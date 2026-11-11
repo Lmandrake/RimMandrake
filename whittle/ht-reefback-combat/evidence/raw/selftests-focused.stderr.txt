@@ -1,0 +1,2 @@
+contained in rm-harness.slice (max 12G), 6 workers
+[1/1] FAIL          0.6s  src/RimMandrake/Utils/selftest_validate_patch.py

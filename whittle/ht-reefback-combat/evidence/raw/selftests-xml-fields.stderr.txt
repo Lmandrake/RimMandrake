@@ -1,0 +1,2 @@
+contained in rm-harness.slice (max 12G), 6 workers
+[1/1] PASS          1.9s  src/RimMandrake/Utils/selftest_def_duplicate_fields.py

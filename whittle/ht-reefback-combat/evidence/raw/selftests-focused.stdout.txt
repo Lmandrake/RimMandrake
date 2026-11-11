@@ -1,0 +1,27 @@
+evidence: 0 eligible, 0 SKIPPED as unchanged, 0 PASS recorded, 0 PASS not recordable — runner 65716eff3278c68e
+cache: 0 CACHED PASS, 0 declared test(s) ran
+known results: 0/1 answered from the ledger (selftests.cache_hit_share 0.000), 0s not spent; 1 ran, 0 recorded, 0 checked against a stored PASS, 0 known red
+  ran (1): no record
+  not recordable (1): external: src/RimMandrake/Utils/selftest_validate_patch.py
+FAIL          0.6s  src/RimMandrake/Utils/selftest_validate_patch.py
+             rc 1
+             ok    a_bare_Defs_step_matches_the_same_as_a_rooted_one
+             ok    a_double_slash_search_is_not_broken_by_the_rebase
+             ok    a_genuinely_dead_xpath_still_reports_zero
+             ok    a_nested_path_predicate_routes_to_lxml_not_a_false_zero
+             ok    a_text_predicate_matches_through_the_lxml_branch
+             ok    an_unusable_live_dump_exits_2_unmeasured_not_0
+             ok    custom_patchoperation_branches_are_xpath_checked
+             FAIL  defs_descendant_xpath_is_not_a_false_zero
+                     count_matches refused '/Defs//defName[text()="Gun_Autopistol"]' as unsupported — it must either evaluate an expression or say so, and a refusal here means the test proves nothing
+             ok    every_full_xpath_feature_takes_the_lxml_branch_and_still_matches
+             ok    rebase_leaves_a_non_Defs_absolute_path_alone
+             ok    the_real_vce_sealer_patch_is_fully_descended
+             ok    the_two_engines_agree_on_the_expressions_both_can_evaluate
+             ok    the_unsupported_token_list_still_routes_text_to_lxml
+             
+             12/13 passed
+
+PASS 0/1  FAIL 1/1  UNMEASURED 0/1  CRASH 0/1  SKIPPED 0/1  (wall 0.6s) — contained in rm-harness.slice (max 12G), 6 workers
+FAIL (1/1): src/RimMandrake/Utils/selftest_validate_patch.py
+RESULT: RED (green = FAIL 0 and CRASH 0)

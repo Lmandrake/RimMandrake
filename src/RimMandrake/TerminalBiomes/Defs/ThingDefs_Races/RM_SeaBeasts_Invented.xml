@@ -1840,8 +1840,37 @@
   <ThingDef ParentName="RM_Reefback">
     <defName>RM_ReefbackJuv</defName>
     <label>young reefback</label>
-    <description>A reefback hatchling-sized by comparison only: the reef has barely begun to grow on it, and it drifts close to wherever the adults went.</description>
+    <description>A reefback hatchling-sized by comparison only: the reef has barely begun to grow on it, its crust is still thin enough to cut, and it drifts close to wherever the adults went.</description>
+    <!-- Delegated nursery combat profile: REEFBACK_NURSERY_COMBAT.md (2026-11-11).
+         Replace adult tools; ordinary animal melee and Core stage factors apply. -->
+    <statBases>
+      <ArmorRating_Blunt>0.25</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.30</ArmorRating_Sharp>
+      <ArmorRating_Heat>0.30</ArmorRating_Heat>
+    </statBases>
+    <tools Inherit="False">
+      <li>
+        <label>tail sweep</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>3.0</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>bulk</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <chanceFactor>0.3</chanceFactor>
+      </li>
+    </tools>
     <race>
+      <baseHealthScale>8</baseHealthScale>
       <lifeStageAges Inherit="False">
         <li>
           <def>AnimalBaby</def>
@@ -1857,6 +1886,7 @@
 
   <PawnKindDef ParentName="RM_Reefback_Kind">
     <defName>RM_ReefbackJuv</defName>
+    <combatPower>150</combatPower>
     <wildGroupSize>2~3</wildGroupSize>
     <label>young reefback</label>
     <race>RM_ReefbackJuv</race>

@@ -124,6 +124,8 @@ ships in this world**, so the sheet's original *"the reason ships sink"* was a d
 is amended in `the_miasma.md` §4. ⚠️ `design/Jawa/campaign/CAMPAIGN_ARC_GATHER.md` G34 still
 quotes the old phrasing and is now stale.
 
+**Reefback combat detail (delegated design, 2026-11-11):** `RM_ReefbackJuv` is nursery prey relative to its open-sea adult and the resident guard. Its thin crust and local tools yield baby/juvenile nominal damage 8/5 and 12/7.5; HealthScale is 2/4.8, independently of body size 6.4/16. Sharp armor is 0.30. “Cheap to hunt” means a lower ranged damage budget under the explicit two-hunter model, not harmless contact or a guaranteed kill time. The adult retains 480/120 tools and HealthScale20; the mother retains 22/18 and HealthScale7 at adult/elder. Mother danger uses her existing anchored water-only target rules; killing a calf does not acquire a new remote retaliation mechanism. The lifecycle, Miasma0.15 row, adults, mother residents and art stay. Exact profile, assumptions and evidence: `design/RimMandrake/hugethings_codex_2026-11-09/REEFBACK_NURSERY_COMBAT.md`.
+
 **Eight juvenile defs already ship** — `RSW_MeeJuv`, `RSW_FaaJuv`, `RSW_LaaJuv`,
 `RSW_YobshrimpJuv`, `RSW_SiltLampreyJuv`, `RSW_RustNipperJuv`, `RSW_OpeeSeaKillerJuv`,
 `RSW_DiggerJuvenile` — and seven of them are already cast on this biome. The nursery is the

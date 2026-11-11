@@ -1,0 +1,3579 @@
+{
+  "scope": "src/**/Patches/*.xml outside excluded lanes; selected raw/resolved XML only",
+  "excluded": [
+    "FlowWorks",
+    "GSS",
+    "GimmeSomeSlack",
+    "GravShipSystems",
+    "art_source",
+    "bin",
+    "obj"
+  ],
+  "files": [
+    {
+      "file": "src/RimMandrake/Abyss/Patches/Abyss_Rename.xml",
+      "bytes": 2978,
+      "sha256": "c93f9bf04a91def9816968943513eba5a5ef42c784959e7b699e41acf56e74b5"
+    },
+    {
+      "file": "src/RimMandrake/Abyss/Patches/RM_AcousticPayload_Abyss.xml",
+      "bytes": 2809,
+      "sha256": "bfd717d097c28abbae656b9208f064ce67b21dbe1db808bd8a159dba7f8f74f3"
+    },
+    {
+      "file": "src/RimMandrake/Abyss/Patches/RM_BroodLair_MapGen.xml",
+      "bytes": 633,
+      "sha256": "9fe62bfa2dc51bc13ac1d8138dde123050e6b7e917457c23e8488f363f8060e7"
+    },
+    {
+      "file": "src/RimMandrake/BlueDesert/Patches/RM_AcousticPayload_BlueDesert.xml",
+      "bytes": 2814,
+      "sha256": "cc9f0cb8b38b1bd99dbddd9a3b61a52ede77e4c50a7780d3d8bcdecab7ad3d60"
+    },
+    {
+      "file": "src/RimMandrake/Cauldron/Patches/RM_AcousticPayload_Cauldron.xml",
+      "bytes": 2611,
+      "sha256": "d2613bb5221fc8a10dd7809ded6fb894f85623acca7bfea3f40468a93a9b9fb6"
+    },
+    {
+      "file": "src/RimMandrake/Cauldron/Patches/RM_CauldronRuinScatter_Register.xml",
+      "bytes": 559,
+      "sha256": "35ee925d61326ca601bc848c1081771c22901922aae3479df499de506e4fdca9"
+    },
+    {
+      "file": "src/RimMandrake/Cauldron/Patches/RM_Cauldron_AcidAir.xml",
+      "bytes": 969,
+      "sha256": "a9f664d5457af6fe093e141a55864a19a7f470481e1f931ef6ba306c57fad5b4"
+    },
+    {
+      "file": "src/RimMandrake/Cauldron/Patches/RM_Cauldron_AcidDamage.xml",
+      "bytes": 1234,
+      "sha256": "9d8b5de259f7141e948b54283d8c84b57a8607ade72707c7c9c8856ed3ca6927"
+    },
+    {
+      "file": "src/RimMandrake/Cauldron/Patches/RM_Cauldron_VexxithContainers.xml",
+      "bytes": 1652,
+      "sha256": "04df7bfbf3b3973104f68a3c0c7d067d4ed75b9063a796eb0a5ba2d186d96c5b"
+    },
+    {
+      "file": "src/RimMandrake/ColdStorage/Patches/ColdStorage_AncientComplexLoot.xml",
+      "bytes": 3116,
+      "sha256": "206e4ba8e8e1c0396d90568257bdaa5c9338be94efcec706a8f92721286c5c2e"
+    },
+    {
+      "file": "src/RimMandrake/ColdStorage/Patches/ColdStorage_EncasedStats.xml",
+      "bytes": 880,
+      "sha256": "a58cf366c384ab1c9cd4c7b09da764c3351504db59a0d0afde0e107e9c61e0ae"
+    },
+    {
+      "file": "src/RimMandrake/ColdStorage/Patches/ColdStorage_LWMDeepStorage.xml",
+      "bytes": 991,
+      "sha256": "1cf00bd9768ece65d3b0bae85ff87dee99b08db39d788303bed465d1a713ba50"
+    },
+    {
+      "file": "src/RimMandrake/ColdStorage/Patches/ColdStorage_WreckedMachinesLadder.xml",
+      "bytes": 4217,
+      "sha256": "02ec215184d8547e415e0ba9df8ba52c6daf65b0cf6bd9ee7461af1dadde85a4"
+    },
+    {
+      "file": "src/RimMandrake/Contagion/Patches/OrganGenomeComps.xml",
+      "bytes": 3554,
+      "sha256": "1d27372e4aeb0021eff9379212b36399cfa722ae628e6282cb9196dcd4815bbd"
+    },
+    {
+      "file": "src/RimMandrake/Contagion/Patches/OrganInstallGenomeMatch.xml",
+      "bytes": 4212,
+      "sha256": "a3b8eea86b586c0af5e165ed0cce2863ef8d3f494aae26316c6be7b5b4d8f55f"
+    },
+    {
+      "file": "src/RimMandrake/Contagion/Patches/RM_AcousticPayload_Contagion.xml",
+      "bytes": 2600,
+      "sha256": "313ea2663e768a17d1ca6276bac13b2bc2f09419c8f6e7f5e0d72dff1c7d93c3"
+    },
+    {
+      "file": "src/RimMandrake/CrackedLands/Patches/RM_AcousticPayload_CrackedLands.xml",
+      "bytes": 3583,
+      "sha256": "d9aa8155779fc1fd9c2cd723fa777f562fddcdbdf4a003145630b2e36f8f2ba1"
+    },
+    {
+      "file": "src/RimMandrake/CrackedLands/Patches/RM_CrackedLands_FossilStrata_Register.xml",
+      "bytes": 1044,
+      "sha256": "363bbd743af2f2f7fa8ccd9122d5ba7a0d5ca8feb446cc19715db2a7af87b836"
+    },
+    {
+      "file": "src/RimMandrake/CrackedLands/Patches/RM_CrackedLands_MercyLedges_Register.xml",
+      "bytes": 798,
+      "sha256": "b5142058e7418ec6a2a6dfbb502e0015b227800f5b63dadc9405348624e752ea"
+    },
+    {
+      "file": "src/RimMandrake/CreatureBehaviors/Patches/RM_Mirage_ThinkTree.xml",
+      "bytes": 2808,
+      "sha256": "7f1863a2ee4547669c8b3dc2082a3c92a1d78d51aab33927f93dccba0b59eb06"
+    },
+    {
+      "file": "src/RimMandrake/CreatureBehaviors/Patches/RM_TidalLock_NoSeasons.xml",
+      "bytes": 2145,
+      "sha256": "1a40d9cf0bf7efec8a0eece5640067d5d5c9cbf4bb5dbad530cffd118bd548ab"
+    },
+    {
+      "file": "src/RimMandrake/DivingInteraction/Patches/RM_AcousticPayload_DivingInteraction.xml",
+      "bytes": 10776,
+      "sha256": "8b4cf9613fe619847e437ff182934d5290c7b32d8834de59b520f8ebc90e3797"
+    },
+    {
+      "file": "src/RimMandrake/DivingInteraction/Patches/RM_ChillAirPump_OxygenPump.xml",
+      "bytes": 1426,
+      "sha256": "46b8c508d7aeb847c39692b3c3b2e2e8aeec91a2a08f48f63737d07cf584daa4"
+    },
+    {
+      "file": "src/RimMandrake/DivingInteraction/Patches/RM_ChillFireBan_FissionGenetrons.xml",
+      "bytes": 1604,
+      "sha256": "97d3452c5a19d25b9a2b0af22aafec9a86292c68607c17bfa869ed65a2beef68"
+    },
+    {
+      "file": "src/RimMandrake/DivingInteraction/Patches/RM_ChillHeatedSuit_ComfyTemperatureMin.xml",
+      "bytes": 1164,
+      "sha256": "aa715b10e52e7e26e416ca3f9b4177d1c501c22ac61182129cefd796248b5bc6"
+    },
+    {
+      "file": "src/RimMandrake/DivingInteraction/Patches/RM_SeabedFloorBiomeWiring.xml",
+      "bytes": 4480,
+      "sha256": "daa494626124055caff2cf515dba5563d9e760c6c47bed1c903979e2b1e87c6e"
+    },
+    {
+      "file": "src/RimMandrake/DivingInteraction/Patches/RM_SeabedFloor_GreyWeather.xml",
+      "bytes": 1249,
+      "sha256": "3ebf813735a4cc9d2504468b8d21125c632d5508a26036d7376246740014755e"
+    },
+    {
+      "file": "src/RimMandrake/DivingInteraction/Patches/RM_SpecimenCabinet_Beauty.xml",
+      "bytes": 410,
+      "sha256": "88c1cc62b8645aa7381aa11223699a0cc228482ed20c6fbfa959666064d3cdc4"
+    },
+    {
+      "file": "src/RimMandrake/EnvironmentalHazards/Patches/RM_ShadeLessons_Sources.xml",
+      "bytes": 39268,
+      "sha256": "9cbbd8f628ce162eca5192dd8c32dca1af2de7e6f90af4e4d6ae4375fd5a4d9d"
+    },
+    {
+      "file": "src/RimMandrake/ExplosiveKnockback/Patches/RM_Knockback_DamageDefs.xml",
+      "bytes": 1856,
+      "sha256": "b2f80968cb1611852bd864634cd66e888c11d92a28b590b65f662c63263875ef"
+    },
+    {
+      "file": "src/RimMandrake/FeverWood/Patches/RM_AcousticPayload_FeverWood.xml",
+      "bytes": 2848,
+      "sha256": "2dda5fe86d130d87ff9a6adfb444f07cf143cb97b939dafc670446be0159073a"
+    },
+    {
+      "file": "src/RimMandrake/FeverWood/Patches/RM_FeverWood_AntHiveGenStep_Register.xml",
+      "bytes": 1219,
+      "sha256": "001f5f07c4f640d41c133a8f5f3714edb0cbe8de5803b6848117677617879162"
+    },
+    {
+      "file": "src/RimMandrake/FeverWood/Patches/RM_FeverWood_GroundRefusalGenStep_Register.xml",
+      "bytes": 670,
+      "sha256": "508628da98aabee4ac8013049a84a82d9fac27705c4c299abd1167c85ad40d45"
+    },
+    {
+      "file": "src/RimMandrake/FeverWood/Patches/RM_FeverWood_ScatterPoolsGenStep_Register.xml",
+      "bytes": 668,
+      "sha256": "be26e3725bb6bdc7a7e990fdd2e5cda1b61f44b28da13e4f50c91aacf99d2671"
+    },
+    {
+      "file": "src/RimMandrake/FeverWood/Patches/RM_FeverWood_StakeLureOrdersPatch.xml",
+      "bytes": 1052,
+      "sha256": "bdf94b3a38e567083700e278b07ebc8b34bbcc12a70939a5d1a94a0a2f68bc47"
+    },
+    {
+      "file": "src/RimMandrake/FeverWood/Patches/RM_FeverWood_SuppressionOrdersPatch.xml",
+      "bytes": 780,
+      "sha256": "24fd75c1921407ae6105a70595295f0a95c0f129d7d464f2ab886e8bfdf5bae9"
+    },
+    {
+      "file": "src/RimMandrake/FeverWood/Patches/RM_FeverWood_WreckField_Register.xml",
+      "bytes": 1166,
+      "sha256": "9ca657713bb07d23c404694045b416ed4d5da478bb7c1b7a67946bf84b9de67c"
+    },
+    {
+      "file": "src/RimMandrake/FeverWood/Patches/RM_FeverWood_YoungCaskTraders.xml",
+      "bytes": 633,
+      "sha256": "2867f1a99ad9600b6e9e36581615500a427a11387c6bdd72b6a410872b254bea"
+    },
+    {
+      "file": "src/RimMandrake/FlameStatues/Patches/Helixien_Pipenet.xml",
+      "bytes": 2134,
+      "sha256": "e010b82b1d9ded11487623430c011c1e5a10f9ad905ef5d3f4b0c299523ac384"
+    },
+    {
+      "file": "src/RimMandrake/GelatinousSlime/Patches/DryingBiomes.xml",
+      "bytes": 3106,
+      "sha256": "271d55e85152c93fa36fde8080c69a6497506d7e129ad69e2f11f3f70233f837"
+    },
+    {
+      "file": "src/RimMandrake/GelatinousSlime/Patches/RM_AcousticPayload_GelatinousSlime.xml",
+      "bytes": 2670,
+      "sha256": "503d10e4fa8a1a4311a85d7d7ac876caf372ec8dc31e3454bb9e72b340d61544"
+    },
+    {
+      "file": "src/RimMandrake/GelatinousSlime/Patches/RM_Oomb_VEFThinkTree.xml",
+      "bytes": 1440,
+      "sha256": "fadacb3cfa4749d9da0262dcc30ce53acab7117e02fad39cbf56265a840e4d25"
+    },
+    {
+      "file": "src/RimMandrake/GelatinousSlime/Patches/RM_SlimeFarmRuins_MapGenPatch.xml",
+      "bytes": 1156,
+      "sha256": "63811d5e921c4d5df87ffc0bd1164a2da4252920f5955831b240d8767ef6197b"
+    },
+    {
+      "file": "src/RimMandrake/GelatinousSlime/Patches/RM_SlimeVisitorSeed_MapGenPatch.xml",
+      "bytes": 1138,
+      "sha256": "ad2c500502c72a371541113569dcefb724c8b76a5dffe700e2366422ebd0a03f"
+    },
+    {
+      "file": "src/RimMandrake/Graffiti/Patches/Graffiti_OrdersPatch.xml",
+      "bytes": 1413,
+      "sha256": "ee3790f46cb6cd42bd696c744bc9dd03d1b8f26daf66a19a64360b645dfafc7e"
+    },
+    {
+      "file": "src/RimMandrake/Greentide/Patches/RM_AcousticPayload_Greentide.xml",
+      "bytes": 2214,
+      "sha256": "6356ad79eab5cae2cad186ec37225a946a0d3dd9e62242d9c6acb9bea857f782"
+    },
+    {
+      "file": "src/RimMandrake/Greentide/Patches/RM_Greatbole_Crossovers.xml",
+      "bytes": 4958,
+      "sha256": "3373893c278b624806f741f6be8633737e14d20951fa7ee9cb3874d6da9b4939"
+    },
+    {
+      "file": "src/RimMandrake/Greentide/Patches/RM_Greentide_GenStep_Register.xml",
+      "bytes": 590,
+      "sha256": "d6b4c6dedef871c4cc4b76dac7b236153e57cdda103e4330432003af283d41a1"
+    },
+    {
+      "file": "src/RimMandrake/Greentide/Patches/RM_StellockLace_Patches.xml",
+      "bytes": 2304,
+      "sha256": "d892fc60e2fc82254c1ce7cf0c931e443bd59f380dc4892cb1e1bfc45c8f2593"
+    },
+    {
+      "file": "src/RimMandrake/HugeThings/Patches/RM_TitanPassage_DarkSide.xml",
+      "bytes": 1520,
+      "sha256": "edb79caaee7a47e1cb109dfe3c6fe021e6e3faa948d907cd0d68d34421f7ebc4"
+    },
+    {
+      "file": "src/RimMandrake/KeelHoist/Patches/RM_HoistFrames_Register.xml",
+      "bytes": 577,
+      "sha256": "0e7a0d7b2f55dfc3cbbad230e3c46704ac9c5c613d3ae56a1bcc778db12fac0f"
+    },
+    {
+      "file": "src/RimMandrake/KineticArms/Patches/RM_KineticArms_PirateLooters.xml",
+      "bytes": 1765,
+      "sha256": "00bdf03f304cbe34c00a312cc5c0a3c5d850fa482cf08bf1cf126e8317a11a3c"
+    },
+    {
+      "file": "src/RimMandrake/KineticArms/Patches/RM_KineticArms_RuinsLoot.xml",
+      "bytes": 2977,
+      "sha256": "5c1a58a5c67486504d96d15a491eb6b5655b2fca2df5b37de5746f0f9dfb57f9"
+    },
+    {
+      "file": "src/RimMandrake/KineticArms/Patches/RM_KineticArms_Thump.xml",
+      "bytes": 686,
+      "sha256": "d61c631f2e03f06f87d95493c70ca30b7a856fdee8b564768f2fe80a3b016cb2"
+    },
+    {
+      "file": "src/RimMandrake/LanternDeeps/Patches/RM_AcousticPayload_LanternDeeps.xml",
+      "bytes": 2871,
+      "sha256": "da2968dce9fa6ce824e4f3fb0cd55b71f696e49f2c1763163ae50b3b38aff436"
+    },
+    {
+      "file": "src/RimMandrake/LanternDeeps/Patches/RM_LanternDeepEmergence_MapGenPatch.xml",
+      "bytes": 656,
+      "sha256": "9f9c1ffb6fcb7bf0db1b0e5e4abd60b4ddd274f5460b5afa725796905d999b68"
+    },
+    {
+      "file": "src/RimMandrake/LanternDeeps/Patches/RM_LanternDeepEvictCrystalFauna.xml",
+      "bytes": 3128,
+      "sha256": "124a1e20ab95d2063c03f60683d6115c356217b2224e981565ca88e6b243dd62"
+    },
+    {
+      "file": "src/RimMandrake/LanternDeeps/Patches/RM_LanternDeepGatePyrinth.xml",
+      "bytes": 1949,
+      "sha256": "a7d4a40b5206a01a29113f9d661094553cb0244dcc5739f72f3827c0a8fdf6e7"
+    },
+    {
+      "file": "src/RimMandrake/LanternDeeps/Patches/RM_LanternDeepIncidentSuppression.xml",
+      "bytes": 4190,
+      "sha256": "49820d3cd32753c3b8ac19292db828d3c1cb953d95806f96dd2b25ecfa98c66a"
+    },
+    {
+      "file": "src/RimMandrake/LanternDeeps/Patches/RM_LanternDeepMineshaft_MapGenPatch.xml",
+      "bytes": 596,
+      "sha256": "aada22ab21cbb8e0be42fb82ff25b48a5412c05709731e4bc5b09ad722403874"
+    },
+    {
+      "file": "src/RimMandrake/LanternDeeps/Patches/RM_LanternstoneFictionRename.xml",
+      "bytes": 4384,
+      "sha256": "09dacaf2198c44a292b1ec1cf2721faf07f7ad97eaf6e7264c1ab406f02e6dee"
+    },
+    {
+      "file": "src/RimMandrake/LeaningScrub/Patches/BetterTrees_SweetlineTree_Immunity.xml",
+      "bytes": 1758,
+      "sha256": "ff8800404a2112ddbc1bbcd39b210396cd691845a5479838563f3eb35b789b3d"
+    },
+    {
+      "file": "src/RimMandrake/LeaningScrub/Patches/ProximityHatch/RM_ProtovermesEgg_ProximityHatch.xml",
+      "bytes": 2608,
+      "sha256": "cbd18273d6f0e570d5fff2a3421a6cf26a21c54700ba228059003893fcb115bb"
+    },
+    {
+      "file": "src/RimMandrake/LeaningScrub/Patches/RM_AcousticPayload_LeaningScrub.xml",
+      "bytes": 2588,
+      "sha256": "084589b72535c12058e8ad35c246b5844bb2ff8eb985fa097e9d1f706b054fd3"
+    },
+    {
+      "file": "src/RimMandrake/LeaningScrub/Patches/RM_DeadVenomvine_Fuel.xml",
+      "bytes": 671,
+      "sha256": "f528d296608aacfabe605bff6cff58caa9a087a86f23e5d7d5e075ca7022ecec"
+    },
+    {
+      "file": "src/RimMandrake/LeaningScrub/Patches/RM_LeaningScrub_GroundCoverDrawLayer.xml",
+      "bytes": 2611,
+      "sha256": "e945a03833264c6b625df902370a2be7106a115016e1383528a5fafa7304662c"
+    },
+    {
+      "file": "src/RimMandrake/LeaningScrub/Patches/RM_Ripple_Cover.xml",
+      "bytes": 787,
+      "sha256": "4a20c0b8785b6f9a229695132f2f0cb55266dc5bab1238c5de01e51bdb812311"
+    },
+    {
+      "file": "src/RimMandrake/LeaningScrub/Patches/RM_StuffComfort_StatPart.xml",
+      "bytes": 542,
+      "sha256": "15f7f16268cb398f68b11db4b52ab8b9635409d0a18c2541c44080b2d3bee4b9"
+    },
+    {
+      "file": "src/RimMandrake/LeaningScrub/Patches/RM_VenomvineThicket_Smotherable.xml",
+      "bytes": 637,
+      "sha256": "e2df207b5591f1a8f7718d0441c9263a4ea6697511215e3ba289111b15416b41"
+    },
+    {
+      "file": "src/RimMandrake/LeaningScrub/Patches/RM_Venomvine_TallCreepSafeRunners.xml",
+      "bytes": 2271,
+      "sha256": "fd9ebde30f0356a024837a550ec86869d5f53d8ba80e92f0ce7bd9ebf6487899"
+    },
+    {
+      "file": "src/RimMandrake/LongShade/Patches/RM_AcousticPayload_LongShade.xml",
+      "bytes": 2591,
+      "sha256": "583f5d23900ca22d227c275cb773a6ec91f8fe77537328bbbfb17b535ffc8cc4"
+    },
+    {
+      "file": "src/RimMandrake/LuminousPigment/Patches/CrowncarpetBedTag.xml",
+      "bytes": 1071,
+      "sha256": "25a97d817c4f9f73af8100b666ee75159bb7c58fa13f9e99981f377a36795a32"
+    },
+    {
+      "file": "src/RimMandrake/LuminousPigment/Patches/DeepfireBeautyStatPart.xml",
+      "bytes": 1032,
+      "sha256": "2527ffeca08205ebe91ad1535445c1a19dc50e18d38c9a2912d072b23bb908f9"
+    },
+    {
+      "file": "src/RimMandrake/LuminousPigment/Patches/DeepfireGlowingTargetStatPart.xml",
+      "bytes": 1133,
+      "sha256": "8461f04366371ce4cde87f5b82baf56ae0317a3fa074140e398a98385c994a19"
+    },
+    {
+      "file": "src/RimMandrake/LuminousPigment/Patches/DeepfireOrdersPatch.xml",
+      "bytes": 980,
+      "sha256": "076ee7f3e089e69c74310aff1242d24607c8e7fc79639f915d5d2a204c559c3b"
+    },
+    {
+      "file": "src/RimMandrake/MandrakePatches/Patches/AnimaTree_NoRandomSpawn.xml",
+      "bytes": 1814,
+      "sha256": "1d487df1d4e900932fe7ee819e0ec11a26fd04651e9247b1e2cf12f36ef6572b"
+    },
+    {
+      "file": "src/RimMandrake/MandrakePatches/Patches/BTDGravshipQuest_GrammarFix.xml",
+      "bytes": 5252,
+      "sha256": "38d646a2c72d9dd585165cc5d9069d9dbcf92d729ded532fcd61ec1aa0bbcc76"
+    },
+    {
+      "file": "src/RimMandrake/MandrakePatches/Patches/BuzzerApostrophe_Fix.xml",
+      "bytes": 4790,
+      "sha256": "4e4dfb1b32e1e77e45886b6357fd09c9e41e18bfb897b5946afe566b71078f7c"
+    },
+    {
+      "file": "src/RimMandrake/MandrakePatches/Patches/DrillTurret_ShootingJob.xml",
+      "bytes": 2647,
+      "sha256": "fb6337a549c5b2812ff62cded19cf1f6b418afb7a5bc889860ed3bd0eaea4560"
+    },
+    {
+      "file": "src/RimMandrake/MandrakePatches/Patches/HeadSetForFA_Revive.xml",
+      "bytes": 6414,
+      "sha256": "014544585a194852c184201ada6d1b1389f08ca74c02f00eeed072c1f6deffd0"
+    },
+    {
+      "file": "src/RimMandrake/MandrakePatches/Patches/ThirdPartySignConfigErrors_Fix.xml",
+      "bytes": 3842,
+      "sha256": "dd5b9f497c4b9700174c432986edab41b3eb0c78c00d29a96fbe11f4ea64f920"
+    },
+    {
+      "file": "src/RimMandrake/MandrakePatches/Patches/WorldMapReadability_Ashkarr.xml",
+      "bytes": 2748,
+      "sha256": "52af343beb45b58c019e9bfd90bc1f6b0853477ca3f504e4e5941e9f8706d14c"
+    },
+    {
+      "file": "src/RimMandrake/Miasma/Patches/RM_AcousticPayload_Miasma.xml",
+      "bytes": 2815,
+      "sha256": "0e655ba48c8fb9788837754312804351ec2e78771a29937868bdb16a3084895f"
+    },
+    {
+      "file": "src/RimMandrake/Miasma/Patches/RM_Attar_BeautyPart.xml",
+      "bytes": 630,
+      "sha256": "65f7513fc1246001b8b01035c317e052293d94d4db27edc98a4bb4de830abc48"
+    },
+    {
+      "file": "src/RimMandrake/Miasma/Patches/RM_DecayDrake_VEFThinkTree.xml",
+      "bytes": 775,
+      "sha256": "06b813f6e1169099417d6e9dcff5992a4b375296299d1422fff42cf6cc3a15bc"
+    },
+    {
+      "file": "src/RimMandrake/Miasma/Patches/RM_Miasma_CrecheScatterer_Register.xml",
+      "bytes": 1856,
+      "sha256": "3743b3a9577f77f233ae07de4b30ebe4821c8aaab098ae83686be65ed2acb3ba"
+    },
+    {
+      "file": "src/RimMandrake/Miasma/Patches/RM_Miasma_ForgeOnSurvival.xml",
+      "bytes": 13207,
+      "sha256": "f66d6dd8bdb0e7badee1b03f4c66a2391f692d1222791263ea220851c4e9d287"
+    },
+    {
+      "file": "src/RimMandrake/Miasma/Patches/RM_Miasma_GradientAxis_Register.xml",
+      "bytes": 1263,
+      "sha256": "2c2b8b2111b7e6777406f7fb29b3138dd3fd24a187e852add06b24bec6342fd7"
+    },
+    {
+      "file": "src/RimMandrake/MovingDunes/Patches/BiomeBindings.xml",
+      "bytes": 4075,
+      "sha256": "9cab14172506510cb5e8f97c1c693480797a6855dd2e91b41eccf358aaa15aec"
+    },
+    {
+      "file": "src/RimMandrake/Pyrelands/Patches/RM_AcousticPayload_Pyrelands.xml",
+      "bytes": 2544,
+      "sha256": "c1333efae8a06c1dfc8a521d6af1e49c98e21e2e48f2808384b95d3d4cf6a542"
+    },
+    {
+      "file": "src/RimMandrake/Pyrelands/Patches/RM_PyreStepAwayFromFire.xml",
+      "bytes": 922,
+      "sha256": "cac0a535063e8bf7d02bab4bdf5a19d30e996fdb3dddf03beefc50fea331e499"
+    },
+    {
+      "file": "src/RimMandrake/Pyrelands/Patches/RM_PyrelandsIgniters_Comps.xml",
+      "bytes": 5349,
+      "sha256": "dffaf8e7b3ad6683b479ccddfbcbc2133a130ffa13b0a6fc05d3fecd9ebb22fe"
+    },
+    {
+      "file": "src/RimMandrake/Pyrelands/Patches/RM_Pyrelands_NativesSlowThirst.xml",
+      "bytes": 1257,
+      "sha256": "57cea5788cc3e59a543b261c128206459e23a32040bd77e55c4a2e6f6f76a532"
+    },
+    {
+      "file": "src/RimMandrake/Pyrelands/Patches/RM_Pyrelands_NoForeignArrivals.xml",
+      "bytes": 3683,
+      "sha256": "d304b23875b26d10306a8f55bb745608086ad5b88bbe9c94dd61c5c832f45b47"
+    },
+    {
+      "file": "src/RimMandrake/Pyrelands/Patches/RM_ShovelSand_Orders.xml",
+      "bytes": 411,
+      "sha256": "89277fd80f36adfa46a9476e3cf4fdd26308955d323c930a946ddef81661005f"
+    },
+    {
+      "file": "src/RimMandrake/Pyrinth/Patches/Absorbed_EpochsPyrinth/Absorbed_EpochsPyrinth_MO_Cost_Patch.xml",
+      "bytes": 825,
+      "sha256": "cacff09c88720771c7d6464a7ba41007c3d1adc101a722c17ffd27491945e61b"
+    },
+    {
+      "file": "src/RimMandrake/Pyrinth/Patches/Absorbed_EpochsPyrinth/Absorbed_EpochsPyrinth_Royalty_Patch.xml",
+      "bytes": 1746,
+      "sha256": "95ecb5bef605d6f1235d422c50b5effb7e3091bb93c7d4a29647a4303200b0bc"
+    },
+    {
+      "file": "src/RimMandrake/RimProperty/Patches/AnimalTheft/RaccoonWildTheft.xml",
+      "bytes": 1423,
+      "sha256": "29fe802cbb64b3f231550e80de8b0f54577ade9a871ec0e7f7accfc1124cd2b7"
+    },
+    {
+      "file": "src/RimMandrake/RimProperty/Patches/AnimalTheft/SkellickWildTheft.xml",
+      "bytes": 1525,
+      "sha256": "b6330e5a79bcced18228288f042cd049eb019982e6b7e22d826fd0cc092fae69"
+    },
+    {
+      "file": "src/RimMandrake/RimProperty/Patches/TheftHauler/DroidLoaders_TheftHauler.xml",
+      "bytes": 3336,
+      "sha256": "79981586a0d2e57d6d83d95920dd96796012db21e636b88e2849353ea010a270"
+    },
+    {
+      "file": "src/RimMandrake/RimProperty/Patches/TheftHauler/MuckrakerChassis_TheftHauler.xml",
+      "bytes": 1814,
+      "sha256": "8aa3919efb4cad43629ba86d68e0beb6ddbff2fdf16142d0fb7ad76f52a75cba"
+    },
+    {
+      "file": "src/RimMandrake/RustCathedral/Patches/RM_AcousticPayload_RustCathedral.xml",
+      "bytes": 2548,
+      "sha256": "4e217da829c5d468144942949cdbac2758479abd15edfffe3bcc7f613c1d4886"
+    },
+    {
+      "file": "src/RimMandrake/RustCathedral/Patches/RM_Borehulk_MapGenPatch.xml",
+      "bytes": 443,
+      "sha256": "1dee21f5f1392885c14bc5116010e73b5547eb9d4755e9e8e3f258fb14653330"
+    },
+    {
+      "file": "src/RimMandrake/RustCathedral/Patches/RM_CathedralFinish_MapGenPatch.xml",
+      "bytes": 469,
+      "sha256": "8d0323ecf0d4bd301527ecc9bd24f12edaeb7c446dc74de274ff1f6b57441ac7"
+    },
+    {
+      "file": "src/RimMandrake/RustCathedral/Patches/RM_CathedralWallScatter_MapGenPatch.xml",
+      "bytes": 638,
+      "sha256": "483685f5e0b68db8e622a2cefe0167fb8c63cc63efd881c31b76aa2d943ef735"
+    },
+    {
+      "file": "src/RimMandrake/RustCathedral/Patches/RM_WornBit.xml",
+      "bytes": 1033,
+      "sha256": "ce211654d6a704bb1040d446e789443048f430c171d29c6280364e0f886c1fb0"
+    },
+    {
+      "file": "src/RimMandrake/Scarlands/Patches/ArtFold/Rimclaw_ArtFold.xml",
+      "bytes": 1259,
+      "sha256": "d123cae3579771806056bc67317564735d94413e29deb268dd7e7402988a7374"
+    },
+    {
+      "file": "src/RimMandrake/Scarlands/Patches/Patches_BrokenTurretAim.xml",
+      "bytes": 5334,
+      "sha256": "957059474bafdbf2a1fde66e4f1ebb62f6c12e565281e4b9760310f737ed36e1"
+    },
+    {
+      "file": "src/RimMandrake/Scarlands/Patches/RM_AcousticPayload_Scarlands.xml",
+      "bytes": 3091,
+      "sha256": "f755466bd6507ce8f35e1402bb9756724197abb62d9ab4838451e29bacd5ca08"
+    },
+    {
+      "file": "src/RimMandrake/Scarlands/Patches/RM_AerosolScreen_PollutedBiomes.xml",
+      "bytes": 2274,
+      "sha256": "77751a64b832bb3012600466ac01ae6435bb8011ccfb4f84d56950a2e252d57e"
+    },
+    {
+      "file": "src/RimMandrake/Scarlands/Patches/RM_GlowerShielding.xml",
+      "bytes": 754,
+      "sha256": "b40cd9a978dcdc5a7cb5a359b828656e835e06b200631fbd70ae9874c1f52895"
+    },
+    {
+      "file": "src/RimMandrake/SleepingIce/Patches/RM_AcousticPayload_SleepingIce.xml",
+      "bytes": 2301,
+      "sha256": "716b322151286a9bd14681f81d11d934b9de8019938160b6121bfe7341d74999"
+    },
+    {
+      "file": "src/RimMandrake/SolarMirrors/Patches/RM_SolarMirrors_LongShade.xml",
+      "bytes": 2430,
+      "sha256": "8b21c55be7c627e083734881661e50925f82757a3349895aeabd007dd79d863c"
+    },
+    {
+      "file": "src/RimMandrake/Stillsand/Patches/RM_AcousticPayload_Stillsand.xml",
+      "bytes": 3028,
+      "sha256": "2f8496dee0effd950773d8570fb0f55e14236eecca0ef6fc48d74dea44152ae1"
+    },
+    {
+      "file": "src/RimMandrake/Stillsand/Patches/RM_GiantSkeletons_Wiring.xml",
+      "bytes": 2703,
+      "sha256": "5a80c3a967e0cdfb19c55fa8504db288a67043cf7d0245085754a2e431314309"
+    },
+    {
+      "file": "src/RimMandrake/Stillsand/Patches/RM_GlassChain.xml",
+      "bytes": 977,
+      "sha256": "94da752074eaeb8072fbb0d978ccc3a01f337ae2a1b14520cab70d011c58cdb8"
+    },
+    {
+      "file": "src/RimMandrake/Stillsand/Patches/RM_KraytLens.xml",
+      "bytes": 3970,
+      "sha256": "3a17e312a24b6babf8b852d8c058e5ed23e4696ad7b2d87ffc3a09877a5f9278"
+    },
+    {
+      "file": "src/RimMandrake/Stillsand/Patches/RM_LoudDraws.xml",
+      "bytes": 1081,
+      "sha256": "24d0db04a0cd0fc7ad32c9db7df656e887fba3f0350edafc88bb37185ef7d392"
+    },
+    {
+      "file": "src/RimMandrake/Stillsand/Patches/RM_PreciousCaves_BiomeGenSteps.xml",
+      "bytes": 1092,
+      "sha256": "ca7260a73db8c3054f197f4b3aab806308225957574070a0b296d8cf9c6d3941"
+    },
+    {
+      "file": "src/RimMandrake/Stillsand/Patches/RM_SandRemembersWater_Stillsand.xml",
+      "bytes": 1866,
+      "sha256": "71f2565647f87c1dc7796df429e63e4de736d4b8b86c8254f27c91d0444b23c6"
+    },
+    {
+      "file": "src/RimMandrake/Stillsand/Patches/RM_Thumper_Groundcaller.xml",
+      "bytes": 1542,
+      "sha256": "dc0d654040d3890da27c06d47efc1a7fa243ea1af8886cbbd4d69dc4a30ede03"
+    },
+    {
+      "file": "src/RimMandrake/Stillsand/Patches/RM_TrackSurface_Stillsand.xml",
+      "bytes": 4144,
+      "sha256": "c73144caea5879daf526fe9448e78b44cfba6f28e1b04bdcf789d9757bd405bd"
+    },
+    {
+      "file": "src/RimMandrake/Stillsand/Patches/RM_TraderCarriers_Stillsand.xml",
+      "bytes": 1716,
+      "sha256": "39a21f97f5dad827bf0d4b6b5459a5a72e692ef3f196163cf9762c12b5cfdf52"
+    },
+    {
+      "file": "src/RimMandrake/StructureInjections/Patches/SignalMast.xml",
+      "bytes": 1972,
+      "sha256": "9b9fbb171bc9e711237bdd1743b8f0abc117673ce43efbecdfefa8f8216cc919"
+    },
+    {
+      "file": "src/RimMandrake/TerminalBiomes/Patches/RM_AcousticPayload_TerminalBiomes.xml",
+      "bytes": 10135,
+      "sha256": "24de4a21ac6388452714a761d398b3ce799ff4d9218b683c574c9b30fcd0add1"
+    },
+    {
+      "file": "src/RimMandrake/TerminalBiomes/Patches/RM_GenStep_TwilightChannels_Register.xml",
+      "bytes": 1689,
+      "sha256": "57ea8773746e314a2efada1f3fb6f15a5d96659e8912bf5fad0428a630f35df5"
+    },
+    {
+      "file": "src/RimMandrake/TerminalBiomes/Patches/RM_GreySeaShoreScatter_Register.xml",
+      "bytes": 2453,
+      "sha256": "5fd906d9ccd884b9e429e9d3b6ef02618a3e91826885c02a5a8490ee7aac81fa"
+    },
+    {
+      "file": "src/RimMandrake/TerminalBiomes/Patches/RM_MixedBiome_Inert.xml",
+      "bytes": 670,
+      "sha256": "1f23bcd1ef5710bf566f28d549da42749c0b16543df4f7d1df1a27fdd761ab3d"
+    },
+    {
+      "file": "src/RimMandrake/TerminalBiomes/Patches/RM_ScaldSailScatterer_Register.xml",
+      "bytes": 2046,
+      "sha256": "387d52277bffce593c92b95102b1bac68ac619865404950bc3455ca7a8ffcbd3"
+    },
+    {
+      "file": "src/RimMandrake/TerminalBiomes/Patches/RM_ScaldSteamLock_BiomeWiring.xml",
+      "bytes": 3755,
+      "sha256": "b8134aeb67bdcb9caea5a666b0e9f70524f881ce5d05a460360fffc1836e1c89"
+    },
+    {
+      "file": "src/RimMandrake/TerminalBiomes/Patches/RM_ScaldWater_LiquidHeat.xml",
+      "bytes": 1405,
+      "sha256": "c3639a3d33eeacd5c9c995bdcb8c5ec141df78775ad201bf5231bcc6fcb71ebe"
+    },
+    {
+      "file": "src/RimMandrake/TerminalBiomes/Patches/RM_ScaldWreckScatter_Register.xml",
+      "bytes": 1916,
+      "sha256": "bce88ee34d2082aa74e12c94c90d4be821479f629ea2117a1a1d5dab4d9589b8"
+    },
+    {
+      "file": "src/RimMandrake/TerminalBiomes/Patches/RM_SiltTrap_SeaSwap.xml",
+      "bytes": 625,
+      "sha256": "f032c6ad316f4a2e6dd8a6f27bc64c493644c34c8e59050b6b5a358a770ce252"
+    },
+    {
+      "file": "src/RimMandrake/TerminalBiomes/Patches/RM_TwilightFloraDressing_Register.xml",
+      "bytes": 1062,
+      "sha256": "8157d3953517d6119d74eee3716dd2117a44ee7b399bc78780eb70768a340c54"
+    },
+    {
+      "file": "src/RimMandrake/TerminalBiomes/Patches/RM_TwilightScatterVauliskLure_Register.xml",
+      "bytes": 1486,
+      "sha256": "7224f33be5391e8102ba71891e1df08a5a287546fa75f9e3ab1220f653aea201"
+    },
+    {
+      "file": "src/RimMandrake/TheForge/Patches/RM_AcousticPayload_TheForge.xml",
+      "bytes": 2610,
+      "sha256": "2390961a454b2f68e75d648dde06c303a0adbd814da02e75aa58343d535bc761"
+    },
+    {
+      "file": "src/RimMandrake/TheRot/Patches/RM_AcousticPayload_TheRot.xml",
+      "bytes": 2644,
+      "sha256": "bebb4801b4c44e00d7568e960347c9ed2d535c1415176d28c0118a2d2ddfb1f8"
+    },
+    {
+      "file": "src/RimMandrake/TheRot/Patches/RM_SwallowedCore_Gravship.xml",
+      "bytes": 1378,
+      "sha256": "c07ceea7e199f275e4967f34638262bb8be8af351d16608400e89184d09760b0"
+    },
+    {
+      "file": "src/RimMandrake/TheRot/Patches/RotGiants_HugeFootprint.xml",
+      "bytes": 16363,
+      "sha256": "c4181529a2511c27188c7856e03feb00e9a1081c77a5dcfb4092238fbbeec6d9"
+    },
+    {
+      "file": "src/RimMandrake/TheRot/Patches/RotSpecies_NamesAndSizes.xml",
+      "bytes": 22520,
+      "sha256": "e758175c3a09ebe0456d5d2f5f40e4b4b43daf23abed9c6af509665831c6ad1a"
+    },
+    {
+      "file": "src/RimMandrake/TheRot/Patches/RotSpecies_WoundSharing.xml",
+      "bytes": 4755,
+      "sha256": "c0ff0b9f104e7af8053ad91fe6ca2e212d7d67b0306e34be9f996d977dd3f2a6"
+    },
+    {
+      "file": "src/RimMandrake/TheSump/Patches/RM_AcousticPayload_TheSump.xml",
+      "bytes": 2572,
+      "sha256": "b26786c8c2a92e43e9eace42b9c55a420f2d7d219082cea3047b13a59d86eef7"
+    },
+    {
+      "file": "src/RimMandrake/TheSump/Patches/RM_BeastBulge_DreadRegistration.xml",
+      "bytes": 2216,
+      "sha256": "be71715014e08f1efb6c29376736614bf2789894957e4fa743d266d54158b5a6"
+    },
+    {
+      "file": "src/RimMandrake/TheSump/Patches/RM_GenStep_DeepBlackMere_Register.xml",
+      "bytes": 1109,
+      "sha256": "6a8b3d3fc9bee1545750ab60619891221744a574866c64b76dd9f910c5d16826"
+    },
+    {
+      "file": "src/RimMandrake/TheSump/Patches/RM_SumpTarBeastGenStep_Register.xml",
+      "bytes": 1156,
+      "sha256": "01c7100d25b85b4fb1c66c49e9a94f7d96ce0257302962bee0fc6038432b8615"
+    },
+    {
+      "file": "src/RimMandrake/TheSump/Patches/RM_Tar_GlasswalkCooling.xml",
+      "bytes": 2312,
+      "sha256": "2a1f336374983d50c0d68bb6d15b8133a6ebf72201d218706882da4fb54235cc"
+    },
+    {
+      "file": "src/RimMandrake/TheSump/Patches/RM_TarredSurgery_RecipeUsers.xml",
+      "bytes": 1731,
+      "sha256": "a26e035fb791cf700649c39116eb317f3d6e9a58780bd951fd2f595563b2203a"
+    },
+    {
+      "file": "src/RimMandrake/Wastes/Patches/RM_AcousticPayload_Wastes.xml",
+      "bytes": 2623,
+      "sha256": "65afb3391d9307672081fae11b4d9593de9a57783ecfa8ce733ec7c9dd31506e"
+    },
+    {
+      "file": "src/RimMandrake/Wastes/Patches/RM_WastesBrine_ScatterRegister.xml",
+      "bytes": 1936,
+      "sha256": "9d548891ad09af9c8e49d8673175553158f4535aa4c863dda424972b8e9a6daf"
+    },
+    {
+      "file": "src/RimMandrake/Wastes/Patches/RM_Wastes_GroundCoverDrawLayer.xml",
+      "bytes": 1773,
+      "sha256": "6a2cfba1be41957e98c9612c39daa9e8d7cf54fa58681db4f20c130b086db08c"
+    },
+    {
+      "file": "src/RimMandrake/Wastes/Patches/RM_Wastes_MovingDunesBinding.xml",
+      "bytes": 4873,
+      "sha256": "5f6b0c71f6155d5c1eeb501eab49d7c1615fdeda72fd4f8280dd6004a33a92c3"
+    },
+    {
+      "file": "src/RimMandrake/Webwork/Patches/RM_AcousticPayload_Webwork.xml",
+      "bytes": 2750,
+      "sha256": "1a26409748a1fcfd41b76e5bd0c0d93214e411b798185c66d598116b73d8d35c"
+    },
+    {
+      "file": "src/RimMandrake/Webwork/Patches/RM_Thrixweave_Rename.xml",
+      "bytes": 1514,
+      "sha256": "ca058acb6fc3b773721f5eec917219743ece6c0533ac536fa88f1d29f1406eed"
+    },
+    {
+      "file": "src/RimMandrake/Webwork/Patches/RM_Thrixweave_Resale.xml",
+      "bytes": 821,
+      "sha256": "6c9489ad8417c34699cb0834233fa989499c460c6afb24e846e66953bdedc961"
+    },
+    {
+      "file": "src/RimMandrake/Webwork/Patches/RM_UrravethRemains_MapGenPatch.xml",
+      "bytes": 485,
+      "sha256": "e6f9317c7c53a82998a1e76eb48b84bf70642d5700cf460076d4e14cebe033b8"
+    },
+    {
+      "file": "src/RimMandrake/Webwork/Patches/RM_WebworkNestScatter_MapGenPatch.xml",
+      "bytes": 740,
+      "sha256": "ddbb6b6859f6f653614b85c1775e1928ed6d427b5770c3e32f6f908bd6ee094e"
+    },
+    {
+      "file": "src/RimMandrake/Webwork/Patches/RM_WebworkWebScatter_MapGenPatch.xml",
+      "bytes": 601,
+      "sha256": "10d5c637bc5fc7340f9d51dc677d82309f9a7d252f6ed58b58e40123a26aff2c"
+    },
+    {
+      "file": "src/RimMandrake/WeepingStones/Patches/RM_AcousticPayload_WeepingStones.xml",
+      "bytes": 2469,
+      "sha256": "8aededb1214e6641132b88c24f30697f34cf9c70e6061418ce1f95eaa75ed700"
+    },
+    {
+      "file": "src/RimMandrake/WeepingStones/Patches/RM_OasisMutatorFlora.xml",
+      "bytes": 1140,
+      "sha256": "2f1b1fb0376d6eef484e93cff9d05c46f658a5cf3e018bd4607eab2460417ca0"
+    },
+    {
+      "file": "src/RimMandrake/WeepingStones/Patches/RM_PoolPenZoneOrdersPatch.xml",
+      "bytes": 1036,
+      "sha256": "bce0d799dff4aa28aed1299c96b546d904531937089ef6619415af74bfe4ad46"
+    },
+    {
+      "file": "src/RimMandrake/WeepingStones/Patches/RM_Reeds_OwnArt.xml",
+      "bytes": 748,
+      "sha256": "f1dbce1e32f06c18a93e0219dc1c2dc3b14f0d747c283d2bdf9d229d0925d034"
+    },
+    {
+      "file": "src/RimMandrake/WeepingStones/Patches/RM_StockedPoolRecipeWiring.xml",
+      "bytes": 1409,
+      "sha256": "bf855ba40151be5c099bf27aaa925b4d378d472b80b976a5bc64b5ff80e5e927"
+    },
+    {
+      "file": "src/RimMandrake/WeepingStones/Patches/RM_TraderCarriers_WeepingStones.xml",
+      "bytes": 1769,
+      "sha256": "327938f2a3493aa4365dbea444b6e3a331a9bf123dad7ec6a46741f94ee246e5"
+    },
+    {
+      "file": "src/RimMandrake/WreckedMachines/Patches/WreckedMachines_AlloyForgeGates.xml",
+      "bytes": 2659,
+      "sha256": "5563962e258474c2b7d24b8e4e6e36b4d6f439eec1378e48e2100a61dca128b1"
+    },
+    {
+      "file": "src/RimMandrake/WreckedMachines/Patches/WreckedMachines_DistillationModule.xml",
+      "bytes": 8315,
+      "sha256": "c42406cacd79fc9b1b03ecd4d3d5f1dce5d5d24fd70b66aa758f534eb083a74e"
+    },
+    {
+      "file": "src/RimMandrake/WreckedMachines/Patches/WreckedMachines_HideDonorSmelter.xml",
+      "bytes": 4160,
+      "sha256": "22727dcd1877fe424926ca7dae56117a8b5cdc26b992399f67e9791576020c84"
+    },
+    {
+      "file": "src/RimMandrake/WreckedMachines/Patches/WreckedMachines_SalvageRule.xml",
+      "bytes": 1049,
+      "sha256": "e83d45bebf7f54c894e2667195c9100e66b19ce594e97092c50a431df0da6c87"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/Absorbed_AdditionalMods/kotorcore/ATC/Absorbed_Kotorcore_ATC_Patch_DroidIngestibleBlacklist.xml",
+      "bytes": 1464,
+      "sha256": "114b59fe76b4bf643bacbee47862df7d19637e7f641471346544bdac1377f7fc"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/Absorbed_AdditionalMods/kotorcore/VEF/Absorbed_Kotorcore_VEF_OptionalPatches.xml",
+      "bytes": 1240,
+      "sha256": "42f9d81c43ebf26d768d7295b5bcdd6738ae1d9580649ade6a73e3c70f47c954"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/Absorbed_AdditionalMods/kotorweapons/TheForceLightsabers/Absorbed_Kotorweapons_TheForceLightsabers_Patch_HandModPositioning.xml",
+      "bytes": 4158,
+      "sha256": "726de5b0c0bd1a44a5a4efc417abce776524833af5db4fa3a5b4caf3fe1f483f"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/Absorbed_AdditionalMods/kotorweapons/TheForceLightsabers/Absorbed_Kotorweapons_TheForceLightsabers_Patch_KotORLightsaberBalancing.xml",
+      "bytes": 10861,
+      "sha256": "4851e22db3622c029dba46eaab0ae7697023ba2be7b55dcd1be82c16d7cc963a"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/Absorbed_AdditionalMods/kotorweapons/TheForceLightsabers/Absorbed_Kotorweapons_TheForceLightsabers_Patch_KotORLightsaberPartSlots.xml",
+      "bytes": 1683,
+      "sha256": "1dd34c6d524475bb461a1705be83433a0fb46d1f5c149e09f8904b9026b86371"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/Armour_DamageCategories.xml",
+      "bytes": 2892,
+      "sha256": "28da4b6f605d0f71c4aec22a50f3e595bccefcce6e07725aa8af6da11fbb6086"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/Armour_Leather.xml",
+      "bytes": 364938,
+      "sha256": "a0c7b4ac0cd19146e09d60a30264f8e950c20e0912eb1f13d01fdf4cf046a30a"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/Armour_Penetration.xml",
+      "bytes": 82553,
+      "sha256": "57b77533a9f30f979944d56d36913fc941ba55d4d7a66332de7c3b377a2baa43"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/Armour_Ratings.xml",
+      "bytes": 46319,
+      "sha256": "7f0ad3a97f991a6cc1071c8ebfb8f7431c7bdc2dbe479e07d629de43a4122a9d"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/Armoury_GlareProtection.xml",
+      "bytes": 871,
+      "sha256": "04bb2313ccf9750dae8bcfd916b23c383151c48a4d56c43438c761bbc9676b67"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/Armoury_LightsaberCraftingCut.xml",
+      "bytes": 5432,
+      "sha256": "56559f3f33609ed22b58b80b518a9eb166989cd77865ac342a44506b81acc650"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/Armoury_MeleePower.xml",
+      "bytes": 17278,
+      "sha256": "ad66246bb0e529011a0bf3b5d0feb302ab4283e033dff9a9d18ae3c10962e3ce"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/Armoury_RangedDamage.xml",
+      "bytes": 16010,
+      "sha256": "a617a4b98a757910b3b04640e8322843229777d25166714351484b4d704cb939"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/Armoury_TorpedoSpeed.xml",
+      "bytes": 822,
+      "sha256": "4f4d016bc17e717eabc685d0030742835e2f03b62a624abfd206385e869c4699"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/Flamebow_TagWiden.xml",
+      "bytes": 4997,
+      "sha256": "ee4f3a2962011fec75b60df1f9acf767371483bb555acaddcbbe45356e16e29a"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/HediffDesc_ElectrostaffStun.xml",
+      "bytes": 1132,
+      "sha256": "501b1441fbf3e8998b630b8dfb0099aca6041de9fc762525a850ece5d58e518b"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/RSW_AlloyForge_Durasteel.xml",
+      "bytes": 4236,
+      "sha256": "c4c2fd2c575ffe2550d72de8a0b922f52b8d84a636290117092a67617f2b0ed6"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/RSW_BeskarNeverReforged.xml",
+      "bytes": 8692,
+      "sha256": "39d00606bd06849d978837e73f3a79c9d05eb52b94ef9b27029c537b82f17470"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/RSW_BronziumDrop.xml",
+      "bytes": 2305,
+      "sha256": "0849849a47a659ce3d4ef1593a284bd013935d33aafbee1d77b3fd6f5defd523"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/RSW_CanonMaterialsTrade.xml",
+      "bytes": 3454,
+      "sha256": "51f8e53d66826432e24bfe9431e56490f5ac50cd4938ceefda1a96f79b6555d5"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/RSW_DurasteelConvert.xml",
+      "bytes": 7162,
+      "sha256": "3e0b3f3e4bdbcf2f9eb43330153c3407519e48be57be6f2db68257f339016872"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/RSW_DurasteelConvert_OuterRim.xml",
+      "bytes": 9270,
+      "sha256": "39f7d114b63485c1ee95068c335faf2cf49de37376b8acb1792a76bf091e91c5"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/RSW_DurasteelProducersZeroed.xml",
+      "bytes": 3434,
+      "sha256": "9ca998bf9e8ad1c5f741fe2e3427be2646eebcd54a2e985c090d00c053b7aaaf"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/RSW_OdysseyAsteroidNoPlasteel.xml",
+      "bytes": 3346,
+      "sha256": "53752b209b41407b84e17b92e5df9f50fae1d59f7c21efe6154d730d013a12d7"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/RSW_OdysseyAsteroid_Doonium.xml",
+      "bytes": 1807,
+      "sha256": "767ab5de4545ef4ff8b4182ec6eb3d14126d6e72e3792ebddac3a1c492c1de0b"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/RSW_PlasteelRecipesCut.xml",
+      "bytes": 1503,
+      "sha256": "4c68056bd1b66cdd19e096de6b0840ed06f3892e10061d480b13a656377abbc3"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/RSW_SalvageByComposition.xml",
+      "bytes": 7960,
+      "sha256": "ff4ad381b0479914da4057cae62df29c4fe4bd5e51b08c3e36d84ac080f467cb"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/RSW_Smelter_Alloys.xml",
+      "bytes": 17432,
+      "sha256": "916ee69b91973b66a63a96e93f0cd7cf94c62fe0ff7d50cd7f06d85866fa6e44"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/RSW_StygiumConvert.xml",
+      "bytes": 2808,
+      "sha256": "15ee785811f1553925a2a240ebb26a9c44c008565ae95e365937a13f8533d4ee"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/RSW_Transparisteel_GlassFold.xml",
+      "bytes": 9106,
+      "sha256": "4cbcedeccd90bd65ddd639fcb0b5798c3f1d5c5fbfe44b73a539d7e74e742f38"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/RSW_ZeroedOreGates.xml",
+      "bytes": 5349,
+      "sha256": "b3380334f8642a9cd5c250e2349c3ae7147745419e3399f3e69952e43034cab5"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/Turrets_DamageDoctrine.xml",
+      "bytes": 24539,
+      "sha256": "0003eeafd36dfbd78b7fc6e761533ce765c8e30fef2da1638acc84e66eebbcc9"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/Turrets_Renames.xml",
+      "bytes": 2364,
+      "sha256": "05afc7965c026d7714306c0e1c0119a220e0f3011560cac77f4f12eab98c99e2"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/Warcasket_BuildPathCut.xml",
+      "bytes": 9843,
+      "sha256": "34903381c3aa7bbe905d85d12f04556adabc6b6572322795a480c76230516b4b"
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/Warcasket_HazardRetune.xml",
+      "bytes": 8351,
+      "sha256": "136bd9e893e7d2ea58286cc1ef788b596c8e2290adc1172632e2842fef759e8f"
+    },
+    {
+      "file": "src/RimStarWars/Bacta/Patches/RSW_Bacta_RecipeWiring.xml",
+      "bytes": 1346,
+      "sha256": "1156b92fc8f0a04d89dc6499bbd630796f3ffaa96015570f89a4778b1b33bb62"
+    },
+    {
+      "file": "src/RimStarWars/Bacta/Patches/RSW_Bacta_TraderStock.xml",
+      "bytes": 3536,
+      "sha256": "1c275d282e8f781ef9674751db9db7de451bd0a4587e6b2a4b3fe0b5d7440340"
+    },
+    {
+      "file": "src/RimStarWars/BrainWorms/Patches/BrainWormEggs_RuinLoot.xml",
+      "bytes": 1461,
+      "sha256": "8ab0b9a2ba510a93daeb0ee2e7b5c077ff0d169ef0b691fd99c67cc8a42561c5"
+    },
+    {
+      "file": "src/RimStarWars/BrainWorms/Patches/BrainWormSurgery_RecipeUsers.xml",
+      "bytes": 1411,
+      "sha256": "0ea60ec619f3678bd33d242be8adaaa5ac163ae94644fa7766c68343c3c408c6"
+    },
+    {
+      "file": "src/RimStarWars/Cuisine/Patches/RSW_ColdStorageSeals.xml",
+      "bytes": 3990,
+      "sha256": "193262de473655ac3bbb1c0e8e32d048344ba5e094e65ef0c93448afeb77ab1c"
+    },
+    {
+      "file": "src/RimStarWars/Cuisine/Patches/RSW_RakatanStasisLadder.xml",
+      "bytes": 6155,
+      "sha256": "705bf868eb9b337a456a6df88886dbb827794d6f7b6b1c176d83b567a8ecb292"
+    },
+    {
+      "file": "src/RimStarWars/Cuisine/Patches/RSW_RottingBed_MarshFungus.xml",
+      "bytes": 2009,
+      "sha256": "1e63f046b1430c5eb497c70910cd10c5101218acf903f8e19807221f46f7ceda"
+    },
+    {
+      "file": "src/RimStarWars/Cuisine/Patches/RSW_VceRationSealer.xml",
+      "bytes": 4748,
+      "sha256": "631d45afac1ece2dce2c34db90c2f9668a3db2403aa76fb641b00f16a50e251b"
+    },
+    {
+      "file": "src/RimStarWars/DesertVehicleReskin/Patches/BeastVehicleProp_Identity.xml",
+      "bytes": 7075,
+      "sha256": "cfd5081d4cc60cda7febce442ec8f57c9bbbcbae0acc4e17100667bad7dcabe4"
+    },
+    {
+      "file": "src/RimStarWars/DesertVehicleReskin/Patches/BeastVehicle_Identity.xml",
+      "bytes": 14738,
+      "sha256": "4dee3c3479fda67198b3d599b4c14fdb36fb1d389e0d41d4feacbcc78b55a440"
+    },
+    {
+      "file": "src/RimStarWars/DesertVehicleReskin/Patches/DogSledTint_Brown.xml",
+      "bytes": 3753,
+      "sha256": "7b93c2e56283754235bc3637c97908cc75604cebc6049a2a5d179adf8dae718a"
+    },
+    {
+      "file": "src/RimStarWars/DesertVehicleReskin/Patches/DraughtFuel_Marker.xml",
+      "bytes": 3165,
+      "sha256": "9529495be649c82494f457b58a19342fc8b38543625a7be5aa9130e009f5fccb"
+    },
+    {
+      "file": "src/RimStarWars/DesertVehicleReskin/Patches/EopieSled_Identity.xml",
+      "bytes": 4660,
+      "sha256": "45f5d9cd0597c3214dd32ca273ccf3f9ff4271d3c9fb99a55c6ea5f8b5d9c356"
+    },
+    {
+      "file": "src/RimStarWars/Droidworks/Patches/BTD_DistressCall_Repoint.xml",
+      "bytes": 4809,
+      "sha256": "1397a297492b309477e21d3b142a5bd60a2b002ae646f84f73c8736c223a9552"
+    },
+    {
+      "file": "src/RimStarWars/Droidworks/Patches/FlowWorks_DroidsDigDeep.xml",
+      "bytes": 1478,
+      "sha256": "1a6dedce8034da7d06bc8a8a9f76d08056a03ba08e31f2bd6f51459eea41597e"
+    },
+    {
+      "file": "src/RimStarWars/Droidworks/Patches/IonBuildup_PowersDownDroid.xml",
+      "bytes": 934,
+      "sha256": "e398ec3af041fa5c4e8afafef6e8302db5d5d14d2422a701629b6595977455a5"
+    },
+    {
+      "file": "src/RimStarWars/Droidworks/Patches/ModuleBodyPartGroups_Wire.xml",
+      "bytes": 1877,
+      "sha256": "9a71151897523e97d2562e16c31e522c1062f4d8bd9f7df7fe838042eb098b7c"
+    },
+    {
+      "file": "src/RimStarWars/Droidworks/Patches/ModulePersonality_Wiring.xml",
+      "bytes": 1976,
+      "sha256": "c1c6e8e21637b163211fa4b2dd2b687d848b84c31312711409c97f19a308c688"
+    },
+    {
+      "file": "src/RimStarWars/Droidworks/Patches/PawnKind_HumanoidDroidResistanceWill.xml",
+      "bytes": 1637,
+      "sha256": "5e5cdae9142df83f8b1942f2108cbf593ccd73e4e17d02a896d2e0ed2de82138"
+    },
+    {
+      "file": "src/RimStarWars/GizkaStowaway/Patches/RSW_GizkaDonorPatches.xml",
+      "bytes": 7699,
+      "sha256": "ed152fc72878b89654a1a6ba07908948e83f616a7e38ac1382c42b31089d7c3d"
+    },
+    {
+      "file": "src/RimStarWars/JawaRules/Patches/RSW_JawaHood.xml",
+      "bytes": 1933,
+      "sha256": "e1c42a42c27cc001f0760625270f9b549e1e99f056b47423c7b232153d6e41b2"
+    },
+    {
+      "file": "src/RimStarWars/JawaVoice/Patches/JawaVoice_CoreInteractions.xml",
+      "bytes": 217412,
+      "sha256": "cc4cda18dfd0229a9b50f2cc98b057f469c2c3602506f2db5dbafd0f5e45cca2"
+    },
+    {
+      "file": "src/RimStarWars/JawaVoice/Patches/JawaVoice_Ideology.xml",
+      "bytes": 39842,
+      "sha256": "6d8e8ca5021818cc0d54ecaf6554e66cbe92175d6412c4aaa32335313b16af68"
+    },
+    {
+      "file": "src/RimStarWars/JawaVoice/Patches/JawaVoice_Insults.xml",
+      "bytes": 37054,
+      "sha256": "9a9d88b1bf18f68085fd2b4e350ed3186a8ca36e356aa2c47742e4758b4b84d7"
+    },
+    {
+      "file": "src/RimStarWars/JawaVoice/Patches/JawaVoice_Interactions.xml",
+      "bytes": 178811,
+      "sha256": "bf753b0d000ab0dd791435ddde58206244a43fb1595e76f1ba724ea0463818d1"
+    },
+    {
+      "file": "src/RimStarWars/JawaVoice/Patches/JawaVoice_animals.xml",
+      "bytes": 840,
+      "sha256": "990d0b2e9bca03464d25f78715fdf0c433e114206ca79d1f62de84536364f05f"
+    },
+    {
+      "file": "src/RimStarWars/JawaVoice/Patches/JawaVoice_chitchat_jokes.xml",
+      "bytes": 28053,
+      "sha256": "794cc0f484f7a1f2c1ca350da1e57f5f44f71bca641b7286e22c1c6077b58fbb"
+    },
+    {
+      "file": "src/RimStarWars/JawaVoice/Patches/JawaVoice_chitchat_thoughts.xml",
+      "bytes": 169590,
+      "sha256": "4f44ceac83abf35f4ecf78ea3a90f0f35eb4af0658c472173543a33a34ea58e4"
+    },
+    {
+      "file": "src/RimStarWars/JawaVoice/Patches/JawaVoice_chitchat_weather.xml",
+      "bytes": 64494,
+      "sha256": "efd0337e578643a26c2f4eae06427b3daea8731f0873ba7bb92592d576f50ddd"
+    },
+    {
+      "file": "src/RimStarWars/JawaVoice/Patches/JawaVoice_deeptalk.xml",
+      "bytes": 18468,
+      "sha256": "a5acc6eb3de4090722795ed24b961c40127663149508d80cb84f5dbf936a252c"
+    },
+    {
+      "file": "src/RimStarWars/JawaVoice/Patches/JawaVoice_prisoners.xml",
+      "bytes": 90364,
+      "sha256": "94ff467b660a4be84796e3a5a4c14c333a79eecc201d683f5c47c1af536dbbf2"
+    },
+    {
+      "file": "src/RimStarWars/JawaVoice/Patches/JawaVoice_romance.xml",
+      "bytes": 6389,
+      "sha256": "c5d86d0e89c45bcc98e3b4d0d0400a5352fc92bc401c657e56d26fd0812ff9c0"
+    },
+    {
+      "file": "src/RimStarWars/SWBestiary/Patches/ArtFold/Anooba_ArtFold.xml",
+      "bytes": 1569,
+      "sha256": "021a409dfb1c2e0e23939c67a629e789b6fecb67fe8217b67c8e23dfd61f3de4"
+    },
+    {
+      "file": "src/RimStarWars/SWBestiary/Patches/ArtFold/Mynock_ArtFold.xml",
+      "bytes": 1200,
+      "sha256": "c0e05fb67804fda679d3c8aa1e34b6c2ba1f877f2c5e5b471248cf036db7c930"
+    },
+    {
+      "file": "src/RimStarWars/SWBestiary/Patches/BeastNorm/BeastNorm_Law3.xml",
+      "bytes": 36879,
+      "sha256": "5e75e558a41becb8294f6960b55203ddb3343591d66e0626e2fd2918d95596b8"
+    },
+    {
+      "file": "src/RimStarWars/SWBestiary/Patches/RSW_GiantSkeletons_Remains.xml",
+      "bytes": 1308,
+      "sha256": "810f155efb339fe1986b82a35c31ae18dfcaff357d64e1622f33cdca8521208d"
+    },
+    {
+      "file": "src/RimStarWars/SWBestiary/Patches/RSW_SekkulaathTank_DianogaSwap.xml",
+      "bytes": 2947,
+      "sha256": "9f2147dc33dcff8bb5843855ca2777ce548d6b5938dd98418ee88282e73337f5"
+    },
+    {
+      "file": "src/RimStarWars/SWBestiary/Patches/RSW_Sekkulaath_DianogaGiant.xml",
+      "bytes": 12540,
+      "sha256": "c4b46c3b8fef4ccc66d6a215386beddaf85deaf9c819a4c89b77e82a823ba359"
+    },
+    {
+      "file": "src/RimStarWars/SWBestiary/Patches/RSW_TaozinNest_Abyss.xml",
+      "bytes": 745,
+      "sha256": "75ff915da742df0bce9c550bad40f4d056fdb403d83cb4639df4a1bc8430c107"
+    },
+    {
+      "file": "src/RimStarWars/SWBestiary/Patches/SeasWaterline/Waterline_Lane1.xml",
+      "bytes": 11711,
+      "sha256": "8c02c7574128f7da9571b431db981ffb11f684def60ad21d3505afae9bc55ab4"
+    },
+    {
+      "file": "src/RimStarWars/SWBestiary/Patches/ShipVermin/RSW_ShipVermin_CanonCast.xml",
+      "bytes": 6948,
+      "sha256": "88f1d5ee1f097c700dd957ca818e2b7033fd74219aadea27cd80a95dab666fbd"
+    },
+    {
+      "file": "src/RimStarWars/Sarlacc/Patches/RSW_SarlaccSeeker_Rooting.xml",
+      "bytes": 2010,
+      "sha256": "cac828ef03e2d0207c3ff2495df90fe14c053ece89002c1efb0c6214def6c2cc"
+    },
+    {
+      "file": "src/RimStarWars/Shokk/Patches/RSW_Shokk_OllathrixSkin.xml",
+      "bytes": 5744,
+      "sha256": "1e38dc5187c40a9d5418b389cb2ac8b4ea139805d4581c4fb8cf5ba057d1e64d"
+    },
+    {
+      "file": "src/RimStarWars/SithLine/Patches/RSW_AnzatiRepoint.xml",
+      "bytes": 2376,
+      "sha256": "8bcf6933af6ffe0fc0f0dcb64aaa111467e4b3b5349a77375b807c6b9e18518a"
+    },
+    {
+      "file": "src/RimStarWars/SithLine/Patches/RSW_SithClosedRoutes.xml",
+      "bytes": 5634,
+      "sha256": "e2fe431dc7e767643b9731cfc7fe030143bec71946cb36a0386d39e7aeac540d"
+    },
+    {
+      "file": "src/RimStarWars/SithLine/Patches/RSW_SithRelabel.xml",
+      "bytes": 30439,
+      "sha256": "9bb571b33b6615a1036c6174b953edb9ac88dca142f4e0acdd6107d8a425ea21"
+    },
+    {
+      "file": "src/RimStarWars/StarWarsPatches/Patches/AncientJunk_StarWarsReskin.xml",
+      "bytes": 28452,
+      "sha256": "ff60b2a71a1cb50441640f395cc7431905fe5e1e61437f0e676d2d42a0b770e8"
+    },
+    {
+      "file": "src/RimStarWars/StarWarsPatches/Patches/BodySizeIsReal.xml",
+      "bytes": 21136,
+      "sha256": "e8adc0c3ac9f9b3afbb3d8485e7abdd21f0bdfe3afb5cfbe044a64949006e273"
+    },
+    {
+      "file": "src/RimStarWars/StarWarsPatches/Patches/DroidDonor_ABFGate.xml",
+      "bytes": 14310,
+      "sha256": "9852c09aba77510874213f6e9825873ec421f365f246c4749ac0deafc8360caa"
+    },
+    {
+      "file": "src/RimStarWars/StarWarsPatches/Patches/DroidFemaleTexture_Fix.xml",
+      "bytes": 8666,
+      "sha256": "93f85398b033869edd9514ca637b641132492dd307aa5abb886529abb7b75f5b"
+    },
+    {
+      "file": "src/RimStarWars/StarWarsPatches/Patches/EggLayersLayEggs.xml",
+      "bytes": 5687,
+      "sha256": "5d27a74c78f0e3961d9bc2b5939f314ea24730d25b022f7d781a769e379b97bf"
+    },
+    {
+      "file": "src/RimStarWars/StarWarsPatches/Patches/ForceGremlin_NoHair.xml",
+      "bytes": 1357,
+      "sha256": "6a1399aee8ae3bcf7564e941cb27df609f20bd79b92f46752bc1b438a007a0d9"
+    },
+    {
+      "file": "src/RimStarWars/StarWarsPatches/Patches/GalacticEmpire.xml",
+      "bytes": 9490,
+      "sha256": "bda39160af15d7a52d2833d9fc8292e3cb62677688f58efa73ed565903a3cb12"
+    },
+    {
+      "file": "src/RimStarWars/StarWarsPatches/Patches/HuttEyes_RestoreRenderNodes.xml",
+      "bytes": 28014,
+      "sha256": "fa7760497c90f8094ed75c079ee8a23027eca1b3684ac4527e3ad9022de44b4a"
+    },
+    {
+      "file": "src/RimStarWars/StarWarsPatches/Patches/IonStunMote_Blue.xml",
+      "bytes": 2753,
+      "sha256": "f21e9310db927e8b1e3a58d1e19805267be30fd7481b22d9069781876ef6786d"
+    },
+    {
+      "file": "src/RimStarWars/StarWarsPatches/Patches/JawaAppearance_Tuning.xml",
+      "bytes": 8657,
+      "sha256": "574136004654372cd72b94b29d20e86f3c22a70ecb5111be0017af756fca3284"
+    },
+    {
+      "file": "src/RimStarWars/StarWarsPatches/Patches/JawaCombatViability_Tuning.xml",
+      "bytes": 6369,
+      "sha256": "1b1d2846add18f4d7c214253c4a02091dca26d6fb28689ec92075e28d55e0e64"
+    },
+    {
+      "file": "src/RimStarWars/StarWarsPatches/Patches/JawaXenotype_Repoint.xml",
+      "bytes": 2655,
+      "sha256": "0ebd928e9463689b30bd894614682e8868085abbae62428033eaf34eb0a6475b"
+    },
+    {
+      "file": "src/RimStarWars/StarWarsPatches/Patches/PetNames_Ashkarr.xml",
+      "bytes": 2581,
+      "sha256": "fd263b18a9094ab807ffa4a373253b5a663b05322c4ecf2b7ab81fb6988e174e"
+    },
+    {
+      "file": "src/RimStarWars/StarWarsPatches/Patches/PlantNames_CanonSW.xml",
+      "bytes": 10715,
+      "sha256": "1ed3926944e6fee4faca1ff849d07fcb55c02cd4115197d113c3468bff4460a1"
+    },
+    {
+      "file": "src/RimStarWars/StarWarsPatches/Patches/PsychicToForceDisturbance.xml",
+      "bytes": 23677,
+      "sha256": "9c0f40bfc83db330527cb5e3ccd0be8268b7d9733a1696372c5c3bb54e01eb15"
+    },
+    {
+      "file": "src/RimStarWars/StarWarsPatches/Patches/SWCPZoomerIcon_Fix.xml",
+      "bytes": 6017,
+      "sha256": "33d5ddd964bf98c2c979988d22d0a4521be371bd037fa4c6e14757c239ee734f"
+    },
+    {
+      "file": "src/RimStarWars/StarWarsPatches/Patches/SWDesertWeather_Attach.xml",
+      "bytes": 5295,
+      "sha256": "f9335a89c16292d06c130cb28743c71842d2b5d9968316befec01e0d21bdd63d"
+    },
+    {
+      "file": "src/RimStarWars/StarWarsPatches/Patches/SpeciesStartingGear_Tuning.xml",
+      "bytes": 6149,
+      "sha256": "f8ce027799e34de2cdb24c585bb7d5d5f3272363d4a6c727c56de0f11ab33d53"
+    },
+    {
+      "file": "src/RimStarWars/StarWarsPatches/Patches/ThirdPartyStunBodySize_Squared.xml",
+      "bytes": 3957,
+      "sha256": "0aaa41efd398d9e71283175bf215d07277b3697618a8682f220d8048d939269a"
+    },
+    {
+      "file": "src/RimStarWars/StarWarsPatches/Patches/VanillaFaction_Xenotypes.xml",
+      "bytes": 10940,
+      "sha256": "f11e4c84dcfbb69f1fcbf8ceff1ca2734d129d3693c574d424a498b808c9476e"
+    },
+    {
+      "file": "src/RimStarWars/StarWarsPatches/Patches/VehicleBeastLabels.xml",
+      "bytes": 5230,
+      "sha256": "40c6277cb126dec775a2434e8f1ac542092ebefb0024b6cd063900a14cf8abb5"
+    },
+    {
+      "file": "src/RimStarWars/StarWarsPatches/Patches/VehicleBeastSound_Fix.xml",
+      "bytes": 2961,
+      "sha256": "2f65403080336265716f0e500f3c2cfb5088bb6b860c4664e87d7b6c5827385e"
+    },
+    {
+      "file": "src/RimStarWars/StarWarsPatches/Patches/WeaponTags_Renormalise.xml",
+      "bytes": 111503,
+      "sha256": "e4c075c96ed8202d6470a33962900545797a52ebeb9af55611c05386170ff371"
+    },
+    {
+      "file": "src/RimStarWars/StarWarsRaces/Patches/RSW_Aquatic_SoakingWet.xml",
+      "bytes": 1167,
+      "sha256": "5ffa29efb7c2fa3944d001502801940c42ad818e47fbbbd6693a9537d58fbe2b"
+    },
+    {
+      "file": "src/RimStarWars/StarWarsRaces/Patches/RSW_Jawa_GlareAdapted.xml",
+      "bytes": 764,
+      "sha256": "b9f10daed8a7bfc849c3403d7d019c5e2242f6302abb955789fac6c8953a617c"
+    },
+    {
+      "file": "src/RimStarWars/StarWarsRaces/Patches/RSW_TableResistance_AteWithoutTable.xml",
+      "bytes": 871,
+      "sha256": "3b6ef05e828aaf28318ae38054dbfba27940e5d5bc4d85fe7688004760f06981"
+    },
+    {
+      "file": "src/RimStarWars/StructureInjectionsSW/Patches/CrawlerRoad_LongShade.xml",
+      "bytes": 2143,
+      "sha256": "eb2ace3196a25b7bd26269f37f343ee9e7ed70c75d416406b5bee3553d4763c0"
+    },
+    {
+      "file": "src/RimStarWars/StructureInjectionsSW/Patches/SalvageLoot_StarWarsParts.xml",
+      "bytes": 4635,
+      "sha256": "8c8426849ff1b95ac074489cc0bce534c5fc53d10e48823870c971304850c23d"
+    },
+    {
+      "file": "src/RimStarWars/StructureInjectionsSW/Patches/SarlaccRing.xml",
+      "bytes": 1827,
+      "sha256": "1219f9d5b62376e2c5df34e525cf3faa39938b0d9154e56654f38fd919a56a1d"
+    },
+    {
+      "file": "src/RimStarWars/StructureInjectionsSW/Patches/ThingDefs_Wrecks.xml",
+      "bytes": 2868,
+      "sha256": "f1ac6595a4d2aed9693512a61a90d43308d665667c19e607e025e026c08f1c50"
+    },
+    {
+      "file": "src/RimStarWars/StructureInjectionsSW/Patches/WhisperSarlaccSign.xml",
+      "bytes": 1843,
+      "sha256": "466b163a6743294a54f224e3cf7a6f3dd093e0526bdeaeeb38da2dadf1fb2066"
+    },
+    {
+      "file": "src/RimStarWars/StructureInjectionsSW/Patches/WreckList_FallLine.xml",
+      "bytes": 785,
+      "sha256": "c15ba645579a55c290708cace3bc79bb1ba024adf8894a42d0da395f03b60785"
+    },
+    {
+      "file": "src/RimStarWars/TrophyCraft/Patches/RSW_TrophyCraft_WyyyschokkFangDrop.xml",
+      "bytes": 1780,
+      "sha256": "1adb78642cbde2906104f90e812512fa1bbcea36608d1c02c2e276e1babffb1e"
+    },
+    {
+      "file": "src/RimUtinni/Antiquities/Patches/RUT_OldTongueTranscription.xml",
+      "bytes": 2214,
+      "sha256": "067b258e48c6ac5d698f530e1ee1e1243e5c949ac86ae8a0af14ca2f502b84b4"
+    },
+    {
+      "file": "src/RimUtinni/AshkarrLandmarkArt/Patches/LandmarkIcons.xml",
+      "bytes": 35368,
+      "sha256": "3f28e65596604857bc18f869d3ac28bad6e900829f1f8af9f766b1f4d5d057d6"
+    },
+    {
+      "file": "src/RimUtinni/AshkarrWeatherSuite/Patches/AshkarrWeather_FolkSigns.xml",
+      "bytes": 4767,
+      "sha256": "81a4bfa044271304047f0b9e8b0b62ddf948bfebf00a4b14d30cd37ccdd3a328"
+    },
+    {
+      "file": "src/RimUtinni/BeskarArmorer/Patches/RM_BeskarMaterials.xml",
+      "bytes": 2868,
+      "sha256": "65054433da3f2a2cbbbe78beb225d549a4264e724b8a1c13719ea4001237cac2"
+    },
+    {
+      "file": "src/RimUtinni/Doctrine/Patches/DroidsAreMachines.xml",
+      "bytes": 6079,
+      "sha256": "cbc56dcfc581a8a6bd5e4eb4ef3eb76964714720b36a81936c983619601f03ce"
+    },
+    {
+      "file": "src/RimUtinni/Doctrine/Patches/MegafaunaYield.xml",
+      "bytes": 447851,
+      "sha256": "cffbef386a5a169ebc89676be1629b9f273ce9efa468915081f0767f3f774d3c"
+    },
+    {
+      "file": "src/RimUtinni/Doctrine/Patches/MegafaunaYield_OwnedPorts.xml",
+      "bytes": 10003,
+      "sha256": "6095ba4dda7c5429486d5382c25447b309bfdb843045cdb9d7d97a0ebb98317d"
+    },
+    {
+      "file": "src/RimUtinni/Doctrine/Patches/MegafaunaYield_OwnedPorts_Warscar.xml",
+      "bytes": 4981,
+      "sha256": "85ea0677e2d431073bbcd67fe952745009c47128d30ad3c29297b7584aa65571"
+    },
+    {
+      "file": "src/RimUtinni/Doctrine/Patches/NoDroidManufacture.xml",
+      "bytes": 2376,
+      "sha256": "d688952d48ccded7315d93dee661af738620303f68936a0b74db8252b2bbab57"
+    },
+    {
+      "file": "src/RimUtinni/FallLineArrivals/Patches/RUT_BunkerBug_FallVermin.xml",
+      "bytes": 1731,
+      "sha256": "4adafbb22d0ac9c9e4879ec9e518b6eedca3c2a25497c40514b6cfc6b97e688c"
+    },
+    {
+      "file": "src/RimUtinni/FungalSoilTrade/Patches/RUT_FungalSoilScatter_MapGenPatch.xml",
+      "bytes": 588,
+      "sha256": "1cf3ecc683e6f1b9e78967ad2431f10f0061a55258b425eb34b81cf560178833"
+    },
+    {
+      "file": "src/RimUtinni/PawnFlavor/Patches/FactionBackstoryWiring.xml",
+      "bytes": 9806,
+      "sha256": "0cbcc76632998d1db1cf6b2c7c6f642c4db88ecc339f744b0eb76ef3a4764244"
+    },
+    {
+      "file": "src/RimUtinni/PawnFlavor/Patches/PawnFlavorPhase2_MentalBreak.xml",
+      "bytes": 69321,
+      "sha256": "b2f07ae9b0733d3aaa5cc057ba9d7401c907273e54861fa2d466873ce2a4a2a1"
+    },
+    {
+      "file": "src/RimUtinni/PawnFlavor/Patches/PawnFlavorPhase2_ThoughtDef.xml",
+      "bytes": 7375040,
+      "sha256": "5d68c1393b6e2bf72c3f2d89c0646907fa85e62f73a0b9c05bdaf4bd40c3d06b"
+    },
+    {
+      "file": "src/RimUtinni/PawnFlavor/Patches/PawnFlavorPhase2_Xenotype.xml",
+      "bytes": 143777,
+      "sha256": "96e7b9c69969c50d019f1180f4aac2cc45601f6ea5580181b3801cf9c6ef15a4"
+    },
+    {
+      "file": "src/RimUtinni/PropaneLakeMechanics/Patches/RUT_VWake_AddAgitationComp.xml",
+      "bytes": 1014,
+      "sha256": "15d914e8d98b143e4ff3de95e74e8de1729d8c5d2599cdeb4187a4d33b88040b"
+    },
+    {
+      "file": "src/RimUtinni/PyrelandsMechanics/Patches/RUT_Thornvine_Edible.xml",
+      "bytes": 3228,
+      "sha256": "92d9ede9e53a13267352327e2732a649bfb6e53215ae393580fd414940d4081a"
+    },
+    {
+      "file": "src/RimUtinni/ResearchRetag/Patches/RUT_ResearchRetag.xml",
+      "bytes": 287952,
+      "sha256": "ec1ff5173c8bb884b51371892a52c4271fc8b560e4f3f10fcc8369589c7d5191"
+    },
+    {
+      "file": "src/RimUtinni/ResearchRetag/Patches/RUT_ResearchRetag_Supplement.xml",
+      "bytes": 9879,
+      "sha256": "6182c9086d56b7d6596e88f78fab58a7d70f0bf2a982c897d34edd387719806d"
+    },
+    {
+      "file": "src/RimUtinni/ResearchRetag/Patches/RUT_ResearchTabAssign.xml",
+      "bytes": 300157,
+      "sha256": "6adcc73cd558c4def56be58783ce9b44b94c4068dc85b4b336b2e9747a5d2975"
+    },
+    {
+      "file": "src/RimUtinni/ResearchRetag/Patches/RUT_TechprintGating.xml",
+      "bytes": 732638,
+      "sha256": "ec052546f356cb19d9ee74cdb52ef85e8ef16933a27f5e758c12f167505b4233"
+    },
+    {
+      "file": "src/RimUtinni/ScarlandsLadder/Patches/RUT_PilgrimCamps_Scarlands.xml",
+      "bytes": 577,
+      "sha256": "c896c7ab33a4e0332ea9c425914c8f6c8206e8ee729db1b3dc1e773717fae0a7"
+    },
+    {
+      "file": "src/RimUtinni/ShipMemory/Patches/RUT_ShipMemory_ContainmentGate.xml",
+      "bytes": 4938,
+      "sha256": "5671d249ff9c7c6aff64da89b37629918b2b91794c1489c8ce3b62e6edb2f546"
+    },
+    {
+      "file": "src/RimUtinni/StructureInjectionsRUT/Patches/AshfallBattery.xml",
+      "bytes": 2302,
+      "sha256": "c651cfa8c54b6f5527fc047759a61243f513c16c69c7d139b2dfb9afc1bf3e2c"
+    },
+    {
+      "file": "src/RimUtinni/StructureInjectionsRUT/Patches/WhisperBatch1.xml",
+      "bytes": 3341,
+      "sha256": "29cb3f95520b21ec13306b2bf42df04fe50dda015797a88a788366f898cd01af"
+    },
+    {
+      "file": "src/RimUtinni/StructureInjectionsRUT/Patches/WhisperBatch2.xml",
+      "bytes": 2249,
+      "sha256": "f1bfc9db5d8fd87bb38c0bd45b10dc26ffc71f6aaa8e06e380b819c15da0b03a"
+    },
+    {
+      "file": "src/RimUtinni/StructureInjectionsRUT/Patches/WhisperBatch3.xml",
+      "bytes": 2606,
+      "sha256": "d611cfdee0258b7ef464909ce801e710b82fd890991a00dbb92494a26ec536ad"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/Absorbed_Cephaloids/Absorbed_Cephaloids_Patches.xml",
+      "bytes": 5572,
+      "sha256": "2b17b1659865fab38262aa8dce5e993bb9a6dcd0faf87026d0ae2279f0733e0d"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/Abyss_CryptidSithWhisper.xml",
+      "bytes": 1106,
+      "sha256": "8b2f0ac67e0d64a1b88ebb401c9f1d65a3bbdf36874200df1fa2643820915564"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/Abyss_ProbeDroids.xml",
+      "bytes": 1996,
+      "sha256": "70898dad7dd538b0bca3effa0cb7a6b14360ed7b88a1a676ff429c860e1b04d3"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/AcousticPayload_UtinniBiomes.xml",
+      "bytes": 2787,
+      "sha256": "48f58b6f9108b19c7652ffdcaaa93a1ce8b3e089f301205b4cb240541225fb12"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/AmbientShrineGuardians.xml",
+      "bytes": 2651,
+      "sha256": "1fd5bce481b7742ef74dafd572d7fb70336aacf76de5526bc78bf3431e0bcdb1"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/Ambrosia_Description.xml",
+      "bytes": 1597,
+      "sha256": "8e46718bf69b90aa81e207356296af20abd03f20cf1c696984ccbb1c02bed365"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/AncientArsenal_Ashkarr.xml",
+      "bytes": 4054,
+      "sha256": "68f40a817a3faff5eb6328ffc63d6bb56b8c80a0b73e7a79c368e9c3b8c52325"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/AncientDangerGenSteps_AmbientDoctrine.xml",
+      "bytes": 9564,
+      "sha256": "a3d6e6fa867413e27e0a5228dd74e2d5854b5217077e775539e321fb996a91ff"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/AncientsAreRakata.xml",
+      "bytes": 15817,
+      "sha256": "2a9e904d5c6e31f3faa16976ee55a6eb3607dabe3b9005ad393e1973dc09ffd7"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Fix.xml",
+      "bytes": 23673,
+      "sha256": "39edff00360adc12d4bb9f9f2b53665c95ff20d718a16a741307caeda0feaf48"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Generated.xml",
+      "bytes": 31155,
+      "sha256": "782ee9c01b4db2bfe16ae8340412821d17ceb2ed96a812630430c49059250409"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml",
+      "bytes": 686888,
+      "sha256": "76488783cc9e5d9f70bcf0b2b389364f006cedb3a05397aa5d8f5ba44ceca9b8"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_OwnedPorts.xml",
+      "bytes": 8737,
+      "sha256": "a99435bf785e9c511f8d78289d982825b63e76835bdfaff8fad045a23d140ebf"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_OwnedPorts_Warscar.xml",
+      "bytes": 7105,
+      "sha256": "d95441134a4fae17456b7332e0de823b533795604ff1d42d9c03b7ceee272f02"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/ApparelTags_DeadTagRepair.xml",
+      "bytes": 10695,
+      "sha256": "fac07b8c8f5afb862286d328d770fff7ac11c115ab713f1df3f2754e06cd0e84"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/ArtFold/AcanthamoebaGiganteaLarge_ArtFold.xml",
+      "bytes": 1397,
+      "sha256": "aa723c921120003719df5c05595d2aef2eadc2d4497ce66af4eeec82b3054f9f"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/ArtFold/Beetlefleet_ArtFold.xml",
+      "bytes": 1303,
+      "sha256": "a9f2dd94ff19f351515900c6b2f0a0f7ad78ab2d262b8c5d6a32112dce5b698c"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/ArtFold/DryadCorruptor_ArtFold.xml",
+      "bytes": 1314,
+      "sha256": "b7390db5d7b5d11148fcd248eade82e68f4b9e35c8e8d675502bcc53009da1d8"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/ArtFold/DryadTumorous_ArtFold.xml",
+      "bytes": 1303,
+      "sha256": "1ce71a3d4d88bb383b6834afff1de05f65daa6639dbe5360f5c846fef1cba645"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/ArtFold/Frostmite_ArtFold.xml",
+      "bytes": 2301,
+      "sha256": "5b23c81762e96520b258b5a8c165fc774065a4d48f1d85b9b116fc7eae7d38f7"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/ArtFold/Grithe_ArtFold.xml",
+      "bytes": 1248,
+      "sha256": "e2e815fc1512d67d4dabdd22e8ad5c6176aa9bf915e6d4ab3eab53aced500a73"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/ArtFold/Grithe_LabelPatch.xml",
+      "bytes": 1930,
+      "sha256": "670f20b9a0e5afe402cbf11158d4598eb81cb3f8804a26500475f4dd8976fc36"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/ArtFold/Grutt_ArtFold.xml",
+      "bytes": 1244,
+      "sha256": "b3c2cba94fa0ad3f590afafe7815fb8477751050c672b0bf6adce2165eb4a062"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/ArtFold/Grutt_LabelPatch.xml",
+      "bytes": 1877,
+      "sha256": "8f44a4cde8d5fd753354707954df965ef98c821e2c7dd5b93fae12dfcc11a88d"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/ArtFold/Spidercat_ArtFold.xml",
+      "bytes": 1279,
+      "sha256": "4753bf68dc0e6f5fc928bd75d2a4dc936c8533c58b71e52cb546e9eb3b7b2509"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/AshStorms_Pyrelands.xml",
+      "bytes": 6291,
+      "sha256": "d5f96c005dd51ab9fe158320128bb102be8dca524720447ddbc52726a31f4193"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/BetterInfestations_SilenceOwnEvents.xml",
+      "bytes": 1583,
+      "sha256": "2f53c326ee67c21fe661079fcfdfaabbc25ec52159bfb6ff34976061e60f6b7d"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/BiomeArrivalLetters_TheSump.xml",
+      "bytes": 3038,
+      "sha256": "df27cae7686f050d876af01e153caa03addd67f029d99a875364be5aba76931e"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/BiomeCastEvictions_WildBiomes.xml",
+      "bytes": 176399,
+      "sha256": "0f72386fdf5eb22c01954be7ad430050a2a3d700794bb2078a79769ed14cf3a2"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/BiomeDescriptions_Ashkarr.xml",
+      "bytes": 10512,
+      "sha256": "7fe01dfc5e77b013fd000f81c4023295c6fff0a84ace8b15a9518420bc3da7cf"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/BiomeFaunaStatAdjustments_Generated.xml",
+      "bytes": 4468,
+      "sha256": "488387a6abfe4af5d3b148f5af73ba308719dbfb22c120f307548015f15121e1"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/BiomeFloraStatAdjustments_Generated.xml",
+      "bytes": 14832,
+      "sha256": "1d66d6ce038258121583213545dca866642cacd7010c943ebf054f7ed3e46561"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/BiomeNames_Ashkarr.xml",
+      "bytes": 5869,
+      "sha256": "5eb83ec468e040b7b0834badd674fe0ae7c7966cafb81f172ff5458a4aeace3e"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/BlackstarCompany.xml",
+      "bytes": 24007,
+      "sha256": "eccde36cfa6cf9b34aaabdbaceb3e024eccf9b7a3716393d891e6366bd0d03eb"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/Cauldron_OomoShrine.xml",
+      "bytes": 971,
+      "sha256": "2e138353fd002256d7a62110b46bc782404aaefdf8192357c2e7e4a7ed85267d"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/Cauldron_Rename.xml",
+      "bytes": 6012,
+      "sha256": "07974e7e7f7a976f4633a14b2b9aa80fffb149b87cfa2377c12c91365a482cfa"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/Cauldron_ToxicPrizedMeat.xml",
+      "bytes": 2964,
+      "sha256": "a7b77df343da9412f6c584769eafcc81d653b60f77ff4b2d3324f255c03f2d90"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/ClaimCrew_CrackedLands.xml",
+      "bytes": 3263,
+      "sha256": "dabfb65f5fb72b63129928f274c24c57d4e7e80592280c49a7af17cdd5564af4"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/ClimbingGear_JawaFactions.xml",
+      "bytes": 6328,
+      "sha256": "cfbb2b3106f869804d90ac27660cab42702ed5aff51ca11e2efadca9ef0e0ed1"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/Contagion_Rename.xml",
+      "bytes": 2123,
+      "sha256": "b1b437090d02e1e547407ccd114fc196440286d58d2e3b9de8b43f09b5012064"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/CreatureNames_Ashkarr.xml",
+      "bytes": 1144,
+      "sha256": "86407c2be7ff667de9b6e73e4128e90339b65637d80a3bffa5f04355f0088535"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/CreatureResize_Ashkarr.xml",
+      "bytes": 14889,
+      "sha256": "a0dc1976f6db8decdf06d6dcd5fd4cdfb792fa4b2fe4f04f121668c1778fcd04"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/DeepDesertTribes.xml",
+      "bytes": 21185,
+      "sha256": "70476703143c1de91a3f920cd45865f1fbf71baa3ea577c3f7dc23a432fee451"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/DesertWrapsApparelWiring.xml",
+      "bytes": 2090,
+      "sha256": "5c6d8439f7827f39cc7202e9280db670d2dac4d20a0857d4a39ca485068a24cd"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/FactionCategoryTags_Compat.xml",
+      "bytes": 4907,
+      "sha256": "79b3a294ae8eb8b68716330cb8e2f715b511ad1091cfe33f8bb88871521373b3"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/FactionSlate/BannedFactions.xml",
+      "bytes": 19345,
+      "sha256": "06a842fc97610dfc6971ce739d18a2996391704c74245e9a256d8b598525c68a"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/FactionSlate/OnlyOurFactions.xml",
+      "bytes": 40261,
+      "sha256": "fa8d82ce4766b2be125e066511614b730dc03567b0df8d0b0abe53ceb34b736c"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/FaunaNorm_Law3_Damage.xml",
+      "bytes": 612002,
+      "sha256": "cbf7b5dfbfbfc02e092ed326ea24f3fc65feeb6889ab029bd9305edacb152e29"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/FaunaNorm_Law5_Tolerance.xml",
+      "bytes": 324179,
+      "sha256": "741795c0b60c8d2af5a52ab112adee28bf95f5231024122dc1817ed8fccc93b2"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/FaunaNorm_Law6_Products.xml",
+      "bytes": 134990,
+      "sha256": "91901f146ad9c51380a89484728f04fa10dc72fa0be8c8bb82de39bd1ea6c823"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/FishTypesStrip_NoFishBiomes.xml",
+      "bytes": 8944,
+      "sha256": "66353e778a55d83f7a75a79d2c49172f88e2eb6bdc131354b2606f08d9624cdf"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/FixedIdeo_StructureFallback.xml",
+      "bytes": 1761,
+      "sha256": "36dfa22a333a692118214deb621713a981c1e0bd330f7b6bda9ab3defa2c49dd"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/Fleshbeast_TrispikeCull.xml",
+      "bytes": 2987,
+      "sha256": "a9685048212a7473eb988979a5b41c19e109e850140f3d810e46d3aa9bdecb33"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/FlowWorks_SubsurfaceLiquid_Ashkarr.xml",
+      "bytes": 4092,
+      "sha256": "46956ea1a64d6204f529e987e8e29faa0b281ee908843b838be9a5fe76f71606"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/ForgottenArsenal.xml",
+      "bytes": 4314,
+      "sha256": "4c023a79a3d05d74aceade397b75bd3161910c79f8cc667c624d7ef6f87637c4"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/FreeDroidEnclaves_LeaderFallback.xml",
+      "bytes": 1041,
+      "sha256": "255c2e5347618e26307efbe611ac88164fa45eada273e695d8974a8fa88f61ec"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/GalacticEmpire_Campaign.xml",
+      "bytes": 21189,
+      "sha256": "99a0a4477a1ba1f38e75cb1bd813bf50a60e3cba3fceaff6c19ad840f4d68fbf"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/GeothermalDensityField.xml",
+      "bytes": 1992,
+      "sha256": "496343e3ee6505b688a175c50614a44401cdd41ecf3c1b306fc969f6137b6ed2"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/GiantWeaponWielders_Ashkarr.xml",
+      "bytes": 9918,
+      "sha256": "1583220612e5c08bc62c84050b8752db4a2e48a29cf8fe247144a9ff515fc76d"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/HelixCurators_Contagion.xml",
+      "bytes": 1966,
+      "sha256": "643488b113c64980caece52bbedf3c17ea00b6959921a8a8f0aaac5c281faa7e"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/HolyFlame_RitualistWiring.xml",
+      "bytes": 1868,
+      "sha256": "7925817bb335c1988de6b22177f9d94bd1198fdb6429686d095ff8ecb909cee4"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/HomesteadDefenseLeague.xml",
+      "bytes": 21331,
+      "sha256": "9e35ca4feedbdedacd5b41352d5b4eb336aba70d3b9cc6ddf6f95deffd3d4421"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/HumanTemperatureBand_Ashkarr.xml",
+      "bytes": 4770,
+      "sha256": "81ee3656da5a98b010a7e1cbdcf01a3de76051328f248d932f80ec3bca3b2bd8"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/Ikee_Rename.xml",
+      "bytes": 4378,
+      "sha256": "b4eac68a89e018c61a4c5d546608fd2a7f0811ce234fbf0f566308ae36a330b0"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/Ikee_Tuning.xml",
+      "bytes": 9798,
+      "sha256": "e64601a0071279b3a575ac45a792020cb5dc6f91fdd995d731d1581039c6bc22"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/Infestation_PlanetwideBan.xml",
+      "bytes": 3163,
+      "sha256": "8355ff6609efa5ae09c757c6e411d308a0d6487e0841e12a72897afe34990aae"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/JawaGroundHulk_Register.xml",
+      "bytes": 4023,
+      "sha256": "5d86ff66a897155913e8db1875c0aa9b6c3db655031422d21296613cd1c221ff"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/JawaMessImmunity.xml",
+      "bytes": 2978,
+      "sha256": "9654bb112182cfa2583c2618278ec6b11051653dca0ea593ef98d4adfe7db5ec"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/JawaResource_Scrapfields.xml",
+      "bytes": 2971,
+      "sha256": "3f5e552cbece0a10754eff38b226e7bdbbc88430a84f9f1bd027c8f05ddbcc65"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/JawaTerrain_DuneSeas.xml",
+      "bytes": 6243,
+      "sha256": "5aecbe934d22e2ecae01889f4bd1e9569610399ddd2b61c562cdff8c3c47ce12"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/JawaTerrain_SaltPans.xml",
+      "bytes": 8251,
+      "sha256": "aa91595f02de6fadb6713976e8eb5ea4170ac44cd74b209672da054b753ec83f"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/JawaWorld_BiomeMix.xml",
+      "bytes": 6570,
+      "sha256": "4452929865afab89b3fa746b2bc6c2b607deffcf2984ed4a51c8e78cc2afac3b"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/JawaWorld_Name.xml",
+      "bytes": 2236,
+      "sha256": "2a4576a9ac2313534602ce84aa575091c424def7eb5cad9de5bbcd4b0627d595"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/KineticArms_OutlawLooters.xml",
+      "bytes": 1989,
+      "sha256": "ec2458781f6e566d1c815deb5de4bf767676ec6aab5b68ad80feca869e3ec786"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/ManyWaters_RiverSteam_Ashkarr.xml",
+      "bytes": 2649,
+      "sha256": "1762357780f95bf98db6de49238f585c4c4631a1a8dba091edcaf8a400dba61d"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/MechClusterBiomes_AmbientDoctrine.xml",
+      "bytes": 6171,
+      "sha256": "26e5ba4e70fba15d12dec564fe57e281c3b414c9d0af9a4cd85613a0601b6e2e"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/MechanoidRaids_PlanetWideDeny.xml",
+      "bytes": 3684,
+      "sha256": "912e872b958b7e2af69600dc66b5398b234e02d1951a7fa5086c5e4111887267"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/MeleeAnimation_LassoRemoval.xml",
+      "bytes": 1713,
+      "sha256": "750366bdd5a5cbaeac6aa072935b09cb3227e7f20d9c37b1df8f5792fa0e0563"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/Miasma_Rename.xml",
+      "bytes": 986,
+      "sha256": "eb1160bb6eed133a2f2b3be0b27486b119d4db01933ce5afec384e5c56ddecb6"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/MiningCo_CzerkaRename.xml",
+      "bytes": 5273,
+      "sha256": "d14ebc3c9645fdf1bb4da1719a28027860123ebe8e63e32f577cc962784ba864"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/PackAnimals_RestoreSaddles.xml",
+      "bytes": 5049,
+      "sha256": "d6c664b0dac01f77cb50a669e8131302329bcb3a831158335451d4c6f28f4dfd"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/PirateWaster_Yield.xml",
+      "bytes": 3758,
+      "sha256": "00fd97613081a06a5b7ca8e14eb28d6af6dd9583c2dec12f69f05dea1a00e285"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/PlanetLayer_BackgroundWater.xml",
+      "bytes": 1218,
+      "sha256": "15e4d9d6e840d4d2e3e5ba0569d577faeecb51e0638de28967fa85ada6eeb9e3"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/PlantNames_Ashkarr.xml",
+      "bytes": 10233,
+      "sha256": "1757c95ee7eb6a55cc0927b0bb593f90ff5717bcb332ea80c3e46ecba4ad04ca"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/PlantTolerances_Ashkarr.xml",
+      "bytes": 293317,
+      "sha256": "b6d7f1807591874145add9b4221ba27e81b9f628837be7bce21a42305170e295"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/PlantTolerances_OwnedPorts.xml",
+      "bytes": 18175,
+      "sha256": "0f0759902951a632f7b00a97ae473356decb76f610b161c9974b5e5236d1504c"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RM_ScrubInjections_ScavengerClans.xml",
+      "bytes": 1316,
+      "sha256": "8151c9472716862ed14157f7e1b32dc475d4eb72d4bee50411ef15e85fcc052e"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RSW_ShrublandGiant_FireStamper.xml",
+      "bytes": 1604,
+      "sha256": "fa2a303bbee958e0b3d95f4c549c46d074a9f5aaa1082b76da4a26d6ff0c21cf"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_BroodRansom_Campaign.xml",
+      "bytes": 7080,
+      "sha256": "b0917536a2d73f0ebdd24f81250d7bbffeaa1e90568cdff5ecd4a79ccc46f405"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_CondenserQuestSlots.xml",
+      "bytes": 1148,
+      "sha256": "039122b0ef9a7258b1919f0e8d3273700f1b4226aa848df8ee8254ca34fc0cd5"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_ContagionRingScatter_Register.xml",
+      "bytes": 1638,
+      "sha256": "8a33c95901c8dd7f05e1f3c95554b7a2f303644102d83e1f1ebc74b65c3e6e9f"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_FallLineWrecks.xml",
+      "bytes": 2748,
+      "sha256": "304aaa562fe92762db6cb219156c23f31f0e9120bca15e7fc76466daf95c720b"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_FoundrySalvageCache_SpunstoneStudy.xml",
+      "bytes": 2694,
+      "sha256": "9204a4b592f130e6a80d9ce98d7aabf247982d2d297d4207a23343272f6385f0"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_FoundryTowerHoistFrame.xml",
+      "bytes": 1477,
+      "sha256": "576712e7563207a13cfef624d9784b3bedc90b665157bbdd9f5837c326d26757"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_FoundryTowerScatter_Register.xml",
+      "bytes": 1200,
+      "sha256": "202bbb2f3ef15d1d19af0b9381aa035775c8339bd400ad1f2fc695ac882577b5"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_Greatbole_CampaignBindings.xml",
+      "bytes": 1181,
+      "sha256": "f6726cf168db26155f93c49b95bdedf806c39c5178a397b96003f7d2c9cc461c"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_GroundCoverDrawLayer.xml",
+      "bytes": 2031,
+      "sha256": "94fe85942b4b87761af500b2d35ebcead340689e05936d940d424fe05b72b258"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_HospiceDroidworksSwap.xml",
+      "bytes": 2252,
+      "sha256": "40459b259ec6997eda4097e1b5974a0b3274674b72339ae8d118b3d8e05c32d7"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_JunkerSealedCorpses.xml",
+      "bytes": 1285,
+      "sha256": "2c73da3ec05e4e7b9170619b4fab7f90e549151508aa55b19d34b5891e6e618d"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_KraytHorn_Answer.xml",
+      "bytes": 1056,
+      "sha256": "8a1ba9241376365aeaa54d0df4b0f772127e8d7175f5b2f2aeeee87501b2f669"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_LanternDeepGateKotorStygium.xml",
+      "bytes": 5773,
+      "sha256": "ce9a764aa523b5af1bc0a8f40cf412a6d8786f99e133e61316f635cf83f54859"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_LanternDeepGateKyber.xml",
+      "bytes": 5538,
+      "sha256": "abb90fb89e9b0fd5b8062fbaab4ca5c0cc728a20ba2ee2834056026d29c3be8d"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_LanternDeepMindstoneGallery.xml",
+      "bytes": 699,
+      "sha256": "176dc360be3796ec54dd0f429b8974ee496fdc44593fa5510393130f6fd774c2"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_LanternstoneKotorCrystals.xml",
+      "bytes": 4099,
+      "sha256": "a2da5e5e2b49ac250d1997f13e95bd9d56a9a14e40e8c013824ab572e5f988e2"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_Lightfall_BroodLair.xml",
+      "bytes": 1392,
+      "sha256": "d8c9adf8b0f505648bbe6a85d489aaf5d186ae250cf26a8ee1d16ec05282af49"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_Miasma_MothersPriceBuyers.xml",
+      "bytes": 1459,
+      "sha256": "7c632a2a93633579e3b4b903ad1f086a3e0424837e17da3572b0476a9c92990e"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_NightHorrorLairs_Register.xml",
+      "bytes": 1039,
+      "sha256": "578e978a1d41f8bb6086b7af40a16ed64db2c81c2044856f5a8dc621e37180b8"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_PaleTree_ForceText.xml",
+      "bytes": 932,
+      "sha256": "bc46cbb65df64364bada529d92cf713a2b0177dd37af81de7e43454f824cdff2"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_PhrikiteDesertLumps_Register.xml",
+      "bytes": 622,
+      "sha256": "c2ae9f8aa6e9d65baad05b8034ca9a51d1b9699b2df6b6edb0067872534335be"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_RetiredMutatorPorts_Biomes.xml",
+      "bytes": 3998,
+      "sha256": "88e202a05310e7d16aee6ab216db6f858c2d302a3be4c749cbae1f023d543ef6"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_TarGas_SumpgasLabel.xml",
+      "bytes": 1964,
+      "sha256": "97ab815204e030c20215795dde7672bdf5d391314e6ad283eeed6e38412c9c57"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_TarShallow_FilthAcceptance.xml",
+      "bytes": 3284,
+      "sha256": "e8e2c96330f19875596090660aaad3676519909bb47d6d764f5d60888c0aa5f5"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_TarShallow_GeneratedFilth.xml",
+      "bytes": 2038,
+      "sha256": "cb3e50e978549231309805fe274d3a61d497eef728035b65ae345ce6cf840205"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_TheReturn_KraytOpens.xml",
+      "bytes": 1430,
+      "sha256": "948cfc0ccebf5440bebddf61d0e6ec2ba15cde341840e1de2c1ccb0363f726e8"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_TibannaTap_BeldonWiring.xml",
+      "bytes": 3828,
+      "sha256": "243403a4b9664ed5afaefa20c36e05b989d6e86eba60d124a3a858dd885f192e"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_VentForge_RecipeWiring.xml",
+      "bytes": 2334,
+      "sha256": "d356ab466643bbca4d109182eac0ec773b8219c0e3863e1f9519c618e5cfa530"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_VentKiln_RecipeWiring.xml",
+      "bytes": 2146,
+      "sha256": "c77826c3ea451fbc497fa8e4f9797c7cf049cc2b5878eb72fd1963664c6fe5fd"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_Webwork_EggBlackMarket.xml",
+      "bytes": 4292,
+      "sha256": "0e9131fa589c194ad2b8f2aa8c1cb4a964ac3a53b70036254ecc2a4abd67990f"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_Webwork_RareThrixweaveStock.xml",
+      "bytes": 2241,
+      "sha256": "e849dcb0ea98baea5d643054900b44d90af2699f4e65547c1d0ed080d65f29d7"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_WornBit_Junkers.xml",
+      "bytes": 1861,
+      "sha256": "7e805b82b2721bf9c304d5affcf6128d6ee282648f8d49161fd002aebb100100"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_ZersiumForgeLumps_Register.xml",
+      "bytes": 619,
+      "sha256": "314763398c80e3525bef0abf632b8f42a0084e3305c9799218332de2dc1aa717"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RebelAlliance_Suppress.xml",
+      "bytes": 7463,
+      "sha256": "ea7ccf24a0867af0506bd2f1a1f17c046ada23386633077efca05bfd390343a3"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RiteOfTipping_Factions.xml",
+      "bytes": 1443,
+      "sha256": "67ea1551ed15392f7789e755402b4ea827ecbf84e96ab6bf22af672d5c3e2bc5"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RotDecayHarvest_LivingProduce.xml",
+      "bytes": 3387,
+      "sha256": "a7987ece32fc02ff217cf01c0e2d3cee95ff78f948416584e9af2b4d98fa9d00"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/SandFishing_CrackedLands.xml",
+      "bytes": 8279,
+      "sha256": "8a4128c9d56e68e6f2dccfc38c8d7fa03c88e4120b99ad54dd59db979b630fe3"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/ShkaarIdol_HolyAct.xml",
+      "bytes": 1936,
+      "sha256": "263f3a14bb19e03d3cd6ec82e070c60bed3d1545dff9ee164f162faa2f763a32"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/SleepingIce_Rename.xml",
+      "bytes": 725,
+      "sha256": "682ed6b4ab82bd34bccd5878faf845482bd14c209900d062e5725ab3bcda6e49"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/SlimeRainStrip_Campaign.xml",
+      "bytes": 1975,
+      "sha256": "92bc95fd80bf8d23808ab6d3c37f4795af722c6526641933397d9fc6ebd2563f"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/Slime_Rename.xml",
+      "bytes": 3231,
+      "sha256": "75614c96ccceb3ad226ea58942c71e4e3484a43c670651682adb74756776a717"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/StatNorm_MoreVanillaTextures_DrawSizeNeutral.xml",
+      "bytes": 2199,
+      "sha256": "b62c41c681968a8acbee9890412a66dabf3087f083276e206c29b4cfa410ecaa"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/TibannaEmbargo_CutDeepRoute.xml",
+      "bytes": 1563,
+      "sha256": "ad5c88e69dea816beb94099caf145299adcf1e5b6b8fdfc69cad3f0b2c0b4b49"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/UtinniWorldIcon.xml",
+      "bytes": 2664,
+      "sha256": "acb10db9486f587e9d4ab091f5fa34fcad1c512a0ac89c58744990825bb57300"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/VQEPatients_AreRakata.xml",
+      "bytes": 4410,
+      "sha256": "787c735663321d413aa846416dbf37cac6c5900612756fad2eb99b243b2aaac8"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/VQEQuestText_AreForsaken.xml",
+      "bytes": 11401,
+      "sha256": "15360907f3a0ccfebe4b4ec82461280a69eebad3b70ca7f7aadc2cc552051669"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/VanillaBeastExcision_Carriers.xml",
+      "bytes": 3215,
+      "sha256": "22bbcfae0e99a9c9f0e6e5cb665097810f74d00bc6b6b3b59359135201cc89c3"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/Warscar_Rename.xml",
+      "bytes": 928,
+      "sha256": "c3ecbb8b32b04d4172103a4c0006cbdadc8768267dd196f5b5c2eff5e8b04313"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Abyss.xml",
+      "bytes": 1006,
+      "sha256": "a35602d865087efa1493c3b9698de9b87180f69ed5ee33cdb99bc81c63ff6c29"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_BlueDesert.xml",
+      "bytes": 2766,
+      "sha256": "9b86f3886664f4d61c4baa44fc98a24040fe9d829961742b352a6b6f17293c89"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Cauldron.xml",
+      "bytes": 4272,
+      "sha256": "01d0e415c09a9a9f19f7f787e5a68d4dca46487ac63a26810646e7b02c7129fd"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_CrackedLands.xml",
+      "bytes": 11637,
+      "sha256": "b88430117147f3ab56214de507e95598b8f9aa3400580aa1fb44635e1d4bab15"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_FeverWood.xml",
+      "bytes": 6343,
+      "sha256": "67ff7c15f8268cfbb657d6dfb905dc0818860d6bb12a2017aac1f07bae0122f9"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Greentide.xml",
+      "bytes": 5689,
+      "sha256": "637e7835239dc6f65c368fa8da7aa56146068566d27b28d562eb819dd226f4f1"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_LeaningScrub.xml",
+      "bytes": 5048,
+      "sha256": "50a8e75fdcfec6fb0b9c7955e7440b96be64329164099577c2e2d9f4d15f6beb"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_LongShade.xml",
+      "bytes": 9374,
+      "sha256": "f0cfb8516c1f63845f239d60d81e1c4785c247098e217248bdf28938fe4eb353"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Miasma.xml",
+      "bytes": 5610,
+      "sha256": "3a7939dd53555f7ea69578e26bc6c8ecfb8fc2bb5cc542fd9f7cc91c60163e60"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Pyrelands.xml",
+      "bytes": 1692,
+      "sha256": "21dd1fedb3256385adc9e8e443c78c2bf3a46c134451381e2d958528a89c5f08"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_RustCathedral.xml",
+      "bytes": 2258,
+      "sha256": "bcd4c03d539064fdd8ca231fc0ee756b8a839fcd101e0c9b8e462796b1481244"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_SleepingIce.xml",
+      "bytes": 2946,
+      "sha256": "fa65aa99744aecdb3af012a821d131fef4547f7610e99808f85a409bcdf06f14"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Stillsand.xml",
+      "bytes": 7423,
+      "sha256": "fe28aff0b27dc63abc095c42eb0e69c984b438ce3a9fb9a44332ac219fcbadf3"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Sump.xml",
+      "bytes": 2588,
+      "sha256": "4770e8b5cd14d88343a9bd3fad8444af5e52b2f73ba8bc174e45669ef62725e8"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_TheForge.xml",
+      "bytes": 3111,
+      "sha256": "47ef169580810f0cea1bfdc90706696760e28f943d34a03fa00f2833e95ad008"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_TheRot.xml",
+      "bytes": 2183,
+      "sha256": "206ea97793e3c4a283937a10c99df10c3843f0bec0bf0974045ac8ec80b39e5d"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_TwilightSea.xml",
+      "bytes": 3149,
+      "sha256": "3b64d171c2f6b3a4b04a83928e432360cf8124222797f12a7f3b2a251ba3a971"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Warscar.xml",
+      "bytes": 3659,
+      "sha256": "3a2e84392e7b93c1a78ed8f96ccea993d9f71a53aa312cd7d1aff156a2cbf639"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Wastes.xml",
+      "bytes": 6928,
+      "sha256": "27b4e4d9c477573f7e5b24ec593e414bf1d916ab87f12e9544f98ca0735312a2"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_WeepingStones.xml",
+      "bytes": 2814,
+      "sha256": "9341f5ca014ed59da62ca65082824fe3abdb15f5ebba33904a32564f2de295e9"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/WildPlants_Webwork.xml",
+      "bytes": 2700,
+      "sha256": "6f45de70119fe615a2f40e4c851abfb2d9f0e5cb8e011571bbcafb6d48c88aae"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/WreckVerminNest_ShipChunk.xml",
+      "bytes": 7044,
+      "sha256": "a74ff4836f0ea36183aa6cf8fb485260384fc6402536ac2bf73d4e626a069e68"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/WyyyschokkFangPendantFactions.xml",
+      "bytes": 2403,
+      "sha256": "bfedd5021fb7b16d05a9531f679bffb10f7777a5627eb19fd320c55770cfc851"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/XenotypeCut_NonSW_SpawnSets.xml",
+      "bytes": 5717,
+      "sha256": "83a9e04f6cf74210780a947e2bd8d1a45134fc726af1d49b6906970bba32e527"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/XenotypeCut_SpawnSets.xml",
+      "bytes": 4687,
+      "sha256": "f457be333b7e893d290c5039cd8794a7b85fe7477cf21d3d63ac61a5caa58314"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/XenotypeTolerances_Ashkarr.xml",
+      "bytes": 7491,
+      "sha256": "dfb7959378f72f7b16bf6355bfa981049a67bc9bb0c1d721151f66d4a66e5bd1"
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/ZZZ_BiomeWildAnimalDuplicates_Generated.xml",
+      "bytes": 4450,
+      "sha256": "e58f4a12eb13ebc9a778279da5087b4403ef41fc4b1d56509a3baa0c2e6b3753"
+    },
+    {
+      "file": "src/RimUtinni/UtinniStatues/Patches/FlameStatues_Integration.xml",
+      "bytes": 3482,
+      "sha256": "d89d89194b68af82816f9d37cd923e840294e1e0c00294260531f04505174971"
+    },
+    {
+      "file": "src/RimUtinni/WasteRun/Patches/RUT_CaskBay_WasteRunPlanner.xml",
+      "bytes": 393,
+      "sha256": "860029334855b9ef2e5e745ea97fa65eae60f190d7060156a8ec5a1168528be6"
+    }
+  ],
+  "operations": [
+    {
+      "file": "src/RimMandrake/DivingInteraction/Patches/RM_AcousticPayload_DivingInteraction.xml",
+      "class": "PatchOperationAddModExtension",
+      "xpath": "/Defs/BiomeDef[defName=\"RM_SeabedFloor_GreySea\"]",
+      "value": "<value>\n        <li Class=\"RimMandrake.AcousticScanner.RM_AcousticPayloadExtension\">\n          <quietText>Salt and sediment, every echo muffled. Nothing on the floor moves.</quietText>\n          <targets>\n            <li>\n              <label>crystallised figure</label>\n              <reading>A standing block of salt with a shape inside it, the wrong shape for stone.</reading>\n              <color>(1, 0.6, 0.45)</color>\n              <weight>2</weight>\n              <thingDefs>\n                <li>RM_BrineEncasement</li>\n                <li>RM_BrineJacket</li>\n              </thingDefs>\n            </li>\n            <li>\n              <label>brine elder</label>\n              <reading>A trunk of grown salt wider than a house, rising out of the deepest pool.</reading>\n              <color>(0.95, 0.9, 1)</color>\n              <weight>2</weight>\n              <thingDefs>\n                <li>RM_BrineElder</li>\n              </thingDefs>\n            </li>\n            <li>\n              <label>crystal-jacketed wreck</label>\n              <reading>A hull the salt grew over, ringing like stone with a hollow inside.</reading>\n              <color>(0.8, 0.8, 0.85)</color>\n              <thingDefs>\n                <li>RM_GreyFloorWreckHull</li>\n                <li>RM_GreyFloorWreckSpine</li>\n                <li>RM_PickedWreck</li>\n              </thingDefs>\n            </li>\n            <li>\n              <label>something vast and slow</label>\n              <reading>A huge, slow body with a whole reef growing on it.</reading>\n              <color>(1, 0.4, 0.3)</color>\n              <weight>3</weight>\n              <pawnRaces>\n                <li>RM_Reefback</li>\n              </pawnRaces>\n            </li>\n          </targets>\n        </li>\n      </value>\n    ",
+      "attribute": null,
+      "resolved_hits": 0,
+      "raw_hits": 0
+    },
+    {
+      "file": "src/RimMandrake/Greentide/Patches/RM_StellockLace_Patches.xml",
+      "class": "PatchOperationAdd",
+      "xpath": "/Defs/ThingDef[@Name=\"AnimalThingBase\"]/recipes",
+      "value": "<value>\n      <li>RM_AdministerStellockLace</li>\n    </value>\n  ",
+      "attribute": null,
+      "resolved_hits": 0,
+      "raw_hits": 1
+    },
+    {
+      "file": "src/RimMandrake/Miasma/Patches/RM_AcousticPayload_Miasma.xml",
+      "class": "PatchOperationAddModExtension",
+      "xpath": "/Defs/BiomeDef[defName=\"RM_Miasma\"]",
+      "value": "<value>\n        <li Class=\"RimMandrake.AcousticScanner.RM_AcousticPayloadExtension\">\n          <quietText>Brackish water and soft roots, deadened by the salt. Nothing in the channels is any bigger than it looks.</quietText>\n          <targets>\n            <li>\n              <label>nursery shallows</label>\n              <reading>Many small quick echoes in the brine shallows, and one larger, slower one keeping watch.</reading>\n              <color>(1, 0.6, 0.45)</color>\n              <weight>2</weight>\n              <thingDefs>\n                <li>RM_CrecheMarker</li>\n              </thingDefs>\n            </li>\n            <li>\n              <label>young things in the channel mud</label>\n              <reading>Small hard shells and soft bodies in the channel mud, a lot of them.</reading>\n              <color>(0.9, 0.5, 0.4)</color>\n              <pawnRaces>\n                <li>RM_SiltLampreyJuv</li>\n                <li>RM_RustNipperJuv</li>\n                <li>RM_CrimsonOpeeJuv</li>\n                <li>RM_ThornbackColoJuv</li>\n                <li>RM_ShaleGorgerJuv</li>\n                <li>RM_ReefbackJuv</li>\n              </pawnRaces>\n            </li>\n            <li>\n              <label>brined flotsam</label>\n              <reading>Salt-crusted metal thrown up by a surge, hollow and ringing dull.</reading>\n              <color>(0.8, 0.8, 0.85)</color>\n              <thingDefs>\n                <li>RM_MiasmaFlotsamFrame</li>\n                <li>RM_MiasmaFlotsamTank</li>\n              </thingDefs>\n            </li>\n            <li>\n              <label>void under the roots</label>\n              <reading>The echo falls into a hollow under the stilt roots.</reading>\n              <color>(0.6, 0.6, 0.9)</color>\n              <hiddenCaves>true</hiddenCaves>\n              <cellSampleStride>4</cellSampleStride>\n            </li>\n          </targets>\n        </li>\n      </value>\n    ",
+      "attribute": null,
+      "resolved_hits": 0,
+      "raw_hits": 0
+    },
+    {
+      "file": "src/RimMandrake/Stillsand/Patches/RM_KraytLens.xml",
+      "class": "PatchOperationAdd",
+      "xpath": "Defs",
+      "value": "<value>\n\n        <ThingDef ParentName=\"ResourceBase\">\n          <defName>RSW_KraytLens</defName>\n          <label>krayt lens</label>\n          <description>A lens ground from a greater krayt dragon's pearl and seated in lens glass. The pearl is a natural focusing crystal, and no glass lens gathers light like it. It is a trade prize and a wonder to look at; a solar still treats it as a plain lens.</description>\n          <graphicData>\n            <texPath>Things/Item/Resource/RSW_KraytLens</texPath>\n            <graphicClass>Graphic_Single</graphicClass>\n          </graphicData>\n          <soundInteract>Metal_Drop</soundInteract>\n          <soundDrop>Metal_Drop</soundDrop>\n          <stackLimit>5</stackLimit>\n          <healthAffectsPrice>true</healthAffectsPrice>\n          <statBases>\n            <MaxHitPoints>60</MaxHitPoints>\n            <MarketValue>900</MarketValue>\n            <Mass>0.3</Mass>\n            <Flammability>0</Flammability>\n            <DeteriorationRate>0.3</DeteriorationRate>\n            <Beauty>20</Beauty>\n          </statBases>\n          <thingCategories>\n            <li>Manufactured</li>\n          </thingCategories>\n          <tradeability>All</tradeability>\n          <tradeTags>\n            <li>Exotic</li>\n          </tradeTags>\n          <techLevel>Medieval</techLevel>\n        </ThingDef>\n\n        <RecipeDef>\n          <defName>RSW_GrindKraytLens</defName>\n          <label>grind krayt lens</label>\n          <description>Grind a krayt pearl into a lens, seated in lens glass.</description>\n          <jobString>Grinding a krayt lens.</jobString>\n          <workAmount>9000</workAmount>\n          <workSpeedStat>GeneralLaborSpeed</workSpeedStat>\n          <effectWorking>CutStone</effectWorking>\n          <soundWorking>Recipe_MakeStoneBlocks</soundWorking>\n          <workSkill>Crafting</workSkill>\n          <skillRequirements>\n            <Crafting>12</Crafting>\n          </skillRequirements>\n          <ingredients>\n            <li>\n              <filter>\n                <thingDefs>\n                  <li>RSW_KraytPearl</li>\n                </thingDefs>\n              </filter>\n              <count>1</count>\n            </li>\n            <li>\n              <filter>\n                <thingDefs>\n                  <li>RM_LensGlass</li>\n                </thingDefs>\n              </filter>\n              <count>2</count>\n            </li>\n          </ingredients>\n          <fixedIngredientFilter>\n            <thingDefs>\n              <li>RSW_KraytPearl</li>\n              <li>RM_LensGlass</li>\n            </thingDefs>\n          </fixedIngredientFilter>\n          <products>\n            <RSW_KraytLens>1</RSW_KraytLens>\n          </products>\n          <recipeUsers>\n            <li>RM_LensBench</li>\n          </recipeUsers>\n        </RecipeDef>\n\n      </value>\n    ",
+      "attribute": null,
+      "resolved_hits": 1,
+      "raw_hits": 1
+    },
+    {
+      "file": "src/RimMandrake/TerminalBiomes/Patches/RM_AcousticPayload_TerminalBiomes.xml",
+      "class": "PatchOperationAddModExtension",
+      "xpath": "/Defs/BiomeDef[defName=\"RM_GreySea\"]",
+      "value": "<value>\n        <li Class=\"RimMandrake.AcousticScanner.RM_AcousticPayloadExtension\">\n          <quietText>Brine and salt, heavy and still. The pulse comes back muffled, and nothing in it moved.</quietText>\n          <targets>\n            <li>\n              <label>something caught in the salt</label>\n              <reading>A shape inside a block of salt that rings wrong, as if it was once alive.</reading>\n              <color>(1, 0.6, 0.45)</color>\n              <weight>2</weight>\n              <thingDefs>\n                <li>RM_BrineJacket</li>\n              </thingDefs>\n            </li>\n            <li>\n              <label>great salt crystals</label>\n              <reading>Clean, high crystal notes from the deep floor.</reading>\n              <color>(0.95, 0.8, 1)</color>\n              <thingDefs>\n                <li>RM_GreatSaltCrystal_White</li>\n                <li>RM_GreatSaltCrystal_Pink</li>\n                <li>RM_GreatSaltCrystal_Violet</li>\n                <li>RM_GreatSaltCrystal_Amber</li>\n              </thingDefs>\n            </li>\n            <li>\n              <label>salt chimney</label>\n              <reading>A slow plume of heavy brine sinking out of a tower of salt.</reading>\n              <color>(0.85, 0.9, 1)</color>\n              <thingDefs>\n                <li>RM_SaltChimney</li>\n              </thingDefs>\n            </li>\n            <li>\n              <label>something vast and slow</label>\n              <reading>A huge, slow body with a whole reef growing on it.</reading>\n              <color>(1, 0.4, 0.3)</color>\n              <weight>3</weight>\n              <pawnRaces>\n                <li>RM_Reefback</li>\n              </pawnRaces>\n            </li>\n          </targets>\n        </li>\n      </value>\n    ",
+      "attribute": null,
+      "resolved_hits": 0,
+      "raw_hits": 0
+    },
+    {
+      "file": "src/RimMandrake/TheSump/Patches/RM_TarredSurgery_RecipeUsers.xml",
+      "class": "PatchOperationAdd",
+      "xpath": "/Defs/ThingDef[recipes/li=\"ExciseCarcinoma\"]/recipes",
+      "value": "<value>\n      <li>RM_ScrubTarred</li>\n    </value>\n  ",
+      "attribute": null,
+      "resolved_hits": 3,
+      "raw_hits": 1
+    },
+    {
+      "file": "src/RimMandrake/Wastes/Patches/RM_Wastes_MovingDunesBinding.xml",
+      "class": "PatchOperationAdd",
+      "xpath": "Defs",
+      "value": "<value>\n            <RimMandrake.MovingDunes.RM_DuneMaterialDef>\n              <defName>RM_Dunes_WastesAsh</defName>\n              <label>settled fallout ash</label>\n              <description>Centuries of deposition: fine, grey, radiologically live ash. Lifts in any real wind, banks against anything that stands, and gives back what it buried when the wind turns.</description>\n              <tint>(0.62,0.62,0.60)</tint>\n              <tintMode>MaterialColor</tintMode>\n              <crestShading>0.2</crestShading>\n              <slabSize>0.05</slabSize>\n              <hopRange>2~7</hopRange>\n              <erodeMinDepth>0.1</erodeMinDepth>\n              <windSpeedThreshold>0.7</windSpeedThreshold>\n              <shadowRange>4</shadowRange>\n              <attemptsPerCellPerDay>5</attemptsPerCellPerDay>\n              <stormTransportFactor>6</stormTransportFactor>\n              <ambientDecayFactor>0</ambientDecayFactor>\n              <influxLossRatio>0.9</influxLossRatio>\n              <influxPerDay>10</influxPerDay>\n              <weatherInfluxFactor>5</weatherInfluxFactor>\n              <maxTotalMassFraction>0.3</maxTotalMassFraction>\n              <burialDepth>0.55</burialDepth>\n              <revealDepth>0.25</revealDepth>\n              <minBurialMarketValue>5</minBurialMarketValue>\n              <maxCachesPerMap>400</maxCachesPerMap>\n              <plantChokeDepth>0.5</plantChokeDepth>\n              <plantChokeDays>4</plantChokeDays>\n              <plantChokeSampleFraction>0.125</plantChokeSampleFraction>\n              <depositFilthDef>Filth_Ash</depositFilthDef>\n              <depositFilthChance>0.01</depositFilthChance>\n              <windShiftMeanDays>5</windShiftMeanDays>\n              <windShiftBigChance>0.3</windShiftBigChance>\n            </RimMandrake.MovingDunes.RM_DuneMaterialDef>\n          </value>\n        ",
+      "attribute": null,
+      "resolved_hits": 1,
+      "raw_hits": 1
+    },
+    {
+      "file": "src/RimMandrake/WreckedMachines/Patches/WreckedMachines_DistillationModule.xml",
+      "class": "PatchOperationAdd",
+      "xpath": "Defs",
+      "value": "<value>\n\n        <ThingDef ParentName=\"BuildingBase\">\n          <defName>RM_WM_Distillation_Wrecked</defName>\n          <building>\n            <buildingTags>   \n              <li>RM_RuinDrawsPipes</li>\n              <li>RM_RuinDrawsConduit</li>\n            </buildingTags>\n          </building>\n          <label>wrecked distillation module</label>\n          <description>The ship's water distillation module, torn off its mounts in the crash. The boiler is cracked and the condenser coil crushed flat. For now it is rubble: clear it, or build a kludged module over it.</description>\n          <thingClass>Building</thingClass>\n          <graphicData>\n            <texPath>Things/Building/Ruins/AncientGenerator</texPath>\n            <graphicClass>Graphic_Random</graphicClass>\n            <drawSize>(2,2)</drawSize>\n            <color>(110,95,85)</color>\n          </graphicData>\n          <size>(2,2)</size>\n          <rotatable>false</rotatable>\n          <altitudeLayer>Building</altitudeLayer>\n          <passability>Impassable</passability>\n          <fillPercent>0.75</fillPercent>\n          <statBases>\n            <MaxHitPoints>200</MaxHitPoints>\n            <Flammability>0</Flammability>\n            <Beauty>-10</Beauty>\n            <WorkToBuild>1200</WorkToBuild>\n          </statBases>\n          <costList>\n            <Steel>40</Steel>\n          </costList>\n          <replaceTags>\n            <li>RM_WM_Distillation</li>\n          </replaceTags>\n        </ThingDef>\n\n        <ThingDef ParentName=\"BuildingBase\">\n          <defName>RM_WM_Distillation_Kludged</defName>\n          <label>kludged distillation module</label>\n          <description>The ship's distillation module, patched back together with a scavenged coil and a boiler wrapped in wire. It takes salt water, brine, boiling, icy, poisoned or acid water from a tank on its line and puts clean water into another, slowly. It will not touch tar, oil, fuel or slime.</description>\n          <thingClass>Building</thingClass>\n          <tickerType>Rare</tickerType>\n          <graphicData>\n            <texPath>Things/Building/Power/ChemfuelPoweredGenerator</texPath>\n            <graphicClass>Graphic_Single</graphicClass>\n            <drawSize>(2,2)</drawSize>\n            <color>(170,150,130)</color>\n          </graphicData>\n          <size>(2,2)</size>\n          <rotatable>false</rotatable>\n          <altitudeLayer>Building</altitudeLayer>\n          <passability>PassThroughOnly</passability>\n          <fillPercent>0.75</fillPercent>\n          <designationCategory>Production</designationCategory>\n          <statBases>\n            <MaxHitPoints>220</MaxHitPoints>\n            <Flammability>0.3</Flammability>\n            <Beauty>-6</Beauty>\n            <WorkToBuild>2500</WorkToBuild>\n          </statBases>\n          <costList>\n            <Steel>60</Steel>\n            <ComponentIndustrial>2</ComponentIndustrial>\n          </costList>\n          <replaceTags>\n            <li>RM_WM_Distillation</li>\n          </replaceTags>\n          <comps>\n            <li Class=\"CompProperties_Power\">\n              <compClass>CompPowerTrader</compClass>\n              <basePowerConsumption>250</basePowerConsumption>\n            </li>\n            <li Class=\"CompProperties_Flickable\" />\n            <li Class=\"CompProperties_Breakdownable\" />\n            <li Class=\"RimMandrake.FlowWorks.Machinery.CompProperties_LiquidConverter\">\n              <tier>Household</tier>\n              <distillsAny>true</distillsAny>\n              <distillProduct>RM_Liquid_FreshWater</distillProduct>\n              <distillInputLitres>400</distillInputLitres>\n              <distillOutputLitres>200</distillOutputLitres>\n              <inputLitresPerDay>24000</inputLitresPerDay>\n              <tierRate>0.5</tierRate>\n            </li>\n          </comps>\n          <modExtensions>\n            <li Class=\"RimMandrake.FlowWorks.Machinery.RM_MachineToggleExtension\">\n              <key>RM_WM_Distillation</key>\n              <label>Ship distillation module (Wrecked Machines)</label>\n            </li>\n          </modExtensions>\n        </ThingDef>\n\n        <ThingDef ParentName=\"BuildingBase\">\n          <defName>RM_WM_Distillation_Repaired</defName>\n          <label>repaired distillation module</label>\n          <description>The ship's distillation module, restored. It takes salt water, brine, boiling, icy, poisoned or acid water from a tank on its line and puts clean water into another at its full rate. It will not touch tar, oil, fuel or slime.</description>\n          <thingClass>Building</thingClass>\n          <tickerType>Rare</tickerType>\n          <graphicData>\n            <texPath>Things/Building/Power/ChemfuelPoweredGenerator</texPath>\n            <graphicClass>Graphic_Single</graphicClass>\n            <drawSize>(2,2)</drawSize>\n            <color>(175,200,215)</color>\n          </graphicData>\n          <size>(2,2)</size>\n          <rotatable>false</rotatable>\n          <altitudeLayer>Building</altitudeLayer>\n          <passability>PassThroughOnly</passability>\n          <fillPercent>0.75</fillPercent>\n          <designationCategory>Production</designationCategory>\n          <statBases>\n            <MaxHitPoints>300</MaxHitPoints>\n            <Flammability>0.2</Flammability>\n            <Beauty>-4</Beauty>\n            <WorkToBuild>5000</WorkToBuild>\n          </statBases>\n          <costList>\n            <Steel>120</Steel>\n            <ComponentIndustrial>5</ComponentIndustrial>\n          </costList>\n          <replaceTags>\n            <li>RM_WM_Distillation</li>\n          </replaceTags>\n          <comps>\n            <li Class=\"CompProperties_Power\">\n              <compClass>CompPowerTrader</compClass>\n              <basePowerConsumption>350</basePowerConsumption>\n            </li>\n            <li Class=\"CompProperties_Flickable\" />\n            <li Class=\"CompProperties_Breakdownable\" />\n            <li Class=\"RimMandrake.FlowWorks.Machinery.CompProperties_LiquidConverter\">\n              <tier>Industrial</tier>\n              <distillsAny>true</distillsAny>\n              <distillProduct>RM_Liquid_FreshWater</distillProduct>\n              <distillInputLitres>400</distillInputLitres>\n              <distillOutputLitres>200</distillOutputLitres>\n              <inputLitresPerDay>48000</inputLitresPerDay>\n              <tierRate>1</tierRate>\n            </li>\n          </comps>\n          <modExtensions>\n            <li Class=\"RimMandrake.FlowWorks.Machinery.RM_MachineToggleExtension\">\n              <key>RM_WM_Distillation</key>\n              <label>Ship distillation module (Wrecked Machines)</label>\n            </li>\n          </modExtensions>\n        </ThingDef>\n\n      </value>\n    ",
+      "attribute": null,
+      "resolved_hits": 1,
+      "raw_hits": 1
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/RSW_AlloyForge_Durasteel.xml",
+      "class": "PatchOperationAdd",
+      "xpath": "/Defs",
+      "value": "<value>\n              <PipeSystem.ProcessDef>\n                <defName>RSW_AlloyDurasteel</defName>\n                <label>Alloy durasteel from steel and zersium</label>\n                <labelOverride>Alloy durasteel from steel and zersium</labelOverride>\n                <description>Smelt zersium into molten steel and hold it at heat until it sets as durasteel, the hard structural alloy of walls, blast doors and starship plating.</description>\n                <priorityInBillList>0</priorityInBillList>\n                <spawnOnInteractionCell>true</spawnOnInteractionCell>\n                <autoGrabFromHoppers>true</autoGrabFromHoppers>\n                <autoInputSlots>\n                  <li>(-2,0,3)</li>\n                  <li>(0,0,3)</li>\n                  <li>(2,0,3)</li>\n                </autoInputSlots>\n                <ticks>9000</ticks>\n                <ingredients>\n                  <li>\n                    <thing>Steel</thing>\n                    <countNeeded>10</countNeeded>\n                  </li>\n                  <li>\n                    <thing>RSW_Zersium</thing>\n                    <countNeeded>2</countNeeded>\n                  </li>\n                </ingredients>\n                <results>\n                  <li>\n                    <thing>RSW_Durasteel</thing>\n                    <count>10</count>\n                  </li>\n                </results>\n                <isFactoryProcess>true</isFactoryProcess>\n                <autoExtract>true</autoExtract>\n                <onlyGrabAndOutputToFactoryHoppers>true</onlyGrabAndOutputToFactoryHoppers>\n                <effecterWhenWorking>true</effecterWhenWorking>\n                <effecterDef>VFEFactory_Smelt</effecterDef>\n                <sustainerWhenWorking>true</sustainerWhenWorking>\n                <sustainerDef>VFEFactory_AutomatedSmeltingSustainer</sustainerDef>\n                <maxOutputCount>75</maxOutputCount>\n              </PipeSystem.ProcessDef>\n            </value>\n          ",
+      "attribute": null,
+      "resolved_hits": 1,
+      "raw_hits": 1
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/RSW_Smelter_Alloys.xml",
+      "class": "PatchOperationAdd",
+      "xpath": "/Defs",
+      "value": "<value>\n              <PipeSystem.ProcessDef>\n                <defName>RSW_SmeltDoonium</defName>\n                <label>Smelt doonium from ore and glower crust</label>\n                <labelOverride>Smelt doonium from ore and glower crust</labelOverride>\n                <description>Smelt doonium ore with glower crust as flux into doonium, the heavy metal of reactor shielding and ship keels.</description>\n                <priorityInBillList>0</priorityInBillList>\n                <spawnOnInteractionCell>true</spawnOnInteractionCell>\n                <autoGrabFromHoppers>true</autoGrabFromHoppers>\n                <autoInputSlots>\n                  <li>(0,0,3)</li>\n                  <li>(1,0,3)</li>\n                  <li>(-1,0,3)</li>\n                </autoInputSlots>\n                <ticks>2400</ticks>\n                <ingredients>\n                  <li>\n                    <thing>RSW_DooniumOre</thing>\n                    <countNeeded>5</countNeeded>\n                  </li>\n                  <li>\n                    <thing>RM_GlowerCrust</thing>\n                    <countNeeded>1</countNeeded>\n                  </li>\n                </ingredients>\n                <results>\n                  <li>\n                    <thing>RSW_Doonium</thing>\n                    <count>4</count>\n                  </li>\n                </results>\n                <isFactoryProcess>true</isFactoryProcess>\n                <autoExtract>true</autoExtract>\n                <onlyGrabAndOutputToFactoryHoppers>true</onlyGrabAndOutputToFactoryHoppers>\n                <sustainerWhenWorking>true</sustainerWhenWorking>\n                <sustainerDef>VFEFactory_AutomatedSmeltingSustainer</sustainerDef>\n                <effecterWhenWorking>true</effecterWhenWorking>\n                <effecterDef>VFEFactory_Smelt</effecterDef>\n                <maxOutputCount>75</maxOutputCount>\n              </PipeSystem.ProcessDef>\n            </value>\n          ",
+      "attribute": null,
+      "resolved_hits": 1,
+      "raw_hits": 1
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/RSW_Smelter_Alloys.xml",
+      "class": "PatchOperationAdd",
+      "xpath": "/Defs",
+      "value": "<value>\n              <PipeSystem.ProcessDef>\n                <defName>RSW_SmeltPhrik</defName>\n                <label>Smelt phrik from phrikite</label>\n                <labelOverride>Smelt phrik from phrikite</labelOverride>\n                <description>Smelt phrikite ore into phrik, the lightsaber-resistant alloy.</description>\n                <priorityInBillList>0</priorityInBillList>\n                <spawnOnInteractionCell>true</spawnOnInteractionCell>\n                <autoGrabFromHoppers>true</autoGrabFromHoppers>\n                <autoInputSlots>\n                  <li>(0,0,3)</li>\n                  <li>(1,0,3)</li>\n                  <li>(-1,0,3)</li>\n                </autoInputSlots>\n                <ticks>2400</ticks>\n                <ingredients>\n                  <li>\n                    <thing>RSW_Phrikite</thing>\n                    <countNeeded>4</countNeeded>\n                  </li>\n                </ingredients>\n                <results>\n                  <li>\n                    <thing>RSW_Phrik</thing>\n                    <count>2</count>\n                  </li>\n                </results>\n                <isFactoryProcess>true</isFactoryProcess>\n                <autoExtract>true</autoExtract>\n                <onlyGrabAndOutputToFactoryHoppers>true</onlyGrabAndOutputToFactoryHoppers>\n                <sustainerWhenWorking>true</sustainerWhenWorking>\n                <sustainerDef>VFEFactory_AutomatedSmeltingSustainer</sustainerDef>\n                <effecterWhenWorking>true</effecterWhenWorking>\n                <effecterDef>VFEFactory_Smelt</effecterDef>\n                <maxOutputCount>75</maxOutputCount>\n              </PipeSystem.ProcessDef>\n            </value>\n          ",
+      "attribute": null,
+      "resolved_hits": 1,
+      "raw_hits": 1
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/RSW_Smelter_Alloys.xml",
+      "class": "PatchOperationAdd",
+      "xpath": "/Defs",
+      "value": "<value>\n              <PipeSystem.ProcessDef>\n                <defName>RSW_SmeltPlasteelFromSlag</defName>\n                <label>Smelt plasteel from slag</label>\n                <labelOverride>Smelt plasteel from slag</labelOverride>\n                <description>Melt plasteel slag back into plasteel plate.</description>\n                <priorityInBillList>0</priorityInBillList>\n                <spawnOnInteractionCell>true</spawnOnInteractionCell>\n                <autoGrabFromHoppers>true</autoGrabFromHoppers>\n                <autoInputSlots>\n                  <li>(0,0,3)</li>\n                  <li>(1,0,3)</li>\n                  <li>(-1,0,3)</li>\n                </autoInputSlots>\n                <ticks>1600</ticks>\n                <ingredients>\n                  <li>\n                    <thing>KotORChunk_plasteel</thing>\n                    <countNeeded>1</countNeeded>\n                  </li>\n                </ingredients>\n                <results>\n                  <li>\n                    <thing>Plasteel</thing>\n                    <count>15</count>\n                  </li>\n                </results>\n                <isFactoryProcess>true</isFactoryProcess>\n                <autoExtract>true</autoExtract>\n                <onlyGrabAndOutputToFactoryHoppers>true</onlyGrabAndOutputToFactoryHoppers>\n                <sustainerWhenWorking>true</sustainerWhenWorking>\n                <sustainerDef>VFEFactory_AutomatedSmeltingSustainer</sustainerDef>\n                <effecterWhenWorking>true</effecterWhenWorking>\n                <effecterDef>VFEFactory_Smelt</effecterDef>\n                <maxOutputCount>75</maxOutputCount>\n              </PipeSystem.ProcessDef>\n              <PipeSystem.ProcessDef>\n                <defName>RSW_SmeltDurasteelFromSlag</defName>\n                <label>Smelt durasteel from slag</label>\n                <labelOverride>Smelt durasteel from slag</labelOverride>\n                <description>Melt durasteel slag back into durasteel.</description>\n                <priorityInBillList>0</priorityInBillList>\n                <spawnOnInteractionCell>true</spawnOnInteractionCell>\n                <autoGrabFromHoppers>true</autoGrabFromHoppers>\n                <autoInputSlots>\n                  <li>(0,0,3)</li>\n                  <li>(1,0,3)</li>\n                  <li>(-1,0,3)</li>\n                </autoInputSlots>\n                <ticks>1600</ticks>\n                <ingredients>\n                  <li>\n                    <thing>KotORChunk_durasteel</thing>\n                    <countNeeded>1</countNeeded>\n                  </li>\n                </ingredients>\n                <results>\n                  <li>\n                    <thing>RSW_Durasteel</thing>\n                    <count>15</count>\n                  </li>\n                </results>\n                <isFactoryProcess>true</isFactoryProcess>\n                <autoExtract>true</autoExtract>\n                <onlyGrabAndOutputToFactoryHoppers>true</onlyGrabAndOutputToFactoryHoppers>\n                <sustainerWhenWorking>true</sustainerWhenWorking>\n                <sustainerDef>VFEFactory_AutomatedSmeltingSustainer</sustainerDef>\n                <effecterWhenWorking>true</effecterWhenWorking>\n                <effecterDef>VFEFactory_Smelt</effecterDef>\n                <maxOutputCount>75</maxOutputCount>\n              </PipeSystem.ProcessDef>\n            </value>\n          ",
+      "attribute": null,
+      "resolved_hits": 1,
+      "raw_hits": 1
+    },
+    {
+      "file": "src/RimStarWars/Armoury/Patches/RSW_Transparisteel_GlassFold.xml",
+      "class": "PatchOperationAdd",
+      "xpath": "/Defs",
+      "value": "<value>\n            <RecipeDef>\n              <defName>RSW_MeltTransparisteel</defName>\n              <label>melt transparisteel</label>\n              <description>Fuse sifted fine sand into clear transparisteel in focused sunlight.</description>\n              <jobString>Melting transparisteel.</jobString>\n              <workAmount>1400</workAmount>\n              <workSpeedStat>GeneralLaborSpeed</workSpeedStat>\n              <effectWorking>Smelt</effectWorking>\n              <soundWorking>Recipe_Smelt</soundWorking>\n              <workSkill>Crafting</workSkill>\n              <workSkillLearnFactor>0.25</workSkillLearnFactor>\n              <ingredients>\n                <li>\n                  <filter>\n                    <thingDefs>\n                      <li>RM_FineSand</li>\n                    </thingDefs>\n                  </filter>\n                  <count>10</count>\n                </li>\n              </ingredients>\n              <fixedIngredientFilter>\n                <thingDefs>\n                  <li>RM_FineSand</li>\n                </thingDefs>\n              </fixedIngredientFilter>\n              <products>\n                <RSW_Transparisteel>5</RSW_Transparisteel>\n              </products>\n              <recipeUsers>\n                <li>RM_SunFurnace</li>\n              </recipeUsers>\n            </RecipeDef>\n          </value>\n        ",
+      "attribute": null,
+      "resolved_hits": 1,
+      "raw_hits": 1
+    },
+    {
+      "file": "src/RimStarWars/Bacta/Patches/RSW_Bacta_RecipeWiring.xml",
+      "class": "PatchOperationAdd",
+      "xpath": "/Defs/ThingDef[@Name=\"AnimalThingBase\"]/recipes",
+      "value": "<value>\n      <li>RSW_AdministerBactaPatch</li>\n      <li>RSW_AdministerBactaSpray</li>\n    </value>\n  ",
+      "attribute": null,
+      "resolved_hits": 0,
+      "raw_hits": 1
+    },
+    {
+      "file": "src/RimStarWars/BrainWorms/Patches/BrainWormSurgery_RecipeUsers.xml",
+      "class": "PatchOperationAdd",
+      "xpath": "/Defs/ThingDef[recipes/li=\"ExciseCarcinoma\"]/recipes",
+      "value": "<value>\n      <li>RSW_RemoveBrainWorm</li>\n    </value>\n  ",
+      "attribute": null,
+      "resolved_hits": 3,
+      "raw_hits": 1
+    },
+    {
+      "file": "src/RimStarWars/GizkaStowaway/Patches/RSW_GizkaDonorPatches.xml",
+      "class": "PatchOperationReplace",
+      "xpath": "/Defs/ThingDef[defName=\"RSW_Gizka\"]/race/lifeStageAges/li[def=\"AnimalJuvenile\"]/minAge",
+      "value": "<value>\n            <minAge>0.02</minAge>\n          </value>\n        ",
+      "attribute": null,
+      "resolved_hits": 0,
+      "raw_hits": 0
+    },
+    {
+      "file": "src/RimStarWars/GizkaStowaway/Patches/RSW_GizkaDonorPatches.xml",
+      "class": "PatchOperationReplace",
+      "xpath": "/Defs/ThingDef[defName=\"RSW_Gizka\"]/race/lifeStageAges/li[def=\"AnimalAdult\"]/minAge",
+      "value": "<value>\n            <minAge>0.045</minAge>\n          </value>\n        ",
+      "attribute": null,
+      "resolved_hits": 0,
+      "raw_hits": 0
+    },
+    {
+      "file": "src/RimStarWars/StructureInjectionsSW/Patches/ThingDefs_Wrecks.xml",
+      "class": "PatchOperationAdd",
+      "xpath": "Defs",
+      "value": "<value>\n          <ThingDef ParentName=\"RM_WreckFamily_Hull\" MayRequire=\"mandrake.rm.biomes\">\n            <defName>RSW_FreshTIEPanelWreck</defName>\n            <label>fallen TIE wing panel</label>\n            <description>A hexagonal solar wing panel torn off a TIE starfighter on the way down, its collector cells cracked, the strut stub still bolted to one edge. It came down recently; the scorch is fresh and nothing has been taken. Deconstruct it for valuable resources.</description>\n            <modExtensions>\n              <li Class=\"RimMandrake.Wreckage.RM_WreckWeathering\">\n                <weathering>RM_WreckWeathering_Fresh</weathering>\n              </li>\n            </modExtensions>\n          </ThingDef>\n\n          <ThingDef ParentName=\"RM_WreckFamily_Speeder\" MayRequire=\"mandrake.rm.biomes\">\n            <defName>RSW_FreshLandspeederWreck</defName>\n            <label>crashed landspeeder</label>\n            <description>An open-cockpit landspeeder that lost its repulsors and ploughed into the ground nose first. One turbine is crumpled, the windscreen is gone, and the seat padding is still smoking. Deconstruct it for valuable resources.</description>\n            <modExtensions>\n              <li Class=\"RimMandrake.Wreckage.RM_WreckWeathering\">\n                <weathering>RM_WreckWeathering_Fresh</weathering>\n              </li>\n            </modExtensions>\n          </ThingDef>\n      </value>\n    ",
+      "attribute": null,
+      "resolved_hits": 1,
+      "raw_hits": 1
+    },
+    {
+      "file": "src/RimUtinni/Doctrine/Patches/MegafaunaYield.xml",
+      "class": "PatchOperationReplace",
+      "xpath": "/Defs/ThingDef[defName=\"RSW_Reefback\"]/statBases/MeatAmount",
+      "value": "<value><MeatAmount>4480</MeatAmount></value>\n          ",
+      "attribute": null,
+      "resolved_hits": 0,
+      "raw_hits": 0
+    },
+    {
+      "file": "src/RimUtinni/Doctrine/Patches/MegafaunaYield.xml",
+      "class": "PatchOperationAdd",
+      "xpath": "/Defs/ThingDef[defName=\"RSW_Reefback\"]/statBases",
+      "value": "<value><MeatAmount>4480</MeatAmount></value>\n          ",
+      "attribute": null,
+      "resolved_hits": 0,
+      "raw_hits": 0
+    },
+    {
+      "file": "src/RimUtinni/Doctrine/Patches/MegafaunaYield.xml",
+      "class": "PatchOperationConditional",
+      "xpath": "/Defs/ThingDef[defName=\"RSW_Reefback\"]/statBases/MeatAmount",
+      "value": "",
+      "attribute": null,
+      "resolved_hits": 0,
+      "raw_hits": 0
+    },
+    {
+      "file": "src/RimUtinni/Doctrine/Patches/MegafaunaYield.xml",
+      "class": "PatchOperationReplace",
+      "xpath": "/Defs/ThingDef[defName=\"RSW_Reefback\"]/statBases/RM_BoneAmount",
+      "value": "<value><RM_BoneAmount>1600</RM_BoneAmount></value>\n            ",
+      "attribute": null,
+      "resolved_hits": 0,
+      "raw_hits": 0
+    },
+    {
+      "file": "src/RimUtinni/Doctrine/Patches/MegafaunaYield.xml",
+      "class": "PatchOperationAdd",
+      "xpath": "/Defs/ThingDef[defName=\"RSW_Reefback\"]/statBases",
+      "value": "<value><RM_BoneAmount>1600</RM_BoneAmount></value>\n            ",
+      "attribute": null,
+      "resolved_hits": 0,
+      "raw_hits": 0
+    },
+    {
+      "file": "src/RimUtinni/Doctrine/Patches/MegafaunaYield.xml",
+      "class": "PatchOperationConditional",
+      "xpath": "/Defs/ThingDef[defName=\"RSW_Reefback\"]/statBases/RM_BoneAmount",
+      "value": "",
+      "attribute": null,
+      "resolved_hits": 0,
+      "raw_hits": 0
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/FaunaNorm_Law5_Tolerance.xml",
+      "class": "PatchOperationReplace",
+      "xpath": "/Defs/ThingDef[defName=\"RM_ReefbackJuv\"]/statBases/ComfyTemperatureMax[number(.) < 73.3]",
+      "value": "<value><ComfyTemperatureMax>73.3</ComfyTemperatureMax></value>\n      ",
+      "attribute": null,
+      "resolved_hits": 1,
+      "raw_hits": 0
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/FaunaNorm_Law5_Tolerance.xml",
+      "class": "PatchOperationConditional",
+      "xpath": "/Defs/ThingDef[defName=\"RM_ReefbackJuv\"]/statBases/ComfyTemperatureMax[number(.) < 73.3]",
+      "value": "",
+      "attribute": null,
+      "resolved_hits": 1,
+      "raw_hits": 0
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/FaunaNorm_Law5_Tolerance.xml",
+      "class": "PatchOperationAdd",
+      "xpath": "/Defs/ThingDef[defName=\"RM_ReefbackJuv\"]/statBases",
+      "value": "<value><ComfyTemperatureMax>73.3</ComfyTemperatureMax></value>\n      ",
+      "attribute": null,
+      "resolved_hits": 1,
+      "raw_hits": 1
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/FaunaNorm_Law5_Tolerance.xml",
+      "class": "PatchOperationAdd",
+      "xpath": "/Defs/ThingDef[defName=\"RM_ReefbackJuv\"]",
+      "value": "<value><statBases><ComfyTemperatureMax>73.3</ComfyTemperatureMax></statBases></value>\n        ",
+      "attribute": null,
+      "resolved_hits": 1,
+      "raw_hits": 1
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/FaunaNorm_Law5_Tolerance.xml",
+      "class": "PatchOperationConditional",
+      "xpath": "/Defs/ThingDef[defName=\"RM_ReefbackJuv\"]",
+      "value": "",
+      "attribute": null,
+      "resolved_hits": 1,
+      "raw_hits": 1
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/FaunaNorm_Law5_Tolerance.xml",
+      "class": "PatchOperationConditional",
+      "xpath": "/Defs/ThingDef[defName=\"RM_ReefbackJuv\"]/statBases",
+      "value": "",
+      "attribute": null,
+      "resolved_hits": 1,
+      "raw_hits": 1
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/FaunaNorm_Law5_Tolerance.xml",
+      "class": "PatchOperationConditional",
+      "xpath": "/Defs/ThingDef[defName=\"RM_ReefbackJuv\"]/statBases/ComfyTemperatureMax",
+      "value": "",
+      "attribute": null,
+      "resolved_hits": 1,
+      "raw_hits": 0
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/FaunaNorm_Law6_Products.xml",
+      "class": "PatchOperationReplace",
+      "xpath": "/Defs/ThingDef[defName=\"RM_Reefback\"]/statBases/MeatAmount",
+      "value": "<value><MeatAmount>4480</MeatAmount></value>\n    ",
+      "attribute": null,
+      "resolved_hits": 0,
+      "raw_hits": 0
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/FaunaNorm_Law6_Products.xml",
+      "class": "PatchOperationAdd",
+      "xpath": "/Defs/ThingDef[defName=\"RM_Reefback\"]/statBases",
+      "value": "<value><MeatAmount>4480</MeatAmount></value>\n      ",
+      "attribute": null,
+      "resolved_hits": 1,
+      "raw_hits": 1
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/FaunaNorm_Law6_Products.xml",
+      "class": "PatchOperationAdd",
+      "xpath": "/Defs/ThingDef[defName=\"RM_Reefback\"]",
+      "value": "<value><statBases><MeatAmount>4480</MeatAmount></statBases></value>\n        ",
+      "attribute": null,
+      "resolved_hits": 1,
+      "raw_hits": 1
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/FaunaNorm_Law6_Products.xml",
+      "class": "PatchOperationConditional",
+      "xpath": "/Defs/ThingDef[defName=\"RM_Reefback\"]",
+      "value": "",
+      "attribute": null,
+      "resolved_hits": 1,
+      "raw_hits": 1
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/FaunaNorm_Law6_Products.xml",
+      "class": "PatchOperationConditional",
+      "xpath": "/Defs/ThingDef[defName=\"RM_Reefback\"]/statBases",
+      "value": "",
+      "attribute": null,
+      "resolved_hits": 1,
+      "raw_hits": 1
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/FaunaNorm_Law6_Products.xml",
+      "class": "PatchOperationConditional",
+      "xpath": "/Defs/ThingDef[defName=\"RM_Reefback\"]/statBases/MeatAmount",
+      "value": "",
+      "attribute": null,
+      "resolved_hits": 0,
+      "raw_hits": 0
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/FaunaNorm_Law6_Products.xml",
+      "class": "PatchOperationReplace",
+      "xpath": "/Defs/ThingDef[defName=\"RM_ReefbackJuv\"]/statBases/MeatAmount",
+      "value": "<value><MeatAmount>4480</MeatAmount></value>\n    ",
+      "attribute": null,
+      "resolved_hits": 0,
+      "raw_hits": 0
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/FaunaNorm_Law6_Products.xml",
+      "class": "PatchOperationAdd",
+      "xpath": "/Defs/ThingDef[defName=\"RM_ReefbackJuv\"]/statBases",
+      "value": "<value><MeatAmount>4480</MeatAmount></value>\n      ",
+      "attribute": null,
+      "resolved_hits": 1,
+      "raw_hits": 1
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/FaunaNorm_Law6_Products.xml",
+      "class": "PatchOperationAdd",
+      "xpath": "/Defs/ThingDef[defName=\"RM_ReefbackJuv\"]",
+      "value": "<value><statBases><MeatAmount>4480</MeatAmount></statBases></value>\n        ",
+      "attribute": null,
+      "resolved_hits": 1,
+      "raw_hits": 1
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/FaunaNorm_Law6_Products.xml",
+      "class": "PatchOperationConditional",
+      "xpath": "/Defs/ThingDef[defName=\"RM_ReefbackJuv\"]",
+      "value": "",
+      "attribute": null,
+      "resolved_hits": 1,
+      "raw_hits": 1
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/FaunaNorm_Law6_Products.xml",
+      "class": "PatchOperationConditional",
+      "xpath": "/Defs/ThingDef[defName=\"RM_ReefbackJuv\"]/statBases",
+      "value": "",
+      "attribute": null,
+      "resolved_hits": 1,
+      "raw_hits": 1
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/FaunaNorm_Law6_Products.xml",
+      "class": "PatchOperationConditional",
+      "xpath": "/Defs/ThingDef[defName=\"RM_ReefbackJuv\"]/statBases/MeatAmount",
+      "value": "",
+      "attribute": null,
+      "resolved_hits": 0,
+      "raw_hits": 0
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_BroodRansom_Campaign.xml",
+      "class": "PatchOperationAdd",
+      "xpath": "/Defs",
+      "value": "<value>\n            <ThingDef ParentName=\"RM_LivingCapturePodBase\">\n              <defName>RUT_SporefallDisplayTank</defName>\n              <label>Sporefall display tank</label>\n              <description>The Wildsteam's pride: a great glass-and-brass tank in the boughs of Sporefall, steam-lamps above it, and in it the biggest young of the deep anyone has ever caught. Townsfolk bring their children to knock on the glass. Something knocks back.</description>\n              <designationCategory IsNull=\"True\" />\n              <graphicData>\n                <texPath>Things/Building/RM_SekkulaathTank/RM_SekkulaathTank</texPath>\n                <graphicClass>Graphic_Single</graphicClass>\n                <drawSize>(2,2)</drawSize>\n              </graphicData>\n              <statBases>\n                <MaxHitPoints>400</MaxHitPoints>\n                <MarketValue>2500</MarketValue>\n              </statBases>\n              <building>\n                <claimable>false</claimable>\n                <deconstructible>false</deconstructible>\n              </building>\n              <comps>\n                <li Class=\"RimMandrake.FeverWood.RM_CompProperties_CapturedSpecimen\">\n                  \n                  <occupantLikeTank>RM_SekkulaathTank</occupantLikeTank>\n                  <teachesColonyWarning>false</teachesColonyWarning>\n                  <damageEscapeThresholdFraction>0.5</damageEscapeThresholdFraction>\n                  <damageEscapeChancePerHit>0.35</damageEscapeChancePerHit>\n                  <displayTank>true</displayTank>\n                  <giftRolls>2</giftRolls>\n                  <freedLetterLabel>Sporefall's young is loose</freedLetterLabel>\n                  <freedLetterText>The display tank of Sporefall stands open and its young, the biggest ever caught, is sliding for the water. The whole town saw it done.\\n\\nThe Wildsteam will not forget this. If the young reaches a pool of the Fever Wood, the deep will pay for it as it has never paid before.</freedLetterText>\n                </li>\n              </comps>\n            </ThingDef>\n            <GenStepDef>\n              <defName>RUT_SporefallDisplayTank</defName>\n              <order>410</order>\n              <genStep Class=\"RimMandrake.FeverWood.RM_GenStep_DisplayTank\">\n                <tankDef>RUT_SporefallDisplayTank</tankDef>\n                <faction>RUT_Jawa_WildsteamClan</faction>\n                <settlementName>Sporefall</settlementName>\n              </genStep>\n            </GenStepDef>\n          </value>\n        ",
+      "attribute": null,
+      "resolved_hits": 1,
+      "raw_hits": 1
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_FallLineWrecks.xml",
+      "class": "PatchOperationAdd",
+      "xpath": "Defs",
+      "value": "<value>\n          <ThingDef ParentName=\"RM_WreckFamily_Hull\" MayRequire=\"mandrake.rm.biomes\">\n            <defName>RUT_FallLineWreckHull</defName>\n            <label>fresh-fallen hull</label>\n            <description>A section of grey Imperial hull plate, still warm from the fall, the Empire's cog stencilled across a seam that split on impact. Nothing has been taken from it yet. Deconstruct it for valuable resources.</description>\n            <modExtensions>\n              <li Class=\"RimMandrake.Wreckage.RM_WreckWeathering\">\n                <weathering>RUT_WreckWeathering_FallLine</weathering>\n              </li>\n            </modExtensions>\n          </ThingDef>\n\n          <ThingDef ParentName=\"RM_WreckFamily_Carapace\" MayRequire=\"mandrake.rm.biomes\">\n            <defName>RUT_FallLineWreckCarapace</defName>\n            <label>fallen Imperial droid shell</label>\n            <description>The black shell of an Imperial service droid, thrown clear of whatever it fell in. Its photoreceptor is dark, but the casing is whole. Deconstruct it for valuable resources.</description>\n            <modExtensions>\n              <li Class=\"RimMandrake.Wreckage.RM_WreckWeathering\">\n                <weathering>RUT_WreckWeathering_FallLine</weathering>\n              </li>\n            </modExtensions>\n          </ThingDef>\n      </value>\n    ",
+      "attribute": null,
+      "resolved_hits": 1,
+      "raw_hits": 1
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Patches/RUT_JunkerSealedCorpses.xml",
+      "class": "PatchOperationAdd",
+      "xpath": "Defs",
+      "value": "<value>\n            <GenStepDef>\n              <defName>RUT_SealedJunkerCorpses_Wastes</defName>\n              <order>970</order>\n              <genStep Class=\"RimMandrake.Warcasket.RM_GenStep_SealedCorpses\">\n                <pawnKind>RUT_Jawa_Junkers_CaskedScavenger</pawnKind>\n                <countRange>1~3</countRange>\n                <biomeDefNames><li>RM_Wastes</li></biomeDefNames>\n                <daysDead>12</daysDead>\n              </genStep>\n            </GenStepDef>\n          </value>\n        ",
+      "attribute": null,
+      "resolved_hits": 1,
+      "raw_hits": 1
+    }
+  ],
+  "xpath_errors": [],
+  "consumer_matches": [
+    {
+      "file": "src/RimMandrake/DivingInteraction/Source/RM_CompTarnnRoused.cs",
+      "sha256": "cbdb7070d30ec653c7940e05201afce0c99259dfdbbf0fabe1f608f993bad7ef",
+      "lines": [
+        {
+          "line": 14,
+          "context": [
+            "    // RM_Tarnn's OWN base stats (RM_TheChillFloorLife.xml, unowned by this",
+            "    // item) are: MoveSpeed 0.3 (cannot meaningfully chase or reposition),",
+            "    // one melee tool at power 1 / cooldown 3.5s (~0.29 raw dps before armor",
+            "    // \u2014 negligible), combatPower 6. That is correct for what it was built to",
+            "    // be: sessile floor-life \"scenery,\" never a fighter. But it means five",
+            "    // dormant Tarnn woken and set hostile would, on melee alone, be",
+            "    // essentially harmless \u2014 failing the ruling's own \"shocking\" and"
+          ]
+        },
+        {
+          "line": 40,
+          "context": [
+            "    //   \u224810.8 combined dps, plus negligible melee. Compare: a vanilla early-",
+            "    //   game raid of 3-5 raiders with firearms typically runs 25-50+",
+            "    //   combined dps and can reposition/flank; this skirmish cannot chase",
+            "    //   (Tarnn MoveSpeed 0.3) and each Tarnn's own HP is low (baseHealthScale",
+            "    //   0.7 on a small Snake body \u2014 a handful of hits from any real weapon",
+            "    //   downs one), so a prepared squad can end the fight in well under a",
+            "    //   minute of real combat, capping total exposure at roughly 100-250"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_TitanKernel.cs",
+      "sha256": "d1f8963154fdb9609786e5d71bba74338a42dc9d0dd0cf81bc302a98398ca7fc",
+      "lines": [
+        {
+          "line": 91,
+          "context": [
+            "        public static float BurstChance(float heldBody, float selfBody) { return Clamp((heldBody / Math.Max(0.01f, selfBody) - 0.15f) * 0.25f, 0f, 0.10f); }",
+            "",
+            "        // Damage-driven shedding: true when a gelatid should be shed (and damageSinceShed is reset).",
+            "        public static bool ShedStep(ref float damageSinceShed, float damage, float baseHealthScale, float shedFraction, int heldCount, float healthPercent, int stage, bool sheds)",
+            "        {",
+            "            if (!sheds || damage <= 0f) return false;",
+            "            if (stage < 1) return false;"
+          ]
+        },
+        {
+          "line": 95,
+          "context": [
+            "        {",
+            "            if (!sheds || damage <= 0f) return false;",
+            "            if (stage < 1) return false;",
+            "            float hpPool = baseHealthScale * 40f;",
+            "            damageSinceShed += damage;",
+            "            float perShed = Math.Max(1f, hpPool * shedFraction);",
+            "            if (damageSinceShed < perShed) return false;"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "src/RimMandrake/GelatinousSlime/Source/Titanoslime.cs",
+      "sha256": "17d4b155aa58be4b92ec6ca022edec352bde8e521daf13efd24233bef83c4cde",
+      "lines": [
+        {
+          "line": 912,
+          "context": [
+            "            }",
+            "",
+            "            float healthPct = self.health != null ? self.health.summaryHealth.SummaryHealthPercent : 1f;",
+            "            if (!RM_TitanKernel.ShedStep(ref damageSinceShed, totalDamageDealt, self.RaceProps != null ? self.RaceProps.baseHealthScale : 1f,",
+            "                    Props.shedDamageFraction, innerContainer.Count, healthPct, self.ageTracker.CurLifeStageIndex, true))",
+            "            {",
+            "                return;"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "src/RimMandrake/Greentide/Source/RM_GreentideAntRaidApplier.cs",
+      "sha256": "4263ece78b87a8ea198a20345a463394a1789c1f56a5d88cfc7f1efb6d917208",
+      "lines": [
+        {
+          "line": 16,
+          "context": [
+            "    // strategy. Listing every strategy there therefore takes the ant faction out of every raid pick, the desperate pass",
+            "    // included (it calls the same FactionCanBeGroupSource). Raids on restores the list the def shipped with.",
+            "    //",
+            "    // Strength. A raid buys pawns with its points at each kind's combatPower, so dividing the two ant kinds'",
+            "    // combatPower by the strength multiplier sends that many times more ants for the same points (2x = twice the",
+            "    // ants). The storyteller's points are untouched; this is how hard the ants hit for what they cost it.",
+            "    [StaticConstructorOnStartup]"
+          ]
+        },
+        {
+          "line": 17,
+          "context": [
+            "    // included (it calls the same FactionCanBeGroupSource). Raids on restores the list the def shipped with.",
+            "    //",
+            "    // Strength. A raid buys pawns with its points at each kind's combatPower, so dividing the two ant kinds'",
+            "    // combatPower by the strength multiplier sends that many times more ants for the same points (2x = twice the",
+            "    // ants). The storyteller's points are untouched; this is how hard the ants hit for what they cost it.",
+            "    [StaticConstructorOnStartup]",
+            "    public static class RM_GreentideAntRaidApplier"
+          ]
+        },
+        {
+          "line": 49,
+          "context": [
+            "                    PawnKindDef k = DefDatabase<PawnKindDef>.GetNamedSilentFail(n);",
+            "                    if (k != null)",
+            "                    {",
+            "                        shippedCombatPower[n] = k.combatPower;",
+            "                    }",
+            "                }",
+            "            }"
+          ]
+        },
+        {
+          "line": 64,
+          "context": [
+            "                PawnKindDef k = DefDatabase<PawnKindDef>.GetNamedSilentFail(kv.Key);",
+            "                if (k != null)",
+            "                {",
+            "                    k.combatPower = kv.Value / strength;",
+            "                }",
+            "            }",
+            "        }"
+          ]
+        },
+        {
+          "line": 91,
+          "context": [
+            "            foreach (string n in KindNames)",
+            "            {",
+            "                PawnKindDef k = DefDatabase<PawnKindDef>.GetNamedSilentFail(n);",
+            "                power.Add(k == null ? \"missing\" : k.combatPower.ToString(\"0.##\"));",
+            "            }",
+            "            return \"raids=\" + (blocked >= all && all > 0 ? \"off\" : \"on\") + \" strategiesBlocked=\" + blocked + \"/\" + all",
+            "                + \" power=\" + string.Join(\",\", power);"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "src/RimMandrake/KeelHoist/Source/Kernel/RM_HoistKernel.cs",
+      "sha256": "12089ad0824d80e4766edb66453c611624d6720a9e936b6f59d34d65c3daa242",
+      "lines": [
+        {
+          "line": 236,
+          "context": [
+            "            return hasBuyer && pitSales && factionOther && !hostile && !gateOpen;",
+            "        }",
+            "",
+            "        public static bool IsFighter(bool humanlike, int meleeLevel, float combatPower)",
+            "        {",
+            "            return humanlike ? meleeLevel >= MeleeFighterSkill : combatPower >= BeastFighterCombatPower;",
+            "        }"
+          ]
+        },
+        {
+          "line": 238,
+          "context": [
+            "",
+            "        public static bool IsFighter(bool humanlike, int meleeLevel, float combatPower)",
+            "        {",
+            "            return humanlike ? meleeLevel >= MeleeFighterSkill : combatPower >= BeastFighterCombatPower;",
+            "        }",
+            "",
+            "        public static int WeekOf(int ticksGame) { return ticksGame / (TicksPerDay * 7); }"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "src/RimMandrake/KeelHoist/Source/RM_PitBuyer.cs",
+      "sha256": "47633f58b65db79b0eac209e3e46a9502ce49f89c89691d2d53ae19a8c7ea299",
+      "lines": [
+        {
+          "line": 52,
+          "context": [
+            "            {",
+            "                return RM_HoistKernel.IsFighter(true, p.skills?.GetSkill(SkillDefOf.Melee)?.Level ?? -1, 0f);",
+            "            }",
+            "            return p.kindDef != null && RM_HoistKernel.IsFighter(false, -1, p.kindDef.combatPower);",
+            "        }",
+            "",
+            "        /// <summary>One week in two (seeded per pit, so every reader agrees) the arena is short of fighters.</summary>"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "src/RimMandrake/Pyrelands/Source/PyrelandsForeignArrivals.cs",
+      "sha256": "aa5aacff9160b3d1989637ddba4020830edfe0c353947f1bbe34c8adc205b5e9",
+      "lines": [
+        {
+          "line": 65,
+          "context": [
+            "        private static void Restrict(BiomeDef b, ref PawnKindDef animalKind, ref bool __result)",
+            "        {",
+            "            if (!__result || !IsPyrelands(b) || b.AllWildAnimals.Contains(animalKind)) return;",
+            "            animalKind = b.AllWildAnimals.Where(k => k.RaceProps.Animal && k.canArriveManhunter).OrderBy(k => k.combatPower).FirstOrDefault();",
+            "            __result = animalKind != null;",
+            "        }",
+            "    }"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "src/RimMandrake/Pyrelands/Source/RM_PyrelandsGiants.cs",
+      "sha256": "a0054f6123bab6bcea097a823573e62b430914d93846181e0c693284c0145d60",
+      "lines": [
+        {
+          "line": 169,
+          "context": [
+            "        {",
+            "            ThingDef race = kind.race;",
+            "            race.race.baseBodySize = PyrelandsTuning.FurnaceClassicBodySize;",
+            "            race.race.baseHealthScale = 2.8f;",
+            "            kind.combatPower = 220f;",
+            "            kind.wildGroupSize = new IntRange(3, 7);",
+            "            float[] classicDraw = { 1.6f, 2.4f, 3.2f };"
+          ]
+        },
+        {
+          "line": 170,
+          "context": [
+            "            ThingDef race = kind.race;",
+            "            race.race.baseBodySize = PyrelandsTuning.FurnaceClassicBodySize;",
+            "            race.race.baseHealthScale = 2.8f;",
+            "            kind.combatPower = 220f;",
+            "            kind.wildGroupSize = new IntRange(3, 7);",
+            "            float[] classicDraw = { 1.6f, 2.4f, 3.2f };",
+            "            for (int i = 0; i < kind.lifeStages.Count && i < classicDraw.Length; i++)"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "src/RimMandrake/RimDefDump/Source/DefDumper.cs",
+      "sha256": "83014214af43ac5b84b26a13b66dfad2b1b9b235e2adfdcd217498e1f84cc139",
+      "lines": [
+        {
+          "line": 593,
+          "context": [
+            "                        w.StartObject();",
+            "                        w.Prop(\"defName\", pk.defName);",
+            "                        w.Prop(\"shortHash\", (long)pk.shortHash);",
+            "                        PropOrError(w, \"combatPower\", () => (double)pk.combatPower);",
+            "                        PropOrError(w, \"ecoSystemWeight\", () => (double)pk.ecoSystemWeight);",
+            "                        PropOrError(w, \"canArriveManhunter\", () => pk.canArriveManhunter);",
+            "                        ModContentPack kpack = null;"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "src/RimMandrake/TheForge/Source/RM_ForgeDhoggurSwell.cs",
+      "sha256": "825524351dcc02d8d8b63456a07918ff4fe8cedfdbf81b104390716428f34e2c",
+      "lines": [
+        {
+          "line": 24,
+          "context": [
+            "    //",
+            "    //   RM_CompDhoggurSwell             the state machine (RM_SwellKernel): damage -> swell, timed end, cooldown stamp,",
+            "    //                                   manhunter while swollen (wild only), fire spit via the hediff's <abilities>.",
+            "    //   RM_Hediff_DhoggurSwell          the visible condition; its stage's MeleeDamageFactor follows the scale setting.",
+            "    //   RM_Patch_DhoggurSwell_*         Pawn.BodySize / Pawn.HealthScale x scale for swollen pawns (a static set, so",
+            "    //                                   every other pawn pays one HashSet.Count read).",
+            "    //   RM_PawnRenderNode(Worker)_Swell the body node: the swollen texture as a graphic state (only when it exists) and"
+          ]
+        },
+        {
+          "line": 224,
+          "context": [
+            "                foreach (Ability a in p.abilities.AllAbilitiesForReading)",
+            "                    if (a.def.defName == \"RM_FireSpit\") fire = true;",
+            "            Hediff h = p.health.hediffSet.GetFirstHediffOfDef(Props.swellHediff);",
+            "            float dmg = p.GetStatValue(StatDefOf.MeleeDamageFactor);",
+            "            return \"dhoggur id=\" + p.ThingID + \" swollen=\" + Swollen + \" lastSource=\" + lastSource + \" hediff=\" + (h != null) + \" ticksLeft=\" + RM_SwellKernel.TicksLeft(state, now)",
+            "                + \" cooldownLeft=\" + RM_SwellKernel.CooldownLeft(state, now) + \" bodySize=\" + p.BodySize.ToString(\"0.###\")",
+            "                + \" healthScale=\" + p.HealthScale.ToString(\"0.###\") + \" meleeFactor=\" + dmg.ToString(\"0.###\")"
+          ]
+        },
+        {
+          "line": 262,
+          "context": [
+            "        }",
+            "    }",
+            "",
+            "    // The condition itself. Its one stage's MeleeDamageFactor is rebuilt from the scale setting (so tuning it works),",
+            "    // keeping every other field of the XML stage.",
+            "    public class RM_Hediff_DhoggurSwell : HediffWithComps",
+            "    {"
+          ]
+        },
+        {
+          "line": 286,
+          "context": [
+            "                    st.statFactors = new List<StatModifier>();",
+            "                    if (xml.statFactors != null)",
+            "                        foreach (StatModifier m in xml.statFactors)",
+            "                            if (m.stat != StatDefOf.MeleeDamageFactor) st.statFactors.Add(m);",
+            "                    st.statFactors.Add(new StatModifier { stat = StatDefOf.MeleeDamageFactor, value = s });",
+            "                    cached = st;",
+            "                    cachedScale = s;"
+          ]
+        },
+        {
+          "line": 287,
+          "context": [
+            "                    if (xml.statFactors != null)",
+            "                        foreach (StatModifier m in xml.statFactors)",
+            "                            if (m.stat != StatDefOf.MeleeDamageFactor) st.statFactors.Add(m);",
+            "                    st.statFactors.Add(new StatModifier { stat = StatDefOf.MeleeDamageFactor, value = s });",
+            "                    cached = st;",
+            "                    cachedScale = s;",
+            "                    cachedFor = def;"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "src/RimMandrake/Watchers/Source/Kernel/RM_WatcherKernel.cs",
+      "sha256": "df8f249d44b0fdda63de894c75a496a305fcdedcd91917bd4e7637a2c2d5fd20",
+      "lines": [
+        {
+          "line": 167,
+          "context": [
+            "",
+            "        // ------------------------------------------------------------------ fragility (owner ruling 2026-10-08, DEATH card)",
+            "        // \"Should take almost no damage to destroy them.\" The engine kills a pawn whose summed injury severity reaches",
+            "        // Pawn_HealthTracker.LethalDamageThreshold = 150 x Pawn.HealthScale, and HealthScale = life stage healthScaleFactor x race",
+            "        // baseHealthScale (RimSage, decompiled 1.6). The audit reads the adult (factor 1), the sturdiest stage.",
+            "",
+            "        public const float LethalDamagePerHealthScale = 150f;"
+          ]
+        },
+        {
+          "line": 168,
+          "context": [
+            "        // ------------------------------------------------------------------ fragility (owner ruling 2026-10-08, DEATH card)",
+            "        // \"Should take almost no damage to destroy them.\" The engine kills a pawn whose summed injury severity reaches",
+            "        // Pawn_HealthTracker.LethalDamageThreshold = 150 x Pawn.HealthScale, and HealthScale = life stage healthScaleFactor x race",
+            "        // baseHealthScale (RimSage, decompiled 1.6). The audit reads the adult (factor 1), the sturdiest stage.",
+            "",
+            "        public const float LethalDamagePerHealthScale = 150f;",
+            ""
+          ]
+        },
+        {
+          "line": 172,
+          "context": [
+            "",
+            "        public const float LethalDamagePerHealthScale = 150f;",
+            "",
+            "        public static float LethalDamage(float baseHealthScale, float lifeStageHealthFactor)",
+            "        {",
+            "            return LethalDamagePerHealthScale * baseHealthScale * lifeStageHealthFactor;",
+            "        }"
+          ]
+        },
+        {
+          "line": 174,
+          "context": [
+            "",
+            "        public static float LethalDamage(float baseHealthScale, float lifeStageHealthFactor)",
+            "        {",
+            "            return LethalDamagePerHealthScale * baseHealthScale * lifeStageHealthFactor;",
+            "        }",
+            "",
+            "        /// <summary>Errors of the startup fragility audit (empty = fragile enough).</summary>"
+          ]
+        },
+        {
+          "line": 178,
+          "context": [
+            "        }",
+            "",
+            "        /// <summary>Errors of the startup fragility audit (empty = fragile enough).</summary>",
+            "        public static List<string> FragilityErrors(float baseHealthScale, float maxLethalDamage)",
+            "        {",
+            "            var e = new List<string>();",
+            "            float lethal = LethalDamage(baseHealthScale, 1f);"
+          ]
+        },
+        {
+          "line": 181,
+          "context": [
+            "        public static List<string> FragilityErrors(float baseHealthScale, float maxLethalDamage)",
+            "        {",
+            "            var e = new List<string>();",
+            "            float lethal = LethalDamage(baseHealthScale, 1f);",
+            "            if (!(lethal <= maxLethalDamage))",
+            "                e.Add(\"an adult dies at \" + lethal + \" damage, above maxLethalDamage \" + maxLethalDamage",
+            "                    + \" (owner ruling 2026-10-08: almost no damage destroys a watcher; lower race baseHealthScale)\");"
+          ]
+        },
+        {
+          "line": 184,
+          "context": [
+            "            float lethal = LethalDamage(baseHealthScale, 1f);",
+            "            if (!(lethal <= maxLethalDamage))",
+            "                e.Add(\"an adult dies at \" + lethal + \" damage, above maxLethalDamage \" + maxLethalDamage",
+            "                    + \" (owner ruling 2026-10-08: almost no damage destroys a watcher; lower race baseHealthScale)\");",
+            "            return e;",
+            "        }",
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "file": "src/RimMandrake/Watchers/Source/RM_CompWatcher.cs",
+      "sha256": "0d9b8378b475cef1b7e54547ee59284845cd9139db633fb61f62a11866610cf2",
+      "lines": [
+        {
+          "line": 120,
+          "context": [
+            "                RM_WatcherExtension ext = def.GetModExtension<RM_WatcherExtension>();",
+            "                AuditMedium(def, ext);",
+            "                RM_WatcherDeath.InstallDeathAction(def, ext);",
+            "                foreach (string err in RM_WatcherKernel.FragilityErrors(def.race.baseHealthScale, ext.maxLethalDamage))",
+            "                {",
+            "                    Log.Error(\"[Watchers] \" + def.defName + \": \" + err);",
+            "                }"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "src/RimMandrake/Watchers/Source/RM_WatcherExtension.cs",
+      "sha256": "43d69461797a1636978944df2ca0b9959408382790d8d70f771e0be5e5e9ba63",
+      "lines": [
+        {
+          "line": 45,
+          "context": [
+            "        public float wanderChance = 0.15f;",
+            "",
+            "        /// <summary>The fragility ceiling (owner ruling 2026-10-08: \"Should take almost no damage to destroy them\"). The startup audit",
+            "        /// logs an error when an adult of the race would survive more than this much damage (150 x race baseHealthScale).</summary>",
+            "        public float maxLethalDamage = 5f;",
+            "",
+            "        /// <summary>What it leaves when it dies (owner ruling 2026-10-08: \"Remains are of highly dubious value and kind of sad\"). Set: the"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "src/RimMandrake/Watchers/Source/SelfTest/WatcherFuzz.cs",
+      "sha256": "f7805d25044285453f98bfa19fe314093636e9f07a15a161faddfcf2ce62f0cf",
+      "lines": [
+        {
+          "line": 10,
+          "context": [
+            "//   gates   every think-tree gate (watch giver, seek-medium backstop) exhaustively against an independent restatement,",
+            "//           plus the cross-gate property that the giver never starts a watch that the first step would end for hunger",
+            "//   config  RM_WatcherExtension.ConfigErrors against a restatement, the shipped piinnok values accepted, each single break reported",
+            "//   death   the fragility rule (150 x baseHealthScale against maxLethalDamage) and the sign validity rule (orphan / duplicate repair)",
+            "//   alarm   the bounded ripple simulated on random fields of watchers: never more than maxCount reached, never past maxHops or the origin",
+            "//           distance or the hop radius, never after maxAge, never the same watcher twice, always terminates, and reaches someone when it can",
+            "// A failing case prints `family seed N: message`; --fuzz-seed N replays it. PROVISIONAL numbers (watch 14, flinch 6, hide 2500~7500,"
+          ]
+        },
+        {
+          "line": 367,
+          "context": [
+            "            var fails = new List<string>();",
+            "            try",
+            "            {",
+            "                // the shipped piinnok: baseHealthScale 0.02 dies at 3, under its ceiling 5",
+            "                Check(Math.Abs(RM_WatcherKernel.LethalDamage(0.02f, 1f) - 3f) < 1e-4f, \"piinnok lethal damage is not 150 x 0.02\");",
+            "                Check(RM_WatcherKernel.FragilityErrors(0.02f, 5f).Count == 0, \"the shipped piinnok fails the fragility audit\");",
+            "                Check(RM_WatcherKernel.FragilityErrors(0.02f, RM_WatcherKernel.LethalDamage(0.02f, 1f)).Count == 0, \"dying exactly at the ceiling fails the audit (the edge is inclusive)\");"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "src/RimMandrake/Webwork/Source/Kernel/RM_WebworkSiegeKernel.cs",
+      "sha256": "e5a7e1b42aa41526eb9a2f5713341dcd7ad411ec80071d82eb4d0ec32aad1eef",
+      "lines": [
+        {
+          "line": 13,
+          "context": [
+            "",
+            "    public static class RM_WebworkSiegeKernel",
+            "    {",
+            "        public const float PointsPerSpider = 160f;      // RM_Ollathrix combatPower",
+            "        public const int MinSpiders = 2;                // PROVISIONAL",
+            "        public const int MaxSpiders = 8;                // PROVISIONAL, before siegeStrength",
+            "        public const int BaseSpinTicks = 600;           // PROVISIONAL: 10 s of game time per spun web"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchAnimalStatsTools.cs",
+      "sha256": "40ae114887d6e5925dd8513c99fb2347ce83097f0b209fe0afddfe21c4674339",
+      "lines": [
+        {
+          "line": 104,
+          "context": [
+            "            ResultDescription =",
+            "                \"success, matched (how many races the filter selected before paging), count, \" +",
+            "                \"offset, limit, and animals[]: defName, label, modName, packageId, isAnimal, \" +",
+            "                \"bodySize (race.baseBodySize), healthScale (race.baseHealthScale), \" +",
+            "                \"stats{wildness, comfyTemperatureMin, comfyTemperatureMax, temperatureSpan, \" +",
+            "                \"meatAmount, leatherAmount} each a {value, explicitInDef} pair where value is \" +",
+            "                \"null - never 0 - if the worker threw, plus any names given in extraStats. \" +"
+          ]
+        },
+        {
+          "line": 293,
+          "context": [
+            "                        packageId = d.modContentPack?.PackageId,",
+            "                        isAnimal = d.race.Animal,",
+            "                        bodySize = d.race.baseBodySize,",
+            "                        healthScale = d.race.baseHealthScale,",
+            "                        stats = statMap,",
+            "                        melee = BestMelee(d, includeTools)",
+            "                    });"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchIncidentTools.cs",
+      "sha256": "510c2ffc8f25a8d6a4807a8dded584dac5b57befb21fc08e4a979ff61b596761",
+      "lines": [
+        {
+          "line": 993,
+          "context": [
+            "                \"reports only fired/canFireNow, never WHICH species or HOW MANY. Read-only.\",",
+            "            ResultDescription =",
+            "                \"success (the call itself always succeeds; the QUESTION can still have no answer), \" +",
+            "                \"points, animalKindFound, animalKind, animalKindLabel, combatPower, count.\")]",
+            "        public static async Task<object> ManhunterPreview(",
+            "            IRimBridgeContext ctx,",
+            "            CancellationToken cancellationToken,"
+          ]
+        },
+        {
+          "line": 1034,
+          "context": [
+            "                    animalKindFound = found,",
+            "                    animalKind = kind != null ? kind.defName : null,",
+            "                    animalKindLabel = kind != null ? kind.label : null,",
+            "                    combatPower = kind != null ? (float?)kind.combatPower : null,",
+            "                    count,",
+            "                    note = found",
+            "                        ? \"ONE DRAW from the same weighted resolution IncidentWorker_AggressiveAnimals uses - the pick is random, so calling this again can name a different species. Fire the real incident with jawa/fire_incident incidentDef=ManhunterPack; it will roll its own. The global Rand state was pushed/popped, so this preview did not perturb the colony's RNG.\""
+          ]
+        }
+      ]
+    },
+    {
+      "file": "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTerrainTools.cs",
+      "sha256": "627581e6f715283044931649d522b1014f2a72ba8f150a176bafc526e6c2e937",
+      "lines": [
+        {
+          "line": 1836,
+          "context": [
+            "                }",
+            "                else if (def is PawnKindDef pawnKindDef)",
+            "                {",
+            "                    // Cherry Picker neuters a PawnKindDef by setting combatPower",
+            "                    // to float.MaxValue (3.4028235E+38) so the storyteller can",
+            "                    // never afford it. THAT NUMBER IS THE CONFIRMATION -- a",
+            "                    // normal value means the pick did not apply, and the def"
+          ]
+        },
+        {
+          "line": 1844,
+          "context": [
+            "                    extra = new",
+            "                    {",
+            "                        isPawnKind = true,",
+            "                        combatPower = pawnKindDef.combatPower,",
+            "                        combatPowerIsMaxValue =",
+            "                            pawnKindDef.combatPower >= float.MaxValue,",
+            "                        race = pawnKindDef.race?.defName,"
+          ]
+        },
+        {
+          "line": 1845,
+          "context": [
+            "                    {",
+            "                        isPawnKind = true,",
+            "                        combatPower = pawnKindDef.combatPower,",
+            "                        combatPowerIsMaxValue =",
+            "                            pawnKindDef.combatPower >= float.MaxValue,",
+            "                        race = pawnKindDef.race?.defName,",
+            "                        defaultFactionDef = pawnKindDef.defaultFactionDef?.defName"
+          ]
+        },
+        {
+          "line": 1846,
+          "context": [
+            "                        isPawnKind = true,",
+            "                        combatPower = pawnKindDef.combatPower,",
+            "                        combatPowerIsMaxValue =",
+            "                            pawnKindDef.combatPower >= float.MaxValue,",
+            "                        race = pawnKindDef.race?.defName,",
+            "                        defaultFactionDef = pawnKindDef.defaultFactionDef?.defName",
+            "                    };"
+          ]
+        },
+        {
+          "line": 4045,
+          "context": [
+            "        // built its rich `extra` block for ThingDef only, so every other def",
+            "        // type came back as label + description. Row 4's dune seas needed",
+            "        // BiomeDef.terrainPatchMakers; row 5 needed a xenotype; the Cherry",
+            "        // Picker audit needed PawnKindDef.combatPower and ThingDef.tradeability.",
+            "        // Each was fixed by adding another hardcoded branch -- which fixes one",
+            "        // gate and leaves the next one to be discovered at live prices.",
+            "        //"
+          ]
+        },
+        {
+          "line": 4085,
+          "context": [
+            "            string defs,",
+            "            [ToolParameter(Description =",
+            "                \"Comma-separated field names to read off each def, e.g. \" +",
+            "                \"'combatPower,tradeability,thingCategories'. Empty returns every public \" +",
+            "                \"scalar field on the def, which is verbose but is how you find out what \" +",
+            "                \"is there.\")]",
+            "            string fields = null,"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchWorldTools.cs",
+      "sha256": "6407071386ff48f40c2472cd4deabf10d0de5ebf434243367cf608a92e225783",
+      "lines": [
+        {
+          "line": 4059,
+          "context": [
+            "                // \ud83d\udd11 THE DISCRIMINATOR IS DELIBERATELY TWO-PART. `isFighter` alone is not",
+            "                // enough: gen_pawnkind_roster.py emits `isFighter` FROM the tag list, so a",
+            "                // kind that lost its tags would have lost its isFighter too and hidden all",
+            "                // over again. combatPower 40 is the anchor the roster generator itself uses",
+            "                // for a grunt-tier tribal carrying almost nothing; below that is civilian.",
+            "                var taglessFighter = new List<object>(); int taglessFighterN = 0;",
+            "                var emptyPool = new List<object>(); int emptyPoolN = 0;"
+          ]
+        },
+        {
+          "line": 4087,
+          "context": [
+            "                    var tags = k.weaponTags;",
+            "                    if (tags == null || tags.Count == 0)",
+            "                    {",
+            "                        if (k.isFighter || k.combatPower >= 40f)",
+            "                        {",
+            "                            taglessFighterN++;",
+            "                            if (taglessFighter.Count < limit)"
+          ]
+        },
+        {
+          "line": 4094,
+          "context": [
+            "                                taglessFighter.Add(new { kind = k.defName, label = k.label,",
+            "                                                         race = k.race.defName,",
+            "                                                         isFighter = k.isFighter,",
+            "                                                         combatPower = k.combatPower });",
+            "                        }",
+            "                        else",
+            "                        {"
+          ]
+        },
+        {
+          "line": 4158,
+          "context": [
+            "                // \ud83d\udd34 BROKEN is ONLY the kinds that INTEND to arm and cannot. The two",
+            "                // categories above are design, and are reported without scoring.",
+            "                // \u26a0\ufe0f taglessFighterN is NOT added to `broken`. It is a SUSPICION, not a",
+            "                // measurement - a kind may legitimately be a high-combatPower brawler with",
+            "                // no ranged tags - so it gets its own sentence and its own list, and a human",
+            "                // decides. Scoring it would re-create the false-positive flood.",
+            "                int broken = emptyPoolN + cannotAffordN;"
+          ]
+        },
+        {
+          "line": 4164,
+          "context": [
+            "                int broken = emptyPoolN + cannotAffordN;",
+            "                string taglessFighterLine = taglessFighterN == 0",
+            "                    ? \"\"",
+            "                    : \" \u26a0\ufe0f \" + taglessFighterN + \" of those declare isFighter or combatPower >= 40 and \" +",
+            "                      \"carry NO weaponTags at all - a combat role that lost its tags looks exactly like \" +",
+            "                      \"a civilian here; see taglessButLooksLikeAFighter.\";",
+            "                return new"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "src/RimStarWars/Droidworks/Source/Droidworks/IncidentWorker_WildDroidCrash.cs",
+      "sha256": "c39349777eab9a4b801b31870451a8318bc60846e84682a7fb7c3627a6021a97",
+      "lines": [
+        {
+          "line": 52,
+          "context": [
+            "    ///    excludes. If a pack is ever wanted, it needs a faction or a",
+            "    ///    different mental state, not a bigger count here.",
+            "    ///",
+            "    /// 2. No points scaling and no combatPower-driven kind choice. Every",
+            "    ///    utility droid kind in this mod carries the combatPower 99999",
+            "    ///    sentinel (PawnKinds_OuterRim.xml's own convention, \"never picked by",
+            "    ///    a points-based raid pool\"), so any Cost/points arithmetic over this"
+          ]
+        },
+        {
+          "line": 53,
+          "context": [
+            "    ///    different mental state, not a bigger count here.",
+            "    ///",
+            "    /// 2. No points scaling and no combatPower-driven kind choice. Every",
+            "    ///    utility droid kind in this mod carries the combatPower 99999",
+            "    ///    sentinel (PawnKinds_OuterRim.xml's own convention, \"never picked by",
+            "    ///    a points-based raid pool\"), so any Cost/points arithmetic over this",
+            "    ///    pool would silently exclude precisely the abandoned-labour droids"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "src/RimUtinni/FallLineArrivals/Source/FeralSurvivors.cs",
+      "sha256": "a539554cf9835749b6404d2d0a372eab47e2a6e20dd659cad8fd351519bcfe31",
+      "lines": [
+        {
+          "line": 17,
+          "context": [
+            "    //",
+            "    // fall_line.md \u00a78b: survivors of the falls gone feral, \"wily, flee-prone\"; the wreckage",
+            "    // is the cover they break for. One droid per event, factionless for life, a flat weighted",
+            "    // pick (every Droidworks utility kind carries the combatPower 99999 sentinel).",
+            "    //",
+            "    //   RUT_Hediff_Feral       the flag. Survives save/load; removes itself the moment the",
+            "    //                          pawn joins the player (the wild data-spike recruits it), so"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "src/RimUtinni/UtinniPatches/Source/AmbientShrineGuardians.cs",
+      "sha256": "408bba8b806346ea84dcf36096a3947c31f2cf4b7f4b1bec99f760ffa609b40c",
+      "lines": [
+        {
+          "line": 128,
+          "context": [
+            "\t//   * AncientWatchCountRange 1-3, against vanilla's 1-5 mechanoids: a thawed",
+            "\t//     AncientSoldier is a heavier unit than the cheap-mech end of",
+            "\t//     MechClusterGenerator.MechKindSuitableForCluster's weighted pick",
+            "\t//     (`1f / kind.combatPower` favours the weakest), and every one of the",
+            "\t//     eight rows says \"sparse\".",
+            "\t//   * ScavengedHaulCountRange 2-4 pulls: chosen so the pile reads as a haul",
+            "\t//     rather than a single crate, while staying well under"
+          ]
+        }
+      ]
+    }
+  ],
+  "other_children": [
+    {
+      "file": "src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_SeaBeasts_Invented.xml",
+      "defName": "RM_ReefbackJuv",
+      "ParentName": "RM_Reefback"
+    },
+    {
+      "file": "src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_SeaBeasts_Invented.xml",
+      "defName": "RM_ReefbackJuv",
+      "ParentName": "RM_Reefback_Kind"
+    }
+  ],
+  "translations": []
+}

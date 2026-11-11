@@ -1,0 +1,23 @@
+# Independent Codex judgment — stopped for allowlist breach
+
+Item: RIMMANDRAKE_RECONCILE_HUGETHINGS_REEFBACK_NURSERY_COMBAT
+
+This review cannot provide acceptance. During independent input-hash verification, I read the bytes of `/mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/Odyssey/Defs/Bodies/Bodies_Animal_Pinniped.xml`. The installed-file allowance names Core defs and managed metadata; this installed Odyssey definition is outside that literal allowance. Its allowed snapshot under `evidence/raw/final/inputs/installed/Data/Odyssey/Defs/Bodies/Bodies_Animal_Pinniped.xml` did not authorize reading the installed original. I detected the breach later in the audit and stopped. I do not self-clear it. This is a failure of this review's scope discipline, not evidence that the implementation fails.
+
+Only this judgment file was written by this review. No game, bridge, build, deployment, network, ledger or git mutation was performed. No builder decision/reconciliation document or previous judgment was read. Every shell exported the three requested seat variables, sourced the specified environment script, and carried those variables through WSLENV.
+
+The following exact frozen bullets receive **cannot tell** in this stopped review. No technical acceptance or rejection is issued from the partial checks.
+
+1. **Cannot tell:** “Reconcile the young reefback, adult reefback and warden mother's combat roles with the established Miasma nursery lifecycle through independent delegated design judgment, preserving existing residents and measured young body sizes.” Frozen source: `STATEMENT.md`, first bullet. Relevant allowed raw inputs include `evidence/design_prompt.txt`, `evidence/design_raw.json`, and `evidence/raw/final/selected-source.xml`; their existence does not cure this review's breach.
+
+2. **Cannot tell:** “Apply warranted local stat/profile or specification corrections and demonstrate exact effective stage damage and health, with a worked modest hunting comparison against the adult and meaningful focused XML/inheritance positive and negative controls.” Frozen source: `STATEMENT.md`, second bullet. Relevant allowed raw inputs include `evidence/raw/final/resolved-source.xml`, `evidence/raw/final/controls.json`, `evidence/raw/final/baseline.json`, `evidence/raw/engine-final.stdout.txt`, and `evidence/raw/production-spec.diff`. No pass label is accepted as proof.
+
+3. **Cannot tell:** “Retain reproducible offline source evidence and a fresh independent Codex judgment for the complete decision; distinguish the source model from actual hits, population outcomes and live balance, and make no deployment, flight, art or L4 acceptance claim.” Frozen source: `STATEMENT.md`, third bullet. Relevant allowed raw process artifacts include `evidence/raw/read_engine.ps1`, `evidence/raw/engine-final.receipt.json`, and `evidence/raw/final/inputs.json`. This stopped judgment does not satisfy the requested complete independent acceptance review.
+
+4. **Cannot tell:** “A1 L0: Independently judged young/adult/mother combat roles, specifications and effective stage stats agree; focused XML/inheritance controls pass and roster residents remain.” Frozen source: `evidence/item-before.txt`, criteria. The role decision and raw controls cited above require a new uncontaminated review before acceptance.
+
+5. **Cannot tell:** “A2 L0: Exact changed XML, effective stage damage/health and the worked hunting comparison pass focused offline validation with adult controls; no actual hit, population or L4-feel acceptance is inferred from the source model.” Frozen source: `evidence/item-before.txt`, criteria. The raw snapshots, consumer IL, baseline and process evidence cited above remain inputs for a new review, not a verdict from this one.
+
+These explicit L0 criteria do not require live hits. No live gate is added, no observed live balance is claimed, and no new mechanism or discovered gameplay defect is accepted or dismissed by this stopped review.
+
+would show: no

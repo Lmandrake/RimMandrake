@@ -1,0 +1,15 @@
+Fresh independent Codex judgment for RIMMANDRAKE_RECONCILE_HUGETHINGS_REEFBACK_NURSERY_COMBAT in /home/mandrake/rm/codex-ht. You did not make this work. Read only the allowlist below; do not browse/list Whittle directories or read builder conclusions. In EVERY shell export RIMFLOW_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS AGENT_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS RIMFLOW_BRIDGE_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS; source /home/mandrake/rm/runner/infrastructure/stevedesktop/testcentre_env.sh; carry all three names through WSLENV. No game/bridge/build/deployment/network/ledger/git mutations or other clone access. Only write whittle/ht-reefback-combat/JUDGE.md.
+
+Allowed:
+- whittle/ht-reefback-combat/STATEMENT.md, NOTES.md, evidence/item-before.txt.
+- All files under whittle/ht-reefback-combat/evidence/raw/ ONLY: neutral source snapshots, raw measurements, exact test processes and fixtures. Do not accept pass labels; independently rederive.
+- evidence/design_prompt.txt and evidence/design_raw.json in this Whittle folder: independent delegated design decision, no maker conclusions.
+- XML/C#/Python source under src/, tools/, installed game Core and all five DLC defs under /mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/ (including Odyssey/Defs/Bodies/Bodies_Animal_Pinniped.xml), and managed metadata under /mnt/d/SteamLibrary/steamapps/common/RimWorld/RimWorldWin64_Data/Managed/ (offline only).
+- CLAUDE.md, infrastructure/agents/CHARTER.md, design/RimMandrake/GIT_WORKFLOW.md, design/RimMandrake/delegation_policy.md, skills/rimworld-modding/ and relevant references.
+- design/Jawa/worldbuilding/biomes/the_miasma.md, the_grey_sea.md and roster JSONs; relevant Miasma/GreySea/TerminalBiomes specs for nursery/combat-role constraints, including any updated nursery wording.
+
+Forbidden: unlisted files, Whittle directory-wide discovery, DONE/BROADEN/FINDINGS/PROGRESS/PROMPT, builder decision/reconciliation document, previous judgments/logs, handoffs and parent summaries. If contaminated, stop with would show: no; do not self-clear.
+
+Judge each exact frozen bullet true/false/cannot tell with raw source/evidence citations. Check complete selected XML inheritance and stage factors; health versus body size distinction, actual damage consumer and overrides; juvenile/adult/mother comparison and a concrete bounded hunting case; meaningful pre-fix/negative controls and patch audit; unchanged existing residents, body sizes and lifecycle. Reconcile current specification changes against independent design reasoning, which cannot substitute for raw checks. Explicit L0 criteria do not require live hits; do not invent a live gate or call this source model observed live balance. Do not accept a new mechanism without explicit proof or dismissal of a discovered gameplay defect.
+
+Last nonempty line exactly "would show: yes" or "would show: no".

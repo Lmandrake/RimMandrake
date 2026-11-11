@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe",
+    "-NoProfile",
+    "-ExecutionPolicy",
+    "Bypass",
+    "-File",
+    "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\codex-ht\\whittle\\ht-reefback-combat\\evidence\\read_engine.ps1",
+    "-GameDir",
+    "D:\\SteamLibrary\\steamapps\\common\\RimWorld"
+  ],
+  "cwd": "/home/mandrake/rm/codex-ht",
+  "started": 1794409167.1130517,
+  "elapsed_seconds": 0.806851863861084,
+  "rc": 0,
+  "stdout_sha256": "5bba3751489eb0f88fda9b6cb1e1498f06437f95923adda86edbff9badba5a49",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

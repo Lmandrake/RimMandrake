@@ -1,0 +1,1443 @@
+{
+  "files": 287,
+  "bytes": 21966036,
+  "sensitive_pattern_hits": [],
+  "largest_bytes": 2495399,
+  "manifest": [
+    {
+      "file": "whittle/ht-reefback-combat/BROADEN.md",
+      "bytes": 2466,
+      "sha256": "cc864aa4f1bac60b652a9af4c8226fb427af9da5ed5f72cb0b9afc7b0751c39d"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/DONE.md",
+      "bytes": 993,
+      "sha256": "7d4db99bf0173c2a067995e6877951c89c152088db8aae094ba8debe2cba2bdc"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/FINDINGS.md",
+      "bytes": 6031,
+      "sha256": "062b3bf717dfff87073c010268445475cb0f8b4d92b84c3000c401a327401576"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/JUDGE.md",
+      "bytes": 22448,
+      "sha256": "e2ea827dacc2904521f4b06644ea7a4fff6aa57486597cae4fe35d8dadb7e167"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/JUDGE_PROMPT.md",
+      "bytes": 2856,
+      "sha256": "f65d979ba37e019ca4c4dd2752c1fc1dfa9e9475926308c6f28e3049e5ebd568"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/NOTES.md",
+      "bytes": 376,
+      "sha256": "069bcf7c7c931ab09b5f696198ac44311a53d273a103be1c32393690c2f93fcf"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/PROGRESS.md",
+      "bytes": 1424,
+      "sha256": "093c5b394a1579f4af9dd71ed2d0ed393f11de249b6dede959a958d012aefa3b"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/PROMPT.md",
+      "bytes": 6730,
+      "sha256": "a9f0a0b3eaa7b8848c8361b595c9dab14cb135c7911c38c9bba5ac62e2287969"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/STATEMENT.md",
+      "bytes": 831,
+      "sha256": "e588e057c54ac77cc94f5104b1451cf7db19f4c4ef53140a4d58b65fd2f6494e"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/attempt1/audit.commands.txt",
+      "bytes": 31234,
+      "sha256": "a712789196c2605a6d9e083efd621e3c8494240ad324652b7f3432fee78e0032"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/attempt1/audit.json",
+      "bytes": 331,
+      "sha256": "b486a3a1aed94c068decdf8b8b9a80c983b6e8ec173bb8610a79a09a002b2eb1"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/attempt1/judge.events.jsonl",
+      "bytes": 728590,
+      "sha256": "155a253242fbf70f1f47ec1323cc53345d2a97931a5c73023393a75fdef1092f"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/attempt1/judge.last.txt",
+      "bytes": 258,
+      "sha256": "ea443a099436aef60994c5b9cee591a083188a830dd2022ab9712fa9ef77846e"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/attempt1/judge.process.receipt.json",
+      "bytes": 959,
+      "sha256": "731c641303841cc8f3b976c864b0483d9d642c4519d506c84338c4bcfc122c76"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/attempt1/judge.process.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/attempt1/judge.process.stdout.txt",
+      "bytes": 490,
+      "sha256": "e3a34e54c8c6d38f098848ab5f9093656352472c33bb2c8e103f1c9b5583ea4e"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/attempt1/judge.prompt.original.txt",
+      "bytes": 2694,
+      "sha256": "b91b069c3e16ca76c662673a9a6127289baf56f56741f474b244d8643ae014b7"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/attempt1/judge.spend.json",
+      "bytes": 840,
+      "sha256": "a5e1102845a3b2ff7d099449e2f251bbca94b245ca995033a213e3f8df6222f3"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/attempt1/judge.tool-items.json",
+      "bytes": 730136,
+      "sha256": "1035dba1e25713b05eac17e0698399da3658177dd833ace153e0d25380edec69"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/attempt1/verdict.txt",
+      "bytes": 4013,
+      "sha256": "f5064a6c41f0153fe21c7eca5ccc439d0b843cd6a2416f612056f8057adbc022"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/attempt2/audit.json",
+      "bytes": 1250,
+      "sha256": "e5a6eab6c753341e038465f8481934a2d55810d0e2d9b7e89bc379e2266d206c"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/attempt2/judge.audit.commands.txt",
+      "bytes": 61966,
+      "sha256": "fb19243cad42a143c781a390fa9cabf229b689b783b6e4bc969bed8d99c7c9ef"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/attempt2/judge.events.jsonl",
+      "bytes": 913301,
+      "sha256": "40c6f01f5a9c88c09b1f8953499b50e0575f56e882ac4607f7c328ce9e5dc435"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/attempt2/judge.last.txt",
+      "bytes": 265,
+      "sha256": "877a8d37dd8d7afeff2a646c7ec1df2d77add6924f65920c995c5e616e608adc"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/attempt2/judge.process.receipt.json",
+      "bytes": 959,
+      "sha256": "3a26304c1c2d4117ae38251600e56d3accf5d9fd885ba74f297b3e1ce3eaff60"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/attempt2/judge.process.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/attempt2/judge.process.stdout.txt",
+      "bytes": 500,
+      "sha256": "0684fbc701275d2a426f6fa05c6e151981edcf13aa3c9d8ec93009b210de5f7d"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/attempt2/judge.prompt.used.txt",
+      "bytes": 2856,
+      "sha256": "f65d979ba37e019ca4c4dd2752c1fc1dfa9e9475926308c6f28e3049e5ebd568"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/attempt2/judge.spend.json",
+      "bytes": 840,
+      "sha256": "665b3d168791cc1e70fe0ce9365aa5a37b728a809395041180f994d3bc0ade47"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/attempt2/judge.tool-items.json",
+      "bytes": 833857,
+      "sha256": "250b5a714edd4a549090e6fbb6dd29557db53c76607ee95cd6e0a34768ea0dea"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/attempt2/verdict.txt",
+      "bytes": 22448,
+      "sha256": "e2ea827dacc2904521f4b06644ea7a4fff6aa57486597cae4fe35d8dadb7e167"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/call_opus.py",
+      "bytes": 1904,
+      "sha256": "849130d48440b61ecae0aba413188a18eff81ccec564d382979883838039d24b"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/check_float.ps1",
+      "bytes": 569,
+      "sha256": "5a60680ec52c596df72e6dc6103b2a93e4173d9d9d67a655fe5fcb72436a26d3"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/design_call.json",
+      "bytes": 1038,
+      "sha256": "9c0cad77825e1c8a97aabf74d382f563e3d3b70e77c3892c429ce6c0a441a150"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/design_prompt.txt",
+      "bytes": 60474,
+      "sha256": "c64082cb6799bf9e80023207db77c8bc85d8181f23cd1ac2676b8fef90561b85"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/design_raw.json",
+      "bytes": 12109,
+      "sha256": "75e841f0db58611633b194cbce8a4f3bb790b9f45f48027376b0ad953f6bd0e2"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/design_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/discover_consumers.ps1",
+      "bytes": 879,
+      "sha256": "3a1d7613e718fdf5c75b09fb2b458dacd5375e555adfb32a84897c1c61db7d43"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/final_evidence.py",
+      "bytes": 3551,
+      "sha256": "1551989b34e0024fef7c9d9b50667f1604ca8fa155490c2f4c34c4d41b38f661"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/invoke_judge.py",
+      "bytes": 1459,
+      "sha256": "179d5eaa228caa24c53c1965f9aabd577f9cde71d548587d9058ba22c28e923b"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/item-before.txt",
+      "bytes": 4522,
+      "sha256": "65c7271b1da3c20d70e93df908c6fad97e17d2042b7b2a45ae2d32497869aeb8"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/judge-prompt-drift.diff",
+      "bytes": 1348,
+      "sha256": "2f6d7c8b4c82010d9a8b1bfb22468468cf747c5c3369d1df36e50e48d7a8a6ff"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/judge.audit.commands.txt",
+      "bytes": 61966,
+      "sha256": "fb19243cad42a143c781a390fa9cabf229b689b783b6e4bc969bed8d99c7c9ef"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/judge.audit.json",
+      "bytes": 1250,
+      "sha256": "e5a6eab6c753341e038465f8481934a2d55810d0e2d9b7e89bc379e2266d206c"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/judge.events.jsonl",
+      "bytes": 913301,
+      "sha256": "40c6f01f5a9c88c09b1f8953499b50e0575f56e882ac4607f7c328ce9e5dc435"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/judge.last.txt",
+      "bytes": 265,
+      "sha256": "877a8d37dd8d7afeff2a646c7ec1df2d77add6924f65920c995c5e616e608adc"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/judge.process.receipt.json",
+      "bytes": 959,
+      "sha256": "3a26304c1c2d4117ae38251600e56d3accf5d9fd885ba74f297b3e1ce3eaff60"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/judge.process.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/judge.process.stdout.txt",
+      "bytes": 500,
+      "sha256": "0684fbc701275d2a426f6fa05c6e151981edcf13aa3c9d8ec93009b210de5f7d"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/judge.spend.json",
+      "bytes": 840,
+      "sha256": "665b3d168791cc1e70fe0ce9365aa5a37b728a809395041180f994d3bc0ade47"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/judge.tool-items.json",
+      "bytes": 833857,
+      "sha256": "250b5a714edd4a549090e6fbb6dd29557db53c76607ee95cd6e0a34768ea0dea"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/parent-judge-allowance.json",
+      "bytes": 469,
+      "sha256": "b17eb0ca3f61d8601a57849f1f9c6f4ba5b71254744c1c90e60fca0a1a920af0"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/parent_runner_exit.json",
+      "bytes": 50,
+      "sha256": "c7e0c0a24ec149c2f030a1c50a1fd304ea0be087120f389a17e83347fbba0b83"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/prepare_design.py",
+      "bytes": 5708,
+      "sha256": "42306b949ee8dfbafbdd53f7bf04bfa1b309c5f52dbd84c4c8b7860a845065ac"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/before/src/RimMandrake/Miasma/Defs/BiomeDefs/RM_Miasma.xml",
+      "bytes": 17701,
+      "sha256": "f6164f87009d6c632a5357d2f4043bc643b0647065621ba6fcd68ca4c5f58240"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/before/src/RimMandrake/Miasma/Defs/ThingDefs_Races/RM_WardenMother.xml",
+      "bytes": 8891,
+      "sha256": "6d225577f44de6a982de84ad815af9d830bdeabb3330a8b674741ae706ee551b"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/before/src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_GreySea.xml",
+      "bytes": 16486,
+      "sha256": "5fd0c53e811a3f626d7476e0cd4412e20b44dc2dfaba5c6ca0d706a03895a634"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/before/src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_SeaBeasts_Invented.xml",
+      "bytes": 69646,
+      "sha256": "dd383ef5e2ea27ed824b773cc6ac04b144e65012093c0803bf06962d71cf7a30"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/changed-source-hashes.json",
+      "bytes": 1210,
+      "sha256": "01c8eeb50f1e42b2df9132776ccd616263d8944128176db90bf371add35d2168"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/check_float.ps1",
+      "bytes": 569,
+      "sha256": "5a60680ec52c596df72e6dc6103b2a93e4173d9d9d67a655fe5fcb72436a26d3"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/consumer-discovery.receipt.json",
+      "bytes": 607,
+      "sha256": "116fdc99cb3d5347cc38f5c2f9f4f00de7a962727552241c9a1bfc46f9d620b2"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/consumer-discovery.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/consumer-discovery.stdout.txt",
+      "bytes": 2333,
+      "sha256": "62bc13b06be5754755a8c7e6108a690992df4401cff4743416084d4ccb519576"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/diff-check-final.receipt.json",
+      "bytes": 872,
+      "sha256": "b524d5c18b234bd9261e4afac7664f5b0dce184ad4608421a6ca5c090ed8ebb6"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/diff-check-final.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/diff-check-final.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/engine-attempt1.receipt.json",
+      "bytes": 646,
+      "sha256": "adb5c80417f32e7324b0458350fc06dda162c2a78481dc539bb3f41efcfc4da4"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/engine-attempt1.stderr.txt",
+      "bytes": 539,
+      "sha256": "a0e3b09a89c0cee08d7970558c73cab4dfea1ff5b3a30b8d5228b96004ae23d7"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/engine-attempt1.stdout.txt",
+      "bytes": 2976,
+      "sha256": "719af45125fa1c5c67c00211ecd1978596d482f3ceb7d8206a77679534397015"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/engine-attempt2.receipt.json",
+      "bytes": 645,
+      "sha256": "8713c58956b0abe992b9a65836d6e7d977dbbfa1941534e2422dff99819a47d4"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/engine-attempt2.stderr.txt",
+      "bytes": 540,
+      "sha256": "62b168aa6af9a552672d168aa6fdc3bd17d930ab160638fcf1080d5bf8b50437"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/engine-attempt2.stdout.txt",
+      "bytes": 24352,
+      "sha256": "60e74cb696a29c9ae24a989923faf52ebcf5a6dd3240c9d53cf277a00b73d278"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/engine-design.receipt.json",
+      "bytes": 645,
+      "sha256": "cb7d6fd1dcd7326c035c44592115404fc3204d1d51a6b54ece0e1cc91e200318"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/engine-design.stderr.txt",
+      "bytes": 533,
+      "sha256": "dcb7b2668af80e33eecd49e354c5ad43c533a8e0a93c6f5e716be1a6dd27f84f"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/engine-design.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/engine-design2.receipt.json",
+      "bytes": 646,
+      "sha256": "2011bd985074d618487015a1985b111369673dfe441aaee364c28d9a58ce0737"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/engine-design2.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/engine-design2.stdout.txt",
+      "bytes": 67008,
+      "sha256": "bba0499ad10b241f17a21f329ae3d84d1a4f90b5e9f38373ce234009cb7c6fa1"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/engine-expanded.receipt.json",
+      "bytes": 598,
+      "sha256": "bed4b729ee3b87860698cb475c1df45923f6453d2b3dfe9156eea04f2006f8fa"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/engine-expanded.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/engine-expanded.stdout.txt",
+      "bytes": 67216,
+      "sha256": "a7e67d0423ef5c2e91fc887ec3004af846970ae7972271d04901c97b020aec7b"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/engine-final.receipt.json",
+      "bytes": 599,
+      "sha256": "98379493be863cd245b1385e4293c99e4cc0a78983d9178772b8ec3686627431"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/engine-final.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/engine-final.stdout.txt",
+      "bytes": 67216,
+      "sha256": "a7e67d0423ef5c2e91fc887ec3004af846970ae7972271d04901c97b020aec7b"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/engine-initial.receipt.json",
+      "bytes": 644,
+      "sha256": "4183cd71727fd6636902c9ee0d7d26247d3c45ce4742c2b3691f21ce77afe443"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/engine-initial.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/engine-initial.stdout.txt",
+      "bytes": 37175,
+      "sha256": "160adf4fe20bb5d293a5f14d6ad7e9c625b5293761b384a9f74610b1a2e9ebc2"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/engine-source.receipt.json",
+      "bytes": 645,
+      "sha256": "4dcb45fa366a0ecb900383e9d60104cb6f1e5c6e9bbe0c8651b1289ff34b75b2"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/engine-source.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/engine-source.stdout.txt",
+      "bytes": 60695,
+      "sha256": "5bba3751489eb0f88fda9b6cb1e1498f06437f95923adda86edbff9badba5a49"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/baseline.json",
+      "bytes": 10648,
+      "sha256": "8057afca761a22e9433720b5dd7a9ff998938c32c6928b42fb32e1c116cb1b4c"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/controls.json",
+      "bytes": 28640,
+      "sha256": "5ace95327b1b9f8eb75da16d7e012b769f3156e9f55484e91665da14a78489ba"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/inputs/before/src/RimMandrake/Miasma/Defs/BiomeDefs/RM_Miasma.xml",
+      "bytes": 17701,
+      "sha256": "f6164f87009d6c632a5357d2f4043bc643b0647065621ba6fcd68ca4c5f58240"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/inputs/before/src/RimMandrake/Miasma/Defs/ThingDefs_Races/RM_WardenMother.xml",
+      "bytes": 8891,
+      "sha256": "6d225577f44de6a982de84ad815af9d830bdeabb3330a8b674741ae706ee551b"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/inputs/before/src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_GreySea.xml",
+      "bytes": 16486,
+      "sha256": "5fd0c53e811a3f626d7476e0cd4412e20b44dc2dfaba5c6ca0d706a03895a634"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/inputs/before/src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_SeaBeasts_Invented.xml",
+      "bytes": 69646,
+      "sha256": "dd383ef5e2ea27ed824b773cc6ac04b144e65012093c0803bf06962d71cf7a30"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/inputs/engine-selected.il.txt",
+      "bytes": 67216,
+      "sha256": "a7e67d0423ef5c2e91fc887ec3004af846970ae7972271d04901c97b020aec7b"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/inputs/installed/Data/Core/Defs/Bodies/BodyParts_Animal.xml",
+      "bytes": 9987,
+      "sha256": "c069f5ebca38bd40b5a4a6f917ce5b97e12965eb413a64ae9875ffc42257b86d"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/inputs/installed/Data/Core/Defs/Bodies/BodyParts_General.xml",
+      "bytes": 5052,
+      "sha256": "c3546b23f5d97d5a9f496ec6eb1e52149e3ef8de2227e71ed0fefccbc0f88d32"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/inputs/installed/Data/Core/Defs/Bodies/BodyParts_Organs.xml",
+      "bytes": 1570,
+      "sha256": "eeeb6f166bde4804b5d91933a3734954f84239e1abad3b3e000fcbe8609e5f80"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/inputs/installed/Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml",
+      "bytes": 8572,
+      "sha256": "9e64ca6431d6685b342f3bec90166a911948aeb364a232ff8eb2fe69ed321fbc"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/inputs/installed/Data/Core/Defs/ThingDefs_Races/Races_Animal_Base.xml",
+      "bytes": 3904,
+      "sha256": "922276d8275c6087014de702401e97c2724d40c38a2f09de131075ba3e7afcf4"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/inputs/installed/Data/Odyssey/Defs/Bodies/Bodies_Animal_Pinniped.xml",
+      "bytes": 9996,
+      "sha256": "bcab82dd36a998591143703d125872a88fe02bd5a4b74ebb80be0a86633ba71d"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/inputs/instrument.py",
+      "bytes": 30864,
+      "sha256": "affab56adabd90efe8e7daef923c8d33124989616d5a2273578fb09bc0770b32"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/inputs/src/RimMandrake/EnvironmentalHazards/Source/RM_CompTerritorialAnchor.cs",
+      "bytes": 15093,
+      "sha256": "3235075bed3d431085cd81d61a672fc2ef5f56a1454e5eb8ceae1bbc9cbf8b83"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/inputs/src/RimMandrake/EnvironmentalHazards/Source/RM_CompWaterLocked.cs",
+      "bytes": 7420,
+      "sha256": "47a51db08a8161ed2394ed164e8c40beece26f9c7d2af1cb8326efffb5bfba1c"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/inputs/src/RimMandrake/EnvironmentalHazards/Source/RM_SetPieceElement_AnchoredPawn.cs",
+      "bytes": 6581,
+      "sha256": "6e98a6223ba9a1e6849c84ffb1ac5bf49e5e2f111633fa5037c54cdab7cd35c6"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/inputs/src/RimMandrake/Miasma/Defs/BiomeDefs/RM_Miasma.xml",
+      "bytes": 17701,
+      "sha256": "f6164f87009d6c632a5357d2f4043bc643b0647065621ba6fcd68ca4c5f58240"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/inputs/src/RimMandrake/Miasma/Defs/MapGeneration/RM_Miasma_CrecheScatterer.xml",
+      "bytes": 5493,
+      "sha256": "78171bfe28fdb2453dfd97e811ba736553f640b712b81d5894ab8552ea884a16"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/inputs/src/RimMandrake/Miasma/Defs/ThingDefs_Races/RM_WardenMother.xml",
+      "bytes": 8891,
+      "sha256": "6d225577f44de6a982de84ad815af9d830bdeabb3330a8b674741ae706ee551b"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/inputs/src/RimMandrake/Miasma/Patches/RM_AcousticPayload_Miasma.xml",
+      "bytes": 2815,
+      "sha256": "0e655ba48c8fb9788837754312804351ec2e78771a29937868bdb16a3084895f"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/inputs/src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_GreySea.xml",
+      "bytes": 16486,
+      "sha256": "5fd0c53e811a3f626d7476e0cd4412e20b44dc2dfaba5c6ca0d706a03895a634"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/inputs/src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_SeaBeasts_Invented.xml",
+      "bytes": 70708,
+      "sha256": "a1fed3005d5e8f45e6cc882cf98d174dd37d6d68d1073e739b2e15be8026daf9"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/inputs.json",
+      "bytes": 4237,
+      "sha256": "6c8b4d4ecb53a00df77a659685a16d28851daca33c805acc8ab7e217c33a2ec1"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/measurement.json",
+      "bytes": 26188,
+      "sha256": "c1aa4c587217f8b29cc791839f1dd4ed34f67b3db898f2fc21f36ef52be7d024"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/patch-audit.json",
+      "bytes": 181922,
+      "sha256": "f55bbaca26cd595f79996bad6914ee1dff82438f49bffa3daf6b71065b4ef38c"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/read-xpath.ps1",
+      "bytes": 525,
+      "sha256": "27ede906e41bf61838d2b901222f71a3a287e9c4610ba4e11becccd82cabf9e2"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/resolved-source.xml",
+      "bytes": 22231,
+      "sha256": "ec1834f00e6aba3342229a08bf99ed4cf7e0d7d1da348826ec9449667e275d01"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/selected-source.xml",
+      "bytes": 21955,
+      "sha256": "f676f9ebf2b3903aa8ea8940563d5f980ece79dcd737808ee6c87983d347beb9"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/xpath-raw.xml",
+      "bytes": 21980,
+      "sha256": "9b299963a2905361c4c831be73600ca26fb8fd604168cf9c8e25057a54a793c3"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/xpath-request.json",
+      "bytes": 1590697,
+      "sha256": "1637288d7daf0a6a431edf74ceeaf46fb940ec439ccd826838eb2458b2790bb0"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/xpath-resolved.xml",
+      "bytes": 22198,
+      "sha256": "3f7c7341d0510d994101f15507cd44485bd699cc1212f6d49964f5e058aa525b"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/xpath.receipt.json",
+      "bytes": 755,
+      "sha256": "29ac1e956ec66a100f8afaac706e99394c70bad605c3011c8b8275f6f543a49e"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/xpath.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/final/xpath.stdout.json",
+      "bytes": 2495399,
+      "sha256": "f506e3375b44140a7ea1a882847e9bcb7aa3a3915f7e64865b5a19f8dab99bdf"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/float-final.receipt.json",
+      "bytes": 531,
+      "sha256": "bd4a649d8cf021688c0377561ca36f30d327ccc0aaf9cc61384cb1b80da2e902"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/float-final.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/float-final.stdout.txt",
+      "bytes": 778,
+      "sha256": "dace9138a3449c7b39491f00fd2774f4afe5f44427b1304c5cd2a0694f615171"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/instrument-diff.receipt.json",
+      "bytes": 275,
+      "sha256": "a7e1b28dcb60e9633989fe2578739f75ce136356100a798c2b37ee23301eb84b"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/instrument.diff",
+      "bytes": 31693,
+      "sha256": "9250de332aa45ab41d2655b7e553a6b63efe52370284fe847a149d82dca57513"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-initial/inputs/before/src/RimMandrake/Miasma/Defs/BiomeDefs/RM_Miasma.xml",
+      "bytes": 17701,
+      "sha256": "f6164f87009d6c632a5357d2f4043bc643b0647065621ba6fcd68ca4c5f58240"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-initial/inputs/before/src/RimMandrake/Miasma/Defs/ThingDefs_Races/RM_WardenMother.xml",
+      "bytes": 8891,
+      "sha256": "6d225577f44de6a982de84ad815af9d830bdeabb3330a8b674741ae706ee551b"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-initial/inputs/before/src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_GreySea.xml",
+      "bytes": 16486,
+      "sha256": "5fd0c53e811a3f626d7476e0cd4412e20b44dc2dfaba5c6ca0d706a03895a634"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-initial/inputs/before/src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_SeaBeasts_Invented.xml",
+      "bytes": 69646,
+      "sha256": "dd383ef5e2ea27ed824b773cc6ac04b144e65012093c0803bf06962d71cf7a30"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-initial/inputs/engine-selected.il.txt",
+      "bytes": 67008,
+      "sha256": "bba0499ad10b241f17a21f329ae3d84d1a4f90b5e9f38373ce234009cb7c6fa1"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-initial/inputs/installed/Data/Core/Defs/Bodies/BodyParts_Animal.xml",
+      "bytes": 9987,
+      "sha256": "c069f5ebca38bd40b5a4a6f917ce5b97e12965eb413a64ae9875ffc42257b86d"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-initial/inputs/installed/Data/Core/Defs/Bodies/BodyParts_General.xml",
+      "bytes": 5052,
+      "sha256": "c3546b23f5d97d5a9f496ec6eb1e52149e3ef8de2227e71ed0fefccbc0f88d32"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-initial/inputs/installed/Data/Core/Defs/Bodies/BodyParts_Organs.xml",
+      "bytes": 1570,
+      "sha256": "eeeb6f166bde4804b5d91933a3734954f84239e1abad3b3e000fcbe8609e5f80"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-initial/inputs/installed/Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml",
+      "bytes": 8572,
+      "sha256": "9e64ca6431d6685b342f3bec90166a911948aeb364a232ff8eb2fe69ed321fbc"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-initial/inputs/installed/Data/Core/Defs/ThingDefs_Races/Races_Animal_Base.xml",
+      "bytes": 3904,
+      "sha256": "922276d8275c6087014de702401e97c2724d40c38a2f09de131075ba3e7afcf4"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-initial/inputs/installed/Data/Odyssey/Defs/Bodies/Bodies_Animal_Pinniped.xml",
+      "bytes": 9996,
+      "sha256": "bcab82dd36a998591143703d125872a88fe02bd5a4b74ebb80be0a86633ba71d"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-initial/inputs/src/RimMandrake/EnvironmentalHazards/Source/RM_CompTerritorialAnchor.cs",
+      "bytes": 15093,
+      "sha256": "3235075bed3d431085cd81d61a672fc2ef5f56a1454e5eb8ceae1bbc9cbf8b83"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-initial/inputs/src/RimMandrake/EnvironmentalHazards/Source/RM_CompWaterLocked.cs",
+      "bytes": 7420,
+      "sha256": "47a51db08a8161ed2394ed164e8c40beece26f9c7d2af1cb8326efffb5bfba1c"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-initial/inputs/src/RimMandrake/EnvironmentalHazards/Source/RM_SetPieceElement_AnchoredPawn.cs",
+      "bytes": 6581,
+      "sha256": "6e98a6223ba9a1e6849c84ffb1ac5bf49e5e2f111633fa5037c54cdab7cd35c6"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-initial/inputs/src/RimMandrake/Miasma/Defs/BiomeDefs/RM_Miasma.xml",
+      "bytes": 17701,
+      "sha256": "f6164f87009d6c632a5357d2f4043bc643b0647065621ba6fcd68ca4c5f58240"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-initial/inputs/src/RimMandrake/Miasma/Defs/MapGeneration/RM_Miasma_CrecheScatterer.xml",
+      "bytes": 5493,
+      "sha256": "78171bfe28fdb2453dfd97e811ba736553f640b712b81d5894ab8552ea884a16"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-initial/inputs/src/RimMandrake/Miasma/Defs/ThingDefs_Races/RM_WardenMother.xml",
+      "bytes": 8891,
+      "sha256": "6d225577f44de6a982de84ad815af9d830bdeabb3330a8b674741ae706ee551b"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-initial/inputs/src/RimMandrake/Miasma/Patches/RM_AcousticPayload_Miasma.xml",
+      "bytes": 2815,
+      "sha256": "0e655ba48c8fb9788837754312804351ec2e78771a29937868bdb16a3084895f"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-initial/inputs/src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_GreySea.xml",
+      "bytes": 16486,
+      "sha256": "5fd0c53e811a3f626d7476e0cd4412e20b44dc2dfaba5c6ca0d706a03895a634"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-initial/inputs/src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_SeaBeasts_Invented.xml",
+      "bytes": 70708,
+      "sha256": "a1fed3005d5e8f45e6cc882cf98d174dd37d6d68d1073e739b2e15be8026daf9"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-initial.receipt.json",
+      "bytes": 729,
+      "sha256": "7148e1a6e9f9588122b75130386e5a16be7c0c1d7cb6fbb90eba9f1394b2ef2f"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-initial.stderr.txt",
+      "bytes": 376,
+      "sha256": "5b953b7f8d59f7ed19a1fde535b56c63961890ad2431ba2c2c746f31258ec87b"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-initial.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/baseline.json",
+      "bytes": 10648,
+      "sha256": "8057afca761a22e9433720b5dd7a9ff998938c32c6928b42fb32e1c116cb1b4c"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/controls.json",
+      "bytes": 26810,
+      "sha256": "705049d4e6220574058bd1bab41dd7d8004f45713a858d69fd808c6f0bb77c56"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/inputs/before/src/RimMandrake/Miasma/Defs/BiomeDefs/RM_Miasma.xml",
+      "bytes": 17701,
+      "sha256": "f6164f87009d6c632a5357d2f4043bc643b0647065621ba6fcd68ca4c5f58240"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/inputs/before/src/RimMandrake/Miasma/Defs/ThingDefs_Races/RM_WardenMother.xml",
+      "bytes": 8891,
+      "sha256": "6d225577f44de6a982de84ad815af9d830bdeabb3330a8b674741ae706ee551b"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/inputs/before/src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_GreySea.xml",
+      "bytes": 16486,
+      "sha256": "5fd0c53e811a3f626d7476e0cd4412e20b44dc2dfaba5c6ca0d706a03895a634"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/inputs/before/src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_SeaBeasts_Invented.xml",
+      "bytes": 69646,
+      "sha256": "dd383ef5e2ea27ed824b773cc6ac04b144e65012093c0803bf06962d71cf7a30"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/inputs/engine-selected.il.txt",
+      "bytes": 67008,
+      "sha256": "bba0499ad10b241f17a21f329ae3d84d1a4f90b5e9f38373ce234009cb7c6fa1"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/inputs/installed/Data/Core/Defs/Bodies/BodyParts_Animal.xml",
+      "bytes": 9987,
+      "sha256": "c069f5ebca38bd40b5a4a6f917ce5b97e12965eb413a64ae9875ffc42257b86d"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/inputs/installed/Data/Core/Defs/Bodies/BodyParts_General.xml",
+      "bytes": 5052,
+      "sha256": "c3546b23f5d97d5a9f496ec6eb1e52149e3ef8de2227e71ed0fefccbc0f88d32"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/inputs/installed/Data/Core/Defs/Bodies/BodyParts_Organs.xml",
+      "bytes": 1570,
+      "sha256": "eeeb6f166bde4804b5d91933a3734954f84239e1abad3b3e000fcbe8609e5f80"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/inputs/installed/Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml",
+      "bytes": 8572,
+      "sha256": "9e64ca6431d6685b342f3bec90166a911948aeb364a232ff8eb2fe69ed321fbc"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/inputs/installed/Data/Core/Defs/ThingDefs_Races/Races_Animal_Base.xml",
+      "bytes": 3904,
+      "sha256": "922276d8275c6087014de702401e97c2724d40c38a2f09de131075ba3e7afcf4"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/inputs/installed/Data/Odyssey/Defs/Bodies/Bodies_Animal_Pinniped.xml",
+      "bytes": 9996,
+      "sha256": "bcab82dd36a998591143703d125872a88fe02bd5a4b74ebb80be0a86633ba71d"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/inputs/instrument.py",
+      "bytes": 23729,
+      "sha256": "75320ebd9380667b928b2ef5c476a26ff069742137fe55b2ccc75d76e23d26ed"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/inputs/src/RimMandrake/EnvironmentalHazards/Source/RM_CompTerritorialAnchor.cs",
+      "bytes": 15093,
+      "sha256": "3235075bed3d431085cd81d61a672fc2ef5f56a1454e5eb8ceae1bbc9cbf8b83"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/inputs/src/RimMandrake/EnvironmentalHazards/Source/RM_CompWaterLocked.cs",
+      "bytes": 7420,
+      "sha256": "47a51db08a8161ed2394ed164e8c40beece26f9c7d2af1cb8326efffb5bfba1c"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/inputs/src/RimMandrake/EnvironmentalHazards/Source/RM_SetPieceElement_AnchoredPawn.cs",
+      "bytes": 6581,
+      "sha256": "6e98a6223ba9a1e6849c84ffb1ac5bf49e5e2f111633fa5037c54cdab7cd35c6"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/inputs/src/RimMandrake/Miasma/Defs/BiomeDefs/RM_Miasma.xml",
+      "bytes": 17701,
+      "sha256": "f6164f87009d6c632a5357d2f4043bc643b0647065621ba6fcd68ca4c5f58240"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/inputs/src/RimMandrake/Miasma/Defs/MapGeneration/RM_Miasma_CrecheScatterer.xml",
+      "bytes": 5493,
+      "sha256": "78171bfe28fdb2453dfd97e811ba736553f640b712b81d5894ab8552ea884a16"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/inputs/src/RimMandrake/Miasma/Defs/ThingDefs_Races/RM_WardenMother.xml",
+      "bytes": 8891,
+      "sha256": "6d225577f44de6a982de84ad815af9d830bdeabb3330a8b674741ae706ee551b"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/inputs/src/RimMandrake/Miasma/Patches/RM_AcousticPayload_Miasma.xml",
+      "bytes": 2815,
+      "sha256": "0e655ba48c8fb9788837754312804351ec2e78771a29937868bdb16a3084895f"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/inputs/src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_GreySea.xml",
+      "bytes": 16486,
+      "sha256": "5fd0c53e811a3f626d7476e0cd4412e20b44dc2dfaba5c6ca0d706a03895a634"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/inputs/src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_SeaBeasts_Invented.xml",
+      "bytes": 70708,
+      "sha256": "a1fed3005d5e8f45e6cc882cf98d174dd37d6d68d1073e739b2e15be8026daf9"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/inputs.json",
+      "bytes": 4237,
+      "sha256": "8626b8710e5b7b00a7773c14266caf17050058efa394e28f0bd951dbb65c2e14"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/measurement.json",
+      "bytes": 26188,
+      "sha256": "c1aa4c587217f8b29cc791839f1dd4ed34f67b3db898f2fc21f36ef52be7d024"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/patch-audit.json",
+      "bytes": 160403,
+      "sha256": "45cd4e542d0a1681447a35dd1f08d9dc5e13476d64ef0ef0535be3043ec6b045"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/read-xpath.ps1",
+      "bytes": 525,
+      "sha256": "27ede906e41bf61838d2b901222f71a3a287e9c4610ba4e11becccd82cabf9e2"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/resolved-source.xml",
+      "bytes": 22231,
+      "sha256": "ec1834f00e6aba3342229a08bf99ed4cf7e0d7d1da348826ec9449667e275d01"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/selected-source.xml",
+      "bytes": 21955,
+      "sha256": "f676f9ebf2b3903aa8ea8940563d5f980ece79dcd737808ee6c87983d347beb9"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/xpath-raw.xml",
+      "bytes": 21980,
+      "sha256": "9b299963a2905361c4c831be73600ca26fb8fd604168cf9c8e25057a54a793c3"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/xpath-request.json",
+      "bytes": 1590725,
+      "sha256": "72400253e1db8291d0fd661dbc6bab7c221048752b7e2bcde44f6869d64934a8"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/xpath-resolved.xml",
+      "bytes": 22198,
+      "sha256": "3f7c7341d0510d994101f15507cd44485bd699cc1212f6d49964f5e058aa525b"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/xpath.receipt.json",
+      "bytes": 783,
+      "sha256": "469d2d4501dca7548044459c3947d7399c6e3698a21b5afa66c92c31f85c6f18"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/xpath.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath/xpath.stdout.json",
+      "bytes": 2495399,
+      "sha256": "f506e3375b44140a7ea1a882847e9bcb7aa3a3915f7e64865b5a19f8dab99bdf"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath.receipt.json",
+      "bytes": 725,
+      "sha256": "49163d7a3a7b1c581c68f9360a08be04a18323fe71eac6ea4476506296437ec3"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-after-xpath.stdout.txt",
+      "bytes": 1690,
+      "sha256": "4c6b63bbbc9f90e94f506b627334ea45198ed35d791eb7e1e50915431358bead"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-before/inputs/engine-selected.il.txt",
+      "bytes": 67008,
+      "sha256": "bba0499ad10b241f17a21f329ae3d84d1a4f90b5e9f38373ce234009cb7c6fa1"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-before/inputs/installed/Data/Core/Defs/Bodies/BodyParts_General.xml",
+      "bytes": 5052,
+      "sha256": "c3546b23f5d97d5a9f496ec6eb1e52149e3ef8de2227e71ed0fefccbc0f88d32"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-before/inputs/installed/Data/Core/Defs/Bodies/BodyParts_Organs.xml",
+      "bytes": 1570,
+      "sha256": "eeeb6f166bde4804b5d91933a3734954f84239e1abad3b3e000fcbe8609e5f80"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-before/inputs/installed/Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml",
+      "bytes": 8572,
+      "sha256": "9e64ca6431d6685b342f3bec90166a911948aeb364a232ff8eb2fe69ed321fbc"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-before/inputs/installed/Data/Core/Defs/ThingDefs_Races/Races_Animal_Base.xml",
+      "bytes": 3904,
+      "sha256": "922276d8275c6087014de702401e97c2724d40c38a2f09de131075ba3e7afcf4"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-before/inputs/installed/Data/Odyssey/Defs/Bodies/Bodies_Animal_Pinniped.xml",
+      "bytes": 9996,
+      "sha256": "bcab82dd36a998591143703d125872a88fe02bd5a4b74ebb80be0a86633ba71d"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-before/inputs/src/RimMandrake/Miasma/Defs/ThingDefs_Races/RM_WardenMother.xml",
+      "bytes": 8891,
+      "sha256": "6d225577f44de6a982de84ad815af9d830bdeabb3330a8b674741ae706ee551b"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-before/inputs/src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_SeaBeasts_Invented.xml",
+      "bytes": 69646,
+      "sha256": "dd383ef5e2ea27ed824b773cc6ac04b144e65012093c0803bf06962d71cf7a30"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-before.receipt.json",
+      "bytes": 721,
+      "sha256": "29ffb186f2b5468dda1e503c393c97ac5cf49c0e0399724713eb77943dfd5ab2"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-before.stderr.txt",
+      "bytes": 710,
+      "sha256": "d68398c0bd31bea3f7234d6b06e2928bb072102ee2abcea6379deb285e9e46c9"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-before.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/baseline.json",
+      "bytes": 10648,
+      "sha256": "8057afca761a22e9433720b5dd7a9ff998938c32c6928b42fb32e1c116cb1b4c"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/controls.json",
+      "bytes": 28242,
+      "sha256": "6c733199c197fe26e7e469011d168694f035c0bf92008bd2996d3548bdfb04f1"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/inputs/before/src/RimMandrake/Miasma/Defs/BiomeDefs/RM_Miasma.xml",
+      "bytes": 17701,
+      "sha256": "f6164f87009d6c632a5357d2f4043bc643b0647065621ba6fcd68ca4c5f58240"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/inputs/before/src/RimMandrake/Miasma/Defs/ThingDefs_Races/RM_WardenMother.xml",
+      "bytes": 8891,
+      "sha256": "6d225577f44de6a982de84ad815af9d830bdeabb3330a8b674741ae706ee551b"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/inputs/before/src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_GreySea.xml",
+      "bytes": 16486,
+      "sha256": "5fd0c53e811a3f626d7476e0cd4412e20b44dc2dfaba5c6ca0d706a03895a634"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/inputs/before/src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_SeaBeasts_Invented.xml",
+      "bytes": 69646,
+      "sha256": "dd383ef5e2ea27ed824b773cc6ac04b144e65012093c0803bf06962d71cf7a30"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/inputs/engine-selected.il.txt",
+      "bytes": 67008,
+      "sha256": "bba0499ad10b241f17a21f329ae3d84d1a4f90b5e9f38373ce234009cb7c6fa1"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/inputs/installed/Data/Core/Defs/Bodies/BodyParts_Animal.xml",
+      "bytes": 9987,
+      "sha256": "c069f5ebca38bd40b5a4a6f917ce5b97e12965eb413a64ae9875ffc42257b86d"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/inputs/installed/Data/Core/Defs/Bodies/BodyParts_General.xml",
+      "bytes": 5052,
+      "sha256": "c3546b23f5d97d5a9f496ec6eb1e52149e3ef8de2227e71ed0fefccbc0f88d32"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/inputs/installed/Data/Core/Defs/Bodies/BodyParts_Organs.xml",
+      "bytes": 1570,
+      "sha256": "eeeb6f166bde4804b5d91933a3734954f84239e1abad3b3e000fcbe8609e5f80"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/inputs/installed/Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml",
+      "bytes": 8572,
+      "sha256": "9e64ca6431d6685b342f3bec90166a911948aeb364a232ff8eb2fe69ed321fbc"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/inputs/installed/Data/Core/Defs/ThingDefs_Races/Races_Animal_Base.xml",
+      "bytes": 3904,
+      "sha256": "922276d8275c6087014de702401e97c2724d40c38a2f09de131075ba3e7afcf4"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/inputs/installed/Data/Odyssey/Defs/Bodies/Bodies_Animal_Pinniped.xml",
+      "bytes": 9996,
+      "sha256": "bcab82dd36a998591143703d125872a88fe02bd5a4b74ebb80be0a86633ba71d"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/inputs/instrument.py",
+      "bytes": 29075,
+      "sha256": "f6223a9dd31c542ccf2150821f8999dcadad79135a51d562e88c7b34cf2a4386"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/inputs/src/RimMandrake/EnvironmentalHazards/Source/RM_CompTerritorialAnchor.cs",
+      "bytes": 15093,
+      "sha256": "3235075bed3d431085cd81d61a672fc2ef5f56a1454e5eb8ceae1bbc9cbf8b83"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/inputs/src/RimMandrake/EnvironmentalHazards/Source/RM_CompWaterLocked.cs",
+      "bytes": 7420,
+      "sha256": "47a51db08a8161ed2394ed164e8c40beece26f9c7d2af1cb8326efffb5bfba1c"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/inputs/src/RimMandrake/EnvironmentalHazards/Source/RM_SetPieceElement_AnchoredPawn.cs",
+      "bytes": 6581,
+      "sha256": "6e98a6223ba9a1e6849c84ffb1ac5bf49e5e2f111633fa5037c54cdab7cd35c6"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/inputs/src/RimMandrake/Miasma/Defs/BiomeDefs/RM_Miasma.xml",
+      "bytes": 17701,
+      "sha256": "f6164f87009d6c632a5357d2f4043bc643b0647065621ba6fcd68ca4c5f58240"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/inputs/src/RimMandrake/Miasma/Defs/MapGeneration/RM_Miasma_CrecheScatterer.xml",
+      "bytes": 5493,
+      "sha256": "78171bfe28fdb2453dfd97e811ba736553f640b712b81d5894ab8552ea884a16"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/inputs/src/RimMandrake/Miasma/Defs/ThingDefs_Races/RM_WardenMother.xml",
+      "bytes": 8891,
+      "sha256": "6d225577f44de6a982de84ad815af9d830bdeabb3330a8b674741ae706ee551b"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/inputs/src/RimMandrake/Miasma/Patches/RM_AcousticPayload_Miasma.xml",
+      "bytes": 2815,
+      "sha256": "0e655ba48c8fb9788837754312804351ec2e78771a29937868bdb16a3084895f"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/inputs/src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_GreySea.xml",
+      "bytes": 16486,
+      "sha256": "5fd0c53e811a3f626d7476e0cd4412e20b44dc2dfaba5c6ca0d706a03895a634"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/inputs/src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_SeaBeasts_Invented.xml",
+      "bytes": 70708,
+      "sha256": "a1fed3005d5e8f45e6cc882cf98d174dd37d6d68d1073e739b2e15be8026daf9"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/inputs.json",
+      "bytes": 4237,
+      "sha256": "a6a00fcd07236a49f56651c8fde866700bb381cafcb6eb68c83ea9209ee6e6e6"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/measurement.json",
+      "bytes": 26188,
+      "sha256": "c1aa4c587217f8b29cc791839f1dd4ed34f67b3db898f2fc21f36ef52be7d024"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/patch-audit.json",
+      "bytes": 181852,
+      "sha256": "83fdc8a126a9b1d0446191ea09af3291a2d7cd959c626e80a26d861231ff6746"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/read-xpath.ps1",
+      "bytes": 525,
+      "sha256": "27ede906e41bf61838d2b901222f71a3a287e9c4610ba4e11becccd82cabf9e2"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/resolved-source.xml",
+      "bytes": 22231,
+      "sha256": "ec1834f00e6aba3342229a08bf99ed4cf7e0d7d1da348826ec9449667e275d01"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/selected-source.xml",
+      "bytes": 21955,
+      "sha256": "f676f9ebf2b3903aa8ea8940563d5f980ece79dcd737808ee6c87983d347beb9"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/xpath-raw.xml",
+      "bytes": 21980,
+      "sha256": "9b299963a2905361c4c831be73600ca26fb8fd604168cf9c8e25057a54a793c3"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/xpath-request.json",
+      "bytes": 1590719,
+      "sha256": "95f84f8b4e2c08e9c168769d4311d573bc431aadd1b8c5a323fdf7f2d8661395"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/xpath-resolved.xml",
+      "bytes": 22198,
+      "sha256": "3f7c7341d0510d994101f15507cd44485bd699cc1212f6d49964f5e058aa525b"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/xpath.receipt.json",
+      "bytes": 777,
+      "sha256": "1aa6ca8dcabb00bd900abee3022123331753bd0ed476c5e8ec92f28f31d81870"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/xpath.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract/xpath.stdout.json",
+      "bytes": 2495399,
+      "sha256": "f506e3375b44140a7ea1a882847e9bcb7aa3a3915f7e64865b5a19f8dab99bdf"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract.receipt.json",
+      "bytes": 723,
+      "sha256": "c38670e818fae05724aa777c67e132d42b644221a6dee3c3b6c02fee8dfcd1e2"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-contract.stdout.txt",
+      "bytes": 1690,
+      "sha256": "4c6b63bbbc9f90e94f506b627334ea45198ed35d791eb7e1e50915431358bead"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-final.receipt.json",
+      "bytes": 799,
+      "sha256": "f572586f71550000356fcb31839cb644afb81e8e2645d40d3306a6576e84b0ac"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-final.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/measure-final.stdout.txt",
+      "bytes": 1690,
+      "sha256": "4c6b63bbbc9f90e94f506b627334ea45198ed35d791eb7e1e50915431358bead"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/parent-selftests-lxml.receipt.json",
+      "bytes": 458,
+      "sha256": "3cb534a1d2ee0aa060d8321e5565370693e42e7f0076ae49df905198f1c9e0bf"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/parent-selftests-lxml.stderr.txt",
+      "bytes": 126,
+      "sha256": "2044e9bb13c1174d91aaa7fef29f7bfb0c8132c34e285186539b53a4b2ff8b40"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/parent-selftests-lxml.stdout.txt",
+      "bytes": 657,
+      "sha256": "b984b3ff3a510dca423f791266d7bbb2aa9c4e9197f2b7e8793a9c882aaaedf4"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/production-spec-diff.receipt.json",
+      "bytes": 328,
+      "sha256": "0443f5257eac95c238fbd15d74f5a9b0228d76acfb964f51d827f340859e6813"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/production-spec.diff",
+      "bytes": 3981,
+      "sha256": "c76d67236812a9523ededb0950ff17f56dbba7f141341bb23283e0b5ba15c60d"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/read_engine.ps1",
+      "bytes": 3646,
+      "sha256": "f36b0c4c3d62ebf06bc1a615a99857d8584192679a34db1471da3202d4258fb2"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/run_process.py",
+      "bytes": 1249,
+      "sha256": "5e7b106c1d71629d9883e126366b3dc91615323f23794b715488072079def4fc"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/selftests-final.receipt.json",
+      "bytes": 440,
+      "sha256": "2b2361332fee4c65ee0c7181d2a4035998717aa0a71116f6e138f703614c8ae1"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/selftests-final.stderr.txt",
+      "bytes": 132,
+      "sha256": "38e48e63910d7f00b00847b77cc942a59964bcb98e09f3e58ced84e60dfcaede"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/selftests-final.stdout.txt",
+      "bytes": 582,
+      "sha256": "a806bed97e24182305e5f16a3a3c3b8f407a3bf8729ffa052ad117247a20e889"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/selftests-focused.receipt.json",
+      "bytes": 426,
+      "sha256": "0fa59dfd2b8f187e51578cd39330130bbe186b843bbe2702db2816316c070675"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/selftests-focused.stderr.txt",
+      "bytes": 126,
+      "sha256": "935334185c2fc291d379a902b1ba958dc201643e729b5a27395fcac5b5526d7c"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/selftests-focused.stdout.txt",
+      "bytes": 1875,
+      "sha256": "cea715934c18600997a289fba9ca6fe2fed98a048201a8823f096ab5b422f88f"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/selftests-xml-fields.receipt.json",
+      "bytes": 432,
+      "sha256": "f20aec10353800b88886c57815c2332cd9b247627541848a34f2dd1a2fedb457"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/selftests-xml-fields.stderr.txt",
+      "bytes": 132,
+      "sha256": "38e48e63910d7f00b00847b77cc942a59964bcb98e09f3e58ced84e60dfcaede"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/selftests-xml-fields.stdout.txt",
+      "bytes": 683,
+      "sha256": "96301bba3d42f9090ce1879d57096c3bc990609e766f9c74528aea91c86a283c"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/validator-exact.receipt.json",
+      "bytes": 476,
+      "sha256": "7f9da34d1da44916f4f73913b2c2df45bf307567b218f4d32d04868d7007f478"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/validator-exact.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/validator-exact.stdout.txt",
+      "bytes": 4315,
+      "sha256": "b03e26869af969db03ae0d17bf135509580b86635b6fa27312772c08a4062d24"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/validator-final.receipt.json",
+      "bytes": 485,
+      "sha256": "927ee646f14eeeb13193cd38ce61f1860239f01f46405f82b08e452f2a023ba2"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/validator-final.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/validator-final.stdout.txt",
+      "bytes": 4315,
+      "sha256": "b03e26869af969db03ae0d17bf135509580b86635b6fa27312772c08a4062d24"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/validator-selftest-lxml.receipt.json",
+      "bytes": 497,
+      "sha256": "414500791da1235d2ab79ab41f65b4e5f09ecf7306f82b388c5b1f24c7d808d9"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/validator-selftest-lxml.stderr.txt",
+      "bytes": 126,
+      "sha256": "2044e9bb13c1174d91aaa7fef29f7bfb0c8132c34e285186539b53a4b2ff8b40"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/raw/validator-selftest-lxml.stdout.txt",
+      "bytes": 657,
+      "sha256": "b984b3ff3a510dca423f791266d7bbb2aa9c4e9197f2b7e8793a9c882aaaedf4"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/read_engine.ps1",
+      "bytes": 3646,
+      "sha256": "f36b0c4c3d62ebf06bc1a615a99857d8584192679a34db1471da3202d4258fb2"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/review.diff",
+      "bytes": 48790,
+      "sha256": "5d4bd3a99aa67220552523b8135725b3dc15519b861be529d88e1c44373c571e"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/run_process.py",
+      "bytes": 1249,
+      "sha256": "5e7b106c1d71629d9883e126366b3dc91615323f23794b715488072079def4fc"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/validate_workflow.py",
+      "bytes": 1227,
+      "sha256": "83488c409166adf61864a761f6e183fa94400609454b8f8a612f8fe26db15930"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/workflow.receipt.json",
+      "bytes": 284,
+      "sha256": "02cefd2c32612fa8bdc23614b8d6469a658fc02207e394c43ae170a337cfb92d"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/workflow.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/evidence/workflow.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/history/JUDGE_PROMPT.core-only.txt",
+      "bytes": 2694,
+      "sha256": "b91b069c3e16ca76c662673a9a6127289baf56f56741f474b244d8643ae014b7"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/parent_admin/ACCEPTANCE.md",
+      "bytes": 1875,
+      "sha256": "a268d93555d52cf8296303c8177ebbfa0530978b88dd952d666b4c770208bdbe"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/parent_admin/audit_bundle.py",
+      "bytes": 1291,
+      "sha256": "198e89550facd148813219bbab8f5ff5f408fc3ed883950063eea35c997266ea"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/parent_admin/judge-audit.json",
+      "bytes": 828,
+      "sha256": "5cc776676f41659a7c807e189160667a819ace50ac45b49a82807d2d7c090b89"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/parent_admin/judge-commands.json",
+      "bytes": 71827,
+      "sha256": "0144bdfdd7b5c2d648070673a3ef6fd6c4ab07de5cbd5910e770aea243c7af93"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/parent_admin/publication-paths.json",
+      "bytes": 26027,
+      "sha256": "e18f6744bff19f89ccf76901ebfe369fa310a7e4f49394e41c6ab35bc1d1fc84"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/run.jsonl",
+      "bytes": 733,
+      "sha256": "c1952a2cebbf71b8c66021a9a583182fd0b2a991b304150fef5f6a3f08dc0d24"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/run.jsonl.events.jsonl",
+      "bytes": 997427,
+      "sha256": "c0a5798e2f981426478f47c2ce6bbf81443dbd5e8eb5b351079ff9a5e13c4561"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/run.jsonl.last.txt",
+      "bytes": 503,
+      "sha256": "3e9f6899cf665db97ee3d43cd3fd214d9a100c72dcc2858f7ae88191d176881b"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/run.jsonl.spend.json",
+      "bytes": 841,
+      "sha256": "042a1472e47ad8b000c83db075ce81c50b129b950924b77ec3f2ad917fe98bff"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/runner.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/runner.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

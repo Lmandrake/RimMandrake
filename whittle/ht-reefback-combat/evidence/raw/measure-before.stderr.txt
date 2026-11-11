@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/northstar/measure_reefback_combat.py", line 372, in <module>
+    main()
+    ~~~~^^
+  File "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/northstar/measure_reefback_combat.py", line 213, in main
+    'hunting': hunting(rows, float(race.findtext('statBases/ArmorRating_Sharp'))),
+               ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/northstar/measure_reefback_combat.py", line 116, in hunting
+    'body_part_budget': r['part_max_health']['Body'],
+                        ~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+KeyError: 'Body'

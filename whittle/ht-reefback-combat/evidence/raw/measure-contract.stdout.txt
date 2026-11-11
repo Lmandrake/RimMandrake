@@ -1,0 +1,94 @@
+{
+  "species": {
+    "RM_ReefbackJuv": [
+      {
+        "stage": "AnimalBaby",
+        "healthScale": 2.0,
+        "Body_maxHP": 80,
+        "damage": [
+          8.0,
+          5.0
+        ]
+      },
+      {
+        "stage": "AnimalJuvenile",
+        "healthScale": 4.8,
+        "Body_maxHP": 192,
+        "damage": [
+          12.0,
+          7.5
+        ]
+      }
+    ],
+    "RM_Reefback": [
+      {
+        "stage": "AnimalBaby",
+        "healthScale": 5.0,
+        "Body_maxHP": 200,
+        "damage": [
+          240.0,
+          60.0
+        ]
+      },
+      {
+        "stage": "AnimalJuvenile",
+        "healthScale": 12.0,
+        "Body_maxHP": 480,
+        "damage": [
+          360.0,
+          90.0
+        ]
+      },
+      {
+        "stage": "AnimalAdult",
+        "healthScale": 20.0,
+        "Body_maxHP": 800,
+        "damage": [
+          480.0,
+          120.0
+        ]
+      }
+    ],
+    "RM_WardenMother": [
+      {
+        "stage": "AnimalBaby",
+        "healthScale": 1.75,
+        "Body_maxHP": 70,
+        "damage": [
+          11.0,
+          9.0
+        ]
+      },
+      {
+        "stage": "AnimalJuvenile",
+        "healthScale": 4.2,
+        "Body_maxHP": 169,
+        "damage": [
+          16.5,
+          13.5
+        ]
+      },
+      {
+        "stage": "AnimalAdult",
+        "healthScale": 7.0,
+        "Body_maxHP": 280,
+        "damage": [
+          22.0,
+          18.0
+        ]
+      },
+      {
+        "stage": "RM_WardenMotherElder",
+        "healthScale": 7.0,
+        "Body_maxHP": 280,
+        "damage": [
+          22.0,
+          18.0
+        ]
+      }
+    ]
+  },
+  "audited_patch_files": 473,
+  "matched_operations": 46,
+  "xpath_errors": 0
+}

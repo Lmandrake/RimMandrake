@@ -1,0 +1,32 @@
+[
+  {
+    "file": "src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_SeaBeasts_Invented.xml",
+    "bytes": 70708,
+    "sha256": "a1fed3005d5e8f45e6cc882cf98d174dd37d6d68d1073e739b2e15be8026daf9"
+  },
+  {
+    "file": "src/RimMandrake/HugeThings/northstar/measure_reefback_combat.py",
+    "bytes": 30864,
+    "sha256": "affab56adabd90efe8e7daef923c8d33124989616d5a2273578fb09bc0770b32"
+  },
+  {
+    "file": "design/Jawa/worldbuilding/biomes/miasma_fauna_roster_2026-09-23.md",
+    "bytes": 40671,
+    "sha256": "d446ebbb3bcf880726f47ed92e6c0f8a0d256699f744be0ea6be1c5260f6b5e0"
+  },
+  {
+    "file": "design/RimMandrake/hugethings_codex_2026-11-09/REEFBACK_CALF_DECISION.md",
+    "bytes": 7360,
+    "sha256": "864e9ab0fcac2b636e79c944cc1b03f9148bfd1138c9875b1d6b71443c58a476"
+  },
+  {
+    "file": "design/RimMandrake/hugethings_codex_2026-11-09/REEFBACK_NURSERY_COMBAT.md",
+    "bytes": 6447,
+    "sha256": "444701319af94d7a7db1f781f0a509a392856ce5761e452fda997f738d6ea170"
+  },
+  {
+    "file": "infrastructure/state/delegated/2026-11-11/RIMMANDRAKE_RECONCILE_HUGETHINGS_REEFBACK_NURSERY_COMBAT.json",
+    "bytes": 1706,
+    "sha256": "c59d9e73ee0cda5bd6817e7652dd93b04da3a4809d9be225ba92af83989f3ee7"
+  }
+]

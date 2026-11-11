@@ -1,0 +1,11 @@
+--- initial frozen prompt
++++ second call prompt
+@@ -4,7 +4,7 @@
+ - whittle/ht-reefback-combat/STATEMENT.md, NOTES.md, evidence/item-before.txt.
+ - All files under whittle/ht-reefback-combat/evidence/raw/ ONLY: neutral source snapshots, raw measurements, exact test processes and fixtures. Do not accept pass labels; independently rederive.
+ - evidence/design_prompt.txt and evidence/design_raw.json in this Whittle folder: independent delegated design decision, no maker conclusions.
+-- XML/C#/Python source under src/, tools/, installed game Core defs and managed metadata under /mnt/d/SteamLibrary/steamapps/common/RimWorld/ (offline only).
++- XML/C#/Python source under src/, tools/, installed game Core and all five DLC defs under /mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/ (including Odyssey/Defs/Bodies/Bodies_Animal_Pinniped.xml), and managed metadata under /mnt/d/SteamLibrary/steamapps/common/RimWorld/RimWorldWin64_Data/Managed/ (offline only).
+ - CLAUDE.md, infrastructure/agents/CHARTER.md, design/RimMandrake/GIT_WORKFLOW.md, design/RimMandrake/delegation_policy.md, skills/rimworld-modding/ and relevant references.
+ - design/Jawa/worldbuilding/biomes/the_miasma.md, the_grey_sea.md and roster JSONs; relevant Miasma/GreySea/TerminalBiomes specs for nursery/combat-role constraints, including any updated nursery wording.
+ 

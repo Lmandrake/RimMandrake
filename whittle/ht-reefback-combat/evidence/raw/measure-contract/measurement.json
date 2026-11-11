@@ -1,0 +1,707 @@
+{
+  "species": {
+    "RM_ReefbackJuv": {
+      "raw_parent": "RM_Reefback",
+      "baseBodySize": 32.0,
+      "baseHealthScale": 8.0,
+      "manhunterOnDamageChance": 0.2,
+      "sharp_armor": 0.3,
+      "blunt_armor": 0.25,
+      "heat_armor": "0.30",
+      "stages": [
+        {
+          "stage": "AnimalBaby",
+          "minAge_xml": 0.0,
+          "factors": {
+            "bodySizeFactor": 0.2,
+            "healthScaleFactor": 0.25,
+            "meleeDamageFactor": 0.5
+          },
+          "factor_provenance": {
+            "bodySizeFactor": "LifeStageDef XML/AnimalBaby/bodySizeFactor",
+            "healthScaleFactor": "LifeStageDef XML/AnimalBaby/healthScaleFactor",
+            "meleeDamageFactor": "LifeStageDef XML/AnimalBaby/meleeDamageFactor"
+          },
+          "bodySize_decimal": 6.4,
+          "bodySize_float32": 6.400000095367432,
+          "healthScale_decimal": 2.0,
+          "healthScale_float32": 2.0,
+          "part_max_health": {
+            "Brain": 20,
+            "Body": 80,
+            "Heart": 30
+          },
+          "tools": [
+            {
+              "label": "tail sweep",
+              "power_xml": 16.0,
+              "cooldown_xml_seconds": 3.0,
+              "chanceFactor_xml": "1",
+              "linked_group": "HeadAttackTool",
+              "nominal_damage_decimal": 8.0,
+              "nominal_damage_float32": 8.0
+            },
+            {
+              "label": "bulk",
+              "power_xml": 10.0,
+              "cooldown_xml_seconds": 2.5,
+              "chanceFactor_xml": "0.3",
+              "linked_group": "FrontLeftPaw",
+              "nominal_damage_decimal": 5.0,
+              "nominal_damage_float32": 5.0
+            }
+          ]
+        },
+        {
+          "stage": "AnimalJuvenile",
+          "minAge_xml": 0.1,
+          "factors": {
+            "bodySizeFactor": 0.5,
+            "healthScaleFactor": 0.6,
+            "meleeDamageFactor": 0.75
+          },
+          "factor_provenance": {
+            "bodySizeFactor": "LifeStageDef XML/AnimalJuvenile/bodySizeFactor",
+            "healthScaleFactor": "LifeStageDef XML/AnimalJuvenile/healthScaleFactor",
+            "meleeDamageFactor": "LifeStageDef XML/AnimalJuvenile/meleeDamageFactor"
+          },
+          "bodySize_decimal": 16.0,
+          "bodySize_float32": 16.0,
+          "healthScale_decimal": 4.8,
+          "healthScale_float32": 4.800000190734863,
+          "part_max_health": {
+            "Brain": 48,
+            "Body": 192,
+            "Heart": 72
+          },
+          "tools": [
+            {
+              "label": "tail sweep",
+              "power_xml": 16.0,
+              "cooldown_xml_seconds": 3.0,
+              "chanceFactor_xml": "1",
+              "linked_group": "HeadAttackTool",
+              "nominal_damage_decimal": 12.0,
+              "nominal_damage_float32": 12.0
+            },
+            {
+              "label": "bulk",
+              "power_xml": 10.0,
+              "cooldown_xml_seconds": 2.5,
+              "chanceFactor_xml": "0.3",
+              "linked_group": "FrontLeftPaw",
+              "nominal_damage_decimal": 7.5,
+              "nominal_damage_float32": 7.5
+            }
+          ]
+        }
+      ],
+      "kind_stage_count": 2,
+      "kind_wildGroupSize": "2~3",
+      "kind_ecoSystemWeight": "4.0",
+      "kind_combatPower": "150",
+      "kind_water_speed_factor": "2.0",
+      "inherited_stats": {
+        "Mass": "60",
+        "Flammability": "0.7",
+        "LeatherAmount": "40",
+        "ToxicResistance": "0.5",
+        "MoveSpeed": "2.0",
+        "MarketValue": "8000",
+        "ComfyTemperatureMin": "-30",
+        "ComfyTemperatureMax": "50",
+        "ArmorRating_Blunt": "0.25",
+        "ArmorRating_Sharp": "0.30",
+        "ArmorRating_Heat": "0.30",
+        "Wildness": "1.0"
+      },
+      "race_fields": {
+        "body": "Pinniped",
+        "leatherDef": "Leather_Sealskin",
+        "waterSeeker": "true",
+        "canBePredatorPrey": "false",
+        "disableMating": "true",
+        "manhunterOnDamageChance": "0.2"
+      },
+      "comps": [
+        "<li>\n        <compClass>CompAttachBase</compClass>\n      </li>\n    ",
+        "<li Class=\"CompProperties_HoldingPlatformTarget\" MayRequire=\"Ludeon.RimWorld.Anomaly\">\n        <baseEscapeIntervalMtbDays>120</baseEscapeIntervalMtbDays>\n        <getsColdContainmentBonus>true</getsColdContainmentBonus>\n      </li>\n      ",
+        "<li MayRequire=\"Ludeon.RimWorld.Anomaly\" Class=\"CompProperties_Studiable\">\n        <frequencyTicks>120000</frequencyTicks>\n        <knowledgeCategory MayRequire=\"Ludeon.RimWorld.Anomaly\">Basic</knowledgeCategory>\n        <anomalyKnowledge>1</anomalyKnowledge>\n        <requiresImprisonment>true</requiresImprisonment>\n        <minMonolithLevelForStudy>1</minMonolithLevelForStudy>\n      </li>\n    "
+      ],
+      "hunting": [
+        {
+          "stage": "AnimalBaby",
+          "sharp_armor": 0.3,
+          "residual_armor": 0.15,
+          "deflect_probability_given_hit": 0.075,
+          "half_damage_probability_given_hit": 0.075,
+          "full_damage_probability_given_hit": 0.85,
+          "expected_damage_per_landed_hit": 10.649999999999999,
+          "team_expected_damage_per_second": 4.26,
+          "expected_damage_30_seconds": 127.8,
+          "body_part_budget": 80,
+          "body_part_budget_over_expected_DPS_seconds": 18.779342723004696
+        },
+        {
+          "stage": "AnimalJuvenile",
+          "sharp_armor": 0.3,
+          "residual_armor": 0.15,
+          "deflect_probability_given_hit": 0.075,
+          "half_damage_probability_given_hit": 0.075,
+          "full_damage_probability_given_hit": 0.85,
+          "expected_damage_per_landed_hit": 10.649999999999999,
+          "team_expected_damage_per_second": 4.26,
+          "expected_damage_30_seconds": 127.8,
+          "body_part_budget": 192,
+          "body_part_budget_over_expected_DPS_seconds": 45.07042253521127
+        }
+      ]
+    },
+    "RM_Reefback": {
+      "raw_parent": "AnimalThingBase",
+      "baseBodySize": 32.0,
+      "baseHealthScale": 20.0,
+      "manhunterOnDamageChance": 0.2,
+      "sharp_armor": 0.7,
+      "blunt_armor": 0.6,
+      "heat_armor": "0.75",
+      "stages": [
+        {
+          "stage": "AnimalBaby",
+          "minAge_xml": 0.0,
+          "factors": {
+            "bodySizeFactor": 0.2,
+            "healthScaleFactor": 0.25,
+            "meleeDamageFactor": 0.5
+          },
+          "factor_provenance": {
+            "bodySizeFactor": "LifeStageDef XML/AnimalBaby/bodySizeFactor",
+            "healthScaleFactor": "LifeStageDef XML/AnimalBaby/healthScaleFactor",
+            "meleeDamageFactor": "LifeStageDef XML/AnimalBaby/meleeDamageFactor"
+          },
+          "bodySize_decimal": 6.4,
+          "bodySize_float32": 6.400000095367432,
+          "healthScale_decimal": 5.0,
+          "healthScale_float32": 5.0,
+          "part_max_health": {
+            "Brain": 50,
+            "Body": 200,
+            "Heart": 75
+          },
+          "tools": [
+            {
+              "label": "tail sweep",
+              "power_xml": 480.0,
+              "cooldown_xml_seconds": 8.5,
+              "chanceFactor_xml": "1",
+              "linked_group": "HeadAttackTool",
+              "nominal_damage_decimal": 240.0,
+              "nominal_damage_float32": 240.0
+            },
+            {
+              "label": "bulk",
+              "power_xml": 120.0,
+              "cooldown_xml_seconds": 6.0,
+              "chanceFactor_xml": "0.3",
+              "linked_group": "FrontLeftPaw",
+              "nominal_damage_decimal": 60.0,
+              "nominal_damage_float32": 60.0
+            }
+          ]
+        },
+        {
+          "stage": "AnimalJuvenile",
+          "minAge_xml": 0.2,
+          "factors": {
+            "bodySizeFactor": 0.5,
+            "healthScaleFactor": 0.6,
+            "meleeDamageFactor": 0.75
+          },
+          "factor_provenance": {
+            "bodySizeFactor": "LifeStageDef XML/AnimalJuvenile/bodySizeFactor",
+            "healthScaleFactor": "LifeStageDef XML/AnimalJuvenile/healthScaleFactor",
+            "meleeDamageFactor": "LifeStageDef XML/AnimalJuvenile/meleeDamageFactor"
+          },
+          "bodySize_decimal": 16.0,
+          "bodySize_float32": 16.0,
+          "healthScale_decimal": 12.0,
+          "healthScale_float32": 12.0,
+          "part_max_health": {
+            "Brain": 120,
+            "Body": 480,
+            "Heart": 180
+          },
+          "tools": [
+            {
+              "label": "tail sweep",
+              "power_xml": 480.0,
+              "cooldown_xml_seconds": 8.5,
+              "chanceFactor_xml": "1",
+              "linked_group": "HeadAttackTool",
+              "nominal_damage_decimal": 360.0,
+              "nominal_damage_float32": 360.0
+            },
+            {
+              "label": "bulk",
+              "power_xml": 120.0,
+              "cooldown_xml_seconds": 6.0,
+              "chanceFactor_xml": "0.3",
+              "linked_group": "FrontLeftPaw",
+              "nominal_damage_decimal": 90.0,
+              "nominal_damage_float32": 90.0
+            }
+          ]
+        },
+        {
+          "stage": "AnimalAdult",
+          "minAge_xml": 0.6,
+          "factors": {
+            "bodySizeFactor": 1.0,
+            "healthScaleFactor": 1.0,
+            "meleeDamageFactor": 1.0
+          },
+          "factor_provenance": {
+            "bodySizeFactor": "LifeStageDef constructor IL default 1",
+            "healthScaleFactor": "LifeStageDef constructor IL default 1",
+            "meleeDamageFactor": "LifeStageDef constructor IL default 1"
+          },
+          "bodySize_decimal": 32.0,
+          "bodySize_float32": 32.0,
+          "healthScale_decimal": 20.0,
+          "healthScale_float32": 20.0,
+          "part_max_health": {
+            "Brain": 200,
+            "Body": 800,
+            "Heart": 300
+          },
+          "tools": [
+            {
+              "label": "tail sweep",
+              "power_xml": 480.0,
+              "cooldown_xml_seconds": 8.5,
+              "chanceFactor_xml": "1",
+              "linked_group": "HeadAttackTool",
+              "nominal_damage_decimal": 480.0,
+              "nominal_damage_float32": 480.0
+            },
+            {
+              "label": "bulk",
+              "power_xml": 120.0,
+              "cooldown_xml_seconds": 6.0,
+              "chanceFactor_xml": "0.3",
+              "linked_group": "FrontLeftPaw",
+              "nominal_damage_decimal": 120.0,
+              "nominal_damage_float32": 120.0
+            }
+          ]
+        }
+      ],
+      "kind_stage_count": 3,
+      "kind_wildGroupSize": "1",
+      "kind_ecoSystemWeight": "4.0",
+      "kind_combatPower": "2000",
+      "kind_water_speed_factor": "2.0",
+      "inherited_stats": {
+        "Mass": "60",
+        "Flammability": "0.7",
+        "LeatherAmount": "40",
+        "ToxicResistance": "0.5",
+        "MoveSpeed": "2.0",
+        "MarketValue": "8000",
+        "ComfyTemperatureMin": "-30",
+        "ComfyTemperatureMax": "50",
+        "ArmorRating_Blunt": "0.60",
+        "ArmorRating_Sharp": "0.70",
+        "ArmorRating_Heat": "0.75",
+        "Wildness": "1.0"
+      },
+      "race_fields": {
+        "body": "Pinniped",
+        "leatherDef": "Leather_Sealskin",
+        "waterSeeker": "true",
+        "canBePredatorPrey": "false",
+        "disableMating": "true",
+        "manhunterOnDamageChance": "0.2"
+      },
+      "comps": [
+        "<li>\n        <compClass>CompAttachBase</compClass>\n      </li>\n    ",
+        "<li Class=\"CompProperties_HoldingPlatformTarget\" MayRequire=\"Ludeon.RimWorld.Anomaly\">\n        <baseEscapeIntervalMtbDays>120</baseEscapeIntervalMtbDays>\n        <getsColdContainmentBonus>true</getsColdContainmentBonus>\n      </li>\n      ",
+        "<li MayRequire=\"Ludeon.RimWorld.Anomaly\" Class=\"CompProperties_Studiable\">\n        <frequencyTicks>120000</frequencyTicks>\n        <knowledgeCategory MayRequire=\"Ludeon.RimWorld.Anomaly\">Basic</knowledgeCategory>\n        <anomalyKnowledge>1</anomalyKnowledge>\n        <requiresImprisonment>true</requiresImprisonment>\n        <minMonolithLevelForStudy>1</minMonolithLevelForStudy>\n      </li>\n    "
+      ],
+      "hunting": [
+        {
+          "stage": "AnimalBaby",
+          "sharp_armor": 0.7,
+          "residual_armor": 0.5499999999999999,
+          "deflect_probability_given_hit": 0.27499999999999997,
+          "half_damage_probability_given_hit": 0.27499999999999997,
+          "full_damage_probability_given_hit": 0.45000000000000007,
+          "expected_damage_per_landed_hit": 7.050000000000001,
+          "team_expected_damage_per_second": 2.82,
+          "expected_damage_30_seconds": 84.6,
+          "body_part_budget": 200,
+          "body_part_budget_over_expected_DPS_seconds": 70.92198581560284
+        },
+        {
+          "stage": "AnimalJuvenile",
+          "sharp_armor": 0.7,
+          "residual_armor": 0.5499999999999999,
+          "deflect_probability_given_hit": 0.27499999999999997,
+          "half_damage_probability_given_hit": 0.27499999999999997,
+          "full_damage_probability_given_hit": 0.45000000000000007,
+          "expected_damage_per_landed_hit": 7.050000000000001,
+          "team_expected_damage_per_second": 2.82,
+          "expected_damage_30_seconds": 84.6,
+          "body_part_budget": 480,
+          "body_part_budget_over_expected_DPS_seconds": 170.2127659574468
+        },
+        {
+          "stage": "AnimalAdult",
+          "sharp_armor": 0.7,
+          "residual_armor": 0.5499999999999999,
+          "deflect_probability_given_hit": 0.27499999999999997,
+          "half_damage_probability_given_hit": 0.27499999999999997,
+          "full_damage_probability_given_hit": 0.45000000000000007,
+          "expected_damage_per_landed_hit": 7.050000000000001,
+          "team_expected_damage_per_second": 2.82,
+          "expected_damage_30_seconds": 84.6,
+          "body_part_budget": 800,
+          "body_part_budget_over_expected_DPS_seconds": 283.68794326241135
+        }
+      ]
+    },
+    "RM_WardenMother": {
+      "raw_parent": "AnimalThingBase",
+      "baseBodySize": 8.0,
+      "baseHealthScale": 7.0,
+      "manhunterOnDamageChance": 0.0,
+      "sharp_armor": 0.65,
+      "blunt_armor": 0.55,
+      "heat_armor": null,
+      "stages": [
+        {
+          "stage": "AnimalBaby",
+          "minAge_xml": 0.0,
+          "factors": {
+            "bodySizeFactor": 0.2,
+            "healthScaleFactor": 0.25,
+            "meleeDamageFactor": 0.5
+          },
+          "factor_provenance": {
+            "bodySizeFactor": "LifeStageDef XML/AnimalBaby/bodySizeFactor",
+            "healthScaleFactor": "LifeStageDef XML/AnimalBaby/healthScaleFactor",
+            "meleeDamageFactor": "LifeStageDef XML/AnimalBaby/meleeDamageFactor"
+          },
+          "bodySize_decimal": 1.6,
+          "bodySize_float32": 1.600000023841858,
+          "healthScale_decimal": 1.75,
+          "healthScale_float32": 1.75,
+          "part_max_health": {
+            "Brain": 18,
+            "Body": 70,
+            "Heart": 27
+          },
+          "tools": [
+            {
+              "label": "crushing bite",
+              "power_xml": 22.0,
+              "cooldown_xml_seconds": 2.0,
+              "chanceFactor_xml": "1",
+              "linked_group": "HeadAttackTool",
+              "nominal_damage_decimal": 11.0,
+              "nominal_damage_float32": 11.0
+            },
+            {
+              "label": "flipper slam",
+              "power_xml": 18.0,
+              "cooldown_xml_seconds": 2.6,
+              "chanceFactor_xml": "0.6",
+              "linked_group": "FrontLeftPaw",
+              "nominal_damage_decimal": 9.0,
+              "nominal_damage_float32": 9.0
+            }
+          ]
+        },
+        {
+          "stage": "AnimalJuvenile",
+          "minAge_xml": 0.15,
+          "factors": {
+            "bodySizeFactor": 0.5,
+            "healthScaleFactor": 0.6,
+            "meleeDamageFactor": 0.75
+          },
+          "factor_provenance": {
+            "bodySizeFactor": "LifeStageDef XML/AnimalJuvenile/bodySizeFactor",
+            "healthScaleFactor": "LifeStageDef XML/AnimalJuvenile/healthScaleFactor",
+            "meleeDamageFactor": "LifeStageDef XML/AnimalJuvenile/meleeDamageFactor"
+          },
+          "bodySize_decimal": 4.0,
+          "bodySize_float32": 4.0,
+          "healthScale_decimal": 4.2,
+          "healthScale_float32": 4.200000286102295,
+          "part_max_health": {
+            "Brain": 43,
+            "Body": 169,
+            "Heart": 64
+          },
+          "tools": [
+            {
+              "label": "crushing bite",
+              "power_xml": 22.0,
+              "cooldown_xml_seconds": 2.0,
+              "chanceFactor_xml": "1",
+              "linked_group": "HeadAttackTool",
+              "nominal_damage_decimal": 16.5,
+              "nominal_damage_float32": 16.5
+            },
+            {
+              "label": "flipper slam",
+              "power_xml": 18.0,
+              "cooldown_xml_seconds": 2.6,
+              "chanceFactor_xml": "0.6",
+              "linked_group": "FrontLeftPaw",
+              "nominal_damage_decimal": 13.5,
+              "nominal_damage_float32": 13.5
+            }
+          ]
+        },
+        {
+          "stage": "AnimalAdult",
+          "minAge_xml": 0.4,
+          "factors": {
+            "bodySizeFactor": 1.0,
+            "healthScaleFactor": 1.0,
+            "meleeDamageFactor": 1.0
+          },
+          "factor_provenance": {
+            "bodySizeFactor": "LifeStageDef constructor IL default 1",
+            "healthScaleFactor": "LifeStageDef constructor IL default 1",
+            "meleeDamageFactor": "LifeStageDef constructor IL default 1"
+          },
+          "bodySize_decimal": 8.0,
+          "bodySize_float32": 8.0,
+          "healthScale_decimal": 7.0,
+          "healthScale_float32": 7.0,
+          "part_max_health": {
+            "Brain": 70,
+            "Body": 280,
+            "Heart": 105
+          },
+          "tools": [
+            {
+              "label": "crushing bite",
+              "power_xml": 22.0,
+              "cooldown_xml_seconds": 2.0,
+              "chanceFactor_xml": "1",
+              "linked_group": "HeadAttackTool",
+              "nominal_damage_decimal": 22.0,
+              "nominal_damage_float32": 22.0
+            },
+            {
+              "label": "flipper slam",
+              "power_xml": 18.0,
+              "cooldown_xml_seconds": 2.6,
+              "chanceFactor_xml": "0.6",
+              "linked_group": "FrontLeftPaw",
+              "nominal_damage_decimal": 18.0,
+              "nominal_damage_float32": 18.0
+            }
+          ]
+        },
+        {
+          "stage": "RM_WardenMotherElder",
+          "minAge_xml": 38.0,
+          "factors": {
+            "bodySizeFactor": 1.0,
+            "healthScaleFactor": 1.0,
+            "meleeDamageFactor": 1.0
+          },
+          "factor_provenance": {
+            "bodySizeFactor": "LifeStageDef XML/RM_WardenMotherElder/bodySizeFactor",
+            "healthScaleFactor": "LifeStageDef constructor IL default 1",
+            "meleeDamageFactor": "LifeStageDef constructor IL default 1"
+          },
+          "bodySize_decimal": 8.0,
+          "bodySize_float32": 8.0,
+          "healthScale_decimal": 7.0,
+          "healthScale_float32": 7.0,
+          "part_max_health": {
+            "Brain": 70,
+            "Body": 280,
+            "Heart": 105
+          },
+          "tools": [
+            {
+              "label": "crushing bite",
+              "power_xml": 22.0,
+              "cooldown_xml_seconds": 2.0,
+              "chanceFactor_xml": "1",
+              "linked_group": "HeadAttackTool",
+              "nominal_damage_decimal": 22.0,
+              "nominal_damage_float32": 22.0
+            },
+            {
+              "label": "flipper slam",
+              "power_xml": 18.0,
+              "cooldown_xml_seconds": 2.6,
+              "chanceFactor_xml": "0.6",
+              "linked_group": "FrontLeftPaw",
+              "nominal_damage_decimal": 18.0,
+              "nominal_damage_float32": 18.0
+            }
+          ]
+        }
+      ],
+      "kind_stage_count": 4,
+      "kind_wildGroupSize": "1",
+      "kind_ecoSystemWeight": "0",
+      "kind_combatPower": "1400",
+      "kind_water_speed_factor": "1.8",
+      "inherited_stats": {
+        "Mass": "60",
+        "Flammability": "0.7",
+        "LeatherAmount": "40",
+        "ToxicResistance": "0.5",
+        "MoveSpeed": "1.6",
+        "MarketValue": "0",
+        "ComfyTemperatureMin": "-20",
+        "ComfyTemperatureMax": "55",
+        "ArmorRating_Blunt": "0.55",
+        "ArmorRating_Sharp": "0.65",
+        "Wildness": "1.0"
+      },
+      "race_fields": {
+        "body": "Pinniped",
+        "leatherDef": "Leather_Sealskin",
+        "waterSeeker": "true",
+        "canBePredatorPrey": "false",
+        "disableMating": "true",
+        "manhunterOnDamageChance": "0"
+      },
+      "comps": [
+        "<li>\n        <compClass>CompAttachBase</compClass>\n      </li>\n    ",
+        "<li Class=\"CompProperties_HoldingPlatformTarget\" MayRequire=\"Ludeon.RimWorld.Anomaly\">\n        <baseEscapeIntervalMtbDays>120</baseEscapeIntervalMtbDays>\n        <getsColdContainmentBonus>true</getsColdContainmentBonus>\n      </li>\n      ",
+        "<li MayRequire=\"Ludeon.RimWorld.Anomaly\" Class=\"CompProperties_Studiable\">\n        <frequencyTicks>120000</frequencyTicks>\n        <knowledgeCategory MayRequire=\"Ludeon.RimWorld.Anomaly\">Basic</knowledgeCategory>\n        <anomalyKnowledge>1</anomalyKnowledge>\n        <requiresImprisonment>true</requiresImprisonment>\n        <minMonolithLevelForStudy>1</minMonolithLevelForStudy>\n      </li>\n    ",
+        "<li Class=\"RimMandrake.EnvironmentalHazards.CompProperties_TerritorialAnchor\">\n        <dutyDef>RM_AnchorGuard</dutyDef>\n        <anchorRadius>16</anchorRadius>\n      </li>\n      ",
+        "<li Class=\"RimMandrake.EnvironmentalHazards.CompProperties_WaterLocked\">\n        <checkIntervalTicks>60</checkIntervalTicks>\n      </li>\n    "
+      ],
+      "hunting": [
+        {
+          "stage": "AnimalBaby",
+          "sharp_armor": 0.65,
+          "residual_armor": 0.5,
+          "deflect_probability_given_hit": 0.25,
+          "half_damage_probability_given_hit": 0.25,
+          "full_damage_probability_given_hit": 0.5,
+          "expected_damage_per_landed_hit": 7.5,
+          "team_expected_damage_per_second": 3.0,
+          "expected_damage_30_seconds": 90.0,
+          "body_part_budget": 70,
+          "body_part_budget_over_expected_DPS_seconds": 23.333333333333332
+        },
+        {
+          "stage": "AnimalJuvenile",
+          "sharp_armor": 0.65,
+          "residual_armor": 0.5,
+          "deflect_probability_given_hit": 0.25,
+          "half_damage_probability_given_hit": 0.25,
+          "full_damage_probability_given_hit": 0.5,
+          "expected_damage_per_landed_hit": 7.5,
+          "team_expected_damage_per_second": 3.0,
+          "expected_damage_30_seconds": 90.0,
+          "body_part_budget": 169,
+          "body_part_budget_over_expected_DPS_seconds": 56.333333333333336
+        },
+        {
+          "stage": "AnimalAdult",
+          "sharp_armor": 0.65,
+          "residual_armor": 0.5,
+          "deflect_probability_given_hit": 0.25,
+          "half_damage_probability_given_hit": 0.25,
+          "full_damage_probability_given_hit": 0.5,
+          "expected_damage_per_landed_hit": 7.5,
+          "team_expected_damage_per_second": 3.0,
+          "expected_damage_30_seconds": 90.0,
+          "body_part_budget": 280,
+          "body_part_budget_over_expected_DPS_seconds": 93.33333333333333
+        },
+        {
+          "stage": "RM_WardenMotherElder",
+          "sharp_armor": 0.65,
+          "residual_armor": 0.5,
+          "deflect_probability_given_hit": 0.25,
+          "half_damage_probability_given_hit": 0.25,
+          "full_damage_probability_given_hit": 0.5,
+          "expected_damage_per_landed_hit": 7.5,
+          "team_expected_damage_per_second": 3.0,
+          "expected_damage_30_seconds": 90.0,
+          "body_part_budget": 280,
+          "body_part_budget_over_expected_DPS_seconds": 93.33333333333333
+        }
+      ]
+    }
+  },
+  "biomes": {
+    "RM_Miasma": {
+      "animalDensity": "6.5",
+      "wildAnimals": {
+        "RM_Karrobel": "0.6",
+        "RM_FeverSwarm": "0.9",
+        "RM_RustNipperJuv": "0.25",
+        "RM_SiltLampreyJuv": "0.25",
+        "RM_CrimsonOpeeJuv": "0.25",
+        "RM_ThornbackColoJuv": "0.25",
+        "RM_ShaleGorgerJuv": "0.25",
+        "RM_ReefbackJuv": "0.15",
+        "RM_Karravel": "3.5",
+        "RM_Karrimeth": "0.8",
+        "RM_Karrolun": "1.2",
+        "RM_Bozzuga": "0.3",
+        "RM_Ommok": "0.025",
+        "RM_Saluksis": "0.7",
+        "RM_Ondrukka": "0.5",
+        "RM_Siezer": "0.2",
+        "RM_Mantrap": "0.2",
+        "RM_Sharpshrimp": "0.2",
+        "RM_DecayDrake": "0.1",
+        "RM_Bileworm": "0.1",
+        "RM_Thermadon": "0.1",
+        "RM_Liliana": "0.3"
+      }
+    },
+    "RM_GreySea": {
+      "animalDensity": "0.1",
+      "wildAnimals": {
+        "RM_Reefback": "0.005",
+        "RM_Fessk": "0.01",
+        "RM_Essarn": "0.6",
+        "RM_Otheska": "0.2",
+        "RM_Nissik": "0.9",
+        "RM_Grusk": "0.8",
+        "RM_Thollim": "0.7",
+        "RM_Corrik": "0.05",
+        "RM_Orruhmu": "0.05"
+      }
+    }
+  },
+  "part_base_hitPoints": {
+    "Brain": 10.0,
+    "Body": 40.0,
+    "Heart": 15.0
+  },
+  "hunting_inputs": {
+    "hunters": 2,
+    "damage": 12,
+    "AP": 0.15,
+    "cycle_seconds": 3,
+    "hit_probability": 0.6,
+    "window_seconds": 30
+  },
+  "assumptions": [
+    "healthy natural linked parts; MeleeDamageFactor stat=1; no equipment/hediffs/genes/settings modifiers",
+    "naked targets; natural armor only; nominal damage is before target armor",
+    "Body is a shared part budget, not a whole-pawn hitpoint pool or predicted time to kill",
+    "fixed hit probability and firing cadence; no range/pathing/retaliation or survival simulated",
+    "selected XML and installed unpatched engine; no claim about external mods or loaded pawns"
+  ]
+}

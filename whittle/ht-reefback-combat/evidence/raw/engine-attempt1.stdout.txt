@@ -1,0 +1,71 @@
+METHOD RimWorld.LifeStageDef::.ctor TOKEN 100702430
+IL_0000: ldarg.0 
+IL_0001: ldc.i4.1 
+IL_0002: stfld RimWorld.LifeStageDef::Boolean visible
+IL_0007: ldarg.0 
+IL_0008: ldc.i4.8 
+IL_0009: stfld RimWorld.LifeStageDef::Verse.DevelopmentalStage developmentalStage
+IL_000E: ldarg.0 
+IL_000F: ldtoken ::RimWorld.LifeStageWorker
+IL_0014: call System.Type::System.Type GetTypeFromHandle(System.RuntimeTypeHandle)
+IL_0019: stfld RimWorld.LifeStageDef::System.Type workerClass
+IL_001E: ldarg.0 
+IL_001F: ldc.i4.1 
+IL_0020: stfld RimWorld.LifeStageDef::Boolean involuntarySleepIsNegativeEvent
+IL_0025: ldarg.0 
+IL_0026: ldc.i4.1 
+IL_0027: stfld RimWorld.LifeStageDef::Boolean canDoRandomMentalBreaks
+IL_002C: ldarg.0 
+IL_002D: ldc.i4.1 
+IL_002E: stfld RimWorld.LifeStageDef::Boolean canVoluntarilySleep
+IL_0033: ldarg.0 
+IL_0034: ldc.i4.1 
+IL_0035: stfld RimWorld.LifeStageDef::Boolean canSleepWhenStarving
+IL_003A: ldarg.0 
+IL_003B: ldc.i4.1 
+IL_003C: stfld RimWorld.LifeStageDef::Boolean canInitiateSocialInteraction
+IL_0041: ldarg.0 
+IL_0042: ldc.r4 1
+IL_0047: stfld RimWorld.LifeStageDef::Single equipmentDrawDistanceFactor
+IL_004C: ldarg.0 
+IL_004D: ldc.r4 0.25
+IL_0052: stfld RimWorld.LifeStageDef::Single soundAttackChance
+IL_0057: ldarg.0 
+IL_0058: ldc.r4 1
+IL_005D: stfld RimWorld.LifeStageDef::Single voxPitch
+IL_0062: ldarg.0 
+IL_0063: ldc.r4 1
+IL_0068: stfld RimWorld.LifeStageDef::Single voxVolume
+IL_006D: ldarg.0 
+IL_006E: newobj System.Collections.Generic.List`1[[RimWorld.StatModifier, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Void .ctor()
+IL_0073: stfld RimWorld.LifeStageDef::System.Collections.Generic.List`1[RimWorld.StatModifier] statOffsets
+IL_0078: ldarg.0 
+IL_0079: newobj System.Collections.Generic.List`1[[RimWorld.StatModifier, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Void .ctor()
+IL_007E: stfld RimWorld.LifeStageDef::System.Collections.Generic.List`1[RimWorld.StatModifier] statFactors
+IL_0083: ldarg.0 
+IL_0084: ldc.r4 1
+IL_0089: stfld RimWorld.LifeStageDef::Single bodySizeFactor
+IL_008E: ldarg.0 
+IL_008F: ldc.r4 1
+IL_0094: stfld RimWorld.LifeStageDef::Single healthScaleFactor
+IL_0099: ldarg.0 
+IL_009A: ldc.r4 1
+IL_009F: stfld RimWorld.LifeStageDef::Single hungerRateFactor
+IL_00A4: ldarg.0 
+IL_00A5: ldc.r4 1
+IL_00AA: stfld RimWorld.LifeStageDef::Single marketValueFactor
+IL_00AF: ldarg.0 
+IL_00B0: ldc.r4 1
+IL_00B5: stfld RimWorld.LifeStageDef::Single foodMaxFactor
+IL_00BA: ldarg.0 
+IL_00BB: ldc.r4 1
+IL_00C0: stfld RimWorld.LifeStageDef::Single attachPointScaleFactor
+IL_00C5: ldarg.0 
+IL_00C6: ldc.r4 1
+IL_00CB: stfld RimWorld.LifeStageDef::Single meleeDamageFactor
+IL_00D0: ldarg.0 
+IL_00D1: call UnityEngine.Vector3::UnityEngine.Vector3 get_zero()
+IL_00D6: stfld RimWorld.LifeStageDef::UnityEngine.Vector3 bodyDrawOffset
+IL_00DB: ldarg.0 
+IL_00DC: call Verse.Def::Void .ctor()
+IL_00E1: ret 

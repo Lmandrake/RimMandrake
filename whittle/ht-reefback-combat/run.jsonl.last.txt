@@ -1,0 +1,5 @@
+Implemented the calf-only correction and offline evidence. Fresh judge: **A1L0/A2L0 true**. Actual Whittle validation: **rc0**.
+
+Caveat: JUDGE_PROMPT.md changed externally between reviews. Unchanged-original-prompt acceptance is not claimed; both attempts and the exact diff are preserved.
+
+All six changed production/spec/record files and limits are listed in [FINDINGS.md](/home/mandrake/rm/codex-ht/whittle/ht-reefback-combat/FINDINGS.md). No live/build/deploy, ledger, commit or publication actions.

@@ -1,0 +1,8 @@
+{
+  "reviewed_at": 1794411552.9053304,
+  "completed_commands": 29,
+  "prompt_sha256": "f65d979ba37e019ca4c4dd2752c1fc1dfa9e9475926308c6f28e3049e5ebd568",
+  "scope": "Parent reviewed command paths, dynamic source/installed-def audits, exact raw/source fingerprint selection, reflection-only metadata reader and the only JUDGE.md write. No builder conclusions or historical verdict reads; no live actions or source changes. Installed Version.txt is deliberately excluded by the direct-original fingerprint loop; no out-of-allowance original was read. Initial lxml import rc1 was followed by stdlib/.NET checks.",
+  "accepted": true,
+  "first_judge": "Unaccepted, retained. Required installed Odyssey input was outside original Core-only allowance. Parent corrected only input allowance; fresh second process used the new hash."
+}

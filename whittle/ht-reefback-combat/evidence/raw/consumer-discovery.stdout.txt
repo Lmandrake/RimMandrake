@@ -1,0 +1,22 @@
+TYPE RimWorld.PawnGenOption
+Single get_Cost()
+System.String ToString()
+Void LoadDataFromXmlCustom(System.Xml.XmlNode)
+ABSENT Verse.PawnGenOption
+TYPE RimWorld.PawnGroupMakerUtility
+System.Collections.Generic.IEnumerable`1[Verse.Pawn] GeneratePawns(RimWorld.PawnGroupMakerParms, Boolean)
+System.Collections.Generic.IEnumerable`1[Verse.PawnKindDef] GeneratePawnKindsExample(RimWorld.PawnGroupMakerParms)
+Boolean TryGetRandomPawnGroupMaker(RimWorld.PawnGroupMakerParms, RimWorld.PawnGroupMaker ByRef, Boolean)
+Boolean PawnGenOptionValid(RimWorld.PawnGenOption, RimWorld.PawnGroupMakerParms, System.Collections.Generic.List`1[RimWorld.PawnGenOptionWithXenotype])
+System.Collections.Generic.List`1[RimWorld.PawnGenOptionWithXenotype] GetOptions(RimWorld.PawnGroupMakerParms, RimWorld.FactionDef, System.Collections.Generic.List`1[RimWorld.PawnGenOption], Single, Single, System.Nullable`1[System.Single], System.Collections.Generic.List`1[RimWorld.PawnGenOptionWithXenotype], Boolean)
+Boolean AnyOptions(RimWorld.PawnGroupMakerParms, RimWorld.FactionDef, System.Collections.Generic.List`1[RimWorld.PawnGenOption], Single)
+Boolean CanUseOption(RimWorld.PawnGenOption, RimWorld.XenotypeDef, RimWorld.PawnGroupMakerParms, System.Collections.Generic.List`1[RimWorld.PawnGenOptionWithXenotype], Single, Single, Boolean)
+System.Collections.Generic.IEnumerable`1[RimWorld.PawnGenOptionWithXenotype] ChoosePawnGenOptionsByPoints(Single, System.Collections.Generic.List`1[RimWorld.PawnGenOption], RimWorld.PawnGroupMakerParms)
+Single MaxPawnCost(RimWorld.Faction, Single, RimWorld.RaidStrategyDef, RimWorld.PawnGroupKindDef)
+Boolean CanGenerateAnyNormalGroup(RimWorld.Faction, Single)
+Void PawnGroupsMade()
+System.Collections.Generic.List`1[RimWorld.Faction] UsableFactions(Single, System.Predicate`1[RimWorld.Faction], Boolean, Boolean, Boolean, Boolean)
+Boolean TryGetRandomFactionForCombatPawnGroup(Single, RimWorld.Faction ByRef, System.Predicate`1[RimWorld.Faction], Boolean, Boolean, Boolean, Boolean)
+Boolean TryGetRandomFactionForCombatPawnGroupWeighted(RimWorld.IncidentParms, RimWorld.Faction ByRef, System.Predicate`1[RimWorld.Faction], Boolean, Boolean, Boolean, Boolean)
+Int32 <PawnGenOptionValid>g__ChosenKindCount|5_0(Verse.PawnKindDef, <>c__DisplayClass5_0 ByRef)
+ABSENT RimWorld.IncidentWorker_ManhunterPack

@@ -1,0 +1,29 @@
+[
+    {
+        "stageFactor":  0.60000002384185791,
+        "baseHealthScale":  8,
+        "bodyProduct":  192,
+        "brainCeiling":  48,
+        "bodyCeiling":  192,
+        "healthScale":  4.8000001907348633,
+        "heartCeiling":  72
+    },
+    {
+        "stageFactor":  0.60000002384185791,
+        "baseHealthScale":  20,
+        "bodyProduct":  480,
+        "brainCeiling":  120,
+        "bodyCeiling":  480,
+        "healthScale":  12,
+        "heartCeiling":  180
+    },
+    {
+        "stageFactor":  0.60000002384185791,
+        "baseHealthScale":  7,
+        "bodyProduct":  168.00001525878906,
+        "brainCeiling":  43,
+        "bodyCeiling":  169,
+        "healthScale":  4.2000002861022949,
+        "heartCeiling":  64
+    }
+]

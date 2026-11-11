@@ -1,0 +1,29 @@
+RIMMANDRAKE_RECONCILE_HUGETHINGS_REEFBACK_NURSERY_COMBAT   proposed  row -  needs offline  target v1
+Reconcile reefback calf inherited 480-power tools and health with Miasma nursery hunting role; keep residents.
+owner CODEX_STEVEDESKTOP_HUGETHINGS   kind task   filed 2026-11-11T14:44:43Z
+
+--- items/RIMMANDRAKE_RECONCILE_HUGETHINGS_REEFBACK_NURSERY_COMBAT.md ---
+## spec
+Reconcile RM_ReefbackJuv's inherited combat profile with Miasma's nursery promise. Keeping its measured size6.4/T1 or16/T2 and existing Miasma0.15 row does not accept combat balance: it inherits tool powers480/120, baseHealthScale20 and manhunter-on-damage0.2. Core stage melee multipliers0.5/0.75 leave nominal tail sweeps240/360 before other mechanics. The nursery sheet calls its young "cheap to hunt". Its size16 juvenile also exceeds the warden mother's adult/elder size8. These are substantive design tensions, not proof of an observed combat failure.
+
+Use independent delegated design judgment to define a coherent young/adult/mother combat role and a measurable modest hunting case. Apply justified local stat/profile or specification corrections, preserve established residents, and retain the Grey Sea nursery lifecycle. Do not shrink the calf merely to make baseBodySize look small, remove a resident, reinterpret an owner ruling as an agent's approval, or change kept art. Keep mother size, rendering and ecology claims bounded to evidence; density6.5 is not directly comparable with ecosystem weight4/group2-3.
+
+Evidence: whittle/ht-reefback-calf/evidence/design_raw.json and JUDGE.md, Consequences; design/RimMandrake/hugethings_codex_2026-11-09/REEFBACK_CALF_DECISION.md. Sources: TerminalBiomes/Defs/ThingDefs_Races/RM_SeaBeasts_Invented.xml:1328-1362 and1840-1890; Miasma/Defs/ThingDefs_Races/RM_WardenMother.xml; design/Jawa/worldbuilding/biomes/the_miasma.md:97-127. Actual hits and population outcomes were not tested. No existing live item covered this combat discrepancy when filed.
+
+## verify
+An independent design judge accepts the explicit nursery role, effective stage stats and a worked hunting comparison against the adult. Validate the exact changed XML and inheritance against production stage/combat consumers with positive and negative controls. A stat-only correction uses the existing observed animal-combat mechanism: ordinary owner play remains its default live validation under CHARTER, rather than inventing a new live gate. If the chosen remedy adds a genuinely new mechanism, give that mechanism its own explicit functional proof before closure.
+
+## criteria
+- A1 L0: Independently judged young/adult/mother combat roles, specifications and effective stage stats agree; focused XML/inheritance controls pass and roster residents remain.
+- A2 L0: Exact changed XML, effective stage damage/health and the worked hunting comparison pass focused offline validation with adult controls; no actual hit, population or L4-feel acceptance is inferred from the source model.
+
+NEXT: obtain the bounded delegated combat-role decision from exact source and nursery wording, then freeze its worked hunting comparison before tuning.
+
+New mechanism not yet observed: none established; existing generic animal combat is not a newly invented mechanism. No actual hunting or combat-balance acceptance is claimed by the current measurement.
+
+--- history (3 events) ---
+  2026-11-11T14:44:43Z  CODEX_STEVEDESKTOP_HUGETHINGS file      caused_by=REEFBACK_CALF_MEASURE_TITAN_ON_LAND for=BENCH kind=task needs=bridge spec=infrastructure/state/items/RIMMANDRAKE_RECONCILE_HUGETHINGS_REEFBACK_NURSERY_COMBAT.md target=v1 title=Reconcile reefback calf inherited 480-power tools and health with Miasma nursery hunting role; keep residents. tsn=1794408283138799826  | agent's reason: delegated: scope; independent design and fresh Codex judge retain a combat/spec tension; worker seat lacks a filing-reader route, reassign next under Conductor identity order
+  2026-11-11T14:44:49Z  CODEX_STEVEDESKTOP_HUGETHINGS reassign  to=CODEX_STEVEDESKTOP_HUGETHINGS tsn=1794408289666186836  | agent's reason: Conductor order 2026-11-11 worker identity
+  2026-11-11T14:45:47Z  CODEX_STEVEDESKTOP_HUGETHINGS needs     to=offline tsn=1794408347932700874  | agent's reason: delegated: scope; correct the fresh draft to CHARTER stat-only offline validation; no new combat mechanism established and no owner criterion changed
+--- causal chain ---
+  RIMMANDRAKE_RECONCILE_HUGETHINGS_REEFBACK_NURSERY_COMBAT  <- caused by REEFBACK_CALF_MEASURE_TITAN_ON_LAND

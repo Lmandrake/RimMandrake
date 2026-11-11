@@ -1,0 +1,13 @@
+{
+  "command": [
+    "/usr/bin/python3",
+    "skills/rimworld-modding/scripts/validate_patch.py",
+    "src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_SeaBeasts_Invented.xml"
+  ],
+  "cwd": "/home/mandrake/rm/codex-ht",
+  "started": 1794410051.898435,
+  "elapsed_seconds": 0.7639226913452148,
+  "rc": 0,
+  "stdout_sha256": "b03e26869af969db03ae0d17bf135509580b86635b6fa27312772c08a4062d24",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

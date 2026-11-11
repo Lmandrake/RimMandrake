@@ -1,0 +1,306 @@
+{
+  "RM_ReefbackJuv": {
+    "stages": [
+      {
+        "stage": "AnimalBaby",
+        "minAge_xml": 0.0,
+        "factors": {
+          "bodySizeFactor": 0.2,
+          "healthScaleFactor": 0.25,
+          "meleeDamageFactor": 0.5
+        },
+        "factor_provenance": {
+          "bodySizeFactor": "LifeStageDef XML/AnimalBaby/bodySizeFactor",
+          "healthScaleFactor": "LifeStageDef XML/AnimalBaby/healthScaleFactor",
+          "meleeDamageFactor": "LifeStageDef XML/AnimalBaby/meleeDamageFactor"
+        },
+        "bodySize_decimal": 6.4,
+        "bodySize_float32": 6.400000095367432,
+        "healthScale_decimal": 5.0,
+        "healthScale_float32": 5.0,
+        "part_max_health": {
+          "Brain": 50,
+          "Body": 200,
+          "Heart": 75
+        },
+        "tools": [
+          {
+            "label": "tail sweep",
+            "power_xml": 480.0,
+            "cooldown_xml_seconds": 8.5,
+            "chanceFactor_xml": "1",
+            "linked_group": "HeadAttackTool",
+            "nominal_damage_decimal": 240.0,
+            "nominal_damage_float32": 240.0
+          },
+          {
+            "label": "bulk",
+            "power_xml": 120.0,
+            "cooldown_xml_seconds": 6.0,
+            "chanceFactor_xml": "0.3",
+            "linked_group": "FrontLeftPaw",
+            "nominal_damage_decimal": 60.0,
+            "nominal_damage_float32": 60.0
+          }
+        ]
+      },
+      {
+        "stage": "AnimalJuvenile",
+        "minAge_xml": 0.1,
+        "factors": {
+          "bodySizeFactor": 0.5,
+          "healthScaleFactor": 0.6,
+          "meleeDamageFactor": 0.75
+        },
+        "factor_provenance": {
+          "bodySizeFactor": "LifeStageDef XML/AnimalJuvenile/bodySizeFactor",
+          "healthScaleFactor": "LifeStageDef XML/AnimalJuvenile/healthScaleFactor",
+          "meleeDamageFactor": "LifeStageDef XML/AnimalJuvenile/meleeDamageFactor"
+        },
+        "bodySize_decimal": 16.0,
+        "bodySize_float32": 16.0,
+        "healthScale_decimal": 12.0,
+        "healthScale_float32": 12.0,
+        "part_max_health": {
+          "Brain": 120,
+          "Body": 480,
+          "Heart": 180
+        },
+        "tools": [
+          {
+            "label": "tail sweep",
+            "power_xml": 480.0,
+            "cooldown_xml_seconds": 8.5,
+            "chanceFactor_xml": "1",
+            "linked_group": "HeadAttackTool",
+            "nominal_damage_decimal": 360.0,
+            "nominal_damage_float32": 360.0
+          },
+          {
+            "label": "bulk",
+            "power_xml": 120.0,
+            "cooldown_xml_seconds": 6.0,
+            "chanceFactor_xml": "0.3",
+            "linked_group": "FrontLeftPaw",
+            "nominal_damage_decimal": 90.0,
+            "nominal_damage_float32": 90.0
+          }
+        ]
+      }
+    ],
+    "hunting": [
+      {
+        "stage": "AnimalBaby",
+        "sharp_armor": 0.7,
+        "residual_armor": 0.5499999999999999,
+        "deflect_probability_given_hit": 0.27499999999999997,
+        "half_damage_probability_given_hit": 0.27499999999999997,
+        "full_damage_probability_given_hit": 0.45000000000000007,
+        "expected_damage_per_landed_hit": 7.050000000000001,
+        "team_expected_damage_per_second": 2.82,
+        "expected_damage_30_seconds": 84.6,
+        "body_part_budget": 200,
+        "body_part_budget_over_expected_DPS_seconds": 70.92198581560284
+      },
+      {
+        "stage": "AnimalJuvenile",
+        "sharp_armor": 0.7,
+        "residual_armor": 0.5499999999999999,
+        "deflect_probability_given_hit": 0.27499999999999997,
+        "half_damage_probability_given_hit": 0.27499999999999997,
+        "full_damage_probability_given_hit": 0.45000000000000007,
+        "expected_damage_per_landed_hit": 7.050000000000001,
+        "team_expected_damage_per_second": 2.82,
+        "expected_damage_30_seconds": 84.6,
+        "body_part_budget": 480,
+        "body_part_budget_over_expected_DPS_seconds": 170.2127659574468
+      }
+    ]
+  },
+  "RM_Reefback": {
+    "stages": [
+      {
+        "stage": "AnimalBaby",
+        "minAge_xml": 0.0,
+        "factors": {
+          "bodySizeFactor": 0.2,
+          "healthScaleFactor": 0.25,
+          "meleeDamageFactor": 0.5
+        },
+        "factor_provenance": {
+          "bodySizeFactor": "LifeStageDef XML/AnimalBaby/bodySizeFactor",
+          "healthScaleFactor": "LifeStageDef XML/AnimalBaby/healthScaleFactor",
+          "meleeDamageFactor": "LifeStageDef XML/AnimalBaby/meleeDamageFactor"
+        },
+        "bodySize_decimal": 6.4,
+        "bodySize_float32": 6.400000095367432,
+        "healthScale_decimal": 5.0,
+        "healthScale_float32": 5.0,
+        "part_max_health": {
+          "Brain": 50,
+          "Body": 200,
+          "Heart": 75
+        },
+        "tools": [
+          {
+            "label": "tail sweep",
+            "power_xml": 480.0,
+            "cooldown_xml_seconds": 8.5,
+            "chanceFactor_xml": "1",
+            "linked_group": "HeadAttackTool",
+            "nominal_damage_decimal": 240.0,
+            "nominal_damage_float32": 240.0
+          },
+          {
+            "label": "bulk",
+            "power_xml": 120.0,
+            "cooldown_xml_seconds": 6.0,
+            "chanceFactor_xml": "0.3",
+            "linked_group": "FrontLeftPaw",
+            "nominal_damage_decimal": 60.0,
+            "nominal_damage_float32": 60.0
+          }
+        ]
+      },
+      {
+        "stage": "AnimalJuvenile",
+        "minAge_xml": 0.2,
+        "factors": {
+          "bodySizeFactor": 0.5,
+          "healthScaleFactor": 0.6,
+          "meleeDamageFactor": 0.75
+        },
+        "factor_provenance": {
+          "bodySizeFactor": "LifeStageDef XML/AnimalJuvenile/bodySizeFactor",
+          "healthScaleFactor": "LifeStageDef XML/AnimalJuvenile/healthScaleFactor",
+          "meleeDamageFactor": "LifeStageDef XML/AnimalJuvenile/meleeDamageFactor"
+        },
+        "bodySize_decimal": 16.0,
+        "bodySize_float32": 16.0,
+        "healthScale_decimal": 12.0,
+        "healthScale_float32": 12.0,
+        "part_max_health": {
+          "Brain": 120,
+          "Body": 480,
+          "Heart": 180
+        },
+        "tools": [
+          {
+            "label": "tail sweep",
+            "power_xml": 480.0,
+            "cooldown_xml_seconds": 8.5,
+            "chanceFactor_xml": "1",
+            "linked_group": "HeadAttackTool",
+            "nominal_damage_decimal": 360.0,
+            "nominal_damage_float32": 360.0
+          },
+          {
+            "label": "bulk",
+            "power_xml": 120.0,
+            "cooldown_xml_seconds": 6.0,
+            "chanceFactor_xml": "0.3",
+            "linked_group": "FrontLeftPaw",
+            "nominal_damage_decimal": 90.0,
+            "nominal_damage_float32": 90.0
+          }
+        ]
+      },
+      {
+        "stage": "AnimalAdult",
+        "minAge_xml": 0.6,
+        "factors": {
+          "bodySizeFactor": 1.0,
+          "healthScaleFactor": 1.0,
+          "meleeDamageFactor": 1.0
+        },
+        "factor_provenance": {
+          "bodySizeFactor": "LifeStageDef constructor IL default 1",
+          "healthScaleFactor": "LifeStageDef constructor IL default 1",
+          "meleeDamageFactor": "LifeStageDef constructor IL default 1"
+        },
+        "bodySize_decimal": 32.0,
+        "bodySize_float32": 32.0,
+        "healthScale_decimal": 20.0,
+        "healthScale_float32": 20.0,
+        "part_max_health": {
+          "Brain": 200,
+          "Body": 800,
+          "Heart": 300
+        },
+        "tools": [
+          {
+            "label": "tail sweep",
+            "power_xml": 480.0,
+            "cooldown_xml_seconds": 8.5,
+            "chanceFactor_xml": "1",
+            "linked_group": "HeadAttackTool",
+            "nominal_damage_decimal": 480.0,
+            "nominal_damage_float32": 480.0
+          },
+          {
+            "label": "bulk",
+            "power_xml": 120.0,
+            "cooldown_xml_seconds": 6.0,
+            "chanceFactor_xml": "0.3",
+            "linked_group": "FrontLeftPaw",
+            "nominal_damage_decimal": 120.0,
+            "nominal_damage_float32": 120.0
+          }
+        ]
+      }
+    ],
+    "hunting": [
+      {
+        "stage": "AnimalBaby",
+        "sharp_armor": 0.7,
+        "residual_armor": 0.5499999999999999,
+        "deflect_probability_given_hit": 0.27499999999999997,
+        "half_damage_probability_given_hit": 0.27499999999999997,
+        "full_damage_probability_given_hit": 0.45000000000000007,
+        "expected_damage_per_landed_hit": 7.050000000000001,
+        "team_expected_damage_per_second": 2.82,
+        "expected_damage_30_seconds": 84.6,
+        "body_part_budget": 200,
+        "body_part_budget_over_expected_DPS_seconds": 70.92198581560284
+      },
+      {
+        "stage": "AnimalJuvenile",
+        "sharp_armor": 0.7,
+        "residual_armor": 0.5499999999999999,
+        "deflect_probability_given_hit": 0.27499999999999997,
+        "half_damage_probability_given_hit": 0.27499999999999997,
+        "full_damage_probability_given_hit": 0.45000000000000007,
+        "expected_damage_per_landed_hit": 7.050000000000001,
+        "team_expected_damage_per_second": 2.82,
+        "expected_damage_30_seconds": 84.6,
+        "body_part_budget": 480,
+        "body_part_budget_over_expected_DPS_seconds": 170.2127659574468
+      },
+      {
+        "stage": "AnimalAdult",
+        "sharp_armor": 0.7,
+        "residual_armor": 0.5499999999999999,
+        "deflect_probability_given_hit": 0.27499999999999997,
+        "half_damage_probability_given_hit": 0.27499999999999997,
+        "full_damage_probability_given_hit": 0.45000000000000007,
+        "expected_damage_per_landed_hit": 7.050000000000001,
+        "team_expected_damage_per_second": 2.82,
+        "expected_damage_30_seconds": 84.6,
+        "body_part_budget": 800,
+        "body_part_budget_over_expected_DPS_seconds": 283.68794326241135
+      }
+    ]
+  },
+  "src/RimMandrake/Miasma/Defs/ThingDefs_Races/RM_WardenMother.xml": {
+    "before_sha256": "6d225577f44de6a982de84ad815af9d830bdeabb3330a8b674741ae706ee551b",
+    "current_sha256": "6d225577f44de6a982de84ad815af9d830bdeabb3330a8b674741ae706ee551b"
+  },
+  "src/RimMandrake/Miasma/Defs/BiomeDefs/RM_Miasma.xml": {
+    "before_sha256": "f6164f87009d6c632a5357d2f4043bc643b0647065621ba6fcd68ca4c5f58240",
+    "current_sha256": "f6164f87009d6c632a5357d2f4043bc643b0647065621ba6fcd68ca4c5f58240"
+  },
+  "src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_GreySea.xml": {
+    "before_sha256": "5fd0c53e811a3f626d7476e0cd4412e20b44dc2dfaba5c6ca0d706a03895a634",
+    "current_sha256": "5fd0c53e811a3f626d7476e0cd4412e20b44dc2dfaba5c6ca0d706a03895a634"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/Utils/run_selftests.py",
+    "--only",
+    "selftest_validate_patch"
+  ],
+  "cwd": "/home/mandrake/rm/codex-ht",
+  "started": 1794409857.7278364,
+  "elapsed_seconds": 1.4608097076416016,
+  "rc": 1,
+  "stdout_sha256": "cea715934c18600997a289fba9ca6fe2fed98a048201a8823f096ab5b422f88f",
+  "stderr_sha256": "935334185c2fc291d379a902b1ba958dc201643e729b5a27395fcac5b5526d7c"
+}

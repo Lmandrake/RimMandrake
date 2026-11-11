@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/northstar/measure_reefback_combat.py", line 392, in <module>
+    main()
+    ~~~~^^
+  File "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/northstar/measure_reefback_combat.py", line 323, in main
+    from lxml import etree as LX
+ModuleNotFoundError: No module named 'lxml'

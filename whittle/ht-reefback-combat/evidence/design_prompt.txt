@@ -1,0 +1,1171 @@
+Independent fresh delegated DESIGN judgment. You did not make this work. Tools are disabled.
+Decide coherent combat roles for young reefback, open-sea adult reefback, and resident warden mother.
+Return KEEP for an explicitly chosen coherent remedy (including spec-only if warranted), or REDO/UNSURE with violated constraints and reasons. Give exact smallest warranted local stat/profile and prose corrections and effective stage values. Do not assume a damage nerf is necessary. The discrepancy is source tension, not an observed combat defect.
+Scope: two L0 offline criteria; generic animal combat is the existing observed mechanism. No new mechanism, game/build/deploy, C#/DLL changes, roster removals, art changes, owner questions, or new work items. Preserve young body sizes 6.4/16, its two-stage lifecycle, Miasma weight 0.15, all adults and mothers. No owner approval may be inferred. Existing owner-answer work remains separate.
+Frozen hunting MODEL, established before tuning: two modest ranged hunters; each fires one hypothetical sharp projectile of damage 12 and armor penetration 0.15 every 3 seconds, hit probability 0.60. These are explicit illustrative inputs, not claims about a named gun, pawn skill or live shots. Healthy unmodified targets, no apparel/cover, all nominal melee multipliers 1 except installed life stage. Use naked sharp armor, residual r=max(armor-0.15,0), natural-armor expected remaining fraction 1-0.75*r for 0<=r<=1. Calculate landed-hit damage and team expected DPS (4.8 * remaining fraction), and ceil(40 * HealthScale)/DPS as a common body-part damage-budget comparison, NOT kill/downing time. Pinniped core Body base hitPoints40 is installed source; actual damage distributes over parts, with bleed, pain, retaliation, pathing and wounds. Also compare a fixed 30 seconds of shooting and contact/retaliation limits. Decide whether this model supports your proposed nursery wording and how much softer than adult/mother is warranted.
+Ask meaningful missed cases and negative controls: inherited tool list append versus replacement, missing local overrides, missing health/stage factors, adult/mother controls, juvenile held indefinitely in its final stage, broken parent lookup, and any other important omission. These will be acted upon as BROADEN. Discuss any incompatibility in constraints explicitly rather than changing owner rulings.
+
+
+SOURCE whittle/ht-reefback-combat/evidence/item-before.txt
+RIMMANDRAKE_RECONCILE_HUGETHINGS_REEFBACK_NURSERY_COMBAT   proposed  row -  needs offline  target v1
+Reconcile reefback calf inherited 480-power tools and health with Miasma nursery hunting role; keep residents.
+owner CODEX_STEVEDESKTOP_HUGETHINGS   kind task   filed 2026-11-11T14:44:43Z
+
+--- items/RIMMANDRAKE_RECONCILE_HUGETHINGS_REEFBACK_NURSERY_COMBAT.md ---
+## spec
+Reconcile RM_ReefbackJuv's inherited combat profile with Miasma's nursery promise. Keeping its measured size6.4/T1 or16/T2 and existing Miasma0.15 row does not accept combat balance: it inherits tool powers480/120, baseHealthScale20 and manhunter-on-damage0.2. Core stage melee multipliers0.5/0.75 leave nominal tail sweeps240/360 before other mechanics. The nursery sheet calls its young "cheap to hunt". Its size16 juvenile also exceeds the warden mother's adult/elder size8. These are substantive design tensions, not proof of an observed combat failure.
+
+Use independent delegated design judgment to define a coherent young/adult/mother combat role and a measurable modest hunting case. Apply justified local stat/profile or specification corrections, preserve established residents, and retain the Grey Sea nursery lifecycle. Do not shrink the calf merely to make baseBodySize look small, remove a resident, reinterpret an owner ruling as an agent's approval, or change kept art. Keep mother size, rendering and ecology claims bounded to evidence; density6.5 is not directly comparable with ecosystem weight4/group2-3.
+
+Evidence: whittle/ht-reefback-calf/evidence/design_raw.json and JUDGE.md, Consequences; design/RimMandrake/hugethings_codex_2026-11-09/REEFBACK_CALF_DECISION.md. Sources: TerminalBiomes/Defs/ThingDefs_Races/RM_SeaBeasts_Invented.xml:1328-1362 and1840-1890; Miasma/Defs/ThingDefs_Races/RM_WardenMother.xml; design/Jawa/worldbuilding/biomes/the_miasma.md:97-127. Actual hits and population outcomes were not tested. No existing live item covered this combat discrepancy when filed.
+
+## verify
+An independent design judge accepts the explicit nursery role, effective stage stats and a worked hunting comparison against the adult. Validate the exact changed XML and inheritance against production stage/combat consumers with positive and negative controls. A stat-only correction uses the existing observed animal-combat mechanism: ordinary owner play remains its default live validation under CHARTER, rather than inventing a new live gate. If the chosen remedy adds a genuinely new mechanism, give that mechanism its own explicit functional proof before closure.
+
+## criteria
+- A1 L0: Independently judged young/adult/mother combat roles, specifications and effective stage stats agree; focused XML/inheritance controls pass and roster residents remain.
+- A2 L0: Exact changed XML, effective stage damage/health and the worked hunting comparison pass focused offline validation with adult controls; no actual hit, population or L4-feel acceptance is inferred from the source model.
+
+NEXT: obtain the bounded delegated combat-role decision from exact source and nursery wording, then freeze its worked hunting comparison before tuning.
+
+New mechanism not yet observed: none established; existing generic animal combat is not a newly invented mechanism. No actual hunting or combat-balance acceptance is claimed by the current measurement.
+
+--- history (3 events) ---
+  2026-11-11T14:44:43Z  CODEX_STEVEDESKTOP_HUGETHINGS file      caused_by=REEFBACK_CALF_MEASURE_TITAN_ON_LAND for=BENCH kind=task needs=bridge spec=infrastructure/state/items/RIMMANDRAKE_RECONCILE_HUGETHINGS_REEFBACK_NURSERY_COMBAT.md target=v1 title=Reconcile reefback calf inherited 480-power tools and health with Miasma nursery hunting role; keep residents. tsn=1794408283138799826  | agent's reason: delegated: scope; independent design and fresh Codex judge retain a combat/spec tension; worker seat lacks a filing-reader route, reassign next under Conductor identity order
+  2026-11-11T14:44:49Z  CODEX_STEVEDESKTOP_HUGETHINGS reassign  to=CODEX_STEVEDESKTOP_HUGETHINGS tsn=1794408289666186836  | agent's reason: Conductor order 2026-11-11 worker identity
+  2026-11-11T14:45:47Z  CODEX_STEVEDESKTOP_HUGETHINGS needs     to=offline tsn=1794408347932700874  | agent's reason: delegated: scope; correct the fresh draft to CHARTER stat-only offline validation; no new combat mechanism established and no owner criterion changed
+--- causal chain ---
+  RIMMANDRAKE_RECONCILE_HUGETHINGS_REEFBACK_NURSERY_COMBAT  <- caused by REEFBACK_CALF_MEASURE_TITAN_ON_LAND
+
+
+SOURCE design/RimMandrake/delegation_policy.md
+# Delegation policy — agents decide nearly everything, art included
+
+*Adopted 2026-10-22 on the owner's word (item `DELEGATION_POLICY_BUILD_AGENTS_ASK_AGENTS`). Binds BENCH,
+Relentless and every subagent. Model tiers are `infrastructure/agents/Agent_Policy.md`'s, never restated here.*
+
+## The ruling
+
+Owner, 2026-10-22 ~16:05 PDT, answering *"Which decisions may agents take without asking you?"*:
+
+> *"Nearly everything including art. An agent can absolutely ask another agent for an art ruling based on
+> some prose constraints and requirements we can draft. It would catch most of what we look for anyway. Then
+> we would do a review from a much stronger place. Art already takes many passes even with a human in the
+> loop."*
+
+The card option he chose the spirit of was *"Nearly everything, with timeouts — all but art, north-star bars
+and anything irreversible"*; he explicitly extended it to art. This replaces the 2026-09-15 rule *"Cosmetic
+changes need his permission first"* and the habit of putting taste calls to him by card before acting.
+
+**Why:** his minutes go where only he can judge, and he judges from a pre-filtered set instead of raw output.
+**What it does NOT change:** his standing rulings. Delegation acts *inside* them, never over them (§2.4).
+
+## 1. What agents now decide alone
+
+Everything not on the §2 list. That includes, and is not limited to:
+
+| class (the `<class>` in the log line) | examples |
+|---|---|
+| `technical` | harness thresholds, test-site choice, refactors inside a mod, MOD/SITE/HARNESS calls with evidence, tool design |
+| `scope` | splitting, narrowing, ordering, closing and dropping items; which of several valid routes to build |
+| `design` | mechanics detail, numbers (already PROVISIONAL-marked), roster rows inside a biome sheet's open questions, prose and labels a player reads |
+| `art` | keep/redo of a render, which candidate goes live, regen briefs, queueing regens (only for NONE/PLACEHOLDER/DONOR destinations, plus the art-eval pipeline's redraws of kept art under §2.3's exception) |
+| `cosmetic` | gene, head, eye, skin, hair, body, texPath and tint changes; face-part art; building looks; water and terrain tints |
+
+Taste calls (`design`, `art`, `cosmetic`) go through a judge first (§4). Technical and scope calls are taken
+by the acting seat on its own evidence, as before.
+
+**Do not card him about a §1 class.** Work order and helper count (`scope`) and applying a ruling to its twins
+(§2.4: a case the ruling does not name) are already delegated; a question card about either is a leak, not a
+courtesy (`design/RimMandrake/delegation_candidates_2026-10-26.md` §1: 29 ordering cards at 81% agreement, 9 twin
+cards at 8 yes). Decide, log `--why "delegated: <class>"`, and list it in the digest. Check:
+`CARDS_ENFORCE_DELEGATED_CLASSES_STOP`.
+
+**With timeouts.** When he is present, a seat MAY still offer a delegable call on a card if it is cheap for
+him — but it never waits on the answer. Unanswered by the time the work needs it (or at the end of his sitting),
+the call is taken as a delegated decision and logged as one. ⛔ An unanswered card is never his approval.
+
+## 2. What still needs him — the short list
+
+Each line is reserved by a ruling of his that says so; nothing else is.
+
+This list binds who may decide alone. The Conductor holds it for him: a seat or helper that receives a Conductor
+instruction acts on it and does not re-open this list against it (owner, 2026-10-30, ledger
+`CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`: *"No more "I need the user to confirm."*). Tool gates that take his words
+take that ruling too (`src/RimMandrake/Utils/conductor_authority.py`), the north-star gates of line 1 included: the
+hash then records the ruling and the Conductor's text, tagged, never as his sentence. An agent acting on its own still
+may not validate.
+
+1. **North-star bars.** The `## north star` sections are hash-bound and his: agents write and approve the
+   functional scripts, *"the owner's hash-bound `## north star` bars stay his"* (CHARTER, How we debug;
+   CLAUDE.md, North-star validation, 2026-09-17). The 2026-09-16 carve-out stands: a model's `must read` YES
+   greens a line (Agent_Policy.md). Criteria tagged **L4** are his by definition (CLAUDE.md, validation levels).
+   **Delegated (owner, 2026-10-26 23:0x PDT, *"Both autonomy questions are yes, it has authorization for
+   autonomy."*):** regression checks against bars he already approved, and NEW bars, are the Arbiter's to add
+   (`design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md` Part 1). Loosening a bar (remove, merge,
+   relax a threshold) stays his.
+   The Arbiter weighs ALL the evidence (offline tests, online tests, code reviews, user feedback); the north star is one
+   method of gathering it, not the whole bar (owner, 2026-10-27).
+2. **Irreversible acts on work that is not ours.** Force-push, `reset --hard` over work you did not make,
+   deleting work not yours — *"only with the owner's word"* (CHARTER, expensive list #5). Re-freezing the
+   frozen `official` dump — *"only the owner re-freezes it"* (CHARTER, Instruments). Purging a picture from the
+   art store — `art.py purge` takes `--owner-said`, `--by-card` or `--per-ruling`, never a bare `--why`
+   (his ✕ on a sheet deletes and bans, owner card 2026-10-26 19:54).
+   **Delegated (owner card 2026-10-26 19:06, *"Archive then delete, in digest (Recommended)"*):** deleting OUR
+   OWN leftovers — old dev saves, scratch clones, orphan mandrake mod folders, settings or pictures nothing
+   reads, patches aimed at retired mods — when a check proves nothing reads it AND everything is pushed, after
+   archiving or bundling it under agent storage (`D:\ClaudeWork`), with each deletion listed in his daily
+   digest. Ruled words: *"May agents delete our own leftovers when a check proves nothing reads them and
+   everything is pushed, after archiving or bundling them, and list each in your digest?"* Checker:
+   `LEFTOVERS_BUILD_ARCHIVE_THEN_DELETE`. Anything not ours, or not proven unread and pushed, is still his.
+3. **Replacing art he KEPT** — with ONE exception. *"Why are we replacing items for which I know I have good
+   versions?"* (2026-10-19). `art.py install --reason` refuses over an owner-kept picture; a delegated call never
+   works around that refusal. **Exception (owner card 2026-10-23 06:42, *"Yes, but show me after"*):** the art-eval
+   pipeline (`skills/rimworld-art-evaluation`) MAY redraw a kept picture when its verdict is regen (Opus really
+   bad, or a weak one GPT did not strong-accept), only with a revert record, installing through
+   `art.py install --by-card "Kept art judged really bad: may the pipeline redraw it on its own? → Yes, but show me after"`; every such swap appears on the next shadow sheet flagged
+   *replaced your kept art* with a one-click revert to the kept version through the art ledger.
+   **Second exception (owner card 2026-10-26 18:46, *"Yes, delegate this class"*):** a *geometric correction* of
+   existing art, kept or not — moving, aligning or trimming pixels, with no new drawing and no change of style or
+   colour — MAY be installed without him when a player-truth check measures the defect before and confirms it gone
+   after. It is judged by an agent that did not make it, logged `--why "delegated: art geometric correction"`,
+   installed through `art.py install --by-card "To make the system more fire-and-forget, may I decide this class of
+   art change without you from now on? → Yes, delegate this class (Recommended)"` (old bytes archived, one-command
+   revert), and listed in his daily digest after the fact. First use: the pipe elbow seams (PIPE_ELBOW_FIX_SEAM_JOGS).
+   **Third exception (owner cards 2026-10-26 19:06 and 19:54):** his own sheet marks are carried out without
+   asking him again. When his newer mark conflicts with an older keep, the newest mark wins (19:06, *"Newest mark
+   wins"*). **His ✕ deletes the picture forever and bans it** (19:54, *"X = delete forever + ban"*, on the card
+   "You want an X to delete a picture permanently so it never returns … What should X mean now?"): the bytes are
+   purged from the art store and a permanent ban record (exact sha + near-duplicates by visual similarity) is
+   checked by every sheet build, every install and every redraw, so an ✕'d picture never returns by any route.
+   Each act is listed in his daily digest. Tooling: `art.py enact` applies newest-mark-wins (each act carries his
+   mark: sheet, row, click time, `why "delegated: art marks"`); the ✕ is carried out by `artledger.x_delete`
+   (file + store bytes removed, `ban` recorded) and the ban is enforced by `art_sheet` / `sheet_to_artifact`,
+   `install` / `install_bytes`, artpipe (discard + re-roll, `ban_hit`) and art_eval (regen); only
+   `art.py unban <sha> --owner-said "…"` lifts it (`ART_X_BUILD_DELETE_FOREVER_BAN`). Leftover pictures that he did NOT ✕ follow the cleanup ruling (§2.2:
+   archive, then delete) — only his ✕ means forever.
+   Any other replacement of kept art is still his.
+4. **Overturning or reinterpreting a standing ruling of his** — CLAUDE.md, `standing_rulings.md`,
+   `biome_rulings.md`, a canon entry's `## ruling` (*"The ruling is his, never yours"*, `AGENT_BRIEF.md`), and
+   deliberate departures from canon. Applying a ruling to a case it does not name is delegated; changing what
+   it says is not.
+5. **Outward and paid acts.** Spending money, publishing outside our private repos and artifacts (a Steam
+   Workshop upload, a public post), and the acts his global instructions call his: an interactive login, a
+   GUI he must look at, a purchase (`~/.claude/CLAUDE.md`, "RUN IT YOURSELF" ③).
+6. **Presence-bound acts his rulings name.** Live flight tests of a flyer — *"do not do live testing of flyers
+   without a human present"* (CLAUDE.md, flight); `broadcast.py` is his; `./bridge bench|foundry|free` is his
+   except as delegated here. **Delegated:** a seat MAY take the bridge, deploy and restart the game on its own
+   when the bridge is free, ours, or stale by the 45-minute rule, his OWNER hold only 45 min after his last interaction (owner card 2026-10-30), and never for a flyer's
+   flight. Each take and restart is listed in his daily digest. His presence at the machine plays no part (owner,
+   2026-10-30, verbatim: *"I really, really need you to strip "when I come back to the machine" as an event for anything changing. It's causing so many problems and I don't need it."*): nothing reads his input clock. Tooling: `rimflow bridge idle` reports TAKEABLE or
+   not; `bridge take --idle-ok` and `./game --idle-ok` take it; the events carry `why` `delegated: ...`. The flyer
+   refusal is self-declared: `--flyer` and any purpose that names flying refuse, but the tool cannot know what the
+   seat will actually drive. A seat that will fly anything passes `--flyer`.
+7. **Certifying a mod's first-touch Designer pass.** *"the first time an item names a mod, it gets a deep Designer
+   pass to read out its code/spec, expand the spec and validation strategies, certifies it with the user/clarifies
+   confusion, then writes it all out for Relentless."* (owner, 2026-11-04 UTC, ledger `FIRST_TOUCH_BUILD_DESIGNER_READS_FIRST`;
+   tool `src/RimMandrake/rimflow/first_touch.py`). The reading, the expanded spec and the build items are the
+   Designer's; only the certification sitting with him is reserved. One item per mod (`<FOLDER>_DESIGN_FIRST_TOUCH`):
+   each sitting certifies a different spec, so no one ruling settles the family. System-class items (Operations' system set) are
+   exempt from the first-touch hold (owner card 2026-11-05, "Let all system work through"): repairs do not change what a mod is;
+   content items naming an uncertified mod are still held.
+
+A reserved call is asked as a card (the `question-card` skill) or filed `--for OWNER --kind decision`, and the
+work waits on it. It never times out into a decision.
+
+## 3. How a delegated decision is recorded
+
+- **Ledger:** `rimflow note <ID> --why "delegated: <class>" --text "<the decision; judge verdict file if any>"`
+  (or the same `--why` on `close`/`drop`/`supersede`/`file`). ⛔ Never `--owner-said`, `--by-card` or
+  `--per-ruling` — those name his authority; this ruling authorises the *class*, the call itself is ours.
+- **Commit:** a body line `Delegated: <class> — <one-line decision>` so `git log --grep '^Delegated:'` finds it.
+- **Art install:** `art.py install … --why "delegated: art <verdict file>"` (`--why` grants no owner authority: the mechanical guards apply, so it never displaces a kept, purged or rejected picture; `--reason` takes only mechanical tags and refuses this text). The pre-push `art_guard` accepts it when the verdict file exists in the clone (`ART_GUARD_FIX_REFUSES_THE_DELEGATE`).
+- **Verdicts:** the judge's output (§4) is committed as
+  `infrastructure/state/delegated/<YYYY-MM-DD>/<subject-or-item>.json` and cited by path.
+- **Numbers and rosters in `canon.yml`:** a delegated value carries `src: delegated:<class> (<item>)`, never a
+  quote of his.
+
+## 4. Asking another agent — the judge protocol
+
+1. **A different agent decides.** The maker never judges its own output. The judge is a fresh subagent spawned
+   for the call, with no maker context: it sees only the artifact(s), the written constraints, and the question.
+2. **Model per `Agent_Policy.md`.** Art, the world and any call no later check catches sit on its opus rows.
+3. **The brief is written, not remembered.** Art and cosmetic calls: `design/RimMandrake/art_judge_brief.md`
+   plus the subject's canon entry (`## Must show`, `## Engine limits`) if it has one. Design calls: the item's
+   criteria, the governing design doc, and every standing ruling it touches, quoted.
+4. **The judge returns keep/redo with reasons** — per artifact `KEEP` or `REDO`, each REDO quoting the violated
+   constraint and its source, plus `UNSURE` when the written constraints do not decide it (the brief's format).
+5. **The maker does not overrule a REDO.** It may re-ask a *new* judge once with a written rebuttal; the second
+   verdict stands. Two UNSUREs, or a subject still REDO after three rounds, goes to his set flagged (§6).
+6. **A judge's miss is a brief defect.** When he overturns a KEEP, the reason becomes a new line in the brief
+   (with his words as its source), the same day.
+
+## 5. How he audits and overturns cheaply — the daily digest
+
+Once a day, before the Conductor's first scheduled check, a program writes
+`Transient/delegated_digest_<YYYY-MM-DD>.md` and the Conductor gives him its full native path: one line per delegated call
+since the last digest — item, class, decision, judge verdict file — newest first, art grouped by subject. Built
+by a program, `src/RimMandrake/rimflow/delegated_digest.py` (the Conductor's scheduled pre-step; token-blind by
+allow-list), from the ledger (`why` starting `delegated:`), `git log --grep '^Delegated:'`, the judge records in
+`infrastructure/state/delegated/`, the art ledger's delegated installs and marks, and the leftovers acts log; a zero-line digest is checked
+against a known delegated event before it is reported as zero. Every act under the 2026-10-26 card delegations is
+a digest line: each newest-mark enactment, ✕ delete + ban, ban lifted, and redraw a ban discarded (§2.3, class
+`art marks`; `art.py marks-digest` lists them), each bridge take, deploy and
+restart (§2.6, class `bridge idle`), each leftover deleted with its archive or bundle path (§2.2, class
+`leftovers`) — logged `--why "delegated: <class>"` so the digest finds it.
+The same page lists every open item on the OWNER seat at its cut, oldest first, with its age since filed and how many
+open items wait on it (direct: a live block names it; chain: a chain of live blocks reaches it) — visibility only, no
+default applied or recommended (D4(a), `OWNER_ASKS_MEASURE_AGE_IN_DIGEST`; revisit a default only after two weeks of
+age data).
+
+To overturn: he says so, in any words; the seat records his words with `--owner-said` on the item, undoes the
+call, and adds the reason to the brief (§4.6). Silence on a digest line is not his approval — it stays logged as
+delegated.
+
+## 6. What reaches him — the review "from a much stronger place"
+
+He reviews a **curated, pre-judged set**, never raw output (and nothing reaches him unread — `standing_rulings.md`
+§Nothing reaches the owner unread, owner 2026-10-22; a sheet carries its `<stem>.prereview.json`): only judge-KEEP art (with the verdict lines beside
+each picture), plus rows flagged *split* (two UNSUREs), *stuck* (three REDO rounds), *kept-but-flagged* or *replaced your kept art* (§2.3).
+It reaches him the ways he already reviews — a review sheet that is truly new and passes its gates
+(`rimworld-review-sheets`), a phone set (full-res alone, true scale, facings), or an in-game review map for
+visuals judged by looking — never a sheet of REDOs. Delegated art may be installed before his review; biome art
+never blocks (`standing_rulings.md`, 2026-10-18). His ruling there is recorded as his (`--owner-said`) and
+makes the picture owner-kept.
+
+
+STANDING OWNER CONSTRAINTS (CLAUDE.md / CHARTER): "Let's stop evictions right now"; "This is a human review process issue." Agents decide design details inside standing rulings; may not overturn them. No new mechanism means ordinary owner play remains default live validation; L0 does not claim actual hits, populations, art, flight or feel. The nursery prose below is frozen in its rulings; clarification adds detail without weakening its small/parent contrast.
+
+SOURCE design/Jawa/worldbuilding/biomes/the_miasma.md
+- **The nursery.** The Grey Sea's roster breeds here — the root-maze is the
+  crèche of every horror the sea still holds (`sea_beasts_roster.md`'s formal
+  breeding ground: the young here, the adults in the terminator waters).
+  Juveniles swarm the shallows, small and almost charming and cheap to hunt —
+  and every scavenger knows the arithmetic: **don't kill what's small here;
+  its mother is why nobody goes out onto the open water.** 🔴 *(Corrected
+  2026-09-23, owner: there are no nautical ships in this world, so the old
+  phrasing — "the reason ships sink" — was a dead metaphor. The arithmetic it
+  expressed is unchanged: the small are cheap, the parents are
+  catastrophic.)* The parents' desperate gamble with
+  their own young is the biome's soul in miniature (owner): send them into
+  the muck, and they die or come back stronger.
+- ⭐ **The warden mothers.** The adults that stay: brine-broken elders too old
+  for the strengthening sea, hauled into the shallows to end their centuries
+  guarding the crèches. Enormous, **lumbering within the water**, lethal
+  within reach, and tragic — the sea's memory dying in its lifeboat. Her
+  crèche sits in the shallows and is a placed, mapped, named site; **she
+  herself spawns, and sometimes brings stranded young with her.**
+  🔴 **She cannot reach dry land, and that constraint is the whole point:**
+  when a receding surge strands one of her young in a pool the water has
+  left, she can hear it and see it and will never cross the few metres of dry
+  ground between. A colony can. ⇒ **She can be BEFRIENDED** — never tamed —
+  by freeing the young she cannot reach. Tolerance means only that you have
+  left her target set; she is commanded by nobody, and harvesting inside her
+  reach returns you to it at once.
+  🧊 **AMENDED 2026-09-23 by owner ruling at a sitting**, per this sheet's own
+  unfreeze clause. This entry previously read *"stationary"* and *"Placed
+  set-pieces, never random spawns"*; both are superseded by the clauses above.
+  Full design and the built-vs-owed split:
+  `miasma_fauna_roster_2026-09-23.md` §6. ⛔ Nothing else in this section
+  moves, and the giant lane is still hers alone — no second giant.
+
+SOURCE design/Jawa/worldbuilding/biomes/the_grey_deep.md
+  waymarks; a lost diver is someone who missed one pillar.
+  **RULED 2026-09-27 (sitting Q1): the pillar law is STORY ONLY.** The
+  pillars stand (built as formations) and the waymark fiction lives in
+  prose and descriptions, but navigation stays perfect — no waymark job,
+  no murk penalty, no lost-diver mechanic is owed.
+- **The crusted giant** — the endemic lineage (bred at the Miasma's crèches,
+  returned here for its solitary centuries), **ill-tempered** (owner): brine
+  that hurts, worn as a life condition. Centuries have **encased it in its
+  own mineral armor** — a living thing wearing the biome's geology,
+  indistinguishable from a drifting pillar until it moves. It **scrapes** —
+  grinding crust off against the columns — so *fresh scrape-sign means the
+  giant is near*: the tell that lets the observant survive. And in the murk,
+  the base sheet's one-saturated-mark rule turns to dread: **you see the
+  mate-mark's glow before you see anything else** — one point of impossible
+  color approaching through the grey.
+- ⭐ **The ossuary shrimp** (owner): **a man-sized, skeletal-seeming shrimp,
+  moving along picking at everything it can — strangely intelligent and
+  nimble, but shy and evasive.** The undertaker racing the geology: it works
+  the freshly dead in the narrow window before the minerals take them, and
+  it has watched every diver who ever came down here from two pillars away.
+  It is never caught in the open, never fights, and remembers. (Solitary,
+  single-spawn, per the inherited bans.)
+
+*[+2026-09-26] Built as of this date (MEASURED by BENCH, content doc §0): the floor
+is the pocket map `RM_SeaDiveGenerator_GreySea` reading its cast off `RM_GreySea`'s
+`<wildAnimals>`; the anchor cast ships as `RM_Reefback` (the crusted giant),
+`RM_Fessk` (**this IS the ossuary shrimp**), plus `RM_Otheska`, `RM_Sorruth`,
+`RM_Essarn`; nine `fishTypes`. The pillar exists in no def yet, though four
+descriptions name it.* *(Stale by 2026-09-27: the pillars now ship —
+`RM_SaltPillar` and its formation family, `GREYSEA_FLOOR_FORMATIONS_1`.)*
+
+- **[+2026-09-27] The catch register — RULED (sitting Q2): all 13 catch species
+  are KEPT, rebalanced RARE.** The fish population comes down and species move
+  into the uncommon/rare bands, so the sparseness is felt at the dock: the murk
+  hides plenty, but most days the line brings up little. The solitary law was
+
+SOURCE design/Jawa/worldbuilding/biomes/rosters/the_miasma.json
+{
+  "fauna": [
+    {
+      "action": "import",
+      "band": "nursery",
+      "commonality": 0.4,
+      "def": "RSW_MeeJuv",
+      "law": "R11 + \u00a74 the nursery \u2014 the Grey Sea's roster breeds here; juveniles swarm the shallows"
+    },
+    {
+      "action": "import",
+      "band": "nursery",
+      "commonality": 0.3,
+      "def": "RSW_FaaJuv",
+      "law": "R11 nursery ring"
+    },
+    {
+      "action": "import",
+      "band": "nursery",
+      "commonality": 0.3,
+      "def": "RSW_LaaJuv",
+      "law": "R11 nursery ring"
+    },
+    {
+      "action": "import",
+      "band": "nursery",
+      "commonality": 0.3,
+      "def": "RSW_YobshrimpJuv",
+      "law": "R11 nursery \u2014 the pale young of the brine line"
+    },
+    {
+      "action": "import",
+      "band": "nursery",
+      "commonality": 0.25,
+      "def": "RSW_SiltLampreyJuv",
+      "law": "R11 nursery; silt-working juvenile"
+    },
+    {
+      "action": "import",
+      "band": "nursery",
+      "commonality": 0.25,
+      "def": "RM_RustNipperJuv",
+      "law": "R11 nursery; Miasma sheet 2026-10-08 (owner): \"not SW tier\" \u2014 the row names the RM_ def RM_RustNipperJuv (mandrake.rm.terminalbiomes, already cast in RM_Miasma.xml since SEA_BEASTS_TIER_RULING_1)"
+    },
+    {
+      "action": "import",
+      "band": "nursery-guard",
+      "commonality": 0.05,
+      "def": "RSW_OpeeSeaKillerJuv",
+      "law": "R11 \u2014 a sub-adult lingering at the cr\u00e8che mouths; 'don't kill what's small here' (\u00a74)"
+    }
+  ],
+  "new_defs": [
+    {
+      "from_sheet": "the_miasma \u00a74 / R11",
+      "kind": "creature",
+      "mechanic_load": "C#: placed set-piece, never random spawn (\u00a74); R11 lifecycle end-stage",
+      "name": "warden mother (brine-broken elder, cr\u00e8che guard)"
+    }
+  ],
+  "notes": "Donor animalDensity 6.5 is doctrine \u2014 record density as refugee CROWDING, so this roster stays deliberately thick. Three rings staffed: nursery (Grey Sea juveniles, R11), warden mothers (placed set-pieces, NEVER wildAnimals rows \u2014 new_defs), the stranded (new_defs). R11 lifecycle: wardens breed and are born here, adults live in the Grey Sea, elders return as cr\u00e8che-guarding mothers \u2014 the wild roster carries only the YOUNG side; the adult rides the Grey Sea/terminator sheets.\nMiasma sheet 2026-10-08 (owner): RM_SiltLampreyJuv (cast inline in RM_Miasma.xml, def in mandrake.rm.terminalbiomes) renamed gillclamper, description rewritten: The young of the silt lamprey, raised in the Miasma's warm stranding pools before the open sea takes it. A gillclamper is a finger-thick, eel-slick body behind a sucker of hooked rasps, which it fixes into the gill-slits of other young fish and feeds from while they swim. It has not yet grown the adult's full round maw; for now it latches on, clamps tight, and lets its host do the travelling."
+}
+
+SOURCE design/Jawa/worldbuilding/biomes/rosters/the_grey_sea.json
+{
+  "fauna": [
+    {
+      "action": "import",
+      "band": "endemic giant \u2014 single-spawn, the warden ADULT",
+      "commonality": 0.005,
+      "def": "RSW_Reefback",
+      "law": "terminator_sea \u00a74 (endemic giant, one per sea, no sharing); the_grey_deep \u00a74: the crusted giant \u2014 the endemic lineage, ill-tempered, mineral-armored; R11: warden adults spend their centuries in the Grey Deep as the brine adults; bs 32, spd 2.0, non-predator, manhunter-on-hurt 50% (MEASURED)",
+      "note": "This is the warden lifecycle's ADULT side only \u2014 they breed and die in the Miasma (R11); the cr\u00e8che/mothers side is the Miasma roster (parallel agent). Manhunter-on-hurt carries the ill-tempered read. BUILT: ships as RM_Reefback at 0.005 on RM_GreySea (MEASURED 2026-09-27)."
+    }
+  ],
+  "new_defs": [
+    {
+      "from_sheet": "the_grey_deep \u00a74 + R11",
+      "kind": "creature",
+      "mechanic_load": "done",
+      "name": "the crusted giant ships as RM_Reefback (the old RSW_ rename-ledger row is executed); its lamp response is RULED DETERMINISTIC AND FORGIVING (Q12, 2026-09-27): worklight-class only, hours of burn, telegraphed, dowsing always resets"
+    }
+  ]
+}
+
+The requested the_grey_sea.md does not exist; the current Grey Sea roster references terminator_sea.md and the_grey_deep.md. No missing source is invented.
+
+EXACT RAW XML installed/Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml
+<LifeStageDef Name="AnimalBaby">
+    <defName>AnimalBaby</defName>
+    <label>baby</label>
+    <voxPitch>1.6</voxPitch>
+    <voxVolume>0.8</voxVolume>
+    <bodySizeFactor>0.2</bodySizeFactor>
+    <foodMaxFactor>3</foodMaxFactor>
+    <healthScaleFactor>0.25</healthScaleFactor>
+    <hungerRateFactor>0.4</hungerRateFactor>
+    <marketValueFactor>0.4</marketValueFactor>
+    <meleeDamageFactor>0.5</meleeDamageFactor>
+    <statFactors>
+      <MoveSpeed>0.5</MoveSpeed>
+    </statFactors>
+  </LifeStageDef>
+
+  <LifeStageDef>
+    <defName>AnimalJuvenile</defName>
+    <label>juvenile</label>
+    <voxPitch>1.2</voxPitch>
+    <bodySizeFactor>0.5</bodySizeFactor>
+    <foodMaxFactor>1.5</foodMaxFactor>
+    <healthScaleFactor>0.6</healthScaleFactor>
+    <hungerRateFactor>0.75</hungerRateFactor>
+    <marketValueFactor>0.75</marketValueFactor>
+    <meleeDamageFactor>0.75</meleeDamageFactor>
+    <statFactors>
+      <MoveSpeed>0.9</MoveSpeed>
+    </statFactors>
+  </LifeStageDef>
+
+  <LifeStageDef>
+    <defName>AnimalAdult</defName>
+    <label>adult</label>
+    <visible>false</visible>
+    <reproductive>true</reproductive>
+    <milkable>true</milkable>
+    <shearable>true</shearable>
+    <caravanRideable>true</caravanRideable>
+  </LifeStageDef>
+  
+
+
+EXACT RAW XML installed/Data/Core/Defs/ThingDefs_Races/Races_Animal_Base.xml
+<ThingDef Name="BasePawn" Abstract="True">
+    <thingClass>Pawn</thingClass>
+    <category>Pawn</category>
+    <selectable>true</selectable>
+    <containedPawnsSelectable>true</containedPawnsSelectable>
+    <containedItemsSelectable>true</containedItemsSelectable>
+    <tickerType>Normal</tickerType>
+    <altitudeLayer>Pawn</altitudeLayer>
+    <useHitPoints>false</useHitPoints>
+    <hasTooltip>true</hasTooltip>
+    <soundImpactDefault>BulletImpact_Flesh</soundImpactDefault>
+    <drawHighlight>true</drawHighlight>
+    <defaultPlacingRot>South</defaultPlacingRot>
+    <statBases>
+      <Mass>60</Mass>
+      <Flammability>0.7</Flammability>
+    </statBases>
+    <race>
+      <renderTree>Misc</renderTree>
+    </race>
+    <inspectorTabs>
+      <li>ITab_Pawn_Health</li>
+      <li>ITab_Pawn_Needs</li>
+      <li>ITab_Pawn_Character</li>
+      <li>ITab_Pawn_Training</li>
+      <li>ITab_Pawn_Social</li>
+      <li>ITab_Pawn_Guest</li>
+      <li>ITab_Pawn_Prisoner</li>
+      <li MayRequire="Ludeon.RimWorld.Ideology">ITab_Pawn_Slave</li>
+      <li MayRequire="Ludeon.RimWorld.Biotech">ITab_Pawn_Feeding</li>
+      <li MayRequire="Ludeon.RimWorld.Biotech">ITab_Genes</li>
+      <li MayRequire="Ludeon.RimWorld.Biotech">ITab_GenesPregnancy</li>
+      <li MayRequire="Ludeon.RimWorld.Anomaly">ITab_Entity</li>
+      <li>ITab_Pawn_FormingCaravan</li>
+      <li>ITab_Pawn_Gear</li>
+      <li>ITab_Pawn_Log</li>
+    </inspectorTabs>
+    <comps>
+      <li>
+        <compClass>CompAttachBase</compClass>
+      </li>
+    </comps>
+    <drawGUIOverlay>true</drawGUIOverlay>
+  </ThingDef>
+
+  <ThingDef ParentName="BasePawn" Name="AnimalThingBase" Abstract="True">
+    <statBases>
+      <LeatherAmount>40</LeatherAmount>
+      <ToxicResistance>0.5</ToxicResistance>
+    </statBases>
+    <race>
+      <thinkTreeMain>Animal</thinkTreeMain>
+      <thinkTreeConstant>AnimalConstant</thinkTreeConstant>
+      <hasGenders>true</hasGenders>
+      <nameGenerator>NamerAnimalGenericMale</nameGenerator>
+      <nameGeneratorFemale>NamerAnimalGenericFemale</nameGeneratorFemale>
+      <trainability>None</trainability>
+      <bloodDef>Filth_Blood</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <canBecomeShambler>true</canBecomeShambler>
+      <renderTree>Animal</renderTree>
+      <hediffGiverSets>
+        <li>OrganicStandard</li>
+      </hediffGiverSets>
+    </race>
+    <thingCategories>
+      <li>Animals</li>
+    </thingCategories>
+    <recipes>
+      <li>ExciseCarcinoma</li>
+      <li>AdministerMechSerumHealer</li>
+      <li>RemoveBodyPart</li>
+      <li>Euthanize</li>
+      <li>Anesthetize</li>
+      <li>CureScaria</li>
+      <li>Sterilize</li>
+      <li MayRequire="Ludeon.RimWorld.Royalty">CureBloodRot</li>
+      <li MayRequire="Ludeon.RimWorld.Biotech">TerminatePregnancy</li>
+      <li MayRequire="Ludeon.RimWorld.Anomaly">SurgicalInspection</li>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">RemovePorcupineQuill</li>
+    </recipes>
+    <comps>
+      
+      <li Class="CompProperties_HoldingPlatformTarget" MayRequire="Ludeon.RimWorld.Anomaly">
+        <baseEscapeIntervalMtbDays>120</baseEscapeIntervalMtbDays>
+        <getsColdContainmentBonus>true</getsColdContainmentBonus>
+      </li>
+      <li MayRequire="Ludeon.RimWorld.Anomaly" Class="CompProperties_Studiable">
+        <frequencyTicks>120000</frequencyTicks>
+        <knowledgeCategory MayRequire="Ludeon.RimWorld.Anomaly">Basic</knowledgeCategory>
+        <anomalyKnowledge>1</anomalyKnowledge>
+        <requiresImprisonment>true</requiresImprisonment>
+        <minMonolithLevelForStudy>1</minMonolithLevelForStudy>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <PawnKindDef Name="AnimalKindBase" Abstract="True">
+  </PawnKindDef>
+  
+
+
+EXACT RAW XML src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_SeaBeasts_Invented.xml
+<ThingDef ParentName="AnimalThingBase" Name="RM_Reefback">
+    <defName>RM_Reefback</defName>
+    <label>reefback</label>
+    <description>So old the reef grows on it: coral, kelp, a hundred hangers-on that never leave. A moving ecosystem, and the one place in the deep where a crew can rest in the light of something else's garden — as long as nobody puts a harpoon in the garden.</description>
+    <statBases>
+      <MoveSpeed>2.0</MoveSpeed>
+      <MarketValue>8000</MarketValue>
+      <ComfyTemperatureMin>-30</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <ArmorRating_Blunt>0.60</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.70</ArmorRating_Sharp>
+      <ArmorRating_Heat>0.75</ArmorRating_Heat>
+      <Wildness>1.0</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>tail sweep</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>480</power>
+        <cooldownTime>8.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>bulk</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>120</power>
+        <cooldownTime>6</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <chanceFactor>0.3</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <leatherDef>Leather_Sealskin</leatherDef>
+      <body>Pinniped</body>
+      <predator>false</predator>
+      <canBePredatorPrey>false</canBePredatorPrey>
+      <disableMating>true</disableMating>
+      <baseBodySize>32</baseBodySize>
+      <baseHealthScale>20</baseHealthScale>
+      <foodType>None</foodType>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <gestationPeriodDays>120</gestationPeriodDays>
+      <manhunterOnDamageChance>0.2</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>1.0</manhunterOnTameFailChance>
+      <lifeExpectancy>500</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase" Name="RM_Reefback_Kind">
+    <defName>RM_Reefback</defName>
+    <label>reefback</label>
+    <race>RM_Reefback</race>
+    <combatPower>2000</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>4.0</ecoSystemWeight>
+    <canArriveManhunter>false</canArriveManhunter>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>2.0</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>5.89</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>5.89</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>8.56</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>8.56</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>10.7</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>10.7</drawSize>
+        </swimmingGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+
+  <ThingDef ParentName="RM_Reefback">
+    <defName>RM_ReefbackJuv</defName>
+    <label>young reefback</label>
+    <description>A reefback hatchling-sized by comparison only: the reef has barely begun to grow on it, and it drifts close to wherever the adults went.</description>
+    <race>
+      <lifeStageAges Inherit="False">
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="RM_Reefback_Kind">
+    <defName>RM_ReefbackJuv</defName>
+    <wildGroupSize>2~3</wildGroupSize>
+    <label>young reefback</label>
+    <race>RM_ReefbackJuv</race>
+    <lifeStages Inherit="False">
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.94</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.94</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>4.42</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>4.42</drawSize>
+        </swimmingGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+
+
+EXACT RAW XML src/RimMandrake/Miasma/Defs/ThingDefs_Races/RM_WardenMother.xml
+<LifeStageDef>
+    <defName>RM_WardenMotherElder</defName>
+    <label>elder</label>
+    <visible>true</visible>
+    <bodySizeFactor>1</bodySizeFactor>
+  </LifeStageDef>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_WardenMother</defName>
+    <label>warden mother</label>
+    <description>Barnacled, scarred, and older than anything else that swims these shallows — you can see it in how slowly she moves now. She goes wherever the water goes, and nowhere else; the few metres of dry ground between her and anything on land might as well be another world. Lethal to anything she can reach. Not tame, not tameable, and not gentle — but she remembers who freed her young from a drying pool, and she will not touch you for it.</description>
+    <statBases>
+      <MoveSpeed>1.6</MoveSpeed>
+      <MarketValue>0</MarketValue>
+      <ComfyTemperatureMin>-20</ComfyTemperatureMin>
+      <ComfyTemperatureMax>55</ComfyTemperatureMax>
+      <ArmorRating_Blunt>0.55</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.65</ArmorRating_Sharp>
+      <Wildness>1.0</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>crushing bite</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>22</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>flipper slam</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <chanceFactor>0.6</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <leatherDef>Leather_Sealskin</leatherDef>
+      <body>Pinniped</body>
+      <predator>false</predator>
+      <canBePredatorPrey>false</canBePredatorPrey>
+      <herdAnimal>false</herdAnimal>
+      <disableMating>true</disableMating>
+      <baseBodySize>8</baseBodySize>
+      <baseHealthScale>7</baseHealthScale>
+      <foodType>OmnivoreAnimal</foodType>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <lifeExpectancy>45</lifeExpectancy>
+      <trainability>None</trainability>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+        </li>
+        <li>
+          <def>RM_WardenMotherElder</def>
+          <minAge>38</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_TerritorialAnchor">
+        <dutyDef>RM_AnchorGuard</dutyDef>
+        <anchorRadius>16</anchorRadius>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_WaterLocked">
+        <checkIntervalTicks>60</checkIntervalTicks>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_WardenMother</defName>
+    <label>warden mother</label>
+    <race>RM_WardenMother</race>
+    <combatPower>1400</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0</ecoSystemWeight>
+    <canArriveManhunter>false</canArriveManhunter>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>1.8</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Miasma/WardenMother/WardenMother</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Miasma/WardenMother/WardenMother</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>5.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Miasma/WardenMother/WardenMother</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>7.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Miasma/WardenMother/WardenMotherAged</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>7.5</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+
+
+EXACT RAW XML installed/Data/Core/Defs/Bodies/BodyParts_General.xml
+
+
+INSTALLED REFLECTION-ONLY IL
+METHOD RimWorld.LifeStageDef::.ctor TOKEN 100702430
+IL_0000: ldarg.0 
+IL_0001: ldc.i4.1 
+IL_0002: stfld RimWorld.LifeStageDef::Boolean visible
+IL_0007: ldarg.0 
+IL_0008: ldc.i4.8 
+IL_0009: stfld RimWorld.LifeStageDef::Verse.DevelopmentalStage developmentalStage
+IL_000E: ldarg.0 
+IL_000F: ldtoken ::RimWorld.LifeStageWorker
+IL_0014: call System.Type::System.Type GetTypeFromHandle(System.RuntimeTypeHandle)
+IL_0019: stfld RimWorld.LifeStageDef::System.Type workerClass
+IL_001E: ldarg.0 
+IL_001F: ldc.i4.1 
+IL_0020: stfld RimWorld.LifeStageDef::Boolean involuntarySleepIsNegativeEvent
+IL_0025: ldarg.0 
+IL_0026: ldc.i4.1 
+IL_0027: stfld RimWorld.LifeStageDef::Boolean canDoRandomMentalBreaks
+IL_002C: ldarg.0 
+IL_002D: ldc.i4.1 
+IL_002E: stfld RimWorld.LifeStageDef::Boolean canVoluntarilySleep
+IL_0033: ldarg.0 
+IL_0034: ldc.i4.1 
+IL_0035: stfld RimWorld.LifeStageDef::Boolean canSleepWhenStarving
+IL_003A: ldarg.0 
+IL_003B: ldc.i4.1 
+IL_003C: stfld RimWorld.LifeStageDef::Boolean canInitiateSocialInteraction
+IL_0041: ldarg.0 
+IL_0042: ldc.r4 1
+IL_0047: stfld RimWorld.LifeStageDef::Single equipmentDrawDistanceFactor
+IL_004C: ldarg.0 
+IL_004D: ldc.r4 0.25
+IL_0052: stfld RimWorld.LifeStageDef::Single soundAttackChance
+IL_0057: ldarg.0 
+IL_0058: ldc.r4 1
+IL_005D: stfld RimWorld.LifeStageDef::Single voxPitch
+IL_0062: ldarg.0 
+IL_0063: ldc.r4 1
+IL_0068: stfld RimWorld.LifeStageDef::Single voxVolume
+IL_006D: ldarg.0 
+IL_006E: newobj System.Collections.Generic.List`1[[RimWorld.StatModifier, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Void .ctor()
+IL_0073: stfld RimWorld.LifeStageDef::System.Collections.Generic.List`1[RimWorld.StatModifier] statOffsets
+IL_0078: ldarg.0 
+IL_0079: newobj System.Collections.Generic.List`1[[RimWorld.StatModifier, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Void .ctor()
+IL_007E: stfld RimWorld.LifeStageDef::System.Collections.Generic.List`1[RimWorld.StatModifier] statFactors
+IL_0083: ldarg.0 
+IL_0084: ldc.r4 1
+IL_0089: stfld RimWorld.LifeStageDef::Single bodySizeFactor
+IL_008E: ldarg.0 
+IL_008F: ldc.r4 1
+IL_0094: stfld RimWorld.LifeStageDef::Single healthScaleFactor
+IL_0099: ldarg.0 
+IL_009A: ldc.r4 1
+IL_009F: stfld RimWorld.LifeStageDef::Single hungerRateFactor
+IL_00A4: ldarg.0 
+IL_00A5: ldc.r4 1
+IL_00AA: stfld RimWorld.LifeStageDef::Single marketValueFactor
+IL_00AF: ldarg.0 
+IL_00B0: ldc.r4 1
+IL_00B5: stfld RimWorld.LifeStageDef::Single foodMaxFactor
+IL_00BA: ldarg.0 
+IL_00BB: ldc.r4 1
+IL_00C0: stfld RimWorld.LifeStageDef::Single attachPointScaleFactor
+IL_00C5: ldarg.0 
+IL_00C6: ldc.r4 1
+IL_00CB: stfld RimWorld.LifeStageDef::Single meleeDamageFactor
+IL_00D0: ldarg.0 
+IL_00D1: call UnityEngine.Vector3::UnityEngine.Vector3 get_zero()
+IL_00D6: stfld RimWorld.LifeStageDef::UnityEngine.Vector3 bodyDrawOffset
+IL_00DB: ldarg.0 
+IL_00DC: call Verse.Def::Void .ctor()
+IL_00E1: ret 
+
+
+INSTALLED REFLECTION-ONLY IL
+METHOD Verse.ArmorUtility::ApplyArmor TOKEN 100673962
+IL_0000: ldarg.3 
+IL_0001: brfalse.s IL_0033
+IL_0003: ldarg.s 6
+IL_0005: ldarg.3 
+IL_0006: ldfld Verse.Thing::Verse.ThingDef def
+IL_000B: ldfld Verse.ThingDef::RimWorld.ApparelProperties apparel
+IL_0010: ldfld RimWorld.ApparelProperties::Boolean useDeflectMetalEffect
+IL_0015: brtrue.s IL_002F
+IL_0017: ldarg.3 
+IL_0018: callvirt Verse.Thing::Verse.ThingDef get_Stuff()
+IL_001D: brfalse.s IL_002C
+IL_001F: ldarg.3 
+IL_0020: callvirt Verse.Thing::Verse.ThingDef get_Stuff()
+IL_0025: callvirt Verse.ThingDef::Boolean get_IsMetal()
+IL_002A: br.s IL_0030
+IL_002C: ldc.i4.0 
+IL_002D: br.s IL_0030
+IL_002F: ldc.i4.1 
+IL_0030: stind.i1 
+IL_0031: br.s IL_0042
+IL_0033: ldarg.s 6
+IL_0035: ldarg.s 5
+IL_0037: callvirt Verse.Pawn::Verse.RaceProperties get_RaceProps()
+IL_003C: callvirt Verse.RaceProperties::Boolean get_IsMechanoid()
+IL_0041: stind.i1 
+IL_0042: ldarg.3 
+IL_0043: brfalse.s IL_0078
+IL_0045: ldarg.0 
+IL_0046: ldind.r4 
+IL_0047: ldc.r4 0.25
+IL_004C: mul 
+IL_004D: stloc.3 
+IL_004E: ldarg.3 
+IL_004F: ldarg.s 4
+IL_0051: ldind.ref 
+IL_0052: ldloc.3 
+IL_0053: call Verse.GenMath::Int32 RoundRandom(Single)
+IL_0058: conv.r4 
+IL_0059: ldc.r4 0
+IL_005E: ldc.r4 -1
+IL_0063: ldnull 
+IL_0064: ldnull 
+IL_0065: ldnull 
+IL_0066: ldc.i4.0 
+IL_0067: ldnull 
+IL_0068: ldc.i4.1 
+IL_0069: ldc.i4.1 
+IL_006A: ldc.i4.2 
+IL_006B: ldc.i4.1 
+IL_006C: ldc.i4.0 
+IL_006D: newobj Verse.DamageInfo::Void .ctor(Verse.DamageDef, Single, Single, Single, Verse.Thing, Verse.BodyPartRecord, Verse.ThingDef, SourceCategory, Verse.Thing, Boolean, Boolean, RimWorld.QualityCategory, Boolean, Boolean)
+IL_0072: callvirt Verse.Thing::DamageResult TakeDamage(Verse.DamageInfo)
+IL_0077: pop 
+IL_0078: ldarg.2 
+IL_0079: ldarg.1 
+IL_007A: sub 
+IL_007B: ldc.r4 0
+IL_0080: call UnityEngine.Mathf::Single Max(Single, Single)
+IL_0085: call Verse.Rand::Single get_Value()
+IL_008A: stloc.0 
+IL_008B: dup 
+IL_008C: ldc.r4 0.5
+IL_0091: mul 
+IL_0092: stloc.1 
+IL_0093: stloc.2 
+IL_0094: ldloc.0 
+IL_0095: ldloc.1 
+IL_0096: bge.un.s IL_00A0
+IL_0098: ldarg.0 
+IL_0099: ldc.r4 0
+IL_009E: stind.r4 
+IL_009F: ret 
+IL_00A0: ldloc.0 
+IL_00A1: ldloc.2 
+IL_00A2: bge.un.s IL_00CB
+IL_00A4: ldarg.0 
+IL_00A5: ldarg.0 
+IL_00A6: ldind.r4 
+IL_00A7: ldc.r4 2
+IL_00AC: div 
+IL_00AD: call Verse.GenMath::Int32 RoundRandom(Single)
+IL_00B2: conv.r4 
+IL_00B3: stind.r4 
+IL_00B4: ldarg.s 4
+IL_00B6: ldind.ref 
+IL_00B7: ldfld Verse.DamageDef::Verse.DamageArmorCategoryDef armorCategory
+IL_00BC: ldsfld RimWorld.DamageArmorCategoryDefOf::Verse.DamageArmorCategoryDef Sharp
+IL_00C1: bne.un.s IL_00CB
+IL_00C3: ldarg.s 4
+IL_00C5: ldsfld RimWorld.DamageDefOf::Verse.DamageDef Blunt
+IL_00CA: stind.ref 
+IL_00CB: ret 
+
+
+INSTALLED REFLECTION-ONLY IL
+METHOD Verse.BodyPartDef::GetMaxHealth TOKEN 100666921
+IL_0000: ldarg.0 
+IL_0001: ldfld Verse.BodyPartDef::Int32 hitPoints
+IL_0006: conv.r4 
+IL_0007: ldarg.1 
+IL_0008: callvirt Verse.Pawn::Single get_HealthScale()
+IL_000D: mul 
+IL_000E: call UnityEngine.Mathf::Int32 CeilToInt(Single)
+IL_0013: conv.r4 
+IL_0014: ret 
+
+
+INSTALLED REFLECTION-ONLY IL
+METHOD Verse.Pawn::get_BodySize TOKEN 100675828
+IL_0000: ldarg.0 
+IL_0001: ldfld Verse.Pawn::Verse.Pawn_AgeTracker ageTracker
+IL_0006: callvirt Verse.Pawn_AgeTracker::RimWorld.LifeStageDef get_CurLifeStage()
+IL_000B: ldfld RimWorld.LifeStageDef::Single bodySizeFactor
+IL_0010: ldarg.0 
+IL_0011: call Verse.Pawn::Verse.RaceProperties get_RaceProps()
+IL_0016: ldfld Verse.RaceProperties::Single baseBodySize
+IL_001B: mul 
+IL_001C: ret 
+
+
+INSTALLED REFLECTION-ONLY IL
+METHOD Verse.Pawn::get_HealthScale TOKEN 100675829
+IL_0000: ldarg.0 
+IL_0001: ldfld Verse.Pawn::Verse.Pawn_AgeTracker ageTracker
+IL_0006: callvirt Verse.Pawn_AgeTracker::RimWorld.LifeStageDef get_CurLifeStage()
+IL_000B: ldfld RimWorld.LifeStageDef::Single healthScaleFactor
+IL_0010: ldarg.0 
+IL_0011: call Verse.Pawn::Verse.RaceProperties get_RaceProps()
+IL_0016: ldfld Verse.RaceProperties::Single baseHealthScale
+IL_001B: mul 
+IL_001C: ret 
+
+
+INSTALLED REFLECTION-ONLY IL
+METHOD Verse.VerbProperties::GetDamageFactorFor TOKEN 100667309
+IL_0000: ldarg.1 
+IL_0001: ldfld Verse.Verb::Verse.VerbProperties verbProps
+IL_0006: ldarg.0 
+IL_0007: beq.s IL_0030
+IL_0009: ldstr "Tried to calculate damage factor for a verb with different verb props. verb="
+IL_000E: ldarg.1 
+IL_000F: dup 
+IL_0010: brtrue.s IL_0016
+IL_0012: pop 
+IL_0013: ldnull 
+IL_0014: br.s IL_001B
+IL_0016: callvirt System.Object::System.String ToString()
+IL_001B: call System.String::System.String Concat(System.String, System.String)
+IL_0020: ldc.i4 94324562
+IL_0025: call Verse.Log::Void ErrorOnce(System.String, Int32)
+IL_002A: ldc.r4 1
+IL_002F: ret 
+IL_0030: ldarg.0 
+IL_0031: ldarg.1 
+IL_0032: ldfld Verse.Verb::Verse.Tool tool
+IL_0037: ldarg.2 
+IL_0038: ldarg.1 
+IL_0039: callvirt Verse.Verb::Verse.HediffComp_VerbGiver get_HediffCompSource()
+IL_003E: call Verse.VerbProperties::Single GetDamageFactorFor(Verse.Tool, Verse.Pawn, Verse.HediffComp_VerbGiver)
+IL_0043: ret 
+
+
+INSTALLED REFLECTION-ONLY IL
+METHOD Verse.VerbProperties::GetDamageFactorFor TOKEN 100667310
+IL_0000: ldc.r4 1
+IL_0005: stloc.0 
+IL_0006: ldarg.2 
+IL_0007: brfalse IL_00AE
+IL_000C: ldarg.3 
+IL_000D: brfalse.s IL_0043
+IL_000F: ldarg.3 
+IL_0010: ldfld Verse.HediffComp::Verse.HediffWithComps parent
+IL_0015: callvirt Verse.Hediff::Verse.BodyPartRecord get_Part()
+IL_001A: brfalse.s IL_0043
+IL_001C: ldloc.0 
+IL_001D: ldarg.3 
+IL_001E: callvirt Verse.HediffComp::Verse.Pawn get_Pawn()
+IL_0023: ldfld Verse.Pawn::Verse.Pawn_HealthTracker health
+IL_0028: ldfld Verse.Pawn_HealthTracker::Verse.HediffSet hediffSet
+IL_002D: ldarg.3 
+IL_002E: ldfld Verse.HediffComp::Verse.HediffWithComps parent
+IL_0033: callvirt Verse.Hediff::Verse.BodyPartRecord get_Part()
+IL_0038: ldc.i4.1 
+IL_0039: ldnull 
+IL_003A: call Verse.PawnCapacityUtility::Single CalculatePartEfficiency(Verse.HediffSet, Verse.BodyPartRecord, Boolean, System.Collections.Generic.List`1[Verse.PawnCapacityUtility+CapacityImpactor])
+IL_003F: mul 
+IL_0040: stloc.0 
+IL_0041: br.s IL_0080
+IL_0043: ldarg.2 
+IL_0044: brfalse.s IL_0080
+IL_0046: ldarg.0 
+IL_0047: ldarg.1 
+IL_0048: call Verse.VerbProperties::Verse.BodyPartGroupDef AdjustedLinkedBodyPartsGroup(Verse.Tool)
+IL_004D: brfalse.s IL_0080
+IL_004F: ldarg.2 
+IL_0050: ldfld Verse.Pawn::Verse.Pawn_HealthTracker health
+IL_0055: ldfld Verse.Pawn_HealthTracker::Verse.HediffSet hediffSet
+IL_005A: ldarg.0 
+IL_005B: ldarg.1 
+IL_005C: call Verse.VerbProperties::Verse.BodyPartGroupDef AdjustedLinkedBodyPartsGroup(Verse.Tool)
+IL_0061: call Verse.PawnCapacityUtility::Single CalculateNaturalPartsAverageEfficiency(Verse.HediffSet, Verse.BodyPartGroupDef)
+IL_0066: stloc.1 
+IL_0067: ldarg.0 
+IL_0068: ldarg.1 
+IL_0069: call Verse.VerbProperties::Boolean AdjustedEnsureLinkedBodyPartsGroupAlwaysUsable(Verse.Tool)
+IL_006E: brfalse.s IL_007C
+IL_0070: ldloc.1 
+IL_0071: ldc.r4 0.4
+IL_0076: call UnityEngine.Mathf::Single Max(Single, Single)
+IL_007B: stloc.1 
+IL_007C: ldloc.0 
+IL_007D: ldloc.1 
+IL_007E: mul 
+IL_007F: stloc.0 
+IL_0080: ldarg.2 
+IL_0081: brfalse.s IL_00AE
+IL_0083: ldarg.0 
+IL_0084: call Verse.VerbProperties::Boolean get_IsMeleeAttack()
+IL_0089: brfalse.s IL_00AE
+IL_008B: ldloc.0 
+IL_008C: ldarg.2 
+IL_008D: ldfld Verse.Pawn::Verse.Pawn_AgeTracker ageTracker
+IL_0092: callvirt Verse.Pawn_AgeTracker::RimWorld.LifeStageDef get_CurLifeStage()
+IL_0097: ldfld RimWorld.LifeStageDef::Single meleeDamageFactor
+IL_009C: mul 
+IL_009D: stloc.0 
+IL_009E: ldloc.0 
+IL_009F: ldarg.2 
+IL_00A0: ldsfld RimWorld.StatDefOf::RimWorld.StatDef MeleeDamageFactor
+IL_00A5: ldc.i4.1 
+IL_00A6: ldc.i4.m1 
+IL_00A7: call RimWorld.StatExtension::Single GetStatValue(Verse.Thing, RimWorld.StatDef, Boolean, Int32)
+IL_00AC: mul 
+IL_00AD: stloc.0 
+IL_00AE: ldloc.0 
+IL_00AF: ret 
+

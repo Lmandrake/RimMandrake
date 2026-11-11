@@ -1,0 +1,36 @@
+
+validate_patch.py - 1 XML file(s): 0 <Patch>, 1 <Defs>
+  SCANNED     Patches/: operation shape, guards, value shape, live xpath hit counts
+              Defs/:    XML parse, comment bodies, missing/duplicate defName, ParentName
+                        resolution, Class attributes, texPath existence and case
+  NOT SCANNED field names, field types, value ranges, C# class members, and any node
+              a PatchOperation creates at load time. This is not a def linter.
+  NOTE        no --defs: ParentName and Class checks are SKIPPED and no xpath is executed.
+
+
+=== src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_SeaBeasts_Invented.xml ===
+  info    ThingDef 'RM_CrimsonOpee': ParentName="AnimalThingBase" is not declared in the files scanned. Pass --defs to check it against the real load set.
+  info    PawnKindDef 'RM_CrimsonOpee': ParentName="AnimalKindBase" is not declared in the files scanned. Pass --defs to check it against the real load set.
+  info    ThingDef 'RM_ShaleGorger': ParentName="AnimalThingBase" is not declared in the files scanned. Pass --defs to check it against the real load set.
+  info    PawnKindDef 'RM_ShaleGorger': ParentName="AnimalKindBase" is not declared in the files scanned. Pass --defs to check it against the real load set.
+  info    ThingDef 'RM_AbyssalColo': ParentName="AnimalThingBase" is not declared in the files scanned. Pass --defs to check it against the real load set.
+  info    PawnKindDef 'RM_AbyssalColo': ParentName="AnimalKindBase" is not declared in the files scanned. Pass --defs to check it against the real load set.
+  info    ThingDef 'RM_ThornbackColo': ParentName="AnimalThingBase" is not declared in the files scanned. Pass --defs to check it against the real load set.
+  info    PawnKindDef 'RM_ThornbackColo': ParentName="AnimalKindBase" is not declared in the files scanned. Pass --defs to check it against the real load set.
+  info    ThingDef 'RM_GrippingTerror': ParentName="AnimalThingBase" is not declared in the files scanned. Pass --defs to check it against the real load set.
+  info    PawnKindDef 'RM_GrippingTerror': ParentName="AnimalKindBase" is not declared in the files scanned. Pass --defs to check it against the real load set.
+  info    ThingDef 'RM_StormSando': ParentName="AnimalThingBase" is not declared in the files scanned. Pass --defs to check it against the real load set.
+  info    PawnKindDef 'RM_StormSando': ParentName="AnimalKindBase" is not declared in the files scanned. Pass --defs to check it against the real load set.
+  info    ThingDef 'RM_SiltLamprey': ParentName="AnimalThingBase" is not declared in the files scanned. Pass --defs to check it against the real load set.
+  info    PawnKindDef 'RM_SiltLamprey': ParentName="AnimalKindBase" is not declared in the files scanned. Pass --defs to check it against the real load set.
+  info    ThingDef 'RM_RustNipper': ParentName="AnimalThingBase" is not declared in the files scanned. Pass --defs to check it against the real load set.
+  info    PawnKindDef 'RM_RustNipper': ParentName="AnimalKindBase" is not declared in the files scanned. Pass --defs to check it against the real load set.
+  info    ThingDef 'RM_Reefback': ParentName="AnimalThingBase" is not declared in the files scanned. Pass --defs to check it against the real load set.
+  info    PawnKindDef 'RM_Reefback': ParentName="AnimalKindBase" is not declared in the files scanned. Pass --defs to check it against the real load set.
+  info    ThingDef 'RM_Starmaw': ParentName="AnimalThingBase" is not declared in the files scanned. Pass --defs to check it against the real load set.
+  info    PawnKindDef 'RM_Starmaw': ParentName="AnimalKindBase" is not declared in the files scanned. Pass --defs to check it against the real load set.
+  info    ThingDef 'RM_Lanternwhale': ParentName="AnimalThingBase" is not declared in the files scanned. Pass --defs to check it against the real load set.
+  info    PawnKindDef 'RM_Lanternwhale': ParentName="AnimalKindBase" is not declared in the files scanned. Pass --defs to check it against the real load set.
+  info    no --defs given; ParentName resolution and Class-attribute checks were SKIPPED. texPath checks used this mod's own Textures/ only, so a path served by another mod cannot be told apart from a typo.
+
+OK - 0 errors, 0 warning(s)

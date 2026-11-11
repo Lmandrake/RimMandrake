@@ -1,0 +1,14 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/Utils/run_selftests.py",
+    "--only",
+    "selftest_def_duplicate_fields"
+  ],
+  "cwd": "/home/mandrake/rm/codex-ht",
+  "started": 1794409965.4274573,
+  "elapsed_seconds": 3.9873929023742676,
+  "rc": 0,
+  "stdout_sha256": "96301bba3d42f9090ce1879d57096c3bc990609e766f9c74528aea91c86a283c",
+  "stderr_sha256": "38e48e63910d7f00b00847b77cc942a59964bcb98e09f3e58ced84e60dfcaede"
+}

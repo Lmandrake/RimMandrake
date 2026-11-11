@@ -1,0 +1,8 @@
+{
+  "accepted": false,
+  "reason": "Installed Odyssey original read outside frozen literal allowlist; snapshot was allowed.",
+  "completed_command_count": 22,
+  "write_target": "whittle/ht-reefback-combat/JUDGE.md",
+  "source_hash_drift": [],
+  "prompt_sha256": "b91b069c3e16ca76c662673a9a6127289baf56f56741f474b244d8643ae014b7"
+}

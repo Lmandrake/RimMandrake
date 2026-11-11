@@ -1,0 +1,13 @@
+{
+  "technical_verdict": "A1L0 and A2L0 TRUE; would show: yes",
+  "current_prompt_allowlist_audit": "No maker conclusions, prior judgments or non-allowlisted application sources found in the 28 completed command events; only deliberate write was JUDGE.md.",
+  "completed_command_count": 28,
+  "source_hash_drift": [],
+  "initial_prompt_sha256": "b91b069c3e16ca76c662673a9a6127289baf56f56741f474b244d8643ae014b7",
+  "second_prompt_sha256": "f65d979ba37e019ca4c4dd2752c1fc1dfa9e9475926308c6f28e3049e5ebd568",
+  "prompt_drift": "Installed Core-only allowance was externally expanded to Core and all five DLC defs before the second invocation. Worker did not edit JUDGE_PROMPT.md. Initial prompt reconstructed byte-for-byte against actual first-call hash; both prompts and exact diff retained.",
+  "scope_caveat": "Acceptance under an unchanged initial prompt is not asserted. Parent must assess the external allowance amendment when reviewing this unit; no owner approval is inferred.",
+  "statement_sha256": "e588e057c54ac77cc94f5104b1451cf7db19f4c4ef53140a4d58b65fd2f6494e",
+  "notes_sha256": "069bcf7c7c931ab09b5f696198ac44311a53d273a103be1c32393690c2f93fcf",
+  "judgment_sha256": "e2ea827dacc2904521f4b06644ea7a4fff6aa57486597cae4fe35d8dadb7e167"
+}

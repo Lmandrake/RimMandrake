@@ -1,0 +1,18 @@
+{
+  "command": [
+    "powershell.exe",
+    "-NoProfile",
+    "-ExecutionPolicy",
+    "Bypass",
+    "-File",
+    "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\codex-ht\\whittle\\ht-reefback-combat\\evidence\\discover_consumers.ps1",
+    "-GameDir",
+    "D:\\SteamLibrary\\steamapps\\common\\RimWorld"
+  ],
+  "cwd": "/home/mandrake/rm/codex-ht",
+  "started": 1794409636.3822448,
+  "elapsed_seconds": 0.44305944442749023,
+  "rc": 0,
+  "stdout_sha256": "62bc13b06be5754755a8c7e6108a690992df4401cff4743416084d4ccb519576",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

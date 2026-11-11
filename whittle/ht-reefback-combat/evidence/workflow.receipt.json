@@ -1,0 +1,9 @@
+{
+  "validator": "/home/mandrake/dev/MandrakeWorkflows-dev/whittle/run.py",
+  "call": "validate(cwd)",
+  "cwd": "/home/mandrake/rm/codex-ht",
+  "WHITTLE_DIR": "whittle/ht-reefback-combat",
+  "started": 1794411469.5234268,
+  "elapsed_seconds": 1.9282007217407227,
+  "workflow_rc": 0
+}

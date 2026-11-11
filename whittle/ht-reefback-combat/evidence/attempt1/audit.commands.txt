@@ -1,0 +1,270 @@
+0: /bin/bash -lc 'export RIMFLOW_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS AGENT_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS RIMFLOW_BRIDGE_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS; source /home/mandrake/rm/runner/infrastructure/stevedesktop/testcentre_env.sh; export WSLENV="${WSLENV:+${WSLENV}:}RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT"; pwd; cat CLAUDE.md infrastructure/agents/CHARTER.md design/RimMandrake/GIT_WORKFLOW.md design/RimMandrake/delegation_policy.md whittle/ht-reefback-combat/STATEMENT.md whittle/ht-reefback-combat/NOTES.md whittle/ht-reefback-combat/evidence/item-before.txt'
+
+1: /bin/bash -lc 'export RIMFLOW_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS AGENT_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS RIMFLOW_BRIDGE_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS; export WSLENV="${WSLENV:+${WSLENV}:}RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT"; source /home/mandrake/rm/runner/infrastructure/stevedesktop/testcentre_env.sh; cat infrastructure/agents/CHARTER.md; cat skills/rimworld-modding/SKILL.md; rg --files whittle/ht-reefback-combat/evidence/raw/; wc -l whittle/ht-reefback-combat/evidence/design_prompt.txt whittle/ht-reefback-combat/evidence/design_raw.json design/RimMandrake/GIT_WORKFLOW.md design/RimMandrake/delegation_policy.md'
+
+2: /bin/bash -lc 'export RIMFLOW_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS AGENT_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS RIMFLOW_BRIDGE_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS; export WSLENV="${WSLENV:+${WSLENV}:}RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT"; source /home/mandrake/rm/runner/infrastructure/stevedesktop/testcentre_env.sh; sed -n '"'90,260p' skills/rimworld-modding/SKILL.md; cat design/RimMandrake/GIT_WORKFLOW.md; rg -n 'reefback|Reefback|nursery|mother|hunting|cheap|combat' design/Jawa/worldbuilding/biomes/the_miasma.md design/Jawa/worldbuilding/biomes/the_grey_sea.md; rg --files src tools | rg -i 'reefback|combat|Miasma/.*spec|GreySea/.*spec|TerminalBiomes/.*spec'; cat whittle/ht-reefback-combat/evidence/raw/production-spec.diff"
+
+3: /bin/bash -lc 'export RIMFLOW_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS AGENT_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS RIMFLOW_BRIDGE_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS; export WSLENV="${WSLENV:+${WSLENV}:}RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT"; source /home/mandrake/rm/runner/infrastructure/stevedesktop/testcentre_env.sh; python3 -B - <<'"'PY'
+import json
+p='whittle/ht-reefback-combat/evidence/design_raw.json'
+d=json.load(open(p))
+print(type(d).__name__)
+if isinstance(d,dict):
+ print('keys',list(d))
+ print(json.dumps(d,indent=2)[:33000])
+PY"
+
+4: /bin/bash -lc 'export RIMFLOW_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS AGENT_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS RIMFLOW_BRIDGE_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS; export WSLENV="${WSLENV:+${WSLENV}:}RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT"; source /home/mandrake/rm/runner/infrastructure/stevedesktop/testcentre_env.sh; sed -n '"'1,125p' whittle/ht-reefback-combat/evidence/design_prompt.txt; sed -n '90,137p' design/Jawa/worldbuilding/biomes/the_miasma.md; sed -n '1,180p' src/RimMandrake/HugeThings/northstar/measure_reefback_combat.py; cat whittle/ht-reefback-combat/evidence/raw/final/inputs.json"
+
+5: /bin/bash -lc 'export RIMFLOW_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS AGENT_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS RIMFLOW_BRIDGE_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS; export WSLENV="${WSLENV:+${WSLENV}:}RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT"; source /home/mandrake/rm/runner/infrastructure/stevedesktop/testcentre_env.sh; sed -n '"'180,390p' src/RimMandrake/HugeThings/northstar/measure_reefback_combat.py; rg -n '"'^===|''^TYPE|''^METHOD|''^FIELD|''^ASSEMBLY|''^SHA|''^#'"' whittle/ht-reefback-combat/evidence/raw/engine-final.stdout.txt; rg --files design -g '*[Mm]iasma*' -g '*[Gg]rey*[Ss]ea*' -g '*[Tt]erminal*' -g '*roster*.json'; cat whittle/ht-reefback-combat/evidence/raw/read_engine.ps1"
+
+6: /bin/bash -lc 'export RIMFLOW_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS AGENT_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS RIMFLOW_BRIDGE_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS; export WSLENV="${WSLENV:+${WSLENV}:}RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT"; source /home/mandrake/rm/runner/infrastructure/stevedesktop/testcentre_env.sh; sed -n '"'390,660p' src/RimMandrake/HugeThings/northstar/measure_reefback_combat.py; sed -n '1,160p' whittle/ht-reefback-combat/evidence/raw/final/patch-audit.json; cat whittle/ht-reefback-combat/evidence/raw/changed-source-hashes.json; rg -n 'reefback|nursery|hunt|combat|mother' design/Jawa/worldbuilding/biomes/miasma_fauna_roster_2026-09-23.md design/Jawa/worldbuilding/biomes/the_grey_sea.md design/validation_walks/RimMandrake/Miasma.md design/validation_walks/RimMandrake/TerminalBiomes.md; rg --files src/RimMandrake/HugeThings/northstar/ -g '*.py'"
+
+7: /bin/bash -lc 'export RIMFLOW_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS AGENT_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS RIMFLOW_BRIDGE_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS; export WSLENV="${WSLENV:+${WSLENV}:}RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT"; source /home/mandrake/rm/runner/infrastructure/stevedesktop/testcentre_env.sh; sed -n '"'1300,1445p' src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_SeaBeasts_Invented.xml; sed -n '1832,1945p' src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_SeaBeasts_Invented.xml; cat src/RimMandrake/Miasma/Defs/ThingDefs_Races/RM_WardenMother.xml; cat /mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/Core/Defs/ThingDefs_Races/Races_Animal_Base.xml; sed -n '1,110p' /mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml"
+
+8: /bin/bash -lc 'export RIMFLOW_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS AGENT_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS RIMFLOW_BRIDGE_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS; export WSLENV="${WSLENV:+${WSLENV}:}RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT"; source /home/mandrake/rm/runner/infrastructure/stevedesktop/testcentre_env.sh; sed -n '"'1,260p' whittle/ht-reefback-combat/evidence/raw/engine-final.stdout.txt; sed -n '719,742p' whittle/ht-reefback-combat/evidence/raw/engine-final.stdout.txt; sed -n '892,1082p' whittle/ht-reefback-combat/evidence/raw/engine-final.stdout.txt; sed -n '1183,1323p' whittle/ht-reefback-combat/evidence/raw/engine-final.stdout.txt"
+
+9: /bin/bash -lc 'export RIMFLOW_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS AGENT_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS RIMFLOW_BRIDGE_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS; export WSLENV="${WSLENV:+${WSLENV}:}RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT"; source /home/mandrake/rm/runner/infrastructure/stevedesktop/testcentre_env.sh; python3 -B - <<'"'PY'
+import json
+p='whittle/ht-reefback-combat/evidence/raw/final/patch-audit.json'
+d=json.load(open(p))
+for k,v in d.items():
+ if k in ('files',): print(k,len(v))
+ else: print(k,json.dumps(v,indent=2))
+PY
+sed -n '514,719p' whittle/ht-reefback-combat/evidence/raw/engine-final.stdout.txt; sed -n '1323,1495p' whittle/ht-reefback-combat/evidence/raw/engine-final.stdout.txt; cat whittle/ht-reefback-combat/evidence/raw/float-final.stdout.txt whittle/ht-reefback-combat/evidence/raw/check_float.ps1; cat whittle/ht-reefback-combat/evidence/raw/consumer-discovery.stdout.txt"
+
+10: /bin/bash -lc 'export RIMFLOW_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS AGENT_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS RIMFLOW_BRIDGE_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS; export WSLENV="${WSLENV:+${WSLENV}:}RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT"; source /home/mandrake/rm/runner/infrastructure/stevedesktop/testcentre_env.sh; python3 -B - <<'"'PY'
+import json
+x=json.load(open('whittle/ht-reefback-combat/evidence/raw/final/patch-audit.json'))
+for r in x['operations']: print(r['file'],r['class'],r['xpath'],r.get('raw_hits'),r.get('resolved_hits'))
+for r in x['consumer_matches']:
+ print(r['file'])
+ for l in r['lines']: print(l['line'], l['context'][min(3,l['line']-1)])
+for k in ('other_children','translations','xpath_errors','descendant_files_scanned','translation_files_scanned'): print(k,x[k])
+PY
+sed -n '1,120p' whittle/ht-reefback-combat/evidence/raw/selftests-final.receipt.json; cat whittle/ht-reefback-combat/evidence/raw/selftests-final.stdout.txt; cat whittle/ht-reefback-combat/evidence/raw/validator-final.receipt.json; sed -n '1,150p' src/RimMandrake/EnvironmentalHazards/Source/RM_CompTerritorialAnchor.cs"
+
+11: /bin/bash -lc 'export RIMFLOW_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS AGENT_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS RIMFLOW_BRIDGE_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS; export WSLENV="${WSLENV:+${WSLENV}:}RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT"; source /home/mandrake/rm/runner/infrastructure/stevedesktop/testcentre_env.sh; sed -n '"'150,400p' src/RimMandrake/EnvironmentalHazards/Source/RM_CompTerritorialAnchor.cs; cat src/RimMandrake/EnvironmentalHazards/Source/RM_CompWaterLocked.cs; rg -n 'RM_AnchorGuard|RM_JobGiver_Anchor|thinkTreeMain|Harvest|harvest|Notify.*Kill|Notify.*Damage|ReefbackJuv' src/RimMandrake/EnvironmentalHazards -g '*.xml' -g '*.cs'; sed -n '1,100p' whittle/ht-reefback-combat/evidence/raw/engine-final.receipt.json; cat whittle/ht-reefback-combat/evidence/raw/engine-final.stderr.txt"
+
+12: /bin/bash -lc 'export RIMFLOW_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS AGENT_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS RIMFLOW_BRIDGE_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS; export WSLENV="${WSLENV:+${WSLENV}:}RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT"; source /home/mandrake/rm/runner/infrastructure/stevedesktop/testcentre_env.sh; rg -n '"'HealthScale|GetMaxHealth|MeleeDamage|DamageInfos|ApplyMeleeDamage|AdjustedBaseMelee|GetDamageFactorFor|meleeDamageFactor|healthScaleFactor|baseHealthScale|\\.power\\s*[=*]|power.*BodySize|BodySize.*damage|damage.*BodySize' src -g '*.cs' -g '"'!**/obj/**'"' -g '"'!**/bin/**'"' -g '"'!**/FlowWorks/**'"' -g '"'!**/GSS/**'"' -g '"'!**/GravShipSystems/**'"' -g '"'!**/GimmeSomeSlack/**'"' -g '"'!**/art_source/**'"'; sed -n '1,200p' src/RimMandrake/EnvironmentalHazards/Defs/ThinkTreeDefs/RM_ThinkTree_AnchorBehaviors.xml; sed -n '1,140p' src/RimMandrake/Miasma/Defs/MapGeneration/RM_Miasma_CrecheScatterer.xml; rg -n -i 'reefback|nursery|grey|mother' design/Jawa/worldbuilding/biomes/rosters/the_miasma.json design/Jawa/worldbuilding/biomes/rosters/the_grey_sea.json"
+
+13: /bin/bash -lc 'export RIMFLOW_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS AGENT_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS RIMFLOW_BRIDGE_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS; export WSLENV="${WSLENV:+${WSLENV}:}RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT"; source /home/mandrake/rm/runner/infrastructure/stevedesktop/testcentre_env.sh; python3 -B - <<'"'PY'
+import pathlib,json,hashlib,subprocess
+root=pathlib.Path('whittle/ht-reefback-combat/evidence/raw/final')
+game=pathlib.Path('/mnt/d/SteamLibrary/steamapps/common/RimWorld')
+bad=[];checked=[]
+for x in json.load(open(root/'inputs.json')):
+ rel=x['input']
+ if rel=='installed/Version.txt':continue
+ p=(game/rel.removeprefix('installed/')) if rel.startswith('installed/') else (pathlib.Path('src/RimMandrake/HugeThings/northstar/measure_reefback_combat.py') if rel=='instrument.py' else root/'inputs'/rel if rel.startswith('before/') or rel=='engine-selected.il.txt' else pathlib.Path(rel))
+ ok=hashlib.sha256(p.read_bytes()).hexdigest()==x['sha256']
+ checked.append((str(p),ok))
+ if not ok:bad.append(str(p))
+print('input hashes independently checked',len(checked),'mismatches',bad)
+p=pathlib.Path('whittle/ht-reefback-combat/evidence/raw/read_engine.ps1').resolve()
+win=subprocess.check_output(['wslpath','-w',str(p)],text=True).strip()
+r=subprocess.run(['powershell.exe','-NoProfile','-ExecutionPolicy','Bypass','-File',win,'-GameDir',r'D:\\SteamLibrary\\steamapps\\common\\RimWorld'],capture_output=True,timeout=30)
+print('reflection-only IL replay rc',r.returncode,'stdout bytes',len(r.stdout),'sha256',hashlib.sha256(r.stdout).hexdigest(),'same as frozen',r.stdout==(root/'inputs/engine-selected.il.txt').read_bytes(),'stderr',r.stderr.decode(errors='replace'))
+print('seat env',{k:__import__('os').environ.get(k) for k in ('RIMFLOW_SEAT','AGENT_SEAT','RIMFLOW_BRIDGE_SEAT','WSLENV')})
+PY"
+
+14: /bin/bash -lc 'export RIMFLOW_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS AGENT_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS RIMFLOW_BRIDGE_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS; export WSLENV="${WSLENV:+${WSLENV}:}RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT"; source /home/mandrake/rm/runner/infrastructure/stevedesktop/testcentre_env.sh; cat whittle/ht-reefback-combat/evidence/raw/selftests-focused.receipt.json whittle/ht-reefback-combat/evidence/raw/parent-selftests-lxml.receipt.json; sed -n '"'1,160p' src/RimMandrake/Utils/selftest_def_duplicate_fields.py; sed -n '626,719p' whittle/ht-reefback-combat/evidence/raw/engine-final.stdout.txt; sed -n '1495,1705p' whittle/ht-reefback-combat/evidence/raw/engine-final.stdout.txt; sed -n '295,327p' src/RimMandrake/TheForge/Source/RM_ForgeDhoggurSwell.cs; sed -n '140,182p' src/RimMandrake/Pyrelands/Source/RM_PyrelandsGiants.cs; sed -n '20,62p' src/RimMandrake/KeelHoist/Source/RM_PitBuyer.cs; sed -n '225,242p' src/RimMandrake/KeelHoist/Source/Kernel/RM_HoistKernel.cs"
+
+15: /bin/bash -lc 'export RIMFLOW_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS AGENT_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS RIMFLOW_BRIDGE_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS; export WSLENV="${WSLENV:+${WSLENV}:}RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT"; source /home/mandrake/rm/runner/infrastructure/stevedesktop/testcentre_env.sh; python3 -B - <<'"'PY'
+import json
+from pathlib import Path
+r=Path('whittle/ht-reefback-combat/evidence/raw')
+for f in ('final/xpath-request.json','selftests-focused.stdout.txt','parent-selftests-lxml.stdout.txt','validator-final.stdout.txt','validator-exact.stdout.txt'):
+ print(f)
+ if f.endswith('.json'):
+  d=json.load(open(r/f));print({k:v for k,v in d.items() if k"'!='"'expressions'});print('expressions',len(d['expressions']))
+ else: print((r/f).read_text()[:5500])
+PY
+rg -n 'AnimalBaby|AnimalJuvenile|AnimalAdult' /mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml; sed -n '128,208p' /mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml; sed -n '1,100p' src/RimMandrake/Utils/selftest_validate_patch.py; sed -n '260,365p' skills/rimworld-modding/SKILL.md"
+
+16: /bin/bash -lc 'export RIMFLOW_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS AGENT_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS RIMFLOW_BRIDGE_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS; export WSLENV="${WSLENV:+${WSLENV}:}RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT"; source /home/mandrake/rm/runner/infrastructure/stevedesktop/testcentre_env.sh; python3 -B - <<'"'PY'
+from pathlib import Path
+from copy import deepcopy as cp
+import xml.etree.ElementTree as E,struct,math,json,hashlib
+G=Path('/mnt/d/SteamLibrary/steamapps/common/RimWorld')
+R=Path('whittle/ht-reefback-combat/evidence/raw/final')
+sea=Path('src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_SeaBeasts_Invented.xml')
+mom=Path('src/RimMandrake/Miasma/Defs/ThingDefs_Races/RM_WardenMother.xml')
+core=E.parse(G/'Data/Core/Defs/ThingDefs_Races/Races_Animal_Base.xml').getroot()
+s=E.parse(sea).getroot();m=E.parse(mom).getroot()
+ns={e.get('Name'):e for root in (core,s,m) for e in root if e.get('Name')}
+def merge(p,c):
+ x=cp(p);x.attrib=dict(c.attrib);x.attrib.pop('Inherit',None)
+ if c.get('Inherit','').lower()=='false' or len(c)==0:
+  x[:]=list(map(cp,c));x.text=c.text
+ else:
+  for a in c:
+   b=x.find(a.tag)
+   if a.tag=='li' or b is None:x.append(cp(a))
+   else:x[list(x).index(b)]=merge(b,a)
+ return x
+def res(n,stack=()):
+ p=n.get('ParentName')
+ if not p:return cp(n)
+ if p in stack:raise ValueError(p)
+ return merge(res(ns[p],stack+(p,)),n)
+def get(root,tag,ident):return next(e for e in root if e.tag==tag and e.findtext('defName')==ident)
+def ft(n,p,d='1'):return float(n.findtext(p,d))
+def fp(v):return struct.unpack('<f',struct.pack('<f',v))[0]
+stages={e.findtext('defName'):e for root in (E.parse(G/'Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml').getroot(),m) for e in root if e.tag=='LifeStageDef'}
+def calc(r):
+ out=[]
+ for a in r.findall('race/lifeStageAges/li'):
+  d=stages[a.findtext('def')];hs=fp(fp(ft(d,'healthScaleFactor'))*fp(ft(r,'race/baseHealthScale')))
+  out.append(dict(stage=a.findtext('def'),age=ft(a,'minAge'),size=ft(r,'race/baseBodySize')*ft(d,'bodySizeFactor'),health=hs,HP=[math.ceil(fp(fp(hp)*hs)) for hp in (40,10,15)],damage=[ft(t,'power')*ft(d,'meleeDamageFactor') for t in r.findall('tools/li')]))
+ return out
+def tree(n):return (n.tag,tuple(sorted(n.attrib.items())),(n.text or '').strip(),tuple(tree(x) for x in n))
+rawres=E.parse(R/'resolved-source.xml').getroot()
+for root,ident in ((s,'RM_ReefbackJuv'),(s,'RM_Reefback'),(m,'RM_WardenMother')):
+ r=res(get(root,'ThingDef',ident));k=res(get(root,'PawnKindDef',ident));rows=calc(r)
+ assert tree(r)==tree(get(rawres,'ThingDef',ident))
+ assert tree(k)==tree(get(rawres,'PawnKindDef',ident))
+ print(ident,'full resolved ThingDef/PawnKindDef matches frozen',json.dumps(rows))
+ for row in rows:
+  armor=ft(r,'statBases/ArmorRating_Sharp');rr=max(armor-.15,0);dps=4.8*(1-.75*rr)
+  print(' model',row['stage'],'landed',12*(1-.75*rr),'DPS',dps,'budget seconds',row['HP'][0]/dps,'30s',30*dps,'budget fraction',30*dps/row['HP'][0])
+y=get(s,'ThingDef','RM_ReefbackJuv');k=get(s,'PawnKindDef','RM_ReefbackJuv');ry=res(y)
+for field in ('tools','race/lifeStageAges'):
+ n=cp(y);n.find(field).attrib.pop('Inherit');print('negative append',field,len(res(n).find(field)))
+n=cp(k);n.find('lifeStages').attrib.pop('Inherit');print('negative kind stages',len(res(n).find('lifeStages')))
+for field in ('tools','race/baseHealthScale','statBases/ArmorRating_Sharp'):
+ n=cp(y);parts=field.split('/');par=n
+ for p in parts[:-1]:par=par.find(p)
+ par.remove(par.find(parts[-1]));rn=res(n)
+ print('negative remove',field,'armor',ft(rn,'statBases/ArmorRating_Sharp'),json.dumps(calc(rn)))
+n=cp(y);n.set('ParentName','missing')
+try:res(n);raise AssertionError('bad parent accepted')
+except KeyError:print('negative missing parent refused')
+n=cp(y);n.find('statBases').set('Inherit','False');print('negative stats replacement loses MoveSpeed',res(n).find('statBases/MoveSpeed') is None)
+n=cp(k);n.remove(n.find('combatPower'));print('negative combatPower',res(n).findtext('combatPower'))
+old=E.parse(R/'inputs/before'/sea).getroot()
+changes=[(a.tag,a.findtext('defName')) for a,b in zip(s,old) if tree(a)"'!=tree(b)]
+assert len(s)==len(old) and changes==[('"'ThingDef','RM_ReefbackJuv'),('PawnKindDef','RM_ReefbackJuv')]
+print('only changed XML nodes',changes)
+print('prefix stages unchanged',tree(y.find('race/lifeStageAges'))==tree(get(old,'ThingDef','RM_ReefbackJuv').find('race/lifeStageAges')))
+print('kind stages unchanged',tree(k.find('lifeStages'))==tree(get(old,'PawnKindDef','RM_ReefbackJuv').find('lifeStages')))
+print('pre-fix',json.dumps(calc(res(get(old,'ThingDef','RM_ReefbackJuv')))))
+for rel in (mom,Path('src/RimMandrake/Miasma/Defs/BiomeDefs/RM_Miasma.xml'),Path('src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_GreySea.xml')):
+ assert rel.read_bytes()==(R/'inputs/before'/rel).read_bytes();print('unchanged bytes',rel)
+for a in (0,.099,.1,.6,25,50,499,500):
+ rows=calc(ry);print('age',a,'stage',next(r['stage'] for r in rows[::-1] if a>=r['age']))
+PY"
+
+17: /bin/bash -lc 'export RIMFLOW_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS AGENT_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS RIMFLOW_BRIDGE_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS; export WSLENV="${WSLENV:+${WSLENV}:}RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT"; source /home/mandrake/rm/runner/infrastructure/stevedesktop/testcentre_env.sh; python3 -B - <<'"'PY'
+from pathlib import Path
+import json,hashlib,xml.etree.ElementTree as E,subprocess
+R=Path('whittle/ht-reefback-combat/evidence/raw/final')
+a=json.load(open(R/'patch-audit.json'));ex=set(a['excluded'])
+files={str(p):p for p in Path('src').rglob('*.xml') if 'Patches' in p.parts and not ex.intersection(p.parts)}
+assert set(files)=={r['file'] for r in a['files']}
+xps=set()
+for r in a['files']:
+ p=files[r['file']];assert hashlib.sha256(p.read_bytes()).hexdigest()==r['sha256'],str(p)
+ for n in E.parse(p).getroot().iter():
+  if n.find('xpath') is not None:xps.add(n.findtext('xpath').strip())
+req=json.load(open(R/'xpath-request.json'));assert xps==set(req['expressions'])
+print('independent patch inventory/hashes',len(files),'unique selectors',len(xps),'match frozen request')
+def win(p):return subprocess.check_output(['wslpath','-w',str(p.resolve())],text=True).strip()
+r=subprocess.run(['powershell.exe','-NoProfile','-NonInteractive','-ExecutionPolicy','Bypass','-File',win(R/'read-xpath.ps1'),'-InputPath',win(R/'xpath-request.json')],capture_output=True,timeout=30)
+assert r.returncode==0,r.stderr
+rows=json.loads(r.stdout.decode('utf-8-sig'));old=json.load(open(R/'xpath.stdout.json',encoding='utf-8-sig'))
+assert rows==old
+print('fresh .NET XPath replay',len(rows),'identical rows; errors',sum('error' in x for x in rows))
+# Scan actual XML declarations for selected identity and parent collisions/extra descendants.
+names={'RM_Reefback','RM_Reefback_Kind','BasePawn','AnimalThingBase','AnimalKindBase'}
+ids={'RM_ReefbackJuv','RM_Reefback','RM_WardenMother','AnimalBaby','AnimalJuvenile','AnimalAdult','RM_WardenMotherElder'}
+found=[];children=[];trans=[]
+for p in Path('src').rglob('*.xml'):
+ if ex.intersection(p.parts):continue
+ if 'Defs' not in p.parts and 'DefInjected' not in p.parts:continue
+ root=E.parse(p).getroot()
+ if root.tag=='Defs':
+  for n in root:
+   if n.get('Name') in names or n.findtext('defName') in ids:found.append((str(p),n.tag,n.get('Name'),n.findtext('defName')))
+   if n.get('ParentName') in ('RM_Reefback','RM_Reefback_Kind'):children.append((str(p),n.findtext('defName'),n.get('ParentName')))
+ else:
+  for n in root:
+   if n.tag.startswith('RM_ReefbackJuv.'):trans.append((str(p),n.tag))
+print('all relevant declarations',json.dumps(found));print('descendants',children,'translation overrides',trans)
+for row in a['operations']:
+ if 'FaunaNorm' in row['file']:print('matched fauna patch',row['class'],row['xpath'],'value',row['value'][:150].strip())
+PY"
+
+18: /bin/bash -lc 'export RIMFLOW_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS AGENT_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS RIMFLOW_BRIDGE_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS; export WSLENV="${WSLENV:+${WSLENV}:}RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT"; source /home/mandrake/rm/runner/infrastructure/stevedesktop/testcentre_env.sh; python3 -u -B - <<'"'PY'
+from pathlib import Path
+import json,hashlib,xml.etree.ElementTree as E,subprocess
+R=Path('whittle/ht-reefback-combat/evidence/raw/final')
+a=json.load(open(R/'patch-audit.json'));ex=set(a['excluded'])
+files={str(p):p for p in Path('src').rglob('*.xml') if 'Patches' in p.parts and not ex.intersection(p.parts)}
+assert set(files)=={r['file'] for r in a['files']}
+xps=set()
+for r in a['files']:
+ p=files[r['file']];assert hashlib.sha256(p.read_bytes()).hexdigest()==r['sha256'],str(p)
+ for n in E.parse(p).getroot().iter():
+  if n.find('xpath') is not None:xps.add(n.findtext('xpath').strip())
+req=json.load(open(R/'xpath-request.json'));assert xps==set(req['expressions'])
+print('independent patch inventory/hashes',len(files),'unique selectors',len(xps),'match frozen request')
+def win(p):return subprocess.check_output(['wslpath','-w',str(p.resolve())],text=True).strip()
+r=subprocess.run(['powershell.exe','-NoProfile','-NonInteractive','-ExecutionPolicy','Bypass','-File',win(R/'read-xpath.ps1'),'-InputPath',win(R/'xpath-request.json')],capture_output=True,timeout=30)
+assert r.returncode==0,r.stderr
+rows=json.loads(r.stdout.decode('utf-8-sig'));old=json.load(open(R/'xpath.stdout.json',encoding='utf-8-sig'))
+assert rows==old
+print('fresh .NET XPath replay',len(rows),'identical rows; errors',sum('error' in x for x in rows))
+names={'RM_Reefback','RM_Reefback_Kind','BasePawn','AnimalThingBase','AnimalKindBase'}
+ids={'RM_ReefbackJuv','RM_Reefback','RM_WardenMother','AnimalBaby','AnimalJuvenile','AnimalAdult','RM_WardenMotherElder'}
+found=[];children=[];trans=[]
+for p in Path('src').rglob('*.xml'):
+ if ex.intersection(p.parts):continue
+ if 'Defs' not in p.parts and 'DefInjected' not in p.parts:continue
+ root=E.parse(p).getroot()
+ if root.tag=='Defs':
+  for n in root:
+   if n.get('Name') in names or n.findtext('defName') in ids:found.append((str(p),n.tag,n.get('Name'),n.findtext('defName')))
+   if n.get('ParentName') in ('RM_Reefback','RM_Reefback_Kind'):children.append((str(p),n.findtext('defName'),n.get('ParentName')))
+ else:
+  for n in root:
+   if n.tag.startswith('RM_ReefbackJuv.'):trans.append((str(p),n.tag))
+print('all relevant declarations',json.dumps(found));print('descendants',children,'translation overrides',trans)
+for row in a['operations']:
+ if 'FaunaNorm' in row['file']:print('matched fauna patch',row['class'],row['xpath'],'value',row['value'][:150].strip())
+PY"
+
+19: /bin/bash -lc 'export RIMFLOW_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS AGENT_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS RIMFLOW_BRIDGE_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS; export WSLENV="${WSLENV:+${WSLENV}:}RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT"; source /home/mandrake/rm/runner/infrastructure/stevedesktop/testcentre_env.sh; rg -n '"'damage|Damage|Reefback' src/RimMandrake/HugeThings -g '*.cs'; rg -n '<defName>MeleeDamageFactor|<defName>Animal(Baby|Juvenile|Adult)' /mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/Core/Defs -g '*.xml'; sed -n '1,130p' src/RimMandrake/TheForge/Source/RM_ForgeDhoggurSwell.cs; sed -n '175,235p' /mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml; rg -n 'defName|hitPoints|HeadAttackTool|FrontLeftPaw' whittle/ht-reefback-combat/evidence/raw/final/inputs/installed/Data/Odyssey/Defs/Bodies/Bodies_Animal_Pinniped.xml; rg -n 'cheap|combat|health|Reefback|hunting|young' design/Jawa/worldbuilding/biomes/kits/miasma_kit_spec.md"
+
+20: /bin/bash -lc 'export RIMFLOW_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS AGENT_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS RIMFLOW_BRIDGE_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS; export WSLENV="${WSLENV:+${WSLENV}:}RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT"; source /home/mandrake/rm/runner/infrastructure/stevedesktop/testcentre_env.sh; sed -n '"'344,380p' design/Jawa/worldbuilding/biomes/kits/miasma_kit_spec.md; sed -n '15,46p' /mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/Core/Defs/Stats/Stats_Pawns_Combat.xml; rg -n 'hurt|damage|Damage|attack|Attack|crush|Crush' src/RimMandrake/HugeThings/Source/Titanic/Events/TitanPassage.cs src/RimMandrake/HugeThings/Source/Kernel/RM_TitanicKernel.cs; sed -n '50,78p' whittle/ht-reefback-combat/evidence/raw/final/inputs/installed/Data/Odyssey/Defs/Bodies/Bodies_Animal_Pinniped.xml; sed -n '25,85p' src/RimMandrake/HugeThings/Source/Titanic/Events/TitanPassage.cs; rg -n 'ReefbackJuv|RM_Reefback' src/RimMandrake/Miasma src/RimMandrake/TerminalBiomes src/RimMandrake/HugeThings -g '*.cs'"
+
+21: /bin/bash -lc 'export RIMFLOW_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS AGENT_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS RIMFLOW_BRIDGE_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS; export WSLENV="${WSLENV:+${WSLENV}:}RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT"; source /home/mandrake/rm/runner/infrastructure/stevedesktop/testcentre_env.sh; python3 -B - <<'"'PY'
+from pathlib import Path
+p=Path('whittle/ht-reefback-combat/JUDGE.md')
+p.write_text('''# Independent Codex judgment — stopped for allowlist breach
+
+Item: RIMMANDRAKE_RECONCILE_HUGETHINGS_REEFBACK_NURSERY_COMBAT
+
+This review cannot provide acceptance. During independent input-hash verification, I read the bytes of "'`/mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/Odyssey/Defs/Bodies/Bodies_Animal_Pinniped.xml`. The installed-file allowance names Core defs and managed metadata; this installed Odyssey definition is outside that literal allowance. Its allowed snapshot under `evidence/raw/final/inputs/installed/Data/Odyssey/Defs/Bodies/Bodies_Animal_Pinniped.xml` did not authorize reading the installed original. I detected the breach later in the audit and stopped. I do not self-clear it. This is a failure of this review'"'s scope discipline, not evidence that the implementation fails.
+
+Only this judgment file was written by this review. No game, bridge, build, deployment, network, ledger or git mutation was performed. No builder decision/reconciliation document or previous judgment was read. Every shell exported the three requested seat variables, sourced the specified environment script, and carried those variables through WSLENV.
+
+The following exact frozen bullets receive **cannot tell** in this stopped review. No technical acceptance or rejection is issued from the partial checks.
+
+1. **Cannot tell:** “Reconcile the young reefback, adult reefback and warden mother's combat roles with the established Miasma nursery lifecycle through independent delegated design judgment, preserving existing residents and measured young body sizes.” Frozen source: "'`STATEMENT.md`, first bullet. Relevant allowed raw inputs include `evidence/design_prompt.txt`, `evidence/design_raw.json`, and `evidence/raw/final/selected-source.xml`; their existence does not cure this review'"'s breach.
+
+2. **Cannot tell:** “Apply warranted local stat/profile or specification corrections and demonstrate exact effective stage damage and health, with a worked modest hunting comparison against the adult and meaningful focused XML/inheritance positive and negative controls.” Frozen source: "'`STATEMENT.md`, second bullet. Relevant allowed raw inputs include `evidence/raw/final/resolved-source.xml`, `evidence/raw/final/controls.json`, `evidence/raw/final/baseline.json`, `evidence/raw/engine-final.stdout.txt`, and `evidence/raw/production-spec.diff`. No pass label is accepted as proof.
+
+3. **Cannot tell:** “Retain reproducible offline source evidence and a fresh independent Codex judgment for the complete decision; distinguish the source model from actual hits, population outcomes and live balance, and make no deployment, flight, art or L4 acceptance claim.” Frozen source: `STATEMENT.md`, third bullet. Relevant allowed raw process artifacts include `evidence/raw/read_engine.ps1`, `evidence/raw/engine-final.receipt.json`, and `evidence/raw/final/inputs.json`. This stopped judgment does not satisfy the requested complete independent acceptance review.
+
+4. **Cannot tell:** “A1 L0: Independently judged young/adult/mother combat roles, specifications and effective stage stats agree; focused XML/inheritance controls pass and roster residents remain.” Frozen source: `evidence/item-before.txt`, criteria. The role decision and raw controls cited above require a new uncontaminated review before acceptance.
+
+5. **Cannot tell:** “A2 L0: Exact changed XML, effective stage damage/health and the worked hunting comparison pass focused offline validation with adult controls; no actual hit, population or L4-feel acceptance is inferred from the source model.” Frozen source: `evidence/item-before.txt`, criteria. The raw snapshots, consumer IL, baseline and process evidence cited above remain inputs for a new review, not a verdict from this one.
+
+These explicit L0 criteria do not require live hits. No live gate is added, no observed live balance is claimed, and no new mechanism or discovered gameplay defect is accepted or dismissed by this stopped review.
+
+would show: no
+'"''',encoding='utf-8')
+print('Wrote whittle/ht-reefback-combat/JUDGE.md')
+PY"

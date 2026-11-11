@@ -1,0 +1,17 @@
+{
+  "command": [
+    "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe",
+    "-NoProfile",
+    "-ExecutionPolicy",
+    "Bypass",
+    "-File",
+    "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\codex-ht\\whittle\\ht-reefback-combat\\evidence\\raw\\measure-contract\\read-xpath.ps1",
+    "-InputPath",
+    "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\codex-ht\\whittle\\ht-reefback-combat\\evidence\\raw\\measure-contract\\xpath-request.json"
+  ],
+  "rc": 0,
+  "elapsed_seconds": 15.051616907119751,
+  "script_sha256": "27ede906e41bf61838d2b901222f71a3a287e9c4610ba4e11becccd82cabf9e2",
+  "stdout_sha256": "f506e3375b44140a7ea1a882847e9bcb7aa3a3915f7e64865b5a19f8dab99bdf",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

@@ -1,0 +1,506 @@
+{
+  "without_replacement_tools": {
+    "fixture_xml": "<ThingDef ParentName=\"RM_Reefback\">\n    <defName>RM_ReefbackJuv</defName>\n    <label>young reefback</label>\n    <description>A reefback hatchling-sized by comparison only: the reef has barely begun to grow on it, its crust is still thin enough to cut, and it drifts close to wherever the adults went.</description>\n    \n    <statBases>\n      <ArmorRating_Blunt>0.25</ArmorRating_Blunt>\n      <ArmorRating_Sharp>0.30</ArmorRating_Sharp>\n      <ArmorRating_Heat>0.30</ArmorRating_Heat>\n    </statBases>\n    <tools>\n      <li>\n        <label>tail sweep</label>\n        <capacities>\n          <li>Blunt</li>\n        </capacities>\n        <power>16</power>\n        <cooldownTime>3.0</cooldownTime>\n        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>\n      </li>\n      <li>\n        <label>bulk</label>\n        <capacities>\n          <li>Blunt</li>\n        </capacities>\n        <power>10</power>\n        <cooldownTime>2.5</cooldownTime>\n        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>\n        <chanceFactor>0.3</chanceFactor>\n      </li>\n    </tools>\n    <race>\n      <baseHealthScale>8</baseHealthScale>\n      <lifeStageAges Inherit=\"False\">\n        <li>\n          <def>AnimalBaby</def>\n          <minAge>0</minAge>\n        </li>\n        <li>\n          <def>AnimalJuvenile</def>\n          <minAge>0.1</minAge>\n        </li>\n      </lifeStageAges>\n    </race>\n  </ThingDef>\n\n  ",
+    "resolved_entries": [
+      "<li>\n        <label>tail sweep</label>\n        <capacities>\n          <li>Blunt</li>\n        </capacities>\n        <power>480</power>\n        <cooldownTime>8.5</cooldownTime>\n        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>\n      </li>\n      ",
+      "<li>\n        <label>bulk</label>\n        <capacities>\n          <li>Blunt</li>\n        </capacities>\n        <power>120</power>\n        <cooldownTime>6</cooldownTime>\n        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>\n        <chanceFactor>0.3</chanceFactor>\n      </li>\n    ",
+      "<li>\n        <label>tail sweep</label>\n        <capacities>\n          <li>Blunt</li>\n        </capacities>\n        <power>16</power>\n        <cooldownTime>3.0</cooldownTime>\n        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>\n      </li>\n      ",
+      "<li>\n        <label>bulk</label>\n        <capacities>\n          <li>Blunt</li>\n        </capacities>\n        <power>10</power>\n        <cooldownTime>2.5</cooldownTime>\n        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>\n        <chanceFactor>0.3</chanceFactor>\n      </li>\n    "
+    ],
+    "original_count": 2,
+    "mutated_count": 4
+  },
+  "without_replacement_race_lifeStageAges": {
+    "fixture_xml": "<ThingDef ParentName=\"RM_Reefback\">\n    <defName>RM_ReefbackJuv</defName>\n    <label>young reefback</label>\n    <description>A reefback hatchling-sized by comparison only: the reef has barely begun to grow on it, its crust is still thin enough to cut, and it drifts close to wherever the adults went.</description>\n    \n    <statBases>\n      <ArmorRating_Blunt>0.25</ArmorRating_Blunt>\n      <ArmorRating_Sharp>0.30</ArmorRating_Sharp>\n      <ArmorRating_Heat>0.30</ArmorRating_Heat>\n    </statBases>\n    <tools Inherit=\"False\">\n      <li>\n        <label>tail sweep</label>\n        <capacities>\n          <li>Blunt</li>\n        </capacities>\n        <power>16</power>\n        <cooldownTime>3.0</cooldownTime>\n        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>\n      </li>\n      <li>\n        <label>bulk</label>\n        <capacities>\n          <li>Blunt</li>\n        </capacities>\n        <power>10</power>\n        <cooldownTime>2.5</cooldownTime>\n        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>\n        <chanceFactor>0.3</chanceFactor>\n      </li>\n    </tools>\n    <race>\n      <baseHealthScale>8</baseHealthScale>\n      <lifeStageAges>\n        <li>\n          <def>AnimalBaby</def>\n          <minAge>0</minAge>\n        </li>\n        <li>\n          <def>AnimalJuvenile</def>\n          <minAge>0.1</minAge>\n        </li>\n      </lifeStageAges>\n    </race>\n  </ThingDef>\n\n  ",
+    "resolved_entries": [
+      "<li>\n          <def>AnimalBaby</def>\n          <minAge>0</minAge>\n        </li>\n        ",
+      "<li>\n          <def>AnimalJuvenile</def>\n          <minAge>0.2</minAge>\n        </li>\n        ",
+      "<li>\n          <def>AnimalAdult</def>\n          <minAge>0.6</minAge>\n        </li>\n      ",
+      "<li>\n          <def>AnimalBaby</def>\n          <minAge>0</minAge>\n        </li>\n        ",
+      "<li>\n          <def>AnimalJuvenile</def>\n          <minAge>0.1</minAge>\n        </li>\n      "
+    ],
+    "original_count": 2,
+    "mutated_count": 5
+  },
+  "removed_override_tools": {
+    "fixture_xml": "<ThingDef ParentName=\"RM_Reefback\">\n    <defName>RM_ReefbackJuv</defName>\n    <label>young reefback</label>\n    <description>A reefback hatchling-sized by comparison only: the reef has barely begun to grow on it, its crust is still thin enough to cut, and it drifts close to wherever the adults went.</description>\n    \n    <statBases>\n      <ArmorRating_Blunt>0.25</ArmorRating_Blunt>\n      <ArmorRating_Sharp>0.30</ArmorRating_Sharp>\n      <ArmorRating_Heat>0.30</ArmorRating_Heat>\n    </statBases>\n    <race>\n      <baseHealthScale>8</baseHealthScale>\n      <lifeStageAges Inherit=\"False\">\n        <li>\n          <def>AnimalBaby</def>\n          <minAge>0</minAge>\n        </li>\n        <li>\n          <def>AnimalJuvenile</def>\n          <minAge>0.1</minAge>\n        </li>\n      </lifeStageAges>\n    </race>\n  </ThingDef>\n\n  ",
+    "stages": [
+      {
+        "stage": "AnimalBaby",
+        "minAge_xml": 0.0,
+        "factors": {
+          "bodySizeFactor": 0.2,
+          "healthScaleFactor": 0.25,
+          "meleeDamageFactor": 0.5
+        },
+        "factor_provenance": {
+          "bodySizeFactor": "LifeStageDef XML/AnimalBaby/bodySizeFactor",
+          "healthScaleFactor": "LifeStageDef XML/AnimalBaby/healthScaleFactor",
+          "meleeDamageFactor": "LifeStageDef XML/AnimalBaby/meleeDamageFactor"
+        },
+        "bodySize_decimal": 6.4,
+        "bodySize_float32": 6.400000095367432,
+        "healthScale_decimal": 2.0,
+        "healthScale_float32": 2.0,
+        "part_max_health": {
+          "Brain": 20,
+          "Body": 80,
+          "Heart": 30
+        },
+        "tools": [
+          {
+            "label": "tail sweep",
+            "power_xml": 480.0,
+            "cooldown_xml_seconds": 8.5,
+            "chanceFactor_xml": "1",
+            "linked_group": "HeadAttackTool",
+            "nominal_damage_decimal": 240.0,
+            "nominal_damage_float32": 240.0
+          },
+          {
+            "label": "bulk",
+            "power_xml": 120.0,
+            "cooldown_xml_seconds": 6.0,
+            "chanceFactor_xml": "0.3",
+            "linked_group": "FrontLeftPaw",
+            "nominal_damage_decimal": 60.0,
+            "nominal_damage_float32": 60.0
+          }
+        ]
+      },
+      {
+        "stage": "AnimalJuvenile",
+        "minAge_xml": 0.1,
+        "factors": {
+          "bodySizeFactor": 0.5,
+          "healthScaleFactor": 0.6,
+          "meleeDamageFactor": 0.75
+        },
+        "factor_provenance": {
+          "bodySizeFactor": "LifeStageDef XML/AnimalJuvenile/bodySizeFactor",
+          "healthScaleFactor": "LifeStageDef XML/AnimalJuvenile/healthScaleFactor",
+          "meleeDamageFactor": "LifeStageDef XML/AnimalJuvenile/meleeDamageFactor"
+        },
+        "bodySize_decimal": 16.0,
+        "bodySize_float32": 16.0,
+        "healthScale_decimal": 4.8,
+        "healthScale_float32": 4.800000190734863,
+        "part_max_health": {
+          "Brain": 48,
+          "Body": 192,
+          "Heart": 72
+        },
+        "tools": [
+          {
+            "label": "tail sweep",
+            "power_xml": 480.0,
+            "cooldown_xml_seconds": 8.5,
+            "chanceFactor_xml": "1",
+            "linked_group": "HeadAttackTool",
+            "nominal_damage_decimal": 360.0,
+            "nominal_damage_float32": 360.0
+          },
+          {
+            "label": "bulk",
+            "power_xml": 120.0,
+            "cooldown_xml_seconds": 6.0,
+            "chanceFactor_xml": "0.3",
+            "linked_group": "FrontLeftPaw",
+            "nominal_damage_decimal": 90.0,
+            "nominal_damage_float32": 90.0
+          }
+        ]
+      }
+    ],
+    "sharp_armor": 0.3
+  },
+  "removed_override_race_baseHealthScale": {
+    "fixture_xml": "<ThingDef ParentName=\"RM_Reefback\">\n    <defName>RM_ReefbackJuv</defName>\n    <label>young reefback</label>\n    <description>A reefback hatchling-sized by comparison only: the reef has barely begun to grow on it, its crust is still thin enough to cut, and it drifts close to wherever the adults went.</description>\n    \n    <statBases>\n      <ArmorRating_Blunt>0.25</ArmorRating_Blunt>\n      <ArmorRating_Sharp>0.30</ArmorRating_Sharp>\n      <ArmorRating_Heat>0.30</ArmorRating_Heat>\n    </statBases>\n    <tools Inherit=\"False\">\n      <li>\n        <label>tail sweep</label>\n        <capacities>\n          <li>Blunt</li>\n        </capacities>\n        <power>16</power>\n        <cooldownTime>3.0</cooldownTime>\n        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>\n      </li>\n      <li>\n        <label>bulk</label>\n        <capacities>\n          <li>Blunt</li>\n        </capacities>\n        <power>10</power>\n        <cooldownTime>2.5</cooldownTime>\n        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>\n        <chanceFactor>0.3</chanceFactor>\n      </li>\n    </tools>\n    <race>\n      <lifeStageAges Inherit=\"False\">\n        <li>\n          <def>AnimalBaby</def>\n          <minAge>0</minAge>\n        </li>\n        <li>\n          <def>AnimalJuvenile</def>\n          <minAge>0.1</minAge>\n        </li>\n      </lifeStageAges>\n    </race>\n  </ThingDef>\n\n  ",
+    "stages": [
+      {
+        "stage": "AnimalBaby",
+        "minAge_xml": 0.0,
+        "factors": {
+          "bodySizeFactor": 0.2,
+          "healthScaleFactor": 0.25,
+          "meleeDamageFactor": 0.5
+        },
+        "factor_provenance": {
+          "bodySizeFactor": "LifeStageDef XML/AnimalBaby/bodySizeFactor",
+          "healthScaleFactor": "LifeStageDef XML/AnimalBaby/healthScaleFactor",
+          "meleeDamageFactor": "LifeStageDef XML/AnimalBaby/meleeDamageFactor"
+        },
+        "bodySize_decimal": 6.4,
+        "bodySize_float32": 6.400000095367432,
+        "healthScale_decimal": 5.0,
+        "healthScale_float32": 5.0,
+        "part_max_health": {
+          "Brain": 50,
+          "Body": 200,
+          "Heart": 75
+        },
+        "tools": [
+          {
+            "label": "tail sweep",
+            "power_xml": 16.0,
+            "cooldown_xml_seconds": 3.0,
+            "chanceFactor_xml": "1",
+            "linked_group": "HeadAttackTool",
+            "nominal_damage_decimal": 8.0,
+            "nominal_damage_float32": 8.0
+          },
+          {
+            "label": "bulk",
+            "power_xml": 10.0,
+            "cooldown_xml_seconds": 2.5,
+            "chanceFactor_xml": "0.3",
+            "linked_group": "FrontLeftPaw",
+            "nominal_damage_decimal": 5.0,
+            "nominal_damage_float32": 5.0
+          }
+        ]
+      },
+      {
+        "stage": "AnimalJuvenile",
+        "minAge_xml": 0.1,
+        "factors": {
+          "bodySizeFactor": 0.5,
+          "healthScaleFactor": 0.6,
+          "meleeDamageFactor": 0.75
+        },
+        "factor_provenance": {
+          "bodySizeFactor": "LifeStageDef XML/AnimalJuvenile/bodySizeFactor",
+          "healthScaleFactor": "LifeStageDef XML/AnimalJuvenile/healthScaleFactor",
+          "meleeDamageFactor": "LifeStageDef XML/AnimalJuvenile/meleeDamageFactor"
+        },
+        "bodySize_decimal": 16.0,
+        "bodySize_float32": 16.0,
+        "healthScale_decimal": 12.0,
+        "healthScale_float32": 12.0,
+        "part_max_health": {
+          "Brain": 120,
+          "Body": 480,
+          "Heart": 180
+        },
+        "tools": [
+          {
+            "label": "tail sweep",
+            "power_xml": 16.0,
+            "cooldown_xml_seconds": 3.0,
+            "chanceFactor_xml": "1",
+            "linked_group": "HeadAttackTool",
+            "nominal_damage_decimal": 12.0,
+            "nominal_damage_float32": 12.0
+          },
+          {
+            "label": "bulk",
+            "power_xml": 10.0,
+            "cooldown_xml_seconds": 2.5,
+            "chanceFactor_xml": "0.3",
+            "linked_group": "FrontLeftPaw",
+            "nominal_damage_decimal": 7.5,
+            "nominal_damage_float32": 7.5
+          }
+        ]
+      }
+    ],
+    "sharp_armor": 0.3
+  },
+  "removed_override_statBases_ArmorRating_Sharp": {
+    "fixture_xml": "<ThingDef ParentName=\"RM_Reefback\">\n    <defName>RM_ReefbackJuv</defName>\n    <label>young reefback</label>\n    <description>A reefback hatchling-sized by comparison only: the reef has barely begun to grow on it, its crust is still thin enough to cut, and it drifts close to wherever the adults went.</description>\n    \n    <statBases>\n      <ArmorRating_Blunt>0.25</ArmorRating_Blunt>\n      <ArmorRating_Heat>0.30</ArmorRating_Heat>\n    </statBases>\n    <tools Inherit=\"False\">\n      <li>\n        <label>tail sweep</label>\n        <capacities>\n          <li>Blunt</li>\n        </capacities>\n        <power>16</power>\n        <cooldownTime>3.0</cooldownTime>\n        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>\n      </li>\n      <li>\n        <label>bulk</label>\n        <capacities>\n          <li>Blunt</li>\n        </capacities>\n        <power>10</power>\n        <cooldownTime>2.5</cooldownTime>\n        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>\n        <chanceFactor>0.3</chanceFactor>\n      </li>\n    </tools>\n    <race>\n      <baseHealthScale>8</baseHealthScale>\n      <lifeStageAges Inherit=\"False\">\n        <li>\n          <def>AnimalBaby</def>\n          <minAge>0</minAge>\n        </li>\n        <li>\n          <def>AnimalJuvenile</def>\n          <minAge>0.1</minAge>\n        </li>\n      </lifeStageAges>\n    </race>\n  </ThingDef>\n\n  ",
+    "stages": [
+      {
+        "stage": "AnimalBaby",
+        "minAge_xml": 0.0,
+        "factors": {
+          "bodySizeFactor": 0.2,
+          "healthScaleFactor": 0.25,
+          "meleeDamageFactor": 0.5
+        },
+        "factor_provenance": {
+          "bodySizeFactor": "LifeStageDef XML/AnimalBaby/bodySizeFactor",
+          "healthScaleFactor": "LifeStageDef XML/AnimalBaby/healthScaleFactor",
+          "meleeDamageFactor": "LifeStageDef XML/AnimalBaby/meleeDamageFactor"
+        },
+        "bodySize_decimal": 6.4,
+        "bodySize_float32": 6.400000095367432,
+        "healthScale_decimal": 2.0,
+        "healthScale_float32": 2.0,
+        "part_max_health": {
+          "Brain": 20,
+          "Body": 80,
+          "Heart": 30
+        },
+        "tools": [
+          {
+            "label": "tail sweep",
+            "power_xml": 16.0,
+            "cooldown_xml_seconds": 3.0,
+            "chanceFactor_xml": "1",
+            "linked_group": "HeadAttackTool",
+            "nominal_damage_decimal": 8.0,
+            "nominal_damage_float32": 8.0
+          },
+          {
+            "label": "bulk",
+            "power_xml": 10.0,
+            "cooldown_xml_seconds": 2.5,
+            "chanceFactor_xml": "0.3",
+            "linked_group": "FrontLeftPaw",
+            "nominal_damage_decimal": 5.0,
+            "nominal_damage_float32": 5.0
+          }
+        ]
+      },
+      {
+        "stage": "AnimalJuvenile",
+        "minAge_xml": 0.1,
+        "factors": {
+          "bodySizeFactor": 0.5,
+          "healthScaleFactor": 0.6,
+          "meleeDamageFactor": 0.75
+        },
+        "factor_provenance": {
+          "bodySizeFactor": "LifeStageDef XML/AnimalJuvenile/bodySizeFactor",
+          "healthScaleFactor": "LifeStageDef XML/AnimalJuvenile/healthScaleFactor",
+          "meleeDamageFactor": "LifeStageDef XML/AnimalJuvenile/meleeDamageFactor"
+        },
+        "bodySize_decimal": 16.0,
+        "bodySize_float32": 16.0,
+        "healthScale_decimal": 4.8,
+        "healthScale_float32": 4.800000190734863,
+        "part_max_health": {
+          "Brain": 48,
+          "Body": 192,
+          "Heart": 72
+        },
+        "tools": [
+          {
+            "label": "tail sweep",
+            "power_xml": 16.0,
+            "cooldown_xml_seconds": 3.0,
+            "chanceFactor_xml": "1",
+            "linked_group": "HeadAttackTool",
+            "nominal_damage_decimal": 12.0,
+            "nominal_damage_float32": 12.0
+          },
+          {
+            "label": "bulk",
+            "power_xml": 10.0,
+            "cooldown_xml_seconds": 2.5,
+            "chanceFactor_xml": "0.3",
+            "linked_group": "FrontLeftPaw",
+            "nominal_damage_decimal": 7.5,
+            "nominal_damage_float32": 7.5
+          }
+        ]
+      }
+    ],
+    "sharp_armor": 0.7
+  },
+  "broken_parent": {
+    "fixture_xml": "<ThingDef ParentName=\"MISSING_REEFBACK_PARENT\">\n    <defName>RM_ReefbackJuv</defName>\n    <label>young reefback</label>\n    <description>A reefback hatchling-sized by comparison only: the reef has barely begun to grow on it, its crust is still thin enough to cut, and it drifts close to wherever the adults went.</description>\n    \n    <statBases>\n      <ArmorRating_Blunt>0.25</ArmorRating_Blunt>\n      <ArmorRating_Sharp>0.30</ArmorRating_Sharp>\n      <ArmorRating_Heat>0.30</ArmorRating_Heat>\n    </statBases>\n    <tools Inherit=\"False\">\n      <li>\n        <label>tail sweep</label>\n        <capacities>\n          <li>Blunt</li>\n        </capacities>\n        <power>16</power>\n        <cooldownTime>3.0</cooldownTime>\n        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>\n      </li>\n      <li>\n        <label>bulk</label>\n        <capacities>\n          <li>Blunt</li>\n        </capacities>\n        <power>10</power>\n        <cooldownTime>2.5</cooldownTime>\n        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>\n        <chanceFactor>0.3</chanceFactor>\n      </li>\n    </tools>\n    <race>\n      <baseHealthScale>8</baseHealthScale>\n      <lifeStageAges Inherit=\"False\">\n        <li>\n          <def>AnimalBaby</def>\n          <minAge>0</minAge>\n        </li>\n        <li>\n          <def>AnimalJuvenile</def>\n          <minAge>0.1</minAge>\n        </li>\n      </lifeStageAges>\n    </race>\n  </ThingDef>\n\n  ",
+    "exception": "missing parent: MISSING_REEFBACK_PARENT"
+  },
+  "omitted_factors": {
+    "wrong_bodySize_as_healthScale": [
+      6.4,
+      16.0
+    ],
+    "wrong_bare_base_healthScale": 8.0,
+    "wrong_unstaged_damage": [
+      16.0,
+      10.0
+    ],
+    "correct_healthScale": [
+      2.0,
+      4.8
+    ],
+    "correct_damage": [
+      [
+        8.0,
+        5.0
+      ],
+      [
+        12.0,
+        7.5
+      ]
+    ],
+    "wrong_part_max_health_without_race_multiplier": [
+      10,
+      24
+    ],
+    "wrong_part_max_health_without_stage_factor": 320
+  },
+  "removed_combatPower_override": {
+    "fixture_xml": "<PawnKindDef ParentName=\"RM_Reefback_Kind\">\n    <defName>RM_ReefbackJuv</defName>\n    <wildGroupSize>2~3</wildGroupSize>\n    <label>young reefback</label>\n    <race>RM_ReefbackJuv</race>\n    <lifeStages Inherit=\"False\">\n      <li>\n        <bodyGraphicData>\n          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>\n          <graphicClass>Graphic_Multi</graphicClass>\n          <drawSize>2.94</drawSize>\n        </bodyGraphicData>\n        <swimmingGraphicData>\n          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>\n          <graphicClass>Graphic_Multi</graphicClass>\n          <drawSize>2.94</drawSize>\n        </swimmingGraphicData>\n      </li>\n      <li>\n        <bodyGraphicData>\n          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>\n          <graphicClass>Graphic_Multi</graphicClass>\n          <drawSize>4.42</drawSize>\n        </bodyGraphicData>\n        <swimmingGraphicData>\n          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>\n          <graphicClass>Graphic_Multi</graphicClass>\n          <drawSize>4.42</drawSize>\n        </swimmingGraphicData>\n      </li>\n    </lifeStages>\n  </PawnKindDef>\n\n",
+    "resolved_combatPower": "2000"
+  },
+  "statBases_replaced": {
+    "fixture_xml": "<ThingDef ParentName=\"RM_Reefback\">\n    <defName>RM_ReefbackJuv</defName>\n    <label>young reefback</label>\n    <description>A reefback hatchling-sized by comparison only: the reef has barely begun to grow on it, its crust is still thin enough to cut, and it drifts close to wherever the adults went.</description>\n    \n    <statBases Inherit=\"False\">\n      <ArmorRating_Blunt>0.25</ArmorRating_Blunt>\n      <ArmorRating_Sharp>0.30</ArmorRating_Sharp>\n      <ArmorRating_Heat>0.30</ArmorRating_Heat>\n    </statBases>\n    <tools Inherit=\"False\">\n      <li>\n        <label>tail sweep</label>\n        <capacities>\n          <li>Blunt</li>\n        </capacities>\n        <power>16</power>\n        <cooldownTime>3.0</cooldownTime>\n        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>\n      </li>\n      <li>\n        <label>bulk</label>\n        <capacities>\n          <li>Blunt</li>\n        </capacities>\n        <power>10</power>\n        <cooldownTime>2.5</cooldownTime>\n        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>\n        <chanceFactor>0.3</chanceFactor>\n      </li>\n    </tools>\n    <race>\n      <baseHealthScale>8</baseHealthScale>\n      <lifeStageAges Inherit=\"False\">\n        <li>\n          <def>AnimalBaby</def>\n          <minAge>0</minAge>\n        </li>\n        <li>\n          <def>AnimalJuvenile</def>\n          <minAge>0.1</minAge>\n        </li>\n      </lifeStageAges>\n    </race>\n  </ThingDef>\n\n  ",
+    "resolved_statBases": "<statBases>\n      <ArmorRating_Blunt>0.25</ArmorRating_Blunt>\n      <ArmorRating_Sharp>0.30</ArmorRating_Sharp>\n      <ArmorRating_Heat>0.30</ArmorRating_Heat>\n    </statBases>\n    "
+  },
+  "final_stage_table_cases": [
+    {
+      "age_years": 0,
+      "stage": "AnimalBaby"
+    },
+    {
+      "age_years": 0.099,
+      "stage": "AnimalBaby"
+    },
+    {
+      "age_years": 0.1,
+      "stage": "AnimalJuvenile"
+    },
+    {
+      "age_years": 0.6,
+      "stage": "AnimalJuvenile"
+    },
+    {
+      "age_years": 25,
+      "stage": "AnimalJuvenile"
+    },
+    {
+      "age_years": 50,
+      "stage": "AnimalJuvenile"
+    },
+    {
+      "age_years": 499,
+      "stage": "AnimalJuvenile"
+    },
+    {
+      "age_years": 500,
+      "stage": "AnimalJuvenile"
+    }
+  ],
+  "armor_boundaries": [
+    {
+      "armor": 0,
+      "rows": [
+        {
+          "stage": "AnimalBaby",
+          "sharp_armor": 0,
+          "residual_armor": 0,
+          "deflect_probability_given_hit": 0.0,
+          "half_damage_probability_given_hit": 0.0,
+          "full_damage_probability_given_hit": 1,
+          "expected_damage_per_landed_hit": 12.0,
+          "team_expected_damage_per_second": 4.8,
+          "expected_damage_30_seconds": 144.0,
+          "body_part_budget": 80,
+          "body_part_budget_over_expected_DPS_seconds": 16.666666666666668
+        },
+        {
+          "stage": "AnimalJuvenile",
+          "sharp_armor": 0,
+          "residual_armor": 0,
+          "deflect_probability_given_hit": 0.0,
+          "half_damage_probability_given_hit": 0.0,
+          "full_damage_probability_given_hit": 1,
+          "expected_damage_per_landed_hit": 12.0,
+          "team_expected_damage_per_second": 4.8,
+          "expected_damage_30_seconds": 144.0,
+          "body_part_budget": 192,
+          "body_part_budget_over_expected_DPS_seconds": 40.0
+        }
+      ]
+    },
+    {
+      "armor": 0.15,
+      "rows": [
+        {
+          "stage": "AnimalBaby",
+          "sharp_armor": 0.15,
+          "residual_armor": 0.0,
+          "deflect_probability_given_hit": 0.0,
+          "half_damage_probability_given_hit": 0.0,
+          "full_damage_probability_given_hit": 1.0,
+          "expected_damage_per_landed_hit": 12.0,
+          "team_expected_damage_per_second": 4.8,
+          "expected_damage_30_seconds": 144.0,
+          "body_part_budget": 80,
+          "body_part_budget_over_expected_DPS_seconds": 16.666666666666668
+        },
+        {
+          "stage": "AnimalJuvenile",
+          "sharp_armor": 0.15,
+          "residual_armor": 0.0,
+          "deflect_probability_given_hit": 0.0,
+          "half_damage_probability_given_hit": 0.0,
+          "full_damage_probability_given_hit": 1.0,
+          "expected_damage_per_landed_hit": 12.0,
+          "team_expected_damage_per_second": 4.8,
+          "expected_damage_30_seconds": 144.0,
+          "body_part_budget": 192,
+          "body_part_budget_over_expected_DPS_seconds": 40.0
+        }
+      ]
+    },
+    {
+      "armor": 1.15,
+      "rows": [
+        {
+          "stage": "AnimalBaby",
+          "sharp_armor": 1.15,
+          "residual_armor": 0.9999999999999999,
+          "deflect_probability_given_hit": 0.49999999999999994,
+          "half_damage_probability_given_hit": 0.49999999999999994,
+          "full_damage_probability_given_hit": 1.1102230246251565e-16,
+          "expected_damage_per_landed_hit": 3.0000000000000013,
+          "team_expected_damage_per_second": 1.2000000000000004,
+          "expected_damage_30_seconds": 36.000000000000014,
+          "body_part_budget": 80,
+          "body_part_budget_over_expected_DPS_seconds": 66.66666666666664
+        },
+        {
+          "stage": "AnimalJuvenile",
+          "sharp_armor": 1.15,
+          "residual_armor": 0.9999999999999999,
+          "deflect_probability_given_hit": 0.49999999999999994,
+          "half_damage_probability_given_hit": 0.49999999999999994,
+          "full_damage_probability_given_hit": 1.1102230246251565e-16,
+          "expected_damage_per_landed_hit": 3.0000000000000013,
+          "team_expected_damage_per_second": 1.2000000000000004,
+          "expected_damage_30_seconds": 36.000000000000014,
+          "body_part_budget": 192,
+          "body_part_budget_over_expected_DPS_seconds": 159.99999999999994
+        }
+      ]
+    }
+  ],
+  "kind_stages_append": {
+    "fixture_xml": "<PawnKindDef ParentName=\"RM_Reefback_Kind\">\n    <defName>RM_ReefbackJuv</defName>\n    <combatPower>150</combatPower>\n    <wildGroupSize>2~3</wildGroupSize>\n    <label>young reefback</label>\n    <race>RM_ReefbackJuv</race>\n    <lifeStages>\n      <li>\n        <bodyGraphicData>\n          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>\n          <graphicClass>Graphic_Multi</graphicClass>\n          <drawSize>2.94</drawSize>\n        </bodyGraphicData>\n        <swimmingGraphicData>\n          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>\n          <graphicClass>Graphic_Multi</graphicClass>\n          <drawSize>2.94</drawSize>\n        </swimmingGraphicData>\n      </li>\n      <li>\n        <bodyGraphicData>\n          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>\n          <graphicClass>Graphic_Multi</graphicClass>\n          <drawSize>4.42</drawSize>\n        </bodyGraphicData>\n        <swimmingGraphicData>\n          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>\n          <graphicClass>Graphic_Multi</graphicClass>\n          <drawSize>4.42</drawSize>\n        </swimmingGraphicData>\n      </li>\n    </lifeStages>\n  </PawnKindDef>\n\n",
+    "resolved_stage_count": 5
+  },
+  "Pinniped_groups": [
+    "FrontLeftPaw",
+    "FrontRightPaw",
+    "HeadAttackTool",
+    "Teeth"
+  ],
+  "changed_XML_nodes": {
+    "before_count": 34,
+    "current_count": 34,
+    "different_nodes": [
+      {
+        "tag": "ThingDef",
+        "defName": "RM_ReefbackJuv"
+      },
+      {
+        "tag": "PawnKindDef",
+        "defName": "RM_ReefbackJuv"
+      }
+    ]
+  },
+  "audit_positive_fixtures": {
+    "translation_xml": "<LanguageData><RM_ReefbackJuv.description>mask</RM_ReefbackJuv.description></LanguageData>",
+    "translation_selected_tags": [
+      "RM_ReefbackJuv.description"
+    ],
+    "child_xml": "<Defs><ThingDef ParentName=\"RM_Reefback\"><defName>ControlChild</defName></ThingDef></Defs>",
+    "child_selected_ids": [
+      "ControlChild"
+    ]
+  }
+}

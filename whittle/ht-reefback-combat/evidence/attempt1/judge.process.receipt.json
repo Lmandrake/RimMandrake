@@ -1,0 +1,29 @@
+{
+  "command": [
+    "/usr/bin/python3",
+    "src/RimMandrake/Utils/agent_runner.py",
+    "--codex",
+    "wsl",
+    "--cwd",
+    "/home/mandrake/rm/codex-ht",
+    "--result",
+    "whittle/ht-reefback-combat/evidence/judge.last.txt",
+    "--events",
+    "whittle/ht-reefback-combat/evidence/judge.events.jsonl",
+    "--spend",
+    "whittle/ht-reefback-combat/evidence/judge.spend.json",
+    "--sandbox",
+    "danger-full-access",
+    "--timeout",
+    "900"
+  ],
+  "stdin_file": "whittle/ht-reefback-combat/JUDGE_PROMPT.md",
+  "stdin_sha256": "b91b069c3e16ca76c662673a9a6127289baf56f56741f474b244d8643ae014b7",
+  "started": 1794410104.9917934,
+  "elapsed_seconds": 420.5321776866913,
+  "rc": 0,
+  "RM_CODEX_SIDE": "wsl",
+  "stdout_sha256": "e3a34e54c8c6d38f098848ab5f9093656352472c33bb2c8e103f1c9b5583ea4e",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "session": "fresh exec; no fork/resume/agent/model arguments"
+}

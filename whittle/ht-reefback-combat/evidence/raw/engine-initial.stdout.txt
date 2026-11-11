@@ -1,0 +1,946 @@
+METHOD RimWorld.LifeStageDef::.ctor TOKEN 100702430
+IL_0000: ldarg.0 
+IL_0001: ldc.i4.1 
+IL_0002: stfld RimWorld.LifeStageDef::Boolean visible
+IL_0007: ldarg.0 
+IL_0008: ldc.i4.8 
+IL_0009: stfld RimWorld.LifeStageDef::Verse.DevelopmentalStage developmentalStage
+IL_000E: ldarg.0 
+IL_000F: ldtoken ::RimWorld.LifeStageWorker
+IL_0014: call System.Type::System.Type GetTypeFromHandle(System.RuntimeTypeHandle)
+IL_0019: stfld RimWorld.LifeStageDef::System.Type workerClass
+IL_001E: ldarg.0 
+IL_001F: ldc.i4.1 
+IL_0020: stfld RimWorld.LifeStageDef::Boolean involuntarySleepIsNegativeEvent
+IL_0025: ldarg.0 
+IL_0026: ldc.i4.1 
+IL_0027: stfld RimWorld.LifeStageDef::Boolean canDoRandomMentalBreaks
+IL_002C: ldarg.0 
+IL_002D: ldc.i4.1 
+IL_002E: stfld RimWorld.LifeStageDef::Boolean canVoluntarilySleep
+IL_0033: ldarg.0 
+IL_0034: ldc.i4.1 
+IL_0035: stfld RimWorld.LifeStageDef::Boolean canSleepWhenStarving
+IL_003A: ldarg.0 
+IL_003B: ldc.i4.1 
+IL_003C: stfld RimWorld.LifeStageDef::Boolean canInitiateSocialInteraction
+IL_0041: ldarg.0 
+IL_0042: ldc.r4 1
+IL_0047: stfld RimWorld.LifeStageDef::Single equipmentDrawDistanceFactor
+IL_004C: ldarg.0 
+IL_004D: ldc.r4 0.25
+IL_0052: stfld RimWorld.LifeStageDef::Single soundAttackChance
+IL_0057: ldarg.0 
+IL_0058: ldc.r4 1
+IL_005D: stfld RimWorld.LifeStageDef::Single voxPitch
+IL_0062: ldarg.0 
+IL_0063: ldc.r4 1
+IL_0068: stfld RimWorld.LifeStageDef::Single voxVolume
+IL_006D: ldarg.0 
+IL_006E: newobj System.Collections.Generic.List`1[[RimWorld.StatModifier, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Void .ctor()
+IL_0073: stfld RimWorld.LifeStageDef::System.Collections.Generic.List`1[RimWorld.StatModifier] statOffsets
+IL_0078: ldarg.0 
+IL_0079: newobj System.Collections.Generic.List`1[[RimWorld.StatModifier, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Void .ctor()
+IL_007E: stfld RimWorld.LifeStageDef::System.Collections.Generic.List`1[RimWorld.StatModifier] statFactors
+IL_0083: ldarg.0 
+IL_0084: ldc.r4 1
+IL_0089: stfld RimWorld.LifeStageDef::Single bodySizeFactor
+IL_008E: ldarg.0 
+IL_008F: ldc.r4 1
+IL_0094: stfld RimWorld.LifeStageDef::Single healthScaleFactor
+IL_0099: ldarg.0 
+IL_009A: ldc.r4 1
+IL_009F: stfld RimWorld.LifeStageDef::Single hungerRateFactor
+IL_00A4: ldarg.0 
+IL_00A5: ldc.r4 1
+IL_00AA: stfld RimWorld.LifeStageDef::Single marketValueFactor
+IL_00AF: ldarg.0 
+IL_00B0: ldc.r4 1
+IL_00B5: stfld RimWorld.LifeStageDef::Single foodMaxFactor
+IL_00BA: ldarg.0 
+IL_00BB: ldc.r4 1
+IL_00C0: stfld RimWorld.LifeStageDef::Single attachPointScaleFactor
+IL_00C5: ldarg.0 
+IL_00C6: ldc.r4 1
+IL_00CB: stfld RimWorld.LifeStageDef::Single meleeDamageFactor
+IL_00D0: ldarg.0 
+IL_00D1: call UnityEngine.Vector3::UnityEngine.Vector3 get_zero()
+IL_00D6: stfld RimWorld.LifeStageDef::UnityEngine.Vector3 bodyDrawOffset
+IL_00DB: ldarg.0 
+IL_00DC: call Verse.Def::Void .ctor()
+IL_00E1: ret 
+METHOD RimWorld.Verb_MeleeAttackDamage::DamageInfosToApply TOKEN 100744257
+IL_0000: ldc.i4.s -2
+IL_0002: newobj RimWorld.Verb_MeleeAttackDamage+<DamageInfosToApply>d__2::Void .ctor(Int32)
+IL_0007: dup 
+IL_0008: ldarg.0 
+IL_0009: stfld RimWorld.Verb_MeleeAttackDamage+<DamageInfosToApply>d__2::RimWorld.Verb_MeleeAttackDamage <>4__this
+IL_000E: dup 
+IL_000F: ldarg.1 
+IL_0010: stfld RimWorld.Verb_MeleeAttackDamage+<DamageInfosToApply>d__2::Verse.LocalTargetInfo <>3__target
+IL_0015: ret 
+AVAILABLE XML METHODS
+System.Collections.Generic.IEnumerable`1[Verse.DamageInfo] DamageInfosToApply(Verse.LocalTargetInfo)
+DamageResult ApplyMeleeDamageToTarget(Verse.LocalTargetInfo)
+Void .ctor()
+METHOD Verse.BodyPartDef::GetMaxHealth TOKEN 100666921
+IL_0000: ldarg.0 
+IL_0001: ldfld Verse.BodyPartDef::Int32 hitPoints
+IL_0006: conv.r4 
+IL_0007: ldarg.1 
+IL_0008: callvirt Verse.Pawn::Single get_HealthScale()
+IL_000D: mul 
+IL_000E: call UnityEngine.Mathf::Int32 CeilToInt(Single)
+IL_0013: conv.r4 
+IL_0014: ret 
+AVAILABLE XML METHODS
+Boolean get_IsSolidInDefinition_Debug()
+Boolean get_IsSkinCoveredInDefinition_Debug()
+Boolean get_IsMirroredPart()
+System.String get_LabelShort()
+System.String get_LabelShortCap()
+System.Collections.Generic.IEnumerable`1[System.String] ConfigErrors()
+Boolean IsSolid(Verse.BodyPartRecord, System.Collections.Generic.List`1[Verse.Hediff])
+Boolean IsSkinCovered(Verse.BodyPartRecord, Verse.HediffSet)
+Single GetMaxHealth(Verse.Pawn)
+Single GetHitChanceFactorFor(Verse.DamageDef)
+System.Collections.Generic.IEnumerable`1[System.String] <>n__0()
+Void .ctor()
+METHOD Verse.DamageWorker_AddInjury::ApplyDamageToPart TOKEN 100673882
+IL_0000: ldarg.0 
+IL_0001: ldarg.1 
+IL_0002: ldarg.2 
+IL_0003: call Verse.DamageWorker_AddInjury::Verse.BodyPartRecord GetExactPartFromDamageInfo(Verse.DamageInfo, Verse.Pawn)
+IL_0008: stloc.2 
+IL_0009: ldloc.2 
+IL_000A: brtrue.s IL_000D
+IL_000C: ret 
+IL_000D: ldarga.s 1
+IL_000F: ldloc.2 
+IL_0010: call Verse.DamageInfo::Void SetHitPart(Verse.BodyPartRecord)
+IL_0015: ldarga.s 1
+IL_0017: call Verse.DamageInfo::Single get_Amount()
+IL_001C: stloc.0 
+IL_001D: ldarga.s 1
+IL_001F: call Verse.DamageInfo::Boolean get_InstantPermanentInjury()
+IL_0024: brtrue.s IL_0032
+IL_0026: ldarga.s 1
+IL_0028: call Verse.DamageInfo::Boolean get_IgnoreArmor()
+IL_002D: ldc.i4.0 
+IL_002E: ceq 
+IL_0030: br.s IL_0033
+IL_0032: ldc.i4.0 
+IL_0033: ldc.i4.0 
+IL_0034: stloc.1 
+IL_0035: brfalse.s IL_007D
+IL_0037: ldarga.s 1
+IL_0039: call Verse.DamageInfo::Verse.DamageDef get_Def()
+IL_003E: stloc.s 4
+IL_0040: ldarg.2 
+IL_0041: ldloc.0 
+IL_0042: ldarga.s 1
+IL_0044: call Verse.DamageInfo::Single get_ArmorPenetrationInt()
+IL_0049: ldarga.s 1
+IL_004B: call Verse.DamageInfo::Verse.BodyPartRecord get_HitPart()
+IL_0050: ldloca.s 4
+IL_0052: ldloca.s 1
+IL_0054: ldloca.s 3
+IL_0056: call Verse.ArmorUtility::Single GetPostArmorDamage(Verse.Pawn, Single, Single, Verse.BodyPartRecord, Verse.DamageDef ByRef, Boolean ByRef, Boolean ByRef)
+IL_005B: stloc.0 
+IL_005C: ldarga.s 1
+IL_005E: ldloc.s 4
+IL_0060: call Verse.DamageInfo::Void set_Def(Verse.DamageDef)
+IL_0065: ldloc.0 
+IL_0066: ldarga.s 1
+IL_0068: call Verse.DamageInfo::Single get_Amount()
+IL_006D: bge.un.s IL_007D
+IL_006F: ldarg.3 
+IL_0070: ldc.i4.1 
+IL_0071: stfld Verse.DamageWorker+DamageResult::Boolean diminished
+IL_0076: ldarg.3 
+IL_0077: ldloc.3 
+IL_0078: stfld Verse.DamageWorker+DamageResult::Boolean diminishedByMetalArmor
+IL_007D: ldarga.s 1
+IL_007F: call Verse.DamageInfo::Verse.DamageDef get_Def()
+IL_0084: ldarg.2 
+IL_0085: callvirt Verse.DamageDef::Boolean ExternalViolenceFor(Verse.Thing)
+IL_008A: brfalse.s IL_009C
+IL_008C: ldloc.0 
+IL_008D: ldarg.2 
+IL_008E: ldsfld RimWorld.StatDefOf::RimWorld.StatDef IncomingDamageFactor
+IL_0093: ldc.i4.1 
+IL_0094: ldc.i4.m1 
+IL_0095: call RimWorld.StatExtension::Single GetStatValue(Verse.Thing, RimWorld.StatDef, Boolean, Int32)
+IL_009A: mul 
+IL_009B: stloc.0 
+IL_009C: ldloc.0 
+IL_009D: ldc.r4 0
+IL_00A2: bgt.un.s IL_00C1
+IL_00A4: ldarg.3 
+IL_00A5: ldarg.2 
+IL_00A6: ldarga.s 1
+IL_00A8: call Verse.DamageInfo::Verse.BodyPartRecord get_HitPart()
+IL_00AD: callvirt Verse.DamageWorker+DamageResult::Void AddPart(Verse.Thing, Verse.BodyPartRecord)
+IL_00B2: ldarg.3 
+IL_00B3: ldc.i4.1 
+IL_00B4: stfld Verse.DamageWorker+DamageResult::Boolean deflected
+IL_00B9: ldarg.3 
+IL_00BA: ldloc.1 
+IL_00BB: stfld Verse.DamageWorker+DamageResult::Boolean deflectedByMetalArmor
+IL_00C0: ret 
+IL_00C1: ldarg.1 
+IL_00C2: ldarg.2 
+IL_00C3: call Verse.DamageWorker_AddInjury::Boolean IsHeadshot(Verse.DamageInfo, Verse.Pawn)
+IL_00C8: brfalse.s IL_00D1
+IL_00CA: ldarg.3 
+IL_00CB: ldc.i4.1 
+IL_00CC: stfld Verse.DamageWorker+DamageResult::Boolean headshot
+IL_00D1: ldarga.s 1
+IL_00D3: call Verse.DamageInfo::Boolean get_InstantPermanentInjury()
+IL_00D8: brfalse.s IL_0131
+IL_00DA: ldarga.s 1
+IL_00DC: call Verse.DamageInfo::Verse.DamageDef get_Def()
+IL_00E1: ldarg.2 
+IL_00E2: ldarga.s 1
+IL_00E4: call Verse.DamageInfo::Verse.BodyPartRecord get_HitPart()
+IL_00E9: call Verse.HealthUtility::Verse.HediffDef GetHediffDefFromDamage(Verse.DamageDef, Verse.Pawn, Verse.BodyPartRecord)
+IL_00EE: ldtoken ::Verse.HediffComp_GetsPermanent
+IL_00F3: call System.Type::System.Type GetTypeFromHandle(System.RuntimeTypeHandle)
+IL_00F8: callvirt Verse.HediffDef::Verse.HediffCompProperties CompPropsFor(System.Type)
+IL_00FD: brfalse.s IL_0130
+IL_00FF: ldarga.s 1
+IL_0101: call Verse.DamageInfo::Verse.BodyPartRecord get_HitPart()
+IL_0106: ldfld Verse.BodyPartRecord::Verse.BodyPartDef def
+IL_010B: ldfld Verse.BodyPartDef::Single permanentInjuryChanceFactor
+IL_0110: ldc.r4 0
+IL_0115: beq.s IL_0130
+IL_0117: ldarg.2 
+IL_0118: ldfld Verse.Pawn::Verse.Pawn_HealthTracker health
+IL_011D: ldfld Verse.Pawn_HealthTracker::Verse.HediffSet hediffSet
+IL_0122: ldarga.s 1
+IL_0124: call Verse.DamageInfo::Verse.BodyPartRecord get_HitPart()
+IL_0129: callvirt Verse.HediffSet::Boolean PartOrAnyAncestorHasDirectlyAddedParts(Verse.BodyPartRecord)
+IL_012E: brfalse.s IL_0131
+IL_0130: ret 
+IL_0131: ldarga.s 1
+IL_0133: call Verse.DamageInfo::Boolean get_AllowDamagePropagation()
+IL_0138: brtrue.s IL_0146
+IL_013A: ldarg.0 
+IL_013B: ldarg.2 
+IL_013C: ldloc.0 
+IL_013D: ldarg.1 
+IL_013E: ldarg.3 
+IL_013F: call Verse.DamageWorker_AddInjury::Single FinalizeAndAddInjury(Verse.Pawn, Single, Verse.DamageInfo, DamageResult)
+IL_0144: pop 
+IL_0145: ret 
+IL_0146: ldarg.0 
+IL_0147: ldarg.2 
+IL_0148: ldloc.0 
+IL_0149: ldarg.1 
+IL_014A: ldarg.3 
+IL_014B: callvirt Verse.DamageWorker_AddInjury::Void ApplySpecialEffectsToPart(Verse.Pawn, Single, Verse.DamageInfo, DamageResult)
+IL_0150: ret 
+AVAILABLE XML METHODS
+DamageResult Apply(Verse.DamageInfo, Verse.Thing)
+DamageResult ApplyToPawn(Verse.DamageInfo, Verse.Pawn)
+Void ApplySmallPawnDamagePropagation(Verse.DamageInfo, Verse.Pawn, DamageResult)
+Void ApplyDamageToPart(Verse.DamageInfo, Verse.Pawn, DamageResult)
+Void ApplySpecialEffectsToPart(Verse.Pawn, Single, Verse.DamageInfo, DamageResult)
+Single FinalizeAndAddInjury(Verse.Pawn, Single, Verse.DamageInfo, DamageResult)
+Single FinalizeAndAddInjury(Verse.Pawn, Verse.Hediff_Injury, Verse.DamageInfo, DamageResult)
+Void CheckDuplicateDamageToOuterParts(Verse.DamageInfo, Verse.Pawn, Single, DamageResult)
+Boolean IsHeadshot(Verse.DamageInfo, Verse.Pawn)
+Verse.BodyPartRecord GetExactPartFromDamageInfo(Verse.DamageInfo, Verse.Pawn)
+Verse.BodyPartRecord ChooseHitPart(Verse.DamageInfo, Verse.Pawn)
+Void PlayWoundedVoiceSound(Verse.DamageInfo, Verse.Pawn)
+Single ReduceDamageToPreserveOutsideParts(Single, Verse.DamageInfo, Verse.Pawn)
+Boolean ShouldReduceDamageToPreservePart(Verse.BodyPartRecord)
+Void .ctor()
+METHOD Verse.Pawn::get_BodySize TOKEN 100675828
+IL_0000: ldarg.0 
+IL_0001: ldfld Verse.Pawn::Verse.Pawn_AgeTracker ageTracker
+IL_0006: callvirt Verse.Pawn_AgeTracker::RimWorld.LifeStageDef get_CurLifeStage()
+IL_000B: ldfld RimWorld.LifeStageDef::Single bodySizeFactor
+IL_0010: ldarg.0 
+IL_0011: call Verse.Pawn::Verse.RaceProperties get_RaceProps()
+IL_0016: ldfld Verse.RaceProperties::Single baseBodySize
+IL_001B: mul 
+IL_001C: ret 
+METHOD Verse.Pawn::get_HealthScale TOKEN 100675829
+IL_0000: ldarg.0 
+IL_0001: ldfld Verse.Pawn::Verse.Pawn_AgeTracker ageTracker
+IL_0006: callvirt Verse.Pawn_AgeTracker::RimWorld.LifeStageDef get_CurLifeStage()
+IL_000B: ldfld RimWorld.LifeStageDef::Single healthScaleFactor
+IL_0010: ldarg.0 
+IL_0011: call Verse.Pawn::Verse.RaceProperties get_RaceProps()
+IL_0016: ldfld Verse.RaceProperties::Single baseHealthScale
+IL_001B: mul 
+IL_001C: ret 
+METHOD Verse.Tool::AdjustedBaseMeleeDamageAmount TOKEN 100678717
+IL_0000: ldarg.0 
+IL_0001: ldfld Verse.Tool::Single power
+IL_0006: stloc.0 
+IL_0007: ldarg.1 
+IL_0008: brfalse.s IL_003F
+IL_000A: ldloc.0 
+IL_000B: ldarg.1 
+IL_000C: ldsfld RimWorld.StatDefOf::RimWorld.StatDef MeleeWeapon_DamageMultiplier
+IL_0011: ldc.i4.1 
+IL_0012: ldc.i4.m1 
+IL_0013: call RimWorld.StatExtension::Single GetStatValue(Verse.Thing, RimWorld.StatDef, Boolean, Int32)
+IL_0018: mul 
+IL_0019: stloc.0 
+IL_001A: ldarg.1 
+IL_001B: callvirt Verse.Thing::Verse.ThingDef get_Stuff()
+IL_0020: brfalse.s IL_003F
+IL_0022: ldarg.2 
+IL_0023: brfalse.s IL_003F
+IL_0025: ldloc.0 
+IL_0026: ldarg.1 
+IL_0027: callvirt Verse.Thing::Verse.ThingDef get_Stuff()
+IL_002C: ldarg.2 
+IL_002D: ldfld Verse.DamageDef::Verse.DamageArmorCategoryDef armorCategory
+IL_0032: ldfld Verse.DamageArmorCategoryDef::RimWorld.StatDef multStat
+IL_0037: ldnull 
+IL_0038: call RimWorld.StatExtension::Single GetStatValueAbstract(Verse.BuildableDef, RimWorld.StatDef, Verse.ThingDef)
+IL_003D: mul 
+IL_003E: stloc.0 
+IL_003F: ldloc.0 
+IL_0040: ret 
+METHOD Verse.Tool::AdjustedBaseMeleeDamageAmount TOKEN 100678718
+IL_0000: ldarg.0 
+IL_0001: ldfld Verse.Tool::Single power
+IL_0006: stloc.0 
+IL_0007: ldarg.2 
+IL_0008: brfalse.s IL_0034
+IL_000A: ldloc.0 
+IL_000B: ldarg.1 
+IL_000C: ldsfld RimWorld.StatDefOf::RimWorld.StatDef MeleeWeapon_DamageMultiplier
+IL_0011: ldarg.2 
+IL_0012: call RimWorld.StatExtension::Single GetStatValueAbstract(Verse.BuildableDef, RimWorld.StatDef, Verse.ThingDef)
+IL_0017: mul 
+IL_0018: stloc.0 
+IL_0019: ldarg.2 
+IL_001A: brfalse.s IL_0034
+IL_001C: ldarg.3 
+IL_001D: brfalse.s IL_0034
+IL_001F: ldloc.0 
+IL_0020: ldarg.2 
+IL_0021: ldarg.3 
+IL_0022: ldfld Verse.DamageDef::Verse.DamageArmorCategoryDef armorCategory
+IL_0027: ldfld Verse.DamageArmorCategoryDef::RimWorld.StatDef multStat
+IL_002C: ldnull 
+IL_002D: call RimWorld.StatExtension::Single GetStatValueAbstract(Verse.BuildableDef, RimWorld.StatDef, Verse.ThingDef)
+IL_0032: mul 
+IL_0033: stloc.0 
+IL_0034: ldloc.0 
+IL_0035: ret 
+AVAILABLE XML METHODS
+System.String get_LabelCap()
+System.Collections.Generic.IEnumerable`1[Verse.ManeuverDef] get_Maneuvers()
+System.Collections.Generic.IEnumerable`1[Verse.VerbProperties] get_VerbsProperties()
+Single AdjustedBaseMeleeDamageAmount(Verse.Thing, Verse.DamageDef)
+Single AdjustedBaseMeleeDamageAmount(Verse.ThingDef, Verse.ThingDef, Verse.DamageDef)
+Single AdjustedCooldown(Verse.Thing)
+Single AdjustedCooldown(Verse.ThingDef, Verse.ThingDef)
+System.String ToString()
+Void PostLoad()
+System.Collections.Generic.IEnumerable`1[System.String] ConfigErrors()
+Boolean <get_Maneuvers>b__22_0(Verse.ManeuverDef)
+Void .ctor()
+METHOD Verse.VerbProperties::AdjustedMeleeDamageAmount TOKEN 100667292
+IL_0000: ldarg.1 
+IL_0001: ldfld Verse.Verb::Verse.VerbProperties verbProps
+IL_0006: ldarg.0 
+IL_0007: beq.s IL_0030
+IL_0009: ldstr "Tried to calculate melee damage amount for a verb with different verb props. verb="
+IL_000E: ldarg.1 
+IL_000F: dup 
+IL_0010: brtrue.s IL_0016
+IL_0012: pop 
+IL_0013: ldnull 
+IL_0014: br.s IL_001B
+IL_0016: callvirt System.Object::System.String ToString()
+IL_001B: call System.String::System.String Concat(System.String, System.String)
+IL_0020: ldc.i4 5469809
+IL_0025: call Verse.Log::Void ErrorOnce(System.String, Int32)
+IL_002A: ldc.r4 0
+IL_002F: ret 
+IL_0030: ldarg.0 
+IL_0031: ldarg.1 
+IL_0032: ldfld Verse.Verb::Verse.Tool tool
+IL_0037: ldarg.2 
+IL_0038: ldarg.1 
+IL_0039: callvirt Verse.Verb::Verse.ThingWithComps get_EquipmentSource()
+IL_003E: ldarg.1 
+IL_003F: callvirt Verse.Verb::Verse.HediffComp_VerbGiver get_HediffCompSource()
+IL_0044: call Verse.VerbProperties::Single AdjustedMeleeDamageAmount(Verse.Tool, Verse.Pawn, Verse.Thing, Verse.HediffComp_VerbGiver)
+IL_0049: ret 
+METHOD Verse.VerbProperties::AdjustedMeleeDamageAmount TOKEN 100667293
+IL_0000: ldarg.0 
+IL_0001: call Verse.VerbProperties::Boolean get_IsMeleeAttack()
+IL_0006: brtrue.s IL_001D
+IL_0008: ldstr "Attempting to get melee damage for a non-melee verb {0}"
+IL_000D: ldarg.0 
+IL_000E: call System.String::System.String Format(System.String, System.Object)
+IL_0013: ldc.i4 26181238
+IL_0018: call Verse.Log::Void ErrorOnce(System.String, Int32)
+IL_001D: ldarg.1 
+IL_001E: brfalse.s IL_0030
+IL_0020: ldarg.1 
+IL_0021: ldarg.3 
+IL_0022: ldarg.0 
+IL_0023: ldfld Verse.VerbProperties::Verse.DamageDef meleeDamageDef
+IL_0028: callvirt Verse.Tool::Single AdjustedBaseMeleeDamageAmount(Verse.Thing, Verse.DamageDef)
+IL_002D: stloc.0 
+IL_002E: br.s IL_0038
+IL_0030: ldarg.0 
+IL_0031: ldfld Verse.VerbProperties::Int32 meleeDamageBaseAmount
+IL_0036: conv.r4 
+IL_0037: stloc.0 
+IL_0038: ldarg.2 
+IL_0039: brfalse.s IL_0048
+IL_003B: ldloc.0 
+IL_003C: ldarg.0 
+IL_003D: ldarg.1 
+IL_003E: ldarg.2 
+IL_003F: ldarg.s 4
+IL_0041: call Verse.VerbProperties::Single GetDamageFactorFor(Verse.Tool, Verse.Pawn, Verse.HediffComp_VerbGiver)
+IL_0046: mul 
+IL_0047: stloc.0 
+IL_0048: ldloc.0 
+IL_0049: ret 
+METHOD Verse.VerbProperties::AdjustedMeleeDamageAmount TOKEN 100667294
+IL_0000: ldarg.0 
+IL_0001: call Verse.VerbProperties::Boolean get_IsMeleeAttack()
+IL_0006: brtrue.s IL_001D
+IL_0008: ldstr "Attempting to get melee damage for a non-melee verb {0}"
+IL_000D: ldarg.0 
+IL_000E: call System.String::System.String Format(System.String, System.Object)
+IL_0013: ldc.i4 26181238
+IL_0018: call Verse.Log::Void ErrorOnce(System.String, Int32)
+IL_001D: ldarg.1 
+IL_001E: brfalse.s IL_0032
+IL_0020: ldarg.1 
+IL_0021: ldarg.3 
+IL_0022: ldarg.s 4
+IL_0024: ldarg.0 
+IL_0025: ldfld Verse.VerbProperties::Verse.DamageDef meleeDamageDef
+IL_002A: callvirt Verse.Tool::Single AdjustedBaseMeleeDamageAmount(Verse.ThingDef, Verse.ThingDef, Verse.DamageDef)
+IL_002F: stloc.0 
+IL_0030: br.s IL_003A
+IL_0032: ldarg.0 
+IL_0033: ldfld Verse.VerbProperties::Int32 meleeDamageBaseAmount
+IL_0038: conv.r4 
+IL_0039: stloc.0 
+IL_003A: ldarg.2 
+IL_003B: brfalse.s IL_004A
+IL_003D: ldloc.0 
+IL_003E: ldarg.0 
+IL_003F: ldarg.1 
+IL_0040: ldarg.2 
+IL_0041: ldarg.s 5
+IL_0043: call Verse.VerbProperties::Single GetDamageFactorFor(Verse.Tool, Verse.Pawn, Verse.HediffComp_VerbGiver)
+IL_0048: mul 
+IL_0049: stloc.0 
+IL_004A: ldloc.0 
+IL_004B: ret 
+METHOD Verse.VerbProperties::AdjustedArmorPenetration TOKEN 100667295
+IL_0000: ldarg.1 
+IL_0001: ldfld Verse.Verb::Verse.VerbProperties verbProps
+IL_0006: ldarg.0 
+IL_0007: beq.s IL_0030
+IL_0009: ldstr "Tried to calculate armor penetration for a verb with different verb props. verb="
+IL_000E: ldarg.1 
+IL_000F: dup 
+IL_0010: brtrue.s IL_0016
+IL_0012: pop 
+IL_0013: ldnull 
+IL_0014: br.s IL_001B
+IL_0016: callvirt System.Object::System.String ToString()
+IL_001B: call System.String::System.String Concat(System.String, System.String)
+IL_0020: ldc.i4 9865767
+IL_0025: call Verse.Log::Void ErrorOnce(System.String, Int32)
+IL_002A: ldc.r4 0
+IL_002F: ret 
+IL_0030: ldarg.0 
+IL_0031: ldarg.1 
+IL_0032: ldfld Verse.Verb::Verse.Tool tool
+IL_0037: ldarg.2 
+IL_0038: ldarg.1 
+IL_0039: callvirt Verse.Verb::Verse.ThingWithComps get_EquipmentSource()
+IL_003E: ldarg.1 
+IL_003F: callvirt Verse.Verb::Verse.HediffComp_VerbGiver get_HediffCompSource()
+IL_0044: call Verse.VerbProperties::Single AdjustedArmorPenetration(Verse.Tool, Verse.Pawn, Verse.Thing, Verse.HediffComp_VerbGiver)
+IL_0049: ret 
+METHOD Verse.VerbProperties::AdjustedArmorPenetration TOKEN 100667296
+IL_0000: ldarg.1 
+IL_0001: brfalse.s IL_000C
+IL_0003: ldarg.1 
+IL_0004: ldfld Verse.Tool::Single armorPenetration
+IL_0009: stloc.0 
+IL_000A: br.s IL_0013
+IL_000C: ldarg.0 
+IL_000D: ldfld Verse.VerbProperties::Single meleeArmorPenetrationBase
+IL_0012: stloc.0 
+IL_0013: ldloc.0 
+IL_0014: ldc.r4 0
+IL_0019: bge.un.s IL_002F
+IL_001B: ldarg.0 
+IL_001C: ldarg.1 
+IL_001D: ldarg.2 
+IL_001E: ldarg.3 
+IL_001F: ldarg.s 4
+IL_0021: call Verse.VerbProperties::Single AdjustedMeleeDamageAmount(Verse.Tool, Verse.Pawn, Verse.Thing, Verse.HediffComp_VerbGiver)
+IL_0026: ldc.r4 0.015
+IL_002B: mul 
+IL_002C: stloc.0 
+IL_002D: br.s IL_0044
+IL_002F: ldarg.3 
+IL_0030: brfalse.s IL_0044
+IL_0032: ldarg.3 
+IL_0033: ldsfld RimWorld.StatDefOf::RimWorld.StatDef MeleeWeapon_DamageMultiplier
+IL_0038: ldc.i4.1 
+IL_0039: ldc.i4.m1 
+IL_003A: call RimWorld.StatExtension::Single GetStatValue(Verse.Thing, RimWorld.StatDef, Boolean, Int32)
+IL_003F: stloc.1 
+IL_0040: ldloc.0 
+IL_0041: ldloc.1 
+IL_0042: mul 
+IL_0043: stloc.0 
+IL_0044: ldloc.0 
+IL_0045: ret 
+METHOD Verse.VerbProperties::AdjustedArmorPenetration TOKEN 100667297
+IL_0000: ldarg.1 
+IL_0001: brfalse.s IL_000C
+IL_0003: ldarg.1 
+IL_0004: ldfld Verse.Tool::Single armorPenetration
+IL_0009: stloc.0 
+IL_000A: br.s IL_0013
+IL_000C: ldarg.0 
+IL_000D: ldfld Verse.VerbProperties::Single meleeArmorPenetrationBase
+IL_0012: stloc.0 
+IL_0013: ldloc.0 
+IL_0014: ldc.r4 0
+IL_0019: bge.un.s IL_0031
+IL_001B: ldarg.0 
+IL_001C: ldarg.1 
+IL_001D: ldarg.2 
+IL_001E: ldarg.3 
+IL_001F: ldarg.s 4
+IL_0021: ldarg.s 5
+IL_0023: call Verse.VerbProperties::Single AdjustedMeleeDamageAmount(Verse.Tool, Verse.Pawn, Verse.ThingDef, Verse.ThingDef, Verse.HediffComp_VerbGiver)
+IL_0028: ldc.r4 0.015
+IL_002D: mul 
+IL_002E: stloc.0 
+IL_002F: br.s IL_0046
+IL_0031: ldarg.3 
+IL_0032: brfalse.s IL_0046
+IL_0034: ldarg.3 
+IL_0035: ldsfld RimWorld.StatDefOf::RimWorld.StatDef MeleeWeapon_DamageMultiplier
+IL_003A: ldarg.s 4
+IL_003C: call RimWorld.StatExtension::Single GetStatValueAbstract(Verse.BuildableDef, RimWorld.StatDef, Verse.ThingDef)
+IL_0041: stloc.1 
+IL_0042: ldloc.0 
+IL_0043: ldloc.1 
+IL_0044: mul 
+IL_0045: stloc.0 
+IL_0046: ldloc.0 
+IL_0047: ret 
+AVAILABLE XML METHODS
+Boolean get_CausesTimeSlowdown()
+Boolean get_LaunchesProjectile()
+Boolean get_Ranged()
+System.String get_AccuracySummaryString()
+Boolean get_IsMeleeAttack()
+Boolean get_CausesExplosion()
+Single get_ForcedMissRadius()
+Single AdjustedRange(Verse.Verb, Verse.Thing)
+Single AdjustedMeleeDamageAmount(Verse.Verb, Verse.Pawn)
+Single AdjustedMeleeDamageAmount(Verse.Tool, Verse.Pawn, Verse.Thing, Verse.HediffComp_VerbGiver)
+Single AdjustedMeleeDamageAmount(Verse.Tool, Verse.Pawn, Verse.ThingDef, Verse.ThingDef, Verse.HediffComp_VerbGiver)
+Single AdjustedArmorPenetration(Verse.Verb, Verse.Pawn)
+Single AdjustedArmorPenetration(Verse.Tool, Verse.Pawn, Verse.Thing, Verse.HediffComp_VerbGiver)
+Single AdjustedArmorPenetration(Verse.Tool, Verse.Pawn, Verse.ThingDef, Verse.ThingDef, Verse.HediffComp_VerbGiver)
+Single AdjustedExpectedDamageForVerbUsableInMelee(Verse.Tool, Verse.Pawn, Verse.Thing, Verse.HediffComp_VerbGiver)
+Single AdjustedExpectedDamageForVerbUsableInMelee(Verse.Tool, Verse.Pawn, Verse.ThingDef, Verse.ThingDef, Verse.HediffComp_VerbGiver)
+Single AdjustedMeleeSelectionWeight(Verse.Verb, Verse.Pawn)
+Single AdjustedMeleeSelectionWeight(Verse.Tool, Verse.Pawn, Verse.Thing, Verse.HediffComp_VerbGiver, Boolean)
+Single AdjustedMeleeSelectionWeight(Verse.Tool, Verse.Pawn, Verse.ThingDef, Verse.ThingDef, Verse.HediffComp_VerbGiver, Boolean)
+Single AdjustedCooldown(Verse.Verb, Verse.Pawn)
+Single AdjustedCooldown(Verse.Tool, Verse.Pawn, Verse.Thing)
+Single AdjustedCooldown(Verse.Tool, Verse.Pawn, Verse.ThingDef, Verse.ThingDef)
+Int32 AdjustedCooldownTicks(Verse.Verb, Verse.Pawn)
+Single AdjustedAccuracy(Verse.RangeCategory, Verse.Thing)
+Single AdjustedFullCycleTime(Verse.Verb, Verse.Pawn)
+Single GetDamageFactorFor(Verse.Verb, Verse.Pawn)
+Single GetDamageFactorFor(Verse.Tool, Verse.Pawn, Verse.HediffComp_VerbGiver)
+Verse.BodyPartGroupDef AdjustedLinkedBodyPartsGroup(Verse.Tool)
+Boolean AdjustedEnsureLinkedBodyPartsGroupAlwaysUsable(Verse.Tool)
+Single EffectiveMinRange(Verse.LocalTargetInfo, Verse.Thing)
+Single EffectiveMinRange(Boolean)
+Single GetHitChanceFactor(Verse.Thing, Single)
+Single GetForceMissFactorFor(Verse.Thing, Verse.Pawn)
+Void DrawRadiusRing(Verse.IntVec3, Verse.Verb)
+System.String ToString()
+Verse.VerbProperties MemberwiseClone()
+System.Collections.Generic.IEnumerable`1[System.String] ConfigErrors(Verse.ThingDef)
+Void PostLoad()
+Boolean <ConfigErrors>b__162_0(Verse.BodyPartRecord)
+Void .ctor()
+METHOD Verse.XmlInheritance::RecursiveNodeCopyOverwriteElements TOKEN 100677042
+IL_0000: ldstr "RecursiveNodeCopyOverwriteElements"
+IL_0005: call Verse.DeepProfiler::Void Start(System.String)
+IL_000A: ldarg.0 
+IL_000B: callvirt System.Xml.XmlNode::System.Xml.XmlAttributeCollection get_Attributes()
+IL_0010: ldstr "Inherit"
+IL_0015: callvirt System.Xml.XmlAttributeCollection::System.Xml.XmlAttribute get_ItemOf(System.String)
+IL_001A: stloc.0 
+IL_001B: ldloc.0 
+IL_001C: brfalse IL_012F
+IL_0021: ldloc.0 
+IL_0022: callvirt System.Xml.XmlNode::System.String get_Value()
+IL_0027: callvirt System.String::System.String ToLower()
+IL_002C: ldstr "false"
+IL_0031: call System.String::Boolean op_Equality(System.String, System.String)
+IL_0036: brfalse IL_012F
+IL_003B: ldarg.1 
+IL_003C: callvirt System.Xml.XmlNode::System.Xml.XmlNode get_FirstChild()
+IL_0041: stloc.s 4
+IL_0043: br.s IL_0057
+IL_0045: ldloc.s 4
+IL_0047: callvirt System.Xml.XmlNode::System.Xml.XmlNode get_NextSibling()
+IL_004C: ldarg.1 
+IL_004D: ldloc.s 4
+IL_004F: callvirt System.Xml.XmlNode::System.Xml.XmlNode RemoveChild(System.Xml.XmlNode)
+IL_0054: pop 
+IL_0055: stloc.s 4
+IL_0057: ldloc.s 4
+IL_0059: brtrue.s IL_0045
+IL_005B: ldarg.0 
+IL_005C: callvirt System.Xml.XmlNode::System.Collections.IEnumerator GetEnumerator()
+IL_0061: stloc.s 5
+IL_0063: br.s IL_008C
+IL_0065: ldloc.s 5
+IL_0067: callvirt System.Collections.IEnumerator::System.Object get_Current()
+IL_006C: castclass ::System.Xml.XmlNode
+IL_0071: stloc.s 6
+IL_0073: ldarg.1 
+IL_0074: callvirt System.Xml.XmlNode::System.Xml.XmlDocument get_OwnerDocument()
+IL_0079: ldloc.s 6
+IL_007B: ldc.i4.1 
+IL_007C: callvirt System.Xml.XmlDocument::System.Xml.XmlNode ImportNode(System.Xml.XmlNode, Boolean)
+IL_0081: stloc.s 7
+IL_0083: ldarg.1 
+IL_0084: ldloc.s 7
+IL_0086: callvirt System.Xml.XmlNode::System.Xml.XmlNode AppendChild(System.Xml.XmlNode)
+IL_008B: pop 
+IL_008C: ldloc.s 5
+IL_008E: callvirt System.Collections.IEnumerator::Boolean MoveNext()
+IL_0093: brtrue.s IL_0065
+IL_0095: leave.s IL_00AC
+IL_0097: ldloc.s 5
+IL_0099: isinst ::System.IDisposable
+IL_009E: stloc.s 8
+IL_00A0: ldloc.s 8
+IL_00A2: brfalse.s IL_00AB
+IL_00A4: ldloc.s 8
+IL_00A6: callvirt System.IDisposable::Void Dispose()
+IL_00AB: endfinally 
+IL_00AC: ldarg.0 
+IL_00AD: callvirt System.Xml.XmlNode::System.Xml.XmlAttributeCollection get_Attributes()
+IL_00B2: callvirt System.Xml.XmlNamedNodeMap::System.Collections.IEnumerator GetEnumerator()
+IL_00B7: stloc.s 5
+IL_00B9: br.s IL_010C
+IL_00BB: ldloc.s 5
+IL_00BD: callvirt System.Collections.IEnumerator::System.Object get_Current()
+IL_00C2: castclass ::System.Xml.XmlAttribute
+IL_00C7: stloc.s 9
+IL_00C9: ldloc.s 9
+IL_00CB: callvirt System.Xml.XmlNode::System.String get_Name()
+IL_00D0: ldstr "Inherit"
+IL_00D5: call System.String::Boolean op_Equality(System.String, System.String)
+IL_00DA: brtrue.s IL_010C
+IL_00DC: ldarg.1 
+IL_00DD: callvirt System.Xml.XmlNode::System.Xml.XmlDocument get_OwnerDocument()
+IL_00E2: ldloc.s 9
+IL_00E4: callvirt System.Xml.XmlNode::System.String get_Name()
+IL_00E9: callvirt System.Xml.XmlDocument::System.Xml.XmlAttribute CreateAttribute(System.String)
+IL_00EE: stloc.s 10
+IL_00F0: ldloc.s 10
+IL_00F2: ldloc.s 9
+IL_00F4: callvirt System.Xml.XmlNode::System.String get_Value()
+IL_00F9: callvirt System.Xml.XmlNode::Void set_Value(System.String)
+IL_00FE: ldarg.1 
+IL_00FF: callvirt System.Xml.XmlNode::System.Xml.XmlAttributeCollection get_Attributes()
+IL_0104: ldloc.s 10
+IL_0106: callvirt System.Xml.XmlAttributeCollection::System.Xml.XmlAttribute Append(System.Xml.XmlAttribute)
+IL_010B: pop 
+IL_010C: ldloc.s 5
+IL_010E: callvirt System.Collections.IEnumerator::Boolean MoveNext()
+IL_0113: brtrue.s IL_00BB
+IL_0115: leave IL_03A5
+IL_011A: ldloc.s 5
+IL_011C: isinst ::System.IDisposable
+IL_0121: stloc.s 8
+IL_0123: ldloc.s 8
+IL_0125: brfalse.s IL_012E
+IL_0127: ldloc.s 8
+IL_0129: callvirt System.IDisposable::Void Dispose()
+IL_012E: endfinally 
+IL_012F: ldarg.1 
+IL_0130: callvirt System.Xml.XmlNode::System.Xml.XmlAttributeCollection get_Attributes()
+IL_0135: callvirt System.Xml.XmlAttributeCollection::Void RemoveAll()
+IL_013A: ldarg.0 
+IL_013B: callvirt System.Xml.XmlNode::System.Xml.XmlAttributeCollection get_Attributes()
+IL_0140: stloc.1 
+IL_0141: ldc.i4.0 
+IL_0142: stloc.s 11
+IL_0144: br.s IL_0175
+IL_0146: ldarg.1 
+IL_0147: callvirt System.Xml.XmlNode::System.Xml.XmlDocument get_OwnerDocument()
+IL_014C: ldloc.1 
+IL_014D: ldloc.s 11
+IL_014F: callvirt System.Xml.XmlAttributeCollection::System.Xml.XmlAttribute get_ItemOf(Int32)
+IL_0154: ldc.i4.1 
+IL_0155: callvirt System.Xml.XmlDocument::System.Xml.XmlNode ImportNode(System.Xml.XmlNode, Boolean)
+IL_015A: castclass ::System.Xml.XmlAttribute
+IL_015F: stloc.s 12
+IL_0161: ldarg.1 
+IL_0162: callvirt System.Xml.XmlNode::System.Xml.XmlAttributeCollection get_Attributes()
+IL_0167: ldloc.s 12
+IL_0169: callvirt System.Xml.XmlAttributeCollection::System.Xml.XmlAttribute Append(System.Xml.XmlAttribute)
+IL_016E: pop 
+IL_016F: ldloc.s 11
+IL_0171: ldc.i4.1 
+IL_0172: add 
+IL_0173: stloc.s 11
+IL_0175: ldloc.s 11
+IL_0177: ldloc.1 
+IL_0178: callvirt System.Xml.XmlNamedNodeMap::Int32 get_Count()
+IL_017D: blt.s IL_0146
+IL_017F: ldc.i4.0 
+IL_0180: stloc.2 
+IL_0181: ldnull 
+IL_0182: stloc.3 
+IL_0183: ldarg.0 
+IL_0184: callvirt System.Xml.XmlNode::System.Collections.IEnumerator GetEnumerator()
+IL_0189: stloc.s 5
+IL_018B: br.s IL_01B6
+IL_018D: ldloc.s 5
+IL_018F: callvirt System.Collections.IEnumerator::System.Object get_Current()
+IL_0194: castclass ::System.Xml.XmlNode
+IL_0199: stloc.s 13
+IL_019B: ldloc.s 13
+IL_019D: callvirt System.Xml.XmlNode::System.Xml.XmlNodeType get_NodeType()
+IL_01A2: ldc.i4.3 
+IL_01A3: bne.un.s IL_01AA
+IL_01A5: ldloc.s 13
+IL_01A7: stloc.3 
+IL_01A8: br.s IL_01B6
+IL_01AA: ldloc.s 13
+IL_01AC: callvirt System.Xml.XmlNode::System.Xml.XmlNodeType get_NodeType()
+IL_01B1: ldc.i4.1 
+IL_01B2: bne.un.s IL_01B6
+IL_01B4: ldc.i4.1 
+IL_01B5: stloc.2 
+IL_01B6: ldloc.s 5
+IL_01B8: callvirt System.Collections.IEnumerator::Boolean MoveNext()
+IL_01BD: brtrue.s IL_018D
+IL_01BF: leave.s IL_01D6
+IL_01C1: ldloc.s 5
+IL_01C3: isinst ::System.IDisposable
+IL_01C8: stloc.s 8
+IL_01CA: ldloc.s 8
+IL_01CC: brfalse.s IL_01D5
+IL_01CE: ldloc.s 8
+IL_01D0: callvirt System.IDisposable::Void Dispose()
+IL_01D5: endfinally 
+IL_01D6: ldloc.3 
+IL_01D7: brfalse.s IL_0255
+IL_01D9: ldstr "RecursiveNodeCopyOverwriteElements - Remove all current nodes"
+IL_01DE: call Verse.DeepProfiler::Void Start(System.String)
+IL_01E3: ldarg.1 
+IL_01E4: callvirt System.Xml.XmlNode::System.Xml.XmlNodeList get_ChildNodes()
+IL_01E9: callvirt System.Xml.XmlNodeList::System.Collections.IEnumerator GetEnumerator()
+IL_01EE: stloc.s 5
+IL_01F0: br.s IL_0213
+IL_01F2: ldloc.s 5
+IL_01F4: callvirt System.Collections.IEnumerator::System.Object get_Current()
+IL_01F9: castclass ::System.Xml.XmlNode
+IL_01FE: stloc.s 15
+IL_0200: ldloc.s 15
+IL_0202: callvirt System.Xml.XmlNode::System.Xml.XmlNodeType get_NodeType()
+IL_0207: ldc.i4.2 
+IL_0208: beq.s IL_0213
+IL_020A: ldarg.1 
+IL_020B: ldloc.s 15
+IL_020D: callvirt System.Xml.XmlNode::System.Xml.XmlNode RemoveChild(System.Xml.XmlNode)
+IL_0212: pop 
+IL_0213: ldloc.s 5
+IL_0215: callvirt System.Collections.IEnumerator::Boolean MoveNext()
+IL_021A: brtrue.s IL_01F2
+IL_021C: leave.s IL_0233
+IL_021E: ldloc.s 5
+IL_0220: isinst ::System.IDisposable
+IL_0225: stloc.s 8
+IL_0227: ldloc.s 8
+IL_0229: brfalse.s IL_0232
+IL_022B: ldloc.s 8
+IL_022D: callvirt System.IDisposable::Void Dispose()
+IL_0232: endfinally 
+IL_0233: call Verse.DeepProfiler::Void End()
+IL_0238: ldarg.1 
+IL_0239: callvirt System.Xml.XmlNode::System.Xml.XmlDocument get_OwnerDocument()
+IL_023E: ldloc.3 
+IL_023F: ldc.i4.1 
+IL_0240: callvirt System.Xml.XmlDocument::System.Xml.XmlNode ImportNode(System.Xml.XmlNode, Boolean)
+IL_0245: stloc.s 14
+IL_0247: ldarg.1 
+IL_0248: ldloc.s 14
+IL_024A: callvirt System.Xml.XmlNode::System.Xml.XmlNode AppendChild(System.Xml.XmlNode)
+IL_024F: pop 
+IL_0250: leave IL_03A5
+IL_0255: ldloc.2 
+IL_0256: brtrue IL_0300
+IL_025B: ldc.i4.0 
+IL_025C: stloc.s 16
+IL_025E: ldarg.1 
+IL_025F: callvirt System.Xml.XmlNode::System.Xml.XmlNodeList get_ChildNodes()
+IL_0264: callvirt System.Xml.XmlNodeList::System.Collections.IEnumerator GetEnumerator()
+IL_0269: stloc.s 5
+IL_026B: br.s IL_0286
+IL_026D: ldloc.s 5
+IL_026F: callvirt System.Collections.IEnumerator::System.Object get_Current()
+IL_0274: castclass ::System.Xml.XmlNode
+IL_0279: callvirt System.Xml.XmlNode::System.Xml.XmlNodeType get_NodeType()
+IL_027E: ldc.i4.1 
+IL_027F: bne.un.s IL_0286
+IL_0281: ldc.i4.1 
+IL_0282: stloc.s 16
+IL_0284: leave.s IL_02A6
+IL_0286: ldloc.s 5
+IL_0288: callvirt System.Collections.IEnumerator::Boolean MoveNext()
+IL_028D: brtrue.s IL_026D
+IL_028F: leave.s IL_02A6
+IL_0291: ldloc.s 5
+IL_0293: isinst ::System.IDisposable
+IL_0298: stloc.s 8
+IL_029A: ldloc.s 8
+IL_029C: brfalse.s IL_02A5
+IL_029E: ldloc.s 8
+IL_02A0: callvirt System.IDisposable::Void Dispose()
+IL_02A5: endfinally 
+IL_02A6: ldloc.s 16
+IL_02A8: brtrue IL_039D
+IL_02AD: ldarg.1 
+IL_02AE: callvirt System.Xml.XmlNode::System.Xml.XmlNodeList get_ChildNodes()
+IL_02B3: callvirt System.Xml.XmlNodeList::System.Collections.IEnumerator GetEnumerator()
+IL_02B8: stloc.s 5
+IL_02BA: br.s IL_02DD
+IL_02BC: ldloc.s 5
+IL_02BE: callvirt System.Collections.IEnumerator::System.Object get_Current()
+IL_02C3: castclass ::System.Xml.XmlNode
+IL_02C8: stloc.s 17
+IL_02CA: ldloc.s 17
+IL_02CC: callvirt System.Xml.XmlNode::System.Xml.XmlNodeType get_NodeType()
+IL_02D1: ldc.i4.2 
+IL_02D2: beq.s IL_02DD
+IL_02D4: ldarg.1 
+IL_02D5: ldloc.s 17
+IL_02D7: callvirt System.Xml.XmlNode::System.Xml.XmlNode RemoveChild(System.Xml.XmlNode)
+IL_02DC: pop 
+IL_02DD: ldloc.s 5
+IL_02DF: callvirt System.Collections.IEnumerator::Boolean MoveNext()
+IL_02E4: brtrue.s IL_02BC
+IL_02E6: leave IL_03A5
+IL_02EB: ldloc.s 5
+IL_02ED: isinst ::System.IDisposable
+IL_02F2: stloc.s 8
+IL_02F4: ldloc.s 8
+IL_02F6: brfalse.s IL_02FF
+IL_02F8: ldloc.s 8
+IL_02FA: callvirt System.IDisposable::Void Dispose()
+IL_02FF: endfinally 
+IL_0300: ldarg.0 
+IL_0301: callvirt System.Xml.XmlNode::System.Collections.IEnumerator GetEnumerator()
+IL_0306: stloc.s 5
+IL_0308: br.s IL_037D
+IL_030A: ldloc.s 5
+IL_030C: callvirt System.Collections.IEnumerator::System.Object get_Current()
+IL_0311: castclass ::System.Xml.XmlNode
+IL_0316: stloc.s 18
+IL_0318: ldloc.s 18
+IL_031A: callvirt System.Xml.XmlNode::System.Xml.XmlNodeType get_NodeType()
+IL_031F: ldc.i4.1 
+IL_0320: bne.un.s IL_037D
+IL_0322: ldloc.s 18
+IL_0324: call Verse.XmlInheritance::Boolean IsListElement(System.Xml.XmlNode)
+IL_0329: brfalse.s IL_0346
+IL_032B: ldarg.1 
+IL_032C: callvirt System.Xml.XmlNode::System.Xml.XmlDocument get_OwnerDocument()
+IL_0331: ldloc.s 18
+IL_0333: ldc.i4.1 
+IL_0334: callvirt System.Xml.XmlDocument::System.Xml.XmlNode ImportNode(System.Xml.XmlNode, Boolean)
+IL_0339: stloc.s 19
+IL_033B: ldarg.1 
+IL_033C: ldloc.s 19
+IL_033E: callvirt System.Xml.XmlNode::System.Xml.XmlNode AppendChild(System.Xml.XmlNode)
+IL_0343: pop 
+IL_0344: br.s IL_037D
+IL_0346: ldarg.1 
+IL_0347: ldloc.s 18
+IL_0349: callvirt System.Xml.XmlNode::System.String get_Name()
+IL_034E: callvirt System.Xml.XmlNode::System.Xml.XmlElement get_Item(System.String)
+IL_0353: stloc.s 20
+IL_0355: ldloc.s 20
+IL_0357: brfalse.s IL_0364
+IL_0359: ldloc.s 18
+IL_035B: ldloc.s 20
+IL_035D: call Verse.XmlInheritance::Void RecursiveNodeCopyOverwriteElements(System.Xml.XmlNode, System.Xml.XmlNode)
+IL_0362: br.s IL_037D
+IL_0364: ldarg.1 
+IL_0365: callvirt System.Xml.XmlNode::System.Xml.XmlDocument get_OwnerDocument()
+IL_036A: ldloc.s 18
+IL_036C: ldc.i4.1 
+IL_036D: callvirt System.Xml.XmlDocument::System.Xml.XmlNode ImportNode(System.Xml.XmlNode, Boolean)
+IL_0372: stloc.s 21
+IL_0374: ldarg.1 
+IL_0375: ldloc.s 21
+IL_0377: callvirt System.Xml.XmlNode::System.Xml.XmlNode AppendChild(System.Xml.XmlNode)
+IL_037C: pop 
+IL_037D: ldloc.s 5
+IL_037F: callvirt System.Collections.IEnumerator::Boolean MoveNext()
+IL_0384: brtrue.s IL_030A
+IL_0386: leave.s IL_03A5
+IL_0388: ldloc.s 5
+IL_038A: isinst ::System.IDisposable
+IL_038F: stloc.s 8
+IL_0391: ldloc.s 8
+IL_0393: brfalse.s IL_039C
+IL_0395: ldloc.s 8
+IL_0397: callvirt System.IDisposable::Void Dispose()
+IL_039C: endfinally 
+IL_039D: leave.s IL_03A5
+IL_039F: call Verse.DeepProfiler::Void End()
+IL_03A4: endfinally 
+IL_03A5: ret 
+METHOD Verse.XmlInheritance::IsListElement TOKEN 100677044
+IL_0000: ldarg.0 
+IL_0001: callvirt System.Xml.XmlNode::System.String get_Name()
+IL_0006: ldstr "li"
+IL_000B: call System.String::Boolean op_Equality(System.String, System.String)
+IL_0010: brtrue.s IL_0032
+IL_0012: ldarg.0 
+IL_0013: callvirt System.Xml.XmlNode::System.Xml.XmlNode get_ParentNode()
+IL_0018: brfalse.s IL_0030
+IL_001A: ldsfld TOKEN 67119252
+IL_001F: ldarg.0 
+IL_0020: callvirt System.Xml.XmlNode::System.Xml.XmlNode get_ParentNode()
+IL_0025: callvirt System.Xml.XmlNode::System.String get_Name()
+IL_002A: callvirt TOKEN 167773765
+IL_002F: ret 
+IL_0030: ldc.i4.0 
+IL_0031: ret 
+IL_0032: ldc.i4.1 
+IL_0033: ret 

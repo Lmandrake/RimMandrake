@@ -1,0 +1,117 @@
+[
+  {
+    "input": "installed/Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml",
+    "bytes": 8572,
+    "sha256": "9e64ca6431d6685b342f3bec90166a911948aeb364a232ff8eb2fe69ed321fbc"
+  },
+  {
+    "input": "installed/Data/Core/Defs/ThingDefs_Races/Races_Animal_Base.xml",
+    "bytes": 3904,
+    "sha256": "922276d8275c6087014de702401e97c2724d40c38a2f09de131075ba3e7afcf4"
+  },
+  {
+    "input": "installed/Data/Core/Defs/Bodies/BodyParts_General.xml",
+    "bytes": 5052,
+    "sha256": "c3546b23f5d97d5a9f496ec6eb1e52149e3ef8de2227e71ed0fefccbc0f88d32"
+  },
+  {
+    "input": "installed/Data/Core/Defs/Bodies/BodyParts_Animal.xml",
+    "bytes": 9987,
+    "sha256": "c069f5ebca38bd40b5a4a6f917ce5b97e12965eb413a64ae9875ffc42257b86d"
+  },
+  {
+    "input": "installed/Data/Core/Defs/Bodies/BodyParts_Organs.xml",
+    "bytes": 1570,
+    "sha256": "eeeb6f166bde4804b5d91933a3734954f84239e1abad3b3e000fcbe8609e5f80"
+  },
+  {
+    "input": "installed/Data/Odyssey/Defs/Bodies/Bodies_Animal_Pinniped.xml",
+    "bytes": 9996,
+    "sha256": "bcab82dd36a998591143703d125872a88fe02bd5a4b74ebb80be0a86633ba71d"
+  },
+  {
+    "input": "src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_SeaBeasts_Invented.xml",
+    "bytes": 70708,
+    "sha256": "a1fed3005d5e8f45e6cc882cf98d174dd37d6d68d1073e739b2e15be8026daf9"
+  },
+  {
+    "input": "src/RimMandrake/Miasma/Defs/ThingDefs_Races/RM_WardenMother.xml",
+    "bytes": 8891,
+    "sha256": "6d225577f44de6a982de84ad815af9d830bdeabb3330a8b674741ae706ee551b"
+  },
+  {
+    "input": "engine-selected.il.txt",
+    "bytes": 67216,
+    "sha256": "a7e67d0423ef5c2e91fc887ec3004af846970ae7972271d04901c97b020aec7b"
+  },
+  {
+    "input": "installed/Version.txt",
+    "bytes": 17,
+    "sha256": "0ec56b267649faa48e8cd6bd767b14bafe3d1359af44434711105dbdc4597be3"
+  },
+  {
+    "input": "installed/RimWorldWin64_Data/Managed/Assembly-CSharp.dll",
+    "bytes": 15777280,
+    "sha256": "5cf1b5be399d5b1c9c56ca72c9d35b4ecf307feacf5859d04ac5a1aa5926356a"
+  },
+  {
+    "input": "src/RimMandrake/Miasma/Defs/BiomeDefs/RM_Miasma.xml",
+    "bytes": 17701,
+    "sha256": "f6164f87009d6c632a5357d2f4043bc643b0647065621ba6fcd68ca4c5f58240"
+  },
+  {
+    "input": "src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_GreySea.xml",
+    "bytes": 16486,
+    "sha256": "5fd0c53e811a3f626d7476e0cd4412e20b44dc2dfaba5c6ca0d706a03895a634"
+  },
+  {
+    "input": "src/RimMandrake/Miasma/Defs/MapGeneration/RM_Miasma_CrecheScatterer.xml",
+    "bytes": 5493,
+    "sha256": "78171bfe28fdb2453dfd97e811ba736553f640b712b81d5894ab8552ea884a16"
+  },
+  {
+    "input": "src/RimMandrake/Miasma/Patches/RM_AcousticPayload_Miasma.xml",
+    "bytes": 2815,
+    "sha256": "0e655ba48c8fb9788837754312804351ec2e78771a29937868bdb16a3084895f"
+  },
+  {
+    "input": "src/RimMandrake/EnvironmentalHazards/Source/RM_SetPieceElement_AnchoredPawn.cs",
+    "bytes": 6581,
+    "sha256": "6e98a6223ba9a1e6849c84ffb1ac5bf49e5e2f111633fa5037c54cdab7cd35c6"
+  },
+  {
+    "input": "src/RimMandrake/EnvironmentalHazards/Source/RM_CompTerritorialAnchor.cs",
+    "bytes": 15093,
+    "sha256": "3235075bed3d431085cd81d61a672fc2ef5f56a1454e5eb8ceae1bbc9cbf8b83"
+  },
+  {
+    "input": "src/RimMandrake/EnvironmentalHazards/Source/RM_CompWaterLocked.cs",
+    "bytes": 7420,
+    "sha256": "47a51db08a8161ed2394ed164e8c40beece26f9c7d2af1cb8326efffb5bfba1c"
+  },
+  {
+    "input": "before/src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_SeaBeasts_Invented.xml",
+    "bytes": 69646,
+    "sha256": "dd383ef5e2ea27ed824b773cc6ac04b144e65012093c0803bf06962d71cf7a30"
+  },
+  {
+    "input": "before/src/RimMandrake/Miasma/Defs/ThingDefs_Races/RM_WardenMother.xml",
+    "bytes": 8891,
+    "sha256": "6d225577f44de6a982de84ad815af9d830bdeabb3330a8b674741ae706ee551b"
+  },
+  {
+    "input": "before/src/RimMandrake/Miasma/Defs/BiomeDefs/RM_Miasma.xml",
+    "bytes": 17701,
+    "sha256": "f6164f87009d6c632a5357d2f4043bc643b0647065621ba6fcd68ca4c5f58240"
+  },
+  {
+    "input": "before/src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_GreySea.xml",
+    "bytes": 16486,
+    "sha256": "5fd0c53e811a3f626d7476e0cd4412e20b44dc2dfaba5c6ca0d706a03895a634"
+  },
+  {
+    "input": "instrument.py",
+    "bytes": 30864,
+    "sha256": "affab56adabd90efe8e7daef923c8d33124989616d5a2273578fb09bc0770b32"
+  }
+]

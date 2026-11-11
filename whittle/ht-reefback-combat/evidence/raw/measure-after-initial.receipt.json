@@ -1,0 +1,20 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/HugeThings/northstar/measure_reefback_combat.py",
+    "--game-dir",
+    "/mnt/d/SteamLibrary/steamapps/common/RimWorld",
+    "--engine-il",
+    "whittle/ht-reefback-combat/evidence/raw/engine-design2.stdout.txt",
+    "--baseline-root",
+    "whittle/ht-reefback-combat/evidence/raw/before",
+    "--out",
+    "whittle/ht-reefback-combat/evidence/raw/measure-after-initial"
+  ],
+  "cwd": "/home/mandrake/rm/codex-ht",
+  "started": 1794409528.1762805,
+  "elapsed_seconds": 0.31784510612487793,
+  "rc": 1,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "5b953b7f8d59f7ed19a1fde535b56c63961890ad2431ba2c2c746f31258ec87b"
+}

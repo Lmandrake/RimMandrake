@@ -1,0 +1,16 @@
+{
+  "command": [
+    "powershell.exe",
+    "-NoProfile",
+    "-ExecutionPolicy",
+    "Bypass",
+    "-File",
+    "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\codex-ht\\whittle\\ht-reefback-combat\\evidence\\check_float.ps1"
+  ],
+  "cwd": "/home/mandrake/rm/codex-ht",
+  "started": 1794410056.5817332,
+  "elapsed_seconds": 0.44941091537475586,
+  "rc": 0,
+  "stdout_sha256": "dace9138a3449c7b39491f00fd2774f4afe5f44427b1304c5cd2a0694f615171",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

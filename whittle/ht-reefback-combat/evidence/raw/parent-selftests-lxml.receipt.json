@@ -1,0 +1,15 @@
+{
+  "command": [
+    "/home/mandrake/.cache/ht-warning-venv/bin/python3",
+    "src/RimMandrake/Utils/run_selftests.py",
+    "--only",
+    "selftest_validate_patch.py",
+    "--workers",
+    "1"
+  ],
+  "rc": 0,
+  "started": 1794410069.0798876,
+  "elapsed_seconds": 1.4583303928375244,
+  "stdout_sha256": "b984b3ff3a510dca423f791266d7bbb2aa9c4e9197f2b7e8793a9c882aaaedf4",
+  "stderr_sha256": "2044e9bb13c1174d91aaa7fef29f7bfb0c8132c34e285186539b53a4b2ff8b40"
+}

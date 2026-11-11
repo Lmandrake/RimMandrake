@@ -1,0 +1,588 @@
+METHOD RimWorld.LifeStageDef::.ctor TOKEN 100702430
+IL_0000: ldarg.0 
+IL_0001: ldc.i4.1 
+IL_0002: stfld RimWorld.LifeStageDef::Boolean visible
+IL_0007: ldarg.0 
+IL_0008: ldc.i4.8 
+IL_0009: stfld RimWorld.LifeStageDef::Verse.DevelopmentalStage developmentalStage
+IL_000E: ldarg.0 
+IL_000F: ldtoken ::RimWorld.LifeStageWorker
+IL_0014: call System.Type::System.Type GetTypeFromHandle(System.RuntimeTypeHandle)
+IL_0019: stfld RimWorld.LifeStageDef::System.Type workerClass
+IL_001E: ldarg.0 
+IL_001F: ldc.i4.1 
+IL_0020: stfld RimWorld.LifeStageDef::Boolean involuntarySleepIsNegativeEvent
+IL_0025: ldarg.0 
+IL_0026: ldc.i4.1 
+IL_0027: stfld RimWorld.LifeStageDef::Boolean canDoRandomMentalBreaks
+IL_002C: ldarg.0 
+IL_002D: ldc.i4.1 
+IL_002E: stfld RimWorld.LifeStageDef::Boolean canVoluntarilySleep
+IL_0033: ldarg.0 
+IL_0034: ldc.i4.1 
+IL_0035: stfld RimWorld.LifeStageDef::Boolean canSleepWhenStarving
+IL_003A: ldarg.0 
+IL_003B: ldc.i4.1 
+IL_003C: stfld RimWorld.LifeStageDef::Boolean canInitiateSocialInteraction
+IL_0041: ldarg.0 
+IL_0042: ldc.r4 1
+IL_0047: stfld RimWorld.LifeStageDef::Single equipmentDrawDistanceFactor
+IL_004C: ldarg.0 
+IL_004D: ldc.r4 0.25
+IL_0052: stfld RimWorld.LifeStageDef::Single soundAttackChance
+IL_0057: ldarg.0 
+IL_0058: ldc.r4 1
+IL_005D: stfld RimWorld.LifeStageDef::Single voxPitch
+IL_0062: ldarg.0 
+IL_0063: ldc.r4 1
+IL_0068: stfld RimWorld.LifeStageDef::Single voxVolume
+IL_006D: ldarg.0 
+IL_006E: newobj System.Collections.Generic.List`1[[RimWorld.StatModifier, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Void .ctor()
+IL_0073: stfld RimWorld.LifeStageDef::System.Collections.Generic.List`1[RimWorld.StatModifier] statOffsets
+IL_0078: ldarg.0 
+IL_0079: newobj System.Collections.Generic.List`1[[RimWorld.StatModifier, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Void .ctor()
+IL_007E: stfld RimWorld.LifeStageDef::System.Collections.Generic.List`1[RimWorld.StatModifier] statFactors
+IL_0083: ldarg.0 
+IL_0084: ldc.r4 1
+IL_0089: stfld RimWorld.LifeStageDef::Single bodySizeFactor
+IL_008E: ldarg.0 
+IL_008F: ldc.r4 1
+IL_0094: stfld RimWorld.LifeStageDef::Single healthScaleFactor
+IL_0099: ldarg.0 
+IL_009A: ldc.r4 1
+IL_009F: stfld RimWorld.LifeStageDef::Single hungerRateFactor
+IL_00A4: ldarg.0 
+IL_00A5: ldc.r4 1
+IL_00AA: stfld RimWorld.LifeStageDef::Single marketValueFactor
+IL_00AF: ldarg.0 
+IL_00B0: ldc.r4 1
+IL_00B5: stfld RimWorld.LifeStageDef::Single foodMaxFactor
+IL_00BA: ldarg.0 
+IL_00BB: ldc.r4 1
+IL_00C0: stfld RimWorld.LifeStageDef::Single attachPointScaleFactor
+IL_00C5: ldarg.0 
+IL_00C6: ldc.r4 1
+IL_00CB: stfld RimWorld.LifeStageDef::Single meleeDamageFactor
+IL_00D0: ldarg.0 
+IL_00D1: call UnityEngine.Vector3::UnityEngine.Vector3 get_zero()
+IL_00D6: stfld RimWorld.LifeStageDef::UnityEngine.Vector3 bodyDrawOffset
+IL_00DB: ldarg.0 
+IL_00DC: call Verse.Def::Void .ctor()
+IL_00E1: ret 
+METHOD Verse.BodyPartDef::GetMaxHealth TOKEN 100666921
+IL_0000: ldarg.0 
+IL_0001: ldfld Verse.BodyPartDef::Int32 hitPoints
+IL_0006: conv.r4 
+IL_0007: ldarg.1 
+IL_0008: callvirt Verse.Pawn::Single get_HealthScale()
+IL_000D: mul 
+IL_000E: call UnityEngine.Mathf::Int32 CeilToInt(Single)
+IL_0013: conv.r4 
+IL_0014: ret 
+AVAILABLE XML METHODS
+Boolean get_IsSolidInDefinition_Debug()
+Boolean get_IsSkinCoveredInDefinition_Debug()
+Boolean get_IsMirroredPart()
+System.String get_LabelShort()
+System.String get_LabelShortCap()
+System.Collections.Generic.IEnumerable`1[System.String] ConfigErrors()
+Boolean IsSolid(Verse.BodyPartRecord, System.Collections.Generic.List`1[Verse.Hediff])
+Boolean IsSkinCovered(Verse.BodyPartRecord, Verse.HediffSet)
+Single GetMaxHealth(Verse.Pawn)
+Single GetHitChanceFactorFor(Verse.DamageDef)
+System.Collections.Generic.IEnumerable`1[System.String] <>n__0()
+Void .ctor()
+METHOD Verse.DamageWorker_AddInjury::ApplyDamageToPart TOKEN 100673882
+IL_0000: ldarg.0 
+IL_0001: ldarg.1 
+IL_0002: ldarg.2 
+IL_0003: call Verse.DamageWorker_AddInjury::Verse.BodyPartRecord GetExactPartFromDamageInfo(Verse.DamageInfo, Verse.Pawn)
+IL_0008: stloc.2 
+IL_0009: ldloc.2 
+IL_000A: brtrue.s IL_000D
+IL_000C: ret 
+IL_000D: ldarga.s 1
+IL_000F: ldloc.2 
+IL_0010: call Verse.DamageInfo::Void SetHitPart(Verse.BodyPartRecord)
+IL_0015: ldarga.s 1
+IL_0017: call Verse.DamageInfo::Single get_Amount()
+IL_001C: stloc.0 
+IL_001D: ldarga.s 1
+IL_001F: call Verse.DamageInfo::Boolean get_InstantPermanentInjury()
+IL_0024: brtrue.s IL_0032
+IL_0026: ldarga.s 1
+IL_0028: call Verse.DamageInfo::Boolean get_IgnoreArmor()
+IL_002D: ldc.i4.0 
+IL_002E: ceq 
+IL_0030: br.s IL_0033
+IL_0032: ldc.i4.0 
+IL_0033: ldc.i4.0 
+IL_0034: stloc.1 
+IL_0035: brfalse.s IL_007D
+IL_0037: ldarga.s 1
+IL_0039: call Verse.DamageInfo::Verse.DamageDef get_Def()
+IL_003E: stloc.s 4
+IL_0040: ldarg.2 
+IL_0041: ldloc.0 
+IL_0042: ldarga.s 1
+IL_0044: call Verse.DamageInfo::Single get_ArmorPenetrationInt()
+IL_0049: ldarga.s 1
+IL_004B: call Verse.DamageInfo::Verse.BodyPartRecord get_HitPart()
+IL_0050: ldloca.s 4
+IL_0052: ldloca.s 1
+IL_0054: ldloca.s 3
+IL_0056: call Verse.ArmorUtility::Single GetPostArmorDamage(Verse.Pawn, Single, Single, Verse.BodyPartRecord, Verse.DamageDef ByRef, Boolean ByRef, Boolean ByRef)
+IL_005B: stloc.0 
+IL_005C: ldarga.s 1
+IL_005E: ldloc.s 4
+IL_0060: call Verse.DamageInfo::Void set_Def(Verse.DamageDef)
+IL_0065: ldloc.0 
+IL_0066: ldarga.s 1
+IL_0068: call Verse.DamageInfo::Single get_Amount()
+IL_006D: bge.un.s IL_007D
+IL_006F: ldarg.3 
+IL_0070: ldc.i4.1 
+IL_0071: stfld Verse.DamageWorker+DamageResult::Boolean diminished
+IL_0076: ldarg.3 
+IL_0077: ldloc.3 
+IL_0078: stfld Verse.DamageWorker+DamageResult::Boolean diminishedByMetalArmor
+IL_007D: ldarga.s 1
+IL_007F: call Verse.DamageInfo::Verse.DamageDef get_Def()
+IL_0084: ldarg.2 
+IL_0085: callvirt Verse.DamageDef::Boolean ExternalViolenceFor(Verse.Thing)
+IL_008A: brfalse.s IL_009C
+IL_008C: ldloc.0 
+IL_008D: ldarg.2 
+IL_008E: ldsfld RimWorld.StatDefOf::RimWorld.StatDef IncomingDamageFactor
+IL_0093: ldc.i4.1 
+IL_0094: ldc.i4.m1 
+IL_0095: call RimWorld.StatExtension::Single GetStatValue(Verse.Thing, RimWorld.StatDef, Boolean, Int32)
+IL_009A: mul 
+IL_009B: stloc.0 
+IL_009C: ldloc.0 
+IL_009D: ldc.r4 0
+IL_00A2: bgt.un.s IL_00C1
+IL_00A4: ldarg.3 
+IL_00A5: ldarg.2 
+IL_00A6: ldarga.s 1
+IL_00A8: call Verse.DamageInfo::Verse.BodyPartRecord get_HitPart()
+IL_00AD: callvirt Verse.DamageWorker+DamageResult::Void AddPart(Verse.Thing, Verse.BodyPartRecord)
+IL_00B2: ldarg.3 
+IL_00B3: ldc.i4.1 
+IL_00B4: stfld Verse.DamageWorker+DamageResult::Boolean deflected
+IL_00B9: ldarg.3 
+IL_00BA: ldloc.1 
+IL_00BB: stfld Verse.DamageWorker+DamageResult::Boolean deflectedByMetalArmor
+IL_00C0: ret 
+IL_00C1: ldarg.1 
+IL_00C2: ldarg.2 
+IL_00C3: call Verse.DamageWorker_AddInjury::Boolean IsHeadshot(Verse.DamageInfo, Verse.Pawn)
+IL_00C8: brfalse.s IL_00D1
+IL_00CA: ldarg.3 
+IL_00CB: ldc.i4.1 
+IL_00CC: stfld Verse.DamageWorker+DamageResult::Boolean headshot
+IL_00D1: ldarga.s 1
+IL_00D3: call Verse.DamageInfo::Boolean get_InstantPermanentInjury()
+IL_00D8: brfalse.s IL_0131
+IL_00DA: ldarga.s 1
+IL_00DC: call Verse.DamageInfo::Verse.DamageDef get_Def()
+IL_00E1: ldarg.2 
+IL_00E2: ldarga.s 1
+IL_00E4: call Verse.DamageInfo::Verse.BodyPartRecord get_HitPart()
+IL_00E9: call Verse.HealthUtility::Verse.HediffDef GetHediffDefFromDamage(Verse.DamageDef, Verse.Pawn, Verse.BodyPartRecord)
+IL_00EE: ldtoken ::Verse.HediffComp_GetsPermanent
+IL_00F3: call System.Type::System.Type GetTypeFromHandle(System.RuntimeTypeHandle)
+IL_00F8: callvirt Verse.HediffDef::Verse.HediffCompProperties CompPropsFor(System.Type)
+IL_00FD: brfalse.s IL_0130
+IL_00FF: ldarga.s 1
+IL_0101: call Verse.DamageInfo::Verse.BodyPartRecord get_HitPart()
+IL_0106: ldfld Verse.BodyPartRecord::Verse.BodyPartDef def
+IL_010B: ldfld Verse.BodyPartDef::Single permanentInjuryChanceFactor
+IL_0110: ldc.r4 0
+IL_0115: beq.s IL_0130
+IL_0117: ldarg.2 
+IL_0118: ldfld Verse.Pawn::Verse.Pawn_HealthTracker health
+IL_011D: ldfld Verse.Pawn_HealthTracker::Verse.HediffSet hediffSet
+IL_0122: ldarga.s 1
+IL_0124: call Verse.DamageInfo::Verse.BodyPartRecord get_HitPart()
+IL_0129: callvirt Verse.HediffSet::Boolean PartOrAnyAncestorHasDirectlyAddedParts(Verse.BodyPartRecord)
+IL_012E: brfalse.s IL_0131
+IL_0130: ret 
+IL_0131: ldarga.s 1
+IL_0133: call Verse.DamageInfo::Boolean get_AllowDamagePropagation()
+IL_0138: brtrue.s IL_0146
+IL_013A: ldarg.0 
+IL_013B: ldarg.2 
+IL_013C: ldloc.0 
+IL_013D: ldarg.1 
+IL_013E: ldarg.3 
+IL_013F: call Verse.DamageWorker_AddInjury::Single FinalizeAndAddInjury(Verse.Pawn, Single, Verse.DamageInfo, DamageResult)
+IL_0144: pop 
+IL_0145: ret 
+IL_0146: ldarg.0 
+IL_0147: ldarg.2 
+IL_0148: ldloc.0 
+IL_0149: ldarg.1 
+IL_014A: ldarg.3 
+IL_014B: callvirt Verse.DamageWorker_AddInjury::Void ApplySpecialEffectsToPart(Verse.Pawn, Single, Verse.DamageInfo, DamageResult)
+IL_0150: ret 
+AVAILABLE XML METHODS
+DamageResult Apply(Verse.DamageInfo, Verse.Thing)
+DamageResult ApplyToPawn(Verse.DamageInfo, Verse.Pawn)
+Void ApplySmallPawnDamagePropagation(Verse.DamageInfo, Verse.Pawn, DamageResult)
+Void ApplyDamageToPart(Verse.DamageInfo, Verse.Pawn, DamageResult)
+Void ApplySpecialEffectsToPart(Verse.Pawn, Single, Verse.DamageInfo, DamageResult)
+Single FinalizeAndAddInjury(Verse.Pawn, Single, Verse.DamageInfo, DamageResult)
+Single FinalizeAndAddInjury(Verse.Pawn, Verse.Hediff_Injury, Verse.DamageInfo, DamageResult)
+Void CheckDuplicateDamageToOuterParts(Verse.DamageInfo, Verse.Pawn, Single, DamageResult)
+Boolean IsHeadshot(Verse.DamageInfo, Verse.Pawn)
+Verse.BodyPartRecord GetExactPartFromDamageInfo(Verse.DamageInfo, Verse.Pawn)
+Verse.BodyPartRecord ChooseHitPart(Verse.DamageInfo, Verse.Pawn)
+Void PlayWoundedVoiceSound(Verse.DamageInfo, Verse.Pawn)
+Single ReduceDamageToPreserveOutsideParts(Single, Verse.DamageInfo, Verse.Pawn)
+Boolean ShouldReduceDamageToPreservePart(Verse.BodyPartRecord)
+Void .ctor()
+METHOD Verse.Pawn::get_BodySize TOKEN 100675828
+IL_0000: ldarg.0 
+IL_0001: ldfld Verse.Pawn::Verse.Pawn_AgeTracker ageTracker
+IL_0006: callvirt Verse.Pawn_AgeTracker::RimWorld.LifeStageDef get_CurLifeStage()
+IL_000B: ldfld RimWorld.LifeStageDef::Single bodySizeFactor
+IL_0010: ldarg.0 
+IL_0011: call Verse.Pawn::Verse.RaceProperties get_RaceProps()
+IL_0016: ldfld Verse.RaceProperties::Single baseBodySize
+IL_001B: mul 
+IL_001C: ret 
+METHOD Verse.Pawn::get_HealthScale TOKEN 100675829
+IL_0000: ldarg.0 
+IL_0001: ldfld Verse.Pawn::Verse.Pawn_AgeTracker ageTracker
+IL_0006: callvirt Verse.Pawn_AgeTracker::RimWorld.LifeStageDef get_CurLifeStage()
+IL_000B: ldfld RimWorld.LifeStageDef::Single healthScaleFactor
+IL_0010: ldarg.0 
+IL_0011: call Verse.Pawn::Verse.RaceProperties get_RaceProps()
+IL_0016: ldfld Verse.RaceProperties::Single baseHealthScale
+IL_001B: mul 
+IL_001C: ret 
+AVAILABLE XML METHODS
+Void VerifyReservations(Verse.AI.Job)
+Void DropAndForbidEverything(Boolean, Boolean)
+Void GenerateNecessaryName()
+Verse.Verb TryGetAttackVerb(Verse.Thing, Boolean, Boolean)
+Boolean TryStartAttack(Verse.LocalTargetInfo)
+System.Collections.Generic.IEnumerable`1[Verse.Thing] ButcherProducts(Verse.Pawn, Single)
+Verse.TaggedString FactionDesc(Verse.TaggedString, Boolean, System.String, System.String)
+System.String MainDesc(Boolean, Boolean)
+System.String GetJobReport()
+System.String GetInspectString()
+System.Collections.Generic.IEnumerable`1[Verse.Gizmo] GetGizmos()
+System.Collections.Generic.IEnumerable`1[Verse.FloatMenuOption] GetExtraFloatMenuOptionsFor(Verse.IntVec3)
+System.Collections.Generic.IEnumerable`1[Verse.FloatMenuOption] GetFloatMenuOptions(Verse.Pawn)
+Verse.TipSignal GetTooltip()
+System.Collections.Generic.IEnumerable`1[RimWorld.StatDrawEntry] SpecialDisplayStats()
+Verse.AI.PathingContext GetPathContext(Verse.AI.Pathing)
+Boolean Sterile()
+Boolean AnythingToStrip()
+Void Strip(Boolean)
+RimWorld.Thought_Memory GiveObservedThought(Verse.Pawn)
+RimWorld.HistoryEventDef GiveObservedHistoryEvent(Verse.Pawn)
+Void HearClamor(Verse.Thing, Verse.ClamorDef)
+Void NotifyLordOfClamor(Verse.Thing, Verse.ClamorDef)
+Void Notify_UsedVerb(Verse.Pawn, Verse.Verb)
+Void Notify_Explosion(Verse.Explosion)
+Void Notify_BulletImpactNearby(RimWorld.BulletImpactData)
+Void Notify_Downed()
+Void Notify_Released()
+Void Notify_PrisonBreakout()
+Void Notify_DuplicatedFrom(Verse.Pawn)
+Void CheckForDisturbedSleep(Verse.Pawn)
+Single GetAcceptArrestChance(Verse.Pawn)
+Boolean CheckAcceptArrest(Verse.Pawn)
+Boolean ThreatDisabled(Verse.AI.IAttackTargetSearcher)
+Boolean ThreatDisabledBecauseNonAggressiveRoamer(Verse.Pawn)
+Void UpdatePyroVerbThought(Verse.Verb)
+Boolean IsValidPyroThoughtTarget(Verse.Thing)
+System.Collections.Generic.List`1[Verse.WorkTypeDef] GetDisabledWorkTypes(Boolean)
+System.Collections.Generic.List`1[System.String] GetReasonsForDisabledWorkType(Verse.WorkTypeDef)
+Boolean WorkTypeIsDisabled(Verse.WorkTypeDef)
+Boolean OneOfWorkTypesIsDisabled(System.Collections.Generic.List`1[Verse.WorkTypeDef])
+Void Notify_DisabledWorkTypesChanged()
+Verse.WorkTags get_CombinedDisabledWorkTags()
+Boolean WorkTagIsDisabled(Verse.WorkTags)
+Boolean PreventPlayerSellingThingsNearby(System.String ByRef)
+Void ChangeKind(Verse.PawnKindDef)
+Boolean CompsWantHoldWeapon()
+Void ExposeData()
+System.String ToString()
+RimWorld.TraderKindDef get_TraderKind()
+RimWorld.TradeCurrency get_TradeCurrency()
+System.Collections.Generic.IEnumerable`1[Verse.Thing] get_Goods()
+Int32 get_RandomPriceFactorSeed()
+System.String get_TraderName()
+Boolean get_CanTradeNow()
+Single get_TradePriceImprovementOffsetForPlayer()
+Single get_BodySize()
+Single get_HealthScale()
+System.Collections.Generic.IEnumerable`1[Verse.Thing] get_EquippedWornOrInventoryThings()
+System.Collections.Generic.IEnumerable`1[Verse.Thing] ColonyThingsWillingToBuy(Verse.Pawn)
+Void GiveSoldThingToTrader(Verse.Thing, Int32, Verse.Pawn)
+Void GiveSoldThingToPlayer(Verse.Thing, Int32, Verse.Pawn)
+Verse.Thing Verse.AI.IAttackTarget.get_Thing()
+Single get_TargetPriorityFactor()
+Verse.LocalTargetInfo get_TargetCurrentlyAimingAt()
+Verse.Thing Verse.AI.IAttackTargetSearcher.get_Thing()
+Verse.LocalTargetInfo get_LastAttackedTarget()
+Int32 get_LastAttackTargetTick()
+Verse.Verb get_CurrentEffectiveVerb()
+Boolean get_ForceNoDeathNotification()
+System.String Verse.IVerbOwner.UniqueVerbOwnerID()
+Boolean Verse.IVerbOwner.VerbsStillUsableBy(Verse.Pawn)
+Verse.Thing Verse.IVerbOwner.get_ConstantCaster()
+Verse.ImplementOwnerTypeDef Verse.IVerbOwner.get_ImplementOwnerTypeDef()
+RimWorld.Planet.PlanetTile GetRootTile()
+Verse.ThingOwner GetDirectlyHeldThings()
+Void GetChildHolders(System.Collections.Generic.List`1[Verse.IThingHolder])
+RimWorld.BillStack get_BillStack()
+Verse.IntVec3 get_InteractionCell()
+Boolean CurrentlyUsableForBills()
+Boolean UsableForBillsAfterFueling()
+Void Notify_BillDeleted(RimWorld.Bill)
+Boolean Equals(Verse.Pawn)
+Verse.ThingOwner get_SearchableContents()
+System.Collections.Generic.IEnumerable`1[Verse.DefHyperlink] <>n__0()
+Void <SpawnSetup>b__288_0()
+Void <SpawnSetup>b__288_1()
+Void <SpawnSetup>b__288_2()
+Boolean <Destroy>b__318_0(Verse.Pawn)
+System.Collections.Generic.IEnumerable`1[Verse.Thing] <>n__1(Verse.Pawn, Single)
+Void <GetGizmos>b__346_0()
+Void <GetGizmos>b__346_1()
+Void <GetGizmos>b__346_2()
+Void <GetGizmos>b__346_3()
+Void <GetGizmos>b__346_4()
+Void <GetGizmos>b__346_6()
+Void <GetGizmos>b__346_7()
+System.Collections.Generic.IEnumerable`1[Verse.Gizmo] <>n__2()
+System.Collections.Generic.IEnumerable`1[Verse.FloatMenuOption] <>n__3(Verse.Pawn)
+System.Collections.Generic.IEnumerable`1[RimWorld.StatDrawEntry] <>n__4()
+Void <GetDisabledWorkTypes>g__FillList|375_0(System.Collections.Generic.List`1[Verse.WorkTypeDef], <>c__DisplayClass375_0 ByRef)
+Verse.Name get_Name()
+Void set_Name(Verse.Name)
+Verse.RaceProperties get_RaceProps()
+Verse.AI.Job get_CurJob()
+Verse.JobDef get_CurJobDef()
+Boolean get_Downed()
+Boolean get_Crawling()
+Boolean get_CanAttackWhileCrawling()
+Boolean get_Flying()
+Boolean get_Swimming()
+Boolean get_Dead()
+Boolean get_DeadOrDowned()
+System.String get_KindLabel()
+Boolean get_InMentalState()
+Verse.AI.MentalState get_MentalState()
+Verse.MentalStateDef get_MentalStateDef()
+Boolean get_InAggroMentalState()
+Boolean get_Inspired()
+RimWorld.Inspiration get_Inspiration()
+RimWorld.InspirationDef get_InspirationDef()
+UnityEngine.Vector3 get_DrawPos()
+Verse.VerbTracker get_VerbTracker()
+System.Collections.Generic.List`1[Verse.VerbProperties] get_VerbProperties()
+System.Collections.Generic.List`1[Verse.Tool] get_Tools()
+Boolean get_ShouldAvoidFences()
+System.Nullable`1[System.Single] get_RoamMtbDays()
+Boolean get_Roamer()
+Boolean get_FenceBlocked()
+Boolean get_CanPassFences()
+Boolean get_DrawNonHumanlikeSwimmingGraphic()
+Boolean get_DrawNonHumanlikeStationaryGraphic()
+Boolean get_CanOpenDoors()
+Boolean get_CanOpenAnyDoor()
+System.Nullable`1[System.Int32] get_WaterCellCost()
+Boolean get_IsColonist()
+Boolean get_IsFreeColonist()
+Boolean get_IsFreeNonSlaveColonist()
+Boolean get_CanTakeOrder()
+Boolean get_IsCreepJoiner()
+RimWorld.Faction get_HostFaction()
+RimWorld.Faction get_SlaveFaction()
+RimWorld.Ideo get_Ideo()
+Boolean get_ShouldHaveIdeo()
+Boolean get_Drafted()
+Boolean get_IsPrisoner()
+Boolean get_IsPrisonerOfColony()
+Boolean get_IsSlave()
+Boolean get_IsSlaveOfColony()
+Boolean get_IsFreeman()
+Boolean get_IsMutant()
+Boolean get_IsSubhuman()
+Boolean get_IsDuplicate()
+Boolean get_IsEntity()
+Boolean get_IsShambler()
+Boolean get_IsGhoul()
+Boolean get_IsAwokenCorpse()
+Boolean get_IsAnimal()
+Boolean get_HasShowGizmosOnCorpseHediff()
+Verse.DevelopmentalStage get_DevelopmentalStage()
+System.Nullable`1[RimWorld.GuestStatus] get_GuestStatus()
+Boolean get_IsColonistPlayerControlled()
+Boolean get_IsColonyMech()
+Boolean get_IsColonyMechPlayerControlled()
+Boolean get_IsColonySubhuman()
+Boolean get_IsColonySubhumanPlayerControlled()
+Boolean get_IsColonyAnimal()
+Boolean get_IsPlayerControlled()
+System.Collections.Generic.IEnumerable`1[Verse.IntVec3] get_IngredientStackCells()
+Boolean get_InContainerEnclosed()
+Verse.Corpse get_Corpse()
+Verse.Pawn get_CarriedBy()
+Boolean get_CanAttackWhenPathingBlocked()
+Boolean get_HarmedByVacuum()
+Boolean get_ConcernedByVacuum()
+System.String get_LabelPrefix()
+System.String get_LabelNoCount()
+System.String get_LabelShort()
+Verse.TaggedString get_LabelNoCountColored()
+Verse.TaggedString get_NameShortColored()
+Verse.TaggedString get_NameFullColored()
+Verse.TaggedString get_LegalStatus()
+Single get_TicksPerMoveCardinal()
+Single get_TicksPerMoveDiagonal()
+System.String get_DescriptionDetailed()
+System.String get_DescriptionFlavor()
+System.Collections.Generic.IEnumerable`1[Verse.DefHyperlink] get_DescriptionHyperlinks()
+Verse.Pawn_DrawTracker get_Drawer()
+RimWorld.Faction get_HomeFaction()
+Boolean get_Deathresting()
+Boolean get_HasDeathRefusalOrResurrecting()
+Boolean get_Suspended()
+RimWorld.Faction get_DeadlifeDustFaction()
+Boolean get_HasPsylink()
+RimWorld.CompOverseerSubject get_OverseerSubject()
+Boolean ShouldShowQuestionMark()
+Int32 get_UpdateRateTicks()
+System.String GetKindLabelSingular()
+System.String GetKindLabelPlural(Int32)
+Void ResetStaticData()
+Void Notify_DefsHotReloaded()
+Void Notify_Unfogged()
+Void MarkDeadlifeDustForFaction(RimWorld.Faction)
+Void SpawnSetup(Verse.Map, Boolean)
+Void PostMake()
+Void PostMapInit()
+Void DrawShadowAt(UnityEngine.Vector3)
+Void DynamicDrawPhaseAt(Verse.DrawPhase, UnityEngine.Vector3, Boolean)
+Void DrawAt(UnityEngine.Vector3, Boolean)
+Void DrawGUIOverlay()
+Void DrawExtraSelectionOverlays()
+Void TickRare()
+Void Tick()
+Void TickInterval(Int32)
+Void ProcessPostTickVisuals(Int32, Verse.CellRect)
+Void TickMothballed(Int32)
+Void Notify_Teleported(Boolean, Boolean)
+RimWorld.SurgicalInspectionOutcome DoSurgicalInspection(Verse.Pawn, System.String ByRef)
+Void Notify_BecameVisible()
+Void Notify_BecameInvisible()
+Void Notify_ForcedVisible()
+Void Notify_PassedToWorld()
+Void Notify_LeftBehind()
+Void Notify_AddBedThoughts()
+Void PreApplyDamage(Verse.DamageInfo ByRef, Boolean ByRef)
+Void PostApplyDamage(Verse.DamageInfo, Single)
+Verse.Thing SplitOff(Int32)
+Single TicksPerMove(Boolean)
+Void DoKillSideEffects(System.Nullable`1[Verse.DamageInfo], Verse.Hediff, Boolean)
+Void PreDeathPawnModifications(System.Nullable`1[Verse.DamageInfo], Verse.Map)
+Void DropBeforeDying(System.Nullable`1[Verse.DamageInfo], Verse.Map ByRef, Boolean ByRef)
+Void RemoveFromHoldingContainer(Verse.Map ByRef, Boolean ByRef, System.Nullable`1[Verse.DamageInfo])
+Void Kill(System.Nullable`1[Verse.DamageInfo], Verse.Hediff)
+Void Destroy(Verse.DestroyMode)
+Void DeSpawn(Verse.DestroyMode)
+Void Discard(Boolean)
+Verse.Corpse MakeCorpse(RimWorld.Building_Grave, RimWorld.Building_Bed)
+Verse.Corpse MakeCorpse(RimWorld.Building_Grave, Boolean, Single)
+Void ExitMap(Boolean, Verse.Rot4)
+Void PreTraded(RimWorld.TradeAction, Verse.Pawn, RimWorld.ITrader)
+Void PreKidnapped(Verse.Pawn)
+Void PreSwapMap()
+Verse.AcceptanceReport ClaimableBy(RimWorld.Faction)
+Boolean AdoptableBy(RimWorld.Faction, System.Text.StringBuilder)
+Void SetFaction(RimWorld.Faction, Verse.Pawn)
+Void ClearMind(Boolean, Boolean, Boolean)
+Void ClearMind_NewTemp(Boolean, Boolean, Boolean, Boolean)
+Void ClearAllReservations(Boolean)
+Void ClearReservationsForJob(Verse.AI.Job)
+Void .ctor()
+Void .cctor()
+METHOD Verse.Tool::AdjustedBaseMeleeDamageAmount TOKEN 100678717
+IL_0000: ldarg.0 
+IL_0001: ldfld Verse.Tool::Single power
+IL_0006: stloc.0 
+IL_0007: ldarg.1 
+IL_0008: brfalse.s IL_003F
+IL_000A: ldloc.0 
+IL_000B: ldarg.1 
+IL_000C: ldsfld RimWorld.StatDefOf::RimWorld.StatDef MeleeWeapon_DamageMultiplier
+IL_0011: ldc.i4.1 
+IL_0012: ldc.i4.m1 
+IL_0013: call RimWorld.StatExtension::Single GetStatValue(Verse.Thing, RimWorld.StatDef, Boolean, Int32)
+IL_0018: mul 
+IL_0019: stloc.0 
+IL_001A: ldarg.1 
+IL_001B: callvirt Verse.Thing::Verse.ThingDef get_Stuff()
+IL_0020: brfalse.s IL_003F
+IL_0022: ldarg.2 
+IL_0023: brfalse.s IL_003F
+IL_0025: ldloc.0 
+IL_0026: ldarg.1 
+IL_0027: callvirt Verse.Thing::Verse.ThingDef get_Stuff()
+IL_002C: ldarg.2 
+IL_002D: ldfld Verse.DamageDef::Verse.DamageArmorCategoryDef armorCategory
+IL_0032: ldfld Verse.DamageArmorCategoryDef::RimWorld.StatDef multStat
+IL_0037: ldnull 
+IL_0038: call RimWorld.StatExtension::Single GetStatValueAbstract(Verse.BuildableDef, RimWorld.StatDef, Verse.ThingDef)
+IL_003D: mul 
+IL_003E: stloc.0 
+IL_003F: ldloc.0 
+IL_0040: ret 
+METHOD Verse.Tool::AdjustedBaseMeleeDamageAmount TOKEN 100678718
+IL_0000: ldarg.0 
+IL_0001: ldfld Verse.Tool::Single power
+IL_0006: stloc.0 
+IL_0007: ldarg.2 
+IL_0008: brfalse.s IL_0034
+IL_000A: ldloc.0 
+IL_000B: ldarg.1 
+IL_000C: ldsfld RimWorld.StatDefOf::RimWorld.StatDef MeleeWeapon_DamageMultiplier
+IL_0011: ldarg.2 
+IL_0012: call RimWorld.StatExtension::Single GetStatValueAbstract(Verse.BuildableDef, RimWorld.StatDef, Verse.ThingDef)
+IL_0017: mul 
+IL_0018: stloc.0 
+IL_0019: ldarg.2 
+IL_001A: brfalse.s IL_0034
+IL_001C: ldarg.3 
+IL_001D: brfalse.s IL_0034
+IL_001F: ldloc.0 
+IL_0020: ldarg.2 
+IL_0021: ldarg.3 
+IL_0022: ldfld Verse.DamageDef::Verse.DamageArmorCategoryDef armorCategory
+IL_0027: ldfld Verse.DamageArmorCategoryDef::RimWorld.StatDef multStat
+IL_002C: ldnull 
+IL_002D: call RimWorld.StatExtension::Single GetStatValueAbstract(Verse.BuildableDef, RimWorld.StatDef, Verse.ThingDef)
+IL_0032: mul 
+IL_0033: stloc.0 
+IL_0034: ldloc.0 
+IL_0035: ret 
+AVAILABLE XML METHODS
+System.String get_LabelCap()
+System.Collections.Generic.IEnumerable`1[Verse.ManeuverDef] get_Maneuvers()
+System.Collections.Generic.IEnumerable`1[Verse.VerbProperties] get_VerbsProperties()
+Single AdjustedBaseMeleeDamageAmount(Verse.Thing, Verse.DamageDef)
+Single AdjustedBaseMeleeDamageAmount(Verse.ThingDef, Verse.ThingDef, Verse.DamageDef)
+Single AdjustedCooldown(Verse.Thing)
+Single AdjustedCooldown(Verse.ThingDef, Verse.ThingDef)
+System.String ToString()
+Void PostLoad()
+System.Collections.Generic.IEnumerable`1[System.String] ConfigErrors()
+Boolean <get_Maneuvers>b__22_0(Verse.ManeuverDef)
+Void .ctor()

@@ -1,0 +1,36 @@
+{
+  "judge_model": {
+    "opus": [
+      {
+        "model_requested": "opus",
+        "models_reported": [
+          "claude-opus-5-5"
+        ],
+        "role": "fresh independent design judge, tools disabled",
+        "seconds": 183.31251430511475,
+        "cost_usd": 0.6044117999999999
+      }
+    ]
+  },
+  "brief": "whittle/ht-reefback-combat/evidence/design_prompt.txt",
+  "subject": "RM_ReefbackJuv nursery combat profile",
+  "item": "RIMMANDRAKE_RECONCILE_HUGETHINGS_REEFBACK_NURSERY_COMBAT",
+  "class": "design",
+  "decision": "KEEP",
+  "reasons": [
+    "Thin-crusted nursery prey should have lower nominal damage and health budget than adult and resident guard while preserving size and residents.",
+    "Apply local young-only tools16/10, baseHealthScale8, armor blunt/sharp/heat0.25/0.30/0.30 and kind combatPower150; retain inherited manhunter0.2.",
+    "Fixed two-hunter source comparison supports relative vulnerability; does not establish safe contact, actual hits, kill time or live balance."
+  ],
+  "verdict": "whittle/ht-reefback-combat/evidence/design_raw.json",
+  "receipt": "whittle/ht-reefback-combat/evidence/design_call.json",
+  "prompt_sha256": "c64082cb6799bf9e80023207db77c8bc85d8181f23cd1ac2676b8fef90561b85",
+  "response_sha256": "75e841f0db58611633b194cbce8a4f3bb790b9f45f48027376b0ad953f6bd0e2",
+  "implementation": "design/RimMandrake/hugethings_codex_2026-11-09/REEFBACK_NURSERY_COMBAT.md",
+  "needs_owner": false,
+  "limits": [
+    "A1L0/A2L0 offline only; no new mechanism",
+    "No owner approval, game/build/deploy, ledger, publication, art or L4 acceptance",
+    "Exact float32 part-health values derived independently; no survival guarantee from design prose"
+  ]
+}

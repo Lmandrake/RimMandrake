@@ -1,0 +1,13 @@
+{
+  "command": [
+    "git",
+    "diff",
+    "--no-index",
+    "--",
+    "/dev/null",
+    "src/RimMandrake/HugeThings/northstar/measure_reefback_combat.py"
+  ],
+  "rc": 1,
+  "stdout_sha256": "9250de332aa45ab41d2655b7e553a6b63efe52370284fe847a149d82dca57513",
+  "stderr": ""
+}
