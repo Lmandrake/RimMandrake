@@ -6,7 +6,7 @@ from validation_aerial import KINETIC_DAMAGE, KINETIC_ROWS
 
 
 def check_result(path, started, finished):
-    rows = read_result(path, started, finished, "flips")
+    rows = read_result(path, started, finished, "flips", fields={"kineticDamage": KINETIC_DAMAGE})
     if any(r.get("status") in ("FAIL", "UNMEASURED") for r in rows):
         raise ValueError("aerial driver has failed or unmeasured rows")
     selected = []
@@ -17,7 +17,7 @@ def check_result(path, started, finished):
         detail = exact[0].get("detail")
         if not isinstance(detail, dict) or type(detail.get("schema")) is not int or detail["schema"] != 1 or \
                 detail.get("setting") != "kineticSway" or detail.get("enabled") is not enabled or \
-                detail.get("damageDef") != KINETIC_DAMAGE:
+                detail.get("damageDef") != KINETIC_DAMAGE or detail.get("damageSelector") != KINETIC_DAMAGE:
             raise ValueError("requires registered kineticSway census evidence")
         delta = detail.get("censusSwayDelta")
         if detail.get("synthetic") is not False or detail.get("kinetic") is not True or detail.get("harmsHealth") is not True or \
@@ -31,7 +31,8 @@ def check_result(path, started, finished):
 
 
 def main(argv=None):
-    return run_proof(argv, mode="flips", prefix="kinetic-", check=check_result)
+    return run_proof(argv, mode="flips", prefix="kinetic-", check=check_result,
+                     driver_args=("--kinetic-damage", KINETIC_DAMAGE))
 
 
 if __name__ == "__main__":

@@ -21,7 +21,7 @@ import restring_style_proof as L
 
 
 class Bridge:
-    def __init__(self, change=None):
+    def __init__(self, change=None, registered_available=True):
         self.change = change or (lambda phase, reply: None)
         self.serial = 0
         self.sways, self.cuts = 7, 4  # cumulative counts deliberately nonzero in both arms
@@ -29,6 +29,7 @@ class Bridge:
         self.arm = 0
         self.exploded = False
         self.calls = []
+        self.registered_available = registered_available
 
     def scene(self, *_):
         self.arm += 1
@@ -50,11 +51,17 @@ class Bridge:
             self.enabled = cmd.endswith("True")
             reply["value"] = str(self.enabled)
             phase = "set"
+        elif cmd in ("defaults", "skipreseed:false"):
+            phase = "defaults"
         elif cmd.startswith("explode:"):
+            selector = cmd.rsplit(",", 1)[1]
+            if selector != "kinetic" and not self.registered_available:
+                return dict(reply, success=False, error="unknown damage defName " + selector)
             self.exploded = True
             delta = int(self.enabled)
             self.sways += delta
-            reply.update(cuts=0, sways=delta, damageDef=A.KINETIC_DAMAGE, synthetic=False,
+            reply.update(cuts=0, sways=delta, damageDef="Bomb" if selector == "kinetic" else selector,
+                         synthetic=selector == "kinetic",
                          kinetic=True, harmsHealth=True, spansReached=1)
             phase = "explode"
         elif cmd == "census":
@@ -72,14 +79,26 @@ class Bridge:
         return reply
 
 
-def run_rows(bridge):
+def run_rows(bridge, damage=A.KINETIC_DAMAGE):
     rows = []
     with mock.patch.object(A, "_scene_pair", side_effect=bridge.scene):
-        A.kinetic_sway_rows(bridge, rows)
+        if damage is None:
+            A.kinetic_sway_rows(bridge, rows)
+        else:
+            A.kinetic_sway_rows(bridge, rows, damage=damage)
     return rows
 
 
 class Rows(unittest.TestCase):
+    def test_gss_only_default_and_explicit_missing_registered_definition(self):
+        generic = Bridge(registered_available=False)
+        rows = run_rows(generic, damage=None)
+        self.assertEqual([r["status"] for r in rows], ["PASS", "PASS"], rows)
+        self.assertEqual(generic.calls.count("explode:98,135,2.5,50,kinetic"), 2)
+        self.assertTrue(all(r["detail"]["synthetic"] is True and r["detail"]["damageDef"] == "Bomb" for r in rows))
+        real = run_rows(Bridge(registered_available=False))
+        self.assertEqual([r["status"] for r in real], ["FAIL", "FAIL"], real)
+
     def test_real_path_and_cumulative_isolation(self):
         b = Bridge()
         rows = run_rows(b)
@@ -220,13 +239,55 @@ class Transport(unittest.TestCase):
 
 
 class Command(unittest.TestCase):
+    def test_actual_cli_default_and_explicit_mode_through_flips_cleanup(self):
+        tree = ast.parse(Path(A.__file__).read_text())
+        four, = [n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == "_four_switches"]
+        call, = [n for n in ast.walk(four) if isinstance(n, ast.Expr) and isinstance(n.value, ast.Call) and
+                 isinstance(n.value.func, ast.Name) and n.value.func.id == "kinetic_sway_rows"]
+        wiring = compile(ast.fix_missing_locations(ast.Module(body=[call], type_ignores=[])), A.__file__, "exec")
+        for explicit, installed, expected in ((False, False, 0), (True, True, 0), (True, False, 1)):
+            b = Bridge(registered_available=installed)
+            def selected_block(bridge, rows, result):
+                exec(wiring, dict(vars(A), B=bridge, rows=rows, res=result))
+            with self.subTest(explicit=explicit, installed=installed), tempfile.TemporaryDirectory() as directory:
+                output = Path(directory) / "flips.json"
+                with mock.patch.object(A, "A", return_value=b), mock.patch.object(A, "flips_block"), \
+                     mock.patch.object(A, "_four_switches", side_effect=selected_block), \
+                     mock.patch.object(A, "_scene_pair", side_effect=b.scene):
+                    code = A.main(["--flips", "--out", str(output)] +
+                                  (["--kinetic-damage", A.KINETIC_DAMAGE] if explicit else []))
+                self.assertEqual(code, expected)
+                result = json.loads(output.read_text())
+                self.assertEqual(result["kineticDamage"], A.KINETIC_DAMAGE if explicit else "kinetic")
+                self.assertTrue(all(r["status"] == ("PASS" if expected == 0 else "FAIL") for r in result["rows"]))
+                self.assertIn("set:kineticSway=True", b.calls)  # actual finally restores the prior setting
+        # proof_all's programmatic namespace predates this option. Both driver constructors must keep the fallback.
+        for name in ("_run_live", "run_flips"):
+            function, = [n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == name]
+            self.assertTrue(any(isinstance(n, ast.Assign) and
+                                ast.unparse(n).startswith("res['kineticDamage'] = getattr(args, 'kinetic_damage', 'kinetic')")
+                                for n in function.body))
+
+    def test_existing_gss_only_bindings_keep_generic_arguments(self):
+        root = HERE.parents[2]
+        for name in ("GSS_SWITCHES_PROVE_LAST_FOUR_STANDING", "GSS_RESTRING_FIX_STYLES_UNRECONCILED"):
+            text = (root / ("infrastructure/state/live_proofs/" + name + ".txt")).read_text()
+            self.assertIn("live-mods: GimmeSomeSlack\n", text)
+            self.assertNotIn("--kinetic-damage", text)
+
     def result(self):
-        return {"script": "validation_aerial.py", "mode": "flips", "rows": run_rows(Bridge())}
+        return {"script": "validation_aerial.py", "mode": "flips", "kineticDamage": A.KINETIC_DAMAGE,
+                "rows": run_rows(Bridge())}
 
     def test_both_exact_fresh_mod_rows(self):
         valid = self.result()
         bad = [[], {}, dict(valid, mode="live"), dict(valid, aborted="dead"), dict(valid, rows=[]),
-               dict(valid, rows=valid["rows"][:1]), dict(valid, rows=valid["rows"] * 2)]
+               dict(valid, rows=valid["rows"][:1]), dict(valid, rows=valid["rows"] * 2),
+               dict(valid, kineticDamage="kinetic"),
+               dict(valid, rows=run_rows(Bridge(registered_available=False), damage=None))]
+        missing_mode = copy.deepcopy(valid)
+        missing_mode.pop("kineticDamage")
+        bad.append(missing_mode)
         for index in (0, 1):
             for field, value in (("id", A.KINETIC_ROWS[index] + "_old"), ("status", "FAIL"),
                                  ("status", "UNMEASURED"), ("class", "HARNESS"), ("detail", {})):
@@ -261,7 +322,7 @@ class Command(unittest.TestCase):
         for fault in (None, "driver_fail", "missing", "malformed", "timeout", "row_fail", "one_row", "duplicate"):
             with self.subTest(fault=fault), tempfile.TemporaryDirectory() as directory:
                 def driver(command, **kwargs):
-                    self.assertEqual(command[2:4], ["--flips", "--out"])
+                    self.assertEqual(command[2:6], ["--flips", "--kinetic-damage", A.KINETIC_DAMAGE, "--out"])
                     self.assertEqual(kwargs["timeout"], 900)
                     kwargs["stdout"].write(b"raw stdout\n")
                     kwargs["stderr"].write(b"raw stderr\n")
@@ -272,7 +333,7 @@ class Command(unittest.TestCase):
                     if fault == "one_row": result["rows"] = result["rows"][:1]
                     if fault == "duplicate": result["rows"] *= 2
                     if fault != "missing":
-                        Path(command[4]).write_text("[]" if fault == "malformed" else json.dumps(result))
+                        Path(command[command.index("--out") + 1]).write_text("[]" if fault == "malformed" else json.dumps(result))
                     return subprocess.CompletedProcess(command, 2 if fault == "driver_fail" else 0)
                 with mock.patch.object(L.subprocess, "run", side_effect=driver):
                     code = P.main(["--out-dir", directory])

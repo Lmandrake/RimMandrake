@@ -1,6 +1,7 @@
 # L0 tooling binding. Separate gameplay/appearance and allocation acceptance remains open.
 # Runs the whole --flips driver in a unique retained attempt; both exact M22 MOD PASS rows and exit 0 required.
 # Census deltas measure kineticSway=True >0 / False ==0 using registered RM_Repulse_Palm, not the synthetic token.
+# The launcher passes --flips --kinetic-damage RM_Repulse_Palm. Generic GSS suites keep synthetic kinetic by default.
 # Raw JSON/stdout/stderr and every failure/timeout receipt are retained. No actual live integration claimed here.
 live-mods: GimmeSomeSlack, KineticArms
 live-proof A2: python.exe src/RimMandrake/GimmeSomeSlack/kinetic_sway_proof.py --out-dir D:/ClaudeWork/rimmandrake/scratch/gss_kinetic_sway --max-seconds 900 < /dev/null

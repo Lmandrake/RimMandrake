@@ -7,6 +7,7 @@ jawa/mod_settings_field, answered by RM_MapComponent_Aerial on its next frame), 
 
     python.exe validation_aerial.py --live                      # on the current map (after validation.py --live)
     python.exe validation_aerial.py --flips                     # only M20a-e: the fallen-wire / gravship setting flips
+    python.exe validation_aerial.py --flips --kinetic-damage RM_Repulse_Palm  # actual KineticArms M22 proof
     python.exe validation_aerial.py --save-load NAME            # M16: links + span states survive save/load
     python.exe validation_aerial.py --removal-check NAME        # M9b: a save WITH anchors on a tier WITHOUT the mod
     python.exe validation_aerial.py --merge OUT base.json [more.json ...]   # one 'live' result for modcheck record
@@ -389,6 +390,7 @@ def _run_live(args, B, tap):
     rows, log = [], []
     res = {"mod": V.MOD, "mode": "live", "script": "validation_aerial.py", "tier": V.TIER,
            "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows, "screenshots": []}
+    res["kineticDamage"] = getattr(args, "kinetic_damage", "kinetic")
     env = {}
     rm = B.call("jawa/running_mods", assembly="RimMandrakeGimmeSomeSlack", details=False)
     if rm.get("success"):
@@ -1062,12 +1064,14 @@ KINETIC_DAMAGE = "RM_Repulse_Palm"  # KineticArms/Defs/DamageDefs/RM_KineticArms
 KINETIC_ROWS = ("M22a_kinetic_sway_on_swings_never_cuts", "M22b_kinetic_sway_off_does_nothing")
 
 
-def kinetic_sway_rows(B, rows):
-    """Real registered KineticArms blast; each arm measures its own cumulative-census delta."""
+def kinetic_sway_rows(B, rows, damage="kinetic"):
+    """Each arm measures its own census delta. Generic GSS suites retain the synthetic token."""
     mid = ((F1[0] + F2[0]) // 2, (F1[1] + F2[1]) // 2)
+    synthetic = damage == "kinetic"
+    expected_def = "Bomb" if synthetic else damage
     for rid, enabled in zip(KINETIC_ROWS, (True, False)):
         evidence = {"schema": 1, "setting": "kineticSway", "enabled": enabled,
-                    "damageDef": KINETIC_DAMAGE, "readings": []}
+                    "damageSelector": damage, "damageDef": expected_def, "readings": []}
         last_serial = -1
 
         def require(ok, reason):
@@ -1120,8 +1124,8 @@ def kinetic_sway_rows(B, rows):
             setting = read("set:kineticSway=%s" % enabled)
             require(setting.get("value") == str(enabled), "kineticSway set echo failed")
             before, health_before = census(left, right)  # independent setting read, immediately before this arm's explosion
-            blast = read("explode:%d,%d,2.5,50,%s" % (*mid, KINETIC_DAMAGE))
-            require(blast.get("damageDef") == KINETIC_DAMAGE and blast.get("synthetic") is False, "wrong or synthetic damage definition")
+            blast = read("explode:%d,%d,2.5,50,%s" % (*mid, damage))
+            require(blast.get("damageDef") == expected_def and blast.get("synthetic") is synthetic, "wrong damage definition or synthetic mode")
             require(blast.get("kinetic") is True and blast.get("harmsHealth") is True and
                     integer(blast.get("spansReached")) and blast["spansReached"] > 0, "blast not kinetic, harmful or in reach")
             require(all(integer(blast.get(k)) for k in ("cuts", "sways")), "missing or malformed explosion counters")
@@ -1246,7 +1250,7 @@ def _four_switches(B, rows, res):
         V.row(rows, rid, st, cl, {"readback": s.get("value"), "spans": len(spans), "checks": checks,
                                   "verts": [sp.get("verts") for sp in spans], "depth": depth, "reach": reach})
 
-    kinetic_sway_rows(B, rows)
+    kinetic_sway_rows(B, rows, damage=res.get("kineticDamage", "kinetic"))
     # ------------------------------------------------ M21e/f keepWiresOnGravship
     # PROVE  set the switch OFF / ON; the field's value as the aerial census reads it back (a second read, not the set
     #        verb's echo).
@@ -1274,6 +1278,7 @@ def run_flips(args):
     rows = []
     res = {"mod": V.MOD, "mode": "flips", "script": "validation_aerial.py", "tier": V.TIER,
            "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows, "screenshots": []}
+    res["kineticDamage"] = getattr(args, "kinetic_damage", "kinetic")
     d = B.ap("defaults")
     if not d.get("success"):
         V.row(rows, "A_probe_channel", "FAIL", "HARNESS", d)
@@ -1827,6 +1832,8 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--live", action="store_true")
     ap.add_argument("--flips", action="store_true", help="only the M20 settings-flip rows (short)")
+    ap.add_argument("--kinetic-damage", default="kinetic", metavar="DEF",
+                    help="M22 blast selector: synthetic kinetic by default; pass a registered defName for cross-mod proof")
     ap.add_argument("--save-load", default=None, metavar="NAME")
     ap.add_argument("--removal-check", default=None, metavar="NAME")
     ap.add_argument("--merge", nargs="+", default=None, metavar="OUT IN")

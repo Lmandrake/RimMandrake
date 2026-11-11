@@ -1,5 +1,5 @@
 # project: RimMandrake/GimmeSomeSlack/Source/RimMandrake_GimmeSomeSlack.csproj
-# dll: ccb43bfa066709b074470b7843e5d466b6c030c004479586cab74ad82b239437
+# dll: c16983bc5d9b43998aec695a26f8f097b181f738ed553fcbe2cdc46f47411e6d
 07d760d041952cf9f31e3bf68e389fd2b85857b14bf774cf38e380b14ed8ce5b Core/ConduitTargets.cs
 0a52dc307cbcd5ca6fb5a2c13ec05eb5e37640adcd9e5e0c06edfc041d2a62d2 ../../_Shared/SettingsKit/SettingsKitMasters.cs
 0b9fbb152b4a3e407e7518b2e099fb8e20288423aadeea65ae007560ab6ca9af Aerial/RestringJob.cs

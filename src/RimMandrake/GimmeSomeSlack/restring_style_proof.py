@@ -10,7 +10,7 @@ import time
 ROW = "M15f_restring_joined_run_one_look"
 
 
-def read_result(path, started, finished, mode):
+def read_result(path, started, finished, mode, *, fields=None):
     """Unique output plus a creation-window check prevents a previous run from satisfying A1."""
     path = Path(path)
     if not path.is_file() or not started <= path.stat().st_mtime <= finished:
@@ -23,6 +23,8 @@ def read_result(path, started, finished, mode):
     rows = result.get("rows")
     if not isinstance(rows, list) or not all(isinstance(r, dict) for r in rows):
         raise ValueError("malformed rows")
+    if fields and any(result.get(key) != value for key, value in fields.items()):
+        raise ValueError("wrong aerial driver options")
     return rows
 
 
@@ -38,7 +40,7 @@ def check_result(path, started, finished):
     return exact[0]
 
 
-def run_proof(argv, *, mode, prefix, check):
+def run_proof(argv, *, mode, prefix, check, driver_args=()):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out-dir", required=True)
     parser.add_argument("--max-seconds", type=int, default=900)
@@ -48,7 +50,8 @@ def run_proof(argv, *, mode, prefix, check):
     Path(args.out_dir).mkdir(parents=True, exist_ok=True)
     attempt = Path(tempfile.mkdtemp(prefix=prefix, dir=args.out_dir)).resolve()
     output = attempt / "aerial.json"
-    command = [sys.executable, str(Path(__file__).with_name("validation_aerial.py")), "--" + mode, "--out", str(output)]
+    command = [sys.executable, str(Path(__file__).with_name("validation_aerial.py")), "--" + mode,
+               *driver_args, "--out", str(output)]
     receipt = {"command": command, "started": time.time(), "timeout": args.max_seconds}
     code = 1
     try:
