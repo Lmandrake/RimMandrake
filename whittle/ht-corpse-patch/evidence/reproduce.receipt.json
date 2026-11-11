@@ -1,0 +1,14 @@
+{
+  "command": [
+    "/usr/bin/python3",
+    "/home/mandrake/rm/codex-ht/whittle/ht-corpse-patch/evidence/prune_corpses.py",
+    "--before",
+    "/home/mandrake/rm/codex-ht/whittle/ht-corpse-patch/evidence/before/BiomeCastEvictions_WildBiomes.xml",
+    "--output",
+    "/home/mandrake/rm/codex-ht/whittle/ht-corpse-patch/evidence/reproduced.xml",
+    "--accept-corpse-only-shrink"
+  ],
+  "started": 1794392858.970471,
+  "elapsed_seconds": 0.3055870532989502,
+  "returncode": 0
+}

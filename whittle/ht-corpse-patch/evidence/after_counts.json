@@ -1,0 +1,13 @@
+{
+  "before_operations": 1339,
+  "after_operations": 528,
+  "removed_corpse_operations": 811,
+  "after_corpse_operations": 0,
+  "after_biomes": [
+    "AridShrubland",
+    "Desert",
+    "ExtremeDesert",
+    "LavaField",
+    "Scarlands"
+  ]
+}

@@ -1,0 +1,4 @@
+contained in rm-harness.slice (max 12G), 1 workers
+[1/3] PASS          0.3s  src/RimMandrake/Utils/selftest_evictions_no_rostered_pair.py
+[2/3] PASS          0.2s  src/RimMandrake/Utils/selftest_wildbiomes_evictions_moved.py
+[3/3] PASS          0.2s  src/RimMandrake/Utils/selftest_biome_evictions_guard.py

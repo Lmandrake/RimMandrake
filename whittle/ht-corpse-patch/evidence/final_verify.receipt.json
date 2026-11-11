@@ -1,0 +1,12 @@
+{
+  "command": [
+    "python3",
+    "whittle/ht-corpse-patch/evidence/verify_final.py"
+  ],
+  "cwd": "/home/mandrake/rm/codex-ht",
+  "started": 1794392858.7871199,
+  "elapsed_seconds": 0.5384430885314941,
+  "returncode": 0,
+  "stdout_sha256": "fc1e277a7c4da7b99ec03edfade9fd4cb740ad67c4b53103f44cd622fa8b6ad8",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

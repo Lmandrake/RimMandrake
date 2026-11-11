@@ -1,0 +1,6 @@
+   animal-side: reusing cache /tmp/selftest_run_9rcwjubx/corpse-evictions-63i3kazp/animal-side.json (delete it after any mod change)
+capture: capture · 1 painted def(s) · 1 roster admission(s)
+2 eviction pair(s) across 1 biome(s); 1 rostered pair(s) left to the de-dup union; 0 already shipped there; 0 skipped as not in the live mod set
+   B                                   2
+
+wrote 2 operation(s) -> /tmp/selftest_run_9rcwjubx/corpse-evictions-63i3kazp/generated.xml

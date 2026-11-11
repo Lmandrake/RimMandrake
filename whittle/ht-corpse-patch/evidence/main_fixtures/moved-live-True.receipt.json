@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "--cache",
+    "/tmp/selftest_run_9rcwjubx/corpse-evictions-63i3kazp/animal-side.json",
+    "--xml",
+    "/tmp/selftest_run_9rcwjubx/corpse-evictions-63i3kazp/generated.xml"
+  ],
+  "returncode": 0,
+  "expected_pairs": [
+    [
+      "RM_Baseopsis",
+      "B"
+    ],
+    [
+      "RaceAllowed",
+      "B"
+    ]
+  ],
+  "expected_returncode": 0
+}

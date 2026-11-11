@@ -1,0 +1,18 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/Utils/run_selftests.py",
+    "--only",
+    "selftest_evictions_no_rostered_pair.py",
+    "selftest_biome_evictions_guard.py",
+    "selftest_wildbiomes_evictions_moved.py",
+    "--workers",
+    "1"
+  ],
+  "cwd": "/home/mandrake/rm/codex-ht",
+  "started": 1794392591.3350296,
+  "elapsed_seconds": 2.5220460891723633,
+  "returncode": 0,
+  "stdout_sha256": "0f87da41b86683b356579eb5b912492f079684f891034b6ec9ef9d5bca3b9eb9",
+  "stderr_sha256": "a7ad05078ea8f2899e42c31ddceb6c32c34dd26e0e23ef21e35710fce8adef0c"
+}

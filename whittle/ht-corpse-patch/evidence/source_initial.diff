@@ -1,0 +1,120 @@
+diff --git a/src/RimMandrake/Utils/biome_wildbiomes_evictions.py b/src/RimMandrake/Utils/biome_wildbiomes_evictions.py
+index c163a9da19..6df66b8434 100644
+--- a/src/RimMandrake/Utils/biome_wildbiomes_evictions.py
++++ b/src/RimMandrake/Utils/biome_wildbiomes_evictions.py
+@@ -324,11 +324,16 @@ def main(argv=None):
+     live = live_races()
+     if live is None:
+         print("⚠️ UNMEASURED: no capture carries ThingDef.json, so installed-but-inactive "
+-              "mods cannot be filtered out. Every pair is emitted.")
++              "mods cannot be filtered out. All otherwise eligible real-race pairs are emitted.")
+ 
+     rows, kept, dup, dead = [], 0, 0, 0
+     for b in sorted(painted):
+         for race in sorted(aside.get(b, ())):
++            # Corpse_ defs are implied by the engine after XML patching. A capture/cache
++            # can contain them, but no such XML ThingDef exists for this patch to remove.
++            # Reject them before roster/duplicate/live filters, even without a live dump.
++            if race.startswith("Corpse_"):
++                continue
+             if is_rostered(race, b, roster, kinds):
+                 kept += 1                       # rostered: the de-dup file's business
+                 continue
+diff --git a/src/RimMandrake/Utils/selftest_evictions_no_rostered_pair.py b/src/RimMandrake/Utils/selftest_evictions_no_rostered_pair.py
+index 1e87207325..62fcc0f14e 100644
+--- a/src/RimMandrake/Utils/selftest_evictions_no_rostered_pair.py
++++ b/src/RimMandrake/Utils/selftest_evictions_no_rostered_pair.py
+@@ -1,11 +1,19 @@
+ #!/usr/bin/env python3
+ """selftest_evictions_no_rostered_pair.py -- the generated BiomeCastEvictions_WildBiomes.xml never
+ evicts a pair a roster admits (EVICTIONS_RAZORJACK_FIX_STALE_ROW: AA_Razorjack x ZBiome_Grasslands
+-was shipped though rostered), and the generator's exemption covers a race's Corpse_ twin.
++was shipped though rostered), and the generator never emits Corpse_ targets.
+ 
+-Offline, no capture needed: reads the roster JSONs and the shipped evictions XML."""
++Offline: reads rosters/shipped XML and runs main() against temporary capture/cache fixtures.
++Never walks installed mods or reads a real capture."""
++import contextlib
++import io
++import json
+ import os
++from pathlib import Path
+ import sys
++import tempfile
++from unittest.mock import patch
++import xml.etree.ElementTree as ET
+ 
+ HERE = os.path.dirname(os.path.abspath(__file__))
+ sys.path.insert(0, HERE)
+@@ -47,6 +55,71 @@ bad = sorted((a, b) for a, b in pairs if E.is_rostered(a, b, roster, {}))
+ check(not bad, "shipped evictions hold no rostered pair: %s" % bad[:5])
+ check(("AA_Razorjack", "ZBiome_Grasslands") not in pairs,
+       "the named pair AA_Razorjack x ZBiome_Grasslands is not evicted")
++check(not any(a.startswith("Corpse_") for a, _b in pairs),
++      "shipped evictions hold no Corpse_ target")
++
++
++def exercise_main():
++    """Use real capture/cache readers and XML writing, with all disk-walk inputs isolated."""
++    import dumppath
++
++    with tempfile.TemporaryDirectory(prefix="corpse-evictions-") as tmp:
++        root = Path(tmp)
++        defs = root / "capture" / "defs"
++        defs.mkdir(parents=True)
++        (defs / "PawnKindDef.json").write_text(json.dumps({"defs": [
++            {"defName": "KindRostered", "fields": {"race": "RaceRostered"}},
++            {"defName": "KindAllowed", "fields": {"race": "RaceAllowed"}},
++        ]}))
++        races = {"RaceAllowed", "RaceRostered", "RaceDirect", "RaceDuplicate", "RaceDead"}
++        corpses = {"Corpse_" + r for r in races}
++        cache = root / "animal-side.json"
++        cache.write_text(json.dumps({"B": sorted(races | corpses)}))
++        (defs / "ThingDef.json").write_text(json.dumps([
++            {"defName": r} for r in sorted((races | corpses) - {"RaceDead", "Corpse_RaceDead"})
++        ]))
++        baseline = root / "shipped.xml"
++        out = root / "generated.xml"
++        with contextlib.ExitStack() as stack:
++            stack.enter_context(patch.object(dumppath, "captures_newest_first",
++                                            return_value=[str(defs.parent)]))
++            stack.enter_context(patch.object(E, "painted_defs", return_value={"B"}))
++            stack.enter_context(patch.object(E, "rostered",
++                                            return_value={"B": {"KindRostered", "RaceDirect"}}))
++            stack.enter_context(patch.object(E, "already_removed", return_value={
++                ("RaceDuplicate", "B"), ("Corpse_RaceDuplicate", "B")}))
++            stack.enter_context(patch.object(E, "SHIPPED_XML", str(baseline)))
++            # A cache must bypass the installed-mod scan entirely.
++            walk = stack.enter_context(patch("gen_cast_patch._animal_side_biomes",
++                                             side_effect=AssertionError("installed-mod walk forbidden")))
++            for live in (True, False):
++                if not live:
++                    (defs / "ThingDef.json").unlink()
++                expected = {("RaceAllowed", "B")}
++                if not live:
++                    expected.add(("RaceDead", "B"))  # None preserves the existing fallback.
++                # No shipped fixture yet: main may emit without count drift masking targets.
++                stdout = io.StringIO()
++                with patch.object(E, "is_rostered", wraps=E.is_rostered) as roster_filter:
++                    with contextlib.redirect_stdout(stdout):
++                        rc = E.main(["--cache", str(cache), "--xml", str(out)])
++                print("fixture main, live=%s:\n%s" % (live, stdout.getvalue()))
++                check(rc == 0 and out.is_file(), "main writes fixture XML, live=%s" % live)
++                if out.is_file():
++                    ops = ET.parse(out).getroot().findall("Operation")
++                    targets = [E.PAIR_RE.fullmatch(op.findtext("xpath", "")).groups()
++                               for op in ops]
++                    check(set(targets) == expected and len(targets) == len(expected),
++                          "main exact real-race output, live=%s: %s" % (live, targets))
++                    check(not any(r.startswith("Corpse_") for r, _b in targets),
++                          "main rejects every corpse, live=%s" % live)
++                check(not any(c.args[0].startswith("Corpse_")
++                              for c in roster_filter.call_args_list),
++                      "corpse rejection precedes roster filtering, live=%s" % live)
++            check(not walk.called, "main never walks installed mods with a cache")
++
++
++exercise_main()
+ 
+ print("%d failure(s)" % len(FAILS))
+ sys.exit(1 if FAILS else 0)

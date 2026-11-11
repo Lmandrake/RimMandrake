@@ -1,0 +1,9 @@
+{
+  "validator": "/home/mandrake/dev/MandrakeWorkflows-dev/whittle/run.py",
+  "call": "validate(cwd)",
+  "cwd": "/home/mandrake/rm/codex-ht",
+  "WHITTLE_DIR": "whittle/ht-corpse-patch",
+  "started": 1794393140.3124459,
+  "elapsed_seconds": 2.421870470046997,
+  "workflow_rc": 0
+}

@@ -1,0 +1,15 @@
+{
+  "recorded_at": 1794393181.0114884,
+  "manifest_drift": [],
+  "git_base_sha": "16ae53578ec76d11eb9f6d48c11086f81492cef4",
+  "git_HEAD": "16ae53578ec76d11eb9f6d48c11086f81492cef4",
+  "judge_verdict": "would show: yes",
+  "judge_prompt_stdin_hash_matches": true,
+  "judge_process_rc": 0,
+  "workflow_rc": 0,
+  "tracked_changed_paths": [
+    "src/RimMandrake/Utils/biome_wildbiomes_evictions.py",
+    "src/RimMandrake/Utils/selftest_evictions_no_rostered_pair.py",
+    "src/RimUtinni/UtinniPatches/Patches/BiomeCastEvictions_WildBiomes.xml"
+  ]
+}

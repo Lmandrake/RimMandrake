@@ -1,0 +1,46 @@
+evidence: 0 eligible, 0 SKIPPED as unchanged, 0 PASS recorded, 0 PASS not recordable — runner 65716eff3278c68e
+cache: 0 CACHED PASS, 0 declared test(s) ran
+known results: 0/3 answered from the ledger (selftests.cache_hit_share 0.000), 0s not spent; 3 ran, 2 recorded, 0 checked against a stored PASS, 0 known red
+  ran (3): no record
+  not recordable (1): changed during the run: src/RimMandrake/Utils/selftest_evictions_no_rostered_pair.py
+PASS          0.1s  src/RimMandrake/Utils/selftest_biome_evictions_guard.py
+FAIL          0.3s  src/RimMandrake/Utils/selftest_evictions_no_rostered_pair.py
+             rc 1
+             ok   control: the ZBiome_Grasslands roster admits AA_Razorjack
+             ok   control: rosters read (497 admissions)
+             ok   is_rostered: race named directly
+             ok   is_rostered: race via its kind
+             ok   is_rostered: corpse twin via its race's kind
+             ok   is_rostered: corpse twin of a named race
+             ok   is_rostered: unrostered race is evictable
+             ok   is_rostered: scoped to the biome
+             ok   control: shipped file parsed (1339 pairs)
+             ok   shipped evictions hold no rostered pair: []
+             ok   the named pair AA_Razorjack x ZBiome_Grasslands is not evicted
+             FAIL shipped evictions hold no Corpse_ target
+             fixture main, live=True:
+                animal-side: reusing cache /tmp/selftest_run_wb848kfp/corpse-evictions-7519ctxq/animal-side.json (delete it after any mod change)
+             capture: capture · 1 painted def(s) · 2 roster admission(s)
+             2 eviction pair(s) across 1 biome(s); 4 rostered pair(s) left to the de-dup union; 2 already shipped there; 2 skipped as not in the live mod set
+                B                                   2
+             REFUSED: 2 new operation(s) vs 1 shipped (more than 5% apart). Writing would delete or rewrite roster evictions. Re-run with --accept-shrink only if that is the intent.
+             
+             FAIL main writes fixture XML, live=True
+             FAIL corpse rejection precedes roster filtering, live=True
+             fixture main, live=False:
+                animal-side: reusing cache /tmp/selftest_run_wb848kfp/corpse-evictions-7519ctxq/animal-side.json (delete it after any mod change)
+             ⚠️ UNMEASURED: no capture carries ThingDef.json, so installed-but-inactive mods cannot be filtered out. Every pair is emitted.
+             capture: capture · 1 painted def(s) · 2 roster admission(s)
+             4 eviction pair(s) across 1 biome(s); 4 rostered pair(s) left to the de-dup union; 2 already shipped there; 0 skipped as not in the live mod set
+                B                                   4
+             REFUSED: 4 new operation(s) vs 2 shipped (more than 5% apart). Writing would delete or rewrite roster evictions. Re-run with --accept-shrink only if that is the intent.
+             
+             FAIL main writes fixture XML, live=False
+             FAIL corpse rejection precedes roster filtering, live=False
+             ok   main never walks installed mods with a cache
+             5 failure(s)
+PASS          0.2s  src/RimMandrake/Utils/selftest_wildbiomes_evictions_moved.py
+
+PASS 2/3  FAIL 1/3  UNMEASURED 0/3  CRASH 0/3  SKIPPED 0/3  (wall 0.6s) — contained in rm-harness.slice (max 12G), 1 workers
+FAIL (1/3): src/RimMandrake/Utils/selftest_evictions_no_rostered_pair.py
+RESULT: RED (green = FAIL 0 and CRASH 0)

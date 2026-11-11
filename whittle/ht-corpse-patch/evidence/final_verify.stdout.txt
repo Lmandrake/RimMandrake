@@ -1,0 +1,14 @@
+{
+  "operations": 528,
+  "corpse_operations": 0,
+  "removed": 811,
+  "retained_bytes_canonical_order_identical": true,
+  "reproduction_byte_identical": true,
+  "protected_scope_unchanged": true,
+  "preserved_helper_AST": [
+    "is_rostered",
+    "shrink_guard",
+    "shipped_op_count"
+  ],
+  "zero_output_regeneration_refused": true
+}

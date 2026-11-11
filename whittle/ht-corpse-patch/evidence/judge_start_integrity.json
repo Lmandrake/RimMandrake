@@ -1,0 +1,11 @@
+{
+  "check": "all frozen and final hashed files unchanged while judge runs",
+  "all_equal": true,
+  "source_sha256": {
+    "src/RimMandrake/Utils/biome_wildbiomes_evictions.py": "32febdfa308b49f954096d084b908a1d97a645c004adc97c2123c86fd67942e5",
+    "src/RimMandrake/Utils/run_selftests.py": "651f5e82fbed5f98b812f60451f515aaf118759514209110236bb01e709ebf90",
+    "src/RimMandrake/Utils/selftest_biome_evictions_guard.py": "115d138a74d41317c305bf48e02989f8bad4deb6ef99444dc6815d7b1737cc87",
+    "src/RimMandrake/Utils/selftest_evictions_no_rostered_pair.py": "47270de613f66884704f5ac0eccb4b07f2d2f22e70b750985cf2ecce857b7dc9",
+    "src/RimMandrake/Utils/selftest_wildbiomes_evictions_moved.py": "7fb65da9fbee73dad0995892c6f740e47f169be8ada079b2ac78b778a56816f8"
+  }
+}

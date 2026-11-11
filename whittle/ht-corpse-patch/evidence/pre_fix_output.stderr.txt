@@ -1,0 +1,2 @@
+contained in rm-harness.slice (max 12G), 1 workers
+[1/1] FAIL          0.3s  src/RimMandrake/Utils/selftest_evictions_no_rostered_pair.py

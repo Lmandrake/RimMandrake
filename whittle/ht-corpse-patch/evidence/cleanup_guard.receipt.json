@@ -1,0 +1,16 @@
+{
+  "command": [
+    "python3",
+    "whittle/ht-corpse-patch/evidence/prune_corpses.py",
+    "--before",
+    "whittle/ht-corpse-patch/evidence/before/BiomeCastEvictions_WildBiomes.xml",
+    "--output",
+    "whittle/ht-corpse-patch/evidence/guard_should_not_write.xml"
+  ],
+  "cwd": "/home/mandrake/rm/codex-ht",
+  "started": 1794392577.1526551,
+  "elapsed_seconds": 0.35082364082336426,
+  "returncode": 3,
+  "stdout_sha256": "976c1273538b2a9b83ab822ed51db548ec687e025a7cacde5c1f0c45628f574d",
+  "stderr_sha256": "cab4ccdc2721914b9b05f19b1a5eb6622491a9cae4dfd4adf27b42baaf6cb797"
+}

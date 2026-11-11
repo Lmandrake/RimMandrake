@@ -1,0 +1,1 @@
+REFUSED: 528 new operation(s) vs 1339 shipped (more than 5% apart). Writing would delete or rewrite roster evictions. Re-run with --accept-shrink only if that is the intent.

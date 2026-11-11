@@ -18,6 +18,9 @@ difference is which pairs it covers and why.
     python3 src/RimMandrake/Utils/biome_wildbiomes_evictions.py --xml OUT  # emit
 
 WHAT IT IS *NOT*
+  ⛔ It never emits Corpse_ targets. These implied defs are generated after XML
+     patching, so their presence in a later capture/cache supplies no XML patch target.
+     is_rostered retains corpse-twin compatibility for other callers.
   ⛔ It never touches a rostered creature. Those pairs are true DUPLICATES (both
      directions register the same key and BiomeDef.CommonalityOfAnimal throws), and they
      belong in AnimalBiomeDuplicates_Generated.xml, which accumulates as a union. Any
@@ -75,8 +78,8 @@ def moved_names(def_types=("ThingDef",)):
     different new names, so the union is unambiguous.
 
     🔑 WHY. The newest capture predates a move: it still knows RSW_Baseopsis and has never
-    heard of RM_Baseopsis. Left raw, a regeneration would re-emit the dead RSW_ rows (and
-    their Corpse_RSW_ rows) from the capture half of the animal scan, and drop the live
+    heard of RM_Baseopsis. Left raw, a regeneration would re-emit the dead RSW_ rows
+    from the capture half of the animal scan, and drop the live
     RM_ rows as "not in the live mod set". RM_SWBRehome_Aliases.xml is the move tools' own
     record of old -> new, so every name read from a capture is canonicalized through it.
     """
@@ -324,11 +327,16 @@ def main(argv=None):
     live = live_races()
     if live is None:
         print("⚠️ UNMEASURED: no capture carries ThingDef.json, so installed-but-inactive "
-              "mods cannot be filtered out. Every pair is emitted.")
+              "mods cannot be filtered out. All otherwise eligible real-race pairs are emitted.")
 
     rows, kept, dup, dead = [], 0, 0, 0
     for b in sorted(painted):
         for race in sorted(aside.get(b, ())):
+            # Corpse_ defs are implied by the engine after XML patching. A capture/cache
+            # can contain them, but no such XML ThingDef exists for this patch to remove.
+            # Reject them before roster/duplicate/live filters, even without a live dump.
+            if race.startswith("Corpse_"):
+                continue
             if is_rostered(race, b, roster, kinds):
                 kept += 1                       # rostered: the de-dup file's business
                 continue

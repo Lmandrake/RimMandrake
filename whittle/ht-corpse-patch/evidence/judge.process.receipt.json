@@ -1,0 +1,31 @@
+{
+  "command": [
+    "/usr/bin/python3",
+    "src/RimMandrake/Utils/agent_runner.py",
+    "--codex",
+    "wsl",
+    "--cwd",
+    "/home/mandrake/rm/codex-ht",
+    "--result",
+    "whittle/ht-corpse-patch/evidence/judge.last.txt",
+    "--events",
+    "whittle/ht-corpse-patch/evidence/judge.events.jsonl",
+    "--spend",
+    "whittle/ht-corpse-patch/evidence/judge.spend.json",
+    "--sandbox",
+    "danger-full-access",
+    "--timeout",
+    "600"
+  ],
+  "cwd": "/home/mandrake/rm/codex-ht",
+  "stdin_file": "/home/mandrake/rm/codex-ht/whittle/ht-corpse-patch/JUDGE_PROMPT.md",
+  "stdin_sha256": "c4cedc4519abacdf2ba5e068cb8abc646ad65a32aef00df092671e77233c9a82",
+  "history": "new agent_runner Codex exec, no resume/fork/model override; only frozen judge prompt on stdin",
+  "removed_environment_keys": [],
+  "WHITTLE": "0",
+  "started": 1794392889.708557,
+  "returncode": 0,
+  "elapsed_seconds": 246.12381100654602,
+  "stdout_sha256": "48302621da2ca6ff032089391cdbc584e9897425a999cffb0abfaa1961143d7d",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  BiomeCastEvictions_WildBiomes.xml      GENERATED - do not hand-edit
+  ============================================================================
+  Regenerate:  python3 src/RimMandrake/Utils/biome_wildbiomes_evictions.py
+               with the flag that names an output path (two hyphens, `xml`, which
+               XML forbids inside a comment so it is named rather than written).
+
+  SOURCE     design/Jawa/worldbuilding/biomes/rosters/*.json - every pair below is
+             (a creature declaring a painted biome in its own race.wildBiomes) that
+             (that biome's roster does not admit). Nothing here is a judgement call:
+             the roster is the whole rule.
+  AUTHORITY  BIOME_FAUNA_ASSIGNMENT_SITTING_1, owner cards 2026-09-09; the gap this
+             closes is recorded in that item as "Enforcement gap the build lane MUST
+             close", 2026-09-09.
+
+  WHY IT IS NEEDED AT ALL. Replacing a BiomeDef's wildAnimals does not evict an animal
+  whose own race.wildBiomes names that biome above 0: the load-time padder materializes
+  those weights back INTO wildAnimals at load, so the cast patch alone under-enforces
+  every eviction the sheets ruled. Removing the animal-side field is what actually
+  starves it. Our own cast never reads wildBiomes - it writes wildAnimals directly - so
+  this can never remove anything we cast.
+
+  DIRECTION is always the ANIMAL side, never our roster. Rostered creatures are
+  untouched here; where one collides from both directions that is a DUPLICATE and it
+  lives in AnimalBiomeDuplicates_Generated.xml, which accumulates as a union. Pairs
+  already shipped there are skipped rather than removed twice.
+
+  Every operation is a PatchOperationConditional, so an absent mod or an author who
+  fixes their def turns it into a no-op instead of a red error. ⚠️ Load this mod LAST:
+  several of these entries are themselves created by another mod's PatchOperation, and
+  the conditional must run after it. A xpath reporting 0 nodes on disk is EXPECTED for
+  exactly those - their evidence is the capture, not the validator.
+  Generated from capture capture plus the installed-mod XML walk.
+  2 operation(s) over 1 painted biome def(s).
+  2 rostered pair(s) deliberately NOT here (de-dup union owns those);
+  0 pair(s) skipped because the race is installed on disk but not in the
+  live mod set - a removal for a def no load sees is dead weight.
+-->
+<Patch>
+
+  <!-- 1. RaceAllowed x B -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RaceAllowed"]/race/wildBiomes/B</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="RaceAllowed"]/race/wildBiomes/B</xpath>
+    </match>
+  </Operation>
+
+  <!-- 2. RaceDead x B -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RaceDead"]/race/wildBiomes/B</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="RaceDead"]/race/wildBiomes/B</xpath>
+    </match>
+  </Operation>
+</Patch>
