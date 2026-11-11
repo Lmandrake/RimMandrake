@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe",
+    "-NoProfile",
+    "-ExecutionPolicy",
+    "Bypass",
+    "-File",
+    "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\codex-ht\\whittle\\ht-reefback-calf\\evidence\\read_engine.ps1",
+    "-GameDir",
+    "D:\\SteamLibrary\\steamapps\\common\\RimWorld"
+  ],
+  "rc": 1,
+  "elapsed": 0.6884734630584717,
+  "script_sha256": "c00f2cd2bbf4f7c513e013a7293adcc78c08486f7d18bdd880d30eac12ac8218",
+  "mode": "reflection-only IL metadata; no assembly execution"
+}

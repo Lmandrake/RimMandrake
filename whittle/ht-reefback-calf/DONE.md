@@ -1,0 +1,7 @@
+# Offline completion declaration
+
+The independent Codex judgment is invoked after this declaration, as required by this workflow. Completion requires its actual untainted verdict and the subsequent real Whittle validation; this file alone certifies neither.
+
+- true: Measure the young reefback's effective body sizes and HugeThings tiers at every supported life stage, distinguishing the inherited base size from a living pawn's size and the passage classifier; compare the adult reefback with exact source provenance. | evidence: `whittle/ht-reefback-calf/evidence/raw/measure/measurement.json` `whittle/ht-reefback-calf/evidence/raw/measure/negative-controls.json` `whittle/ht-reefback-calf/evidence/raw/measure.receipt.json`
+- true: Decide whether the calf needs smaller sizes and whether Miasma should keep drawing it, using the established nursery lifecycle, current roster and independent delegated design judgment; apply any warranted correction without inventing an owner ruling or evicting roster residents. | evidence: `whittle/ht-reefback-calf/evidence/final-evidence.json` `whittle/ht-reefback-calf/evidence/raw/measure/broaden-followups.json`
+- true: Retain reproducible offline evidence and a fresh independent Codex judgment for the complete decision; report its exact limits and make no live, deployment, flight, art-appearance or first-touch acceptance claim. | evidence: `whittle/ht-reefback-calf/evidence/final-evidence.json` `whittle/ht-reefback-calf/evidence/raw/final-process.receipt.json`

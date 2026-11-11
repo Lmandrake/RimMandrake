@@ -1,0 +1,1 @@
+{"runner": "codex", "is_error": true, "codex_usage": "UNMEASURED", "result": "Codex exited -15", "subtype": "failed", "spend": "/home/mandrake/rm/codex-ht/whittle/ht-reefback-calf/evidence/judge.spend.json"}

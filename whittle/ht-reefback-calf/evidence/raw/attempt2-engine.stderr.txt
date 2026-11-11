@@ -1,0 +1,7 @@
+You cannot call a method on a null-valued expression.
+At \\wsl.localhost\Ubuntu\home\mandrake\rm\codex-ht\whittle\ht-reefback-calf\evidence\read_engine.ps1:29 char:103
++ ...  if($n -eq 254){$n=65280+[int]$bytes[$i];$i++}; $op=$ops[$n]; $arg=''
++                                                                   ~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 

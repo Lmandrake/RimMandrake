@@ -1,0 +1,19 @@
+{
+  "command": [
+    "python3",
+    "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/northstar/measure_reefback_calf.py",
+    "--repo-root",
+    "/home/mandrake/rm/codex-ht",
+    "--game-dir",
+    "/mnt/d/SteamLibrary/steamapps/common/RimWorld",
+    "--engine-il",
+    "/home/mandrake/rm/codex-ht/whittle/ht-reefback-calf/evidence/raw/engine.stdout.txt",
+    "--out",
+    "/home/mandrake/rm/codex-ht/whittle/ht-reefback-calf/evidence/raw/measure"
+  ],
+  "rc": 0,
+  "elapsed": 2.506030797958374,
+  "script_sha256": "2f771515e05f8d4d62b8bce0e2273ba1789df01b02be8fecf71cf1cf0eea7b69",
+  "stdout_sha256": "9fbfbc0eebba5cdceef145d82aebbbe8742bea5c33ba6618e94aea69b1162f4f",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

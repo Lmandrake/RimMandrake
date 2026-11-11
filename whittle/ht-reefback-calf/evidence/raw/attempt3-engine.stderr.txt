@@ -1,0 +1,7 @@
+Unknown opcode 65281 at 224
+At \\wsl.localhost\Ubuntu\home\mandrake\rm\codex-ht\whittle\ht-reefback-calf\evidence\read_engine.ps1:29 char:126
++ ... t]$n]; if($null -eq $op){throw "Unknown opcode $n at $offset"}; $arg= ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (Unknown opcode 65281 at 224:String) [], RuntimeException
+    + FullyQualifiedErrorId : Unknown opcode 65281 at 224
+ 

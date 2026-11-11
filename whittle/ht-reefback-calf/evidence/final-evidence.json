@@ -1,0 +1,95 @@
+{
+  "checked_at": 1794407477.3068936,
+  "mode": "actual offline rerun and content verification",
+  "verified_measurement_inputs": [
+    "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml",
+    "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/Core/Defs/ThingDefs_Races/Races_Animal_Base.xml",
+    "src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_SeaBeasts_Invented.xml",
+    "src/RimMandrake/Miasma/Defs/ThingDefs_Races/RM_WardenMother.xml",
+    "src/RimMandrake/HugeThings/Source/Titanic/Tiering/TitanicTierUtility.cs",
+    "src/RimMandrake/HugeThings/Source/Kernel/RM_TitanicKernel.cs",
+    "src/RimMandrake/HugeThings/Source/Titanic/Events/TitanPassage.cs",
+    "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/CorpseSiteVisitors.cs",
+    "src/RimMandrake/HugeThings/Source/Titanic/RM_TitanicCreaturesMod.cs",
+    "src/RimMandrake/HugeThings/Source/Titanic/Footprint/LargePawnsBridge.cs",
+    "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_StrandingPools.cs",
+    "src/RimMandrake/EnvironmentalHazards/Source/RM_SetPieceElement_AnchoredPawn.cs",
+    "src/RimMandrake/TheForge/Source/RM_ForgeDhoggurSwell.cs",
+    "/home/mandrake/rm/codex-ht/whittle/ht-reefback-calf/evidence/raw/engine.stdout.txt",
+    "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Version.txt",
+    "/mnt/d/SteamLibrary/steamapps/common/RimWorld/RimWorldWin64_Data/Managed/Assembly-CSharp.dll",
+    "src/RimMandrake/HugeThings/Defs/TitanicTierDefs/RM_TitanicTierDef.xml",
+    "src/RimMandrake/Miasma/Defs/BiomeDefs/RM_Miasma.xml",
+    "src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_GreySea.xml",
+    "src/RimMandrake/Miasma/Patches/RM_AcousticPayload_Miasma.xml",
+    "src/RimMandrake/Miasma/Defs/MapGeneration/RM_Miasma_CrecheScatterer.xml",
+    "design/Jawa/worldbuilding/biomes/rosters/the_miasma.json",
+    "design/Jawa/worldbuilding/biomes/rosters/the_grey_sea.json"
+  ],
+  "design_process_rc": 0,
+  "design_response_error": false,
+  "artifacts": [
+    {
+      "path": "src/RimMandrake/HugeThings/northstar/measure_reefback_calf.py",
+      "sha256": "2f771515e05f8d4d62b8bce0e2273ba1789df01b02be8fecf71cf1cf0eea7b69"
+    },
+    {
+      "path": "design/RimMandrake/hugethings_codex_2026-11-09/REEFBACK_CALF_DECISION.md",
+      "sha256": "cdff681db8a1a5497665578ccef8f32add0dc946780224dfc77926ec3ea58492"
+    },
+    {
+      "path": "whittle/ht-reefback-calf/STATEMENT.md",
+      "sha256": "c3abbee614fe96b8220d4be485f24e8c10a2e1ee1aa6db046e9d1817ea469698"
+    },
+    {
+      "path": "whittle/ht-reefback-calf/NOTES.md",
+      "sha256": "7b2b2525787461e3a6128337d4855348f8a2e9dd133e1ab268af0794abf4e29e"
+    },
+    {
+      "path": "whittle/ht-reefback-calf/JUDGE_PROMPT.md",
+      "sha256": "a4ff26d9c8d29c36d214f518300a668b7cded878a27204f0dfd638b6431d8371"
+    },
+    {
+      "path": "whittle/ht-reefback-calf/evidence/design_prompt.txt",
+      "sha256": "4d1fe5d44f6bcc65e39cd1147cba009ca54d5801e9b508436674b7d777f4457f"
+    },
+    {
+      "path": "whittle/ht-reefback-calf/evidence/design_raw.json",
+      "sha256": "259c223d2b2a428917b871ffa9926bc0c610b9b49a1c9e098899bcb79bfe45b2"
+    },
+    {
+      "path": "whittle/ht-reefback-calf/evidence/design_call.json",
+      "sha256": "46fa45609a0cb18816e00de65943f33872a76ed1c6dadcd82613def1310cc736"
+    },
+    {
+      "path": "whittle/ht-reefback-calf/evidence/raw/engine.receipt.json",
+      "sha256": "ace8c81d16b28496090035089a57d405105a9bc3e7dc05c9461d726fc647216f"
+    },
+    {
+      "path": "whittle/ht-reefback-calf/evidence/raw/measure.receipt.json",
+      "sha256": "696fbdc0395ad0fb2ffd60dc694210f3d4fed9e5b10c5ce5fb25b559cb1583a8"
+    },
+    {
+      "path": "whittle/ht-reefback-calf/evidence/raw/final-process.receipt.json",
+      "sha256": "ac3597cd1ec42901ca73ab7652f0d602921fbfd2231d7acff2253121c5fa748b"
+    },
+    {
+      "path": "whittle/ht-reefback-calf/evidence/raw/measure/inputs.json",
+      "sha256": "d97505fdf20d66c43052a5c954da59e6020aff1592d120885567ef34bc6d21f7"
+    },
+    {
+      "path": "whittle/ht-reefback-calf/evidence/raw/measure/measurement.json",
+      "sha256": "05977a67ac8205cdf1f362d424a1d7f2ba1a502306f57c84300e18c60657f8b0"
+    },
+    {
+      "path": "whittle/ht-reefback-calf/evidence/raw/measure/negative-controls.json",
+      "sha256": "78bad650c2a1ae96eff1e9071f4f97c166f8b103f7fc02e231fcc3a696d3c6b3"
+    },
+    {
+      "path": "whittle/ht-reefback-calf/evidence/raw/measure/broaden-followups.json",
+      "sha256": "d2a597e3c294179e656cd808beef71e92414e43d54672081678c246d45eb2707"
+    }
+  ],
+  "git_base": "2594ce0b37a7611d024a5499c72b9edadc97aadd",
+  "limit": "Fresh Codex judgment and Whittle validation follow DONE; those receipts are separate. No runtime or publication claim."
+}

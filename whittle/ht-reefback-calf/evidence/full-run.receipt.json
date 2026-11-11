@@ -1,0 +1,26 @@
+{
+  "scope": "REEFBACK_CALF_MEASURE_TITAN_ON_LAND offline unit",
+  "completed_at": 1794408040.3200612,
+  "final_evidence_process_rcs": [
+    0,
+    0,
+    0,
+    1,
+    1
+  ],
+  "fresh_judge_process_rc": 0,
+  "fresh_judge_last_line": "would show: yes",
+  "actual_Whittle_validate_cwd_rc": 0,
+  "full_run_rc": 0,
+  "intentional_interrupted_judges": [
+    {
+      "path": "evidence/judge-attempt1-interrupted",
+      "rc": 1
+    },
+    {
+      "path": "evidence/judge-attempt2-interrupted",
+      "rc": 1
+    }
+  ],
+  "limit": "Final corrected run rc0. Earlier interrupted processes are preserved and not accepted. No ledger, commit, publication, build, game or deployment operation."
+}

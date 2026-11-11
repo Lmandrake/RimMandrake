@@ -1,0 +1,20 @@
+{
+  "checked_at": 1794408040.3156428,
+  "events_sha256": "020181d6ed5c2b2b3ea9d46560a446c62effdf0e22c6d160c23c73960d7c61df",
+  "completed_shell_commands": 18,
+  "file_changes": [
+    {
+      "path": "/home/mandrake/rm/codex-ht/whittle/ht-reefback-calf/JUDGE.md",
+      "kind": "add"
+    }
+  ],
+  "event_item_counts": {
+    "agent_message": 5,
+    "command_execution": 18,
+    "file_change": 1
+  },
+  "forbidden_builder_conclusion_markers_in_commands": [],
+  "manual_review": "Reviewed all 18 completed shell commands. Reads were frozen statement/notes/original item, raw evidence, permitted independent design prompt/response, source XML/C#/Python, installed Core XML, CLAUDE/CHARTER/GIT_WORKFLOW/delegation and related lifecycle sources. No builder conclusions or prior judgments read. Source XML audit included FlowWorks files under the broad frozen source allowlist; no production file edits or operations there.",
+  "verdict_last_line": "would show: yes",
+  "prompt_sha256": "a4ff26d9c8d29c36d214f518300a668b7cded878a27204f0dfd638b6431d8371"
+}

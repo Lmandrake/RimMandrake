@@ -1,0 +1,36 @@
+# Reefback calf: retain size and Miasma placement
+
+2026-11-11 — REEFBACK_CALF_MEASURE_TITAN_ON_LAND. Delegated design decision, not owner approval. Fresh independent Opus ruled **KEEP both**; exact brief, raw response and process receipt: `whittle/ht-reefback-calf/evidence/design_prompt.txt`, `design_raw.json`, `design_call.json` (same evidence directory). Call rc0, successful response, tools disabled, fresh print session; prompt SHA-256 `4d1fe5d44f6bcc65e39cd1147cba009ca54d5801e9b508436674b7d777f4457f`, response SHA-256 `259c223d2b2a428917b871ffa9926bc0c610b9b49a1c9e098899bcb79bfe45b2`.
+
+The original item claimed “RM_ReefbackJuv (young reefback) has body size 32 … a calf at adult size is tier 3 by size” from a 2026-11-02 dump. That conflates inherited **baseBodySize=32** with a supported pawn stage. No registered item build/criteria existed; the frozen Whittle statement defines this offline decision.
+
+| Race | XML stage minAge (years) | Stage factor | Source-derived BodySize | GetTier, defaults 4/8/20 |
+|---|---:|---:|---:|---|
+| RM_ReefbackJuv | baby0 | 0.2 | 6.4 | T1 |
+| RM_ReefbackJuv | juvenile0.1, final | 0.5 | 16 | T2 |
+| RM_Reefback | baby0 | 0.2 | 6.4 | T1 |
+| RM_Reefback | juvenile0.2 | 0.5 | 16 | T2 |
+| RM_Reefback | adult0.6 | 1 | 32 | T3 |
+| RM_WardenMother | baby0 / juvenile0.15 / adult0.4 / elder38 | 0.2 / 0.5 / 1 / 1 | 1.6 / 4 / 8 / 8 | None / T1 / T2 / T2 |
+
+These are an **offline model of selected source**, not exact values observed on a running pawn. Binary float baby size is 6.400000095367432; the table uses readable decimal 6.4. XML ages are stage metadata: the installed animal age tracker selects by growth mapped to final minAge, with 1e-6 tolerance. No exact elapsed-time transition is claimed.
+
+Both calf race `lifeStageAges` and kind `lifeStages` use `Inherit="False"`, replacing their parent lists with two entries. Installed Core XML supplies 0.2/0.5; AnimalAdult omits factor, and installed LifeStageDef constructor IL supplies 1. Pawn.BodySize IL multiplies current stage factor by base size. AnimalThingBase/BasePawn add no stage list. The calf never acquires an adult entry merely by aging; this does not prove migration or species conversion. Its own supported factors match the parent race’s early stages, and its description says “hatchling-sized by comparison only.” Shrinking solely to produce a diff would distort that relationship.
+
+**Passage classification is separate.** `GetTier(Pawn)` consumes Pawn.BodySize. `AdultTier(ThingDef)` and DefQualifies floor maxFactor at1, so the calf’s classifier is T3 even though its supported pawn maximum is T2. Passage eligibility uses that classifier plus biome, sea/land, season, explicit-list and existing-T3 gates. Conditional source checks find Miasma eligibility with no existing T3 and acceptable season; the T3-on-map veto excludes it otherwise. A classifier using the actual 0.5 maximum would still be T2 and eligible in the first case. This unit changes no classifier semantics. Scavenger eligibility already fails predator=false independently; LargePawnsBridge emits explicit override rows only for forceEnabled, absent here. Wake qualification succeeds at either actual maximum or current classifier.
+
+**Keep the Miasma draw at 0.15.** Miasma §4 and roster notes establish the Grey Sea nursery/R11 lifecycle; the Grey Deep spec names the adult lineage bred at Miasma’s crèches. Current RM_Miasma XML, crèche scatterer and acoustic payload name RM_ReefbackJuv. RM_GreySea names RM_Reefback at 0.005. The older Miasma JSON enumerates earlier nursery species but lacks this later calf row; that gap does not erase current source wiring. Grey Sea’s older `RSW_Reefback` row explicitly documents the current `RM_Reefback` identity. Relative draw weights are not spawn percentages. The lifecycle supplies the in-game reason for young/adult habitat separation, and removal would evict an existing resident under the owner’s stopped-evictions ruling.
+
+Opus acknowledged the “no second giant” concern and judged this lineage’s young consistent with the nursery, rather than an unrelated replacement giant. That is delegated judgment within existing constraints, not a new interpretation attributed to the owner. The smaller warden-mother counterpart (adult/elder 8 versus young 16), inherited 480/120-power combat tools and health, and ecosystem weight 4/group 2–3 are real independent tensions, preserved for parent review. No combat-balance, visual-scale or ecological-census acceptance is inferred, and these are not silently dismissed as fixed. Under the inspected default age curve, unconstrained spawn-age support is 25..625 years (0.05..1.25 × expectancy 500), entirely beyond the final 0.1 threshold: conditional source draws are juvenile/T2. This checks wild, stranded-pool and crèche request paths; it is no runtime frequency claim.
+
+Reproduce with `python3 src/RimMandrake/HugeThings/northstar/measure_reefback_calf.py --game-dir <Linux-game-dir> --engine-il <selected-IL-file> --out <output-dir>`. The retained wrapper `evidence/run_measure.py` supplies current explicit inputs. `evidence/raw/measure/` contains selected source/resolved XML, measurement, age/pool followups, negative controls and complete input hashes. The patch audit covers 474 project patch XML files outside prohibited lanes: no selected body-size/stage/force/tier or age-generation change affects these races. Relevant patches change products, temperature or acoustic payload; unrelated species size patches remain unrelated. The local BodySize postfix is Dhoggur-registry-specific. External mods/settings remain outside this source model.
+
+Key SHA-256 provenance (full manifest in `evidence/raw/measure/inputs.json`):
+
+- Reefback source `dd383ef5e2ea27ed824b773cc6ac04b144e65012093c0803bf06962d71cf7a30`.
+- Miasma source `f6164f87009d6c632a5357d2f4043bc643b0647065621ba6fcd68ca4c5f58240`.
+- Mother source `6d225577f44de6a982de84ad815af9d830bdeabb3330a8b674741ae706ee551b`.
+- Tier utility `9d51b6d57730218f4ef523be88bd61f7d621b55b7b9544971fdf7f532e0563de`.
+- Installed Core LifeStages.xml `9e64ca6431d6685b342f3bec90166a911948aeb364a232ff8eb2fe69ed321fbc`; installed Assembly-CSharp.dll `5cf1b5be399d5b1c9c56ca72c9d35b4ecf307feacf5859d04ac5a1aa5926356a` (Version.txt reports 1.6.4871 rev590).
+
+Installed Core XML was available loose under RM_STEAMAPPS; no relevant Core archive was located or extracted. The script supports optional selective tar-member reads, but that path is not claimed exercised on a real Core archive. Installed Source contains samples only; engine evidence comes from reflection-only metadata, without executing the game assembly. Negative controls reject base-only sizing, removed Inherit=False (including identical parent/child lists), and passage gate violations. No production XML/C# changes are warranted for this item. No live, build, deployment, flight, art-appearance or first-touch acceptance is claimed. Parent owns ledger, commit and publication.

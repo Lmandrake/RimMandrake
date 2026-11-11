@@ -1,0 +1,185 @@
+{
+  "initial_age_cases": [
+    {
+      "initial_age_years": 0,
+      "growth": 0.0,
+      "stage": "AnimalBaby",
+      "body_size_float32": 6.400000095367432,
+      "default_GetTier": 1
+    },
+    {
+      "initial_age_years": 0.099,
+      "growth": 0.9900000095367432,
+      "stage": "AnimalBaby",
+      "body_size_float32": 6.400000095367432,
+      "default_GetTier": 1
+    },
+    {
+      "initial_age_years": 0.1,
+      "growth": 1.0,
+      "stage": "AnimalJuvenile",
+      "body_size_float32": 16.0,
+      "default_GetTier": 2
+    },
+    {
+      "initial_age_years": 0.6,
+      "growth": 1.0,
+      "stage": "AnimalJuvenile",
+      "body_size_float32": 16.0,
+      "default_GetTier": 2
+    },
+    {
+      "initial_age_years": 25,
+      "growth": 1.0,
+      "stage": "AnimalJuvenile",
+      "body_size_float32": 16.0,
+      "default_GetTier": 2
+    },
+    {
+      "initial_age_years": 500,
+      "growth": 1.0,
+      "stage": "AnimalJuvenile",
+      "body_size_float32": 16.0,
+      "default_GetTier": 2
+    }
+  ],
+  "unconstrained_spawn_age_source_model": {
+    "DefaultAgeGenerationCurve_IL_points": [
+      [
+        0.05,
+        0.0
+      ],
+      [
+        0.1,
+        100.0
+      ],
+      [
+        0.675,
+        100.0
+      ],
+      [
+        0.75,
+        30.0
+      ],
+      [
+        0.875,
+        18.0
+      ],
+      [
+        1.0,
+        10.0
+      ],
+      [
+        1.125,
+        3.0
+      ],
+      [
+        1.25,
+        0.0
+      ]
+    ],
+    "lifeExpectancy": 500.0,
+    "support_years": [
+      25.0,
+      625.0
+    ],
+    "baby_share": 0,
+    "juvenile_share": 1,
+    "conditions": "Selected unpatched default age curve, no fixed/newborn/range override; wild spawner uses GeneratePawn(kind), stranding and creche requests do not force biological age. This is conditional source support, not an observed spawn census or realized age distribution."
+  },
+  "consumer_cases": {
+    "classifier_AdultTier": 3,
+    "passage_predicate_cases": {
+      "Miasma_no_existing_T3_season_ok_no_override_list": {
+        "predicate_arguments": [
+          3,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          true,
+          false
+        ],
+        "eligible": true
+      },
+      "Miasma_existing_T3": {
+        "predicate_arguments": [
+          3,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          true,
+          true
+        ],
+        "eligible": false
+      },
+      "sea_map_with_same_land_homed_kind": {
+        "predicate_arguments": [
+          3,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,
+          true,
+          false
+        ],
+        "eligible": false
+      },
+      "explicit_list_omits_kind": {
+        "predicate_arguments": [
+          3,
+          false,
+          false,
+          false,
+          true,
+          false,
+          true,
+          true,
+          false
+        ],
+        "eligible": false
+      },
+      "biome_opt_out": {
+        "predicate_arguments": [
+          3,
+          true,
+          false,
+          false,
+          false,
+          false,
+          true,
+          true,
+          false
+        ],
+        "eligible": false
+      },
+      "unacceptable_season": {
+        "predicate_arguments": [
+          3,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false
+        ],
+        "eligible": false
+      }
+    },
+    "DefQualifies_default_wake_attachment": true,
+    "scavenger_eligible": false,
+    "scavenger_exclusion_reason": "predator=false independently of the AdultTier test",
+    "LargePawns_explicit_override_row": false,
+    "LargePawns_reason": "PushOverrideRows only adds rows for explicit forceEnabled; none in selected race/parent XML. No claim about external Large Pawns runtime footprint.",
+    "scope": "Conditional source evaluation of TitanEventEligible; no actual incident fired. Replacing classifier factor with actual maximum would still give T2 eligible on land, but would change the T3-on-map veto."
+  }
+}

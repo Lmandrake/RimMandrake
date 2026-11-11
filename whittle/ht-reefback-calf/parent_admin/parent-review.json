@@ -1,0 +1,16 @@
+{
+  "observed_outer_exec_session": 8270,
+  "outer_process_exit_code": 0,
+  "observed_at": 1794408349.9091241,
+  "workflow_rc": 0,
+  "fresh_judge_rc": 0,
+  "judge_last_line": "would show: yes",
+  "parent_completed_command_audit": 18,
+  "parent_source_review": "Read the complete measurement module and final corrections; no unresolved implementation defect found within its explicitly selected-source scope. No runtime claim.",
+  "secret_pattern_scan": {
+    "files": 103,
+    "hits": []
+  },
+  "source_sha256": "2f771515e05f8d4d62b8bce0e2273ba1789df01b02be8fecf71cf1cf0eea7b69",
+  "metadata_boundary": "Followup item prose and ledger notes were written AFTER the actual successful workflow checks. Raw evidence and verdict mtimes were not altered."
+}

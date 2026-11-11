@@ -1,0 +1,184 @@
+METHOD RimWorld.LifeStageDef::.ctor TOKEN 100702430
+IL_0000: ldarg.0 
+IL_0001: ldc.i4.1 
+IL_0002: stfld RimWorld.LifeStageDef::Boolean visible
+IL_0007: ldarg.0 
+IL_0008: ldc.i4.8 
+IL_0009: stfld RimWorld.LifeStageDef::Verse.DevelopmentalStage developmentalStage
+IL_000E: ldarg.0 
+IL_000F: ldtoken ::RimWorld.LifeStageWorker
+IL_0014: call System.Type::System.Type GetTypeFromHandle(System.RuntimeTypeHandle)
+IL_0019: stfld RimWorld.LifeStageDef::System.Type workerClass
+IL_001E: ldarg.0 
+IL_001F: ldc.i4.1 
+IL_0020: stfld RimWorld.LifeStageDef::Boolean involuntarySleepIsNegativeEvent
+IL_0025: ldarg.0 
+IL_0026: ldc.i4.1 
+IL_0027: stfld RimWorld.LifeStageDef::Boolean canDoRandomMentalBreaks
+IL_002C: ldarg.0 
+IL_002D: ldc.i4.1 
+IL_002E: stfld RimWorld.LifeStageDef::Boolean canVoluntarilySleep
+IL_0033: ldarg.0 
+IL_0034: ldc.i4.1 
+IL_0035: stfld RimWorld.LifeStageDef::Boolean canSleepWhenStarving
+IL_003A: ldarg.0 
+IL_003B: ldc.i4.1 
+IL_003C: stfld RimWorld.LifeStageDef::Boolean canInitiateSocialInteraction
+IL_0041: ldarg.0 
+IL_0042: ldc.r4 1
+IL_0047: stfld RimWorld.LifeStageDef::Single equipmentDrawDistanceFactor
+IL_004C: ldarg.0 
+IL_004D: ldc.r4 0.25
+IL_0052: stfld RimWorld.LifeStageDef::Single soundAttackChance
+IL_0057: ldarg.0 
+IL_0058: ldc.r4 1
+IL_005D: stfld RimWorld.LifeStageDef::Single voxPitch
+IL_0062: ldarg.0 
+IL_0063: ldc.r4 1
+IL_0068: stfld RimWorld.LifeStageDef::Single voxVolume
+IL_006D: ldarg.0 
+IL_006E: newobj System.Collections.Generic.List`1[[RimWorld.StatModifier, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Void .ctor()
+IL_0073: stfld RimWorld.LifeStageDef::System.Collections.Generic.List`1[RimWorld.StatModifier] statOffsets
+IL_0078: ldarg.0 
+IL_0079: newobj System.Collections.Generic.List`1[[RimWorld.StatModifier, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Void .ctor()
+IL_007E: stfld RimWorld.LifeStageDef::System.Collections.Generic.List`1[RimWorld.StatModifier] statFactors
+IL_0083: ldarg.0 
+IL_0084: ldc.r4 1
+IL_0089: stfld RimWorld.LifeStageDef::Single bodySizeFactor
+IL_008E: ldarg.0 
+IL_008F: ldc.r4 1
+IL_0094: stfld RimWorld.LifeStageDef::Single healthScaleFactor
+IL_0099: ldarg.0 
+IL_009A: ldc.r4 1
+IL_009F: stfld RimWorld.LifeStageDef::Single hungerRateFactor
+IL_00A4: ldarg.0 
+IL_00A5: ldc.r4 1
+IL_00AA: stfld RimWorld.LifeStageDef::Single marketValueFactor
+IL_00AF: ldarg.0 
+IL_00B0: ldc.r4 1
+IL_00B5: stfld RimWorld.LifeStageDef::Single foodMaxFactor
+IL_00BA: ldarg.0 
+IL_00BB: ldc.r4 1
+IL_00C0: stfld RimWorld.LifeStageDef::Single attachPointScaleFactor
+IL_00C5: ldarg.0 
+IL_00C6: ldc.r4 1
+IL_00CB: stfld RimWorld.LifeStageDef::Single meleeDamageFactor
+IL_00D0: ldarg.0 
+IL_00D1: call UnityEngine.Vector3::UnityEngine.Vector3 get_zero()
+IL_00D6: stfld RimWorld.LifeStageDef::UnityEngine.Vector3 bodyDrawOffset
+IL_00DB: ldarg.0 
+IL_00DC: call Verse.Def::Void .ctor()
+IL_00E1: ret 
+METHOD Verse.Pawn::get_BodySize TOKEN 100675828
+IL_0000: ldarg.0 
+IL_0001: ldfld Verse.Pawn::Verse.Pawn_AgeTracker ageTracker
+IL_0006: callvirt Verse.Pawn_AgeTracker::RimWorld.LifeStageDef get_CurLifeStage()
+IL_000B: ldfld RimWorld.LifeStageDef::Single bodySizeFactor
+IL_0010: ldarg.0 
+IL_0011: call Verse.Pawn::Verse.RaceProperties get_RaceProps()
+IL_0016: ldfld Verse.RaceProperties::Single baseBodySize
+IL_001B: mul 
+IL_001C: ret 
+METHOD Verse.Pawn_AgeTracker::get_CurLifeStageIndex TOKEN 100676262
+IL_0000: ldarg.0 
+IL_0001: ldfld Verse.Pawn_AgeTracker::Int32 cachedLifeStageIndex
+IL_0006: ldc.i4.0 
+IL_0007: bge.s IL_000F
+IL_0009: ldarg.0 
+IL_000A: call Verse.Pawn_AgeTracker::Void RecalculateLifeStageIndex()
+IL_000F: ldarg.0 
+IL_0010: ldfld Verse.Pawn_AgeTracker::Int32 cachedLifeStageIndex
+IL_0015: ret 
+METHOD Verse.Pawn_AgeTracker::get_CurLifeStage TOKEN 100676263
+IL_0000: ldarg.0 
+IL_0001: call Verse.Pawn_AgeTracker::Verse.LifeStageAge get_CurLifeStageRace()
+IL_0006: ldfld Verse.LifeStageAge::RimWorld.LifeStageDef def
+IL_000B: ret 
+METHOD Verse.Pawn_AgeTracker::RecalculateLifeStageIndex TOKEN 100676295
+IL_0000: ldc.i4.m1 
+IL_0001: stloc.0 
+IL_0002: ldarg.0 
+IL_0003: ldfld Verse.Pawn_AgeTracker::Int32 lockedLifeStageIndex
+IL_0008: ldc.i4.0 
+IL_0009: blt.s IL_0014
+IL_000B: ldarg.0 
+IL_000C: ldfld Verse.Pawn_AgeTracker::Int32 lockedLifeStageIndex
+IL_0011: stloc.0 
+IL_0012: br.s IL_0027
+IL_0014: ldarg.0 
+IL_0015: ldfld Verse.Pawn_AgeTracker::Single growth
+IL_001A: ldc.r4 0
+IL_001F: bge.un.s IL_0027
+IL_0021: ldarg.0 
+IL_0022: call Verse.Pawn_AgeTracker::Void CalculateInitialGrowth()
+IL_0027: ldarg.0 
+IL_0028: ldfld Verse.Pawn_AgeTracker::Verse.Pawn pawn
+IL_002D: callvirt Verse.Pawn::Verse.RaceProperties get_RaceProps()
+IL_0032: callvirt Verse.RaceProperties::Boolean get_Humanlike()
+IL_0037: brfalse.s IL_0043
+IL_0039: ldarg.0 
+IL_003A: call Verse.Pawn_AgeTracker::Int32 get_AgeBiologicalYears()
+IL_003F: conv.r4 
+IL_0040: stloc.1 
+IL_0041: br.s IL_0085
+IL_0043: ldc.r4 0
+IL_0048: ldarg.0 
+IL_0049: ldfld Verse.Pawn_AgeTracker::Verse.Pawn pawn
+IL_004E: callvirt Verse.Pawn::Verse.RaceProperties get_RaceProps()
+IL_0053: ldfld Verse.RaceProperties::System.Collections.Generic.List`1[Verse.LifeStageAge] lifeStageAges
+IL_0058: ldarg.0 
+IL_0059: ldfld Verse.Pawn_AgeTracker::Verse.Pawn pawn
+IL_005E: callvirt Verse.Pawn::Verse.RaceProperties get_RaceProps()
+IL_0063: ldfld Verse.RaceProperties::System.Collections.Generic.List`1[Verse.LifeStageAge] lifeStageAges
+IL_0068: callvirt System.Collections.Generic.List`1[[Verse.LifeStageAge, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Int32 get_Count()
+IL_006D: ldc.i4.1 
+IL_006E: sub 
+IL_006F: callvirt System.Collections.Generic.List`1[[Verse.LifeStageAge, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Verse.LifeStageAge get_Item(Int32)
+IL_0074: ldfld Verse.LifeStageAge::Single minAge
+IL_0079: ldarg.0 
+IL_007A: ldfld Verse.Pawn_AgeTracker::Single growth
+IL_007F: call UnityEngine.Mathf::Single Lerp(Single, Single, Single)
+IL_0084: stloc.1 
+IL_0085: ldloc.0 
+IL_0086: ldc.i4.0 
+IL_0087: bge.s IL_00CC
+IL_0089: ldarg.0 
+IL_008A: ldfld Verse.Pawn_AgeTracker::Verse.Pawn pawn
+IL_008F: callvirt Verse.Pawn::Verse.RaceProperties get_RaceProps()
+IL_0094: ldfld Verse.RaceProperties::System.Collections.Generic.List`1[Verse.LifeStageAge] lifeStageAges
+IL_0099: stloc.3 
+IL_009A: ldloc.3 
+IL_009B: callvirt System.Collections.Generic.List`1[[Verse.LifeStageAge, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Int32 get_Count()
+IL_00A0: ldc.i4.1 
+IL_00A1: sub 
+IL_00A2: stloc.s 4
+IL_00A4: br.s IL_00C7
+IL_00A6: ldloc.3 
+IL_00A7: ldloc.s 4
+IL_00A9: callvirt System.Collections.Generic.List`1[[Verse.LifeStageAge, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Verse.LifeStageAge get_Item(Int32)
+IL_00AE: ldfld Verse.LifeStageAge::Single minAge
+IL_00B3: ldloc.1 
+IL_00B4: ldc.r4 1E-06
+IL_00B9: add 
+IL_00BA: bgt.un.s IL_00C1
+IL_00BC: ldloc.s 4
+IL_00BE: stloc.0 
+IL_00BF: br.s IL_00CC
+IL_00C1: ldloc.s 4
+IL_00C3: ldc.i4.1 
+IL_00C4: sub 
+IL_00C5: stloc.s 4
+IL_00C7: ldloc.s 4
+IL_00C9: ldc.i4.0 
+IL_00CA: bge.s IL_00A6
+IL_00CC: ldloc.0 
+IL_00CD: ldc.i4.m1 
+IL_00CE: bne.un.s IL_00D2
+IL_00D0: ldc.i4.0 
+IL_00D1: stloc.0 
+IL_00D2: ldarg.0 
+IL_00D3: ldfld Verse.Pawn_AgeTracker::Int32 cachedLifeStageIndex
+IL_00D8: stloc.2 
+IL_00D9: ldarg.0 
+IL_00DA: ldfld Verse.Pawn_AgeTracker::Int32 cachedLifeStageIndex
+IL_00DF: ldloc.0 

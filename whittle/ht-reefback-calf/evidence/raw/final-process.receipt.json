@@ -1,0 +1,64 @@
+[
+  {
+    "name": "engine-final",
+    "command": [
+      "python3",
+      "/home/mandrake/rm/codex-ht/whittle/ht-reefback-calf/evidence/run_engine.py"
+    ],
+    "rc": 0,
+    "elapsed": 0.8821766376495361,
+    "stdout_sha256": "d715a8a0cc74670c460fd47e651079066f0a3d6b1d20d45f12be69e19ab65aa8",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "measure-final",
+    "command": [
+      "python3",
+      "/home/mandrake/rm/codex-ht/whittle/ht-reefback-calf/evidence/run_measure.py"
+    ],
+    "rc": 0,
+    "elapsed": 2.544344902038574,
+    "stdout_sha256": "9fbfbc0eebba5cdceef145d82aebbbe8742bea5c33ba6618e94aea69b1162f4f",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "diff-check",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "rc": 0,
+    "elapsed": 0.13048601150512695,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "new-file-whitespace",
+    "command": [
+      "git",
+      "diff",
+      "--no-index",
+      "--check",
+      "/dev/null",
+      "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/northstar/measure_reefback_calf.py"
+    ],
+    "rc": 1,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "name": "new-file-whitespace",
+    "command": [
+      "git",
+      "diff",
+      "--no-index",
+      "--check",
+      "/dev/null",
+      "/home/mandrake/rm/codex-ht/design/RimMandrake/hugethings_codex_2026-11-09/REEFBACK_CALF_DECISION.md"
+    ],
+    "rc": 1,
+    "stdout": "",
+    "stderr": ""
+  }
+]

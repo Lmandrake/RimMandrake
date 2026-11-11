@@ -1,0 +1,9 @@
+Completed offline; full run rc0.
+
+- Keep calf sizes **6.4/T1 and 16/T2**.
+- Keep Miasma’s **0.15** draw.
+- Fresh Codex judge: **yes**. Actual Whittle validation: **rc0**.
+
+[Decision](/home/mandrake/rm/codex-ht/design/RimMandrake/hugethings_codex_2026-11-09/REEFBACK_CALF_DECISION.md) · [Findings and limits](/home/mandrake/rm/codex-ht/whittle/ht-reefback-calf/FINDINGS.md)
+
+Ledger, commit, and publication remain with the parent.

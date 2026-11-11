@@ -1,0 +1,1088 @@
+You are a fresh independent Opus design judge and different-model BROADEN reviewer. You did not make this work. Tools are disabled; decide only from the exact selected source/measurements below. No proposed verdict is supplied. Decide both questions: should RM_ReefbackJuv be smaller or keep its supported sizes, and should RM_Miasma keep drawing it or why not? Give KEEP/REDO/UNSURE with reasons grounded in the constraints. Identify realistic cases this offline measurement missed; suggest one or two bounded substantive checks. Distinguish a source-model conclusion from running-game proof, and independent gameplay issues from this size/placement item. This is delegated design judgment, never owner approval.
+
+Current scope: offline ONLY this item; no game/bridge/deploy/build, art change, classifier semantics change, other-lane edits, ledger/commit/publication, or contacting owner. Preserve existing roster residents.
+
+Owner constraints (CLAUDE.md; delegation_policy.md): "Let's stop evictions right now"; "This is a human review process issue." Animals normally belong to one biome unless there is an in-game reason. Delegated design taste calls go to a fresh other agent; they are not owner rulings. Nursery lifecycle provides a possible in-game reason. No new north-star bar or first-touch acceptance here.
+
+--- whittle/ht-reefback-calf/STATEMENT.md sha256=c3abbee614fe96b8220d4be485f24e8c10a2e1ee1aa6db046e9d1817ea469698 ---
+# Reefback calf size and Miasma placement — REEFBACK_CALF_MEASURE_TITAN_ON_LAND
+
+- Measure the young reefback's effective body sizes and HugeThings tiers at every supported life stage, distinguishing the inherited base size from a living pawn's size and the passage classifier; compare the adult reefback with exact source provenance.
+- Decide whether the calf needs smaller sizes and whether Miasma should keep drawing it, using the established nursery lifecycle, current roster and independent delegated design judgment; apply any warranted correction without inventing an owner ruling or evicting roster residents.
+- Retain reproducible offline evidence and a fresh independent Codex judgment for the complete decision; report its exact limits and make no live, deployment, flight, art-appearance or first-touch acceptance claim.
+
+
+--- whittle/ht-reefback-calf/NOTES.md sha256=7b2b2525787461e3a6128337d4855348f8a2e9dd133e1ab268af0794abf4e29e ---
+# Owner notes
+
+Conductor order, 2026-11-11: "Do not change another lane's items." "never ask the owner anything."
+
+Owner, 2026-09-20 (CLAUDE.md): "Let's stop evictions right now"; "This is a human review process issue."
+
+
+--- whittle/ht-reefback-calf/evidence/item-before.txt sha256=f1fdeee7254b8bc9f1c6a5f953eaa174efab72686fae85bd513fe87d669ab718 ---
+REEFBACK_CALF_MEASURE_TITAN_ON_LAND   doing  row -  needs offline  target v1
+RM_ReefbackJuv (young reefback) has body size 32 and sits on RM_Miasma at commonality 0.15: a calf at adult size is tier 3 by size on a common land row. Decide whether the calf should be smaller, and whether Miasma should keep drawing it. Found by UNUSED_PORTS_MEASURE_WHAT_NOBODY_NEEDS in the 2026-11-02 def dump.
+owner CODEX_STEVEDESKTOP_HUGETHINGS   kind task   filed 2026-11-03T21:52:08Z
+
+--- items/REEFBACK_CALF_MEASURE_TITAN_ON_LAND.md ---
+(absent or has no ## sections)
+--- history (6 events) ---
+  2026-11-03T21:52:08Z  BENCH  file      for=BENCH kind=task needs=offline role_unit=rm-detached-bench-unused-ports-measure-what-nobody-needs-1793741449 target=v1 title=RM_ReefbackJuv (young reefback) has body size 32 and sits on RM_Miasma at commonality 0.15: a calf at adult size is tier 3 by size on a common land row. Decide whether the calf should be smaller, and whether Miasma should keep drawing it. Found by UNUSED_PORTS_MEASURE_WHAT_NOBODY_NEEDS in the 2026-11-02 def dump. tsn=1793742728179328699  | agent's reason: survey side finding; not a port
+  2026-11-11T14:03:32Z  CODEX_STEVEDESKTOP_HUGETHINGS reassign  to=CODEX_STEVEDESKTOP_HUGETHINGS tsn=1794405812873871043  | agent's reason: Conductor order 2026-11-11 worker identity
+  2026-11-11T14:03:37Z  CODEX_STEVEDESKTOP_HUGETHINGS lease     action=take expires=2026-11-11T14:48:37Z token=CODEX_STEVEDESKTOP_HUGETHINGS.pid28692.df4c866c tsn=1794405819612917379  | agent's reason: Conductor order 2026-11-11 HugeThings drain
+  2026-11-11T14:03:41Z  CODEX_STEVEDESKTOP_HUGETHINGS claim     tsn=1794405821413434573  | agent's reason: Conductor order 2026-11-11 HugeThings drain
+  2026-11-11T14:03:43Z  CODEX_STEVEDESKTOP_HUGETHINGS start     tsn=1794405823207583340  | agent's reason: Conductor order 2026-11-11 HugeThings drain
+  2026-11-11T14:03:49Z  CODEX_STEVEDESKTOP_HUGETHINGS start     tsn=1794405829770402329  | agent's reason: Conductor order 2026-11-11 HugeThings drain
+--- causal chain ---
+  (none — this item stands on its own)
+
+
+--- whittle/ht-reefback-calf/evidence/raw/measure/measurement.json sha256=ad64703cea053ec1d7304b4c19f4d433002896eacd8449e16b8d17c3a85eb975 ---
+{
+  "mode": "offline selected source model; no running-game observation",
+  "tier_floors": [
+    4.0,
+    8.0,
+    20.0
+  ],
+  "species": {
+    "RM_ReefbackJuv": {
+      "baseBodySize": 32.0,
+      "stages": [
+        {
+          "stage": "AnimalBaby",
+          "minAge_years_xml": 0.0,
+          "factor": 0.2,
+          "factor_source": "Core XML",
+          "body_size_decimal": 6.4,
+          "body_size_float32": 6.400000095367432,
+          "default_GetTier": 1,
+          "kind_drawSize": "2.94"
+        },
+        {
+          "stage": "AnimalJuvenile",
+          "minAge_years_xml": 0.1,
+          "factor": 0.5,
+          "factor_source": "Core XML",
+          "body_size_decimal": 16.0,
+          "body_size_float32": 16.0,
+          "default_GetTier": 2,
+          "kind_drawSize": "4.42"
+        }
+      ],
+      "kind_stage_count": 2,
+      "AdultTier_classifier": 3,
+      "max_supported_GetTier": 2,
+      "inherited_tools": [
+        "<li>\n        <label>tail sweep</label>\n        <capacities>\n          <li>Blunt</li>\n        </capacities>\n        <power>480</power>\n        <cooldownTime>8.5</cooldownTime>\n        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>\n      </li>\n      ",
+        "<li>\n        <label>bulk</label>\n        <capacities>\n          <li>Blunt</li>\n        </capacities>\n        <power>120</power>\n        <cooldownTime>6</cooldownTime>\n        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>\n        <chanceFactor>0.3</chanceFactor>\n      </li>\n    "
+      ],
+      "force_extensions": []
+    },
+    "RM_Reefback": {
+      "baseBodySize": 32.0,
+      "stages": [
+        {
+          "stage": "AnimalBaby",
+          "minAge_years_xml": 0.0,
+          "factor": 0.2,
+          "factor_source": "Core XML",
+          "body_size_decimal": 6.4,
+          "body_size_float32": 6.400000095367432,
+          "default_GetTier": 1,
+          "kind_drawSize": "5.89"
+        },
+        {
+          "stage": "AnimalJuvenile",
+          "minAge_years_xml": 0.2,
+          "factor": 0.5,
+          "factor_source": "Core XML",
+          "body_size_decimal": 16.0,
+          "body_size_float32": 16.0,
+          "default_GetTier": 2,
+          "kind_drawSize": "8.56"
+        },
+        {
+          "stage": "AnimalAdult",
+          "minAge_years_xml": 0.6,
+          "factor": 1.0,
+          "factor_source": "LifeStageDef constructor IL default",
+          "body_size_decimal": 32.0,
+          "body_size_float32": 32.0,
+          "default_GetTier": 3,
+          "kind_drawSize": "10.7"
+        }
+      ],
+      "kind_stage_count": 3,
+      "AdultTier_classifier": 3,
+      "max_supported_GetTier": 3,
+      "inherited_tools": [
+        "<li>\n        <label>tail sweep</label>\n        <capacities>\n          <li>Blunt</li>\n        </capacities>\n        <power>480</power>\n        <cooldownTime>8.5</cooldownTime>\n        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>\n      </li>\n      ",
+        "<li>\n        <label>bulk</label>\n        <capacities>\n          <li>Blunt</li>\n        </capacities>\n        <power>120</power>\n        <cooldownTime>6</cooldownTime>\n        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>\n        <chanceFactor>0.3</chanceFactor>\n      </li>\n    "
+      ],
+      "force_extensions": []
+    },
+    "RM_WardenMother": {
+      "baseBodySize": 8.0,
+      "stages": [
+        {
+          "stage": "AnimalBaby",
+          "minAge_years_xml": 0.0,
+          "factor": 0.2,
+          "factor_source": "Core XML",
+          "body_size_decimal": 1.6,
+          "body_size_float32": 1.600000023841858,
+          "default_GetTier": 0,
+          "kind_drawSize": "3.5"
+        },
+        {
+          "stage": "AnimalJuvenile",
+          "minAge_years_xml": 0.15,
+          "factor": 0.5,
+          "factor_source": "Core XML",
+          "body_size_decimal": 4.0,
+          "body_size_float32": 4.0,
+          "default_GetTier": 1,
+          "kind_drawSize": "5.5"
+        },
+        {
+          "stage": "AnimalAdult",
+          "minAge_years_xml": 0.4,
+          "factor": 1.0,
+          "factor_source": "LifeStageDef constructor IL default",
+          "body_size_decimal": 8.0,
+          "body_size_float32": 8.0,
+          "default_GetTier": 2,
+          "kind_drawSize": "7.5"
+        },
+        {
+          "stage": "RM_WardenMotherElder",
+          "minAge_years_xml": 38.0,
+          "factor": 1.0,
+          "factor_source": "Core XML",
+          "body_size_decimal": 8.0,
+          "body_size_float32": 8.0,
+          "default_GetTier": 2,
+          "kind_drawSize": "7.5"
+        }
+      ],
+      "kind_stage_count": 4,
+      "AdultTier_classifier": 2,
+      "max_supported_GetTier": 2,
+      "inherited_tools": [
+        "<li>\n        <label>crushing bite</label>\n        <capacities>\n          <li>Bite</li>\n        </capacities>\n        <power>22</power>\n        <cooldownTime>2.0</cooldownTime>\n        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>\n      </li>\n      ",
+        "<li>\n        <label>flipper slam</label>\n        <capacities>\n          <li>Blunt</li>\n        </capacities>\n        <power>18</power>\n        <cooldownTime>2.6</cooldownTime>\n        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>\n        <chanceFactor>0.6</chanceFactor>\n      </li>\n    "
+      ],
+      "force_extensions": []
+    }
+  },
+  "biomes": {
+    "RM_Miasma": {
+      "animal": "RM_ReefbackJuv",
+      "commonality": 0.15,
+      "animalDensity": "6.5"
+    },
+    "RM_GreySea": {
+      "animal": "RM_Reefback",
+      "commonality": 0.005,
+      "animalDensity": "0.1"
+    }
+  },
+  "limits": [
+    "Default HugeThings thresholds, no force extension, no uninspected external mod or saved-setting override.",
+    "Stage minAge is XML provenance. Animal stage selection uses growth clamped to final minAge, plus 1e-6 comparison tolerance; no exact wall-clock transition claim.",
+    "Young race never gains an adult entry by aging. No automatic juvenile-to-adult species conversion demonstrated.",
+    "No art, combat balance, runtime pathing, lifecycle transport, deployment, DLL or first-touch acceptance."
+  ]
+}
+
+
+--- whittle/ht-reefback-calf/evidence/raw/measure/negative-controls.json sha256=630a2b84424cffcb99ecd2ede8ca67279d40b2cbe0e8790b61709522bde435d0 ---
+{
+  "missing_InheritFalse": {
+    "mutated_stage_names": [
+      "AnimalBaby",
+      "AnimalJuvenile",
+      "AnimalAdult",
+      "AnimalBaby",
+      "AnimalJuvenile"
+    ],
+    "mutated_kind_count": 5,
+    "shape_oracle_rejects": true,
+    "note": "Appending leaves an unsorted five-entry list. Reverse selection can shadow the inherited adult; this control proves list replacement, not an automatic T3 transition."
+  },
+  "base_only_oracle": {
+    "wrong_size": 32,
+    "wrong_tier": 3,
+    "supported_sizes": [
+      6.400000095367432,
+      16.0
+    ],
+    "rejected": true
+  }
+}
+
+
+--- <Source input="/mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml" sha256="9e64ca6431d6685b342f3bec90166a911948aeb364a232ff8eb2fe69ed321fbc"> ---
+<LifeStageDef Name="AnimalBaby">
+      <defName>AnimalBaby</defName>
+      <label>baby</label>
+      <voxPitch>1.6</voxPitch>
+      <voxVolume>0.8</voxVolume>
+      <bodySizeFactor>0.2</bodySizeFactor>
+      <foodMaxFactor>3</foodMaxFactor>
+      <healthScaleFactor>0.25</healthScaleFactor>
+      <hungerRateFactor>0.4</hungerRateFactor>
+      <marketValueFactor>0.4</marketValueFactor>
+      <meleeDamageFactor>0.5</meleeDamageFactor>
+      <statFactors>
+        <MoveSpeed>0.5</MoveSpeed>
+      </statFactors>
+    </LifeStageDef>
+    
+<LifeStageDef>
+      <defName>AnimalJuvenile</defName>
+      <label>juvenile</label>
+      <voxPitch>1.2</voxPitch>
+      <bodySizeFactor>0.5</bodySizeFactor>
+      <foodMaxFactor>1.5</foodMaxFactor>
+      <healthScaleFactor>0.6</healthScaleFactor>
+      <hungerRateFactor>0.75</hungerRateFactor>
+      <marketValueFactor>0.75</marketValueFactor>
+      <meleeDamageFactor>0.75</meleeDamageFactor>
+      <statFactors>
+        <MoveSpeed>0.9</MoveSpeed>
+      </statFactors>
+    </LifeStageDef>
+    
+<LifeStageDef>
+      <defName>AnimalAdult</defName>
+      <label>adult</label>
+      <visible>false</visible>
+      <reproductive>true</reproductive>
+      <milkable>true</milkable>
+      <shearable>true</shearable>
+      <caravanRideable>true</caravanRideable>
+    </LifeStageDef>
+  
+
+--- <Source input="/mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/Core/Defs/ThingDefs_Races/Races_Animal_Base.xml" sha256="922276d8275c6087014de702401e97c2724d40c38a2f09de131075ba3e7afcf4"> ---
+<ThingDef Name="BasePawn" Abstract="True">
+      <thingClass>Pawn</thingClass>
+      <category>Pawn</category>
+      <selectable>true</selectable>
+      <containedPawnsSelectable>true</containedPawnsSelectable>
+      <containedItemsSelectable>true</containedItemsSelectable>
+      <tickerType>Normal</tickerType>
+      <altitudeLayer>Pawn</altitudeLayer>
+      <useHitPoints>false</useHitPoints>
+      <hasTooltip>true</hasTooltip>
+      <soundImpactDefault>BulletImpact_Flesh</soundImpactDefault>
+      <drawHighlight>true</drawHighlight>
+      <defaultPlacingRot>South</defaultPlacingRot>
+      <statBases>
+        <Mass>60</Mass>
+        <Flammability>0.7</Flammability>
+      </statBases>
+      <race>
+        <renderTree>Misc</renderTree>
+      </race>
+      <inspectorTabs>
+        <li>ITab_Pawn_Health</li>
+        <li>ITab_Pawn_Needs</li>
+        <li>ITab_Pawn_Character</li>
+        <li>ITab_Pawn_Training</li>
+        <li>ITab_Pawn_Social</li>
+        <li>ITab_Pawn_Guest</li>
+        <li>ITab_Pawn_Prisoner</li>
+        <li MayRequire="Ludeon.RimWorld.Ideology">ITab_Pawn_Slave</li>
+        <li MayRequire="Ludeon.RimWorld.Biotech">ITab_Pawn_Feeding</li>
+        <li MayRequire="Ludeon.RimWorld.Biotech">ITab_Genes</li>
+        <li MayRequire="Ludeon.RimWorld.Biotech">ITab_GenesPregnancy</li>
+        <li MayRequire="Ludeon.RimWorld.Anomaly">ITab_Entity</li>
+        <li>ITab_Pawn_FormingCaravan</li>
+        <li>ITab_Pawn_Gear</li>
+        <li>ITab_Pawn_Log</li>
+      </inspectorTabs>
+      <comps>
+        <li>
+          <compClass>CompAttachBase</compClass>
+        </li>
+      </comps>
+      <drawGUIOverlay>true</drawGUIOverlay>
+    </ThingDef>
+    
+<ThingDef ParentName="BasePawn" Name="AnimalThingBase" Abstract="True">
+      <statBases>
+        <LeatherAmount>40</LeatherAmount>
+        <ToxicResistance>0.5</ToxicResistance>
+      </statBases>
+      <race>
+        <thinkTreeMain>Animal</thinkTreeMain>
+        <thinkTreeConstant>AnimalConstant</thinkTreeConstant>
+        <hasGenders>true</hasGenders>
+        <nameGenerator>NamerAnimalGenericMale</nameGenerator>
+        <nameGeneratorFemale>NamerAnimalGenericFemale</nameGeneratorFemale>
+        <trainability>None</trainability>
+        <bloodDef>Filth_Blood</bloodDef>
+        <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+        <canBecomeShambler>true</canBecomeShambler>
+        <renderTree>Animal</renderTree>
+        <hediffGiverSets>
+          <li>OrganicStandard</li>
+        </hediffGiverSets>
+      </race>
+      <thingCategories>
+        <li>Animals</li>
+      </thingCategories>
+      <recipes>
+        <li>ExciseCarcinoma</li>
+        <li>AdministerMechSerumHealer</li>
+        <li>RemoveBodyPart</li>
+        <li>Euthanize</li>
+        <li>Anesthetize</li>
+        <li>CureScaria</li>
+        <li>Sterilize</li>
+        <li MayRequire="Ludeon.RimWorld.Royalty">CureBloodRot</li>
+        <li MayRequire="Ludeon.RimWorld.Biotech">TerminatePregnancy</li>
+        <li MayRequire="Ludeon.RimWorld.Anomaly">SurgicalInspection</li>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">RemovePorcupineQuill</li>
+      </recipes>
+      <comps>
+        <li Class="CompProperties_HoldingPlatformTarget" MayRequire="Ludeon.RimWorld.Anomaly">
+          <baseEscapeIntervalMtbDays>120</baseEscapeIntervalMtbDays>
+          <getsColdContainmentBonus>true</getsColdContainmentBonus>
+        </li>
+        <li MayRequire="Ludeon.RimWorld.Anomaly" Class="CompProperties_Studiable">
+          <frequencyTicks>120000</frequencyTicks>
+          <knowledgeCategory MayRequire="Ludeon.RimWorld.Anomaly">Basic</knowledgeCategory>
+          <anomalyKnowledge>1</anomalyKnowledge>
+          <requiresImprisonment>true</requiresImprisonment>
+          <minMonolithLevelForStudy>1</minMonolithLevelForStudy>
+        </li>
+      </comps>
+    </ThingDef>
+    
+<PawnKindDef Name="AnimalKindBase" Abstract="True">
+  </PawnKindDef>
+  
+
+--- <Source input="src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_SeaBeasts_Invented.xml:selected nodes" sha256="dd383ef5e2ea27ed824b773cc6ac04b144e65012093c0803bf06962d71cf7a30"> ---
+<ThingDef ParentName="AnimalThingBase" Name="RM_Reefback">
+      <defName>RM_Reefback</defName>
+      <label>reefback</label>
+      <description>So old the reef grows on it: coral, kelp, a hundred hangers-on that never leave. A moving ecosystem, and the one place in the deep where a crew can rest in the light of something else's garden — as long as nobody puts a harpoon in the garden.</description>
+      <statBases>
+        <MoveSpeed>2.0</MoveSpeed>
+        <MarketValue>8000</MarketValue>
+        <ComfyTemperatureMin>-30</ComfyTemperatureMin>
+        <ComfyTemperatureMax>50</ComfyTemperatureMax>
+        <ArmorRating_Blunt>0.60</ArmorRating_Blunt>
+        <ArmorRating_Sharp>0.70</ArmorRating_Sharp>
+        <ArmorRating_Heat>0.75</ArmorRating_Heat>
+        <Wildness>1.0</Wildness>
+      </statBases>
+      <tools>
+        <li>
+          <label>tail sweep</label>
+          <capacities>
+            <li>Blunt</li>
+          </capacities>
+          <power>480</power>
+          <cooldownTime>8.5</cooldownTime>
+          <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        </li>
+        <li>
+          <label>bulk</label>
+          <capacities>
+            <li>Blunt</li>
+          </capacities>
+          <power>120</power>
+          <cooldownTime>6</cooldownTime>
+          <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+          <chanceFactor>0.3</chanceFactor>
+        </li>
+      </tools>
+      <race>
+        <leatherDef>Leather_Sealskin</leatherDef>
+        <body>Pinniped</body>
+        <predator>false</predator>
+        <canBePredatorPrey>false</canBePredatorPrey>
+        <disableMating>true</disableMating>
+        <baseBodySize>32</baseBodySize>
+        <baseHealthScale>20</baseHealthScale>
+        <foodType>None</foodType>
+        <waterSeeker>true</waterSeeker>
+        <waterCellCost>1</waterCellCost>
+        <gestationPeriodDays>120</gestationPeriodDays>
+        <manhunterOnDamageChance>0.2</manhunterOnDamageChance>
+        <manhunterOnTameFailChance>1.0</manhunterOnTameFailChance>
+        <lifeExpectancy>500</lifeExpectancy>
+        <lifeStageAges>
+          <li>
+            <def>AnimalBaby</def>
+            <minAge>0</minAge>
+          </li>
+          <li>
+            <def>AnimalJuvenile</def>
+            <minAge>0.2</minAge>
+          </li>
+          <li>
+            <def>AnimalAdult</def>
+            <minAge>0.6</minAge>
+          </li>
+        </lifeStageAges>
+      </race>
+    </ThingDef>
+    
+<PawnKindDef ParentName="AnimalKindBase" Name="RM_Reefback_Kind">
+      <defName>RM_Reefback</defName>
+      <label>reefback</label>
+      <race>RM_Reefback</race>
+      <combatPower>2000</combatPower>
+      <wildGroupSize>1</wildGroupSize>
+      <ecoSystemWeight>4.0</ecoSystemWeight>
+      <canArriveManhunter>false</canArriveManhunter>
+      <moveSpeedFactorByTerrainTag>
+        <li>
+          <key>Water</key>
+          <value>2.0</value>
+        </li>
+      </moveSpeedFactorByTerrainTag>
+      <lifeStages>
+        <li>
+          <bodyGraphicData>
+            <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>5.89</drawSize>
+          </bodyGraphicData>
+          <swimmingGraphicData>
+            <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>5.89</drawSize>
+          </swimmingGraphicData>
+        </li>
+        <li>
+          <bodyGraphicData>
+            <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>8.56</drawSize>
+          </bodyGraphicData>
+          <swimmingGraphicData>
+            <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>8.56</drawSize>
+          </swimmingGraphicData>
+        </li>
+        <li>
+          <bodyGraphicData>
+            <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>10.7</drawSize>
+          </bodyGraphicData>
+          <swimmingGraphicData>
+            <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>10.7</drawSize>
+          </swimmingGraphicData>
+        </li>
+      </lifeStages>
+    </PawnKindDef>
+    
+<ThingDef ParentName="RM_Reefback">
+      <defName>RM_ReefbackJuv</defName>
+      <label>young reefback</label>
+      <description>A reefback hatchling-sized by comparison only: the reef has barely begun to grow on it, and it drifts close to wherever the adults went.</description>
+      <race>
+        <lifeStageAges Inherit="False">
+          <li>
+            <def>AnimalBaby</def>
+            <minAge>0</minAge>
+          </li>
+          <li>
+            <def>AnimalJuvenile</def>
+            <minAge>0.1</minAge>
+          </li>
+        </lifeStageAges>
+      </race>
+    </ThingDef>
+    
+<PawnKindDef ParentName="RM_Reefback_Kind">
+      <defName>RM_ReefbackJuv</defName>
+      <wildGroupSize>2~3</wildGroupSize>
+      <label>young reefback</label>
+      <race>RM_ReefbackJuv</race>
+      <lifeStages Inherit="False">
+        <li>
+          <bodyGraphicData>
+            <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>2.94</drawSize>
+          </bodyGraphicData>
+          <swimmingGraphicData>
+            <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>2.94</drawSize>
+          </swimmingGraphicData>
+        </li>
+        <li>
+          <bodyGraphicData>
+            <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>4.42</drawSize>
+          </bodyGraphicData>
+          <swimmingGraphicData>
+            <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>4.42</drawSize>
+          </swimmingGraphicData>
+        </li>
+      </lifeStages>
+    </PawnKindDef>
+  
+
+--- <Source input="src/RimMandrake/Miasma/Defs/ThingDefs_Races/RM_WardenMother.xml:selected nodes" sha256="6d225577f44de6a982de84ad815af9d830bdeabb3330a8b674741ae706ee551b"> ---
+<LifeStageDef>
+      <defName>RM_WardenMotherElder</defName>
+      <label>elder</label>
+      <visible>true</visible>
+      <bodySizeFactor>1</bodySizeFactor>
+    </LifeStageDef>
+    
+<ThingDef ParentName="AnimalThingBase">
+      <defName>RM_WardenMother</defName>
+      <label>warden mother</label>
+      <description>Barnacled, scarred, and older than anything else that swims these shallows — you can see it in how slowly she moves now. She goes wherever the water goes, and nowhere else; the few metres of dry ground between her and anything on land might as well be another world. Lethal to anything she can reach. Not tame, not tameable, and not gentle — but she remembers who freed her young from a drying pool, and she will not touch you for it.</description>
+      <statBases>
+        <MoveSpeed>1.6</MoveSpeed>
+        <MarketValue>0</MarketValue>
+        <ComfyTemperatureMin>-20</ComfyTemperatureMin>
+        <ComfyTemperatureMax>55</ComfyTemperatureMax>
+        <ArmorRating_Blunt>0.55</ArmorRating_Blunt>
+        <ArmorRating_Sharp>0.65</ArmorRating_Sharp>
+        <Wildness>1.0</Wildness>
+      </statBases>
+      <tools>
+        <li>
+          <label>crushing bite</label>
+          <capacities>
+            <li>Bite</li>
+          </capacities>
+          <power>22</power>
+          <cooldownTime>2.0</cooldownTime>
+          <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        </li>
+        <li>
+          <label>flipper slam</label>
+          <capacities>
+            <li>Blunt</li>
+          </capacities>
+          <power>18</power>
+          <cooldownTime>2.6</cooldownTime>
+          <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+          <chanceFactor>0.6</chanceFactor>
+        </li>
+      </tools>
+      <race>
+        <leatherDef>Leather_Sealskin</leatherDef>
+        <body>Pinniped</body>
+        <predator>false</predator>
+        <canBePredatorPrey>false</canBePredatorPrey>
+        <herdAnimal>false</herdAnimal>
+        <disableMating>true</disableMating>
+        <baseBodySize>8</baseBodySize>
+        <baseHealthScale>7</baseHealthScale>
+        <foodType>OmnivoreAnimal</foodType>
+        <waterSeeker>true</waterSeeker>
+        <waterCellCost>1</waterCellCost>
+        <manhunterOnDamageChance>0</manhunterOnDamageChance>
+        <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+        <lifeExpectancy>45</lifeExpectancy>
+        <trainability>None</trainability>
+        <lifeStageAges>
+          <li>
+            <def>AnimalBaby</def>
+            <minAge>0</minAge>
+          </li>
+          <li>
+            <def>AnimalJuvenile</def>
+            <minAge>0.15</minAge>
+          </li>
+          <li>
+            <def>AnimalAdult</def>
+            <minAge>0.4</minAge>
+          </li>
+          <li>
+            <def>RM_WardenMotherElder</def>
+            <minAge>38</minAge>
+          </li>
+        </lifeStageAges>
+      </race>
+      <comps>
+        <li Class="RimMandrake.EnvironmentalHazards.CompProperties_TerritorialAnchor">
+          <dutyDef>RM_AnchorGuard</dutyDef>
+          <anchorRadius>16</anchorRadius>
+        </li>
+        <li Class="RimMandrake.EnvironmentalHazards.CompProperties_WaterLocked">
+          <checkIntervalTicks>60</checkIntervalTicks>
+        </li>
+      </comps>
+    </ThingDef>
+    
+<PawnKindDef ParentName="AnimalKindBase">
+      <defName>RM_WardenMother</defName>
+      <label>warden mother</label>
+      <race>RM_WardenMother</race>
+      <combatPower>1400</combatPower>
+      <wildGroupSize>1</wildGroupSize>
+      <ecoSystemWeight>0</ecoSystemWeight>
+      <canArriveManhunter>false</canArriveManhunter>
+      <moveSpeedFactorByTerrainTag>
+        <li>
+          <key>Water</key>
+          <value>1.8</value>
+        </li>
+      </moveSpeedFactorByTerrainTag>
+      <lifeStages>
+        <li>
+          <bodyGraphicData>
+            <texPath>Things/Pawn/Animal/Miasma/WardenMother/WardenMother</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>3.5</drawSize>
+          </bodyGraphicData>
+        </li>
+        <li>
+          <bodyGraphicData>
+            <texPath>Things/Pawn/Animal/Miasma/WardenMother/WardenMother</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>5.5</drawSize>
+          </bodyGraphicData>
+        </li>
+        <li>
+          <bodyGraphicData>
+            <texPath>Things/Pawn/Animal/Miasma/WardenMother/WardenMother</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>7.5</drawSize>
+          </bodyGraphicData>
+        </li>
+        <li>
+          <bodyGraphicData>
+            <texPath>Things/Pawn/Animal/Miasma/WardenMother/WardenMotherAged</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>7.5</drawSize>
+          </bodyGraphicData>
+        </li>
+      </lifeStages>
+    </PawnKindDef>
+  
+
+--- design/Jawa/worldbuilding/biomes/the_miasma.md lines 94-138 sha256=2c2de8888b733045aa94b9635500e6f4d147dc127a87f9a1781e887ae63d114c ---
+
+## 4. How the biology adapted — the three rings of refuge
+
+- **The nursery.** The Grey Sea's roster breeds here — the root-maze is the
+  crèche of every horror the sea still holds (`sea_beasts_roster.md`'s formal
+  breeding ground: the young here, the adults in the terminator waters).
+  Juveniles swarm the shallows, small and almost charming and cheap to hunt —
+  and every scavenger knows the arithmetic: **don't kill what's small here;
+  its mother is why nobody goes out onto the open water.** 🔴 *(Corrected
+  2026-09-23, owner: there are no nautical ships in this world, so the old
+  phrasing — "the reason ships sink" — was a dead metaphor. The arithmetic it
+  expressed is unchanged: the small are cheap, the parents are
+  catastrophic.)* The parents' desperate gamble with
+  their own young is the biome's soul in miniature (owner): send them into
+  the muck, and they die or come back stronger.
+- ⭐ **The warden mothers.** The adults that stay: brine-broken elders too old
+  for the strengthening sea, hauled into the shallows to end their centuries
+  guarding the crèches. Enormous, **lumbering within the water**, lethal
+  within reach, and tragic — the sea's memory dying in its lifeboat. Her
+  crèche sits in the shallows and is a placed, mapped, named site; **she
+  herself spawns, and sometimes brings stranded young with her.**
+  🔴 **She cannot reach dry land, and that constraint is the whole point:**
+  when a receding surge strands one of her young in a pool the water has
+  left, she can hear it and see it and will never cross the few metres of dry
+  ground between. A colony can. ⇒ **She can be BEFRIENDED** — never tamed —
+  by freeing the young she cannot reach. Tolerance means only that you have
+  left her target set; she is commanded by nobody, and harvesting inside her
+  reach returns you to it at once.
+  🧊 **AMENDED 2026-09-23 by owner ruling at a sitting**, per this sheet's own
+  unfreeze clause. This entry previously read *"stationary"* and *"Placed
+  set-pieces, never random spawns"*; both are superseded by the clauses above.
+  Full design and the built-vs-owed split:
+  `miasma_fauna_roster_2026-09-23.md` §6. ⛔ Nothing else in this section
+  moves, and the giant lane is still hers alone — no second giant.
+- **The stranded.** The surge's orphans: endemics cut off in pools when the
+  salt line moves, forced ashore between waters — gills going leathery, fins
+  splaying into feet that don't quite work. Creatures that *look
+  transitional*: evolution auditioning, generation by generation, in the
+  pools behind the player's base. The almost-breakthrough given a face.
+- ⭐ **The crusty arthropods** (owner) — the small creature of the biome:
+  little armored scuttlers in uncountable numbers, **eaten by everything**,
+  the trophic floor that supports the great beasts' growth. Harvestable,
+  renewable, faintly comic; the entire food pyramid stands on their backs.
+- **The composters.** Burrowing muck-workers digesting the sin-soup; their
+  castings are **delta loam** (§7). The hopeful mirror of the Scarlands'
+
+--- design/Jawa/worldbuilding/biomes/the_grey_deep.md lines 99-124 sha256=b717e7f7b79126e933bae0bcf69e6d432ae0a9121c8132692ec58190ddb9d2ec ---
+  prose and descriptions, but navigation stays perfect — no waymark job,
+  no murk penalty, no lost-diver mechanic is owed.
+- **The crusted giant** — the endemic lineage (bred at the Miasma's crèches,
+  returned here for its solitary centuries), **ill-tempered** (owner): brine
+  that hurts, worn as a life condition. Centuries have **encased it in its
+  own mineral armor** — a living thing wearing the biome's geology,
+  indistinguishable from a drifting pillar until it moves. It **scrapes** —
+  grinding crust off against the columns — so *fresh scrape-sign means the
+  giant is near*: the tell that lets the observant survive. And in the murk,
+  the base sheet's one-saturated-mark rule turns to dread: **you see the
+  mate-mark's glow before you see anything else** — one point of impossible
+  color approaching through the grey.
+- ⭐ **The ossuary shrimp** (owner): **a man-sized, skeletal-seeming shrimp,
+  moving along picking at everything it can — strangely intelligent and
+  nimble, but shy and evasive.** The undertaker racing the geology: it works
+  the freshly dead in the narrow window before the minerals take them, and
+  it has watched every diver who ever came down here from two pillars away.
+  It is never caught in the open, never fights, and remembers. (Solitary,
+  single-spawn, per the inherited bans.)
+
+*[+2026-09-26] Built as of this date (MEASURED by BENCH, content doc §0): the floor
+is the pocket map `RM_SeaDiveGenerator_GreySea` reading its cast off `RM_GreySea`'s
+`<wildAnimals>`; the anchor cast ships as `RM_Reefback` (the crusted giant),
+`RM_Fessk` (**this IS the ossuary shrimp**), plus `RM_Otheska`, `RM_Sorruth`,
+`RM_Essarn`; nine `fishTypes`. The pillar exists in no def yet, though four
+descriptions name it.* *(Stale by 2026-09-27: the pillars now ship —
+
+--- src/RimMandrake/Miasma/Defs/ThingDefs_Races/RM_WardenMother.xml lines 1-53 sha256=6d225577f44de6a982de84ad815af9d830bdeabb3330a8b674741ae706ee551b ---
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_WardenMother.xml   Miasma - WARDEN_MOTHER_BEFRIENDING_1
+
+  The Miasma's centrepiece giant, ruled by the owner 2026-09-23
+  (miasma_fauna_roster_2026-09-23.md §6): "a not-so-gentle giant who can be
+  befriended when its young call out for it and get stuck... able to lumber
+  along in the water... but cannot get on dry land." Franchise-free per Q11a
+  and SEA_BEASTS_TIER_RULING_1 — she is invented, not canon, so RM_ (the
+  earlier RUT_WardenMother name in RM_CompTerritorialAnchor.cs's own header
+  comment was always wrong for this reason, per that file's own retraction).
+
+  Spawned exclusively via RM_GenStep_CrecheScatterer
+  (Defs/MapGeneration/RM_Miasma_CrecheScatterer.xml, RM_GenStep_PlacedSetPieces),
+  never via <wildAnimals> — zero biome wild-spawn commonality, matching the
+  already-shipped GenStep's own "the GenStep is their only entry" posture.
+  That GenStep's own validator (RM_ScattererValidator_BrineShallowWater)
+  places her crèche site on brine-side shallow water, and
+  RM_SetPieceElement_AnchoredPawn's SetAnchor() call anchors her to the
+  RM_CrecheMarker placed at that same site — "her crèche is in the
+  shallows" is therefore true by construction, not by a separate mechanism.
+
+  bodySize 8: bigger than the evicted AA_OvergrownColossus (6, cast_assignment.csv)
+  per "the giant lane here is owned by warden mothers... a random giant
+  dilutes them" (item's own Watch-out), smaller than the whale-scale
+  RM_Reefback (32, TerminalBiomes/RM_SeaBeasts_Invented.xml) since she is an
+  amphibious melee predator, not a leviathan drifting the open sea.
+  INVENTED-BUILD figure, no size named by the roster beyond "enormous."
+
+  waterSeeker + waterCellCost 1: real vanilla RaceProperties fields
+  (Verse/RaceProperties.cs, used identically by every Odyssey coastal/sea
+  creature and this repo's own RM_Reefback) that bias the normal pathfinder
+  toward water for this race — a genuine, low-risk, zero-new-code nudge
+  layered under the three water-only pieces in RM_CompWaterLocked.cs's own
+  header (wander validator / target validator / tick backstop). It does NOT
+  by itself make land impassable; MEASURED against the decompiled engine
+  before writing this (Source/Verse/AI/Pawn_PathFollower.cs:739,
+  Source/Verse/PathFinderCostTuning.cs:47) — it only ever discounts the cost
+  of a water cell, never inflates a land cell's.
+
+  Wildness 1.0 (same convention as every SEA_BEASTS_TIER_RULING_1 creature,
+  RM_Reefback included): "she is never tamed" per the roster's own repeated
+  ⛔. disableMating true, predator/canBePredatorPrey false: she is a set-piece
+  defender anchored to one site, not part of the map's ordinary food web —
+  same posture as RM_Reefback's own reasoning, reused rather than re-derived.
+
+  lifeExpectancy 45 (INVENTED-BUILD; the roster's §6a rules "she dies of age,
+  foreshadowed hard from the first day" but names no figure) is deliberately
+  short for a creature this size, so a colony that raises her stranded young
+  across a normal campaign has a real chance of outliving her — the
+  succession payoff (§6a) depends on that. Full succession-on-death (the
+  young inheriting the crèche) and the UX foreshadowing (slowing
+  measurably, an NPC who tells you) are NOT built here — filed as
+
+--- whittle/ht-reefback-calf/evidence/raw/measure/snapshots/the_miasma-selected.json sha256=8cb8fff377e18a9115f90b4b29458620cb6e348557c20578f7d144ed094317bb ---
+{
+  "confidence": [
+    {
+      "claim": "warden lifecycle stages",
+      "status": "UNMEASURED",
+      "why": "register carries no life stages; the whole R11 arc is def-authoring, not stat-verified"
+    }
+  ],
+  "defNames": [],
+  "evictions": [
+    {
+      "def": "AA_OvergrownColossus",
+      "disposition": "homeless-reserve",
+      "reason": "the giant lane here is owned by warden mothers (placed set-pieces, §4) — a random giant dilutes them"
+    }
+  ],
+  "fauna": [
+    {
+      "action": "import",
+      "band": "nursery",
+      "commonality": 0.4,
+      "def": "RSW_MeeJuv",
+      "law": "R11 + §4 the nursery — the Grey Sea's roster breeds here; juveniles swarm the shallows"
+    },
+    {
+      "action": "import",
+      "band": "nursery",
+      "commonality": 0.3,
+      "def": "RSW_FaaJuv",
+      "law": "R11 nursery ring"
+    },
+    {
+      "action": "import",
+      "band": "nursery",
+      "commonality": 0.3,
+      "def": "RSW_LaaJuv",
+      "law": "R11 nursery ring"
+    },
+    {
+      "action": "import",
+      "band": "nursery",
+      "commonality": 0.3,
+      "def": "RSW_YobshrimpJuv",
+      "law": "R11 nursery — the pale young of the brine line"
+    },
+    {
+      "action": "import",
+      "band": "nursery",
+      "commonality": 0.25,
+      "def": "RSW_SiltLampreyJuv",
+      "law": "R11 nursery; silt-working juvenile"
+    },
+    {
+      "action": "import",
+      "band": "nursery",
+      "commonality": 0.25,
+      "def": "RM_RustNipperJuv",
+      "law": "R11 nursery; Miasma sheet 2026-10-08 (owner): \"not SW tier\" — the row names the RM_ def RM_RustNipperJuv (mandrake.rm.terminalbiomes, already cast in RM_Miasma.xml since SEA_BEASTS_TIER_RULING_1)"
+    },
+    {
+      "action": "import",
+      "band": "nursery-guard",
+      "commonality": 0.05,
+      "def": "RSW_OpeeSeaKillerJuv",
+      "law": "R11 — a sub-adult lingering at the crèche mouths; 'don't kill what's small here' (§4)"
+    }
+  ],
+  "flora": [],
+  "flora_purged": [],
+  "law_sources": [
+    "sea_beasts_roster.md (nursery pairing)"
+  ],
+  "new_defs": [
+    {
+      "from_sheet": "the_miasma §4 / R11",
+      "kind": "creature",
+      "mechanic_load": "C#: placed set-piece, never random spawn (§4); R11 lifecycle end-stage",
+      "name": "warden mother (brine-broken elder, crèche guard)"
+    }
+  ],
+  "stat_adjustments": [],
+  "notes": "Donor animalDensity 6.5 is doctrine — record density as refugee CROWDING, so this roster stays deliberately thick. Three rings staffed: nursery (Grey Sea juveniles, R11), warden mothers (placed set-pieces, NEVER wildAnimals rows — new_defs), the stranded (new_defs). R11 lifecycle: wardens breed and are born here, adults live in the Grey Sea, elders return as crèche-guarding mothers — the wild roster carries only the YOUNG side; the adult rides the Grey Sea/terminator sheets.\nMiasma sheet 2026-10-08 (owner): RM_SiltLampreyJuv (cast inline in RM_Miasma.xml, def in mandrake.rm.terminalbiomes) renamed gillclamper, description rewritten: The young of the silt lamprey, raised in the Miasma's warm stranding pools before the open sea takes it. A gillclamper is a finger-thick, eel-slick body behind a sucker of hooked rasps, which it fixes into the gill-slits of other young fish and feeds from while they swim. It has not yet grown the adult's full round maw; for now it latches on, clamps tight, and lets its host do the travelling."
+}
+
+
+--- whittle/ht-reefback-calf/evidence/raw/measure/snapshots/the_grey_sea-selected.json sha256=c576db4d460922e5d9910be25bb760d9685c4e249995aafd8c22ef9cd462b6fb ---
+{
+  "confidence": [
+    {
+      "claim": "warden adult ↔ Miasma crèche route",
+      "status": "open",
+      "why": "R11's 'Owed: a stated route between the Miasma delta and the Grey Deep' is still owed; R24a measured the biomes touching at arc 70-75, so the route is physically possible"
+    }
+  ],
+  "defNames": [],
+  "evictions": [],
+  "fauna": [
+    {
+      "action": "import",
+      "band": "endemic giant — single-spawn, the warden ADULT",
+      "commonality": 0.005,
+      "def": "RSW_Reefback",
+      "law": "terminator_sea §4 (endemic giant, one per sea, no sharing); the_grey_deep §4: the crusted giant — the endemic lineage, ill-tempered, mineral-armored; R11: warden adults spend their centuries in the Grey Deep as the brine adults; bs 32, spd 2.0, non-predator, manhunter-on-hurt 50% (MEASURED)",
+      "note": "This is the warden lifecycle's ADULT side only — they breed and die in the Miasma (R11); the crèche/mothers side is the Miasma roster (parallel agent). Manhunter-on-hurt carries the ill-tempered read. BUILT: ships as RM_Reefback at 0.005 on RM_GreySea (MEASURED 2026-09-27)."
+    }
+  ],
+  "flora": [],
+  "flora_purged": [],
+  "law_sources": [],
+  "new_defs": [
+    {
+      "from_sheet": "the_grey_deep §4 + R11",
+      "kind": "creature",
+      "mechanic_load": "done",
+      "name": "the crusted giant ships as RM_Reefback (the old RSW_ rename-ledger row is executed); its lamp response is RULED DETERMINISTIC AND FORGIVING (Q12, 2026-09-27): worklight-class only, hours of burn, telegraphed, dowsing always resets"
+    }
+  ],
+  "stat_adjustments": [],
+  "notes": null
+}
+
+
+--- Exact current biome wiring ---
+RM_Miasma wildAnimals/RM_ReefbackJuv=0.15; nursery siblings=0.25; strandedSpawnList includes RM_ReefbackJuv. Acoustic patch RM_AcousticPayload_Miasma.xml defNames includes RM_ReefbackJuv. RM_GreySea wildAnimals/RM_Reefback=0.005. These are relative draw weights, not percentages or observed frequencies. Source snapshots/hashes are retained in raw/measure/selected-source.xml and inputs.json. The Miasma roster JSON records the nursery lifecycle but its older enumerated nursery list does not explicitly contain the later RM_ReefbackJuv addition. Grey Sea older RSW_Reefback row explicitly says built as RM_Reefback; this is a documented alias, not inferred absence.
+
+--- Patch audit selected facts ---
+474 repository patch XML files inspected with explicit selected fields and all selectors retained. Size/stage modifiers target Gizka, Zakkeg or Ikee, not Reefback/Core stages. Reefback-specific source patches adjust temperature tolerance, MeatAmount/BoneAmount or acoustic payload; none changes baseBodySize, stage factor/list, tier floors or forceEnabled for these races. This does not certify an arbitrary external mod stack or saved settings. One repository Pawn.BodySize postfix in TheForge scales registered Dhoggur pawns; reefbacks have no Dhoggur comp in their resolved XML.
+
+--- src/RimMandrake/HugeThings/Source/Titanic/Tiering/TitanicTierUtility.cs sha256=9d51b6d57730218f4ef523be88bd61f7d621b55b7b9544971fdf7f532e0563de ---
+using System.Linq;
+using RimWorld;
+using Verse;
+using RimMandrake.HugeThings;
+
+namespace RimMandrake.TitanicCreatures
+{
+    /// <summary>
+    /// The one place tier is computed. Everything else in the mod (comp
+    /// auto-attach, the wake processor, the yield curve, the corpse-site
+    /// conversion, LargePawnsBridge) calls through here rather than reading
+    /// bodySize or the modExtension itself, so the auto-attach rule and the
+    /// runtime tier can never drift apart.
+    /// </summary>
+    public static class TitanicTierUtility
+    {
+        private static RM_TitanicTierDef cachedThresholds;
+        private static readonly RM_TitanicTierDef customThresholds = new RM_TitanicTierDef { defName = "RM_TitanicTiers_ModSettings" };
+
+        /// <summary>
+        /// The ladder in force: the player's custom tiers (Mod Settings, giant animals on, custom tiers on, and strictly rising),
+        /// else the shipped RM_TitanicTierDef. Which races carry the wake comp and the Large Pawns rows are decided from this at
+        /// startup, so a change that moves a race across T1 needs a restart (the settings label says so); runtime tiers follow
+        /// it at once.
+        /// </summary>
+        public static RM_TitanicTierDef Thresholds
+        {
+            get
+            {
+                if (RM_HugeThingsSettings.TierThresholdsCustomActive
+                    && RM_TitanicKernel.ThresholdsValid(RM_HugeThingsSettings.tierT1MinBodySize, RM_HugeThingsSettings.tierT2MinBodySize,
+                                                        RM_HugeThingsSettings.tierT3MinBodySize))
+                {
+                    customThresholds.t1MinBodySize = RM_HugeThingsSettings.tierT1MinBodySize;
+                    customThresholds.t2MinBodySize = RM_HugeThingsSettings.tierT2MinBodySize;
+                    customThresholds.t3MinBodySize = RM_HugeThingsSettings.tierT3MinBodySize;
+                    return customThresholds;
+                }
+                return ShippedThresholds;
+            }
+        }
+
+        /// <summary>The shipped ladder, Defs/TitanicTierDefs/RM_TitanicTierDef.xml.</summary>
+        public static RM_TitanicTierDef ShippedThresholds
+        {
+            get
+            {
+                if (cachedThresholds == null)
+                {
+                    cachedThresholds = DefDatabase<RM_TitanicTierDef>.AllDefsListForReading.FirstOrDefault();
+                    if (cachedThresholds == null)
+                    {
+                        Log.Error("[RimMandrake.TitanicCreatures] No RM_TitanicTierDef found - " +
+                                  "Defs/TitanicTierDefs/RM_TitanicTierDef.xml is missing or failed to " +
+                                  "load. Falling back to hardcoded defaults (4/8/20); fix the XML.");
+                        cachedThresholds = new RM_TitanicTierDef();
+                    }
+                }
+                return cachedThresholds;
+            }
+        }
+
+        /// <summary>RM_TitanicExtension.forceEnabled as the kernel's tri-state.</summary>
+        public static int ForceOf(RM_TitanicExtension ext)
+        {
+            if (ext == null || ext.forceEnabled == null) return RM_TitanicKernel.ForceAuto;
+            return ext.forceEnabled == true ? RM_TitanicKernel.ForceIn : RM_TitanicKernel.ForceOut;
+        }
+
+        /// <summary>
+        /// Def-level qualification check: could ANY pawn of this race ever be
+        /// tiered? Used only to decide whether to auto-attach CompTitanicWake
+        /// at def-load time (a lifestage/gene swelling a borderline race past
+        /// the floor at runtime must not require the comp to already be
+        /// present, so this checks the race's base bodySize, not any one
+        /// pawn's current BodySize).
+        /// </summary>
+        public static bool DefQualifies(ThingDef raceDef)
+        {
+            if (raceDef?.race == null)
+            {
+                return false;
+            }
+            // TITAN_WAKE_FIXES_1 (B3.18 / C3.4): Pawn.BodySize = CurLifeStage.bodySizeFactor * baseBodySize, so qualify on the base times
+            // the largest life-stage factor; a race whose adult stage swells past T1 must carry the comp from the start.
+            float maxFactor = 1f;
+            if (raceDef.race.lifeStageAges != null)
+                foreach (LifeStageAge a in raceDef.race.lifeStageAges)
+                    if (a?.def != null && a.def.bodySizeFactor > maxFactor) maxFactor = a.def.bodySizeFactor;
+            return RM_TitanicKernel.DefQualifies(raceDef.race.baseBodySize, maxFactor, Thresholds.t1MinBodySize,
+                ForceOf(raceDef.GetModExtension<RM_TitanicExtension>()));
+        }
+
+        /// <summary>TITAN_CAMPS_SCAVENGERS_EVENTS_1: the tier a race's grown adult reaches (base size times its largest life-stage
+        /// factor) - what decides whether a race is a titan for the titan event and a non-titan for the scavenger draw.</summary>
+        public static TitanicTier AdultTier(ThingDef raceDef)
+        {
+            if (raceDef?.race == null) return TitanicTier.None;
+            float maxFactor = 1f;
+            if (raceDef.race.lifeStageAges != null)
+                foreach (LifeStageAge a in raceDef.race.lifeStageAges)
+                    if (a?.def != null && a.def.bodySizeFactor > maxFactor) maxFactor = a.def.bodySizeFactor;
+            RM_TitanicTierDef t = Thresholds;
+            return (TitanicTier)RM_TitanicKernel.TierFor(raceDef.race.baseBodySize * maxFactor, t.t1MinBodySize, t.t2MinBodySize,
+                t.t3MinBodySize, ForceOf(raceDef.GetModExtension<RM_TitanicExtension>()));
+        }
+
+        /// <summary>
+        /// The runtime tier for one pawn right now - the authority every
+        /// other system in this mod reads.
+        /// </summary>
+        public static TitanicTier GetTier(Pawn pawn)
+        {
+            if (pawn?.RaceProps == null)
+            {
+                return TitanicTier.None;
+            }
+            // Pawn.BodySize = lifestage.bodySizeFactor * RaceProps.baseBodySize
+            // (Verse/Pawn.cs). OPEN QUESTION (flagged, not guessed): whether any
+            // gene StatDef offsets a separate "BodySize" stat outside this
+            // formula is unconfirmed - if a future gene needs to move a pawn
+            // between tiers independently of RaceProps/lifestage, that stat
+            // must be found and read here rather than assumed absent.
+            RM_TitanicTierDef t = Thresholds;
+            return (TitanicTier)RM_TitanicKernel.TierFor(pawn.BodySize, t.t1MinBodySize, t.t2MinBodySize, t.t3MinBodySize,
+                ForceOf(pawn.def.GetModExtension<RM_TitanicExtension>()));
+        }
+    }
+}
+
+
+--- src/RimMandrake/HugeThings/Source/Kernel/RM_TitanicKernel.cs sha256=f1b87ad1ffdccaf95b75a207f68f9b788fdd962ed18709901043a25d7fadcd18 ---
+        /// <summary>Runtime tier of one pawn: bodySize ladder, force-out wins, force-in floors at T1.</summary>
+        public static int TierFor(float bodySize, float t1, float t2, float t3, int force)
+        {
+            if (force == ForceOut) return None;
+            int tier;
+            if (bodySize >= t3) tier = T3;
+            else if (bodySize >= t2) tier = T2;
+            else if (bodySize >= t1) tier = T1;
+            else tier = None;
+            if (tier == None && force == ForceIn) tier = T1;
+            return tier;
+        }
+
+
+
+--- Engine metadata and limits ---
+Installed Source contains samples only and historical decompile paths are absent. Reflection-only IL was read from the installed Assembly-CSharp.dll without executing it. Pawn.BodySize IL loads CurLifeStage.bodySizeFactor and RaceProps.baseBodySize, multiplies and returns. LifeStageDef constructor sets factor=1 (AnimalAdult omits it). XmlInheritance clears parent children for Inherit=False; otherwise li elements append. Animal age tracker selects last eligible list entry from growth mapped to final minAge with 1e-6 tolerance; initial growth=Clamp01(age/final minAge). No running pawn, rendered appearance, actual passage event, ecological frequency, combat, migration or age-to-species conversion was observed. The young race only supports baby/juvenile, even at late ages. Early stages in RM_Reefback itself have the same body factors as the juvenile proxy. Mother elder body size is 8, smaller than proxy juvenile 16; this mismatch is supplied for independent judgment, not hidden.

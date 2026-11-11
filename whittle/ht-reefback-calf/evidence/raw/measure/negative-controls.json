@@ -1,0 +1,32 @@
+{
+  "missing_InheritFalse": {
+    "mutated_stage_names": [
+      "AnimalBaby",
+      "AnimalJuvenile",
+      "AnimalAdult",
+      "AnimalBaby",
+      "AnimalJuvenile"
+    ],
+    "mutated_kind_count": 5,
+    "shape_oracle_rejects": true,
+    "note": "Appending leaves an unsorted five-entry list. Reverse selection can shadow the inherited adult; this control proves list replacement, not an automatic T3 transition."
+  },
+  "base_only_oracle": {
+    "wrong_size": 32,
+    "wrong_tier": 3,
+    "supported_sizes": [
+      6.400000095367432,
+      16.0
+    ],
+    "rejected": true
+  },
+  "inherited_same_list_fixture": {
+    "parent_and_child_stage_names": [
+      "AnimalBaby",
+      "AnimalJuvenile"
+    ],
+    "without_InheritFalse_count": 4,
+    "with_InheritFalse_count": 2,
+    "rejected_without_replacement": true
+  }
+}

@@ -1,0 +1,15 @@
+REEFBACK_CALF_MEASURE_TITAN_ON_LAND   doing  row -  needs offline  target v1
+RM_ReefbackJuv (young reefback) has body size 32 and sits on RM_Miasma at commonality 0.15: a calf at adult size is tier 3 by size on a common land row. Decide whether the calf should be smaller, and whether Miasma should keep drawing it. Found by UNUSED_PORTS_MEASURE_WHAT_NOBODY_NEEDS in the 2026-11-02 def dump.
+owner CODEX_STEVEDESKTOP_HUGETHINGS   kind task   filed 2026-11-03T21:52:08Z
+
+--- items/REEFBACK_CALF_MEASURE_TITAN_ON_LAND.md ---
+(absent or has no ## sections)
+--- history (6 events) ---
+  2026-11-03T21:52:08Z  BENCH  file      for=BENCH kind=task needs=offline role_unit=rm-detached-bench-unused-ports-measure-what-nobody-needs-1793741449 target=v1 title=RM_ReefbackJuv (young reefback) has body size 32 and sits on RM_Miasma at commonality 0.15: a calf at adult size is tier 3 by size on a common land row. Decide whether the calf should be smaller, and whether Miasma should keep drawing it. Found by UNUSED_PORTS_MEASURE_WHAT_NOBODY_NEEDS in the 2026-11-02 def dump. tsn=1793742728179328699  | agent's reason: survey side finding; not a port
+  2026-11-11T14:03:32Z  CODEX_STEVEDESKTOP_HUGETHINGS reassign  to=CODEX_STEVEDESKTOP_HUGETHINGS tsn=1794405812873871043  | agent's reason: Conductor order 2026-11-11 worker identity
+  2026-11-11T14:03:37Z  CODEX_STEVEDESKTOP_HUGETHINGS lease     action=take expires=2026-11-11T14:48:37Z token=CODEX_STEVEDESKTOP_HUGETHINGS.pid28692.df4c866c tsn=1794405819612917379  | agent's reason: Conductor order 2026-11-11 HugeThings drain
+  2026-11-11T14:03:41Z  CODEX_STEVEDESKTOP_HUGETHINGS claim     tsn=1794405821413434573  | agent's reason: Conductor order 2026-11-11 HugeThings drain
+  2026-11-11T14:03:43Z  CODEX_STEVEDESKTOP_HUGETHINGS start     tsn=1794405823207583340  | agent's reason: Conductor order 2026-11-11 HugeThings drain
+  2026-11-11T14:03:49Z  CODEX_STEVEDESKTOP_HUGETHINGS start     tsn=1794405829770402329  | agent's reason: Conductor order 2026-11-11 HugeThings drain
+--- causal chain ---
+  (none — this item stands on its own)

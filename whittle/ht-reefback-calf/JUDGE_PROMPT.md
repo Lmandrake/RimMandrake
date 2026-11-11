@@ -1,0 +1,14 @@
+Fresh independent Codex judgment for REEFBACK_CALF_MEASURE_TITAN_ON_LAND in /home/mandrake/rm/codex-ht. You did not make this work. Read only the allowlist below; do not browse/list the Whittle directory. Do not read builder verdicts/conclusions or prior judgments. Source /home/mandrake/rm/runner/infrastructure/stevedesktop/testcentre_env.sh in each shell and export the three seat variables RIMFLOW_SEAT, AGENT_SEAT, RIMFLOW_BRIDGE_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS, carried through WSLENV. No live/game/bridge/deployment, commits, ledger, network or other-clone access. Only write whittle/ht-reefback-calf/JUDGE.md. Bounded read-only verification allowed.
+
+Allowed inputs:
+- whittle/ht-reefback-calf/STATEMENT.md and NOTES.md.
+- whittle/ht-reefback-calf/evidence/item-before.txt.
+- All files under whittle/ht-reefback-calf/evidence/raw/ only. These must be source snapshots, raw measurements/test processes, hashes and fixtures, not builder reports. Re-derive results yourself rather than trusting pass labels.
+- whittle/ht-reefback-calf/evidence/design_prompt.txt and design_raw.json ONLY: independent delegated design response. Consider its reasoning; it cannot substitute for evidence. Do not read BROADEN or decision doc.
+- Source XML/C#/Python under src/ and tools/, core game defs/archive and source under /mnt/d/SteamLibrary/steamapps/common/RimWorld/, CLAUDE.md, CHARTER, GIT_WORKFLOW, delegation_policy, design/Jawa/worldbuilding/biomes/the_miasma.md, the_grey_sea.md and their roster JSON files, plus relevant other Miasma/GreySea source/specs needed to trace established lifecycle/aliases. No other HugeThings review/coordination prose.
+
+Forbidden: all unlisted files, directory-wide Whittle discovery, DONE/BROADEN/FINDINGS/PROGRESS/PROMPT, design/.../REEFBACK_CALF_DECISION.md, parent summaries, prior judge logs/verdicts, handoffs, other clones. If allowlist breached stop with would show:no; do not accept your own assurance after contamination.
+
+For each exact frozen bullet true/false/cannot tell with raw source/evidence citations. Check inherited list replacement, actual Core stage factors, all patches affecting selected fields, Pawn.BodySize consumer, effective baby/juvenile versus adult, default HugeThings tiers and distinct AdultTier classifier. Does original T3/adult-size assertion survive measurement? Is smaller/keep and Miasma retention/removal decided and consistent with nursery and stopped evictions? Check independent design basis and negative controls. Offline source evidence must remain offline; no live/DLL/deploy/flight/art/first-touch claim. Missing runtime measurement is not a defect for this explicitly offline task, but must not be relabeled runtime proof. If genuine gameplay bug is discovered do not let a decision doc dismiss it silently.
+
+Last nonempty line exactly "would show: yes" or "would show: no".

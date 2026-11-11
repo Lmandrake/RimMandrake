@@ -1,0 +1,14 @@
+{
+  "source": "infrastructure/state/ledger/events/OWNER.jsonl",
+  "source_sha256": "eae6ff40f4db75f38071082ae3d339de0fab4dde346b03c29817d1d96c859274",
+  "event": {
+    "seat": "OWNER",
+    "event": "note",
+    "id": "TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT",
+    "text": "Ruled 2026-10-21. Implemented 1a104682f: juveniles stay (adult tier); sea creature (homed only in water/seabed biomes) only on sea maps and land giants only on land; pool = map biome's RM_TitanPassageExtension passers list when present, else the biome's own roster (replaces card #5's homed-elsewhere rule); extension 'none' opts a biome out. Rust Cathedral and the nightside biomes home no titan, so they host no passage without any opt-out; per-biome roster work filed as TITAN_PASSAGE_POPULATE_* items.",
+    "ownerSaid": "Calves are ok. Sea creatures are not on dry land. Opposite can happen in sea biomes. Only sea creatures not land creatures. Every biome should have something like this. It's Star Wars. A few exceptions such as rust cathedral and dark side biomes. Only if giants can exist there. Should draw from the hints of their own biome always of course.",
+    "byCard": "Titan passage pool: sea/juvenile kinds → his notes",
+    "ts": "2026-10-21T21:43:03Z",
+    "tsn": 1792618983088247673
+  }
+}

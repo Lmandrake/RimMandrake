@@ -1,0 +1,8 @@
+Exception calling "GetType" with "2" argument(s): "Could not load type 'Verse.LifeStageDef' from assembly 
+'Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null'."
+At \\wsl.localhost\Ubuntu\home\mandrake\rm\codex-ht\whittle\ht-reefback-calf\evidence\read_engine.ps1:23 char:2
++  $t=$assembly.GetType($typeName,$true)
++  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : TypeLoadException
+ 
