@@ -1,0 +1,33 @@
+{
+  "mode": "reproduce",
+  "command": [
+    "/mnt/c/Users/Mandrake/.dotnet/dotnet.exe",
+    "run",
+    "--project",
+    "D:\\ClaudeWork\\rimmandrake\\scratch\\fw-hose-isolation\\reproduce\\Probe.csproj",
+    "-c",
+    "Release"
+  ],
+  "stage": "/mnt/d/ClaudeWork/rimmandrake/scratch/fw-hose-isolation/reproduce",
+  "started": 1794391483.5157564,
+  "elapsed": 2.009662389755249,
+  "returncode": 1,
+  "source_sha256": {
+    "src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidNetKernel.cs": "738d600b5db245bb9c1938920bb40c24c6bccd761c5bca15f8c16ef166e1593d",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/HoseNetChecks.cs": "c5d0cc489f0f9837ddd248a2d0dc370e055d3c4d7efe8310baff16e9929345da"
+  },
+  "staged_sha256": {
+    "Kernel.cs": "738d600b5db245bb9c1938920bb40c24c6bccd761c5bca15f8c16ef166e1593d",
+    "HoseNetChecks.cs": "c5d0cc489f0f9837ddd248a2d0dc370e055d3c4d7efe8310baff16e9929345da",
+    "Program.cs": "6e13ff9e2e071d4b5b9fa5c0919be0133ad683d231112e531c856aa756e6522b",
+    "Probe.csproj": "8ae67106915a71a43a83d0c153adc5b2dd0d6cedb57f275fda0aa40955b0bbfb"
+  },
+  "evidence_sha256": {
+    "Kernel.cs": "738d600b5db245bb9c1938920bb40c24c6bccd761c5bca15f8c16ef166e1593d",
+    "HoseNetChecks.cs": "c5d0cc489f0f9837ddd248a2d0dc370e055d3c4d7efe8310baff16e9929345da",
+    "Program.cs": "6e13ff9e2e071d4b5b9fa5c0919be0133ad683d231112e531c856aa756e6522b",
+    "Probe.csproj": "8ae67106915a71a43a83d0c153adc5b2dd0d6cedb57f275fda0aa40955b0bbfb"
+  },
+  "expected_returncode": 1,
+  "staged_inputs_match_saved": true
+}

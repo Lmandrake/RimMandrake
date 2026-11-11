@@ -1,0 +1,17 @@
+--- actual_source
++++ tank_conduction
+@@ -371,7 +371,13 @@
+                 }
+                 if (g.RoleOf(v) == RM_NetRole.Pipe)
+                 {
+-                    foreach (object t in g.PipeTanks(v)) { AttachMember(comp, t, i, comp.Tanks); st?.Add(new Step { Kind = 0, Obj = t }); }
++                    foreach (object t in g.PipeTanks(v))
++                    {
++                        AttachMember(comp, t, i, comp.Tanks); st?.Add(new Step { Kind = 0, Obj = t });
++                        // MUTANT ONLY: traverse across a tank into all its attached pipe runs.
++                        foreach (object n in g.OriginPipeCells(t))
++                        { Visit(comp, n, i, q); st?.Add(new Step { Kind = 3, Obj = n }); }
++                    }
+                     foreach (object m in g.PipeMachines(v)) { AttachMember(comp, m, i, comp.Machines); st?.Add(new Step { Kind = 1, Obj = m }); }
+                     foreach (object n in g.PipeNeighbours(v)) { Visit(comp, n, i, q); st?.Add(new Step { Kind = 3, Obj = n }); }
+                 }

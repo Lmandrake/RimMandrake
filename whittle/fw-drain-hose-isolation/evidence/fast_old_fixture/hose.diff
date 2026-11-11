@@ -1,0 +1,23 @@
+--- actual_source
++++ old_fixture
+@@ -175,15 +175,15 @@
+                   "pump -hose-> T and pump-at-far-end -hose-> T both reach T, and stop there");
+             // two separate pipe runs touching the same tank never merge through it
+             var g3 = new G();
+-            G.Add(g3.PipeOf, "P1", "cA1");
+-            G.Add(g3.PT, "cA1", "T");
+-            G.Add(g3.PT, "cB1", "T");
+-            G.Add(g3.PT, "cB1", "TV");
++            G.Add(g3.PipeOf, "P1", "a1");
++            G.Add(g3.PT, "a1", "T");
++            G.Add(g3.PT, "b1", "T");
++            G.Add(g3.PT, "b1", "TV");
+             RM_NetResult r3 = Walk(g3, "P1");
+             Check(Tanks(r3).SequenceEqual(new[] { "T" }) && Route(r3, "T") == "",
+                   "two pipe runs touching one tank stay two nets: pump reaches T over pipe, never TV");
+             var c3 = new RM_NetComponents(g3);
+-            RM_NetComponent near = c3.ComponentOfNode("cA1"), far = c3.ComponentOfNode("cB1");
++            RM_NetComponent near = c3.ComponentOfNode("a1"), far = c3.ComponentOfNode("b1");
+             Check(near != null && far != null && near != far && near.Tanks.Contains("T") && far.Tanks.Contains("T")
+                   && far.Tanks.Contains("TV") && !near.Tanks.Contains("TV") && c3.ComponentsOf("T").Count == 2,
+                   "can-fail: both pipe runs exist, T attaches to both, TV only to the far run");

@@ -1,0 +1,39 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/Utils/run_selftests.py",
+    "--only",
+    "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+    "--workers",
+    "1"
+  ],
+  "observer_argv": [
+    "/home/mandrake/.seat-tmp/fw-two-stray-tools/usr/bin/strace",
+    "-f",
+    "-ttt",
+    "--trace=write",
+    "--trace-fds=1,2",
+    "-s",
+    "2000000",
+    "-E",
+    "LD_LIBRARY_PATH",
+    "-o",
+    "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-hose-isolation/evidence/selftest_writes.strace",
+    "python3",
+    "src/RimMandrake/Utils/run_selftests.py",
+    "--only",
+    "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+    "--workers",
+    "1"
+  ],
+  "observer_sha256": "f47342683309e807bca57d6d89b82f94a9b39aa614e9c28c2b67cefbc35eee58",
+  "started": 1794391642.1777885,
+  "tested_HEAD": "40f1b06c765e73e7f19b03e86cfe8c0bef3d817c",
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-hose-isolation",
+  "RIMWORLD_DECOMPILED": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\scratch\\BENCH\\fw-drain\\whittle\\fw-drain-selftest-resume\\evidence\\reference",
+  "WSLENV": "WT_SESSION:WT_PROFILE_ID::RIMWORLD_DECOMPILED",
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "timeout_seconds": 1260,
+  "purpose": "Capture stdout writes discarded by the runner on PASS; external observation only; full FlowWorks/GSS and tool inputs hashed",
+  "pid": 205297
+}

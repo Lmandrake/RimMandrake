@@ -1,0 +1,4 @@
+MEASURED roles a1=None b1=None tanks=[]
+PASS OLD exclusion passes with no recognized pipes
+FAIL REPAIRED reach-T-and-exclude-TV assertion on OLD fixture
+FAILED checks: 1

@@ -1,0 +1,31 @@
+diff --git a/src/RimMandrake/FlowWorks/Source/SelfTest/HoseNetChecks.cs b/src/RimMandrake/FlowWorks/Source/SelfTest/HoseNetChecks.cs
+index cd6290a295..8b46abd497 100644
+--- a/src/RimMandrake/FlowWorks/Source/SelfTest/HoseNetChecks.cs
++++ b/src/RimMandrake/FlowWorks/Source/SelfTest/HoseNetChecks.cs
+@@ -173,13 +173,20 @@ namespace RimMandrake.FlowWorks.SelfTest
+             g2.Hose("T", "P2", "y");
+             Check(Tanks(Walk(g2, "P1")).SequenceEqual(new[] { "T" }) && Tanks(Walk(g2, "P2")).SequenceEqual(new[] { "T" }),
+                   "pump -hose-> T and pump-at-far-end -hose-> T both reach T, and stop there");
+-            // two pipe runs never merge through a tank, even with a hose screwed onto it
++            // two separate pipe runs touching the same tank never merge through it
+             var g3 = new G();
+-            G.Add(g3.PipeOf, "P1", "a1");
+-            G.Add(g3.PT, "a1", "T");
+-            G.Add(g3.PT, "b1", "T");
+-            G.Add(g3.PT, "b1", "TV");
+-            Check(!Tanks(Walk(g3, "P1")).Contains("TV"), "two pipe runs touching one tank stay two nets");
++            G.Add(g3.PipeOf, "P1", "cA1");
++            G.Add(g3.PT, "cA1", "T");
++            G.Add(g3.PT, "cB1", "T");
++            G.Add(g3.PT, "cB1", "TV");
++            RM_NetResult r3 = Walk(g3, "P1");
++            Check(Tanks(r3).SequenceEqual(new[] { "T" }) && Route(r3, "T") == "",
++                  "two pipe runs touching one tank stay two nets: pump reaches T over pipe, never TV");
++            var c3 = new RM_NetComponents(g3);
++            RM_NetComponent near = c3.ComponentOfNode("cA1"), far = c3.ComponentOfNode("cB1");
++            Check(near != null && far != null && near != far && near.Tanks.Contains("T") && far.Tanks.Contains("T")
++                  && far.Tanks.Contains("TV") && !near.Tanks.Contains("TV") && c3.ComponentsOf("T").Count == 2,
++                  "can-fail: both pipe runs exist, T attaches to both, TV only to the far run");
+             // rev 2 §3.1: tank-hose-tank is one component, so T's OWN store holds TU (route = that hose), while the pump's does not
+             RM_NetResult rt = Walk(g, "T");
+             Check(Tanks(rt).SequenceEqual(new[] { "TU" }) && Route(rt, "TU") == "TU", "tank-hose-tank: T's store is TU over the hose; T is never in its own store");

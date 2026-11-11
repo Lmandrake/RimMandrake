@@ -1,0 +1,14 @@
+{
+  "time": 1794392257.9983299,
+  "WHITTLE_DIR": "whittle/fw-drain-hose-isolation",
+  "need_judge": true,
+  "need_broaden": true,
+  "last_change": 1794391608.8928912,
+  "done_problems": [
+    "No judge's verdict newer than DONE.md and the evidence. Spawn a fresh subagent (not a fork) with whittle/fw-drain-hose-isolation/JUDGE_PROMPT.md as its whole brief. It writes whittle/fw-drain-hose-isolation/JUDGE.md."
+  ],
+  "full_validator": "MandrakeWorkflows/whittle/run.py validate(root)",
+  "full_validator_returncode": 1,
+  "stdout": "",
+  "stderr": "Whittle: not done yet.\n- No judge's verdict newer than DONE.md and the evidence. Spawn a fresh subagent (not a fork) with whittle/fw-drain-hose-isolation/JUDGE_PROMPT.md as its whole brief. It writes whittle/fw-drain-hose-isolation/JUDGE.md.\nIf you truly can't go on, or need the owner, write whittle/fw-drain-hose-isolation/BLOCKED.md saying why, then stop.\n"
+}

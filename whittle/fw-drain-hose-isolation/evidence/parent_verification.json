@@ -1,0 +1,13 @@
+{
+  "time": 1794392581.4813955,
+  "proof_inputs": 6009,
+  "mismatches": [],
+  "current_patch_equals_tested": true,
+  "judge_matches_raw": true,
+  "done_problems": [],
+  "need_judge": true,
+  "need_broaden": true,
+  "full_validator_returncode": 0,
+  "stdout": "",
+  "stderr": ""
+}

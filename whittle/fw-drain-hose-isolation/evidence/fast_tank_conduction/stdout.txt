@@ -1,0 +1,41 @@
+PASS hosenet: a hose from the pump reaches the far tank, route = that hose
+PASS hosenet: a pump at the far end reaches the tank at the reel end
+PASS hosenet: a dead link (dropped hose, refused lay) carries nothing
+PASS hosenet: adjacent tanks lead (empty route), the origin is never a tank of its own net
+PASS hosenet: pipe then hose: both tanks; only the hose-side tank's route crosses the hose
+PASS hosenet: tank on pipe AND hose: route is the pipe (empty), hose H on no route (stays flat); the pipe tank leads
+PASS hosenet: can-fail: with the pipes off the same tank is reached by the hose (route H)
+PASS hosenet: pipes off: the pipe run and the hose screwed onto it carry nothing
+PASS hosenet: a hose onto a pipe run reaches the run's tanks over the hose
+PASS hosenet: pump -> pipe -> T, T -hose-> TU: TU is not on the pump's net (tank endpoint)
+PASS hosenet: pump -hose-> T and pump-at-far-end -hose-> T both reach T, and stop there
+FAIL hosenet: two pipe runs touching one tank stay two nets: pump reaches T over pipe, never TV
+FAIL hosenet: can-fail: both pipe runs exist, T attaches to both, TV only to the far run
+PASS hosenet: tank-hose-tank: T's store is TU over the hose; T is never in its own store
+PASS hosenet: can-fail: T is attached to two components (the pipe run, the hose) and the pump's holds no TU
+PASS hosenet: an external (visual-only) pipe between two native runs does not merge them
+PASS hosenet: a machine at a hose end ends the walk; from that machine its own hose reaches T
+PASS hosenet: port X: T1
+PASS hosenet: port X -> Y (the far tank replaced): T2, never the old one
+PASS hosenet: port removed (far tank deconstructed): no link, nothing reached
+PASS hosenet: port rebuilt: reached again
+PASS hosenet: a relay chain of three conducts, crediting all three hoses (A,B,C)
+PASS hosenet: a relay whose own hose is not laid ends the chain
+PASS hosenet: a ring of relays terminates and still finds the tank
+PASS hosenet: one route per tank: the parallel hose stays flat (only the first is credited)
+PASS hosenet: the same route whichever way the hoses were laid (A,B,C vs A,B,C)
+PASS hosenet: a link wound in between the walk and the transfer drops the route (no credit)
+PASS hosenet: a never-credited hose is not flowing
+PASS hosenet: a pump credit at 1000 leases to 1375 (1.5 x 250)
+PASS hosenet: lease monotonic and order-independent (1750,1750)
+PASS hosenet: a steady pump: no tick without flow
+PASS hosenet: can-fail: a lease sized for a 60-tick cadence against a 250-tick pump would flicker
+PASS hosenet: a bath credit (cadence = releaseTicks 500) leases one pulse of 750
+PASS hosenet: flat no later than 1.5 x 250 + releaseTicks + transitionTicks = 905
+PASS hosenet: the first credit on an untinted hose sets the tint at once
+PASS hosenet: tar credited for 500 < 600 ticks: still water
+PASS hosenet: tar credited continuously for 750 >= 600: the tint switches
+PASS hosenet: a gap in the candidate's credits restarts the dwell
+PASS hosenet: candidate ties go to the name in any crediting order
+PASS hosenet: a load mid-switch keeps the shown tint and restarts the dwell (never flips on load)
+FAILED checks: 2

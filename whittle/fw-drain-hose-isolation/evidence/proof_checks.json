@@ -1,0 +1,87 @@
+{
+  "reproduce": {
+    "returncode": 1,
+    "passes": 1,
+    "failures": [
+      "FAIL REPAIRED reach-T-and-exclude-TV assertion on OLD fixture"
+    ],
+    "source_sha256": {
+      "src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidNetKernel.cs": "738d600b5db245bb9c1938920bb40c24c6bccd761c5bca15f8c16ef166e1593d",
+      "src/RimMandrake/FlowWorks/Source/SelfTest/HoseNetChecks.cs": "c5d0cc489f0f9837ddd248a2d0dc370e055d3c4d7efe8310baff16e9929345da"
+    },
+    "saved_inputs_match_receipt": true
+  },
+  "final": {
+    "returncode": 0,
+    "passes": 40,
+    "failures": [],
+    "source_sha256": {
+      "src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidNetKernel.cs": "738d600b5db245bb9c1938920bb40c24c6bccd761c5bca15f8c16ef166e1593d",
+      "src/RimMandrake/FlowWorks/Source/SelfTest/HoseNetChecks.cs": "5b647005f48bad7972488653809ef1c61d5236e4648d92d0f3de802df7b66954"
+    },
+    "saved_inputs_match_receipt": true
+  },
+  "old_fixture": {
+    "returncode": 1,
+    "passes": 38,
+    "failures": [
+      "FAIL hosenet: two pipe runs touching one tank stay two nets: pump reaches T over pipe, never TV",
+      "FAIL hosenet: can-fail: both pipe runs exist, T attaches to both, TV only to the far run"
+    ],
+    "source_sha256": {
+      "src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidNetKernel.cs": "738d600b5db245bb9c1938920bb40c24c6bccd761c5bca15f8c16ef166e1593d",
+      "src/RimMandrake/FlowWorks/Source/SelfTest/HoseNetChecks.cs": "5b647005f48bad7972488653809ef1c61d5236e4648d92d0f3de802df7b66954"
+    },
+    "saved_inputs_match_receipt": true
+  },
+  "tank_conduction": {
+    "returncode": 1,
+    "passes": 38,
+    "failures": [
+      "FAIL hosenet: two pipe runs touching one tank stay two nets: pump reaches T over pipe, never TV",
+      "FAIL hosenet: can-fail: both pipe runs exist, T attaches to both, TV only to the far run"
+    ],
+    "source_sha256": {
+      "src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidNetKernel.cs": "738d600b5db245bb9c1938920bb40c24c6bccd761c5bca15f8c16ef166e1593d",
+      "src/RimMandrake/FlowWorks/Source/SelfTest/HoseNetChecks.cs": "5b647005f48bad7972488653809ef1c61d5236e4648d92d0f3de802df7b66954"
+    },
+    "saved_inputs_match_receipt": true
+  },
+  "reproduction_exclusion_was_vacuous": true,
+  "final_source_sha256": {
+    "src/RimMandrake/FlowWorks/Source/SelfTest/HoseNetChecks.cs": "5b647005f48bad7972488653809ef1c61d5236e4648d92d0f3de802df7b66954",
+    "src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidNetKernel.cs": "738d600b5db245bb9c1938920bb40c24c6bccd761c5bca15f8c16ef166e1593d"
+  },
+  "isolated_controls_have_intended_source_differences": true,
+  "changed_tracked_mod_or_tool_inputs": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/HoseNetChecks.cs"
+  ],
+  "wrapper": {
+    "returncode": 0,
+    "elapsed": 481.958792924881,
+    "stdout": "evidence: 0 eligible, 0 SKIPPED as unchanged, 0 PASS recorded, 0 PASS not recordable \u2014 runner 65716eff3278c68e\ncache: 0 CACHED PASS, 1 declared test(s) ran\nknown results: 0/1 answered from the ledger (selftests.cache_hit_share 0.000), 0s not spent; 1 ran, 0 recorded, 0 checked against a stored PASS, 0 known red\n  ran (1): no record\n  not recordable (1): changed during the run: src/RimMandrake/Utils/selftest_flowworks_stock.py\nPASS        469.1s  src/RimMandrake/Utils/selftest_flowworks_stock.py\n\nPASS 1/1  FAIL 0/1  UNMEASURED 0/1  CRASH 0/1  SKIPPED 0/1  (wall 470.5s) \u2014 contained in rm-harness.slice (max 24G), 1 workers\nRESULT: GREEN (green = FAIL 0 and CRASH 0)\n",
+    "source_test_hashes_unchanged": true,
+    "staged_matches_test_input": true,
+    "targeted_lines": [
+      "  HoseNetChecks: 40/40"
+    ],
+    "summary_lines": [
+      "1240/1240 passed",
+      "hose: 188/188 checks passed",
+      "hose: 456/456 assertions passed (moved from Gimme Some Slack: 349; new: 107)"
+    ]
+  },
+  "reference_rechecked_after_test": {
+    "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/Managed/Assembly-CSharp.dll": "5cf1b5be399d5b1c9c56ca72c9d35b4ecf307feacf5859d04ac5a1aa5926356a",
+    "whittle/fw-drain-selftest-resume/evidence/reference/RimWorld/Pawn_NeedsTracker.cs": "fa58868173d778dd1f0f596eb062c6c14af87f74293cf5f171aab08269a394d2"
+  },
+  "limitation": "Offline fake-graph endpoint isolation; no geometry, live-map/game or visual re-approval. Mutant covers pipe\u2013tank\u2013pipe traversal, not every form of tank conduction. Media unchanged by hash; wrapper intentionally excludes media from staging.",
+  "time": 1794392188.9886782,
+  "raw_output_sha256": {
+    "csharp_stdout.txt": "3b525b48a2bd5afbfa8c4bdb5671da25d3cdaeb28300a42a454c545eecb85c01",
+    "csharp_stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "selftest_stdout.txt": "dc3f35ff4f29c6812d04359ce292664f516f7f2d190a0e7b1a04bd9f026f1907",
+    "selftest_stderr.txt": "e470c3e50ecc17fab3235f96ebe71a086459f16d645e9b67596ed9118ff6bbf6",
+    "selftest_output_writes.strace": "e338c9c36650e2efa3a2db22e5965613b6d5252843ea6980277eeab723b5a68a"
+  }
+}

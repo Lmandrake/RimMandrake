@@ -1,0 +1,64 @@
+{
+  "time": 1794391584.892892,
+  "operation": "Unchanged UTF-8 copy of the complete fresh CLI JSON result string to report file",
+  "raw_sha256": "4a87a46cc20e1c248dc2741678b2b666c4d2c84f432e427d726759c4af734355",
+  "result_sha256": "e2a6e4e2cc59f2b0ecdffafd56a2a4842a016fdfda54488347037e52db568b28",
+  "file_sha256": "e2a6e4e2cc59f2b0ecdffafd56a2a4842a016fdfda54488347037e52db568b28",
+  "unchanged": true,
+  "session_id": "883686df-b635-46e7-8b56-8690d608bde7",
+  "total_cost_usd": 0.6972006,
+  "usage": {
+    "input_tokens": 22,
+    "cache_creation_input_tokens": 49776,
+    "cache_read_input_tokens": 317223,
+    "output_tokens": 11773,
+    "output_tokens_details": {
+      "thinking_tokens": 7017
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 49776,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 5339,
+        "cache_read_input_tokens": 47491,
+        "cache_creation_input_tokens": 5508,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 5508
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-opus-5-5": {
+      "inputTokens": 22,
+      "outputTokens": 11773,
+      "cacheReadInputTokens": 317223,
+      "cacheCreationInputTokens": 49776,
+      "webSearchRequests": 0,
+      "costUSD": 0.6972006,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 7017,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 49776,
+      "canonicalModel": "claude-opus-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "last_line": "- Editing `NetComponentChecks` or the kernel."
+}

@@ -1,0 +1,7 @@
+You are a fresh independent read-only Opus reviewer, broadening a narrow Whittle test repair. Do not edit anything. Use Read/Glob/Grep only. Read actual files under /home/mandrake/rm/scratch/BENCH/fw-drain:
+whittle/fw-drain-hose-isolation/STATEMENT.md
+whittle/fw-drain-hose-isolation/NOTES.md
+src/RimMandrake/FlowWorks/Source/SelfTest/HoseNetChecks.cs (full)
+src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidNetKernel.cs (RM_NetComponents is inside this file; no separate RM_LiquidNetComponents.cs exists)
+design/RimMandrake/liquid_network_semantics_design_2026-10-11.md §3.1
+Task: repair TankEndpoints g3 a1/b1 unrecognized-pipe vacuity, test-only. What cases would expose a false pass or unintended tank conduction? Suggest 1-3 specific actionable checks and assess an isolated mutant that makes pipe-tank contacts visit all OriginPipeCells(tank), while leaving production unchanged. Intended proof uses actual kernel and exact final HoseNetChecks compiled into a tiny offline C# project plus the authorized full production-linked selftest wrapper. No source parser needed. Distinguish useful narrow additions from scope creep. Report concrete suggestions and pitfalls, not an acceptance verdict.

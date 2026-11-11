@@ -1,0 +1,64 @@
+{
+  "time": 1794392432.887512,
+  "operation": "Unchanged UTF-8 copy of the complete fresh CLI JSON result string to report file",
+  "raw_sha256": "923d44439f9d22071aedeb091ffee4285caa28fb50571089d44b3d8e0f515396",
+  "result_sha256": "f1619946fffab4a3459c7a15d0c138f9dbb7c7d4eb3609f1e85eda8d1de30df3",
+  "file_sha256": "f1619946fffab4a3459c7a15d0c138f9dbb7c7d4eb3609f1e85eda8d1de30df3",
+  "unchanged": true,
+  "session_id": "63c5824e-d0a0-4a9b-a2d9-7210c3ec6120",
+  "total_cost_usd": 1.1470554000000002,
+  "usage": {
+    "input_tokens": 44,
+    "cache_creation_input_tokens": 84325,
+    "cache_read_input_tokens": 1106597,
+    "output_tokens": 12548,
+    "output_tokens_details": {
+      "thinking_tokens": 3731
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 84325,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 3112,
+        "cache_read_input_tokens": 86501,
+        "cache_creation_input_tokens": 1047,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 1047
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-opus-5-5": {
+      "inputTokens": 44,
+      "outputTokens": 12548,
+      "cacheReadInputTokens": 1106597,
+      "cacheCreationInputTokens": 84325,
+      "webSearchRequests": 0,
+      "costUSD": 1.1470554000000002,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 3731,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 84325,
+      "canonicalModel": "claude-opus-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "last_line": "would show: yes"
+}
