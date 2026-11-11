@@ -41,8 +41,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                 }
                 Assert(dir != null, "found FlowWorks Source/Rivers above " + AppContext.BaseDirectory);
             }
-            return Regex.Replace(File.ReadAllText(Path.Combine(dir, rel)), @"\s+", " ");
+            return Flat(File.ReadAllText(Path.Combine(dir, rel)));
         }
+
+        internal static string Flat(string text) => Regex.Replace(text, @"\s+", " ");
 
         /// <summary>The absolute path of a production source file (TransferChecks walks the whole tree from it).</summary>
         internal static string SrcPath(string rel)

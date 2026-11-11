@@ -1,0 +1,15 @@
+{
+  "recorded_at": 1794389987.9841354,
+  "command": [
+    "python3",
+    "whittle/fw-drain-pipe-span/evidence/record_proof.py"
+  ],
+  "exit_code": 1,
+  "stage": "input hashing before manifest or wrapper launch",
+  "exception": "FileNotFoundError: [Errno 2] No such file or directory: '/home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/Utils/failreport.py'",
+  "classification": "observer setup fault",
+  "suite_launched": false,
+  "repair": "Resolve optional winbuild imports to their actual pulse/ and telemetry/ paths.",
+  "stderr_preservation": "Copied unchanged from the exec tool result to proof_setup_failure_stderr.txt",
+  "stderr_sha256": "5263f25926adbf51c08b9e810ff4bff3a710922884a1fabfc5a9c023134756cc"
+}

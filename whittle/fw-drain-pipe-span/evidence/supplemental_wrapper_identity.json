@@ -1,0 +1,51 @@
+{
+  "time": 1794390729.4503286,
+  "operation": "Supplemental cache/evidence-module identity inspection after test. Baseline bytes are derived from immutable recorded HEAD and its clean pre-run status for these paths.",
+  "pre_run_HEAD": "b24bb1cae88888b6cf0c6c02c91e40152bca5795",
+  "pre_run_status": " M src/RimMandrake/FlowWorks/Source/SelfTest/PipeSpanNetChecks.cs\n M src/RimMandrake/FlowWorks/Source/SelfTest/RiverSwitchFlipChecks.cs\n?? whittle/fw-drain-pipe-span/\n",
+  "stage_git_states": {
+    "ev_start": {
+      "sha": "b24bb1cae88888b6cf0c6c02c91e40152bca5795",
+      "dirty": true,
+      "dirty_n": 2,
+      "dirty_paths": [
+        "src/RimMandrake/FlowWorks/Source/SelfTest/PipeSpanNetChecks.cs",
+        "src/RimMandrake/FlowWorks/Source/SelfTest/RiverSwitchFlipChecks.cs"
+      ],
+      "_token": "5e32669b0160c1114378f5b7acd0c39b8cea44e55b25e936710c9479111efc6b"
+    },
+    "ev_end": {
+      "sha": "b24bb1cae88888b6cf0c6c02c91e40152bca5795",
+      "dirty": true,
+      "dirty_n": 2,
+      "dirty_paths": [
+        "src/RimMandrake/FlowWorks/Source/SelfTest/PipeSpanNetChecks.cs",
+        "src/RimMandrake/FlowWorks/Source/SelfTest/RiverSwitchFlipChecks.cs"
+      ],
+      "_token": "5e32669b0160c1114378f5b7acd0c39b8cea44e55b25e936710c9479111efc6b"
+    }
+  },
+  "inputs": {
+    "src/RimMandrake/Utils/known_results.py": {
+      "recorded_HEAD_blob_sha256": "29f458ecb031f5e063076cd821f180d17aff2b6973e3b077fdc5ea55e1ac412f",
+      "current_sha256": "29f458ecb031f5e063076cd821f180d17aff2b6973e3b077fdc5ea55e1ac412f",
+      "staged_sha256": "29f458ecb031f5e063076cd821f180d17aff2b6973e3b077fdc5ea55e1ac412f"
+    },
+    "src/RimMandrake/Utils/suite_evidence.py": {
+      "recorded_HEAD_blob_sha256": "ad9c0e4281d4f302159a1d120fd4a6ce7324aa5d4f05192f118d00a3e8c6c17d",
+      "current_sha256": "ad9c0e4281d4f302159a1d120fd4a6ce7324aa5d4f05192f118d00a3e8c6c17d",
+      "staged_sha256": "ad9c0e4281d4f302159a1d120fd4a6ce7324aa5d4f05192f118d00a3e8c6c17d"
+    },
+    "src/RimMandrake/Utils/selftest_cache.py": {
+      "recorded_HEAD_blob_sha256": "af855af99acb42ac4631e4f393d8fddfcde181e3fb592edf847d2a9e06fd9c20",
+      "current_sha256": "af855af99acb42ac4631e4f393d8fddfcde181e3fb592edf847d2a9e06fd9c20",
+      "staged_sha256": "af855af99acb42ac4631e4f393d8fddfcde181e3fb592edf847d2a9e06fd9c20"
+    },
+    "src/RimMandrake/Utils/evidence_covers.py": {
+      "recorded_HEAD_blob_sha256": "de85e3801ea89d95f973a9667cef302cd4454c7f0332f78b137a83f75b4f6798",
+      "current_sha256": "de85e3801ea89d95f973a9667cef302cd4454c7f0332f78b137a83f75b4f6798",
+      "staged_sha256": "de85e3801ea89d95f973a9667cef302cd4454c7f0332f78b137a83f75b4f6798"
+    }
+  },
+  "all_match": true
+}

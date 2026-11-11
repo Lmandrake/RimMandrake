@@ -1,0 +1,14 @@
+{
+  "time": 1794390039.8523753,
+  "WHITTLE_DIR": "whittle/fw-drain-pipe-span",
+  "need_judge": true,
+  "need_broaden": true,
+  "last_change": 1794390026.6930716,
+  "done_problems": [
+    "There is no whittle/fw-drain-pipe-span/DONE.md yet. Keep working. When you would show this to the owner, write it: one line per statement bullet, '- true: <the bullet, copied> | evidence: `path` `path`', naming saved evidence files."
+  ],
+  "full_validator": "MandrakeWorkflows/whittle/run.py validate(root)",
+  "full_validator_returncode": 1,
+  "stdout": "",
+  "stderr": "Whittle: not done yet.\n- There is no whittle/fw-drain-pipe-span/DONE.md yet. Keep working. When you would show this to the owner, write it: one line per statement bullet, '- true: <the bullet, copied> | evidence: `path` `path`', naming saved evidence files.\nIf you truly can't go on, or need the owner, write whittle/fw-drain-pipe-span/BLOCKED.md saying why, then stop.\n"
+}

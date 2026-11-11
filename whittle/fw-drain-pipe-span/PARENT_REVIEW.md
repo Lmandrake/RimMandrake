@@ -1,0 +1,5 @@
+# Parent inspection during implementation
+
+Potential defect to resolve before final acceptance: CallbackBumpsNet strips line comments before Flat, which is correct for raw source, but a caller that passes Flat(raw) has already collapsed every // line ending. StripComments then treats everything after the first // as a comment. The positive raw-plus-Flat(raw) control appears likely to fail because RM_PipePoles.cs contains line comments. Counter-only mutants may also be rejected because their callback vanished with the comments, rather than because the body is counter-only. Use the actual C# controls to establish this, and ensure the normalized counter-only controls preserve a recognized method header before exercising the predicate. Preserve correct comment handling and the same whitespace normalization without pretending comment stripping commutes with normalization.
+
+No source edited by parent. This is a review observation, not a final verdict or extra owner bar. Final independent judge should inspect actual proof and final sources.

@@ -1,0 +1,83 @@
+{
+  "time": 1794390498.3582458,
+  "HEAD": "b24bb1cae88888b6cf0c6c02c91e40152bca5795",
+  "tested_HEAD": "b24bb1cae88888b6cf0c6c02c91e40152bca5795",
+  "main_counts": [
+    1240,
+    1240
+  ],
+  "hose_counts": [
+    455,
+    455
+  ],
+  "exact_pipe_span_case_passes": {
+    "PipeSpan_P3_edge_joins_two_60pct_components_cap_after_join_refused": true,
+    "PipeSpan_P3_edge_joins_two_40pct_components_accepted_as_one": true,
+    "PipeSpan_P3_one_logical_edge_no_duplicate_cardinal_or_reverse_span": true,
+    "PipeSpan_P3_ring_of_two_pole_routes_cut_in_turn": true,
+    "PipeSpan_P3_cut_span_splits_the_net_once": true,
+    "PipeSpan_P3_production_wiring_adapter_callback_join_order": true,
+    "PipeSpan_P3_callback_guard_rejects_normalized_counter_only": true,
+    "PipeSpan_P3_callback_guard_scopes_changed_bump": true
+  },
+  "actual_pipe_span_cases": [
+    "PipeSpan_P3_edge_joins_two_60pct_components_cap_after_join_refused",
+    "PipeSpan_P3_edge_joins_two_40pct_components_accepted_as_one",
+    "PipeSpan_P3_one_logical_edge_no_duplicate_cardinal_or_reverse_span",
+    "PipeSpan_P3_ring_of_two_pole_routes_cut_in_turn",
+    "PipeSpan_P3_cut_span_splits_the_net_once",
+    "PipeSpan_P3_production_wiring_adapter_callback_join_order",
+    "PipeSpan_P3_callback_guard_rejects_normalized_counter_only",
+    "PipeSpan_P3_callback_guard_scopes_changed_bump"
+  ],
+  "failing_lines": [],
+  "wrapper_pass": true,
+  "receipt_returncode": 0,
+  "unmeasured_phrase_present": false,
+  "source_hashes_unchanged": true,
+  "input_groups": {
+    "flowworks_source": {
+      "files": 497,
+      "sha256": "24962b08a88b57131401ec9c100fc4b61cfa85e4a2b28c794373e167ec723400"
+    },
+    "gss_source": {
+      "files": 107,
+      "sha256": "0fcd441d630c5739d43144d672059d9fd4199ef5111623ae9edf985990e078b6"
+    },
+    "shared": {
+      "files": 27,
+      "sha256": "fc5b5439683044d038988918e6289939dcea07318aa1e0c129c991005b7d0ecf"
+    }
+  },
+  "stage_all_inputs_match": true,
+  "reference_remeasured_after": {
+    "assembly_sha256": "5cf1b5be399d5b1c9c56ca72c9d35b4ecf307feacf5859d04ac5a1aa5926356a",
+    "source_sha256": "fa58868173d778dd1f0f596eb062c6c14af87f74293cf5f171aab08269a394d2"
+  },
+  "reference_identity_matches": true,
+  "changed_paths": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/PipeSpanNetChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/RiverSwitchFlipChecks.cs"
+  ],
+  "source_diff_sha256": "f94ade1082f9fd93b7da5a79bcd5e1a687774edc589d76168462a105821e49c0",
+  "raw_output_sha256": "91a93f3f220703b3cc0c24d6b4385493f039d70730bbfd439fbecd1647464872",
+  "original_guard_reproduction_readback": {
+    "time": 1794389744.5662563,
+    "test_source_sha256": "1044802650d60e3e32ede835944ddb0a12be987e1e873e751d9b609685d3c400",
+    "helper_sha256": "b922bfd1c897777bfa69212e28e1a06a816cea96b6daf08e623988603e83cb25",
+    "normalization": "Regex.Replace(text, @\"\\s+\", \" \")",
+    "counter_only_raw": "internal static void OnSpansChanged(Map map)\n\t\t{\n\t\t\tSpansChangedCount++;\n\t\t}",
+    "counter_only_normalized": "internal static void OnSpansChanged(Map map) { SpansChangedCount++; }",
+    "old_needle": "SpansChangedCount++;\n\t\t}",
+    "old_guard_accepts_retired_callback": true,
+    "literal_pattern_is_present_in_actual_guard": true
+  },
+  "scope_reconciliation": "# Scope reconciliation\n\nThe original finding FE_cs_selftests_2.4 records a vacuous rejection of the retired counter-only callback. Its explanation says the guard must catch that callback after RiverSwitchFlipChecks.Src collapses whitespace. The assertion message says \u201cthe callback is no longer only a counter\u201d.\n\nHistory supplies the behavior. Commit 1e681b935e used `private static void OnSpansChanged(Map map) => SpansChangedCount++;`. Commit 5f54729885 added the block callback, per-map signatures, Changed, NetBumps and RM_LiquidNet.Bump(map), together with these production-math and wiring checks. The current callback retains those operations. RM_PipeSpanNetMath.Changed admits the first observed set and changed sets, and refuses repeated equal signatures. The net revision must follow a real span-set change.\n\nThe 2026-10-29 ledger note says \u201cfails when the callback body gains a statement\u201d. That agent-drafted done-condition reverses the original guard and the shipped phase-5 contract. The attached owner quote asks for assessment of ancient items and routing of owner-needed work. It supplies no instruction to reject the working callback or remove net invalidation. The frozen statement and current worker instruction explicitly require rejection of the retired callback and acceptance of the working callback.\n\nThe repair therefore rejects the retired counter-only body through the same whitespace collapse used by Src, keeps acceptance of the working callback, and preserves the production net-bump, listener registration and join-order checks. This file records the reconciliation for the parent\u2019s ledger note. The worker performs no ledger mutation. The evidence is an offline test-instrument repair. Live pipe-span acceptance remains outside this item.\n\nThe raw item, including the complete triage text and owner quote, is saved in item.txt. The relevant source history is saved in history.txt.\n",
+  "negative_callback_controls": 14,
+  "limitations": [
+    "Offline source-shape and linked production math proof.",
+    "Source guard pins current internal signature, parameter names and braced Changed block.",
+    "Existing brace matcher does not lex strings or preprocessor directives.",
+    "GSS AerialSelfTest and separate FlowWorks Replay project were outside the requested wrapper."
+  ]
+}

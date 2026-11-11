@@ -1,0 +1,14 @@
+# Fresh different-model broaden review
+
+A fresh `claude -p --model opus --effort high` process read the frozen statement, task instructions and actual callback, math and selftest sources before implementation and final proof. It used Read, Glob and Grep from a neutral ext4 directory, with empty project settings and MCP configuration, no session persistence, resume or fork. The call completed successfully with zero permission denials. Complete JSON, unchanged extracted report and receipt are preserved in evidence/broaden_raw.json, evidence/broaden_result.txt, evidence/broaden_call.json and evidence/broaden_recovery.json.
+
+The question asked what a maintainer might change that the vacuous guard would miss or falsely reject, with whitespace, expression bodies, neighbouring methods and fake text among the requested cases.
+
+## Actions
+
+- Used the existing DrawbridgeChecks.Body helper to scope the Changed/NetBumps/Bump check to the callback. A declaration must contain its opening brace, preventing an expression body from borrowing a decoy method’s braces. Exactly one matching block declaration is required. Missing and renamed callbacks, a moved bump block and an expression-bodied callback next to a decoy are negative controls.
+- Factored Src’s existing Regex.Replace whitespace collapse into RiverSwitchFlipChecks.Flat. Src and all normalized mutants call that same helper. Five counter-only variants include CRLF/tabs, compact punctuation, current and historical expression bodies and an added return. Every mutant is derived from the real callback, must differ from the original and is rejected after normalization. The real callback is accepted raw, normalized and with changed whitespace.
+- Reused TransferChecks.StripComments before whitespace collapse, while line endings remain available. A block of bump work left inside a comment is rejected. Fake callback text in a line comment and unrelated counter-only method/string text preserve acceptance of the current callback.
+- Required the positive Changed condition and retained NetBumps and Bump. Controls remove either bump operation, replace the condition with true and negate Changed. The original production net/edge math, GSS listener-registration and join-order checks stay in the relevant suite.
+
+The reviewer’s parser limitation remains bounded. Existing brace matching does not lex C# strings or directives. This source-shape check pins the current internal signature, parameter names and braced Changed block. Equivalent helper refactors or renames require a deliberate test update. Arbitrary full declarations embedded in string literals, inactive preprocessor branches and semantic reachability are beyond this narrow repair. The final proof is the requested offline wrapper. GSS live delivery and rendered behavior require other evidence.

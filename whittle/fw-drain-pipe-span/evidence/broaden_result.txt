@@ -1,0 +1,59 @@
+I read all the files you named, plus `NOTES.md` (it holds only a heading) and the related check at `LineReadoutChecks.cs:129`. I wrote no files and ran nothing.
+
+# Broaden review: the vacuous counter-only callback guard in PipeSpanNetChecks
+
+## What's wrong today
+`PipeSpanNetChecks.cs:183` runs `!poles.Contains("SpansChangedCount++;\n\t\t}")` on text returned by `RiverSwitchFlipChecks.Src`. `Src` replaces every run of whitespace with a single space (`RiverSwitchFlipChecks.cs:44`). The collapsed text never contains `\n`, so this check passes against any source, including the retired callback. If the source were ever checked out with CRLF line endings on the Windows side, the literal would miss even before collapsing.
+
+The real contract is in `RM_PipePoles.cs:70-93`, its class comment at lines 23-24, and `RM_PipeSpanNetMath.cs:18-19`. When the strung pipe-span set changes, the callback bumps the liquid net through `Changed(...)` → `NetBumps++; RM_LiquidNet.Bump(map);`, and it bumps nothing otherwise.
+
+The triage wording "fails when the callback body gains a statement" would reject the current production body, which has about 15 statements. That contradicts STATEMENT bullet 1, so it can't be the intent. The guard must fail when the body is reduced to just the counter.
+
+`LineReadoutChecks.cs:129` already scopes a similar check to the method body: `Body(poles, "internal static void OnSpansChanged(").Contains("RM_LiquidNet.Bump(map)")`. That's useful precedent for the reconciliation note.
+
+## Main recommendation: check the callback's own body, and test that check against altered copies of the source
+Copy the pattern from `RiverSwitchFlip_weirWhiteWater` (`RiverSwitchFlipChecks.cs:215-227`): a `Func<string,bool>` check run on the real source and on altered copies (mutants). Use the existing `DrawbridgeChecks.Body(src, signature)`; no parser is needed. Its brace counting already handles the nested if/else/foreach in the current body.
+
+```
+Func<string,bool> rebuilds = src =>
+{
+    const string sig = "internal static void OnSpansChanged(";
+    if (!src.Contains(sig)) return false;                      // absent callback: reject, don't throw
+    string b = DrawbridgeChecks.Body(src, sig);
+    return b.StartsWith(sig + "Map map) {")                    // a block body, not "=> ..." that borrows the next method's braces
+        && Regex.IsMatch(b, <existing line-178 Changed/NetBumps/Bump regex>);
+};
+Assert(rebuilds(poles), "the callback rebuilds the net on a changed span set");
+```
+
+- Run the existing Changed/Bump regex against the body `b` instead of the whole file. It's file-wide today, so it would still pass if the bump block moved into a different, uncalled method.
+- With that scoped check, rejecting the counter-only body falls out of the positive check. A separate negative check, such as an exact match on the retired body, is optional.
+- Prefer this over just changing `"\n\t\t}"` to `"; }"`. That literal would wrongly fail any unrelated method in the file that ends with `SpansChangedCount++; }`. It would also miss `=> SpansChangedCount++;`, `++SpansChangedCount`, `SpansChangedCount += 1;`, a trailing `return;`, and a trailing comment.
+
+## Controls, highest priority first
+Build every mutant from the `Src` output, which is the same collapsed text the real check reads. **Assert `mutant != poles` for each one.** A `Replace` that matches nothing would otherwise make the control prove nothing, and the weir mutants don't check for this.
+
+1. **Retired counter-only block → reject.** Use `poles.Replace(DrawbridgeChecks.Body(poles, sig), "internal static void OnSpansChanged(Map map) { SpansChangedCount++; }")`. This is the main control the item asks for.
+2. **The same with messy whitespace → reject.** Insert `"\r\n\t\t"`, tabs and doubled spaces into the retired body, then collapse it with the exact `Src` regex. The PROMPT wants the *same* normalization, so the cleanest fix is a small `internal static string Flat(string)` in `RiverSwitchFlipChecks`, called by both `Src` and the test. `LineReadoutChecks.cs:25` has a private copy of the same regex, which is fine but not provably the same code. Collapsing already-collapsed text changes nothing, so the mutant can be built either way.
+3. **Expression-bodied counter (the older-style one-line callback) → reject.** First `=> SpansChangedCount++;` in place of the block. Then the sharper version: the same line placed directly before a decoy method that contains the full `Changed { NetBumps++; RM_LiquidNet.Bump(map); }` block. Without the `StartsWith(... "{")` check, `Body` grabs the decoy's braces and wrongly accepts.
+4. **Counter-only callback with the bump block moved into an unrelated method → reject.** This proves the check is scoped to the callback. The current file-wide regex at line 178 would accept it.
+5. **Real source plus unrelated counter-only text elsewhere → still accept.** For example, append a method `static void Probe() { SpansChangedCount++; }` and a comment containing `SpansChangedCount++; }`. This is the false-rejection control that tells a scoped check apart from the naive text fix.
+6. **Callback absent or renamed → reject, as `false`.** Don't let `Body`'s "missing:" exception decide the result; if you do rely on it, assert the exception explicitly.
+7. **Unconditional bump (the `if (RM_PipeSpanNetMath.Changed(...))` wrapper removed) → reject.** Optional. It keeps "only on a changed set" covered now that the regex runs on the body.
+8. **Existing registration and join-order checks.** Leave lines 179-182 working as they are. Cheap mutants: delete `new Action<Map>(OnSpansChanged)` and require `Has` to throw; swap the `OccupiedRect` and `CardinalDirections` lines and require the order assert to fail. Keep the existing L1 checks on the production math at lines 134-169 untouched.
+
+## What a maintainer could legitimately change that this check would wrongly reject
+All of these fail loudly with a clear message, which is acceptable for a source check. Record them in FINDINGS.
+
+- Moving the bump into a helper (`{ SpansChangedCount++; Rebuild(map); }`).
+- Renaming `NetBumps` or `map`, or changing visibility. The exact signature `internal static void OnSpansChanged(` is strict; `void OnSpansChanged(` is more tolerant. If you loosen it, assert it occurs exactly once so a second overload can't hide the real one.
+- Rewriting the bump as a single statement without braces (`if (...) RM_LiquidNet.Bump(map);`). The existing regex already requires the `{ NetBumps++;` shape.
+
+## What it could still miss
+- `Body` doesn't skip comments or strings (its own comment says so). A brace inside a comment or string in the callback could throw off the scoping. A counter-only body with the full bump block left in a comment would be wrongly accepted. That's unlikely given the exact regex shape.
+- `#if` blocks, `partial` declarations and code reached only by reflection are out of scope.
+- This proves nothing about GSS actually calling the method in a running game; that stays an offline-only claim.
+
+## Evidence notes for DONE and FINDINGS
+- Record the exact file hashes of `PipeSpanNetChecks.cs`, `RM_PipePoles.cs` and `RiverSwitchFlipChecks.cs` (if `Flat` is added there). Also record whether the staged Windows copy has CRLF line endings. Collapsing makes the check indifferent to that, but say so.
+- Write the reconciliation as one explicit sentence. The triage line inverts the guard's purpose. The owner's quote set the general scope and did not ask for a guard that fails on the working callback. The intent is backed by the production class comment and `LineReadoutChecks.cs:129`.

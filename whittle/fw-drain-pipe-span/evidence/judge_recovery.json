@@ -1,0 +1,64 @@
+{
+  "time": 1794390852.4162962,
+  "operation": "Unchanged UTF-8 copy of the complete fresh CLI JSON result string to JUDGE.md",
+  "raw_sha256": "b618b02db9884136f63d83552f5cdff4baec2bc6258355ec62c967c967347b81",
+  "result_sha256": "9a9cd0dee91cf92eaf4b55bf4701228732e1ef8e914fa1028bbf84dced9af7af",
+  "file_sha256": "9a9cd0dee91cf92eaf4b55bf4701228732e1ef8e914fa1028bbf84dced9af7af",
+  "unchanged": true,
+  "session_id": "ce7391e5-dfcf-4b49-b457-86f938fba3d4",
+  "total_cost_usd": 2.0006044,
+  "usage": {
+    "input_tokens": 56,
+    "cache_creation_input_tokens": 139188,
+    "cache_read_input_tokens": 2693282,
+    "output_tokens": 17411,
+    "output_tokens_details": {
+      "thinking_tokens": 7516
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 139188,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 3520,
+        "cache_read_input_tokens": 140670,
+        "cache_creation_input_tokens": 1741,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 1741
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-opus-5-5": {
+      "inputTokens": 56,
+      "outputTokens": 17411,
+      "cacheReadInputTokens": 2693282,
+      "cacheCreationInputTokens": 139188,
+      "webSearchRequests": 0,
+      "costUSD": 2.0006044,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 7516,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 139188,
+      "canonicalModel": "claude-opus-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "last_line": "would show: yes"
+}

@@ -1,0 +1,54 @@
+PIPE_SPAN_SELFTEST_FIX_COLLAPSED_WHITESPACE   proposed  row -  needs offline  target v1
+[MINOR] Pipe-span regression assertion searches for whitespace its helper has removed
+owner BENCH   kind task   filed 2026-10-24T04:22:24Z
+
+--- items/PIPE_SPAN_SELFTEST_FIX_COLLAPSED_WHITESPACE.md ---
+## spec
+found-by: GPT review, verified (BENCH, 2026-10-23, FlowWorks + GSS high-depth review; gpt_consult default model, high effort).
+Report: `Transient/flowworks_takeover_20261023/GPT_REVIEW.md` (finding ids FE_cs_selftests_2.4). Raw GPT reply: `D:\ClaudeWork\rimmandrake\scratch\gpt_fw_review\raw\<part>.md`.
+Severity: MINOR. Not fixed: this item only records the defect.
+
+### verification (FE_cs_selftests_2.4)
+Verdict: CONFIRMED MINOR. PipeSpanNetChecks.cs:183 searches for "\n\t\t}" in a Src string whose whitespace was collapsed (RiverSwitchFlipChecks.cs:44): always passes
+
+### GPT finding (verbatim)
+### FE_cs_selftests_2.4 — Pipe-span regression assertion searches for whitespace its helper has removed
+- severity: MINOR
+- where: src/RimMandrake/FlowWorks/Source/SelfTest/PipeSpanNetChecks.cs:183 (`PipeSpan_P3_production_wiring_adapter_callback_join_order`)
+- evidence:
+```csharp
+                Assert(!poles.Contains("SpansChangedCount++;\n\t\t}") , "the callback is no longer only a counter");
+```
+- failure scenario: `poles` comes from `RiverSwitchFlipChecks.Src`, which collapses all whitespace to spaces. Consequently, it cannot contain the searched newline/tab sequence, even when that exact retired callback is present in the original source. This assertion always passes. Other assertions in the case still provide protection; this particular regression guard provides none. I opened the outside-part helper, `Source/SelfTest/RiverSwitchFlipChecks.cs:44`, and reproduced the normalization mismatch.
+- confidence: high
+
+--- history (4 events) ---
+  2026-10-24T04:22:24Z  BENCH  file      for=BENCH kind=task spec=infrastructure/state/items/PIPE_SPAN_SELFTEST_FIX_COLLAPSED_WHITESPACE.md target=v1 title=[MINOR] Pipe-span regression assertion searches for whitespace its helper has removed tsn=1792815744745670521  | agent's reason: found by GPT review, verified
+  2026-10-29T01:31:55Z  OWNER  reassign  override=only BENCH or DECIDE may `reassign` (seat is OWNER)
+
+✅ If the OWNER told you to do this, that is not a refusal — quote him and it lands,
+   with his words recorded on the event as the authorization:
+    python3 src/RimMandrake/rimflow/cli.py reassign PIPE_SPAN_SELFTEST_FIX_COLLAPSED_WHITESPACE … --owner-said "<his words, verbatim>"
+
+⚠️  Pass what he ACTUALLY said. Bare assent ("yes", "ok", "go ahead") is refused on
+    purpose — that is him agreeing to something YOU said, and the ledger would record
+    your words as his. A short instruction is fine.
+
+⛔ If he did NOT tell you to, the rule stands. Route it to BENCH or DECIDE instead. reason=v3 cutover: BENCH lane -> FOUNDRY to=FOUNDRY tsn=1793237515629048537  | owner said “Once we switch over to Conductor + ispatch + Foundry, all bench items get reassigned to Dispatch-> Foundry”
+  2026-10-29T05:00:23Z  OWNER  note      text=Done when: PipeSpanNetChecks.cs:183 searches a whitespace-normalised string (as RiverSwitchFlipChecks does) and fails when the callback body gains a statement (red-first). tsn=1793250023814440545  | owner said “Please assess those ancient queue items now to ensure they are even well formulated and real... do they REALLY need the owner? IF they do, then yes they are Conductor material.” | agent's reason: backlog deep triage: KEEP, real; done-condition added
+  2026-11-03T05:05:48Z  OWNER  reassign  override=only BENCH or DECIDE may `reassign` (seat is OWNER)
+
+✅ If the OWNER told you to do this, that is not a refusal — quote him and it lands,
+   with his words recorded on the event as the authorization:
+    python3 src/RimMandrake/rimflow/cli.py reassign PIPE_SPAN_SELFTEST_FIX_COLLAPSED_WHITESPACE … --owner-said "<his words, verbatim>"
+
+⚠️  Pass what he ACTUALLY said. Bare assent ("yes", "ok", "go ahead") is refused on
+    purpose — that is him agreeing to something YOU said, and the ledger would record
+    your words as his. A short instruction is fine.
+
+✅ If the CONDUCTOR told you to, it carries his authority: same command with
+    --per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM --why "<the Conductor's text>"
+
+⛔ If neither did, the rule stands. Route it to BENCH or DECIDE instead. ranBy=BENCH reason=FOUNDRY retired 2026-11-02: re-homed to BENCH (bucket relentless) to=BENCH tsn=1793682348443858300  | decided by card: What should happen to FOUNDRY? → Retire it (Recommended)
+--- causal chain ---
+  (none — this item stands on its own)

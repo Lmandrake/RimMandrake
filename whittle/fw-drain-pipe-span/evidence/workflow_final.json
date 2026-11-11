@@ -1,0 +1,12 @@
+{
+  "time": 1794391018.705636,
+  "WHITTLE_DIR": "whittle/fw-drain-pipe-span",
+  "need_judge": true,
+  "need_broaden": true,
+  "last_change": 1794390026.6930716,
+  "done_problems": [],
+  "full_validator": "MandrakeWorkflows/whittle/run.py validate(root)",
+  "full_validator_returncode": 0,
+  "stdout": "",
+  "stderr": ""
+}

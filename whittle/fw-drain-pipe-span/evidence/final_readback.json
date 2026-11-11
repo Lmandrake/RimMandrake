@@ -1,0 +1,14 @@
+{
+  "time": 1794390948.6111798,
+  "operation": "Post-judge source and proof readback, plus inspection of the positive whitespace rewrite identified by the judge.",
+  "source_sha256": "df06e2bc3db66e65f661fce4480424b9860db1a76858ca7f56ab31e9135c7132",
+  "working_whitespace_mutant_differs": true,
+  "callback_before_sha256": "60142061105b0c23e787dcd37593acfd2e41544201504091dd001f5c31118a29",
+  "callback_after_sha256": "80f2d38e55cbbf138c7a15e7dc69a13a26bd02ccfd290625cec460774dbee4c4",
+  "whitespace_only": true,
+  "all_proof_inputs_still_match": true,
+  "supplemental_wrapper_modules_still_match": true,
+  "judge_report_matches_raw_json_result": true,
+  "git_diff_check": 0,
+  "status": " M src/RimMandrake/FlowWorks/Source/SelfTest/PipeSpanNetChecks.cs\n M src/RimMandrake/FlowWorks/Source/SelfTest/RiverSwitchFlipChecks.cs\n?? whittle/fw-drain-pipe-span/\n"
+}

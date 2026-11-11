@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-pipe-span/evidence/record_proof.py", line 29, in <module>
+    sha256=hashes(), status=subprocess.check_output(['git', 'status', '--short'], cwd=root, text=True))
+           ~~~~~~^^
+  File "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-pipe-span/evidence/record_proof.py", line 26, in hashes
+    return {p: hashlib.sha256((root / p).read_bytes()).hexdigest() for p in paths}
+                              ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/pathlib/__init__.py", line 778, in read_bytes
+    with self.open(mode='rb', buffering=0) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/pathlib/__init__.py", line 772, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/Utils/failreport.py'

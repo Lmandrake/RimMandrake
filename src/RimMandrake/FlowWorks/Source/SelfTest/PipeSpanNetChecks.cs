@@ -7,7 +7,9 @@
 // on poles carrying liquid in a running game (L2 live row, owed).
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using RimMandrake.FlowWorks.Machinery;
 
 namespace RimMandrake.FlowWorks.SelfTest
@@ -54,6 +56,17 @@ namespace RimMandrake.FlowWorks.SelfTest
         }
 
         private static RM_NetComponents Net(HoseNetChecks.G g, RM_PipeSpanEdges e, int cap) => new RM_NetComponents(new SpanGraph(g, e), cap);
+
+        private static bool CallbackBumpsNet(string raw)
+        {
+            // Strip comments before Src's whitespace collapse, while // still has its line ending.
+            string src = RiverSwitchFlipChecks.Flat(TransferChecks.StripComments(raw, out _));
+            var heads = Regex.Matches(src, @"\binternal\s+static\s+void\s+OnSpansChanged\s*\(\s*Map\s+map\s*\)\s*\{");
+            if (heads.Count != 1) return false;
+            // Requiring the opening brace in the header prevents an expression body borrowing the next method's body.
+            string body = DrawbridgeChecks.Body(src, heads[0].Value);
+            return Regex.IsMatch(body, @"if\s*\(\s*RM_PipeSpanNetMath\.Changed\([\s\S]{0,120}\)\)\s*\{\s*NetBumps\+\+;\s*RM_LiquidNet\.Bump\(map\);");
+        }
 
         public static void Run(Action<string, Action> Case)
         {
@@ -175,12 +188,67 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(net, @"PipesEnabled \? RM_PipePoles\.EdgesFor\(map\) : RM_PipeSpanEdges\.Empty", "edges are built per revision, none with pipes off");
                 RiverSwitchFlipChecks.Has(net, @"s\.polesOn != RM_MachinerySettings\.pipePolesEnabled\)[\s\S]{0,200}s\.revision\+\+", "the pipe-pole switch is a new revision");
                 string poles = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Machinery", "RM_PipePoles.cs"));
-                RiverSwitchFlipChecks.Has(poles, @"RM_PipeSpanNetMath\.Changed\([\s\S]{0,120}\)\)\s*\{\s*NetBumps\+\+;\s*RM_LiquidNet\.Bump\(map\);", "the span callback bumps the net only on a changed set");
+                Assert(CallbackBumpsNet(File.ReadAllText(RiverSwitchFlipChecks.SrcPath(Path.Combine("Machinery", "RM_PipePoles.cs")))),
+                    "the span callback bumps the net only on a changed set (the retired counter-only callback is rejected)");
                 RiverSwitchFlipChecks.Has(poles, @"new Action<Map>\(OnSpansChanged\)", "the callback is registered with GSS");
                 int under = poles.IndexOf("pole.OccupiedRect())", StringComparison.Ordinal);
                 int dirs = poles.IndexOf("new[] { GenAdj.CardinalDirections, GenAdj.DiagonalDirections }", StringComparison.Ordinal);
                 Assert(under > 0 && dirs > under, "JoinCells orders under, then cardinal, then diagonal");
-                Assert(!poles.Contains("SpansChangedCount++;\n\t\t}") , "the callback is no longer only a counter");
+            });
+
+            Case("PipeSpan_P3_callback_guard_rejects_normalized_counter_only", () =>
+            {
+                string raw = File.ReadAllText(RiverSwitchFlipChecks.SrcPath(Path.Combine("Machinery", "RM_PipePoles.cs")));
+                const string signature = "internal static void OnSpansChanged(Map map)";
+                string callback = DrawbridgeChecks.Body(raw, signature);
+                foreach (string retired in new[]
+                {
+                    signature + "\r\n\t\t{\r\n\t\t\tSpansChangedCount++;\r\n\t\t}",
+                    "internal  static void OnSpansChanged ( Map map ){SpansChangedCount++;}",
+                    signature + " => SpansChangedCount++;",
+                    "private static void OnSpansChanged(Map map) => SpansChangedCount++;",
+                    signature + " { SpansChangedCount++; return; }",
+                })
+                {
+                    string mutant = raw.Replace(callback, retired);
+                    Assert(mutant != raw, "counter-only mutation changes the actual callback");
+                    string flat = RiverSwitchFlipChecks.Flat(TransferChecks.StripComments(mutant, out _));
+                    Assert(!flat.Contains('\n') && !flat.Contains('\t'), "the mutant uses Src's whitespace normalization");
+                    Assert(!CallbackBumpsNet(flat), "can-fail: the normalized counter-only callback is rejected");
+                }
+                string normalized = RiverSwitchFlipChecks.Flat(TransferChecks.StripComments(raw, out _));
+                Assert(CallbackBumpsNet(raw) && CallbackBumpsNet(normalized), "the current callback survives Src's normalization");
+                Assert(CallbackBumpsNet(raw.Replace(callback, Regex.Replace(callback, @"\s+", "\r\n\t"))),
+                    "the working callback also accepts CRLF, tabs and changed indentation");
+            });
+
+            Case("PipeSpan_P3_callback_guard_scopes_changed_bump", () =>
+            {
+                string raw = File.ReadAllText(RiverSwitchFlipChecks.SrcPath(Path.Combine("Machinery", "RM_PipePoles.cs")));
+                const string signature = "internal static void OnSpansChanged(Map map)";
+                string callback = DrawbridgeChecks.Body(raw, signature);
+                string block = callback.Substring(callback.IndexOf('{'));
+                foreach (string replacement in new[]
+                {
+                    "",
+                    callback.Replace("OnSpansChanged", "UnusedCallback"),
+                    signature + " { SpansChangedCount++; } private static void Decoy(Map map) " + block,
+                    signature + " => SpansChangedCount++; private static void Decoy(Map map) " + block,
+                    signature + " { SpansChangedCount++; /* " + block + " */ }",
+                    callback.Replace("NetBumps++;", ""),
+                    callback.Replace("RM_LiquidNet.Bump(map);", ""),
+                    callback.Replace("RM_PipeSpanNetMath.Changed(ref st.last, ref st.known, RM_PipeSpanNetMath.Signature(ids))", "true"),
+                    callback.Replace("if (RM_PipeSpanNetMath.Changed", "if (!RM_PipeSpanNetMath.Changed"),
+                })
+                {
+                    string mutant = raw.Replace(callback, replacement);
+                    Assert(mutant != raw, "scoping mutation changes the actual callback");
+                    Assert(!CallbackBumpsNet(mutant), "can-fail: missing, misplaced or commented callback work is rejected");
+                }
+                string decoys = "\n// " + signature + " { SpansChangedCount++; }\n"
+                    + "static void Probe() { SpansChangedCount++; }\n"
+                    + "static string ProbeText = \"SpansChangedCount++; }\";\n";
+                Assert(CallbackBumpsNet(decoys + raw + decoys), "unrelated counter-only text leaves the working callback accepted");
             });
         }
     }

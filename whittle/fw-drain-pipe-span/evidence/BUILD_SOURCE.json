@@ -1,0 +1,35 @@
+{
+ "csproj": "src/RimMandrake/FlowWorks/Source/SelfTest/RimMandrakeFlowWorks.SelfTest.csproj",
+ "stage": "/mnt/d/ClaudeWork/rimmandrake/build/selftest_RimMandrakeFlowWorks.SelfTest_79bb8021",
+ "outputs": [],
+ "ev_scope": [
+  "src/",
+  "src/Directory.Build.targets",
+  "src/Directory.Build.props"
+ ],
+ "ev_start": {
+  "sha": "b24bb1cae88888b6cf0c6c02c91e40152bca5795",
+  "dirty": true,
+  "dirty_n": 2,
+  "dirty_paths": [
+   "src/RimMandrake/FlowWorks/Source/SelfTest/PipeSpanNetChecks.cs",
+   "src/RimMandrake/FlowWorks/Source/SelfTest/RiverSwitchFlipChecks.cs"
+  ],
+  "_token": "5e32669b0160c1114378f5b7acd0c39b8cea44e55b25e936710c9479111efc6b"
+ },
+ "staged": true,
+ "ev_end": {
+  "sha": "b24bb1cae88888b6cf0c6c02c91e40152bca5795",
+  "dirty": true,
+  "dirty_n": 2,
+  "dirty_paths": [
+   "src/RimMandrake/FlowWorks/Source/SelfTest/PipeSpanNetChecks.cs",
+   "src/RimMandrake/FlowWorks/Source/SelfTest/RiverSwitchFlipChecks.cs"
+  ],
+  "_token": "5e32669b0160c1114378f5b7acd0c39b8cea44e55b25e936710c9479111efc6b"
+ },
+ "source_sha": "b24bb1cae88888b6cf0c6c02c91e40152bca5795",
+ "dirty": true,
+ "clone": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+ "built_utc": "2026-11-11T09:41:51+00:00"
+}
