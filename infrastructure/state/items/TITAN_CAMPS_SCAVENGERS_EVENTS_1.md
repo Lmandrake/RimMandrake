@@ -20,11 +20,11 @@ full review, `Transient/hugethingsbounds2026-10-07/` (gone; never kept in git)).
 - **Titan passage** (`IncidentDef RM_TitanPassage`, `IncidentWorker_TitanPassage`, `MapComponent_TitanPassages`): picks a
   race of adult tier T2/T3 from this map biome's explicit passage hints, else its own roster, with sea/land matching (`RM_TitanicKernel.TitanEventEligible`,
   also the one-T3-per-map spacing law); "Footfall tremors" letter naming the edge; camera shake every 300 ticks rising
-  0.3 -> 1.5 and a message every 2 h through `titanEventWarningHours` (default 6); then the titan spawns and walks edge to
+  0.3 -> 1.5 and a message every 2 h through `titanEventWarningHours` (default 2, owner 2026-11-11); then the titan spawns and walks edge to
   edge on a vanilla `LordJob_ExitMapNear` (the herd-migration shape). Re-checked at arrival; if no longer eligible the
   tremors "fade".
 - Mod Settings: scavengers / camps toggles + chance, max, meat/day, camp hours under the corpse-site group; a new "Titan
-  events" group with its toggle and warning hours. All numbers **PROVISIONAL** (FOUNDRY first guess, to be tuned live).
+  events" group with its toggle and warning hours. The warning default is owner-ruled at two hours (2026-11-11); valid explicit player tuning remains supported. Other numbers remain **PROVISIONAL** (FOUNDRY first guess, to be tuned live).
 
 ## criteria
 

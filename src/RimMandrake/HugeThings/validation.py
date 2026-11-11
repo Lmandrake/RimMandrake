@@ -69,7 +69,7 @@ DEFAULTS = {"giantPlantsEnabled": True, "plantTrunkEnabled": True, "plantSelecti
             # TITAN_CAMPS_SCAVENGERS_EVENTS_1 (cards #4/#5 2026-09-09; numbers PROVISIONAL, FOUNDRY 2026-10-21)
             "corpseSiteScavengersEnabled": True, "corpseSiteScavengerDailyChance": 0.35, "corpseSiteScavengerMax": 3,
             "corpseSiteVisitorMeatPerDay": 20, "corpseSiteCampsEnabled": True, "corpseSiteCampDailyChance": 0.1,
-            "corpseSiteCampHours": 36.0, "titanEventsEnabled": True, "titanEventWarningHours": 6.0,
+            "corpseSiteCampHours": 36.0, "titanEventsEnabled": True, "titanEventWarningHours": 2.0,
             # BIG_CREATURES_DESIGN_WALLS_AND_SLOTS phase 1 (owner cards 2026-10-18: x2 squeeze at half width, breadth 2 breaks
             # thin walls, titans step over narrow trenches); live chains in northstar/walls_slots_live.py.
             "wallsSlotsEnabled": True, "squeezeEnabled": True, "squeezeSlowdownAtHalf": 2.0, "trampleBudgetPerBreadth": 100.0,

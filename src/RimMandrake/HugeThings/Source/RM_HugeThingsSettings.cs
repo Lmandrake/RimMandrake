@@ -78,7 +78,8 @@ namespace RimMandrake.HugeThings
         public static float corpseSiteCampDailyChance = 0.1f;
         public static float corpseSiteCampHours = 36f;
         public static bool titanEventsEnabled = true;
-        public static float titanEventWarningHours = 6f;
+        // Owner 2026-11-11: two-hour warning; explicit valid player tuning is preserved.
+        public static float titanEventWarningHours = 2f;
 
         // --- What is live (master AND detail) -----------------------------------------------------------------------------------
         public static bool PlantTrunkActive => HugeGates.Plant(giantPlantsEnabled, plantTrunkEnabled);
@@ -159,7 +160,7 @@ namespace RimMandrake.HugeThings
             Scribe_Values.Look(ref corpseSiteCampDailyChance, "corpseSiteCampDailyChance", 0.1f);
             Scribe_Values.Look(ref corpseSiteCampHours, "corpseSiteCampHours", 36f);
             Scribe_Values.Look(ref titanEventsEnabled, "titanEventsEnabled", true);
-            Scribe_Values.Look(ref titanEventWarningHours, "titanEventWarningHours", 6f);
+            Scribe_Values.Look(ref titanEventWarningHours, "titanEventWarningHours", 2f);
             if (Scribe.mode == LoadSaveMode.PostLoadInit || Scribe.mode == LoadSaveMode.LoadingVars) Sanitize();
         }
 
@@ -198,7 +199,7 @@ namespace RimMandrake.HugeThings
             corpseSiteVisitorMeatPerDay = RM_TitanicKernel.SaneSetting(corpseSiteVisitorMeatPerDay, 5, 100);
             corpseSiteCampDailyChance = RM_TitanicKernel.SaneSetting(corpseSiteCampDailyChance, 0f, 1f, 0.1f);
             corpseSiteCampHours = RM_TitanicKernel.SaneSetting(corpseSiteCampHours, 6f, 120f, 36f);
-            titanEventWarningHours = RM_TitanicKernel.SaneSetting(titanEventWarningHours, 0.5f, 24f, 6f);
+            titanEventWarningHours = RM_TitanicKernel.SaneSetting(titanEventWarningHours, 0.5f, 24f, 2f);
         }
 
         private static Vector2 settingsScroll;
