@@ -312,10 +312,44 @@ def t_review_w11():
             pf.informational_build, pf.intended, pf.gp.MODS_CONFIG, pf.LAST_REPORT = saved
 
 
+def t_dependency_loadfolders():
+    from pathlib import Path
+    from unittest.mock import patch
+    with tempfile.TemporaryDirectory() as td:
+        root = Path(td)
+        for mod, dll in ((pf.RBS_WORKSHOP, 'RimBridgeServer.dll'),
+                         (pf.HARMONY_WORKSHOP, '0Harmony.dll')):
+            m = root / mod
+            (m / '1.6/Assemblies').mkdir(parents=True)
+            (m / 'Current/Assemblies').mkdir(parents=True)
+            (m / 'LoadFolders.xml').write_text('<loadFolders><v1.6><li>1.6</li></v1.6></loadFolders>')
+            (m / '1.6/Assemblies' / dll).write_bytes(b'loaded')
+            (m / 'Current/Assemblies' / dll).write_bytes(b'stale')
+        data = root / 'Data'
+        data.mkdir()
+        (root / 'RimWorldWin64_Data/Managed').mkdir(parents=True)
+        (root / 'RimWorldWin64_Data/Managed/Assembly-CSharp.dll').write_bytes(b'engine')
+        cfg = root / 'ModsConfig.xml'
+        cfg.write_text('<ModsConfigData><version>1.6.4633</version><activeMods/></ModsConfigData>')
+        with patch.multiple(pf.gp, WORKSHOP=td, GAME_DATA=str(data), MODS_CONFIG=str(cfg)):
+            fp = pf.dependency_fingerprint()
+            check('dependency hashes use selected version, never stale Current',
+                  fp['0Harmony.dll'] == pf.sha256(root / pf.HARMONY_WORKSHOP / '1.6/Assemblies/0Harmony.dll', 16))
+            baseline = root / 'baseline.json'
+            baseline.write_text(json.dumps({'fp': fp}))
+            with patch.object(pf, 'DEP_BASELINE', str(baseline)):
+                check('matching selected dependencies pass', pf.c_deps({'accept_deps': False}).status == 'PASS')
+                (root / pf.HARMONY_WORKSHOP / '1.6/Assemblies/0Harmony.dll').write_bytes(b'updated')
+                check('changed selected Harmony still fails fingerprint', pf.c_deps({'accept_deps': False}).status == 'FAIL')
+                (root / pf.HARMONY_WORKSHOP / '1.6/Assemblies/0Harmony.dll').unlink()
+                check('missing Harmony cannot hide behind other dependency DLLs',
+                      pf.c_deps({'accept_deps': False}).status == 'UNMEASURED')
+
+
 def main():
     import io
     import contextlib
-    for t in (t_verdict, t_modsconfig, t_live, t_manifest, t_deploy_staged, t_review_w10, t_review_w11):
+    for t in (t_verdict, t_modsconfig, t_live, t_manifest, t_deploy_staged, t_review_w10, t_review_w11, t_dependency_loadfolders):
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
             before = len(RESULTS)

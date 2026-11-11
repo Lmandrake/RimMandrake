@@ -355,13 +355,24 @@ def c_companion(ctx):
 
 
 def dependency_fingerprint():
+    """Fingerprint the assemblies selected by RimWorld's load-folder rules."""
+    from rimworld_loadset import resolve_load_folders
+    version = ET.parse(gp.MODS_CONFIG).getroot().findtext('version')
+    version = '.'.join(version.split('.')[:2])
+    active = set(active_ids(gp.MODS_CONFIG))
     fp = {}
     rbs = os.path.join(gp.WORKSHOP, RBS_WORKSHOP)
-    for f in sorted(glob.glob(os.path.join(rbs, '1.6', 'Assemblies', '*.dll'))) + \
-            [os.path.join(gp.WORKSHOP, HARMONY_WORKSHOP, 'Current', 'Assemblies', '0Harmony.dll'),
-             os.path.join(gp.GAME_DATA, '..', 'RimWorldWin64_Data', 'Managed', 'Assembly-CSharp.dll')]:
-        if os.path.isfile(f):
-            fp[os.path.basename(f)] = sha256(f, 16)
+    for mod in (rbs, os.path.join(gp.WORKSHOP, HARMONY_WORKSHOP)):
+        for folder in resolve_load_folders(mod, version, active):
+            for f in sorted(glob.glob(os.path.join(folder, 'Assemblies', '*.dll'))):
+                key = os.path.basename(f)
+                digest = sha256(f, 16)
+                if key in fp and fp[key] != digest:
+                    raise ValueError('conflicting loaded dependency assembly: %s' % key)
+                fp[key] = digest
+    game = os.path.join(gp.GAME_DATA, '..', 'RimWorldWin64_Data', 'Managed', 'Assembly-CSharp.dll')
+    if os.path.isfile(game):
+        fp['Assembly-CSharp.dll'] = sha256(game, 16)
     man = os.path.join(rbs, 'About', 'Manifest.xml')
     if os.path.isfile(man):
         m = re.search(r'<version>([^<]+)', open(man, encoding='utf-8-sig', errors='replace').read())
@@ -372,7 +383,7 @@ def dependency_fingerprint():
 def c_deps(ctx):
     fp = dependency_fingerprint()
     ctx['deps'] = fp
-    if len([k for k in fp if k.endswith('.dll')]) < 3:
+    if not {'0Harmony.dll', 'RimBridgeServer.dll', 'Assembly-CSharp.dll'} <= fp.keys():
         return UNM('found only %s -- RBS/Harmony/game assemblies not where expected' % sorted(fp))
     if ctx['accept_deps']:
         os.makedirs(os.path.dirname(DEP_BASELINE), exist_ok=True)

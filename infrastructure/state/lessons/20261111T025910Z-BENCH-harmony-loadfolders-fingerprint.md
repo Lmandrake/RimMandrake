@@ -1,0 +1,2 @@
+Preflight dependency discovery must resolve LoadFolders.xml for the target game version: Harmony 3.0.1.0 removed Current/Assemblies and loads 1.6 instead. Hash all selected assemblies, explicitly require Harmony/RBS/game, and retain a negative control for a changed selected DLL. An investigated dependency update establishes a new environment, never comparability with the old baseline.
+home: src/RimMandrake/Utils/preflight_bridge.py
