@@ -1,0 +1,19 @@
+{
+  "time": 1794431359.3769314,
+  "status": "PASS",
+  "source_inputs": 6034,
+  "source_mismatches": [],
+  "shipping_inputs": 349,
+  "shipping_dll": "ec29517d2e6d961485c0e6d10dc5b57310170a85b4f2fdffa1cda057f91c58c9",
+  "compiled_stage_inputs": 264,
+  "exact_extracted_production_methods": 7,
+  "mutants_compiled_and_behaviorally_red": 8,
+  "full_observer_bytes": 388104,
+  "csharp_stdout_bytes": 111623,
+  "csharp_stderr_bytes": 0,
+  "main_cases": "1287/1287",
+  "hose_checks": "188/188",
+  "hose_assertions": "457/457",
+  "standard_runner": "PASS 1/1; all nonpass zero",
+  "limits": "Extracted real methods with Unity/Verse/lay/clock doubles; live pixels and real jobs/saves unverified; draw-order/budget stale interval qualified."
+}

@@ -1,0 +1,34 @@
+[
+  {
+    "commit": "32ca2009d73b72dfa8ae1f94e71ceba186fa46d9",
+    "parent": "7aae7a0990e73d0e253b293523aab48af01ebc36",
+    "topic": "carry",
+    "published_ancestor_of_origin_main": true,
+    "patch_sha256": "ac2a67fc18717c5ccf6a7d756a9cd20210bfee792ed2099528fc3aabe78fae1f",
+    "raw": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/hose-shadow-raw/original/32ca2009d7-patch.txt"
+  },
+  {
+    "commit": "f3e8255a14e80279ebc8ffda2420278a28566957",
+    "parent": "494b659efc1e62333447ad66d8a6c876441650b3",
+    "topic": "retract and serial key",
+    "published_ancestor_of_origin_main": true,
+    "patch_sha256": "4692f47703530ec1a82c068e177ba0a4bb19cd2bb53db2ff884cf9711fb97744",
+    "raw": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/hose-shadow-raw/original/f3e8255a14-patch.txt"
+  },
+  {
+    "commit": "32bb6a4c787faa4e7254c8553185b414e6e79c1d",
+    "parent": "c78563a9353c55cb1aec58328b88ca9bded56a97",
+    "topic": "null lay",
+    "published_ancestor_of_origin_main": true,
+    "patch_sha256": "055491d3f8eddf49550b6ef469acbed3aacc6ff5ae8fb3d2cd316408c080ec62",
+    "raw": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/hose-shadow-raw/original/32bb6a4c78-patch.txt"
+  },
+  {
+    "commit": "8ef7d5275a56688eccc1c6c4f7c6f9c389a98c0b",
+    "parent": "41c63a66aac08d82c70a69e6c04555f665df5a8a",
+    "topic": "indexed removal and dirty propagation",
+    "published_ancestor_of_origin_main": true,
+    "patch_sha256": "8a886369dda552020a5294a66994c11c13cf40a562d8075f428ce384a46ce3bd",
+    "raw": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/hose-shadow-raw/original/8ef7d5275a-patch.txt"
+  }
+]

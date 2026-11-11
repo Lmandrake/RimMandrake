@@ -1,0 +1,14 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+    "--only",
+    "HS_*,HoseCarryChecks,HX4*"
+  ],
+  "returncode": 1,
+  "env": {
+    "WSLENV": "WT_SESSION:WT_PROFILE_ID::RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT:RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT:RIMWORLD_DECOMPILED",
+    "RIMWORLD_DECOMPILED": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\scratch\\BENCH\\fw-drain\\whittle\\fw-drain-selftest-resume\\evidence\\reference"
+  },
+  "time": 1794430372.520962
+}

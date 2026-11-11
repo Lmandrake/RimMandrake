@@ -1,0 +1,33 @@
+<Project>
+  <!-- Complete shipping bodies, compiled unchanged against the explicit boundaries in HoseShadowHarness.cs. -->
+  <UsingTask TaskName="ExtractHoseShadow" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup><Source ParameterType="System.String" Required="true"/><Output ParameterType="System.String" Required="true"/></ParameterGroup>
+    <Task><Using Namespace="System.IO"/><Using Namespace="System.Text"/>
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        string source = File.ReadAllText(Source);
+        string[] signatures = { "private void DrawAll()", "private void DropMeshes(", "private static void DestroyMeshes(", "private static void DestroyOver(", "private void DrawCrossShadow(", "private void RebuildCrossShadow(", "private void BuildCrossMesh(" };
+        var text = new StringBuilder("// GENERATED: whole production methods; never edit.\nusing System; using System.Collections.Generic; using RimMandrake.Shared.Slack; using RimMandrake.FlowWorks.Hose;\nnamespace RimMandrake.FlowWorks.SelfTest.HoseShadowHarness { internal partial class Component {\n");
+        foreach (string signature in signatures) {
+          int start = source.IndexOf(signature, StringComparison.Ordinal);
+          int open = start < 0 ? -1 : source.IndexOf('{', start + signature.Length);
+          int end = -1, depth = 0;
+          if (open < 0) { Log.LogError("Hose shadow method missing: " + signature); return false; }
+          // Selected bodies have no braces inside strings/comments. Compiler rejects incompatible source drift.
+          for (int i = open; i < source.Length; i++) {
+            if (source[i] == '{') depth++;
+            else if (source[i] == '}' && --depth == 0) { end = i; break; }
+          }
+          if (end < 0) { Log.LogError("Unbalanced hose shadow body: " + signature); return false; }
+          text.Append(source.Substring(start, end + 1 - start)).Append("\n");
+        }
+        text.Append("} }\n");
+        Directory.CreateDirectory(Path.GetDirectoryName(Output));
+        File.WriteAllText(Output, text.ToString());
+      ]]></Code>
+    </Task>
+  </UsingTask>
+  <Target Name="ExtractHoseShadow" BeforeTargets="CoreCompile">
+    <ExtractHoseShadow Source="$(MSBuildProjectDirectory)\..\Hose\RM_MapComponent_Hoses.cs" Output="$(MSBuildProjectDirectory)\$(IntermediateOutputPath)HoseShadow.g.cs"/>
+    <ItemGroup><Compile Include="$(MSBuildProjectDirectory)\$(IntermediateOutputPath)HoseShadow.g.cs"/></ItemGroup>
+  </Target>
+</Project>

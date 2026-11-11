@@ -1,0 +1,143 @@
+{
+  "time": 1794431074.7743506,
+  "frozen_statement_sha256": "034a159b7fa44a559be7c6e2a5b7448de42fa0f8977a59e225abf937a5e2c6c9",
+  "source_inputs_freshly_read": 6034,
+  "all_before_after_inputs_equal": true,
+  "shipping_stamp_rows": 349,
+  "shipping_dll_sha256": "ec29517d2e6d961485c0e6d10dc5b57310170a85b4f2fdffa1cda057f91c58c9",
+  "shipping_stamp_sha256": "b1375866bfd079d1f2c361faacb389c7e99c3706554ec4c3dd034d8908c6a29b",
+  "installed_assembly_sha256": "5cf1b5be399d5b1c9c56ca72c9d35b4ecf307feacf5859d04ac5a1aa5926356a",
+  "source_manifest_evidence": "identity_before.json, identity_preproof.json, identity_after.json, integrity_before.json, stage_identity.json",
+  "stage_compiled_inputs": 264,
+  "exact_extracted_production_methods": [
+    "private void DrawAll()",
+    "private void DropMeshes(",
+    "private static void DestroyMeshes(",
+    "private static void DestroyOver(",
+    "private void DrawCrossShadow(",
+    "private void RebuildCrossShadow(",
+    "private void BuildCrossMesh("
+  ],
+  "focused": "focused3.json: 10/10 Cases including 9 HS behaviours, HoseCarryChecks41/41 assertions",
+  "standard_runner_stdout": "evidence: 0 eligible, 0 SKIPPED as unchanged, 0 PASS recorded, 0 PASS not recordable \u2014 runner 65716eff3278c68e\ncache: 0 CACHED PASS, 1 declared test(s) ran\nknown results: 0/1 answered from the ledger (selftests.cache_hit_share 0.000), 0s not spent; 1 ran, 0 recorded, 0 checked against a stored PASS, 0 known red\n  ran (1): no record\n  not recordable (1): changed during the run: src/RimMandrake/Utils/selftest_flowworks_stock.py\nPASS        448.5s  src/RimMandrake/Utils/selftest_flowworks_stock.py\n\nPASS 1/1  FAIL 0/1  UNMEASURED 0/1  CRASH 0/1  SKIPPED 0/1  (wall 449.8s) \u2014 contained in rm-harness.slice (max 24G), 1 workers\nRESULT: GREEN (green = FAIL 0 and CRASH 0)\n",
+  "standard_csharp_summary": [
+    "ok    HS_transition_0_upperFirst_False",
+    "ok    HS_transition_0_upperFirst_True",
+    "ok    HS_transition_1_upperFirst_False",
+    "ok    HS_transition_1_upperFirst_True",
+    "ok    HS_transition_2_upperFirst_False",
+    "ok    HS_transition_2_upperFirst_True",
+    "ok    HS_drop_budget_dirty_then_drain_and_idempotence",
+    "ok    HS_rank_toggle_and_same_key_relay",
+    "ok    HS_legacy_retains_original_carry_comparison",
+    "1287/1287 passed",
+    "hose: 188/188 checks passed",
+    "  HoseCarryChecks: 41/41",
+    "hose: 457/457 assertions passed (moved from Gimme Some Slack: 350; new: 107)"
+  ],
+  "negative_controls": [
+    {
+      "name": "original_carry_no_drop",
+      "failures": [
+        "FAIL  HS_transition_0_upperFirst_False",
+        "FAIL  HS_transition_0_upperFirst_True",
+        "FAIL  HS_legacy_retains_original_carry_comparison"
+      ]
+    },
+    {
+      "name": "original_null_lay_no_drop",
+      "failures": [
+        "FAIL  HS_transition_1_upperFirst_False",
+        "FAIL  HS_transition_1_upperFirst_True"
+      ]
+    },
+    {
+      "name": "original_retract_no_drop",
+      "failures": [
+        "FAIL  HS_transition_2_upperFirst_False",
+        "FAIL  HS_transition_2_upperFirst_True"
+      ]
+    },
+    {
+      "name": "mutant_drop_keeps_index",
+      "failures": [
+        "FAIL  HS_transition_0_upperFirst_False",
+        "FAIL  HS_transition_0_upperFirst_True",
+        "FAIL  HS_transition_1_upperFirst_False",
+        "FAIL  HS_transition_1_upperFirst_True",
+        "FAIL  HS_transition_2_upperFirst_False",
+        "FAIL  HS_transition_2_upperFirst_True",
+        "FAIL  HS_drop_budget_dirty_then_drain_and_idempotence",
+        "FAIL  HS_rank_toggle_and_same_key_relay",
+        "FAIL  HS_legacy_retains_original_carry_comparison"
+      ]
+    },
+    {
+      "name": "mutant_index_drop_no_remove",
+      "failures": [
+        "FAIL  HS_transition_0_upperFirst_False",
+        "FAIL  HS_transition_0_upperFirst_True",
+        "FAIL  HS_transition_1_upperFirst_False",
+        "FAIL  HS_transition_1_upperFirst_True",
+        "FAIL  HS_transition_2_upperFirst_False",
+        "FAIL  HS_transition_2_upperFirst_True",
+        "FAIL  HS_drop_budget_dirty_then_drain_and_idempotence",
+        "FAIL  HS_rank_toggle_and_same_key_relay",
+        "FAIL  HS_legacy_retains_original_carry_comparison"
+      ]
+    },
+    {
+      "name": "mutant_index_drop_no_dirty",
+      "failures": [
+        "FAIL  HS_transition_0_upperFirst_False",
+        "FAIL  HS_transition_0_upperFirst_True",
+        "FAIL  HS_transition_1_upperFirst_False",
+        "FAIL  HS_transition_1_upperFirst_True",
+        "FAIL  HS_transition_2_upperFirst_False",
+        "FAIL  HS_transition_2_upperFirst_True",
+        "FAIL  HS_drop_budget_dirty_then_drain_and_idempotence",
+        "FAIL  HS_rank_toggle_and_same_key_relay",
+        "FAIL  HS_legacy_retains_original_carry_comparison"
+      ]
+    },
+    {
+      "name": "mutant_rank_reversed",
+      "failures": [
+        "FAIL  HS_transition_0_upperFirst_False",
+        "FAIL  HS_transition_0_upperFirst_True",
+        "FAIL  HS_transition_1_upperFirst_False",
+        "FAIL  HS_transition_1_upperFirst_True",
+        "FAIL  HS_transition_2_upperFirst_False",
+        "FAIL  HS_transition_2_upperFirst_True",
+        "FAIL  HS_drop_budget_dirty_then_drain_and_idempotence",
+        "FAIL  HS_rank_toggle_and_same_key_relay",
+        "FAIL  HS_legacy_retains_original_carry_comparison"
+      ]
+    },
+    {
+      "name": "mutant_dependent_mesh_not_cleared",
+      "failures": [
+        "FAIL  HS_drop_budget_dirty_then_drain_and_idempotence",
+        "FAIL  HS_rank_toggle_and_same_key_relay"
+      ]
+    }
+  ],
+  "changed_paths": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/HoseShadowHarness.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/HoseShadowHarness.targets",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/Program.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/RimMandrakeFlowWorks.SelfTest.csproj"
+  ],
+  "other_changes": "Parent-existing own-seat reassignment ledger modification and unit scaffold are preserved; worker made no ledger writes",
+  "limits": [
+    "offline complete-method extraction against explicit engine doubles, not the whole Verse class",
+    "upper-first iteration can retain one stale frame; budget can retain old shadow while pending until a later scan",
+    "retracting entire lower strand is omitted including visible clipped remainder",
+    "LegacyFrame opt-in intentionally retains original carry/null/retract comparison behavior",
+    "actual live rendered behavior, Unity lifecycle, natural jobs/scheduling and full mod list unverified"
+  ],
+  "shipping_source_changed": false,
+  "shipping_build_run": false,
+  "art_changes": false,
+  "bridge_or_deploy_or_game_or_modlist_actions": false
+}

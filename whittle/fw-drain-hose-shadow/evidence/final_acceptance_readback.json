@@ -1,0 +1,28 @@
+{
+  "time": 1794431359.468318,
+  "fresh_content_readback_paths": 6034,
+  "matches_tested_manifest": true,
+  "shipping_dll": "ec29517d2e6d961485c0e6d10dc5b57310170a85b4f2fdffa1cda057f91c58c9",
+  "shipping_stamp": "b1375866bfd079d1f2c361faacb389c7e99c3706554ec4c3dd034d8908c6a29b",
+  "shipping_stamp_rows": 349,
+  "judge_result_sha256": "33e93b71de5a19b7361b8641dfb12725fe7ffb4772d639a3b73ab61fcb412b28",
+  "judge_model": [
+    "claude-opus-5-5"
+  ],
+  "broaden_model": [
+    "claude-opus-5-5"
+  ],
+  "broaden_independence_verified": true,
+  "judge_independence_verified": true,
+  "whole_frozen_judge_brief_verified": true,
+  "source_art_and_shipping_artifacts_unchanged": true,
+  "proof_evidence": "verification.json",
+  "raw_refusals": "compile1.json, focused2.json and recording_refusal_readback.json retained; no stale pass relabeled",
+  "limits": [
+    "offline complete-method extraction against explicit engine doubles, not the whole Verse class",
+    "upper-first iteration can retain one stale frame; budget can retain old shadow while pending until a later scan",
+    "retracting entire lower strand is omitted including visible clipped remainder",
+    "LegacyFrame opt-in intentionally retains original carry/null/retract comparison behavior",
+    "actual live rendered behavior, Unity lifecycle, natural jobs/scheduling and full mod list unverified"
+  ]
+}

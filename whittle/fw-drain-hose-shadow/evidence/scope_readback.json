@@ -1,0 +1,20 @@
+{
+  "time": 1794431136.9574254,
+  "source_changes": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/HoseShadowHarness.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/HoseShadowHarness.targets",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/Program.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/RimMandrakeFlowWorks.SelfTest.csproj"
+  ],
+  "work_root": "whittle/fw-drain-hose-shadow/",
+  "external_raw": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/hose-shadow-raw",
+  "HEAD": "2f4602f2ecfd682644878f7a27621554e2a77aee",
+  "production_source": "src/RimMandrake/FlowWorks/Source/Hose/RM_MapComponent_Hoses.cs",
+  "production_source_sha256": "bc4d5b8e5fba6e5b0b4b51416fa353cb198ac3ce8b74723c214b8279cb8409b5",
+  "production_index": "src/RimMandrake/FlowWorks/Source/Hose/HoseCrossShadows.cs",
+  "production_index_sha256": "45307b36fb17013394b417168361ac373b78a04e2902db998d8725e817e9c250",
+  "shipping_dll": "ec29517d2e6d961485c0e6d10dc5b57310170a85b4f2fdffa1cda057f91c58c9",
+  "shipping_stamp": "b1375866bfd079d1f2c361faacb389c7e99c3706554ec4c3dd034d8908c6a29b",
+  "item_state": "Parent alone will publish, register/verify/close/archive; worker writes no item or ledger notes",
+  "shipping_code_art_and_dll_unchanged": true
+}

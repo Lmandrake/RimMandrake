@@ -180,6 +180,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 HoseFrameMemoChecks.Run(Case);
                 HoseAllocChecks.Run(Case);
                 HoseLayerChecks.Run(Case);
+                HoseShadowHarness.Component.Run(Case);
                 HoseCrossShadowChecks.Run(Case);
                 Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
                 return Fail.Count == 0 ? 0 : 1;
@@ -2246,6 +2247,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             HoseFrameMemoChecks.Run(Case);     // HOSE_FRAME_SHRINK_PER_FRAME_GARBAGE: per-frame key memos match the old strings, allocate nothing (HoseFrameMemoChecks.cs)
             HoseAllocChecks.Run(Case);         // HOSE_LAY_FIX_GC_STORM_FROM_WORKER: garbage per hose lay (HoseAllocChecks.cs)
             HoseLayerChecks.Run(Case);         // HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP: cached broad-phase layering (HoseLayerChecks.cs)
+            HoseShadowHarness.Component.Run(Case);
             HoseCrossShadowChecks.Run(Case);   // HOSE_DRAW_FIX_CROSS_SHADOW_QUADRATIC: indexed crossing shadows (HoseCrossShadowChecks.cs)
             HoseLayQueueChecks.Run(Case);      // HOSE_LAY_FIX_SYNC_RELAY_IN_DRAW: draw/tick lays off the frame, budgeted (HoseLayQueueChecks.cs)
             HoseReplanChecks.Run(Case);        // HOSE_RECHECK_TAME_REPLAN_OFF_TICK: the corridor replan off the tick, shared quota (HoseReplanChecks.cs)

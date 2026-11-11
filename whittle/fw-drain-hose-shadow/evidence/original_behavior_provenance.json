@@ -1,0 +1,23 @@
+[
+  {
+    "behavior": "carry",
+    "parent_of": "32ca2009d7",
+    "exact_original_branch": "if (r.carry == HoseCarryState.Carrying && r.trail.Count > 0) { DrawCarrying(r, y, lastFar); continue; }",
+    "preserved_parent": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/hose-shadow-raw/original/32ca2009d7-parent.cs",
+    "control": "remove only the corresponding DropMeshes call from current source in the external test stage, retaining current index machinery"
+  },
+  {
+    "behavior": "null lay",
+    "parent_of": "32bb6a4c78",
+    "exact_original_branch": "if (lay == null) { lastDraw[r] = \"none\"; continue; }",
+    "preserved_parent": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/hose-shadow-raw/original/32bb6a4c78-parent.cs",
+    "control": "remove only the corresponding DropMeshes call from current source in the external test stage, retaining current index machinery"
+  },
+  {
+    "behavior": "retract",
+    "parent_of": "f3e8255a14",
+    "original": "no retract-specific DropMeshes before cache lookup; existing per-frame clip retained",
+    "preserved_parent": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/hose-shadow-raw/original/f3e8255a14-parent.cs",
+    "control": "remove only this later added drop from current source in external test stage"
+  }
+]

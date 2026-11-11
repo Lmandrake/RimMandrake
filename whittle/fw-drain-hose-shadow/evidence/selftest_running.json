@@ -1,0 +1,40 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/Utils/run_selftests.py",
+    "--only",
+    "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+    "--workers",
+    "1"
+  ],
+  "observer_argv": [
+    "/home/mandrake/.seat-tmp/fw-two-stray-tools/usr/bin/strace",
+    "-f",
+    "-ttt",
+    "--trace=write",
+    "--trace-fds=1,2",
+    "-s",
+    "2000000",
+    "-E",
+    "LD_LIBRARY_PATH",
+    "-o",
+    "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/hose-shadow-raw/final_selftest_writes.strace",
+    "python3",
+    "src/RimMandrake/Utils/run_selftests.py",
+    "--only",
+    "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+    "--workers",
+    "1"
+  ],
+  "observer_sha256": "f47342683309e807bca57d6d89b82f94a9b39aa614e9c28c2b67cefbc35eee58",
+  "started": 1794430607.4039552,
+  "tested_HEAD": "2f4602f2ecfd682644878f7a27621554e2a77aee",
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-hose-shadow",
+  "RIMWORLD_DECOMPILED": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\scratch\\BENCH\\fw-drain\\whittle\\fw-drain-selftest-resume\\evidence\\reference",
+  "WSLENV": "WT_SESSION:WT_PROFILE_ID::RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT:RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT:RIMWORLD_DECOMPILED",
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "timeout_seconds": 1260,
+  "raw_trace": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/hose-shadow-raw/final_selftest_writes.strace",
+  "purpose": "Capture stdout writes discarded by the runner on PASS; external observation only; modified SelfTest guards are included in integrity manifest",
+  "pid": 1357855
+}

@@ -1,0 +1,7 @@
+{
+  "time": 1794431466.2163174,
+  "exact_raw_response_suffix": true,
+  "exact_occurrences": 1,
+  "exact_frozen_input": true,
+  "earlier_parent_assertion": "Required one extra trailing newline; raw result has none and was copied verbatim. Corrected content check, no verdict edit."
+}

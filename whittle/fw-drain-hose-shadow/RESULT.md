@@ -1,0 +1,21 @@
+Accepted bounded offline verification for HOSE_SHADOW_FIX_STALE_ROUTE_CASTS. Parent alone publishes and writes final item note, verification, closure and archive. No source CLEAN claim.
+
+Current shipping repair commits (all ancestors of origin/main): carry 32ca2009d73b72dfa8ae1f94e71ceba186fa46d9; null lay 32bb6a4c787faa4e7254c8553185b414e6e79c1d; retract and serial key f3e8255a14e80279ebc8ffda2420278a28566957; index/drop integration 8ef7d5275a56688eccc1c6c4f7c6f9c389a98c0b. This worker changed no shipping source and ran no shipping build.
+
+Focused sanctioned wrapper: focused3 PASS, ten Cases (nine new production-body HS cases plus existing HX4) and HoseCarryChecks41/41 assertions. Required actual run_selftests.py --only src/RimMandrake/Utils/selftest_flowworks_stock.py --workers1 PASS1/1, FAIL/UNMEASURED/CRASH/SKIPPED all zero; cache and known-answer hits zero. Main1287/1287; hose188/188 checks and457/457 assertions. Raw stdout recovered from external observer without injecting into the runner.
+
+Eight controls compiled and failed behaviorally in the external stage: localized historical carry/null-lay/retract no-drop behavior; DropMeshes omitting index drop; index Drop omitting removal or dirty propagation; reversed rank comparison; dependent mesh not cleared. These are current-source mutations restoring the original branches, not whole historical-commit test runs. Exact old parent sources/patches and all control outputs are preserved. Stage source restored byte-exact, then the final standard runner restaged/rebuilt fresh. Earlier compile1 boundary-type failure and focused2 invalid-fixture failure are retained. Standard runner passed but refused reusable recording, reporting wrapper changed during run; independent before/after/current content hashes agree, cause unestablished, no reusable cached result claimed.
+
+Before-proof and fresh readback manifest:6034 paths;349 shipping stamp inputs match. Stage readback:764 inputs (two normal artwork exclusions),264 direct compile inputs, seven exact whole production bodies. Shipping DLL sha256 ec29517d2e6d961485c0e6d10dc5b57310170a85b4f2fdffa1cda057f91c58c9; stamp b1375866bfd079d1f2c361faacb389c7e99c3706554ec4c3dd034d8908c6a29b. Installed Assembly-CSharp.dll5cf1b5be399d5b1c9c56ca72c9d35b4ecf307feacf5859d04ac5a1aa5926356a matches the prior actual ILSpy reference extraction; Windows UNC/reference/seat readback retained.
+
+Fresh Opus5.5 broaden preceded final proof, its scenarios were exercised. Fresh separate read-only Opus5.5 judge used JUDGE_PROMPT as the entire brief, no history/resume/fork/persistence, neutral temporary cwd, Read/Glob/Grep only and empty strict MCP. Envelope, exact input, timings and result retained; JUDGE.md is verbatim after provenance prefix. Judge did not read the broaden, as instructed; maker independently verified both fresh call envelopes and acted-on scenarios.
+
+Limits: seven extracted complete methods and real index/geometry against engine doubles, not the whole Verse-bound class. Upper-first order can leave one stale frame; exhausted budget can retain old shadow while pending until a later scan, without a universal frame bound claimed. Retraction omits the whole lower strand, including visible clipped remainder. LegacyFrame deliberately preserves historical comparison behavior and starts off in shipping. Live rendered pixels, Unity destruction timing, real carry/job/save/scheduling and full-list play remain unverified. Empty carried trail is source-inspected through HoseOut/EnsureLay, not behaviorally exercised. No bridge, deployment, game launch, ModsConfig/save, art or GSS look actions.
+
+Exact source changes:
+- src/RimMandrake/FlowWorks/Source/SelfTest/HoseShadowHarness.cs
+- src/RimMandrake/FlowWorks/Source/SelfTest/HoseShadowHarness.targets
+- src/RimMandrake/FlowWorks/Source/SelfTest/Program.cs
+- src/RimMandrake/FlowWorks/Source/SelfTest/RimMandrakeFlowWorks.SelfTest.csproj
+
+Work/evidence: whittle/fw-drain-hose-shadow/. Raw/native storage: /mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/hose-shadow-raw/. Parent's pre-existing reassignment ledger edit and scaffold preserved; no worker ledger writes. Actual completion validator receipts are evidence/workflow_final.json (then final audit if needed).

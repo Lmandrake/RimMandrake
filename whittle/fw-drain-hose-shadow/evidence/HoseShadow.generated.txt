@@ -1,0 +1,284 @@
+// GENERATED: whole production methods; never edit.
+using System; using System.Collections.Generic; using RimMandrake.Shared.Slack; using RimMandrake.FlowWorks.Hose;
+namespace RimMandrake.FlowWorks.SelfTest.HoseShadowHarness { internal partial class Component {
+private void DrawAll()
+        {
+            float y0 = (float)RimMandrake.Shared.Slack.DrawOrder.Alt(RimMandrake.Shared.Slack.DrawOrder.LayerHose) + RimMandrake.Shared.Slack.DrawOrder.HoseBaseLift;
+            lastWrapDraws = lastFeedDraws = lastFeedPipeDraws = lastReelEndHidden = lastRelayCouplings = 0;
+            lastCarryDraws = lastClipDraws = lastGhostDraws = lastPortCouplings = 0;
+            lastDepthDraws = 0;
+            lastPortStubs = 0;
+            lastMateJoins = 0;
+            lastOverDraws = lastCrossShadowDraws = 0;
+            lastDeferredRebuilds = lastDeferredCross = 0;
+            rebuildSpent = crossSpent = 0;
+            lastDeferredMates = 0;
+            RimMandrake.FlowWorks.Machinery.RM_UnderCouplers.ResetFrame();
+            lastFar = Find.CameraDriver.CurrentZoom >= CameraZoomRange.Far;
+            // HOSE_RELAY_FIX_BUDGET_STARVES_LATE_REELS: the walk starts at the first reel a budget turned away last frame
+            // (HoseDrawRotation); FrameLegacy keeps reel order
+            drawOrder.Begin(reels.Count, !LegacyFrame);
+            if (!LegacyFrame) mateEnds.BeginFrame(Time.frameCount);
+            for (int step = 0; step < reels.Count; step++)
+            {
+                int i = drawOrder.At(step);
+                CompHoseReel r = reels[i];
+                // B18: where hoses cross, one passes cleanly over the other, the same way every frame: each hose (and its
+                // fittings) sits in its own altitude band, ordered by when the reel was built
+                int rank = RankOf(r);
+                float y = y0 + HoseMath.CrossLift(rank);
+                if (drawnFittings.TryGetValue(r, out Dictionary<string, DrawnFitting> df)) df.Clear();   // this frame's record only
+                DrawFeed(r, y0);
+                // S4 (design section 6): a carried hose is drawn live along the walked trail to the carrier's hand
+                if (r.carry == HoseCarryState.Carrying && r.trail.Count > 0)
+                {
+                    // HOSE_SHADOW_FIX_CARRIED_STRAND_STALE: a laid hose picked up (PickUp only nulls its lay; the tick skips an unlaid
+                    // reel) kept its laid strand cached, so hoses above cast crossing shadows over empty ground until it was set down
+                    if (!LegacyFrame && meshes.ContainsKey(r)) DropMeshes(r);
+                    DrawCarrying(r, y, lastFar);
+                    continue;
+                }
+                if (carryCache.Count > 0) DropCarryCache(r);
+                HoseLay lay = EnsureLay(r, true);   // HOSE_LAY_FIX_SYNC_RELAY_IN_DRAW: never a lay inside the draw (FrameLegacy: as before)
+                if (lay == null)
+                {
+                    // HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP: a wound-in hose (EnsureLay returns null without re-laying) dropped no
+                    // strand, so hoses above kept crossing shadows over it and every scan still walked it
+                    if (!LegacyFrame && meshes.ContainsKey(r)) DropMeshes(r);
+                    lastDraw[r] = "none";
+                    continue;
+                }
+                PoseInfo pi = Info(r);
+                double amt = RM_HoseSettings.plumpAmount;
+                int T = RM_HoseSettings.Tuning().TransitionTicks;
+                bool settled = !pi.Wobbling && (pi.Blend <= 0 || pi.Blend >= 1);
+                // a transitioning pose depends only on the game tick, so it is cached per tick (a paused game stops re-meshing every frame)
+                string key = LegacyFrame ? (settled ? (pi.Blend >= 1 ? "P" : "F") : "T" + Find.TickManager.TicksGame) + r.layKey + "@" + RankOf(r) : null;
+                // HOSE_ENDS_FIX_MISSES_THE_PORTS: an end coupled to a tank's drawn port bends onto it (TankPortGeometry), so the
+                // coupling DrawEnds puts half a cell past the end sits on the flange, not half a cell beside it
+                V2 portAt = default(V2), portAxis = default(V2);
+                bool onPort = r.laid && r.carry != HoseCarryState.Retracting && PortEnd(r, out portAt, out portAxis);
+                if (onPort && LegacyFrame) key += "|p" + portAt.X.ToString("0.000") + "," + portAt.Z.ToString("0.000");
+                // HOSE_SPLICE_BUILD_MATES_BY_SLOPE: an open end lying on another hose's open end couples to it face to face
+                MateInfo mi = onPort ? null : MateFor(r);
+                if (LegacyFrame) { if (mi != null) key += "|m" + mi.key; }
+                // HOSE_FRAME_SHRINK_PER_FRAME_GARBAGE: the same key, the cached instance while its inputs hold (HoseDrawKeyMemo)
+                else key = (r.drawKeyMemo ?? (r.drawKeyMemo = new HoseDrawKeyMemo())).Get(settled, pi.Blend >= 1, Find.TickManager.TicksGame, r.layKey, RankOf(r), onPort, portAt.X, portAt.Z, mi?.key);
+                // HOSE_SHADOW_FIX_RETRACTING_STRAND_STALE (review 2026-10-26): a hose being wound in draws a per-frame clip and
+                // never re-caches (key null below), so its full laid strand stayed in meshes and hoses above cast crossing
+                // shadows over wound-away ground for the whole wind job. Dropped here; while winding, hoses above cast no
+                // crossing shadow onto what remains of it.
+                if (!LegacyFrame && r.carry == HoseCarryState.Retracting && meshes.ContainsKey(r)) DropMeshes(r);
+                // review 2026-10-22: the key is built first, so a cache hit reuses the pose its meshes were built from
+                meshes.TryGetValue(r, out Cached c);
+                List<V2> pts;
+                long rebuildT0 = 0;
+                if (r.carry != HoseCarryState.Retracting && c != null && c.pts != null && c.key == key) pts = c.pts;
+                else if (!LegacyFrame && r.carry != HoseCarryState.Retracting && c != null && c.pts != null && c.key != null
+                         && rebuildSpent >= RebuildBudgetMs * TicksPerMs)
+                {
+                    // HOSE_RELAY_FIX_WAVE_FRAME_OVER_BUDGET: this frame's re-posing is spent; the cached pose and meshes are drawn
+                    // as they were and the key stays unmet, so the next frame re-poses it
+                    key = c.key;
+                    pts = c.pts;
+                    lastDeferredRebuilds++;
+                    DeferredRebuildsTotal++;
+                    drawOrder.Deferred(i);
+                }
+                else
+                {
+                    rebuildT0 = System.Diagnostics.Stopwatch.GetTimestamp();
+                    // HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS: one entry point (HoseMath.DrawnPose) for the pose and its port end, so the
+                    // offline selftest (HoseCurveChecks) measures exactly what is drawn here. It stays inside this update, behind the
+                    // world-map guard above (HOSE_DRAW_FIX_LEAKS_ONTO_WORLDMAP).
+                    pts = HoseMath.DrawnPose(lay, pi.Eased, pi.Wobbling ? pi.SinceChange : int.MaxValue / 2, T, amt, onPort ? portAt : (V2?)null, portAxis);
+                    if (mi != null)
+                    {
+                        if (LegacyFrame || MateEndIsCopy(r, mi)) pts = Mated(r, mi, pts);
+                        // HOSE_DRAW_FIX_STALLS_WHILE_WORKER_LAYS (round 8: Mated 11.7 ms mean, 50.7 ms max, in the draw): the
+                        // end's re-shape is solved on a worker (HoseMateEndQueue); until it lands the cached pose is drawn
+                        else MatedLater(r, mi, lay, c, i, ref key, ref pts);
+                    }
+                }
+                // rule 3: a joiner that would sit over a hose drawn beneath is left out (HoseMath.Layer)
+                List<int> joints = Layered().Joints.TryGetValue(r.parent.thingIDNumber, out List<int> kept) ? kept : lay.Joints;
+                // a mated end's re-shaped run carries no mid-hose joiner (its samples are new)
+                if (mi != null && mateKept.TryGetValue(r, out int keptN))
+                {
+                    if (LegacyFrame) joints = JointsBefore(joints, keptN - 2);
+                    else
+                    {
+                        // HOSE_FRAME_SHRINK_PER_FRAME_GARBAGE: filtered into a reused buffer (read by DrawEnds below, never kept)
+                        jointScratch.Clear();
+                        for (int k = 0; k < joints.Count; k++) if (joints[k] < keptN - 2) jointScratch.Add(joints[k]);
+                        joints = jointScratch;
+                    }
+                }
+                // S4: winding in, the laid pose is cut at the wound fraction (rebuilt per frame only while winding)
+                if (r.carry == HoseCarryState.Retracting)
+                {
+                    pts = HoseLive.ClipWound(pts, r.wound, TotalOf(r));
+                    joints = HoseLive.JointsWithin(joints, pts.Count);
+                    key = null;
+                    lastClipDraws++;
+                    lastDraw[r] = "clip";
+                }
+                else lastDraw[r] = "lay";
+                lastDrawnLen[r] = Geo.Length(pts);
+                float vis = (float)pi.Visible;
+                float e = (float)pi.Eased;
+                Mesh fm, pm, sm;
+                if (c != null && key != null && c.key == key) { fm = c.flat; pm = c.plump; sm = c.shadow; }
+                else
+                {
+                    // 2026-10-05: on a nozzled reel the strand starts inside the outlet coupling's wrap, not under the pump, so
+                    // no bare hose shows alongside the coupling between the wrap and the nozzle
+                    List<V2> rp = HoseMath.TrimStart(pts, OutletTrim(r, vis));
+                    fm = e < 0.999f ? Ribbon(rp, (float)HoseMath.MeshWidthFlat(vis), y, 0.37) : null;
+                    pm = e > 0.001f ? Ribbon(rp, (float)HoseMath.MeshWidthPlump(vis), y + 0.0004f, 0.37) : null;
+                    var off = new V2(0.03 + 0.05 * e, -(0.03 + 0.06 * e));
+                    List<V2> sp = Offset(rp, off);
+                    sm = Ribbon(sp, vis * (float)HoseMath.ShadowWidth(e), y - 0.0004f, 0.11);
+                    if (key != null)
+                    {
+                        if (c != null) { DestroyMeshes(c); }
+                        meshes[r] = new Cached { key = key, flat = fm, plump = pm, shadow = sm, pts = pts, rp = rp, serial = ++cachedSerial };
+                        crossIndex.Set(r.parent.thingIDNumber, rp);   // dirties only the strands near its old and new box
+                    }
+                    else { frameMeshes.Add(fm); frameMeshes.Add(pm); frameMeshes.Add(sm); }
+                }
+                if (rebuildT0 != 0) rebuildSpent += System.Diagnostics.Stopwatch.GetTimestamp() - rebuildT0;
+                Color tint = Tint(r);
+                HoseLookMats hm = HoseMaterials.For(r);      // stage 3: the hose draws in its REEL's look
+                if (sm != null) Graphics.DrawMesh(sm, Matrix4x4.identity, HoseMaterials.Shadow((float)HoseMath.ShadowAlpha(e)), 0);
+                // depth pre-pass of the dominant pose only (a fading pose must stay see-through), so wall sun shadows skip the hose
+                if (pm != null && (fm == null || e >= 0.5f)) DepthPass(pm, Matrix4x4.identity, hm.Plump(1f, tint));
+                else if (fm != null) DepthPass(fm, Matrix4x4.identity, hm.Flat(1f));
+                if (fm != null) Graphics.DrawMesh(fm, Matrix4x4.identity, hm.Flat(1f - e), 0);
+                if (pm != null) Graphics.DrawMesh(pm, Matrix4x4.identity, hm.Plump(e, tint), 0);
+                // a settled or per-tick cached pose (not one winding in, rebuilt per frame): its stretches over walk-over
+                // buildings are redrawn above them, and where it passes over a hose drawn beneath it casts a crossing shadow
+                if (key != null && meshes.TryGetValue(r, out Cached cur) && cur.key == key)
+                {
+                    DrawOverBuildings(cur, hm, tint, vis, e, rank);
+                    int crossWas = lastDeferredCross;
+                    DrawCrossShadow(r, cur, vis, e, y, rank);
+                    if (lastDeferredCross != crossWas) drawOrder.Deferred(i);
+                }
+                DrawEnds(r, hm, joints, pts, vis, y + 0.001f, true);
+            }
+            DrawGhosts(y0);
+            // a winding hose's, a carried tail's and a ghost's meshes live one frame (a transitioning pose is cached per tick)
+            for (int k = 0; k < oldFrame.Count; k++) if (oldFrame[k] != null) UnityEngine.Object.Destroy(oldFrame[k]);
+            oldFrame.Clear();
+            oldFrame.AddRange(frameMeshes);
+            frameMeshes.Clear();
+        }
+private void DropMeshes(CompHoseReel r)
+        {
+            if (meshes.TryGetValue(r, out Cached c)) { DestroyMeshes(c); meshes.Remove(r); crossIndex.Drop(r.parent.thingIDNumber); }
+            if (stubMeshes.TryGetValue(r, out StubCache sc)) { if (sc.mesh != null) UnityEngine.Object.Destroy(sc.mesh); stubMeshes.Remove(r); }
+        }
+private static void DestroyMeshes(Cached c)
+        {
+            if (c.flat != null) UnityEngine.Object.Destroy(c.flat);
+            if (c.plump != null) UnityEngine.Object.Destroy(c.plump);
+            if (c.shadow != null) UnityEngine.Object.Destroy(c.shadow);
+            DestroyOver(c);
+            if (c.crossShadow != null) UnityEngine.Object.Destroy(c.crossShadow);
+            c.crossShadow = null;
+        }
+private static void DestroyOver(Cached c)
+        {
+            foreach (Mesh m in c.overMeshes) if (m != null) UnityEngine.Object.Destroy(m);
+            c.overMeshes.Clear();
+        }
+private void DrawCrossShadow(CompHoseReel r, Cached c, float vis, float e, float y, int rank)
+        {
+            if (c.rp == null || c.rp.Count < 2) return;
+            if (!LegacyFrame)
+            {
+                // HOSE_DRAW_FIX_CROSS_SHADOW_QUADRATIC: re-checked only when a strand near it was built or dropped or moved rank,
+                // or its own rank moved (HoseCrossShadows); the mesh is rebuilt only when its lower set changed
+                int id = r.parent.thingIDNumber;
+                if (!crossIndex.TryGet(id, out HoseCrossShadows.Strand st) || !ReferenceEquals(st.Rp, c.rp)) crossIndex.Set(id, c.rp);
+                // HOSE_RELAY_FIX_WAVE_FRAME_OVER_BUDGET: past this frame's crossing-shadow budget a pending strand is not scanned
+                // (it stays dirty and keeps its old mesh until a later frame has budget)
+                if (crossSpent >= CrossBudgetMs * TicksPerMs && crossIndex.Pending(id, rank))
+                {
+                    lastDeferredCross++;
+                    DeferredCrossTotal++;
+                }
+                else
+                {
+                    long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+                    if (crossIndex.Check(id, rank, rankOfId ?? (rankOfId = RankOfId), vis, CrossShadowMargin, out List<double[]> spans))
+                    {
+                        c.crossSpans = spans;
+                        BuildCrossMesh(c, vis, e, y);
+                    }
+                    crossSpent += System.Diagnostics.Stopwatch.GetTimestamp() - t0;
+                }
+            }
+            else
+            {
+                // FrameLegacy: every frame, every other hose
+                ulong h = CrossMix(1469598103934665603UL, c.serial);
+                List<IList<V2>> lowers = null;
+                for (int i = 0; i < reels.Count; i++)
+                {
+                    CompHoseReel o = reels[i];
+                    if (o == r || !meshes.TryGetValue(o, out Cached oc) || oc.rp == null || oc.rp.Count < 2) continue;
+                    if (RankOf(o) >= rank) continue;
+                    h = CrossMix(h, oc.serial);
+                    (lowers ?? (lowers = new List<IList<V2>>())).Add(oc.rp);
+                }
+                RebuildCrossShadow(c, lowers, CrossMix(h, lowers == null ? 0 : lowers.Count), vis, e, y);
+            }
+            if (c.crossShadow == null) return;
+            Graphics.DrawMesh(c.crossShadow, Matrix4x4.identity, HoseMaterials.Shadow((float)HoseMath.ShadowAlpha(1)), 0);
+            lastCrossShadowDraws++;
+        }
+private void RebuildCrossShadow(Cached c, List<IList<V2>> lowers, ulong ck, float vis, float e, float y)
+        {
+            if (!c.crossKeyed || c.crossKey != ck)
+            {
+                c.crossKeyed = true;
+                c.crossKey = ck;
+                c.crossSpans = lowers == null ? new List<double[]>() : HoseOverDraw.CrossSpans(c.rp, lowers, vis, CrossShadowMargin);
+                BuildCrossMesh(c, vis, e, y);
+            }
+        }
+private void BuildCrossMesh(Cached c, float vis, float e, float y)
+        {
+            if (c.crossSpans == null) c.crossSpans = new List<double[]>();
+            {
+                if (c.crossShadow != null) UnityEngine.Object.Destroy(c.crossShadow);
+                c.crossShadow = null;
+                if (c.crossSpans.Count > 0)
+                {
+                    var off = new V2(CrossShadowOffset + 0.04 * e, -(CrossShadowOffset + 0.04 * e));
+                    // HOSE_RELAY_FIX_WAVE_FRAME_OVER_BUDGET (round 9: 5 full GCs in an 87 s wave): the spans' strips are appended
+                    // straight into the shared scratch (RibbonInto), not built as a temporary mesh per span whose
+                    // vertices/uv/triangles were then copied out as fresh arrays
+                    List<Vector3> all = RibbonV; List<Vector2> uvs = RibbonUv; List<int> tris = RibbonTr;
+                    all.Clear(); uvs.Clear(); tris.Clear();
+                    foreach (double[] sp in c.crossSpans)
+                    {
+                        List<V2> part = HoseOverDraw.Slice(c.rp, sp[0], sp[1]);
+                        if (part.Count < 2) continue;
+                        RibbonInto(Offset(part, off), vis * (float)HoseMath.ShadowWidth(e) * CrossShadowWiden, y - 0.0004f, 0.11, all, uvs, tris);
+                    }
+                    if (tris.Count > 0)
+                    {
+                        c.crossShadow = new Mesh { name = "RM_HoseCrossShadow" };
+                        c.crossShadow.SetVertices(all);
+                        c.crossShadow.SetUVs(0, uvs);
+                        c.crossShadow.SetTriangles(tris, 0);
+                        c.crossShadow.RecalculateBounds();
+                    }
+                }
+                CrossBuilds++;
+            }
+        }
+} }

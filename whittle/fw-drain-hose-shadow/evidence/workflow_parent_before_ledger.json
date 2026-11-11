@@ -1,0 +1,12 @@
+{
+  "time": 1794431386.3564262,
+  "WHITTLE_DIR": "whittle/fw-drain-hose-shadow",
+  "need_judge": true,
+  "need_broaden": true,
+  "last_change": 1794430487.3761778,
+  "done_problems": [],
+  "full_validator": "MandrakeWorkflows/whittle/run.py validate(root)",
+  "full_validator_returncode": 0,
+  "stdout": "",
+  "stderr": ""
+}

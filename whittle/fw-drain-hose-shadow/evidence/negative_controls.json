@@ -1,0 +1,229 @@
+{
+  "time": 1794430600.5288043,
+  "stage": "/mnt/d/ClaudeWork/rimmandrake/build/selftest_RimMandrakeFlowWorks.SelfTest_79bb8021",
+  "records": [
+    {
+      "name": "original_carry_no_drop",
+      "path": "src/RimMandrake/FlowWorks/Source/Hose/RM_MapComponent_Hoses.cs",
+      "command": [
+        "/mnt/c/Users/Mandrake/.dotnet/dotnet.exe",
+        "run",
+        "--project",
+        "D:\\ClaudeWork\\rimmandrake\\build\\selftest_RimMandrakeFlowWorks.SelfTest_79bb8021\\src\\RimMandrake\\FlowWorks\\Source\\SelfTest\\RimMandrakeFlowWorks.SelfTest.csproj",
+        "-c",
+        "Release",
+        "--",
+        "--only",
+        "HS_*"
+      ],
+      "returncode": 1,
+      "elapsed": 4.876885890960693,
+      "original_sha256": "bc4d5b8e5fba6e5b0b4b51416fa353cb198ac3ce8b74723c214b8279cb8409b5",
+      "mutant_sha256": "f9b49fd67980f50ea98f9836a558d2e365b0c686dc7aea12e790ad092e798ead",
+      "failures": [
+        "FAIL  HS_transition_0_upperFirst_False",
+        "FAIL  HS_transition_0_upperFirst_True",
+        "FAIL  HS_legacy_retains_original_carry_comparison"
+      ],
+      "compiled": true
+    },
+    {
+      "name": "original_null_lay_no_drop",
+      "path": "src/RimMandrake/FlowWorks/Source/Hose/RM_MapComponent_Hoses.cs",
+      "command": [
+        "/mnt/c/Users/Mandrake/.dotnet/dotnet.exe",
+        "run",
+        "--project",
+        "D:\\ClaudeWork\\rimmandrake\\build\\selftest_RimMandrakeFlowWorks.SelfTest_79bb8021\\src\\RimMandrake\\FlowWorks\\Source\\SelfTest\\RimMandrakeFlowWorks.SelfTest.csproj",
+        "-c",
+        "Release",
+        "--",
+        "--only",
+        "HS_*"
+      ],
+      "returncode": 1,
+      "elapsed": 4.669628858566284,
+      "original_sha256": "bc4d5b8e5fba6e5b0b4b51416fa353cb198ac3ce8b74723c214b8279cb8409b5",
+      "mutant_sha256": "92108e760b63d1028a9f99fc218ae5e4130c2a0a69455a228c35ffb004f3f8f7",
+      "failures": [
+        "FAIL  HS_transition_1_upperFirst_False",
+        "FAIL  HS_transition_1_upperFirst_True"
+      ],
+      "compiled": true
+    },
+    {
+      "name": "original_retract_no_drop",
+      "path": "src/RimMandrake/FlowWorks/Source/Hose/RM_MapComponent_Hoses.cs",
+      "command": [
+        "/mnt/c/Users/Mandrake/.dotnet/dotnet.exe",
+        "run",
+        "--project",
+        "D:\\ClaudeWork\\rimmandrake\\build\\selftest_RimMandrakeFlowWorks.SelfTest_79bb8021\\src\\RimMandrake\\FlowWorks\\Source\\SelfTest\\RimMandrakeFlowWorks.SelfTest.csproj",
+        "-c",
+        "Release",
+        "--",
+        "--only",
+        "HS_*"
+      ],
+      "returncode": 1,
+      "elapsed": 5.058816432952881,
+      "original_sha256": "bc4d5b8e5fba6e5b0b4b51416fa353cb198ac3ce8b74723c214b8279cb8409b5",
+      "mutant_sha256": "873203bca9639e10e20305531124e2faf5376c0996cb23ba139b43688941f81e",
+      "failures": [
+        "FAIL  HS_transition_2_upperFirst_False",
+        "FAIL  HS_transition_2_upperFirst_True"
+      ],
+      "compiled": true
+    },
+    {
+      "name": "mutant_drop_keeps_index",
+      "path": "src/RimMandrake/FlowWorks/Source/Hose/RM_MapComponent_Hoses.cs",
+      "command": [
+        "/mnt/c/Users/Mandrake/.dotnet/dotnet.exe",
+        "run",
+        "--project",
+        "D:\\ClaudeWork\\rimmandrake\\build\\selftest_RimMandrakeFlowWorks.SelfTest_79bb8021\\src\\RimMandrake\\FlowWorks\\Source\\SelfTest\\RimMandrakeFlowWorks.SelfTest.csproj",
+        "-c",
+        "Release",
+        "--",
+        "--only",
+        "HS_*"
+      ],
+      "returncode": 1,
+      "elapsed": 4.779658794403076,
+      "original_sha256": "bc4d5b8e5fba6e5b0b4b51416fa353cb198ac3ce8b74723c214b8279cb8409b5",
+      "mutant_sha256": "6385e50a01c7ace4ed0f41a06f203046002dd397dc5eda5abf0451f0b91d42d5",
+      "failures": [
+        "FAIL  HS_transition_0_upperFirst_False",
+        "FAIL  HS_transition_0_upperFirst_True",
+        "FAIL  HS_transition_1_upperFirst_False",
+        "FAIL  HS_transition_1_upperFirst_True",
+        "FAIL  HS_transition_2_upperFirst_False",
+        "FAIL  HS_transition_2_upperFirst_True",
+        "FAIL  HS_drop_budget_dirty_then_drain_and_idempotence",
+        "FAIL  HS_rank_toggle_and_same_key_relay",
+        "FAIL  HS_legacy_retains_original_carry_comparison"
+      ],
+      "compiled": true
+    },
+    {
+      "name": "mutant_index_drop_no_remove",
+      "path": "src/RimMandrake/FlowWorks/Source/Hose/HoseCrossShadows.cs",
+      "command": [
+        "/mnt/c/Users/Mandrake/.dotnet/dotnet.exe",
+        "run",
+        "--project",
+        "D:\\ClaudeWork\\rimmandrake\\build\\selftest_RimMandrakeFlowWorks.SelfTest_79bb8021\\src\\RimMandrake\\FlowWorks\\Source\\SelfTest\\RimMandrakeFlowWorks.SelfTest.csproj",
+        "-c",
+        "Release",
+        "--",
+        "--only",
+        "HS_*"
+      ],
+      "returncode": 1,
+      "elapsed": 4.676084041595459,
+      "original_sha256": "45307b36fb17013394b417168361ac373b78a04e2902db998d8725e817e9c250",
+      "mutant_sha256": "372b09238df1ff6edae244500604b9612d0edad8e6ed1c007bc3482aaeac260d",
+      "failures": [
+        "FAIL  HS_transition_0_upperFirst_False",
+        "FAIL  HS_transition_0_upperFirst_True",
+        "FAIL  HS_transition_1_upperFirst_False",
+        "FAIL  HS_transition_1_upperFirst_True",
+        "FAIL  HS_transition_2_upperFirst_False",
+        "FAIL  HS_transition_2_upperFirst_True",
+        "FAIL  HS_drop_budget_dirty_then_drain_and_idempotence",
+        "FAIL  HS_rank_toggle_and_same_key_relay",
+        "FAIL  HS_legacy_retains_original_carry_comparison"
+      ],
+      "compiled": true
+    },
+    {
+      "name": "mutant_index_drop_no_dirty",
+      "path": "src/RimMandrake/FlowWorks/Source/Hose/HoseCrossShadows.cs",
+      "command": [
+        "/mnt/c/Users/Mandrake/.dotnet/dotnet.exe",
+        "run",
+        "--project",
+        "D:\\ClaudeWork\\rimmandrake\\build\\selftest_RimMandrakeFlowWorks.SelfTest_79bb8021\\src\\RimMandrake\\FlowWorks\\Source\\SelfTest\\RimMandrakeFlowWorks.SelfTest.csproj",
+        "-c",
+        "Release",
+        "--",
+        "--only",
+        "HS_*"
+      ],
+      "returncode": 1,
+      "elapsed": 5.008535385131836,
+      "original_sha256": "45307b36fb17013394b417168361ac373b78a04e2902db998d8725e817e9c250",
+      "mutant_sha256": "3d60c9730d9d31070e803a9f52340e8ea984a29f649a2fd901b3312415af9eba",
+      "failures": [
+        "FAIL  HS_transition_0_upperFirst_False",
+        "FAIL  HS_transition_0_upperFirst_True",
+        "FAIL  HS_transition_1_upperFirst_False",
+        "FAIL  HS_transition_1_upperFirst_True",
+        "FAIL  HS_transition_2_upperFirst_False",
+        "FAIL  HS_transition_2_upperFirst_True",
+        "FAIL  HS_drop_budget_dirty_then_drain_and_idempotence",
+        "FAIL  HS_rank_toggle_and_same_key_relay",
+        "FAIL  HS_legacy_retains_original_carry_comparison"
+      ],
+      "compiled": true
+    },
+    {
+      "name": "mutant_rank_reversed",
+      "path": "src/RimMandrake/FlowWorks/Source/Hose/HoseCrossShadows.cs",
+      "command": [
+        "/mnt/c/Users/Mandrake/.dotnet/dotnet.exe",
+        "run",
+        "--project",
+        "D:\\ClaudeWork\\rimmandrake\\build\\selftest_RimMandrakeFlowWorks.SelfTest_79bb8021\\src\\RimMandrake\\FlowWorks\\Source\\SelfTest\\RimMandrakeFlowWorks.SelfTest.csproj",
+        "-c",
+        "Release",
+        "--",
+        "--only",
+        "HS_*"
+      ],
+      "returncode": 1,
+      "elapsed": 5.30992865562439,
+      "original_sha256": "45307b36fb17013394b417168361ac373b78a04e2902db998d8725e817e9c250",
+      "mutant_sha256": "2c5a379696941c1add0e5800ce16a0ef9468806b7f0d96be6c70d97a72843011",
+      "failures": [
+        "FAIL  HS_transition_0_upperFirst_False",
+        "FAIL  HS_transition_0_upperFirst_True",
+        "FAIL  HS_transition_1_upperFirst_False",
+        "FAIL  HS_transition_1_upperFirst_True",
+        "FAIL  HS_transition_2_upperFirst_False",
+        "FAIL  HS_transition_2_upperFirst_True",
+        "FAIL  HS_drop_budget_dirty_then_drain_and_idempotence",
+        "FAIL  HS_rank_toggle_and_same_key_relay",
+        "FAIL  HS_legacy_retains_original_carry_comparison"
+      ],
+      "compiled": true
+    },
+    {
+      "name": "mutant_dependent_mesh_not_cleared",
+      "path": "src/RimMandrake/FlowWorks/Source/Hose/RM_MapComponent_Hoses.cs",
+      "command": [
+        "/mnt/c/Users/Mandrake/.dotnet/dotnet.exe",
+        "run",
+        "--project",
+        "D:\\ClaudeWork\\rimmandrake\\build\\selftest_RimMandrakeFlowWorks.SelfTest_79bb8021\\src\\RimMandrake\\FlowWorks\\Source\\SelfTest\\RimMandrakeFlowWorks.SelfTest.csproj",
+        "-c",
+        "Release",
+        "--",
+        "--only",
+        "HS_*"
+      ],
+      "returncode": 1,
+      "elapsed": 4.669588565826416,
+      "original_sha256": "bc4d5b8e5fba6e5b0b4b51416fa353cb198ac3ce8b74723c214b8279cb8409b5",
+      "mutant_sha256": "dcb080799072d4aca3601fb425c1be0e2849032ba54e696fc58b50ba4c3a75ff",
+      "failures": [
+        "FAIL  HS_drop_budget_dirty_then_drain_and_idempotence",
+        "FAIL  HS_rank_toggle_and_same_key_relay"
+      ],
+      "compiled": true
+    }
+  ],
+  "restored_byte_exact": true,
+  "scope": "external selftest stage only; original current-clone shipping source untouched; final runner must restage and rebuild"
+}

@@ -358,4 +358,6 @@
     <Compile Include="..\..\..\LuminousPigment\Source\Kernel\RM_GlowTankWater.cs" Link="External\RM_GlowTankWater.cs"/>
     <Compile Include="..\..\..\Cauldron\Source\Kernel\RM_VentGasKernel.cs" Link="External\RM_VentGasKernel.cs"/></ItemGroup>
   <Import Project="TankTheftHarness.targets"/>
+  <ItemGroup><Compile Include="HoseShadowHarness.cs"/></ItemGroup>
+  <Import Project="HoseShadowHarness.targets"/>
 </Project>

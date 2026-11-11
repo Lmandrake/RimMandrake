@@ -1,0 +1,10 @@
+{
+  "time": 1794431110.154231,
+  "actual_runner_message": "not recordable (1): changed during the run: src/RimMandrake/Utils/selftest_flowworks_stock.py",
+  "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+  "before": "f83a6480dbf5780d0497025fed4bf5d7d2c221ea3e72f5d2a091a734412d2eec",
+  "after": "f83a6480dbf5780d0497025fed4bf5d7d2c221ea3e72f5d2a091a734412d2eec",
+  "fresh_readback": "f83a6480dbf5780d0497025fed4bf5d7d2c221ea3e72f5d2a091a734412d2eec",
+  "all_manifest_inputs_unchanged": true,
+  "qualification": "Preserve runner refusal to record reusable result. Actual execution passed with no cached answers. Independently recorded byte hashes agree; the cause of the runner recording refusal is not established and no reusable result is claimed."
+}
