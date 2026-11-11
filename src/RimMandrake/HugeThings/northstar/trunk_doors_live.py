@@ -61,6 +61,18 @@ def work_bits(text):
     return struct.pack('<f', float(text))
 
 
+def mental_clear(result):
+    # PawnMental's single successful return always computes currentState.
+    # Its nullable started/currentState fields are omitted when null on the wire.
+    return (result.get('success') is True and result.get('action') == 'list'
+            and type(result.get('ticksGame')) is int
+            and result['ticksGame'] == result.get('state', {}).get('tick')
+            and type(result.get('totalDefs')) is int and result['totalDefs'] > 0
+            and isinstance(result.get('states'), list) and len(result['states']) == 1
+            and result.get('notes') == [] and result.get('started') is None
+            and result.get('currentState') is None)
+
+
 def loaded_cut_matches(saved, captured, plant, contact, nonce):
     try:
         return (captured.get('newGame') == 'True' and captured.get('beforeNativeTick') == 'True'
@@ -226,7 +238,7 @@ class Run:
                     'SITE_interference: original pawn became unavailable at '+phase)
             if pid in self.borrowed:
                 mental = self.call('jawa/pawn_mental', pawn=pid, action='list', limit=1)
-                require('currentState' in mental and mental['currentState'] is None,
+                require(mental_clear(mental),
                         'SITE_interference: borrowed actor mental state at '+phase)
                 working = pid == self.actor_roles['cutter'] and phase in ('natural_pickup', 'occupied_reload')
                 draft = self.call('jawa/set_draft', pawnId=pid, drafted=not working)
@@ -285,7 +297,7 @@ class Run:
             area = self.call('jawa/set_player_settings', pawnId=pid)
             require(area.get('area') is None, 'SITE: actor has an allowed-area restriction')
             mental = self.call('jawa/pawn_mental', pawn=pid, action='list', limit=1)
-            require('currentState' in mental and mental['currentState'] is None, 'SITE: actor in mental state')
+            require(mental_clear(mental), 'SITE: actor in mental state')
             priority = self.call('jawa/set_work_priority', allow=True, pawnId=pid, workType='PlantCutting', priority=1)
             self.rec['actor_candidates'].append(dict(pawn=pid, details=details, area=area, mental=mental, priority=priority))
             if priority.get('success') is True and int(priority.get('readBack', 0)) > 0:
