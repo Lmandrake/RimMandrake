@@ -15,6 +15,10 @@ minimal mod list (no vanilla race reaches body size 8):
 - RM_TestTitanT2Control: body size 8, forced out of tiering (RM_TitanicExtension
   forceEnabled=false): the same-mass untiered control for the butcher yield curve.
 
+Also includes RM_TestContactPlant: synthetic two-contact geometry using vanilla oak
+art as a marker, for distant-corridor closure and scheduler pressure tests. Its
+contacts are adversarial fixture data, not measured production art.
+
 No biome lists them and they carry no trade tags, so they appear only when a test
 spawns them. Item TITANIC_BODYSIZE_TEST_RACE_1.</description>
   <modDependencies>

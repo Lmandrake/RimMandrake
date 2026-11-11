@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Adversarial HARNESS geometry, not an art measurement or shipping content.
+       Vanilla oak art is only a visible marker. The unmatched synthetic variant
+       intentionally exercises the union-mask fallback, with symmetric contacts. -->
+  <ThingDef ParentName="DeciduousTreeBase">
+    <defName>RM_TestContactPlant</defName>
+    <label>test contact plant (harness only)</label>
+    <description>Synthetic two-contact plant used only by the HugeThings P1 live proof.</description>
+    <graphicData>
+      <texPath>Things/Plant/TreeOak</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <plant>
+      <visualSizeRange>5~5</visualSizeRange>
+      <maxMeshCount>1</maxMeshCount>
+      <growDays>30</growDays>
+    </plant>
+    <modExtensions>
+      <li Class="RimMandrake.HugeThings.RM_HugePlantExtension">
+        <measuredSize>5</measuredSize>
+        <minGrowthToBlock>0.5</minGrowthToBlock>
+        <variants>
+          <li>
+            <texture>HARNESS_SYNTHETIC_CONTACTS</texture>
+            <contact><li>(-2,0)</li><li>(2,0)</li></contact>
+          </li>
+        </variants>
+      </li>
+    </modExtensions>
+  </ThingDef>
+</Defs>

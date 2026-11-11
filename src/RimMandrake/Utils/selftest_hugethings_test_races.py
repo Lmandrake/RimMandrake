@@ -360,7 +360,7 @@ def main():
     check("sanity probe: parser reads RM_Hwelgrue baseBodySize 8", probe == 8.0, "read %r" % probe)
 
     nodes = defs_in(os.path.join(MOD, "Defs"))
-    races = resolve(nodes, "ThingDef")
+    races = {name: row for name, row in resolve(nodes, "ThingDef").items() if row[0] is not None}
     check("exactly the five test races", sorted(races) == sorted(EXPECT), "%r" % sorted(races))
     for d, (size, tier, force) in sorted(EXPECT.items()):
         got = races.get(d, (None, None, False))
