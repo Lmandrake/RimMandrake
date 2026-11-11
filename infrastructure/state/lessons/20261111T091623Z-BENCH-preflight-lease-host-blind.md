@@ -1,0 +1,2 @@
+preflight_bridge.py c_bridge_lease reads the clone's infrastructure/state/BRIDGE, which is Archmagi's lease projection; run on SteveDesktop it judges Steve's game by Archmagi's holder (PASS when the same seat holds Archmagi, FAIL when another seat does). Steve's real lock is host_guard (DRIVER_LOCK.json under RM_DATA_ROOT); the check should read host_guard status when the host is stevedesktop.
+home: src/RimMandrake/Utils/preflight_bridge.py
