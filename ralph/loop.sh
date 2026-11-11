@@ -7,11 +7,13 @@ export PATH="$PATH:/mnt/c/Windows/System32:/mnt/c/Windows/System32/WindowsPowerS
 export RIMFLOW_SEAT=BENCH
 LOGS=/mnt/d/ClaudeWork/rimmandrake/ralph_pyrelands
 EVENTS=$LOGS/events.log
-REVIEW_AT=${REVIEW_AT:-10000000}
+REVIEW_AT=${REVIEW_AT:-20000000}
 OFFLINE_AT=${OFFLINE_AT:-3000000}
 say() { echo "$(date '+%H:%M:%S PST') $*" >> "$EVENTS"; }
 tally() { python3 ralph/tally.py "$LOGS"; }
-game_busy() { systemctl --user is-active --quiet rm-ralph-graffiti || systemctl --user is-active --quiet rm-ralph-gss; }
+# The Archmagi driver lock (driver_lock.py, the one host_guard/testq/Codex rounds take) held by a live process also means busy.
+driver_busy() { python3 -c "import sys; sys.path.insert(0,'$PWD/src/RimMandrake/rimflow'); import driver_lock as D; sys.exit(0 if D.status(D.lock_path()).get('state')=='HELD' else 1)" 2>/dev/null; }
+game_busy() { systemctl --user is-active --quiet rm-ralph-graffiti || systemctl --user is-active --quiet rm-ralph-gss || driver_busy; }
 
 n=$(ls "$LOGS"/pass_*.jsonl 2>/dev/null | wc -l)
 say "LOOP start, $n passes on record, $(tally) tokens"
@@ -37,7 +39,7 @@ while :; do
   n=$((n + 1))
   f=$(printf '%s/pass_%03d.jsonl' "$LOGS" "$n")
   say "PASS $n start, $t tokens so far"
-  timeout 6h claude -p "$(cat ralph/PROMPT.md)" --model opus --setting-sources project \
+  timeout 6h claude -p "$(cat ralph/PROMPT.md)" --model opus --effort xhigh --setting-sources project \
     --dangerously-skip-permissions --strict-mcp-config --output-format stream-json --verbose > "$f" 2> "$f.err"
   rc=$?
   say "PASS $n end, rc $rc, $(tally) tokens, head $(git log -1 --format=%h)"
