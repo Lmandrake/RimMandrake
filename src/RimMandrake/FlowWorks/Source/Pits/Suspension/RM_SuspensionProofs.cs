@@ -164,14 +164,14 @@ namespace RimMandrake.FlowWorks.Pits
 				+ " deckNotches=" + r.deckNotches + " span=" + (span + 1) + "/" + r.SpanCount + " line=" + RM_SuspensionMath.LoadLine(load, r.RatingKg);
 		}
 
-		/// <summary>"x,z;on|off": the bridge's railings switch, built at once (god). → "RAILS on=b railed=N"</summary>
+		/// <summary>"x,z;on|off[;player]": the bridge's railings switch (god unless player is explicit). → "RAILS on=b railed=N"</summary>
 		public static string ProofRails(string arg)
 		{
 			Map map = Find.CurrentMap;
 			string[] a = (arg ?? "").Split(';');
-			if (map == null || a.Length != 2 || !Cell(a[0], out IntVec3 c))
+			if (map == null || (a.Length != 2 && a.Length != 3) || (a.Length == 3 && a[2] != "player") || !Cell(a[0], out IntVec3 c))
 			{
-				return "REFUSED: arg must be x,z;on|off";
+				return "REFUSED: arg must be x,z;on|off[;player]";
 			}
 			RM_MapComponent_SuspensionBridges b = map.GetComponent<RM_MapComponent_SuspensionBridges>();
 			SuspensionBridgeRecord r = b?.RecordAt(c);
@@ -180,7 +180,7 @@ namespace RimMandrake.FlowWorks.Pits
 				return "RAILS none";
 			}
 			bool was = DebugSettings.godMode;
-			DebugSettings.godMode = true;
+			DebugSettings.godMode = a.Length != 3;
 			try
 			{
 				b.SetRailings(r, a[1] == "on");

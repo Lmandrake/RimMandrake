@@ -1227,7 +1227,7 @@ namespace RimMandrake.FlowWorks.Pits
 					IntVec3 c = r.Cell(lane, i);
 					if (on)
 					{
-						if (DeckAt(map, c) != null)
+						if (RailedAt(map, c) || DeckAt(map, c) != null)
 						{
 							PlaceRailing(c);
 						}
@@ -1243,8 +1243,20 @@ namespace RimMandrake.FlowWorks.Pits
 		private void PlaceRailing(IntVec3 c)
 		{
 			ThingDef rail = RM_SuspensionDefOf.RM_SuspensionRailing;
-			if (rail == null || RailedAt(map, c))
+			if (rail == null)
 			{
+				return;
+			}
+			if (RailedAt(map, c))
+			{
+				// Re-enabling before removal keeps the built railings, cancelling only their queued deconstruction.
+				foreach (Thing t in c.GetThingList(map))
+				{
+					if (t is Building_SuspensionRailing existing)
+					{
+						map.designationManager.DesignationOn(existing, DesignationDefOf.Deconstruct)?.Delete();
+					}
+				}
 				return;
 			}
 			foreach (Thing t in c.GetThingList(map))
