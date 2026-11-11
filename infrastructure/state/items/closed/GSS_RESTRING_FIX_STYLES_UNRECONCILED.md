@@ -31,3 +31,11 @@ Current source has `Patch_Restring_Bridge` in `Source/Aerial/ConduitStylePicker.
 - A1 L2: cut the only span joining two runs, restyle the sides differently, re-string: the joined run carries one style
 - A2 L2: a MOD-class proof row for RM_RestringSpan PASS on the current build
 - A3 L0: `mod_completion.py GimmeSomeSlack` no longer lists RM_RestringSpan as unverified
+
+## Completed 2026-11-11 — CODEX_ARCHMAGI_FWDRAIN
+
+Published artifact 2a4d23fb8e4bc1bb681e687420f709c9869dfdd5, evidence `whittle/fw-drain-restring-live/`. A1/A2 L2 acceptance observed the actual running RM_RestringSpan job, exactly one completion and splice, split Modern/Industrial power/style runs joining one Modern run across all three masts. The production launcher and whole aerial driver exited 0 with 39/39 PASS, complete log coverage and zero lost/failed reads. A3 actual mod_completion now reports RM_RestringSpan works, two L2 passes and zero failures.
+
+Proof repairs have original RED and focused GREEN 4/4 plus annotation 2/2. Shipping executable, DLL stamp inputs and approved GSS appearance are unchanged. Fresh Opus broaden/pilot/judge accepted; native Codex Whittle and independently repeated full validator passed. Parent independently rehashed 1047 proof inputs, 470 shipping inputs/all deployed pairs and all 344 existing saves. Exact held snapshot/pawn/job/tick, settings/debug/difficulty/config restored; game DOWN and bridge/host lock FREE.
+
+Scope: probe-assigned real WorkGiver/JobDriver, explicit production reconciliation flush, DEV fixtures and a partial all-DLC tier. Natural scheduler pickup, full-list play, visible sway, KineticArms integration and gravship launch remain unverified. Pre-fixture vanilla CurKindLifeStage diagnostic and companion missing-sidecar qualification remain. No source CLEAN certification. Earlier failures and raw receipts are preserved.
