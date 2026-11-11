@@ -129,12 +129,10 @@ namespace RimMandrake.TitanicCreatures
             {
                 return TitanicTier.None;
             }
-            // Pawn.BodySize = lifestage.bodySizeFactor * RaceProps.baseBodySize
-            // (Verse/Pawn.cs). OPEN QUESTION (flagged, not guessed): whether any
-            // gene StatDef offsets a separate "BodySize" stat outside this
-            // formula is unconfirmed - if a future gene needs to move a pawn
-            // between tiers independently of RaceProps/lifestage, that stat
-            // must be found and read here rather than assumed absent.
+            // Core BodySize is current-stage factor times base size. Loaded postfixes can modify that getter
+            // (VEF adds its cached offset and floors at 0.05); read the actual property, never substitute a formula.
+            // Def-level event spacing cannot forecast external runtime modifiers. The L1 needs-null fixture exercises
+            // VEF's default-cache branch only, not generated-pawn gene/hediff modifier computation.
             RM_TitanicTierDef t = Thresholds;
             return (TitanicTier)RM_TitanicKernel.TierFor(pawn.BodySize, t.t1MinBodySize, t.t2MinBodySize, t.t3MinBodySize,
                 ForceOf(pawn.def.GetModExtension<RM_TitanicExtension>()));

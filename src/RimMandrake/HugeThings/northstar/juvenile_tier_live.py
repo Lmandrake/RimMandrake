@@ -4,6 +4,8 @@ PROVE actual GetTier/AdultTier/SpacingTier/DefQualifies and TitanEventEligible c
 EXPECT lineage eligibility stays; supported size16 spaces as T2 by default and T3 at custom T3=16.
 LIES stale DLL/process, unresolved inheritance, synthetic fixtures mistaken for real races, or settings not restored.
 Orchestration must establish fresh-process/preflight identity separately; this script verifies source/deployed bytes.
+Fixtures use engine age/health trackers with needs absent: VEF postfix/defaultCache branch stays active and its offset is read.
+Generated-pawn gene/hediff modifiers are outside this L1 scope. VEF memo references die with the process.
 """
 import argparse
 from datetime import datetime, timezone
@@ -100,7 +102,11 @@ def main():
         assert int(row['AdultTier']) == expected_adult, row
         assert int(row['SpacingTier']) == expected_spacing, row
         assert [float(x) for x in row['thresholds'].split(',')] == ladder, row
-        if expected_body is not None:
+        if expected_body is None:
+            assert row['GetTier']=='unsupported' and row['body']=='unsupported',row
+        else:
+            assert row['bodyAgain']==row['body'] and row['bodyFloat32Bits']!='unsupported',row
+            assert 'memoOwnPawn:True,memoDefault:True,offset:0' in row['VEF'],row
             assert abs(float(row['body'])-expected_body) < 1e-5, row
             assert int(row['GetTier']) == tier(expected_body, ladder, force), row
         base=float(row['base'])
@@ -142,6 +148,23 @@ def main():
             original[name] = field('get', name)
         report['original_settings'] = original.copy()
         report['restoration']['attempted'] = True
+        configure([4,8,20],False)
+        report['environment_before']=parse(invoke('Environment'))
+        assert report['environment_before']['program']=='Entry' and report['environment_before']['gameNull']=='True'
+        assert float(report['environment_before']['vefOffset'])==0
+        # Def-level census/gate results are retained before any runtime fixture call.
+        raw=invoke('Census')
+        census=[parse(line) for line in raw.splitlines()]
+        assert census and len({r['kind'] for r in census})==len(census)
+        assert {a.juvenile_race,a.adult_race} <= {r['race'] for r in census}
+        report['resolved_kind_census']=census
+        for adult in range(4):
+            for spacing in range(4):
+                raw=invoke('GateMatrix',f'{adult}|{spacing}')
+                assert raw==''.join('1' if gate(adult,spacing,bits) else '0' for bits in range(256))
+        for factors in ['null-list','empty','0.2,0.5,null-entry','0.2,0.5,null-def','0.2,0.5,0',
+                        '0.2,0.5,-1','0.2,0.5,NaN','0.2,0.5,Infinity','0.2,0.5,-Infinity']:
+            observe('Fixture','32|'+factors+'|0|-1',3,3,None,[4,8,20],tag='malformed')
         # Repeat after valid, invalid and disabled ladders to detect accidental cached event tiers.
         ladders = [('shipped',[4,8,20],False,True), ('custom_boundary',[4,8,16],True,True),
                    ('custom_calf_below_T2',[4,18,30],True,True), ('custom_above_lineage',[4,8,40],True,True),
@@ -152,33 +175,30 @@ def main():
         for label, values, custom, animals in ladders:
             configure(values,custom,animals)
             ladder = values if label.startswith('custom_') and custom and animals else [4,8,20]
+            seen_stages={}
             for race, factors in [(a.juvenile_race,[.2,.5]),(a.adult_race,[.2,.5,1])]:
-                for index, factor in enumerate(factors):
+                for index in list(range(len(factors)))+list(reversed(range(len(factors)))):
+                    factor=factors[index]
                     row=observe('Observe',race+'|'+str(index),tier(32,ladder),tier(32*max(factors),ladder),32*factor,ladder,tag=label)
                     assert float(row['base'])==32 and len(row['stages'].split(','))==len(factors)
                     assert row['force']=='0' and row['harness']=='False', row
+                    same={key:row[key] for key in ['bodyFloat32Bits','GetTier','AdultTier','SpacingTier','DefQualifies']}
+                    stage_key=(race,index)
+                    if stage_key in seen_stages:
+                        assert seen_stages[stage_key]==same,('order dependence',stage_key,seen_stages[stage_key],same)
+                    seen_stages[stage_key]=same
             observe('Fixture','3|4|0|0',tier(12,ladder),tier(12,ladder),12,ladder,tag=label)
         configure([4,8,20],False)
-        for factors in ['null-list','empty','0.2,0.5,null-entry','0.2,0.5,null-def','0.2,0.5,0',
-                        '0.2,0.5,-1','0.2,0.5,NaN','0.2,0.5,Infinity','0.2,0.5,-Infinity']:
-            observe('Fixture','32|'+factors+'|0|-1',3,3,None,[4,8,20],tag='malformed')
         for base,factors,maxfactor in [(32,'0.2,0.5',.5),(6,'0.5',.5),(1,'0.5',.5),(3,'4',4)]:
             for force in [-1,0,1]:
                 observe('Fixture',f'{base}|{factors}|{force}|0',tier(base*max(1,maxfactor),[4,8,20],force),
                         tier(base*maxfactor,[4,8,20],force),base*float(factors.split(',')[0]),[4,8,20],force,tag='force')
-        for adult in range(4):
-            for spacing in range(4):
-                raw = invoke('GateMatrix',f'{adult}|{spacing}')
-                expected=''.join('1' if gate(adult,spacing,bits) else '0' for bits in range(256))
-                assert raw==expected, (adult,spacing,raw)
         assert invoke('GetTier','null',UTILITY)=='None'
         assert invoke('AdultTier','null',UTILITY)=='None'
         assert invoke('SpacingTier','null',UTILITY)=='None'
-        raw=invoke('Census')
-        census=[parse(line) for line in raw.splitlines()]
-        assert census and len({r['kind'] for r in census})==len(census)
-        assert {a.juvenile_race,a.adult_race} <= {r['race'] for r in census}
-        report['resolved_kind_census']=census
+        report['environment_after']=parse(invoke('Environment'))
+        assert report['environment_after']==report['environment_before'], (report['environment_before'],report['environment_after'])
+        report['fixture_scope']='Unregistered fresh needs-null living pawns with engine age/health trackers; VEF postfix/defaultCache branch active, offset0; no generated-pawn modifiers. VEF memo references remain until process shutdown; no cache clearing/patch/global manipulation.'
     except Exception as exc:
         report['errors'].append(str(exc))
     finally:
