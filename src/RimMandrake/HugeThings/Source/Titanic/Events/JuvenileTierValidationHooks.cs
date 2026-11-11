@@ -17,6 +17,7 @@ namespace RimMandrake.TitanicCreatures
     public static class JuvenileTierValidationHooks
     {
         private static string F(float value) => value.ToString("R", CultureInfo.InvariantCulture);
+        private static ulong ReadRandState() => (ulong)AccessTools.Property(typeof(Rand), "StateCompressed").GetValue(null, null);
         private static object Static(string type, string field) => AccessTools.Field(AccessTools.TypeByName(type), field).GetValue(null);
         private static object Member(object owner, string field) => AccessTools.Field(owner.GetType(), field).GetValue(owner);
         private const string VefData = "VEF.AestheticScaling.CachedPawnData";
@@ -37,7 +38,7 @@ namespace RimMandrake.TitanicCreatures
             }));
             object data = Static(VefData, "defaultCache");
             return "program=" + Current.ProgramState + ";gameNull=" + (Current.Game == null)
-                + ";rand=" + AccessTools.Property(typeof(Rand), "StateCompressed").GetValue(null, null)
+                + ";rand=" + ReadRandState()
                 + ";thingDefs=" + DefDatabase<ThingDef>.AllDefsListForReading.Count
                 + ";stageDefs=" + DefDatabase<LifeStageDef>.AllDefsListForReading.Count
                 + ";kindDefs=" + DefDatabase<PawnKindDef>.AllDefsListForReading.Count
@@ -95,10 +96,22 @@ namespace RimMandrake.TitanicCreatures
                 + ";thresholds=" + F(t.t1MinBodySize) + "," + F(t.t2MinBodySize) + "," + F(t.t3MinBodySize);
         }
 
-        public static string Observe(ThingDef race, int stageIndex) => ObserveRace(race, stageIndex);
+        // Entry UI can consume global Rand BETWEEN bridge requests. Bound ownership inside this synchronous main-thread call.
+        private static string RandChecked(Func<string> observe)
+        {
+            ulong before = ReadRandState();
+            string result = observe();
+            ulong after = ReadRandState();
+            if (before != after) throw new InvalidOperationException("Fixture changed Rand state: " + before + " -> " + after);
+            return result + ";fixtureRandBefore=" + before + ";fixtureRandAfter=" + after;
+        }
+
+        public static string Observe(ThingDef race, int stageIndex) => RandChecked(() => ObserveRace(race, stageIndex));
 
         public static string Fixture(float baseSize, string factors, int force, int stageIndex)
         {
+            return RandChecked(() =>
+            {
             var race = new ThingDef { defName = "RM_JuvenileTierLocalFixture", race = new RaceProperties { baseBodySize = baseSize } };
             race.modExtensions = new List<DefModExtension> { new RM_TitanicExtension {
                 forceEnabled = force < 0 ? (bool?)false : force > 0 ? (bool?)true : null } };
@@ -114,6 +127,7 @@ namespace RimMandrake.TitanicCreatures
                 }
             }
             return ObserveRace(race, stageIndex);
+            });
         }
 
         /// <summary>All resolved kinds, no name-based eligibility filter. This is tier census, not map eligibility.</summary>

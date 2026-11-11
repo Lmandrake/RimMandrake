@@ -1,4 +1,4 @@
-"""L1 loaded tier/spacing controls at Entry. No map, spawning, RNG, passage, ticks or settings-file writes.
+"""L1 loaded tier/spacing controls at Entry. No map, spawning, passage, ticks or settings-file writes.
 
 PROVE actual GetTier/AdultTier/SpacingTier/DefQualifies and TitanEventEligible calls on resolved races and local fixtures.
 EXPECT lineage eligibility stays; supported size16 spaces as T2 by default and T3 at custom T3=16.
@@ -99,6 +99,7 @@ def main():
     def observe(method, args, expected_adult, expected_spacing, expected_body, ladder, force=0, tag=''):
         row = parse(invoke(method, args))
         report['observations'].append(dict(tag=tag, method=method, args=args, fields=row))
+        assert row['fixtureRandBefore']==row['fixtureRandAfter'],row
         assert int(row['AdultTier']) == expected_adult, row
         assert int(row['SpacingTier']) == expected_spacing, row
         assert [float(x) for x in row['thresholds'].split(',')] == ladder, row
@@ -149,6 +150,10 @@ def main():
         report['original_settings'] = original.copy()
         report['restoration']['attempted'] = True
         configure([4,8,20],False)
+        report['idle_before']=parse(invoke('Environment'))
+        import time
+        time.sleep(2)
+        report['idle_after']=parse(invoke('Environment'))
         report['environment_before']=parse(invoke('Environment'))
         assert report['environment_before']['program']=='Entry' and report['environment_before']['gameNull']=='True'
         assert float(report['environment_before']['vefOffset'])==0
@@ -197,7 +202,10 @@ def main():
         assert invoke('AdultTier','null',UTILITY)=='None'
         assert invoke('SpacingTier','null',UTILITY)=='None'
         report['environment_after']=parse(invoke('Environment'))
-        assert report['environment_after']==report['environment_before'], (report['environment_before'],report['environment_after'])
+        for key,value in report['environment_before'].items():
+            if key!='rand':
+                assert report['environment_after'][key]==value,(key,value,report['environment_after'][key])
+        report['rng_scope']='Exact Rand before/after inside every synchronous fixture call; passive Entry/UI may consume global RNG between requests. Idle samples and full before/after values retained, never rewritten.'
         report['fixture_scope']='Unregistered fresh needs-null living pawns with engine age/health trackers; VEF postfix/defaultCache branch active, offset0; no generated-pawn modifiers. VEF memo references remain until process shutdown; no cache clearing/patch/global manipulation.'
     except Exception as exc:
         report['errors'].append(str(exc))
