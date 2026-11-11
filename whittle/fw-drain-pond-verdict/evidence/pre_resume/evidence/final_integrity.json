@@ -1,0 +1,16 @@
+{
+  "time": 1794383890.6355543,
+  "HEAD": "4ca1fc48d3efb86bd061ee9edbc5d10365ef0f05",
+  "source_sha256": {
+    "src/RimMandrake/FlowWorks/northstar/liquid_checks.py": "d1b701f4ea29e784fa37e3479306c33ea42be431866b11aa70863cf207be1272",
+    "src/RimMandrake/FlowWorks/northstar/selftest_liquid_checks.py": "9a88ab6eb925d9e8f4602d67a94692243ff50e4a71c15426ec5b6d11482ca0f1"
+  },
+  "matches_tested_hashes": true,
+  "judge_exactly_matches_independent_denied_write_payload": true,
+  "git_diff_check_returncode": 0,
+  "tracked_changed_paths": [
+    "src/RimMandrake/FlowWorks/northstar/liquid_checks.py",
+    "src/RimMandrake/FlowWorks/northstar/selftest_liquid_checks.py"
+  ],
+  "git_status_short": " M src/RimMandrake/FlowWorks/northstar/liquid_checks.py\n M src/RimMandrake/FlowWorks/northstar/selftest_liquid_checks.py\n?? whittle/fw-drain-pond-verdict/\n"
+}

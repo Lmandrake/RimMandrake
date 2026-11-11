@@ -1,0 +1,9 @@
+# Different-model broaden
+
+A fresh bounded `claude -p --model opus` call asked what a real user would try beyond the planned deep-only/individual-stage/classification cases. It ran with no tools, MCP servers, setting sources, persisted session or inherited history, WHITTLE=0, and a neutral working directory. Exact prompt: `evidence/broaden_prompt.txt`; unchanged response: `evidence/broaden_raw.json`; process receipt: `evidence/broaden_call.json`; stderr: `evidence/broaden_stderr.txt`. Exit 0 in 21.47 seconds. Session `20afc7f2-2973-44cd-8293-a7f1cc6e9897`; raw model usage identifies `claude-opus-5-5`, different from the Codex builder.
+
+Opus proposed an early partial census followed by a filtered None reading and a deep-only final census. This distinguishes checking the final census from accepting partial stages anywhere in the trace. Added to the existing L8 selftest; final predicate returns FAIL/MOD, while the actual original predicate returns PASS/MOD. Both full verdicts and identical parsed inputs are in `evidence/verdict_comparison.json`.
+
+It also proposed repeated brim readings followed by four deep squares and one thin square, with wet count exactly equal to the brim maximum. Added this boundary case: old and current both PASS/MOD. It proves that deep presence is allowed when a genuine partial square exists and that stable wet count still passes. Added its suggested nonapplicable-early-read and no-movement precedence variations: both remain UNMEASURED/SITE. A transient wet-count shrink despite genuine partial stages remains FAIL/MOD; filtering to one real read remains UNMEASURED/HARNESS. The existing s>=1 census rule was also checked at s=2 without changing production semantics.
+
+All source and tests were final before `evidence/verify.py` recorded the focused runner result and old/current replay. Broaden suggestions changed tests only. No live observations or appearance claims were made.

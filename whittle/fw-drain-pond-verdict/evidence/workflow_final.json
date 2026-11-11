@@ -1,0 +1,12 @@
+{
+  "time": 1794383839.4901865,
+  "WHITTLE_DIR": "whittle/fw-drain-pond-verdict",
+  "need_judge": true,
+  "need_broaden": true,
+  "last_change": 1794383600.1094325,
+  "done_problems": [],
+  "full_validator": "MandrakeWorkflows/whittle/run.py validate(root)",
+  "full_validator_returncode": 0,
+  "stdout": "",
+  "stderr": ""
+}

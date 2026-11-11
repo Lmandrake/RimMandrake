@@ -1,0 +1,34 @@
+{
+  "command": [
+    "claude",
+    "-p",
+    "--model",
+    "opus",
+    "--tools",
+    "",
+    "--strict-mcp-config",
+    "--mcp-config",
+    "{\"mcpServers\":{}}",
+    "--setting-sources",
+    "",
+    "--no-session-persistence",
+    "--output-format",
+    "json",
+    "--max-budget-usd",
+    "6"
+  ],
+  "input": "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-pond-verdict/evidence/broaden_prompt.txt",
+  "started": 1794383507.3872316,
+  "timeout_seconds": 360,
+  "WHITTLE": "0",
+  "removed_environment_keys": [
+    "CLAUDECODE"
+  ],
+  "history": "new print session; no resume, fork or persistence",
+  "setting_sources": "",
+  "mcp_servers": {},
+  "cwd": "/home/mandrake/.seat-tmp/BENCH/pond-verdict-opus-5chiu6yn",
+  "returncode": 0,
+  "elapsed": 21.470744848251343,
+  "stdout": "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-pond-verdict/evidence/broaden_raw.json"
+}

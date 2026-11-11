@@ -1,0 +1,2065 @@
+[
+  {
+    "case": "L8: one level down, nothing dried, stages show",
+    "parsed_reads": [
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 0,
+        "r": 0,
+        "wet": 100,
+        "census": {
+          "deep": 0,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 100,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      },
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 1,
+        "r": 0,
+        "wet": 100,
+        "census": {
+          "deep": 0,
+          "chest": 64,
+          "shallow": 0,
+          "thin": 36,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      }
+    ],
+    "expected": [
+      "PASS",
+      "MOD"
+    ],
+    "old_verdict": [
+      "PASS",
+      "MOD",
+      {
+        "s": [
+          0,
+          1
+        ],
+        "wet": [
+          100,
+          100
+        ],
+        "census": {
+          "deep": 0,
+          "chest": 64,
+          "shallow": 0,
+          "thin": 36,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ]
+      }
+    ],
+    "current_verdict": [
+      "PASS",
+      "MOD",
+      {
+        "s": [
+          0,
+          1
+        ],
+        "wet": [
+          100,
+          100
+        ],
+        "census": {
+          "deep": 0,
+          "chest": 64,
+          "shallow": 0,
+          "thin": 36,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ]
+      }
+    ],
+    "old_meets_expectation": true
+  },
+  {
+    "case": "L8: deep-only is not a part-depth stage",
+    "parsed_reads": [
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 0,
+        "r": 0,
+        "wet": 100,
+        "census": {
+          "deep": 100,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      },
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 1,
+        "r": 0,
+        "wet": 100,
+        "census": {
+          "deep": 100,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      }
+    ],
+    "expected": [
+      "FAIL",
+      "MOD"
+    ],
+    "old_verdict": [
+      "PASS",
+      "MOD",
+      {
+        "s": [
+          0,
+          1
+        ],
+        "wet": [
+          100,
+          100
+        ],
+        "census": {
+          "deep": 100,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ]
+      }
+    ],
+    "current_verdict": [
+      "FAIL",
+      "MOD",
+      {
+        "s": [
+          0,
+          1
+        ],
+        "wet": [
+          100,
+          100
+        ],
+        "census": {
+          "deep": 100,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ],
+        "why": "the surface fell but no square shows a part-depth stage"
+      }
+    ],
+    "old_meets_expectation": false
+  },
+  {
+    "case": "L8: chest alone is a part-depth stage",
+    "parsed_reads": [
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 0,
+        "r": 0,
+        "wet": 100,
+        "census": {
+          "deep": 100,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      },
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 1,
+        "r": 0,
+        "wet": 100,
+        "census": {
+          "deep": 0,
+          "chest": 100,
+          "shallow": 0,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      }
+    ],
+    "expected": [
+      "PASS",
+      "MOD"
+    ],
+    "old_verdict": [
+      "PASS",
+      "MOD",
+      {
+        "s": [
+          0,
+          1
+        ],
+        "wet": [
+          100,
+          100
+        ],
+        "census": {
+          "deep": 0,
+          "chest": 100,
+          "shallow": 0,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ]
+      }
+    ],
+    "current_verdict": [
+      "PASS",
+      "MOD",
+      {
+        "s": [
+          0,
+          1
+        ],
+        "wet": [
+          100,
+          100
+        ],
+        "census": {
+          "deep": 0,
+          "chest": 100,
+          "shallow": 0,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ]
+      }
+    ],
+    "old_meets_expectation": true
+  },
+  {
+    "case": "L8: shallow alone is a part-depth stage",
+    "parsed_reads": [
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 0,
+        "r": 0,
+        "wet": 100,
+        "census": {
+          "deep": 100,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      },
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 1,
+        "r": 0,
+        "wet": 100,
+        "census": {
+          "deep": 0,
+          "chest": 0,
+          "shallow": 100,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      }
+    ],
+    "expected": [
+      "PASS",
+      "MOD"
+    ],
+    "old_verdict": [
+      "PASS",
+      "MOD",
+      {
+        "s": [
+          0,
+          1
+        ],
+        "wet": [
+          100,
+          100
+        ],
+        "census": {
+          "deep": 0,
+          "chest": 0,
+          "shallow": 100,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ]
+      }
+    ],
+    "current_verdict": [
+      "PASS",
+      "MOD",
+      {
+        "s": [
+          0,
+          1
+        ],
+        "wet": [
+          100,
+          100
+        ],
+        "census": {
+          "deep": 0,
+          "chest": 0,
+          "shallow": 100,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ]
+      }
+    ],
+    "old_meets_expectation": true
+  },
+  {
+    "case": "L8: thin alone is a part-depth stage",
+    "parsed_reads": [
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 0,
+        "r": 0,
+        "wet": 100,
+        "census": {
+          "deep": 100,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      },
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 1,
+        "r": 0,
+        "wet": 100,
+        "census": {
+          "deep": 0,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 100,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      }
+    ],
+    "expected": [
+      "PASS",
+      "MOD"
+    ],
+    "old_verdict": [
+      "PASS",
+      "MOD",
+      {
+        "s": [
+          0,
+          1
+        ],
+        "wet": [
+          100,
+          100
+        ],
+        "census": {
+          "deep": 0,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 100,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ]
+      }
+    ],
+    "current_verdict": [
+      "PASS",
+      "MOD",
+      {
+        "s": [
+          0,
+          1
+        ],
+        "wet": [
+          100,
+          100
+        ],
+        "census": {
+          "deep": 0,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 100,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ]
+      }
+    ],
+    "old_meets_expectation": true
+  },
+  {
+    "case": "L8: mixed deep and one genuine partial square is valid",
+    "parsed_reads": [
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 0,
+        "r": 0,
+        "wet": 100,
+        "census": {
+          "deep": 100,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      },
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 1,
+        "r": 0,
+        "wet": 100,
+        "census": {
+          "deep": 99,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 1,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      }
+    ],
+    "expected": [
+      "PASS",
+      "MOD"
+    ],
+    "old_verdict": [
+      "PASS",
+      "MOD",
+      {
+        "s": [
+          0,
+          1
+        ],
+        "wet": [
+          100,
+          100
+        ],
+        "census": {
+          "deep": 99,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 1,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ]
+      }
+    ],
+    "current_verdict": [
+      "PASS",
+      "MOD",
+      {
+        "s": [
+          0,
+          1
+        ],
+        "wet": [
+          100,
+          100
+        ],
+        "census": {
+          "deep": 99,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 1,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ]
+      }
+    ],
+    "old_meets_expectation": true
+  },
+  {
+    "case": "L8: the old shrink-from-the-rim is a FAIL",
+    "parsed_reads": [
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 0,
+        "r": 0,
+        "wet": 100,
+        "census": {
+          "deep": 0,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 100,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      },
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 1,
+        "r": 0,
+        "wet": 64,
+        "census": {
+          "deep": 0,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 64,
+          "mud": 36,
+          "lakebed": 0,
+          "other": 0
+        }
+      }
+    ],
+    "expected": [
+      "FAIL",
+      "MOD"
+    ],
+    "old_verdict": [
+      "FAIL",
+      "MOD",
+      {
+        "s": [
+          0,
+          1
+        ],
+        "wet": [
+          100,
+          64
+        ],
+        "census": {
+          "deep": 0,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 64,
+          "mud": 36,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ],
+        "why": "the wet count shrank one level down: the pond shrank instead of shallowing"
+      }
+    ],
+    "current_verdict": [
+      "FAIL",
+      "MOD",
+      {
+        "s": [
+          0,
+          1
+        ],
+        "wet": [
+          100,
+          64
+        ],
+        "census": {
+          "deep": 0,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 64,
+          "mud": 36,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ],
+        "why": "the wet count shrank one level down: the pond shrank instead of shallowing"
+      }
+    ],
+    "old_meets_expectation": true
+  },
+  {
+    "case": "L8: s fell but no part-depth square",
+    "parsed_reads": [
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 0,
+        "r": 0,
+        "wet": 100,
+        "census": {
+          "deep": 0,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 100,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      },
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 1,
+        "r": 0,
+        "wet": 100,
+        "census": {
+          "deep": 0,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 100,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      }
+    ],
+    "expected": [
+      "FAIL",
+      "MOD"
+    ],
+    "old_verdict": [
+      "FAIL",
+      "MOD",
+      {
+        "s": [
+          0,
+          1
+        ],
+        "wet": [
+          100,
+          100
+        ],
+        "census": {
+          "deep": 0,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 100,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ],
+        "why": "the surface fell but no square shows a part-depth stage"
+      }
+    ],
+    "current_verdict": [
+      "FAIL",
+      "MOD",
+      {
+        "s": [
+          0,
+          1
+        ],
+        "wet": [
+          100,
+          100
+        ],
+        "census": {
+          "deep": 0,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 100,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ],
+        "why": "the surface fell but no square shows a part-depth stage"
+      }
+    ],
+    "old_meets_expectation": true
+  },
+  {
+    "case": "L8: the pump drew nothing is SITE",
+    "parsed_reads": [
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 0,
+        "r": 0,
+        "wet": 100,
+        "census": {
+          "deep": 0,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 100,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      },
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 0,
+        "r": 0,
+        "wet": 100,
+        "census": {
+          "deep": 0,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 100,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      }
+    ],
+    "expected": [
+      "UNMEASURED",
+      "SITE"
+    ],
+    "old_verdict": [
+      "UNMEASURED",
+      "SITE",
+      {
+        "s": [
+          0,
+          0
+        ],
+        "wet": [
+          100,
+          100
+        ],
+        "census": {
+          "deep": 0,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 100,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ],
+        "why": "the surface never fell: the pump drew nothing"
+      }
+    ],
+    "current_verdict": [
+      "UNMEASURED",
+      "SITE",
+      {
+        "s": [
+          0,
+          0
+        ],
+        "wet": [
+          100,
+          100
+        ],
+        "census": {
+          "deep": 0,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 100,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ],
+        "why": "the surface never fell: the pump drew nothing"
+      }
+    ],
+    "old_meets_expectation": true
+  },
+  {
+    "case": "L8: model not applying is SITE",
+    "parsed_reads": [
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": false,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 0,
+        "r": 0,
+        "wet": 9,
+        "census": {
+          "deep": 0,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      },
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": false,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 1,
+        "r": 0,
+        "wet": 9,
+        "census": {
+          "deep": 0,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      }
+    ],
+    "expected": [
+      "UNMEASURED",
+      "SITE"
+    ],
+    "old_verdict": [
+      "UNMEASURED",
+      "SITE",
+      {
+        "s": [
+          0,
+          1
+        ],
+        "wet": [
+          9,
+          9
+        ],
+        "census": {
+          "deep": 0,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ],
+        "why": "the depth model does not apply to this body (limitless, moving or not water)"
+      }
+    ],
+    "current_verdict": [
+      "UNMEASURED",
+      "SITE",
+      {
+        "s": [
+          0,
+          1
+        ],
+        "wet": [
+          9,
+          9
+        ],
+        "census": {
+          "deep": 0,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ],
+        "why": "the depth model does not apply to this body (limitless, moving or not water)"
+      }
+    ],
+    "old_meets_expectation": true
+  },
+  {
+    "case": "L8: one read is not a trace",
+    "parsed_reads": [
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 0,
+        "r": 0,
+        "wet": 9,
+        "census": {
+          "deep": 0,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      }
+    ],
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old_verdict": [
+      "UNMEASURED",
+      "HARNESS",
+      {
+        "why": "fewer than two pond reads",
+        "reads": 1
+      }
+    ],
+    "current_verdict": [
+      "UNMEASURED",
+      "HARNESS",
+      {
+        "why": "fewer than two pond reads",
+        "reads": 1
+      }
+    ],
+    "old_meets_expectation": true
+  },
+  {
+    "case": "L8: no reads is not a trace",
+    "parsed_reads": [],
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old_verdict": [
+      "UNMEASURED",
+      "HARNESS",
+      {
+        "why": "fewer than two pond reads",
+        "reads": 0
+      }
+    ],
+    "current_verdict": [
+      "UNMEASURED",
+      "HARNESS",
+      {
+        "why": "fewer than two pond reads",
+        "reads": 0
+      }
+    ],
+    "old_meets_expectation": true
+  },
+  {
+    "case": "L8: earlier partial stages and a filtered read cannot rescue a deep-only final census",
+    "parsed_reads": [
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 0,
+        "r": 0,
+        "wet": 6,
+        "census": {
+          "deep": 0,
+          "chest": 2,
+          "shallow": 2,
+          "thin": 2,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      },
+      null,
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 1,
+        "r": 0,
+        "wet": 6,
+        "census": {
+          "deep": 6,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      }
+    ],
+    "expected": [
+      "FAIL",
+      "MOD"
+    ],
+    "old_verdict": [
+      "PASS",
+      "MOD",
+      {
+        "s": [
+          0,
+          1
+        ],
+        "wet": [
+          6,
+          6
+        ],
+        "census": {
+          "deep": 6,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ]
+      }
+    ],
+    "current_verdict": [
+      "FAIL",
+      "MOD",
+      {
+        "s": [
+          0,
+          1
+        ],
+        "wet": [
+          6,
+          6
+        ],
+        "census": {
+          "deep": 6,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ],
+        "why": "the surface fell but no square shows a part-depth stage"
+      }
+    ],
+    "old_meets_expectation": false
+  },
+  {
+    "case": "L8: repeated brim reads and one thin square preserve the stable-wet boundary",
+    "parsed_reads": [
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 0,
+        "r": 0,
+        "wet": 5,
+        "census": {
+          "deep": 0,
+          "chest": 0,
+          "shallow": 3,
+          "thin": 2,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      },
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 0,
+        "r": 0,
+        "wet": 5,
+        "census": {
+          "deep": 0,
+          "chest": 0,
+          "shallow": 3,
+          "thin": 2,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      },
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 1,
+        "r": 0,
+        "wet": 5,
+        "census": {
+          "deep": 4,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 1,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      }
+    ],
+    "expected": [
+      "PASS",
+      "MOD"
+    ],
+    "old_verdict": [
+      "PASS",
+      "MOD",
+      {
+        "s": [
+          0,
+          0,
+          1
+        ],
+        "wet": [
+          5,
+          5,
+          5
+        ],
+        "census": {
+          "deep": 4,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 1,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ]
+      }
+    ],
+    "current_verdict": [
+      "PASS",
+      "MOD",
+      {
+        "s": [
+          0,
+          0,
+          1
+        ],
+        "wet": [
+          5,
+          5,
+          5
+        ],
+        "census": {
+          "deep": 4,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 1,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ]
+      }
+    ],
+    "old_meets_expectation": true
+  },
+  {
+    "case": "L8: a nonapplicable early read takes precedence over a deep-only final census",
+    "parsed_reads": [
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": false,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 0,
+        "r": 0,
+        "wet": 6,
+        "census": {
+          "deep": 0,
+          "chest": 2,
+          "shallow": 2,
+          "thin": 2,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      },
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 1,
+        "r": 0,
+        "wet": 6,
+        "census": {
+          "deep": 6,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      }
+    ],
+    "expected": [
+      "UNMEASURED",
+      "SITE"
+    ],
+    "old_verdict": [
+      "UNMEASURED",
+      "SITE",
+      {
+        "s": [
+          0,
+          1
+        ],
+        "wet": [
+          6,
+          6
+        ],
+        "census": {
+          "deep": 6,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ],
+        "why": "the depth model does not apply to this body (limitless, moving or not water)"
+      }
+    ],
+    "current_verdict": [
+      "UNMEASURED",
+      "SITE",
+      {
+        "s": [
+          0,
+          1
+        ],
+        "wet": [
+          6,
+          6
+        ],
+        "census": {
+          "deep": 6,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ],
+        "why": "the depth model does not apply to this body (limitless, moving or not water)"
+      }
+    ],
+    "old_meets_expectation": true
+  },
+  {
+    "case": "L8: no movement takes precedence over a deep-only final census",
+    "parsed_reads": [
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 0,
+        "r": 0,
+        "wet": 6,
+        "census": {
+          "deep": 0,
+          "chest": 2,
+          "shallow": 2,
+          "thin": 2,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      },
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 0,
+        "r": 0,
+        "wet": 6,
+        "census": {
+          "deep": 6,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      }
+    ],
+    "expected": [
+      "UNMEASURED",
+      "SITE"
+    ],
+    "old_verdict": [
+      "UNMEASURED",
+      "SITE",
+      {
+        "s": [
+          0,
+          0
+        ],
+        "wet": [
+          6,
+          6
+        ],
+        "census": {
+          "deep": 6,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ],
+        "why": "the surface never fell: the pump drew nothing"
+      }
+    ],
+    "current_verdict": [
+      "UNMEASURED",
+      "SITE",
+      {
+        "s": [
+          0,
+          0
+        ],
+        "wet": [
+          6,
+          6
+        ],
+        "census": {
+          "deep": 6,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ],
+        "why": "the surface never fell: the pump drew nothing"
+      }
+    ],
+    "old_meets_expectation": true
+  },
+  {
+    "case": "L8: genuine partial stages cannot rescue an intermediate wet-count shrink",
+    "parsed_reads": [
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 0,
+        "r": 0,
+        "wet": 100,
+        "census": {
+          "deep": 100,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      },
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 1,
+        "r": 0,
+        "wet": 99,
+        "census": {
+          "deep": 0,
+          "chest": 99,
+          "shallow": 0,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      },
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 1,
+        "r": 0,
+        "wet": 100,
+        "census": {
+          "deep": 0,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 100,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      }
+    ],
+    "expected": [
+      "FAIL",
+      "MOD"
+    ],
+    "old_verdict": [
+      "FAIL",
+      "MOD",
+      {
+        "s": [
+          0,
+          1,
+          1
+        ],
+        "wet": [
+          100,
+          99,
+          100
+        ],
+        "census": {
+          "deep": 0,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 100,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ],
+        "why": "the wet count shrank one level down: the pond shrank instead of shallowing"
+      }
+    ],
+    "current_verdict": [
+      "FAIL",
+      "MOD",
+      {
+        "s": [
+          0,
+          1,
+          1
+        ],
+        "wet": [
+          100,
+          99,
+          100
+        ],
+        "census": {
+          "deep": 0,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 100,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ],
+        "why": "the wet count shrank one level down: the pond shrank instead of shallowing"
+      }
+    ],
+    "old_meets_expectation": true
+  },
+  {
+    "case": "L8: deep-only still fails beyond the first level",
+    "parsed_reads": [
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 0,
+        "r": 0,
+        "wet": 100,
+        "census": {
+          "deep": 100,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      },
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 2,
+        "r": 0,
+        "wet": 100,
+        "census": {
+          "deep": 100,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      }
+    ],
+    "expected": [
+      "FAIL",
+      "MOD"
+    ],
+    "old_verdict": [
+      "PASS",
+      "MOD",
+      {
+        "s": [
+          0,
+          2
+        ],
+        "wet": [
+          100,
+          100
+        ],
+        "census": {
+          "deep": 100,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ]
+      }
+    ],
+    "current_verdict": [
+      "FAIL",
+      "MOD",
+      {
+        "s": [
+          0,
+          2
+        ],
+        "wet": [
+          100,
+          100
+        ],
+        "census": {
+          "deep": 100,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ],
+        "why": "the surface fell but no square shows a part-depth stage"
+      }
+    ],
+    "old_meets_expectation": false
+  },
+  {
+    "case": "L8: a genuine partial stage still passes beyond the first level",
+    "parsed_reads": [
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 0,
+        "r": 0,
+        "wet": 100,
+        "census": {
+          "deep": 100,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      },
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 2,
+        "r": 0,
+        "wet": 100,
+        "census": {
+          "deep": 0,
+          "chest": 0,
+          "shallow": 100,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      }
+    ],
+    "expected": [
+      "PASS",
+      "MOD"
+    ],
+    "old_verdict": [
+      "PASS",
+      "MOD",
+      {
+        "s": [
+          0,
+          2
+        ],
+        "wet": [
+          100,
+          100
+        ],
+        "census": {
+          "deep": 0,
+          "chest": 0,
+          "shallow": 100,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ]
+      }
+    ],
+    "current_verdict": [
+      "PASS",
+      "MOD",
+      {
+        "s": [
+          0,
+          2
+        ],
+        "wet": [
+          100,
+          100
+        ],
+        "census": {
+          "deep": 0,
+          "chest": 0,
+          "shallow": 100,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        },
+        "stock": [
+          10.0,
+          10.0
+        ]
+      }
+    ],
+    "old_meets_expectation": true
+  },
+  {
+    "case": "L8: filtered reads do not manufacture a second reading",
+    "parsed_reads": [
+      null,
+      {
+        "id": 1,
+        "pulse": 9,
+        "model": 1,
+        "applies": true,
+        "limitless": false,
+        "stock": 10.0,
+        "capacity": 20.0,
+        "s": 0,
+        "r": 0,
+        "wet": 9,
+        "census": {
+          "deep": 0,
+          "chest": 0,
+          "shallow": 0,
+          "thin": 0,
+          "own": 0,
+          "mud": 0,
+          "lakebed": 0,
+          "other": 0
+        }
+      },
+      null
+    ],
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old_verdict": [
+      "UNMEASURED",
+      "HARNESS",
+      {
+        "why": "fewer than two pond reads",
+        "reads": 1
+      }
+    ],
+    "current_verdict": [
+      "UNMEASURED",
+      "HARNESS",
+      {
+        "why": "fewer than two pond reads",
+        "reads": 1
+      }
+    ],
+    "old_meets_expectation": true
+  }
+]

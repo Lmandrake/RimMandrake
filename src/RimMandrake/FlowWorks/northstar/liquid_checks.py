@@ -400,7 +400,7 @@ def pond_depth_verdict(reads):
     if brim and one and min(r["wet"] for r in one) < max(r["wet"] for r in brim):
         return "FAIL", "MOD", dict(det, why="the wet count shrank one level down: the pond shrank instead of shallowing")
     c = last.get("census") or {}
-    if last.get("s", 0) >= 1 and c.get("chest", 0) + c.get("shallow", 0) + c.get("thin", 0) + c.get("deep", 0) == 0:
+    if last.get("s", 0) >= 1 and c.get("chest", 0) + c.get("shallow", 0) + c.get("thin", 0) == 0:
         return "FAIL", "MOD", dict(det, why="the surface fell but no square shows a part-depth stage")
     return "PASS", "MOD", det
 

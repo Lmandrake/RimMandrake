@@ -1,0 +1,15 @@
+{
+  "time": 1794383838.779254,
+  "operation": "verbatim recovery of denied independent Opus Write tool payload",
+  "source": "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-pond-verdict/evidence/judge_raw.json",
+  "source_json_pointer": "/permission_denials/0/tool_input/content",
+  "session_id": "47484a2d-6569-432d-a111-270faf752c1e",
+  "model": "claude-opus-5-5",
+  "original_write_permission_denied": true,
+  "cli_returncode": 0,
+  "report_authored_by": "independent Opus judge; builder performed byte-for-byte recovery only",
+  "raw_sha256": "da469b48f9e65e7cc00ded00b74407a4bb72805505a62a7d90f052e6da90764f",
+  "judge_sha256": "08b0c813a82aea070e9b0e64799694c474c61cad236fe9e36e89c257afca0a21",
+  "exact_payload_match": true,
+  "new_reviewer_launched": false
+}

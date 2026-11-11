@@ -1,0 +1,165 @@
+{
+  "time": 1794384629.4570122,
+  "HEAD": "a4ac58453febec724e81445ecbac7376d98a1b7d",
+  "original_git_sha": "4ca1fc48d3efb86bd061ee9edbc5d10365ef0f05",
+  "source_sha256": {
+    "src/RimMandrake/FlowWorks/northstar/liquid_checks.py": "d1b701f4ea29e784fa37e3479306c33ea42be431866b11aa70863cf207be1272",
+    "src/RimMandrake/FlowWorks/northstar/selftest_liquid_checks.py": "9a88ab6eb925d9e8f4602d67a94692243ff50e4a71c15426ec5b6d11482ca0f1"
+  },
+  "matches_original_final_integrity": true,
+  "command": [
+    "python3",
+    "src/RimMandrake/Utils/run_selftests.py",
+    "--only",
+    "src/RimMandrake/FlowWorks/northstar/selftest_liquid_checks.py",
+    "--workers",
+    "1"
+  ],
+  "returncode": 0,
+  "elapsed_seconds": 0.7467334270477295,
+  "original_whittle_files": {
+    "STATEMENT.md": {
+      "sha256": "3c1977df46b0c3a8c57930c4d5f6e58827fd2032a00baedc348fb520f522ef15",
+      "mtime_ns": 1794383425963143110
+    },
+    "run.jsonl.events.jsonl": {
+      "sha256": "f6e1152e63804a6063f7cd8704228a0ec9d37f1fd30e0088c7bf5f34e702b216",
+      "mtime_ns": 1794383911985699987
+    },
+    "run.jsonl.last.txt": {
+      "sha256": "e336726cca63eec1246828808f0624f302df99c103f5a7fc8fde399182d7af38",
+      "mtime_ns": 1794383911869460519
+    },
+    "BROADEN.md": {
+      "sha256": "15c577445ce2f0b004d0782c46a2819cbed6e510c9d5d42bef60c0cf98a97ef1",
+      "mtime_ns": 1794383670109436078
+    },
+    "JUDGE.md": {
+      "sha256": "08b0c813a82aea070e9b0e64799694c474c61cad236fe9e36e89c257afca0a21",
+      "mtime_ns": 1794383838779232770
+    },
+    "PROMPT.md": {
+      "sha256": "66ee567b4c09fc4b3b04021e9b386e7d889448212817dbac7775630223a4356d",
+      "mtime_ns": 1794384582231289306
+    },
+    "run.jsonl.spend.json": {
+      "sha256": "b194ab8d797ae6ca3983efbb0885cca900bb3fdbade6766274ac6d2a1af04845",
+      "mtime_ns": 1794383911986028737
+    },
+    "FINDINGS.md": {
+      "sha256": "ea358e4960296491f34cb86ce252c75ea2268bccb8e3b60349c19131cf90ba77",
+      "mtime_ns": 1794383890661437302
+    },
+    "run.jsonl": {
+      "sha256": "a72e93420d82be7a4b5ae52ed5c936c39bcc9810ccbde1e8c5ae4a2b11be3bac",
+      "mtime_ns": 1794383911986183004
+    },
+    "JUDGE_PROMPT.md": {
+      "sha256": "4905e3a1a4875d7f7750de2948f0fbc4b2eccc7f1281b12516e8e2bdfd14e13e",
+      "mtime_ns": 1794383632149433703
+    },
+    "NOTES.md": {
+      "sha256": "3c896036c5cceee1ae957aa6b8a2514912773163c6b72cc883f3a9303b53649d",
+      "mtime_ns": 1794383425963172359
+    },
+    ".stop_state.json": {
+      "sha256": "bece840a30418b5f739019dc92ff4391abe40e8ce90c17b7d59cb47bf833b2b4",
+      "mtime_ns": 1794383670843678017
+    },
+    "DONE.md": {
+      "sha256": "34bc1c91e6d2c4400c73469006b2eadc80ed4363df1aaeedbe3767c7266533e6",
+      "mtime_ns": 1794383670109436078
+    },
+    "evidence/workflow_final.json": {
+      "sha256": "c3af46a190900e98dfc0dcad961a1d3b65625fc9f4f6bc6ce940d6de8f3b1106",
+      "mtime_ns": 1794383839695170357
+    },
+    "evidence/verdict_comparison.json": {
+      "sha256": "10c4bd221923841e3160ff5d50a9faf35ea445989e2a59b4cb0bc54941237692",
+      "mtime_ns": 1794383633718673015
+    },
+    "evidence/judge_raw.json": {
+      "sha256": "da469b48f9e65e7cc00ded00b74407a4bb72805505a62a7d90f052e6da90764f",
+      "mtime_ns": 1794383774980903612
+    },
+    "evidence/broaden_raw.json": {
+      "sha256": "26e2c79fab55abbc65554e4113e37d0335775bfd6c63e2b0c940df7f99a8fb2b",
+      "mtime_ns": 1794383528857943450
+    },
+    "evidence/broaden_call.json": {
+      "sha256": "bf507f8f3436bfbef817eada426d7abcea71398371498d9c38fcb201929a2405",
+      "mtime_ns": 1794383528858049239
+    },
+    "evidence/old_pond_depth_verdict.py": {
+      "sha256": "d889369c8499a974e09709558dae5b8f79ebf668e4635bbe928febbcf525c572",
+      "mtime_ns": 1794383633706481070
+    },
+    "evidence/selftest_stdout.txt": {
+      "sha256": "67cfca2ddd5de05a01facd0a312b725cf946e97ede5511b8420965a818ab4245",
+      "mtime_ns": 1794383633692336610
+    },
+    "evidence/judge_stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1794383774980903612
+    },
+    "evidence/judge_recovery.json": {
+      "sha256": "52be0ae18c6c247caf44b8ed503dee3efebe274c519923d656f3f3ec2dbcdb7a",
+      "mtime_ns": 1794383838779322406
+    },
+    "evidence/call_opus.py": {
+      "sha256": "3db526f96465e0cde685e118537fddae27849f2cdffbc9c469442000017cbcd1",
+      "mtime_ns": 1794383507349428342
+    },
+    "evidence/broaden_stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1794383528857943450
+    },
+    "evidence/check_workflow.py": {
+      "sha256": "e033bd200ad903d9cb320c3265f84ca595b6b8b918852a25614d05bd9b869243",
+      "mtime_ns": 1794383632149433703
+    },
+    "evidence/workflow_initial.json": {
+      "sha256": "301a086a301e9ea9d3d8e6e2d713b0b3134d9a4fd1a36b810185300ef02dd743",
+      "mtime_ns": 1794383632821229603
+    },
+    "evidence/production.patch": {
+      "sha256": "2537229a87765e1a70edc698af798128813642cf401f8bac2fea43bccf5ab8ff",
+      "mtime_ns": 1794383642224129949
+    },
+    "evidence/final_integrity.json": {
+      "sha256": "09e32d9fe624b6702fddef1883070ef8778d2449b66f8cfbea00f0bca141e02f",
+      "mtime_ns": 1794383890635726372
+    },
+    "evidence/broaden_prompt.txt": {
+      "sha256": "e2ed9e8f4ce71372ac087aa9302b5baf83e5a3ea1f43fedf5fb628bef9f406df",
+      "mtime_ns": 1794383507349428342
+    },
+    "evidence/verification.json": {
+      "sha256": "1731818dc722f865664e5341c7421a0050fca0b81c4872a16ca98265cc294632",
+      "mtime_ns": 1794383633720165252
+    },
+    "evidence/recover_judge.py": {
+      "sha256": "61f98cf7af606889eb5ec5f8ce3bd62ba1900ab89840c24f86d4b4ba9c8e714e",
+      "mtime_ns": 1794383838745444310
+    },
+    "evidence/workflow_before_judge.json": {
+      "sha256": "f22f136474860c743cca02d011cff01499a4ebb0e3bc2655f514fd5103c93934",
+      "mtime_ns": 1794383671057681499
+    },
+    "evidence/verify.py": {
+      "sha256": "77dc664b4d32e20ab87f45221f48a97c2102364fcd8c80748941766c70e86d8b",
+      "mtime_ns": 1794383600113432386
+    },
+    "evidence/selftest_stderr.txt": {
+      "sha256": "86fa5f72023378d93141853d340bf58021831e295de6ab96d593f4d37b9ac780",
+      "mtime_ns": 1794383633692380719
+    },
+    "evidence/judge_call.json": {
+      "sha256": "c3caa4ad5a789070fc4097e675e7fedc7600ec210182455f89eba9944d0b20d3",
+      "mtime_ns": 1794383774981021351
+    }
+  },
+  "source_unchanged_during_selftest": true,
+  "git_diff_check_returncode": 0,
+  "git_status_short": " M src/RimMandrake/FlowWorks/northstar/liquid_checks.py\n M src/RimMandrake/FlowWorks/northstar/selftest_liquid_checks.py\n?? whittle/fw-drain-pond-verdict/\n"
+}

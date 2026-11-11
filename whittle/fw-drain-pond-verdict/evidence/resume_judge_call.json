@@ -1,0 +1,43 @@
+{
+  "command": [
+    "claude",
+    "-p",
+    "--model",
+    "opus",
+    "--tools",
+    "Read,Glob,Grep,Write",
+    "--strict-mcp-config",
+    "--mcp-config",
+    "{\"mcpServers\":{}}",
+    "--setting-sources",
+    "",
+    "--no-session-persistence",
+    "--output-format",
+    "json",
+    "--max-budget-usd",
+    "6",
+    "--add-dir",
+    "/home/mandrake/rm/scratch/BENCH/fw-drain",
+    "--allowedTools",
+    "Read",
+    "Glob",
+    "Grep",
+    "Write(/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-pond-verdict/JUDGE.md)",
+    "--permission-mode",
+    "dontAsk"
+  ],
+  "input": "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-pond-verdict/JUDGE_PROMPT.md",
+  "started": 1794384751.531943,
+  "timeout_seconds": 360,
+  "WHITTLE": "0",
+  "removed_environment_keys": [
+    "CLAUDECODE"
+  ],
+  "history": "new print session; no resume, fork or persistence",
+  "setting_sources": "",
+  "mcp_servers": {},
+  "cwd": "/home/mandrake/.seat-tmp/BENCH/pond-verdict-opus-9o32ocrh",
+  "returncode": 0,
+  "elapsed": 91.10586285591125,
+  "stdout": "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-pond-verdict/evidence/resume_judge_raw.json"
+}

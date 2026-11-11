@@ -1,0 +1,24 @@
+{
+  "time": 1794384692.4017117,
+  "cause": "Parent sync advanced HEAD; only committed change between original and current HEAD is infrastructure/state/ledger/events/RUNNER.jsonl. Its mtime 1794384521.9176755 is newer than the original verification. Source/test bytes and mtimes remain unchanged.",
+  "refusal": "evidence/workflow_resume.json",
+  "archive": "evidence/pre_resume/",
+  "all_original_receipts_and_reports_content_and_mtimes_verified": true,
+  "original_file_count": 35,
+  "mutable_hook_state": [
+    {
+      "path": ".stop_state.json",
+      "before": {
+        "sha256": "bece840a30418b5f739019dc92ff4391abe40e8ce90c17b7d59cb47bf833b2b4",
+        "mtime_ns": 1794383670843678017
+      },
+      "after": {
+        "sha256": "8c2c8f708a4a9d78012a55d3c79c7c43d8744211ae67f106d7100cc7b8b19524",
+        "mtime_ns": 1794384630372511132
+      },
+      "reason": "Full workflow validator legitimately updates refusal state; initial archive assertion caught this before re-verification."
+    }
+  ],
+  "source_changed": false,
+  "next": "Fresh predicate replay using the one completed resume focused selftest, then one fresh independent Opus judge. Original broaden is preserved and not repeated."
+}

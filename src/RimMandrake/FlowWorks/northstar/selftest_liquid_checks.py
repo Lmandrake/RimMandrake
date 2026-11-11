@@ -110,12 +110,49 @@ def _P(s_, r_, wet, applies=True, **cen):
                          % (applies, s_, r_, wet, ",".join("%s:%d" % kv for kv in c.items())))
 case(LC.parse_pond("POND id=3 s=2 r=1 wet=7 applies=True census=deep:1,thin:2")["census"]["thin"], 2, "L8: the reply parses")
 case(LC.parse_pond("REFUSED: no formed pond"), None, "L8: a refusal is no read")
-case(LC.pond_depth_verdict([_P(0, 0, 100, own=100), _P(1, 0, 100, chest=64, thin=36)])[0], "PASS", "L8: one level down, nothing dried, stages show")
-case(LC.pond_depth_verdict([_P(0, 0, 100, own=100), _P(1, 0, 64, own=64, mud=36)])[0], "FAIL", "L8: the old shrink-from-the-rim is a FAIL")
-case(LC.pond_depth_verdict([_P(0, 0, 100, own=100), _P(1, 0, 100, own=100)])[0], "FAIL", "L8: s fell but no part-depth square")
-case(LC.pond_depth_verdict([_P(0, 0, 100, own=100), _P(0, 0, 100, own=100)])[0], "UNMEASURED", "L8: the pump drew nothing is SITE")
-case(LC.pond_depth_verdict([_P(0, 0, 9, False), _P(1, 0, 9, False)])[1], "SITE", "L8: model not applying is SITE")
-case(LC.pond_depth_verdict([_P(0, 0, 9)])[0], "UNMEASURED", "L8: one read is not a trace")
+_pond_cases = [
+    ("L8: one level down, nothing dried, stages show",
+     [_P(0, 0, 100, own=100), _P(1, 0, 100, chest=64, thin=36)], ("PASS", "MOD")),
+    ("L8: deep-only is not a part-depth stage",
+     [_P(0, 0, 100, deep=100), _P(1, 0, 100, deep=100)], ("FAIL", "MOD")),
+    ("L8: chest alone is a part-depth stage",
+     [_P(0, 0, 100, deep=100), _P(1, 0, 100, chest=100)], ("PASS", "MOD")),
+    ("L8: shallow alone is a part-depth stage",
+     [_P(0, 0, 100, deep=100), _P(1, 0, 100, shallow=100)], ("PASS", "MOD")),
+    ("L8: thin alone is a part-depth stage",
+     [_P(0, 0, 100, deep=100), _P(1, 0, 100, thin=100)], ("PASS", "MOD")),
+    ("L8: mixed deep and one genuine partial square is valid",
+     [_P(0, 0, 100, deep=100), _P(1, 0, 100, deep=99, thin=1)], ("PASS", "MOD")),
+    ("L8: the old shrink-from-the-rim is a FAIL",
+     [_P(0, 0, 100, own=100), _P(1, 0, 64, own=64, mud=36)], ("FAIL", "MOD")),
+    ("L8: s fell but no part-depth square",
+     [_P(0, 0, 100, own=100), _P(1, 0, 100, own=100)], ("FAIL", "MOD")),
+    ("L8: the pump drew nothing is SITE",
+     [_P(0, 0, 100, own=100), _P(0, 0, 100, own=100)], ("UNMEASURED", "SITE")),
+    ("L8: model not applying is SITE",
+     [_P(0, 0, 9, False), _P(1, 0, 9, False)], ("UNMEASURED", "SITE")),
+    ("L8: one read is not a trace", [_P(0, 0, 9)], ("UNMEASURED", "HARNESS")),
+    ("L8: no reads is not a trace", [], ("UNMEASURED", "HARNESS")),
+    ("L8: earlier partial stages and a filtered read cannot rescue a deep-only final census",
+     [_P(0, 0, 6, chest=2, shallow=2, thin=2), None, _P(1, 0, 6, deep=6)], ("FAIL", "MOD")),
+    ("L8: repeated brim reads and one thin square preserve the stable-wet boundary",
+     [_P(0, 0, 5, shallow=3, thin=2), _P(0, 0, 5, shallow=3, thin=2),
+      _P(1, 0, 5, deep=4, thin=1)], ("PASS", "MOD")),
+    ("L8: a nonapplicable early read takes precedence over a deep-only final census",
+     [_P(0, 0, 6, False, chest=2, shallow=2, thin=2), _P(1, 0, 6, deep=6)], ("UNMEASURED", "SITE")),
+    ("L8: no movement takes precedence over a deep-only final census",
+     [_P(0, 0, 6, chest=2, shallow=2, thin=2), _P(0, 0, 6, deep=6)], ("UNMEASURED", "SITE")),
+    ("L8: genuine partial stages cannot rescue an intermediate wet-count shrink",
+     [_P(0, 0, 100, deep=100), _P(1, 0, 99, chest=99), _P(1, 0, 100, thin=100)], ("FAIL", "MOD")),
+    ("L8: deep-only still fails beyond the first level",
+     [_P(0, 0, 100, deep=100), _P(2, 0, 100, deep=100)], ("FAIL", "MOD")),
+    ("L8: a genuine partial stage still passes beyond the first level",
+     [_P(0, 0, 100, deep=100), _P(2, 0, 100, shallow=100)], ("PASS", "MOD")),
+    ("L8: filtered reads do not manufacture a second reading",
+     [None, _P(0, 0, 9), None], ("UNMEASURED", "HARNESS")),
+]
+for why, reads, want in _pond_cases:
+    case(LC.pond_depth_verdict(reads)[:2], want, why)
 case(LC.spill_verdict(None, 0, L, 0, 3, 0, 0)[:2], ("UNMEASURED", "HARNESS"), "held units unreadable is HARNESS, not 'held nothing'")
 case(LC.clean_verdict("Human1", {"success": True}, 3, 9, 0, 750)[0], "PASS", "readBack 3 with manual priorities off is enabled")
 case(LC.clean_verdict("Human1", {"success": True}, 0, 9, 0, 750)[0], "UNMEASURED", "Cleaning off is no test")

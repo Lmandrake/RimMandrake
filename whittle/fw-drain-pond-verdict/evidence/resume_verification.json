@@ -1,0 +1,38 @@
+{
+  "started": 1794384726.790749,
+  "elapsed": 0.0370328426361084,
+  "original_git_sha": "4ca1fc48d3efb86bd061ee9edbc5d10365ef0f05",
+  "current_git_sha": "a4ac58453febec724e81445ecbac7376d98a1b7d",
+  "source_sha256": {
+    "src/RimMandrake/FlowWorks/northstar/liquid_checks.py": "d1b701f4ea29e784fa37e3479306c33ea42be431866b11aa70863cf207be1272",
+    "src/RimMandrake/FlowWorks/northstar/selftest_liquid_checks.py": "9a88ab6eb925d9e8f4602d67a94692243ff50e4a71c15426ec5b6d11482ca0f1"
+  },
+  "original_production_sha256": "b0c70f412b3370f4dc292a0d3ccd854425bfc75878d2cb150dd2ec5c752a58d6",
+  "old_extracted_function_sha256": "d889369c8499a974e09709558dae5b8f79ebf668e4635bbe928febbcf525c572",
+  "selftest_command": [
+    "python3",
+    "src/RimMandrake/Utils/run_selftests.py",
+    "--only",
+    "src/RimMandrake/FlowWorks/northstar/selftest_liquid_checks.py",
+    "--workers",
+    "1"
+  ],
+  "selftest_returncode": 0,
+  "selftest_evidence": "resume_selftest.txt",
+  "selftest_process_receipt": "resume_integrity.json",
+  "selftest_output_sha256": "023acf141900f65b8137be9cbcec349a6823d5332696e1167ddb14e4e16eb56d",
+  "selftest_run_count_this_resume": 1,
+  "fixtures": "AST-extracted _P and _pond_cases from final existing selftest; parsed through current production parse_pond",
+  "execution": "Fresh execution of git-show AST-extracted original predicate and imported current predicate on identical deep-copied parsed inputs",
+  "total_pond_cases": 20,
+  "current_failures": 0,
+  "old_failures": [
+    "L8: deep-only is not a part-depth stage",
+    "L8: earlier partial stages and a filtered read cannot rescue a deep-only final census",
+    "L8: deep-only still fails beyond the first level"
+  ],
+  "comparison_sha256": "10c4bd221923841e3160ff5d50a9faf35ea445989e2a59b4cb0bc54941237692",
+  "fresh_results_equal_original_recorded_results": true,
+  "source_unchanged_during_verification": true,
+  "bridge_or_game_used": false
+}

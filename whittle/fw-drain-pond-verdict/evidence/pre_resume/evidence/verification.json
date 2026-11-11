@@ -1,0 +1,32 @@
+{
+  "started": 1794383632.8674028,
+  "elapsed": 0.8513712882995605,
+  "original_git_sha": "4ca1fc48d3efb86bd061ee9edbc5d10365ef0f05",
+  "current_git_sha": "4ca1fc48d3efb86bd061ee9edbc5d10365ef0f05",
+  "command": [
+    "python3",
+    "src/RimMandrake/Utils/run_selftests.py",
+    "--only",
+    "src/RimMandrake/FlowWorks/northstar/selftest_liquid_checks.py",
+    "--workers",
+    "1"
+  ],
+  "returncode": 0,
+  "source_sha256": {
+    "src/RimMandrake/FlowWorks/northstar/liquid_checks.py": "d1b701f4ea29e784fa37e3479306c33ea42be431866b11aa70863cf207be1272",
+    "src/RimMandrake/FlowWorks/northstar/selftest_liquid_checks.py": "9a88ab6eb925d9e8f4602d67a94692243ff50e4a71c15426ec5b6d11482ca0f1"
+  },
+  "original_production_sha256": "b0c70f412b3370f4dc292a0d3ccd854425bfc75878d2cb150dd2ec5c752a58d6",
+  "old_extracted_function_sha256": "d889369c8499a974e09709558dae5b8f79ebf668e4635bbe928febbcf525c572",
+  "fixtures": "AST-extracted _P and _pond_cases from final existing selftest; parsed through current production parse_pond",
+  "execution": "Old predicate AST from git show; current predicate imported from working source; identical deep-copied parsed inputs",
+  "total_pond_cases": 20,
+  "current_failures": 0,
+  "old_failures": [
+    "L8: deep-only is not a part-depth stage",
+    "L8: earlier partial stages and a filtered read cannot rescue a deep-only final census",
+    "L8: deep-only still fails beyond the first level"
+  ],
+  "source_unchanged_during_verification": true,
+  "bridge_or_game_used": false
+}
