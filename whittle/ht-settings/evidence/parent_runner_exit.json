@@ -1,0 +1,8 @@
+{
+  "command": "whittle/run.py --runner codex --cwd /home/mandrake/rm/codex-ht --log whittle/ht-settings/evidence/run.jsonl --sandbox danger-full-access",
+  "exec_session_id": 57456,
+  "observed_exit_code": 0,
+  "transport_is_error": false,
+  "validator_rc": 0,
+  "completion_logs": "Written when worker exited; explicitly retained after initial proof publication. No raw evidence or mtimes altered."
+}

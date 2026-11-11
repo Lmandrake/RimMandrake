@@ -1,0 +1,5 @@
+Ready for parent review: [judge](whittle/ht-settings/JUDGE.md) says **would show: yes**; actual Whittle validation returned **0**.
+
+All 27 numeric settings passed real cold-load checks. Labels are keyed and rendered correctly. Settings were restored; game is DOWN; host guard FREE, generation 1399.
+
+[Evidence claim](whittle/ht-settings/DONE.md) · [Findings](whittle/ht-settings/FINDINGS.md). Publication and closure remain with parent.
