@@ -1,0 +1,58 @@
+{
+  "time": 1794385308.9916606,
+  "results": [
+    {
+      "command": [
+        "git",
+        "show",
+        "--format=fuller",
+        "0aaff523566a14ab71050cec527561b425cb24bc",
+        "--",
+        "src/RimMandrake/FlowWorks/Source/RM_LiquidStock.cs"
+      ],
+      "returncode": 0,
+      "stdout": "commit 0aaff523566a14ab71050cec527561b425cb24bc\nAuthor:     Lukas Mandrake <lukas.mandrake@gmail.com>\nAuthorDate: Mon Nov 2 21:22:33 2026 -0800\nCommit:     Lukas Mandrake <lukas.mandrake@gmail.com>\nCommitDate: Mon Nov 2 21:22:39 2026 -0800\n\n    PLOT_D_BODY_PRUNE_STALE_SEA: ProofResetRect releases every body's claim on the reset rect\n    \n    The golden save holds bodies 1-4 only; the stale claim was in-session (CollectBody joins any claimed 8-neighbour, Soil included).\n    Dev fixture only: play never calls RM_LiquidStock.ReleaseRect (selftest guards it).\n    \n    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\n\ndiff --git a/src/RimMandrake/FlowWorks/Source/RM_LiquidStock.cs b/src/RimMandrake/FlowWorks/Source/RM_LiquidStock.cs\nindex 7baf15d210..562e6588b0 100644\n--- a/src/RimMandrake/FlowWorks/Source/RM_LiquidStock.cs\n+++ b/src/RimMandrake/FlowWorks/Source/RM_LiquidStock.cs\n@@ -458,6 +458,54 @@ namespace RimMandrake.FlowWorks\n \t\t\treturn excess;\n \t\t}\n \n+\t\t/// <summary>Dev fixture surface (RM_NorthstarProofs.ProofResetRect; PLOT_D_BODY_PRUNE_STALE_SEA): every body gives up\n+\t\t/// its squares inside <paramref name=\"r\"/> (footprint, receded list and index), a limited one losing their bed share of\n+\t\t/// capacity as <see cref=\"DetachBedCell\"/> does, and a body left with no square is dropped. The plot reset repaints\n+\t\t/// Soil and fills dug cells back in (which REATTACHES them to their pond), so without this a cleared plot kept an\n+\t\t/// earlier body's claims and the next chain's pond joined it (RM_FlowKernel.ReleaseClaimsInRect). Never called in\n+\t\t/// play: ruling 16 keeps a classified cell its body's. Returns the squares released; <paramref name=\"dropped\"/> the\n+\t\t/// bodies removed.</summary>\n+\t\tpublic int ReleaseRect(Map map, CellRect r, RM_MapComponent_Excavation owner, out int dropped)\n+\t\t{\n+\t\t\tdropped = 0;\n+\t\t\tif (RM_StockMath.NeedsIndexRebuild(indexDirty, bodies.Count, cellToBody.Count))\n+\t\t\t{\n+\t\t\t\tRebuildIndex(map);\n+\t\t\t}\n+\t\t\tint released = 0;\n+\t\t\tfor (int b = bodies.Count - 1; b >= 0; b--)\n+\t\t\t{\n+\t\t\t\tRM_LiquidBody body = bodies[b];\n+\t\t\t\tint before = body.cells.Count;\n+\t\t\t\tfloat unit = body.limitless ? 0f : LevelUnitOf(body, owner);\n+\t\t\t\tbody.cells.RemoveAll(c => r.Contains(c));\n+\t\t\t\tif (body.cells.Count == before)\n+\t\t\t\t{\n+\t\t\t\t\tcontinue;\n+\t\t\t\t}\n+\t\t\t\tbody.receded.RemoveAll(c => r.Contains(c));\n+\t\t\t\treleased += before - body.cells.Count;\n+\t\t\t\tif (body.cells.Count == 0)\n+\t\t\t\t{\n+\t\t\t\t\tbodies.RemoveAt(b);\n+\t\t\t\t\tbyId.Remove(body.id);\n+\t\t\t\t\tdropped++;\n+\t\t\t\t\tcontinue;\n+\t\t\t\t}\n+\t\t\t\tif (!body.limitless)\n+\t\t\t\t{\n+\t\t\t\t\tbody.capacity = RM_BedMath.CapacityForBeds(unit, BedSum(body, owner));\n+\t\t\t\t\tif (body.stock > body.capacity)\n+\t\t\t\t\t{\n+\t\t\t\t\t\tbody.AddStock(body.capacity - body.stock);\n+\t\t\t\t\t}\n+\t\t\t\t}\n+\t\t\t}\n+\t\t\t// The index too: a truncated body's far squares can be indexed without being in its footprint list.\n+\t\t\tRM_FlowKernel.ReleaseClaimsInRect(cellToBody, map.Size.x, map.Size.z, r.minX, r.minZ, r.Width, r.Height);\n+\t\t\treturn released;\n+\t\t}\n+\n \t\t/// <summary>Ruling 6's other half: filling a dug bed square back in to the surface returns it to its pond, dry\n \t\t/// (receded, refillable by any inflow), with its capacity share back. Never writes water: the stock that would\n \t\t/// fill it has not been paid (the G5 bug this replaces).</summary>\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "merge-base",
+        "--is-ancestor",
+        "0aaff523566a14ab71050cec527561b425cb24bc",
+        "4e9da327df7ba0a60b50837e200efb711fcbfef1"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "merge-base",
+        "--is-ancestor",
+        "feb753b9d34d921defcd0126644d4ced041e1303",
+        "4e9da327df7ba0a60b50837e200efb711fcbfef1"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "log",
+        "--format=%H %s",
+        "4e9da327df7ba0a60b50837e200efb711fcbfef1..HEAD",
+        "--",
+        "src/RimMandrake/FlowWorks/Source/RM_LiquidStock.cs",
+        "src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidJoins.cs",
+        "src/RimMandrake/FlowWorks/Source/RM_BedMath.cs",
+        "src/RimMandrake/FlowWorks/Source/Machinery/LiquidJoinRule.cs"
+      ],
+      "returncode": 0,
+      "stdout": "b69a9aa0f1d7120e387f1f947566a699a0d01dda WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES: wrecked tiers draw in pipes and conduit like repaired ones\n4c3b08a30696b8d550a538d4b2d8e12529ce3b10 POND_DRAWN_FIX_VERYSHALLOW_NEVER_MUDS: a drawn flat pond's residue is mud, not 25 very-shallow sources\n34ce31058fa22ec6f04f8774fd4ec4fbb5c20b84 HOSE_SADDLE_FIX_STOPS_SHORT_OF_PIPE: a hose beside a pipe couples on a turned saddle at the pipe line\n",
+      "stderr": ""
+    }
+  ]
+}

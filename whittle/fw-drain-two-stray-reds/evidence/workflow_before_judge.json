@@ -1,0 +1,15 @@
+{
+  "time": 1794386034.2399118,
+  "WHITTLE_DIR": "whittle/fw-drain-two-stray-reds",
+  "need_judge": true,
+  "need_broaden": true,
+  "last_change": 1794385030.6536167,
+  "done_problems": [
+    "'the current production-linked flowworks c# selftest suite is green, and the evidence identifies the published repair and distinguishes stale test assertions from a production defect.' is marked false. Make it true, or write whittle/fw-drain-two-stray-reds/BLOCKED.md saying why you can't.",
+    "No judge's verdict newer than DONE.md and the evidence. Spawn a fresh subagent (not a fork) with whittle/fw-drain-two-stray-reds/JUDGE_PROMPT.md as its whole brief. It writes whittle/fw-drain-two-stray-reds/JUDGE.md."
+  ],
+  "full_validator": "MandrakeWorkflows/whittle/run.py validate(root)",
+  "full_validator_returncode": 1,
+  "stdout": "",
+  "stderr": "Whittle: not done yet.\n- 'the current production-linked flowworks c# selftest suite is green, and the evidence identifies the published repair and distinguishes stale test assertions from a production defect.' is marked false. Make it true, or write whittle/fw-drain-two-stray-reds/BLOCKED.md saying why you can't.\n- No judge's verdict newer than DONE.md and the evidence. Spawn a fresh subagent (not a fork) with whittle/fw-drain-two-stray-reds/JUDGE_PROMPT.md as its whole brief. It writes whittle/fw-drain-two-stray-reds/JUDGE.md.\nIf you truly can't go on, or need the owner, write whittle/fw-drain-two-stray-reds/BLOCKED.md saying why, then stop.\n"
+}

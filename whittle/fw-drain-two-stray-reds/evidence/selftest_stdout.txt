@@ -1,0 +1,56 @@
+evidence: 0 eligible, 0 SKIPPED as unchanged, 0 PASS recorded, 0 PASS not recordable — runner 65716eff3278c68e
+cache: 0 CACHED PASS, 1 declared test(s) ran
+known results: 0/1 answered from the ledger (selftests.cache_hit_share 0.000), 0s not spent; 1 ran, 0 recorded, 0 checked against a stored PASS, 0 known red
+  ran (1): no record
+  not recordable (1): changed during the run: src/RimMandrake/Utils/selftest_flowworks_stock.py
+FAIL        593.5s  src/RimMandrake/Utils/selftest_flowworks_stock.py
+             rc 1
+               HoseCarryChecks: 41/41
+               HoseLiveChecks: 21/21
+               StyleStage3Checks: 9/9
+               HoseGptFix: 26/26
+               HoseLegacyChecks: 24/24
+               HoseNetChecks: 39/39
+               net perf: best of 3 passes, 4 revisions, 0.00009 ms/tick mean (budget 0.05), worst tick 0.068 ms (budget 1)
+               rev 2 net perf: 20 reels, 4 pumps (1 pouring), 10 tanks (3 with jobs), 2 intake + 2 outflow ends: 0.00013 ms/tick mean (budget 0.05), worst tick 0.073 ms (budget 1)
+               relay index n=60: 0 B per in-place rebuild, 82584 B per new index
+               relay index n=20: rebuild + every query = 20 intake enumerations (old per-query shape: 214)
+               relay index n=60: rebuild + every query = 60 intake enumerations (old per-query shape: 3152)
+               relay index n=60: 0.0568 ms per rebuild + 60 reels' queries (budget 0.25; it runs only when a laid end changes); old per-query shape 9.453 ms
+               debug lease: DebugReach 70 steps vs per-hose FedByDebug 506 steps (12 layouts)
+               HoseNetCacheChecks: 28/28
+               hose link cache: 89999 refreshes over 40 seeds, 0 disagree with the full walk; 351771 reel reads, 787958 skipped (69.1% saved)
+               HoseLinkCacheChecks: 8/8
+               fuzz hose      2798 cases      8200 steps   23.35 s   (2409 laid, 0 via fallback, 1 known-gap class(es) tallied below)
+                 known gap G4 [outlet] 1/1159 laid: G4 plump hose longer than flat: 17.99 vs 17.43  (seed 46, reel(13,14) -> (0,22) max 49.1 minR 2.0 walls 5, walls (2,18) (2,19) (5,19) (1,21) (2,21))
+                 G2 locator: 0/964 outlet lays bend under 95% of minR; tightest bend in the straight run 0, in the blend 0, beyond it 0
+                 G2 locator: same seed laid WITHOUT the outlet bends within 95% of minR in 0/0 of those (2x2 reels)
+                 G2 locator: turn across the blend (outward vs heading after it) median NaN deg failing vs 118 deg passing; target bearing from outward median NaN deg failing vs 93 passing; radius <= blend/turn in 0/0
+                 G6 (cost vs length, GPT B2, FIXED 2026-10-06): not reproduced: hose 40, the corridor route needs 37.4 (fits) but the search returns a 59.0-cell route (57 cells, 37 in the dry tunnel stretch, extra cost 0) and CheckInstall says 'ok'
+                 refused after the route check [outlet] no room for the straight lead-out from the nozzle: 191
+                 refused after the route check [outlet] route too long (the laid hose, lead-out included, is longer than the hose): 95
+               fuzz trail     1500 cases    133643 steps    0.82 s
+             hose fuzz total: 4298 cases, 141843 steps, 24.16 s
+               HoseFuzz: 4/4
+             hose: 455/455 assertions passed (moved from Gimme Some Slack: 349; new: 106)
+             
+             FAILING CHECKS (rc 1):
+               FAIL  RiverSwitchFlip_weirWhiteWater
+               call site: DrawAt draws the white water only when its switch is on  (pattern if \(RM_RiversSettings\.weirWhiteWater && )
+               FAIL  PitCapture_follows_a_held_pawn_that_moves
+               the job driver asks the step and pins the victim for the hold
+               FAIL  PipePole_P3_sag_at_the_slider_extremes
+               GSS's curve is the formula above
+               FAIL  LW1 a lay depends on the world's content only: fresh clone = reused pooled clone = rebuilt world (bit hash); TakeLayWorld uses World(LayWorldMaxAge)
+               call site: SwimCellsPublished lists each square, a whole rebuild past capacity  (pattern if \(!MarkDirty\(i % w, i / w, i % w, i / w\)\) \{ MapChanged\(\); return; \})
+               FAIL  Thirst_small_pond_drink_admitted
+               TryFindDrinkCell skips a cell whose body cannot pay the drink
+             FAIL  RiverSwitchFlip_weirWhiteWater
+             FAIL  PitCapture_follows_a_held_pawn_that_moves
+             FAIL  PipePole_P3_sag_at_the_slider_extremes
+             FAIL  LW1 a lay depends on the world's content only: fresh clone = reused pooled clone = rebuilt world (bit hash); TakeLayWorld uses World(LayWorldMaxAge)
+             FAIL  Thirst_small_pond_drink_admitted
+
+PASS 0/1  FAIL 1/1  UNMEASURED 0/1  CRASH 0/1  SKIPPED 0/1  (wall 594.6s) — contained in rm-harness.slice (max 24G), 1 workers
+FAIL (1/1): src/RimMandrake/Utils/selftest_flowworks_stock.py
+RESULT: RED (green = FAIL 0 and CRASH 0)

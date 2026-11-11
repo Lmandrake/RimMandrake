@@ -1,0 +1,16 @@
+{
+  "time": 1794386507.630704,
+  "WHITTLE_DIR": "whittle/fw-drain-two-stray-reds",
+  "need_judge": true,
+  "need_broaden": true,
+  "last_change": 1794385030.6536167,
+  "done_problems": [
+    "'pond_capacity_dug_out_and_back_in_any_order passes on current source, retaining the unit-times-beds capacity sequence and checking all current sizing sites.' is marked false. Make it true, or write whittle/fw-drain-two-stray-reds/BLOCKED.md saying why you can't.",
+    "'the current production-linked flowworks c# selftest suite is green, and the evidence identifies the published repair and distinguishes stale test assertions from a production defect.' is marked false. Make it true, or write whittle/fw-drain-two-stray-reds/BLOCKED.md saying why you can't.",
+    "No judge's verdict newer than DONE.md and the evidence. Spawn a fresh subagent (not a fork) with whittle/fw-drain-two-stray-reds/JUDGE_PROMPT.md as its whole brief. It writes whittle/fw-drain-two-stray-reds/JUDGE.md."
+  ],
+  "full_validator": "MandrakeWorkflows/whittle/run.py validate(root)",
+  "full_validator_returncode": 2,
+  "stdout": "",
+  "stderr": ""
+}

@@ -1,0 +1,24 @@
+{
+  "time": 1794386367.3662684,
+  "tested_HEAD": "14b5a573688a293511f8a64ea2cac4d90410ff2c",
+  "current_HEAD": "14b5a573688a293511f8a64ea2cac4d90410ff2c",
+  "manifest_files": 501,
+  "before_map_sha256": "daa90ebaa4bd465bc28cc55af4534a5d25f7e3069ffb3825af11255d4e5c1dc9",
+  "after_proof_map_sha256": "daa90ebaa4bd465bc28cc55af4534a5d25f7e3069ffb3825af11255d4e5c1dc9",
+  "after_review_map_sha256": "daa90ebaa4bd465bc28cc55af4534a5d25f7e3069ffb3825af11255d4e5c1dc9",
+  "all_source_test_hashes_equal": true,
+  "mismatches": [],
+  "selected_source_sha256": {
+    "src/RimMandrake/FlowWorks/Source/RM_LiquidStock.cs": "8bf7480c35d837b5a2d01d15e86530bdbe54189d8da1fb71b9ae4458670e7f79",
+    "src/RimMandrake/FlowWorks/Source/RM_BedMath.cs": "6be6956039f5c672ee17838409234d5b314bb3c952c6ac1d834fed66617701e6",
+    "src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidJoins.cs": "38ffadae34b9bf27e1c96912bc0e2d25a3f833b7ef22e2043888e6fbd83c54ea",
+    "src/RimMandrake/FlowWorks/Source/Machinery/LiquidJoinRule.cs": "2d04b40cf202fb25463a834f6f888685217b5afc29d1384a36b53fc233dde3a9",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/DeepBedChecks.cs": "c395a7200dc4478e11e1ab6d2fcf155611b4e65043abe4c8c5f4d81147ee1871",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/ReelRiserShadowChecks.cs": "b0dc180e8d23dad02ac80c722e84ce394fa18fb8b9145d9686928a48efb942bd",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/RimMandrakeFlowWorks.SelfTest.csproj": "ef4fde6dcb5dc65bc83a6ea223f9f74fcdfcd11df0f03fd519776166cfbec26b",
+    "src/RimMandrake/Utils/selftest_flowworks_stock.py": "1c4bc152045d3af048e3cb9588ac8048aae461d466605a7f5aa8f80793908a8e",
+    "src/RimMandrake/Utils/run_selftests.py": "651f5e82fbed5f98b812f60451f515aaf118759514209110236bb01e709ebf90"
+  },
+  "judge_exact_denied_payload_preserved": true,
+  "current_status": "?? whittle/fw-drain-two-stray-reds/\n"
+}

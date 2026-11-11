@@ -1,0 +1,128 @@
+{
+  "time": 1794385254.0551794,
+  "results": [
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD",
+        "origin/main"
+      ],
+      "returncode": 0,
+      "stdout": "14b5a573688a293511f8a64ea2cac4d90410ff2c\n14b5a573688a293511f8a64ea2cac4d90410ff2c\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "merge-base",
+        "--is-ancestor",
+        "4e9da327df7ba0a60b50837e200efb711fcbfef1",
+        "HEAD"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "merge-base",
+        "--is-ancestor",
+        "4e9da327df7ba0a60b50837e200efb711fcbfef1",
+        "origin/main"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "ls-remote",
+        "origin",
+        "refs/heads/main"
+      ],
+      "returncode": 0,
+      "stdout": "b7d7d79acf33bc776292d7c7316c1db964ddc368\trefs/heads/main\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "status",
+        "--short"
+      ],
+      "returncode": 0,
+      "stdout": "?? whittle/fw-drain-two-stray-reds/\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "show",
+        "--format=fuller",
+        "--stat",
+        "4e9da327df7ba0a60b50837e200efb711fcbfef1"
+      ],
+      "returncode": 0,
+      "stdout": "commit 4e9da327df7ba0a60b50837e200efb711fcbfef1\nAuthor:     Lukas Mandrake <lukas.mandrake@gmail.com>\nAuthorDate: Tue Nov 3 01:21:49 2026 -0800\nCommit:     Lukas Mandrake <lukas.mandrake@gmail.com>\nCommitDate: Tue Nov 3 01:21:51 2026 -0800\n\n    PLOT_D_BODY_PRUNE_STALE_SEA: stock selftest green again (1190/1190)\n    \n    DeepBedChecks counts ReleaseRect as the third unit x beds sizing site; the riser rim-swap check follows PrintStrip(path) (moved by feb753b9d3).\n    \n    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\n\n src/RimMandrake/FlowWorks/Source/SelfTest/DeepBedChecks.cs         | 4 ++--\n src/RimMandrake/FlowWorks/Source/SelfTest/ReelRiserShadowChecks.cs | 4 +++-\n 2 files changed, 5 insertions(+), 3 deletions(-)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "4e9da327df7ba0a60b50837e200efb711fcbfef1^",
+        "4e9da327df7ba0a60b50837e200efb711fcbfef1",
+        "--",
+        "src/RimMandrake/FlowWorks/Source/SelfTest/DeepBedChecks.cs",
+        "src/RimMandrake/FlowWorks/Source/SelfTest/ReelRiserShadowChecks.cs"
+      ],
+      "returncode": 0,
+      "stdout": "diff --git a/src/RimMandrake/FlowWorks/Source/SelfTest/DeepBedChecks.cs b/src/RimMandrake/FlowWorks/Source/SelfTest/DeepBedChecks.cs\nindex aeedba18e3..52b3aedf0a 100644\n--- a/src/RimMandrake/FlowWorks/Source/SelfTest/DeepBedChecks.cs\n+++ b/src/RimMandrake/FlowWorks/Source/SelfTest/DeepBedChecks.cs\n@@ -389,8 +389,8 @@ namespace RimMandrake.FlowWorks.SelfTest\n                     \"6 -> 4 -> 0 -> 2 -> 6, got \" + c1 + \" \" + c2 + \" \" + c3 + \" \" + c4);\n                 string st = RiverSwitchFlipChecks.Src(\"RM_LiquidStock.cs\");\n                 Assert(!Regex.IsMatch(st, @\"CapacityWithoutBed|CapacityWithBed\"), \"the ratio pair is gone from the stock model\");\n-                Assert(Regex.Matches(st, @\"body\\.capacity = RM_BedMath\\.CapacityForBeds\\(unit, BedSum\\(body, owner\\)\\);\").Count == 2,\n-                    \"detach and reattach both size the pond by unit x beds\");\n+                Assert(Regex.Matches(st, @\"body\\.capacity = RM_BedMath\\.CapacityForBeds\\(unit, BedSum\\(body, owner\\)\\);\").Count == 3,\n+                    \"detach, reattach and the dev plot reset (ReleaseRect, PLOT_D_BODY_PRUNE_STALE_SEA) all size the pond by unit x beds\");\n                 RiverSwitchFlipChecks.Has(st, @\"body\\.levelUnit = RM_BedMath\\.LevelUnit\\(body\\.capacity, BedSum\\(body, owner\\)\\);\", \"the unit is fixed at formation\");\n                 // C2-F7: sticky-limitless off, a truncated LIMITED body's far squares bring their own capacity and water\n                 RiverSwitchFlipChecks.Has(st, @\"if \\(!owned\\.limitless\\) \\{ float add = LevelUnitOf\\(owned, owner\\) \\* owner\\.BedLevelsAt\\(far\\); owned\\.capacity \\+= add; owned\\.AddStock\\(add\\); \\}\",\ndiff --git a/src/RimMandrake/FlowWorks/Source/SelfTest/ReelRiserShadowChecks.cs b/src/RimMandrake/FlowWorks/Source/SelfTest/ReelRiserShadowChecks.cs\nindex d92a11af4b..44cbe9b532 100644\n--- a/src/RimMandrake/FlowWorks/Source/SelfTest/ReelRiserShadowChecks.cs\n+++ b/src/RimMandrake/FlowWorks/Source/SelfTest/ReelRiserShadowChecks.cs\n@@ -261,7 +261,9 @@ namespace RimMandrake.FlowWorks.SelfTest\n                     \"a cell between two tanks keeps its tile in the Print skip too, as the layer bends from its centre\");\n                 Assert(j.Contains(\"relevantChangeTypes = (ulong)MapMeshFlagDefOf.Buildings | (ulong)MapMeshFlagDefOf.Things;\"),\n                     \"the riser layer regenerates when a neighbouring pipe changes the link mask\");\n-                Assert(j.Contains(\"if (LiquidJoinRule.TravelsWest(plan.Path)) { float sw = vr; vr = vl; vl = sw; }\"),\n+                // PUMP_ON_TANK_FIX_NO_COUPLER moved the strip into the shared PrintStrip (riser and machine drop alike)\n+                Assert(j.Contains(\"return PrintStrip(this, sm, plan.Path, yTile + 0.001f);\")\n+                       && j.Contains(\"if (LiquidJoinRule.TravelsWest(path)) { float sw = vr; vr = vl; vl = sw; }\"),\n                     \"a west-going strip keeps the tile's north rim on the north\");\n                 Assert(j.Contains(\"class Patch_Pipe_RiserReplacesTile\") && j.Contains(\"return !RM_LiquidJoins.RiserReplacesTile(thing);\"),\n                     \"the cell's own cap/corner tile gives way to the bend\");\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "show",
+        "--format=fuller",
+        "feb753b9d3",
+        "--",
+        "src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidJoins.cs"
+      ],
+      "returncode": 0,
+      "stdout": "commit feb753b9d34d921defcd0126644d4ced041e1303\nAuthor:     Lukas Mandrake <lukas.mandrake@gmail.com>\nAuthorDate: Mon Nov 2 18:32:54 2026 -0800\nCommit:     Lukas Mandrake <lukas.mandrake@gmail.com>\nCommitDate: Mon Nov 2 18:33:22 2026 -0800\n\n    PUMP_ON_TANK_FIX_NO_COUPLER: machine coupler on the 2x2 tank's drawn nozzle, drop pipe under the pump\n    \n    The 2x2 RM_LiquidTank draws one nozzle per W/E side (TankPortGeometry), half a cell off a 1x1 pump's port;\n    LiquidJoinRule.MachineTankJoin puts the coupler there and an S-bend drop at pipe altitude joins the two.\n    Live proof: FlowWorks/prove_pump_tank_coupler.py (RM_LiquidJoins.ProofMachineCouplers via jawa/static_call).\n    \n    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\n\ndiff --git a/src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidJoins.cs b/src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidJoins.cs\nindex 77e9b606d3..add3685c72 100644\n--- a/src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidJoins.cs\n+++ b/src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidJoins.cs\n@@ -187,6 +187,98 @@ namespace RimMandrake.FlowWorks.Machinery\n             return false;\n         }\n \n+        private static readonly Dictionary<string, Material> straightMats = new Dictionary<string, Material>();\n+\n+        /// <summary>PUMP_ON_TANK_FIX_NO_COUPLER: the universal pipe's straight east-west tile in one look (its linked atlas,\n+        /// PipeStyles.AtlasPath), for pipe drawn where no pipe thing stands (the machine-to-tank drop); null when the atlas is\n+        /// not installed.</summary>\n+        public static Material PipeStraightMat(string look)\n+        {\n+            look = PipeStyles.DefaultLook(look);\n+            if (straightMats.TryGetValue(look, out Material m)) return m;\n+            Texture2D t = ContentFinder<Texture2D>.Get(PipeStyles.AtlasPath(look), reportFailure: false);\n+            m = t == null ? null : MaterialAtlasPool.SubMaterialFromAtlas(MaterialPool.MatFrom(t, ShaderDatabase.Cutout, Color.white),\n+                (LinkDirections)(LiquidJoinRule.LinkLeft | LiquidJoinRule.LinkRight));\n+            straightMats[look] = m;\n+            return m;\n+        }\n+\n+        /// <summary>\n+        /// PUMP_ON_TANK_FIX_NO_COUPLER live proof (jawa/static_call, dev surface only; nothing in the game calls it). WRITES,\n+        /// then undoes: on the current map, at \"x,z\" (the tank's Position) or, for an empty arg, the first clear 4x2 block\n+        /// spiralling out from the map centre, spawns a 2x2 RM_LiquidTank with an RM_LiquidPump touching it on the east (lower\n+        /// lane) and one on the west (upper lane), regenerates each pump's SectionLayer_RM_LiquidJoins, reads what it printed,\n+        /// and destroys all three. \"COUPLERS ok=b E[...] W[...]\": ok when each pump printed exactly one coupler, on the\n+        /// tank's drawn port (TankPortGeometry.PortPoint, within 0.01 cell), and one drop, with no placeholder art.\n+        /// </summary>\n+        public static string ProofMachineCouplers(string arg)\n+        {\n+            Map map = Find.CurrentMap;\n+            if (map == null) return \"REFUSED: no current map\";\n+            if (!RM_MachinerySettings.joinFittings) return \"REFUSED: joinFittings is off\";\n+            ThingDef tankDef = DefDatabase<ThingDef>.GetNamedSilentFail(Hose.TankPortGeometry.TankDef);\n+            ThingDef pumpDef = DefDatabase<ThingDef>.GetNamedSilentFail(PipeStyles.PumpDef);\n+            if (tankDef == null || pumpDef == null) return \"REFUSED: RM_LiquidTank or RM_LiquidPump not loaded\";\n+            bool Clear(IntVec3 q) => q.InBounds(map) && q.Standable(map) && q.GetThingList(map).Count == 0;\n+            bool Block(IntVec3 p)\n+            {\n+                for (int dx = -1; dx <= 2; dx++)\n+                    for (int dz = 0; dz <= 1; dz++)\n+                        if (!Clear(new IntVec3(p.x + dx, 0, p.z + dz))) return false;\n+                return true;\n+            }\n+            IntVec3 at = IntVec3.Invalid;\n+            string[] xz = (arg ?? \"\").Split(',');\n+            if (xz.Length == 2 && int.TryParse(xz[0], out int ax) && int.TryParse(xz[1], out int az)) at = new IntVec3(ax, 0, az);\n+            else\n+            {\n+                foreach (IntVec3 q in GenRadial.RadialCellsAround(map.Center, 40f, true))\n+                {\n+                    if (Block(q)) { at = q; break; }\n+                }\n+            }\n+            if (!at.IsValid || !Block(at)) return \"REFUSED: no clear 4x2 block at \" + at;\n+            int placeholdersBefore = placeholderPieces;\n+            var made = new List<Thing>();\n+            var sb = new System.Text.StringBuilder();\n+            bool ok = true;\n+            try\n+            {\n+                Thing tank = GenSpawn.Spawn(ThingMaker.MakeThing(tankDef, tankDef.MadeFromStuff ? GenStuff.DefaultStuffFor(tankDef) : null), at, map);\n+                made.Add(tank);\n+                CellRect r = tank.OccupiedRect();\n+                string look = LookOf(tank);\n+                foreach ((string side, IntVec3 pos, int sx) in new[] { (\"E\", new IntVec3(r.maxX + 1, 0, r.minZ), 1), (\"W\", new IntVec3(r.minX - 1, 0, r.maxZ), -1) })\n+                {\n+                    Thing pump = GenSpawn.Spawn(ThingMaker.MakeThing(pumpDef, pumpDef.MadeFromStuff ? GenStuff.DefaultStuffFor(pumpDef) : null), pos, map);\n+                    made.Add(pump);\n+                    SectionLayer layer = map.mapDrawer.SectionAt(pump.Position)?.GetLayer(typeof(SectionLayer_RM_LiquidJoins));\n+                    if (layer == null) { ok = false; sb.Append(\" \" + side + \"[no joins layer]\"); continue; }\n+                    layer.Regenerate();\n+                    // the port the tank draws on the side facing this pump (-sx: the step from the pump into the tank)\n+                    Hose.TankPortGeometry.PortPoint(look, r.minX, r.minZ, r.Width, r.Height, -sx, 0, out var port);\n+                    Vector2 c = SectionLayer_RM_LiquidJoins.lastCouplerAt;\n+                    bool onPort = Mathf.Abs(c.x - (float)port.X) < 0.01f && Mathf.Abs(c.y - (float)port.Z) < 0.01f;\n+                    bool sideOk = SectionLayer_RM_LiquidJoins.lastCouplers == 1 && SectionLayer_RM_LiquidJoins.lastCouplersOnPort == 1\n+                        && SectionLayer_RM_LiquidJoins.lastDrops == 1 && onPort;\n+                    ok &= sideOk;\n+                    sb.Append(\" \" + side + \"[pump=\" + pump.Position.x + \",\" + pump.Position.z + \" couplers=\" + SectionLayer_RM_LiquidJoins.lastCouplers\n+                        + \" onPort=\" + SectionLayer_RM_LiquidJoins.lastCouplersOnPort + \" drops=\" + SectionLayer_RM_LiquidJoins.lastDrops\n+                        + \" at=\" + c.x.ToString(\"0.###\") + \",\" + c.y.ToString(\"0.###\") + \" port=\" + port.X.ToString(\"0.###\") + \",\" + port.Z.ToString(\"0.###\")\n+                        + \" ok=\" + sideOk + \"]\");\n+                }\n+                bool art = placeholderPieces == placeholdersBefore && Mat(\"Coupler\", look) != null && PipeStraightMat(look) != null;\n+                ok &= art;\n+                sb.Append(\" art=\" + art + \" look=\" + look);\n+            }\n+            finally\n+            {\n+                foreach (Thing t in made)\n+                    if (!t.Destroyed) t.Destroy(DestroyMode.Vanish);\n+            }\n+            return \"COUPLERS ok=\" + ok + \" tank=\" + at.x + \",\" + at.z + sb;\n+        }\n+\n         public static bool IsHoseReel(Thing t) => t is ThingWithComps tw && tw.GetComp<Hose.CompHoseReel>() != null;\n \n         public static bool IsPartner(Thing t)\n@@ -272,6 +364,7 @@ namespace RimMandrake.FlowWorks.Machinery\n             ClearSubMeshes(MeshParts.All);\n             if (!RM_MachinerySettings.joinFittings)\n             {\n+                lastCouplers = lastCouplersOnPort = lastDrops = 0;\n                 FinalizeMesh(MeshParts.All);\n                 return;\n             }\n@@ -279,6 +372,7 @@ namespace RimMandrake.FlowWorks.Machinery\n             float yPipe = AltitudeLayer.FloorEmplacement.AltitudeFor() + 0.02f;\n             float yTop = AltitudeLayer.BuildingOnTop.AltitudeFor();\n             float s = (float)LiquidJoinRule.FlangeSize;\n+            int couplers = 0, onPort = 0, drops = 0;\n             foreach (IntVec3 c in section.CellRect)\n             {\n                 List<Thing> l = c.GetThingList(map);\n@@ -309,7 +403,8 @@ namespace RimMandrake.FlowWorks.Machinery\n                     }\n                     else if (t.Position == c && RM_LiquidNet.RoleOfKind(t) == RM_NetRole.Machine)\n                     {\n-                        // a machine prints once (at its own position) a coupler on each edge it shares with a tank\n+                        // a machine prints once (at its own position) a coupler on each edge it shares with a tank;\n+                        // PUMP_ON_TANK_FIX_NO_COUPLER: on a 2x2 tank's drawn nozzle, with a drop under the machine to it\n                         CellRect a = t.OccupiedRect();\n                         var seen = new HashSet<Thing>();\n                         foreach (IntVec3 n in a.ExpandedBy(1).EdgeCells)\n@@ -321,19 +416,37 @@ namespace RimMandrake.FlowWorks.Machinery\n                                 Thing b = nl[j];\n                                 if (!(b is Building_LiquidTank) || !seen.Add(b)) continue;\n                                 CellRect br = b.OccupiedRect();\n-                                if (!LiquidJoinRule.SharedEdge(a.minX, a.minZ, a.Width, a.Height, br.minX, br.minZ, br.Width, br.Height,\n-                                        out double mx, out double mz, out int sx, out int sz)) continue;\n-                                Material m = RM_LiquidJoins.Mat(\"Coupler\", RM_LiquidJoins.LookOf(b));\n+                                string look = RM_LiquidJoins.LookOf(b);\n+                                LiquidJoinRule.MachineJoin join = LiquidJoinRule.MachineTankJoin(b.def.defName, look, a.minX, a.minZ, a.Width, a.Height,\n+                                    br.minX, br.minZ, br.Width, br.Height);\n+                                if (join == null) continue;\n+                                if (join.Drop != null)\n+                                {\n+                                    Material pm = RM_LiquidJoins.PipeStraightMat(look);\n+                                    if (pm != null && SectionLayer_RM_PipeCentreStubs.PrintStrip(this, pm, join.Drop, yPipe) > 0) drops++;\n+                                }\n+                                Material m = RM_LiquidJoins.Mat(\"Coupler\", look);\n                                 if (m == null) continue;\n-                                Printer_Plane.PrintPlane(this, new Vector3((float)mx, yTop, (float)mz), new Vector2(s, s), m,\n-                                    sx != 0 ? 0f : 90f);\n+                                Printer_Plane.PrintPlane(this, new Vector3((float)join.CouplerX, yTop, (float)join.CouplerZ), new Vector2(s, s), m,\n+                                    join.AlongX ? 0f : 90f);\n+                                couplers++;\n+                                if (join.OnDrawnPort) onPort++;\n+                                lastCouplerAt = new Vector2((float)join.CouplerX, (float)join.CouplerZ);\n                             }\n                         }\n                     }\n                 }\n             }\n+            lastCouplers = couplers;\n+            lastCouplersOnPort = onPort;\n+            lastDrops = drops;\n             FinalizeMesh(MeshParts.All);\n         }\n+\n+        /// <summary>State reads (PUMP_ON_TANK_FIX_NO_COUPLER live proof): machine-to-tank couplers printed by the last\n+        /// regeneration of any section, how many sat on a tank's drawn port, drop pipes printed, and the last coupler's centre.</summary>\n+        public static int lastCouplers, lastCouplersOnPort, lastDrops;\n+        public static Vector2 lastCouplerAt;\n     }\n \n     /// <summary>\n@@ -404,12 +517,20 @@ namespace RimMandrake.FlowWorks.Machinery\n             }\n             Material sm = StraightMat(t, true);\n             if (sm == null) return 0;\n-            LayerSubMesh mesh = GetSubMesh(sm);\n+            return PrintStrip(this, sm, plan.Path, yTile + 0.001f);\n+        }\n+\n+        /// <summary>Print a path (RiserPlan.Path segments) as a bent strip of the straight east-west pipe tile\n+        /// <paramref name=\"sm\"/> at height <paramref name=\"y\"/>. Returns the quads printed. Shared by the risers and the\n+        /// machine-to-tank drop (PUMP_ON_TANK_FIX_NO_COUPLER).</summary>\n+        internal static int PrintStrip(SectionLayer layer, Material sm, List<double[]> path, float y)\n+        {\n+            LayerSubMesh mesh = layer.GetSubMesh(sm);\n             // the cross-section is not symmetric (rim shadow on the south): StripQuads puts v \"left of travel\", which is north\n             // only for eastward travel, so a riser travelling west (tank on its west, dx -1) swaps the two rims\n-            float y = yTile + 0.001f, vr = 0.5f - (float)LiquidJoinRule.BoreHalf, vl = 0.5f + (float)LiquidJoinRule.BoreHalf;\n-            if (LiquidJoinRule.TravelsWest(plan.Path)) { float sw = vr; vr = vl; vl = sw; }\n-            List<LiquidJoinRule.StripQuad> quads = LiquidJoinRule.StripQuads(plan.Path, LiquidJoinRule.BoreHalf);\n+            float vr = 0.5f - (float)LiquidJoinRule.BoreHalf, vl = 0.5f + (float)LiquidJoinRule.BoreHalf;\n+            if (LiquidJoinRule.TravelsWest(path)) { float sw = vr; vr = vl; vl = sw; }\n+            List<LiquidJoinRule.StripQuad> quads = LiquidJoinRule.StripQuads(path, LiquidJoinRule.BoreHalf);\n             foreach (LiquidJoinRule.StripQuad q in quads)\n             {\n                 int k = mesh.verts.Count;\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "4e9da327df7ba0a60b50837e200efb711fcbfef1",
+        "HEAD",
+        "--",
+        "src/RimMandrake/FlowWorks/Source/SelfTest/DeepBedChecks.cs",
+        "src/RimMandrake/FlowWorks/Source/SelfTest/ReelRiserShadowChecks.cs"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "log",
+        "--format=%H %s",
+        "-S",
+        "public int ReleaseRect",
+        "--",
+        "src/RimMandrake/FlowWorks/Source/RM_LiquidStock.cs"
+      ],
+      "returncode": 0,
+      "stdout": "0aaff523566a14ab71050cec527561b425cb24bc PLOT_D_BODY_PRUNE_STALE_SEA: ProofResetRect releases every body's claim on the reset rect\n",
+      "stderr": ""
+    }
+  ]
+}

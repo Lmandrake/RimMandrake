@@ -1,0 +1,5 @@
+# Parent review — unfinished verification
+
+The two named tests pass and published 4e9da327df repairs their original stale assertions. Full runner result remains RED: 1233/1238 main cases, 455/455 hose assertions, five other source-guard failures. The independent judge rejects the frozen statement and qualifies its broader sizing-site claim. Parent corrected DONE bullet 1 to false rather than retain an unsupported true claim; the earlier version is preserved. STATEMENT and the independent judgment are unchanged.
+
+This diagnostic unit is not acceptance or closure. Ledger state stays proposed, needs offline. NEXT: inspect each of the five exact source pairings in BLOCKED.md, prove intended behavior before modifying a guard, repair actual defects within authorized scope, rerun the relevant suite after changes, and get fresh judgment. No owner decision is needed for this technical work. No production/test source, deployed bytes, game, bridge or GSS look was changed during this unit. The original Whittle runner exit 2 is preserved externally in two-stray-raw/.

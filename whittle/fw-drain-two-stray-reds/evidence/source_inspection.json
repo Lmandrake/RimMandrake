@@ -1,0 +1,30 @@
+{
+  "time": 1794385410.3833492,
+  "capacity_sizing_sites": [
+    {
+      "method": "DetachBedCell",
+      "line": 455,
+      "text": "body.capacity = RM_BedMath.CapacityForBeds(unit, BedSum(body, owner));"
+    },
+    {
+      "method": "ReleaseRect",
+      "line": 497,
+      "text": "body.capacity = RM_BedMath.CapacityForBeds(unit, BedSum(body, owner));"
+    },
+    {
+      "method": "ReattachBedCell",
+      "line": 524,
+      "text": "body.capacity = RM_BedMath.CapacityForBeds(unit, BedSum(body, owner));"
+    }
+  ],
+  "old_capacity_guard_expected": 2,
+  "current_capacity_guard_expected": 3,
+  "old_riser_literal_present": false,
+  "new_riser_caller_present": true,
+  "shared_swap_present": true,
+  "ratio_helpers_present": false,
+  "test_files_identical_to_published_fix": {
+    "src/RimMandrake/FlowWorks/Source/SelfTest/DeepBedChecks.cs": true,
+    "src/RimMandrake/FlowWorks/Source/SelfTest/ReelRiserShadowChecks.cs": true
+  }
+}

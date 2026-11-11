@@ -1,0 +1,9 @@
+{
+  "time": 1794385588.461813,
+  "stage": "/mnt/d/ClaudeWork/rimmandrake/build/selftest_RimMandrakeFlowWorks.SelfTest_79bb8021",
+  "source_clone": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "source_files_checked": 497,
+  "mismatches": [],
+  "expected_HEAD": "14b5a573688a293511f8a64ea2cac4d90410ff2c",
+  "build_source_file": "BUILD_SOURCE.json"
+}

@@ -1,0 +1,15 @@
+{
+  "time": 1794386371.7879674,
+  "WHITTLE_DIR": "whittle/fw-drain-two-stray-reds",
+  "need_judge": true,
+  "need_broaden": true,
+  "last_change": 1794385030.6536167,
+  "done_problems": [
+    "'the current production-linked flowworks c# selftest suite is green, and the evidence identifies the published repair and distinguishes stale test assertions from a production defect.' is marked false. Make it true, or write whittle/fw-drain-two-stray-reds/BLOCKED.md saying why you can't.",
+    "The judge (whittle/fw-drain-two-stray-reds/JUDGE.md) would not show this yet: its last line is not 'would show: yes'. Work on what it found."
+  ],
+  "full_validator": "MandrakeWorkflows/whittle/run.py validate(root)",
+  "full_validator_returncode": 2,
+  "stdout": "",
+  "stderr": ""
+}

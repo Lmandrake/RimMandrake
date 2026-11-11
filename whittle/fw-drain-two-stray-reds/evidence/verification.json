@@ -1,0 +1,52 @@
+{
+  "time": 1794385992.9570086,
+  "HEAD": "14b5a573688a293511f8a64ea2cac4d90410ff2c",
+  "runner_returncode": 1,
+  "main_summary": [
+    [
+      "1233",
+      "1238"
+    ]
+  ],
+  "hose_assertion_summary": [
+    [
+      "455",
+      "455"
+    ]
+  ],
+  "named_passes": {
+    "Pond_capacity_dug_out_and_back_in_any_order": true,
+    "PipeTankRiser_wiring_link_stops_layer_prints_flange_follows": true
+  },
+  "failures": [
+    {
+      "name": "RiverSwitchFlip_weirWhiteWater",
+      "detail": "call site: DrawAt draws the white water only when its switch is on  (pattern if \\(RM_RiversSettings\\.weirWhiteWater && )"
+    },
+    {
+      "name": "PitCapture_follows_a_held_pawn_that_moves",
+      "detail": "the job driver asks the step and pins the victim for the hold"
+    },
+    {
+      "name": "PipePole_P3_sag_at_the_slider_extremes",
+      "detail": "GSS's curve is the formula above"
+    },
+    {
+      "name": "LW1 a lay depends on the world's content only: fresh clone = reused pooled clone = rebuilt world (bit hash); TakeLayWorld uses World(LayWorldMaxAge)",
+      "detail": "call site: SwimCellsPublished lists each square, a whole rebuild past capacity  (pattern if \\(!MarkDirty\\(i % w, i / w, i % w, i / w\\)\\) \\{ MapChanged\\(\\); return; \\})"
+    },
+    {
+      "name": "Thirst_small_pond_drink_admitted",
+      "detail": "TryFindDrinkCell skips a cell whose body cannot pay the drink"
+    }
+  ],
+  "cache_answered": false,
+  "wrapper_passes": 0,
+  "wrapper_failures": 1,
+  "wrapper_unmeasured": 0,
+  "wrapper_crashes": 0,
+  "wrapper_skips": 0,
+  "source_hashes_before_after_proof_equal": true,
+  "source_manifest_count": 501,
+  "current_status": "?? whittle/fw-drain-two-stray-reds/\n"
+}

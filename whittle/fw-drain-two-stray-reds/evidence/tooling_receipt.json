@@ -1,0 +1,19 @@
+{
+  "time": 1794385606.2794883,
+  "purpose": "External observation of the authorized runner; no source/test/runner injection",
+  "setup": "Downloaded and extracted strace and libunwind8 under ~/.seat-tmp; no system installation",
+  "observed_setup_failure": {
+    "tool_shell_returncode": 1,
+    "operation": "command -v strace",
+    "stdout": ""
+  },
+  "observed_extracted_binary_failure": {
+    "tool_shell_returncode": 1,
+    "stderr": "/home/mandrake/.seat-tmp/fw-two-stray-tools/usr/bin/strace: error while loading shared libraries: libunwind-ptrace.so.0: cannot open shared object file: No such file or directory"
+  },
+  "resolution": "Extracted libunwind8; scoped LD_LIBRARY_PATH only to strace and removed it from the test environment with -E LD_LIBRARY_PATH",
+  "packages": {
+    "strace_6.19+ds-0ubuntu5_amd64.deb": "aa530bb652e46beaf92d5c916403182a5ac6b2ba79a94f18e5b9da45d1799ee5",
+    "libunwind8_1.8.3-0ubuntu1_amd64.deb": "7a9978fadf0940f45500ced0fba219cb5954f322a31068b7b32ad04f3ddc5c3f"
+  }
+}

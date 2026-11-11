@@ -1,0 +1,36 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/Utils/run_selftests.py",
+    "--only",
+    "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+    "--workers",
+    "1"
+  ],
+  "observer_argv": [
+    "/home/mandrake/.seat-tmp/fw-two-stray-tools/usr/bin/strace",
+    "-f",
+    "-ttt",
+    "--trace=write",
+    "--trace-fds=1,2",
+    "-s",
+    "2000000",
+    "-E",
+    "LD_LIBRARY_PATH",
+    "-o",
+    "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-two-stray-reds/evidence/selftest_writes.strace",
+    "python3",
+    "src/RimMandrake/Utils/run_selftests.py",
+    "--only",
+    "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+    "--workers",
+    "1"
+  ],
+  "observer_sha256": "f47342683309e807bca57d6d89b82f94a9b39aa614e9c28c2b67cefbc35eee58",
+  "started": 1794385279.5859375,
+  "tested_HEAD": "14b5a573688a293511f8a64ea2cac4d90410ff2c",
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "timeout_seconds": 1260,
+  "purpose": "Capture stdout writes discarded by the runner on PASS; source/tests/runner are unmodified",
+  "pid": 32268
+}

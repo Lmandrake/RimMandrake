@@ -1,0 +1,15 @@
+{
+  "time": 1794386268.172067,
+  "operation": "verbatim recovery of denied independent Opus Write tool payload",
+  "source": "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-two-stray-reds/evidence/judge_raw.json",
+  "source_json_pointer": "/permission_denials/0/tool_input/content",
+  "session_id": "89f2543e-2010-4821-aa43-07887566488c",
+  "model": "claude-opus-5-5",
+  "original_write_permission_denied": true,
+  "cli_returncode": 0,
+  "report_authored_by": "independent Opus judge; verifier recovered exact bytes only",
+  "raw_sha256": "946fe4cd9492b35c56a5422358852f6b51e6f8063f7a8f25d5d19fa7b13d3b5f",
+  "judge_sha256": "0e41e99022582ccb08c8b5dbd5860458db4ab6d75e80aa89ec125ba801f582fb",
+  "exact_payload_match": true,
+  "additional_reviewer_launched": false
+}
