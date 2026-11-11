@@ -51,7 +51,7 @@ namespace RimMandrake.TitanicCreatures
         public const string SeabedFloorExtensionName = "RM_SeabedFloorExtension";
 
         /// <summary>The 2026-10-21 card's gate, per kind: RM_TitanicKernel.TitanEventEligible over the live biome commonalities.
-        /// A calf kind of a titan race is judged by its race's adult tier, so it qualifies ("Calves are ok").</summary>
+        /// A calf kind qualifies by lineage ("Calves are ok"); only supported T3 stages trigger the existing-T3 veto.</summary>
         public static bool Eligible(PawnKindDef k, Map map, bool t3OnMap)
         {
             if (k?.race?.race == null || map == null || !k.RaceProps.Animal || k.RaceProps.Dryad) return false;
@@ -69,7 +69,7 @@ namespace RimMandrake.TitanicCreatures
             }
             bool here = map.Biomes.Any(b => b.CommonalityOfAnimal(k) > 0f);
             bool season = map.mapTemperature.SeasonAndOutdoorTemperatureAcceptableFor(k.race);
-            return RM_TitanicKernel.TitanEventEligible(tier, optedOut, IsSeaCreature(k), IsSeaMap(map), hasList, onList, here,
+            return RM_TitanicKernel.TitanEventEligible(tier, (int)TitanicTierUtility.SpacingTier(k.race), optedOut, IsSeaCreature(k), IsSeaMap(map), hasList, onList, here,
                 season, t3OnMap);
         }
 

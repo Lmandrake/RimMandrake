@@ -60,6 +60,20 @@ namespace RimMandrake.TitanicCreatures
             return DefQualifies(baseBodySize * f, t1, force);
         }
 
+        /// <summary>Maximum supported factor for spacing; NaN means no trustworthy complete stage list. A missing/null stage
+        /// is passed as NaN by the Verse adapter. Malformed data must retain AdultTier spacing rather than relaxing it.</summary>
+        public static float MaxSupportedLifeStageFactor(IEnumerable<float> factors)
+        {
+            if (factors == null) return float.NaN;
+            float max = 0f;
+            foreach (float factor in factors)
+            {
+                if (!Finite(factor) || factor <= 0f) return float.NaN;
+                if (factor > max) max = factor;
+            }
+            return max > 0f ? max : float.NaN;
+        }
+
         /// <summary>TITAN_WAKE_FIXES_1 (B3.6): a multi-cell thing is registered in every cell it covers, so a footprint scan sees it once per
         /// covered cell. Each thing comes back once, in first-seen order, so one titan step strikes it once.</summary>
         public static List<T> UniqueInOrder<T>(IEnumerable<IEnumerable<T>> cells) where T : class
@@ -208,13 +222,22 @@ namespace RimMandrake.TitanicCreatures
         /// only when: the map's biome has not opted out; it is a titan by its ADULT tier (T2 or T3, so a calf kind of a titan
         /// race qualifies); its water-ness matches the map's (sea giants only on a sea map, land giants only on land); it comes
         /// from the map biome's own hints, which are the biome's passage list when it has one and its own roster otherwise; the
-        /// season suits it; and (spacing law, one T3 per map) no T3 already stands on the map when it is itself T3.</summary>
+        /// season suits it; and (spacing law, one T3 per map) no T3 already stands on the map when any supported stage can be T3.</summary>
         public static bool TitanEventEligible(int adultTier, bool biomeOptedOut, bool seaCreature, bool seaMap,
+            bool biomeHasPassageList, bool onPassageList, bool homedHere, bool seasonOk, bool t3OnMap)
+        {
+            // Compatibility for callers that only know a conservative lineage tier.
+            return TitanEventEligible(adultTier, adultTier, biomeOptedOut, seaCreature, seaMap,
+                biomeHasPassageList, onPassageList, homedHere, seasonOk, t3OnMap);
+        }
+
+        /// <summary>Lineage decides eligibility (calves stay); supported stages decide T3 spacing. No pool or habitat gate changes.</summary>
+        public static bool TitanEventEligible(int adultTier, int spacingTier, bool biomeOptedOut, bool seaCreature, bool seaMap,
             bool biomeHasPassageList, bool onPassageList, bool homedHere, bool seasonOk, bool t3OnMap)
         {
             if (biomeOptedOut || adultTier < T2 || seaCreature != seaMap || !seasonOk) return false;
             if (!(biomeHasPassageList ? onPassageList : homedHere)) return false;
-            return !(adultTier == T3 && t3OnMap);
+            return !(spacingTier == T3 && t3OnMap);
         }
 
         /// <summary>A sea creature is a race homed in at least one biome, every one of them a sea biome. A race homed nowhere is

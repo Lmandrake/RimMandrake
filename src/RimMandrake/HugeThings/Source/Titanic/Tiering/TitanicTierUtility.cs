@@ -9,8 +9,8 @@ namespace RimMandrake.TitanicCreatures
     /// The one place tier is computed. Everything else in the mod (comp
     /// auto-attach, the wake processor, the yield curve, the corpse-site
     /// conversion, LargePawnsBridge) calls through here rather than reading
-    /// bodySize or the modExtension itself, so the auto-attach rule and the
-    /// runtime tier can never drift apart.
+    /// bodySize or the modExtension itself. Comp attachment is conservative;
+    /// event eligibility uses lineage, spacing uses supported stages, and runtime uses actual size.
     /// </summary>
     public static class TitanicTierUtility
     {
@@ -103,6 +103,20 @@ namespace RimMandrake.TitanicCreatures
             RM_TitanicTierDef t = Thresholds;
             return (TitanicTier)RM_TitanicKernel.TierFor(raceDef.race.baseBodySize * maxFactor, t.t1MinBodySize, t.t2MinBodySize,
                 t.t3MinBodySize, ForceOf(raceDef.GetModExtension<RM_TitanicExtension>()));
+        }
+
+        /// <summary>Passage spacing only: the largest supported stage of this race. Lineage eligibility stays on AdultTier
+        /// ("Calves are ok"). Incomplete/malformed stage data cannot justify relaxing spacing, so it falls back to AdultTier.
+        /// Read the current ladder every time; neither tiers nor stage factors are cached. Comp attachment stays separate.</summary>
+        public static TitanicTier SpacingTier(ThingDef raceDef)
+        {
+            if (raceDef?.race == null) return TitanicTier.None;
+            float maxFactor = RM_TitanicKernel.MaxSupportedLifeStageFactor(
+                raceDef.race.lifeStageAges?.Select(a => a?.def == null ? float.NaN : a.def.bodySizeFactor));
+            if (!RM_TitanicKernel.Finite(maxFactor)) return AdultTier(raceDef);
+            RM_TitanicTierDef t = Thresholds;
+            return (TitanicTier)RM_TitanicKernel.TierFor(raceDef.race.baseBodySize * maxFactor, t.t1MinBodySize,
+                t.t2MinBodySize, t.t3MinBodySize, ForceOf(raceDef.GetModExtension<RM_TitanicExtension>()));
         }
 
         /// <summary>

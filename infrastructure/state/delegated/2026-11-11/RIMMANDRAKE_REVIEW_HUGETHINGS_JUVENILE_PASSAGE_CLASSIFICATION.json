@@ -1,0 +1,19 @@
+{
+  "id": "RIMMANDRAKE_REVIEW_HUGETHINGS_JUVENILE_PASSAGE_CLASSIFICATION",
+  "class": "design",
+  "date": "2026-11-11",
+  "judge": "fresh tools-disabled Opus",
+  "verdict": {
+    "AdultTier": "KEEP",
+    "Spacing": "REDO bounded maximum-supported stage tier",
+    "GetTier": "KEEP",
+    "DefQualifies": "KEEP separate conservative policy"
+  },
+  "decision": "design/RimMandrake/hugethings_codex_2026-11-09/JUVENILE_PASSAGE_CLASSIFICATION.md",
+  "prompt": "whittle/ht-juvenile-tier/evidence/design_prompt.txt",
+  "raw": "whittle/ht-juvenile-tier/evidence/design_raw.json",
+  "receipt": "whittle/ht-juvenile-tier/evidence/design_call.json",
+  "prompt_sha256": "5061e5283367c71eb19f82fb36332c193573bf0d1957bd813e2b474e2556bc3f",
+  "raw_sha256": "751d8437bd8a4f097bad20804715ab04845cb9f43c134d61d1975f0f19733a4f",
+  "owner_approval": false
+}

@@ -1,0 +1,13 @@
+# Tier classification and passage spacing
+
+Delegated design decision, 2026-11-11: `RIMMANDRAKE_REVIEW_HUGETHINGS_JUVENILE_PASSAGE_CLASSIFICATION`. This applies the owner's “Calves are ok” allowance; it is not a new owner ruling.
+
+`GetTier(Pawn)` reads actual current `Pawn.BodySize`, with force-out returning None and force-in flooring at T1. `AdultTier(ThingDef)` retains lineage eligibility: base size times the largest stage factor, floored at 1. Ordinary calf kinds and juvenile-only races therefore retain their grown-lineage eligibility even if their supported stages fall below T2. Passage still requires AdultTier T2/T3 and the unchanged animal, dryad, harness, biome opt-out, pool/list, sea/land and seasonal gates.
+
+`SpacingTier(ThingDef)` separately measures base size times the largest supported stage factor, without a floor of 1. Only a nonempty list whose every entry/def exists and whose every factor is finite and positive supports this refinement. Missing/empty lists, null entries/defs, zero, negative, NaN or infinite factors fall back to AdultTier. The same force override and current threshold ladder apply. A candidate is vetoed by an existing T3 only when SpacingTier is T3. `T3OnMap` continues to count living spawned pawns by actual GetTier, and passage arrival rechecks current eligibility.
+
+At shipped 4/8/20: RM_ReefbackJuv base32 stages0.2/0.5 has AdultTier T3, SpacingTier T2 and runtime T1/T2. Ordinary RM_Reefback also supports stage1, so remains T3 for eligibility and spacing even when arriving as a calf. At custom4/8/16 the juvenile's supported16 meets T3 exactly and is vetoed beside an existing T3. At custom4/18/30 it remains lineage-eligible although its supported tier is T1. Growth above1 remains supported.
+
+`DefQualifies` stays a separate conservative startup comp-attachment policy, with the factor floor1. Startup comp/footprint attachment is not recomputed by runtime threshold changes; crossing T1 needs a restart as the settings already say. Event tiers read the current valid custom ladder each call; disabled or malformed custom ladders use shipped thresholds. No new tier cache is added; the shipped-def cache and fixed-roster sea cache are unchanged. A missing shipped definition retains the existing logged hardcoded4/8/20 fallback. Existing malformed positive-infinite stages can classify AdultTier as T3 while conservative comp code treats the factor as1; this unit preserves that behavior.
+
+Def-level spacing cannot foresee external runtime body-size modifiers. Actual GetTier/T3OnMap remain authoritative for present pawns. This decision changes no roster, combat profile, T2 population cap, pathfinding, warning, flight or passage completion requirement.
