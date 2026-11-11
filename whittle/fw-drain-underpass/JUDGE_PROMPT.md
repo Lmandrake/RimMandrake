@@ -1,0 +1,1 @@
+Read whittle/fw-drain-underpass/STATEMENT.md and its raw evidence, and inspect the implementation and focused checks. Do not read DONE.md or builder conclusions. Independently determine whether every bullet is true. Write whittle/fw-drain-underpass/JUDGE.md with concrete findings, last line would show: yes or would show: no. Do not edit other files.

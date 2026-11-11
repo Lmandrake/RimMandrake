@@ -1,0 +1,3336 @@
+{
+  "mode": "offline instrument selftest; no live game",
+  "source": "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-underpass/evidence/old_drawbridge_proof.py",
+  "rows": [
+    {
+      "case": "unchanged existing injury",
+      "expected": [
+        "PASS",
+        "MOD"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "real empty lists",
+      "expected": [
+        "PASS",
+        "MOD"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "worsened equal count",
+      "expected": [
+        "FAIL",
+        "MOD"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "tiny severity drift",
+      "expected": [
+        "FAIL",
+        "MOD"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "replaced equal count",
+      "expected": [
+        "FAIL",
+        "MOD"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "part changed equal count",
+      "expected": [
+        "FAIL",
+        "MOD"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "side label changed",
+      "expected": [
+        "FAIL",
+        "MOD"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "last injury changed",
+      "expected": [
+        "FAIL",
+        "MOD"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "order changes",
+      "expected": [
+        "PASS",
+        "MOD"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "duplicates lost",
+      "expected": [
+        "FAIL",
+        "MOD"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "FAIL",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "duplicate multiplicity replaced",
+      "expected": [
+        "FAIL",
+        "MOD"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "whole body null parts",
+      "expected": [
+        "PASS",
+        "MOD"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "numeric severity equivalent",
+      "expected": [
+        "PASS",
+        "MOD"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "large distinct severity",
+      "expected": [
+        "FAIL",
+        "MOD"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "cell moved",
+      "expected": [
+        "FAIL",
+        "MOD"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "FAIL",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            3,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "unread cells",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            null,
+            32
+          ],
+          "underAfter": [
+            null,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "shared mutable pawn payload",
+      "expected": [
+        "FAIL",
+        "MOD"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "capacity change only",
+      "expected": [
+        "PASS",
+        "MOD"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "injury fields only health block",
+      "expected": [
+        "PASS",
+        "MOD"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "health absent before",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "UNMEASURED",
+        "class": "HARNESS",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1,
+          "verdictWithheld": "FAIL",
+          "unmeasuredBecause": [
+            {
+              "scope": "underpass focused offline selftest",
+              "what": "pawn health read",
+              "why": "no health block",
+              "class": "HARNESS"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case": "health absent after",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "UNMEASURED",
+        "class": "HARNESS",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1,
+          "verdictWithheld": "FAIL",
+          "unmeasuredBecause": [
+            {
+              "scope": "underpass focused offline selftest",
+              "what": "pawn health read",
+              "why": "no health block",
+              "class": "HARNESS"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case": "health absent both",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "UNMEASURED",
+        "class": "HARNESS",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1,
+          "verdictWithheld": "PASS",
+          "unmeasuredBecause": [
+            {
+              "scope": "underpass focused offline selftest",
+              "what": "pawn health read",
+              "why": "no health block",
+              "class": "HARNESS"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case": "health null before",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "UNMEASURED",
+        "class": "HARNESS",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1,
+          "verdictWithheld": "FAIL",
+          "unmeasuredBecause": [
+            {
+              "scope": "underpass focused offline selftest",
+              "what": "pawn health read",
+              "why": "no health block",
+              "class": "HARNESS"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case": "health null after",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "UNMEASURED",
+        "class": "HARNESS",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1,
+          "verdictWithheld": "FAIL",
+          "unmeasuredBecause": [
+            {
+              "scope": "underpass focused offline selftest",
+              "what": "pawn health read",
+              "why": "no health block",
+              "class": "HARNESS"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case": "health null both",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "UNMEASURED",
+        "class": "HARNESS",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1,
+          "verdictWithheld": "PASS",
+          "unmeasuredBecause": [
+            {
+              "scope": "underpass focused offline selftest",
+              "what": "pawn health read",
+              "why": "no health block",
+              "class": "HARNESS"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case": "health list before",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "UNMEASURED",
+        "class": "HARNESS",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1,
+          "verdictWithheld": "FAIL",
+          "unmeasuredBecause": [
+            {
+              "scope": "underpass focused offline selftest",
+              "what": "pawn health read",
+              "why": "no health block",
+              "class": "HARNESS"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case": "health list after",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "UNMEASURED",
+        "class": "HARNESS",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1,
+          "verdictWithheld": "FAIL",
+          "unmeasuredBecause": [
+            {
+              "scope": "underpass focused offline selftest",
+              "what": "pawn health read",
+              "why": "no health block",
+              "class": "HARNESS"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case": "health list both",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "UNMEASURED",
+        "class": "HARNESS",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1,
+          "verdictWithheld": "PASS",
+          "unmeasuredBecause": [
+            {
+              "scope": "underpass focused offline selftest",
+              "what": "pawn health read",
+              "why": "no health block",
+              "class": "HARNESS"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case": "health string before",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "UNMEASURED",
+        "class": "HARNESS",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1,
+          "verdictWithheld": "FAIL",
+          "unmeasuredBecause": [
+            {
+              "scope": "underpass focused offline selftest",
+              "what": "pawn health read",
+              "why": "no health block",
+              "class": "HARNESS"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case": "health string after",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "UNMEASURED",
+        "class": "HARNESS",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1,
+          "verdictWithheld": "FAIL",
+          "unmeasuredBecause": [
+            {
+              "scope": "underpass focused offline selftest",
+              "what": "pawn health read",
+              "why": "no health block",
+              "class": "HARNESS"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case": "health string both",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "UNMEASURED",
+        "class": "HARNESS",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1,
+          "verdictWithheld": "PASS",
+          "unmeasuredBecause": [
+            {
+              "scope": "underpass focused offline selftest",
+              "what": "pawn health read",
+              "why": "no health block",
+              "class": "HARNESS"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case": "hediffs absent before",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "FAIL",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "hediffs absent after",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "FAIL",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "hediffs absent both",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "hediffs null before",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "FAIL",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "hediffs null after",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "FAIL",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "hediffs null both",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "hediffs false before",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "FAIL",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "hediffs false after",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "FAIL",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "hediffs false both",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "hediffs zero before",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "FAIL",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "hediffs zero after",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "FAIL",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "hediffs zero both",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "hediffs string before",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "FAIL",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "hediffs string after",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "FAIL",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "hediffs string both",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "hediffs dict before",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "FAIL",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "hediffs dict after",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "FAIL",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "hediffs dict both",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "hediff null before",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "hediff null after",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "hediff null both",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "hediff string before",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "hediff string after",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "hediff string both",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "incomplete record before",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "incomplete record after",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "incomplete record both",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "record missing def before",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "record missing def after",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "record missing def both",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "record missing label before",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "record missing label after",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "record missing label both",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "record missing severity before",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "record missing severity after",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "record missing severity both",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "record missing part before",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "record missing part after",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "record missing part both",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "record missing partLabel before",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "record missing partLabel after",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "record missing partLabel both",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "record missing lastInjury before",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "record missing lastInjury after",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "record missing lastInjury both",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed severity True before",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed severity True after",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed severity True both",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed severity '2.5' before",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed severity '2.5' after",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed severity '2.5' both",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed severity None before",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed severity None after",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed severity None both",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed severity nan before",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed severity nan after",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed severity nan both",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed severity inf before",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed severity inf after",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed severity inf both",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed severity -1 before",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed severity -1 after",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed severity -1 both",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed severity 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 before",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed severity 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 after",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed severity 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 both",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed part 7 before",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed part 7 after",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed part 7 both",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed partLabel [] before",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed partLabel [] after",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed partLabel [] both",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed lastInjury False before",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed lastInjury False after",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed lastInjury False both",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed def '' before",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed def '' after",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed def '' both",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed label 3 before",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed label 3 after",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed label 3 both",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed part None before",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed part None after",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    },
+    {
+      "case": "malformed part None both",
+      "expected": [
+        "UNMEASURED",
+        "HARNESS"
+      ],
+      "row": {
+        "id": "RAISE_SPARES_UNDERPASS",
+        "status": "PASS",
+        "class": "MOD",
+        "detail": {
+          "underBefore": [
+            2,
+            32
+          ],
+          "underAfter": [
+            2,
+            32
+          ],
+          "band": "BAND view=floor",
+          "riderAt": [
+            0,
+            32
+          ],
+          "tipped": 1
+        }
+      }
+    }
+  ],
+  "failures": 115,
+  "errors": 0
+}

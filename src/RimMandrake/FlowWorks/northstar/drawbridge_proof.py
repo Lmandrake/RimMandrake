@@ -73,6 +73,7 @@ import argparse
 import contextlib
 import copy
 import json
+import math
 import os
 import re
 import sys
@@ -524,20 +525,66 @@ def raise_spares_underpass(ctx):
     rider = spawn(P(3, 32), draft=True)
     ps0 = ctx["pawns"]()
     c0 = ctx["counters"]()
+    u0 = copy.deepcopy(ps0.get(under) or {})
+    h0 = _underpass_injuries(u0, "before")
     dproof("ProofDevSet", "%s;raise" % xz(P(2, 32)))
     ctx["ticks"](10)
     ps1 = ctx["pawns"]()
     c1 = ctx["counters"]()
     kvb, tb = sproof("ProofBand", under, answer=True)
     V.require(kvb, "ProofBand answered (an empty read would pass 'view != deck' vacuously)", tb, cls="HARNESS")
-    u0, u1 = ps0.get(under) or {}, ps1.get(under) or {}
-    V.require(_health(u0) is not None and _health(u1) is not None, "pawn health read", "no health block", cls="HARNESS")
-    same = ctx["at"](u0) == ctx["at"](u1) and len(_health(u1) or []) == len(_health(u0) or [])
+    u1 = copy.deepcopy(ps1.get(under) or {})
+    h1 = _underpass_injuries(u1, "after")
+    V.require(all(type(p.get(k)) is int for p in (u0, u1) for k in ("x", "z")),
+              "underpass pawn cells read", [ctx["at"](u0), ctx["at"](u1)], cls="HARNESS")
+    same = ctx["at"](u0) == ctx["at"](u1) and h0 is not None and h1 is not None and h0 == h1
     rider_at = ctx["at"](ps1.get(rider))
     tipped = ctx["delta"](c0, c1, "TippedCount")
     good = same and kvb.get("view") != "deck" and tipped == 1 and rider_at[0] is not None and rider_at[0] <= P(0, 0)[0]
     row("RAISE_SPARES_UNDERPASS", "PASS" if good else "FAIL",
-        {"underBefore": ctx["at"](u0), "underAfter": ctx["at"](u1), "band": tb, "riderAt": rider_at, "tipped": tipped})
+        {"underBefore": ctx["at"](u0), "underAfter": ctx["at"](u1), "band": tb, "riderAt": rider_at, "tipped": tipped,
+         "healthBefore": u0.get("health"), "healthAfter": u1.get("health"),
+         "healthBeforePresent": "health" in u0, "healthAfterPresent": "health" in u1})
+
+
+def _underpass_injuries(pawn, phase):
+    """Strict list_pawns injury snapshot for this row only; _health's other callers retain their contract.
+
+    JawaBenchTerrainTools.ListPawns emits all six fields below, including explicit nulls for whole-body hediffs.
+    Compare full records as a multiset: list order is immaterial, duplicates and every reported field matter.
+    """
+    health = pawn.get("health")
+    injuries = health.get("hediffs") if isinstance(health, dict) else None
+    why = None
+    if not isinstance(injuries, list):
+        why = "health.hediffs must be a measured list (empty is valid)"
+    else:
+        for i, injury in enumerate(injuries):
+            if not isinstance(injury, dict) or not {"def", "label", "severity", "part", "partLabel", "lastInjury"} <= injury.keys():
+                why = "hediffs[%d] lacks the producer's complete record" % i
+                break
+            severity = injury["severity"]
+            try:
+                finite_severity = type(severity) in (int, float) and math.isfinite(severity) and severity >= 0
+            except OverflowError:
+                finite_severity = False
+            if (not isinstance(injury["def"], str) or not injury["def"] or not isinstance(injury["label"], str)
+                    or not finite_severity
+                    or any(injury[k] is not None and (not isinstance(injury[k], str) or not injury[k])
+                           for k in ("part", "partLabel", "lastInjury"))
+                    or (injury["part"] is None) != (injury["partLabel"] is None)):
+                why = "hediffs[%d] has malformed injury fields" % i
+                break
+    snapshot = None
+    if why is None:
+        try:
+            snapshot = sorted(json.dumps(dict(h, severity=int(h["severity"]) if h["severity"] == int(h["severity"])
+                                              else h["severity"]), sort_keys=True, allow_nan=False)
+                              for h in injuries)
+        except (TypeError, ValueError):
+            why = "hediff records are not finite JSON payloads"
+    V.require(why is None, "underpass pawn health read (%s)" % phase, why, cls="HARNESS")
+    return snapshot
 
 
 def lower_only_from_winch(ctx):

@@ -1,0 +1,1727 @@
+[
+  {
+    "case": "unchanged existing injury",
+    "expected": [
+      "PASS",
+      "MOD"
+    ],
+    "new": [
+      "PASS",
+      "MOD"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "real empty lists",
+    "expected": [
+      "PASS",
+      "MOD"
+    ],
+    "new": [
+      "PASS",
+      "MOD"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "worsened equal count",
+    "expected": [
+      "FAIL",
+      "MOD"
+    ],
+    "new": [
+      "FAIL",
+      "MOD"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "tiny severity drift",
+    "expected": [
+      "FAIL",
+      "MOD"
+    ],
+    "new": [
+      "FAIL",
+      "MOD"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "replaced equal count",
+    "expected": [
+      "FAIL",
+      "MOD"
+    ],
+    "new": [
+      "FAIL",
+      "MOD"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "part changed equal count",
+    "expected": [
+      "FAIL",
+      "MOD"
+    ],
+    "new": [
+      "FAIL",
+      "MOD"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "side label changed",
+    "expected": [
+      "FAIL",
+      "MOD"
+    ],
+    "new": [
+      "FAIL",
+      "MOD"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "last injury changed",
+    "expected": [
+      "FAIL",
+      "MOD"
+    ],
+    "new": [
+      "FAIL",
+      "MOD"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "order changes",
+    "expected": [
+      "PASS",
+      "MOD"
+    ],
+    "new": [
+      "PASS",
+      "MOD"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "duplicates lost",
+    "expected": [
+      "FAIL",
+      "MOD"
+    ],
+    "new": [
+      "FAIL",
+      "MOD"
+    ],
+    "old": [
+      "FAIL",
+      "MOD"
+    ]
+  },
+  {
+    "case": "duplicate multiplicity replaced",
+    "expected": [
+      "FAIL",
+      "MOD"
+    ],
+    "new": [
+      "FAIL",
+      "MOD"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "whole body null parts",
+    "expected": [
+      "PASS",
+      "MOD"
+    ],
+    "new": [
+      "PASS",
+      "MOD"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "numeric severity equivalent",
+    "expected": [
+      "PASS",
+      "MOD"
+    ],
+    "new": [
+      "PASS",
+      "MOD"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "large distinct severity",
+    "expected": [
+      "FAIL",
+      "MOD"
+    ],
+    "new": [
+      "FAIL",
+      "MOD"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "cell moved",
+    "expected": [
+      "FAIL",
+      "MOD"
+    ],
+    "new": [
+      "FAIL",
+      "MOD"
+    ],
+    "old": [
+      "FAIL",
+      "MOD"
+    ]
+  },
+  {
+    "case": "unread cells",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "shared mutable pawn payload",
+    "expected": [
+      "FAIL",
+      "MOD"
+    ],
+    "new": [
+      "FAIL",
+      "MOD"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "capacity change only",
+    "expected": [
+      "PASS",
+      "MOD"
+    ],
+    "new": [
+      "PASS",
+      "MOD"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "injury fields only health block",
+    "expected": [
+      "PASS",
+      "MOD"
+    ],
+    "new": [
+      "PASS",
+      "MOD"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "health absent before",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "UNMEASURED",
+      "HARNESS"
+    ]
+  },
+  {
+    "case": "health absent after",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "UNMEASURED",
+      "HARNESS"
+    ]
+  },
+  {
+    "case": "health absent both",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "UNMEASURED",
+      "HARNESS"
+    ]
+  },
+  {
+    "case": "health null before",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "UNMEASURED",
+      "HARNESS"
+    ]
+  },
+  {
+    "case": "health null after",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "UNMEASURED",
+      "HARNESS"
+    ]
+  },
+  {
+    "case": "health null both",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "UNMEASURED",
+      "HARNESS"
+    ]
+  },
+  {
+    "case": "health list before",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "UNMEASURED",
+      "HARNESS"
+    ]
+  },
+  {
+    "case": "health list after",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "UNMEASURED",
+      "HARNESS"
+    ]
+  },
+  {
+    "case": "health list both",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "UNMEASURED",
+      "HARNESS"
+    ]
+  },
+  {
+    "case": "health string before",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "UNMEASURED",
+      "HARNESS"
+    ]
+  },
+  {
+    "case": "health string after",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "UNMEASURED",
+      "HARNESS"
+    ]
+  },
+  {
+    "case": "health string both",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "UNMEASURED",
+      "HARNESS"
+    ]
+  },
+  {
+    "case": "hediffs absent before",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "FAIL",
+      "MOD"
+    ]
+  },
+  {
+    "case": "hediffs absent after",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "FAIL",
+      "MOD"
+    ]
+  },
+  {
+    "case": "hediffs absent both",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "hediffs null before",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "FAIL",
+      "MOD"
+    ]
+  },
+  {
+    "case": "hediffs null after",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "FAIL",
+      "MOD"
+    ]
+  },
+  {
+    "case": "hediffs null both",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "hediffs false before",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "FAIL",
+      "MOD"
+    ]
+  },
+  {
+    "case": "hediffs false after",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "FAIL",
+      "MOD"
+    ]
+  },
+  {
+    "case": "hediffs false both",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "hediffs zero before",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "FAIL",
+      "MOD"
+    ]
+  },
+  {
+    "case": "hediffs zero after",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "FAIL",
+      "MOD"
+    ]
+  },
+  {
+    "case": "hediffs zero both",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "hediffs string before",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "FAIL",
+      "MOD"
+    ]
+  },
+  {
+    "case": "hediffs string after",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "FAIL",
+      "MOD"
+    ]
+  },
+  {
+    "case": "hediffs string both",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "hediffs dict before",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "FAIL",
+      "MOD"
+    ]
+  },
+  {
+    "case": "hediffs dict after",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "FAIL",
+      "MOD"
+    ]
+  },
+  {
+    "case": "hediffs dict both",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "hediff null before",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "hediff null after",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "hediff null both",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "hediff string before",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "hediff string after",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "hediff string both",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "incomplete record before",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "incomplete record after",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "incomplete record both",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "record missing def before",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "record missing def after",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "record missing def both",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "record missing label before",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "record missing label after",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "record missing label both",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "record missing severity before",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "record missing severity after",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "record missing severity both",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "record missing part before",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "record missing part after",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "record missing part both",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "record missing partLabel before",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "record missing partLabel after",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "record missing partLabel both",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "record missing lastInjury before",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "record missing lastInjury after",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "record missing lastInjury both",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed severity True before",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed severity True after",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed severity True both",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed severity '2.5' before",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed severity '2.5' after",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed severity '2.5' both",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed severity None before",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed severity None after",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed severity None both",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed severity nan before",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed severity nan after",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed severity nan both",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed severity inf before",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed severity inf after",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed severity inf both",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed severity -1 before",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed severity -1 after",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed severity -1 both",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed severity 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 before",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed severity 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 after",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed severity 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 both",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed part 7 before",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed part 7 after",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed part 7 both",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed partLabel [] before",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed partLabel [] after",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed partLabel [] both",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed lastInjury False before",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed lastInjury False after",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed lastInjury False both",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed def '' before",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed def '' after",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed def '' both",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed label 3 before",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed label 3 after",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed label 3 both",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed part None before",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed part None after",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  },
+  {
+    "case": "malformed part None both",
+    "expected": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "new": [
+      "UNMEASURED",
+      "HARNESS"
+    ],
+    "old": [
+      "PASS",
+      "MOD"
+    ]
+  }
+]

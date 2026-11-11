@@ -1,0 +1,25 @@
+{
+  "command": [
+    "claude",
+    "-p",
+    "--model",
+    "opus",
+    "--tools",
+    "",
+    "--strict-mcp-config",
+    "--mcp-config",
+    "{\"mcpServers\":{}}",
+    "--setting-sources",
+    "",
+    "--no-session-persistence",
+    "--output-format",
+    "json",
+    "--max-budget-usd",
+    "3"
+  ],
+  "input": "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-underpass/evidence/broaden_prompt.txt",
+  "stdout": "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-underpass/evidence/broaden_raw.json",
+  "returncode": 0,
+  "started": 1794380581.3022325,
+  "elapsed": 32.782710790634155
+}

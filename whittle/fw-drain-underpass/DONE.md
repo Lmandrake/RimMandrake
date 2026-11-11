@@ -1,0 +1,6 @@
+# Claim against the frozen statement
+
+- true: Raising the bridge is reported safe only when the underpass pawn stays in the same cell and its measured injuries are unchanged. | evidence: `whittle/fw-drain-underpass/evidence/focused_rows.json` `whittle/fw-drain-underpass/evidence/verdict_comparison.json` `whittle/fw-drain-underpass/evidence/verification.json`
+- true: Worsened injury severity, replacement injuries and changed injury body parts cannot pass merely because the injury count stays the same. | evidence: `whittle/fw-drain-underpass/evidence/focused_rows.json` `whittle/fw-drain-underpass/evidence/verdict_comparison.json` `whittle/fw-drain-underpass/evidence/verification.json`
+- true: Missing or malformed health readings are reported as harness failures instead of silently becoming an empty healthy list. | evidence: `whittle/fw-drain-underpass/evidence/focused_rows.json` `whittle/fw-drain-underpass/evidence/verdict_comparison.json` `whittle/fw-drain-underpass/evidence/verification.json`
+- true: Focused offline regression checks execute the production acceptance row and demonstrate the intended unchanged-health case passes while the false-safe cases fail. | evidence: `whittle/fw-drain-underpass/evidence/focused_rows.json` `whittle/fw-drain-underpass/evidence/verdict_comparison.json` `whittle/fw-drain-underpass/evidence/verification.json`

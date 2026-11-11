@@ -1,0 +1,68 @@
+{
+  "mode": "offline acceptance instrument only; no live game or bridge",
+  "calls": [
+    {
+      "name": "focused",
+      "command": [
+        "python3",
+        "src/RimMandrake/Utils/run_selftests.py",
+        "--only",
+        "src/RimMandrake/Utils/selftest_drawbridge_underpass.py",
+        "--workers",
+        "1"
+      ],
+      "started": 1794380817.7653685,
+      "elapsed": 0.6884307861328125,
+      "returncode": 0,
+      "expected_returncode": 0,
+      "stdout": "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-underpass/evidence/focused.stdout.log",
+      "env": {
+        "DRAWBRIDGE_UNDERPASS_ROWS": "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-underpass/evidence/focused_rows.json"
+      }
+    },
+    {
+      "name": "regression_old",
+      "command": [
+        "python3",
+        "src/RimMandrake/Utils/run_selftests.py",
+        "--only",
+        "src/RimMandrake/Utils/selftest_drawbridge_underpass.py",
+        "--workers",
+        "1"
+      ],
+      "started": 1794380818.4538927,
+      "elapsed": 0.6879067420959473,
+      "returncode": 1,
+      "expected_returncode": 1,
+      "stdout": "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-underpass/evidence/regression_old.stdout.log",
+      "env": {
+        "DRAWBRIDGE_UNDERPASS_ROWS": "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-underpass/evidence/regression_old_rows.json",
+        "DRAWBRIDGE_UNDERPASS_MODULE": "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-underpass/evidence/old_drawbridge_proof.py"
+      }
+    },
+    {
+      "name": "existing_drawbridge",
+      "command": [
+        "python3",
+        "src/RimMandrake/Utils/run_selftests.py",
+        "--only",
+        "src/RimMandrake/FlowWorks/northstar/selftest_drawbridge_proof.py",
+        "--workers",
+        "1"
+      ],
+      "started": 1794380819.141874,
+      "elapsed": 0.7360782623291016,
+      "returncode": 0,
+      "expected_returncode": 0,
+      "stdout": "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-underpass/evidence/existing_drawbridge.stdout.log",
+      "env": {}
+    }
+  ],
+  "production_sha256_before": "676aee027f8385bae0b2db4be6110ca65c474afc134bfa7cc575343c6b8c29bf",
+  "production_sha256_after": "676aee027f8385bae0b2db4be6110ca65c474afc134bfa7cc575343c6b8c29bf",
+  "old_sha256": "fa4c4f8d6020d8eda4fa089ab449c64fdfbd29c40270cfd2cfe00da3a210d6b4",
+  "selftest_sha256": "9d1bec228655cdb8de5d6704128207d550c325802bd8d25bd4fd9e0553480983",
+  "diff_check": "",
+  "status": " M src/RimMandrake/FlowWorks/northstar/drawbridge_proof.py\n?? src/RimMandrake/Utils/selftest_drawbridge_underpass.py\n?? whittle/fw-drain-underpass/\n",
+  "filesystem": "ext4 /\n"
+}

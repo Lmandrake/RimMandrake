@@ -1,0 +1,2 @@
+contained in rm-harness.slice (max 24G), 1 workers
+[1/1] PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_drawbridge_proof.py

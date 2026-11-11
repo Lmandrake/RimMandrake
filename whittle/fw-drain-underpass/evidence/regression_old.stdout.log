@@ -1,0 +1,61 @@
+evidence: 0 eligible, 0 SKIPPED as unchanged, 0 PASS recorded, 0 PASS not recordable — runner 65716eff3278c68e
+cache: 0 CACHED PASS, 0 declared test(s) ran
+known results: 0/1 answered from the ledger (selftests.cache_hit_share 0.000), 0s not spent; 1 ran, 0 recorded, 0 checked against a stored PASS, 0 known red
+  ran (1): no record
+  not recordable (1): external: src/RimMandrake/Utils/selftest_drawbridge_underpass.py
+FAIL          0.2s  src/RimMandrake/Utils/selftest_drawbridge_underpass.py
+             rc 1
+             ----------------------------------------------------------------------
+             Traceback (most recent call last):
+               File "/home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/Utils/selftest_drawbridge_underpass.py", line 158, in test_production_row
+                 self.check_case(name, before, after, want, **kw)
+                 ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               File "/home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/Utils/selftest_drawbridge_underpass.py", line 98, in check_case
+                 self.assertEqual((result['status'], result['class']), expected, name)
+                 ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+             AssertionError: Tuples differ: ('PASS', 'MOD') != ('UNMEASURED', 'HARNESS')
+             
+             First differing element 0:
+             'PASS'
+             'UNMEASURED'
+             
+             - ('PASS', 'MOD')
+             + ('UNMEASURED', 'HARNESS') : malformed part None after
+             
+             ======================================================================
+             FAIL: test_production_row (__main__.UnderpassContract.test_production_row) (case='malformed part None both')
+             ----------------------------------------------------------------------
+             Traceback (most recent call last):
+               File "/home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/Utils/selftest_drawbridge_underpass.py", line 158, in test_production_row
+                 self.check_case(name, before, after, want, **kw)
+                 ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               File "/home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/Utils/selftest_drawbridge_underpass.py", line 98, in check_case
+                 self.assertEqual((result['status'], result['class']), expected, name)
+                 ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+             AssertionError: Tuples differ: ('PASS', 'MOD') != ('UNMEASURED', 'HARNESS')
+             
+             First differing element 0:
+             'PASS'
+             'UNMEASURED'
+             
+             - ('PASS', 'MOD')
+             + ('UNMEASURED', 'HARNESS') : malformed part None both
+             
+             ----------------------------------------------------------------------
+             Ran 2 tests in 0.027s
+             
+             FAILED (failures=115)
+             FAIL: test_production_row (__main__.UnderpassContract.test_production_row) (case='unchanged existing injury')
+             FAIL: test_production_row (__main__.UnderpassContract.test_production_row) (case='real empty lists')
+             FAIL: test_production_row (__main__.UnderpassContract.test_production_row) (case='worsened equal count')
+             FAIL: test_production_row (__main__.UnderpassContract.test_production_row) (case='tiny severity drift')
+             FAIL: test_production_row (__main__.UnderpassContract.test_production_row) (case='replaced equal count')
+             FAIL: test_production_row (__main__.UnderpassContract.test_production_row) (case='part changed equal count')
+             FAIL: test_production_row (__main__.UnderpassContract.test_production_row) (case='side label changed')
+             FAIL: test_production_row (__main__.UnderpassContract.test_production_row) (case='last injury changed')
+             FAIL: test_production_row (__main__.UnderpassContract.test_production_row) (case='order changes')
+             FAIL: test_production_row (__main__.UnderpassContract.test_production_row) (case='duplicates lost')
+
+PASS 0/1  FAIL 1/1  UNMEASURED 0/1  CRASH 0/1  SKIPPED 0/1  (wall 0.2s) — contained in rm-harness.slice (max 24G), 1 workers
+FAIL (1/1): src/RimMandrake/Utils/selftest_drawbridge_underpass.py
+RESULT: RED (green = FAIL 0 and CRASH 0)

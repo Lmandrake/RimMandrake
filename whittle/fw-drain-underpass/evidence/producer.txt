@@ -1,0 +1,47 @@
+src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTerrainTools.cs
+1160:                     var stunner = pawn.stances?.stunner;
+1161:                     object health = null;
+1162:                     if (includeHealth && pawn.health != null)
+1163:                     {
+1164:                         var hediffs = new List<object>();
+1165:                         foreach (var h in pawn.health.hediffSet.hediffs)
+1166:                             hediffs.Add(new
+1167:                             {
+1168:                                 def = h.def?.defName,
+1169:                                 label = h.Label,
+1170:                                 severity = h.Severity,
+1171:                                 part = h.Part?.def?.defName,
+1172:                                 partLabel = h.Part?.Label,
+1173:                                 // A part destroyed outright becomes MissingBodyPart and leaves NO injury
+1174:                                 // hediff of the damage that took it (LIVE modcheck7 2026-10-16: a UV-shy
+1175:                                 // native burned under open sky read only 'MissingBodyPart'). lastInjury
+1176:                                 // names that damage's injury def (Burn, Cut, ...); null on other hediffs.
+1177:                                 lastInjury = (h as Hediff_MissingPart)?.lastInjury?.defName
+1178:                             });
+1179:                         var caps = new Dictionary<string, float>();
+1180:                         // Finding #30 (COMPANION_HARDENING_AUDIT_2026-09-09): a bare
+1181:                         // try/catch{skip} here was indistinguishable from a capacity the
+1182:                         // pawn genuinely lacks (CapableOf false). Collect what threw.
+1183:                         var capacityErrors = new List<object>();
+1184:                         foreach (var cap in DefDatabase<PawnCapacityDef>.AllDefsListForReading)
+1185:                         {
+1186:                             try
+1187:                             {
+1188:                                 if (pawn.health.capacities.CapableOf(cap))
+1189:                                     caps[cap.defName] = pawn.health.capacities.GetLevel(cap);
+1190:                             }
+1191:                             catch (Exception ex)
+1192:                             {
+1193:                                 capacityErrors.Add(new { cap = cap.defName, reason = ex.GetType().Name });
+1194:                             }
+1195:                         }
+1196:                         health = new
+1197:                         {
+1198:                             hediffs,
+1199:                             capacities = caps,
+1200:                             capacityErrors,
+1201:                             painTotal = pawn.health.hediffSet.PainTotal,
+1202:                             bleedRate = pawn.health.hediffSet.BleedRateTotal
+1203:                         };
+1204:                     }
+1205: 

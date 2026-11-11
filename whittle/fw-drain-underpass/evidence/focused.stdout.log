@@ -1,0 +1,9 @@
+evidence: 0 eligible, 0 SKIPPED as unchanged, 0 PASS recorded, 0 PASS not recordable — runner 65716eff3278c68e
+cache: 0 CACHED PASS, 0 declared test(s) ran
+known results: 0/1 answered from the ledger (selftests.cache_hit_share 0.000), 0s not spent; 1 ran, 0 recorded, 0 checked against a stored PASS, 0 known red
+  ran (1): no record
+  not recordable (1): external: src/RimMandrake/Utils/selftest_drawbridge_underpass.py
+PASS          0.2s  src/RimMandrake/Utils/selftest_drawbridge_underpass.py
+
+PASS 1/1  FAIL 0/1  UNMEASURED 0/1  CRASH 0/1  SKIPPED 0/1  (wall 0.2s) — contained in rm-harness.slice (max 24G), 1 workers
+RESULT: GREEN (green = FAIL 0 and CRASH 0)
