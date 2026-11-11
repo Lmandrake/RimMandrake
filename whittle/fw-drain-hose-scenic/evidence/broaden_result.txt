@@ -1,0 +1,57 @@
+The fixture idea is sound, but there are two things to sort out before it can prove anything. The staged probe hasn't compiled yet. And whether the mutant control works depends on where the mutation goes: one spot gives a clean result, another is useless, and a third can make the old fixture fail for reasons that have nothing to do with the crossing.
+
+## 1. The staged probe has never run
+`probe_initial_receipt.json` shows rc=1. `probe_initial_stdout.txt` holds the build errors and stderr just says "The build failed". The hand-picked file list is missing three files:
+- `_Shared/SlackGeometry/DrawOrder.cs`, needed by `HoseRelay.cs:388`
+- `FlowWorks/Source/Machinery/LiquidJoinRule.cs`, needed by `HoseRelay.cs:449`
+- `FlowWorks/Source/Hose/HoseCarry.cs`, which defines `HoseTrail` (used at `HoseMath.cs:859`)
+
+Take the staging list from the `<Compile Include>` entries in `SelfTest/RimMandrakeFlowWorks.SelfTest.csproj` (lines 181, 186, 198, 201) rather than choosing files by hand. Also, `fast_probe.py` writes `probe_manifest.json` before it knows whether the build worked. Record the return code in the manifest, and don't cite the current `probe_initial_*` files as evidence of how anything behaves.
+
+## 2. Why the old fixture can't catch the regression (confirmed from code)
+- `Lay` doesn't start its A* search at the mouth. It starts at `aPlan = Mouth + west*OutletLead` (`HoseMath.cs:388-389`). `OutletLead` is 1.6 + 2×1.2 = 4.0, so the search starts around x≈16, outside the reel.
+- The route from there to (14,9) touches no costed cell. The pump at (20,10) is costed, but the z10 wall row makes it unwalkable. The only costed cell the hose touches is the mouth cell, through `pts[0]`.
+- So any planner-level "block" mutation leaves the old fixture passing, even without a mouth exemption.
+
+## 3. Where to put the mutation
+**Recommended: `CordPlanner.Walk` (`CordPlanner.cs:185`).** Change it to `c == start || c == goal || (w.IsWalkable(c) && w.ExtraCost(c) < 6f)`.
+- This is on `Lay`'s path: `Plan` → `AStar` → `Search`, non-dive.
+- The start/goal exemption is built in. Trees (1.5) and water (3) stay below 6, so they're unaffected.
+- Expected result on the new fixture: `plan.Ok=false`, then `DirectJoin` returns null because `endInward` is null, then the reason is `"no route"`.
+- **Assert that exact reason** in the mutant run. That proves the failure came from this gate and not from `LeadOutBlocked` or "corners too tight".
+
+**Don't mutate `RouteCells` (`HoseMath.cs:2117`).** Only `CheckInstall` uses it, not `Lay`, so both fixtures would pass and the control would prove nothing.
+
+**Avoid mutating `CordWorld.IsWalkable` if you can.** `Clearance()` (`CordWorld.cs:335`) would then treat costed cells as walls. The own reel's other three cells would sit next to the lead-out as walls, which can change `ProjectOut` and `Clear` (0.2 clearance) on the *old* fixture. The old fixture could then fail for an unrelated reason and spoil the control. If you do use this site, exempt all four own-reel cells, not just the mouth cell.
+
+**Optional extra mutant:** set the cost to something huge (e.g. 1e6) without blocking. The fixture must still pass, which shows it isn't tied to the value 6f.
+
+## 4. Fixture geometry checks out
+- The walls at z7 and z10 run the full width (x 0–43), leaving a corridor at z8–9 only. A 2×2 reel at x12–13, z8–9 fills it completely, so there is no way round.
+- Target (8,9).Centre = (8.5, 9.5) is walkable and uncosted, about 11.5 cells from the mouth, well under MaxLength 40.
+- The lead-out is clear: `OutletClear` needs x≈15.5 open, and it is.
+- The route is straight, and the 2-wide corridor gives 1.0 clearance at the centreline.
+- The string-pull `Clear` allows costed cells that are on the path (`CordPlanner.cs:269`).
+- `LayOnce`'s rig-hit count excludes the plan's own cells (`HoseMath.cs:921-922`), so the crossing shouldn't trigger the shaping fallback.
+
+## 5. Strengthening the assertions
+- **Use `HoseMath.CellsAlong(lay.Flat)` and `CellsAlong(lay.Plump)`, not raw point counts.** `Flat` is `ResampleN(F, max(8, …))`, and raw points could in principle skip a one-cell column.
+- Require at least one cell inside the remote rectangle with X==12 **and** one with X==13, for both Flat and Plump.
+- Filter by membership in the remote rectangle, not by `Dist > 0.3` from the mouth. That way the own-reel mouth cell can never satisfy the check, and the mouth filter doesn't matter at x12–13 anyway.
+- Also assert: `Reason == null`; `Flat[0]` and `Plump[0]` ≈ mouth; the last point ≈ `(8,9).Centre`; `!Overlong(lay, 40)`. Put the reason and the crossed cells in the check message.
+- Plump may legitimately equal Flat because of the fallback at `HoseMath.cs:978`, so traversal by Plump is a weaker signal than it looks.
+- **Add a permanent in-suite can-fail control:** the same world with the remote cells set to `SetBlocked(Device)` instead of costed must fail with `"no route"`. That proves inside the shipping suite that there's no way round, so a successful lay must mean a crossing. It matches the existing "can-fail" style. Keep the old (14,9) check as well; it costs nothing.
+
+## 6. Tying the probe to the real fixture
+`fast_probe.py` retypes the fixture as a string, so it can drift from `HoseReviewChecks.cs`. In order of strength:
+1. Hash `HoseReviewChecks.cs` into the manifest and regex the staged copy for the exact literals: `new HoseReelRect(12, 8, 2, 2)`, `new Cell(8, 9).Centre`, wall rows 7 and 10, `MinBendRadius = 1.2, MaxLength = 40`, seed 7. Fail if any is missing.
+2. Strongest: build the real SelfTest csproj in staging with only `CordPlanner.cs` swapped for the mutant, and look for FAIL on that specific `scenic:` line. This links to the exact fixture. Check first whether this kind of staging run is allowed, separate from the authorized full-suite wrapper.
+
+## 7. Blind spots to state in the evidence
+- **Live lays wall off the reel's own footprint.** `HoseLayQueue.LayFromOn` (`HoseLayQueue.cs:75-88`) marks the nozzled reel `BlockKind.Device` during the lay. Live never sees the own-reel cost that ScenicRoute's `Rig(true)` sets, so the remote-reel case is the realistic one. That file is compiled into the SelfTest (csproj line 186), so consider also running the forced lay through `LayFromOn` to cover the live entry point.
+- **Relays could hide the mutant.** With `endInward` set, `DirectJoin`'s Dubins path only checks walls, ignores costs, and would still lay under a planner mutant. Keep `endInward` null and note that relays aren't covered.
+- **The shaping and lead-out fallback isn't exercised.** The "a cost, never a refusal" second pass (`HoseMath.cs:948-967`, `996-998`) only runs for stray rig cells. The crossing cells belong to the plan, so this fixture can't catch a regression there.
+- **Carried lays aren't covered.** `LayAlong` with a walked route goes through `HoseTrail.Pulled`, `SegmentAvoidsBuildings`, and the leading-costed-point strip at line 873. A carried variant walking west along z9 would cover them.
+- **`CheckInstall` / `RouteCells` (cost off) is a separate route search** and isn't covered.
+- **Only seed 7 is tested.** Trying a few more seeds is cheap insurance against S-curve variation.
+- **GSS shares `CordPlanner`.** Keep the mutant in staging only, and show the shipping diff touches only `HoseReviewChecks.cs`, with before/after hashes of the shared SlackGeometry files.

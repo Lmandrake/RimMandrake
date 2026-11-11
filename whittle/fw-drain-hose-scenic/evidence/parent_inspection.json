@@ -1,0 +1,12 @@
+{
+  "time": 1794394351.4647095,
+  "tested_HEAD": "fea33f6a8cad7b1c002776b495e2c9bc455d7ec3",
+  "current_HEAD": "fea33f6a8cad7b1c002776b495e2c9bc455d7ec3",
+  "proof_and_support_inputs": 1830,
+  "mismatches": [],
+  "diff_matches": true,
+  "judge_equals_raw_result": true,
+  "independent_retained_raw_stdout_decode_matches": true,
+  "done_problems": [],
+  "full_validator_returncode": 0
+}

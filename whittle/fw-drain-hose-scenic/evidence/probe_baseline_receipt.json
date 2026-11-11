@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/mnt/c/Users/Mandrake/.dotnet/dotnet.exe",
+    "run",
+    "--project",
+    "D:\\ClaudeWork\\rimmandrake\\scratch\\fw-hose-scenic-fast\\Probe.csproj",
+    "-c",
+    "Release"
+  ],
+  "returncode": 0,
+  "elapsed": 1.5444974899291992
+}

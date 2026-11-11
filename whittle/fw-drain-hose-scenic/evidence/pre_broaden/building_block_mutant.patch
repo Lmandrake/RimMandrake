@@ -1,0 +1,11 @@
+--- src/RimMandrake/_Shared/SlackGeometry/CordWorld.cs
++++ isolated-stage/CordWorld.cs
+@@ -305,7 +305,7 @@
+         public void SetForcedBuried(Cell c) { if (InBounds(c)) forcedBuried[Idx(c)] = true; }
+ 
+         public bool IsConduit(Cell c) => InBounds(c) && conduit[Idx(c)];
+-        public bool IsWalkable(Cell c) => InBounds(c) && block[Idx(c)] == 0;
++        public bool IsWalkable(Cell c) => InBounds(c) && block[Idx(c)] == 0 && (c == new Cell(20, 8) || extraCost[Idx(c)] < RimMandrake.FlowWorks.Hose.HoseMath.BuildingCrossCost);
+         public BlockKind BlockAt(Cell c) => InBounds(c) ? (BlockKind)block[Idx(c)] : BlockKind.Wall;
+         public bool IsDoor(Cell c) => InBounds(c) && door[Idx(c)];
+         public float ExtraCost(Cell c) => InBounds(c) ? extraCost[Idx(c)] : 0f;

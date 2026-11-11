@@ -1,0 +1,16 @@
+mouth=(20.026,8.773) floor=(20,8) walkable=True outlet_clear=True
+remote_cost_walkable=False
+PASS Original scenic: a planned hose from the west nozzle to an east end goes round the reels and pump (laid, 0 points on them)
+PASS Original scenic can-fail: with the rig uncosted (the old live world) the same lay crosses it (8 points)
+PASS Original scenic: a carried hose walked east from the reel goes round it too (laid, 0 points on the rig)
+PASS Original scenic can-fail: the same walk with the rig uncosted crosses it (8 points)
+PASS Original scenic: the cost never blocks (a hose with no way round still lays: laid)
+PASS Original scenic: a straight shortcut across the drum is refused, one past it is not
+PASS Original scenic: the live hose world and its per-cell signature both cost a reel, a pump or a walk-over building drawn above the hose BuildingCrossCost
+PASS Final scenic: a planned hose from the west nozzle to an east end goes round the reels and pump (laid, 0 points on them)
+PASS Final scenic can-fail: with the rig uncosted (the old live world) the same lay crosses it (8 points)
+PASS Final scenic: a carried hose walked east from the reel goes round it too (laid, 0 points on the rig)
+PASS Final scenic can-fail: the same walk with the rig uncosted crosses it (8 points)
+FAIL Final scenic: the cost never blocks (both poses cross both remote reel columns with no way round: no route)
+PASS Final scenic: a straight shortcut across the drum is refused, one past it is not
+PASS Final scenic: the live hose world and its per-cell signature both cost a reel, a pump or a walk-over building drawn above the hose BuildingCrossCost

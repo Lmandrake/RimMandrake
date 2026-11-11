@@ -1,0 +1,64 @@
+{
+  "time": 1794393002.2164989,
+  "elapsed": 1.7204921245574951,
+  "command": [
+    "/mnt/c/Users/Mandrake/.dotnet/dotnet.exe",
+    "run",
+    "--project",
+    "D:\\ClaudeWork\\rimmandrake\\scratch\\fw-hose-scenic-mutant\\Probe.csproj",
+    "-c",
+    "Release"
+  ],
+  "returncode": 0,
+  "mutant": true,
+  "stage": "/mnt/d/ClaudeWork/rimmandrake/scratch/fw-hose-scenic-mutant",
+  "production_inputs": {
+    "src/RimMandrake/_Shared/SlackGeometry/CordMath.cs": {
+      "source_sha256": "cc964bf78552ae0bc53960b1cd646fd0024771b7542b8e7c3a8f280c24441f90",
+      "stage_sha256": "cc964bf78552ae0bc53960b1cd646fd0024771b7542b8e7c3a8f280c24441f90"
+    },
+    "src/RimMandrake/_Shared/SlackGeometry/CordWorld.cs": {
+      "source_sha256": "71e15119d89a4b4056a454a1870ba43a72dc6a4316eb194e1402310460d4efa9",
+      "stage_sha256": "362593329d4ccfa4ecad7b3c17a2d6ef8a07a1851a19e302cab191c87ff89d01"
+    },
+    "src/RimMandrake/_Shared/SlackGeometry/CordPlanner.cs": {
+      "source_sha256": "2b1a8ab0432e0620dceb0420833568dad8d2834b39de4351c539667ae46be29a",
+      "stage_sha256": "2b1a8ab0432e0620dceb0420833568dad8d2834b39de4351c539667ae46be29a"
+    },
+    "src/RimMandrake/_Shared/SlackGeometry/CordLayer.cs": {
+      "source_sha256": "a8d116de7e561e02a7c90c219244a4f017cc38ae911ada3a10a725846e42d42a",
+      "stage_sha256": "a8d116de7e561e02a7c90c219244a4f017cc38ae911ada3a10a725846e42d42a"
+    },
+    "src/RimMandrake/_Shared/SlackGeometry/DrawOrder.cs": {
+      "source_sha256": "91d38bf31dae06bb08563846d60074563f4b18b403cc33d73dae418b3e607851",
+      "stage_sha256": "91d38bf31dae06bb08563846d60074563f4b18b403cc33d73dae418b3e607851"
+    },
+    "src/RimMandrake/FlowWorks/Source/Hose/HoseMath.cs": {
+      "source_sha256": "dd6e26b974060df4c987e374588038cc3c76b669583d88cf6bb8eea9fc69d18d",
+      "stage_sha256": "dd6e26b974060df4c987e374588038cc3c76b669583d88cf6bb8eea9fc69d18d"
+    },
+    "src/RimMandrake/FlowWorks/Source/Hose/HoseClothoid.cs": {
+      "source_sha256": "bc2e21c985950d919bcf67f13270e597a1b25ad3eb5858d6ea12643124947e26",
+      "stage_sha256": "bc2e21c985950d919bcf67f13270e597a1b25ad3eb5858d6ea12643124947e26"
+    },
+    "src/RimMandrake/FlowWorks/Source/Hose/HoseRelay.cs": {
+      "source_sha256": "37264c6c679f57ef7ff890c685a5ef6f4470b29bb58394dbf0558614f057749a",
+      "stage_sha256": "37264c6c679f57ef7ff890c685a5ef6f4470b29bb58394dbf0558614f057749a"
+    },
+    "src/RimMandrake/FlowWorks/Source/Hose/ReelIntakeGeometry.cs": {
+      "source_sha256": "be97086e602ff70e50e10f7b67267715e9911d656ccdf081fd079958669e20ca",
+      "stage_sha256": "be97086e602ff70e50e10f7b67267715e9911d656ccdf081fd079958669e20ca"
+    },
+    "src/RimMandrake/FlowWorks/Source/Hose/HoseCarry.cs": {
+      "source_sha256": "eb84e0b29f0925afdeecdd4e4d3922c11b6fa09efdf833a60028509113a8b1ce",
+      "stage_sha256": "eb84e0b29f0925afdeecdd4e4d3922c11b6fa09efdf833a60028509113a8b1ce"
+    },
+    "src/RimMandrake/FlowWorks/Source/Machinery/LiquidJoinRule.cs": {
+      "source_sha256": "2d04b40cf202fb25463a834f6f888685217b5afc29d1384a36b53fc233dde3a9",
+      "stage_sha256": "2d04b40cf202fb25463a834f6f888685217b5afc29d1384a36b53fc233dde3a9"
+    }
+  },
+  "fixture_source_sha256": "930eb9a4c64875540334e7780978c752b4b97b41be1b98ca4242a55116c7cca3",
+  "original_source_sha256": "14c895e03cfb58e8e4c439604a12cd87189422bca4d5caa1b036a5fae20c8025",
+  "program_sha256": "cc3b3a0ac13212794531b3d80faab2ff6f46d8d762c459833ba72911ac761878"
+}

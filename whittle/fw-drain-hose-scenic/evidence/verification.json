@@ -1,0 +1,25 @@
+{
+  "time": 1794393752.3523166,
+  "source_sha256": "80815870cdb9b0ead575d526d960dd3ae5387d71238c79e712817d4bc9f1a588",
+  "counts": [
+    1240,
+    1240
+  ],
+  "hose_counts": [
+    457,
+    457
+  ],
+  "wrapper_returncode": 0,
+  "source_test_hashes_unchanged": true,
+  "tracked_changed_paths": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/HoseReviewChecks.cs"
+  ],
+  "checks": "All assertions in verify_proof.py passed",
+  "csharp_sha256": "75ce2616458d1faa5e2e6e4866af5a84432a7a56079e10779de0d1d49a35f51f",
+  "wrapper_sha256": "a837e2d8f2cfb44c29989ca455cda92b1e03086a4014dd685d4bbe8e1e49a947",
+  "limits": [
+    "Offline planned Lay seed 7; no live or rendered proof",
+    "No relay endpoint, separate CheckInstall search, or all carried-route guarantee",
+    "Plump can use Flat fallback in production; distinct shape not asserted"
+  ]
+}

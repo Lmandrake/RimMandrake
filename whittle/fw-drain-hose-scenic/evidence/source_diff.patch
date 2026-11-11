@@ -1,0 +1,38 @@
+diff --git a/src/RimMandrake/FlowWorks/Source/SelfTest/HoseReviewChecks.cs b/src/RimMandrake/FlowWorks/Source/SelfTest/HoseReviewChecks.cs
+index 2816534dc4..1d3f42f207 100644
+--- a/src/RimMandrake/FlowWorks/Source/SelfTest/HoseReviewChecks.cs
++++ b/src/RimMandrake/FlowWorks/Source/SelfTest/HoseReviewChecks.cs
+@@ -441,11 +441,29 @@ namespace RimMandrake.FlowWorks.SelfTest
+             HoseLay carriedOld = HoseMath.LayAlong(Rig(false), reel.Mouth, walk, end.Centre, prm, 7, null, reel.Outward);
+             Check(carried.Ok && OnRig(carried) == 0, "scenic: a carried hose walked east from the reel goes round it too (" + (carried.Reason ?? "laid") + ", " + OnRig(carried) + " points on the rig)");
+             Check(carriedOld.Ok && OnRig(carriedOld) > 0, "scenic can-fail: the same walk with the rig uncosted crosses it (" + OnRig(carriedOld) + " points)");
+-            // a cost, never a block: a reel walled in on both sides is still crossed when there is no other way
++            // A remote 2x2 reel spans BOTH open rows (8,9) between full-width walls (7,10).
++            // The west-facing source mouth is at x~20.02; its lead-out stays east of this reel.
++            // The target is west of it: every continuous in-bounds lay must cross x=12 AND x=13.
++            // Unlike the old target (14,9) with no remote reel, success cannot mean only leaving the nozzle.
++            var crossing = new HoseReelRect(12, 8, 2, 2);
+             CordWorld boxed = Rig(true);
+-            for (int x = 0; x < 44; x++) { boxed.SetBlocked(new Cell(x, 7), BlockKind.Wall); boxed.SetBlocked(new Cell(x, 10), BlockKind.Wall); }
+-            HoseLay forced = HoseMath.Lay(boxed, reel.Mouth, new Cell(14, 9).Centre, prm, 7, null, reel.Outward);
+-            Check(forced.Ok, "scenic: the cost never blocks (a hose with no way round still lays: " + (forced.Reason ?? "laid") + ")");
++            for (int x = crossing.X0; x < crossing.X0 + crossing.W; x++)
++                for (int z = crossing.Z0; z < crossing.Z0 + crossing.H; z++) boxed.SetExtraCost(new Cell(x, z), HoseMath.BuildingCrossCost);
++            for (int x = 0; x < boxed.Width; x++) { boxed.SetBlocked(new Cell(x, 7), BlockKind.Wall); boxed.SetBlocked(new Cell(x, 10), BlockKind.Wall); }
++            HoseLay forced = HoseMath.Lay(boxed, reel.Mouth, new Cell(8, 9).Centre, prm, 7, null, reel.Outward);
++            // Require interior samples in each costed column in BOTH poses, far from the source's nozzle cell.
++            // A grazing boundary point or the mouth's unavoidable contact with its own reel cannot satisfy this.
++            bool Crosses(IList<V2> pose) => Enumerable.Range(crossing.X0, crossing.W).All(x => pose.Any(q =>
++                q.X > x + 0.1 && q.X < x + 0.9 && q.Z > crossing.Z0 + 0.1 && q.Z < crossing.Z0 + crossing.H - 0.1
++                && boxed.ExtraCost(q.Floor) >= HoseMath.BuildingCrossCost));
++            Check(forced.Ok && Crosses(forced.Flat) && Crosses(forced.Plump),
++                "scenic: the cost never blocks (both poses cross both remote reel columns with no way round: " + (forced.Reason ?? "laid") + ")");
++            // Can-fail: changing only the remote footprint to a real block seals the same valid corridor.
++            for (int x = crossing.X0; x < crossing.X0 + crossing.W; x++)
++                for (int z = crossing.Z0; z < crossing.Z0 + crossing.H; z++) boxed.SetBlocked(new Cell(x, z), BlockKind.Device);
++            HoseLay sealedOff = HoseMath.Lay(boxed, reel.Mouth, new Cell(8, 9).Centre, prm, 7, null, reel.Outward);
++            Check(!sealedOff.Ok && sealedOff.Reason == "no route",
++                "scenic can-fail: blocking the remote reel seals the corridor (" + (sealedOff.Reason ?? "laid") + ")");
+             Check(HoseMath.SegmentAvoidsBuildings(Rig(true), new V2(17, 7.5), new V2(25, 7.5)) && !HoseMath.SegmentAvoidsBuildings(Rig(true), new V2(17, 9), new V2(25, 9)),
+                 "scenic: a straight shortcut across the drum is refused, one past it is not");
+             // the live hose world (Verse-bound, not compiled here): World() and LiveCellSig must cost a reel/pump (and, since

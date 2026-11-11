@@ -1,0 +1,13 @@
+{
+  "src/RimMandrake/_Shared/SlackGeometry/CordMath.cs": "cc964bf78552ae0bc53960b1cd646fd0024771b7542b8e7c3a8f280c24441f90",
+  "src/RimMandrake/_Shared/SlackGeometry/CordWorld.cs": "71e15119d89a4b4056a454a1870ba43a72dc6a4316eb194e1402310460d4efa9",
+  "src/RimMandrake/_Shared/SlackGeometry/CordPlanner.cs": "2b1a8ab0432e0620dceb0420833568dad8d2834b39de4351c539667ae46be29a",
+  "src/RimMandrake/_Shared/SlackGeometry/CordLayer.cs": "a8d116de7e561e02a7c90c219244a4f017cc38ae911ada3a10a725846e42d42a",
+  "src/RimMandrake/_Shared/SlackGeometry/DrawOrder.cs": "91d38bf31dae06bb08563846d60074563f4b18b403cc33d73dae418b3e607851",
+  "src/RimMandrake/FlowWorks/Source/Hose/HoseMath.cs": "dd6e26b974060df4c987e374588038cc3c76b669583d88cf6bb8eea9fc69d18d",
+  "src/RimMandrake/FlowWorks/Source/Hose/HoseClothoid.cs": "bc2e21c985950d919bcf67f13270e597a1b25ad3eb5858d6ea12643124947e26",
+  "src/RimMandrake/FlowWorks/Source/Hose/HoseRelay.cs": "37264c6c679f57ef7ff890c685a5ef6f4470b29bb58394dbf0558614f057749a",
+  "src/RimMandrake/FlowWorks/Source/Hose/ReelIntakeGeometry.cs": "be97086e602ff70e50e10f7b67267715e9911d656ccdf081fd079958669e20ca",
+  "src/RimMandrake/FlowWorks/Source/Hose/HoseCarry.cs": "eb84e0b29f0925afdeecdd4e4d3922c11b6fa09efdf833a60028509113a8b1ce",
+  "src/RimMandrake/FlowWorks/Source/Machinery/LiquidJoinRule.cs": "2d04b40cf202fb25463a834f6f888685217b5afc29d1384a36b53fc233dde3a9"
+}

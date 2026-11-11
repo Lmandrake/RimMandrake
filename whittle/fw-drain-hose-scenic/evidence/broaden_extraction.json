@@ -1,0 +1,45 @@
+{
+  "time": 1794393144.2031047,
+  "mode": "broaden",
+  "raw_sha256": "ac56766fa3aec75bb5ed89ae2018fd50904ab09f86eb1df20db8fbcc3e87c832",
+  "result_sha256": "2a48ee8c0721ef22fd63617b44c9f1cf2716182427ccb4ba6815ae1bf0c29cdd",
+  "output": "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-hose-scenic/evidence/broaden_result.txt",
+  "extraction": "result string unchanged; no added newline or verdict",
+  "subtype": "success",
+  "is_error": false,
+  "usage": {
+    "input_tokens": 40,
+    "cache_creation_input_tokens": 82107,
+    "cache_read_input_tokens": 929057,
+    "output_tokens": 18584,
+    "output_tokens_details": {
+      "thinking_tokens": 10486
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 82107,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 7284,
+        "cache_read_input_tokens": 84417,
+        "cache_creation_input_tokens": 913,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 913
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "total_cost_usd": 1.2145074
+}

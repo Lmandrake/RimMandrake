@@ -1,0 +1,15 @@
+{
+  "time": 1794393782.550802,
+  "WHITTLE_DIR": "whittle/fw-drain-hose-scenic",
+  "need_judge": true,
+  "need_broaden": true,
+  "last_change": 1794393184.3878965,
+  "done_problems": [
+    "The evidence 'whittle/fw-drain-hose-scenic/evidence/reference_remeasurement.json' for 'evidence identifies the exact tested source and its limits. the repair preserves shipping behavior and the approved gss cord appearance.' is older than your last change to the project. Look again and save fresh evidence.",
+    "No judge's verdict newer than DONE.md and the evidence. Spawn a fresh subagent (not a fork) with whittle/fw-drain-hose-scenic/JUDGE_PROMPT.md as its whole brief. It writes whittle/fw-drain-hose-scenic/JUDGE.md."
+  ],
+  "full_validator": "MandrakeWorkflows/whittle/run.py validate(root)",
+  "full_validator_returncode": 1,
+  "stdout": "",
+  "stderr": "Whittle: not done yet.\n- The evidence 'whittle/fw-drain-hose-scenic/evidence/reference_remeasurement.json' for 'evidence identifies the exact tested source and its limits. the repair preserves shipping behavior and the approved gss cord appearance.' is older than your last change to the project. Look again and save fresh evidence.\n- No judge's verdict newer than DONE.md and the evidence. Spawn a fresh subagent (not a fork) with whittle/fw-drain-hose-scenic/JUDGE_PROMPT.md as its whole brief. It writes whittle/fw-drain-hose-scenic/JUDGE.md.\nIf you truly can't go on, or need the owner, write whittle/fw-drain-hose-scenic/BLOCKED.md saying why, then stop.\n"
+}

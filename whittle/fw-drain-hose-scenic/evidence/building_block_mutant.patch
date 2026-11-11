@@ -1,0 +1,11 @@
+--- src/RimMandrake/_Shared/SlackGeometry/CordPlanner.cs
++++ isolated-stage/CordPlanner.cs
+@@ -182,7 +182,7 @@
+             finally { s.Busy = false; }
+         }
+ 
+-        private static bool Walk(CordWorld w, Cell c, Cell start, Cell goal) => c == start || c == goal || w.IsWalkable(c);
++        private static bool Walk(CordWorld w, Cell c, Cell start, Cell goal) => c == start || c == goal || (w.IsWalkable(c) && w.ExtraCost(c) < RimMandrake.FlowWorks.Hose.HoseMath.BuildingCrossCost);
+ 
+         private static bool Open(CordWorld w, Cell c, Cell start, Cell goal, Func<Cell, bool> exempt) =>
+             c == start || c == goal || w.IsWalkable(c) || (exempt != null && exempt(c));

@@ -1,0 +1,42 @@
+{
+  "command": [
+    "claude",
+    "-p",
+    "--model",
+    "opus",
+    "--effort",
+    "high",
+    "--tools",
+    "Read,Glob,Grep",
+    "--strict-mcp-config",
+    "--mcp-config",
+    "{\"mcpServers\":{}}",
+    "--setting-sources",
+    "",
+    "--no-session-persistence",
+    "--output-format",
+    "json",
+    "--max-budget-usd",
+    "6",
+    "--add-dir",
+    "/home/mandrake/rm/scratch/BENCH/fw-drain",
+    "--allowedTools",
+    "Read",
+    "Glob",
+    "Grep",
+    "--permission-mode",
+    "dontAsk"
+  ],
+  "input": "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-hose-scenic/JUDGE_PROMPT.md",
+  "started": 1794393800.8383636,
+  "timeout_seconds": 360,
+  "WHITTLE": "0",
+  "removed_environment_keys": [
+    "CLAUDECODE"
+  ],
+  "history": "fresh print process; no resume, fork or persistence",
+  "setting_sources": "",
+  "mcp_servers": {},
+  "cwd": "/home/mandrake/.seat-tmp/BENCH/fw-hose-scenic-opus-yevsc6s0",
+  "pid": 260741
+}
