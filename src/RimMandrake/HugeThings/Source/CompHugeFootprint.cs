@@ -124,7 +124,7 @@ namespace RimMandrake.HugeThings
             return RM_HugeFootprintKernel.ContactCells(s.RootX, s.RootZ, QuadOf(s), s.BlockScale, s.Flip, m, budget);
         }
 
-        /// <summary>The cells this plant could EVER claim at full growth and the largest setting: the fixed planning window
+        /// <summary>The cells this plant could EVER claim at full growth and the largest setting: the bounded placement-flag window
         /// (Planner.Window) and the re-link scan, derived from the real transform (GPT review #7).</summary>
         public List<long> MaxKeys()
         {

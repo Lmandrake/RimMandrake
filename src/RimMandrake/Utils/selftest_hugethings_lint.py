@@ -82,6 +82,13 @@ def every_opt_in_has_generated_masks():
     bad = []
     for p, dn, li in ins:
         rel = os.path.relpath(p, SRC)
+        if rel == "RimMandrake/HugeThingsTestRaces/Defs/ThingDefs_Plants/RM_TestContactPlant.xml":
+            # This declared adversarial fixture deliberately does not pretend its oak art was measured.
+            assert dn is None and len(li.findall("variants/li")) == 1
+            assert li.findtext("variants/li/texture") == "HARNESS_SYNTHETIC_CONTACTS"
+            assert li.findtext("measuredSize") == "5" and li.findtext("minGrowthToBlock") == "0.5"
+            assert [c.text for c in li.findall("variants/li/contact/li")] == ["(-2,0)", "(2,0)"]
+            continue
         if GENERATED not in open(p, encoding="utf-8").read():
             bad.append("%s: %s lives in a file without the tool's GENERATED header" % (rel, dn))
         size = float(li.findtext("measuredSize") or 0)

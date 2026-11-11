@@ -1,2 +1,2 @@
 Read the production constant before writing a live acceptance threshold. HugeThings FootprintWorkBudget selftest examples use small synthetic allowances, but MapComponent_HugeFootprints.WorkUnitsPerTick is 200000, not 512. The P1 live driver now derives the expected work/owner caps from the source paired with the verified DLL. Its 100-plant workload must defer work, respect both caps and converge; cap exhaustion is separately reported, never inferred when budgetRefusals stays zero. Adversarial exhaustion/across-map guarantees remain the production-code offline harness scope.
-home: src/RimMandrake/HugeThings/northstar/p1_live.py
+home: src/RimMandrake/HugeThings/northstar/workload_corpse_live.py

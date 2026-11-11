@@ -13,7 +13,7 @@ def main():
     if rc:
         return rc
     dll = winbuild.staged_win(record, os.path.dirname(project)) + "\\bin\\Release\\net8.0\\FootprintBudget.dll"
-    return winbuild.run_interop([winbuild.dotnet_exe(), dll], cwd="/mnt/d/Luke/dev", timeout=None)
+    return winbuild.run_interop([winbuild.dotnet_exe(), dll], cwd=record["stage"], timeout=None)
 
 
 if __name__ == "__main__":

@@ -1,3 +1,5 @@
+Historical question bank: all eight drafts were answered in ANSWERS_OWNER.md. Draft 03 describes the rejected access-open rule; it is not a current requirement.
+
 DRY RUN — HugeThings, proposed root and question bank. All wording and guesses below are mine, not Mandrake's words. Nothing is approved or sent.
 
 This mod bundles several built promises: huge plants, huge animals, titan movement and damage, and the aftermath of a titan's death. Each needs its own proof.

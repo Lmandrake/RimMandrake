@@ -46,15 +46,31 @@ giant is one tool run. At runtime the contact cells are mirrored with `flipUv` a
 settings multiplier, and a cell blocks only if its centre is inside the drawn picture. The root cell is never
 blocked: an impassable edifice there would wipe the plant (`GenSpawn.SpawningWipes`, `BlocksPlanting`).
 
-**Making it safe (GPT review 2026-10-07, `Transient/huge_things_bounds_2026-10-07/GPT_REVIEW.md`).**
-`MapComponent_HugeFootprints` keeps a map-wide claim ledger (overlapping giants share cells; one blocker per cell;
-order-independent) and closes a claimed cell only when it holds no pawn and no item (nothing is ever moved aside or
-destroyed), is not protected (buildings, blueprints, frames, their interaction cells, door approaches, trees, other
-giants), and closing it neither cuts a cell off from open ground nor cuts a giant's root off from every open
-neighbour. A refused cell stays claimed and is retried. After load every blocker on the map is indexed and anything
-unclaimed or duplicated is removed. Blockers do not carve zones (patched); stockpiles and sowing already refuse the
-cell. Refreshes happen only when a plant's footprint signature changes (growth, harvest, graphic, settings), a few
-per tick. A gravship landing that clears a giant's blocker or root removes that giant.
+**Placement and access (owner answer 4, 2026-11-11).**
+`MapComponent_HugeFootprints` keeps map-wide shared claims and one blocker per cell. A claimed cell closes only
+when passable and free of pawns, items and protected Things: existing buildings (including doors), blueprints,
+frames, interaction cells, trees, other giants and indestructibles. Pawn protection uses the whole occupied body.
+Ordinary items may move to validated free cells outside all footprints under the existing item-push setting;
+quest-tagged items never move, and failed placement never permits a wipe. Refused cells remain pending and retry.
+
+Growing trunks may seal a doorway's open approach and disconnect an occupied workshop. There is no doorway,
+connectivity or root-access exception. Colonists must cut the plant to restore access. Existing doors remain intact:
+RimWorld stores one edifice per cell and spawning a blocker over a door would wipe it, so ordinary building protection
+still applies to the door itself. When the root itself is enclosed, the registered `RM_CutHugePlantFromTrunk` workgiver scans its realized trunk cells.
+It delegates policy and reservation gates to vanilla `PlantsCut`, requires the plant's cut designation, and yields to
+ordinary cutting whenever the root is reachable. A separate job uses vanilla `JobDriver_PlantCut_Designated`; a narrowly
+validated iterator patch changes only the approach/work-touch target to its owned blocker C. Root target A retains
+vanilla reservations, designation checks, work rate, skill, products, PlantCollected and destruction. A changed IL
+contract disables the new giver while retaining all vanilla toils. The claim must still belong to the root at each
+approach/work check; shared cells permit nonprimary owners. Effects/progress still point at the root; no art/feel
+claim is made. The functional scene proves a real inside cutter can remove a root enclosed on all eight sides,
+including a saved in-progress job, and restore access with the same door intact.
+
+On load every blocker is indexed and unclaimed/duplicate cells are removed. Growth, harvest, graphics and settings
+refresh claims through the shared work budget; death cleanup releases only the departing owner's claims. Blockers
+do not carve zones; stockpiles and sowing refuse solid cells. Gravship clearing removes an affected owning plant under
+the existing clear-mode policy. `northstar/trunk_doors_live.py` proves growth, loss of access, actual cutting, restored
+access and placement controls on a restored disposable site.
 
 **Cover and damage.** Trunk cells are `fillPercent` 0.4 (reasoning in the def): partial cover, never full (rooms,
 sight and roofs are unchanged). A shot that hits one is forwarded to the plant; an explosion reroutes through the

@@ -6,7 +6,7 @@ using System.Linq;
 namespace RimWorld { }
 namespace Verse
 {
-    public enum ThingCategory { Item, Building, Plant }
+    public enum ThingCategory { Item, Building, Plant, Other }
     public enum DestroyMode { Vanish }
     public enum WipeMode { Vanish }
     public class ThingDef
@@ -54,7 +54,11 @@ namespace Verse
         public void DeSpawn(DestroyMode mode) { if(Map!=null && Map.Cells.TryGetValue(Position,out var ts)) ts.Remove(this); Spawned=false; }
         public void Destroy(DestroyMode mode) { DeSpawn(mode); Destroyed=true; }
     }
-    public class Pawn : Thing { public CellRect OccupiedRect()=>CellRect.FromLimits(Position.x,Position.z,Position.x,Position.z); }
+    public class Pawn : Thing
+    {
+        public int Width=1,Height=1;
+        public CellRect OccupiedRect()=>CellRect.FromLimits(Position.x,Position.z,Position.x+Width-1,Position.z+Height-1);
+    }
     public class Plant : Thing { }
     public class Building_Door : Thing { }
     public class MapPawns { public List<Pawn> AllPawnsSpawned=new List<Pawn>(); }

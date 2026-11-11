@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
-"""Bounded P1 live proof on the all-DLC HugeThingsTestRaces + FlowWorks tier.
+"""Bounded workload and corpse live proof on the all-DLC HugeThingsTestRaces + FlowWorks tier.
 
 Uses an existing disposable calm save, a synthetic harness-only two-contact oak,
-and grounded elephant test races. Never worldgen or flight. PROVE: distant pawn's
-only corridor exit stays open; 100 sparse plants eventually realize their contacts
-under the declared production scheduler cap; obstructed T3 conversion survives reload, retries
-without wiping its obstruction, and cannot butcher around the site-only contract.
-LIES: zero blockers / zero workload deferral, a pawn already trapped, a missing corpse,
-a disabled site feature, accepted-but-not-executed orders, or absent controls cannot
-pass. Restore the whole scene-begin save, verify its rectangle hash and all statics.
+and grounded elephant test races. PROVE: 100 sparse plants converge under the
+production scheduler cap; obstructed T3 conversion survives reload, retries without
+wiping its obstruction, and cannot butcher around the site-only contract.
+LIES: zero blockers, zero deferral, missing corpses, disabled features or missing
+controls cannot pass. Restore the scene-begin save and verify its hash/settings.
 """
 import argparse
 import hashlib
@@ -93,36 +91,12 @@ class Run:
                       ops='\n'.join(f'id=p{i}|kind=plant|x={x}|z={z}|def={PLANT}|growth=1' for i,(x,z) in enumerate(roots)))
         require(len(r.get('ops', [])) == len(roots) and all(x.get('ok') for x in r['ops']), f'plant staging: {r}')
 
-    def reachable(self, pawn):
-        # This tool issues an order even for waitTicks=0. Read CanReach as the answer,
-        # stop immediately while paused, and require that no time or position changed.
-        r = self.call('jawa/order_pawn', allow=True, pawnId=pawn, x=112, z=100,
-                      pathEndMode='oncell', waitTicks=0, unpause=False, draft=True)
-        self.call('jawa/stop_job', pawnId=pawn, mode='stopall')
-        rows = r.get('pawns', [])
-        require(len(rows)==1 and r.get('ticksElapsed')==0 and rows[0]['start']==rows[0]['end'], f'bad paused reach probe: {r}')
-        return rows[0]['canReach'] is True
-
-    def footprints(self):
+    def workload(self):
         # Removing natural rock supports without its roof drops CollapsedRocks
         # during the closure clock, re-obstructing a successfully cleared site.
-        self.call('jawa/set_roof_batch', ops='None:70,90,48,22;None:120,120,100,100')
-        self.call('jawa/destroy_batch', categories='All', rects='70,90,48,22;120,120,100,100')
-        self.call('jawa/set_terrain_batch', ops='Soil:70,90,48,22;Soil:120,120,100,100')
-        walls = [(x,z) for x in range(75,101) for z in (99,101)] + [(75,100)]
-        self.call('jawa/build_batch', ops=';'.join(f'Wall:{x},{z}' for x,z in walls), stuff='WoodLog', faction='player')
-        p = self.call('jawa/spawn_pawn', kindDef='Colonist', x=77, z=100, faction='player', count=1, xenotype='Baseliner')['pawns']
-        require(len(p)==1, str(p))
-        pawn = p[0]['id']
-        require(self.reachable(pawn), 'corridor pawn already trapped before plant')
-        self.stage([(102,100)])
-        self.ticks(120)
-        probe = self.sc('DebugPlantState', 'current|102,100')
-        self.rec['closure'] = dict(probe=probe, reachable=self.reachable(pawn), blockers=self.things(BLOCKER,'98,98,9,5'))
-        f = kv(probe)
-        require(f.get('claimed')=='2' and f.get('realized')=='1' and f.get('pending')=='1', f'closure has no positive realized/refused pair: {probe}')
-        require(self.rec['closure']['reachable'] and len(self.things(BLOCKER,'100,100,1,1'))==0,
-                'plant closed the distant pawn corridor')
+        self.call('jawa/set_roof_batch', ops='None:120,120,100,100')
+        self.call('jawa/destroy_batch', categories='All', rects='120,120,100,100')
+        self.call('jawa/set_terrain_batch', ops='Soil:120,120,100,100')
         roots=[(130+8*x,130+8*z) for x in range(10) for z in range(10)]
         self.stage(roots)
         samples=[]
@@ -134,11 +108,11 @@ class Run:
             require(cap==WORK_CAP and 0<=used<=cap and int(f['ownersVisited'])<=VISIT_CAP,
                     f'scheduler cap violated: {txt}')
             samples.append(dict(tick=tick, counts=txt))
-            if int(f['realized'])>=201:
+            if int(f['realized'])>=200:
                 break
         self.rec['budget_samples']=samples
         count=len(self.things(BLOCKER,'120,120,100,100'))
-        require(int(kv(samples[0]['counts'])['realized'])<201, 'no deferred-work pressure on the first tick')
+        require(int(kv(samples[0]['counts'])['realized'])<200, 'no deferred-work pressure on the first tick')
         self.rec['work_cap']=WORK_CAP
         self.rec['visit_cap']=VISIT_CAP
         self.rec['cap_exhaustion_observed']=any(int(kv(s['counts'])['budgetRefusals'])>0 for s in samples)
@@ -146,8 +120,7 @@ class Run:
         # production-code offline harness separately forces exhaustion across maps;
         # a live counter that never hits its cap is not evidence of exhaustion.
         require(count==200, f'budget starvation: {count}/200 sparse contacts after {len(samples)} ticks')
-        require(self.reachable(pawn), 'stress planting closed the corridor')
-        self.rec['footprints']='PASS'
+        self.rec['workload']='PASS'
 
     def corpse(self, tx):
         self.setting('corpseSiteEnabled',True)
@@ -171,7 +144,7 @@ class Run:
         require(any(t['id']==corpse for t in self.things('Corpse_RM_TestTitanT3Adult','46,166,9,9')), 'blocked corpse disappeared')
         require(self.things('Wall','51,171,1,1')==wall, 'conversion wiped or damaged its obstruction')
         require(int(kv(self.sc('SiteReport','',HOOKS))['sites'])==before, 'blocked site converted')
-        name='CODEX_HugeP1_Occupied_'+time.strftime('%Y%m%dT%H%M%S')
+        name='CODEX_HugeWorkload_Occupied_'+time.strftime('%Y%m%dT%H%M%S')
         self.rec['occupied_save']=T.save_site(self.call,name,SAVES)
         loaded=T.load_site(self.call,'calm',name=name,check=False,map_controls=('modal_broker',))
         self.rec['occupied_load']=loaded
@@ -193,7 +166,7 @@ def main():
     a=ap.parse_args()
     rec=dict(script=__file__,calls=[],started=time.time(),scope='isolated 14-mod all-DLC synthetic-plant/grounded-elephant fixture')
     r=Run(rec)
-    snap='CODEX_HugeP1_Begin_'+time.strftime('%Y%m%dT%H%M%S')
+    snap='CODEX_HugeWorkload_Begin_'+time.strftime('%Y%m%dT%H%M%S')
     saved=False
     baseline=None
     tx=None
@@ -211,7 +184,7 @@ def main():
         rec['quiet']=H.quiet_world(T.call_session(r.call),tx,wild_spawner=False,log_raids=False)
         for field,value in dict(giantPlantsEnabled=True,plantTrunkEnabled=True,plantTrunkScale=1,giantAnimalsEnabled=True).items():
             r.setting(field,value)
-        r.footprints()
+        r.workload()
         r.corpse(tx)
         rec['status']='PASS'
     except Exception as ex:

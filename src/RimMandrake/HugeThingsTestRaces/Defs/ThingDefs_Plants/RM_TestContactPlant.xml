@@ -6,7 +6,7 @@
   <ThingDef ParentName="DeciduousTreeBase">
     <defName>RM_TestContactPlant</defName>
     <label>test contact plant (harness only)</label>
-    <description>Synthetic two-contact plant used only by the HugeThings P1 live proof.</description>
+    <description>Synthetic two-contact plant used only by the HugeThings workload live proof.</description>
     <graphicData>
       <texPath>Things/Plant/TreeOak</texPath>
       <graphicClass>Graphic_Random</graphicClass>

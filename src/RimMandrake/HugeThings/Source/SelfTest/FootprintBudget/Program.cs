@@ -23,7 +23,11 @@ class Program
             Sig=new FootprintSignature{RootX=x,RootZ=z,DrawX=side,Visual=1,BlockScale=1,Blocking=blocking,OldEnough=true}};
         m.Component.Register(c); return c;
     }
-    static void Reset() { Current.Game=new object(); Find.Maps.Clear(); CompHugeFootprint.Completion.Clear(); }
+    static void Reset()
+    {
+        Current.Game=new object(); Find.Maps.Clear(); CompHugeFootprint.Completion.Clear();
+        RM_HugeThingsSettings.PlantTrunkActive=true;RM_HugeThingsSettings.PlantItemPushActive=false;
+    }
     static void Tick(int tick,params Map[] maps)
     {
         Find.TickManager.TicksGame=tick;
@@ -61,10 +65,51 @@ class Program
         Check(retries.Count==owners.Count && retries.Values.All(due=>due>500),"same-phase pending owner was not retried");
         return events.ToArray();
     }
+    static bool Blocked(Map map,long key)
+    {
+        var cell=new IntVec3(RM_HugeFootprintKernel.KeyX(key),0,RM_HugeFootprintKernel.KeyZ(key));
+        return cell.GetThingList(map).Any(t=>t is Building_TrunkBlocker && t.Spawned);
+    }
+    static IntVec3 Cell(long key)=>new IntVec3(RM_HugeFootprintKernel.KeyX(key),0,RM_HugeFootprintKernel.KeyZ(key));
+    static void PlacementControls()
+    {
+        Reset();var map=Map();var owner=Add(map,9001,2,true);long key=owner.DesiredKeys().First();
+        // Other is deliberately neither building, tree, giant, pawn nor item:
+        // only the production destroyable guard protects this fixture.
+        var indestructible=new Thing{def=new ThingDef{category=ThingCategory.Other,destroyable=false}};
+        GenSpawn.Spawn(indestructible,Cell(key),map,WipeMode.Vanish);
+        for(int tick=0;tick<10;tick++) Tick(tick,map);
+        Check(map.Component.IsClaimed(Cell(key)) && !Blocked(map,key) && indestructible.Spawned && !indestructible.Destroyed,
+            "indestructible-only placement guard failed");
+        indestructible.def.destroyable=true;Tick(300,map);
+        Check(Blocked(map,key),"matched destroyable free-space control did not close");
+
+        Reset();map=Map();owner=Add(map,9002,2,true);key=owner.DesiredKeys().First();
+        RM_HugeThingsSettings.PlantItemPushActive=true;
+        var quest=new Thing{def=new ThingDef{category=ThingCategory.Item},questTags=new List<string>{"owned-proof-quest"}};
+        GenSpawn.Spawn(quest,Cell(key),map,WipeMode.Vanish);IntVec3 before=quest.Position;
+        for(int tick=0;tick<10;tick++) Tick(tick,map);
+        Check(map.Component.IsClaimed(Cell(key)) && !Blocked(map,key) && quest.Spawned && !quest.Destroyed && quest.Position==before,
+            "quest item moved, wiped or covered");
+        quest.questTags.Clear();Tick(300,map);
+        Check(Blocked(map,key) && quest.Spawned && !quest.Destroyed && quest.Position!=before &&
+            !map.Component.IsClaimed(quest.Position),"ordinary-item matched push control lost the Thing or chose a claimed destination");
+        Check(map.Cells.Values.Sum(ts=>ts.Count(t=>t.def.category==ThingCategory.Item && t.Spawned))==1,"push duplicated/lost item");
+
+        Reset();map=Map();owner=Add(map,9003,2,true);key=owner.DesiredKeys().First();var at=Cell(key);
+        var pawn=new Pawn{Width=2,def=new ThingDef{category=ThingCategory.Other}};
+        GenSpawn.Spawn(pawn,new IntVec3(at.x-1,0,at.z),map,WipeMode.Vanish);map.mapPawns.AllPawnsSpawned.Add(pawn);
+        Check(at.GetFirstPawn(map)==null,"body-control anchor overlaps target; fixture would not discriminate");
+        for(int tick=0;tick<10;tick++) Tick(tick,map);
+        Check(map.Component.IsClaimed(at) && !Blocked(map,key) && pawn.Spawned,"non-anchor pawn body cell was covered");
+        pawn.DeSpawn(DestroyMode.Vanish);GenSpawn.Spawn(pawn,new IntVec3(at.x,0,at.z+10),map,WipeMode.Vanish);Tick(300,map);
+        Check(Blocked(map,key),"vacated pawn body cell did not retry");
+    }
     static int Main()
     {
         try
         {
+            PlacementControls();
             Check(Schedule().SequenceEqual(Schedule()),"schedule was not reproducible");
             Reset(); var map=Map(); var huge=Add(map,1,120,true);
             Tick(0,map); Check(huge.Taken==0,"large geometry was not sliced across ticks");
@@ -95,10 +140,10 @@ class Program
             { affected++; Check(cell==0 && !freed && ledger.PrimaryOwner(cell)==1001,"shared primary owner lost"); }
             Check(affected==1 && ledger.ClaimedCount==1000,"removal work was not proportional to affected claims");
             // Tiny read budgets must abort before returning an unsafe partial plan or unbounded geometry result.
-            foreach(int limit in new[]{0,1,10,100})
+            foreach(int limit in new[]{0,1,10,16})
             {
                 var budget=new FootprintWorkBudget(limit); bool exhausted=false;
-                try { Planner.Plan(new List<long>{0},new List<long>(),k=>CellFlags.Passable,new CellBox(-4,-4,4,4),budget:budget); }
+                try { Planner.Plan(new List<long>{0},k=>CellFlags.Passable,new CellBox(-4,-4,4,4),budget:budget); }
                 catch(FootprintBudgetExhausted) { exhausted=true; }
                 Check(exhausted && budget.Used<=limit,"planner did not respect tiny budget");
             }

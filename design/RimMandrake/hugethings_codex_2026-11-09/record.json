@@ -151,7 +151,7 @@
                       },
                       {
                           "id":  "plant_claim_safety",
-                          "text":  "One blocker per shared claim, protected pawns/buildings/blueprints/frames/interactions/doors/trees, local reach and root access, pending refusals.",
+                          "text":  "One blocker per shared claim; pawn/item/building/blueprint/frame/interaction/tree placement protections and pending retries remain. Owner answer 4 permits doorway approach sealing and disconnected rooms; no keep-access rule.",
                           "source":  "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeClaimsKernel.cs",
                           "impl":  "present",
                           "impl_evidence":  [

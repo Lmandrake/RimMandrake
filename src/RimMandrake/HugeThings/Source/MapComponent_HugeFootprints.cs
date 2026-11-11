@@ -11,8 +11,8 @@ namespace RimMandrake.HugeThings
     ///    by exactly one RM_HugeTrunkBlocker, whatever order plants registered or refreshed in (#8).
     ///  * Realizing: a newly claimed cell closes only when Planner allows it: never over a pawn or an item (nothing is
     ///    moved aside or destroyed, #2), never over a protected cell (buildings, blueprints, frames, their interaction
-    ///    cells, door approaches, trees, other giants, #6), never if it would cut a cell off from open ground (trapped
-    ///    pawns, new pockets) or cut a giant's root off from access (#1). A refused cell stays claimed and is retried.
+    ///    cells, trees, other giants, #6). Growth may seal door approaches and disconnect rooms (owner answer 4,
+    ///    2026-11-11). A refused placement cell stays claimed and is retried.
     ///  * Freeing: changed claims open affected cells; death cleanup drains under the shared work budget.
     ///  * Reconciling: after load, every blocker on the map is indexed (not just those near a plant) and any blocker on an
     ///    unclaimed cell, any duplicate, and any blocker on the wrong map is removed (#5).
@@ -67,8 +67,6 @@ namespace RimMandrake.HugeThings
         private readonly Dictionary<long, int> lastMoveTick = new Dictionary<long, int>();
         private bool initialized;
         private bool mutating;
-        // Every giant's root cell, for the planner; plants do not move, so it changes only on register / deregister.
-        private List<long> rootsCache;
 
         public MapComponent_HugeFootprints(Map map) : base(map) { }
 
@@ -91,7 +89,6 @@ namespace RimMandrake.HugeThings
             comps[c.OwnerId] = c;
             dirty.Add(c.OwnerId);
             readyOwners.Add(c.OwnerId);
-            rootsCache = null;
         }
 
         /// <summary>A plant left the map (cut, died, minified, destroyed): its removal is queued, and every cell nobody else
@@ -100,7 +97,6 @@ namespace RimMandrake.HugeThings
         {
             comps.Remove(c.OwnerId);
             dirty.Remove(c.OwnerId);
-            rootsCache = null;
             // Death hooks enqueue O(1) work. Claims and physical cells are released under the shared tick budget.
             removals.Enqueue(c.OwnerId);
             retryAt.Remove(c.OwnerId);
@@ -205,7 +201,7 @@ namespace RimMandrake.HugeThings
                                 long k = cells.First.Value;
                                 // Rotate BEFORE planning, including an exhausted attempt: a large candidate cannot starve siblings.
                                 cells.RemoveFirst(); cells.AddLast(pendingNodes[k]);
-                                RealizeCells(new List<long> { k }, c, Roots());
+                                RealizeCells(new List<long> { k });
                             }
                             retryAt[id] = Find.TickManager.TicksGame + PendingRetryInterval;
                         }
@@ -225,7 +221,7 @@ namespace RimMandrake.HugeThings
         }
 
         // Geometry, the old-claim snapshot and claim edits all resume across ticks. Each edit is a small reserved
-        // transaction. New blockers still use freshly read flags in THIS tick, never a stale multi-tick path proof.
+        // transaction. New blockers still use freshly read flags in THIS tick, never stale multi-tick placement flags.
         private bool AdvanceRefresh(CompHugeFootprint c)
         {
             int id = c.OwnerId;
@@ -288,18 +284,6 @@ namespace RimMandrake.HugeThings
                 }
             }
             return false;
-        }
-
-        private List<long> Roots()
-        {
-            if (rootsCache == null)
-            {
-                work?.Spend(comps.Count); // capacity/zeroing; charge each read before filling
-                var roots = new List<long>(comps.Count);
-                foreach (CompHugeFootprint c in comps.Values) { work?.Spend(); roots.Add(Key(c.parent.Position)); }
-                rootsCache = roots;
-            }
-            return rootsCache;
         }
 
         private void DrainRemoval()
@@ -399,32 +383,31 @@ namespace RimMandrake.HugeThings
             if (pending.Count == 0) return;
             var owners = new SortedSet<int>();
             foreach (long k in pending) foreach (int owner in ledger.OwnersOf(k)) owners.Add(owner);
-            List<long> roots = Roots();
             foreach (int id in owners)
             {
                 if (!comps.TryGetValue(id, out CompHugeFootprint c)) continue;
-                try { RealizeOwner(id, c, roots); }
+                try { RealizeOwner(id, c); }
                 catch (System.Exception e) { Log.ErrorOnce("[RimMandrake.HugeThings] load footprint failed: " + e, id ^ 0x5245); }
             }
         }
 
-        private void RealizeOwner(int id, CompHugeFootprint c, List<long> roots)
+        private void RealizeOwner(int id, CompHugeFootprint c)
         {
             List<long> mine = new List<long>();
             foreach (long k in ledger.CellsOf(id)) if (pending.Contains(k)) mine.Add(k);
             if (mine.Count == 0) return;
-            RealizeCells(mine, c, roots);
+            RealizeCells(mine);
         }
 
-        private void RealizeCells(List<long> mine, CompHugeFootprint c, List<long> roots)
+        private void RealizeCells(List<long> mine)
         {
             mine.Sort();
-            List<CellBox> clearance = PawnClearance(out HashSet<long> occupied, out int margin);
-            CellBox window = ClearanceWindow(Planner.Window(mine, mine[0]), margin);
+            HashSet<long> occupied = OccupiedPawnCells();
+            CellBox window = Planner.Window(mine, mine[0]);
             Dictionary<long, CellFlags> flags = Flags(window);
             foreach (long k in occupied)
             { work?.Spend(); if (flags.TryGetValue(k, out CellFlags f)) flags[k] = f | CellFlags.Pawn; }
-            Dictionary<long, List<long>> moves = PlanItemMoves(mine, flags, roots, window, clearance, out List<long> ok);
+            Dictionary<long, List<long>> moves = PlanItemMoves(mine, flags, window, out List<long> ok);
             Planner.RealizeInOrder(ok, k =>
             {
                 if (moves.TryGetValue(k, out List<long> dests) && !MoveItems(k, dests)) return false;
@@ -434,43 +417,31 @@ namespace RimMandrake.HugeThings
             });
         }
 
-        private static CellBox ClearanceWindow(CellBox w, int margin) => new CellBox(w.MinX - margin, w.MinZ - margin,
-                                                                                  w.MaxX + margin, w.MaxZ + margin);
-
-        // OccupiedRect is the engine/integration truth, including Large Pawns. Protect every occupied cell, not just
-        // the pawn's ThingGrid anchor. Preserve anchor connectivity for each present shape and its rotated shape.
-        private List<CellBox> PawnClearance(out HashSet<long> occupied, out int margin)
+        // Protect every engine OccupiedRect cell, including Large Pawns' body, rather than just the ThingGrid anchor.
+        private HashSet<long> OccupiedPawnCells()
         {
-            occupied = new HashSet<long>();
-            margin = 0;
-            var sizes = new HashSet<long>();
-            var result = new List<CellBox>();
+            var occupied = new HashSet<long>();
             foreach (Pawn pawn in map.mapPawns.AllPawnsSpawned)
             {
                 work?.Spend();
-                CellRect rect = pawn.OccupiedRect();
-                foreach (IntVec3 cell in rect) { work?.Spend(); occupied.Add(Key(cell)); }
-                int sx = rect.Width, sz = rect.Height;
-                margin = System.Math.Max(margin, System.Math.Max(sx, sz));
-                if (sizes.Add(RM_HugeFootprintKernel.Key(sx, sz))) result.Add(new CellBox(0, 0, sx - 1, sz - 1));
-                if (sizes.Add(RM_HugeFootprintKernel.Key(sz, sx))) result.Add(new CellBox(0, 0, sz - 1, sx - 1));
+                foreach (IntVec3 cell in pawn.OccupiedRect()) { work?.Spend(); occupied.Add(Key(cell)); }
             }
-            return result;
+            return occupied;
         }
 
         /// <summary>Owner ruling 2026-10-07 21:08: for each wanted cell held ONLY by items (no pawn, nothing protected), a
         /// destination per item in the nearest free valid cell outside every footprint, preferring the source's own storage;
         /// at most once per PendingRetryInterval per cell. Cells whose items do not all fit are left out (they stay open).</summary>
-        private Dictionary<long, List<long>> PlanItemMoves(List<long> mine, Dictionary<long, CellFlags> flags, List<long> roots, CellBox window, List<CellBox> clearance,
+        private Dictionary<long, List<long>> PlanItemMoves(List<long> mine, Dictionary<long, CellFlags> flags, CellBox window,
                                                            out List<long> accepted)
         {
             List<long> Plan(Dictionary<long, List<long>> mv)
             {
-                return Planner.Plan(mine, roots, k =>
+                return Planner.Plan(mine, k =>
                 {
                     if (!flags.TryGetValue(k, out CellFlags f)) return CellFlags.Passable;
                     return mv.ContainsKey(k) ? f & ~CellFlags.Item : f;   // movable: plan it as if clear
-                }, window, clearance, work);
+                }, window, work);
             }
             Dictionary<long, int> counts = new Dictionary<long, int>();
             if (RM_HugeThingsSettings.PlantItemPushActive)   // Mod Settings off: the cell stays open
@@ -615,10 +586,6 @@ namespace RimMandrake.HugeThings
                             foreach (IntVec3 ic in icells) { work?.Spend(); protectedCells.Add(ic); }
                         }
                     }
-                    if (t is Building_Door)
-                    {
-                        foreach (IntVec3 d in GenAdj.CardinalDirections) protectedCells.Add(c + d);
-                    }
                 }
             }
             for (int z = w.MinZ; z <= w.MaxZ; z++)
@@ -651,6 +618,27 @@ namespace RimMandrake.HugeThings
                 }
             }
             return f;
+        }
+
+        /// <summary>Live realized claims used by cutting; shared ownership, not just the display/damage owner.</summary>
+        public bool HasCutClaim(Plant plant, Building_TrunkBlocker blocker)
+        {
+            if (plant == null || blocker == null || !Owns(blocker)) return false;
+            foreach (int owner in ledger.OwnersOf(Key(blocker.Position))) if (owner == plant.thingIDNumber) return true;
+            return false;
+        }
+
+        public IEnumerable<Plant> CutOwners(Building_TrunkBlocker blocker)
+        {
+            if (!Owns(blocker)) yield break;
+            foreach (int id in ledger.OwnersOf(Key(blocker.Position)))
+                if (comps.TryGetValue(id, out CompHugeFootprint comp) && comp.Plant.Spawned) yield return comp.Plant;
+        }
+
+        public IEnumerable<Building_TrunkBlocker> CutBlockers(Plant plant)
+        {
+            foreach (long key in ledger.CellsOf(plant.thingIDNumber))
+                if (realized.TryGetValue(key, out Building_TrunkBlocker blocker) && blocker.Spawned) yield return blocker;
         }
 
         /// <summary>Each blocker answers to its cell's primary owner (lowest thing id among its claimants).</summary>
@@ -745,6 +733,13 @@ namespace RimMandrake.HugeThings
                 + " workTick=" + budgetTick + " ownersVisited=" + c.ownersVisited + " removalsQueued=" + c.removals.Count;
         }
 
+        public static string DebugCellState(Map map, IntVec3 cell)
+        {
+            var component = map?.GetComponent<MapComponent_HugeFootprints>();
+            return component == null ? "FAIL no component" : "claimed=" + component.IsClaimed(cell)
+                + " realized=" + component.realized.ContainsKey(Key(cell));
+        }
+
         /// <summary>HUGETHINGS_TRUNK_ZERO_BLOCKERS_1: read-only state of the huge plant rooted at `cell`, for a bridge probe
         /// (jawa/static_call RimMandrake.HugeThings.MapComponent_HugeFootprints DebugPlantState current|x,z): is it registered,
         /// what the comp computes, how many of its claimed cells are realized or pending, and for the pending ones what the
@@ -775,8 +770,8 @@ namespace RimMandrake.HugeThings
                 + " claimed=" + mine.Count + " realized=" + real + " pending=" + pend + " | " + comp.DebugDescribe() + " | " + head;
             if (pendList.Count == 0) return s;
             pendList.Sort();
-            List<CellBox> clearance = mc.PawnClearance(out HashSet<long> occupied, out int margin);
-            CellBox window = ClearanceWindow(Planner.Window(comp.MaxKeys(), Key(comp.parent.Position)), margin);
+            HashSet<long> occupied = mc.OccupiedPawnCells();
+            CellBox window = Planner.Window(comp.MaxKeys(), Key(comp.parent.Position));
             Dictionary<long, CellFlags> flags = mc.Flags(window);
             foreach (long k in occupied)
                 if (flags.TryGetValue(k, out CellFlags f)) flags[k] = f | CellFlags.Pawn;
@@ -790,9 +785,7 @@ namespace RimMandrake.HugeThings
                 if ((f & CellFlags.Item) != 0) item++;
                 if ((f & CellFlags.Protected) != 0) prot++;
             }
-            List<long> roots = new List<long>();
-            foreach (CompHugeFootprint c in mc.comps.Values) roots.Add(Key(c.parent.Position));
-            int accept = Planner.Plan(pendList, roots, k => flags.TryGetValue(k, out CellFlags f) ? f : CellFlags.None, window, clearance).Count;
+            int accept = Planner.Plan(pendList, k => flags.TryGetValue(k, out CellFlags f) ? f : CellFlags.None, window).Count;
             return s + " | pendingFlags notPassable=" + notPass + " pawn=" + pawn + " item=" + item + " protected=" + prot
                 + " outsideWindow=" + outside + " window=" + window.MinX + "," + window.MinZ + ".." + window.MaxX + "," + window.MaxZ
                 + " dryPlanAccepts=" + accept;

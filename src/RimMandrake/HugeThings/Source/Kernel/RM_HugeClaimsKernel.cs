@@ -3,11 +3,9 @@
 // no Verse/RimWorld/UnityEngine. Cells are RM_HugeFootprintKernel.Key(x, z) longs.
 //   ClaimLedger      multi-owner cell claims: a cell is blocked while ANY owner claims it; one physical blocker per cell;
 //                    the result never depends on the order owners registered or refreshed in.
-//   Planner          which claimed-but-open cells may close NOW: never a cell holding a pawn or an item (so nothing is ever
-//                    moved aside or destroyed), never a protected cell (buildings, blueprints, frames, their interaction cells,
-//                    door approaches, trees, other giants, unwalkable ground), and never one whose closing would cut a
-//                    passable component apart anywhere on the map (including pawn clearance) or cut a giant's root off
-//                    from every open 4-neighbour (it must stay cuttable). A refused cell is deferred, not dropped.
+//   Planner          which claimed-but-open cells may close NOW: never over pawns, items, protected buildings,
+//                    blueprints, frames, interaction cells, trees, other giants or unwalkable ground.
+//                    Growth may seal doors and disconnect areas (owner answer 4, 2026-11-11).
 //   FootprintSignature  everything the geometry depends on, compared field by field (the selection/refresh cache key).
 //   DamageDedup      one forwarded hit per (tick, source, owner): a beam or blast crossing several cells of one giant hits it once.
 using System;
@@ -159,16 +157,14 @@ namespace RimMandrake.HugeThings
         Passable = 1,     // a pawn can walk here now (vanilla Walkable, which is false under any impassable edifice)
         Pawn = 2,
         Item = 4,
-        Protected = 8,    // building/blueprint/frame/interaction cell/door approach/tree/other giant/indestructible/bad ground
+        Protected = 8,    // building/blueprint/frame/interaction cell/tree/other giant/indestructible/bad ground
     }
 
     public static class Planner
     {
         public const int Margin = 4;
 
-        /// <summary>Bounds a local reconnection proof by the supplied cells/root plus Margin. Runtime retries use a
-        /// single candidate; batch callers can supply a fixed whole-footprint window for fixpoint idempotence. The
-        /// global safety proof never treats this window's border as a map exit: ambiguous closures stay open.</summary>
+        /// <summary>Bounds placement-flag reads by the supplied cells/root plus Margin.</summary>
         public static CellBox Window(IEnumerable<long> footprint, long root)
         {
             int minX = RM_HugeFootprintKernel.KeyX(root), minZ = RM_HugeFootprintKernel.KeyZ(root), maxX = minX, maxZ = minZ;
@@ -183,161 +179,34 @@ namespace RimMandrake.HugeThings
             return new CellBox(minX - Margin, minZ - Margin, maxX + Margin, maxZ + Margin);
         }
 
-        /// <summary>
-        /// Decide which of `wanted` (claimed, not yet blocked) may close now, in a deterministic order. flagsAt answers for
-        /// any cell; roots keep an open neighbour. Local reconnection is a sufficient proof of GLOBAL connectivity:
-        /// every surviving neighbour of the deleted anchor set must reconnect without leaving the window. Every global
-        /// path through deleted anchors can then substitute that local path. Ambiguous closures stay open. Clearance
-        /// boxes specify occupied width/height (their position is irrelevant); 1x1 is always checked too.
-        /// </summary>
-        public static List<long> Plan(IList<long> wanted, IList<long> roots, Func<long, CellFlags> flagsAt, CellBox window, IList<CellBox> clearance = null, FootprintWorkBudget budget = null)
+        /// <summary>Accept empty, passable, unprotected wanted cells in deterministic order. Access is deliberately
+        /// not a placement constraint: growing trunks can seal doors and disconnect rooms. Occupied cells stay pending.</summary>
+        public static List<long> Plan(IList<long> wanted, Func<long, CellFlags> flagsAt, CellBox window, FootprintWorkBudget budget = null)
         {
-            List<long> accepted = new List<long>();
+            var accepted = new List<long>();
             if (wanted == null || wanted.Count == 0) return accepted;
-            int minX = window.MinX, minZ = window.MinZ, maxX = window.MaxX, maxZ = window.MaxZ;
-            long lw = (long)maxX - minX + 1, lh = (long)maxZ - minZ + 1;
-            if (lw <= 0 || lh <= 0 || lw * lh > MaxWindowCells) return accepted;   // A3.12: refuse an unbounded window
-            int w = (int)lw, h = (int)lh;
-            budget?.Spend(w * (long)h);
-            bool[] pass = new bool[w * h];
-            for (int z = 0; z < h; z++)
-                for (int x = 0; x < w; x++)
-                {
-                    budget?.Spend();
-                    pass[z * w + x] = (flagsAt(RM_HugeFootprintKernel.Key(minX + x, minZ + z)) & CellFlags.Passable) != 0;
-                }
-
-            bool[] before = Reach(pass, w, h, budget);
-            List<int> rootIdx = new List<int>();
-            if (roots != null)
-            {
-                foreach (long k in roots)
-                {
-                    budget?.Spend();
-                    if (!window.Contains(RM_HugeFootprintKernel.KeyX(k), RM_HugeFootprintKernel.KeyZ(k))) continue;
-                    int i = (RM_HugeFootprintKernel.KeyZ(k) - minZ) * w + (RM_HugeFootprintKernel.KeyX(k) - minX);
-                    if (RootServed(i, pass, pass, w, h)) rootIdx.Add(i);   // only roots that have access now must keep it
-                }
-            }
-
-            // Reserve copies, hashing and comparison-sort work before allocating them.
+            long width = (long)window.MaxX - window.MinX + 1, height = (long)window.MaxZ - window.MinZ + 1;
+            if (width <= 0 || height <= 0 || width > MaxWindowCells || height > MaxWindowCells || width * height > MaxWindowCells)
+                return accepted;
             budget?.Spend(8L * wanted.Count * (1 + (long)Math.Ceiling(Math.Log(wanted.Count + 1, 2))));
-            List<long> order = new List<long>(new HashSet<long>(wanted));
+            var order = new List<long>(new HashSet<long>(wanted));
             order.Sort((a, b) =>
             {
-                int za = RM_HugeFootprintKernel.KeyZ(a), zb = RM_HugeFootprintKernel.KeyZ(b);
-                if (za != zb) return za.CompareTo(zb);
-                return RM_HugeFootprintKernel.KeyX(a).CompareTo(RM_HugeFootprintKernel.KeyX(b));
+                int z = RM_HugeFootprintKernel.KeyZ(a).CompareTo(RM_HugeFootprintKernel.KeyZ(b));
+                return z != 0 ? z : RM_HugeFootprintKernel.KeyX(a).CompareTo(RM_HugeFootprintKernel.KeyX(b));
             });
-            // Repeat to a fixpoint: a cell refused because closing it would cut off a neighbour becomes acceptable once that
-            // neighbour itself closes later in the pass (measured: without this a second pass closed more, 132/3000 cases).
-            bool progress = true;
-            while (progress)
+            foreach (long cell in order)
             {
-                progress = false;
-                for (int n = 0; n < order.Count; n++)
-                {
-                    budget?.Spend();
-                    long k = order[n];
-                    CellFlags f = flagsAt(k);
-                    if (!window.Contains(RM_HugeFootprintKernel.KeyX(k), RM_HugeFootprintKernel.KeyZ(k))) continue;
-                    if ((f & CellFlags.Passable) == 0 || (f & (CellFlags.Pawn | CellFlags.Item | CellFlags.Protected)) != 0) continue;
-                    int i = (RM_HugeFootprintKernel.KeyZ(k) - minZ) * w + (RM_HugeFootprintKernel.KeyX(k) - minX);
-                    budget?.Spend(rootIdx.Count);
-                    if (rootIdx.Contains(i) || !pass[i]) continue;
-                    pass[i] = false;
-                    bool[] after = Reach(pass, w, h, budget);
-                    bool ok = Reconnects(i, pass, w, h, 1, 1, budget);
-                    if (clearance != null)
-                        foreach (CellBox size in clearance)
-                        {
-                            budget?.Spend();
-                            if (!ok) break;
-                            ok = Reconnects(i, pass, w, h, size.MaxX - size.MinX + 1, size.MaxZ - size.MinZ + 1, budget);
-                        }
-                    for (int j = 0; j < pass.Length && ok; j++)
-                    {
-                        budget?.Spend();
-                        if (pass[j] && before[j] && !after[j]) ok = false;     // a cell that reached the border no longer does
-                    }
-                    for (int r = 0; r < rootIdx.Count && ok; r++)
-                    {
-                        budget?.Spend();
-                        if (!RootServed(rootIdx[r], pass, pass, w, h)) ok = false;
-                    }
-                    if (ok)
-                    {
-                        accepted.Add(k);
-                        before = after;
-                        progress = true;
-                    }
-                    else
-                    {
-                        pass[i] = true;
-                    }
-                }
+                budget?.Spend();
+                if (!window.Contains(RM_HugeFootprintKernel.KeyX(cell), RM_HugeFootprintKernel.KeyZ(cell))) continue;
+                CellFlags flags = flagsAt(cell);
+                if ((flags & CellFlags.Passable) != 0 && (flags & (CellFlags.Pawn | CellFlags.Item | CellFlags.Protected)) == 0)
+                    accepted.Add(cell);
             }
-            // PLANT_FOOTPRINT_HARDENING_1 (A3.3): returned in ACCEPTANCE order, never re-sorted. A cell accepted on a later fixpoint
-            // round depends on cells accepted before it; every prefix of this list is safe to close on its own, so a realizer
-            // must spawn in this order and stop at its first failure (RealizeInOrder).
             return accepted;
         }
 
-        // pass already has the candidate closed. In the anchor graph, closing a physical cell deletes all
-        // previously valid occupied rectangles containing it. Require ALL surviving neighbours of that set to
-        // reconnect locally. This is conservative even when the deleted anchors had separate components before.
-        private static bool Reconnects(int cell, bool[] pass, int w, int h, int sx, int sz, FootprintWorkBudget budget)
-        {
-            int cx = cell % w, cz = cell / w;
-            if (sx <= 0 || sz <= 0 || cx - sx < 0 || cz - sz < 0 || cx + sx >= w || cz + sz >= h) return false;
-            bool Fits(int x, int z, bool before)
-            {
-                budget?.Spend();
-                if (x < 0 || z < 0 || x + sx > w || z + sz > h) return false;
-                for (int dz = 0; dz < sz; dz++)
-                    for (int dx = 0; dx < sx; dx++)
-                    {
-                        budget?.Spend();
-                        int i = (z + dz) * w + x + dx;
-                        if (!pass[i] && !(before && i == cell)) return false;
-                    }
-                return true;
-            }
-            var boundary = new HashSet<int>();
-            int[] dxs = { 1, -1, 0, 0, 1, 1, -1, -1 }, dzs = { 0, 0, 1, -1, 1, -1, 1, -1 };
-            for (int z = cz - sz + 1; z <= cz; z++)
-                for (int x = cx - sx + 1; x <= cx; x++)
-                {
-                    if (!Fits(x, z, true)) continue;
-                    // Include diagonal boundary edges too; reconnect via cardinal steps, a sufficient proof for both.
-                    for (int d = 0; d < 8; d++)
-                    {
-                        int nx = x + dxs[d], nz = z + dzs[d];
-                        if (Fits(nx, nz, false)) boundary.Add(nz * w + nx);
-                    }
-                }
-            if (boundary.Count <= 1) return true;
-            var seen = new HashSet<int>();
-            var todo = new Stack<int>();
-            foreach (int i in boundary) { todo.Push(i); seen.Add(i); break; }
-            while (todo.Count > 0)
-            {
-                budget?.Spend();
-                int i = todo.Pop();
-                boundary.Remove(i);
-                if (boundary.Count == 0) return true;
-                for (int d = 0; d < 4; d++)
-                {
-                    int x = i % w + dxs[d], z = i / w + dzs[d];
-                    int next = z * w + x;
-                    if (Fits(x, z, false) && seen.Add(next)) todo.Push(next);
-                }
-            }
-            return false;
-        }
-
-        /// <summary>PLANT_FOOTPRINT_HARDENING_1 (A3.3): realize `accepted` in order and stop at the first cell that fails, leaving it and
-        /// everything after it pending (a later cell may depend on it). Returns how many were realized.</summary>
+        /// <summary>Realize accepted cells in order, stopping at the first failed placement transaction. Remaining cells stay pending.</summary>
         public static int RealizeInOrder(IList<long> accepted, Func<long, bool> realize)
         {
             int n = 0;
@@ -349,63 +218,9 @@ namespace RimMandrake.HugeThings
             return n;
         }
 
-        /// <summary>PLANT_FOOTPRINT_HARDENING_1 (A3.12): the largest window Plan will allocate for; a bigger one (bad def data) plans
-        /// nothing rather than allocating w*h unbounded.</summary>
+        /// <summary>PLANT_FOOTPRINT_HARDENING_1 (A3.12): the largest placement-flag window; a bigger one (bad def data) plans nothing.</summary>
         public const long MaxWindowCells = 512L * 512L;
 
-        private static bool RootServed(int i, bool[] pass, bool[] reach, int w, int h)
-        {
-            int x = i % w, z = i / w;
-            int[] dx = { 1, -1, 0, 0 }, dz = { 0, 0, 1, -1 };
-            for (int d = 0; d < 4; d++)
-            {
-                int nx = x + dx[d], nz = z + dz[d];
-                if (nx < 0 || nz < 0 || nx >= w || nz >= h) return true;   // touches the border: reachable from outside
-                int j = nz * w + nx;
-                if (pass[j] && reach[j]) return true;
-            }
-            return false;
-        }
-
-        /// <summary>4-connected flood from every passable border cell.</summary>
-        public static bool[] Reach(bool[] pass, int w, int h, FootprintWorkBudget budget = null)
-        {
-            budget?.Spend(pass.Length); // allocation/zeroing
-            bool[] seen = new bool[pass.Length];
-            Stack<int> st = new Stack<int>();
-            for (int x = 0; x < w; x++)
-            {
-                budget?.Spend();
-                Seed(x, pass, seen, st);
-                Seed((h - 1) * w + x, pass, seen, st);
-            }
-            for (int z = 0; z < h; z++)
-            {
-                budget?.Spend();
-                Seed(z * w, pass, seen, st);
-                Seed(z * w + w - 1, pass, seen, st);
-            }
-            while (st.Count > 0)
-            {
-                budget?.Spend();
-                int i = st.Pop();
-                int x = i % w, z = i / w;
-                if (x > 0) Seed(i - 1, pass, seen, st);
-                if (x < w - 1) Seed(i + 1, pass, seen, st);
-                if (z > 0) Seed(i - w, pass, seen, st);
-                if (z < h - 1) Seed(i + w, pass, seen, st);
-            }
-            return seen;
-        }
-
-        private static void Seed(int i, bool[] pass, bool[] seen, Stack<int> st)
-        {
-            if (pass[i] && !seen[i])
-            {
-                seen[i] = true;
-                st.Push(i);
-            }
-        }
     }
 
     /// <summary>

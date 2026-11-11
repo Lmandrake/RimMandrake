@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
+  <WorkGiverDef>
+    <defName>RM_CutHugePlantFromTrunk</defName>
+    <label>cut enclosed huge plants</label>
+    <giverClass>RimMandrake.HugeThings.WorkGiver_CutHugePlantFromTrunk</giverClass>
+    <workType>PlantCutting</workType>
+    <priorityInType>1</priorityInType>
+    <verb>cut</verb>
+    <gerund>cutting</gerund>
+    <requiredCapacities><li>Manipulation</li></requiredCapacities>
+  </WorkGiverDef>
+
 
   <WorkGiverDef>
     <defName>RM_HarvestTitanicCorpse</defName>

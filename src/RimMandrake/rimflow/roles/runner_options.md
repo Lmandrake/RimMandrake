@@ -179,7 +179,10 @@ accepted receipts. These were not reasons to skip a check.
 
 The pit judge's four bullets are true, with relative D6 versus legacy absolute D4,
 a healed upright fixture and a complete isolated 60000-tick day in each arm.
-HugeThings proves distant 1×1 pawn connectivity, sparse-workload convergence and
-T3 retry/butcher controls with occupied reload. Large Pawns live clearance,
+HugeThings retains sparse-workload and T3 retry/butcher checks in
+`HugeThings/northstar/workload_corpse_live.py`. The current doorway promise is
+growth sealing access until a real cutting job removes the plant, exercised by
+`HugeThings/northstar/trunk_doors_live.py`; acceptance requires that script's own
+current raw proof. Large Pawns live clearance,
 adversarial cross-map live exhaustion, dense Rot timing, full-list integration
 and the review's remaining P2/design work are still UNVERIFIED here.

@@ -11,8 +11,8 @@
 //   boundary     growths that put an edge within 1e-4 of a cell centre, nudged both ways, against the oracle
 //   symmetry     integer translation moves the footprint with the root; a mirrored mask with the opposite flip is identical
 //   ledger       overlap: realized = union of claims in any order; idempotent re-set; removing one owner keeps the rest
-//   planner      never closes pawn/item/protected cells, never cuts a cell off from open ground or a root from access;
-//                order-independent; idempotent (checked against an independent flood over the planning window)
+//   planner      closes every empty passable unprotected wanted cell; preserves occupied/protected cells;
+//                order-independent and idempotent. Door approaches and disconnected areas may close.
 //   cache        signature cache == fresh computation as each field changes alone, selection kept with blocking off,
 //                and it recomputes exactly when the signature changed
 //   hitbox       huge-pawn click box: never smaller than the footprint, covers the drawn box, vanilla when it adds nothing
@@ -430,79 +430,25 @@ namespace RimMandrake.HugeThings.SelfTest
             return g;
         }
 
-        // Independent WHOLE-MAP oracle: label anchor components before and after. Every pair of surviving
-        // anchors connected before must remain connected. No planning-window border participates in this oracle.
-        private static bool GlobalConnectivity(Grid g, HashSet<long> closed, int sx, int sz)
-        {
-            Dictionary<long, int> Labels(bool after)
-            {
-                var labels = new Dictionary<long, int>();
-                bool Fits(int x, int z)
-                {
-                    if (x < 0 || z < 0 || x + sx > g.W || z + sz > g.H) return false;
-                    for (int oz = 0; oz < sz; oz++)
-                        for (int ox = 0; ox < sx; ox++)
-                            if ((g.F[(z + oz) * g.W + x + ox] & CellFlags.Passable) == 0 ||
-                                (after && closed.Contains(K.Key(x + ox, z + oz)))) return false;
-                    return true;
-                }
-                int component = 0;
-                for (int z = 0; z < g.H; z++)
-                    for (int x = 0; x < g.W; x++)
-                    {
-                        long start = K.Key(x, z);
-                        if (labels.ContainsKey(start) || !Fits(x, z)) continue;
-                        var queue = new Queue<long>();
-                        queue.Enqueue(start); labels[start] = ++component;
-                        while (queue.Count > 0)
-                        {
-                            long at = queue.Dequeue();
-                            int ax = K.KeyX(at), az = K.KeyZ(at);
-                            foreach (long next in new[] { K.Key(ax+1, az), K.Key(ax-1, az), K.Key(ax, az+1), K.Key(ax, az-1) })
-                                if (!labels.ContainsKey(next) && Fits(K.KeyX(next), K.KeyZ(next)))
-                                { labels[next] = component; queue.Enqueue(next); }
-                        }
-                    }
-                return labels;
-            }
-            var before = Labels(false); var afterLabels = Labels(true);
-            var destinations = new Dictionary<int, int>();
-            foreach (var pair in afterLabels)
-            {
-                int original = before[pair.Key];
-                if (destinations.TryGetValue(original, out int destination) && destination != pair.Value) return false;
-                destinations[original] = pair.Value;
-            }
-            return true;
-        }
-
-        private static string CaseGlobalPlanner(int seed)
+        private static string CaseDoorSealing(int seed)
         {
             int shift = new Random(seed).Next(6), gateZ = 30 + shift;
             var g = new Grid { W = 72, H = 72, F = Enumerable.Repeat(CellFlags.Passable, 72*72).ToArray() };
             for (int z = 10; z <= 60; z++) { g.F[z*g.W+10] = CellFlags.None; g.F[z*g.W+60] = CellFlags.None; }
             for (int x = 10; x <= 60; x++) { g.F[10*g.W+x] = CellFlags.None; g.F[60*g.W+x] = CellFlags.None; }
             long gate = K.Key(10, gateZ); g.F[gateZ*g.W+10] = CellFlags.Passable;
-            var wanted = new List<long> { gate }; var roots = new List<long> { K.Key(12, gateZ+2) };
-            var window = Planner.Window(wanted, roots[0]);
-            Check(!GlobalConnectivity(g, new HashSet<long> { gate }, 1, 1), "global oracle failed to catch old large-enclosure closure");
-            Check(Planner.Plan(wanted, roots, g.At, window).Count == 0, "sole entrance of enclosure extending beyond window closed");
-            // A 4-wide gate narrowed to 3: still connected for a 1x1 pawn, disconnected for a 4x4 pawn.
-            for (int z = 0; z < g.H; z++)
-                for (int x = 0; x < g.W; x++) g.F[z*g.W+x] = x == 32 && (z < 29 || z > 32) ? CellFlags.None : CellFlags.Passable;
-            long edge = K.Key(32, 29); wanted[0] = edge; roots[0] = K.Key(30, 30);
-            window = new CellBox(22, 19, 42, 42);
-            var sizes = new List<CellBox> { new CellBox(0, 0, 3, 3) };
-            Check(GlobalConnectivity(g, new HashSet<long> { edge }, 1, 1), "clearance fixture must remain open to 1x1");
-            Check(!GlobalConnectivity(g, new HashSet<long> { edge }, 4, 4), "global oracle missed large-pawn clearance loss");
-            Check(Planner.Plan(wanted, roots, g.At, window, sizes).Count == 0, "narrowed sole large-pawn entrance");
-            // Ordinary open terrain uses only the supplied local window and still closes.
-            Check(Planner.Plan(wanted, roots, k => CellFlags.Passable, window, sizes).Count == 1, "obviously safe open cell refused");
+            var wanted = new List<long> { gate };
+            var window = Planner.Window(wanted, K.Key(12, gateZ+2));
+            Check(Planner.Plan(wanted, g.At, window).SequenceEqual(wanted), "empty sole entrance did not seal");
+            foreach (CellFlags occupied in new[] { CellFlags.Pawn, CellFlags.Item, CellFlags.Protected })
+            {
+                g.F[gateZ*g.W+10] = CellFlags.Passable | occupied;
+                Check(Planner.Plan(wanted, g.At, window).Count == 0, "occupied/protected entrance closed");
+            }
             return "";
         }
 
-        /// <summary>The planner never closes a pawn/item/protected/impassable cell, never cuts a passable cell off from the
-        /// border it reached, keeps every served root served, is order-independent and idempotent.</summary>
+        /// <summary>Exact placement eligibility, order independence and idempotence, without any keep-access exception.</summary>
         internal static string CasePlanner(int seed)
         {
             var r = new Random(seed);
@@ -512,9 +458,7 @@ namespace RimMandrake.HugeThings.SelfTest
             var roots = new List<long> { K.Key(w / 2, h / 2 - 1) };
             wanted.Remove(roots[0]);
             CellBox win = Planner.Window(wanted, roots[0]);
-            int sx = 1 + r.Next(4), sz = 1 + r.Next(4);
-            var clearance = new List<CellBox> { new CellBox(0, 0, sx - 1, sz - 1) };
-            List<long> acc = Planner.Plan(wanted, roots, g.At, win, clearance);
+            List<long> acc = Planner.Plan(wanted, g.At, win);
             var accSet = new HashSet<long>(acc);
             Check(accSet.Count == acc.Count, "duplicate planned cells");
             Check(accSet.IsSubsetOf(wanted), "planned a cell nobody wanted");
@@ -527,79 +471,26 @@ namespace RimMandrake.HugeThings.SelfTest
                 Check((f & CellFlags.Protected) == 0, "closed a protected cell");
                 Check(!roots.Contains(k), "closed a root");
             }
-            Check(GlobalConnectivity(g, accSet, 1, 1), "whole-map 1x1 component split");
-            Check(GlobalConnectivity(g, accSet, sx, sz), "whole-map clearance component split");
-            // Retain the old window oracle as an additional (weaker) check.
-            bool[] Board(HashSet<long> closed, out int bw, out int bh)
-            {
-                bw = win.MaxX - win.MinX + 1; bh = win.MaxZ - win.MinZ + 1;
-                var pass = new bool[bw * bh];
-                for (int z = 0; z < bh; z++)
-                    for (int x = 0; x < bw; x++)
-                    {
-                        long k = K.Key(x + win.MinX, z + win.MinZ);
-                        pass[z * bw + x] = (g.At(k) & CellFlags.Passable) != 0 && !closed.Contains(k);
-                    }
-                return pass;
-            }
-            bool[] p0 = Board(new HashSet<long>(), out int W2, out int H2);
-            bool[] p1 = Board(accSet, out _, out _);
-            bool[] r0 = Flood(p0, W2, H2), r1 = Flood(p1, W2, H2);
-            for (int i = 0; i < p1.Length; i++)
-            {
-                if (p1[i] && r0[i]) Check(r1[i], "a cell that reached open ground is now cut off (trapped pawn / new pocket) at " + (i % W2 + win.MinX) + "," + (i / W2 + win.MinZ));
-            }
-            foreach (long root in roots)
-            {
-                int ri = (K.KeyZ(root) - win.MinZ) * W2 + K.KeyX(root) - win.MinX;
-                bool Served(bool[] pass, bool[] reach) => new[] { 1, -1, W2, -W2 }.Any(d => pass[ri + d] && reach[ri + d]);
-                if (Served(p0, r0)) Check(Served(p1, r1), "the root lost every reachable open neighbour (cannot be cut)");
-            }
-            // PLANT_FOOTPRINT_HARDENING_1 (A3.3): every PREFIX of the acceptance order is safe to close on its own (a realizer that
-            // stops at its first failure leaves only a prefix), and RealizeInOrder stops at an injected failure.
+            var expected = wanted.Distinct().Where(k => g.At(k) == CellFlags.Passable)
+                .OrderBy(k => K.KeyZ(k)).ThenBy(k => K.KeyX(k)).ToList();
+            Check(acc.SequenceEqual(expected), "planner did not close exactly the eligible cells");
             if (acc.Count > 1)
             {
-                int cut = r.Next(1, acc.Count);
-                bool[] pp = Board(new HashSet<long>(acc.Take(cut)), out _, out _);
-                bool[] rp = Flood(pp, W2, H2);
-                for (int i = 0; i < pp.Length; i++)
-                    if (pp[i] && r0[i]) Check(rp[i], "the first " + cut + " of " + acc.Count + " accepted cells, closed alone, cut a cell off: acceptance order is not a dependency order");
                 var done = new List<long>();
                 int fail = r.Next(0, acc.Count);
                 int n = Planner.RealizeInOrder(acc, k => { if (done.Count == fail) return false; done.Add(k); return true; });
-                Check(n == fail && done.SequenceEqual(acc.Take(fail)), "RealizeInOrder did not stop at the first failure (" + n + " realized, failure at " + fail + ")");
+                Check(n == fail && done.SequenceEqual(acc.Take(fail)), "realizer did not stop at the failed transaction");
             }
             // order independence
             var shuffled = wanted.OrderBy(_ => r.Next()).ToList();
-            List<long> acc2 = Planner.Plan(shuffled, roots, g.At, win, clearance);
+            List<long> acc2 = Planner.Plan(shuffled, g.At, win);
             Check(acc2.SequenceEqual(acc), "planning depends on the order cells were wanted in");
             // idempotence: with the accepted cells closed, the rest stays deferred
             Grid g2 = new Grid { W = w, H = h, F = (CellFlags[])g.F.Clone() };
             foreach (long k in acc) g2.F[K.KeyZ(k) * w + K.KeyX(k)] = CellFlags.None;
-            List<long> again = Planner.Plan(wanted.Where(k => !accSet.Contains(k)).ToList(), roots, g2.At, win, clearance);
+            List<long> again = Planner.Plan(wanted.Where(k => !accSet.Contains(k)).ToList(), g2.At, win);
             Check(again.Count == 0, "a second plan on the same map closed " + again.Count + " more cells (not idempotent)");
             return string.Join(" ", acc);
-        }
-
-        /// <summary>Independent 4-connected flood from the border (BFS over a queue; the planner uses a stack).</summary>
-        private static bool[] Flood(bool[] pass, int w, int h)
-        {
-            var seen = new bool[pass.Length];
-            var q = new Queue<int>();
-            for (int i = 0; i < pass.Length; i++)
-            {
-                int x = i % w, z = i / w;
-                if (pass[i] && (x == 0 || z == 0 || x == w - 1 || z == h - 1)) { seen[i] = true; q.Enqueue(i); }
-            }
-            while (q.Count > 0)
-            {
-                int i = q.Dequeue(), x = i % w, z = i / w;
-                foreach (int j in new[] { x > 0 ? i - 1 : -1, x < w - 1 ? i + 1 : -1, z > 0 ? i - w : -1, z < h - 1 ? i + w : -1 })
-                {
-                    if (j >= 0 && pass[j] && !seen[j]) { seen[j] = true; q.Enqueue(j); }
-                }
-            }
-            return seen;
         }
 
         /// <summary>The cache returns exactly what a fresh computation would, as each signature field changes alone.</summary>
@@ -721,7 +612,7 @@ namespace RimMandrake.HugeThings.SelfTest
             // PLANT_FOOTPRINT_HARDENING_1 (C3.2): assign and plan iterate (as production does) until no source the planner refuses
             // still holds destinations; liveness: every source keeping a move is accepted.
             List<long> PlanWith(Dictionary<long, List<long>> mv)
-                => Planner.Plan(claimed, new List<long> { root }, k =>
+                => Planner.Plan(claimed, k =>
                    {
                        if (!flags.TryGetValue(k, out CellFlags f)) return CellFlags.Passable;
                        return mv.ContainsKey(k) ? f & ~CellFlags.Item : f;
@@ -807,7 +698,7 @@ namespace RimMandrake.HugeThings.SelfTest
             if (only == null || only == "ledger") ok &= Family("ledger", N(4000), one, CaseLedger);
             if (only == null || only == "planner")
             {
-                ok &= Family("global-planner", N(30), one, CaseGlobalPlanner);
+                ok &= Family("door-sealing", N(30), one, CaseDoorSealing);
                 ok &= Family("planner", N(3000), one, CasePlanner);
             }
             if (only == null || only == "items") ok &= Family("items", N(4000), one, CaseItems);

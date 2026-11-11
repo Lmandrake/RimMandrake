@@ -662,7 +662,7 @@ def _build_suite():
                 ("trunk_relinks_after_save_load", None, "needs a save/load round on a map with a giant"),
                 ("shot_into_trunk_damages_the_plant_once", "plantTrunkDamageEnabled", "no bridge tool fires a projectile or explosion at a cell; offline: kernel fuzz `damage`, static patch checks"),
                 ("growth_pushes_items_never_wipes_them", "plantItemPushEnabled", "needs items staged under a growing footprint; offline: kernel fuzz `items`"),
-                ("growth_never_traps_a_pawn", None, "needs a pawn staged inside a growing footprint; offline: kernel fuzz `planner`"),
+                ("growth_seals_door_then_cut_restores_access", None, "northstar/trunk_doors_live.py: real growth and cutting job on restored disposable site"),
                 ("zone_cells_survive_blockers", None, "needs a stockpile staged under a footprint; offline: static patch check"),
                 ("mapgen_giants_get_trunks", None, "needs a fresh Rot map generation"),
                 ("t2_holes_thin_roofs_and_crushes_walls", "wakeRoofHolingEnabled",

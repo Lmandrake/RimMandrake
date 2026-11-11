@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
+  <!-- Same plant work pipeline as vanilla CutPlantDesignated; C is an owned trunk approach. -->
+  <JobDef>
+    <defName>RM_CutHugePlantFromTrunk</defName>
+    <driverClass>RimWorld.JobDriver_PlantCut_Designated</driverClass>
+    <reportString>cutting TargetA.</reportString>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
+
 
   <JobDef>
     <defName>RM_HarvestTitanicCorpse</defName>

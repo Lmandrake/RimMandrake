@@ -298,7 +298,7 @@ def patch_is_what_the_tool_measures_from_the_current_art():
 
 
 @test
-def root_only_giants_are_made_impassable_and_stay_cuttable():
+def root_only_giants_are_made_impassable():
     """Owner ruling 2026-10-07 21:08: a giant whose every measured picture touches the ground only in its own cell is made
     Impassable on that cell, by the generic rule (never a per-species exception). Pins which giants that is today, and that
     the code path carries its 1.6 evidence: Touch reaches an impassable 1x1 plant from an adjacent cell."""
@@ -311,9 +311,6 @@ def root_only_giants_are_made_impassable_and_stay_cuttable():
     assert "RM_GiantAgarilux" not in core and "GiantAgarilux" not in core, "a hand-tuned exception crept in"
     for needle in ("PathEndMode.Touch", "WorkGiver_PlantsCut", "WorkGiver_GrowerHarvest", "TouchPathEndModeUtility.AddAllowedAdjacentRegions"):
         assert needle in core, "the impassable-root note lost its 1.6 evidence: %s" % needle
-    # the root of an impassable plant must still have an open neighbour: the planner keeps every served root served
-    comp = open(os.path.join(HERE, "Source", "MapComponent_HugeFootprints.cs"), encoding="utf-8").read()
-    assert "Planner.Plan(mine, roots," in comp
 
 
 @test
