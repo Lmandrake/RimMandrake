@@ -1,0 +1,11 @@
+{
+  "time": 1794398348.2706742,
+  "repo": "/home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/bridgetools/artifacts/BridgeTools/JawaBench/JawaBench.BridgeTools.dll",
+  "game": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/BridgeTools/JawaBench/JawaBench.BridgeTools.dll",
+  "repo_sha256": "d76ec2b1e18929ea8ba81fe360690811774befe9f5a30f81839df8f478c5e083",
+  "game_sha256": "d76ec2b1e18929ea8ba81fe360690811774befe9f5a30f81839df8f478c5e083",
+  "source_hash": "48258bf21f617ff5b51bfe3951b4b3f20132ba6353887b5a81a34e60e03ad6ea",
+  "embedded_source_hash": "48258bf21f617ff5b51bfe3951b4b3f20132ba6353887b5a81a34e60e03ad6ea",
+  "build_commit": "446ec4d7dbb5b4f280143e75a2079e02921f3bd7",
+  "matching": true
+}

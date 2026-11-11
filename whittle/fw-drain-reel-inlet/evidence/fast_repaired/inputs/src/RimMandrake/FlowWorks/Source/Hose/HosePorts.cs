@@ -1,0 +1,280 @@
+using System;
+using System.Collections.Generic;
+using Verse;
+using RimMandrake.Shared.Slack;
+
+namespace RimMandrake.FlowWorks.Hose
+{
+    /// <summary>
+    /// Opt-in for any building a hose reel may couple to (owner review round 2, 2026-10-04: "the Hose Reel can also connect
+    /// to standard static piping and other pipe-friendly buildings (like tanks) ... universal pipes that can carry any liquid
+    /// of any kind"). FlowWorks' universal pipe / universal tank (design-only today) add this to their defs; nothing else
+    /// is needed on their side. kind: Pipe | Tank | Other.
+    /// </summary>
+    public class HosePortExtension : DefModExtension
+    {
+        public HosePortKind kind = HosePortKind.Pipe;
+    }
+
+    /// <summary>
+    /// Which neighbour a reel is coupled to (what the DRAWN hose screws onto). Classifies by def extension first, then
+    /// FlowWorks' own types (tank, universal pipe, liquid machines), then by TYPE NAME for the mods FlowWorks never
+    /// references: a VE PipeSystem storage comp = Tank, any other VE PipeSystem resource comp (its pipes) = Pipe; a Dubs Bad
+    /// Hygiene pipe comp = Pipe -- those stay VISUAL couplings only (RM_LiquidNet.RoleOfThing: None). The choice itself is
+    /// HosePortRule (Verse-free, selftested).
+    /// </summary>
+    public static class HosePorts
+    {
+        private static readonly Dictionary<ThingDef, HosePortKind> cache = new Dictionary<ThingDef, HosePortKind>();
+
+        public static HosePortKind Classify(Thing t)
+        {
+            if (t?.def == null || t.def.category != ThingCategory.Building) return HosePortKind.None;
+            if (cache.TryGetValue(t.def, out HosePortKind k)) return k;
+            k = ClassifyDef(t);
+            cache[t.def] = k;
+            return k;
+        }
+
+        private static HosePortKind ClassifyDef(Thing t)
+        {
+            HosePortExtension ext = t.def.GetModExtension<HosePortExtension>();
+            if (ext != null) return ext.kind;
+            if (t is ThingWithComps tw && tw.GetComp<CompHoseReel>() != null) return HosePortKind.None;
+            // FlowWorks' own buildings by TYPE since the hose moved into FlowWorks (hose port): the tank, the universal pipe, and
+            // the liquid machines (Machine kind, step 6). The hydraulic role (RM_LiquidNet.RoleOfThing) decides what CARRIES.
+            if (t is RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank) return HosePortKind.Tank;
+            if (RimMandrake.FlowWorks.Machinery.RM_LiquidNet.IsPipe(t)) return HosePortKind.Pipe;
+            if (RimMandrake.FlowWorks.Machinery.RM_LiquidNet.RoleOfKind(t) == RimMandrake.FlowWorks.Machinery.RM_NetRole.Machine) return HosePortKind.Machine;
+            HosePortKind best = HosePortKind.None;
+            if (t.def.comps != null)
+                foreach (CompProperties cp in t.def.comps)
+                {
+                    HosePortKind ck = ClassifyComp(cp.compClass);
+                    if (ck < best) best = ck;
+                }
+            return best;
+        }
+
+        private static HosePortKind ClassifyComp(Type ty)
+        {
+            for (; ty != null && ty != typeof(object); ty = ty.BaseType)
+            {
+                string ns = ty.Namespace ?? "", n = ty.Name;
+                if (ns == "PipeSystem" && n.StartsWith("CompResourceStorage", StringComparison.Ordinal)) return HosePortKind.Tank;
+                if (ns == "PipeSystem" && n == "CompResource") return HosePortKind.Pipe;
+                if (ns.StartsWith("DubsBadHygiene", StringComparison.Ordinal) && n == "CompPipe") return HosePortKind.Pipe;
+            }
+            return HosePortKind.None;
+        }
+
+        /// <summary>GPT source read 2026-10-06 B14: Pick keeps the first of equal ranks, so candidates go in thing-id order, never
+        /// the order things happen to sit in a cell's list.</summary>
+        private static void ById(List<Thing> things, List<HosePortCandidate> cands)
+        {
+            if (things.Count < 2) return;   // HOSES_MAP1_DIAGNOSE_TICK_STALLS: nothing to order
+            // HOSE_TICK_REBUILD_ZERO_ALLOC: insertion sort of both lists in step, in place (a handful of candidates; the
+            // callers never add a thing twice, so ids are distinct and the order equals the old index sort)
+            for (int i = 1; i < things.Count; i++)
+            {
+                Thing t = things[i];
+                HosePortCandidate c = cands[i];
+                int j = i - 1;
+                while (j >= 0 && things[j].thingIDNumber > t.thingIDNumber)
+                {
+                    things[j + 1] = things[j];
+                    cands[j + 1] = cands[j];
+                    j--;
+                }
+                things[j + 1] = t;
+                cands[j + 1] = c;
+            }
+        }
+
+        /// <summary>Calls to <see cref="Find"/> since load (RM_HoseLinks.ProofTiming reads the delta per Refresh).</summary>
+        internal static int FindCalls;
+
+        /// <summary>The reel's coupled neighbour (null when none), the side it is on and its kind.</summary>
+        internal static Thing Find(CompHoseReel r, out Cell side, out Cell contact, out HosePortKind kind)
+        {
+            FindCalls++;
+            Thing t = RawFind(r, out side, out contact, out kind);
+            if (t is RimMandrake.FlowWorks.LiquidTypes.Building_LiquidPump pump && !PumpSideTakes(pump, ReelSideOn(pump, r), r))
+            {
+                kind = HosePortKind.None;
+                return null;
+            }
+            return t;
+        }
+
+        /// <summary>The geometric coupling of a reel's body, before the pump's one-port-per-side gate.</summary>
+        private static Thing RawFind(CompHoseReel r, out Cell side, out Cell contact, out HosePortKind kind)
+        {
+            side = contact = new Cell(0, 0);
+            kind = HosePortKind.None;
+            Map map = r.parent.Map;
+            if (map == null) return null;
+            HoseReelRect rect = r.Rect;
+            // HOSES_MAP1_DIAGNOSE_TICK_STALLS: reused scratch (main thread; nothing below re-enters RawFind), not three lists a call
+            List<Thing> things = rawThings; things.Clear();
+            List<HosePortCandidate> cands = rawCands; cands.Clear();
+            List<Cell> perim = rawPerim;
+            HashSet<Cell> reachable = rawReachable; reachable.Clear();
+            rect.PerimeterInto(perim);
+            for (int pi = 0; pi < perim.Count; pi++)
+            {
+                Cell pc = perim[pi];
+                var c = new IntVec3(pc.X, 0, pc.Z);
+                if (!c.InBounds(map)) continue;
+                // REEL_BODY_INLET_FIX_SKIPS_DEPTH_RULES: clamp the OUTSIDE contact to its adjacent body edge cell.
+                // A multi-cell reel's origin/centre is not that cell. Route links (ramps/ladders) do not grant endpoint
+                // reach across bands. Filter in Pick too: another cell of this same neighbour may be reachable.
+                var body = new IntVec3(Math.Max(rect.X0, Math.Min(pc.X, rect.X0 + rect.W - 1)), 0,
+                    Math.Max(rect.Z0, Math.Min(pc.Z, rect.Z0 + rect.H - 1)));
+                if (!HoseBandMath.EndReaches(RM_HoseBands.BandAt(map, body), RM_HoseBands.BandAt(map, c))) continue;
+                reachable.Add(pc);
+                List<Thing> l = c.GetThingList(map);
+                for (int i = 0; i < l.Count; i++)
+                {
+                    Thing t = l[i];
+                    if (t == r.parent || things.Contains(t)) continue;
+                    HosePortKind k = Classify(t);
+                    if (k == HosePortKind.None) continue;
+                    CellRect rc = t.OccupiedRect();
+                    things.Add(t);
+                    cands.Add(new HosePortCandidate(rc.minX, rc.minZ, rc.Width, rc.Height, k));
+                }
+            }
+            ById(things, cands);
+            int pick = HosePortRule.Pick(rect, cands, out side, out contact, reachable);
+            if (pick < 0) return null;
+            kind = cands[pick].Kind;
+            return things[pick];
+        }
+
+        /// <summary>Carry stage S4 (design section 7): the pipe/tank, of ANY faction, beside a hose's free end at
+        /// <paramref name="end"/> (the same rule as the reel side, the end cell treated as a 1x1 reel). A thing standing ON the
+        /// end cell counts too (a hose pushed into a tank's footprint couples to it). Null = none.</summary>
+        internal static Thing FindAt(Map map, IntVec3 end, Thing exclude, out Cell side, out HosePortKind kind)
+        {
+            Thing t = RawFindAt(map, end, exclude, out side, out kind);
+            if (t is RimMandrake.FlowWorks.LiquidTypes.Building_LiquidPump pump
+                && !PumpSideTakes(pump, EndSideOn(pump, end), (exclude as ThingWithComps)?.GetComp<CompHoseReel>()))
+            {
+                kind = HosePortKind.None;
+                return null;
+            }
+            return t;
+        }
+
+        // ---------------------------------------------------------------- FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE
+        /// <summary>The pump side whose port cell (RM_PumpPortMath.PortCell) a reel's body covers, or -1 (a corner, another lane).</summary>
+        private static int ReelSideOn(Thing pump, CompHoseReel r)
+        {
+            // HOSE_END_FIX_CELL_SHORT_OF_PORT: the port cell is read off the pump's footprint (a 3x2 station has four too)
+            CellRect rc = r.parent.OccupiedRect(), pr = pump.OccupiedRect();
+            for (int s = 0; s < 4; s++)
+            {
+                RimMandrake.FlowWorks.Machinery.RM_PumpPortMath.PortCell(pr.minX, pr.minZ, pr.Width, pr.Height, pump.Position.x, pump.Position.z, s,
+                    out int nx, out int nz);
+                if (rc.Contains(new IntVec3(nx, 0, nz))) return s;
+            }
+            return -1;
+        }
+
+        /// <summary>The pump side whose port cell a free end at <paramref name="end"/> lies on, or -1 (a corner, another lane of a
+        /// long side, or pushed onto the pump itself).</summary>
+        private static int EndSideOn(Thing pump, IntVec3 end)
+        {
+            CellRect pr = pump.OccupiedRect();
+            return RimMandrake.FlowWorks.Machinery.RM_PumpPortMath.SideOfPort(pr.minX, pr.minZ, pr.Width, pr.Height, pump.Position.x, pump.Position.z,
+                end.x, end.z);
+        }
+
+        /// <summary>He typed 2026-10-20, "a HOSE must connect at one of the four sides": may <paramref name="self"/> (a reel, by
+        /// its body or its free end) couple at the port on <paramref name="side"/> of <paramref name="pump"/>? Not on a corner,
+        /// and not where another hose with a lower id already couples (read geometrically, so no recursion). Pipes are not
+        /// ports (they join wherever adjacent) and never block a hose.</summary>
+        private static bool PumpSideTakes(Thing pump, int side, CompHoseReel self)
+        {
+            Map map = pump.Map;
+            if (map == null || side < 0) return false;
+            // HOSE_TICK_REBUILD_ZERO_ALLOC: reused scratch (main thread; RawFind / RawFindAt below never re-enter this gate)
+            List<int> others = sideIds; others.Clear();
+            RM_MapComponent_Hoses comp = map.GetComponent<RM_MapComponent_Hoses>();
+            if (comp != null)
+            {
+                CellRect pr = pump.OccupiedRect();
+                IReadOnlyList<CompHoseReel> reels = comp.OrderedReels();
+                for (int ri = 0; ri < reels.Count; ri++)
+                {
+                    CompHoseReel o = reels[ri];
+                    if (o == null || o == self || o.parent == null || !o.parent.Spawned) continue;
+                    // HOSELINKS_REFRESH_DIAGNOSE_MAP0_TICK_SPIKE: RawFind / RawFindAt only see things on or edge-beside the
+                    // body / end, so a reel whose body and end are both 2+ cells from the pump cannot couple to it; skipping
+                    // it spares a perimeter scan (two allocated lists) per reel per pump Find (HoseLive.RectsNear, an exact superset)
+                    HoseReelRect orr = o.Rect;
+                    bool bodyNear = HoseLive.RectsNear(pr.minX, pr.minZ, pr.Width, pr.Height, orr.X0, orr.Z0, orr.W, orr.H, 1);
+                    bool endNear = o.laid && o.far.IsValid && HoseLive.RectsNear(pr.minX, pr.minZ, pr.Width, pr.Height, o.far.x, o.far.z, 1, 1, 1);
+                    if (!bodyNear && !endNear) continue;
+                    if (bodyNear && RawFind(o, out _, out _, out _) == pump && ReelSideOn(pump, o) == side) others.Add(o.parent.thingIDNumber);
+                    else if (endNear && comp.RelayOf(o) == null && RawFindAt(map, o.far, o.parent, out _, out _) == pump && EndSideOn(pump, o.far) == side)
+                        others.Add(o.parent.thingIDNumber);
+                }
+            }
+            int id = self?.parent != null ? self.parent.thingIDNumber : int.MaxValue;
+            return RimMandrake.FlowWorks.Machinery.RM_PumpPortMath.HoseMayTake(side, id, others);
+        }
+
+        /// <summary>The geometric coupling of a free end, before the pump's one-port-per-side gate.</summary>
+        private static Thing RawFindAt(Map map, IntVec3 end, Thing exclude, out Cell side, out HosePortKind kind)
+        {
+            side = new Cell(0, 0);
+            kind = HosePortKind.None;
+            if (map == null || !end.InBounds(map)) return null;
+            var rect = new HoseReelRect(end.x, end.z, 1, 1);
+            // HOSES_MAP1_DIAGNOSE_TICK_STALLS: reused scratch (HoseEnds.Read calls this every few ticks per free end)
+            List<Thing> things = atThings; things.Clear();
+            List<HosePortCandidate> cands = atCands; cands.Clear();
+            Thing on = null;
+            foreach (Thing t in end.GetThingList(map))
+                if (t != exclude && Classify(t) != HosePortKind.None && (on == null || t.thingIDNumber < on.thingIDNumber)) on = t;
+            if (on != null) { kind = Classify(on); return on; }
+            // PIPE_POLES phase 6 (design §P5): endpoint reach is by band; a port beside the end on another band (a pump on the
+            // lip over a hose end on the pit floor) is not beside it at all
+            int endBand = RM_HoseBands.BandAt(map, end);
+            List<Cell> perim = atPerim;
+            rect.PerimeterInto(perim);
+            for (int pi = 0; pi < perim.Count; pi++)
+            {
+                Cell pc = perim[pi];
+                var c = new IntVec3(pc.X, 0, pc.Z);
+                if (!c.InBounds(map)) continue;
+                if (!HoseBandMath.EndReaches(endBand, RM_HoseBands.BandAt(map, c))) continue;
+                List<Thing> l = c.GetThingList(map);
+                for (int i = 0; i < l.Count; i++)
+                {
+                    Thing t = l[i];
+                    if (t == exclude || things.Contains(t)) continue;
+                    HosePortKind k = Classify(t);
+                    if (k == HosePortKind.None) continue;
+                    CellRect rc = t.OccupiedRect();
+                    things.Add(t);
+                    cands.Add(new HosePortCandidate(rc.minX, rc.minZ, rc.Width, rc.Height, k));
+                }
+            }
+            ById(things, cands);
+            int pick = HosePortRule.Pick(rect, cands, out side, out _);
+            if (pick < 0) return null;
+            kind = cands[pick].Kind;
+            return things[pick];
+        }
+        // end RawFindAt
+
+        private static readonly List<Thing> rawThings = new List<Thing>(), atThings = new List<Thing>();
+        private static readonly List<HosePortCandidate> rawCands = new List<HosePortCandidate>(), atCands = new List<HosePortCandidate>();
+        private static readonly List<Cell> rawPerim = new List<Cell>(), atPerim = new List<Cell>();
+        private static readonly List<int> sideIds = new List<int>();
+        private static readonly HashSet<Cell> rawReachable = new HashSet<Cell>();
+    }
+}

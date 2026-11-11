@@ -1,0 +1,7 @@
+# Completed claim
+
+- true: A reel body cannot hydraulically couple across a sheer depth-band boundary, and still couples to valid same-band neighbours using actual multi-cell contact geometry. | evidence: `whittle/fw-drain-reel-inlet/evidence/final_checks.json`
+- true: Production-linked executable checks reproduce the original defect and reject its return, covering candidate ranking, contact choice, settings and existing free-end/pump semantics where relevant. The relevant FlowWorks selftest and shipping build pass on the repaired source. | evidence: `whittle/fw-drain-reel-inlet/evidence/final_checks.json`
+- true: A disposable live-game acceptance verifies the repaired inlet behavior on the deployed DLL. Evidence names exact inputs, results and remaining limits, with the approved GSS appearance preserved. | evidence: `whittle/fw-drain-reel-inlet/evidence/final_checks.json`
+
+The final receipt re-reads and hashes the original raw runs and current inputs after live restoration/shutdown/release; it is not a repeated suite. See the primary raw paths named there and in JUDGE_PROMPT.md. This item concerns pipe/tank/machine body ports in RawFind; relay intake indexing is a separate path and remains an explicit limit. Forced Port reads refresh its inlet cache; no normal cache-convergence or fluid-transfer proof is claimed. GSS appearance is preserved through unchanged source/assets/DLL hashes, not a new art judgment.

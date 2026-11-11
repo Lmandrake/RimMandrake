@@ -1,0 +1,22 @@
+{
+  "time": 1794399994.3486142,
+  "judge_would_show_yes": true,
+  "judge_result_unchanged": true,
+  "judge_total_cost_usd": 2.256619,
+  "judge_duration_ms": 300058,
+  "judge_num_turns": 65,
+  "broaden_total_cost_usd": 1.5354185999999996,
+  "workflow": {
+    "time": 1794399960.8367336,
+    "WHITTLE_DIR": "whittle/fw-drain-reel-inlet",
+    "need_judge": true,
+    "need_broaden": true,
+    "last_change": 1794399448.4360335,
+    "done_problems": [],
+    "full_validator": "MandrakeWorkflows/whittle/run.py validate(root)",
+    "full_validator_returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "FINDINGS_sha256": "1ec7a708d9d1bbe0bd9087d3df5d4c787d0b7e923168e4310b81dedecc165762"
+}

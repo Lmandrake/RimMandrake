@@ -1,0 +1,1 @@
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\original\AdapterStubs.cs(37,14): error CS0101: The namespace 'RimMandrake.FlowWorks.Machinery' already contains a definition for 'RM_NetRole' [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\original\Probe.csproj]

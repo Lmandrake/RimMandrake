@@ -1,0 +1,16 @@
+{
+  "time": 1794398824.2599268,
+  "command": [
+    "./publish",
+    "-m",
+    "Fix reel inlet depth at real contacts\n\nCo-Authored-By: Codex (GPT) via WSL codex-cli",
+    "src/RimMandrake/FlowWorks/Source/Hose/HoseMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Hose/HosePorts.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/Program.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/RimMandrakeFlowWorks.SelfTest.csproj",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/HoseBodyInletChecks.cs",
+    "src/RimMandrake/FlowWorks/northstar/reel_body_inlet_live.py",
+    "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll",
+    "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll.srchash"
+  ]
+}

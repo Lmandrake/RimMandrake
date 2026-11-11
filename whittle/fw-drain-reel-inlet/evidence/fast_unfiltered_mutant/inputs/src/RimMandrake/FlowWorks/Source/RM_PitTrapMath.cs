@@ -1,0 +1,581 @@
+using System;
+using System.Collections.Generic;
+
+namespace RimMandrake.FlowWorks
+{
+	/// <summary>
+	/// SUPERDEEP_HOLDER_RETIRE_1 — the trap rule's arithmetic, Verse-free on purpose so
+	/// Source/SelfTest/ compiles THIS production file (same discipline as RM_StockMath).
+	///
+	/// A pit is a canal cell dug to SUPERDEEP (D = 4) and nothing else; there is no holder
+	/// Thing. Owner, 2026-10-02 (Q4): <i>"The pit has to be as wide as the creature to hold
+	/// it. Otherwise it gets out."</i> RimWorld pawns occupy one cell, so width is a rule on
+	/// BodySize: required width W = max(1, round(sqrt(BodySize))) (bands &lt;2.25 → 1,
+	/// &lt;6.25 → 2, &lt;12.25 → 3; the bands are a proposal for his word, scaled by a Mod
+	/// Setting). A pawn on a D = 4 cell is held only if some W×W square made entirely of
+	/// D = 4 cells contains its cell. Diagonal runs do not count.
+	/// </summary>
+	public static class RM_PitTrapMath
+	{
+		public const int Superdeep = 4;
+
+		/// <summary>Upper bound on the width ever searched; W = 9 is BodySize ~72-90.</summary>
+		public const int MaxWidth = 9;
+
+		/// <summary>Kg of pawn mass per point of blunt fall damage (inherited from the retired
+		/// Building_OpenPit.FallDamagePerMassKg = 0.08f, unchanged).</summary>
+		public const float FallDamagePerMassKg = 0.08f;
+
+		/// <summary>W = max(1, round(sqrt(bodySize × multiplier))), rounding half AWAY from
+		/// zero so the band edges are exactly 2.25 → 2 and 6.25 → 3.</summary>
+		public static int RequiredWidth(float bodySize, float multiplier = 1f)
+		{
+			float b = bodySize * (multiplier > 0f ? multiplier : 1f);
+			if (!(b > 0f))
+			{
+				return 1;
+			}
+			int w = (int)Math.Round(Math.Sqrt(b), MidpointRounding.AwayFromZero);
+			return Math.Max(1, Math.Min(MaxWidth, w));
+		}
+
+		/// <summary>Is there a w×w square of D = 4 cells containing (x, z)?
+		/// isSuperdeep must answer false out of bounds. At most w² squares × w² reads.</summary>
+		public static bool PitWidthAt(Func<int, int, bool> isSuperdeep, int x, int z, int w)
+		{
+			if (w < 1)
+			{
+				w = 1;
+			}
+			if (!isSuperdeep(x, z))
+			{
+				return false;
+			}
+			for (int ox = x - w + 1; ox <= x; ox++)
+			{
+				for (int oz = z - w + 1; oz <= z; oz++)
+				{
+					bool all = true;
+					for (int dx = 0; dx < w && all; dx++)
+					{
+						for (int dz = 0; dz < w; dz++)
+						{
+							if (!isSuperdeep(ox + dx, oz + dz))
+							{
+								all = false;
+								break;
+							}
+						}
+					}
+					if (all)
+					{
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
+		/// <summary>The widest square pit containing (x, z): 0 if the cell is not D = 4.</summary>
+		public static int MeasuredPitWidth(Func<int, int, bool> isSuperdeep, int x, int z)
+		{
+			int best = 0;
+			for (int w = 1; w <= MaxWidth; w++)
+			{
+				if (!PitWidthAt(isSuperdeep, x, z, w))
+				{
+					break;
+				}
+				best = w;
+			}
+			return best;
+		}
+
+		/// <summary>The trap predicate, given everything already read off the grid.</summary>
+		public static bool Held(bool ruleOn, bool onSuperdeep, bool factionCaptured, bool flying,
+			bool ladderUsableHere, bool wideEnough)
+		{
+			return ruleOn && onSuperdeep && factionCaptured && !flying && !ladderUsableHere && wideEnough;
+		}
+
+		/// <summary>A descent INTO a pit: the previous cell was shallower and this one is D = 4.
+		/// Moving along a D = 4 floor is not a descent; climbing out is not one.</summary>
+		public static bool IsPitDescent(int fromDepth, int toDepth)
+		{
+			return toDepth >= Superdeep && fromDepth < Superdeep;
+		}
+
+		/// <summary>A held pawn may step only to another D = 4 cell.</summary>
+		public static bool StepBlocked(bool heldHere, int toDepth)
+		{
+			return heldHere && toDepth < Superdeep;
+		}
+
+		// ── FLOWWORKS_PIT_FALL_ONLY_FORCED_1 (owner, 2026-10-06): who falls ─────────
+		// "You can't fall in by careless colonist pathing. Only if they get blown/forced in do they
+		// fall. Enemies can fall if the pit is concealed or they are forced/blown in."
+
+		/// <summary>Does this descent into an (uncovered) D = 4 cell count as a FALL (fall damage,
+		/// spikes)? <paramref name="walkedStep"/> = the pawn's own path follower stepped it there;
+		/// anything else (skip/teleport, a flyer landing, the jump gizmo, a mod's push) is forced.
+		/// Covered cells never reach here: a cover is ground until it gives way, and giving way is
+		/// its own fall route (Building_PitCover).</summary>
+		public static bool DescentFalls(bool walkedStep, bool ontoUsableLadder, bool playerFaction, bool captured)
+		{
+			if (!walkedStep)
+			{
+				return true;
+			}
+			if (ontoUsableLadder)
+			{
+				return false; // climbing down a lowered ladder
+			}
+			// A walked step into an open pit is pathing; pathing avoids open pits (RM_PitPathing),
+			// so this is a stale route. Never a colonist's fall; for anyone the hole captures it
+			// keeps the old ruling-26 rule.
+			return !playerFaction && captured;
+		}
+
+		/// <summary>The legs RM_PitPathing can ask the path follower for.</summary>
+		public enum PitLeg
+		{
+			/// <summary>Vanilla request, no customizer.</summary>
+			Vanilla,
+			/// <summary>To the real destination, open pit cells impassable.</summary>
+			AvoidPits,
+			/// <summary>To the real destination, everything but this pit impassable.</summary>
+			StayInPit,
+			/// <summary>One step to (x, z), no customizer (onto a ladder, or up onto the lip).</summary>
+			StepTo,
+			/// <summary>To (x, z), open pit cells impassable (the lip beside a ladder).</summary>
+			WalkToAvoidPits,
+			/// <summary>To (x, z) inside the pit, everything but the pit impassable (to the way out).</summary>
+			WalkToInPit,
+			/// <summary>PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS: to the real destination, the cliff masks deciding the route; only the
+			/// lowered ladders this pawn may not climb (the prison-door rule) are closed, by the offset grid.</summary>
+			ClosedLadders,
+		}
+
+		public struct PitRoute
+		{
+			public PitLeg leg;
+			public int x;
+			public int z;
+
+			public PitRoute(PitLeg leg, int x = 0, int z = 0)
+			{
+				this.leg = leg;
+				this.x = x;
+				this.z = z;
+			}
+		}
+
+		private static readonly int[] Dx8 = { 0, 1, 0, -1, 1, 1, -1, -1 };
+		private static readonly int[] Dz8 = { 1, 0, -1, 0, 1, -1, -1, 1 };
+
+		/// <summary>The 8-connected open-pit component containing (x, z), in BFS order from it.
+		/// Empty if (x, z) is not an open pit cell. Capped at maxCells.</summary>
+		public static List<(int, int)> PitComponent(Func<int, int, bool> isPit, int x, int z, int maxCells)
+		{
+			var order = new List<(int, int)>();
+			if (!isPit(x, z))
+			{
+				return order;
+			}
+			var seen = new HashSet<(int, int)> { (x, z) };
+			order.Add((x, z));
+			for (int i = 0; i < order.Count && order.Count < maxCells; i++)
+			{
+				(int cx, int cz) = order[i];
+				for (int k = 0; k < 8; k++)
+				{
+					var n = (cx + Dx8[k], cz + Dz8[k]);
+					if (!seen.Contains(n) && isPit(n.Item1, n.Item2))
+					{
+						seen.Add(n);
+						order.Add(n);
+					}
+				}
+			}
+			return order;
+		}
+
+		private static bool BestLip(Func<int, int, bool> isPit, Func<int, int, bool> lipStandable, int x, int z,
+			int towardX, int towardZ, out int lx, out int lz)
+		{
+			lx = lz = 0;
+			long best = long.MaxValue;
+			for (int k = 0; k < 8; k++)
+			{
+				int nx = x + Dx8[k], nz = z + Dz8[k];
+				if (isPit(nx, nz) || !lipStandable(nx, nz))
+				{
+					continue;
+				}
+				long d = (long)(nx - towardX) * (nx - towardX) + (long)(nz - towardZ) * (nz - towardZ);
+				if (d < best)
+				{
+					best = d;
+					lx = nx;
+					lz = nz;
+				}
+			}
+			return best != long.MaxValue;
+		}
+
+		/// <summary>
+		/// LADDER FIX (pit_escape live FAIL 2026-10-06) + FLOWWORKS_PIT_FALL_ONLY_FORCED_1. Which leg the
+		/// path follower should request from start s toward destination d.
+		///
+		/// The vanilla pathfinder knows nothing of the trap: a D = 4 cell costs 300, so its shortest
+		/// route out of a pit leaves over the NEAREST lip, never via the ladder, and from a held cell
+		/// that step is vetoed by the per-move floor (StepBlocked) — the pawn never leaves. And from
+		/// outside, a 300-cost hole is still crossable "by careless pathing". So:
+		///   • outside → open pits are impassable (AvoidPits); a destination that needs the pit floor is
+		///     reached only down a ladder this pawn may climb (lip beside it, then one step onto it);
+		///   • inside, held → walk INSIDE the pit to the nearest cell that lets it out and touches the lip
+		///     (WalkToInPit), then step up onto the lip (StepTo);
+		///   • inside, on such an exit cell, where this pit holds the pawn elsewhere → StepTo the lip;
+		///   • inside, destination in the same pit → StayInPit (never out over the lip and back in).
+		/// isPit = uncovered D = 4; heldAt = the full trap predicate for this pawn; ladderFor = a ladder
+		/// this pawn may climb stands there; lipStandable = walkable ground.
+		/// </summary>
+		public static PitRoute PlanRoute(Func<int, int, bool> isPit, Func<int, int, bool> heldAt,
+			Func<int, int, bool> ladderFor, Func<int, int, bool> lipStandable,
+			int sx, int sz, int dx, int dz, bool destNeedsPit, int maxCells)
+		{
+			if (!isPit(sx, sz))
+			{
+				if (!destNeedsPit)
+				{
+					return new PitRoute(PitLeg.AvoidPits);
+				}
+				// Down a ladder or not at all.
+				List<(int, int)> destComp = PitComponent(isPit, dx, dz, maxCells);
+				long best = long.MaxValue;
+				(int, int) ladder = (0, 0);
+				foreach ((int x, int z) c in destComp)
+				{
+					if (!ladderFor(c.x, c.z))
+					{
+						continue;
+					}
+					// Only a ladder this pawn can actually reach: beside it, or with standable lip ground (the same test
+					// PitFloorEnterable makes, so the reachability veto and the pather agree; review 2026-10-11).
+					bool besideStart = Math.Abs(c.x - sx) <= 1 && Math.Abs(c.z - sz) <= 1;
+					if (!besideStart && !BestLip(isPit, lipStandable, c.x, c.z, sx, sz, out _, out _))
+					{
+						continue;
+					}
+					long d = (long)(c.x - sx) * (c.x - sx) + (long)(c.z - sz) * (c.z - sz);
+					if (d < best)
+					{
+						best = d;
+						ladder = c;
+					}
+				}
+				if (best == long.MaxValue)
+				{
+					return new PitRoute(PitLeg.AvoidPits); // no way down: the pathfinder refuses
+				}
+				if (Math.Abs(ladder.Item1 - sx) <= 1 && Math.Abs(ladder.Item2 - sz) <= 1)
+				{
+					return new PitRoute(PitLeg.StepTo, ladder.Item1, ladder.Item2);
+				}
+				if (BestLip(isPit, lipStandable, ladder.Item1, ladder.Item2, sx, sz, out int lx, out int lz))
+				{
+					return new PitRoute(PitLeg.WalkToAvoidPits, lx, lz);
+				}
+				return new PitRoute(PitLeg.AvoidPits);
+			}
+
+			List<(int, int)> comp = PitComponent(isPit, sx, sz, maxCells);
+			if (destNeedsPit && comp.Contains((dx, dz)))
+			{
+				return new PitRoute(PitLeg.StayInPit);
+			}
+			bool anyHeld = false;
+			foreach ((int x, int z) c in comp)
+			{
+				if (heldAt(c.x, c.z))
+				{
+					anyHeld = true;
+					break;
+				}
+			}
+			if (!anyHeld)
+			{
+				return new PitRoute(PitLeg.Vanilla); // this pit does not hold this pawn anywhere
+			}
+			// Nearest (BFS order) cell that is not held and touches the lip: the way out.
+			foreach ((int x, int z) c in comp)
+			{
+				if (heldAt(c.x, c.z))
+				{
+					continue;
+				}
+				if (!BestLip(isPit, lipStandable, c.x, c.z, dx, dz, out int lx, out int lz))
+				{
+					continue;
+				}
+				if (c.x == sx && c.z == sz)
+				{
+					return new PitRoute(PitLeg.StepTo, lx, lz);
+				}
+				return new PitRoute(PitLeg.WalkToInPit, c.x, c.z);
+			}
+			return new PitRoute(PitLeg.Vanilla); // trapped: reachability already vetoes
+		}
+
+		/// <summary>FLOWWORKS_LADDER_RAISE_LOWER_1 + LADDER_PRISON_DOOR_1: may this pawn climb this ladder (either
+		/// way)? A RAISED ladder is climbed by nobody while the raise/lower setting is on; a lowered one follows the
+		/// prison-door rule (<paramref name="mayClimb"/>) while that setting is on, else anyone climbs it.</summary>
+		public static bool LadderUsable(bool raiseLowerOn, bool raised, bool prisonDoorOn, bool mayClimb)
+		{
+			if (raiseLowerOn && raised)
+			{
+				return false;
+			}
+			return !prisonDoorOn || mayClimb;
+		}
+
+		/// <summary>FLOWWORKS_LADDER_RAISE_LOWER_1: from OUTSIDE the pit, can a pawn get down onto the floor cell
+		/// (dx, dz) at all? Only down a ladder it may climb that stands in that cell's open-pit component with
+		/// walkable ground beside it — the same test PlanRoute's "down a ladder or not at all" leg makes, so the
+		/// reachability veto and the pather never disagree (a hauler is not offered an item it cannot path to).</summary>
+		public static bool PitFloorEnterable(Func<int, int, bool> isPit, Func<int, int, bool> ladderFor,
+			Func<int, int, bool> lipStandable, int dx, int dz, int maxCells)
+		{
+			foreach ((int x, int z) c in PitComponent(isPit, dx, dz, maxCells))
+			{
+				if (ladderFor(c.x, c.z) && BestLip(isPit, lipStandable, c.x, c.z, c.x, c.z, out _, out _))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		/// <summary>Mass-scaled blunt fall damage, at least 1.</summary>
+		public static float FallDamage(float massKg, float multiplier)
+		{
+			return Math.Max(1f, massKg * FallDamagePerMassKg * multiplier);
+		}
+
+		/// <summary>CANAL_BOTTOM_SPIKES_1 — PROPOSED numbers, owner's word owed (the item says
+		/// "propose the number with the reasoning shown"). A spiked floor is several points, not
+		/// one, so the descent lands SpikeHits Sharp (Stab) hits, each through the normal armour
+		/// pipeline. The total scales with body size (owner [G]): 40 per unit of BodySize. A human
+		/// (1.0) takes 3 stabs of ~13: several real wounds and bleeding, not an instant kill
+		/// (torso 40 HP, armour applies). A muffalo (2.4) takes ~96 across 3 hits, a thrumbo (4)
+		/// ~160. Reference point: the retired building pit's spikeDamage 25 Stab, one hit, flat.</summary>
+		public const int SpikeHits = 3;
+
+		public const float SpikeDamagePerBodySize = 40f;
+
+		/// <summary>SPIKES_PIERCE_TUNE_LIKE_VANILLA_TRAP: armour penetration per point of spike damage, vanilla's spike trap
+		/// rule (Building_TrapDamager.SpringSub, 1.6 decompiled 2026-10-25: armorPenetration = damage x 0.015, the same 1.5%
+		/// vanilla gives a melee hit with no stated penetration).</summary>
+		public const float SpikeArmorPenetrationPerDamage = 0.015f;
+
+		/// <summary>Armour penetration of ONE spike hit of <paramref name="perHit"/> damage (vanilla trap rule).</summary>
+		public static float SpikeArmorPenetration(float perHit)
+		{
+			return Math.Max(0f, perHit) * SpikeArmorPenetrationPerDamage;
+		}
+
+		/// <summary>Damage of ONE spike hit: max(1, bodySize x 40 x multiplier / 3).</summary>
+		public static float SpikeDamagePerHit(float bodySize, float multiplier)
+		{
+			float b = bodySize > 0f ? bodySize : 0f;
+			float m = multiplier > 0f ? multiplier : 0f;
+			return Math.Max(1f, b * SpikeDamagePerBodySize * m / SpikeHits);
+		}
+
+		/// <summary>FLOWWORKS_DOOR_FAMILY_1 — does a sluice / security grate open for a pawn walking up to it shut?
+		/// SLUICE_GATE_REBUILD_LIFTS_UP_NOT_SIDEWAYS (owner 2026-10-24: "When closed, it is not traversible. When open it
+		/// is."): a sluice never opens for anyone walking at it; it is lifted and lowered by a colonist working it from beside
+		/// it (Building_RM_FlowDoor.SetGateOpen), and while lifted every pawn passes. The grate is a door: vanilla decides,
+		/// except that a pawn held in a superdeep pit never opens one while that setting is on.</summary>
+		public static bool FlowDoorOpens(bool vanillaOpens, bool heldInPit, bool sealedFromPitRule, bool isSluice)
+		{
+			if (isSluice)
+			{
+				return false;
+			}
+			if (sealedFromPitRule && heldInPit)
+			{
+				return false;
+			}
+			return vanillaOpens;
+		}
+
+		/// <summary>SLUICE_GATE_REBUILD_LIFTS_UP_NOT_SIDEWAYS / GRATE_DOOR_REBUILD_LIFTS_LIKE_THE_SLUICE — where the gate's
+		/// panel draws while it opens: straight up (+z on screen, RimWorld's oblique height) by liftCells x openPct, never
+		/// sideways. Returned as (dx, dz) in cells; the frame stays put. Tools/fw_gate_lift.py solves liftCells against the
+		/// real textures (the lifted panel clears the passage and still overlaps the post tops).</summary>
+		public static void GateLiftOffset(float liftCells, float openPct, out float dx, out float dz)
+		{
+			float p = openPct < 0f ? 0f : (openPct > 1f ? 1f : openPct);
+			float l = liftCells > 0f ? liftCells : 0f;
+			dx = 0f;
+			dz = l * p;
+		}
+
+		/// <summary>FLOWWORKS_SLUICE_TWO_DOORS_1 (owner 2026-10-06): does this flow door hold liquid back? A sluice
+		/// is sealed while shut; a grate is "just a gate, not a sluice gate" and always lets liquid through.</summary>
+		public static bool FlowDoorSeals(bool isSluice, bool open)
+		{
+			return isSluice && !open;
+		}
+
+		/// <summary>Ruling #18 (owner card, 2026-10-11: "Sluice doors and grates may be placed on wet canal cells"): may a
+		/// flow door's blueprint, frame or building stand on a cell? Vanilla's terrain verdict, or, for a flow door only, a
+		/// cell somebody dug (<paramref name="dugDepth"/> &gt; 0) that now holds liquid (<paramref name="fill"/> &gt; 0):
+		/// a wet fill terrain inherits WaterShallow's affordances, which lack the door's Light. A natural lake or river is
+		/// never dug, so it stays refused. The same verdict keeps a frame standing when its dry cut floods.</summary>
+		public static bool FlowDoorStandsOn(bool vanillaAllows, bool isFlowDoor, int dugDepth, int fill)
+		{
+			return vanillaAllows || (isFlowDoor && dugDepth > 0 && fill > 0);
+		}
+
+		/// <summary>DEEP_WATER_BUILD_REFUSED_BY_LIGHT_AFFORDANCE (owner 2026-10-25: "Gotta think about building where it's
+		/// already underwater too: we should just let that happen, it needs to happen."). Which buildings stand in the water of
+		/// a flooded dug cell: the things that are built up from the floor and stand in water in life. Walls (any stuff, any
+		/// mod's wall: ThingDef.IsWall), fences, vanilla's column and any def carrying RM_StandsInWaterExtension (the opt-in for another mod's pillar or pier). Everything else (beds,
+		/// tables, benches, machines) keeps vanilla's refusal: the wet rungs are vanilla water terrain, and vanilla deep water
+		/// has no affordances at all. Suspension bridge parts are not decided here: RM_Patch_SuspensionAffordance owns them
+		/// (towers and decks already stand on any dug cell; an anchor is refused on a wet ledge on purpose).</summary>
+		public static bool StandsInWater(bool isWall, bool isFence, bool isColumn, bool optedIn)
+		{
+			return isWall || isFence || isColumn || optedIn;
+		}
+
+		/// <summary>DEEP_WATER_BUILD_REFUSED_BY_LIGHT_AFFORDANCE: may a water-standing structure's blueprint, frame or building
+		/// stand on a cell? Vanilla's yes stays; otherwise only with the setting on, a def that <see cref="StandsInWater"/>, a
+		/// cell somebody dug (<paramref name="dugDepth"/> &gt; 0) and liquid in it now (<paramref name="fill"/> &gt; 0). A natural
+		/// lake, river or ocean is never dug, so it stays refused (owner scope: OUR flooded cuts). Any depth of water: chest-deep
+		/// and deep rungs alike.</summary>
+		public static bool StandsInDugWater(bool vanillaAllows, bool enabled, bool standsInWater, int dugDepth, int fill)
+		{
+			return vanillaAllows || (enabled && standsInWater && dugDepth > 0 && fill > 0);
+		}
+
+		// ── PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP (design/RimMandrake/relative_depth_climb_design_2026-10-12.md §8) ──
+		// Owner, 2026-10-12 (Q1): "it should be relative height (the depth of the pit relative to its N, S, E, W, neighbors) so
+		// that gradual slopes never trap anyone." (Q2): "Human-sized pawns should climb two at a time (slow) or one a time
+		// (faster). Three or more traps. This changes depending on creature size."
+
+		/// <summary>Band edges on EFFECTIVE body size (bodySize × multiplier²; the multiplier scales height, and height goes as
+		/// sqrt(bodySize)). Under 0.75 → K 1 (rat, cat, dog, child); under 1.65 → K 2 (person); under 3.0 → K 3 (muffalo,
+		/// bear); else K 4 (thrumbo). PROVISIONAL (design §8.2); the formula K = floor(0.7 × sqrt(b) / 0.3) only placed them.</summary>
+		public static readonly float[] ClimbBandEdges = { 0.75f, 1.65f, 3.0f };
+
+		/// <summary>PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT: the largest climb limit any creature can have: the top size band (4)
+		/// plus a climber's and a leaper's extra notch. The pocket grid and the cliff masks keep one band per K = 1..this, sized
+		/// by WHO CLIMBS, never by how deep digging goes (with an 8 m dig a huge K 4 is held by a 3 m sheer wall, so the old "K
+		/// at the dig cap climbs everything" shortcut is false).</summary>
+		public const int MaxClimbLimit = 6;
+
+		/// <summary>Band array length for the pocket grid and the cliff masks: index K = 1..<see cref="MaxClimbLimit"/>.</summary>
+		public const int ClimbBands = MaxClimbLimit + 1;
+
+		/// <summary>The most levels this creature climbs in one N/S/E/W step (design §8.2). extraLevels: climbers and leapers
+		/// (+1 each, RM_ClimbAbility). Never below 1.</summary>
+		public static int ClimbLimit(float bodySize, int extraLevels = 0, float heightMultiplier = 1f)
+		{
+			float m = heightMultiplier > 0f ? heightMultiplier : 1f;
+			float b = (bodySize > 0f ? bodySize : 0f) * m * m;
+			int k = 1;
+			for (int i = 0; i < ClimbBandEdges.Length; i++)
+			{
+				if (b >= ClimbBandEdges[i])
+				{
+					k = i + 2;
+				}
+			}
+			return Math.Min(MaxClimbLimit, Math.Max(1, k + extraLevels));
+		}
+
+		/// <summary>A walked N/S/E/W step between depths (design §8.1): allowed when |fromD − toD| ≤ K (up or down: nobody
+		/// jumps a cliff on purpose), or when a ramp joins the cells (any pawn), or a ladder this pawn may use does.</summary>
+		public static bool StepAllowed(int fromD, int toD, int k, bool rampJoins = false, bool ladderJoinsForPawn = false)
+		{
+			if (rampJoins || ladderJoinsForPawn)
+			{
+				return true;
+			}
+			return Math.Abs(fromD - toD) <= Math.Max(1, k);
+		}
+
+		/// <summary>A diagonal step (design §8.1, GPT #7): both cells and both cardinal corner cells pairwise within K, so a
+		/// cliff is never cut at its corner. Depths: from, to, and the two corner cells (a = (to.x, from.z), b = (from.x, to.z)).</summary>
+		public static bool DiagonalAllowed(int fromD, int toD, int cornerAD, int cornerBD, int k)
+		{
+			int lo = Math.Min(Math.Min(fromD, toD), Math.Min(cornerAD, cornerBD));
+			int hi = Math.Max(Math.Max(fromD, toD), Math.Max(cornerAD, cornerBD));
+			return hi - lo <= Math.Max(1, k);
+		}
+
+		/// <summary>Slow-climb factor's default (design §8.2, PROVISIONAL): a step of exactly K ≥ 2 costs twice a normal climb.</summary>
+		public const float DefaultSlowClimbFactor = 2f;
+
+		/// <summary>Terrain base cost of one ALLOWED step (design §8.2; RM_Patch_PitStepCost prices a walked step with it while
+		/// RM_CliffMask.On, PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS): 0 along equal depth, 0 by ramp (flat walking), ladderCost × levels by ladder, a normal climb
+		/// (climbCost, the deeper cell's dry cost, as DryStepBaseCost) for a step under K or any step when K = 1, and
+		/// climbCost × slowFactor for a step of exactly K ≥ 2. Down costs the same as up.</summary>
+		public static int StepCost(int fromD, int toD, int k, int climbCost, bool viaRamp = false, bool viaLadder = false,
+			int ladderCostPerLevel = 0, float slowFactor = DefaultSlowClimbFactor)
+		{
+			int s = Math.Abs(fromD - toD);
+			if (s == 0 || viaRamp)
+			{
+				return 0;
+			}
+			if (viaLadder)
+			{
+				return Math.Max(0, ladderCostPerLevel) * s;
+			}
+			int c = climbCost < 0 ? 0 : climbCost;
+			if (k >= 2 && s >= k)
+			{
+				return (int)Math.Round(c * (slowFactor > 1f ? slowFactor : 1f));
+			}
+			return c;
+		}
+
+		/// <summary>Design §8.5 step 8: an arrival is a FALL when it drops more than this pawn climbs (drop = toD − fromD).
+		/// Who actually takes it (walked vs forced, ladder, faction) is still <see cref="DescentFalls"/>.</summary>
+		public static bool ArrivalDropsTooFar(int fromD, int toD, int k)
+		{
+			return toD - fromD > Math.Max(1, k);
+		}
+
+		/// <summary>The relative hold (design §8.3): in a pocket of its band, no usable ladder in that pocket's cell, not flying
+		/// (or able to fly), wide enough. Same gate order as <see cref="Held"/>.</summary>
+		public static bool HeldRelative(bool ruleOn, bool inPocket, bool captured, bool flying, bool ladderUsableHere, bool wideEnough)
+		{
+			return ruleOn && inPocket && captured && !flying && !ladderUsableHere && wideEnough;
+		}
+
+		/// <summary>FLOWWORKS_REVIEW_LOOKS_ROUND_1 item 9 (owner, 2026-10-06: <i>"people stuck inside a pit do NOT walk
+		/// slowly... they walk at normal speed. Only when they are climbing in or out do they move slowly. Falling into a
+		/// pit is FAST. Walking around within the pit is normal."</i>). The terrain base cost of one step between two
+		/// DRY cells: 0 (normal walking) between equal depths, 0 for a sheer drop of 2 m or more (a fall), otherwise
+		/// <paramref name="climbCost"/> (the deeper cell's dry path cost: climbing in or out, ladder included).
+		/// PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: the fall is the DROP (RM_RelativeRulesMath.StepIsAFall), never "the
+		/// destination is 2 m deep" (that priced a 2 m to 2.5 m step and a 4 m ledge to a 7 m core alike as free falls).</summary>
+		public static int DryStepBaseCost(int fromDepth, int toDepth, int climbCost)
+		{
+			if (fromDepth == toDepth)
+			{
+				return 0;
+			}
+			if (RM_RelativeRulesMath.StepIsAFall(fromDepth, toDepth, Superdeep))
+			{
+				return 0;
+			}
+			return climbCost < 0 ? 0 : climbCost;
+		}
+	}
+}

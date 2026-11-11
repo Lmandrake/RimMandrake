@@ -1,0 +1,17 @@
+{
+  "unrelated_publication_input_change": "Utils/selftest_settings_screens.py arrived from origin during publication; not retested, no FlowWorks/GSS/shared change",
+  "time": 1794398932.566726,
+  "PUBLISHED": "88b81f3dd8f550b1efd6b2b827b4ffb84e74141b",
+  "ancestry_verified": true,
+  "HEAD": "88b81f3dd8f550b1efd6b2b827b4ffb84e74141b",
+  "changes_since_suite": [
+    "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll",
+    "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll.srchash",
+    "src/RimMandrake/Utils/selftest_settings_screens.py"
+  ],
+  "artifacts": {
+    "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll": "bb48497102949cad14cf173b743baaebc5b2889a55d4bc0421671ca7351fa0e1",
+    "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll.srchash": "791186e2f5c9b02e2a833a797c9814b5605faf09ef7d3fd0c2751cfc71818f8f"
+  },
+  "live_driver_sha256": "f691ef62cf9c5a8526729f15e5bf37c3dfad34ad5b9a734bdab83c54e80954d1"
+}

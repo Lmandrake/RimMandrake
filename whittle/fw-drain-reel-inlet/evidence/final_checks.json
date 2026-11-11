@@ -1,0 +1,336 @@
+{
+  "time": 1794399512.6955533,
+  "PUBLISHED": "88b81f3dd8f550b1efd6b2b827b4ffb84e74141b",
+  "ancestry_verified": true,
+  "fast_checks": "47/47; unchanged original expanded 17 expected failures/43; isolated filter mutant 1 expected failure/47",
+  "suite": "PASS 1/1; 1244/1244 main, 188/188 hose checks, 457/457 hose assertions",
+  "suite_hashes_stable": 6010,
+  "staged_suite_inputs": 3969,
+  "stamped_shipping_inputs": 352,
+  "changes_since_suite": [
+    "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll",
+    "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll.srchash",
+    "src/RimMandrake/Utils/selftest_settings_screens.py"
+  ],
+  "publication_qualification": "Utils/selftest_settings_screens.py arrived from origin during publication; not retested, no FlowWorks/GSS/shared change",
+  "gss_files_unchanged": 502,
+  "artifacts": {
+    "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll": "bb48497102949cad14cf173b743baaebc5b2889a55d4bc0421671ca7351fa0e1",
+    "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll.srchash": "791186e2f5c9b02e2a833a797c9814b5605faf09ef7d3fd0c2751cfc71818f8f"
+  },
+  "live": {
+    "same_band_multicell": {
+      "success": true,
+      "reel": 24588,
+      "rect": [
+        38,
+        36,
+        2,
+        2
+      ],
+      "portId": 24589,
+      "hydraulicPortId": 24589,
+      "kind": 1,
+      "side": [
+        1,
+        0
+      ],
+      "contact": [
+        40,
+        36
+      ],
+      "bodyBand": 0,
+      "contactBand": 0
+    },
+    "alternate_contact_same_tank": {
+      "success": true,
+      "reel": 24588,
+      "rect": [
+        38,
+        36,
+        2,
+        2
+      ],
+      "portId": 24589,
+      "hydraulicPortId": 24589,
+      "kind": 1,
+      "side": [
+        1,
+        0
+      ],
+      "contact": [
+        40,
+        37
+      ],
+      "bodyBand": 0,
+      "contactBand": 0
+    },
+    "sheer_wall_refused": {
+      "success": true,
+      "reel": 24588,
+      "rect": [
+        38,
+        36,
+        2,
+        2
+      ],
+      "portId": -1,
+      "hydraulicPortId": -1,
+      "kind": 4,
+      "side": [
+        0,
+        0
+      ],
+      "contact": [
+        0,
+        0
+      ],
+      "bodyBand": -1,
+      "contactBand": -1
+    },
+    "rules_off": {
+      "success": true,
+      "reel": 24588,
+      "rect": [
+        38,
+        36,
+        2,
+        2
+      ],
+      "portId": 24589,
+      "hydraulicPortId": 24589,
+      "kind": 1,
+      "side": [
+        1,
+        0
+      ],
+      "contact": [
+        40,
+        36
+      ],
+      "bodyBand": 0,
+      "contactBand": 0
+    },
+    "alternate_neighbour": {
+      "success": true,
+      "reel": 24588,
+      "rect": [
+        38,
+        36,
+        2,
+        2
+      ],
+      "portId": 24590,
+      "hydraulicPortId": 24590,
+      "kind": 0,
+      "side": [
+        -1,
+        0
+      ],
+      "contact": [
+        37,
+        36
+      ],
+      "bodyBand": 0,
+      "contactBand": 0
+    },
+    "invalid_preferred_east_pipe": {
+      "success": true,
+      "reel": 24588,
+      "rect": [
+        38,
+        36,
+        2,
+        2
+      ],
+      "portId": 24590,
+      "hydraulicPortId": 24590,
+      "kind": 0,
+      "side": [
+        -1,
+        0
+      ],
+      "contact": [
+        37,
+        36
+      ],
+      "bodyBand": 0,
+      "contactBand": 0
+    }
+  },
+  "restoration": {
+    "load": {
+      "site": "calm",
+      "save": "WHITTLE_ReelInlet_Begin_20261111T041539",
+      "utc": "2026-11-11T12:15:51Z",
+      "problems": [],
+      "load_s": 3.7,
+      "quietMap": {
+        "profile": "quiet_site",
+        "suite": "isolated",
+        "row": "test_site_saves_load_calm",
+        "topic": null,
+        "controls": [
+          {
+            "name": "threat_structures_cleared",
+            "what": "hostile threat structures vanished at setup (vitals classifier: turret, spawner, dormant, condition causer, non-humanlike faction); keep_defs spared",
+            "hides": "hive/infestation/mech-cluster interactions; insect-faction behaviour on the site",
+            "readBack": {
+              "removed": [],
+              "threatsAfter": 0,
+              "kept": 0,
+              "errors": []
+            }
+          },
+          {
+            "name": "hostiles_removed",
+            "what": "hostile pawns present at setup removed by Vanish (no death action, no corpse)",
+            "hides": "combat interactions with the mod's things",
+            "readBack": {
+              "acted": 0,
+              "residue": []
+            }
+          },
+          {
+            "name": "proximity_letters_sent",
+            "what": "every CompProximityLetter marked sent (the mapgen void monolith's 'Fallen monolith')",
+            "hides": "the Anomaly monolith discovery letter and any mod building's proximity letter",
+            "readBack": {
+              "letters": [
+                [
+                  "VoidMonolith",
+                  "Fallen monolith",
+                  true
+                ]
+              ],
+              "unsentAfter": 0
+            }
+          },
+          {
+            "name": "modal_broker",
+            "what": "explicit window handlers only (MODAL_HANDLERS); an unknown force-pause window is CAPTURED and blocks the row, never closed blindly; the same window still open after its handler escalates",
+            "hides": "the handled dialog's other choices (VEF new-faction: 'Do nothing' means the faction is not spawned)",
+            "readBack": {
+              "handled": [],
+              "unknown": []
+            }
+          }
+        ],
+        "notSuppressed": [
+          "active quests and their parts (never ended by default: ending a quest changes the world)",
+          "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+          "existing game conditions, map/world/game components and mod tickers",
+          "hives and other pawn-spawning structures, births, egg hatching, breeders",
+          "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+          "weather transitions, fires, existing hostile behaviour"
+        ],
+        "keepDefs": [],
+        "events": [],
+        "problems": [],
+        "verify": null,
+        "arrivals": [],
+        "note": "enableStoryteller is not saved with the game: re-apply after any load"
+      },
+      "sky": {
+        "weather": [
+          {
+            "after": "Clear",
+            "ok": true
+          },
+          {
+            "after": "Clear",
+            "ok": true
+          }
+        ],
+        "extinguished": 0,
+        "strayFires": 0,
+        "verified": true,
+        "error": null
+      },
+      "ready_s": 4.9,
+      "verified": true
+    },
+    "rect": "RECT sha256=275a5b46c389792768220ad877ea953dc0dd078e5d2f35ec23e57349ea2f939c beds=0",
+    "rules": "True",
+    "status": "PASS"
+  },
+  "canonical_unchanged": {
+    "CANONICAL_ASHKARR_START_2026-09-12.rws": {
+      "bytes": 17483421,
+      "sha256": "1ff329161abeaa8c66ebe2818de5428b8a1a9d95676f106dcd2b8d6f98a008c6"
+    },
+    "ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws": {
+      "bytes": 13531124,
+      "sha256": "1d569ea8e7a871e98a27c0cc258f1d7e95cc13b2b2ca63753168700b668ba2b6"
+    }
+  },
+  "log_issue_lines": [],
+  "final_game": "DOWN; NOT RUNNING",
+  "bridge": "FREE; driver lock FREE",
+  "raw_external": {
+    "broaden_call.json": {
+      "sha256": "97b9323b05fc5ffa612a645ca3d0d1a98f7db13a306b617cf603e985891c2466",
+      "bytes": 1011
+    },
+    "broaden_raw.json": {
+      "sha256": "b3e5393cbdfa63c6609439f2150e53cd9c23a3cde475f0711dc9f8b2ef544ffb",
+      "bytes": 9306
+    },
+    "broaden_stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "Player.after_acceptance.log": {
+      "sha256": "5b294a17a57f5aec1988c96cb911f225fdd7edc0adfea287a2d16ede16243687",
+      "bytes": 15823
+    },
+    "Player.after_launch.log": {
+      "sha256": "b75673218ab6b0e640543c6553eecf97b325efe1a14743382c1d5d46b273d5a3",
+      "bytes": 9326
+    },
+    "Player.after_shutdown.log": {
+      "sha256": "c3747c2c97591d6d77dd818a2127da91ee90807c04ec0b2425c30c40e8a37e31",
+      "bytes": 28264
+    },
+    "Player.before_launch.log": {
+      "sha256": "c3ff3f7bd2afa3eea240f8733c61cc5f2d84044372977dbee925f78ded96ff2c",
+      "bytes": 28087
+    },
+    "selftest_stderr.txt": {
+      "sha256": "d233f2fe12e3d834e3348dfb6aa0d91872c5a0f5597bb7f7de055ea3d508ef82",
+      "bytes": 127
+    },
+    "selftest_stdout.txt": {
+      "sha256": "dfb994852dbf5db8c717221a7b0b5164757d1f56d6062596df7d854575a62359",
+      "bytes": 675
+    },
+    "selftest_writes.strace": {
+      "sha256": "8a9d9b67ee3340bf2533e51366c309c53b0a0b718dba545a7bf40fc1b8ef6451",
+      "bytes": 400757
+    }
+  },
+  "evidence_sha256": {
+    "fast_checks.json": "f7b089ca07547c5ee93cb40afd155de693aefa38895ea7521f1594cf8e32aba5",
+    "fast_original_expanded/stdout.txt": "22183c00803a8d0fb6e9eb761c2eaeff06db33307ad286681b3bad11cb5f82b7",
+    "fast_unfiltered_mutant/stdout.txt": "14671305b03ef3c99fd3fde72d46406d50464280205da63fde98f77e39d3d937",
+    "fast_final_correct_fixture/stdout.txt": "363ce0c0298a8512ab60831b90b9e5e393e8a894aa1075c384b57624e5d7f681",
+    "selftest_receipt.json": "d3a2b7658ec9dc5fe1617c28b8b9cd2c796505040461a3e434fbc609a0a1d01b",
+    "csharp_stdout.txt": "17eb3d8df5818f0103cb87405e274df098869eb96008131dabb88c31cd33e1d4",
+    "integrity_after_test.json": "189d96ee628724acfc5a0ec0bd715f011f6cac194c9add9096c24a51021ec562",
+    "build_integrity.json": "5bedafc064a0a6d92162e3381987f276d4945a9614ec0981f7550f050d0880ce",
+    "publication.json": "0cb01c81e0445432fad12bf10daa7919ffdc26d2c13fe4f71845a7359e08f1fa",
+    "deployed_dlls.json": "4030b5d9b34be22c8a943ba81bf3903e32eb67d1fd62657a60e5778b0394de69",
+    "live_attempt1.json": "beebae9337d7882fea535ee2fa909fd976bb31007a4fa35928de67000e1e3438",
+    "bridge_final.txt": "01a449f8a22bde0fb5d72d06eb48762ff3f1811790df018ebc5fbf97d6b887a7",
+    "game_final.txt": "7f7c1e540cb8f9df5bedf4561b0b15e969cd45c13b34f66d7b62f2582ab3c2e9",
+    "live_scene.png": "3d493bb8eb44bf3f434346ddfe73d59722bd0ea8a54e21982a48e090bc9aa9a1"
+  },
+  "limits": [
+    "Forced Find/Port geometry, not normal cache convergence or liquid transfer",
+    "Relay intake indexing, on-footprint free-end semantics, water/swim/deck behavior unchanged and not newly accepted",
+    "Adapter uses explicit engine doubles; ladder/ramp witnesses do not simulate actual placement",
+    "Screenshot supporting only; GSS art preserved by exact hashes, no new visual approval",
+    "Known unrelated fuzz route note retained; cache admission refused despite stable recorded input bytes",
+    "Published unrelated settings-screen selftest update was not retested"
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "time": 1794398196.6767333,
+  "HEAD": "77e71c52f58a706f41466b6192b4838ba1a40821",
+  "status": " M src/RimMandrake/FlowWorks/Source/Hose/HoseMath.cs\n M src/RimMandrake/FlowWorks/Source/Hose/HosePorts.cs\n M src/RimMandrake/FlowWorks/Source/SelfTest/Program.cs\n M src/RimMandrake/FlowWorks/Source/SelfTest/RimMandrakeFlowWorks.SelfTest.csproj\n?? src/RimMandrake/FlowWorks/Source/SelfTest/HoseBodyInletChecks.cs\n?? src/RimMandrake/FlowWorks/northstar/reel_body_inlet_live.py\n?? whittle/fw-drain-reel-inlet/\n"
+}

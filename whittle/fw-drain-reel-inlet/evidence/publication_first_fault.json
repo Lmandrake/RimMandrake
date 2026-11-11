@@ -1,0 +1,8 @@
+{
+  "fault": "broad manifest comparison assertion; inspect exact differing inputs",
+  "differences": [
+    "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll",
+    "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll.srchash",
+    "src/RimMandrake/Utils/selftest_settings_screens.py"
+  ]
+}

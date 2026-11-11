@@ -1,0 +1,14 @@
+{
+  "time": "2026-11-11T11:46:38.284758+00:00",
+  "HEAD": "77e71c52f58a706f41466b6192b4838ba1a40821",
+  "mode": "Codex Whittle native WSL; sole source/live writer; parent owns item/final evidence publication",
+  "inputs": {
+    "CLAUDE.md": "3fbc54855428841271d4054727df69172f845f7fe2dee73c3a843034dbfa27d2",
+    "infrastructure/agents/CHARTER.md": "a852968e8684d11e8638944a41b37f52c75f4b2113d9708779a259bdd84d97d8",
+    "design/RimMandrake/GIT_WORKFLOW.md": "75b9edda5b6d78b5d9e655139a6c6a2ef5f6411716c409728f6c88da0e4c997a",
+    "design/RimMandrake/delegation_policy.md": "749a8fbd75655f9dbd062228c412855a72772877c12b615e639516e7bcdbf89b",
+    "src/RimMandrake/rimflow/roles/runner_options.md": "2cd6fcb70d7a14cb4c4da8c673c9616f183760beafb4a08367f0edadbd702725",
+    "whittle/fw-drain-reel-inlet/STATEMENT.md": "c89350d66b1e23fd550045cd14aa00ed0b2313066a03d9a62efe7b200f892c18",
+    "whittle/fw-drain-reel-inlet/NOTES.md": "414c239f1573ffc0d488857966a7f76b7627a17bdf9a6ddd07278e1fdbd06821"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "time": 1794399512.6955533,
+  "PUBLISHED": "88b81f3dd8f550b1efd6b2b827b4ffb84e74141b",
+  "ancestry_verified": true,
+  "fast_checks": "47/47; unchanged original expanded 17 expected failures/43; isolated filter mutant 1 expected failure/47",
+  "suite": "PASS 1/1; 1244/1244 main, 188/188 hose checks, 457/457 hose assertions",
+  "suite_hashes_stable": 6010,
+  "staged_suite_inputs": 3969,
+  "stamped_shipping_inputs": 352,
+  "changes_since_suite": [
+    "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll",
+    "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll.srchash",
+    "src/RimMandrake/Utils/selftest_settings_screens.py"
+  ],
+  "publication_qualification": "Utils/selftest_settings_screens.py arrived from origin during publication; not retested, no FlowWorks/GSS/shared change",
+  "gss_files_unchanged": 502,
+  "artifacts": {
+    "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll": "bb48497102949cad14cf173b743baaebc5b2889a55d4bc0421671ca7351fa0e1",
+    "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll.srchash": "791186e2f5c9b02e2a833a797c9814b5605faf09ef7d3fd0c2751cfc71818f8f"
+  },
+  "log_issue_lines": [],
+  "final_game": "DOWN; NOT RUNNING",
+  "bridge": "FREE; driver lock FREE",
+  "limits": [
+    "Forced Find/Port geometry, not normal cache convergence or liquid transfer",
+    "Relay intake indexing, on-footprint free-end semantics, water/swim/deck behavior unchanged and not newly accepted",
+    "Adapter uses explicit engine doubles; ladder/ramp witnesses do not simulate actual placement",
+    "Screenshot supporting only; GSS art preserved by exact hashes, no new visual approval",
+    "Known unrelated fuzz route note retained; cache admission refused despite stable recorded input bytes",
+    "Published unrelated settings-screen selftest update was not retested"
+  ]
+}

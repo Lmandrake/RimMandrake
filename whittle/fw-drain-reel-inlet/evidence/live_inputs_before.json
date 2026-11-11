@@ -1,0 +1,28 @@
+{
+  "time": 1794398972.0307343,
+  "saves": {
+    "CANONICAL_ASHKARR_START_2026-09-12.rws": {
+      "bytes": 17483421,
+      "sha256": "1ff329161abeaa8c66ebe2818de5428b8a1a9d95676f106dcd2b8d6f98a008c6"
+    },
+    "ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws": {
+      "bytes": 13531124,
+      "sha256": "1d569ea8e7a871e98a27c0cc258f1d7e95cc13b2b2ca63753168700b668ba2b6"
+    }
+  },
+  "mods": [
+    "brrainz.harmony",
+    "ludeon.rimworld",
+    "ludeon.rimworld.royalty",
+    "ludeon.rimworld.ideology",
+    "ludeon.rimworld.biotech",
+    "ludeon.rimworld.anomaly",
+    "ludeon.rimworld.odyssey",
+    "brrainz.rimbridgeserver",
+    "ray1203.simplecamerasetting",
+    "mandrake.rm.gimmesomeslack",
+    "mandrake.rm.flowworks",
+    "mandrake.rm.hugethings",
+    "mandrake.rm.patches"
+  ]
+}

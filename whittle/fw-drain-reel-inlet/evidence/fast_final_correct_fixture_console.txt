@@ -1,0 +1,92 @@
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(17,23): warning CS0649: Field 'MachineInfo.DefName' is never assigned to, and will always have its default value null [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseReplanQueue.cs(74,37): warning CS0649: Field 'HoseReplanQueue.Released' is never assigned to, and will always have its default value null [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(96,27): warning CS0649: Field 'HoseLayQueue.Work.Tag' is never assigned to, and will always have its default value null [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\_Shared\SlackGeometry\CordLayer.cs(62,21): warning CS0649: Field 'LayParams.FairBends' is never assigned to, and will always have its default value false [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(21,24): warning CS0649: Field 'MachineInfo.Z0' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(52,28): warning CS0649: Field 'HoseLayInputs.BodyZ0' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(52,20): warning CS0649: Field 'HoseLayInputs.BodyX0' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(46,20): warning CS0649: Field 'HoseLayInputs.Outward' is never assigned to, and will always have its default value [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(52,43): warning CS0649: Field 'HoseLayInputs.BodyH' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseReplanQueue.cs(39,24): warning CS0649: Field 'HoseReplanQueue.Work.Serial' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(52,36): warning CS0649: Field 'HoseLayInputs.BodyW' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(29,39): warning CS0649: Field 'MachineInfo.InsetE' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\_Shared\SlackGeometry\CordLayer.cs(41,21): warning CS0649: Field 'LayParams.FillFlats' is never assigned to, and will always have its default value false [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseReplanQueue.cs(37,33): warning CS0649: Field 'HoseReplanQueue.Work.Run' is never assigned to, and will always have its default value null [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(29,31): warning CS0649: Field 'MachineInfo.InsetN' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(44,19): warning CS0649: Field 'HoseLayInputs.PortAxis' is never assigned to, and will always have its default value [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(43,20): warning CS0649: Field 'HoseLayInputs.Inward' is never assigned to, and will always have its default value [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\_Shared\SlackGeometry\CordLayer.cs(52,21): warning CS0649: Field 'LayParams.RoundExcursions' is never assigned to, and will always have its default value false [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(48,32): warning CS0649: Field 'HoseLayInputs.Shape' is never assigned to, and will always have its default value null [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(16,23): warning CS0649: Field 'MachineInfo.Id' is never assigned to, and will always have its default value null [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(41,29): warning CS0649: Field 'HoseLayInputs.Rect' is never assigned to, and will always have its default value [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\_Shared\SlackGeometry\CordLayer.cs(57,21): warning CS0649: Field 'LayParams.RoundLoops' is never assigned to, and will always have its default value false [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(29,23): warning CS0649: Field 'MachineInfo.InsetS' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(42,26): warning CS0649: Field 'HoseLayInputs.End' is never assigned to, and will always have its default value [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(43,28): warning CS0649: Field 'HoseLayInputs.PortAt' is never assigned to, and will always have its default value [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(35,21): warning CS0649: Field 'MachineInfo.HasHome' is never assigned to, and will always have its default value false [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(42,19): warning CS0649: Field 'HoseLayInputs.Start' is never assigned to, and will always have its default value [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(21,20): warning CS0649: Field 'MachineInfo.X0' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(49,22): warning CS0649: Field 'HoseLayInputs.Seed' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(93,34): warning CS0649: Field 'HoseLayQueue.Work.Run' is never assigned to, and will always have its default value null [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(94,30): warning CS0649: Field 'HoseLayQueue.Work.World' is never assigned to, and will always have its default value null [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(121,37): warning CS0649: Field 'HoseLayQueue.Released' is never assigned to, and will always have its default value null [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(20,23): warning CS0649: Field 'MachineInfo.BaseDz' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(29,47): warning CS0649: Field 'MachineInfo.InsetW' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(36,20): warning CS0649: Field 'MachineInfo.HomeX' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(41,21): warning CS0649: Field 'MachineInfo.Foot' is never assigned to, and will always have its default value false [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(51,21): warning CS0649: Field 'HoseLayInputs.HasBody' is never assigned to, and will always have its default value false [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(36,27): warning CS0649: Field 'MachineInfo.HomeZ' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(18,28): warning CS0649: Field 'MachineInfo.Kind' is never assigned to, and will always have its default value [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseReplanQueue.cs(38,30): warning CS0649: Field 'HoseReplanQueue.Work.World' is never assigned to, and will always have its default value null [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\inputs\src\RimMandrake\_Shared\SlackGeometry\CordLayer.cs(45,21): warning CS0649: Field 'LayParams.SoftPins' is never assigned to, and will always have its default value false [D:\ClaudeWork\rimmandrake\scratch\fw-reel-inlet\final_correct_fixture\Probe.csproj]
+PASS multicell same-band (1,0)
+PASS multicell sheer-wall (1,0)
+PASS route linked witness (1,0)
+PASS ramp/ladder route does not authorize cross-band inlet (1,0)
+PASS rules-off (1,0)
+PASS multicell same-band (0,1)
+PASS multicell sheer-wall (0,1)
+PASS route linked witness (0,1)
+PASS ramp/ladder route does not authorize cross-band inlet (0,1)
+PASS rules-off (0,1)
+PASS multicell same-band (-1,0)
+PASS multicell sheer-wall (-1,0)
+PASS route linked witness (-1,0)
+PASS ramp/ladder route does not authorize cross-band inlet (-1,0)
+PASS rules-off (-1,0)
+PASS multicell same-band (0,-1)
+PASS multicell sheer-wall (0,-1)
+PASS route linked witness (0,-1)
+PASS ramp/ladder route does not authorize cross-band inlet (0,-1)
+PASS rules-off (0,-1)
+PASS later valid contact of same multi-cell candidate
+PASS contact body cell is not origin/centre
+PASS invalid preferred pipe falls back to tank
+PASS pipe rank preserved
+PASS thing-id tie independent of insertion
+PASS invalid east falls back west
+PASS corner and overlap remain refused
+PASS multi-cell pump proper side
+PASS pump sheer wall refused
+PASS eligible lower-id free end reserves pump side
+PASS unlaid lower-id reel does not reserve pump side
+PASS wrong-lane lower-id free end does not reserve pump side
+PASS free end differing band unchanged
+PASS free end equal band unchanged
+PASS free end on-footprint unchanged
+PASS 1x1 same band
+PASS 1x1 sheer band
+PASS map boundary empty
+PASS map boundary valid side
+PASS pump adjacent wrong lane stays refused
+PASS real-position pump selects designated port contact
+PASS other same-band pump lane cannot bypass fixed port depth
+PASS invalid nonport lane cannot hide valid pump port
+PASS ReelBodyInlet_multicell_contacts_all_sides
+PASS ReelBodyInlet_filtered_oracle
+PASS ReelBodyInlet_filtered_pick_no_alloc
+PASS ReelBodyInlet_reachable_candidate_ranking
+CHECKS 47 FAILURES 0
+
+
+RETURN 0

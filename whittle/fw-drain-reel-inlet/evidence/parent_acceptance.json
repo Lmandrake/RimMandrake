@@ -1,0 +1,23 @@
+{
+  "time": 1794400096.8295903,
+  "rehashed_inputs": 6010,
+  "changes_after_test": [
+    "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll",
+    "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll.srchash",
+    "src/RimMandrake/Utils/selftest_settings_screens.py"
+  ],
+  "shipping_compile_inputs_match_test": 352,
+  "whole_observer_sha256": "8a9d9b67ee3340bf2533e51366c309c53b0a0b718dba545a7bf40fc1b8ef6451",
+  "independently_decoded_stdout_sha256": "17eb3d8df5818f0103cb87405e274df098869eb96008131dabb88c31cd33e1d4",
+  "judge_equals_raw": true,
+  "live_readings": 6,
+  "restoration_matches": true,
+  "whittle_done_problems": [],
+  "full_validator_returncode": 0,
+  "native_orchestrator_exit": 0,
+  "runner_usage": {
+    "input_tokens": 26711143,
+    "output_tokens": 71480
+  },
+  "qualification": "Permanent normal tests cover filtered Pick. Full RawFind/pump adapter regressions are retained under evidence and run separately. Pump designated port row affects drawn feed geometry and is adapter-only. Forced inlet reads do not certify cache timing or liquid transfer."
+}

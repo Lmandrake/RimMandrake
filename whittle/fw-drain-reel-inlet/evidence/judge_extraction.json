@@ -1,0 +1,10 @@
+{
+  "time": 1794399901.822864,
+  "raw_path": "whittle/fw-drain-reel-inlet/evidence/judge_raw.json",
+  "raw_sha256": "c46050988a021d4730df15f183cd51cad501912ede51489929a4b702d011098d",
+  "result_sha256": "b0812c1e3c97088656e2d7f1807f0317b23a68fb41129c3aa2428d1538d701bc",
+  "saved_sha256": "b0812c1e3c97088656e2d7f1807f0317b23a68fb41129c3aa2428d1538d701bc",
+  "exact_result_unchanged": true,
+  "prompt_sha256": "4c6a017c5c0fe6f33c61d0e405208ed0428580cc7ec1a5cd246b46e7684dc207",
+  "returncode": 0
+}

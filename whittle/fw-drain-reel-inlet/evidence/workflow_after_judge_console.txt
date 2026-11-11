@@ -1,0 +1,12 @@
+{
+  "time": 1794399960.8367336,
+  "WHITTLE_DIR": "whittle/fw-drain-reel-inlet",
+  "need_judge": true,
+  "need_broaden": true,
+  "last_change": 1794399448.4360335,
+  "done_problems": [],
+  "full_validator": "MandrakeWorkflows/whittle/run.py validate(root)",
+  "full_validator_returncode": 0,
+  "stdout": "",
+  "stderr": ""
+}

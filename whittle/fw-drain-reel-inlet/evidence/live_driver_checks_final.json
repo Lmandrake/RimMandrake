@@ -1,0 +1,48 @@
+[
+  {
+    "fault": false,
+    "error": null,
+    "restore": {
+      "load": {
+        "verified": true
+      },
+      "rect": "RECT sha256=unchanged beds=0",
+      "rules": false,
+      "status": "PASS"
+    },
+    "loads": [
+      {},
+      {
+        "name": "WHITTLE_ReelInlet_Begin_20261111T040555",
+        "check": false
+      },
+      {
+        "name": "WHITTLE_ReelInlet_Begin_20261111T040555",
+        "check": false
+      }
+    ]
+  },
+  {
+    "fault": true,
+    "error": "body inlet crossed sheer wall",
+    "restore": {
+      "load": {
+        "verified": true
+      },
+      "rect": "RECT sha256=unchanged beds=0",
+      "rules": false,
+      "status": "PASS"
+    },
+    "loads": [
+      {},
+      {
+        "name": "WHITTLE_ReelInlet_Begin_20261111T040557",
+        "check": false
+      },
+      {
+        "name": "WHITTLE_ReelInlet_Begin_20261111T040557",
+        "check": false
+      }
+    ]
+  }
+]
