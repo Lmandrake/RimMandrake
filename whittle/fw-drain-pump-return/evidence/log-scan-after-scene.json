@@ -1,0 +1,14 @@
+{
+  "private_path": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/pump-private/Player-after-scene.log",
+  "sha256": "11389361ed96c958144521f330b0ec0881f54512936dd7e1d47dd99b749a1a4d",
+  "bytes": 15825,
+  "patterns": [
+    "Exception",
+    "Config error",
+    "Could not resolve",
+    "Error in ",
+    "Error while",
+    "Failed to"
+  ],
+  "hits": []
+}

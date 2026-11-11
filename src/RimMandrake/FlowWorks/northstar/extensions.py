@@ -2461,8 +2461,10 @@ def _tank_set(t, tank, mode, liquid=None, units=None):
     if liquid is not None:
         arg += ";%s;%d" % (liquid, units)
     r = t.bridge_call("jawa/static_call", type="RimMandrake.FlowWorks.RM_NorthstarProofs", method="ProofTank", args=arg)
-    res = str((r or {}).get("result", ""))
-    if t._guard() and not res.startswith("TANK mode=%s effective=%s" % (mode, mode)):
+    res = str(r.get("result", "")) if isinstance(r, dict) else ""
+    match = re.fullmatch(r"TANK mode=(\S+) effective=(\S+) liquid=(\S+) units=(\d+)", res)
+    if t._guard() and (not isinstance(r, dict) or r.get("success") is False or r.get("error")
+                       or not match or match.group(1) != mode or match.group(2) != mode):
         raise ExpectationFailed("UNMEASURED: ProofTank %s did not set the mode: %r" % (arg, r))
     return res
 

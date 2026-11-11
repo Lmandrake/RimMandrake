@@ -1,0 +1,9 @@
+{
+  "work": "whittle/fw-drain-pump-return",
+  "need_judge": true,
+  "need_broaden": true,
+  "last_change": 1794382380.2093685,
+  "problems": [
+    "No judge's verdict newer than DONE.md and the evidence. Spawn a fresh subagent (not a fork) with whittle/fw-drain-pump-return/JUDGE_PROMPT.md as its whole brief. It writes whittle/fw-drain-pump-return/JUDGE.md."
+  ]
+}

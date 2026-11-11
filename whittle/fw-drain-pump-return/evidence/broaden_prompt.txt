@@ -1,0 +1,91 @@
+You are an independent read-only adversarial reviewer, not the builder. No tools, edits, game or bridge. Propose at most six revealing bounded offline negative/readback cases for this exact frozen proof contract. Focus on false acceptance, mode ordering and restoration; distinguish contract needs from new gameplay scope. Return specific suggested inputs and expected refusal/failure.
+
+# Pump return proof — verify the landed repair
+
+The pump-return acceptance scene should exercise the shipped tank-mode rules.
+
+- The live liquid_pump chain marks its tank Dump and verifies its effective mode before switching the pump to Pour; governed real ticks then make the channel level rise, with the powered-draw and disabled controls also measured.
+- A fresh dependency-complete all-DLC FlowWorks game passes the intended tier preflight before and after launch, with deployed artifact identity measured and no uninvestigated load/config error.
+- The proof runs on a disposable registered saved site, restores the prior settings and scene by a verified saved baseline, and preserves canonical saves.
+- The game is stopped and stamped down after the proof, and both bridge ownership and host driver lock are released, including on failure.
+
+Production helper:
+def _tank_set(t, tank, mode, liquid=None, units=None):
+    """RM_NorthstarProofs.ProofTank: the harness has no HoseProbe channel and a new tank is Store, which takes no unasked
+    pour. Anything but a "TANK mode=..." answer is UNMEASURED, never a pass."""
+    arg = "%d,%d;%s" % (tank[0], tank[1], mode)
+    if liquid is not None:
+        arg += ";%s;%d" % (liquid, units)
+    r = t.bridge_call("jawa/static_call", type="RimMandrake.FlowWorks.RM_NorthstarProofs", method="ProofTank", args=arg)
+    res = str((r or {}).get("result", ""))
+    if t._guard() and not res.startswith("TANK mode=%s effective=%s" % (mode, mode)):
+        raise ExpectationFailed("UNMEASURED: ProofTank %s did not set the mode: %r" % (arg, r))
+    return res
+
+
+
+Production chain:
+@suite.chain("liquid_pump")
+def liquid_pump(t):
+    """FLOWWORKS_BUILD_PROGRAM_1 Phase 8 slice 1 (f3ab74a1b): a powered pump between a 3-cell D=2 water channel
+    (F=2 each) and a 2x2 tank draws one level per 250-tick cycle into the tank as 10,000 units (1 kL, was 5 drums), and in pour mode returns
+    them. Unpowered it does nothing; with liquidPumpEnabled off it does nothing even powered."""
+    x0, z0 = _prep_plot(t, "D")
+    # x0+12.. (2026-10-24, FLOWWORKS_MODCHECK_FIX_SIX_STANDING_FAILS): at x0+4..6 the channel sat INSIDE
+    # toggle_recession's 5x5 pond (x0+3..7, rows 4-8), a body that stays classified for the life of the map: its
+    # StagePond repainted the plot's prep Soil and the pond fed the channel, so the unpowered pump read level != 6.
+    # PUMP_DX keeps the whole fixture east of every plot-D pond and its 8-adjacent ring (x0+8).
+    ch = _line(x0 + PUMP_DX, z0 + 6, 3)
+    pump, tank, batt = (x0 + PUMP_DX + 1, z0 + 7), (x0 + PUMP_DX + 1, z0 + 8), (x0 + PUMP_DX + 5, z0 + 8)
+    _dig_run(t, ch, 2)
+    for x, z in ch:
+        _fill(t, x, z, 2)
+    _stage(t, "jawa/build_batch", ops="RM_LiquidPump:%d,%d;RM_LiquidTank:%d,%d" % (pump + tank), faction="player")
+
+    def rd(mode=""):
+        return _kv(_sc(t, NS_PROOF, "ProofPump", "%d,%d" % pump + ((";" + mode) if mode else "")))
+
+    def level():
+        # EXACT water in levels (_water: ProofPitWater decilitres), never excavation_report's integer `fill`: the channel
+        # levels its water out, so after two draws its 40,000 dL sit 13,333 dL a cell and the floored fills read 1+1+1 = 3
+        # (PUMP_TANK_FIX_DRAWS_TOO_LITTLE, run7: "channel levels 3, expected 6 - moved 2" with the tank holding 20,000)
+        return sum(_water(t, ch))
+
+    with t.component("pump_unpowered_idle"):
+        t.wait_ticks(600)
+        k = rd()
+        if t._guard():
+            lv = level()
+            _expect(k.get("running") == "False" and k.get("moved") == "0" and abs(lv - 6) < PUMP_LEVEL_TOL,
+                    "an unpowered pump moved liquid: %s level %.2f" % (k, lv))
+    _stage(t, "jawa/build_batch", ops="Battery:%d,%d" % batt, faction="player")
+    bat = ((t.bridge_call("jawa/list_things", defName="Battery", rect=_rect(batt[0], batt[1], 1, 2), limit=2) or {})
+           .get("things") or [{}])[0].get("id")
+    t.bridge_call("jawa/battery_set", thing=bat, mode="setPct", value=1.0)
+    with t.component("pump_draws_into_tank", toggle="liquidPumpEnabled"):
+        t.wait_ticks(800)
+        k, lv = rd(), level()
+        if t._guard():
+            moved = int(k.get("moved", 0))
+            tk = k.get("tank", "none")
+            _expect(k.get("running") == "True" and moved >= 2, "powered pump not drawing: %s" % k)
+            _expect(abs(lv - (6 - moved)) < PUMP_LEVEL_TOL, "channel levels %.2f, expected 6 - moved %d" % (lv, moved))
+            _expect(":" in tk and not tk.startswith("empty") and int(tk.split(":")[1]) == UNITS_PER_LEVEL * moved,
+                    "tank %s after %d draws (10000 units/level)" % (tk, moved))
+    with t.component("pump_off_idles", toggle="liquidPumpEnabled"):
+        with _setting(t, "liquidPumpEnabled", False):
+            m0 = rd().get("moved")
+            t.wait_ticks(600)
+            k = rd()
+            _expect(k.get("moved") == m0 and k.get("running") == "False" if t._guard() else None,
+                    "pump moved liquid with liquidPumpEnabled OFF: %s -> %s" % (m0, k))
+    with t.component("pump_pours_back"):
+        # The new tank is Store, and POUR drains only a Dump tank (PUMP_POUR_PROOF_FIX_TANK_NOT_DUMP): mark it first.
+        _tank_set(t, tank, "Dump")
+        lv0 = level()
+        rd("pour")
+        t.wait_ticks(600)
+        lv1 = level()
+        _expect(lv1 > lv0 + PUMP_LEVEL_TOL if t._guard() else None, "pour mode did not raise the channel: %.2f -> %.2f" % (lv0, lv1))
+
+

@@ -1,0 +1,14 @@
+{
+  "private_path": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/pump-private/Player-loaded.log",
+  "sha256": "8ebe9c301b0bda2af8491dfa0920b39a97f4abc6c0681ac086afbadbace4d3cb",
+  "bytes": 9326,
+  "patterns": [
+    "Exception",
+    "Config error",
+    "Could not resolve",
+    "Error in ",
+    "Error while",
+    "Failed to"
+  ],
+  "hits": []
+}

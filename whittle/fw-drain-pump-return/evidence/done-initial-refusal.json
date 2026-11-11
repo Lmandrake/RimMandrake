@@ -1,0 +1,9 @@
+{
+  "work": "whittle/fw-drain-pump-return",
+  "need_judge": true,
+  "need_broaden": true,
+  "last_change": 1794382380.2093685,
+  "problems": [
+    "There is no whittle/fw-drain-pump-return/DONE.md yet. Keep working. When you would show this to the owner, write it: one line per statement bullet, '- true: <the bullet, copied> | evidence: `path` `path`', naming saved evidence files."
+  ]
+}

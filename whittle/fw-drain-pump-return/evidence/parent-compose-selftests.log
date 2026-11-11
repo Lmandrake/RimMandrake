@@ -1,0 +1,13 @@
+contained in rm-harness.slice (max 24G), 1 workers
+[1/2] PASS          2.6s  src/RimMandrake/Utils/selftest_biomes_compose_scratch.py
+[2/2] PASS          1.5s  src/RimMandrake/Utils/selftest_biomes_compose_cleanup.py
+evidence: 0 eligible, 0 SKIPPED as unchanged, 0 PASS recorded, 0 PASS not recordable — runner 65716eff3278c68e
+cache: 0 CACHED PASS, 0 declared test(s) ran
+known results: 0/2 answered from the ledger (selftests.cache_hit_share 0.000), 0s not spent; 2 ran, 0 recorded, 0 checked against a stored PASS, 0 known red
+  ran (2): no record
+  not recordable (2): external: src/RimMandrake/Utils/selftest_biomes_compose_cleanup.py, src/RimMandrake/Utils/selftest_biomes_compose_scratch.py
+PASS          1.5s  src/RimMandrake/Utils/selftest_biomes_compose_cleanup.py
+PASS          2.6s  src/RimMandrake/Utils/selftest_biomes_compose_scratch.py
+
+PASS 2/2  FAIL 0/2  UNMEASURED 0/2  CRASH 0/2  SKIPPED 0/2  (wall 4.4s) — contained in rm-harness.slice (max 24G), 1 workers
+RESULT: GREEN (green = FAIL 0 and CRASH 0)

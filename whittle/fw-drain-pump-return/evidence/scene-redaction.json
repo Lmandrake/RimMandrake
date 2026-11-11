@@ -1,0 +1,8 @@
+{
+  "raw_private": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/pump-private/scene-raw.json",
+  "raw_sha256": "2ae15368c0fa036827b0bbcbf65ee4c851976d5e289aa45c4abac4cfa1d0ce56",
+  "public": "whittle/fw-drain-pump-return/evidence/scene-public.json",
+  "public_sha256": "aec4ec321e4495165683e9f56e326914091c30567af2fac5e90c6f2a24b074a7",
+  "redactions": 1,
+  "change": "Only exact private bridge-token bytes replaced; no JSON field/status/timing changed."
+}

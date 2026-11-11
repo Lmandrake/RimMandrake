@@ -1,0 +1,151 @@
+[
+  {
+    "case": "runner_nonpass",
+    "status": "FAIL",
+    "restore": {
+      "errors": [],
+      "reload": {
+        "verified": true
+      },
+      "rect": "RECT sha256=fixture beds=0",
+      "settings": [
+        {
+          "type": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+          "field": "depthEngineEnabled",
+          "value": "True",
+          "after": "True",
+          "changed": false
+        },
+        {
+          "type": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+          "field": "depthEngineLiveForTests",
+          "value": "False",
+          "after": "False",
+          "changed": true
+        },
+        {
+          "type": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+          "field": "liquidPumpEnabled",
+          "value": "False",
+          "after": "False",
+          "changed": false
+        },
+        {
+          "type": "RimMandrake.FlowWorks.Hose.RM_HoseSettings",
+          "field": "tankModesEnabled",
+          "value": "False",
+          "after": "False",
+          "changed": true
+        }
+      ],
+      "debug": {
+        "enableStoryteller": true
+      },
+      "difficulty": {
+        "threatScale": 1,
+        "allowBigThreats": true
+      },
+      "status": "PASS"
+    },
+    "loads": 3
+  },
+  {
+    "case": "reload_failure",
+    "status": "FAIL",
+    "restore": {
+      "errors": [
+        "scene: AssertionError(\"baseline reload {'verified': False}\")"
+      ],
+      "settings": [
+        {
+          "type": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+          "field": "depthEngineEnabled",
+          "value": "True",
+          "after": "True",
+          "changed": false
+        },
+        {
+          "type": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+          "field": "depthEngineLiveForTests",
+          "value": "False",
+          "after": "False",
+          "changed": true
+        },
+        {
+          "type": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+          "field": "liquidPumpEnabled",
+          "value": "False",
+          "after": "False",
+          "changed": false
+        },
+        {
+          "type": "RimMandrake.FlowWorks.Hose.RM_HoseSettings",
+          "field": "tankModesEnabled",
+          "value": "False",
+          "after": "False",
+          "changed": true
+        }
+      ],
+      "debug": {
+        "enableStoryteller": true
+      },
+      "difficulty": {
+        "threatScale": 1,
+        "allowBigThreats": true
+      },
+      "status": "FAIL"
+    },
+    "loads": 3
+  },
+  {
+    "case": "preflight_nonpass_cleanup",
+    "commands": [
+      [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "who"
+      ],
+      [
+        "python.exe",
+        "/home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/Utils/preflight_bridge.py",
+        "--tier",
+        "quicktest",
+        "--modset",
+        "mods__mandrake_rm_flowworks__mandrake_rm_hugethings__mandrake_rm_patches",
+        "--deep",
+        "--live",
+        "--seat",
+        "BENCH",
+        "--json",
+        "/home/mandrake/.seat-tmp/BENCH/tmp0_chfsp_/cleanup/preflight-live.json"
+      ],
+      [
+        "python.exe",
+        "/home/mandrake/.seat-tmp/BENCH/tmp0_chfsp_/cleanup/lifecycle.py",
+        "stop"
+      ],
+      [
+        "./game",
+        "--why",
+        "FW drain pump return: proof ended; supported stop",
+        "down"
+      ],
+      [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "release"
+      ],
+      [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "who"
+      ]
+    ],
+    "status": "FAIL",
+    "cleanup_errors": [],
+    "bridge_and_lock_free": true
+  }
+]

@@ -1,0 +1,208 @@
+{
+  "valid": {
+    "verdict": "PASS",
+    "detail": "",
+    "events": [
+      {
+        "tool": "jawa/static_call",
+        "args": {
+          "type": "RimMandrake.FlowWorks.RM_NorthstarProofs",
+          "method": "ProofTank",
+          "args": "1,2;Dump"
+        }
+      },
+      {
+        "pump_request": "pour"
+      },
+      {
+        "wait": 600
+      }
+    ]
+  },
+  "no_rise": {
+    "verdict": "FAIL",
+    "detail": "ExpectationFailed: pour mode did not raise the channel: 3.00 -> 3.00",
+    "events": [
+      {
+        "tool": "jawa/static_call",
+        "args": {
+          "type": "RimMandrake.FlowWorks.RM_NorthstarProofs",
+          "method": "ProofTank",
+          "args": "1,2;Dump"
+        }
+      },
+      {
+        "pump_request": "pour"
+      },
+      {
+        "wait": 600
+      }
+    ]
+  },
+  "bad_0": {
+    "verdict": "UNMEASURED",
+    "detail": "ExpectationFailed: UNMEASURED: ProofTank 1,2;Dump did not set the mode: None",
+    "events": [
+      {
+        "tool": "jawa/static_call",
+        "args": {
+          "type": "RimMandrake.FlowWorks.RM_NorthstarProofs",
+          "method": "ProofTank",
+          "args": "1,2;Dump"
+        }
+      }
+    ]
+  },
+  "bad_1": {
+    "verdict": "UNMEASURED",
+    "detail": "ExpectationFailed: UNMEASURED: ProofTank 1,2;Dump did not set the mode: {}",
+    "events": [
+      {
+        "tool": "jawa/static_call",
+        "args": {
+          "type": "RimMandrake.FlowWorks.RM_NorthstarProofs",
+          "method": "ProofTank",
+          "args": "1,2;Dump"
+        }
+      }
+    ]
+  },
+  "bad_2": {
+    "verdict": "UNMEASURED",
+    "detail": "ExpectationFailed: UNMEASURED: ProofTank 1,2;Dump did not set the mode: 'TANK mode=Dump effective=Dump'",
+    "events": [
+      {
+        "tool": "jawa/static_call",
+        "args": {
+          "type": "RimMandrake.FlowWorks.RM_NorthstarProofs",
+          "method": "ProofTank",
+          "args": "1,2;Dump"
+        }
+      }
+    ]
+  },
+  "bad_3": {
+    "verdict": "UNMEASURED",
+    "detail": "ExpectationFailed: UNMEASURED: ProofTank 1,2;Dump did not set the mode: {'success': False, 'result': 'TANK mode=Dump effective=Dump liquid=RM_Liquid_FreshWater units=30000'}",
+    "events": [
+      {
+        "tool": "jawa/static_call",
+        "args": {
+          "type": "RimMandrake.FlowWorks.RM_NorthstarProofs",
+          "method": "ProofTank",
+          "args": "1,2;Dump"
+        }
+      }
+    ]
+  },
+  "bad_4": {
+    "verdict": "UNMEASURED",
+    "detail": "ExpectationFailed: UNMEASURED: ProofTank 1,2;Dump did not set the mode: {'result': 'TANK mode=Dump effective=Dump liquid=RM_Liquid_FreshWater units=30000', 'error': 'tank not found'}",
+    "events": [
+      {
+        "tool": "jawa/static_call",
+        "args": {
+          "type": "RimMandrake.FlowWorks.RM_NorthstarProofs",
+          "method": "ProofTank",
+          "args": "1,2;Dump"
+        }
+      }
+    ]
+  },
+  "bad_5": {
+    "verdict": "UNMEASURED",
+    "detail": "ExpectationFailed: UNMEASURED: ProofTank 1,2;Dump did not set the mode: {'result': 'REFUSED: no RM_LiquidTank'}",
+    "events": [
+      {
+        "tool": "jawa/static_call",
+        "args": {
+          "type": "RimMandrake.FlowWorks.RM_NorthstarProofs",
+          "method": "ProofTank",
+          "args": "1,2;Dump"
+        }
+      }
+    ]
+  },
+  "bad_6": {
+    "verdict": "UNMEASURED",
+    "detail": "ExpectationFailed: UNMEASURED: ProofTank 1,2;Dump did not set the mode: {'result': 'TANK mode=Dump effective=Store liquid=RM_Liquid_FreshWater units=30000'}",
+    "events": [
+      {
+        "tool": "jawa/static_call",
+        "args": {
+          "type": "RimMandrake.FlowWorks.RM_NorthstarProofs",
+          "method": "ProofTank",
+          "args": "1,2;Dump"
+        }
+      }
+    ]
+  },
+  "bad_7": {
+    "verdict": "UNMEASURED",
+    "detail": "ExpectationFailed: UNMEASURED: ProofTank 1,2;Dump did not set the mode: {'result': 'TANK mode=Dump effective=DumpPending liquid=RM_Liquid_FreshWater units=30000'}",
+    "events": [
+      {
+        "tool": "jawa/static_call",
+        "args": {
+          "type": "RimMandrake.FlowWorks.RM_NorthstarProofs",
+          "method": "ProofTank",
+          "args": "1,2;Dump"
+        }
+      }
+    ]
+  },
+  "bad_8": {
+    "verdict": "UNMEASURED",
+    "detail": "ExpectationFailed: UNMEASURED: ProofTank 1,2;Dump did not set the mode: {'result': 'TANK mode=Dump effective=Dump; liquid=RM_Liquid_FreshWater units=30000'}",
+    "events": [
+      {
+        "tool": "jawa/static_call",
+        "args": {
+          "type": "RimMandrake.FlowWorks.RM_NorthstarProofs",
+          "method": "ProofTank",
+          "args": "1,2;Dump"
+        }
+      }
+    ]
+  },
+  "bad_9": {
+    "verdict": "UNMEASURED",
+    "detail": "ExpectationFailed: UNMEASURED: ProofTank 1,2;Dump did not set the mode: {'result': 'TANK mode=Dump effective=Dump'}",
+    "events": [
+      {
+        "tool": "jawa/static_call",
+        "args": {
+          "type": "RimMandrake.FlowWorks.RM_NorthstarProofs",
+          "method": "ProofTank",
+          "args": "1,2;Dump"
+        }
+      }
+    ]
+  },
+  "bad_10": {
+    "verdict": "UNMEASURED",
+    "detail": "ExpectationFailed: UNMEASURED: ProofTank 1,2;Dump did not set the mode: {'result': 'TANK mode=Dump effective=Dump liquid=RM_Liquid_FreshWater units=30000 actual=Store'}",
+    "events": [
+      {
+        "tool": "jawa/static_call",
+        "args": {
+          "type": "RimMandrake.FlowWorks.RM_NorthstarProofs",
+          "method": "ProofTank",
+          "args": "1,2;Dump"
+        }
+      }
+    ]
+  },
+  "guard_off": {
+    "verdict": "UNMEASURED",
+    "detail": "UNMEASURED: injected prior failure",
+    "events": [
+      {
+        "pump_request": "pour"
+      },
+      {
+        "wait": 600
+      }
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "head": "5ad7dd1f682abe6dcc95969b4480224c049fa7ad",
+  "private_log_sha256": "fe6465804f5cdcbd8cfb5328a30a755b8849b38437ec32bcdcbe3e0e59708466",
+  "mods": {
+    "FlowWorks": {
+      "RimMandrakeFlowWorks.dll": {
+        "source_sha256": "1c92c54ebdffb03aefa05c92512b37d2ce63a67ea18f5b8c3b903ef146bfd8a2",
+        "deployed_sha256": "1c92c54ebdffb03aefa05c92512b37d2ce63a67ea18f5b8c3b903ef146bfd8a2",
+        "same": true
+      }
+    },
+    "GimmeSomeSlack": {
+      "RimMandrakeGimmeSomeSlack.dll": {
+        "source_sha256": "fb2995657a1670acceb45c6a9653cc8aeec070ac5355e7ab486bb061df722a26",
+        "deployed_sha256": "fb2995657a1670acceb45c6a9653cc8aeec070ac5355e7ab486bb061df722a26",
+        "same": true
+      }
+    },
+    "HugeThings": {
+      "RM_HugeThings.dll": {
+        "source_sha256": "c3aaab68e5a45d0033ed8f422375d4bd22e528a5091e2a32d5c94535c1639bb8",
+        "deployed_sha256": "c3aaab68e5a45d0033ed8f422375d4bd22e528a5091e2a32d5c94535c1639bb8",
+        "same": true
+      }
+    },
+    "MandrakePatches": {
+      "RimMandrakePatches.dll": {
+        "source_sha256": "2e77b243a9efba38d41552db1befd15a6c8c7f8bbedc2fc1fd617c0962b61175",
+        "deployed_sha256": "2e77b243a9efba38d41552db1befd15a6c8c7f8bbedc2fc1fd617c0962b61175",
+        "same": true
+      }
+    }
+  }
+}

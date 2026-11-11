@@ -1,0 +1,136 @@
+{
+  "actual_live_reply_replay": {
+    "verdict": "PASS",
+    "detail": "",
+    "events": [
+      {
+        "tool": "jawa/static_call",
+        "args": {
+          "type": "RimMandrake.FlowWorks.RM_NorthstarProofs",
+          "method": "ProofTank",
+          "args": "1,2;Dump"
+        }
+      },
+      {
+        "pump_request": "pour"
+      },
+      {
+        "wait": 600
+      }
+    ]
+  },
+  "cases": [
+    {
+      "case": "effective-prefix",
+      "old": {
+        "verdict": "PASS",
+        "detail": "",
+        "events": [
+          {
+            "tool": "jawa/static_call",
+            "args": {
+              "type": "RimMandrake.FlowWorks.RM_NorthstarProofs",
+              "method": "ProofTank",
+              "args": "1,2;Dump"
+            }
+          },
+          {
+            "pump_request": "pour"
+          },
+          {
+            "wait": 600
+          }
+        ]
+      },
+      "fixed": {
+        "verdict": "UNMEASURED",
+        "detail": "ExpectationFailed: UNMEASURED: ProofTank 1,2;Dump did not set the mode: {'result': 'TANK mode=Dump effective=DumpPending liquid=RM_Liquid_FreshWater units=30000'}",
+        "events": [
+          {
+            "tool": "jawa/static_call",
+            "args": {
+              "type": "RimMandrake.FlowWorks.RM_NorthstarProofs",
+              "method": "ProofTank",
+              "args": "1,2;Dump"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": "error-payload",
+      "old": {
+        "verdict": "PASS",
+        "detail": "",
+        "events": [
+          {
+            "tool": "jawa/static_call",
+            "args": {
+              "type": "RimMandrake.FlowWorks.RM_NorthstarProofs",
+              "method": "ProofTank",
+              "args": "1,2;Dump"
+            }
+          },
+          {
+            "pump_request": "pour"
+          },
+          {
+            "wait": 600
+          }
+        ]
+      },
+      "fixed": {
+        "verdict": "UNMEASURED",
+        "detail": "ExpectationFailed: UNMEASURED: ProofTank 1,2;Dump did not set the mode: {'result': 'TANK mode=Dump effective=Dump liquid=RM_Liquid_FreshWater units=30000', 'error': 'missing tank'}",
+        "events": [
+          {
+            "tool": "jawa/static_call",
+            "args": {
+              "type": "RimMandrake.FlowWorks.RM_NorthstarProofs",
+              "method": "ProofTank",
+              "args": "1,2;Dump"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": "false-success",
+      "old": {
+        "verdict": "PASS",
+        "detail": "",
+        "events": [
+          {
+            "tool": "jawa/static_call",
+            "args": {
+              "type": "RimMandrake.FlowWorks.RM_NorthstarProofs",
+              "method": "ProofTank",
+              "args": "1,2;Dump"
+            }
+          },
+          {
+            "pump_request": "pour"
+          },
+          {
+            "wait": 600
+          }
+        ]
+      },
+      "fixed": {
+        "verdict": "UNMEASURED",
+        "detail": "ExpectationFailed: UNMEASURED: ProofTank 1,2;Dump did not set the mode: {'success': False, 'method': 'System.String ProofTank(System.String)', 'result': 'TANK mode=Dump effective=Dump liquid=RM_Liquid_FreshWater units=30000', 'thingArgs': [], 'ticksGame': 2003, 'operation': {'OperationId': 'op_883cb080f4234dbe96ddd36ad0db6e48', 'Status': 'Completed', 'Success': True, 'DurationMs': 45}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 2003}}",
+        "events": [
+          {
+            "tool": "jawa/static_call",
+            "args": {
+              "type": "RimMandrake.FlowWorks.RM_NorthstarProofs",
+              "method": "ProofTank",
+              "args": "1,2;Dump"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "note": "Original live receipt is unchanged; new parser is replayed offline against its exact raw reply."
+}

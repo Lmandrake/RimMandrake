@@ -1,0 +1,134 @@
+{
+  "checked_at": 1794382766.2472763,
+  "status": "PASS",
+  "scope": "liquid_pump only, four rows; no full-suite or rate/mode-persistence acceptance",
+  "original_live_source": "landed 0ce8db3227245542f51656802a7b6c72afd9b641 repair, clone HEAD 5ad7dd1f682abe6dcc95969b4480224c049fa7ad",
+  "post_live_change": "strict mode-token and malformed-payload parser only; exact raw live reply replayed offline; no changed gameplay artifact",
+  "raw_hashes": {
+    "rewrite-regression-windows.log": "4439f9fb2d1c72d42edeec5274cfaaca4558dbac7b55289dc07b9d7c391772ff",
+    "log-scan-loaded.json": "17f8e9788e3a73f73a6bea453e797ae861c98ea479c65d2b14f6cfe6eec23fb9",
+    "extensions-offline.stderr.log": "00ed4a2528d4b58c2814fef3e8f6b22e69a7b1d95646d17aaa01156a726d9cdc",
+    "bridge-held.stdout.log": "42496971e8a746ddc17ef3cbf3056f3d79feb029e8051dadad1def3395cac39e",
+    "tier.log": "045a0b4fe732978e56ca60717aac7aab6ba6c72d0f931c17d96c879aa0dbba69",
+    "stamp-up.stdout.log": "bf5a1f75c1315b9ffa8644d9df32274e63932189264bf68f3770d4b583b3e92f",
+    "scene.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "companion-recovery.json": "fe825f5e37ab3422c2ceb6c3364e8b579e7d0cca1b03523e5eb7b2877e2872a3",
+    "drive.stdout.log": "12825c8f52d74d86abb034a4322ba6937e299f8409850064f06ee909b0b8d889",
+    "preflight-offline.json": "8c6e7c351b3b8c5ca156255c40facd60e16f320b5eaa60807c2f3223bcd61857",
+    "drive.py": "f8470ec66da87e4801a791997bfe6c1237882f671c31ee81a3e70222f548e778",
+    "drive.json": "a9bcc510446f5a9ade0f1de349ca2910e415e819594f35a108db463f2affaf7f",
+    "scene-public.json": "aec4ec321e4495165683e9f56e326914091c30567af2fac5e90c6f2a24b074a7",
+    "broaden_raw.json": "d4529396d54b61594dc3758a6e7072943a1730e91c55e6d2fd6c9e95f3f2a2fb",
+    "deploy-plan-HugeThings.log": "1943fdf416437b174b8572087d81a67a7b23a76a64a793f4e38772e4d66446ef",
+    "bridge-free.stdout.log": "01a449f8a22bde0fb5d72d06eb48762ff3f1811790df018ebc5fbf97d6b887a7",
+    "stamp-up.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "readback-comparison.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "broaden_call.json": "33a2b00d52faa070fd008d7866312931e2bc6aba9557e95052af5a00027598e2",
+    "artifact-identity.json": "74c4cc80a48c2f85bd893861b9ef49d18d341d70d42f942a35383a30a9ecde5f",
+    "readback-cases.json": "3fdfaad74c9eb4bb1604ceb80b4a830a2f91d2a7f45a10516e574d24a7953be8",
+    "runner.stderr.log": "5a89aa8fda18d1d1e75f65d2ba113e892c40c52eac42376469b4041e11a2a42d",
+    "check_done.py": "49d0f1b40d0008a8b73bf0529078e87a08fb54ee8a310fd1685886c621a7e01e",
+    "launch.log": "228d207e8302294747758a12bf9134462fdcc24ede512663f139cac328c4ba8c",
+    "scene.stdout.log": "e8c9e04af1732eef4145ff43cfeb58be490bbd95297963776ac0782e7884acb9",
+    "deploy-plan-FlowWorks.log": "0895dab057aed6300394417d3ba9de6fa4891f5cddc4531f7fe3e9789799dd67",
+    "verify2.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bridge-held.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "broaden_stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bridge-release.stdout.log": "96b0b89346093e0dcbd3d38cbc25f2308ac9e94099171cbfdc63d76f81e81232",
+    "rewrite-regression.log": "6002cafbd28520a572d8f0d5c9d02d02768d5601fe34ba22aa2e9d2dc6f763a5",
+    "preflight-offline.log": "b0225b15f24eb618b72b8e93cbd935ef08cec302b75c7e4dcecdb3480762c8bb",
+    "log-final.json": "43353c0f140ee29c2a1692be2b856f869a609f063855594d6984ba02d9747fd8",
+    "deploy-plan-MandrakePatches.log": "6b8d5bfef208cbb0008e08ed6c5f3c31dfca6f9ce5ec0fac3f1e9a65985052ed",
+    "run_scene.py": "e71fa247fa7d82915052dc34284b601aaeccdb1ece2e342168cb1f22f51f9d15",
+    "readback-comparison.stdout.log": "f660b6210cc2a9c6320482d6a7a86d1051bdc5af1212a14d6d9004ce986ab788",
+    "stop-after.stdout.log": "060c3e0cc886de9774ec77367e99007d17511d2872263491724d11e3aefc18da",
+    "result.json": "63758b2f5dd5d93b81d27adb849ae8afdcb569161760137e411e2ea7a4900af7",
+    "bridge-release.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "readback_comparison.py": "5147e8b20ae3f34d807a5da58019631d99a8fb219e3cfaa3b6afa36aa8d5a18a",
+    "deploy-plan-GimmeSomeSlack.log": "5b8654c8427125a17b0319b4feb336fd9fc9e9925b5ceb935b03803f2e90acea",
+    "drive.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "failure_tests.py": "6eac8ace999c8772d3c213f0302d1ea50c0745ca06598e8eff8508bc5828a569",
+    "extensions-offline.stdout.log": "93b12d80da0fb9240fc4851ef05023b874ed3be48a9b34eb1ff829025181ec4d",
+    "quota.json": "b309a21fc702139079318225db2c8ed24fd86b98fc5b7932a3e0d7d692da336b",
+    "stop-after.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "runner.stdout.log": "212c4fbe4720a0ef1667249aa01d883f214c39c44bbaa50d688f0852cd8c9291",
+    "failure-tests.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "lifecycle.py": "3e38d76f79090e9d6a57f0aed9ff141c2fa391ef99a81547fb9899ea95f58699",
+    "preflight-live.json": "4bc551df60a50f6be74c559c6a2632f4a9f394381af889177245beaffebc67be",
+    "call_judge.py": "527e2d896c67a687c344d1154cc9e93e21781a4b6bf1a465c2a6a6d6a7363e3b",
+    "readback-comparison.json": "af1a396ddfc74ac1ed73f0ca64b2f4842333616efb6f3cd8c45ad7acc46c9d22",
+    "failure-cases.json": "7d8f729254a1fea9d2f47f5906657fc5f5c588fab5e8f1dd3ebf13f0a678f039",
+    "broaden_prompt.txt": "3cb28b8f7154d10b9a7740b6fb42b5afa0f19c76370688657b247f5bbd4d29c9",
+    "stamp-down.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bridge-free.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "preflight-live.stdout.log": "8afad95cae4f03dc2e060c9221c4b96340c83a4a4a007c4645f313d9355ce57b",
+    "rewrite-old-regression.log": "64d80f0da151fff61cd77b8316378b2af5d1df7cfd8951575755b0cfc7206f4c",
+    "stamp-loading.log": "aab6e064baf874d6f6c771a2d34415f82a5ae3dae22aad25a7a9f1902fc414ca",
+    "preflight-live.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "broaden-process.stdout.log": "81bae4f0f7f32a7843efd10b411026d6fd67d832e18b029f3c4f4997e3285d5d",
+    "preflight-offline-2.log": "6b8e23c8947a38ff6a30cd00c36644fd59130e0db4a5c017c5376a136432a8cb",
+    "preflight-offline-2.json": "955b776b3259696a4fb33e1160e506549f77c57c88b967a74d8067b810671bc4",
+    "verify2.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "log-scan-after-scene.json": "d3ed7b5be9c0880d9a5197f41ac3e42e56a0b43de9014fa24107ce6b137119b5",
+    "stop-before.log": "2137c703a8de0420d72da38cdc784cf8f5e87e28e5adf7e5e4b7f1c11bf47df3",
+    "verify.py": "9650f9c14232bb9659bdd20f36581ffda3cb270a18079bda8955ec8f54f57d54",
+    "readback-cases.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "call_judge_2.py": "870db6e95eb1592b159fa7a774710874a6b514e39b5bdf314c1b3eaaf4119cf3",
+    "scene-redaction.json": "9923724ef51c62e29b7431209ae0318c93ce4723805f2071a5feaaab8197a28a",
+    "failure-tests.stdout.log": "11de26f45da0670ff98f3bc314d02dfbd399df1b30ef9cb9d98e88ce08da96e9",
+    "broaden-process.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stamp-down.stdout.log": "8fccecb22f2dbf8cf4bc66418556662f73adcfe11eec9cc0af11767fb318d926",
+    "call_broaden.py": "e44249367ad18e228701fe889e8aac252b35c6a86303cbb137b8cd2d6aa01160"
+  },
+  "source_hashes": {
+    "src/RimMandrake/FlowWorks/northstar/extensions.py": "15b665939399358ca2185297b19307052e2f96b6d137372782c219b6cdda6408",
+    "src/RimMandrake/FlowWorks/northstar/selftest_pump_return_readback.py": "5ef194eb9bf355bd48d812a97209cb5a4da1d9e2973f648d49c956afffb6dc2f",
+    "src/RimMandrake/Utils/biomes_compose.py": "9710d8755d3599ad7ad9a10aa3aee9d6389acad48f4b178152b89d39922c9985",
+    "src/RimMandrake/Utils/selftest_biomes_rewrite_windows.py": "0ced83e72cf1fa749d1b82024ccf7385242641f25ecf95aa2bae74923fd2fad6"
+  },
+  "source_stamp_entries_checked": 349,
+  "negative_receipt_checks": [
+    {
+      "case": "wrong-pump-readback",
+      "refused": [
+        "pour switch not confirmed"
+      ]
+    },
+    {
+      "case": "missing-tank-readback",
+      "refused": [
+        "tank Dump readback"
+      ]
+    },
+    {
+      "case": "external-source",
+      "refused": [
+        "source or sink in channel"
+      ]
+    }
+  ],
+  "actual_channel_dl": [
+    60000,
+    30000,
+    60000
+  ],
+  "actual_draw_moved": 3,
+  "actual_pour_ticks": 600,
+  "governed_ticks": 2600,
+  "baseline_rect": "RECT sha256=7396d9301ff12b4d5ded1eece11ee564cce46fa026a337a535e75dbf8d890a55 beds=0",
+  "settings_checked": 410,
+  "canonical_hashes": {
+    "CANONICAL_ASHKARR_START_2026-09-12.rws": "1ff329161abeaa8c66ebe2818de5428b8a1a9d95676f106dcd2b8d6f98a008c6",
+    "ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws": "1d569ea8e7a871e98a27c0cc258f1d7e95cc13b2b2ca63753168700b668ba2b6"
+  },
+  "bridge_and_lock_free": true,
+  "known_limits": [
+    "no post-pour pump/tank counter probe; no rate claim",
+    "isolated tier, not full mod list",
+    "companion embedded source verified; no srchash beside ignored companion artifact"
+  ],
+  "failure_classification": {
+    "preflight-offline.json": "HARNESS: Windows symlink privilege 1314 in rewrite staging; fixed and cold/live rerun GREEN",
+    "live_chain_nonpasses": 0
+  }
+}

@@ -1,0 +1,2 @@
+driver lock: HELD  BENCH 2421855 gen 1405 (holder process pid 2421855 alive)
+bridge held by BENCH since 2026-11-11T07:19:21Z  for: FW drain: PUMP_POUR_PROOF_FIX_TANK_NOT_DUMP  (idle 7 min)

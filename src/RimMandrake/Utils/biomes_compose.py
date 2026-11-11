@@ -276,7 +276,7 @@ def scan_ghost_guards(src_root, mapping=None):
 
 
 def stage_rewritten(src_dir, mapping, log=print, names=None):
-    """-> staged dir (symlink farm; only offending XML is real, rewritten), or
+    """-> staged dir (links, or copies when Windows denies symlink privilege), or
     None when nothing in src_dir needs rewriting. Caller removes the dir."""
     bad = {}
     for dp, dn, fn in os.walk(src_dir):
@@ -313,7 +313,12 @@ def stage_rewritten(src_dir, mapping, log=print, names=None):
                         fh.write(bad[s][0].encode("utf-8"))
                     shutil.copystat(s, t)
                 else:
-                    os.symlink(s, t)
+                    try:
+                        os.symlink(s, t)
+                    except OSError as ex:
+                        if getattr(ex, "winerror", None) != 1314:
+                            raise
+                        shutil.copy2(s, t)
     except BaseException:
         # the caller only learns the dir on success: a failed farm (a symlink refused on native Windows without the
         # privilege, a source vanishing mid-walk) must not strand it

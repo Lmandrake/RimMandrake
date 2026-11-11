@@ -1,0 +1,2 @@
+/home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/FlowWorks/northstar/live_session.py:2342: SyntaxWarning: "\." is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\."? A raw string is also an option.
+  """Repo-relative when it can be: python.exe runs the repo from \\wsl.localhost\... and --out-dir is on D:, and relpath

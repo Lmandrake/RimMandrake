@@ -1,0 +1,3 @@
+PASS Windows 1314 fallback preserves binary bytes and rewrites only staged XML
+PASS unexpected symlink failures propagate and leave no staging tree
+PASS failed fallback copy refuses and removes staging tree

@@ -1,0 +1,33 @@
+{
+  "command": [
+    "claude",
+    "-p",
+    "--model",
+    "opus",
+    "--tools",
+    "Read,Glob,Grep,Write",
+    "--allowedTools",
+    "Read",
+    "Glob",
+    "Grep",
+    "Write",
+    "--permission-mode",
+    "dontAsk",
+    "--strict-mcp-config",
+    "--mcp-config",
+    "{\"mcpServers\":{}}",
+    "--setting-sources",
+    "",
+    "--no-session-persistence",
+    "--output-format",
+    "json",
+    "--max-budget-usd",
+    "6"
+  ],
+  "input": "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-pump-return/JUDGE_PROMPT.md",
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "stdout": "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-pump-return/evidence/judge_raw.json",
+  "returncode": 143,
+  "started": 1794382674.1970773,
+  "elapsed": 46.467936515808105
+}

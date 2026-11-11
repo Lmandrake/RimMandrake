@@ -1,0 +1,110 @@
+{
+  "started": 1794382006.9452171,
+  "status": "PASS",
+  "processes": [
+    {
+      "command": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "who"
+      ],
+      "name": "bridge-held",
+      "returncode": 0,
+      "started": 1794382006.9452188,
+      "elapsed": 2.268833637237549
+    },
+    {
+      "command": [
+        "python.exe",
+        "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\scratch\\BENCH\\fw-drain\\src\\RimMandrake\\Utils\\preflight_bridge.py",
+        "--tier",
+        "quicktest",
+        "--modset",
+        "mods__mandrake_rm_flowworks__mandrake_rm_hugethings__mandrake_rm_patches",
+        "--deep",
+        "--live",
+        "--seat",
+        "BENCH",
+        "--json",
+        "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\scratch\\BENCH\\fw-drain\\whittle\\fw-drain-pump-return\\evidence\\preflight-live.json"
+      ],
+      "name": "preflight-live",
+      "returncode": 0,
+      "started": 1794382009.2153823,
+      "elapsed": 4.486804723739624
+    },
+    {
+      "command": [
+        "./game",
+        "--why",
+        "FW drain pump return: fresh live preflight GREEN",
+        "up"
+      ],
+      "name": "stamp-up",
+      "returncode": 0,
+      "started": 1794382013.7209973,
+      "elapsed": 4.523642301559448
+    },
+    {
+      "command": [
+        "python.exe",
+        "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\scratch\\BENCH\\fw-drain\\whittle\\fw-drain-pump-return\\evidence\\run_scene.py"
+      ],
+      "name": "scene",
+      "returncode": 0,
+      "started": 1794382018.2456877,
+      "elapsed": 125.5168125629425
+    },
+    {
+      "command": [
+        "python.exe",
+        "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\scratch\\BENCH\\fw-drain\\whittle\\fw-drain-pump-return\\evidence\\lifecycle.py",
+        "stop"
+      ],
+      "name": "stop-after",
+      "returncode": 0,
+      "started": 1794382143.7802448,
+      "elapsed": 10.299855947494507
+    },
+    {
+      "command": [
+        "./game",
+        "--why",
+        "FW drain pump return: proof ended; supported stop",
+        "down"
+      ],
+      "name": "stamp-down",
+      "returncode": 0,
+      "started": 1794382154.0801086,
+      "elapsed": 4.273116111755371
+    },
+    {
+      "command": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "release"
+      ],
+      "name": "bridge-release",
+      "returncode": 0,
+      "started": 1794382158.353233,
+      "elapsed": 5.877143621444702
+    },
+    {
+      "command": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "who"
+      ],
+      "name": "bridge-free",
+      "returncode": 0,
+      "started": 1794382164.2303863,
+      "elapsed": 2.269257068634033
+    }
+  ],
+  "cleanup_errors": [],
+  "bridge_and_lock_free": true,
+  "finished": 1794382166.4997637
+}

@@ -1,0 +1,40 @@
+{
+  "checked_at": 1794383079.3583858,
+  "producer_command_receipt": "judge2_call.json",
+  "process_outcome": {
+    "command": [
+      "claude",
+      "-p",
+      "--model",
+      "opus",
+      "--tools",
+      "Read,Glob,Grep,Write",
+      "--allowedTools",
+      "Read",
+      "Glob",
+      "Grep",
+      "Write",
+      "--permission-mode",
+      "dontAsk",
+      "--strict-mcp-config",
+      "--mcp-config",
+      "{\"mcpServers\":{}}",
+      "--setting-sources",
+      "",
+      "--no-session-persistence",
+      "--output-format",
+      "json",
+      "--max-budget-usd",
+      "6"
+    ],
+    "error": "timeout",
+    "started": 1794382766.281812,
+    "elapsed": 240.1274745464325
+  },
+  "report_path": "whittle/fw-drain-pump-return/JUDGE.md",
+  "report_sha256": "14a24ddd659b2117d373a52eaa49f386f6e4d8040886389bba041c7250a498b9",
+  "report_final_line": "would show: yes",
+  "report_mtime": 1794383003.4293823,
+  "stdout_bytes": 0,
+  "note": "Independent Claude Write produced the complete report before the invocation hit its wall limit. No successful CLI exit or final JSON response is claimed."
+}
