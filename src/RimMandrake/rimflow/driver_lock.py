@@ -6,7 +6,7 @@ second, stricter witness the ledger lock now consults:
 
   * ONE file on the drive every clone and python.exe can see (D:\\ClaudeWork\\rimmandrake\\scratch\\DRIVER_LOCK.json),
     created with O_CREAT|O_EXCL - the filesystem picks exactly one winner.
-  * the holder is a PROCESS: {pid, start time, boot_id, platform}. The owner process is the nearest `claude`
+  * the holder is a PROCESS: {pid, start time, boot_id, platform}. The owner process is the nearest `claude` or `codex`
     ancestor (the agent window), else the parent shell - not the short-lived rimflow process.
   * liveness is that process existing with the same start time on the same boot; a pid reused by a new process
     is a different holder. Heartbeat age is reported; it decides only when the process cannot be inspected.
@@ -100,7 +100,7 @@ def _ppid(pid):
 
 
 def owner_pid():
-    """The process that owns a take: RM_DRIVER_PID, else the nearest `claude` ancestor, else the parent."""
+    """The process that owns a take: RM_DRIVER_PID, else the nearest Claude/Codex ancestor, else the parent."""
     env = os.environ.get("RM_DRIVER_PID")
     if env and env.isdigit():
         return int(env)
@@ -111,7 +111,7 @@ def owner_pid():
         p = _ppid(p)
         if not p or p <= 1:
             break
-        if _comm(p) == "claude":
+        if _comm(p) in ("claude", "codex"):
             return p
     return os.getppid()
 

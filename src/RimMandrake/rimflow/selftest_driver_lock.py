@@ -26,8 +26,28 @@ def ident(pid, start=100.0, boot="boot-1", platform="wsl"):
     return {"pid": pid, "start": start, "boot_id": boot, "platform": platform, "host": "archmagi"}
 
 
-def main():
+def owner_cases():
+    from unittest.mock import patch
     good = []
+    parents = {100: 50, 101: 51, 50: 20, 51: 20, 20: 10, 10: 1}
+    for runner in ('claude', 'codex'):
+        with patch.dict(os.environ, {}, clear=True), patch.object(D, '_ppid', side_effect=parents.get), \
+             patch.object(D, '_comm', side_effect=lambda p: runner if p == 20 else 'shell'), \
+             patch.object(D.os, 'getpid', return_value=100):
+            a = D.owner_pid()
+            with patch.object(D.os, 'getpid', return_value=101):
+                b = D.owner_pid()
+            good.append(case(runner + ' owns take and release across separate tool shells', a == b == 20))
+            with patch.dict(os.environ, {'RM_DRIVER_PID': '77'}):
+                good.append(case(runner + ' explicit driver identity still wins', D.owner_pid() == 77))
+    with patch.dict(os.environ, {}, clear=True), patch.object(D, '_ppid', return_value=1), \
+         patch.object(D.os, 'getppid', return_value=88):
+        good.append(case('unrecognized launcher retains parent fallback', D.owner_pid() == 88))
+    return good
+
+
+def main():
+    good = owner_cases()
     path = os.path.join(tempfile.mkdtemp(), "DRIVER_LOCK.json")
     alive = {}
     D.process_alive = lambda i: alive.get((i.get("pid"), i.get("start")), False)

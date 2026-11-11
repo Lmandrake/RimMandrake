@@ -1,0 +1,2 @@
+Fresh scratch clones omit the ignored JawaBench comparison DLL and local BRIDGE mirror. Query/take the bridge through rimflow before preflight, pass --seat BENCH and --tier quicktest --modset flowworks explicitly. For a missing local companion artifact, compare companion_identity.srchash_worktree against the installed DLL embedded source hash before copying it locally; byte equality alone cannot establish source provenance.
+home: src/RimMandrake/rimflow/roles/runner_options.md

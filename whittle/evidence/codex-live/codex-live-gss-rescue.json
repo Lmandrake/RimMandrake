@@ -1,0 +1,17 @@
+[
+  {
+    "file": "src/RimMandrake/GimmeSomeSlack/Assemblies/RimMandrakeGimmeSomeSlack.dll",
+    "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/GimmeSomeSlack/Assemblies/RimMandrakeGimmeSomeSlack.dll",
+    "sha256": "28ee963764beaa5fdff0b3285d5e3e8546fd23e828df851809395313cc78d1db"
+  },
+  {
+    "file": "src/RimMandrake/GimmeSomeSlack/Assemblies/RimMandrakeGimmeSomeSlack.dll.srchash",
+    "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/GimmeSomeSlack/Assemblies/RimMandrakeGimmeSomeSlack.dll.srchash",
+    "sha256": "4b884aabc0499dd50d768885fe27c9f731c06265182bad1c3fa2f6e2d3c16873"
+  },
+  {
+    "file": "src/RimMandrake/GimmeSomeSlack/review/gss_art_manifest.json",
+    "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/GimmeSomeSlack/review/gss_art_manifest.json",
+    "sha256": "92a2f42927395ceacfcbc66ffc0f73dcf991229b018b9fb12332bbf72abac72a"
+  }
+]

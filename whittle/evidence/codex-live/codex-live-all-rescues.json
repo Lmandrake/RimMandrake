@@ -1,0 +1,1568 @@
+[
+ {
+  "mod": "AcousticScanner",
+  "file": "Assemblies/RimMandrake.AcousticScanner.dll",
+  "sha256": "a6ccac733434adc11ea4cbba814e3cb79b3ff0d343723ee5e8cecd01d7f7d8d2",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/AcousticScanner/Assemblies/RimMandrake.AcousticScanner.dll"
+ },
+ {
+  "mod": "AcousticScanner",
+  "file": "Assemblies/RimMandrake.AcousticScanner.dll.srchash",
+  "sha256": "9f5a453f9672d18eb4f3875adf8c74993a9882d329b69802b32a5e5b20b70707",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/AcousticScanner/Assemblies/RimMandrake.AcousticScanner.dll.srchash"
+ },
+ {
+  "mod": "AshkarrLandmarkArt",
+  "file": "About/About.xml",
+  "sha256": "349c15b2da3e3ef0e29a2e96ef6f3ce97f30dffb61a5b0534c3769894f8ab813",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/AshkarrLandmarkArt/About/About.xml"
+ },
+ {
+  "mod": "AshkarrLandmarkArt",
+  "file": "Patches/LandmarkIcons.xml",
+  "sha256": "4344d679822bb5a24e4f0c51d5c8f18ff42dcf911e74d4c813b6c827564721c2",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/AshkarrLandmarkArt/Patches/LandmarkIcons.xml"
+ },
+ {
+  "mod": "AssailantSalvage",
+  "file": "About/About.xml",
+  "sha256": "6e982badf2775abb868e5b2e9871a70881b69bf3e6c84a71b7b7055c30598b44",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/AssailantSalvage/About/About.xml"
+ },
+ {
+  "mod": "BeskarArmorer",
+  "file": "Assemblies/RimMandrake.Utinni.BeskarArmorer.dll",
+  "sha256": "c8712feccdeeb5ff8cdfe5f96a3135fd57866deb483560255eb426316cb3eae0",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/BeskarArmorer/Assemblies/RimMandrake.Utinni.BeskarArmorer.dll"
+ },
+ {
+  "mod": "BeskarArmorer",
+  "file": "Assemblies/RimMandrake.Utinni.BeskarArmorer.dll.srchash",
+  "sha256": "9ce42d476f7c4daf39739f55df3a98b7adbfc46c396461f3c90f9d07d9694d85",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/BeskarArmorer/Assemblies/RimMandrake.Utinni.BeskarArmorer.dll.srchash"
+ },
+ {
+  "mod": "CathedralPass",
+  "file": "About/About.xml",
+  "sha256": "792502c08c74d25af91f69073441acee63fa9fe656f166718a1fa64c41e41c98",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/CathedralPass/About/About.xml"
+ },
+ {
+  "mod": "CathedralPass",
+  "file": "Assemblies/RimMandrake.Utinni.CathedralPass.dll",
+  "sha256": "6f603ecc624700880a60a56ecbe5875ce5f5d5c1f51b7f230317da66f573f15b",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/CathedralPass/Assemblies/RimMandrake.Utinni.CathedralPass.dll"
+ },
+ {
+  "mod": "CathedralPass",
+  "file": "Assemblies/RimMandrake.Utinni.CathedralPass.dll.srchash",
+  "sha256": "8c6dc99667c361488de32c029228f374488b4140999b5f2d2f6789ffcf2efef2",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/CathedralPass/Assemblies/RimMandrake.Utinni.CathedralPass.dll.srchash"
+ },
+ {
+  "mod": "ColdStorage",
+  "file": "Assemblies/RimMandrakeColdStorage.dll",
+  "sha256": "4afa22da26cdc979fcc8f53c84639d5c0bc965aae8cd4c08a3324333846bb68f",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/ColdStorage/Assemblies/RimMandrakeColdStorage.dll"
+ },
+ {
+  "mod": "ColdStorage",
+  "file": "Assemblies/RimMandrakeColdStorage.dll.srchash",
+  "sha256": "7f18aaa08a354f69afe2f00002456a7b631b7621151215515d211f3a11ba8360",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/ColdStorage/Assemblies/RimMandrakeColdStorage.dll.srchash"
+ },
+ {
+  "mod": "ColdStorage",
+  "file": "Defs/ColdStorage_StasisLockers.xml",
+  "sha256": "d6269c171f4cf2ff0d7fc3a8006937db307938c7437b1c134db9f365bc9aebe7",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/ColdStorage/Defs/ColdStorage_StasisLockers.xml"
+ },
+ {
+  "mod": "ColdStorage",
+  "file": "Defs/Seals/Seals_Items.xml",
+  "sha256": "73453157cb7483216abed93f61ab946f11c9a0e62b51e57e3dc0ab3eab57af13",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/ColdStorage/Defs/Seals/Seals_Items.xml"
+ },
+ {
+  "mod": "ColdStorage",
+  "file": "Defs/Seals/Seals_Recipes.xml",
+  "sha256": "593f582f309989dfa7f4a5e992c151d5413dfb60ad5f4fab0780a701af5e2d57",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/ColdStorage/Defs/Seals/Seals_Recipes.xml"
+ },
+ {
+  "mod": "ColdStorage",
+  "file": "Languages/English/Keyed/ColdStorage.xml",
+  "sha256": "c79c90d823a97c93a10a1e38d9134e144587c009bb92dc2c867f460fb9f1619e",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/ColdStorage/Languages/English/Keyed/ColdStorage.xml"
+ },
+ {
+  "mod": "DeepDrill",
+  "file": "Defs/RM_DeepHomeTable.xml",
+  "sha256": "22d9920fa92c236e54b5a46f41de73138c4fa0deea5ba1de7a7bb949ab526fea",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/DeepDrill/Defs/RM_DeepHomeTable.xml"
+ },
+ {
+  "mod": "Doctrine",
+  "file": "About/About.xml",
+  "sha256": "afb5f049d3cb9ef19f9db7a89e6bd21b0ad6478fce83eaa1a9764efe7b0e967b",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/Doctrine/About/About.xml"
+ },
+ {
+  "mod": "Doctrine",
+  "file": "Patches/MegafaunaYield.xml",
+  "sha256": "7d182b2c1a603fb1de8757d592024bf2cf771ad1d919b053bf3b66e66d82b798",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/Doctrine/Patches/MegafaunaYield.xml"
+ },
+ {
+  "mod": "Doctrine",
+  "file": "Patches/MegafaunaYield_OwnedPorts.xml",
+  "sha256": "e1ae42fd5666a67c86e84a922396f81ea3b3f4914e967be227d93ed2a6fa4624",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/Doctrine/Patches/MegafaunaYield_OwnedPorts.xml"
+ },
+ {
+  "mod": "Doctrine",
+  "file": "Patches/MegafaunaYield_OwnedPorts_Warscar.xml",
+  "sha256": "c603f89251d5eef638d58a31fc83d9d2fcd4211dc76cf6be472f82ca0bd03daf",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/Doctrine/Patches/MegafaunaYield_OwnedPorts_Warscar.xml"
+ },
+ {
+  "mod": "EggReckoning",
+  "file": "Defs/HistoryEventDefs/RUT_HistoryEvent_EggAssassination.xml",
+  "sha256": "e4b15ad1a4b9f66b40217471933a6cdca3c39e9f80c3617b3a9909775bbf5069",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/EggReckoning/Defs/HistoryEventDefs/RUT_HistoryEvent_EggAssassination.xml"
+ },
+ {
+  "mod": "EggReckoning",
+  "file": "Defs/HistoryEventDefs/RUT_HistoryEvent_ReckoningAttempt.xml",
+  "sha256": "0c55f1c04851f8bbe078b1977062801fc361e5cf4d20ae5a23e670ebdf121142",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/EggReckoning/Defs/HistoryEventDefs/RUT_HistoryEvent_ReckoningAttempt.xml"
+ },
+ {
+  "mod": "EggReckoning",
+  "file": "Defs/QuestScriptDefs/RUT_Reckoning.xml",
+  "sha256": "ecdbea3c55c96597e1e1c333db6d0a1468112fcbe96d270ce6a664c5e3dd779b",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/EggReckoning/Defs/QuestScriptDefs/RUT_Reckoning.xml"
+ },
+ {
+  "mod": "EmpirePursuit",
+  "file": "Assemblies/RuthlessPursuingMechanoids.dll",
+  "sha256": "1d5aa651c2a51c483e1a9a971c4115b2192c3aef80e9c3108d39fab76475a9d6",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/EmpirePursuit/Assemblies/RuthlessPursuingMechanoids.dll"
+ },
+ {
+  "mod": "EmpirePursuit",
+  "file": "Assemblies/RuthlessPursuingMechanoids.dll.srchash",
+  "sha256": "6138f21bc360490940d5ee15a1a46fb2ce7a640ba06550e8172bbf9a30812133",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/EmpirePursuit/Assemblies/RuthlessPursuingMechanoids.dll.srchash"
+ },
+ {
+  "mod": "EmpirePursuit",
+  "file": "Defs/Scenarios/ScenParts_EmpirePursuit.xml",
+  "sha256": "1e922249fa4db19a97e7e4b187f231106aead7f4b092afafe2c6302aacd4e66d",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/EmpirePursuit/Defs/Scenarios/ScenParts_EmpirePursuit.xml"
+ },
+ {
+  "mod": "ExplosiveKnockback",
+  "file": "Assemblies/RimMandrakeExplosiveKnockback.dll",
+  "sha256": "7a1143a6d4b94d3fa2bf96a6f71f0d148056b0036737dba1e55b92fa24e20239",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/ExplosiveKnockback/Assemblies/RimMandrakeExplosiveKnockback.dll"
+ },
+ {
+  "mod": "ExplosiveKnockback",
+  "file": "Assemblies/RimMandrakeExplosiveKnockback.dll.srchash",
+  "sha256": "137d83de49dc6fe6e64307438ff9c5dded663915a5ba1b552cac775beda6fba4",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/ExplosiveKnockback/Assemblies/RimMandrakeExplosiveKnockback.dll.srchash"
+ },
+ {
+  "mod": "FallLineArrivals",
+  "file": "About/About.xml",
+  "sha256": "abdacece6fdf130feffe0c0fa7150a6e9685a7eccf356df61a5b0ba02e1b8de4",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/FallLineArrivals/About/About.xml"
+ },
+ {
+  "mod": "FallLineArrivals",
+  "file": "Assemblies/RimMandrake.Utinni.FallLineArrivals.dll",
+  "sha256": "6275eacf7166a743a2a4d011502c46c62db3911ef4788f934aae2053875ffc4e",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/FallLineArrivals/Assemblies/RimMandrake.Utinni.FallLineArrivals.dll"
+ },
+ {
+  "mod": "FallLineArrivals",
+  "file": "Assemblies/RimMandrake.Utinni.FallLineArrivals.dll.srchash",
+  "sha256": "57c8dafcfd5c5a792c436d990b8bf528d0c41777d53074571ff83ee2ecef3535",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/FallLineArrivals/Assemblies/RimMandrake.Utinni.FallLineArrivals.dll.srchash"
+ },
+ {
+  "mod": "FlowWorks",
+  "file": "northstar/extension_result_20261005T194720.json",
+  "sha256": "0b32915f7b2475a679c7ce6f3608eb6f3a1775214b6d6080380309c1d2e5d20f",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/FlowWorks/northstar/extension_result_20261005T194720.json"
+ },
+ {
+  "mod": "FlowWorks",
+  "file": "northstar/extension_result_20261005T195815.json",
+  "sha256": "163043b45d1a693bfbc9e8134b90f5bd346d6aeb3dda623df8f826b64cb495bb",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/FlowWorks/northstar/extension_result_20261005T195815.json"
+ },
+ {
+  "mod": "FlowWorks",
+  "file": "northstar/extension_result_20261005T200437.json",
+  "sha256": "0b18eb7a847d7d093adb357d08fda68fae5d24827a1b35b2c487f343afceb60d",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/FlowWorks/northstar/extension_result_20261005T200437.json"
+ },
+ {
+  "mod": "FlowWorks",
+  "file": "northstar/validation_v2_result_20261005T194509.json",
+  "sha256": "7da505466f358a7289125a50ac760dfaab7dcbfe5ba74c55c0b14a747925d812",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/FlowWorks/northstar/validation_v2_result_20261005T194509.json"
+ },
+ {
+  "mod": "FlowWorks",
+  "file": "northstar/validation_v2_result_20261005T195337.json",
+  "sha256": "7b311836446e4b819b3dd68b2e8790514a8a3f2120b07113efea90eabf20120d",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/FlowWorks/northstar/validation_v2_result_20261005T195337.json"
+ },
+ {
+  "mod": "FlowWorks",
+  "file": "northstar/validation_v2_result_20261005T200322.json",
+  "sha256": "eb9358b984d01db49c66f568b129e3e8c8f3c2fd17b5e28ef6fcb84d8f7800ff",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/FlowWorks/northstar/validation_v2_result_20261005T200322.json"
+ },
+ {
+  "mod": "FlowWorks",
+  "file": "northstar/validation_v2_result_20261005T201023.json",
+  "sha256": "e2e7de35c455144eaa7b34d3489c745881605c5101a6022777459362e35e4730",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/FlowWorks/northstar/validation_v2_result_20261005T201023.json"
+ },
+ {
+  "mod": "FlowWorks",
+  "file": "northstar/validation_v2_result_20261005T202312.json",
+  "sha256": "600a72d25812742cfd6d5e67010ea14a38bbb5b1696a80ac1496e0dbeb0f0ca1",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/FlowWorks/northstar/validation_v2_result_20261005T202312.json"
+ },
+ {
+  "mod": "FlowWorks",
+  "file": "About/About.xml",
+  "sha256": "9c82c3bb78bf39947f772e6ec37d730c10c3eb642f8fdad884f783aae5297350",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/FlowWorks/About/About.xml"
+ },
+ {
+  "mod": "FlowWorks",
+  "file": "Defs/Machinery/RM_LiquidWorksScatter.xml",
+  "sha256": "ca5938d805f2ce6bbefbc77e0e91bad3cab0711f27c950d57fe2cc532d6f7d56",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/FlowWorks/Defs/Machinery/RM_LiquidWorksScatter.xml"
+ },
+ {
+  "mod": "FlowWorks",
+  "file": "Patches/Machinery/RM_LiquidWorksScatter_Register.xml",
+  "sha256": "371fccca95d8cf65f77cdfd9853ae25de473fe6e202e55fa372f36733fb2c7af",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/FlowWorks/Patches/Machinery/RM_LiquidWorksScatter_Register.xml"
+ },
+ {
+  "mod": "FlowWorks",
+  "file": "northstar/review/map/keysheet.html",
+  "sha256": "8e1d95c2abbe2dd9f32990ac1c63f40b55262e054064ec37cf252b9ea01d400a",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/FlowWorks/northstar/review/map/keysheet.html"
+ },
+ {
+  "mod": "FungalSoilTrade",
+  "file": "About/About.xml",
+  "sha256": "acc6e7d57f221522315bbbb22792f59faedf60fd4d8419490cf3de49d41439e2",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/FungalSoilTrade/About/About.xml"
+ },
+ {
+  "mod": "FungalSoilTrade",
+  "file": "Assemblies/RimMandrake.Utinni.FungalSoilTrade.dll",
+  "sha256": "e85023f0688258938f1d04cff2484d9c95b5d66d05417f76b58ec4563c0d3109",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/FungalSoilTrade/Assemblies/RimMandrake.Utinni.FungalSoilTrade.dll"
+ },
+ {
+  "mod": "FungalSoilTrade",
+  "file": "Assemblies/RimMandrake.Utinni.FungalSoilTrade.dll.srchash",
+  "sha256": "1d57722f0e486e226d0f834cf2fed63882359e459846bc9fe7a58080d5a53519",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/FungalSoilTrade/Assemblies/RimMandrake.Utinni.FungalSoilTrade.dll.srchash"
+ },
+ {
+  "mod": "FungalSoilTrade",
+  "file": "Defs/MapGeneration/RUT_FungalSoilScatter.xml",
+  "sha256": "c723c9562e226b0cae5f04098c5f040fb755620c8c58de856bda5b26d5c9c18d",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/FungalSoilTrade/Defs/MapGeneration/RUT_FungalSoilScatter.xml"
+ },
+ {
+  "mod": "FungalSoilTrade",
+  "file": "Defs/ThingDefs_Items/RUT_FungalSoil.xml",
+  "sha256": "ba2deb3b295ed0bc5915b25120d52a6c67728896aeb053da7a14fbc64b2e84fe",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/FungalSoilTrade/Defs/ThingDefs_Items/RUT_FungalSoil.xml"
+ },
+ {
+  "mod": "FungalSoilTrade",
+  "file": "Patches/RUT_FungalSoilScatter_MapGenPatch.xml",
+  "sha256": "220d8c196fe5a4a290a868fc2dd7c12dd8554a102b4728000fc563f66d99b547",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/FungalSoilTrade/Patches/RUT_FungalSoilScatter_MapGenPatch.xml"
+ },
+ {
+  "mod": "GimmeSomeSlack",
+  "file": "Assemblies/RimMandrakeGimmeSomeSlack.dll",
+  "sha256": "28ee963764beaa5fdff0b3285d5e3e8546fd23e828df851809395313cc78d1db",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/GimmeSomeSlack/Assemblies/RimMandrakeGimmeSomeSlack.dll"
+ },
+ {
+  "mod": "GimmeSomeSlack",
+  "file": "Assemblies/RimMandrakeGimmeSomeSlack.dll.srchash",
+  "sha256": "4b884aabc0499dd50d768885fe27c9f731c06265182bad1c3fa2f6e2d3c16873",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/GimmeSomeSlack/Assemblies/RimMandrakeGimmeSomeSlack.dll.srchash"
+ },
+ {
+  "mod": "GimmeSomeSlack",
+  "file": "review/gss_art_manifest.json",
+  "sha256": "92a2f42927395ceacfcbc66ffc0f73dcf991229b018b9fb12332bbf72abac72a",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/GimmeSomeSlack/review/gss_art_manifest.json"
+ },
+ {
+  "mod": "HugeThings",
+  "file": "Assemblies/RM_HugeThings.dll",
+  "sha256": "c61c26fde93259037078210a0fb3b51712b17d0dbaa2f0d62e698c275a33a974",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/HugeThings/Assemblies/RM_HugeThings.dll"
+ },
+ {
+  "mod": "HugeThings",
+  "file": "Assemblies/RM_HugeThings.dll.srchash",
+  "sha256": "b29551e91b7a1196358dbc9f504095b6a8d92dc116c5d87f730ecd0f0c797afc",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/HugeThings/Assemblies/RM_HugeThings.dll.srchash"
+ },
+ {
+  "mod": "HugeThings",
+  "file": "Patches/RM_TitanPassage_DarkSide.xml",
+  "sha256": "6d22c96f747fed770a4f3d9b13674f6b27331c9d01a414722f2fe2006902c785",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/HugeThings/Patches/RM_TitanPassage_DarkSide.xml"
+ },
+ {
+  "mod": "KineticArms",
+  "file": "Assemblies/RimMandrakeKineticArms.dll",
+  "sha256": "c4b9ffbddf59e525b76fba8d0eee8063fbd08a3002d9b37b4e8bb4501fbd8e90",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/KineticArms/Assemblies/RimMandrakeKineticArms.dll"
+ },
+ {
+  "mod": "KineticArms",
+  "file": "Assemblies/RimMandrakeKineticArms.dll.srchash",
+  "sha256": "268d31d576d3a792671f7a6928f34b05caf64190898f47550a38524f74f3a081",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/KineticArms/Assemblies/RimMandrakeKineticArms.dll.srchash"
+ },
+ {
+  "mod": "LuminousPigment",
+  "file": "Defs/ThingDefs_Items/RM_Deepfire.xml",
+  "sha256": "af258fb63fbc5e1f6e9dd2a7068a913e5bf3621dbfa9336f215efd73e812981c",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/LuminousPigment/Defs/ThingDefs_Items/RM_Deepfire.xml"
+ },
+ {
+  "mod": "Minerals",
+  "file": "Assemblies/RimMandrakeMinerals.dll",
+  "sha256": "f87afac003a8f91d8e4cb2f514ea6c70b84c79f8982ad56245df6391d3033aad",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/Minerals/Assemblies/RimMandrakeMinerals.dll"
+ },
+ {
+  "mod": "Minerals",
+  "file": "Assemblies/RimMandrakeMinerals.dll.srchash",
+  "sha256": "828af7a02fbec62ef95377b36e2bcd0fccdddda90275d181183c5ed46f7b9e91",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/Minerals/Assemblies/RimMandrakeMinerals.dll.srchash"
+ },
+ {
+  "mod": "Minerals",
+  "file": "Defs/RM_MineralRegistry.xml",
+  "sha256": "9092f408732263cb97ae68d0e29c0be4af13c7d5e6b648584c5771b551d4fcde",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/Minerals/Defs/RM_MineralRegistry.xml"
+ },
+ {
+  "mod": "PropaneLakeMechanics",
+  "file": "Defs/ThingDefs_Buildings/RUT_PipeInfrastructure.xml",
+  "sha256": "1bfaa93ef004ffcf473a98b1c57f8d76649923c9ecbe18ee9cc1121d921bc52b",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/PropaneLakeMechanics/Defs/ThingDefs_Buildings/RUT_PipeInfrastructure.xml"
+ },
+ {
+  "mod": "Pyrinth",
+  "file": "Textures/Things/Item/Resource/Pyrinth/Pyrinth_a.png",
+  "sha256": "c954f2aca96bc413426c3452da0c98917fbeefcf2df2f44f45e2454bd6229fee",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/Pyrinth/Textures/Things/Item/Resource/Pyrinth/Pyrinth_a.png"
+ },
+ {
+  "mod": "Pyrinth",
+  "file": "Textures/Things/Item/Resource/Pyrinth/Pyrinth_b.png",
+  "sha256": "5de00ff946d87e9af20ed8ca6db9ef3b8f4eb7570921f70336cb4157260cc735",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/Pyrinth/Textures/Things/Item/Resource/Pyrinth/Pyrinth_b.png"
+ },
+ {
+  "mod": "Pyrinth",
+  "file": "Textures/Things/Item/Resource/Pyrinth/Pyrinth_c.png",
+  "sha256": "c06e2b36799020649fa09361e2f25ab572e573aeeb29320c5d742162f2219ffb",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/Pyrinth/Textures/Things/Item/Resource/Pyrinth/Pyrinth_c.png"
+ },
+ {
+  "mod": "ResearchRetag",
+  "file": "Patches/RUT_ResearchTabAssign.xml",
+  "sha256": "2702c5cedea457cbedc56ff16c71e06ad2b06677315c8e9de18c2c3eb78d4fb2",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/ResearchRetag/Patches/RUT_ResearchTabAssign.xml"
+ },
+ {
+  "mod": "RimProperty",
+  "file": "Assemblies/RimMandrakeProperty.dll",
+  "sha256": "c6a823786d54b6e31948c7f49e14795559f3da22b491649549b0c0040be23874",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/RimProperty/Assemblies/RimMandrakeProperty.dll"
+ },
+ {
+  "mod": "RimProperty",
+  "file": "Assemblies/RimMandrakeProperty.dll.srchash",
+  "sha256": "1e05f900a28ecb4fd3e086f8269bc991f5a72798e6cbc1fce8b367eac5c56ef1",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/RimProperty/Assemblies/RimMandrakeProperty.dll.srchash"
+ },
+ {
+  "mod": "Rites",
+  "file": "Assemblies/RimMandrake.Utinni.Rites.dll",
+  "sha256": "f024722fd8c5da8552c22f157a7c3cd3aa0d830d44559c409e156cbcd72a023c",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/Rites/Assemblies/RimMandrake.Utinni.Rites.dll"
+ },
+ {
+  "mod": "Rites",
+  "file": "Assemblies/RimMandrake.Utinni.Rites.dll.srchash",
+  "sha256": "814a43080f703f8fc6e25e5c0c936f39b23eac67e17637095298f818c546ec36",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/Rites/Assemblies/RimMandrake.Utinni.Rites.dll.srchash"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "About/About.xml",
+  "sha256": "4f9a506d93a268203c87facf5560f2a6be4ea923966cb132b1de4bc6bb922d8a",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/About/About.xml"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Defs/BiomesTeamPort/ThingDefs_Items/RSW_BiomesTeamPort_Fish.xml",
+  "sha256": "75a69946eeb365e40da2ae2b5dd4827fffb4966bc8751049d6e9aa5dd75532f9",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Defs/BiomesTeamPort/ThingDefs_Items/RSW_BiomesTeamPort_Fish.xml"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Defs/MapGeneration/RSW_TaozinNest.xml",
+  "sha256": "c6d4d9fa28b7e0f299621874a0db25f214d07a74c3cc30108d005d54ccda586a",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Defs/MapGeneration/RSW_TaozinNest.xml"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Colo.xml",
+  "sha256": "ac5f2083f71613fad7b1e6a1b2efd6296c1657d8f1eb694bff8693940b0eaecc",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Colo.xml"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Colossi.xml",
+  "sha256": "8879aa5b5ba3021ec4362185e0ad8e4b8db9eae4500d592a72d3a34d4e36213d",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Colossi.xml"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Defs/TaozinBrineTank/RSW_TaozinBrineTank.xml",
+  "sha256": "cb75e69406b2a291c90de1a41dd6434facfda51a1750bcb5f5ac14581b476fb6",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Defs/TaozinBrineTank/RSW_TaozinBrineTank.xml"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Defs/ThingDefs_Races/RSW_Dragonsnake.xml",
+  "sha256": "29d9ef4bdd5fcbd465ef39821fb90e5abb1443bbd231b0d00ab6f0c238e1c490",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Defs/ThingDefs_Races/RSW_Dragonsnake.xml"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Defs/ThingDefs_Races/RSW_DragonsnakeAlbino.xml",
+  "sha256": "82dc1cb181949f6b7151e4a1ff1604b7f6999ea2c9177b9ec4136f1dbfb9ea35",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Defs/ThingDefs_Races/RSW_DragonsnakeAlbino.xml"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Defs/ThingDefs_Races/RSW_ScrapNestBird.xml",
+  "sha256": "90e002694f2012041316c09294e7efbe7061878b94f0f4db3e89373c5219ba6c",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Defs/ThingDefs_Races/RSW_ScrapNestBird.xml"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Defs/ThingDefs_Races/RSW_ShadeWhale.xml",
+  "sha256": "93c3835ac375686b9b0cf647562eb1e81c736149d814477d2bab1dc6390f3a77",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Defs/ThingDefs_Races/RSW_ShadeWhale.xml"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Defs/ThingDefs_Races/RSW_Strill.xml",
+  "sha256": "49c532739c08268ef3ee6822174cfe23e32908ebb2673387c6bc2b517494e07f",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Defs/ThingDefs_Races/RSW_Strill.xml"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Defs/ThingDefs_Races/RSW_Taozin.xml",
+  "sha256": "31064e16c4fbf198ddc052626de3256d10ce151d0d77ca2e53dc9ff81253aae8",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Defs/ThingDefs_Races/RSW_Taozin.xml"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Defs/ThingDefs_Races/RSW_TunnelSnake.xml",
+  "sha256": "9e33c2f55bfa5db049fd1a647beac38e3ada8b4afcf00399d5dc7a4efa2f23c3",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Defs/ThingDefs_Races/RSW_TunnelSnake.xml"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Defs/ThingDefs_Races/RSW_VentStalker.xml",
+  "sha256": "9a48c0e578ace27bf6dc6d605f02feab70ff5b9b26e2d9460d893fbd350dd07f",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Defs/ThingDefs_Races/RSW_VentStalker.xml"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Defs/ThingDefs_Races/RSW_WraidAlpha.xml",
+  "sha256": "9c5c8019d66be73d54ee440887ec74003ba1076ef38f0f4c8d6e0ac283cbe0bb",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Defs/ThingDefs_Races/RSW_WraidAlpha.xml"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Patches/RSW_GiantSkeletons_Remains.xml",
+  "sha256": "44723a23779a91c24e7eb6053dc97371fefc34f0ec506f485c354daffc82d6d0",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Patches/RSW_GiantSkeletons_Remains.xml"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/GlowWorm/GlowWorm_east.png",
+  "sha256": "06e8fdba152b6cea123077e50604572c79b27550891b5218b5f5075e74fa5ddd",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/GlowWorm/GlowWorm_east.png"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/GlowWorm/GlowWorm_north.png",
+  "sha256": "d533c0fdb60dbee18e74abd7d6bb84cade7cc090d72348999c0eacc5ae83f593",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/GlowWorm/GlowWorm_north.png"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/GlowWorm/GlowWorm_south.png",
+  "sha256": "a38f5405d00b6565125d9f718308f0e3fe1565b988d581c901943925e3e20293",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/GlowWorm/GlowWorm_south.png"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Maguana/Maguana_east.png",
+  "sha256": "ae34b0c48b7ba72b58d5d6d89058adee69e69f1157135791867415c68cfd11e9",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Maguana/Maguana_east.png"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Maguana/Maguana_north.png",
+  "sha256": "c0890c660c9341364ad1478c46e55f302899fc0a88cbb5d2d5a3e91717dbed6e",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Maguana/Maguana_north.png"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Maguana/Maguana_south.png",
+  "sha256": "ab277f93d0efd60c5915a0b497be6274dd14e69eca88d9ddb5546a8e64e71927",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Maguana/Maguana_south.png"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatMale_east.png",
+  "sha256": "6e4e9f389620412ad1f3a86d2db76062589811d5fb2901bf863786094bf84505",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatMale_east.png"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatMale_north.png",
+  "sha256": "4c64f96f23be0216b84be067f4dba9071ce648d8e40805a0dc25d05061c04bb9",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatMale_north.png"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatMale_south.png",
+  "sha256": "f5fd97a32800110ee7b609cffa955f750b1441886d41a883c10fec9368b47c3a",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatMale_south.png"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Textures/swanimals/Fanback/FanbackV_C_east.png",
+  "sha256": "7007902c204278da53e2efb6be0cf81c255f511746c037a00d33ffc9938eef14",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Textures/swanimals/Fanback/FanbackV_C_east.png"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Textures/swanimals/Fanback/FanbackV_C_north.png",
+  "sha256": "43d73f1701bd26f0f0787e12608d56f1c802ce7df6915982df8670cea1c5e788",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Textures/swanimals/Fanback/FanbackV_C_north.png"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Textures/swanimals/Fanback/FanbackV_C_south.png",
+  "sha256": "a8e776bf9adc3357efec37e9a2bd444d9b77e3e03c856f6695a130edf99c109f",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Textures/swanimals/Fanback/FanbackV_C_south.png"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Textures/swanimals/FrilledGorg/FrilledGorgV_J_east.png",
+  "sha256": "b538f7d50010a7a90b5c6681c134b023c5fecb1e4b380420df11125038e8f990",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Textures/swanimals/FrilledGorg/FrilledGorgV_J_east.png"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Textures/swanimals/FrilledGorg/FrilledGorgV_J_north.png",
+  "sha256": "abec406f57bdfcaef98ad749ed1b36c15e76a19cb52ee26528e417d5f976d8d3",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Textures/swanimals/FrilledGorg/FrilledGorgV_J_north.png"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Textures/swanimals/FrilledGorg/FrilledGorgV_J_south.png",
+  "sha256": "2dd8424ffc03aac7ca6ef893c2fec3c0462f8086a28e2cf62674af1577905264",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Textures/swanimals/FrilledGorg/FrilledGorgV_J_south.png"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Textures/swanimals/Maalraas/Maalraas_east.png",
+  "sha256": "7593620764f794d075464c9686f80a770143ea6562475c05ace29fa19f3e37f5",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Textures/swanimals/Maalraas/Maalraas_east.png"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Textures/swanimals/Maalraas/Maalraas_north.png",
+  "sha256": "be876afbbe0cceab190a2c1e582babc4812a31a10a74e588c86ea833d5b61428",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Textures/swanimals/Maalraas/Maalraas_north.png"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Textures/swanimals/Maalraas/Maalraas_south.png",
+  "sha256": "c6627ec688a182a5351a3eeb40190dee1cdf02d0a03190ba68c244936dd8dbb7",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Textures/swanimals/Maalraas/Maalraas_south.png"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Textures/swanimals/Raxshir/Raxshir_east.png",
+  "sha256": "338eda0be6d1e02d4b6ffad6b2d1ba899ad55dce2f631b95ae81f1df2c1a27dd",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Textures/swanimals/Raxshir/Raxshir_east.png"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Textures/swanimals/Raxshir/Raxshir_north.png",
+  "sha256": "b7fc6246bb1dca449ece26b44ce519521dc62ae7a967588190e2c198c74ba6ea",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Textures/swanimals/Raxshir/Raxshir_north.png"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Textures/swanimals/Raxshir/Raxshir_south.png",
+  "sha256": "eb73e3759346c4ae3f497575824a0a40aa2526945b6e91c8b9b601a7c903d198",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Textures/swanimals/Raxshir/Raxshir_south.png"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Textures/swanimals/ShiroTrap/ShiroTrap_i_east.png",
+  "sha256": "66e6a7f9bc1456ce977e5fdc245797b9420c9eb34f618d30a0c6b82b43be8b74",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Textures/swanimals/ShiroTrap/ShiroTrap_i_east.png"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Textures/swanimals/ShiroTrap/ShiroTrap_i_north.png",
+  "sha256": "a1dead03093f77644d5a9a4624d88104b6090382dd814e5bcf89300c6bf5fe1d",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Textures/swanimals/ShiroTrap/ShiroTrap_i_north.png"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Textures/swanimals/ShiroTrap/ShiroTrap_i_south.png",
+  "sha256": "c9e6a4958133ca100d9042f0012d2774380bbdf9e9e697f0d43b6a2df35d18e6",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Textures/swanimals/ShiroTrap/ShiroTrap_i_south.png"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Textures/swanimals/Strill/Strill_Flying_1_east.png",
+  "sha256": "cccf13c2b59f563c280b591a8e0a4a2d5fc7e4a3039d2967bfeaf797764f3b02",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Textures/swanimals/Strill/Strill_Flying_1_east.png"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Textures/swanimals/Strill/Strill_Flying_1_north.png",
+  "sha256": "e550de2a8819d928ae04d9cba755b5acaa704d9dec0681e600328d77dd5b7725",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Textures/swanimals/Strill/Strill_Flying_1_north.png"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Textures/swanimals/Strill/Strill_Flying_1_south.png",
+  "sha256": "fa77dce9932ae766460a02a8d420841697c051563d290f5535af8124275026f1",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Textures/swanimals/Strill/Strill_Flying_1_south.png"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Textures/swanimals/Torton/Torton_f_east.png",
+  "sha256": "1610ff858c7b8b19a5f0fc136a59a0d12cb61d9065495678b6cfb946c475c1d2",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Textures/swanimals/Torton/Torton_f_east.png"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Textures/swanimals/Torton/Torton_f_north.png",
+  "sha256": "e1d9c9b1ed0ee45a57bb7242f7a34051652d443198e029e56176479b17507a81",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Textures/swanimals/Torton/Torton_f_north.png"
+ },
+ {
+  "mod": "SWBestiary",
+  "file": "Textures/swanimals/Torton/Torton_f_south.png",
+  "sha256": "89c58c4f6904e85a15abe2622ef7e9aeb2a251e96766a105088cf1d1a00a6ece",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SWBestiary/Textures/swanimals/Torton/Torton_f_south.png"
+ },
+ {
+  "mod": "Sarlacc",
+  "file": "Assemblies/Sarlacc.dll",
+  "sha256": "3ef95b3ac5ef0be41bf318e556f4161e31db9d367494f0ee2b32ebc4bf90b109",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/Sarlacc/Assemblies/Sarlacc.dll"
+ },
+ {
+  "mod": "Sarlacc",
+  "file": "Assemblies/Sarlacc.dll.srchash",
+  "sha256": "2a44396502ae32205436a10a3794592fe822ce3868f5e95ad705deceb3f6edf2",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/Sarlacc/Assemblies/Sarlacc.dll.srchash"
+ },
+ {
+  "mod": "Sarlacc",
+  "file": "Patches/RSW_SarlaccSeeker_Rooting.xml",
+  "sha256": "c7fa598811fd3bab95a76f8baf08c82f6141d27128e526d34a12befa36ddf700",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/Sarlacc/Patches/RSW_SarlaccSeeker_Rooting.xml"
+ },
+ {
+  "mod": "ScarlandsLadder",
+  "file": "About/About.xml",
+  "sha256": "ba24cc4f965211b01268e64eadf869ed9a51a20c160121fc2b3ebc1f4afda82f",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/ScarlandsLadder/About/About.xml"
+ },
+ {
+  "mod": "ScarlandsLadder",
+  "file": "Assemblies/RimMandrake.Utinni.ScarlandsLadder.dll",
+  "sha256": "331fba2b76394c3f93c5f61c501d7b859472ea5a643d47bfc7698b246754123a",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/ScarlandsLadder/Assemblies/RimMandrake.Utinni.ScarlandsLadder.dll"
+ },
+ {
+  "mod": "ScarlandsLadder",
+  "file": "Assemblies/RimMandrake.Utinni.ScarlandsLadder.dll.srchash",
+  "sha256": "7e29a3e0529ba1826d6851f6b8e2d88e537a2dd149d6eee82f94eb0615d9424d",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/ScarlandsLadder/Assemblies/RimMandrake.Utinni.ScarlandsLadder.dll.srchash"
+ },
+ {
+  "mod": "ScarlandsLadder",
+  "file": "Defs/GenStepDefs/RUT_PilgrimCamps.xml",
+  "sha256": "4ed1613661d24f8aad127eefd6ca55008216b8d84e1238866bfba044d191bc51",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/ScarlandsLadder/Defs/GenStepDefs/RUT_PilgrimCamps.xml"
+ },
+ {
+  "mod": "ScarlandsLadder",
+  "file": "Defs/LoreStageTableDefs/RUT_ScarlandsLadder.xml",
+  "sha256": "82ea6f384aa562cebeb8de296200b5d89b60ec644ae279387056653198f44ec5",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/ScarlandsLadder/Defs/LoreStageTableDefs/RUT_ScarlandsLadder.xml"
+ },
+ {
+  "mod": "ScarlandsLadder",
+  "file": "Patches/RUT_PilgrimCamps_Scarlands.xml",
+  "sha256": "e8d22244c191d8dd55980ce8ca073c86cbb79d97f0620ff41644239269f163aa",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/ScarlandsLadder/Patches/RUT_PilgrimCamps_Scarlands.xml"
+ },
+ {
+  "mod": "ShipShields",
+  "file": "Assemblies/RimMandrake.Utinni.ShipShields.dll",
+  "sha256": "b54bd3d8870357fd09684963bf3b85a71bdff03419e8c0bae631e80c0b12ad0c",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/ShipShields/Assemblies/RimMandrake.Utinni.ShipShields.dll"
+ },
+ {
+  "mod": "ShipShields",
+  "file": "Assemblies/RimMandrake.Utinni.ShipShields.dll.srchash",
+  "sha256": "c668ac0a8481c90960b18b8bdd38d055d06a830cb7bf6ad9ca8afb0a24d1ab75",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/ShipShields/Assemblies/RimMandrake.Utinni.ShipShields.dll.srchash"
+ },
+ {
+  "mod": "ShipShields",
+  "file": "Defs/ThingDefs_Buildings/RUT_ShieldGenerator.xml",
+  "sha256": "6fb2ada0f4158fbfe02ff1cd9c40913c26ed868bdd888630a223061bb0cec150",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/ShipShields/Defs/ThingDefs_Buildings/RUT_ShieldGenerator.xml"
+ },
+ {
+  "mod": "ShipVermin",
+  "file": "Defs/ThingDefs_Races/RM_ShipVermin_Cast.xml",
+  "sha256": "4d1790fb7d83e76344469d5e8d0a9ff7006e493e6170fb572c619cf1b726688c",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/ShipVermin/Defs/ThingDefs_Races/RM_ShipVermin_Cast.xml"
+ },
+ {
+  "mod": "SithLine",
+  "file": "Assemblies/RimMandrakeSithLine.dll",
+  "sha256": "fb0e42a314dce945d21f8803df88f8f8d7c0a1e2f788cd4788d704d545b1a36c",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SithLine/Assemblies/RimMandrakeSithLine.dll"
+ },
+ {
+  "mod": "SithLine",
+  "file": "Assemblies/RimMandrakeSithLine.dll.srchash",
+  "sha256": "02331a81a9c35fabf022a1d2ed1e1a42a28764ce2cf7a07269ee2f7382b271ea",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SithLine/Assemblies/RimMandrakeSithLine.dll.srchash"
+ },
+ {
+  "mod": "SithLine",
+  "file": "Defs/GeneDefs/RSW_AnzatiCopies.xml",
+  "sha256": "6089dc8f2b4f5c3623c977788d5aef020a5e4c5b10bf8f473b527dc7807c941a",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SithLine/Defs/GeneDefs/RSW_AnzatiCopies.xml"
+ },
+ {
+  "mod": "SithLine",
+  "file": "Defs/PawnKindDefs/RSW_SithInquisitor.xml",
+  "sha256": "d06d256630466682abdd728e9f377250d797e9d7f1eaaf64005a9875a3b68eca",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/SithLine/Defs/PawnKindDefs/RSW_SithInquisitor.xml"
+ },
+ {
+  "mod": "StarWarsPatches",
+  "file": "About/About.xml",
+  "sha256": "7e2424423f7e23c2e0bb62f158860d10b3fe018db370e0e24351ec89cf7d6fb7",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/StarWarsPatches/About/About.xml"
+ },
+ {
+  "mod": "StructureInjections",
+  "file": "Assemblies/RimMandrakeStructureInjections.dll",
+  "sha256": "f8804ea0f9ac55ce2729a2331d18b690291f9e843381dca930a65dddc6e09a11",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/StructureInjections/Assemblies/RimMandrakeStructureInjections.dll"
+ },
+ {
+  "mod": "StructureInjections",
+  "file": "Assemblies/RimMandrakeStructureInjections.dll.srchash",
+  "sha256": "c2e44add78e95ebfa96083cb452383ebb2d37e5c7707d928c0a8fdb2300fe34c",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/StructureInjections/Assemblies/RimMandrakeStructureInjections.dll.srchash"
+ },
+ {
+  "mod": "StructureInjectionsRUT",
+  "file": "Assemblies/RimMandrake.Utinni.StructureInjectionsRUT.dll",
+  "sha256": "a7a81576928ab3e940c7226a6394c9b3fe4029251d4ecf13acd52a6669aa978e",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/StructureInjectionsRUT/Assemblies/RimMandrake.Utinni.StructureInjectionsRUT.dll"
+ },
+ {
+  "mod": "StructureInjectionsRUT",
+  "file": "Assemblies/RimMandrake.Utinni.StructureInjectionsRUT.dll.srchash",
+  "sha256": "42d2f7c5abf0d4c962b5a31b7e265502a45227e97495590bed46111f3ea0b623",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/StructureInjectionsRUT/Assemblies/RimMandrake.Utinni.StructureInjectionsRUT.dll.srchash"
+ },
+ {
+  "mod": "StructureInjectionsRUT",
+  "file": "Defs/WarLab/SitePartDefs_WarLab.xml",
+  "sha256": "b1c998af30790f4f873f5f04d9e2a97b8bc787f0512fa7820db83a0a140a219c",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/StructureInjectionsRUT/Defs/WarLab/SitePartDefs_WarLab.xml"
+ },
+ {
+  "mod": "StructureInjectionsSW",
+  "file": "Defs/GenStepDefs_SarlaccRing.xml",
+  "sha256": "79879667a79c30e0fd3ef40fb08b36ea939ff5d2d0e019c50b2fdc2f56d9e53b",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/StructureInjectionsSW/Defs/GenStepDefs_SarlaccRing.xml"
+ },
+ {
+  "mod": "StructureInjectionsSW",
+  "file": "Defs/TileMutatorDefs_Batch2.xml",
+  "sha256": "26af496b68e848601156dddb184d71630642535ab11975ee1b1603bf87b50832",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/StructureInjectionsSW/Defs/TileMutatorDefs_Batch2.xml"
+ },
+ {
+  "mod": "TheBazaar",
+  "file": "Assemblies/RimMandrakeBazaar.dll",
+  "sha256": "65dfe2e32f1d6688e49dc8a98dcae14064ca6ad89914945704e31e1fc9d5fdc3",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/TheBazaar/Assemblies/RimMandrakeBazaar.dll"
+ },
+ {
+  "mod": "TheBazaar",
+  "file": "Assemblies/RimMandrakeBazaar.dll.srchash",
+  "sha256": "4b9bcc12f9973faa8f8d5d26975ce81b90c77edc37eca58b1e98bb99f76f8038",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/TheBazaar/Assemblies/RimMandrakeBazaar.dll.srchash"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/BiomeDefs/RUT_Abyss.xml",
+  "sha256": "eb9ace44b66ffb9bd3d387704d7be8c5abda538a71154394df4da1d0bc29f0ca",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/BiomeDefs/RUT_Abyss.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/BiomeDefs/RUT_AridShrubland.xml",
+  "sha256": "2d5f001f5fe98ba9b9f1dde4e03671a65f67e05192ca83de286f8b72cdc382b4",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/BiomeDefs/RUT_AridShrubland.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/BiomeDefs/RUT_BlueDesert.xml",
+  "sha256": "1f39395aff58b3923a47d697fcf05a5c369ba2bf038396a465b178dc9e188dd5",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/BiomeDefs/RUT_BlueDesert.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/BiomeDefs/RUT_Cauldron.xml",
+  "sha256": "c6fd1cae97bc4e3ae341c7b2b933857033f876c0410f41bc803959c715154ed0",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/BiomeDefs/RUT_Cauldron.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/BiomeDefs/RUT_Contagion.xml",
+  "sha256": "d6855a483020cadbb058ac22dcdf692777b3ef5e9529402d760b9a65266fb2d8",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/BiomeDefs/RUT_Contagion.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/BiomeDefs/RUT_CrackedLands.xml",
+  "sha256": "2307165fc5a6c83de18cfa8eb76875d8da5f1c505fd9ab8cd81b56358b516556",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/BiomeDefs/RUT_CrackedLands.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/BiomeDefs/RUT_Desert.xml",
+  "sha256": "b2b8e14115698aa6598a6a2dbc643bfb872d6ce2df6945517c0a6c3a5ef0fc52",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/BiomeDefs/RUT_Desert.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/BiomeDefs/RUT_ExtremeDesert.xml",
+  "sha256": "2470a8356f9c326fc26b25c13a424af180719bd910db947a35790a3e2143056c",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/BiomeDefs/RUT_ExtremeDesert.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/BiomeDefs/RUT_FeverWood.xml",
+  "sha256": "ad550819a71a2b71a29367914f039dba6217dfe78eee3aa3acacf9d4e84390f9",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/BiomeDefs/RUT_FeverWood.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/BiomeDefs/RUT_Greentide.xml",
+  "sha256": "43876745674313592c7f5c408b290998373e6d1dd572d4fd23de3c039c341c4a",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/BiomeDefs/RUT_Greentide.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/BiomeDefs/RUT_GreySea.xml",
+  "sha256": "d5be1359fe0c85a85f5eb0a597589f62553862bb177f881096d01113d095011b",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/BiomeDefs/RUT_GreySea.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/BiomeDefs/RUT_Miasma.xml",
+  "sha256": "81852890b2493663558a67c69bb428c0fd3d5e7632fdd0c94f0f0d95a1ec08a2",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/BiomeDefs/RUT_Miasma.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/BiomeDefs/RUT_PropaneLake.xml",
+  "sha256": "a09232f5dc66d99aeb3c89e39c247d81e4050df8fefe7f30a09e1b199d4551cf",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/BiomeDefs/RUT_PropaneLake.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/BiomeDefs/RUT_RustCathedral.xml",
+  "sha256": "d2e57ace902543ebae76f7179a5904d6501b40f904a541362c0a8a258c420d33",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/BiomeDefs/RUT_RustCathedral.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/BiomeDefs/RUT_Scarlands.xml",
+  "sha256": "04d85aaccb15cee3e17717cda17af2fc5f06c9b51d397dcfeabbbe02796504b1",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/BiomeDefs/RUT_Scarlands.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/BiomeDefs/RUT_SleepingIce.xml",
+  "sha256": "22e4f37acf152672c1cf311cd4e194063d4abeefe8330f4307e3a4c5fa3dd860",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/BiomeDefs/RUT_SleepingIce.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/BiomeDefs/RUT_Slime.xml",
+  "sha256": "169190fcfb378d36b57292290a9de9d8268027811f348daa89fb4eea85b90b1c",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/BiomeDefs/RUT_Slime.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/BiomeDefs/RUT_Sump.xml",
+  "sha256": "3c4ecd8d46cf0bc5c7ae3422abb3277e24c889a3eb75c96e9f8f25fbf93a5f4b",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/BiomeDefs/RUT_Sump.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/BiomeDefs/RUT_TheForge.xml",
+  "sha256": "940f0912a56875c694d5c3ab3c5fd0bad7eb408004bcb9730a33835d6a101da9",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/BiomeDefs/RUT_TheForge.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/BiomeDefs/RUT_TheRot.xml",
+  "sha256": "cd424b5259768fd771e799b7789d0dd0da7d6ae7a4fd61b34a0d80dba9a110a7",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/BiomeDefs/RUT_TheRot.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/BiomeDefs/RUT_TheScald.xml",
+  "sha256": "6af438f9b8b4a61d4ee13816594ec5f3bff072ee7c9cf37e5879b81e8f27a643",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/BiomeDefs/RUT_TheScald.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/BiomeDefs/RUT_TwilightSea.xml",
+  "sha256": "2f6f8f36e3aff0a5e11bb8293d6788dd2ca31df9551c02e5795cb10c0f988f28",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/BiomeDefs/RUT_TwilightSea.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/BiomeDefs/RUT_Wastes.xml",
+  "sha256": "a89fd06194103f53ecd9c7b5da07ecd74f8c072369885d1a612b1c458fdc1804",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/BiomeDefs/RUT_Wastes.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/BiomeDefs/RUT_Webwork.xml",
+  "sha256": "292fc785a3e51c31989dc72f33925aa7bf36f305f29de543ca327f7c49292aac",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/BiomeDefs/RUT_Webwork.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/BiomeDefs/RUT_WeepingStones.xml",
+  "sha256": "9dac4caf0f722b85fe4eca6211848b7555d6c66059d200accdeacbd0cb141d64",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/BiomeDefs/RUT_WeepingStones.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Languages/English/Keyed/ImperialVocabulary.xml",
+  "sha256": "0b798e077e23af3339912e2370d62389f2abcceb58dea3345e9c16963954c2fd",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Languages/English/Keyed/ImperialVocabulary.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/AcousticPayload_CrackedLands.xml",
+  "sha256": "34ca646f422fd9bf2fdcf5c31d2a13e31267a5bf917b8878b72effbdff487149",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/AcousticPayload_CrackedLands.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/BiomeFishTypes_TwilightDeep.xml",
+  "sha256": "05a31b4e09f4d5513b72f7d7714d7da65f0acec7338bb1cdac5d1e2de8e91576",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/BiomeFishTypes_TwilightDeep.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/BiomeFlora_Ashkarr.xml",
+  "sha256": "bab1842c075c186d4f4d9c3227e9be5c391599b71a0d0ee559bb9107a3ee6482",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/BiomeFlora_Ashkarr.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/GalacticEmpire.xml",
+  "sha256": "6d11ef2997fca9241012a4ade3ce2e6c89bfa92967e2d72e50546cb5e8043d14",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/GalacticEmpire.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/OasisMutator_DesertOasis.xml",
+  "sha256": "9842c10dcaf1d962474b5393498db9b58e236a0e78a89111a6e18d7c13cf51c2",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/OasisMutator_DesertOasis.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/RUT_ForgePulse_BiomeWiring.xml",
+  "sha256": "e59bc5a27f4c0ec711471f26d9c5ce0f3ae4ffad713352057174d146c08cb72f",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/RUT_ForgePulse_BiomeWiring.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/RUT_ScaldSteamLock_BiomeWiring.xml",
+  "sha256": "ffcf7290ba230cae5d65701974443ef789d75d6fbe1388e40a087c0b82856bbd",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/RUT_ScaldSteamLock_BiomeWiring.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/RUT_WastesBrineScatter_Register.xml",
+  "sha256": "d380934023889510441f5429a85dd4e30349d2ca8d8c89a72235e1da635ef5b8",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/RUT_WastesBrineScatter_Register.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/WildAnimals_Webwork.xml",
+  "sha256": "3971f38681f59e1e3b55b253c4910034213f85d71cdb2a3932e6dfea55b18178",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/WildAnimals_Webwork.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "About/About.xml",
+  "sha256": "07c483181e7c24405b33b62924d8de372594130ea02b9ed5e864da717f3f6cc5",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/About/About.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Assemblies/RimMandrake.Utinni.UtinniPatches.dll",
+  "sha256": "48db0dc520c9d4e14663160b359003a020aac139721cdae93a427318ed8d1d44",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Assemblies/RimMandrake.Utinni.UtinniPatches.dll"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Assemblies/RimMandrake.Utinni.UtinniPatches.dll.srchash",
+  "sha256": "0355acc63801c5a4d8ac7bb2f531f87a3c3c983739fe92ea89e238860f67235e",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Assemblies/RimMandrake.Utinni.UtinniPatches.dll.srchash"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/Absorbed_Cephaloids/Absorbed_Cephaloids_Defs.xml",
+  "sha256": "71e5cc8f8abba1cb1d0f5092ee674aa35bcede25a9e78b2759c669c46d230702",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/Absorbed_Cephaloids/Absorbed_Cephaloids_Defs.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/BiomeDefs/Jawa_BackgroundWater.xml",
+  "sha256": "6892abdac67cdd27cddee0a80efd3923d71668ab1fdbe08153c3787cf3ca8c89",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/BiomeDefs/Jawa_BackgroundWater.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/BiomeDefs/RUT_Umbra.xml",
+  "sha256": "e8f0f7d3770d68b5d902c78d9725fb8a9158912c522e45ea8acf341ee1e6b1c3",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/BiomeDefs/RUT_Umbra.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/ExplosiveGrowth/RUT_ExplosiveGrowthRoster.xml",
+  "sha256": "57c58ef496f397221eb08e44552a39622712d8198da5abfffdd328aa14eae1b4",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/ExplosiveGrowth/RUT_ExplosiveGrowthRoster.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/GameConditionDefs/RUT_ForgePulse.xml",
+  "sha256": "70ffffe4cfa513eff579e9dc10864dcb8d547fbd6518a3defe391d29c649ef94",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/GameConditionDefs/RUT_ForgePulse.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/GameConditionDefs/RUT_ScariaOnsetArming.xml",
+  "sha256": "01f7f3d43e6df8dfc74509c39db4f305daeb8e3c17071cb7521ab8c6da97d9f8",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/GameConditionDefs/RUT_ScariaOnsetArming.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/GameConditionDefs/RUT_ScarlandsMarkLock.xml",
+  "sha256": "3b37bcbfce0bfc9281dc92f2c749bad6632dda9e256d91a389b7d1fc5adc41c2",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/GameConditionDefs/RUT_ScarlandsMarkLock.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/IncidentDefs/RUT_ContagionProbe.xml",
+  "sha256": "9eeee6e656816c235bfa33ef131f885f34055e32897938fb74e6a42cd909b078",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/IncidentDefs/RUT_ContagionProbe.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/MapGeneration/RUT_ContagionRingScatter.xml",
+  "sha256": "57d34bec0e3e554108931abbaeab2458e54f13684ee8ca8e4b20aa9160ea019d",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/MapGeneration/RUT_ContagionRingScatter.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/MapGeneration/RUT_PhrikiteDesertLumps.xml",
+  "sha256": "c2d255c742d68b08260bde4a2b6778d2ba45c8a051349208920ee19e4cef266e",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/MapGeneration/RUT_PhrikiteDesertLumps.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/MapGeneration/RUT_ScarlandsGraveWardScatter.xml",
+  "sha256": "f7a48a2874a42f659d64fc1b5c0e2e1612b89d1e175ca85beb0c2a17268523cc",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/MapGeneration/RUT_ScarlandsGraveWardScatter.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/MapGeneration/RUT_ScarlandsSprungDangers_GenStep.xml",
+  "sha256": "d15eaab0a2eb5400ba03150e972b1dd69405b7531a87cb25472fa7945dce80f2",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/MapGeneration/RUT_ScarlandsSprungDangers_GenStep.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/MapGeneration/RUT_WastesBrineScatter.xml",
+  "sha256": "941fdce93d9862eb1e6640a4c48dbba7b186cb5191edd9f751b12e528148f052",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/MapGeneration/RUT_WastesBrineScatter.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/MapGeneration/RUT_ZersiumForgeLumps.xml",
+  "sha256": "ee8f07e42ee51a44ca6f387f10f25f010623ca71c9096728f9b794206329d3e0",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/MapGeneration/RUT_ZersiumForgeLumps.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/Misc/RUT_UmbraRename_Aliases.xml",
+  "sha256": "ad196ffa841c8dcf607ab3eaf01c8e1c9cda57a2b9ab28fc02ea88dcc97065c5",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/Misc/RUT_UmbraRename_Aliases.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/PawnKindDefs/RUT_Placeholder_GreentideGnawer.xml",
+  "sha256": "ffd96b8e12d00ea4ea00c9338feb060b4969755adfc443c031ef7aecc6c9a4a2",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/PawnKindDefs/RUT_Placeholder_GreentideGnawer.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/PrefabDefs/RUT_ScarlandsSprungDangers.xml",
+  "sha256": "57ba1cc26ff505f35e7ddf5cc706bdcab1389d6bbd15bd840c66e7c21f816c93",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/PrefabDefs/RUT_ScarlandsSprungDangers.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/TerrainDefs/RUT_WastesBrineWater.xml",
+  "sha256": "07abca643673f5ab2eef90f5d5a23040bbb1a66cd265e26ef378a066f5d87725",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/TerrainDefs/RUT_WastesBrineWater.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/ThingDefs_Buildings/RUT_SentinelGraveWard.xml",
+  "sha256": "cd40b7b2413a00ebdee1b5ec3573dfccfe55d2e16c1b2e6cf8c6e6a49407e0ab",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/ThingDefs_Buildings/RUT_SentinelGraveWard.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/ThingDefs_Items/RUT_GreySeaFish_Items.xml",
+  "sha256": "6469e12811c2c01c8b42c55b46e94eeabde81544f482628c1727667e51b70f4a",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/ThingDefs_Items/RUT_GreySeaFish_Items.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/ThingDefs_Items/RUT_PropaneLakeCatch_Items.xml",
+  "sha256": "96ff880beeb19dc3e7cba130cdb6da8f9909ff4c93f43d4c25e504c5a43eeaa6",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/ThingDefs_Items/RUT_PropaneLakeCatch_Items.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/ThingDefs_Items/RUT_ScaldFish.xml",
+  "sha256": "2abc5d033fbbca6ca00ce062fc0d116b6f82165012fffe3f50ef23fce3f34319",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/ThingDefs_Items/RUT_ScaldFish.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/ThingDefs_Items/RUT_TwilightFish_Niim.xml",
+  "sha256": "fdb6539544aa6f71ff75e68dfcf524f073be6b8cd290120999980aa4a1303760",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/ThingDefs_Items/RUT_TwilightFish_Niim.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/ThingDefs_Items/RUT_WastesBrine_Items.xml",
+  "sha256": "8bd3b3feec1d4dca72aa6ed1a476c7a9c4bd03098fd1b5a7cf9804e486f43baf",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/ThingDefs_Items/RUT_WastesBrine_Items.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/ThingDefs_Items/RUT_WeepingStonesFish_Items.xml",
+  "sha256": "ae8f11d1700f600b963fa84d3e67329dbe51a83aab3e86e739ac31d0f8240edd",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/ThingDefs_Items/RUT_WeepingStonesFish_Items.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/ThingDefs_Races/RUT_BrineBattery.xml",
+  "sha256": "c0269993241642ec383f06744d6f9a5372ea28d9aa559ea32e0775bf1a4d510a",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/ThingDefs_Races/RUT_BrineBattery.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/ThingDefs_Races/RUT_FleetFlier.xml",
+  "sha256": "616ed527d76860e2d06a89784a40df903bfed2e7dfcc27de2586dde338983f53",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/ThingDefs_Races/RUT_FleetFlier.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/ThingDefs_Races/RUT_PropaneLakeFauna.xml",
+  "sha256": "55a5beabeda76c30992bf55deb60c5f409580b2fba3867fd88580a39f6e8c071",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/ThingDefs_Races/RUT_PropaneLakeFauna.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/ThingDefs_Races/RUT_SealedSleeper.xml",
+  "sha256": "59d2eabb763afdd48311185e453251f9552c53e39347a4eb9d27863ac50f32d9",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/ThingDefs_Races/RUT_SealedSleeper.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/ThingSetMakerDefs/RUT_RareGreentideCatches.xml",
+  "sha256": "a995ee631cb1ca463f348542bf7941b16a520fd45de64705647151fdc05faaa8",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/ThingSetMakerDefs/RUT_RareGreentideCatches.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/ThingSetMakerDefs/RUT_RareOasisCatches.xml",
+  "sha256": "2cbbd9cdf8c1fa0985e654be526459d0cae19112db88ab6bfa53e6a23ce47b1d",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/ThingSetMakerDefs/RUT_RareOasisCatches.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/WeatherDefs/RUT_BoilingRain.xml",
+  "sha256": "1365a941732a007cdefcbd3587ba964a2e62cac3300733ecae4b4bd8bb297c53",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/WeatherDefs/RUT_BoilingRain.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Defs/WeatherDefs/RUT_ForgeStill.xml",
+  "sha256": "f9a375cbb9aea64aeef99674c984ae61bd805bd2432cfa06d595dd6c4ff4b8da",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Defs/WeatherDefs/RUT_ForgeStill.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/Abyss_ProbeDroids.xml",
+  "sha256": "325335b6cc2b91cc6b2cf4acd3475bcc08bfc6af224fdf12044ff47a3f5fdb07",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/Abyss_ProbeDroids.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/AcousticPayload_UtinniBiomes.xml",
+  "sha256": "e5aad1a0cdf62962c0afbded0ccd62e677171341f13868b4afb6cf0740c23ea0",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/AcousticPayload_UtinniBiomes.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/AncientDangerGenSteps_AmbientDoctrine.xml",
+  "sha256": "3f3b3fd28515a153facbfa1751cbf8ec11fe2f48f3b76c9fb7df13f3569090df",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/AncientDangerGenSteps_AmbientDoctrine.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/BiomeDescriptions_Ashkarr.xml",
+  "sha256": "8128835cd0ec1fbe069e044fff3016fa7fd728ea67b8ace0f29494e21395efc4",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/BiomeDescriptions_Ashkarr.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/BiomeNames_Ashkarr.xml",
+  "sha256": "930d4a9ecc8182e247d57a9e62f1d5157938742e8ea47e637a53477abaebfabe",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/BiomeNames_Ashkarr.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/Cauldron_ToxicPrizedMeat.xml",
+  "sha256": "723bb558ba771ce01cc171b7a9f25774557a8837328c1e729344b2da7cda9de0",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/Cauldron_ToxicPrizedMeat.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/ClaimCrew_CrackedLands.xml",
+  "sha256": "4aa096a8081263efb67d035d7df2aeaac1db798e868efebb5eabcd921513eed2",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/ClaimCrew_CrackedLands.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/FaunaNorm_Law5_Tolerance.xml",
+  "sha256": "f76fc208fda55cb51f6231bc6f83f0c80e1bc945822fae516e3fe0d97ad9d2ba",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/FaunaNorm_Law5_Tolerance.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/FishTypesStrip_NoFishBiomes.xml",
+  "sha256": "4504c7d26fa44f521e64a7bf533736b5604c9bf6e5ae0f0caa9ef7c280118d10",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/FishTypesStrip_NoFishBiomes.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/MechClusterBiomes_AmbientDoctrine.xml",
+  "sha256": "ea68e8ecc296d106156af89fa591c5b3f9b399965256a6b87a50e002182cc8a6",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/MechClusterBiomes_AmbientDoctrine.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/RUT_ContagionRingScatter_Register.xml",
+  "sha256": "c17b2644aa366f5a23f8a2e3981c38b88ec36aa977aaea587e86e46182309f3f",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/RUT_ContagionRingScatter_Register.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/RUT_GroundCoverDrawLayer.xml",
+  "sha256": "8637a2530fb3a693e5d5bc8fd120ea358771f47a9a1d5eb362ff4d703aea10c7",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/RUT_GroundCoverDrawLayer.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/RUT_RetiredMutatorPorts_Biomes.xml",
+  "sha256": "e58d443e0d056e2e0fa70882bba7be45bca64756d490bdd2b8c3233eb7545b73",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/RUT_RetiredMutatorPorts_Biomes.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/RUT_TibannaTap_BeldonWiring.xml",
+  "sha256": "d05c0ac465e20015df44a35a2914f9d00177f958e3d175d9e7acdc2ac7bf6de9",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/RUT_TibannaTap_BeldonWiring.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/SandFishing_CrackedLands.xml",
+  "sha256": "ae2d16ebad5b9b7c5b49212b6d678e847fbef738d5ca22cbd64d3e38abdefced",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/SandFishing_CrackedLands.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/SlimeRainStrip_Campaign.xml",
+  "sha256": "aaf4983582c74a24c30342c11cb111969adb0ebde7d1ef7fb86b260caf260a75",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/SlimeRainStrip_Campaign.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/VanillaBeastExcision_Carriers.xml",
+  "sha256": "f6d4eb07be916ffaeae7dd3fd7da02caa61cd4e3e79ae75e59c5a73743690f62",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/VanillaBeastExcision_Carriers.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/WildAnimals_BlueDesert.xml",
+  "sha256": "5d8d9a2c786e3dcf1a1641e0ba35824ec7b8eaaaac8ca9a3a8c7987cda2a9a13",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/WildAnimals_BlueDesert.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/WildAnimals_Cauldron.xml",
+  "sha256": "78aaec8cdc05ac19eba828b19567a3db753c890bfc2b1df89e10e8ac50200756",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/WildAnimals_Cauldron.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/WildAnimals_CrackedLands.xml",
+  "sha256": "703c3885274f7d998d66a7e21fb4cd737a303a84003e1d37576e77046ad19a06",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/WildAnimals_CrackedLands.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/WildAnimals_FeverWood.xml",
+  "sha256": "f8be8bfd0b7de1aa27d0ddcccd10d0f07f25dfc8e9532ba417b562056e299103",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/WildAnimals_FeverWood.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/WildAnimals_Greentide.xml",
+  "sha256": "4fd7167c9e5f06d82366701a94e3c593ae432ac3aa86f3e1758fd91f69cc4660",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/WildAnimals_Greentide.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/WildAnimals_LeaningScrub.xml",
+  "sha256": "1c5919d009293f283fbd31f8bec8ae1d75b06e4ec86b018b8b23f42998201dbd",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/WildAnimals_LeaningScrub.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/WildAnimals_LongShade.xml",
+  "sha256": "4708614999ad160612b8af4ec685b97eb9077df63e95ab382470ed12ab2ed4b7",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/WildAnimals_LongShade.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/WildAnimals_Miasma.xml",
+  "sha256": "2fc0597000da674641bc56414556d72e1a1f2481937e15ec63823b05814da855",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/WildAnimals_Miasma.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/WildAnimals_RustCathedral.xml",
+  "sha256": "fd393e77afb415858a29f77dd40ae81b6e3cc03e905e8ac56c2a74d6f20d7152",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/WildAnimals_RustCathedral.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/WildAnimals_SleepingIce.xml",
+  "sha256": "b4e0fe1784bd2fa8ecadcc7ea7f8c1cd3e55bb04ccda4d670f66e69123b7ec44",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/WildAnimals_SleepingIce.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/WildAnimals_Stillsand.xml",
+  "sha256": "8cc413b188271224cf6d9aa2ae37b7e55353b7ee02257fe7fd988af6999c3a23",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/WildAnimals_Stillsand.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/WildAnimals_TheForge.xml",
+  "sha256": "af151b820d6c75b12520fdcaeb8536421e23ea933e81cc4eba8bc765d7925d3d",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/WildAnimals_TheForge.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/WildAnimals_Warscar.xml",
+  "sha256": "8ca4ba4e2fea0393c07c7d845dacfd2b9d668839ec388ccf59f9eba74c453730",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/WildAnimals_Warscar.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/WildAnimals_Wastes.xml",
+  "sha256": "7663b8fb7914e8202d84b28838ad1673ca6ba3d4a86625872cddb7c50c06e02e",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/WildAnimals_Wastes.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/WildAnimals_WeepingStones.xml",
+  "sha256": "dd247baa19317ed222f00cf6663bae18b1e414613c662bb3de473bc218571a3b",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/WildAnimals_WeepingStones.xml"
+ },
+ {
+  "mod": "UtinniPatches",
+  "file": "Patches/WildPlants_Webwork.xml",
+  "sha256": "d2dec1f7cb7e427c393e9a904157a7f6d3faaef19f01a14b6ad58c3b9cc1ddfe",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniPatches/Patches/WildPlants_Webwork.xml"
+ },
+ {
+  "mod": "UtinniStatues",
+  "file": "Assemblies/RimMandrake.Utinni.UtinniStatues.dll",
+  "sha256": "c0f2601aab77b4f595156d8e8624e88685383b688ae8b8ddfd556a837edb8a1a",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniStatues/Assemblies/RimMandrake.Utinni.UtinniStatues.dll"
+ },
+ {
+  "mod": "UtinniStatues",
+  "file": "Assemblies/RimMandrake.Utinni.UtinniStatues.dll.srchash",
+  "sha256": "563bee5b5cdd38d09b292cf2bee3f7fba63e310d4f409e5f99899a5b3130a9f6",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniStatues/Assemblies/RimMandrake.Utinni.UtinniStatues.dll.srchash"
+ },
+ {
+  "mod": "UtinniStatues",
+  "file": "Patches/FlameStatues_Integration.xml",
+  "sha256": "5437f79ce9f21fe3fb8cbb3ee9d54204a6ff9c021e817eb85fd9964090894659",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/UtinniStatues/Patches/FlameStatues_Integration.xml"
+ },
+ {
+  "mod": "Warcasket",
+  "file": "About/About.xml",
+  "sha256": "da11e16fe6d04cf30eb33d1433e9648c113cd2a5375601177d6a57c400f7b6ee",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/Warcasket/About/About.xml"
+ },
+ {
+  "mod": "Warcasket",
+  "file": "Assemblies/RimMandrake.Warcasket.dll",
+  "sha256": "59882b9c6b173cd43789786abed0bb4defb17f2e1661f68563aeb158e9126c48",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/Warcasket/Assemblies/RimMandrake.Warcasket.dll"
+ },
+ {
+  "mod": "Warcasket",
+  "file": "Assemblies/RimMandrake.Warcasket.dll.srchash",
+  "sha256": "e2f55031223da06e5c913e2c0175d833d846dbfdc669ba4db817ee9330902b31",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/Warcasket/Assemblies/RimMandrake.Warcasket.dll.srchash"
+ },
+ {
+  "mod": "WasteRun",
+  "file": "About/About.xml",
+  "sha256": "e61524a436f602749d58fb3e11d69b54239e710eaa600fe953fee7c73e0094e3",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/WasteRun/About/About.xml"
+ },
+ {
+  "mod": "WasteRun",
+  "file": "Assemblies/RimMandrake.Utinni.WasteRun.dll",
+  "sha256": "71093a50517a2efdb65c4094a0a7aa72a2f5f3f8b4e916d45468745e9b1f3107",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/WasteRun/Assemblies/RimMandrake.Utinni.WasteRun.dll"
+ },
+ {
+  "mod": "WasteRun",
+  "file": "Assemblies/RimMandrake.Utinni.WasteRun.dll.srchash",
+  "sha256": "77103f4ddff67f6af9187ac313a61385dd1817d447fa812164dba29fa87fd527",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/WasteRun/Assemblies/RimMandrake.Utinni.WasteRun.dll.srchash"
+ },
+ {
+  "mod": "WasteRun",
+  "file": "Defs/QuestScriptDefs/RUT_WasteRun.xml",
+  "sha256": "c07e256d015f212651acefacffebc4d64d5b28e78bd54a366df253c1914d2869",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/WasteRun/Defs/QuestScriptDefs/RUT_WasteRun.xml"
+ },
+ {
+  "mod": "WreckedMachines",
+  "file": "Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedSmelter.xml",
+  "sha256": "f5225d2e16ce99e22db40f522c20da1727d1e21426c54f74555c392039ed96f7",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedSmelter.xml"
+ },
+ {
+  "mod": "WreckedMachines",
+  "file": "Defs/ThingDefs_Buildings/Buildings_WreckedMachines_Mobile.xml",
+  "sha256": "65fd9a5f5210677d792f7e20f2cfbff11d5110754ac72c16a1a60953dbf9f536",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_Mobile.xml"
+ },
+ {
+  "mod": "WreckedMachines",
+  "file": "Patches/WreckedMachines_DistillationModule.xml",
+  "sha256": "54ecbda44a1662b556a36bd93952197b8e847b06f661b9e0c21ee3ac694a7664",
+  "rescue": "/mnt/d/ClaudeWork/rimmandrake/backups/codex-live-20261110/all-mods/WreckedMachines/Patches/WreckedMachines_DistillationModule.xml"
+ }
+]

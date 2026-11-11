@@ -1,0 +1,286 @@
+AcousticScanner: ~  Assemblies/RimMandrake.AcousticScanner.dll
+AcousticScanner: ~  Assemblies/RimMandrake.AcousticScanner.dll.srchash
+AshkarrLandmarkArt: ~  About/About.xml
+AshkarrLandmarkArt: ~  Patches/LandmarkIcons.xml
+AssailantSalvage: ~  About/About.xml
+BeskarArmorer: ~  Assemblies/RimMandrake.Utinni.BeskarArmorer.dll
+BeskarArmorer: ~  Assemblies/RimMandrake.Utinni.BeskarArmorer.dll.srchash
+CathedralPass: ~  About/About.xml
+CathedralPass: ~  Assemblies/RimMandrake.Utinni.CathedralPass.dll
+CathedralPass: ~  Assemblies/RimMandrake.Utinni.CathedralPass.dll.srchash
+ColdStorage: +  Defs/ColdStorage_StasisLockerPrefabs.xml
+ColdStorage: +  Defs/Seals/Seals_Frost.xml
+ColdStorage: +  Patches/ColdStorage_AncientComplexLoot.xml
+ColdStorage: ~  Assemblies/RimMandrakeColdStorage.dll
+ColdStorage: ~  Assemblies/RimMandrakeColdStorage.dll.srchash
+ColdStorage: ~  Defs/ColdStorage_StasisLockers.xml
+ColdStorage: ~  Defs/Seals/Seals_Items.xml
+ColdStorage: ~  Languages/English/Keyed/ColdStorage.xml
+DeepDrill: ~  Defs/RM_DeepHomeTable.xml
+Doctrine: ~  About/About.xml
+Doctrine: ~  Patches/MegafaunaYield.xml
+Doctrine: ~  Patches/MegafaunaYield_OwnedPorts.xml
+Doctrine: ~  Patches/MegafaunaYield_OwnedPorts_Warscar.xml
+EggReckoning: ~  Defs/HistoryEventDefs/RUT_HistoryEvent_EggAssassination.xml
+EggReckoning: ~  Defs/HistoryEventDefs/RUT_HistoryEvent_ReckoningAttempt.xml
+EggReckoning: ~  Defs/QuestScriptDefs/RUT_Reckoning.xml
+EmpirePursuit: ~  Assemblies/RuthlessPursuingMechanoids.dll
+EmpirePursuit: ~  Assemblies/RuthlessPursuingMechanoids.dll.srchash
+EmpirePursuit: ~  Defs/Scenarios/ScenParts_EmpirePursuit.xml
+ExplosiveKnockback: ~  Assemblies/RimMandrakeExplosiveKnockback.dll
+ExplosiveKnockback: ~  Assemblies/RimMandrakeExplosiveKnockback.dll.srchash
+FallLineArrivals: ~  About/About.xml
+FallLineArrivals: ~  Assemblies/RimMandrake.Utinni.FallLineArrivals.dll
+FallLineArrivals: ~  Assemblies/RimMandrake.Utinni.FallLineArrivals.dll.srchash
+FlowWorks: ~  About/About.xml
+FungalSoilTrade: +  Textures/Things/Item/Resource/RUT_FungalSoil/RUT_FungalSoil_a.png
+FungalSoilTrade: +  Textures/Things/Item/Resource/RUT_FungalSoil/RUT_FungalSoil_b.png
+FungalSoilTrade: +  Textures/Things/Item/Resource/RUT_FungalSoil/RUT_FungalSoil_c.png
+FungalSoilTrade: ~  About/About.xml
+FungalSoilTrade: ~  Assemblies/RimMandrake.Utinni.FungalSoilTrade.dll
+FungalSoilTrade: ~  Assemblies/RimMandrake.Utinni.FungalSoilTrade.dll.srchash
+FungalSoilTrade: ~  Defs/MapGeneration/RUT_FungalSoilScatter.xml
+FungalSoilTrade: ~  Defs/ThingDefs_Items/RUT_FungalSoil.xml
+FungalSoilTrade: ~  Patches/RUT_FungalSoilScatter_MapGenPatch.xml
+GimmeSomeSlack: ~  Assemblies/RimMandrakeGimmeSomeSlack.dll
+GimmeSomeSlack: ~  Assemblies/RimMandrakeGimmeSomeSlack.dll.srchash
+HugeThings: ~  Assemblies/RM_HugeThings.dll
+HugeThings: ~  Assemblies/RM_HugeThings.dll.srchash
+HugeThings: ~  Patches/RM_TitanPassage_DarkSide.xml
+KineticArms: ~  Assemblies/RimMandrakeKineticArms.dll
+KineticArms: ~  Assemblies/RimMandrakeKineticArms.dll.srchash
+LuminousPigment: ~  Defs/ThingDefs_Items/RM_Deepfire.xml
+Minerals: ~  Assemblies/RimMandrakeMinerals.dll
+Minerals: ~  Assemblies/RimMandrakeMinerals.dll.srchash
+Minerals: ~  Defs/RM_MineralRegistry.xml
+PropaneLakeMechanics: ~  Defs/ThingDefs_Buildings/RUT_PipeInfrastructure.xml
+Pyrinth: ~  Textures/Things/Item/Resource/Pyrinth/Pyrinth_a.png
+Pyrinth: ~  Textures/Things/Item/Resource/Pyrinth/Pyrinth_b.png
+Pyrinth: ~  Textures/Things/Item/Resource/Pyrinth/Pyrinth_c.png
+ResearchRetag: ~  Patches/RUT_ResearchTabAssign.xml
+RimProperty: ~  Assemblies/RimMandrakeProperty.dll
+RimProperty: ~  Assemblies/RimMandrakeProperty.dll.srchash
+Rites: ~  Assemblies/RimMandrake.Utinni.Rites.dll
+Rites: ~  Assemblies/RimMandrake.Utinni.Rites.dll.srchash
+SWBestiary: +  Textures/swanimals/Strill/Strill_Flying_2_east.png
+SWBestiary: +  Textures/swanimals/Strill/Strill_Flying_2_north.png
+SWBestiary: +  Textures/swanimals/Strill/Strill_Flying_2_south.png
+SWBestiary: +  Textures/swanimals/Strill/Strill_Flying_3_east.png
+SWBestiary: +  Textures/swanimals/Strill/Strill_Flying_3_north.png
+SWBestiary: +  Textures/swanimals/Strill/Strill_Flying_3_south.png
+SWBestiary: +  Textures/swanimals/Strill/Strill_Flying_4_east.png
+SWBestiary: +  Textures/swanimals/Strill/Strill_Flying_4_north.png
+SWBestiary: +  Textures/swanimals/Strill/Strill_Flying_4_south.png
+SWBestiary: ~  About/About.xml
+SWBestiary: ~  Defs/BiomesTeamPort/ThingDefs_Items/RSW_BiomesTeamPort_Fish.xml
+SWBestiary: ~  Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Colo.xml
+SWBestiary: ~  Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Colossi.xml
+SWBestiary: ~  Defs/ThingDefs_Races/RSW_Dragonsnake.xml
+SWBestiary: ~  Defs/ThingDefs_Races/RSW_DragonsnakeAlbino.xml
+SWBestiary: ~  Defs/ThingDefs_Races/RSW_ScrapNestBird.xml
+SWBestiary: ~  Defs/ThingDefs_Races/RSW_ShadeWhale.xml
+SWBestiary: ~  Defs/ThingDefs_Races/RSW_Strill.xml
+SWBestiary: ~  Defs/ThingDefs_Races/RSW_TunnelSnake.xml
+SWBestiary: ~  Defs/ThingDefs_Races/RSW_VentStalker.xml
+SWBestiary: ~  Defs/ThingDefs_Races/RSW_WraidAlpha.xml
+SWBestiary: ~  Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/GlowWorm/GlowWorm_east.png
+SWBestiary: ~  Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/GlowWorm/GlowWorm_north.png
+SWBestiary: ~  Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/GlowWorm/GlowWorm_south.png
+SWBestiary: ~  Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Maguana/Maguana_east.png
+SWBestiary: ~  Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Maguana/Maguana_north.png
+SWBestiary: ~  Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Maguana/Maguana_south.png
+SWBestiary: ~  Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatMale_east.png
+SWBestiary: ~  Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatMale_north.png
+SWBestiary: ~  Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatMale_south.png
+SWBestiary: ~  Textures/swanimals/Fanback/FanbackV_C_east.png
+SWBestiary: ~  Textures/swanimals/Fanback/FanbackV_C_north.png
+SWBestiary: ~  Textures/swanimals/Fanback/FanbackV_C_south.png
+SWBestiary: ~  Textures/swanimals/FrilledGorg/FrilledGorgV_J_east.png
+SWBestiary: ~  Textures/swanimals/FrilledGorg/FrilledGorgV_J_north.png
+SWBestiary: ~  Textures/swanimals/FrilledGorg/FrilledGorgV_J_south.png
+SWBestiary: ~  Textures/swanimals/Maalraas/Maalraas_east.png
+SWBestiary: ~  Textures/swanimals/Maalraas/Maalraas_north.png
+SWBestiary: ~  Textures/swanimals/Maalraas/Maalraas_south.png
+SWBestiary: ~  Textures/swanimals/Raxshir/Raxshir_east.png
+SWBestiary: ~  Textures/swanimals/Raxshir/Raxshir_north.png
+SWBestiary: ~  Textures/swanimals/Raxshir/Raxshir_south.png
+SWBestiary: ~  Textures/swanimals/ShiroTrap/ShiroTrap_i_east.png
+SWBestiary: ~  Textures/swanimals/ShiroTrap/ShiroTrap_i_north.png
+SWBestiary: ~  Textures/swanimals/ShiroTrap/ShiroTrap_i_south.png
+SWBestiary: ~  Textures/swanimals/Strill/Strill_Flying_1_east.png
+SWBestiary: ~  Textures/swanimals/Strill/Strill_Flying_1_north.png
+SWBestiary: ~  Textures/swanimals/Strill/Strill_Flying_1_south.png
+SWBestiary: ~  Textures/swanimals/Torton/Torton_f_east.png
+SWBestiary: ~  Textures/swanimals/Torton/Torton_f_north.png
+SWBestiary: ~  Textures/swanimals/Torton/Torton_f_south.png
+Sarlacc: ~  Assemblies/Sarlacc.dll
+Sarlacc: ~  Assemblies/Sarlacc.dll.srchash
+Sarlacc: ~  Patches/RSW_SarlaccSeeker_Rooting.xml
+ScarlandsLadder: ~  About/About.xml
+ScarlandsLadder: ~  Assemblies/RimMandrake.Utinni.ScarlandsLadder.dll
+ScarlandsLadder: ~  Assemblies/RimMandrake.Utinni.ScarlandsLadder.dll.srchash
+ScarlandsLadder: ~  Defs/GenStepDefs/RUT_PilgrimCamps.xml
+ScarlandsLadder: ~  Defs/LoreStageTableDefs/RUT_ScarlandsLadder.xml
+ScarlandsLadder: ~  Patches/RUT_PilgrimCamps_Scarlands.xml
+ShipShields: ~  Assemblies/RimMandrake.Utinni.ShipShields.dll
+ShipShields: ~  Assemblies/RimMandrake.Utinni.ShipShields.dll.srchash
+ShipShields: ~  Defs/ThingDefs_Buildings/RUT_ShieldGenerator.xml
+ShipVermin: ~  Defs/ThingDefs_Races/RM_ShipVermin_Cast.xml
+SithLine: ~  Assemblies/RimMandrakeSithLine.dll
+SithLine: ~  Assemblies/RimMandrakeSithLine.dll.srchash
+SithLine: ~  Defs/GeneDefs/RSW_AnzatiCopies.xml
+SithLine: ~  Defs/PawnKindDefs/RSW_SithInquisitor.xml
+StarWarsPatches: +  Languages/English/Keyed/ImperialVocabulary.xml
+StarWarsPatches: +  Patches/GalacticEmpire.xml
+StarWarsPatches: +  Textures/World/JawaFactions/GalacticEmpire.png
+StarWarsPatches: ~  About/About.xml
+StructureInjections: ~  Assemblies/RimMandrakeStructureInjections.dll
+StructureInjections: ~  Assemblies/RimMandrakeStructureInjections.dll.srchash
+StructureInjectionsRUT: ~  Assemblies/RimMandrake.Utinni.StructureInjectionsRUT.dll
+StructureInjectionsRUT: ~  Assemblies/RimMandrake.Utinni.StructureInjectionsRUT.dll.srchash
+StructureInjectionsRUT: ~  Defs/WarLab/SitePartDefs_WarLab.xml
+StructureInjectionsSW: +  Defs/GenStepDefs_GasStation.xml
+StructureInjectionsSW: +  Defs/GenStepDefs_TarRefinery.xml
+StructureInjectionsSW: +  Defs/TileMutatorDefs_GasStation.xml
+StructureInjectionsSW: +  Defs/TileMutatorDefs_TarRefinery.xml
+StructureInjectionsSW: +  Templates/gas_station.txt
+StructureInjectionsSW: +  Templates/tar_refinery.txt
+StructureInjectionsSW: ~  Defs/GenStepDefs_SarlaccRing.xml
+StructureInjectionsSW: ~  Defs/TileMutatorDefs_Batch2.xml
+TheBazaar: ~  Assemblies/RimMandrakeBazaar.dll
+TheBazaar: ~  Assemblies/RimMandrakeBazaar.dll.srchash
+TileFeatures: +  About/About.xml
+TileFeatures: +  Assemblies/RimMandrakeTileFeatures.dll
+TileFeatures: +  Assemblies/RimMandrakeTileFeatures.dll.srchash
+TileFeatures: +  Defs/Conditions/RM_TileFeatures_RottenStench.xml
+TileFeatures: +  Defs/Conditions/RM_TileFeatures_TidalFlooding.xml
+TileFeatures: +  Defs/LandmarkDefs/RM_TileFeatures_Landmarks.xml
+TileFeatures: +  Defs/MapGeneration/RM_TileFeatures_GenSteps.xml
+TileFeatures: +  Defs/MapGeneration/RM_TileFeatures_LandformGenSteps.xml
+TileFeatures: +  Defs/PrefabDefs/RM_TileFeatures_Prefabs.xml
+TileFeatures: +  Defs/TerrainDefs/RM_TileFeatures_LandformTerrains.xml
+TileFeatures: +  Defs/ThingDefs/RM_TileFeatures_LandformThings.xml
+TileFeatures: +  Defs/ThingDefs/RM_TileFeatures_Plants.xml
+TileFeatures: +  Defs/ThingDefs/RM_TileFeatures_Vents.xml
+TileFeatures: +  Defs/TileMutatorDefs/RM_TileFeatures_Flora.xml
+TileFeatures: +  Defs/TileMutatorDefs/RM_TileFeatures_Landforms.xml
+TileFeatures: +  Defs/TileMutatorDefs/RM_TileFeatures_Vents.xml
+TileFeatures: +  Defs/TileMutatorDefs/RM_TileFeatures_Weather.xml
+TileFeatures: +  Defs/Weather/RM_TileFeatures_DustStorm.xml
+UtinniPatches: +  Patches/GalacticEmpire_Campaign.xml
+UtinniPatches: ~  About/About.xml
+UtinniPatches: ~  Assemblies/RimMandrake.Utinni.UtinniPatches.dll
+UtinniPatches: ~  Assemblies/RimMandrake.Utinni.UtinniPatches.dll.srchash
+UtinniPatches: ~  Defs/Absorbed_Cephaloids/Absorbed_Cephaloids_Defs.xml
+UtinniPatches: ~  Defs/BiomeDefs/Jawa_BackgroundWater.xml
+UtinniPatches: ~  Defs/BiomeDefs/RUT_Umbra.xml
+UtinniPatches: ~  Defs/ExplosiveGrowth/RUT_ExplosiveGrowthRoster.xml
+UtinniPatches: ~  Defs/GameConditionDefs/RUT_ForgePulse.xml
+UtinniPatches: ~  Defs/GameConditionDefs/RUT_ScariaOnsetArming.xml
+UtinniPatches: ~  Defs/GameConditionDefs/RUT_ScarlandsMarkLock.xml
+UtinniPatches: ~  Defs/IncidentDefs/RUT_ContagionProbe.xml
+UtinniPatches: ~  Defs/MapGeneration/RUT_ContagionRingScatter.xml
+UtinniPatches: ~  Defs/MapGeneration/RUT_PhrikiteDesertLumps.xml
+UtinniPatches: ~  Defs/MapGeneration/RUT_ScarlandsGraveWardScatter.xml
+UtinniPatches: ~  Defs/MapGeneration/RUT_ScarlandsSprungDangers_GenStep.xml
+UtinniPatches: ~  Defs/MapGeneration/RUT_WastesBrineScatter.xml
+UtinniPatches: ~  Defs/MapGeneration/RUT_ZersiumForgeLumps.xml
+UtinniPatches: ~  Defs/PawnKindDefs/RUT_Placeholder_GreentideGnawer.xml
+UtinniPatches: ~  Defs/PrefabDefs/RUT_ScarlandsSprungDangers.xml
+UtinniPatches: ~  Defs/TerrainDefs/RUT_WastesBrineWater.xml
+UtinniPatches: ~  Defs/ThingDefs_Buildings/RUT_SentinelGraveWard.xml
+UtinniPatches: ~  Defs/ThingDefs_Items/RUT_GreySeaFish_Items.xml
+UtinniPatches: ~  Defs/ThingDefs_Items/RUT_PropaneLakeCatch_Items.xml
+UtinniPatches: ~  Defs/ThingDefs_Items/RUT_ScaldFish.xml
+UtinniPatches: ~  Defs/ThingDefs_Items/RUT_TwilightFish_Niim.xml
+UtinniPatches: ~  Defs/ThingDefs_Items/RUT_WastesBrine_Items.xml
+UtinniPatches: ~  Defs/ThingDefs_Items/RUT_WeepingStonesFish_Items.xml
+UtinniPatches: ~  Defs/ThingDefs_Races/RUT_BrineBattery.xml
+UtinniPatches: ~  Defs/ThingDefs_Races/RUT_FleetFlier.xml
+UtinniPatches: ~  Defs/ThingDefs_Races/RUT_PropaneLakeFauna.xml
+UtinniPatches: ~  Defs/ThingDefs_Races/RUT_SealedSleeper.xml
+UtinniPatches: ~  Defs/ThingSetMakerDefs/RUT_RareGreentideCatches.xml
+UtinniPatches: ~  Defs/ThingSetMakerDefs/RUT_RareOasisCatches.xml
+UtinniPatches: ~  Defs/WeatherDefs/RUT_BoilingRain.xml
+UtinniPatches: ~  Defs/WeatherDefs/RUT_ForgeStill.xml
+UtinniPatches: ~  Patches/Abyss_ProbeDroids.xml
+UtinniPatches: ~  Patches/AcousticPayload_UtinniBiomes.xml
+UtinniPatches: ~  Patches/AncientDangerGenSteps_AmbientDoctrine.xml
+UtinniPatches: ~  Patches/BiomeDescriptions_Ashkarr.xml
+UtinniPatches: ~  Patches/BiomeNames_Ashkarr.xml
+UtinniPatches: ~  Patches/Cauldron_ToxicPrizedMeat.xml
+UtinniPatches: ~  Patches/FaunaNorm_Law5_Tolerance.xml
+UtinniPatches: ~  Patches/FishTypesStrip_NoFishBiomes.xml
+UtinniPatches: ~  Patches/MechClusterBiomes_AmbientDoctrine.xml
+UtinniPatches: ~  Patches/RUT_ContagionRingScatter_Register.xml
+UtinniPatches: ~  Patches/RUT_GroundCoverDrawLayer.xml
+UtinniPatches: ~  Patches/RUT_RetiredMutatorPorts_Biomes.xml
+UtinniPatches: ~  Patches/RUT_TibannaTap_BeldonWiring.xml
+UtinniPatches: ~  Patches/SandFishing_CrackedLands.xml
+UtinniPatches: ~  Patches/SlimeRainStrip_Campaign.xml
+UtinniPatches: ~  Patches/VanillaBeastExcision_Carriers.xml
+UtinniPatches: ~  Patches/WildAnimals_BlueDesert.xml
+UtinniPatches: ~  Patches/WildAnimals_Cauldron.xml
+UtinniPatches: ~  Patches/WildAnimals_CrackedLands.xml
+UtinniPatches: ~  Patches/WildAnimals_FeverWood.xml
+UtinniPatches: ~  Patches/WildAnimals_Greentide.xml
+UtinniPatches: ~  Patches/WildAnimals_LeaningScrub.xml
+UtinniPatches: ~  Patches/WildAnimals_LongShade.xml
+UtinniPatches: ~  Patches/WildAnimals_Miasma.xml
+UtinniPatches: ~  Patches/WildAnimals_RustCathedral.xml
+UtinniPatches: ~  Patches/WildAnimals_SleepingIce.xml
+UtinniPatches: ~  Patches/WildAnimals_Stillsand.xml
+UtinniPatches: ~  Patches/WildAnimals_TheForge.xml
+UtinniPatches: ~  Patches/WildAnimals_Warscar.xml
+UtinniPatches: ~  Patches/WildAnimals_Wastes.xml
+UtinniPatches: ~  Patches/WildAnimals_WeepingStones.xml
+UtinniPatches: ~  Patches/WildPlants_Webwork.xml
+UtinniPatches: -  Defs/BiomeDefs/RUT_Abyss.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Defs/BiomeDefs/RUT_AridShrubland.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Defs/BiomeDefs/RUT_BlueDesert.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Defs/BiomeDefs/RUT_Cauldron.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Defs/BiomeDefs/RUT_Contagion.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Defs/BiomeDefs/RUT_CrackedLands.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Defs/BiomeDefs/RUT_Desert.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Defs/BiomeDefs/RUT_ExtremeDesert.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Defs/BiomeDefs/RUT_FeverWood.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Defs/BiomeDefs/RUT_Greentide.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Defs/BiomeDefs/RUT_GreySea.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Defs/BiomeDefs/RUT_Miasma.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Defs/BiomeDefs/RUT_PropaneLake.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Defs/BiomeDefs/RUT_RustCathedral.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Defs/BiomeDefs/RUT_Scarlands.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Defs/BiomeDefs/RUT_SleepingIce.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Defs/BiomeDefs/RUT_Slime.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Defs/BiomeDefs/RUT_Sump.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Defs/BiomeDefs/RUT_TheForge.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Defs/BiomeDefs/RUT_TheRot.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Defs/BiomeDefs/RUT_TheScald.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Defs/BiomeDefs/RUT_TwilightSea.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Defs/BiomeDefs/RUT_Wastes.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Defs/BiomeDefs/RUT_Webwork.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Defs/BiomeDefs/RUT_WeepingStones.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Languages/English/Keyed/ImperialVocabulary.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Patches/AcousticPayload_CrackedLands.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Patches/BiomeFishTypes_TwilightDeep.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Patches/BiomeFlora_Ashkarr.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Patches/GalacticEmpire.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Patches/OasisMutator_DesertOasis.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Patches/RUT_ForgePulse_BiomeWiring.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Patches/RUT_ScaldSteamLock_BiomeWiring.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Patches/RUT_WastesBrineScatter_Register.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniPatches: -  Patches/WildAnimals_Webwork.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+UtinniStatues: ~  Assemblies/RimMandrake.Utinni.UtinniStatues.dll
+UtinniStatues: ~  Assemblies/RimMandrake.Utinni.UtinniStatues.dll.srchash
+UtinniStatues: ~  Patches/FlameStatues_Integration.xml
+Warcasket: ~  About/About.xml
+Warcasket: ~  Assemblies/RimMandrake.Warcasket.dll
+Warcasket: ~  Assemblies/RimMandrake.Warcasket.dll.srchash
+WasteRun: +  Defs/ThoughtDefs/RUT_WasteRunMoods.xml
+WasteRun: ~  About/About.xml
+WasteRun: ~  Assemblies/RimMandrake.Utinni.WasteRun.dll
+WasteRun: ~  Assemblies/RimMandrake.Utinni.WasteRun.dll.srchash
+WasteRun: ~  Defs/QuestScriptDefs/RUT_WasteRun.xml
+WreckedMachines: ~  Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedSmelter.xml
+WreckedMachines: ~  Defs/ThingDefs_Buildings/Buildings_WreckedMachines_Mobile.xml
+WreckedMachines: ~  Patches/WreckedMachines_DistillationModule.xml

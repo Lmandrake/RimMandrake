@@ -27,9 +27,19 @@ The DLL, stamp and older review manifest were preserved under
 `D:\ClaudeWork\rimmandrake\backups\codex-live-20261110\GimmeSomeSlack`.
 These unproven older artifacts were not adopted into the source tree.
 The complete deploy plan finished with `Drift found`, covering 41 drifted mods;
-all divergent copies are rescued through --pull before applying origin/main.
+261 files from 40 existing divergent mod copies were rescued through --pull
+before applying origin/main (TileFeatures was entirely new). Rescue hashes and
+paths are in whittle/evidence/codex-live/codex-live-all-rescues.json.
 
 The installed JawaBench companion embeds source hash
 `48258bf21f617ff5b51bfe3951b4b3f20132ba6353887b5a81a34e60e03ad6ea`,
 identical to this clone's source hash. Only the ignored local comparison artifact
 was recovered from the deployed copy; no companion replacement was needed.
+
+## Driver identity repair
+
+The driver lock recognized only a Claude ancestor; Codex tool shells could
+therefore record a dead process, or fail release across shells. It now recognizes
+the nearest Codex or Claude process, preserving explicit RM_DRIVER_PID priority
+and the parent fallback. Separate-shell regression controls for both runners,
+override and fallback, plus existing exclusivity/CLI cases: wrapper PASS 1/1.
