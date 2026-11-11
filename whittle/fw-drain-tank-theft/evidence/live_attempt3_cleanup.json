@@ -1,0 +1,63 @@
+{
+  "started": 1794414617.639572,
+  "command": [
+    "python.exe",
+    "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\scratch\\BENCH\\fw-drain\\src\\RimMandrake\\FlowWorks\\northstar\\tank_theft_live.py",
+    "--out",
+    "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\scratch\\BENCH\\fw-drain\\whittle\\fw-drain-tank-theft\\evidence\\live_attempt3.json"
+  ],
+  "cleanup": [
+    {
+      "command": [
+        "python3",
+        "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-tank-theft/evidence/control_session.py",
+        "stop"
+      ],
+      "returncode": 0,
+      "stdout": "[1 stop] game exited\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "game"
+      ],
+      "returncode": 0,
+      "stdout": "running   : NOT RUNNING   (tasklist.exe lists no RimWorldWin64)\nrecorded  : UP  \u2192 corrected to DOWN, measured now\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "release"
+      ],
+      "returncode": 0,
+      "stdout": "bridge released by CODEX_ARCHMAGI_FWDRAIN \u2014 it is now FREE for the other window\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "./game"
+      ],
+      "returncode": 0,
+      "stdout": "running   : NOT RUNNING   (tasklist.exe lists no RimWorldWin64)\nrecorded  : DOWN\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "who"
+      ],
+      "returncode": 0,
+      "stdout": "driver lock: FREE\nbridge FREE \u2014 take it:  rimflow bridge take --for \"<what for>\"\n",
+      "stderr": ""
+    }
+  ],
+  "proof_returncode": 1,
+  "finished": 1794414685.4739416
+}

@@ -1,0 +1,19 @@
+{
+  "time": 1794418702.1969202,
+  "sha": "727ff654c16f08d905c328b925a0ea9c656bf517",
+  "inputs": {
+    "src/RimMandrake/Cauldron/Source/RM_GasTap.cs": "27d17ab9e96c630e1a584dab844632aea62a3bb4a29eaf00f45af6c7d688b7c6",
+    "src/RimMandrake/LuminousPigment/Source/FlowWorksWaterBridge.cs": "96eb271d2a66d426e0ae2da7a2e418ad5c9a7d7df5d08aca230bc532edef0143",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/RimMandrakeFlowWorks.SelfTest.csproj": "714023dfc8cc4a56caf798ce3a30516b8f84eca0d8adf917f46a2be7924ff893",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/TankTheftCallerChecks.cs": "1a952af23c1d30c7b201e29b59dd18946c1cc00e027b703ed628a32f60324e69",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/TankTheftHarness.cs": "4cf556224ef311cae57ab390f41bdc5d52a4b9fd29bee70347c7fe0648ebee8a",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/TankTheftHarness.targets": "f76a26438fdd4b6b0a1c0fbc3aa3e028a109b520dc185b7faf3cbee2fb92ce94",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/ExternalTankTheftChecks.cs": "55f7f36763180a64fbf328215e83d630e68e694df618f36d9327baea76b7bcea",
+    "src/RimMandrake/Cauldron/Assemblies/RimMandrake.Cauldron.dll": "855651597e97c7d4744385eacdad55103f04edfca09d8f43c806c707cac9e67e",
+    "src/RimMandrake/Cauldron/Assemblies/RimMandrake.Cauldron.dll.srchash": "016c0dbc50091c2683cae67ca8f59ce384f962226bf646fb53301d7375db35ce",
+    "src/RimMandrake/LuminousPigment/Assemblies/RimMandrakeLuminousPigment.dll": "8f6cf2b9b68aca9937168e8bda813f74b76b66b8582affbd69a4603d93c3cc1e",
+    "src/RimMandrake/LuminousPigment/Assemblies/RimMandrakeLuminousPigment.dll.srchash": "09e7f622dac0433b3e600fbf67033047350807f42107642a2ac609f16dbe1c8f"
+  },
+  "origin_main_ancestor": true,
+  "scope": "11 explicit source/test/DLL/stamp paths; no item closure, OWNER shard or final evidence publication"
+}

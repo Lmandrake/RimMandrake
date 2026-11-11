@@ -1,0 +1,22 @@
+{
+  "command": [
+    "python.exe",
+    "-c",
+    "import os,json; print(json.dumps({k:os.environ.get(k) for k in (\"RIMFLOW_SEAT\",\"AGENT_SEAT\",\"RIMFLOW_BRIDGE_SEAT\")}))"
+  ],
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "started": 1794413139.7638016,
+  "seats": {
+    "RIMFLOW_SEAT": "CODEX_ARCHMAGI_FWDRAIN",
+    "AGENT_SEAT": "CODEX_ARCHMAGI_FWDRAIN",
+    "RIMFLOW_BRIDGE_SEAT": "CODEX_ARCHMAGI_FWDRAIN"
+  },
+  "WSLENV": "WT_SESSION:WT_PROFILE_ID::RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT:RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT",
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-tank-theft",
+  "pid": 915382,
+  "returncode": 0,
+  "finished": 1794413139.8856966,
+  "elapsed": 0.12189507484436035,
+  "stdout_sha256": "2adf7dbd13cde7af4ac879c36ab6621030599f9f54adc6629820a8d9d937ef66",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

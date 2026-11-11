@@ -1,0 +1,10 @@
+{
+  "time": 1794413986.6377063,
+  "ancestry": {
+    "bd3ebe304e93e19b3cd23b560cd9ba397f7df027": 0,
+    "5cfadc93c5ba587973a9e855b9094255fcfdcf02": 0,
+    "c463c4f9415bfad30b0d6008e8a524f57f9f45c4": 0
+  },
+  "proof_sha256": "55464f20fb9b7d244e409f6812a5fc02c2aca03e68e6a1a65f90c45c8aa919c1",
+  "committed_proof_sha256": "55464f20fb9b7d244e409f6812a5fc02c2aca03e68e6a1a65f90c45c8aa919c1"
+}

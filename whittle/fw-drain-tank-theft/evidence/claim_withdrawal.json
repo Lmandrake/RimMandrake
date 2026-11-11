@@ -1,0 +1,6 @@
+{
+  "time": 1794416277.1657922,
+  "reason": "Repository-wide trace found LuminousPigment reflective TryRemoveLiquid and Cauldron GasTap TryAddLiquid outside actor boundary",
+  "judge_process": 986052,
+  "action": "sent SIGTERM to own read-only judge because maker withdrew claim on discovering uncovered known repo callers"
+}

@@ -1,0 +1,30 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/Utils/preflight_bridge.py",
+    "--tier",
+    "quicktest",
+    "--modset",
+    "mods__mandrake_rm_flowworks__mandrake_rm_gimmesomeslack__mandrake_rm_hugethings__mandrake_rm_patches",
+    "--deep",
+    "--seat",
+    "CODEX_ARCHMAGI_FWDRAIN",
+    "--json",
+    "whittle/fw-drain-tank-theft/evidence/preflight_offline1.json"
+  ],
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "started": 1794413162.3921683,
+  "seats": {
+    "RIMFLOW_SEAT": "CODEX_ARCHMAGI_FWDRAIN",
+    "AGENT_SEAT": "CODEX_ARCHMAGI_FWDRAIN",
+    "RIMFLOW_BRIDGE_SEAT": "CODEX_ARCHMAGI_FWDRAIN"
+  },
+  "WSLENV": "WT_SESSION:WT_PROFILE_ID::RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT:RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT",
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-tank-theft",
+  "pid": 915731,
+  "returncode": 0,
+  "finished": 1794413216.9807246,
+  "elapsed": 54.58855628967285,
+  "stdout_sha256": "dd6816ea5c26a5e7a4fb8bf000154cb7fac7da2b8d805fa643fe0392befe9e1e",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

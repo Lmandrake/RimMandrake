@@ -1,0 +1,22 @@
+{
+  "time": 1794413637.0436487,
+  "raw": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/tank-theft-raw/Player_after_live1.log",
+  "sha256": "96101580d4409f1ffeccdcb29f4269ade468dfd5c77b1fa7867937cb67bac8a9",
+  "first_map_error_context": [
+    "Tried to get CurKindLifeStage from humanlike pawn Shiki",
+    "[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.",
+    "[RimMandrake.FlowWorks] fill layer model 0 -> 1 (wet dug squares on the base layer, P14): 0 wet dug square(s), 0 temp fill(s) taken off, 0 base write(s) standing; 0 L before, 0 L after (unchanged).",
+    "[JawaBench] TPS marker game: session 2d73efe0ae654aef971c21386dd17c0a seq 5 utc 2026-11-11T16:12:18.444Z",
+    "Unloading 1 Unused Serialized files (Serialized files now loaded: 5)",
+    "Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 34301.",
+    "Total: 142.738800 ms (FindLiveObjects: 1.119000 ms CreateObjectMapping: 1.278900 ms MarkObjects: 140.273700 ms  DeleteObjects: 0.066900 ms)",
+    "",
+    "Unloading 2 Unused Serialized files (Serialized files now loaded: 5)",
+    "Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 30107.",
+    "Total: 158.270900 ms (FindLiveObjects: 0.997900 ms CreateObjectMapping: 1.047800 ms MarkObjects: 156.171600 ms  DeleteObjects: 0.053200 ms)",
+    "",
+    "Unloading 2 Unused Serialized files (Serialized files now loaded: 5)",
+    "[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.",
+    "UnloadTime: 1.152700 ms"
+  ]
+}

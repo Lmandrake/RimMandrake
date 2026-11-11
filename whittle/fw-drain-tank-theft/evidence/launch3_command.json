@@ -1,0 +1,22 @@
+{
+  "command": [
+    "python3",
+    "whittle/fw-drain-tank-theft/evidence/control_session.py",
+    "launch"
+  ],
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "started": 1794414435.5706148,
+  "seats": {
+    "RIMFLOW_SEAT": "CODEX_ARCHMAGI_FWDRAIN",
+    "AGENT_SEAT": "CODEX_ARCHMAGI_FWDRAIN",
+    "RIMFLOW_BRIDGE_SEAT": "CODEX_ARCHMAGI_FWDRAIN"
+  },
+  "WSLENV": "WT_SESSION:WT_PROFILE_ID::RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT:RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT",
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-tank-theft",
+  "pid": 947743,
+  "returncode": 0,
+  "finished": 1794414463.898936,
+  "elapsed": 28.3283212184906,
+  "stdout_sha256": "6b72b0955a94c0e10e590da21919553874af07d6038b1193c2de3c75de4e84e5",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

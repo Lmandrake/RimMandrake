@@ -1,0 +1,40 @@
+{
+  "raw_trace": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/tank-theft-raw/external_green2_selftest_writes.strace",
+  "command": [
+    "python3",
+    "src/RimMandrake/Utils/run_selftests.py",
+    "--only",
+    "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+    "--workers",
+    "1"
+  ],
+  "observer_argv": [
+    "/home/mandrake/.seat-tmp/fw-two-stray-tools/usr/bin/strace",
+    "-f",
+    "-ttt",
+    "--trace=write",
+    "--trace-fds=1,2",
+    "-s",
+    "2000000",
+    "-E",
+    "LD_LIBRARY_PATH",
+    "-o",
+    "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/tank-theft-raw/external_green2_selftest_writes.strace",
+    "python3",
+    "src/RimMandrake/Utils/run_selftests.py",
+    "--only",
+    "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+    "--workers",
+    "1"
+  ],
+  "observer_sha256": "f47342683309e807bca57d6d89b82f94a9b39aa614e9c28c2b67cefbc35eee58",
+  "started": 1794418124.7323344,
+  "tested_HEAD": "f8f882b4e67edcdfa2da83719db1c5216f8d38d5",
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-tank-theft",
+  "RIMWORLD_DECOMPILED": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\scratch\\BENCH\\fw-drain\\whittle\\fw-drain-selftest-resume\\evidence\\reference",
+  "WSLENV": "WT_SESSION:WT_PROFILE_ID::RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT:RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT:TMPDIR/p:RIMWORLD_DECOMPILED",
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "timeout_seconds": 1260,
+  "purpose": "Capture stdout writes discarded by the runner on PASS; external observation only; modified SelfTest guards are included in integrity manifest",
+  "pid": 1041376
+}

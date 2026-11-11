@@ -1,0 +1,37 @@
+# Independent acceptance review
+
+You are a fresh read-only judge, not the maker or broadener. Use only the frozen statement, actual source and raw execution/readback evidence below. Do not read DONE.md, FINDINGS.md, BROADEN.md, broaden results, other trial conclusions, conversations, ledger item claims or maker summaries. Do not edit or attach to the bridge/game. Read/Glob/Grep only; bound searches to the named source/evidence paths.
+
+Root: `/home/mandrake/rm/scratch/BENCH/fw-drain`.
+All relative paths below resolve against that root, not your neutral working directory.
+
+Frozen requirements: `whittle/fw-drain-tank-theft/STATEMENT.md`.
+
+Actual source under `src/RimMandrake/FlowWorks/Source/`:
+
+- `Machinery/RM_LiquidTheft.cs`, `LiquidTypes/Building_LiquidTank.cs`, `Machinery/RM_LiquidTransfer.cs`, and the theft math in `Machinery/RM_LiquidNetKernel.cs`.
+- Pump `LiquidTypes/Building_LiquidPump.cs`; machinery `CompLiquidConverter.cs`, `CompLiquidPipeAdapter.cs`, `Kits/RM_LiquidReaction.cs`, `Kits/RM_LiquidBath.cs`; `RM_IceMelter.cs`; `Sprinklers/RM_Sprinkle.cs`; `Thirst/Building_RM_PipeFaucet.cs`, `Thirst/RM_ThirstJobs.cs`; both tank bottle JobDrivers.
+- `Machinery/RM_LiquidNet.cs`, especially roles/settings, FillFrom/Credit, SettleTick and DumpDrain; `Machinery/RM_Levelling.cs` for actual world-versus-tank transfer boundaries.
+- `SelfTest/TankTheftHarness.cs`, `TankTheftHarness.targets`, `TankTheftCallerChecks.cs`, `LiquidTheftChecks.cs`, changed pump harness/targets and registration in Program.cs/csproj. Other relevant production-extraction/transfer checks may be read within this Source tree.
+- Actual live script: `src/RimMandrake/FlowWorks/northstar/tank_theft_live.py`.
+
+Raw evidence directory: `whittle/fw-drain-tank-theft/evidence/`:
+
+- `red1/csharp_stdout.txt`, `red1/selftest_receipt.json`, `red1/integrity_before.json`, `red_sources/` (the actual original source/test bodies).
+- `green1/csharp_stdout.txt`, `green2/csharp_stdout.txt`, `green2/selftest_receipt.json`, `green2/integrity_before.json`, `green2/windows_stage_readback.json`, `post_publish_test_inputs.json`, and original output extraction receipts. The runner reports GREEN for green2 while declining cache registration; inspect the input/readback evidence rather than inferring proof from cache status.
+- `reference_provenance.json`; `build1_stdout.txt`, `build1_command.json`; `publish_inputs.json`, `publication.json`; publication stdout/command receipts; `deploy_plan1_stdout.txt`, `deploy_apply1_stdout.txt`; `live_inputs_before.json`.
+- Fresh offline/live preflight JSON/receipts for attempts 1–4, live census JSON and descriptors, log reviews before launch/proof.
+- `live_attempt1.json`, `live_attempt1_cleanup.json`, `live_script_attempt1.py`; attempts 2 and 3 with their cleanup and exact scripts; `live_attempt4.json` and `live_attempt4_cleanup.json`. Preserve their actual statuses; compare the final script to the execution being judged. Do not read the pilot's conclusions.
+- `final_readback.json` is a newly generated content/hash readback after restoration/release; inspect its underlying raw files too. It does not replace them.
+- `owner_stamp_fault.json`, `stamp_loading1_stderr.txt`, and measured state/cleanup receipts document the game-state wrapper/CLI routing behavior. One OWNER-shard event remains unpublished; subsequent state measurements and bridge events use the worker seat. No infrastructure repair is part of this unit.
+
+Full original syscall observer traces and complete Player.log snapshots are preserved at `/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/tank-theft-raw/`. Hashes are in the extraction/readback receipts. These are private raw evidence; do not quote bridge authentication data. The source manifest covers FlowWorks and test tooling; final readback separately identifies any external direct Compile inputs with immutable initial Git-blob/current/stage provenance.
+
+Questions to resolve independently:
+
+1. Does every actual production tank mutation get the correct narrow actor boundary? Check synchronous hose inventory filling, actual Empty/Fill endpoints, Dump/gravity, machines, job-time callbacks, nested scopes/exceptions, unscoped setup and unrelated foreign tanks. Does owner use remain unbilled with reachable idle/unrelated active player equipment?
+2. Do refused/full rollback, partial acceptance, restored stock, equal-volume liquid changes, owner replenishment, settings off/on, removed routes and persistence have correct semantics? Are historical caught state, witness rules and goodwill preserved? Identify any untested or incorrect boundary rather than trusting test names.
+3. Are registered checks tied to shipping source and the exact built/deployed/loaded DLL? Do the intentional red, later green and raw stage/provenance evidence support the regression claim?
+4. Does the disposable live receipt show actual actor identities and production transfers, exact deltas, owner negative and genuine theft positive, an occupied pending save/load, real witness/caught/goodwill effects and full restoration? Scheduling is bypassed by the documented production-entry adapters; two pump-disabled setup ticks refresh hose indexes, a pump-disabled load interval is separately bounded and checked, and the caught remainder is compressed for a real next transfer's goodwill charge. Assess those limits explicitly. Inspect site-control errors and the complete logger tap; ensure a control allowance is not concealing a new fault.
+
+Report one independent verdict per frozen bullet, with source/raw evidence and any remaining limits or defects. Do not change code or write files. End with exactly `would show: yes` or `would show: no`, based on the actual evidence. A missing/weak requirement must result in no; do not rubber-stamp maker claims.

@@ -1,0 +1,29 @@
+{
+  "time": 1794412923.9677835,
+  "source_commit": "bd3ebe304e93e19b3cd23b560cd9ba397f7df027",
+  "source_inputs_matched": 510,
+  "stage_inputs_matched": 509,
+  "shipping_inputs_in_test_manifest": 338,
+  "shipping_shared_inputs_unchanged_from_start": [
+    "src/RimMandrake/_Shared/SettingsKit/SettingsKitMasters.cs",
+    "src/RimMandrake/_Shared/HarmonyResilience/PatchApplier.cs",
+    "src/RimMandrake/_Shared/SettingsKit/SettingsKitCore.cs",
+    "src/RimMandrake/_Shared/SlackGeometry/CordPlanner.cs",
+    "src/RimMandrake/_Shared/SlackGeometry/CordWorld.cs",
+    "src/RimMandrake/_Shared/SlackGeometry/DrawOrder.cs",
+    "src/RimMandrake/_Shared/StylePicker/StylePickerCore.cs",
+    "src/RimMandrake/_Shared/SlackGeometry/CordLayer.cs",
+    "src/RimMandrake/_Shared/SettingsKit/SettingsKitMastersDrawer.cs",
+    "src/RimMandrake/_Shared/SlackGeometry/CordMath.cs",
+    "src/RimMandrake/_Shared/SettingsKit/SettingsKitDrawer.cs"
+  ],
+  "raw_stdout_bytes": 106656,
+  "raw_stderr_bytes": 0,
+  "raw_observer_sha256": "8ac87e8731f793bc8302812d12d01885072119c3db64ee7ab3e53b2da29054a7",
+  "shipping_dll_sha256": "ec29517d2e6d961485c0e6d10dc5b57310170a85b4f2fdffa1cda057f91c58c9",
+  "gss_no_diff_from_start": true,
+  "parent_read_faults": [
+    "Initial .srchash JSON parse refused; inspected actual line format.",
+    "Initial exact manifest lookup rejected relative shared input; normalized paths and separately proved shared shipping inputs unchanged from start."
+  ]
+}

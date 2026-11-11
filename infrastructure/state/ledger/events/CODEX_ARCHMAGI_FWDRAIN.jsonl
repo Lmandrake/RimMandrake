@@ -1,0 +1,19 @@
+{"seat":"CODEX_ARCHMAGI_FWDRAIN","event":"reassign","id":"TANK_THEFT_FIX_CHARGES_OWNER_USE","to":"CODEX_ARCHMAGI_FWDRAIN","why":"Conductor order 2026-11-11 worker identity","ts":"2026-11-11T15:24:45Z","tsn":1794410685992683076}
+{"seat":"CODEX_ARCHMAGI_FWDRAIN","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"FW drain: TANK_THEFT_FIX_CHARGES_OWNER_USE","ts":"2026-11-11T16:01:05Z","tsn":1794412865502635551}
+{"seat":"CODEX_ARCHMAGI_FWDRAIN","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-11-11T16:12:08Z","tsn":1794413528140811719}
+{"seat":"CODEX_ARCHMAGI_FWDRAIN","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-11-11T16:12:54Z","tsn":1794413574449189237}
+{"seat":"CODEX_ARCHMAGI_FWDRAIN","event":"bridge","state":"released","ts":"2026-11-11T16:12:59Z","tsn":1794413579598780608}
+{"seat":"CODEX_ARCHMAGI_FWDRAIN","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"FW drain: TANK_THEFT_FIX_CHARGES_OWNER_USE","ts":"2026-11-11T16:16:06Z","tsn":1794413766328505285}
+{"seat":"CODEX_ARCHMAGI_FWDRAIN","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-11-11T16:20:25Z","tsn":1794414025294057506}
+{"seat":"CODEX_ARCHMAGI_FWDRAIN","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-11-11T16:21:15Z","tsn":1794414075863502677}
+{"seat":"CODEX_ARCHMAGI_FWDRAIN","event":"bridge","state":"released","ts":"2026-11-11T16:21:21Z","tsn":1794414081190198193}
+{"seat":"CODEX_ARCHMAGI_FWDRAIN","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"FW drain: TANK_THEFT_FIX_CHARGES_OWNER_USE","ts":"2026-11-11T16:25:22Z","tsn":1794414322876741212}
+{"seat":"CODEX_ARCHMAGI_FWDRAIN","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-11-11T16:30:10Z","tsn":1794414610886120501}
+{"seat":"CODEX_ARCHMAGI_FWDRAIN","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-11-11T16:31:14Z","tsn":1794414674486930342}
+{"seat":"CODEX_ARCHMAGI_FWDRAIN","event":"bridge","state":"released","ts":"2026-11-11T16:31:19Z","tsn":1794414679960700277}
+{"seat":"CODEX_ARCHMAGI_FWDRAIN","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"FW drain: TANK_THEFT_FIX_CHARGES_OWNER_USE","ts":"2026-11-11T16:37:56Z","tsn":1794415076773572790}
+{"seat":"CODEX_ARCHMAGI_FWDRAIN","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-11-11T16:43:28Z","tsn":1794415408017099161}
+{"seat":"CODEX_ARCHMAGI_FWDRAIN","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-11-11T16:44:31Z","tsn":1794415471076665694}
+{"seat":"CODEX_ARCHMAGI_FWDRAIN","event":"bridge","state":"released","ts":"2026-11-11T16:44:36Z","tsn":1794415476266218609}
+{"seat":"CODEX_ARCHMAGI_FWDRAIN","event":"bridge","state":"taken","purpose":"Deploy published tank theft integration DLL/stamp pairs only","ts":"2026-11-11T17:43:56Z","tsn":1794419036915387709}
+{"seat":"CODEX_ARCHMAGI_FWDRAIN","event":"bridge","state":"released","ts":"2026-11-11T17:44:20Z","tsn":1794419060192456239}

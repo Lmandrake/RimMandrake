@@ -7390,3 +7390,4 @@
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"FW drain pump outflow: offline proof and deployment verified","ts":"2026-11-11T14:57:31Z","tsn":1794409051318617619}
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"FW drain pump outflow: fresh process, actual ordered list and live preflight GREEN","ts":"2026-11-11T14:58:17Z","tsn":1794409097853326823}
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"FW drain pump outflow: restoration ended; release immediately","ts":"2026-11-11T14:59:02Z","tsn":1794409142666082924}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"CODEX_ARCHMAGI_FWDRAIN","why":"FW tank theft: measured down before scoped DLL deployment","ts":"2026-11-11T16:01:46Z","tsn":1794412906303660677}

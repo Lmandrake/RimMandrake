@@ -1,0 +1,11 @@
+only the OWNER announces game state — unless you MEASURED it.
+
+✅ To read and correct it from the machine, which any seat may do:
+    python3 src/RimMandrake/rimflow/cli.py game
+
+A seat that INFERS 'the game is up' and tells everyone is still guessing on other people's behalf.
+
+✅ But if he SAID it, quoting him is not inferring — stamp it now:
+    python3 src/RimMandrake/rimflow/cli.py game <STATE> --owner-said "<his words>"
+⚠️  That stamps the LEDGER only. Waking the other windows is still his, and
+    `./game up` does both in one word.

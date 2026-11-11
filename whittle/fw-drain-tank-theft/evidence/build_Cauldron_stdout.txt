@@ -1,0 +1,19 @@
+staging src/RimMandrake/Cauldron/Source/RM_Cauldron.csproj -> D:\ClaudeWork\rimmandrake\build\Cauldron
+  src/RimMandrake/Cauldron/Source/
+  src/RimMandrake/_Shared/SettingsKit/
+  src/RimMandrake/FlowWorks/Assemblies/
+  src/RimMandrake/_Shared/HarmonyResilience/
+  src/RimMandrake/CreatureBehaviors/Assemblies/
++ dotnet.exe build D:\ClaudeWork\rimmandrake\build\Cauldron\src\RimMandrake\Cauldron\Source\RM_Cauldron.csproj -c Release
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  RM_Cauldron -> D:\ClaudeWork\rimmandrake\build\Cauldron\src\RimMandrake\Cauldron\Assemblies\RimMandrake.Cauldron.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:02.44
+BUILT src/RimMandrake/Cauldron/Assemblies/RimMandrake.Cauldron.dll (source f8f882b4e67e+dirty)
+BUILT src/RimMandrake/CreatureBehaviors/Assemblies/RimMandrake.CreatureBehaviors.dll (source f8f882b4e67e+dirty)
+BUILT src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll (source f8f882b4e67e+dirty)

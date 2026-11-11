@@ -1,0 +1,23 @@
+{
+  "command": [
+    "./publish",
+    "-m",
+    "Refresh live hose indexes before theft controls\n\nUse guarded pump-disabled setup ticks and verify actual outlet ports.\nCo-Authored-By: Codex (GPT) via WSL codex-cli",
+    "src/RimMandrake/FlowWorks/northstar/tank_theft_live.py"
+  ],
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "started": 1794414261.5513446,
+  "seats": {
+    "RIMFLOW_SEAT": "CODEX_ARCHMAGI_FWDRAIN",
+    "AGENT_SEAT": "CODEX_ARCHMAGI_FWDRAIN",
+    "RIMFLOW_BRIDGE_SEAT": "CODEX_ARCHMAGI_FWDRAIN"
+  },
+  "WSLENV": "WT_SESSION:WT_PROFILE_ID::RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT:RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT",
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-tank-theft",
+  "pid": 943630,
+  "returncode": 0,
+  "finished": 1794414268.3153398,
+  "elapsed": 6.763995170593262,
+  "stdout_sha256": "5148223a5f786d9172f5a374d0ab659fa050c4b3ea8f6f618e2d61a34e9bc0b4",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

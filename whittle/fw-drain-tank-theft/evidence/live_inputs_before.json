@@ -1,0 +1,41 @@
+{
+  "time": 1794413162.334412,
+  "dlls": {
+    "clone": {
+      "path": "/home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll",
+      "sha256": "ec29517d2e6d961485c0e6d10dc5b57310170a85b4f2fdffa1cda057f91c58c9",
+      "stamp_sha256": "b1375866bfd079d1f2c361faacb389c7e99c3706554ec4c3dd034d8908c6a29b"
+    },
+    "mirror": {
+      "path": "/mnt/d/Luke/dev/RimMandrake/src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll",
+      "sha256": "ec29517d2e6d961485c0e6d10dc5b57310170a85b4f2fdffa1cda057f91c58c9",
+      "stamp_sha256": "b1375866bfd079d1f2c361faacb389c7e99c3706554ec4c3dd034d8908c6a29b"
+    },
+    "build": {
+      "path": "/mnt/d/ClaudeWork/rimmandrake/build/FlowWorks/src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll",
+      "sha256": "ec29517d2e6d961485c0e6d10dc5b57310170a85b4f2fdffa1cda057f91c58c9",
+      "stamp_sha256": "b1375866bfd079d1f2c361faacb389c7e99c3706554ec4c3dd034d8908c6a29b"
+    },
+    "game": {
+      "path": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll",
+      "sha256": "ec29517d2e6d961485c0e6d10dc5b57310170a85b4f2fdffa1cda057f91c58c9",
+      "stamp_sha256": "b1375866bfd079d1f2c361faacb389c7e99c3706554ec4c3dd034d8908c6a29b"
+    }
+  },
+  "mods": [
+    "brrainz.harmony",
+    "ludeon.rimworld",
+    "ludeon.rimworld.royalty",
+    "ludeon.rimworld.ideology",
+    "ludeon.rimworld.biotech",
+    "ludeon.rimworld.anomaly",
+    "ludeon.rimworld.odyssey",
+    "brrainz.rimbridgeserver",
+    "ray1203.simplecamerasetting",
+    "mandrake.rm.gimmesomeslack",
+    "mandrake.rm.flowworks",
+    "mandrake.rm.hugethings",
+    "mandrake.rm.patches"
+  ],
+  "proof_sha256": "2933bace3739a6bedeb1b3a1e7e3c5859ee96c98736dc930daadc064f9df99bf"
+}

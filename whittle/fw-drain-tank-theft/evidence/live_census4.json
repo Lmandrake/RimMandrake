@@ -1,0 +1,66 @@
+{
+  "time": 1794415346.3573036,
+  "tool_count": 559,
+  "jawa_count": 423,
+  "running": {
+    "success": true,
+    "count": 13,
+    "packageIds": [
+      "brrainz.harmony",
+      "ludeon.rimworld",
+      "ludeon.rimworld.royalty",
+      "ludeon.rimworld.ideology",
+      "ludeon.rimworld.biotech",
+      "ludeon.rimworld.anomaly",
+      "ludeon.rimworld.odyssey",
+      "brrainz.rimbridgeserver",
+      "ray1203.simplecamerasetting",
+      "mandrake.rm.gimmesomeslack",
+      "mandrake.rm.flowworks",
+      "mandrake.rm.hugethings",
+      "mandrake.rm.patches"
+    ],
+    "ticksGame": -1,
+    "operation": {
+      "OperationId": "op_d470dd916f90419daf08745f2541513a",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 49
+    },
+    "state": {
+      "programState": "Entry",
+      "hasCurrentGame": false
+    }
+  },
+  "identity": {
+    "success": true,
+    "typeName": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidPump",
+    "resolved": true,
+    "assembly": "RimMandrakeFlowWorks, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "assemblyLocation": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\FlowWorks\\Assemblies\\RimMandrakeFlowWorks.dll",
+    "assemblyLocationSource": "Assembly.Location",
+    "assemblyMvid": "2910651b-ca48-4a85-ac8e-b278e1f1bf95",
+    "assemblyFileSha256": "ec29517d2e6d961485c0e6d10dc5b57310170a85b4f2fdffa1cda057f91c58c9",
+    "assemblyFileMvid": "2910651b-ca48-4a85-ac8e-b278e1f1bf95",
+    "mvidMatchesFile": true,
+    "inAllTypesByIdentity": true,
+    "allTypesNameMatches": 1,
+    "allTypesCount": 22708,
+    "assemblyTypesInAllTypes": 1607,
+    "carryingMods": [
+      "mandrake.rm.flowworks"
+    ],
+    "debugActions": [],
+    "state": {
+      "programState": "Entry"
+    },
+    "ticksGame": -1,
+    "operation": {
+      "OperationId": "op_67e531c5a738437ca34b9d13a6819022",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 93
+    }
+  },
+  "ordered_list_matches": true
+}

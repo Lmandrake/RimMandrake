@@ -1,0 +1,31 @@
+{
+  "command": [
+    "rg",
+    "-n",
+    "--glob",
+    "*.cs",
+    "--glob",
+    "!**/SelfTest/**",
+    "--glob",
+    "!**/obj/**",
+    "--glob",
+    "!**/bin/**",
+    "TryRemoveLiquid|TryAddLiquid|storedUnits\\s*([-+*/]?=|\\+\\+|--)",
+    "src"
+  ],
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "started": 1794416946.5013049,
+  "seats": {
+    "RIMFLOW_SEAT": "CODEX_ARCHMAGI_FWDRAIN",
+    "AGENT_SEAT": "CODEX_ARCHMAGI_FWDRAIN",
+    "RIMFLOW_BRIDGE_SEAT": "CODEX_ARCHMAGI_FWDRAIN"
+  },
+  "WSLENV": "WT_SESSION:WT_PROFILE_ID::RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT:RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT",
+  "TMPDIR": "/home/mandrake/.seat-tmp/BENCH",
+  "pid": 1010290,
+  "returncode": 0,
+  "finished": 1794416946.5199354,
+  "elapsed": 0.018630504608154297,
+  "stdout_sha256": "1504ef9a9f6c2cf77129bb079e97b54cd9fc3c06a186663de44bc2c3bfb6cafc",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

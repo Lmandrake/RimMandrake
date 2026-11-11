@@ -1,0 +1,14 @@
+FAIL AssertionError("{'success': False, 'error': 'no probe_type on this bridge class'}") restore=PASS
+[1 stop] game exited
+ 
+running   : NOT RUNNING   (tasklist.exe lists no RimWorldWin64)
+recorded  : UP  → corrected to DOWN, measured now
+ 
+bridge released by CODEX_ARCHMAGI_FWDRAIN — it is now FREE for the other window
+ 
+running   : NOT RUNNING   (tasklist.exe lists no RimWorldWin64)
+recorded  : DOWN
+ 
+driver lock: FREE
+bridge FREE — take it:  rimflow bridge take --for "<what for>"
+ 

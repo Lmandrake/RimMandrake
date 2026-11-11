@@ -1,0 +1,12 @@
+{
+  "time": 1794412816.0574982,
+  "operation": "Decode actual stdout/stderr writes from the sampled selftest wrapper PID",
+  "wrapper_pid": 897680,
+  "runner_pid": 897399,
+  "original_observer_sha256": "8ac87e8731f793bc8302812d12d01885072119c3db64ee7ab3e53b2da29054a7",
+  "original_observer_bytes": 373988,
+  "kept_raw": "selftest_output_writes.strace",
+  "stdout_sha256": "7ce7d534474fd106aed1db73695f2d799c083309b647db566621fe7107e5a85e",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "omitted": "Unrelated subprocess syscalls, including redundant source/Git/rsync payloads; no test log omitted"
+}

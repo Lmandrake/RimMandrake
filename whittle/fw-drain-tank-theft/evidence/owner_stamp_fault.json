@@ -1,0 +1,14 @@
+{
+  "time": 1794413341.5187547,
+  "event": {
+    "seat": "OWNER",
+    "event": "game",
+    "state": "DOWN",
+    "ranBy": "CODEX_ARCHMAGI_FWDRAIN",
+    "why": "FW tank theft: measured down before scoped DLL deployment",
+    "ts": "2026-11-11T16:01:46Z",
+    "tsn": 1794412906303660677
+  },
+  "tool_source": "src/RimMandrake/Utils/broadcast.py:339",
+  "route": "subsequent calls: rimflow game under RIMFLOW_SEAT=CODEX_ARCHMAGI_FWDRAIN; preserve original event; do not publish OWNER shard"
+}

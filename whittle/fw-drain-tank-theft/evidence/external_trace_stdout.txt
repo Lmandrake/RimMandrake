@@ -1,0 +1,45 @@
+src/RimMandrake/LuminousPigment/Source/FlowWorksWaterBridge.cs:14:    // `public bool TryRemoveLiquid(int units)`. FlowWorks absent = Present false, a silent no-op.
+src/RimMandrake/LuminousPigment/Source/FlowWorksWaterBridge.cs:49:            tryRemove = AccessTools.Method(tank, "TryRemoveLiquid", new[] { typeof(int) });
+src/RimMandrake/Cauldron/Source/RM_GasTap.cs:84:                if (n <= 0 || !tank.TryAddLiquid(Props.condensate, n * per)) continue;
+src/RimMandrake/Cauldron/Source/RM_CauldronRuinKit.cs:76:                        tank.TryAddLiquid(p.liquid, System.Math.Max(1, (int)(tank.Capacity * p.liquidFraction.RandomInRange)));
+src/RimMandrake/FlowWorks/Source/LiquidTypes/Building_LiquidPump.cs:388:					if (RM_LiquidTransfer.Move(take, world, RM_TransferLeg.Split(plan.Count, i => plan[i].units, (i, k) => plan[i].tank.CanAccept(l, k), (i, k) => plan[i].tank.TryAddLiquid(l, k), (i, k) => plan[i].tank.TryRemoveLiquid(k)), out _) == take)
+src/RimMandrake/FlowWorks/Source/LiquidTypes/Building_LiquidPump.cs:405:					if (RM_LiquidTransfer.Move(take, world, RM_TransferLeg.Split(plan.Count, i => plan[i].units, (i, k) => plan[i].tank.CanAccept(l, k), (i, k) => plan[i].tank.TryAddLiquid(l, k), (i, k) => plan[i].tank.TryRemoveLiquid(k)), out _) == take)
+src/RimMandrake/FlowWorks/Source/LiquidTypes/Building_LiquidPump.cs:560:						if (RM_LiquidTransfer.Move(units, RM_TransferLeg.Store(k => st.CanProvide(k), k => st.TryRemoveLiquid(k), k => st.TryAddLiquid(sp, k)), Sheet.RM_MapComponent_Sheet.SpillLeg(Map, spillAt, spf, RM_SheetMath.Source.Pump), out _) == units)
+src/RimMandrake/FlowWorks/Source/LiquidTypes/Building_LiquidPump.cs:586:			if (RM_LiquidTransfer.Move(units, RM_TransferLeg.Store(k => tank.CanProvide(k), k => tank.TryRemoveLiquid(k), k => tank.TryAddLiquid(poured, k)), world, out RM_MoveOutcome mv) != units)
+src/RimMandrake/FlowWorks/Source/LiquidTypes/Building_LiquidPump.cs:616:					if (RM_LiquidTransfer.Move(units, RM_TransferLeg.Store(k => tank.CanProvide(k), k => tank.TryRemoveLiquid(k), k => tank.TryAddLiquid(poured, k)),
+src/RimMandrake/FlowWorks/Source/LiquidTypes/Building_LiquidPump.cs:658:					if (RM_LiquidTransfer.Move(units, RM_TransferLeg.Store(k2 => tank.CanProvide(k2), k2 => tank.TryRemoveLiquid(k2), k2 => tank.TryAddLiquid(poured, k2)), outlet, out _) == units)
+src/RimMandrake/FlowWorks/Source/LiquidTypes/Building_LiquidTank.cs:112:        public bool TryAddLiquid(LiquidDef liquid, int units)
+src/RimMandrake/FlowWorks/Source/LiquidTypes/Building_LiquidTank.cs:120:            storedUnits += units;
+src/RimMandrake/FlowWorks/Source/LiquidTypes/Building_LiquidTank.cs:127:        public bool TryRemoveLiquid(int units)
+src/RimMandrake/FlowWorks/Source/LiquidTypes/Building_LiquidTank.cs:134:            storedUnits -= units;
+src/RimMandrake/FlowWorks/Source/LiquidTypes/Building_LiquidTank.cs:137:                storedUnits = 0;
+src/RimMandrake/FlowWorks/Source/LiquidTypes/Building_LiquidTank.cs:154:                storedUnits = 0;
+src/RimMandrake/FlowWorks/Source/LiquidTypes/Building_LiquidTank.cs:215:                storedUnits = RM_Volume.FromLegacyUnits(storedUnits);   // 200 L units -> decilitres, once
+src/RimMandrake/FlowWorks/Source/LiquidTypes/Building_LiquidTank.cs:234:                storedUnits = 0;
+src/RimMandrake/FlowWorks/Source/LiquidTypes/JobDriver_EmptyBottleIntoTank.cs:68:                if (!tank.TryAddLiquid(ext.liquid, units))
+src/RimMandrake/FlowWorks/Source/RM_NorthstarProofs.cs:81:				if (had > 0 && !tank.TryRemoveLiquid(had))
+src/RimMandrake/FlowWorks/Source/RM_NorthstarProofs.cs:85:				if (units > 0 && !tank.TryAddLiquid(liquid, units))
+src/RimMandrake/FlowWorks/Source/RM_NorthstarProofs.cs:90:						tank.TryAddLiquid(hadLiquid, had);
+src/RimMandrake/FlowWorks/Source/LiquidTypes/JobDriver_FillBottleFromTank.cs:67:                if (filledDef == null || !tank.TryRemoveLiquid(units))
+src/RimMandrake/FlowWorks/Source/Debug/FlowWorksTankDebug.cs:29:            t.storedUnits = RM_TankDebugMath.FillUnits(t.Capacity);
+src/RimMandrake/FlowWorks/Source/Debug/FlowWorksTankDebug.cs:37:            t.storedUnits = 0;
+src/RimMandrake/FlowWorks/Source/Thirst/Building_RM_PipeFaucet.cs:74:				(i, k) => plan[i].tank.TryRemoveLiquid(k), (i, k) => plan[i].tank.TryAddLiquid(liquid, k));
+src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstJobs.cs:247:					|| !tank.TryRemoveLiquid(RM_Volume.Units(RM_ThirstMath.TankDrinkLitres)))
+src/RimMandrake/FlowWorks/Source/RM_IceMelter.cs:109:				RM_TransferLeg tanks = RM_TransferLeg.Split(plan.Count, i => plan[i].units, (i, k) => plan[i].tank.CanAccept(water, k), (i, k) => plan[i].tank.TryAddLiquid(water, k), (i, k) => plan[i].tank.TryRemoveLiquid(k));
+src/RimMandrake/FlowWorks/Source/Machinery/Kits/RM_LiquidReaction.cs:209:					? RM_TransferLeg.Split(pp.Count, i => pp[i].units, (i, k) => pp[i].tank.CanAccept(r.productLiquid, k), (i, k) => pp[i].tank.TryAddLiquid(r.productLiquid, k), (i, k) => pp[i].tank.TryRemoveLiquid(k), r.ProductUnits)
+src/RimMandrake/FlowWorks/Source/Machinery/Kits/RM_LiquidReaction.cs:211:				if (RM_LiquidTransfer.Move(n, RM_TransferLeg.All(RM_TransferLeg.Split(pa.Count, i => pa[i].units, (i, k) => pa[i].tank.CanProvide(k), (i, k) => pa[i].tank.TryRemoveLiquid(k), (i, k) => pa[i].tank.TryAddLiquid(r.reactantA, k), r.UnitsA), RM_TransferLeg.Split(pb.Count, i => pb[i].units, (i, k) => pb[i].tank.CanProvide(k), (i, k) => pb[i].tank.TryRemoveLiquid(k), (i, k) => pb[i].tank.TryAddLiquid(r.reactantB, k), r.UnitsB)), dest, out _) == n)
+src/RimMandrake/FlowWorks/Source/Machinery/CompLiquidPipeAdapter.cs:186:					if (RM_LiquidTransfer.Move(take, RM_TransferLeg.Split(plan.Count, i => plan[i].units, (i, k) => plan[i].tank.CanProvide(k), (i, k) => plan[i].tank.TryRemoveLiquid(k), (i, k) => plan[i].tank.TryAddLiquid(fed, k)), ve, out RM_MoveOutcome mv) > 0)
+src/RimMandrake/FlowWorks/Source/Machinery/CompLiquidPipeAdapter.cs:222:						if (RM_LiquidTransfer.Move(units, ve, RM_TransferLeg.Split(plan.Count, i => plan[i].units, (i, k) => plan[i].tank.CanAccept(Props.liquid, k), (i, k) => plan[i].tank.TryAddLiquid(Props.liquid, k), (i, k) => plan[i].tank.TryRemoveLiquid(k)), out RM_MoveOutcome mv) > 0)
+src/RimMandrake/FlowWorks/Source/Machinery/CompLiquidConverter.cs:286:					? RM_TransferLeg.Split(outPlan.Count, i => outPlan[i].units, (i, k) => outPlan[i].tank.CanAccept(step.product, k), (i, k) => outPlan[i].tank.TryAddLiquid(step.product, k), (i, k) => outPlan[i].tank.TryRemoveLiquid(k), step.OutputUnits)
+src/RimMandrake/FlowWorks/Source/Machinery/CompLiquidConverter.cs:288:				if (RM_LiquidTransfer.Move(n, RM_TransferLeg.Split(inPlan.Count, i => inPlan[i].units, (i, k) => inPlan[i].tank.CanProvide(k), (i, k) => inPlan[i].tank.TryRemoveLiquid(k), (i, k) => inPlan[i].tank.TryAddLiquid(inputLiquid, k), step.InputUnits),
+src/RimMandrake/FlowWorks/Source/Machinery/Kits/RM_LiquidBath.cs:195:				if (RM_LiquidTransfer.Move(ext.UnitsPerCraft, RM_TransferLeg.Split(plan.Count, i => plan[i].units, (i, k) => plan[i].tank.CanProvide(k), (i, k) => plan[i].tank.TryRemoveLiquid(k), (i, k) => plan[i].tank.TryAddLiquid(bathed, k)), RM_TransferLeg.Sink(null), out _) == ext.UnitsPerCraft)
+src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidNet.cs:709:				return k <= 0 ? 0 : RM_LiquidTransfer.Move(k, RM_TransferLeg.Store(j => tank.CanProvide(j), j => tank.TryRemoveLiquid(j), j => tank.TryAddLiquid(liquid, j)), RM_TransferLeg.Sink(null), out _);
+src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidNet.cs:912:						if (RM_LiquidTransfer.Move(n, RM_TransferLeg.Store(k => src.CanProvide(k), k => src.TryRemoveLiquid(k), k => src.TryAddLiquid(liquid, k)),
+src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidNet.cs:913:							RM_TransferLeg.Store(k => dst.CanAccept(liquid, k), k => dst.TryAddLiquid(liquid, k), k => dst.TryRemoveLiquid(k)), out RM_MoveOutcome mv) > 0)
+src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidNet.cs:979:								if (RM_LiquidTransfer.Move((int)head, RM_TransferLeg.Store(k => tank.CanProvide(k), k => tank.TryRemoveLiquid(k), k => tank.TryAddLiquid(liquid, k)), lip, out RM_MoveOutcome gm) > 0)
+src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidNet.cs:998:						if (RM_LiquidTransfer.Move(n, RM_TransferLeg.Store(k => tank.CanProvide(k), k => tank.TryRemoveLiquid(k), k => tank.TryAddLiquid(liquid, k)), outlet, out RM_MoveOutcome mv) > 0)
+src/RimMandrake/FlowWorks/Source/Sprinklers/RM_Sprinkle.cs:108:				(i, k) => plan[i].tank.TryRemoveLiquid(k), (i, k) => plan[i].tank.TryAddLiquid(liquid, k));
+src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidWorksRuins.cs:89:					t.TryAddLiquid(liquid, System.Math.Max(RM_Volume.UnitsPerLevel, (int)(t.Capacity * Props.stockFraction.RandomInRange)));   // at least one level
+src/RimMandrake/FlowWorks/Source/Hose/HoseNetProbe.cs:67:                    t.TryRemoveLiquid(had);
+src/RimMandrake/FlowWorks/Source/Hose/HoseNetProbe.cs:68:                    bool ok = units <= 0 || t.TryAddLiquid(l, units);
+src/RimMandrake/FlowWorks/Source/Hose/HoseNetProbe.cs:69:                    if (!ok && had > 0 && hadLiquid != null) t.TryAddLiquid(hadLiquid, had);

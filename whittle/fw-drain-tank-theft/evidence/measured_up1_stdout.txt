@@ -1,0 +1,2 @@
+running   : RUNNING   (RimWorldWin64 running, bridge answers)
+recorded  : DOWN  → corrected to UP, measured now

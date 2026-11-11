@@ -1,0 +1,6 @@
+{
+  "reason": "Native Codex transport 7200-second timeout terminated worker and its active tool processes; no wrapper receipt or accepted result. Preserve partial logs; rerun final focused suite under external_green2.",
+  "source_inputs_current_match": 520,
+  "native_session": "/home/mandrake/.codex/sessions/2026/11/11/rollout-2026-11-11T07-25-52-01a1cb37-292b-7292-9979-a633f1961803.jsonl",
+  "copied_full_session": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/tank-theft-raw/native_session_initial_full.jsonl"
+}

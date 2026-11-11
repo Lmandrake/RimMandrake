@@ -1,0 +1,9 @@
+{
+  "time": 1794419410.1394053,
+  "operation": "Copy exact independent Opus result without edits",
+  "raw_sha256": "5f93f60816ee3664b45815af5b4c2f93339ba7e898b03b3e59e38f18e47385e3",
+  "result_sha256": "366045212a436cbb0b8e8317a55f93ac7e6cdc00d0f5955eed13e6da1e0488f3",
+  "judge_sha256": "366045212a436cbb0b8e8317a55f93ac7e6cdc00d0f5955eed13e6da1e0488f3",
+  "exact_copy": true,
+  "result_last_line": "would show: yes"
+}

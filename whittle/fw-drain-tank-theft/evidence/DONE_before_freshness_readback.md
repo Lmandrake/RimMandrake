@@ -1,0 +1,10 @@
+# Measured completion claim
+
+- true: Another faction using its own tank never catches or charges the player merely because player equipment reaches it, including idle and unrelated active equipment. | evidence: `whittle/fw-drain-tank-theft/evidence/final_readback_external.json`
+- true: Successful player transfers involving a foreign tank retain theft detection, witness rules and goodwill accrual; refused or restored transfers and unchanged stock do not create false theft. | evidence: `whittle/fw-drain-tank-theft/evidence/final_readback_external.json`
+- true: Production-linked regression checks reproduce the attribution defect and protect the repair, including transfer callers, settings and persistence boundaries. The relevant FlowWorks selftest and shipping build pass. | evidence: `whittle/fw-drain-tank-theft/evidence/final_readback_external.json`
+- true: A disposable live-game proof on the deployed build shows owner use without a player accusation and real player theft with the existing consequences; quantities, restoration and remaining limits are recorded. | evidence: `whittle/fw-drain-tank-theft/evidence/final_readback_external.json`
+
+The fresh content readback verifies the actual raw RED/GREEN and live receipts, 520 unchanged final test inputs, 7 external direct Compile inputs, 349 compiled core inputs, published source and shipping DLL/stamp pairs, actual deployed bytes, retained backups, and DOWN/FREE/FREE cleanup. Original failed, partial and withdrawn trials retain their original statuses and times.
+
+Scope: core live attempt 4 uses paused production pump/TheftTick entries, dev power, two pump-disabled setup ticks, one pump-disabled load tick, and a seeded caught-day remainder. It is not scheduled/full-list or bottle-job live coverage. The compiled Luminous reflection bridge and Cauldron gas Deliver are exercised offline through actual extracted production bodies with declared discovery/adjacency doubles, built and byte-deployed; neither integration was live-tested. The independent judge must assess this scope. Cache-registration and site-control noise/provenance/workflow limits remain in the raw receipts and FINDINGS.

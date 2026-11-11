@@ -1,0 +1,23 @@
+{
+  "command": [
+    "./publish",
+    "-m",
+    "Account for isolated pending-load ticks\n\nApply independent pilot controls to all theft fields and water deltas.\nCo-Authored-By: Codex (GPT) via WSL codex-cli",
+    "src/RimMandrake/FlowWorks/northstar/tank_theft_live.py"
+  ],
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "started": 1794415013.8434663,
+  "seats": {
+    "RIMFLOW_SEAT": "CODEX_ARCHMAGI_FWDRAIN",
+    "AGENT_SEAT": "CODEX_ARCHMAGI_FWDRAIN",
+    "RIMFLOW_BRIDGE_SEAT": "CODEX_ARCHMAGI_FWDRAIN"
+  },
+  "WSLENV": "WT_SESSION:WT_PROFILE_ID::RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT:RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT",
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-tank-theft",
+  "pid": 963264,
+  "returncode": 0,
+  "finished": 1794415022.5375464,
+  "elapsed": 8.694080114364624,
+  "stdout_sha256": "804a73f84bd8f420fa0fddd9f7f939576dd4070ae8c252545afc36d1f3661034",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

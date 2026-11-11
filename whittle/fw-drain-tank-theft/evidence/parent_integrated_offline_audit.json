@@ -1,0 +1,21 @@
+{
+  "time": 1794418943.3951445,
+  "status": "PASS",
+  "integration_source_commit": "727ff654c16f08d905c328b925a0ea9c656bf517",
+  "source_inputs_matched": 520,
+  "test_stage_inputs_matched": 519,
+  "raw_stdout_bytes": 107093,
+  "raw_stderr_bytes": 0,
+  "raw_observer_sha256": "e07b38f72a65e0007917f8ebed69a313e06d3f27101a2f8004ed3c8991c09056",
+  "build_unique_inputs": 85,
+  "build_stage_reads": 88,
+  "stamp_input_counts": {
+    "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll": 349,
+    "src/RimMandrake/Cauldron/Assemblies/RimMandrake.Cauldron.dll": 25,
+    "src/RimMandrake/LuminousPigment/Assemblies/RimMandrakeLuminousPigment.dll": 61
+  },
+  "untested_shipping_inputs_proven_unchanged_from_round_start": 85,
+  "core_dll_sha256": "ec29517d2e6d961485c0e6d10dc5b57310170a85b4f2fdffa1cda057f91c58c9",
+  "core_live_receipt_unchanged": true,
+  "gss_no_diff_from_round_start": true
+}

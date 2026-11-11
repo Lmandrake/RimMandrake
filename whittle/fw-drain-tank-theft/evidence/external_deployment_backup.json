@@ -1,0 +1,39 @@
+{
+  "time": 1794418822.8915868,
+  "files": {
+    "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/Cauldron/Assemblies/RimMandrake.Cauldron.dll": {
+      "before_sha256": "695aae24456de045c116495f42ccd014d76adbb72d4fca0e20fb7bb2dda73b4c",
+      "backup": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/tank-theft-raw/external_deploy_backup/Cauldron.backup",
+      "backup_sha256": "695aae24456de045c116495f42ccd014d76adbb72d4fca0e20fb7bb2dda73b4c",
+      "previous_published_sha256": "695aae24456de045c116495f42ccd014d76adbb72d4fca0e20fb7bb2dda73b4c",
+      "unknown_deployed_edit": false,
+      "repo": "src/RimMandrake/Cauldron/Assemblies/RimMandrake.Cauldron.dll"
+    },
+    "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/Cauldron/Assemblies/RimMandrake.Cauldron.dll.srchash": {
+      "before_sha256": "debbcab911124186386d0f07d969b7262a4bebb86eadb9f7f8769d919d7e5959",
+      "backup": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/tank-theft-raw/external_deploy_backup/Cauldron.srchash.backup",
+      "backup_sha256": "debbcab911124186386d0f07d969b7262a4bebb86eadb9f7f8769d919d7e5959",
+      "previous_published_sha256": "debbcab911124186386d0f07d969b7262a4bebb86eadb9f7f8769d919d7e5959",
+      "unknown_deployed_edit": false,
+      "repo": "src/RimMandrake/Cauldron/Assemblies/RimMandrake.Cauldron.dll.srchash"
+    },
+    "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/LuminousPigment/Assemblies/RimMandrakeLuminousPigment.dll": {
+      "before_sha256": "e8bde686bd8097f1dac3a9eb7483894b1a38c1cf022b8e161062981a6c2342bb",
+      "backup": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/tank-theft-raw/external_deploy_backup/LuminousPigment.backup",
+      "backup_sha256": "e8bde686bd8097f1dac3a9eb7483894b1a38c1cf022b8e161062981a6c2342bb",
+      "previous_published_sha256": "e8bde686bd8097f1dac3a9eb7483894b1a38c1cf022b8e161062981a6c2342bb",
+      "unknown_deployed_edit": false,
+      "repo": "src/RimMandrake/LuminousPigment/Assemblies/RimMandrakeLuminousPigment.dll"
+    },
+    "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/LuminousPigment/Assemblies/RimMandrakeLuminousPigment.dll.srchash": {
+      "before_sha256": "4067b5fbc8f1164d80ca31cc3a3ea6289cf1f2c901220f5d6c57321e9c4e24d5",
+      "backup": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/tank-theft-raw/external_deploy_backup/LuminousPigment.srchash.backup",
+      "backup_sha256": "4067b5fbc8f1164d80ca31cc3a3ea6289cf1f2c901220f5d6c57321e9c4e24d5",
+      "previous_published_sha256": "4067b5fbc8f1164d80ca31cc3a3ea6289cf1f2c901220f5d6c57321e9c4e24d5",
+      "unknown_deployed_edit": false,
+      "repo": "src/RimMandrake/LuminousPigment/Assemblies/RimMandrakeLuminousPigment.dll.srchash"
+    }
+  },
+  "all_deployed_pairs_match_previous_publication": true,
+  "preparation_fault": "First inline backup command had a Python parse error before any execution; corrected here. No deployed write occurred."
+}

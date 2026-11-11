@@ -1,0 +1,41 @@
+{
+  "time": 1794415567.3174565,
+  "status": "PASS",
+  "live_receipt_sha256": "aa81713217c10c270eb17490aaeceda2883f5f6a0b5897e1e880654da52ba801",
+  "source_manifest_current_matches": 510,
+  "loaded_dll_sha256": "ec29517d2e6d961485c0e6d10dc5b57310170a85b4f2fdffa1cda057f91c58c9",
+  "proof_commit": "f8f882b4e67edcdfa2da83719db1c5216f8d38d5",
+  "negative_arm": {
+    "owner_delta": 10000,
+    "unrelated_delta": 10000,
+    "foreign_tank_units": "10000",
+    "pending": "[]",
+    "caught_by": "none"
+  },
+  "positive_arm": {
+    "first_tank_units": "20000",
+    "second_tank_units": "30000",
+    "catch_delta": 1,
+    "charge_delta": 1,
+    "goodwill_delta": -2
+  },
+  "pending_reload_water": [
+    10000,
+    10000,
+    10000
+  ],
+  "timing": {
+    "before": 3,
+    "after": 6,
+    "hose_refresh_ticks": 2,
+    "load_ticks": 1,
+    "boundary": "real production entries; pump-disabled hose setup and bounded load ticks; one-day remainder seeded after genuine catch"
+  },
+  "protected_saves_rehashed": 20,
+  "restoration": "PASS",
+  "known_site_errors": [
+    "Tried to get CurKindLifeStage from humanlike pawn Shiki"
+  ],
+  "debug_flags_compared": 47,
+  "rectangle_matches_baseline": true
+}

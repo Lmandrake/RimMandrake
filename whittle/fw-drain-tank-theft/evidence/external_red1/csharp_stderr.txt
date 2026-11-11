@@ -1,0 +1,2 @@
+BUILD FAILED (1) in D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_79bb8021\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj
+staged build of /home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/FlowWorks/Source/SelfTest/RimMandrakeFlowWorks.SelfTest.csproj failed (rc=1) - env/build failure, not a selftest verdict

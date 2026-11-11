@@ -1,0 +1,1 @@
+contained in rm-harness.slice (max 24G), 1 workers

@@ -1,0 +1,23 @@
+{
+  "time": 1794418391.9575994,
+  "manifest": "/home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/Biomes.compose.json",
+  "manifest_sha256": "28246bff8e3eddbc81e8d396e71172a9d957f1a2f87d687fc2c68a503abae3c3",
+  "folded": [
+    "RimMandrake.Biomes",
+    "Cauldron"
+  ],
+  "pairs": {
+    "Cauldron": {
+      "project": "src/RimMandrake/Cauldron/Source/RM_Cauldron.csproj",
+      "artifact": "/home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/Cauldron/Assemblies/RimMandrake.Cauldron.dll",
+      "shipping_owner": "RimMandrake.Biomes",
+      "deployed_relative": "RimMandrake.Biomes/Biomes/Cauldron/Assemblies/RimMandrake.Cauldron.dll"
+    },
+    "LuminousPigment": {
+      "project": "src/RimMandrake/LuminousPigment/Source/RM_LuminousPigment.csproj",
+      "artifact": "/home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/LuminousPigment/Assemblies/RimMandrakeLuminousPigment.dll",
+      "shipping_owner": "LuminousPigment",
+      "deployed_relative": "LuminousPigment/Assemblies/RimMandrakeLuminousPigment.dll"
+    }
+  }
+}

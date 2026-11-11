@@ -1,0 +1,17 @@
+{
+  "time": 1794417621.7971401,
+  "sha256": {
+    "/home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/Cauldron/Assemblies/RimMandrake.Cauldron.dll": "695aae24456de045c116495f42ccd014d76adbb72d4fca0e20fb7bb2dda73b4c",
+    "/mnt/d/Luke/dev/RimMandrake/src/RimMandrake/Cauldron/Assemblies/RimMandrake.Cauldron.dll": "695aae24456de045c116495f42ccd014d76adbb72d4fca0e20fb7bb2dda73b4c",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Assemblies/RimMandrake.Cauldron.dll": null,
+    "/home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/Cauldron/Assemblies/RimMandrake.Cauldron.dll.srchash": "debbcab911124186386d0f07d969b7262a4bebb86eadb9f7f8769d919d7e5959",
+    "/mnt/d/Luke/dev/RimMandrake/src/RimMandrake/Cauldron/Assemblies/RimMandrake.Cauldron.dll.srchash": "debbcab911124186386d0f07d969b7262a4bebb86eadb9f7f8769d919d7e5959",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Assemblies/RimMandrake.Cauldron.dll.srchash": null,
+    "/home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/LuminousPigment/Assemblies/RimMandrakeLuminousPigment.dll": "e8bde686bd8097f1dac3a9eb7483894b1a38c1cf022b8e161062981a6c2342bb",
+    "/mnt/d/Luke/dev/RimMandrake/src/RimMandrake/LuminousPigment/Assemblies/RimMandrakeLuminousPigment.dll": "e8bde686bd8097f1dac3a9eb7483894b1a38c1cf022b8e161062981a6c2342bb",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/LuminousPigment/Assemblies/RimMandrakeLuminousPigment.dll": "e8bde686bd8097f1dac3a9eb7483894b1a38c1cf022b8e161062981a6c2342bb",
+    "/home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/LuminousPigment/Assemblies/RimMandrakeLuminousPigment.dll.srchash": "4067b5fbc8f1164d80ca31cc3a3ea6289cf1f2c901220f5d6c57321e9c4e24d5",
+    "/mnt/d/Luke/dev/RimMandrake/src/RimMandrake/LuminousPigment/Assemblies/RimMandrakeLuminousPigment.dll.srchash": "4067b5fbc8f1164d80ca31cc3a3ea6289cf1f2c901220f5d6c57321e9c4e24d5",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/LuminousPigment/Assemblies/RimMandrakeLuminousPigment.dll.srchash": "4067b5fbc8f1164d80ca31cc3a3ea6289cf1f2c901220f5d6c57321e9c4e24d5"
+  }
+}

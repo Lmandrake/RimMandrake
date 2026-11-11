@@ -1,0 +1,23 @@
+{
+  "command": [
+    "./publish",
+    "-m",
+    "Fix tank theft live probe transport\n\nUse the hose bridge channel and retain observed site-control noise.\nCo-Authored-By: Codex (GPT) via WSL codex-cli",
+    "src/RimMandrake/FlowWorks/northstar/tank_theft_live.py"
+  ],
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "started": 1794413691.7891567,
+  "seats": {
+    "RIMFLOW_SEAT": "CODEX_ARCHMAGI_FWDRAIN",
+    "AGENT_SEAT": "CODEX_ARCHMAGI_FWDRAIN",
+    "RIMFLOW_BRIDGE_SEAT": "CODEX_ARCHMAGI_FWDRAIN"
+  },
+  "WSLENV": "WT_SESSION:WT_PROFILE_ID::RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT:RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT",
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-tank-theft",
+  "pid": 928548,
+  "returncode": 0,
+  "finished": 1794413700.7463217,
+  "elapsed": 8.957165002822876,
+  "stdout_sha256": "4614337cd2c98c3d0eb96a18dce51118f31f65bc88588b4eb4509333c9695794",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

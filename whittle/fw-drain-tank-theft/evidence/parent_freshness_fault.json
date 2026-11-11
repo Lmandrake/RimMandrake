@@ -1,0 +1,6 @@
+{
+  "time": 1794419642.1898434,
+  "cause": "Parent ran rimflow bridge who and bare ./game after final_readback_external.json while integrated judge was active. The CLI refreshed generated infrastructure/state/BRIDGE mirror and parent directory mtime. Source/test/build/deployment bytes unchanged; validator properly refused freshness.",
+  "repair": "Worker obtains fresh actual content readback and fresh independent judgment. Parent will not invoke CLI state/show/queue tools before required validator pass; no touching timestamps or relabeling.",
+  "parent_state_probe_time": 1794419242.8558044
+}

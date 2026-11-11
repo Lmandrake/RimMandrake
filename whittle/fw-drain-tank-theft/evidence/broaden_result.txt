@@ -1,0 +1,77 @@
+I found one blocking problem, three high-risk ones and a few medium/low ones. The blocking one is the plan to require both a net player change and a real stock change before charging: that lets steady pump-against-pump theft through.
+
+## How the code is laid out
+
+- **Where foreign stock can change.** Every tank change goes through `TryAddLiquid`/`TryRemoveLiquid` (`Building_LiquidTank.cs:110-137`). The only direct writes to `storedUnits` are `Destroy` (`:150`), debug fill/empty (`FlowWorksTankDebug.cs:29,37`) and the old-save conversion on load.
+- **Pawns can't touch foreign tanks today.**
+  - Bottle jobs only search `AllBuildingsColonistOfClass` (`RM_LiquidTankUtility.cs:95`), so only player tanks.
+  - Drinking from a tank requires `tank.Faction == pawn.Faction` (`RM_ThirstUtility.cs:400`), so a foreign pawn drinking from its own tank (`RM_ThirstJobs.cs:246`) is owner use.
+  - The "colonist with a bottle" mover in the doc comment (`RM_LiquidTheft.cs:20`) doesn't exist in the code.
+- **Who the actor is on the paths that can reach foreign tanks.**
+  - Machines: pump, converter, pipe adapter, reactor, bath, sprinkler, ice melter.
+  - Faucet: `Building_RM_PipeFaucet.TryPour`, called from a pawn's job. Only player faucets are ever chosen (`:128`).
+  - Tank jobs: `SettleTick` only enumerates `allBuildingsColonist` (`RM_LiquidNet.cs:866`), and a foreign tank's `EffectiveMode` is always Store (`Building_LiquidTank.cs:50`). So every settle or dump move is caused by the player, but the source tank can be foreign.
+  - Machines don't check faction: `Building_LiquidPump.Tick` (`:95-139`) runs for foreign and unowned pumps. That is the owner's-own-use path the current code wrongly bills.
+- **Rollback is local and symmetric.** `Move`, `Split.Undo` (it takes back from the last parts first) and `All.Undo` only call `TryAdd`/`TryRemove` (`RM_LiquidTransfer.cs:93-129,163-178`). A ledger kept inside the two tank methods cancels refused or partial moves automatically, including a partial accept at the VE pipe boundary.
+
+## Findings, by priority
+
+**P0 — Requiring both a net player change and a stock change misses ordinary theft.**
+- Pumps move whole levels per cycle (`Building_LiquidPump.cs:114-137`). An owner pump adding one level while a player pump draws one level leaves the stock unchanged every cycle, so the player is never caught or charged.
+- The same gate silently skips the first cycle after loading or after a new foreign tank spawns, because `theftSeenUnits = -1` is runtime-only (`Building_LiquidTank.cs:46`; `RM_LiquidTheft.cs:47`).
+- **Recommendation:** decide "touched" from the player ledger alone. Keep the stock difference as a diagnostic at most. Once the ledger cancels rollbacks, the "unchanged stock" clause in the statement is already satisfied.
+
+**P1 — Drop `PlayerReaches` from the decision** (`RM_LiquidTheft.cs:53`). If it stays as an extra condition, real theft slips through whenever the route goes away between the draw and `TheftTick`: a hose wound in (route checks bump the net, `RM_LiquidNet.cs:481-506`), a pump deconstructed, or a flick off. The ledger is direct evidence of who moved the liquid; reach is the global blame the statement rules out. `GptFixesAChecks.cs:302-307` pins the current line and will need rewriting rather than deleting.
+
+**P1 — The actor scope must cover entries that aren't machine ticks.**
+- **Settle.** `RM_LiquidNet.cs:911-914` (a player Fill tank pulling from a foreign Store tank) is the most likely real theft. It's owner ruling #9: screw a hose into the tank and click Fill. If only machine ticks are wrapped, this goes unbilled.
+- **Faucet.** `TryPour` (`Building_RM_PipeFaucet.cs:61-81`) runs inside a pawn's job toil. The actor is the faucet, not a machine tick.
+- **Bath.** `RM_LiquidBath.cs:194` runs when a craft finishes, also inside a job.
+- **Hose fill.** `Credit` → `FillFrom(tank)` (`RM_LiquidNet.cs:700-710,814`) is a separate `Move` that removes hose capacity from the leg's tank, which may be foreign. A scope set per `Move` without the actor's identity misses it; a scope at the entry covers it.
+- **Recommended shape:** an ambient actor scope. Save and restore the previous actor rather than using a depth counter, release it in a `finally`, and reset it at each `TheftTick`. RimWorld catches per-thing tick exceptions, so a scope leaked by a thrown pump tick would bill the next foreign pawn's drink to the player.
+
+**P1 — Mid-cycle toggles and stale state.** `TheftTick` returns early when theft is off (`:37`), so neither the snapshot nor a ledger gets cleared. A ledger filled before theft is switched off would be charged when it's switched back on, possibly days later with a witness standing there.
+- Clear the ledger on every pass and for every tank, including non-foreign tanks, tanks that changed faction (claimed), and the `victim == null`/`defeated` and no-witness `continue` paths.
+- The cheapest approach is a per-map dirty set in `RM_LiquidTheft`.
+- `LiquidTheftChecks.cs:86` pins the early-return text, so put the clearing before it or update the pin.
+
+**P2 — Record at the tank methods, not at `Credit`.** `Credit` has no sign (draw or fill), and settle and dump call `CreditRoute` directly. Recording from `plan` instead of `Committed(plan, mv.Moved)` over-bills partial moves at the VE boundary. Record the liquid before decrementing in `TryRemoveLiquid`, since it nulls `storedLiquid` when the tank runs dry.
+
+**P2 — Persistence.**
+- If the ledger is runtime-only, a partial cycle before a save is forgiven (at most 250 ticks; acceptable, but write it down).
+- Old saves keep any false `rmTheftCaughtBy`/`rmTheftTicks` (`Building_LiquidTank.cs:215-216`). After the fix that tank accrues nothing from owner use, but the player's first genuine draw charges immediately with no witness, and the leftover `theftTicks` can tip a charge early. Decide whether to leave that or reset it on load, and record the choice.
+
+**P3 — Known limits to record, not fix here.**
+- A foreign machine's committed move through a player hose fills that hose from the owner's tank without billing anyone.
+- `FillPlan`/`DrawPlan` happily pick a foreign tank (fullest first, or emptiest first; `RM_LiquidNet.cs:537-572`). Player pumps will now be correctly billed for automatically "giving" liquid to, or taking it from, a neighbour's tank they're hosed to.
+- Parking liquid in a foreign tank and drawing it back in a later cycle is billed both ways, because the ledger nets per cycle only.
+- Tank faction changes: ignore the ledger when `IsForeign` is false at `TheftTick`.
+
+## Simpler implementation
+
+1. Add a small Verse-free ledger (a per-liquid signed map) that `TryAddLiquid`/`TryRemoveLiquid` update only when `RM_LiquidTheft.CurrentActorIsPlayer && IsForeign(this)`.
+2. Wrap each entry in `using (RM_LiquidTheft.As(actor))`, which is active only when `actor.Faction == Faction.OfPlayer`:
+   - the pump cycle block;
+   - converter, pipe adapter, reactor, sprinkler and ice-melter ticks;
+   - the bath craft;
+   - `PipeFaucet.TryPour`;
+   - all of `SettleTick`, which is always player-caused.
+3. `TheftTick`: touched = any non-zero ledger entry; clear it unconditionally; no `PlayerReaches`, no stock-diff gate.
+
+With no scope active the default is "not the player", so a new caller fails toward the owner. That makes the coverage test below necessary.
+
+## High-value regression cases
+
+1. A foreign pump fills its own tank over several cycles, with a player pipe, idle hose and adjacent machine all reaching it and a witness present: no letter, no caught state, no goodwill. Repeat with a foreign pawn drinking (`RM_ThirstJobs.cs:246`).
+2. An unrelated active player pump on the same component draws only from a player tank while the owner changes the foreign stock: no charge.
+3. A player pump draws from the foreign tank: caught on the first cycle with a witness; accrues only in cycles with a non-zero ledger; −2 goodwill after one day of continuous draw.
+4. Exact cancellation (owner +1 level, player −1 level in the same cycle): must be theft. This fails under the both-conditions gate.
+5. A refused move, and a partial accept at the VE boundary with `Split.Undo` putting back the last parts, using production `RM_LiquidTransfer.Move`: the ledger equals the committed units, and a full refusal gives zero.
+6. A player Fill tank pulls from a foreign Store tank by settle: theft. Same setup with `tankModesEnabled` off: nothing.
+7. With hoses holding liquid, the first draw through a new hose from a foreign tank counts the hose fill. A foreign pump through a player hose gives no charge (documented limit).
+8. A player faucet whose only tank is foreign: a colonist's drink is billed, through a job-time scope.
+9. An exception thrown inside a player scope: the next foreign drink is not attributed to the player.
+10. Ledger non-zero → theft off → owner use → theft on: no stale charge. Save mid-cycle → load → a real draw is caught in the first full cycle.
+11. Coverage test: extend `TransferChecks.cs:478-491` so every production file that calls `.TryAddLiquid(`/`.TryRemoveLiquid(` is either a declared actor entry or on an explicit allowlist (player-tank-only bottle jobs, same-faction thirst, ruins dressing, debug and probes). Include a planted negative like the existing ones.
+
+One caution on proof: `TankTheftHarness.cs` and `LiquidTheftChecks` test the extracted `TheftTick` plus source-text pins. They can't catch a missing scope or a broken rollback, so cases 5, 9 and 11 should run against the production ledger and `Move`, not regex pins.

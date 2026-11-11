@@ -1,0 +1,83 @@
+I found no production defect in the three runs. Run 3 failed on a counting error in the proof script itself: its own save/load round trip uses up one game tick, and the timing check doesn't count it. Every behavioural check in run 3 passed.
+
+## Run 3 (script 4c3e9d7): the refusal
+
+The run stopped with `AssertionError('time advanced outside the declared hose-index setup ticks')` from `tank_theft_live.py:262`. It requires `end_tick - start_tick == refresh_ticks`, but the pending save/load at lines 235–236 sits inside that window. These are the clock readings in `live_attempt3.json`:
+
+| Step | Line | Tick |
+|---|---|---|
+| `start_tick` from `map_info` | 7957/7992 | 3 |
+| Hose refresh 1 (pump disabled, `B.ticks(1)`) | 8412 → 8464 | 3 → 4 |
+| Hose refresh 2 | 9084 → 9136 | 4 → 5 |
+| `save_game` Pending, paused | 9574–9595 | 5 |
+| `load_game`: loading, game speed `Normal` | 10154–10158 | 5 |
+| First "Playing" state seen, paused | 10211–10215 | **6** |
+| `end_tick` | 11318/11353 | 6 |
+
+That is 6 − 3 = 3 ticks against 2 declared. Every load in the run adds exactly one tick:
+- the registered calm site went 1 → 2 (lines 974/1066)
+- the Begin reload went 2 → 3 (3449/3506)
+- the cleanup reload went 2 → 3 (11889/11946)
+
+The tick happens between the loading state and the first "Playing" poll. That is before `load_site` makes any calls of its own (`test_site_saves.py:447–474`), so it comes from the game or bridge load. I didn't read the C# behind `load_game`, so I can't say which of the two runs that tick. `B.ticks` itself measured correctly: both refreshes moved exactly 1 tick (`validation_core.py:197–227`).
+
+**Did that extra tick change anything?** Not in this run, going by the raw values:
+- Before the save: the tank had `units=20000 pending=[FreshWater:10000] caughtBy=none` (9527) and the source cell had `dl=10000` (9557).
+- After the load: the tank read the same (11011), and the pump read `sources=[40,41:10000] tankRoom=140000` (11095).
+
+But that result was luck. The setup ticks are run with the pump turned off, while the load tick ran with the pump and theft both turned on. The script also never checks the water levels across the round trip.
+
+**Everything else in run 3 passed:**
+- **Owner fills its own tank:** +10000 with `pending=[]` (8194/8222).
+- **Unrelated active player pump:** `outflows=[51,40]` moved 10000, and the tank stayed unchanged at `pending=[]` (8827/8855).
+- **Real player theft:** the capped player pump put +10000 into the tank and was recorded as pending (9499/9527).
+- **Witness:** caught with `caughtBy=Faction_0 caught=1 charges=0` (11039).
+- **Prime:** `ticks=59750` (11067).
+- **Second transfer:** `charges=1 goodwill=-2 victimGoodwill=-2` (11271).
+- **Idle tank:** no further charge (11299).
+- **Cleanup:**
+  - Restore passed, no existing saves changed, and protected save hashes are identical.
+  - `new_errors=[]` with `lost=0`.
+  - Every cleanup step returned 0, the game is down and the bridge is FREE.
+
+## Runs 1 and 2: earlier, separate problems
+
+- **Run 1 (harness setup):**
+  - The bridge object had no `probe_type`, so the first probe call failed with `no probe_type on this bridge class` (line 6520).
+  - The log check also failed on the known site-load error `Tried to get CurKindLifeStage from humanlike pawn Shiki` (error level, seq 32), because that message wasn't yet allowed.
+  - Script 2 fixed both (its lines 46 and 143–146).
+- **Run 2 (stale fixture):**
+  - The outflow role was set, but the pump still read `outflows=[]`. It then drew 10000 into the foreign tank, which was recorded as `pending=[FreshWater:10000]` (`live_attempt2.json:8502/8530`).
+  - That pending record is correct: water really did enter the tank, so it isn't a false theft and doesn't show a production fault.
+  - Script 3's pump-off refresh tick fixed it; `outflows=[51,40]` appears at 8623.
+
+## Weak checks
+
+1. **The timing check:** it leaves out a tick the script itself causes, so it can never pass as written (this is run 3's failure).
+2. **The round-trip comparison** (`tank_theft_live.py:240`):
+   - It checks only 8 fields and skips `caught`, `charges`, `goodwill`, `victimGoodwill` and `reach`.
+   - It doesn't check the source water level either.
+3. **The recorded timing note** (`:263`) says "two pump-disabled setup ticks", which is false: one of the three ticks was a load tick with the pump on.
+4. **Limits to record:** these must be written into the proof's evidence, not left implied.
+   - `prime` artificially fast-forwards the rest of the caught day.
+   - `theft('tick')` skips the normal scheduling.
+   - Pump power is forced on with a dev tool.
+   - The power re-apply branch at :249–254 never ran in run 3.
+
+## Fix before the next attempt
+
+Keep the timing check strict, measure the load tick, and make it unable to move water:
+
+- **Before `save_site`:**
+  - Read the theft state, the water at (40,41) and `ticksGame`.
+  - Turn `liquidPumpEnabled` off, as `refresh_hose_index` does. This is a global mod setting, so the theft state stored in the save isn't affected.
+- **After `load_site` and pausing:**
+  - Read `ticksGame` again.
+  - Require `load_ticks = post − pre ≤ 1` and record it.
+  - Require that every theft field and the source water level are unchanged.
+  - Then turn the pump back on.
+- **Then:**
+  - Change line 262 to `end_tick - start_tick == refresh_ticks + load_ticks`.
+  - Correct the timing note.
+
+Don't remove the timing check or allow open-ended slack. It guards a real requirement: no time should pass that the proof hasn't accounted for. This is a diagnosis only, not an acceptance judgment.

@@ -1,0 +1,14 @@
+{
+  "time": 1794419424.7021866,
+  "project_checker": "/home/mandrake/rm/scratch/BENCH/fw-drain/.claude/hooks/whittle_stop.py",
+  "done_problems": [
+    "The evidence 'whittle/fw-drain-tank-theft/evidence/final_readback_external.json' for 'another faction using its own tank never catches or charges the player merely because player equipment reaches it, including idle and unrelated active equipment.' is older than your last change to the project. Look again and save fresh evidence.",
+    "The evidence 'whittle/fw-drain-tank-theft/evidence/final_readback_external.json' for 'successful player transfers involving a foreign tank retain theft detection, witness rules and goodwill accrual; refused or restored transfers and unchanged stock do not create false theft.' is older than your last change to the project. Look again and save fresh evidence.",
+    "The evidence 'whittle/fw-drain-tank-theft/evidence/final_readback_external.json' for 'production-linked regression checks reproduce the attribution defect and protect the repair, including transfer callers, settings and persistence boundaries. the relevant flowworks selftest and shipping build pass.' is older than your last change to the project. Look again and save fresh evidence.",
+    "The evidence 'whittle/fw-drain-tank-theft/evidence/final_readback_external.json' for 'a disposable live-game proof on the deployed build shows owner use without a player accusation and real player theft with the existing consequences; quantities, restoration and remaining limits are recorded.' is older than your last change to the project. Look again and save fresh evidence."
+  ],
+  "need_judge": true,
+  "need_broaden": true,
+  "workflow_checker": "/home/mandrake/dev/MandrakeWorkflows/whittle/run.py",
+  "actual_validate_returncode": 1
+}

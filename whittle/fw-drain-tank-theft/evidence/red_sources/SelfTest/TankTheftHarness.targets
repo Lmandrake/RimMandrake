@@ -1,0 +1,19 @@
+<Project>
+  <UsingTask TaskName="ExtractTankTheft" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup><Source ParameterType="System.String" Required="true"/><Output ParameterType="System.String" Required="true"/></ParameterGroup>
+    <Task><Using Namespace="System.IO"/><Code Type="Fragment" Language="cs"><![CDATA[
+      string s = File.ReadAllText(Source);
+      string sig = "public static void TheftTick(Map map)";
+      int start = s.IndexOf(sig, StringComparison.Ordinal), open = start < 0 ? -1 : s.IndexOf('{', start + sig.Length), end = -1, depth = 0;
+      if (open < 0) { Log.LogError("Missing production TheftTick"); return false; }
+      for (int i = open; i < s.Length; i++) { if (s[i] == '{') depth++; else if (s[i] == '}' && --depth == 0) { end = i; break; } }
+      if (end < 0) { Log.LogError("Unbalanced production TheftTick"); return false; }
+      Directory.CreateDirectory(Path.GetDirectoryName(Output));
+      File.WriteAllText(Output, "using RimMandrake.FlowWorks.Machinery; namespace RimMandrake.FlowWorks.SelfTest.TheftHarness { internal static partial class RM_LiquidTheft { " + s.Substring(start, end + 1 - start) + " } }");
+    ]]></Code></Task>
+  </UsingTask>
+  <Target Name="ExtractTankTheft" BeforeTargets="CoreCompile">
+    <ExtractTankTheft Source="$(MSBuildProjectDirectory)\..\Machinery\RM_LiquidTheft.cs" Output="$(MSBuildProjectDirectory)\$(IntermediateOutputPath)TankTheft.g.cs"/>
+    <ItemGroup><Compile Include="$(MSBuildProjectDirectory)\$(IntermediateOutputPath)TankTheft.g.cs"/></ItemGroup>
+  </Target>
+</Project>

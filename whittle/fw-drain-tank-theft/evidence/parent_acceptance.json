@@ -1,0 +1,15 @@
+{
+  "time": 1794420014.965149,
+  "judge": "judge_external2_raw.json exact result equals JUDGE.md",
+  "done_problems": [],
+  "actual_workflow_validate": 0,
+  "native_continuation_exit": 0,
+  "native_continuation_spend": {
+    "input_tokens": 15070421,
+    "output_tokens": 40615
+  },
+  "initial_native": "7200-second timeout, exit 1, usage UNMEASURED; full initial local session and partial event stream preserved externally",
+  "source_publication": "727ff654c16f08d905c328b925a0ea9c656bf517",
+  "core_publication": "bd3ebe304e93e19b3cd23b560cd9ba397f7df027",
+  "accepted_before_ledger_writes": true
+}

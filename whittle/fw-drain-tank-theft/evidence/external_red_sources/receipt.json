@@ -1,0 +1,12 @@
+{
+  "time": 1794417258.1925125,
+  "source_manifest": "external_red3/integrity_before.json",
+  "sha256": {
+    "src/RimMandrake/LuminousPigment/Source/FlowWorksWaterBridge.cs": "d621daea8acb48aebf4f49a334cd786f1e26b9b04c53c6a96561fc5b7d86e76f",
+    "src/RimMandrake/Cauldron/Source/RM_GasTap.cs": "196a23da49dab9f37a97eae509e630543587281fcbebbd0d36ebf5ed380df417",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/ExternalTankTheftChecks.cs": "7784be8b3c441d5ca76f7d1511925eb6e41f6234b71616eedd6ad29fe5ec0f67",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/TankTheftHarness.cs": "4cf556224ef311cae57ab390f41bdc5d52a4b9fd29bee70347c7fe0648ebee8a",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/TankTheftHarness.targets": "f76a26438fdd4b6b0a1c0fbc3aa3e028a109b520dc185b7faf3cbee2fb92ce94",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/TankTheftCallerChecks.cs": "ca63933f9f3d3e04121f64ba5b067066757f64855526bb831b987bd5c1fb1501"
+  }
+}

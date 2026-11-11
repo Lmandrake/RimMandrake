@@ -1,0 +1,11 @@
+{
+  "time": 1794412551.258879,
+  "script": "src/RimMandrake/FlowWorks/northstar/tank_theft_live.py",
+  "sha256": "d5c10e1a7b4c8b6c4a116525f077616858637cd4a019997fe06a98511d1fd093",
+  "syntax": "parsed",
+  "protected_required": [
+    "CANONICAL_ASHKARR_START_2026-09-12.rws",
+    "ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws",
+    "RM_TestSite_calm_v3.rws"
+  ]
+}
