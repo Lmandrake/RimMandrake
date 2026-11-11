@@ -1,0 +1,28 @@
+{
+  "original": {
+    "checks": [
+      true,
+      true,
+      true,
+      true,
+      false
+    ],
+    "error": "KeyError('RimBridgeServer.dll')",
+    "stdout": "ok   dependency hashes use selected version, never stale Current\nok   matching selected dependencies pass\nok   changed selected Harmony still fails fingerprint\nok   missing Harmony cannot hide behind other dependency DLLs\nFAIL local installed bridge is fingerprinted by package ID\n"
+  },
+  "current": {
+    "checks": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "error": null,
+    "stdout": "ok   dependency hashes use selected version, never stale Current\nok   matching selected dependencies pass\nok   changed selected Harmony still fails fingerprint\nok   missing Harmony cannot hide behind other dependency DLLs\nok   local installed bridge is fingerprinted by package ID\nok   local bridge updates change the fingerprint\n"
+  },
+  "original_revision": "f3c6f9346befdd2fd1bdbf14064a09f6291270f2",
+  "current_source_sha256": "e9f06989f9dc37fce486f9effdf2293a26d9b69c36690a2a8041a35f686a3085",
+  "current_test_sha256": "dde97f276f90eec787065f5f2daaf785ea1a4c05004099d8f1cd387a834f4e85"
+}

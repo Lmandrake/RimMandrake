@@ -20,7 +20,7 @@ The shipped warning is two in-game hours. Change all default/fallback paths toge
 
 Acceptance: L1: On SteveDesktop deployed DLL, default/fallback is 2 and production WarningTicks(2) is 5000; source/static checks cover absent-key Scribe fallback. No crossing-feel claim.
 
-State: filed; implementation/live acceptance not claimed.
+State: implementation published at f3c6f9346bef; SteveDesktop L1 raw proof passed in whittle/ht-two-hour-warning/evidence/live.json. Final independent judgment and ledger closure follow proof publication.
 
 ## RIMMANDRAKE_ALLOW_HUGETHINGS_TRUNKS_TO_SEAL_DOORS
 

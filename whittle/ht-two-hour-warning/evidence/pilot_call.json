@@ -1,0 +1,32 @@
+{
+  "argv": [
+    "claude",
+    "-p",
+    "--model",
+    "opus",
+    "--tools",
+    "Read,Glob,Grep,Bash,Write",
+    "--strict-mcp-config",
+    "--mcp-config",
+    "{\"mcpServers\":{}}",
+    "--setting-sources",
+    "",
+    "--no-session-persistence",
+    "--output-format",
+    "json",
+    "--max-budget-usd",
+    "6",
+    "--permission-mode",
+    "dontAsk",
+    "--allowedTools",
+    "Read",
+    "Glob",
+    "Grep",
+    "Bash",
+    "Write"
+  ],
+  "stdin": "whittle/ht-two-hour-warning/evidence/pilot_prompt.txt",
+  "elapsed": 360.12646222114563,
+  "rc": 124,
+  "fresh": true
+}

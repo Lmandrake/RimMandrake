@@ -1,0 +1,17 @@
+{
+ "state": "HELD",
+ "seat": "BENCH",
+ "purpose": "HT: RIMMANDRAKE_SET_HUGETHINGS_TREMORS_TWO_HOURS",
+ "identity": {
+  "pid": 2765148,
+  "start": 79933.52,
+  "boot_id": "83c87369-52bb-43a4-9179-a6cd07ce769d",
+  "platform": "wsl",
+  "host": "SteveDesktop"
+ },
+ "generation": 1393,
+ "heartbeat": "2026-11-11T10:01:08Z",
+ "how": "holder process pid 2765148 alive",
+ "host": "stevedesktop",
+ "path": "/mnt/d/RimTest/data/scratch/DRIVER_LOCK.json"
+}

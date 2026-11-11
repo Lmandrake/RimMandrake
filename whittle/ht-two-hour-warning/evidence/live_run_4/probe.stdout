@@ -1,0 +1,2 @@
+{"ok": true, "errors": [], "loaded_original_warning": "2", "invalid_fallback_readback": "2", "two_hour_ticks": "5000", "custom_six_readback": "6", "six_hour_ticks": "15000"}
+restoration: True receipt: \\wsl.localhost\Ubuntu\home\mandrake\rm\codex-ht\whittle\ht-two-hour-warning\evidence\live.json

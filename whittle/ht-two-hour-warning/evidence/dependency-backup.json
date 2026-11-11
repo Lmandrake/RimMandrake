@@ -1,0 +1,390 @@
+{
+  "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945",
+  "files": [
+    {
+      "mod": "FlowWorks",
+      "path": "Patches/Scenarios_StartingWaterBottles.xml",
+      "operation": "-",
+      "sha256": "3c7df4ef374b7283b5321f7d782e92c0b4b4428a48d53376e697c7dd55bc28fb",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/FlowWorks/Patches/Scenarios_StartingWaterBottles.xml"
+    },
+    {
+      "mod": "FlowWorks",
+      "path": "Textures/Things/Building/FlowWorks/Canals/LadderRig/RM_LadderCap_Steel.png",
+      "operation": "-",
+      "sha256": "65baef72e1981ff2e5e5f78a84012ae9f592c055f824c44971ff19b4da196399",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/FlowWorks/Textures/Things/Building/FlowWorks/Canals/LadderRig/RM_LadderCap_Steel.png"
+    },
+    {
+      "mod": "FlowWorks",
+      "path": "Textures/Things/Building/FlowWorks/Canals/LadderRig/RM_LadderCap_Wood.png",
+      "operation": "-",
+      "sha256": "098d01c6ce95089f8b0682d141c4571bb0c7657db3b7ae6c577cd43fc824839b",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/FlowWorks/Textures/Things/Building/FlowWorks/Canals/LadderRig/RM_LadderCap_Wood.png"
+    },
+    {
+      "mod": "FlowWorks",
+      "path": "Textures/Things/Building/FlowWorks/Canals/LadderRig/RM_LadderRailCap.png",
+      "operation": "-",
+      "sha256": "21aeb14dc6bfac478d0aea7ecb5fd576a7b83a8a560f0e89b92b9f25dec7111d",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/FlowWorks/Textures/Things/Building/FlowWorks/Canals/LadderRig/RM_LadderRailCap.png"
+    },
+    {
+      "mod": "FlowWorks",
+      "path": "Textures/Things/Building/FlowWorks/Canals/LadderRig/RM_LadderRailTile.png",
+      "operation": "-",
+      "sha256": "8113bb41120c5dd8a9aa73958409507c76643ad811442a8b3195191a4e2c20af",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/FlowWorks/Textures/Things/Building/FlowWorks/Canals/LadderRig/RM_LadderRailTile.png"
+    },
+    {
+      "mod": "FlowWorks",
+      "path": "Textures/Things/Building/FlowWorks/Canals/LadderRig/RM_LadderTile_Steel.png",
+      "operation": "-",
+      "sha256": "2e0c7126bd6b5483133c6ca8f5402b112313b0f113c15991b7ea23df341ea181",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/FlowWorks/Textures/Things/Building/FlowWorks/Canals/LadderRig/RM_LadderTile_Steel.png"
+    },
+    {
+      "mod": "FlowWorks",
+      "path": "Textures/Things/Building/FlowWorks/Canals/LadderRig/RM_LadderTile_Wood.png",
+      "operation": "-",
+      "sha256": "8cc5078154c6ec668ba1520a1630a3a4380fdc8a84f07b5d36d38b69e3a70511",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/FlowWorks/Textures/Things/Building/FlowWorks/Canals/LadderRig/RM_LadderTile_Wood.png"
+    },
+    {
+      "mod": "FlowWorks",
+      "path": "Textures/Things/Pawn/Humanlike/Apparel/FlowWorks/RM_ClimbingGear/RM_ClimbingGear_east.png",
+      "operation": "-",
+      "sha256": "3733de4e22360816941544caf659a42b04d271ae43b11e29ef69917fa91744fe",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/FlowWorks/Textures/Things/Pawn/Humanlike/Apparel/FlowWorks/RM_ClimbingGear/RM_ClimbingGear_east.png"
+    },
+    {
+      "mod": "FlowWorks",
+      "path": "Textures/Things/Pawn/Humanlike/Apparel/FlowWorks/RM_ClimbingGear/RM_ClimbingGear_north.png",
+      "operation": "-",
+      "sha256": "1255dbebb1d006fd2f80e798f49ccbd64b0d12ac9254aa63d7681284d453d8e4",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/FlowWorks/Textures/Things/Pawn/Humanlike/Apparel/FlowWorks/RM_ClimbingGear/RM_ClimbingGear_north.png"
+    },
+    {
+      "mod": "FlowWorks",
+      "path": "Textures/Things/Pawn/Humanlike/Apparel/FlowWorks/RM_ClimbingGear/RM_ClimbingGear_south.png",
+      "operation": "-",
+      "sha256": "389480a8ac8466b82459bac1931c71f18eeda0782e92ff8af1884c1da1aef467",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/FlowWorks/Textures/Things/Pawn/Humanlike/Apparel/FlowWorks/RM_ClimbingGear/RM_ClimbingGear_south.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Assemblies/RimMandrakeGimmeSomeSlack.dll",
+      "operation": "~",
+      "sha256": "c5861d3a78210a3dddca3b01c85860cb3756f61945604f4d8a9b31ec68f7967a",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Assemblies/RimMandrakeGimmeSomeSlack.dll"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Assemblies/RimMandrakeGimmeSomeSlack.dll.srchash",
+      "operation": "~",
+      "sha256": "bf104f2d6f61ee4c2546c9b80375c63de411c7d3edecefe36dffc793a8bfdd19",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Assemblies/RimMandrakeGimmeSomeSlack.dll.srchash"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Defs/Aerial/RM_AerialRestring.xml",
+      "operation": "~",
+      "sha256": "1e332b2165bb0532ef5302ce856ddabb6554758eb9915bea01d713cfa13349a9",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Defs/Aerial/RM_AerialRestring.xml"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Junction_Tape.png",
+      "operation": "~",
+      "sha256": "fdfb968ce6ee0ae2f85d924c93ad3276f06b081ef4a90ed739994a5f9574b009",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Junction_Tape.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Junction_Tin.png",
+      "operation": "~",
+      "sha256": "4e0b9d94c8bc90be925ef7d2a813ee5d017db62381f73fe1b29e58ceee85547e",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Junction_Tin.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Plug.png",
+      "operation": "~",
+      "sha256": "44e03caed4bf261828c5bd206b19c2e10a68de5adaf2a7475df151dab17b542b",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Plug.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/PowerStrip.png",
+      "operation": "~",
+      "sha256": "16965ab579969b9ada4831723eb5eeaf35b0bef63f3ef1a1019326d91925d2ef",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/PowerStrip.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/StubRock.png",
+      "operation": "~",
+      "sha256": "f50a2b8f4552e7aaf5efc7d570518d3234285cdaf849aee4acf579ced2c79cf7",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/StubRock.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/StubWall.png",
+      "operation": "~",
+      "sha256": "5cfebe455c12ad745692c0f7b54aa4be39038b3cfde902e089c4f4f14d36feb5",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/StubWall.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_T.png",
+      "operation": "~",
+      "sha256": "a9b7826f03dc49916be9f8f7ec2d647e6b2df6ef202ce3a08efedc4c5addd0ac",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_T.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X.png",
+      "operation": "~",
+      "sha256": "a9d7b63c13602cc76f07d642f5cc1f6ea5861361b37ba53f528abbb79e6e5249",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/Cybertek/Plug.png",
+      "operation": "~",
+      "sha256": "ad21109dbc2d47917097388671be218558acd9af7eaafc074a2ffe0cbc456b08",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Cybertek/Plug.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/Cybertek/StubRock.png",
+      "operation": "~",
+      "sha256": "4e28d23de8ab80583912329db2db9ecad4208c46fe099db09b76366b7fc569d4",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Cybertek/StubRock.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/Cybertek/StubWall.png",
+      "operation": "~",
+      "sha256": "6e4acfd15ec7148c2954d4c627328c48acf331535652b365331d6075b36c95df",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Cybertek/StubWall.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_T.png",
+      "operation": "~",
+      "sha256": "bfd4e16c2af7a8b4e560876b0460fcb849b8606520893842c9354f3c81c0d7c4",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_T.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X.png",
+      "operation": "~",
+      "sha256": "a8cf0806eed59144242a2f2a1c9dc95a91947733f1cb6a20b2c817f1ec84e7c2",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Plug.png",
+      "operation": "~",
+      "sha256": "4b9bc1faac47349672544ae554e5c2c106f101019a358063c770e059b05de1fe",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Plug.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/StubRock.png",
+      "operation": "~",
+      "sha256": "fc7f91c5fa878dac0af1cac5b86eab0cabdf6aed5aee38fa61eb5b72eede42ce",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/StubRock.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/StubWall.png",
+      "operation": "~",
+      "sha256": "0092d743ee4ae3ea5185df9515fb944adb8c58aa7ae317bf7e0c163cb804362d",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/StubWall.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_T.png",
+      "operation": "~",
+      "sha256": "0b99bde8adfe5cbc8558f3cea7b55391f055745bf0c3a759617b1d2fe115d95e",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_T.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X.png",
+      "operation": "~",
+      "sha256": "37d80cb4d490895ccb2880e9b3686461baaedc5e9156486ed83cad8fbc171c6a",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Plug.png",
+      "operation": "~",
+      "sha256": "774fcc51cea44a2f0820f78dc1d5a4925627b7bef095d13da1d98be96ba61673",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Plug.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/StubRock.png",
+      "operation": "~",
+      "sha256": "d17f31521f294e5f6e6070087bebb6b3d73feb6f13331c2143bf3fabb1b028e3",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/StubRock.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/StubWall.png",
+      "operation": "~",
+      "sha256": "a66ffb5464307dcd4e60e2c23bc271ad96f11a9316a7a3204cb17d1506c370fe",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/StubWall.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_T.png",
+      "operation": "~",
+      "sha256": "02dc8df755171c0737e1a5a0dfbcb2c765b038ada2563cebd4268aa9a98015c2",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_T.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X.png",
+      "operation": "~",
+      "sha256": "26f3ece80658b22f6d7c12547395f0de697c55c024bd3032742d7192bfa58733",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Plug.png",
+      "operation": "~",
+      "sha256": "ed13bf65331698ca792ff5268fa59d2881e988aabaf5e59a812cc0f95f66d5d2",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Plug.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/StubRock.png",
+      "operation": "~",
+      "sha256": "b2c3b7f66a94f964b6a0599462fb00bd52f97ea3e2ead2546d7b5964d5fa409a",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/StubRock.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/StubWall.png",
+      "operation": "~",
+      "sha256": "529c7f7bce3eb7b774b4c07f5884361ca2bc94f91277cae111022f17e557ed04",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/StubWall.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_T.png",
+      "operation": "~",
+      "sha256": "48277e416ba3346436ad3eb0a149a4fbf3ff3e47795e9da888c7bede5f25c00f",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_T.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X.png",
+      "operation": "~",
+      "sha256": "2d216e27e3e6238f22230e651e7efa12b93fe12cda3d68103277d0bb160866d7",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Plug.png",
+      "operation": "~",
+      "sha256": "2634d58c75e746ab2463928ffe44d67cab4b8c27acff606ebc05e0eaf820be46",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Plug.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/PowerStrip_Off.png",
+      "operation": "~",
+      "sha256": "912b55b9a5b9ac8e8cbd0bd4f9da688a2aa347f11ec61411b9992b8a80da633c",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/PowerStrip_Off.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/StubRock.png",
+      "operation": "~",
+      "sha256": "fcb65e787e15fcdd7e97b71962403c552214c9f1815164a2c29b5a0fd53da96c",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/StubRock.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/StubWall.png",
+      "operation": "~",
+      "sha256": "e51cb3111a7e18c8f8d29722bba1c4179fa9d4b1138041a0960c1a2ef269d673",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/StubWall.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_T.png",
+      "operation": "~",
+      "sha256": "2e077ea2af40a3809d9248b520c7e6266785f82062ca057dda6af0eca82a0c28",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_T.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X.png",
+      "operation": "~",
+      "sha256": "9adabddeed59d9f771ca79ce128dcab3d08bd750b0748ccb88876fd4e4ca710f",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Plug.png",
+      "operation": "~",
+      "sha256": "992d836cbb55664191c85b31f765c71f0fc46338d69e6cc9d3061caeeb15130c",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Plug.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/StubRock.png",
+      "operation": "~",
+      "sha256": "77c0deee84074665b9dd104cef7ed348b1403e44e8ce30ec69c435ca514464d1",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/StubRock.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/StubWall.png",
+      "operation": "~",
+      "sha256": "d07295b20c6116d93f79115fb066b4ca93ca370e2e7aba30b98e13f003f8e922",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/StubWall.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_T.png",
+      "operation": "~",
+      "sha256": "373e42c870d99bdc4f7a7a4a1b63ef927471cb6210defe23ddc9f02048fab1d2",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_T.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X.png",
+      "operation": "~",
+      "sha256": "addd1df455dddbc06866646180830c7e538b569344f53a1a905294e755d0bbfa",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/StarWars/Plug.png",
+      "operation": "~",
+      "sha256": "dc124b33c2d036d0034f13d30d2858012839e2050ba8c2c1d37719ab50d491b0",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/StarWars/Plug.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/StarWars/StubRock.png",
+      "operation": "~",
+      "sha256": "cf7430c8aa351c7e7f756116d474e9403c46a67e7066c03a402df3c8ccbd8063",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/StarWars/StubRock.png"
+    },
+    {
+      "mod": "GimmeSomeSlack",
+      "path": "Textures/RimMandrake/GimmeSomeSlack/Styles/StarWars/StubWall.png",
+      "operation": "~",
+      "sha256": "752a26e6968534c77df9e3b9484b0b0f69e66a62f49dc829dab62fae46143b7d",
+      "backup": "/mnt/d/RimTest/data/backups/ht-warning-dependencies-20261111T0945/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/StarWars/StubWall.png"
+    }
+  ]
+}

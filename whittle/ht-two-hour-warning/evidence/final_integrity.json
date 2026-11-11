@@ -1,0 +1,41 @@
+{
+  "verified_at": 1794391597.0163372,
+  "git_sha": "27f3faf48775feb5ad91021dace90107b1c2022c",
+  "tested_artifact_sha": "f3c6f9346befdd2fd1bdbf14064a09f6291270f2",
+  "current_source_hashes": {
+    "src/RimMandrake/HugeThings/Source/RM_HugeThingsSettings.cs": "5f97d7281a58359b74c319900691f0c623ceaa35c02ba9606df8aebeeb91dd83",
+    "src/RimMandrake/HugeThings/validation.py": "ea764e957fd15ae64b8a473fb40ed948faf0472ce7b6034d1c18c9afcdc384b5",
+    "src/RimMandrake/HugeThings/Languages/English/Keyed/RM_HugeThings.xml": "115ff972df622b6894ea56027e2efeef2c5392f0e3a858fe0d5ea3f44d4af228",
+    "src/RimMandrake/HugeThings/northstar/warning_defaults_live.py": "6ed9b55f650b6b6acf90acfd52be0bb880eb08ade19ef9c153a21253dc0c3406",
+    "src/RimMandrake/HugeThings/Assemblies/RM_HugeThings.dll": "e1d1b0623922831d9b3ce52f8da24678b1585e66c6c97c29dca8a3edc50ee5d0",
+    "src/RimMandrake/HugeThings/Assemblies/RM_HugeThings.dll.srchash": "f50d0d075358b4c8de39598f937933256ab9e0cdd4d7eab117f24ef1a450317d",
+    "src/RimMandrake/Utils/preflight_bridge.py": "e9f06989f9dc37fce486f9effdf2293a26d9b69c36690a2a8041a35f686a3085",
+    "src/RimMandrake/Utils/selftest_preflight_bridge.py": "dde97f276f90eec787065f5f2daaf785ea1a4c05004099d8f1cd387a834f4e85"
+  },
+  "live_evidence_sha256": "fd13b788747b551a09aa1fcfa3c4ed7547e2d269484e094757f962fd1cb49982",
+  "warning_source_readback": [
+    "public static float titanEventWarningHours = 2f;",
+    "Scribe_Values.Look(ref titanEventWarningHours, \"titanEventWarningHours\", 2f);",
+    "titanEventWarningHours = RM_TitanicKernel.SaneSetting(titanEventWarningHours, 0.5f, 24f, 2f);",
+    "if (Group(list, \"Titan events\", RimMandrake.Shared.SettingScope.NextPulse, new[] { \"titanEventsEnabled\", \"titanEventWarningHours\" }))",
+    "list.Label(\"RM_HugeThings_TitanWarning\".Translate(titanEventWarningHours.ToString(\"0.0\")));",
+    "titanEventWarningHours = list.Slider(titanEventWarningHours, 0.5f, 24f);"
+  ],
+  "warning_label_readback": "  Tremor warning before it arrives: {0} hours",
+  "validation_default_readback": 2.0,
+  "loaded_original": "2",
+  "live_restored_fields": 27,
+  "raw_restoration_matches_originals": true,
+  "raw_settings_files_unchanged": true,
+  "raw_preflights_all_pass": true,
+  "current_scoped_bytes_equal_published_test_sha": true,
+  "limits": "L1 static settings/fallback/conversion only; no game ticks, crossing, arrival, feel or flight.",
+  "focused_check_exit_codes": {
+    "selftests_frozen.rc": "0",
+    "static.rc": "0",
+    "build_stevedesktop.rc": "0",
+    "parent_preflight_selftest_final.rc": "0"
+  },
+  "preflight_regression_sha256": "f300a140978452acdddc297f0b2223fdd3b3e24597d80a36eca280dda231f6a8",
+  "verified_focused_checks_at": 1794391760.5817337
+}

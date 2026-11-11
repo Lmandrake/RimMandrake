@@ -1,0 +1,250 @@
+{
+  "started_utc": "2026-11-11T10:01:18.725439+00:00",
+  "commands": [
+    {
+      "name": "readiness_python",
+      "args": [
+        "/home/mandrake/.cache/ht-warning-venv/bin/python3",
+        "-c",
+        "import sys,lxml; print(sys.executable); print(lxml.__version__)"
+      ],
+      "rc": 0,
+      "elapsed_s": 0.015054941177368164
+    },
+    {
+      "name": "guard_before",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/host_guard.py",
+        "status",
+        "--json"
+      ],
+      "rc": 0,
+      "elapsed_s": 0.07572460174560547
+    },
+    {
+      "name": "take",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "take",
+        "--host",
+        "stevedesktop",
+        "--idle-ok",
+        "--for",
+        "HT: RIMMANDRAKE_SET_HUGETHINGS_TREMORS_TWO_HOURS"
+      ],
+      "rc": 0,
+      "elapsed_s": 10.28740382194519
+    },
+    {
+      "name": "lease_before",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "who",
+        "--host",
+        "stevedesktop"
+      ],
+      "rc": 0,
+      "elapsed_s": 1.7178657054901123
+    },
+    {
+      "name": "down_before_deploy",
+      "args": [
+        "bash",
+        "/home/mandrake/rm/runner/infrastructure/stevedesktop/rw_game.sh",
+        "down"
+      ],
+      "rc": 0,
+      "elapsed_s": 0.7539777755737305
+    },
+    {
+      "name": "deploy",
+      "args": [
+        "python3",
+        "src/RimMandrake/Utils/deploy_custom_mods.py",
+        "--mod",
+        "HugeThings",
+        "--apply"
+      ],
+      "rc": 0,
+      "elapsed_s": 45.710458517074585
+    },
+    {
+      "name": "preflight_offline",
+      "args": [
+        "/home/mandrake/.cache/ht-warning-venv/bin/python3",
+        "src/RimMandrake/Utils/preflight_bridge.py",
+        "--tier",
+        "quicktest",
+        "--modset",
+        "mods__mandrake_rm_flowworks__mandrake_rm_hugethings__mandrake_rm_hugethingstestraces__mandrake_rm_patches",
+        "--deep",
+        "--all",
+        "--seat",
+        "BENCH",
+        "--json",
+        "/home/mandrake/rm/codex-ht/whittle/ht-two-hour-warning/evidence/live_run_4/preflight_offline.json"
+      ],
+      "rc": 0,
+      "elapsed_s": 46.84843969345093
+    },
+    {
+      "name": "powershell_path",
+      "args": [
+        "which",
+        "powershell.exe"
+      ],
+      "rc": 0,
+      "elapsed_s": 0.009203910827636719
+    },
+    {
+      "name": "up",
+      "args": [
+        "bash",
+        "/home/mandrake/rm/runner/infrastructure/stevedesktop/rw_game.sh",
+        "up",
+        "--wait"
+      ],
+      "rc": 0,
+      "elapsed_s": 40.62236666679382
+    },
+    {
+      "name": "preflight_live",
+      "args": [
+        "/home/mandrake/.cache/ht-warning-venv/bin/python3",
+        "src/RimMandrake/Utils/preflight_bridge.py",
+        "--tier",
+        "quicktest",
+        "--modset",
+        "mods__mandrake_rm_flowworks__mandrake_rm_hugethings__mandrake_rm_hugethingstestraces__mandrake_rm_patches",
+        "--deep",
+        "--all",
+        "--seat",
+        "BENCH",
+        "--json",
+        "/home/mandrake/rm/codex-ht/whittle/ht-two-hour-warning/evidence/live_run_4/preflight_live.json",
+        "--live"
+      ],
+      "rc": 0,
+      "elapsed_s": 4.566143274307251
+    },
+    {
+      "name": "lease_live",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "who",
+        "--host",
+        "stevedesktop"
+      ],
+      "rc": 0,
+      "elapsed_s": 1.2850217819213867
+    },
+    {
+      "name": "script_winpath",
+      "args": [
+        "wslpath",
+        "-w",
+        "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/northstar/warning_defaults_live.py"
+      ],
+      "rc": 0,
+      "elapsed_s": 0.003504037857055664
+    },
+    {
+      "name": "out_winpath",
+      "args": [
+        "wslpath",
+        "-w",
+        "/home/mandrake/rm/codex-ht/whittle/ht-two-hour-warning/evidence/live.json"
+      ],
+      "rc": 0,
+      "elapsed_s": 0.0032901763916015625
+    },
+    {
+      "name": "probe",
+      "args": [
+        "python.exe",
+        "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\codex-ht\\src\\RimMandrake\\HugeThings\\northstar\\warning_defaults_live.py",
+        "--out",
+        "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\codex-ht\\whittle\\ht-two-hour-warning\\evidence\\live.json"
+      ],
+      "rc": 0,
+      "elapsed_s": 7.672034740447998
+    },
+    {
+      "name": "down_finally",
+      "args": [
+        "bash",
+        "/home/mandrake/rm/runner/infrastructure/stevedesktop/rw_game.sh",
+        "down"
+      ],
+      "rc": 0,
+      "elapsed_s": 6.723521709442139
+    },
+    {
+      "name": "release",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "release",
+        "--host",
+        "stevedesktop"
+      ],
+      "rc": 0,
+      "elapsed_s": 10.137450933456421
+    },
+    {
+      "name": "lease_after",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "who",
+        "--host",
+        "stevedesktop"
+      ],
+      "rc": 0,
+      "elapsed_s": 1.6877367496490479
+    },
+    {
+      "name": "guard_after",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/host_guard.py",
+        "status",
+        "--json"
+      ],
+      "rc": 0,
+      "elapsed_s": 0.07480168342590332
+    }
+  ],
+  "ok": true,
+  "inherited_driver": {
+    "state": "HELD",
+    "seat": "BENCH",
+    "purpose": "HT: RIMMANDRAKE_SET_HUGETHINGS_TREMORS_TWO_HOURS",
+    "identity": {
+      "pid": 2765148,
+      "start": 79933.52,
+      "boot_id": "83c87369-52bb-43a4-9179-a6cd07ce769d",
+      "platform": "wsl",
+      "host": "SteveDesktop"
+    },
+    "generation": 1393,
+    "heartbeat": "2026-11-11T10:01:08Z",
+    "how": "holder process pid 2765148 alive",
+    "host": "stevedesktop",
+    "path": "/mnt/d/RimTest/data/scratch/DRIVER_LOCK.json"
+  },
+  "next_round_copy": {
+    "path": "/home/mandrake/codex-steve/ht-loop/evidence/two-hour-warning.json",
+    "sha256": "f77436c2914e15f626bc976d9dd52977ab36567bb3c02f1b71874464dc69d296"
+  },
+  "finished_utc": "2026-11-11T10:05:01.993213+00:00"
+}

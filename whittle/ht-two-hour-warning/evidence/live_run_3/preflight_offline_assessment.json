@@ -1,0 +1,30 @@
+{
+  "O02_actual": [
+    {
+      "id": "O02",
+      "name": "bridge_lease",
+      "required": true,
+      "status": "PASS",
+      "reason": "FREE    since 2026-11-11T07:29:21Z -- take it before launching: rimflow bridge take --for \"<what>\"",
+      "cost_est_s": 0.1,
+      "took_s": 0.0,
+      "prevents": "#22 #50 two drivers",
+      "evidence": {}
+    }
+  ],
+  "O02_applicability": "not applicable: reads other host Archmagi BRIDGE; owner exception",
+  "other_required_nonpasses": [
+    {
+      "id": "O14",
+      "name": "effective_def_lint",
+      "required": true,
+      "status": "UNMEASURED",
+      "reason": "effective_def_lint wrote no report (exit 1): dex-ht/src/RimMandrake/Utils/effective_def_lint.py\", line 267, in build_and_check\n    import costlist_resolve_check as crc\n  File \"/home/mandrake/rm/codex-ht/src/RimMandrake/Utils/costlist_resolve_check.py\", line 22, in <module>\n    from lxml import etree\nModuleNotFoundError: No module named 'lxml'\n",
+      "cost_est_s": 30,
+      "took_s": 1.55,
+      "prevents": "#24 #30 #36 #37 #41 #53 #66 load killers",
+      "evidence": {}
+    }
+  ],
+  "ok": false
+}
