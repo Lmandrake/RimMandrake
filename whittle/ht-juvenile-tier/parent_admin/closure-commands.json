@@ -1,0 +1,70 @@
+[
+  {
+    "command": [
+      "python3",
+      "src/RimMandrake/rimflow/cli.py",
+      "verify",
+      "RIMMANDRAKE_REVIEW_HUGETHINGS_JUVENILE_PASSAGE_CLASSIFICATION",
+      "--result",
+      "pass",
+      "--config",
+      "offline-production-adapter-kernel",
+      "--level",
+      "L0",
+      "--sha",
+      "fbbba4bbf2d9363e0cdc024b93c1653950a1d365",
+      "--evidence",
+      "whittle/ht-juvenile-tier/JUDGE.md",
+      "--why",
+      "Conductor order 2026-11-11 HugeThings drain; independent delegated design and focused source controls, unchanged A1L0"
+    ],
+    "rc": 0,
+    "stdout": "RIMMANDRAKE_REVIEW_HUGETHINGS_JUVENILE_PASSAGE_CLASSIFICATION/run-1@offline-production-adapter-kernel recorded, result pass at L0. The run is IMMUTABLE.\n\u2139\ufe0f  --level without --criterion is recorded on the run and drops nothing; name the criterion to advance the item.\n",
+    "stderr": "",
+    "at": 1794419762.4563081
+  },
+  {
+    "command": [
+      "python3",
+      "src/RimMandrake/rimflow/cli.py",
+      "verify",
+      "RIMMANDRAKE_REVIEW_HUGETHINGS_JUVENILE_PASSAGE_CLASSIFICATION",
+      "--criterion",
+      "A2",
+      "--result",
+      "pass",
+      "--config",
+      "stevedesktop-hugethings16-entry",
+      "--level",
+      "L1",
+      "--sha",
+      "fbbba4bbf2d9363e0cdc024b93c1653950a1d365",
+      "--evidence",
+      "whittle/ht-juvenile-tier/evidence/raw/live-attempt5/loaded-methods.json",
+      "--why",
+      "Conductor order 2026-11-11 HugeThings drain; fresh independent Codex accepts original A2L1, actual loaded methods and exact restoration; no map passage or L4 claim"
+    ],
+    "rc": 0,
+    "stdout": "RIMMANDRAKE_REVIEW_HUGETHINGS_JUVENILE_PASSAGE_CLASSIFICATION/run-1@stevedesktop-hugethings16-entry recorded, result pass for A2 L1. The run is IMMUTABLE.\nRIMMANDRAKE_REVIEW_HUGETHINGS_JUVENILE_PASSAGE_CLASSIFICATION: built -> done\nprose moved: infrastructure/state/items/RIMMANDRAKE_REVIEW_HUGETHINGS_JUVENILE_PASSAGE_CLASSIFICATION.md -> infrastructure/state/items/closed/RIMMANDRAKE_REVIEW_HUGETHINGS_JUVENILE_PASSAGE_CLASSIFICATION.md \u2014 stage BOTH paths in your commit.\n",
+    "stderr": "",
+    "at": 1794419770.8470156
+  },
+  {
+    "command": [
+      "python3",
+      "src/RimMandrake/rimflow/cli.py",
+      "close",
+      "RIMMANDRAKE_REVIEW_HUGETHINGS_JUVENILE_PASSAGE_CLASSIFICATION",
+      "--sha",
+      "fbbba4bbf2d9363e0cdc024b93c1653950a1d365",
+      "--reason",
+      "Original A1L0/A2L1 independently proven; actual full Whittle rc0 and fresh39-command Codex judge yes; L1 Entry only, exact settings/RNG and DOWN/FREE cleanup",
+      "--why",
+      "Conductor order 2026-11-11 HugeThings drain"
+    ],
+    "rc": 2,
+    "stdout": "",
+    "stderr": "RIMMANDRAKE_REVIEW_HUGETHINGS_JUVENILE_PASSAGE_CLASSIFICATION is already `done`, and this would be a SECOND one. The first record stands \u2014 a repeat cannot be told apart from the original in any view, but it would silently replace the sha, the reason or the successor the projection reports. If something more happened, file a NEW item and link it with caused_by.\n",
+    "at": 1794419774.7335477
+  }
+]

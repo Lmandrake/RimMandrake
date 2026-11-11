@@ -1,0 +1,9 @@
+{
+  "at": 1794419704.9841073,
+  "artifact_sha": "fbbba4bbf2d9363e0cdc024b93c1653950a1d365",
+  "published_ancestor": true,
+  "prepublication_twin": "08d42c01546a6964891e18aaef1ff5ba137e427f",
+  "tested_dll_unchanged_after_publication": true,
+  "tested_stamp_unchanged_after_publication": true,
+  "source_at_build_local_twin": "d0e0ed2d3fe160b69b5a73a735151ea6b95db084"
+}

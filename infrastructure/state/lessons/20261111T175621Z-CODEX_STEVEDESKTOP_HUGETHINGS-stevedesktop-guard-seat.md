@@ -1,0 +1,2 @@
+SteveDesktop readonly rw_game.sh invokes host_guard with RM_GUARD_SEAT default RUNNER. Export RM_GUARD_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS alongside the three task seat variables, and carry it through WSLENV where needed, so the helper requests/logs the actual worker seat. Always prove the real host guard seat/generation; old inherited generations and a requested-seat log label do not prove ownership. No runner-clone edit needed. Evidence: whittle/ht-juvenile-tier/PARENT_REVIEW.md and accepted generation1422 raw receipts.
+home: NONE

@@ -1,6 +1,6 @@
 {
-  "files": 939,
-  "bytes": 14191018,
+  "files": 943,
+  "bytes": 14210843,
   "sensitive_pattern_hits": [],
   "largest_bytes": 4151356,
   "manifest": [
@@ -4600,6 +4600,21 @@
       "sha256": "80e8ccf613faa28b19a1d0928c0a30580299ba9dc77d953b03910ca2981dea28"
     },
     {
+      "file": "whittle/ht-juvenile-tier/parent_admin/closed-item-final-readback.txt",
+      "bytes": 8719,
+      "sha256": "a76430d3c97b5baca0f4ded502d1cdeecb5784cdd8e56149a48f569dca1633c3"
+    },
+    {
+      "file": "whittle/ht-juvenile-tier/parent_admin/closed-item-readback.txt",
+      "bytes": 7625,
+      "sha256": "84af27d26b403ff505d9fde3be98c09c4378c183afb72e3dcf803c8a05344d1e"
+    },
+    {
+      "file": "whittle/ht-juvenile-tier/parent_admin/closure-commands.json",
+      "bytes": 3111,
+      "sha256": "32ee04c83eaaecdfa711d0d431d27ad17062118189437417197cffea831bdec1"
+    },
+    {
       "file": "whittle/ht-juvenile-tier/parent_admin/dependency-provenance.json",
       "bytes": 1174,
       "sha256": "280105f5632ed8c9298eede389b1b66e82c7cfc96489e6a2ab65656cbc54e689"
@@ -4638,6 +4653,11 @@
       "file": "whittle/ht-juvenile-tier/parent_admin/publication-paths.json",
       "bytes": 83919,
       "sha256": "d6a0bc752e9e1b30b06c7d6147388b42d7eb3f191b917bce2c2d837b06ddb78d"
+    },
+    {
+      "file": "whittle/ht-juvenile-tier/parent_admin/publication.json",
+      "bytes": 370,
+      "sha256": "9c101ca69d4e001cc482f7d2d582ef997392df2ddfb0050cac974fab4ceceac4"
     },
     {
       "file": "whittle/ht-juvenile-tier/parent_admin/rand-visibility.rc",

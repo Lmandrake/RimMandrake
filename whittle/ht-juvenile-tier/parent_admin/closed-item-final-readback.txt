@@ -1,0 +1,45 @@
+RIMMANDRAKE_REVIEW_HUGETHINGS_JUVENILE_PASSAGE_CLASSIFICATION   done  row -  needs bridge  target v1
+Resolve juvenile-only AdultTier T3 spacing versus supported T2; preserve the owner calf allowance.
+owner CODEX_STEVEDESKTOP_HUGETHINGS   kind task   filed 2026-11-11T14:44:30Z
+closed at fbbba4bbf2d9363e0cdc024b93c1653950a1d365
+built:    fbbba4bbf2d9 on origin/main at 2026-11-11T17:55:08Z, level reached L1
+owes:     nothing
+
+--- items/RIMMANDRAKE_REVIEW_HUGETHINGS_JUVENILE_PASSAGE_CLASSIFICATION.md ---
+## spec
+Titan passage keeps grown-lineage AdultTier eligibility, preserving the owner's 2026-10-21 "Calves are ok" ruling (OWNER tsn1792618983088247673), including custom ladders where a juvenile-only race's supported size is below T2. Separate SpacingTier measures the maximum supported life-stage size for the existing-T3 veto. Missing, empty or malformed stage data falls back to conservative AdultTier spacing. Explicit force overrides, biome pools/list precedence, sea/land matching, season, pending/arrival checks, runtime GetTier executable behavior and conservative startup DefQualifies are unchanged.
+
+RM_ReefbackJuv at shipped4/8/20 retains lineageT3 and has supported spacingT2; ordinary RM_Reefback remains T3 for both. Custom T3=16 makes the juvenile spacingT3 and preserves its veto beside a T3. Policy is independent delegated design, not new owner approval: design/RimMandrake/hugethings_codex_2026-11-09/JUVENILE_PASSAGE_CLASSIFICATION.md; complete contract src/RimMandrake/HugeThings/TIERING.md.
+
+## verify
+CLOSED at the original L1 bar. Independent Opus policy, production adapter/kernel14798 controls and source-model gate controls pass. Fresh deployed SteveDesktop16-mod/all-five-DLC process13760 at Entry/no Game/map/ticks-1 returned153 observations,686-kind census and4096 kernel gate cells. Exact per-call/whole-batch RNG and five settings restore; owned unregistered fixtures disappear at shutdown. Both complete preflight row sets PASS; only other-hostO02 is inapplicable, actual SteveDesktop host ownership proved separately. Final gameDOWN, host bridge/guardFREE1422.
+
+Actual GetTier executes the composed getter on stage-selected needs-null living fixtures with engine age/health trackers and VEF default-cache offset0. Generated-pawn modifiers and natural age progression are unclaimed. Matching settings-file inventories are empty, not a general filesystem audit. Map-level Eligible/T3OnMap and completed/natural passage/crossing, flight, first-touch and L4 acceptance remain outside this item's original criteria.
+
+## criteria
+- A1 L0: Source/specifications agree with an independent delegated classifier/spacing decision; focused positive and negative controls pass without changing the calf allowance or other passage gates.
+- A2 L1: On a fresh deployed minimal-tier process, representative juvenile-only and ordinary adult definitions plus growth/force/threshold controls produce the chosen actual GetTier/AdultTier and T3-spacing results.
+
+## evidence
+Published tested artifact/full Whittle proof: fbbba4bbf2d9363e0cdc024b93c1653950a1d365. Source/deployed DLL4a4f0cbcbcc2ad3f81c75b1d85f7c3deaae7d6e1623750e90692ddc9a68e1b9f and stamp a7d9acee04dba20deb2f38df6047d38596eb0567637e949180feb6940c97b5c4 match51 compiled inputs. Raw whittle/ht-juvenile-tier/evidence/raw/live-attempt5/loaded-methods.json; fresh independent39-command Codex judgment whittle/ht-juvenile-tier/JUDGE.md accepts all three frozen bullets and original A1L0/A2L1. Actual outer Codex Whittle rc0 and validate(cwd) rc0; receipts retained. Earlier failed runs remain failed, including the79 RNG draws from Def constructors; final owned clones avoid those constructors without resetting RNG.
+
+The last level-tagged criterion verify derived done and moved this prose. The required explicit close command then correctly refused a second terminal record; the first immutable done record stands.
+
+NEXT: none for this completed item. Existing giant-plant/titan demonstrations, door-sealing reversal, warned-edge/faction/claim/parallel-expedition work and owner-only certification retain their own items and acceptance bars.
+
+--- history (10 events) ---
+  2026-11-11T14:44:30Z  CODEX_STEVEDESKTOP_HUGETHINGS file      caused_by=REEFBACK_CALF_MEASURE_TITAN_ON_LAND for=BENCH kind=task needs=bridge spec=infrastructure/state/items/RIMMANDRAKE_REVIEW_HUGETHINGS_JUVENILE_PASSAGE_CLASSIFICATION.md target=v1 title=Resolve juvenile-only AdultTier T3 spacing versus supported T2; preserve the owner calf allowance. tsn=1794408270266385674  | agent's reason: delegated: scope; fresh independent HugeThings review found an untested semantic difference; worker seat lacks a filing-reader route, reassign next under Conductor identity order
+  2026-11-11T14:44:36Z  CODEX_STEVEDESKTOP_HUGETHINGS reassign  to=CODEX_STEVEDESKTOP_HUGETHINGS tsn=1794408276694490297  | agent's reason: Conductor order 2026-11-11 worker identity
+  2026-11-11T15:53:07Z  CODEX_STEVEDESKTOP_HUGETHINGS lease     action=take expires=2026-11-11T16:38:07Z token=CODEX_STEVEDESKTOP_HUGETHINGS.pid29029.26015292 tsn=1794412389533604454  | agent's reason: Conductor order 2026-11-11 HugeThings drain
+  2026-11-11T15:53:11Z  CODEX_STEVEDESKTOP_HUGETHINGS claim     tsn=1794412391453734867  | agent's reason: Conductor order 2026-11-11 HugeThings drain
+  2026-11-11T15:53:13Z  CODEX_STEVEDESKTOP_HUGETHINGS start     tsn=1794412393323380272  | agent's reason: Conductor order 2026-11-11 HugeThings drain
+  2026-11-11T17:52:07Z  CODEX_STEVEDESKTOP_HUGETHINGS note      text=Independent delegated Opus decision: retain AdultTier lineage eligibility, GetTier and conservative DefQualifies; use maximum trustworthy supported-stage SpacingTier only for the existing-T3 veto, with malformed fallback. Verdict infrastructure/state/delegated/2026-11-11/RIMMANDRAKE_REVIEW_HUGETHINGS_JUVENILE_PASSAGE_CLASSIFICATION.json; fresh independent Codex JUDGE accepts unchanged A1 L0/A2 L1. tsn=1794419528003864312  | agent's reason: delegated: design
+  2026-11-11T17:52:14Z  CODEX_STEVEDESKTOP_HUGETHINGS note      text=Final live-attempt5 PASS at L1 Entry/nullGame/ticks-1: 153 observations,686-kind census,4096 gate cells; whole-batch/local RNG and five settings exact. Actual host generation1422 released, game DOWN. DLL4a4f0cbc/stamp a7d9acee with51 inputs matched. Independent39-command Codex judge yes; actual Whittle outer rc0 and validate rc0. No map Eligible/T3OnMap, natural passage, crossing, generated-pawn modifiers, flight or L4 claim. Raw whittle/ht-juvenile-tier/evidence/raw/live-attempt5/. tsn=1794419534859875409  | agent's reason: Conductor order 2026-11-11 HugeThings drain
+  2026-11-11T17:55:08Z  CODEX_STEVEDESKTOP_HUGETHINGS implemented criteria=[{'id': 'A1', 'level': 'L0', 'text': 'Source/specifications agree with an independent delegated classifier/spacing decision; focused positive and negative controls pass without changing the calf all'}, {'id': 'A2', 'level': 'L1', 'text': 'On a fresh deployed minimal-tier process, representative juvenile-only and ordinary adult definitions plus growth/force/threshold controls produce the chosen ac'}] needs=bridge ref=origin/main sha=fbbba4bbf2d9 tsn=1794419708679724748  | agent's reason: Conductor order 2026-11-11 HugeThings drain; published tested pair and complete independently judged Whittle proof; register unchanged A1 L0 and A2 L1
+  2026-11-11T17:55:59Z  CODEX_STEVEDESKTOP_HUGETHINGS verify    config=offline-production-adapter-kernel evidence=whittle/ht-juvenile-tier/JUDGE.md level=L0 result=pass sha=fbbba4bbf2d9363e0cdc024b93c1653950a1d365 tsn=1794419759147618291  | agent's reason: Conductor order 2026-11-11 HugeThings drain; independent delegated design and focused source controls, unchanged A1L0
+  2026-11-11T17:56:06Z  CODEX_STEVEDESKTOP_HUGETHINGS verify    config=stevedesktop-hugethings16-entry criterion=A2 evidence=whittle/ht-juvenile-tier/evidence/raw/live-attempt5/loaded-methods.json level=L1 result=pass sha=fbbba4bbf2d9363e0cdc024b93c1653950a1d365 tsn=1794419766067489535  | agent's reason: Conductor order 2026-11-11 HugeThings drain; fresh independent Codex accepts original A2L1, actual loaded methods and exact restoration; no map passage or L4 claim
+--- runs (immutable; a failure stands forever) ---
+  RIMMANDRAKE_REVIEW_HUGETHINGS_JUVENILE_PASSAGE_CLASSIFICATION/run-1@offline-production-adapter-kernel  pass    whittle/ht-juvenile-tier/JUDGE.md
+  RIMMANDRAKE_REVIEW_HUGETHINGS_JUVENILE_PASSAGE_CLASSIFICATION/run-1@stevedesktop-hugethings16-entry  pass    whittle/ht-juvenile-tier/evidence/raw/live-attempt5/loaded-methods.json
+--- causal chain ---
+  RIMMANDRAKE_REVIEW_HUGETHINGS_JUVENILE_PASSAGE_CLASSIFICATION  <- caused by REEFBACK_CALF_MEASURE_TITAN_ON_LAND
