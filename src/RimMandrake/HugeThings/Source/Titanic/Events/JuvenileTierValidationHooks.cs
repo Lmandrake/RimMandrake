@@ -17,6 +17,8 @@ namespace RimMandrake.TitanicCreatures
     public static class JuvenileTierValidationHooks
     {
         private static string F(float value) => value.ToString("R", CultureInfo.InvariantCulture);
+        private static T Clone<T>(T source) where T : class =>
+            (T)AccessTools.Method(typeof(object), "MemberwiseClone").Invoke(source, null);
         private static ulong ReadRandState() => (ulong)AccessTools.Property(typeof(Rand), "StateCompressed").GetValue(null, null);
         private static object Static(string type, string field) => AccessTools.Field(AccessTools.TypeByName(type), field).GetValue(null);
         private static object Member(object owner, string field) => AccessTools.Field(owner.GetType(), field).GetValue(owner);
@@ -96,7 +98,7 @@ namespace RimMandrake.TitanicCreatures
                 + ";thresholds=" + F(t.t1MinBodySize) + "," + F(t.t2MinBodySize) + "," + F(t.t3MinBodySize);
         }
 
-        // Entry UI can consume global Rand BETWEEN bridge requests. Bound ownership inside this synchronous main-thread call.
+        // Verify ownership inside the synchronous call, in addition to the whole-batch state check. Never write RNG state.
         private static string RandChecked(Func<string> observe)
         {
             ulong before = ReadRandState();
@@ -108,13 +110,21 @@ namespace RimMandrake.TitanicCreatures
 
         public static string Observe(ThingDef race, int stageIndex) => RandChecked(() => ObserveRace(race, stageIndex));
 
-        public static string Fixture(float baseSize, string factors, int force, int stageIndex)
+        public static string Fixture(ThingDef template, float baseSize, string factors, int force, int stageIndex)
         {
             return RandChecked(() =>
             {
-            var race = new ThingDef { defName = "RM_JuvenileTierLocalFixture", race = new RaceProperties { baseBodySize = baseSize } };
-            race.modExtensions = new List<DefModExtension> { new RM_TitanicExtension {
-                forceEnabled = force < 0 ? (bool?)false : force > 0 ? (bool?)true : null } };
+            if (template?.race == null) throw new ArgumentException("Resolved template race required");
+            // Verse.Def's ctor consumes Rand for debugRandomId. Clone resolved defs instead of constructing new Defs;
+            // own every field/list we change, and never add the clones to a DefDatabase or rewrite RNG.
+            var race = Clone(template);
+            race.defName = "RM_JuvenileTierLocalFixture";
+            race.race = Clone(template.race);
+            race.race.baseBodySize = baseSize;
+            race.modExtensions = template.modExtensions?.Where(x => !(x is RM_TitanicExtension)).ToList() ?? new List<DefModExtension>();
+            race.modExtensions.Add(new RM_TitanicExtension {
+                forceEnabled = force < 0 ? (bool?)false : force > 0 ? (bool?)true : null });
+            LifeStageDef stageTemplate = template.race.lifeStageAges.Last(a => a?.def != null).def;
             if (factors == "null-list") race.race.lifeStageAges = null;
             else
             {
@@ -122,8 +132,12 @@ namespace RimMandrake.TitanicCreatures
                 if (factors != "empty") foreach (string token in factors.Split(','))
                 {
                     if (token == "null-entry") race.race.lifeStageAges.Add(null);
-                    else race.race.lifeStageAges.Add(new LifeStageAge { def = token == "null-def" ? null :
-                        new LifeStageDef { defName = "RM_LocalStage", bodySizeFactor = float.Parse(token, CultureInfo.InvariantCulture) } });
+                    else
+                    {
+                        LifeStageDef stage = token == "null-def" ? null : Clone(stageTemplate);
+                        if (stage != null) { stage.defName = "RM_LocalStage"; stage.bodySizeFactor = float.Parse(token, CultureInfo.InvariantCulture); }
+                        race.race.lifeStageAges.Add(new LifeStageAge { def = stage });
+                    }
                 }
             }
             return ObserveRace(race, stageIndex);

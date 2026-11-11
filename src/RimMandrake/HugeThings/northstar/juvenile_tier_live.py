@@ -97,6 +97,8 @@ def main():
             assert got.lower() == value.lower() or float(got) == float(value), (name, value, got)
 
     def observe(method, args, expected_adult, expected_spacing, expected_body, ladder, force=0, tag=''):
+        if method=='Fixture':
+            args=a.adult_race+'|'+args
         row = parse(invoke(method, args))
         report['observations'].append(dict(tag=tag, method=method, args=args, fields=row))
         assert row['fixtureRandBefore']==row['fixtureRandAfter'],row
@@ -202,10 +204,8 @@ def main():
         assert invoke('AdultTier','null',UTILITY)=='None'
         assert invoke('SpacingTier','null',UTILITY)=='None'
         report['environment_after']=parse(invoke('Environment'))
-        for key,value in report['environment_before'].items():
-            if key!='rand':
-                assert report['environment_after'][key]==value,(key,value,report['environment_after'][key])
-        report['rng_scope']='Exact Rand before/after inside every synchronous fixture call; passive Entry/UI may consume global RNG between requests. Idle samples and full before/after values retained, never rewritten.'
+        assert report['environment_after']==report['environment_before'],(report['environment_before'],report['environment_after'])
+        report['rng_scope']='Exact whole-batch state and every synchronous fixture-call state both unchanged. Synthetic defs are owned clones; no Def constructors, RNG writes or Push/Pop.'
         report['fixture_scope']='Unregistered fresh needs-null living pawns with engine age/health trackers; VEF postfix/defaultCache branch active, offset0; no generated-pawn modifiers. VEF memo references remain until process shutdown; no cache clearing/patch/global manipulation.'
     except Exception as exc:
         report['errors'].append(str(exc))
