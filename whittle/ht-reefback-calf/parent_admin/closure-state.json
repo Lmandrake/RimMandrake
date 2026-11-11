@@ -1,0 +1,85 @@
+{
+  "observed_at": 1794408513.4063265,
+  "bridge_taken_this_round": false,
+  "game_launched_this_round": false,
+  "closed_this_round": 1,
+  "filed_this_round": 2,
+  "results": {
+    "item": {
+      "command": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "show",
+        "REEFBACK_CALF_MEASURE_TITAN_ON_LAND"
+      ],
+      "rc": 0,
+      "stdout": "REEFBACK_CALF_MEASURE_TITAN_ON_LAND   done  row -  needs offline  target v1\nRM_ReefbackJuv (young reefback) has body size 32 and sits on RM_Miasma at commonality 0.15: a calf at adult size is tier 3 by size on a common land row. Decide whether the calf should be smaller, and whether Miasma should keep drawing it. Found by UNUSED_PORTS_MEASURE_WHAT_NOBODY_NEEDS in the 2026-11-02 def dump.\nowner CODEX_STEVEDESKTOP_HUGETHINGS   kind task   filed 2026-11-03T21:52:08Z\nclosed at b8b3136d93240a6f4865498278c1ea66e44b600a\n\n--- items/REEFBACK_CALF_MEASURE_TITAN_ON_LAND.md ---\n(absent or has no ## sections)\n--- history (11 events) ---\n  2026-11-03T21:52:08Z  BENCH  file      for=BENCH kind=task needs=offline role_unit=rm-detached-bench-unused-ports-measure-what-nobody-needs-1793741449 target=v1 title=RM_ReefbackJuv (young reefback) has body size 32 and sits on RM_Miasma at commonality 0.15: a calf at adult size is tier 3 by size on a common land row. Decide whether the calf should be smaller, and whether Miasma should keep drawing it. Found by UNUSED_PORTS_MEASURE_WHAT_NOBODY_NEEDS in the 2026-11-02 def dump. tsn=1793742728179328699  | agent's reason: survey side finding; not a port\n  2026-11-11T14:03:32Z  CODEX_STEVEDESKTOP_HUGETHINGS reassign  to=CODEX_STEVEDESKTOP_HUGETHINGS tsn=1794405812873871043  | agent's reason: Conductor order 2026-11-11 worker identity\n  2026-11-11T14:03:37Z  CODEX_STEVEDESKTOP_HUGETHINGS lease     action=take expires=2026-11-11T14:48:37Z token=CODEX_STEVEDESKTOP_HUGETHINGS.pid28692.df4c866c tsn=1794405819612917379  | agent's reason: Conductor order 2026-11-11 HugeThings drain\n  2026-11-11T14:03:41Z  CODEX_STEVEDESKTOP_HUGETHINGS claim     tsn=1794405821413434573  | agent's reason: Conductor order 2026-11-11 HugeThings drain\n  2026-11-11T14:03:43Z  CODEX_STEVEDESKTOP_HUGETHINGS start     tsn=1794405823207583340  | agent's reason: Conductor order 2026-11-11 HugeThings drain\n  2026-11-11T14:03:49Z  CODEX_STEVEDESKTOP_HUGETHINGS start     tsn=1794405829770402329  | agent's reason: Conductor order 2026-11-11 HugeThings drain\n  2026-11-11T14:24:03Z  CODEX_STEVEDESKTOP_HUGETHINGS lease     action=renew expires=2026-11-11T15:09:03Z token=CODEX_STEVEDESKTOP_HUGETHINGS.pid28692.df4c866c tsn=1794407045503372096  | agent's reason: Conductor order 2026-11-11 HugeThings drain\n  2026-11-11T14:42:01Z  CODEX_STEVEDESKTOP_HUGETHINGS lease     action=renew expires=2026-11-11T15:27:01Z token=CODEX_STEVEDESKTOP_HUGETHINGS.pid28692.df4c866c tsn=1794408123589735992  | agent's reason: Conductor order 2026-11-11 HugeThings drain\n  2026-11-11T14:44:01Z  CODEX_STEVEDESKTOP_HUGETHINGS note      text=delegated: design; fresh tools-disabled Opus KEEP supported source sizes6.4/T1 and16/T2, KEEP Miasma0.15. Fresh independent Codex all3 bullets true; actual Whittle validator and outer runner rc0. Offline L0 only; no live/deploy/flight/art acceptance. Separate classifier-spacing and nursery-combat followups filed, not claimed fixed. Proof whittle/ht-reefback-calf/JUDGE.md and raw evidence; design decision REEFBACK_CALF_DECISION.md. tsn=1794408241433905699  | agent's reason: Conductor order 2026-11-11 HugeThings drain\n  2026-11-11T14:47:26Z  CODEX_STEVEDESKTOP_HUGETHINGS verify    config=offline-source-reefback evidence=whittle/ht-reefback-calf/JUDGE.md level=L0 result=pass sha=b8b3136d93240a6f4865498278c1ea66e44b600a tsn=1794408446129152187  | agent's reason: Conductor order 2026-11-11 HugeThings drain; actual offline model and controls, independent delegated KEEP/KEEP, fresh independent Codex yes and real Whittle rc0. No runtime, deployment, combat or first-touch acceptance.\n  2026-11-11T14:47:40Z  CODEX_STEVEDESKTOP_HUGETHINGS close     reason=L0 offline size/placement decision complete: supported source calf sizes6.4/T1 and16/T2, adult32/T3; independent delegated KEEP sizes and Miasma0.15, fresh separate Codex all3 true, actual full Whittle rc0. No live/deploy/combat/first-touch claim. Separate classifier and nursery-combat followups are live under this worker. sha=b8b3136d93240a6f4865498278c1ea66e44b600a tsn=1794408460045591038  | agent's reason: Conductor order 2026-11-11 HugeThings drain\n--- runs (immutable; a failure stands forever) ---\n  REEFBACK_CALF_MEASURE_TITAN_ON_LAND/run-1@offline-source-reefback  pass    whittle/ht-reefback-calf/JUDGE.md\n--- causal chain ---\n  REEFBACK_CALF_MEASURE_TITAN_ON_LAND  -> caused RIMMANDRAKE_RECONCILE_HUGETHINGS_REEFBACK_NURSERY_COMBAT\n  REEFBACK_CALF_MEASURE_TITAN_ON_LAND  -> caused RIMMANDRAKE_REVIEW_HUGETHINGS_JUVENILE_PASSAGE_CLASSIFICATION\n",
+      "stderr": ""
+    },
+    "host_guard": {
+      "command": [
+        "python3",
+        "src/RimMandrake/rimflow/host_guard.py",
+        "status"
+      ],
+      "rc": 0,
+      "stdout": "stevedesktop FREE\n",
+      "stderr": ""
+    },
+    "host_bridge": {
+      "command": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "who",
+        "--host",
+        "stevedesktop"
+      ],
+      "rc": 0,
+      "stdout": "stevedesktop guard: stevedesktop FREE\nstevedesktop bridge FREE in the ledger \u2014 take it:  rimflow bridge take --host stevedesktop --for \"<what for>\"\n",
+      "stderr": ""
+    },
+    "game": {
+      "command": [
+        "bash",
+        "/home/mandrake/rm/runner/infrastructure/stevedesktop/rw_game.sh",
+        "status"
+      ],
+      "rc": 3,
+      "stdout": "stopped\n",
+      "stderr": ""
+    },
+    "count": {
+      "command": [
+        "python3",
+        "/home/mandrake/codex-steve/ht-loop/count.py",
+        "/home/mandrake/rm/codex-ht"
+      ],
+      "rc": 0,
+      "stdout": "46\n",
+      "stderr": ""
+    },
+    "published_artifact": {
+      "command": [
+        "git",
+        "merge-base",
+        "--is-ancestor",
+        "b8b3136d93240a6f4865498278c1ea66e44b600a",
+        "origin/main"
+      ],
+      "rc": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "quota": {
+      "command": [
+        "python3",
+        "-c",
+        "import time,json,ops_watch as O;print(O.c_codex(time.time(),json.load(open('ops_watch_rules.json')),{})['codex.week_used_pct']['v'])"
+      ],
+      "rc": 0,
+      "stdout": "22.0\n",
+      "stderr": ""
+    }
+  }
+}
