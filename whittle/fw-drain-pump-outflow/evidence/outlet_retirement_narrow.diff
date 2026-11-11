@@ -1,0 +1,11 @@
+--- fixed-production
++++ room-retirement-mutant
+@@ -348,7 +348,7 @@
+ 					int amt = (int)System.Math.Min(units, System.Math.Min(avail, room));
+ 					if (amt <= 0 || (!RM_MapComponent_Excavation.LevelExact && amt < units))
+ 					{
+-						usedOutflows.Add(oi);   // source is eligible; this end has too little room this cycle
++						// NEGATIVE CONTROL: do not retire the room-short outlet
+ 						continue;
+ 					}
+ 					RM_TransferLeg into = fillHoses ? RM_TransferLeg.Sink(k => RM_LiquidNet.FillRoutes(this, new object[] { s.port, port }, l, k))

@@ -1,0 +1,2 @@
+contained in rm-harness.slice (max 24G), 1 workers
+[1/1] PASS        462.6s  src/RimMandrake/Utils/selftest_flowworks_stock.py

@@ -1,0 +1,15 @@
+{
+  "time": 1794409128.779257,
+  "raw_path": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/pump-outflow-raw/live-attempt2/Player_after_scene.log",
+  "sha256": "423854d3e15a1402b654d1da39fb65201c4a2b63d1430dfd133e919212cdb83e",
+  "patterns": [
+    "Exception",
+    "Config error",
+    "Could not resolve",
+    "Error in ",
+    "Error while",
+    "Failed to"
+  ],
+  "hits": [],
+  "first_exception": null
+}

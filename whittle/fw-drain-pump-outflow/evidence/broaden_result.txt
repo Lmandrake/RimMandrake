@@ -1,0 +1,66 @@
+I've finished reading the four files and the selftest pins; here is the diagnosis and the suggested fix. I edited nothing.
+
+## Diagnosis (exact-level off, s0 = 900 dL channel, s1 ≥ 10,000 dL, one outflow, no tank room)
+
+A level is 10,000 dL (`RM_PumpMath.TankUnitsPerLevel`).
+
+1. **Attempt 1:** `PumpNext` goes through sources first. s0 is live, and its outflow predicate only checks `Outlet(...) != Blocked`, so it returns (s0, o0).
+2. In `Building_LiquidPump.cs:337-344`: `avail = 900` and `amt = 900`. Because exact-level is off and `amt < units`, the code runs `usedOutflows.Add(oi); continue;`. **That retires the outflow for a source shortfall.**
+3. **Attempt 2:** the outflow is used. `tanksTake(s0)` is 0 (no room), and so is `tanksTake(s1)`, so `PumpNext` returns false. Nothing moves and the status is "NothingToDraw".
+
+The root cause is that one `if` (`amt <= 0 || (!exact && amt < units)`) treats "source short" and "outlet room short" the same way, and both retire the outlet.
+
+Only channel sources can hit this. With exact-level off, a natural body under one level isn't `Drawable` at all (`SourceTakeUnits` returns 0).
+
+## Minimal fix (keeps the partial-channel tank fallback)
+
+**Don't put a short source in `deadSources`.** That would also skip its tank fallback. With exact-level off, a 900 dL channel can still go into tanks, because `TankTakeUnits(..., partialOk: s.channel || exact)`.
+
+Instead, check source eligibility for outflows in the chooser predicate, the same way `TankTake` is shared by the predicate and the fill plan:
+
+```csharp
+// one helper, used by both the PumpNext predicate and the branch's amt
+private int OutflowGive(RM_MapComponent_Excavation ex, Source s) =>
+    RM_PumpMath.SourceTakeUnits(RM_PumpMath.TankUnitsPerLevel,
+        s.channel ? ex.WaterDlAt(s.cell) : ex.Stock.SupplyDl(Map, s.cell, RM_PumpMath.TankUnitsPerLevel, ex),
+        RM_MapComponent_Excavation.LevelExact);
+
+(o, i) => OutflowGive(ex, sources[i]) > 0 && Outlet(ex, outflows[o], null, sources[i].fluid, out _) != RM_OutletKind.Blocked
+```
+
+`SourceTakeUnits` already has the rule you need: a whole level if the source has one; otherwise whatever is left with exact-level on, or 0 with it off.
+
+In the branch, set `avail = OutflowGive(...)`. The only shortfall left there is outlet room (`room <= 0`, or `room < units` with exact-level off), and only that retires the outflow.
+
+What this gives you:
+- **No new state and no extra attempts.** The loop bound `sources + outflows + 1` still holds, because every failed attempt adds a new entry to `usedOutflows` or `deadSources`.
+- **Tank fallback is unchanged.** `PumpNext` still calls `tanksTake(s0)` when s0 doesn't qualify for an outflow.
+- **Starvation goes away when there are 2+ levels.** Level 1 sends s0 to the tank and leaves the outflow free; level 2 sends s1 to the outflow. Before, the outflow was burned on level 1.
+
+**One policy point, flagged rather than fixed:** with tank room and `levels = 1`, s0 still goes to the tank and s1 doesn't use the outflow that cycle. That follows from the documented source-first order in `PumpNext`. Switching to "try every source on outflows before any tank" would change `PumpNext` semantics and its selftests, so it's out of scope for a minimal fix.
+
+**Alternative if you'd rather react at failure time:** add a second cell-keyed set, `noOutflowSources`, cleared in `Tick` next to `deadSources`. You would then have to raise the attempt bound to `2*sources + outflows + 1`, because one source can fail twice (not outflow-eligible, then dead for tanks).
+
+**Simultaneous shortage (source short and outlet short):** with the predicate approach the pair is never picked, so the outlet stays free for s1. If s1 then finds the outlet room short, that attempt retires the outlet. That's the correct split of blame.
+
+## Risks to check
+
+- **The pin will break:** the `PumpChecks.cs:217` regex fixes the exact `PumpNext` call text. Update it, and add a pin that the branch's `avail` and the predicate use the same helper.
+- **The existing harness isn't production code:** `PumpChecks.Cycle()` is a copy that works in whole levels with `src[s] > 0`, so it can't reproduce the defect. Run it in dL and call `RM_PumpMath.SourceTakeUnits` / `TankTakeUnits`, or pull the branch's shortfall classification into a Verse-free `RM_PumpMath` function that both the pump and the harness call.
+- **Outlet room depends on the fluid:** `OutletRoomDl(..., f, ...)` and `fillHoses` (per `s.port`) depend on the source. Retiring an outlet because of room short for source A could starve source B, whose Intake hose still needs filling (hose fill sets `room = units`). This is pre-existing; test it rather than widen the fix.
+- **Possible pre-existing leak:** the take is `ex.TryTakeDl(cell, k, out _) == k`. If `TryTakeDl` can take part and return less, `Do` reports 0 and nothing is put back, so liquid is lost. Check that it's all-or-nothing.
+- **Cell keys are right:** `Sources()` is rebuilt on every `TryDraw`, so list indices shift when a source dries up. The same cell can also appear twice, once in reach and once through an Intake port. Keying by cell index is correct for both tank refusal and shortfall, since neither depends on the port. Any new set must also be cell-keyed.
+
+## Adversarial tests (run through the production helpers and the normal selftest entry point)
+
+1. **Repro:** exact-level off, s0 a 900 dL channel, s1 a 10,000 dL channel or body, one outflow with room ≥ 10,000, tank room 0, `levels = 1`. Expect s1→o0 with 10,000 moved, s0 still at 900, and the outflow gaining exactly what s1 lost. It must fail before the fix (no move). Repeat with s1 reached through an Intake end, and check the port credits.
+2. **Tank fallback with exact-level off:** tank room ≥ 900, `levels = 1`: s0→tank 900 and the outflow unused. `levels = 2`: s0→tank, then s1→o0. Tank room 500: s0→tank 500, with 400 left in the cell.
+3. **Outlet short (exact-level off, room 9,999):** the outflow is retired, s0 and s1 are unchanged, the loop stops, and any tank fallback still happens.
+4. **Both short:** s0 short, o0 room short, plus a second outflow o1 that's fine. Use cycle offsets so the rotation starts at o0 and at o1. s1 should end up on o1.
+5. **Exact-level on:** s0 900 → o0 900 (partial moves are allowed), and o0 is then used. Outlet room 500 → 500 moves. Short sources must not be excluded in this mode.
+6. **All sources short, no tank room:** no moves, outflows not consumed, the loop stops within its bound.
+7. **Cell-key checks:** the same cell listed via reach and via an Intake gets one retirement that covers both entries. A source dries up between levels and the list shifts; the source that moved into its slot must not inherit the old "dead" status. Add a deliberately index-keyed variant that should fail.
+8. **Hose fill:** s1's Intake hose needs liquid while outlet room is 0. The level should go into the hoses, with s0 still excluded.
+9. **Rollback:** force the outlet's `Do` to refuse after the take. The channel gets it back via `TryPourDl`, a body via `CreditDl`. `PutBacks` goes up by one, `Lost == 0`, the outflow is retired, and no credits or `Moved++` happen.
+10. **Mixed fluids:** s0 short water, s1 tar, the outlet is a water channel. Tar is `Blocked`, so s1 goes to tanks or nowhere.
+11. **Control:** exact-level off, a body at 9,999 dL isn't drawable at all.

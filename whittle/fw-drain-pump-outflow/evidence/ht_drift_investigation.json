@@ -1,0 +1,20 @@
+{
+  "time": 1794406195.3237064,
+  "files": {
+    "clone": {
+      "path": "src/RimMandrake/HugeThings/Defs/IncidentDefs/RM_TitanPassage.xml",
+      "sha256": "7c072157953fc87211a5afc887c98c6ed10e2db037e838e4286a18759a85bab2",
+      "text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<Defs>\n  <!--\n    TITAN_CAMPS_SCAVENGERS_EVENTS_1, card #5 (owner 2026-09-09): a titan some biome homes, but not this map's, crosses the\n    map edge to edge after hours of footfall tremors. The race is picked at fire time from the live biome commonalities\n    (IncidentWorker_TitanPassage); none is named here. PROVISIONAL (FOUNDRY 2026-10-21): baseChance 0.3, minRefireDays 30.\n  -->\n  <IncidentDef>\n    <defName>RM_TitanPassage</defName>\n    <label>titan passage</label>\n    <category>Misc</category>\n    <targetTags><li>Map_PlayerHome</li></targetTags>\n    <workerClass>RimMandrake.TitanicCreatures.IncidentWorker_TitanPassage</workerClass>\n    <baseChance>0.3</baseChance>\n    <minRefireDays>30</minRefireDays>\n  </IncidentDef>\n</Defs>\n"
+    },
+    "mirror": {
+      "path": "/mnt/d/Luke/dev/RimMandrake/src/RimMandrake/HugeThings/Defs/IncidentDefs/RM_TitanPassage.xml",
+      "sha256": "292d61b604df29756437bd2cfb0efc58b6b91c6404d686e3f55d5af963c4bb4a",
+      "text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<Defs>\n  <!--\n    TITAN_CAMPS_SCAVENGERS_EVENTS_1, owner 2026-10-21: a titan is picked from this biome's passage hints, or its own roster,\n    with sea/land matching and calves allowed by adult race tier. The passage is warned by two in-game hours of tremors\n    by default (owner 2026-11-11). IncidentWorker_TitanPassage names no race here. PROVISIONAL: baseChance 0.3, minRefireDays 30.\n  -->\n  <IncidentDef>\n    <defName>RM_TitanPassage</defName>\n    <label>titan passage</label>\n    <category>Misc</category>\n    <targetTags><li>Map_PlayerHome</li></targetTags>\n    <workerClass>RimMandrake.TitanicCreatures.IncidentWorker_TitanPassage</workerClass>\n    <baseChance>0.3</baseChance>\n    <minRefireDays>30</minRefireDays>\n  </IncidentDef>\n</Defs>\n"
+    },
+    "deployed": {
+      "path": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/HugeThings/Defs/IncidentDefs/RM_TitanPassage.xml",
+      "sha256": "7c072157953fc87211a5afc887c98c6ed10e2db037e838e4286a18759a85bab2",
+      "text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<Defs>\n  <!--\n    TITAN_CAMPS_SCAVENGERS_EVENTS_1, card #5 (owner 2026-09-09): a titan some biome homes, but not this map's, crosses the\n    map edge to edge after hours of footfall tremors. The race is picked at fire time from the live biome commonalities\n    (IncidentWorker_TitanPassage); none is named here. PROVISIONAL (FOUNDRY 2026-10-21): baseChance 0.3, minRefireDays 30.\n  -->\n  <IncidentDef>\n    <defName>RM_TitanPassage</defName>\n    <label>titan passage</label>\n    <category>Misc</category>\n    <targetTags><li>Map_PlayerHome</li></targetTags>\n    <workerClass>RimMandrake.TitanicCreatures.IncidentWorker_TitanPassage</workerClass>\n    <baseChance>0.3</baseChance>\n    <minRefireDays>30</minRefireDays>\n  </IncidentDef>\n</Defs>\n"
+    }
+  }
+}

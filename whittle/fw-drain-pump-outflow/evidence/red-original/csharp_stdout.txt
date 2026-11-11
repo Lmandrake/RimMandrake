@@ -1,0 +1,3 @@
+staging src/RimMandrake/FlowWorks/Source/SelfTest/RimMandrakeFlowWorks.SelfTest.csproj -> D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_79bb8021
+  src/
++ dotnet.exe build D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_79bb8021\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj -c Release

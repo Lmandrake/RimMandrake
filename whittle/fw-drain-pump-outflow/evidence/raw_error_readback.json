@@ -1,0 +1,20 @@
+{
+  "time": 1794409614.4030395,
+  "source": "whittle/fw-drain-pump-outflow/evidence/live-attempt2/live_scene.json",
+  "sha256": "475633d6b0776cdf252fe15669fce49454314cfa259a7cad858f9123cdd00636",
+  "error_level_entries": [
+    {
+      "path": "/calls/21/result/logs/0",
+      "entry": {
+        "Sequence": 31,
+        "EntryId": "log_ea1ca6970e4d45d89df8f3df20ba01f5",
+        "Level": "error",
+        "Message": "Tried to get CurKindLifeStage from humanlike pawn Shiki",
+        "Source": "unity",
+        "FirstSeenAtUtc": "2026-11-11T14:58:24.170731+00:00",
+        "TimestampUtc": "2026-11-11T14:58:24.170731+00:00",
+        "RepeatCount": 1
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "time": 1794406611.3158917,
+  "operation": "Decode actual stdout/stderr writes from the sampled selftest wrapper PID",
+  "wrapper_pid": 744368,
+  "runner_pid": 744188,
+  "original_observer_path": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/pump-outflow-raw/negative-outlet-retirement/selftest_writes.strace",
+  "original_observer_sha256": "1f9b64f1522937ffff7b43f9e80b9aa263284fb20280cc585adc595204fc1d7e",
+  "original_observer_bytes": 351272,
+  "kept_raw": "selftest_output_writes.strace",
+  "stdout_sha256": "a22ac917668f0c183eaf39cfd8d438ba78d63d9b35feda1d9ba38a8ddfd7eefc",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "omitted": "Unrelated subprocess syscalls, including redundant source/Git/rsync payloads; no test log omitted"
+}

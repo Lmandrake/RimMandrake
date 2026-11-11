@@ -1,0 +1,22 @@
+{
+  "command": [
+    "./publish",
+    "-m",
+    "Keep short pump sources from consuming outflows\n\nPreserve tank fallback and prove production ordering.\nCo-Authored-By: Codex (GPT) via WSL codex-cli",
+    "src/RimMandrake/FlowWorks/Source/LiquidTypes/Building_LiquidPump.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/PumpOutflowHarness.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/PumpOutflowHarness.targets",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/Program.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/PumpChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/RimMandrakeFlowWorks.SelfTest.csproj",
+    "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+    "src/RimMandrake/FlowWorks/northstar/pump_outflow_live.py",
+    "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll",
+    "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll.srchash"
+  ],
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "started": 1794407700.6231024,
+  "elapsed": 8.680846214294434,
+  "returncode": 0,
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-pump-outflow"
+}

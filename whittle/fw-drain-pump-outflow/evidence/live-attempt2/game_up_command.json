@@ -1,0 +1,11 @@
+{
+  "command": [
+    "./game",
+    "--why",
+    "FW drain pump outflow: fresh process, actual ordered list and live preflight GREEN",
+    "up"
+  ],
+  "started": 1794409095.779111,
+  "elapsed": 4.4750330448150635,
+  "returncode": 0
+}

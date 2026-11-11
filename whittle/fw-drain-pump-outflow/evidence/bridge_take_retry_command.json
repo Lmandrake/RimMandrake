@@ -1,0 +1,16 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/rimflow/cli.py",
+    "bridge",
+    "take",
+    "--idle-ok",
+    "--for",
+    "FW drain: PUMP_OUTFLOW_FIX_PART_SOURCE_HOGS_DOOR"
+  ],
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "started": 1794408959.0873225,
+  "elapsed": 6.88774847984314,
+  "returncode": 0,
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-pump-outflow"
+}

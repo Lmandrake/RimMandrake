@@ -1,0 +1,14 @@
+{
+  "command": [
+    "python.exe",
+    "D:\\Luke\\dev\\RimMandrake\\src\\RimMandrake\\Utils\\deploy_custom_mods.py",
+    "--mod",
+    "FlowWorks",
+    "--apply"
+  ],
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "started": 1794407798.4498732,
+  "elapsed": 8.212931156158447,
+  "returncode": 0,
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-pump-outflow"
+}

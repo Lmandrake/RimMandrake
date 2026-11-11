@@ -1,0 +1,12 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/Utils/winbuild.py",
+    "FlowWorks"
+  ],
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "started": 1794407649.5891292,
+  "elapsed": 8.445990085601807,
+  "returncode": 0,
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-pump-outflow"
+}

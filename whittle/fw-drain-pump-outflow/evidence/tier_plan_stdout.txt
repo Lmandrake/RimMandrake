@@ -1,0 +1,20 @@
+installed mods discovered: 1379
+
+tier 'mods__mandrake_rm_flowworks__mandrake_rm_gimmesomeslack__mandrake_rm_hugethings__mandrake_rm_patches': LIGHTSPEED_REWIRE_ROUND_AS_TESTQ_CLIENT: the mods a live-proof file needs (its build's mods and its live-mods), with the bridge, Gimme Some Slack and all five DLC: brrainz.rimbridgeserver, mandrake.rm.gimmesomeslack, mandrake.rm.flowworks, mandrake.rm.hugethings, mandrake.rm.patches
+
+    1  brrainz.harmony                              Harmony
+    2  ludeon.rimworld                              Ludeon.RimWorld
+    3  ludeon.rimworld.royalty                      Ludeon.RimWorld.Royalty
+    4  ludeon.rimworld.ideology                     Ludeon.RimWorld.Ideology
+    5  ludeon.rimworld.biotech                      Ludeon.RimWorld.Biotech
+    6  ludeon.rimworld.anomaly                      Ludeon.RimWorld.Anomaly
+    7  ludeon.rimworld.odyssey                      Ludeon.RimWorld.Odyssey
+    8  brrainz.rimbridgeserver                      RimBridgeServer
+    9  ray1203.simplecamerasetting                  SimpleCameraSetting
+   10  mandrake.rm.gimmesomeslack                   RimMandrake: Gimme Some Slack
+   11  mandrake.rm.flowworks                        RimMandrake: FlowWorks
+   12  mandrake.rm.hugethings                       RimMandrake: Huge Things
+   13  mandrake.rm.patches                          RimMandrake Patches
+
+  13 mods, down from 316.
+  plan only. Re-run with --apply to write ModsConfig.xml.

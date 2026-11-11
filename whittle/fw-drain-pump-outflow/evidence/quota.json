@@ -1,0 +1,8 @@
+{
+  "status": "MEASURED",
+  "week_percent": 16,
+  "reset_hours": 161,
+  "measured_utc": "2026-11-11T13:44:53Z",
+  "provenance": "fresh parent measurement expressly supplied in the task; unit gate; cutoff 88 percent",
+  "recorded": 1794405894.8264363
+}

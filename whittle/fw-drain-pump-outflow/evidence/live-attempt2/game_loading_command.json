@@ -1,0 +1,11 @@
+{
+  "command": [
+    "./game",
+    "--why",
+    "FW drain pump outflow: offline proof and deployment verified",
+    "loading"
+  ],
+  "started": 1794409049.5358112,
+  "elapsed": 3.6234421730041504,
+  "returncode": 0
+}

@@ -1,0 +1,20 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/Utils/preflight_bridge.py",
+    "--tier",
+    "quicktest",
+    "--modset",
+    "mods__mandrake_rm_flowworks__mandrake_rm_gimmesomeslack__mandrake_rm_hugethings__mandrake_rm_patches",
+    "--deep",
+    "--seat",
+    "BENCH",
+    "--json",
+    "whittle/fw-drain-pump-outflow/evidence/preflight_offline_retry.json"
+  ],
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "started": 1794408966.290845,
+  "elapsed": 56.75727319717407,
+  "returncode": 0,
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-pump-outflow"
+}

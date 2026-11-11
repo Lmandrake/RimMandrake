@@ -1,0 +1,11 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/rimflow/cli.py",
+    "bridge",
+    "release"
+  ],
+  "started": 1794409144.567469,
+  "elapsed": 5.429902791976929,
+  "returncode": 0
+}

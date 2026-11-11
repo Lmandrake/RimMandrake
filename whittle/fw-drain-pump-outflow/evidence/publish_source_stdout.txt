@@ -1,0 +1,3 @@
+moved the branch: 0 dirty file(s) merged in place, 3 carried past git
+PUBLISHED d0d7cc2f1f23677c06fa9ee2f39c370ca7437a45
+close with: rimflow close <ID> --sha d0d7cc2f1f23

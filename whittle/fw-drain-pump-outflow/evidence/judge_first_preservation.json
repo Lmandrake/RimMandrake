@@ -1,0 +1,7 @@
+{
+  "time": 1794409733.6193519,
+  "source": "JUDGE.md",
+  "preserved": "whittle/fw-drain-pump-outflow/evidence/judge_first_exact.md",
+  "sha256": "e736d0152b4f53245c0b7e30c83df47bb69a4c61e88501d355412c0069b90058",
+  "reason": "First verdict preserved unchanged; a real status read regenerated queue views, requiring fresh readback/DONE/judge, with no code or live behavior change."
+}

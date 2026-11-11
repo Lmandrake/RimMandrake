@@ -1,0 +1,11 @@
+{
+  "command": [
+    "./game",
+    "--why",
+    "FW drain pump outflow: restoration ended; release immediately",
+    "down"
+  ],
+  "started": 1794408051.2127638,
+  "elapsed": 3.573521852493286,
+  "returncode": 0
+}

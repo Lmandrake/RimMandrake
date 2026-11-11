@@ -1,0 +1,11 @@
+# Independent broaden call
+
+Fresh read-only Opus print process, neutral ext4 cwd, no resume/fork/history, Read/Glob/Grep only. Full original JSON and transport receipt: evidence/broaden_raw.json and broaden_call.json.
+
+Opus identified that blindly adding a short source to deadSources also suppresses its partial-channel tank fallback. Acted on: filter source eligibility for outflows with the existing SourceTakeUnits rule, shared by the chooser and transfer amount. This adds no retirement state and preserves source-first/tank fallback order. Outlet room refusal continues retiring the outlet.
+
+Acted on rotation, simultaneous shortage, exact partial transfer, duplicate contacts, multi-level cycle/reset, hose fill and rollback suggestions through complete production-method extraction in the normal SelfTest entry point. The engine boundary is explicitly doubled. Inspection of actual TryTakeDl found that exact-off partial requests round down; tests must disclose that separate boundary rather than imply a live partial tank withdrawal works.
+
+Cell-key finding: Sources is rebuilt per TryDraw and can contain the same physical cell through reach and intake. Existing deadSources keys physical cells, so a list-index key would be wrong after depletion. This repair does not add dead-source entries: its outflow eligibility is recomputed from each actual cell, leaving distinct port-dependent hose contacts available. Existing destination/transfer failures still retire outlets, including the pre-existing limit that one failed outlet for one contact can suppress another contact whose hose needs filling.
+
+A separate fresh read-only Opus pilot followed the first live fixture refusal (full raw JSON: evidence/pilot_raw.json, exact extraction pilot_result.txt). It traced the endpoint's D4 band and the missing legal cross-band route, recommended a ground mouth at 51,40 beside the actual destination 52,40, and identified an unrecorded lineCrossingRulesEnabled precondition. Acted on: supported adjacent mouth, real CheckInstall read before lay, and read/require/restore of the enabled crossing rule. It did not drive the game or judge acceptance. The first attempt and successful restoration remain unchanged at the root evidence paths.

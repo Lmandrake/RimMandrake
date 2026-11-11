@@ -1,0 +1,13 @@
+{
+  "time": 1794409591.8258388,
+  "raw_path": "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-pump-outflow/evidence/judge_raw.json",
+  "raw_sha256": "9662eb3c2093818baea334c3b5e4d4dc97a754403a4236c47fc33e8997e4bc28",
+  "extracted_path": "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-pump-outflow/JUDGE.md",
+  "result_utf8_sha256": "e736d0152b4f53245c0b7e30c83df47bb69a4c61e88501d355412c0069b90058",
+  "extracted_sha256": "e736d0152b4f53245c0b7e30c83df47bb69a4c61e88501d355412c0069b90058",
+  "exact_result_unchanged": true,
+  "subtype": "success",
+  "is_error": false,
+  "session_id": "59e71fcf-4261-4a37-b9b0-288eae965433",
+  "last_line": "would show: yes"
+}

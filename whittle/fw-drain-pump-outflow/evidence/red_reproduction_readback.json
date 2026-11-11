@@ -1,0 +1,11 @@
+{
+  "time": 1794406720.1331303,
+  "input": "whittle/fw-drain-pump-outflow/evidence/red-executable/csharp_stdout.txt",
+  "input_sha256": "3657716b8ece7ca2394ea6c8ec17389d8aebf548f42ede186930f99c6bda1be2",
+  "verbatim_lines": [
+    "    candidates=0:900,1:20000 cycle=0 after=0:900,1:20000 moved=0 sources=;outflows=0 total=20900",
+    "FAIL  PumpOutflow_short_first_real_TryDraw",
+    "        expected move 10000, got 0"
+  ],
+  "original_source_sha256": "767932167ced0dd08c6278e264dff35be893ee4a778b51b7c2ffebfecf72f39f"
+}

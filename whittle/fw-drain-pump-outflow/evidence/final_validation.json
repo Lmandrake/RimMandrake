@@ -1,0 +1,13 @@
+{
+  "time": 1794409592.7537916,
+  "checker_path": "/home/mandrake/rm/scratch/BENCH/fw-drain/.claude/hooks/whittle_stop.py",
+  "called": "done_problems(root, work, True, True)",
+  "problems": [],
+  "workflow_path": "/home/mandrake/dev/MandrakeWorkflows/whittle/run.py",
+  "workflow_call": "validate(root)",
+  "workflow_returncode": 0,
+  "stdout": "",
+  "stderr": "",
+  "need_judge": true,
+  "need_broaden": true
+}

@@ -1,0 +1,29 @@
+{
+  "time": 1794407624.4271014,
+  "files": [
+    {
+      "mod": "FlowWorks",
+      "path": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll",
+      "deployed_sha256": "d70a84da372c6f6f97007c743cb074e9b9e9d43b985a0679ee8a8f2173c2877e",
+      "HEAD_sha256": "d70a84da372c6f6f97007c743cb074e9b9e9d43b985a0679ee8a8f2173c2877e",
+      "recognized_as_current_clone_committed_bytes": true,
+      "raw_backup": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/pump-outflow-raw/predeploy_FlowWorks_RimMandrakeFlowWorks.dll"
+    },
+    {
+      "mod": "FlowWorks",
+      "path": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll.srchash",
+      "deployed_sha256": "56e53116bbd18338475ffa58f25b31e94c6eeca0df7adc828ba8ea1d3233cc79",
+      "HEAD_sha256": "56e53116bbd18338475ffa58f25b31e94c6eeca0df7adc828ba8ea1d3233cc79",
+      "recognized_as_current_clone_committed_bytes": true,
+      "raw_backup": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/pump-outflow-raw/predeploy_FlowWorks_RimMandrakeFlowWorks.dll.srchash"
+    },
+    {
+      "mod": "HugeThings",
+      "path": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/HugeThings/Defs/IncidentDefs/RM_TitanPassage.xml",
+      "deployed_sha256": "7c072157953fc87211a5afc887c98c6ed10e2db037e838e4286a18759a85bab2",
+      "HEAD_sha256": "7c072157953fc87211a5afc887c98c6ed10e2db037e838e4286a18759a85bab2",
+      "recognized_as_current_clone_committed_bytes": true,
+      "raw_backup": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/pump-outflow-raw/predeploy_HugeThings_RM_TitanPassage.xml"
+    }
+  ]
+}

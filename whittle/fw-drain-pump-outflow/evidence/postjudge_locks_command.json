@@ -1,0 +1,13 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/rimflow/cli.py",
+    "bridge",
+    "who"
+  ],
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "started": 1794409680.8603115,
+  "elapsed": 2.3588144779205322,
+  "returncode": 0,
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-pump-outflow"
+}

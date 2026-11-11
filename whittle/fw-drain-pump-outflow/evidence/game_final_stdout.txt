@@ -1,0 +1,2 @@
+running   : NOT RUNNING   (tasklist.exe lists no RimWorldWin64)
+recorded  : DOWN

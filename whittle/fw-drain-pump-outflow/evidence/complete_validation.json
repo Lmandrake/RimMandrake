@@ -1,0 +1,18 @@
+{
+  "time": 1794409687.6753998,
+  "checker_path": "/home/mandrake/rm/scratch/BENCH/fw-drain/.claude/hooks/whittle_stop.py",
+  "called": "done_problems(root, work, True, True)",
+  "problems": [
+    "The evidence 'whittle/fw-drain-pump-outflow/evidence/final_readback.json' for 'with exact-level mode off, a short first source and a full second source can use one available outflow during the same pump cycle when tanks have no room. the short source keeps its liquid and the successful transfer conserves liquid.' is older than your last change to the project. Look again and save fresh evidence.",
+    "The evidence 'whittle/fw-drain-pump-outflow/evidence/final_readback.json' for 'source shortfall and outlet-room shortfall retire the appropriate candidate for that cycle, while exact-level transfers and existing hose-fill, tank fallback and failure rollback behavior remain correct.' is older than your last change to the project. Look again and save fresh evidence.",
+    "The evidence 'whittle/fw-drain-pump-outflow/evidence/final_readback.json' for 'production-linked regression checks reproduce the defect and protect the repair through the normal relevant selftest entry point. the focused flowworks suite and shipping build pass.' is older than your last change to the project. Look again and save fresh evidence.",
+    "The evidence 'whittle/fw-drain-pump-outflow/evidence/final_readback.json' for 'a disposable live-game check exercises the repaired source ordering on the deployed dll and records quantities, actual candidates, restoration and remaining limits.' is older than your last change to the project. Look again and save fresh evidence."
+  ],
+  "workflow_path": "/home/mandrake/dev/MandrakeWorkflows/whittle/run.py",
+  "workflow_call": "validate(root)",
+  "workflow_returncode": 1,
+  "stdout": "",
+  "stderr": "Whittle: not done yet.\n- The evidence 'whittle/fw-drain-pump-outflow/evidence/final_readback.json' for 'with exact-level mode off, a short first source and a full second source can use one available outflow during the same pump cycle when tanks have no room. the short source keeps its liquid and the successful transfer conserves liquid.' is older than your last change to the project. Look again and save fresh evidence.\n- The evidence 'whittle/fw-drain-pump-outflow/evidence/final_readback.json' for 'source shortfall and outlet-room shortfall retire the appropriate candidate for that cycle, while exact-level transfers and existing hose-fill, tank fallback and failure rollback behavior remain correct.' is older than your last change to the project. Look again and save fresh evidence.\n- The evidence 'whittle/fw-drain-pump-outflow/evidence/final_readback.json' for 'production-linked regression checks reproduce the defect and protect the repair through the normal relevant selftest entry point. the focused flowworks suite and shipping build pass.' is older than your last change to the project. Look again and save fresh evidence.\n- The evidence 'whittle/fw-drain-pump-outflow/evidence/final_readback.json' for 'a disposable live-game check exercises the repaired source ordering on the deployed dll and records quantities, actual candidates, restoration and remaining limits.' is older than your last change to the project. Look again and save fresh evidence.\nIf you truly can't go on, or need the owner, write whittle/fw-drain-pump-outflow/BLOCKED.md saying why, then stop.\n",
+  "need_judge": true,
+  "need_broaden": true
+}

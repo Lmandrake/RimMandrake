@@ -1,0 +1,49 @@
+I found the cause. The hose was refused because its target, 52,40, is a dug pit with no ramp or ladder into it, and a hose can't route down a sheer drop. The smallest fix is to end the hose on the ground at 51,40, right next to the pit, and leave 52,40 as the destination. The pump's outflow already pours into a dug cell next to the hose end, so this needs no code change.
+
+## What the evidence shows
+
+From `live_scene.json`:
+- The three cells 40,41, 40,39 and 52,40 were each dug to depth 4 with fill 0, at tick 3, paused.
+- The pump at 40,40 (rot 0) and the reel at 41,41 (rot 1) were both placed and survived (`survived: 2`). `map_commit` passed every step.
+- `lay:41,41,52,40` → `{"success":false,"reason":"no route","layOk":false}`. This is the first failure. The pump's power, role, read and step calls never ran, and nothing was transferred.
+- Restore passed with no errors. The baseline and restored rect hash match (`b63a7e55…`), `changed_existing_saves` is empty, the protected-save hashes I checked match, and the only new file is the disposable `WHITTLE_PumpOutflow_Begin_20261111T064015.rws`.
+
+## Why the route fails (from reading the code; I didn't read band values live)
+
+- The probe's `lay` calls `TryLay`, which runs `CheckInstall` (`RM_MapComponent_Hoses.cs:588`) and then `HoseMath.CheckInstall` (`HoseMath.cs:2042`). The bounded route search finds nothing, the unbounded one finds nothing either, and it returns `"no route"` (`:2056`). Two earlier checks clearly passed: the target was not `"target blocked"` (so 52,40 counts as walkable) and not `"too far"`.
+- `RouteCells` stops at `w.StepAllowed(c, q)` (`HoseMath.cs:2162`). In `CordWorld.cs:163`, a step between cells at different depths ("bands") is only allowed if a ramp, a hose-carrying ladder, or a shared pit floor links them. Diagonal steps go through the same rule via their corner cells.
+- A cell's band is its depth (`HoseBandMath.Band`), and this rule is on by default (`lineCrossingRulesEnabled = true`, `RM_MachinerySettings.cs:96`). So 52,40 sits at band 4, surrounded by band-0 ground, with nothing linking them. No route can enter it from any side.
+- The reel→pump coupling should be fine. The pump's east port, 41,40, lies under the reel's footprint (41..42 × 40..41), both are on band 0, and `RawFind`/`ReelSideOn` should pair them on side 1. The dug source cell 40,41 also touches the reel's edge, but its band differs, so `RawFind` just skips it. That does no harm.
+
+## Why ending at 51,40 works (from the code)
+
+- `RM_LiquidSpill.Outlet` (`RM_LiquidSpill.cs:50-64`) checks the hose end cell plus its 8 neighbours for pour room, with **no band check**. The class comment says this on purpose: liquid goes "into an excavated cell at the end or the best one within 1.5 cells".
+- An end on plain ground with no port becomes `RM_NetPort { Cell = r.far, Role }` (`RM_LiquidNet.cs:1196`). `ProofDrawCycle` prints `outflows=[...]` from that cell (`Building_LiquidPump.cs:444`), so the read will show the hose end, not the pit.
+- Of 51,40's neighbours, only 52,40 is dug, so `PickPour` has just one candidate. That cell is empty and 4 levels deep, so it has room for the repro, full and exact arms.
+
+## Proposed layout (two-line change)
+
+| Item | Now | Proposed |
+|---|---|---|
+| Pump | `RM_LiquidPump:40,40` | unchanged |
+| Reel | `RM_HoseReel:41,41,1` (footprint 41..42 × 40..41) | unchanged |
+| Sources | 40,41 and 40,39, depth 4 | unchanged |
+| Destination pit | 52,40, depth 4, fill 0 | unchanged (all `water((52,40))` readbacks stay) |
+| Hose lay | `hp('lay:41,41,52,40')` | `hp('lay:41,41,51,40')` |
+| Read check | `'outflows=[52,40]' in read` | `'outflows=[51,40]' in read` |
+
+The route runs straight east along z=40, about 9 cells over undug soil, well inside the default 40-cell hose. The expected quantities for each arm don't change.
+
+I wouldn't put a ramp or ladder into 52,40 so the end can sit in the pit. It would be a bigger fixture, and the ramp would join the pit to the ground, which could change how the destination counts as a channel.
+
+## Remaining risks and driver hazards
+
+1. **The band setting isn't pinned.** `RM_MachinerySettings.lineCrossingRulesEnabled` controls this whole failure, but the driver doesn't record or check it. I'd read it, require it to be True, and add it to the restore list. Don't flip it to get past the band rule.
+2. **The fix relies on `Outlet` not checking bands.** Nothing gates this today. If a band check is ever added to `Outlet` (the way `WaterAt` already uses `EndReaches`), the fixture would quietly turn into a ground spill or "blocked". Keep the `after == expected_after` check on 52,40 as the real proof.
+3. **The end-of-hose lead-out isn't confirmed.** The planned lay is also checked after `HoseMath.CheckInstall` (`LayFrom`). A straight approach from the west should leave room for the nozzle's lead-out, but I haven't verified that the drawn nozzle never crosses into 52,40. A failure there would look like a different refusal reason, not "no route".
+4. **Cached state while paused.** Free ends are cached for 60 ticks and the net components are rebuilt on version bumps. With the game paused, the first `ProofDrawCycle read` straight after the lay and `ProofHoseRole` could see stale ports. The require on `outflows=` would catch that; it wouldn't silently pass.
+5. **The global dev-mode flag.** `hp('devmode:…')` sets `Prefs.DevMode` for the whole game, not just the reel. The driver restores it in `finally` *before* the reload, which is the right order. But it needs the reel at 41,41 to still exist. If the reel is gone, restore is flagged FAIL, which is fine, but the global flag stays changed.
+6. **Bridge calls I haven't checked against their contracts.** `select_things ids=<single int>` and the `'power'`+`'dev'` label match for the power gizmo are both untested; any mismatch fails loudly (StopIteration or a refusal) inside the `try`, so restore still runs.
+7. **An older fixture has the same shape.** `water_scenes_walk.py` S3 lays its Outflow end directly onto `canal[0]`, a depth-1 dug cell with no ramp (`:739`, `:805`). By the same band rule, that lay would be refused too. Don't treat it as proof that an end inside a pit is supported. I think it was written before the band rule, but I haven't verified that or checked its results.
+
+I made no edits and no game calls. I read only the files listed and the code they call, and none of the maker reports or prior model results.

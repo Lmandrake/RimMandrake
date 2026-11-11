@@ -1,0 +1,10 @@
+{
+  "command": [
+    "./game"
+  ],
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "started": 1794407796.6881673,
+  "elapsed": 1.7401793003082275,
+  "returncode": 0,
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-pump-outflow"
+}

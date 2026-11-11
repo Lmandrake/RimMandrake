@@ -1,0 +1,15 @@
+{
+  "time": 1794409197.2968032,
+  "checker_path": "/home/mandrake/rm/scratch/BENCH/fw-drain/.claude/hooks/whittle_stop.py",
+  "called": "done_problems(root, work, True, True)",
+  "problems": [
+    "No judge's verdict newer than DONE.md and the evidence. Spawn a fresh subagent (not a fork) with whittle/fw-drain-pump-outflow/JUDGE_PROMPT.md as its whole brief. It writes whittle/fw-drain-pump-outflow/JUDGE.md."
+  ],
+  "workflow_path": "/home/mandrake/dev/MandrakeWorkflows/whittle/run.py",
+  "workflow_call": "validate(root)",
+  "workflow_returncode": 1,
+  "stdout": "",
+  "stderr": "Whittle: not done yet.\n- No judge's verdict newer than DONE.md and the evidence. Spawn a fresh subagent (not a fork) with whittle/fw-drain-pump-outflow/JUDGE_PROMPT.md as its whole brief. It writes whittle/fw-drain-pump-outflow/JUDGE.md.\nIf you truly can't go on, or need the owner, write whittle/fw-drain-pump-outflow/BLOCKED.md saying why, then stop.\n",
+  "need_judge": true,
+  "need_broaden": true
+}

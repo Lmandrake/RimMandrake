@@ -1,0 +1,129 @@
+{
+  "started": 1794409049.5357752,
+  "status": "PASS",
+  "commands": [
+    {
+      "command": [
+        "./game",
+        "--why",
+        "FW drain pump outflow: offline proof and deployment verified",
+        "loading"
+      ],
+      "started": 1794409049.5358112,
+      "elapsed": 3.6234421730041504,
+      "returncode": 0
+    },
+    {
+      "command": [
+        "python.exe",
+        "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\scratch\\BENCH\\fw-drain\\whittle\\fw-drain-pump-outflow\\evidence\\live-attempt2\\launch_game.py"
+      ],
+      "started": 1794409053.1605315,
+      "elapsed": 25.45561146736145,
+      "returncode": 0
+    },
+    {
+      "command": [
+        "python.exe",
+        "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\scratch\\BENCH\\fw-drain\\whittle\\fw-drain-pump-outflow\\evidence\\live-attempt2\\live_census.py"
+      ],
+      "started": 1794409078.61727,
+      "elapsed": 0.530517578125,
+      "returncode": 0
+    },
+    {
+      "command": [
+        "python3",
+        "src/RimMandrake/Utils/preflight_bridge.py",
+        "--tier",
+        "quicktest",
+        "--modset",
+        "mods__mandrake_rm_flowworks__mandrake_rm_gimmesomeslack__mandrake_rm_hugethings__mandrake_rm_patches",
+        "--deep",
+        "--live",
+        "--seat",
+        "BENCH",
+        "--json",
+        "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-pump-outflow/evidence/live-attempt2/preflight_live.json"
+      ],
+      "started": 1794409079.1480312,
+      "elapsed": 16.60572600364685,
+      "returncode": 0
+    },
+    {
+      "command": [
+        "./game",
+        "--why",
+        "FW drain pump outflow: fresh process, actual ordered list and live preflight GREEN",
+        "up"
+      ],
+      "started": 1794409095.779111,
+      "elapsed": 4.4750330448150635,
+      "returncode": 0
+    },
+    {
+      "command": [
+        "python.exe",
+        "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\scratch\\BENCH\\fw-drain\\src\\RimMandrake\\FlowWorks\\northstar\\pump_outflow_live.py",
+        "--out",
+        "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\scratch\\BENCH\\fw-drain\\whittle\\fw-drain-pump-outflow\\evidence\\live-attempt2\\live_scene.json"
+      ],
+      "started": 1794409100.2558126,
+      "elapsed": 28.501673698425293,
+      "returncode": 0
+    },
+    {
+      "command": [
+        "python.exe",
+        "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\scratch\\BENCH\\fw-drain\\whittle\\fw-drain-pump-outflow\\evidence\\live-attempt2\\stop_game.py"
+      ],
+      "started": 1794409128.7820442,
+      "elapsed": 12.111917972564697,
+      "returncode": 0
+    },
+    {
+      "command": [
+        "./game",
+        "--why",
+        "FW drain pump outflow: restoration ended; release immediately",
+        "down"
+      ],
+      "started": 1794409140.8941655,
+      "elapsed": 3.673090696334839,
+      "returncode": 0
+    },
+    {
+      "command": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "release"
+      ],
+      "started": 1794409144.567469,
+      "elapsed": 5.429902791976929,
+      "returncode": 0
+    },
+    {
+      "command": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "who"
+      ],
+      "started": 1794409149.997642,
+      "elapsed": 2.219244956970215,
+      "returncode": 0
+    },
+    {
+      "command": [
+        "./game"
+      ],
+      "started": 1794409152.21708,
+      "elapsed": 1.2170813083648682,
+      "returncode": 0
+    }
+  ],
+  "cleanup_errors": [],
+  "both_locks_free": true,
+  "finished": 1794409153.4343216
+}

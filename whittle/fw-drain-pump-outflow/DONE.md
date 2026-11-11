@@ -1,0 +1,6 @@
+# Evidence against the frozen statement
+
+- true: With exact-level mode off, a short first source and a full second source can use one available outflow during the same pump cycle when tanks have no room. The short source keeps its liquid and the successful transfer conserves liquid. | evidence: `whittle/fw-drain-pump-outflow/evidence/final_readback_after_status.json`
+- true: Source shortfall and outlet-room shortfall retire the appropriate candidate for that cycle, while exact-level transfers and existing hose-fill, tank fallback and failure rollback behavior remain correct. | evidence: `whittle/fw-drain-pump-outflow/evidence/final_readback_after_status.json`
+- true: Production-linked regression checks reproduce the defect and protect the repair through the normal relevant selftest entry point. The focused FlowWorks suite and shipping build pass. | evidence: `whittle/fw-drain-pump-outflow/evidence/final_readback_after_status.json`
+- true: A disposable live-game check exercises the repaired source ordering on the deployed DLL and records quantities, actual candidates, restoration and remaining limits. | evidence: `whittle/fw-drain-pump-outflow/evidence/final_readback_after_status.json`

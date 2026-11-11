@@ -1,0 +1,13 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/Utils/modset_builder.py",
+    "--tier",
+    "mods__mandrake_rm_flowworks__mandrake_rm_gimmesomeslack__mandrake_rm_hugethings__mandrake_rm_patches"
+  ],
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "started": 1794405725.4904623,
+  "elapsed": 8.967685461044312,
+  "returncode": 0,
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-pump-outflow"
+}

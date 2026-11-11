@@ -1,0 +1,11 @@
+{
+  "command": [
+    "python.exe",
+    "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\scratch\\BENCH\\fw-drain\\src\\RimMandrake\\FlowWorks\\northstar\\pump_outflow_live.py",
+    "--out",
+    "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\scratch\\BENCH\\fw-drain\\whittle\\fw-drain-pump-outflow\\evidence\\live_scene.json"
+  ],
+  "started": 1794408007.3859193,
+  "elapsed": 31.912126541137695,
+  "returncode": 1
+}

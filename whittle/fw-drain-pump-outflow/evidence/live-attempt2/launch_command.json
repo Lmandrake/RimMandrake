@@ -1,0 +1,9 @@
+{
+  "command": [
+    "python.exe",
+    "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\scratch\\BENCH\\fw-drain\\whittle\\fw-drain-pump-outflow\\evidence\\live-attempt2\\launch_game.py"
+  ],
+  "started": 1794409053.1605315,
+  "elapsed": 25.45561146736145,
+  "returncode": 0
+}

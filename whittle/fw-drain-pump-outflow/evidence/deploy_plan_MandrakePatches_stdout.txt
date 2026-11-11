@@ -1,0 +1,17 @@
+repo : D:\Luke\dev\RimMandrake\src
+game : C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods
+mode : plan only (use --apply to write)
+holds: 26 pattern(s) from src\DEPLOY_HOLD.txt
+skip : dirs .git .vs Source __pycache__ _artsrc art_candidates art_source bin obj · exts .csproj .md .py .pyc .sln .user
+
+def guard: 103 mod(s) in the resulting game copy (mandrake.*), 1 target(s): clean
+  (out of scope: 1 orphan game folder(s) with no repo source, not on the owner's full list -- never load: RM_Showing_SiltTrapRedraws)
+  (1 PRE-EXISTING conflict(s) not touching this plan's mods; not blocking)
+    . ALIAS-REPO ThingDef guy762_crystalitem_stygium -> RSW_Stygium: the repo itself still defines guy762_crystalitem_stygium in Armoury, so the alias (in RimMandrake.Biomes/Biomes/_Kits/EnvironmentalHazards/Defs/Misc/RM_MaterialMerges_Aliases.xml) is inert -- a repo question, not a deploy hazard
+
+MandrakePatches  mandrake.rm.patches        1 file(s) HELD
+    H  Textures\Things\Structures\GravshipGenebank\GravshipGenebank_north.png   (repo-only; not deployed)
+           held: owner: pulled pending art verification, 2026-08-14
+    in sync (22 files, 1 held)
+
+Everything in sync.

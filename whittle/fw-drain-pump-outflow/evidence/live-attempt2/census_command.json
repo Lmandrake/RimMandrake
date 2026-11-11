@@ -1,0 +1,9 @@
+{
+  "command": [
+    "python.exe",
+    "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\scratch\\BENCH\\fw-drain\\whittle\\fw-drain-pump-outflow\\evidence\\live-attempt2\\live_census.py"
+  ],
+  "started": 1794409078.61727,
+  "elapsed": 0.530517578125,
+  "returncode": 0
+}

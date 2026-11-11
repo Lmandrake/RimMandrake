@@ -1,0 +1,6 @@
+{
+  "time": 1794406902.9094288,
+  "finding": "TrySetDriverFillOutcome preserves partGrid for interior fills; sequential live arms must drain to zero before staging whole quantities",
+  "path": "src/RimMandrake/FlowWorks/Source/RM_MapComponent_Excavation.cs:4046",
+  "action": "Stopped only the queued post-test/build orchestrator PID 749110; current unmodified final proof observer/runner continue to completion. Driver correction and added offline fixture test follow that receipt. No game launched."
+}

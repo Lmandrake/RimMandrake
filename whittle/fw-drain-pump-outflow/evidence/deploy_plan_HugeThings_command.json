@@ -1,0 +1,13 @@
+{
+  "command": [
+    "python.exe",
+    "D:\\Luke\\dev\\RimMandrake\\src\\RimMandrake\\Utils\\deploy_custom_mods.py",
+    "--mod",
+    "HugeThings"
+  ],
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "started": 1794406156.317018,
+  "elapsed": 13.610014915466309,
+  "returncode": 1,
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-pump-outflow"
+}

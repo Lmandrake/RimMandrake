@@ -1,0 +1,40 @@
+{
+  "runner": "codex",
+  "usage": {
+    "input_tokens": 65328876,
+    "output_tokens": 128904
+  },
+  "state": "done",
+  "quota": {
+    "codex.week_used_pct": {
+      "v": 17.0,
+      "m": "MEASURED",
+      "unit": "% of the weekly quota used",
+      "x": {
+        "reading_at": "2026-11-11T13:45:55Z",
+        "files": 784
+      }
+    },
+    "codex.hours_to_reset": {
+      "v": 161.0,
+      "m": "MEASURED",
+      "unit": "h to the weekly reset"
+    },
+    "codex.runway": {
+      "v": 0.21,
+      "m": "MEASURED",
+      "unit": "x the time to reset",
+      "x": {
+        "rate_pct_h": 2.434,
+        "rate_from": "readings over the last 24 h"
+      }
+    }
+  },
+  "sandbox": "danger-full-access",
+  "model": "config",
+  "effort": "high",
+  "codex_side": "wsl",
+  "codex_home": "/home/mandrake/.codex",
+  "error": null,
+  "returncode": 0
+}

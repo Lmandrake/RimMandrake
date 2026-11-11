@@ -1,0 +1,26 @@
+{
+  "time": 1794408948.8569615,
+  "HEAD": "e8d61372520ec131a22820837e03598825cabebf",
+  "mods": [
+    "brrainz.harmony",
+    "ludeon.rimworld",
+    "ludeon.rimworld.royalty",
+    "ludeon.rimworld.ideology",
+    "ludeon.rimworld.biotech",
+    "ludeon.rimworld.anomaly",
+    "ludeon.rimworld.odyssey",
+    "brrainz.rimbridgeserver",
+    "ray1203.simplecamerasetting",
+    "mandrake.rm.gimmesomeslack",
+    "mandrake.rm.flowworks",
+    "mandrake.rm.hugethings",
+    "mandrake.rm.patches"
+  ],
+  "hashes": {
+    "/home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll": "a4b1acd85657946b4e66ab6b134d7ee7d7bc4ab09eb88038cc95c9c97766d6cb",
+    "/home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll.srchash": "d5a1ed0ed9c5072735c5f0a3936c5c396bb241da83878dafe7ddffa47d1e0aef",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll": "a4b1acd85657946b4e66ab6b134d7ee7d7bc4ab09eb88038cc95c9c97766d6cb",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll.srchash": "d5a1ed0ed9c5072735c5f0a3936c5c396bb241da83878dafe7ddffa47d1e0aef",
+    "/home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/FlowWorks/northstar/pump_outflow_live.py": "b25974fd99920006ce0f93a4970d3036c978b80450f6166fc5850c9c228979af"
+  }
+}
