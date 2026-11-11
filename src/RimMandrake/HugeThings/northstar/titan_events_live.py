@@ -17,7 +17,7 @@ makes a camp only while its camper list is empty, so the toggle rows run FIRST o
      advance past the camp hours        -> every camper gone / exiting      (A3 leave)
   T2 scavengers on, camps off           -> scavengers > 0, camp 0           (A2 draw, A5 camps)
      advance until one is at the site, one more step -> eaten rises, meat falls by at least that   (A2 eat)
-  P  titanEventsEnabled off -> canFire False; on -> fire, pending + tremor letter; arrive -> tier >= T2, not homed here,
+  P  titanEventsEnabled off -> canFire False; on -> fire, pending + tremor letter; arrive -> tier >= T2, sea/land matched to this map,
      LordJob_ExitMapNear; a live T3 on the map -> no eligible kind is T3     (A4, A5 passage)
 """
 import argparse

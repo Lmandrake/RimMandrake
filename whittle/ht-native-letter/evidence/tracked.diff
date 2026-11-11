@@ -1,0 +1,38 @@
+diff --git a/src/RimMandrake/HugeThings/Languages/English/Keyed/RM_HugeThings.xml b/src/RimMandrake/HugeThings/Languages/English/Keyed/RM_HugeThings.xml
+index 2e42069879..45c0c12170 100644
+--- a/src/RimMandrake/HugeThings/Languages/English/Keyed/RM_HugeThings.xml
++++ b/src/RimMandrake/HugeThings/Languages/English/Keyed/RM_HugeThings.xml
+@@ -100,6 +100,6 @@
+   <RM_HugeThings_CorpseCampChance>    Daily chance of a camp: {0}% (provisional)</RM_HugeThings_CorpseCampChance>
+   <RM_HugeThings_CorpseCampHours>    How long a camp stays: {0} hours (provisional)</RM_HugeThings_CorpseCampHours>
+   <RM_HugeThings_TitanEvents>Titans from elsewhere pass through, with warning</RM_HugeThings_TitanEvents>
+-  <RM_HugeThings_TitanEvents_Desc>A titan (size tier 2 or 3) that lives in some other biome, never this map's own, may cross your map edge to edge. Hours of footfall tremors (screen shake and messages) come first; then it walks across, and its wake smashes what is built in its path. Never two of the largest tier on one map. Off: the event never fires.</RM_HugeThings_TitanEvents_Desc>
++  <RM_HugeThings_TitanEvents_Desc>A titan (size tier 2 or 3) may walk in from beyond your map and cross it edge to edge. This map's biome decides which titans can come: those it lists for passage or, if it lists none, those from its own wild animal roster. Hours of footfall tremors (screen shake and messages) come first; then it walks across, and its wake smashes what is built in its path. Never two of the largest tier on one map. Off: the event never fires.</RM_HugeThings_TitanEvents_Desc>
+   <RM_HugeThings_TitanWarning>  Tremor warning before it arrives: {0} hours (provisional)</RM_HugeThings_TitanWarning>
+ </LanguageData>
+diff --git a/src/RimMandrake/HugeThings/Languages/English/Keyed/RM_TitanicCreatures.xml b/src/RimMandrake/HugeThings/Languages/English/Keyed/RM_TitanicCreatures.xml
+index c02fb43220..e49f0485d8 100644
+--- a/src/RimMandrake/HugeThings/Languages/English/Keyed/RM_TitanicCreatures.xml
++++ b/src/RimMandrake/HugeThings/Languages/English/Keyed/RM_TitanicCreatures.xml
+@@ -7,7 +7,7 @@
+   <RM_TitanicCorpseSite_CampLabel>Camp at the remains</RM_TitanicCorpseSite_CampLabel>
+   <RM_TitanicCorpseSite_CampText>A party from {0} has come to camp by the {1} and cut their share of it. They will stay a while, then go.</RM_TitanicCorpseSite_CampText>
+   <RM_TitanPassage_TremorLabel>Footfall tremors</RM_TitanPassage_TremorLabel>
+-  <RM_TitanPassage_TremorText>The ground shudders in slow, heavy beats from the {0}. Something enormous is walking this way, and it does not live here.\n\nWhatever it is will cross the map. Anything built in its path may not survive it.</RM_TitanPassage_TremorText>
++  <RM_TitanPassage_TremorText>The ground shudders in slow, heavy beats from the {0}. Something enormous is coming in from beyond the map.\n\nWhatever it is will cross the map. Anything built in its path may not survive it.</RM_TitanPassage_TremorText>
+   <RM_TitanPassage_TremorStronger>The tremors are growing stronger.</RM_TitanPassage_TremorStronger>
+   <RM_TitanPassage_Faded>The tremors fade. Whatever it was has turned away.</RM_TitanPassage_Faded>
+   <RM_TitanPassage_ArriveLabel>Titan: {0}</RM_TitanPassage_ArriveLabel>
+diff --git a/src/RimMandrake/HugeThings/northstar/titan_events_live.py b/src/RimMandrake/HugeThings/northstar/titan_events_live.py
+index 80c53bb526..3da280e588 100644
+--- a/src/RimMandrake/HugeThings/northstar/titan_events_live.py
++++ b/src/RimMandrake/HugeThings/northstar/titan_events_live.py
+@@ -17,7 +17,7 @@ makes a camp only while its camper list is empty, so the toggle rows run FIRST o
+      advance past the camp hours        -> every camper gone / exiting      (A3 leave)
+   T2 scavengers on, camps off           -> scavengers > 0, camp 0           (A2 draw, A5 camps)
+      advance until one is at the site, one more step -> eaten rises, meat falls by at least that   (A2 eat)
+-  P  titanEventsEnabled off -> canFire False; on -> fire, pending + tremor letter; arrive -> tier >= T2, not homed here,
++  P  titanEventsEnabled off -> canFire False; on -> fire, pending + tremor letter; arrive -> tier >= T2, sea/land matched to this map,
+      LordJob_ExitMapNear; a live T3 on the map -> no eligible kind is T3     (A4, A5 passage)
+ """
+ import argparse

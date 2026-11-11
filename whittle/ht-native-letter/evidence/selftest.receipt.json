@@ -1,0 +1,28 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/Utils/run_selftests.py",
+    "--only",
+    "selftest_hugethings_titanic_lint.py",
+    "--workers",
+    "1"
+  ],
+  "cwd": "/home/mandrake/rm/codex-ht",
+  "git_sha": "f5df8f2217d5bc40e89d72738a60f4063d984507",
+  "started": 1794388964.7355807,
+  "elapsed_seconds": 60.74293565750122,
+  "returncode": 0,
+  "source_sha256": {
+    "src/RimMandrake/HugeThings/Languages/English/Keyed/RM_TitanicCreatures.xml": "62d4ec75c1a6202466f04c26ed92a0810ddc2b22d1ea1770e569df5699df3fcf",
+    "src/RimMandrake/HugeThings/Languages/English/Keyed/RM_HugeThings.xml": "a0d9b463fd56e22044936100fbb8098f46804f30d5321a8e3b9b3d6ab160bb51",
+    "src/RimMandrake/HugeThings/northstar/titan_events_live.py": "7bc6a05360b24546c64d2313a0b82b64b8ee211b4381fa9c04fd8a837d03cdd1",
+    "src/RimMandrake/HugeThings/Source/Titanic/Events/TitanPassage.cs": "4e18d8ea282a5fe378b85f611cd472e737fca6eb209d5709cc9e7b69d69319eb",
+    "src/RimMandrake/HugeThings/Source/Kernel/RM_TitanicKernel.cs": "f1b87ad1ffdccaf95b75a207f68f9b788fdd962ed18709901043a25d7fadcd18",
+    "src/RimMandrake/HugeThings/Source/RM_HugeThingsSettings.cs": "e51e94b99450075c27f086860974f1cdc870cc368585e02cc173d22ac42e114d",
+    "src/RimMandrake/HugeThings/Source/Titanic/Events/RM_TitanPassageExtension.cs": "5dd90419838c5da49353c74287c31e857e7156d1eeb7b30c917fb3169f3066b2",
+    "src/RimMandrake/HugeThings/Source/Titanic/Events/TitanValidationHooks.cs": "68b67c31b11bda073091038233658e4e2f98727b1fa0b5590dc5392cbe33f11e"
+  },
+  "source_unchanged_through_check": true,
+  "stdout_sha256": "ee14cb502d812c31b2be29631950acbd12d6bd24c747d688df13e03277669db1",
+  "stderr_sha256": "a4ec78a1f4c23a324de565e69e3e31dd3ac47338cf6dbafae3c8eb31d4d9c1b8"
+}

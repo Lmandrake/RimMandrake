@@ -1,0 +1,55 @@
+You are an independent player-readability consultant for a narrowly bounded offline text correction in a RimWorld mod. No inherited conversation. Do not use tools, external services or MCP. Answer from the excerpts below only. What would a player try or misread about these descriptions? Identify the most revealing 1-2 cases, explicitly considering (1) explicit biome passers versus fallback own roster, and (2) preserving the directional warning argument and destructive-crossing warning. Do not propose C# behavior, settings numbers, tests, art, or acceptance-bar changes. Keep your answer under 700 words.
+
+Existing tremor letter: The ground shudders in slow, heavy beats from the {0}. Something enormous is walking this way, and it does not live here.\n\nWhatever it is will cross the map. Anything built in its path may not survive it.
+Proposed letter: The ground shudders in slow, heavy beats from the {0}. Something enormous is walking this way.\n\nWhatever it is will cross the map. Anything built in its path may not survive it.
+Existing setting description: A titan (size tier 2 or 3) that lives in some other biome, never this map's own, may cross your map edge to edge. Hours of footfall tremors (screen shake and messages) come first; then it walks across, and its wake smashes what is built in its path. Never two of the largest tier on one map. Off: the event never fires.
+Proposed setting description: A titan (size tier 2 or 3) from this map's own biome passage list, or its animal roster if no passage list is set, may cross your map edge to edge. Hours of footfall tremors (screen shake and messages) come first; then it walks across, and its wake smashes what is built in its path. Never two of the largest tier on one map. Off: the event never fires.
+The neighboring checkbox label remains: Titans from elsewhere pass through, with warning. Here 'elsewhere' can mean outside this map; the correction is confined to the two requested descriptions and a stale docstring.
+The warning setting label remains: Tremor warning before it arrives: {0} hours (provisional).
+Stale live-script docstring says 'tier >= T2, not homed here'; actual checks use seaMatch=True and allow homedHere=True. Only that docstring phrase may be corrected, not its checks.
+
+Authoritative source excerpts (read-only):
+            comp.Schedule(kind, start, end, RM_TitanicKernel.WarningTicks(RM_HugeThingsSettings.titanEventWarningHours));
+            SendStandardLetter("RM_TitanPassage_TremorLabel".Translate(), "RM_TitanPassage_TremorText".Translate(
+                    TitanPassageUtility.EdgeName(map, start)), LetterDefOf.ThreatSmall, parms, new TargetInfo(start, map));
+            return true;
+        }
+    }
+
+    public static class TitanPassageUtility
+    {
+        public const string SeabedLayerDefName = "RM_SeabedLayer";
+        public const string SeabedFloorExtensionName = "RM_SeabedFloorExtension";
+
+        /// <summary>The 2026-10-21 card's gate, per kind: RM_TitanicKernel.TitanEventEligible over the live biome commonalities.
+        /// A calf kind of a titan race is judged by its race's adult tier, so it qualifies ("Calves are ok").</summary>
+        public static bool Eligible(PawnKindDef k, Map map, bool t3OnMap)
+        {
+            if (k?.race?.race == null || map == null || !k.RaceProps.Animal || k.RaceProps.Dryad) return false;
+            if (k.race.GetModExtension<RM_TitanicExtension>()?.harnessOnly == true) return false;
+            int tier = (int)TitanicTierUtility.AdultTier(k.race);
+            if (tier < RM_TitanicKernel.T2) return false;
+            bool optedOut = map.Biomes.Any(b => b?.GetModExtension<RM_TitanPassageExtension>()?.none == true);
+            bool hasList = false, onList = false;
+            foreach (BiomeDef b in map.Biomes)
+            {
+                List<PawnKindDef> list = b?.GetModExtension<RM_TitanPassageExtension>()?.passers;
+                if (list == null || list.Count == 0) continue;
+                hasList = true;
+                if (list.Contains(k)) onList = true;
+            }
+            bool here = map.Biomes.Any(b => b.CommonalityOfAnimal(k) > 0f);
+            bool season = map.mapTemperature.SeasonAndOutdoorTemperatureAcceptableFor(k.race);
+            return RM_TitanicKernel.TitanEventEligible(tier, optedOut, IsSeaCreature(k), IsSeaMap(map), hasList, onList, here,
+                season, t3OnMap);
+        }
+
+
+        public static bool TitanEventEligible(int adultTier, bool biomeOptedOut, bool seaCreature, bool seaMap,
+            bool biomeHasPassageList, bool onPassageList, bool homedHere, bool seasonOk, bool t3OnMap)
+        {
+            if (biomeOptedOut || adultTier < T2 || seaCreature != seaMap || !seasonOk) return false;
+            if (!(biomeHasPassageList ? onPassageList : homedHere)) return false;
+            return !(adultTier == T3 && t3OnMap);
+        }
+

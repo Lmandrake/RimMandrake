@@ -1,0 +1,38 @@
+# Player-readability read
+
+## Case 1: Passage list versus the fallback roster (setting description)
+
+**What the code does.** If any of the map's biomes defines a passage list, only kinds on that list qualify. Whether the kind also lives here doesn't matter: a listed titan that never spawns here qualifies, and a native titan that isn't listed does not. Only when no map biome has a list does the gate fall back to "has nonzero commonality in a map biome." Either way, the sea/land match and the season check still filter. Any biome with an opt-out blocks the event entirely.
+
+**What a player would misread in the proposed text:**
+
+- **"if no passage list is set"** reads like a setting. In a settings panel, "set" suggests something the player configures. They will look for a list to edit and won't find one. The list is biome content, not a toggle.
+- **"biome passage list"** is internal vocabulary. Players have no way to see it. From their side, the first half of the sentence is opaque, and the only part they can check is "its animal roster."
+- **Union versus replacement.** "From the list, or its roster if no list" does say replacement if read carefully. A skimming player will still read it as "list plus natives" and be surprised when a native titan never passes on a biome that has a list.
+- **The checkbox label clash.** The label "Titans from elsewhere pass through" sits right next to "from this map's own biome... animal roster." Without a cue, "elsewhere" and "own roster" contradict each other. The description is the only place to resolve this, and the existing "edge to edge" phrasing is too far into the sentence to do it.
+
+**Suggested wording** (description only, mechanics unchanged):
+
+> A titan (size tier 2 or 3) walks in from beyond your map and crosses it edge to edge. Which titans can come is decided by this map's biome: those it names as passers-through, or, if it names none, titans from its own wild animal roster. Hours of footfall tremors…
+
+This keeps the exclusive "or, if none," turns "set" into something the biome does, and ties "elsewhere" to "beyond your map." That ties the description back to the unchanged checkbox label. I'd keep "this map's biome" singular for readability even though the code checks all of the map's biomes. For players the difference is negligible.
+
+## Case 2: Removing "it does not live here" (tremor letter)
+
+**The removal is correct.** Native titans can now qualify, so the old line would be a false claim. The proposal keeps the `{0}` direction argument and the destructive-crossing sentence verbatim, which is what matters most.
+
+**What a player would try or misread after the removal.** In the fallback case, the same species may already be wandering the map. A player reading "Something enormous is walking this way" without any "not from here" cue may assume the resident animal is the threat. They might hunt it, tame it, or wall it in to prevent the crossing, then get blindsided when a new one arrives from the `{0}` edge. The old line accidentally prevented this, even though it was no longer true.
+
+**Minimal fix** that keeps `{0}` and the warning:
+
+> The ground shudders in slow, heavy beats from the {0}. Something enormous is coming in from beyond the map.
+>
+> Whatever it is will cross the map. Anything built in its path may not survive it.
+
+"From beyond the map" is true for both the listed and the native case. It points the player at the edge rather than at local wildlife, and it echoes "Titans from elsewhere."
+
+**Minor point, leave as is.** The letter says built things "may not survive," while the setting says the wake "smashes" them. That softer tone is fine for a letter, and it's outside this correction's scope.
+
+## Docstring
+
+Changing "not homed here" to something like "passage-listed, or homed here when the biome has no list" matches the checks and doesn't touch them. Players never see it, but it stops the next editor from reintroducing "does not live here."

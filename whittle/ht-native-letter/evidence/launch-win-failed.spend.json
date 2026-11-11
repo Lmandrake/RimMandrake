@@ -1,0 +1,39 @@
+{
+  "runner": "codex",
+  "usage": "UNMEASURED",
+  "state": "failed",
+  "quota": {
+    "codex.week_used_pct": {
+      "v": 3.0,
+      "m": "MEASURED",
+      "unit": "% of the weekly quota used",
+      "x": {
+        "reading_at": "2026-11-11T09:18:17Z",
+        "files": 3
+      }
+    },
+    "codex.hours_to_reset": {
+      "v": 165.5,
+      "m": "MEASURED",
+      "unit": "h to the weekly reset"
+    },
+    "codex.runway": {
+      "v": 1.17,
+      "m": "ESTIMATE",
+      "why": "rate from a fresh week's burn (3% in its first 2.5 h, counted over 6 h)",
+      "unit": "x the time to reset",
+      "x": {
+        "rate_pct_h": 0.5,
+        "rate_from": "a fresh week's burn (3% in its first 2.5 h, counted over 6 h)"
+      }
+    }
+  },
+  "staging_cwd": "/mnt/d/RimTest/data/scratch/codex/agent-f0fb8f96895349e0a8a1748c1a1af992",
+  "sandbox": "danger-full-access",
+  "model": "config",
+  "effort": "high",
+  "codex_side": "win",
+  "codex_home": "/home/mandrake/.codex",
+  "error": "EnvError: Cannot find codex.exe. Checked CODEX_CLI_PATH in config.toml, $PATH, and AppData/Local/OpenAI/Codex/bin/*/codex.exe. Install or update the Codex app, or set CODEX_CLI_PATH.",
+  "returncode": 1
+}

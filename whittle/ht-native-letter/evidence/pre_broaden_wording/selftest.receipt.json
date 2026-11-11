@@ -1,0 +1,17 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/Utils/run_selftests.py",
+    "--only",
+    "selftest_hugethings_titanic_lint.py",
+    "--workers",
+    "1"
+  ],
+  "cwd": "/home/mandrake/rm/codex-ht",
+  "git_sha": "f5df8f2217d5bc40e89d72738a60f4063d984507",
+  "started": 1794388871.045877,
+  "elapsed_seconds": 64.50626587867737,
+  "returncode": 0,
+  "stdout_sha256": "ae18ef0ce52cec958ef21814966b9c872ddebd953441a9e324cebbaa7b2ace69",
+  "stderr_sha256": "d9e03d5501d257a1d8335050f564803d722dcffdc5ea63dc9ab05f6196f5708b"
+}

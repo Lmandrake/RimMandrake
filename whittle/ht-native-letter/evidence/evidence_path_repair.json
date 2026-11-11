@@ -1,0 +1,15 @@
+{
+  "reason": "Validator found missing Source directory component in three DONE citations. Added directory aliases to existing judge-reviewed raw snapshots; did not edit DONE, source, verdict, or snapshot targets.",
+  "aliases": [
+    {
+      "alias": "whittle/ht-native-letter/evidence/source/Titanic",
+      "target": "whittle/ht-native-letter/evidence/source/Source/Titanic",
+      "target_mtimes_and_hashes_unchanged": true
+    },
+    {
+      "alias": "whittle/ht-native-letter/evidence/source/Kernel",
+      "target": "whittle/ht-native-letter/evidence/source/Source/Kernel",
+      "target_mtimes_and_hashes_unchanged": true
+    }
+  ]
+}

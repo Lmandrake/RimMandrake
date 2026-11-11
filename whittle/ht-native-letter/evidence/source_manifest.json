@@ -1,0 +1,46 @@
+{
+  "git_sha": "f5df8f2217d5bc40e89d72738a60f4063d984507",
+  "captured_at": 1794388944.8450367,
+  "files": {
+    "src/RimMandrake/HugeThings/Languages/English/Keyed/RM_TitanicCreatures.xml": {
+      "sha256": "62d4ec75c1a6202466f04c26ed92a0810ddc2b22d1ea1770e569df5699df3fcf",
+      "snapshot": "whittle/ht-native-letter/evidence/source/Languages/English/Keyed/RM_TitanicCreatures.xml",
+      "same_as_head": false
+    },
+    "src/RimMandrake/HugeThings/Languages/English/Keyed/RM_HugeThings.xml": {
+      "sha256": "a0d9b463fd56e22044936100fbb8098f46804f30d5321a8e3b9b3d6ab160bb51",
+      "snapshot": "whittle/ht-native-letter/evidence/source/Languages/English/Keyed/RM_HugeThings.xml",
+      "same_as_head": false
+    },
+    "src/RimMandrake/HugeThings/northstar/titan_events_live.py": {
+      "sha256": "7bc6a05360b24546c64d2313a0b82b64b8ee211b4381fa9c04fd8a837d03cdd1",
+      "snapshot": "whittle/ht-native-letter/evidence/source/northstar/titan_events_live.py",
+      "same_as_head": false
+    },
+    "src/RimMandrake/HugeThings/Source/Titanic/Events/TitanPassage.cs": {
+      "sha256": "4e18d8ea282a5fe378b85f611cd472e737fca6eb209d5709cc9e7b69d69319eb",
+      "snapshot": "whittle/ht-native-letter/evidence/source/Source/Titanic/Events/TitanPassage.cs",
+      "same_as_head": true
+    },
+    "src/RimMandrake/HugeThings/Source/Kernel/RM_TitanicKernel.cs": {
+      "sha256": "f1b87ad1ffdccaf95b75a207f68f9b788fdd962ed18709901043a25d7fadcd18",
+      "snapshot": "whittle/ht-native-letter/evidence/source/Source/Kernel/RM_TitanicKernel.cs",
+      "same_as_head": true
+    },
+    "src/RimMandrake/HugeThings/Source/RM_HugeThingsSettings.cs": {
+      "sha256": "e51e94b99450075c27f086860974f1cdc870cc368585e02cc173d22ac42e114d",
+      "snapshot": "whittle/ht-native-letter/evidence/source/Source/RM_HugeThingsSettings.cs",
+      "same_as_head": true
+    },
+    "src/RimMandrake/HugeThings/Source/Titanic/Events/RM_TitanPassageExtension.cs": {
+      "sha256": "5dd90419838c5da49353c74287c31e857e7156d1eeb7b30c917fb3169f3066b2",
+      "snapshot": "whittle/ht-native-letter/evidence/source/Source/Titanic/Events/RM_TitanPassageExtension.cs",
+      "same_as_head": true
+    },
+    "src/RimMandrake/HugeThings/Source/Titanic/Events/TitanValidationHooks.cs": {
+      "sha256": "68b67c31b11bda073091038233658e4e2f98727b1fa0b5590dc5392cbe33f11e",
+      "snapshot": "whittle/ht-native-letter/evidence/source/Source/Titanic/Events/TitanValidationHooks.cs",
+      "same_as_head": true
+    }
+  }
+}

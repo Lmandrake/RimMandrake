@@ -7,7 +7,7 @@
   <RM_TitanicCorpseSite_CampLabel>Camp at the remains</RM_TitanicCorpseSite_CampLabel>
   <RM_TitanicCorpseSite_CampText>A party from {0} has come to camp by the {1} and cut their share of it. They will stay a while, then go.</RM_TitanicCorpseSite_CampText>
   <RM_TitanPassage_TremorLabel>Footfall tremors</RM_TitanPassage_TremorLabel>
-  <RM_TitanPassage_TremorText>The ground shudders in slow, heavy beats from the {0}. Something enormous is walking this way, and it does not live here.\n\nWhatever it is will cross the map. Anything built in its path may not survive it.</RM_TitanPassage_TremorText>
+  <RM_TitanPassage_TremorText>The ground shudders in slow, heavy beats from the {0}. Something enormous is coming in from beyond the map.\n\nWhatever it is will cross the map. Anything built in its path may not survive it.</RM_TitanPassage_TremorText>
   <RM_TitanPassage_TremorStronger>The tremors are growing stronger.</RM_TitanPassage_TremorStronger>
   <RM_TitanPassage_Faded>The tremors fade. Whatever it was has turned away.</RM_TitanPassage_Faded>
   <RM_TitanPassage_ArriveLabel>Titan: {0}</RM_TitanPassage_ArriveLabel>

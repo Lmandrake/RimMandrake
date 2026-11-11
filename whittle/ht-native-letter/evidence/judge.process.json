@@ -1,0 +1,29 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/Utils/agent_runner.py",
+    "--cwd",
+    "/home/mandrake/rm/codex-ht",
+    "--result",
+    "whittle/ht-native-letter/evidence/judge.last.txt",
+    "--events",
+    "whittle/ht-native-letter/evidence/judge.events.jsonl",
+    "--spend",
+    "whittle/ht-native-letter/evidence/judge.spend.json",
+    "--sandbox",
+    "danger-full-access",
+    "--timeout",
+    "600"
+  ],
+  "cwd": "/home/mandrake/rm/codex-ht",
+  "stdin": "whittle/ht-native-letter/JUDGE_PROMPT.md",
+  "stdin_sha256": "3ccb2bdc4d376c8ec63bf5639a273fc1ed4c585b51f9da006ed7512c250406fb",
+  "started": 1794389062.9192305,
+  "elapsed_seconds": 131.2566213607788,
+  "returncode": 0,
+  "model_override": null,
+  "history": "fresh agent_runner codex exec; stdin exactly frozen JUDGE_PROMPT.md",
+  "git_sha": "f5df8f2217d5bc40e89d72738a60f4063d984507",
+  "stdout_sha256": "bb56a8979067c5cfdac391a66f1f725401fb519ebc4d4b7d3c61edab3a094eb0",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

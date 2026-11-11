@@ -1,0 +1,11 @@
+# Different-model broaden consultation
+
+One fresh, bounded `claude -p --model opus --tools ""` consultation ran with WHITTLE=0, an empty strict MCP configuration, no setting sources, no resume/fork/history, and no persistence. The process returned 0 with a successful one-turn response; raw model identity and usage are retained. No external service or MCP tool was provided to the consultant.
+
+Exact question/context: `whittle/ht-native-letter/evidence/broaden_prompt.txt`. Raw response: `whittle/ht-native-letter/evidence/broaden_raw.json`; extracted response: `whittle/ht-native-letter/evidence/broaden_response.txt`; stderr: `whittle/ht-native-letter/evidence/broaden_stderr.txt`; command, deadline, prompt/output hashes and process receipt: `whittle/ht-native-letter/evidence/broaden_call.json`. Invocation script: `whittle/ht-native-letter/evidence/call_opus.py`.
+
+Opus identified two revealing player cases. First, a player could read the passage list as an editable setting or as additive to local wildlife. I traced the unchanged Eligible/kernel list-versus-roster branch and revised the description to say the map biome decides the passers and falls back to its wild animal roster only if it lists none. Second, a player could mistake a resident native for the approaching titan. I revised the letter to identify entry from beyond the map, kept the directional {0}, and inspected formatted examples for every direction and the unchanged warning-hours argument. The original damage, warning, T3 cap and off explanations remain intact.
+
+Acted-on static traces and limitations: `whittle/ht-native-letter/evidence/player_cases.txt`; formatting inspection: `whittle/ht-native-letter/evidence/compatibility.json`; raw final source and caller snapshots: `whittle/ht-native-letter/evidence/source/`; final diff: `whittle/ht-native-letter/evidence/source.diff`. No game run, live claims, C# changes, settings-number changes, acceptance-bar changes or art changes.
+
+The first focused lint ran before the wording refinements and passed; its untouched receipts are preserved under `whittle/ht-native-letter/evidence/pre_broaden_wording/`. Final check receipts are separate and refer to the final source hashes.

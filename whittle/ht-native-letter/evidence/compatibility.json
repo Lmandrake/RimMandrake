@@ -1,0 +1,53 @@
+{
+  "git_sha": "f5df8f2217d5bc40e89d72738a60f4063d984507",
+  "inspected_at": 1794388945.0170226,
+  "diff_check_rc": 0,
+  "xml": [
+    {
+      "file": "src/RimMandrake/HugeThings/Languages/English/Keyed/RM_TitanicCreatures.xml",
+      "well_formed": true,
+      "same_ordered_unique_keys": true,
+      "all_format_args_unchanged": true,
+      "changed_values": [
+        {
+          "key": "RM_TitanPassage_TremorText",
+          "before": "The ground shudders in slow, heavy beats from the {0}. Something enormous is walking this way, and it does not live here.\\n\\nWhatever it is will cross the map. Anything built in its path may not survive it.",
+          "after": "The ground shudders in slow, heavy beats from the {0}. Something enormous is coming in from beyond the map.\\n\\nWhatever it is will cross the map. Anything built in its path may not survive it.",
+          "format_args": [
+            "{0}"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "src/RimMandrake/HugeThings/Languages/English/Keyed/RM_HugeThings.xml",
+      "well_formed": true,
+      "same_ordered_unique_keys": true,
+      "all_format_args_unchanged": true,
+      "changed_values": [
+        {
+          "key": "RM_HugeThings_TitanEvents_Desc",
+          "before": "A titan (size tier 2 or 3) that lives in some other biome, never this map's own, may cross your map edge to edge. Hours of footfall tremors (screen shake and messages) come first; then it walks across, and its wake smashes what is built in its path. Never two of the largest tier on one map. Off: the event never fires.",
+          "after": "A titan (size tier 2 or 3) may walk in from beyond your map and cross it edge to edge. This map's biome decides which titans can come: those it lists for passage or, if it lists none, those from its own wild animal roster. Hours of footfall tremors (screen shake and messages) come first; then it walks across, and its wake smashes what is built in its path. Never two of the largest tier on one map. Off: the event never fires.",
+          "format_args": []
+        }
+      ]
+    }
+  ],
+  "python_executable_ast_unchanged": true,
+  "tracked_changes_exactly_requested_three_files": true,
+  "all_inspected_cs_files_byte_identical_to_head": true,
+  "directional_warning_examples": {
+    "north": "The ground shudders in slow, heavy beats from the north. Something enormous is coming in from beyond the map.\n\nWhatever it is will cross the map. Anything built in its path may not survive it.",
+    "south": "The ground shudders in slow, heavy beats from the south. Something enormous is coming in from beyond the map.\n\nWhatever it is will cross the map. Anything built in its path may not survive it.",
+    "east": "The ground shudders in slow, heavy beats from the east. Something enormous is coming in from beyond the map.\n\nWhatever it is will cross the map. Anything built in its path may not survive it.",
+    "west": "The ground shudders in slow, heavy beats from the west. Something enormous is coming in from beyond the map.\n\nWhatever it is will cross the map. Anything built in its path may not survive it."
+  },
+  "warning_hours_example": "  Tremor warning before it arrives: 6.0 hours (provisional)",
+  "callsite_review": {
+    "tremor": "TitanPassage.cs:42-43 passes EdgeName(map, start) as the sole argument",
+    "description": "RM_HugeThingsSettings.cs:399 translates description with zero arguments",
+    "warning": "RM_HugeThingsSettings.cs:402 passes formatted warning hours as the sole argument",
+    "limitations": "Offline XML/string/callsite inspection only; no game run or gameplay acceptance."
+  }
+}

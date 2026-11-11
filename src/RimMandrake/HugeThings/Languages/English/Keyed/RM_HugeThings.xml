@@ -100,6 +100,6 @@
   <RM_HugeThings_CorpseCampChance>    Daily chance of a camp: {0}% (provisional)</RM_HugeThings_CorpseCampChance>
   <RM_HugeThings_CorpseCampHours>    How long a camp stays: {0} hours (provisional)</RM_HugeThings_CorpseCampHours>
   <RM_HugeThings_TitanEvents>Titans from elsewhere pass through, with warning</RM_HugeThings_TitanEvents>
-  <RM_HugeThings_TitanEvents_Desc>A titan (size tier 2 or 3) that lives in some other biome, never this map's own, may cross your map edge to edge. Hours of footfall tremors (screen shake and messages) come first; then it walks across, and its wake smashes what is built in its path. Never two of the largest tier on one map. Off: the event never fires.</RM_HugeThings_TitanEvents_Desc>
+  <RM_HugeThings_TitanEvents_Desc>A titan (size tier 2 or 3) may walk in from beyond your map and cross it edge to edge. This map's biome decides which titans can come: those it lists for passage or, if it lists none, those from its own wild animal roster. Hours of footfall tremors (screen shake and messages) come first; then it walks across, and its wake smashes what is built in its path. Never two of the largest tier on one map. Off: the event never fires.</RM_HugeThings_TitanEvents_Desc>
   <RM_HugeThings_TitanWarning>  Tremor warning before it arrives: {0} hours (provisional)</RM_HugeThings_TitanWarning>
 </LanguageData>

@@ -1,0 +1,11 @@
+Offline player-reading inspections; no C# execution or game observation.
+Git/source identity: source_manifest.json and source.diff.
+
+Case 1 — A listed non-native titan versus an unlisted native; then no explicit list.
+Read source/Titanic/Events/TitanPassage.cs Eligible, lines 61-74, and source/Kernel/RM_TitanicKernel.cs lines 212-217.
+Eligible marks hasList only for a nonempty passers list from a map biome and marks onList if that list contains the kind. It separately computes here from positive commonality. The kernel selects biomeHasPassageList ? onPassageList : homedHere. With the remaining gates satisfied, a listed non-native therefore passes, an unlisted native does not when a list exists, and a native can pass when no nonempty list exists. This is a static trace of the unchanged source, not measured gameplay.
+Read both XML values in source/Languages/English/Keyed. Final wording attributes the passage list to the map biome, makes roster fallback conditional on no listed passers, and says entry is from beyond the map rather than from another biome. It does not promise that all natives can pass when a list exists. The original warning, wake damage, largest-tier cap, and off-switch sentences remain verbatim; the diff supplies raw comparison.
+
+Case 2 — Player sees a native resident and receives the tremor letter from a map edge.
+Read source/Titanic/Events/TitanPassage.cs lines 42-43 and EdgeName lines 145-150: Translate receives exactly one translated direction argument, with north/south/east/west keys. The final letter retains {0}, now says the approaching titan is coming from beyond the map, and retains the entire destructive crossing paragraph and literal backslash-n separators. A resident being of the same species no longer makes the letter false, and the warning still points the player toward an incoming passage.
+compatibility.json contains local string-format examples for all four directions (not game-rendered screenshots), plus a 6.0-hour warning-label formatting example. The settings label callsite still passes one formatted-hours argument at RM_HugeThingsSettings.cs:402, while the description at :399 takes zero. These examples only inspect formatting compatibility; they do not claim live arrival, warning timing, movement or damage.

@@ -1,0 +1,5 @@
+Whittle: not done yet.
+- Evidence for 'the keyed footfall tremors letter warns of the direction and destructive crossing without claiming the approaching titan is foreign or absent from the biome.': 'whittle/ht-native-letter/evidence/source/Titanic/Events/TitanPassage.cs' is not a file that exists.
+- Evidence for 'the keyed titan-events settings description describes the biome hint or own-roster pool and preserves the warning, damage, largest-tier limit and off-switch explanations, without claiming local creatures are excluded.': 'whittle/ht-native-letter/evidence/source/Titanic/Events/TitanPassage.cs' is not a file that exists.
+- Evidence for 'the keyed titan-events settings description describes the biome hint or own-roster pool and preserves the warning, damage, largest-tier limit and off-switch explanations, without claiming local creatures are excluded.': 'whittle/ht-native-letter/evidence/source/Kernel/RM_TitanicKernel.cs' is not a file that exists.
+If you truly can't go on, or need the owner, write whittle/ht-native-letter/BLOCKED.md saying why, then stop.
