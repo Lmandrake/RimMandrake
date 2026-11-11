@@ -10,8 +10,10 @@ The old/current production planner comparison supplies the matched offline RED.
 import argparse
 import hashlib
 import json
+import math
 from pathlib import Path
 import re
+import struct
 import sys
 import time
 import uuid
@@ -53,6 +55,25 @@ def sha(path):
 
 def kv(text):
     return dict(re.findall(r'(\w+)=([^\s|]+)', str(text)))
+
+
+def work_bits(text):
+    return struct.pack('<f', float(text))
+
+
+def loaded_cut_matches(saved, captured, plant, contact, nonce):
+    try:
+        return (captured.get('newGame') == 'True' and captured.get('beforeNativeTick') == 'True'
+                and captured.get('nonce') == nonce and bool(nonce)
+                and captured.get('driver') == 'JobDriver_PlantCut_Designated'
+                and saved['job'] == captured.get('current') == CUT and captured.get('forced') == 'False'
+                and saved['plant'] == 'Thing_'+plant and captured.get('plant') == plant
+                and saved['contact'] == 'Thing_'+contact and captured.get('contact') == contact
+                and captured.get('tick') == saved['tick']
+                and math.isfinite(float(saved['work'])) and float(saved['work']) > 0
+                and work_bits(captured['work']) == work_bits(saved['work']))
+    except (KeyError, TypeError, ValueError, OverflowError):
+        return False
 
 
 class Run:
@@ -420,15 +441,41 @@ class Run:
         work_before_save = state
         occupied = 'CODEX_TrunkDoors_Cutting_'+uuid.uuid4().hex[:12]
         self.rec['cut_save'] = T.save_site(self.call, occupied, G.SAVES)
+        saved_path = Path(G.SAVES)/(occupied+'.rws')
+        saved_xml = ET.parse(saved_path).getroot()
+        saved_pawn = next(t for t in saved_xml.iter('thing') if t.findtext('id') == cutter)
+        saved_jobs = saved_pawn.find('jobs')
+        saved_state = dict(work=saved_jobs.findtext('curDriver/workDone'),
+                           job=saved_jobs.findtext('curJob/def'),
+                           plant=saved_jobs.findtext('curJob/targetA'),
+                           contact=saved_jobs.findtext('curJob/targetC'),
+                           tick=saved_xml.findtext('game/tickManager/ticksGame'),
+                           load_id=saved_jobs.findtext('curJob/loadID'))
+        self.rec['serialized_cut'] = dict(path=str(saved_path), sha256=sha(saved_path), state=saved_state)
+        before = kv(work_before_save)
+        require(saved_state['job'] == CUT and saved_state['plant'] == 'Thing_'+plant
+                and saved_state['contact'] == 'Thing_'+blockers[0]['id']
+                and saved_state['tick'] == before['tick']
+                and work_bits(saved_state['work']) == work_bits(before['work']),
+                'cutting snapshot differs from the exact pre-save state')
+        self.rec['reload_observer_arm'] = self.sc('ArmCutReload', cutter, 'RimMandrake.HugeThings.TrunkDoorValidationHooks')
+        observer = kv(self.rec['reload_observer_arm'])
+        require(observer.get('armed') == 'True' and observer.get('pawn') == cutter and observer.get('nonce'),
+                'reload observer did not arm for owned cutter')
         self.rec['cut_reload'] = T.load_site(self.call, 'calm', name=occupied, check=False, map_controls=('modal_broker',))
         require(self.rec['cut_reload']['verified'], 'cutting snapshot did not reload')
+        self.rec['cut_before_native_load_tick'] = self.sc('ReadCutReload', '', 'RimMandrake.HugeThings.TrunkDoorValidationHooks')
+        captured = kv(self.rec['cut_before_native_load_tick'])
+        require(loaded_cut_matches(saved_state, captured, plant, blockers[0]['id'], observer['nonce']),
+                'loaded cutting state before first native tick differs from exact serialized work/targets')
+        self.sc('ClearCutReload', '', 'RimMandrake.HugeThings.TrunkDoorValidationHooks')
         H.quiet_world(T.call_session(self.call), tx, wild_spawner=False, log_raids=False)
         self.check_originals('occupied_reload')
         self.rec['cut_job_after_reload'] = self.sc('CutState', cutter, 'RimMandrake.HugeThings.TrunkDoorValidationHooks')
         restored_work = kv(self.rec['cut_job_after_reload'])
         require(restored_work.get('current') == CUT and restored_work.get('plant') == plant and
-                restored_work.get('contact') == blockers[0]['id'] and restored_work.get('work') == kv(work_before_save).get('work'),
-                'cutting work/targets changed across occupied reload')
+                restored_work.get('contact') == blockers[0]['id'] and restored_work.get('forced') == 'False',
+                'cutting job/targets changed after native load tick')
         for _ in range(80):
             self.ticks(100)
             if not any(t['id'] == plant for t in self.things(PLANT)):
@@ -579,6 +626,10 @@ def main():
         r.rec['error'] = repr(exc)
     finally:
         errors = []
+        try:
+            r.sc('ClearCutReload', '', 'RimMandrake.HugeThings.TrunkDoorValidationHooks')
+        except Exception as exc:
+            errors.append(repr(exc))
         for field, value in r.prior.items():
             try:
                 r.setting(field, value)

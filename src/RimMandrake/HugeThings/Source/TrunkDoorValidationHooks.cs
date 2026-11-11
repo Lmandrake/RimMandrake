@@ -13,6 +13,53 @@ namespace RimMandrake.HugeThings
     /// The normal think tree picks up designated cuts; no helper creates cutting jobs or advances ticks/growth/work.</summary>
     public static class TrunkDoorValidationHooks
     {
+        private static Game reloadFromGame;
+        private static string reloadPawn;
+        private static string reloadCapture;
+        private static string reloadNonce;
+
+        /// <summary>Arm one read-only observation in a different loaded Game. The installed engine's
+        /// pause-on-load callback ticks once before pausing, so a bridge read after load is too late
+        /// to compare serialized work exactly. This observer never changes or suppresses that tick.</summary>
+        public static string ArmCutReload(string pawnId)
+        {
+            if (reloadPawn != null) return "FAIL reload observation already armed";
+            Pawn pawn = Find.CurrentMap?.mapPawns.AllPawnsSpawned.FirstOrDefault(p => p.ThingID == pawnId);
+            if (!(pawn?.jobs.curDriver is JobDriver_PlantWork) || pawn.CurJobDef?.defName != "RM_CutHugePlantFromTrunk")
+                return "FAIL no current trunk cutting fixture";
+            reloadFromGame = Current.Game;
+            reloadPawn = pawnId;
+            reloadCapture = null;
+            reloadNonce = Guid.NewGuid().ToString("N");
+            return "armed=True pawn=" + pawnId + " nonce=" + reloadNonce;
+        }
+
+        internal static void ObserveCutReload()
+        {
+            if (reloadPawn == null || Current.Game == null || ReferenceEquals(Current.Game, reloadFromGame)) return;
+            string pawnId = reloadPawn;
+            reloadPawn = null;
+            try
+            {
+                if (Current.ProgramState != ProgramState.Playing || Find.CurrentMap == null)
+                    reloadCapture = "FAIL reload first tick not in playable state=" + Current.ProgramState;
+                else reloadCapture = "newGame=True beforeNativeTick=True nonce=" + reloadNonce + " " + CutState(pawnId);
+            }
+            catch (Exception e) { reloadCapture = "FAIL reload observation " + e.GetType().Name; }
+            finally { reloadFromGame = null; }
+        }
+
+        public static string ReadCutReload() => reloadCapture ?? "FAIL reload observation absent";
+
+        public static string ClearCutReload()
+        {
+            reloadFromGame = null;
+            reloadPawn = null;
+            reloadCapture = null;
+            reloadNonce = null;
+            return "armed=False captureCleared=True";
+        }
+
         public static string CutState(string pawnId)
         {
             Pawn pawn = Find.CurrentMap?.mapPawns.AllPawnsSpawned.FirstOrDefault(p => p.ThingID == pawnId);
@@ -20,7 +67,8 @@ namespace RimMandrake.HugeThings
             var driver = pawn.jobs.curDriver as JobDriver_PlantWork;
             float work = driver == null ? 0f : (float)AccessTools.Field(typeof(JobDriver_PlantWork), "workDone").GetValue(driver);
             return "current=" + pawn.CurJobDef?.defName + " forced=" + pawn.CurJob?.playerForced + " plant=" + pawn.CurJob?.targetA.Thing?.ThingID
-                + " contact=" + pawn.CurJob?.targetC.Thing?.ThingID + " work=" + work.ToString("R", CultureInfo.InvariantCulture)
+                + " contact=" + pawn.CurJob?.targetC.Thing?.ThingID + " driver=" + (driver?.GetType().Name ?? "none")
+                + " work=" + (driver == null ? "absent" : work.ToString("R", CultureInfo.InvariantCulture))
                 + " x=" + pawn.Position.x + " z=" + pawn.Position.z + " tick=" + Find.TickManager.TicksGame;
         }
 
@@ -64,5 +112,11 @@ namespace RimMandrake.HugeThings
             GravshipPlacementUtility.ClearArea(map, cell, new HashSet<IntVec3> { IntVec3.Zero }, mode);
             return "mode=" + mode + " plantDestroyed=" + plant.Destroyed + " blockerDestroyed=" + blocker.Destroyed;
         }
+    }
+
+    [HarmonyPatch(typeof(TickManager), nameof(TickManager.DoSingleTick))]
+    internal static class Patch_TrunkDoorReloadObservation
+    {
+        private static void Prefix() => TrunkDoorValidationHooks.ObserveCutReload();
     }
 }
