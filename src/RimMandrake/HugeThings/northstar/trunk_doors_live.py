@@ -86,6 +86,10 @@ class Run:
         self.originals = {}
         self.retained = []
         self.retained_cells = set()
+        self.actor_roles = {}
+        self.borrowed = set()
+        self.actor_positions = {}
+        self.baseline_actor_ids = set()
 
     def persist(self):
         self.out.write_text(json.dumps(self.rec, indent=2, default=str, allow_nan=False)+'\n', encoding='utf-8')
@@ -156,6 +160,7 @@ class Run:
         require(rows == self.rec['baseline']['map_pawns'], 'SITE: original census changed before isolation')
         self.originals = {p['id']: p for p in rows}
         require(all(p.get('isPlayer') and p.get('intelligence') == 'Humanlike' and p.get('def') == 'Human'
+                    and p.get('xenotype') == 'Baseliner' and not p.get('uniqueXenotype')
                     and p.get('spawned') and not p.get('dead') and not p.get('downed') for p in rows),
                 'SITE: original map pawns are not the supported draftable human colonists')
         require(not any(self.near_fixture(p, margin=1) for p in rows),
@@ -217,9 +222,29 @@ class Run:
         checks = []
         for pid, original in self.originals.items():
             pawn = by_id.get(pid)
-            require(pawn and pawn.get('spawned') and not pawn.get('dead') and not pawn.get('downed')
-                    and (pawn['x'], pawn['z']) == (original['x'], original['z']),
-                    'SITE_interference: original pawn moved or became unavailable at '+phase)
+            require(pawn and pawn.get('spawned') and not pawn.get('dead') and not pawn.get('downed'),
+                    'SITE_interference: original pawn became unavailable at '+phase)
+            if pid in self.borrowed:
+                mental = self.call('jawa/pawn_mental', pawn=pid, action='list', limit=1)
+                require('currentState' in mental and mental['currentState'] is None,
+                        'SITE_interference: borrowed actor mental state at '+phase)
+                working = pid == self.actor_roles['cutter'] and phase in ('natural_pickup', 'occupied_reload')
+                draft = self.call('jawa/set_draft', pawnId=pid, drafted=not working)
+                require(draft.get('wasDrafted') is (not working) and draft.get('changed') is False,
+                        'SITE_interference: borrowed actor draft state at '+phase)
+                if working:
+                    require(((96 <= pawn['x'] <= 104 and 103 <= pawn['z'] <= 110) or
+                             (pawn['x'], pawn['z']) == (100, 102)) and
+                            any(p['id'] == pid and p['job'] == CUT for p in state['pawns']),
+                            'SITE_interference: cutter left real workshop job')
+                elif phase != 'cut_completed' or pid != self.actor_roles['cutter']:
+                    require((pawn['x'], pawn['z']) == self.actor_positions[pid],
+                            'SITE_interference: drafted fixture moved at '+phase)
+                checks.append(dict(pawn=pawn, mental=mental, draft=draft,
+                                   borrowed_role=next(k for k, v in self.actor_roles.items() if v == pid)))
+                continue
+            require((pawn['x'], pawn['z']) == (original['x'], original['z']),
+                    'SITE_interference: unborrowed original moved at '+phase)
             # This instrument reports the actual PRE-WRITE draft state. A false
             # wasDrafted fails even though the call then redrafts for safe cleanup.
             draft = self.call('jawa/set_draft', pawnId=pid, drafted=True)
@@ -228,8 +253,9 @@ class Run:
             checks.append(dict(pawn=pawn, draft=draft))
         require(not any(p['id'] not in self.rec['fixture_ids'] and self.near_fixture(p) for p in rows),
                 'SITE_interference: non-fixture pawn entered scene at '+phase)
-        require(not any(p['id'] in self.originals and (p.get('job') == CUT or p.get('queued')) for p in state['pawns'])
-                and not any(p['claimant'] in self.originals for p in state['reservationsInRect']),
+        fixed = set(self.originals)-self.borrowed
+        require(not any(p['id'] in fixed and (p.get('job') == CUT or p.get('queued')) for p in state['pawns'])
+                and not any(p['claimant'] in fixed for p in state['reservationsInRect']),
                 'SITE_interference: original job/reservation at '+phase)
         retained = [self.identity(t['id']) for t in self.retained]
         require(retained == self.retained, 'SITE_interference: retained baseline object changed at '+phase)
@@ -245,13 +271,59 @@ class Run:
         require(type(rows[0].get('canReach')) is bool, 'path answer missing')
         return rows[0]['canReach']
 
-    def spawn_pawn(self, x, z):
-        rows = self.call('jawa/spawn_pawn', kindDef='Colonist', x=x, z=z, faction='player', count=1, xenotype='Baseliner')['pawns']
-        require(len(rows) == 1, 'wrong spawn cardinality')
-        pid = rows[0]['id']
-        self.rec['fixture_ids'].append(pid)
-        C.declare_fixture(pid)
-        self.call('jawa/set_draft', pawnId=pid, drafted=True)
+    def select_actors(self):
+        # The registered site's existing colonists are restored from the unique
+        # snapshot. No PawnGenerator call: its unrelated food-gear path can NRE.
+        require(len(self.originals) == 3, 'SITE: exact three-colonist fixture crew unavailable')
+        capable = []
+        self.rec['actor_candidates'] = []
+        for pid in sorted(self.originals, key=lambda value: int(re.search(r'\d+$', value).group())):
+            details = self.call('jawa/pawn_get', pawn=pid)['pawns'][0]
+            needs = {n['need']: n['pct'] for n in details['needs']}
+            require(needs.get('Food', 0) >= 0.5 and needs.get('Rest', 0) >= 0.5,
+                    'SITE: original actor lacks food/rest margin')
+            area = self.call('jawa/set_player_settings', pawnId=pid)
+            require(area.get('area') is None, 'SITE: actor has an allowed-area restriction')
+            mental = self.call('jawa/pawn_mental', pawn=pid, action='list', limit=1)
+            require('currentState' in mental and mental['currentState'] is None, 'SITE: actor in mental state')
+            priority = self.call('jawa/set_work_priority', allow=True, pawnId=pid, workType='PlantCutting', priority=1)
+            self.rec['actor_candidates'].append(dict(pawn=pid, details=details, area=area, mental=mental, priority=priority))
+            if priority.get('success') is True and int(priority.get('readBack', 0)) > 0:
+                capable.append(pid)
+                if len(capable) == 2:
+                    break
+        require(len(capable) >= 2, 'SITE: existing crew lacks two capable PlantCutting workers')
+        self.actor_roles = dict(cutter=capable[0], second=capable[1], guard=capable[1])
+        self.rec['actor_roles'] = dict(self.actor_roles)
+
+    def move_actor(self, role, x, z):
+        pid = self.actor_roles[role]
+        if pid in self.borrowed:
+            require(self.rec.get('cut_recovered') is True, 'HARNESS: actor reused before cutting recovery')
+        else:
+            self.borrowed.add(pid)
+            self.rec['fixture_ids'].append(pid)
+            C.declare_fixture(pid)
+        move = self.call('jawa/order_pawn', allow=True, pawnId=pid, x=x, z=z, waitTicks=0, unpause=False, draft=True)
+        require(len(move.get('pawns', [])) == 1 and move['pawns'][0].get('orderAccepted') is True
+                and move['pawns'][0].get('canReach') is True and move['ticksElapsed'] == 0,
+                'SITE: existing actor cannot reach staging cell')
+        samples = []
+        for _ in range(30):
+            rows = [p for p in self.pawns(MAP_RECT) if p['id'] == pid]
+            require(len(rows) == 1 and not rows[0]['dead'] and not rows[0]['downed'], 'SITE: actor unavailable during staging')
+            samples.append(rows[0])
+            if (rows[0]['x'], rows[0]['z']) == (x, z):
+                break
+            self.ticks(60)
+        require((samples[-1]['x'], samples[-1]['z']) == (x, z), 'SITE: existing actor failed governed walk to fixture')
+        self.call('jawa/stop_job', pawnId=pid, mode='stopall')
+        drafted = self.call('jawa/set_draft', pawnId=pid, drafted=True)
+        require(drafted.get('drafted') is True, 'SITE: borrowed actor not drafted')
+        self.actor_positions[pid] = (x, z)
+        self.rec.setdefault('actor_staging', []).append(dict(role=role, pawn=pid, order=move, samples=samples,
+            origin='registered disposable site baseline; temporarily borrowed, never generated or despawned'))
+        self.check_originals('staged_'+role)
         return pid
 
     def stage_plant(self, x, z, growth=0.2499):
@@ -277,20 +349,35 @@ class Run:
         self.rec.setdefault('supplement_saves', []).append(saved)
         path = Path(G.SAVES)/(observation+'.rws')
         growth = []
-        for thing in ET.parse(path).getroot().iter('thing'):
+        actor_policies = []
+        saved = ET.parse(path).getroot()
+        require(not saved.findall('game/maps/li/lordManager/lords/li'), 'SITE: baseline actors have an active lord group')
+        for thing in saved.iter('thing'):
+            if thing.findtext('id') in self.baseline_actor_ids:
+                require(thing.find('workSettings') is not None and thing.find('timetable') is not None,
+                        'SITE: serialized actor policy missing')
+                require(not list(thing.find('carryTracker/innerContainer/innerList')),
+                        'SITE: baseline actor carries an item')
+                actor_policies.append(dict(id=thing.findtext('id'), pos=thing.findtext('pos'),
+                    work=ET.tostring(thing.find('workSettings'), encoding='unicode').strip(),
+                    timetable=ET.tostring(thing.find('timetable'), encoding='unicode').strip(),
+                    drafted=thing.findtext('drafter/drafted', 'False'), job=thing.findtext('jobs/curJob/def')))
             if thing.find('growth') is None:
                 continue
             xyz = list(map(int, re.findall(r'-?\d+', thing.findtext('pos', ''))))
             if len(xyz) == 3 and 90 <= xyz[0] < 186 and 90 <= xyz[2] < 120:
                 growth.append(dict(id=thing.findtext('id'), pos=thing.findtext('pos'),
                                    growth=thing.findtext('growth'), age=thing.findtext('age')))
+        require(len(actor_policies) == len(self.baseline_actor_ids), 'SITE: incomplete serialized actor policy census')
         return dict(designations=sorted(rows, key=lambda d: json.dumps(d, sort_keys=True)),
-                    plant_growth=sorted(growth, key=lambda d: d['id']))
+                    plant_growth=sorted(growth, key=lambda d: d['id']),
+                    actor_policies=sorted(actor_policies, key=lambda d: d['id']))
 
 
     def scenario(self, tx):
         retained_by_rect = self.prepare_clear()
         self.pin_originals()
+        self.select_actors()
         for rect in CLEAR_RECTS:
             require(not self.pawns(rect), 'SITE: fixture rectangle contains pawns; refuse clearing')
             runs = self.editable_rects(rect)
@@ -319,16 +406,9 @@ class Run:
         require(len(door) == len(bench) == 1, 'workshop door/bench not built')
         self.rec['door_before'], self.rec['bench_before'] = door[0], bench[0]
         self.rec['walls_before'] = self.things('Wall')
-        cutter = None
-        self.rec['cutter_candidates'] = []
-        for attempt in range(6):
-            pid = self.spawn_pawn(100+attempt % 2, 107+attempt // 2)
-            priority = self.call('jawa/set_work_priority', allow=True, pawnId=pid, workType='PlantCutting', priority=1)
-            self.rec['cutter_candidates'].append(dict(pawn=pid, priority=priority))
-            if priority.get('success') is True and int(priority.get('readBack', 0)) > 0:
-                cutter = pid
-                break
-        require(cutter is not None, 'SITE: bounded Baseliner candidates have no capable PlantCutting worker')
+        cutter = self.move_actor('cutter', 100, 107)
+        second = self.move_actor('second', 101, 107)
+        self.rec['second'] = second
         self.rec['cutter'] = cutter
         self.rec['failure_stage'] = 'HARNESS_baseline_geometry'
         require(self.reach(cutter, 100, 97), 'HARNESS: workshop already inaccessible')
@@ -383,21 +463,15 @@ class Run:
         require(root_probe['gates']['canReachTouchDeadly'] is False, 'root was deliberately left reachable')
         probe = self.call('jawa/workgiver_probe', pawn=cutter, thing=blockers[0]['id'], workGiver=CUT)
         self.rec['cut_probes'] = dict(root=root_probe, trunk=probe)
+        require(root_probe.get('carried') is None and probe.get('carried') is None, 'SITE: cutter carries an item')
         require(probe['gates']['canReach'] is True and probe['gates']['canReserve'] is True and probe.get('job', {}).get('def') == CUT,
                 'trunk cutting giver did not produce a reachable/reservable real job')
         self.rec['failure_stage'] = 'MOD_natural_cut_pickup'
         prepared = self.sc('PrepareCutter', cutter, 'RimMandrake.HugeThings.TrunkDoorValidationHooks')
         self.rec['cutter_prepared'] = prepared
-        second = None
-        self.rec['second_candidates'] = []
-        for attempt in range(6):
-            pid = self.spawn_pawn(101+attempt % 2, 107+attempt // 2)
-            priority = self.call('jawa/set_work_priority', allow=True, pawnId=pid, workType='PlantCutting', priority=1)
-            self.rec['second_candidates'].append(dict(pawn=pid, priority=priority))
-            if priority.get('success') is True and int(priority.get('readBack', 0)) > 0:
-                second = pid
-                break
-        require(second is not None, 'HARNESS: no capable second reservation worker')
+        needs = {n['need']: n['pct'] for n in self.call('jawa/pawn_get', pawn=cutter)['pawns'][0]['needs']}
+        require(needs.get('Food', 0) >= 0.35 and needs.get('Rest', 0) >= 0.35,
+                'SITE: cutter lacks needs margin before natural pickup')
         self.sc('PrepareCutter', second, 'RimMandrake.HugeThings.TrunkDoorValidationHooks')
         self.call('jawa/set_draft', pawnId=second, drafted=False)
         second_positive = self.call('jawa/workgiver_probe', pawn=second, thing=blockers[0]['id'], workGiver=CUT)
@@ -481,21 +555,22 @@ class Run:
             if not any(t['id'] == plant for t in self.things(PLANT)):
                 break
         require(not any(t['id'] == plant for t in self.things(PLANT)), 'actual cutting job never removed enclosed plant')
-        self.check_originals('cut_completed')
         self.call('jawa/set_draft', pawnId=cutter, drafted=True)
+        self.check_originals('cut_completed')
         self.ticks(500)
         require(not self.things(BLOCKER, '96,96,9,6'), 'plant blockers survived cutting/cleanup')
         require(self.reach(cutter, 100, 97), 'access not restored after real cutting')
         require(self.identity(door[0]['id']) == door[0] and self.identity(bench[0]['id']) == bench[0], 'cutting altered door/workshop')
         require(self.things('Wall') == self.rec['walls_before'], 'growth/cutting changed existing walls')
         self.rec['cut_recovered'] = True
+        self.move_actor('cutter', 100, 107)
         self.rec['failure_stage'] = 'MOD_placement_controls'
         self.controls()
 
     def controls(self):
         # Each plant has positive free contact cells as well as the obstructed
         # one: an absent/disabled footprint cannot satisfy placement protection.
-        guard = self.spawn_pawn(125, 101)
+        guard = self.move_actor('guard', 125, 101)
         self.call('jawa/spawn_batch', ops='Steel:140,101,17')
         item = self.things('Steel', '140,101,1,1')
         require(len(item) == 1, 'item control absent')
@@ -554,6 +629,7 @@ class Run:
                 'SITE: guard did not actually arrive after governed movement')
         self.ticks(500)
         require(self.things(BLOCKER, '125,101,1,1'), 'vacated pawn contact never retried')
+        self.actor_positions[guard] = (125, 105)
         self.check_originals('controls_item_pawn')
         clear_plant = self.things(PLANT, '175,110,1,1')
         require(len(clear_plant) == 1 and self.things(BLOCKER, '175,111,1,1'), 'ground ClearArea fixture absent')
@@ -578,6 +654,8 @@ class Run:
         self.ticks(500)
         require(self.things(BLOCKER, '172,98,7,6'), 'reenabled free-space feature did not resume')
         self.check_originals('controls_reenabled')
+        require({p['id'] for p in self.pawns(MAP_RECT)} == set(self.originals),
+                'SITE: map pawn IDs changed during borrowed-actor proof')
         self.rec['controls'] = dict(pawn=guard, item=item[0], building=door[0], indestructible=geyser[0], free_before=free_before,
                                     item_after_push=moved, vacated_pawn_retried=True, disabled=True, reenabled=True)
 
@@ -615,7 +693,9 @@ def main():
         require(r.rec['baseline_load']['verified'], 'scene-begin reload failed')
         baseline = r.sc('Rect', RECT, PROOF)
         baseline_pawns = r.pawns()
-        r.rec['baseline'] = dict(rectangle=baseline, pawns=baseline_pawns, map_pawns=r.pawns(MAP_RECT), supplement=r.supplement())
+        baseline_map_pawns = r.pawns(MAP_RECT)
+        r.baseline_actor_ids = {p['id'] for p in baseline_map_pawns}
+        r.rec['baseline'] = dict(rectangle=baseline, pawns=baseline_pawns, map_pawns=baseline_map_pawns, supplement=r.supplement())
         tx = H.SettingsTransaction(T.call_session(r.call)); tx.__enter__()
         quiet = H.quiet_world(T.call_session(r.call), tx, wild_spawner=False, log_raids=False)
         require(quiet.verified, 'quiet controls unreadable')
