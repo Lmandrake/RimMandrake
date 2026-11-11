@@ -1,0 +1,13 @@
+mid = ((F1[0] + F2[0]) // 2, (F1[1] + F2[1]) // 2)
+for rid, val, want in (("M22a_kinetic_sway_on_swings_never_cuts", True, True), ("M22b_kinetic_sway_off_does_nothing", False, False)):
+    i1, i2, up = _scene_pair(B)
+    s = B.ap("set:kineticSway=%s" % val)
+    if not (i1 and up and s.get("success")):
+        V.row(rows, rid, "UNMEASURED", "SITE", {"linked": up, "set": s})
+        continue
+    ex = B.ap("explode:%d,%d,2.5,50,kinetic" % mid)
+    B.ticks(3)
+    ap_ = anchors_by_pos(B.ap("census"))
+    still = any(l.get("state") == "Up" for l in _links_to(ap_.get(F1), i2))
+    ok = ex.get("success") and still and ex.get("cuts") == 0 and (ex.get("sways", 0) > 0) == want
+    V.row(rows, rid, "PASS" if ok else "FAIL", "MOD", {"explode": ex, "spanStillUp": still, "wantSway": want})

@@ -1,0 +1,7 @@
+{
+  "started": 1794424012.6285512,
+  "returncode": 1,
+  "production_normalization": "string cmd = request.Trim();",
+  "extraction": "actual production normalization inserted before exact production explode branch; shipping source untouched",
+  "raw": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/kinetic-sway-raw/service_normalization_probe.txt"
+}

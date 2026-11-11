@@ -1,0 +1,11 @@
+{
+  "HEAD": "5450e062ca48ae901b531288c30d05c54d64f84b",
+  "root": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/kinetic-sway-raw/original",
+  "sha256": {
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialProbe.cs": "8ba70189830fc01e3b3dd4d1a6c43c738b54febfea05090bb7cfe4c3f334a886",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs": "019a9278b98fe51674364f512dfeb6cff226f1db5136e9a2c937db5e98a9a39a",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SwitchFlipChecks.cs": "262af04001871ebb455596aa3746f047886701f114f20262a04b5641d86923af",
+    "src/RimMandrake/GimmeSomeSlack/validation_aerial.py": "9e72c52440a61d09062ccbb1c04a031e82d558f54f836f45920ea0713e92f961",
+    "src/RimMandrake/GimmeSomeSlack/restring_style_proof.py": "589dc1c1a2925058936455a69ad468d0408e483a8b0c81dfbc8147ecab8082ad"
+  }
+}

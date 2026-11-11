@@ -1,0 +1,11 @@
+# L0 tooling claim
+
+- true: AerialProbe explode accepts an optional registered damage defName, preserves the existing Bomb default and synthetic kinetic token, and has offline parsing checks. | evidence: `whittle/fw-drain-kinetic-sway/evidence/fresh_readback2.json`
+- true: The aerial proof observes kineticSway on and off using a real KineticArms damage definition, with MOD rows requiring successful setting readback, positive on sway and zero off sway in the census, and an intact connected span. | evidence: `whittle/fw-drain-kinetic-sway/evidence/fresh_readback2.json`
+- true: GSS_CORD_SWAY_TAME_PER_FRAME_ALLOC has an executable live-proof command naming GimmeSomeSlack and KineticArms that requires fresh successful kinetic sway rows, with focused offline checks for the real proof path and command. | evidence: `whittle/fw-drain-kinetic-sway/evidence/fresh_readback2.json`
+
+Local source/build commits: 0cd82b62db and 913a415fdf (unpublished). Final standard runner ran all four focused selftests, PASS 4/4, no cached pass. The normal GSS test passed 4485/4485 checks including aerial 155/155. One cache-record refusal says changed during the run; the retained before/after source hashes agree, and the fresh readback compares all exact test and build inputs to current committed source and both actual stages. This is fresh execution evidence, not a stored PASS claim. Shipping winbuild succeeded with 0 warnings/errors. All 70 compiled source stamp inputs and the committed DLL match.
+
+Original behavioral RED is 14 failures in the preserved original C# branch and two M22 false-pass controls. A later boundary readback exposed request.Trim normalization: the pre-fix commit snapshot has three failing whitespace-selector cases under the exact normalization plus branch; the final production harness passes these. The initial harness compile failure, Python bool/int test-fixture mistake, superseded first judgment and all raw logs remain retained.
+
+No live game, bridge, mod list or deploy. No actual KineticArms integration, pixels, art or allocation acceptance is claimed. The separate GSS_CORD_SWAY_TAME_PER_FRAME_ALLOC live item remains open. Parent alone publishes and writes final item verify/close/archive.

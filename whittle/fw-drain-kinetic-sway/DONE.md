@@ -1,0 +1,13 @@
+# L0 tooling claim
+
+- true: AerialProbe explode accepts an optional registered damage defName, preserves the existing Bomb default and synthetic kinetic token, and has offline parsing checks. | evidence: `whittle/fw-drain-kinetic-sway/evidence/fresh_readback3.json`
+- true: The aerial proof observes kineticSway on and off using a real KineticArms damage definition, with MOD rows requiring successful setting readback, positive on sway and zero off sway in the census, and an intact connected span. | evidence: `whittle/fw-drain-kinetic-sway/evidence/fresh_readback3.json`
+- true: GSS_CORD_SWAY_TAME_PER_FRAME_ALLOC has an executable live-proof command naming GimmeSomeSlack and KineticArms that requires fresh successful kinetic sway rows, with focused offline checks for the real proof path and command. | evidence: `whittle/fw-drain-kinetic-sway/evidence/fresh_readback3.json`
+
+Local source/build commits: 0cd82b62db, 913a415fdf and 732415605f (unpublished). Generic --live/--flips and proof_all callers keep the synthetic kinetic default. The new launcher explicitly passes --kinetic-damage RM_Repulse_Palm and requires that mode plus both real-definition rows in the fresh result and driver exit 0. Missing registered definitions fail only the explicit mode.
+
+The final standard runner executed four focused tests (parse, kinetic/CLI, existing restring launcher, existing proof drivers): PASS 4/4, no cached results. The normal GSS selftest was already PASS 4485/4485 including aerial 155/155 after the final C# change; fresh readback confirms all its C#/project/JSON inputs still match. Its cache-record refusal (changed /home/mandrake parent folder) is retained. No stored PASS is claimed. Final shipping winbuild succeeded with 0 warnings/errors; all 70 stamp inputs and the committed DLL match.
+
+Original production RED (14 C# behavior failures; two M22 false-pass controls), request-normalization RED (three whitespace cases), generic missing-mod RED (actual pre-fix helper fails without KineticArms), intermediate test faults and both earlier judgments remain retained. The second judge's no verdict caused the compatibility repair and new CLI/default/explicit/missing-mod controls. Fresh source readback includes exact final tests/build inputs, actual stage provenance, observed key hash lines, and current normal command bindings.
+
+No live game, bridge, mod list, deploy or actual KineticArms integration. No render/art/appearance or allocation acceptance is claimed. Separate GSS_CORD_SWAY_TAME_PER_FRAME_ALLOC live acceptance remains open. Parent alone publishes and writes final item verify/close/archive.

@@ -1,0 +1,45 @@
+{
+  "path": "/home/mandrake/.local/state/rm-selftests/known_results/refusals.jsonl",
+  "rows": [
+    {
+      "test": "src/RimMandrake/Utils/selftest_gimmesomeslack.py",
+      "why": [
+        "clock: a python process read the wall clock",
+        "external: /mnt/c/Users",
+        "external: /mnt/c/Users/All Users",
+        "external: /mnt/c/Users/All Users/.dotnet",
+        "external: /mnt/c/Users/Default User",
+        "external: /mnt/c/Users/Default User/.dotnet",
+        "external: /mnt/c/Users/Default/.dotnet",
+        "external: /mnt/c/Users/Mandrake/.dotnet",
+        "external: /mnt/c/Users/Mandrake/.dotnet/dotnet.exe",
+        "external: /mnt/c/Users/Public/.dotnet",
+        "external: /mnt/d/ClaudeWork",
+        "external: /mnt/d/ClaudeWork/rimmandrake/build"
+      ],
+      "clock_by": [
+        "/home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/Utils/winbuild.py:time"
+      ]
+    },
+    {
+      "test": "src/RimMandrake/Utils/selftest_gimmesomeslack.py",
+      "why": [
+        "changed during the run: /home/mandrake (an absent input's folder)",
+        "clock: a python process read the wall clock",
+        "external: /mnt/c/Users",
+        "external: /mnt/c/Users/All Users",
+        "external: /mnt/c/Users/All Users/.dotnet",
+        "external: /mnt/c/Users/Default User",
+        "external: /mnt/c/Users/Default User/.dotnet",
+        "external: /mnt/c/Users/Default/.dotnet",
+        "external: /mnt/c/Users/Mandrake/.dotnet",
+        "external: /mnt/c/Users/Mandrake/.dotnet/dotnet.exe",
+        "external: /mnt/c/Users/Public/.dotnet",
+        "external: /mnt/d/ClaudeWork"
+      ],
+      "clock_by": [
+        "/home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/Utils/winbuild.py:time"
+      ]
+    }
+  ]
+}

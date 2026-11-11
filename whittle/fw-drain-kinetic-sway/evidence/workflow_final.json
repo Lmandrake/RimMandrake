@@ -1,0 +1,12 @@
+{
+  "time": 1794425200.488694,
+  "WHITTLE_DIR": "whittle/fw-drain-kinetic-sway",
+  "need_judge": true,
+  "need_broaden": true,
+  "last_change": 1794424817.1343632,
+  "done_problems": [],
+  "full_validator": "MandrakeWorkflows/whittle/run.py validate(root)",
+  "full_validator_returncode": 0,
+  "stdout": "",
+  "stderr": ""
+}

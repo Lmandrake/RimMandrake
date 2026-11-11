@@ -1,0 +1,17 @@
+{
+  "time": 1794424305.6718118,
+  "WHITTLE_DIR": "whittle/fw-drain-kinetic-sway",
+  "need_judge": true,
+  "need_broaden": true,
+  "last_change": 1794424243.459864,
+  "done_problems": [
+    "The evidence 'whittle/fw-drain-kinetic-sway/evidence/fresh_readback.json' for 'aerialprobe explode accepts an optional registered damage defname, preserves the existing bomb default and synthetic kinetic token, and has offline parsing checks.' is older than your last change to the project. Look again and save fresh evidence.",
+    "The evidence 'whittle/fw-drain-kinetic-sway/evidence/fresh_readback.json' for 'the aerial proof observes kineticsway on and off using a real kineticarms damage definition, with mod rows requiring successful setting readback, positive on sway and zero off sway in the census, and an intact connected span.' is older than your last change to the project. Look again and save fresh evidence.",
+    "The evidence 'whittle/fw-drain-kinetic-sway/evidence/fresh_readback.json' for 'gss_cord_sway_tame_per_frame_alloc has an executable live-proof command naming gimmesomeslack and kineticarms that requires fresh successful kinetic sway rows, with focused offline checks for the real proof path and command.' is older than your last change to the project. Look again and save fresh evidence.",
+    "No judge's verdict newer than DONE.md and the evidence. Spawn a fresh subagent (not a fork) with whittle/fw-drain-kinetic-sway/JUDGE_PROMPT.md as its whole brief. It writes whittle/fw-drain-kinetic-sway/JUDGE.md."
+  ],
+  "full_validator": "MandrakeWorkflows/whittle/run.py validate(root)",
+  "full_validator_returncode": 1,
+  "stdout": "",
+  "stderr": "Whittle: not done yet.\n- The evidence 'whittle/fw-drain-kinetic-sway/evidence/fresh_readback.json' for 'aerialprobe explode accepts an optional registered damage defname, preserves the existing bomb default and synthetic kinetic token, and has offline parsing checks.' is older than your last change to the project. Look again and save fresh evidence.\n- The evidence 'whittle/fw-drain-kinetic-sway/evidence/fresh_readback.json' for 'the aerial proof observes kineticsway on and off using a real kineticarms damage definition, with mod rows requiring successful setting readback, positive on sway and zero off sway in the census, and an intact connected span.' is older than your last change to the project. Look again and save fresh evidence.\n- The evidence 'whittle/fw-drain-kinetic-sway/evidence/fresh_readback.json' for 'gss_cord_sway_tame_per_frame_alloc has an executable live-proof command naming gimmesomeslack and kineticarms that requires fresh successful kinetic sway rows, with focused offline checks for the real proof path and command.' is older than your last change to the project. Look again and save fresh evidence.\n- No judge's verdict newer than DONE.md and the evidence. Spawn a fresh subagent (not a fork) with whittle/fw-drain-kinetic-sway/JUDGE_PROMPT.md as its whole brief. It writes whittle/fw-drain-kinetic-sway/JUDGE.md.\nIf you truly can't go on, or need the owner, write whittle/fw-drain-kinetic-sway/BLOCKED.md saying why, then stop.\n"
+}

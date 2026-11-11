@@ -1,0 +1,8 @@
+{
+  "commit": "0cd82b62db",
+  "root": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/kinetic-sway-raw/dispatch_before_fix",
+  "sha256": {
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs": "26f58f44d9f0c49c9a2b727ced8c49fb78a2def9ec9410053a35f315b60914c3",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialProbe.cs": "477b0e63f5dc8293277d942768b478b8fd40f93e0347553cec8ebb3cae9817ea"
+  }
+}

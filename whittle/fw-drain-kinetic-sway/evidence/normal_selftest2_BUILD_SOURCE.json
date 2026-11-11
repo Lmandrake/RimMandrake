@@ -1,0 +1,38 @@
+{
+ "csproj": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/RimMandrakeGimmeSomeSlack.SelfTest.csproj",
+ "stage": "/mnt/d/ClaudeWork/rimmandrake/build/GimmeSomeSlackSelfTest",
+ "outputs": [],
+ "ev_scope": [
+  "src/RimMandrake/_Shared/SlackGeometry/",
+  "src/RimMandrake/GimmeSomeSlack/Source/Core/",
+  "src/RimMandrake/GimmeSomeSlack/Source/Aerial/",
+  "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/",
+  "src/Directory.Build.targets",
+  "src/Directory.Build.props"
+ ],
+ "ev_start": {
+  "sha": "0cd82b62db48ddf7bea85b4bdbf4e2da3bd8410a",
+  "dirty": true,
+  "dirty_n": 2,
+  "dirty_paths": [
+   "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialProbe.cs",
+   "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/ExplodeProbeChecks.cs"
+  ],
+  "_token": "226341512de6eb7d171d26e35d724ab6d0439243ca6ae364904f61d0fac8d425"
+ },
+ "staged": true,
+ "ev_end": {
+  "sha": "0cd82b62db48ddf7bea85b4bdbf4e2da3bd8410a",
+  "dirty": true,
+  "dirty_n": 2,
+  "dirty_paths": [
+   "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialProbe.cs",
+   "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/ExplodeProbeChecks.cs"
+  ],
+  "_token": "226341512de6eb7d171d26e35d724ab6d0439243ca6ae364904f61d0fac8d425"
+ },
+ "source_sha": "0cd82b62db48ddf7bea85b4bdbf4e2da3bd8410a",
+ "dirty": true,
+ "clone": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+ "built_utc": "2026-11-11T19:08:29+00:00"
+}

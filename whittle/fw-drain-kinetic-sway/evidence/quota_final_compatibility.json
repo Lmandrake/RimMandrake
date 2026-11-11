@@ -1,0 +1,25 @@
+{
+  "codex.week_used_pct": {
+    "v": 35.0,
+    "m": "MEASURED",
+    "unit": "% of the weekly quota used",
+    "x": {
+      "reading_at": "2026-11-11T19:18:30Z",
+      "files": 792
+    }
+  },
+  "codex.hours_to_reset": {
+    "v": 155.5,
+    "m": "MEASURED",
+    "unit": "h to the weekly reset"
+  },
+  "codex.runway": {
+    "v": 0.15,
+    "m": "MEASURED",
+    "unit": "x the time to reset",
+    "x": {
+      "rate_pct_h": 2.794,
+      "rate_from": "readings over the last 24 h"
+    }
+  }
+}

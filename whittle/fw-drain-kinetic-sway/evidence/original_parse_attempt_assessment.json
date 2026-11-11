@@ -1,0 +1,15 @@
+{
+  "command": [
+    "python3",
+    "-c",
+    "import sys; from pathlib import Path; sys.path.insert(0,\"src/RimMandrake/GimmeSomeSlack\"); import selftest_gss_explode_parse as T; sys.exit(T.run(Path(\"/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/kinetic-sway-raw/original/src/RimMandrake/GimmeSomeSlack\")))"
+  ],
+  "started": 1794423379.1307702,
+  "elapsed": 2.4719078540802,
+  "returncode": 1,
+  "source": "untouched preserved original source snapshot",
+  "stdout": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/kinetic-sway-raw/original_parse_red.stdout",
+  "stderr": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/kinetic-sway-raw/original_parse_red.stderr",
+  "valid_behavioral_red": false,
+  "limitation": "Initial attempt failed to compile due to unused Core.WallMount references in full AerialMath; not a production red. Retained verbatim. Corrected extraction harness rerun is original_parse_red2."
+}

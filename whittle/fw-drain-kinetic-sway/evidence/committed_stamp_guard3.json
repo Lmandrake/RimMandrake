@@ -1,0 +1,14 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/Utils/dll_source_stamp.py",
+    "check",
+    "--range",
+    "5450e062ca48ae901b531288c30d05c54d64f84b..HEAD"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "",
+  "HEAD": "732415605fcea4c88e8e67c9a5e30c787e08a2cd",
+  "time": 1794424904.0510054
+}

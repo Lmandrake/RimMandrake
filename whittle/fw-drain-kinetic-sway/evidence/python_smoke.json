@@ -1,0 +1,10 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/GimmeSomeSlack/selftest_gss_kinetic_sway.py"
+  ],
+  "returncode": 0,
+  "elapsed": 0.4167783260345459,
+  "stdout": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/kinetic-sway-raw/python_smoke.stdout",
+  "stderr": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/kinetic-sway-raw/python_smoke.stderr"
+}

@@ -1,0 +1,42 @@
+{
+ "csproj": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/RimMandrakeGimmeSomeSlack.SelfTest.csproj",
+ "stage": "/mnt/d/ClaudeWork/rimmandrake/build/GimmeSomeSlackSelfTest",
+ "outputs": [],
+ "ev_scope": [
+  "src/RimMandrake/_Shared/SlackGeometry/",
+  "src/RimMandrake/GimmeSomeSlack/Source/Core/",
+  "src/RimMandrake/GimmeSomeSlack/Source/Aerial/",
+  "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/",
+  "src/Directory.Build.targets",
+  "src/Directory.Build.props"
+ ],
+ "ev_start": {
+  "sha": "5450e062ca48ae901b531288c30d05c54d64f84b",
+  "dirty": true,
+  "dirty_n": 4,
+  "dirty_paths": [
+   "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs",
+   "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialProbe.cs",
+   "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/ExplodeProbeChecks.cs",
+   "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SwitchFlipChecks.cs"
+  ],
+  "_token": "abd4618f629adeeaf41e26db44ed7689c2c0b81b650afec6fc033111796d8422"
+ },
+ "staged": true,
+ "ev_end": {
+  "sha": "5450e062ca48ae901b531288c30d05c54d64f84b",
+  "dirty": true,
+  "dirty_n": 4,
+  "dirty_paths": [
+   "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs",
+   "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialProbe.cs",
+   "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/ExplodeProbeChecks.cs",
+   "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SwitchFlipChecks.cs"
+  ],
+  "_token": "abd4618f629adeeaf41e26db44ed7689c2c0b81b650afec6fc033111796d8422"
+ },
+ "source_sha": "5450e062ca48ae901b531288c30d05c54d64f84b",
+ "dirty": true,
+ "clone": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+ "built_utc": "2026-11-11T19:00:21+00:00"
+}

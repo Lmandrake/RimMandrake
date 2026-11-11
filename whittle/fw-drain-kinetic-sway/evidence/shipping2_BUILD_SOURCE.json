@@ -1,0 +1,42 @@
+{
+ "csproj": "src/RimMandrake/GimmeSomeSlack/Source/RimMandrake_GimmeSomeSlack.csproj",
+ "stage": "/mnt/d/ClaudeWork/rimmandrake/build/GimmeSomeSlack",
+ "outputs": [
+  "src/RimMandrake/GimmeSomeSlack/Assemblies/RimMandrakeGimmeSomeSlack.dll",
+  "src/RimMandrake/GimmeSomeSlack/Assemblies/RimMandrakeGimmeSomeSlack.dll.srchash"
+ ],
+ "ev_scope": [
+  "src/RimMandrake/_Shared/StylePicker/",
+  "src/RimMandrake/_Shared/SettingsKit/",
+  "src/RimMandrake/GimmeSomeSlack/Source/",
+  "src/RimMandrake/_Shared/SlackGeometry/",
+  "src/RimMandrake/_Shared/HarmonyResilience/",
+  "src/Directory.Build.targets",
+  "src/Directory.Build.props"
+ ],
+ "ev_start": {
+  "sha": "0cd82b62db48ddf7bea85b4bdbf4e2da3bd8410a",
+  "dirty": true,
+  "dirty_n": 2,
+  "dirty_paths": [
+   "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialProbe.cs",
+   "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/ExplodeProbeChecks.cs"
+  ],
+  "_token": "3e1d996d39a931d06a378cc58376a9c499fbe1916d6ae92d6825029ba64ea2cb"
+ },
+ "staged": true,
+ "ev_end": {
+  "sha": "0cd82b62db48ddf7bea85b4bdbf4e2da3bd8410a",
+  "dirty": true,
+  "dirty_n": 2,
+  "dirty_paths": [
+   "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialProbe.cs",
+   "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/ExplodeProbeChecks.cs"
+  ],
+  "_token": "3e1d996d39a931d06a378cc58376a9c499fbe1916d6ae92d6825029ba64ea2cb"
+ },
+ "source_sha": "0cd82b62db48ddf7bea85b4bdbf4e2da3bd8410a",
+ "dirty": true,
+ "clone": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+ "built_utc": "2026-11-11T19:10:43+00:00"
+}

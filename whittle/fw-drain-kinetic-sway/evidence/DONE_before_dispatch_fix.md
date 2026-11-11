@@ -1,0 +1,9 @@
+# L0 tooling claim
+
+- true: AerialProbe explode accepts an optional registered damage defName, preserves the existing Bomb default and synthetic kinetic token, and has offline parsing checks. | evidence: `whittle/fw-drain-kinetic-sway/evidence/fresh_readback.json`
+- true: The aerial proof observes kineticSway on and off using a real KineticArms damage definition, with MOD rows requiring successful setting readback, positive on sway and zero off sway in the census, and an intact connected span. | evidence: `whittle/fw-drain-kinetic-sway/evidence/fresh_readback.json`
+- true: GSS_CORD_SWAY_TAME_PER_FRAME_ALLOC has an executable live-proof command naming GimmeSomeSlack and KineticArms that requires fresh successful kinetic sway rows, with focused offline checks for the real proof path and command. | evidence: `whittle/fw-drain-kinetic-sway/evidence/fresh_readback.json`
+
+Local source/build commit: 0cd82b62db (unpublished). Final standard runner: four focused selftests ran, all PASS, no cached pass. Shipping winbuild succeeded, 0 warnings/errors. Fresh readback rehashes all exact test/build inputs, reads changed production paths and frozen instructions, validates all 70 committed stamp inputs and the DLL hash, reads actual stage provenance and raw red/green logs. The initial extraction harness compile failure and the Python bool/int fixture-comparison failure are retained separately from production red evidence. Original production red is the 14 failing behavioral checks from the preserved C# branch plus two original M22 false-pass scenarios.
+
+No live game, bridge, mod list or deploy. No actual KineticArms integration, pixels, art or allocation acceptance is claimed. The separate GSS_CORD_SWAY_TAME_PER_FRAME_ALLOC live item remains open. Parent alone publishes and writes final item verify/close/archive.

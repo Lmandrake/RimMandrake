@@ -1,0 +1,22 @@
+{
+  "block_sha256": "3f745a0f6ee0a5c4424ce6a27ccb7d9875f789aee6e5d55e98ae9c62a4e74f2b",
+  "results": [
+    {
+      "fault": "failed_census",
+      "original_statuses": [
+        "PASS",
+        "PASS"
+      ],
+      "expected": "must not PASS"
+    },
+    {
+      "fault": "missing_off_sways",
+      "original_statuses": [
+        "PASS",
+        "PASS"
+      ],
+      "expected": "must not PASS"
+    }
+  ],
+  "raw": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/kinetic-sway-raw/original_m22_red.txt"
+}

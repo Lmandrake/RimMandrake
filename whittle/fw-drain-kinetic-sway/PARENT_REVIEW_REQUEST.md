@@ -1,0 +1,5 @@
+# Parent compatibility review
+
+The existing GSS-only --flips and --live proof entry points must remain usable under their declared live-mods. The new actual-KineticArms integration proof must explicitly select its real registered damage path and require that evidence. The current unconditional RM_Repulse_Palm request makes the generic callers fail without KineticArms. Preserve the original synthetic path for those generic callers, with explicit real-definition invocation from the new launcher. Keep the strengthened successful-read/census-delta checks in both paths. Add a focused normal-entry regression for generic default versus explicit real-definition mode. Parent added this question to JUDGE_PROMPT before the next fresh review.
+
+Parent also observed local source commit 0cd82b62db48ddf7bea85b4bdbf4e2da3bd8410a lacks the required Co-Authored-By trailer. Preserve history, and include the required trailer on every subsequent commit. Parent will disclose the first commit omission in final report. Do not amend/rewrite. Parent alone publishes.
