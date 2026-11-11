@@ -6,7 +6,7 @@ and grounded elephant test races. Never worldgen or flight. PROVE: distant pawn'
 only corridor exit stays open; 100 sparse plants eventually realize their contacts
 under the declared production scheduler cap; obstructed T3 conversion survives reload, retries
 without wiping its obstruction, and cannot butcher around the site-only contract.
-LIES: zero blockers / zero budget pressure, a pawn already trapped, a missing corpse,
+LIES: zero blockers / zero workload deferral, a pawn already trapped, a missing corpse,
 a disabled site feature, accepted-but-not-executed orders, or absent controls cannot
 pass. Restore the whole scene-begin save, verify its rectangle hash and all statics.
 """
@@ -104,6 +104,9 @@ class Run:
         return rows[0]['canReach'] is True
 
     def footprints(self):
+        # Removing natural rock supports without its roof drops CollapsedRocks
+        # during the closure clock, re-obstructing a successfully cleared site.
+        self.call('jawa/set_roof_batch', ops='None:70,90,48,22;None:120,120,100,100')
         self.call('jawa/destroy_batch', categories='All', rects='70,90,48,22;120,120,100,100')
         self.call('jawa/set_terrain_batch', ops='Soil:70,90,48,22;Soil:120,120,100,100')
         walls = [(x,z) for x in range(75,101) for z in (99,101)] + [(75,100)]
@@ -155,6 +158,7 @@ class Run:
         control=self.sc('ButcherYieldReport','RM_TestTitanT3Adult',HOOKS)
         require(int(kv(control)['meat'])>0, 'disabled-feature butcher control produced no meat')
         self.setting('corpseSiteEnabled',True)
+        self.call('jawa/set_roof_batch', ops='None:46,166,9,9')
         self.call('jawa/destroy_batch', categories='All', rects='46,166,9,9')
         self.call('jawa/set_terrain_batch', ops='Soil:46,166,9,9')
         self.call('jawa/build_batch',ops='Wall:51,171',stuff='WoodLog',faction='player')
