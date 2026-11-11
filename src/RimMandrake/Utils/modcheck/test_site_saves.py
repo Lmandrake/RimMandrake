@@ -417,10 +417,12 @@ def _load_errors(call, after_seq):
     return hits
 
 
-def load_site(call, site, budget_s=420, sleep=time.sleep, check=True, name=None):
+def load_site(call, site, budget_s=420, sleep=time.sleep, check=True, name=None, map_controls=None):
     """Load the site save from the MAIN MENU (loading over a live game NREs in the teardown: northstar_site.py), wait for
     Playing + a current map, make the site map current, re-apply the map-only quiet profile and the calm sky (a load
-    resets the storyteller static and the weather lock), and READ BACK check_map. -> receipt; receipt['verified']."""
+    resets the storyteller static and the weather lock), and READ BACK check_map. -> receipt; receipt['verified'].
+    Occupied snapshots must explicitly pass map_controls=('modal_broker',): the default
+    fixture cleanup deliberately vanishes hostile-faction pawns, including prisoners."""
     spec = SITES[site]
     name = name or spec.get("save")
     if not name:
@@ -465,7 +467,8 @@ def load_site(call, site, budget_s=420, sleep=time.sleep, check=True, name=None)
             rec["problems"].append("current map is tile %s, the save's site is %s" % (cur.get("tile"), reg["tile"]))
     S = call_session(call)
     import quiet_site as QS
-    rec["quietMap"] = QS.site_profile_receipt(S, "test_site_saves_load_%s" % site, controls=QS.MAP_ONLY + ("modal_broker",))
+    controls = QS.MAP_ONLY + ("modal_broker",) if map_controls is None else tuple(map_controls)
+    rec["quietMap"] = QS.site_profile_receipt(S, "test_site_saves_load_%s" % site, controls=controls)
     mi = call("jawa/map_info") or {}
     rec["sky"] = TG.calm_sky(S, (int(mi.get("sizeX", 250)), int(mi.get("sizeZ", 250))))
     call("jawa/incident_queue_clear")

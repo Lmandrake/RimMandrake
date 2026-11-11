@@ -174,10 +174,15 @@ T.clean_map(f, "calm", quiet=False)
 f.log = []
 T.read_registry = lambda path=None: {}
 import quiet_site as QS  # noqa: E402
-QS.site_profile_receipt = lambda *a, **k: {"problems": [], "error": None}
+seen_controls = []
+QS.site_profile_receipt = lambda *a, **k: (seen_controls.append(k.get("controls")) or {"problems": [], "error": None})
 r = T.load_site(f, "calm", sleep=lambda s: None)
 check("6 load via main menu before load_game", f.log.index("rimworld/go_to_main_menu") < f.log.index("rimworld/load_game"))
 check("6 loaded clean map verified", r["verified"], r["problems"])
+check("6 fixture loads retain destructive cleanup by default", seen_controls[-1] == QS.MAP_ONLY + ("modal_broker",))
+r_preserve = T.load_site(f, "calm", name="occupied", check=False, map_controls=("modal_broker",), sleep=lambda s: None)
+check("6 occupied snapshots use explicit non-destructive controls", r_preserve["verified"] and
+      seen_controls[-1] == ("modal_broker",))
 check("6 load ignores the save's mod header (fixture save, tier list differs)",
       getattr(f, "load_args", {}).get("ignoreModCompatibility") is True, getattr(f, "load_args", None))
 try:

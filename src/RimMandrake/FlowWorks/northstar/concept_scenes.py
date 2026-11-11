@@ -237,7 +237,7 @@ def scene_hole_prison(B, snapshot, reload_snapshot, receipt, *, relative=True, a
         # BROADEN (Opus): recomputed room/guest state after a save while occupied.
         if save_occupied is not None:
             receipt['occupied_save'] = save_occupied()
-            load_occupied()
+            receipt['occupied_load'] = load_occupied()
             step(2500)
             receipt['occupied_reload'] = [state(p) for p in raiders]
             require(all(s['kept'] == 'True' for s in receipt['occupied_reload']),
@@ -349,8 +349,9 @@ def main():
         def save_occupied():
             return T.save_site(B.call, occupied, SAVES)
         def load_occupied():
-            r = T.load_site(B.call, 'calm', name=occupied, check=False)
+            r = T.load_site(B.call, 'calm', name=occupied, check=False, map_controls=('modal_broker',))
             require(r['verified'], 'occupied reload failed: '+str(r))
+            return r
         scene_hole_prison(B, snapshot, reload_snapshot, res, relative=not a.absolute, abort=a.abort,
                           save_occupied=save_occupied, load_occupied=load_occupied,
                           expected_sha256=hashlib.sha256((HERE.parent/'Assemblies/RimMandrakeFlowWorks.dll').read_bytes()).hexdigest())
