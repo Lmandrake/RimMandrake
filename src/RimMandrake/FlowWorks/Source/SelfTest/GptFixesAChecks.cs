@@ -295,7 +295,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(f, @"NotifyExplosionAt\(map, ex, c, explosion\.damType, explosion\.Position, explosion\.thingIDNumber\);", "the patch passes the explosion's id");
             });
 
-            // LIQUID_THEFT_VERIFY_FALSE_ACCUSATION C1-F14: a foreign tank's change counts only when the player's net reaches it.
+            // LIQUID_THEFT_VERIFY_FALSE_ACCUSATION C1-F14: reach was the legacy gate; retained player changes now decide theft.
             Case("GptA_theft_requires_actual_player_changes_and_reach_is_diagnostic", () =>
             {
                 string th = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Machinery", "RM_LiquidTheft.cs"));

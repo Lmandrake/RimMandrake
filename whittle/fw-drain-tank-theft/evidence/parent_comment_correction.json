@@ -1,0 +1,10 @@
+{
+  "time": 1794420584.2830448,
+  "file": "src/RimMandrake/FlowWorks/Source/SelfTest/GptFixesAChecks.cs",
+  "before_sha256": "4ff18dd880acbcdec8492df4afba65fd02a703e03afce98d879976ad46a30c7e",
+  "after_sha256": "857534c4ce5252a7b856872c82f44c41dfa0074b3a019209e6a8526a4ed304dd",
+  "executable_text_equal_after_removing_the_one_whole_comment_line": true,
+  "comparison_sha256": "784ec4da2f2283b92dfefe4ffd4d91016db0f71fd0157b3ce62800efc8d1a906",
+  "tested_artifact": "727ff654c16f08d905c328b925a0ea9c656bf517",
+  "scope": "Correct obsolete reachability statement after acceptance. Same line count; every other byte identical. No executable change or shipping DLL change; no suite/build rerun for a comment-only correction."
+}
