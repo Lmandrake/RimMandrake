@@ -1,4 +1,7 @@
 # A2: M15e_restring_is_a_colonist_job is the MOD row for the RM_RestringSpan job (order alone leaves the span cut; the colonist's job restores and rejoins).
-# A1 (the joined run carries one style) has no row yet: filed as GSS_RESTRING_PROVE_ONE_STYLE_AFTER_JOIN. "--max-seconds 900" is read by proof_budget.
+# A1: M15f_restring_joined_run_one_look measures differing styles on disconnected sides, then the actual colonist job and joined nonempty equal styles.
+# A1 runs validation_aerial.py --live in a unique retained attempt directory and requires a fresh exact MOD PASS row and successful driver exit. All JSON, stdout, stderr and timeout/failure receipts are retained. "--max-seconds 900" is read by proof_budget.
+# Offline fake-bridge checks are instrument tests. Separate L2 gameplay acceptance remains open.
 live-mods: GimmeSomeSlack
+live-proof A1: python.exe src/RimMandrake/GimmeSomeSlack/restring_style_proof.py --out-dir D:/ClaudeWork/rimmandrake/scratch/gss_restring/a1 --max-seconds 900 < /dev/null
 live-proof A2: mkdir -p /mnt/d/ClaudeWork/rimmandrake/scratch/gss_restring; rm -f /mnt/d/ClaudeWork/rimmandrake/scratch/gss_restring/aerial.json; python.exe src/RimMandrake/GimmeSomeSlack/validation_aerial.py --live --out D:/ClaudeWork/rimmandrake/scratch/gss_restring/aerial.json < /dev/null; python3 -c "import json,sys,os,time; p='/mnt/d/ClaudeWork/rimmandrake/scratch/gss_restring/aerial.json'; ok=os.path.exists(p) and time.time()-os.path.getmtime(p)<1800; r=[x for x in (json.load(open(p))['rows'] if ok else []) if x.get('id')=='M15e_restring_is_a_colonist_job']; print(r[0] if r else 'M15e row missing'); sys.exit(0 if r and r[0].get('status')=='PASS' else 1)" --max-seconds 900

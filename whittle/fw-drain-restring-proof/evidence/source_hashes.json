@@ -1,0 +1,9 @@
+{
+  "src/RimMandrake/GimmeSomeSlack/validation_aerial.py": "9e72c52440a61d09062ccbb1c04a031e82d558f54f836f45920ea0713e92f961",
+  "src/RimMandrake/GimmeSomeSlack/restring_style_proof.py": "589dc1c1a2925058936455a69ad468d0408e483a8b0c81dfbc8147ecab8082ad",
+  "src/RimMandrake/GimmeSomeSlack/selftest_gss_restring_proof.py": "e670807e56c29a815bbf6439e09a7b527716ed3662fd4c9f433a33fa27e52d3e",
+  "infrastructure/state/live_proofs/GSS_RESTRING_FIX_STYLES_UNRECONCILED.txt": "172ed7f55a92f63ea8b979399d8330af138d8258bd345b67cc76a9900799d9be",
+  "whittle/fw-drain-restring-proof/STATEMENT.md": "b13edebe31647158b9285e4dc019fef990f6cd441a8417eb38f20a9e13ba18be",
+  "whittle/fw-drain-restring-proof/NOTES.md": "8157d10507d70882564f75ddf5b15d276e487155cb8fd46705da293fc8f5fa2e",
+  "whittle/fw-drain-restring-proof/JUDGE_PROMPT.md": "67ff8de16385d194584d3a93e5b9e41dea64b96bd4db7530ab253b10d43e4d48"
+}

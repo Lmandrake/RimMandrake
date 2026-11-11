@@ -162,6 +162,191 @@ def taps_off_control(before, after, lamp):
                     "note": "battery self-discharge only (5 W ~ 0.05 Wd/600 ticks)"}
 
 
+def park_restring_colonists(B, home):
+    """Return the suite's workers and hold them through subsequent falling-wire rows."""
+    replies = []
+    for pawn in home:
+        pid, pos = pawn["id"], pawn["pos"]
+        for cmd in ("pawn:%d=draft" % pid, "pawn:%d=tp:%d,%d" % (pid, pos[0], pos[1])):
+            try:
+                replies.append(B.probe(cmd))
+            except Exception as ex:
+                replies.append({"success": False, "cmd": cmd, "error": str(ex)})
+    try:
+        current = B.probe("colonists")
+        replies.append(current)
+        by_id = {p["id"]: p for p in current["pawns"]}
+        safe = all(isinstance(r, dict) and r.get("success") is True for r in replies) and all(
+            by_id.get(p["id"], {}).get("pos") == p["pos"] and
+            by_id.get(p["id"], {}).get("drafted") is True for p in home)
+    except Exception as ex:
+        replies.append({"success": False, "error": str(ex)})
+        safe = False
+    if not safe:
+        raise RuntimeError("colonist return/draft readback failed: %r" % replies)
+    return replies
+
+
+def restring_style_job(B, rows, left, right):
+    """M15f's production path. Probe failures retain their payload and never pass."""
+    evidence = {"schema": 1, "jobDef": "RM_RestringSpan", "readings": [], "cleanup": []}
+    status, cls = "UNMEASURED", "HARNESS"
+    home, default_key = [], None
+
+    def require(ok, reason):
+        if not ok:
+            raise ValueError(reason)
+
+    def read(cmd, pawn=False):
+        reply = B.probe(cmd) if pawn else B.ap(cmd)
+        evidence["readings"].append({"cmd": cmd, "reply": reply})
+        require(isinstance(reply, dict) and reply.get("success") is True and reply.get("cmd") == cmd,
+                "failed or mismatched reading " + cmd)
+        return reply
+
+    def integer(value):
+        return type(value) is int and value >= 0
+
+    def state(cmd):
+        value = read(cmd)
+        require(all(integer(value.get(k)) for k in ("cut", "jobsDone", "spansRestrung")) and
+                type(value.get("designated")) is bool, "malformed job state")
+        return value
+
+    def span(expected):
+        census = read("census")
+        anchors = census.get("anchors")
+        require(isinstance(anchors, list) and all(isinstance(a, dict) for a in anchors), "malformed census")
+        pair = []
+        for pid, pos, other in ((left, M2, right), (right, M3, left)):
+            matches = [a for a in anchors if a.get("id") == pid and (a.get("x"), a.get("z")) == pos]
+            require(len(matches) == 1, "missing or duplicate span anchor")
+            a = matches[0]
+            require(all(type(a.get(k)) is int for k in ("id", "x", "z")), "malformed anchor identity")
+            links = a.get("links")
+            require(isinstance(links, list) and all(isinstance(l, dict) and integer(l.get("other")) for l in links), "malformed links")
+            require([l.get("state") for l in links if l.get("other") == other] == [expected],
+                    "span is not reciprocally " + expected)
+            require(integer(a.get("net")), "missing registered net")
+            pair.append(a["net"])
+        require((pair[0] == pair[1]) == (expected == "Up"), "registered nets do not match span state")
+        return pair
+
+    def styles():
+        reading = read("cstyles")
+        members = reading.get("members")
+        require(isinstance(members, list) and all(isinstance(m, dict) for m in members), "malformed style members")
+        looks, runs = [], []
+        for pid, pos in ((left, M2), (right, M3)):
+            matches = [m for m in members if m.get("id") == pid and (m.get("x"), m.get("z")) == pos]
+            require(len(matches) == 1, "missing or duplicate style member")
+            require(all(type(matches[0].get(k)) is int for k in ("id", "x", "z")), "malformed style identity")
+            look = matches[0].get("look")
+            require(isinstance(look, str) and bool(look.strip()), "missing nonempty style")
+            raw, colour, run = matches[0].get("rawStyle"), matches[0].get("colour"), matches[0].get("run")
+            require(isinstance(raw, str) and bool(raw.strip()) and "colour" in matches[0] and
+                    (colour is None or isinstance(colour, str)) and integer(run), "missing full style or run")
+            looks.append([look, colour, raw])
+            runs.append(run)
+        return reading, looks, runs
+
+    try:
+        require(integer(left) and integer(right) and left != right, "missing distinct anchors")
+        colonists = read("colonists", pawn=True).get("pawns")
+        require(isinstance(colonists, list) and bool(colonists), "no colonist")
+        require(all(isinstance(p, dict) and integer(p.get("id")) and
+                    isinstance(p.get("pos"), list) and len(p["pos"]) == 2 and
+                    all(type(v) is int for v in p["pos"]) and type(p.get("drafted")) is bool and
+                    type(p.get("downed")) is bool for p in colonists), "malformed colonists")
+        require(len({p["id"] for p in colonists}) == len(colonists), "duplicate colonists")
+        home = colonists
+        require(any(p["downed"] is False for p in home), "no upright colonist")
+        evidence["parkBeforeCut"] = park_restring_colonists(B, home)
+        baseline = read("cstyles")
+        default_key = baseline.get("defaultKey")
+        require(isinstance(default_key, str) and bool(default_key.strip()), "missing suite default style")
+        require(read("cut:%d,%d" % (left, right)).get("done") is True, "span cut failed")
+        B.ticks(2)
+        read("cprocess")
+        evidence["splitNets"] = span("Cut")
+        read("crestyle:%d,%d:Modern_Orange" % M2)
+        read("crestyle:%d,%d:Industrial" % M3)
+        _, before, split_runs = styles()
+        evidence["before"] = before
+        evidence["splitRuns"] = split_runs
+        require(split_runs[0] != split_runs[1], "style runs never disconnected")
+        require(before[0] != before[1], "styles already equal before job")
+        order = state("restringorder:%d" % left)
+        require(order["designated"] is True and order["cut"] == 1, "order did not leave the only joining span cut")
+        # Everyone stays held until setup is measured. The probe chooses the nearest eligible worker.
+        for p in home:
+            if not p["downed"]:
+                read("pawn:%d=undraft" % p["id"], pawn=True)
+        evidence["order"] = order
+        job = state("restringjob:%d" % left)
+        evidence["job"] = job
+        require(isinstance(job.get("by"), str) and bool(job["by"].strip()), "job has no colonist")
+        require(job["cut"] == 1 and job["jobsDone"] == order["jobsDone"] and
+                job["spansRestrung"] == order["spansRestrung"], "job bypassed work")
+        worker = B.call("jawa/pawn_get", pawn=job["by"])
+        evidence["worker"] = worker
+        require(isinstance(worker, dict) and worker.get("success") is True and
+                isinstance(worker.get("pawns"), list) and len(worker["pawns"]) == 1, "missing job worker identity")
+        identity = worker["pawns"][0]
+        require(isinstance(identity, dict) and identity.get("thingId") == job["by"] and
+                integer(identity.get("thingIdNumber")), "mismatched worker identity")
+        active = read("colonists", pawn=True).get("pawns")
+        require(isinstance(active, list) and any(isinstance(p, dict) and
+                integer(p.get("id")) and p.get("id") == identity["thingIdNumber"] and p.get("id") in {c["id"] for c in home} and
+                p.get("job") == "RM_RestringSpan" and p.get("downed") is False
+                for p in active), "no running RM_RestringSpan job for the named worker")
+        status, cls = "FAIL", "MOD"
+        after_job = job
+        for _ in range(12):
+            B.ticks(250)
+            after_job = state("restringstate:%d" % left)
+            if after_job["cut"] == 0:
+                break
+        evidence["completion"] = after_job
+        require(after_job["cut"] == 0 and after_job["designated"] is False and
+                after_job["jobsDone"] == order["jobsDone"] + 1 and
+                after_job["spansRestrung"] == order["spansRestrung"] + 1, "job did not complete one splice within 3000 ticks")
+        B.ticks(3)
+        read("cprocess")
+        evidence["joinedNets"] = span("Up")
+        joined, after, joined_runs = styles()
+        evidence["after"] = after
+        evidence["joinedRuns"] = joined_runs
+        require(joined_runs[0] == joined_runs[1], "style runs remain disconnected")
+        require(after[0] == after[1], "joined styles differ")
+        require(all([m.get("look"), m.get("colour"), m.get("rawStyle")] == after[0]
+                    for m in joined["members"] if m.get("run") == joined_runs[0]),
+                "another member of the joined run has a different style")
+        status = "PASS"
+    except Exception as ex:  # retain bridge and malformed-payload failures as a nonpassing row
+        evidence["error"] = "%s: %s" % (type(ex).__name__, ex)
+    finally:
+        cleanup_errors = []
+        if home:
+            try:
+                evidence["cleanup"].append({"colonists": park_restring_colonists(B, home)})
+            except Exception as ex:
+                cleanup_errors.append(str(ex))
+        if default_key:
+            for cmd in ("crestyle:%d,%d:%s" % (M2[0], M2[1], default_key),
+                        "crestyle:%d,%d:%s" % (M3[0], M3[1], default_key), "cprocess"):
+                try:
+                    read(cmd)
+                except Exception as ex:
+                    cleanup_errors.append(str(ex))
+        if cleanup_errors:
+            status, cls = "FAIL", "HARNESS"
+            evidence["cleanupErrors"] = cleanup_errors
+    V.row(rows, "M15f_restring_joined_run_one_look", status, cls, evidence)
+    if cleanup_errors:
+        raise RuntimeError("M15f cleanup failed, stopping before further falling wires")
+
+
 def build_mast(B, cell, faction="player", d="RM_AerialMast"):
     return B.call("jawa/build_batch", ops="%s:%d,%d" % (d, cell[0], cell[1]), faction=faction, wipeExisting=False)
 
@@ -407,59 +592,34 @@ def _run_live(args, B, tap):
     if i2:
         B.ap("cut:%d,%d" % (i2, i3))
         B.ticks(2)
-        home = {p["id"]: p.get("pos") for p in B.probe("colonists").get("pawns") or []}
-        o = B.ap("restringorder:%d" % i2)
-        B.ticks(5)
-        st0 = B.ap("restringstate:%d" % i2)
-        j = B.ap("restringjob:%d" % i2)
-        st1 = st0
-        for _ in range(12):
+        home = B.probe("colonists").get("pawns") or []
+        try:
+            o = B.ap("restringorder:%d" % i2)
+            B.ticks(5)
+            st0 = B.ap("restringstate:%d" % i2)
+            j = B.ap("restringjob:%d" % i2)
+            st1 = st0
+            for _ in range(12):
+                if not j.get("success"):
+                    break
+                B.ticks(250)
+                st1 = B.ap("restringstate:%d" % i2)
+                if st1.get("cut") == 0:
+                    break
+            nre = nets(B.ap("census"))
             if not j.get("success"):
-                break
-            B.ticks(250)
-            st1 = B.ap("restringstate:%d" % i2)
-            if st1.get("cut") == 0:
-                break
-        nre = nets(B.ap("census"))
-        if not j.get("success"):
-            V.row(rows, "M15e_restring_is_a_colonist_job", "UNMEASURED", "SITE", {"order": o, "job": j, "meaning": "no free colonist could take the job"})
-        else:
-            ok = o.get("designated") and st0.get("cut", 0) >= 1 and st1.get("cut") == 0 and st1.get("jobsDone", 0) > st0.get("jobsDone", 0) \
-                and not st1.get("designated") and one_net(nre, "m1", "m3")
-            V.row(rows, "M15e_restring_is_a_colonist_job", "PASS" if ok else "FAIL", "MOD",
-                  {"order": o, "before": st0, "after": st1, "by": j.get("by"), "nets": nre, "jobDef": "RM_RestringSpan",
-                   "meaning": "PASS = the order alone leaves the span cut; the colonist's job restores it, clears the order and rejoins the nets"})
-        # HARNESS (runs of 2026-11-06, downed at 108,183, "health 1"): the splicer is left standing on the span's line, and M15f
-        # cuts that span again: a live wire falls on him and the shock is the mod working. Back where he came from, held there.
-        for pid, pos in home.items():
-            if pos:
-                B.probe("pawn:%d=tp:%d,%d" % (pid, pos[0], pos[1]))
-            B.probe("pawn:%d=draft" % pid)
+                V.row(rows, "M15e_restring_is_a_colonist_job", "UNMEASURED", "SITE", {"order": o, "job": j, "meaning": "no free colonist could take the job"})
+            else:
+                ok = o.get("designated") and st0.get("cut", 0) >= 1 and st1.get("cut") == 0 and st1.get("jobsDone", 0) > st0.get("jobsDone", 0) \
+                    and not st1.get("designated") and one_net(nre, "m1", "m3")
+                V.row(rows, "M15e_restring_is_a_colonist_job", "PASS" if ok else "FAIL", "MOD",
+                      {"order": o, "before": st0, "after": st1, "by": j.get("by"), "nets": nre, "jobDef": "RM_RestringSpan",
+                       "meaning": "PASS = the order alone leaves the span cut; the colonist's job restores it, clears the order and rejoins the nets"})
+        finally:
+            park_restring_colonists(B, home)
 
-    # M15f (GSS_RESTRING_FIX_STYLES_UNRECONCILED): cut the only span joining two runs, give each side its own look, re-string:
-    # the joined run must carry one look. Patch_Restring_Bridge queues the bridge rule; the job and the verb both call Restring.
-    if i2:
-        B.ap("cut:%d,%d" % (i2, i3))
-        B.ticks(2)
-        B.ap("cprocess")
-        ra, rb = B.ap("crestyle:%d,%d:Modern_Orange" % M2), B.ap("crestyle:%d,%d:Industrial" % M3)
-        def look_of(st, p):
-            return next((m.get("look") for m in st.get("members") or [] if (m.get("x"), m.get("z")) == p), None)
-        split = B.ap("cstyles")
-        before = (look_of(split, M2), look_of(split, M3))
-        rs3 = B.ap("restring:%d,%d" % (i2, i3))
-        B.ticks(3)
-        B.ap("cprocess")
-        joined = B.ap("cstyles")
-        after = (look_of(joined, M2), look_of(joined, M3))
-        ev = {"restyled": (ra.get("success"), rb.get("success")), "before": before, "after": after, "restring": rs3.get("done"),
-              "meaning": "PASS = two looks before the re-string, one look on the rejoined run after it"}
-        if not (ra.get("success") and rb.get("success") and rs3.get("done")) or None in before or before[0] == before[1]:
-            V.row(rows, "M15f_restring_joined_run_one_look", "UNMEASURED", "HARNESS", ev)
-        else:
-            V.row(rows, "M15f_restring_joined_run_one_look", "PASS" if after[0] == after[1] and None not in after else "FAIL", "MOD", ev)
-        B.ap("crestyle:%d,%d:%s" % (M2[0], M2[1], joined.get("defaultKey") or "Scrapper"))
-        B.ap("cprocess")
+    # M15f (GSS_RESTRING_FIX_STYLES_UNRECONCILED): the actual job must join the differently styled sides.
+    restring_style_job(B, rows, i2, i3)
 
     # ---------------------------------------------------------------- M15d: a DIAGONAL span's halves meet on the line
     # AERIAL_CUT_POINT_PRECISION_1: both halves must end at the SAME point ON the line between the poles. The M15 span is

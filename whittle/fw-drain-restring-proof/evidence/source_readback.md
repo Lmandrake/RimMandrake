@@ -1,0 +1,2261 @@
+# Source content readback
+
+Read at 2026-11-11T18:37:03.501709+00:00
+
+## src/RimMandrake/GimmeSomeSlack/validation_aerial.py
+
+SHA256 9e72c52440a61d09062ccbb1c04a031e82d558f54f836f45920ea0713e92f961
+
+~~~
+"""validation_aerial.py -- Gimme Some Slack L5 (aerial power lines) functional script, beside validation.py.
+
+Design: design/RimMandrake/messy_conduit_phase2_design_2026-10-02.md section 2 (walk rows M13-M16, M19).
+Offline half: the Verse-free AerialMath.cs is checked by the C# SelfTest (AerialSelfTest.cs, run by
+validation.py's O3 row). State is read through RimMandrake.GimmeSomeSlack.Aerial.AerialProbe (written/read with
+jawa/mod_settings_field, answered by RM_MapComponent_Aerial on its next frame), never from screenshots.
+
+    python.exe validation_aerial.py --live                      # on the current map (after validation.py --live)
+    python.exe validation_aerial.py --flips                     # only M20a-e: the fallen-wire / gravship setting flips
+    python.exe validation_aerial.py --save-load NAME            # M16: links + span states survive save/load
+    python.exe validation_aerial.py --removal-check NAME        # M9b: a save WITH anchors on a tier WITHOUT the mod
+    python.exe validation_aerial.py --merge OUT base.json [more.json ...]   # one 'live' result for modcheck record
+    python.exe validation_aerial.py --theft catch|day|stop --out R.json   # POWER_THEFT A2/A3 (phases share R.json)
+
+Batch order (one session): validation.py --live --fresh-map, validation.py --save-load A (a cords-only save, so M9
+stays the clean check), THEN this --live and --save-load B, then the tier swap and both removal checks.
+
+LEARNED (each line is a check below):
+  * The despawn gap (design 2.2) is REAL, not only reasoned: row M14_gap_control removes the middle mast with the
+    re-seed switched off (test-only AerialProbe "skipreseed:true") and the far mast must read NO net; with the fix
+    on (M14a) it must read a net. If the control ever reads a net, the theory went false and the fix is dead code.
+  * A clamp built as a TRANSMITTER would merge the grids by adjacency (every vanilla generator is a transmitter);
+    the clamp is a plain CompPowerTrader connector, guarded onto our faction's nets (M19 net ids must differ).
+"""
+import json
+import math
+import os
+import re
+import shutil
+import sys
+import time
+import uuid
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+import validation as V  # noqa: E402
+
+APROBE = "RimMandrake.GimmeSomeSlack.Aerial.AerialProbe"
+AX0, AZ0 = 90, 180
+SITE = (AX0 - 2, AZ0 - 2, 46, 20)
+BAT = (AX0 + 1, AZ0 + 5)                     # Battery 1x2 rot N: cells z..z+1; M1 is cardinally adjacent
+M1, M2, M3 = (AX0 + 2, AZ0 + 5), (AX0 + 14, AZ0 + 5), (AX0 + 26, AZ0 + 5)      # 12-cell spans, range 20
+LAMP = (AX0 + 27, AZ0 + 7)                   # hooks up to M3 (nearest transmitter)
+ROOM = (AX0 + 6, AZ0 + 2, AX0 + 10, AZ0 + 8)  # walled + roofed room under the M1-M2 span
+HMAST = (AX0 + 20, AZ0 + 15)                 # a HOSTILE mast: never a link target
+HBAT = (AX0 + 30, AZ0 + 12)                  # victim grid: hostile battery + 2 conduit
+HCOND = [(AX0 + 31, AZ0 + 12), (AX0 + 32, AZ0 + 12)]
+CLAMP = (AX0 + 33, AZ0 + 12)
+OCOND = [(AX0 + 35, AZ0 + 12), (AX0 + 36, AZ0 + 12)]                          # our cable, not adjacent to theirs
+OLAMP = (AX0 + 38, AZ0 + 13)                 # our only consumer on the tapped side; no source of our own
+BLAST = (AX0 + 20, AZ0 + 4)                  # under the M2-M3 span, 6 cells from both masts
+DSITE = (AX0 - 2, AZ0 - 30, 20, 16)          # M15d: a separate diagonal span south of the main site
+D1, D2 = (AX0 + 2, AZ0 - 25), (AX0 + 12, AZ0 - 18)                             # 10 x 7: a true diagonal, range 20
+DBLAST = (AX0 + 7, AZ0 - 22)                 # a cell the line crosses OFF its centre (line z at x=97.5 is 159.0)
+MSITE = (AX0 + 20, AZ0 - 30, 16, 10)         # M19m: hostile conduit run with ONE of ours on its end (one mixed net)
+MHCOND = [(AX0 + 23, AZ0 - 25), (AX0 + 24, AZ0 - 25), (AX0 + 25, AZ0 - 25)]
+MOCOND = (AX0 + 26, AZ0 - 25)                # ours, adjacent -> same net as the hostile run
+MCLAMP = (AX0 + 22, AZ0 - 25)                # nearest transmitter is FOREIGN (1 cell); ours is 4 cells away
+SHOTS = os.path.join(V.REPO, "Transient", "messy_conduit_live_20261002")
+# M20 (GSS_SWITCHES_PROVE_TWENTY_UNFLIPPED): the fallen-wire / gravship setting flips, on their own small site south of DSITE
+FSITE = (AX0 - 2, AZ0 - 48, 30, 14)
+FBAT = (AX0 + 1, AZ0 - 45)                   # Battery 1x2 rot N, cardinally adjacent to F1: the cut half stays LIVE
+F1, F2 = (AX0 + 2, AZ0 - 45), (AX0 + 14, AZ0 - 45)
+FBLAST = (AX0 + 8, AZ0 - 45)
+
+
+class A(V.Bridge):
+    def ap(self, cmd, wait_s=20.0):
+        before = self.call("jawa/mod_settings_field", typeName=APROBE, action="get", field="serial").get("value")
+        s = self.call("jawa/mod_settings_field", typeName=APROBE, action="set", field="request", value=cmd)
+        if not s.get("success"):
+            return {"success": False, "error": "aerial probe set failed", "raw": s}
+        t0 = time.time()
+        while time.time() - t0 < wait_s:
+            now = self.call("jawa/mod_settings_field", typeName=APROBE, action="get", field="serial").get("value")
+            if now != before:
+                res = self.call("jawa/mod_settings_field", typeName=APROBE, action="get", field="result").get("value")
+                try:
+                    return json.loads(res)
+                except Exception:  # noqa: BLE001
+                    return {"success": False, "raw": res}
+            time.sleep(0.3)
+        return {"success": False, "error": "aerial probe timed out (no frame serviced it)"}
+
+    def shot(self, name, rect):
+        self.call("jawa/clear_ui", all=True)
+        self.call("rimworld/frame_cell_rect", x=rect[0], z=rect[1], width=rect[2], height=rect[3], paddingCells=1)
+        time.sleep(2.0)
+        r = self.call("jawa/take_screenshot", fileName=name + "_" + uuid.uuid4().hex)
+        src = r.get("filePath")
+        if r.get("success") is not True or not src or not matrix_support().wait_png(src):
+            return "copy failed: screenshot incomplete (%s)" % src
+        try:
+            os.makedirs(SHOTS, exist_ok=True)
+            dst = os.path.join(SHOTS, name + ".png")
+            shutil.copyfile(src, dst)
+            return dst
+        except Exception as ex:  # noqa: BLE001
+            return "copy failed: %s (%s)" % (ex, src)
+
+
+def anchors_by_pos(c):
+    return {(a["x"], a["z"]): a for a in c.get("anchors") or []}
+
+
+def live_fallen_wires(c):
+    """Every anchor in an AerialProbe census holding a fallen cord that may be live (fallenLive true, or null = not polled
+    yet). The census has NO top-level "links"/"fallen" keys: they are per anchor under "anchors" (total "fallenCords").
+    GSS_FALLEN_WIRE_FIX_SHOCK_HOTSPOT: a probe reading c.get("fallen") saw 0 beside a live cut half that downed 3 colonists."""
+    out = []
+    for a in (c or {}).get("anchors") or []:
+        fl = a.get("fallen") or []
+        if fl and a.get("fallenLive") is not False:
+            out.append({"id": a.get("id"), "def": a.get("def"), "at": [a.get("x"), a.get("z")], "fallenLive": a.get("fallenLive"),
+                        "cords": len(fl), "tips": [f.get("tip") for f in fl], "cutPartners": [f.get("cutPartner") for f in fl]})
+    return out
+
+
+def restring_plan(c):
+    """Each Cut span in a census once, as (lower id, higher id), both anchors on the map: what `restring:a,b` re-joins."""
+    ids = {a.get("id") for a in (c or {}).get("anchors") or []}
+    pairs = set()
+    for a in (c or {}).get("anchors") or []:
+        for l in a.get("links") or []:
+            o = l.get("other", -1)
+            if l.get("state") == "Cut" and o in ids and o != a.get("id"):
+                pairs.add((min(a["id"], o), max(a["id"], o)))
+    return sorted(pairs)
+
+
+def clear_live_fallen(B):
+    """Re-string every Cut span an earlier block left (proof_all's save_load cuts M2-M3 before its save and keeps it), so a
+    scene played on the same map is not downed by a wire it never built. A live cord with no partner left cannot be
+    re-strung: it is reported in "after", never hidden."""
+    c0 = B.ap("census")
+    before, plan = live_fallen_wires(c0), restring_plan(c0)
+    done = [list(p) for p in plan if B.ap("restring:%d,%d" % p).get("done")]
+    if plan:
+        B.ap("poll")
+    return {"before": before, "restrung": done, "after": live_fallen_wires(B.ap("census")) if plan else before}
+
+
+def net_at(B, cell):
+    return B.ap("net:%d,%d" % cell)
+
+
+def observed_power(reply, def_name):
+    if reply.get("success") is not True or not isinstance(reply.get("things"), list):
+        return None
+    values = [t.get("powerOn") for t in reply["things"] if t.get("def") == def_name]
+    return values[0] if len(values) == 1 and isinstance(values[0], bool) else None
+
+
+def taps_off_control(before, after, lamp):
+    power = observed_power(lamp, "StandingLamp")
+    values = [r.get("storedWd") for r in (before, after)]
+    measured = all(r.get("success") is True for r in (before, after)) and all(
+        isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v) for v in values)
+    drop = values[0] - values[1] if measured else None
+    status = "UNMEASURED" if not measured or power is None else "PASS" if power is False and drop < 0.5 else "FAIL"
+    return status, {"ourLampDark": None if power is None else not power, "victimDrop600": drop,
+                    "note": "battery self-discharge only (5 W ~ 0.05 Wd/600 ticks)"}
+
+
+def park_restring_colonists(B, home):
+    """Return the suite's workers and hold them through subsequent falling-wire rows."""
+    replies = []
+    for pawn in home:
+        pid, pos = pawn["id"], pawn["pos"]
+        for cmd in ("pawn:%d=draft" % pid, "pawn:%d=tp:%d,%d" % (pid, pos[0], pos[1])):
+            try:
+                replies.append(B.probe(cmd))
+            except Exception as ex:
+                replies.append({"success": False, "cmd": cmd, "error": str(ex)})
+    try:
+        current = B.probe("colonists")
+        replies.append(current)
+        by_id = {p["id"]: p for p in current["pawns"]}
+        safe = all(isinstance(r, dict) and r.get("success") is True for r in replies) and all(
+            by_id.get(p["id"], {}).get("pos") == p["pos"] and
+            by_id.get(p["id"], {}).get("drafted") is True for p in home)
+    except Exception as ex:
+        replies.append({"success": False, "error": str(ex)})
+        safe = False
+    if not safe:
+        raise RuntimeError("colonist return/draft readback failed: %r" % replies)
+    return replies
+
+
+def restring_style_job(B, rows, left, right):
+    """M15f's production path. Probe failures retain their payload and never pass."""
+    evidence = {"schema": 1, "jobDef": "RM_RestringSpan", "readings": [], "cleanup": []}
+    status, cls = "UNMEASURED", "HARNESS"
+    home, default_key = [], None
+
+    def require(ok, reason):
+        if not ok:
+            raise ValueError(reason)
+
+    def read(cmd, pawn=False):
+        reply = B.probe(cmd) if pawn else B.ap(cmd)
+        evidence["readings"].append({"cmd": cmd, "reply": reply})
+        require(isinstance(reply, dict) and reply.get("success") is True and reply.get("cmd") == cmd,
+                "failed or mismatched reading " + cmd)
+        return reply
+
+    def integer(value):
+        return type(value) is int and value >= 0
+
+    def state(cmd):
+        value = read(cmd)
+        require(all(integer(value.get(k)) for k in ("cut", "jobsDone", "spansRestrung")) and
+                type(value.get("designated")) is bool, "malformed job state")
+        return value
+
+    def span(expected):
+        census = read("census")
+        anchors = census.get("anchors")
+        require(isinstance(anchors, list) and all(isinstance(a, dict) for a in anchors), "malformed census")
+        pair = []
+        for pid, pos, other in ((left, M2, right), (right, M3, left)):
+            matches = [a for a in anchors if a.get("id") == pid and (a.get("x"), a.get("z")) == pos]
+            require(len(matches) == 1, "missing or duplicate span anchor")
+            a = matches[0]
+            require(all(type(a.get(k)) is int for k in ("id", "x", "z")), "malformed anchor identity")
+            links = a.get("links")
+            require(isinstance(links, list) and all(isinstance(l, dict) and integer(l.get("other")) for l in links), "malformed links")
+            require([l.get("state") for l in links if l.get("other") == other] == [expected],
+                    "span is not reciprocally " + expected)
+            require(integer(a.get("net")), "missing registered net")
+            pair.append(a["net"])
+        require((pair[0] == pair[1]) == (expected == "Up"), "registered nets do not match span state")
+        return pair
+
+    def styles():
+        reading = read("cstyles")
+        members = reading.get("members")
+        require(isinstance(members, list) and all(isinstance(m, dict) for m in members), "malformed style members")
+        looks, runs = [], []
+        for pid, pos in ((left, M2), (right, M3)):
+            matches = [m for m in members if m.get("id") == pid and (m.get("x"), m.get("z")) == pos]
+            require(len(matches) == 1, "missing or duplicate style member")
+            require(all(type(matches[0].get(k)) is int for k in ("id", "x", "z")), "malformed style identity")
+            look = matches[0].get("look")
+            require(isinstance(look, str) and bool(look.strip()), "missing nonempty style")
+            raw, colour, run = matches[0].get("rawStyle"), matches[0].get("colour"), matches[0].get("run")
+            require(isinstance(raw, str) and bool(raw.strip()) and "colour" in matches[0] and
+                    (colour is None or isinstance(colour, str)) and integer(run), "missing full style or run")
+            looks.append([look, colour, raw])
+            runs.append(run)
+        return reading, looks, runs
+
+    try:
+        require(integer(left) and integer(right) and left != right, "missing distinct anchors")
+        colonists = read("colonists", pawn=True).get("pawns")
+        require(isinstance(colonists, list) and bool(colonists), "no colonist")
+        require(all(isinstance(p, dict) and integer(p.get("id")) and
+                    isinstance(p.get("pos"), list) and len(p["pos"]) == 2 and
+                    all(type(v) is int for v in p["pos"]) and type(p.get("drafted")) is bool and
+                    type(p.get("downed")) is bool for p in colonists), "malformed colonists")
+        require(len({p["id"] for p in colonists}) == len(colonists), "duplicate colonists")
+        home = colonists
+        require(any(p["downed"] is False for p in home), "no upright colonist")
+        evidence["parkBeforeCut"] = park_restring_colonists(B, home)
+        baseline = read("cstyles")
+        default_key = baseline.get("defaultKey")
+        require(isinstance(default_key, str) and bool(default_key.strip()), "missing suite default style")
+        require(read("cut:%d,%d" % (left, right)).get("done") is True, "span cut failed")
+        B.ticks(2)
+        read("cprocess")
+        evidence["splitNets"] = span("Cut")
+        read("crestyle:%d,%d:Modern_Orange" % M2)
+        read("crestyle:%d,%d:Industrial" % M3)
+        _, before, split_runs = styles()
+        evidence["before"] = before
+        evidence["splitRuns"] = split_runs
+        require(split_runs[0] != split_runs[1], "style runs never disconnected")
+        require(before[0] != before[1], "styles already equal before job")
+        order = state("restringorder:%d" % left)
+        require(order["designated"] is True and order["cut"] == 1, "order did not leave the only joining span cut")
+        # Everyone stays held until setup is measured. The probe chooses the nearest eligible worker.
+        for p in home:
+            if not p["downed"]:
+                read("pawn:%d=undraft" % p["id"], pawn=True)
+        evidence["order"] = order
+        job = state("restringjob:%d" % left)
+        evidence["job"] = job
+        require(isinstance(job.get("by"), str) and bool(job["by"].strip()), "job has no colonist")
+        require(job["cut"] == 1 and job["jobsDone"] == order["jobsDone"] and
+                job["spansRestrung"] == order["spansRestrung"], "job bypassed work")
+        worker = B.call("jawa/pawn_get", pawn=job["by"])
+        evidence["worker"] = worker
+        require(isinstance(worker, dict) and worker.get("success") is True and
+                isinstance(worker.get("pawns"), list) and len(worker["pawns"]) == 1, "missing job worker identity")
+        identity = worker["pawns"][0]
+        require(isinstance(identity, dict) and identity.get("thingId") == job["by"] and
+                integer(identity.get("thingIdNumber")), "mismatched worker identity")
+        active = read("colonists", pawn=True).get("pawns")
+        require(isinstance(active, list) and any(isinstance(p, dict) and
+                integer(p.get("id")) and p.get("id") == identity["thingIdNumber"] and p.get("id") in {c["id"] for c in home} and
+                p.get("job") == "RM_RestringSpan" and p.get("downed") is False
+                for p in active), "no running RM_RestringSpan job for the named worker")
+        status, cls = "FAIL", "MOD"
+        after_job = job
+        for _ in range(12):
+            B.ticks(250)
+            after_job = state("restringstate:%d" % left)
+            if after_job["cut"] == 0:
+                break
+        evidence["completion"] = after_job
+        require(after_job["cut"] == 0 and after_job["designated"] is False and
+                after_job["jobsDone"] == order["jobsDone"] + 1 and
+                after_job["spansRestrung"] == order["spansRestrung"] + 1, "job did not complete one splice within 3000 ticks")
+        B.ticks(3)
+        read("cprocess")
+        evidence["joinedNets"] = span("Up")
+        joined, after, joined_runs = styles()
+        evidence["after"] = after
+        evidence["joinedRuns"] = joined_runs
+        require(joined_runs[0] == joined_runs[1], "style runs remain disconnected")
+        require(after[0] == after[1], "joined styles differ")
+        require(all([m.get("look"), m.get("colour"), m.get("rawStyle")] == after[0]
+                    for m in joined["members"] if m.get("run") == joined_runs[0]),
+                "another member of the joined run has a different style")
+        status = "PASS"
+    except Exception as ex:  # retain bridge and malformed-payload failures as a nonpassing row
+        evidence["error"] = "%s: %s" % (type(ex).__name__, ex)
+    finally:
+        cleanup_errors = []
+        if home:
+            try:
+                evidence["cleanup"].append({"colonists": park_restring_colonists(B, home)})
+            except Exception as ex:
+                cleanup_errors.append(str(ex))
+        if default_key:
+            for cmd in ("crestyle:%d,%d:%s" % (M2[0], M2[1], default_key),
+                        "crestyle:%d,%d:%s" % (M3[0], M3[1], default_key), "cprocess"):
+                try:
+                    read(cmd)
+                except Exception as ex:
+                    cleanup_errors.append(str(ex))
+        if cleanup_errors:
+            status, cls = "FAIL", "HARNESS"
+            evidence["cleanupErrors"] = cleanup_errors
+    V.row(rows, "M15f_restring_joined_run_one_look", status, cls, evidence)
+    if cleanup_errors:
+        raise RuntimeError("M15f cleanup failed, stopping before further falling wires")
+
+
+def build_mast(B, cell, faction="player", d="RM_AerialMast"):
+    return B.call("jawa/build_batch", ops="%s:%d,%d" % (d, cell[0], cell[1]), faction=faction, wipeExisting=False)
+
+
+def matrix_support():
+    from northstar_matrix import run_live
+    return run_live
+
+
+def with_journal(args, runner, shared=False):
+    B = A()
+    if shared:
+        return runner(args, B, None)
+    previous = list(V.VC.TAP)
+    tap = V.VC.tap_start(matrix_support().JournalReader(B))
+    try:
+        return runner(args, B, tap)
+    finally:
+        V.VC.TAP[:] = previous
+
+
+def run_live(args):
+    return with_journal(args, _run_live, shared=V.SHARED)
+
+
+def _run_live(args, B, tap):
+    rows, log = [], []
+    res = {"mod": V.MOD, "mode": "live", "script": "validation_aerial.py", "tier": V.TIER,
+           "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows, "screenshots": []}
+    env = {}
+    rm = B.call("jawa/running_mods", assembly="RimMandrakeGimmeSomeSlack", details=False)
+    if rm.get("success"):
+        import hashlib
+        env["running"] = [p.lower() for p in rm.get("packageIds") or []]
+        env["running_sha256"] = hashlib.sha256("\n".join(env["running"]).encode("utf-8")).hexdigest()
+    res["env"] = env
+    try:
+        sys.path.insert(0, os.path.join(V.UTILS, "modcheck"))
+        import status as _mc  # noqa: E402
+        res["mod_hash"] = _mc.mod_hash(HERE)
+    except Exception as ex:  # noqa: BLE001
+        res["mod_hash"] = None
+        log.append("mod_hash unavailable: %s" % ex)
+    d = B.ap("defaults")
+    if not d.get("success"):
+        V.row(rows, "A_probe_channel", "FAIL", "HARNESS", d)
+        res["aborted"] = "aerial probe dead"
+        return res
+    B.ap("skipreseed:false")
+
+    # ---------------------------------------------------------------- scene
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % SITE, categories="All")
+    B.call("jawa/set_terrain_batch", ops="Soil:%d,%d,%d,%d" % SITE)
+    B.call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % SITE)
+    B.call("jawa/set_roof_batch", ops="None:%d,%d,%d,%d" % SITE)
+    walls = V.perimeter(*ROOM)
+    b_w = B.call("jawa/build_batch", ops=V.ops("Wall", walls), stuff="Steel", faction="player")
+    rx0, rz0, rx1, rz1 = ROOM
+    roof = B.call("jawa/set_roof_batch", ops="RoofConstructed:%d,%d,%d,%d" % (rx0 + 1, rz0 + 1, rx1 - rx0 - 1, rz1 - rz0 - 1))
+    b_b = B.call("jawa/build_batch", ops="Battery:%d,%d,0" % BAT, faction="player")
+    b_m = B.call("jawa/build_batch", ops=V.ops("RM_AerialMast", [M1, M2, M3]), faction="player", wipeExisting=False)
+    b_l = B.call("jawa/build_batch", ops="StandingLamp:%d,%d" % LAMP, faction="player")
+    b_h = build_mast(B, HMAST, faction="hostile")
+    B.call("jawa/map_commit")
+    lt = B.call("jawa/list_things", defName="Battery", rect="%d,%d,1,2" % BAT, limit=3)
+    bat_id = next((t.get("id") or t.get("thingId") for t in lt.get("things") or []), None)
+    bs = B.call("jawa/battery_set", thing=bat_id, mode="setPct", value=1.0) if bat_id else {}
+    V.frame_fit(B, SITE)      # 2026-10-10: the whole site in view (R2 counts the masts drawn), not just framed at the kept zoom
+    B.ticks(3)                                      # tick 1: auto-link queue; tick 2: nets rebuilt
+    time.sleep(1.0)
+    c0 = B.ap("census")
+    ap0 = anchors_by_pos(c0)
+    ok = all(p in ap0 for p in (M1, M2, M3, HMAST)) and (bs.get("storedEnergyAfter") or 0) > 0
+    V.hrow(rows, "A0_scene_built", "PASS" if ok else "FAIL", "SITE",
+          {"walls": b_w.get("survived"), "roof": roof.get("success"), "battery": bat_id, "stored": bs.get("storedEnergyAfter"),
+           "masts": b_m.get("survived"), "lamp": b_l.get("survived"), "hostileMast": b_h.get("survived"), "anchors": sorted(ap0)})
+    if not ok:
+        res["aborted"] = "scene not built"
+        res["log"] = [c0]
+        return res
+    i1, i2, i3, ih = (ap0[p]["id"] for p in (M1, M2, M3, HMAST))
+
+    def nets(c):
+        a = anchors_by_pos(c)
+        return {k: (a[p]["net"] if p in a else None) for k, p in (("m1", M1), ("m2", M2), ("m3", M3))}
+
+    # a mast missing from the census reads None, and None == None != -1 is True: a net is only real when it is a
+    # registered id (Codex review 2026-11-09)
+    def real(x):
+        return isinstance(x, int) and not isinstance(x, bool) and x != -1
+
+    def one_net(n, *keys):
+        return all(real(n[k]) for k in keys) and len({n[k] for k in keys}) == 1
+
+    # ---------------------------------------------------------------- M13: one net across the gap
+    n0 = nets(c0)
+    lamp0 = net_at(B, LAMP)
+    lamp_on = any(t.get("powerOn") for t in lamp0.get("things") or [])
+    m13 = one_net(n0, "m1", "m2", "m3") and ap0[M1]["netLive"] and c0.get("spansUp") == 2 \
+        and c0.get("autoLinks", 0) >= 2 and c0.get("postfixAppends", 0) > 0
+    V.row(rows, "M13a_linked_one_net_across_gap", "PASS" if m13 else "FAIL", "MOD",
+          {"nets": n0, "gapCells": M2[0] - M1[0], "spansUp": c0.get("spansUp"), "autoLinks": c0.get("autoLinks"),
+           "postfixAppends": c0.get("postfixAppends"), "m1Live": ap0[M1]["netLive"]})
+    B.ticks(210)                                    # a consumer is switched on at most every 200 ticks (PowerNetTick)
+    lamp1 = net_at(B, LAMP)
+    lamp_on = any(t.get("powerOn") for t in lamp1.get("things") or [])
+    V.row(rows, "M13b_far_consumer_powered", "PASS" if lamp_on else "FAIL", "MOD",
+          {"lamp": lamp1.get("things"), "net": lamp1.get("net"), "live": lamp1.get("live"),
+           "note": "the lamp hooks to M3, 24 cells from the battery, across a walled ROOFED room (spans may pass over roofs)"})
+    # unlink -> two nets; relink -> one
+    B.ap("unlink:%d,%d" % (i2, i3))
+    B.ticks(30)
+    c1 = B.ap("census")
+    n1 = nets(c1)
+    lamp2 = net_at(B, LAMP)
+    lamp_power = observed_power(lamp2, "StandingLamp")
+    off = lamp_power is False
+    B.ap("link:%d,%d" % (i2, i3))
+    B.ticks(3)
+    n1b = nets(B.ap("census"))
+    V.row(rows, "M13c_unlink_two_nets_relink_one", "PASS" if (one_net(n1, "m1", "m2") and real(n1["m3"]) and n1["m3"] != n1["m1"] and off and
+                                                           one_net(n1b, "m1", "m3")) else "FAIL" if lamp_power is not None else "UNMEASURED",
+          "MOD" if lamp_power is not None else "HARNESS",
+          {"afterUnlink": n1, "lampOffAfterUnlink": off, "afterRelink": n1b})
+    v_far = B.ap("link:%d,%d" % (i1, i3))
+    v_hm = B.ap("link:%d,%d" % (i3, ih))
+    bat_num = int("".join(ch for ch in str(bat_id) if ch.isdigit()) or 0)      # list_things ids read "Battery19643"
+    v_bat = B.ap("link:%d,%d" % (i1, bat_num)) if bat_num else {}
+    V.row(rows, "M13d_refusals", "PASS" if (v_far.get("verdict") == "OutOfRange" and v_hm.get("verdict") == "Foreign"
+                                          and v_bat.get("verdict") == "NotAnchor") else "FAIL", "MOD",
+          {"m1->m3 (24 cells)": v_far.get("verdict"), "m3->hostile mast": v_hm.get("verdict"), "m1->battery": v_bat.get("verdict")})
+    hm_links = anchors_by_pos(B.ap("census")).get(HMAST, {}).get("links")
+    V.row(rows, "M13e_hostile_mast_not_autolinked", "PASS" if hm_links == [] else "FAIL", "MOD", {"hostileMastLinks": hm_links})
+
+    # ---------------------------------------------------------------- drawing: altitude + spans drawn
+    time.sleep(0.6)
+    c2 = B.ap("census")
+    al = c2.get("altitudes") or {}
+    alt_ok = al and al["pawn"] < al["pawnState"] < al["top"] < al["span"] < al["blueprint"] < al["weather"]
+    V.row(rows, "R1_span_altitude_above_pawns_below_blueprints", "PASS" if alt_ok else "FAIL", "MOD", al)
+    # KEPT although the consolidation doc proposed cutting it "if MX_A's census row reads R2's fields (verify)": verified
+    # 2026-10-05, run_live.aerial_compare reads spans_up/cut/fallen/pole_live/anchors, never spanDraws/topDraws/spanMeshes.
+    V.row(rows, "R2_spans_and_heads_drawn", "PASS" if c2.get("spanDraws", 0) >= 2 and c2.get("topDraws", 0) >= 3 and c2.get("spanMeshes", 0) >= 2 else "FAIL",
+          "MOD", {k: c2.get(k) for k in ("spanDraws", "topDraws", "spanMeshes", "groundVerts")})
+    res["screenshots"].append(B.shot("aerial_01_lines_up", (AX0 - 1, AZ0 + 1, 30, 10)))
+
+    # ---------------------------------------------------------------- M14: the despawn gap
+    B.ap("skipreseed:true")
+    try:                                            # a governor stop mid-control must not leave reseeding off in the game
+        B.ap("dismantle:%d" % i2)
+        B.ticks(2)
+        cg = B.ap("census")
+        ng = nets(cg)
+    finally:
+        B.ap("skipreseed:false")
+    agc = anchors_by_pos(cg)
+    raw = {k: agc[p].get("compNet") for k, p in (("m1", M1), ("m3", M3)) if p in agc}
+    V.row(rows, "M14_gap_control_without_fix", "PASS" if ng["m3"] == -1 and ng["m1"] == -1 else "FAIL", "HARNESS",
+          {"registeredNets": ng, "compNets(stale pointer)": raw,
+           "meaning": "PASS = the despawn gap is real: with the re-seed OFF both sides are left on NO registered net (their "
+                      "CompPower.transNet still points at the same deleted net: a same-net read alone looks healthy)"})
+    B.ap("reseed:%d" % i3)
+    B.ap("reseed:%d" % i1)                         # the gap strands BOTH sides: the shared net was destroyed whole
+    B.ticks(2)
+
+    def rebuild_m2():
+        B.call("jawa/destroy_batch", rects="%d,%d,1,1" % M2, categories="All")   # a killed mast leaves debris on its cell
+        build_mast(B, M2)
+        B.ticks(3)
+        cc = B.ap("census")
+        m2 = anchors_by_pos(cc).get(M2)
+        if not m2:   # a None id would crash later as a bare TypeError on "%d"; name the harness failure instead
+            raise RuntimeError("HARNESS: rebuild_m2 found no mast anchor at M2 %s after build_mast" % (M2,))
+        linked = {l["other"] for l in m2["links"]}
+        for o in (i1, i3):
+            if o not in linked:
+                B.ap("link:%d,%d" % (m2["id"], o))
+        B.ticks(3)
+        return m2["id"]
+
+    i2 = rebuild_m2()
+    nr0 = B.ap("census").get("netRepairs")
+    B.ap("dismantle:%d" % i2)
+    B.ticks(2)
+    cd = B.ap("census")
+    nd = nets(cd)
+    B.ticks(260)                                    # one watchdog sweep
+    cd2 = B.ap("census")
+    m14a = real(nd["m1"]) and real(nd["m3"]) and nd["m1"] != nd["m3"] and cd.get("fallenCords") == 0 and \
+        cd2.get("netRepairs") == nr0 and cd2.get("watchdogRuns", 0) > 0
+    V.row(rows, "M14a_remove_middle_both_ends_resolve", "PASS" if m14a else "FAIL", "MOD",
+          {"nets": nd, "fallenCords(dismantle coils)": cd.get("fallenCords"), "netRepairs": [nr0, cd2.get("netRepairs")],
+           "watchdogRuns": cd2.get("watchdogRuns")})
+
+    # kill (not dismantle) -> each survivor holds a fallen live/dead cord
+    i2 = rebuild_m2()
+    B.ap("kill:%d" % i2)
+    B.ticks(2)
+    B.ap("poll")
+    ck = B.ap("census")
+    ak = anchors_by_pos(ck)
+    f1, f3 = ak[M1]["fallen"], ak[M3]["fallen"]
+    nk = nets(ck)
+    # M1's cable falls toward M2 across the walled room: it must stop at the room's west wall ("the rest is over the
+    # wall"); M3's lies on open ground and must reach out its full length (12 cells x 1.05).
+    m14b = len(f1) == 1 and len(f3) == 1 and ak[M1]["fallenLive"] is True and ak[M3]["fallenLive"] is False and \
+        real(nk["m1"]) and real(nk["m3"]) and f1[0]["toward"] == list(M2) and f1[0]["blocked"] and f1[0]["tip"][0] < ROOM[0] and \
+        not f3[0]["blocked"] and f3[0]["laidLen"] > 0.85 * 12.6
+    V.row(rows, "M14b_dead_pole_drops_live_and_dead_cords", "PASS" if m14b else "FAIL", "MOD",
+          {"m1Fallen": f1, "m1Live": ak[M1]["fallenLive"], "m3Fallen": f3, "m3Live": ak[M3]["fallenLive"], "nets": nk})
+    time.sleep(0.5)
+    V.row(rows, "M14c_live_tip_glows", "PASS" if B.ap("census").get("glowDraws", 0) >= 1 else "FAIL", "MOD",
+          "look only (owner 2026-10-02): no shock; glow per frame at the live tip")
+    res["screenshots"].append(B.shot("aerial_02_dead_pole_fallen_cords", (AX0 - 1, AZ0 + 1, 30, 10)))
+
+    # ---------------------------------------------------------------- M15: explosion cuts a span
+    i2 = rebuild_m2()
+    ce = B.ap("explode:%d,%d,2.5,50" % BLAST)
+    B.ticks(30)
+    B.ap("poll")
+    cx = B.ap("census")
+    ax = anchors_by_pos(cx)
+    nx = nets(cx)
+    halves = [f for p in (M2, M3) for f in ax.get(p, {}).get("fallen", []) if f.get("cutPartner", -1) != -1]
+    m15 = ce.get("cuts") == 1 and cx.get("spansCut") == 1 and len(halves) == 2 and one_net(nx, "m1", "m2") and real(nx["m3"]) and nx["m3"] != nx["m1"]
+    V.row(rows, "M15_explosion_cuts_span", "PASS" if m15 else "FAIL", "MOD",
+          {"cuts": ce.get("cuts"), "spansCut": cx.get("spansCut"), "halves": halves, "nets": nx,
+           "m2Live": ax.get(M2, {}).get("fallenLive"), "m3Live": ax.get(M3, {}).get("fallenLive")})
+    res["screenshots"].append(B.shot("aerial_03_explosion_cut_halves", (AX0 + 10, AZ0, 20, 10)))
+    # WIRE_DOWN_ALERT_1: the alert's culprit set is the cut halves' anchors; switched off it reports inactive
+    al = B.ap("alert")
+    B.ap("set:wireDownAlert=false"); al_off = B.ap("alert"); B.ap("set:wireDownAlert=true")
+    V.row(rows, "M15a_wire_down_alert_lists_cut", "PASS" if al.get("down", 0) >= 2 and al.get("enabled") is True and al_off.get("enabled") is False else "FAIL", "MOD",
+          {"down": al.get("down"), "ids": al.get("ids"), "enabledOff": al_off.get("enabled")})
+    rs = B.ap("restring:%d,%d" % (i2, i3)) if i2 else {}
+    B.ticks(3)
+    nrs = nets(B.ap("census"))
+    V.row(rows, "M15b_restring_rejoins", "PASS" if rs.get("done") and one_net(nrs, "m1", "m3") else "FAIL", "MOD", {"nets": nrs})
+    al2 = B.ap("alert")
+    V.row(rows, "M15c_wire_down_alert_clears_on_restring", "PASS" if rs.get("done") and al2.get("down") == 0 else "FAIL", "MOD", {"down": al2.get("down")})
+    # M15e (owner by card 2026-10-15: "Re-stringing a cut power line is instant and free... What ships? -> Make it a colonist
+    # job"): the gizmo's order splices NOTHING by itself; a colonist walks to the cut, works ~300 ticks, and the span is up
+    if i2:
+        B.ap("cut:%d,%d" % (i2, i3))
+        B.ticks(2)
+        home = B.probe("colonists").get("pawns") or []
+        try:
+            o = B.ap("restringorder:%d" % i2)
+            B.ticks(5)
+            st0 = B.ap("restringstate:%d" % i2)
+            j = B.ap("restringjob:%d" % i2)
+            st1 = st0
+            for _ in range(12):
+                if not j.get("success"):
+                    break
+                B.ticks(250)
+                st1 = B.ap("restringstate:%d" % i2)
+                if st1.get("cut") == 0:
+                    break
+            nre = nets(B.ap("census"))
+            if not j.get("success"):
+                V.row(rows, "M15e_restring_is_a_colonist_job", "UNMEASURED", "SITE", {"order": o, "job": j, "meaning": "no free colonist could take the job"})
+            else:
+                ok = o.get("designated") and st0.get("cut", 0) >= 1 and st1.get("cut") == 0 and st1.get("jobsDone", 0) > st0.get("jobsDone", 0) \
+                    and not st1.get("designated") and one_net(nre, "m1", "m3")
+                V.row(rows, "M15e_restring_is_a_colonist_job", "PASS" if ok else "FAIL", "MOD",
+                      {"order": o, "before": st0, "after": st1, "by": j.get("by"), "nets": nre, "jobDef": "RM_RestringSpan",
+                       "meaning": "PASS = the order alone leaves the span cut; the colonist's job restores it, clears the order and rejoins the nets"})
+        finally:
+            park_restring_colonists(B, home)
+
+    # M15f (GSS_RESTRING_FIX_STYLES_UNRECONCILED): the actual job must join the differently styled sides.
+    restring_style_job(B, rows, i2, i3)
+
+    # ---------------------------------------------------------------- M15d: a DIAGONAL span's halves meet on the line
+    # AERIAL_CUT_POINT_PRECISION_1: both halves must end at the SAME point ON the line between the poles. The M15 span is
+    # axis-aligned, so its cut point is also a cell centre and could not tell the fix from the old cell-centre aim.
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % DSITE, categories="All")
+    B.call("jawa/set_terrain_batch", ops="Soil:%d,%d,%d,%d" % DSITE)
+    B.call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % DSITE)
+    B.call("jawa/set_roof_batch", ops="None:%d,%d,%d,%d" % DSITE)
+    B.call("jawa/build_batch", ops=V.ops("RM_AerialMast", [D1, D2]), faction="player", wipeExisting=False)
+    B.call("jawa/map_commit")
+    B.ticks(3)
+    cd0 = anchors_by_pos(B.ap("census"))
+    dlinked = D1 in cd0 and D2 in cd0 and any(l.get("state") == "Up" for l in cd0[D1].get("links") or []) if D1 in cd0 else False
+    if D1 in cd0 and D2 in cd0 and not dlinked:
+        B.ap("link:%d,%d" % (cd0[D1]["id"], cd0[D2]["id"]))
+        B.ticks(2)
+    ced = B.ap("explode:%d,%d,2.5,50" % DBLAST)
+    B.ticks(30)
+    B.ap("poll")
+    cdx = anchors_by_pos(B.ap("census"))
+    dh = [f for p in (D1, D2) for f in cdx.get(p, {}).get("fallen", []) if f.get("cutPartner", -1) != -1]
+    ax_, az_, bx_, bz_ = D1[0] + 0.5, D1[1] + 0.5, D2[0] + 0.5, D2[1] + 0.5
+    m15d, geo = False, {}
+    if len(dh) == 2:
+        (p1x, p1z), (p2x, p2z) = dh[0]["breakAt"], dh[1]["breakAt"]
+        dx, dz = bx_ - ax_, bz_ - az_
+        L2 = dx * dx + dz * dz
+        t = ((p1x - ax_) * dx + (p1z - az_) * dz) / L2
+        perp = abs((p1x - ax_) * dz - (p1z - az_) * dx) / L2 ** 0.5
+        same = abs(p1x - p2x) < 0.01 and abs(p1z - p2z) < 0.01
+        # a fallen wire lies as a loose cut cord: its end lies somewhere near the break, and the two halves' ends apart, never pinched to one point (blind judge, pass 1)
+        tips = all(not f["blocked"] and ((f["tip"][0] - f["breakAt"][0]) ** 2 + (f["tip"][1] - f["breakAt"][1]) ** 2) ** 0.5 < 4.0 for f in dh) \
+            and ((dh[0]["tip"][0] - dh[1]["tip"][0]) ** 2 + (dh[0]["tip"][1] - dh[1]["tip"][1]) ** 2) ** 0.5 > 0.3
+        centre = all(abs(f["breakAt"][0] - (f["toward"][0] + 0.5)) < 0.01 and abs(f["breakAt"][1] - (f["toward"][1] + 0.5)) < 0.01 for f in dh)
+        geo = {"breakAt": [p1x, p1z], "same": same, "t": round(t, 3), "perpToLine": round(perp, 4), "tipsNearBreakApart": tips, "tips": [dh[0]["tip"], dh[1]["tip"]],
+               "isCellCentre(old aim)": centre}
+        m15d = same and perp < 0.1 and 0 < t < 1 and tips and not centre
+    V.row(rows, "M15d_diagonal_cut_halves_meet_on_line", "PASS" if m15d else "FAIL", "MOD",
+          dict(geo, cuts=ced.get("cuts"), halves=len(dh), linkedBefore=dlinked, masts=[D1, D2], blast=DBLAST))
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % DSITE, categories="All")
+
+    # ---------------------------------------------------------------- sway (motion is NOT a bar; state proxy only)
+    B.ap("set:sway=CPU")
+    time.sleep(0.6)
+    s_on = B.ap("census")
+    B.ap("set:sway=Off")
+    time.sleep(0.6)
+    s_off = B.ap("census")
+    B.ap("set:sway=Auto")
+    # CPU is the "Always" mode: with the game's plant-sway pref off it still sways, reason "cpu (Always: ...)" (WireSway.Active)
+    on_ok = s_on.get("swayDraws", 0) > 0 if (s_on.get("swayReason") or "").startswith("cpu") else s_on.get("swayReason") == "no wind"
+    V.row(rows, "R3_sway_proxy", "PASS" if on_ok and s_off.get("swayDraws") == 0 and s_off.get("swayReason") == "setting off" else "FAIL", "MOD",
+          {"on": {k: s_on.get(k) for k in ("swayReason", "swayDraws", "wind", "plantSwayPref")},
+           "off": {k: s_off.get(k) for k in ("swayReason", "swayDraws")}})
+
+    # ---------------------------------------------------------------- M19: the one-way power tap
+    tb = [B.call("jawa/build_batch", ops="Battery:%d,%d,0" % HBAT, faction="hostile"),
+          B.call("jawa/build_batch", ops=V.ops("PowerConduit", HCOND), faction="hostile", wipeExisting=False),
+          B.call("jawa/build_batch", ops=V.ops("PowerConduit", OCOND), faction="player", wipeExisting=False),
+          B.call("jawa/build_batch", ops="StandingLamp:%d,%d" % OLAMP, faction="player"),
+          B.call("jawa/build_batch", ops="RM_PowerTapClamp:%d,%d" % CLAMP, faction="player")]
+    lt = B.call("jawa/list_things", defName="Battery", rect="%d,%d,1,2" % HBAT, limit=3)
+    hb_id = next((t.get("id") or t.get("thingId") for t in lt.get("things") or []), None)
+    hs = B.call("jawa/battery_set", thing=hb_id, mode="setPct", value=1.0) if hb_id else {}
+    B.ticks(5)
+    ct = B.ap("census")
+    tap = (ct.get("taps") or [{}])[0]
+    v0 = net_at(B, HBAT)
+    B.ticks(210)
+    ol = net_at(B, OLAMP)
+    lamp_on = any(t.get("powerOn") for t in ol.get("things") or [])
+    v1 = net_at(B, HBAT)
+    B.ticks(600)
+    v2 = net_at(B, HBAT)
+    ct2 = B.ap("census")
+    tap2 = (ct2.get("taps") or [{}])[0]
+    drop = (v1.get("storedWd") or 0) - (v2.get("storedWd") or 0)
+    m19 = tap.get("connected") and tap.get("ourNet", -1) != -1 and tap.get("victimNet", -1) != -1 and tap["ourNet"] != tap["victimNet"] \
+        and tap2.get("ourNet") != tap2.get("victimNet") and (tap2.get("outputW") or 0) > 400 and lamp_on and drop > 3.0
+    V.row(rows, "M19_tap_drains_one_way", "PASS" if m19 else "FAIL", "MOD",
+          {"built": [b.get("survived") for b in tb], "victimStoredSet": hs.get("storedEnergyAfter"), "tap": tap2,
+           "ourLamp": ol.get("things"), "victimStored": [v0.get("storedWd"), v1.get("storedWd"), v2.get("storedWd")],
+           "victimDrop600": round(drop, 3), "expectedDrop600~": round(500 * 600 * 1.6666667e-05, 3),
+           "victimNet": v2.get("net"), "ourNet": tap2.get("ourNet"), "guardRefused": ct2.get("tapGuardRefused"),
+           "tapEvents": ct2.get("tapEventsRaised")})
+    res["screenshots"].append(B.shot("aerial_04_power_tap_clamp", (AX0 + 28, AZ0 + 9, 12, 7)))
+    # control: taps off -> victim stops draining, our lamp goes dark
+    B.ap("set:tapsEnabled=False")
+    B.ticks(40)
+    w0 = net_at(B, HBAT)
+    B.ticks(600)
+    w1 = net_at(B, HBAT)
+    ol2 = net_at(B, OLAMP)
+    off_status, off_detail = taps_off_control(w0, w1, ol2)
+    B.ap("set:tapsEnabled=True")
+    V.row(rows, "M19n_taps_off_control", off_status, "HARNESS" if off_status == "UNMEASURED" else "MOD", off_detail)
+
+    # ---------------------------------------------------------------- M19m: a tap beside a MIXED-faction net
+    # POWER_TAP_MIXED_NET_CONNECT_1: the clamp's nearest transmitter is foreign, but that net also holds one of OUR
+    # conduits. The tap must connect to OUR conduit (own-faction transmitter), and the guard must not keep refusing.
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % MSITE, categories="All")
+    B.call("jawa/set_terrain_batch", ops="Soil:%d,%d,%d,%d" % MSITE)
+    B.call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % MSITE)
+    B.call("jawa/set_roof_batch", ops="None:%d,%d,%d,%d" % MSITE)
+    mb = [B.call("jawa/build_batch", ops=V.ops("PowerConduit", MHCOND), faction="hostile", wipeExisting=False),
+          B.call("jawa/build_batch", ops=V.ops("PowerConduit", [MOCOND]), faction="player", wipeExisting=False),
+          B.call("jawa/build_batch", ops="RM_PowerTapClamp:%d,%d" % MCLAMP, faction="player", wipeExisting=False)]
+    B.call("jawa/map_commit")
+    B.ticks(5)
+    cm0 = B.ap("census")
+    r0 = cm0.get("tapGuardRefused")
+    B.ticks(300)
+    cm1 = B.ap("census")
+    r1 = cm1.get("tapGuardRefused")
+    mtap = next((t for t in cm1.get("taps") or [] if t.get("id") not in (tap.get("id"),)), {})
+    mn_a, mn_b = net_at(B, MHCOND[0]).get("net"), net_at(B, MOCOND).get("net")
+    mixed_net = real(mn_a) and mn_a == mn_b                 # two failed reads (None == None) are not one net
+    ours = ap0[M1].get("faction")
+    m19m = bool(mtap) and mtap.get("connected") is True and mtap.get("connectFaction") == ours and counter_status(r0, r1) == "PASS"
+    st19, cl19 = m19m_status(mixed_net, m19m)
+    V.row(rows, "M19m_tap_mixed_net_connects_own_conduit", st19, cl19,
+          {"built": [b.get("survived") for b in mb], "mixedNet": mixed_net, "tap": mtap, "ourFaction": ours,
+           "guardRefused_t0": r0, "guardRefused_t300": r1})
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % MSITE, categories="All")
+
+    # ---------------------------------------------------------------- M17: GS-5 owner change cuts wires to the other owner
+    # POLE_OWNER_CHANGE_DROPS_WIRES_1. Two player masts linked; one changes owner; the 250-tick sweep (or the explicit
+    # ownersweep verb) must unlink them. Control: cutWiresOnOwnerChange=False leaves the link standing.
+    # PROVISIONAL: the L2 outcome is owed until a live run records it.
+    O1, O2 = (MSITE[0] + 2, MSITE[1] + 3), (MSITE[0] + 12, MSITE[1] + 3)
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % MSITE, categories="All")
+    B.call("jawa/build_batch", ops=V.ops("RM_AerialMast", [O1, O2]), faction="player", wipeExisting=False)
+    B.call("jawa/map_commit")
+    B.ticks(3)
+    oc = anchors_by_pos(B.ap("census"))
+    o1, o2 = oc[O1]["id"], oc[O2]["id"]
+    B.ap("link:%d,%d" % (o1, o2))
+    n1, n2 = net_at(B, O1).get("net"), net_at(B, O2).get("net")
+    linked0 = real(n1) and n1 == n2
+    B.ap("set:cutWiresOnOwnerChange=False")
+    B.ap("owner:%d,hostile" % o2)
+    off = B.ap("ownersweep").get("cut", -1)
+    B.ap("set:cutWiresOnOwnerChange=True")
+    on = B.ap("ownersweep").get("cut", -1)
+    V.row(rows, "M17_owner_change_cuts_cross_owner_wires", "PASS" if linked0 and off == 0 and on >= 1 else "FAIL", "MOD",
+          {"linkedBefore": linked0, "cutWhenToggleOff": off, "cutWhenOn": on, "provisional": True})
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % MSITE, categories="All")
+
+    # ---------------------------------------------------------------- M20: settings flips (fallen wire, gravship)
+    flips_block(B, rows, res)
+    # ---------------------------------------------------------------- M21: the last four switches (owner change, drips, gravship)
+    four_switches_block(B, rows, res)
+
+    # ---------------------------------------------------------------- log budget
+    if not V.SHARED:                 # SHARED: proof_all's one run-end Z over the whole session (doc section 2 "Log budget")
+        new, coverage = matrix_support().streamed_logs(tap, tap.base)
+        alive = V.VC.log_alive(B, "aerial AZ")
+        errs = [e for e in new if str(e.get("Level", "")).lower() in ("error", "exception")]
+        site = [e for e in errs if "non-destroyable" in str(e.get("Message", ""))]
+        errs = [e for e in errs if e not in site]
+        complete = coverage["complete"] and alive.get("alive") is True
+        V.row(rows, "AZ_log_budget", ("PASS" if not errs else "FAIL") if complete else "UNMEASURED", "MOD" if complete else "HARNESS",
+              {"errors": [str(e.get("Message", ""))[:240] for e in errs[:8]], "newWarnings": len(new),
+               "siteClearErrorsExcluded": len(site), "coverage": coverage, "sentinel": alive})
+    B.ap("defaults")
+    res["log"] = log
+    res["sceneIds"] = {"m1": i1, "m3": i3, "hostileMast": ih, "battery": bat_id, "hostileBattery": hb_id}
+    return res
+
+
+# ============================================================================ M20: the settings flips (short)
+def _pos_of(p):
+    pos = p.get("pos") or p.get("position") or p.get("cell")
+    if isinstance(pos, dict):
+        return (pos.get("x"), pos.get("z"))
+    if isinstance(pos, (list, tuple)) and len(pos) >= 2:
+        return (pos[0], pos[-1])
+    return (p.get("x"), p.get("z"))
+
+
+def _pawn_row(B, pid, cell):
+    r = B.call("jawa/list_pawns", rect="%d,%d,9,9" % (cell[0] - 4, cell[1] - 4), includeHealth=True, limit=50)
+    if r.get("success") is not True:
+        return None
+    return next((p for p in r.get("pawns") or [] if p.get("id") == pid), None)
+
+
+def _wire_trial(B, cell, settle=24):
+    """A fresh DOWNED animal on the live tip cell (downed so it cannot wander: its start cell is fixed), `settle` ticks
+    (> RM_FallenWireShock.CheckInterval, 4 since 2026-10-22), then (shocked?, start cell, end cell). The pawn is left lying; the site is
+    cleared at the end."""
+    sp = B.call("jawa/spawn_pawn", kindDef="Muffalo", x=cell[0], z=cell[1], faction="none", count=1)
+    pid = ((sp.get("pawns") or [{}])[0]).get("id")
+    if not pid:
+        return {"error": "spawn_pawn gave no pawn", "raw": sp}
+    B.call("jawa/pawn_force_incapacitate", pawn=pid, action="downed")
+    p0 = _pawn_row(B, pid, cell)
+    B.ticks(settle)
+    p1 = _pawn_row(B, pid, cell)
+    if p0 is None or p1 is None:
+        return {"error": "pawn not in list_pawns", "id": pid}
+    health = p1.get("health")
+    if (not isinstance(health, dict) or not isinstance(health.get("hediffs"), list)
+            or any(not isinstance(h, dict) or not isinstance(h.get("def"), str) for h in health["hediffs"])):
+        return {"error": "pawn health.hediffs not observed", "id": pid}
+    start, end = _pos_of(p0), _pos_of(p1)
+    if any(not isinstance(v, (int, float)) or isinstance(v, bool) or not math.isfinite(v) for v in start + end):
+        return {"error": "pawn start/end position not observed", "id": pid}
+    if not isinstance(p1.get("dead"), bool):
+        return {"error": "pawn dead state not observed", "id": pid}
+    hed = [h["def"] for h in health["hediffs"]]
+    return {"id": pid, "shocked": "RM_FallenWireShock" in hed, "dead": bool(p1.get("dead")),
+            "start": start, "end": end}
+
+
+def _trial_errors(*trials):
+    """True when any _wire_trial came back as an error dict (spawn or list_pawns failed): it measured nothing."""
+    return any(t.get("error") for t in trials)
+
+
+def _moved(t):
+    a, b = t.get("start"), t.get("end")
+    if not a or not b or None in a or None in b:
+        return False
+    return (a[0], a[1]) != (b[0], b[1])
+
+
+def _in_rect(c, rect):
+    x, z, w, h = rect
+    return x <= c[0] < x + w and z <= c[1] < z + h
+
+
+def shock_outlives_verdict(before, after, trial, tip, site):
+    """M20e (GSS_FALLEN_WIRE_FIX_SHOCK_OUTLIVES_WIRE). before/after: aerial census reads around removing the mast that holds the
+    live fallen half; trial: a _wire_trial on the old tip afterwards. Returns (status, class, detail).
+    UNMEASURED SITE: the census has no shock fields (an old DLL) or the live wire never made a shock cell on its tip.
+    UNMEASURED HARNESS: the trial animal never ran. PASS: no shock cell left on the site, no orphan, the animal unshocked."""
+    def cells(c):
+        return [tuple(x) for x in (c or {}).get("shockCellList") or []]
+    det = {"before": {"shockCells": (before or {}).get("shockCells"), "orphans": (before or {}).get("shockOrphans")},
+           "after": {"shockCells": (after or {}).get("shockCells"), "orphans": (after or {}).get("shockOrphans"),
+                     "onSite": [c for c in cells(after) if _in_rect(c, site)]},
+           "tip": list(tip), "trial": trial}
+    if any("shockCells" not in (c or {}) or "shockOrphans" not in (c or {}) for c in (before, after)):
+        return "UNMEASURED", "SITE", dict(det, why="census has no shockCells/shockOrphans: the deployed DLL predates them")
+    if tuple(tip) not in cells(before):
+        return "UNMEASURED", "SITE", dict(det, why="the live half made no shock cell on its tip before the removal")
+    if (trial or {}).get("error"):
+        return "UNMEASURED", "HARNESS", det
+    ok = (not det["after"]["onSite"] and after.get("shockOrphans") == 0 and before.get("shockOrphans") == 0
+          and trial.get("shocked") is False)
+    return ("PASS" if ok else "FAIL"), "MOD", det
+
+
+def flips_block(B, rows, res):
+    """Rows M20a-M20d. Scene: battery + two masts, the span blown (M15's explosion), so mast F1 holds a LIVE fallen half
+    (its battery is adjacent). Each flip: switch off -> behaviour absent, on -> present, restore the shipped value."""
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % FSITE, categories="All")
+    B.call("jawa/set_terrain_batch", ops="Soil:%d,%d,%d,%d" % FSITE)
+    B.call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % FSITE)
+    B.call("jawa/set_roof_batch", ops="None:%d,%d,%d,%d" % FSITE)
+    B.call("jawa/build_batch", ops="Battery:%d,%d,0" % FBAT, faction="player")
+    B.call("jawa/build_batch", ops=V.ops("RM_AerialMast", [F1, F2]), faction="player", wipeExisting=False)
+    B.call("jawa/map_commit")
+    lt = B.call("jawa/list_things", defName="Battery", rect="%d,%d,1,2" % FBAT, limit=3)
+    bid = next((t.get("id") or t.get("thingId") for t in lt.get("things") or []), None)
+    if bid:
+        B.call("jawa/battery_set", thing=bid, mode="setPct", value=1.0)
+    B.ticks(3)
+    time.sleep(1.0)
+    for k, v in (("fallenWireShock", "True"), ("fallenWireIgnites", "True"), ("fallenWireKnockback", "2")):
+        B.ap("set:%s=%s" % (k, v))
+    ap_ = anchors_by_pos(B.ap("census"))
+    if F1 not in ap_ or F2 not in ap_:
+        V.hrow(rows, "M20_flip_scene_built", "FAIL", "SITE", {"anchors": sorted(ap_)})
+        return
+    B.ap("link:%d,%d" % (ap_[F1]["id"], ap_[F2]["id"]))
+    B.ticks(3)
+    ce = B.ap("explode:%d,%d,2.5,50" % FBLAST)
+    B.ticks(30)
+    B.ap("poll")
+    cx = anchors_by_pos(B.ap("census"))
+    f1 = (cx.get(F1) or {})
+    half = next((f for f in f1.get("fallen") or [] if f.get("cutPartner", -1) != -1), None)
+    live = f1.get("fallenLive") is True and half is not None
+    if not live:
+        V.hrow(rows, "M20_flip_scene_built", "FAIL", "SITE", {"cuts": ce.get("cuts"), "fallenLive": f1.get("fallenLive"), "half": half})
+        return
+    tip = (int(half["tip"][0] // 1), int(half["tip"][1] // 1))
+    V.hrow(rows, "M20_flip_scene_built", "PASS", "SITE", {"tipCell": tip, "cuts": ce.get("cuts")})
+
+    # M20a fallenWireShock: off -> no hediff, on -> hediff
+    B.ap("set:fallenWireKnockback=0")
+    B.ap("set:fallenWireShock=False")
+    B.ticks(250)                    # contacts are rebuilt only on the 250-tick sweep: let one run after each flip
+    t_off = _wire_trial(B, tip)
+    B.ap("set:fallenWireShock=True")
+    B.ticks(250)                    # run 4 (2026-10-12): trial 24 ticks after the flip saw no contact cells -> 0 of 3 shocked
+    t_on = _wire_trial(B, tip)
+    if _trial_errors(t_off, t_on):       # a trial that never ran (no pawn spawned / listed) is not "no shock"
+        V.row(rows, "M20a_fallen_wire_shock_flip", "UNMEASURED", "HARNESS", {"off": t_off, "on": t_on})
+    else:
+        V.row(rows, "M20a_fallen_wire_shock_flip", "PASS" if t_on.get("shocked") and t_off.get("shocked") is False else "FAIL", "MOD",
+              {"off": t_off, "on": t_on})
+
+    # M20b fallenWireKnockback: 0 -> shocked but not moved; 3 -> shocked and moved (up to 3 fresh pawns: a random direction
+    # when the pawn stands on the tip can be blocked by a contact cell, which stops the throw)
+    t0 = _wire_trial(B, tip)
+    B.ap("set:fallenWireKnockback=3")
+    t3 = [_wire_trial(B, tip)]
+    while not (t3[-1].get("shocked") and _moved(t3[-1])) and len(t3) < 3:
+        t3.append(_wire_trial(B, tip))
+    B.ap("set:fallenWireKnockback=2")
+    if _trial_errors(t0) or (t3 and all(t.get("error") for t in t3)):
+        V.row(rows, "M20b_fallen_wire_knockback_flip", "UNMEASURED", "HARNESS", {"knockback0": t0, "knockback3": t3})
+    else:
+        V.row(rows, "M20b_fallen_wire_knockback_flip",
+              "PASS" if t0.get("shocked") and not _moved(t0) and any(t.get("shocked") and _moved(t) for t in t3) else "FAIL", "MOD",
+              {"knockback0": t0, "knockback3": t3})
+
+    # M20c fallenWireIgnites: spilled fuel on the live tip; off -> no fire over 12 sweeps; on -> fire (35% per 250-tick sweep)
+    B.ap("set:fallenWireShock=False")                 # no pawn is there, but a shock-free contact map isolates the ignite switch
+    B.call("jawa/destroy_batch", rects="%d,%d,1,1" % tip, categories="All")
+
+    if os.path.join(HERE, "northstar") not in sys.path:
+        sys.path.append(os.path.join(HERE, "northstar"))
+    from scene_rows import ignition_control
+    B.ap("set:fallenWireIgnites=False")
+    off_status, off_detail = ignition_control(B, tip)
+    B.ap("set:fallenWireIgnites=True")
+    on_status, on_detail = ignition_control(B, tip, stop_on_fire=True)
+    B.ap("set:fallenWireShock=True")
+    measured = "UNMEASURED" not in (off_status, on_status)
+    V.row(rows, "M20c_fallen_wire_ignites_flip", ("PASS" if off_status == "PASS" and on_status == "FAIL" else "FAIL") if measured else "UNMEASURED",
+          "MOD" if measured else "HARNESS",
+          {"fireWhenOff_12sweeps": off_detail["fires"], "fireWhenOn": on_detail["fires"], "sweepsToIgnite": on_detail["sweeps"],
+           "offObservations": off_detail["observations"], "onObservations": on_detail["observations"],
+           "note": "ignite is a 35% roll per 250-tick sweep; P(miss in 12) = 0.6%"})
+
+    # M20e GSS_FALLEN_WIRE_FIX_SHOCK_OUTLIVES_WIRE: a shock cell dies with its wire. F1's live half lies across the site; the
+    # census lists the shock cells (shockCellList) and how many of them a fresh rebuild would not produce (shockOrphans). Remove
+    # F1 (its fallen half goes with it): within a few ticks no shock cell is left on the site, none is an orphan, and a fresh
+    # animal on the old tip is not shocked. (Filed from a 2026-10-29 hotspot whose "0 fallen" came from a probe reading census
+    # keys that never existed; the hotspot was proof debris, so this row is the reading that would have said so.)
+    B.ticks(250)
+    before = B.ap("census")
+    B.call("jawa/destroy_batch", rects="%d,%d,1,1" % F1, categories="All")
+    B.ticks(3)                      # Deregister marks contacts dirty; the next tick rebuilds them
+    after = B.ap("census")
+    gone = _wire_trial(B, tip)
+    st, cls, det = shock_outlives_verdict(before, after, gone, tip, FSITE)
+    V.row(rows, "M20e_shock_cells_die_with_wire", st, cls, det)
+
+    # M20d keepWiresOnGravship: the BEHAVIOUR needs a gravship launch (GravshipUtility.generatingGravship is only true
+    # inside the engine's despawn loop; a quicktest map has no engine), so this row proves only the wiring: the field flips,
+    # reads back, and Apply() accepts it. The behaviour stays owed (item note).
+    a = B.ap("set:keepWiresOnGravship=False")
+    b = B.ap("set:keepWiresOnGravship=True")
+    V.row(rows, "M20d_keep_wires_setting_roundtrip", "PASS" if a.get("value") == "False" and b.get("value") == "True" else "FAIL", "MOD",
+          {"off": a.get("value"), "on": b.get("value"), "behaviourOwed": "gravship launch rig; wiring only"})
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % FSITE, categories="All")
+
+
+# ============================================================================ M21: the last four switches standing
+# GSS_SWITCHES_PROVE_LAST_FOUR_STANDING: cutWiresOnOwnerChange, dripLoops, keepWiresOnGravship (slideUnder is core,
+# validation.py M12). Each row names ONE switch (mod_completion credits a row to every key its text names), each switch
+# is read ON and OFF, and every value touched is restored to what census read before the block and read back.
+DRIP_STEP = 0.5                                 # AerialMath.SpanCurve / SpanCurveDrip default step
+
+
+def _links_to(anchor, other_id):
+    return [l for l in (anchor or {}).get("links") or [] if l.get("other") == other_id]
+
+
+def owner_change_verdict(cut_on, linked_before, a_after, b_after, id_a, id_b):
+    """M21a/b. linked_before: the census read the span Up both ways before the owner change; a_after/b_after: the two
+    anchors' census rows after the sweep (None = gone from census). ON: neither side lists the other. OFF: both still
+    do. A span that never stood, or an anchor gone from census, is (UNMEASURED, SITE): the row could not ask."""
+    if not linked_before or a_after is None or b_after is None:
+        return "UNMEASURED", "SITE"
+    kept = bool(_links_to(a_after, id_b)) and bool(_links_to(b_after, id_a))
+    gone = not _links_to(a_after, id_b) and not _links_to(b_after, id_a)
+    return ("PASS" if (gone if cut_on else kept) else "FAIL"), "MOD"
+
+
+def drip_expected_points(ax, az, bx, bz, drip, depth=0.12, reach=0.45, step=DRIP_STEP):
+    """The point count AerialMath builds for one strand A->B: SpanCurve n+1 with n = max(4, ceil(len/step));
+    SpanCurveDrip (depth, reach > 0, len >= 1e-6) 12 loop samples + (n'+1) + 12 with reach' = min(reach, len/4),
+    n' = max(2, ceil((1 - 2 reach'/len) len / step))."""
+    ln = math.hypot(bx - ax, bz - az)
+    if not drip or not (depth > 0) or not (reach > 0) or ln < 1e-6:
+        return max(4, int(math.ceil(ln / max(0.05, step)))) + 1
+    r = min(reach, ln / 4)
+    n = max(2, int(math.ceil((1 - 2 * r / ln) * ln / max(0.05, step))))
+    return n + 25
+
+
+def drip_verdict(spans, drip_on, depth=0.12, reach=0.45):
+    """M21c/d. spans: the styles probe's span rows of the scene's link. Every Power strand's built point count must be
+    the formula's for the switch's value (+-1: the probe prints ends to 4 places, which can move a ceil) and NOT the other
+    formula's. A deployed build without strandPts -> (UNMEASURED, HARNESS); strands where the two formulas sit within 2
+    of each other decide nothing; none decisive -> (UNMEASURED, SITE). Also verts == 2 * sum(points) (one ribbon pair per
+    sample) or FAIL."""
+    pw = [s for s in spans or [] if s.get("kind") == "Power"]
+    if not pw or any("strandPts" not in s or "strandEnds" not in s for s in pw):
+        return "UNMEASURED", "HARNESS", []
+    checks = []
+    for s in pw:
+        for cnt, e in zip(s["strandPts"], s["strandEnds"]):
+            want = drip_expected_points(*e, drip=drip_on, depth=depth, reach=reach)
+            other = drip_expected_points(*e, drip=not drip_on, depth=depth, reach=reach)
+            if abs(want - other) <= 2:
+                continue
+            checks.append({"pts": cnt, "want": want, "other": other, "ok": abs(cnt - want) <= 1 and abs(cnt - other) > 1})
+    if not checks:
+        return "UNMEASURED", "SITE", checks
+    verts_ok = all(s.get("verts") == 2 * sum(s["strandPts"]) for s in pw)
+    return ("PASS" if verts_ok and all(c["ok"] for c in checks) else "FAIL"), "MOD", checks
+
+
+def _aerial_setting(B, key):
+    """The value the aerial census reports for one AerialSettings field (a string, "True"/"False"), None if unread."""
+    return (B.ap("census").get("settings") or {}).get(key)
+
+
+def four_switches_block(B, rows, res):
+    """M21a-f on the flips site (FSITE, cleared). Two player masts F1, F2 linked; then per switch OFF and ON."""
+    keys = ("cutWiresOnOwnerChange", "dripLoops", "keepWiresOnGravship", "kineticSway")
+    c0 = B.ap("census").get("settings") or {}
+    prior = {k: c0.get(k) for k in keys}
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % FSITE, categories="All")
+    B.call("jawa/set_terrain_batch", ops="Soil:%d,%d,%d,%d" % FSITE)
+    B.call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % FSITE)
+    B.call("jawa/set_roof_batch", ops="None:%d,%d,%d,%d" % FSITE)
+    try:
+        _four_switches(B, rows, res)
+    finally:
+        back = {}
+        for k in keys:
+            v = prior.get(k) if prior.get(k) in ("True", "False") else "True"   # every one ships True
+            B.ap("set:%s=%s" % (k, v))
+            back[k] = _aerial_setting(B, k)
+        B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % FSITE, categories="All")
+        bad = {k: (prior.get(k), back.get(k)) for k in keys if prior.get(k) in ("True", "False") and back.get(k) != prior.get(k)}
+        if bad or any(prior.get(k) is None for k in keys):
+            V.hrow(rows, "M21_restore_settings", "FAIL", "HARNESS", {"priorThenRestored": bad, "prior": prior})
+
+
+def _scene_pair(B):
+    """Build and link F1-F2 (player). -> (id1, id2, linkedUp) with linkedUp read from census both ways."""
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % FSITE, categories="Building")
+    B.call("jawa/build_batch", ops=V.ops("RM_AerialMast", [F1, F2]), faction="player", wipeExisting=False)
+    B.call("jawa/map_commit")
+    B.ticks(3)
+    ap_ = anchors_by_pos(B.ap("census"))
+    if F1 not in ap_ or F2 not in ap_:
+        return None, None, False
+    i1, i2 = ap_[F1]["id"], ap_[F2]["id"]
+    B.ap("link:%d,%d" % (i1, i2))
+    B.ticks(3)
+    ap_ = anchors_by_pos(B.ap("census"))
+    up = any(l.get("state") == "Up" for l in _links_to(ap_.get(F1), i2)) and \
+        any(l.get("state") == "Up" for l in _links_to(ap_.get(F2), i1))
+    return i1, i2, up
+
+
+def _four_switches(B, rows, res):
+    # ------------------------------------------------ M21a/b cutWiresOnOwnerChange
+    # PROVE  link F1-F2 (player); set the switch OFF (readback); owner:F2,hostile; ownersweep; 260 ticks (the periodic
+    #        250-tick sweep runs too); census -> both anchors still list each other. Then ON (readback); ownersweep;
+    #        census -> neither lists the other.
+    # EXPECT OFF: link kept both sides; ON: link gone both sides. The bar is the census, not the sweep's cut count (the
+    #        periodic sweep may cut first and the explicit one then reads 0, as M17's count could).
+    # LIES   the hostile faction never taking (owner: fails) would read OFF-kept as PASS and ON as FAIL, so the owner
+    #        verb's own faction readback is required or the pair is UNMEASURED/HARNESS; a span that never stood is SITE.
+    i1, i2, up = _scene_pair(B)
+    s_off = B.ap("set:cutWiresOnOwnerChange=False")
+    ow = B.ap("owner:%d,hostile" % i2) if i2 else {}
+    cut_off = B.ap("ownersweep").get("cut")
+    B.ticks(260)
+    a_off = anchors_by_pos(B.ap("census"))
+    s_on = B.ap("set:cutWiresOnOwnerChange=True")
+    cut_on = B.ap("ownersweep").get("cut")
+    B.ticks(3)
+    a_on = anchors_by_pos(B.ap("census"))
+    took = bool(ow.get("success")) and a_off.get(F2, {}).get("faction") not in (None, a_off.get(F1, {}).get("faction"))
+    for rid, on, snap, s, cut in (("M21a_cut_wires_on_owner_change_off_keeps_link", False, a_off, s_off, cut_off),
+                                  ("M21b_cut_wires_on_owner_change_on_cuts_link", True, a_on, s_on, cut_on)):
+        d = {"linkedBefore": up, "readback": s.get("value"), "ownerSet": ow.get("faction"), "sweepCut": cut,
+             "f1Links": (snap.get(F1) or {}).get("links"), "f2Links": (snap.get(F2) or {}).get("links"),
+             "factions": [(snap.get(F1) or {}).get("faction"), (snap.get(F2) or {}).get("faction")]}
+        if up and not took:
+            V.row(rows, rid, "UNMEASURED", "HARNESS", d)
+            continue
+        st, cl = owner_change_verdict(on, up, snap.get(F1), snap.get(F2), i1, i2)
+        if st == "PASS" and s.get("value") != str(on):
+            st = "FAIL"
+        V.row(rows, rid, st, cl, d)
+
+    # ------------------------------------------------ M21c/d dripLoops
+    # PROVE  a fresh linked F1-F2 pair; set the switch OFF / ON (readback); styles -> the span's strandPts, strandEnds,
+    #        verts (SpanMeshFor rebuilds on the switch: it is in the mesh signature).
+    # EXPECT every Power strand's point count = SpanCurve's n+1 OFF, SpanCurveDrip's n'+13 ON (drip_expected_points),
+    #        from its own reported ends; verts = 2 x the points.
+    # LIES   this reads the built mesh data, not the picture: a shader or draw that hid the loop would still PASS, and
+    #        the loop's depth/shape is not judged (a screenshot review owns that). A build without strandPts (the probe
+    #        field landed with this row) is UNMEASURED/HARNESS until GimmeSomeSlack is redeployed.
+    i1, i2, up = _scene_pair(B)
+    c = B.ap("census").get("settings") or {}
+    try:
+        depth, reach = float(c.get("DripDepth", 0.12)), float(c.get("DripReach", 0.45))
+    except (TypeError, ValueError):
+        depth, reach = 0.12, 0.45
+    for rid, val in (("M21c_drip_loops_off_plain_curve", False), ("M21d_drip_loops_on_loop_samples", True)):
+        s = B.ap("set:dripLoops=%s" % val)
+        B.ticks(2)
+        st_ = B.ap("styles")
+        spans = [sp for a in st_.get("anchors") or [] if a.get("id") in (i1, i2)
+                 for sp in a.get("spans") or [] if sp.get("other") in (i1, i2)]
+        if not up:
+            V.row(rows, rid, "UNMEASURED", "SITE", {"linkedBefore": up})
+            continue
+        st, cl, checks = drip_verdict(spans, val, depth, reach)
+        if st == "PASS" and s.get("value") != str(val):
+            st = "FAIL"
+        V.row(rows, rid, st, cl, {"readback": s.get("value"), "spans": len(spans), "checks": checks,
+                                  "verts": [sp.get("verts") for sp in spans], "depth": depth, "reach": reach})
+
+    # ------------------------------------------------ M22a/b kineticSway (GSS_SWAY_PROVE_KINETIC_LIVE_ROW)
+    # PROVE  a real GenExplosion with a blast marked kinetic (the marker Kinetic Arms sets, matched by name), mid-span.
+    # EXPECT on: the span swings and stays up; off: nothing. A bomb's own cut is M15; a blast here never wounds.
+    mid = ((F1[0] + F2[0]) // 2, (F1[1] + F2[1]) // 2)
+    for rid, val, want in (("M22a_kinetic_sway_on_swings_never_cuts", True, True), ("M22b_kinetic_sway_off_does_nothing", False, False)):
+        i1, i2, up = _scene_pair(B)
+        s = B.ap("set:kineticSway=%s" % val)
+        if not (i1 and up and s.get("success")):
+            V.row(rows, rid, "UNMEASURED", "SITE", {"linked": up, "set": s})
+            continue
+        ex = B.ap("explode:%d,%d,2.5,50,kinetic" % mid)
+        B.ticks(3)
+        ap_ = anchors_by_pos(B.ap("census"))
+        still = any(l.get("state") == "Up" for l in _links_to(ap_.get(F1), i2))
+        ok = ex.get("success") and still and ex.get("cuts") == 0 and (ex.get("sways", 0) > 0) == want
+        V.row(rows, rid, "PASS" if ok else "FAIL", "MOD", {"explode": ex, "spanStillUp": still, "wantSway": want})
+    # ------------------------------------------------ M21e/f keepWiresOnGravship
+    # PROVE  set the switch OFF / ON; the field's value as the aerial census reads it back (a second read, not the set
+    #        verb's echo).
+    # EXPECT "False" then "True".
+    # LIES   this is the SETTING's state, not its behaviour. The behaviour (spans to anchors aboard a launching gravship
+    #        kept) runs only inside the engine's GravshipUtility.generatingGravship despawn loop with DestroyMode
+    #        .WillReplace; no bridge tool or probe verb can stage that without a launch, and a gravship launch is not
+    #        live-tested unattended. The removal plan's aboard rule is proved offline by AerialSelfTest (PlanRemoval
+    #        aboard cases). A PASS here does not show a single wire kept on a gravship.
+    for rid, val in (("M21e_keep_wires_on_gravship_off_setting_state", False),
+                     ("M21f_keep_wires_on_gravship_on_setting_state", True)):
+        s = B.ap("set:keepWiresOnGravship=%s" % val)
+        read = _aerial_setting(B, "keepWiresOnGravship")
+        if not s.get("success") or read is None:
+            V.row(rows, rid, "UNMEASURED", "HARNESS", {"set": s, "census": read})
+            continue
+        V.row(rows, rid, "PASS" if s.get("value") == str(val) and read == str(val) else "FAIL", "MOD",
+              {"readback": s.get("value"), "censusRead": read, "behaviourObserved": False,
+               "owed": "gravship launch keeps spans aboard: engine-only path, offline AerialSelfTest PlanRemoval"})
+
+
+def run_flips(args):
+    """--flips: ONLY the M20 + M21 rows on a fresh scene of their own (a few minutes of game time; the ignite flip dominates)."""
+    B = A()
+    rows = []
+    res = {"mod": V.MOD, "mode": "flips", "script": "validation_aerial.py", "tier": V.TIER,
+           "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows, "screenshots": []}
+    d = B.ap("defaults")
+    if not d.get("success"):
+        V.row(rows, "A_probe_channel", "FAIL", "HARNESS", d)
+        res["aborted"] = "aerial probe dead"
+        return res
+    B.ap("skipreseed:false")
+    try:
+        flips_block(B, rows, res)
+        four_switches_block(B, rows, res)
+    finally:
+        B.ap("defaults")
+    return res
+
+
+# ============================================================================ PT: power theft (--theft)
+# POWER_THEFT_BUILD_SLOW_GOODWILL_LEAK A2/A3, ported from BENCH's ad-hoc Transient/bench_live_20261011/gss_live_checks.py +
+# gss_theft_day.py (2026-10-11) after b6241f975 changed the letter (says REMOVE: the clamp has no CompFlickable, C5) and the
+# goodwill clock (counts DRAINING ticks, C7; caught once per faction, C8). Three phases, one result file (--out) carried
+# between them, so no single call outlives a 10-minute foreground budget:
+#   --theft catch   build a non-player battery grid + a player clamp biting it + witnesses 5 cells away -> A2 rows
+#   --theft day     play until one in-game day of draining has elapsed since the catch (resumable: re-run until it
+#                   reports done) -> A3 rows: goodwill fell by theftGoodwillPerDay, our charge counter moved by the same
+#   --theft stop    remove the clamp, play one more day -> A3 stop row: goodwill and the counter do not move
+# LEARNED:
+#   * (BENCH 2026-10-11) one 60,500-tick rimworld/step_game_ticks hit its 120 s timeout after ~7,200 ticks, so "a day"
+#     never elapsed (HARNESS). B.ticks (validation_core: clockgate safe_advance, 2,500-tick chunks) is the road now.
+#   * (BENCH) "switching the clamp off" is not a thing: the stop control is REMOVAL (no CompFlickable; C5 fixed the letter).
+#   * jawa/letter_list carries the label + lookTargetIds but NOT the body; the body text is checked offline (O7 vs
+#     PowerTheftConsequences.StopAdvice) and by eye on the opened-letter screenshot.
+#   * The goodwill "reason" (HistoryEventDef RM_PowerTheftCaught, label "power theft") is only on screen, in vanilla's
+#     "relations changed" message: no bridge tool reads Messages or HistoryEventsManager. The day phase therefore steps the
+#     last stretch in 250-tick events and screenshots the moment our charge counter moves (the message is on screen then).
+THEFT = "RimMandrake.GimmeSomeSlack.Aerial.PowerTheftConsequences"
+PT_DAY = 60000
+PT_SLOP = 300                                    # the catch event + one 250-tick event window
+PT_WALL_S = 420                                  # wall budget per day/stop call (re-run to resume)
+
+
+def _pt_scene(sx, sz):
+    """Cells of the theft scene from an origin (sx, sz): an E-W victim conduit run at z=sz+10, three victim batteries south
+    of it, the clamp on the run's south side, our own conduit + a lamp further south, witnesses 5 cells north of the clamp."""
+    return {"rect": (sx, sz, 30, 22), "bats": [(sx + 4, sz + 8), (sx + 6, sz + 8), (sx + 8, sz + 8)],
+            "run": [(x, sz + 10) for x in range(sx + 4, sx + 22)], "clamp": (sx + 14, sz + 9),
+            "ours": [(sx + 14, sz + 6), (sx + 14, sz + 5), (sx + 14, sz + 4)], "lamp": (sx + 15, sz + 3),
+            "witness": (sx + 14, sz + 14)}
+
+
+def _pt_stat(B, f):
+    reply = B.call("jawa/mod_settings_field", typeName=THEFT, action="get", field=f)
+    return counter_value(reply.get("value")) if reply.get("success") is True else None
+
+
+def _pt_faction(B, dn):
+    reply = B.call("jawa/list_factions")
+    return next((f for f in reply.get("factions") or [] if f.get("defName") == dn), None) if reply.get("success") is True else None
+
+
+def _pt_tick(B):
+    return B.call("rimworld/get_game_info").get("ticksGame")
+
+
+def _pt_victim(facs):
+    """A non-player, non-hostile, visible faction whose goodwill can still fall (Outlander first, as BENCH)."""
+    ok = [f for f in facs if not f.get("isPlayer") and not f.get("hostile") and not f.get("permanentEnemy")
+          and not f.get("hidden") and (f.get("goodwill") is None or f.get("goodwill") > -80)]
+    return next((f for f in ok if str(f.get("defName", "")).startswith("Outlander")), None) or (ok[0] if ok else None)
+
+
+def _pt_ids(B, defn, rect):
+    lt = B.call("jawa/list_things", defName=defn, rect="%d,%d,%d,%d" % tuple(rect), limit=20)
+    if lt.get("success") is not True or not isinstance(lt.get("things"), list):
+        return None
+    return [t.get("id") or t.get("thingId") for t in lt.get("things") or []]
+
+
+def counter_value(value):
+    if isinstance(value, bool) or not isinstance(value, (str, int)):
+        return None
+    try:
+        return int(value)  # the reflection tool serializes field values as strings
+    except ValueError:
+        return None
+
+
+def counter_status(before, after, delta=0):
+    before, after = counter_value(before), counter_value(after)
+    if before is None or after is None:
+        return "UNMEASURED"
+    return "PASS" if after == before + delta else "FAIL"
+
+
+def theft_stopped_status(before, goodwill, charged):
+    values = tuple(counter_value(v) for v in (before.get("goodwill"), before.get("goodwillCharged"), goodwill, charged))
+    if not isinstance(before.get("clampLeft"), list) or any(v is None for v in values):
+        return "UNMEASURED"
+    return "PASS" if not before["clampLeft"] and values[2] == values[0] and values[3] == values[1] else "FAIL"
+
+
+def theft_catch(B, rows, res):
+    gi = B.call("jawa/map_info")
+    sx, sz = res.get("origin") or (20, 20)       # a corner, away from the quicktest colonists at the map centre
+    S = _pt_scene(sx, sz)
+    res["scene"] = S
+    rm = B.call("jawa/running_mods", assembly="RimMandrakeGimmeSomeSlack", details=False)
+    res["env"] = {"running": rm.get("count"), "gssAssembly": (rm.get("assembly") or {}).get("matches"), "map": gi.get("mapBiome"),
+                  "size": [gi.get("sizeX"), gi.get("sizeZ")], "tick": _pt_tick(B)}
+    B.ap("defaults")
+    res["settings"] = {f: B.call("jawa/mod_settings_field", typeName="RimMandrake.GimmeSomeSlack.Aerial.AerialSettings",
+                                 action="get", field=f).get("value") for f in ("theftGoodwill", "theftGoodwillPerDay", "theftSightRange",
+                                                                              "tapsEnabled", "tapEvents", "tapRate")}
+    facs = B.call("jawa/list_factions").get("factions") or []
+    vic = _pt_victim(facs)
+    res["victim"] = vic and {k: vic.get(k) for k in ("defName", "name", "goodwill", "hostile")}
+    if not vic:
+        V.row(rows, "PT_A2_letter", "UNMEASURED", "SITE", "no non-hostile, visible, non-player faction in this world")
+        return
+    nf = vic["defName"]
+    # every clamp already on the map goes first: live 2026-10-21 a clamp left at an earlier --origin was still draining the
+    # same faction (and caught), so the global goodwillCharged counter read -4 for "one day" -- two clamps x 2, no mod bug
+    old = B.call("jawa/list_things", defName="RM_PowerTapClamp", rect="0,0,%d,%d" % (gi.get("sizeX") or 250, gi.get("sizeZ") or 250),
+                 limit=50).get("things") or []
+    for t in old:
+        B.call("jawa/destroy_batch", rects="%d,%d,1,1" % (t["x"], t["z"]), categories="All")
+    res["clampsRemovedFirst"] = [t.get("id") for t in old]
+    res["liveWiresClearedFirst"] = clear_live_fallen(B)     # GSS_FALLEN_WIRE_FIX_SHOCK_HOTSPOT: proof_all's cut M2-M3 half
+    r = "%d,%d,%d,%d" % S["rect"]
+    B.call("jawa/destroy_batch", rects=r, categories="All")
+    B.call("jawa/set_terrain_batch", ops="Soil:" + r)
+    B.call("jawa/set_fog", action="unfog", rect=r)
+    B.call("jawa/set_roof_batch", ops="None:" + r)
+    b = [B.call("jawa/build_batch", ops=V.ops("Battery", S["bats"], rot=0), faction=nf, wipeExisting=False),
+         B.call("jawa/build_batch", ops=V.ops("PowerConduit", S["run"]), faction=nf, wipeExisting=False),
+         B.call("jawa/build_batch", ops="RM_PowerTapClamp:%d,%d" % S["clamp"], faction="player", wipeExisting=False),
+         B.call("jawa/build_batch", ops=V.ops("PowerConduit", S["ours"]), faction="player", wipeExisting=False),
+         B.call("jawa/build_batch", ops="StandingLamp:%d,%d" % S["lamp"], faction="player", wipeExisting=False)]
+    B.call("jawa/map_commit")
+    bats = _pt_ids(B, "Battery", S["rect"])
+    for bid in bats or []:
+        B.call("jawa/battery_set", thing=bid, mode="setPct", value=1.0)
+    clamp = _pt_ids(B, "RM_PowerTapClamp", S["rect"])
+    gw0 = vic.get("goodwill")
+    # the control needs a map with no victim pawn in sight range: live 2026-10-21 a stray visitor from an earlier attempt
+    # (walking to the map edge) caught the clamp during the "no witness" control, so wait them out or call it SITE
+    near = []
+    for _ in range(12):
+        near = [(p["id"], p.get("x"), p.get("z")) for p in B.call("jawa/pawn_census").get("pawns") or []
+                if p.get("faction") == nf and p.get("x") is not None
+                and ((p["x"] - S["clamp"][0]) ** 2 + (p["z"] - S["clamp"][1]) ** 2) ** 0.5 <= float(res["settings"]["theftSightRange"]) + 4]
+        if not near:
+            break
+        B.ticks(250)
+    if near:
+        V.row(rows, "PT_A2_drain_no_witness_no_letter", "UNMEASURED", "SITE", {"victimPawnsNearClamp": near, "fix": "--origin elsewhere"})
+        return
+    cc0 = _pt_stat(B, "caughtCount")
+    # control first: draining with NO witness on the map must not catch (the letter needs a pawn of THEIRS that sees it)
+    B.ticks(300)
+    cc_ctrl = _pt_stat(B, "caughtCount")
+    taps = B.ap("census").get("taps") or []
+    # list_things says "RM_PowerTapClamp767378", the probe's census says 767378 (live 2026-10-21: a bare == never matched)
+    tap = next((t for t in taps if clamp and str(clamp[0]).endswith(str(t.get("id")))), None)
+    ctrl_status = counter_status(cc0, cc_ctrl)
+    ctrl_status = "UNMEASURED" if not tap or ctrl_status == "UNMEASURED" else "PASS" if (tap.get("lastStolenW") or 0) > 0 and ctrl_status == "PASS" else "FAIL"
+    V.row(rows, "PT_A2_drain_no_witness_no_letter", ctrl_status, "HARNESS" if ctrl_status == "UNMEASURED" else "MOD",
+          {"tap": tap, "caughtCount": [cc0, cc_ctrl], "built": [x.get("survived") for x in b], "batteries": bats})
+    wit = B.call("jawa/spawn_pawn", kindDef="Villager", x=S["witness"][0], z=S["witness"][1], faction=nf, count=2)
+    wids = [p.get("id") or p.get("thingId") for p in wit.get("pawns") or []]
+    # a lordless visitor's first job is Goto the map edge (live 2026-10-21: out of 12-cell sight before the next 250-tick
+    # drain event, so nobody ever caught it); a defend lord on the witness cell keeps them looking at the clamp
+    lord = B.call("jawa/lord_defend_spawn", pawns=",".join(wids), point="%d,%d" % S["witness"], wanderRadius=2.0,
+                  defendRadius=3.0, addFleeToil=False) if wids else {}
+    res["witnessLord"] = {k: lord.get(k) for k in ("success", "message", "error")}
+    B.ticks(300)
+    cc1 = _pt_stat(B, "caughtCount")
+    letters = [l for l in B.call("jawa/letter_list").get("letters") or [] if "Power theft" in json.dumps(l)]
+    lt = letters[-1] if letters else {}
+    ids = [str(x) for x in lt.get("lookTargetIds") or []]
+    ends = lambda n: any(i.endswith(str(n)) for i in ids)   # noqa: E731  ThingID "RM_PowerTapClamp50026" vs id 50026
+    res["catch"] = {"tick": _pt_tick(B), "goodwill0": gw0, "goodwillCharged0": _pt_stat(B, "goodwillCharged"),
+                    "caughtCount": [cc0, cc_ctrl, cc1], "witness": wids, "clamp": clamp}
+    shot = B.shot("PT_A2_letter_and_clamp", (S["clamp"][0] - 6, S["clamp"][1] - 6, 13, 13))
+    res.setdefault("screenshots", []).append(shot)
+    letter_status = counter_status(cc_ctrl, cc1, 1)
+    letter_status = letter_status if letters or letter_status == "UNMEASURED" else "FAIL"
+    V.row(rows, "PT_A2_letter", letter_status, "HARNESS" if letter_status == "UNMEASURED" else "MOD",
+          {"letter": lt, "caughtCount": [cc_ctrl, cc1], "witness": wids, "victim": nf, "shot": shot})
+    V.row(rows, "PT_A2_letter_targets", "PASS" if clamp and ends(clamp[0]) and any(ends(w) for w in wids) else
+          ("UNMEASURED" if not letters else "FAIL"), "MOD",
+          {"lookTargetIds": ids, "clamp": clamp, "witness": wids, "bar": "the letter jumps to the clamp AND the witness"})
+    # a second witness of the SAME faction later does not re-catch (once per clamp per faction, C8)
+    B.ticks(500)
+    cc2 = _pt_stat(B, "caughtCount")
+    once_status = counter_status(cc1, cc2)
+    V.row(rows, "PT_A2_caught_once", once_status, "HARNESS" if once_status == "UNMEASURED" else "MOD",
+          {"caughtCount": [cc1, cc2], "letters": len([l for l in B.call("jawa/letter_list").get("letters") or []
+                                                                            if "Power theft" in json.dumps(l)])})
+
+
+# the quicktest colony on the owner's full list starves, dehydrates and walks into pits during a day of play (live
+# 2026-10-21: Captain downed by RM_PitDrowning 0.6); none of it is this mod's, all of it stops the clock governor
+# RM_SwimExhaustion is on the list because stripping RM_PitDrowning alone is not a rescue: RM_Swim.KeepsHeadUp is false
+# while exhaustion is 1, so a pawn left in the same cell starts drowning again at once (2026-10-21, Captain re-downed every
+# ~2,000 ticks; RM_PitDrowning is RM_Swim's hediff on NATURAL water too, not evidence of a pit - read
+# flowworks_excavation_report excavatedCellCount first).
+PT_SITE_HEDIFFS = ("RM_PitDrowning", "RM_SwimExhaustion", "DBHDehydration", "Malnutrition", "Heatstroke", "Hypothermia",
+                   "BloodLoss")
+# heuristic, by defName (no bridge tool exposes TerrainDef.IsWater): a pawn standing on one of these is walked ashore
+PT_WET_TERRAIN = re.compile(r"Water|Marsh|Mud|Brine|Ocean|Sea|Lake|River|Bog|Swamp", re.I)
+
+
+def _pt_ashore(B, p, r=10):
+    """Walk a colonist standing on wet terrain to the nearest dry cell it can reach (drafted, so it holds there instead of
+    wading straight back in; it stays drafted for the rest of the phase, which this backdrop colony does not need).
+    Returns None when already dry, else {"from", "to", "terrain", "ok"}; to=None means no dry reachable cell in range.
+    The game is not unpaused here: the walk happens in the next B.ticks."""
+    x, z = p.get("x"), p.get("z")
+    if x is None or z is None:
+        return None
+    cells = {}
+    for run in str(B.call("jawa/get_terrain_batch", rects="%d,%d,%d,%d" % (x - r, z - r, 2 * r + 1, 2 * r + 1)).get("ops") or "").split(";"):
+        if ":" not in run:
+            continue
+        d, nums = run.rsplit(":", 1)
+        rx, rz, w = (int(v) for v in nums.split(",")[:3])
+        for i in range(w):
+            cells[(rx + i, rz)] = d
+    here = cells.get((x, z), "")
+    if here and not PT_WET_TERRAIN.search(here):
+        return None
+    out = {"from": [x, z], "terrain": here, "to": None, "ok": False}
+    dry = sorted((c for c, d in cells.items() if not PT_WET_TERRAIN.search(d)), key=lambda c: (c[0] - x) ** 2 + (c[1] - z) ** 2)
+    for cx, cz in dry[:6]:                       # canGo is computed before the order; an unreachable Goto is "accepted"
+        o = B.call("jawa/order_pawn", pawnId=p["id"], x=cx, z=cz, draft=True, waitTicks=0, unpause=False)
+        row = (o.get("pawns") or [{}])[0]
+        if row.get("canGo") and row.get("ok"):
+            out.update(to=[cx, cz], ok=True, dryTerrain=cells[(cx, cz)])
+            break
+    return out
+
+
+def _pt_calm(B):
+    """Fill every colonist's needs, strip PT_SITE_HEDIFFS and walk anyone on wet terrain ashore (_pt_ashore); returns the
+    refused removals and failed rescues. The owner's full-list quicktest colony sits at 'minor break risk x5', and a break
+    stops the clock governor (live 2026-10-21: InsultingSpree after 1,440 ticks of the first day chunk)."""
+    refused = []
+    B.call("jawa/kill_hostiles")                 # a raid landed mid-day (live 2026-10-21: Hutt Cartel enforcers)
+    for p in B.call("jawa/pawn_census").get("pawns") or []:
+        if not p.get("isColonist"):
+            continue
+        # jawa/pawn_refresh_needs only re-walks WHICH needs exist (it fills nothing; live 2026-10-21 the colony starved
+        # through it); pawn_need sets the level. Needs a pawn lacks are refused harmlessly.
+        for nd in ("Food", "Rest", "Joy", "Mood", "DBHThirst", "Hygiene", "Bladder"):
+            B.call("jawa/pawn_need", pawn=p["id"], action="need", need=nd, level=1.0)
+        for h in (B.call("jawa/pawn_get", pawn=p["id"]).get("pawns") or [{}])[0].get("hediffs") or []:
+            if h.get("def") in PT_SITE_HEDIFFS:
+                r = B.call("jawa/pawn_health", pawn=p["id"], action="remove", hediff=h["def"])
+                if r.get("success") is not True:
+                    refused.append((p["id"], h["def"], str(r.get("message") or r.get("error"))[:60]))
+        a = _pt_ashore(B, p)                     # after the strip: a still-downed pawn cannot walk, and says so here
+        if a is not None and not a["ok"]:
+            refused.append((p["id"], "ashore", json.dumps(a)[:60]))
+    return refused
+
+
+def _pt_play(B, res, key, target, since_tick):
+    """Advance until ticksGame - since_tick >= target or the wall budget is spent (played is MEASURED from ticksGame, so a
+    crashed call loses nothing). The last 2,500 ticks run in 250-tick events, and the first event that moves
+    goodwillCharged is screenshotted (vanilla's "relations changed (power theft)" message). A governor stop for a colonist's
+    mental break is a SITE event: ended, colony calmed, recorded, play resumes; any other stop halts the phase."""
+    cg = V.VC._clockgate()
+    st = res.setdefault(key, {"since": since_tick, "chargeShot": None, "siteEvents": []})
+    st.pop("halted", None)
+    st.setdefault("liveWiresCleared", []).append(clear_live_fallen(B))
+    _pt_calm(B)
+    w0 = time.time()
+    st["played"] = _pt_tick(B) - since_tick
+    while st["played"] < target and time.time() - w0 < PT_WALL_S:
+        left = target - st["played"]
+        step = 250 if left <= 2500 else min(2500, left - 2500)
+        g0 = _pt_stat(B, "goodwillCharged")
+        try:
+            B.ticks(step)
+        except cg.GovernorStop as g:
+            r = g.result if isinstance(g.result, dict) else {}
+            by = r.get("stopBy") or {}
+            det, who = str(by.get("detail") or r), by.get("subjectId")
+            ev = {"tick": _pt_tick(B), "detail": det[:200], "subject": who}
+            if det.startswith("downed"):          # a fallen-wire downing names the wires that could have done it
+                ev["liveFallen"] = live_fallen_wires(B.ap("census"))
+            st["siteEvents"].append(ev)
+            if (det.startswith("mental") or det.startswith("food")) and who:
+                B.call("jawa/pawn_mental", pawn=who, action="end")
+                _pt_calm(B)
+            elif det.startswith("downed") and who and not _pt_calm(B) and not any(
+                    p.get("downed") for p in B.call("jawa/pawn_census").get("pawns") or [] if p.get("isColonist")):
+                pass                                     # healed: the downed colonist is up again
+            else:
+                st["halted"] = det[:200]
+                break
+        st["played"] = _pt_tick(B) - since_tick
+        if step == 250 and st["chargeShot"] is None and _pt_stat(B, "goodwillCharged") != g0:
+            st["chargeShot"] = B.shot("PT_A3_goodwill_charge_message_" + key, tuple(res["scene"]["rect"]))
+            st["chargeAtPlayed"] = st["played"]
+            res.setdefault("screenshots", []).append(st["chargeShot"])
+    st["done"] = st["played"] >= target
+    return st
+
+
+def theft_day(B, rows, res):
+    if not res.get("catch"):
+        V.row(rows, "PT_A3_goodwill_day", "UNMEASURED", "HARNESS", "run --theft catch first (same --out)")
+        return
+    st = _pt_play(B, res, "day", PT_DAY + PT_SLOP, res["catch"]["tick"])
+    print("day: played %d / %d, site events %s" % (st["played"], PT_DAY + PT_SLOP, st["siteEvents"]), flush=True)
+    if not st["done"]:
+        return
+    nf = res["victim"]["defName"]
+    gw0, gc0 = res["catch"]["goodwill0"], res["catch"]["goodwillCharged0"]
+    f = _pt_faction(B, nf) or {}
+    gw1, gc1 = f.get("goodwill"), _pt_stat(B, "goodwillCharged")
+    per = int(float(res["settings"].get("theftGoodwillPerDay") or 0))
+    taps = B.ap("census").get("taps") or []
+    res["day"].update({"goodwill1": gw1, "goodwillCharged1": gc1, "taps": taps})
+    dc = int(gc1 or 0) - int(gc0 or 0)
+    day_status = "UNMEASURED" if any(v is None for v in (gw0, gw1, gc0, gc1)) or per <= 0 else "PASS" if dc == -per and gw0 - gw1 == per else "FAIL"
+    V.row(rows, "PT_A3_goodwill_day", day_status,
+          "HARNESS" if day_status == "UNMEASURED" else "MOD", {"setting": "theftGoodwill", "goodwill": [gw0, gw1], "goodwillCharged": [gc0, gc1], "perDay": per, "played": st["played"],
+                  "chargeAtPlayed": st.get("chargeAtPlayed"), "chargeShot": st.get("chargeShot"), "taps": taps})
+
+
+def theft_stop(B, rows, res):
+    if not (res.get("day") or {}).get("done"):
+        V.row(rows, "PT_A3_removed_stops", "UNMEASURED", "HARNESS", "run --theft day to done first (same --out)")
+        return
+    if not res.get("stopFrom"):
+        B.call("jawa/destroy_batch", rects="%d,%d,1,1" % tuple(res["scene"]["clamp"]), categories="All")
+        res["stopFrom"] = {"goodwill": (_pt_faction(B, res["victim"]["defName"]) or {}).get("goodwill"),
+                           "goodwillCharged": _pt_stat(B, "goodwillCharged"), "tick": _pt_tick(B),
+                           "clampLeft": _pt_ids(B, "RM_PowerTapClamp", res["scene"]["rect"])}
+    st = _pt_play(B, res, "stop", PT_DAY + PT_SLOP, res["stopFrom"]["tick"])
+    print("stop: played %d / %d" % (st["played"], PT_DAY + PT_SLOP), flush=True)
+    if not st["done"]:
+        return
+    a = res["stopFrom"]
+    gw2, gc2 = (_pt_faction(B, res["victim"]["defName"]) or {}).get("goodwill"), _pt_stat(B, "goodwillCharged")
+    stop_status = theft_stopped_status(a, gw2, gc2)
+    V.row(rows, "PT_A3_removed_stops", stop_status,
+          "HARNESS" if stop_status == "UNMEASURED" else "MOD", {"goodwill": [a["goodwill"], gw2], "goodwillCharged": [a["goodwillCharged"], gc2], "clampLeft": a["clampLeft"],
+                  "played": st["played"], "stop": "clamp removed (it has no switch)"})
+
+
+UNFINISHED = "UNFINISHED"
+THEFT_PHASE_ROW = {"catch": "PT_A2_letter", "day": "PT_A3_goodwill_day", "stop": "PT_A3_removed_stops"}
+
+
+def theft_phase_gap(phase, rows):
+    """The row id a --theft phase owes and did not write, else None (review 9.4)."""
+    rid = THEFT_PHASE_ROW[phase]
+    return None if any(r.get("id") == rid for r in rows) else rid
+
+
+def m19m_status(mixed_net, connects):
+    """(status, class). The row proves a tap on a MIXED-faction net connects its own conduit; when the staged conduits did
+    not land on one net the scene never posed that question, so it is UNMEASURED SITE, not a FAIL or PASS (review 9.5)."""
+    if not mixed_net:
+        return "UNMEASURED", "SITE"
+    return ("PASS" if connects else "FAIL"), "MOD"
+
+
+def restart_theft_phase(res, phase):
+    rows = res.setdefault("rows", [])
+    if phase == "catch":
+        rows[:] = [r for r in rows if not str(r.get("id", "")).startswith(("PT_A2_", "PT_A3_"))]
+        for key in ("catch", "day", "stop", "stopFrom"):
+            res.pop(key, None)
+    else:
+        obsolete = {THEFT_PHASE_ROW[phase]}
+        if phase == "day":
+            obsolete.add(THEFT_PHASE_ROW["stop"])
+            res.pop("stop", None)
+            res.pop("stopFrom", None)
+        rows[:] = [r for r in rows if r.get("id") not in obsolete]
+    rows[:] = [r for r in rows if not str(r.get("detail", "")).startswith(UNFINISHED)]
+    return rows
+
+
+def run_theft(args):
+    global SHOTS
+    SHOTS = os.path.join(V.REPO, "Transient", "power_theft_live_" + time.strftime("%Y%m%d"))
+    B = A()
+    prior = {}
+    if args.out and os.path.exists(args.out):
+        with open(args.out, encoding="utf-8") as f:
+            prior = json.load(f)
+    res = prior or {"mod": V.MOD, "mode": "theft", "script": "validation_aerial.py", "tier": "the live list (env.running)",
+                    "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": []}
+    rows = res["rows"]
+    if args.origin and not res.get("origin"):
+        res["origin"] = [int(v) for v in args.origin.split(",")]
+    phase = args.theft
+    restart_theft_phase(res, phase)
+    {"catch": theft_catch, "day": theft_day, "stop": theft_stop}[phase](B, rows, res)
+    res.setdefault("phases", []).append({"phase": phase, "at": time.strftime("%Y-%m-%dT%H:%M:%S")})
+    gap = theft_phase_gap(phase, rows)
+    res["aborted"] = None
+    if gap:                                  # review 9.4: an unfinished phase wrote no row and the run exited 0
+        V.row(rows, gap, "UNMEASURED", "HARNESS", UNFINISHED + ": phase %r stopped before its row; rerun the same command with the same --out" % phase)
+        res["aborted"] = "theft phase %s unfinished" % phase
+    return res
+
+
+# ============================================================================ M16 / M9b
+def _aerial_set(c):
+    pos = {a["id"]: (a["x"], a["z"]) for a in c.get("anchors") or []}
+    links = sorted({tuple(sorted([pos[a["id"]], pos.get(l["other"], (-1, -1))])) + (l["state"],)
+                    for a in c.get("anchors") or [] for l in a["links"]})
+    fallen = sorted((pos[a["id"]], tuple(f["toward"]), f["cutPartner"] != -1) for a in c.get("anchors") or [] for f in a["fallen"])
+    netgroups = {}
+    for a in c.get("anchors") or []:
+        netgroups.setdefault(a["net"], []).append((a["x"], a["z"]))
+    return {"anchors": sorted(pos.values()), "links": links, "fallen": fallen,
+            "netGroups": sorted(sorted(v) for v in netgroups.values()), "taps": len(c.get("taps") or [])}
+
+
+def run_save_load(args):
+    B = A()
+    rows = []
+    res = {"mod": V.MOD, "mode": "save-load", "script": "validation_aerial.py", "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows}
+    name = args.save_load
+    B.call("rimworld/frame_cell_rect", x=SITE[0], z=SITE[1], width=SITE[2], height=SITE[3], paddingCells=1)
+    B.ticks(2)
+    ca = B.ap("census")
+    # the save must carry a CUT span and its two fallen halves too, not only UP links
+    ap_ = anchors_by_pos(ca)
+    if M2 in ap_ and M3 in ap_ and not any(l["state"] == "Cut" for a in ca.get("anchors") or [] for l in a["links"]):
+        B.ap("cut:%d,%d" % (ap_[M2]["id"], ap_[M3]["id"]))
+        B.ticks(3)
+        B.ap("poll")
+        ca = B.ap("census")
+    if not ca.get("anchors"):
+        V.row(rows, "M16_save_load_links", "FAIL", "SITE", "no anchors on the current map")
+        return res
+    before = V._saves_stat()
+    if name + ".rws" in before:
+        V.row(rows, "M16_save_load_links", "FAIL", "HARNESS", "%s.rws exists" % name)
+        return res
+    B.call("rimworld/save_game", saveName=name)
+    V._wait_saved(name)
+    after = V._saves_stat()
+    new = sorted(set(after) - set(before))
+    changed = sorted(n for n in before if n in after and after[n] != before[n])
+    ok_save = new == [name + ".rws"] and not changed
+    V.row(rows, "M16a_save_landed_new_file_only", "PASS" if ok_save else "FAIL", "HARNESS", {"new": new, "changed": changed})
+    if not ok_save:
+        res["aborted"] = "save did not land as a new file only"
+        return res
+    with open(os.path.join(V.SAVES, name + ".rws"), "rb") as f:
+        blob = f.read()
+    comp_hits = blob.count(b"RM_MapComponent_Aerial")
+    V.row(rows, "M16b_component_not_in_save", "PASS" if comp_hits == 0 else "FAIL", "MOD", {"RM_MapComponent_Aerial mentions": comp_hits})
+    B.call("rimworld/load_game", saveName=name)
+    ok, waited = V._wait_playing(B)
+    if not ok:
+        V.row(rows, "M16_save_load_links", "FAIL", "SITE", {"state": waited})
+        return res
+    B.call("rimworld/frame_cell_rect", x=SITE[0], z=SITE[1], width=SITE[2], height=SITE[3], paddingCells=1)
+    B.ticks(2)
+    time.sleep(1.0)
+    cb = B.ap("census")
+    # LEARNED live 2026-10-04: the census read right after load can be EMPTY (anchors register a little later); the
+    # first failure of this row was that race, not lost state -- poll up to 12 s and report how long it took.
+    t_poll = time.time()
+    while not cb.get("anchors") and time.time() - t_poll < 12.0:
+        B.ticks(10)
+        time.sleep(1.0)
+        cb = B.ap("census")
+    registered_after_s = round(time.time() - t_poll, 1)
+    sa, sb = _aerial_set(ca), _aerial_set(cb)
+    diff = sorted(k for k in sa if sa[k] != sb[k])
+    V.row(rows, "M16_save_load_links", "PASS" if not diff and sa["links"] and sa["fallen"] else "FAIL", "MOD",
+          {"differs": diff, "links": len(sa["links"]), "fallen": len(sa["fallen"]), "netGroups": sb["netGroups"], "loadSeconds": waited,
+           "netRepairsAfterLoad": cb.get("netRepairs"), "registeredAfterS": registered_after_s})
+    res["before"], res["after"] = sa, sb
+    res["screenshots"] = [B.shot("aerial_05_after_save_load", (AX0 - 1, AZ0 + 1, 42, 16))]
+    return res
+
+
+def run_removal_check(args):
+    """M9b: a save holding anchors, loaded on a tier WITHOUT the mod. Expected (design 2.4): vanilla's missing-def
+    errors name ONLY our defs and the game loads; nothing may name one of our C# classes."""
+    return with_journal(args, _run_removal_check)
+
+
+def _run_removal_check(args, B, tap):
+    rows = []
+    res = {"mod": V.MOD, "mode": "removal-check", "script": "validation_aerial.py", "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows}
+    rm = B.call("jawa/running_mods", details=False)
+    running = [p.lower() for p in rm.get("packageIds") or []]
+    if not running or V.PKG in running:
+        V.row(rows, "M9b_remove_mod_with_anchors", "UNMEASURED", "SITE", "mod list unreadable or the mod still running")
+        return res
+    B.call("rimworld/load_game", saveName=args.removal_check, ignoreModCompatibility=True)
+    ok, waited = V._wait_playing(B)
+    if not ok:
+        V.row(rows, "M9b_remove_mod_with_anchors", "FAIL", "MOD", {"state": waited})
+        return res
+    B.ticks(60)
+    time.sleep(1.0)
+    new, coverage = matrix_support().streamed_logs(tap, tap.base)
+    alive = V.VC.log_alive(B, "aerial removal")
+    errs = [str(e.get("Message", "")) + " " + str(e.get("StackTrace", "")) for e in new if str(e.get("Level", "")).lower() in ("error", "exception")]
+    our_defs = ("RM_AerialMast", "RM_AerialLampMast", "RM_AerialWallBracket", "RM_PowerTapClamp", "RM_AerialLines")
+    class_hits = [e[:240] for e in errs if "RimMandrake.GimmeSomeSlack" in e]
+    def_hits = [e[:200] for e in errs if any(d in e for d in our_defs)]
+    other = [e[:160] for e in errs if "RimMandrake.GimmeSomeSlack" not in e and not any(d in e for d in our_defs)]
+    complete = coverage["complete"] and alive.get("alive") is True
+    V.row(rows, "M9b_remove_mod_with_anchors", ("PASS" if not class_hits else "FAIL") if complete else "UNMEASURED", "MOD" if complete else "HARNESS",
+          {"loadSeconds": waited, "errorsNamingOurClasses": class_hits[:6], "errorsNamingOurDefs(expected)": len(def_hits),
+           "firstDefErrors": def_hits[:3], "otherErrors": other[:6], "coverage": coverage, "sentinel": alive})
+    return res
+
+
+def merge(out, paths):
+    """One 'live' result for `modcheck record`: rows of every input, each tagged with its source file. The FIRST
+    input must be a live run (it provides mod_hash and env); an UNCOVERED row is dropped when another input
+    measured that same id."""
+    parts = [json.load(open(p, encoding="utf-8")) for p in paths]
+    base = dict(parts[0])
+    assert base.get("mode") == "live", "first input must be a live run"
+    measured = {r["id"] for p in parts for r in p.get("rows") or [] if r.get("status") not in ("UNCOVERED",)}
+    rows = []
+    for p, path in zip(parts, paths):
+        if p.get("mod_hash") and base.get("mod_hash") and p["mod_hash"] != base["mod_hash"]:
+            raise SystemExit("REFUSED: %s ran at another mod hash" % path)
+        for r in p.get("rows") or []:
+            if r.get("status") == "UNCOVERED" and r["id"] in measured:
+                continue
+            rows.append(dict(r, source=os.path.basename(path)))
+    base.update(rows=rows, merged_from=[os.path.basename(p) for p in paths], script="validation.py+validation_aerial.py")
+    with open(out, "w", encoding="utf-8") as f:
+        json.dump(base, f, indent=1, default=str)
+    t = {}
+    for r in rows:
+        t[r["status"]] = t.get(r["status"], 0) + 1
+    print("merged %d rows %s -> %s" % (len(rows), t, out))
+    return 0
+
+
+def main(argv=None):
+    import argparse
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--live", action="store_true")
+    ap.add_argument("--flips", action="store_true", help="only the M20 settings-flip rows (short)")
+    ap.add_argument("--save-load", default=None, metavar="NAME")
+    ap.add_argument("--removal-check", default=None, metavar="NAME")
+    ap.add_argument("--merge", nargs="+", default=None, metavar="OUT IN")
+    ap.add_argument("--theft", choices=("catch", "day", "stop"), default=None,
+                    help="POWER_THEFT A2/A3 in phases sharing one --out (day/stop resume until done)")
+    ap.add_argument("--origin", default=None, metavar="X,Z", help="--theft catch: scene origin (default 20,20)")
+    ap.add_argument("--out", default=None)
+    a = ap.parse_args(argv)
+    if a.merge:
+        return merge(a.merge[0], a.merge[1:])
+    if a.theft:
+        res = run_theft(a)
+    elif a.save_load:
+        res = run_save_load(a)
+    elif a.removal_check:
+        res = run_removal_check(a)
+    elif a.flips:
+        res = run_flips(a)
+    elif a.live:
+        res = run_live(a)
+    else:
+        ap.print_help()
+        return 2
+    os.makedirs(os.path.join(HERE, "northstar"), exist_ok=True)
+    out = a.out or os.path.join(HERE, "northstar", "validation_aerial_%s_%s.json" % (res["mode"], time.strftime("%Y%m%dT%H%M%S")))
+    with open(out, "w", encoding="utf-8") as f:
+        json.dump(res, f, indent=1, default=str)
+    t = {}
+    for r in res["rows"]:
+        t[r["status"]] = t.get(r["status"], 0) + 1
+    print("aerial %s: %s -> %s" % (res["mode"], t, out))
+    return 0 if not res.get("aborted") and not t.get("FAIL") and not t.get("UNMEASURED") else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())
+
+~~~
+
+## src/RimMandrake/GimmeSomeSlack/restring_style_proof.py
+
+SHA256 589dc1c1a2925058936455a69ad468d0408e483a8b0c81dfbc8147ecab8082ad
+
+~~~
+"""Run aerial --live and require its fresh exact M15f MOD PASS. Retain every attempt."""
+import argparse
+import json
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
+import time
+
+ROW = "M15f_restring_joined_run_one_look"
+
+
+def check_result(path, started, finished):
+    """Unique output plus a creation-window check prevents a previous run from satisfying A1."""
+    path = Path(path)
+    if not path.is_file() or not started <= path.stat().st_mtime <= finished:
+        raise ValueError("no fresh aerial output")
+    result = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(result, dict):
+        raise ValueError("malformed aerial result")
+    if result.get("script") != "validation_aerial.py" or result.get("mode") != "live" or result.get("aborted"):
+        raise ValueError("wrong or aborted aerial driver")
+    rows = result.get("rows")
+    if not isinstance(rows, list) or not all(isinstance(r, dict) for r in rows):
+        raise ValueError("malformed rows")
+    exact = [r for r in rows if r.get("id") == ROW]
+    if len(exact) != 1 or exact[0].get("status") != "PASS" or exact[0].get("class") != "MOD":
+        raise ValueError("requires exactly one %s MOD PASS" % ROW)
+    detail = exact[0].get("detail")
+    if not isinstance(detail, dict) or type(detail.get("schema")) is not int or detail["schema"] != 1 or \
+            detail.get("jobDef") != "RM_RestringSpan":
+        raise ValueError("requires the colonist-job M15f evidence schema")
+    return exact[0]
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--out-dir", required=True)
+    parser.add_argument("--max-seconds", type=int, default=900)
+    args = parser.parse_args(argv)
+    if args.max_seconds <= 0:
+        parser.error("--max-seconds must be positive")
+    Path(args.out_dir).mkdir(parents=True, exist_ok=True)
+    attempt = Path(tempfile.mkdtemp(prefix="a1-", dir=args.out_dir)).resolve()
+    output = attempt / "aerial.json"
+    command = [sys.executable, str(Path(__file__).with_name("validation_aerial.py")), "--live", "--out", str(output)]
+    receipt = {"command": command, "started": time.time(), "timeout": args.max_seconds}
+    code = 1
+    try:
+        with (attempt / "stdout.txt").open("wb") as stdout, (attempt / "stderr.txt").open("wb") as stderr:
+            child = subprocess.run(command, stdin=subprocess.DEVNULL, stdout=stdout, stderr=stderr,
+                                   timeout=args.max_seconds, check=False)
+        receipt["driverReturncode"] = child.returncode
+        receipt["finished"] = time.time()
+        row = check_result(output, receipt["started"], receipt["finished"])
+        receipt["row"] = row
+        if child.returncode != 0:
+            raise ValueError("aerial driver returned %s" % child.returncode)
+        code = 0
+    except (OSError, ValueError, subprocess.TimeoutExpired) as ex:
+        receipt["error"] = "%s: %s" % (type(ex).__name__, ex)
+    receipt["finished"] = time.time()
+    receipt["returncode"] = code
+    (attempt / "receipt.json").write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
+    print(json.dumps({"attempt": str(attempt), **receipt}, indent=2))
+    return code
+
+
+if __name__ == "__main__":
+    sys.exit(main())
+
+~~~
+
+## src/RimMandrake/GimmeSomeSlack/selftest_gss_restring_proof.py
+
+SHA256 e670807e56c29a815bbf6439e09a7b527716ed3662fd4c9f433a33fa27e52d3e
+
+~~~
+"""Offline instrument tests of the production M15f path. No live acceptance."""
+import ast
+import contextlib
+import os
+import copy
+import json
+import pathlib
+import subprocess
+import tempfile
+import time
+from unittest import mock
+import sys
+import unittest
+
+HERE = pathlib.Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))
+import validation_aerial as A
+
+
+class Bridge:
+    def __init__(self, fault=None):
+        self.fault = fault
+        self.sent = []
+        self.cut = False
+        self.complete = False
+        self.ordered = False
+        self.job = False
+        self.steps = 0
+        self.complete_after = 1
+        self.counter_base = 0
+        self.overrides = {}
+        self.looks = ["Scrapper", "Scrapper"]
+        self.pawns = [{"id": 7, "pos": [80, 180], "drafted": True, "downed": False, "job": None}]
+
+    def ap(self, cmd):
+        self.sent.append(cmd)
+        if cmd in self.overrides:
+            return copy.deepcopy(self.overrides[cmd])
+        ok = {"success": True, "cmd": cmd}
+        if cmd.startswith("cut:"):
+            self.cut = self.fault != "no_cut"
+            return dict(ok, done=self.cut)
+        if cmd.startswith("crestyle:"):
+            cell, look = cmd[9:].split(":")
+            idx = 0 if cell == "%d,%d" % A.M2 else 1
+            self.looks[idx] = look.split("_")[0]
+            if self.fault == "same_before" and not self.complete:
+                self.looks = ["Industrial", "Industrial"]
+            return ok
+        if cmd == "cprocess":
+            return ok
+        if cmd == "cstyles":
+            looks = list(self.looks)
+            if self.complete:
+                looks = ["Modern", "Industrial"] if self.fault == "unequal_after" else ["Industrial", "Industrial"]
+            if self.fault == "none_after" and self.complete:
+                looks[1] = None
+            if self.fault in ("missing_style", "none_style", "empty_style"):
+                looks[1] = {"none_style": None, "empty_style": ""}.get(self.fault)
+            result = dict(ok, defaultKey="Scrapper", members=[
+                {"id": i, "x": p[0], "z": p[1], "look": looks[n],
+                 "rawStyle": "Style_" + str(looks[n]), "colour": None,
+                 "run": 2 if self.complete else i}
+                for n, (i, p) in enumerate(((2, A.M2), (3, A.M3)))])
+            if self.complete and self.fault == "colour_after":
+                result["members"][1]["colour"] = "Orange"
+            if self.complete and self.fault == "runs_after":
+                result["members"][1]["run"] = 3
+            if self.fault == "runs_before" and not self.complete:
+                result["members"][1]["run"] = 2
+            if self.fault == "raw_style_missing":
+                result["members"][1]["rawStyle"] = None
+            return result
+        if cmd == "census":
+            joined = self.complete or not self.cut
+            nets = [11, 11] if joined else [11, 22]
+            if self.fault == "no_disconnect":
+                nets = [11, 11]
+            if self.complete and self.fault == "unjoined_after":
+                nets = [11, 22]
+            return dict(ok, anchors=[
+                {"id": i, "x": p[0], "z": p[1], "net": nets[n],
+                 "links": [{"other": other, "state": "Up" if joined else "Cut"}]}
+                for n, (i, other, p) in enumerate(((2, 3, A.M2), (3, 2, A.M3)))])
+        if cmd.startswith("restringorder:"):
+            self.ordered = True
+        if cmd.startswith("restringjob:"):
+            if self.fault == "job_failure":
+                return {"success": False, "error": "no free colonist"}
+            if self.fault == "direct_bypass":
+                self.complete = True
+            self.job = True
+            self.pawns[0]["job"] = None if self.fault == "not_running" else "RM_RestringSpan"
+            return dict(self.state(cmd), by="Human999" if self.fault == "wrong_worker" else "Human7")
+        if cmd.startswith("restringstate:") or cmd.startswith("restringorder:"):
+            return self.state(cmd)
+        if cmd.startswith("restring:"):
+            self.complete = True
+            return dict(ok, done=True)
+        raise AssertionError(cmd)
+
+    def state(self, cmd):
+        completed = self.complete and self.fault != "no_completion"
+        return {"success": True, "cmd": cmd, "cut": 0 if self.complete else 1,
+                "designated": self.ordered and not self.complete,
+                "jobsDone": self.counter_base + int(completed), "spansRestrung": self.counter_base + int(completed)}
+
+    def probe(self, cmd):
+        self.sent.append(cmd)
+        if cmd == "colonists":
+            return {"success": True, "cmd": cmd, "pawns": copy.deepcopy(self.pawns)}
+        _, rest = cmd.split(":", 1)
+        _, action = rest.split("=")
+        if action.startswith("tp"):
+            self.pawns[0]["pos"] = [80, 180]
+            self.pawns[0]["job"] = None
+        else:
+            self.pawns[0]["drafted"] = action == "draft"
+        return {"success": True, "cmd": cmd, "pawn": dict(self.pawns[0])}
+
+    def ticks(self, n):
+        self.sent.append(("ticks", n))
+        if self.job and n == 250:
+            self.steps += 1
+            if self.fault != "timeout" and self.steps >= self.complete_after:
+                self.complete = True
+                self.pawns[0]["job"] = None
+                self.pawns[0]["pos"] = [110, 185]
+
+
+    def call(self, tool, **kwargs):
+        self.sent.append((tool, kwargs))
+        if tool != "jawa/pawn_get":
+            raise AssertionError(tool)
+        return {"success": True, "pawns": [{"thingId": kwargs["pawn"], "thingIdNumber":
+                                           999 if self.fault == "wrong_worker" else 7}]}
+
+
+def run_row(bridge):
+    rows = []
+    A.restring_style_job(bridge, rows, 2, 3)
+    if len(rows) != 1:
+        raise AssertionError(rows)
+    print(json.dumps({"fault": bridge.fault, "row": rows[0], "calls": bridge.sent}, default=str))
+    return rows[0]
+
+
+class RestringProof(unittest.TestCase):
+    def test_live_flow_calls_helper(self):
+        tree = ast.parse(pathlib.Path(A.__file__).read_text())
+        live, = [n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == "_run_live"]
+        calls = [n for n in ast.walk(live) if isinstance(n, ast.Call) and
+                 isinstance(n.func, ast.Name) and n.func.id == "restring_style_job"]
+        self.assertEqual(len(calls), 1)
+        self.assertEqual([n.id for n in calls[0].args], ["B", "rows", "i2", "i3"])
+
+    def test_actual_job_path(self):
+        b = Bridge()
+        row = run_row(b)
+        self.assertEqual(row["status"], "PASS", row)
+        self.assertFalse(any(isinstance(c, str) and c.startswith("restring:") for c in b.sent), b.sent)
+        self.assertIn("restringjob:2", b.sent)
+
+
+    def test_rejects_false_pass_scenarios(self):
+        for fault in ("job_failure", "direct_bypass", "no_cut", "no_disconnect", "same_before",
+                      "missing_style", "none_style", "empty_style", "no_completion",
+                      "not_running", "wrong_worker", "colour_after", "runs_after", "runs_before", "raw_style_missing", "unequal_after", "unjoined_after", "none_after", "timeout"):
+            with self.subTest(fault=fault):
+                b = Bridge(fault)
+                row = run_row(b)
+                self.assertNotEqual(row["status"], "PASS", row)
+                self.assertLessEqual(b.steps, 12)
+                self.assertEqual(b.pawns[0]["pos"], [80, 180])
+                self.assertIs(b.pawns[0]["drafted"], True)
+                self.assertFalse(any(isinstance(c, str) and c.startswith("restring:") for c in b.sent))
+
+    def test_counter_deltas_with_existing_jobs(self):
+        b = Bridge()
+        b.counter_base = 5
+        self.assertEqual(run_row(b)["status"], "PASS")
+        b = Bridge("no_completion")
+        b.counter_base = 5
+        self.assertNotEqual(run_row(b)["status"], "PASS")
+
+    def test_mismatched_reply_echo(self):
+        b = Bridge()
+        b.overrides["cut:2,3"] = {"success": True, "done": True, "cmd": "restring:2,3"}
+        self.assertNotEqual(run_row(b)["status"], "PASS")
+
+    def test_bounded_completion(self):
+        for complete_after, passes in ((12, True), (13, False)):
+            with self.subTest(complete_after=complete_after):
+                b = Bridge()
+                b.complete_after = complete_after
+                self.assertEqual(run_row(b)["status"] == "PASS", passes)
+                self.assertEqual(b.steps, 12)
+
+    def test_bad_readings(self):
+        invalid = [
+            ("cut:2,3", None),
+            ("restringorder:2", {"success": False, "error": "order failed"}),
+            ("restringorder:2", {"success": True, "cut": 1, "jobsDone": 0,
+                                 "spansRestrung": 0, "designated": False}), ("cut:2,3", {"success": True, "done": 1}),
+            ("census", {"success": True, "anchors": [None]}),
+            ("census", {"success": True, "anchors": []}),
+            ("cstyles", {"success": True, "members": None}),
+            ("cstyles", {"success": True, "defaultKey": "Scrapper", "members": [None]}),
+            ("restringorder:2", {"success": True, "cut": True, "jobsDone": 0,
+                                 "spansRestrung": 0, "designated": True}),
+            ("restringjob:2", {"success": True, "cut": 1, "jobsDone": "0",
+                               "spansRestrung": 0, "designated": True, "by": "Human7"}),
+            ("restringstate:2", {"success": True, "cut": 0, "jobsDone": None,
+                                 "spansRestrung": 1, "designated": False}),
+        ]
+        for cmd, value in invalid:
+            with self.subTest(cmd=cmd, value=value):
+                b = Bridge()
+                b.overrides[cmd] = dict(value, cmd=cmd) if isinstance(value, dict) else value
+                self.assertNotEqual(run_row(b)["status"], "PASS")
+
+    def test_no_colonist_and_missing_anchor(self):
+        b = Bridge()
+        b.pawns = []
+        self.assertNotEqual(run_row(b)["status"], "PASS")
+        rows = []
+        A.restring_style_job(Bridge(), rows, None, 3)
+        self.assertNotEqual(rows[0]["status"], "PASS")
+
+    def test_park_attempts_all_pawns_after_transport_exception(self):
+        b = Bridge()
+        home = copy.deepcopy(b.pawns) + [{"id": 8, "pos": [81, 180]}]
+        sent = []
+        def probe(cmd):
+            sent.append(cmd)
+            raise RuntimeError("transport down")
+        with mock.patch.object(b, "probe", side_effect=probe):
+            with self.assertRaises(RuntimeError):
+                A.park_restring_colonists(b, home)
+        self.assertIn("pawn:8=tp:81,180", sent)
+
+    def test_exact_pair_evidence(self):
+        for key, bad in (("net", -1), ("net", None), ("net", True), ("links", []),
+                         ("links", [{"other": 2, "state": "Up"}])):
+            b = Bridge()
+            original = b.ap("census")
+            original["anchors"][1][key] = bad
+            b.overrides["census"] = original
+            with self.subTest(key=key, bad=bad):
+                self.assertNotEqual(run_row(b)["status"], "PASS")
+        b = Bridge()
+        original = b.ap("cstyles")
+        original["members"].append(original["members"][0])
+        b.overrides["cstyles"] = original
+        self.assertNotEqual(run_row(b)["status"], "PASS")
+
+    def test_style_restore_and_pawn_return_precede_next_cut(self):
+        b = Bridge()
+        row = run_row(b)
+        self.assertEqual(row["class"], "MOD")
+        self.assertEqual(b.pawns[0]["pos"], [80, 180])
+        self.assertIs(b.pawns[0]["drafted"], True)
+        self.assertEqual(b.looks, ["Scrapper", "Scrapper"])
+        self.assertIn("crestyle:104,185:Scrapper", b.sent)
+        self.assertIn("crestyle:116,185:Scrapper", b.sent)
+
+    def test_cleanup_failure_stops_flow(self):
+        b = Bridge()
+        def failed_park(*args):
+            raise RuntimeError("return transport failed")
+        rows = []
+        with mock.patch.object(A, "park_restring_colonists", side_effect=failed_park):
+            with self.assertRaisesRegex(RuntimeError, "cleanup failed"):
+                A.restring_style_job(b, rows, 2, 3)
+        self.assertEqual(rows[0]["status"], "FAIL")
+        self.assertIn("return transport failed", str(rows[0]))
+
+
+class FreshCommand(unittest.TestCase):
+    def result(self, **changes):
+        import restring_style_proof as P
+        return {"script": "validation_aerial.py", "mode": "live",
+                "rows": [{"id": P.ROW, "status": "PASS", "class": "MOD",
+                          "detail": {"schema": 1, "jobDef": "RM_RestringSpan"}}], **changes}
+
+    def test_exact_fresh_result(self):
+        import restring_style_proof as P
+        with tempfile.TemporaryDirectory() as directory:
+            path = pathlib.Path(directory) / "aerial.json"
+            path.write_text(json.dumps(self.result()))
+            stamp = path.stat().st_mtime
+            self.assertEqual(P.check_result(path, stamp - 1, stamp + 1)["status"], "PASS")
+            for start, end in ((stamp + 1, stamp + 2), (stamp - 2, stamp - 1)):
+                with self.assertRaises(ValueError):
+                    P.check_result(path, start, end)
+
+    def test_absent_wrong_stale_malformed_rows(self):
+        import restring_style_proof as P
+        variants = [None, [], {}, self.result(rows=[{"id": P.ROW, "status": "PASS", "class": "MOD"}]), self.result(rows=[]), self.result(mode="save-load"),
+                    self.result(script="validation.py"), self.result(aborted="probe dead"),
+                    self.result(rows=[None]), self.result(rows="PASS"),
+                    self.result(rows=[{"id": P.ROW + "_extra", "status": "PASS", "class": "MOD"}]),
+                    self.result(rows=self.result()["rows"] * 2)]
+        for field, values in (("status", ("FAIL", "UNMEASURED", None, True)),
+                              ("class", ("HARNESS", "SITE", None))):
+            for value in values:
+                r = self.result()
+                r["rows"][0][field] = value
+                variants.append(r)
+        with tempfile.TemporaryDirectory() as directory:
+            path = pathlib.Path(directory) / "aerial.json"
+            with self.assertRaises(ValueError):
+                P.check_result(path, 0, time.time())
+            for value in variants:
+                with self.subTest(value=value):
+                    path.write_text(json.dumps(value))
+                    stamp = path.stat().st_mtime
+                    with self.assertRaises(ValueError):
+                        P.check_result(path, stamp - 1, stamp + 1)
+            path.write_text("{bad JSON")
+            with self.assertRaises(ValueError):
+                P.check_result(path, 0, time.time())
+
+    def test_command_launch_and_raw_retention(self):
+        import restring_style_proof as P
+        for fault in (None, "driver_fail", "no_file", "row_fail", "timeout", "malformed"):
+            with self.subTest(fault=fault), tempfile.TemporaryDirectory() as directory:
+                def driver(command, **kwargs):
+                    self.assertEqual(command[1], str(HERE / "validation_aerial.py"))
+                    self.assertEqual(command[2:4], ["--live", "--out"])
+                    self.assertEqual(kwargs["timeout"], 900)
+                    kwargs["stdout"].write(b"full driver raw stdout\n")
+                    kwargs["stderr"].write(b"full driver raw stderr\n")
+                    if fault == "timeout":
+                        raise subprocess.TimeoutExpired(command, 900)
+                    result = self.result()
+                    if fault == "row_fail":
+                        result["rows"][0]["status"] = "FAIL"
+                    if fault != "no_file":
+                        pathlib.Path(command[4]).write_text("[]" if fault == "malformed" else json.dumps(result))
+                    return subprocess.CompletedProcess(command, 2 if fault == "driver_fail" else 0)
+                with mock.patch.object(P.subprocess, "run", side_effect=driver):
+                    code = P.main(["--out-dir", directory])
+                self.assertEqual(code == 0, fault is None)
+                attempt = next(pathlib.Path(directory).iterdir())
+                self.assertEqual((attempt / "stdout.txt").read_bytes(), b"full driver raw stdout\n")
+                self.assertEqual((attempt / "stderr.txt").read_bytes(), b"full driver raw stderr\n")
+                self.assertEqual(json.loads((attempt / "receipt.json").read_text())["returncode"], code)
+
+    def test_registered_A1_runs_wrapper(self):
+        proof = HERE.parents[2] / "infrastructure/state/live_proofs/GSS_RESTRING_FIX_STYLES_UNRECONCILED.txt"
+        line, = [l for l in proof.read_text().splitlines() if l.startswith("live-proof A1:")]
+        self.assertIn("python.exe src/RimMandrake/GimmeSomeSlack/restring_style_proof.py", line)
+        self.assertIn("--max-seconds 900", line)
+
+
+if __name__ == "__main__":
+    log_path = os.environ.get("GSS_RESTRING_TEST_RAW")
+    if log_path:
+        with open(log_path, "w", encoding="utf-8") as raw:
+            with contextlib.redirect_stdout(raw), contextlib.redirect_stderr(raw):
+                suite = unittest.defaultTestLoader.loadTestsFromModule(sys.modules[__name__])
+                result = unittest.TextTestRunner(stream=raw, verbosity=2).run(suite)
+        print(pathlib.Path(log_path).read_text())
+        sys.exit(0 if result.wasSuccessful() else 1)
+    unittest.main(verbosity=2)
+
+
+~~~
+
+## infrastructure/state/live_proofs/GSS_RESTRING_FIX_STYLES_UNRECONCILED.txt
+
+SHA256 172ed7f55a92f63ea8b979399d8330af138d8258bd345b67cc76a9900799d9be
+
+~~~
+# A2: M15e_restring_is_a_colonist_job is the MOD row for the RM_RestringSpan job (order alone leaves the span cut; the colonist's job restores and rejoins).
+# A1: M15f_restring_joined_run_one_look measures differing styles on disconnected sides, then the actual colonist job and joined nonempty equal styles.
+# A1 runs validation_aerial.py --live in a unique retained attempt directory and requires a fresh exact MOD PASS row and successful driver exit. All JSON, stdout, stderr and timeout/failure receipts are retained. "--max-seconds 900" is read by proof_budget.
+# Offline fake-bridge checks are instrument tests. Separate L2 gameplay acceptance remains open.
+live-mods: GimmeSomeSlack
+live-proof A1: python.exe src/RimMandrake/GimmeSomeSlack/restring_style_proof.py --out-dir D:/ClaudeWork/rimmandrake/scratch/gss_restring/a1 --max-seconds 900 < /dev/null
+live-proof A2: mkdir -p /mnt/d/ClaudeWork/rimmandrake/scratch/gss_restring; rm -f /mnt/d/ClaudeWork/rimmandrake/scratch/gss_restring/aerial.json; python.exe src/RimMandrake/GimmeSomeSlack/validation_aerial.py --live --out D:/ClaudeWork/rimmandrake/scratch/gss_restring/aerial.json < /dev/null; python3 -c "import json,sys,os,time; p='/mnt/d/ClaudeWork/rimmandrake/scratch/gss_restring/aerial.json'; ok=os.path.exists(p) and time.time()-os.path.getmtime(p)<1800; r=[x for x in (json.load(open(p))['rows'] if ok else []) if x.get('id')=='M15e_restring_is_a_colonist_job']; print(r[0] if r else 'M15e row missing'); sys.exit(0 if r and r[0].get('status')=='PASS' else 1)" --max-seconds 900
+
+~~~

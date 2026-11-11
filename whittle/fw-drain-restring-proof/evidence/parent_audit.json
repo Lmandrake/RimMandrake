@@ -1,0 +1,21 @@
+{
+  "time": 1794422516.1586633,
+  "tested_hashes_match": {
+    "src/RimMandrake/GimmeSomeSlack/validation_aerial.py": true,
+    "src/RimMandrake/GimmeSomeSlack/restring_style_proof.py": true,
+    "src/RimMandrake/GimmeSomeSlack/selftest_gss_restring_proof.py": true,
+    "infrastructure/state/live_proofs/GSS_RESTRING_FIX_STYLES_UNRECONCILED.txt": true
+  },
+  "judge_verbatim_result_with_provenance_prefix": true,
+  "initial_parent_audit_assertion": "Whole-file equality refused a provenance prefix; exact raw result occurs once as unchanged final suffix. No verdict/source/evidence altered.",
+  "done_problems": [],
+  "full_validator": 0,
+  "tracked_changes": [
+    "infrastructure/state/ledger/events/CODEX_ARCHMAGI_FWDRAIN.jsonl",
+    "infrastructure/state/live_proofs/GSS_RESTRING_FIX_STYLES_UNRECONCILED.txt",
+    "src/RimMandrake/GimmeSomeSlack/validation_aerial.py"
+  ],
+  "shipping_source_art_changed": [],
+  "live_gameplay": "UNVERIFIED; separate L2 item remains open",
+  "raw_final_suite_summary": ") ran\nknown results: 0/2 answered from the ledger (selftests.cache_hit_share 0.000), 0s not spent; 2 ran, 0 recorded, 0 checked against a stored PASS, 0 known red\n  ran (2): no record\n  not recordable (1): external: src/RimMandrake/GimmeSomeSlack/selftest_gss_proof_drivers.py\n  not recordable (1): clock: src/RimMandrake/GimmeSomeSlack/selftest_gss_restring_proof.py\nPASS          0.2s  src/RimMandrake/GimmeSomeSlack/selftest_gss_proof_drivers.py\nPASS          0.2s  src/RimMandrake/GimmeSomeSlack/selftest_gss_restring_proof.py\n\nPASS 2/2  FAIL 0/2  UNMEASURED 0/2  CRASH 0/2  SKIPPED 0/2  (wall 0.6s) \u2014 contained in rm-harness.slice (max 24G), 1 workers\nRESULT: GREEN (green = FAIL 0 and CRASH 0)\n"
+}

@@ -1,0 +1,14 @@
+{
+  "time": 1794422224.4444,
+  "WHITTLE_DIR": "whittle/fw-drain-restring-proof",
+  "need_judge": true,
+  "need_broaden": true,
+  "last_change": 1794422139.0423598,
+  "done_problems": [
+    "No judge's verdict newer than DONE.md and the evidence. Spawn a fresh subagent (not a fork) with whittle/fw-drain-restring-proof/JUDGE_PROMPT.md as its whole brief. It writes whittle/fw-drain-restring-proof/JUDGE.md."
+  ],
+  "full_validator": "MandrakeWorkflows/whittle/run.py validate(root)",
+  "full_validator_returncode": 1,
+  "stdout": "",
+  "stderr": "Whittle: not done yet.\n- No judge's verdict newer than DONE.md and the evidence. Spawn a fresh subagent (not a fork) with whittle/fw-drain-restring-proof/JUDGE_PROMPT.md as its whole brief. It writes whittle/fw-drain-restring-proof/JUDGE.md.\nIf you truly can't go on, or need the owner, write whittle/fw-drain-restring-proof/BLOCKED.md saying why, then stop.\n"
+}
