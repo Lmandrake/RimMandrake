@@ -1,10 +1,10 @@
 ## spec
 found-by: GPT review, verified (BENCH, 2026-10-23, FlowWorks + GSS high-depth review; gpt_consult default model, high effort).
 Report: `Transient/flowworks_takeover_20261023/GPT_REVIEW.md` (finding ids FB_hose_gss_1.8). Raw GPT reply: `D:\ClaudeWork\rimmandrake\scratch\gpt_fw_review\raw\<part>.md`.
-Severity: MINOR. Not fixed: this item only records the defect.
+Severity: MINOR. Current source contains cache invalidation for carried, unlaid and retracting hoses. Independent verification and closure remain owed.
 
 ### verification (FB_hose_gss_1.8)
-Verdict: CONFIRMED MINOR. Carried hose skips EnsureLay (RM_MapComponent_Hoses.cs:764) but its Cached mesh stays in meshes (dropped only on Deregister/new lay, 120,528); crossing-shadow loop (950) still reads its old rp
+Current source inspection (2026-11-11): production DrawAll drops cached meshes before drawing a carried trail, on a null lay and before drawing a retracting hose. These changes postdate the original finding below. Verify DropMeshes also invalidates the crossing index and existing regression coverage before deciding closure; rendered live behavior is not newly claimed.
 
 ### GPT finding (verbatim)
 ### FB_hose_gss_1.8 — Cached former hose routes continue casting crossing shadows
