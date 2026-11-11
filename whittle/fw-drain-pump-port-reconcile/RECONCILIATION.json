@@ -1,0 +1,15 @@
+{
+  "time": "2026-11-11T11:40:14.069288+00:00",
+  "item": "PUMP_PORT_FIX_ASSUMES_ONE_CELL",
+  "duplicate_of": "HOSE_END_FIX_CELL_SHORT_OF_PORT",
+  "accepted_build_sha": "26ebff247e37e2eb882cefbb0fd5c81ef783d9c6",
+  "source_identical_to_accepted_build": {
+    "src/RimMandrake/FlowWorks/Source/Hose/HosePorts.cs": "bb8a6a3d4adf1545cb7539dc6db13b389934ed3d9a94b6116f386c97466c1a3c",
+    "src/RimMandrake/FlowWorks/Source/Machinery/RM_PumpPortMath.cs": "9a79ead9966ccc6f1367213df5e03e4de394232f38e7af3f2c93cd7378e775d2"
+  },
+  "current_selftest_evidence": "whittle/fw-drain-hose-fuzz/evidence/csharp_stdout.txt",
+  "current_case_result": "ok    PumpPorts_station_footprint_ports",
+  "historical_live_acceptance": "Ledger verify A1 L2 pass at 26ebff247e37 on 2026-11-06T21:53:44Z; successor state done, owes nothing. No fresh live run or raw historical-log audit claimed.",
+  "decision": "Supersede duplicate: source and test explicitly name both items, current two implementation files byte-identical to accepted successor, original defect no longer exists as separately owed work.",
+  "workflow": "Direct terminal duplicate reconciliation under user instruction; no new builder/Whittle trial or code change. Completed Codex Whittle proof from this round supplies the unchanged current offline case result."
+}

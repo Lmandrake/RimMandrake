@@ -1,0 +1,56 @@
+PUMP_PORT_FIX_ASSUMES_ONE_CELL   proposed  row -  needs offline  target v1
+[MAJOR] Pump port arbitration assumes every pumping station occupies one cell
+owner BENCH   kind task   filed 2026-10-24T04:21:02Z
+
+--- items/PUMP_PORT_FIX_ASSUMES_ONE_CELL.md ---
+## spec
+found-by: GPT review, verified (BENCH, 2026-10-23, FlowWorks + GSS high-depth review; gpt_consult default model, high effort).
+Report: `Transient/flowworks_takeover_20261023/GPT_REVIEW.md` (finding ids FB_hose_gss_1.2). Raw GPT reply: `D:\ClaudeWork\rimmandrake\scratch\gpt_fw_review\raw\<part>.md`.
+Severity: MAJOR. Not fixed: this item only records the defect.
+
+### verification (FB_hose_gss_1.2)
+Verdict: CONFIRMED MAJOR. EndSideOn/ReelSideOn measure from pump.Position as if 1x1 (HosePorts.cs:146-160) but RM_PumpingStation* are 3x2 Building_LiquidPump (RM_PumpingStation.xml:36-40) -> most edge cells refused
+
+### GPT finding (verbatim)
+### FB_hose_gss_1.2 — Pump port arbitration assumes every pumping station occupies one cell
+- severity: MAJOR
+- where: src/RimMandrake/FlowWorks/Source/Hose/HosePorts.cs:145–170 (`ReelSideOn`, `EndSideOn`, `PumpSideTakes`)
+- evidence:
+  ```csharp
+  IntVec3 n = pump.Position + new Rot4(s).FacingCell;
+  return RimMandrake.FlowWorks.Machinery.RM_PumpPortMath.SideOf(end.x - pump.Position.x, end.z - pump.Position.z);
+  if (map == null || side < 0) return false;
+  ```
+- failure scenario: Put a hose end against the east edge of a 3×2 kludged or repaired pumping station. The end is two cells east of `pump.Position`, so `SideOf` returns `-1`; the visible edge connection is refused. Reel-body connections suffer the same origin-based assumption. Targeting the station can consequently select a distant surviving approach or report no available port despite clear sides. Confirmed the 3×2 `Building_LiquidPump` definition in `Defs/Machinery/RM_PumpingStation.xml:38–43` and unit-offset-only `RM_PumpPortMath.SideOf` outside this part; both opened.
+- confidence: high
+
+--- history (4 events) ---
+  2026-10-24T04:21:02Z  BENCH  file      for=BENCH kind=task spec=infrastructure/state/items/PUMP_PORT_FIX_ASSUMES_ONE_CELL.md target=v1 title=[MAJOR] Pump port arbitration assumes every pumping station occupies one cell tsn=1792815662962942545  | agent's reason: found by GPT review, verified
+  2026-10-29T01:31:59Z  OWNER  reassign  override=only BENCH or DECIDE may `reassign` (seat is OWNER)
+
+✅ If the OWNER told you to do this, that is not a refusal — quote him and it lands,
+   with his words recorded on the event as the authorization:
+    python3 src/RimMandrake/rimflow/cli.py reassign PUMP_PORT_FIX_ASSUMES_ONE_CELL … --owner-said "<his words, verbatim>"
+
+⚠️  Pass what he ACTUALLY said. Bare assent ("yes", "ok", "go ahead") is refused on
+    purpose — that is him agreeing to something YOU said, and the ledger would record
+    your words as his. A short instruction is fine.
+
+⛔ If he did NOT tell you to, the rule stands. Route it to BENCH or DECIDE instead. reason=v3 cutover: BENCH lane -> FOUNDRY to=FOUNDRY tsn=1793237519647608117  | owner said “Once we switch over to Conductor + ispatch + Foundry, all bench items get reassigned to Dispatch-> Foundry”
+  2026-11-03T05:06:16Z  OWNER  reassign  override=only BENCH or DECIDE may `reassign` (seat is OWNER)
+
+✅ If the OWNER told you to do this, that is not a refusal — quote him and it lands,
+   with his words recorded on the event as the authorization:
+    python3 src/RimMandrake/rimflow/cli.py reassign PUMP_PORT_FIX_ASSUMES_ONE_CELL … --owner-said "<his words, verbatim>"
+
+⚠️  Pass what he ACTUALLY said. Bare assent ("yes", "ok", "go ahead") is refused on
+    purpose — that is him agreeing to something YOU said, and the ledger would record
+    your words as his. A short instruction is fine.
+
+✅ If the CONDUCTOR told you to, it carries his authority: same command with
+    --per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM --why "<the Conductor's text>"
+
+⛔ If neither did, the rule stands. Route it to BENCH or DECIDE instead. ranBy=BENCH reason=FOUNDRY retired 2026-11-02: re-homed to BENCH (bucket relentless) to=BENCH tsn=1793682376879926281  | decided by card: What should happen to FOUNDRY? → Retire it (Recommended)
+  2026-11-05T18:10:40Z  BENCH  note      role_unit=rm-relentless-work-053d00b4b5-g1 text=Fixed in bbce4efeab56 by HOSE_END_FIX_CELL_SHORT_OF_PORT: RM_PumpPortMath.PortCell/SideOfPort, HosePorts End/ReelSideOn and ProofPumpPorts read sides off the footprint; selftest_pump_station_ports.py + PumpChecks PumpPorts_station_footprint_ports. Live A1 is on HOSE_END_FIX_CELL_SHORT_OF_PORT. tsn=1793902240653653290  | agent's reason: same defect, fixed by the S5 hose-end item
+--- causal chain ---
+  (none — this item stands on its own)
