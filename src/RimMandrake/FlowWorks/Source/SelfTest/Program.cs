@@ -2167,6 +2167,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             HoseTickAllocChecks.Run(Case);     // HOSES_MAP1_DIAGNOSE_TICK_STALLS c2 + WALLREACH_BUILD_DIAGNOSE_RAIN_TAIL (HoseTickAllocChecks.cs)
             HoseWorldPatchChecks.Run(Case);    // HOSE_TICK_REBUILD_ZERO_ALLOC (HoseWorldPatchChecks.cs)
             PumpChecks.Run(Case);              // liquid networks L6: the pump as world mover (PumpChecks.cs)
+            PumpHarness.PumpOutflowChecks.Run(Case); // complete production draw/cycle methods against explicit engine doubles
             DeepDigChecks.Run(Case);           // PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT + DIG_COST_TUNE_DEEP_IS_A_MEGAPROJECT (DeepDigChecks.cs)
             RelativeRulesChecks.Run(Case);     // PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: R7 relative rules V2-V6 (RelativeRulesChecks.cs)
             FallRailChecks.Run(Case);          // FALL_GUARDRAILS_BUILD_REAL_OBJECT: rails and fences stop falls off a lip (FallRailChecks.cs)

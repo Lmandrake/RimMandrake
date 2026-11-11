@@ -289,6 +289,15 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 			return null;
 		}
 
+		/// <summary>Outflows require a whole notch with exact levels off. This eligibility applies only to
+		/// outflows: a short channel remains eligible for the existing partial tank fallback.</summary>
+		private int OutflowGive(RM_MapComponent_Excavation ex, Source source)
+		{
+			int units = RM_PumpMath.TankUnitsPerLevel;
+			long available = source.channel ? ex.WaterDlAt(source.cell) : ex.Stock.SupplyDl(Map, source.cell, units, ex);
+			return RM_PumpMath.SourceTakeUnits(units, available, RM_MapComponent_Excavation.LevelExact);
+		}
+
 		private string TryDraw()
 		{
 			RM_MapComponent_Excavation ex = RM_SuperdeepTrap.EngineOf(Map);
@@ -310,7 +319,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 			for (int attempt = 0; attempt < sources.Count + outflows.Count + 1; attempt++)
 			{
 				if (!RM_LiquidNetKernel.PumpNext(sources.Count, i => !deadSources.Contains(Map.cellIndices.CellToIndex(sources[i].cell)), outflows.Count,
-					(o, i) => Outlet(ex, outflows[o], null, sources[i].fluid, out _) != RM_OutletKind.Blocked, usedOutflows,
+					(o, i) => OutflowGive(ex, sources[i]) > 0 && Outlet(ex, outflows[o], null, sources[i].fluid, out _) != RM_OutletKind.Blocked, usedOutflows,
 					i => TankTake(ex, sources[i], LiquidFor(sources[i].fluid)) > 0, cycle,
 					out int si, out int oi))
 				{
@@ -334,12 +343,12 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 					// holds and what the outlet takes. A canal holding a sheet has no whole notch in any one square, so the old
 					// whole-level move stopped after the first level (live S3/S5.G, 1,000 L); it now runs until the canal is
 					// brim-full or the source is dry. Whole-notch water (exact-level off) still moves whole levels only.
-					long avail = s.channel ? ex.WaterDlAt(cell) : ex.Stock.SupplyDl(Map, cell, units, ex);
+					long avail = OutflowGive(ex, s);
 					long room = fillHoses ? units : RM_LiquidSpill.OutletRoomDl(ex, kind, dest, f, units);
 					int amt = (int)System.Math.Min(units, System.Math.Min(avail, room));
 					if (amt <= 0 || (!RM_MapComponent_Excavation.LevelExact && amt < units))
 					{
-						usedOutflows.Add(oi);   // nothing to move through this end this cycle (a dry source, a full canal)
+						usedOutflows.Add(oi);   // source is eligible; this end has too little room this cycle
 						continue;
 					}
 					RM_TransferLeg into = fillHoses ? RM_TransferLeg.Sink(k => RM_LiquidNet.FillRoutes(this, new object[] { s.port, port }, l, k))
@@ -405,6 +414,64 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 				deadSources.Add(Map.cellIndices.CellToIndex(s.cell));
 			}
 			return "RMFlow_PumpNothingToDraw".Translate();
+		}
+
+		/// <summary>Paused mechanism proof through jawa/static_call. "x,z;read|step": report the actual ordered
+		/// candidates, or execute one draw level through TryDraw while respecting Running. Step bypasses only
+		/// hash scheduling; it restores the caller's cycle/retirement state even on failure. Liquid/counters commit normally.</summary>
+		public static string ProofDrawCycle(string arg)
+		{
+			string[] parts = (arg ?? "").Split(';');
+			string[] pos = parts[0].Split(',');
+			Map map = Find.CurrentMap;
+			if (parts.Length != 2 || pos.Length != 2 || !int.TryParse(pos[0], out int x) || !int.TryParse(pos[1], out int z)
+				|| (parts[1] != "read" && parts[1] != "step") || map == null)
+			{
+				return "REFUSED: x,z;read|step on a loaded map";
+			}
+			IntVec3 at = new IntVec3(x, 0, z);
+			Building_LiquidPump pump = at.InBounds(map) ? at.GetFirstBuilding(map) as Building_LiquidPump : null;
+			RM_MapComponent_Excavation ex = RM_SuperdeepTrap.EngineOf(map);
+			if (pump == null || ex == null || pump.pourMode)
+			{
+				return "REFUSED: draw pump and excavation engine required";
+			}
+			List<Source> sources = pump.Sources(ex);
+			List<RM_NetPort> ports = RM_LiquidNet.PortsOf(pump, RM_FreeEndRole.Outflow);
+			string sourceText = string.Join(";", sources.Select(s => s.cell.x + "," + s.cell.z + ":"
+				+ (s.channel ? ex.WaterDlAt(s.cell) : ex.Stock.SupplyDl(map, s.cell, RM_PumpMath.TankUnitsPerLevel, ex))));
+			LiquidDef liquid = sources.Count == 0 ? null : LiquidFor(sources[0].fluid);
+			string portText = string.Join(";", ports.Select(p => p.Cell is IntVec3 c ? c.x + "," + c.z : "invalid"));
+			int before = pump.Moved;
+			string status = "read";
+			if (parts[1] == "step" && pump.Running)
+			{
+				int oldCycle = pump.cycle;
+				bool oldFilled = pump.filledPastOutflow, oldCircle = pump.circle;
+				int[] oldDead = pump.deadSources.ToArray(), oldUsed = pump.usedOutflows.ToArray();
+				try
+				{
+					pump.deadSources.Clear();
+					pump.usedOutflows.Clear();
+					pump.cycle = Find.TickManager.TicksGame / RM_PumpMath.CycleTicks;
+					status = pump.TryDraw();
+				}
+				finally
+				{
+					pump.cycle = oldCycle;
+					pump.filledPastOutflow = oldFilled;
+					pump.circle = oldCircle;
+					pump.deadSources.Clear();
+					pump.deadSources.UnionWith(oldDead);
+					pump.usedOutflows.Clear();
+					pump.usedOutflows.UnionWith(oldUsed);
+				}
+			}
+			return "PUMPDRAW sources=[" + sourceText + "] outflows=[" + portText + "] tankRoom="
+				+ (liquid == null ? 0 : Machinery.RM_LiquidNet.Room(pump, liquid)) + " hoseNeed="
+				+ (liquid == null ? 0 : RM_LiquidNet.HoseNeed(pump, ports.Cast<object>(), liquid))
+				+ " running=" + pump.Running + " moved=" + (pump.Moved - before) + " units="
+				+ (pump.Moved == before ? 0 : pump.lastMovedUnits) + " status=" + status;
 		}
 
 		/// <summary>State read (inspect, probes): the units of the last successful transfer and its tick (hose port step 6).</summary>

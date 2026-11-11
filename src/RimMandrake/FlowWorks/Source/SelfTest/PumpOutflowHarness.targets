@@ -1,0 +1,54 @@
+<Project>
+  <!-- Whole methods, read from the shipping source every build; no copied decision logic. -->
+  <UsingTask TaskName="ExtractPumpOutflow" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <Source ParameterType="System.String" Required="true"/>
+      <Output ParameterType="System.String" Required="true"/>
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.IO"/>
+      <Using Namespace="System.Text"/>
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        string source = File.ReadAllText(Source);
+        string[] signatures = { "private struct Source", "private bool Drawable(", "private int SourceTake(", "private int TankTake(", "private List<Source> Sources(", "private RM_OutletKind Outlet(", "private static LiquidDef LiquidFor(", "private int OutflowGive(", "public static string ProofDrawCycle(", "private string TryDraw(", "protected override void Tick(" };
+        var text = new StringBuilder("// GENERATED from complete production methods.\nusing System; using System.Collections.Generic; using System.Linq; using RimMandrake.FlowWorks.Machinery;\nnamespace RimMandrake.FlowWorks.SelfTest.PumpHarness { internal partial class Building_LiquidPump {\n");
+        foreach (string signature in signatures)
+        {
+            int start = source.IndexOf(signature, StringComparison.Ordinal);
+            int open = start < 0 ? -1 : source.IndexOf('{', start + signature.Length);
+            int end = -1, depth = 0;
+            if (open < 0)
+            {
+                Log.LogError("Pump method missing: " + signature);
+                return false;
+            }
+            // The selected methods contain no braces in strings or comments. Fail compilation on drift.
+            for (int i = open; i < source.Length; i++)
+            {
+                if (source[i] == '{') depth++;
+                else if (source[i] == '}' && --depth == 0)
+                {
+                    end = i;
+                    break;
+                }
+            }
+            if (end < 0)
+            {
+                Log.LogError("Unbalanced pump method: " + signature);
+                return false;
+            }
+            text.Append(source.Substring(start, end + 1 - start)).Append("\n");
+        }
+        text.Append("} }\n");
+        Directory.CreateDirectory(Path.GetDirectoryName(Output));
+        File.WriteAllText(Output, text.ToString());
+      ]]></Code>
+    </Task>
+  </UsingTask>
+  <Target Name="ExtractPumpOutflow" BeforeTargets="CoreCompile">
+    <ExtractPumpOutflow Source="$(MSBuildProjectDirectory)\..\LiquidTypes\Building_LiquidPump.cs" Output="$(MSBuildProjectDirectory)\$(IntermediateOutputPath)PumpOutflow.g.cs"/>
+    <ItemGroup>
+      <Compile Include="$(MSBuildProjectDirectory)\$(IntermediateOutputPath)PumpOutflow.g.cs"/>
+    </ItemGroup>
+  </Target>
+</Project>

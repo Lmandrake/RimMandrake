@@ -14,7 +14,7 @@ RimWorld/Unity assemblies: FlowWorks/Source/SelfTest/.
 WHAT MAKES THIS ONE STRONG: the retired Pits selftest (selftest_pit_logic.py,
 deleted with the building pit 2026-10-02) hand-extracted its escape-chance
 formula, so it kept passing against the old formula if the real method changed.
-This project extracts NOTHING. RM_StockMath.cs is the production file the shipping mod
+RM_StockMath.cs is the production file the shipping mod
 compiles, pulled into the test project directly, so the 5:1 budget, the
 seepage/rain/season refill, the supported-cell floor, the recession ordering
 and the credit/debit primitives are all covered for real.
@@ -23,6 +23,8 @@ dotnet is WINDOWS-NATIVE (see RimMandrake_FlowWorks.csproj's own build comment)
 and cannot take a /mnt/d path, so this script finds dotnet.exe and hands it the
 project path from selftest_winstage.windows_project_path (a D-drive path on the
 /mnt tree; a staged copy under D:\\ClaudeWork\\rimmandrake\\build from an ext4 clone).
+Complete Verse-bound pump and railing methods are also extracted at build time against
+explicit engine doubles; those harnesses state their limits.
 The SelfTest project now also carries the hose suites and every other Verse-free
 FlowWorks check (325+ cases), not only the stock and pit-trap math.
 _to_windows_path stays: selftest_flowworks_kernel_oracle.py imports it.
