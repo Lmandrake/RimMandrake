@@ -1,0 +1,27 @@
+{
+  "time": 1794396635.977399,
+  "raw_path": "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-hose-fuzz/evidence/judge_final_raw.json",
+  "raw_sha256": "62ef23c882796e4ab3ee2fa5cf508790d78619a5f6867ab3b45ef29d4e004f1d",
+  "extracted_path": "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-hose-fuzz/JUDGE.md",
+  "extracted_sha256": "8b7891c7f9f8cbb98aec304926e23ff6356f8470d8d8c63e496d63b9c31cbfe5",
+  "unchanged_result": true,
+  "model_usage": {
+    "claude-opus-5-5": {
+      "inputTokens": 66,
+      "outputTokens": 21089,
+      "cacheReadInputTokens": 4197993,
+      "cacheCreationInputTokens": 207507,
+      "webSearchRequests": 0,
+      "costUSD": 2.9216985999999996,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 9816,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 207507,
+      "canonicalModel": "claude-opus-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "last_line": "would show: yes"
+}

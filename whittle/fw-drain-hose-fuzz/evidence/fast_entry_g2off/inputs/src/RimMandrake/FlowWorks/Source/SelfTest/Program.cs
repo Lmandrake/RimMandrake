@@ -1,0 +1,2336 @@
+// Selftest for the source stock model built under FLUID_SOURCE_STOCK_MODEL_1,
+// extended under CANAL_FILL_IN_DISPLACEMENT_1 to cover the fill-in
+// displacement walk's arithmetic (§5, "Filling a canal back in").
+//
+// WHY THIS EXISTS: §5 of design/RimMandrake/flowworks_mod_definition.md is a
+// tuning spec as much as an architecture. Every number in it — the pond budget (now bed notches),
+// the seepage baseline, the season bands, the supported-cell floor — produces
+// no error of any kind when it drifts. The pond just refills at the wrong rate,
+// or recedes at the wrong stock, forever, until somebody happens to trace it by
+// hand again. That is exactly the class of defect an offline selftest catches
+// for free, on the same discipline as
+// src/RimMandrake/Utils/selftest_validate_patch.py.
+//
+// WHAT IS REAL vs EXTRACTED:
+//   EXCEPTION: the four fill-in Scenario_* cases (Scenario_fill_in_..., Scenario_filling_in_..., Scenario_channel_...,
+//   Scenario_displaced_...) replay §5's displacement walk
+//   inside the test; only the helper arithmetic they call is production code
+//   (review 2026-10-11), so they prove the arithmetic, not the walk's order.
+//   Otherwise the §5 stock cases are REAL: RM_StockMath.cs is the PRODUCTION file, compiled
+//   into this project directly (see the .csproj). It is not a transcription.
+//   RM_LiquidStock calls every RM_StockMath function asserted, so a change to any
+//   constant or clause fails this test immediately. The runner now drives ~70 suites over many production files;
+//   cases built on RiverSwitchFlipChecks.Src/Has read SOURCE TEXT (a revert guard), not behaviour.
+//
+//   ⭐ That is a deliberate improvement on the retired Pits selftest, whose
+//   escape-chance formula was a hand transcription that "keeps passing against
+//   the OLD formula" if the real method changes. RM_PitTrapMath.cs follows the
+//   same rule for the pit-width trap rule. The §5 arithmetic needed no Map, Thing or IntVec3 to be
+//   stated, so it was pulled into a Verse-free production file rather than
+//   copied into a test.
+//
+//   ⛔ NOT COVERED, and needing a live Map: the flood fill that discovers a
+//   body's footprint and its map-edge contact (RM_LiquidStock.FormBody), the
+//   terrain writes of recession and restoration
+//   (RM_MapComponent_Excavation.DryNaturalCell / RestoreOriginalTerrain), the
+//   scribing round trip, and the pulse hook itself. Those stay untested here on
+//   purpose — this file covers the arithmetic they carry, not the grid walking.
+//
+// Run:
+//   python3 src/RimMandrake/Utils/selftest_flowworks_stock.py
+
+using System;
+using System.Collections.Generic;
+using RimMandrake.FlowWorks;
+using RimMandrake.FlowWorks.LiquidTypes;
+using RimMandrake.FlowWorks.TakenByLand;
+
+namespace RimMandrake.FlowWorks.SelfTest
+{
+    internal static partial class Program
+    {
+        private static readonly List<string> Pass = new();
+        private static readonly List<(string name, string msg)> Fail = new();
+
+        // The shipped RM_Fluid_Water row, from
+        // FlowWorks/Defs/Canals/FluidDefs/FlowWorks_Fluids.xml. Kept here as
+        // named constants so a failure says which authored number moved.
+        private const float WaterVolumePerTile = 1f;
+        private const float WaterDeepBedLevels = RM_Volume.LevelsPerSquare;   // POND_VOLUME_UNIFY: one deep notch
+        private const float WaterOozePerCellPerDay = 0.13f;
+        private const float WaterRainRefillFactor = 3f;
+
+        // RimMandrakeFlowWorksSettings defaults (that file needs Verse, so the
+        // defaults are restated; each is asserted only as the shipped value a
+        // scenario runs at, never as the definition of the setting).
+        private const float DefaultBudgetMultiplier = 1f;
+        private const float DefaultRefillRateMultiplier = 1f;
+        private const int DefaultMinLimitlessBodyCells = 50;
+
+        // Verse's GenDate.TicksPerDay / a RimWorld season in days.
+        private const int TicksPerDay = 60000;
+        private const int DaysPerSeason = 15;
+
+        // SELFTEST_FILTER_BUILD_SERIAL_DLL: `--only A,B*` runs only the Case()s (and hose suites) named A or starting with B, so a
+        // modcheck chain that reads six cases does not pay for 325+ (validation.py _selftest_cases passes its names). No
+        // filter: everything runs, as before. A filter that selects nothing exits 3 (a misspelt name is not a green run).
+        private static string[] Only;
+        private static int FilteredOut;
+
+        internal static bool Selected(string name)
+        {
+            if (Only == null) return true;
+            foreach (var p in Only)
+                if (p.EndsWith("*") ? name.StartsWith(p.Substring(0, p.Length - 1), StringComparison.Ordinal) : name == p)
+                    return true;
+            return false;
+        }
+
+        private static void Case(string name, Action fn)
+        {
+            if (!Selected(name)) { FilteredOut++; return; }
+            try
+            {
+                fn();
+                Pass.Add(name);
+                Console.WriteLine("ok    " + name);
+            }
+            catch (Exception ex)
+            {
+                Fail.Add((name, ex.Message));
+                Console.WriteLine("FAIL  " + name + "\n        " + ex.Message);
+            }
+        }
+
+        private static void FuzzCase(string name, Func<List<string>> run)
+        {
+            if (!Selected(name)) { FilteredOut++; return; }
+            long c0 = SequenceFuzz.Cases, s0 = SequenceFuzz.Steps;
+            var clock = System.Diagnostics.Stopwatch.StartNew();
+            Case(name, () =>
+            {
+                List<string> fails = run();
+                if (fails.Count > 0) throw new Exception(fails.Count + " failing seed(s), shrunk:\n        " + string.Join("\n        ", fails));
+            });
+            Console.WriteLine($"      {SequenceFuzz.Cases - c0} cases, {SequenceFuzz.Steps - s0} steps, {clock.Elapsed.TotalSeconds:F2} s");
+        }
+
+        private static void KernelCase(string name, Func<List<string>> run)
+        {
+            if (!Selected(name)) { FilteredOut++; return; }
+            long c0 = FlowKernelFuzz.Cases, p0 = FlowKernelFuzz.Pulses;
+            var clock = System.Diagnostics.Stopwatch.StartNew();
+            Case(name, () =>
+            {
+                List<string> fails = run();
+                if (fails.Count > 0) throw new Exception(fails.Count + " failing seed(s), shrunk:\n        " + string.Join("\n        ", fails));
+            });
+            Console.WriteLine($"      {FlowKernelFuzz.Cases - c0} scenes, {FlowKernelFuzz.Pulses - p0} pulses, {clock.Elapsed.TotalSeconds:F2} s");
+        }
+
+        private static void Assert(bool cond, string msg)
+        {
+            if (!cond) throw new Exception(msg);
+        }
+
+        private static void AssertClose(float got, float want, string msg, float eps = 0.0001f)
+        {
+            if (Math.Abs(got - want) > eps)
+                throw new Exception($"{msg}: got {got}, want {want}");
+        }
+
+        private static float WaterCapacity(int cells) =>
+            RM_StockMath.BodyCapacity(cells, WaterDeepBedLevels, WaterVolumePerTile, DefaultBudgetMultiplier);
+
+        private static int Main(string[] args)
+        {
+            int oi = Array.IndexOf(args, "--only");
+            if (oi >= 0)
+            {
+                if (oi + 1 >= args.Length) { Console.Error.WriteLine("--only needs a comma list of case names (a trailing * is a prefix)"); return 2; }
+                Only = args[oi + 1].Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                var rest = new List<string>(args);
+                rest.RemoveRange(oi, 2);
+                args = rest.ToArray();
+            }
+            // Differential mode: selftest_flowworks_kernel_oracle.py passes a scene file (stdin if none) and compares the
+            // kernel's fill vectors with the Python PulseOracle (northstar/validation_v2.py).
+            // LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP: the floor preview's data (lake_floor_preview.py renders it).
+            if (args.Length > 1 && args[0] == "--lake-floors")
+            {
+                return LakeFloorChecks.Preview(args[1]);
+            }
+            // CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED: the sheet-water kernel alone (fast loop while it is built)
+            if (args.Length > 0 && args[0] == "--sheet")
+            {
+                SheetWaterChecks.Run(Case);
+                FloodReleaseChecks.Run(Case);
+                Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
+                return Fail.Count == 0 ? 0 : 1;
+            }
+            // HOSE_BEND_FIX_SHAVES_WALL_CORNERS / HOSE_LEADIN_FIX_STUB_IN_THE_CANAL: the drawn-hose geometry cases alone (fast loop)
+            // HOSE_SPLICE_BUILD_MATES_BY_SLOPE: the G2 hose joiner alone (fast loop)
+            if (args.Length > 0 && args[0] == "--hose-splice")
+            {
+                HoseSpliceChecks.Run(Case);
+                HoseMateCacheChecks.Run(Case);
+                HoseMateEndQueueChecks.Run(Case);
+                HoseLayQueueChecks.Run(Case);
+                HoseReplanChecks.Run(Case);
+                HoseFrameMemoChecks.Run(Case);
+                HoseAllocChecks.Run(Case);
+                HoseLayerChecks.Run(Case);
+                HoseCrossShadowChecks.Run(Case);
+                Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
+                return Fail.Count == 0 ? 0 : 1;
+            }
+            if (args.Length > 0 && args[0] == "--hose-draw")
+            {
+                if (args.Length > 1 && args[1] == "probe") HoseDrawGeometryChecks.Probe();
+                HoseDrawGeometryChecks.Run(Case);
+                Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
+                return Fail.Count == 0 ? 0 : 1;
+            }
+            // HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS: the G2 hose-curve ruler over the hard stations alone (fast loop);
+            // "report <path>" writes one line per drawn pose, "dump <path>" the drawn points as JSON for the previews
+            if (args.Length > 0 && args[0] == "--hose-curves")
+            {
+                // "g2off" first: the clothoid G2 fit off (the shaped poses alone; HoseMath.G2On is on in the game since 2026-10-24);
+                // "g2" (on) is kept as a no-op for old command lines
+                if (args.Length > 1 && (args[1] == "g2" || args[1] == "g2off")) { RimMandrake.FlowWorks.Hose.HoseMath.G2On = args[1] == "g2"; var rest = new string[args.Length - 1]; Array.Copy(args, 1, rest, 0, rest.Length); rest[0] = "--hose-curves"; args = rest; }
+                if (args.Length > 2 && args[1] == "report") HoseCurveChecks.Report(args[2]);
+                if (args.Length > 2 && args[1] == "dump") HoseCurveChecks.Dump(args[2]);
+                HoseCurveChecks.Run(Case);
+                Console.WriteLine(HoseCurveChecks.SolverCost());
+                Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
+                return Fail.Count == 0 ? 0 : 1;
+            }
+            // HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS step 4: the near port sweep alone; "report <path> [span]" writes one line a placement
+            if (args.Length > 0 && args[0] == "--hose-layouts")
+            {
+                if (args.Length > 2 && args[1] == "report") HoseLayoutChecks.Report(args[2], args.Length > 3 ? int.Parse(args[3]) : 3);
+                else if (args.Length > 1 && args[1] == "full") HoseLayoutChecks.RunFull(Case);
+                else HoseLayoutChecks.Run(Case);
+                Console.WriteLine(HoseCurveChecks.SolverCost());
+                Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
+                return Fail.Count == 0 ? 0 : 1;
+            }
+            // HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS: the hose fuzz alone with the clothoid solver's cost (fast loop); "g2off" = fit off
+            if (args.Length > 0 && args[0] == "--hose-fuzz")
+            {
+                if (args.Length > 1 && args[1] == "g2off") RimMandrake.FlowWorks.Hose.HoseMath.G2On = false;
+                if (args.Length > 1 && args[1] == "g2") RimMandrake.FlowWorks.Hose.HoseMath.G2On = true;
+                var clock = System.Diagnostics.Stopwatch.StartNew();
+                int fails = RunHoseFuzzOnly(args);
+                Console.WriteLine(HoseCurveChecks.SolverCost() + $", fuzz wall {clock.Elapsed.TotalSeconds:F2} s");
+                return fails == 0 ? 0 : 1;
+            }
+            // SURFACEGAP_PARITY_FIX_TIES_ARE_UNSORTED: RM_SurfaceGap.Measure over a scene file, against level_water.surface_gaps
+            // (selftest_flowworks_kernel_oracle.py mode "gaps"). A file, not stdin (the WSL pipe hang below).
+            if (args.Length > 1 && args[0] == "--surface-gaps")
+            {
+                using (var reader = new System.IO.StreamReader(args[1]))
+                {
+                    return LevelExactChecks.SurfaceGapScenes(reader, Console.Out);
+                }
+            }
+
+            if (args.Length > 0 && args[0] == "--oracle-scenes")
+            {
+                // A file, not stdin: a large pipe into dotnet.exe across the WSL boundary hangs (measured, 3000 scenes).
+                // A third argument "surface" runs the kernel with levelBySurfaceEnabled (WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND);
+                // "levelset" adds levelSetEnabled (WATER_LEVELSET_SOLVE); "shipped" adds both creeps on top
+                // (CANAL_MOUTH_DIAGNOSE_BLINKS_DRY_HALF_TIME: the mouth top-up runs only with water creep on).
+                using (var reader = args.Length > 1 ? new System.IO.StreamReader(args[1]) : Console.In)
+                {
+                    string mode = args.Length > 2 ? args[2] : "";
+                    // "bodies" = FISH_ROLL_MEND_PONDS_BORN_BARREN: the vanilla tracker port plus the production split mend; prints
+                    // body sizes after every toggle, against the oracle's own connected components.
+                    if (mode == "bodies")
+                    {
+                        return WaterBodyMendChecks.OracleRun(reader, Console.Out);
+                    }
+                    // "pond" = shipped plus the pond head rule (POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD, D2).
+                    bool shipped = mode == "shipped" || mode == "pond";
+                    // "exact" = WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: levelExactEnabled on the shipped flags (decilitres, one
+                    // surface per body); prints water in dL. Against northstar/level_water.py.
+                    bool exact = mode == "exact";
+                    return OracleScenes.Run(reader, Console.Out, mode == "surface" || mode == "levelset" || shipped || exact,
+                        mode == "levelset" || shipped || exact, shipped || exact, mode == "pond", exact);
+                }
+            }
+
+            // ═══════════ the pond budget (§5 "Budget"; capacity is the bed notches, the 5:1 rule is dead) ══
+
+            Case("Capacity_is_cells_times_bed_times_volumePerTile", () =>
+                // POND_VOLUME_UNIFY: a deep pond square holds one deep notch (4 levels).
+                AssertClose(WaterCapacity(3), 12f, "a 3-cell deep water pond"));
+
+            Case("Capacity_scales_linearly_with_footprint", () =>
+                Assert(WaterCapacity(20) == 10f * WaterCapacity(2),
+                    "the budget is per source CELL, so ten times the footprint must be ten times the capacity"));
+
+            Case("Capacity_of_a_viscous_liquid_is_higher_in_fill_units", () =>
+                // volumePerTile 2 means a cell of canal costs two fill-units, so
+                // the same footprint must be denominated in twice as many.
+                AssertClose(RM_StockMath.BodyCapacity(3, 5f, 2f, 1f), 30f, "a 3-cell tar pond at volumePerTile 2"));
+
+            Case("Capacity_of_an_empty_footprint_is_zero", () =>
+                AssertClose(WaterCapacity(0), 0f, "no cells, no stock"));
+
+            Case("PerCellBudget_floors_above_zero_at_the_lowest_slider_notch", () =>
+            {
+                // FluidDef.ConfigErrors() complains about volumePerTile <= 0 and
+                // a zero budget slider, but a ConfigError is a red line in
+                // the log, NOT a load refusal — the def still loads and the engine
+                // still runs on it. The floor is what stops that def making every
+                // body's PerCellVolume 0, which SupportedCells would divide by.
+                //
+                // 🔴 ASSERTED AS A PROPERTY, NOT AGAINST THE CONSTANT, and with the
+                // input that can actually reach zero. Two earlier drafts of this
+                // case were useless: `tiny >= RM_StockMath.MinPerCellVolume` is
+                // self-referential and passes trivially when the floor is set to 0,
+                // and feeding merely SMALL values (1e-4) never reaches 0 in float
+                // anyway, so it passed with the floor removed. Both were caught by
+                // perturbing the constant to 0f and finding the test still green.
+                Assert(RM_StockMath.PerCellBudget(5f, 0f, 1f) > 0f,
+                    "a fluid authored with volumePerTile 0 still LOADS after its ConfigError; its per-cell "
+                    + "budget must still be strictly positive or supported-cell count divides by zero");
+                Assert(RM_StockMath.PerCellBudget(0f, 1f, 1f) > 0f,
+                    "same for a bed of 0 levels");
+                Assert(RM_StockMath.BodyCapacity(10, 5f, 0f, 1f) > 0f,
+                    "and a body built from such a def must still get a real capacity, not zero");
+                Assert(RM_StockMath.SupportedCells(1f, RM_StockMath.PerCellBudget(5f, 0f, 1f)) >= 0,
+                    "and the supported-cell count must be computable from it at all");
+            });
+
+            Case("PerCellVolume_is_the_budget_read_backwards", () =>
+                AssertClose(RM_StockMath.PerCellVolume(WaterCapacity(3), 3), 4f,
+                    "one deep square of a water body's footprint is worth one deep canal square (4 levels)"));
+
+            Case("PerCellVolume_of_an_empty_body_is_zero_not_a_divide_by_zero", () =>
+                AssertClose(RM_StockMath.PerCellVolume(0f, 0), 0f, "empty body"));
+
+            // ══════════════════════════ limited vs limitless (ruling 16, §5) ══
+
+            Case("Limitless_needs_edge_contact_AND_size", () =>
+            {
+                Assert(RM_StockMath.IsLimitless(true, false, true, 50, DefaultMinLimitlessBodyCells),
+                    "a 50-cell body touching the map edge is the off-map reservoir: LIMITLESS");
+                Assert(!RM_StockMath.IsLimitless(true, false, true, 49, DefaultMinLimitlessBodyCells),
+                    "edge contact alone must not buy limitless — a 49-cell puddle at the edge is still a puddle");
+                Assert(!RM_StockMath.IsLimitless(true, false, false, 4000, DefaultMinLimitlessBodyCells),
+                    "size alone must not buy limitless — a huge INLAND lake is finite, which is the whole scarcity premise");
+            });
+
+            Case("Wetness_cutoff_is_600_wet_5000_temperate_never_dry", () =>
+            {
+                Assert(RM_StockMath.WetnessCutoffCells(2000f) == 600, "a wet tile cuts at 600 cells");
+                Assert(RM_StockMath.WetnessCutoffCells(600f) > 5000 && RM_StockMath.WetnessCutoffCells(700f) == 5000, "temperate cuts at 5000");
+                Assert(RM_StockMath.WetnessCutoffCells(100f) == int.MaxValue, "a desert tile never reaches limitless by size");
+                Assert(RM_StockMath.WetnessCutoffCells(1100f) < 5000 && RM_StockMath.WetnessCutoffCells(1100f) > 600, "the slide is monotone between");
+            });
+
+            Case("Limitless_by_wetness_river_and_edge_always_inland_by_cutoff", () =>
+            {
+                Assert(RM_StockMath.IsLimitlessByWetness(true, false, false, true, 3, int.MaxValue), "a river is limitless however small or dry");
+                Assert(RM_StockMath.IsLimitlessByWetness(true, false, true, false, 3, int.MaxValue), "an off-map body is limitless however small");
+                Assert(RM_StockMath.IsLimitlessByWetness(true, false, false, false, 600, 600), "an inland lake at the cutoff is limitless");
+                Assert(!RM_StockMath.IsLimitlessByWetness(true, false, false, false, 599, 600), "one under the cutoff is limited");
+                Assert(!RM_StockMath.IsLimitlessByWetness(true, false, false, false, 20000, int.MaxValue), "size never makes a dry lake limitless");
+                Assert(!RM_StockMath.IsLimitlessByWetness(false, true, true, true, 99999, 1), "sticky off: nothing is limitless");
+            });
+
+            Case("Limitless_is_forced_when_the_flood_fill_truncates", () =>
+                Assert(RM_StockMath.IsLimitless(true, true, false, 4000, DefaultMinLimitlessBodyCells),
+                    "a body too big to flood-fill is an ocean; it must classify limitless rather than get a capacity "
+                    + "computed from a truncated footprint, which would UNDERSTATE the ocean"));
+
+            Case("Limitless_off_in_settings_makes_every_body_limited", () =>
+                Assert(!RM_StockMath.IsLimitless(false, true, true, 99999, 1),
+                    "all-off degradation: with sticky classification disabled nothing is limitless, "
+                    + "so the mechanic switches off without switching the stock model off"));
+
+            // ════════════════════════════════ refill (ruling 2, §5 "Refill") ══
+
+            Case("Refill_baseline_is_ooze_times_cellCount", () =>
+                AssertClose(
+                    RM_StockMath.RefillPerDay(WaterOozePerCellPerDay, 4, WaterRainRefillFactor, 0f,
+                        RM_StockMath.SeasonBand.Neutral, DefaultRefillRateMultiplier),
+                    0.52f, "4 cells of water seeping in fair weather"));
+
+            Case("Refill_is_proportional_to_footprint", () =>
+            {
+                float one = RM_StockMath.RefillPerDay(WaterOozePerCellPerDay, 1, WaterRainRefillFactor, 0f,
+                    RM_StockMath.SeasonBand.Neutral, 1f);
+                float ten = RM_StockMath.RefillPerDay(WaterOozePerCellPerDay, 10, WaterRainRefillFactor, 0f,
+                    RM_StockMath.SeasonBand.Neutral, 1f);
+                AssertClose(ten, 10f * one, "§5: the seepage baseline is groundOoze * sourceCellCount");
+            });
+
+            Case("Refill_rain_term_multiplies_the_baseline", () =>
+                // (1 + 3*1) = 4x at a full downpour.
+                AssertClose(
+                    RM_StockMath.RefillPerDay(WaterOozePerCellPerDay, 1, WaterRainRefillFactor, 1f,
+                        RM_StockMath.SeasonBand.Neutral, 1f),
+                    0.52f, "rain is the fast lane; seepage is the floor"));
+
+            Case("Refill_never_stops_entirely_without_rain", () =>
+                Assert(RM_StockMath.RefillPerDay(WaterOozePerCellPerDay, 1, WaterRainRefillFactor, 0f,
+                        RM_StockMath.SeasonBand.Dry, 1f) > 0f,
+                    "ruling 2's baseline is ALWAYS ON: 'slow and certain, not random'. A body that can reach "
+                    + "zero refill in a dry season can be permanently dead, which is not what was ruled."));
+
+            Case("Season_bands_are_ordered_wet_over_neutral_over_cool_over_dry", () =>
+            {
+                float wet = RM_StockMath.SeasonFactor(RM_StockMath.SeasonBand.Wet);
+                float neutral = RM_StockMath.SeasonFactor(RM_StockMath.SeasonBand.Neutral);
+                float cool = RM_StockMath.SeasonFactor(RM_StockMath.SeasonBand.Cool);
+                float dry = RM_StockMath.SeasonFactor(RM_StockMath.SeasonBand.Dry);
+                Assert(wet > neutral && neutral > cool && cool > dry,
+                    "the desert-world shape §5 asks for: the wet season carries the refill and high summer barely moves it");
+            });
+
+            Case("Refill_accrual_is_INVARIANT_to_pulse_interval", () =>
+            {
+                // 🔴 PILLAR 2, expressed as a property rather than a comment. The
+                // pulse interval is a player-facing slider (60..2500 ticks). If the
+                // accrual were not scaled by pulse length, moving that slider would
+                // silently retune every pond on the map.
+                float perDay = 1f;
+                float tenShort = 10f * RM_StockMath.RefillForPulse(perDay, 250, TicksPerDay);
+                float oneLong = RM_StockMath.RefillForPulse(perDay, 2500, TicksPerDay);
+                AssertClose(tenShort, oneLong,
+                    "ten short pulses must accrue exactly what one ten-times-longer pulse accrues");
+            });
+
+            Case("Refill_over_a_full_day_equals_the_per_day_rate", () =>
+                AssertClose(RM_StockMath.RefillForPulse(0.13f, TicksPerDay, TicksPerDay), 0.13f,
+                    "a pulse covering one whole day must accrue exactly one day's worth"));
+
+            Case("Refill_clamps_to_capacity_and_never_above", () =>
+            {
+                AssertClose(RM_StockMath.ClampToCapacity(14f, 99f, 15f), 15f,
+                    "§5: clamped to bodyCapacity — a pond may not overfill past what its footprint justifies");
+                AssertClose(RM_StockMath.ClampToCapacity(4f, 1f, 15f), 5f, "an ordinary accrual is not clamped");
+            });
+
+            // ───── hand-traced scenario: the one-cell seep takes MULTIPLE SEASONS
+
+            Case("Scenario_one_cell_seep_takes_multiple_seasons_to_refill_from_empty", () =>
+            {
+                // §5's tuning requirement, stated as a number: "Tune groundOoze so a
+                // very small natural source takes multiple seasons".
+                //   capacity      = 1 * 4 * 1            = 4 fill-units (one deep notch, POND_VOLUME_UNIFY)
+                //   refill/day    = 0.13 * 1 * 1 * 1     = 0.13 fill-units
+                //   days to full  = 4 / 0.13             = 30.8 days
+                //   seasons       = 30.8 / 15            = 2.05 seasons
+                float capacity = WaterCapacity(1);
+                AssertClose(capacity, 4f, "one-cell seep capacity");
+                float perDay = RM_StockMath.RefillPerDay(WaterOozePerCellPerDay, 1, WaterRainRefillFactor, 0f,
+                    RM_StockMath.SeasonBand.Neutral, DefaultRefillRateMultiplier);
+                float days = capacity / perDay;
+                float seasons = days / DaysPerSeason;
+                Assert(seasons > 2f && seasons < 6f,
+                    $"§5 asks for 'multiple seasons' — slow and certain, not a decade. Got {seasons:F2} seasons "
+                    + $"({days:F1} days). Below 2 the scarcity is decoration; above 6 a drained seep is effectively dead.");
+            });
+
+            Case("Scenario_that_same_seep_refills_far_faster_in_a_wet_spring", () =>
+            {
+                float fair = RM_StockMath.RefillPerDay(WaterOozePerCellPerDay, 1, WaterRainRefillFactor, 0f,
+                    RM_StockMath.SeasonBand.Neutral, 1f);
+                float storm = RM_StockMath.RefillPerDay(WaterOozePerCellPerDay, 1, WaterRainRefillFactor, 1f,
+                    RM_StockMath.SeasonBand.Wet, 1f);
+                Assert(storm > 4f * fair,
+                    "a wet-season downpour must be a visibly different regime from bare seepage, or weather is decoration");
+            });
+
+            // ══════════════ recession and restoration (§5 "Recession, cell by cell") ══
+
+            Case("SupportedCells_at_full_stock_is_the_whole_footprint", () =>
+                Assert(RM_StockMath.SupportedCells(15f, 5f) == 3,
+                    "a full 3-cell pond must support all 3 cells, or a body recedes the moment it forms"));
+
+            Case("SupportedCells_floors_rather_than_rounds", () =>
+                Assert(RM_StockMath.SupportedCells(9f, 5f) == 1,
+                    "a body pays for a cell in full or gives it up; 9 units at 5/cell supports 1 cell, not 2"));
+
+            Case("SupportedCells_of_an_empty_body_is_zero", () =>
+                Assert(RM_StockMath.SupportedCells(0f, 5f) == 0, "a spent pond supports nothing"));
+
+            Case("SupportedCells_never_returns_negative", () =>
+                Assert(RM_StockMath.SupportedCells(-1f, 5f) == 0,
+                    "a negative supported count would make the recession loop's guard the only thing between "
+                    + "this and an unbounded shed"));
+
+            Case("SupportedCells_with_no_per_cell_volume_is_zero_not_a_crash", () =>
+                Assert(RM_StockMath.SupportedCells(10f, 0f) == 0, "divide-by-zero guard"));
+
+            Case("SupportedCellsKeepingLast_keeps_one_cell_while_any_stock_remains", () =>
+            {
+                Assert(RM_StockMath.SupportedCellsKeepingLast(2f, 5f, true) == 1, "2 of 5 units must keep the last cell drawable");
+                Assert(RM_StockMath.SupportedCellsKeepingLast(2f, 5f, false) == 0, "setting off: plain floor");
+                Assert(RM_StockMath.SupportedCellsKeepingLast(0f, 5f, true) == 0, "a truly empty body still recedes fully");
+                Assert(RM_StockMath.SupportedCellsKeepingLast(12f, 5f, true) == 2, "above one cell it is the plain floor");
+            });
+
+            Case("LocalRemovalKeepsConnected_detects_a_bridge_cell", () =>
+            {
+                // ring bits: 0 N, 1 NE, 2 E, 3 SE, 4 S, 5 SW, 6 W, 7 NW
+                Assert(!RM_StockMath.LocalRemovalKeepsConnected((1 << 0) | (1 << 4)), "N and S only: centre is a bridge");
+                Assert(!RM_StockMath.LocalRemovalKeepsConnected((1 << 2) | (1 << 6)), "E and W only: centre is a bridge");
+                Assert(RM_StockMath.LocalRemovalKeepsConnected((1 << 0) | (1 << 2)), "N and E touch diagonally");
+                Assert(RM_StockMath.LocalRemovalKeepsConnected((1 << 0) | (1 << 1) | (1 << 2) | (1 << 3) | (1 << 4)), "a full east half stays one group");
+                Assert(RM_StockMath.LocalRemovalKeepsConnected(1 << 5), "a single neighbour is an end cell");
+                Assert(RM_StockMath.LocalRemovalKeepsConnected(0), "an isolated cell");
+                Assert(!RM_StockMath.LocalRemovalKeepsConnected((1 << 1) | (1 << 5)), "opposite diagonals are split");
+            });
+
+            Case("Recession_order_prefers_FEWEST_neighbours_first", () =>
+                Assert(RM_StockMath.PrefersCandidate(2, 0, 0, 5, 999, 0),
+                    "§5: fewest same-liquid neighbours first — that thins the body from its shallow edge "
+                    + "and never fragments it. A low neighbour count must win even against a far better distance."));
+
+            Case("Recession_order_tie_breaks_on_GREATEST_distance_from_centroid", () =>
+            {
+                Assert(RM_StockMath.PrefersCandidate(3, 100, 5, 3, 40, 1),
+                    "equal neighbours: the cell further from the centroid recedes first");
+                Assert(!RM_StockMath.PrefersCandidate(3, 40, 1, 3, 100, 5),
+                    "and the nearer one does not");
+            });
+
+            Case("Recession_order_final_tie_break_is_the_deterministic_cell_index", () =>
+            {
+                Assert(RM_StockMath.PrefersCandidate(3, 40, 7, 3, 40, 9),
+                    "🔑 with neighbours and distance both tied, the cell index decides — this is what makes "
+                    + "recession survive a save/reload and be identical on every machine");
+                Assert(!RM_StockMath.PrefersCandidate(3, 40, 9, 3, 40, 7), "and the order is strict, never ambiguous");
+            });
+
+            Case("Recession_order_is_a_STRICT_preference_so_an_incumbent_is_never_displaced_by_an_equal", () =>
+                Assert(!RM_StockMath.PrefersCandidate(3, 40, 7, 3, 40, 7),
+                    "a candidate identical to the incumbent must not displace it, or the scan's result depends "
+                    + "on iteration order and determinism is lost"));
+
+            Case("Recession_order_spares_an_OUTFLOW_cell_until_last", () =>
+            {
+                Assert(RM_StockMath.PrefersCandidate(false, 5, 0, 9, true, 2, 999, 0),
+                    "POND_RECESSION_STRANDS_CHANNEL_1: a cell feeding a dug channel recedes after every other cell, "
+                    + "even one with more neighbours and nearer the centroid, or the channel is cut off with the stock stranded");
+                Assert(!RM_StockMath.PrefersCandidate(true, 2, 999, 0, false, 5, 0, 9), "and the outflow cell never displaces a non-outflow one");
+                Assert(RM_StockMath.PrefersCandidate(true, 2, 0, 0, true, 5, 999, 0) == RM_StockMath.PrefersCandidate(2, 0, 0, 5, 999, 0),
+                    "between two outflow cells the old order decides");
+            });
+
+            // ───── hand-traced scenario: a small pond drawn down, then refilled
+
+            Case("Scenario_three_cell_pond_drawn_down_recedes_then_recovers_its_cells", () =>
+            {
+                // A 3-cell deep water pond. capacity 12, perCell 4 (one deep notch, POND_VOLUME_UNIFY).
+                float capacity = WaterCapacity(3);
+                float perCell = RM_StockMath.PerCellVolume(capacity, 3);
+                AssertClose(capacity, 12f, "capacity");
+                AssertClose(perCell, 4f, "per-cell volume");
+
+                float stock = capacity;
+                Assert(RM_StockMath.SupportedCells(stock, perCell) == 3, "full: 3 cells standing");
+
+                // A canal draws. Each canal cell debits volumePerTile (1 unit).
+                for (int i = 0; i < 6; i++)
+                {
+                    Assert(RM_StockMath.CanDebit(false, stock, WaterVolumePerTile),
+                        "a pond at " + stock + " must still afford a 1-unit debit");
+                    stock -= WaterVolumePerTile;
+                }
+                AssertClose(stock, 6f, "after filling 6 canal cells");
+                Assert(RM_StockMath.SupportedCells(stock, perCell) == 1,
+                    "6 units supports 1 of 3 cells — the pond visibly gives up 2 cells to mud");
+
+                // Drawn to nothing.
+                stock = 0f;
+                Assert(!RM_StockMath.CanDebit(false, stock, WaterVolumePerTile),
+                    "🔴 a spent LIMITED body must refuse the debit. The caller must then NOT move liquid — "
+                    + "a transfer after a failed debit is the silent leak the conservation ledger exists to catch.");
+                Assert(!RM_StockMath.CanSupply(false, stock, WaterVolumePerTile),
+                    "and it must stop being picked as a donor at all, so the picker can find a wet neighbour instead");
+                Assert(RM_StockMath.SupportedCells(stock, perCell) == 0, "spent: the whole footprint is mud");
+
+                // Now it rains for ten days in spring.
+                float perDay = RM_StockMath.RefillPerDay(WaterOozePerCellPerDay, 3, WaterRainRefillFactor, 1f,
+                    RM_StockMath.SeasonBand.Wet, 1f);
+                for (int day = 0; day < 10; day++)
+                {
+                    stock = RM_StockMath.ClampToCapacity(stock, RM_StockMath.RefillForPulse(perDay, TicksPerDay, TicksPerDay), capacity);
+                }
+                Assert(stock > 0f, "a refilling body must actually gain");
+                Assert(stock <= capacity, "and must never exceed capacity");
+                Assert(RM_StockMath.SupportedCells(stock, perCell) >= 1,
+                    "after ten wet days the pond must have won back at least its first cell — refill has to be VISIBLE (§5)");
+            });
+
+            Case("Scenario_a_limitless_edge_body_never_runs_down_and_never_recedes", () =>
+            {
+                // A 400-cell lake touching the map edge.
+                Assert(RM_StockMath.IsLimitless(true, false, true, 400, DefaultMinLimitlessBodyCells),
+                    "400 cells on the edge: LIMITLESS");
+                // Stock is meaningless for it; every gate must pass on the flag alone,
+                // with a stock field of literally zero.
+                Assert(RM_StockMath.CanSupply(true, 0f, WaterVolumePerTile),
+                    "🔑 the sentinel, not a big number: a limitless body supplies with a stock of 0 recorded");
+                Assert(RM_StockMath.CanDebit(true, 0f, 9999f),
+                    "and affords any debit, however large, without a magic literal anywhere");
+                AssertClose(RM_StockMath.CreditAccepted(true, 0f, 0f, 42f), 42f,
+                    "and accepts any credit back — the off-map continuation cannot be overfilled");
+            });
+
+            // ═══════════════════ credit: fill-in displacement (§5) and §8 pumps ══
+
+            Case("Credit_to_a_limited_body_stops_at_capacity", () =>
+                AssertClose(RM_StockMath.CreditAccepted(false, 12f, 15f, 10f), 3f,
+                    "a pond with 3 units of room accepts 3 of the 10 offered; the other 7 are the caller's "
+                    + "problem — and §5 says they overflow and are DESTROYED, disclosed rather than dropped"));
+
+            Case("Credit_to_a_full_body_is_refused_entirely", () =>
+                AssertClose(RM_StockMath.CreditAccepted(false, 15f, 15f, 10f), 0f, "no room, nothing accepted"));
+
+            Case("Credit_below_capacity_is_accepted_whole", () =>
+                AssertClose(RM_StockMath.CreditAccepted(false, 5f, 15f, 4f), 4f, "plenty of room"));
+
+            Case("Credit_of_nothing_is_nothing", () =>
+                AssertClose(RM_StockMath.CreditAccepted(false, 5f, 15f, 0f), 0f, "zero in, zero out"));
+
+            Case("Credit_and_debit_round_trip_conserves_exactly", () =>
+            {
+                // The reversibility §5 promises: "fill it back in before a raid that
+                // never came and you get most of your liquid back". Within capacity,
+                // MOST becomes ALL, and that must hold to the unit.
+                float capacity = WaterCapacity(3);
+                float stock = capacity;
+                int drawn = 0;
+                for (int i = 0; i < 6; i++)
+                {
+                    Assert(RM_StockMath.CanDebit(false, stock, WaterVolumePerTile), "affordable");
+                    stock -= WaterVolumePerTile;
+                    drawn++;
+                }
+                float back = RM_StockMath.CreditAccepted(false, stock, capacity, drawn * WaterVolumePerTile);
+                AssertClose(back, drawn * WaterVolumePerTile,
+                    "everything drawn must fit back in, because the body had exactly that much room");
+                stock += back;
+                AssertClose(stock, capacity,
+                    "🔑 conservation of mass: dig a canal and fill it straight back in, and the pond is whole again");
+            });
+
+            // ═══════ the fill-in displacement walk (CANAL_FILL_IN_DISPLACEMENT_1) ═
+            //
+            // OWNER, 2026-09-16: "There should also be a way to 'fill in' a canal
+            // that displaces liquid BACK. It does not destroy liquid if there's a
+            // place for it to go, but if it would 'overflow' it is destroyed."
+            //
+            // The grid walking (BFS order, terrain writes, the message) needs a
+            // live Map and is NOT covered here. What IS covered is every number
+            // the walk decides with: how much a raised cell displaces, how much
+            // room a channel cell has, and how many whole levels a body takes.
+
+            Case("Displaced_is_what_the_shallower_cell_can_no_longer_hold", () =>
+                Assert(RM_StockMath.DisplacedLevels(4, 4) == 1,
+                    "a brimming depth-4 cell raised to 3 sheds exactly one level"));
+
+            Case("Displacing_a_cell_with_slack_sheds_NOTHING", () =>
+            {
+                // §5's own worked example: "a trench holding one level out of four
+                // loses nothing when it is raised to three — the liquid simply sits
+                // higher, which is what actually happens when you shovel earth in
+                // under it."
+                Assert(RM_StockMath.DisplacedLevels(4, 1) == 0, "1 of 4 raised to 3 still fits");
+                Assert(RM_StockMath.DisplacedLevels(4, 3) == 0, "3 of 4 raised to 3 fits exactly");
+                Assert(RM_StockMath.DisplacedLevels(4, 0) == 0, "a dry trench displaces nothing");
+            });
+
+            Case("Displacing_a_brimming_cell_at_every_depth_sheds_exactly_one", () =>
+            {
+                for (int d = 1; d <= 4; d++)
+                {
+                    Assert(RM_StockMath.DisplacedLevels(d, d) == 1,
+                        $"depth {d} brimming sheds one level, never the whole column");
+                }
+            });
+
+            Case("Displacing_an_unexcavated_cell_is_zero_not_negative", () =>
+            {
+                Assert(RM_StockMath.DisplacedLevels(0, 0) == 0, "nothing dug, nothing displaced");
+                Assert(RM_StockMath.DisplacedLevels(0, 2) == 0, "a corrupt fill above a zero depth cannot go negative");
+            });
+
+            Case("Displacement_clamps_a_fill_that_exceeds_its_own_brim", () =>
+                Assert(RM_StockMath.DisplacedLevels(2, 5) == 1,
+                    "fill is clamped to the brim first, so a corrupt grid sheds one level, not four"));
+
+            Case("CellRoom_is_the_gap_below_the_brim", () =>
+            {
+                Assert(RM_StockMath.CellRoom(4, 1) == 3, "a depth-4 cell holding 1 has 3 levels of room");
+                Assert(RM_StockMath.CellRoom(4, 4) == 0, "a brimming cell has none");
+                Assert(RM_StockMath.CellRoom(2, 5) == 0, "over-full never reads as negative room");
+            });
+
+            Case("CreditableLevels_converts_fill_units_to_WHOLE_levels", () =>
+            {
+                // 🔴 The unit bug this function exists to prevent. The grids count
+                // LEVELS; a body's stock counts FILL-UNITS, and one level is
+                // volumePerTile units — exactly what the pulse debits per level
+                // poured out of a source. A walk that handed its level count
+                // straight to a fill-unit credit would under-pay every liquid
+                // whose volumePerTile is not 1.
+                const float viscous = 2f;
+                // 10 units of room at 2 units per level = 5 levels.
+                Assert(RM_StockMath.CreditableLevels(false, 5f, 15f, 8, viscous) == 5,
+                    "room in units, answer in levels");
+                Assert(RM_StockMath.CreditableLevels(false, 5f, 15f, 3, viscous) == 3,
+                    "never more than was offered");
+            });
+
+            Case("CreditableLevels_floors_rather_than_crediting_a_part_level", () =>
+            {
+                // A body with 3 units of room and a 2-unit level takes ONE level
+                // and leaves 1 unit of room. Rounding up here would credit stock
+                // that no cell ever gave up, which is a silent mass GAIN — the
+                // mirror of the leak the conservation ledger hunts.
+                Assert(RM_StockMath.CreditableLevels(false, 12f, 15f, 4, 2f) == 1,
+                    "3 units of room at 2 per level is one whole level, not one and a half");
+                Assert(RM_StockMath.CreditableLevels(false, 14f, 15f, 4, 2f) == 0,
+                    "1 unit of room at 2 per level is no level at all");
+            });
+
+            Case("CreditableLevels_to_a_full_body_is_zero_so_the_rest_overflows", () =>
+                Assert(RM_StockMath.CreditableLevels(false, 15f, 15f, 5, WaterVolumePerTile) == 0,
+                    "a full pond takes nothing, and §5 destroys what finds no room — disclosed, not silent"));
+
+            Case("CreditableLevels_to_a_LIMITLESS_body_takes_everything", () =>
+                Assert(RM_StockMath.CreditableLevels(true, 0f, 0f, 9, WaterVolumePerTile) == 9,
+                    "the off-map continuation cannot be overfilled (ruling 16), so it never causes an overflow"));
+
+            Case("CreditableLevels_of_nothing_offered_is_nothing", () =>
+            {
+                Assert(RM_StockMath.CreditableLevels(false, 0f, 15f, 0, WaterVolumePerTile) == 0, "zero in, zero out");
+                Assert(RM_StockMath.CreditableLevels(true, 0f, 0f, 0, WaterVolumePerTile) == 0,
+                    "and limitless does not invent levels out of an empty offer");
+            });
+
+            Case("CreditableLevels_refuses_rather_than_dividing_by_a_zero_unit", () =>
+                Assert(RM_StockMath.CreditableLevels(false, 0f, 15f, 4, 0f) == 0,
+                    "a malformed FluidDef must not produce an unbounded credit; refusing shows up as "
+                    + "disclosed overflow, which is the failure a player can actually see"));
+
+            // The four fill-in Scenario_* cases below replay §5's walk inline: the production walk (RM_LiquidStock displacement) needs
+            // Verse (Map, IntVec3, terrain grids) and cannot compile into this Verse-free project; only the arithmetic it calls is real.
+            Case("Scenario_fill_in_one_end_of_a_full_canal_and_the_rest_gets_DEEPER", () =>
+            {
+                // §5's third consequence, the one the player must SEE: "the
+                // receiving cells' fill tiers rise, so displacement is visible:
+                // filling in one end of a canal makes the rest of it deeper."
+                //
+                // Four depth-4 cells, the first brimming and the rest holding 2.
+                // Raise the first to depth 3; it sheds one level, which the
+                // nearest channel cell below its brim takes.
+                int[] depth = { 4, 4, 4, 4 };
+                int[] fill = { 4, 2, 2, 2 };
+                int displaced = RM_StockMath.DisplacedLevels(depth[0], fill[0]);
+                Assert(displaced == 1, "one level comes out");
+                int remaining = displaced;
+                for (int i = 1; i < depth.Length && remaining > 0; i++)
+                {
+                    int take = Math.Min(RM_StockMath.CellRoom(depth[i], fill[i]), remaining);
+                    fill[i] += take;
+                    remaining -= take;
+                }
+                Assert(remaining == 0, "the channel had room, so nothing was destroyed");
+                Assert(fill[1] == 3, "🔑 the neighbour is visibly deeper — that is the whole point of the mechanic");
+                Assert(fill[2] == 2 && fill[3] == 2, "nearest first: the far end is untouched while the near end has room");
+            });
+
+            Case("Scenario_filling_in_a_sealed_full_canal_destroys_exactly_the_overflow", () =>
+            {
+                // No room anywhere and no body to take it: §5's one sanctioned
+                // exception. The amount destroyed is the displacement and not one
+                // level more.
+                int[] depth = { 4, 4 };
+                int[] fill = { 4, 4 };
+                int remaining = RM_StockMath.DisplacedLevels(depth[0], fill[0]);
+                for (int i = 1; i < depth.Length && remaining > 0; i++)
+                {
+                    int take = Math.Min(RM_StockMath.CellRoom(depth[i], fill[i]), remaining);
+                    fill[i] += take;
+                    remaining -= take;
+                }
+                Assert(remaining == 1, "one level had nowhere to go");
+                Assert(fill[1] == 4, "and the brimming neighbour took none of it");
+            });
+
+            Case("Scenario_channel_is_served_BEFORE_the_body_so_displacement_stays_visible", () =>
+            {
+                // The two-phase ordering, stated as a number. A pond one cell away
+                // with room to spare would swallow the whole displacement in a
+                // single mixed breadth-first walk, leaving the canal exactly as it
+                // was: mass conserved and every visible trace of it gone.
+                int channelRoom = RM_StockMath.CellRoom(4, 2);
+                int remaining = 2;
+                int toChannel = Math.Min(channelRoom, remaining);
+                remaining -= toChannel;
+                int toBody = RM_StockMath.CreditableLevels(false, 0f, 99f, remaining, WaterVolumePerTile);
+                Assert(toChannel == 2, "the channel takes what it can hold first");
+                Assert(toBody == 0, "so the pond — which would have taken all of it — gets nothing");
+            });
+
+            Case("Scenario_displaced_liquid_the_channel_cannot_hold_goes_home_to_the_pond", () =>
+            {
+                // And the reverse: a sealed channel with a pond at the end loses
+                // nothing at all. This is §5's reversibility argument — "fill it
+                // back in before a raid that never came and you get most of your
+                // liquid back."
+                float capacity = WaterCapacity(3);
+                float stock = capacity - 4f * WaterVolumePerTile; // four levels were dug out
+                int remaining = 3;                                // and three are coming back
+                int toChannel = RM_StockMath.CellRoom(4, 4);      // sealed: no room
+                Assert(toChannel == 0, "the channel is brimming");
+                int toBody = RM_StockMath.CreditableLevels(false, stock, capacity, remaining, WaterVolumePerTile);
+                Assert(toBody == 3, "the pond had room for all three, so nothing is destroyed");
+                stock += toBody * WaterVolumePerTile;
+                remaining -= toBody;
+                Assert(remaining == 0, "nothing left over to destroy");
+                AssertClose(stock, capacity - WaterVolumePerTile,
+                    "and the pond is back to exactly what the one remaining dug level took from it");
+            });
+
+            // ── flow order (FLOWWORKS_CHANNEL_OSCILLATION_1) ──────────────
+            Case("FlowOrder_equal_depth_overflow_only_runs_away_from_the_source", () =>
+            {
+                // A brimming D=1 mouth (1 hop) may hand a level to the next cell
+                // (2 hops) — and that cell may never hand it back. The back-gift is
+                // exactly the period-2 shuttle measured live on plot D.
+                Assert(RM_StockMath.MayFlowBetween(1, 0, 1, 2, 0, 1), "mouth -> next cell");
+                Assert(!RM_StockMath.MayFlowBetween(2, 0, 1, 1, 0, 1), "next cell -> mouth is refused");
+                Assert(!RM_StockMath.MayFlowBetween(2, 0, 1, 2, 0, 1), "equal key, equal depth: no sideways swap");
+            });
+
+            Case("FlowOrder_gravity_survives_at_an_equal_key", () =>
+            {
+                // No supplying source and no sink: every key is (0, 0), so only
+                // gravity moves — a breach into a deeper cell still drains.
+                Assert(RM_StockMath.MayFlowBetween(0, 0, 1, 0, 0, 3), "shallow -> deeper at equal key");
+                Assert(!RM_StockMath.MayFlowBetween(0, 0, 3, 0, 0, 1), "deeper -> shallow at equal key is refused");
+            });
+
+            Case("FlowOrder_without_a_source_levels_run_toward_the_sink", () =>
+            {
+                Assert(RM_StockMath.MayFlowBetween(0, 5, 1, 0, 4, 1), "one hop nearer the sink");
+                Assert(!RM_StockMath.MayFlowBetween(0, 4, 1, 0, 5, 1), "away from the sink is refused");
+            });
+
+            Case("FlowOrder_is_a_strict_order_so_no_level_can_return", () =>
+            {
+                // Exhaustive over a small key space: never both a->b and b->a, and
+                // never a->a. That antisymmetry is the whole oscillation fix.
+                for (int s1 = 0; s1 < 4; s1++)
+                for (int k1 = 0; k1 < 4; k1++)
+                for (int d1 = 1; d1 <= 4; d1++)
+                for (int s2 = 0; s2 < 4; s2++)
+                for (int k2 = 0; k2 < 4; k2++)
+                for (int d2 = 1; d2 <= 4; d2++)
+                {
+                    bool ab = RM_StockMath.MayFlowBetween(s1, k1, d1, s2, k2, d2);
+                    bool ba = RM_StockMath.MayFlowBetween(s2, k2, d2, s1, k1, d1);
+                    Assert(!(ab && ba), $"both ways at ({s1},{k1},{d1}) / ({s2},{k2},{d2})");
+                }
+            });
+
+            // LIQUID_BODY_FLUID_IDENTITY_1 step 2 (fluids never mix, owner Q3).
+            Case("FluidsCompatible_wet_cell_refuses_a_different_fluid", () =>
+            {
+                var water = new object();
+                var oil = new object();
+                Assert(RM_StockMath.FluidsCompatible(true, water, water), "same fluid flows");
+                Assert(!RM_StockMath.FluidsCompatible(true, water, oil), "oil may not enter a water cell");
+                Assert(!RM_StockMath.FluidsCompatible(true, oil, water), "water may not enter an oil cell");
+            });
+
+            Case("FluidsCompatible_dry_or_unrecorded_cells_take_any_fluid", () =>
+            {
+                var water = new object();
+                var oil = new object();
+                Assert(RM_StockMath.FluidsCompatible(false, water, oil), "a dry cell is claimed by the first fluid");
+                Assert(RM_StockMath.FluidsCompatible(true, (object)null, oil), "wet but unrecorded: legacy permissive");
+                Assert(RM_StockMath.FluidsCompatible(true, water, (object)null), "unrecorded donor: legacy permissive");
+            });
+
+            // FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 viscosity: stride = ticksPerTile / water's, rounded, >= 1.
+            Case("Viscosity_stride_from_ticksPerTile", () =>
+            {
+                Assert(RM_StockMath.ViscosityStride(60) == 1, "water moves every pulse");
+                Assert(RM_StockMath.ViscosityStride(1) == 1, "faster than water still moves every pulse");
+                Assert(RM_StockMath.ViscosityStride(180) == 3, "oil 180 -> 3");
+                Assert(RM_StockMath.ViscosityStride(360) == 6, "tar 360 -> 6");
+                Assert(RM_StockMath.ViscosityStride(480) == 8, "slime 480 -> 8");
+                Assert(RM_StockMath.ViscosityStride(89) == 1 && RM_StockMath.ViscosityStride(90) == 2, "rounds half up");
+            });
+
+            Case("Viscosity_tar_moves_one_pulse_in_six_water_every_pulse", () =>
+            {
+                int tar = 0, water = 0;
+                for (long p = 1; p <= 60; p++)
+                {
+                    if (RM_StockMath.FluidMovesThisPulse(p, 360)) tar++;
+                    if (RM_StockMath.FluidMovesThisPulse(p, 60)) water++;
+                }
+                Assert(water == 60, "water gave on " + water + " of 60 pulses");
+                Assert(tar == 10, "tar gave on " + tar + " of 60 pulses, want 10");
+                bool gap = false;
+                for (long p = 1; p <= 5; p++) gap |= !RM_StockMath.FluidMovesThisPulse(p, 360);
+                Assert(gap, "tar moved on every one of 5 consecutive pulses: no lag");
+            });
+
+            // FLOWWORKS_SHARED_SOURCE_STALL_1: the production component walk.
+            // A 3x1 body (sources at x=3..5, z=5); channel E runs (6..9,5) off the
+            // body's east end, channel N runs (5,6..9) off the same corner cell.
+            var srcCells = new HashSet<(int, int)> { (3, 5), (4, 5), (5, 5) };
+            var dug = new HashSet<(int, int)>();
+            for (int i = 1; i <= 4; i++) { dug.Add((5 + i, 5)); dug.Add((5, 5 + i)); }
+            List<List<(int, int)>> Components(IEnumerable<(int, int)> seeds)
+            {
+                var visited = new HashSet<(int, int)>();
+                var compSrc = new HashSet<(int, int)>();
+                var q = new Queue<(int, int)>();
+                var scratch = new List<(int, int)>();
+                var all = new List<List<(int, int)>>();
+                foreach (var s in seeds)
+                {
+                    if (visited.Contains(s)) continue;
+                    var comp = new List<(int, int)>();
+                    RM_StockMath.CollectComponent(s, c => srcCells.Contains(c), c => dug.Contains(c),
+                        (c, into) => { into.Add((c.Item1, c.Item2 + 1)); into.Add((c.Item1 + 1, c.Item2));
+                                       into.Add((c.Item1, c.Item2 - 1)); into.Add((c.Item1 - 1, c.Item2)); },
+                        visited, compSrc, q, scratch, comp, 6000);
+                    all.Add(comp);
+                }
+                return all;
+            }
+
+            Case("SharedSource_every_adjacent_channel_gets_the_source_either_dig_order", () =>
+            {
+                var east = new List<(int, int)>(); var north = new List<(int, int)>();
+                for (int i = 1; i <= 4; i++) { east.Add((5 + i, 5)); north.Add((5, 5 + i)); }
+                foreach (var order in new[] { east.Concat(north), north.Concat(east) })
+                {
+                    var comps = Components(order);
+                    Assert(comps.Count == 2, $"two components, got {comps.Count}");
+                    foreach (var comp in comps)
+                    {
+                        Assert(comp.Contains((5, 5)), "a channel component lacks the shared source (the stall)");
+                        Assert(comp.Count == 5, $"4 channel cells + 1 source, got {comp.Count}");
+                    }
+                }
+            });
+
+            Case("SharedSource_source_joins_but_is_never_expanded_through", () =>
+            {
+                // (4,5) and (3,5) are sources too but touch no channel cell: an ocean
+                // must not be walked just because one channel reaches its shore.
+                var comps = Components(new[] { (6, 5) });
+                Assert(!comps[0].Contains((4, 5)) && !comps[0].Contains((3, 5)), "walked into the body");
+                Assert(comps[0].Count == 5, $"E channel + 1 source, got {comps[0].Count}");
+            });
+
+            Case("SharedSource_one_channel_touching_two_sources_lists_each_once", () =>
+            {
+                dug.Add((4, 6)); // touches source (4,5) and channel cell (5,6)
+                try
+                {
+                    var comps = Components(new[] { (5, 6) });
+                    int s45 = comps[0].Count(c => c == (4, 5)), s55 = comps[0].Count(c => c == (5, 5));
+                    Assert(s45 == 1 && s55 == 1, $"sources listed (4,5)x{s45} (5,5)x{s55}");
+                }
+                finally { dug.Remove((4, 6)); }
+            });
+
+            // ── PIT_TEMPERATURE_SOFTENING_1 (redesigned 2026-10-11; coupling kept until its live check) ──
+            Case("PitExposure_coupling_never_weakens_and_pit_room_needs_half_deep", () =>
+            {
+                Assert(RM_PitExposureMath.Coupling(0.2f) == 1f && RM_PitExposureMath.Coupling(3f) == 3f, "coupling floor 1");
+                Assert(RM_PitExposureMath.IsPitRoom(5, 9) && !RM_PitExposureMath.IsPitRoom(4, 9), "half rounds up");
+                Assert(!RM_PitExposureMath.IsPitRoom(0, 0), "empty room is not a pit room");
+            });
+            Case("PitExposure_narrowing_moves_both_safe_bounds_by_N", () =>
+            {
+                // The ARITHMETIC only (vanilla's +-10 safe margin over the narrowed comfort range); that ApplyNarrowing writes +n/-n
+                // onto the right two stats is pinned in ReviewFixChecks. Design "The test that proves it", offline: human comfort 16-26,
+                // safe 6-36; narrowed by 8 -> 14-28 (owner Q1).
+                RM_PitExposureMath.SafeRange(16f, 26f, 0f, out float lo0, out float hi0);
+                Assert(lo0 == 6f && hi0 == 36f, "no narrowing = vanilla's safe range " + lo0 + ".." + hi0);
+                RM_PitExposureMath.SafeRange(16f, 26f, RM_PitExposureMath.DefaultNarrowing, out float lo, out float hi);
+                Assert(lo == 14f && hi == 28f, "narrowed 8: 14..28 (" + lo + ".." + hi + ")");
+                foreach (float n in new[] { 1f, 5f, 12f })
+                {
+                    RM_PitExposureMath.SafeRange(16f, 26f, n, out float a, out float b);
+                    Assert(a - lo0 == n && hi0 - b == n, "both bounds move by exactly " + n);
+                }
+                Assert(RM_PitExposureMath.Narrowing(-3f) == 0f && RM_PitExposureMath.Narrowing(99f) == 15f && RM_PitExposureMath.Narrowing(float.NaN) == 0f, "setting clamped 0..15");
+                // the design's three weathers, against the narrowed range (pit) and vanilla's (control)
+                Assert(RM_PitExposureMath.ElementsHurting(false, 32f, lo, hi) && !RM_PitExposureMath.ElementsHurting(false, 32f, lo0, hi0), "hot 32: pit hurts, control does not");
+                Assert(RM_PitExposureMath.ElementsHurting(false, 10f, lo, hi) && !RM_PitExposureMath.ElementsHurting(false, 10f, lo0, hi0), "cold 10: pit hurts, control does not");
+                Assert(!RM_PitExposureMath.ElementsHurting(false, 20f, lo, hi), "can-fail: mild 20 hurts nobody (exposure alone costs no resistance, owner Q2)");
+                Assert(RM_PitExposureMath.ElementsHurting(true, 20f, lo, hi), "an active Heatstroke/Hypothermia still counts after the weather turns");
+            });
+            Case("PitExposure_resistance_falls_faster_with_rate_and_floors_at_zero", () =>
+            {
+                Assert(RM_PitExposureMath.NextResistance(5f, 2f) < RM_PitExposureMath.NextResistance(5f, 1f), "rate scales");
+                Assert(RM_PitExposureMath.NextResistance(5f, 0f) == 5f, "rate 0 is the off dial");
+                Assert(RM_PitExposureMath.NextResistance(0.01f, 1f) == 0f, "floor");
+            });
+
+            // ── SUPERDEEP_HOLDER_RETIRE_1: the grid trap rule (owner Q4, pit width) ──
+            // PRODUCTION RM_PitTrapMath.cs. The holder model it replaces held ANY pawn on
+            // ANY D=4 cell; these cases go red against that model (large pawn in 1x1 / 1x5).
+            HashSet<(int, int)> PitRect(int x0, int z0, int w, int h)
+            {
+                var s = new HashSet<(int, int)>();
+                for (int i = 0; i < w; i++) for (int j = 0; j < h; j++) s.Add((x0 + i, z0 + j));
+                return s;
+            }
+            bool HeldIn(HashSet<(int, int)> pit, (int, int) c, float bodySize) =>
+                RM_PitTrapMath.Held(true, pit.Contains(c), true, false, false,
+                    RM_PitTrapMath.PitWidthAt((x, z) => pit.Contains((x, z)), c.Item1, c.Item2,
+                        RM_PitTrapMath.RequiredWidth(bodySize)));
+
+            Case("PitWidth_required_width_bands", () =>
+            {
+                Assert(RM_PitTrapMath.RequiredWidth(0.2f) == 1, "0.2 -> 1");
+                Assert(RM_PitTrapMath.RequiredWidth(1.0f) == 1, "1.0 -> 1");
+                Assert(RM_PitTrapMath.RequiredWidth(2.24f) == 1, "2.24 -> 1");
+                Assert(RM_PitTrapMath.RequiredWidth(2.25f) == 2, "2.25 -> 2 (band edge)");
+                Assert(RM_PitTrapMath.RequiredWidth(6.24f) == 2, "6.24 -> 2");
+                Assert(RM_PitTrapMath.RequiredWidth(6.25f) == 3, "6.25 -> 3 (band edge)");
+                Assert(RM_PitTrapMath.RequiredWidth(12.24f) == 3, "12.24 -> 3");
+                Assert(RM_PitTrapMath.RequiredWidth(1.0f, 4f) == 2, "multiplier scales BodySize");
+                Assert(RM_PitTrapMath.RequiredWidth(0f) == 1, "0 -> 1 floor");
+            });
+
+            Case("PitWidth_matrix_small_large_x_1x1_trench_2x2", () =>
+            {
+                // item verify: expected held = {T,T,T ; F,F,T}
+                var p1 = PitRect(10, 10, 1, 1); var tr = PitRect(10, 10, 1, 5); var p2 = PitRect(10, 10, 2, 2);
+                Assert(HeldIn(p1, (10, 10), 1.0f), "small in 1x1 held");
+                Assert(HeldIn(tr, (10, 12), 1.0f), "small in 1x5 trench held");
+                Assert(HeldIn(p2, (11, 11), 1.0f), "small in 2x2 held");
+                Assert(!HeldIn(p1, (10, 10), 2.4f), "large (2.4) in 1x1 NOT held");
+                Assert(!HeldIn(tr, (10, 12), 2.4f), "large in 1x5 trench NOT held");
+                foreach (var c in p2) Assert(HeldIn(p2, c, 2.4f), $"large in 2x2 held at {c}");
+            });
+
+            Case("PitWidth_fill_in_one_cell_releases_large", () =>
+            {
+                var p2 = PitRect(10, 10, 2, 2);
+                p2.Remove((11, 11));
+                Assert(!HeldIn(p2, (10, 10), 2.4f), "2x2 broken by a fill-in -> large not held");
+                Assert(HeldIn(p2, (10, 10), 1.0f), "small still held");
+            });
+
+            Case("PitWidth_diagonal_run_does_not_count", () =>
+            {
+                var diag = new HashSet<(int, int)> { (10, 10), (11, 11), (12, 12), (13, 13) };
+                Assert(!HeldIn(diag, (11, 11), 2.4f), "diagonal cells are not a 2-wide pit");
+                Assert(RM_PitTrapMath.MeasuredPitWidth((x, z) => diag.Contains((x, z)), 11, 11) == 1, "width 1");
+                Assert(RM_PitTrapMath.MeasuredPitWidth((x, z) => PitRect(0, 0, 3, 3).Contains((x, z)), 2, 0) == 3, "3x3 corner width 3");
+                Assert(RM_PitTrapMath.MeasuredPitWidth((x, z) => false, 0, 0) == 0, "not D4 -> 0");
+            });
+
+            Case("PitTrap_held_gates_and_step_rule", () =>
+            {
+                Assert(!RM_PitTrapMath.Held(false, true, true, false, false, true), "rule off -> free");
+                Assert(!RM_PitTrapMath.Held(true, false, true, false, false, true), "not D4 -> free");
+                Assert(!RM_PitTrapMath.Held(true, true, false, false, false, true), "own faction carve-out -> free");
+                Assert(!RM_PitTrapMath.Held(true, true, true, true, false, true), "flying -> free");
+                Assert(!RM_PitTrapMath.Held(true, true, true, false, true, true), "ladder -> free");
+                Assert(RM_PitTrapMath.Held(true, true, true, false, false, true), "all gates -> held");
+                Assert(RM_PitTrapMath.StepBlocked(true, 3) && RM_PitTrapMath.StepBlocked(true, 0), "held cannot step up");
+                Assert(!RM_PitTrapMath.StepBlocked(true, 4), "held may move along the D4 floor");
+                Assert(!RM_PitTrapMath.StepBlocked(false, 0), "unheld walks out");
+                Assert(RM_PitTrapMath.IsPitDescent(0, 4) && RM_PitTrapMath.IsPitDescent(3, 4), "into D4 is a descent");
+                Assert(!RM_PitTrapMath.IsPitDescent(4, 4) && !RM_PitTrapMath.IsPitDescent(4, 0) && !RM_PitTrapMath.IsPitDescent(0, 3),
+                    "along / out / into D3 are not pit descents");
+                AssertClose(RM_PitTrapMath.FallDamage(60f, 1f), 4.8f, "60 kg -> 4.8 blunt");
+                AssertClose(RM_PitTrapMath.FallDamage(5f, 1f), 1f, "floor 1");
+                AssertClose(RM_PitTrapMath.FallDamage(60f, 0f), 1f, "multiplier 0 still floors at 1");
+            });
+
+            // ── FLOWWORKS_PIT_FALL_ONLY_FORCED_1 + the pit_escape ladder bug (live FAIL 2026-10-06) ──
+            Case("PitFall_only_forced_or_concealed", () =>
+            {
+                // (walkedStep, ontoUsableLadder, playerFaction, captured)
+                Assert(RM_PitTrapMath.DescentFalls(false, false, true, false), "colonist blown/forced in: falls");
+                Assert(RM_PitTrapMath.DescentFalls(false, true, true, false), "forced onto a ladder cell still falls");
+                Assert(RM_PitTrapMath.DescentFalls(false, false, false, true), "enemy forced in: falls");
+                Assert(!RM_PitTrapMath.DescentFalls(true, false, true, false), "colonist never falls by walking");
+                Assert(!RM_PitTrapMath.DescentFalls(true, false, true, true), "...even with the own-faction capture setting on");
+                Assert(!RM_PitTrapMath.DescentFalls(true, true, false, true), "climbing down a usable ladder is not a fall");
+                Assert(RM_PitTrapMath.DescentFalls(true, false, false, true), "a captured non-colonist walking into an open pit still falls (stale route)");
+                Assert(!RM_PitTrapMath.DescentFalls(true, false, false, false), "not captured, walked: no fall");
+            });
+
+            Case("PitRoute_ladder_way_out_and_never_in_by_accident", () =>
+            {
+                // 5x5 pit at (10..14, 10..14); ladder in the TOP ROW at (12, 14) — the runner's fixture.
+                var pit = PitRect(10, 10, 5, 5);
+                var ladder = (12, 14);
+                bool IsPit(int x, int z) => pit.Contains((x, z));
+                bool Lip(int x, int z) => !pit.Contains((x, z));
+                bool LadderLowered(int x, int z) => (x, z) == ladder;
+                bool HeldLowered(int x, int z) => pit.Contains((x, z)) && (x, z) != ladder;
+                bool HeldRaised(int x, int z) => pit.Contains((x, z));
+                bool NoLadder(int x, int z) => false;
+                bool Free(int x, int z) => false;
+
+                // A held friendly in the far corner, sent outside, below-left of the pit: the old
+                // vanilla route left over the nearest lip and was vetoed. Now: walk IN the pit to the ladder.
+                var r = RM_PitTrapMath.PlanRoute(IsPit, HeldLowered, LadderLowered, Lip, 10, 10, 5, 5, false, 4000);
+                Assert(r.leg == RM_PitTrapMath.PitLeg.WalkToInPit && (r.x, r.z) == ladder, "held: to the ladder inside the pit, got " + r.leg + " " + r.x + "," + r.z);
+                // On the ladder: one step up onto the lip, toward the destination.
+                r = RM_PitTrapMath.PlanRoute(IsPit, HeldLowered, LadderLowered, Lip, 12, 14, 5, 5, false, 4000);
+                Assert(r.leg == RM_PitTrapMath.PitLeg.StepTo && !pit.Contains((r.x, r.z))
+                    && Math.Abs(r.x - 12) <= 1 && Math.Abs(r.z - 14) <= 1, "on the ladder: step to an adjacent lip cell");
+                // Raised ladder (or a hostile, for whom a lowered ladder is no way out): nothing.
+                r = RM_PitTrapMath.PlanRoute(IsPit, HeldRaised, NoLadder, Lip, 10, 10, 5, 5, false, 4000);
+                Assert(r.leg == RM_PitTrapMath.PitLeg.Vanilla, "trapped: vanilla (reachability vetoes)");
+                // A pawn this pit does not hold (colonist, own-faction carve-out): untouched.
+                r = RM_PitTrapMath.PlanRoute(IsPit, Free, LadderLowered, Lip, 10, 10, 5, 5, false, 4000);
+                Assert(r.leg == RM_PitTrapMath.PitLeg.Vanilla, "not held anywhere: vanilla");
+                // Moving within the pit stays in the pit (never out over the lip and back in).
+                r = RM_PitTrapMath.PlanRoute(IsPit, HeldLowered, LadderLowered, Lip, 10, 10, 14, 10, true, 4000);
+                Assert(r.leg == RM_PitTrapMath.PitLeg.StayInPit, "in-pit destination: StayInPit");
+                // Ladder in the interior with no lip beside it is not a way out by itself.
+                var pit7 = PitRect(0, 0, 7, 7);
+                r = RM_PitTrapMath.PlanRoute((x, z) => pit7.Contains((x, z)), (x, z) => pit7.Contains((x, z)) && (x, z) != (3, 3),
+                    (x, z) => (x, z) == (3, 3), (x, z) => !pit7.Contains((x, z)), 0, 0, -5, -5, false, 4000);
+                Assert(r.leg == RM_PitTrapMath.PitLeg.Vanilla, "interior ladder touching no lip: no exit leg");
+
+                // From outside: open pits are never crossed; a pit-floor destination only via a ladder.
+                r = RM_PitTrapMath.PlanRoute(IsPit, HeldLowered, LadderLowered, Lip, 5, 12, 20, 12, false, 4000);
+                Assert(r.leg == RM_PitTrapMath.PitLeg.AvoidPits, "outside -> outside: AvoidPits");
+                r = RM_PitTrapMath.PlanRoute(IsPit, HeldLowered, NoLadder, Lip, 5, 12, 11, 11, true, 4000);
+                Assert(r.leg == RM_PitTrapMath.PitLeg.AvoidPits, "no ladder: the floor is refused (AvoidPits)");
+                r = RM_PitTrapMath.PlanRoute(IsPit, HeldLowered, LadderLowered, Lip, 5, 20, 11, 11, true, 4000);
+                Assert(r.leg == RM_PitTrapMath.PitLeg.WalkToAvoidPits && !pit.Contains((r.x, r.z))
+                    && Math.Abs(r.x - 12) <= 1 && Math.Abs(r.z - 14) <= 1, "down a ladder: first the lip beside it");
+                r = RM_PitTrapMath.PlanRoute(IsPit, HeldLowered, LadderLowered, Lip, 12, 15, 11, 11, true, 4000);
+                Assert(r.leg == RM_PitTrapMath.PitLeg.StepTo && (r.x, r.z) == ladder, "beside the ladder: step onto it");
+            });
+
+            // ── FLOWWORKS_LADDER_RAISE_LOWER_1 (owner 2026-10-06): ladder up / ladder down ──
+            Case("Ladder_raise_lower_usable_and_entry", () =>
+            {
+                // (raiseLowerOn, raised, prisonDoorOn, mayClimb)
+                Assert(RM_PitTrapMath.LadderUsable(true, false, true, true), "lowered, colonist: climbs");
+                Assert(!RM_PitTrapMath.LadderUsable(true, false, true, false), "lowered, hostile under the prison door: stays");
+                Assert(!RM_PitTrapMath.LadderUsable(true, true, true, true), "raised: nobody, colonist included");
+                Assert(!RM_PitTrapMath.LadderUsable(true, true, false, false), "raised blocks even with the prison door off");
+                Assert(RM_PitTrapMath.LadderUsable(false, true, true, true), "raise/lower setting off: a 'raised' ladder counts as lowered");
+                Assert(RM_PitTrapMath.LadderUsable(true, false, false, false), "prison door off: a lowered ladder lets anyone climb");
+
+                // 5x5 pit (10..14, 10..14), ladder top-middle (12, 14); item on the floor at the centre.
+                var pit = PitRect(10, 10, 5, 5);
+                bool IsPit(int x, int z) => pit.Contains((x, z));
+                bool Lip(int x, int z) => !pit.Contains((x, z));
+                bool Lowered(int x, int z) => (x, z) == (12, 14);
+                bool Raised(int x, int z) => false;
+                Assert(RM_PitTrapMath.PitFloorEnterable(IsPit, Lowered, Lip, 12, 12, 4000), "lowered ladder: the floor is enterable (a hauler may fetch)");
+                Assert(!RM_PitTrapMath.PitFloorEnterable(IsPit, Raised, Lip, 12, 12, 4000), "raised ladder: the floor is not enterable");
+                Assert(!RM_PitTrapMath.PitFloorEnterable(IsPit, Lowered, Lip, 30, 30, 4000), "not a pit cell: no component, nothing to enter");
+                // A ladder in a DIFFERENT pit does not let you into this one.
+                var pitB = PitRect(20, 10, 5, 5);
+                bool IsPitAB(int x, int z) => pit.Contains((x, z)) || pitB.Contains((x, z));
+                bool LadderInB(int x, int z) => (x, z) == (22, 14);
+                Assert(!RM_PitTrapMath.PitFloorEnterable(IsPitAB, LadderInB, (x, z) => !IsPitAB(x, z), 12, 12, 4000), "a ladder in another pit does not help");
+                // An interior ladder touching no lip is no way down (matches PlanRoute's descent leg).
+                var pit7 = PitRect(0, 0, 7, 7);
+                Assert(!RM_PitTrapMath.PitFloorEnterable((x, z) => pit7.Contains((x, z)), (x, z) => (x, z) == (3, 3),
+                    (x, z) => !pit7.Contains((x, z)), 1, 1, 4000), "interior ladder: not an entry");
+                // Agreement with the pather: enterable <=> PlanRoute's descent leg is not AvoidPits.
+                var r = RM_PitTrapMath.PlanRoute(IsPit, (x, z) => false, Lowered, Lip, 12, 20, 12, 12, true, 4000);
+                Assert(r.leg != RM_PitTrapMath.PitLeg.AvoidPits, "lowered: pather plans a way down");
+                r = RM_PitTrapMath.PlanRoute(IsPit, (x, z) => false, Raised, Lip, 12, 20, 12, 12, true, 4000);
+                Assert(r.leg == RM_PitTrapMath.PitLeg.AvoidPits, "raised: pather refuses the floor");
+            });
+
+            Case("PitTrap_spike_damage_scales_with_body_size", () =>
+            {
+                Assert(RM_PitTrapMath.SpikeHits == 3, "three spike hits per descent");
+                AssertClose(RM_PitTrapMath.SpikeDamagePerHit(1f, 1f), 40f / 3f, "human: 3 x 13.3 = 40 Sharp");
+                AssertClose(RM_PitTrapMath.SpikeDamagePerHit(4f, 1f) * 3, 160f, "thrumbo-size: 160 total");
+                Assert(RM_PitTrapMath.SpikeDamagePerHit(2f, 1f) > RM_PitTrapMath.SpikeDamagePerHit(1f, 1f), "bigger body, bigger hits");
+                AssertClose(RM_PitTrapMath.SpikeDamagePerHit(1f, 2f), 80f / 3f, "multiplier scales linearly");
+                AssertClose(RM_PitTrapMath.SpikeDamagePerHit(0.1f, 0f), 1f, "floor 1 per hit");
+            });
+
+            // ── SLUICE_GATE_REBUILD_LIFTS_UP_NOT_SIDEWAYS: "When closed, it is not traversible" — a shut sluice opens for
+            //    nobody walking at it, not even a colonist vanilla would let through (the old rule did: it fails here) ──
+            Case("FlowDoor_shut_sluice_opens_for_nobody_grate_holds_prisoners", () =>
+            {
+                // (vanillaOpens, heldInPit, sealedRule, isSluice)
+                Assert(!RM_PitTrapMath.FlowDoorOpens(true, false, true, true), "shut sluice: a colonist vanilla lets through stays out");
+                Assert(!RM_PitTrapMath.FlowDoorOpens(true, false, false, true), "shut sluice: rule off changes nothing");
+                Assert(!RM_PitTrapMath.FlowDoorOpens(false, false, true, true), "shut sluice: a prisoner or beast stays in");
+                Assert(!RM_PitTrapMath.FlowDoorOpens(true, true, true, false), "held in a pit: grate shut even for a colonist");
+                Assert(RM_PitTrapMath.FlowDoorOpens(true, true, false, false), "sealed rule off: vanilla decides");
+                Assert(RM_PitTrapMath.FlowDoorOpens(true, false, true, false), "colonist outside a pit: grate opens");
+                Assert(!RM_PitTrapMath.FlowDoorOpens(false, false, true, false), "grate holds a human prisoner");
+                Assert(RM_PitTrapMath.FlowDoorSeals(true, false) && !RM_PitTrapMath.FlowDoorSeals(true, true)
+                    && !RM_PitTrapMath.FlowDoorSeals(false, false), "shut sluice seals; lifted sluice and grate pass liquid");
+            });
+
+            // ── GRATE_DOOR_REBUILD_LIFTS_LIKE_THE_SLUICE: the panel rises straight up, never sideways (vanilla's movers slide
+            //    0.45 x OpenPct sideways; that rule fails the dx checks) ──
+            Case("FlowDoor_gate_panel_lifts_straight_up", () =>
+            {
+                float dx, dz;
+                RM_PitTrapMath.GateLiftOffset(0.56f, 0f, out dx, out dz);
+                AssertClose(dx, 0f, "shut: no sideways");
+                AssertClose(dz, 0f, "shut: panel down");
+                RM_PitTrapMath.GateLiftOffset(0.56f, 0.5f, out dx, out dz);
+                AssertClose(dx, 0f, "half: no sideways");
+                AssertClose(dz, 0.28f, "half: half the lift");
+                RM_PitTrapMath.GateLiftOffset(0.56f, 1f, out dx, out dz);
+                AssertClose(dx, 0f, "open: no sideways");
+                AssertClose(dz, 0.56f, "open: full lift");
+                RM_PitTrapMath.GateLiftOffset(0.56f, 3f, out dx, out dz);
+                AssertClose(dz, 0.56f, "open pct clamps at 1");
+                RM_PitTrapMath.GateLiftOffset(-1f, 1f, out dx, out dz);
+                AssertClose(dz, 0f, "negative lift draws shut");
+            });
+
+            // ── PIT_DEPTH_DRAW_OFFSET_1: pawns sink with D; D=4 lip is 1.2x a person (owner's 20 %) ──
+            Case("PitDraw_sink_is_monotonic_in_depth_and_superdeep_clears_head_by_20pct", () =>
+            {
+                float k = RM_PitDrawMath.DefaultSinkPerLevel;
+                for (int d = 0; d < RM_PitDrawMath.SinkCapLevels; d++)
+                    Assert(RM_PitDrawMath.SinkFor(d + 1, k) > RM_PitDrawMath.SinkFor(d, k), "deeper draws lower at D=" + (d + 1));
+                AssertClose(RM_PitDrawMath.SinkFor(0, k), 0f, "surface: no sink");
+                Assert(RM_PitDrawMath.SinkCapLevels == 8, "the sink cap is 4 m (SINK_CAP_WIDEN_PAWNS_SINK_TO_FOUR)");
+                AssertClose(RM_PitDrawMath.SinkFor(9, k), RM_PitDrawMath.SinkFor(8, k), "clamped at 4 m");
+                Assert(RM_PitDrawMath.WallOverHeadRatio(4, k, RM_PitDrawMath.HumanlikeFeetToHeadTop) >= 1.2f - 1e-4f, "D=4 wall >= 1.2x head");
+                Assert(RM_PitDrawMath.WallOverHeadRatio(3, k, RM_PitDrawMath.HumanlikeFeetToHeadTop) < 1f, "D=3 does not bury a person");
+                AssertClose(RM_PitDrawMath.SinkFor(4, 0f), 0f, "per-level 0 is the off dial");
+            });
+            Case("PitDraw_StepProgress_projects_onto_the_step", () =>
+            {
+                AssertClose(RM_PitDrawMath.StepProgress(0.5f, 0.5f, 1.5f, 0.5f, 1.0f, 0.5f), 0.5f, "progress projects onto the step");
+                AssertClose(RM_PitDrawMath.StepProgress(0.5f, 0.5f, 1.5f, 1.5f, -3f, -3f), 0f, "clamped low");
+                AssertClose(RM_PitDrawMath.StepProgress(0.5f, 0.5f, 0.5f, 0.5f, 9f, 9f), 1f, "zero-length step");
+            });
+
+            // ── PIT_LIP_OCCLUDES_OUTSIDE_1: a pit pawn's drawn centre never drops past the near lip ──
+            Case("PitDraw_sink_never_carries_the_centre_south_of_the_lip", () =>
+            {
+                float s4 = RM_PitDrawMath.SinkFor(4, 0.3f);
+                // south row of a pit: cell 135 (centre 135.5), lip at 135 -> only half a cell of sink
+                AssertClose(RM_PitDrawMath.ClampSinkToLip(s4, 135.5f, 135f), 0.5f, "south row: centre held on the lip");
+                Assert(135.5f - RM_PitDrawMath.ClampSinkToLip(s4, 135.5f, 135f) >= 135f - 1e-4f, "drawn centre inside the opening");
+                // two rows in: full superdeep sink fits
+                AssertClose(RM_PitDrawMath.ClampSinkToLip(s4, 136.5f, 135f), s4, "room enough: full sink");
+                AssertClose(RM_PitDrawMath.ClampSinkToLip(s4, 136.5f, float.NaN), s4, "no lip found: sink unchanged");
+                AssertClose(RM_PitDrawMath.ClampSinkToLip(0f, 135.5f, 135f), 0f, "no sink stays none");
+                AssertClose(RM_PitDrawMath.ClampSinkToLip(s4, 135.5f, 136f), 0f, "lip at or north of the centre: no sink");
+            });
+
+            // ── LIQUID_HEAT_PUSH_1: hot and icy liquid move the room through vanilla heat ──
+            Case("LiquidHeat_kind_hot_cold_neither_and_both", () =>
+            {
+                Assert(RM_LiquidHeatMath.Kind(true, false) == 1, "hot alone is +1");
+                Assert(RM_LiquidHeatMath.Kind(false, true) == -1, "cold alone is -1");
+                Assert(RM_LiquidHeatMath.Kind(false, false) == 0, "neither pushes nothing");
+                Assert(RM_LiquidHeatMath.Kind(true, true) == 0, "a def claiming both pushes nothing (safe reading)");
+            });
+
+            Case("LiquidHeat_cell_energy_scales_with_fill_and_strength_and_sign", () =>
+            {
+                float one = RM_LiquidHeatMath.CellEnergy(1, 1, 1f);
+                Assert(one > 0f, "hot liquid pushes positive energy");
+                AssertClose(RM_LiquidHeatMath.CellEnergy(1, 4, 1f), 4f * one, "a brim-full superdeep cell is four levels");
+                AssertClose(RM_LiquidHeatMath.CellEnergy(1, 2, 2f), 4f * one, "strength multiplies");
+                Assert(RM_LiquidHeatMath.CellEnergy(-1, 2, 1f) < 0f, "icy liquid pushes negative energy");
+                AssertClose(RM_LiquidHeatMath.CellEnergy(1, 0, 1f), 0f, "a dry cell pushes nothing");
+                AssertClose(RM_LiquidHeatMath.CellEnergy(0, 4, 1f), 0f, "plain water pushes nothing");
+                AssertClose(RM_LiquidHeatMath.CellEnergy(1, 4, 0f), 0f, "strength 0 pushes nothing");
+                // calibration: a superdeep cell brim-full of boiling water is about half a vanilla heater (21/s)
+                float heater = 21f * RM_LiquidHeatMath.SecondsPerInterval;
+                float pit = RM_LiquidHeatMath.CellEnergy(1, 4, 1f);
+                Assert(pit > 0.4f * heater && pit < 0.75f * heater, "one full boiling pit cell is ~half a heater: " + pit + " vs " + heater);
+            });
+
+            Case("LiquidHeat_room_never_passes_its_target", () =>
+            {
+                // A 9-cell pit room at 20 C under a huge push: it may rise at most to 50 C (30 C x 9 cells = 270).
+                float e = RM_LiquidHeatMath.RoomEnergy(1e6f, 20f, 9, 1f);
+                Assert(e > 0f, "a cool room takes heat");
+                Assert(20f + e / 9f <= RM_LiquidHeatMath.HotTargetC + 1e-3f, "a hot room overshot its target: " + (20f + e / 9f));
+                AssertClose(RM_LiquidHeatMath.RoomEnergy(100f, RM_LiquidHeatMath.HotTargetC, 9, 1f), 0f, "a room at the target takes nothing");
+                AssertClose(RM_LiquidHeatMath.RoomEnergy(100f, 70f, 9, 1f), 0f, "a room ABOVE a hot target is never cooled by hot liquid");
+                float c = RM_LiquidHeatMath.RoomEnergy(-1e6f, 20f, 9, 1f);
+                Assert(c < 0f, "a warm room is chilled by icy liquid");
+                Assert(20f + c / 9f >= RM_LiquidHeatMath.ColdTargetC - 1e-3f, "a cold room undershot its target: " + (20f + c / 9f));
+                AssertClose(RM_LiquidHeatMath.RoomEnergy(-100f, -10f, 9, 1f), 0f, "a room below 0 C is never warmed by icy liquid");
+            });
+
+            Case("LiquidHeat_room_cap_is_eight_heaters_per_interval", () =>
+            {
+                float heater = 21f * RM_LiquidHeatMath.SecondsPerInterval;
+                // A 1000-cell hall at 0 C: the target allows 50,000; the cap must bind.
+                float e = RM_LiquidHeatMath.RoomEnergy(1e7f, 0f, 1000, 1f);
+                AssertClose(e, 8f * heater, "a hall over a lake takes eight heaters' worth, no more");
+                AssertClose(RM_LiquidHeatMath.RoomEnergy(-1e7f, 40f, 1000, 1f), -8f * heater, "the cap binds for cold too");
+                AssertClose(RM_LiquidHeatMath.RoomEnergy(1e7f, 0f, 1000, 2f), 16f * heater, "the cap scales with strength");
+                AssertClose(RM_LiquidHeatMath.RoomEnergy(10f, 0f, 1000, 1f), 10f, "under the cap the sum passes whole");
+                AssertClose(RM_LiquidHeatMath.RoomEnergy(10f, 0f, 0, 1f), 0f, "a room of no cells takes nothing");
+            });
+
+            Case("LiquidHeat_budget_bounds_cost_and_keeps_average_power", () =>
+            {
+                int v = RM_LiquidHeatMath.Budget(100, out float s1);
+                Assert(v == 100 && s1 == 1f, "under the budget every cell is visited at face value");
+                int big = RM_LiquidHeatMath.CellBudgetPerInterval * 4;
+                v = RM_LiquidHeatMath.Budget(big, out float s2);
+                Assert(v == RM_LiquidHeatMath.CellBudgetPerInterval, "a big lake visits only the budget");
+                AssertClose(v * s2, big, "visited x scale equals the full count: average power is exact");
+                v = RM_LiquidHeatMath.Budget(0, out float s3);
+                Assert(v == 0 && s3 == 1f, "nothing to visit");
+            });
+
+            // ── FLOWWORKS_BUILD_PROGRAM_1 Phase 6: ruling 7's burn rates and the travelling front ──
+            Case("Fire_burn_is_one_rate_one_notch_a_day_canal_or_pond", () =>
+            {
+                // LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD (D3): one rate for every burning square; the 5-day pond rate is gone
+                int canal = RM_FireMath.TicksPerCanalLevel(1f);
+                Assert(canal == 60000, "one notch per day");
+                string fm = RiverSwitchFlipChecks.Src("RM_FireMath.cs");
+                Assert(!fm.Contains("TicksPerSourceLevel"), "no second (pond) rate");
+                string lf = RiverSwitchFlipChecks.Src("RM_LiquidFire.cs");
+                Assert(!lf.Contains("sourceBurnDaysPerLevel") && !lf.Contains("canalBurnDaysPerLevel"), "the fire reads the one setting");
+                RiverSwitchFlipChecks.Has(lf, @"int notchTicks = RM_FireMath\.TicksPerCanalLevel\(RimMandrakeFlowWorksSettings\.burnDaysPerNotch\);", "one rate");
+                RiverSwitchFlipChecks.Has(lf, @"long dl = RM_FireMath\.DlDue\(ref acc, pulseTicks, notchTicks, U\);", "a pond square burns at the same rate");
+                // in decilitres: 240 pulses of 250 ticks burn exactly one notch, and a 4.5 cm sheet (900 dL) burns in 2.16 h
+                int U = RM_Volume.UnitsPerLevel;
+                int a2 = 0; long dl = 0;
+                for (int p = 0; p < 240; p++) dl += RM_FireMath.DlDue(ref a2, 250, canal, U);
+                Assert(dl == U && a2 == 0, "240 pulses burn exactly one notch in dL, got " + dl + " acc " + a2);
+                a2 = 0; dl = 0; int pulses = 0;
+                while (dl < 900 && pulses < 1000) { dl += RM_FireMath.DlDue(ref a2, 250, canal, U); pulses++; }
+                Assert(pulses == 22, "a 4.5 cm sheet burns away in 22 pulses (~5,400 ticks), took " + pulses);
+                a2 = 0;
+                Assert(RM_FireMath.CanalDlToBurn(false, ref a2, 250, canal, U) == 0 && a2 == 0, "water that does not burn is not consumed");
+                int acc = 0, levels = 0;
+                for (int p = 0; p < 240; p++) levels += RM_FireMath.LevelsDue(ref acc, 250, canal);
+                Assert(levels == 1 && acc == 0, "240 pulses of 250 ticks burn exactly one level");
+                acc = 0; levels = 0;
+                for (int p = 0; p < 720; p++) levels += RM_FireMath.LevelsDue(ref acc, 250, canal);
+                Assert(levels == 3, "a brimming 3-level cell burns about three days");
+                acc = 0;
+                Assert(RM_FireMath.LevelsDue(ref acc, 0, canal) == 0 && acc == 0, "no time, no burn");
+            });
+            Case("ExcavationSanity_corrupt_grid_is_clamped_and_palette_compacts", () =>
+            {
+                byte[] d = { 0, 9, 2, 3 };
+                byte[] f = { 0, 4, 3, 1 };
+                byte[] x = { 0, 1, 200, 3 };
+                var r = RM_ExcavationSanityMath.Repair(d, f, x, 3, 4);
+                Assert(d[1] == 4 && r.depthClamped == 1, "depth 9 clamps to 4");
+                Assert(f[2] == 2 && r.fillClamped == 1, "fill 3 over depth 2 clamps to 2");
+                Assert(x[2] == 0 && r.fluidKeyCleared == 1, "fluid key past the palette is cleared");
+                Assert(RM_ExcavationSanityMath.Repair(d, f, x, 3, 4).Total == 0, "a second pass changes nothing");
+                bool[] used = RM_ExcavationSanityMath.KeysInUse(x, 3);
+                Assert(used[1] && !used[2] && used[3], "keys 1 and 3 in use, 2 not");
+                byte[] remap;
+                Assert(RM_ExcavationSanityMath.BuildCompaction(used, out remap) == 2, "palette shrinks 3 to 2");
+                RM_ExcavationSanityMath.ApplyRemap(x, remap);
+                Assert(x[1] == 1 && x[3] == 2, "key 3 remaps to 2");
+                Assert(RM_ExcavationSanityMath.Repair(null, null, null, 0, 4).Total == 0, "null grids are skipped");
+            });
+            Case("Fire_front_fuse_is_outrunnable_detonation_is_fast_and_source_reach_bounded", () =>
+            {
+                Assert(RM_FireMath.FrontDue(100, 120, 1f) == 220, "fuse steps by ticksPerCell");
+                Assert(RM_FireMath.FrontDue(100, 120, 2f) == 160, "speed multiplier halves the step");
+                Assert(RM_FireMath.FrontDue(100, 0, 1f) == 101, "never zero: the front always moves forward in time");
+                Assert(RM_FireMath.SourceHopsFor(false, 0, true) == 1, "entering a pond is hop 1");
+                Assert(RM_FireMath.SourceHopsFor(true, 2, true) == 3, "walking a pond counts hops");
+                Assert(RM_FireMath.SourceHopsFor(true, 5, false) == 0, "back into a channel resets");
+                Assert(RM_FireMath.SourceHopAllowed(3, 3) && !RM_FireMath.SourceHopAllowed(4, 3), "reach bounds the pond walk");
+                Assert(!RM_FireMath.SourceHopAllowed(1, 0), "reach 0: a source never lights");
+                AssertClose(RM_FireMath.AttachChance(true), 1f, "ruling 22: a pit occupant always catches");
+                Assert(RM_FireMath.AttachChance(false) < 1f, "a free pawn may step out unburned");
+            });
+
+            // ── PIT_FILL_EFFECTS_1, rewired by PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE (V2): drowning when the head is under ──
+            Case("FillEffects_drowning_is_head_under_nonswimmer_any_depth", () =>
+            {
+                float full = RM_RelativeRulesMath.DrowningPerCheck(true, false, false, false, false, 1f);
+                Assert(full > 0f, "head under, no exit: a non-swimmer drowns");
+                Assert(1f / full <= 10.5f && 1f / full >= 9.5f, "about ten checks (one in-game hour) to death");
+                AssertClose(RM_RelativeRulesMath.DrowningPerCheck(false, false, false, false, false, 1f), 0f, "head clear: nobody drowns");
+                AssertClose(RM_RelativeRulesMath.DrowningPerCheck(true, false, true, false, false, 1f), 0f, "a swimmer treads water");
+                AssertClose(RM_RelativeRulesMath.DrowningPerCheck(true, false, false, true, false, 1f), 0f, "a flier is not in it");
+                AssertClose(RM_RelativeRulesMath.DrowningPerCheck(true, false, false, false, true, 1f), 0f, "standing beside a climbable way out");
+                AssertClose(RM_RelativeRulesMath.DrowningPerCheck(true, true, false, false, true, 1f), full, "lying down reaches no exit");
+            });
+            Case("FillEffects_poison_scales_with_fill_and_resistance", () =>
+            {
+                float full = RM_FillEffectMath.ToxinPerCheck(3, 3, 2.4f, 0f, false);
+                AssertClose(full, 0.01f, "2.4/day at brim is 0.01 per 250-tick check");
+                AssertClose(RM_FillEffectMath.ToxinPerCheck(1, 3, 2.4f, 0f, false), full / 3f, "one third full, one third dose");
+                AssertClose(RM_FillEffectMath.ToxinPerCheck(3, 3, 2.4f, 0.5f, false), full / 2f, "half resistance, half dose");
+                AssertClose(RM_FillEffectMath.ToxinPerCheck(3, 3, 2.4f, 1f, false), 0f, "immune");
+                AssertClose(RM_FillEffectMath.ToxinPerCheck(3, 3, 0f, 0f, false), 0f, "water is not poison");
+            });
+
+            // ── SUPERDEEP_PRISON_ROOM_1: the pit wall bounds rooms; capture down from the lip ──
+            Case("PitRoom_wall_splits_sides_and_lip_jobs_never_stand_in_the_pit", () =>
+            {
+                Assert(RM_PitRoomMath.SameSide(true, true) && RM_PitRoomMath.SameSide(false, false), "same side shares a room");
+                Assert(!RM_PitRoomMath.SameSide(true, false), "the pit wall splits rooms");
+                Assert(!RM_PitRoomMath.LipCandidate(true, true, 1f, 1.5f), "a superdeep cell is never a lip cell");
+                Assert(!RM_PitRoomMath.LipCandidate(false, false, 1f, 1.5f), "an unstandable cell is not a lip");
+                Assert(RM_PitRoomMath.LipCandidate(false, true, 1.41f, 1.5f), "a diagonal neighbour is a lip cell for touch");
+                Assert(!RM_PitRoomMath.LipCandidate(false, true, 2f, 1.5f), "two cells away cannot touch");
+                Assert(RM_PitRoomMath.KindOf("PrisonerConvert") == RM_PitRoomMath.LipKind.Interact, "convert down is an interaction");
+                Assert(RM_PitRoomMath.KindOf("PrisonerAttemptRecruit") == RM_PitRoomMath.LipKind.Interact, "recruit is an interaction");
+                Assert(RM_PitRoomMath.KindOf("DeliverFood") == RM_PitRoomMath.LipKind.Drop, "food is dropped down");
+                Assert(RM_PitRoomMath.KindOf("FeedPatient") == RM_PitRoomMath.LipKind.Touch, "feeding a downed prisoner touches from the rim");
+                Assert(RM_PitRoomMath.KindOf("TendPatient") == RM_PitRoomMath.LipKind.Touch, "tending touches");
+                Assert(RM_PitRoomMath.KindOf("Mine") == RM_PitRoomMath.LipKind.None, "other jobs untouched");
+                AssertClose(RM_PitRoomMath.RadiusFor(RM_PitRoomMath.LipKind.Interact), 6f, "vanilla interaction range");
+            });
+            Case("PitRoom_capture_down_needs_a_held_person_and_enclosed_pit", () =>
+            {
+                Assert(RM_PitRoomMath.CaptureDown(true, true, false, false, true, true) == RM_PitRoomMath.CaptureDownVerdict.Allowed, "held + prison = capture");
+                Assert(RM_PitRoomMath.CaptureDown(true, true, false, false, false, true) == RM_PitRoomMath.CaptureDownVerdict.NotHeld, "too wide for the pit: not offered (Q4)");
+                Assert(RM_PitRoomMath.CaptureDown(true, true, false, false, true, false) == RM_PitRoomMath.CaptureDownVerdict.NotPrison, "an unenclosed hole is not a prison");
+                Assert(RM_PitRoomMath.CaptureDown(true, false, false, false, true, true) == RM_PitRoomMath.CaptureDownVerdict.NotAPerson, "animals are not captured");
+                Assert(RM_PitRoomMath.CaptureDown(false, true, false, false, true, true) == RM_PitRoomMath.CaptureDownVerdict.SettingOff, "setting off");
+                Assert(RM_PitRoomMath.CaptureDown(true, true, true, false, true, true) == RM_PitRoomMath.CaptureDownVerdict.OwnSide, "own people are not captured");
+            });
+
+            // ── Phase 6 owed: explosions light, rain douses ──
+            Case("Fire_explosions_light_and_rain_douses", () =>
+            {
+                Assert(RM_FireMath.ExplosionIgnites("Flame") && RM_FireMath.ExplosionIgnites("Bomb"), "flame and bomb light liquid");
+                Assert(RM_FireMath.ExplosionIgnites("VWE_Incendiary"), "a mod incendiary lights liquid");
+                Assert(!RM_FireMath.ExplosionIgnites("EMP") && !RM_FireMath.ExplosionIgnites("Extinguish")
+                    && !RM_FireMath.ExplosionIgnites("Smoke") && !RM_FireMath.ExplosionIgnites(null), "EMP, foam, smoke never do");
+                AssertClose(RM_FireMath.RainDouseChance(0f), 0f, "no rain, no douse");
+                AssertClose(RM_FireMath.RainDouseChance(1f), 0.03f, "full rain 3% per check");
+                AssertClose(RM_FireMath.RainDouseChance(2f), 0.03f, "capped at full rain");
+            });
+
+            // ── FLOWWORKS_QUARRY_DIGGING_1: canal-dig finds ──
+            Case("DigFinds_guard_depth_size_budget", () =>
+            {
+                Assert(RM_DigDiscoveryMath.RollsAt(0, 1) && RM_DigDiscoveryMath.RollsAt(2, 3), "a deeper cut rolls");
+                Assert(!RM_DigDiscoveryMath.RollsAt(3, 3) && !RM_DigDiscoveryMath.RollsAt(4, 2), "fill and re-dig pays nothing twice");
+                Assert(!RM_DigDiscoveryMath.ReachesDeep(2) && RM_DigDiscoveryMath.ReachesDeep(3) && RM_DigDiscoveryMath.ReachesDeep(4), "deep and superdeep reach the deep grid");
+                Assert(RM_DigDiscoveryMath.LumpSize(0f, 75) == 10 && RM_DigDiscoveryMath.LumpSize(0.9999f, 75) == 25, "a lump is 10-25");
+                Assert(RM_DigDiscoveryMath.LumpSize(0.99f, 5) == 5, "never past the stack limit");
+                AssertClose(RM_DigDiscoveryMath.Chance(1f), 0.015f, "1.5% per cut");
+                AssertClose(RM_DigDiscoveryMath.Chance(0f), 0f, "multiplier 0 = never");
+                AssertClose(RM_DigDiscoveryMath.Budget(1200f, 5f), 60f, "5% of the rock's units");
+                AssertClose(RM_DigDiscoveryMath.Budget(0f, 5f), 0f, "no ore, no loose budget");
+            });
+            // ── PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS: superdeep cuts reach a deeper stone, picked stably per tile ──
+            Case("DeepStone_superdeep_strikes_and_stable_pick", () =>
+            {
+                Assert(!RM_DigDiscoveryMath.StrikesDeepStone(3, 4) && RM_DigDiscoveryMath.StrikesDeepStone(4, 4)
+                    && RM_DigDiscoveryMath.StrikesDeepStone(40, 4), "2 m (D4) and below is the deep stratum, 1.5 m is not");
+                Assert(!RM_DigDiscoveryMath.StrikesDeepStone(4, 0), "no superdeep level, no deep stone");
+                Assert(RM_DigDiscoveryMath.PickIndex(123, 0) == -1, "no candidates, no pick");
+                for (int seed = -500; seed < 500; seed += 7)
+                {
+                    int i = RM_DigDiscoveryMath.PickIndex(seed, 5);
+                    Assert(i >= 0 && i < 5 && i == RM_DigDiscoveryMath.PickIndex(seed, 5), "pick in range and stable for seed " + seed);
+                }
+                var seen = new HashSet<int>();
+                for (int seed = 0; seed < 64; seed++) seen.Add(RM_DigDiscoveryMath.PickIndex(seed, 4));
+                Assert(seen.Count == 4, "neighbouring tiles reach every candidate, saw " + seen.Count);
+                // the Verse wiring, read from production source
+                string src = System.IO.File.ReadAllText(RiverSwitchFlipChecks.SrcPath("RM_DigDiscovery.cs"));
+                Assert(src.Contains("StrikesDeepStone(newDepth, RM_ExcavationDepth.Superdeep)") && src.Contains("digDeepStoneEnabled"),
+                    "the chunk roll asks StrikesDeepStone at the superdeep level, behind the switch");
+                Assert(src.Contains("surface.Contains(d)") && src.Contains("biomeSpecific"), "the fallback skips surface rocks and foreign biome-specific ones");
+                Assert(src.Contains("pool.Sort("), "the fallback pool is name-sorted: load order never moves a tile's stone");
+            });
+            // ── DIG_ROCK_TUNE_STONE_FIGHTS_BACK: rock ground, chunks, work ──
+            Case("DigRock_chunk_chance_and_work", () =>
+            {
+                AssertClose(RM_DigDiscoveryMath.RockChunkChance(RM_DigDiscoveryMath.VanillaRockDropChance, 1f), 0.25f, "rock ground: vanilla wall-mining rate (25%)");
+                AssertClose(RM_DigDiscoveryMath.RockChunkChance(0.25f, 2f), 0.5f, "multiplier scales the rate");
+                AssertClose(RM_DigDiscoveryMath.RockChunkChance(0.25f, 0f), 0f, "multiplier 0 = never");
+                AssertClose(RM_DigDiscoveryMath.RockChunkChance(0.25f, 99f), 1f, "capped at certainty");
+                AssertClose(RM_DigDiscoveryMath.SoilChunkChance(0.5f), 0.005f, "non-rock ground: 0.5% per cut");
+                AssertClose(RM_DigDiscoveryMath.SoilChunkChance(-1f), 0f, "negative = never");
+                Assert(RM_DigDiscoveryMath.SoilChunkChance(0.5f) < RM_DigDiscoveryMath.Chance(1f), "a soil chunk is rarer than a mineral find");
+                Assert(RM_DigDiscoveryMath.RockWork(3200, 4f) == 12800, "rock level 1 = 4x soft ground");
+                Assert(RM_DigDiscoveryMath.RockWork(3200, 0.2f) == 3200, "never easier than soft ground");
+                Assert(RM_DigDiscoveryMath.RockWork(12800, 4f) == 51200, "scales with the level cut");
+            });
+
+            // ── FLOWWORKS_QUARRY_DIGGING_1, river half: sluice box and panning ──
+            Case("Placer_stock_sluice_pan", () =>
+            {
+                AssertClose(RimMandrake.FlowWorks.Quarry.RM_PlacerMath.StockCap(10000f, 2f), 200f, "stock = 2% of the land's placer units");
+                AssertClose(RimMandrake.FlowWorks.Quarry.RM_PlacerMath.StockCap(0f, 2f), 0f, "no placer rock, river carries nothing");
+                AssertClose(RimMandrake.FlowWorks.Quarry.RM_PlacerMath.Regrow(0f, 200f, RimMandrake.FlowWorks.Quarry.RM_PlacerMath.TicksPerYear / 2), 100f, "half a year regrows half");
+                AssertClose(RimMandrake.FlowWorks.Quarry.RM_PlacerMath.Regrow(150f, 200f, RimMandrake.FlowWorks.Quarry.RM_PlacerMath.TicksPerYear), 200f, "never past the cap");
+                Assert(RimMandrake.FlowWorks.Quarry.RM_PlacerMath.SluiceYield(0.5f, 0, 1f, 1f) == 0, "still water washes nothing");
+                Assert(RimMandrake.FlowWorks.Quarry.RM_PlacerMath.SluiceYield(0.99f, 2, 1f, 1f) == 0, "the chest-deep centre washes nothing");
+                Assert(RimMandrake.FlowWorks.Quarry.RM_PlacerMath.SluiceYield(0f, 1, 1f, 1f) == 1 && RimMandrake.FlowWorks.Quarry.RM_PlacerMath.SluiceYield(0.9f, 1, 1f, 1f) == 2, "edge water: 1-2 a day");
+                Assert(RimMandrake.FlowWorks.Quarry.RM_PlacerMath.SluiceYield(0f, 1, 0.5f, 1f) == 0 && RimMandrake.FlowWorks.Quarry.RM_PlacerMath.SluiceYield(0.5f, 1, 1.5f, 1f) == 2, "scales with river size");
+                Assert(RimMandrake.FlowWorks.Quarry.RM_PlacerMath.SluiceYield(0.99f, 1, 1f, 0f) == 0, "multiplier 0 = never");
+                AssertClose(RimMandrake.FlowWorks.Quarry.RM_PlacerMath.PanSkillFactor(0), 0.4f, "skill 0 = 40%");
+                AssertClose(RimMandrake.FlowWorks.Quarry.RM_PlacerMath.PanSkillFactor(20), 1.6f, "skill 20 = 160%");
+                Assert(RimMandrake.FlowWorks.Quarry.RM_PlacerMath.PanTicks(1f) == 5000 && RimMandrake.FlowWorks.Quarry.RM_PlacerMath.PanTicks(2f) == 2500, "session scales with MiningSpeed");
+                Assert(RimMandrake.FlowWorks.Quarry.RM_PlacerMath.PanSession(0.9f, 0.5f, 10, 1f) == 0, "mostly nothing");
+                int lo = RimMandrake.FlowWorks.Quarry.RM_PlacerMath.PanSession(0f, 0f, 10, 1f), hi = RimMandrake.FlowWorks.Quarry.RM_PlacerMath.PanSession(0f, 0.9999f, 10, 1f);
+                Assert(lo == 1 && hi == 3, "a find is 1-3 units");
+                Assert(RimMandrake.FlowWorks.Quarry.RM_PlacerMath.PanSession(0f, 0.5f, 10, 0f) == 0, "panning multiplier 0 = never");
+                Assert(RimMandrake.FlowWorks.Quarry.RM_PlacerMath.Take(2.7f, 5) == 2 && RimMandrake.FlowWorks.Quarry.RM_PlacerMath.Take(0.9f, 1) == 0, "a take never exceeds the stock");
+            });
+
+            // ── Phase 8: the pump ──
+            Case("Pump_unit_bridge", () =>
+            {
+                // LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS: a channel level is a cubic metre, 10,000 decilitre units
+                Assert(RM_PumpMath.TankUnitsPerLevel == 10000 && RM_Volume.LitresPerLevel == 1000 && RM_Volume.UnitsPerLitre == 10,
+                    "a channel level is 1,000 L = 10,000 tank units");
+            });
+
+            // ── LIQUID_UNIT_CONTRACT_ROUNDTRIP_1: units cross every system join without appearing or vanishing ──
+            Case("Liquid_unit_contract_roundtrip_conserves", () =>
+            {
+                string dir = AppContext.BaseDirectory;
+                string defs = null;
+                for (int up = 0; up < 12 && dir != null; up++)
+                {
+                    string cand = System.IO.Path.Combine(dir, "FlowWorks", "Defs", "LiquidTypes");
+                    if (System.IO.Directory.Exists(cand)) { defs = cand; break; }
+                    cand = System.IO.Path.Combine(dir, "Defs", "LiquidTypes");
+                    if (System.IO.Directory.Exists(cand)) { defs = cand; break; }
+                    dir = System.IO.Path.GetDirectoryName(dir);
+                }
+                Assert(defs != null, "FlowWorks Defs/LiquidTypes not found above the test binary");
+                var reg = System.Xml.Linq.XDocument.Load(System.IO.Path.Combine(defs, "LiquidDefs", "RM_LiquidDefRegistry.xml"));
+                var bottles = System.Xml.Linq.XDocument.Load(System.IO.Path.Combine(defs, "ThingDefs", "RM_LiquidBottles_Base.xml"));
+                var liquids = new List<(int bottle, int bucket, int barrel)>();
+                foreach (var d in reg.Descendants("bottled"))
+                {
+                    Assert(!d.Descendants().Any(e => e.Name.LocalName.StartsWith("unitsPer")), "a registry row still states a container in old units");
+                    int Get(string n, float dflt) { var e = d.Descendants(n).FirstOrDefault(); return RM_Volume.Units(e == null ? dflt : float.Parse(e.Value.Trim(), System.Globalization.CultureInfo.InvariantCulture)); }
+                    if (d.Descendants("bottle").FirstOrDefault()?.Value.Trim() == "Chemfuel") continue;   // the adopted item keeps 200 L
+                    liquids.Add((Get("litresPerBottle", 1.5f), Get("litresPerBucket", 15f), Get("litresPerBarrel", 208f)));
+                }
+                Assert(liquids.Count >= 9, "sanity probe: registry should list its liquids, found " + liquids.Count);
+                var factors = new List<float> { 1f };
+                foreach (var e in bottles.Descendants("capacityFactor"))
+                    factors.Add(float.Parse(e.Value.Trim(), System.Globalization.CultureInfo.InvariantCulture));
+                Assert(factors.Count > 3 && factors.Any(f => f != 1f), "sanity probe: container materials should carry non-1 factors");
+
+                foreach (var l in liquids)
+                {
+                    // the contract (owner 2026-10-16): bottle 1.5 L, bucket 15 L, barrel 208 L; a barrel is far below a tank square
+                    Assert(l.bottle == 15 && l.bucket == 150 && l.barrel == 2080, "container sizes are not 1.5 / 15 / 208 L: " + l.bottle + "/" + l.bucket + "/" + l.barrel + " dL");
+                    Assert(l.barrel * 10 < RM_Volume.UnitsPerSquare, "a barrel must not hold anything like a tank square");
+                }
+                foreach (var l in liquids)
+                foreach (float f in factors)
+                {
+                    int pumped = 12 * RM_PumpMath.TankUnitsPerLevel;     // pond -> canal -> pump: 12 levels
+                    int tank = pumped, held = 0;
+                    foreach (int baseUnits in new[] { l.barrel, l.bucket, l.bottle })
+                    {
+                        int units = RimMandrake.FlowWorks.LiquidTypes.RM_ContainerMaterialMath.ScaledUnits(baseUnits, f);
+                        while (tank >= units) { tank -= units; held += units; }
+                    }
+                    // (review 2026-10-22: the old fill asserts here were true by construction of the loop above.) What CAN fail:
+                    // a barrel at every shipped material factor stays far below a tank square, as the contract barrel does.
+                    Assert(RimMandrake.FlowWorks.LiquidTypes.RM_ContainerMaterialMath.ScaledUnits(l.barrel, f) * 10 < RM_Volume.UnitsPerSquare,
+                        "a " + f + "x barrel holds something like a tank square");
+                }
+                // ScaledUnits is the one place a material changes a container's size: factor 1 is the contract size, the size never
+                // shrinks as the factor grows, and a positive base never reaches 0 whatever the factor
+                foreach (int baseUnits in new[] { 15, 150, 2080 })
+                {
+                    Assert(RimMandrake.FlowWorks.LiquidTypes.RM_ContainerMaterialMath.ScaledUnits(baseUnits, 1f) == baseUnits, "factor 1 must leave " + baseUnits + " dL alone");
+                    int last = 0;
+                    foreach (float f in factors.OrderBy(x => x))
+                    {
+                        int u = RimMandrake.FlowWorks.LiquidTypes.RM_ContainerMaterialMath.ScaledUnits(baseUnits, f);
+                        Assert(u >= 1 && u >= last, "ScaledUnits(" + baseUnits + ", " + f + ") = " + u + " is below the size at a smaller factor (" + last + ")");
+                        last = u;
+                    }
+                }
+            });
+
+            // ── Liquid machinery: converter cycle arithmetic ──
+            Case("Converter_cycle_math", () =>
+            {
+                AssertClose(RimMandrake.FlowWorks.Machinery.RM_ConversionMath.BudgetPerRareTick(240f, 1f, 1f, 1f), 1f, "240 a day is one per rare tick");
+                AssertClose(RimMandrake.FlowWorks.Machinery.RM_ConversionMath.BudgetPerRareTick(240f, 0.5f, 1f, 1f), 0.5f, "kludged tier runs at half");
+                AssertClose(RimMandrake.FlowWorks.Machinery.RM_ConversionMath.BudgetPerRareTick(240f, 1f, 1f, 0f), 0f, "no sun, no work");
+                Assert(RimMandrake.FlowWorks.Machinery.RM_ConversionMath.Batches(4f, 2, 1, 100, 100) == 2, "budget bounds batches");
+                Assert(RimMandrake.FlowWorks.Machinery.RM_ConversionMath.Batches(40f, 2, 1, 3, 100) == 1, "input bounds batches");
+                Assert(RimMandrake.FlowWorks.Machinery.RM_ConversionMath.Batches(40f, 2, 3, 100, 7) == 2, "output room bounds batches");
+                Assert(RimMandrake.FlowWorks.Machinery.RM_ConversionMath.Batches(40f, 4, 1, 100, -1) == 10, "item fallback is unbounded");
+                Assert(RimMandrake.FlowWorks.Machinery.RM_ConversionMath.Batches(1.9f, 2, 1, 100, 100) == 0, "a part batch waits");
+                AssertClose(RimMandrake.FlowWorks.Machinery.RM_ConversionMath.CapAccrued(50f, 2, 0.25f), 2f, "idle budget never bursts");
+                AssertClose(RimMandrake.FlowWorks.Machinery.RM_ConversionMath.SunFactor(0.8f, false), 1f, "open daylight");
+                AssertClose(RimMandrake.FlowWorks.Machinery.RM_ConversionMath.SunFactor(0.8f, true), 0f, "roofed");
+                AssertClose(RimMandrake.FlowWorks.Machinery.RM_ConversionMath.SunFactor(0.2f, false), 0f, "night");
+            });
+
+            // ── EXCAVATION_WALL_ART_1: every depth reads differently ──
+            Case("WallFaces_every_depth_differs", () =>
+            {
+                float last = 0f;
+                for (int d = 1; d <= 4; d++)
+                {
+                    float h = RM_WallFaceMath.NorthFaceHeight(RM_WallFaceMath.ExposedDrop(d, 0, 0));
+                    Assert(h > last, "north face grows with depth at D=" + d);
+                    last = h;
+                }
+                Assert(RM_WallFaceMath.FootDarkness(4) > RM_WallFaceMath.FootDarkness(3), "deeper foot is darker");
+                Assert(RM_WallFaceMath.ExposedDrop(2, 3, 0) == 0, "no wall where the neighbour is deeper");
+                Assert(RM_WallFaceMath.ExposedDrop(4, 0, 3) == 1, "liquid covers the foot");
+                Assert(RM_WallFaceMath.ExposedDrop(3, 0, 3) == 0, "a brimming cut shows no face");
+                Assert(RM_WallFaceMath.NorthFaceHeight(9) <= RM_WallFaceMath.NorthMax, "never taller than a cell");
+            });
+
+            // ── FLOWWORKS_VISUAL_PRINCIPLES_1 principle 1: a person-deep cut shows a wall-height face, deeper taller ──
+            Case("WallFaces_D3_is_a_wall_D4_taller", () =>
+            {
+                // vanilla wall south face MEASURED ~0.25 cell (Wall_Atlas_Smooth / Rock_Atlas, 2026-10-05)
+                float d3 = RM_WallFaceMath.NorthFaceHeight(3);
+                Assert(d3 >= 0.25f && d3 <= 0.40f, "D3 face is about a vanilla wall's face: " + d3);
+                Assert(RM_WallFaceMath.NorthFaceHeight(4) >= d3 * 1.4f, "D4 is visibly more extended than D3");
+                float lastSide = 0f;
+                for (int d = 1; d <= 4; d++)
+                {
+                    float s = RM_WallFaceMath.SideFaceWidth(d);
+                    Assert(s > lastSide, "side face grows with depth at D=" + d);
+                    lastSide = s;
+                }
+            });
+
+            // owner 2026-10-05 in game: "more of a black-lining on the southern edge of the pits"
+            Case("SouthLining_thicker_than_north_and_grows", () =>
+            {
+                float last = 0f;
+                for (int d = 1; d <= 4; d++)
+                {
+                    float w = RM_WallFaceMath.SouthLining(d);
+                    Assert(w > last, "south lining grows with depth at D=" + d);
+                    Assert(w > RM_WallFaceMath.RimLine, "south lining is thicker than the north rim line at D=" + d);
+                    last = w;
+                }
+                AssertClose(RM_WallFaceMath.SouthLining(0), 0f, "no drop, no lining");
+                Assert(RM_WallFaceMath.SouthLining(9) <= RM_WallFaceMath.SouthLining(4), "clamped past superdeep");
+            });
+
+            // owner 2026-10-06, of the starburst round: "those look ridiculous" — round 3 follows GPT concept art
+            // (Transient/scorch_concept_2026-10-06): grey ash floor, char at walls and in patches, plumed walls, lobed halo
+            Case("Scorch_ash_floor_char_walls_lobed_halo", () =>
+            {
+                Assert(RM_WallFaceMath.AshCover(1f, 0f) >= 0.8f, "full scorch: the floor is ash all over, not spots");
+                AssertClose(RM_WallFaceMath.AshCover(0f, 1f), 0f, "no scorch, no ash");
+                Assert(RM_WallFaceMath.AshCover(0.5f, 0.5f) < RM_WallFaceMath.AshCover(1f, 0.5f), "fading thins the ash");
+                Assert(RM_WallFaceMath.CharCover(1f, 0.3f, 0f) > 0.8f, "char heavy against a wall");
+                AssertClose(RM_WallFaceMath.CharCover(1f, 0.3f, 0.8f), 0f, "low-noise middle of the floor: ash, not char");
+                Assert(RM_WallFaceMath.CharCover(1f, 0.9f, 0.8f) > 0.6f, "char patches where the noise runs high");
+                Assert(RM_WallFaceMath.HeatTint(1f, 0.9f, 0.25f) > 0f && RM_WallFaceMath.HeatTint(1f, 0.9f, 0.25f) <= 0.3f, "heat tint is a faint accent near walls");
+                AssertClose(RM_WallFaceMath.HeatTint(1f, 0.9f, 0.9f), 0f, "no tint mid-floor");
+                Assert(RM_WallFaceMath.HaloCover(1f, 0f, 0.5f) > 0.7f && RM_WallFaceMath.HaloCover(1f, 0f, 1f) > RM_WallFaceMath.HaloCover(1f, 0f, 0f), "halo darkest at the lip, and uneven along it");
+                AssertClose(RM_WallFaceMath.HaloCover(1f, 0.6f, 0f), 0f, "short lobe: gone by 0.6 cell");
+                Assert(RM_WallFaceMath.HaloCover(1f, 0.6f, 1f) > 0.2f, "long lobe: still smoky at 0.6 cell");
+                AssertClose(RM_WallFaceMath.HaloCover(1f, 1.5f, 1f), 0f, "never reaches past 1.4 cells");
+                Assert(RM_WallFaceMath.FaceSoot(1f, 0.5f, 0.9f) > RM_WallFaceMath.FaceSoot(1f, 0.5f, 0.1f) + 0.35f, "plumes stand out on the face");
+                Assert(RM_WallFaceMath.FaceSoot(1f, 0f, 0.1f) > RM_WallFaceMath.FaceSoot(1f, 0.5f, 0.1f), "heaviest at the foot");
+                Assert(RM_WallFaceMath.FaceSoot(1f, 0f, 1f) <= 0.95f, "face soot capped");
+                AssertClose(RM_WallFaceMath.FaceSoot(0f, 0f, 1f), 0f, "no scorch, no soot");
+                Assert(RM_WallFaceMath.AshDepthShade(1) < RM_WallFaceMath.AshDepthShade(3) && RM_WallFaceMath.AshDepthShade(3) < RM_WallFaceMath.AshDepthShade(4), "a deeper burned pit still reads deeper");
+            });
+
+            // owner card 2026-10-06, round 4: "All of that plus debris" — dirt has its own look, drips, debris
+            Case("Scorch_round4_dirt_drips_debris", () =>
+            {
+                Assert(RM_WallFaceMath.AshCover(1f, 0.2f, true) < RM_WallFaceMath.AshCover(1f, 0.2f, false) - 0.2f, "dirt: soil shows through the ash");
+                Assert(RM_WallFaceMath.HeatTint(1f, 0.8f, 0.5f, true) > RM_WallFaceMath.HeatTint(1f, 0.8f, 0.5f, false), "dirt carries the reddish bake mid-floor");
+                Assert(RM_WallFaceMath.HeatTint(1f, 0.8f, 0.3f, true) <= 0.3f, "the bake stays a tint");
+                int lo = 99, hi = 0, total = 0, chars = 0, pieces = 0;
+                bool inRange = true, stable = true;
+                var firstPass = new int[60, 60];
+                for (int x = 0; x < 60; x++)
+                    for (int z = 0; z < 60; z++)
+                    {
+                        int n = RM_WallFaceMath.DripCount(x, z);
+                        lo = System.Math.Min(lo, n); hi = System.Math.Max(hi, n);
+                        RM_WallFaceMath.Drip(x, z, 0, out float u, out float w, out float len);
+                        if (u < 0.06f || u > 0.94f || w < 0.03f || w > 0.09f || len < 0.35f || len > 1f) inRange = false;
+                        int dn = RM_WallFaceMath.DebrisCount(1f, x, z);
+                        total += dn;
+                        firstPass[x, z] = dn;
+                        for (int k = 0; k < dn; k++)
+                        {
+                            RM_WallFaceMath.DebrisPiece(x, z, k, 0.6f, 12, out float lx, out float lz, out float sz, out float rot, out bool ch, out int v);
+                            pieces++;
+                            if (ch) chars++;
+                            if (lx < 0.12f || lx > 0.88f || lz < 0.1f || lz > 0.5f || v < 0 || v > 11 || sz < 0.18f || sz > 0.38f) inRange = false;
+                        }
+                    }
+                Assert(lo == 3 && hi == 6, "3..6 drips per far-wall cell: " + lo + ".." + hi);
+                Assert(inRange, "drip and debris parameters stay in their ranges and on the floor");
+                // a pure function of the cell: a second pass in the opposite order, after every other cell was asked, gives the same counts
+                for (int x = 59; x >= 0; x--)
+                    for (int z = 59; z >= 0; z--)
+                        if (RM_WallFaceMath.DebrisCount(1f, x, z) != firstPass[x, z]) stable = false;
+                Assert(stable, "debris is a pure function of the cell (same after save/load)");
+                Assert(total > 6000 && total < 8400, "about two pieces per burned cell: " + total);
+                Assert(chars > pieces * 0.4 && chars < pieces * 0.7, "a mix of char lumps and ash flakes: " + chars + "/" + pieces);
+                Assert(RM_WallFaceMath.DebrisCount(0f, 3, 3) == 0, "no scorch, no debris");
+            });
+
+            // owner 2026-10-06: acid/slime/boiling bubble; bubbles scale with view and stay bounded
+            Case("Liquid_bubbles_rate", () =>
+            {
+                Assert(RM_LiquidLookMath.BubblesThisTick(0f, 1f, 600, 0f) == 0, "a liquid without bubbles never bubbles");
+                Assert(RM_LiquidLookMath.BubblesThisTick(0.9f, 0f, 600, 0f) == 0, "density 0 = none");
+                // 0.9/cell/s over 600 cells = 9 per tick expected -> capped
+                Assert(RM_LiquidLookMath.BubblesThisTick(0.9f, 1f, 600, 0.99f) == RM_LiquidLookMath.MaxBubblesPerSample, "bounded per sample");
+                // 0.08/cell/s over 60 cells = 0.08 per tick: rolls
+                Assert(RM_LiquidLookMath.BubblesThisTick(0.08f, 1f, 60, 0.05f) == 1 && RM_LiquidLookMath.BubblesThisTick(0.08f, 1f, 60, 0.5f) == 0, "fraction is rolled");
+                double heavy = 0, light = 0;
+                for (int i = 0; i < 1000; i++)
+                {
+                    float r = i / 1000f;
+                    heavy += RM_LiquidLookMath.BubblesThisTick(0.9f, 1f, 20, r);
+                    light += RM_LiquidLookMath.BubblesThisTick(0.08f, 1f, 20, r);
+                }
+                Assert(heavy > light * 8, "boiling bubbles far more than slime: " + heavy + " vs " + light);
+            });
+
+            // owner 2026-10-06: "show the pit walls/floor beneath the translucent water"
+            Case("Liquid_see_through", () =>
+            {
+                AssertClose(RM_LiquidLookMath.FloorSeeThroughAlpha(0f, 2), 0f, "opaque liquid hides the floor");
+                AssertClose(RM_LiquidLookMath.FloorSeeThroughAlpha(0.55f, 0), 0f, "dry: nothing to see through");
+                Assert(RM_LiquidLookMath.FloorSeeThroughAlpha(0.55f, 1) > RM_LiquidLookMath.FloorSeeThroughAlpha(0.55f, 3), "deeper hides more");
+                Assert(RM_LiquidLookMath.FloorSeeThroughAlpha(0.55f, 4) >= 0f, "never negative");
+                Assert(RM_LiquidLookMath.DrownedFaceAlpha(0.55f, 3, 1f) >= RM_LiquidLookMath.DrownedFaceAlpha(0.55f, 3, 0f), "face clearer toward the water line");
+            });
+
+            // owner 2026-10-06: "Only when they are climbing in or out do they move slowly. Falling into a pit is FAST.
+            // Walking around within the pit is normal."
+            Case("Pit_step_cost_walk_normal_climb_slow_fall_fast", () =>
+            {
+                for (int d = 1; d <= 4; d++) Assert(RM_PitTrapMath.DryStepBaseCost(d, d, 300) == 0, "same depth D" + d + " walks at normal speed");
+                Assert(RM_PitTrapMath.DryStepBaseCost(0, 1, 30) == 30, "climbing into a shallow pit is slow");
+                Assert(RM_PitTrapMath.DryStepBaseCost(3, 0, 80) == 80, "climbing out is slow");
+                Assert(RM_PitTrapMath.DryStepBaseCost(2, 3, 80) == 80, "a step down a level is a climb");
+                Assert(RM_PitTrapMath.DryStepBaseCost(0, 4, 300) == 0, "dropping into a superdeep pit is a fall: instant");
+                Assert(RM_PitTrapMath.DryStepBaseCost(4, 0, 300) == 300, "out of a superdeep pit (the ladder) is the slowest climb");
+            });
+
+            Case("WallFace_mitre_and_measured_bevels", () =>
+            {
+                AssertClose(RM_WallFaceMath.NorthFaceHeight(3), 0.35f, "D3 = the measured steel-wall bevel band");
+                AssertClose(RM_WallFaceMath.SideFaceWidth(3), 0.17f, "D3 side = the measured side bevel");
+                AssertClose(RM_WallFaceMath.MitreInset(0.17f, 0.35f), 0.17f, "45-degree mitre steps in by the bevel width");
+                AssertClose(RM_WallFaceMath.MitreInset(0f, 0.35f), 0f, "no side bevel, no mitre");
+            });
+
+            Case("LipOcclusion_band", () =>
+            {
+                // pawn centre 1.2 below its cell centre (D4 sink): sprite 10.05..11.55, lip at z=11 -> band 10.05..11
+                Assert(RM_WallFaceMath.OccludedBand(11f, 10.05f, 11.55f, out float a, out float b), "D4 pawn hangs below the lip");
+                AssertClose(a, 10.05f, "band starts at the sprite's bottom");
+                AssertClose(b, 11f, "band stops at the lip");
+                Assert(!RM_WallFaceMath.OccludedBand(11f, 11.2f, 12.4f, out _, out _), "a pawn wholly above the lip is not covered");
+                Assert(RM_WallFaceMath.OccludedBand(11f, 10.2f, 10.9f, out _, out float b2) && b2 < 11f, "a pawn wholly below is covered to its top");
+            });
+
+            Case("LipOcclusion_occupant_cut", () =>
+            {
+                // FLOWWORKS_PIT_OCCUPANT_LIP_CUT_1: window of 1 cell around the occupant at x=5.5, cover piece 4.9..6.1
+                int n = RM_WallFaceMath.CutCoverSpan(4.9f, 6.1f, 5f, 6f, out float l1, out float r1, out float l2, out float r2);
+                Assert(n == 2, "a window inside the piece leaves two flanks");
+                AssertClose(r1, 5f, "left flank stops at the window"); AssertClose(l2, 6f, "right flank starts after it");
+                Assert(RM_WallFaceMath.CutCoverSpan(5.2f, 5.8f, 5f, 6f, out _, out _, out _, out _) == 0, "a piece wholly inside the window vanishes (occupant uncovered)");
+                Assert(RM_WallFaceMath.CutCoverSpan(7f, 8f, 5f, 6f, out float a, out float b, out _, out _) == 1 && a == 7f && b == 8f, "a piece clear of the window stays whole");
+                Assert(RM_WallFaceMath.CutCoverSpan(5.5f, 7f, 5f, 6f, out float c, out float d, out _, out _) == 1 && c == 6f && d == 7f, "a piece half in the window keeps its far side");
+            });
+
+            Case("LipCover_keeps_the_wall_edge_shadow", () =>
+            {
+                // PIT_PAWN_FIX_CARRIES_A_SUNNY_SQUARE (owner walk 2026-10-23: "a strange square of bright terrain around it as it
+                // moves"): the near-lip cover re-draws the bare ground ABOVE the pawn, so it dropped vanilla's edge shadow
+                // (SectionLayer_EdgeShadows: 195/255 at a wall's edge, lit 0.45 cell in) -- a bright box against the wall. The
+                // cover now carries the same shade (RM_WallFaceMath.EdgeShadeAt), read from the cell's shadow casters.
+                const float Sh = 195f / 255f;
+                AssertClose(RM_WallFaceMath.EdgeShadeAt(0.3f, 0.02f, 0), 1f, "no caster: lit");
+                AssertClose(RM_WallFaceMath.EdgeShadeAt(0.5f, 0f, RM_WallFaceMath.ShadeS), Sh, "wall to the south: shadowed at the edge");
+                AssertClose(RM_WallFaceMath.EdgeShadeAt(0.5f, 0.225f, RM_WallFaceMath.ShadeS), (Sh + 1f) / 2f, "half way in: half the shade");
+                AssertClose(RM_WallFaceMath.EdgeShadeAt(0.5f, 0.6f, RM_WallFaceMath.ShadeS), 1f, "0.45 in and beyond: lit");
+                AssertClose(RM_WallFaceMath.EdgeShadeAt(0.97f, 0.5f, RM_WallFaceMath.ShadeE), Sh + (1f - Sh) * (0.03f / 0.45f), "wall to the east");
+                AssertClose(RM_WallFaceMath.EdgeShadeAt(0.1f, 0.1f, RM_WallFaceMath.ShadeSW), Sh + (1f - Sh) * (0.2f / 0.45f), "corner caster: the corner triangle");
+                AssertClose(RM_WallFaceMath.EdgeShadeAt(0.3f, 0.3f, RM_WallFaceMath.ShadeSW), 1f, "corner caster: lit past the triangle");
+                AssertClose(RM_WallFaceMath.EdgeShadeAt(0.1f, 0.1f, RM_WallFaceMath.ShadeSW | RM_WallFaceMath.ShadeS), Sh + (1f - Sh) * (0.1f / 0.45f), "a cardinal wall beside the corner wins (vanilla skips the corner)");
+                Assert(RM_WallFaceMath.ShadeCasters(c => c == (0, -1)) == RM_WallFaceMath.ShadeS, "caster bits read from the neighbours (south)");
+                Assert(RM_WallFaceMath.ShadeCasters(c => c == (1, 1)) == RM_WallFaceMath.ShadeNE, "caster bits (north-east)");
+            });
+            Case("LipOcclusion_boar_hangs_out", () =>
+            {
+                // PIT_LIP_FIX_BOAR_HANGS_OUT: south-row cell z=10 (lip at 10), clamp on: centre held at the lip, so a
+                // 1.6-tall sprite spans 9.2..10.8 -> exactly half in the opening -> no window, the lip hides the rest.
+                Assert(!RM_WallFaceMath.OccupantCutNeeded(10f, 9.2f, 10.8f), "clamped occupant: no window, part below the rim hidden");
+                Assert(!RM_WallFaceMath.OccupantCutNeeded(10f, 9.6f, 11.2f), "D1 sink (centre north of lip): no window");
+                Assert(RM_WallFaceMath.OccupantCutNeeded(10f, 8.0f, 9.6f), "clamp off, sprite wholly below the lip: window opens");
+                Assert(RM_WallFaceMath.OccupantCutNeeded(10f, 8.6f, 10.2f), "clamp off, mostly hidden: window opens");
+                Assert(!RM_WallFaceMath.OccupantCutNeeded(10f, 10f, 10f), "degenerate sprite: no window");
+                // a lying pawn's cover spans the rotated sprite
+                RM_WallFaceMath.RotatedHalfExtent(0.8f, 0.5f, 90f, out float rx, out float ry);
+                AssertClose(rx, 0.5f, "90 deg swaps width"); AssertClose(ry, 0.8f, "90 deg swaps height");
+                RM_WallFaceMath.RotatedHalfExtent(0.8f, 0.5f, 270f, out rx, out ry);
+                AssertClose(ry, 0.8f, "270 deg (sleeping animal facing west) swaps too");
+                RM_WallFaceMath.RotatedHalfExtent(0.5f, 0.5f, 45f, out rx, out ry);
+                AssertClose(ry, 0.70710678f, "a downed pawn at 45 deg reaches its corners");
+                RM_WallFaceMath.RotatedHalfExtent(0.8f, 0.5f, 0f, out rx, out ry);
+                AssertClose(rx, 0.8f, "upright unchanged"); AssertClose(ry, 0.5f, "upright unchanged");
+            });
+
+            Case("StockReload_index_rebuild_rule", () =>
+            {
+                Assert(RM_StockMath.NeedsIndexRebuild(true, 0, 0), "dirty after load always rebuilds");
+                Assert(RM_StockMath.NeedsIndexRebuild(false, 3, 0), "saved bodies with an empty index rebuild");
+                Assert(!RM_StockMath.NeedsIndexRebuild(false, 3, 12), "a built index is left alone");
+                Assert(!RM_StockMath.NeedsIndexRebuild(false, 0, 0), "no bodies, nothing to rebuild");
+            });
+
+            Case("LipOcclusion_skips_shallower_pawn", () =>
+            {
+                Assert(RM_WallFaceMath.CoverPieceHitsShallowerPawn(5f, 6f, 10.05f, 11f, 4.6f, 6.4f, 9.5f, 11.2f, 0, 4), "ground pawn under the band is not covered");
+                Assert(!RM_WallFaceMath.CoverPieceHitsShallowerPawn(5f, 6f, 10.05f, 11f, 8f, 9f, 9.5f, 11.2f, 0, 4), "no overlap, still covered");
+                Assert(!RM_WallFaceMath.CoverPieceHitsShallowerPawn(5f, 6f, 10.05f, 11f, 4.6f, 6.4f, 9.5f, 11.2f, 4, 4), "a pawn as deep is never exempt");
+                Assert(RM_WallFaceMath.CoverPieceHitsShallowerPawn(5f, 6f, 10.05f, 11f, 4.6f, 6.4f, 9.5f, 11.2f, 2, 4), "a shallower pawn is exempt");
+            });
+
+            // ── principle 5: the scorch persists, fades in quarters, never fades at 0 days ──
+            Case("Scorch_fade_rule", () =>
+            {
+                AssertClose(RM_WallFaceMath.ScorchStrength(0, 20f), 1f, "fresh scorch is full");
+                AssertClose(RM_WallFaceMath.ScorchStrength(10L * 60000, 0f), 1f, "0 days = never fades");
+                AssertClose(RM_WallFaceMath.ScorchStrength(20L * 60000, 20f), 0f, "gone at the fade time");
+                float mid = RM_WallFaceMath.ScorchStrength(9L * 60000, 20f);
+                Assert(mid > 0f && mid < 1f && Math.Abs(mid * 4f - Math.Round(mid * 4f)) < 1e-4, "quantised to quarters: " + mid);
+            });
+
+            // ═══════════ FLOWWORKS_CONTAINER_MATERIALS_1 ruling 2 (card 2026-10-06 23:45) ══
+            // The production rules file plus the SHIPPED XML numbers, read from the mod's own Defs.
+            Case("ContainerMat_classify_stuff", () =>
+            {
+                Assert(RM_ContainerMaterialMath.Classify("Plasteel", new[] { "Metallic" }) == RM_ContainerMaterial.Plasteel, "plasteel is its own material");
+                Assert(RM_ContainerMaterialMath.Classify("RM_Vexxith", new[] { "Metallic", "RM_VexxithPlate" }) == RM_ContainerMaterial.Vexxith, "vexxith is its own material, not metal");
+                Assert(RM_ContainerMaterialMath.GateBurnsInAcid(RM_ContainerMaterial.Metal, true, true), "acid eats a steel gate");
+                Assert(!RM_ContainerMaterialMath.GateBurnsInAcid(RM_ContainerMaterial.Plasteel, true, true), "plasteel gate holds acid");
+                Assert(RM_ContainerMaterialMath.GateBurnsInAcid(RM_ContainerMaterial.Vexxith, true, true), "a vexxith gate reaches TakeDamage, where the Cauldron's toggled immunity answers");
+                Assert(!RM_ContainerMaterialMath.GateBurnsInAcid(RM_ContainerMaterial.Metal, false, true), "the corrosion toggle stops gate burn");
+                Assert(!RM_ContainerMaterialMath.GateBurnsInAcid(RM_ContainerMaterial.Metal, true, false), "no acid, no burn");
+                Assert(RM_ContainerMaterialMath.Classify("Steel", new[] { "Metallic" }) == RM_ContainerMaterial.Metal, "steel is metal");
+                Assert(RM_ContainerMaterialMath.Classify("BlocksGranite", new[] { "Stony" }) == RM_ContainerMaterial.Glass, "any stone is glass");
+                Assert(RM_ContainerMaterialMath.Classify("Leather_Plain", new[] { "Leathery" }) == RM_ContainerMaterial.Leather, "leather");
+                Assert(RM_ContainerMaterialMath.Classify("WoodLog", new[] { "Woody" }) == RM_ContainerMaterial.Wood, "wood");
+                Assert(RM_ContainerMaterialMath.Classify(null, null) == RM_ContainerMaterial.Unknown, "no stuff = unknown");
+            });
+            Case("ContainerMat_registry_hot_and_acid_flags", () =>
+            {
+                var liq = ContainerMatFixture.Liquids();
+                Assert(liq["RM_Liquid_BoilingWater"].hot, "boiling water is hot");
+                Assert(!liq["RM_Liquid_FreshWater"].hot && !liq["RM_Liquid_FreshWater"].acid, "fresh water is neither");
+                Assert(liq["RM_Liquid_AcidWater"].acid, "acid water is acid");
+                Assert(!liq["RM_Liquid_IcyWater"].hot && !liq["RM_Liquid_IcyWater"].acid, "icy water is neither");
+                Assert(!liq["RM_Liquid_Tar"].acid && !liq["RM_Liquid_Brine"].acid, "tar and brine are not acid");
+            });
+            Case("ContainerMat_leather_refuses_hot_and_acid_every_size", () =>
+            {
+                var liq = ContainerMatFixture.Liquids();
+                foreach (string fam in new[] { "RM_BottleItemBase", "RM_BucketItemBase" })
+                {
+                    var rule = RM_ContainerMaterialMath.RuleFor(ContainerMatFixture.Rules(fam), RM_ContainerMaterial.Leather);
+                    Assert(rule != null, fam + " ships a leather rule");
+                    var boil = liq["RM_Liquid_BoilingWater"]; var acid = liq["RM_Liquid_AcidWater"]; var fresh = liq["RM_Liquid_FreshWater"];
+                    Assert(RM_ContainerMaterialMath.CanHold(rule, boil.hot, boil.acid) == RM_HoldRefusal.Hot, fam + " leather refuses boiling water (Hot)");
+                    Assert(RM_ContainerMaterialMath.CanHold(rule, acid.hot, acid.acid) == RM_HoldRefusal.Acid, fam + " leather refuses acid (Acid)");
+                    Assert(RM_ContainerMaterialMath.CanHold(rule, fresh.hot, fresh.acid) == RM_HoldRefusal.None, fam + " leather holds fresh water");
+                }
+            });
+            Case("ContainerMat_wood_refuses_acid_holds_hot", () =>
+            {
+                var liq = ContainerMatFixture.Liquids();
+                var boil = liq["RM_Liquid_BoilingWater"]; var acid = liq["RM_Liquid_AcidWater"]; var fresh = liq["RM_Liquid_FreshWater"];
+                foreach (string fam in new[] { "RM_BucketItemBase", "RM_BarrelItemBase" })
+                {
+                    var rule = RM_ContainerMaterialMath.RuleFor(ContainerMatFixture.Rules(fam), RM_ContainerMaterial.Wood);
+                    Assert(rule != null, fam + " ships a wood rule");
+                    Assert(RM_ContainerMaterialMath.CanHold(rule, acid.hot, acid.acid) == RM_HoldRefusal.Acid, fam + " wood refuses acid (Acid)");
+                    Assert(RM_ContainerMaterialMath.CanHold(rule, boil.hot, boil.acid) == RM_HoldRefusal.None, fam + " wood holds boiling water");
+                    Assert(RM_ContainerMaterialMath.CanHold(rule, fresh.hot, fresh.acid) == RM_HoldRefusal.None, fam + " wood holds fresh water");
+                }
+            });
+            Case("ContainerMat_glass_plasteel_hold_acid_metal_refuses", () =>
+            {
+                var liq = ContainerMatFixture.Liquids();
+                var boil = liq["RM_Liquid_BoilingWater"]; var acid = liq["RM_Liquid_AcidWater"];
+                var glass = RM_ContainerMaterialMath.RuleFor(ContainerMatFixture.Rules("RM_BottleItemBase"), RM_ContainerMaterial.Glass);
+                Assert(glass != null && RM_ContainerMaterialMath.CanHold(glass, true, true) == RM_HoldRefusal.None, "glass bottle holds hot acid");
+                foreach (string fam in new[] { "RM_BottleItemBase", "RM_BucketItemBase", "RM_BarrelItemBase" })
+                {
+                    var metal = RM_ContainerMaterialMath.RuleFor(ContainerMatFixture.Rules(fam), RM_ContainerMaterial.Metal);
+                    Assert(metal != null, fam + " ships a metal rule");
+                    Assert(RM_ContainerMaterialMath.CanHold(metal, acid.hot, acid.acid) == RM_HoldRefusal.Acid, fam + " metal refuses acid");
+                    Assert(RM_ContainerMaterialMath.CanHold(metal, boil.hot, boil.acid) == RM_HoldRefusal.None, fam + " metal holds boiling water");
+                }
+                // Question card 2026-10-07 00:53: plasteel holds acid (and hot).
+                var plasteel = RM_ContainerMaterialMath.RuleFor(ContainerMatFixture.Rules("RM_BarrelItemBase"), RM_ContainerMaterial.Plasteel);
+                Assert(plasteel != null && RM_ContainerMaterialMath.CanHold(plasteel, true, true) == RM_HoldRefusal.None, "plasteel barrel holds hot acid");
+                Assert(RM_ContainerMaterialMath.CanHold(null, true, true) == RM_HoldRefusal.None, "an unlisted material (no rule) holds anything");
+            });
+            Case("ContainerMat_only_leather_refuses_hot", () =>
+            {
+                foreach (string fam in new[] { "RM_BottleItemBase", "RM_BucketItemBase", "RM_BarrelItemBase" })
+                    foreach (var r in ContainerMatFixture.Rules(fam))
+                        Assert(r.holdsHot == (r.material != RM_ContainerMaterial.Leather), fam + " " + r.material + " holdsHot should be " + (r.material != RM_ContainerMaterial.Leather));
+            });
+            Case("ContainerMat_capacity_shipped_numbers", () =>
+            {
+                int U(string fam, RM_ContainerMaterial m, int baseUnits) =>
+                    RM_ContainerMaterialMath.ScaledUnits(baseUnits, RM_ContainerMaterialMath.RuleFor(ContainerMatFixture.Rules(fam), m).capacityFactor);
+                Assert(U("RM_BarrelItemBase", RM_ContainerMaterial.Wood, 25) == 25, "wood barrel factor 1.0 (base 25 -> 25)");
+                Assert(U("RM_BarrelItemBase", RM_ContainerMaterial.Metal, 25) == 30, "metal barrel factor 1.2 (base 25 -> 30)");
+                Assert(U("RM_BarrelItemBase", RM_ContainerMaterial.Plasteel, 25) == 40, "plasteel barrel factor 1.6 (base 25 -> 40)");
+                Assert(U("RM_BarrelItemBase", RM_ContainerMaterial.Plasteel, 25) > U("RM_BarrelItemBase", RM_ContainerMaterial.Metal, 25), "plasteel barrels hold more");
+                Assert(U("RM_BucketItemBase", RM_ContainerMaterial.Wood, 5) == 5 && U("RM_BucketItemBase", RM_ContainerMaterial.Metal, 5) == 6
+                    && U("RM_BucketItemBase", RM_ContainerMaterial.Leather, 5) == 4, "bucket factors wood 1.0 / metal 1.2 / leather 0.8 (base 5 -> 5 / 6 / 4)");
+                // A bottle is 1.5 L whatever it is made of (every shipped factor is 1.0). Measured in decilitres, where ANY factor
+                // off 1.0 by 0.04+ moves the count: base 1 unit rounds every factor below 1.5 back to 1 and proved nothing.
+                var bottleRules = ContainerMatFixture.Rules("RM_BottleItemBase");
+                Assert(bottleRules.Count >= 3, "sanity: found " + bottleRules.Count + " bottle material rules, expected >= 3");
+                foreach (var r in bottleRules)
+                    Assert(RM_ContainerMaterialMath.ScaledUnits(15, r.capacityFactor) == 15, "a " + r.material + " bottle does not hold 1.5 L (factor " + r.capacityFactor + ")");
+                Assert(RM_ContainerMaterialMath.ScaledUnits(15, 1.05f) != 15, "can-fail: a 1.05 bottle factor changes the 1.5 L count");
+            });
+            Case("ContainerMat_scaled_units_rounding", () =>
+            {
+                Assert(RM_ContainerMaterialMath.ScaledUnits(1, 0.5f) == 1, "never below 1");
+                Assert(RM_ContainerMaterialMath.ScaledUnits(1, 1.49f) == 1 && RM_ContainerMaterialMath.ScaledUnits(1, 1.5f) == 2, "half rounds away from zero");
+                Assert(RM_ContainerMaterialMath.ScaledUnits(0, 2f) == 0, "no base, no units");
+            });
+
+            Case("ContainerMat_stone_bottle_reads_glass", () =>
+            {
+                Assert(RM_ContainerMaterialMath.RelabelAsGlass("granite empty bottle", "granite empty bottle", "glass empty bottle") == "glass empty bottle", "granite -> glass");
+                Assert(RM_ContainerMaterialMath.RelabelAsGlass("marble bottled fresh water (45%)", "marble bottled fresh water", "glass bottled fresh water") == "glass bottled fresh water (45%)", "suffix kept");
+                Assert(RM_ContainerMaterialMath.RelabelAsGlass("steel empty bottle", "granite empty bottle", "glass empty bottle") == "steel empty bottle", "absent phrase leaves label alone");
+            });
+            Case("ContainerMat_every_bottled_liquid_has_a_container_colour", () =>
+            {
+                var doc = System.Xml.Linq.XDocument.Load(System.IO.Path.Combine(ContainerMatFixture.Root(), "LiquidDefs", "RM_LiquidDefRegistry.xml"));
+                int n = 0;
+                foreach (var d in doc.Root.Elements("RimMandrake.FlowWorks.LiquidTypes.LiquidDef"))
+                {
+                    string bottle = (string)d.Element("bottled")?.Element("bottle");
+                    if (bottle == null || !bottle.StartsWith("RM_")) continue;
+                    n++;
+                    string col = (string)d.Element("color");
+                    Assert(col != null && col.Replace(" ", "") != "(1,1,1)", (string)d.Element("defName") + " ships no container colour (would show material colour when filled)");
+                }
+                Assert(n >= 9, "sanity: found " + n + " bottled rows, expected >= 9");
+            });
+
+            // ═══════════ Approach B: generated action sequences (design/RimMandrake/flowworks_offline_kernel_B.md) ══
+            // Timing is a first-class output: each family prints its case count, step count and seconds.
+            var fuzzClock = System.Diagnostics.Stopwatch.StartNew();
+            FuzzCase("Fuzz_cell_body_tank_sequences", () => SequenceFuzz.Sequences(20000, 1));
+            FuzzCase("Fuzz_flow_and_recession_orders_are_strict", () => SequenceFuzz.Orders(200000, 7));
+            FuzzCase("Fuzz_converter_never_overspends", () => SequenceFuzz.Conversion(5000, 11));
+            FuzzCase("Fuzz_pit_width_monotone", () => SequenceFuzz.PitWidth(20000, 13));
+            Console.WriteLine($"fuzz total: {SequenceFuzz.Cases} cases, {SequenceFuzz.Steps} steps, {fuzzClock.Elapsed.TotalSeconds:F2} s");
+
+            // ═══════════ Approach B phase 2: the PRODUCTION pulse kernel (RM_FlowKernel.cs) on generated grids ══
+            var kernelClock = System.Diagnostics.Stopwatch.StartNew();
+            KernelCase("Kernel_fuzz_ledger_bounds_nomix_settles", () => FlowKernelFuzz.Fuzz(5000, 101));
+            KernelCase("Kernel_limitless_source_fills_its_component", () => FlowKernelFuzz.FillsFromLimitless(2000, 202));
+            KernelCase("LEVELSET_DIAGNOSE_SHALLOW_RIM_STAYS_DRY_limitless_source_fills_at_shipped_flags", () => FlowKernelFuzz.FillsFromLimitless(2000, 1000, shipped: true));
+            Case("FLOW_ORDER_EXTERNAL_INPUT_1_pump_fed_channel_spreads_and_settles", () =>
+            {
+                string r = FlowKernelFuzz.PumpFedChannelSpreads();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
+            Case("PUMP_FED_CHANNEL_STALL_PROVE_AFTER_RELOAD_brimming_outlet_reload_resumes_spread", () =>
+            {
+                string r = FlowKernelFuzz.PumpFedChannelResumesAfterReload();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
+            Case("FLOWWORKS_PUMP_FIX_D1_CANAL_STALLS_driver_fed_d1_canal_fills", () =>
+            {
+                string r = FlowKernelFuzz.DriverFedD1CanalFills();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
+            Case("FLOWWORKS_SLUICE_FIX_BELOW_SOURCE_LUCK_upstream_of_shut_sluice_fills", () =>
+            {
+                string r = FlowKernelFuzz.SealedSinkBelowSourceFillsUpstream();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
+            Case("FLOWWORKS_STRIDE_FIX_WALKS_INTO_WALL_seam_start_covers_network", () =>
+            {
+                string r = FlowKernelFuzz.SeamSlotCoversNetwork();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
+            Case("FLOW_ORDER_EXTERNAL_INPUT_1_part2_oversized_network_exchanges_across_seams", () =>
+            {
+                string r = FlowKernelFuzz.OversizedNetworkExchanges();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
+            Console.WriteLine($"kernel total: {FlowKernelFuzz.Cases} scenes, {FlowKernelFuzz.Pulses} pulses, {kernelClock.Elapsed.TotalSeconds:F2} s");
+            // Owner rulings 2026-10-06 (design/RimMandrake/flowworks_offline_kernel_B.md): regression guards.
+            // TAKEN_BY_LAND_SERVICE_1 (X-10): the shared hold-and-return decisions, which the river and the dune gale both ride.
+            Case("TAKEN_BY_LAND_SERVICE_1_kernel_decides_return_outcomes_and_schedules", () =>
+            {
+                Assert(RM_TakenByLandKernel.Decide(true, false, false, true) == TakenOutcome.LostMissing, "a missing pawn is lost");
+                Assert(RM_TakenByLandKernel.Decide(false, true, false, true) == TakenOutcome.LostMissing, "a missing map loses the pawn");
+                Assert(RM_TakenByLandKernel.Decide(false, false, true, true) == TakenOutcome.LostDead, "a dead pawn stays lost");
+                Assert(RM_TakenByLandKernel.Decide(false, false, false, true) == TakenOutcome.SpawnAlive, "a good roll comes back alive");
+                Assert(RM_TakenByLandKernel.Decide(false, false, false, false) == TakenOutcome.SpawnThenKill, "a bad roll comes back to die");
+                Assert(!RM_TakenByLandKernel.ShouldScan(0, 250, 250) && !RM_TakenByLandKernel.ShouldScan(3, 251, 250) && RM_TakenByLandKernel.ShouldScan(3, 500, 250), "the book is scanned only when full and on the interval");
+                Assert(RM_TakenByLandKernel.ReturnTick(1000, 1f, 60000) == 61000 && RM_TakenByLandKernel.ReturnTick(1000, 0f, 60000) == 1001, "return tick is days ahead, never before the next tick");
+                Assert(RM_TakenByLandKernel.ReturnTick(int.MaxValue - 5, 10f, 60000) == int.MaxValue, "return tick saturates instead of overflowing");
+                Assert(RM_TakenByLandKernel.IsDue(10, 10) && !RM_TakenByLandKernel.IsDue(11, 10), "due on its tick, not before");
+                Assert(RM_TakenByLandKernel.EarlierEventOnMap(7, 100, 7, 200) && !RM_TakenByLandKernel.EarlierEventOnMap(7, 200, 7, 200) && !RM_TakenByLandKernel.EarlierEventOnMap(8, 100, 7, 200),
+                    "a storm's end returns what an EARLIER event took from THIS map only");
+                var book = new List<int> { 1, 2, 3, 4, 5 };
+                var taken = RM_TakenByLandKernel.TakeWhere(book, x => x % 2 == 0);
+                Assert(taken.Count == 2 && book.Count == 3 && !book.Contains(2) && !book.Contains(4), "TakeWhere removes exactly the picked records");
+            });
+            Case("THICK_LIQUID_CREEP_1_front_speed_down_a_40_cell_channel", () =>
+            {
+                string r = FlowKernelFuzz.FrontSpeed();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
+            Case("WATER_SURFACE_REWIRE_flat_channel_levels", () =>
+            {
+                string r = FlowKernelFuzz.SurfaceFlatChannelLevels();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
+            Case("WATER_SURFACE_REWIRE_edge_drained_channel_empties", () =>
+            {
+                string r = FlowKernelFuzz.SurfaceEdgeDrainedChannelEmpties();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
+            Case("WATER_SURFACE_REWIRE_deep_hole_beside_shallow_trench_levels_by_surface", () =>
+            {
+                string r = FlowKernelFuzz.SurfaceDeepHoleBesideShallowTrench();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
+            Case("WATER_SURFACE_REWIRE_source_still_fills_channel", () =>
+            {
+                string r = FlowKernelFuzz.SurfaceSourceStillFillsChannel();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
+            Case("WATER_SURFACE_REWIRE_random_scenes_settle_and_conserve", () =>
+            {
+                string r = FlowKernelFuzz.SurfaceRandomScenesSettleAndConserve();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
+            // WATER_LEVELSET_SOLVE (owner 2026-10-16, station 1: "levelset down to a smooth 0 or 1 ... not 0, deep, 0").
+            foreach (var (name, fn) in new (string, Func<string>)[] {
+                ("low_volume_wide_basin_one_patch", LevelSetChecks.LowVolumeWideBasinOnePatch),
+                ("enough_volume_flat_sheet", LevelSetChecks.EnoughVolumeFlatSheet),
+                ("stepped_floor_flat_surface", LevelSetChecks.SteppedFloorFlatSurface),
+                ("conserves_and_edge_drains", LevelSetChecks.ConservesAndDrains),
+                ("striped_save_gathers", LevelSetChecks.StripedSaveGathers),
+                ("wide_basin_cost", LevelSetChecks.WideBasinCost) })
+            {
+                Case("WATER_LEVELSET_" + name, () =>
+                {
+                    string r = fn();
+                    Console.WriteLine("      " + r);
+                    Assert(r.StartsWith("OK"), r);
+                });
+            }
+            // The WATER_SURFACE_REWIRE cases again with the solve (shipped ON).
+            FlowKernelFuzz.LevelSet = true;
+            foreach (var (name, fn) in new (string, Func<string>)[] {
+                ("flat_channel_levels", FlowKernelFuzz.SurfaceFlatChannelLevels),
+                ("edge_drained_channel_empties", FlowKernelFuzz.SurfaceEdgeDrainedChannelEmpties),
+                ("deep_hole_beside_shallow_trench", FlowKernelFuzz.SurfaceDeepHoleBesideShallowTrench),
+                ("source_still_fills_channel", FlowKernelFuzz.SurfaceSourceStillFillsChannel),
+                ("random_scenes_settle_and_conserve", FlowKernelFuzz.SurfaceRandomScenesSettleAndConserve) })
+            {
+                Case("WATER_LEVELSET_rewire_" + name, () =>
+                {
+                    string r = fn();
+                    Console.WriteLine("      " + r);
+                    Assert(r.StartsWith("OK"), r);
+                });
+            }
+            FlowKernelFuzz.LevelSet = false;
+            Case("CANAL_FILL_FRONT_TRACE_MOUTH_STAYS_DRY_dead_end_fills_from_far_end", () =>
+            {
+                string r = FlowKernelFuzz.CanalMouthDeadEndFillsFromFarEnd();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
+            Case("Ruling1_touching_water_and_tar_stay_separate", () =>
+            {
+                string r = FlowKernelFuzz.TouchingFluidsStaySeparate();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
+            Case("Ruling1_channel_touching_both_pools_never_mixes", () =>
+            {
+                string r = FlowKernelFuzz.ChannelTouchingBothNeverMixes();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
+            Case("Ruling2_scarce_supply_paid_by_cell_index", () =>
+            {
+                string r = FlowKernelFuzz.ScarceSupplyPaidByPosition();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
+
+            Case("Sluice_shut_seals_grate_passes", () =>
+            {
+                Assert(RM_PitTrapMath.FlowDoorSeals(true, false), "a shut sluice must seal");
+                Assert(!RM_PitTrapMath.FlowDoorSeals(true, true), "an open sluice must pass liquid");
+                Assert(!RM_PitTrapMath.FlowDoorSeals(false, false), "a shut grate must pass liquid");
+                Assert(!RM_PitTrapMath.FlowDoorSeals(false, true), "an open grate must pass liquid");
+                string r = FlowKernelFuzz.SluiceSealsGrateDoesNot();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
+
+            Case("Sealed_sink_does_not_drain", () =>
+            {
+                string r = FlowKernelFuzz.SealedSinkHolds();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
+            Case("CollectBody_exact_cap_not_truncated", () =>
+            {
+                string r = FlowKernelFuzz.CollectBodyExactCapNotTruncated();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
+
+            RunPrePortFixes();     // hose port step 5: P1 pour, P2 converter, P3 bath (PrePortFixChecks.cs)
+            RunPaletteExhaustion();   // FlowWorks P7: fluid palette exhaustion (PaletteExhaustionChecks.cs)
+            RunHeatBudget();          // FlowWorks P9a: heat budget split and rotation (HeatBudgetChecks.cs)
+            FuelFireChecks.Run(Case);          // CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL: chemfuel inferno + astrofuel detonation (FuelFireChecks.cs)
+            GateFirebreakChecks.Run(Case);     // SUMP_TAR_FIRE_NETWORK_1: a shut sluice is a firebreak on the tar front (GateFirebreakChecks.cs)
+            RiverSwitchFlipChecks.Run(Case);   // RIVER_TOGGLE_PROOFS_BUILD_ELEVEN_UNCLAIMED
+            HoseSwitchFlipChecks.Run(Case);    // hose port review S2/S3
+            PipeStraightVariantChecks.Run(Case);   // SCRAPPER_PIPE_REDRAW_ASKED_TWICE_NOW: straight-run variants by cell hash
+            TransferChecks.Run(Case);          // liquid networks L1: the one transfer service (TransferChecks.cs)
+            NetComponentChecks.Run(Case);      // liquid networks L2: components per topology revision (NetComponentChecks.cs)
+            NetIncrementalChecks.Run(Case);    // LIQUIDNET_REBUILD_SHRINK_TO_AFFECTED: canonical tree roots, affected-only rebuild, incremental == fresh (NetIncrementalChecks.cs)
+            PlanChecks.Run(Case);              // liquid networks L3: fill/draw plans, split levels, consumer rotation (PlanChecks.cs)
+            SettleChecks.Run(Case);            // liquid networks L4: tank jobs and the settle (SettleChecks.cs)
+            LevellingChecks.Run(Case);         // PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL: passive gravity levelling (LevellingChecks.cs)
+            LevelRunWalkChecks.Run(Case);      // LEVELLING_TICK_DIAGNOSE_DRY_GC_SPIKE: the allocation-free run walk (LevelRunWalkChecks.cs)
+            LevelPrejitChecks.Run(Case);       // LEVELLING_TICK_DIAGNOSE_DRY_GC_SPIKE: start-up pre-JIT of the levelling cycle (LevelPrejitChecks.cs)
+            HoseCacheChecks.Run(Case);         // HOSELINKS_REFRESH_DIAGNOSE_MAP0_TICK_SPIKE: phased hose caches, pump-side prefilter (HoseCacheChecks.cs)
+            HoseBandsApplyChecks.Run(Case);    // HOSES_MAP1_DIAGNOSE_TICK_STALLS: allocation-free hose band pass + legacy oracle (HoseBandsApplyChecks.cs)
+            HoseTickAllocChecks.Run(Case);     // HOSES_MAP1_DIAGNOSE_TICK_STALLS c2 + WALLREACH_BUILD_DIAGNOSE_RAIN_TAIL (HoseTickAllocChecks.cs)
+            HoseWorldPatchChecks.Run(Case);    // HOSE_TICK_REBUILD_ZERO_ALLOC (HoseWorldPatchChecks.cs)
+            PumpChecks.Run(Case);              // liquid networks L6: the pump as world mover (PumpChecks.cs)
+            DeepDigChecks.Run(Case);           // PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT + DIG_COST_TUNE_DEEP_IS_A_MEGAPROJECT (DeepDigChecks.cs)
+            RelativeRulesChecks.Run(Case);     // PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: R7 relative rules V2-V6 (RelativeRulesChecks.cs)
+            FallRailChecks.Run(Case);          // FALL_GUARDRAILS_BUILD_REAL_OBJECT: rails and fences stop falls off a lip (FallRailChecks.cs)
+            SwimChecks.Run(Case);              // DEEP_WATER_BUILD_SWIM_OR_SINK: R12 deep swimming (SwimChecks.cs)
+            WetCostChecks.Run(Case);           // WET_FOXHOLE_BUILD_COLD_FEET_SHAKY_AIM: aim, cold, no guns in water (WetCostChecks.cs)
+            WaterBodyMendChecks.Run(Case);     // FISH_ROLL_MEND_PONDS_BORN_BARREN: fish roll, refill memory, splits, plant grace (WaterBodyMendChecks.cs)
+            RewireChecks.Run(Case);            // LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD + DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE (RewireChecks.cs)
+            VolumeChecks.Run(Case);            // POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK: one square = one square (VolumeChecks.cs)
+            PondReturnChecks.Run(Case);        // POND_RETURN_LEG_BUILD_WATER_GOES_HOME: dug beds, checked/guarded refill (PondReturnChecks.cs)
+            DeepBedChecks.Run(Case);           // POND_ELEVATION_BUILD_LAKES_RUN_DEEP + POND_CAPACITY / FILLIN_DISPLACE fixes (DeepBedChecks.cs)
+            LakeFloorChecks.Run(Case);         // LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP: per-lake, per-roughness floors (LakeFloorChecks.cs)
+            PocketGridChecks.Run(Case);        // PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP: relative climb, pocket grid (PocketGridChecks.cs)
+            WallReachChecks.Run(Case);         // REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE: wall-aware reach labels per class (WallReachChecks.cs)
+            WallReachSliceChecks.Run(Case);    // WALLREACH_RELABEL_TAME_SLICED_BUFFERED: sliced relabel == one-shot, never half-built, no veto uncovered (WallReachSliceChecks.cs)
+            WallReachReadChecks.Run(Case);     // WALLREACH_BEGINJOB_TAME_INPUTS_OUT_OF_SLICE: sliced kinds read == map, recycled arrays, protocol no false NO (WallReachReadChecks.cs)
+            ExcavationTickChecks.Run(Case);    // EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: delta judge + content skip vs the full scan (ExcavationTickChecks.cs)
+            CliffMaskChecks.Run(Case);         // PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS: per-band connectivity masks (CliffMaskChecks.cs)
+            OutflowChecks.Run(Case);           // liquid networks L7: outflow ends and the Dump drain (OutflowChecks.cs)
+            HoseHoldChecks.Run(Case);          // liquid networks L8: held hose volume and the spill (HoseHoldChecks.cs)
+            LiquidTheftChecks.Run(Case);       // liquid networks L9: liquid theft, priced like power theft (LiquidTheftChecks.cs)
+            AdapterChecks.Run(Case);           // liquid networks L10: adapter modes and the boundary (AdapterChecks.cs)
+            TakenIdentityChecks.Run(Case);     // RIVER_SWEEP_FIX_COLONISTS_RETURN_AS_NPCS (TakenIdentityChecks.cs)
+            RiverWashChecks.Run(Case);         // FlowWorks P10: breach wash drop-failed path (RiverWashChecks.cs)
+            WeirPoolChecks.Run(Case);          // WEIR_POOL_DIAGNOSE_DAMMED_AT_THE_EDGE: bank-edge slack pool (WeirPoolChecks.cs)
+            GateAcidChecks.Run(Case);          // VEXXITH_USES_1: a gate sees acid in a canal fill, on the shipped defs (GateAcidChecks.cs)
+            ImmersionChecks.Run(Case);         // IMMERSION_DAMAGE_WIRE_NEVER_APPLIED: depth selects damageOnImmersion, on the shipped defs (ImmersionChecks.cs)
+            SlimeChecks.Run(Case);             // SLIME_CROSSING_BUILD_SLIPPERY_SLOPE: slime slips, climb-out slides back (SlimeChecks.cs)
+            HoseRulingTextChecks.Run(Case);    // hose leftovers + ruling #3 text (HoseRulingTextChecks.cs)
+            PipeStyleChecks.Run(Case);         // rigid pipe looks + build-menu placement (owner rulings 2026-10-11)
+            LiquidJoinChecks.Run(Case);        // liquid-join draw hooks + hose thickness (HOSE_JOINTS_REDESIGN_PUMP_TOO_PUNY)
+            ReelRiserShadowChecks.Run(Case);   // owner cards 2026-10-22: reel turns, pipe riser onto the tank flange, empty-hose shadow
+            HoseEndLipChecks.Run(Case);        // HOSE_MOUTH_FIX_FACE_ON_DISC edge-on open end, HOSE_REEL_SHADOW_FIX_FULL_TILE_SQUARE (HoseEndLipChecks.cs)
+            ContainerStyleChecks.Run(Case);    // LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS: bottle/bucket/barrel in the four looks
+            TankDebugChecks.Run(Case);         // TANK_DEBUG_BUILD_FILL_AT_WILL: picker order, fill = capacity, debug ledger
+            SettingsResetChecks.Run(Case);     // FLOWWORKS_RESET_BUILD_TWELVE_SCREENS_MISSING: the shared reset helper and its twelve screens
+            ReviewFixChecks.Run(Case);         // code-review batches 2-4 behaviour fixes (2026-10-11)
+            ReviewBatch56Checks.Run(Case);     // code-review batches 5+6 behaviour fixes (2026-10-11); also the d1898bef91 re-review fixes
+            ReviewFixBatch01Checks.Run(Case);  // code-review fixes batch 01: natural tar, dig/fill designations, dig finds
+            DeepWaterBuildChecks.Run(Case);  // DEEP_WATER_BUILD_REFUSED_BY_LIGHT_AFFORDANCE; SUSPENSION_TOWER_DIAGNOSE_UNSUPPLIED_IN_POOL
+            SpikePierceChecks.Run(Case);     // SPIKES_PIERCE_TUNE_LIKE_VANILLA_TRAP
+            RulingsWetDoorWakeBottleChecks.Run(Case);  // rulings #18 wet-cell doors, #19 wakes; the bottle-loop fix
+            GptFixesAChecks.Run(Case);         // GPT consult fixes, builder A: liquid net, tanks, hoses, bottles (GptFixesAChecks.cs)
+            GptBatchA1024Checks.Run(Case);     // GPT review 2026-10-23 batch A: liquid-sim core (GptBatchA1024Checks.cs)
+            GptEdge1016Checks.Run(Case);       // GPT edge-case consult fixes 2026-10-16 (GptEdge1016Checks.cs)
+            HoseNanShapeChecks.Run(Case);      // HOSE_SETTINGS_FIX_NAN_SHAPE (HoseNanShapeChecks.cs)
+            DirtyReview1022Checks.Run(Case);   // DIRTY-file review 2026-10-22 second pass (DirtyReview1022Checks.cs)
+            CsReview1028Checks.Run(Case);      // C# review 2026-10-28: WallReach W1-W4, LiquidNet settle route (CsReview1028Checks.cs)
+            MapControlChecks.Run(Case);        // FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS: dev-placed flow source and sink (MapControlChecks.cs)
+            FlowDoorFacingChecks.Run(Case);    // SLUICE_GATE_REWIRE_TURNS_LIKE_A_DOOR: sluices and grates span between canal banks (FlowDoorFacingChecks.cs)
+            LadderWallChecks.Run(Case);        // PIT_LADDER_REDRAW_HUNG_ON_THE_WALL: the ladder hangs on one wall, slid up holds everyone (LadderWallChecks.cs)
+            PlayerTruthSweeps.Run(Case);       // PLAYER-TRUTH PILOT: exhaustive sweeps of what a player expects (PlayerTruthSweeps.cs)
+            PitAccessChecks.Run(Case);         // PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: portable ladder, climbing gear, safe jumps/skips, rescue ladder (PitAccessChecks.cs)
+            WallClimbChecks.Run(Case);         // WALL_SCALING_BUILD_ROPE_OVER_RAMPARTS: gear climbs unroofed built walls, slowly (WallClimbChecks.cs)
+            PitDeckChecks.Run(Case);           // COVER_SCAN_TAME_QUADRATIC_ID_MINIMA: the cover scan stops at the first lower id (PitDeckChecks.cs)
+            TrenchStrideChecks.Run(Case);      // TITAN_TRENCHES_WIRE_MIND_THE_GAP: titans step over trenches narrower than B/4 (TrenchStrideChecks.cs)
+            RaiderTrenchChecks.Run(Case);      // RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP: go around, jump, ladders, fill; sieges unchanged (RaiderTrenchChecks.cs)
+            ShovelChecks.Run(Case);            // SHOVELS_BUILD_NO_DIGGING_BARE_HANDED: who needs one, raid shares (siege none, sappers more), wiring (ShovelChecks.cs)
+            LadderParityChecks.Run(Case);      // LADDER_PARITY_BUILD_NO_KEYS_REQUIRED: no keys, carried/taken ladders, slow fill + repair, ladder over a wall (LadderParityChecks.cs)
+            FwFix2Checks.Run(Case);            // FlowWorks C# fix batch 2 (review debt 2026-10-26): pipe arm redraw, river probe leaks, ladder inspect, detached bed (FwFix2Checks.cs)
+            PlotDBodyPruneChecks.Run(Case);    // PLOT_D_BODY_PRUNE_STALE_SEA: the dev plot reset releases body claims (PlotDBodyPruneChecks.cs)
+            SpanBaseChecks.Run(Case);          // SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT: the span base under pit covers, DeckedAt (SpanBaseChecks.cs)
+            PitCoverBeneathChecks.Run(Case);   // PIT_COVER_FIX_OCCUPANT_STAYS_BELOW: a lid laid over a pit occupant keeps her below (PitCoverBeneathChecks.cs)
+            PitCoverLookChecks.Run(Case);   // PLANK_COVER_REDRAW_READS_AS_EMPTY_PIT: a lid in an open pit shows its planks (PitCoverLookChecks.cs)
+            PitDrawHoldChecks.Run(Case);       // PIT_BOAR_FIX_SUNBATHES_ON_THE_WALL: the sink holds the DRAWN (tweened) centre above the near lip (PitDrawHoldChecks.cs)
+            SpikeDrawChecks.Run(Case);         // PIT_SPIKES_FIX_OVER_WALL_AND_SUBMERGE: stakes on the floor, never the walls; gone under 1 m (SpikeDrawChecks.cs)
+            CoverFloorSurveyChecks.Run(Case);   // PIT_COVER_WIDEN_PLANKS_BEAR_BOOTS + DRILL_PLACEMENT_ENFORCE_NO_DRY_HOLES (owner cards 2026-10-22)
+            DrawbridgeChecks.Run(Case);        // DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS: leaves, raise state, forced repath, never Collapse (DrawbridgeChecks.cs)
+            LineCrossingChecks.Run(Case);      // PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE: line tag + P2 crossing table, style never changes permission (LineCrossingChecks.cs)
+            LineDigBreakChecks.Run(Case);      // PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 2: a committed dig breaks lines once, a cancel breaks nothing (LineDigBreakChecks.cs)
+            PowerCordChecks.Run(Case);         // POWER_CORD_BUILD_BENDS_WHERE_CONDUIT_BREAKS: the cord def is caught by the crossing table, the dig break and the leaf cut (PowerCordChecks.cs)
+            DeckCollapseLinesChecks.Run(Case); // PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 3: a collapsing deck drops its cords as a live wire once and reels in its hoses (DeckCollapseLinesChecks.cs)
+            PipePoleChecks.Run(Case);          // PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 4: pipe pole support rule, span cap, sag extremes, not pawn topology (PipePoleChecks.cs)
+            PipeSpanNetChecks.Run(Case);       // PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 5: the liquid net's pole-to-pole edge, cap after join, ring cut, one rebuild per cut (PipeSpanNetChecks.cs)
+            LineReadoutChecks.Run(Case);       // PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 7: P9 readout lines for the four crossing cases, P8 gravship re-key (LineReadoutChecks.cs)
+            HoseFrameMemoChecks.Run(Case);     // HOSE_FRAME_SHRINK_PER_FRAME_GARBAGE: per-frame key memos match the old strings, allocate nothing (HoseFrameMemoChecks.cs)
+            HoseAllocChecks.Run(Case);         // HOSE_LAY_FIX_GC_STORM_FROM_WORKER: garbage per hose lay (HoseAllocChecks.cs)
+            HoseLayerChecks.Run(Case);         // HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP: cached broad-phase layering (HoseLayerChecks.cs)
+            HoseCrossShadowChecks.Run(Case);   // HOSE_DRAW_FIX_CROSS_SHADOW_QUADRATIC: indexed crossing shadows (HoseCrossShadowChecks.cs)
+            HoseLayQueueChecks.Run(Case);      // HOSE_LAY_FIX_SYNC_RELAY_IN_DRAW: draw/tick lays off the frame, budgeted (HoseLayQueueChecks.cs)
+            HoseReplanChecks.Run(Case);        // HOSE_RECHECK_TAME_REPLAN_OFF_TICK: the corridor replan off the tick, shared quota (HoseReplanChecks.cs)
+            HoseMateCacheChecks.Run(Case);     // HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP: pair solves keyed on inputs, budgeted, off the frame (HoseMateCacheChecks.cs)
+            HoseMateEndQueueChecks.Run(Case);  // live round 8: mate-end re-shape off the frame, rotating draw start, lay world reuse (HoseMateEndQueueChecks.cs)
+            HoseSpliceChecks.Run(Case);        // HOSE_SPLICE_BUILD_MATES_BY_SLOPE: G2 joiner (position, angle, curvature at both ends, |k| <= 1/MinBendRadius); two hose ends mate face to face (HoseSpliceChecks.cs)
+            HoseDrawGeometryChecks.Run(Case);  // HOSE_BEND_FIX_SHAVES_WALL_CORNERS + HOSE_LEADIN_FIX_STUB_IN_THE_CANAL: the drawn hose clears wall corners and meets a side port with no stub (HoseDrawGeometryChecks.cs)
+            HoseClothoidChecks.RunSnap(Case);  // HOSESNAP_FIX_HEADING_AND_RAMP_SCALE: Snap is Feasible only with headings met; ramp bound stretched dk*sc (HoseClothoidChecks.cs)
+            HoseCurveChecks.Guard(Case);       // HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS step 5: the G2 ruler over the hard stations holds its floor; owed rows only fail (HoseCurveChecks.cs)
+            HoseLayoutChecks.Run(Case);        // HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS steps 4-5: a hose is never drawn through its reel or fixture; too close to bend is refused (HoseLayoutChecks.cs)
+            WorldMapDrawGuardChecks.Run(Case); // HOSE_DRAW_FIX_LEAKS_ONTO_WORLDMAP: every drawing MapComponentUpdate skips the world view (WorldMapDrawGuardChecks.cs)
+            HoseWallSeamChecks.Run(Case);      // HOSE_CLEAR_FIX_WALL_SEAM_LOOPHOLE: wall test vs an independent ruler, seam lines refused, re-plans never cross a wall (HoseWallSeamChecks.cs)
+            HoseBandChecks.Run(Case);          // PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 6: hoses into pits only by ramp or ladder, band-aware end reach, raised ladder hangs, dig re-plans once (HoseBandChecks.cs)
+            SuspensionBridgeChecks.Run(Case);  // SUSPENSION_BRIDGE_BUILD_POSTS_AT_BOTH_ENDS: drag validator, spans, load, falls, wiring (SuspensionBridgeChecks.cs)
+            GroundClassChecks.Run(Case);  // DIG_SPOIL_BUILD_GRAVEL_PAYS_ITS_WAY + PIT_DIG_FIX_SAND_SLIDES_BACK_IN: ground classes, spoil, fill credit, mining miss, wiring (GroundClassChecks.cs)
+            ThirstChecks.Run(Case);            // THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY: thirst math, shipped defs, the Dubs cut (ThirstChecks.cs)
+            PondDepthChecks.Run(Case);         // POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD: ponds shallow out, one surface across connected water (PondDepthChecks.cs)
+            LevelSurfaceChecks.Run(Case);      // WATER_SURFACE_REPAIR_LEVEL_OR_BUST: live S5/S6 scenes offline, one level surface (LevelSurfaceChecks.cs)
+            LevelExactChecks.Run(Case);        // WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: exact decilitres, one surface per body (LevelExactChecks.cs)
+            LevelPourChecks.Run(Case);         // PUMP_CANAL_FEED / HOSE_LEFTOVER / CANAL_FILLIN fixes: pours and fill-ins in decilitres (LevelPourChecks.cs)
+            WaterLadderChecks.Run(Case);       // POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD (P14): one water ladder, base-layer dug water, migration (WaterLadderChecks.cs)
+            WaterLookChecks.Run(Case);         // WATER_ART_CANDIDATES_BUILD_WHAT_HE_APPROVED: deep navy tint steps, wet-wall shadow band, settings (WaterLookChecks.cs)
+            SheetWaterChecks.Run(Case);        // CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED stage 0: the sheet-water kernel (SheetWaterChecks.cs)
+            FloodReleaseChecks.Run(Case);      // CANAL_OVERFLOW step 1: Flood_FlowWorks' four accounting faults fixed (FloodReleaseChecks.cs)
+            SprinklerChecks.Run(Case);         // SPRINKLER_HEADS_BUILD_PUMP_REQUIRED: sprinkler kernel, shipped defs, VFE patch (SprinklerChecks.cs)
+
+            Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
+            // hose port (step 2): the hose suites moved from Gimme Some Slack's SelfTest, counted per assertion (HoseChecks.cs)
+            int hoseRan0 = hoseCounts.Count;
+            int hoseFails = RunHoseSuites(args);
+            if (Only != null)
+            {
+                int hoseRan = hoseCounts.Count - hoseRan0;
+                Console.WriteLine($"--only {string.Join(",", Only)}: {Pass.Count + Fail.Count} case(s) and {hoseRan} hose suite(s) ran, {FilteredOut} filtered out");
+                if (Pass.Count + Fail.Count + hoseRan == 0) return 3;
+            }
+            return Fail.Count == 0 && hoseFails == 0 ? 0 : 1;
+        }
+    }
+
+    /// <summary>FLOWWORKS_CONTAINER_MATERIALS_1: reads the mod's SHIPPED XML (not a copy) so the
+    /// selftest asserts the numbers the game loads.</summary>
+    internal static class ContainerMatFixture
+    {
+        private static string defsRoot;
+
+        public static string Root() => DefsRoot();
+
+        private static string DefsRoot()
+        {
+            if (defsRoot != null) return defsRoot;
+            var dir = new System.IO.DirectoryInfo(AppContext.BaseDirectory);
+            while (dir != null && !System.IO.Directory.Exists(System.IO.Path.Combine(dir.FullName, "Defs", "LiquidTypes")))
+                dir = dir.Parent;
+            if (dir == null) throw new Exception("could not find FlowWorks Defs/LiquidTypes above " + AppContext.BaseDirectory);
+            return defsRoot = System.IO.Path.Combine(dir.FullName, "Defs", "LiquidTypes");
+        }
+
+        public static Dictionary<string, (bool hot, bool acid)> Liquids()
+        {
+            var doc = System.Xml.Linq.XDocument.Load(System.IO.Path.Combine(DefsRoot(), "LiquidDefs", "RM_LiquidDefRegistry.xml"));
+            var result = new Dictionary<string, (bool hot, bool acid)>();
+            foreach (var d in doc.Root.Elements("RimMandrake.FlowWorks.LiquidTypes.LiquidDef"))
+            {
+                string V(string n) => (string)d.Element(n);
+                bool acidBurn = d.Descendants("damageDef").Any(e => e.Value == "AcidBurn");
+                float pH = V("pH") != null ? float.Parse(V("pH"), System.Globalization.CultureInfo.InvariantCulture) : 7f;
+                result[V("defName")] = (V("hot") == "true",
+                    RM_ContainerMaterialMath.IsAcid(pH, V("corrodesApparel") == "true", acidBurn));
+            }
+            return result;
+        }
+
+        public static List<RM_ContainerMaterialRule> Rules(string baseName)
+        {
+            var doc = System.Xml.Linq.XDocument.Load(System.IO.Path.Combine(DefsRoot(), "ThingDefs", "RM_LiquidBottles_Base.xml"));
+            var def = doc.Root.Elements("ThingDef").First(e => (string)e.Attribute("Name") == baseName);
+            var list = new List<RM_ContainerMaterialRule>();
+            foreach (var li in def.Descendants("materials").SelectMany(m => m.Elements("li")))
+            {
+                list.Add(new RM_ContainerMaterialRule
+                {
+                    material = (RM_ContainerMaterial)Enum.Parse(typeof(RM_ContainerMaterial), (string)li.Element("material")),
+                    capacityFactor = float.Parse((string)li.Element("capacityFactor"), System.Globalization.CultureInfo.InvariantCulture),
+                    holdsHot = (string)li.Element("holdsHot") != "false",
+                    holdsAcid = (string)li.Element("holdsAcid") != "false",
+                });
+            }
+            return list;
+        }
+    }
+}

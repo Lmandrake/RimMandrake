@@ -1,0 +1,159 @@
+using System;
+using System.Collections.Generic;
+
+namespace RimMandrake.FlowWorks
+{
+	/// <summary>
+	/// PIT_SPIKES_FIX_OVER_WALL_AND_SUBMERGE. Owner 2026-10-24: "you can see the spi[k]es aren't right. They should not be
+	/// showing drawn over the paler walls, right? And I needed deeper water to test the spikes. They should be shown as
+	/// submerged rapidly."
+	///
+	/// The spikes used to be one 1x1 sprite at Building altitude, so the stakes covered the pit's far-wall face, its side
+	/// bevels and its black outline (RM_ExcavationWalls, drawn at TerrainScatter). Now Building_RM_Spikes lays the
+	/// variant's own stakes (RM_SpikeStakes, cut from the owner-accepted PNGs) inside FloorRect: the part of the cell the
+	/// walls leave as floor. Water fades them out (SubmergedAlpha): 1 dry, 0.25 at 0.5 m, gone at SubmergeMetres.
+	/// Verse-free: the C# SelfTest (SpikeDrawChecks) and the offline scene (Tools/fw_scenes_spikes.py) both run this
+	/// math; the Python mirror is held to it by the parity fixture in SpikeDrawChecks.
+	/// </summary>
+	public static class RM_SpikeDrawMath
+	{
+		/// <summary>Clear gap (cells) kept between a stake and the floor's edge.</summary>
+		public const float Margin = 0.01f;
+
+		/// <summary>Water depth (m) at which the stakes are no longer drawn. A stake is ~0.15-0.18 cell tall.</summary>
+		public const float SubmergeMetres = 1.0f;
+
+		/// <summary>Stake opacity under <paramref name="fillLevels"/> of standing liquid (RM_MapComponent_Excavation.FillAt):
+		/// (1 - m / SubmergeMetres)^2, so it falls fast: 1 dry, 0.25 at one level (0.5 m), 0 from two levels (1 m).</summary>
+		public static float SubmergedAlpha(int fillLevels)
+		{
+			if (fillLevels <= 0) return 1f;
+			float t = 1f - fillLevels * RM_Volume.MetresPerLevel / SubmergeMetres;
+			return t <= 0f ? 0f : t * t;
+		}
+
+		/// <summary>The visible floor of a dug cell in cell-local coordinates (x east, z north, 0..1), from the same tables
+		/// RM_ExcavationWalls draws with. Neighbour levels are RM_ExcavationWalls.NeighbourLevel's (off-map / natural
+		/// liquid = level). The DRY faces are used (fill 0): water hides a face's foot, but the stakes stand on the floor
+		/// below it, so they keep clear of the whole face at any fill. <paramref name="faces"/> =
+		/// excavationWallFacesEnabled (off: the walls layer draws nothing, outline included); <paramref name="outline"/> =
+		/// pitOutlineEnabled.</summary>
+		public static void FloorRect(int d, int north, int south, int west, int east, bool faces, bool outline,
+			out float x0, out float z0, out float x1, out float z1)
+		{
+			bool lines = faces && outline;
+			float top = 0f, left = 0f, right = 0f, bottom = 0f;
+			if (faces)
+			{
+				top = RM_WallFaceMath.NorthFaceHeight(RM_WallFaceMath.ExposedDrop(d, north, 0));
+				left = RM_WallFaceMath.SideFaceWidth(RM_WallFaceMath.ExposedDrop(d, west, 0));
+				right = RM_WallFaceMath.SideFaceWidth(RM_WallFaceMath.ExposedDrop(d, east, 0));
+			}
+			if (lines)
+			{
+				if (d - north > 0) top = Math.Max(top, RM_WallFaceMath.RimLine);
+				if (d - west > 0) left = Math.Max(left, RM_WallFaceMath.SideLine);
+				if (d - east > 0) right = Math.Max(right, RM_WallFaceMath.SideLine);
+				if (d - south > 0) bottom = RM_WallFaceMath.SouthLining(d - south);
+			}
+			x0 = left;
+			x1 = 1f - right;
+			z0 = bottom;
+			z1 = 1f - top;
+		}
+
+		/// <summary>A deterministic 32-bit mix of (seed, k). Mirrored bit for bit in Tools/fw_scenes_spikes.py.</summary>
+		public static uint Hash(int seed, int k)
+		{
+			unchecked
+			{
+				uint x = (uint)seed * 0x9E3779B1u + (uint)k * 0x85EBCA77u;
+				x ^= x >> 15;
+				x *= 0x2C1B3C6Du;
+				x ^= x >> 12;
+				x *= 0x297A2D39u;
+				x ^= x >> 15;
+				return x;
+			}
+		}
+
+		/// <summary>Floats per laid stake in Layout's output: x, z, w, h (cell-local), u0, v0, u1, v1.</summary>
+		public const int Out = 8;
+
+		/// <summary>Lays variant <paramref name="variant"/>'s stakes over the rect at its own density (a cell-anchored staggered grid at
+		/// RM_SpikeStakes.Pitch, each slot a hashed stake jittered by up to a quarter pitch, kept where it fits the rect), scaled down only if the rect
+		/// is smaller than the tallest / widest stake. Every quad lies inside the rect less Margin. Output is sorted far
+		/// (north) first so nearer stakes overlap farther ones. Returns the stake count (0 for a rect too small).</summary>
+		public static int Layout(int variant, int seed, float x0, float z0, float x1, float z1, List<float> outQuads)
+		{
+			outQuads.Clear();
+			float[] lib = RM_SpikeStakes.Stakes[variant];
+			int n = lib.Length / RM_SpikeStakes.Stride;
+			float wmax = 0f, hmax = 0f;
+			for (int i = 0; i < n; i++)
+			{
+				wmax = Math.Max(wmax, lib[i * RM_SpikeStakes.Stride]);
+				hmax = Math.Max(hmax, lib[i * RM_SpikeStakes.Stride + 1]);
+			}
+			float fw = x1 - x0 - 2f * Margin, fh = z1 - z0 - 2f * Margin;
+			if (n == 0 || fw <= 0f || fh <= 0f) return 0;
+			float s = Math.Min(1f, Math.Min(fh / hmax, fw / wmax));
+			float lo = x0 + Margin, hi = x1 - Margin, bot = z0 + Margin, topz = z1 - Margin;
+			// PIT_SPIKES_TUNE_SOUTH_ROW_TOO_DENSE: ONE lattice per CELL, not per rect. The grid (whole rows / columns per cell at the
+			// variant's pitch) is anchored on the cell, and a stake is kept where its rect has room for it, so a cell the walls
+			// shorten (south lining, north face) shows the same stakes at the same pitch as its neighbours, the rows line up
+			// across cell joins, and nothing is respread (the old per-rect spread made short rects denser/thinner). s only
+			// shrinks stakes for a rect smaller than the tallest stake; the pitch never scales.
+			float span = Math.Max(0f, 1f - hmax * 0.5f);   // base rows run 0..1-hmax/2: the tallest stakes of the top rows are pulled down to the cell top
+			bool cellTop = topz >= 1f - Margin - 1e-4f;
+			int nrow = Math.Max(1, (int)Math.Floor(span / RM_SpikeStakes.Pitch[variant, 1]) + 1);
+			int ncol = Math.Max(1, (int)Math.Round(1f / RM_SpikeStakes.Pitch[variant, 0], MidpointRounding.AwayFromZero));
+			float rpz = nrow > 1 ? span / (nrow - 1) : 0f, rpx = 1f / ncol;
+			// PIT_SPIKES_TUNE_NORTH_ROW_TOO_SPARSE: a rect the north face shortens keeps every row the cell top would keep: a
+			// base up to half a stake under the rect top, plus half a row pitch, is pulled down inside (as the cell top pulls in
+			// its top row) instead of being dropped, so the north cell keeps a middle cell's density on its shorter floor.
+			float cap = topz - hmax * s * 0.5f + 0.5f * rpz;
+			var rows = new List<float[]>();
+			for (int pass = 0; pass < 2 && rows.Count == 0; pass++)
+			{
+				for (int r = 0; r < nrow; r++)
+				{
+					bool odd = (r & 1) == 1;
+					int cols = odd ? ncol + 1 : ncol;
+					for (int col = 0; col < cols; col++)
+					{
+						int k = r * (ncol + 1) + col;
+						uint h = Hash(seed, k);
+						int j = (int)(h % (uint)n) * RM_SpikeStakes.Stride;
+						float w = lib[j] * s, ht = lib[j + 1] * s;
+						float xc = (odd ? col : col + 0.5f) * rpx;
+						float jx = (((h >> 8) & 0xFF) / 255f - 0.5f) * 0.5f * rpx;
+						float jz = (((h >> 16) & 0xFF) / 255f - 0.5f) * 0.5f * rpz;
+						if (xc + w * 0.5f <= lo || xc - w * 0.5f >= hi) continue;
+						float zb = r * rpz + jz;
+						// pass 0 keeps a stake whose base is under cap (clamped in below); pass 1 (a rect shorter than one row) clamps the first row in
+						if (pass == 0 ? ((zb > cap && !cellTop) || (r > 0 && zb < bot)) : r != 0) continue;
+						float x = Clamp(xc + jx - w * 0.5f, lo, hi - w);
+						float z = Clamp(zb, bot, topz - ht);
+						rows.Add(new[] { x, z, w, ht, lib[j + 2], lib[j + 3], lib[j + 4], lib[j + 5], k });
+					}
+				}
+			}
+			rows.Sort((a, b) => a[1] != b[1] ? b[1].CompareTo(a[1]) : a[8].CompareTo(b[8]));
+			foreach (float[] q in rows)
+			{
+				for (int i = 0; i < Out; i++) outQuads.Add(q[i]);
+			}
+			return rows.Count;
+		}
+
+		private static float Clamp(float v, float lo, float hi) => v < lo ? lo : (v > hi ? hi : v);
+
+		/// <summary>The variant index (into RM_SpikeStakes.Variants) a texture name like "RM_Spikes_b" names, or -1.</summary>
+		public static int VariantOf(string textureName)
+		{
+			if (string.IsNullOrEmpty(textureName) || textureName.Length < 2 || textureName[textureName.Length - 2] != '_') return -1;
+			return RM_SpikeStakes.Variants.IndexOf(textureName[textureName.Length - 1]);
+		}
+	}
+}

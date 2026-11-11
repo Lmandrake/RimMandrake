@@ -1,0 +1,27 @@
+{
+  "time": 1794394959.149213,
+  "raw_path": "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-hose-fuzz/evidence/broaden_raw.json",
+  "raw_sha256": "e3fe89ae1162c3bddd29cfef473e5bd11797b495111039cfdbc102c9aa37582e",
+  "extracted_path": "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-hose-fuzz/evidence/broaden_report.md",
+  "extracted_sha256": "c432a8d7e4c63f2f5b1ac909cf308a19d9114feb630631f1ebb0eed8352cec96",
+  "unchanged_result": true,
+  "model_usage": {
+    "claude-opus-5-5": {
+      "inputTokens": 28,
+      "outputTokens": 19030,
+      "cacheReadInputTokens": 897009,
+      "cacheCreationInputTokens": 117178,
+      "webSearchRequests": 0,
+      "costUSD": 1.4975378,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 11352,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 117178,
+      "canonicalModel": "claude-opus-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "last_line": "This is input for the maker and the separate judge call. It is not a finding that the item is complete or correct."
+}

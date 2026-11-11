@@ -1,0 +1,10 @@
+{
+  "time": 1794395115.0070841,
+  "label": "entry_g2",
+  "phase": "Python source staging, before C# build or execution",
+  "returncode": 1,
+  "console": "entry_g2_console.txt",
+  "preserved_partial_stage": "fast_entry_g2/inputs",
+  "diagnosis": "INSTRUMENT. The script treated a generated Compile item inside a build Target as a static source path. It attempted to read literal MSBuild variables. The real project generates ReleaseRect.g.cs during CoreCompile.",
+  "action": "Read only top-level static Compile entries. For actual-entry controls, stage the unchanged actual project plus its RM_LiquidStock.cs generation input and let MSBuild run the original target. Retry under a new label. No mod source change."
+}

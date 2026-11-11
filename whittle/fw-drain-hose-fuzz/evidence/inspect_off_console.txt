@@ -1,0 +1,145 @@
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(20,23): warning CS0649: Field 'MachineInfo.BaseDz' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\_Shared\SlackGeometry\CordLayer.cs(45,21): warning CS0649: Field 'LayParams.SoftPins' is never assigned to, and will always have its default value false [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(52,43): warning CS0649: Field 'HoseLayInputs.BodyH' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\_Shared\SlackGeometry\CordLayer.cs(41,21): warning CS0649: Field 'LayParams.FillFlats' is never assigned to, and will always have its default value false [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(21,24): warning CS0649: Field 'MachineInfo.Z0' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(41,21): warning CS0649: Field 'MachineInfo.Foot' is never assigned to, and will always have its default value false [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(96,27): warning CS0649: Field 'HoseLayQueue.Work.Tag' is never assigned to, and will always have its default value null [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(49,22): warning CS0649: Field 'HoseLayInputs.Seed' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseReplanQueue.cs(39,24): warning CS0649: Field 'HoseReplanQueue.Work.Serial' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\_Shared\SlackGeometry\CordLayer.cs(57,21): warning CS0649: Field 'LayParams.RoundLoops' is never assigned to, and will always have its default value false [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(43,28): warning CS0649: Field 'HoseLayInputs.PortAt' is never assigned to, and will always have its default value [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(36,27): warning CS0649: Field 'MachineInfo.HomeZ' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(43,20): warning CS0649: Field 'HoseLayInputs.Inward' is never assigned to, and will always have its default value [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\_Shared\SlackGeometry\CordLayer.cs(62,21): warning CS0649: Field 'LayParams.FairBends' is never assigned to, and will always have its default value false [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseReplanQueue.cs(74,37): warning CS0649: Field 'HoseReplanQueue.Released' is never assigned to, and will always have its default value null [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(42,26): warning CS0649: Field 'HoseLayInputs.End' is never assigned to, and will always have its default value [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(29,31): warning CS0649: Field 'MachineInfo.InsetN' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(93,34): warning CS0649: Field 'HoseLayQueue.Work.Run' is never assigned to, and will always have its default value null [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(48,32): warning CS0649: Field 'HoseLayInputs.Shape' is never assigned to, and will always have its default value null [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(35,21): warning CS0649: Field 'MachineInfo.HasHome' is never assigned to, and will always have its default value false [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(44,19): warning CS0649: Field 'HoseLayInputs.PortAxis' is never assigned to, and will always have its default value [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(52,28): warning CS0649: Field 'HoseLayInputs.BodyZ0' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(41,29): warning CS0649: Field 'HoseLayInputs.Rect' is never assigned to, and will always have its default value [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(42,19): warning CS0649: Field 'HoseLayInputs.Start' is never assigned to, and will always have its default value [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(52,20): warning CS0649: Field 'HoseLayInputs.BodyX0' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(121,37): warning CS0649: Field 'HoseLayQueue.Released' is never assigned to, and will always have its default value null [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(51,21): warning CS0649: Field 'HoseLayInputs.HasBody' is never assigned to, and will always have its default value false [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\_Shared\SlackGeometry\CordLayer.cs(52,21): warning CS0649: Field 'LayParams.RoundExcursions' is never assigned to, and will always have its default value false [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(29,23): warning CS0649: Field 'MachineInfo.InsetS' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(46,20): warning CS0649: Field 'HoseLayInputs.Outward' is never assigned to, and will always have its default value [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(29,47): warning CS0649: Field 'MachineInfo.InsetW' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(16,23): warning CS0649: Field 'MachineInfo.Id' is never assigned to, and will always have its default value null [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(17,23): warning CS0649: Field 'MachineInfo.DefName' is never assigned to, and will always have its default value null [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(36,20): warning CS0649: Field 'MachineInfo.HomeX' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(18,28): warning CS0649: Field 'MachineInfo.Kind' is never assigned to, and will always have its default value [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseReplanQueue.cs(38,30): warning CS0649: Field 'HoseReplanQueue.Work.World' is never assigned to, and will always have its default value null [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(29,39): warning CS0649: Field 'MachineInfo.InsetE' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(21,20): warning CS0649: Field 'MachineInfo.X0' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseReplanQueue.cs(37,33): warning CS0649: Field 'HoseReplanQueue.Work.Run' is never assigned to, and will always have its default value null [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(94,30): warning CS0649: Field 'HoseLayQueue.Work.World' is never assigned to, and will always have its default value null [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\inputs\src\RimMandrake\FlowWorks\Source\Hose\HoseLayQueue.cs(52,36): warning CS0649: Field 'HoseLayInputs.BodyW' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\fw-hose-fuzz\inspect_off\Probe.csproj]
+INSPECT seed=1 outlet=True reel=1 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=1 outlet=False reel=1 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=2 outlet=True reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=2 outlet=False reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=3 outlet=True reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=3 outlet=False reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=4 outlet=True reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=4 outlet=False reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=5 outlet=True reel=1 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=5 outlet=False reel=1 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=6 outlet=True reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=6 outlet=False reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=7 outlet=True reel=2 laid=0 fallback=0 steps=3 msg=ok
+INSPECT seed=7 outlet=False reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=8 outlet=True reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=8 outlet=False reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=9 outlet=True reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=9 outlet=False reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=10 outlet=True reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=10 outlet=False reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=11 outlet=True reel=2 laid=0 fallback=0 steps=3 msg=ok
+INSPECT seed=11 outlet=False reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=12 outlet=True reel=2 laid=0 fallback=0 steps=3 msg=ok
+INSPECT seed=12 outlet=False reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=13 outlet=True reel=2 laid=0 fallback=0 steps=3 msg=ok
+INSPECT seed=13 outlet=False reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=14 outlet=True reel=2 laid=0 fallback=0 steps=3 msg=ok
+INSPECT seed=14 outlet=False reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=15 outlet=True reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=15 outlet=False reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=16 outlet=True reel=2 laid=0 fallback=0 steps=3 msg=ok
+INSPECT seed=16 outlet=False reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=17 outlet=True reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=17 outlet=False reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=18 outlet=True reel=2 laid=0 fallback=0 steps=1 msg=ok
+INSPECT seed=18 outlet=False reel=2 laid=0 fallback=0 steps=1 msg=ok
+INSPECT seed=19 outlet=True reel=2 laid=0 fallback=0 steps=3 msg=ok
+INSPECT seed=19 outlet=False reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=20 outlet=True reel=1 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=20 outlet=False reel=1 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=21 outlet=True reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=21 outlet=False reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=22 outlet=True reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=22 outlet=False reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=23 outlet=True reel=1 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=23 outlet=False reel=1 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=24 outlet=True reel=2 laid=0 fallback=0 steps=3 msg=ok
+INSPECT seed=24 outlet=False reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=25 outlet=True reel=2 laid=0 fallback=0 steps=3 msg=ok
+INSPECT seed=25 outlet=False reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=26 outlet=True reel=2 laid=0 fallback=0 steps=3 msg=ok
+INSPECT seed=26 outlet=False reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=27 outlet=True reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=27 outlet=False reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=28 outlet=True reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=28 outlet=False reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=29 outlet=True reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=29 outlet=False reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=30 outlet=True reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=30 outlet=False reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=31 outlet=True reel=1 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=31 outlet=False reel=1 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=32 outlet=True reel=1 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=32 outlet=False reel=1 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=33 outlet=True reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=33 outlet=False reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=34 outlet=True reel=1 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=34 outlet=False reel=1 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=35 outlet=True reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=35 outlet=False reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=36 outlet=True reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=36 outlet=False reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=37 outlet=True reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=37 outlet=False reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=38 outlet=True reel=1 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=38 outlet=False reel=1 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=39 outlet=True reel=1 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=39 outlet=False reel=1 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=40 outlet=True reel=2 laid=1 fallback=0 steps=3 msg=ok
+INSPECT seed=40 outlet=False reel=2 laid=1 fallback=0 steps=3 msg=ok
+FAILED checks: 0
+
+
+{
+  "label": "inspect_off",
+  "version": "original",
+  "mutant": "production",
+  "command": [
+    "/mnt/c/Users/Mandrake/.dotnet/dotnet.exe",
+    "run",
+    "--project",
+    "D:\\ClaudeWork\\rimmandrake\\scratch\\fw-hose-fuzz\\inspect_off\\Probe.csproj",
+    "-c",
+    "Release",
+    "--",
+    "g2off",
+    "--inspect"
+  ],
+  "stage": "/mnt/d/ClaudeWork/rimmandrake/scratch/fw-hose-fuzz/inspect_off",
+  "started": 1794394789.6560528,
+  "elapsed": 2.3979971408843994,
+  "returncode": 0,
+  "staged_inputs_match_saved": true
+}

@@ -1,0 +1,12 @@
+--- src/RimMandrake/FlowWorks/Source/Hose/HoseMath.cs
++++ isolated/src/RimMandrake/FlowWorks/Source/Hose/HoseMath.cs
+@@ -379,6 +379,9 @@
+         /// run is not clear.</param>
+         internal static HoseLay Lay(CordWorld w, V2 a, V2 b, HoseShapeParams p, ulong seed, V2? endInward = null, V2? startOutward = null)
+         {
++            // ISOLATED MUTANT ONLY
++            if (!startOutward.HasValue) return new HoseLay { Reason = "isolated refusal mutant" };
++
+             V2 bPlan = endInward.HasValue ? b - endInward.Value * HoseRelay.EndStraight : b;
+             V2 aPlan = a;
+             if (startOutward.HasValue)

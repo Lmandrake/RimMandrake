@@ -1,0 +1,484 @@
+// WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES (plan P3 of FLOWWORKS_DEPTH_REBUILD_ONE_BIG_DIG). Owner, 2026-10-17: "We need VERY
+// smooth water. That's water's one primary characteristic: a level surface." Ruled exactly level by card.
+// The PRODUCTION exact kernel (RM_FlowKernel.levelExactEnabled + RM_LevelSolve) at the SHIPPED flags on plain arrays: the
+// redrawn S5/S6 numbers (design/RimMandrake/flowworks_level_surface_2026-10-17.md §1, worked by hand), conservation to the
+// decilitre, one surface per body (the R9 bar's offline twin, read with the same RM_SurfaceGap the live proof uses), a
+// sill that splits a falling body and joins a rising one, the save migration's arithmetic, and the look by true metres.
+// The Python twin is northstar/level_water.py; selftest_flowworks_kernel_oracle.py (modes exact, exactpond) diffs them.
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace RimMandrake.FlowWorks.SelfTest
+{
+	internal static class LevelExactChecks
+	{
+		private const int U = RM_LevelSolve.U;
+
+		private static void Assert(bool ok, string msg)
+		{
+			if (!ok) throw new Exception(msg);
+		}
+
+		/// <summary>The shipped kernel flags (RimMandrakeFlowWorksSettings defaults through DoPulse's copy lines).</summary>
+		private static ArrayWorld World(int w, int h)
+		{
+			var world = new ArrayWorld(w, h);
+			world.k.levelBySurfaceEnabled = true;
+			world.k.levelSetEnabled = true;
+			world.k.creepWaterEnabled = true;
+			world.k.creepEnabled = true;
+			world.k.viscosityEnabled = true;
+			world.k.levelExactEnabled = true;
+			return world;
+		}
+
+		private static long Total(ArrayWorld w)
+		{
+			long t = 0;
+			for (int i = 0; i < w.w * w.h; i++) if (w.k.depth[i] > 0) t += w.k.WaterOf(i);
+			foreach (var b in w.bodies) if (!b.limitless) t += b.Dl();
+			return t;
+		}
+
+		private static double M(long dl) => RM_LevelSolve.Metres(dl);
+
+		/// <summary>Worst surface gap (metres) over every body of the world (RM_SurfaceGap, the live diagnostic's maths).</summary>
+		public static double WorstGap(ArrayWorld w, out int bodies)
+		{
+			var cells = Enumerable.Range(0, w.w * w.h).Where(i => w.k.depth[i] > 0).ToList();
+			var list = RM_SurfaceGap.Measure(cells, i => w.k.depth[i], i => w.k.WaterOf(i), i => w.cellFluid[i],
+				(i, d) => w.k.Cardinal(i, d),
+				i => !w.k.IsSource(i) || w.LevelBodyOf(i) == RM_FlowKernel.LevelBodyDisabled ? -1 : w.LevelBodyOf(i) < 0 ? -2 : w.LevelBodyOf(i),
+				b => RM_LevelSolve.PondSurfaceHeight(w.BodyHistogram(b), w.BodyStockDl(b)),
+				i => w.BedAt(i), w.k.IsSealed, i => w.DonorFluid(i, true));
+			bodies = list.Count;
+			return list.Count == 0 ? 0.0 : list[0].gapM;
+		}
+
+		/// <summary>A 3x3 (or 1-square) enclosed pond of bed 4 holding <paramref name="levels"/> and a dry canal off its east middle.</summary>
+		private static (ArrayWorld w, List<int> canal, ArrayWorld.Body body) PondAndCanal(int pondSquares, float levels, int canalLen, int canalDepth)
+		{
+			var w = World(20, 5);
+			var pond = new List<int>();
+			if (pondSquares == 9) { for (int z = 1; z <= 3; z++) for (int x = 1; x <= 3; x++) pond.Add(z * 20 + x); }
+			else pond.Add(2 * 20 + 1);
+			var body = w.AddBody(false, levels, pond);
+			foreach (int c in pond) w.bed[c] = 4;
+			int x0 = pondSquares == 9 ? 4 : 2;
+			var canal = Enumerable.Range(x0, canalLen).Select(x => 2 * 20 + x).ToList();
+			foreach (int c in canal) w.k.depth[c] = (byte)canalDepth;
+			return (w, canal, body);
+		}
+
+		private static void Settle(ArrayWorld w, List<int> seeds, int pulses, out bool conserved)
+		{
+			long t0 = Total(w);
+			conserved = true;
+			for (int p = 0; p < pulses; p++)
+			{
+				w.Pulse(seeds);
+				if (Total(w) != t0 || w.k.worstImbalance > 0) conserved = false;
+			}
+		}
+
+		public static void Run(Action<string, Action> Case)
+		{
+			Case("Exact_S5A_full_pond_wets_all_ten_canal_squares_at_0237", () =>
+			{
+				var (w, canal, body) = PondAndCanal(9, 36f, 10, 1);
+				Settle(w, canal, 200, out bool cons);
+				var depths = canal.Select(c => Math.Round(M(w.k.WaterOf(c)), 3)).ToArray();
+				Assert(depths.All(d => d == 0.237), "all ten canal squares 0.237 m: " + string.Join(" ", depths));
+				double surf = M((long)Math.Round(RM_LevelSolve.PondSurfaceHeight(w.BodyHistogram(body.id), body.Dl())));
+				Assert(Math.Abs(surf + 5.0 / 19) < 1e-3, "pond surface -5/19 m (1.737 m deep): " + surf.ToString("F4"));
+				Assert(cons, "36,000 L conserved to the decilitre at every pulse, ledger balanced");
+				Assert(WorstGap(w, out int nb) < 0.001 && nb == 1, "one body, surface gap under 1 mm: " + WorstGap(w, out _));
+			});
+
+			Case("Exact_S5B_one_pond_square_wets_all_ten_at_45mm", () =>
+			{
+				var (w, canal, body) = PondAndCanal(1, 4f, 10, 1);
+				Settle(w, canal, 200, out bool cons);
+				var depths = canal.Select(c => M(w.k.WaterOf(c))).ToArray();
+				Assert(depths.All(d => Math.Abs(d - 0.0455) < 0.0006), "all ten at 4.5 cm: " + string.Join(" ", depths.Select(d => d.ToString("F4"))));
+				Assert(cons && Total(w) == 4L * U, "4,000 L conserved to the decilitre");
+				Assert(WorstGap(w, out _) < 0.001, "surface gap under 1 mm: " + WorstGap(w, out _));
+			});
+
+			Case("Exact_S5F_pond_square_and_dug_pit_level_at_one_metre_each", () =>
+			{
+				var (w, canal, body) = PondAndCanal(1, 4f, 1, 4);
+				Settle(w, canal, 50, out bool cons);
+				Assert(w.k.WaterOf(canal[0]) == 2L * U && body.Dl() == 2L * U, $"1 m + 1 m: {w.k.WaterOf(canal[0])} / {body.Dl()}");
+			});
+
+			Case("Exact_S5_control_low_pond_feeds_no_shallow_canal", () =>
+			{
+				var (w, canal, body) = PondAndCanal(9, 26f, 10, 1);
+				Settle(w, canal, 60, out bool cons);
+				Assert(canal.All(c => w.k.WaterOf(c) == 0) && body.Dl() == 26L * U, "a pond whose surface is 0.56 m down feeds no 0.5 m canal");
+			});
+
+			Case("Exact_S5E_wide_basin_one_flat_sheet", () =>
+			{
+				var w = World(8, 8);
+				var basin = new List<int>();
+				for (int z = 1; z <= 6; z++) for (int x = 1; x <= 6; x++) { int c = z * 8 + x; basin.Add(c); w.k.depth[c] = 2; }
+				foreach (int c in new[] { 3 * 8 + 3, 3 * 8 + 4, 4 * 8 + 3, 4 * 8 + 4 }) { w.k.fill[c] = 2; w.cellFluid[c] = ArrayWorld.Water; }
+				Settle(w, basin, 60, out bool cons);
+				var d = basin.Select(c => Math.Round(M(w.k.WaterOf(c)), 3)).Distinct().ToArray();
+				Assert(d.Length == 1 && d[0] == 0.111, "one 0.111 m sheet: " + string.Join(" ", d));
+				Assert(cons, "8,000 L kept to the decilitre");
+			});
+
+			Case("Exact_S6_pond_alone_nine_squares_at_1444", () =>
+			{
+				int[] h = RM_PondDepthMath.Histogram(Enumerable.Repeat(4, 9).ToList());
+				double s = RM_LevelSolve.PondSurfaceHeight(h, 26L * U);
+				double w = RM_LevelSolve.PondSquareWater(4, s);
+				Assert(Math.Round(M((long)Math.Round(w)), 3) == 1.444, "1.444 m in every square: " + M((long)Math.Round(w)));
+				Assert(RM_PondDepthMath.StageForExact(w, 4) == RM_PondDepthMath.Stage.ChestDeep,
+					"1.44 m shows the 1.5 m (chest-deep) look in all nine: " + RM_PondDepthMath.StageForExact(w, 4));
+				Assert(RM_PondDepthMath.StageForExact(39999, 4) == RM_PondDepthMath.Stage.Original, "a nearly full square keeps its own water");
+				Assert(RM_PondDepthMath.StageForExact(0.2, 4) == RM_PondDepthMath.Stage.Mud, "under half a decilitre is mud");
+			});
+
+			Case("Exact_pond_drawn_flat_residue_is_mud", () =>
+			{
+				// POND_DRAWN_FIX_VERYSHALLOW_NEVER_MUDS: a 5x5 flat pond (bed 2, 50 levels) drawn to stock 0.00 still held a few
+				// litres; spread level they were > 0.5 dL a square, so all 25 stayed RM_WaterVeryShallow sources and none mudded.
+				int[] h = RM_PondDepthMath.Histogram(Enumerable.Repeat(2, 25).ToList());
+				foreach (long left in new long[] { 1, 40, 49, 25L * 199 })
+				{
+					double wd = RM_LevelSolve.PondSquareWater(2, RM_LevelSolve.PondSurfaceHeight(h, left));
+					Assert(wd >= 0.0 && RM_PondDepthMath.StageForExact(wd, 2) == RM_PondDepthMath.Stage.Mud,
+						left + " dL left on 25 squares (" + wd + " dL each) is mud, not very shallow");
+				}
+				Assert(RM_PondDepthMath.StageForExact(RM_PondDepthMath.PondFilmDl, 2) == RM_PondDepthMath.Stage.VeryShallow,
+					"a wet square at the 1 cm film keeps its water");
+				Assert(RM_PondDepthMath.StageForExact(300, 2, false) == RM_PondDepthMath.Stage.Mud,
+					"a dry square does not re-wet between the film and twice it (no flicker)");
+				Assert(RM_PondDepthMath.StageForExact(RM_PondDepthMath.PondRewetDl, 2, false) == RM_PondDepthMath.Stage.VeryShallow,
+					"a dry square re-wets at twice the film");
+				Assert(RM_PondDepthMath.StageForExact(2000, 2, false) == RM_PondDepthMath.Stage.VeryShallow, "10 cm is very shallow water");
+			});
+
+			Case("Exact_S1_limitless_canal_fills_by_pulse_10_unbroken", () =>
+			{
+				var w = World(20, 3);
+				var lake = new List<int>();
+				for (int x = 0; x < 8; x++) for (int z = 0; z < 3; z++) lake.Add(z * 20 + x);
+				w.AddBody(true, 0f, lake);
+				var canal = Enumerable.Range(8, 8).Select(x => 20 + x).ToList();
+				foreach (int c in canal) w.k.depth[c] = 1;
+				int fullAt = -1;
+				for (int p = 1; p <= 20; p++)
+				{
+					w.Pulse(canal);
+					var wet = canal.Select(c => w.k.WaterOf(c) > 0).ToList();
+					int k = wet.IndexOf(false); if (k < 0) k = wet.Count;
+					Assert(!wet.Skip(k).Any(x => x), $"pulse {p}: the wet run is unbroken from the mouth");
+					if (fullAt < 0 && canal.All(c => w.k.WaterOf(c) == U)) fullAt = p;
+				}
+				Assert(fullAt > 0 && fullAt <= 10, "full end to end by pulse 10: " + fullAt);
+			});
+
+			Case("Exact_sill_splits_a_falling_body_and_joins_a_rising_one", () =>
+			{
+				// rising: a fed 1 m channel, a 0.5 m sill, then a dry 1 m channel
+				var w = World(12, 3);
+				w.AddBody(true, 0f, new[] { 1 * 12 + 0 });
+				var left = Enumerable.Range(1, 4).Select(x => 12 + x).ToList();
+				int sill = 12 + 5;
+				var right = Enumerable.Range(6, 4).Select(x => 12 + x).ToList();
+				foreach (int c in left.Concat(right)) w.k.depth[c] = 2;
+				w.k.depth[sill] = 1;
+				var all = left.Concat(new[] { sill }).Concat(right).ToList();
+				bool order = true;
+				for (int p = 0; p < 60; p++)
+				{
+					w.Pulse(all);
+					if (right.Any(c => w.k.WaterOf(c) > 0) && left.Any(c => w.k.WaterOf(c) < U)) order = false;
+				}
+				Assert(order, "the far basin wets only once the near one stands at the sill floor");
+				Assert(all.All(c => w.k.WaterOf(c) == w.k.depth[c] * (long)U), "then it fills: one body");
+				// falling: the same, settled full, drained from the far end through a sink: the near basin keeps its 0.5 m
+				var f = World(12, 3);
+				foreach (int c in left.Concat(right)) { f.k.depth[c] = 2; f.k.fill[c] = 2; f.cellFluid[c] = ArrayWorld.Water; }
+				f.k.depth[sill] = 1; f.k.fill[sill] = 1; f.cellFluid[sill] = ArrayWorld.Water;
+				f.k.depth[12 + 10] = 2; f.k.depth[12 + 11] = 2;
+				f.sink[12 + 11] = true; f.k.edgeSinksEnabled = true;
+				var allF = all.Concat(new[] { 12 + 10, 12 + 11 }).ToList();
+				long t0 = Total(f); float drained = 0f; bool kept = true;
+				for (int p = 0; p < 150; p++)
+				{
+					f.Pulse(allF);
+					drained += f.k.sinkDrained;
+					if (left.Any(c => f.k.WaterOf(c) < U)) kept = false;
+				}
+				Assert(kept && left.All(c => f.k.WaterOf(c) == U) && f.k.WaterOf(sill) == 0, "the near basin keeps 0.5 m below the sill floor");
+				Assert(right.All(c => f.k.WaterOf(c) == 0), "the far basin drains to the last decilitre");
+				Assert(Math.Abs(Total(f) + drained * U - t0) < 1, "kept + drained = start");
+			});
+
+			Case("Exact_fuzz_conserves_to_the_decilitre_and_rests_level", () => ExactFuzz(600, 9100, 4, new[] { 2, 4, 4, 6 }));
+
+			// review day 3: every kernel fuzz dug 0.5..2 m only (r.Next(1, 5)), from before digs went to 20 m (P5) and lake floors
+			// to 50 m (P11): the same invariants with holes to 20 m and beds to 8 m
+			Case("Exact_fuzz_past_2m_conserves_and_rests_level", () => ExactFuzz(300, 9700, 40, new[] { 2, 4, 8, 16 }));
+
+			Case("Exact_migration_reads_float_stock_to_the_decilitre", () =>
+			{
+				// RM_LiquidBody's load path: a save from before the exact model holds a float stock; stockDl = round(stock x U).
+				foreach (float f in new[] { 0f, 1f, 26f, 25.37f, 3999.5f, 123456.7f })
+				{
+					long dl = (long)Math.Round(f * (double)U);
+					Assert(Math.Abs(dl / (double)U - f) <= 0.5 / U + f * 6e-8, $"{f} levels -> {dl} dL keeps every litre");
+				}
+				// review day 3: the arithmetic above is the test's own copy; bind it to the production load path (RM_LiquidBody is
+				// Verse-bound, not compiled here), or the case passes whatever RM_LiquidBody does
+				string lb = RiverSwitchFlipChecks.Src("RM_LiquidBody.cs");
+				RiverSwitchFlipChecks.Has(lb, @"stockDl = dl != long\.MinValue \? dl : \(long\)System\.Math\.Round\(stockView \* \(double\)RM_LevelSolve\.U\);",
+					"the load path rounds a float stock to the decilitre exactly as above");
+				// a whole-notch canal grid loads as W = F x U, part 0: unchanged
+				var w = World(4, 1);
+				w.k.depth[1] = 3; w.k.fill[1] = 2; w.cellFluid[1] = ArrayWorld.Water;
+				w.k.part = new ushort[4];
+				Assert(w.k.WaterOf(1) == 2L * U, "an old 2-notch square is 20,000 dL");
+			});
+
+			Case("Exact_look_follows_true_metres", () =>
+			{
+				Assert(RM_LevelSolve.LookBand(0) == 0, "dry");
+				Assert(RM_LevelSolve.LookBand(4737) == 1, "0.237 m: the very-shallow look (hook)");
+				Assert(RM_LevelSolve.LookBand(U) == 2, "0.5 m");
+				Assert(RM_LevelSolve.LookBand(2 * U) == 3, "1 m");
+				Assert(RM_LevelSolve.LookBand(28889) == 4, "1.44 m reads as 1.5 m");
+				Assert(RM_LevelSolve.LookBand(4 * U) == 5 && RM_LevelSolve.LookBand(12 * U) == 5, "2 m and deeper");
+				Assert(RM_LevelSolve.LookBand(U / 2) == 2 && RM_LevelSolve.LookBand(U / 2 - 1) == 1, "the 25 cm line");
+			});
+
+			Case("Exact_surface_gap_sees_a_step", () =>
+			{
+				// can the instrument go red? two wet squares of one run at different surfaces read as a gap
+				var w = World(3, 1);
+				w.k.part = new ushort[3];
+				w.k.depth[0] = 2; w.k.depth[1] = 2; w.k.fill[0] = 2; w.k.fill[1] = 1;
+				w.cellFluid[0] = w.cellFluid[1] = ArrayWorld.Water;
+				double g = WorstGap(w, out int nb);
+				Assert(nb == 1 && Math.Abs(g - 0.5) < 1e-9, "a 0.5 m step in one body reads 0.5 m: " + g);
+			});
+
+			Case("Exact_surface_gap_merges_arms_through_a_pond", () =>
+			{
+				// SURFACEGAP_MERGE_ARMS_THROUGH_POND: arm A 0.95 cm above a half-full 2 m pond square, arm B 0.95 cm below it,
+				// one row A | pond | B: ONE body of 1.9 cm (twin: selftest_level_water.py t_surface_gap_merge)
+				long u = RM_LevelSolve.U;
+				int[] depth = { 4, 0, 4 };
+				long[] water = { 2 * u + 190, 0, 2 * u - 190 };
+				object fl = new object();
+				var list = RM_SurfaceGap.Measure(new[] { 0, 1, 2 }, i => depth[i], i => water[i], i => fl,
+					(i, d) => d == 1 ? (i < 2 ? i + 1 : -1) : d == 3 ? (i > 0 ? i - 1 : -1) : -1,
+					i => i == 1 ? 0 : -1, p => -2.0 * u, i => 4);
+				Assert(list.Count == 1 && list[0].squares == 2 && list[0].firstCell == 0 && Math.Abs(list[0].gapM - 0.019) < 1e-9,
+					"two arms of one pond read one body of 1.9 cm: " + string.Join("; ", list.Select(b => b.squares + "@" + b.gapM)));
+			});
+
+			// SURFACEGAP_PARITY_FIX_TIES_ARE_UNSORTED: a body is what the solve levels together (twin: selftest_level_water.py
+			// t_surface_gap_parity); the randomized C#-vs-Python check is selftest_flowworks_kernel_oracle.py mode "gaps".
+			Case("Exact_surface_gap_tied_bodies_list_in_first_cell_order", () =>
+			{
+				// 40 one-square bodies, all gap 0 (List.Sort is an introsort past 16 items: unstable without a tiebreak)
+				int n = 80;
+				var list = RM_SurfaceGap.Measure(Enumerable.Range(0, n), i => i % 2 == 0 ? 2 : 0, i => i % 2 == 0 ? RM_LevelSolve.U : 0,
+					i => ArrayWorld.Water, (i, d) => d == 1 ? (i + 1 < n ? i + 1 : -1) : d == 3 ? (i > 0 ? i - 1 : -1) : -1,
+					i => -1, p => 0.0, i => 4);
+				bool ordered = list.Count == n / 2;
+				for (int k = 1; k < list.Count && ordered; k++) ordered = list[k - 1].firstCell < list[k].firstCell;
+				Assert(ordered, "tied bodies list in first-cell order (the Python twin's): "
+					+ string.Join(",", list.Take(24).Select(b => b.firstCell)));
+			});
+
+			Case("Exact_surface_gap_oil_arm_is_not_one_body_with_a_water_pond", () =>
+			{
+				// a water pond never feeds an oil arm (ExactTouchSource FluidsCompatible): 0.95 cm (water arm + pond) and 0, not 1.9
+				long u = RM_LevelSolve.U;
+				int[] depth = { 4, 0, 4 };
+				long[] water = { 2 * u + 190, 0, 2 * u - 190 };
+				object[] fluid = { ArrayWorld.Water, null, new object() };
+				var list = RM_SurfaceGap.Measure(new[] { 0, 1, 2 }, i => depth[i], i => water[i], i => fluid[i],
+					(i, d) => d == 1 ? (i < 2 ? i + 1 : -1) : d == 3 ? (i > 0 ? i - 1 : -1) : -1,
+					i => i == 1 ? 0 : -1, p => -2.0 * u, i => 4, null, i => ArrayWorld.Water);
+				var gaps = list.Select(b => Math.Round(b.gapM, 9)).OrderBy(g => g).ToList();
+				Assert(list.Count == 2 && gaps[0] == 0.0 && gaps[1] == 0.0095,
+					"an oil arm and a water arm of one water pond: " + string.Join("; ", list.Select(b => b.squares + "@" + b.gapM)));
+			});
+
+			Case("Exact_surface_gap_shut_sluice_on_a_shore_square_cuts_the_arm_off", () =>
+			{
+				// row A | pond | pond (SHUT) | B: B reaches the pond only through the sealed shore square -> two bodies
+				long u = RM_LevelSolve.U;
+				int[] depth = { 4, 0, 0, 4 };
+				long[] water = { 2 * u + 190, 0, 0, 2 * u - 190 };
+				Func<int, bool> shut = i => i == 2;
+				var list = RM_SurfaceGap.Measure(new[] { 0, 1, 2, 3 }, i => depth[i], i => water[i], i => ArrayWorld.Water,
+					(i, d) => d == 1 ? (i < 3 ? i + 1 : -1) : d == 3 ? (i > 0 ? i - 1 : -1) : -1,
+					i => i == 1 || i == 2 ? 0 : -1, p => -2.0 * u, i => 4, shut);
+				var gaps = list.Select(b => Math.Round(b.gapM, 9)).OrderBy(g => g).ToList();
+				Assert(list.Count == 2 && gaps[0] == 0.0 && gaps[1] == 0.0095,
+					"a shut shore square: " + string.Join("; ", list.Select(b => b.squares + "@" + b.gapM)));
+				// control: open, one body of 1.9 cm
+				list = RM_SurfaceGap.Measure(new[] { 0, 1, 2, 3 }, i => depth[i], i => water[i], i => ArrayWorld.Water,
+					(i, d) => d == 1 ? (i < 3 ? i + 1 : -1) : d == 3 ? (i > 0 ? i - 1 : -1) : -1,
+					i => i == 1 || i == 2 ? 0 : -1, p => -2.0 * u, i => 4, i => false);
+				Assert(list.Count == 1 && Math.Abs(list[0].gapM - 0.019) < 1e-9, "control, open: " + list.Count);
+			});
+
+			Case("Exact_surface_gap_cells_are_the_domain_not_seeds", () =>
+			{
+				// a 4-square run whose last two squares stand 0.5 m lower; measured over the first two only (a scene rect), the
+				// run does not leak out of it: one body of 2 squares, gap 0 (the Python twin's cells are the whole domain)
+				long u = RM_LevelSolve.U;
+				long[] water = { 2 * u, 2 * u, u, u };
+				var list = RM_SurfaceGap.Measure(new[] { 0, 1 }, i => 4, i => water[i], i => ArrayWorld.Water,
+					(i, d) => d == 1 ? (i < 3 ? i + 1 : -1) : d == 3 ? (i > 0 ? i - 1 : -1) : -1,
+					i => -1, p => 0.0, i => 4);
+				Assert(list.Count == 1 && list[0].squares == 2 && list[0].gapM == 0.0,
+					"measured over squares 0,1 of 0..3: " + string.Join("; ", list.Select(b => b.squares + "@" + b.gapM)));
+			});
+		}
+
+		/// <summary>SURFACEGAP_PARITY_FIX_TIES_ARE_UNSORTED: RM_SurfaceGap.Measure over scenes level_water.surface_gaps also reads
+		/// (selftest_flowworks_kernel_oracle.py mode "gaps"). One scene per line, space-separated:
+		/// <c>w h nCells [idx D W f]* nSrc [idx body bed f]* nPonds [body surface]* nSealed [idx]* nDomain [idx]*</c>; f 0 = no
+		/// fluid, 1 water, 2 oil; body -2 = limitless; surface in dL per square (round-trip double). Prints one line per scene,
+		/// "squares:gap:min:max" per body in Measure's order, ';'-joined, doubles round-trip; "-" when no body.</summary>
+		public static int SurfaceGapScenes(System.IO.TextReader reader, System.IO.TextWriter output)
+		{
+			var inv = System.Globalization.CultureInfo.InvariantCulture;
+			object[] fluids = { null, ArrayWorld.Water, new object() };
+			string line;
+			while ((line = reader.ReadLine()) != null)
+			{
+				if (line.Trim().Length == 0)
+				{
+					continue;
+				}
+				string[] t = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+				int k = 0;
+				int Next() => int.Parse(t[k++], inv);
+				int w = Next(), h = Next();
+				var depth = new int[w * h];
+				var water = new long[w * h];
+				var fl = new object[w * h];
+				var srcBody = Enumerable.Repeat(-1, w * h).ToArray();
+				var bed = new int[w * h];
+				var srcFl = new object[w * h];
+				for (int n = Next(); n > 0; n--)
+				{
+					int i = Next();
+					depth[i] = Next();
+					water[i] = long.Parse(t[k++], inv);
+					fl[i] = fluids[Next()];
+				}
+				for (int n = Next(); n > 0; n--)
+				{
+					int i = Next();
+					srcBody[i] = Next();
+					bed[i] = Next();
+					srcFl[i] = fluids[Next()];
+				}
+				var surf = new Dictionary<int, double>();
+				for (int n = Next(); n > 0; n--)
+				{
+					int b = Next();
+					surf[b] = double.Parse(t[k++], inv);
+				}
+				var sealedSet = new HashSet<int>();
+				for (int n = Next(); n > 0; n--)
+				{
+					sealedSet.Add(Next());
+				}
+				var domain = new List<int>();
+				for (int n = Next(); n > 0; n--)
+				{
+					domain.Add(Next());
+				}
+				var list = RM_SurfaceGap.Measure(domain, i => depth[i], i => water[i], i => fl[i],
+					(i, d) =>
+					{
+						int x = i % w + (d == 1 ? 1 : d == 3 ? -1 : 0), z = i / w + (d == 0 ? 1 : d == 2 ? -1 : 0);
+						return x < 0 || z < 0 || x >= w || z >= h ? -1 : z * w + x;
+					},
+					i => srcBody[i], b => surf[b], i => bed[i], i => sealedSet.Contains(i), i => srcFl[i]);
+				// "-" for a scene with no body: a blank line would be dropped by the reader and shift every later answer.
+				output.WriteLine(list.Count == 0 ? "-" : string.Join(";", list.Select(b => b.squares + ":" + b.gapM.ToString("R", inv) + ":"
+					+ b.minM.ToString("R", inv) + ":" + b.maxM.ToString("R", inv))));
+			}
+			return 0;
+		}
+
+		/// <summary>Random scenes at the shipped flags: ledger, bounds and conservation to the dL every pulse; a body at rest stands
+		/// at one surface. Holes 1..<paramref name="maxDepth"/> notches, pond beds from <paramref name="bedChoices"/>.</summary>
+		private static void ExactFuzz(int scenes, int baseSeed, int maxDepth, int[] bedChoices)
+		{
+				int rested = 0;
+				for (int seed = 0; seed < scenes; seed++)
+				{
+					var r = new Random(baseSeed + seed);
+					int W = r.Next(3, 10), H = r.Next(3, 10);
+					var w = World(W, H);
+					int nb = r.Next(0, 3);
+					for (int b = 0; b < nb; b++)
+					{
+						int x0 = r.Next(W), z0 = r.Next(H), bw = r.Next(1, 4), bh = r.Next(1, 4);
+						var cells = new List<int>();
+						for (int x = x0; x < Math.Min(W, x0 + bw); x++) for (int z = z0; z < Math.Min(H, z0 + bh); z++) if (!w.natural[z * W + x]) cells.Add(z * W + x);
+						if (cells.Count == 0) continue;
+						foreach (int c in cells) w.bed[c] = bedChoices[r.Next(bedChoices.Length)];
+						int cap = cells.Sum(c => w.bed[c]);
+						w.AddBody(r.Next(4) == 0, r.Next(0, cap + 1), cells);
+					}
+					var digs = new List<int>();
+					for (int d = 0; d < r.Next(1, W * H / 2 + 1); d++)
+					{
+						int c = r.Next(W * H);
+						if (w.natural[c]) continue;
+						w.k.depth[c] = (byte)Math.Max(w.k.depth[c], r.Next(1, maxDepth + 1));
+						if (!digs.Contains(c)) digs.Add(c);
+					}
+					foreach (int c in digs) if (r.Next(3) == 0) { w.k.fill[c] = (byte)r.Next(0, w.k.depth[c] + 1); if (w.k.fill[c] > 0) w.cellFluid[c] = ArrayWorld.Water; }
+					bool sinks = r.Next(4) == 0;
+					if (sinks) { w.k.edgeSinksEnabled = true; for (int i = 0; i < W * H; i++) w.sink[i] = i % W == 0; }
+					long t0 = Total(w);
+					float drainedLv = 0f, paidLv = 0f;
+					string prev = null; int still = 0;
+					for (int p = 0; p < 400 && still < 3; p++)
+					{
+						w.externalIn.Clear();
+						w.Pulse(digs);
+						drainedLv += w.k.sinkDrained;
+						paidLv += w.externalIn.Values.Sum();
+						Assert(w.k.worstImbalance == 0, $"seed {seed} pulse {p}: kernel ledger {string.Join("; ", w.k.imbalanceReports)}");
+						for (int i = 0; i < W * H; i++)
+							Assert(w.k.depth[i] == 0 || (w.k.WaterOf(i) >= 0 && w.k.WaterOf(i) <= w.k.depth[i] * (long)U), $"seed {seed}: bounds at {i}");
+						long now = Total(w);
+						long want = t0 - (long)Math.Round(drainedLv * U) + (long)Math.Round(paidLv * U);
+						Assert(Math.Abs(now - want) <= 1, $"seed {seed} pulse {p}: total {now} dL, start {t0} - drained + paid = {want}");
+						string snap = string.Join(",", digs.Select(c => w.k.WaterOf(c))) + "|" + string.Join(",", w.bodies.Select(b => b.Dl()))
+							+ "|" + w.k.exactCreditDl + "|" + w.k.exactDrainDl;
+						still = snap == prev && w.k.exactCreditDl == 0 && w.k.exactDrainDl == 0 ? still + 1 : 0;
+						prev = snap;
+					}
+					if (still >= 3)
+					{
+						rested++;
+						double g = WorstGap(w, out _);
+						Assert(g < 0.001, $"seed {seed}: at rest, a body's surface varies by {g:F4} m\n{w.Grid()}");
+					}
+				}
+				Assert(rested > scenes / 2, $"only {rested} of {scenes} scenes came to rest (the gap check needs still water)");
+		}
+	}
+}

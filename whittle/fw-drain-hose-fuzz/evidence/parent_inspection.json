@@ -1,0 +1,18 @@
+{
+  "time": 1794396911.3945954,
+  "tested_HEAD": "ade2af0bb3fc4b40f0b152df4605b999468758d5",
+  "current_HEAD": "ade2af0bb3fc4b40f0b152df4605b999468758d5",
+  "source_tool_media_inputs": 6009,
+  "staged_inputs": 3968,
+  "mismatches": [],
+  "exact_tested_patch": true,
+  "independent_whole_trace_hash_and_decode_match": true,
+  "judge_and_broaden_equal_raw_result": true,
+  "executable_controls": 20,
+  "runner_exit": 0,
+  "runner_usage": {
+    "input_tokens": 10082496,
+    "output_tokens": 53449
+  },
+  "early_parent_probe": "An early parent inspection reached a not-yet-written source_diff.patch while evidence was being assembled; repeated complete inspection passed without source or test changes."
+}

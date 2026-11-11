@@ -1,0 +1,7 @@
+{
+  "time": 1794396272.3427367,
+  "original_path": "whittle/fw-drain-hose-fuzz/JUDGE.md",
+  "archived_path": "whittle/fw-drain-hose-fuzz/evidence/JUDGE_first.md",
+  "sha256": "a7f890d7561db7fa8c45cfc915ce97c0d95b68ee9aa96e189b6c23eb1ea63716",
+  "reason": "Preserve the complete first positive verdict before updating DONE to disclose the control-build overlap it identified. A second fresh judge will assess the updated claim."
+}

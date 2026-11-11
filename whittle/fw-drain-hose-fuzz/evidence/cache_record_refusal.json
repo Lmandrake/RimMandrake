@@ -1,0 +1,7 @@
+{
+  "time": 1794395732.0720234,
+  "path": "/home/mandrake/.local/state/rm-selftests/known_results/refusals.jsonl",
+  "line": 31783,
+  "latest_matching_raw_row": "{\"test\": \"src/RimMandrake/Utils/selftest_flowworks_stock.py\", \"why\": [\"changed during the run: /etc (an absent input's folder)\", \"changed during the run: /home/mandrake (an absent input's folder)\", \"clock: a python process read the wall clock\", \"external: /mnt/c/Users\", \"external: /mnt/c/Users/All Users\", \"external: /mnt/c/Users/All Users/.dotnet\", \"external: /mnt/c/Users/Default User\", \"external: /mnt/c/Users/Default User/.dotnet\", \"external: /mnt/c/Users/Default/.dotnet\", \"external: /mnt/c/Users/Mandrake/.dotnet\", \"external: /mnt/c/Users/Mandrake/.dotnet/dotnet.exe\", \"external: /mnt/c/Users/Public/.dotnet\"], \"clock_by\": [\"/home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/Utils/winbuild.py:time\"]}",
+  "diagnosis": "Known-results cache refusal is separate from the executed test result. Inspect the raw reasons and the unchanged source manifests."
+}

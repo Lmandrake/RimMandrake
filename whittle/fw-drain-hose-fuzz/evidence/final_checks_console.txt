@@ -1,0 +1,24 @@
+{
+  "time": 1794396750.2209933,
+  "all_checks_pass": true,
+  "source_and_tool_and_media_files": 6009,
+  "staged_inputs": 3968,
+  "post_review_matches_test_input": true,
+  "review_outputs_unchanged": true,
+  "reference_remeasured_after_final_review": {
+    "assembly": "5cf1b5be399d5b1c9c56ca72c9d35b4ecf307feacf5859d04ac5a1aa5926356a",
+    "source": "fa58868173d778dd1f0f596eb062c6c14af87f74293cf5f171aab08269a394d2"
+  },
+  "whole_observer_preserved": {
+    "path": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/hose-fuzz-raw/selftest_writes.strace",
+    "sha256": "1afe04c97a02cdd801a9d22877c7b5fa30b21ba4503c662a1e5c9093446c80c4",
+    "bytes": 328008
+  },
+  "external_raw_runner_logs_match_saved": true,
+  "workflow_receipt": "workflow_after_judge.json",
+  "workflow_returncode": 0,
+  "done_problems": [],
+  "git_diff_check": 0,
+  "status": " M src/RimMandrake/FlowWorks/Source/SelfTest/HoseFuzz.cs\n?? whittle/fw-drain-hose-fuzz/\n",
+  "source_HEAD_unchanged": true
+}

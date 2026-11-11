@@ -1,0 +1,17 @@
+{
+  "time": 1794394756.467397,
+  "WHITTLE_DIR": "whittle/fw-drain-hose-fuzz",
+  "need_judge": true,
+  "need_broaden": true,
+  "last_change": 1794394570.4725578,
+  "done_problems": [
+    "DONE.md has no verdict line for the statement bullet 'the hose fuzz family proves meaningful successful lay coverage and cannot pass when every generated hose lay is refused.'. Copy the bullet exactly.",
+    "DONE.md has no verdict line for the statement bullet 'executable production-linked controls demonstrate the old false pass and repaired failure, while legitimate individual refusals and supported single-seed/debug modes remain usable. the relevant flowworks selftest passes on final sources.'. Copy the bullet exactly.",
+    "DONE.md has no verdict line for the statement bullet 'evidence identifies the exact tested source and its limits. the repair preserves shipping behavior and the approved gss cord appearance.'. Copy the bullet exactly.",
+    "No judge's verdict newer than DONE.md and the evidence. Spawn a fresh subagent (not a fork) with whittle/fw-drain-hose-fuzz/JUDGE_PROMPT.md as its whole brief. It writes whittle/fw-drain-hose-fuzz/JUDGE.md."
+  ],
+  "full_validator": "MandrakeWorkflows/whittle/run.py validate(root)",
+  "full_validator_returncode": 1,
+  "stdout": "",
+  "stderr": "Whittle: not done yet.\n- DONE.md has no verdict line for the statement bullet 'the hose fuzz family proves meaningful successful lay coverage and cannot pass when every generated hose lay is refused.'. Copy the bullet exactly.\n- DONE.md has no verdict line for the statement bullet 'executable production-linked controls demonstrate the old false pass and repaired failure, while legitimate individual refusals and supported single-seed/debug modes remain usable. the relevant flowworks selftest passes on final sources.'. Copy the bullet exactly.\n- DONE.md has no verdict line for the statement bullet 'evidence identifies the exact tested source and its limits. the repair preserves shipping behavior and the approved gss cord appearance.'. Copy the bullet exactly.\n- No judge's verdict newer than DONE.md and the evidence. Spawn a fresh subagent (not a fork) with whittle/fw-drain-hose-fuzz/JUDGE_PROMPT.md as its whole brief. It writes whittle/fw-drain-hose-fuzz/JUDGE.md.\nIf you truly can't go on, or need the owner, write whittle/fw-drain-hose-fuzz/BLOCKED.md saying why, then stop.\n"
+}

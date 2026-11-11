@@ -1,0 +1,36 @@
+{
+  "time": 1794396272.3424978,
+  "wrapper_started": 1794395121.1783748,
+  "wrapper_ended": 1794395640.9113662,
+  "controls": [
+    {
+      "label": "entry_g2_retry",
+      "started": 1794395118.1795967,
+      "ended": 1794395120.6677947,
+      "stage": "/mnt/d/ClaudeWork/rimmandrake/scratch/fw-hose-fuzz/entry_g2_retry",
+      "overlapped_wrapper": false
+    },
+    {
+      "label": "entry_g2off",
+      "started": 1794395125.130386,
+      "ended": 1794395127.4627252,
+      "stage": "/mnt/d/ClaudeWork/rimmandrake/scratch/fw-hose-fuzz/entry_g2off",
+      "overlapped_wrapper": true
+    },
+    {
+      "label": "entry_refusal",
+      "started": 1794395132.0253692,
+      "ended": 1794395134.2253127,
+      "stage": "/mnt/d/ClaudeWork/rimmandrake/scratch/fw-hose-fuzz/entry_refusal",
+      "overlapped_wrapper": true
+    },
+    {
+      "label": "entry_total",
+      "started": 1794395138.8657367,
+      "ended": 1794395141.1482103,
+      "stage": "/mnt/d/ClaudeWork/rimmandrake/scratch/fw-hose-fuzz/entry_total",
+      "overlapped_wrapper": true
+    }
+  ],
+  "diagnosis": "Three focused actual-entry control builds overlapped the one authorized wrapper. Each used a separate scratch stage and build outputs. They did not acquire the wrapper dotnet_lock. Wrapper raw output and the independent stage hashes show production coverage with 2409 random lays and 2/2 witnesses. No test source changes occurred during the wrapper."
+}

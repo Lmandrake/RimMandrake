@@ -1,0 +1,298 @@
+{
+  "original_total": {
+    "returncode": 0,
+    "expected": 0,
+    "raw_stdout": "fast_original_total/stdout.txt",
+    "receipt": "fast_original_total/receipt.json",
+    "targeted_lines": [
+      "PASS fuzz hose: 1 cases, 3 steps, 0 failure(s)",
+      "  fuzz hose         1 cases         3 steps    0.02 s   (0 laid, 0 via fallback, 0 known-gap class(es) tallied below)",
+      "hose fuzz total: 1 cases, 3 steps, 0.02 s",
+      "FAILED checks: 0"
+    ],
+    "inputs_verified": true
+  },
+  "original_total_full": {
+    "returncode": 0,
+    "expected": 0,
+    "raw_stdout": "fast_original_total_full/stdout.txt",
+    "receipt": "fast_original_total_full/receipt.json",
+    "targeted_lines": [
+      "PASS fuzz hose: 2798 cases, 8200 steps, 0 failure(s)",
+      "  fuzz hose      2798 cases      8200 steps    0.41 s   (0 laid, 0 via fallback, 0 known-gap class(es) tallied below)",
+      "hose fuzz total: 2798 cases, 8200 steps, 0.42 s",
+      "FAILED checks: 0"
+    ],
+    "inputs_verified": true
+  },
+  "final_total_full": {
+    "returncode": 1,
+    "expected": 1,
+    "raw_stdout": "fast_final_total_full/stdout.txt",
+    "receipt": "fast_final_total_full/receipt.json",
+    "targeted_lines": [
+      "FAIL fuzz hose: 2798 cases, 8200 steps, 2 failure(s)",
+      "  fuzz hose      2798 cases      8200 steps    0.38 s   (0 random laid, 0 via fallback, 0 known-gap class(es) tallied below; 0/2 successful checked coverage witnesses (seed 2, outlet/free))",
+      "hose fuzz total: 2798 cases, 8200 steps, 0.39 s",
+      "FAILED checks: 1"
+    ],
+    "inputs_verified": true
+  },
+  "final_repaired_total": {
+    "returncode": 1,
+    "expected": 1,
+    "raw_stdout": "fast_final_repaired_total/stdout.txt",
+    "receipt": "fast_final_repaired_total/receipt.json",
+    "targeted_lines": [
+      "FAIL fuzz hose: 1 cases, 3 steps, 2 failure(s)",
+      "  fuzz hose         1 cases         3 steps    0.02 s   (0 random laid, 0 via fallback, 0 known-gap class(es) tallied below; 0/2 successful checked coverage witnesses (seed 2, outlet/free))",
+      "hose fuzz total: 1 cases, 3 steps, 0.03 s",
+      "FAILED checks: 1"
+    ],
+    "inputs_verified": true
+  },
+  "final_positive_tiny": {
+    "returncode": 0,
+    "expected": 0,
+    "raw_stdout": "fast_final_positive_tiny/stdout.txt",
+    "receipt": "fast_final_positive_tiny/receipt.json",
+    "targeted_lines": [
+      "PASS fuzz hose: 1 cases, 3 steps, 0 failure(s)",
+      "  fuzz hose         1 cases         3 steps    0.16 s   (1 random laid, 0 via fallback, 0 known-gap class(es) tallied below; 2/2 successful checked coverage witnesses (seed 2, outlet/free))",
+      "hose fuzz total: 1 cases, 3 steps, 0.16 s",
+      "FAILED checks: 0"
+    ],
+    "inputs_verified": true
+  },
+  "final_positive_g2off": {
+    "returncode": 0,
+    "expected": 0,
+    "raw_stdout": "fast_final_positive_g2off/stdout.txt",
+    "receipt": "fast_final_positive_g2off/receipt.json",
+    "targeted_lines": [
+      "PASS fuzz hose: 1 cases, 3 steps, 0 failure(s)",
+      "  fuzz hose         1 cases         3 steps    0.08 s   (1 random laid, 0 via fallback, 0 known-gap class(es) tallied below; 2/2 successful checked coverage witnesses (seed 2, outlet/free))",
+      "hose fuzz total: 1 cases, 3 steps, 0.08 s",
+      "FAILED checks: 0"
+    ],
+    "inputs_verified": true
+  },
+  "final_positive_g2": {
+    "returncode": 0,
+    "expected": 0,
+    "raw_stdout": "fast_final_positive_g2/stdout.txt",
+    "receipt": "fast_final_positive_g2/receipt.json",
+    "targeted_lines": [
+      "PASS fuzz hose: 1 cases, 3 steps, 0 failure(s)",
+      "  fuzz hose         1 cases         3 steps    0.15 s   (1 random laid, 0 via fallback, 0 known-gap class(es) tallied below; 2/2 successful checked coverage witnesses (seed 2, outlet/free))",
+      "hose fuzz total: 1 cases, 3 steps, 0.16 s",
+      "FAILED checks: 0"
+    ],
+    "inputs_verified": true
+  },
+  "final_refuse_outlet": {
+    "returncode": 1,
+    "expected": 1,
+    "raw_stdout": "fast_final_refuse_outlet/stdout.txt",
+    "receipt": "fast_final_refuse_outlet/receipt.json",
+    "targeted_lines": [
+      "FAIL fuzz hose: 1 cases, 3 steps, 1 failure(s)",
+      "  fuzz hose         1 cases         3 steps    0.07 s   (1 random laid, 0 via fallback, 0 known-gap class(es) tallied below; 1/2 successful checked coverage witnesses (seed 2, outlet/free))",
+      "hose fuzz total: 1 cases, 3 steps, 0.08 s",
+      "FAILED checks: 1"
+    ],
+    "inputs_verified": true
+  },
+  "final_refuse_free": {
+    "returncode": 1,
+    "expected": 1,
+    "raw_stdout": "fast_final_refuse_free/stdout.txt",
+    "receipt": "fast_final_refuse_free/receipt.json",
+    "targeted_lines": [
+      "FAIL fuzz hose: 1 cases, 3 steps, 1 failure(s)",
+      "  fuzz hose         1 cases         3 steps    0.14 s   (0 random laid, 0 via fallback, 0 known-gap class(es) tallied below; 1/2 successful checked coverage witnesses (seed 2, outlet/free))",
+      "hose fuzz total: 1 cases, 3 steps, 0.15 s",
+      "FAILED checks: 1"
+    ],
+    "inputs_verified": true
+  },
+  "final_debug_refusal": {
+    "returncode": 0,
+    "expected": 0,
+    "raw_stdout": "fast_final_debug_refusal/stdout.txt",
+    "receipt": "fast_final_debug_refusal/receipt.json",
+    "targeted_lines": [
+      "PASS fuzz hose: 2 cases, 2 steps, 0 failure(s)",
+      "  fuzz hose         2 cases         2 steps    0.02 s   (0 random laid, 0 via fallback, 0 known-gap class(es) tallied below; single-seed debug; successful lay coverage not required)",
+      "hose fuzz total: 2 cases, 2 steps, 0.03 s",
+      "FAILED checks: 0"
+    ],
+    "inputs_verified": true
+  },
+  "final_debug_partial_refusal": {
+    "returncode": 0,
+    "expected": 0,
+    "raw_stdout": "fast_final_debug_partial_refusal/stdout.txt",
+    "receipt": "fast_final_debug_partial_refusal/receipt.json",
+    "targeted_lines": [
+      "PASS fuzz hose: 2 cases, 6 steps, 0 failure(s)",
+      "  fuzz hose         2 cases         6 steps    0.08 s   (1 random laid, 0 via fallback, 0 known-gap class(es) tallied below; single-seed debug; successful lay coverage not required)",
+      "hose fuzz total: 2 cases, 6 steps, 0.08 s",
+      "FAILED checks: 0"
+    ],
+    "inputs_verified": true
+  },
+  "final_debug_positive": {
+    "returncode": 0,
+    "expected": 0,
+    "raw_stdout": "fast_final_debug_positive/stdout.txt",
+    "receipt": "fast_final_debug_positive/receipt.json",
+    "targeted_lines": [
+      "PASS fuzz hose: 2 cases, 6 steps, 0 failure(s)",
+      "  fuzz hose         2 cases         6 steps    0.17 s   (2 random laid, 0 via fallback, 0 known-gap class(es) tallied below; single-seed debug; successful lay coverage not required)",
+      "hose fuzz total: 2 cases, 6 steps, 0.17 s",
+      "FAILED checks: 0"
+    ],
+    "inputs_verified": true
+  },
+  "final_debug_mutant": {
+    "returncode": 0,
+    "expected": 0,
+    "raw_stdout": "fast_final_debug_mutant/stdout.txt",
+    "receipt": "fast_final_debug_mutant/receipt.json",
+    "targeted_lines": [
+      "PASS fuzz hose: 2 cases, 6 steps, 0 failure(s)",
+      "  fuzz hose         2 cases         6 steps    0.03 s   (0 random laid, 0 via fallback, 0 known-gap class(es) tallied below; single-seed debug; successful lay coverage not required)",
+      "hose fuzz total: 2 cases, 6 steps, 0.03 s",
+      "FAILED checks: 0"
+    ],
+    "inputs_verified": true
+  },
+  "final_disabled": {
+    "returncode": 0,
+    "expected": 0,
+    "raw_stdout": "fast_final_disabled/stdout.txt",
+    "receipt": "fast_final_disabled/receipt.json",
+    "targeted_lines": [
+      "FAILED checks: 0"
+    ],
+    "inputs_verified": true
+  },
+  "final_trail_only": {
+    "returncode": 0,
+    "expected": 0,
+    "raw_stdout": "fast_final_trail_only/stdout.txt",
+    "receipt": "fast_final_trail_only/receipt.json",
+    "targeted_lines": [
+      "hose fuzz total: 1 cases, 69 steps, 0.03 s",
+      "FAILED checks: 0"
+    ],
+    "inputs_verified": true
+  },
+  "final_both_families": {
+    "returncode": 0,
+    "expected": 0,
+    "raw_stdout": "fast_final_both_families/stdout.txt",
+    "receipt": "fast_final_both_families/receipt.json",
+    "targeted_lines": [
+      "PASS fuzz hose: 1 cases, 3 steps, 0 failure(s)",
+      "  fuzz hose         1 cases         3 steps    0.16 s   (1 random laid, 0 via fallback, 0 known-gap class(es) tallied below; 2/2 successful checked coverage witnesses (seed 2, outlet/free))",
+      "hose fuzz total: 2 cases, 72 steps, 0.17 s",
+      "FAILED checks: 0"
+    ],
+    "inputs_verified": true
+  },
+  "entry_g2_retry": {
+    "returncode": 0,
+    "expected": 0,
+    "raw_stdout": "fast_entry_g2_retry/stdout.txt",
+    "receipt": "fast_entry_g2_retry/receipt.json",
+    "targeted_lines": [
+      "  fuzz hose         1 cases         3 steps    0.17 s   (1 random laid, 0 via fallback, 0 known-gap class(es) tallied below; 2/2 successful checked coverage witnesses (seed 2, outlet/free))",
+      "hose fuzz total: 1 cases, 3 steps, 0.17 s",
+      "  HoseFuzz: 3/3"
+    ],
+    "inputs_verified": true
+  },
+  "entry_g2off": {
+    "returncode": 0,
+    "expected": 0,
+    "raw_stdout": "fast_entry_g2off/stdout.txt",
+    "receipt": "fast_entry_g2off/receipt.json",
+    "targeted_lines": [
+      "  fuzz hose         1 cases         3 steps    0.08 s   (1 random laid, 0 via fallback, 0 known-gap class(es) tallied below; 2/2 successful checked coverage witnesses (seed 2, outlet/free))",
+      "hose fuzz total: 1 cases, 3 steps, 0.09 s",
+      "  HoseFuzz: 3/3"
+    ],
+    "inputs_verified": true
+  },
+  "entry_refusal": {
+    "returncode": 0,
+    "expected": 0,
+    "raw_stdout": "fast_entry_refusal/stdout.txt",
+    "receipt": "fast_entry_refusal/receipt.json",
+    "targeted_lines": [
+      "  fuzz hose         2 cases         2 steps    0.02 s   (0 random laid, 0 via fallback, 0 known-gap class(es) tallied below; single-seed debug; successful lay coverage not required)",
+      "hose fuzz total: 2 cases, 2 steps, 0.03 s",
+      "  HoseFuzz: 3/3"
+    ],
+    "inputs_verified": true
+  },
+  "entry_total": {
+    "returncode": 1,
+    "expected": 1,
+    "raw_stdout": "fast_entry_total/stdout.txt",
+    "receipt": "fast_entry_total/receipt.json",
+    "targeted_lines": [
+      "FAIL fuzz hose: 1 cases, 3 steps, 2 failure(s)",
+      "  fuzz hose         1 cases         3 steps    0.02 s   (0 random laid, 0 via fallback, 0 known-gap class(es) tallied below; 0/2 successful checked coverage witnesses (seed 2, outlet/free))",
+      "hose fuzz total: 1 cases, 3 steps, 0.04 s",
+      "  HoseFuzz: 2/3"
+    ],
+    "inputs_verified": true
+  },
+  "same_total_refusal_mutant_verified": true,
+  "full_scale_original_false_pass": "2798 cases, 8200 steps, 0 failures, 0 laid",
+  "changed_since_pre_edit_source_manifest": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/HoseFuzz.cs"
+  ],
+  "full_mod_tool_media_snapshot_stable_since_final_change": true,
+  "tracked_mod_tool_changes_vs_HEAD": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/HoseFuzz.cs"
+  ],
+  "staged_inputs_match_test_input": true,
+  "stage": "/mnt/d/ClaudeWork/rimmandrake/build/selftest_RimMandrakeFlowWorks.SelfTest_79bb8021",
+  "wrapper": {
+    "returncode": 0,
+    "elapsed": 519.7329914569855,
+    "stdout": "evidence: 0 eligible, 0 SKIPPED as unchanged, 0 PASS recorded, 0 PASS not recordable \u2014 runner 65716eff3278c68e\ncache: 0 CACHED PASS, 1 declared test(s) ran\nknown results: 0/1 answered from the ledger (selftests.cache_hit_share 0.000), 0s not spent; 1 ran, 0 recorded, 0 checked against a stored PASS, 0 known red\n  ran (1): no record\n  not recordable (1): changed during the run: src/RimMandrake/Utils/selftest_flowworks_stock.py\nPASS        504.3s  src/RimMandrake/Utils/selftest_flowworks_stock.py\n\nPASS 1/1  FAIL 0/1  UNMEASURED 0/1  CRASH 0/1  SKIPPED 0/1  (wall 505.8s) \u2014 contained in rm-harness.slice (max 24G), 1 workers\nRESULT: GREEN (green = FAIL 0 and CRASH 0)\n",
+    "targeted_lines": [
+      "  fuzz hose      2798 cases      8200 steps   22.98 s   (2409 random laid, 0 via fallback, 1 known-gap class(es) tallied below; 2/2 successful checked coverage witnesses (seed 2, outlet/free))",
+      "  fuzz trail     1500 cases    133643 steps    0.81 s",
+      "  HoseFuzz: 4/4",
+      "hose: 457/457 assertions passed (moved from Gimme Some Slack: 350; new: 107)"
+    ]
+  },
+  "reference_after_test": {
+    "assembly": "5cf1b5be399d5b1c9c56ca72c9d35b4ecf307feacf5859d04ac5a1aa5926356a",
+    "source": "fa58868173d778dd1f0f596eb062c6c14af87f74293cf5f171aab08269a394d2"
+  },
+  "whole_observer_preserved": {
+    "path": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/hose-fuzz-raw/selftest_writes.strace",
+    "sha256": "1afe04c97a02cdd801a9d22877c7b5fa30b21ba4503c662a1e5c9093446c80c4",
+    "bytes": 328008
+  },
+  "preparation_failure": {
+    "time": 1794395115.0070841,
+    "label": "entry_g2",
+    "phase": "Python source staging, before C# build or execution",
+    "returncode": 1,
+    "console": "entry_g2_console.txt",
+    "preserved_partial_stage": "fast_entry_g2/inputs",
+    "diagnosis": "INSTRUMENT. The script treated a generated Compile item inside a build Target as a static source path. It attempted to read literal MSBuild variables. The real project generates ReleaseRect.g.cs during CoreCompile.",
+    "action": "Read only top-level static Compile entries. For actual-entry controls, stage the unchanged actual project plus its RM_LiquidStock.cs generation input and let MSBuild run the original target. Retry under a new label. No mod source change."
+  },
+  "final_source_sha256": "577c4429c424506d94cadabb8d536d0a801f446905d656848fd0a3fb5019b788",
+  "original_source_sha256": "62b6fff3cc26d89d509b1ab81d172c51e9db1816631523525174f9efc706ff53",
+  "time": 1794395806.190181
+}

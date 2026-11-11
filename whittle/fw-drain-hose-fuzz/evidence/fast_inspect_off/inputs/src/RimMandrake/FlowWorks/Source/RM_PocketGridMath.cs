@@ -1,0 +1,376 @@
+using System;
+using System.Collections.Generic;
+
+namespace RimMandrake.FlowWorks
+{
+	/// <summary>
+	/// PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP — the pocket grid's arithmetic, Verse-free so Source/SelfTest/ compiles THIS
+	/// production file (design/RimMandrake/relative_depth_climb_design_2026-10-12.md §8.3).
+	///
+	/// For one climb band K, two N/S/E/W neighbours join when the step between them is allowed for K
+	/// (RM_PitTrapMath.StepAllowed; a ramp joins any pair it spans). A POCKET is a component with no cell at D = 0: nothing in
+	/// it can walk up to the surface. Gradual slopes never make one, because every step on them is ≤ K (owner, 2026-10-12:
+	/// "so that gradual slopes never trap anyone"; "Natural ponds and lakes when pumped dry would leave just such gradual
+	/// terrain so no chance to fall in and get stuck").
+	///
+	/// Walkability is deliberately NOT an input: the grid is depth-only, so building or removing a wall never makes it stale.
+	/// Vanilla reachability already accounts for walls, and the reachability seam ANDs the two. Cell index = z × width + x
+	/// (RimWorld's CellIndices order). No component is capped (GPT #13: a dried deep lake is just a big component).
+	/// </summary>
+	public static class RM_PocketGridMath
+	{
+		public sealed class Labels
+		{
+			/// <summary>Component label per cell, 0..count-1.</summary>
+			public int[] label;
+			public int count;
+			/// <summary>Per label: some cell is at D = 0.</summary>
+			public bool[] surface;
+			/// <summary>Per label: cell count.</summary>
+			public int[] size;
+			public int width;
+			public int height;
+			public int k;
+
+			public bool IsPocketCell(int i)
+			{
+				return i >= 0 && i < label.Length && !surface[label[i]];
+			}
+
+			public bool IsPocketCell(int x, int z)
+			{
+				return x >= 0 && z >= 0 && x < width && z < height && !surface[label[z * width + x]];
+			}
+
+			public bool SameComponent(int a, int b)
+			{
+				return a >= 0 && b >= 0 && a < label.Length && b < label.Length && label[a] == label[b];
+			}
+		}
+
+		/// <summary>Label every cell for band K. depth: effective climb depth per cell (a covered cell reads 0).
+		/// rampJoins(i, j), optional: a ramp joins cells i and j (both directions, any band). Null until ramps exist.
+		/// reuse, optional (EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES): an int[width × height] no reader holds any more, overwritten
+		/// whole and returned as the new label array (the caller's double buffer); any other length is ignored. The BFS queue
+		/// and the per-label tallies are per-thread scratch, so a rebuild allocates only what it returns (live r13: a full
+		/// collection of the game's ~3.6 GB heap costs ~1.2 s, and every band of every rebuild allocated ~0.85 MB).</summary>
+		public static Labels Label(byte[] depth, int width, int height, int k, Func<int, int, bool> rampJoins = null, int[] reuse = null)
+		{
+			if (depth == null || width <= 0 || height <= 0 || depth.Length < width * height)
+			{
+				throw new ArgumentException("depth grid does not match " + width + "x" + height);
+			}
+			int n = width * height;
+			int[] lab = reuse != null && reuse.Length == n ? reuse : new int[n];
+			for (int i = 0; i < n; i++)
+			{
+				lab[i] = -1;
+			}
+			int[] queue = QueueScratch(n);
+			if (sizeScratch == null || sizeScratch.Length < n)
+			{
+				sizeScratch = new int[n];
+				surfaceScratch = new bool[n];
+			}
+			int[] size = sizeScratch;
+			bool[] surface = surfaceScratch;
+			int count = 0;
+			for (int seed = 0; seed < n; seed++)
+			{
+				if (lab[seed] >= 0)
+				{
+					continue;
+				}
+				int id = count++;
+				bool surf = false;
+				int sz = 0;
+				int head = 0, tail = 0;
+				queue[tail++] = seed;
+				lab[seed] = id;
+				while (head < tail)
+				{
+					int c = queue[head++];
+					sz++;
+					int d = depth[c];
+					if (d == 0)
+					{
+						surf = true;
+					}
+					int z = c / width, x = c - z * width;
+					for (int dir = 0; dir < 4; dir++)
+					{
+						int ni;
+						switch (dir)
+						{
+							case 0: if (z + 1 >= height) { continue; } ni = c + width; break;
+							case 1: if (x + 1 >= width) { continue; } ni = c + 1; break;
+							case 2: if (z == 0) { continue; } ni = c - width; break;
+							default: if (x == 0) { continue; } ni = c - 1; break;
+						}
+						if (lab[ni] >= 0)
+						{
+							continue;
+						}
+						// A ramp only ever adds a join (StepAllowed is true whenever rampJoins is), so the ramp pairs are read
+						// only for a step the depth rule refuses: the same verdict, two dictionary reads fewer per open step.
+						if (!RM_PitTrapMath.StepAllowed(d, depth[ni], k)
+							&& !(rampJoins != null && (rampJoins(c, ni) || rampJoins(ni, c))))
+						{
+							continue;
+						}
+						lab[ni] = id;
+						queue[tail++] = ni;
+					}
+				}
+				surface[id] = surf;
+				size[id] = sz;
+			}
+			var surfaceOut = new bool[count];
+			var sizeOut = new int[count];
+			Array.Copy(surface, surfaceOut, count);
+			Array.Copy(size, sizeOut, count);
+			return new Labels
+			{
+				label = lab, count = count, surface = surfaceOut, size = sizeOut,
+				width = width, height = height, k = k,
+			};
+		}
+
+		// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: per-thread flood scratch (Label is main-thread in play; a selftest or a query-time
+		// first build on another thread gets its own). Never escapes a call.
+		[ThreadStatic] private static int[] queueScratch;
+		[ThreadStatic] private static int[] sizeScratch;
+		[ThreadStatic] private static bool[] surfaceScratch;
+
+		/// <summary>The calling thread's BFS queue, at least n long (shared by RM_WallReachMath.Label; neither nests).</summary>
+		internal static int[] QueueScratch(int n)
+		{
+			if (queueScratch == null || queueScratch.Length < n)
+			{
+				queueScratch = new int[n];
+			}
+			return queueScratch;
+		}
+
+		/// <summary>Every cell index carrying this label, ascending.</summary>
+		public static List<int> CellsOf(Labels l, int label)
+		{
+			var o = new List<int>();
+			for (int i = 0; i < l.label.Length; i++)
+			{
+				if (l.label[i] == label)
+				{
+					o.Add(i);
+				}
+			}
+			return o;
+		}
+
+		/// <summary>The W×W width rule over a pocket (design §8.1: "measured over the cells of the pawn's own pocket"): true when
+		/// EVERY cell of the pocket lies in some W×W square made only of that pocket's cells. A narrower arm anywhere is a
+		/// way out for a creature that wide (it braces across and walks out), as ruled in September.</summary>
+		public static bool WideEverywhere(Labels l, int label, int w)
+		{
+			if (w <= 1)
+			{
+				return true;
+			}
+			bool In(int x, int z) => x >= 0 && z >= 0 && x < l.width && z < l.height && l.label[z * l.width + x] == label;
+			foreach (int i in CellsOf(l, label))
+			{
+				if (!RM_PitTrapMath.PitWidthAt(In, i % l.width, i / l.width, w))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+
+		/// <summary>Is a pawn standing in a pocket of its band TRAPPED there (no way out at all)? Only when no ladder it may
+		/// use stands anywhere in the pocket and the pocket is wide enough for it on every cell (design §8.3).</summary>
+		public static bool Trapped(bool inPocket, bool usableLadderInPocket, bool wideEverywhere)
+		{
+			return inPocket && !usableLadderInPocket && wideEverywhere;
+		}
+
+		/// <summary>V2_LADDER_ROWS_DIAGNOSE_STAGE_FRIGHT: does a ladder that leads out of its pocket count as a way in or out for
+		/// this reachability query? A pawn's own query: only one it may climb (raised = nobody, prison-door rule). A PAWNLESS
+		/// query sees the cliff masks' structural view: any LOWERED ladder. Vanilla Pawn_PathFollower.StartPath asks
+		/// Reachability.CanReach(…, TraverseParms.For(TraverseMode.PassDoors)) — no pawn — before every walk, so counting no
+		/// ladder there failed every walk into or out of a laddered pocket (v2 P4/P4f/P5n). The prison-door rule stays per pawn:
+		/// the pawn's own CanReach, the ladder offset grid and the step floor.</summary>
+		public static bool LadderIsAWay(bool pawnKnown, bool lowered, bool pawnMayClimb)
+		{
+			return pawnKnown ? pawnMayClimb : lowered;
+		}
+
+		/// <summary>The relative rule's reachability veto (design §8.5 step 6): vanilla said yes, but start and destination lie in
+		/// different band components, and the trip needs a way out of the start pocket (if any) AND a way into the destination
+		/// pocket (if any) (a ladder that is a way for this query, or a pocket too narrow to hold the pawn). Two surface
+		/// components (no pocket at either end) stay apart. REACH_VETO_FIX_ONE_END_ENOUGH (GPT C3-F8/C4-F2): one end having a
+		/// way used to clear the veto, so a laddered pocket "reached" a sealed one and the pather failed in a loop.</summary>
+		public static bool ReachVetoed(bool sameComponent, bool startPocket, bool startWayOut, bool destPocket, bool destWayIn)
+		{
+			if (sameComponent)
+			{
+				return false;
+			}
+			bool outOk = !startPocket || startWayOut;
+			bool inOk = !destPocket || destWayIn;
+			return !(outOk && inOk && (startPocket || destPocket));
+		}
+
+		/// <summary>TRENCH_CROSSING_FIX_DOWN_ACROSS_AND_UP: the join one ladder adds between band components — the component of
+		/// its own square and that of the square across the wall it hangs on — when that wall still joins
+		/// (RM_LadderWallMath.Joins: the ladder's own rotation, the other side shallower) and the ladder is a way for this
+		/// query (<see cref="LadderIsAWay"/>). The masks restore exactly this edge, so reachability and A* see one graph.</summary>
+		public static bool LadderEdge(int rot, int ladderD, int ladderComp, int otherD, int otherComp, bool isAWay)
+		{
+			return isAWay && rot >= 0 && rot < 4 && ladderComp >= 0 && otherComp >= 0 && ladderComp != otherComp
+				&& RM_LadderWallMath.Joins(rot, ladderD, RM_LadderWallMath.FX[rot], RM_LadderWallMath.FZ[rot], otherD);
+		}
+
+		/// <summary>TRENCH_CROSSING_FIX_DOWN_ACROSS_AND_UP: are two band components joined through ladders (each edge both ways:
+		/// a ladder is climbed down and up)? Bank A, down the near ladder to the trench floor, across, up the far ladder to
+		/// bank B is ONE route. ReachVetoed alone kept any two surface components apart, so a trench laddered on both walls was
+		/// never one hop (raiders were sent into the trench first; colonists were refused).</summary>
+		public static bool JoinedByLadders(int from, int to, IReadOnlyList<(int a, int b)> edges)
+		{
+			if (from < 0 || to < 0)
+			{
+				return false;
+			}
+			if (from == to)
+			{
+				return true;
+			}
+			if (edges == null || edges.Count == 0)
+			{
+				return false;
+			}
+			var seen = new HashSet<int> { from };
+			var q = new Queue<int>();
+			q.Enqueue(from);
+			while (q.Count > 0)
+			{
+				int c = q.Dequeue();
+				for (int i = 0; i < edges.Count; i++)
+				{
+					int n = edges[i].a == c ? edges[i].b : edges[i].b == c ? edges[i].a : -1;
+					if (n < 0 || !seen.Add(n))
+					{
+						continue;
+					}
+					if (n == to)
+					{
+						return true;
+					}
+					q.Enqueue(n);
+				}
+			}
+			return false;
+		}
+
+		/// <summary>RAIDER_TRENCH_FIX_REACH_BOUNCE: RelativeVeto's whole decision for two DIFFERENT band components. A ladder is a
+		/// route only to the component across the wall it hangs on, so a ladder way is judged by the ladder graph alone
+		/// (<see cref="JoinedByLadders"/>, the edges the cliff masks restore for A*). The end rule (<see cref="ReachVetoed"/>)
+		/// still answers only when an end is a pocket too NARROW to hold the pawn: it braces across and walks out, and the masks
+		/// give such a pawn vanilla's array (RM_CliffMask), so no ladder edge describes it. Before: a trench floor with a ladder up
+		/// the near wall cleared the veto for the FAR bank too (and a bank for a floor laddered only from the other bank); A* found
+		/// no path and the raider looped (GotoNearestHostile → TryCross null → again). joinedByLadders is asked last.</summary>
+		public static bool ReachVetoedWhole(bool startPocket, bool startNarrow, bool startWayOut, bool destPocket, bool destNarrow,
+			bool destWayIn, Func<bool> joinedByLadders)
+		{
+			if ((startPocket && startNarrow) || (destPocket && destNarrow))
+			{
+				if (!ReachVetoed(false, startPocket, startWayOut, destPocket, destWayIn))
+				{
+					return false;
+				}
+			}
+			return !joinedByLadders();
+		}
+
+		/// <summary>REACH_VETO_FIX_ONE_END_ENOUGH (GPT C3-F9): does this component hold a cell on the map's border? A surface
+		/// component that does not (an island ringed by a sheer trench) never reaches the map edge on foot.</summary>
+		public static bool TouchesEdge(Labels l, int label)
+		{
+			if (l == null || label < 0 || label >= l.count)
+			{
+				return false;
+			}
+			int w = l.width, h = l.height;
+			for (int x = 0; x < w; x++)
+			{
+				if (l.label[x] == label || l.label[(h - 1) * w + x] == label)
+				{
+					return true;
+				}
+			}
+			for (int z = 0; z < h; z++)
+			{
+				if (l.label[z * w] == label || l.label[z * w + w - 1] == label)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		/// <summary>UNDERPASS_REACH_FIX_DECK_VIEW_SAYS_NO: the walking depth one square shows in a view (RM_PocketGrid.EffectiveDepth,
+		/// RM_SuspensionUnderpass.FloorViewDepthAt): an intact deck is ground at its height (RM_SpanMath.WalkingDepth), except
+		/// a deck the floor band passes under, which the floor view reads as the floor beneath it.</summary>
+		public static int ViewDepth(int climb, bool decked, int deckNotches, bool passesUnder, bool floorView)
+		{
+			if (!decked || (floorView && passesUnder))
+			{
+				return climb;
+			}
+			return deckNotches < climb ? deckNotches : climb;
+		}
+
+		/// <summary>UNDERPASS_REACH_FIX_DECK_VIEW_SAYS_NO: does a walk of this pawn plan on the floor view? In the floor band, yes;
+		/// on a deck, no; on an undecked square only when it stands deeper than every deck the floor band passes under
+		/// (<paramref name="deepestPassingDeck"/>, -1 for none), the depth RM_SuspensionMath.StepGoesUnder sends a pawn under
+		/// from. Before: any dug square chose the floor view, so a pawn on a ledge read a sunken deck at its own height as the
+		/// hole beneath and could never step onto it. A ledge between two deck heights keeps the deck view (it steps onto the
+		/// deeper deck and does not walk under the shallower one): one view per walk, refused rather than promised.</summary>
+		public static bool UsesFloorView(bool walkUnderOn, bool inFloorBand, bool standsOnDeck, int standDepth, int deepestPassingDeck)
+		{
+			if (!walkUnderOn)
+			{
+				return false;
+			}
+			if (inFloorBand)
+			{
+				return true;
+			}
+			return !standsOnDeck && standDepth > 0 && standDepth > deepestPassingDeck;
+		}
+
+		/// <summary>UNDERPASS_REACH_FIX_DECK_VIEW_SAYS_NO: which pocket grid answers this pawn's reach, chosen exactly as the path
+		/// request's connectivity is (RM_CliffMask.Swap, then RM_TrenchStride's swap over it): a strider with a stride view
+		/// (<paramref name="viewStride"/> of the view it asks, &gt; 0) is judged on that view; anyone else on the floor view when
+		/// it plans on it. Before: reach always read the deck view, where a deck splits the hole beneath it, so CanReach refused
+		/// a walk under the deck that A* (on the floor view) would take.</summary>
+		public static (bool floorView, int stride) ReachGridView(bool floorDiffers, bool usesFloorView, bool striderFloorView,
+			Func<bool, int> viewStride)
+		{
+			bool sf = floorDiffers && striderFloorView;
+			int s = viewStride == null ? 0 : viewStride(sf);
+			return s > 0 ? (sf, s) : (floorDiffers && usesFloorView, 0);
+		}
+
+		/// <summary>The band whose grid answers for climb limit K: 1..maxDepth-1 (callers pass the band array length,
+		/// RM_PitTrapMath.ClimbBands). K ≥ maxDepth has no grid (returns 0): true only when no step on the map exceeds K, which
+		/// is why the band count is sized by the largest climb limit (PIT_DEPTH_WIDEN) and ClimbLimit is capped at it.</summary>
+		public static int BandFor(int k, int maxDepth)
+		{
+			if (k >= maxDepth)
+			{
+				return 0;
+			}
+			return Math.Max(1, k);
+		}
+	}
+}

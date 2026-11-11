@@ -1,0 +1,12 @@
+{
+  "time": 1794396820.646427,
+  "WHITTLE_DIR": "whittle/fw-drain-hose-fuzz",
+  "need_judge": true,
+  "need_broaden": true,
+  "last_change": 1794395005.8645213,
+  "done_problems": [],
+  "full_validator": "MandrakeWorkflows/whittle/run.py validate(root)",
+  "full_validator_returncode": 0,
+  "stdout": "",
+  "stderr": ""
+}

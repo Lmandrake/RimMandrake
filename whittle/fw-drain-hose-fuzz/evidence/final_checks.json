@@ -1,0 +1,98 @@
+{
+  "time": 1794396750.2209933,
+  "all_checks_pass": true,
+  "source_and_tool_and_media_files": 6009,
+  "staged_inputs": 3968,
+  "post_review_matches_test_input": true,
+  "review_outputs_unchanged": true,
+  "reviews": {
+    "broaden": {
+      "raw_sha256": "e3fe89ae1162c3bddd29cfef473e5bd11797b495111039cfdbc102c9aa37582e",
+      "report_sha256": "c432a8d7e4c63f2f5b1ac909cf308a19d9114feb630631f1ebb0eed8352cec96",
+      "model_usage": {
+        "claude-opus-5-5": {
+          "inputTokens": 28,
+          "outputTokens": 19030,
+          "cacheReadInputTokens": 897009,
+          "cacheCreationInputTokens": 117178,
+          "webSearchRequests": 0,
+          "costUSD": 1.4975378,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 128000,
+          "thinkingTokens": 11352,
+          "cacheCreationEphemeral5mInputTokens": 0,
+          "cacheCreationEphemeral1hInputTokens": 117178,
+          "canonicalModel": "claude-opus-5-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "last_line": "This is input for the maker and the separate judge call. It is not a finding that the item is complete or correct.",
+      "fresh_call": true
+    },
+    "judge": {
+      "raw_sha256": "470793859786a5b1f2050f3e565efe5b3db7447ea1104d5a36d89107ef4fd64e",
+      "report_sha256": "a7f890d7561db7fa8c45cfc915ce97c0d95b68ee9aa96e189b6c23eb1ea63716",
+      "model_usage": {
+        "claude-opus-5-5": {
+          "inputTokens": 52,
+          "outputTokens": 16797,
+          "cacheReadInputTokens": 2180936,
+          "cacheCreationInputTokens": 140636,
+          "webSearchRequests": 0,
+          "costUSD": 1.8974232,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 128000,
+          "thinkingTokens": 8302,
+          "cacheCreationEphemeral5mInputTokens": 0,
+          "cacheCreationEphemeral1hInputTokens": 140636,
+          "canonicalModel": "claude-opus-5-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "last_line": "would show: yes",
+      "fresh_call": true
+    },
+    "judge_final": {
+      "raw_sha256": "62ef23c882796e4ab3ee2fa5cf508790d78619a5f6867ab3b45ef29d4e004f1d",
+      "report_sha256": "8b7891c7f9f8cbb98aec304926e23ff6356f8470d8d8c63e496d63b9c31cbfe5",
+      "model_usage": {
+        "claude-opus-5-5": {
+          "inputTokens": 66,
+          "outputTokens": 21089,
+          "cacheReadInputTokens": 4197993,
+          "cacheCreationInputTokens": 207507,
+          "webSearchRequests": 0,
+          "costUSD": 2.9216985999999996,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 128000,
+          "thinkingTokens": 9816,
+          "cacheCreationEphemeral5mInputTokens": 0,
+          "cacheCreationEphemeral1hInputTokens": 207507,
+          "canonicalModel": "claude-opus-5-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "last_line": "would show: yes",
+      "fresh_call": true
+    }
+  },
+  "reference_remeasured_after_final_review": {
+    "assembly": "5cf1b5be399d5b1c9c56ca72c9d35b4ecf307feacf5859d04ac5a1aa5926356a",
+    "source": "fa58868173d778dd1f0f596eb062c6c14af87f74293cf5f171aab08269a394d2"
+  },
+  "whole_observer_preserved": {
+    "path": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/hose-fuzz-raw/selftest_writes.strace",
+    "sha256": "1afe04c97a02cdd801a9d22877c7b5fa30b21ba4503c662a1e5c9093446c80c4",
+    "bytes": 328008
+  },
+  "external_raw_runner_logs_match_saved": true,
+  "workflow_receipt": "workflow_after_judge.json",
+  "workflow_returncode": 0,
+  "done_problems": [],
+  "git_diff_check": 0,
+  "status": " M src/RimMandrake/FlowWorks/Source/SelfTest/HoseFuzz.cs\n?? whittle/fw-drain-hose-fuzz/\n",
+  "source_HEAD_unchanged": true
+}

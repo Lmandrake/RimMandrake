@@ -1,0 +1,19 @@
+{
+  "time": 1794395074.9773772,
+  "results": [
+    {
+      "label": "original_total_full",
+      "returncode": 0,
+      "expected": 0,
+      "transport_returncode": 0,
+      "match": true
+    },
+    {
+      "label": "final_total_full",
+      "returncode": 1,
+      "expected": 1,
+      "transport_returncode": 0,
+      "match": true
+    }
+  ]
+}

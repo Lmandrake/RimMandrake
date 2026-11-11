@@ -1,0 +1,220 @@
+using System;
+using System.Collections.Generic;
+
+namespace RimMandrake.FlowWorks.LiquidTypes
+{
+    /// <summary>FLOWWORKS_CONTAINER_MATERIALS_1. What a bottle, bucket or barrel is made of, as far as
+    /// holding a liquid is concerned. "Glass" is any stone (the stone only tints it); "Unknown" is a
+    /// container with no stuff at all (an adopted vanilla item such as Chemfuel), which holds anything
+    /// at its base capacity.</summary>
+    public enum RM_ContainerMaterial
+    {
+        Unknown,
+        Leather,
+        Glass,
+        Metal,
+        Wood,
+        Plasteel,
+        /// <summary>VEXXITH_USES_1: the Cauldron's sheared plate. Metallic stuff that holds acid like plasteel.</summary>
+        Vexxith,
+    }
+
+    /// <summary>Why a container refuses a liquid. None = it holds it.</summary>
+    public enum RM_HoldRefusal
+    {
+        None,
+        Hot,
+        Acid,
+    }
+
+    /// <summary>One material's rule on one container family -- the def field the owner's ruling asked
+    /// for (decision taken by question card 2026-10-06 23:45: "Material changes what a container can
+    /// hold -- full rules incl. capacity"). Authored per container family in
+    /// RM_ContainerMaterialsExtension on RM_BottleItemBase / RM_BucketItemBase / RM_BarrelItemBase;
+    /// the shipped numbers are documented there and asserted by the FlowWorks selftest.</summary>
+    public class RM_ContainerMaterialRule
+    {
+        public RM_ContainerMaterial material = RM_ContainerMaterial.Unknown;
+
+        /// <summary>Multiplies the liquid's litres per container of this size (LiquidBottledForm.UnitsFor).</summary>
+        public float capacityFactor = 1f;
+
+        /// <summary>False = refuses hot liquids (LiquidDef.hot, e.g. boiling water).</summary>
+        public bool holdsHot = true;
+
+        /// <summary>False = refuses acid (LiquidDef.IsAcid).</summary>
+        public bool holdsAcid = true;
+    }
+
+    /// <summary>Verse-free rules, compiled straight into the offline selftest.</summary>
+    public static class RM_ContainerMaterialMath
+    {
+        /// <summary>Plasteel is checked by defName before the categories because vanilla files it under
+        /// Metallic; leather before stone/metal/wood in case a modded stuff carries two categories.</summary>
+        public static RM_ContainerMaterial Classify(string stuffDefName, IEnumerable<string> stuffCategories)
+        {
+            if (stuffDefName == null)
+            {
+                return RM_ContainerMaterial.Unknown;
+            }
+            if (stuffDefName == "Plasteel")
+            {
+                return RM_ContainerMaterial.Plasteel;
+            }
+            if (stuffDefName == "RM_Vexxith")
+            {
+                return RM_ContainerMaterial.Vexxith;
+            }
+            bool leathery = false, stony = false, metallic = false, woody = false;
+            if (stuffCategories != null)
+            {
+                foreach (string c in stuffCategories)
+                {
+                    if (c == "Leathery") leathery = true;
+                    else if (c == "Stony") stony = true;
+                    else if (c == "Metallic") metallic = true;
+                    else if (c == "Woody") woody = true;
+                }
+            }
+            if (leathery) return RM_ContainerMaterial.Leather;
+            if (stony) return RM_ContainerMaterial.Glass;
+            if (metallic) return RM_ContainerMaterial.Metal;
+            if (woody) return RM_ContainerMaterial.Wood;
+            return RM_ContainerMaterial.Unknown;
+        }
+
+        /// <summary>Acid = corrodes apparel, burns with acid, or pH 4 and below.</summary>
+        public static bool IsAcid(float pH, bool corrodesApparel, bool acidBurnDamage)
+        {
+            return corrodesApparel || acidBurnDamage || pH <= 4f;
+        }
+
+        /// <summary>VEXXITH_USES_1: hours between acid bites on a canal gate touching acid. A 100 HP gate lasts about four days.</summary>
+        public const int GateAcidIntervalTicks = 2500;
+        public const float GateAcidDamage = 1f;
+
+        /// <summary>VEXXITH_USES_1, owner: "Acid-proof material for canal doors that can withstand acid shutoff/open flows."
+        /// Acid eats a gate unless plasteel holds it off. Vexxith is NOT excused here: it reaches Thing.TakeDamage and the
+        /// Cauldron's immunity patch refuses the burn, so that mod's toggle keeps meaning what it says.</summary>
+        public static bool GateBurnsInAcid(RM_ContainerMaterial material, bool corrosionEnabled, bool touchesAcid)
+        {
+            return corrosionEnabled && touchesAcid && material != RM_ContainerMaterial.Plasteel;
+        }
+
+        /// <summary>Hot is checked first: the reason a player reads should name the most obvious hazard.
+        /// A null rule (a material the def does not list) holds anything.</summary>
+        public static RM_HoldRefusal CanHold(RM_ContainerMaterialRule rule, bool liquidHot, bool liquidAcid)
+        {
+            if (rule == null)
+            {
+                return RM_HoldRefusal.None;
+            }
+            if (liquidHot && !rule.holdsHot)
+            {
+                return RM_HoldRefusal.Hot;
+            }
+            if (liquidAcid && !rule.holdsAcid)
+            {
+                return RM_HoldRefusal.Acid;
+            }
+            return RM_HoldRefusal.None;
+        }
+
+        /// <summary>Units a container of this material holds: the liquid's base units for the size,
+        /// times the factor, rounded half away from zero, never below 1 while the base is above 0.
+        /// Units are decilitres, so a 1.5 L bottle (15) changes with any factor that moves it by 0.05 L or more.</summary>
+        public static int ScaledUnits(int baseUnits, float capacityFactor)
+        {
+            if (baseUnits <= 0)
+            {
+                return 0;
+            }
+            int scaled = (int)Math.Round(baseUnits * capacityFactor, MidpointRounding.AwayFromZero);
+            return scaled < 1 ? 1 : scaled;
+        }
+
+        /// <summary>Ruling 3: swap the first "stone-made" phrase in a label for the "glass-made" one
+        /// ("granite empty bottle" -> "glass empty bottle", keeping any prefix/suffix such as a
+        /// health percentage). Label unchanged when the phrase is absent.</summary>
+        public static string RelabelAsGlass(string label, string stoneForm, string glassForm)
+        {
+            if (string.IsNullOrEmpty(label) || string.IsNullOrEmpty(stoneForm) || glassForm == null)
+            {
+                return label;
+            }
+            int at = label.IndexOf(stoneForm, StringComparison.Ordinal);
+            return at < 0 ? label : label.Substring(0, at) + glassForm + label.Substring(at + stoneForm.Length);
+        }
+
+        public static RM_ContainerMaterialRule RuleFor(List<RM_ContainerMaterialRule> rules, RM_ContainerMaterial material)
+        {
+            if (rules == null)
+            {
+                return null;
+            }
+            for (int i = 0; i < rules.Count; i++)
+            {
+                if (rules[i] != null && rules[i].material == material)
+                {
+                    return rules[i];
+                }
+            }
+            return null;
+        }
+
+        /// <summary>DUG_WATER_FILL_FIX_NO_CANAL_DEBIT: the decilitres a fill, wash or drink of <paramref name="units"/> container
+        /// units (a unit is a decilitre) takes out of a DUG cell holding <paramref name="haveDl"/>, or -1 when the cell cannot pay
+        /// (the caller must not fill). Exact-level water pays to the decilitre; whole-notch water (exact off) holds whole notches
+        /// only, so the draw rounds UP to whole notches of <paramref name="dlPerNotch"/> -- it may waste, it never creates.</summary>
+        public static long DugCellDebitDl(int units, long haveDl, bool exact, long dlPerNotch)
+        {
+            if (units <= 0)
+            {
+                return 0;
+            }
+            long need = units;
+            if (!exact && dlPerNotch > 0)
+            {
+                need = (need + dlPerNotch - 1) / dlPerNotch * dlPerNotch;
+            }
+            return need <= haveDl ? need : -1;
+        }
+
+        /// <summary>BOTTLE_STOCK_MEND_FREE_REFILLS (C2-F2/C2-F3): what <paramref name="units"/> container units of a liquid
+        /// spend from a pond body, in the body's own stock unit: a body level is <paramref name="volumePerTile"/> stock and
+        /// <paramref name="unitsPerLevel"/> tank units (the pump's rate), so a bottle costs its share of a level.</summary>
+        public static float BodyStockFor(int units, float volumePerTile, int unitsPerLevel)
+        {
+            if (units <= 0 || volumePerTile <= 0f || unitsPerLevel <= 0)
+            {
+                return 0f;
+            }
+            return units * volumePerTile / unitsPerLevel;
+        }
+
+        /// <summary>TERRAIN_DRINK_FIX_SMALL_POND_REFUSED: may a body afford <paramref name="units"/> container units? The SAME
+        /// stock <see cref="BodyStockFor"/> charges, so a search asking this never disagrees with the debit that follows. The
+        /// whole-level CanSupply gate refused a 500 L pond for a 1.5 L drink.</summary>
+        public static bool BodyAffords(bool limitless, float stock, int units, float volumePerTile, int unitsPerLevel)
+        {
+            return RimMandrake.FlowWorks.RM_StockMath.CanDebit(limitless, stock, BodyStockFor(units, volumePerTile, unitsPerLevel));
+        }
+
+        /// <summary>BOTTLE_STOCK_MEND_FREE_REFILLS (C2-F9): the hit points a container keeps through a chain step (fill, use,
+        /// wash, pour, revert make a NEW Thing): the same fraction of the new def's maximum, at least 1, never above it.
+        /// A source without hit points (<paramref name="fromMax"/> &lt;= 0) gives the new container its full maximum.</summary>
+        public static int CarriedHitPoints(int fromHp, int fromMax, int toMax)
+        {
+            if (toMax <= 0)
+            {
+                return 0;
+            }
+            if (fromMax <= 0)
+            {
+                return toMax;
+            }
+            int hp = (int)Math.Round(toMax * (double)Math.Max(0, Math.Min(fromHp, fromMax)) / fromMax, MidpointRounding.AwayFromZero);
+            return Math.Max(1, Math.Min(toMax, hp));
+        }
+    }
+}

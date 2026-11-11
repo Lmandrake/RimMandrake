@@ -1,0 +1,11 @@
+# Parent acceptance
+
+Accept the offline zero-lay false-PASS repair. Read the complete source patch, real RunHose/Report/entry behavior, raw default-scale original/final mutant results, mode-only failures, legitimate refusal/debug controls and full wrapper output. The final fresh Opus judge returned would show: yes after the concurrent-build disclosure was added. Both judge responses and broaden are preserved unchanged.
+
+Parent independently recomputed all 6009 final source/tool/media input hashes and 3968 staged input identities, checked the exact tested patch and all 20 indexed control outcomes, decoded complete wrapper stdout/stderr from the unchanged whole observer trace, and compared both judgments with raw CLI results. All agree. The native Codex Whittle runner and orchestrator exited zero. Explicit parent workflow recheck is saved alongside this record.
+
+The full wrapper passed 1/1, main cases 1240/1240 and hose assertions 457/457. HoseFuzz is 4/4 with 2409 random lays and two nonfallback checked coverage witnesses. Identical default-scale total-refusal mutation passes the original family at zero lays and fails the repaired family with two coverage faults. Each actual-mode-only mutation fails its corresponding witness.
+
+One seed per real lay mode provides positive exercise without a random-success-rate floor. Explicit single-seed debug intentionally permits refusal-only passes and prints that limitation. Three isolated actual-entry controls overlapped early wrapper orchestration in separate stages, bypassing its lock; the final stage identity and positive wrapper output rule out mutant contamination. No isolation/performance benchmark is claimed. Cache admission was refused for environmental inputs. The initial generated-source staging fault and early parent missing-patch check are retained as instrument/preparation limitations, never relabelled as test passes.
+
+Only SelfTest/HoseFuzz.cs changes. No shipping DLL rebuild is needed. Shipping/GSS/art hashes are unchanged. No code CLEAN mark, live gameplay or fresh visual approval is claimed. The VV ShippedMatrixProbe was read but not executed. No bridge/game/deploy/ModsConfig/save action occurred. No new owner question.

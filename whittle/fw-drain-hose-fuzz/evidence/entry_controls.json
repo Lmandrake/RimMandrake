@@ -1,0 +1,33 @@
+{
+  "time": 1794395142.3144922,
+  "results": [
+    {
+      "label": "entry_g2_retry",
+      "returncode": 0,
+      "expected": 0,
+      "transport_returncode": 0,
+      "match": true
+    },
+    {
+      "label": "entry_g2off",
+      "returncode": 0,
+      "expected": 0,
+      "transport_returncode": 0,
+      "match": true
+    },
+    {
+      "label": "entry_refusal",
+      "returncode": 0,
+      "expected": 0,
+      "transport_returncode": 0,
+      "match": true
+    },
+    {
+      "label": "entry_total",
+      "returncode": 1,
+      "expected": 1,
+      "transport_returncode": 0,
+      "match": true
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "time": 1794395043.7517934,
+  "results": [
+    {
+      "label": "final_repaired_total",
+      "returncode": 1,
+      "expected": 1,
+      "transport_returncode": 0,
+      "match": true
+    },
+    {
+      "label": "final_positive_tiny",
+      "returncode": 0,
+      "expected": 0,
+      "transport_returncode": 0,
+      "match": true
+    },
+    {
+      "label": "final_positive_g2off",
+      "returncode": 0,
+      "expected": 0,
+      "transport_returncode": 0,
+      "match": true
+    },
+    {
+      "label": "final_positive_g2",
+      "returncode": 0,
+      "expected": 0,
+      "transport_returncode": 0,
+      "match": true
+    },
+    {
+      "label": "final_refuse_outlet",
+      "returncode": 1,
+      "expected": 1,
+      "transport_returncode": 0,
+      "match": true
+    },
+    {
+      "label": "final_refuse_free",
+      "returncode": 1,
+      "expected": 1,
+      "transport_returncode": 0,
+      "match": true
+    },
+    {
+      "label": "final_debug_refusal",
+      "returncode": 0,
+      "expected": 0,
+      "transport_returncode": 0,
+      "match": true
+    },
+    {
+      "label": "final_debug_partial_refusal",
+      "returncode": 0,
+      "expected": 0,
+      "transport_returncode": 0,
+      "match": true
+    },
+    {
+      "label": "final_debug_positive",
+      "returncode": 0,
+      "expected": 0,
+      "transport_returncode": 0,
+      "match": true
+    },
+    {
+      "label": "final_debug_mutant",
+      "returncode": 0,
+      "expected": 0,
+      "transport_returncode": 0,
+      "match": true
+    },
+    {
+      "label": "final_disabled",
+      "returncode": 0,
+      "expected": 0,
+      "transport_returncode": 0,
+      "match": true
+    },
+    {
+      "label": "final_trail_only",
+      "returncode": 0,
+      "expected": 0,
+      "transport_returncode": 0,
+      "match": true
+    },
+    {
+      "label": "final_both_families",
+      "returncode": 0,
+      "expected": 0,
+      "transport_returncode": 0,
+      "match": true
+    }
+  ]
+}

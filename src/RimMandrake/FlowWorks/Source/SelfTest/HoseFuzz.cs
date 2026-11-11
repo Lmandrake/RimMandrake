@@ -482,6 +482,24 @@ namespace RimMandrake.FlowWorks.SelfTest
                         fails.Add("hose seed " + seed + ": " + (m3 ?? msg) + " | " + MakeHose(seed, min) + " | walls " + string.Join(" ", min.Take(20).Select(c => c.ToString())));
                     }
                 }
+                // A small scale can sample only refusals (or only a 1x1 reel). Seed 2 is a 2x2
+                // reel that lays in both modes, through every RunHose invariant. Keep these
+                // witnesses separate from random coverage and from single-seed debugging.
+                string coverage = "single-seed debug; successful lay coverage not required";
+                if (one == null)
+                {
+                    int witnessed = 0;
+                    bool hasNozzle = MakeHose(2).Reel.Outward.HasValue;
+                    foreach (bool outlet in new[] { true, false })
+                    {
+                        long steps = 0;
+                        string msg = RunHose(2, null, ref steps, out int ok, out int f, outlet);
+                        if (hasNozzle && msg == null && ok == 1 && f == 0) { witnessed++; continue; }
+                        t.Failures++;
+                        fails.Add("hose coverage " + (outlet ? "[outlet]" : "[free]") + " seed 2: " + (msg ?? "expected a non-fallback checked lay from a nozzled reel (nozzle " + hasNozzle + ", laid " + ok + ", fallback " + f + ")"));
+                    }
+                    coverage = witnessed + "/2 successful checked coverage witnesses (seed 2, outlet/free)";
+                }
                 // each known gap: how often, and its first reproducer shrunk to the fewest walls that still show it
                 var gapLines = new List<string>();
                 foreach (var kv in gapCount.OrderBy(k => k.Key))
@@ -500,7 +518,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 foreach (string gl in OutletBendReport()) fails.Add("KNOWNGAP " + gl);
                 foreach (string gl in CostVsLengthProbe()) fails.Add("KNOWNGAP " + gl);
                 foreach (var kv in RefuseWhy.OrderBy(k => k.Key)) fails.Add("KNOWNGAP refused after the route check " + kv.Key + ": " + kv.Value);
-                sw.Stop(); t.Seconds = sw.Elapsed.TotalSeconds; t.Extra = "   (" + laid + " laid, " + fb + " via fallback, " + gapCount.Count + " known-gap class(es) tallied below)";
+                sw.Stop(); t.Seconds = sw.Elapsed.TotalSeconds; t.Extra = "   (" + laid + " random laid, " + fb + " via fallback, " + gapCount.Count + " known-gap class(es) tallied below; " + coverage + ")";
                 Report(t, fails); tallies.Add(t);
             }
             if (only == null || only == "trail")

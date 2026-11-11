@@ -1,0 +1,96 @@
+{
+  "time": 1794394917.7048278,
+  "results": [
+    {
+      "label": "repaired_total",
+      "returncode": 1,
+      "expected": 1,
+      "transport_returncode": 0,
+      "match": true
+    },
+    {
+      "label": "positive_tiny",
+      "returncode": 0,
+      "expected": 0,
+      "transport_returncode": 0,
+      "match": true
+    },
+    {
+      "label": "positive_g2off",
+      "returncode": 0,
+      "expected": 0,
+      "transport_returncode": 0,
+      "match": true
+    },
+    {
+      "label": "positive_g2",
+      "returncode": 0,
+      "expected": 0,
+      "transport_returncode": 0,
+      "match": true
+    },
+    {
+      "label": "refuse_outlet",
+      "returncode": 1,
+      "expected": 1,
+      "transport_returncode": 0,
+      "match": true
+    },
+    {
+      "label": "refuse_free",
+      "returncode": 1,
+      "expected": 1,
+      "transport_returncode": 0,
+      "match": true
+    },
+    {
+      "label": "debug_refusal",
+      "returncode": 0,
+      "expected": 0,
+      "transport_returncode": 0,
+      "match": true
+    },
+    {
+      "label": "debug_partial_refusal",
+      "returncode": 0,
+      "expected": 0,
+      "transport_returncode": 0,
+      "match": true
+    },
+    {
+      "label": "debug_positive",
+      "returncode": 0,
+      "expected": 0,
+      "transport_returncode": 0,
+      "match": true
+    },
+    {
+      "label": "debug_mutant",
+      "returncode": 0,
+      "expected": 0,
+      "transport_returncode": 0,
+      "match": true
+    },
+    {
+      "label": "disabled",
+      "returncode": 0,
+      "expected": 0,
+      "transport_returncode": 0,
+      "match": true
+    },
+    {
+      "label": "trail_only",
+      "returncode": 0,
+      "expected": 0,
+      "transport_returncode": 0,
+      "match": true
+    },
+    {
+      "label": "both_families",
+      "returncode": 0,
+      "expected": 0,
+      "transport_returncode": 0,
+      "match": true
+    }
+  ]
+}
