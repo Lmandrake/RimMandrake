@@ -1,0 +1,387 @@
+{
+  "phase": "after-fix",
+  "started_utc": "2026-11-11T21:59:21.653224+00:00",
+  "commands": [
+    {
+      "name": "guard-before",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/host_guard.py",
+        "status",
+        "--json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.0821077823638916,
+      "error": null
+    },
+    {
+      "name": "take",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "take",
+        "--host",
+        "stevedesktop",
+        "--idle-ok",
+        "--for",
+        "HT: RIMMANDRAKE_ALLOW_HUGETHINGS_TRUNKS_TO_SEAL_DOORS"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 10.294152975082397,
+      "error": null
+    },
+    {
+      "name": "guard-taken",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/host_guard.py",
+        "status",
+        "--json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.07949399948120117,
+      "error": null
+    },
+    {
+      "name": "lease-before",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "who",
+        "--host",
+        "stevedesktop"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 1.7253949642181396,
+      "error": null
+    },
+    {
+      "name": "down-before-deploy",
+      "args": [
+        "bash",
+        "/home/mandrake/rm/runner/infrastructure/stevedesktop/rw_game.sh",
+        "down"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.7774467468261719,
+      "error": null
+    },
+    {
+      "name": "luminous-plan",
+      "args": [
+        "python3",
+        "src/RimMandrake/Utils/deploy_custom_mods.py",
+        "--mod",
+        "LuminousPigment"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 47.11210536956787,
+      "error": null
+    },
+    {
+      "name": "hugethings-plan",
+      "args": [
+        "python3",
+        "src/RimMandrake/Utils/deploy_custom_mods.py",
+        "--mod",
+        "HugeThings"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 46.255276918411255,
+      "error": null
+    },
+    {
+      "name": "test-fixture-plan",
+      "args": [
+        "python3",
+        "src/RimMandrake/Utils/deploy_custom_mods.py",
+        "--mod",
+        "HugeThingsTestRaces"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 46.24801254272461,
+      "error": null
+    },
+    {
+      "name": "deployment-bytes",
+      "args": [
+        "python3",
+        "/home/mandrake/rm/codex-ht/whittle/ht-trunk-doors/evidence/verify_deploy.py",
+        "/home/mandrake/rm/codex-ht/whittle/ht-trunk-doors/evidence/raw/live-after8/deployment-bytes.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.19330120086669922,
+      "error": null
+    },
+    {
+      "name": "guard-before-tier",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/host_guard.py",
+        "status",
+        "--json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.08025860786437988,
+      "error": null
+    },
+    {
+      "name": "status-before-tier",
+      "args": [
+        "bash",
+        "/home/mandrake/rm/runner/infrastructure/stevedesktop/rw_game.sh",
+        "status"
+      ],
+      "rc": 3,
+      "elapsed_seconds": 0.6529138088226318,
+      "error": null
+    },
+    {
+      "name": "tier-apply",
+      "args": [
+        "python3",
+        "src/RimMandrake/Utils/modset_builder.py",
+        "--tier",
+        "mods__mandrake_rm_flowworks__mandrake_rm_hugethingstestraces__mandrake_rm_patches__mandrake_rm_biomes__oskarpotocki_vanillafactionsexpanded_core",
+        "--apply",
+        "--by",
+        "CODEX_STEVEDESKTOP_HUGETHINGS",
+        "--not-my-bridge",
+        "Parent-authorized default-host gate mismatch only: fresh CODEX_STEVEDESKTOP_HUGETHINGS own stevedesktop host_guard generation 1432 and driver 2995357 verified HELD, actual game DOWN and SteveDesktop paths independently verified; other-host O02 is N/A."
+      ],
+      "rc": 0,
+      "elapsed_seconds": 4.102335691452026,
+      "error": null
+    },
+    {
+      "name": "sanitize-old-log",
+      "args": [
+        "python3",
+        "/home/mandrake/rm/codex-ht/whittle/ht-trunk-doors/evidence/sanitize_old_log.py",
+        "/home/mandrake/rm/codex-ht/whittle/ht-trunk-doors/evidence/raw/live-after8/old-log-sanitization.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.8057222366333008,
+      "error": null
+    },
+    {
+      "name": "preflight-offline",
+      "args": [
+        "/home/mandrake/.cache/ht-warning-venv/bin/python3",
+        "src/RimMandrake/Utils/preflight_bridge.py",
+        "--tier",
+        "quicktest",
+        "--modset",
+        "mods__mandrake_rm_flowworks__mandrake_rm_hugethingstestraces__mandrake_rm_patches__mandrake_rm_biomes__oskarpotocki_vanillafactionsexpanded_core",
+        "--deep",
+        "--all",
+        "--seat",
+        "CODEX_STEVEDESKTOP_HUGETHINGS",
+        "--json",
+        "/home/mandrake/rm/codex-ht/whittle/ht-trunk-doors/evidence/raw/live-after8/preflight-offline.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 59.90003561973572,
+      "error": null
+    },
+    {
+      "name": "powershell-path",
+      "args": [
+        "which",
+        "powershell.exe"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.010906696319580078,
+      "error": null
+    },
+    {
+      "name": "up",
+      "args": [
+        "bash",
+        "/home/mandrake/rm/runner/infrastructure/stevedesktop/rw_game.sh",
+        "up",
+        "--wait"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 79.35573983192444,
+      "error": null
+    },
+    {
+      "name": "creation-status",
+      "args": [
+        "bash",
+        "/home/mandrake/rm/runner/infrastructure/stevedesktop/rw_game.sh",
+        "status"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 1.2841684818267822,
+      "error": null
+    },
+    {
+      "name": "bridge-status",
+      "args": [
+        "bash",
+        "/home/mandrake/rm/runner/infrastructure/stevedesktop/rw_game.sh",
+        "status"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 1.2290699481964111,
+      "error": null
+    },
+    {
+      "name": "preflight-live",
+      "args": [
+        "/home/mandrake/.cache/ht-warning-venv/bin/python3",
+        "src/RimMandrake/Utils/preflight_bridge.py",
+        "--tier",
+        "quicktest",
+        "--modset",
+        "mods__mandrake_rm_flowworks__mandrake_rm_hugethingstestraces__mandrake_rm_patches__mandrake_rm_biomes__oskarpotocki_vanillafactionsexpanded_core",
+        "--deep",
+        "--all",
+        "--seat",
+        "CODEX_STEVEDESKTOP_HUGETHINGS",
+        "--json",
+        "/home/mandrake/rm/codex-ht/whittle/ht-trunk-doors/evidence/raw/live-after8/preflight-live.json",
+        "--live"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 4.657594203948975,
+      "error": null
+    },
+    {
+      "name": "guard-live",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/host_guard.py",
+        "status",
+        "--json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.06703424453735352,
+      "error": null
+    },
+    {
+      "name": "winpath-trunk_doors_live",
+      "args": [
+        "wslpath",
+        "-w",
+        "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/northstar/trunk_doors_live.py"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.0044400691986083984,
+      "error": null
+    },
+    {
+      "name": "winpath-trunk-doors",
+      "args": [
+        "wslpath",
+        "-w",
+        "/home/mandrake/rm/codex-ht/whittle/ht-trunk-doors/evidence/raw/live-after8/trunk-doors.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.004311800003051758,
+      "error": null
+    },
+    {
+      "name": "trunk-doors",
+      "args": [
+        "python.exe",
+        "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\codex-ht\\src\\RimMandrake\\HugeThings\\northstar\\trunk_doors_live.py",
+        "--out",
+        "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\codex-ht\\whittle\\ht-trunk-doors\\evidence\\raw\\live-after8\\trunk-doors.json"
+      ],
+      "rc": 1,
+      "elapsed_seconds": 50.88761806488037,
+      "error": null
+    },
+    {
+      "name": "down-finally",
+      "args": [
+        "bash",
+        "/home/mandrake/rm/runner/infrastructure/stevedesktop/rw_game.sh",
+        "down"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 6.814850330352783,
+      "error": null
+    },
+    {
+      "name": "release",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "release",
+        "--host",
+        "stevedesktop"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 11.335846185684204,
+      "error": null
+    },
+    {
+      "name": "lease-after",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "who",
+        "--host",
+        "stevedesktop"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 1.8620495796203613,
+      "error": null
+    },
+    {
+      "name": "guard-after",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/host_guard.py",
+        "status",
+        "--json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.07694506645202637,
+      "error": null
+    },
+    {
+      "name": "status-after",
+      "args": [
+        "bash",
+        "/home/mandrake/rm/runner/infrastructure/stevedesktop/rw_game.sh",
+        "status"
+      ],
+      "rc": 3,
+      "elapsed_seconds": 0.6088442802429199,
+      "error": null
+    }
+  ],
+  "ok": false,
+  "parent_script_commit": "597faec68cf59dcd3757eaf9c6bc6a169a909c3d",
+  "parent_script_sha256": "f940109dda5c32ccccf0a58b94dd1997e68e20d5a471f029e8b8ce74ebd88dc0",
+  "actual_fresh_driver": {
+    "state": "HELD",
+    "seat": "CODEX_STEVEDESKTOP_HUGETHINGS",
+    "purpose": "HT: RIMMANDRAKE_ALLOW_HUGETHINGS_TRUNKS_TO_SEAL_DOORS",
+    "identity": {
+      "pid": 2995357,
+      "start": 120551.77,
+      "boot_id": "83c87369-52bb-43a4-9179-a6cd07ce769d",
+      "platform": "wsl",
+      "host": "SteveDesktop"
+    },
+    "generation": 1432,
+    "heartbeat": "2026-11-11T21:59:26Z",
+    "how": "holder process pid 2995357 alive",
+    "host": "stevedesktop",
+    "path": "/mnt/d/RimTest/data/scratch/DRIVER_LOCK.json"
+  },
+  "dependency_authorization_sha256": "476ad3bbb6496a7ce8935f7a7db7de7a2980d9b69dcba64697187877d9325c6b",
+  "game_pid": "20560",
+  "error": "AssertionError('SITE: actor in mental state')",
+  "finished_utc": "2026-11-11T22:06:23.499022+00:00"
+}

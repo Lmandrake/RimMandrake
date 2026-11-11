@@ -1,0 +1,16 @@
+{
+  "original_sha256": "afc63ee61ffb19406092e6bf802bc0152324b963c7afa6def5e00d6895013331",
+  "original_size": 29891,
+  "original_mtime_ns": 1794427519218304600,
+  "original_line_count": 496,
+  "redaction_count": 1,
+  "sanitized_sha256": "ecf80d2158b27ffde74a3a4c9cadba5a72463b572cb1eadc3fb242e3b327302c",
+  "script_sha256": "4ca61a7f74d32d83071830211847c749788de5ac82b4347558fbb09666588a0d",
+  "first_exception": [
+    45,
+    "Exception getting Verse.Graphic_Single at Things/Item/Equipment/WeaponRanged/UniqueWeapons/AssaultRifle/UniqueAssaultRifleA: System.ArgumentException: Illegal characters in path."
+  ],
+  "config_errors": [],
+  "guard_generation": 1428,
+  "game_status_rc": 3
+}

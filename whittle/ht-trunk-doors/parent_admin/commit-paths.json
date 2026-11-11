@@ -1,0 +1,15 @@
+[
+  "whittle/ht-trunk-doors",
+  "infrastructure/state/items/RIMMANDRAKE_ALLOW_HUGETHINGS_TRUNKS_TO_SEAL_DOORS.md",
+  "infrastructure/state/ledger/events/CODEX_STEVEDESKTOP_HUGETHINGS.jsonl",
+  "infrastructure/state/code_review/CODEX_STEVEDESKTOP_HUGETHINGS.jsonl",
+  "design/RimMandrake/giant_footprint_design_2026-10-07.md",
+  "design/RimMandrake/huge_footprints_perf.md",
+  "infrastructure/state/lessons/20261111T222949Z-CODEX_STEVEDESKTOP_HUGETHINGS-pause-load-ticks-before-pausing.md",
+  "infrastructure/state/lessons/20261111T222949Z-CODEX_STEVEDESKTOP_HUGETHINGS-old-source-freeze-includes-project-globs.md",
+  "infrastructure/state/lessons/20261111T222949Z-CODEX_STEVEDESKTOP_HUGETHINGS-worker-seat-per-ruling-elevates-actor.md",
+  "infrastructure/state/lessons/20261111T222949Z-CODEX_STEVEDESKTOP_HUGETHINGS-bridge-null-omission-not-mental-state.md",
+  "infrastructure/state/lessons/20261111T222949Z-CODEX_STEVEDESKTOP_HUGETHINGS-green-preflight-still-needs-startup-first.md",
+  "infrastructure/state/lessons/20261111T222949Z-CODEX_STEVEDESKTOP_HUGETHINGS-required-log-archive-cannot-be-skipped.md",
+  "infrastructure/state/lessons/20261111T222949Z-CODEX_STEVEDESKTOP_HUGETHINGS-disposable-site-fixtures-need-bounded-census.md"
+]

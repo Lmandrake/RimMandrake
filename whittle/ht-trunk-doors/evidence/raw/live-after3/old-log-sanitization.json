@@ -1,0 +1,16 @@
+{
+  "original_sha256": "3b93ffba8cdc98ecddf56fa632143dbf3fe18d8b56374820d7d1a586a61b293a",
+  "original_size": 27440,
+  "original_mtime_ns": 1794426958303804600,
+  "original_line_count": 471,
+  "redaction_count": 1,
+  "sanitized_sha256": "e34b55eaab62ccabd2e2d447c3e83ab4be11900931432f2e95112ae87bcf5800",
+  "script_sha256": "4ca61a7f74d32d83071830211847c749788de5ac82b4347558fbb09666588a0d",
+  "first_exception": [
+    45,
+    "Exception loading def from file RM_CrackedLands_DonorPorts.xml: System.ArgumentException: Could not find type named VEF.Plants.DualCropExtension from node <li Class=\"VEF.Plants.DualCropExtension\"><randomOutput>true</randomOutput><outPutAmount>1</outPutAmount><randomSecondaryOutput><li>ChunkSandstone</li><li>ChunkGranite</li><li>ChunkLimestone</li><li>ChunkSlate</li><li>ChunkMarble</li></randomSecondaryOutput></li>"
+  ],
+  "config_errors": [],
+  "guard_generation": 1426,
+  "game_status_rc": 3
+}

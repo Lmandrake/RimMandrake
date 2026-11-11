@@ -1,0 +1,10 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/Utils/deploy_custom_mods.py",
+    "--mod",
+    "LuminousPigment"
+  ],
+  "rc": 1,
+  "elapsed": 46.285693645477295
+}

@@ -1,0 +1,128 @@
+Verse.ContentFinder`1 TryFindAssetInModBundles
+[
+  {
+    "offset": "0x104",
+    "op": "0x13",
+    "operand": "08"
+  },
+  {
+    "offset": "0x106",
+    "op": "0x11",
+    "operand": "04"
+  },
+  {
+    "offset": "0x108",
+    "op": "0x28",
+    "operand": "9203002b",
+    "member": "<own>.ContentPath"
+  },
+  {
+    "offset": "0x10d",
+    "op": "0x28",
+    "operand": "db05000a",
+    "member": "Path.Combine"
+  },
+  {
+    "offset": "0x112",
+    "op": "0x2",
+    "operand": ""
+  },
+  {
+    "offset": "0x113",
+    "op": "0x28",
+    "operand": "db05000a",
+    "member": "Path.Combine"
+  },
+  {
+    "offset": "0x118",
+    "op": "0x13",
+    "operand": "09"
+  },
+  {
+    "offset": "0x11a",
+    "op": "0x11",
+    "operand": "05"
+  },
+  {
+    "offset": "0x11c",
+    "op": "0x28",
+    "operand": "9203002b",
+    "member": "<own>.ContentPath"
+  },
+  {
+    "offset": "0x121",
+    "op": "0x28",
+    "operand": "db05000a",
+    "member": "Path.Combine"
+  },
+  {
+    "offset": "0x126",
+    "op": "0x2",
+    "operand": ""
+  },
+  {
+    "offset": "0x127",
+    "op": "0x28",
+    "operand": "db05000a",
+    "member": "Path.Combine"
+  },
+  {
+    "offset": "0x12c",
+    "op": "0x13",
+    "operand": "0a"
+  },
+  {
+    "offset": "0x12e",
+    "op": "0x6",
+    "operand": ""
+  },
+  {
+    "offset": "0x12f",
+    "op": "0x13",
+    "operand": "0b"
+  }
+]
+Verse.ModContentPack get_PackageIdPlayerFacing
+[
+  {
+    "offset": "0x0",
+    "op": "0x2",
+    "operand": ""
+  },
+  {
+    "offset": "0x1",
+    "op": "0x7b",
+    "operand": "2e1e0004",
+    "member": "packageIdPlayerFacingInt"
+  },
+  {
+    "offset": "0x6",
+    "op": "0x2a",
+    "operand": ""
+  }
+]
+Verse.ModContentPack get_FolderName
+[
+  {
+    "offset": "0x0",
+    "op": "0x2",
+    "operand": ""
+  },
+  {
+    "offset": "0x1",
+    "op": "0x7b",
+    "operand": "2a1e0004",
+    "member": "rootDirInt"
+  },
+  {
+    "offset": "0x6",
+    "op": "0x6f",
+    "operand": "d905000a",
+    "member": "FileSystemInfo.get_Name"
+  },
+  {
+    "offset": "0xb",
+    "op": "0x2a",
+    "operand": ""
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "utc": 1794432680.019202,
+  "script_sha256": "084b016e8104f5ee992b0ae0f8065712ecd890d793058b04001b5d3ce4a235ab",
+  "helper_sha256": "258fba521ca7a6cd158d1ae601ef83b2b72dd25ed1a3b4225c0c97ef044bc68f",
+  "syntax": "PASS",
+  "runtime_inputs": 54,
+  "changed_compile_inputs": [
+    "src/RimMandrake/HugeThings/Source/TrunkDoorValidationHooks.cs"
+  ],
+  "predicate_cases": 16
+}

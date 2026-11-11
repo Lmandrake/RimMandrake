@@ -1,0 +1,26 @@
+{
+  "source": "CODEX_TrunkDoors_Cutting_417024a68ab6.rws",
+  "actors": [
+    {
+      "id": "Human475",
+      "carryTracker": "<carryTracker>\n\t\t\t\t\t\t\t<innerContainer>\n\t\t\t\t\t\t\t\t<maxStacks>1</maxStacks>\n\t\t\t\t\t\t\t\t<innerList />\n\t\t\t\t\t\t\t</innerContainer>\n\t\t\t\t\t\t</carryTracker>\n\t\t\t\t\t\t",
+      "innerList_exists": true,
+      "timetable_exists": true,
+      "workSettings_exists": true
+    },
+    {
+      "id": "Human478",
+      "carryTracker": "<carryTracker>\n\t\t\t\t\t\t\t<innerContainer>\n\t\t\t\t\t\t\t\t<maxStacks>1</maxStacks>\n\t\t\t\t\t\t\t\t<innerList />\n\t\t\t\t\t\t\t</innerContainer>\n\t\t\t\t\t\t</carryTracker>\n\t\t\t\t\t\t",
+      "innerList_exists": true,
+      "timetable_exists": true,
+      "workSettings_exists": true
+    },
+    {
+      "id": "Human483",
+      "carryTracker": "<carryTracker>\n\t\t\t\t\t\t\t<innerContainer>\n\t\t\t\t\t\t\t\t<maxStacks>1</maxStacks>\n\t\t\t\t\t\t\t\t<innerList />\n\t\t\t\t\t\t\t</innerContainer>\n\t\t\t\t\t\t</carryTracker>\n\t\t\t\t\t\t",
+      "innerList_exists": true,
+      "timetable_exists": true,
+      "workSettings_exists": true
+    }
+  ]
+}

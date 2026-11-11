@@ -1,0 +1,10 @@
+[main 48dc9b0114] Let growing trunks seal doors and remain cuttable
+ 29 files changed, 1079 insertions(+), 1186 deletions(-)
+ create mode 100644 src/RimMandrake/HugeThings/Source/HugePlantCutting.cs
+ create mode 100644 src/RimMandrake/HugeThings/Source/PlantCutToilRewrite.cs
+ create mode 100644 src/RimMandrake/HugeThings/Source/SelfTest/TrunkDoors/Program.cs
+ create mode 100644 src/RimMandrake/HugeThings/Source/SelfTest/TrunkDoors/TrunkDoors.csproj
+ create mode 100644 src/RimMandrake/HugeThings/Source/TrunkDoorValidationHooks.cs
+ create mode 100644 src/RimMandrake/HugeThings/northstar/trunk_doors_live.py
+ rename src/RimMandrake/HugeThings/northstar/{p1_live.py => workload_corpse_live.py} (76%)
+ create mode 100644 src/RimMandrake/Utils/selftest_hugethings_trunk_doors.py

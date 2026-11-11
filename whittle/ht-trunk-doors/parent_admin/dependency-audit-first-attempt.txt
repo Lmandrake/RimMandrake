@@ -1,0 +1,1 @@
+Initial read-only audit failed before any backup or deployment because stamp input paths were resolved from src rather than the stamped csproj directory. AssertionError: src/RM_DigDiscoveryMath.cs. The corrected audit resolved the # project header and independently matched every input. No failed-audit acceptance claim.

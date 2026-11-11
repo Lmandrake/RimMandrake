@@ -1,0 +1,17 @@
+{
+  "save": "RM_TestSite_calm_v3.rws",
+  "sha256": "d432d1458ae5dd0b5c92c64546487fcaa3e8db863025e730f45c5e6b4c891ed8",
+  "package_ids": [
+    "brrainz.harmony",
+    "ludeon.rimworld",
+    "ludeon.rimworld.royalty",
+    "ludeon.rimworld.ideology",
+    "ludeon.rimworld.biotech",
+    "ludeon.rimworld.anomaly",
+    "ludeon.rimworld.odyssey",
+    "brrainz.rimbridgeserver",
+    "mandrake.rm.flowworks",
+    "mandrake.rm.gimmesomeslack",
+    "ray1203.simplecamerasetting"
+  ]
+}

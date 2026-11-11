@@ -1,0 +1,1 @@
+FAIL AssertionError('SITE: target rectangle already contains pawns; refuse clearing') []

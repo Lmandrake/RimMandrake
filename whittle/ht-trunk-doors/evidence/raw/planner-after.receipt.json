@@ -1,0 +1,61 @@
+{
+  "arm": "after",
+  "inputs": [
+    {
+      "path": "whittle/ht-trunk-doors/evidence/raw/planner-after-inputs/Geometry.cs",
+      "sha256": "1b78346bf894cbc2264a76e315e56e37862eba66ff5237342268afc407e0eebc"
+    },
+    {
+      "path": "whittle/ht-trunk-doors/evidence/raw/planner-after-inputs/Planner.csproj",
+      "sha256": "192e4116881e9d2a6dc45341968aa786bbecc7d7e382e13d02a506514acf8825"
+    },
+    {
+      "path": "whittle/ht-trunk-doors/evidence/raw/planner-after-inputs/Claims.cs",
+      "sha256": "a2192572b5a2793763936103e1a901ad2c1d2c7a63c42ef0962884ef220c791f"
+    },
+    {
+      "path": "whittle/ht-trunk-doors/evidence/raw/planner-after-inputs/Program.cs",
+      "sha256": "00bef2cb538191dbf19329f51fe076b2e388f8dafa78df9712096ad539b4fa70"
+    },
+    {
+      "path": "whittle/ht-trunk-doors/evidence/raw/planner-after-inputs/DrawnExtent.cs",
+      "sha256": "cebd383f2afd063b967275e3b42db98696978bf1c5652c86212530a7a63497e2"
+    }
+  ],
+  "build_rc": 0,
+  "execution_rc": 0,
+  "elapsed": 2.2482378482818604,
+  "stage": {
+    "csproj": "whittle/ht-trunk-doors/evidence/raw/planner-after-inputs/Planner.csproj",
+    "stage": "/mnt/d/RimTest/data/build/HTTrunkDoorCompareafter",
+    "outputs": [],
+    "ev_scope": [
+      "whittle/ht-trunk-doors/evidence/raw/planner-after-inputs/",
+      "src/Directory.Build.targets",
+      "src/Directory.Build.props"
+    ],
+    "ev_start": {
+      "sha": "974537eeb71866efdecf527afea150a14905a998",
+      "dirty": true,
+      "dirty_n": 1,
+      "dirty_paths": [
+        "whittle/ht-trunk-doors/evidence/raw/planner-after-inputs/"
+      ],
+      "_token": "d938ae4be171ab2cf6369fb38062330feeb1114ae3d0553abacd02129c645a57"
+    },
+    "staged": true,
+    "ev_end": {
+      "sha": "974537eeb71866efdecf527afea150a14905a998",
+      "dirty": true,
+      "dirty_n": 1,
+      "dirty_paths": [
+        "whittle/ht-trunk-doors/evidence/raw/planner-after-inputs/"
+      ],
+      "_token": "d938ae4be171ab2cf6369fb38062330feeb1114ae3d0553abacd02129c645a57"
+    },
+    "source_sha": "974537eeb71866efdecf527afea150a14905a998",
+    "dirty": true,
+    "clone": "/home/mandrake/rm/codex-ht",
+    "built_utc": "2026-11-11T19:38:41+00:00"
+  }
+}

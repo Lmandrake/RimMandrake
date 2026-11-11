@@ -1,0 +1,34 @@
+{
+  "source": "whittle/ht-trunk-doors/evidence/raw/live-after4/trunk-doors.json",
+  "pawns": [
+    {
+      "id": "Human475",
+      "x": 124,
+      "z": 119,
+      "isPlayer": true,
+      "kindDef": "Colonist",
+      "xenotype": "Baseliner"
+    },
+    {
+      "id": "Human478",
+      "x": 119,
+      "z": 111,
+      "isPlayer": true,
+      "kindDef": "Colonist",
+      "xenotype": "Baseliner"
+    },
+    {
+      "id": "Human483",
+      "x": 119,
+      "z": 110,
+      "isPlayer": true,
+      "kindDef": "Colonist",
+      "xenotype": "Baseliner"
+    }
+  ],
+  "restoration": {
+    "ok": true,
+    "errors": [],
+    "settings": {}
+  }
+}

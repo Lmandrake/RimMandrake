@@ -126,9 +126,10 @@ patching vanilla.
 ### 5.3 Live acceptance
 
 `northstar/workload_corpse_live.py` retains sparse scheduler and corpse-conversion controls.
-`northstar/trunk_doors_live.py` demonstrates natural growth sealing an occupied workshop, an unreachable enclosed root,
-a real inside cutting job with vanilla reservations/work and mid-job save/reload, restored access through the intact
-door, and pawn/item/building/free-space/disabled-feature controls. Both restore their scene-begin snapshot exactly.
+`northstar/trunk_doors_live.py` must demonstrate natural growth sealing an occupied workshop, an unreachable enclosed
+root, a real inside cutting job with vanilla reservations/work and mid-job save/reload, restored access through the
+intact door, and pawn/item/building/free-space/disabled-feature controls. Both instruments require exact restoration
+of their scene-begin snapshot; their checks are acceptance requirements, not evidence that a run has passed.
 
 ### 5.4 Determinism across save/load
 

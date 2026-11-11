@@ -1,0 +1,16 @@
+staging whittle/ht-trunk-doors/evidence/raw/planner-before-inputs/Planner.csproj -> D:\RimTest\data\build\HTTrunkDoorCompareReplaybefore
+  whittle/ht-trunk-doors/evidence/raw/planner-before-inputs/
++ dotnet.exe build D:\RimTest\data\build\HTTrunkDoorCompareReplaybefore\whittle\ht-trunk-doors\evidence\raw\planner-before-inputs\Planner.csproj -c Release
+  Determining projects to restore...
+  Restored D:\RimTest\data\build\HTTrunkDoorCompareReplaybefore\whittle\ht-trunk-doors\evidence\raw\planner-before-inputs\Planner.csproj (in 81 ms).
+  Planner -> D:\RimTest\data\build\HTTrunkDoorCompareReplaybefore\whittle\ht-trunk-doors\evidence\raw\planner-before-inputs\bin\Release\net8.0\Planner.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.33
+entrance contacts accepted=0 of 2
+excluded=Pawn accepted=0
+excluded=Item accepted=0
+excluded=Protected accepted=0

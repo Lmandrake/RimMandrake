@@ -1,0 +1,30 @@
+using Verse;
+
+namespace RimMandrake.TitanicCreatures
+{
+    /// <summary>
+    /// The curated per-def override (item ruling #2: "a curated developer
+    /// override (yes/no per def)"). Attach to a race ThingDef's
+    /// &lt;modExtensions&gt; to move it off the bodySize-only default:
+    ///
+    ///   forceEnabled unset / omitted -&gt; auto: tier decided by bodySize alone.
+    ///   forceEnabled = true          -&gt; force IN even if bodySize is below
+    ///                                    the T1 floor (a dense small thing
+    ///                                    opts in; floors at T1, or higher if
+    ///                                    its bodySize genuinely qualifies).
+    ///   forceEnabled = false         -&gt; force OUT regardless of bodySize (a
+    ///                                    light big thing opts out entirely).
+    /// </summary>
+    public class RM_TitanicExtension : DefModExtension
+    {
+        public bool? forceEnabled;
+
+        /// <summary>BIG_CREATURES_DESIGN_WALLS_AND_SLOTS §3: the creature's breadth B in cells for the walls-and-slots rule, for a
+        /// body whose shape is not a square (a serpent, a whale). 0 (unset) = auto, max(1, round(sqrt(body size))).</summary>
+        public int breadthCells;
+
+        /// <summary>TITANIC_BODYSIZE_TEST_RACE_1: a harness-only test race (mod HugeThingsTestRaces). Tiers as its body size says, but no
+        /// titan event ever picks it (TitanPassageUtility.Eligible), so loading the test mod cannot put a test titan into a session.</summary>
+        public bool harnessOnly;
+    }
+}

@@ -1,0 +1,8 @@
+[
+  {
+    "name": "CODEX_TrunkDoors_Observe_89acd6b5e87e.rws",
+    "sha256": "db670eb881fe278f6c7427d25c53426bc466f09621fc07da3c1960c270cef411",
+    "error": "not well-formed (invalid token): line 141345, column 21",
+    "bounded_bytes_hex": "09090909093c7468696e6720436c6173733d22506c00000000000000000000000000000000663e506c616e745f47726173733c2f6465663e"
+  }
+]

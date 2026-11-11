@@ -1,0 +1,44 @@
+[
+  {
+    "slug": "worker-seat-per-ruling-elevates-actor",
+    "rc": 0,
+    "stdout": "infrastructure/state/lessons/20261111T222949Z-CODEX_STEVEDESKTOP_HUGETHINGS-worker-seat-per-ruling-elevates-actor.md\ncommit it: git commit infrastructure/state/lessons/20261111T222949Z-CODEX_STEVEDESKTOP_HUGETHINGS-worker-seat-per-ruling-elevates-actor.md -m 'lesson: \u2026'\n",
+    "stderr": ""
+  },
+  {
+    "slug": "disposable-site-fixtures-need-bounded-census",
+    "rc": 0,
+    "stdout": "infrastructure/state/lessons/20261111T222949Z-CODEX_STEVEDESKTOP_HUGETHINGS-disposable-site-fixtures-need-bounded-census.md\ncommit it: git commit infrastructure/state/lessons/20261111T222949Z-CODEX_STEVEDESKTOP_HUGETHINGS-disposable-site-fixtures-need-bounded-census.md -m 'lesson: \u2026'\n",
+    "stderr": ""
+  },
+  {
+    "slug": "pause-on-load-ticks-before-pausing",
+    "rc": 0,
+    "stdout": "infrastructure/state/lessons/20261111T222949Z-CODEX_STEVEDESKTOP_HUGETHINGS-pause-load-ticks-before-pausing.md\ncommit it: git commit infrastructure/state/lessons/20261111T222949Z-CODEX_STEVEDESKTOP_HUGETHINGS-pause-load-ticks-before-pausing.md -m 'lesson: \u2026'\n",
+    "stderr": ""
+  },
+  {
+    "slug": "bridge-null-omission-is-not-mental-state",
+    "rc": 0,
+    "stdout": "infrastructure/state/lessons/20261111T222949Z-CODEX_STEVEDESKTOP_HUGETHINGS-bridge-null-omission-not-mental-state.md\ncommit it: git commit infrastructure/state/lessons/20261111T222949Z-CODEX_STEVEDESKTOP_HUGETHINGS-bridge-null-omission-not-mental-state.md -m 'lesson: \u2026'\n",
+    "stderr": ""
+  },
+  {
+    "slug": "green-preflight-still-needs-startup-first-error",
+    "rc": 0,
+    "stdout": "infrastructure/state/lessons/20261111T222949Z-CODEX_STEVEDESKTOP_HUGETHINGS-green-preflight-still-needs-startup-first.md\ncommit it: git commit infrastructure/state/lessons/20261111T222949Z-CODEX_STEVEDESKTOP_HUGETHINGS-green-preflight-still-needs-startup-first.md -m 'lesson: \u2026'\n",
+    "stderr": ""
+  },
+  {
+    "slug": "old-source-freeze-includes-project-globs",
+    "rc": 0,
+    "stdout": "infrastructure/state/lessons/20261111T222949Z-CODEX_STEVEDESKTOP_HUGETHINGS-old-source-freeze-includes-project-globs.md\ncommit it: git commit infrastructure/state/lessons/20261111T222949Z-CODEX_STEVEDESKTOP_HUGETHINGS-old-source-freeze-includes-project-globs.md -m 'lesson: \u2026'\n",
+    "stderr": ""
+  },
+  {
+    "slug": "required-log-archive-cannot-be-skipped",
+    "rc": 0,
+    "stdout": "infrastructure/state/lessons/20261111T222949Z-CODEX_STEVEDESKTOP_HUGETHINGS-required-log-archive-cannot-be-skipped.md\ncommit it: git commit infrastructure/state/lessons/20261111T222949Z-CODEX_STEVEDESKTOP_HUGETHINGS-required-log-archive-cannot-be-skipped.md -m 'lesson: \u2026'\n",
+    "stderr": ""
+  }
+]

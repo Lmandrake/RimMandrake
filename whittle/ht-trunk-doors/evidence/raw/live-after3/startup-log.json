@@ -1,0 +1,9 @@
+{
+  "first_exception": [
+    45,
+    "Exception getting Verse.Graphic_Single at Things/Item/Equipment/WeaponRanged/UniqueWeapons/AssaultRifle/UniqueAssaultRifleA: System.ArgumentException: Illegal characters in path."
+  ],
+  "exception_count": 4,
+  "config_errors": [],
+  "parse_errors": []
+}

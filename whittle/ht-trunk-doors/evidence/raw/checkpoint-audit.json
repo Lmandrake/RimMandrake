@@ -1,0 +1,39 @@
+{
+  "utc": 1794427828.6328914,
+  "cleanup_commands": [
+    {
+      "command": [
+        "python3",
+        "src/RimMandrake/rimflow/host_guard.py",
+        "status",
+        "--json"
+      ],
+      "rc": 0
+    },
+    {
+      "command": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "who",
+        "--host",
+        "stevedesktop"
+      ],
+      "rc": 0
+    },
+    {
+      "command": [
+        "bash",
+        "/home/mandrake/rm/runner/infrastructure/stevedesktop/rw_game.sh",
+        "status"
+      ],
+      "rc": 3
+    }
+  ],
+  "runtime_input_manifest_sha256": "13fb034da0eb5239007268465120f6a0a18119d4200a5e010afdebdde565b063",
+  "build_commit": "ef5821d580764928453e41abb2f4903c5f8eb739",
+  "build_receipt_sha256": "5791e92c4e0205309b12e5569408a210bc04b2e2ea50c8ff170b5da414258ef2",
+  "runtime_input_count": 54,
+  "test_rc": 0,
+  "gameplay_proof_files": []
+}

@@ -1,0 +1,222 @@
+{
+  "project": "src/RimMandrake/HugeThings/Source/RM_HugeThings.csproj",
+  "project_sha256": "3d6c2613c46e66738985000863873e2a58a524f84cf0cb93e2509b787fd75f70",
+  "inputs": [
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeFootprintKernel.cs",
+      "sha256": "1b78346bf894cbc2264a76e315e56e37862eba66ff5237342268afc407e0eebc"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeClaimsKernel.cs",
+      "sha256": "a2192572b5a2793763936103e1a901ad2c1d2c7a63c42ef0962884ef220c791f"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeTitanKernel.cs",
+      "sha256": "0b0bade7e9441acf83569023369ed4eff948b8616a97a7a26a5b51c3f413770c"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Kernel/RM_TitanicKernel.cs",
+      "sha256": "b48cf9b451f8e178294dd277cc7dfd28d5892dd5f8a45075b781fad734d30277"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Kernel/RM_TitanClearingKernel.cs",
+      "sha256": "aaaab177abffcad294b756ac0bee5a634643073d7acd701d00c8282f8575711e"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Kernel/RM_WallsSlotsKernel.cs",
+      "sha256": "a191025c47d567387ceeeeee4d5dd95d790c57c526c9afd1bc226419f6f9d7d5"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Kernel/RM_WallsSlotsMemoKernel.cs",
+      "sha256": "ff0e6cfbc42b39a2704eadfed63bb30151879f5f5dbce2555f62d8f55b8ebc8e"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Building_TrunkBlocker.cs",
+      "sha256": "0b151098c9dc96479bbc243f53dc33b02657de71ec25acbeac36a2970cbd7999"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/CompHugeFootprint.cs",
+      "sha256": "08f387d765e714cf14aa843d92592298b78f39b0a702759e3746d5970e7c2385"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Extensions.cs",
+      "sha256": "64b100daf6e4fed158a9f0aa4d365761db4f8be245f63dc7a39737f7780bf4b6"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/FootprintMath.cs",
+      "sha256": "d623c99f1002f2091f708cd65d2319161844b12254ec93edde38ca03c7dae63e"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/HugeThingsCore.cs",
+      "sha256": "98febc02e782228c0ddbb6ffb4506f5ac41c1bb83e3c21db4087de97607d6fae"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/HugePlantCutting.cs",
+      "sha256": "cb7cf80fb4483fa3ca0d953fb3b95615262760acd01ddd77dfb952751e7f2766"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/PlantCutToilRewrite.cs",
+      "sha256": "cfb920bc871a389c204aa20941df2cb492ea4d37cfcb91059798db4d7b6121d8"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/TrunkDoorValidationHooks.cs",
+      "sha256": "d9d48f7126f981ebf6f4dabb33f33b782eec8f7468a97591d43642178230c231"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/MapComponent_HugeFootprints.cs",
+      "sha256": "625d9b072d356b1cb33b389cdf3a711132bba344fc275428dec6a20f66738692"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/RM_HugeThingsSettings.cs",
+      "sha256": "d1902dc7278c98c31305bbc5d003e4de83075e88b07ecf67548f0b91abba2570"
+    },
+    {
+      "path": "src/RimMandrake/_Shared/DrawnExtent/DrawnExtentKernel.cs",
+      "sha256": "cebd383f2afd063b967275e3b42db98696978bf1c5652c86212530a7a63497e2"
+    },
+    {
+      "path": "src/RimMandrake/_Shared/SettingsKit/SettingsKitCore.cs",
+      "sha256": "28477b7ceeeb7e1b65406a88160919447409e41d26891b1278de9f9e3dd5f37e"
+    },
+    {
+      "path": "src/RimMandrake/_Shared/SettingsKit/SettingsKitDrawer.cs",
+      "sha256": "d6ec4adcaa1ab98bad5a13ce3de55647b8dfa863cfb759407b099a4ad0c0f453"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/Building_TitanicCorpseSite.cs",
+      "sha256": "e916461382937272e7a2876ac6614e6023b13153d29dc5f5a45252351adafff4"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/CorpseSiteVisitors.cs",
+      "sha256": "1ddcda5e9a3ce6833b3b2bc55309e57eaa629b04a598b88457b61af8cc66fc14"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/Events/RM_TitanPassageExtension.cs",
+      "sha256": "5dd90419838c5da49353c74287c31e857e7156d1eeb7b30c917fb3169f3066b2"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/Events/TitanPassage.cs",
+      "sha256": "8a4904ff7d650f719425876a713d81c4395e986c02a0fa68e4521b2792b1270f"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/Events/TitanValidationHooks.cs",
+      "sha256": "68b67c31b11bda073091038233658e4e2f98727b1fa0b5590dc5392cbe33f11e"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/Events/JuvenileTierValidationHooks.cs",
+      "sha256": "91640e5a39275e33d174df152452177cbb4f04277c09749dd923815a162e36fa"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/JobDriver_HarvestTitanicCorpse.cs",
+      "sha256": "7f933f96c63ac95282925edd868b4e416eedd2fc5279b3068f40f5f2328d7ecc"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/Patch_CorpseSiteConversion.cs",
+      "sha256": "48852203bcaecc13bda211728a3b302c3d3b198c199f045e453ff1a639643112"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/TitanicCorpseSiteUtility.cs",
+      "sha256": "f9ca96f257e5ce7361d34305340ccbc23d1a26a105cff55697f68827737915ca"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/WorkGiver_HarvestTitanicCorpse.cs",
+      "sha256": "f8198c4bc9dd421c042e959456f15e50db078bc55c629e4ad7e428b8bf6967d8"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/Clearing/JobDriver_TitanClearObstacle.cs",
+      "sha256": "16d5b054cb3024ccc0152227283d7953b4a578398f78cd6ed9a9af5428354146"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/Clearing/Patch_StartPath_TitanClearing.cs",
+      "sha256": "9afa87ca92ddbc9d98e385249dfd35b09e51726edc03e594d9c3ea07ca2d51c5"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/Clearing/TitanClearingUtility.cs",
+      "sha256": "7c4d96b3c6169f0b12e870a4196278a891596df54d4d4eee6a6b78d42baa2b86"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/Footprint/LargePawnsBridge.cs",
+      "sha256": "ea0b0a07a2647c5b0e8079a58b8b44a383201ac61dc1b84545493d4c45b3da17"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/Footprint/Patch_ThickRoofAvoidance.cs",
+      "sha256": "0a0f6e5b369308a6dc3e1066640b34b1cfca58a127fe47b2d67397e3956a11ee"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/RM_TitanicCreaturesDefOf.cs",
+      "sha256": "95bec2fd15ffa4e0f24aa78c37330e427a4f0d3552d206427b6a52c7601faa64"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/RM_TitanicCreaturesMod.cs",
+      "sha256": "28317d515fbe24f3edcff5fa2d5729242b7a1e9cb8a09fd8e7dbb4e9a0f91e5a"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/Tiering/RM_TitanicExtension.cs",
+      "sha256": "71b2a0bdb6e86595427329a5029532a56c5f159157e59bcf4121a11e3a51551e"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/Tiering/RM_TitanicTierDef.cs",
+      "sha256": "63ebec96b05dda8cbfa7e9d1d2a9024c4dcee8d34fd6d895f7431d28dc0e96be"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/Tiering/TitanicTier.cs",
+      "sha256": "ee3ef1fee3dcd820840ca85d76cb0c609f7bda902cca5b09eb8a66d64bec4cac"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/Tiering/TitanicTierUtility.cs",
+      "sha256": "dc956d31e23747b5a27e8c1b6a4a2669b2001436f394f5c86c2d3144563580e6"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/Wake/CompProperties_TitanicWake.cs",
+      "sha256": "601d79d83d57294ed17b5abbd44acf1ef3fb927b42666e2d97231e577fc69cc8"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/Wake/CompTitanicWake.cs",
+      "sha256": "3f018905c7cb8c475ff91967f77fe6f476b6dce194e79e52e93778bc4ed641d2"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/Wake/CrushTableUtility.cs",
+      "sha256": "6242a06539a2ea59b3f68215ea0647c4a235209f888fb8481c8fc604a13e4054"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/Wake/Patch_ButcherYieldCurve.cs",
+      "sha256": "688bbcab7c7171643b300ac372c01a4fe5c42496b088e24a17dc4f4b14d9fc80"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/Wake/Patch_Thing_Position_Wake.cs",
+      "sha256": "162ded838f87bbaa42f0cc5deb9d7e67e94ce2489a1237d1dc19a05e9c779bac"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/Wake/RM_CrushRuleDef.cs",
+      "sha256": "f006d80e3abf6227da2dfa55bb846d8c758f01f59134a7def7e5ea34f62703c9"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/Wake/TitanicWakeProcessor.cs",
+      "sha256": "b1626fc0e0933cc47911358964a042f3ec3c187416975d18fd80570c5329ca6f"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/Wake/YieldCurveUtility.cs",
+      "sha256": "cfa16bb26079ab775a41b77ca750d5680abfb0c918973355f034abbba9934aef"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/JobDriver_TitanSqueeze.cs",
+      "sha256": "76fea4aa03255f31f63e9eadc850cc11f8c2544ae1c6fe141f5db3710fdf2e7a"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/Patch_WallsSlots.cs",
+      "sha256": "4fd604894bb5c0420ab35f442e7059700d0dc140ccaae8644e3923c3ed4e1568"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/TrenchStrideHook.cs",
+      "sha256": "02561741a243227c62355ac551651a979cc5f6246e86c7e92ded3c4f3dfeaf78"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/WallsSlotsDecider.cs",
+      "sha256": "b5d2491731fbae0ac18da28016d91fffb3ae8911815003531ef7ad11ce26da37"
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/WallsSlotsUtility.cs",
+      "sha256": "5c09fffd489dd5e9c37ab8777b008d2ee5d7365756fee9ab41383cf3205bd783"
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+started pid 12760
+bridge up on port 5174 after 72 s

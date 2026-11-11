@@ -1,0 +1,81 @@
+using System.Collections.Generic;
+using RimWorld;
+using Verse;
+using Verse.AI;
+using RimMandrake.HugeThings;
+
+namespace RimMandrake.TitanicCreatures
+{
+    /// <summary>
+    /// One harvest session against a Building_TitanicCorpseSite's remaining
+    /// pool. Modeled directly on this codebase's own
+    /// RimMandrake.Pits.JobDriver_DigPitDeeper (MiningSpeed-scaled work toil) -
+    /// harvesting a titan's remains reads as excavation, not butchery, which is
+    /// also why this sits on the Mining work type rather than Cooking/Hunting.
+    /// </summary>
+    public class JobDriver_HarvestTitanicCorpse : JobDriver
+    {
+        private float workLeft;
+
+        // GenDate.TicksPerHour (2500) * the player-tunable hour count.
+        private static float WorkPerSession =>
+            GenDate.TicksPerHour * RM_HugeThingsSettings.corpseSiteWorkHoursPerSession;
+
+        private Building_TitanicCorpseSite Site => job.targetA.Thing as Building_TitanicCorpseSite;
+
+        public override bool TryMakePreToilReservations(bool errorOnFailed)
+        {
+            return pawn.Reserve(job.targetA, job, 1, -1, null, errorOnFailed);
+        }
+
+        protected override IEnumerable<Toil> MakeNewToils()
+        {
+            this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
+            this.FailOn(() => Site == null || !Site.HasYield);
+
+            yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch);
+
+            Toil harvest = ToilMaker.MakeToil("MakeNewToils");
+            harvest.initAction = delegate { workLeft = WorkPerSession; };
+            harvest.tickIntervalAction = delegate(int delta)
+            {
+                float amount = pawn.GetStatValue(StatDefOf.MiningSpeed) * delta;
+                workLeft -= amount;
+                if (pawn.skills != null)
+                {
+                    pawn.skills.Learn(SkillDefOf.Mining, 0.08f * delta);
+                }
+                if (workLeft <= 0f)
+                {
+                    Building_TitanicCorpseSite site = Site;
+                    if (site != null && !site.Destroyed)
+                    {
+                        // CORPSE_SITE_SAFETY_1 (B3.11): commit only what was placed; 1.6 TryPlaceThing can fail with an unspawned
+                        // remainder, which goes back to the pool.
+                        List<Thing> products = site.MakeSessionProducts();
+                        foreach (Thing product in products)
+                        {
+                            int made = product.stackCount;
+                            bool placed = GenPlace.TryPlaceThing(product, pawn.Position, pawn.Map, ThingPlaceMode.Near);
+                            int remainder = (!placed && !product.Destroyed && !product.Spawned) ? product.stackCount : 0;
+                            site.CommitHarvest(product.def, made - remainder);
+                        }
+                        site.FinishSession();
+                    }
+                    ReadyForNextToil();
+                }
+            };
+            harvest.defaultCompleteMode = ToilCompleteMode.Never;
+            harvest.WithProgressBar(TargetIndex.A, () => 1f - workLeft / WorkPerSession);
+            harvest.FailOnCannotTouch(TargetIndex.A, PathEndMode.Touch);
+            harvest.activeSkill = () => SkillDefOf.Mining;
+            yield return harvest;
+        }
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Values.Look(ref workLeft, "workLeft", 0f);
+        }
+    }
+}

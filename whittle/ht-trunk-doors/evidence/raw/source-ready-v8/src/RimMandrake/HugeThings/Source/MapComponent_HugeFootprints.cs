@@ -1,0 +1,794 @@
+using System.Collections.Generic;
+using RimWorld;
+using Verse;
+
+namespace RimMandrake.HugeThings
+{
+    /// <summary>
+    /// Every huge plant's footprint on one map (GPT review 2026-10-07: #1 #2 #5 #6 #8 #9 #14).
+    ///
+    ///  * Claims: each plant claims its desired cells in a map-wide ClaimLedger; a cell is blocked while ANY plant claims it,
+    ///    by exactly one RM_HugeTrunkBlocker, whatever order plants registered or refreshed in (#8).
+    ///  * Realizing: a newly claimed cell closes only when Planner allows it: never over a pawn or an item (nothing is
+    ///    moved aside or destroyed, #2), never over a protected cell (buildings, blueprints, frames, their interaction
+    ///    cells, trees, other giants, #6). Growth may seal door approaches and disconnect rooms (owner answer 4,
+    ///    2026-11-11). A refused placement cell stays claimed and is retried.
+    ///  * Freeing: changed claims open affected cells; death cleanup drains under the shared work budget.
+    ///  * Reconciling: after load, every blocker on the map is indexed (not just those near a plant) and any blocker on an
+    ///    unclaimed cell, any duplicate, and any blocker on the wrong map is removed (#5).
+    ///  * Cost: all loaded maps share a logical-work budget. Geometry/claims resume across ticks; each owner visit and
+    ///    retry batch is bounded. Settings changes invalidate a generation in O(1). Frame-time performance UNVERIFIED.
+    /// </summary>
+    public class MapComponent_HugeFootprints : MapComponent
+    {
+        public const int PendingRetryInterval = 250;
+        public const int RefreshesPerTick = 8;
+        public const int WorkUnitsPerTick = 200000;
+        private static object budgetGame;
+        private static int budgetTick = int.MinValue;
+        private static FootprintWorkBudget sharedBudget;
+        private FootprintWorkBudget work;
+        private readonly FootprintOwnerQueue readyOwners = new FootprintOwnerQueue();
+        private readonly Queue<int> removals = new Queue<int>();
+        private readonly Dictionary<int, LinkedList<long>> pendingByOwner = new Dictionary<int, LinkedList<long>>();
+        private readonly Dictionary<long, LinkedListNode<long>> pendingNodes = new Dictionary<long, LinkedListNode<long>>();
+        private readonly Dictionary<long, int> pendingOwners = new Dictionary<long, int>();
+        private readonly Dictionary<int, int> retryAt = new Dictionary<int, int>();
+        private readonly Dictionary<int, int> ownerGeneration = new Dictionary<int, int>();
+        private int refreshGeneration;
+        private int ownersVisited;
+        private readonly Dictionary<int, RefreshWork> refreshes = new Dictionary<int, RefreshWork>();
+        private sealed class RefreshWork
+        {
+            public FootprintSignature Signature;
+            public IEnumerator<long?> Geometry;
+            public readonly HashSet<long> Want = new HashSet<long>();
+            public IEnumerator<long> Old, Add;
+            public readonly List<long> Drop = new List<long>();
+            public int Phase, Index;
+        }
+
+        private static FootprintWorkBudget BudgetForTick()
+        {
+            int now = Find.TickManager.TicksGame;
+            if (!ReferenceEquals(budgetGame, Current.Game) || budgetTick != now)
+            {
+                budgetGame = Current.Game; budgetTick = now;
+                sharedBudget = new FootprintWorkBudget(WorkUnitsPerTick);
+            }
+            return sharedBudget;
+        }
+
+        private readonly Dictionary<int, CompHugeFootprint> comps = new Dictionary<int, CompHugeFootprint>();
+        private readonly SortedSet<int> dirty = new SortedSet<int>();
+        private readonly ClaimLedger ledger = new ClaimLedger();
+        private readonly Dictionary<long, Building_TrunkBlocker> realized = new Dictionary<long, Building_TrunkBlocker>();
+        private readonly SortedSet<long> pending = new SortedSet<long>();
+        private readonly Dictionary<long, int> lastMoveTick = new Dictionary<long, int>();
+        private bool initialized;
+        private bool mutating;
+
+        public MapComponent_HugeFootprints(Map map) : base(map) { }
+
+        public int Count => comps.Count;
+
+        public int BlockerCount => realized.Count;
+
+        public int PendingCount => pending.Count;
+
+        public bool IsClaimed(IntVec3 c) => ledger.IsClaimed(Key(c));
+
+        public bool Owns(Building_TrunkBlocker b) => realized.TryGetValue(Key(b.Position), out Building_TrunkBlocker r) && r == b;
+
+        private static long Key(IntVec3 c) => RM_HugeFootprintKernel.Key(c.x, c.z);
+
+        private static IntVec3 Cell(long k) => new IntVec3(RM_HugeFootprintKernel.KeyX(k), 0, RM_HugeFootprintKernel.KeyZ(k));
+
+        public void Register(CompHugeFootprint c)
+        {
+            comps[c.OwnerId] = c;
+            dirty.Add(c.OwnerId);
+            readyOwners.Add(c.OwnerId);
+        }
+
+        /// <summary>A plant left the map (cut, died, minified, destroyed): its removal is queued, and every cell nobody else
+        /// claims opens during budgeted cleanup.</summary>
+        public void Deregister(CompHugeFootprint c)
+        {
+            comps.Remove(c.OwnerId);
+            dirty.Remove(c.OwnerId);
+            // Death hooks enqueue O(1) work. Claims and physical cells are released under the shared tick budget.
+            removals.Enqueue(c.OwnerId);
+            retryAt.Remove(c.OwnerId);
+            ownerGeneration.Remove(c.OwnerId);
+            refreshes.Remove(c.OwnerId);
+        }
+
+        public void MarkDirty(CompHugeFootprint c)
+        {
+            if (comps.ContainsKey(c.OwnerId)) { dirty.Add(c.OwnerId); readyOwners.Add(c.OwnerId); }
+        }
+
+        public void MarkAllDirty()
+        {
+            // O(1) invalidation. Every registered owner is in the fair ring; no settings-change full-map walk.
+            refreshGeneration++;
+        }
+
+        public override void FinalizeInit()
+        {
+            base.FinalizeInit();
+            Reconcile();
+        }
+
+        /// <summary>Index every blocker on the map, then rebuild claims from the plants and drop what nobody claims.</summary>
+        public void Reconcile()
+        {
+            realized.Clear();
+            pending.Clear();
+            List<Thing> all = map.listerThings.ThingsOfDef(HugeThingsDefOf.RM_HugeTrunkBlocker);
+            List<Building_TrunkBlocker> extra = new List<Building_TrunkBlocker>();
+            for (int i = 0; i < all.Count; i++)
+            {
+                if (!(all[i] is Building_TrunkBlocker b) || !b.Spawned) continue;
+                long k = Key(b.Position);
+                if (realized.ContainsKey(k)) extra.Add(b);
+                else realized[k] = b;
+            }
+            foreach (Building_TrunkBlocker b in extra) Despawn(b);
+            List<int> ids = new List<int>(comps.Keys);
+            ids.Sort();
+            // PLANT_FOOTPRINT_HARDENING_1 (A2.3): one bad owner must not abort map init; each is isolated, logged once, skipped.
+            foreach (int id in ids) TryTake(comps[id]);
+            dirty.Clear();
+            List<long> stray = new List<long>();
+            foreach (long k in realized.Keys) if (!ledger.IsClaimed(k)) stray.Add(k);
+            Open(stray);
+            foreach (long k in ledger.Claimed) if (!realized.ContainsKey(k)) pending.Add(k);
+            initialized = true;
+            RealizePending();
+            RelabelOwners();
+            foreach (long k in pending) QueuePending(k);
+        }
+
+        private bool TryTake(CompHugeFootprint c)
+        {
+            try
+            {
+                Take(c);
+                return true;
+            }
+            catch (FootprintBudgetExhausted) { throw; }
+            catch (System.Exception e)
+            {
+                Log.ErrorOnce("[RimMandrake.HugeThings] footprint refresh failed for " + c.parent + ": " + e, c.OwnerId ^ 0x4875);
+                return false;
+            }
+        }
+
+        public override void MapComponentTick()
+        {
+            base.MapComponentTick();
+            if (!initialized) return;
+            // A child quota gives every loaded map a share; the parent enforces the aggregate cap even if maps
+            // are added/removed during a tick. An early map cannot consume a later map's entire allowance.
+            work = new FootprintWorkBudget(WorkUnitsPerTick / System.Math.Max(1, Find.Maps.Count), BudgetForTick());
+            ownersVisited = 0;
+            try
+            {
+                // Alternate bounded removal and owner work so neither stream can starve the other.
+                int visits = System.Math.Min(RefreshesPerTick, readyOwners.Count);
+                for (int n = 0; n < visits; n++)
+                {
+                    DrainRemoval();
+                    work.Spend();
+                    if (!readyOwners.Next(out int id)) break;
+                    if (!comps.TryGetValue(id, out CompHugeFootprint c)) continue;
+                    ownersVisited++;
+                    try
+                    {
+                        bool refresh = dirty.Contains(id) || !ownerGeneration.TryGetValue(id, out int generation) || generation != refreshGeneration;
+                        if (refresh)
+                        {
+                            if (!AdvanceRefresh(c)) continue;
+                        }
+                        if (pendingByOwner.TryGetValue(id, out LinkedList<long> cells) && cells.First != null &&
+                            (refresh || !retryAt.TryGetValue(id, out int due) || Find.TickManager.TicksGame >= due))
+                        {
+                            int candidates = System.Math.Min(8, cells.Count);
+                            for (int candidate = 0; candidate < candidates && cells.First != null; candidate++)
+                            {
+                                long k = cells.First.Value;
+                                // Rotate BEFORE planning, including an exhausted attempt: a large candidate cannot starve siblings.
+                                cells.RemoveFirst(); cells.AddLast(pendingNodes[k]);
+                                RealizeCells(new List<long> { k });
+                            }
+                            retryAt[id] = Find.TickManager.TicksGame + PendingRetryInterval;
+                        }
+                    }
+                    catch (FootprintBudgetExhausted) { /* Reads exhausted: preserve claims/pending, try another fair visit. */ }
+                    catch (System.Exception e)
+                    {
+                        Log.ErrorOnce("[RimMandrake.HugeThings] budgeted footprint visit failed: " + e, id ^ 0x5245);
+                    }
+                    finally { readyOwners.Add(id); }
+                }
+                // A map with no living owners must still drain mass-death cleanup.
+                for (int n = 0; n < RefreshesPerTick; n++) DrainRemoval();
+            }
+            catch (FootprintBudgetExhausted) { }
+            finally { work = null; }
+        }
+
+        // Geometry, the old-claim snapshot and claim edits all resume across ticks. Each edit is a small reserved
+        // transaction. New blockers still use freshly read flags in THIS tick, never stale multi-tick placement flags.
+        private bool AdvanceRefresh(CompHugeFootprint c)
+        {
+            int id = c.OwnerId;
+            if (!refreshes.TryGetValue(id, out RefreshWork job))
+            {
+                FootprintSignature signature = c.Signature(out HugeMask mask, work);
+                var quad = RM_HugeFootprintKernel.Quad(signature.RootX, signature.RootZ, signature.DrawX, signature.Visual,
+                                                       signature.JitterX, signature.JitterZ);
+                job = new RefreshWork { Signature = signature };
+                job.Geometry = signature.Blocking && signature.OldEnough
+                    ? RM_HugeFootprintKernel.ContactSteps(signature.RootX, signature.RootZ, quad, signature.BlockScale, signature.Flip, mask).GetEnumerator()
+                    : ((IEnumerable<long?>)System.Array.Empty<long?>()).GetEnumerator();
+                refreshes[id] = job;
+            }
+            for (int step = 0; step < 1024; step++)
+            {
+                work.Spend(32); // covers a geometry visit, snapshot append OR one atomic claim/open/relabel transaction
+                if (job.Phase == 0)
+                {
+                    if (job.Geometry.MoveNext())
+                    {
+                        long? key = job.Geometry.Current;
+                        if (key.HasValue && Cell(key.Value).InBounds(map)) job.Want.Add(key.Value);
+                    }
+                    else { job.Geometry.Dispose(); job.Old = ledger.CellsOf(id).GetEnumerator(); job.Phase = 1; }
+                }
+                else if (job.Phase == 1)
+                {
+                    if (job.Old.MoveNext()) { long k = job.Old.Current; if (!job.Want.Contains(k)) job.Drop.Add(k); }
+                    else { job.Old.Dispose(); job.Phase = 2; }
+                }
+                else if (job.Phase == 2)
+                {
+                    if (job.Index < job.Drop.Count)
+                    {
+                        long k = job.Drop[job.Index++];
+                        if (ledger.ReleaseCell(id, k)) Open(new List<long> { k });
+                        else { QueuePending(k); RelabelCell(k); }
+                    }
+                    else { job.Add = job.Want.GetEnumerator(); job.Phase = 3; }
+                }
+                else if (job.Phase == 3)
+                {
+                    if (job.Add.MoveNext())
+                    {
+                        long k = job.Add.Current;
+                        ledger.AddCell(id, k);
+                        if (!realized.ContainsKey(k)) pending.Add(k);
+                        QueuePending(k); RelabelCell(k);
+                    }
+                    else { job.Add.Dispose(); job.Phase = 4; }
+                }
+                else
+                {
+                    // If growth/settings changed while work was in flight, finish safely then queue the new signature.
+                    FootprintSignature current = c.Signature(out _, work);
+                    c.MarkTaken(job.Signature); refreshes.Remove(id);
+                    if (current.Equals(job.Signature)) { dirty.Remove(id); ownerGeneration[id] = refreshGeneration; return true; }
+                    dirty.Add(id); return false;
+                }
+            }
+            return false;
+        }
+
+        private void DrainRemoval()
+        {
+            if (removals.Count == 0) return;
+            work?.Spend(32); // one pair of balanced-set edits and one engine despawn at most
+            int id = removals.Dequeue();
+            if (comps.ContainsKey(id)) return; // a minified/moved plant with the same id has registered again
+            if (ledger.RemoveNext(id, out long k, out bool freed))
+            {
+                if (freed) Open(new List<long> { k });
+                else { QueuePending(k); RelabelCell(k); }
+                removals.Enqueue(id);
+            }
+            else pendingByOwner.Remove(id);
+        }
+
+        private void UnqueuePending(long k)
+        {
+            if (pendingNodes.TryGetValue(k, out LinkedListNode<long> node))
+            {
+                node.List.Remove(node); pendingNodes.Remove(k); pendingOwners.Remove(k);
+            }
+        }
+
+        private void QueuePending(long k)
+        {
+            if (!pending.Contains(k)) return;
+            int owner = ledger.PrimaryOwner(k);
+            if (pendingOwners.TryGetValue(k, out int old) && old == owner) return;
+            UnqueuePending(k);
+            if (owner < 0 || !comps.ContainsKey(owner)) return; // removed owner transfers when its claim is drained
+            if (!pendingByOwner.TryGetValue(owner, out LinkedList<long> cells))
+                pendingByOwner[owner] = cells = new LinkedList<long>();
+            pendingNodes[k] = cells.AddLast(k); pendingOwners[k] = owner;
+        }
+
+        private void RelabelCell(long k)
+        {
+            if (!realized.TryGetValue(k, out Building_TrunkBlocker blocker)) return;
+            int owner = ledger.PrimaryOwner(k);
+            blocker.owner = owner >= 0 && comps.TryGetValue(owner, out CompHugeFootprint c) ? c.Plant : null;
+        }
+
+        /// <summary>Take a plant's current desired cells into the ledger; free what it no longer wants.</summary>
+        private void Take(CompHugeFootprint c)
+        {
+            List<long> claimed = new List<long>(), freed = new List<long>();
+            List<long> want = c.DesiredKeys(work);
+            work?.Spend(want.Count);
+            List<long> keep = new List<long>(want.Count);
+            foreach (long k in want) { work?.Spend(); if (Cell(k).InBounds(map)) keep.Add(k); }
+            // Atomic ledger/open/relabel transaction: reserve its bounded copies, comparisons and affected-cell work
+            // BEFORE mutating any ownership. If it cannot fit, leave the previous footprint intact and dirty.
+            long count = (long)ledger.CountOf(c.OwnerId) + keep.Count + 1;
+            work?.Spend(32 * count * (1 + (long)System.Math.Ceiling(System.Math.Log(count + 1, 2))));
+            HashSet<long> before = new HashSet<long>(ledger.CellsOf(c.OwnerId));
+            ledger.Set(c.OwnerId, keep, claimed, freed);
+            Open(freed);
+            foreach (long k in claimed) if (!realized.ContainsKey(k)) pending.Add(k);
+            before.UnionWith(keep);
+            foreach (long k in before) { QueuePending(k); RelabelCell(k); }
+            c.MarkTaken();
+        }
+
+        private void Open(List<long> cells)
+        {
+            foreach (long k in cells)
+            {
+                pending.Remove(k); UnqueuePending(k); lastMoveTick.Remove(k);
+                if (realized.TryGetValue(k, out Building_TrunkBlocker b))
+                {
+                    realized.Remove(k);
+                    Despawn(b);
+                }
+            }
+        }
+
+        private void Despawn(Building_TrunkBlocker b)
+        {
+            if (b == null || b.Destroyed) return;
+            mutating = true;
+            try
+            {
+                b.Destroy(DestroyMode.Vanish);
+            }
+            finally
+            {
+                mutating = false;
+            }
+        }
+
+        /// <summary>Initial load realization; normal ticks use bounded batches of freshly checked candidates per fair owner visit.</summary>
+        // Load-only reconciliation. Tick work exclusively uses the bounded fair queue above.
+        private void RealizePending()
+        {
+            if (pending.Count == 0) return;
+            var owners = new SortedSet<int>();
+            foreach (long k in pending) foreach (int owner in ledger.OwnersOf(k)) owners.Add(owner);
+            foreach (int id in owners)
+            {
+                if (!comps.TryGetValue(id, out CompHugeFootprint c)) continue;
+                try { RealizeOwner(id, c); }
+                catch (System.Exception e) { Log.ErrorOnce("[RimMandrake.HugeThings] load footprint failed: " + e, id ^ 0x5245); }
+            }
+        }
+
+        private void RealizeOwner(int id, CompHugeFootprint c)
+        {
+            List<long> mine = new List<long>();
+            foreach (long k in ledger.CellsOf(id)) if (pending.Contains(k)) mine.Add(k);
+            if (mine.Count == 0) return;
+            RealizeCells(mine);
+        }
+
+        private void RealizeCells(List<long> mine)
+        {
+            mine.Sort();
+            HashSet<long> occupied = OccupiedPawnCells();
+            CellBox window = Planner.Window(mine, mine[0]);
+            Dictionary<long, CellFlags> flags = Flags(window);
+            foreach (long k in occupied)
+            { work?.Spend(); if (flags.TryGetValue(k, out CellFlags f)) flags[k] = f | CellFlags.Pawn; }
+            Dictionary<long, List<long>> moves = PlanItemMoves(mine, flags, window, out List<long> ok);
+            Planner.RealizeInOrder(ok, k =>
+            {
+                if (moves.TryGetValue(k, out List<long> dests) && !MoveItems(k, dests)) return false;
+                if (!Spawn(k)) return false;
+                flags[k] = CellFlags.None;
+                return true;
+            });
+        }
+
+        // Protect every engine OccupiedRect cell, including Large Pawns' body, rather than just the ThingGrid anchor.
+        private HashSet<long> OccupiedPawnCells()
+        {
+            var occupied = new HashSet<long>();
+            foreach (Pawn pawn in map.mapPawns.AllPawnsSpawned)
+            {
+                work?.Spend();
+                foreach (IntVec3 cell in pawn.OccupiedRect()) { work?.Spend(); occupied.Add(Key(cell)); }
+            }
+            return occupied;
+        }
+
+        /// <summary>Owner ruling 2026-10-07 21:08: for each wanted cell held ONLY by items (no pawn, nothing protected), a
+        /// destination per item in the nearest free valid cell outside every footprint, preferring the source's own storage;
+        /// at most once per PendingRetryInterval per cell. Cells whose items do not all fit are left out (they stay open).</summary>
+        private Dictionary<long, List<long>> PlanItemMoves(List<long> mine, Dictionary<long, CellFlags> flags, CellBox window,
+                                                           out List<long> accepted)
+        {
+            List<long> Plan(Dictionary<long, List<long>> mv)
+            {
+                return Planner.Plan(mine, k =>
+                {
+                    if (!flags.TryGetValue(k, out CellFlags f)) return CellFlags.Passable;
+                    return mv.ContainsKey(k) ? f & ~CellFlags.Item : f;   // movable: plan it as if clear
+                }, window, work);
+            }
+            Dictionary<long, int> counts = new Dictionary<long, int>();
+            if (RM_HugeThingsSettings.PlantItemPushActive)   // Mod Settings off: the cell stays open
+            {
+                int now = Find.TickManager.TicksGame;
+                foreach (long k in mine)
+                {
+                    work?.Spend();
+                    if (!flags.TryGetValue(k, out CellFlags f) || f != (CellFlags.Passable | CellFlags.Item)) continue;
+                    if (lastMoveTick.TryGetValue(k, out int t) && now - t < PendingRetryInterval) continue;
+                    if (HoldsQuestItem(Cell(k))) continue;   // A3.6: never move a quest thing; the cell is deferred (stays open)
+                    counts[k] = Cell(k).GetItemCount(map);
+                }
+            }
+            if (counts.Count == 0)
+            {
+                accepted = Plan(new Dictionary<long, List<long>>());
+                return new Dictionary<long, List<long>>();
+            }
+            return ItemMover.AssignAndPlan(counts, Capacity, k => ledger.IsClaimed(k),
+                                           (src, k) => Cell(src).GetSlotGroup(map) == Cell(k).GetSlotGroup(map), Plan, out accepted, work);
+        }
+
+        /// <summary>How many more items cell k takes; -1 when it is no place for an item at all.</summary>
+        private int Capacity(long k)
+        {
+            work?.Spend();
+            IntVec3 c = Cell(k);
+            if (c.InBounds(map)) work?.Spend(c.GetThingList(map).Count + 1L);
+            if (!c.InBounds(map) || !c.Standable(map) || realized.ContainsKey(k)) return -1;
+            return System.Math.Max(0, c.GetMaxItemsAllowedInCell(map) - c.GetItemCount(map));
+        }
+
+        /// <summary>Move every item off k to its planned cell, keeping each Thing (so its forbidden state, stack and
+        /// quality) and destroying nothing; an item that cannot be placed goes back where it was. Quiet: no letter, no
+        /// message. True only when the cell is left with no items.</summary>
+        private bool MoveItems(long k, List<long> dests)
+        {
+            IntVec3 src = Cell(k);
+            // Reserve the whole mutation first; never interrupt between despawning an item and replacing it.
+            work?.Spend(32L * (src.GetThingList(map).Count + dests.Count + 1));
+            lastMoveTick[k] = Find.TickManager.TicksGame;
+            List<Thing> items = new List<Thing>();
+            foreach (Thing t in src.GetThingList(map)) if (t.def.category == ThingCategory.Item) items.Add(t);
+            if (items.Count != dests.Count) return false;   // the cell changed since planning: try again later
+            if (HoldsQuestItem(src)) return false;          // A3.6: a quest thing arrived since planning: defer
+            for (int i = 0; i < items.Count; i++)
+            {
+                Thing t = items[i];
+                IntVec3 to = Cell(dests[i]);
+                if (to.GetItemCount(map) >= to.GetMaxItemsAllowedInCell(map) || !to.Standable(map)) continue;
+                t.DeSpawn(DestroyMode.Vanish);
+                try
+                {
+                    GenSpawn.Spawn(t, to, map, WipeMode.Vanish);
+                }
+                catch (System.Exception e)
+                {
+                    Log.ErrorOnce("[RimMandrake.HugeThings] could not move " + t + " to " + to + ": " + e, t.thingIDNumber ^ 0x6d76);
+                }
+                if (!t.Spawned) GenSpawn.Spawn(t, src, map, WipeMode.Vanish);   // put it back rather than lose it
+            }
+            return src.GetItemCount(map) == 0;
+        }
+
+        /// <summary>PLANT_INTERACTION_GUARDS_1 (A3.6, mechanical half): 1.6 Thing.DeSpawn releases reservations and sends the quest
+        /// "Despawned" signal, so a thing carrying questTags is never moved; its cell waits. (Wider relocation policy: owner Q8.)</summary>
+        private bool HoldsQuestItem(IntVec3 c)
+        {
+            if (!c.InBounds(map)) return false;
+            foreach (Thing t in c.GetThingList(map))
+            {
+                work?.Spend();
+                if (t.def.category == ThingCategory.Item && !t.questTags.NullOrEmpty()) return true;
+            }
+            return false;
+        }
+
+        private bool Spawn(long k)
+        {
+            IntVec3 c = Cell(k);
+            if (!c.InBounds(map) || realized.ContainsKey(k)) return false;
+            work?.Spend(32L + c.GetThingList(map).Count);
+            // An impassable thing spawning over an item WIPES it (GenSpawn.SpawningWipes, verified 1.6): never spawn over one.
+            if (c.GetItemCount(map) > 0 || c.GetFirstPawn(map) != null) return false;
+            Building_TrunkBlocker b = (Building_TrunkBlocker)ThingMaker.MakeThing(HugeThingsDefOf.RM_HugeTrunkBlocker);
+            mutating = true;
+            try
+            {
+                // Planner refused every cell holding an item or pawn, so Vanish wipes only small plants and filth.
+                GenSpawn.Spawn(b, c, map, WipeMode.Vanish);
+            }
+            catch (System.Exception e)
+            {
+                Log.ErrorOnce("[RimMandrake.HugeThings] blocker spawn failed at " + c + ": " + e, c.GetHashCode() ^ 0x5157);
+            }
+            finally
+            {
+                mutating = false;
+            }
+            if (b.Spawned)
+            {
+                realized[k] = b;   // recorded even after an exception mid-spawn, so it can never become a ghost
+                pending.Remove(k); UnqueuePending(k);
+                RelabelCell(k);
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>Planner input for every cell of a window.</summary>
+        /// <summary>How far outside a planning window a building's interaction cell may lie and still be seen (A3.4).</summary>
+        public const int InteractionScanMargin = 8;
+
+        private Dictionary<long, CellFlags> Flags(CellBox w)
+        {
+            Dictionary<long, CellFlags> f = new Dictionary<long, CellFlags>();
+            HashSet<IntVec3> protectedCells = new HashSet<IntVec3>();
+            // PLANT_INTERACTION_GUARDS_1 (A3.4): interaction cells resolved as vanilla does (GenConstruct.NotBlockingAnyInteractionCells):
+            // a blueprint or frame answers for the def it builds, and multipleInteractionCellOffsets are all honoured
+            // (ThingUtility.InteractionCellsWhenAt). The scan margin covers a big building's far interaction spot.
+            const int margin = InteractionScanMargin;
+            CellRect scan = CellRect.FromLimits(w.MinX - margin, w.MinZ - margin, w.MaxX + margin, w.MaxZ + margin).ClipInsideMap(map);
+            List<IntVec3> icells = new List<IntVec3>();
+            foreach (IntVec3 c in scan)
+            {
+                work?.Spend();
+                List<Thing> list = c.GetThingList(map);
+                for (int i = 0; i < list.Count; i++)
+                {
+                    work?.Spend();
+                    Thing t = list[i];
+                    if (t is Building_TrunkBlocker) continue;
+                    bool building = t.def.category == ThingCategory.Building || t.def.IsBlueprint || t.def.IsFrame;
+                    if (building)
+                    {
+                        ThingDef built = (t.def.IsBlueprint || t.def.IsFrame) ? t.def.entityDefToBuild as ThingDef : t.def;
+                        if (built != null && built.HasSingleOrMultipleInteractionCells)
+                        {
+                            work?.Spend(1L + (built.multipleInteractionCellOffsets?.Count ?? 0));
+                            ThingUtility.InteractionCellsWhenAt(icells, built, t.Position, t.Rotation, map);
+                            foreach (IntVec3 ic in icells) { work?.Spend(); protectedCells.Add(ic); }
+                        }
+                    }
+                }
+            }
+            for (int z = w.MinZ; z <= w.MaxZ; z++)
+            {
+                for (int x = w.MinX; x <= w.MaxX; x++)
+                {
+                    work?.Spend();
+                    IntVec3 c = new IntVec3(x, 0, z);
+                    long k = Key(c);
+                    if (!c.InBounds(map))
+                    {
+                        f[k] = CellFlags.None;
+                        continue;
+                    }
+                    CellFlags fl = c.Walkable(map) ? CellFlags.Passable : CellFlags.None;
+                    if (protectedCells.Contains(c)) fl |= CellFlags.Protected;
+                    List<Thing> list = c.GetThingList(map);
+                    for (int i = 0; i < list.Count; i++)
+                    {
+                        work?.Spend();
+                        Thing t = list[i];
+                        if (t is Pawn) fl |= CellFlags.Pawn;
+                        else if (t.def.category == ThingCategory.Item) fl |= CellFlags.Item;
+                        else if (t.def.category == ThingCategory.Building || t.def.IsBlueprint || t.def.IsFrame || !t.def.destroyable)
+                            fl |= CellFlags.Protected;
+                        else if (t is Plant pl && (pl.def.plant.IsTree || pl.def.HasModExtension<RM_HugePlantExtension>()))
+                            fl |= CellFlags.Protected;
+                    }
+                    f[k] = fl;
+                }
+            }
+            return f;
+        }
+
+        /// <summary>Live realized claims used by cutting; shared ownership, not just the display/damage owner.</summary>
+        public bool HasCutClaim(Plant plant, Building_TrunkBlocker blocker)
+        {
+            if (plant == null || blocker == null || !Owns(blocker)) return false;
+            foreach (int owner in ledger.OwnersOf(Key(blocker.Position))) if (owner == plant.thingIDNumber) return true;
+            return false;
+        }
+
+        public IEnumerable<Plant> CutOwners(Building_TrunkBlocker blocker)
+        {
+            if (!Owns(blocker)) yield break;
+            foreach (int id in ledger.OwnersOf(Key(blocker.Position)))
+                if (comps.TryGetValue(id, out CompHugeFootprint comp) && comp.Plant.Spawned) yield return comp.Plant;
+        }
+
+        public IEnumerable<Building_TrunkBlocker> CutBlockers(Plant plant)
+        {
+            foreach (long key in ledger.CellsOf(plant.thingIDNumber))
+                if (realized.TryGetValue(key, out Building_TrunkBlocker blocker) && blocker.Spawned) yield return blocker;
+        }
+
+        /// <summary>Each blocker answers to its cell's primary owner (lowest thing id among its claimants).</summary>
+        private void RelabelOwners()
+        {
+            foreach (KeyValuePair<long, Building_TrunkBlocker> kv in realized)
+            {
+                int id = ledger.PrimaryOwner(kv.Key);
+                kv.Value.owner = id >= 0 && comps.TryGetValue(id, out CompHugeFootprint c) ? c.Plant : null;
+            }
+        }
+
+        /// <summary>A blocker vanished by something other than this component (gravship clearing, roof collapse, dev mode):
+        /// forget it; its cell stays claimed and is re-planned.</summary>
+        public void Notify_BlockerGone(Building_TrunkBlocker b)
+        {
+            if (mutating) return;
+            long k = Key(b.Position);
+            if (realized.TryGetValue(k, out Building_TrunkBlocker r) && r == b)
+            {
+                realized.Remove(k);
+                if (ledger.IsClaimed(k)) { pending.Add(k); QueuePending(k); }
+            }
+        }
+
+        /// <summary>The plants whose blockers or roots stand on any of these cells (gravship landing policy).</summary>
+        public List<Plant> OwnersAt(IEnumerable<IntVec3> cells)
+        {
+            HashSet<Plant> outPlants = new HashSet<Plant>();
+            HashSet<long> ks = new HashSet<long>();
+            foreach (IntVec3 c in cells) ks.Add(Key(c));
+            foreach (CompHugeFootprint c in comps.Values)
+            {
+                if (ks.Contains(Key(c.parent.Position))) { outPlants.Add(c.Plant); continue; }
+                foreach (long k in ledger.CellsOf(c.OwnerId))
+                {
+                    if (ks.Contains(k) && realized.ContainsKey(k)) { outPlants.Add(c.Plant); break; }
+                }
+            }
+            List<Plant> list = new List<Plant>(outPlants);
+            list.Sort((a, b) => a.thingIDNumber.CompareTo(b.thingIDNumber));
+            return list;
+        }
+
+        /// <summary>
+        /// Giant plants' solid cells in an area, for a titan smashing through (HugeTitan kernel, GiantSmash.Owners): every realized
+        /// trunk cell (owned by the plant its hits forward to) and every giant's own cell. Walks the area's cells, never the map.
+        /// </summary>
+        public List<SolidCell> SolidCellsIn(CellRect area, Dictionary<int, Plant> plants)
+        {
+            List<SolidCell> cells = new List<SolidCell>();
+            foreach (IntVec3 c in area)
+            {
+                if (!c.InBounds(map)) continue;
+                if (realized.TryGetValue(Key(c), out Building_TrunkBlocker b) && b.owner != null && !b.owner.Destroyed && b.owner.Spawned)
+                {
+                    cells.Add(new SolidCell(c.x, c.z, b.owner.thingIDNumber));
+                    plants[b.owner.thingIDNumber] = b.owner;
+                }
+                List<Thing> things = c.GetThingList(map);
+                for (int i = 0; i < things.Count; i++)
+                {
+                    if (things[i] is Plant p && !p.Destroyed && comps.ContainsKey(p.thingIDNumber))
+                    {
+                        cells.Add(new SolidCell(c.x, c.z, p.thingIDNumber));
+                        plants[p.thingIDNumber] = p;
+                    }
+                }
+            }
+            return cells;
+        }
+
+        /// <summary>Called when Mod Settings change: every plant re-takes its footprint over the next ticks.</summary>
+        public static void RefreshAllMaps()
+        {
+            if (Current.Game == null) return;
+            foreach (Map m in Find.Maps)
+            {
+                m.GetComponent<MapComponent_HugeFootprints>()?.MarkAllDirty();
+            }
+        }
+
+        /// <summary>Read-only state counts for a bridge probe (jawa/static_call ... DebugCounts current): registered giants,
+        /// dirty queue, realized blockers, refused (pending) cells, initialized.</summary>
+        public static string DebugCounts(Map map)
+        {
+            MapComponent_HugeFootprints c = map?.GetComponent<MapComponent_HugeFootprints>();
+            if (c == null) return "no component";
+            return "giants=" + c.comps.Count + " dirty=" + c.dirty.Count + " realized=" + c.realized.Count
+                + " pending=" + c.pending.Count + " initialized=" + c.initialized
+                + " work=" + (sharedBudget?.Used ?? 0) + "/" + WorkUnitsPerTick + " budgetRefusals=" + (sharedBudget?.Refusals ?? 0)
+                + " workTick=" + budgetTick + " ownersVisited=" + c.ownersVisited + " removalsQueued=" + c.removals.Count;
+        }
+
+        public static string DebugCellState(Map map, IntVec3 cell)
+        {
+            var component = map?.GetComponent<MapComponent_HugeFootprints>();
+            return component == null ? "FAIL no component" : "claimed=" + component.IsClaimed(cell)
+                + " realized=" + component.realized.ContainsKey(Key(cell));
+        }
+
+        /// <summary>HUGETHINGS_TRUNK_ZERO_BLOCKERS_1: read-only state of the huge plant rooted at `cell`, for a bridge probe
+        /// (jawa/static_call RimMandrake.HugeThings.MapComponent_HugeFootprints DebugPlantState current|x,z): is it registered,
+        /// what the comp computes, how many of its claimed cells are realized or pending, and for the pending ones what the
+        /// planner sees (flag counts) and how many a dry Planner.Plan would accept now. Changes nothing.</summary>
+        public static string DebugPlantState(Map map, IntVec3 cell)
+        {
+            MapComponent_HugeFootprints mc = map?.GetComponent<MapComponent_HugeFootprints>();
+            if (mc == null) return "FAIL no component";
+            if (!cell.InBounds(map)) return "FAIL cell out of bounds";
+            CompHugeFootprint comp = null;
+            foreach (Thing t in cell.GetThingList(map))
+            {
+                if (t is Plant && t.Position == cell && (comp = t.TryGetComp<CompHugeFootprint>()) != null) break;
+            }
+            string head = "initialized=" + mc.initialized + " trunkActive=" + RM_HugeThingsSettings.PlantTrunkActive
+                + " giants=" + mc.comps.Count + " realizedAll=" + mc.realized.Count + " pendingAll=" + mc.pending.Count;
+            if (comp == null) return "FAIL no huge plant with CompHugeFootprint at " + cell + " | " + head;
+            int id = comp.OwnerId;
+            List<long> mine = new List<long>(mc.ledger.CellsOf(id));
+            int real = 0, pend = 0;
+            List<long> pendList = new List<long>();
+            foreach (long k in mine)
+            {
+                if (mc.realized.ContainsKey(k)) real++;
+                if (mc.pending.Contains(k)) { pend++; pendList.Add(k); }
+            }
+            string s = "plant=" + comp.parent.ThingID + " registered=" + mc.comps.ContainsKey(id) + " dirtyQueued=" + mc.dirty.Contains(id)
+                + " claimed=" + mine.Count + " realized=" + real + " pending=" + pend + " | " + comp.DebugDescribe() + " | " + head;
+            if (pendList.Count == 0) return s;
+            pendList.Sort();
+            HashSet<long> occupied = mc.OccupiedPawnCells();
+            CellBox window = Planner.Window(comp.MaxKeys(), Key(comp.parent.Position));
+            Dictionary<long, CellFlags> flags = mc.Flags(window);
+            foreach (long k in occupied)
+                if (flags.TryGetValue(k, out CellFlags f)) flags[k] = f | CellFlags.Pawn;
+            int notPass = 0, pawn = 0, item = 0, prot = 0, outside = 0;
+            foreach (long k in pendList)
+            {
+                if (!window.Contains(RM_HugeFootprintKernel.KeyX(k), RM_HugeFootprintKernel.KeyZ(k))) outside++;
+                CellFlags f = flags.TryGetValue(k, out CellFlags v) ? v : CellFlags.Passable;
+                if ((f & CellFlags.Passable) == 0) notPass++;
+                if ((f & CellFlags.Pawn) != 0) pawn++;
+                if ((f & CellFlags.Item) != 0) item++;
+                if ((f & CellFlags.Protected) != 0) prot++;
+            }
+            int accept = Planner.Plan(pendList, k => flags.TryGetValue(k, out CellFlags f) ? f : CellFlags.None, window).Count;
+            return s + " | pendingFlags notPassable=" + notPass + " pawn=" + pawn + " item=" + item + " protected=" + prot
+                + " outsideWindow=" + outside + " window=" + window.MinX + "," + window.MinZ + ".." + window.MaxX + "," + window.MaxZ
+                + " dryPlanAccepts=" + accept;
+        }
+    }
+}

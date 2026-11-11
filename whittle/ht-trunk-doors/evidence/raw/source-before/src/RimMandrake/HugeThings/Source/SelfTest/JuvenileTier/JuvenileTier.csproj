@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><EnableDefaultCompileItems>false</EnableDefaultCompileItems></PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs"/><Compile Include="Stubs.cs"/>
+    <Compile Include="..\..\Kernel\RM_TitanicKernel.cs" Link="RM_TitanicKernel.cs"/>
+    <Compile Include="..\..\Titanic\Tiering\TitanicTierUtility.cs" Link="TitanicTierUtility.cs"/>
+    <Compile Include="..\..\Titanic\Tiering\TitanicTier.cs" Link="TitanicTier.cs"/>
+    <Compile Include="..\..\Titanic\Tiering\RM_TitanicTierDef.cs" Link="RM_TitanicTierDef.cs"/>
+    <Compile Include="..\..\Titanic\Tiering\RM_TitanicExtension.cs" Link="RM_TitanicExtension.cs"/>
+  </ItemGroup>
+</Project>

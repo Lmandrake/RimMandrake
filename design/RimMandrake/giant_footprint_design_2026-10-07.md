@@ -63,14 +63,14 @@ validated iterator patch changes only the approach/work-touch target to its owne
 vanilla reservations, designation checks, work rate, skill, products, PlantCollected and destruction. A changed IL
 contract disables the new giver while retaining all vanilla toils. The claim must still belong to the root at each
 approach/work check; shared cells permit nonprimary owners. Effects/progress still point at the root; no art/feel
-claim is made. The functional scene proves a real inside cutter can remove a root enclosed on all eight sides,
-including a saved in-progress job, and restore access with the same door intact.
+claim is made. The functional scene must demonstrate a real inside cutter removing a root enclosed on all eight
+sides, including a saved in-progress job, and restoring access with the same door intact.
 
 On load every blocker is indexed and unclaimed/duplicate cells are removed. Growth, harvest, graphics and settings
 refresh claims through the shared work budget; death cleanup releases only the departing owner's claims. Blockers
 do not carve zones; stockpiles and sowing refuse solid cells. Gravship clearing removes an affected owning plant under
-the existing clear-mode policy. `northstar/trunk_doors_live.py` proves growth, loss of access, actual cutting, restored
-access and placement controls on a restored disposable site.
+the existing clear-mode policy. `northstar/trunk_doors_live.py` is the functional instrument for proving growth, loss
+of access, actual cutting, restored access and placement controls on a restored disposable site.
 
 **Cover and damage.** Trunk cells are `fillPercent` 0.4 (reasoning in the def): partial cover, never full (rooms,
 sight and roofs are unchanged). A shot that hits one is forwarded to the plant; an explosion reroutes through the

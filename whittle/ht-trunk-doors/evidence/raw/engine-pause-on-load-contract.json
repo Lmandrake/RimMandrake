@@ -1,0 +1,96 @@
+{
+  "assembly_sha256": "5cf1b5be399d5b1c9c56ca72c9d35b4ecf307feacf5859d04ac5a1aa5926356a",
+  "methods": [
+    {
+      "type": ".<>c",
+      "method": "<LoadGame>b__81_1",
+      "il": [
+        {
+          "offset": "0x0",
+          "op": "0x28",
+          "operand": "1b540006",
+          "member": "<own>.get_TickManager"
+        },
+        {
+          "offset": "0x5",
+          "op": "0x6f",
+          "operand": "c2150006",
+          "member": "<own>.DoSingleTick"
+        },
+        {
+          "offset": "0xa",
+          "op": "0x28",
+          "operand": "1b540006",
+          "member": "<own>.get_TickManager"
+        },
+        {
+          "offset": "0xf",
+          "op": "0x16",
+          "operand": ""
+        },
+        {
+          "offset": "0x10",
+          "op": "0x6f",
+          "operand": "b7150006",
+          "member": "<own>.set_CurTimeSpeed"
+        },
+        {
+          "offset": "0x15",
+          "op": "0x2a",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "type": "Verse.Prefs",
+      "method": "get_PauseOnLoad",
+      "il": [
+        {
+          "offset": "0x0",
+          "op": "0x7e",
+          "operand": "453f0004",
+          "member": "data"
+        },
+        {
+          "offset": "0x5",
+          "op": "0x7b",
+          "operand": "8a3f0004",
+          "member": "pauseOnLoad"
+        },
+        {
+          "offset": "0xa",
+          "op": "0x2a",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "type": "Verse.Prefs",
+      "method": "set_PauseOnLoad",
+      "il": [
+        {
+          "offset": "0x0",
+          "op": "0x7e",
+          "operand": "453f0004",
+          "member": "data"
+        },
+        {
+          "offset": "0x5",
+          "op": "0x2",
+          "operand": ""
+        },
+        {
+          "offset": "0x6",
+          "op": "0x7d",
+          "operand": "8a3f0004",
+          "member": "pauseOnLoad"
+        },
+        {
+          "offset": "0xb",
+          "op": "0x2a",
+          "operand": ""
+        }
+      ]
+    }
+  ]
+}

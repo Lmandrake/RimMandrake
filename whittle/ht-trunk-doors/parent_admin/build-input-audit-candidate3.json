@@ -1,0 +1,9 @@
+{
+  "artifact_sha": "2f7d6b24ccb59da34d14e2a464684b2159be8952",
+  "build_source_sha": "ef5821d580764928453e41abb2f4903c5f8eb739",
+  "runtime_manifest": "whittle/ht-trunk-doors/evidence/raw/source-ready-v4-compiled-inputs.json",
+  "matched_committed_inputs": 54,
+  "dll_sha256": "a17ccd6ebaa7a2ebcb87e4b5a1bdfa14e0acd254910d2094eb64449cb32bf62f",
+  "stamp_sha256": "870cf2953eff8c3c318b8b42058c710724cc2d42a80824dbc4ebc214b78d7e91",
+  "no_runtime_rebuild": true
+}

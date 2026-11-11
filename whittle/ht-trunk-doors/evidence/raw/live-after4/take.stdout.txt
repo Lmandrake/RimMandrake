@@ -1,0 +1,3 @@
+stevedesktop bridge taken by CODEX_STEVEDESKTOP_HUGETHINGS
+  guard: ok   taken gen 1428  (children: RM_HOST_GUARD_GEN=1428)
+  pass RM_HOST_GUARD_GEN to what you run there (rw_game.sh, modcheck) so it drives under this take; re-run take within 45 min to keep it.

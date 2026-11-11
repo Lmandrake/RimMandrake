@@ -1,0 +1,10 @@
+{
+  "command": [
+    "python.exe",
+    "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\codex-ht\\whittle\\ht-trunk-doors\\evidence\\after9_cross_reader.py"
+  ],
+  "elapsed_seconds": 3.6496329307556152,
+  "rc": 0,
+  "input_sha256": "9c12c8261fe12a2db831603a1893efc2f75f0d08877d369beadfa33b4c9c0366",
+  "all_six_reads_match_failed_file": true
+}

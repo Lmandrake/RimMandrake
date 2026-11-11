@@ -1,0 +1,11 @@
+{
+  "utc": "2026-11-11T20:31:55.794228+00:00",
+  "old_prompt_path": "whittle/ht-trunk-doors/parent_admin/worker1-prompt.md",
+  "old_prompt_sha256": "0b58ee13a6e8330dbfa4e18ff0140df03227e5985db7bfb353cd3d98030acb27",
+  "reason": "Sequential continuation after first worker completed incomplete with safe DOWN/FREE checkpoint. Bootstrap prompt changes only; frozen statement, owner words and original criteria unchanged. No final judge started yet.",
+  "first_outer_result": "whittle/ht-trunk-doors/evidence/parent_runner_exit.json",
+  "new_prompt_sha256": "4337452bc2237f92429a561eac81d35ce98f71c840da2dfe087bc34f8f370f74",
+  "new_prompt_path": "whittle/ht-trunk-doors/PROMPT.md",
+  "new_prompt_utc": "2026-11-11T20:34:01.590184+00:00",
+  "parent_artifact_sha": "2f7d6b24ccb59da34d14e2a464684b2159be8952"
+}

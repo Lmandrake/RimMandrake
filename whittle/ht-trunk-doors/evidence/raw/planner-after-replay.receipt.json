@@ -1,0 +1,13 @@
+{
+  "command": [
+    "/usr/bin/python3",
+    "/home/mandrake/rm/codex-ht/whittle/ht-trunk-doors/evidence/planner_compare_execute.py",
+    "after"
+  ],
+  "rc": 0,
+  "expected_rc": 0,
+  "elapsed": 2.3437023162841797,
+  "input_manifest": "planner-after.receipt.json",
+  "stdout_sha256": "04581d3fd1695b3d6cf9dd20dabd6f8c2d3c8696f8f5a27a8ce9ac8d692f4acc",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

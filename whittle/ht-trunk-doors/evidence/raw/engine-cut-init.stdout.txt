@@ -1,0 +1,33 @@
+METHOD RimWorld.JobDriver_PlantCut::Init TOKEN 100694613 ATTR PrivateScope, Family, Virtual, HideBySig
+IL_0000: ldarg.0 
+IL_0001: call RimWorld.JobDriver_PlantWork::RimWorld.Plant get_Plant()
+IL_0006: dup 
+IL_0007: brtrue.s IL_000D
+IL_0009: pop 
+IL_000A: ldnull 
+IL_000B: br.s IL_001C
+IL_000D: ldfld Verse.Thing::Verse.ThingDef def
+IL_0012: ldfld Verse.ThingDef::RimWorld.PlantProperties plant
+IL_0017: ldfld RimWorld.PlantProperties::Verse.ThingDef harvestedThingDef
+IL_001C: brfalse.s IL_0037
+IL_001E: ldarg.0 
+IL_001F: call RimWorld.JobDriver_PlantWork::RimWorld.Plant get_Plant()
+IL_0024: callvirt RimWorld.Plant::Boolean CanYieldNow()
+IL_0029: brfalse.s IL_0037
+IL_002B: ldarg.0 
+IL_002C: ldc.r4 0.085
+IL_0031: stfld RimWorld.JobDriver_PlantWork::Single xpPerTick
+IL_0036: ret 
+IL_0037: ldarg.0 
+IL_0038: ldc.r4 0
+IL_003D: stfld RimWorld.JobDriver_PlantWork::Single xpPerTick
+IL_0042: ret 
+METHOD RimWorld.JobDriver_PlantCut::PlantWorkDoneToil TOKEN 100694614 ATTR PrivateScope, Family, Virtual, HideBySig
+IL_0000: ldc.i4.1 
+IL_0001: call Verse.AI.Toils_Interact::Verse.AI.Toil DestroyThing(Verse.AI.TargetIndex)
+IL_0006: ret 
+AVAILABLE XML METHODS
+RimWorld.PlantDestructionMode get_PlantDestructionMode()
+Void Init()
+Verse.AI.Toil PlantWorkDoneToil()
+Void .ctor()

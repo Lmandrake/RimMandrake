@@ -1,0 +1,74 @@
+[
+  {
+    "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Assemblies/RM_HugeThings.dll",
+    "deployed": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/HugeThings/Assemblies/RM_HugeThings.dll",
+    "source_sha256": "4a4f0cbcbcc2ad3f81c75b1d85f7c3deaae7d6e1623750e90692ddc9a68e1b9f",
+    "deployed_sha256": "4a4f0cbcbcc2ad3f81c75b1d85f7c3deaae7d6e1623750e90692ddc9a68e1b9f"
+  },
+  {
+    "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Assemblies/RM_HugeThings.dll.srchash",
+    "deployed": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/HugeThings/Assemblies/RM_HugeThings.dll.srchash",
+    "source_sha256": "a7d9acee04dba20deb2f38df6047d38596eb0567637e949180feb6940c97b5c4",
+    "deployed_sha256": "a7d9acee04dba20deb2f38df6047d38596eb0567637e949180feb6940c97b5c4"
+  },
+  {
+    "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Defs/JobDefs/RM_JobDefs.xml",
+    "deployed": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/HugeThings/Defs/JobDefs/RM_JobDefs.xml",
+    "source_sha256": "19ddea10001d809d0fa209120511e33b051cd92d9798dced61565a4052ae8ae4",
+    "deployed_sha256": "19ddea10001d809d0fa209120511e33b051cd92d9798dced61565a4052ae8ae4"
+  },
+  {
+    "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Defs/WorkGiverDefs/RM_WorkGivers.xml",
+    "deployed": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/HugeThings/Defs/WorkGiverDefs/RM_WorkGivers.xml",
+    "source_sha256": "214ef0aa26bc8dd3866a024ad722f2d1c53b69cc34d116ace3587e6807cd04fa",
+    "deployed_sha256": "214ef0aa26bc8dd3866a024ad722f2d1c53b69cc34d116ace3587e6807cd04fa"
+  },
+  {
+    "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThingsTestRaces/Defs/ThingDefs_Plants/RM_TestContactPlant.xml",
+    "deployed": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/HugeThingsTestRaces/Defs/ThingDefs_Plants/RM_TestContactPlant.xml",
+    "source_sha256": "354e36243065ac03b89df710e95156816055468e7986ffe55b2bfcdf13c295ce",
+    "deployed_sha256": "354e36243065ac03b89df710e95156816055468e7986ffe55b2bfcdf13c295ce"
+  },
+  {
+    "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll",
+    "deployed": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll",
+    "source_sha256": "ec29517d2e6d961485c0e6d10dc5b57310170a85b4f2fdffa1cda057f91c58c9",
+    "deployed_sha256": "ec29517d2e6d961485c0e6d10dc5b57310170a85b4f2fdffa1cda057f91c58c9"
+  },
+  {
+    "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll.srchash",
+    "deployed": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll.srchash",
+    "source_sha256": "b1375866bfd079d1f2c361faacb389c7e99c3706554ec4c3dd034d8908c6a29b",
+    "deployed_sha256": "b1375866bfd079d1f2c361faacb389c7e99c3706554ec4c3dd034d8908c6a29b"
+  },
+  {
+    "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/GimmeSomeSlack/Assemblies/RimMandrakeGimmeSomeSlack.dll",
+    "deployed": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/GimmeSomeSlack/Assemblies/RimMandrakeGimmeSomeSlack.dll",
+    "source_sha256": "fb2995657a1670acceb45c6a9653cc8aeec070ac5355e7ab486bb061df722a26",
+    "deployed_sha256": "fb2995657a1670acceb45c6a9653cc8aeec070ac5355e7ab486bb061df722a26"
+  },
+  {
+    "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/TheRot/Patches/RotGiants_HugeFootprint.xml",
+    "deployed": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/TheRot/Patches/RotGiants_HugeFootprint.xml",
+    "source_sha256": "c4181529a2511c27188c7856e03feb00e9a1081c77a5dcfb4092238fbbeec6d9",
+    "deployed_sha256": "c4181529a2511c27188c7856e03feb00e9a1081c77a5dcfb4092238fbbeec6d9"
+  },
+  {
+    "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/TheRot/Defs/ThingDefs_Plants/RM_RotSporeKit_Flora.xml",
+    "deployed": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/TheRot/Defs/ThingDefs_Plants/RM_RotSporeKit_Flora.xml",
+    "source_sha256": "b46a30a4a6f6bd67626bb1137f4b8cca40207d024ba9d8e38b9dc2e4478c2109",
+    "deployed_sha256": "b46a30a4a6f6bd67626bb1137f4b8cca40207d024ba9d8e38b9dc2e4478c2109"
+  },
+  {
+    "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/Cauldron/Assemblies/RimMandrake.Cauldron.dll",
+    "deployed": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/Cauldron/Assemblies/RimMandrake.Cauldron.dll",
+    "source_sha256": "855651597e97c7d4744385eacdad55103f04edfca09d8f43c806c707cac9e67e",
+    "deployed_sha256": "855651597e97c7d4744385eacdad55103f04edfca09d8f43c806c707cac9e67e"
+  },
+  {
+    "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/Cauldron/Assemblies/RimMandrake.Cauldron.dll.srchash",
+    "deployed": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/Cauldron/Assemblies/RimMandrake.Cauldron.dll.srchash",
+    "source_sha256": "016c0dbc50091c2683cae67ca8f59ce384f962226bf646fb53301d7375db35ce",
+    "deployed_sha256": "016c0dbc50091c2683cae67ca8f59ce384f962226bf646fb53301d7375db35ce"
+  }
+]

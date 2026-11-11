@@ -1,0 +1,35 @@
+[
+  {
+    "name": "CODEX_TrunkDoors_Begin_d9727a318cff.rws",
+    "bytes": 8535600,
+    "sha256": "2bfd0d881ac872421b5df412bc09be5222cd73b7d175476e3d49a932088aefcb",
+    "zero_count": 0,
+    "zero_runs": [],
+    "run_count": 0
+  },
+  {
+    "name": "CODEX_TrunkDoors_Observe_89acd6b5e87e.rws",
+    "bytes": 8538538,
+    "sha256": "db670eb881fe278f6c7427d25c53426bc466f09621fc07da3c1960c270cef411",
+    "zero_count": 32,
+    "zero_runs": [
+      [
+        6057987,
+        16
+      ],
+      [
+        6058345,
+        16
+      ]
+    ],
+    "run_count": 2
+  },
+  {
+    "name": "CODEX_TrunkDoors_Observe_006772234abb.rws",
+    "bytes": 8538655,
+    "sha256": "15b84dede57ab411f7dce04cd92af952a0a31a76236db08a72e4b2195bd6fa72",
+    "zero_count": 0,
+    "zero_runs": [],
+    "run_count": 0
+  }
+]

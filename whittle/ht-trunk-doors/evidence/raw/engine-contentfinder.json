@@ -1,0 +1,869 @@
+{
+  "assembly_sha256": "5cf1b5be399d5b1c9c56ca72c9d35b4ecf307feacf5859d04ac5a1aa5926356a",
+  "methods": [
+    {
+      "type": "Verse.ContentFinder`1",
+      "method": "TryFindAssetInModBundles",
+      "il": [
+        {
+          "index": 0,
+          "op": "0xd0",
+          "token": "0x1b000004"
+        },
+        {
+          "index": 1,
+          "op": "0x28",
+          "token": "0xa000160",
+          "member": "Type.GetTypeFromHandle"
+        },
+        {
+          "index": 2,
+          "op": "0xd0",
+          "token": "0x1000087"
+        },
+        {
+          "index": 3,
+          "op": "0x28",
+          "token": "0xa000160",
+          "member": "Type.GetTypeFromHandle"
+        },
+        {
+          "index": 4,
+          "op": "0x28",
+          "token": "0xa000228",
+          "member": "Type.op_Equality"
+        },
+        {
+          "index": 5,
+          "op": "0x2c",
+          "token": null
+        },
+        {
+          "index": 6,
+          "op": "0x7e",
+          "token": "0x4001e08",
+          "member": "TextureExtensions"
+        },
+        {
+          "index": 7,
+          "op": "0xa",
+          "token": null
+        },
+        {
+          "index": 8,
+          "op": "0x2b",
+          "token": null
+        },
+        {
+          "index": 9,
+          "op": "0xd0",
+          "token": "0x1b000004"
+        },
+        {
+          "index": 10,
+          "op": "0x28",
+          "token": "0xa000160",
+          "member": "Type.GetTypeFromHandle"
+        },
+        {
+          "index": 11,
+          "op": "0xd0",
+          "token": "0x100006d"
+        },
+        {
+          "index": 12,
+          "op": "0x28",
+          "token": "0xa000160",
+          "member": "Type.GetTypeFromHandle"
+        },
+        {
+          "index": 13,
+          "op": "0x28",
+          "token": "0xa000228",
+          "member": "Type.op_Equality"
+        },
+        {
+          "index": 14,
+          "op": "0x2c",
+          "token": null
+        },
+        {
+          "index": 15,
+          "op": "0x7e",
+          "token": "0x4001e09",
+          "member": "AudioClipExtensions"
+        },
+        {
+          "index": 16,
+          "op": "0xa",
+          "token": null
+        },
+        {
+          "index": 17,
+          "op": "0x2b",
+          "token": null
+        },
+        {
+          "index": 18,
+          "op": "0xd0",
+          "token": "0x1b000004"
+        },
+        {
+          "index": 19,
+          "op": "0x28",
+          "token": "0xa000160",
+          "member": "Type.GetTypeFromHandle"
+        },
+        {
+          "index": 20,
+          "op": "0xd0",
+          "token": "0x1000126"
+        },
+        {
+          "index": 21,
+          "op": "0x28",
+          "token": "0xa000160",
+          "member": "Type.GetTypeFromHandle"
+        },
+        {
+          "index": 22,
+          "op": "0x28",
+          "token": "0xa000228",
+          "member": "Type.op_Equality"
+        },
+        {
+          "index": 23,
+          "op": "0x2c",
+          "token": null
+        },
+        {
+          "index": 24,
+          "op": "0x7e",
+          "token": "0x4001e0a",
+          "member": "ShaderExtensions"
+        },
+        {
+          "index": 25,
+          "op": "0xa",
+          "token": null
+        },
+        {
+          "index": 26,
+          "op": "0x2b",
+          "token": null
+        },
+        {
+          "index": 27,
+          "op": "0x72",
+          "token": "0x7002480b",
+          "literal": "Unsupported type {0} for asset bundle loading. Did you forget to add a new type?"
+        },
+        {
+          "index": 28,
+          "op": "0xd0",
+          "token": "0x1b000004"
+        },
+        {
+          "index": 29,
+          "op": "0x28",
+          "token": "0xa000160",
+          "member": "Type.GetTypeFromHandle"
+        },
+        {
+          "index": 30,
+          "op": "0x28",
+          "token": "0xa000057",
+          "member": "String.Format"
+        },
+        {
+          "index": 31,
+          "op": "0x73",
+          "token": "0xa001112",
+          "member": "NotSupportedException..ctor"
+        },
+        {
+          "index": 32,
+          "op": "0x7a",
+          "token": null
+        },
+        {
+          "index": 33,
+          "op": "0x28",
+          "token": "0x60023ce",
+          "member": "<own>.get_RunningModsListForReading"
+        },
+        {
+          "index": 34,
+          "op": "0xb",
+          "token": null
+        },
+        {
+          "index": 35,
+          "op": "0x72",
+          "token": "0x700248ae",
+          "literal": "Assets"
+        },
+        {
+          "index": 36,
+          "op": "0x72",
+          "token": "0x700248bc",
+          "literal": "Data"
+        },
+        {
+          "index": 37,
+          "op": "0x28",
+          "token": "0xa0005db",
+          "member": "Path.Combine"
+        },
+        {
+          "index": 38,
+          "op": "0xc",
+          "token": null
+        },
+        {
+          "index": 39,
+          "op": "0x7",
+          "token": null
+        },
+        {
+          "index": 40,
+          "op": "0x6f",
+          "token": "0xa00110e",
+          "member": "?.get_Count"
+        },
+        {
+          "index": 41,
+          "op": "0x17",
+          "token": null
+        },
+        {
+          "index": 42,
+          "op": "0x59",
+          "token": null
+        },
+        {
+          "index": 43,
+          "op": "0xd",
+          "token": null
+        },
+        {
+          "index": 44,
+          "op": "0x38",
+          "token": "0x135"
+        },
+        {
+          "index": 45,
+          "op": "0x8",
+          "token": null
+        },
+        {
+          "index": 46,
+          "op": "0x7",
+          "token": null
+        },
+        {
+          "index": 47,
+          "op": "0x9",
+          "token": null
+        },
+        {
+          "index": 48,
+          "op": "0x6f",
+          "token": "0xa00110f",
+          "member": "?.get_Item"
+        },
+        {
+          "index": 49,
+          "op": "0x6f",
+          "token": "0x6002441",
+          "member": "<own>.get_FolderName"
+        },
+        {
+          "index": 50,
+          "op": "0x28",
+          "token": "0xa0005db",
+          "member": "Path.Combine"
+        },
+        {
+          "index": 51,
+          "op": "0x13",
+          "token": null
+        },
+        {
+          "index": 52,
+          "op": "0x8",
+          "token": null
+        },
+        {
+          "index": 53,
+          "op": "0x7",
+          "token": null
+        },
+        {
+          "index": 54,
+          "op": "0x9",
+          "token": null
+        },
+        {
+          "index": 55,
+          "op": "0x6f",
+          "token": "0xa00110f",
+          "member": "?.get_Item"
+        },
+        {
+          "index": 56,
+          "op": "0x6f",
+          "token": "0x600243e",
+          "member": "<own>.get_PackageIdPlayerFacing"
+        },
+        {
+          "index": 57,
+          "op": "0x28",
+          "token": "0xa0005db",
+          "member": "Path.Combine"
+        },
+        {
+          "index": 58,
+          "op": "0x13",
+          "token": null
+        },
+        {
+          "index": 59,
+          "op": "0x7",
+          "token": null
+        },
+        {
+          "index": 60,
+          "op": "0x9",
+          "token": null
+        },
+        {
+          "index": 61,
+          "op": "0x6f",
+          "token": "0xa00110f",
+          "member": "?.get_Item"
+        },
+        {
+          "index": 62,
+          "op": "0x6f",
+          "token": "0x6002445",
+          "member": "<own>.get_IsOfficialMod"
+        },
+        {
+          "index": 63,
+          "op": "0x16",
+          "token": null
+        },
+        {
+          "index": 64,
+          "op": "0xfe01",
+          "token": null
+        },
+        {
+          "index": 65,
+          "op": "0x13",
+          "token": null
+        },
+        {
+          "index": 66,
+          "op": "0x7",
+          "token": null
+        },
+        {
+          "index": 67,
+          "op": "0x9",
+          "token": null
+        },
+        {
+          "index": 68,
+          "op": "0x6f",
+          "token": "0xa00110f",
+          "member": "?.get_Item"
+        },
+        {
+          "index": 69,
+          "op": "0x7b",
+          "token": "0x4001e33",
+          "member": "assetBundles"
+        },
+        {
+          "index": 70,
+          "op": "0x7b",
+          "token": "0x4001e07",
+          "member": "loadedAssetBundles"
+        },
+        {
+          "index": 71,
+          "op": "0x6f",
+          "token": "0xa001113",
+          "member": "?.GetEnumerator"
+        },
+        {
+          "index": 72,
+          "op": "0x13",
+          "token": null
+        },
+        {
+          "index": 73,
+          "op": "0x38",
+          "token": "0xbf"
+        },
+        {
+          "index": 74,
+          "op": "0x12",
+          "token": null
+        },
+        {
+          "index": 75,
+          "op": "0x28",
+          "token": "0xa001114",
+          "member": "?.get_Current"
+        },
+        {
+          "index": 76,
+          "op": "0x13",
+          "token": null
+        },
+        {
+          "index": 77,
+          "op": "0x11",
+          "token": null
+        },
+        {
+          "index": 78,
+          "op": "0x28",
+          "token": "0x2b000392",
+          "member": "<own>.ContentPath"
+        },
+        {
+          "index": 79,
+          "op": "0x28",
+          "token": "0xa0005db",
+          "member": "Path.Combine"
+        },
+        {
+          "index": 80,
+          "op": "0x2",
+          "token": null
+        },
+        {
+          "index": 81,
+          "op": "0x28",
+          "token": "0xa0005db",
+          "member": "Path.Combine"
+        },
+        {
+          "index": 82,
+          "op": "0x13",
+          "token": null
+        },
+        {
+          "index": 83,
+          "op": "0x11",
+          "token": null
+        },
+        {
+          "index": 84,
+          "op": "0x28",
+          "token": "0x2b000392",
+          "member": "<own>.ContentPath"
+        },
+        {
+          "index": 85,
+          "op": "0x28",
+          "token": "0xa0005db",
+          "member": "Path.Combine"
+        },
+        {
+          "index": 86,
+          "op": "0x2",
+          "token": null
+        },
+        {
+          "index": 87,
+          "op": "0x28",
+          "token": "0xa0005db",
+          "member": "Path.Combine"
+        },
+        {
+          "index": 88,
+          "op": "0x13",
+          "token": null
+        },
+        {
+          "index": 89,
+          "op": "0x6",
+          "token": null
+        },
+        {
+          "index": 90,
+          "op": "0x13",
+          "token": null
+        },
+        {
+          "index": 91,
+          "op": "0x16",
+          "token": null
+        },
+        {
+          "index": 92,
+          "op": "0x13",
+          "token": null
+        },
+        {
+          "index": 93,
+          "op": "0x2b",
+          "token": null
+        },
+        {
+          "index": 94,
+          "op": "0x11",
+          "token": null
+        },
+        {
+          "index": 95,
+          "op": "0x11",
+          "token": null
+        },
+        {
+          "index": 96,
+          "op": "0x9a",
+          "token": null
+        },
+        {
+          "index": 97,
+          "op": "0x13",
+          "token": null
+        },
+        {
+          "index": 98,
+          "op": "0x11",
+          "token": null
+        },
+        {
+          "index": 99,
+          "op": "0x11",
+          "token": null
+        },
+        {
+          "index": 100,
+          "op": "0x11",
+          "token": null
+        },
+        {
+          "index": 101,
+          "op": "0x28",
+          "token": "0xa000045",
+          "member": "String.Concat"
+        },
+        {
+          "index": 102,
+          "op": "0xd0",
+          "token": "0x1b000004"
+        },
+        {
+          "index": 103,
+          "op": "0x28",
+          "token": "0xa000160",
+          "member": "Type.GetTypeFromHandle"
+        },
+        {
+          "index": 104,
+          "op": "0x6f",
+          "token": "0xa001115",
+          "member": "AssetBundle.LoadAsset"
+        },
+        {
+          "index": 105,
+          "op": "0x75",
+          "token": "0x1b000004"
+        },
+        {
+          "index": 106,
+          "op": "0xa5",
+          "token": "0x1b000004"
+        },
+        {
+          "index": 107,
+          "op": "0x13",
+          "token": null
+        },
+        {
+          "index": 108,
+          "op": "0x11",
+          "token": null
+        },
+        {
+          "index": 109,
+          "op": "0x8c",
+          "token": "0x1b000004"
+        },
+        {
+          "index": 110,
+          "op": "0x2c",
+          "token": null
+        },
+        {
+          "index": 111,
+          "op": "0x11",
+          "token": null
+        },
+        {
+          "index": 112,
+          "op": "0x13",
+          "token": null
+        },
+        {
+          "index": 113,
+          "op": "0xde",
+          "token": null
+        },
+        {
+          "index": 114,
+          "op": "0x11",
+          "token": null
+        },
+        {
+          "index": 115,
+          "op": "0x2c",
+          "token": null
+        },
+        {
+          "index": 116,
+          "op": "0x11",
+          "token": null
+        },
+        {
+          "index": 117,
+          "op": "0x11",
+          "token": null
+        },
+        {
+          "index": 118,
+          "op": "0x11",
+          "token": null
+        },
+        {
+          "index": 119,
+          "op": "0x28",
+          "token": "0xa000045",
+          "member": "String.Concat"
+        },
+        {
+          "index": 120,
+          "op": "0xd0",
+          "token": "0x1b000004"
+        },
+        {
+          "index": 121,
+          "op": "0x28",
+          "token": "0xa000160",
+          "member": "Type.GetTypeFromHandle"
+        },
+        {
+          "index": 122,
+          "op": "0x6f",
+          "token": "0xa001115",
+          "member": "AssetBundle.LoadAsset"
+        },
+        {
+          "index": 123,
+          "op": "0x75",
+          "token": "0x1b000004"
+        },
+        {
+          "index": 124,
+          "op": "0xa5",
+          "token": "0x1b000004"
+        },
+        {
+          "index": 125,
+          "op": "0x13",
+          "token": null
+        },
+        {
+          "index": 126,
+          "op": "0x11",
+          "token": null
+        },
+        {
+          "index": 127,
+          "op": "0x8c",
+          "token": "0x1b000004"
+        },
+        {
+          "index": 128,
+          "op": "0x2c",
+          "token": null
+        },
+        {
+          "index": 129,
+          "op": "0x11",
+          "token": null
+        },
+        {
+          "index": 130,
+          "op": "0x13",
+          "token": null
+        },
+        {
+          "index": 131,
+          "op": "0xde",
+          "token": null
+        },
+        {
+          "index": 132,
+          "op": "0x11",
+          "token": null
+        },
+        {
+          "index": 133,
+          "op": "0x17",
+          "token": null
+        },
+        {
+          "index": 134,
+          "op": "0x58",
+          "token": null
+        },
+        {
+          "index": 135,
+          "op": "0x13",
+          "token": null
+        },
+        {
+          "index": 136,
+          "op": "0x11",
+          "token": null
+        },
+        {
+          "index": 137,
+          "op": "0x11",
+          "token": null
+        },
+        {
+          "index": 138,
+          "op": "0x8e",
+          "token": null
+        },
+        {
+          "index": 139,
+          "op": "0x69",
+          "token": null
+        },
+        {
+          "index": 140,
+          "op": "0x3f",
+          "token": "0xffffff7a"
+        },
+        {
+          "index": 141,
+          "op": "0x12",
+          "token": null
+        },
+        {
+          "index": 142,
+          "op": "0x28",
+          "token": "0xa001116",
+          "member": "?.MoveNext"
+        },
+        {
+          "index": 143,
+          "op": "0x3a",
+          "token": "0xffffff35"
+        },
+        {
+          "index": 144,
+          "op": "0xde",
+          "token": null
+        },
+        {
+          "index": 145,
+          "op": "0x12",
+          "token": null
+        },
+        {
+          "index": 146,
+          "op": "0xfe16",
+          "token": "0x1b0005e3"
+        },
+        {
+          "index": 147,
+          "op": "0x6f",
+          "token": "0xa000024",
+          "member": "IDisposable.Dispose"
+        },
+        {
+          "index": 148,
+          "op": "0xdc",
+          "token": null
+        },
+        {
+          "index": 149,
+          "op": "0x9",
+          "token": null
+        },
+        {
+          "index": 150,
+          "op": "0x17",
+          "token": null
+        },
+        {
+          "index": 151,
+          "op": "0x59",
+          "token": null
+        },
+        {
+          "index": 152,
+          "op": "0xd",
+          "token": null
+        },
+        {
+          "index": 153,
+          "op": "0x9",
+          "token": null
+        },
+        {
+          "index": 154,
+          "op": "0x16",
+          "token": null
+        },
+        {
+          "index": 155,
+          "op": "0x3c",
+          "token": "0xfffffec4"
+        },
+        {
+          "index": 156,
+          "op": "0x12",
+          "token": null
+        },
+        {
+          "index": 157,
+          "op": "0xfe15",
+          "token": "0x1b000004"
+        },
+        {
+          "index": 158,
+          "op": "0x11",
+          "token": null
+        },
+        {
+          "index": 159,
+          "op": "0x2a",
+          "token": null
+        },
+        {
+          "index": 160,
+          "op": "0x11",
+          "token": null
+        },
+        {
+          "index": 161,
+          "op": "0x2a",
+          "token": null
+        }
+      ]
+    }
+  ]
+}

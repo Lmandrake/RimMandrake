@@ -1,0 +1,2 @@
+A valid old-source proof freeze must remove candidate-only C# files too: a preflight compile-include check correctly rejected extra new helpers left outside the old explicit project. For build identity resolve .srchash paths from its # project header under src, then compare every input against current bytes AND the committed build-source blobs; do not guess the base directory or infer a clean DLL from HEAD. Proof: whittle/ht-trunk-doors/evidence/raw/live-before1 and parent_admin/build-input-audit-candidate7.json.
+home: src/RimMandrake/rimflow/roles/runner_options.md

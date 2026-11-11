@@ -1,0 +1,16 @@
+evidence: 1 eligible, 0 SKIPPED as unchanged, 0 PASS recorded, 1 PASS not recordable — runner 65716eff3278c68e
+  not recordable (1): reads outside the repo: /mnt/c/Users: src/RimMandrake/Utils/selftest_hugethings_fuzz.py
+cache: 0 CACHED PASS, 0 declared test(s) ran
+known results: 0/5 answered from the ledger (selftests.cache_hit_share 0.000), 0s not spent; 5 ran, 1 recorded, 0 checked against a stored PASS, 0 known red
+  ran (1): an input changed: src/RimMandrake/Utils/selftest_hugethings_lint.py <- src/RimMandrake/HugeThings/Source/SelfTest/FootprintBudget/Program.cs
+  ran (4): no record
+  not recordable (3): clock: src/RimMandrake/Utils/selftest_hugethings_budget.py, src/RimMandrake/Utils/selftest_hugethings_fuzz.py, src/RimMandrake/Utils/selftest_hugethings_trunk_doors.py
+  not recordable (1): external: src/RimMandrake/HugeThings/selftest_hugethings_footprint.py
+PASS        128.8s  src/RimMandrake/HugeThings/selftest_hugethings_footprint.py
+PASS          6.2s  src/RimMandrake/Utils/selftest_hugethings_budget.py
+PASS         12.7s  src/RimMandrake/Utils/selftest_hugethings_fuzz.py
+PASS          6.5s  src/RimMandrake/Utils/selftest_hugethings_lint.py
+PASS          2.9s  src/RimMandrake/Utils/selftest_hugethings_trunk_doors.py
+
+PASS 5/5  FAIL 0/5  UNMEASURED 0/5  CRASH 0/5  SKIPPED 0/5  (wall 157.6s) — contained in rm-harness.slice (max 12G), 1 workers
+RESULT: GREEN (green = FAIL 0 and CRASH 0)

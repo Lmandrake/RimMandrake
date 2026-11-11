@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Stubs.cs"/><Compile Include="Program.cs"/>
+    <Compile Include="..\..\Titanic\CorpseSite\TitanicCorpseSiteUtility.cs" Link="TitanicCorpseSiteUtility.cs"/>
+    <Compile Include="..\..\Titanic\CorpseSite\Patch_CorpseSiteConversion.cs" Link="Patch_CorpseSiteConversion.cs"/>
+    <Compile Include="..\..\Titanic\Wake\Patch_ButcherYieldCurve.cs" Link="Patch_ButcherYieldCurve.cs"/>
+  </ItemGroup>
+</Project>

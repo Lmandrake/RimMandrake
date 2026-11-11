@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe",
+    "-NoProfile",
+    "-ExecutionPolicy",
+    "Bypass",
+    "-File",
+    "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\codex-ht\\whittle\\ht-trunk-doors\\evidence\\read_gravship.ps1",
+    "-GameDir",
+    "D:\\SteamLibrary\\steamapps\\common\\RimWorld"
+  ],
+  "rc": 1,
+  "elapsed": 0.6033098697662354,
+  "script_sha256": "2012dac48a90c2b979cd3a392a8fe3d3de66be19ddd426a9c181a2fa7d59f2cd",
+  "stdout_sha256": "2900d141c7c438d3a84e834fd342ab4fc4887061d565c8c698209781b237fbbc",
+  "stderr_sha256": "7c04cd01f699355980fb4a01d2f391e660f7a925479fb86b964f07d300a848dd",
+  "mode": "reflection-only IL metadata; no assembly execution"
+}

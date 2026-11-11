@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- HARNESS ONLY (TITANIC_BODYSIZE_TEST_RACE_1): elephant-bodied races at the Huge Things T2 and T3 floors (RM_TitanicTierDef
+     8 / 20), plus a body-size 12 T2 pair for the yield curve. The tier reads race.baseBodySize x the largest lifestage bodySizeFactor (AnimalAdult = 1), so these sizes ARE the
+     tiers. No biome, no trade tags, never a manhunter (kinds) or a titan-passage pick (harnessOnly): they exist only when a
+     test spawns them. -->
+<Defs>
+  <ThingDef Name="RM_TestTitanBase" ParentName="AnimalThingBase" Abstract="True">
+    <devNote>harness-only test race</devNote>
+    <statBases>
+      <MoveSpeed>4.8</MoveSpeed>
+      <MarketValue>600</MarketValue>
+      <ComfyTemperatureMin>-40</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <Wildness>0.75</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left foot</label>
+        <labelNoLocation>foot</labelNoLocation>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>16.9</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHoovesTusksAndTrunk</body>
+      <baseHungerRate>1.605</baseHungerRate>
+      <baseHealthScale>3.6</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <useMeatFrom>Elephant</useMeatFrom>
+      <leatherDef>Leather_Elephant</leatherDef>
+      <gestationPeriodDays>13.32</gestationPeriodDays>
+      <trainability>None</trainability>
+      <lifeExpectancy>50</lifeExpectancy>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.3</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.666</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_TestTitanBase">
+    <defName>RM_TestTitanT2Adult</defName>
+    <label>test titan (T2)</label>
+    <description>Harness-only test race: an elephant of body size 8, the Huge Things T2 floor.</description>
+    <race>
+      <baseBodySize>8</baseBodySize>
+    </race>
+    <modExtensions>
+      <li Class="RimMandrake.TitanicCreatures.RM_TitanicExtension">
+        <harnessOnly>true</harnessOnly>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_TestTitanBase">
+    <defName>RM_TestTitanT3Adult</defName>
+    <label>test titan (T3)</label>
+    <description>Harness-only test race: an elephant of body size 20, the Huge Things T3 floor.</description>
+    <race>
+      <baseBodySize>20</baseBodySize>
+    </race>
+    <modExtensions>
+      <li Class="RimMandrake.TitanicCreatures.RM_TitanicExtension">
+        <harnessOnly>true</harnessOnly>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_TestTitanBase">
+    <defName>RM_TestTitanT2Control</defName>
+    <label>test titan control</label>
+    <description>Harness-only test race: body size 8 but forced out of titan tiering, the same-mass untiered control.</description>
+    <race>
+      <baseBodySize>8</baseBodySize>
+    </race>
+    <modExtensions>
+      <li Class="RimMandrake.TitanicCreatures.RM_TitanicExtension">
+        <forceEnabled>false</forceEnabled>
+        <harnessOnly>true</harnessOnly>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- The yield-curve pair: SubLinearFactor = sqrt(T2 floor / bodySize), so a race ON the floor (RM_TestTitanT2Adult, 8) gets 1 and
+       proves nothing. Body size 12 sits inside T2 (8 <= 12 < 20) with factor sqrt(8/12) = 0.8165; its control has the same mass
+       and is forced out of tiering, so butchering both isolates the curve. -->
+  <ThingDef ParentName="RM_TestTitanBase">
+    <defName>RM_TestTitanT2Heavy</defName>
+    <label>test titan (T2 heavy)</label>
+    <description>Harness-only test race: an elephant of body size 12, inside the Huge Things T2 band and above its floor, so the yield curve reduces it.</description>
+    <race>
+      <baseBodySize>12</baseBodySize>
+    </race>
+    <modExtensions>
+      <li Class="RimMandrake.TitanicCreatures.RM_TitanicExtension">
+        <harnessOnly>true</harnessOnly>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_TestTitanBase">
+    <defName>RM_TestTitanT2HeavyControl</defName>
+    <label>test titan heavy control</label>
+    <description>Harness-only test race: body size 12 but forced out of titan tiering, the same-mass untiered control for the yield curve.</description>
+    <race>
+      <baseBodySize>12</baseBodySize>
+    </race>
+    <modExtensions>
+      <li Class="RimMandrake.TitanicCreatures.RM_TitanicExtension">
+        <forceEnabled>false</forceEnabled>
+        <harnessOnly>true</harnessOnly>
+      </li>
+    </modExtensions>
+  </ThingDef>
+</Defs>

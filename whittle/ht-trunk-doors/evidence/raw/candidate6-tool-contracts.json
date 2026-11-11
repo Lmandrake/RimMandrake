@@ -1,0 +1,11 @@
+{
+  "build_source_sha256": "5c4bb455e82c868ee16d798e9ea9deacb2737f1757f4254a276240ce722e8627",
+  "list_destroy_source_sha256": "627581e6f715283044931649d522b1014f2a72ba8f150a176bafc526e6c2e937",
+  "build_source": "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchMapTools.cs",
+  "list_destroy_source": "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTerrainTools.cs",
+  "build_direct_spawn": "var spawned = GenSpawn.Spawn(t, c, map, rot);",
+  "destroy_undestroyable_skip": "if (!thing.def.destroyable) { skippedUndestroyable++; continue; }",
+  "known_scope": "source contract; unstamped companion repo/deployed-byte caveat remains disclosed",
+  "list_rect_filter": "pos.x < rx || pos.z < rz || pos.x >= rx + rw || pos.z >= rz + rh",
+  "list_filter_scope": "anchor Position, not occupied overlap"
+}

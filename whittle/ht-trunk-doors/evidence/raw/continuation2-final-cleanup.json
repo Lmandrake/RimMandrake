@@ -1,0 +1,44 @@
+{
+  "utc": 1794435959.9262805,
+  "actual_independent_read_only_statuses": [
+    {
+      "name": "guard",
+      "command": [
+        "python3",
+        "src/RimMandrake/rimflow/host_guard.py",
+        "status",
+        "--json"
+      ],
+      "rc": 0,
+      "stdout_sha256": "d71ac177bf29e65e23548cb4f3844a8db44897bc9417cc495a546b3331e34189"
+    },
+    {
+      "name": "ledger",
+      "command": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "who",
+        "--host",
+        "stevedesktop"
+      ],
+      "rc": 0,
+      "stdout_sha256": "caecbc5c0233bf9dcd72550607f9db44f6817d9310dd67f6bb876afaa524efc0"
+    },
+    {
+      "name": "game",
+      "command": [
+        "bash",
+        "/home/mandrake/rm/runner/infrastructure/stevedesktop/rw_game.sh",
+        "status"
+      ],
+      "rc": 3,
+      "stdout_sha256": "f247a76b2893208aae7751dbf51f4c495efacfb6d9e743802870300f31ac45c8"
+    }
+  ],
+  "ok": true,
+  "game": "DOWN",
+  "host_guard": "FREE",
+  "host_ledger": "FREE",
+  "historical_generation_not_reused": true
+}

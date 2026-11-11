@@ -1,0 +1,10 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/Utils/deploy_custom_mods.py",
+    "--mod",
+    "GimmeSomeSlack"
+  ],
+  "rc": 0,
+  "elapsed": 46.424033641815186
+}

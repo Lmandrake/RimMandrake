@@ -1,0 +1,10 @@
+{
+  "utc": 1794430131.4407983,
+  "script_sha256": "b1e9d413093bb61e3b572a0556a85d3c9d18203537208c7eb07c0a30ca916dea",
+  "syntax": "ast.parse PASS",
+  "runtime_inputs_unchanged": 54,
+  "compiled_manifest_byte_identical_v4": true,
+  "no_rebuild_required": true,
+  "pilot": "evidence/pilot4_raw.json",
+  "known_order_contract": "order_pawn success requires positive ticks; accepted+canReach checked before governed ticks, actual position checked after"
+}

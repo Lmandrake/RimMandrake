@@ -1,0 +1,3 @@
+staging whittle/ht-trunk-doors/evidence/raw/planner-after-inputs/Planner.csproj -> D:\RimTest\data\build\HTTrunkDoorCompareafter
+  whittle/ht-trunk-doors/evidence/raw/planner-after-inputs/
++ dotnet.exe build D:\RimTest\data\build\HTTrunkDoorCompareafter\whittle\ht-trunk-doors\evidence\raw\planner-after-inputs\Planner.csproj -c Release

@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe",
+    "-NoProfile",
+    "-ExecutionPolicy",
+    "Bypass",
+    "-File",
+    "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\codex-ht\\whittle\\ht-trunk-doors\\evidence\\read_cut_init2.ps1",
+    "-GameDir",
+    "D:\\SteamLibrary\\steamapps\\common\\RimWorld"
+  ],
+  "rc": 0,
+  "elapsed": 0.7409577369689941,
+  "script_sha256": "4b365452a4b4a30867fc0cfa9b012a407e8b772912baba933456375200497bf0",
+  "stdout_sha256": "5fe149978eea4eb383b31ed7ce167edb5634c1d4b91f4e5704b3398710cca344",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "mode": "reflection-only IL metadata; no assembly execution"
+}

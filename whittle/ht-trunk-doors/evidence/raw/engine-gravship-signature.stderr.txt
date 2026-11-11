@@ -1,0 +1,10 @@
+Exception calling "ToString" with "0" argument(s): "Method 
+'System.Collections.Generic.HashSet`1<T>.System.Collections.Generic.ICollection<T>.Add(!0)' is security transparent, 
+but is a member of a security critical type."
+At \\wsl.localhost\Ubuntu\home\mandrake\rm\codex-ht\whittle\ht-trunk-doors\evidence\read_gravship_signature.ps1:22 
+char:71
++ ... ame::$($m.Name) TOKEN $($m.MetadataToken) SIGNATURE $($m.ToString())"
++                                                           ~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : TypeLoadException
+ 

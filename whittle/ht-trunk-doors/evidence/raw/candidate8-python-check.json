@@ -1,0 +1,15 @@
+{
+  "utc": 1794434223.6476903,
+  "script_sha256": "f940109dda5c32ccccf0a58b94dd1997e68e20d5a471f029e8b8ce74ebd88dc0",
+  "syntax": "PASS",
+  "runtime_inputs_unchanged": 54,
+  "manifest_byte_identical_v7": true,
+  "unchanged_tested_AST": [
+    "work_bits",
+    "loaded_cut_matches",
+    "editable_rects"
+  ],
+  "spawn_pawn_calls": 0,
+  "pilot": "evidence/pilot8_raw.json",
+  "tool_contract": "set_work_priority checks disabled before nonzero SetPriority; no Log.Error on disabled refusal; C.declare/withdraw only add/discard IDs; set_player_settings all options omitted is read-only"
+}

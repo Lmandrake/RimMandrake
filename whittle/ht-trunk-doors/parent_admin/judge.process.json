@@ -1,0 +1,27 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/Utils/agent_runner.py",
+    "--cwd",
+    "/home/mandrake/rm/codex-ht",
+    "--codex",
+    "wsl",
+    "--sandbox",
+    "danger-full-access",
+    "--timeout",
+    "1200",
+    "--result",
+    "/home/mandrake/rm/codex-ht/whittle/ht-trunk-doors/parent_admin/judge.last.txt",
+    "--events",
+    "/home/mandrake/rm/codex-ht/whittle/ht-trunk-doors/parent_admin/judge.events.jsonl",
+    "--spend",
+    "/home/mandrake/rm/codex-ht/whittle/ht-trunk-doors/parent_admin/judge.spend.json"
+  ],
+  "prompt": "whittle/ht-trunk-doors/JUDGE_PROMPT.md",
+  "prompt_sha256": "402459a30c4f72e2d921839a0fddc7f4590c76fa7145f03b04c63aafc743ef90",
+  "started_utc": "2026-11-11T22:24:58.240533+00:00",
+  "history": "fresh exec, exact prompt on stdin, no fork/resume/agent prefix/model override",
+  "rc": 0,
+  "elapsed_seconds": 913.5403554439545,
+  "finished_utc": "2026-11-11T22:40:11.781788+00:00"
+}

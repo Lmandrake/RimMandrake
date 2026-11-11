@@ -1,0 +1,72 @@
+{
+  "utc": 1794432679.9723253,
+  "script_sha256": "084b016e8104f5ee992b0ae0f8065712ecd890d793058b04001b5d3ce4a235ab",
+  "actual_predicate": "loaded_cut_matches AST",
+  "cases": [
+    {
+      "case": "exact loaded pre-tick serialization",
+      "accepted": true
+    },
+    {
+      "case": "newGame=False",
+      "accepted": false
+    },
+    {
+      "case": "beforeNativeTick=False",
+      "accepted": false
+    },
+    {
+      "case": "nonce=wrong",
+      "accepted": false
+    },
+    {
+      "case": "driver=none",
+      "accepted": false
+    },
+    {
+      "case": "current=Wait",
+      "accepted": false
+    },
+    {
+      "case": "forced=True",
+      "accepted": false
+    },
+    {
+      "case": "plant=P2",
+      "accepted": false
+    },
+    {
+      "case": "contact=B2",
+      "accepted": false
+    },
+    {
+      "case": "tick=2624",
+      "accepted": false
+    },
+    {
+      "case": "work=0",
+      "accepted": false
+    },
+    {
+      "case": "work=2.85813427",
+      "accepted": false
+    },
+    {
+      "case": "work=nan",
+      "accepted": false
+    },
+    {
+      "case": "work=inf",
+      "accepted": false
+    },
+    {
+      "case": "work -1float32ULP",
+      "accepted": false
+    },
+    {
+      "case": "work 1float32ULP",
+      "accepted": false
+    }
+  ],
+  "ok": true
+}

@@ -1,0 +1,6 @@
+{
+  "source_snapshot": "raw/source-ready-v3",
+  "artifact_commit": "974537eeb71866efdecf527afea150a14905a998",
+  "artifact_build_receipt": "raw/build-production.receipt.json",
+  "runtime_compile_manifest": "raw/source-ready-v3-compiled-inputs.json"
+}

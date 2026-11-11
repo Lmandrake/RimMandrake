@@ -1,0 +1,906 @@
+METHOD RimWorld.JobDriver_PlantCut::Init TOKEN 100694613 ATTR PrivateScope, Family, Virtual, HideBySig
+IL_0000: ldarg.0 
+IL_0001: call RimWorld.JobDriver_PlantWork::RimWorld.Plant get_Plant()
+IL_0006: dup 
+IL_0007: brtrue.s IL_000D
+IL_0009: pop 
+IL_000A: ldnull 
+IL_000B: br.s IL_001C
+IL_000D: ldfld Verse.Thing::Verse.ThingDef def
+IL_0012: ldfld Verse.ThingDef::RimWorld.PlantProperties plant
+IL_0017: ldfld RimWorld.PlantProperties::Verse.ThingDef harvestedThingDef
+IL_001C: brfalse.s IL_0037
+IL_001E: ldarg.0 
+IL_001F: call RimWorld.JobDriver_PlantWork::RimWorld.Plant get_Plant()
+IL_0024: callvirt RimWorld.Plant::Boolean CanYieldNow()
+IL_0029: brfalse.s IL_0037
+IL_002B: ldarg.0 
+IL_002C: ldc.r4 0.085
+IL_0031: stfld RimWorld.JobDriver_PlantWork::Single xpPerTick
+IL_0036: ret 
+IL_0037: ldarg.0 
+IL_0038: ldc.r4 0
+IL_003D: stfld RimWorld.JobDriver_PlantWork::Single xpPerTick
+IL_0042: ret 
+METHOD RimWorld.JobDriver_PlantCut::PlantWorkDoneToil TOKEN 100694614 ATTR PrivateScope, Family, Virtual, HideBySig
+IL_0000: ldc.i4.1 
+IL_0001: call Verse.AI.Toils_Interact::Verse.AI.Toil DestroyThing(Verse.AI.TargetIndex)
+IL_0006: ret 
+AVAILABLE XML METHODS
+RimWorld.PlantDestructionMode get_PlantDestructionMode()
+Void Init()
+Verse.AI.Toil PlantWorkDoneToil()
+Void .ctor()
+METHOD RimWorld.JobDriver_PlantCut_Designated::get_RequiredDesignation TOKEN 100694618 ATTR PrivateScope, Family, Virtual, HideBySig, SpecialName
+IL_0000: ldsfld RimWorld.DesignationDefOf::Verse.DesignationDef CutPlant
+IL_0005: ret 
+AVAILABLE XML METHODS
+Verse.DesignationDef get_RequiredDesignation()
+Void .ctor()
+METHOD RimWorld.JobDriver_PlantWork::get_Plant TOKEN 100694582 ATTR PrivateScope, Family, HideBySig, SpecialName
+IL_0000: ldarg.0 
+IL_0001: ldfld Verse.AI.JobDriver::Verse.AI.Job job
+IL_0006: ldflda Verse.AI.Job::Verse.LocalTargetInfo targetA
+IL_000B: call Verse.LocalTargetInfo::Verse.Thing get_Thing()
+IL_0010: castclass ::RimWorld.Plant
+IL_0015: ret 
+METHOD RimWorld.JobDriver_PlantWork::get_RequiredDesignation TOKEN 100694583 ATTR PrivateScope, Family, Virtual, HideBySig, VtableLayoutMask, SpecialName
+IL_0000: ldnull 
+IL_0001: ret 
+METHOD RimWorld.JobDriver_PlantWork::WorkDonePerTick TOKEN 100694585 ATTR PrivateScope, Public, Static, HideBySig
+IL_0000: ldarg.0 
+IL_0001: ldsfld RimWorld.StatDefOf::RimWorld.StatDef PlantWorkSpeed
+IL_0006: ldc.i4.1 
+IL_0007: ldc.i4.m1 
+IL_0008: call RimWorld.StatExtension::Single GetStatValue(Verse.Thing, RimWorld.StatDef, Boolean, Int32)
+IL_000D: ldc.r4 3.3
+IL_0012: ldc.r4 1
+IL_0017: ldarg.1 
+IL_0018: callvirt RimWorld.Plant::Single get_Growth()
+IL_001D: call UnityEngine.Mathf::Single Lerp(Single, Single, Single)
+IL_0022: mul 
+IL_0023: ret 
+METHOD RimWorld.JobDriver_PlantWork::TryMakePreToilReservations TOKEN 100694586 ATTR PrivateScope, Public, Virtual, HideBySig
+IL_0000: ldarg.0 
+IL_0001: ldfld Verse.AI.JobDriver::Verse.AI.Job job
+IL_0006: ldc.i4.1 
+IL_0007: callvirt Verse.AI.Job::Verse.LocalTargetInfo GetTarget(Verse.AI.TargetIndex)
+IL_000C: stloc.0 
+IL_000D: ldloca.s 0
+IL_000F: call Verse.LocalTargetInfo::Boolean get_IsValid()
+IL_0014: brfalse.s IL_0031
+IL_0016: ldarg.0 
+IL_0017: ldfld Verse.AI.JobDriver::Verse.Pawn pawn
+IL_001C: ldloc.0 
+IL_001D: ldarg.0 
+IL_001E: ldfld Verse.AI.JobDriver::Verse.AI.Job job
+IL_0023: ldc.i4.1 
+IL_0024: ldc.i4.m1 
+IL_0025: ldnull 
+IL_0026: ldarg.1 
+IL_0027: ldc.i4.0 
+IL_0028: call Verse.AI.ReservationUtility::Boolean Reserve(Verse.Pawn, Verse.LocalTargetInfo, Verse.AI.Job, Int32, Int32, Verse.ReservationLayerDef, Boolean, Boolean)
+IL_002D: brtrue.s IL_0031
+IL_002F: ldc.i4.0 
+IL_0030: ret 
+IL_0031: ldarg.0 
+IL_0032: ldfld Verse.AI.JobDriver::Verse.Pawn pawn
+IL_0037: ldarg.0 
+IL_0038: ldfld Verse.AI.JobDriver::Verse.AI.Job job
+IL_003D: ldc.i4.1 
+IL_003E: callvirt Verse.AI.Job::System.Collections.Generic.List`1[Verse.LocalTargetInfo] GetTargetQueue(Verse.AI.TargetIndex)
+IL_0043: ldarg.0 
+IL_0044: ldfld Verse.AI.JobDriver::Verse.AI.Job job
+IL_0049: ldc.i4.1 
+IL_004A: ldc.i4.m1 
+IL_004B: ldnull 
+IL_004C: call Verse.AI.ReservationUtility::Void ReserveAsManyAsPossible(Verse.Pawn, System.Collections.Generic.List`1[Verse.LocalTargetInfo], Verse.AI.Job, Int32, Int32, Verse.ReservationLayerDef)
+IL_0051: ldc.i4.1 
+IL_0052: ret 
+METHOD RimWorld.JobDriver_PlantWork::MakeNewToils TOKEN 100694587 ATTR PrivateScope, Family, Virtual, HideBySig
+IL_0000: ldc.i4.s -2
+IL_0002: newobj RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Void .ctor(Int32)
+IL_0007: dup 
+IL_0008: ldarg.0 
+IL_0009: stfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::RimWorld.JobDriver_PlantWork <>4__this
+IL_000E: ret 
+METHOD RimWorld.JobDriver_PlantWork::Init TOKEN 100694589 ATTR PrivateScope, Family, Virtual, HideBySig, VtableLayoutMask
+IL_0000: ret 
+AVAILABLE XML METHODS
+RimWorld.Plant get_Plant()
+Verse.DesignationDef get_RequiredDesignation()
+RimWorld.PlantDestructionMode get_PlantDestructionMode()
+Single WorkDonePerTick(Verse.Pawn, RimWorld.Plant)
+Boolean TryMakePreToilReservations(Boolean)
+System.Collections.Generic.IEnumerable`1[Verse.AI.Toil] MakeNewToils()
+Void ExposeData()
+Void Init()
+Verse.AI.Toil PlantWorkDoneToil()
+Void .ctor()
+METHOD RimWorld.JobDriver_PlantWork+<>c::<MakeNewToils>b__11_4 TOKEN 100694594 ATTR PrivateScope, Assembly, HideBySig
+IL_0000: ldsfld RimWorld.SkillDefOf::RimWorld.SkillDef Plants
+IL_0005: ret 
+AVAILABLE XML METHODS
+RimWorld.SkillDef <MakeNewToils>b__11_4()
+Void .cctor()
+Void .ctor()
+METHOD RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::<MakeNewToils>b__0 TOKEN 100694596 ATTR PrivateScope, Assembly, HideBySig
+IL_0000: ldarg.0 
+IL_0001: ldfld RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::RimWorld.JobDriver_PlantWork <>4__this
+IL_0006: call Verse.AI.JobDriver::Verse.Map get_Map()
+IL_000B: ldfld Verse.Map::Verse.DesignationManager designationManager
+IL_0010: ldarg.1 
+IL_0011: ldarg.0 
+IL_0012: ldfld RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::RimWorld.JobDriver_PlantWork <>4__this
+IL_0017: callvirt RimWorld.JobDriver_PlantWork::Verse.DesignationDef get_RequiredDesignation()
+IL_001C: callvirt Verse.DesignationManager::Verse.Designation DesignationOn(Verse.Thing, Verse.DesignationDef)
+IL_0021: ldnull 
+IL_0022: cgt.un 
+IL_0024: ret 
+METHOD RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::<MakeNewToils>b__1 TOKEN 100694597 ATTR PrivateScope, Assembly, HideBySig
+IL_0000: ldarg.0 
+IL_0001: ldfld RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::Verse.AI.Toil cut
+IL_0006: ldfld Verse.AI.Toil::Verse.Pawn actor
+IL_000B: stloc.0 
+IL_000C: ldloc.0 
+IL_000D: ldfld Verse.Pawn::RimWorld.Pawn_SkillTracker skills
+IL_0012: brfalse.s IL_0034
+IL_0014: ldloc.0 
+IL_0015: ldfld Verse.Pawn::RimWorld.Pawn_SkillTracker skills
+IL_001A: ldsfld RimWorld.SkillDefOf::RimWorld.SkillDef Plants
+IL_001F: ldarg.0 
+IL_0020: ldfld RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::RimWorld.JobDriver_PlantWork <>4__this
+IL_0025: ldfld RimWorld.JobDriver_PlantWork::Single xpPerTick
+IL_002A: ldarg.1 
+IL_002B: conv.r4 
+IL_002C: mul 
+IL_002D: ldc.i4.0 
+IL_002E: ldc.i4.0 
+IL_002F: callvirt RimWorld.Pawn_SkillTracker::Void Learn(RimWorld.SkillDef, Single, Boolean, Boolean)
+IL_0034: ldarg.0 
+IL_0035: ldfld RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::RimWorld.JobDriver_PlantWork <>4__this
+IL_003A: call RimWorld.JobDriver_PlantWork::RimWorld.Plant get_Plant()
+IL_003F: stloc.1 
+IL_0040: ldarg.0 
+IL_0041: ldfld RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::RimWorld.JobDriver_PlantWork <>4__this
+IL_0046: ldarg.0 
+IL_0047: ldfld RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::RimWorld.JobDriver_PlantWork <>4__this
+IL_004C: ldfld RimWorld.JobDriver_PlantWork::Single workDone
+IL_0051: ldloc.0 
+IL_0052: ldloc.1 
+IL_0053: call RimWorld.JobDriver_PlantWork::Single WorkDonePerTick(Verse.Pawn, RimWorld.Plant)
+IL_0058: ldarg.1 
+IL_0059: conv.r4 
+IL_005A: mul 
+IL_005B: add 
+IL_005C: stfld RimWorld.JobDriver_PlantWork::Single workDone
+IL_0061: ldarg.0 
+IL_0062: ldfld RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::RimWorld.JobDriver_PlantWork <>4__this
+IL_0067: ldfld RimWorld.JobDriver_PlantWork::Single workDone
+IL_006C: ldloc.1 
+IL_006D: ldfld Verse.Thing::Verse.ThingDef def
+IL_0072: ldfld Verse.ThingDef::RimWorld.PlantProperties plant
+IL_0077: ldfld RimWorld.PlantProperties::Single harvestWork
+IL_007C: bge.un.s IL_007F
+IL_007E: ret 
+IL_007F: ldloc.1 
+IL_0080: ldfld Verse.Thing::Verse.ThingDef def
+IL_0085: ldfld Verse.ThingDef::RimWorld.PlantProperties plant
+IL_008A: ldfld RimWorld.PlantProperties::Verse.ThingDef harvestedThingDef
+IL_008F: brfalse IL_0294
+IL_0094: ldloc.1 
+IL_0095: ldfld Verse.Thing::Verse.ThingDef def
+IL_009A: ldfld Verse.ThingDef::RimWorld.PlantProperties plant
+IL_009F: ldfld RimWorld.PlantProperties::Verse.ThingDef harvestedThingDef
+IL_00A4: callvirt Verse.ThingDef::Boolean get_IsDrug()
+IL_00A9: brtrue.s IL_00C4
+IL_00AB: ldloc.1 
+IL_00AC: ldfld Verse.Thing::Verse.ThingDef def
+IL_00B1: ldfld Verse.ThingDef::RimWorld.PlantProperties plant
+IL_00B6: ldfld RimWorld.PlantProperties::Boolean drugForHarvestPurposes
+IL_00BB: brtrue.s IL_00C4
+IL_00BD: ldsfld RimWorld.StatDefOf::RimWorld.StatDef PlantHarvestYield
+IL_00C2: br.s IL_00C9
+IL_00C4: ldsfld RimWorld.StatDefOf::RimWorld.StatDef DrugHarvestYield
+IL_00C9: stloc.2 
+IL_00CA: ldloc.0 
+IL_00CB: ldloc.2 
+IL_00CC: ldc.i4.1 
+IL_00CD: ldc.i4.m1 
+IL_00CE: call RimWorld.StatExtension::Single GetStatValue(Verse.Thing, RimWorld.StatDef, Boolean, Int32)
+IL_00D3: stloc.3 
+IL_00D4: ldloc.0 
+IL_00D5: callvirt Verse.Pawn::Verse.RaceProperties get_RaceProps()
+IL_00DA: callvirt Verse.RaceProperties::Boolean get_Humanlike()
+IL_00DF: brfalse.s IL_0151
+IL_00E1: ldloc.1 
+IL_00E2: ldfld Verse.Thing::Verse.ThingDef def
+IL_00E7: ldfld Verse.ThingDef::RimWorld.PlantProperties plant
+IL_00EC: ldfld RimWorld.PlantProperties::Boolean harvestFailable
+IL_00F1: brfalse.s IL_0151
+IL_00F3: ldloc.1 
+IL_00F4: callvirt RimWorld.Plant::Boolean get_Blighted()
+IL_00F9: brtrue.s IL_0151
+IL_00FB: call Verse.Rand::Single get_Value()
+IL_0100: ldloc.3 
+IL_0101: ble.un.s IL_0151
+IL_0103: ldarg.0 
+IL_0104: ldfld RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::RimWorld.JobDriver_PlantWork <>4__this
+IL_0109: ldfld Verse.AI.JobDriver::Verse.Pawn pawn
+IL_010E: callvirt Verse.Thing::UnityEngine.Vector3 get_DrawPos()
+IL_0113: ldloc.1 
+IL_0114: callvirt Verse.Thing::UnityEngine.Vector3 get_DrawPos()
+IL_0119: call UnityEngine.Vector3::UnityEngine.Vector3 op_Addition(UnityEngine.Vector3, UnityEngine.Vector3)
+IL_011E: ldc.r4 2
+IL_0123: call UnityEngine.Vector3::UnityEngine.Vector3 op_Division(UnityEngine.Vector3, Single)
+IL_0128: ldarg.0 
+IL_0129: ldfld RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::RimWorld.JobDriver_PlantWork <>4__this
+IL_012E: call Verse.AI.JobDriver::Verse.Map get_Map()
+IL_0133: ldstr "TextMote_HarvestFailed"
+IL_0138: call Verse.Translator::Verse.TaggedString Translate(System.String)
+IL_013D: call Verse.TaggedString::System.String op_Implicit(Verse.TaggedString)
+IL_0142: ldc.r4 3.65
+IL_0147: call RimWorld.MoteMaker::Void ThrowText(UnityEngine.Vector3, Verse.Map, System.String, Single)
+IL_014C: br IL_0294
+IL_0151: ldloc.1 
+IL_0152: callvirt RimWorld.Plant::Int32 YieldNow()
+IL_0157: stloc.s 4
+IL_0159: ldloc.3 
+IL_015A: ldc.r4 1
+IL_015F: ble.un.s IL_016D
+IL_0161: ldloc.s 4
+IL_0163: conv.r4 
+IL_0164: ldloc.3 
+IL_0165: mul 
+IL_0166: call Verse.GenMath::Int32 RoundRandom(Single)
+IL_016B: stloc.s 4
+IL_016D: ldloc.s 4
+IL_016F: ldc.i4.0 
+IL_0170: ble.s IL_01ED
+IL_0172: ldloc.1 
+IL_0173: ldfld Verse.Thing::Verse.ThingDef def
+IL_0178: ldfld Verse.ThingDef::RimWorld.PlantProperties plant
+IL_017D: ldfld RimWorld.PlantProperties::Verse.ThingDef harvestedThingDef
+IL_0182: ldnull 
+IL_0183: call Verse.ThingMaker::Verse.Thing MakeThing(Verse.ThingDef, Verse.ThingDef)
+IL_0188: stloc.s 5
+IL_018A: ldloc.s 5
+IL_018C: ldloc.s 4
+IL_018E: stfld Verse.Thing::Int32 stackCount
+IL_0193: ldloc.0 
+IL_0194: callvirt Verse.Thing::RimWorld.Faction get_Faction()
+IL_0199: call RimWorld.Faction::RimWorld.Faction get_OfPlayer()
+IL_019E: beq.s IL_01A9
+IL_01A0: ldloc.s 5
+IL_01A2: ldc.i4.1 
+IL_01A3: ldc.i4.1 
+IL_01A4: call RimWorld.ForbidUtility::Void SetForbidden(Verse.Thing, Boolean, Boolean)
+IL_01A9: call Verse.Find::RimWorld.QuestManager get_QuestManager()
+IL_01AE: ldloc.0 
+IL_01AF: ldloc.s 5
+IL_01B1: callvirt RimWorld.QuestManager::Void Notify_PlantHarvested(Verse.Pawn, Verse.Thing)
+IL_01B6: ldloc.s 5
+IL_01B8: ldloc.0 
+IL_01B9: callvirt Verse.Thing::Verse.IntVec3 get_Position()
+IL_01BE: ldarg.0 
+IL_01BF: ldfld RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::RimWorld.JobDriver_PlantWork <>4__this
+IL_01C4: call Verse.AI.JobDriver::Verse.Map get_Map()
+IL_01C9: ldc.i4.1 
+IL_01CA: ldnull 
+IL_01CB: ldnull 
+IL_01CC: ldloca.s 6
+IL_01CE: initobj ::System.Nullable`1[Verse.Rot4]
+IL_01D4: ldloc.s 6
+IL_01D6: ldc.i4.1 
+IL_01D7: call Verse.GenPlace::Boolean TryPlaceThing(Verse.Thing, Verse.IntVec3, Verse.Map, Verse.ThingPlaceMode, System.Action`2[Verse.Thing,System.Int32], System.Predicate`1[Verse.IntVec3], System.Nullable`1[Verse.Rot4], Int32)
+IL_01DC: pop 
+IL_01DD: ldloc.0 
+IL_01DE: ldfld Verse.Pawn::RimWorld.Pawn_RecordsTracker records
+IL_01E3: ldsfld RimWorld.RecordDefOf::RimWorld.RecordDef PlantsHarvested
+IL_01E8: callvirt RimWorld.Pawn_RecordsTracker::Void Increment(RimWorld.RecordDef)
+IL_01ED: ldloc.1 
+IL_01EE: callvirt RimWorld.Plant::Boolean get_HarvestableNow()
+IL_01F3: brfalse IL_0294
+IL_01F8: ldloc.1 
+IL_01F9: callvirt Verse.ThingWithComps::System.Collections.Generic.List`1[Verse.ThingComp] get_AllComps()
+IL_01FE: callvirt System.Collections.Generic.List`1[[Verse.ThingComp, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Enumerator GetEnumerator()
+IL_0203: stloc.s 7
+IL_0205: br.s IL_027B
+IL_0207: ldloca.s 7
+IL_0209: call System.Collections.Generic.List`1+Enumerator[[Verse.ThingComp, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Verse.ThingComp get_Current()
+IL_020E: callvirt Verse.ThingComp::System.Collections.Generic.IEnumerable`1[Verse.ThingDefCountClass] GetAdditionalHarvestYield()
+IL_0213: callvirt System.Collections.Generic.IEnumerable`1[[Verse.ThingDefCountClass, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::System.Collections.Generic.IEnumerator`1[Verse.ThingDefCountClass] GetEnumerator()
+IL_0218: stloc.s 8
+IL_021A: br.s IL_0264
+IL_021C: ldloc.s 8
+IL_021E: callvirt System.Collections.Generic.IEnumerator`1[[Verse.ThingDefCountClass, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Verse.ThingDefCountClass get_Current()
+IL_0223: stloc.s 9
+IL_0225: ldloc.s 9
+IL_0227: ldfld Verse.ThingDefCountClass::Verse.ThingDef thingDef
+IL_022C: ldnull 
+IL_022D: call Verse.ThingMaker::Verse.Thing MakeThing(Verse.ThingDef, Verse.ThingDef)
+IL_0232: dup 
+IL_0233: ldloc.s 9
+IL_0235: ldfld Verse.ThingDefCountClass::Int32 count
+IL_023A: stfld Verse.Thing::Int32 stackCount
+IL_023F: ldloc.0 
+IL_0240: callvirt Verse.Thing::Verse.IntVec3 get_Position()
+IL_0245: ldarg.0 
+IL_0246: ldfld RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::RimWorld.JobDriver_PlantWork <>4__this
+IL_024B: call Verse.AI.JobDriver::Verse.Map get_Map()
+IL_0250: ldc.i4.1 
+IL_0251: ldnull 
+IL_0252: ldnull 
+IL_0253: ldloca.s 6
+IL_0255: initobj ::System.Nullable`1[Verse.Rot4]
+IL_025B: ldloc.s 6
+IL_025D: ldc.i4.1 
+IL_025E: call Verse.GenPlace::Boolean TryPlaceThing(Verse.Thing, Verse.IntVec3, Verse.Map, Verse.ThingPlaceMode, System.Action`2[Verse.Thing,System.Int32], System.Predicate`1[Verse.IntVec3], System.Nullable`1[Verse.Rot4], Int32)
+IL_0263: pop 
+IL_0264: ldloc.s 8
+IL_0266: callvirt System.Collections.IEnumerator::Boolean MoveNext()
+IL_026B: brtrue.s IL_021C
+IL_026D: leave.s IL_027B
+IL_026F: ldloc.s 8
+IL_0271: brfalse.s IL_027A
+IL_0273: ldloc.s 8
+IL_0275: callvirt System.IDisposable::Void Dispose()
+IL_027A: endfinally 
+IL_027B: ldloca.s 7
+IL_027D: call System.Collections.Generic.List`1+Enumerator[[Verse.ThingComp, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Boolean MoveNext()
+IL_0282: brtrue.s IL_0207
+IL_0284: leave.s IL_0294
+IL_0286: ldloca.s 7
+IL_0288: constrained. System.Collections.Generic.List`1::System.Collections.Generic.List`1+Enumerator[Verse.ThingComp]
+IL_028E: callvirt System.IDisposable::Void Dispose()
+IL_0293: endfinally 
+IL_0294: ldloc.1 
+IL_0295: ldfld Verse.Thing::Verse.ThingDef def
+IL_029A: ldfld Verse.ThingDef::RimWorld.PlantProperties plant
+IL_029F: ldfld RimWorld.PlantProperties::Verse.SoundDef soundHarvestFinish
+IL_02A4: ldloc.0 
+IL_02A5: call Verse.Sound.SoundInfo::Verse.Sound.SoundInfo op_Implicit(Verse.Thing)
+IL_02AA: call Verse.Sound.SoundStarter::Void PlayOneShot(Verse.SoundDef, Verse.Sound.SoundInfo)
+IL_02AF: ldloc.1 
+IL_02B0: ldarg.0 
+IL_02B1: ldfld RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::RimWorld.JobDriver_PlantWork <>4__this
+IL_02B6: ldfld Verse.AI.JobDriver::Verse.Pawn pawn
+IL_02BB: ldarg.0 
+IL_02BC: ldfld RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::RimWorld.JobDriver_PlantWork <>4__this
+IL_02C1: callvirt RimWorld.JobDriver_PlantWork::RimWorld.PlantDestructionMode get_PlantDestructionMode()
+IL_02C6: callvirt RimWorld.Plant::Void PlantCollected(Verse.Pawn, RimWorld.PlantDestructionMode)
+IL_02CB: ldarg.0 
+IL_02CC: ldfld RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::RimWorld.JobDriver_PlantWork <>4__this
+IL_02D1: ldc.r4 0
+IL_02D6: stfld RimWorld.JobDriver_PlantWork::Single workDone
+IL_02DB: ldarg.0 
+IL_02DC: ldfld RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::RimWorld.JobDriver_PlantWork <>4__this
+IL_02E1: call Verse.AI.JobDriver::Void ReadyForNextToil()
+IL_02E6: ret 
+METHOD RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::<MakeNewToils>b__2 TOKEN 100694598 ATTR PrivateScope, Assembly, HideBySig
+IL_0000: ldarg.0 
+IL_0001: ldfld RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::RimWorld.JobDriver_PlantWork <>4__this
+IL_0006: ldfld RimWorld.JobDriver_PlantWork::Single workDone
+IL_000B: ldarg.0 
+IL_000C: ldfld RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::RimWorld.JobDriver_PlantWork <>4__this
+IL_0011: call RimWorld.JobDriver_PlantWork::RimWorld.Plant get_Plant()
+IL_0016: ldfld Verse.Thing::Verse.ThingDef def
+IL_001B: ldfld Verse.ThingDef::RimWorld.PlantProperties plant
+IL_0020: ldfld RimWorld.PlantProperties::Single harvestWork
+IL_0025: div 
+IL_0026: ret 
+METHOD RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::<MakeNewToils>b__3 TOKEN 100694599 ATTR PrivateScope, Assembly, HideBySig
+IL_0000: ldarg.0 
+IL_0001: ldfld RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::RimWorld.JobDriver_PlantWork <>4__this
+IL_0006: call RimWorld.JobDriver_PlantWork::RimWorld.Plant get_Plant()
+IL_000B: ldfld Verse.Thing::Verse.ThingDef def
+IL_0010: ldfld Verse.ThingDef::RimWorld.PlantProperties plant
+IL_0015: ldfld RimWorld.PlantProperties::Verse.SoundDef soundHarvesting
+IL_001A: ret 
+AVAILABLE XML METHODS
+Boolean <MakeNewToils>b__0(Verse.Thing)
+Void <MakeNewToils>b__1(Int32)
+Single <MakeNewToils>b__2()
+Verse.SoundDef <MakeNewToils>b__3()
+Void .ctor()
+METHOD RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::System.IDisposable.Dispose TOKEN 100694601 ATTR PrivateScope, Private, Final, Virtual, HideBySig, VtableLayoutMask
+IL_0000: ret 
+METHOD RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::MoveNext TOKEN 100694602 ATTR PrivateScope, Private, Final, Virtual, HideBySig, VtableLayoutMask
+IL_0000: ldarg.0 
+IL_0001: ldfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Int32 <>1__state
+IL_0006: stloc.0 
+IL_0007: ldarg.0 
+IL_0008: ldfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::RimWorld.JobDriver_PlantWork <>4__this
+IL_000D: stloc.1 
+IL_000E: ldloc.0 
+IL_000F: switch IL_003A,IL_0078,IL_00BC,IL_00D8,IL_00F5,IL_0137,IL_02AA,IL_02CB,IL_02EC
+IL_0038: ldc.i4.0 
+IL_0039: ret 
+IL_003A: ldarg.0 
+IL_003B: ldc.i4.m1 
+IL_003C: stfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Int32 <>1__state
+IL_0041: ldarg.0 
+IL_0042: newobj RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::Void .ctor()
+IL_0047: stfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::<>c__DisplayClass11_0 <>8__1
+IL_004C: ldarg.0 
+IL_004D: ldfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::<>c__DisplayClass11_0 <>8__1
+IL_0052: ldarg.0 
+IL_0053: ldfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::RimWorld.JobDriver_PlantWork <>4__this
+IL_0058: stfld RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::RimWorld.JobDriver_PlantWork <>4__this
+IL_005D: ldloc.1 
+IL_005E: callvirt RimWorld.JobDriver_PlantWork::Void Init()
+IL_0063: ldarg.0 
+IL_0064: ldc.i4.1 
+IL_0065: call Verse.AI.Toils_JobTransforms::Verse.AI.Toil MoveCurrentTargetIntoQueue(Verse.AI.TargetIndex)
+IL_006A: stfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Verse.AI.Toil <>2__current
+IL_006F: ldarg.0 
+IL_0070: ldc.i4.1 
+IL_0071: stfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Int32 <>1__state
+IL_0076: ldc.i4.1 
+IL_0077: ret 
+IL_0078: ldarg.0 
+IL_0079: ldc.i4.m1 
+IL_007A: stfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Int32 <>1__state
+IL_007F: ldarg.0 
+IL_0080: ldc.i4.1 
+IL_0081: ldloc.1 
+IL_0082: callvirt RimWorld.JobDriver_PlantWork::Verse.DesignationDef get_RequiredDesignation()
+IL_0087: brtrue.s IL_008C
+IL_0089: ldnull 
+IL_008A: br.s IL_009D
+IL_008C: ldarg.0 
+IL_008D: ldfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::<>c__DisplayClass11_0 <>8__1
+IL_0092: ldftn RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::Boolean <MakeNewToils>b__0(Verse.Thing)
+IL_0098: newobj System.Func`2[[Verse.Thing, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null],[System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]::Void .ctor(System.Object, IntPtr)
+IL_009D: call Verse.AI.Toils_JobTransforms::Verse.AI.Toil ClearDespawnedNullOrForbiddenQueuedTargets(Verse.AI.TargetIndex, System.Func`2[Verse.Thing,System.Boolean])
+IL_00A2: stfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Verse.AI.Toil <initExtractTargetFromQueue>5__2
+IL_00A7: ldarg.0 
+IL_00A8: ldarg.0 
+IL_00A9: ldfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Verse.AI.Toil <initExtractTargetFromQueue>5__2
+IL_00AE: stfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Verse.AI.Toil <>2__current
+IL_00B3: ldarg.0 
+IL_00B4: ldc.i4.2 
+IL_00B5: stfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Int32 <>1__state
+IL_00BA: ldc.i4.1 
+IL_00BB: ret 
+IL_00BC: ldarg.0 
+IL_00BD: ldc.i4.m1 
+IL_00BE: stfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Int32 <>1__state
+IL_00C3: ldarg.0 
+IL_00C4: ldc.i4.1 
+IL_00C5: call Verse.AI.Toils_JobTransforms::Verse.AI.Toil SucceedOnNoTargetInQueue(Verse.AI.TargetIndex)
+IL_00CA: stfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Verse.AI.Toil <>2__current
+IL_00CF: ldarg.0 
+IL_00D0: ldc.i4.3 
+IL_00D1: stfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Int32 <>1__state
+IL_00D6: ldc.i4.1 
+IL_00D7: ret 
+IL_00D8: ldarg.0 
+IL_00D9: ldc.i4.m1 
+IL_00DA: stfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Int32 <>1__state
+IL_00DF: ldarg.0 
+IL_00E0: ldc.i4.1 
+IL_00E1: ldc.i4.1 
+IL_00E2: call Verse.AI.Toils_JobTransforms::Verse.AI.Toil ExtractNextTargetFromQueue(Verse.AI.TargetIndex, Boolean)
+IL_00E7: stfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Verse.AI.Toil <>2__current
+IL_00EC: ldarg.0 
+IL_00ED: ldc.i4.4 
+IL_00EE: stfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Int32 <>1__state
+IL_00F3: ldc.i4.1 
+IL_00F4: ret 
+IL_00F5: ldarg.0 
+IL_00F6: ldc.i4.m1 
+IL_00F7: stfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Int32 <>1__state
+IL_00FC: ldc.i4.1 
+IL_00FD: ldc.i4.2 
+IL_00FE: ldc.i4.0 
+IL_00FF: call Verse.AI.Toils_Goto::Verse.AI.Toil GotoThing(Verse.AI.TargetIndex, Verse.AI.PathEndMode, Boolean)
+IL_0104: ldc.i4.1 
+IL_0105: ldarg.0 
+IL_0106: ldfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Verse.AI.Toil <initExtractTargetFromQueue>5__2
+IL_010B: call Verse.AI.ToilJumpConditions::Verse.AI.Toil JumpIfDespawnedOrNullOrForbidden(Verse.AI.Toil, Verse.AI.TargetIndex, Verse.AI.Toil)
+IL_0110: stloc.3 
+IL_0111: ldloc.1 
+IL_0112: callvirt RimWorld.JobDriver_PlantWork::Verse.DesignationDef get_RequiredDesignation()
+IL_0117: brfalse.s IL_0127
+IL_0119: ldloc.3 
+IL_011A: ldc.i4.1 
+IL_011B: ldloc.1 
+IL_011C: callvirt RimWorld.JobDriver_PlantWork::Verse.DesignationDef get_RequiredDesignation()
+IL_0121: call Verse.AI.ToilFailConditions::Verse.AI.Toil FailOnThingMissingDesignation[Toil](Verse.AI.Toil, Verse.AI.TargetIndex, Verse.DesignationDef)
+IL_0126: pop 
+IL_0127: ldarg.0 
+IL_0128: ldloc.3 
+IL_0129: stfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Verse.AI.Toil <>2__current
+IL_012E: ldarg.0 
+IL_012F: ldc.i4.5 
+IL_0130: stfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Int32 <>1__state
+IL_0135: ldc.i4.1 
+IL_0136: ret 
+IL_0137: ldarg.0 
+IL_0138: ldc.i4.m1 
+IL_0139: stfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Int32 <>1__state
+IL_013E: ldarg.0 
+IL_013F: ldfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::<>c__DisplayClass11_0 <>8__1
+IL_0144: ldstr "MakeNewToils"
+IL_0149: call Verse.ToilMaker::Verse.AI.Toil MakeToil(System.String)
+IL_014E: stfld RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::Verse.AI.Toil cut
+IL_0153: ldarg.0 
+IL_0154: ldfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::<>c__DisplayClass11_0 <>8__1
+IL_0159: ldfld RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::Verse.AI.Toil cut
+IL_015E: ldarg.0 
+IL_015F: ldfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::<>c__DisplayClass11_0 <>8__1
+IL_0164: ldftn RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::Void <MakeNewToils>b__1(Int32)
+IL_016A: newobj System.Action`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]::Void .ctor(System.Object, IntPtr)
+IL_016F: stfld Verse.AI.Toil::System.Action`1[System.Int32] tickIntervalAction
+IL_0174: ldarg.0 
+IL_0175: ldfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::<>c__DisplayClass11_0 <>8__1
+IL_017A: ldfld RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::Verse.AI.Toil cut
+IL_017F: ldc.i4.1 
+IL_0180: call Verse.AI.ToilFailConditions::Verse.AI.Toil FailOnDespawnedNullOrForbidden[Toil](Verse.AI.Toil, Verse.AI.TargetIndex)
+IL_0185: pop 
+IL_0186: ldloc.1 
+IL_0187: callvirt RimWorld.JobDriver_PlantWork::Verse.DesignationDef get_RequiredDesignation()
+IL_018C: brfalse.s IL_01A6
+IL_018E: ldarg.0 
+IL_018F: ldfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::<>c__DisplayClass11_0 <>8__1
+IL_0194: ldfld RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::Verse.AI.Toil cut
+IL_0199: ldc.i4.1 
+IL_019A: ldloc.1 
+IL_019B: callvirt RimWorld.JobDriver_PlantWork::Verse.DesignationDef get_RequiredDesignation()
+IL_01A0: call Verse.AI.ToilFailConditions::Verse.AI.Toil FailOnThingMissingDesignation[Toil](Verse.AI.Toil, Verse.AI.TargetIndex, Verse.DesignationDef)
+IL_01A5: pop 
+IL_01A6: ldarg.0 
+IL_01A7: ldfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::<>c__DisplayClass11_0 <>8__1
+IL_01AC: ldfld RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::Verse.AI.Toil cut
+IL_01B1: ldc.i4.1 
+IL_01B2: ldc.i4.2 
+IL_01B3: call Verse.AI.ToilFailConditions::Verse.AI.Toil FailOnCannotTouch[Toil](Verse.AI.Toil, Verse.AI.TargetIndex, Verse.AI.PathEndMode)
+IL_01B8: pop 
+IL_01B9: ldarg.0 
+IL_01BA: ldfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::<>c__DisplayClass11_0 <>8__1
+IL_01BF: ldfld RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::Verse.AI.Toil cut
+IL_01C4: ldc.i4.5 
+IL_01C5: stfld Verse.AI.Toil::Verse.AI.ToilCompleteMode defaultCompleteMode
+IL_01CA: ldarg.0 
+IL_01CB: ldfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::<>c__DisplayClass11_0 <>8__1
+IL_01D0: ldfld RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::Verse.AI.Toil cut
+IL_01D5: ldloc.1 
+IL_01D6: call RimWorld.JobDriver_PlantWork::RimWorld.Plant get_Plant()
+IL_01DB: dup 
+IL_01DC: brtrue.s IL_01E2
+IL_01DE: pop 
+IL_01DF: ldc.i4.0 
+IL_01E0: br.s IL_01F1
+IL_01E2: ldfld Verse.Thing::Verse.ThingDef def
+IL_01E7: ldfld Verse.ThingDef::RimWorld.PlantProperties plant
+IL_01EC: callvirt RimWorld.PlantProperties::Boolean get_IsTree()
+IL_01F1: brtrue.s IL_01FA
+IL_01F3: ldsfld RimWorld.EffecterDefOf::Verse.EffecterDef Harvest_Plant
+IL_01F8: br.s IL_01FF
+IL_01FA: ldsfld RimWorld.EffecterDefOf::Verse.EffecterDef Harvest_Tree
+IL_01FF: ldc.i4.1 
+IL_0200: ldloca.s 4
+IL_0202: initobj ::System.Nullable`1[UnityEngine.Color]
+IL_0208: ldloc.s 4
+IL_020A: call Verse.AI.ToilEffects::Verse.AI.Toil WithEffect(Verse.AI.Toil, Verse.EffecterDef, Verse.AI.TargetIndex, System.Nullable`1[UnityEngine.Color])
+IL_020F: pop 
+IL_0210: ldarg.0 
+IL_0211: ldfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::<>c__DisplayClass11_0 <>8__1
+IL_0216: ldfld RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::Verse.AI.Toil cut
+IL_021B: ldc.i4.1 
+IL_021C: ldarg.0 
+IL_021D: ldfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::<>c__DisplayClass11_0 <>8__1
+IL_0222: ldftn RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::Single <MakeNewToils>b__2()
+IL_0228: newobj System.Func`1[[System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]::Void .ctor(System.Object, IntPtr)
+IL_022D: ldc.i4.1 
+IL_022E: ldc.r4 -0.5
+IL_0233: ldc.i4.0 
+IL_0234: call Verse.AI.ToilEffects::Verse.AI.Toil WithProgressBar(Verse.AI.Toil, Verse.AI.TargetIndex, System.Func`1[System.Single], Boolean, Single, Boolean)
+IL_0239: pop 
+IL_023A: ldarg.0 
+IL_023B: ldfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::<>c__DisplayClass11_0 <>8__1
+IL_0240: ldfld RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::Verse.AI.Toil cut
+IL_0245: ldarg.0 
+IL_0246: ldfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::<>c__DisplayClass11_0 <>8__1
+IL_024B: ldftn RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::Verse.SoundDef <MakeNewToils>b__3()
+IL_0251: newobj System.Func`1[[Verse.SoundDef, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Void .ctor(System.Object, IntPtr)
+IL_0256: ldc.r4 1
+IL_025B: call Verse.AI.ToilEffects::Verse.AI.Toil PlaySustainerOrSound(Verse.AI.Toil, System.Func`1[Verse.SoundDef], Single)
+IL_0260: pop 
+IL_0261: ldarg.0 
+IL_0262: ldfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::<>c__DisplayClass11_0 <>8__1
+IL_0267: ldfld RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::Verse.AI.Toil cut
+IL_026C: ldsfld RimWorld.JobDriver_PlantWork+<>c::System.Func`1[RimWorld.SkillDef] <>9__11_4
+IL_0271: dup 
+IL_0272: brtrue.s IL_028B
+IL_0274: pop 
+IL_0275: ldsfld RimWorld.JobDriver_PlantWork+<>c::<>c <>9
+IL_027A: ldftn RimWorld.JobDriver_PlantWork+<>c::RimWorld.SkillDef <MakeNewToils>b__11_4()
+IL_0280: newobj System.Func`1[[RimWorld.SkillDef, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Void .ctor(System.Object, IntPtr)
+IL_0285: dup 
+IL_0286: stsfld RimWorld.JobDriver_PlantWork+<>c::System.Func`1[RimWorld.SkillDef] <>9__11_4
+IL_028B: stfld Verse.AI.Toil::System.Func`1[RimWorld.SkillDef] activeSkill
+IL_0290: ldarg.0 
+IL_0291: ldarg.0 
+IL_0292: ldfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::<>c__DisplayClass11_0 <>8__1
+IL_0297: ldfld RimWorld.JobDriver_PlantWork+<>c__DisplayClass11_0::Verse.AI.Toil cut
+IL_029C: stfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Verse.AI.Toil <>2__current
+IL_02A1: ldarg.0 
+IL_02A2: ldc.i4.6 
+IL_02A3: stfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Int32 <>1__state
+IL_02A8: ldc.i4.1 
+IL_02A9: ret 
+IL_02AA: ldarg.0 
+IL_02AB: ldc.i4.m1 
+IL_02AC: stfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Int32 <>1__state
+IL_02B1: ldloc.1 
+IL_02B2: callvirt RimWorld.JobDriver_PlantWork::Verse.AI.Toil PlantWorkDoneToil()
+IL_02B7: stloc.2 
+IL_02B8: ldloc.2 
+IL_02B9: brfalse.s IL_02D2
+IL_02BB: ldarg.0 
+IL_02BC: ldloc.2 
+IL_02BD: stfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Verse.AI.Toil <>2__current
+IL_02C2: ldarg.0 
+IL_02C3: ldc.i4.7 
+IL_02C4: stfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Int32 <>1__state
+IL_02C9: ldc.i4.1 
+IL_02CA: ret 
+IL_02CB: ldarg.0 
+IL_02CC: ldc.i4.m1 
+IL_02CD: stfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Int32 <>1__state
+IL_02D2: ldarg.0 
+IL_02D3: ldarg.0 
+IL_02D4: ldfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Verse.AI.Toil <initExtractTargetFromQueue>5__2
+IL_02D9: call Verse.AI.Toils_Jump::Verse.AI.Toil Jump(Verse.AI.Toil)
+IL_02DE: stfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Verse.AI.Toil <>2__current
+IL_02E3: ldarg.0 
+IL_02E4: ldc.i4.8 
+IL_02E5: stfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Int32 <>1__state
+IL_02EA: ldc.i4.1 
+IL_02EB: ret 
+IL_02EC: ldarg.0 
+IL_02ED: ldc.i4.m1 
+IL_02EE: stfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Int32 <>1__state
+IL_02F3: ldc.i4.0 
+IL_02F4: ret 
+METHOD RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::System.Collections.Generic.IEnumerator<Verse.AI.Toil>.get_Current TOKEN 100694603 ATTR PrivateScope, Private, Final, Virtual, HideBySig, VtableLayoutMask, SpecialName
+IL_0000: ldarg.0 
+IL_0001: ldfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Verse.AI.Toil <>2__current
+IL_0006: ret 
+METHOD RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::System.Collections.IEnumerator.Reset TOKEN 100694604 ATTR PrivateScope, Private, Final, Virtual, HideBySig, VtableLayoutMask
+IL_0000: newobj System.NotSupportedException::Void .ctor()
+IL_0005: throw 
+METHOD RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::System.Collections.IEnumerator.get_Current TOKEN 100694605 ATTR PrivateScope, Private, Final, Virtual, HideBySig, VtableLayoutMask, SpecialName
+IL_0000: ldarg.0 
+IL_0001: ldfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Verse.AI.Toil <>2__current
+IL_0006: ret 
+METHOD RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::System.Collections.Generic.IEnumerable<Verse.AI.Toil>.GetEnumerator TOKEN 100694606 ATTR PrivateScope, Private, Final, Virtual, HideBySig, VtableLayoutMask
+IL_0000: ldarg.0 
+IL_0001: ldfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Int32 <>1__state
+IL_0006: ldc.i4.s -2
+IL_0008: bne.un.s IL_0022
+IL_000A: ldarg.0 
+IL_000B: ldfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Int32 <>l__initialThreadId
+IL_0010: call System.Environment::Int32 get_CurrentManagedThreadId()
+IL_0015: bne.un.s IL_0022
+IL_0017: ldarg.0 
+IL_0018: ldc.i4.0 
+IL_0019: stfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Int32 <>1__state
+IL_001E: ldarg.0 
+IL_001F: stloc.0 
+IL_0020: br.s IL_0035
+IL_0022: ldc.i4.0 
+IL_0023: newobj RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::Void .ctor(Int32)
+IL_0028: stloc.0 
+IL_0029: ldloc.0 
+IL_002A: ldarg.0 
+IL_002B: ldfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::RimWorld.JobDriver_PlantWork <>4__this
+IL_0030: stfld RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::RimWorld.JobDriver_PlantWork <>4__this
+IL_0035: ldloc.0 
+IL_0036: ret 
+METHOD RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::System.Collections.IEnumerable.GetEnumerator TOKEN 100694607 ATTR PrivateScope, Private, Final, Virtual, HideBySig, VtableLayoutMask
+IL_0000: ldarg.0 
+IL_0001: call RimWorld.JobDriver_PlantWork+<MakeNewToils>d__11::System.Collections.Generic.IEnumerator`1[Verse.AI.Toil] System.Collections.Generic.IEnumerable<Verse.AI.Toil>.GetEnumerator()
+IL_0006: ret 
+AVAILABLE XML METHODS
+Void System.IDisposable.Dispose()
+Boolean MoveNext()
+Verse.AI.Toil System.Collections.Generic.IEnumerator<Verse.AI.Toil>.get_Current()
+Void System.Collections.IEnumerator.Reset()
+System.Object System.Collections.IEnumerator.get_Current()
+System.Collections.Generic.IEnumerator`1[Verse.AI.Toil] System.Collections.Generic.IEnumerable<Verse.AI.Toil>.GetEnumerator()
+System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+Void .ctor(Int32)
+METHOD RimWorld.WorkGiver_PlantsCut::PotentialWorkThingsGlobal TOKEN 100697451 ATTR PrivateScope, Public, Virtual, HideBySig
+IL_0000: ldc.i4.s -2
+IL_0002: newobj RimWorld.WorkGiver_PlantsCut+<PotentialWorkThingsGlobal>d__1::Void .ctor(Int32)
+IL_0007: dup 
+IL_0008: ldarg.1 
+IL_0009: stfld RimWorld.WorkGiver_PlantsCut+<PotentialWorkThingsGlobal>d__1::Verse.Pawn <>3__pawn
+IL_000E: ret 
+METHOD RimWorld.WorkGiver_PlantsCut::JobOnThing TOKEN 100697454 ATTR PrivateScope, Public, Virtual, HideBySig
+IL_0000: ldarg.2 
+IL_0001: ldfld Verse.Thing::Verse.ThingDef def
+IL_0006: ldfld Verse.ThingDef::Verse.ThingCategory category
+IL_000B: ldc.i4.4 
+IL_000C: beq.s IL_0010
+IL_000E: ldnull 
+IL_000F: ret 
+IL_0010: ldarg.1 
+IL_0011: ldarg.2 
+IL_0012: call Verse.LocalTargetInfo::Verse.LocalTargetInfo op_Implicit(Verse.Thing)
+IL_0017: ldc.i4.1 
+IL_0018: ldc.i4.m1 
+IL_0019: ldnull 
+IL_001A: ldarg.3 
+IL_001B: call Verse.AI.ReservationUtility::Boolean CanReserve(Verse.Pawn, Verse.LocalTargetInfo, Int32, Int32, Verse.ReservationLayerDef, Boolean)
+IL_0020: brtrue.s IL_0024
+IL_0022: ldnull 
+IL_0023: ret 
+IL_0024: ldarg.2 
+IL_0025: call RimWorld.FireUtility::Boolean IsBurning(Verse.Thing)
+IL_002A: brfalse.s IL_002E
+IL_002C: ldnull 
+IL_002D: ret 
+IL_002E: ldarg.2 
+IL_002F: ldarg.1 
+IL_0030: call RimWorld.PlantUtility::Boolean PawnWillingToCutPlant_Job(Verse.Thing, Verse.Pawn)
+IL_0035: brtrue.s IL_0039
+IL_0037: ldnull 
+IL_0038: ret 
+IL_0039: ldarg.3 
+IL_003A: brtrue.s IL_0050
+IL_003C: ldarg.2 
+IL_003D: ldloca.s 0
+IL_003F: call Verse.ThingCompUtility::Boolean TryGetComp[CompPlantPreventCutting](Verse.Thing, RimWorld.CompPlantPreventCutting ByRef)
+IL_0044: brfalse.s IL_0050
+IL_0046: ldloc.0 
+IL_0047: callvirt RimWorld.CompPlantPreventCutting::Boolean get_PreventCutting()
+IL_004C: brfalse.s IL_0050
+IL_004E: ldnull 
+IL_004F: ret 
+IL_0050: ldarg.1 
+IL_0051: callvirt Verse.Thing::Verse.Map get_Map()
+IL_0056: ldfld Verse.Map::Verse.DesignationManager designationManager
+IL_005B: ldarg.2 
+IL_005C: callvirt Verse.DesignationManager::System.Collections.Generic.List`1[Verse.Designation] AllDesignationsOn(Verse.Thing)
+IL_0061: callvirt System.Collections.Generic.List`1[[Verse.Designation, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Enumerator GetEnumerator()
+IL_0066: stloc.1 
+IL_0067: br.s IL_00C2
+IL_0069: ldloca.s 1
+IL_006B: call System.Collections.Generic.List`1+Enumerator[[Verse.Designation, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Verse.Designation get_Current()
+IL_0070: stloc.2 
+IL_0071: ldloc.2 
+IL_0072: ldfld Verse.Designation::Verse.DesignationDef def
+IL_0077: ldsfld RimWorld.DesignationDefOf::Verse.DesignationDef HarvestPlant
+IL_007C: bne.un.s IL_00A2
+IL_007E: ldarg.2 
+IL_007F: castclass ::RimWorld.Plant
+IL_0084: callvirt RimWorld.Plant::Boolean get_HarvestableNow()
+IL_0089: brtrue.s IL_008F
+IL_008B: ldnull 
+IL_008C: stloc.3 
+IL_008D: leave.s IL_00DD
+IL_008F: ldsfld RimWorld.JobDefOf::Verse.JobDef HarvestDesignated
+IL_0094: ldarg.2 
+IL_0095: call Verse.LocalTargetInfo::Verse.LocalTargetInfo op_Implicit(Verse.Thing)
+IL_009A: call Verse.JobMaker::Verse.AI.Job MakeJob(Verse.JobDef, Verse.LocalTargetInfo)
+IL_009F: stloc.3 
+IL_00A0: leave.s IL_00DD
+IL_00A2: ldloc.2 
+IL_00A3: ldfld Verse.Designation::Verse.DesignationDef def
+IL_00A8: ldsfld RimWorld.DesignationDefOf::Verse.DesignationDef CutPlant
+IL_00AD: bne.un.s IL_00C2
+IL_00AF: ldsfld RimWorld.JobDefOf::Verse.JobDef CutPlantDesignated
+IL_00B4: ldarg.2 
+IL_00B5: call Verse.LocalTargetInfo::Verse.LocalTargetInfo op_Implicit(Verse.Thing)
+IL_00BA: call Verse.JobMaker::Verse.AI.Job MakeJob(Verse.JobDef, Verse.LocalTargetInfo)
+IL_00BF: stloc.3 
+IL_00C0: leave.s IL_00DD
+IL_00C2: ldloca.s 1
+IL_00C4: call System.Collections.Generic.List`1+Enumerator[[Verse.Designation, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Boolean MoveNext()
+IL_00C9: brtrue.s IL_0069
+IL_00CB: leave.s IL_00DB
+IL_00CD: ldloca.s 1
+IL_00CF: constrained. System.Collections.Generic.List`1::System.Collections.Generic.List`1+Enumerator[Verse.Designation]
+IL_00D5: callvirt System.IDisposable::Void Dispose()
+IL_00DA: endfinally 
+IL_00DB: ldnull 
+IL_00DC: ret 
+IL_00DD: ldloc.3 
+IL_00DE: ret 
+AVAILABLE XML METHODS
+Verse.Danger MaxPathDanger(Verse.Pawn)
+System.Collections.Generic.IEnumerable`1[Verse.Thing] PotentialWorkThingsGlobal(Verse.Pawn)
+Boolean ShouldSkip(Verse.Pawn, Boolean)
+Verse.AI.PathEndMode get_PathEndMode()
+Verse.AI.Job JobOnThing(Verse.Pawn, Verse.Thing, Boolean)
+System.String PostProcessedGerund(Verse.AI.Job)
+Void .ctor()
+METHOD Verse.AI.Toils_Goto::GotoThing TOKEN 100688149 ATTR PrivateScope, Public, Static, HideBySig
+IL_0000: newobj Verse.AI.Toils_Goto+<>c__DisplayClass1_0::Void .ctor()
+IL_0005: stloc.0 
+IL_0006: ldloc.0 
+IL_0007: ldarg.0 
+IL_0008: stfld Verse.AI.Toils_Goto+<>c__DisplayClass1_0::Verse.AI.TargetIndex ind
+IL_000D: ldloc.0 
+IL_000E: ldarg.2 
+IL_000F: stfld Verse.AI.Toils_Goto+<>c__DisplayClass1_0::Boolean canGotoSpawnedParent
+IL_0014: ldloc.0 
+IL_0015: ldarg.1 
+IL_0016: stfld Verse.AI.Toils_Goto+<>c__DisplayClass1_0::Verse.AI.PathEndMode peMode
+IL_001B: ldloc.0 
+IL_001C: ldstr "GotoThing"
+IL_0021: call Verse.ToilMaker::Verse.AI.Toil MakeToil(System.String)
+IL_0026: stfld Verse.AI.Toils_Goto+<>c__DisplayClass1_0::Verse.AI.Toil toil
+IL_002B: ldloc.0 
+IL_002C: ldfld Verse.AI.Toils_Goto+<>c__DisplayClass1_0::Verse.AI.Toil toil
+IL_0031: ldloc.0 
+IL_0032: ldftn Verse.AI.Toils_Goto+<>c__DisplayClass1_0::Void <GotoThing>b__0()
+IL_0038: newobj System.Action::Void .ctor(System.Object, IntPtr)
+IL_003D: stfld Verse.AI.Toil::System.Action initAction
+IL_0042: ldloc.0 
+IL_0043: ldfld Verse.AI.Toils_Goto+<>c__DisplayClass1_0::Verse.AI.Toil toil
+IL_0048: ldc.i4.2 
+IL_0049: stfld Verse.AI.Toil::Verse.AI.ToilCompleteMode defaultCompleteMode
+IL_004E: ldloc.0 
+IL_004F: ldfld Verse.AI.Toils_Goto+<>c__DisplayClass1_0::Boolean canGotoSpawnedParent
+IL_0054: brfalse.s IL_006A
+IL_0056: ldloc.0 
+IL_0057: ldfld Verse.AI.Toils_Goto+<>c__DisplayClass1_0::Verse.AI.Toil toil
+IL_005C: ldloc.0 
+IL_005D: ldfld Verse.AI.Toils_Goto+<>c__DisplayClass1_0::Verse.AI.TargetIndex ind
+IL_0062: call Verse.AI.ToilFailConditions::Verse.AI.Toil FailOnSelfAndParentsDespawnedOrNull[Toil](Verse.AI.Toil, Verse.AI.TargetIndex)
+IL_0067: pop 
+IL_0068: br.s IL_007C
+IL_006A: ldloc.0 
+IL_006B: ldfld Verse.AI.Toils_Goto+<>c__DisplayClass1_0::Verse.AI.Toil toil
+IL_0070: ldloc.0 
+IL_0071: ldfld Verse.AI.Toils_Goto+<>c__DisplayClass1_0::Verse.AI.TargetIndex ind
+IL_0076: call Verse.AI.ToilFailConditions::Verse.AI.Toil FailOnDespawnedOrNull[Toil](Verse.AI.Toil, Verse.AI.TargetIndex)
+IL_007B: pop 
+IL_007C: ldloc.0 
+IL_007D: ldfld Verse.AI.Toils_Goto+<>c__DisplayClass1_0::Verse.AI.Toil toil
+IL_0082: ret 
+METHOD Verse.AI.Toils_Goto::GotoThing TOKEN 100688150 ATTR PrivateScope, Public, Static, HideBySig
+IL_0000: newobj Verse.AI.Toils_Goto+<>c__DisplayClass2_0::Void .ctor()
+IL_0005: stloc.0 
+IL_0006: ldloc.0 
+IL_0007: ldarg.1 
+IL_0008: stfld Verse.AI.Toils_Goto+<>c__DisplayClass2_0::Verse.IntVec3 exactCell
+IL_000D: ldloc.0 
+IL_000E: ldstr "GotoThing"
+IL_0013: call Verse.ToilMaker::Verse.AI.Toil MakeToil(System.String)
+IL_0018: stfld Verse.AI.Toils_Goto+<>c__DisplayClass2_0::Verse.AI.Toil toil
+IL_001D: ldloc.0 
+IL_001E: ldfld Verse.AI.Toils_Goto+<>c__DisplayClass2_0::Verse.AI.Toil toil
+IL_0023: ldloc.0 
+IL_0024: ldftn Verse.AI.Toils_Goto+<>c__DisplayClass2_0::Void <GotoThing>b__0()
+IL_002A: newobj System.Action::Void .ctor(System.Object, IntPtr)
+IL_002F: stfld Verse.AI.Toil::System.Action initAction
+IL_0034: ldloc.0 
+IL_0035: ldfld Verse.AI.Toils_Goto+<>c__DisplayClass2_0::Verse.AI.Toil toil
+IL_003A: ldc.i4.2 
+IL_003B: stfld Verse.AI.Toil::Verse.AI.ToilCompleteMode defaultCompleteMode
+IL_0040: ldloc.0 
+IL_0041: ldfld Verse.AI.Toils_Goto+<>c__DisplayClass2_0::Verse.AI.Toil toil
+IL_0046: ldarg.0 
+IL_0047: call Verse.AI.ToilFailConditions::Verse.AI.Toil FailOnDespawnedOrNull[Toil](Verse.AI.Toil, Verse.AI.TargetIndex)
+IL_004C: pop 
+IL_004D: ldloc.0 
+IL_004E: ldfld Verse.AI.Toils_Goto+<>c__DisplayClass2_0::Verse.AI.Toil toil
+IL_0053: ret 
+AVAILABLE XML METHODS
+Verse.AI.Toil Goto(Verse.AI.TargetIndex, Verse.AI.PathEndMode)
+Verse.AI.Toil GotoThing(Verse.AI.TargetIndex, Verse.AI.PathEndMode, Boolean)
+Verse.AI.Toil GotoThing(Verse.AI.TargetIndex, Verse.IntVec3)
+Verse.AI.Toil GotoCell(Verse.AI.TargetIndex, Verse.AI.PathEndMode)
+Verse.AI.Toil GotoCell(Verse.IntVec3, Verse.AI.PathEndMode)
+Verse.AI.Toil MoveOffTargetBlueprint(Verse.AI.TargetIndex)
+Verse.AI.Toil GotoBuild(Verse.AI.TargetIndex)
+ENUM None=0
+ENUM A=1
+ENUM B=2
+ENUM C=3

@@ -1,0 +1,59 @@
+{
+  "utc": 1794435991.502578,
+  "reader": "Windows python.exe",
+  "rows": [
+    {
+      "label": "native-original",
+      "samples": [
+        {
+          "utc": 1794435988.572692,
+          "bytes": 8538538,
+          "sha256": "db670eb881fe278f6c7427d25c53426bc466f09621fc07da3c1960c270cef411",
+          "NUL_count": 32,
+          "parse": "not well-formed (invalid token): line 141345, column 21"
+        },
+        {
+          "utc": 1794435988.9957495,
+          "bytes": 8538538,
+          "sha256": "db670eb881fe278f6c7427d25c53426bc466f09621fc07da3c1960c270cef411",
+          "NUL_count": 32,
+          "parse": "not well-formed (invalid token): line 141345, column 21"
+        },
+        {
+          "utc": 1794435989.4201887,
+          "bytes": 8538538,
+          "sha256": "db670eb881fe278f6c7427d25c53426bc466f09621fc07da3c1960c270cef411",
+          "NUL_count": 32,
+          "parse": "not well-formed (invalid token): line 141345, column 21"
+        }
+      ]
+    },
+    {
+      "label": "retained-UNC",
+      "samples": [
+        {
+          "utc": 1794435990.0241487,
+          "bytes": 8538538,
+          "sha256": "db670eb881fe278f6c7427d25c53426bc466f09621fc07da3c1960c270cef411",
+          "NUL_count": 32,
+          "parse": "not well-formed (invalid token): line 141345, column 21"
+        },
+        {
+          "utc": 1794435990.6277635,
+          "bytes": 8538538,
+          "sha256": "db670eb881fe278f6c7427d25c53426bc466f09621fc07da3c1960c270cef411",
+          "NUL_count": 32,
+          "parse": "not well-formed (invalid token): line 141345, column 21"
+        },
+        {
+          "utc": 1794435991.2257507,
+          "bytes": 8538538,
+          "sha256": "db670eb881fe278f6c7427d25c53426bc466f09621fc07da3c1960c270cef411",
+          "NUL_count": 32,
+          "parse": "not well-formed (invalid token): line 141345, column 21"
+        }
+      ]
+    }
+  ],
+  "limit": "Current stable retained/original bytes only; cannot identify initial producer/expansion/write stage."
+}

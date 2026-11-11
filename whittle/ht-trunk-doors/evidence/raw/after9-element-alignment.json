@@ -1,0 +1,173 @@
+{
+  "utc": 1794435807.982449,
+  "initial_equal_length_check": "refused: Begin element length differed, so no equal-length assumption retained",
+  "files": {
+    "begin": {
+      "bytes": 8535600,
+      "sha256": "2bfd0d881ac872421b5df412bc09be5222cd73b7d175476e3d49a932088aefcb"
+    },
+    "invalid": {
+      "bytes": 8538538,
+      "sha256": "db670eb881fe278f6c7427d25c53426bc466f09621fc07da3c1960c270cef411"
+    },
+    "restored": {
+      "bytes": 8538655,
+      "sha256": "15b84dede57ab411f7dce04cd92af952a0a31a76236db08a72e4b2195bd6fa72"
+    }
+  },
+  "rows": [
+    {
+      "offset": 6057987,
+      "file_alignment16": 3,
+      "element_offset": 16,
+      "id": "Plant_Grass8537",
+      "invalid_element": "b'<thing Class=\"Pl\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00f>Plant_Grass</def>\\r\\n\\t\\t\\t\\t\\t\\t<id>Plant_Grass8537</id>\\r\\n\\t\\t\\t\\t\\t\\t<map>0</map>\\r\\n\\t\\t\\t\\t\\t\\t<pos>(53, 0, 124)</pos>\\r\\n\\t\\t\\t\\t\\t\\t<health>85</health>\\r\\n\\t\\t\\t\\t\\t\\t<questTags IsNull=\"True\" />\\r\\n\\t\\t\\t\\t\\t\\t<spawnedTick>0</spawnedTick>\\r\\n\\t\\t\\t\\t\\t\\t<despawnedTick>-1</despawnedTick>\\r\\n\\t\\t\\t\\t\\t\\t<beenRevealed>True</beenRevealed>\\r\\n\\t\\t\\t\\t\\t\\t<growth>0.957859457</growth>\\r\\n\\t\\t\\t\\t\\t\\t<age>208672</age\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\r\\n\\t\\t\\t\\t\\t<thing Class=\"Plant\">\\r\\n\\t\\t\\t\\t\\t\\t<def>Plant_PincushionCactus</def>\\r\\n\\t\\t\\t\\t\\t\\t<id>Plant_PincushionCactus8538</id>\\r\\n\\t\\t\\t\\t\\t\\t<map>0</map>\\r\\n\\t\\t\\t\\t\\t\\t<pos>(202, 0, 60)</pos>\\r\\n\\t\\t\\t\\t\\t\\t<health>150</health>\\r\\n\\t\\t\\t\\t\\t\\t<questTags IsNull=\"True\" />\\r\\n\\t\\t\\t\\t\\t\\t<spawnedTick>0</spawnedTick>\\r\\n\\t\\t\\t\\t\\t\\t<despawnedTick>-1</despawnedTick>\\r\\n\\t\\t\\t\\t\\t\\t<beenRevealed>True</beenRevealed>\\r\\n\\t\\t\\t\\t\\t\\t<growth>0.325381875</growth>\\r\\n\\t\\t\\t\\t\\t\\t<age>3416</age>\\r\\n\\t\\t\\t\\t\\t</thing>'",
+      "invalid_element_length": 808,
+      "references": {
+        "begin": {
+          "element_length": 390,
+          "clean_element": "b'<thing Class=\"Plant\">\\r\\n\\t\\t\\t\\t\\t\\t<def>Plant_Grass</def>\\r\\n\\t\\t\\t\\t\\t\\t<id>Plant_Grass8537</id>\\r\\n\\t\\t\\t\\t\\t\\t<map>0</map>\\r\\n\\t\\t\\t\\t\\t\\t<pos>(53, 0, 124)</pos>\\r\\n\\t\\t\\t\\t\\t\\t<health>85</health>\\r\\n\\t\\t\\t\\t\\t\\t<questTags IsNull=\"True\" />\\r\\n\\t\\t\\t\\t\\t\\t<spawnedTick>0</spawnedTick>\\r\\n\\t\\t\\t\\t\\t\\t<despawnedTick>-1</despawnedTick>\\r\\n\\t\\t\\t\\t\\t\\t<beenRevealed>True</beenRevealed>\\r\\n\\t\\t\\t\\t\\t\\t<growth>0.957859457</growth>\\r\\n\\t\\t\\t\\t\\t\\t<age>208672</age>\\r\\n\\t\\t\\t\\t\\t</thing>'",
+          "changes": [
+            {
+              "op": "replace",
+              "invalid_range": [
+                16,
+                32
+              ],
+              "clean_range": [
+                16,
+                32
+              ],
+              "invalid": "b'\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00'",
+              "clean": "b'ant\">\\r\\n\\t\\t\\t\\t\\t\\t<de'"
+            },
+            {
+              "op": "delete",
+              "invalid_range": [
+                374,
+                792
+              ],
+              "clean_range": [
+                374,
+                374
+              ],
+              "invalid": "b'\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\r\\n\\t\\t\\t\\t\\t<thing Class=\"Plant\">\\r\\n\\t\\t\\t\\t\\t\\t<def>Plant_PincushionCactus</def>\\r\\n\\t\\t\\t\\t\\t\\t<id>Plant_PincushionCactus8538</id>\\r\\n\\t\\t\\t\\t\\t\\t<map>0</map>\\r\\n\\t\\t\\t\\t\\t\\t<pos>(202, 0, 60)</pos>\\r\\n\\t\\t\\t\\t\\t\\t<health>150</health>\\r\\n\\t\\t\\t\\t\\t\\t<questTags IsNull=\"True\" />\\r\\n\\t\\t\\t\\t\\t\\t<spawnedTick>0</spawnedTick>\\r\\n\\t\\t\\t\\t\\t\\t<despawnedTick>-1</despawnedTick>\\r\\n\\t\\t\\t\\t\\t\\t<beenRevealed>True</beenRevealed>\\r\\n\\t\\t\\t\\t\\t\\t<growth>0.325381875</growth>\\r\\n\\t\\t\\t\\t\\t\\t<age>3416</age'",
+              "clean": "b''"
+            }
+          ],
+          "element_sha256": "c46be74353e918dd461eaf6ac30c1727c79b695e989f596019016c0ef865c54c"
+        },
+        "restored": {
+          "element_length": 390,
+          "clean_element": "b'<thing Class=\"Plant\">\\r\\n\\t\\t\\t\\t\\t\\t<def>Plant_Grass</def>\\r\\n\\t\\t\\t\\t\\t\\t<id>Plant_Grass8537</id>\\r\\n\\t\\t\\t\\t\\t\\t<map>0</map>\\r\\n\\t\\t\\t\\t\\t\\t<pos>(53, 0, 124)</pos>\\r\\n\\t\\t\\t\\t\\t\\t<health>85</health>\\r\\n\\t\\t\\t\\t\\t\\t<questTags IsNull=\"True\" />\\r\\n\\t\\t\\t\\t\\t\\t<spawnedTick>0</spawnedTick>\\r\\n\\t\\t\\t\\t\\t\\t<despawnedTick>-1</despawnedTick>\\r\\n\\t\\t\\t\\t\\t\\t<beenRevealed>True</beenRevealed>\\r\\n\\t\\t\\t\\t\\t\\t<growth>0.957859457</growth>\\r\\n\\t\\t\\t\\t\\t\\t<age>208672</age>\\r\\n\\t\\t\\t\\t\\t</thing>'",
+          "changes": [
+            {
+              "op": "replace",
+              "invalid_range": [
+                16,
+                32
+              ],
+              "clean_range": [
+                16,
+                32
+              ],
+              "invalid": "b'\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00'",
+              "clean": "b'ant\">\\r\\n\\t\\t\\t\\t\\t\\t<de'"
+            },
+            {
+              "op": "delete",
+              "invalid_range": [
+                374,
+                792
+              ],
+              "clean_range": [
+                374,
+                374
+              ],
+              "invalid": "b'\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\r\\n\\t\\t\\t\\t\\t<thing Class=\"Plant\">\\r\\n\\t\\t\\t\\t\\t\\t<def>Plant_PincushionCactus</def>\\r\\n\\t\\t\\t\\t\\t\\t<id>Plant_PincushionCactus8538</id>\\r\\n\\t\\t\\t\\t\\t\\t<map>0</map>\\r\\n\\t\\t\\t\\t\\t\\t<pos>(202, 0, 60)</pos>\\r\\n\\t\\t\\t\\t\\t\\t<health>150</health>\\r\\n\\t\\t\\t\\t\\t\\t<questTags IsNull=\"True\" />\\r\\n\\t\\t\\t\\t\\t\\t<spawnedTick>0</spawnedTick>\\r\\n\\t\\t\\t\\t\\t\\t<despawnedTick>-1</despawnedTick>\\r\\n\\t\\t\\t\\t\\t\\t<beenRevealed>True</beenRevealed>\\r\\n\\t\\t\\t\\t\\t\\t<growth>0.325381875</growth>\\r\\n\\t\\t\\t\\t\\t\\t<age>3416</age'",
+              "clean": "b''"
+            }
+          ],
+          "element_sha256": "c46be74353e918dd461eaf6ac30c1727c79b695e989f596019016c0ef865c54c"
+        }
+      }
+    },
+    {
+      "offset": 6058345,
+      "file_alignment16": 9,
+      "element_offset": 374,
+      "id": "Plant_Grass8537",
+      "invalid_element": "b'<thing Class=\"Pl\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00f>Plant_Grass</def>\\r\\n\\t\\t\\t\\t\\t\\t<id>Plant_Grass8537</id>\\r\\n\\t\\t\\t\\t\\t\\t<map>0</map>\\r\\n\\t\\t\\t\\t\\t\\t<pos>(53, 0, 124)</pos>\\r\\n\\t\\t\\t\\t\\t\\t<health>85</health>\\r\\n\\t\\t\\t\\t\\t\\t<questTags IsNull=\"True\" />\\r\\n\\t\\t\\t\\t\\t\\t<spawnedTick>0</spawnedTick>\\r\\n\\t\\t\\t\\t\\t\\t<despawnedTick>-1</despawnedTick>\\r\\n\\t\\t\\t\\t\\t\\t<beenRevealed>True</beenRevealed>\\r\\n\\t\\t\\t\\t\\t\\t<growth>0.957859457</growth>\\r\\n\\t\\t\\t\\t\\t\\t<age>208672</age\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\r\\n\\t\\t\\t\\t\\t<thing Class=\"Plant\">\\r\\n\\t\\t\\t\\t\\t\\t<def>Plant_PincushionCactus</def>\\r\\n\\t\\t\\t\\t\\t\\t<id>Plant_PincushionCactus8538</id>\\r\\n\\t\\t\\t\\t\\t\\t<map>0</map>\\r\\n\\t\\t\\t\\t\\t\\t<pos>(202, 0, 60)</pos>\\r\\n\\t\\t\\t\\t\\t\\t<health>150</health>\\r\\n\\t\\t\\t\\t\\t\\t<questTags IsNull=\"True\" />\\r\\n\\t\\t\\t\\t\\t\\t<spawnedTick>0</spawnedTick>\\r\\n\\t\\t\\t\\t\\t\\t<despawnedTick>-1</despawnedTick>\\r\\n\\t\\t\\t\\t\\t\\t<beenRevealed>True</beenRevealed>\\r\\n\\t\\t\\t\\t\\t\\t<growth>0.325381875</growth>\\r\\n\\t\\t\\t\\t\\t\\t<age>3416</age>\\r\\n\\t\\t\\t\\t\\t</thing>'",
+      "invalid_element_length": 808,
+      "references": {
+        "begin": {
+          "element_length": 390,
+          "clean_element": "b'<thing Class=\"Plant\">\\r\\n\\t\\t\\t\\t\\t\\t<def>Plant_Grass</def>\\r\\n\\t\\t\\t\\t\\t\\t<id>Plant_Grass8537</id>\\r\\n\\t\\t\\t\\t\\t\\t<map>0</map>\\r\\n\\t\\t\\t\\t\\t\\t<pos>(53, 0, 124)</pos>\\r\\n\\t\\t\\t\\t\\t\\t<health>85</health>\\r\\n\\t\\t\\t\\t\\t\\t<questTags IsNull=\"True\" />\\r\\n\\t\\t\\t\\t\\t\\t<spawnedTick>0</spawnedTick>\\r\\n\\t\\t\\t\\t\\t\\t<despawnedTick>-1</despawnedTick>\\r\\n\\t\\t\\t\\t\\t\\t<beenRevealed>True</beenRevealed>\\r\\n\\t\\t\\t\\t\\t\\t<growth>0.957859457</growth>\\r\\n\\t\\t\\t\\t\\t\\t<age>208672</age>\\r\\n\\t\\t\\t\\t\\t</thing>'",
+          "changes": [
+            {
+              "op": "replace",
+              "invalid_range": [
+                16,
+                32
+              ],
+              "clean_range": [
+                16,
+                32
+              ],
+              "invalid": "b'\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00'",
+              "clean": "b'ant\">\\r\\n\\t\\t\\t\\t\\t\\t<de'"
+            },
+            {
+              "op": "delete",
+              "invalid_range": [
+                374,
+                792
+              ],
+              "clean_range": [
+                374,
+                374
+              ],
+              "invalid": "b'\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\r\\n\\t\\t\\t\\t\\t<thing Class=\"Plant\">\\r\\n\\t\\t\\t\\t\\t\\t<def>Plant_PincushionCactus</def>\\r\\n\\t\\t\\t\\t\\t\\t<id>Plant_PincushionCactus8538</id>\\r\\n\\t\\t\\t\\t\\t\\t<map>0</map>\\r\\n\\t\\t\\t\\t\\t\\t<pos>(202, 0, 60)</pos>\\r\\n\\t\\t\\t\\t\\t\\t<health>150</health>\\r\\n\\t\\t\\t\\t\\t\\t<questTags IsNull=\"True\" />\\r\\n\\t\\t\\t\\t\\t\\t<spawnedTick>0</spawnedTick>\\r\\n\\t\\t\\t\\t\\t\\t<despawnedTick>-1</despawnedTick>\\r\\n\\t\\t\\t\\t\\t\\t<beenRevealed>True</beenRevealed>\\r\\n\\t\\t\\t\\t\\t\\t<growth>0.325381875</growth>\\r\\n\\t\\t\\t\\t\\t\\t<age>3416</age'",
+              "clean": "b''"
+            }
+          ],
+          "element_sha256": "c46be74353e918dd461eaf6ac30c1727c79b695e989f596019016c0ef865c54c"
+        },
+        "restored": {
+          "element_length": 390,
+          "clean_element": "b'<thing Class=\"Plant\">\\r\\n\\t\\t\\t\\t\\t\\t<def>Plant_Grass</def>\\r\\n\\t\\t\\t\\t\\t\\t<id>Plant_Grass8537</id>\\r\\n\\t\\t\\t\\t\\t\\t<map>0</map>\\r\\n\\t\\t\\t\\t\\t\\t<pos>(53, 0, 124)</pos>\\r\\n\\t\\t\\t\\t\\t\\t<health>85</health>\\r\\n\\t\\t\\t\\t\\t\\t<questTags IsNull=\"True\" />\\r\\n\\t\\t\\t\\t\\t\\t<spawnedTick>0</spawnedTick>\\r\\n\\t\\t\\t\\t\\t\\t<despawnedTick>-1</despawnedTick>\\r\\n\\t\\t\\t\\t\\t\\t<beenRevealed>True</beenRevealed>\\r\\n\\t\\t\\t\\t\\t\\t<growth>0.957859457</growth>\\r\\n\\t\\t\\t\\t\\t\\t<age>208672</age>\\r\\n\\t\\t\\t\\t\\t</thing>'",
+          "changes": [
+            {
+              "op": "replace",
+              "invalid_range": [
+                16,
+                32
+              ],
+              "clean_range": [
+                16,
+                32
+              ],
+              "invalid": "b'\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00'",
+              "clean": "b'ant\">\\r\\n\\t\\t\\t\\t\\t\\t<de'"
+            },
+            {
+              "op": "delete",
+              "invalid_range": [
+                374,
+                792
+              ],
+              "clean_range": [
+                374,
+                374
+              ],
+              "invalid": "b'\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\r\\n\\t\\t\\t\\t\\t<thing Class=\"Plant\">\\r\\n\\t\\t\\t\\t\\t\\t<def>Plant_PincushionCactus</def>\\r\\n\\t\\t\\t\\t\\t\\t<id>Plant_PincushionCactus8538</id>\\r\\n\\t\\t\\t\\t\\t\\t<map>0</map>\\r\\n\\t\\t\\t\\t\\t\\t<pos>(202, 0, 60)</pos>\\r\\n\\t\\t\\t\\t\\t\\t<health>150</health>\\r\\n\\t\\t\\t\\t\\t\\t<questTags IsNull=\"True\" />\\r\\n\\t\\t\\t\\t\\t\\t<spawnedTick>0</spawnedTick>\\r\\n\\t\\t\\t\\t\\t\\t<despawnedTick>-1</despawnedTick>\\r\\n\\t\\t\\t\\t\\t\\t<beenRevealed>True</beenRevealed>\\r\\n\\t\\t\\t\\t\\t\\t<growth>0.325381875</growth>\\r\\n\\t\\t\\t\\t\\t\\t<age>3416</age'",
+              "clean": "b''"
+            }
+          ],
+          "element_sha256": "c46be74353e918dd461eaf6ac30c1727c79b695e989f596019016c0ef865c54c"
+        }
+      }
+    }
+  ],
+  "limit": "Expanded-save element alignment only; no original native compressed bytes exist to identify producer/transform/read/write stage."
+}

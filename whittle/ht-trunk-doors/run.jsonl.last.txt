@@ -1,0 +1,7 @@
+Source built with zero warnings/errors; focused tests passed 5/5.
+
+Live acceptance remains blocked by startup graphic/path exceptions before scene loading. Actual Whittle validation returned rc1. No DONE, JUDGE or CLEAN claim.
+
+Game DOWN; host guard and ledger FREE, independently rechecked.
+
+Exact blocker and next steps: [FINDINGS.md](/home/mandrake/rm/codex-ht/whittle/ht-trunk-doors/FINDINGS.md) and [continuation checkpoint](/home/mandrake/rm/codex-ht/whittle/ht-trunk-doors/CONTINUATION_CHECKPOINT.md).

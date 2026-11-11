@@ -1,0 +1,1431 @@
+METHOD RimWorld.Building_Door::get_FreePassage TOKEN 100724204
+IL_0000: ldarg.0 
+IL_0001: ldfld RimWorld.Building_Door::Boolean openInt
+IL_0006: brtrue.s IL_000A
+IL_0008: ldc.i4.0 
+IL_0009: ret 
+IL_000A: ldarg.0 
+IL_000B: ldfld RimWorld.Building_Door::Boolean holdOpenInt
+IL_0010: brtrue.s IL_001C
+IL_0012: ldarg.0 
+IL_0013: call RimWorld.Building_Door::Boolean get_WillCloseSoon()
+IL_0018: ldc.i4.0 
+IL_0019: ceq 
+IL_001B: ret 
+IL_001C: ldc.i4.1 
+IL_001D: ret 
+METHOD RimWorld.Building_Door::SpawnSetup TOKEN 100724219
+IL_0000: ldarg.0 
+IL_0001: ldarg.1 
+IL_0002: ldarg.2 
+IL_0003: call Verse.Building::Void SpawnSetup(Verse.Map, Boolean)
+IL_0008: ldarg.0 
+IL_0009: ldarg.0 
+IL_000A: call Verse.ThingWithComps::RimWorld.CompPowerTrader GetComp[CompPowerTrader]()
+IL_000F: stfld RimWorld.Building_Door::RimWorld.CompPowerTrader powerComp
+IL_0014: ldarg.0 
+IL_0015: ldarg.1 
+IL_0016: call RimWorld.Building_Door::Void ClearReachabilityCache(Verse.Map)
+IL_001B: ldarg.0 
+IL_001C: call RimWorld.Building_Door::Boolean get_BlockedOpenMomentary()
+IL_0021: brfalse.s IL_002B
+IL_0023: ldarg.0 
+IL_0024: ldc.i4.s 110
+IL_0026: callvirt RimWorld.Building_Door::Void DoorOpen(Int32)
+IL_002B: ret 
+METHOD RimWorld.Building_Door::DeSpawn TOKEN 100724220
+IL_0000: ldarg.0 
+IL_0001: call Verse.Thing::Verse.Map get_Map()
+IL_0006: stloc.0 
+IL_0007: ldarg.0 
+IL_0008: ldarg.1 
+IL_0009: call Verse.Building::Void DeSpawn(Verse.DestroyMode)
+IL_000E: ldarg.0 
+IL_000F: ldloc.0 
+IL_0010: call RimWorld.Building_Door::Void ClearReachabilityCache(Verse.Map)
+IL_0015: ret 
+METHOD RimWorld.JobDriver_PlantCut::PlantWorkDoneToil TOKEN 100694614
+IL_0000: ldc.i4.1 
+IL_0001: call Verse.AI.Toils_Interact::Verse.AI.Toil DestroyThing(Verse.AI.TargetIndex)
+IL_0006: ret 
+METHOD RimWorld.WorkGiver_PlantsCut::JobOnThing TOKEN 100697454
+IL_0000: ldarg.2 
+IL_0001: ldfld Verse.Thing::Verse.ThingDef def
+IL_0006: ldfld Verse.ThingDef::Verse.ThingCategory category
+IL_000B: ldc.i4.4 
+IL_000C: beq.s IL_0010
+IL_000E: ldnull 
+IL_000F: ret 
+IL_0010: ldarg.1 
+IL_0011: ldarg.2 
+IL_0012: call Verse.LocalTargetInfo::Verse.LocalTargetInfo op_Implicit(Verse.Thing)
+IL_0017: ldc.i4.1 
+IL_0018: ldc.i4.m1 
+IL_0019: ldnull 
+IL_001A: ldarg.3 
+IL_001B: call Verse.AI.ReservationUtility::Boolean CanReserve(Verse.Pawn, Verse.LocalTargetInfo, Int32, Int32, Verse.ReservationLayerDef, Boolean)
+IL_0020: brtrue.s IL_0024
+IL_0022: ldnull 
+IL_0023: ret 
+IL_0024: ldarg.2 
+IL_0025: call RimWorld.FireUtility::Boolean IsBurning(Verse.Thing)
+IL_002A: brfalse.s IL_002E
+IL_002C: ldnull 
+IL_002D: ret 
+IL_002E: ldarg.2 
+IL_002F: ldarg.1 
+IL_0030: call RimWorld.PlantUtility::Boolean PawnWillingToCutPlant_Job(Verse.Thing, Verse.Pawn)
+IL_0035: brtrue.s IL_0039
+IL_0037: ldnull 
+IL_0038: ret 
+IL_0039: ldarg.3 
+IL_003A: brtrue.s IL_0050
+IL_003C: ldarg.2 
+IL_003D: ldloca.s 0
+IL_003F: call Verse.ThingCompUtility::Boolean TryGetComp[CompPlantPreventCutting](Verse.Thing, RimWorld.CompPlantPreventCutting ByRef)
+IL_0044: brfalse.s IL_0050
+IL_0046: ldloc.0 
+IL_0047: callvirt RimWorld.CompPlantPreventCutting::Boolean get_PreventCutting()
+IL_004C: brfalse.s IL_0050
+IL_004E: ldnull 
+IL_004F: ret 
+IL_0050: ldarg.1 
+IL_0051: callvirt Verse.Thing::Verse.Map get_Map()
+IL_0056: ldfld Verse.Map::Verse.DesignationManager designationManager
+IL_005B: ldarg.2 
+IL_005C: callvirt Verse.DesignationManager::System.Collections.Generic.List`1[Verse.Designation] AllDesignationsOn(Verse.Thing)
+IL_0061: callvirt System.Collections.Generic.List`1[[Verse.Designation, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Enumerator GetEnumerator()
+IL_0066: stloc.1 
+IL_0067: br.s IL_00C2
+IL_0069: ldloca.s 1
+IL_006B: call System.Collections.Generic.List`1+Enumerator[[Verse.Designation, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Verse.Designation get_Current()
+IL_0070: stloc.2 
+IL_0071: ldloc.2 
+IL_0072: ldfld Verse.Designation::Verse.DesignationDef def
+IL_0077: ldsfld RimWorld.DesignationDefOf::Verse.DesignationDef HarvestPlant
+IL_007C: bne.un.s IL_00A2
+IL_007E: ldarg.2 
+IL_007F: castclass ::RimWorld.Plant
+IL_0084: callvirt RimWorld.Plant::Boolean get_HarvestableNow()
+IL_0089: brtrue.s IL_008F
+IL_008B: ldnull 
+IL_008C: stloc.3 
+IL_008D: leave.s IL_00DD
+IL_008F: ldsfld RimWorld.JobDefOf::Verse.JobDef HarvestDesignated
+IL_0094: ldarg.2 
+IL_0095: call Verse.LocalTargetInfo::Verse.LocalTargetInfo op_Implicit(Verse.Thing)
+IL_009A: call Verse.JobMaker::Verse.AI.Job MakeJob(Verse.JobDef, Verse.LocalTargetInfo)
+IL_009F: stloc.3 
+IL_00A0: leave.s IL_00DD
+IL_00A2: ldloc.2 
+IL_00A3: ldfld Verse.Designation::Verse.DesignationDef def
+IL_00A8: ldsfld RimWorld.DesignationDefOf::Verse.DesignationDef CutPlant
+IL_00AD: bne.un.s IL_00C2
+IL_00AF: ldsfld RimWorld.JobDefOf::Verse.JobDef CutPlantDesignated
+IL_00B4: ldarg.2 
+IL_00B5: call Verse.LocalTargetInfo::Verse.LocalTargetInfo op_Implicit(Verse.Thing)
+IL_00BA: call Verse.JobMaker::Verse.AI.Job MakeJob(Verse.JobDef, Verse.LocalTargetInfo)
+IL_00BF: stloc.3 
+IL_00C0: leave.s IL_00DD
+IL_00C2: ldloca.s 1
+IL_00C4: call System.Collections.Generic.List`1+Enumerator[[Verse.Designation, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Boolean MoveNext()
+IL_00C9: brtrue.s IL_0069
+IL_00CB: leave.s IL_00DB
+IL_00CD: ldloca.s 1
+IL_00CF: constrained. System.Collections.Generic.List`1::System.Collections.Generic.List`1+Enumerator[Verse.Designation]
+IL_00D5: callvirt System.IDisposable::Void Dispose()
+IL_00DA: endfinally 
+IL_00DB: ldnull 
+IL_00DC: ret 
+IL_00DD: ldloc.3 
+IL_00DE: ret 
+METHOD Verse.Building::SpawnSetup TOKEN 100677282
+IL_0000: ldarg.0 
+IL_0001: ldfld Verse.Thing::Verse.ThingDef def
+IL_0006: call Verse.EdificeUtility::Boolean IsEdifice(Verse.BuildableDef)
+IL_000B: brfalse.s IL_0054
+IL_000D: ldarg.1 
+IL_000E: ldfld Verse.Map::Verse.EdificeGrid edificeGrid
+IL_0013: ldarg.0 
+IL_0014: callvirt Verse.EdificeGrid::Void Register(Verse.Building)
+IL_0019: ldarg.0 
+IL_001A: ldfld Verse.Thing::Verse.ThingDef def
+IL_001F: callvirt Verse.ThingDef::Verse.FillCategory get_Fillage()
+IL_0024: ldc.i4.2 
+IL_0025: bne.un.s IL_0037
+IL_0027: ldarg.1 
+IL_0028: ldfld Verse.Map::Verse.TerrainGrid terrainGrid
+IL_002D: callvirt Verse.TerrainGrid::Verse.CellBoolDrawer get_Drawer()
+IL_0032: callvirt Verse.CellBoolDrawer::Void SetDirty()
+IL_0037: ldarg.0 
+IL_0038: ldfld Verse.Thing::Verse.ThingDef def
+IL_003D: callvirt Verse.BuildableDef::Boolean get_AffectsFertility()
+IL_0042: brfalse.s IL_0054
+IL_0044: ldarg.1 
+IL_0045: ldfld Verse.Map::RimWorld.FertilityGrid fertilityGrid
+IL_004A: callvirt RimWorld.FertilityGrid::Verse.CellBoolDrawer get_Drawer()
+IL_004F: callvirt Verse.CellBoolDrawer::Void SetDirty()
+IL_0054: ldarg.0 
+IL_0055: ldarg.1 
+IL_0056: ldarg.2 
+IL_0057: call Verse.ThingWithComps::Void SpawnSetup(Verse.Map, Boolean)
+IL_005C: ldarg.0 
+IL_005D: call Verse.Thing::Verse.Map get_Map()
+IL_0062: ldfld Verse.Map::Verse.ListerBuildings listerBuildings
+IL_0067: ldarg.0 
+IL_0068: callvirt Verse.ListerBuildings::Void Add(Verse.Building)
+IL_006D: ldarg.0 
+IL_006E: ldfld Verse.Thing::Verse.ThingDef def
+IL_0073: ldfld Verse.ThingDef::Boolean coversFloor
+IL_0078: brfalse.s IL_009C
+IL_007A: ldarg.0 
+IL_007B: call Verse.Thing::Verse.Map get_Map()
+IL_0080: ldfld Verse.Map::Verse.MapDrawer mapDrawer
+IL_0085: ldarg.0 
+IL_0086: call Verse.Thing::Verse.IntVec3 get_Position()
+IL_008B: ldsfld RimWorld.MapMeshFlagDefOf::RimWorld.MapMeshFlagDef Terrain
+IL_0090: call RimWorld.MapMeshFlagDef::UInt64 op_Implicit(RimWorld.MapMeshFlagDef)
+IL_0095: ldc.i4.1 
+IL_0096: ldc.i4.0 
+IL_0097: callvirt Verse.MapDrawer::Void MapMeshDirty(Verse.IntVec3, UInt64, Boolean, Boolean)
+IL_009C: ldarg.0 
+IL_009D: call Verse.GenAdj::Verse.CellRect OccupiedRect(Verse.Thing)
+IL_00A2: stloc.0 
+IL_00A3: ldloc.0 
+IL_00A4: ldfld Verse.CellRect::Int32 minZ
+IL_00A9: stloc.1 
+IL_00AA: br IL_015F
+IL_00AF: ldloc.0 
+IL_00B0: ldfld Verse.CellRect::Int32 minX
+IL_00B5: stloc.2 
+IL_00B6: br IL_014F
+IL_00BB: ldloca.s 3
+IL_00BD: ldloc.2 
+IL_00BE: ldc.i4.0 
+IL_00BF: ldloc.1 
+IL_00C0: call Verse.IntVec3::Void .ctor(Int32, Int32, Int32)
+IL_00C5: ldarg.0 
+IL_00C6: call Verse.Thing::Verse.Map get_Map()
+IL_00CB: ldfld Verse.Map::Verse.MapDrawer mapDrawer
+IL_00D0: ldloc.3 
+IL_00D1: ldsfld RimWorld.MapMeshFlagDefOf::RimWorld.MapMeshFlagDef Buildings
+IL_00D6: call RimWorld.MapMeshFlagDef::UInt64 op_Implicit(RimWorld.MapMeshFlagDef)
+IL_00DB: callvirt Verse.MapDrawer::Void MapMeshDirty(Verse.IntVec3, UInt64)
+IL_00E0: ldarg.0 
+IL_00E1: ldfld Verse.Thing::Verse.ThingDef def
+IL_00E6: ldfld Verse.ThingDef::Boolean blockLight
+IL_00EB: brfalse.s IL_00FE
+IL_00ED: ldarg.0 
+IL_00EE: call Verse.Thing::Verse.Map get_Map()
+IL_00F3: ldfld TOKEN 67115320
+IL_00F8: ldloc.3 
+IL_00F9: callvirt TOKEN 100670121
+IL_00FE: ldarg.0 
+IL_00FF: ldfld Verse.Thing::Verse.ThingDef def
+IL_0104: call Verse.SnowGrid::Boolean CanCoexistWithSnow(Verse.ThingDef)
+IL_0109: brtrue.s IL_0121
+IL_010B: ldarg.0 
+IL_010C: call Verse.Thing::Verse.Map get_Map()
+IL_0111: ldfld Verse.Map::Verse.SnowGrid snowGrid
+IL_0116: ldloc.3 
+IL_0117: ldc.r4 0
+IL_011C: callvirt Verse.SnowGrid::Void SetDepth(Verse.IntVec3, Single)
+IL_0121: call Verse.ModsConfig::Boolean get_OdysseyActive()
+IL_0126: brfalse.s IL_014B
+IL_0128: ldarg.0 
+IL_0129: ldfld Verse.Thing::Verse.ThingDef def
+IL_012E: call Verse.SandGrid::Boolean CanCoexistWithSand(Verse.ThingDef)
+IL_0133: brtrue.s IL_014B
+IL_0135: ldarg.0 
+IL_0136: call Verse.Thing::Verse.Map get_Map()
+IL_013B: ldfld Verse.Map::Verse.SandGrid sandGrid
+IL_0140: ldloc.3 
+IL_0141: ldc.r4 0
+IL_0146: callvirt Verse.SandGrid::Void SetDepth(Verse.IntVec3, Single)
+IL_014B: ldloc.2 
+IL_014C: ldc.i4.1 
+IL_014D: add 
+IL_014E: stloc.2 
+IL_014F: ldloc.2 
+IL_0150: ldloc.0 
+IL_0151: ldfld Verse.CellRect::Int32 maxX
+IL_0156: ble IL_00BB
+IL_015B: ldloc.1 
+IL_015C: ldc.i4.1 
+IL_015D: add 
+IL_015E: stloc.1 
+IL_015F: ldloc.1 
+IL_0160: ldloc.0 
+IL_0161: ldfld Verse.CellRect::Int32 maxZ
+IL_0166: ble IL_00AF
+IL_016B: ldarg.0 
+IL_016C: call Verse.Thing::RimWorld.Faction get_Faction()
+IL_0171: call RimWorld.Faction::RimWorld.Faction get_OfPlayer()
+IL_0176: bne.un.s IL_01AD
+IL_0178: ldarg.0 
+IL_0179: ldfld Verse.Thing::Verse.ThingDef def
+IL_017E: ldfld Verse.ThingDef::RimWorld.BuildingProperties building
+IL_0183: brfalse.s IL_01AD
+IL_0185: ldarg.0 
+IL_0186: ldfld Verse.Thing::Verse.ThingDef def
+IL_018B: ldfld Verse.ThingDef::RimWorld.BuildingProperties building
+IL_0190: ldfld RimWorld.BuildingProperties::RimWorld.ConceptDef spawnedConceptLearnOpportunity
+IL_0195: brfalse.s IL_01AD
+IL_0197: ldarg.0 
+IL_0198: ldfld Verse.Thing::Verse.ThingDef def
+IL_019D: ldfld Verse.ThingDef::RimWorld.BuildingProperties building
+IL_01A2: ldfld RimWorld.BuildingProperties::RimWorld.ConceptDef spawnedConceptLearnOpportunity
+IL_01A7: ldc.i4.0 
+IL_01A8: call RimWorld.LessonAutoActivator::Void TeachOpportunity(RimWorld.ConceptDef, RimWorld.OpportunityType)
+IL_01AD: ldarg.0 
+IL_01AE: call RimWorld.AutoHomeAreaMaker::Void Notify_BuildingSpawned(Verse.Thing)
+IL_01B3: ldarg.0 
+IL_01B4: call Verse.Thing::Verse.Map get_Map()
+IL_01B9: ldfld Verse.Map::RimWorld.ListerBuildingsRepairable listerBuildingsRepairable
+IL_01BE: ldarg.0 
+IL_01BF: callvirt RimWorld.ListerBuildingsRepairable::Void Notify_BuildingSpawned(Verse.Building)
+IL_01C4: ldarg.0 
+IL_01C5: call Verse.Thing::Verse.Map get_Map()
+IL_01CA: ldfld Verse.Map::RimWorld.ListerArtificialBuildingsForMeditation listerArtificialBuildingsForMeditation
+IL_01CF: ldarg.0 
+IL_01D0: callvirt RimWorld.ListerArtificialBuildingsForMeditation::Void Notify_BuildingSpawned(Verse.Building)
+IL_01D5: ldarg.0 
+IL_01D6: call Verse.Thing::Verse.Map get_Map()
+IL_01DB: ldfld Verse.Map::RimWorld.ListerBuldingOfDefInProximity listerBuldingOfDefInProximity
+IL_01E0: ldarg.0 
+IL_01E1: callvirt RimWorld.ListerBuldingOfDefInProximity::Void Notify_BuildingSpawned(Verse.Building)
+IL_01E6: ldarg.0 
+IL_01E7: call Verse.Thing::Verse.Map get_Map()
+IL_01EC: ldfld Verse.Map::RimWorld.ListerBuildingWithTagInProximity listerBuildingWithTagInProximity
+IL_01F1: ldarg.0 
+IL_01F2: callvirt RimWorld.ListerBuildingWithTagInProximity::Void Notify_BuildingSpawned(Verse.Building)
+IL_01F7: ldarg.0 
+IL_01F8: call Verse.GenGrid::Boolean CanBeSeenOver(Verse.Building)
+IL_01FD: brtrue.s IL_020F
+IL_01FF: ldarg.0 
+IL_0200: call Verse.Thing::Verse.Map get_Map()
+IL_0205: ldfld Verse.Map::Verse.ExitMapGrid exitMapGrid
+IL_020A: callvirt Verse.ExitMapGrid::Void Notify_LOSBlockerSpawned()
+IL_020F: ldarg.0 
+IL_0210: call RimWorld.SmoothSurfaceDesignatorUtility::Void Notify_BuildingSpawned(Verse.Building)
+IL_0215: ldarg.1 
+IL_0216: ldfld Verse.Map::Verse.MapEvents events
+IL_021B: ldarg.0 
+IL_021C: callvirt Verse.MapEvents::Void Notify_BuildingSpawned(Verse.Building)
+IL_0221: ret 
+METHOD Verse.Building::DeSpawn TOKEN 100677283
+IL_0000: ldarg.0 
+IL_0001: call Verse.Thing::Verse.Map get_Map()
+IL_0006: stloc.0 
+IL_0007: ldarg.0 
+IL_0008: call RimWorld.GenConstruct::System.Collections.Generic.List`1[Verse.Thing] GetAttachedBuildings(Verse.Thing)
+IL_000D: stloc.1 
+IL_000E: ldarg.0 
+IL_000F: ldarg.1 
+IL_0010: call Verse.ThingWithComps::Void DeSpawn(Verse.DestroyMode)
+IL_0015: ldarg.0 
+IL_0016: ldfld Verse.Thing::Verse.ThingDef def
+IL_001B: callvirt Verse.ThingDef::Boolean get_IsFrame()
+IL_0020: brfalse.s IL_0025
+IL_0022: ldarg.1 
+IL_0023: brfalse.s IL_0099
+IL_0025: ldarg.0 
+IL_0026: ldfld Verse.Thing::Verse.ThingDef def
+IL_002B: ldfld Verse.ThingDef::RimWorld.BuildingProperties building
+IL_0030: ldfld RimWorld.BuildingProperties::Boolean isNaturalRock
+IL_0035: brfalse.s IL_003B
+IL_0037: ldarg.1 
+IL_0038: ldc.i4.1 
+IL_0039: beq.s IL_0099
+IL_003B: ldarg.1 
+IL_003C: ldc.i4.1 
+IL_003D: beq.s IL_0099
+IL_003F: ldloc.1 
+IL_0040: callvirt System.Collections.Generic.List`1[[Verse.Thing, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Enumerator GetEnumerator()
+IL_0045: stloc.3 
+IL_0046: br.s IL_0080
+IL_0048: ldloca.s 3
+IL_004A: call System.Collections.Generic.List`1+Enumerator[[Verse.Thing, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Verse.Thing get_Current()
+IL_004F: stloc.s 4
+IL_0051: ldloc.s 4
+IL_0053: ldfld Verse.Thing::Verse.ThingDef def
+IL_0058: callvirt Verse.ThingDef::Boolean get_Minifiable()
+IL_005D: brfalse.s IL_0078
+IL_005F: ldloc.s 4
+IL_0061: ldc.i4.0 
+IL_0062: call RimWorld.MinifyUtility::RimWorld.MinifiedThing MakeMinified(Verse.Thing, Verse.DestroyMode)
+IL_0067: ldloc.s 4
+IL_0069: callvirt Verse.Thing::Verse.IntVec3 get_Position()
+IL_006E: ldloc.0 
+IL_006F: ldc.i4.0 
+IL_0070: call Verse.GenSpawn::Verse.Thing Spawn(Verse.Thing, Verse.IntVec3, Verse.Map, Verse.WipeMode)
+IL_0075: pop 
+IL_0076: br.s IL_0080
+IL_0078: ldloc.s 4
+IL_007A: ldarg.1 
+IL_007B: callvirt Verse.Thing::Void Destroy(Verse.DestroyMode)
+IL_0080: ldloca.s 3
+IL_0082: call System.Collections.Generic.List`1+Enumerator[[Verse.Thing, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Boolean MoveNext()
+IL_0087: brtrue.s IL_0048
+IL_0089: leave.s IL_0099
+IL_008B: ldloca.s 3
+IL_008D: constrained. System.Collections.Generic.List`1::System.Collections.Generic.List`1+Enumerator[Verse.Thing]
+IL_0093: callvirt System.IDisposable::Void Dispose()
+IL_0098: endfinally 
+IL_0099: ldarg.0 
+IL_009A: ldfld Verse.Thing::Verse.ThingDef def
+IL_009F: call Verse.EdificeUtility::Boolean IsEdifice(Verse.BuildableDef)
+IL_00A4: brfalse.s IL_0104
+IL_00A6: ldloc.0 
+IL_00A7: ldfld Verse.Map::Verse.EdificeGrid edificeGrid
+IL_00AC: ldarg.0 
+IL_00AD: callvirt Verse.EdificeGrid::Void DeRegister(Verse.Building)
+IL_00B2: ldarg.0 
+IL_00B3: ldfld Verse.Thing::Verse.ThingDef def
+IL_00B8: callvirt Verse.ThingDef::Verse.FillCategory get_Fillage()
+IL_00BD: ldc.i4.2 
+IL_00BE: bne.un.s IL_00E7
+IL_00C0: ldloc.0 
+IL_00C1: ldfld Verse.Map::Verse.TerrainGrid terrainGrid
+IL_00C6: callvirt Verse.TerrainGrid::Verse.CellBoolDrawer get_Drawer()
+IL_00CB: callvirt Verse.CellBoolDrawer::Void SetDirty()
+IL_00D0: call Verse.ModsConfig::Boolean get_BiotechActive()
+IL_00D5: brfalse.s IL_00E7
+IL_00D7: ldloc.0 
+IL_00D8: ldfld Verse.Map::Verse.PollutionGrid pollutionGrid
+IL_00DD: callvirt Verse.PollutionGrid::Verse.CellBoolDrawer get_Drawer()
+IL_00E2: callvirt Verse.CellBoolDrawer::Void SetDirty()
+IL_00E7: ldarg.0 
+IL_00E8: ldfld Verse.Thing::Verse.ThingDef def
+IL_00ED: callvirt Verse.BuildableDef::Boolean get_AffectsFertility()
+IL_00F2: brfalse.s IL_0104
+IL_00F4: ldloc.0 
+IL_00F5: ldfld Verse.Map::RimWorld.FertilityGrid fertilityGrid
+IL_00FA: callvirt RimWorld.FertilityGrid::Verse.CellBoolDrawer get_Drawer()
+IL_00FF: callvirt Verse.CellBoolDrawer::Void SetDirty()
+IL_0104: ldarg.1 
+IL_0105: ldc.i4.1 
+IL_0106: beq.s IL_0149
+IL_0108: ldarg.0 
+IL_0109: ldfld Verse.Thing::Verse.ThingDef def
+IL_010E: callvirt Verse.ThingDef::Boolean get_MakeFog()
+IL_0113: brfalse.s IL_0121
+IL_0115: ldloc.0 
+IL_0116: ldfld TOKEN 67115318
+IL_011B: ldarg.0 
+IL_011C: callvirt TOKEN 100670056
+IL_0121: ldarg.0 
+IL_0122: ldfld Verse.Thing::Verse.ThingDef def
+IL_0127: ldfld Verse.ThingDef::Boolean holdsRoof
+IL_012C: brfalse.s IL_0135
+IL_012E: ldarg.0 
+IL_012F: ldloc.0 
+IL_0130: call Verse.RoofCollapseCellsFinder::Void Notify_RoofHolderDespawned(Verse.Thing, Verse.Map)
+IL_0135: ldarg.0 
+IL_0136: ldfld Verse.Thing::Verse.ThingDef def
+IL_013B: callvirt Verse.ThingDef::Boolean get_IsSmoothable()
+IL_0140: brfalse.s IL_0149
+IL_0142: ldarg.0 
+IL_0143: ldloc.0 
+IL_0144: call RimWorld.SmoothSurfaceDesignatorUtility::Void Notify_BuildingDespawned(Verse.Building, Verse.Map)
+IL_0149: ldarg.0 
+IL_014A: call Verse.GenAdj::Verse.CellRect OccupiedRect(Verse.Thing)
+IL_014F: stloc.2 
+IL_0150: ldloc.2 
+IL_0151: ldfld Verse.CellRect::Int32 minZ
+IL_0156: stloc.s 5
+IL_0158: br IL_0222
+IL_015D: ldloc.2 
+IL_015E: ldfld Verse.CellRect::Int32 minX
+IL_0163: stloc.s 6
+IL_0165: br IL_020F
+IL_016A: ldloca.s 7
+IL_016C: ldloc.s 6
+IL_016E: ldc.i4.0 
+IL_016F: ldloc.s 5
+IL_0171: call Verse.IntVec3::Void .ctor(Int32, Int32, Int32)
+IL_0176: ldsfld RimWorld.MapMeshFlagDefOf::RimWorld.MapMeshFlagDef Buildings
+IL_017B: call RimWorld.MapMeshFlagDef::UInt64 op_Implicit(RimWorld.MapMeshFlagDef)
+IL_0180: stloc.s 8
+IL_0182: ldarg.0 
+IL_0183: ldfld Verse.Thing::Verse.ThingDef def
+IL_0188: ldfld Verse.ThingDef::Boolean coversFloor
+IL_018D: brfalse.s IL_019E
+IL_018F: ldloc.s 8
+IL_0191: ldsfld RimWorld.MapMeshFlagDefOf::RimWorld.MapMeshFlagDef Terrain
+IL_0196: call RimWorld.MapMeshFlagDef::UInt64 op_Implicit(RimWorld.MapMeshFlagDef)
+IL_019B: or 
+IL_019C: stloc.s 8
+IL_019E: ldarg.0 
+IL_019F: ldfld Verse.Thing::Verse.ThingDef def
+IL_01A4: callvirt Verse.ThingDef::Verse.FillCategory get_Fillage()
+IL_01A9: ldc.i4.2 
+IL_01AA: bne.un.s IL_01E0
+IL_01AC: ldloc.s 8
+IL_01AE: ldsfld RimWorld.MapMeshFlagDefOf::RimWorld.MapMeshFlagDef Roofs
+IL_01B3: call RimWorld.MapMeshFlagDef::UInt64 op_Implicit(RimWorld.MapMeshFlagDef)
+IL_01B8: or 
+IL_01B9: stloc.s 8
+IL_01BB: ldloc.s 8
+IL_01BD: ldsfld RimWorld.MapMeshFlagDefOf::RimWorld.MapMeshFlagDef Snow
+IL_01C2: call RimWorld.MapMeshFlagDef::UInt64 op_Implicit(RimWorld.MapMeshFlagDef)
+IL_01C7: or 
+IL_01C8: stloc.s 8
+IL_01CA: call Verse.ModsConfig::Boolean get_OdysseyActive()
+IL_01CF: brfalse.s IL_01E0
+IL_01D1: ldloc.s 8
+IL_01D3: ldsfld RimWorld.MapMeshFlagDefOf::RimWorld.MapMeshFlagDef Sand
+IL_01D8: call RimWorld.MapMeshFlagDef::UInt64 op_Implicit(RimWorld.MapMeshFlagDef)
+IL_01DD: or 
+IL_01DE: stloc.s 8
+IL_01E0: ldloc.0 
+IL_01E1: ldfld Verse.Map::Verse.MapDrawer mapDrawer
+IL_01E6: ldloc.s 7
+IL_01E8: ldloc.s 8
+IL_01EA: callvirt Verse.MapDrawer::Void MapMeshDirty(Verse.IntVec3, UInt64)
+IL_01EF: ldarg.0 
+IL_01F0: ldfld Verse.Thing::Verse.ThingDef def
+IL_01F5: ldfld Verse.ThingDef::Boolean blockLight
+IL_01FA: brfalse.s IL_0209
+IL_01FC: ldloc.0 
+IL_01FD: ldfld TOKEN 67115320
+IL_0202: ldloc.s 7
+IL_0204: callvirt TOKEN 100670122
+IL_0209: ldloc.s 6
+IL_020B: ldc.i4.1 
+IL_020C: add 
+IL_020D: stloc.s 6
+IL_020F: ldloc.s 6
+IL_0211: ldloc.2 
+IL_0212: ldfld Verse.CellRect::Int32 maxX
+IL_0217: ble IL_016A
+IL_021C: ldloc.s 5
+IL_021E: ldc.i4.1 
+IL_021F: add 
+IL_0220: stloc.s 5
+IL_0222: ldloc.s 5
+IL_0224: ldloc.2 
+IL_0225: ldfld Verse.CellRect::Int32 maxZ
+IL_022A: ble IL_015D
+IL_022F: ldloc.0 
+IL_0230: ldfld Verse.Map::Verse.ListerBuildings listerBuildings
+IL_0235: ldarg.0 
+IL_0236: callvirt Verse.ListerBuildings::Void Remove(Verse.Building)
+IL_023B: ldloc.0 
+IL_023C: ldfld Verse.Map::RimWorld.ListerBuildingsRepairable listerBuildingsRepairable
+IL_0241: ldarg.0 
+IL_0242: callvirt RimWorld.ListerBuildingsRepairable::Void Notify_BuildingDeSpawned(Verse.Building)
+IL_0247: ldloc.0 
+IL_0248: ldfld Verse.Map::RimWorld.ListerArtificialBuildingsForMeditation listerArtificialBuildingsForMeditation
+IL_024D: ldarg.0 
+IL_024E: callvirt RimWorld.ListerArtificialBuildingsForMeditation::Void Notify_BuildingDeSpawned(Verse.Building)
+IL_0253: ldloc.0 
+IL_0254: ldfld Verse.Map::RimWorld.ListerBuldingOfDefInProximity listerBuldingOfDefInProximity
+IL_0259: ldarg.0 
+IL_025A: callvirt RimWorld.ListerBuldingOfDefInProximity::Void Notify_BuildingDeSpawned(Verse.Building)
+IL_025F: ldloc.0 
+IL_0260: ldfld Verse.Map::RimWorld.ListerBuildingWithTagInProximity listerBuildingWithTagInProximity
+IL_0265: ldarg.0 
+IL_0266: callvirt RimWorld.ListerBuildingWithTagInProximity::Void Notify_BuildingDeSpawned(Verse.Building)
+IL_026B: ldarg.0 
+IL_026C: ldfld Verse.Thing::Verse.ThingDef def
+IL_0271: ldfld Verse.ThingDef::RimWorld.BuildingProperties building
+IL_0276: ldfld RimWorld.BuildingProperties::Verse.TerrainDef leaveTerrain
+IL_027B: brfalse.s IL_02DF
+IL_027D: call Verse.Current::Verse.ProgramState get_ProgramState()
+IL_0282: ldc.i4.2 
+IL_0283: bne.un.s IL_02DF
+IL_0285: ldarg.0 
+IL_0286: ldfld Verse.Building::Boolean canChangeTerrainOnDestroyed
+IL_028B: brfalse.s IL_02DF
+IL_028D: ldarg.0 
+IL_028E: call Verse.GenAdj::Verse.CellRect OccupiedRect(Verse.Thing)
+IL_0293: stloc.s 10
+IL_0295: ldloca.s 10
+IL_0297: call Verse.CellRect::Enumerator GetEnumerator()
+IL_029C: stloc.s 9
+IL_029E: br.s IL_02C6
+IL_02A0: ldloca.s 9
+IL_02A2: call Verse.CellRect+Enumerator::Verse.IntVec3 get_Current()
+IL_02A7: stloc.s 11
+IL_02A9: ldloc.0 
+IL_02AA: ldfld Verse.Map::Verse.TerrainGrid terrainGrid
+IL_02AF: ldloc.s 11
+IL_02B1: ldarg.0 
+IL_02B2: ldfld Verse.Thing::Verse.ThingDef def
+IL_02B7: ldfld Verse.ThingDef::RimWorld.BuildingProperties building
+IL_02BC: ldfld RimWorld.BuildingProperties::Verse.TerrainDef leaveTerrain
+IL_02C1: callvirt Verse.TerrainGrid::Void SetTerrain(Verse.IntVec3, Verse.TerrainDef)
+IL_02C6: ldloca.s 9
+IL_02C8: call Verse.CellRect+Enumerator::Boolean MoveNext()
+IL_02CD: brtrue.s IL_02A0
+IL_02CF: leave.s IL_02DF
+IL_02D1: ldloca.s 9
+IL_02D3: constrained. Verse.CellRect::Verse.CellRect+Enumerator
+IL_02D9: callvirt System.IDisposable::Void Dispose()
+IL_02DE: endfinally 
+IL_02DF: ldloc.0 
+IL_02E0: ldfld Verse.Map::Verse.DesignationManager designationManager
+IL_02E5: ldarg.0 
+IL_02E6: callvirt Verse.DesignationManager::Void Notify_BuildingDespawned(Verse.Thing)
+IL_02EB: ldarg.0 
+IL_02EC: call Verse.GenGrid::Boolean CanBeSeenOver(Verse.Building)
+IL_02F1: brtrue.s IL_02FE
+IL_02F3: ldloc.0 
+IL_02F4: ldfld Verse.Map::Verse.ExitMapGrid exitMapGrid
+IL_02F9: callvirt Verse.ExitMapGrid::Void Notify_LOSBlockerDespawned()
+IL_02FE: ldarg.0 
+IL_02FF: ldfld Verse.Thing::Verse.ThingDef def
+IL_0304: ldfld Verse.ThingDef::RimWorld.BuildingProperties building
+IL_0309: ldfld RimWorld.BuildingProperties::Boolean hasFuelingPort
+IL_030E: brfalse.s IL_033C
+IL_0310: ldarg.0 
+IL_0311: call Verse.Thing::Verse.IntVec3 get_Position()
+IL_0316: ldarg.0 
+IL_0317: call Verse.Thing::Verse.Rot4 get_Rotation()
+IL_031C: call RimWorld.FuelingPortUtility::Verse.IntVec3 GetFuelingPortCell(Verse.IntVec3, Verse.Rot4)
+IL_0321: ldloc.0 
+IL_0322: call RimWorld.FuelingPortUtility::RimWorld.CompLaunchable LaunchableAt(Verse.IntVec3, Verse.Map)
+IL_0327: stloc.s 12
+IL_0329: ldloc.s 12
+IL_032B: brfalse.s IL_033C
+IL_032D: ldarg.0 
+IL_032E: call Verse.Thing::Boolean get_BeingTransportedOnGravship()
+IL_0333: brtrue.s IL_033C
+IL_0335: ldloc.s 12
+IL_0337: callvirt RimWorld.CompLaunchable::Void Notify_FuelingPortSourceDeSpawned()
+IL_033C: ldloc.0 
+IL_033D: ldfld Verse.Map::Verse.MapEvents events
+IL_0342: ldarg.0 
+IL_0343: callvirt Verse.MapEvents::Void Notify_BuildingDespawned(Verse.Building)
+IL_0348: ldarg.0 
+IL_0349: callvirt Verse.Building::Int32 get_MaxItemsInCell()
+IL_034E: ldc.i4.2 
+IL_034F: blt IL_03FB
+IL_0354: ldarg.0 
+IL_0355: call Verse.GenAdj::Verse.CellRect OccupiedRect(Verse.Thing)
+IL_035A: stloc.s 10
+IL_035C: ldloca.s 10
+IL_035E: call Verse.CellRect::Enumerator GetEnumerator()
+IL_0363: stloc.s 9
+IL_0365: br.s IL_03DF
+IL_0367: ldloca.s 9
+IL_0369: call Verse.CellRect+Enumerator::Verse.IntVec3 get_Current()
+IL_036E: stloc.s 13
+IL_0370: ldloc.s 13
+IL_0372: ldloc.0 
+IL_0373: call Verse.GridsUtility::Int32 GetItemCount(Verse.IntVec3, Verse.Map)
+IL_0378: stloc.s 14
+IL_037A: ldloc.s 14
+IL_037C: ldc.i4.1 
+IL_037D: ble.s IL_03DF
+IL_037F: ldloc.s 14
+IL_0381: ldloc.s 13
+IL_0383: ldloc.0 
+IL_0384: call Verse.GridsUtility::Int32 GetMaxItemsAllowedInCell(Verse.IntVec3, Verse.Map)
+IL_0389: ble.s IL_03DF
+IL_038B: ldc.i4.0 
+IL_038C: stloc.s 15
+IL_038E: br.s IL_03D7
+IL_0390: ldloc.s 13
+IL_0392: ldloc.0 
+IL_0393: call Verse.GridsUtility::Verse.Thing GetFirstItem(Verse.IntVec3, Verse.Map)
+IL_0398: stloc.s 16
+IL_039A: ldloc.s 16
+IL_039C: brfalse.s IL_03DF
+IL_039E: ldloc.s 16
+IL_03A0: ldc.i4.0 
+IL_03A1: callvirt Verse.Entity::Void DeSpawn(Verse.DestroyMode)
+IL_03A6: ldloc.s 16
+IL_03A8: ldloc.s 13
+IL_03AA: ldloc.0 
+IL_03AB: ldc.i4.1 
+IL_03AC: ldnull 
+IL_03AD: ldnull 
+IL_03AE: ldloca.s 17
+IL_03B0: initobj ::System.Nullable`1[Verse.Rot4]
+IL_03B6: ldloc.s 17
+IL_03B8: ldc.i4.1 
+IL_03B9: call Verse.GenPlace::Boolean TryPlaceThing(Verse.Thing, Verse.IntVec3, Verse.Map, Verse.ThingPlaceMode, System.Action`2[Verse.Thing,System.Int32], System.Predicate`1[Verse.IntVec3], System.Nullable`1[Verse.Rot4], Int32)
+IL_03BE: pop 
+IL_03BF: ldloc.s 13
+IL_03C1: ldloc.0 
+IL_03C2: call Verse.GridsUtility::Int32 GetItemCount(Verse.IntVec3, Verse.Map)
+IL_03C7: ldloc.s 13
+IL_03C9: ldloc.0 
+IL_03CA: call Verse.GridsUtility::Int32 GetMaxItemsAllowedInCell(Verse.IntVec3, Verse.Map)
+IL_03CF: ble.s IL_03DF
+IL_03D1: ldloc.s 15
+IL_03D3: ldc.i4.1 
+IL_03D4: add 
+IL_03D5: stloc.s 15
+IL_03D7: ldloc.s 15
+IL_03D9: ldloc.s 14
+IL_03DB: ldc.i4.1 
+IL_03DC: sub 
+IL_03DD: blt.s IL_0390
+IL_03DF: ldloca.s 9
+IL_03E1: call Verse.CellRect+Enumerator::Boolean MoveNext()
+IL_03E6: brtrue IL_0367
+IL_03EB: leave.s IL_03FB
+IL_03ED: ldloca.s 9
+IL_03EF: constrained. Verse.CellRect::Verse.CellRect+Enumerator
+IL_03F5: callvirt System.IDisposable::Void Dispose()
+IL_03FA: endfinally 
+IL_03FB: ret 
+METHOD Verse.EdificeGrid::Register TOKEN 100670224
+IL_0000: ldarg.0 
+IL_0001: ldfld Verse.EdificeGrid::Verse.Map map
+IL_0006: ldfld Verse.Map::Verse.CellIndices cellIndices
+IL_000B: stloc.0 
+IL_000C: ldarg.1 
+IL_000D: call Verse.GenAdj::Verse.CellRect OccupiedRect(Verse.Thing)
+IL_0012: stloc.1 
+IL_0013: ldloc.1 
+IL_0014: ldfld Verse.CellRect::Int32 minZ
+IL_0019: stloc.2 
+IL_001A: br.s IL_0051
+IL_001C: ldloc.1 
+IL_001D: ldfld Verse.CellRect::Int32 minX
+IL_0022: stloc.3 
+IL_0023: br.s IL_0044
+IL_0025: ldloca.s 4
+IL_0027: ldloc.3 
+IL_0028: ldc.i4.0 
+IL_0029: ldloc.2 
+IL_002A: call Verse.IntVec3::Void .ctor(Int32, Int32, Int32)
+IL_002F: ldarg.0 
+IL_0030: ldfld Verse.EdificeGrid::Verse.Building[] innerArray
+IL_0035: ldloca.s 0
+IL_0037: ldloc.s 4
+IL_0039: call Verse.CellIndices::Int32 CellToIndex(Verse.IntVec3)
+IL_003E: ldarg.1 
+IL_003F: stelem.ref 
+IL_0040: ldloc.3 
+IL_0041: ldc.i4.1 
+IL_0042: add 
+IL_0043: stloc.3 
+IL_0044: ldloc.3 
+IL_0045: ldloc.1 
+IL_0046: ldfld Verse.CellRect::Int32 maxX
+IL_004B: ble.s IL_0025
+IL_004D: ldloc.2 
+IL_004E: ldc.i4.1 
+IL_004F: add 
+IL_0050: stloc.2 
+IL_0051: ldloc.2 
+IL_0052: ldloc.1 
+IL_0053: ldfld Verse.CellRect::Int32 maxZ
+IL_0058: ble.s IL_001C
+IL_005A: ret 
+METHOD Verse.EdificeGrid::DeRegister TOKEN 100670225
+IL_0000: ldarg.0 
+IL_0001: ldfld Verse.EdificeGrid::Verse.Map map
+IL_0006: ldfld Verse.Map::Verse.CellIndices cellIndices
+IL_000B: stloc.0 
+IL_000C: ldarg.1 
+IL_000D: call Verse.GenAdj::Verse.CellRect OccupiedRect(Verse.Thing)
+IL_0012: stloc.1 
+IL_0013: ldloc.1 
+IL_0014: ldfld Verse.CellRect::Int32 minZ
+IL_0019: stloc.2 
+IL_001A: br.s IL_0047
+IL_001C: ldloc.1 
+IL_001D: ldfld Verse.CellRect::Int32 minX
+IL_0022: stloc.3 
+IL_0023: br.s IL_003A
+IL_0025: ldarg.0 
+IL_0026: ldfld Verse.EdificeGrid::Verse.Building[] innerArray
+IL_002B: ldloca.s 0
+IL_002D: ldloc.3 
+IL_002E: ldloc.2 
+IL_002F: call Verse.CellIndices::Int32 CellToIndex(Int32, Int32)
+IL_0034: ldnull 
+IL_0035: stelem.ref 
+IL_0036: ldloc.3 
+IL_0037: ldc.i4.1 
+IL_0038: add 
+IL_0039: stloc.3 
+IL_003A: ldloc.3 
+IL_003B: ldloc.1 
+IL_003C: ldfld Verse.CellRect::Int32 maxX
+IL_0041: ble.s IL_0025
+IL_0043: ldloc.2 
+IL_0044: ldc.i4.1 
+IL_0045: add 
+IL_0046: stloc.2 
+IL_0047: ldloc.2 
+IL_0048: ldloc.1 
+IL_0049: ldfld Verse.CellRect::Int32 maxZ
+IL_004E: ble.s IL_001C
+IL_0050: ret 
+METHOD Verse.GenSpawn::Spawn TOKEN 100685306
+IL_0000: ldarg.0 
+IL_0001: ldarg.1 
+IL_0002: ldarg.2 
+IL_0003: ldsfld Verse.Rot4::Verse.Rot4 North
+IL_0008: ldarg.3 
+IL_0009: call Verse.GenSpawn::Verse.Thing Spawn(Verse.ThingDef, Verse.IntVec3, Verse.Map, Verse.Rot4, Verse.WipeMode)
+IL_000E: ret 
+METHOD Verse.GenSpawn::Spawn TOKEN 100685307
+IL_0000: ldarg.0 
+IL_0001: ldarg.1 
+IL_0002: ldarg.3 
+IL_0003: ldarg.2 
+IL_0004: callvirt Verse.ThingDef::Boolean CanSpawnAt(Verse.IntVec3, Verse.Rot4, Verse.Map)
+IL_0009: brtrue.s IL_000D
+IL_000B: ldnull 
+IL_000C: ret 
+IL_000D: ldarg.0 
+IL_000E: ldnull 
+IL_000F: call Verse.ThingMaker::Verse.Thing MakeThing(Verse.ThingDef, Verse.ThingDef)
+IL_0014: ldarg.1 
+IL_0015: ldarg.2 
+IL_0016: ldarg.3 
+IL_0017: ldarg.s 4
+IL_0019: ldc.i4.0 
+IL_001A: ldc.i4.0 
+IL_001B: call Verse.GenSpawn::Verse.Thing Spawn(Verse.Thing, Verse.IntVec3, Verse.Map, Verse.Rot4, Verse.WipeMode, Boolean, Boolean)
+IL_0020: ret 
+METHOD Verse.GenSpawn::Spawn TOKEN 100685308
+IL_0000: ldarg.0 
+IL_0001: ldarg.1 
+IL_0002: ldarg.2 
+IL_0003: ldsfld Verse.Rot4::Verse.Rot4 North
+IL_0008: ldarg.3 
+IL_0009: ldc.i4.0 
+IL_000A: ldc.i4.0 
+IL_000B: call Verse.GenSpawn::Verse.Thing Spawn(Verse.Thing, Verse.IntVec3, Verse.Map, Verse.Rot4, Verse.WipeMode, Boolean, Boolean)
+IL_0010: ret 
+METHOD Verse.GenSpawn::Spawn TOKEN 100685312
+IL_0000: newobj Verse.GenSpawn+<>c__DisplayClass6_0::Void .ctor()
+IL_0005: stloc.0 
+IL_0006: ldarg.2 
+IL_0007: brtrue.s IL_0025
+IL_0009: ldstr "Tried to spawn "
+IL_000E: ldarg.0 
+IL_000F: call Verse.Gen::System.String ToStringSafe[Thing](Verse.Thing)
+IL_0014: ldstr " in a null map."
+IL_0019: call System.String::System.String Concat(System.String, System.String, System.String)
+IL_001E: call Verse.Log::Void Error(System.String)
+IL_0023: ldnull 
+IL_0024: ret 
+IL_0025: ldarg.1 
+IL_0026: ldarg.2 
+IL_0027: call Verse.GenGrid::Boolean InBounds(Verse.IntVec3, Verse.Map)
+IL_002C: brtrue.s IL_0073
+IL_002E: ldc.i4.5 
+IL_002F: newarr ::System.String
+IL_0034: dup 
+IL_0035: ldc.i4.0 
+IL_0036: ldstr "Tried to spawn "
+IL_003B: stelem.ref 
+IL_003C: dup 
+IL_003D: ldc.i4.1 
+IL_003E: ldarg.0 
+IL_003F: call Verse.Gen::System.String ToStringSafe[Thing](Verse.Thing)
+IL_0044: stelem.ref 
+IL_0045: dup 
+IL_0046: ldc.i4.2 
+IL_0047: ldstr " out of bounds at "
+IL_004C: stelem.ref 
+IL_004D: dup 
+IL_004E: ldc.i4.3 
+IL_004F: ldarg.1 
+IL_0050: stloc.1 
+IL_0051: ldloca.s 1
+IL_0053: constrained. ::Verse.IntVec3
+IL_0059: callvirt System.Object::System.String ToString()
+IL_005E: stelem.ref 
+IL_005F: dup 
+IL_0060: ldc.i4.4 
+IL_0061: ldstr "."
+IL_0066: stelem.ref 
+IL_0067: call System.String::System.String Concat(System.String[])
+IL_006C: call Verse.Log::Void Error(System.String)
+IL_0071: ldnull 
+IL_0072: ret 
+IL_0073: ldarg.0 
+IL_0074: ldfld Verse.Thing::Verse.ThingDef def
+IL_0079: ldfld Verse.ThingDef::Boolean randomizeRotationOnSpawn
+IL_007E: brfalse.s IL_0087
+IL_0080: call Verse.Rot4::Verse.Rot4 get_Random()
+IL_0085: starg.s 3
+IL_0087: ldloc.0 
+IL_0088: ldarg.1 
+IL_0089: ldarg.3 
+IL_008A: ldarg.0 
+IL_008B: ldfld Verse.Thing::Verse.ThingDef def
+IL_0090: callvirt Verse.BuildableDef::Verse.IntVec2 get_Size()
+IL_0095: call Verse.GenAdj::Verse.CellRect OccupiedRect(Verse.IntVec3, Verse.Rot4, Verse.IntVec2)
+IL_009A: stfld Verse.GenSpawn+<>c__DisplayClass6_0::Verse.CellRect occupiedRect
+IL_009F: ldloc.0 
+IL_00A0: ldflda Verse.GenSpawn+<>c__DisplayClass6_0::Verse.CellRect occupiedRect
+IL_00A5: ldarg.2 
+IL_00A6: call Verse.CellRect::Boolean InBounds(Verse.Map)
+IL_00AB: brtrue.s IL_0116
+IL_00AD: ldc.i4.7 
+IL_00AE: newarr ::System.String
+IL_00B3: dup 
+IL_00B4: ldc.i4.0 
+IL_00B5: ldstr "Tried to spawn "
+IL_00BA: stelem.ref 
+IL_00BB: dup 
+IL_00BC: ldc.i4.1 
+IL_00BD: ldarg.0 
+IL_00BE: call Verse.Gen::System.String ToStringSafe[Thing](Verse.Thing)
+IL_00C3: stelem.ref 
+IL_00C4: dup 
+IL_00C5: ldc.i4.2 
+IL_00C6: ldstr " out of bounds at "
+IL_00CB: stelem.ref 
+IL_00CC: dup 
+IL_00CD: ldc.i4.3 
+IL_00CE: ldarg.1 
+IL_00CF: stloc.1 
+IL_00D0: ldloca.s 1
+IL_00D2: constrained. ::Verse.IntVec3
+IL_00D8: callvirt System.Object::System.String ToString()
+IL_00DD: stelem.ref 
+IL_00DE: dup 
+IL_00DF: ldc.i4.4 
+IL_00E0: ldstr " (out of bounds because size is "
+IL_00E5: stelem.ref 
+IL_00E6: dup 
+IL_00E7: ldc.i4.5 
+IL_00E8: ldarg.0 
+IL_00E9: ldfld Verse.Thing::Verse.ThingDef def
+IL_00EE: callvirt Verse.BuildableDef::Verse.IntVec2 get_Size()
+IL_00F3: stloc.2 
+IL_00F4: ldloca.s 2
+IL_00F6: constrained. ::Verse.IntVec2
+IL_00FC: callvirt System.Object::System.String ToString()
+IL_0101: stelem.ref 
+IL_0102: dup 
+IL_0103: ldc.i4.6 
+IL_0104: ldstr ")."
+IL_0109: stelem.ref 
+IL_010A: call System.String::System.String Concat(System.String[])
+IL_010F: call Verse.Log::Void Error(System.String)
+IL_0114: ldnull 
+IL_0115: ret 
+IL_0116: ldarg.0 
+IL_0117: callvirt Verse.Thing::Boolean get_Spawned()
+IL_011C: brfalse.s IL_0141
+IL_011E: ldstr "Tried to spawn "
+IL_0123: ldarg.0 
+IL_0124: dup 
+IL_0125: brtrue.s IL_012B
+IL_0127: pop 
+IL_0128: ldnull 
+IL_0129: br.s IL_0130
+IL_012B: callvirt System.Object::System.String ToString()
+IL_0130: ldstr " but it's already spawned."
+IL_0135: call System.String::System.String Concat(System.String, System.String, System.String)
+IL_013A: call Verse.Log::Void Error(System.String)
+IL_013F: ldarg.0 
+IL_0140: ret 
+IL_0141: ldarg.s 4
+IL_0143: brtrue.s IL_0156
+IL_0145: ldarg.1 
+IL_0146: ldarg.3 
+IL_0147: ldarg.0 
+IL_0148: ldfld Verse.Thing::Verse.ThingDef def
+IL_014D: ldarg.2 
+IL_014E: ldc.i4.0 
+IL_014F: call Verse.GenSpawn::Void WipeExistingThings(Verse.IntVec3, Verse.Rot4, Verse.BuildableDef, Verse.Map, Verse.DestroyMode)
+IL_0154: br.s IL_018F
+IL_0156: ldarg.s 4
+IL_0158: ldc.i4.1 
+IL_0159: bne.un.s IL_016D
+IL_015B: ldarg.1 
+IL_015C: ldarg.3 
+IL_015D: ldarg.0 
+IL_015E: ldfld Verse.Thing::Verse.ThingDef def
+IL_0163: ldarg.2 
+IL_0164: ldarg.s 6
+IL_0166: call Verse.GenSpawn::Void WipeAndRefundExistingThings(Verse.IntVec3, Verse.Rot4, Verse.BuildableDef, Verse.Map, Boolean)
+IL_016B: br.s IL_018F
+IL_016D: ldarg.s 4
+IL_016F: ldc.i4.2 
+IL_0170: bne.un.s IL_018F
+IL_0172: ldarg.1 
+IL_0173: ldarg.3 
+IL_0174: ldarg.0 
+IL_0175: ldfld Verse.Thing::Verse.ThingDef def
+IL_017A: ldarg.2 
+IL_017B: call Verse.GenSpawn::Void CheckMoveItemsAside(Verse.IntVec3, Verse.Rot4, Verse.ThingDef, Verse.Map)
+IL_0180: ldarg.1 
+IL_0181: ldarg.3 
+IL_0182: ldarg.0 
+IL_0183: ldfld Verse.Thing::Verse.ThingDef def
+IL_0188: ldarg.2 
+IL_0189: ldc.i4.0 
+IL_018A: call Verse.GenSpawn::Void WipeExistingThings(Verse.IntVec3, Verse.Rot4, Verse.BuildableDef, Verse.Map, Verse.DestroyMode)
+IL_018F: ldarg.0 
+IL_0190: ldfld Verse.Thing::Verse.ThingDef def
+IL_0195: ldfld Verse.ThingDef::Verse.ThingCategory category
+IL_019A: ldc.i4.2 
+IL_019B: bne.un IL_0253
+IL_01A0: call Verse.Current::Verse.ProgramState get_ProgramState()
+IL_01A5: ldc.i4.2 
+IL_01A6: bne.un IL_0253
+IL_01AB: ldarg.1 
+IL_01AC: ldarg.2 
+IL_01AD: call Verse.GridsUtility::Int32 GetItemCount(Verse.IntVec3, Verse.Map)
+IL_01B2: ldarg.1 
+IL_01B3: ldarg.2 
+IL_01B4: call Verse.GridsUtility::Int32 GetMaxItemsAllowedInCell(Verse.IntVec3, Verse.Map)
+IL_01B9: blt IL_0253
+IL_01BE: ldarg.1 
+IL_01BF: ldarg.2 
+IL_01C0: call Verse.GridsUtility::System.Collections.Generic.List`1[Verse.Thing] GetThingList(Verse.IntVec3, Verse.Map)
+IL_01C5: call System.Linq.Enumerable::System.Collections.Generic.List`1[Verse.Thing] ToList[Thing](System.Collections.Generic.IEnumerable`1[Verse.Thing])
+IL_01CA: callvirt System.Collections.Generic.List`1[[Verse.Thing, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Enumerator GetEnumerator()
+IL_01CF: stloc.3 
+IL_01D0: br.s IL_023A
+IL_01D2: ldloca.s 3
+IL_01D4: call System.Collections.Generic.List`1+Enumerator[[Verse.Thing, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Verse.Thing get_Current()
+IL_01D9: stloc.s 4
+IL_01DB: ldloc.s 4
+IL_01DD: ldarg.0 
+IL_01DE: beq.s IL_023A
+IL_01E0: ldloc.s 4
+IL_01E2: ldfld Verse.Thing::Verse.ThingDef def
+IL_01E7: ldfld Verse.ThingDef::Verse.ThingCategory category
+IL_01EC: ldc.i4.2 
+IL_01ED: bne.un.s IL_023A
+IL_01EF: ldloc.s 4
+IL_01F1: ldc.i4.0 
+IL_01F2: callvirt Verse.Entity::Void DeSpawn(Verse.DestroyMode)
+IL_01F7: ldloc.s 4
+IL_01F9: ldarg.1 
+IL_01FA: ldarg.2 
+IL_01FB: ldc.i4.1 
+IL_01FC: ldnull 
+IL_01FD: ldloc.0 
+IL_01FE: ldfld Verse.GenSpawn+<>c__DisplayClass6_0::System.Predicate`1[Verse.IntVec3] <>9__0
+IL_0203: dup 
+IL_0204: brtrue.s IL_021E
+IL_0206: pop 
+IL_0207: ldloc.0 
+IL_0208: ldloc.0 
+IL_0209: ldftn Verse.GenSpawn+<>c__DisplayClass6_0::Boolean <Spawn>b__0(Verse.IntVec3)
+IL_020F: newobj System.Predicate`1[[Verse.IntVec3, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Void .ctor(System.Object, IntPtr)
+IL_0214: dup 
+IL_0215: stloc.s 5
+IL_0217: stfld Verse.GenSpawn+<>c__DisplayClass6_0::System.Predicate`1[Verse.IntVec3] <>9__0
+IL_021C: ldloc.s 5
+IL_021E: ldloca.s 6
+IL_0220: initobj ::System.Nullable`1[Verse.Rot4]
+IL_0226: ldloc.s 6
+IL_0228: ldc.i4.1 
+IL_0229: call Verse.GenPlace::Boolean TryPlaceThing(Verse.Thing, Verse.IntVec3, Verse.Map, Verse.ThingPlaceMode, System.Action`2[Verse.Thing,System.Int32], System.Predicate`1[Verse.IntVec3], System.Nullable`1[Verse.Rot4], Int32)
+IL_022E: brtrue.s IL_0243
+IL_0230: ldloc.s 4
+IL_0232: ldc.i4.0 
+IL_0233: callvirt Verse.Thing::Void Destroy(Verse.DestroyMode)
+IL_0238: leave.s IL_0253
+IL_023A: ldloca.s 3
+IL_023C: call System.Collections.Generic.List`1+Enumerator[[Verse.Thing, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Boolean MoveNext()
+IL_0241: brtrue.s IL_01D2
+IL_0243: leave.s IL_0253
+IL_0245: ldloca.s 3
+IL_0247: constrained. System.Collections.Generic.List`1::System.Collections.Generic.List`1+Enumerator[Verse.Thing]
+IL_024D: callvirt System.IDisposable::Void Dispose()
+IL_0252: endfinally 
+IL_0253: ldarg.0 
+IL_0254: ldarg.3 
+IL_0255: callvirt Verse.Thing::Void set_Rotation(Verse.Rot4)
+IL_025A: ldarg.0 
+IL_025B: ldarg.1 
+IL_025C: callvirt Verse.Thing::Void set_Position(Verse.IntVec3)
+IL_0261: ldarg.0 
+IL_0262: ldfld Verse.Thing::Verse.ThingOwner holdingOwner
+IL_0267: brfalse.s IL_0276
+IL_0269: ldarg.0 
+IL_026A: ldfld Verse.Thing::Verse.ThingOwner holdingOwner
+IL_026F: ldarg.0 
+IL_0270: callvirt Verse.ThingOwner::Boolean Remove(Verse.Thing)
+IL_0275: pop 
+IL_0276: ldarg.0 
+IL_0277: ldarg.2 
+IL_0278: ldarg.s 5
+IL_027A: callvirt Verse.Entity::Void SpawnSetup(Verse.Map, Boolean)
+IL_027F: ldarg.0 
+IL_0280: callvirt Verse.Thing::Boolean get_Spawned()
+IL_0285: brfalse.s IL_02B4
+IL_0287: ldarg.0 
+IL_0288: ldfld Verse.Thing::Int32 stackCount
+IL_028D: brtrue.s IL_02B4
+IL_028F: ldstr "Spawned thing with 0 stackCount: "
+IL_0294: ldarg.0 
+IL_0295: dup 
+IL_0296: brtrue.s IL_029C
+IL_0298: pop 
+IL_0299: ldnull 
+IL_029A: br.s IL_02A1
+IL_029C: callvirt System.Object::System.String ToString()
+IL_02A1: call System.String::System.String Concat(System.String, System.String)
+IL_02A6: call Verse.Log::Void Error(System.String)
+IL_02AB: ldarg.0 
+IL_02AC: ldc.i4.0 
+IL_02AD: callvirt Verse.Thing::Void Destroy(Verse.DestroyMode)
+IL_02B2: ldnull 
+IL_02B3: ret 
+IL_02B4: ldarg.0 
+IL_02B5: ldfld Verse.Thing::Verse.ThingDef def
+IL_02BA: ldfld Verse.BuildableDef::Verse.Traversability passability
+IL_02BF: ldc.i4.2 
+IL_02C0: bne.un IL_0349
+IL_02C5: ldloc.0 
+IL_02C6: ldflda Verse.GenSpawn+<>c__DisplayClass6_0::Verse.CellRect occupiedRect
+IL_02CB: call Verse.CellRect::Enumerator GetEnumerator()
+IL_02D0: stloc.s 7
+IL_02D2: br.s IL_0330
+IL_02D4: ldloca.s 7
+IL_02D6: call Verse.CellRect+Enumerator::Verse.IntVec3 get_Current()
+IL_02DB: ldarg.2 
+IL_02DC: call Verse.GridsUtility::System.Collections.Generic.List`1[Verse.Thing] GetThingList(Verse.IntVec3, Verse.Map)
+IL_02E1: call System.Linq.Enumerable::System.Collections.Generic.List`1[Verse.Thing] ToList[Thing](System.Collections.Generic.IEnumerable`1[Verse.Thing])
+IL_02E6: callvirt System.Collections.Generic.List`1[[Verse.Thing, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Enumerator GetEnumerator()
+IL_02EB: stloc.3 
+IL_02EC: br.s IL_0317
+IL_02EE: ldloca.s 3
+IL_02F0: call System.Collections.Generic.List`1+Enumerator[[Verse.Thing, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Verse.Thing get_Current()
+IL_02F5: stloc.s 8
+IL_02F7: ldloc.s 8
+IL_02F9: ldarg.0 
+IL_02FA: beq.s IL_0317
+IL_02FC: ldloc.s 8
+IL_02FE: isinst ::Verse.Pawn
+IL_0303: stloc.s 9
+IL_0305: ldloc.s 9
+IL_0307: brfalse.s IL_0317
+IL_0309: ldloc.s 9
+IL_030B: ldfld Verse.Pawn::Verse.AI.Pawn_PathFollower pather
+IL_0310: ldc.i4.0 
+IL_0311: callvirt Verse.AI.Pawn_PathFollower::Boolean TryRecoverFromUnwalkablePosition(Boolean)
+IL_0316: pop 
+IL_0317: ldloca.s 3
+IL_0319: call System.Collections.Generic.List`1+Enumerator[[Verse.Thing, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Boolean MoveNext()
+IL_031E: brtrue.s IL_02EE
+IL_0320: leave.s IL_0330
+IL_0322: ldloca.s 3
+IL_0324: constrained. System.Collections.Generic.List`1::System.Collections.Generic.List`1+Enumerator[Verse.Thing]
+IL_032A: callvirt System.IDisposable::Void Dispose()
+IL_032F: endfinally 
+IL_0330: ldloca.s 7
+IL_0332: call Verse.CellRect+Enumerator::Boolean MoveNext()
+IL_0337: brtrue.s IL_02D4
+IL_0339: leave.s IL_0349
+IL_033B: ldloca.s 7
+IL_033D: constrained. Verse.CellRect::Verse.CellRect+Enumerator
+IL_0343: callvirt System.IDisposable::Void Dispose()
+IL_0348: endfinally 
+IL_0349: ldarg.0 
+IL_034A: ret 
+METHOD Verse.GenSpawn::SpawningWipes TOKEN 100685320
+IL_0000: ldarg.0 
+IL_0001: isinst ::Verse.ThingDef
+IL_0006: stloc.0 
+IL_0007: ldarg.1 
+IL_0008: isinst ::Verse.ThingDef
+IL_000D: stloc.1 
+IL_000E: ldloc.0 
+IL_000F: brfalse.s IL_0014
+IL_0011: ldloc.1 
+IL_0012: brtrue.s IL_0016
+IL_0014: ldc.i4.0 
+IL_0015: ret 
+IL_0016: ldloc.0 
+IL_0017: ldfld Verse.ThingDef::Verse.ThingCategory category
+IL_001C: ldc.i4.8 
+IL_001D: beq.s IL_003B
+IL_001F: ldloc.0 
+IL_0020: ldfld Verse.ThingDef::Verse.ThingCategory category
+IL_0025: ldc.i4.s 9
+IL_0027: beq.s IL_003B
+IL_0029: ldloc.0 
+IL_002A: ldfld Verse.ThingDef::Verse.ThingCategory category
+IL_002F: ldc.i4.6 
+IL_0030: beq.s IL_003B
+IL_0032: ldloc.0 
+IL_0033: ldfld Verse.ThingDef::Verse.ThingCategory category
+IL_0038: ldc.i4.5 
+IL_0039: bne.un.s IL_003D
+IL_003B: ldc.i4.0 
+IL_003C: ret 
+IL_003D: ldarg.2 
+IL_003E: brtrue.s IL_004A
+IL_0040: ldloc.1 
+IL_0041: ldfld Verse.ThingDef::Boolean destroyable
+IL_0046: brtrue.s IL_004A
+IL_0048: ldc.i4.0 
+IL_0049: ret 
+IL_004A: ldloc.0 
+IL_004B: ldfld Verse.ThingDef::Verse.ThingCategory category
+IL_0050: ldc.i4.4 
+IL_0051: bne.un.s IL_0055
+IL_0053: ldc.i4.0 
+IL_0054: ret 
+IL_0055: ldloc.0 
+IL_0056: ldfld Verse.ThingDef::Verse.ThingCategory category
+IL_005B: ldc.i4.s 11
+IL_005D: bne.un.s IL_006A
+IL_005F: ldloc.1 
+IL_0060: ldfld Verse.ThingDef::Verse.ThingCategory category
+IL_0065: ldc.i4.s 11
+IL_0067: ceq 
+IL_0069: ret 
+IL_006A: ldloc.1 
+IL_006B: ldfld Verse.ThingDef::Verse.ThingCategory category
+IL_0070: ldc.i4.6 
+IL_0071: bne.un.s IL_007D
+IL_0073: ldloc.0 
+IL_0074: ldfld Verse.BuildableDef::Verse.Traversability passability
+IL_0079: brfalse.s IL_007D
+IL_007B: ldc.i4.1 
+IL_007C: ret 
+IL_007D: ldloc.1 
+IL_007E: ldfld Verse.ThingDef::Verse.ThingCategory category
+IL_0083: ldc.i4.2 
+IL_0084: bne.un.s IL_0099
+IL_0086: ldloc.0 
+IL_0087: ldfld Verse.BuildableDef::Verse.Traversability passability
+IL_008C: ldc.i4.2 
+IL_008D: bne.un.s IL_0099
+IL_008F: ldloc.0 
+IL_0090: ldfld Verse.ThingDef::Verse.SurfaceType surfaceType
+IL_0095: brtrue.s IL_0099
+IL_0097: ldc.i4.1 
+IL_0098: ret 
+IL_0099: ldloc.0 
+IL_009A: callvirt Verse.ThingDef::Boolean get_EverTransmitsPower()
+IL_009F: brfalse.s IL_00B8
+IL_00A1: ldloc.1 
+IL_00A2: ldfld Verse.ThingDef::RimWorld.BuildingProperties building
+IL_00A7: brfalse.s IL_00B8
+IL_00A9: ldloc.1 
+IL_00AA: ldfld Verse.ThingDef::RimWorld.BuildingProperties building
+IL_00AF: ldfld RimWorld.BuildingProperties::Boolean isPowerConduit
+IL_00B4: brfalse.s IL_00B8
+IL_00B6: ldc.i4.1 
+IL_00B7: ret 
+IL_00B8: ldloc.0 
+IL_00B9: callvirt Verse.ThingDef::Boolean get_IsFrame()
+IL_00BE: brfalse.s IL_00D1
+IL_00C0: ldloc.0 
+IL_00C1: ldfld Verse.ThingDef::Verse.BuildableDef entityDefToBuild
+IL_00C6: ldarg.1 
+IL_00C7: ldc.i4.0 
+IL_00C8: call Verse.GenSpawn::Boolean SpawningWipes(Verse.BuildableDef, Verse.BuildableDef, Boolean)
+IL_00CD: brfalse.s IL_00D1
+IL_00CF: ldc.i4.1 
+IL_00D0: ret 
+IL_00D1: ldloc.0 
+IL_00D2: call RimWorld.GenConstruct::Verse.BuildableDef BuiltDefOf(Verse.ThingDef)
+IL_00D7: stloc.2 
+IL_00D8: ldloc.1 
+IL_00D9: call RimWorld.GenConstruct::Verse.BuildableDef BuiltDefOf(Verse.ThingDef)
+IL_00DE: stloc.3 
+IL_00DF: ldloc.2 
+IL_00E0: brfalse.s IL_00E5
+IL_00E2: ldloc.3 
+IL_00E3: brtrue.s IL_00E7
+IL_00E5: ldc.i4.0 
+IL_00E6: ret 
+IL_00E7: ldloc.1 
+IL_00E8: ldfld Verse.ThingDef::Verse.BuildableDef entityDefToBuild
+IL_00ED: isinst ::Verse.ThingDef
+IL_00F2: stloc.s 4
+IL_00F4: ldloc.0 
+IL_00F5: ldfld Verse.ThingDef::Verse.BuildableDef entityDefToBuild
+IL_00FA: isinst ::Verse.ThingDef
+IL_00FF: stloc.s 5
+IL_0101: ldloc.1 
+IL_0102: callvirt Verse.ThingDef::Boolean get_IsBlueprint()
+IL_0107: brfalse IL_0203
+IL_010C: ldloc.0 
+IL_010D: callvirt Verse.ThingDef::Boolean get_IsBlueprint()
+IL_0112: brfalse IL_01B3
+IL_0117: ldloc.s 5
+IL_0119: brfalse.s IL_015C
+IL_011B: ldloc.s 5
+IL_011D: ldfld Verse.ThingDef::RimWorld.BuildingProperties building
+IL_0122: brfalse.s IL_015C
+IL_0124: ldloc.s 5
+IL_0126: ldfld Verse.ThingDef::RimWorld.BuildingProperties building
+IL_012B: ldfld RimWorld.BuildingProperties::Boolean canPlaceOverWall
+IL_0130: brfalse.s IL_015C
+IL_0132: ldloc.1 
+IL_0133: ldfld Verse.ThingDef::Verse.BuildableDef entityDefToBuild
+IL_0138: isinst ::Verse.ThingDef
+IL_013D: stloc.s 6
+IL_013F: ldloc.s 6
+IL_0141: brfalse.s IL_015C
+IL_0143: ldloc.s 6
+IL_0145: ldfld Verse.ThingDef::RimWorld.BuildingProperties building
+IL_014A: brfalse.s IL_015C
+IL_014C: ldloc.s 6
+IL_014E: ldfld Verse.ThingDef::RimWorld.BuildingProperties building
+IL_0153: ldfld RimWorld.BuildingProperties::Boolean isPlaceOverableWall
+IL_0158: brfalse.s IL_015C
+IL_015A: ldc.i4.1 
+IL_015B: ret 
+IL_015C: ldloc.s 5
+IL_015E: brfalse.s IL_0176
+IL_0160: ldloc.s 5
+IL_0162: ldfld Verse.ThingDef::System.Collections.Generic.List`1[System.String] replaceTags
+IL_0167: ldloc.1 
+IL_0168: ldfld Verse.ThingDef::System.Collections.Generic.List`1[System.String] replaceTags
+IL_016D: call Verse.GenList::Boolean NotNullAndContainsAnyElement[String](System.Collections.Generic.IList`1[System.String], System.Collections.Generic.IList`1[System.String])
+IL_0172: brfalse.s IL_0176
+IL_0174: ldc.i4.1 
+IL_0175: ret 
+IL_0176: ldloc.1 
+IL_0177: ldfld Verse.ThingDef::Verse.BuildableDef entityDefToBuild
+IL_017C: isinst ::Verse.TerrainDef
+IL_0181: brfalse.s IL_01B3
+IL_0183: ldloc.0 
+IL_0184: ldfld Verse.ThingDef::Verse.BuildableDef entityDefToBuild
+IL_0189: isinst ::Verse.ThingDef
+IL_018E: brfalse.s IL_01A4
+IL_0190: ldloc.0 
+IL_0191: ldfld Verse.ThingDef::Verse.BuildableDef entityDefToBuild
+IL_0196: castclass ::Verse.ThingDef
+IL_019B: ldfld Verse.ThingDef::Boolean coversFloor
+IL_01A0: brfalse.s IL_01A4
+IL_01A2: ldc.i4.1 
+IL_01A3: ret 
+IL_01A4: ldloc.0 
+IL_01A5: ldfld Verse.ThingDef::Verse.BuildableDef entityDefToBuild
+IL_01AA: isinst ::Verse.TerrainDef
+IL_01AF: brfalse.s IL_01B3
+IL_01B1: ldc.i4.1 
+IL_01B2: ret 
+IL_01B3: ldloc.s 4
+IL_01B5: brfalse.s IL_0201
+IL_01B7: ldloc.s 4
+IL_01B9: ldfld Verse.ThingDef::RimWorld.BuildingProperties building
+IL_01BE: dup 
+IL_01BF: brtrue.s IL_01CE
+IL_01C1: pop 
+IL_01C2: ldloca.s 9
+IL_01C4: initobj ::System.Nullable`1[System.Boolean]
+IL_01CA: ldloc.s 9
+IL_01CC: br.s IL_01D8
+IL_01CE: ldfld RimWorld.BuildingProperties::Boolean isPowerConduit
+IL_01D3: newobj System.Nullable`1[[System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]::Void .ctor(Boolean)
+IL_01D8: stloc.s 7
+IL_01DA: ldc.i4.1 
+IL_01DB: stloc.s 8
+IL_01DD: ldloca.s 7
+IL_01DF: call System.Nullable`1[[System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]::Boolean GetValueOrDefault()
+IL_01E4: ldloc.s 8
+IL_01E6: ceq 
+IL_01E8: ldloca.s 7
+IL_01EA: call System.Nullable`1[[System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]::Boolean get_HasValue()
+IL_01EF: and 
+IL_01F0: brfalse.s IL_0201
+IL_01F2: ldloc.s 5
+IL_01F4: brfalse.s IL_0201
+IL_01F6: ldloc.s 5
+IL_01F8: call Verse.ThingDef::Boolean get_EverTransmitsPower()
+IL_01FD: brfalse.s IL_0201
+IL_01FF: ldc.i4.1 
+IL_0200: ret 
+IL_0201: ldc.i4.0 
+IL_0202: ret 
+IL_0203: ldloc.1 
+IL_0204: callvirt Verse.ThingDef::Boolean get_IsFrame()
+IL_0209: brtrue.s IL_0213
+IL_020B: ldloc.1 
+IL_020C: callvirt Verse.ThingDef::Boolean get_IsBlueprint()
+IL_0211: brfalse.s IL_0237
+IL_0213: ldloc.1 
+IL_0214: ldfld Verse.ThingDef::Verse.BuildableDef entityDefToBuild
+IL_0219: isinst ::Verse.TerrainDef
+IL_021E: brfalse.s IL_0237
+IL_0220: ldloc.2 
+IL_0221: isinst ::Verse.ThingDef
+IL_0226: stloc.s 10
+IL_0228: ldloc.s 10
+IL_022A: brfalse.s IL_0237
+IL_022C: ldloc.s 10
+IL_022E: callvirt Verse.ThingDef::Boolean get_CoexistsWithFloors()
+IL_0233: brtrue.s IL_0237
+IL_0235: ldc.i4.1 
+IL_0236: ret 
+IL_0237: ldloc.1 
+IL_0238: ldsfld RimWorld.ThingDefOf::Verse.ThingDef ActiveDropPod
+IL_023D: beq.s IL_0247
+IL_023F: ldloc.0 
+IL_0240: ldsfld RimWorld.ThingDefOf::Verse.ThingDef ActiveDropPod
+IL_0245: bne.un.s IL_0249
+IL_0247: ldc.i4.0 
+IL_0248: ret 
+IL_0249: ldloc.0 
+IL_024A: ldfld Verse.ThingDef::Boolean wipesPlants
+IL_024F: brfalse.s IL_0265
+IL_0251: ldloc.0 
+IL_0252: ldfld Verse.ThingDef::Verse.ThingCategory category
+IL_0257: ldc.i4.3 
+IL_0258: bne.un.s IL_0265
+IL_025A: ldloc.1 
+IL_025B: ldfld Verse.ThingDef::Verse.ThingCategory category
+IL_0260: ldc.i4.4 
+IL_0261: bne.un.s IL_0265
+IL_0263: ldc.i4.1 
+IL_0264: ret 
+IL_0265: ldloc.0 
+IL_0266: ldc.i4.0 
+IL_0267: callvirt Verse.ThingDef::Boolean BlocksPlanting(Boolean)
+IL_026C: brfalse.s IL_0279
+IL_026E: ldloc.1 
+IL_026F: ldfld Verse.ThingDef::Verse.ThingCategory category
+IL_0274: ldc.i4.4 
+IL_0275: bne.un.s IL_0279
+IL_0277: ldc.i4.1 
+IL_0278: ret 
+IL_0279: ldloc.0 
+IL_027A: call Verse.EdificeUtility::Boolean IsEdifice(Verse.BuildableDef)
+IL_027F: brfalse.s IL_029F
+IL_0281: ldloc.1 
+IL_0282: ldfld Verse.ThingDef::Verse.ThingCategory category
+IL_0287: ldc.i4.s 11
+IL_0289: bne.un.s IL_028D
+IL_028B: ldc.i4.1 
+IL_028C: ret 
+IL_028D: ldloc.2 
+IL_028E: isinst ::Verse.TerrainDef
+IL_0293: brtrue.s IL_029F
+IL_0295: ldloc.3 
+IL_0296: call Verse.EdificeUtility::Boolean IsEdifice(Verse.BuildableDef)
+IL_029B: brfalse.s IL_029F
+IL_029D: ldc.i4.1 
+IL_029E: ret 
+IL_029F: ldloc.0 
+IL_02A0: ldfld Verse.BuildableDef::System.Collections.Generic.List`1[Verse.AltitudeLayer] blocksAltitudes
+IL_02A5: brfalse.s IL_02BC
+IL_02A7: ldloc.0 
+IL_02A8: ldfld Verse.BuildableDef::System.Collections.Generic.List`1[Verse.AltitudeLayer] blocksAltitudes
+IL_02AD: ldloc.1 
+IL_02AE: ldfld Verse.BuildableDef::Verse.AltitudeLayer altitudeLayer
+IL_02B3: callvirt System.Collections.Generic.List`1[[Verse.AltitudeLayer, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Boolean Contains(Verse.AltitudeLayer)
+IL_02B8: brfalse.s IL_02BC
+IL_02BA: ldc.i4.1 
+IL_02BB: ret 
+IL_02BC: ldloc.1 
+IL_02BD: ldfld Verse.BuildableDef::System.Collections.Generic.List`1[Verse.AltitudeLayer] blocksAltitudes
+IL_02C2: brfalse.s IL_02D9
+IL_02C4: ldloc.1 
+IL_02C5: ldfld Verse.BuildableDef::System.Collections.Generic.List`1[Verse.AltitudeLayer] blocksAltitudes
+IL_02CA: ldloc.0 
+IL_02CB: ldfld Verse.BuildableDef::Verse.AltitudeLayer altitudeLayer
+IL_02D0: callvirt System.Collections.Generic.List`1[[Verse.AltitudeLayer, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Boolean Contains(Verse.AltitudeLayer)
+IL_02D5: brfalse.s IL_02D9
+IL_02D7: ldc.i4.1 
+IL_02D8: ret 
+IL_02D9: ldc.i4.0 
+IL_02DA: ret 

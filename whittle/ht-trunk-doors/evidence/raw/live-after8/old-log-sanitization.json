@@ -1,0 +1,16 @@
+{
+  "original_sha256": "4c7d1371e331f86aa46d6cb8a99f7463595b7dec2db2e638bd8cf0c214d2edc5",
+  "original_size": 34457,
+  "original_mtime_ns": 1794433279289511200,
+  "original_line_count": 590,
+  "redaction_count": 1,
+  "sanitized_sha256": "34c6f1f037fe707b7b4f3580ab5b3fcf0c5c7ba8bc679660d69bc2b4ad264435",
+  "script_sha256": "4ca61a7f74d32d83071830211847c749788de5ac82b4347558fbb09666588a0d",
+  "first_exception": [
+    208,
+    "Error while generating pawn. Rethrowing. Exception: System.NullReferenceException: Object reference not set to an instance of an object"
+  ],
+  "config_errors": [],
+  "guard_generation": 1432,
+  "game_status_rc": 3
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "deployed_path": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/LuminousPigment/Assemblies/RimMandrakeLuminousPigment.dll",
+    "backup": "whittle/ht-trunk-doors/evidence/raw/dependency-before/LuminousPigment/Assemblies/RimMandrakeLuminousPigment.dll",
+    "installed_sha256": "e8bde686bd8097f1dac3a9eb7483894b1a38c1cf022b8e161062981a6c2342bb",
+    "source_path": "src/RimMandrake/LuminousPigment/Assemblies/RimMandrakeLuminousPigment.dll",
+    "source_sha256": "8f6cf2b9b68aca9937168e8bda813f74b76b66b8582affbd69a4603d93c3cc1e"
+  },
+  {
+    "deployed_path": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/LuminousPigment/Assemblies/RimMandrakeLuminousPigment.dll.srchash",
+    "backup": "whittle/ht-trunk-doors/evidence/raw/dependency-before/LuminousPigment/Assemblies/RimMandrakeLuminousPigment.dll.srchash",
+    "installed_sha256": "4067b5fbc8f1164d80ca31cc3a3ea6289cf1f2c901220f5d6c57321e9c4e24d5",
+    "source_path": "src/RimMandrake/LuminousPigment/Assemblies/RimMandrakeLuminousPigment.dll.srchash",
+    "source_sha256": "09e7f622dac0433b3e600fbf67033047350807f42107642a2ac609f16dbe1c8f"
+  }
+]

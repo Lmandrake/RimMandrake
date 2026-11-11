@@ -1,0 +1,142 @@
+[
+  {
+    "path": "design/RimMandrake/giant_footprint_design_2026-10-07.md",
+    "exists": true,
+    "sha256": "1928f17a8dcbba75d0ee3445f30ab82dc10052828cf72d8575f823ef1a301c3e"
+  },
+  {
+    "path": "design/RimMandrake/huge_footprints_perf.md",
+    "exists": true,
+    "sha256": "4876d2dd49b6f3182fe4f1dbcc1eace00c83aba4f2f9abadecb2fce7784c7750"
+  },
+  {
+    "path": "design/RimMandrake/hugethings_codex_2026-11-09/QUESTIONS.md",
+    "exists": true,
+    "sha256": "8a9227793e612c05cb848e45fdf4e551bf4e46e497a0e85a4ce2b5a4bda1d2c4"
+  },
+  {
+    "path": "design/RimMandrake/hugethings_codex_2026-11-09/REVIEW.md",
+    "exists": true,
+    "sha256": "5a6cf5c9036334b4af13b02397e9f421f04f8f59db4de62ebbae3ee4240fdd2a"
+  },
+  {
+    "path": "design/RimMandrake/hugethings_codex_2026-11-09/record.json",
+    "exists": true,
+    "sha256": "ce18bbc60bceb114949ca430c5ca7eef0d212828b3e9e5f7fd866a373118f11d"
+  },
+  {
+    "path": "src/RimMandrake/HugeThings/Defs/JobDefs/RM_JobDefs.xml",
+    "exists": true,
+    "sha256": "4bb2c3e805f95ec7537a9a2b2737a200f77612939b17a4f008ece6557b3b8cdf"
+  },
+  {
+    "path": "src/RimMandrake/HugeThings/Defs/WorkGiverDefs/RM_WorkGivers.xml",
+    "exists": true,
+    "sha256": "d34bb47be29ea305555489058a65aaa7acf2aa8abb44f2e860c2dd1ff69f1ac3"
+  },
+  {
+    "path": "src/RimMandrake/HugeThings/Source/CompHugeFootprint.cs",
+    "exists": true,
+    "sha256": "08f387d765e714cf14aa843d92592298b78f39b0a702759e3746d5970e7c2385"
+  },
+  {
+    "path": "src/RimMandrake/HugeThings/Source/HugePlantCutting.cs",
+    "exists": true,
+    "sha256": "cb7cf80fb4483fa3ca0d953fb3b95615262760acd01ddd77dfb952751e7f2766"
+  },
+  {
+    "path": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeClaimsKernel.cs",
+    "exists": true,
+    "sha256": "a2192572b5a2793763936103e1a901ad2c1d2c7a63c42ef0962884ef220c791f"
+  },
+  {
+    "path": "src/RimMandrake/HugeThings/Source/MapComponent_HugeFootprints.cs",
+    "exists": true,
+    "sha256": "625d9b072d356b1cb33b389cdf3a711132bba344fc275428dec6a20f66738692"
+  },
+  {
+    "path": "src/RimMandrake/HugeThings/Source/PlantCutToilRewrite.cs",
+    "exists": true,
+    "sha256": "cfb920bc871a389c204aa20941df2cb492ea4d37cfcb91059798db4d7b6121d8"
+  },
+  {
+    "path": "src/RimMandrake/HugeThings/Source/RM_HugeThings.csproj",
+    "exists": true,
+    "sha256": "3d6c2613c46e66738985000863873e2a58a524f84cf0cb93e2509b787fd75f70"
+  },
+  {
+    "path": "src/RimMandrake/HugeThings/Source/SelfTest/FootprintBudget/Program.cs",
+    "exists": true,
+    "sha256": "3c80eb32d234cef3ef66dc88072b77ede3419fb464ef0a4f4db0c5c0f57c0ca6"
+  },
+  {
+    "path": "src/RimMandrake/HugeThings/Source/SelfTest/FootprintBudget/Stubs.cs",
+    "exists": true,
+    "sha256": "2f0ff1a4d71cf91d36e48ec796de79907d9e2deba776e4988ec9d692d035775c"
+  },
+  {
+    "path": "src/RimMandrake/HugeThings/Source/SelfTest/HugeThingsFuzz.cs",
+    "exists": true,
+    "sha256": "b00a8f92b44c910f2564456b26f80b5e639179974e49860de11078bb2c058220"
+  },
+  {
+    "path": "src/RimMandrake/HugeThings/Source/SelfTest/TrunkDoors/Program.cs",
+    "exists": true,
+    "sha256": "47eca201c8bcd4a9fe310d72856abbcd336cd88c7d9e2b623ecd0243c00d0cc5"
+  },
+  {
+    "path": "src/RimMandrake/HugeThings/Source/SelfTest/TrunkDoors/TrunkDoors.csproj",
+    "exists": true,
+    "sha256": "ae88f49e37aba5049e07c4042a6acda189ad59c3dea00575dfaa1d229a238a3d"
+  },
+  {
+    "path": "src/RimMandrake/HugeThings/Source/TrunkDoorValidationHooks.cs",
+    "exists": true,
+    "sha256": "41b6583d85c05055e60356c5c445b4e1edee0d8c340c3c43c7c6ac1da1d8506e"
+  },
+  {
+    "path": "src/RimMandrake/HugeThings/northstar/p1_live.py",
+    "exists": false,
+    "sha256": null
+  },
+  {
+    "path": "src/RimMandrake/HugeThings/northstar/trunk_doors_live.py",
+    "exists": true,
+    "sha256": "afd5bdf0793becbf3d5ac0d3a02fa8d317966d18e5ccf1eb98761fb361ff796a"
+  },
+  {
+    "path": "src/RimMandrake/HugeThings/northstar/workload_corpse_live.py",
+    "exists": true,
+    "sha256": "c9759bcd807bb933c1809e47b7780d67d6a712750904b99c8cd79ec5a8445363"
+  },
+  {
+    "path": "src/RimMandrake/HugeThings/selftest_hugethings_footprint.py",
+    "exists": true,
+    "sha256": "01d0cada524b7c49b4b1f3d5db088c128d23db1514988fe436528e8393151860"
+  },
+  {
+    "path": "src/RimMandrake/HugeThings/validation.py",
+    "exists": true,
+    "sha256": "0fb3a68208865b1fb15d5695852d05301afded5a8f39cca8f9fe0ca78a394718"
+  },
+  {
+    "path": "src/RimMandrake/HugeThingsTestRaces/Defs/ThingDefs_Plants/RM_TestContactPlant.xml",
+    "exists": true,
+    "sha256": "3ffe3d6ebf820026de7722f046fd11666f7024f13c521f69172555fc0d591c41"
+  },
+  {
+    "path": "src/RimMandrake/Utils/selftest_hugethings_budget.py",
+    "exists": true,
+    "sha256": "49120e5d588140cbcced20f76344071ee32e1480c75e4e11fd8eaefdeea00403"
+  },
+  {
+    "path": "src/RimMandrake/Utils/selftest_hugethings_lint.py",
+    "exists": true,
+    "sha256": "d10ec0923b1f0b8298f757c46ec94ff8ded2fa8bd216f6a6c9a9b9f81f61b22d"
+  },
+  {
+    "path": "src/RimMandrake/Utils/selftest_hugethings_trunk_doors.py",
+    "exists": true,
+    "sha256": "a40abfca9720cb2bcfa8f3fc66e3cb9bd44fd078734c61cffd1dbaa885bcea92"
+  }
+]

@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\codex-ht\src\RimMandrake\HugeThings\northstar\trunk_doors_live.py", line 686, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\codex-ht\src\RimMandrake\HugeThings\northstar\trunk_doors_live.py", line 681, in main
+    print('PASS' if r.rec['ok'] else 'FAIL', r.rec.get('error', ''), errors, flush=True)
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 131-132: character maps to <undefined>

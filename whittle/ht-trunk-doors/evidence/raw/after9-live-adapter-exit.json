@@ -1,0 +1,13 @@
+{
+  "utc": 1794435941.09487,
+  "live_adapter_command": [
+    "python3",
+    "whittle/ht-trunk-doors/evidence/run_live.py",
+    "live-after9"
+  ],
+  "observed_process_exit_code": 1,
+  "observation": "Actual unified exec session6410 completed exit_code1 after cleanup; not a Whittle validation or full worker outer exit.",
+  "workflow_final_not_run": true,
+  "full_worker_outer_exit": "parent records after worker returns",
+  "incomplete": true
+}

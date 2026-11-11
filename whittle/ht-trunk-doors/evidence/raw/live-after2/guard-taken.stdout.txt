@@ -1,0 +1,17 @@
+{
+ "state": "HELD",
+ "seat": "CODEX_STEVEDESKTOP_HUGETHINGS",
+ "purpose": "HT: RIMMANDRAKE_ALLOW_HUGETHINGS_TRUNKS_TO_SEAL_DOORS",
+ "identity": {
+  "pid": 2958174,
+  "start": 112286.02,
+  "boot_id": "83c87369-52bb-43a4-9179-a6cd07ce769d",
+  "platform": "wsl",
+  "host": "SteveDesktop"
+ },
+ "generation": 1425,
+ "heartbeat": "2026-11-11T19:48:21Z",
+ "how": "holder process pid 2958174 alive",
+ "host": "stevedesktop",
+ "path": "/mnt/d/RimTest/data/scratch/DRIVER_LOCK.json"
+}

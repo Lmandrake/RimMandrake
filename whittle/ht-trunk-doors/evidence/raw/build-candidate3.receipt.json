@@ -1,0 +1,22 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/Utils/winbuild.py",
+    "HugeThings",
+    "--",
+    "/p:HarmonyDll=D:/SteamLibrary/steamapps/workshop/content/294100/2009463077/1.6/Assemblies/0Harmony.dll",
+    "/p:RimWorldManaged=D:/SteamLibrary/steamapps/common/RimWorld/RimWorldWin64_Data/Managed"
+  ],
+  "rc": 0,
+  "elapsed": 3.890652656555176,
+  "commit": "ef5821d580764928453e41abb2f4903c5f8eb739",
+  "compile_manifest_sha256": "13fb034da0eb5239007268465120f6a0a18119d4200a5e010afdebdde565b063",
+  "dll": {
+    "sha256": "a17ccd6ebaa7a2ebcb87e4b5a1bdfa14e0acd254910d2094eb64449cb32bf62f",
+    "path": "src/RimMandrake/HugeThings/Assemblies/RM_HugeThings.dll"
+  },
+  "dll.srchash": {
+    "sha256": "870cf2953eff8c3c318b8b42058c710724cc2d42a80824dbc4ebc214b78d7e91",
+    "path": "src/RimMandrake/HugeThings/Assemblies/RM_HugeThings.dll.srchash"
+  }
+}

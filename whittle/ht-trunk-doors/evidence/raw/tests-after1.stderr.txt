@@ -1,0 +1,5 @@
+contained in rm-harness.slice (max 12G), 1 workers
+[1/4] PASS        127.7s  src/RimMandrake/HugeThings/selftest_hugethings_footprint.py
+[2/4] PASS          4.8s  src/RimMandrake/Utils/selftest_hugethings_budget.py
+[3/4] PASS         14.0s  src/RimMandrake/Utils/selftest_hugethings_fuzz.py
+[4/4] PASS          6.2s  src/RimMandrake/Utils/selftest_hugethings_lint.py

@@ -1,0 +1,4 @@
+usage: modset_builder.py [-h] [--tier TIER] [--list] [--apply] [--restore]
+                         [--restore-full] [--by OWNER] [--restore-own OWNER]
+                         [--repair-reset] [--not-my-bridge REASON]
+modset_builder.py: error: argument --tier: 'mods__mandrake_rm_flowworks__mandrake_rm_hugethings__mandrake_rm_hugethingstestraces__mandrake_rm_patches__mandrake_rm_biomes__oskarpotocki_vanillafactionsexpanded_core' is no modset_builder tier (--list names them) and no mods__ name

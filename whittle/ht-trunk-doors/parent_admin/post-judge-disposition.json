@@ -1,0 +1,15 @@
+{
+  "verdict": "would show: no",
+  "closed": false,
+  "code_findings_open": [
+    "F1",
+    "F2",
+    "F3",
+    "F4",
+    "F5"
+  ],
+  "D1": "Corrected descriptive proof overclaims to acceptance requirements after verdict; no new live acceptance or independent re-review claimed.",
+  "runtime_source_sha": "863dc1064fa0d4d556bd0d79ad310d8ca8fab9a6",
+  "script_sha": "9c89d8f5e5220e60f042820535cee9494c8a3e76",
+  "runtime_source_and_artifact_changed_after_judge": false
+}

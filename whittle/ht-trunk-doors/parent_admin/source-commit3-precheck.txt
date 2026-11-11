@@ -1,0 +1,1 @@
+Initial precheck expected one changed file but found the live-script direct-claim repair too; stopped before staging/commit. Parent then read that complete diff, matched both against SOURCE_READY hashes, and committed both exact files. No failed precheck claimed as validation.

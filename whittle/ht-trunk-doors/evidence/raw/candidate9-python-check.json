@@ -1,0 +1,43 @@
+{
+  "utc": 1794435116.3468843,
+  "script_sha256": "27c4127244b9376a078931a4ad23300209e6428ba437b15e5ce049f4b464f072",
+  "syntax": "PASS",
+  "runtime_inputs_unchanged": 54,
+  "manifest_byte_identical_v7": true,
+  "mental_predicate_cases": [
+    {
+      "name": "actual_null_omitted",
+      "expected": true
+    },
+    {
+      "name": "explicit_null",
+      "expected": true
+    },
+    {
+      "name": "mental_state",
+      "expected": false
+    },
+    {
+      "name": "failed",
+      "expected": false
+    },
+    {
+      "name": "wrong_action",
+      "expected": false
+    },
+    {
+      "name": "missing_schema",
+      "expected": false
+    },
+    {
+      "name": "wrong_tick",
+      "expected": false
+    },
+    {
+      "name": "started",
+      "expected": false
+    }
+  ],
+  "pilot": "evidence/pilot9_raw.json",
+  "source_contract": "JawaBenchPawnTools.PawnMental single successful return always computes nullable currentState and started; list is read-only; observed raw omits both nulls. No bridge DLL/source repair or rebuild claimed."
+}

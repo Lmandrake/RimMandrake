@@ -1,0 +1,265 @@
+{
+  "clear_calls": [
+    {
+      "call": {
+        "tool": "jawa/destroy_batch",
+        "args": {
+          "categories": "All",
+          "rects": "94,95,13,18"
+        },
+        "result": {
+          "success": true,
+          "message": "Destroyed 73 thing(s) across 234 cell(s).",
+          "cellsExamined": 234,
+          "outOfBounds": 0,
+          "destroyed": 73,
+          "pawnsSkipped": 0,
+          "undestroyableSkipped": 0,
+          "perCategory": {
+            "Plant": 36,
+            "Filth": 26,
+            "Item": 11
+          },
+          "samples": [
+            {
+              "x": 96,
+              "z": 95,
+              "def": "Plant_PincushionCactus",
+              "category": "Plant"
+            },
+            {
+              "x": 96,
+              "z": 97,
+              "def": "Plant_Grass",
+              "category": "Plant"
+            },
+            {
+              "x": 96,
+              "z": 107,
+              "def": "Plant_Grass",
+              "category": "Plant"
+            },
+            {
+              "x": 96,
+              "z": 109,
+              "def": "Plant_Bush",
+              "category": "Plant"
+            },
+            {
+              "x": 97,
+              "z": 112,
+              "def": "Plant_Grass",
+              "category": "Plant"
+            },
+            {
+              "x": 98,
+              "z": 98,
+              "def": "Plant_Grass",
+              "category": "Plant"
+            },
+            {
+              "x": 98,
+              "z": 99,
+              "def": "Plant_Grass",
+              "category": "Plant"
+            },
+            {
+              "x": 99,
+              "z": 96,
+              "def": "Plant_Grass",
+              "category": "Plant"
+            }
+          ],
+          "ticksGame": 3,
+          "operation": {
+            "OperationId": "op_fd963e8eb61742aba26418c366405fe3",
+            "Status": "Completed",
+            "Success": true,
+            "DurationMs": 55
+          },
+          "state": {
+            "programState": "Playing",
+            "hasCurrentGame": true,
+            "paused": true,
+            "timeSpeed": "Paused",
+            "tick": 3
+          }
+        }
+      },
+      "after": {
+        "tool": "jawa/list_things",
+        "args": {
+          "rect": "94,95,13,18",
+          "limit": 5000
+        },
+        "result": {
+          "success": true,
+          "things": [],
+          "scanned": 15032,
+          "countReturned": 0,
+          "countMatched": 0,
+          "isCompleteList": true,
+          "truncated": 0,
+          "pawnsSkipped": 3,
+          "perDef": {},
+          "ticksGame": 3,
+          "message": "NOTHING MATCHED. 15032 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+          "operation": {
+            "OperationId": "op_05eb983ec34948d68f4214bef6c08fe5",
+            "Status": "Completed",
+            "Success": true,
+            "DurationMs": 53
+          },
+          "state": {
+            "programState": "Playing",
+            "hasCurrentGame": true,
+            "paused": true,
+            "timeSpeed": "Paused",
+            "tick": 3
+          }
+        }
+      }
+    },
+    {
+      "call": {
+        "tool": "jawa/destroy_batch",
+        "args": {
+          "categories": "All",
+          "rects": "121,94,61,13"
+        },
+        "result": {
+          "success": true,
+          "message": "Destroyed 177 thing(s) across 793 cell(s); 4 non-destroyable thing(s) left alone.",
+          "cellsExamined": 793,
+          "outOfBounds": 0,
+          "destroyed": 177,
+          "pawnsSkipped": 0,
+          "undestroyableSkipped": 4,
+          "perCategory": {
+            "Plant": 99,
+            "Item": 24,
+            "Filth": 54
+          },
+          "samples": [
+            {
+              "x": 121,
+              "z": 98,
+              "def": "Plant_Grass",
+              "category": "Plant"
+            },
+            {
+              "x": 121,
+              "z": 103,
+              "def": "Plant_Grass",
+              "category": "Plant"
+            },
+            {
+              "x": 121,
+              "z": 106,
+              "def": "WoodLog",
+              "category": "Item"
+            },
+            {
+              "x": 122,
+              "z": 98,
+              "def": "Plant_Dandelion",
+              "category": "Plant"
+            },
+            {
+              "x": 122,
+              "z": 101,
+              "def": "Plant_Dandelion",
+              "category": "Plant"
+            },
+            {
+              "x": 123,
+              "z": 96,
+              "def": "Plant_SaguaroCactus",
+              "category": "Plant"
+            },
+            {
+              "x": 123,
+              "z": 100,
+              "def": "Plant_Grass",
+              "category": "Plant"
+            },
+            {
+              "x": 123,
+              "z": 103,
+              "def": "Plant_Grass",
+              "category": "Plant"
+            }
+          ],
+          "ticksGame": 3,
+          "operation": {
+            "OperationId": "op_d732bf1c84684238ada86f18536697c4",
+            "Status": "Completed",
+            "Success": true,
+            "DurationMs": 64
+          },
+          "state": {
+            "programState": "Playing",
+            "hasCurrentGame": true,
+            "paused": true,
+            "timeSpeed": "Paused",
+            "tick": 3
+          }
+        }
+      },
+      "after": {
+        "tool": "jawa/list_things",
+        "args": {
+          "rect": "121,94,61,13",
+          "limit": 5000
+        },
+        "result": {
+          "success": true,
+          "things": [
+            {
+              "id": "SteamGeyser10411",
+              "def": "SteamGeyser",
+              "label": "Steam geyser",
+              "x": 162,
+              "z": 97,
+              "spawned": true,
+              "rot": 0,
+              "stackCount": 1,
+              "hitPoints": -1,
+              "maxHitPoints": -1
+            }
+          ],
+          "scanned": 14855,
+          "countReturned": 1,
+          "countMatched": 1,
+          "isCompleteList": true,
+          "truncated": 0,
+          "pawnsSkipped": 3,
+          "perDef": {
+            "SteamGeyser": 1
+          },
+          "ticksGame": 3,
+          "message": "1 of 1 matching thing(s) returned, 14855 examined.",
+          "operation": {
+            "OperationId": "op_d98e0b2c8bdf47d4a2d135d28aff065b",
+            "Status": "Completed",
+            "Success": true,
+            "DurationMs": 40
+          },
+          "state": {
+            "programState": "Playing",
+            "hasCurrentGame": true,
+            "paused": true,
+            "timeSpeed": "Paused",
+            "tick": 3
+          }
+        }
+      }
+    }
+  ],
+  "error": "AssertionError('SITE: bounded fixture clear left objects')",
+  "restoration": {
+    "ok": true,
+    "errors": [],
+    "settings": {}
+  }
+}

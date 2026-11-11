@@ -1,0 +1,242 @@
+{
+  "assembly_sha256": "5cf1b5be399d5b1c9c56ca72c9d35b4ecf307feacf5859d04ac5a1aa5926356a",
+  "methods": [
+    {
+      "type": "Verse.GenFilePaths",
+      "method": "ContentPath",
+      "il": [
+        {
+          "index": 0,
+          "op": "0xd0",
+          "token": "0x1b000114"
+        },
+        {
+          "index": 1,
+          "op": "0x28",
+          "token": "0xa000160",
+          "member": "Type.GetTypeFromHandle"
+        },
+        {
+          "index": 2,
+          "op": "0xd0",
+          "token": "0x100006d"
+        },
+        {
+          "index": 3,
+          "op": "0x28",
+          "token": "0xa000160",
+          "member": "Type.GetTypeFromHandle"
+        },
+        {
+          "index": 4,
+          "op": "0x28",
+          "token": "0xa000228",
+          "member": "Type.op_Equality"
+        },
+        {
+          "index": 5,
+          "op": "0x2c",
+          "token": null
+        },
+        {
+          "index": 6,
+          "op": "0x72",
+          "token": "0x70074898",
+          "literal": "Sounds/"
+        },
+        {
+          "index": 7,
+          "op": "0x2a",
+          "token": null
+        },
+        {
+          "index": 8,
+          "op": "0xd0",
+          "token": "0x1b000114"
+        },
+        {
+          "index": 9,
+          "op": "0x28",
+          "token": "0xa000160",
+          "member": "Type.GetTypeFromHandle"
+        },
+        {
+          "index": 10,
+          "op": "0xd0",
+          "token": "0x1000087"
+        },
+        {
+          "index": 11,
+          "op": "0x28",
+          "token": "0xa000160",
+          "member": "Type.GetTypeFromHandle"
+        },
+        {
+          "index": 12,
+          "op": "0x28",
+          "token": "0xa000228",
+          "member": "Type.op_Equality"
+        },
+        {
+          "index": 13,
+          "op": "0x2c",
+          "token": null
+        },
+        {
+          "index": 14,
+          "op": "0x72",
+          "token": "0x7005297d",
+          "literal": "Textures/"
+        },
+        {
+          "index": 15,
+          "op": "0x2a",
+          "token": null
+        },
+        {
+          "index": 16,
+          "op": "0xd0",
+          "token": "0x1b000114"
+        },
+        {
+          "index": 17,
+          "op": "0x28",
+          "token": "0xa000160",
+          "member": "Type.GetTypeFromHandle"
+        },
+        {
+          "index": 18,
+          "op": "0xd0",
+          "token": "0x1000006"
+        },
+        {
+          "index": 19,
+          "op": "0x28",
+          "token": "0xa000160",
+          "member": "Type.GetTypeFromHandle"
+        },
+        {
+          "index": 20,
+          "op": "0x28",
+          "token": "0xa000228",
+          "member": "Type.op_Equality"
+        },
+        {
+          "index": 21,
+          "op": "0x2c",
+          "token": null
+        },
+        {
+          "index": 22,
+          "op": "0x72",
+          "token": "0x700748a8",
+          "literal": "Strings/"
+        },
+        {
+          "index": 23,
+          "op": "0x2a",
+          "token": null
+        },
+        {
+          "index": 24,
+          "op": "0xd0",
+          "token": "0x1b000114"
+        },
+        {
+          "index": 25,
+          "op": "0x28",
+          "token": "0xa000160",
+          "member": "Type.GetTypeFromHandle"
+        },
+        {
+          "index": 26,
+          "op": "0xd0",
+          "token": "0x1000161"
+        },
+        {
+          "index": 27,
+          "op": "0x28",
+          "token": "0xa000160",
+          "member": "Type.GetTypeFromHandle"
+        },
+        {
+          "index": 28,
+          "op": "0x28",
+          "token": "0xa000228",
+          "member": "Type.op_Equality"
+        },
+        {
+          "index": 29,
+          "op": "0x2c",
+          "token": null
+        },
+        {
+          "index": 30,
+          "op": "0x72",
+          "token": "0x700748ba",
+          "literal": "AssetBundles/"
+        },
+        {
+          "index": 31,
+          "op": "0x2a",
+          "token": null
+        },
+        {
+          "index": 32,
+          "op": "0xd0",
+          "token": "0x1b000114"
+        },
+        {
+          "index": 33,
+          "op": "0x28",
+          "token": "0xa000160",
+          "member": "Type.GetTypeFromHandle"
+        },
+        {
+          "index": 34,
+          "op": "0xd0",
+          "token": "0x1000126"
+        },
+        {
+          "index": 35,
+          "op": "0x28",
+          "token": "0xa000160",
+          "member": "Type.GetTypeFromHandle"
+        },
+        {
+          "index": 36,
+          "op": "0x28",
+          "token": "0xa000228",
+          "member": "Type.op_Equality"
+        },
+        {
+          "index": 37,
+          "op": "0x2c",
+          "token": null
+        },
+        {
+          "index": 38,
+          "op": "0x72",
+          "token": "0x700076c5",
+          "literal": "Materials/"
+        },
+        {
+          "index": 39,
+          "op": "0x2a",
+          "token": null
+        },
+        {
+          "index": 40,
+          "op": "0x73",
+          "token": "0xa00062c",
+          "member": "ArgumentException..ctor"
+        },
+        {
+          "index": 41,
+          "op": "0x7a",
+          "token": null
+        }
+      ]
+    }
+  ]
+}

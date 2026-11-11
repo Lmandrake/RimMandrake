@@ -1,0 +1,13 @@
+{
+  "command": [
+    "powershell.exe",
+    "-NoProfile",
+    "-ExecutionPolicy",
+    "Bypass",
+    "-File",
+    "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\codex-ht\\whittle\\ht-trunk-doors\\parent_admin\\start_steam_validation.ps1"
+  ],
+  "rc": 0,
+  "script_sha256": "326bdbe4ef0458a0776cc7add7ae6d1b63d872418db2a04246523a1f0ee44968",
+  "utc": "2026-11-11T20:23:19.282359+00:00"
+}

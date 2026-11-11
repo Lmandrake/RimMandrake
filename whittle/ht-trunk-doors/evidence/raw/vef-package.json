@@ -1,0 +1,7 @@
+{
+  "packageId": "OskarPotocki.VanillaFactionsExpanded.Core",
+  "dependencies": [
+    "brrainz.harmony"
+  ],
+  "about_sha256": "4b9f062111cafcc98a950ee0d3be12fa7592d4463b4686d63f1b1e10544fb367"
+}

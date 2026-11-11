@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- One invisible, impassable cell of a huge plant's ground footprint. Spawned and removed only by
+       MapComponent_HugeFootprints (never by a player, never at mapgen by itself). Being an impassable EDIFICE
+       is the whole point: vanilla's own path grid, regions, blueprint refusal and plant-growth checks then treat
+       the cell as solid with no further patching. It carries no hit points and no flammability: a shot or blast
+       that hits it is forwarded to the plant (Building_TrunkBlocker.PreApplyDamage, explosion prefix in
+       HugeThingsCore), once per projectile / beam / blast.
+
+       fillPercent 0.4 (owner ruling 2026-10-07 20:38, decision taken by question card: trunk cells give partial
+       cover). Reasoning: vanilla trees are 0.25 and sandbags 0.65. A giant's ground cell is denser than one
+       tree trunk but is often root tangle rather than solid wall, so it sits between the two. In 1.6 it stops a
+       passing shot with chance 0.4 x 0.15 = 6% per cell en route and 40% when adjacent to the target
+       (Projectile.CheckForFreeIntercept), and gives 40% base cover to a pawn behind it. It stays below 1 on
+       purpose: full fill would seal rooms and block sight (GPT review #17), and the lint pins it. -->
+  <ThingDef>
+    <defName>RM_HugeTrunkBlocker</defName>
+    <label>trunk</label>
+    <description>The solid trunk of a huge plant.</description>
+    <thingClass>RimMandrake.HugeThings.Building_TrunkBlocker</thingClass>
+    <category>Building</category>
+    <altitudeLayer>Building</altitudeLayer>
+    <drawerType>None</drawerType>
+    <passability>Impassable</passability>
+    <fillPercent>0.4</fillPercent>
+    <useHitPoints>false</useHitPoints>
+    <selectable>false</selectable>
+    <rotatable>false</rotatable>
+    <holdsRoof>false</holdsRoof>
+    <blockLight>false</blockLight>
+    <blockWind>false</blockWind>
+    <tickerType>Rare</tickerType>
+    <scatterableOnMapGen>false</scatterableOnMapGen>
+    <canOverlapZones>false</canOverlapZones>
+    <statBases>
+      <Flammability>0</Flammability>
+      <Beauty>0</Beauty>
+    </statBases>
+    <building>
+      <isEdifice>true</isEdifice>
+      <isInert>true</isInert>
+      <isTargetable>false</isTargetable>
+      <claimable>false</claimable>
+      <repairable>false</repairable>
+      <neverBuildable>true</neverBuildable>
+      <expandHomeArea>false</expandHomeArea>
+      <allowAutoroof>false</allowAutoroof>
+      <canBuildNonEdificesUnder>false</canBuildNonEdificesUnder>
+      <ai_chillDestination>false</ai_chillDestination>
+    </building>
+  </ThingDef>
+</Defs>

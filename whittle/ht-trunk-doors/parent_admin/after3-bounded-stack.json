@@ -1,0 +1,129 @@
+{
+  "utc": "2026-11-11T20:09:26.399718+00:00",
+  "original_log_sha256": "afc63ee61ffb19406092e6bf802bc0152324b963c7afa6def5e00d6895013331",
+  "matched_exception_count": 1,
+  "selected_bounded_stacks": [
+    [
+      {
+        "line": 45,
+        "text": "Exception getting Verse.Graphic_Single at Things/Item/Equipment/WeaponRanged/UniqueWeapons/AssaultRifle/UniqueAssaultRifleA: System.ArgumentException: Illegal characters in path."
+      },
+      {
+        "line": 46,
+        "text": "[Ref B47DB130]"
+      },
+      {
+        "line": 47,
+        "text": "  at System.IO.Path.Combine (System.String path1, System.String path2) [0x0003e] in <51fded79cd284d4d911c5949aff4cb21>:0 "
+      },
+      {
+        "line": 48,
+        "text": "  at Verse.ContentFinder`1[T].TryFindAssetInModBundles (System.String itemPath) [0x00121] in <61e4173561894da49d210260257b5097>:0 "
+      },
+      {
+        "line": 49,
+        "text": "  at Verse.ContentFinder`1[T].Get (System.String itemPath, System.Boolean reportFailure) [0x0013f] in <61e4173561894da49d210260257b5097>:0 "
+      },
+      {
+        "line": 50,
+        "text": "  at Verse.Graphic_Single.Init (Verse.GraphicRequest req) [0x000ce] in <61e4173561894da49d210260257b5097>:0 "
+      },
+      {
+        "line": 51,
+        "text": "  at Verse.GraphicDatabase.GetInner[T] (Verse.GraphicRequest req) [0x000a5] in <61e4173561894da49d210260257b5097>:0 "
+      },
+      {
+        "line": 52,
+        "text": "(wrapper delegate-invoke) System.Func`2[Verse.GraphicRequest,Verse.Graphic].invoke_TResult_T(Verse.GraphicRequest)"
+      },
+      {
+        "line": 53,
+        "text": "  at Verse.GraphicDatabase.Get (Verse.GraphicRequest req) [0x00066] in <61e4173561894da49d210260257b5097>:0 "
+      },
+      {
+        "line": 54,
+        "text": "Failed to find any textures at swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/TruffleMole while constructing Multi(initPath=swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/TruffleMole, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))"
+      },
+      {
+        "line": 55,
+        "text": "Exception getting Verse.Graphic_StackCount at Things/Item/Resource/MeatFoodRaw/Meat_Small: System.ArgumentException: Illegal characters in path."
+      },
+      {
+        "line": 56,
+        "text": "[Ref 865401E0]"
+      },
+      {
+        "line": 57,
+        "text": "  at System.IO.Path.Combine (System.String path1, System.String path2) [0x0003e] in <51fded79cd284d4d911c5949aff4cb21>:0 "
+      },
+      {
+        "line": 58,
+        "text": "  at Verse.ContentFinder`1[T].TryFindAssetInModBundles (System.String itemPath) [0x00121] in <61e4173561894da49d210260257b5097>:0 "
+      },
+      {
+        "line": 59,
+        "text": "  at Verse.ContentFinder`1[T].Get (System.String itemPath, System.Boolean reportFailure) [0x0013f] in <61e4173561894da49d210260257b5097>:0 "
+      },
+      {
+        "line": 60,
+        "text": "  at Verse.Graphic_Collection.Init (Verse.GraphicRequest req) [0x00282] in <61e4173561894da49d210260257b5097>:0 "
+      },
+      {
+        "line": 61,
+        "text": "  at Verse.GraphicDatabase.GetInner[T] (Verse.GraphicRequest req) [0x000a5] in <61e4173561894da49d210260257b5097>:0 "
+      },
+      {
+        "line": 62,
+        "text": "(wrapper delegate-invoke) System.Func`2[Verse.GraphicRequest,Verse.Graphic].invoke_TResult_T(Verse.GraphicRequest)"
+      },
+      {
+        "line": 63,
+        "text": "  at Verse.GraphicDatabase.Get (Verse.GraphicRequest req) [0x00066] in <61e4173561894da49d210260257b5097>:0 "
+      },
+      {
+        "line": 64,
+        "text": "Could not execute post-long-event action. Exception: System.Xml.XmlException: The '.' character, hexadecimal value 0x00, cannot be included in a name. Line 114630, position 6."
+      },
+      {
+        "line": 65,
+        "text": "[Ref 8C345A82]"
+      },
+      {
+        "line": 66,
+        "text": "  at System.Xml.XmlTextReaderImpl.Throw (System.Exception e) [0x00027] in <506b716a330a4f09bc4a846352df3f09>:0 "
+      },
+      {
+        "line": 67,
+        "text": "  at System.Xml.XmlTextReaderImpl.Throw (System.String res, System.String[] args) [0x00029] in <506b716a330a4f09bc4a846352df3f09>:0 "
+      },
+      {
+        "line": 68,
+        "text": "  at System.Xml.XmlTextReaderImpl.Throw (System.Int32 pos, System.String res, System.String[] args) [0x0000c] in <506b716a330a4f09bc4a846352df3f09>:0 "
+      },
+      {
+        "line": 69,
+        "text": "  at System.Xml.XmlTextReaderImpl.ParseElement () [0x002b9] in <506b716a330a4f09bc4a846352df3f09>:0 "
+      },
+      {
+        "line": 70,
+        "text": "  at System.Xml.XmlTextReaderImpl.ParseElementContent () [0x0016f] in <506b716a330a4f09bc4a846352df3f09>:0 "
+      },
+      {
+        "line": 71,
+        "text": "  at System.Xml.XmlTextReaderImpl.Read () [0x00085] in <506b716a330a4f09bc4a846352df3f09>:0 "
+      },
+      {
+        "line": 72,
+        "text": "  at RimWorld.SolidBioDatabase.ParseTextAsset (UnityEngine.TextAsset textObject, System.Collections.Generic.List`1[T] outputBios) [0x00304] in <61e4173561894da49d210260257b5097>:0 "
+      },
+      {
+        "line": 73,
+        "text": "  at RimWorld.SolidBioDatabase.LoadAllBios () [0x00015] in <61e4173561894da49d210260257b5097>:0 "
+      },
+      {
+        "line": 74,
+        "text": "  at Verse.PlayDataLoader+<>c.<DoPlayLoad>b__4_2 () [0x0000a] in <61e4173561894da49d210260257b5097>:0 "
+      }
+    ]
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "utc": 1794435832.220549,
+  "method": "Use clean same-ID element length as a comparison window; never parse/reconstruct/repair corrupted XML. Original extraction used next literal closing tag, which was itself NUL-overwritten and consequently included the next cactus; retained prior diagnostic is limited accordingly.",
+  "rows": [
+    {
+      "reference": "begin",
+      "thing_id": "Plant_Grass8537",
+      "reference_element_bytes": 390,
+      "invalid_comparison_window_bytes": 390,
+      "window_equals_reference_except_two_NUL_runs": true,
+      "runs": [
+        {
+          "element_offset": 16,
+          "absolute_offset": 6057987,
+          "count": 16,
+          "reference_bytes_repr": "b'ant\">\\r\\n\\t\\t\\t\\t\\t\\t<de'"
+        },
+        {
+          "element_offset": 374,
+          "absolute_offset": 6058345,
+          "count": 16,
+          "reference_bytes_repr": "b'>\\r\\n\\t\\t\\t\\t\\t</thing>'"
+        }
+      ],
+      "invalid_window_sha256": "d433076280b8627d5074b069e8f4f7c969fd2173b4fbcd7de988e2292c89b668",
+      "reference_element_sha256": "c46be74353e918dd461eaf6ac30c1727c79b695e989f596019016c0ef865c54c"
+    },
+    {
+      "reference": "restored",
+      "thing_id": "Plant_Grass8537",
+      "reference_element_bytes": 390,
+      "invalid_comparison_window_bytes": 390,
+      "window_equals_reference_except_two_NUL_runs": true,
+      "runs": [
+        {
+          "element_offset": 16,
+          "absolute_offset": 6057987,
+          "count": 16,
+          "reference_bytes_repr": "b'ant\">\\r\\n\\t\\t\\t\\t\\t\\t<de'"
+        },
+        {
+          "element_offset": 374,
+          "absolute_offset": 6058345,
+          "count": 16,
+          "reference_bytes_repr": "b'>\\r\\n\\t\\t\\t\\t\\t</thing>'"
+        }
+      ],
+      "invalid_window_sha256": "d433076280b8627d5074b069e8f4f7c969fd2173b4fbcd7de988e2292c89b668",
+      "reference_element_sha256": "c46be74353e918dd461eaf6ac30c1727c79b695e989f596019016c0ef865c54c"
+    }
+  ],
+  "conclusion": "Both16byte blocks overwrite existing characters at start/end of the SAME plant element; no insertion in this390byte comparison window. Stage/cause not identified."
+}

@@ -1,0 +1,32 @@
+{
+  "utc": "2026-11-11T18:48:05.819466+00:00",
+  "scope": "Deployment only of the two published Cauldron DLL/stamp files in the composed Biomes plan. Hashes and backups must still match before apply; no source/item/build changes.",
+  "files": [
+    {
+      "package": "Biomes",
+      "deployed_path": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/Cauldron/Assemblies/RimMandrake.Cauldron.dll",
+      "backup": "whittle/ht-trunk-doors/evidence/raw/dependency-before/RimMandrake.Biomes/Biomes/Cauldron/Assemblies/RimMandrake.Cauldron.dll",
+      "installed_sha256": "695aae24456de045c116495f42ccd014d76adbb72d4fca0e20fb7bb2dda73b4c",
+      "approved_source_path": "src/RimMandrake/Cauldron/Assemblies/RimMandrake.Cauldron.dll",
+      "approved_sha256": "855651597e97c7d4744385eacdad55103f04edfca09d8f43c806c707cac9e67e"
+    },
+    {
+      "package": "Biomes",
+      "deployed_path": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/Cauldron/Assemblies/RimMandrake.Cauldron.dll.srchash",
+      "backup": "whittle/ht-trunk-doors/evidence/raw/dependency-before/RimMandrake.Biomes/Biomes/Cauldron/Assemblies/RimMandrake.Cauldron.dll.srchash",
+      "installed_sha256": "debbcab911124186386d0f07d969b7262a4bebb86eadb9f7f8769d919d7e5959",
+      "approved_source_path": "src/RimMandrake/Cauldron/Assemblies/RimMandrake.Cauldron.dll.srchash",
+      "approved_sha256": "016c0dbc50091c2683cae67ca8f59ce384f962226bf646fb53301d7375db35ce"
+    }
+  ],
+  "provenance": [
+    "whittle/ht-trunk-doors/parent_admin/dependency-review.json",
+    "whittle/ht-trunk-doors/parent_admin/cauldron-review.json"
+  ],
+  "plans": [
+    "whittle/ht-trunk-doors/evidence/raw/deploy-fw-plan.stdout.txt",
+    "whittle/ht-trunk-doors/evidence/raw/deploy-biomes-plan.stdout.txt"
+  ],
+  "gss": "Plan in sync; no GSS deployment needed.",
+  "authorized": true
+}

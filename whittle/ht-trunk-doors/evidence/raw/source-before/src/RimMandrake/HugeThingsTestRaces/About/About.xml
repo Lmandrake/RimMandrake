@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: Huge Things Test Races (harness only)</name>
+  <packageId>mandrake.rm.hugethingstestraces</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>HARNESS ONLY. Never shipped, never on a player's list.
+
+Three elephant-bodied test races so Huge Things' titan tiers can be measured on a
+minimal mod list (no vanilla race reaches body size 8):
+- RM_TestTitanT2Adult: body size 8 (the T2 floor).
+- RM_TestTitanT3Adult: body size 20 (the T3 floor).
+- RM_TestTitanT2Control: body size 8, forced out of tiering (RM_TitanicExtension
+  forceEnabled=false): the same-mass untiered control for the butcher yield curve.
+
+Also includes RM_TestContactPlant: synthetic two-contact geometry using vanilla oak
+art as a marker, for distant-corridor closure and scheduler pressure tests. Its
+contacts are adversarial fixture data, not measured production art.
+
+No biome lists them and they carry no trade tags, so they appear only when a test
+spawns them. Item TITANIC_BODYSIZE_TEST_RACE_1.</description>
+  <modDependencies>
+    <li>
+      <packageId>mandrake.rm.hugethings</packageId>
+      <displayName>RimMandrake: Huge Things</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>mandrake.rm.hugethings</li>
+  </loadAfter>
+</ModMetaData>

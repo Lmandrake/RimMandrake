@@ -1,0 +1,186 @@
+{
+  "tier": "mods__mandrake_rm_flowworks__mandrake_rm_hugethingstestraces__mandrake_rm_patches__mandrake_rm_biomes__oskarpotocki_vanillafactionsexpanded_core",
+  "mods": [
+    {
+      "package_id": "brrainz.harmony",
+      "root": "/mnt/d/SteamLibrary/steamapps/workshop/content/294100/2009463077",
+      "folder_name": "2009463077",
+      "invalid_root": false,
+      "invalid_package_id": false,
+      "asset_bundle_files": []
+    },
+    {
+      "package_id": "ludeon.rimworld",
+      "root": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/Core",
+      "folder_name": "Core",
+      "invalid_root": false,
+      "invalid_package_id": false,
+      "asset_bundle_files": []
+    },
+    {
+      "package_id": "ludeon.rimworld.royalty",
+      "root": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/Royalty",
+      "folder_name": "Royalty",
+      "invalid_root": false,
+      "invalid_package_id": false,
+      "asset_bundle_files": [
+        {
+          "path": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/Royalty/AssetBundles/resources_royalty",
+          "invalid": false
+        },
+        {
+          "path": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/Royalty/AssetBundles/resources_royalty.manifest",
+          "invalid": false
+        }
+      ]
+    },
+    {
+      "package_id": "ludeon.rimworld.ideology",
+      "root": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/Ideology",
+      "folder_name": "Ideology",
+      "invalid_root": false,
+      "invalid_package_id": false,
+      "asset_bundle_files": [
+        {
+          "path": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/Ideology/AssetBundles/resources_ideology",
+          "invalid": false
+        },
+        {
+          "path": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/Ideology/AssetBundles/resources_ideology.manifest",
+          "invalid": false
+        }
+      ]
+    },
+    {
+      "package_id": "ludeon.rimworld.biotech",
+      "root": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/Biotech",
+      "folder_name": "Biotech",
+      "invalid_root": false,
+      "invalid_package_id": false,
+      "asset_bundle_files": [
+        {
+          "path": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/Biotech/AssetBundles/resources_biotech",
+          "invalid": false
+        },
+        {
+          "path": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/Biotech/AssetBundles/resources_biotech.manifest",
+          "invalid": false
+        }
+      ]
+    },
+    {
+      "package_id": "ludeon.rimworld.anomaly",
+      "root": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/Anomaly",
+      "folder_name": "Anomaly",
+      "invalid_root": false,
+      "invalid_package_id": false,
+      "asset_bundle_files": [
+        {
+          "path": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/Anomaly/AssetBundles/resources_anomaly",
+          "invalid": false
+        },
+        {
+          "path": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/Anomaly/AssetBundles/resources_anomaly.manifest",
+          "invalid": false
+        }
+      ]
+    },
+    {
+      "package_id": "ludeon.rimworld.odyssey",
+      "root": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/Odyssey",
+      "folder_name": "Odyssey",
+      "invalid_root": false,
+      "invalid_package_id": false,
+      "asset_bundle_files": [
+        {
+          "path": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/Odyssey/AssetBundles/resources_odyssey",
+          "invalid": false
+        },
+        {
+          "path": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/Odyssey/AssetBundles/resources_odyssey.manifest",
+          "invalid": false
+        }
+      ]
+    },
+    {
+      "package_id": "brrainz.rimbridgeserver",
+      "root": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/3727949765",
+      "folder_name": "3727949765",
+      "invalid_root": false,
+      "invalid_package_id": false,
+      "asset_bundle_files": []
+    },
+    {
+      "package_id": "oskarpotocki.vanillafactionsexpanded.core",
+      "root": "/mnt/d/SteamLibrary/steamapps/workshop/content/294100/2023507013",
+      "folder_name": "2023507013",
+      "invalid_root": false,
+      "invalid_package_id": false,
+      "asset_bundle_files": []
+    },
+    {
+      "package_id": "ray1203.simplecamerasetting",
+      "root": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/3232415388",
+      "folder_name": "3232415388",
+      "invalid_root": false,
+      "invalid_package_id": false,
+      "asset_bundle_files": []
+    },
+    {
+      "package_id": "mandrake.rm.gimmesomeslack",
+      "root": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/GimmeSomeSlack",
+      "folder_name": "GimmeSomeSlack",
+      "invalid_root": false,
+      "invalid_package_id": false,
+      "asset_bundle_files": []
+    },
+    {
+      "package_id": "mandrake.rm.flowworks",
+      "root": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/FlowWorks",
+      "folder_name": "FlowWorks",
+      "invalid_root": false,
+      "invalid_package_id": false,
+      "asset_bundle_files": []
+    },
+    {
+      "package_id": "mandrake.rm.hugethings",
+      "root": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/HugeThings",
+      "folder_name": "HugeThings",
+      "invalid_root": false,
+      "invalid_package_id": false,
+      "asset_bundle_files": []
+    },
+    {
+      "package_id": "mandrake.rm.hugethingstestraces",
+      "root": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/HugeThingsTestRaces",
+      "folder_name": "HugeThingsTestRaces",
+      "invalid_root": false,
+      "invalid_package_id": false,
+      "asset_bundle_files": []
+    },
+    {
+      "package_id": "mandrake.rm.luminouspigment",
+      "root": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/LuminousPigment",
+      "folder_name": "LuminousPigment",
+      "invalid_root": false,
+      "invalid_package_id": false,
+      "asset_bundle_files": []
+    },
+    {
+      "package_id": "mandrake.rm.biomes",
+      "root": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/RimMandrake.Biomes",
+      "folder_name": "RimMandrake.Biomes",
+      "invalid_root": false,
+      "invalid_package_id": false,
+      "asset_bundle_files": []
+    },
+    {
+      "package_id": "mandrake.rm.patches",
+      "root": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/MandrakePatches",
+      "folder_name": "MandrakePatches",
+      "invalid_root": false,
+      "invalid_package_id": false,
+      "asset_bundle_files": []
+    }
+  ]
+}

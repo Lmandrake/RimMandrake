@@ -1,0 +1,52 @@
+{
+  "sha": "ef5821d580764928453e41abb2f4903c5f8eb739",
+  "utc": "2026-11-11T21:07:34.808701+00:00",
+  "paths": [
+    "design/RimMandrake/giant_footprint_design_2026-10-07.md",
+    "design/RimMandrake/huge_footprints_perf.md",
+    "design/RimMandrake/hugethings_codex_2026-11-09/QUESTIONS.md",
+    "design/RimMandrake/hugethings_codex_2026-11-09/REVIEW.md",
+    "design/RimMandrake/hugethings_codex_2026-11-09/record.json",
+    "src/RimMandrake/HugeThings/Defs/JobDefs/RM_JobDefs.xml",
+    "src/RimMandrake/HugeThings/Defs/WorkGiverDefs/RM_WorkGivers.xml",
+    "src/RimMandrake/HugeThings/Source/CompHugeFootprint.cs",
+    "src/RimMandrake/HugeThings/Source/HugePlantCutting.cs",
+    "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeClaimsKernel.cs",
+    "src/RimMandrake/HugeThings/Source/MapComponent_HugeFootprints.cs",
+    "src/RimMandrake/HugeThings/Source/PlantCutToilRewrite.cs",
+    "src/RimMandrake/HugeThings/Source/RM_HugeThings.csproj",
+    "src/RimMandrake/HugeThings/Source/SelfTest/FootprintBudget/Program.cs",
+    "src/RimMandrake/HugeThings/Source/SelfTest/FootprintBudget/Stubs.cs",
+    "src/RimMandrake/HugeThings/Source/SelfTest/HugeThingsFuzz.cs",
+    "src/RimMandrake/HugeThings/Source/SelfTest/TrunkDoors/Program.cs",
+    "src/RimMandrake/HugeThings/Source/SelfTest/TrunkDoors/TrunkDoors.csproj",
+    "src/RimMandrake/HugeThings/Source/TrunkDoorValidationHooks.cs",
+    "src/RimMandrake/HugeThings/northstar/p1_live.py",
+    "src/RimMandrake/HugeThings/northstar/trunk_doors_live.py",
+    "src/RimMandrake/HugeThings/northstar/workload_corpse_live.py",
+    "src/RimMandrake/HugeThings/selftest_hugethings_footprint.py",
+    "src/RimMandrake/HugeThings/validation.py",
+    "src/RimMandrake/HugeThingsTestRaces/Defs/ThingDefs_Plants/RM_TestContactPlant.xml",
+    "src/RimMandrake/Utils/selftest_hugethings_budget.py",
+    "src/RimMandrake/Utils/selftest_hugethings_lint.py",
+    "src/RimMandrake/Utils/selftest_hugethings_trunk_doors.py",
+    "src/RimMandrake/rimflow/roles/runner_options.md",
+    "infrastructure/state/lessons/20261111T044621Z-BENCH-budget-fixture-not-production-cap.md"
+  ],
+  "runtime_compile_manifest": "whittle/ht-trunk-doors/evidence/raw/source-ready-v6-compiled-inputs.json",
+  "state": "Candidate6 Python-only baseline geyser preservation committed; C# ef5821d and exact DLL/stamp unchanged. All 54 current runtime inputs match v6 manifest, byte-identical v5; no rebuild. Frozen criteria unchanged; no live acceptance yet.",
+  "parent_inbound_fixes": [
+    "runner_options current connectivity claim replaced with current entrypoints",
+    "historical budget lesson home repaired"
+  ],
+  "previous_sha": "974537eeb71866efdecf527afea150a14905a998",
+  "candidate": 6,
+  "updated_paths": [
+    "src/RimMandrake/HugeThings/Source/TrunkDoorValidationHooks.cs",
+    "src/RimMandrake/HugeThings/northstar/trunk_doors_live.py"
+  ],
+  "initial_runtime_compile_manifest": "whittle/ht-trunk-doors/evidence/raw/source-ready-compiled-inputs.json",
+  "build_source_sha": "ef5821d580764928453e41abb2f4903c5f8eb739",
+  "artifact_sha": "2f7d6b24ccb59da34d14e2a464684b2159be8952",
+  "script_sha": "82f408e6fc07eaa2fae6f50f247e1e0415b56db2"
+}

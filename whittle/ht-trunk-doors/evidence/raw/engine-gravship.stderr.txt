@@ -1,0 +1,9 @@
+Exception calling "GetMethodBody" with "0" argument(s): "Method 
+'System.Collections.Generic.HashSet`1+Enumerator<T>.Dispose()' is security transparent, but is a member of a security 
+critical type."
+At \\wsl.localhost\Ubuntu\home\mandrake\rm\codex-ht\whittle\ht-trunk-doors\evidence\read_gravship.ps1:23 char:3
++   $body=$m.GetMethodBody(); if($null -eq $body){continue}; $bytes=$bo ...
++   ~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : TypeLoadException
+ 

@@ -1,0 +1,10 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/Utils/deploy_custom_mods.py",
+    "--compose",
+    "biomes"
+  ],
+  "rc": 1,
+  "elapsed": 127.69601917266846
+}

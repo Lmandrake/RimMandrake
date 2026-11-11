@@ -1,0 +1,9 @@
+{
+    "contentLog":  "C:\\program files (x86)\\steam\\logs\\content_log.txt",
+    "priorModifiedUtc":  "2026-11-11T20:05:21.5758058Z",
+    "requestedUtc":  "2026-11-11T20:23:18.8025123Z",
+    "uri":  "steam://validate/294100",
+    "appid":  294100,
+    "priorBytes":  2008375,
+    "result":  "request only; completion requires a new validation log record"
+}

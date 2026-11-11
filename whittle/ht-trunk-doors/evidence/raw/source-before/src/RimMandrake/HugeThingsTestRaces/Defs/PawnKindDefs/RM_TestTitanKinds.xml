@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- HARNESS ONLY (TITANIC_BODYSIZE_TEST_RACE_1): kinds for the test titans; elephant art tinted so a capture cannot mistake
+     them for a real elephant. -->
+<Defs>
+  <PawnKindDef Name="RM_TestTitanKindBase" ParentName="AnimalKindBase" Abstract="True">
+    <ecoSystemWeight>0</ecoSystemWeight>
+    <canArriveManhunter>false</canArriveManhunter>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Elephant/Elephant</texPath>
+          <color>(150,110,110)</color>
+          <drawSize>2.6</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Elephant/Dessicated_Elephant</texPath>
+          <drawSize>2.6</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Elephant/Elephant</texPath>
+          <color>(150,110,110)</color>
+          <drawSize>3.8</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Elephant/Dessicated_Elephant</texPath>
+          <drawSize>3.8</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Elephant/Elephant</texPath>
+          <color>(150,110,110)</color>
+          <drawSize>5.0</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Elephant/Dessicated_Elephant</texPath>
+          <drawSize>5.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <PawnKindDef ParentName="RM_TestTitanKindBase">
+    <defName>RM_TestTitanT2Adult</defName>
+    <label>test titan (T2)</label>
+    <race>RM_TestTitanT2Adult</race>
+    <combatPower>400</combatPower>
+  </PawnKindDef>
+  <PawnKindDef ParentName="RM_TestTitanKindBase">
+    <defName>RM_TestTitanT3Adult</defName>
+    <label>test titan (T3)</label>
+    <race>RM_TestTitanT3Adult</race>
+    <combatPower>800</combatPower>
+  </PawnKindDef>
+  <PawnKindDef ParentName="RM_TestTitanKindBase">
+    <defName>RM_TestTitanT2Control</defName>
+    <label>test titan control</label>
+    <race>RM_TestTitanT2Control</race>
+    <combatPower>400</combatPower>
+  </PawnKindDef>
+  <PawnKindDef ParentName="RM_TestTitanKindBase">
+    <defName>RM_TestTitanT2Heavy</defName>
+    <label>test titan (T2 heavy)</label>
+    <race>RM_TestTitanT2Heavy</race>
+    <combatPower>500</combatPower>
+  </PawnKindDef>
+  <PawnKindDef ParentName="RM_TestTitanKindBase">
+    <defName>RM_TestTitanT2HeavyControl</defName>
+    <label>test titan heavy control</label>
+    <race>RM_TestTitanT2HeavyControl</race>
+    <combatPower>500</combatPower>
+  </PawnKindDef>
+</Defs>

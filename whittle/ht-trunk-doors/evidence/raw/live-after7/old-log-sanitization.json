@@ -1,0 +1,13 @@
+{
+  "original_sha256": "68531d804e54910038bb7c0b619ec9c80f38cad16dce6403c2500e9649942b46",
+  "original_size": 35117,
+  "original_mtime_ns": 1794431739867011700,
+  "original_line_count": 619,
+  "redaction_count": 1,
+  "sanitized_sha256": "f8c7eb8d88fb7a39e3256eaa7f9d597d629a0f9754470135915c2cc5841f5bb9",
+  "script_sha256": "4ca61a7f74d32d83071830211847c749788de5ac82b4347558fbb09666588a0d",
+  "first_exception": null,
+  "config_errors": [],
+  "guard_generation": 1431,
+  "game_status_rc": 3
+}

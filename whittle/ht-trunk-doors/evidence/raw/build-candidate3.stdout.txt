@@ -1,0 +1,15 @@
+staging src/RimMandrake/HugeThings/Source/RM_HugeThings.csproj -> D:\RimTest\data\build\HugeThings
+  src/RimMandrake/HugeThings/Source/
+  src/RimMandrake/_Shared/SettingsKit/
+  src/RimMandrake/_Shared/DrawnExtent/
++ dotnet.exe build D:\RimTest\data\build\HugeThings\src\RimMandrake\HugeThings\Source\RM_HugeThings.csproj -c Release
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  RM_HugeThings -> D:\RimTest\data\build\HugeThings\src\RimMandrake\HugeThings\Assemblies\RM_HugeThings.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:02.02
+BUILT src/RimMandrake/HugeThings/Assemblies/RM_HugeThings.dll (source ef5821d58076)

@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><EnableDefaultCompileItems>false</EnableDefaultCompileItems></PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Stubs.cs"/><Compile Include="Program.cs"/>
+    <Compile Include="..\..\MapComponent_HugeFootprints.cs" Link="MapComponent_HugeFootprints.cs"/>
+    <Compile Include="..\..\Kernel\RM_HugeClaimsKernel.cs" Link="RM_HugeClaimsKernel.cs"/>
+    <Compile Include="..\..\Kernel\RM_HugeFootprintKernel.cs" Link="RM_HugeFootprintKernel.cs"/>
+    <Compile Include="..\..\Kernel\RM_HugeTitanKernel.cs" Link="RM_HugeTitanKernel.cs"/>
+    <Compile Include="..\..\..\..\_Shared\DrawnExtent\DrawnExtentKernel.cs" Link="DrawnExtentKernel.cs"/>
+  </ItemGroup>
+</Project>

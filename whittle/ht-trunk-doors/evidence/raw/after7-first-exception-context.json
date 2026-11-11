@@ -1,0 +1,123 @@
+{
+  "log_sha256": "4c7d1371e331f86aa46d6cb8a99f7463595b7dec2db2e638bd8cf0c214d2edc5",
+  "exception_count": 7,
+  "bounded_context": [
+    {
+      "line": 207,
+      "text": ""
+    },
+    {
+      "line": 208,
+      "text": "Error while generating pawn. Rethrowing. Exception: System.NullReferenceException: Object reference not set to an instance of an object"
+    },
+    {
+      "line": 209,
+      "text": "[Ref F5A10FC7]"
+    },
+    {
+      "line": 210,
+      "text": "  at RimWorld.PawnInventoryGenerator.GiveRandomFood (Verse.Pawn p) <0x2b091fc6fa0 + 0x00010> in <61e4173561894da49d210260257b5097>:0 "
+    },
+    {
+      "line": 211,
+      "text": "  at RimWorld.PawnInventoryGenerator.GenerateInventoryFor (Verse.Pawn p, Verse.PawnGenerationRequest request) [0x00150] in <61e4173561894da49d210260257b5097>:0 "
+    },
+    {
+      "line": 212,
+      "text": "  at Verse.PawnGenerator.GenerateGearFor (Verse.Pawn pawn, Verse.PawnGenerationRequest request) [0x00007] in <61e4173561894da49d210260257b5097>:0 "
+    },
+    {
+      "line": 213,
+      "text": "    - POSTFIX mandrake.rm.flowworks: Void RimMandrake.FlowWorks.RM_Patch_GenerateGear_ClimbingGear:Postfix(Pawn pawn, PawnGenerationRequest request)"
+    },
+    {
+      "line": 214,
+      "text": "  at Verse.PawnGenerator.TryGenerateNewPawnInternal (Verse.PawnGenerationRequest& request, System.String& error, System.Boolean ignoreScenarioRequirements, System.Boolean ignoreValidator) [0x00cd7] in <61e4173561894da49d210260257b5097>:0 "
+    },
+    {
+      "line": 215,
+      "text": "  at Verse.PawnGenerator.GenerateNewPawnInternal (Verse.PawnGenerationRequest& request) [0x000a5] in <61e4173561894da49d210260257b5097>:0 "
+    },
+    {
+      "line": 216,
+      "text": "    - POSTFIX OskarPotocki.VEF: Void VEF.Abilities.VanillaExpandedFramework_PawnGenerator_GenerateNewPawnInternal_Patch:Postfix(Pawn __result)"
+    },
+    {
+      "line": 217,
+      "text": "  at Verse.PawnGenerator.GenerateOrRedressPawnInternal (Verse.PawnGenerationRequest request) [0x00140] in <61e4173561894da49d210260257b5097>:0 "
+    },
+    {
+      "line": 218,
+      "text": "  at Verse.PawnGenerator.GeneratePawn (Verse.PawnGenerationRequest request) [0x00007] in <61e4173561894da49d210260257b5097>:0 "
+    },
+    {
+      "line": 219,
+      "text": "Unloading 1 Unused Serialized files (Serialized files now loaded: 5)"
+    },
+    {
+      "line": 220,
+      "text": "Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 38281."
+    },
+    {
+      "line": 221,
+      "text": "Total: 381.474200 ms (FindLiveObjects: 1.958400 ms CreateObjectMapping: 3.353100 ms MarkObjects: 376.078100 ms  DeleteObjects: 0.084300 ms)"
+    },
+    {
+      "line": 222,
+      "text": ""
+    },
+    {
+      "line": 223,
+      "text": "Unloading 2 Unused Serialized files (Serialized files now loaded: 5)"
+    },
+    {
+      "line": 224,
+      "text": "[PhysX] Initialized MultithreadedTaskDispatcher with 18 workers."
+    },
+    {
+      "line": 225,
+      "text": "UnloadTime: 0.414100 ms"
+    },
+    {
+      "line": 226,
+      "text": "Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 38248."
+    },
+    {
+      "line": 227,
+      "text": "Total: 370.310800 ms (FindLiveObjects: 1.814000 ms CreateObjectMapping: 3.220700 ms MarkObjects: 365.168600 ms  DeleteObjects: 0.107300 ms)"
+    },
+    {
+      "line": 228,
+      "text": ""
+    },
+    {
+      "line": 229,
+      "text": "Unloading 2 Unused Serialized files (Serialized files now loaded: 5)"
+    },
+    {
+      "line": 230,
+      "text": "[PhysX] Initialized MultithreadedTaskDispatcher with 18 workers."
+    },
+    {
+      "line": 231,
+      "text": "UnloadTime: 0.370200 ms"
+    },
+    {
+      "line": 232,
+      "text": "Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 38271."
+    },
+    {
+      "line": 233,
+      "text": "Total: 281.914900 ms (FindLiveObjects: 1.884800 ms CreateObjectMapping: 3.205900 ms MarkObjects: 276.756400 ms  DeleteObjects: 0.067500 ms)"
+    },
+    {
+      "line": 234,
+      "text": ""
+    },
+    {
+      "line": 235,
+      "text": "Loading game from file CODEX_TrunkDoors_Begin_2d1275d92f4f with mods:"
+    }
+  ],
+  "config_errors": []
+}

@@ -1,0 +1,2 @@
+resolved tuple length 3 types ['list', 'list', 'list']
+active mods 17 invalid physical roots 0 bundle files 10

@@ -1,0 +1,139 @@
+[
+  {
+    "path": "/mnt/c/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Saves/CODEX_TrunkDoors_Observe_89acd6b5e87e.rws",
+    "sha256": "db670eb881fe278f6c7427d25c53426bc466f09621fc07da3c1960c270cef411",
+    "bytes": 8538538,
+    "parse": "not well-formed (invalid token): line 141345, column 21",
+    "offset": 6057987,
+    "context_repr": "b'>\\r\\n\\t\\t\\t\\t\\t\\t<growth>0.970272124</growth>\\r\\n\\t\\t\\t\\t\\t\\t<age>574508</age>\\r\\n\\t\\t\\t\\t\\t</thing>\\r\\n\\t\\t\\t\\t\\t<thing Class=\"Pl\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00f>Plant_Grass</def>\\r\\n\\t\\t\\t\\t\\t\\t<id>Plant_Grass8537</id>\\r\\n\\t\\t\\t\\t\\t\\t<map>0</map>\\r\\n\\t\\t\\t\\t\\t\\t<pos>'",
+    "codepoints": [
+      {
+        "offset": 6057987,
+        "value": 0
+      },
+      {
+        "offset": 6057988,
+        "value": 0
+      },
+      {
+        "offset": 6057989,
+        "value": 0
+      },
+      {
+        "offset": 6057990,
+        "value": 0
+      },
+      {
+        "offset": 6057991,
+        "value": 0
+      },
+      {
+        "offset": 6057992,
+        "value": 0
+      },
+      {
+        "offset": 6057993,
+        "value": 0
+      },
+      {
+        "offset": 6057994,
+        "value": 0
+      },
+      {
+        "offset": 6057995,
+        "value": 0
+      },
+      {
+        "offset": 6057996,
+        "value": 0
+      },
+      {
+        "offset": 6057997,
+        "value": 0
+      },
+      {
+        "offset": 6057998,
+        "value": 0
+      },
+      {
+        "offset": 6057999,
+        "value": 0
+      },
+      {
+        "offset": 6058000,
+        "value": 0
+      },
+      {
+        "offset": 6058001,
+        "value": 0
+      },
+      {
+        "offset": 6058002,
+        "value": 0
+      },
+      {
+        "offset": 6058345,
+        "value": 0
+      },
+      {
+        "offset": 6058346,
+        "value": 0
+      },
+      {
+        "offset": 6058347,
+        "value": 0
+      },
+      {
+        "offset": 6058348,
+        "value": 0
+      },
+      {
+        "offset": 6058349,
+        "value": 0
+      },
+      {
+        "offset": 6058350,
+        "value": 0
+      },
+      {
+        "offset": 6058351,
+        "value": 0
+      },
+      {
+        "offset": 6058352,
+        "value": 0
+      },
+      {
+        "offset": 6058353,
+        "value": 0
+      },
+      {
+        "offset": 6058354,
+        "value": 0
+      },
+      {
+        "offset": 6058355,
+        "value": 0
+      },
+      {
+        "offset": 6058356,
+        "value": 0
+      },
+      {
+        "offset": 6058357,
+        "value": 0
+      },
+      {
+        "offset": 6058358,
+        "value": 0
+      }
+    ],
+    "retained": "whittle/ht-trunk-doors/evidence/raw/after9-invalid-observe.rws"
+  },
+  {
+    "path": "/mnt/c/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Saves/CODEX_TrunkDoors_Observe_006772234abb.rws",
+    "sha256": "15b84dede57ab411f7dce04cd92af952a0a31a76236db08a72e4b2195bd6fa72",
+    "bytes": 8538655,
+    "parse": "PASS"
+  }
+]

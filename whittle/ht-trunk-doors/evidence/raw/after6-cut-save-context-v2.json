@@ -1,0 +1,23 @@
+{
+  "save_name": "CODEX_TrunkDoors_Cutting_417024a68ab6.rws",
+  "sha256": "621f531ee9bda4b8fbf5f57d9be28a5f018c868fc2417a0a0816b7cb15f49deb",
+  "ticks": [
+    [
+      "ticksGame",
+      "2623"
+    ]
+  ],
+  "cutter_jobs_xml": "<jobs>\n\t\t\t\t\t\t\t<curJob>\n\t\t\t\t\t\t\t\t<commTarget>null</commTarget>\n\t\t\t\t\t\t\t\t<verbToUse>null</verbToUse>\n\t\t\t\t\t\t\t\t<bill>null</bill>\n\t\t\t\t\t\t\t\t<lord>null</lord>\n\t\t\t\t\t\t\t\t<quest>null</quest>\n\t\t\t\t\t\t\t\t<def>RM_CutHugePlantFromTrunk</def>\n\t\t\t\t\t\t\t\t<loadID>21</loadID>\n\t\t\t\t\t\t\t\t<targetA>Thing_RM_Nogtyl24638</targetA>\n\t\t\t\t\t\t\t\t<targetC>Thing_RM_HugeTrunkBlocker24640</targetC>\n\t\t\t\t\t\t\t\t<targetQueueA />\n\t\t\t\t\t\t\t\t<targetQueueB IsNull=\"True\" />\n\t\t\t\t\t\t\t\t<countQueue IsNull=\"True\" />\n\t\t\t\t\t\t\t\t<startTick>2504</startTick>\n\t\t\t\t\t\t\t\t<placedThings IsNull=\"True\" />\n\t\t\t\t\t\t\t\t<workGiverDef>RM_CutHugePlantFromTrunk</workGiverDef>\n\t\t\t\t\t\t\t\t<jobGiverThinkTree>Humanlike</jobGiverThinkTree>\n\t\t\t\t\t\t\t\t<psyfocusTargetLast>-1</psyfocusTargetLast>\n\t\t\t\t\t\t\t\t<ability>null</ability>\n\t\t\t\t\t\t\t\t<source>null</source>\n\t\t\t\t\t\t\t\t<interactableIndex>-1</interactableIndex>\n\t\t\t\t\t\t\t\t<lastJobGiverKey>1864904395</lastJobGiverKey>\n\t\t\t\t\t\t\t</curJob>\n\t\t\t\t\t\t\t<curDriver Class=\"JobDriver_PlantCut_Designated\">\n\t\t\t\t\t\t\t\t<curToilIndex>5</curToilIndex>\n\t\t\t\t\t\t\t\t<ticksLeftThisToil>-5</ticksLeftThisToil>\n\t\t\t\t\t\t\t\t<startTick>2504</startTick>\n\t\t\t\t\t\t\t\t<locomotionUrgencySameAs>null</locomotionUrgencySameAs>\n\t\t\t\t\t\t\t\t<workDone>1.58785236</workDone>\n\t\t\t\t\t\t\t</curDriver>\n\t\t\t\t\t\t\t<jobQueue>\n\t\t\t\t\t\t\t\t<jobs />\n\t\t\t\t\t\t\t</jobQueue>\n\t\t\t\t\t\t\t<formingCaravanTick>-1</formingCaravanTick>\n\t\t\t\t\t\t</jobs>\n\t\t\t\t\t\t",
+  "before": "current=RM_CutHugePlantFromTrunk forced=False plant=RM_Nogtyl24638 contact=RM_HugeTrunkBlocker24640 work=1.58785236 x=100 z=102 tick=2623",
+  "after": "current=RM_CutHugePlantFromTrunk forced=False plant=RM_Nogtyl24638 contact=RM_HugeTrunkBlocker24640 work=2.85813427 x=100 z=102 tick=2624",
+  "restoration": {
+    "ok": true,
+    "errors": [],
+    "settings": {
+      "giantPlantsEnabled": "True",
+      "plantTrunkEnabled": "True",
+      "plantTrunkScale": "1",
+      "plantItemPushEnabled": "True"
+    }
+  }
+}

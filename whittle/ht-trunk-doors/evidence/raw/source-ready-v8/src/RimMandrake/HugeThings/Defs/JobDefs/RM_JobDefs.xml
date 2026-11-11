@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Same plant work pipeline as vanilla CutPlantDesignated; C is an owned trunk approach. -->
+  <JobDef>
+    <defName>RM_CutHugePlantFromTrunk</defName>
+    <driverClass>RimWorld.JobDriver_PlantCut_Designated</driverClass>
+    <reportString>cutting TargetA.</reportString>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
+
+
+  <JobDef>
+    <defName>RM_HarvestTitanicCorpse</defName>
+    <driverClass>RimMandrake.TitanicCreatures.JobDriver_HarvestTitanicCorpse</driverClass>
+    <reportString>harvesting titanic remains.</reportString>
+  </JobDef>
+
+  <!-- TITAN_BREAKTHROUGH_CLEARING_1: a titan strikes the obstacle sealing its way (JobDriver_TitanClearObstacle). Started only by
+       Patch_StartPath_TitanClearing; suspendable stays true so the job it interrupts can resume behind it. -->
+  <JobDef>
+    <defName>RM_TitanClearObstacle</defName>
+    <driverClass>RimMandrake.TitanicCreatures.JobDriver_TitanClearObstacle</driverClass>
+    <reportString>smashing through TargetA.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+  <!-- BIG_CREATURES_DESIGN_WALLS_AND_SLOTS phase 1: a big creature squeezes straight through a gap at least half its width
+       (JobDriver_TitanSqueeze). Started only by the path-start hook; suspendable so the job it interrupts resumes behind it. -->
+  <JobDef>
+    <defName>RM_TitanSqueeze</defName>
+    <driverClass>RimMandrake.TitanicCreatures.JobDriver_TitanSqueeze</driverClass>
+    <reportString>squeezing through a gap.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+</Defs>

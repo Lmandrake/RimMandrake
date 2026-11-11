@@ -1,0 +1,14 @@
+repo : /home/mandrake/rm/codex-ht/src
+game : /mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods
+mode : plan only (use --apply to write)
+holds: 26 pattern(s) from src/DEPLOY_HOLD.txt
+skip : dirs .git .vs Source __pycache__ _artsrc art_candidates art_source bin obj · exts .csproj .md .py .pyc .sln .user
+
+def guard: 34 mod(s) in the resulting game copy (mandrake.*), 1 target(s): clean
+  (1 PRE-EXISTING conflict(s) not touching this plan's mods; not blocking)
+    . ALIAS-REPO ThingDef guy762_crystalitem_stygium -> RSW_Stygium: the repo itself still defines guy762_crystalitem_stygium in Armoury, so the alias (in RimMandrake.Biomes/Biomes/_Kits/EnvironmentalHazards/Defs/Misc/RM_MaterialMerges_Aliases.xml) is inert -- a repo question, not a deploy hazard
+
+HugeThingsTestRaces mandrake.rm.hugethingstestraces
+    ~  Defs/ThingDefs_Plants/RM_TestContactPlant.xml
+
+Drift found. Re-run with --apply to deploy.

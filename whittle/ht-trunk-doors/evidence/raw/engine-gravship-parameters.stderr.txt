@@ -1,0 +1,8 @@
+At \\wsl.localhost\Ubuntu\home\mandrake\rm\codex-ht\whittle\ht-trunk-doors\evidence\read_gravship_parameters.ps1:18 
+char:53
++ foreach ($typeName in $selected.Keys | Sort-Object) {
++                                                     ~
+Missing closing '}' in statement block or type definition.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : MissingEndCurlyBrace
+ 

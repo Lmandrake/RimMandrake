@@ -1,0 +1,58 @@
+{
+  "sha": "863dc1064fa0d4d556bd0d79ad310d8ca8fab9a6",
+  "utc": "2026-11-11T22:13:10.575736+00:00",
+  "paths": [
+    "design/RimMandrake/giant_footprint_design_2026-10-07.md",
+    "design/RimMandrake/huge_footprints_perf.md",
+    "design/RimMandrake/hugethings_codex_2026-11-09/QUESTIONS.md",
+    "design/RimMandrake/hugethings_codex_2026-11-09/REVIEW.md",
+    "design/RimMandrake/hugethings_codex_2026-11-09/record.json",
+    "src/RimMandrake/HugeThings/Defs/JobDefs/RM_JobDefs.xml",
+    "src/RimMandrake/HugeThings/Defs/WorkGiverDefs/RM_WorkGivers.xml",
+    "src/RimMandrake/HugeThings/Source/CompHugeFootprint.cs",
+    "src/RimMandrake/HugeThings/Source/HugePlantCutting.cs",
+    "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeClaimsKernel.cs",
+    "src/RimMandrake/HugeThings/Source/MapComponent_HugeFootprints.cs",
+    "src/RimMandrake/HugeThings/Source/PlantCutToilRewrite.cs",
+    "src/RimMandrake/HugeThings/Source/RM_HugeThings.csproj",
+    "src/RimMandrake/HugeThings/Source/SelfTest/FootprintBudget/Program.cs",
+    "src/RimMandrake/HugeThings/Source/SelfTest/FootprintBudget/Stubs.cs",
+    "src/RimMandrake/HugeThings/Source/SelfTest/HugeThingsFuzz.cs",
+    "src/RimMandrake/HugeThings/Source/SelfTest/TrunkDoors/Program.cs",
+    "src/RimMandrake/HugeThings/Source/SelfTest/TrunkDoors/TrunkDoors.csproj",
+    "src/RimMandrake/HugeThings/Source/TrunkDoorValidationHooks.cs",
+    "src/RimMandrake/HugeThings/northstar/p1_live.py",
+    "src/RimMandrake/HugeThings/northstar/trunk_doors_live.py",
+    "src/RimMandrake/HugeThings/northstar/workload_corpse_live.py",
+    "src/RimMandrake/HugeThings/selftest_hugethings_footprint.py",
+    "src/RimMandrake/HugeThings/validation.py",
+    "src/RimMandrake/HugeThingsTestRaces/Defs/ThingDefs_Plants/RM_TestContactPlant.xml",
+    "src/RimMandrake/Utils/selftest_hugethings_budget.py",
+    "src/RimMandrake/Utils/selftest_hugethings_lint.py",
+    "src/RimMandrake/Utils/selftest_hugethings_trunk_doors.py",
+    "src/RimMandrake/rimflow/roles/runner_options.md",
+    "infrastructure/state/lessons/20261111T044621Z-BENCH-budget-fixture-not-production-cap.md"
+  ],
+  "runtime_compile_manifest": "whittle/ht-trunk-doors/evidence/raw/source-ready-v9-compiled-inputs.json",
+  "state": "Round stopped incomplete after fresh independent judge NO. Candidate9 code/runtime pair remains exact; D1 docs corrected after judgment. F1\u2013F5 remain open in three DIRTY Python instruments; A2 not reached. Do not infer acceptance from this metadata. See parent_admin/post-judge-disposition.json and JUDGE.md.",
+  "parent_inbound_fixes": [
+    "runner_options current connectivity claim replaced with current entrypoints",
+    "historical budget lesson home repaired"
+  ],
+  "previous_sha": "974537eeb71866efdecf527afea150a14905a998",
+  "candidate": 9,
+  "updated_paths": [
+    "src/RimMandrake/HugeThings/Source/TrunkDoorValidationHooks.cs",
+    "src/RimMandrake/HugeThings/northstar/trunk_doors_live.py"
+  ],
+  "initial_runtime_compile_manifest": "whittle/ht-trunk-doors/evidence/raw/source-ready-compiled-inputs.json",
+  "build_source_sha": "863dc1064fa0d4d556bd0d79ad310d8ca8fab9a6",
+  "artifact_sha": "77d14ad281b617982c50e319555c27b9e03b5f3d",
+  "script_sha": "9c89d8f5e5220e60f042820535cee9494c8a3e76",
+  "previous_build_source_sha": "ef5821d580764928453e41abb2f4903c5f8eb739",
+  "previous_artifact_sha": "2f7d6b24ccb59da34d14e2a464684b2159be8952",
+  "post_judge_doc_hashes": {
+    "design/RimMandrake/giant_footprint_design_2026-10-07.md": "4b6d38beb4cd7002089ae8c700de74d154815e2355f1f38f1142bc905ea84c8d",
+    "design/RimMandrake/huge_footprints_perf.md": "4ed784b29ed1a5e674587401f0a7fe6cbf1b51fba3f0b4727ff7a55ea3473f18"
+  }
+}

@@ -1,0 +1,13 @@
+# Growing trunks may seal doors — RIMMANDRAKE_ALLOW_HUGETHINGS_TRUNKS_TO_SEAL_DOORS
+
+- A giant plant's growing trunk may seal an existing workshop doorway and cut off access; remove the superseded doorway/access safety rule from implementation, current specifications and enforcing tests, including the old connectivity P1 and p1_live expectations.
+- In a restored disposable test site, demonstrate growth sealing an occupied workshop's doorway, then a real colonist cutting job removing the plant and its blockers and restoring access.
+- Preserve unrelated pawn and item placement safety, indestructible and gravship constraints, with focused positive and negative controls and retained raw evidence; do not claim flight, art, L4 feel or first-touch certification.
+
+Owner answer 4, 2026-11-11: "To be honest I don't really like the safety rule. I think they have to cut it down to get in or out after it grows."
+
+Independent implementation-design question. No tools. Frozen scope: remove doorway/access-open planner exceptions and global connectivity/root-access promises; preserve pawn/item placement safety, protected unrelated buildings/blueprints/frames/interaction cells, indestructibles, gravship handling, ownership/budgets/lifecycle.
+
+Installed engine 1.6 reflection-only IL: Verse.EdificeGrid.Register assigns one Building[] entry for each occupied cell; DeRegister clears it unconditionally. Verse.GenSpawn.SpawningWipes IL_0279..029E returns true for spawning edifice over an existing edifice. Our blocker is an impassable edifice; doors are edifices. Co-spawning would wipe the existing door, or suppressing the wipe would corrupt edifice indexing.
+
+Options: (A) remove only special door-approach protections, retain ordinary existing-building protection, let real growing contact cells seal an adjacent doorway approach, with intact door and no alternative path; (B) replace door/blocker mechanics to support same-cell coexistence; (C) destroy the existing door as growth reaches it. Which smallest mechanic satisfies the owner's experience without adding collateral damage or unrelated changes? Identify any unresolved requirement or missed messy case. Include implications for a real cutting job if root is wholly surrounded; no new keep-access exception is allowed. Do not assess implementation not supplied.

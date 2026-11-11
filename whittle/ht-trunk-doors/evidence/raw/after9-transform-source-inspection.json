@@ -1,0 +1,20 @@
+{
+  "utc": 1794435808.0428796,
+  "source": "src/RimMandrake/Utils/modcheck/save_uncompress.py",
+  "sha256": "9489a6269dddbfeee48dd43c80df73d45f36d7e240d543e9a7f771b3724bc1bb",
+  "full_file_read": true,
+  "findings": [
+    "struct.pack/unpack used only in read_grid/write_grid; write_grid wraps binary compressed data in ASCII base64 before insertion into XML",
+    "expand_text constructs existing strings/new valid XML elements by slicing, join and regex substitutions",
+    "expand_fresh uses text UTF8 read/write to .tmp then os.replace; no fsync or post-write parse/hash check",
+    "save_site waits existence plus fixed3sec before expansion; no raw-native capture or stable-byte/parse gate"
+  ],
+  "not_found": [
+    "literal NUL construction",
+    "bytearray/memoryview/mmap",
+    "ljust/zfill",
+    "seek/truncate/preallocation",
+    "errors handler in transform read/write"
+  ],
+  "limit": "Static source observations only. No cause or exoneration established; actual original expansion branch was not replayed from native compressed input."
+}

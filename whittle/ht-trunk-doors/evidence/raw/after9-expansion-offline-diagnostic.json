@@ -1,0 +1,50 @@
+{
+  "utc": 1794435715.488679,
+  "helper": "src/RimMandrake/Utils/modcheck/save_uncompress.py",
+  "helper_sha256": "9489a6269dddbfeee48dd43c80df73d45f36d7e240d543e9a7f771b3724bc1bb",
+  "rows": [
+    {
+      "label": "begin",
+      "input_sha256": "2bfd0d881ac872421b5df412bc09be5222cd73b7d175476e3d49a932088aefcb",
+      "input_nuls": 0,
+      "deterministic_three_calls": true,
+      "output": {
+        "sha256": "2bfd0d881ac872421b5df412bc09be5222cd73b7d175476e3d49a932088aefcb",
+        "bytes": 8535600,
+        "nul_count": 0,
+        "parse": "PASS",
+        "census": {},
+        "stacks_added": 0
+      }
+    },
+    {
+      "label": "invalid",
+      "input_sha256": "db670eb881fe278f6c7427d25c53426bc466f09621fc07da3c1960c270cef411",
+      "input_nuls": 32,
+      "deterministic_three_calls": true,
+      "output": {
+        "sha256": "db670eb881fe278f6c7427d25c53426bc466f09621fc07da3c1960c270cef411",
+        "bytes": 8538538,
+        "nul_count": 32,
+        "parse": "not well-formed (invalid token): line 141345, column 21",
+        "census": {},
+        "stacks_added": 0
+      }
+    },
+    {
+      "label": "restored",
+      "input_sha256": "15b84dede57ab411f7dce04cd92af952a0a31a76236db08a72e4b2195bd6fa72",
+      "input_nuls": 0,
+      "deterministic_three_calls": true,
+      "output": {
+        "sha256": "15b84dede57ab411f7dce04cd92af952a0a31a76236db08a72e4b2195bd6fa72",
+        "bytes": 8538655,
+        "nul_count": 0,
+        "parse": "PASS",
+        "census": {},
+        "stacks_added": 0
+      }
+    }
+  ],
+  "limit": "Offline replay of retained expanded bytes only; no pre-expansion native output was retained for failing save, so this does not identify where original NULs entered."
+}

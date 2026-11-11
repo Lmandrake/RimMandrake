@@ -1,0 +1,8 @@
+Exception calling "GetType" with "2" argument(s): "Could not load type 'RimWorld.JobDriver_PlantCutDesignated' from 
+assembly 'Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null'."
+At \\wsl.localhost\Ubuntu\home\mandrake\rm\codex-ht\whittle\ht-trunk-doors\evidence\read_cut_init.ps1:27 char:2
++  $t=$assembly.GetType($typeName,$true)
++  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : TypeLoadException
+ 

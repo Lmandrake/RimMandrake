@@ -1,0 +1,90 @@
+Fresh tools-disabled bounded Test Pilot for harness defect only. Frozen task: real RM_Nogtyl natural growth seals occupied workshop then real native colonist cutting, exact work persistence, placement controls and restoration. No scope/log/preflight waivers. after8 strict startup/preflights PASS then actor selection fails BEFORE growth because harness requires currentState key in jawa/pawn_mental(action=list). Exact successful raw response: {success:true,action:"list",notes:[],totalDefs:54,states:[{def:"Berserk",label:"berserk",neverRecoversAlone:false,blockNormalThoughts:true}],ticksGame:3}, no currentState field. Current bridge source JawaBenchPawnTools.cs lines1842-1930 is read-only for list and unconditionally returns currentState = p.MentalState != null ? p.MentalState.def.defName : null; raw omits started null too. Thus absent currentState is consistent with null omission, not positive mentalstate evidence. RestorationPASS/DOWN/guardFREE/hostledgerFREE1432. Existing two capable borrowed actors/third pinned authorized by parent; no generator retry. Proposed bounded Python-only correction to both selection and phase checks: require mental.success is True, action=='list', integer ticksGame, states list and totalDefs>0 (positive contract/schema), then mental.get('currentState') is None; reject non-null mental state and malformed/failed response. Retain raw and exact C#/DLL no rebuild. Ask whether absence-safe check is sound given unconditional source, any stronger small read-only check that avoids unrelated bridge edit. Do not propose enabling/recovering mentalstates or dropping guard. All previous failures stay RED. Return short concrete guidance. Source snippet:
+        public static async Task<object> PawnMental(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Pawn id or name.")] string pawn = null,
+            [ToolParameter(Description = "'list' | 'start' | 'end'.")] string action = "list",
+            [ToolParameter(Description = "MentalStateDef name.")] string state = null,
+            [ToolParameter(Description = "Bypass the worker's own StateCanOccur check. Default true.")] bool forced = true,
+            [ToolParameter(Description = "Start it even on a sleeping pawn. Default true.")] bool forceWake = true,
+            [ToolParameter(Description = "Another pawn, for social states.")] string otherPawn = null,
+            [ToolParameter(Description = "Max defs listed. Default 60.")] int limit = 60)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                string err; var p = FindPawn(pawn, out err);
+                if (p == null) return Fail(err);
+                string A = (action ?? "list").Trim().ToLowerInvariant();
+                var notes = new List<string>();
+                bool? started = null;
+
+                if (A == "start")
+                {
+                    if (p.mindState == null || p.mindState.mentalStateHandler == null)
+                        return Fail("Pawn has no mental state handler (animals and mechs may not).");
+                    if (string.IsNullOrEmpty(state)) return Fail("Give a MentalStateDef.");
+                    var sd = DefDatabase<MentalStateDef>.GetNamedSilentFail(state.Trim());
+                    if (sd == null) return Fail("No MentalStateDef '" + state + "'.", DefSuggestions<MentalStateDef>(state));
+                    Pawn other = null;
+                    // Fixed 2026-09-02 (opus code review): a mistyped otherPawn's
+                    // lookup error was discarded, so TryStartMentalState ran with
+                    // other=null as though no target was ever requested.
+                    if (!string.IsNullOrEmpty(otherPawn))
+                    {
+                        string e2; other = FindPawn(otherPawn, out e2);
+                        if (other == null) return Fail(e2);
+                    }
+                    try
+                    {
+                        started = p.mindState.mentalStateHandler.TryStartMentalState(sd, "forced via bridge", forced, forceWake, false, other);
+                        if (started != true)
+                            notes.Add("TryStartMentalState returned FALSE - RimWorld refused. Common causes: already in this state, " +
+                                      "asleep without forceWake, a mutant that prevents breaks, or the state's own worker saying no.");
+                        if (sd.minTicksBeforeRecovery > sd.maxTicksBeforeRecovery)
+                            notes.Add("⚠️ '" + sd.defName + "' NEVER RECOVERS on its own - use action='end'.");
+                    }
+                    catch (Exception e) { return Fail("TryStartMentalState threw: " + e.GetType().Name + ": " + e.Message); }
+                }
+                else if (A == "end")
+                {
+                    var ms = p.MentalState;
+                    if (ms == null) return Fail("Pawn is not in a mental state.");
+                    try { ms.RecoverFromState(); notes.Add("RecoverFromState - grants the recovery thought and notifies the breaker; the dirty alternative (Reset) does neither"); }
+                    catch (Exception e) { return Fail("RecoverFromState threw: " + e.Message); }
+                }
+                else if (A != "list") return Fail("action must be list|start|end.");
+
+                var defs = new List<object>();
+                if (A == "list")
+                    foreach (var d in DefDatabase<MentalStateDef>.AllDefsListForReading.Take(Math.Max(1, limit)))
+                        defs.Add(new
+                        {
+                            def = d.defName,
+                            label = d.label,
+                            neverRecoversAlone = d.minTicksBeforeRecovery > d.maxTicksBeforeRecovery,
+                            blockNormalThoughts = d.blockNormalThoughts,
+                        });
+
+                return (object)new
+                {
+                    success = true, action = A, started, notes,
+                    currentState = p.MentalState != null ? p.MentalState.def.defName : null,
+                    totalDefs = DefDatabase<MentalStateDef>.AllDefsListForReading.Count,
+                    states = defs,
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
+            "jawa/pawn_romance",
+            Description =
+                "Do the FULL social transaction, not just the relation flip. " +
+                "action='romance' makes two pawns lovers and shares a bed; 'marry' runs " +
+                "MarriageCeremonyUtility.Married - which ex-spouses everyone, removes Fiance, " +
+                "adds the newly-married thoughts BOTH ways, renames after marriage and shares " +
+                "a bed; 'breakup' mirrors InteractionWorker_Breakup so the BrokeUpWithMe " +
+                "thought actually lands; 'memory' adds a ThoughtDef about another pawn. " +
+                "🔑 OPINION IS PURELY COMPUTED - relation offsets plus thoughts. There is no " +
+                "stored opinion field, so a MEMORY is the only lever on how two pawns feel.",
+            ResultDescription = "success, what happened, opinion both ways, relations after.")]

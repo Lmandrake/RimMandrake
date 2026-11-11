@@ -1,0 +1,21 @@
+# Safe continuation checkpoint
+
+Task/statement/NOTES/prompt are frozen. Work only this clone and this item. No BENCH handoff, other clone, unrelated source/art, ledger lifecycle, commit or publication work by worker.
+
+Current actual state: gameDOWN; stevedesktop guardFREE generation1426; stevedesktop ledgerFREE. Actual checkpoint-audit PASS and all command streams under evidence/raw/checkpoint-*. Final independent cleanup recheck: evidence/raw/final-checkpoint-cleanup.json and final-checkpoint-* streams. No game scene was loaded in any attempt. No accepted compact copy, DONE, JUDGE_SCOPE_READY, JUDGE_PROMPT or JUDGE written.
+
+Parent source candidate3 ef5821d committed/built with prescribed winbuild properties,0warnings/errors, exact54 inputs/DLL/stamp. Parent candidate4 handoff only Python16→17 loaded-tier requirement; no C# or artifact change. Parent commit + stale SOURCE_COMMITTED runtime manifest pointer correction pending. Final runtime manifests v3/v4 byte-identical. All helper arity fixes are in candidate3.
+
+Tests-after5 registered5/5 rc0. Executable old/current production planner comparison oldREDrc1/currentGREENrc0 with matched negatives; replay raw streams saved. Parent PARENT_METHOD_SCOPE.md explicitly authorizes this L0 method in place of an old-game round.
+
+Critical unresolved SITE blocker: after3 all required offline/live rowsPASS, but startup log gate reports4 graphic exceptions before scene. First unique assault rifle Graphic_Single -> engine ContentFinder.TryFindAssetInModBundles -> Path.Combine Illegal characters. Bounded exact raw: evidence/raw/after3-first-exception-context.json; Config errors empty. No waiver or synthetic replacement permitted. Fresh pilot3 prompt/process/raw exists. Physical active roots/bundle filenames tested clean; invalid Path.Combine argument owner still unknown. PARENT_SITE_BLOCKER.md requests parent published artifact/real-plant route. Original16tier omitted VEF;17tier adds registered VEF because composed Biomes donor XML needs it. Exact registered17closure dry plan rc0, expression144chars; no registry/shared workflow edit.
+
+Use evidence/run_live.py with NEW attempt directory only after diagnosis/retry route is ready. It carries fresh own guard generation/PID, exact host take/release/purpose, reviewed dependency checks, own deploy plans, modset_builder, authorized stopped-old-log sanitizer+normal O08 archive, single Steam adapter launch, separate budgets, strict preflights/startup gate, Windows python THISclone functional driver, then DOWN/release/checks finally. Do not run old wrapper. Candidate source/proofs remain frozen unless needed correction; no pull/sync.
+
+Fresh independent Opus calls require exact tools-disabled flags, neutral cwd, WHITTLE0; call_pilot3.py preserves current scaffold. No blind live retry. Any later C# source change: SOURCE_READY + WAIT parent SOURCE_COMMITTED before prescribed rebuild. Script currently expects exact17-package closure. Actual giant RM_Nogtyl comes from published composed Biomes/TheRot; standalone TheRot refused as folded/unregistered. Synthetic fixture substitute is not accepted.
+
+Actual Whittle validate ran rc1 because no DONE; evidence/workflow.*. FINDINGS.md states incomplete truth. Future successful final validation should preserve this failed receipt (use a new prefix/path), not overwrite it. Parent should stop outside-Whittle terminal metadata writes before final accepted proof/judge/validator. No evidence mtime edits.
+
+Next after accepted final proof only: accepted compact raw target copy, DONE exact frozen bullets, neutral raw/source/test/dependency JUDGE_SCOPE_READY, WAIT parent exact JUDGE_PROMPT, fresh separate Codex agent_runner stdin EXACT prompt/no fork/resume/model override/timeout1200, audit reads against scope, only judge writes JUDGE.md, actual read-only Whittle validate and final FINDINGS. Parent owns independent full-file CLEAN, publication/ledger/closure.
+
+Own claim token remains CODEX_STEVEDESKTOP_HUGETHINGS.pid29578.98f393dd; last renewal19:59Z through20:44Z, renew own item only. Quota last37% used (<88). Never expose account/host/key identities or full logs. Every shell must begin exact seat exports + source testcentre_env and carry three seat variables + actual lease generation/PID through WSLENV.

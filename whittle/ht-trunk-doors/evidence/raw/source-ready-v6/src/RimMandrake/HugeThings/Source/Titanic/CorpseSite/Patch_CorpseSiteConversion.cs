@@ -1,0 +1,34 @@
+using HarmonyLib;
+using Verse;
+using RimMandrake.HugeThings;
+
+namespace RimMandrake.TitanicCreatures
+{
+    /// <summary>
+    /// Card #4's trigger point: the instant a T3 titan's Corpse actually
+    /// spawns onto a map (Verse/Corpse.cs SpawnSetup), queue it to become the
+    /// landmark on a later tick (MapComponent_TitanicCorpseSites). Firing on SpawnSetup rather than on Pawn.Kill / MakeCorpse
+    /// means this works regardless of which vanilla code path caused the
+    /// corpse to appear (death, quest cleanup, debug spawn, ...) - anywhere a
+    /// T3 Corpse ends up on a map, it becomes a site instead.
+    ///
+    /// Loaded unconverted corpses are queued too; the map component also reconciles legacy saves in FinalizeInit.
+    /// </summary>
+    [HarmonyPatch(typeof(Corpse), nameof(Corpse.SpawnSetup))]
+    internal static class Patch_Corpse_SpawnSetup_TitanicSite
+    {
+        private static void Postfix(Corpse __instance, Map map, bool respawningAfterLoad)
+        {
+            // MOD_OPTIONS_RETROFIT_1: master switch. Off: a T3 corpse is left
+            // as an ordinary Corpse and butchers normally.
+            if (!RM_HugeThingsSettings.CorpseSiteActive) return;
+            Pawn inner = __instance.InnerPawn;
+            if (inner == null || TitanicTierUtility.GetTier(inner) != TitanicTier.T3)
+            {
+                return;
+            }
+            // CORPSE_SITE_SAFETY_1 (B3.1): never destroy the corpse inside its own SpawnSetup; queue it for a later tick.
+            map?.GetComponent<MapComponent_TitanicCorpseSites>()?.Enqueue(__instance);
+        }
+    }
+}

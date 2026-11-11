@@ -1,0 +1,16 @@
+{
+  "assembly": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/RimWorldWin64_Data/Managed/Assembly-CSharp.dll",
+  "sha256": "5cf1b5be399d5b1c9c56ca72c9d35b4ecf307feacf5859d04ac5a1aa5926356a",
+  "field_token": 67161481,
+  "methods_scanned": 90840,
+  "reads": [
+    {
+      "type": "RimWorld.WorkGiver_PlantsCut",
+      "method": "JobOnThing"
+    },
+    {
+      "type": "RimWorld.WorkGiver_PlantsCut",
+      "method": "PostProcessedGerund"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/home/mandrake/.cache/ht-warning-venv/bin/python3",
+    "src/RimMandrake/Utils/run_selftests.py",
+    "--only",
+    "src/RimMandrake/Utils/selftest_hugethings_fuzz.py",
+    "src/RimMandrake/Utils/selftest_hugethings_budget.py",
+    "src/RimMandrake/Utils/selftest_hugethings_lint.py",
+    "src/RimMandrake/Utils/selftest_hugethings_trunk_doors.py",
+    "src/RimMandrake/HugeThings/selftest_hugethings_footprint.py",
+    "--workers",
+    "1"
+  ],
+  "rc": 0,
+  "elapsed": 158.49632668495178
+}

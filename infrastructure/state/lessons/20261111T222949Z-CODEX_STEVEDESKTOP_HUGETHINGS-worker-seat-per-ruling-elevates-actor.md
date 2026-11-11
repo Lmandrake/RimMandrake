@@ -1,0 +1,2 @@
+In the HugeThings drain, --per-ruling elevated a reassign actor to OWNER even though all three worker seat variables were correct. An already-authorized own-seat reassign with --why retained CODEX_STEVEDESKTOP_HUGETHINGS. Preserve any mistaken immutable event, append an explicit corrective event/note, and never rewrite the shard to hide it. Proof: whittle/ht-trunk-doors/evidence/item-before.txt and published setup492e4fee.
+home: src/RimMandrake/rimflow/roles/runner_options.md

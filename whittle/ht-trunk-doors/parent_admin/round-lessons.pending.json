@@ -1,0 +1,37 @@
+[
+  {
+    "slug": "worker-seat-per-ruling-elevates-actor",
+    "home": "src/RimMandrake/rimflow/roles/runner_options.md",
+    "text": "In the HugeThings drain, --per-ruling elevated a reassign actor to OWNER even though all three worker seat variables were correct. An already-authorized own-seat reassign with --why retained CODEX_STEVEDESKTOP_HUGETHINGS. Preserve any mistaken immutable event, append an explicit corrective event/note, and never rewrite the shard to hide it. Proof: whittle/ht-trunk-doors/evidence/item-before.txt and published setup492e4fee."
+  },
+  {
+    "slug": "disposable-site-fixtures-need-bounded-census",
+    "home": "skills/rimbridge/SKILL.md",
+    "text": "A registered disposable test site is not an empty rectangle. The trunk proof found original colonists in unused gaps and a baseline indestructible2x2 geyser; destroy_batch skips that Thing once per occupied cell. Census before writes, clear only declared fixture plots, preserve every occupied baseline indestructible cell, and compare exact identities after restoration. For borrowed site actors, keep a nonvacuous stationary original, use governed real walks, and restore/read back workSettings, timetables and draft state as well as pawn positions. Proof: whittle/ht-trunk-doors/evidence/raw/live-after4 through live-after9."
+  },
+  {
+    "slug": "pause-on-load-ticks-before-pausing",
+    "home": "skills/rimbridge/SKILL.md",
+    "text": "The installed RimWorld1.6 LoadGame pause-on-load callback calls TickManager.DoSingleTick before setting Paused. Exact post-load cutting-work equality therefore rejected real continued work in after6. A once-armed read-only observer before the first native tick in a different Game object, tied to a nonce and exact serialized tick/targets/float32 work, measures persistence without suppressing or faking time/work. Preserve failed evidence and require actual cutting completion separately. Proof: whittle/ht-trunk-doors/evidence/raw/engine-pause-on-load-contract.json and Source/TrunkDoorValidationHooks.cs."
+  },
+  {
+    "slug": "bridge-null-omission-is-not-mental-state",
+    "home": "skills/rimbridge/SKILL.md",
+    "text": "The actual jawa/pawn_mental action=list response omitted nullable currentState/started fields for a healthy actor, while states[0]=Berserk was a catalog entry. Requiring key presence falsely failed after8. Inspect source/actual response contracts, schema-check null omission or prefer a nonnullable observation such as pawn_census.inMentalState, and retain positive-state/malformed/failed/stale-response negatives. Do not infer a mental break from the catalog or remove the safety check. Proof: whittle/ht-trunk-doors/evidence/raw/candidate9-python-check.json and live-after8/trunk-doors.json."
+  },
+  {
+    "slug": "green-preflight-still-needs-startup-first-error",
+    "home": "src/RimMandrake/rimflow/roles/runner_options.md",
+    "text": "All required applicable preflight rows passed while live-after3 startup still had graphic/path and biography XML exceptions. The generation was refused before scene work. Later clean startup after Steam validation did not prove a cause or repair (validation reported NoError and no workshop file changes; engine bytes unchanged). Require fresh startup and post-proof exception/config/parse checks alongside preflight. SteveDesktop O02 alone reads the other host bridge and is N/A only with independent own host_guard/ledger evidence. Preserve privacy: do not copy full credential-bearing logs. Proof: whittle/ht-trunk-doors/evidence/raw/live-after3 and parent_admin/steam-validation-final.json."
+  },
+  {
+    "slug": "old-source-freeze-includes-project-globs",
+    "home": "src/RimMandrake/rimflow/roles/runner_options.md",
+    "text": "A valid old-source proof freeze must remove candidate-only C# files too: a preflight compile-include check correctly rejected extra new helpers left outside the old explicit project. For build identity resolve .srchash paths from its # project header under src, then compare every input against current bytes AND the committed build-source blobs; do not guess the base directory or infer a clean DLL from HEAD. Proof: whittle/ht-trunk-doors/evidence/raw/live-before1 and parent_admin/build-input-audit-candidate7.json."
+  },
+  {
+    "slug": "required-log-archive-cannot-be-skipped",
+    "home": "src/RimMandrake/rimflow/roles/runner_options.md",
+    "text": "--no-archive leaves required preflight O08 UNMEASURED, so it is not an acceptable privacy shortcut. Under an actual DOWN game and own host lease, retain original log hash/metadata and bounded redacted diagnostics, sanitize credential-bearing old log lines in place only under explicit task authority, then let the unmodified default archive check run. Never copy the full credential-bearing log. Fresh game startup/proof logs are separately gated. Proof: whittle/ht-trunk-doors/ARCHIVE_POLICY_DECISION.md and evidence/sanitize_old_log.py."
+  }
+]

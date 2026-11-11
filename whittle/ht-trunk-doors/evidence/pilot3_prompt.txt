@@ -1,0 +1,104 @@
+# Growing trunks may seal doors — RIMMANDRAKE_ALLOW_HUGETHINGS_TRUNKS_TO_SEAL_DOORS
+
+- A giant plant's growing trunk may seal an existing workshop doorway and cut off access; remove the superseded doorway/access safety rule from implementation, current specifications and enforcing tests, including the old connectivity P1 and p1_live expectations.
+- In a restored disposable test site, demonstrate growth sealing an occupied workshop's doorway, then a real colonist cutting job removing the plant and its blockers and restoring access.
+- Preserve unrelated pawn and item placement safety, indestructible and gravship constraints, with focused positive and negative controls and retained raw evidence; do not claim flight, art, L4 feel or first-touch certification.
+
+Fresh tools-disabled independent Test Pilot. No previous session. The exact17-package retry adds registered VEF as last pilot advised. All required offline/live preflight rows passed. Startup gate then found4 exceptions, first stack below; no scene was loaded. GameDOWN / host guardFREE / host ledgerFREE proved in finally. Do not waive errors, modify unrelated source or kept art, or claim gameplay acceptance. Diagnose only to evidence strength and suggest1-2 bounded read-only next checks or an allowed published fixture route. If blocked on external artifact/source authority say precisely. Worker deadline20:17Z; do not lower any bar to fit it.
+
+ACTUAL FIRST STACK:
+{
+  "log_sha256": "afc63ee61ffb19406092e6bf802bc0152324b963c7afa6def5e00d6895013331",
+  "first_exception_context": [
+    {
+      "line": 45,
+      "text": "Exception getting Verse.Graphic_Single at Things/Item/Equipment/WeaponRanged/UniqueWeapons/AssaultRifle/UniqueAssaultRifleA: System.ArgumentException: Illegal characters in path."
+    },
+    {
+      "line": 46,
+      "text": "[Ref B47DB130]"
+    },
+    {
+      "line": 47,
+      "text": "  at System.IO.Path.Combine (System.String path1, System.String path2) [0x0003e] in <51fded79cd284d4d911c5949aff4cb21>:0 "
+    },
+    {
+      "line": 48,
+      "text": "  at Verse.ContentFinder`1[T].TryFindAssetInModBundles (System.String itemPath) [0x00121] in <61e4173561894da49d210260257b5097>:0 "
+    },
+    {
+      "line": 49,
+      "text": "  at Verse.ContentFinder`1[T].Get (System.String itemPath, System.Boolean reportFailure) [0x0013f] in <61e4173561894da49d210260257b5097>:0 "
+    },
+    {
+      "line": 50,
+      "text": "  at Verse.Graphic_Single.Init (Verse.GraphicRequest req) [0x000ce] in <61e4173561894da49d210260257b5097>:0 "
+    },
+    {
+      "line": 51,
+      "text": "  at Verse.GraphicDatabase.GetInner[T] (Verse.GraphicRequest req) [0x000a5] in <61e4173561894da49d210260257b5097>:0 "
+    },
+    {
+      "line": 52,
+      "text": "(wrapper delegate-invoke) System.Func`2[Verse.GraphicRequest,Verse.Graphic].invoke_TResult_T(Verse.GraphicRequest)"
+    },
+    {
+      "line": 53,
+      "text": "  at Verse.GraphicDatabase.Get (Verse.GraphicRequest req) [0x00066] in <61e4173561894da49d210260257b5097>:0 "
+    },
+    {
+      "line": 54,
+      "text": "Failed to find any textures at swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/TruffleMole while constructing Multi(initPath=swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/TruffleMole, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))"
+    }
+  ],
+  "config_errors": []
+}
+
+ACTUAL STARTUP SUMMARY:
+{
+  "first_exception": [
+    45,
+    "Exception getting Verse.Graphic_Single at Things/Item/Equipment/WeaponRanged/UniqueWeapons/AssaultRifle/UniqueAssaultRifleA: System.ArgumentException: Illegal characters in path."
+  ],
+  "exception_count": 4,
+  "config_errors": [],
+  "parse_errors": []
+}
+
+EXACT TIER DRY PLAN:
+installed mods discovered: 116
+
+tier 'mods__mandrake_rm_flowworks__mandrake_rm_hugethingstestraces__mandrake_rm_patches__mandrake_rm_biomes__oskarpotocki_vanillafactionsexpanded_core': LIGHTSPEED_REWIRE_ROUND_AS_TESTQ_CLIENT: the mods a live-proof file needs (its build's mods and its live-mods), with the bridge, Gimme Some Slack and all five DLC: brrainz.rimbridgeserver, mandrake.rm.gimmesomeslack, mandrake.rm.flowworks, mandrake.rm.hugethingstestraces, mandrake.rm.patches, mandrake.rm.biomes, oskarpotocki.vanillafactionsexpanded.core
+
+    1  brrainz.harmony                              Harmony
+    2  ludeon.rimworld                              Ludeon.RimWorld
+    3  ludeon.rimworld.royalty                      Ludeon.RimWorld.Royalty
+    4  ludeon.rimworld.ideology                     Ludeon.RimWorld.Ideology
+    5  ludeon.rimworld.biotech                      Ludeon.RimWorld.Biotech
+    6  ludeon.rimworld.anomaly                      Ludeon.RimWorld.Anomaly
+    7  ludeon.rimworld.odyssey                      Ludeon.RimWorld.Odyssey
+    8  brrainz.rimbridgeserver                      RimBridgeServer
+    9  oskarpotocki.vanillafactionsexpanded.core    Vanilla Expanded Framework
+   10  ray1203.simplecamerasetting                  SimpleCameraSetting
+   11  mandrake.rm.gimmesomeslack                   RimMandrake: Gimme Some Slack
+   12  mandrake.rm.flowworks                        RimMandrake: FlowWorks
+   13  mandrake.rm.hugethings                       RimMandrake: Huge Things
+   14  mandrake.rm.hugethingstestraces              RimMandrake: Huge Things Test Races (har
+   15  mandrake.rm.luminouspigment                  RimMandrake: Luminous Pigment
+   16  mandrake.rm.biomes                           RimMandrake: Baroque Biomes
+   17  mandrake.rm.patches                          RimMandrake Patches
+
+  17 mods, down from 316.
+  plan only. Re-run with --apply to write ModsConfig.xml.
+
+ACTUAL VEF CLASS PROVIDERS:
+{
+  "path": "/mnt/d/SteamLibrary/steamapps/workshop/content/294100/2023507013/1.6/Assemblies/VEF.dll",
+  "sha256": "2f0c890c54dd0498aebcfa42b63a859f8acee894adddd08807a523d683e8dc6d",
+  "type_names": [
+    "VEF.Plants.DualCropExtension",
+    "VEF.AnimalBehaviours.CompProperties_AnimalProduct"
+  ]
+}
+
+Current measured production giant opt-in patch is TheRot/Patches/RotGiants_HugeFootprint.xml, composed into Biomes. Standalone TheRot deploy was previously refused as folded/unregistered. Only HugeThingsTestRaces has a synthetic fixture. No substitution of synthetic or loaded-method-only proof is allowed. Original old planner RED/current GREEN and production build/selftests are complete; A2 remains unseen.

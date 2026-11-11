@@ -1,0 +1,22 @@
+{
+  "utc": "2026-11-11T21:43:15.351871+00:00",
+  "first_line": 208,
+  "context": [
+    "",
+    "Error while generating pawn. Rethrowing. Exception: System.NullReferenceException: Object reference not set to an instance of an object",
+    "[Ref F5A10FC7]",
+    "  at RimWorld.PawnInventoryGenerator.GiveRandomFood (Verse.Pawn p) <0x2b091fc6fa0 + 0x00010> in <61e4173561894da49d210260257b5097>:0 ",
+    "  at RimWorld.PawnInventoryGenerator.GenerateInventoryFor (Verse.Pawn p, Verse.PawnGenerationRequest request) [0x00150] in <61e4173561894da49d210260257b5097>:0 ",
+    "  at Verse.PawnGenerator.GenerateGearFor (Verse.Pawn pawn, Verse.PawnGenerationRequest request) [0x00007] in <61e4173561894da49d210260257b5097>:0 ",
+    "    - POSTFIX mandrake.rm.flowworks: Void RimMandrake.FlowWorks.RM_Patch_GenerateGear_ClimbingGear:Postfix(Pawn pawn, PawnGenerationRequest request)",
+    "  at Verse.PawnGenerator.TryGenerateNewPawnInternal (Verse.PawnGenerationRequest& request, System.String& error, System.Boolean ignoreScenarioRequirements, System.Boolean ignoreValidator) [0x00cd7] in <61e4173561894da49d210260257b5097>:0 ",
+    "  at Verse.PawnGenerator.GenerateNewPawnInternal (Verse.PawnGenerationRequest& request) [0x000a5] in <61e4173561894da49d210260257b5097>:0 ",
+    "    - POSTFIX OskarPotocki.VEF: Void VEF.Abilities.VanillaExpandedFramework_PawnGenerator_GenerateNewPawnInternal_Patch:Postfix(Pawn __result)",
+    "  at Verse.PawnGenerator.GenerateOrRedressPawnInternal (Verse.PawnGenerationRequest request) [0x00140] in <61e4173561894da49d210260257b5097>:0 ",
+    "  at Verse.PawnGenerator.GeneratePawn (Verse.PawnGenerationRequest request) [0x00007] in <61e4173561894da49d210260257b5097>:0 ",
+    "Unloading 1 Unused Serialized files (Serialized files now loaded: 5)",
+    "Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 38281.",
+    "Total: 381.474200 ms (FindLiveObjects: 1.958400 ms CreateObjectMapping: 3.353100 ms MarkObjects: 376.078100 ms  DeleteObjects: 0.084300 ms)",
+    ""
+  ]
+}

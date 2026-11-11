@@ -1,0 +1,64 @@
+{
+  "utc": 1794432572.7012734,
+  "script_sha256": "2773cab493a16dd1b3dd2cab34e9033a25a236d3b91b47e874a88ebbc391ce69",
+  "actual_predicate": "loaded_cut_matches AST",
+  "cases": [
+    {
+      "case": "exact serialized pre-native-tick state",
+      "accepted": true
+    },
+    {
+      "case": "newGame=False",
+      "accepted": false
+    },
+    {
+      "case": "beforeNativeTick=False",
+      "accepted": false
+    },
+    {
+      "case": "current=Wait",
+      "accepted": false
+    },
+    {
+      "case": "forced=True",
+      "accepted": false
+    },
+    {
+      "case": "plant=P2",
+      "accepted": false
+    },
+    {
+      "case": "contact=B2",
+      "accepted": false
+    },
+    {
+      "case": "tick=2624",
+      "accepted": false
+    },
+    {
+      "case": "work=0",
+      "accepted": false
+    },
+    {
+      "case": "work=2.85813427",
+      "accepted": false
+    },
+    {
+      "case": "work=nan",
+      "accepted": false
+    },
+    {
+      "case": "work=inf",
+      "accepted": false
+    },
+    {
+      "case": "work offset -1 float32ULP",
+      "accepted": false
+    },
+    {
+      "case": "work offset 1 float32ULP",
+      "accepted": false
+    }
+  ],
+  "ok": true
+}

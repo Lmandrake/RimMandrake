@@ -1,0 +1,10 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/Utils/modset_builder.py",
+    "--tier",
+    "mods__mandrake_rm_flowworks__mandrake_rm_hugethings__mandrake_rm_hugethingstestraces__mandrake_rm_patches__mandrake_rm_biomes__oskarpotocki_vanillafactionsexpanded_core"
+  ],
+  "rc": 2,
+  "elapsed": 0.11106610298156738
+}

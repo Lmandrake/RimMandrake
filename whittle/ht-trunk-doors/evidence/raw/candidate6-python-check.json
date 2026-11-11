@@ -1,0 +1,13 @@
+{
+  "utc": 1794431218.8352485,
+  "script_sha256": "afd5bdf0793becbf3d5ac0d3a02fa8d317966d18e5ccf1eb98761fb361ff796a",
+  "syntax": "ast.parse PASS",
+  "runtime_inputs_unchanged": 54,
+  "compiled_manifest_byte_identical_v5": true,
+  "no_rebuild_required": true,
+  "pilot": "evidence/pilot5_raw.json",
+  "destroy_categories": [
+    "All",
+    "Building"
+  ]
+}

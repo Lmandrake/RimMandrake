@@ -1,0 +1,4 @@
+.<>c <LoadGame>b__81_1 instructions 6
+[{"offset": "0x0", "op": "0x28", "operand": "1b540006", "member": "<own>.get_TickManager"}, {"offset": "0x5", "op": "0x6f", "operand": "c2150006", "member": "<own>.DoSingleTick"}, {"offset": "0xa", "op": "0x28", "operand": "1b540006", "member": "<own>.get_TickManager"}, {"offset": "0xf", "op": "0x16", "operand": ""}]
+Verse.Prefs get_PauseOnLoad instructions 3
+Verse.Prefs set_PauseOnLoad instructions 4

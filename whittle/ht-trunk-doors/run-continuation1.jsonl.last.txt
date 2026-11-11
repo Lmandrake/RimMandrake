@@ -1,0 +1,6 @@
+Incomplete checkpoint preserved in [CONTINUATION_CHECKPOINT.md](/home/mandrake/rm/codex-ht/whittle/ht-trunk-doors/CONTINUATION_CHECKPOINT.md).
+
+- After9 failed before growth on two 16-byte NUL runs in supplemental save XML; cause unidentified.
+- Full restoration remains NOTPASS. Game DOWN, guard FREE, host ledger FREE independently verified.
+- Actual Whittle validation returned rc1. No DONE or accepted compact proof created.
+- Parent owns the sole fresh judge and requested this safe incomplete handoff.

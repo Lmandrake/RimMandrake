@@ -1,0 +1,28 @@
+# Growing trunks may seal doors — RIMMANDRAKE_ALLOW_HUGETHINGS_TRUNKS_TO_SEAL_DOORS
+
+- A giant plant's growing trunk may seal an existing workshop doorway and cut off access; remove the superseded doorway/access safety rule from implementation, current specifications and enforcing tests, including the old connectivity P1 and p1_live expectations.
+- In a restored disposable test site, demonstrate growth sealing an occupied workshop's doorway, then a real colonist cutting job removing the plant and its blockers and restoring access.
+- Preserve unrelated pawn and item placement safety, indestructible and gravship constraints, with focused positive and negative controls and retained raw evidence; do not claim flight, art, L4 feel or first-touch certification.
+
+No tools. Independent implementation design for enclosed-root cutting, required by prior design review: remove root-access exception and allow cutting from a reachable owned trunk blocker, while root itself is unreachable. Keep vanilla cutting workgiver rules, ideology, cut designation, reservation against plant (not separate reservations per blocker), skill/work/yield/destruction semantics and save/load.
+
+Installed engine: JobDriver_PlantWork holds actual plant in targetB; plant cutting Init copies A to B; all plant/reservation/designation/work/yield code uses B. Its generated MakeNewToils iterator calls Toils_Goto.GotoThing(B, Touch, false), and work toil FailOnCannotTouch(B, Touch). All remaining checks should keep B. JobDriver_PlantCutDesignated supplies cut designation requirement and PlantCut destruction mode. Engine consumes PlantWorkSpeed and harvestWork, places yields and calls PlantCollected, then DestroyThing(B).
+
+Proposed minimal engine reuse: new PlantCutting WorkGiver scans realized blockers of cut-designated huge plants. It uses vanilla WorkGiver_PlantsCut.JobOnThing on their owning plant, preserving policy/CanReserve/PreventCutting/burning gates, and additionally checks plant forbidden + declaration. Returns separate JobDef with vanilla JobDriver_PlantCutDesignated, A/B=plant and C=owned blocker. A narrowly validated Harmony transpiler on the existing PlantWork iterator redirects ONLY GotoThing and FailOnCannotTouch through wrappers that select C only for this separate JobDef; every normal plant job and all remaining plant checks stay vanilla B. Wrappers verify blocker still realized, claimed by plant, same map, settings active; target changes fail safely. Shared claim owner enumeration permits cutting a nonprimary plant too. No new growth exception.
+
+Compare against writing a custom cutting driver that copies vanilla work/yield code. Is the proposed reuse a sound smallest change, and what exact conditions/negative controls are needed? If unsound, identify concrete flaw and recommend the safer smallest route. Do not judge source not supplied or call a test pass.
+
+Measured vanilla work formula IL:
+METHOD RimWorld.JobDriver_PlantWork::WorkDonePerTick TOKEN 100694585 ATTR PrivateScope, Public, Static, HideBySig
+IL_0000: ldarg.0 
+IL_0001: ldsfld RimWorld.StatDefOf::RimWorld.StatDef PlantWorkSpeed
+IL_0006: ldc.i4.1 
+IL_0007: ldc.i4.m1 
+IL_0008: call RimWorld.StatExtension::Single GetStatValue(Verse.Thing, RimWorld.StatDef, Boolean, Int32)
+IL_000D: ldc.r4 3.3
+IL_0012: ldc.r4 1
+IL_0017: ldarg.1 
+IL_0018: callvirt RimWorld.Plant::Single get_Growth()
+IL_001D: call UnityEngine.Mathf::Single Lerp(Single, Single, Single)
+IL_0022: mul 
+IL_0023: ret 

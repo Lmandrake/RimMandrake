@@ -1,0 +1,57 @@
+{
+  "O02": "N/A other-host bridge row only; actual host lease proved separately",
+  "other_required_nonpasses": [
+    {
+      "id": "O08",
+      "name": "player_log_archive",
+      "required": true,
+      "status": "UNMEASURED",
+      "reason": "not archived (--no-archive); the next launch truncates it",
+      "cost_est_s": 1,
+      "took_s": 0.02,
+      "prevents": "#26 stale log generation",
+      "evidence": {}
+    },
+    {
+      "id": "O12",
+      "name": "src_load_killers",
+      "required": true,
+      "status": "FAIL",
+      "reason": "repo load killers: {'compile_include': ['src/RimMandrake/HugeThings/Source/TrunkDoorValidationHooks.cs', 'src/RimMandrake/HugeThings/Source/PlantCutToilRewrite.cs', 'src/RimMandrake/HugeThings/Source/HugePlantCutting.cs']}",
+      "cost_est_s": 1,
+      "took_s": 1.49,
+      "prevents": "#33 alert leaf, BiomeWorker rivers",
+      "evidence": {}
+    },
+    {
+      "id": "O14",
+      "name": "effective_def_lint",
+      "required": true,
+      "status": "FAIL",
+      "reason": "no crash path, but error findings in ['compile_include'] | /mnt/c/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Config/ModsConfig.xml; cache MISS; unsupported scope: ['unsupported_patch_ops', 'donor_types']",
+      "cost_est_s": 30,
+      "took_s": 70.11,
+      "prevents": "#24 #30 #36 #37 #41 #53 #66 load killers",
+      "evidence": {
+        "failed": [
+          "compile_include"
+        ]
+      }
+    },
+    {
+      "id": "O13",
+      "name": "deploy_match",
+      "required": true,
+      "status": "FAIL",
+      "reason": "1 of 7 mods (5976 files) differ from the deployed copy: [\"LuminousPigment(2: ['Assemblies/RimMandrakeLuminousPigment.dll', 'Assemblies/RimMandrakeLuminousPigment.dll.srchash'])\"]",
+      "cost_est_s": 60,
+      "took_s": 11.59,
+      "prevents": "#31 #46 #52 #57 deploy drift",
+      "evidence": {
+        "drift": [
+          "LuminousPigment(2: ['Assemblies/RimMandrakeLuminousPigment.dll', 'Assemblies/RimMandrakeLuminousPigment.dll.srchash'])"
+        ]
+      }
+    }
+  ]
+}

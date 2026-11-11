@@ -1,0 +1,160 @@
+{
+  "utc": 1794436121.086662,
+  "worker_outcome": "INCOMPLETE",
+  "actual_validator_rc": 1,
+  "actual_live_after9_adapter_rc": 1,
+  "full_worker_outer_exit": "parent records actual after return, not self-fabricated",
+  "source_candidate": 9,
+  "code_source_commit": "863dc1064fa0d4d556bd0d79ad310d8ca8fab9a6",
+  "script_commit": "9c89d8f5e5220e60f042820535cee9494c8a3e76",
+  "artifact_commit": "77d14ad281b617982c50e319555c27b9e03b5f3d",
+  "cleanup_reference": "evidence/raw/continuation2-final-cleanup.json",
+  "judgment": "parent sole fresh judge owns separate code/evidence review, no worker verdict",
+  "files": [
+    {
+      "path": "whittle/ht-trunk-doors/STATEMENT.md",
+      "bytes": 768,
+      "sha256": "01a61392838d2df2c9293f341abf1bd0391c5015701717d72ec7ef6f035fd27e"
+    },
+    {
+      "path": "whittle/ht-trunk-doors/NOTES.md",
+      "bytes": 271,
+      "sha256": "3694242c2dd05f8325a829ae6244ff811feabec93a6a58787fd995b55b0c5035"
+    },
+    {
+      "path": "whittle/ht-trunk-doors/SOURCE_COMMITTED.json",
+      "bytes": 3328,
+      "sha256": "316c225645f9b647151f1b93e9a56b31e1faf8c59b107ce37339add0d4c4eb5a"
+    },
+    {
+      "path": "whittle/ht-trunk-doors/SOURCE_READY_INPUTS.json",
+      "bytes": 5092,
+      "sha256": "223aeba652e74b9dfa9af0add63b7ce1c69a1c245325dab5dcf6bf7775400444"
+    },
+    {
+      "path": "whittle/ht-trunk-doors/PARENT_JUDGE_OWNERSHIP.md",
+      "bytes": 541,
+      "sha256": "f28f602715170624a00db4de2126277dc506c8268e85534b56fa4a3c39e82717"
+    },
+    {
+      "path": "whittle/ht-trunk-doors/CONTINUATION_CHECKPOINT.md",
+      "bytes": 12768,
+      "sha256": "02811781675a3673e462ce6b68057ad268de2233714970e2718e86d4a11adb5a"
+    },
+    {
+      "path": "whittle/ht-trunk-doors/CONTINUATION_STATUS.md",
+      "bytes": 1421,
+      "sha256": "4aa38cd7c762b81a3943ec3e7b8d7a43023f0b79a50ce30cc6f5989cf6861cd5"
+    },
+    {
+      "path": "whittle/ht-trunk-doors/PROGRESS.md",
+      "bytes": 7747,
+      "sha256": "6b9d12ca8170ca58c7d3a51d056cce5e3b61fc32960276adf879db6812717ac8"
+    },
+    {
+      "path": "whittle/ht-trunk-doors/FINDINGS.md",
+      "bytes": 9040,
+      "sha256": "798471119f43f94b2388324f4473ae70c7b458552bd61d3180ea8ddcab48d254"
+    },
+    {
+      "path": "whittle/ht-trunk-doors/PARENT_ROUND_HANDOFF.md",
+      "bytes": 2448,
+      "sha256": "7a8d4f86da5cd047f328e48de8330c39391f72f116cc99b2d4378a8089b4cc85"
+    },
+    {
+      "path": "whittle/ht-trunk-doors/evidence/workflow-continuation2.receipt.json",
+      "bytes": 279,
+      "sha256": "cb3a16b108b240fe8a34a1ab3c5e55cc70522c0f735f4165ec5e2a3ff4bc2411"
+    },
+    {
+      "path": "whittle/ht-trunk-doors/evidence/workflow-continuation2.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "whittle/ht-trunk-doors/evidence/workflow-continuation2.stderr.txt",
+      "bytes": 362,
+      "sha256": "5a353908ab42573f9fdf7b543f637b58598b21343fc26e39a981330dce0ae998"
+    },
+    {
+      "path": "whittle/ht-trunk-doors/evidence/raw/continuation2-final-cleanup.json",
+      "bytes": 1059,
+      "sha256": "2a5900c17175c78f6c9f635c08cf7c3996faeff30dfa3584a8370df2e8e1e8d1"
+    },
+    {
+      "path": "whittle/ht-trunk-doors/evidence/raw/after9-live-adapter-exit.json",
+      "bytes": 445,
+      "sha256": "b7e8aa0f43bd934220704a26ec8930f45221008057c77b88239bf8a5cda2df00"
+    },
+    {
+      "path": "whittle/ht-trunk-doors/evidence/raw/after9-invalid-observe.rws",
+      "bytes": 8538538,
+      "sha256": "db670eb881fe278f6c7427d25c53426bc466f09621fc07da3c1960c270cef411"
+    },
+    {
+      "path": "whittle/ht-trunk-doors/evidence/raw/after9-save-parse-diagnostic.json",
+      "bytes": 3027,
+      "sha256": "b365c7ccb7c3ba316832e788037a5a46ba8e2e2e63fb906f573e2145451032fe"
+    },
+    {
+      "path": "whittle/ht-trunk-doors/evidence/raw/after9-zero-run-census.json",
+      "bytes": 789,
+      "sha256": "afc73be07c7031aa44052ee6b56a7f757f57fc7ba8ffb3e67f4863f76f7cfe3b"
+    },
+    {
+      "path": "whittle/ht-trunk-doors/evidence/raw/after9-expansion-offline-diagnostic.json",
+      "bytes": 1714,
+      "sha256": "c3429695a6bb0c06fb1208336d7357431d4c212d16ed7d2dcd7f6c7ded081458"
+    },
+    {
+      "path": "whittle/ht-trunk-doors/evidence/raw/after9-element-alignment-v2.json",
+      "bytes": 2161,
+      "sha256": "e618252950e77c082f6336e4e8fcfff6d8afc9500a2278399f5a0d2d14b761de"
+    },
+    {
+      "path": "whittle/ht-trunk-doors/evidence/raw/after9-transform-source-inspection.json",
+      "bytes": 1052,
+      "sha256": "6947024c8c63dcf7a2699a48d3ec40d7e0e521b5a46c63172b94272c0f6d3848"
+    },
+    {
+      "path": "whittle/ht-trunk-doors/evidence/raw/after9-cross-reader.receipt.json",
+      "bytes": 343,
+      "sha256": "e0bc16e4f84ae7f1e5e82f1e05fab6a29c7d7006525665e3601a0be1c0991cae"
+    },
+    {
+      "path": "whittle/ht-trunk-doors/evidence/raw/after9-post-cleanup-log.json",
+      "bytes": 218,
+      "sha256": "7a58848961e9d4f3cda3cf33f5bfe82cabc853ef1f086972ec0d36607c9884a0"
+    },
+    {
+      "path": "whittle/ht-trunk-doors/evidence/raw/after9-offline-partial-restoration.json",
+      "bytes": 2700,
+      "sha256": "98a39a1bf32438911f942802f8b4f403d03d5febee9b474d5227a2b6c31f6033"
+    },
+    {
+      "path": "whittle/ht-trunk-doors/evidence/raw/live-after9/trunk-doors.json",
+      "bytes": 1067649,
+      "sha256": "1f22d6f1dd99af32a76b832edea4e0946ee63addcbd33355ee2d76bd2ff90322"
+    },
+    {
+      "path": "whittle/ht-trunk-doors/evidence/raw/live-after9/process-receipt.json",
+      "bytes": 10264,
+      "sha256": "dca29fe166a740ffcc8859bd8d6c12e419f375029050653fbef594f4bf3941fe"
+    },
+    {
+      "path": "whittle/ht-trunk-doors/evidence/pilot10_prompt.txt",
+      "bytes": 4518,
+      "sha256": "e229f8cc203b74a090117b17e42d8ea6d49a86b1276fd394a1db4c1ddc74c896"
+    },
+    {
+      "path": "whittle/ht-trunk-doors/evidence/pilot10_raw.json",
+      "bytes": 7548,
+      "sha256": "e45f2db27fa6c0145b4753cede07ce5b3759f9260b8524ff052a7876ea87dc25"
+    },
+    {
+      "path": "whittle/ht-trunk-doors/evidence/pilot10_call.json",
+      "bytes": 1035,
+      "sha256": "374f656e503a35c3b1cb31c89bfa750873b1094790dd4e163727af2a4d7b14bc"
+    }
+  ]
+}
