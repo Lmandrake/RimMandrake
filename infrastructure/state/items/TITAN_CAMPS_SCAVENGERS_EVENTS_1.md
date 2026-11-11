@@ -19,7 +19,7 @@ full review, `Transient/hugethingsbounds2026-10-07/` (gone; never kept in git)).
   (`RM_TitanicKernel.VisitorTake`). Inspect line shows who is at the remains.
 - **Titan passage** (`IncidentDef RM_TitanPassage`, `IncidentWorker_TitanPassage`, `MapComponent_TitanPassages`): picks a
   race of adult tier T2/T3 from this map biome's explicit passage hints, else its own roster, with sea/land matching (`RM_TitanicKernel.TitanEventEligible`,
-  also the one-T3-per-map spacing law); "Footfall tremors" letter naming the edge; camera shake every 300 ticks rising
+  also the one-T3-per-map spacing law). Lineage AdultTier preserves calf eligibility; separate SpacingTier uses the largest supported stage, falling back to AdultTier for missing/malformed stages, for the existing-T3 veto (`HugeThings/TIERING.md`, delegated2026-11-11); "Footfall tremors" letter naming the edge; camera shake every 300 ticks rising
   0.3 -> 1.5 and a message every 2 h through `titanEventWarningHours` (default 2, owner 2026-11-11); then the titan spawns and walks edge to
   edge on a vanilla `LordJob_ExitMapNear` (the herd-migration shape). Re-checked at arrival; if no longer eligible the
   tremors "fade".

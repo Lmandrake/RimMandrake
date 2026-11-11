@@ -11,6 +11,7 @@ import argparse
 import copy
 import hashlib
 import json
+import math
 from pathlib import Path
 import re
 import struct
@@ -66,13 +67,20 @@ def tier(size, floors):
     return next((n for n in (3, 2, 1) if size >= floors[n-1]), 0)
 
 
-def event_eligible(adult_tier, opted_out, sea_creature, sea_map, has_list, on_list, homed_here, season_ok, t3_on_map):
+def spacing_tier(base, factors, floors, adult_tier):
+    """Declared supported stages only; malformed lists cannot relax lineage spacing."""
+    if not factors or any(f is None or not math.isfinite(f) or f <= 0 for f in factors):
+        return adult_tier
+    return tier(f32(f32(base)*f32(max(factors))), floors)
+
+
+def event_eligible(adult_tier, spacing_tier, opted_out, sea_creature, sea_map, has_list, on_list, homed_here, season_ok, t3_on_map):
     """Source-model evaluation of the selected RM_TitanicKernel predicate."""
     if opted_out or adult_tier < 2 or sea_creature != sea_map or not season_ok:
         return False
     if not (on_list if has_list else homed_here):
         return False
-    return not (adult_tier == 3 and t3_on_map)
+    return not (spacing_tier == 3 and t3_on_map)
 
 
 def main():
@@ -319,16 +327,19 @@ def main():
     max_age=curve[-1][0]*young['lifeExpectancy']
     assert min_age > young['stages'][-1]['minAge_years_xml']
     classifier=young['AdultTier_classifier']
+    spacing=spacing_tier(young['baseBodySize'],[r['factor'] for r in young['stages']],floors,classifier)
     case_inputs={
-        'Miasma_no_existing_T3_season_ok_no_override_list': [classifier,False,False,False,False,False,True,True,False],
-        'Miasma_existing_T3': [classifier,False,False,False,False,False,True,True,True],
-        'sea_map_with_same_land_homed_kind': [classifier,False,False,True,False,False,False,True,False],
-        'explicit_list_omits_kind': [classifier,False,False,False,True,False,True,True,False],
-        'biome_opt_out': [classifier,True,False,False,False,False,True,True,False],
-        'unacceptable_season': [classifier,False,False,False,False,False,True,False,False]}
+        'Miasma_no_existing_T3_season_ok_no_override_list': [classifier,spacing,False,False,False,False,False,True,True,False],
+        'Miasma_existing_T3': [classifier,spacing,False,False,False,False,False,True,True,True],
+        'sea_map_with_same_land_homed_kind': [classifier,spacing,False,False,True,False,False,False,True,False],
+        'explicit_list_omits_kind': [classifier,spacing,False,False,False,True,False,True,True,False],
+        'biome_opt_out': [classifier,spacing,True,False,False,False,False,True,True,False],
+        'unacceptable_season': [classifier,spacing,False,False,False,False,False,True,False,False]}
     pool_cases={name:{'predicate_arguments':args,'eligible':event_eligible(*args)} for name,args in case_inputs.items()}
     assert pool_cases['Miasma_no_existing_T3_season_ok_no_override_list']['eligible']
-    assert not any(row['eligible'] for name,row in pool_cases.items() if name!='Miasma_no_existing_T3_season_ok_no_override_list')
+    assert pool_cases['Miasma_existing_T3']['eligible']
+    assert not any(row['eligible'] for name,row in pool_cases.items() if name not in
+                   ('Miasma_no_existing_T3_season_ok_no_override_list','Miasma_existing_T3'))
     followups={'initial_age_cases':ages,
         'unconstrained_spawn_age_source_model':{
             'DefaultAgeGenerationCurve_IL_points':curve,
@@ -337,13 +348,14 @@ def main():
             'conditions':'Selected unpatched default age curve, no fixed/newborn/range override; wild spawner uses GeneratePawn(kind), stranding and creche requests do not force biological age. This is conditional source support, not an observed spawn census or realized age distribution.'},
         'consumer_cases':{
             'classifier_AdultTier':young['AdultTier_classifier'],
+            'classifier_SpacingTier':spacing,
             'passage_predicate_cases':pool_cases,
             'DefQualifies_default_wake_attachment':young['baseBodySize']>=floors[0],
             'scavenger_eligible':young['predator']=='true' and classifier==0,
             'scavenger_exclusion_reason':'predator=false independently of the AdultTier test',
             'LargePawns_explicit_override_row':bool(young['force_extensions']),
             'LargePawns_reason':'PushOverrideRows only adds rows for explicit forceEnabled; none in selected race/parent XML. No claim about external Large Pawns runtime footprint.',
-            'scope':'Conditional source evaluation of TitanEventEligible; no actual incident fired. Replacing classifier factor with actual maximum would still give T2 eligible on land, but would change the T3-on-map veto.'}}
+            'scope':'Conditional current source evaluation of TitanEventEligible: lineage AdultTier preserves calf eligibility; supported-stage SpacingTier controls the existing-T3 veto. No actual incident fired.'}}
     (out/'broaden-followups.json').write_text(json.dumps(followups,indent=2)+'\n')
     ET.indent(selections)
     ET.ElementTree(selections).write(out/'selected-source.xml',encoding='utf-8',xml_declaration=True)
