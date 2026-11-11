@@ -1,0 +1,2 @@
+HugeThingsTestRaces now includes a deliberately synthetic plant fixture as well as elephant races. The old test treated every ThingDef as a race and failed its exact-five-races assertion. Filter the resolved ThingDefs by effective race/baseBodySize, retaining exact expected race identities and all five body-size/tier controls. A missing required race still fails. Synthetic contacts are test data, never measured production art or shipping content.
+home: src/RimMandrake/Utils/selftest_hugethings_test_races.py

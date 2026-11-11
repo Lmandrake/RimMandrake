@@ -1,0 +1,32 @@
+{
+ "when": "2026-11-11T04:47:20Z",
+ "mode": "offline",
+ "tier": "quicktest",
+ "modset": "mods__mandrake_rm_flowworks__mandrake_rm_hugethings__mandrake_rm_hugethingstestraces__mandrake_rm_patches",
+ "purpose": "test",
+ "verdict": "GREEN",
+ "rows": [
+  {
+   "id": "O14",
+   "name": "effective_def_lint",
+   "required": true,
+   "status": "PASS",
+   "reason": "clean | /mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Config/ModsConfig.xml; cache MISS; unsupported scope: ['donor_types']",
+   "cost_est_s": 30,
+   "took_s": 35.24,
+   "prevents": "#24 #30 #36 #37 #41 #53 #66 load killers",
+   "evidence": {}
+  },
+  {
+   "id": "O13",
+   "name": "deploy_match",
+   "required": true,
+   "status": "PASS",
+   "reason": "5 mods, 1211 files: deployed == repo byte for byte",
+   "cost_est_s": 60,
+   "took_s": 8.67,
+   "prevents": "#31 #46 #52 #57 deploy drift",
+   "evidence": {}
+  }
+ ]
+}

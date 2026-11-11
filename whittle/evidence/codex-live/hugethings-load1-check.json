@@ -1,0 +1,25 @@
+{
+ "when": "2026-11-11T04:43:37Z",
+ "mode": "live",
+ "tier": "quicktest",
+ "modset": "mods__mandrake_rm_flowworks__mandrake_rm_hugethings__mandrake_rm_hugethingstestraces__mandrake_rm_patches",
+ "purpose": "test",
+ "verdict": "GREEN",
+ "rows": [
+  {
+   "id": "L03",
+   "name": "live_first_exception",
+   "required": true,
+   "status": "PASS",
+   "reason": "no missing types; 6 Config errors; first exception: Config error in RM_TestTitanT2: ends with a numerical digit, which is not allowed on ThingDefs.",
+   "cost_est_s": 1,
+   "took_s": 0.01,
+   "prevents": "#57 missing types",
+   "evidence": {
+    "first_exception": "Config error in RM_TestTitanT2: ends with a numerical digit, which is not allowed on ThingDefs.",
+    "config_errors": 6,
+    "missing_types": []
+   }
+  }
+ ]
+}

@@ -1,0 +1,4 @@
+preflight OFFLINE tier=quicktest purpose=test seat=BENCH 2026-11-11T04:46:36Z
+PASS       O14  effective_def_lint       req   35.2s  clean | /mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Config/ModsConfig.xml; cache MISS; unsupported scope: ['donor_types']
+PASS       O13  deploy_match             req    8.7s  5 mods, 1211 files: deployed == repo byte for byte
+VERDICT GREEN

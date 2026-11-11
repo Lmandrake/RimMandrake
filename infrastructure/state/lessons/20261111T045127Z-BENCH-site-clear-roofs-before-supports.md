@@ -1,0 +1,2 @@
+A destroy_batch clear and verified Soil replacement do not clear roofs. The HugeThings sparse-plant workload staged 99/100 plants after its preceding 120-tick closure probe: clearing natural rock supports had left roofs, which dropped CollapsedRocks at 154,162 during those ticks. Clear/read back None roofs before removing supports in every staged rectangle, including the corpse site. Assert every subject row before timing or judging the mod; this was SITE/HARNESS, not a footprint defect, and snapshot restoration passed.
+home: src/RimMandrake/rimflow/roles/runner_options.md

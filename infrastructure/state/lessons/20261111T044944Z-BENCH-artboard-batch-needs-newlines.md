@@ -1,0 +1,2 @@
+jawa/artboard_stage is newline-separated, with pipe-separated fields. Semicolon-separated batches silently collapse into one operation because repeated keys overwrite each other; success:true is not the requested batch size. The HugeThings 100-plant proof caught opsCount=1 and refused the workload, then restored its snapshot. Join staged rows with newlines and assert exact returned row count plus every row ok. The ordinary build_batch/spawn_batch semicolon syntax does not carry across tools.
+home: src/RimMandrake/rimflow/roles/runner_options.md

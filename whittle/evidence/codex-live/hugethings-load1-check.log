@@ -1,0 +1,3 @@
+preflight LIVE tier=quicktest purpose=test seat=BENCH 2026-11-11T04:43:37Z
+PASS       L03  live_first_exception     req    0.0s  no missing types; 6 Config errors; first exception: Config error in RM_TestTitanT2: ends with a numerical digit, which is not allowed on ThingDefs.
+VERDICT GREEN

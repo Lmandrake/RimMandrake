@@ -52,3 +52,11 @@ reload and upright ingestion. Both raw receipts PASS and the fresh independent
 judge finds every frozen bullet true: would show yes. See
 `whittle/CODEX_LIVE_2026-11-10.md` for receipts, repairs and scope limits.
 This establishes isolated 12-mod/all-DLC operation, not full-list integration.
+
+HugeThings follow-up also PASS: distant corridor closure refused, 100 sparse
+plants/200 contacts converge over 13 ticks under production work/owner caps,
+and blocked T3 conversion survives occupied reload then retries safely;
+ordinary butcher bypass and disabled-feature control both pass. Final raw receipt
+`whittle/evidence/codex-live/hugethings-p1-3.json`. No cap exhaustion observed live;
+no dense-Rot, Large Pawns or cross-map live performance claim. The review item
+remains open for P2/design work. All snapshot/settings restoration passed.

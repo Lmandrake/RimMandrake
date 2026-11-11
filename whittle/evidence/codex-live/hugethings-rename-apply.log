@@ -1,0 +1,18 @@
+repo : /home/mandrake/rm/scratch/BENCH/codex-live/src
+game : /mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods
+mode : APPLY
+holds: 26 pattern(s) from src/DEPLOY_HOLD.txt
+skip : dirs .git .vs Source __pycache__ _artsrc art_candidates art_source bin obj · exts .csproj .md .py .pyc .sln .user
+
+def guard: 103 mod(s) in the resulting game copy (mandrake.*), 1 target(s): clean
+  (out of scope: 1 orphan game folder(s) with no repo source, not on the owner's full list -- never load: RM_Showing_SiltTrapRedraws)
+  (1 PRE-EXISTING conflict(s) not touching this plan's mods; not blocking)
+    . ALIAS-REPO ThingDef guy762_crystalitem_stygium -> RSW_Stygium: the repo itself still defines guy762_crystalitem_stygium in Armoury, so the alias (in RimMandrake.Biomes/Biomes/_Kits/EnvironmentalHazards/Defs/Misc/RM_MaterialMerges_Aliases.xml) is inert -- a repo question, not a deploy hazard
+
+HugeThingsTestRaces mandrake.rm.hugethingstestraces
+    ~  About/About.xml
+    ~  Defs/PawnKindDefs/RM_TestTitanKinds.xml
+    ~  Defs/ThingDefs_Races/RM_TestTitans.xml
+    -> VERIFIED in sync
+
+Deployed 3 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.

@@ -1,0 +1,54 @@
+contained in rm-harness.slice (max 24G), 6 workers
+[1/1] FAIL         12.3s  src/RimMandrake/Utils/selftest_hugethings_test_races.py
+evidence: 0 eligible, 0 SKIPPED as unchanged, 0 PASS recorded, 0 PASS not recordable — runner 65716eff3278c68e
+cache: 0 CACHED PASS, 0 declared test(s) ran
+known results: 0/1 answered from the ledger (selftests.cache_hit_share 0.000), 0s not spent; 1 ran, 0 recorded, 0 checked against a stored PASS, 0 known red
+  ran (1): no record
+  not recordable (1): changed during the run: src/RimMandrake/Utils/selftest_hugethings_test_races.py
+FAIL         12.3s  src/RimMandrake/Utils/selftest_hugethings_test_races.py
+             rc 1
+             PASS judge_footprint: T3 at 3 fails
+             PASS judge_footprint: all 1x1 (Large Pawns inert) fails
+             PASS judge_footprint: Large Pawns' own 2.5/4.5/10 ladder fails
+             PASS judge_footprint: a NaN ladder fails
+             PASS judge_footprint: an unread edge fails
+             PASS wrapper verdict: six PASS -> 0
+             PASS wrapper strict fails but all rows classified
+             PASS events: all expected rows pass
+             PASS events: missing work cannot pass
+             PASS events: planted MOD failure cannot pass
+             PASS wrapper verdict: the runner's five alone -> 1
+             PASS wrapper verdict: footprint UNMEASURED SITE (no Large Pawns) -> 1
+             PASS wrapper verdict: a runner row missing -> 1
+             PASS live-mods names HugeThings and HugeThingsTestRaces
+             PASS live-mods names neku.largepawns as a packageId (gen11: without it the footprint row read UNMEASURED SITE 3 builds running)
+             PASS live-mods folder HugeThings has a packageId
+             PASS live-mods folder HugeThingsTestRaces has a packageId
+             PASS proofs file names neku.largepawns for the stager
+             PASS A2 proof line still parses with the live-mods header
+             PASS clear_rect centres a 9x9 on the cell
+             PASS failed clear -> UNMEASURED SITE, no kill
+             PASS both kill cells cleared before the first kill
+             PASS cleared, 0->1->1 -> PASS
+             PASS cleared, 0->0->0 -> FAIL MOD
+             PASS NO_VERDICT is neither PASS 0 nor FAIL 1
+             UNMEASURED: the bridge could not be reached, no verdict (exit 2): cannot reach the bridge from WSL (selftest probe)
+             five-row runner exit 2: no verdict for A2
+             UNMEASURED: the bridge could not be reached, no verdict (exit 2): cannot reach the bridge from WSL (selftest probe)
+             PASS connect refused: runner and wrapper both return NO_VERDICT
+             PASS connect refused: no result JSON written
+             UNMEASURED: the bridge could not be reached, no verdict (exit 2): no log
+             five-row runner exit 2: no verdict for A2
+             UNMEASURED: the bridge could not be reached, no verdict (exit 2): no log
+             PASS no bridge log: runner and wrapper both return NO_VERDICT
+             PASS no bridge log: no result JSON written
+             five-row runner exit 2: no verdict for A2
+             PASS R6 ages with allowBackwards=True
+             PASS R6 calls OccupiedRect by bare thingIDNumber
+             PASS runner no-verdict: wrapper returns NO_VERDICT without connecting
+             103/104 PASS
+             FAIL rimbridge-companion tool list documents the test races
+
+PASS 0/1  FAIL 1/1  UNMEASURED 0/1  CRASH 0/1  SKIPPED 0/1  (wall 12.4s) — contained in rm-harness.slice (max 24G), 6 workers
+FAIL (1/1): src/RimMandrake/Utils/selftest_hugethings_test_races.py
+RESULT: RED (green = FAIL 0 and CRASH 0)

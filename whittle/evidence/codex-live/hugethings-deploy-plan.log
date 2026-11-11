@@ -1,0 +1,19 @@
+repo : /home/mandrake/rm/scratch/BENCH/codex-live/src
+game : /mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods
+mode : plan only (use --apply to write)
+holds: 26 pattern(s) from src/DEPLOY_HOLD.txt
+skip : dirs .git .vs Source __pycache__ _artsrc art_candidates art_source bin obj · exts .csproj .md .py .pyc .sln .user
+
+def guard: 103 mod(s) in the resulting game copy (mandrake.*), 1 target(s): clean
+  (out of scope: 1 orphan game folder(s) with no repo source, not on the owner's full list -- never load: RM_Showing_SiltTrapRedraws)
+  (1 PRE-EXISTING conflict(s) not touching this plan's mods; not blocking)
+    . ALIAS-REPO ThingDef guy762_crystalitem_stygium -> RSW_Stygium: the repo itself still defines guy762_crystalitem_stygium in Armoury, so the alias (in RimMandrake.Biomes/Biomes/_Kits/EnvironmentalHazards/Defs/Misc/RM_MaterialMerges_Aliases.xml) is inert -- a repo question, not a deploy hazard
+
+HugeThings       mandrake.rm.hugethings     not enabled in ModsConfig · 2 file(s) HELD
+    H  northstar/titan_events_live_20261021T0250.json   (repo-only; not deployed)
+           held: live scripts + result JSONs (titan_events_live.py, walls_slots_live.py): repo tools, never game content
+    H  northstar/titan_events_live_20261021T0950_run1.json   (repo-only; not deployed)
+           held: live scripts + result JSONs (titan_events_live.py, walls_slots_live.py): repo tools, never game content
+    in sync (15 files, 2 held)
+
+Everything in sync.
