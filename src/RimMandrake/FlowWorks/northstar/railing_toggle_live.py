@@ -43,8 +43,8 @@ def run(B,T,saves,res,expected_sha):
         r=call('jawa/designate_batch',action='query',limit=1000)
         require(r.get('truncated') is False and r.get('total')==len(r['designations']),'incomplete designations')
         return r
-    def rail_marks(r):return sorted((d['x'],d['z']) for d in r['designations'] if d['def']=='Deconstruct' and d['thing']==RAIL and 30<=d['x']<54 and 30<=d['z']<48)
-    def controls(r):return sorted((d['def'],d['x'],d['z'],d['thing'] or '') for d in r['designations'] if d['def']=='Plan' or (d['def']=='Deconstruct' and d['thing']=='Wall'))
+    def rail_marks(r):return sorted((d['x'],d['z']) for d in r['designations'] if d['def']=='Deconstruct' and d.get('thing')==RAIL and 30<=d['x']<54 and 30<=d['z']<48)
+    def controls(r):return sorted((d['def'],d['x'],d['z'],d.get('thing') or '') for d in r['designations'] if d['def']=='Plan' or (d['def']=='Deconstruct' and d.get('thing')=='Wall'))
     def toggle(on):
         text=sc(SUSP,'ProofRails','38,36;'+('on' if on else 'off')+';player')
         span=sc(SUSP,'ProofSpan','38,36')
@@ -84,6 +84,10 @@ def run(B,T,saves,res,expected_sha):
         expected=sorted((t['x'],t['z']) for t in baseline)
         require(rail_marks(off)==expected,'off must mark each actual railing')
         require(rails()==baseline,'off changed railing identities/material/HP')
+        # Capture the actual visible off designation marks before enabling again; game time remains paused.
+        call('jawa/clear_ui');call('rimworld/frame_cell_rect',x=34,z=33,width=17,height=10,paddingCells=1)
+        time.sleep(1)
+        res['off_screenshot']=call('jawa/take_screenshot',fileName='WHITTLE_RailingToggle_Off_'+time.strftime('%Y%m%dT%H%M%S'))
         res['on']=toggle(True);on=designations();res['designations_on']=on
         require(not rail_marks(on),'on retained Deconstruct')
         require(rails()==baseline,'on replaced or removed railings')
