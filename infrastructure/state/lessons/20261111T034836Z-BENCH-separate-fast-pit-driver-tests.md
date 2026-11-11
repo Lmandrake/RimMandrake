@@ -1,0 +1,2 @@
+The combined hole-prison selftest restages/builds C# even for Python-only transport fixes (observed wrapper runs 133.9, 162.4, 190.6 and 200.3 seconds). Keep its production PitRoom_* checks, but expose the same strict driver fault suite through selftest_hole_prison_driver.py for targeted Python repairs. This avoids repeated unrelated build waits without dropping the combined gate for C# changes. Run both paths through run_selftests.py --only with explicit scope.
+home: src/RimMandrake/FlowWorks/northstar/selftest_hole_prison_driver.py

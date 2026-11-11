@@ -21,6 +21,8 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[3]
 for p in (ROOT / 'src/RimMandrake/Utils', ROOT / 'src/RimMandrake/Utils/modcheck'):
     sys.path.insert(0, str(p))
+import clockgate as CG
+
 PROOF = 'RimMandrake.FlowWorks.RM_PitPrisonProof'
 ROOMS = 'RimMandrake.FlowWorks.RM_PitRooms'
 SETTINGS = 'RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings'
@@ -46,6 +48,10 @@ def scene_hole_prison(B, snapshot, reload_snapshot, receipt, *, relative=True, a
     The day uses real ticks, never time_set_ticks. Finally runs even on an assertion.
     """
     prior = {}
+    fixtures = []
+    fixture_baseline = set(CG.FIXTURE_IDS)
+    stops_begin = len(CG.BENIGN_STOPS)
+    receipt['fixture_declarations'] = fixtures
     calls = receipt.setdefault('calls', [])
 
     def call(tool, allow_refusal=False, **kw):
@@ -88,6 +94,12 @@ def scene_hole_prison(B, snapshot, reload_snapshot, receipt, *, relative=True, a
                  xenotype='Baseliner')
         ids = [p['id'] for p in r.get('pawns', [])]
         require(len(ids) == 1, 'spawn failed: %s' % r)
+        if faction == 'hostile':
+            # Only the arrival of these exact staged subjects is expected.
+            # Injury, death, a real raid and every other governor stop remain active.
+            number = CG.declare_fixture(ids[0])
+            if number not in fixture_baseline:
+                fixtures.append(ids[0])
         return ids[0]
 
     def care(worker, pid, mode, start=False):
@@ -318,6 +330,9 @@ def scene_hole_prison(B, snapshot, reload_snapshot, receipt, *, relative=True, a
             sc('RebuildAllMaps', typ=ROOMS)
         except Exception as e:
             errors.append(repr(e))
+        receipt['governor_resumes'] = list(CG.BENIGN_STOPS[stops_begin:])
+        for pid in fixtures:
+            CG.withdraw_fixture(pid)
         receipt['restore']['status'] = 'FAIL' if errors else 'PASS'
         require(not errors, 'restore failed: '+str(errors))
 

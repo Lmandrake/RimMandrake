@@ -17,6 +17,7 @@ class Bridge:
         self.settings = {'superdeepRoomsEnabled': True, 'pitRelativeClimbEnabled': True}
         self.original = dict(self.settings)
         self.pawns = {}
+        self.hostile_ids = set()
         self.tick = 100
         self.beds = []
         self.depth = 0
@@ -32,11 +33,13 @@ class Bridge:
         self.loads += 1
         self.baseline = True
         self.pawns.clear()
+        self.hostile_ids.clear()
         self.beds.clear()
         if self.fault == 'bad_snapshot' and self.loads > 1:
             self.baseline = False
 
     def ticks(self, n):
+        assert all(C.CG._thing_number(pid) in C.CG.FIXTURE_IDS for pid in self.hostile_ids), 'undeclared hostile fixture'
         self.tick += n
         for p in self.pawns.values():
             if p['prisoner'] == 'True' and self.fault == 'escape' and n == 2500:
@@ -80,6 +83,7 @@ class Bridge:
             return {'success':True,'depth':self.depth,'fill':1 if self.fault == 'wet' else 0,'isExcavated':True}
         if tool == 'jawa/spawn_pawn':
             pid = 'Pawn'+str(len(self.pawns))
+            if kw['faction'] == 'hostile': self.hostile_ids.add(pid)
             self.pawns[pid] = {'id':pid,'x':kw['x'],'z':kw['z'],'downed':'False','dead':'False',
                               'prisoner':'False','kept':'False','food':'0.1','rest':'0.8','inBed':'False'}
             return {'success':True,'pawns':[{'id':pid}]}
@@ -113,6 +117,7 @@ class Bridge:
 
 def check(fault=None, abort=False, occupied=False):
     B = Bridge(fault)
+    fixture_baseline = set(C.CG.FIXTURE_IDS)
     rec = {}
     failed = False
     try:
@@ -133,17 +138,28 @@ def check(fault=None, abort=False, occupied=False):
     assert B.snapshot_calls == 1 and B.loads == 2, (fault, B.loads)
     assert all(B.settings[k] == v for k,v in B.original.items()), (fault, B.settings)
     assert not B.pawns, (fault, B.pawns)
+    assert C.CG.FIXTURE_IDS == fixture_baseline, 'fixture declaration leaked across runs'
     assert rec['restore']['status'] == ('FAIL' if fault == 'bad_snapshot' else 'PASS')
     print('ok', fault or ('injected_abort' if abort else 'complete_scene'))
 
-for f in (None, 'no_capture', 'off_captures', 'remote_warp', 'no_feed', 'escape', 'wet', 'bad_snapshot', 'incapable_worker', 'no_order', 'off_unattempted', 'no_supply',
-          'first_incapable', 'off_refuses'):
-    check(f)
-check(abort=True)
-check(occupied=True)
-check('lost_occupied', occupied=True)
-# Also compile/run the actual Verse-free production logic, only these three cases.
-root = HERE.parents[3]
-subprocess.run([sys.executable, str(root/'src/RimMandrake/Utils/selftest_flowworks_stock.py'),
-                '--only', 'PitRoom_*'], check=True)
-print('PASS: fault controls, abort cleanup and selected C# pit-room cases')
+def run_driver_checks():
+    for f in (None, 'no_capture', 'off_captures', 'remote_warp', 'no_feed', 'escape', 'wet', 'bad_snapshot', 'incapable_worker', 'no_order', 'off_unattempted', 'no_supply',
+              'first_incapable', 'off_refuses'):
+        check(f)
+    check(abort=True)
+    check(occupied=True)
+    check('lost_occupied', occupied=True)
+    C.CG.declare_fixture('Pawn0')
+    try:
+        check()  # a pre-existing declaration with the same id belongs to its caller
+    finally:
+        C.CG.withdraw_fixture('Pawn0')
+
+
+if __name__ == "__main__":
+    run_driver_checks()
+    # Also compile/run the actual Verse-free production logic, only these three cases.
+    root = HERE.parents[3]
+    subprocess.run([sys.executable, str(root/'src/RimMandrake/Utils/selftest_flowworks_stock.py'),
+                    '--only', 'PitRoom_*'], check=True)
+    print('PASS: fault controls, abort cleanup and selected C# pit-room cases')
