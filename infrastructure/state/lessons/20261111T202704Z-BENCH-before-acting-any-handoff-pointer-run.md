@@ -1,0 +1,1 @@
+Before acting on any handoff pointer, run rimflow show on its item id: a handoff is a snapshot and its pointers can be closed already (2026-11-11 a stale handoff restarted three owner-closed Artisan loops).

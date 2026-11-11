@@ -516,6 +516,14 @@ def pointer_states(evs):
     return last
 
 
+def pointer_ids(text):
+    """Item ids a handoff points at: `- `ID`` (backticked) or `- ID -- state` / `- ID — state` (the template's own
+    form, `- ITEM_ID -- state; NEXT:`). The backtick-only reader missed five of six pointers on 2026-11-11."""
+    ids = re.findall(r"^- `([A-Z][A-Z0-9_]+)`", text, re.M)
+    ids += re.findall(r"^- ([A-Z][A-Z0-9_]+) (?:--|\u2014|\u2013) ", text, re.M)
+    return list(dict.fromkeys(ids))
+
+
 def wake():
     """The READ side of the ritual: print this seat's latest committed handoff
     with each pointer's CURRENT ledger state. Consumption audit 2026-09-17:
@@ -532,7 +540,7 @@ def wake():
         return 0
     text = io.open(os.path.join(HANDOFFS, prev_name), encoding="utf-8").read()
     print(_wake_view(text, os.path.join(HANDOFFS, prev_name)))
-    ids = re.findall(r"^- `([A-Z][A-Z0-9_]+)`", text, re.M)
+    ids = pointer_ids(text)
     if ids:
         last = pointer_states(events())
         print("=" * 66)
@@ -541,7 +549,10 @@ def wake():
         open_ids = []
         for i in dict.fromkeys(ids):
             st = last.get(i, "not in ledger")
-            print("  %-48s %s" % (i, st))
+            if st in ("close", "drop", "supersede"):
+                print("  %-48s %s  *** CLOSED -- do NOT act on this pointer ***" % (i, st.upper()))
+            else:
+                print("  %-48s %s" % (i, st))
             if st in ("file", "spawn", "start", "block", "not in ledger"):
                 open_ids.append(i)
         print("open pointers: %d — pick each up, close it, or say in your first"

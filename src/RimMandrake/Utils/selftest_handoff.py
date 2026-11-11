@@ -260,4 +260,8 @@ check(_s.get("A_SPAWNED_LIVE_ITEM") == "spawn", "a live spawn's id is read from 
 check(_s.get("A_SPAWNED_THEN_CLOSED") == "close", "a later close wins, and a note does not change the state")
 
 print("\n%s: %d failure(s)" % (os.path.basename(__file__), len(fails)))
+print("handoff: pointer_ids reads the template's `- ID -- state; NEXT:` form")
+_ptxt = "- `A_ONE_1` -- x; NEXT: y\n- B_TWO_2 -- s; NEXT: t\n- C_THREE_3 \u2014 s; NEXT: t\n- not an id -- z\n"
+check(handoff.pointer_ids(_ptxt) == ["A_ONE_1", "B_TWO_2", "C_THREE_3"], "backtick, double hyphen and em dash pointers all found")
+
 sys.exit(1 if fails else 0)
