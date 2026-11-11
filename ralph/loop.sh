@@ -3,7 +3,7 @@
 # It stops at ralph/DONE.md, at the token review point, on the file STOP in the log folder, or on 2 passes with no commit.
 # Loops ahead in the queue have the one game first: a pass that needs it creates ralph/NEED_GAME and retires, and this shell waits, no model running.
 cd "$(dirname "$0")/.." || exit 1
-export PATH="$PATH:/mnt/c/Windows/System32:/mnt/c/Windows/System32/WindowsPowerShell/v1.0:/mnt/c/Users/Mandrake/AppData/Local/Microsoft/WindowsApps"
+export PATH="$HOME/.local/bin:$HOME/bin:$PATH:/mnt/c/Windows/System32:/mnt/c/Windows/System32/WindowsPowerShell/v1.0:/mnt/c/Users/Mandrake/AppData/Local/Microsoft/WindowsApps"
 export RIMFLOW_SEAT=BENCH
 LOGS=/mnt/d/ClaudeWork/rimmandrake/ralph_pyrelands
 EVENTS=$LOGS/events.log
