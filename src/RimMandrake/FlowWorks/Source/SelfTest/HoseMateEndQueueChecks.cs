@@ -328,7 +328,23 @@ namespace RimMandrake.FlowWorks.SelfTest
                 // the climb generation folds; every other source still moves ClimbGenerationNoSwim
                 RiverSwitchFlipChecks.Has(RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs"), @"climbGeneration\+\+;\s*if \(source != GenSwim\)\s*\{\s*climbGenerationNoSwim\+\+;", "every non-swim climb move moves the generation World() folds");
                 RiverSwitchFlipChecks.Has(RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs"), @"swimGenOwed = true;\s*map\.GetComponent<Hose\.RM_MapComponent_Hoses>\(\)\?\.SwimCellsPublished\(batch\);", "a swim publish hands its squares to the hose world");
-                RiverSwitchFlipChecks.Has(s, @"if \(!MarkDirty\(i % w, i / w, i % w, i / w\)\) \{ MapChanged\(\); return; \}", "SwimCellsPublished lists each square, a whole rebuild past capacity");
+                // The dirty list now holds the whole map (HoseWorldPatchChecks proves >16,384 cells and batched
+                // convergence to Full). Swim must invalidate corridor versions even before a snapshot exists.
+                Func<string, bool> publishes = src =>
+                {
+                    string body = DrawbridgeChecks.Body(src, "internal void SwimCellsPublished(");
+                    return body.Contains("HoseCorridorVersions cv = Versions(); for (int k = 0; k < cells.Count; k++) cv.Touch(cells[k] % w, cells[k] / w); if (world == null || worldVersion != mapVersion) return;")
+                        && body.Contains("for (int k = 0; k < cells.Count; k++) { int i = cells[k]; MarkDirty(i % w, i / w, i % w, i / w); }");
+                };
+                Assert(publishes(s), "every swim cell touches its corridor and marks a current snapshot dirty");
+                foreach (string part in new[] { "cv.Touch(cells[k] % w, cells[k] / w);", "MarkDirty(i % w, i / w, i % w, i / w);" })
+                    Assert(!publishes(s.Replace(part, "")), "can-fail: missing swim invalidation caught: " + part);
+                string mark = DrawbridgeChecks.Body(s, "private void MarkDirty(");
+                Assert(mark.Contains("dirty.Ensure(world.Width, world.Height); dirty.MarkRect(x0, z0, x1, z1);"),
+                    "MarkDirty uses the map-sized production dirty list");
+                string patch = DrawbridgeChecks.Body(s, "private void PatchWorld(");
+                Assert(patch.Contains("HoseWorldPatch.Patch(world, dirty, liveRule, maxCells);") && patch.Contains("worldSerial++;"),
+                    "patches use the production convergence-tested rule and invalidate pooled lay copies");
                 RiverSwitchFlipChecks.Has(RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs"), @"bedGrid\[i\] = v;\s*BumpClimbGeneration\(GenBedSet\);", "SetBed (a bed with no path-cost event) moves the climb generation World() reads");
                 RiverSwitchFlipChecks.Has(RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Superdeep", "RM_PocketGrid.cs")), @"settingsSalt\+\+;\s*RM_CliffMask\.settingsSalt\+\+;", "a climb-settings change moves the salt World() reads");
                 RiverSwitchFlipChecks.Has(RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Superdeep", "RM_LadderUtility.cs")), @"raised = value;\s*RM_LadderUtility\.StateVersion\+\+;", "SetRaised bumps the ladder counter World() reads");

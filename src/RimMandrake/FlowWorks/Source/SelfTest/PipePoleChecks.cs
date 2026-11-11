@@ -46,8 +46,9 @@ namespace RimMandrake.FlowWorks.SelfTest
             return float.Parse(m.Groups[1].Value, System.Globalization.CultureInfo.InvariantCulture);
         }
 
-        /// <summary>SpanCurve's height at fraction t (GSS AerialMath: lerp(A, B, t) - sag x |AB| x 4t(1-t)).</summary>
-        private static double CurveZ(double len, float sag, double t) => -RM_PipePoleMath.SagDepth(len, sag) * 4 * t * (1 - t);
+        /// <summary>SpanCurve's offset from its chord, using GSS's flat-ended sin-squared droop.</summary>
+        private static double CurveZ(double len, float sag, double t) =>
+            t <= 0 || t >= 1 ? 0 : -RM_PipePoleMath.SagDepth(len, sag) * Math.Pow(Math.Sin(Math.PI * t), 2);
 
         public static void Run(Action<string, Action> Case)
         {
@@ -133,7 +134,35 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_PipePoleMath.SagDefault <= 0.06f / 3f + 1e-6f, "owner's widths card: about a third of the wire's 6%");
                 Assert(RM_PipePoleMath.ClampSag(0.5f) == RM_PipePoleMath.SagMax && RM_PipePoleMath.ClampSag(-1f) == 0f && RM_PipePoleMath.ClampSag(float.NaN) == 0f, "sag clamped to the slider");
                 string math = GssSrc("Aerial", "AerialMath.cs");
-                Assert(math.Contains("p.Z -= sag * 4 * t * (1 - t);") && math.Contains("double sag = Math.Max(0, sagFactor) * len;"), "GSS's curve is the formula above");
+                Func<string, bool> curveWired = src =>
+                {
+                    string curve = DrawbridgeChecks.Body(src, "public static List<P2> SpanCurve(");
+                    string droop = DrawbridgeChecks.Body(src, "public static double Droop(");
+                    string samples = DrawbridgeChecks.Body(src, "public static List<double> SpanTs(");
+                    return curve.Contains("List<double> ts = SpanTs(len, step);")
+                        && src.Contains("public static readonly double[] SpanEndSamples = { 0.08, 0.16, 0.3 };")
+                        && samples.Contains("foreach (double d in SpanEndSamples) if (d < len / 4) { ts.Add(d / len); ts.Add(1 - d / len); }")
+                        && samples.Contains("ts.Sort();")
+                        && curve.Contains("double sag = Math.Max(0, sagFactor) * len;")
+                        && curve.Contains("P2 p = P2.Lerp(a, b, t); p.Z -= sag * Droop(t); pts.Add(p);")
+                        && curve.Contains("pts[0] = a; pts[pts.Count - 1] = b;")
+                        && droop == "public static double Droop(double t) { if (t <= 0 || t >= 1) return 0; double s = Math.Sin(Math.PI * t); return s * s; }";
+                };
+                Assert(curveWired(math), "GSS SpanCurve uses the length-scaled, flat-ended sin-squared curve checked here");
+                foreach (string part in new[] { "sag * Droop(t)", "Math.Max(0, sagFactor) * len", "return s * s;", "pts[0] = a;",
+                    "SpanTs(len, step)", "{ 0.08, 0.16, 0.3 }", "if (d < len / 4)" })
+                    Assert(!curveWired(math.Replace(part, "0")), "can-fail: curve regression caught: " + part);
+                Assert(!curveWired(math.Replace("return s * s;", "return 4 * t * (1 - t);")),
+                    "can-fail: the old kinked parabola is caught despite identical ends and midpoint");
+                for (int i = 0; i <= 100; i++)
+                {
+                    double t = i / 100.0, z = CurveZ(12, RM_PipePoleMath.SagMax, t);
+                    Assert(z <= 0 && z >= -0.720001 && Math.Abs(z - CurveZ(12, RM_PipePoleMath.SagMax, 1 - t)) < 1e-9,
+                        "droop is symmetric and bounded at " + t);
+                }
+                double endSlope = Math.Abs(CurveZ(12, RM_PipePoleMath.SagMax, 0.0001) / (12 * 0.0001));
+                Assert(endSlope < 0.0001 && 4 * RM_PipePoleMath.SagMax > 0.2,
+                    "flat insulator tangent discriminates against the old parabola's 0.24 end slope");
                 string mesh = GssSrc("Aerial", "RM_MapComponent_Aerial.cs");
                 Assert(mesh.Contains("float sagK = AerialLineProfiles.SagFor(kind);") && mesh.Contains("AerialMath.SpanCurve(s.A, s.B, sagK * s.SagMul)")
                        && mesh.Contains("AerialKinds.StrandCap(kind, AerialSettings.maxStrands)") && mesh.Contains("AerialKinds.Drips(kind, AerialSettings.dripLoops)"),

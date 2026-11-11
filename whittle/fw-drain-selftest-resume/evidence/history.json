@@ -1,0 +1,34 @@
+{
+  "weir": {
+    "path": "src/RimMandrake/FlowWorks/Source/Rivers/RM_Weir.cs",
+    "pattern": "bool animate =",
+    "history": "4a0f8616b724ae324ff45c336ac324b4ce92a366 WEIR_SPILL_REDRAW_ANIMATED_NOT_PAINTED: water over the weir is an animated layer, not painted No look paints water into its wall; crest sheet = RM_BankWeirSpill_<facing>_00..11 drawn in DrawAt on the foam clock. White water now starts under the wall (RM_WeirArt.FoamStartByLook) and emerges at each look's foot.\n"
+  },
+  "capture": {
+    "path": "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitRooms.cs",
+    "pattern": "JobDriver_CaptureDownPinned",
+    "history": "6d07391d3b61d9c8aaf09b776434f957088f241d PIT_CAPTURE_FIX_WARDEN_HURT_AT_LIP: capture-down pin no longer auto-melees the lip warden\n"
+  },
+  "gss": {
+    "path": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs",
+    "pattern": "double Droop",
+    "history": "b05e9ce45db8bacacfee59b6dd51ddbcc92d5449 GSS: land ralph/gss (owner-approved cord look) with Codex review fixes\n"
+  },
+  "hose": {
+    "path": "src/RimMandrake/FlowWorks/Source/Hose/RM_MapComponent_Hoses.cs",
+    "pattern": "cv.Touch",
+    "history": "377557044b915356e04fc4d55a7cca87fe1aa18f FlowWorks: hose recheck is change-driven (HOSE_INVALIDATION_REWIRE_EVENT_DRIVEN step 2)\n"
+  },
+  "dirty": {
+    "path": "src/RimMandrake/FlowWorks/Source/Hose/HoseWorldPatch.cs",
+    "pattern": "list = new int",
+    "history": "12c138bd76cede6362f237a1a855559af42ab3de HOSE_DIRTY_LIST_WIDEN_NO_OVERFLOW_REBUILD: whole-map dirty list, bounded patch batches\n7cf027a03a5459c182649fa1c857584787f9de81 hose world patched cell by cell, not rebuilt whole (HOSE_TICK_REBUILD_ZERO_ALLOC, in progress)\n"
+  },
+  "drink": {
+    "path": "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstUtility.cs",
+    "pattern": "bool Consider",
+    "history": "8fb9f7f2b695ca818292ab843a277dbfefe4b2a4 Pyrelands lands on main: branch ralph/pyrelands (tip 38d347bfc2, 74 commits), closed live by the owner 2026-11-08\n"
+  },
+  "original_repair": "commit 4e9da327df7ba0a60b50837e200efb711fcbfef1\nAuthor: Lukas Mandrake <lukas.mandrake@gmail.com>\nDate:   Tue Nov 3 01:21:49 2026 -0800\n\n    PLOT_D_BODY_PRUNE_STALE_SEA: stock selftest green again (1190/1190)\n    \n    DeepBedChecks counts ReleaseRect as the third unit x beds sizing site; the riser rim-swap check follows PrintStrip(path) (moved by feb753b9d3).\n    \n    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\n\ndiff --git a/src/RimMandrake/FlowWorks/Source/SelfTest/DeepBedChecks.cs b/src/RimMandrake/FlowWorks/Source/SelfTest/DeepBedChecks.cs\nindex aeedba18e3..52b3aedf0a 100644\n--- a/src/RimMandrake/FlowWorks/Source/SelfTest/DeepBedChecks.cs\n+++ b/src/RimMandrake/FlowWorks/Source/SelfTest/DeepBedChecks.cs\n@@ -389,8 +389,8 @@ namespace RimMandrake.FlowWorks.SelfTest\n                     \"6 -> 4 -> 0 -> 2 -> 6, got \" + c1 + \" \" + c2 + \" \" + c3 + \" \" + c4);\n                 string st = RiverSwitchFlipChecks.Src(\"RM_LiquidStock.cs\");\n                 Assert(!Regex.IsMatch(st, @\"CapacityWithoutBed|CapacityWithBed\"), \"the ratio pair is gone from the stock model\");\n-                Assert(Regex.Matches(st, @\"body\\.capacity = RM_BedMath\\.CapacityForBeds\\(unit, BedSum\\(body, owner\\)\\);\").Count == 2,\n-                    \"detach and reattach both size the pond by unit x beds\");\n+                Assert(Regex.Matches(st, @\"body\\.capacity = RM_BedMath\\.CapacityForBeds\\(unit, BedSum\\(body, owner\\)\\);\").Count == 3,\n+                    \"detach, reattach and the dev plot reset (ReleaseRect, PLOT_D_BODY_PRUNE_STALE_SEA) all size the pond by unit x beds\");\n                 RiverSwitchFlipChecks.Has(st, @\"body\\.levelUnit = RM_BedMath\\.LevelUnit\\(body\\.capacity, BedSum\\(body, owner\\)\\);\", \"the unit is fixed at formation\");\n                 // C2-F7: sticky-limitless off, a truncated LIMITED body's far squares bring their own capacity and water\n                 RiverSwitchFlipChecks.Has(st, @\"if \\(!owned\\.limitless\\) \\{ float add = LevelUnitOf\\(owned, owner\\) \\* owner\\.BedLevelsAt\\(far\\); owned\\.capacity \\+= add; owned\\.AddStock\\(add\\); \\}\",\ndiff --git a/src/RimMandrake/FlowWorks/Source/SelfTest/ReelRiserShadowChecks.cs b/src/RimMandrake/FlowWorks/Source/SelfTest/ReelRiserShadowChecks.cs\nindex d92a11af4b..44cbe9b532 100644\n--- a/src/RimMandrake/FlowWorks/Source/SelfTest/ReelRiserShadowChecks.cs\n+++ b/src/RimMandrake/FlowWorks/Source/SelfTest/ReelRiserShadowChecks.cs\n@@ -261,7 +261,9 @@ namespace RimMandrake.FlowWorks.SelfTest\n                     \"a cell between two tanks keeps its tile in the Print skip too, as the layer bends from its centre\");\n                 Assert(j.Contains(\"relevantChangeTypes = (ulong)MapMeshFlagDefOf.Buildings | (ulong)MapMeshFlagDefOf.Things;\"),\n                     \"the riser layer regenerates when a neighbouring pipe changes the link mask\");\n-                Assert(j.Contains(\"if (LiquidJoinRule.TravelsWest(plan.Path)) { float sw = vr; vr = vl; vl = sw; }\"),\n+                // PUMP_ON_TANK_FIX_NO_COUPLER moved the strip into the shared PrintStrip (riser and machine drop alike)\n+                Assert(j.Contains(\"return PrintStrip(this, sm, plan.Path, yTile + 0.001f);\")\n+                       && j.Contains(\"if (LiquidJoinRule.TravelsWest(path)) { float sw = vr; vr = vl; vl = sw; }\"),\n                     \"a west-going strip keeps the tile's north rim on the north\");\n                 Assert(j.Contains(\"class Patch_Pipe_RiserReplacesTile\") && j.Contains(\"return !RM_LiquidJoins.RiserReplacesTile(thing);\"),\n                     \"the cell's own cap/corner tile gives way to the bend\");\n",
+  "repair_is_ancestor": true
+}

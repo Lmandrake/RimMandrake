@@ -211,7 +211,20 @@ namespace RimMandrake.FlowWorks.SelfTest
             {
                 // weir review 2026-10-23: the animated white water is drawn only while its switch is on
                 string w = Src(Path.Combine("Rivers", "RM_Weir.cs"));
-                Has(w, @"if \(" + S + @"weirWhiteWater && ", "DrawAt draws the white water only when its switch is on");
+                // The switch also freezes the crest sheet at frame zero (the animated-spill refactor).
+                Func<string, bool> gated = src =>
+                {
+                    string draw = DrawbridgeChecks.Body(src, "protected override void DrawAt(");
+                    return Regex.Matches(draw, @"DrawWhiteWater\(").Count == 1 && Regex.Matches(draw, @"DrawSpill\(").Count == 1
+                        && Regex.IsMatch(draw, @"bool animate = RM_RiversSettings\.weirWhiteWater; DrawSpill\(map, animate \? frame : 0\); if \(animate\) \{ DrawWhiteWater\(map, comp, dx, dz, surge, frame\); \}");
+                };
+                Assert(gated(w), "DrawAt freezes the crest and omits white water with animation off");
+                Assert(!gated(w.Replace("bool animate = RM_RiversSettings.weirWhiteWater;", "bool animate = true;")),
+                    "can-fail: ignoring the animation switch is caught");
+                Assert(!gated(w.Replace("if (animate)", "if (true)")), "can-fail: unconditional white water is caught");
+                Assert(!gated(w.Replace("animate ? frame : 0", "frame")), "can-fail: an animated crest with the switch off is caught");
+                Assert(!gated(w.Replace("DrawSpill(map, animate ? frame : 0);", "DrawSpill(map, animate ? frame : 0); DrawWhiteWater(map, comp, dx, dz, surge, frame);")),
+                    "can-fail: an extra unconditional white-water draw is caught");
             });
 
             // ── walk lines' offline halves ─────────────────────────────────────

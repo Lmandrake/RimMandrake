@@ -1,0 +1,241 @@
+diff --git a/src/RimMandrake/FlowWorks/Source/SelfTest/HoseMateEndQueueChecks.cs b/src/RimMandrake/FlowWorks/Source/SelfTest/HoseMateEndQueueChecks.cs
+index 80e6fb715c..5bd5625900 100644
+--- a/src/RimMandrake/FlowWorks/Source/SelfTest/HoseMateEndQueueChecks.cs
++++ b/src/RimMandrake/FlowWorks/Source/SelfTest/HoseMateEndQueueChecks.cs
+@@ -328,7 +328,23 @@ namespace RimMandrake.FlowWorks.SelfTest
+                 // the climb generation folds; every other source still moves ClimbGenerationNoSwim
+                 RiverSwitchFlipChecks.Has(RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs"), @"climbGeneration\+\+;\s*if \(source != GenSwim\)\s*\{\s*climbGenerationNoSwim\+\+;", "every non-swim climb move moves the generation World() folds");
+                 RiverSwitchFlipChecks.Has(RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs"), @"swimGenOwed = true;\s*map\.GetComponent<Hose\.RM_MapComponent_Hoses>\(\)\?\.SwimCellsPublished\(batch\);", "a swim publish hands its squares to the hose world");
+-                RiverSwitchFlipChecks.Has(s, @"if \(!MarkDirty\(i % w, i / w, i % w, i / w\)\) \{ MapChanged\(\); return; \}", "SwimCellsPublished lists each square, a whole rebuild past capacity");
++                // The dirty list now holds the whole map (HoseWorldPatchChecks proves >16,384 cells and batched
++                // convergence to Full). Swim must invalidate corridor versions even before a snapshot exists.
++                Func<string, bool> publishes = src =>
++                {
++                    string body = DrawbridgeChecks.Body(src, "internal void SwimCellsPublished(");
++                    return body.Contains("HoseCorridorVersions cv = Versions(); for (int k = 0; k < cells.Count; k++) cv.Touch(cells[k] % w, cells[k] / w); if (world == null || worldVersion != mapVersion) return;")
++                        && body.Contains("for (int k = 0; k < cells.Count; k++) { int i = cells[k]; MarkDirty(i % w, i / w, i % w, i / w); }");
++                };
++                Assert(publishes(s), "every swim cell touches its corridor and marks a current snapshot dirty");
++                foreach (string part in new[] { "cv.Touch(cells[k] % w, cells[k] / w);", "MarkDirty(i % w, i / w, i % w, i / w);" })
++                    Assert(!publishes(s.Replace(part, "")), "can-fail: missing swim invalidation caught: " + part);
++                string mark = DrawbridgeChecks.Body(s, "private void MarkDirty(");
++                Assert(mark.Contains("dirty.Ensure(world.Width, world.Height); dirty.MarkRect(x0, z0, x1, z1);"),
++                    "MarkDirty uses the map-sized production dirty list");
++                string patch = DrawbridgeChecks.Body(s, "private void PatchWorld(");
++                Assert(patch.Contains("HoseWorldPatch.Patch(world, dirty, liveRule, maxCells);") && patch.Contains("worldSerial++;"),
++                    "patches use the production convergence-tested rule and invalidate pooled lay copies");
+                 RiverSwitchFlipChecks.Has(RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs"), @"bedGrid\[i\] = v;\s*BumpClimbGeneration\(GenBedSet\);", "SetBed (a bed with no path-cost event) moves the climb generation World() reads");
+                 RiverSwitchFlipChecks.Has(RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Superdeep", "RM_PocketGrid.cs")), @"settingsSalt\+\+;\s*RM_CliffMask\.settingsSalt\+\+;", "a climb-settings change moves the salt World() reads");
+                 RiverSwitchFlipChecks.Has(RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Superdeep", "RM_LadderUtility.cs")), @"raised = value;\s*RM_LadderUtility\.StateVersion\+\+;", "SetRaised bumps the ladder counter World() reads");
+diff --git a/src/RimMandrake/FlowWorks/Source/SelfTest/PipePoleChecks.cs b/src/RimMandrake/FlowWorks/Source/SelfTest/PipePoleChecks.cs
+index 9d4951ba88..8eca8d383f 100644
+--- a/src/RimMandrake/FlowWorks/Source/SelfTest/PipePoleChecks.cs
++++ b/src/RimMandrake/FlowWorks/Source/SelfTest/PipePoleChecks.cs
+@@ -46,8 +46,9 @@ namespace RimMandrake.FlowWorks.SelfTest
+             return float.Parse(m.Groups[1].Value, System.Globalization.CultureInfo.InvariantCulture);
+         }
+ 
+-        /// <summary>SpanCurve's height at fraction t (GSS AerialMath: lerp(A, B, t) - sag x |AB| x 4t(1-t)).</summary>
+-        private static double CurveZ(double len, float sag, double t) => -RM_PipePoleMath.SagDepth(len, sag) * 4 * t * (1 - t);
++        /// <summary>SpanCurve's offset from its chord, using GSS's flat-ended sin-squared droop.</summary>
++        private static double CurveZ(double len, float sag, double t) =>
++            t <= 0 || t >= 1 ? 0 : -RM_PipePoleMath.SagDepth(len, sag) * Math.Pow(Math.Sin(Math.PI * t), 2);
+ 
+         public static void Run(Action<string, Action> Case)
+         {
+@@ -133,7 +134,35 @@ namespace RimMandrake.FlowWorks.SelfTest
+                 Assert(RM_PipePoleMath.SagDefault <= 0.06f / 3f + 1e-6f, "owner's widths card: about a third of the wire's 6%");
+                 Assert(RM_PipePoleMath.ClampSag(0.5f) == RM_PipePoleMath.SagMax && RM_PipePoleMath.ClampSag(-1f) == 0f && RM_PipePoleMath.ClampSag(float.NaN) == 0f, "sag clamped to the slider");
+                 string math = GssSrc("Aerial", "AerialMath.cs");
+-                Assert(math.Contains("p.Z -= sag * 4 * t * (1 - t);") && math.Contains("double sag = Math.Max(0, sagFactor) * len;"), "GSS's curve is the formula above");
++                Func<string, bool> curveWired = src =>
++                {
++                    string curve = DrawbridgeChecks.Body(src, "public static List<P2> SpanCurve(");
++                    string droop = DrawbridgeChecks.Body(src, "public static double Droop(");
++                    string samples = DrawbridgeChecks.Body(src, "public static List<double> SpanTs(");
++                    return curve.Contains("List<double> ts = SpanTs(len, step);")
++                        && src.Contains("public static readonly double[] SpanEndSamples = { 0.08, 0.16, 0.3 };")
++                        && samples.Contains("foreach (double d in SpanEndSamples) if (d < len / 4) { ts.Add(d / len); ts.Add(1 - d / len); }")
++                        && samples.Contains("ts.Sort();")
++                        && curve.Contains("double sag = Math.Max(0, sagFactor) * len;")
++                        && curve.Contains("P2 p = P2.Lerp(a, b, t); p.Z -= sag * Droop(t); pts.Add(p);")
++                        && curve.Contains("pts[0] = a; pts[pts.Count - 1] = b;")
++                        && droop == "public static double Droop(double t) { if (t <= 0 || t >= 1) return 0; double s = Math.Sin(Math.PI * t); return s * s; }";
++                };
++                Assert(curveWired(math), "GSS SpanCurve uses the length-scaled, flat-ended sin-squared curve checked here");
++                foreach (string part in new[] { "sag * Droop(t)", "Math.Max(0, sagFactor) * len", "return s * s;", "pts[0] = a;",
++                    "SpanTs(len, step)", "{ 0.08, 0.16, 0.3 }", "if (d < len / 4)" })
++                    Assert(!curveWired(math.Replace(part, "0")), "can-fail: curve regression caught: " + part);
++                Assert(!curveWired(math.Replace("return s * s;", "return 4 * t * (1 - t);")),
++                    "can-fail: the old kinked parabola is caught despite identical ends and midpoint");
++                for (int i = 0; i <= 100; i++)
++                {
++                    double t = i / 100.0, z = CurveZ(12, RM_PipePoleMath.SagMax, t);
++                    Assert(z <= 0 && z >= -0.720001 && Math.Abs(z - CurveZ(12, RM_PipePoleMath.SagMax, 1 - t)) < 1e-9,
++                        "droop is symmetric and bounded at " + t);
++                }
++                double endSlope = Math.Abs(CurveZ(12, RM_PipePoleMath.SagMax, 0.0001) / (12 * 0.0001));
++                Assert(endSlope < 0.0001 && 4 * RM_PipePoleMath.SagMax > 0.2,
++                    "flat insulator tangent discriminates against the old parabola's 0.24 end slope");
+                 string mesh = GssSrc("Aerial", "RM_MapComponent_Aerial.cs");
+                 Assert(mesh.Contains("float sagK = AerialLineProfiles.SagFor(kind);") && mesh.Contains("AerialMath.SpanCurve(s.A, s.B, sagK * s.SagMul)")
+                        && mesh.Contains("AerialKinds.StrandCap(kind, AerialSettings.maxStrands)") && mesh.Contains("AerialKinds.Drips(kind, AerialSettings.dripLoops)"),
+diff --git a/src/RimMandrake/FlowWorks/Source/SelfTest/RelativeRulesChecks.cs b/src/RimMandrake/FlowWorks/Source/SelfTest/RelativeRulesChecks.cs
+index a82ed8eee7..01473ef4e1 100644
+--- a/src/RimMandrake/FlowWorks/Source/SelfTest/RelativeRulesChecks.cs
++++ b/src/RimMandrake/FlowWorks/Source/SelfTest/RelativeRulesChecks.cs
+@@ -87,8 +87,60 @@ namespace RimMandrake.FlowWorks.SelfTest
+                 Assert(RM_PitRoomMath.CaptureDownNext(false, false, RM_PitRoomMath.CaptureRepathLimit) == RM_PitRoomMath.CaptureStep.GiveUp,
+                     "bounded: a victim that keeps moving ends the job, it does not loop");
+                 string rooms = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_PitRooms.cs"));
+-                Assert(rooms.Contains("RM_PitRoomMath.CaptureDownNext(") && rooms.Contains("PawnUtility.ForceWait(Victim, RM_PitRoomMath.CaptureDownTicks"),
+-                    "the job driver asks the step and pins the victim for the hold");
++                // The dedicated pin avoids vanilla Wait's hostile auto-melee at the lip. Check both hold entry and
++                // refresh, scoped to this driver, plus the helper's actual job start and bounded lifetime.
++                string driver = rooms.Substring(rooms.IndexOf("class JobDriver_CaptureDown :", StringComparison.Ordinal));
++                driver = driver.Substring(0, driver.IndexOf("public class JobDriver_CaptureDownPinned", StringComparison.Ordinal));
++                Func<string, bool> pins = src =>
++                {
++                    foreach (var section in new[] {
++                        new[] { "Toil reach =", "yield return reach;", "RM_PitRoomMath.CaptureDownTicks + 30" },
++                        new[] { "hold.AddPreTickIntervalAction(", "yield return hold;", "ticksLeftThisToil + 30" } })
++                    {
++                        int start = src.IndexOf(section[0], StringComparison.Ordinal);
++                        int end = start < 0 ? -1 : src.IndexOf(section[1], start, StringComparison.Ordinal);
++                        if (start < 0 || end < start) return false;
++                        string toil = src.Substring(start, end - start);
++                        int held = toil.IndexOf("case RM_PitRoomMath.CaptureStep.Hold:", StringComparison.Ordinal);
++                        int repath = toil.IndexOf("case RM_PitRoomMath.CaptureStep.Repath:", StringComparison.Ordinal);
++                        if (held < 0 || repath <= held) return false;
++                        string call = "JobDriver_CaptureDownPinned.Pin(Victim, pawn, " + section[2] + ");";
++                        if (!toil.Contains("switch (RM_PitRoomMath.CaptureDownNext(")
++                            || !toil.Substring(held, repath - held).Contains(call)
++                            || System.Text.RegularExpressions.Regex.Matches(toil, @"JobDriver_CaptureDownPinned\.Pin\(").Count != 1) return false;
++                    }
++                    return true;
++                };
++                Assert(pins(driver), "capture asks the step and pins at hold entry and on hold refresh");
++                foreach (string call in new[] { "JobDriver_CaptureDownPinned.Pin(Victim, pawn, RM_PitRoomMath.CaptureDownTicks + 30);",
++                    "JobDriver_CaptureDownPinned.Pin(Victim, pawn, ticksLeftThisToil + 30);" })
++                    Assert(!pins(driver.Replace(call, "")), "can-fail: a missing victim pin is caught: " + call);
++                string pin = DrawbridgeChecks.Body(rooms, "public static void Pin(Pawn victim,");
++                Func<string, bool> startsPin = src => src.Contains("Job job = JobMaker.MakeJob(RimMandrakeFlowWorks_DefOf.RM_CaptureDownPinned, warden); job.expiryInterval = ticks; victim.jobs.StartJob(job, JobCondition.InterruptForced, null, resumeCurJobAfterwards: true);");
++                Assert(startsPin(pin), "the helper starts the dedicated pin job with the requested expiry");
++                Assert(!startsPin(pin.Replace("victim.jobs.StartJob(job, JobCondition.InterruptForced, null, resumeCurJobAfterwards: true);", "")),
++                    "can-fail: a helper that never starts the pin is caught");
++                Assert(!startsPin(pin.Replace("job.expiryInterval = ticks;", "job.expiryInterval = 1;")),
++                    "can-fail: a pin that expires before the hold is caught");
++                string refresh = "JobDriver_CaptureDownPinned.Pin(Victim, pawn, ticksLeftThisToil + 30);";
++                string wrongBranch = driver.Replace(refresh, "").Replace("case RM_PitRoomMath.CaptureStep.Repath:",
++                    "case RM_PitRoomMath.CaptureStep.Repath: " + refresh);
++                Assert(!pins(wrongBranch), "can-fail: refresh moved to Repath is caught");
++                Func<string, bool> pinLives = src =>
++                {
++                    string helper = DrawbridgeChecks.Body(src, "public static void Pin(Pawn victim,");
++                    string pinned = src.Substring(src.IndexOf("public class JobDriver_CaptureDownPinned", StringComparison.Ordinal));
++                    string toil = DrawbridgeChecks.Body(pinned, "protected override IEnumerable<Toil> MakeNewToils()");
++                    return helper.Contains("|| victim.CurJobDef == RimMandrakeFlowWorks_DefOf.RM_CaptureDownPinned) { return; }")
++                        && toil.Contains("this.FailOn(() => Warden == null || Warden.CurJobDef != RimMandrakeFlowWorks_DefOf.RM_CaptureDown);")
++                        && toil.Contains("pawn.pather?.StopDead();")
++                        && toil.Contains("pinned.defaultCompleteMode = ToilCompleteMode.Never;");
++                };
++                Assert(pinLives(rooms), "a pin already running stays put, stops walking, lasts and releases when capture ends");
++                foreach (string part in new[] { "|| victim.CurJobDef == RimMandrakeFlowWorks_DefOf.RM_CaptureDownPinned",
++                    "this.FailOn(() => Warden == null || Warden.CurJobDef != RimMandrakeFlowWorks_DefOf.RM_CaptureDown);",
++                    "pawn.pather?.StopDead();", "pinned.defaultCompleteMode = ToilCompleteMode.Never;" })
++                    Assert(!pinLives(rooms.Replace(part, "")), "can-fail: pin lifetime regression caught: " + part);
+             });
+             Case("PitCapture_waits_for_a_held_pawn_no_lip_touches", () =>
+             {
+diff --git a/src/RimMandrake/FlowWorks/Source/SelfTest/RiverSwitchFlipChecks.cs b/src/RimMandrake/FlowWorks/Source/SelfTest/RiverSwitchFlipChecks.cs
+index 7464b71b28..37f704b9a2 100644
+--- a/src/RimMandrake/FlowWorks/Source/SelfTest/RiverSwitchFlipChecks.cs
++++ b/src/RimMandrake/FlowWorks/Source/SelfTest/RiverSwitchFlipChecks.cs
+@@ -211,7 +211,20 @@ namespace RimMandrake.FlowWorks.SelfTest
+             {
+                 // weir review 2026-10-23: the animated white water is drawn only while its switch is on
+                 string w = Src(Path.Combine("Rivers", "RM_Weir.cs"));
+-                Has(w, @"if \(" + S + @"weirWhiteWater && ", "DrawAt draws the white water only when its switch is on");
++                // The switch also freezes the crest sheet at frame zero (the animated-spill refactor).
++                Func<string, bool> gated = src =>
++                {
++                    string draw = DrawbridgeChecks.Body(src, "protected override void DrawAt(");
++                    return Regex.Matches(draw, @"DrawWhiteWater\(").Count == 1 && Regex.Matches(draw, @"DrawSpill\(").Count == 1
++                        && Regex.IsMatch(draw, @"bool animate = RM_RiversSettings\.weirWhiteWater; DrawSpill\(map, animate \? frame : 0\); if \(animate\) \{ DrawWhiteWater\(map, comp, dx, dz, surge, frame\); \}");
++                };
++                Assert(gated(w), "DrawAt freezes the crest and omits white water with animation off");
++                Assert(!gated(w.Replace("bool animate = RM_RiversSettings.weirWhiteWater;", "bool animate = true;")),
++                    "can-fail: ignoring the animation switch is caught");
++                Assert(!gated(w.Replace("if (animate)", "if (true)")), "can-fail: unconditional white water is caught");
++                Assert(!gated(w.Replace("animate ? frame : 0", "frame")), "can-fail: an animated crest with the switch off is caught");
++                Assert(!gated(w.Replace("DrawSpill(map, animate ? frame : 0);", "DrawSpill(map, animate ? frame : 0); DrawWhiteWater(map, comp, dx, dz, surge, frame);")),
++                    "can-fail: an extra unconditional white-water draw is caught");
+             });
+ 
+             // ── walk lines' offline halves ─────────────────────────────────────
+diff --git a/src/RimMandrake/FlowWorks/Source/SelfTest/ThirstChecks.cs b/src/RimMandrake/FlowWorks/Source/SelfTest/ThirstChecks.cs
+index afcf4a708e..d11989e36b 100644
+--- a/src/RimMandrake/FlowWorks/Source/SelfTest/ThirstChecks.cs
++++ b/src/RimMandrake/FlowWorks/Source/SelfTest/ThirstChecks.cs
+@@ -77,22 +77,37 @@ namespace RimMandrake.FlowWorks.SelfTest
+                 string util = RiverSwitchFlipChecks.Src(Path.Combine("Thirst", "RM_ThirstUtility.cs"));
+                 RiverSwitchFlipChecks.Has(util, @"!RM_LiquidBottleUtility\.CanDebitTerrain\(map, c, RM_Volume\.Units\(RM_ThirstMath\.TerrainDrinkLitres\)\)", "the drink search gates on the drink it debits");
+                 Assert(!util.Contains("ex.Stock.CanSupply("), "can-fail: the drink search no longer asks for a whole level");
+-                // The gate must sit in TryFindDrinkCell's own body and SKIP the cell: the call alone stayed green with its
+-                // `continue` dropped (an empty if admits the small pond's refusal as a no-op) or moved to another method.
++                // Consider returns true to keep walking, before reachability and admission. Both the radial and
++                // far-cell loops stop only on false. Scope the gate to the local callback inside this overload.
+                 string utilRaw = File.ReadAllText(RiverSwitchFlipChecks.SrcPath(Path.Combine("Thirst", "RM_ThirstUtility.cs")));
+                 const string findSig = "public static bool TryFindDrinkCell(Pawn pawn, float level, out IntVec3 cell, out LiquidDef liquid, out RM_DrinkUse use,";
+                 const string gate = "if (ex?.Stock != null && !RM_LiquidBottleUtility.CanDebitTerrain(map, c, RM_Volume.Units(RM_ThirstMath.TerrainDrinkLitres)))";
+                 Func<string, bool> gateSkips = raw =>
+                 {
+-                    List<string> st = MethodStatements(raw, findSig);
++                    string find = DrawbridgeChecks.Body(raw, findSig);
++                    List<string> st = MethodStatements(find, "bool Consider(IntVec3 c)");
+                     int i = st.IndexOf(gate);
+-                    return i >= 0 && i + 1 < st.Count && st[i + 1].StartsWith("continue;", StringComparison.Ordinal)
+-                           && st.Contains("RM_MapComponent_Excavation ex = map.GetComponent<RM_MapComponent_Excavation>();")
+-                           && st.IndexOf("RM_MapComponent_Excavation ex = map.GetComponent<RM_MapComponent_Excavation>();") < i;
++                    int ex = find.IndexOf("RM_MapComponent_Excavation ex = map.GetComponent<RM_MapComponent_Excavation>();", StringComparison.Ordinal);
++                    return ex >= 0 && i >= 0 && i + 1 < st.Count && st[i + 1].StartsWith("return true;", StringComparison.Ordinal)
++                        && i < st.IndexOf("bestCell = c;")
++                        && i < st.FindIndex(line => line.StartsWith("if (c.IsForbidden(pawn)", StringComparison.Ordinal))
++                        && ex < find.IndexOf("bool Consider(IntVec3 c)", StringComparison.Ordinal)
++                        && System.Text.RegularExpressions.Regex.Matches(find, @"if \(!Consider\(c\)\)\s*\{\s*break;").Count == 2;
+                 };
+-                Assert(gateSkips(utilRaw), "TryFindDrinkCell skips a cell whose body cannot pay the drink");
+-                string noSkip = utilRaw.Replace("continue;   // TERRAIN_DRINK_FIX_SMALL_POND_REFUSED", "// TERRAIN_DRINK_FIX_SMALL_POND_REFUSED");
+-                Assert(noSkip != utilRaw && !gateSkips(noSkip), "can-fail: a gate that no longer skips the cell is caught");
++                Assert(gateSkips(utilRaw), "an unaffordable candidate returns before admission and both search loops continue");
++                const string refusal = "return true;   // TERRAIN_DRINK_FIX_SMALL_POND_REFUSED";
++                foreach (string replacement in new[] { "// TERRAIN_DRINK_FIX_SMALL_POND_REFUSED", "return false; // TERRAIN_DRINK_FIX_SMALL_POND_REFUSED" })
++                {
++                    string noSkip = utilRaw.Replace(refusal, replacement);
++                    Assert(noSkip != utilRaw && !gateSkips(noSkip), "can-fail: no refusal or premature search termination is caught");
++                }
++                string admitsFirst = utilRaw.Replace(gate, "bestCell = c;\n" + gate);
++                Assert(!gateSkips(admitsFirst), "can-fail: admitting the candidate before affordability is caught");
++                string ignoresCallback = utilRaw.Replace("if (!Consider(c))", "if (Consider(c))");
++                Assert(!gateSkips(ignoresCallback), "can-fail: reversing callback continuation is caught");
++                string gateBlock = DrawbridgeChecks.Body(utilRaw, gate);
++                string paysAfterReach = utilRaw.Replace(gateBlock, "").Replace("bestCell = c;", gateBlock + "\n bestCell = c;");
++                Assert(!gateSkips(paysAfterReach), "can-fail: unaffordable cells must skip before counting reach failures");
+                 string jobs = RiverSwitchFlipChecks.Src(Path.Combine("Thirst", "RM_ThirstJobs.cs"));
+                 RiverSwitchFlipChecks.Has(jobs, @"RM_LiquidBottleUtility\.TryDebitTerrain\(Map, c, RM_Volume\.Units\(RM_ThirstMath\.TerrainDrinkLitres\)\)", "the drink job debits the same units");
+                 string bot = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "RM_LiquidBottleUtility.cs"));
+@@ -501,9 +516,11 @@ namespace RimMandrake.FlowWorks.SelfTest
+                 RiverSwitchFlipChecks.Has(prov, @"\[HarmonyPatch\(typeof\(Pawn_NeedsTracker\), ""ShouldHaveNeed""\)\]", "postfix on Pawn_NeedsTracker.ShouldHaveNeed");
+                 RiverSwitchFlipChecks.Has(prov, @"__result = RM_ThirstProvider\.Eligible\(___pawn\);", "the postfix only narrows (runs when vanilla said yes)");
+                 RiverSwitchFlipChecks.Has(prov, @"""\[FlowWorks\] thirst provider: Own \("" \+ Reason", "T1's log line");
+-                // the decompiled 1.6 source, when this machine has it: the signature the patch names
+-                string dec = Path.Combine("/mnt/d/Luke/dev/reference/rimworld-decompiled", "RimWorld", "Pawn_NeedsTracker.cs");
+-                if (!File.Exists(dec)) dec = @"D:\Luke\dev\reference\rimworld-decompiled\RimWorld\Pawn_NeedsTracker.cs";
++                // Allow a measured reference from this machine's assembly instead of requiring one retired checkout path.
++                string decRoot = Environment.GetEnvironmentVariable("RIMWORLD_DECOMPILED");
++                string dec = Path.Combine(string.IsNullOrEmpty(decRoot) ? "/mnt/d/Luke/dev/reference/rimworld-decompiled" : decRoot,
++                    "RimWorld", "Pawn_NeedsTracker.cs");
++                if (string.IsNullOrEmpty(decRoot) && !File.Exists(dec)) dec = @"D:\Luke\dev\reference\rimworld-decompiled\RimWorld\Pawn_NeedsTracker.cs";
+                 if (File.Exists(dec))
+                 {
+                     Assert(File.ReadAllText(dec).Contains("private bool ShouldHaveNeed(NeedDef nd)"), "1.6 signature: private bool ShouldHaveNeed(NeedDef nd)");

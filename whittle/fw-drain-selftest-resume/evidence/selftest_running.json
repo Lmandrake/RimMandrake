@@ -1,0 +1,37 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/Utils/run_selftests.py",
+    "--only",
+    "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+    "--workers",
+    "1"
+  ],
+  "observer_argv": [
+    "/home/mandrake/.seat-tmp/fw-two-stray-tools/usr/bin/strace",
+    "-f",
+    "-ttt",
+    "--trace=write",
+    "--trace-fds=1,2",
+    "-s",
+    "2000000",
+    "-E",
+    "LD_LIBRARY_PATH",
+    "-o",
+    "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-selftest-resume/evidence/selftest_writes.strace",
+    "python3",
+    "src/RimMandrake/Utils/run_selftests.py",
+    "--only",
+    "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+    "--workers",
+    "1"
+  ],
+  "observer_sha256": "f47342683309e807bca57d6d89b82f94a9b39aa614e9c28c2b67cefbc35eee58",
+  "started": 1794387321.1569016,
+  "tested_HEAD": "2c50b03192750395ce1f265208842d4d3284f305",
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-selftest-resume",
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "timeout_seconds": 1260,
+  "purpose": "Capture stdout writes discarded by the runner on PASS; external observation only; modified SelfTest guards are included in integrity manifest",
+  "pid": 88162
+}

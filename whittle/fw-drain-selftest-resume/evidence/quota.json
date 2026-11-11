@@ -1,0 +1,26 @@
+{
+  "codex.week_used_pct": {
+    "v": 3.0,
+    "m": "MEASURED",
+    "unit": "% of the weekly quota used",
+    "x": {
+      "reading_at": "2026-11-11T08:47:48Z",
+      "files": 770
+    }
+  },
+  "codex.hours_to_reset": {
+    "v": 166.0,
+    "m": "MEASURED",
+    "unit": "h to the weekly reset"
+  },
+  "codex.runway": {
+    "v": 1.17,
+    "m": "ESTIMATE",
+    "why": "rate from a fresh week's burn (3% in its first 2.0 h, counted over 6 h)",
+    "unit": "x the time to reset",
+    "x": {
+      "rate_pct_h": 0.5,
+      "rate_from": "a fresh week's burn (3% in its first 2.0 h, counted over 6 h)"
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "command": [
+    "claude",
+    "-p",
+    "--model",
+    "opus",
+    "--tools",
+    "Read,Glob,Grep",
+    "--strict-mcp-config",
+    "--mcp-config",
+    "{\"mcpServers\":{}}",
+    "--setting-sources",
+    "",
+    "--no-session-persistence",
+    "--output-format",
+    "json",
+    "--max-budget-usd",
+    "6",
+    "--add-dir",
+    "/home/mandrake/rm/scratch/BENCH/fw-drain",
+    "--allowedTools",
+    "Read",
+    "Glob",
+    "Grep",
+    "--permission-mode",
+    "dontAsk"
+  ],
+  "input": "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-selftest-resume/JUDGE_PROMPT.md",
+  "started": 1794388713.9371908,
+  "timeout_seconds": 360,
+  "WHITTLE": "0",
+  "removed_environment_keys": [
+    "CLAUDECODE"
+  ],
+  "history": "fresh print process; no resume, fork or persistence",
+  "setting_sources": "",
+  "mcp_servers": {},
+  "cwd": "/home/mandrake/.seat-tmp/fw-selftest-resume/fw-selftest-resume-opus-20grpsa2",
+  "pid": 128221,
+  "returncode": 0,
+  "elapsed": 326.59645199775696
+}

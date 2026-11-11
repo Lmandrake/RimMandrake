@@ -1,0 +1,15 @@
+{
+  "time": 1794388712.992611,
+  "path": "/home/mandrake/.local/state/rm-selftests/known_results/refusals.jsonl",
+  "observed_last_two_matching_rows": [
+    "{\"test\": \"src/RimMandrake/Utils/selftest_flowworks_stock.py\", \"why\": [\"changed during the run: /etc (an absent input's folder)\", \"changed during the run: /home/mandrake (an absent input's folder)\", \"changed during the run: /home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/Utils/__pycache__\", \"clock: a python process read the wall clock\", \"external: /mnt/c/Users\", \"external: /mnt/c/Users/All Users\", \"external: /mnt/c/Users/All Users/.dotnet\", \"external: /mnt/c/Users/Default User\", \"external: /mnt/c/Users/Default User/.dotnet\", \"external: /mnt/c/Users/Default/.dotnet\", \"external: /mnt/c/Users/Mandrake/.dotnet\", \"external: /mnt/c/Users/Mandrake/.dotnet/dotnet.exe\"], \"clock_by\": [\"/home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/Utils/winbuild.py:time\"]}",
+    "{\"test\": \"src/RimMandrake/Utils/selftest_flowworks_stock.py\", \"why\": [\"changed during the run: /etc (an absent input's folder)\", \"changed during the run: /home/mandrake (an absent input's folder)\", \"clock: a python process read the wall clock\", \"external: /mnt/c/Users\", \"external: /mnt/c/Users/All Users\", \"external: /mnt/c/Users/All Users/.dotnet\", \"external: /mnt/c/Users/Default User\", \"external: /mnt/c/Users/Default User/.dotnet\", \"external: /mnt/c/Users/Default/.dotnet\", \"external: /mnt/c/Users/Mandrake/.dotnet\", \"external: /mnt/c/Users/Mandrake/.dotnet/dotnet.exe\", \"external: /mnt/c/Users/Public/.dotnet\"], \"clock_by\": [\"/home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/Utils/winbuild.py:time\"]}"
+  ],
+  "unparseable_lines": [
+    {
+      "line": 1462,
+      "bytes": 815
+    }
+  ],
+  "reason": "Read actual cache refusals without changing the runner or cache. Initial capture could not parse an existing non-JSON line. This capture preserves the newest matching raw rows and reports every unparseable line."
+}

@@ -77,22 +77,37 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string util = RiverSwitchFlipChecks.Src(Path.Combine("Thirst", "RM_ThirstUtility.cs"));
                 RiverSwitchFlipChecks.Has(util, @"!RM_LiquidBottleUtility\.CanDebitTerrain\(map, c, RM_Volume\.Units\(RM_ThirstMath\.TerrainDrinkLitres\)\)", "the drink search gates on the drink it debits");
                 Assert(!util.Contains("ex.Stock.CanSupply("), "can-fail: the drink search no longer asks for a whole level");
-                // The gate must sit in TryFindDrinkCell's own body and SKIP the cell: the call alone stayed green with its
-                // `continue` dropped (an empty if admits the small pond's refusal as a no-op) or moved to another method.
+                // Consider returns true to keep walking, before reachability and admission. Both the radial and
+                // far-cell loops stop only on false. Scope the gate to the local callback inside this overload.
                 string utilRaw = File.ReadAllText(RiverSwitchFlipChecks.SrcPath(Path.Combine("Thirst", "RM_ThirstUtility.cs")));
                 const string findSig = "public static bool TryFindDrinkCell(Pawn pawn, float level, out IntVec3 cell, out LiquidDef liquid, out RM_DrinkUse use,";
                 const string gate = "if (ex?.Stock != null && !RM_LiquidBottleUtility.CanDebitTerrain(map, c, RM_Volume.Units(RM_ThirstMath.TerrainDrinkLitres)))";
                 Func<string, bool> gateSkips = raw =>
                 {
-                    List<string> st = MethodStatements(raw, findSig);
+                    string find = DrawbridgeChecks.Body(raw, findSig);
+                    List<string> st = MethodStatements(find, "bool Consider(IntVec3 c)");
                     int i = st.IndexOf(gate);
-                    return i >= 0 && i + 1 < st.Count && st[i + 1].StartsWith("continue;", StringComparison.Ordinal)
-                           && st.Contains("RM_MapComponent_Excavation ex = map.GetComponent<RM_MapComponent_Excavation>();")
-                           && st.IndexOf("RM_MapComponent_Excavation ex = map.GetComponent<RM_MapComponent_Excavation>();") < i;
+                    int ex = find.IndexOf("RM_MapComponent_Excavation ex = map.GetComponent<RM_MapComponent_Excavation>();", StringComparison.Ordinal);
+                    return ex >= 0 && i >= 0 && i + 1 < st.Count && st[i + 1].StartsWith("return true;", StringComparison.Ordinal)
+                        && i < st.IndexOf("bestCell = c;")
+                        && i < st.FindIndex(line => line.StartsWith("if (c.IsForbidden(pawn)", StringComparison.Ordinal))
+                        && ex < find.IndexOf("bool Consider(IntVec3 c)", StringComparison.Ordinal)
+                        && System.Text.RegularExpressions.Regex.Matches(find, @"if \(!Consider\(c\)\)\s*\{\s*break;").Count == 2;
                 };
-                Assert(gateSkips(utilRaw), "TryFindDrinkCell skips a cell whose body cannot pay the drink");
-                string noSkip = utilRaw.Replace("continue;   // TERRAIN_DRINK_FIX_SMALL_POND_REFUSED", "// TERRAIN_DRINK_FIX_SMALL_POND_REFUSED");
-                Assert(noSkip != utilRaw && !gateSkips(noSkip), "can-fail: a gate that no longer skips the cell is caught");
+                Assert(gateSkips(utilRaw), "an unaffordable candidate returns before admission and both search loops continue");
+                const string refusal = "return true;   // TERRAIN_DRINK_FIX_SMALL_POND_REFUSED";
+                foreach (string replacement in new[] { "// TERRAIN_DRINK_FIX_SMALL_POND_REFUSED", "return false; // TERRAIN_DRINK_FIX_SMALL_POND_REFUSED" })
+                {
+                    string noSkip = utilRaw.Replace(refusal, replacement);
+                    Assert(noSkip != utilRaw && !gateSkips(noSkip), "can-fail: no refusal or premature search termination is caught");
+                }
+                string admitsFirst = utilRaw.Replace(gate, "bestCell = c;\n" + gate);
+                Assert(!gateSkips(admitsFirst), "can-fail: admitting the candidate before affordability is caught");
+                string ignoresCallback = utilRaw.Replace("if (!Consider(c))", "if (Consider(c))");
+                Assert(!gateSkips(ignoresCallback), "can-fail: reversing callback continuation is caught");
+                string gateBlock = DrawbridgeChecks.Body(utilRaw, gate);
+                string paysAfterReach = utilRaw.Replace(gateBlock, "").Replace("bestCell = c;", gateBlock + "\n bestCell = c;");
+                Assert(!gateSkips(paysAfterReach), "can-fail: unaffordable cells must skip before counting reach failures");
                 string jobs = RiverSwitchFlipChecks.Src(Path.Combine("Thirst", "RM_ThirstJobs.cs"));
                 RiverSwitchFlipChecks.Has(jobs, @"RM_LiquidBottleUtility\.TryDebitTerrain\(Map, c, RM_Volume\.Units\(RM_ThirstMath\.TerrainDrinkLitres\)\)", "the drink job debits the same units");
                 string bot = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "RM_LiquidBottleUtility.cs"));
@@ -501,9 +516,11 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(prov, @"\[HarmonyPatch\(typeof\(Pawn_NeedsTracker\), ""ShouldHaveNeed""\)\]", "postfix on Pawn_NeedsTracker.ShouldHaveNeed");
                 RiverSwitchFlipChecks.Has(prov, @"__result = RM_ThirstProvider\.Eligible\(___pawn\);", "the postfix only narrows (runs when vanilla said yes)");
                 RiverSwitchFlipChecks.Has(prov, @"""\[FlowWorks\] thirst provider: Own \("" \+ Reason", "T1's log line");
-                // the decompiled 1.6 source, when this machine has it: the signature the patch names
-                string dec = Path.Combine("/mnt/d/Luke/dev/reference/rimworld-decompiled", "RimWorld", "Pawn_NeedsTracker.cs");
-                if (!File.Exists(dec)) dec = @"D:\Luke\dev\reference\rimworld-decompiled\RimWorld\Pawn_NeedsTracker.cs";
+                // Allow a measured reference from this machine's assembly instead of requiring one retired checkout path.
+                string decRoot = Environment.GetEnvironmentVariable("RIMWORLD_DECOMPILED");
+                string dec = Path.Combine(string.IsNullOrEmpty(decRoot) ? "/mnt/d/Luke/dev/reference/rimworld-decompiled" : decRoot,
+                    "RimWorld", "Pawn_NeedsTracker.cs");
+                if (string.IsNullOrEmpty(decRoot) && !File.Exists(dec)) dec = @"D:\Luke\dev\reference\rimworld-decompiled\RimWorld\Pawn_NeedsTracker.cs";
                 if (File.Exists(dec))
                 {
                     Assert(File.ReadAllText(dec).Contains("private bool ShouldHaveNeed(NeedDef nd)"), "1.6 signature: private bool ShouldHaveNeed(NeedDef nd)");

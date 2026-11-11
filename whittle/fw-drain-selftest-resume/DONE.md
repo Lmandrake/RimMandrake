@@ -1,0 +1,11 @@
+# Done claim
+
+- true: The two originally reported cases pass with current production source, retaining the pond unit-times-beds checks and the shared westward strip rim-orientation check. | evidence: `whittle/fw-drain-selftest-resume/evidence/final/csharp_stdout.txt` `whittle/fw-drain-selftest-resume/evidence/verification.json`
+- true: The five further mismatched source guards are resolved against intended current behavior with meaningful negative controls, and the complete relevant FlowWorks C# selftest run passes. | evidence: `whittle/fw-drain-selftest-resume/evidence/final/csharp_stdout.txt` `whittle/fw-drain-selftest-resume/evidence/final/selftest_stdout.txt` `whittle/fw-drain-selftest-resume/evidence/final/selftest_receipt.json` `whittle/fw-drain-selftest-resume/evidence/verification.json`
+- true: Evidence identifies the published original repair, the reason for each additional guard change, exact tested sources and actual test output. Shipping behavior and the approved GSS cord appearance are preserved. | evidence: `whittle/fw-drain-selftest-resume/evidence/verification.json` `whittle/fw-drain-selftest-resume/evidence/post_final_proof_integrity.json` `whittle/fw-drain-selftest-resume/evidence/final/stage_identity.json`
+
+## Review limits
+
+The tested identity is HEAD 2c50b03192750395ce1f265208842d4d3284f305 plus the five selftest edits recorded in source_diff.patch. The original repair is published in 4e9da327df7ba0a60b50837e200efb711fcbfef1. The pond guard pins three unit-times-beds occurrences without method identity. GSS and FlowWorks production source are preserved by this test-only patch. This task provides offline math and source wiring evidence. Drawn pixels, engine job behavior, separate GSS angle tests and the separate replay project are unmeasured here.
+
+The first changed-source wrapper was UNMEASURED because its reference lookup failed. Its complete receipts remain alongside the final attempt. The related reference lookup repair and fresh installed-assembly reference are described in PAIRINGS.md. The runner's final cache-recording refusal remains visible, with the actual reasons in evidence/cache_record_refusal.json. The final wrapper verdict is PASS. Source/input manifests match through the run.

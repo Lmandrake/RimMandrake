@@ -1,0 +1,50 @@
+evidence: 0 eligible, 0 SKIPPED as unchanged, 0 PASS recorded, 0 PASS not recordable — runner 65716eff3278c68e
+cache: 0 CACHED PASS, 1 declared test(s) ran
+known results: 0/1 answered from the ledger (selftests.cache_hit_share 0.000), 0s not spent; 1 ran, 0 recorded, 0 checked against a stored PASS, 0 known red
+  ran (1): no record
+UNMEASURED  466.8s  src/RimMandrake/Utils/selftest_flowworks_stock.py
+             printed the unmeasured phrase and exited 0
+             1238/1238 passed
+             
+             hose suites (moved from Gimme Some Slack's SelfTest):
+               hose r4: st22 route 18.5 laid 19.6; st23 route 22.2 laid 23.7; owner maze route 34.6 (40-cell lay 33.5); slack cap 19.4/21; joiners st22 1 st23 0 owner 1 (bends 1/2/3)
+               hose r5: boxed target 250x250: bounded 1389 cells 0 ms, unbounded 62491 cells 26 ms; st34 owner maze taut 34.8 (needs 37), bounded search 73 expansions, unbounded 73; spiral 7x7: route 19.0, hose 21 found it in 19 expansions (unbounded 19); 9x9: route 33.0, hose 36 found it in 33 expansions (unbounded 33); 11x11: route 51.0, hose 55 found it in 51 expansions (unbounded 51); 13x13: route 73.0, hose 78 found it in 73 expansions (unbounded 73)
+             hose: 188/188 checks passed
+               HoseSelfTest: 188/188
+               HoseReview6: 26/26
+               HoseReview7: 28/28
+               HoseReelLinkChecks: 7/7
+               pilelook hoses: end case rank B 0 / A 1; joiner case kept 0; before 1+1 on top, after 0+0
+               HosePileLook: 6/6
+               HoseCarryChecks: 41/41
+               HoseLiveChecks: 21/21
+               StyleStage3Checks: 9/9
+               HoseGptFix: 26/26
+               HoseLegacyChecks: 24/24
+               HoseNetChecks: 39/39
+               net perf: best of 3 passes, 4 revisions, 0.00008 ms/tick mean (budget 0.05), worst tick 0.048 ms (budget 1)
+               rev 2 net perf: 20 reels, 4 pumps (1 pouring), 10 tanks (3 with jobs), 2 intake + 2 outflow ends: 0.00011 ms/tick mean (budget 0.05), worst tick 0.051 ms (budget 1)
+               relay index n=60: 0 B per in-place rebuild, 82584 B per new index
+               relay index n=20: rebuild + every query = 20 intake enumerations (old per-query shape: 214)
+               relay index n=60: rebuild + every query = 60 intake enumerations (old per-query shape: 3152)
+               relay index n=60: 0.0551 ms per rebuild + 60 reels' queries (budget 0.25; it runs only when a laid end changes); old per-query shape 8.933 ms
+               debug lease: DebugReach 70 steps vs per-hose FedByDebug 506 steps (12 layouts)
+               HoseNetCacheChecks: 28/28
+               hose link cache: 89999 refreshes over 40 seeds, 0 disagree with the full walk; 351771 reel reads, 787958 skipped (69.1% saved)
+               HoseLinkCacheChecks: 8/8
+               fuzz hose      2798 cases      8200 steps   23.54 s   (2409 laid, 0 via fallback, 1 known-gap class(es) tallied below)
+                 known gap G4 [outlet] 1/1159 laid: G4 plump hose longer than flat: 17.99 vs 17.43  (seed 46, reel(13,14) -> (0,22) max 49.1 minR 2.0 walls 5, walls (2,18) (2,19) (5,19) (1,21) (2,21))
+                 G2 locator: 0/964 outlet lays bend under 95% of minR; tightest bend in the straight run 0, in the blend 0, beyond it 0
+                 G2 locator: same seed laid WITHOUT the outlet bends within 95% of minR in 0/0 of those (2x2 reels)
+                 G2 locator: turn across the blend (outward vs heading after it) median NaN deg failing vs 118 deg passing; target bearing from outward median NaN deg failing vs 93 passing; radius <= blend/turn in 0/0
+                 G6 (cost vs length, GPT B2, FIXED 2026-10-06): not reproduced: hose 40, the corridor route needs 37.4 (fits) but the search returns a 59.0-cell route (57 cells, 37 in the dry tunnel stretch, extra cost 0) and CheckInstall says 'ok'
+                 refused after the route check [outlet] no room for the straight lead-out from the nozzle: 191
+                 refused after the route check [outlet] route too long (the laid hose, lead-out included, is longer than the hose): 95
+               fuzz trail     1500 cases    133643 steps    0.83 s
+             hose fuzz total: 4298 cases, 141843 steps, 24.36 s
+               HoseFuzz: 4/4
+             hose: 455/455 assertions passed (moved from Gimme Some Slack: 349; new: 106)
+
+PASS 0/1  FAIL 0/1  UNMEASURED 1/1  CRASH 0/1  SKIPPED 0/1  (wall 466.9s) — contained in rm-harness.slice (max 24G), 1 workers
+🔴 UNMEASURED (1/1) — did NOT run their check; not failures, and NOT passes: src/RimMandrake/Utils/selftest_flowworks_stock.py
+RESULT: GREEN (green = FAIL 0 and CRASH 0)

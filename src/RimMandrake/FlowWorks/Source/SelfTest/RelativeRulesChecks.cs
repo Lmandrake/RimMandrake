@@ -87,8 +87,60 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_PitRoomMath.CaptureDownNext(false, false, RM_PitRoomMath.CaptureRepathLimit) == RM_PitRoomMath.CaptureStep.GiveUp,
                     "bounded: a victim that keeps moving ends the job, it does not loop");
                 string rooms = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_PitRooms.cs"));
-                Assert(rooms.Contains("RM_PitRoomMath.CaptureDownNext(") && rooms.Contains("PawnUtility.ForceWait(Victim, RM_PitRoomMath.CaptureDownTicks"),
-                    "the job driver asks the step and pins the victim for the hold");
+                // The dedicated pin avoids vanilla Wait's hostile auto-melee at the lip. Check both hold entry and
+                // refresh, scoped to this driver, plus the helper's actual job start and bounded lifetime.
+                string driver = rooms.Substring(rooms.IndexOf("class JobDriver_CaptureDown :", StringComparison.Ordinal));
+                driver = driver.Substring(0, driver.IndexOf("public class JobDriver_CaptureDownPinned", StringComparison.Ordinal));
+                Func<string, bool> pins = src =>
+                {
+                    foreach (var section in new[] {
+                        new[] { "Toil reach =", "yield return reach;", "RM_PitRoomMath.CaptureDownTicks + 30" },
+                        new[] { "hold.AddPreTickIntervalAction(", "yield return hold;", "ticksLeftThisToil + 30" } })
+                    {
+                        int start = src.IndexOf(section[0], StringComparison.Ordinal);
+                        int end = start < 0 ? -1 : src.IndexOf(section[1], start, StringComparison.Ordinal);
+                        if (start < 0 || end < start) return false;
+                        string toil = src.Substring(start, end - start);
+                        int held = toil.IndexOf("case RM_PitRoomMath.CaptureStep.Hold:", StringComparison.Ordinal);
+                        int repath = toil.IndexOf("case RM_PitRoomMath.CaptureStep.Repath:", StringComparison.Ordinal);
+                        if (held < 0 || repath <= held) return false;
+                        string call = "JobDriver_CaptureDownPinned.Pin(Victim, pawn, " + section[2] + ");";
+                        if (!toil.Contains("switch (RM_PitRoomMath.CaptureDownNext(")
+                            || !toil.Substring(held, repath - held).Contains(call)
+                            || System.Text.RegularExpressions.Regex.Matches(toil, @"JobDriver_CaptureDownPinned\.Pin\(").Count != 1) return false;
+                    }
+                    return true;
+                };
+                Assert(pins(driver), "capture asks the step and pins at hold entry and on hold refresh");
+                foreach (string call in new[] { "JobDriver_CaptureDownPinned.Pin(Victim, pawn, RM_PitRoomMath.CaptureDownTicks + 30);",
+                    "JobDriver_CaptureDownPinned.Pin(Victim, pawn, ticksLeftThisToil + 30);" })
+                    Assert(!pins(driver.Replace(call, "")), "can-fail: a missing victim pin is caught: " + call);
+                string pin = DrawbridgeChecks.Body(rooms, "public static void Pin(Pawn victim,");
+                Func<string, bool> startsPin = src => src.Contains("Job job = JobMaker.MakeJob(RimMandrakeFlowWorks_DefOf.RM_CaptureDownPinned, warden); job.expiryInterval = ticks; victim.jobs.StartJob(job, JobCondition.InterruptForced, null, resumeCurJobAfterwards: true);");
+                Assert(startsPin(pin), "the helper starts the dedicated pin job with the requested expiry");
+                Assert(!startsPin(pin.Replace("victim.jobs.StartJob(job, JobCondition.InterruptForced, null, resumeCurJobAfterwards: true);", "")),
+                    "can-fail: a helper that never starts the pin is caught");
+                Assert(!startsPin(pin.Replace("job.expiryInterval = ticks;", "job.expiryInterval = 1;")),
+                    "can-fail: a pin that expires before the hold is caught");
+                string refresh = "JobDriver_CaptureDownPinned.Pin(Victim, pawn, ticksLeftThisToil + 30);";
+                string wrongBranch = driver.Replace(refresh, "").Replace("case RM_PitRoomMath.CaptureStep.Repath:",
+                    "case RM_PitRoomMath.CaptureStep.Repath: " + refresh);
+                Assert(!pins(wrongBranch), "can-fail: refresh moved to Repath is caught");
+                Func<string, bool> pinLives = src =>
+                {
+                    string helper = DrawbridgeChecks.Body(src, "public static void Pin(Pawn victim,");
+                    string pinned = src.Substring(src.IndexOf("public class JobDriver_CaptureDownPinned", StringComparison.Ordinal));
+                    string toil = DrawbridgeChecks.Body(pinned, "protected override IEnumerable<Toil> MakeNewToils()");
+                    return helper.Contains("|| victim.CurJobDef == RimMandrakeFlowWorks_DefOf.RM_CaptureDownPinned) { return; }")
+                        && toil.Contains("this.FailOn(() => Warden == null || Warden.CurJobDef != RimMandrakeFlowWorks_DefOf.RM_CaptureDown);")
+                        && toil.Contains("pawn.pather?.StopDead();")
+                        && toil.Contains("pinned.defaultCompleteMode = ToilCompleteMode.Never;");
+                };
+                Assert(pinLives(rooms), "a pin already running stays put, stops walking, lasts and releases when capture ends");
+                foreach (string part in new[] { "|| victim.CurJobDef == RimMandrakeFlowWorks_DefOf.RM_CaptureDownPinned",
+                    "this.FailOn(() => Warden == null || Warden.CurJobDef != RimMandrakeFlowWorks_DefOf.RM_CaptureDown);",
+                    "pawn.pather?.StopDead();", "pinned.defaultCompleteMode = ToilCompleteMode.Never;" })
+                    Assert(!pinLives(rooms.Replace(part, "")), "can-fail: pin lifetime regression caught: " + part);
             });
             Case("PitCapture_waits_for_a_held_pawn_no_lip_touches", () =>
             {

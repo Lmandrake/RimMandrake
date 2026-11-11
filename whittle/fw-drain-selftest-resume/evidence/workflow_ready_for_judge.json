@@ -1,0 +1,14 @@
+{
+  "time": 1794388713.709368,
+  "WHITTLE_DIR": "whittle/fw-drain-selftest-resume",
+  "need_judge": true,
+  "need_broaden": true,
+  "last_change": 1794388029.963802,
+  "done_problems": [
+    "No judge's verdict newer than DONE.md and the evidence. Spawn a fresh subagent (not a fork) with whittle/fw-drain-selftest-resume/JUDGE_PROMPT.md as its whole brief. It writes whittle/fw-drain-selftest-resume/JUDGE.md."
+  ],
+  "full_validator": "MandrakeWorkflows/whittle/run.py validate(root)",
+  "full_validator_returncode": 1,
+  "stdout": "",
+  "stderr": "Whittle: not done yet.\n- No judge's verdict newer than DONE.md and the evidence. Spawn a fresh subagent (not a fork) with whittle/fw-drain-selftest-resume/JUDGE_PROMPT.md as its whole brief. It writes whittle/fw-drain-selftest-resume/JUDGE.md.\nIf you truly can't go on, or need the owner, write whittle/fw-drain-selftest-resume/BLOCKED.md saying why, then stop.\n"
+}

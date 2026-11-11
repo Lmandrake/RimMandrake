@@ -1,0 +1,41 @@
+{
+ "csproj": "src/RimMandrake/FlowWorks/Source/SelfTest/RimMandrakeFlowWorks.SelfTest.csproj",
+ "stage": "/mnt/d/ClaudeWork/rimmandrake/build/selftest_RimMandrakeFlowWorks.SelfTest_79bb8021",
+ "outputs": [],
+ "ev_scope": [
+  "src/",
+  "src/Directory.Build.targets",
+  "src/Directory.Build.props"
+ ],
+ "ev_start": {
+  "sha": "2c50b03192750395ce1f265208842d4d3284f305",
+  "dirty": true,
+  "dirty_n": 5,
+  "dirty_paths": [
+   "src/RimMandrake/FlowWorks/Source/SelfTest/HoseMateEndQueueChecks.cs",
+   "src/RimMandrake/FlowWorks/Source/SelfTest/PipePoleChecks.cs",
+   "src/RimMandrake/FlowWorks/Source/SelfTest/RelativeRulesChecks.cs",
+   "src/RimMandrake/FlowWorks/Source/SelfTest/RiverSwitchFlipChecks.cs",
+   "src/RimMandrake/FlowWorks/Source/SelfTest/ThirstChecks.cs"
+  ],
+  "_token": "ed402beb9634511918c8187dcfa042f9e87b33645e4f76b1da08afc75f451147"
+ },
+ "staged": true,
+ "ev_end": {
+  "sha": "2c50b03192750395ce1f265208842d4d3284f305",
+  "dirty": true,
+  "dirty_n": 5,
+  "dirty_paths": [
+   "src/RimMandrake/FlowWorks/Source/SelfTest/HoseMateEndQueueChecks.cs",
+   "src/RimMandrake/FlowWorks/Source/SelfTest/PipePoleChecks.cs",
+   "src/RimMandrake/FlowWorks/Source/SelfTest/RelativeRulesChecks.cs",
+   "src/RimMandrake/FlowWorks/Source/SelfTest/RiverSwitchFlipChecks.cs",
+   "src/RimMandrake/FlowWorks/Source/SelfTest/ThirstChecks.cs"
+  ],
+  "_token": "ed402beb9634511918c8187dcfa042f9e87b33645e4f76b1da08afc75f451147"
+ },
+ "source_sha": "2c50b03192750395ce1f265208842d4d3284f305",
+ "dirty": true,
+ "clone": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+ "built_utc": "2026-11-11T08:57:01+00:00"
+}

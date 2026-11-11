@@ -1,0 +1,12 @@
+{
+  "command": [
+    "python.exe",
+    "-c",
+    "import os,pathlib,hashlib,json; p=pathlib.Path(os.environ[\"RIMWORLD_DECOMPILED\"])/\"RimWorld\"/\"Pawn_NeedsTracker.cs\"; print(json.dumps(dict(path=str(p), exists=p.is_file(), sha256=hashlib.sha256(p.read_bytes()).hexdigest())))"
+  ],
+  "returncode": 0,
+  "stdout": "{\"path\": \"\\\\\\\\wsl.localhost\\\\Ubuntu\\\\home\\\\mandrake\\\\rm\\\\scratch\\\\BENCH\\\\fw-drain\\\\whittle\\\\fw-drain-selftest-resume\\\\evidence\\\\reference\\\\RimWorld\\\\Pawn_NeedsTracker.cs\", \"exists\": true, \"sha256\": \"fa58868173d778dd1f0f596eb062c6c14af87f74293cf5f171aab08269a394d2\"}\n",
+  "stderr": "",
+  "RIMWORLD_DECOMPILED": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\scratch\\BENCH\\fw-drain\\whittle\\fw-drain-selftest-resume\\evidence\\reference",
+  "WSLENV": "WT_SESSION:WT_PROFILE_ID::RIMWORLD_DECOMPILED"
+}

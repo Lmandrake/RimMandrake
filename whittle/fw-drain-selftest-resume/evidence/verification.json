@@ -1,0 +1,66 @@
+{
+  "time": 1794388626.3425853,
+  "HEAD": "2c50b03192750395ce1f265208842d4d3284f305",
+  "origin_main": "2c50b03192750395ce1f265208842d4d3284f305",
+  "tested_HEAD": "2c50b03192750395ce1f265208842d4d3284f305",
+  "main_counts": [
+    1238,
+    1238
+  ],
+  "hose_counts": [
+    455,
+    455
+  ],
+  "exact_case_passes": {
+    "Pond_capacity_dug_out_and_back_in_any_order": true,
+    "PipeTankRiser_wiring_link_stops_layer_prints_flange_follows": true,
+    "RiverSwitchFlip_weirWhiteWater": true,
+    "PitCapture_follows_a_held_pawn_that_moves": true,
+    "PipePole_P3_sag_at_the_slider_extremes": true,
+    "LW1 a lay depends on the world's content only: fresh clone = reused pooled clone = rebuilt world (bit hash); TakeLayWorld uses World(LayWorldMaxAge)": true,
+    "Thirst_small_pond_drink_admitted": true,
+    "Thirst_harmony_target_and_call_sites": true
+  },
+  "failing_lines": [],
+  "unmeasured_phrase_present": false,
+  "wrapper_pass": true,
+  "receipt_returncode": 0,
+  "source_hashes_unchanged": true,
+  "changed_paths": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/HoseMateEndQueueChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/PipePoleChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/RelativeRulesChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/RiverSwitchFlipChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/ThirstChecks.cs"
+  ],
+  "source_diff_sha256": "96cb4b16c12b80bcd3ecf051d1e830cdfe7e6df8e587ab9b4f2fbcf38d62b9e8",
+  "input_groups": {
+    "flowworks_source": {
+      "files": 497,
+      "sha256": "6284bcb974e0c59d9eb32514d122221d6a7272e290260a3bb3d1c7a7ecf14899"
+    },
+    "gss_source": {
+      "files": 107,
+      "sha256": "0fcd441d630c5739d43144d672059d9fd4199ef5111623ae9edf985990e078b6"
+    },
+    "shared": {
+      "files": 27,
+      "sha256": "fc5b5439683044d038988918e6289939dcea07318aa1e0c129c991005b7d0ecf"
+    }
+  },
+  "original_repair": "4e9da327df7ba0a60b50837e200efb711fcbfef1",
+  "original_repair_ancestor": {
+    "HEAD": true,
+    "origin/main": true
+  },
+  "original_repair_diff": "commit 4e9da327df7ba0a60b50837e200efb711fcbfef1\nAuthor: Lukas Mandrake <lukas.mandrake@gmail.com>\nDate:   Tue Nov 3 01:21:49 2026 -0800\n\n    PLOT_D_BODY_PRUNE_STALE_SEA: stock selftest green again (1190/1190)\n    \n    DeepBedChecks counts ReleaseRect as the third unit x beds sizing site; the riser rim-swap check follows PrintStrip(path) (moved by feb753b9d3).\n    \n    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\n\ndiff --git a/src/RimMandrake/FlowWorks/Source/SelfTest/DeepBedChecks.cs b/src/RimMandrake/FlowWorks/Source/SelfTest/DeepBedChecks.cs\nindex aeedba18e3..52b3aedf0a 100644\n--- a/src/RimMandrake/FlowWorks/Source/SelfTest/DeepBedChecks.cs\n+++ b/src/RimMandrake/FlowWorks/Source/SelfTest/DeepBedChecks.cs\n@@ -389,8 +389,8 @@ namespace RimMandrake.FlowWorks.SelfTest\n                     \"6 -> 4 -> 0 -> 2 -> 6, got \" + c1 + \" \" + c2 + \" \" + c3 + \" \" + c4);\n                 string st = RiverSwitchFlipChecks.Src(\"RM_LiquidStock.cs\");\n                 Assert(!Regex.IsMatch(st, @\"CapacityWithoutBed|CapacityWithBed\"), \"the ratio pair is gone from the stock model\");\n-                Assert(Regex.Matches(st, @\"body\\.capacity = RM_BedMath\\.CapacityForBeds\\(unit, BedSum\\(body, owner\\)\\);\").Count == 2,\n-                    \"detach and reattach both size the pond by unit x beds\");\n+                Assert(Regex.Matches(st, @\"body\\.capacity = RM_BedMath\\.CapacityForBeds\\(unit, BedSum\\(body, owner\\)\\);\").Count == 3,\n+                    \"detach, reattach and the dev plot reset (ReleaseRect, PLOT_D_BODY_PRUNE_STALE_SEA) all size the pond by unit x beds\");\n                 RiverSwitchFlipChecks.Has(st, @\"body\\.levelUnit = RM_BedMath\\.LevelUnit\\(body\\.capacity, BedSum\\(body, owner\\)\\);\", \"the unit is fixed at formation\");\n                 // C2-F7: sticky-limitless off, a truncated LIMITED body's far squares bring their own capacity and water\n                 RiverSwitchFlipChecks.Has(st, @\"if \\(!owned\\.limitless\\) \\{ float add = LevelUnitOf\\(owned, owner\\) \\* owner\\.BedLevelsAt\\(far\\); owned\\.capacity \\+= add; owned\\.AddStock\\(add\\); \\}\",\ndiff --git a/src/RimMandrake/FlowWorks/Source/SelfTest/ReelRiserShadowChecks.cs b/src/RimMandrake/FlowWorks/Source/SelfTest/ReelRiserShadowChecks.cs\nindex d92a11af4b..44cbe9b532 100644\n--- a/src/RimMandrake/FlowWorks/Source/SelfTest/ReelRiserShadowChecks.cs\n+++ b/src/RimMandrake/FlowWorks/Source/SelfTest/ReelRiserShadowChecks.cs\n@@ -261,7 +261,9 @@ namespace RimMandrake.FlowWorks.SelfTest\n                     \"a cell between two tanks keeps its tile in the Print skip too, as the layer bends from its centre\");\n                 Assert(j.Contains(\"relevantChangeTypes = (ulong)MapMeshFlagDefOf.Buildings | (ulong)MapMeshFlagDefOf.Things;\"),\n                     \"the riser layer regenerates when a neighbouring pipe changes the link mask\");\n-                Assert(j.Contains(\"if (LiquidJoinRule.TravelsWest(plan.Path)) { float sw = vr; vr = vl; vl = sw; }\"),\n+                // PUMP_ON_TANK_FIX_NO_COUPLER moved the strip into the shared PrintStrip (riser and machine drop alike)\n+                Assert(j.Contains(\"return PrintStrip(this, sm, plan.Path, yTile + 0.001f);\")\n+                       && j.Contains(\"if (LiquidJoinRule.TravelsWest(path)) { float sw = vr; vr = vl; vl = sw; }\"),\n                     \"a west-going strip keeps the tile's north rim on the north\");\n                 Assert(j.Contains(\"class Patch_Pipe_RiserReplacesTile\") && j.Contains(\"return !RM_LiquidJoins.RiserReplacesTile(thing);\"),\n                     \"the cell's own cap/corner tile gives way to the bend\");\n",
+  "raw_output_sha256": "d9d87a46e8c207e7601c2162292833f108fce5252c2ad09fa4dddecc4a3d6946",
+  "supporting_tests_not_executed": [
+    "GSS AerialSelfTest and SittingChecks",
+    "separate FlowWorks Replay project"
+  ],
+  "limitations": [
+    "No live job/map/pixel proof",
+    "pond count pins three occurrences without method identity"
+  ]
+}

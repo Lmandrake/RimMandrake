@@ -1,0 +1,56 @@
+```json
+{
+  "role": "independent Opus broaden reviewer (read-only, no writes, nothing built or run)",
+  "acceptance_inferred": false,
+  "scope_note": "I read the five current guards and their production pairs, plus GSS AerialSelfTest.PipeKind, GSS SittingChecks, DeepBedChecks (pond) and HoseCorridorVersions. I did not run anything, so every finding below comes from reading the source. Paths are relative to src/RimMandrake/.",
+  "act_on_before_final_proof": [
+    {
+      "id": "A1_pipe_pole_end_samples",
+      "target": "FlowWorks/Source/SelfTest/PipePoleChecks.cs:137-150 (curveWired)",
+      "gap": "curveWired pins Droop's body and three lines of SpanCurve. It does not pin how SpanCurve chooses its sample points: `List<double> ts = SpanTs(len, step);`, the SpanTs body, or `SpanEndSamples = { 0.08, 0.16, 0.3 }` (GimmeSomeSlack/Source/Aerial/AerialMath.cs:151,178-192). A regression could empty SpanEndSamples, drop the `d < len/4` additions, or go back to a uniform `for i<=n` loop, and the guard would stay green. That brings back the 4-12 degree V at the pole top that the comment at AerialMath.cs:176-177 describes, which breaks the approved GSS look. Also, CurveZ (PipePoleChecks.cs:50) is a local copy of the formula, so the endSlope check at :157-159 tests the copy, not GSS. It only gets teeth through the exact Droop string match.",
+      "action": "Add to curveWired: `curve.Contains(\"List<double> ts = SpanTs(len, step);\")`, plus the SpanEndSamples declaration string and the SpanTs body via DrawbridgeChecks.Body(src, \"public static List<double> SpanTs(\"). Add can-fail mutants: replace `{ 0.08, 0.16, 0.3 }` with `{ }`; replace `if (d < len / 4)` with `if (false)`; replace `SpanTs(len, step)` with a uniform list. Each must turn curveWired false. Then record in the evidence that the actual angle measurements (pole-top kink of 3 degrees or less, and the wire leaving the insulator within 1.5 degrees of the chord) are GSS SittingChecks.cs:86-93, which runs in GSS's selftest and not in the FlowWorks run. Only say the look is preserved if that GSS run's output is cited. Otherwise state it as an offline limit."
+    },
+    {
+      "id": "A2_pit_capture_pin_scoped_to_hold_case_and_pin_driver",
+      "target": "FlowWorks/Source/SelfTest/RelativeRulesChecks.cs:79-108 (PitCapture_follows_a_held_pawn_that_moves)",
+      "gap": "`pins(driver)` only checks that both Pin(...) strings appear somewhere in the CaptureDown driver. Two regressions get past it. (a) Moving the hold-refresh Pin out of `case CaptureStep.Hold:`, e.g. into Repath or ahead of the switch, so a held pawn that moves gets re-pinned at the wrong time or never. (b) Changes to JobDriver_CaptureDownPinned (FlowWorks/Source/Superdeep/RM_PitRooms.cs:822-865) aren't checked at all: (i) deleting the `victim.CurJobDef == RM_CaptureDownPinned` early return restarts the pin job every interval tick with InterruptForced and resumeCurJobAfterwards, which churns or queues resumed jobs; (ii) `defaultCompleteMode = ToilCompleteMode.Never` changed to Instant ends the pin at once, and the victim walks off the lip (the original moved-pawn bug); (iii) the `FailOn(() => Warden == null || Warden.CurJobDef != RM_CaptureDown)` line removed or inverted leaves the victim pinned after the capture is abandoned.",
+      "action": "Reuse the reach/hold span logic from PitCapture_driver_repaths_from_reach_and_hold_each:207-217. Slice `case RM_PitRoomMath.CaptureStep.Hold:` .. `case RM_PitRoomMath.CaptureStep.Repath:` inside each span. Require the CaptureDownTicks+30 Pin in reach's Hold case and the ticksLeftThisToil+30 Pin in hold's Hold case, and require that neither Repath segment contains `Pin(`. Pin the Pinned driver: in the Body of `protected override IEnumerable<Toil> MakeNewToils()` after `class JobDriver_CaptureDownPinned`, require the FailOn line, `pinned.defaultCompleteMode = ToilCompleteMode.Never;` and `pawn.pather?.StopDead();`. In the Pin body, require the already-pinned early-return clause. Give each a can-fail Replace mutant. Optionally use XDocument to check that Defs/Canals/JobDefs/FlowWorks_JobDefs.xml:45-51 declares RM_CaptureDownPinned with driverClass RimMandrake.FlowWorks.JobDriver_CaptureDownPinned, since a null DefOf would make MakeJob fail at runtime."
+    }
+  ],
+  "secondary_cheap_hardening": [
+    {
+      "id": "S1_thirst_gate_before_reach",
+      "target": "FlowWorks/Source/SelfTest/ThirstChecks.cs:85-106",
+      "finding": "The callback-continuation check looks correct: the gate is followed by `return true;`, comes before `bestCell = c;`, and both loops contain exactly two `if (!Consider(c)) { break;`. The reversed-callback and early-admission mutants are caught. One gap: moving the gate below `if (c.IsForbidden(pawn) || !pawn.CanReach(...))` (RM_ThirstUtility.cs:536) passes the guard but changes behaviour. Unaffordable but unreachable cells would then count toward the 40 reach failures and could end the radial search early. They would also block the far-cell pass, which is gated on `reachFails <= 40` (:560).",
+      "action": "Require `i < st.FindIndex(l => l.StartsWith(\"if (c.IsForbidden(pawn)\"))`, plus a mutant that moves the gate after the reach check."
+    },
+    {
+      "id": "S2_weir_single_white_water_call",
+      "target": "FlowWorks/Source/SelfTest/RiverSwitchFlipChecks.cs:210-222",
+      "finding": "The three mutants match the shipped `animate` local (RM_Weir.cs:705-710). A second, unconditional `DrawWhiteWater(` anywhere else in DrawAt would still match the regex.",
+      "action": "Assert `Regex.Matches(Body(w, \"protected override void DrawAt(\"), @\"DrawWhiteWater\\(\").Count == 1` and `DrawSpill\\(` count == 1, with a planted-duplicate mutant."
+    },
+    {
+      "id": "S3_pond_three_occurrences_precise_wording",
+      "target": "FlowWorks/Source/SelfTest/DeepBedChecks.cs:392",
+      "finding": "`Count == 3` pins exactly three textual copies of `body.capacity = RM_BedMath.CapacityForBeds(unit, BedSum(body, owner));` in RM_LiquidStock.cs. Today they sit at :455 DetachBedCell, :497 ReleaseRect and :524 ReattachBedCell. It does not pin which methods hold them: duplicating one inside Detach and deleting Reattach's keeps the count at 3. It also says nothing about the other capacity writes at :196 (`+=` far squares), :242 (FormBody via CapacityOf), :376 and :404 (migrations).",
+      "action": "Evidence wording must say 'the three unit-times-beds occurrences (Detach, ReleaseRect, Reattach)', not 'every capacity assignment'. Optional hardening: check each method body with DrawbridgeChecks.Body on `public float DetachBedCell(`, `public int ReleaseRect(` and `public void ReattachBedCell(`, each containing the line once."
+    },
+    {
+      "id": "S4_hose_partial_invalidation_in_memory",
+      "target": "FlowWorks/Source/Hose/HoseCorridorVersions.cs (Verse-free)",
+      "finding": "LW1 (HoseMateEndQueueChecks.cs:333-341) matches the current shape. Swim cells Touch their corridor versions before the `world == null || worldVersion != mapVersion` return, and the matched string pins that order. MarkDirty self-guards, and HoseWorldPatchChecks BOUNDED_BATCHES_EQUAL_FULL covers batched convergence (the PatchWorld(now, PatchBatchCells) call at :1347). What is left is a regression that is false 'unchanged': e.g. ChangedSince ignoring allAt, Touch hitting the wrong chunk, or TouchRect off by one at chunk edges. That would leave a stale hose. Nothing in SelfTest runs it directly, and HoseCorridorVersions.cs is NOT in RimMandrakeFlowWorks.SelfTest.csproj. Only Replay.Sources.props includes it.",
+      "action": "Only if a test-project csproj include is acceptable in scope: compile it in and add a bounded case. On a 20x20 grid: seen=Now; Touch(9,9) makes ChangedSince(seen, 8,8,15,15) true and (0,0,7,7) false; TouchRect(7,0,8,0) touches both chunks 0 and 1; TouchAll makes every rect true; Ensure with a new size makes everything true. Otherwise cite the replay hose assertions that exercise CorridorMoved, and leave this unclaimed."
+    }
+  ],
+  "assessments": {
+    "local_callback_continuation": "Correct in production: an unaffordable cell returns true, so the walk continues and reachFails is not bumped. The guard catches inversion and early admission. See S1 for the ordering gap.",
+    "partial_invalidation": "Production order is right: corridor Touch is unconditional, and the snapshot is only marked dirty when it is current. The text pins hold. The real exposure is in HoseCorridorVersions, which isn't tested here (S4).",
+    "moved_pawn_capture_pin": "The step logic is pinned well per toil. The pin job's lifetime and scoping are only partly pinned (A2). Whether a job with expiryInterval set actually expires in the engine can't be checked offline.",
+    "sine_squared_vs_parabola": "The guard correctly rejects `4*t*(1-t)` even though it has the same ends and midpoint. The flat ends of the drawn line depend on the SpanEndSamples sampling, which isn't pinned (A1).",
+    "approved_gss_look": "FlowWorks proves only that the source text matches. The look is actually measured by GSS SittingChecks pole-top checks, which run outside this suite, so cite that output or record the limit (A1)."
+  },
+  "offline_limits": "No Verse or RimWorld runtime is involved here. These checks cannot prove job expiry and resume semantics, DefOf binding, map-event delivery, GenRadial ordering, or the drawn pixels. Source-text pins and Verse-free math only. No live game, bridge, art, ModsConfig, deployment, ledger or publishing was touched or needed.",
+  "no_unchanged_rerun": "After A1 and A2, and any secondary items taken, run the same relevant wrapper once and record its exact output. Do not reuse the 1233/1238 + 455/455 run as evidence of green."
+}
+```

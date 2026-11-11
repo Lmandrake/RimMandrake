@@ -1,0 +1,9 @@
+{
+  "time": 1794387321.0376937,
+  "operation": "Copy the complete result string from the fresh CLI JSON unchanged as UTF-8",
+  "raw_sha256": "c1140702c6c1a92ab1912bf72dc2d4cb919d9480941c40f4f43d9570be3bd146",
+  "result_sha256": "2ab39125fa1d29ea3572bbefdc0ebaa8468e4a96c0f0b78be6aee2548e93b20d",
+  "matches_result": true,
+  "total_cost_usd": 1.7117511999999997,
+  "permission_denials": []
+}

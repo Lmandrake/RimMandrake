@@ -1,0 +1,42 @@
+{
+  "command": [
+    "claude",
+    "-p",
+    "--model",
+    "opus",
+    "--tools",
+    "Read,Glob,Grep",
+    "--strict-mcp-config",
+    "--mcp-config",
+    "{\"mcpServers\":{}}",
+    "--setting-sources",
+    "",
+    "--no-session-persistence",
+    "--output-format",
+    "json",
+    "--max-budget-usd",
+    "6",
+    "--add-dir",
+    "/home/mandrake/rm/scratch/BENCH/fw-drain",
+    "--allowedTools",
+    "Read",
+    "Glob",
+    "Grep",
+    "--permission-mode",
+    "dontAsk"
+  ],
+  "input": "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-selftest-resume/evidence/broaden_prompt.txt",
+  "started": 1794386966.0973487,
+  "timeout_seconds": 360,
+  "WHITTLE": "0",
+  "removed_environment_keys": [
+    "CLAUDECODE"
+  ],
+  "history": "fresh print process; no resume, fork or persistence",
+  "setting_sources": "",
+  "mcp_servers": {},
+  "cwd": "/home/mandrake/.seat-tmp/fw-selftest-resume/fw-selftest-resume-opus-sgc_rnzy",
+  "pid": 78652,
+  "returncode": 0,
+  "elapsed": 244.97997784614563
+}

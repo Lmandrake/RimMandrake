@@ -1,0 +1,12 @@
+{
+  "time": 1794389098.5149436,
+  "WHITTLE_DIR": "whittle/fw-drain-selftest-resume",
+  "need_judge": true,
+  "need_broaden": true,
+  "last_change": 1794388029.963802,
+  "done_problems": [],
+  "full_validator": "MandrakeWorkflows/whittle/run.py validate(root)",
+  "full_validator_returncode": 0,
+  "stdout": "",
+  "stderr": ""
+}
