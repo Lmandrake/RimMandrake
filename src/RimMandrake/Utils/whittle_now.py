@@ -54,7 +54,9 @@ STEVE_HOST = os.environ.get("WHITTLE_STEVE_SSH", "stevedesktop-wsl")
 STALE_PAGE_S = 180
 STUCK_ROUNDS = 2            # more rounds than this on one item is stuck (the brief: "stuck >2 rounds")
 STUCK_RUNS = 3              # more non-pass ledger runs in a row than this is stuck (">3 non-pass runs")
-QUIET_S = 45 * 60           # unit up and no file of the worker written for this long: it may be hung
+QUIET_S = 30 * 60           # unit up, no file of the worker AND no claude transcript written for this long: it may be hung
+FLEET_START = "2026-11-11T19:48:00-08:00"   # the Whittle fleet started; account drops are counted from here
+FRESH_READING_S = 10 * 60   # an account reading older than this is flagged OLD in the first line
 CLAIM_GRACE_S = 15 * 60     # a "closed" the ledger has not caught up with after this long is a mismatch
 WINDOW_S = 12 * 3600        # the picture shows at most this much of the clock
 ROUNDS_SHOWN = 12
@@ -106,6 +108,32 @@ def today_start():
 
 def plain_state(s):
     return re.sub(r"[_-]+", " ", str(s or "")).strip().lower()
+
+
+def num_of(text):
+    try:
+        return float(text) if text not in (None, "") else None
+    except ValueError:
+        return None
+
+
+def round_spend(folder, x):
+    """-> (usd, weighted) of one ended round: its round-end line first, else rounds/<n>/spend.json, else the total_cost_usd of
+    the round's setup/wrapup/whittle JSONs. (None, None) = unmeasured."""
+    if x.get("cost") is not None:
+        return x["cost"], x.get("weighted")
+    rd = os.path.join(folder, "rounds", str(x["n"]))
+    j, why = read_json(os.path.join(rd, "spend.json"))
+    if not why and isinstance(j, dict) and isinstance(j.get("total"), dict) and isinstance(j["total"].get("cost_usd"), (int, float)):
+        w = j["total"].get("weighted")
+        return float(j["total"]["cost_usd"]), int(w) if isinstance(w, (int, float)) else None
+    tot, seen = 0.0, False
+    for f in ("setup.json", "wrapup.json") + tuple("whittle.%d.json" % i for i in range(1, 9)):
+        j, why = read_json(os.path.join(rd, f))
+        if not why and isinstance(j, dict) and isinstance(j.get("total_cost_usd"), (int, float)):
+            tot += j["total_cost_usd"]
+            seen = True
+    return (tot, None) if seen else (None, None)
 
 
 def int_of(text):
@@ -168,7 +196,7 @@ STAMP = r"(\d{4}-\d\d-\d\d[ T]\d\d:\d\d(?::\d\d)?(?:\.\d+)?(?:Z|[+-]\d\d:?\d\d)?
 ROUND_LINE = re.compile(r"^\s*\[?" + STAMP + r"\]?\s+round\s+#?(\d+)\s+(start|started|begin|end|ended|done)\b[\s,:;-]*(.*)$", re.I)
 STAMPED = re.compile(r"^\s*\[?" + STAMP + r"\]?\s+(.*)$")
 ITEM_ID = re.compile(r"\b([A-Z][A-Z0-9]*(?:_[A-Z0-9]+){1,})\b")
-KV = re.compile(r"\b(open|item|sha|tokens|outcome|result)\s*[=:]\s*([^\s,;]+)", re.I)
+KV = re.compile(r"\b(open|item|sha|tokens|outcome|result|weighted|cost_usd)\s*[=:]\s*([^\s,;]+)", re.I)
 
 
 def parse_loop_log(text):
@@ -189,7 +217,7 @@ def parse_loop_log(text):
         t, n, kind, rest = parse_when(m[1]), int(m[2]), m[3].lower(), m[4]
         kv = {k.lower(): v for k, v in KV.findall(rest)}
         r = rounds.setdefault(n, {"n": n, "start": None, "end": None, "item": None, "outcome": None,
-                                  "sha": None, "tokens": None, "open": None})
+                                  "sha": None, "tokens": None, "open": None, "cost": None, "weighted": None})
         if kind in ("start", "started", "begin"):
             r["start"] = t
             r["open"] = int_of(kv.get("open"))
@@ -198,17 +226,19 @@ def parse_loop_log(text):
                 r["item"] = item.strip("`*")
         else:
             r["end"] = t
-            words = re.findall(r"[A-Za-z]+", re.sub(r"\b(sha|tokens|open)\s*[=:]\s*\S+", "", ITEM_ID.sub(" ", rest), flags=re.I).lower())
+            words = re.findall(r"[A-Za-z]+", re.sub(r"\b(sha|tokens|open|weighted|cost_usd)\s*[=:]\s*\S+", "", ITEM_ID.sub(" ", rest), flags=re.I).lower())
             r["outcome"] = (kv.get("outcome") or kv.get("result") or next((w for w in words if w in OUTCOMES), None) or
                             (words[0] if words else "ended"))
             r["outcome"] = r["outcome"].lower()
-            ids = ITEM_ID.findall(re.sub(r"\b(sha|tokens|open)\s*[=:]\s*\S+", "", rest, flags=re.I))
+            ids = ITEM_ID.findall(re.sub(r"\b(sha|tokens|open|weighted|cost_usd)\s*[=:]\s*\S+", "", rest, flags=re.I))
             if ids:
                 r["end_item"] = ids[0]
                 r["item"] = r["item"] or ids[0]
             sha = kv.get("sha")
             r["sha"] = sha if sha and re.fullmatch(r"[0-9a-fA-F]{6,40}", sha) else None
             r["tokens"] = int_of(kv.get("tokens"))
+            r["cost"] = num_of(kv.get("cost_usd"))
+            r["weighted"] = int_of(kv.get("weighted"))
     return rounds, other, odd
 
 
@@ -539,6 +569,16 @@ def assess(r, ledger):
     r["tokens_today"] = sum(x["tokens"] or 0 for x in ended if x["end"] >= t0)
     r["tokens_all"] = sum(x["tokens"] or 0 for x in ended)
     r["tokens_seen"] = any(x["tokens"] is not None for x in ended)
+    r["spend_today"], r["weighted_today"], r["unmeasured_today"], r["spend_all"] = 0.0, 0, 0, 0.0
+    for x in ended:
+        x["usd"], x["wtd"] = round_spend(r["dir"], x)
+        if x["usd"] is None:
+            r["unmeasured_today"] += 1 if x["end"] >= t0 else 0
+            continue
+        r["spend_all"] += x["usd"]
+        if x["end"] >= t0:
+            r["spend_today"] += x["usd"]
+            r["weighted_today"] += x["wtd"] or 0
     r["counts"] = {}
     for x in ended:
         r["counts"][x["outcome"]] = r["counts"].get(x["outcome"], 0) + 1
@@ -564,14 +604,17 @@ def assess(r, ledger):
     r["last_write"] = last_write
     us = r.get("unit_state") or {}
     st = plain_state(info.get("state"))
-    if us.get("word") == "active":
+    r["stop"] = stop_reason(r["dir"])
+    if us.get("word") == "active" and r["stop"] is not None:
+        r["state_word"] = "stopping after this round"
+    elif us.get("word") == "active":
         r["state_word"] = "working" if not st or st in ("working", "running", "round", "busy", "active") else st
     elif us.get("word") in ("activating", "reloading"):
         r["state_word"] = "starting"
     elif us.get("word") in ("failed",):
         r["state_word"] = "UNIT FAILED"
     elif us.get("word") == "inactive":
-        r["state_word"] = "stopped on purpose" if r.get("stop") is not None else "stopped" if st not in ("done", "finished", "drained", "out of work") else st
+        r["state_word"] = "stopped by owner" if r.get("stop") is not None else "stopped" if st not in ("done", "finished", "drained", "out of work") else st
     elif us.get("word") == "unreachable":
         r["state_word"] = "%s (machine unreachable)" % (st or "UNMEASURED")
     else:
@@ -581,7 +624,6 @@ def assess(r, ledger):
     # a machine alarm or incident note is not a question for the owner
     r["alarms_list"] = [q for q in allq if ALARM_RE.search(q["text"])]
     r["questions_list"] = [q for q in allq if not ALARM_RE.search(q["text"])]
-    r["stop"] = stop_reason(r["dir"])
     return r
 
 
@@ -603,15 +645,16 @@ def needs_for(r):
             n, title, np)))
     us = r.get("unit_state") or {}
     st = plain_state(r["info"].get("state"))
+    if r.get("stop") is not None and us.get("word") != "active":
+        return [o for o in out if o[0] == 1]  # stopped by the owner: only a real question stays
     if us.get("word") == "failed":
         out.append((2, "**%s's unit `%s` has failed** on %s%s." % (n, r["unit"], us.get("host"), " (%s)" % us["result"] if us.get("result") not in (None, "success") else "")))
-    elif us.get("word") == "inactive" and r.get("stop") is not None:
-        pass  # stopped on purpose: shown in its section and the glance, not a contradiction
     elif us.get("word") == "inactive" and st in ("working", "running", "round", "busy", "active"):
         out.append((2, "**%s's file says it is working, but its unit `%s` is stopped** on %s. Its last write was %s ago." % (
             n, r["unit"], us.get("host"), ago(now_s() - r["last_write"]) if r["last_write"] else "never")))
-    if us.get("word") == "active" and r["last_write"] and now_s() - r["last_write"] > QUIET_S:
-        out.append((3, "**%s has written nothing for %s** while its unit runs. It may be hung." % (n, ago(now_s() - r["last_write"]))))
+    alive = max([t for t in (r["last_write"], r.get("transcript_t")) if t] or [0]) or None
+    if us.get("word") == "active" and alive and now_s() - alive > QUIET_S:
+        out.append((3, "**%s has written nothing, and its claude transcript is quiet, for %s** while its unit runs. It may be hung." % (n, ago(now_s() - alive))))
     for x in r["rounds_sorted"]:
         if x["outcome"] == "closed" and x["end"] and now_s() - x["end"] > CLAIM_GRACE_S and x["truth"].get("known") is not None \
                 and not x["truth"].get("closed") and x["truth"].get("word") != "UNMEASURED (ledger unread)":
@@ -703,7 +746,7 @@ def picture(recs):
         if r["closed_today"] and len(r["accepted_today"]) != len(r["closed_today"]):
             side += ", %d in ledger" % len(r["accepted_today"])
         P.text(right + 12, y + 18, side, size=11, weight="600")
-        sub = "%s tokens today" % toks(r["tokens_today"]) if r["tokens_seen"] else "tokens not logged"
+        sub = usd_word(r)
         P.text(right + 12, y + 33, sub, size=10.5, colour=A.DIM)
     label = "Whittle workers on one clock: " + ("; ".join("%s %s" % (r["name"], r["state_word"]) for r in recs) or "none yet")
     return P.out(h, label)
@@ -724,7 +767,7 @@ def unit_text(r):
     if w == "UNMEASURED":
         return "`%s` on %s: UNMEASURED (%s)" % (r["unit"], host, us.get("detail"))
     if w == "inactive" and r.get("stop") is not None:
-        return "`%s` on %s: **stopped on purpose** (STOP file: %s)" % (r["unit"], host, short(r["stop"], 200))
+        return "`%s` on %s: **stopped by owner** (STOP file: %s)" % (r["unit"], host, short(r["stop"], 200))
     return "`%s` on %s: **%s**" % (r["unit"], host, w)
 
 
@@ -737,8 +780,14 @@ def lane_word(info):
     return lane or "UNMEASURED"
 
 
+def usd_word(r):
+    if r["unmeasured_today"] and not r["spend_today"]:
+        return "unmeasured" if r["unmeasured_today"] else "$0"
+    return "$%.2f%s" % (r["spend_today"], " (+%d unmeasured)" % r["unmeasured_today"] if r["unmeasured_today"] else "")
+
+
 def glance(recs):
-    rows = ["| Worker | State | Machine | Now on | On it for | Round | Closed today | Tokens today |",
+    rows = ["| Worker | State | Machine | Now on | On it for | Round | Closed today | Spent today |",
             "|---|---|---|---|---|---|---|---|"]
     for r in recs:
         info = r["info"]
@@ -751,7 +800,7 @@ def glance(recs):
             cell(info.get("machine") or "UNMEASURED"), cell(on),
             cell(A.hm(now_s() - r["item_since"]) if r["item"] and r["item_since"] else "-"),
             cell(r["round_no"] if r["round_no"] is not None else "-"), cell(closed),
-            cell("~" + toks(r["tokens_today"]) if r["tokens_seen"] else "not logged")))
+            cell(usd_word(r))))
     below = titles_below((r["item"], r["item_truth"]) for r in recs)
     return rows + ([""] + below if below else [])
 
@@ -803,7 +852,9 @@ def worker_section(r):
     if c:
         L.append("- **Rounds ended:** %s." % ", ".join("%d %s" % (v, k) for k, v in sorted(c.items(), key=lambda kv: -kv[1])))
     L.append("- **Closed today:** %d said by the worker, %d closed in the ledger." % (len(r["closed_today"]), len(r["accepted_today"])))
-    L.append("- **Tokens:** %s." % ("~%s today, ~%s on record" % (toks(r["tokens_today"]), toks(r["tokens_all"])) if r["tokens_seen"] else "not logged in loop.log"))
+    L.append("- **Spent:** %s today, $%.2f on record%s; raw tokens ~%s today." % (
+        usd_word(r), r["spend_all"], ", %d round%s today unmeasured" % (r["unmeasured_today"], "" if r["unmeasured_today"] == 1 else "s") if r["unmeasured_today"] else "",
+        toks(r["tokens_today"]) if r["tokens_seen"] else "not logged"))
     ages = ", ".join("%s %s" % (f, "%s ago" % ago(now_s() - t) if t else "missing") for f, t in r["files"].items())
     L.append("- **Files:** %s. Folder `%s\\%s`." % (ages, NATIVE_ROOT, r["name"]))
     if r["why"]:
@@ -873,23 +924,58 @@ def read_codex(sources):
     return val
 
 
-def accounts_line(accounts, notice, codex):
-    """One compact line: % of the week REMAINING on the three Claude accounts and Codex. Unreadable -> "?"."""
+def account_history(sources, start=None):
+    """-> {account: (used_at_start, week_resets_at)}: each Claude account's first MEASURED week reading at or after the fleet start,
+    from the same series.jsonl read_accounts uses. {} when there is no history."""
+    start = start if start is not None else parse_when(FLEET_START)
+    first = {}
+    try:
+        for line in read_tail(os.path.join(A.ACCOUNTS, "series.jsonl"), 800_000).splitlines():
+            try:
+                d = json.loads(line)
+            except ValueError:
+                continue
+            t = A.parse_iso(d.get("measured_at"))
+            u = d.get("week_pct_used")
+            n = str(d.get("account") or "").lower().split("@")[0]
+            if t and start and t >= start and isinstance(u, (int, float)) and n not in first:
+                first[n] = (float(u), d.get("week_resets_at"))
+    except OSError as e:
+        sources.add("account history (series.jsonl)", None, short(e, 60))
+        return {}
+    sources.add("account history (series.jsonl)", 0, None)
+    return first
+
+
+def accounts_line(accounts, notice, codex, history=None):
+    """FIRST line of the page, bold: % of the week REMAINING on the three Claude accounts (and points dropped since the fleet started)
+    and Codex. Unreadable -> "?"."""
     live = str(notice.get("account") or "").lower() if isinstance(notice, dict) else ""
     rows = {}
     if isinstance(accounts, list):
         for a in accounts:
             rows[a["name"].lower().split("@")[0]] = a
     parts, oldest = [], None
+    since = clock(parse_when(FLEET_START)) if parse_when(FLEET_START) else "start"
 
     def age_tag(t):
         return " (%s old)" % ago(now_s() - t) if t and now_s() - t > STALE_READING_S else ""
-    for n in CLAUDE_ACCOUNTS:
+    first = True
+    for n in ("steven", "system", "lukas"):
         a = rows.get(n)
         if not a or not isinstance(a.get("used"), (int, float)):
             parts.append("%s ?" % n)
             continue
-        parts.append("%s %d%%%s" % (n, round(100 - a["used"]), age_tag(a.get("t"))))
+        h = (history or {}).get(n)
+        d = round(a["used"] - h[0]) if h is not None else None
+        if d is None or d < 0:   # no history, or the week reset since the start
+            drop = " (since start: ?)" if first else " (?)"
+        elif first:
+            drop = " (\u2212%d since %s)" % (d, since) if d else " (\u00b10 since %s)" % since
+        else:
+            drop = " (\u2212%d)" % d if d else ""
+        first = False
+        parts.append("%s %d%%%s%s" % (n, round(100 - a["used"]), drop, age_tag(a.get("t"))))
         if a.get("t"):
             oldest = a["t"] if oldest is None else min(oldest, a["t"])
     if isinstance(codex, dict) and isinstance(codex.get("used"), (int, float)):
@@ -899,12 +985,64 @@ def accounts_line(accounts, notice, codex):
         parts.append(c)
     else:
         parts.append("Codex ?")
-    s = "Accounts left this week \u2014 " + " \u00b7 ".join(parts)
+    s = "Accounts left \u2014 " + " \u00b7 ".join(parts)
     if live:
-        s += "  \u00b7  live: %s" % live
+        s += " \u00b7 live: %s" % live
     if oldest:
-        s += "  \u00b7  read %s" % clock(oldest)
-    return s
+        old = now_s() - oldest
+        s += " \u00b7 read %s%s" % (clock(oldest), " \u2014 %s OLD, not current" % ago(old) if old > FRESH_READING_S else "")
+    else:
+        s += " \u00b7 read time unknown"
+    return "**%s**" % s
+
+
+HOME = os.path.expanduser("~")
+CLONE_OF = (  # worker name -> (clone dir, where it runs), as the unit's loop.run.sh table says
+    (re.compile(r"CLAUDE_ARCHMAGI_FWLIVE$"), "/home/mandrake/rm/scratch/BENCH/claude-archmagi-fwlive", "local"),
+    (re.compile(r"CLAUDE_STEVEDESKTOP_FWLIVE$"), "/home/mandrake/rm/scratch/BENCH/claude-steve-fwlive", "local"),
+    (re.compile(r"CLAUDE_ARCHMAGI_OFFLINE(\d)$"), "/home/mandrake/rm/scratch/BENCH/claude-archmagi-offline%s", "local"),
+    (re.compile(r"CLAUDE_STEVEDESKTOP_OFFLINE(\d)$"), "/home/mandrake/rm/claude-offline%s", "steve"),
+)
+
+
+def transcript_dir(clone):
+    return re.sub(r"[^A-Za-z0-9]", "-", clone)
+
+
+def read_transcripts(recs, sources):
+    """r["transcript_t"] = newest mtime of the worker's claude transcript (~/.claude/projects/<clone>/*.jsonl), local for the Archmagi-run
+    workers, one short ssh for the SteveDesktop-run ones. None = unknown (never a reason to call it hung)."""
+    remote = {}
+    for r in recs:
+        r["transcript_t"] = None
+        for rx, clone, where in CLONE_OF:
+            m = rx.search(r["name"])
+            if not m:
+                continue
+            clone = clone % m.group(1) if "%s" in clone else clone
+            d = transcript_dir(clone)
+            if where == "local":
+                base = os.path.join(HOME, ".claude", "projects", d)
+                try:
+                    r["transcript_t"] = max([e.stat().st_mtime for e in os.scandir(base) if e.name.endswith(".jsonl")] or [0]) or None
+                except OSError:
+                    pass
+            else:
+                remote[d] = r
+    if remote:
+        cmd = "cd ~/.claude/projects 2>/dev/null && for d in %s; do echo \"$d $(ls -t ./$d/*.jsonl 2>/dev/null | head -1 | xargs -r stat -c %%Y)\"; done" % " ".join(remote)
+        try:
+            rc, out, err = run(["ssh", "-o", "ConnectTimeout=4", "-o", "BatchMode=yes", STEVE_HOST, cmd], timeout=9)
+            if rc:
+                raise Unmeasured("ssh rc %s" % rc)
+            for line in out.splitlines():
+                bits = line.split()
+                if len(bits) == 2 and bits[0] in remote and bits[1].isdigit():
+                    remote[bits[0]]["transcript_t"] = float(bits[1])
+            sources.add("claude transcripts on SteveDesktop (ssh)", 0, None)
+        except Exception as e:
+            sources.add("claude transcripts on SteveDesktop (ssh)", None, short(e, 80))
+    sources.add("claude transcripts (local)", 0, None)
 
 
 def headline(recs, lane, needs, ledger_ok):
@@ -925,8 +1063,14 @@ def headline(recs, lane, needs, ledger_ok):
             s += " Closed today: %d, all in the ledger." % acc if said else " Closed today: none yet."
         else:
             s += " Closed today: %d said, %d in the ledger." % (said, acc)
-        if any(r["tokens_seen"] for r in recs):
-            s += " Tokens today: ~%s." % toks(sum(r["tokens_today"] for r in recs))
+        spent = sum(r["spend_today"] for r in recs)
+        unm = sum(r["unmeasured_today"] for r in recs)
+        wtd = sum(r["weighted_today"] for r in recs)
+        s += " Spent today: $%.2f (%.2fM weighted tokens)%s." % (spent, wtd / 1e6, ", %d round%s unmeasured" % (unm, "" if unm == 1 else "s") if unm else "")
+        if ledger_ok and acc:
+            s += " $%.2f per close." % (spent / acc)
+        elif ledger_ok:
+            s += " $ per close: no closes yet."
     s += " FlowWorks lane: %s left to work." % (lane["open"] if isinstance(lane, dict) else "UNMEASURED")
     s += " Needs you: %d." % len(needs)
     return "**%s**" % s
@@ -960,6 +1104,7 @@ def build(stubs=None):
         ledger, ledger_why = None, str(e)
     else:
         ledger_why = None
+    (stubs.get("transcripts") or read_transcripts)(recs, sources)
     for r in recs:
         assess(r, ledger)
     try:
@@ -986,8 +1131,8 @@ def build(stubs=None):
     needs = [t for _, t in sorted(needs, key=lambda x: x[0])]
 
     head = headline(recs, lane, needs, ledger is not None)
-    acct_line = accounts_line(accounts, notice, codex)
-    P = ["# Whittle now", "", picture(recs), "", head, "", acct_line, "",
+    acct_line = accounts_line(accounts, notice, codex, (stubs.get("history") or account_history)(sources))
+    P = ["# Whittle now", "", acct_line, "", picture(recs), "", head, "",
          "Generated %s by `whittle_now.py`, no model called. Written every minute: over 3 minutes old means the timer is dead." % (
              dt.datetime.fromtimestamp(now_s()).astimezone().strftime("%b %-d, %H:%M:%S %Z")), ""]
     P += ["## Needs you", ""]
@@ -1082,7 +1227,7 @@ def build(stubs=None):
 
 
 def phone_page(head, recs, needs, lane, machines, acct_line=""):
-    L = ["Whittle %s" % dt.datetime.fromtimestamp(now_s()).astimezone().strftime("%H:%M %Z"), head.strip("*"), acct_line, ""]
+    L = ["Whittle %s" % dt.datetime.fromtimestamp(now_s()).astimezone().strftime("%H:%M %Z"), acct_line.strip("*"), head.strip("*"), ""]
     if needs:
         L.append("NEEDS YOU %d" % len(needs))
         L += ["- " + short(re.sub(r"\*\*|`", "", n), 150) for n in needs[:8]]

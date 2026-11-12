@@ -97,7 +97,7 @@ def plant(root):
     worker("closer", {"worker": "closer", "unit": "rm-whittle-closer.service", "machine": "SteveDesktop",
                       "lane": "offline", "item": None, "round": 4, "state": "working"},
            ["%s round 1 start, open=5 item=RM_DONE_ITEM_ONE" % stamp(48),
-            "%s round 1 end: RM_DONE_ITEM_ONE closed sha=abc1234def56789012abc1234def5678901234ab tokens=1.2M" % stamp(41),
+            "%s round 1 end: RM_DONE_ITEM_ONE closed sha=abc1234def56789012abc1234def5678901234ab tokens=1.2M weighted=2000000 cost_usd=12.50" % stamp(41),
             "[%s:07] round #2 started open=4 item=RM_CLAIM_ITEM_ONE" % stamp(38),
             "%s round 2 end: RM_CLAIM_ITEM_ONE closed sha=def5678 tokens=300k" % stamp(25),
             "%s note: drained the easy ones" % stamp(24),
@@ -121,7 +121,7 @@ def plant(root):
 
 
 def plant_steve(root):
-    for name, stop in (("steveon", None), ("stevestop", "Owner parked this lane until the disk move is done."), ("stevedead", None)):
+    for name, stop in (("steveon", None), ("stevestop", "Owner parked this lane until the disk move is done."), ("stevedead", None), ("steveon_halting", "No offline agents for now")):
         d = os.path.join(root, name)
         os.makedirs(d)
         json.dump({"worker": name, "unit": "rm-whittle-" + name, "machine": "SteveDesktop", "lane": "offline", "state": "working"},
@@ -130,6 +130,9 @@ def plant_steve(root):
         if stop:
             open(os.path.join(d, "STOP"), "w").write(stop)
     os.makedirs(os.path.join(root, "tools"))
+
+
+TRANSCRIPT_AGE = [None]   # seconds old the planted claude transcript is; None = unknown
 
 
 def wire(mod, root, lane_file, steve_up=False):
@@ -152,7 +155,11 @@ def wire(mod, root, lane_file, steve_up=False):
         return {u: {"Id": u, "LoadState": "loaded", "ActiveState": "active" if "steveon" in u else "inactive"} for u in units}
 
     mod.units_local, mod.units_remote = local, remote
-    return {"ledger": fake_ledger, "machines": lambda state, sources: {},
+
+    def transcripts(recs, sources):
+        for r in recs:
+            r["transcript_t"] = TRANSCRIPT_AGE[0] and time.time() - TRANSCRIPT_AGE[0]
+    return {"ledger": fake_ledger, "transcripts": transcripts, "history": lambda sources: {"system": (30.0, None)}, "machines": lambda state, sources: {},
             "accounts": lambda sources: [{"name": "system", "used": 42.0, "resets": time.time() + 86400, "t": time.time(),
                                           "why": None, "slope": None}],
             "codex": lambda sources: {"used": 30.0, "t": time.time(), "exact": True, "reset": None},
@@ -176,7 +183,11 @@ def checks(mod, tmp):
     lane = os.path.join(tmp, "lane.json")
     json.dump({"seat": "X", "id_patterns": ["^RM_FWLIVE_", "^RM_STUCK_"]}, open(lane, "w"))
     plant(root)
+    r2 = os.path.join(root, "stuckone", "rounds", "2")
+    os.makedirs(r2)
+    json.dump({"total": {"cost_usd": 3.25, "weighted": 500000}}, open(os.path.join(r2, "spend.json"), "w"))
     stubs = wire(mod, root, lane)
+    mstubs = stubs
     page, phone, _ = mod.build(stubs)
     needs = page.split("## Needs you", 1)[1].split("## Workers at a glance", 1)[0].split("\n## Alarms", 1)[0]
     edge_part = page.split("## edgy", 1)[1] if "## edgy" in page else ""
@@ -195,7 +206,11 @@ def checks(mod, tmp):
         ("claim not accepted", near_midnight or "closer said it closed `RM_CLAIM_ITEM_ONE`" in needs),
         ("ledger close accepted", "closed in the ledger" in page and "`abc1234def`" in page and "abc1234def5" not in page),
         ("closed today split", near_midnight or "2 said, 1 in ledger" in page),
-        ("tokens summed", near_midnight or "~1.51M" in page),
+        ("spend from round-end line + spend.json", near_midnight or "Spent today: $15.75 (2.50M weighted tokens)" in page),
+        ("unmeasured rounds counted, not guessed", near_midnight or "rounds unmeasured" in page),
+        ("dollars per close", near_midnight or "$15.75 per close" in page),
+        ("raw token sum gone", "Tokens today" not in page),
+        ("accounts line is first under the title", page.splitlines()[2].startswith("**Accounts left") and page.index("<svg") > page.index("Accounts left")),
         ("drifted start line read", "| 2 |" in page.split("## closer", 1)[1]),
         ("other log line kept", "drained the easy ones" in page),
         ("odd line counted", "1 line with no time stamp" in page),
@@ -208,6 +223,16 @@ def checks(mod, tmp):
         ("item titles under the table", "`RM_\u200bDONE_\u200bITEM_\u200bONE`: A thing really closed" in page),
         ("tables fit: short rows, no long unbreakable run, no 40-hex", narrow_tables(page) == [] and narrow_tables(phone) == []),
     ]
+    # liveness: files 2 h old, unit up; the claude transcript decides
+    for n in ("worker.json", "loop.log", "progress.md", "OWNER_QUESTIONS.md"):
+        os.utime(os.path.join(root, "stuckone", n), (time.time() - 7200,) * 2)
+    TRANSCRIPT_AGE[0] = 60
+    pageL, _, _ = mod.build(mstubs)
+    TRANSCRIPT_AGE[0] = 3 * 3600
+    pageH, _, _ = mod.build(mstubs)
+    TRANSCRIPT_AGE[0] = None
+    out.append(("fresh transcript: not hung", "stuckone has written nothing" not in pageL))
+    out.append(("stale files and stale transcript: hung", "stuckone has written nothing, and its claude transcript is quiet" in pageH))
     empty = os.path.join(tmp, "empty")
     os.makedirs(empty)
     stubs = wire(mod, empty, lane)
@@ -215,7 +240,7 @@ def checks(mod, tmp):
     sroot = os.path.join(tmp, "s")
     os.makedirs(sroot)
     plant_steve(sroot)
-    json.dump({"workers": [{"worker": n, "machine": "SteveDesktop"} for n in ("steveon", "stevestop", "stevedead")]},
+    json.dump({"workers": [{"worker": n, "machine": "SteveDesktop"} for n in ("steveon", "stevestop", "stevedead", "steveon_halting")]},
               open(os.path.join(sroot, "workers.json"), "w"))
     stubs = wire(mod, sroot, lane, steve_up=True)
     pageS, _, _ = mod.build(stubs)
@@ -225,15 +250,20 @@ def checks(mod, tmp):
         ("alarm not a question", "alarmer asks you 1 question" in needs and "Which colour" in needs and "read-only" not in needs),
         ("alarm in its own section", "## Alarms" in page and "alarmer" in page.split("## Alarms", 1)[1].split("## Workers at a glance", 1)[0]),
         ("steve unit asked on steve", "`rm-whittle-steveon.service` on SteveDesktop: running" in pageS),
-        ("stop file is on purpose", "stevestop" not in needsS and "stopped on purpose" in pageS and "Owner parked this lane" in pageS),
+        ("stop file is on purpose", "stevestop" not in needsS and "stopped by owner" in pageS and "Owner parked this lane" in pageS),
+        ("stop file, round running -> stopping after this round", "STOPPING AFTER THIS ROUND" in pageS and "halting" not in needsS),
         ("real contradiction stays", "stevedead's file says it is working, but its unit `rm-whittle-stevedead.service` is stopped** on SteveDesktop" in needsS),
         ("steve down not crash", "steveon" not in needs and "**unreachable**" in page),
     ]
     out.append(("empty root", "No Whittle workers yet" in page2 and "none yet" in phone2))
-    line = [l for l in page.splitlines() if l.startswith("Accounts left this week")]
-    out.append(("accounts line: remaining, ? for missing source, live marked",
-                len(line) == 1 and "system 58%" in line[0] and "steven ?" in line[0] and "lukas ?" in line[0]
-                and "Codex 70%" in line[0] and "live: steven" in line[0] and phone.splitlines()[2].startswith("Accounts left")))
+    line = [l for l in page.splitlines() if l.startswith("**Accounts left")]
+    out.append(("accounts line: remaining, drop since start, ? for missing source, live marked",
+                len(line) == 1 and "system 58% (\u221212 since 19:48" in line[0] and "steven ?" in line[0] and "lukas ?" in line[0]
+                and "Codex 70%" in line[0] and "live: steven" in line[0] and "OLD" not in line[0] and phone.splitlines()[1].startswith("Accounts left")))
+    sa = dict(stubs)
+    sa["accounts"] = lambda sources: [{"name": "system", "used": 42.0, "resets": None, "t": time.time() - 1200, "why": None, "slope": None}]
+    old_line = [l for l in mod.build(sa)[0].splitlines() if l.startswith("**Accounts left")][0]
+    out.append(("old reading flagged in the line", "20 min OLD" in old_line))
     stubs2 = dict(stubs)
     stubs2["codex"] = lambda sources: (_ for _ in ()).throw(mod.Unmeasured("planted codex failure"))
     pageC, _, _ = mod.build(stubs2)
@@ -254,7 +284,8 @@ def run_checks(source):
 
 MUTANTS = [
     ("steve unit asked on steve", 'str(r["info"].get("machine", "")).lower().startswith("steve"))]', 'False)]'),
-    ("stop file is on purpose", 'r.get("stop") is not None:\n        pass', 'r.get("stop") is None:\n        pass'),
+    ("stop file is on purpose", 'if r.get("stop") is not None and us.get("word") != "active":', 'if False:'),
+    ("fresh transcript: not hung", 'alive = max([t for t in (r["last_write"], r.get("transcript_t")) if t] or [0]) or None', 'alive = r["last_write"]'),
     ("alarm not a question", 'if not ALARM_RE.search(q["text"])]', 'if True]'),
     ("edge not stuck by rounds", 'r["rounds_on_item"] > STUCK_ROUNDS', 'r["rounds_on_item"] >= STUCK_ROUNDS'),
     ("released is handed back", '"released": "handed back"', '"released": "other end"'),
