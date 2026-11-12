@@ -2,3 +2,5 @@
 {"seat":"CLAUDE_ARCHMAGI_FWLIVE","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"BLEED_WELL_BUILD_SWITCH_AND_SAY_WHY: live proof","ts":"2026-11-12T03:53:18Z","tsn":1794455598669937694}
 {"seat":"CLAUDE_ARCHMAGI_FWLIVE","event":"bridge","state":"released","ts":"2026-11-12T04:16:57Z","tsn":1794457017152569415}
 {"seat":"CLAUDE_ARCHMAGI_FWLIVE","event":"note","id":"BLEED_WELL_BUILD_SWITCH_AND_SAY_WHY","text":"Claude Whittle CLAUDE_ARCHMAGI_FWLIVE released this claim: no live item file (ledger ghost)","why":"picker took a ledger-open id with no items/<ID>.md","ts":"2026-11-12T04:18:16Z","tsn":1794457096738449439}
+{"seat":"CLAUDE_ARCHMAGI_FWLIVE","event":"claim","id":"GSS_WATER_STUB_FIX_PASSED_LAST_WEEK","session":"9e8f8b83-16bc-407f-b8f8-577fb7cf838c","ts":"2026-11-12T04:20:12Z","tsn":1794457212723668460}
+{"seat":"CLAUDE_ARCHMAGI_FWLIVE","event":"start","id":"GSS_WATER_STUB_FIX_PASSED_LAST_WEEK","session":"9e8f8b83-16bc-407f-b8f8-577fb7cf838c","ts":"2026-11-12T04:20:30Z","tsn":1794457230618982634}
