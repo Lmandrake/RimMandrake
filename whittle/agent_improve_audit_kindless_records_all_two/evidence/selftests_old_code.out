@@ -1,15 +1,15 @@
-# selftests as of HEAD 608a72f6df run against the pre-change code (git archive 66ab8395fd), 2026-11-11 21:12 -0800
+# selftests as of HEAD 2452d42756 run against the pre-change code (git archive 66ab8395fd), 2026-11-11 21:19 -0800
 ## selftest_agent_improve
-FAIL: an alarm names its own item (clones/<item>[.qN]), so it carries that item's kind (4.3) [{'target': 'relentless', 'kind': 'alarm:remove_failed', 'ts': 1793523600, 'path': '/tmp/tmp5jg9hmpt/store/journal.jsonl', 'text': 'gone'}]
+FAIL: an alarm names its own item (clones/<item>[.qN]), so it carries that item's kind (4.3) [{'target': 'relentless', 'kind': 'alarm:remove_failed', 'ts': 1793523600, 'path': '/tmp/tmp388rt0zb/store/journal.jsonl', 'text': 'gone'}]
 FAIL: lesson kinds: footer item, NONE, kindless own item, a quoted item: line, none recorded {'bare': 'REPAIR', 'legacy': 'REPAIR', 'none': 'REPAIR', 'own': 'REPAIR', 'quoted': 'REPAIR'}
-FAIL: owner note and ops alarm: their own id decides, not a later id in the text [{'target': None, 'kind': 'owner_said', 'ts': 1793530800, 'path': '/tmp/tmp5jg9hmpt/own_items/OWNER.jsonl', 'text': 'SEA_DIVE_HATCH_REMOVE_1: see WIDGET_REPAIR
+FAIL: owner note and ops alarm: their own id decides, not a later id in the text [{'target': None, 'kind': 'owner_said', 'ts': 1793530800, 'path': '/tmp/tmp388rt0zb/own_items/OWNER.jsonl', 'text': 'SEA_DIVE_HATCH_REMOVE_1: see WIDGET_REPAIR_SHAPE'}, {'target': 'operations', 'kind': 'alarm', 'ts': 1793527200, 'path': '/tmp/tmp388rt0zb/own_items/alarms.json', 'text': 'disk.pool_breach: WIDGET_REPAIR
 selftest_agent_improve: FAIL 3
 exit 1
 ## selftest_agent_improve_steps
-FAIL: L0 records the kind a lesson names past its first line ('agent/foo/v1 1525dc1445c13bcff1a3f61f01bea7522dfe149a (tag push FAILED; local tag only)', [], {'target': 'foo', 'version': 1, 'tag': 'agent/foo/v1', 'day': '2026-11-02', 'path':
-FAIL: L1 records the kind a lesson names past its first line ('agent/foo/v2 7a5a608c2368a59c608859cc3bb9f108b34aab94 (tag push FAILED; local tag only)', [], {'target': 'foo', 'version': 2, 'tag': 'agent/foo/v2', 'day': '2026-11-03', 'path':
-FAIL: a lesson's item: line is its kind, over an item its text names ('agent/foo/v3 8b934c86033389cbcd3df6788e7103f8c4876ec9 (tag push FAILED; local tag only)', {'target': 'foo', 'version': 3, 'tag': 'agent/foo/v3', 'day': '2026-11-03', 'pa
-FAIL: L0 applies a change from a lesson naming no item, recorded kindless ('agent/foo/v4 b1ff2ed9fd9ffb47d33044415e12aef04a33b51a (tag push FAILED; local tag only)', {'target': 'foo', 'version': 4, 'tag': 'agent/foo/v4', 'day': '2026-11-02'
+FAIL: L0 records the kind a lesson names past its first line ('agent/foo/v1 45e70049ab1ee513981cf8bb4707d6b3870155b8 (tag push FAILED; local tag only)', [], {'target': 'foo', 'version': 1, 'tag': 'agent/foo/v1', 'day': '2026-11-02', 'path': 'skills/foo/SKILL.md', 'pieces': [{'path': '/tmp/tmppwjw4544/lessons/20261101T080000Z-BENCH-named-late.md', 'text': 'The foo skill tells a worker to guess a de
+FAIL: L1 records the kind a lesson names past its first line ('agent/foo/v2 196dd47d7f0052634eee9a0137e487cafe5855de (tag push FAILED; local tag only)', [], {'target': 'foo', 'version': 2, 'tag': 'agent/foo/v2', 'day': '2026-11-03', 'path': 'skills/foo/SKILL.md', 'pieces': [{'path': '/tmp/tmppwjw4544/lessons/20261101T080000Z-BENCH-named-late.md', 'text': 'The foo skill tells a worker to guess a de
+FAIL: a lesson's item: line is its kind, over an item its text names ('agent/foo/v3 247e95298fd6f5adb2c4baa504dcb792d923d3df (tag push FAILED; local tag only)', {'target': 'foo', 'version': 3, 'tag': 'agent/foo/v3', 'day': '2026-11-03', 'path': 'skills/foo/SKILL.md', 'pieces': [{'path': '/tmp/tmppwjw4544/lessons/20261101T100000Z-CLAUDE_ARCHMAGI_OFFLINE1-stamped.md', 'text': 'Mentions WIDGET_REPAIR
+FAIL: L0 applies a change from a lesson naming no item, recorded kindless ('agent/foo/v4 6d1322869ee29d77d880338df61e3a7222251622 (tag push FAILED; local tag only)', {'target': 'foo', 'version': 4, 'tag': 'agent/foo/v4', 'day': '2026-11-02', 'path': 'skills/foo/SKILL.md', 'pieces': [{'path': '/tmp/tmppwjw4544/lessons/20261101T090000Z-FOUNDRY-names-none.md', 'text': 'skills/foo/SKILL.md points at a
 selftest_agent_improve_steps: FAIL 4
 exit 1
 ## selftest_lessons
@@ -20,10 +20,10 @@ FAIL: RIMFLOW_ITEM first phi two
 home: foo
 
 Traceback (most recent call last):
-  File "/tmp/aik/old/src/RimMandrake/Utils/selftest_lessons.py", line 71, in <module>
+  File "/tmp/aik2/old/src/RimMandrake/Utils/selftest_lessons.py", line 71, in <module>
     check("--item over the environment", "item: SPROCKET_AUDIT_TEETH\n" in body_of("chi-three"), body_of("chi-three"))
                                                                            ~~~~~~~^^^^^^^^^^^^^
-  File "/tmp/aik/old/src/RimMandrake/Utils/selftest_lessons.py", line 64, in body_of
+  File "/tmp/aik2/old/src/RimMandrake/Utils/selftest_lessons.py", line 64, in body_of
     return open(os.path.join(d, [n for n in sorted(os.listdir(d)) if word in n][0])).read()
                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^
 IndexError: list index out of range

@@ -7,6 +7,10 @@
 - true: **A change applied below L2 either records source kinds, or the decision to let it stay uncheckable is written in | evidence: `whittle/agent_improve_audit_kindless_records_all_two/evidence/selftests_new_code.out` `whittle/agent_improve_audit_kindless_records_all_two/evidence/selftests_old_code.out` `whittle/agent_improve_audit_kindless_records_all_two/evidence/ordinary_use_lesson.out` `whittle/agent_improve_audit_kindless_records_all_two/evidence/attribution_audit.out`
 - true: **The share of change records with no source kinds is measured from `infrastructure/state/agent_improve/changes/` and | evidence: `whittle/agent_improve_audit_kindless_records_all_two/evidence/measure_kindless.out` `whittle/agent_improve_audit_kindless_records_all_two/evidence/measure_kindless.py`
 
+Every evidence file was re-run 2026-11-11 21:19-21:24 PST at HEAD 2452d42756 (after the last pull); the figures are
+unchanged. `measure_kindless.py` is unchanged since it was committed (only re-run). The item's 04:41Z note described an
+older probe; a correcting note (2026-11-12T05:18:29Z) now states the apply_change probe.
+
 ## How each is true
 Bullet 1 is true both ways: (a) and (b), and they agree.
 (a) `apply_change` at L0 and L1 now records the kind a lesson names past its 200-character first line, and a

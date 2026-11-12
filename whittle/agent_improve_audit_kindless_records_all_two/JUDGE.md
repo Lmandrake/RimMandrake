@@ -1,47 +1,48 @@
-# Judge verdict: AGENT_IMPROVE_AUDIT_KINDLESS_RECORDS_ALL_TWO
+# Judge verdict — AGENT_IMPROVE_AUDIT_KINDLESS_RECORDS_ALL_TWO
 
-Judge: fresh blind judge, CLAUDE_ARCHMAGI_OFFLINE1 clone, 2026-11-11. I did not read DONE.md, BROADEN.md or the earlier JUDGE.md.
-What I read: STATEMENT.md, NOTES.md, the evidence files, the diff 66ab8395fd..HEAD of agent_improve.py, lessons.py and
-design §4.3, and `rimflow show`. What I ran myself: the five selftests (GREEN 5/5), `measure_kindless.py` with no
-argument, `attribution_audit.py`, and `rimflow show`.
+Judge: fresh blind judge, CLAUDE_ARCHMAGI_OFFLINE1 seat clone, 2026-11-11 (HEAD 2452d42756, pre-change 66ab8395fd).
+Read: STATEMENT.md, NOTES.md, evidence/*, `git diff 66ab8395fd HEAD` for agent_improve.py, lessons.py and the design doc,
+the change records on file, `rimflow show`. Not read: DONE.md, BROADEN.md, the earlier JUDGE.md.
+Re-ran myself: the five selftests (GREEN 5/5) and `measure_kindless.py` with no argument (sections 1-3 match the saved
+output line for line).
 
-## Line 1: a change below L2 either records source kinds, or design 4.3 says with a reason that it stays uncheckable. TRUE (option b)
-- §4.3 now has a paragraph dated 2026-11-11 that names the item. In bold it says: "A change at L0 or L1 whose cited
-  pieces still name no item is applied, and its record says `source_kinds: []`: it stays uncheckable by design". It
-  gives the reasons: a guessed kind would give a held-out sample that is not held out; the two other sources were
-  measured and both failed (the seat touched 8 or 41 items within the hour, and the adding commits name no item);
-  refusing such a change at L0/L1 would add a new gate, which the freeze forbids, and would lower the acceptance rate.
-- The code agrees with the doc:
-  - `need_general` is True only at L2 (LEVELS), so `general_gate`'s refusal of empty kinds runs only there.
-  - `_prepare_record` writes `source_kinds(row, entry)`, which can be `[]`.
-  - `piece()` takes the kind from the piece's own item when the source records one (lesson `item:` footer, Relentless
-    reject/learned item, alarm `item` or `clones/<item>`, ops alarm name, owner note id). `NONE`, or an id with no
-    intent word, gives None with no fallback to the text. Otherwise the kind comes from the whole text.
-  - The cites in each record carry `task_kind`, as the doc says.
-  - `lessons.py add --item` and the RIMFLOW_ITEM/WC_ITEM environment variables write the footer, as the doc says.
-- Selftests: GREEN 5/5 when I ran them. `selftests_old_code.out` shows the new footer and alarm-item tests fail on
-  the old code. Option (b) does not strictly need this, but it is there.
+## Line 1 — a change below L2 records source kinds, or the decision to leave it uncheckable is in 4.3 with its reason: TRUE
+- Route (b) is met. `design/RimMandrake/daily_agent_improvement_2026-11-02.md` has a new paragraph inside **4.3** (4.3
+  starts at l.120, 4.4 at l.201), dated 2026-11-11 and naming the item. In bold it says that a change at L0/L1 whose cited
+  pieces name no item is applied with `source_kinds: []` and "stays uncheckable by design". It gives the reason: no other
+  sound source is left, and a guessed kind would make a held-out sample that is not held out. It also says the two other
+  sources were measured and rejected (seat touched 8 and 41 items within the hour; the adding commits name no item), and
+  that refusing these changes would be a new gate.
+- The builder also improved where kinds come from (this goes beyond route (b), and the doc describes it). `piece()` now
+  stores `task_kind` taken from the piece's own item: a lesson's `item:` footer via the new `lessons.item_of`, the item on
+  a Relentless reject/learned/alarm line, the name on an ops alarm, the id on an owner note. If the piece has no own item,
+  `task_kind` comes from the whole text, not just the first line. An own item of NONE, or one with no intent word, gives
+  no fallback. Change-record cites carry `task_kind`.
+- Doc and code agree. I checked each claim in the paragraph against the diff. `general_gate` runs only where
+  `LEVELS[...]["need_general"]` is set (L2 only, agent_improve.py l.771), so "refused only by the L2 gate" is true.
+  selftest_agent_improve_steps checks that L0 and L1 apply a lesson that names no item and record `[]`, and that a
+  late-named item and a footer item are recorded. These pass on the new code and fail on the old (selftests_old_code.out).
 
-## Line 2: the share of kindless change records is measured, has a sanity probe, and is stated on the item and in 4.3. TRUE
-- I re-ran `measure_kindless.py`. It printed "KINDLESS 2 of 2 records" (rimworld-modding_v1, using-rimflow_v1),
-  which matches the saved `evidence/measure_kindless.out` and the 2 files in `changes/`.
-- The sanity probe is real. It runs the production `apply_change` at L0 in a temp repo on a real inbox lesson that
-  has an `item:` footer, and writes `probe_v1.json` with `source_kinds ['AUDIT']`. The same `count()` reader then
-  counts 0 of 1. So the reader can see a non-empty list, and the probe would fail if it could not.
-- The item's note (2026-11-12T04:41:56Z) states the 2 of 2 figure. §4.3 states it too, along with the inbox counts
-  (8 of 114 name an item, 5 have footers). My re-run reproduced those counts.
+## Line 2 — the share of kindless records is measured, with a sanity probe, and stated on the item and in 4.3: TRUE
+- Measurement: `evidence/measure_kindless.py` and its output `measure_kindless.out` (the header gives the command and HEAD).
+  Result: KINDLESS 2 of 2 records. I checked this independently by loading both JSONs in
+  `infrastructure/state/agent_improve/changes/` (each has `source_kinds []` and 1 piece). I also grepped both cited lessons
+  at their adding commits for item-shaped tokens: there are none, which confirms that "neither lesson names an item anywhere".
+- Sanity probe: the production `apply_change` at L0, run in a temp git repo on a real inbox lesson that has an `item:`
+  footer, writes `probe_v1.json` with `source_kinds ['AUDIT']`. The same `count()` reader then reports 0 of 1. The probe
+  could fail: it would read 1 of 1 if the writer or the reader were blind. It reproduced on my run.
+- Stated on the item: ledger note 2026-11-12T04:41Z gives the 2 of 2. The 05:18Z note corrects that note's wrong
+  description of the probe. Stated in 4.3: "Measured 2026-11-11: 2 of 2 change records on file have `source_kinds: []`".
 
-## Staged or flattering
-- The probe lesson is the builder's own, filed in this round with WC_ITEM set. It is a real inbox file read by
-  production code, so the probe is honest, but it is a best case.
-- The item note describes an older probe ("a copy with ['REPAIR']"), while the current evidence shows the
-  apply_change probe with ['AUDIT']. This is drift in the note only. The share the criterion asks for is stated
-  correctly.
-- The evidence is candid about what the change does not achieve:
-  - §4 (ordinary use) shows the same signalled targets on old and new code.
-  - The attribution audit shows the whole-text fallback is only a proxy: 49% corroborated against 27% for the first
-    line. §4.3 says so.
-  - The doc admits most skill changes will stay unmeasured until lessons carry an `item:` line.
-- Nothing here needs motion or a live game. Everything is offline and reproducible.
+## Where the evidence is flattering or thin
+- The probe lesson was filed by the builder's own seat during this work, with a footer naming this item. It is the one
+  case built to succeed. It proves the instrument can see a non-empty list. It says nothing about how often real lessons
+  will carry a footer: 5 of 114 in the live inbox, and the doc says plainly that most changes will stay unmeasured.
+- n = 2 records is a census, not a rate. The doc and the note both say so.
+- The saved evidence `.out` files in the working tree are an uncommitted rerun at 21:19 (HEAD 2452d42756). Only the
+  header lines differ from the committed copies (HEAD and temp path); the results are the same.
+- selftest_lessons on the old code crashes (IndexError) rather than giving a clean FAIL. That is acceptable as
+  "fails on old", but it is a crash, not an assertion.
+- None of these changes a line's verdict.
 
 would show: yes

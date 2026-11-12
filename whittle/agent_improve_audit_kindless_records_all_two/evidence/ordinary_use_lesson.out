@@ -3,34 +3,35 @@ $ WC_ITEM=AGENT_IMPROVE_AUDIT_KINDLESS_RECORDS_ALL_TWO python3 src/RimMandrake/U
 infrastructure/state/lessons/20261112T043802Z-CLAUDE_ARCHMAGI_OFFLINE1-lesson-item-footer-feeds-kinds.md
 commit it: git commit infrastructure/state/lessons/20261112T043802Z-CLAUDE_ARCHMAGI_OFFLINE1-lesson-item-footer-feeds-kinds.md -m 'lesson: …'
 
-# re-read 2026-11-11 21:14 -0800 at HEAD 608a72f6df
+
+# re-read 2026-11-11 21:21 -0800 at HEAD 2452d42756
 $ tail -2 infrastructure/state/lessons/20261112T043802Z-CLAUDE_ARCHMAGI_OFFLINE1-lesson-item-footer-feeds-kinds.md
 item: AGENT_IMPROVE_AUDIT_KINDLESS_RECORDS_ALL_TWO
 home: design/RimMandrake/daily_agent_improvement_2026-11-02.md
 
 # the pass's collector on the real inbox (agent_improve.lesson_pieces, UTC day 2026-11-12):
-  task_kind=None     target=None                                 20261112T033316Z-BENCH-notice-json-has-no-system-pct.md
-  task_kind=None     target=None                                 20261112T035822Z-CLAUDE_STEVEDESKTOP_OFFLINE1-stevedesktop-whittle-clones-rm-claude-offline1.md
-  task_kind=BUILD    target=selftest_codex_seats.py              20261112T040055Z-BENCH-codex-seats-selftest-reads-live-steve.md
-  task_kind=None     target=None                                 20261112T040152Z-CLAUDE_STEVEDESKTOP_OFFLINE2-stevedesktop-whittle-loop-clones-claude-offline2.md
-  task_kind=None     target=None                                 20261112T040220Z-CLAUDE_STEVEDESKTOP_OFFLINE3-stevedesktop-whittle-clones-rm-claude-offline.md
-  task_kind=None     target=None                                 20261112T040220Z-CLAUDE_STEVEDESKTOP_OFFLINE3-whittle-claude-offline-lane-gate-hook.md
-  task_kind=None     target=None                                 20261112T041011Z-BENCH-steve-c-drive-bounds-worker-clones.md
-  task_kind=None     target=None                                 20261112T041030Z-CLAUDE_STEVEDESKTOP_OFFLINE3-wsl2-restart-stevedesktop-2026-11-11.md
-  task_kind=None     target=None                                 20261112T041546Z-CLAUDE_STEVEDESKTOP_OFFLINE4-wsl2-ext4-emergency-read-only-remount.md
-  task_kind=None     target=install.sh                           20261112T041548Z-BENCH-offline5-clone-removed-with-dirty-files.md
-  task_kind=None     target=CLAUDE.md                            20261112T041548Z-BENCH-stevedesktop-already-held-claude-vaults.md
-  task_kind=FIX      target=None                                 20261112T041623Z-CLAUDE_ARCHMAGI_OFFLINE1-class-guard-s-sanity-fixtures-must.md
-  task_kind=None     target=None                                 20261112T041933Z-CLAUDE_STEVEDESKTOP_FWLIVE-rimflow-bridge-release-host-stevedesktop-force.md
-  task_kind=None     target=None                                 20261112T042646Z-BENCH-claude-whittle-loops-2026-11-11.md
-  task_kind=AUDIT    target=daily_agent_improvement_2026-11-02.md 20261112T043802Z-CLAUDE_ARCHMAGI_OFFLINE1-lesson-item-footer-feeds-kinds.md
-  task_kind=None     target=None                                 20261112T044100Z-CLAUDE_STEVEDESKTOP_OFFLINE2-stevedesktop-wsl-had-no-playwright-2026.md
-  task_kind=REBUILD  target=None                                 20261112T044100Z-CLAUDE_STEVEDESKTOP_OFFLINE2-whittle-setup-stevedesktop-left-done-md.md
-  task_kind=FIX      target=None                                 20261112T044201Z-CLAUDE_ARCHMAGI_OFFLINE3-givequest-incident-world-target.md
-  task_kind=None     target=loop.sh                              20261112T045615Z-BENCH-claude-p-default-context-cost.md
-  task_kind=None     target=wc.py                                20261112T045615Z-BENCH-ledger-open-ghosts.md
-  task_kind=None     target=loop.sh                              20261112T045615Z-BENCH-private-run-copy-never-adopts.md
-  task_kind=None     target=wc.py                                20261112T045616Z-BENCH-empty-out-mtime-birth.md
+  task_kind=None     target=None                                   20261112T033316Z-BENCH-notice-json-has-no-system-pct.md
+  task_kind=None     target=None                                   20261112T035822Z-CLAUDE_STEVEDESKTOP_OFFLINE1-stevedesktop-whittle-clones-rm-claude-offline1.md
+  task_kind=BUILD    target=selftest_codex_seats.py                20261112T040055Z-BENCH-codex-seats-selftest-reads-live-steve.md
+  task_kind=None     target=None                                   20261112T040152Z-CLAUDE_STEVEDESKTOP_OFFLINE2-stevedesktop-whittle-loop-clones-claude-offline2.md
+  task_kind=None     target=None                                   20261112T040220Z-CLAUDE_STEVEDESKTOP_OFFLINE3-stevedesktop-whittle-clones-rm-claude-offline.md
+  task_kind=None     target=None                                   20261112T040220Z-CLAUDE_STEVEDESKTOP_OFFLINE3-whittle-claude-offline-lane-gate-hook.md
+  task_kind=None     target=None                                   20261112T041011Z-BENCH-steve-c-drive-bounds-worker-clones.md
+  task_kind=None     target=None                                   20261112T041030Z-CLAUDE_STEVEDESKTOP_OFFLINE3-wsl2-restart-stevedesktop-2026-11-11.md
+  task_kind=None     target=None                                   20261112T041546Z-CLAUDE_STEVEDESKTOP_OFFLINE4-wsl2-ext4-emergency-read-only-remount.md
+  task_kind=None     target=install.sh                             20261112T041548Z-BENCH-offline5-clone-removed-with-dirty-files.md
+  task_kind=None     target=CLAUDE.md                              20261112T041548Z-BENCH-stevedesktop-already-held-claude-vaults.md
+  task_kind=FIX      target=None                                   20261112T041623Z-CLAUDE_ARCHMAGI_OFFLINE1-class-guard-s-sanity-fixtures-must.md
+  task_kind=None     target=None                                   20261112T041933Z-CLAUDE_STEVEDESKTOP_FWLIVE-rimflow-bridge-release-host-stevedesktop-force.md
+  task_kind=None     target=None                                   20261112T042646Z-BENCH-claude-whittle-loops-2026-11-11.md
+  task_kind=AUDIT    target=daily_agent_improvement_2026-11-02.md  20261112T043802Z-CLAUDE_ARCHMAGI_OFFLINE1-lesson-item-footer-feeds-kinds.md
+  task_kind=None     target=None                                   20261112T044100Z-CLAUDE_STEVEDESKTOP_OFFLINE2-stevedesktop-wsl-had-no-playwright-2026.md
+  task_kind=REBUILD  target=None                                   20261112T044100Z-CLAUDE_STEVEDESKTOP_OFFLINE2-whittle-setup-stevedesktop-left-done-md.md
+  task_kind=FIX      target=None                                   20261112T044201Z-CLAUDE_ARCHMAGI_OFFLINE3-givequest-incident-world-target.md
+  task_kind=None     target=loop.sh                                20261112T045615Z-BENCH-claude-p-default-context-cost.md
+  task_kind=None     target=wc.py                                  20261112T045615Z-BENCH-ledger-open-ghosts.md
+  task_kind=None     target=loop.sh                                20261112T045615Z-BENCH-private-run-copy-never-adopts.md
+  task_kind=None     target=wc.py                                  20261112T045616Z-BENCH-empty-out-mtime-birth.md
 
 $ python3 src/RimMandrake/Utils/agent_improve.py gather --day 2026-11-12 --dry-run --out <scratch, L0>
 # Agent improvement packet 2026-11-12
@@ -39,10 +40,28 @@ $ python3 src/RimMandrake/Utils/agent_improve.py gather --day 2026-11-12 --dry-r
 
 ## loop.sh (2 in window, 2 today)
 kinds: lesson 2
+- [lesson] A bare 'claude -p' in a seat clone loads the full CLAUDE.md layers (~48k tokens) plus a ~134k MCP deferred-tool delta on every call: Claude Whittle setup paid $1.2-1.8 of opus per round (21 turns) jus  (/home/mandrake/rm/scratch/BENCH/claude-archmagi-offline1/infrastructure/state/lessons/20261112T045615Z-BENCH-claude-p-default-context-cost.md)
+- [lesson] A loop that execs a private copy of itself (loop.run.sh) never adopts a new loop.sh: only wc.py and the *.md briefs it re-reads each round reach a running unit. Fixes for running loops must ride wc.py  (/home/mandrake/rm/scratch/BENCH/claude-archmagi-offline1/infrastructure/state/lessons/20261112T045615Z-BENCH-private-run-copy-never-adopts.md)
 
 ## wc.py (2 in window, 2 today)
 kinds: lesson 2
+- [lesson] Of 1865 ledger-open ids on 2026-11-11, 1191 had no infrastructure/state/items/<ID>.md on origin/main (ghosts): a picker that trusts ledger state alone hands a model a ticket that does not exist. wc.py  (/home/mandrake/rm/scratch/BENCH/claude-archmagi-offline1/infrastructure/state/lessons/20261112T045615Z-BENCH-ledger-open-ghosts.md)
+- [lesson] The mtime of an empty output file a killed process redirected into is its creation time, not when the run ended: ending a killed claude run's spend window there counted 0 tokens. End it at the next ph  (/home/mandrake/rm/scratch/BENCH/claude-archmagi-offline1/infrastructure/state/lessons/20261112T045616Z-BENCH-empty-out-mtime-birth.md)
 
 ## unrouted (the Curator routes these or leaves them)
+- [lesson] The account switcher's D:\ClaudeWork\rimmandrake\switching_plan\notice.json holds the switcher's current account (steven), pct_left and its switch line, not the Claude System account's weekly %. That 
+- [lesson] SteveDesktop Whittle clones (~/rm/claude-offline1..4, ~/rm/claude-fwlive) push to git@github.com, which resolves to ~/.ssh/id_ed25519: a READ-ONLY key (GitHub: 'marked as read only'), so ./publish ret
+- [lesson] SteveDesktop Whittle loop clones claude-offline2 and claude-offline3 were created with push URL git@github.com:... , which authenticates with the machine's READ-ONLY default key, so ./publish retries 
+- [lesson] SteveDesktop Whittle clones (~/rm/claude-offline*) set no core.sshCommand, so ./publish pushes with the read-only id_ed25519 and is REFUSED ('key ... marked as read only'). Publish with GIT_SSH_COMMAN
+- [lesson] The whittle_claude offline-lane gate hook (infrastructure/whittle_claude/gate.py) refuses ANY Bash command whose text contains the rimflow close flag for running-promises, even inside a heredoc of pro
+- [lesson] On SteveDesktop the bound for adding Claude worker clones is C: free space, not CPU or RAM. The WSL ext4.vhdx is on C: (C:\Users\sjlewis\AppData\Local\wsl\{353db0b6-...}\ext4.vhdx, 107.7 GB on 2026-11
+- [lesson] A WSL2 restart on SteveDesktop (2026-11-11 20:08) zero-filled files mid-write in a Whittle clone: 37 empty .git/objects (HEAD 'bad object'), files truncated to 0 bytes, and a ledger tail of NUL bytes 
+- [lesson] A WSL2 ext4 emergency read-only remount (errors=remount-ro) can leave NUL-padded files in a clone after reboot; a Whittle runner then dies with 'ValueError: embedded null byte' reading PROMPT.md. Afte
+- [lesson] A class guard's sanity fixtures must not be cut from the file it judges: selftest_hook_promises_wired first derived its 'minus one hook' fixture from the repo's settings.json, so on a clobbered clone 
+- [lesson] rimflow bridge release --host stevedesktop --force releases the ledger bridge but NOT the stevedesktop guard driver lock when its holder pid (a Whittle phase's proof run) has died; the guard still rea
+- [lesson] Claude Whittle loops (2026-11-11) spent 2.2-3.1M tokens per round on 4 ghost tickets (ledger-open, no live items/<ID>.md) only to release them: setup, whittle and wrapup were all model calls. Rule: el
+- [lesson] SteveDesktop WSL had no playwright (2026-11-11): a venv under D:\ClaudeWork\rimmandrake\whittle_claude\<SEAT>\venv plus 'sudo -n <venv>/bin/playwright install-deps chromium' (passwordless sudo works) 
+- [lesson] Whittle setup on SteveDesktop left DONE.md and JUDGE_PROMPT.md as 0-byte files (MINERAL_SHEET_REBUILD_FROM_PAINTED_MAP, 2026-11-11); loop.sh lays the templates only when the file is ABSENT ([ -e ]), s
+- [lesson] A baseChance-0 GiveQuest incident fired through jawa/storyteller_fire must override GiveQuestBase's targetTags (World) with <targetTags Inherit="False"><li>Map_PlayerHome</li></targetTags>: storytelle
 
 Not signalled today: CLAUDE.md, daily_agent_improvement_2026-11-02.md, install.sh, selftest_codex_seats.py
