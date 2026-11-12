@@ -253,6 +253,10 @@ while :; do
             setcur phase=wrapup whittle_rc=ghost tries=0; continue
         fi
         mkdir -p "$DIR/evidence"
+        # Lodestar's SessionEnd hook writes conversations/<session>.md into the clone after the session and before run.py's
+        # validator compares evidence mtimes with the project's newest file, so every finished claim read as stale (2026-11-11:
+        # nearly every run on every lane exit 1). Kept out of that read; the record is still written.
+        EX=$(git rev-parse --git-path info/exclude); grep -qxF '/conversations/' "$EX" 2>/dev/null || echo '/conversations/' >> "$EX"
         # the Whittle machinery: the templates with their paths pointed at this item's directory
         for f in DONE.md JUDGE_PROMPT.md; do [ -e "$DIR/$f" ] || sed "s#whittle/#$DIR/#g" "$WC_TEMPLATE/$f" > "$DIR/$f"; done
         grep -q "This loop's round" "$DIR/PROMPT.md" 2>/dev/null || {
