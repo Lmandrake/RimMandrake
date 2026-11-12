@@ -1,0 +1,1 @@
+rimflow bridge release --host stevedesktop --force releases the ledger bridge but NOT the stevedesktop guard driver lock when its holder pid (a Whittle phase's proof run) has died; the guard still reads HELD until its heartbeat goes stale. Seen 2026-11-11 gen 1488, pid 1957241.
