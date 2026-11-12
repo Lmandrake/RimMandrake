@@ -35,6 +35,12 @@ Distinctness pass (Whittle judge, 2026-11-11): three biomes gave a cabin heater,
 bone and the Rot row only its drive core; the furnace-hide bank is the one heater. The two water machines stay, told
 apart in their rows (powered and buildable vs unpowered and unique).
 
+**Art still owed.** 14 gifts would look like other things on a deck: 8 borrow another thing's texture (hull liner
+rig, wind vaporator, sun-sphere, glasswalk, aerosol screen, glower shield panel, waste cask bay, traction lance) and 6
+are declared placeholders (summ great bone, sekkulaath tank, lure awning, tar vault, floatstone door, ancient condenser
+plant). Their own art is owed by `RIMMANDRAKE_PAINT_SHIP_GIFTS_OWN_ART`; until it lands the scrapbook shows in what
+the gifts do, not yet in how they look.
+
 **Why agents picked rows on a design item.** The 2026-11-03 note routed this item's design to the Designer. The
 Conductor, who carries the owner's authority (`CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`, owner 2026-10-30), put it in
 a Whittle offline lane on 2026-11-11 (owner order ~19:10 PST: *"start other Whittle agents to work on offline items
@@ -59,7 +65,7 @@ fresh design judge, and carded to the owner for review (`whittle/biome_ship_cont
 | Pyrelands | **the furnace-hide heat bank**: furnace-beast hide gives back banked sun, a heater with no fuel and no power | `RM_FurnaceHideBank` | *new*, *delegated* |
 | The Rust Cathedral | **pattern hull**: hull seeded with live pattern metal that mends itself (120 HP a day) | `RM_PatternHull` | *new*, *delegated* |
 | The Sleeping Ice | **tellurox hexplate**: a deck floor of the tellurox's permanent shell plates | `RM_TelluroxHexplate` | *new*, *delegated* |
-| Stillsand | **the precision-lens kit**: the lens-glass solar still and sun lance, fuel-free on an open deck (the earlier "ship lens array" row named a part that was never built; this is what ships) | `RM_SolarStill` `RM_SunLance` | `STILLSAND_GLASS_LENS_CHAIN_1` §11 (owner-typed lens chain) |
+| Stillsand | **the precision-lens kit**: the lens-glass solar still and sun lance, fuel-free on an open deck (the earlier "ship lens array" row named a part that was never built; this is what ships) | `RM_SolarStill` `RM_SunLance` | `STILLSAND_GLASS_LENS_CHAIN_1` §11 (the lens chain is the owner's typed ruling; choosing these two as the ship gift is an agent pick); *delegated* |
 | Terminal Biomes | **the sun-sphere**: a cultured ollumin that grows into its own small sun, lighting and growing crops with no power or lamp; and the **cryoponics vat**, the Chill's deep-bed plants raised anywhere | `RM_SunSphere` `RM_ChillCryoponicsVat` | TerminalBiomes mod; *delegated* |
 | The Forge | **spunstone hull and floatstone door**: airtight floatstone ship parts | `RM_SpunstoneHull` `RM_FloatstoneDoor` | owner by card 2026-10-03 (`FORGE_SPUNSTONE_SOURCES_1`) |
 | The Rot | **the swallowed drive core**: an older ship's drive coil cut out of a hwelgrue, installed as a grav-engine facility, multiplies the ship's total range | `RM_SwallowedDriveCore` | TheRot mod; *delegated* |
@@ -67,7 +73,7 @@ fresh design judge, and carded to the owner for review (`whittle/biome_ship_cont
 | Warscar | **the aerosol screen** (a clean-air dome over the ship in any polluted biome) and the **glower shield panel** | `RM_AerosolScreen` `RM_GlowerShieldPanel` | `WARSCAR_AEROSOL_SCREEN_1` (owner turn 4, 2026-09-30) |
 | The Wastes | **the waste cask bay**: a shielded, powered rack that lets a ship carry waste casks safely | `RM_WasteCaskBay` | `wastes.md` (the waste run by gravship); *delegated* |
 | Webwork | **the traction lance**: a crewed tether emplacement that reels a target or a downed colonist in | `RM_TractionLance` | Webwork mod; *delegated* |
-| Weeping Stones | **the ancient condenser plant**: the oldest gorrask's machine, one per world, cut from its shell; it weeps water with no power or fuel wherever it is installed (unlike the Leaning Scrub vaporator: unpowered, unique, a trophy) | `RM_AncientCondenserPlant` | WeepingStones mod (its own text: "install it on a ship") |
+| Weeping Stones | **the ancient condenser plant**: the oldest gorrask's machine, one per world, cut from its shell; it weeps water with no power or fuel wherever it is installed (unlike the Leaning Scrub vaporator: unpowered, unique, a trophy) | `RM_AncientCondenserPlant` | WeepingStones mod (its own text: "install it on a ship"); *delegated* |
 
 ## spec
 

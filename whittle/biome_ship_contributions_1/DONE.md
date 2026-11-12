@@ -18,8 +18,10 @@ mod built from this clone loads clean in the offline effective def tree (`eviden
 ## What I'm least sure about
 - Nothing was placed, flown or used in a running game (offline lane). Placement is the engine's rules read from
   decompiled 1.6 and the defs; the load check reads defs and patches as the game does but runs no C#.
-- 17 rows are agent picks under the delegation, and the 4 new gifts' numbers are provisional; the owner card is not
-  answered yet (keep-as-is recommended, non-blocking).
+- 20 rows are agent picks under the delegation (each row says where it comes from), and the 4 new gifts' numbers are
+  provisional; the owner card is not answered yet (keep-as-is recommended, non-blocking).
+- 14 gifts still wear stand-in art (8 borrowed textures, 6 declared placeholders). The list and the card name them;
+  their art is owed by the filed item RIMMANDRAKE_PAINT_SHIP_GIFTS_OWN_ART, so the scrapbook shows in function first.
 - The checker's source test is a whitelist plus a file-level C# rule, and patch xpath is pattern-matched, not
   evaluated (both documented in the checker).
 

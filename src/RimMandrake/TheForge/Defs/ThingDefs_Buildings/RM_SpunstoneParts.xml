@@ -27,9 +27,10 @@
   autodoor's 4x), costStuffCount 25 (vanilla Door), WorkToBuild 1100 (vanilla Autodoor);
   hull keeps GravshipHull's 420 HP / 300 work / 7 per cell, scaled by floatstone's stuff
   factors (HP x2.2, work x3.5).
-  PLACEHOLDER ART: the door uses vanilla simple-door textures, the hull the vanilla
-  gravship-hull atlas, both tinted by floatstone's stuff colour. Own art is owed (none
-  found by artpipe_state.py find floatstone/spunstone, 2026-10-06).
+  ART: the hull has its own linked atlas (Things/Building/Linked/RM_SpunstoneHull/RM_SpunstoneHull, a 4x4
+  CornerFiller atlas; installed 2026-11-11 by BIOME_SHIP_CONTRIBUTIONS_1, judged KEEP). PLACEHOLDER ART: the door
+  still uses vanilla simple-door textures tinted by floatstone's stuff colour; its own art is owed by
+  RIMMANDRAKE_PAINT_SHIP_GIFTS_OWN_ART.
 -->
 <Defs>
 

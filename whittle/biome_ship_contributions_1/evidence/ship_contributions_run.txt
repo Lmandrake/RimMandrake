@@ -1,4 +1,4 @@
-run 2026-11-11 23:20 -0800, HEAD 1cbec4b00c + working tree
+run 2026-11-11 23:32 -0800, HEAD 4d551f04e0 + working tree
 deck affordances (read from Odyssey Substructure): Heavy, Light, Medium, Substructure, Walkable
 shipped biome mods (Biomes.compose.json): 24
 PASS   The Abyss            RM_SummGreatBone   (also deck-placeable: 1)
