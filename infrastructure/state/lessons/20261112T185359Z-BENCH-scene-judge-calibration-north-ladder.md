@@ -1,0 +1,3 @@
+Scene-look judge calibration 2026-11-12 (n=1, owner's pit screenshot): two naive Opus judges (uncropped; uncropped+2x crops) MISSED the 2 m north ladder drawn behind the pit wall art; one judge with design/RimMandrake/scene_look_judge_brief.md got PARTIAL (named the ladder as odd vs the dry reference, called the cut-off 'acceptable for submerged'). Judges read a fitting cut off at the waterline as submerged. Reference cells not described in the expectation get flagged WRONG. Evidence: D:\ClaudeWork\rimmandrake\conductor\scene_judge_20261112\RESULT.md
+item: RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL
+home: design/RimMandrake/scene_look_judge_brief.md
