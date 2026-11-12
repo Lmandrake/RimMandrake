@@ -1,0 +1,2 @@
+A ModsConfig PRESWAP snapshot is the live list over [its mtime, its stamp] (the archive copy keeps mtime; the stamp is the writer's local time), but repeated lists are never re-snapshotted, so about half of Relentless's pre-2026-11-12 run times fall in gaps: a negative control on old PASS runs cannot see their running load. Since LIVE_NEEDS_ENFORCE_ABSENCE_NOW_EXPLICIT (35f19251ee), every admitted run row carries env.running (count, sha, list under live/loads/).
+item: LIVE_NEEDS_ENFORCE_ABSENCE_NOW_EXPLICIT
