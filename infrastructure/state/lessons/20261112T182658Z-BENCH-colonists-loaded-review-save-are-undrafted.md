@@ -1,0 +1,1 @@
+Colonists in a loaded review save are UNDRAFTED and idle; within ~200 ticks one hauled 25 steel off a just-slid closed container onto the next cell, which looked exactly like a knockback bug (journal silent). Draft every colonist before a proof read or before saving a scene for the owner. Measured 2026-11-12 (stage5.py, 20/100/300-tick reads).

@@ -1,0 +1,1 @@
+wall_art_scene.py's per-pit 'closest zoom' shots (rimworld/set_camera_zoom rootSize 11 or 6) came out at the same scale as the whole-row shot on the 13-mod list with SimpleCameraSetting: crop the PNG to look at a pit, do not trust the zoom. 2026-11-12.

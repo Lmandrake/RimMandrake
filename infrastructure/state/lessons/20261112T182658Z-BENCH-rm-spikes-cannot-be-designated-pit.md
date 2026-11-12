@@ -1,0 +1,1 @@
+RM_Spikes cannot be designated in a pit that already holds water ('requires terrain that supports: Light'); place spikes dry, then fill. Spikes are fully hidden at 1 m of water by design (SubmergedAlpha), so a fill-2 pit shows the ladder top and no stakes. 2026-11-12.

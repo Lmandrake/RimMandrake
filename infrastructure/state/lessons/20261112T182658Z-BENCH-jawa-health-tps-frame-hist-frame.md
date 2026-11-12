@@ -1,0 +1,1 @@
+jawa/health tps.frame-hist is the frame-time instrument (interval between Root.Update prefixes; maxMs and bucket counts); it sees a deliberate stall (static_call System.Threading.Thread.SpinWait 100000000 = 1,095 ms read 1094.963). Thread.Sleep is refused as an ambiguous overload. Its JSON and windowing are broken: RIMMANDRAKE_REPAIR_FRAME_HIST_READS_THREE_WAYS_WRONG. 2026-11-12.

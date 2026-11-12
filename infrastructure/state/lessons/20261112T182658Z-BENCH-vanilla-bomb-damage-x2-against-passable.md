@@ -1,0 +1,1 @@
+Vanilla Bomb damage is x2 against passable buildings (buildingDamageFactorPassable 2): 50 x 2 = 100 = a Hopper's whole HP (Hopper is not stuffed), so ANY HE shell blast that reaches a Hopper destroys it, 3 shells or 25. To show a container surviving a blast, use a plasteel small shelf (ShelfSmall 50 HP x 2.8 = 140) tagged closed. Measured 2026-11-12, Station 5.
