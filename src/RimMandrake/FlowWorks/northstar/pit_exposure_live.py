@@ -104,8 +104,15 @@ def verdicts(res, row):
     full = [NOTCHES, NOTCHES]
     shallow = [s["hour"] for s in samples if s.get("depthA") != full or s.get("depthB") != full
                or s.get("fillA") not in (0, None) or s.get("fillB") not in (0, None)]   # a dry pit, full depth
-    if not (s0 and s12) or None in (s0.get("TA"), s0.get("TB"), s12.get("TA"), s12.get("TB")):
-        row("PEX_A2_open_pit_tracks_noon", "UNMEASURED", "HARNESS", {"why": "no start/12:00 temperature read"})
+    unread = [s["hour"] for s in samples if None in (s.get("TA"), s.get("TB"), s.get("out"))]
+    # a sample's label is the hour asked for; the game's own hour sits a fixed zone offset from it (e.g. 5.77 for 6:00).
+    # An offset that moves means a step failed or the game changed between resumes: the labels lie
+    offs = [s["hour"] - fnum(s["PA"].get("hour")) for s in samples if fnum(s["PA"].get("hour")) is not None]
+    drift = len(offs) < 2 or max(offs) - min(offs) > 0.1
+    if not (s0 and s12) or unread or drift:
+        row("PEX_A2_open_pit_tracks_noon", "UNMEASURED", "HARNESS",
+            {"why": "a sample has no temperature read" if unread or not (s0 and s12) else "sample hours drift from the game clock",
+             "hours_unread": unread[:6], "offsets": [round(o, 2) for o in offs][:16]})
     elif shallow or s12["PA"].get("exposed") != "True" or s12["PA"].get("outdoorRoom") != "True" \
             or s12["PB"].get("outdoorRoom") != "False":
         # flat ground or a half-dug pit also reads outdoors: the row is about a 4 m open pit and its roofed twin
@@ -203,6 +210,9 @@ def main():
                "rows": [], "samples": [], "args": {k: getattr(a, k) for k in ("day", "tile_temp", "from_hour", "to_hour",
                                                                                   "every", "save_name")}}
     rows, samples = res["rows"], res["samples"]
+    if a.resume and res.get("finished"):
+        print("REFUSED: %s finished at %s: start a fresh run" % (out, res["finished"]))
+        return 2
     if a.resume and "next_hour" not in res:
         print("REFUSED: %s was saved before its site was built (setup did not finish): start a fresh run" % out)
         return 2
@@ -239,7 +249,7 @@ def main():
     if not a.resume:
         want = [b for b in a.want_biome.split(",") if b]
         rolled = []
-        for roll in range(a.rolls if a.fresh_map else 1):
+        for roll in range(max(1, a.rolls) if a.fresh_map else 1):
             if a.fresh_map:
                 B.call("rimworld/go_to_main_menu")
                 B.call("rimworld/start_debug_game_ready", readiness="mapData", pauseIfNeeded=True, timeoutMs=280000)
@@ -279,7 +289,12 @@ def main():
         tc = B.call("jawa/world_tile_cache_reset", tiles=str(tile)) or {}
         clk = B.call("jawa/time_clock") or {}
         start_abs = int(clk.get("ticksAbs", 0)) - int(clk.get("ticksGame", 0))
-        t0 = tick_for(a.day, 0.0, lon)
+        # --day is northern midsummer; a southern tile's midsummer is half a year (30 days) on
+        day = a.day if fnum(mi.get("latitude"), 0.0) >= 0 else (a.day + 30) % 60
+        res["args"]["day_used"] = day
+        t0 = tick_for(day, 0.0, lon)
+        while t0 <= int(clk.get("ticksAbs", 0)):   # never jump backwards: the same day of a later year
+            t0 += 60 * DAY_TICKS
         tj = B.call("jawa/time_set_ticks", ticks=t0 - start_abs, timeException=True,
                     why="%s: midsummer desert day for the pit exposure proof, before the site is built" % ITEM) or {}
         step(1)
@@ -437,7 +452,7 @@ def main():
             if args.get("save_name"):
                 sn = "%s_%s" % (args["save_name"], stamp)
                 res["save"] = {"name": sn, "result": str(B.call("rimworld/save_game", saveName=sn))[:200]}
-            B.call("jawa/clear_ui", all=True, hideHudSeconds=1)   # its default 20 s screenshot mode would hide the inspect pane below
+            B.call("jawa/clear_ui", all=True, hideHudSeconds=5)   # its default 20 s screenshot mode would hide the inspect pane below
             sh = B.call("rimworld/screenshot_cell_rect", x=rect[0], z=rect[1], width=rect[2], height=rect[3], paddingCells=2,
                         fileName="pit_exposure_site_%s" % stamp, suppressMessage=True) or {}
             src = local(sh.get("path"))
@@ -448,8 +463,8 @@ def main():
                 shutil.copyfile(src, shots["site"])
             pa = probes["A"]
             # the HUD back on (the site capture's screenshot-mode lease ends by itself): this capture is what a player sees
-            B.call("jawa/clear_ui", hideHud=True, hideHudSeconds=1)
-            time.sleep(2.5)
+            B.call("jawa/clear_ui", hideHud=False)   # dev windows shut; the HUD and the inspect pane stay for the player view
+            time.sleep(5.5)   # the site shot's 5 s screenshot-mode lease runs out
             B.call("rimworld/jump_camera_to_cell", x=pa[0], z=pa[1])
 
             def tab_shot(key, pid, tab):

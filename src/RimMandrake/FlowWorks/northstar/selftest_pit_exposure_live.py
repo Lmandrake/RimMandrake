@@ -120,6 +120,17 @@ def main():
     r.pop("noon_thoughts")
     check(judge(r)["PEX_A4_compassion_not_psycho"][0] == "UNMEASURED", "no thought read is UNMEASURED")
 
+    r = base()   # review 2026-11-12: a blank outdoor read mid-day used to drop out of the lag test (or crash max([]))
+    r["samples"][3]["out"] = None
+    check(judge(r)["PEX_A2_open_pit_tracks_noon"][0] == "UNMEASURED", "a sample with no outdoor read is A2 UNMEASURED")
+    r = base()   # review 2026-11-12: a failed step leaves the labels on the wrong game hours
+    r["samples"][5]["PA"]["hour"] = "13.00"
+    check(judge(r)["PEX_A2_open_pit_tracks_noon"][0] == "UNMEASURED", "a sample off the game clock is A2 UNMEASURED")
+    r = base()   # the real runs read the game hour 0.23 h behind the label (a whole-hour zone): a fixed offset is fine
+    for s in r["samples"]:
+        s["PA"]["hour"] = "%.2f" % (s["hour"] - 0.23)
+    check(judge(r)["PEX_A2_open_pit_tracks_noon"][0] == "PASS", "a fixed zone offset between label and game hour still passes")
+
     check(L.kv("REFUSED: no spawned pawn x") == {"raw": "REFUSED: no spawned pawn x"}, "a refusal parses to raw, no fields")
     check(L.kv("EXPOSURE exposed=True resistance=4.500")["resistance"] == "4.500", "kv reads the proof line")
     check(L.tick_for(22, 0.0, 0.0) == 22 * 60000, "local midnight at longitude 0")

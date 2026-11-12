@@ -1,0 +1,81 @@
+{
+ "note": "pit_exposure_live.verdicts after the code-review fixes (every sample needs TA/TB/outdoor; sample labels must sit a fixed offset from the game hour), run on the recorded results and on two damaged copies of run 13",
+ "cases": {
+  "pit_exposure_result_20261112T014420.json": [
+   {
+    "id": "PEX_A2_open_pit_tracks_noon",
+    "status": "PASS",
+    "class": "MOD",
+    "why": null
+   },
+   {
+    "id": "PEX_A3_pit_wears_resistance",
+    "status": "PASS",
+    "class": "MOD",
+    "why": null
+   },
+   {
+    "id": "PEX_A4_compassion_not_psycho",
+    "status": "PASS",
+    "class": "MOD",
+    "why": null
+   }
+  ],
+  "pit_exposure_result_20261112T011827.json": [
+   {
+    "id": "PEX_A2_open_pit_tracks_noon",
+    "status": "PASS",
+    "class": "MOD",
+    "why": null
+   },
+   {
+    "id": "PEX_A3_pit_wears_resistance",
+    "status": "PASS",
+    "class": "MOD",
+    "why": null
+   },
+   {
+    "id": "PEX_A4_compassion_not_psycho",
+    "status": "PASS",
+    "class": "MOD",
+    "why": null
+   }
+  ],
+  "pit_exposure_result_20261112T005328.json": [
+   {
+    "id": "PEX_A2_open_pit_tracks_noon",
+    "status": "PASS",
+    "class": "MOD",
+    "why": null
+   },
+   {
+    "id": "PEX_A3_pit_wears_resistance",
+    "status": "PASS",
+    "class": "MOD",
+    "why": null
+   },
+   {
+    "id": "PEX_A4_compassion_not_psycho",
+    "status": "PASS",
+    "class": "MOD",
+    "why": null
+   }
+  ],
+  "run13 with the 09:00 outdoor read blanked": [
+   {
+    "id": "PEX_A2_open_pit_tracks_noon",
+    "status": "UNMEASURED",
+    "class": "HARNESS",
+    "why": "a sample has no temperature read"
+   }
+  ],
+  "run13 with the 11:00 sample taken at game hour 13.77": [
+   {
+    "id": "PEX_A2_open_pit_tracks_noon",
+    "status": "UNMEASURED",
+    "class": "HARNESS",
+    "why": "sample hours drift from the game clock"
+   }
+  ]
+ }
+}
