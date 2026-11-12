@@ -236,6 +236,46 @@ def _advisory_checks():
     check(FM.release(type("A", (), {"prefix": "J"})()) == 1, "release refuses with the switch off")
 
 
+def periodic_checks():
+    """advisory + reboot_every_h: old boot -> pause, drain, reboot once, resume only after a NEW boot answers; never mid-job."""
+    saved = (FM.T.QHOME, FM.worker_busy, FM.reboot, FM.T.steve_running, FM.T.paused, FM.T.cmd_pause, FM.T.cmd_resume)
+    FM.T.QHOME = tempfile.mkdtemp(prefix="rf_pr_")
+    log, box = [], {"pz": None, "running": [True], "busy": True}
+    try:
+        FM.S.dump({"advisory": True, "reboot_every_h": 12}, FM.T.q(FM.ADVISORY_FILE))
+        FM.worker_busy = lambda: box["busy"]
+        FM.reboot = lambda why: (log.append("reboot") or True, "")
+        FM.T.steve_running = lambda: box["running"]
+        FM.T.paused = lambda host=None: box["pz"]
+        FM.T.cmd_pause = lambda a: box.update(pz={"reason": a.reason}) or log.append("pause")
+        FM.T.cmd_resume = lambda a: box.update(pz=None) or log.append("resume")
+        st, B = {}, 1000000
+        young = {"boot": B}
+        FM.periodic_reboot(st, young, B + 11 * 3600)
+        check(not log and not st.get("pr"), "periodic: a boot younger than reboot_every_h is left alone")
+        old = {"boot": B}
+        FM.periodic_reboot(st, old, B + 13 * 3600)
+        check(log == ["pause"] and st["pr"]["state"] == "DRAIN", "periodic: an old boot pauses the lane")
+        for _ in range(3):
+            FM.periodic_reboot(st, old, B + 13 * 3600 + 60)
+        check("reboot" not in log, "periodic: never reboots while a job runs")
+        box.update(running=[], busy=False)
+        for _ in range(3):
+            FM.periodic_reboot(st, old, B + 13 * 3600 + 120)
+        check(log.count("reboot") == 1 and st["pr"]["state"] == "WAIT_BOOT", "periodic: reboots once, between jobs")
+        FM.periodic_reboot(st, old, B + 13 * 3600 + 600)
+        check("resume" not in log, "periodic: no resume until a new boot is seen")
+        FM.periodic_reboot(st, {"boot": B + 13 * 3600 + 400}, B + 13 * 3600 + 900)
+        check(log[-1] == "resume" and not st["pr"]["state"], "periodic: new boot answering resumes the lane")
+        os.remove(FM.T.q(FM.ADVISORY_FILE))
+        log.clear()
+        FM.periodic_reboot({}, old, B + 99 * 3600)
+        check(not log, "periodic: without the advisory switch nothing is scheduled (default unchanged)")
+    finally:
+        shutil.rmtree(FM.T.QHOME, ignore_errors=True)
+        (FM.T.QHOME, FM.worker_busy, FM.reboot, FM.T.steve_running, FM.T.paused, FM.T.cmd_pause, FM.T.cmd_resume) = saved
+
+
 def _gate_checks():
     a = FM.analyse([start(), cyc(170), cyc(175, [0]), start("2026-11-04 03:00:00")])
     w, now = a["windows"], BOOT_S + 3600 * 8
@@ -505,6 +545,7 @@ def ingest_checks(tmp):
 def main():
     analyse_checks()
     gate_checks()
+    periodic_checks()
     tmp = tempfile.mkdtemp(prefix="rf_fault_")
     try:
         machine_checks(tmp)

@@ -414,8 +414,8 @@ def step(st, a, fx, now):
     """One move of the machine. st is mutated; effects go through the module's functions."""
     phase = st.get("phase", "CLEAN")
     opened, windows = a["open"], a["windows"]
-    if os.path.exists(T.q("fault_monitor.stop")) or retest_active():
-        st["phase"] = "PASSIVE"
+    if os.path.exists(T.q("fault_monitor.stop")) or retest_active() or advisory():
+        st["phase"] = "PASSIVE"      # advisory(): the window is recorded; periodic_reboot() owns the reboots
         return
     if phase == "PASSIVE":      # back in charge: a pause of ours still on means a recovery was under way
         phase = "CLEAN"
@@ -489,6 +489,51 @@ def step(st, a, fx, now):
         return
 
 
+PR_MARK = "STEVE_PERIODIC_REBOOT:"
+
+
+def periodic_reboot(st, a, now):
+    """The owner's ruling 2026-11-12 ("we simply periodically reboot the machine and proceed"): with advisory() on and
+    fault_advisory.json carrying reboot_every_h, a boot older than that is drained (lane paused, running job finishes),
+    rebooted, and the lane resumed once the new boot answers. Never mid-job. Returns nothing; st["pr"] holds the state."""
+    cfg = T.read_json(T.q(ADVISORY_FILE)) or {}
+    every = cfg.get("reboot_every_h")
+    pr = st.get("pr") or {}
+    if not (advisory() and every and a["boot"]):
+        return
+    uptime = now - a["boot"]
+    pz = T.paused()
+    if pr.get("state") == "WAIT_BOOT":
+        if a["boot"] > pr["boot_before"]:
+            if worker_busy() is not None:           # the new boot's worker answers
+                if pz and PR_MARK in (pz.get("reason") or ""):
+                    T.cmd_resume(argparse.Namespace(reason=PR_MARK + " new boot answers", lane=T.STEVE))
+                st["pr"] = {"state": None, "last_reboot": stamp(now), "n": pr.get("n", 0) + 1}
+        elif now - pr["t0"] > BOOT_TIMEOUT_S:
+            st["alarm"] = "NO_RETURN Steve not back %d s after the periodic reboot" % (now - pr["t0"])
+        return
+    if pr.get("state") == "DRAIN":
+        if T.steve_running() or worker_busy() is not False:
+            pr["quiet"] = 0
+            return
+        pr["quiet"] = pr.get("quiet", 0) + 1
+        if pr["quiet"] < QUIET_TICKS:
+            return
+        ok, out = reboot("periodic reboot (owner ruling 2026-11-12): drained, rebooting")
+        st["last_reboot_out"] = out
+        if ok:
+            st["reboots"] = [t for t in st.get("reboots", []) if now - t < 86400] + [now]
+            st["pr"] = {"state": "WAIT_BOOT", "t0": now, "boot_before": a["boot"], "n": pr.get("n", 0)}
+        else:
+            pr["quiet"] = 0
+        return
+    if uptime >= float(every) * 3600 and (not pz or PR_MARK in (pz.get("reason") or "")):
+        if not pz:
+            T.cmd_pause(argparse.Namespace(reason=PR_MARK + " boot is %.1f h old: drain, reboot, resume" % (uptime / 3600),
+                                           hours=PAUSE_HOURS))
+        st["pr"] = {"state": "DRAIN", "quiet": 0, "n": pr.get("n", 0)}
+
+
 def merge_mirror(lines):
     """Union of the mirror and what Steve just gave, by timestamp, so Steve's log can rotate and we still hold history."""
     path = T.q("fault_watch.log")
@@ -533,6 +578,7 @@ def tick(now=None):
             if a["boot"] and now - a["boot"] > BLIND_S and now - (a["last_cycle"] or 0) > BLIND_S:
                 st["blind"] = "no canary cycle since %s" % (stamp(a["last_cycle"]) if a["last_cycle"] else "ever")
             step(st, a, fx, now)
+            periodic_reboot(st, a, now)
         elif st.get("phase") == "WAIT_BOOT" and now - st.get("reboot_t0", now) > BOOT_TIMEOUT_S:
             st["alarm"] = "NO_RETURN Steve not back %d s after the fault reboot" % (now - st["reboot_t0"])
         st.update(schema="steve.fault/1", at=stamp(now), reachable=bool(fx), boot=a["boot"],
