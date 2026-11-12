@@ -1,0 +1,20 @@
+
+== StandIn/Things/Plants/AB_AgariluxPrime   slots: (none in our defs)
+   variants: 1 distinct pictures (donor 1, repo 1); purged 0
+
+== Things/Plants/AB_AgariluxPrime   slots: (none in our defs)
+   variants: 2 distinct pictures (artpipe 2, git 1, repo 2); purged 0
+
+   rulings on 'Things/Plants/AB_AgariluxPrime': 1
+      keep           trust=prefill           2026-09-19_bulk_art_misroute_2026-09-19.decision  
+
+== RotSpecies/AgariluxPrime   slots: RM_AgariluxPrime/body
+   LIVE TheRot                   AgariluxPrime.png            85779af91a06
+   variants: 1 distinct pictures (artpipe 1, git 2, repo 1); purged 0
+
+== RotSpecies/AgariluxPrime   slots: RM_AgariluxPrime/body
+   LIVE TheRot                   AgariluxPrime.png            85779af91a06
+   variants: 1 distinct pictures (artpipe 1, git 2, repo 1); purged 0
+
+   rulings on 'RM_AgariluxPrime': 1
+      keep           trust=prefill           2026-09-17_flora_legibility_sheet_2026-09-17__de  

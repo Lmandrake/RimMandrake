@@ -1,0 +1,14 @@
+
+validate_patch.py - 1 XML file(s): 0 <Patch>, 1 <Defs>
+  SCANNED     Patches/: operation shape, guards, value shape, live xpath hit counts
+              Defs/:    XML parse, comment bodies, missing/duplicate defName, ParentName
+                        resolution, Class attributes, texPath existence and case
+  NOT SCANNED field names, field types, value ranges, C# class members, and any node
+              a PatchOperation creates at load time. This is not a def linter.
+
+  info    xpath engine: lxml 6.0.2.0 - full XPath 1.0, the same class of engine RimWorld itself uses, so text(), contains(), starts-with(), not() and boolean predicates are CHECKED.
+  info    load set: 316 active mods, 316 found on disk, target version 1.6 -> 7,022 def files
+
+=== src/RimMandrake/TheRot/Defs/ThingDefs_Plants/RM_TheRot_DonorPorts.xml ===
+
+OK - 0 errors, 0 warning(s)

@@ -537,7 +537,9 @@
   </ThingDef>
 
   <!-- RM_AgariluxPrime: port of AB_AgariluxPrime (Alpha Biomes, Plants_MycoticJungle.xml), copied as plain XML 2026-10-18 for donor retirement.
-       Dropped/replaced: AlphaBiomes.CompProperties_GasProducer (gas AB_MycoticSpores, radius 8, rate 0.4) -> our RimMandrake.EnvironmentalHazards.CompProperties_ActiveGasEmitter on RM_ChokingSpores, same radius/rate. -->
+       Dropped/replaced: AlphaBiomes.CompProperties_GasProducer (gas AB_MycoticSpores, radius 8, rate 0.4) -> our RimMandrake.EnvironmentalHazards.CompProperties_ActiveGasEmitter on RM_ChokingSpores, same radius/rate.
+       texPath is our own v3 render (owner-approved 2026-09-20), not the donor slot Things/Plants/AB_AgariluxPrime: two shadowed
+       copies at that slot (TheRot, UtinniPatches) were retired by AGARILUX_PRIME_COPIES_RECONCILE_SPLIT, 2026-11-11. -->
   <ThingDef ParentName="RM_TheRotPortedCavePlantBase">
     <defName>RM_AgariluxPrime</defName>
     <label>Agarilux Prime</label>
@@ -550,7 +552,7 @@
     </statBases>
     <tickerType>Normal</tickerType>
     <graphicData>
-      <texPath>Things/Plants/AB_AgariluxPrime</texPath>
+      <texPath>RotSpecies/AgariluxPrime</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <shadowData>
         <volume>(0.2, 0.2, 0.2)</volume>

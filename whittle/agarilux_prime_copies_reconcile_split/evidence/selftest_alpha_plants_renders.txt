@@ -1,0 +1,64 @@
+PASS sanity: donor folder holds 1124 distinct PNGs (>50)
+PASS RM_Bryolux (Graphic_Random) TheRot/Textures/RotSpecies/Bryolux resolves to 1 PNG(s) of its own mod
+PASS RM_Bryolux texPath is not a StandIn path (RotSpecies/Bryolux)
+PASS RM_Bryolux no texture byte-identical to a donor PNG 
+PASS RM_Glowstool (Graphic_Random) TheRot/Textures/RotSpecies/Glowstool resolves to 3 PNG(s) of its own mod
+PASS RM_Glowstool texPath is not a StandIn path (RotSpecies/Glowstool)
+PASS RM_Glowstool no texture byte-identical to a donor PNG 
+PASS RM_GiantAgarilux (Graphic_Random) TheRot/Textures/RotSpecies/GiantAgarilux resolves to 3 PNG(s) of its own mod
+PASS RM_GiantAgarilux texPath is not a StandIn path (RotSpecies/GiantAgarilux)
+PASS RM_GiantAgarilux no texture byte-identical to a donor PNG 
+PASS RM_GlowingAgarilux (Graphic_Random) TheRot/Textures/RotSpecies/GlowingAgarilux resolves to 3 PNG(s) of its own mod
+PASS RM_GlowingAgarilux texPath is not a StandIn path (RotSpecies/GlowingAgarilux)
+PASS RM_GlowingAgarilux no texture byte-identical to a donor PNG 
+PASS RM_LilacBeacon (Graphic_Random) TheRot/Textures/RotSpecies/LilacBeacon resolves to 5 PNG(s) of its own mod
+PASS RM_LilacBeacon texPath is not a StandIn path (RotSpecies/LilacBeacon)
+PASS RM_LilacBeacon no texture byte-identical to a donor PNG 
+PASS RM_WitchesOyster (Graphic_Random) TheRot/Textures/RotSpecies/WitchesOyster resolves to 3 PNG(s) of its own mod
+PASS RM_WitchesOyster texPath is not a StandIn path (RotSpecies/WitchesOyster)
+PASS RM_WitchesOyster no texture byte-identical to a donor PNG 
+PASS RM_RecurvedStropharia (Graphic_Single) TheRot/Textures/RotSpecies/RecurvedStropharia resolves to 1 PNG(s) of its own mod
+PASS RM_RecurvedStropharia texPath is not a StandIn path (RotSpecies/RecurvedStropharia)
+PASS RM_RecurvedStropharia no texture byte-identical to a donor PNG 
+PASS RM_ArbuscularMycorrhiza (Graphic_Random) TheRot/Textures/RotSpecies/ArbuscularMycorrhiza resolves to 1 PNG(s) of its own mod
+PASS RM_ArbuscularMycorrhiza texPath is not a StandIn path (RotSpecies/ArbuscularMycorrhiza)
+PASS RM_ArbuscularMycorrhiza no texture byte-identical to a donor PNG 
+PASS RM_SlimyPholiota (Graphic_Random) TheRot/Textures/RotSpecies/SlimyPholiota resolves to 3 PNG(s) of its own mod
+PASS RM_SlimyPholiota texPath is not a StandIn path (RotSpecies/SlimyPholiota)
+PASS RM_SlimyPholiota no texture byte-identical to a donor PNG 
+PASS RM_AgaricusDomeCap (Graphic_Single) TheRot/Textures/RotSpecies/AgaricusDomeCap resolves to 1 PNG(s) of its own mod
+PASS RM_AgaricusDomeCap texPath is not a StandIn path (RotSpecies/AgaricusDomeCap)
+PASS RM_AgaricusDomeCap no texture byte-identical to a donor PNG 
+PASS RM_DribblingCap (Graphic_Random) TheRot/Textures/RotSpecies/DribblingCap resolves to 3 PNG(s) of its own mod
+PASS RM_DribblingCap texPath is not a StandIn path (RotSpecies/DribblingCap)
+PASS RM_DribblingCap no texture byte-identical to a donor PNG 
+PASS RM_AgariluxPrime (Graphic_Single) TheRot/Textures/RotSpecies/AgariluxPrime resolves to 1 PNG(s) of its own mod
+PASS RM_AgariluxPrime texPath is not a StandIn path (RotSpecies/AgariluxPrime)
+PASS RM_AgariluxPrime no texture byte-identical to a donor PNG 
+PASS RM_FirevineTree (Graphic_Random) TheForge/Textures/Things/Plant/RM_FirevineTree resolves to 1 PNG(s) of its own mod
+PASS RM_FirevineTree texPath is not a StandIn path (Things/Plant/RM_FirevineTree)
+PASS RM_FirevineTree no texture byte-identical to a donor PNG 
+PASS tinkle grass defined nowhere 
+PASS tinkle grass on no RM_ biome roster 
+PASS sanity: the picks sheet showed 17 rotvar_ab renders (>=17)
+PASS every rotvar_ab render the sheet showed has a sha in the art ledger 
+PASS rotvar_ab_bryolux_a_v1: installed
+PASS rotvar_ab_bryolux_b_v1: disposition: not picked: AB_Bryolux row decision A (rotvar_ab_bryolux_a_v1, now RM_Rimetangle)
+PASS rotvar_ab_dribblingcap_a_v1: installed
+PASS rotvar_ab_dribblingcap_b_v1: installed
+PASS rotvar_ab_giantagarilux_a_v1: installed
+PASS rotvar_ab_giantagarilux_b_v1: disposition: superseded by rotvar_ab_giantagarilux_b_v2 (grader-flagged v1; v2 installed)
+PASS rotvar_ab_giantagarilux_b_v2: installed
+PASS rotvar_ab_glowingagarilux_a_v1: installed
+PASS rotvar_ab_glowingagarilux_b_v1: installed
+PASS rotvar_ab_glowstool_a_v1: installed
+PASS rotvar_ab_glowstool_b_v1: installed
+PASS rotvar_ab_lilacbeacon_a_v1: installed
+PASS rotvar_ab_lilacbeacon_b_v1: installed
+PASS rotvar_ab_slimypholiota_a_v1: installed
+PASS rotvar_ab_slimypholiota_b_v1: installed
+PASS rotvar_ab_witchesoyster_a_v1: installed
+PASS rotvar_ab_witchesoyster_b_v1: installed
+PASS no disposition names a render that is in fact installed 
+
+PASS: 0 failure(s)

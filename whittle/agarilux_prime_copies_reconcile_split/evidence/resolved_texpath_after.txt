@@ -1,0 +1,41 @@
+== 1. base def RM_AgariluxPrime
+   RM_AgariluxPrime                         src/RimMandrake/TheRot/Defs/ThingDefs_Plants/RM_TheRot_DonorPorts.xml
+   base graphicData/texPath = 'RotSpecies/AgariluxPrime'
+
+== 2. patch operations naming RM_AgariluxPrime (src/**/Patches)
+   other   PatchOperationConditional        src/RimMandrake/TheRot/Patches/RotGiants_HugeFootprint.xml  /Defs/ThingDef[defName="RM_AgariluxPrime"]
+   other   PatchOperationAddModExtension    src/RimMandrake/TheRot/Patches/RotGiants_HugeFootprint.xml  /Defs/ThingDef[defName="RM_AgariluxPrime"]
+   other   PatchOperationConditional        src/RimMandrake/TheRot/Patches/RotSpecies_NamesAndSizes.xml  /Defs/ThingDef[defName="RM_AgariluxPrime"]
+   other   PatchOperationReplace            src/RimMandrake/TheRot/Patches/RotSpecies_NamesAndSizes.xml  /Defs/ThingDef[defName="RM_AgariluxPrime"]/label
+   other   PatchOperationReplace            src/RimMandrake/TheRot/Patches/RotSpecies_NamesAndSizes.xml  /Defs/ThingDef[defName="RM_AgariluxPrime"]/description
+   other   PatchOperationReplace            src/RimMandrake/TheRot/Patches/RotSpecies_NamesAndSizes.xml  /Defs/ThingDef[defName="RM_AgariluxPrime"]/plant/visualSizeRange
+   other   PatchOperationConditional        src/RimUtinni/UtinniPatches/Patches/PlantTolerances_Ashkarr.xml  /Defs/ThingDef[defName="RM_AgariluxPrime"]/plant
+   other   PatchOperationConditional        src/RimUtinni/UtinniPatches/Patches/PlantTolerances_Ashkarr.xml  /Defs/ThingDef[defName="RM_AgariluxPrime"]/plant/minGrowthTemperature
+   other   PatchOperationReplace            src/RimUtinni/UtinniPatches/Patches/PlantTolerances_Ashkarr.xml  /Defs/ThingDef[defName="RM_AgariluxPrime"]/plant/minGrowthTemperature
+   other   PatchOperationAdd                src/RimUtinni/UtinniPatches/Patches/PlantTolerances_Ashkarr.xml  /Defs/ThingDef[defName="RM_AgariluxPrime"]/plant
+   other   PatchOperationConditional        src/RimUtinni/UtinniPatches/Patches/PlantTolerances_Ashkarr.xml  /Defs/ThingDef[defName="RM_AgariluxPrime"]/plant/minOptimalGrowthTemperature
+   other   PatchOperationReplace            src/RimUtinni/UtinniPatches/Patches/PlantTolerances_Ashkarr.xml  /Defs/ThingDef[defName="RM_AgariluxPrime"]/plant/minOptimalGrowthTemperature
+   other   PatchOperationAdd                src/RimUtinni/UtinniPatches/Patches/PlantTolerances_Ashkarr.xml  /Defs/ThingDef[defName="RM_AgariluxPrime"]/plant
+   other   PatchOperationConditional        src/RimUtinni/UtinniPatches/Patches/PlantTolerances_Ashkarr.xml  /Defs/ThingDef[defName="RM_AgariluxPrime"]/plant/maxOptimalGrowthTemperature
+   other   PatchOperationReplace            src/RimUtinni/UtinniPatches/Patches/PlantTolerances_Ashkarr.xml  /Defs/ThingDef[defName="RM_AgariluxPrime"]/plant/maxOptimalGrowthTemperature
+   other   PatchOperationAdd                src/RimUtinni/UtinniPatches/Patches/PlantTolerances_Ashkarr.xml  /Defs/ThingDef[defName="RM_AgariluxPrime"]/plant
+   other   PatchOperationConditional        src/RimUtinni/UtinniPatches/Patches/PlantTolerances_Ashkarr.xml  /Defs/ThingDef[defName="RM_AgariluxPrime"]/plant/maxGrowthTemperature
+   other   PatchOperationReplace            src/RimUtinni/UtinniPatches/Patches/PlantTolerances_Ashkarr.xml  /Defs/ThingDef[defName="RM_AgariluxPrime"]/plant/maxGrowthTemperature
+   other   PatchOperationAdd                src/RimUtinni/UtinniPatches/Patches/PlantTolerances_Ashkarr.xml  /Defs/ThingDef[defName="RM_AgariluxPrime"]/plant
+   19 operation(s); 0 touch graphicData/texPath
+
+== 3. resolved texPath 'RotSpecies/AgariluxPrime' -> PNG(s) in our src mods
+   src/RimMandrake/TheRot/Textures/RotSpecies/AgariluxPrime.png  (27414112 bytes)
+
+== 4. live def dump /mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/defs.sqlite
+   captured_utc=2026-11-02T17:59:18Z mod_count=317 game=1.6.4871 rev591 modlist_fingerprint=228dc89a129afe09
+   RM_AgariluxPrime: texPath='RotSpecies/AgariluxPrime' packageId=mandrake.rm.biomes mod='RimMandrake: Baroque Biomes'
+   AB_AgariluxPrime: NOT IN THE LIVE GAME (no row)
+   dumped defs whose JSON names 'Things/Plants/AB_AgariluxPrime': 0 []
+   sanity probe: dumped defs naming 'RotSpecies/AgariluxPrime': 1 (instrument can see)
+
+== 5. PNGs at the old slot Things/Plants/AB_AgariluxPrime.png
+   src/: none
+   deployed Steam Mods (stale until the next deploy of those mods): ['/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/TheRot/Textures/Things/Plants/AB_AgariluxPrime.png', '/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/UtinniPatches/Textures/Things/Plants/AB_AgariluxPrime.png']
+
+VERDICT: ONE PNG -- the player sees src/RimMandrake/TheRot/Textures/RotSpecies/AgariluxPrime.png

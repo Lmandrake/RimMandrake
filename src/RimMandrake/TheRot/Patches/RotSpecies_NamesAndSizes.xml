@@ -366,13 +366,7 @@
 
 
   <!-- ============== v3 regen landings, 2026-09-20 (rejected v2 replaced) ============== -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RM_AgariluxPrime"]/graphicData/texPath</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="RM_AgariluxPrime"]/graphicData/texPath</xpath>
-      <value><texPath>RotSpecies/AgariluxPrime</texPath></value>
-    </match>
-  </Operation>
+  <!-- RM_AgariluxPrime's v3 (RotSpecies/AgariluxPrime) is its base texPath in RM_TheRot_DonorPorts.xml since 2026-11-11. -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RM_RecurvedStropharia"]/graphicData/texPath</xpath>
     <match Class="PatchOperationReplace">

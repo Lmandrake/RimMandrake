@@ -1,0 +1,10 @@
+plan keys: ['generated', 'rows', 'repoint', 'retire', 'skipped', 'unresolved']
+plan rows naming AgariluxPrime: 0
+sanity: total plan size chars 108259
+
+Re-install check (2026-11-11, after the retire): bulk_accept_renders.py plan, the hourly donor-render installer's planner.
+  artpipe jobs named *agarilux* in done/ (20,378 files; a full-content grep timed out) whose JSON names the old slot: one,
+  dregen_RM_AgariluxPrime_ABAgariluxPrime_v1; pending/ and active/ hold no *agariluxprime* job. Its install_to src/RimMandrake/TheRot/Textures/Things/Plants/AB_AgariluxPrime.png
+  occurrences of 'dregen_RM_AgariluxPrime' anywhere in the plan (rows, repoints, retires, every skip list): 0
+  sanity probe -- other dregen_ jobs the plan does see: 104 (the instrument sees dregen jobs)
+  plan totals: {'rows': 21, 'repoint': 15, 'retire': 0} {'missing and drawn by no XML of ours': 225, 'live is REGEN': 268, 'live is UNPROVEN': 1, 'every render for it was purged by the owner': 1, 'live is REGEN (at the path the def draws now)': 6, 'repoint incomplete': 27}

@@ -1,0 +1,16 @@
+contained in rm-harness.slice (max 24G), 2 workers
+[1/3] PASS         15.2s  src/RimMandrake/Utils/art/selftest_alpha_plants_renders.py
+[2/3] PASS          2.5s  src/RimMandrake/Utils/selftest_hugethings_lint.py
+[3/3] PASS         62.1s  src/RimMandrake/HugeThings/selftest_hugethings_footprint.py
+evidence: 0 eligible, 0 SKIPPED as unchanged, 0 PASS recorded, 0 PASS not recordable — runner 65716eff3278c68e
+cache: 0 CACHED PASS, 0 declared test(s) ran
+known results: 0/3 answered from the ledger (selftests.cache_hit_share 0.000), 0s not spent; 3 ran, 0 recorded, 0 checked against a stored PASS, 0 known red
+  ran (3): no record
+  not recordable (2): changed during the run: src/RimMandrake/Utils/art/selftest_alpha_plants_renders.py, src/RimMandrake/Utils/selftest_hugethings_lint.py
+  not recordable (1): external: src/RimMandrake/HugeThings/selftest_hugethings_footprint.py
+PASS         62.1s  src/RimMandrake/HugeThings/selftest_hugethings_footprint.py
+PASS         15.2s  src/RimMandrake/Utils/art/selftest_alpha_plants_renders.py
+PASS          2.5s  src/RimMandrake/Utils/selftest_hugethings_lint.py
+
+PASS 3/3  FAIL 0/3  UNMEASURED 0/3  CRASH 0/3  SKIPPED 0/3  (wall 62.2s) — contained in rm-harness.slice (max 24G), 2 workers
+RESULT: GREEN (green = FAIL 0 and CRASH 0)
