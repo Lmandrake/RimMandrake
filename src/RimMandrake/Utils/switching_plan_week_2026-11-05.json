@@ -11,8 +11,8 @@
  "_order": "[O] 2026-10-28 10:15 (see _owner): 'Once steven.lewis resets, switch over to it and use it until 50%. Then use up system.mandrake to 2%, then lukas.mandrake to 2%.' A fixed priority: the engine burns the FIRST account in this list that is eligible (measured, fresh, inside its window, above its line). steven is eligible only inside his window after his reset, down to leave_pct_left. When system resets, the machine goes to system even if lukas still has budget; a lower account's budget that expires first is given up (the owner 2026-10-28, on being left on lukas at 13:00: 'awkward').",
  "accounts": {
   "steven": {
-   "leave_pct_left": 30,
-   "_leave_pct_left": "[C] 2026-10-28 10:20 card, Steven: 'Leave at 52% left' (his 10:15 words: 'use it until 50%'; the 2 points are the overshoot margin).",
+   "leave_pct_left": 62,
+   "_leave_pct_left": "[O] 2026-11-11 20:3x PST, card on the Whittle fleet's account: 'Use Steven until it is down to 60%, then switch to system please.' 62 = 60 plus the plan's 2-point overshoot margin (as 50 -> 52 on 2026-10-28).",
    "window_h_after_reset": 168,
    "_window_h_after_reset": "[O] 2026-10-27 'Dispatcher can use Steve up to 50% after a fresh reset only'; the 48 h reading of 'fresh' is [A] (slot_rules.json lent_accounts.steven.prefer_start_of_week_h). Outside this window the engine never switches to steven and switches off him if live."
   },
