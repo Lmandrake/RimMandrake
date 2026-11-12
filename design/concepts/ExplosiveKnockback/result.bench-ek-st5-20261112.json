@@ -1,0 +1,8 @@
+{
+ "run": "bench-ek-st5-20261112",
+ "stage": 5,
+ "outcome": "return",
+ "to": 3,
+ "decision": "Coverage judge not_covered (19 gaps, all return_to 3, none needs the owner: each is settled by a record decision). Rewrite scenes/tree/sheet per coverage_verdict.json gaps: limit the 40-throw cap to pawns or remove it (d_c_all_fly) and stage more goods than the cap; showcase 1 is his one flagship scene only, with one named weapon, an in-line heavy stack and an expectation on the covered pit cell; narrow no_careless_fall to d_pit_only_forced (enemies may fall into a concealed pit by walking); add leaves and sheet lines for the shipped behaviours the sheet omits (who is spared, recovery immunity, per-weapon caps, hose drop, doors and deep water stopping a throw, explosions only); give wall_stop, shield, gas-chain, containers, teleport trace, frame probe, hose drop, settings and the walk real controls or scenes; fill record.json script_audit. Also set tree.json root_state VALIDATED and root_hash to the walk's (gate refusal). Then re-run the stage 4 exam on refrozen scenarios and the judge.",
+ "summary": "Stage 5: gate REFUSED (root hash not the walk's; no coverage signature). Coverage judge rm-coverage-judge-1794471169 verdict not_covered with 19 gaps, all stage 3 work; returned to stage 3. The stage 4 exam passed 18/18 with control missed, but is void once stage 3 changes the tree."
+}

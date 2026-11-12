@@ -1,0 +1,143 @@
+{
+ "author": "BENCH builder run afbfd522846d85892",
+ "examiner": "a5446ba105341fa10",
+ "challenger": "af5bb3a7cf3c012d8",
+ "inputs": {
+  "tree": "0980d1464ff3ee3a7e696307c4e5e91298f57436170584df911791e82788ae44",
+  "sheet": "fa445148d77cde3bd8dcbc85f9b7cb14ed9cc289c546bb54a1fc9e1fc4313f8f"
+ },
+ "scenarios": [
+  {
+   "id": "e1",
+   "text": "A raider mortar shell lands one cell from a colonist crouched behind a sandbag line. The colonist sails clean over the sandbags, lands about three cells away from the crater, still alive, and stands dazed for a moment before moving again.",
+   "expect": "accept: a nearby shell throws a person about three cells straight away, over sandbags, alive and briefly stunned",
+   "expect_source": "leaf:people_thrown_three_cells"
+  },
+  {
+   "id": "e2",
+   "text": "A grenade goes off in a narrow corridor; the nearest colonist is thrown into the stone wall behind them, takes a bruise, and bounces back a cell toward the corridor's middle before coming to rest.",
+   "expect": "reject: a thrown person stops dead at the wall with an impact hit and never rebounds",
+   "expect_source": "leaf:wall_stops_dead"
+  },
+  {
+   "id": "e3",
+   "text": "A frag grenade bursts beside a colonist wearing a charged shield belt. The bubble flashes and absorbs the shrapnel, the belt's charge drops by a large chunk, and the colonist is still carried two cells backward by the blast.",
+   "expect": "reject: a shield belt that absorbs the blast keeps its wearer in place (it pays extra charge instead)",
+   "expect_source": "leaf:shield_belt_holds"
+  },
+  {
+   "id": "e4",
+   "text": "A mortar lands in a stockpile beside the storeroom wall. Stacks of herbal medicine and a raider corpse arc high through the air spinning quickly, smack into the wall, bounce off noticeably slower, bounce again weaker still, and settle a few cells away.",
+   "expect": "accept: loose goods and corpses fly in a high spinning arc and rebound off walls losing energy each time until spent",
+   "expect_source": "leaf:goods_arc_spin_rebound"
+  },
+  {
+   "id": "e5",
+   "text": "A grenade explodes in a storeroom. The steel and wood lying on the floor fly everywhere, but the meals and medicine sitting on the open shelving along the wall stay neatly in place, untouched.",
+   "expect": "reject: open shelves, racks and tables protect nothing; their goods scatter like floor goods",
+   "expect_source": "leaf:open_shelf_scatters"
+  },
+  {
+   "id": "e6",
+   "text": "A grenade goes off beside a crate pushed against a wall. The crate shudders in place without moving, and when the player opens it afterwards every item it held is still inside, while the loose goods on the floor nearby have flown off.",
+   "expect": "accept: a closed container keeps its goods and may itself be jolted or shoved a little",
+   "expect_source": "leaf:closed_container_holds"
+  },
+  {
+   "id": "e7",
+   "text": "A blast throws a bundle of cloth along the hallway; it strikes a colonist standing two cells away, who takes a small blunt bruise and staggers for half a second while the cloth drops at their feet.",
+   "expect": "reject: only heavy stacks knock a pawn; light goods such as cloth fly past untouched",
+   "expect_source": "leaf:heavy_stack_knocks"
+  },
+  {
+   "id": "e8",
+   "text": "An incendiary mortar shell lands one cell from a raider. Flames spread across the ground and the raider catches fire, but the raider is not pushed at all and stays on the same cell, while a frag shell a moment later throws the next raider three cells.",
+   "expect": "reject: fire blasts throw too, at about half strength; only harmless bursts throw nothing",
+   "expect_source": "leaf:every_harmful_blast_throws"
+  },
+  {
+   "id": "e9",
+   "text": "A drifting cloud of flammable gas over a workshop catches at one edge. Small pops run through it one after another behind the fire front, each flicking nearby tools and components a cell or two, and a colonist caught inside is nudged one cell sideways with no new injuries.",
+   "expect": "accept: a lit gas cloud goes off clump by clump, scattering goods near each burst and shoving people one cell unhurt",
+   "expect_source": "leaf:gas_goes_clump_by_clump"
+  },
+  {
+   "id": "e10",
+   "text": "A raider charges across a covered pit trap at the colony gate just as a colonist's grenade lands on the cover. The cover shatters into splinters and the raider drops out of sight onto the pit floor.",
+   "expect": "accept: a damaging blast breaks a pit cover and whoever is on it falls in",
+   "expect_source": "leaf:blast_breaks_pit_cover"
+  },
+  {
+   "id": "e11",
+   "text": "A mortar strikes a packed stockpile. The stacks nearest the crater fly up spinning, while stacks near the edge of the blast simply blink out and appear a couple of cells away, each under a small puff of dust.",
+   "expect": "reject: goods never vanish and reappear under a dust puff; every thrown good must visibly fly",
+   "expect_source": "leaf:no_teleport"
+  },
+  {
+   "id": "e12",
+   "text": "A colonist ordered to haul steel from the far side of an open pit takes the straight line to it, steps onto the pit's edge cell, and drops to the pit floor with no blast or other force involved.",
+   "expect": "reject: nobody enters a pit by ordinary pathing; only a blast or another force puts anyone in",
+   "expect_source": "leaf:no_careless_fall"
+  },
+  {
+   "id": "c1",
+   "text": "A raider stands on a covered pit inside a drifting cloud of flammable gas. A colonist lights the cloud; the clumps go off one after another, and the clump bursting over the pit cracks the cover apart and the raider drops to the pit floor.",
+   "expect": "reject: only a damaging or fire blast breaks a pit cover; a gas clump burst must leave the cover whole (the raider may only be shoved one cell)",
+   "expect_source": "leaf:blast_breaks_pit_cover",
+   "loophole": "the card line 'a blast breaks a pit cover' plus gas clumps being lit, burning bursts, so a gas burst reads as a fire blast"
+  },
+  {
+   "id": "c2",
+   "text": "A grenade lands two cells from a colonist standing near a granite wall. The colonist is flung into the wall, takes a hit, then bounces back a cell off it before falling stunned, just as the scattered steel bounced off the same wall.",
+   "expect": "reject: a thrown person stops dead on the cell before the wall and takes the impact hit; people never rebound",
+   "expect_source": "leaf:wall_stops_dead",
+   "loophole": "the owner's 'rebound off walls losing energy' and the wild scatter ruling, read as applying to everything a blast throws"
+  },
+  {
+   "id": "c3",
+   "text": "A mortar shell lands beside a colonist who has a one-cell-wide open pit just behind them. The colonist sails clean over the pit, the way they cleared the sandbag line earlier, and lands stunned on the far rim.",
+   "expect": "reject: anything thrown toward an open pit falls to its floor; nothing is thrown across a pit",
+   "expect_source": "leaf:thrown_into_pit_falls",
+   "loophole": "'thrown over sandbags' and the 3-cell throw distance, which make a 1-wide gap look like just another obstacle to clear"
+  },
+  {
+   "id": "c4",
+   "text": "A mechanoid scyther walks into an EMP grenade's burst. It is stunned and knocked back two cells, about half as far as a frag grenade would throw it.",
+   "expect": "reject: EMP is one of the harmless bursts that throw nothing at all, whatever it is hitting",
+   "expect_source": "leaf:every_harmful_blast_throws",
+   "loophole": "'all harmful explosions' and 'fire at half': EMP does real harm to mechanoids and shields, so it seems to qualify, perhaps at the reduced strength fire gets"
+  },
+  {
+   "id": "c5",
+   "text": "A six-shell mortar barrage hits a packed stockpile. The stacks near each impact arc and spin, but stacks at the edge of each blast just stay where they are, and the game never stutters.",
+   "expect": "reject: every loose good the blast reaches moves; none is skipped or held back to save frame time",
+   "expect_source": "OWNER:1794468864684141079",
+   "loophole": "the frame-budget line that the barrage must 'stay smooth', which seems to license capping how many stacks are thrown per tick"
+  },
+  {
+   "id": "c6",
+   "text": "A grenade goes off beside a crate full of medicine standing at the edge of an open pit in the storeroom floor. The crate keeps all its medicine but is shoved one cell and drops into the pit.",
+   "expect": "reject: a closed container keeps its goods and may slide one cell, but never into a pit, a wall or onto a pawn; with the pit behind it, it should only jolt in place",
+   "expect_source": "leaf:closed_container_holds",
+   "loophole": "'the closed containers may themselves get shoved a bit' combined with the first ruling that whatever is blasted toward a pit falls in"
+  }
+ ],
+ "scenarios_hash": "24f4ef2317fe685c3d34920de787658dd9edde4d3338888e8115dff78798244c",
+ "readers": [
+  "reader a3507febe0638c7ee",
+  "reader ad9e32a146065e0bc"
+ ],
+ "control": {
+  "broken_leaf": "wall_stops_dead",
+  "missed": true,
+  "reader": "a1d0f98ce9bf20458",
+  "note": "tree without wall_stops_dead and sheet with its three lines (does, pruning, later) stripped: the control reader accepted e2 and c2 (a thrown person bouncing off a wall), which both real readers rejected on wall_stops_dead"
+ },
+ "score": {
+  "right": 18,
+  "total": 18
+ },
+ "accept_where_reject_core": 0,
+ "challenger_misses": [],
+ "verdicts": "D:\\ClaudeWork\\rimmandrake\\designer\\ExplosiveKnockback\\exam\\verdicts_r1.json, verdicts_r2.json, verdicts_r3.json (control)"
+}
