@@ -11,20 +11,24 @@ import pit_exposure_live as L  # noqa: E402
 
 
 def sample(h, out, ta, tb, tc, ra, rb, rc, hurt_a):
-    def p(r, hurt, t):
-        return {"resistance": "%.3f" % r, "hurting": str(hurt), "ambient": "%.2f" % t, "safeMax": "38.0",
-                "heatstroke": "0.010", "outdoorRoom": "True", "hour": "%.2f" % h}
-    return {"hour": h, "out": out, "TA": ta, "TB": tb, "TC": tc,
-            "PA": p(ra, hurt_a, ta), "PB": p(rb, False, tb), "PC": p(rc, False, tc)}
+    def p(r, hurt, t, outdoor, exposed):
+        return {"resistance": "%.3f" % r, "hurting": str(hurt), "ambient": "%.2f" % t, "safeMax": "38.0", "prisoner": "True",
+                "heatstroke": "0.010", "outdoorRoom": str(outdoor), "exposed": str(exposed), "hour": "%.2f" % h}
+    return {"hour": h, "out": out, "TA": ta, "TB": tb, "TC": tc, "depthA": [8, 8], "depthB": [8, 8],
+            "PA": p(ra, hurt_a, ta, True, True), "PB": p(rb, False, tb, False, False), "PC": p(rc, False, tc, False, False)}
+
+
+HOT = ["EnvironmentHot", -8.0, "Hot"]
 
 
 def base():
     s = [sample(6.0 + k, 36.7 + k, 36.68 + k, 40.0 + 0.1 * k, 37.2 + 0.9 * k, 12.0 - 0.5 * k, 14.0, 12.0, True)
          for k in range(10)]
     return {"args": {"from_hour": 6.0}, "samples": s, "prisoners": {"PA": "a", "PB": "b", "PC": "c"},
-            "colonists": {"ids": ["k", "p", "h"], "psychopath": "p", "charity": {"Kind": ["Charity_Important"], "Hard": []},
+            "colonists": {"ids": ["k", "p", "h"], "psychopath": "p", "psycho_trait": True, "charity": {"Kind": ["Charity_Important"], "Hard": []},
                           "ideos": {"k": "Kind", "p": "Kind", "h": "Hard"}},
-            "noon_thoughts": {"k": [["RM_ExposedPrisoner", -3.0, "Prisoner left exposed in a pit"]], "p": [], "h": []}}
+            "noon_thoughts": {"k": [["RM_ExposedPrisoner", -3.0, "Prisoner left exposed in a pit"], HOT],
+                              "p": [HOT], "h": [HOT]}}
 
 
 def judge(res):
@@ -34,9 +38,10 @@ def judge(res):
 
 
 def main():
-    fails = []
+    fails, count = [], [0]
 
     def check(ok, msg):
+        count[0] += 1
         if not ok:
             fails.append(msg)
 
@@ -56,6 +61,16 @@ def main():
     r["samples"] = [s for s in r["samples"] if s["hour"] != 12.0]
     check(judge(r)["PEX_A2_open_pit_tracks_noon"][0] == "UNMEASURED", "no 12:00 sample is UNMEASURED, never PASS")
 
+    r = base()   # review 2026-11-11: pit A never dug (the drive refused): flat ground also tracks outdoors
+    for x in r["samples"]:
+        x["depthA"] = None
+    check(judge(r)["PEX_A2_open_pit_tracks_noon"] == ("UNMEASURED", "SITE"), "an undug pit A is UNMEASURED SITE")
+    r = base()   # run 3: the pit got shallower under the prisoner
+    r["samples"][4]["depthA"] = [3, 8]
+    check(judge(r)["PEX_A2_open_pit_tracks_noon"][0] == "UNMEASURED", "a pit not full depth all day is UNMEASURED")
+    r = base()
+    r["samples"][6]["PB"]["outdoorRoom"] = "True"
+    check(judge(r)["PEX_A2_open_pit_tracks_noon"][0] == "UNMEASURED", "a 'roofed' twin reading outdoors is UNMEASURED")
     r = base()   # the normal cell's prisoner loses as much: the pit is not what wore it down
     for k, s in enumerate(r["samples"]):
         s["PC"]["resistance"] = "%.3f" % (12.0 - 0.5 * k)
@@ -77,12 +92,27 @@ def main():
     r["noon_thoughts"]["h"] = [["RM_ExposedPrisoner", -3.0, "x"]]
     check(judge(r)["PEX_A4_compassion_not_psycho"][0] == "FAIL", "a hard-morality colonist with the thought is an A4 FAIL")
     r = base()
-    r["noon_thoughts"]["k"] = []
+    r["noon_thoughts"]["k"] = [HOT]
     check(judge(r)["PEX_A4_compassion_not_psycho"][0] == "FAIL", "a compassionate colonist without it is an A4 FAIL")
     r = base()
     r["colonists"]["charity"] = {"Kind": [], "Hard": []}
-    r["noon_thoughts"]["k"] = []
-    check(judge(r)["PEX_A4_compassion_not_psycho"][0] == "FAIL", "no compassionate colonist at all is never a PASS")
+    r["noon_thoughts"]["k"] = [HOT]
+    check(judge(r)["PEX_A4_compassion_not_psycho"][0] != "PASS", "no compassionate colonist at all is never a PASS")
+    r = base()   # review 2026-11-11: PA recruited/released before the end reads resistance -1
+    r["samples"][-1]["PA"]["resistance"], r["samples"][-1]["PA"]["prisoner"] = "-1.000", "False"
+    check(judge(r)["PEX_A3_pit_wears_resistance"][0] == "UNMEASURED", "a prisoner no longer a prisoner is UNMEASURED")
+    r = base()   # review 2026-11-11: a failed thought read for the psychopath is not 'no thought'
+    r["noon_thoughts"]["p"] = []
+    check(judge(r)["PEX_A4_compassion_not_psycho"][0] == "UNMEASURED", "an empty thought read is UNMEASURED")
+    r = base()   # no compassionate colonist: the kind one moved to the hard ideo
+    r["colonists"]["ideos"]["k"] = "Hard"
+    check(judge(r)["PEX_A4_compassion_not_psycho"][0] == "FAIL", "no compassionate colonist is a FAIL")
+    r = base()   # run 6: the 'psychopath' was a pawn of no ideoligion: his missing thought proves nothing
+    r["colonists"]["ideos"]["p"] = None
+    check(judge(r)["PEX_A4_compassion_not_psycho"][0] == "UNMEASURED", "a psychopath outside a Charity ideo is UNMEASURED")
+    r = base()
+    r["colonists"]["psycho_trait"] = False
+    check(judge(r)["PEX_A4_compassion_not_psycho"][0] == "UNMEASURED", "a trait that did not take is UNMEASURED")
     r = copy.deepcopy(base())
     r.pop("noon_thoughts")
     check(judge(r)["PEX_A4_compassion_not_psycho"][0] == "UNMEASURED", "no thought read is UNMEASURED")
@@ -91,7 +121,8 @@ def main():
     check(L.kv("EXPOSURE exposed=True resistance=4.500")["resistance"] == "4.500", "kv reads the proof line")
     check(L.tick_for(22, 0.0, 0.0) == 22 * 60000, "local midnight at longitude 0")
     check(L.tick_for(22, 6.0, 15.0) == 22 * 60000 + 5 * 2500, "longitude 15 E is one hour ahead")
-    n = 17
+    check(L.tick_for(22, 6.0, 11.47) == 22 * 60000 + 5 * 2500, "a fractional zone rounds to a whole hour (TimeZoneAt)")
+    n = count[0]
     for f in fails:
         print("FAIL", f)
     print("%s %d/%d" % ("PASS" if not fails else "FAIL", n - len(fails), n))

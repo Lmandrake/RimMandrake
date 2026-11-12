@@ -1767,7 +1767,7 @@ for _name in ("limitless_endless", "ladder_rails_raise_lower", "pit_travel_fly_j
               "dig_fill_shovel_hours", "pump_ports_one_per_side", "water_ladder_silt", "deep_water_swims",
               "pit_access_gear_ladders", "wall_scaling_gear", "suspension_bridges_and_covers", "pipes_meet_centre",
               "thirst", "sprinklers", "drawbridges", "lines", "player_missions", "canal_overflow",
-              "droid_dig"):
+              "droid_dig", "pit_exposure"):
     suite.chain_inputs[_name] = GATE_SELFTEST_INPUTS + GATE_READER_INPUTS
 suite.chain_inputs["trench_cover_and_raiders"] = (["Source/**/*.cs", "Source/**/*.csproj",
                                                    "@closure:../Utils/selftest_flowworks_trench_cover.py"]

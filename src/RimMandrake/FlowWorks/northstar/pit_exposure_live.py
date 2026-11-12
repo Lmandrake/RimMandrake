@@ -86,8 +86,9 @@ def fnum(v, d=None):
 
 
 def tick_for(day, hour, longitude):
-    """Absolute tick of local `hour` on year-day `day` (GenDate: local ticks = abs + longitude/360 * 60000)."""
-    off = int(round((hour - longitude / 15.0) * HOUR_TICKS)) % DAY_TICKS
+    """Absolute tick of local `hour` on year-day `day`. GenDate.TimeZoneAt rounds the zone to a whole hour
+    (RoundToInt(longitude / 15)): a fractional zone put every sample up to half an hour off (code review 2026-11-11)."""
+    off = int(round((hour - round(longitude / 15.0)) * HOUR_TICKS)) % DAY_TICKS
     return day * DAY_TICKS + off
 
 
@@ -99,8 +100,17 @@ def verdicts(res, row):
     def at(h):
         return next((s for s in samples if abs(s["hour"] - h) < 0.01), None)
     s0, s12, sl = at(res["args"]["from_hour"]), at(12.0), samples[-1] if samples else None
+    full = [NOTCHES, NOTCHES]
+    shallow = [s["hour"] for s in samples if s.get("depthA") != full or s.get("depthB") != full]
     if not (s0 and s12) or None in (s0.get("TA"), s0.get("TB"), s12.get("TA"), s12.get("TB")):
         row("PEX_A2_open_pit_tracks_noon", "UNMEASURED", "HARNESS", {"why": "no start/12:00 temperature read"})
+    elif shallow or s12["PA"].get("exposed") != "True" or s12["PA"].get("outdoorRoom") != "True" \
+            or s12["PB"].get("outdoorRoom") != "False":
+        # flat ground or a half-dug pit also reads outdoors: the row is about a 4 m open pit and its roofed twin
+        row("PEX_A2_open_pit_tracks_noon", "UNMEASURED", "SITE",
+            {"why": "the pits are not a full-depth open pit and a roofed twin", "hours_not_full_depth": shallow[:6],
+             "A_exposed": s12["PA"].get("exposed"), "A_outdoorRoom": s12["PA"].get("outdoorRoom"),
+             "B_outdoorRoom": s12["PB"].get("outdoorRoom")})
     else:
         riseA, riseB = s12["TA"] - s0["TA"], s12["TB"] - s0["TB"]
         lags = lambda k: [abs(s[k] - s["out"]) for s in samples if s.get(k) is not None and s.get("out") is not None]  # noqa: E731
@@ -115,7 +125,10 @@ def verdicts(res, row):
              "outdoorRoomA": s12["PA"].get("outdoorRoom"), "outdoorRoomB": s12["PB"].get("outdoorRoom")})
     r0 = {n: fnum(samples[0][n].get("resistance")) for n in pris} if samples else {}
     r1 = {n: fnum(sl[n].get("resistance")) for n in pris} if sl else {}
-    if lost or not r0 or None in list(r0.values()) + list(r1.values()) or min(r0.values()) < 0:
+    not_prisoner = sorted({n for s in samples for n in pris if s[n].get("prisoner") != "True"})
+    if not_prisoner and not lost:
+        lost = {n: {"why": "not a colony prisoner in every sample (recruited, released, lost)"} for n in not_prisoner}
+    if lost or not r0 or None in list(r0.values()) + list(r1.values()) or min(list(r0.values()) + list(r1.values())) < 0:
         row("PEX_A3_pit_wears_resistance", "UNMEASURED", "SITE" if lost else "HARNESS",
             {"why": "a prisoner was lost mid-run" if lost else "resistance unread", "lost": lost, "r0": r0, "r1": r1})
     else:
@@ -130,6 +143,15 @@ def verdicts(res, row):
     psycho, charity, ideos = res["colonists"]["psychopath"], res["colonists"]["charity"], res["colonists"]["ideos"]
     if not nt:
         row("PEX_A4_compassion_not_psycho", "UNMEASURED", "HARNESS", {"why": "no 12:00 thought read"})
+    elif any(not nt.get(c) for c in cids):
+        # an adult always carries some mood thought: an empty list is a failed read, not "no RM_ExposedPrisoner"
+        row("PEX_A4_compassion_not_psycho", "UNMEASURED", "HARNESS",
+            {"why": "a colonist's thoughts read empty", "empty": [c for c in cids if not nt.get(c)]})
+    elif not res["colonists"].get("psycho_trait") or not charity.get(ideos.get(psycho)):
+        # a psychopath outside a Charity ideoligion would lack the thought for the ideo's sake: it would prove nothing
+        row("PEX_A4_compassion_not_psycho", "UNMEASURED", "HARNESS",
+            {"why": "the psychopath is not a Psychopath of a Charity ideoligion", "psycho_trait": res["colonists"].get("psycho_trait"),
+             "ideo": ideos.get(psycho), "charity": charity.get(ideos.get(psycho))})
     else:
         has = {c: any(t[0] == "RM_ExposedPrisoner" for t in nt.get(c) or []) for c in cids}
         cares = {c: bool(charity.get(ideos.get(c))) for c in cids}
@@ -179,6 +201,9 @@ def main():
                "rows": [], "samples": [], "args": {k: getattr(a, k) for k in ("day", "tile_temp", "from_hour", "to_hour",
                                                                                   "every", "save_name")}}
     rows, samples = res["rows"], res["samples"]
+    if a.resume and "next_hour" not in res:
+        print("REFUSED: %s was saved before its site was built (setup did not finish): start a fresh run" % out)
+        return 2
     shots_dir = a.shots_dir or res.get("shots_dir") or os.path.join(REPO, "Transient", "pit_exposure")
     res["shots_dir"] = shots_dir
     os.makedirs(shots_dir, exist_ok=True)
@@ -227,10 +252,13 @@ def main():
         res["biome_rolls"] = rolled
         import driver_stamp  # noqa: E402  (mode/mod_hash/env: what validation.py checks before it reads this result)
         driver_stamp.stamp(res, B.call)
-        gd = B.call("jawa/get_defs", defs="RM_PitExposure;RM_ExposedPrisoner", fields="defName") or {}
-        found = sorted({str(d.get("defName")) for d in gd.get("defs") or [] if isinstance(d, dict)}) if gd.get("defs") else None
-        row("PEX_A1_defs_resolve", "PASS" if gd.get("success") and not gd.get("notFound") else "FAIL", "MOD",
-            {"notFound": gd.get("notFound"), "found": found, "count": gd.get("count")})
+        gd = B.call("jawa/get_defs", defs="HediffDef/RM_PitExposure;ThoughtDef/RM_ExposedPrisoner", fields="defName") or {}
+        found = sorted(str(d.get("defName")) for d in gd.get("defs") or [] if isinstance(d, dict))
+        if gd.get("malformed") or gd.get("success") is None:
+            row("PEX_A1_defs_resolve", "UNMEASURED", "HARNESS", {"why": "get_defs did not read the request", "reply": str(gd)[:300]})
+        else:
+            row("PEX_A1_defs_resolve", "PASS" if found == ["RM_ExposedPrisoner", "RM_PitExposure"] else "FAIL", "MOD",
+                {"found": found, "notFound": gd.get("notFound"), "foundCount": gd.get("foundCount")})
         res["map"] = {k: mi.get(k) for k in ("tile", "mapBiome", "latitude", "longitude", "season", "tileInfo")}
         lon = fnum(mi.get("longitude"), 0.0)
         res["site_calm"] = V.site_calm(B)
@@ -254,7 +282,12 @@ def main():
 
         # 2. the site, next to the colonists
         cols = (B.call("rimworld/list_colonists") or {}).get("colonists") or []
-        cids = [str(c.get("pawnId", "")).replace("Thing_", "") for c in cols]
+        cids = []
+        for c in cols:   # the three roles need adults with an ideoligion (a quicktest child takes neither trait nor ideo)
+            cid = str(c.get("pawnId", "")).replace("Thing_", "")
+            pg = ((B.call("jawa/pawn_get", pawn=cid) or {}).get("pawns") or [{}])[0]
+            if pg.get("developmentalStage") == "Adult" and pg.get("ideo"):
+                cids.append(cid)
         pg = ((B.call("jawa/pawn_get", pawn=cids[0]) or {}).get("pawns") or [{}])[0] if cids else {}
         pos = pg.get("position") or {"x": 120, "z": 120}
         ox, oz = int(pos["x"]) - 12, int(pos["z"]) + 6
@@ -296,7 +329,15 @@ def main():
             row("PEX_site", "UNMEASURED", "HARNESS", {"why": "a prisoner did not spawn", "prisoners": pris})
             return 2
 
-        # 4. the colonists
+        # 4. the colonists: short of three adults, new colonists join (the player's ideoligion, like any newcomer)
+        while len(cids) < 3:
+            r = B.call("jawa/spawn_pawn", kindDef="Colonist", x=P(10, 8)[0], z=P(10, 8)[1], faction="player", count=1) or {}
+            nid = ((r.get("pawns") or [{}])[0]).get("id")
+            if not nid:
+                row("PEX_site", "UNMEASURED", "HARNESS", {"why": "fewer than three adult colonists", "spawn": str(r)[:200]})
+                return 2
+            cids.append(nid)
+        cids = cids[:3]
         for cid in cids:
             B.call("jawa/pawn_refresh_needs", pawn=cid)
         psycho = cids[1] if len(cids) > 1 else None
@@ -311,9 +352,13 @@ def main():
         if not any(charity.values()):
             for i in all_ideos:   # none on the planet: add the common precept to the first ideo whose memes allow it
                 added = B.call("jawa/ideo_precept_edit", ideo=str(i.get("id")), action="add", precept="Charity_Important") or {}
-                if added.get("success") is not False:
-                    charity[i.get("name")] = ["Charity_Important (added)"]
-                    break
+                if added.get("success") is True:
+                    for j in (B.call("jawa/ideo_of", ideo=str(i.get("id")), precepts=True) or {}).get("ideos") or []:
+                        if j.get("name") == i.get("name"):   # read back, never assumed
+                            charity[j.get("name")] = [p.get("defName") for p in j.get("precepts") or []
+                                                      if str(p.get("defName")).startswith("Charity_")]
+                    if charity.get(i.get("name")):
+                        break
         kind_ideos = [n for n, v in charity.items() if v]
         hard_ideos = [n for n, v in charity.items() if not v]
         # colonist 0 compassionate, colonist 1 the psychopath, both of a charity ideo; colonist 2 of a hard-morality ideo
@@ -324,8 +369,11 @@ def main():
         for cid, names in plan.items():
             if cid and names:
                 moved[cid] = str((B.call("jawa/set_pawn_ideo", pawn=cid, action="set", ideo=names[0]) or {}).get("success"))
-        ideos = {cid: (((B.call("jawa/pawn_get", pawn=cid) or {}).get("pawns") or [{}])[0]).get("ideo") for cid in cids}
-        res["colonists"] = {"ids": cids, "psychopath": psycho, "trait_added": tr.get("added"), "ideos": ideos,
+        pgs = {cid: (((B.call("jawa/pawn_get", pawn=cid) or {}).get("pawns") or [{}])[0]) for cid in cids}
+        ideos = {cid: pgs[cid].get("ideo") for cid in cids}
+        psycho_trait = any(t.get("def") == "Psychopath" for t in pgs.get(psycho, {}).get("traits") or [])
+        res["colonists"] = {"ids": cids, "psychopath": psycho, "trait_added": tr.get("added"), "psycho_trait": psycho_trait,
+                            "ideos": ideos,
                             "charity": {n: charity.get(n) for n in set(ideos.values())}, "moved": moved,
                             "precept_added": str(added)[:160] if added else None}
         step(args["from_hour"] * HOUR_TICKS)
