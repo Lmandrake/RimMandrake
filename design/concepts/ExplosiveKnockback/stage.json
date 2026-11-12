@@ -1,0 +1,25 @@
+{
+ "aliases": [],
+ "budget": {
+  "cap": 4000000,
+  "charges": [],
+  "reserve": 60000,
+  "spent": 0
+ },
+ "history": [
+  {
+   "at": "2026-11-12T07:00:06Z",
+   "stage": 0,
+   "what": "init",
+   "why": "stage 0, budget 4000000 (reserve 60000)"
+  }
+ ],
+ "item": null,
+ "mod": "ExplosiveKnockback",
+ "recovery": [],
+ "results": [],
+ "running": null,
+ "schema": 1,
+ "stage": 0,
+ "status": "ready"
+}

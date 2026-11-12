@@ -1,0 +1,561 @@
+{
+ "mod": "ExplosiveKnockback",
+ "packageId": "mandrake.rm.explosiveknockback",
+ "stage": 0,
+ "scope": [
+  {
+   "id": "s_walk_draft",
+   "speaker": "agent",
+   "source": [
+    "design/validation_walks/RimMandrake/ExplosiveKnockback.md"
+   ],
+   "text": "Walk exists with 30 must-be-true rows; north star DRAFT, no owner bars yet."
+  }
+ ],
+ "decisions": [
+  {
+   "id": "d_pit_only_forced",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": "OWNER:1791304039837927694",
+   "date": "2026-10-06",
+   "words": "You can't fall in by careless colonist pathing. Only if they get blown/forced in do they fall. Enemies can fall if the pit is concealed or they are forced/blown in.",
+   "what": "Pits are entered only by force; knockback is the force. (FlowWorks side, the reason this mod exists.)"
+  },
+  {
+   "id": "d_pushed_or_blasted",
+   "kind": "ruling",
+   "speaker": "agent",
+   "source": [
+    "design/RimMandrake/explosive_knockback_design_2026-10-06.md:24"
+   ],
+   "date": "2026-09-17",
+   "words": "Covering the pit allows people to fall into it involuntarily (or if they are somehow pushed or blasted into it, something that would move them normally against their will like weapon blowback).",
+   "what": "Being blasted into a pit is an involuntary fall.",
+   "relayed": "his card answer or typed words, transcribed in the cited design doc; no OWNER.jsonl event carries it"
+  },
+  {
+   "id": "d_q1_everywhere",
+   "kind": "ruling",
+   "speaker": "agent",
+   "source": [
+    "design/RimMandrake/explosive_knockback_design_2026-10-06.md:455"
+   ],
+   "date": "2026-10-06",
+   "words": "everywhere (card)",
+   "what": "Every blast throws pawns everywhere on the map, not only near pits.",
+   "relayed": "his card answer or typed words, transcribed in the cited design doc; no OWNER.jsonl event carries it"
+  },
+  {
+   "id": "d_q2_explosions_only",
+   "kind": "ruling",
+   "speaker": "agent",
+   "source": [
+    "design/RimMandrake/explosive_knockback_design_2026-10-06.md:456"
+   ],
+   "date": "2026-10-06",
+   "words": "(1) because melee weapons often already have blowback",
+   "what": "Explosions only; no melee or bullet knockback in this mod.",
+   "relayed": "his card answer or typed words, transcribed in the cited design doc; no OWNER.jsonl event carries it"
+  },
+  {
+   "id": "d_q3_over_sandbags",
+   "kind": "ruling",
+   "speaker": "agent",
+   "source": [
+    "design/RimMandrake/explosive_knockback_design_2026-10-06.md:457"
+   ],
+   "date": "2026-10-06",
+   "words": "thrown over sandbags and barricades (card)",
+   "what": "Sandbags and barricades do not stop a throw.",
+   "relayed": "his card answer or typed words, transcribed in the cited design doc; no OWNER.jsonl event carries it"
+  },
+  {
+   "id": "d_q4_everything_light",
+   "kind": "ruling",
+   "speaker": "agent",
+   "source": [
+    "design/RimMandrake/explosive_knockback_design_2026-10-06.md:458"
+   ],
+   "date": "2026-10-06",
+   "words": "everything light (card)",
+   "what": "Light items and corpses are thrown too, not only pawns.",
+   "relayed": "his card answer or typed words, transcribed in the cited design doc; no OWNER.jsonl event carries it"
+  },
+  {
+   "id": "d_q5_cover_breaks",
+   "kind": "ruling",
+   "speaker": "agent",
+   "source": [
+    "design/RimMandrake/explosive_knockback_design_2026-10-06.md:459"
+   ],
+   "date": "2026-10-06",
+   "words": "a blast on a cover always breaks it (card)",
+   "what": "A blast that reaches a pit cover breaks it.",
+   "relayed": "his card answer or typed words, transcribed in the cited design doc; no OWNER.jsonl event carries it"
+  },
+  {
+   "id": "d_q6_hose_drops",
+   "kind": "ruling",
+   "speaker": "agent",
+   "source": [
+    "design/RimMandrake/explosive_knockback_design_2026-10-06.md:460"
+   ],
+   "date": "2026-10-06",
+   "words": "drops where the carrier stood (card)",
+   "what": "A thrown colonist carrying a hose end drops it at the takeoff cell.",
+   "relayed": "his card answer or typed words, transcribed in the cited design doc; no OWNER.jsonl event carries it"
+  },
+  {
+   "id": "d_q7_three_cells",
+   "kind": "ruling",
+   "speaker": "agent",
+   "source": [
+    "design/RimMandrake/explosive_knockback_design_2026-10-06.md:461"
+   ],
+   "date": "2026-10-06",
+   "words": "3 cells (card)",
+   "what": "A mortar shell beside a human throws them 3 cells; a Mod Setting scales it.",
+   "relayed": "his card answer or typed words, transcribed in the cited design doc; no OWNER.jsonl event carries it"
+  },
+  {
+   "id": "d_q8_own_mod",
+   "kind": "ruling",
+   "speaker": "agent",
+   "source": [
+    "design/RimMandrake/explosive_knockback_design_2026-10-06.md:462"
+   ],
+   "date": "2026-10-06",
+   "words": "its own mod (card)",
+   "what": "Ships as its own mod, mandrake.rm.explosiveknockback.",
+   "relayed": "his card answer or typed words, transcribed in the cited design doc; no OWNER.jsonl event carries it"
+  },
+  {
+   "id": "d_q9_cover_blasts",
+   "kind": "ruling",
+   "speaker": "agent",
+   "source": [
+    "design/RimMandrake/explosive_knockback_design_2026-10-06.md:463"
+   ],
+   "date": "2026-10-06",
+   "words": "1+3",
+   "what": "Blasts that break a pit cover: damaging blasts (bombs, grenades, mortars) and fire/incendiary; not EMP, smoke or stun.",
+   "relayed": "his card answer or typed words, transcribed in the cited design doc; no OWNER.jsonl event carries it"
+  },
+  {
+   "id": "d_q10_retrievable",
+   "kind": "ruling",
+   "speaker": "agent",
+   "source": [
+    "design/RimMandrake/explosive_knockback_design_2026-10-06.md:465"
+   ],
+   "date": "2026-10-06",
+   "words": "fall in and stay retrievable (card)",
+   "what": "Items and corpses thrown into a pit lie on its floor and colonists can fetch them.",
+   "relayed": "his card answer or typed words, transcribed in the cited design doc; no OWNER.jsonl event carries it"
+  },
+  {
+   "id": "d_fall_breaks_cover",
+   "kind": "ruling",
+   "speaker": "agent",
+   "source": [
+    "design/RimMandrake/explosive_knockback_design_2026-10-06.md:467"
+   ],
+   "date": "2026-10-06",
+   "words": "And when something falls into a covered pit, of course it is no longer covered",
+   "what": "Anything that falls through a cover leaves it broken.",
+   "relayed": "his card answer or typed words, transcribed in the cited design doc; no OWNER.jsonl event carries it"
+  },
+  {
+   "id": "d_cap_per_weapon",
+   "kind": "ruling",
+   "speaker": "agent",
+   "source": [
+    "design/RimMandrake/kinetic_blast_weapons_design_2026-10-06.md:402"
+   ],
+   "date": "2026-10-06",
+   "words": "Let each weapon set it (card)",
+   "what": "Each weapon may set its own maximum throw; 0 = the global maximum.",
+   "relayed": "his card answer or typed words, transcribed in the cited design doc; no OWNER.jsonl event carries it"
+  },
+  {
+   "id": "d_goods_fly",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": "OWNER:1794373318813726012",
+   "date": "2026-11-10",
+   "words": "1:1 totally. Even better if they can bounce inelastically off walls and rotate while they fly.",
+   "what": "Thrown goods visibly fly, rotate in flight, and rebound off walls losing energy."
+  },
+  {
+   "id": "d_no_shelf_exemption",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": "OWNER:1794373318813726012",
+   "date": "2026-11-10",
+   "words": "2:1",
+   "what": "Ordinary shelves give no exemption: loose goods on an open shelf are scattered too."
+  },
+  {
+   "id": "d_gas_per_clump",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": "OWNER:1794373318813726012",
+   "date": "2026-11-10",
+   "words": "3:Each gas unit that ignites should create its own weak explosion that then whooshes along, detonating each gas cloud along the entire pattern. The backwash should scatter items not just in the cloud but within the radius of any of the individual explosions. Like 3:3 but I want to make sure each of the individual gas clumps gets it, not just \"the centroid of the large gas cloud\"",
+   "what": "Igniting gas chains clump by clump; each clump makes its own weak explosion that scatters goods in its own radius, inside or outside the gas. Never one centroid blast."
+  }
+ ],
+ "asks": [],
+ "inventory": [
+  {
+   "id": "inv_kernel",
+   "what": "Pure throw kernel: distance from blast strength, falloff, mass; path walk that stops at walls, closed doors, deep water, goes over sandbags, stops inside the first open pit cell",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "proof": "current",
+   "proof_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py"
+   ],
+   "scope": "approved",
+   "source": [
+    "src/RimMandrake/ExplosiveKnockback/",
+    "design/validation_walks/RimMandrake/ExplosiveKnockback.md"
+   ],
+   "proof_note": "offline K-01..K-16 88/88 2026-10-06"
+  },
+  {
+   "id": "inv_hook",
+   "what": "Explosion hook: each thing the blast wave reaches is queued once per explosion (prefix on the explosion's damage step) and thrown at the end of the explosion tick",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_Patch_DamageWorker_ExplosionKnockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/validation.py"
+   ],
+   "scope": "approved",
+   "source": [
+    "src/RimMandrake/ExplosiveKnockback/",
+    "design/validation_walks/RimMandrake/ExplosiveKnockback.md"
+   ],
+   "proof_note": "18 v1 scenes owed a re-run after the 2026-10-06 change (EK.scenes18 owed)"
+  },
+  {
+   "id": "inv_pawn_flyer",
+   "what": "Pawns are thrown by our own flyer def: impact damage for cells not travelled when they hit a wall or pawn, landing stun, flyer never re-targets",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/Defs/ThingDefs/RM_PawnFlyer_Knockback.xml",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_PawnFlyerPatches.cs"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/validation.py"
+   ],
+   "scope": "approved",
+   "source": [
+    "src/RimMandrake/ExplosiveKnockback/",
+    "design/validation_walks/RimMandrake/ExplosiveKnockback.md"
+   ]
+  },
+  {
+   "id": "inv_which_blasts",
+   "what": "Which blasts throw: Bomb (and its children) force 1.0; Flame, EMP, Smoke, Extinguish, ToxGas force 0; other mods' explosions 0% by default; lookup order projectile then weapon then DamageDef",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/Patches/RM_Knockback_DamageDefs.xml",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackCompat.cs"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/validation.py"
+   ],
+   "scope": "open_question",
+   "source": [
+    "src/RimMandrake/ExplosiveKnockback/",
+    "design/validation_walks/RimMandrake/ExplosiveKnockback.md"
+   ]
+  },
+  {
+   "id": "inv_items_teleport",
+   "what": "Items and corpses under 75 kg are moved by despawn and re-place at the landing cell with a dust puff: no visible flight, no rotation, no bounce",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs:474"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/validation.py"
+   ],
+   "scope": "open_question",
+   "source": [
+    "src/RimMandrake/ExplosiveKnockback/",
+    "design/validation_walks/RimMandrake/ExplosiveKnockback.md"
+   ],
+   "proof_note": "contradicts d_goods_fly"
+  },
+  {
+   "id": "inv_shelf_skip",
+   "what": "Items on a shelf or any storage building are skipped (journal reason in_storage)",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs:399"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/validation.py"
+   ],
+   "scope": "out",
+   "source": [
+    "src/RimMandrake/ExplosiveKnockback/",
+    "design/validation_walks/RimMandrake/ExplosiveKnockback.md"
+   ],
+   "proof_note": "contradicts d_no_shelf_exemption; walk row light_things.item_on_a_shelf_stays asserts the old rule"
+  },
+  {
+   "id": "inv_who_is_spared",
+   "what": "Spared: body size 2.5 or more, pawns already in a pit, pawns carrying a pawn, flying pawns, pawns in bed or carried",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/validation.py"
+   ],
+   "scope": "approved",
+   "source": [
+    "src/RimMandrake/ExplosiveKnockback/",
+    "design/validation_walks/RimMandrake/ExplosiveKnockback.md"
+   ]
+  },
+  {
+   "id": "inv_shield",
+   "what": "A shield belt that absorbs the blast absorbs the throw and loses extra charge (agent design from Kinetic Arms, not his ruling)",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs",
+    "design/RimMandrake/kinetic_blast_weapons_design_2026-10-06.md:225"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/validation.py"
+   ],
+   "scope": "open_question",
+   "source": [
+    "src/RimMandrake/ExplosiveKnockback/",
+    "design/validation_walks/RimMandrake/ExplosiveKnockback.md"
+   ]
+  },
+  {
+   "id": "inv_recovery",
+   "what": "A pawn thrown once is immune to another throw until its stun plus a recovery window ends",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "proof": "missing",
+   "proof_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/validation.py"
+   ],
+   "scope": "approved",
+   "source": [
+    "src/RimMandrake/ExplosiveKnockback/",
+    "design/validation_walks/RimMandrake/ExplosiveKnockback.md"
+   ],
+   "proof_note": "save/reload of the stamps UNMEASURED"
+  },
+  {
+   "id": "inv_caps",
+   "what": "Caps: 40 throws per explosion (pawns first), 60 item throws per map tick; the overflow is dropped and does not move",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/validation.py"
+   ],
+   "scope": "open_question",
+   "source": [
+    "src/RimMandrake/ExplosiveKnockback/",
+    "design/validation_walks/RimMandrake/ExplosiveKnockback.md"
+   ]
+  },
+  {
+   "id": "inv_settings",
+   "what": "Mod Settings page: master switch, strength, max distance, per-weapon cap scale, other-mod explosions %, downed/animals/mechs/items/corpses toggles, mass limit, sandbags, impact, stun, recovery, doors, pits, shields, caps, debug vectors",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/validation.py"
+   ],
+   "scope": "approved",
+   "source": [
+    "src/RimMandrake/ExplosiveKnockback/",
+    "design/validation_walks/RimMandrake/ExplosiveKnockback.md"
+   ]
+  },
+  {
+   "id": "inv_pits_receive",
+   "what": "FlowWorks receiving side: a pawn landing in an open pit falls (also from a covered pit cell); a damaging or fire blast breaks a pit cover deck and drops whoever stands on it",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPathing.cs:551",
+    "src/RimMandrake/FlowWorks/Source/Pits/Building_PitCover.cs:320"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/validation.py",
+    "ITEM:FLOWWORKS_FORCED_PIT_FALL_ROW_1"
+   ],
+   "scope": "approved",
+   "source": [
+    "src/RimMandrake/ExplosiveKnockback/",
+    "design/validation_walks/RimMandrake/ExplosiveKnockback.md"
+   ]
+  },
+  {
+   "id": "inv_pit_floor_haul",
+   "what": "Items and corpses on a pit floor: reachable only down a lowered ladder (haulers route around open pit cells)",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPathing.cs"
+   ],
+   "proof": "missing",
+   "proof_evidence": [
+    "design/validation_walks/RimMandrake/ExplosiveKnockback.md"
+   ],
+   "scope": "approved",
+   "source": [
+    "src/RimMandrake/ExplosiveKnockback/",
+    "design/validation_walks/RimMandrake/ExplosiveKnockback.md"
+   ],
+   "proof_note": "walk row UNCOVERED: no ladder-haul scene"
+  },
+  {
+   "id": "inv_hose_drop",
+   "what": "Hose end drops where the carrier stood",
+   "impl": "unknown",
+   "impl_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackCompat.cs"
+   ],
+   "proof": "missing",
+   "proof_evidence": [
+    "design/validation_walks/RimMandrake/ExplosiveKnockback.md"
+   ],
+   "scope": "approved",
+   "source": [
+    "src/RimMandrake/ExplosiveKnockback/",
+    "design/validation_walks/RimMandrake/ExplosiveKnockback.md"
+   ],
+   "proof_note": "UNMEASURED: no carry scene"
+  },
+  {
+   "id": "inv_proof_scenes",
+   "what": "Live scenes RM_KnockbackProof (mortar 3 cells, wall, door, sandbags, too big, EMP, items, shelf, corpse, pits, cover, caps, master off, config, guards) and the runner that drives them",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "src/RimMandrake/ExplosiveKnockback/knockback_runner.py",
+    "src/RimMandrake/ExplosiveKnockback/validation.py"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/validation.py"
+   ],
+   "scope": "approved",
+   "source": [
+    "src/RimMandrake/ExplosiveKnockback/",
+    "design/validation_walks/RimMandrake/ExplosiveKnockback.md"
+   ]
+  },
+  {
+   "id": "inv_gas_chain",
+   "what": "Per-clump gas ignition explosions",
+   "impl": "absent",
+   "impl_evidence": [],
+   "proof": "missing",
+   "proof_evidence": [],
+   "scope": "opened_by_owner",
+   "source": [
+    "src/RimMandrake/ExplosiveKnockback/",
+    "design/validation_walks/RimMandrake/ExplosiveKnockback.md"
+   ],
+   "search_scope": "src/RimMandrake/**/*.cs for gas + ignite/DoExplosion (2026-11-11): none; TheForge gas wash lights fires by FireUtility.TryStartFireIn, no explosion",
+   "scope_source": "OWNER:1794373318813726012"
+  }
+ ],
+ "built_reviewed": [],
+ "contradictions": [
+  {
+   "id": "c_goods_teleport",
+   "status": "open",
+   "source": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs:474",
+    "OWNER:1794373318813726012"
+   ],
+   "text": "Built: goods vanish and reappear with a dust puff. Ruled 2026-11-10: they visibly fly, rotate, bounce off walls losing energy. Build owed (a thrown-thing carrier), not a question."
+  },
+  {
+   "id": "c_shelf_skip",
+   "status": "open",
+   "source": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs:399",
+    "design/validation_walks/RimMandrake/ExplosiveKnockback.md",
+    "OWNER:1794373318813726012"
+   ],
+   "text": "Built and walked: items on any storage building stay. Ruled 2026-11-10: ordinary shelves give no exemption. Defect: remove the skip for open shelves, flip walk row item_on_a_shelf_stays."
+  },
+  {
+   "id": "c_gas_absent",
+   "status": "open",
+   "source": [
+    "OWNER:1794373318813726012",
+    "src/RimMandrake/TheForge/Source/RM_GameCondition_ForgeCycle.cs"
+   ],
+   "text": "Ruled 2026-11-10: each igniting gas clump makes its own weak explosion. Nothing built anywhere does this; no gas in our mods currently explodes when lit."
+  },
+  {
+   "id": "c_fire_and_foreign_blasts",
+   "status": "open",
+   "source": [
+    "src/RimMandrake/ExplosiveKnockback/Patches/RM_Knockback_DamageDefs.xml",
+    "design/RimMandrake/explosive_knockback_design_2026-10-06.md:455"
+   ],
+   "text": "Ruled Q1 'everywhere: every blast throws'. Built: fire blasts throw nothing and other mods' explosions throw at 0% by default. Decision for him (open question 2)."
+  },
+  {
+   "id": "c_retrievable_unproven",
+   "status": "open",
+   "source": [
+    "design/validation_walks/RimMandrake/ExplosiveKnockback.md",
+    "design/RimMandrake/explosive_knockback_design_2026-10-06.md:465"
+   ],
+   "text": "Ruled Q10: goods in a pit stay retrievable. Only a lowered ladder reaches them; no scene proves a colonist fetches one. Proof owed, not a question."
+  }
+ ],
+ "script_audit": [],
+ "failure_modes": [
+  "It looks like teleporting, not a blast: goods blink to new cells under a dust puff, so the scatter he asked to watch (flying, spinning, bouncing loot) never happens, and every row reads green.",
+  "It looks green but isn't: the live scenes were last green 2026-10-06 on a staged site with the old rules (shelf exemption, instant items); since then his 2026-11-10 rulings and the gas chain exist only on paper, so in a real raid the mod may not match what he ruled and nothing he walks would show which.",
+  "The spectacle costs the game: a mortar into a stockpile, or a gas cloud going off clump by clump, spawns dozens of flying stacks at once; either the game stutters or the caps silently leave most goods unmoved, and both read to him as broken."
+ ],
+ "root_draft": {
+  "status": "draft_for_owner_approval",
+  "speaker": "agent",
+  "source": [
+   "design/RimMandrake/explosive_knockback_design_2026-10-06.md:455",
+   "OWNER:1794373318813726012"
+  ],
+  "text": "Every blast in RimWorld now throws what it hits. A mortar shell beside a colonist hurls them three cells straight away from it, clean over sandbags, until a wall stops them hard; anything light goes too, so loose goods and corpses fly through the air, spinning and rebounding off walls, and no open shelf keeps them safe. When gas catches, it goes off clump by clump, each small burst scattering whatever lies near it, as the fire whooshes through the whole cloud. And where a blast meets a pit, its cover breaks and whoever it throws in falls."
+ }
+}
