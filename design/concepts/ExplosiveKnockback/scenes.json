@@ -18,13 +18,13 @@
    "start": [
     "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists storeroom_bomb_pit; INVALID otherwise)",
     "FlowWorks loaded (asserted: Names reports flowworks=true; INVALID otherwise)",
-    "a walled 7x7 storeroom: open shelves of mixed goods along the north wall, a closed 1x1 crate of goods with a free cell behind it, loose stacks on the floor, and a 75-unit steel stack (over the 10 kg heavy threshold) placed on the ray from the impact cell to a colonist two cells beyond it",
+    "a walled 7x7 storeroom: open shelves of mixed goods along the north wall, a closed 1x1 crate of goods under the mass limit (asserted: mass read) with a free cell behind it, loose stacks on the floor, and a 75-unit steel stack (over the 10 kg heavy threshold) placed on the ray from the impact cell to a colonist two cells beyond it",
     "three colonists inside: one one cell east of the impact cell, two near the south wall",
     "the storeroom's open south side gives onto an open pit two cells wide along it, with one covered pit cell in the same row; a loose stack sits on the floor where its planned landing cell is that covered cell (asserted at launch from the trace's planned cell; INVALID otherwise)",
     "the thing trace (thing id, spawned state, drawn position, height, rotation, spawn and despawn events) and the descent journal are running (asserted: one test row each before the shell)"
    ],
    "action": "one high-explosive mortar shell lands on the impact cell in the middle of the storeroom; step until every thrown thing is at rest (at most 900 ticks)",
-   "expect": "the colonist one cell from the impact is carried through the air about three cells straight away from it and lands alive and stunned; the goods on the shelves and the floor fly with arc, spin and wall rebounds, every stack the blast reached moved, with zero despawn-spawn pairs in the trace and every moved stack's height above zero mid-flight; the crate's contents are unchanged and the crate slid at most one cell; the steel stack strikes the colonist in line, a 2 to 5 blunt hit and a stagger, and stops there; some goods and at least one colonist end on the pit floor with one descent each; the stack aimed at the covered cell falls through it with one descent and the cover is destroyed",
+   "expect": "the colonist one cell from the impact is carried through the air about three cells straight away from it and lands alive and stunned; the goods on the shelves and the floor fly with arc, spin and wall rebounds, every stack the blast reached moved, with zero despawn-spawn pairs in the trace and every moved stack's height above zero mid-flight; the crate's contents are unchanged and the crate slid exactly one cell straight away from the blast (journal container line, action slide); the steel stack strikes the colonist in line, a 2 to 5 blunt hit and a stagger, and stops there; some goods and at least one colonist end on the pit floor with one descent each; the stack aimed at the covered cell falls through it with one descent and the cover is destroyed",
    "control": {
     "case": "the same storeroom, colonists and shell with the pit filled in and the covered cell solid floor",
     "expect": "nothing descends; the same colonists and goods land on flat ground on the cells the trace planned at launch",
@@ -116,11 +116,11 @@
    "start": [
     "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists spared_states; INVALID otherwise)",
     "FlowWorks loaded (asserted: Names reports flowworks=true; INVALID otherwise)",
-    "beside one grenade, all two cells from the impact: a thrumbo (body size 2.5 or more, asserted), a colonist on a pit floor, a colonist carrying a downed pawn, a colonist in a bed, and a colonist whose airborne state a test hook forces true (a state read only: nothing is launched)",
+    "beside one grenade, all two cells from the impact: a thrumbo (body size 2.5 or more, asserted), a colonist on a pit floor, a colonist carrying a downed pawn, a colonist in a bed, a thrumbo corpse, a stack and a corpse lying on the pit floor, and a colonist whose airborne state a test hook forces true (a state read only: nothing is launched)",
     "a plain colonist at the same distance"
    ],
    "action": "the grenade lands; step 300 ticks",
-   "expect": "each spared pawn on its own cell, with journal skip reasons too_big, in_pit, carrying_pawn, in_bed and flying; the carried pawn has no request line",
+   "expect": "each spared pawn on its own cell, with journal skip reasons too_big, in_pit, carrying_pawn, in_bed and flying; the thrumbo corpse, the pit-floor stack and the pit-floor corpse unmoved with skip reasons too_big, in_pit and in_pit; the carried pawn has no request line",
    "control": {
     "case": "the plain colonist in the same blast",
     "expect": "thrown, one launch line",
@@ -143,7 +143,7 @@
     "a colonist standing two cells from an impact point; recoveryWindowTicks at its default (asserted: setting read)"
    ],
    "action": "grenade 1; a second grenade inside the window; then the same again with a save and reload between the two; a third grenade after the window ends",
-   "expect": "inside the window the second blast gives skip reason recovering and no second launch, before and after the reload",
+   "expect": "inside the window the second blast gives skip reason immune and no second launch, before and after the reload",
    "control": {
     "case": "the third grenade after the window",
     "expect": "the colonist is thrown again",
@@ -212,12 +212,12 @@
    "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::settings_sweep",
    "start": [
     "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists settings_sweep; INVALID otherwise)",
-    "one staged lane at fixed cells (asserted): a colonist, an animal, a mech, a downed pawn, loose goods of 50, 65 and 100 kg, a corpse, a 1x1 crate, a heavy stack aimed at a pawn, a tagged gas puff with a fuse cell, a sandbag line on one colonist's ray, a wall behind one colonist, a closed door behind another, an open pit cell on a good's ray and a colonist with a charged shield belt",
-    "the bursts: a plain frag grenade, the same grenade carrying an own maxThrowCells 4, and an incendiary shell, each on the lane",
+    "one staged lane at fixed cells (asserted): a colonist, an animal, a second animal of body size 2.0 to under 2.5 (asserted: body size read), a mech, a downed pawn, loose goods of 50, 65 and 100 kg, a corpse, a 1x1 crate, a heavy stack aimed at a pawn, a tagged gas puff with a fuse cell, a sandbag line on one colonist's ray, a wall behind one colonist, a closed door behind another, an open pit cell on a good's ray and a colonist with a charged shield belt",
+    "the bursts: a plain frag grenade, the same grenade carrying an own maxThrowCells 4, an incendiary shell, and a harmful explosion of a test damage type that carries no knockback extension anywhere, standing in for another mod's (asserted: journal tuning source unpatched), each on the lane",
     "every setting at default (asserted: Settings reset then read)"
    ],
-   "action": "the bursts over the lane once per changed setting, lighting the puff each run: strength 0.5, maxThrowCells 2, ownCapScale 0.5, unpatchedHarmfulPercent 50, throwAnimals, throwMechanoids, throwDowned, throwItems and throwCorpses off, lightMassLimit 60, the heavy threshold raised over the stack, sandbagsStopThrow on, impactDamageEnabled off, impactDamagePerCell 8, landingStunMin and landingStunMax 30 and 40, recoveryWindowTicks 0 (a second grenade 10 ticks after landing), doorsTakeDamage off, throwIntoPits off, shieldDebitPerForce 20, debugDrawVectors on, and each new part's switch off (goods in the air, the closed guard, the container shove, the heavy knock, the gas chain, fire at half)",
-   "expect": "each change alters only its own outcome: cells halved at strength 0.5; at most 2 cells; the own-cap grenade throws 2 cells under ownCapScale 0.5 while the plain grenade is unchanged; the other-mod percent applied; each toggled kind skipped with its reason; the 65 kg good thrown at default and skipped over the mass limit at 60; the stack no longer knocks; the sandbagged colonist stops at the sandbags; the wall impact is 0 with impact off and doubled at 8 per cell; the landing stun lasts 30 to 40 ticks; the second grenade throws the just-landed colonist at window 0 and not at default; the door's hit points unchanged with door damage off; the good on the pit ray lands on the rim with throwIntoPits off; the belt's energy drop doubles at 20; the vector overlay draws (the proof's draw counter is above zero) only with debugDrawVectors on; each switched-off part inert, the puff bursting as one blast with the gas chain off and the incendiary at full strength with fire at half off, while everything else still throws; the Mod Settings page and the saved settings hold no maxThrowsPerExplosion and no maxItemThrowsPerMapTick line",
+   "action": "the bursts over the lane once per changed setting, lighting the puff each run: strength 0.5, maxThrowCells 2, ownCapScale 0.5, unpatchedHarmfulPercent 50, immuneBodySize 2.0, throwAnimals, throwMechanoids, throwDowned, throwItems and throwCorpses off, lightMassLimit 60, the heavy threshold raised over the stack, sandbagsStopThrow on, impactDamageEnabled off, impactDamagePerCell 8, landingStunMin and landingStunMax 30 and 40, recoveryWindowTicks 0 (a second grenade 10 ticks after landing), doorsTakeDamage off, throwIntoPits off, shieldDebitPerForce 20, debugDrawVectors on, and each new part's switch off (goods in the air, the closed guard, the container shove, the heavy knock, the gas chain, fire at half)",
+   "expect": "each change alters only its own outcome: cells halved at strength 0.5; at most 2 cells; the own-cap grenade throws 2 cells under ownCapScale 0.5 while the plain grenade is unchanged; the unpatched explosion throws at full strength by default and at half (journal force 0.5 of the default run) at 50; the second animal thrown at default and skipped with reason too_big at immuneBodySize 2.0; each toggled kind skipped with its reason; the 65 kg good thrown at default and skipped over the mass limit at 60; the stack no longer knocks; the sandbagged colonist stops at the sandbags; the wall impact is 0 with impact off and doubled at 8 per cell; the landing stun lasts 30 to 40 ticks; the second grenade throws the just-landed colonist at window 0 and not at default; the door's hit points unchanged with door damage off; the good on the pit ray lands on the rim with throwIntoPits off; the belt's energy drop doubles at 20; the vector overlay draws (the proof's draw counter is above zero) only with debugDrawVectors on; each switched-off part inert, the puff bursting as one blast with the gas chain off and the incendiary at full strength with fire at half off, while everything else still throws; the Mod Settings page and the saved settings hold no maxThrowsPerExplosion and no maxItemThrowsPerMapTick line",
    "control": {
     "case": "the default run before and after the sweep",
     "expect": "identical results in both, and every setting reads its default after",
@@ -287,7 +287,7 @@
     "a second colonist two cells from deep water, impact on the far side (asserted: the water cell is not standable)"
    ],
    "action": "a grenade in each lane; step 300 ticks",
-   "expect": "the first colonist lands before the door, journal stop Door, door hit points down; the second lands on the last standable cell, journal stop Water",
+   "expect": "the first colonist lands before the door, journal stop Door with impact above 0 and a new injury on the colonist, door hit points down; the second lands on the last standable cell, journal stop Water",
    "control": {
     "case": "the same throws with the door held open and the water cell filled",
     "expect": "both colonists land 3 cells out",
@@ -333,10 +333,11 @@
    "start": [
     "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists goods_fly_wild; INVALID otherwise)",
     "a 5x5 stockpile of mixed goods and a corpse beside a wall (asserted: thing count per cell)",
+    "a colonist at the same distance from the impact as the stockpile's near row, with nothing in its way (asserted: cells read)",
     "the thing trace with spawn and despawn events is running"
    ],
    "action": "a mortar lands in the stockpile; step until all are at rest",
-   "expect": "each thrown thing's height rises above zero mid-path and its rotation changes; at least one rebounds off the wall with speed near 0.7 of before; no thing id despawns at one cell and spawns at another",
+   "expect": "each thrown thing's height rises above zero mid-path and its rotation changes; at least one rebounds off the wall with speed near 0.7 of before; no thing id despawns at one cell and spawns at another; each good's request line carries its kernel cells and its wild cells, every wild-to-kernel ratio between 1.3 and 2.0, and a near-row good with nothing in its way travels more cells before its first contact than the colonist's whole throw",
    "control": {
     "case": "the same trace over the shipped build's hop, run before the carrier lands (or forced by a debug hop)",
     "expect": "every moved good shows as a despawn-spawn pair with no height",
@@ -404,10 +405,11 @@
    "start": [
     "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists closed_containers; INVALID otherwise)",
     "FlowWorks loaded (asserted: Names reports flowworks=true; INVALID otherwise)",
-    "beside one grenade: 1x1 crates free-backed, wall-backed, pawn-backed and pit-backed, a 1x1 container over the mass limit, a fridge larger than 1x1 with a free cell behind, a locker, a deep storage unit, a hopper and a tagged modded container, each holding goods (asserted: each container def is loaded from the guard's census and the mod providing it is active, else that row INVALID)"
+    "beside one grenade: 1x1 crates free-backed, wall-backed, pawn-backed and pit-backed, a 1x1 container over the mass limit, a fridge larger than 1x1 with a free cell behind, a locker, a deep storage unit, a hopper and a tagged modded container, each holding goods (asserted: each container def is loaded from the guard's census and the mod providing it is active, else that row INVALID)",
+    "the thing trace (thing id, drawn position, spawn and despawn events) and the journal are running (asserted: one test row each before the grenade)"
    ],
    "action": "the grenade lands; step until at rest",
-   "expect": "every container's contents unchanged; only the free-backed 1x1 crate under the mass limit slid one cell away from the blast; every other container stayed and jolted",
+   "expect": "every container's contents unchanged; only the free-backed 1x1 crate under the mass limit slid one cell away from the blast (journal container line, action slide); every other container stayed on its cells, each with one journal container line, action jolt, and a drawn offset above zero on at least one tick in the thing trace",
    "control": {
     "case": "the same goods loose on the floor at the same cells",
     "expect": "they fly",
@@ -497,14 +499,14 @@
    "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::lookup_projectile",
    "start": [
     "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists lookup_projectile; INVALID otherwise)",
-    "explosions staged with knockback extensions read back (asserted): (a) one explosion whose projectile, weapon and damage type each carry a different force (2.5, 1.5, 1.0); (b) the same with the projectile's extension removed; (c) the same with only the damage type's; (d) a projectile saying force 0 over a damage type saying 1.0; (e) a projectile with its own maxThrowCells 2 under a global maximum of 6; (f) a projectile with own maxThrowCells 4 under ownCapScale 0.5; (g) the same projectile with maxThrowCells 0 under ownCapScale 0.5; (h) impactFactor 0 with a wall two cells behind the colonist; (i) immuneBodySizeOverride 3.6 beside an animal of body size from 2.5 to under 3.5 (asserted: body size read)",
+    "explosions staged with knockback extensions read back (asserted): (a) one explosion whose projectile, weapon and damage type each carry a different force (2.5, 1.5, 1.0); (b) the same with the projectile's extension removed; (c) the same with only the damage type's; (d) a projectile saying force 0 over a damage type saying 1.0; (e) a projectile with its own maxThrowCells 2 under a global maximum of 6; (f) a projectile with own maxThrowCells 4 under ownCapScale 0.5; (g) the same projectile with maxThrowCells 0 under ownCapScale 0.5; (h) impactFactor 0 with a wall two cells behind the colonist, the same with a standing colonist two cells behind instead, and the same with a closed wooden door two cells behind instead (asserted: door closed, hit points read); (i) immuneBodySizeOverride 3.6 beside an animal of body size from 2.5 to under 3.5 (asserted: body size read)",
     "force strong enough that (e), (f) and (g) would each throw beyond their cap uncapped (asserted from the kernel's uncapped cells)"
    ],
    "action": "one colonist (an animal in (i)) per explosion at the same distance; step 300 ticks",
-   "expect": "journal tuning source: (a) projectile, (b) weapon, (c) damage type, with throw cells ordered (a) > (b) > (c); (d) no request line and no move; (e) exactly 2 cells; (f) exactly 2 cells; (g) the global 6 cells; (h) stopped before the wall, journal stop Wall with impact 0 and no new injury; (i) the animal thrown, while the same animal under the plain grenade stays with skip reason too_big",
+   "expect": "journal tuning source: (a) projectile, (b) weapon, (c) damage type, with throw cells ordered (a) > (b) > (c); (d) no request line and no move; (e) exactly 2 cells; (f) exactly 2 cells; (g) the global 6 cells; (h) stopped before the wall, journal stop Wall with impact 0 and no new injury; stopped before the standing colonist, journal stop Pawn with impact 0 and no new injury on either; stopped before the door, journal stop Door with impact 0, no new injury and the door's hit points unchanged; (i) the animal thrown, while the same animal under the plain grenade stays with skip reason too_big",
    "control": {
     "case": "the same explosions with no extension anywhere",
-    "expect": "every lane throws at the damage type's value with the global cap, and (h) takes a nonzero impact",
+    "expect": "every lane throws at the damage type's value with the global cap, and each (h) lane takes a nonzero impact, the door's hit points going down",
     "rules_out": "every blast throwing alike whatever its tuning, or a lane order that hides which source won"
    },
    "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
@@ -572,11 +574,11 @@
    "start": [
     "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists cover_breaks; INVALID otherwise)",
     "FlowWorks loaded (asserted: Names reports flowworks=true; INVALID otherwise)",
-    "four covered pits (asserted: cover hit points read), a raider on each of the first three",
+    "five covered pits (asserted: cover hit points read), a raider on the first, second, third and fifth",
     "over the third cover a tagged flammable gas cloud, lit at its far edge (asserted: cloud cells read)"
    ],
-   "action": "a grenade on the first cover, an incendiary shell on the second, the third's cloud lit; step until the cloud is spent",
-   "expect": "first and second covers destroyed, one descent each; the journal shows a gas burst whose radius covers the third cover, its cover hit points unchanged and no descent through it (its raider shoved at most one cell, not into the pit)",
+   "action": "a grenade on the first cover, an incendiary shell on the second, the third's cloud lit, an EMP grenade on the fifth; step until the cloud is spent",
+   "expect": "first and second covers destroyed, one descent each; the journal shows a gas burst whose radius covers the third cover, its cover hit points unchanged and no descent through it (its raider shoved at most one cell, not into the pit); the fifth cover's hit points unchanged and no descent under the EMP",
    "control": {
     "case": "the same grenade on a fourth covered pit with no pawn",
     "expect": "the cover is destroyed and no descent is recorded",
@@ -595,18 +597,41 @@
    "staged_by": "script",
    "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::pit_colonist",
    "start": [
-    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists pit_colonist; INVALID otherwise) and pit_enemy",
+    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists pit_colonist; INVALID otherwise)",
     "FlowWorks loaded (asserted: Names reports flowworks=true; INVALID otherwise)",
     "a colonist and a stack beside a 1-wide open pit, blast on the far side",
-    "a raider (hostile faction, asserted) beside a second open pit, blast on the far side",
     "a second colonist and stack aimed at a covered pit cell (asserted: cover intact)"
    ],
    "action": "a grenade per lane; step until at rest",
-   "expect": "the colonist, the stack and the raider each land in the first pit cell, one descent each; on the covered cell the colonist and the stack fall through, one descent each, and the cover is broken",
+   "expect": "the colonist and the stack each land in the first pit cell, one descent each; on the covered cell the colonist and the stack fall through, one descent each, and the cover is broken",
    "control": {
     "case": "the same throws with the pits filled",
     "expect": "they land on flat ground, no descent",
     "rules_out": "a pit pulling things in by some path other than the throw"
+   },
+   "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS"
+  },
+  {
+   "id": "sc_pit_enemy",
+   "kind": "acceptance",
+   "requirement": [
+    "thrown_into_pit_falls"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::pit_enemy",
+   "start": [
+    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists pit_enemy; INVALID otherwise)",
+    "FlowWorks loaded (asserted: Names reports flowworks=true; INVALID otherwise)",
+    "a raider (hostile faction, asserted) and a stack beside a 1-wide open pit, blast on the far side"
+   ],
+   "action": "a grenade per lane; step until at rest",
+   "expect": "the raider and the stack each land in the first pit cell, one descent each, the raider's descent journaled as a throw, not a walk",
+   "control": {
+    "case": "the same throw with the pit filled",
+    "expect": "the raider and the stack land on flat ground, no descent",
+    "rules_out": "a raider reaching the pit by its own pathing rather than the throw"
    },
    "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
    "hold": "immediate",
@@ -767,10 +792,11 @@
    "start": [
     "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists killed_by_blast; INVALID otherwise)",
     "three colonists around one impact cell, each one cell from it (asserted)",
-    "the thing trace (thing id, spawned state, drawn position, height, rotation, spawn and despawn events) is running (asserted: one test row before the blast)"
+    "the thing trace (thing id, spawned state, drawn position, height, rotation, spawn and despawn events) is running (asserted: one test row before the blast)",
+    "at least one colonist dies from the blast itself (asserted from the death record and the explosion id; INVALID otherwise)"
    ],
    "action": "a 9999-damage bomb explosion on the impact cell; step until at rest",
-   "expect": "every colonist the blast kills is thrown as a corpse away from the impact, with height above zero mid-flight and no despawn-spawn pair; any survivor is thrown as a pawn",
+   "expect": "at least one colonist is killed by the blast, and every colonist it kills is thrown as a corpse away from the impact, with height above zero mid-flight and no despawn-spawn pair; any survivor is thrown as a pawn",
    "control": {
     "case": "the same three colonists killed by a debug kill before a 1-damage explosion of the same radius",
     "expect": "the corpses are thrown by the same rule, and with throwCorpses off none of them moves",
@@ -887,6 +913,7 @@
     "sc_wall_stop",
     "sc_door_water",
     "sc_pit_fall",
+    "sc_pit_enemy",
     "sc_no_careless_fall",
     "sc_lookup",
     "sc_killed_thrown"
@@ -934,6 +961,23 @@
     "sc_killed_thrown"
    ],
    "why": "a pawn the blast kills is thrown as a corpse, the shipped killed_by_blast scene"
+  },
+  {
+   "capability": "inv_pit_floor_goods_stay",
+   "by": [
+    "every_good_moves",
+    "the_spared",
+    "sc_spared"
+   ],
+   "why": "a stack and a corpse on the spared lane's pit floor with the plain-colonist control"
+  },
+  {
+   "capability": "inv_big_corpse_spared",
+   "by": [
+    "the_spared",
+    "sc_spared"
+   ],
+   "why": "a thrumbo corpse on the spared lane with the plain-colonist control"
   }
  ]
 }

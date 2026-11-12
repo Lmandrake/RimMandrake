@@ -19,7 +19,7 @@
 ## does
 - [leaf:people_thrown_three_cells] A mortar shell beside a colonist throws them about three cells straight away, over sandbags and barricades, alive and briefly stunned
 - [leaf:pawn_flight_arc] A thrown pawn is carried through the air to the cell chosen at the blast, never re-targeted, and goes back to work when the stun ends
-- [leaf:the_spared] Never thrown: body size 2.5 or more (the Mod Settings default; a weapon with its own body-size limit, like the grav-ram's 3.6, throws pawns under that limit instead), a pawn already in a pit, a pawn carrying a pawn, a pawn already airborne, a pawn in bed
+- [leaf:the_spared] Never thrown: body size 2.5 or more (the Mod Settings default; a weapon with its own body-size limit, like the grav-ram's 3.6, throws pawns under that limit instead), a pawn already in a pit, a pawn carrying a pawn, a pawn already airborne, a pawn in bed, a corpse of body size 2.5 or more, goods and corpses already on a pit floor
 - [leaf:recovery_immunity] A pawn just thrown is spared a second throw until its stun and a short recovery end, also across a save
 - [leaf:hose_drops_at_takeoff] A thrown colonist carrying a hose end drops it where they stood, owed a proof
 - [leaf:wall_stops_dead] A thrown person stops dead at a wall and takes an impact hit; people never rebound
@@ -27,7 +27,7 @@
 - [leaf:doors_and_deep_water_stop] A closed door stops a throw and takes damage; deep water stops a throw on the last cell a pawn can stand on
 - [leaf:shield_belt_holds] A shield belt that absorbs the blast keeps its wearer in place and pays extra charge
 - [leaf:goods_arc_spin_rebound] Loose goods and corpses, a pawn the blast kills among them, fly wild: high arc, fast spin, rebounds off walls keeping about 70 percent each, until spent. OWNER:1794468855146168085, owed
-- [leaf:every_good_moves] Every loose good the blast reaches moves; the 40-throw cap and the per-tick drop are removed, nothing is skipped over a cap. OWNER:1794468864684141079, owed
+- [leaf:every_good_moves] Every loose good the blast reaches moves (bar those spared above); the 40-throw cap and the per-tick drop are removed, nothing is skipped over a cap. OWNER:1794468864684141079, owed
 - [leaf:open_shelf_scatters] Open shelves, racks and tables protect nothing. OWNER:1794468845275647261, owed
 - [leaf:closed_container_holds] Closed containers keep their goods and may themselves be shoved a little. OWNER:1794468845275647261, owed
 - [leaf:heavy_stack_knocks] A heavy thrown stack gives a pawn a light knock and a stagger; light goods pass. OWNER:1794468869384727517, owed
@@ -36,7 +36,7 @@
 - [leaf:per_weapon_tuning] A weapon's own tuning sets its throw, projectile first, then weapon, then damage type; zero turns it off; its own maximum caps the throw (0 = the global maximum) and the per-weapon cap scale shortens that own maximum; an impact factor of 0 makes its throws hit walls and pawns harmlessly; its own body-size limit lets it throw bigger pawns
 - [leaf:gas_goes_clump_by_clump] A lit flammable gas cloud goes off clump by clump, scattering goods and shoving people one cell unhurt. OWNER:1794468860062036002, owed
 - [leaf:our_gases_burn] The Cauldron's gas and our other fitting gases carry the flammable tag. OWNER:1794468874358971350, owed
-- [leaf:blast_breaks_pit_cover] A damaging or fire blast breaks a pit cover and whoever is on it falls; a gas burst never does
+- [leaf:blast_breaks_pit_cover] A damaging or fire blast breaks a pit cover and whoever is on it falls; a gas burst or an EMP, smoke or stun burst never does
 - [leaf:thrown_into_pit_falls] Anything thrown toward an open pit falls to its floor, and onto a covered cell falls through and breaks the cover; nothing is thrown across
 - [leaf:pit_goods_fetched] A colonist can fetch thrown goods and corpses back off a pit floor, owed a proof
 - [leaf:barrage_frame_budget] A mortar barrage into a full stockpile and a long gas chain stay smooth at normal speed, owed

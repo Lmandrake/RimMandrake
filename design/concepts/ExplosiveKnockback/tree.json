@@ -15,7 +15,7 @@
  "exam_waived": null,
  "waived": [],
  "advisory": [
-  "The wild tuning numbers (throw x1.6, about 70 percent kept per rebound) are playtest tuning inside his card; the scene checks the shape, not the exact numbers"
+  "The wild tuning numbers (throw x1.6, about 70 percent kept per rebound) are playtest tuning inside his card; sc_storeroom_mortar checks the shape (goods throw 1.3 to 2.0 times the kernel and farther than a person at the same distance; a rebound keeps near 0.7 of its speed), not the exact numbers"
  ],
  "leaves": [
   {
@@ -74,7 +74,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "each spared pawn on its own cell after, with journal skip reasons too_big, in_pit, carrying_pawn, in_bed and flying; the carried pawn is not reached; control: the plain colonist at the same distance is thrown",
+   "oracle_proposed": "each spared pawn on its own cell after, with journal skip reasons too_big, in_pit, carrying_pawn, in_bed and flying, and too_big, in_pit, in_pit for the thrumbo corpse and the pit-floor stack and corpse; the carried pawn is not reached; control: the plain colonist at the same distance is thrown",
    "tier_reason": "the throw, the landing and the scatter are runtime (PawnFlyer, map things, the explosion wave); the kernel selftest proves only the path maths",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -85,8 +85,8 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "preserve",
-   "experience": "A blast never throws a pawn of body size 2.5 or more (the Mod Settings default; a weapon that sets its own body-size limit throws pawns under that limit instead), a pawn already in a pit, a pawn carrying another pawn, a pawn already airborne, or a pawn in bed, and the player sees them stay where they were.",
-   "scenario": "Beside one grenade, same distance each: a thrumbo, a colonist on a pit floor, a colonist carrying a downed pawn, a colonist in a bed, and a colonist whose airborne state is forced true by a test hook (a state read only); a plain colonist beside them.",
+   "experience": "A blast never throws a pawn of body size 2.5 or more (the Mod Settings default; a weapon that sets its own body-size limit throws pawns under that limit instead), a pawn already in a pit, a pawn carrying another pawn, a pawn already airborne, or a pawn in bed, nor a corpse of body size 2.5 or more nor goods and corpses already on a pit floor, and the player sees them stay where they were.",
+   "scenario": "Beside one grenade, same distance each: a thrumbo, a colonist on a pit floor, a colonist carrying a downed pawn, a colonist in a bed, a thrumbo corpse, a stack and a corpse on the pit floor, and a colonist whose airborne state is forced true by a test hook (a state read only); a plain colonist beside them.",
    "false_pass": [
     "the blast reached none of them, so nothing was spared",
     "a spared pawn is thrown"
@@ -99,7 +99,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "proof scene immunity_window: second blast inside the window, skip reason recovering, no second launch; after a save and reload the same; control: the third blast after the window throws again",
+   "oracle_proposed": "proof scene immunity_window: second blast inside the window, skip reason immune, no second launch; after a save and reload the same; control: the third blast after the window throws again",
    "tier_reason": "the throw, the landing and the scatter are runtime (PawnFlyer, map things, the explosion wave); the kernel selftest proves only the path maths",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -200,7 +200,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "proof scene door_stop: landing on the cell before the door, journal stop Door, door hit points down; water scene: landing on the last standable cell, journal stop Water; control: the same throws with the door open and the water filled land 3 cells out",
+   "oracle_proposed": "proof scene door_stop: landing on the cell before the door, journal stop Door with impact above 0 and a new injury on the colonist, door hit points down; water scene: landing on the last standable cell, journal stop Water; control: the same throws with the door open and the water filled land 3 cells out",
    "tier_reason": "the throw, the landing and the scatter are runtime (PawnFlyer, map things, the explosion wave); the kernel selftest proves only the path maths",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -288,7 +288,7 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "change",
-   "experience": "Every loose good the blast reaches moves, however many there are, and the player never sees one stack sit still in the blast while its neighbours fly.",
+   "experience": "Every loose good the blast reaches moves, however many there are (except goods and corpses already on a pit floor, and corpses of body size 2.5 or more), and the player never sees one stack sit still in the blast while its neighbours fly.",
    "scenario": "A mortar into a full 10x10 stockpile, one stack per cell (more than 40 stacks inside the blast radius), with three colonists among the stacks; count stacks reached, stacks moved and colonists thrown.",
    "false_pass": [
     "the per-explosion cap of 40 still applies and the stacks past it stay",
@@ -329,7 +329,7 @@
    "bundle": "storage",
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "every container's contents count unchanged; only the free-backed 1x1 crate under the mass limit moved, one cell away from the blast; the walled, pawn-backed, pit-backed and over-mass 1x1 crates and the larger fridge stayed on their cells and jolted",
+   "oracle_proposed": "every container's contents count unchanged; only the free-backed 1x1 crate under the mass limit moved, one cell away from the blast; the walled, pawn-backed, pit-backed and over-mass 1x1 crates and the larger fridge stayed on their cells and jolted (journal container line, action slide or jolt, and a drawn offset in the trace)",
    "tier_reason": "the throw, the landing and the scatter are runtime (PawnFlyer, map things, the explosion wave); the kernel selftest proves only the path maths",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -444,7 +444,7 @@
    "leaf_kind": "experience",
    "clause_kind": "preserve",
    "experience": "The player sees a weapon's own tuning set its throw: the projectile's setting wins over the weapon's, the weapon's over its damage type, a setting of zero turns the throw off, a weapon's own maximum caps its throw (0 means the global maximum) and the per-weapon cap scale shortens that own maximum, an impact factor of 0 makes its throws hit walls and pawns harmlessly, and its own body-size limit lets it throw a pawn bigger than the global limit.",
-   "scenario": "One explosion whose projectile, weapon and damage type each carry a different force, the same with the projectile's removed, the same with only the damage type's; a projectile saying zero; an own maximum of 2; an own maximum of 4 under ownCapScale 0.5 and a zero own maximum under the same scale; impactFactor 0 before a wall; immuneBodySizeOverride 3.6 beside an animal of body size 2.5 to 3.5.",
+   "scenario": "One explosion whose projectile, weapon and damage type each carry a different force, the same with the projectile's removed, the same with only the damage type's; a projectile saying zero; an own maximum of 2; an own maximum of 4 under ownCapScale 0.5 and a zero own maximum under the same scale; impactFactor 0 before a wall, a standing pawn and a closed door; immuneBodySizeOverride 3.6 beside an animal of body size 2.5 to 3.5.",
    "false_pass": [
     "every blast throws the same whatever its tuning",
     "a zero on the projectile is overridden by its damage type",
@@ -511,7 +511,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "proof scenes cover_breaks and cover_breaks_fire: cover destroyed, one descent recorded each; gas scene: cover hit points unchanged, no descent",
+   "oracle_proposed": "proof scenes cover_breaks and cover_breaks_fire: cover destroyed, one descent recorded each; gas and EMP lanes: cover hit points unchanged, no descent",
    "tier_reason": "the throw, the landing and the scatter are runtime (PawnFlyer, map things, the explosion wave); the kernel selftest proves only the path maths",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -522,12 +522,13 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "preserve",
-   "experience": "A damaging or fire blast over a covered pit breaks its cover and the pawn standing on it falls in, while the player sees a gas burst leave a cover whole.",
-   "scenario": "A raider on a covered pit; a grenade lands on the cover; a second raider on a second covered pit under an incendiary shell; separately a gas cloud bursts over a third covered pit.",
+   "experience": "A damaging or fire blast over a covered pit breaks its cover and the pawn standing on it falls in, while the player sees a gas burst or an EMP, smoke or stun burst leave a cover whole.",
+   "scenario": "A raider on a covered pit; a grenade lands on the cover; a second raider on a second covered pit under an incendiary shell; separately a gas cloud bursts over a third covered pit and an EMP grenade over a fourth with a raider on it.",
    "false_pass": [
     "the cover breaks but the raider stands in the air",
     "a gas burst also breaks covers",
-    "a fire blast leaves the cover whole"
+    "a fire blast leaves the cover whole",
+    "an EMP, smoke or stun burst breaks a cover"
    ],
    "red": "a build where covers survive a grenade, or crack under a gas burst",
    "tier_proposed": "live_minimal",

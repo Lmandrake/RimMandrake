@@ -900,6 +900,38 @@
     "design/validation_walks/RimMandrake/ExplosiveKnockback.md"
    ],
    "scope_note": "walk row light_things.pawn_killed_by_blast_thrown_as_corpse; under the new carrier the corpse flies as a good"
+  },
+  {
+   "id": "inv_pit_floor_goods_stay",
+   "what": "Goods and corpses already lying on a pit floor are never thrown (skip reason in_pit)",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::in_pit_skip"
+   ],
+   "scope": "approved",
+   "source": [
+    "src/RimMandrake/ExplosiveKnockback/"
+   ],
+   "scope_note": "kept: his 2026-10-06 answer keeps goods in a pit retrievable, and nothing is thrown out of a pit"
+  },
+  {
+   "id": "inv_big_corpse_spared",
+   "what": "A corpse of body size 2.5 or more (the Mod Settings limit) is never thrown (skip reason too_big)",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "proof": "missing",
+   "proof_evidence": [],
+   "scope": "approved",
+   "source": [
+    "src/RimMandrake/ExplosiveKnockback/"
+   ],
+   "scope_note": "kept: the same limit that spares a thrumbo spares its corpse"
   }
  ],
  "built_reviewed": [],
@@ -1121,7 +1153,7 @@
     "a stack in the lane",
     "control: the pit filled"
    ],
-   "fix": "sc_pit_fall",
+   "fix": "sc_pit_enemy",
    "source": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::pit_enemy"
   },
   {

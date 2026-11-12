@@ -10,7 +10,7 @@ Each step is one rimflow item, built by Relentless from the tree; none needs wor
 1. **Goods truly fly, wild tuning** (`RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD`; d_c_wild, d_c_all_fly). Replace the
    despawn and re-place hop at `src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs` (about line
    474) with a thrown-thing carrier that draws each good and corpse along an arc, spinning fast, rebounding off walls
-   keeping about 70 percent per bounce until spent; throws about 1.6x the person kernel's distance. Remove the
+   keeping about 70 percent per bounce until spent; throws about 1.6x the person kernel's distance; each good's request line logs its kernel and wild cells. Remove the
    per-tick overflow drop (`maxItemThrowsPerMapTick`) and the 40-throw per-explosion cap (`maxThrowsPerExplosion`):
    his "All of them fly" (d_c_all_fly) leaves no cap, and frame time is a proven bar (item 6), not a limit; every
    good the wave reaches flies (scene `sc_all_fly_no_cap`, inventory `inv_caps` scoped out). The carrier survives a
@@ -19,7 +19,7 @@ Each step is one rimflow item, built by Relentless from the tree; none needs wor
 2. **Closed containers only, plus the shove** (`RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED`; d_c_closed_containers,
    dl_closed_means_hidden, dl_container_shove). The in_storage skip (about line 399) becomes a closed-container
    guard: storage that does not draw its contents, plus an opt-in tag. A 1x1 container under the mass limit slides
-   one cell when the cell behind is free, else jolts; never into a pit, a wall or onto a pawn. Walk row
+   one cell when the cell behind is free, else jolts; never into a pit, a wall or onto a pawn; each held container logs one journal container line, action slide or jolt. Walk row
    `light_things.item_on_a_shelf_stays` (which still states the old rule) is rewritten in
    design/validation_walks/RimMandrake/ExplosiveKnockback.md's must-be-true list, outside its validated north-star
    section, to "an item on an open shelf scatters; an item in a closed container stays". Leaves `open_shelf_scatters`, `closed_container_holds`.
@@ -51,9 +51,9 @@ Each step is one rimflow item, built by Relentless from the tree; none needs wor
    `script_audit` in record.json). Rewrites `RM_KnockbackProof.cs` so every scene in scenes.json asserts its start
    and runs its named control: edits calibration, wall_stop, over_sandbags (barricade lane), door_stop (deep-water
    lane), shield_counter, immunity_window (reload), lookup_projectile, emp_no_throw (into `blast_kinds`), cover_breaks
-   (incendiary), pit_colonist (covered cell), settings_off; removes tick_cap and the caps/shelf/items assertions
+   (incendiary, EMP lane), pit_colonist (covered cell), settings_off; removes tick_cap and the caps/shelf/items assertions
    that his answers reverse; adds pawn_arc, pawn_hits_pawn, spared_states (airborne state by a test hook, never a
-   live flight), settings_sweep, no_cross_ordered and hose_carry_drop; extends pit_enemy, corpse_into_pit, killed_by_blast (trace), lookup_zero_wins,
+   live flight), settings_sweep, no_cross_ordered and hose_carry_drop; extends pit_enemy (its own scene sc_pit_enemy), corpse_into_pit, killed_by_blast (trace), lookup_zero_wins,
    impact_factor and body_override (lanes of `sc_lookup`), and adds the proof's debug-vector draw counter. Runs the NOT YET RUN LIVE scenes live.
 
 ## Settled since
