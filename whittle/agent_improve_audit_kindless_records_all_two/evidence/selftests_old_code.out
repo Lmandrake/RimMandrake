@@ -1,15 +1,15 @@
-# selftests as of HEAD 28e3907a0d run against the pre-change code (git archive 66ab8395fd), 2026-11-11 21:08 -0800
+# selftests as of HEAD 608a72f6df run against the pre-change code (git archive 66ab8395fd), 2026-11-11 21:12 -0800
 ## selftest_agent_improve
-FAIL: an alarm names its own item (clones/<item>[.qN]), so it carries that item's kind (4.3) [{'target': 'relentless', 'kind': 'alarm:remove_failed', 'ts': 1793523600, 'path': '/tmp/tmpqds775pf/store/journal.jsonl', 'text': 'gone'}]
+FAIL: an alarm names its own item (clones/<item>[.qN]), so it carries that item's kind (4.3) [{'target': 'relentless', 'kind': 'alarm:remove_failed', 'ts': 1793523600, 'path': '/tmp/tmp5jg9hmpt/store/journal.jsonl', 'text': 'gone'}]
 FAIL: lesson kinds: footer item, NONE, kindless own item, a quoted item: line, none recorded {'bare': 'REPAIR', 'legacy': 'REPAIR', 'none': 'REPAIR', 'own': 'REPAIR', 'quoted': 'REPAIR'}
-FAIL: owner note and ops alarm: their own id decides, not a later id in the text [{'target': None, 'kind': 'owner_said', 'ts': 1793530800, 'path': '/tmp/tmpqds775pf/own_items/OWNER.jsonl', 'text': 'SEA_DIVE_HATCH_REMOVE_1: see WIDGET_REPAIR
+FAIL: owner note and ops alarm: their own id decides, not a later id in the text [{'target': None, 'kind': 'owner_said', 'ts': 1793530800, 'path': '/tmp/tmp5jg9hmpt/own_items/OWNER.jsonl', 'text': 'SEA_DIVE_HATCH_REMOVE_1: see WIDGET_REPAIR
 selftest_agent_improve: FAIL 3
 exit 1
 ## selftest_agent_improve_steps
-FAIL: L0 records the kind a lesson names past its first line ('agent/foo/v1 3ac2fd01ec25f3e6b7381b699c11ed3432b1f58a (tag push FAILED; local tag only)', [], {'target': 'foo', 'version': 1, 'tag': 'agent/foo/v1', 'day': '2026-11-02', 'path':
-FAIL: L1 records the kind a lesson names past its first line ('agent/foo/v2 a485f3562ec3829ae763c82d4c2b01b3f5da7c3d (tag push FAILED; local tag only)', [], {'target': 'foo', 'version': 2, 'tag': 'agent/foo/v2', 'day': '2026-11-03', 'path':
-FAIL: a lesson's item: line is its kind, over an item its text names ('agent/foo/v3 cd8eef6c53628c2b929600d634d30299423f0a19 (tag push FAILED; local tag only)', {'target': 'foo', 'version': 3, 'tag': 'agent/foo/v3', 'day': '2026-11-03', 'pa
-FAIL: L0 applies a change from a lesson naming no item, recorded kindless ('agent/foo/v4 b57be74a66aa1066077556354b35843dbe7d5cdc (tag push FAILED; local tag only)', {'target': 'foo', 'version': 4, 'tag': 'agent/foo/v4', 'day': '2026-11-02'
+FAIL: L0 records the kind a lesson names past its first line ('agent/foo/v1 1525dc1445c13bcff1a3f61f01bea7522dfe149a (tag push FAILED; local tag only)', [], {'target': 'foo', 'version': 1, 'tag': 'agent/foo/v1', 'day': '2026-11-02', 'path':
+FAIL: L1 records the kind a lesson names past its first line ('agent/foo/v2 7a5a608c2368a59c608859cc3bb9f108b34aab94 (tag push FAILED; local tag only)', [], {'target': 'foo', 'version': 2, 'tag': 'agent/foo/v2', 'day': '2026-11-03', 'path':
+FAIL: a lesson's item: line is its kind, over an item its text names ('agent/foo/v3 8b934c86033389cbcd3df6788e7103f8c4876ec9 (tag push FAILED; local tag only)', {'target': 'foo', 'version': 3, 'tag': 'agent/foo/v3', 'day': '2026-11-03', 'pa
+FAIL: L0 applies a change from a lesson naming no item, recorded kindless ('agent/foo/v4 b1ff2ed9fd9ffb47d33044415e12aef04a33b51a (tag push FAILED; local tag only)', {'target': 'foo', 'version': 4, 'tag': 'agent/foo/v4', 'day': '2026-11-02'
 selftest_agent_improve_steps: FAIL 4
 exit 1
 ## selftest_lessons
