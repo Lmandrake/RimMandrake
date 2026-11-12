@@ -569,10 +569,17 @@
     "ref": "run bench-ek-st3k-20261112",
     "stage": 3,
     "tokens": 3940000
+   },
+   {
+    "at": "2026-11-12T11:10:35Z",
+    "kind": "unmeasured",
+    "ref": "run bench-ek-st4k-20261112",
+    "stage": 4,
+    "tokens": 3940000
    }
   ],
   "reserve": 60000,
-  "spent": 85368279
+  "spent": 89308279
  },
  "history": [
   {
@@ -1066,6 +1073,24 @@
    "stage": 4,
    "what": "close",
    "why": "run bench-ek-st3k-20261112: stage 3 done"
+  },
+  {
+   "at": "2026-11-12T11:09:36Z",
+   "stage": 4,
+   "what": "over_budget",
+   "why": "85368279 of 4000000 spent; run bench-ek-st4k-20261112 goes on with 3940000 (advisory)"
+  },
+  {
+   "at": "2026-11-12T11:09:36Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run bench-ek-st4k-20261112, stage 4, budget 3940000"
+  },
+  {
+   "at": "2026-11-12T11:10:35Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run bench-ek-st4k-20261112: stage 4 done"
   }
  ],
  "item": "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
@@ -1259,11 +1284,32 @@
    "run": "bench-ek-st3k-20261112",
    "stage": 3,
    "summary": "judge8 gaps (4, all stage 3) settled from record: closed 1x1 containers staged as a vanilla small shelf (ShelfSmall) given the guard's opt-in closed tag (no storage crate exists on the list), the weapon rack replaced by Shelf/ShelfSmall/Table2x2c; the airborne lane sets the vanilla Pawn_FlightTracker state the shipped skip reads, the mod's check untouched; new delegated dl_fire_half_off (a part switched off gives back what ships: fire throws nothing) in the settings leaf, sheet and sweep; hose_drop oracle and coverage_rest why name the Settings enabled false control; the gas-shove control names the Cauldron grid's registration removed."
+  },
+  {
+   "at": "2026-11-12T11:10:35Z",
+   "inputs": {
+    "exam": "ce18bdaeb162f1d17d2d99b24b2656738532e22c10da0f5978ea904fcc7bf917",
+    "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
+    "scenes": "39f5f8460353baec6a454af4ad49351ea6a15cea4bcd259a8418ee59b52ca070",
+    "sheet": "decd62e555e47fb236d2bb0e16dedff3b2f3c8bd42434f1495887a0ed3c36137",
+    "tree": "052301404e081d7c1d5e00afeae1b8d11d0e6aaa3ac4f414e8fe9f79dcd07eb2"
+   },
+   "manifest": {
+    "designer.md": "b79052133c514f160b33c30b53d69a947adbfdbc81304681463b1038e82fce9f",
+    "designer_exam.md": "9892f91253ca15581c15f6f64d211a2275f345d0e13e0200dcda9c9f8004e07a"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "bench-ek-st4k-20261112",
+   "stage": 4,
+   "summary": "exam8 on the judge8-reworked sheet and tree: 52 scenarios (exam7s 44 plus 8 by a fresh examiner on the changed storage, airborne and settings leaves; 32 rejects), two fresh counted readers 52/52 each, control reader (closed_container_holds stripped) missed e20, e21, c10 and y6."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 5,
  "status": "ready"
 }
