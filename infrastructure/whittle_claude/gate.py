@@ -21,14 +21,49 @@ GAME = re.compile(
     r"|system_screenshot|rw_game\.sh|preflight_bridge")
 STEVE = re.compile(r"steve\.sh|stevedesktop", re.I)
 RIMFLOW = re.compile(r"(?:rimflow|rimflow/cli\.py)\s+(\S+)")
-SEG = re.compile(r"\s*(?:&&|\|\||;|\||\n)\s*")
+# commands whose arguments are only text or files: they cannot start a game, so a game word inside them (a grep pattern,
+# a commit message) is no reason to refuse. `git` is here for commit messages and ledger work.
+INERT = {"git", "grep", "egrep", "rg", "cat", "ls", "head", "tail", "wc", "diff", "echo", "printf", "sort", "uniq", "find",
+         "stat", "file", "less", "cut", "tr", "sed", "awk", "jq", "test", "[", "cd", "mkdir", "cp", "mv", "rm", "touch"}
+
+
+def split_segments(cmd):
+    """Split on && || ; | and newlines, but not inside '...' or "..." (steve.sh's remote command is quoted)."""
+    segs, cur, q, i = [], [], None, 0
+    while i < len(cmd):
+        c = cmd[i]
+        if q:
+            cur.append(c)
+            if c == "\\" and q == '"' and i + 1 < len(cmd):
+                cur.append(cmd[i + 1]); i += 1
+            elif c == q:
+                q = None
+        elif c in "'\"":
+            q = c; cur.append(c)
+        elif c in ";\n|&":
+            segs.append("".join(cur)); cur = []
+            while i + 1 < len(cmd) and cmd[i + 1] in "|&" and c in "|&":
+                i += 1
+        else:
+            cur.append(c)
+        i += 1
+    segs.append("".join(cur))
+    return [s.strip() for s in segs if s.strip()]
+
+
+def first_word(seg):
+    for w in seg.split():
+        if "=" in w and not w.startswith(("-", "/", ".")) and w.split("=", 1)[0].replace("_", "").isalnum():
+            continue   # FOO=bar prefix
+        return w.rsplit("/", 1)[-1]
+    return ""
 
 
 def verdict(lane, cmd):
-    if lane == "steve" and "whittle_claude/steve.sh" in cmd:
-        return "ALLOW"   # everything steve.sh runs is on SteveDesktop; its quoted remote command may hold && or |
-    segs = [s for s in SEG.split(cmd) if s.strip()]
+    segs = split_segments(cmd)
     for s in segs:
+        if first_word(s) in INERT:
+            continue
         rf = RIMFLOW.search(s)
         verb = rf.group(1) if rf else None
         # the ledger: every verb is fine except taking a game you do not drive (close --live is a ledger record)
