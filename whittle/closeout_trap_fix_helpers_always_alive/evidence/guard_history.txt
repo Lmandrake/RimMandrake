@@ -1,0 +1,6 @@
+# the guard (at 0a9dbe0158) replayed on .claude/settings.json at each commit around the outage (2026-11-11 20:13 -0800); promises are today's ledger + baseline
+5b487e7adc 2026-11-08 11:51 ledger: RIMMASTER_REDESIGN_ARTISAN_JUDGMENT_NOT_CHEC | exit 0 | 0 hooks named | ok    every promised hook is wired (28 of 28)
+8fb9f7f2b6 2026-11-08 11:52 Pyrelands lands on main: branch ralph/pyrelands (tip | exit 1 | 28 hooks named | FAIL  every promised hook is wired (0 of 28)
+20b248ca0c 2026-11-08 18:33 ledger: live sweep OPERATIONS_FIX_RUNS_BLIND_WHEN_ST | exit 1 | 28 hooks named | FAIL  every promised hook is wired (0 of 28)
+943a7a66da 2026-11-08 19:37 Restore .claude/settings.json clobbered by the Pyrel | exit 0 | 0 hooks named | ok    every promised hook is wired (28 of 28)
+0a9dbe0158 2026-11-11 20:12 CLOSEOUT_TRAP_FIX_HELPERS_ALWAYS_ALIVE: class guard, | exit 0 | 0 hooks named | ok    every promised hook is wired (28 of 28)

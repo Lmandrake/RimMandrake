@@ -1,0 +1,56 @@
+$ python3 src/RimMandrake/Utils/selftest_hook_promises_wired.py --settings whittle/closeout_trap_fix_helpers_always_alive/evidence/settings_8fb9f7f2b6.json   # 2026-11-11 20:17 -0800 at 9671dc3d9b
+settings: whittle/closeout_trap_fix_helpers_always_alive/evidence/settings_8fb9f7f2b6.json
+promises: 28 hooks (23 from live_baseline.txt, 12 from the ledger; live_retired.txt retires 10 subjects)
+FAIL  hook auto_allow_bash_permission.py (promised by live_baseline.txt): not wired in whittle/closeout_trap_fix_helpers_always_alive/evidence/settings_8fb9f7f2b6.json
+FAIL  hook bench_mode.py (promised by live_baseline.txt): not wired in whittle/closeout_trap_fix_helpers_always_alive/evidence/settings_8fb9f7f2b6.json
+FAIL  hook block_agent_over_slots.py (promised by live_baseline.txt, CLOSEOUT_TRAP_FIX_HELPERS_ALWAYS_ALIVE, SPAWN_HOOK_FIX_TYPING_BEATS_OWNER_CAP): not wired in whittle/closeout_trap_fix_helpers_always_alive/evidence/settings_8fb9f7f2b6.json
+FAIL  hook block_agent_without_model.py (promised by live_baseline.txt): not wired in whittle/closeout_trap_fix_helpers_always_alive/evidence/settings_8fb9f7f2b6.json
+FAIL  hook block_blanket_git_stage.py (promised by live_baseline.txt, AMEND_HOOK_HARDEN_SWEPT_A_NEIGHBOUR, HOOKS_VERIFY_TRUE_SUFFIX_MAY_MUTE_REFUSALS): not wired in whittle/closeout_trap_fix_helpers_always_alive/evidence/settings_8fb9f7f2b6.json
+FAIL  hook block_blind_scan.py (promised by live_baseline.txt, HOOKS_BLINDSCAN_TUNE_DRIVE_D_IMPORT_TOLL, HOOKS_SCANGUARD_FIX_QUOTED_PIPE_SLIPS_PAST): not wired in whittle/closeout_trap_fix_helpers_always_alive/evidence/settings_8fb9f7f2b6.json
+FAIL  hook block_canon_contradiction.py (promised by live_baseline.txt): not wired in whittle/closeout_trap_fix_helpers_always_alive/evidence/settings_8fb9f7f2b6.json
+FAIL  hook block_delegated_cards.py (promised by live_baseline.txt, DELEGATED_CARDS_FIX_HELD_OUT_RECALL): not wired in whittle/closeout_trap_fix_helpers_always_alive/evidence/settings_8fb9f7f2b6.json
+FAIL  hook block_dll_source_mismatch.py (promised by live_baseline.txt): not wired in whittle/closeout_trap_fix_helpers_always_alive/evidence/settings_8fb9f7f2b6.json
+FAIL  hook block_forged_validation.py (promised by live_baseline.txt, MODCHECK_VALIDATE_BUILD_DELEGATED_NEW_BARS): not wired in whittle/closeout_trap_fix_helpers_always_alive/evidence/settings_8fb9f7f2b6.json
+FAIL  hook block_hand_edited_sheet.py (promised by live_baseline.txt): not wired in whittle/closeout_trap_fix_helpers_always_alive/evidence/settings_8fb9f7f2b6.json
+FAIL  hook block_ledger_lint.py (promised by live_baseline.txt): not wired in whittle/closeout_trap_fix_helpers_always_alive/evidence/settings_8fb9f7f2b6.json
+FAIL  hook block_orphan_item_prose.py (promised by NIGHTLY_COP_FIX_RED_ATJKEB_FBYD): not wired in whittle/closeout_trap_fix_helpers_always_alive/evidence/settings_8fb9f7f2b6.json
+FAIL  hook block_paste_handoff.py (promised by live_baseline.txt): not wired in whittle/closeout_trap_fix_helpers_always_alive/evidence/settings_8fb9f7f2b6.json
+FAIL  hook block_shared_tree_merge.py (promised by live_baseline.txt): not wired in whittle/closeout_trap_fix_helpers_always_alive/evidence/settings_8fb9f7f2b6.json
+FAIL  hook block_tmpfs_clone.py (promised by live_baseline.txt): not wired in whittle/closeout_trap_fix_helpers_always_alive/evidence/settings_8fb9f7f2b6.json
+FAIL  hook block_unbounded_agent.py (promised by live_baseline.txt): not wired in whittle/closeout_trap_fix_helpers_always_alive/evidence/settings_8fb9f7f2b6.json
+FAIL  hook block_unbounded_robocopy.py (promised by CALL_DEADLINES_ENFORCE_130_OPEN_ENDED): not wired in whittle/closeout_trap_fix_helpers_always_alive/evidence/settings_8fb9f7f2b6.json
+FAIL  hook block_unledgered_texture.py (promised by live_baseline.txt): not wired in whittle/closeout_trap_fix_helpers_always_alive/evidence/settings_8fb9f7f2b6.json
+FAIL  hook block_worktrees.py (promised by live_baseline.txt): not wired in whittle/closeout_trap_fix_helpers_always_alive/evidence/settings_8fb9f7f2b6.json
+FAIL  hook conductor_goodbye.py (promised by live_baseline.txt, CONDUCTOR_CLOSEOUT_BUILD_LEDGER_CHECK, CONDUCTOR_RESET_FIX_KILLED_MID_READ, GOODBYE_CANCEL_FIX_PEER_ATE_THE_NIGHT): not wired in whittle/closeout_trap_fix_helpers_always_alive/evidence/settings_8fb9f7f2b6.json
+FAIL  hook handoff_restart.py (promised by CONDUCTOR_REBOOT_FIX_THREE_WASTED_MINUTES, HANDOFF_HOOK_FIX_QUOTED_READY_COUNTS, HANDOFF_RESTART_AUDIT_FILES_OWED): not wired in whittle/closeout_trap_fix_helpers_always_alive/evidence/settings_8fb9f7f2b6.json
+FAIL  hook notebox_deliver.py (promised by STATION_NOTEBOX_BUILD_WHISPER_AT_NEXT_TURN): not wired in whittle/closeout_trap_fix_helpers_always_alive/evidence/settings_8fb9f7f2b6.json
+FAIL  hook queue_lint.py (promised by live_baseline.txt, SEAT_BENCH_RENAME_WORD_OUTLIVED_ITS_WORKSHOP): not wired in whittle/closeout_trap_fix_helpers_always_alive/evidence/settings_8fb9f7f2b6.json
+FAIL  hook set_session_title.py (promised by live_baseline.txt): not wired in whittle/closeout_trap_fix_helpers_always_alive/evidence/settings_8fb9f7f2b6.json
+FAIL  hook warn_skill_unwired.py (promised by live_baseline.txt): not wired in whittle/closeout_trap_fix_helpers_always_alive/evidence/settings_8fb9f7f2b6.json
+FAIL  hook warn_unclosed_queue_item.py (promised by live_baseline.txt): not wired in whittle/closeout_trap_fix_helpers_always_alive/evidence/settings_8fb9f7f2b6.json
+FAIL  hook wrapup_hook.py (promised by AGENT_WRAPUP_ENFORCE_ASKING_NEVER_WORKED): not wired in whittle/closeout_trap_fix_helpers_always_alive/evidence/settings_8fb9f7f2b6.json
+FAIL  every promised hook is wired in whittle/closeout_trap_fix_helpers_always_alive/evidence/settings_8fb9f7f2b6.json (0 of 28)
+fix   wire each back in .claude/settings.json (a landing that replaced the file: restore it from the commit before), or retire a hook removed on purpose in src/RimMandrake/rimflow/live_retired.txt with one line per spelling it was promised as (hook=x.py and hook=.claude/hooks/x.py are two lines)
+ok    every hook line ever in live_baseline.txt is still there or retired in live_retired.txt (gone: none)
+-- the instrument (fixtures of its own, whatever the settings above) --
+ok    the ledger reads (7541 items)
+ok    the ledger yields hook promises (12 hooks, e.g. block_agent_over_slots.py, block_blanket_git_stage.py, block_blind_scan.py)
+ok    live_baseline.txt yields hook promises (23)
+ok    live_baseline.txt's git history yields hook lines (25)
+ok    block_agent_over_slots.py (this item's own promise) is among the promises read
+ok    fixture: every promised hook wired reads green (28 hooks)
+ok    fixture: a prompt hook (no command) beside the full set is no problem
+ok    fixture: the documented python3 "$CLAUDE_PROJECT_DIR"/.claude/hooks/x.py style reads wired
+ok    fixture: settings without block_agent_over_slots.py report exactly that hook (got ['block_agent_over_slots.py'])
+ok    fixture: a lookalike x_block_agent_over_slots.py does not count as wiring it (whole-name match)
+ok    fixture: a hook promised only on the ledger (block_orphan_item_prose.py, by NIGHTLY_COP_FIX_RED_ATJKEB_FBYD) is reported when dropped
+ok    fixture: disableAllHooks reports every promised hook (28 of 28)
+ok    fixture: block_agent_over_slots.py named only in a matcher, in no command, is reported (got ['block_agent_over_slots.py'])
+ok    fixture: a wired hook whose file is gone is reported (wired in /tmp/selftest_hook_promises_wired_d51v8aqe/settings_file_gone.json but /tmp/selftest_hook_promises_wired_d51v8aqe/project/.claude/hooks/block_agent_over_slots.py is absent)
+ok    fixture: a top level list settings file fails block_agent_over_slots.py with a shape problem, no crash (settings top level is a list, not an object)
+ok    fixture: a hooks string settings file fails block_agent_over_slots.py with a shape problem, no crash (`hooks` is a str, not an object of events)
+ok    fixture: a group dict settings file fails block_agent_over_slots.py with a shape problem, no crash (hooks.PreToolUse is a dict, not a list of groups)
+ok    fixture: a not json settings file fails block_agent_over_slots.py with a shape problem, no crash (/tmp/selftest_hook_promises_wired_d51v8aqe/settings_not_json.json does not read as JSON (Expecting property name enclosed in double quotes: line 1 column 2 (char 1)))
+ok    fixture: a dropped item, a retired subject and a dropped LIVE_RESTORE_ item promise nothing
+FAIL 29
+exit 1

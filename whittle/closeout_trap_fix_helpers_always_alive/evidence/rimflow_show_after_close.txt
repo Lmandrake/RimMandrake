@@ -1,0 +1,66 @@
+CLOSEOUT_TRAP_FIX_HELPERS_ALWAYS_ALIVE   done  row -  needs offline  target v1
+Close-out is refused while any helper lives but rules forbid idling; hard context limit has no drain or spawn freeze; helper state dies with helpers
+owner CLAUDE_ARCHMAGI_OFFLINE1   kind bug   filed 2026-10-31T23:02:29Z
+closed at 0a9dbe0158a9a3514cf1f6cb250689960f0e09c4
+live: hook=block_agent_over_slots.py  (1 outage(s))
+guard: src/RimMandrake/Utils/selftest_hook_promises_wired.py, shown failing (exit 1) 2026-11-12T04:12:40Z
+
+--- items/CLOSEOUT_TRAP_FIX_HELPERS_ALWAYS_ALIVE.md ---
+(absent or has no ## sections)
+--- history (26 events) ---
+  2026-10-31T23:02:29Z  BENCH  file      for=FOUNDRY kind=bug target=v1 title=Close-out is refused while any helper lives but rules forbid idling; hard context limit has no drain or spawn freeze; helper state dies with helpers tsn=1793487749135059217  | agent's reason: parallel review 2026-10-31, design/RimMandrake/parallel_review_2026-10-31/ handoff_context.md
+  2026-11-01T02:12:54Z  OWNER  reassign  override=only BENCH or DECIDE may `reassign` (seat is OWNER)
+
+✅ If the OWNER told you to do this, that is not a refusal — quote him and it lands,
+   with his words recorded on the event as the authorization:
+    python3 src/RimMandrake/rimflow/cli.py reassign CLOSEOUT_TRAP_FIX_HELPERS_ALWAYS_ALIVE … --owner-said "<his words, verbatim>"
+
+⚠️  Pass what he ACTUALLY said. Bare assent ("yes", "ok", "go ahead") is refused on
+    purpose — that is him agreeing to something YOU said, and the ledger would record
+    your words as his. A short instruction is fine.
+
+⛔ If he did NOT tell you to, the rule stands. Route it to BENCH or DECIDE instead. ranBy=BENCH reason=Conductor brief: BENCH works it to=BENCH tsn=1793499174058520010  | per standing ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM
+  2026-11-01T02:13:07Z  BENCH  lease     action=take expires=2026-11-01T02:58:07Z token=BENCH.pid29532.87d59094 tsn=1793499188256039639
+  2026-11-01T02:13:09Z  BENCH  claim     tsn=1793499189294335467
+  2026-11-01T02:13:10Z  BENCH  start     tsn=1793499190063623069
+  2026-11-01T02:29:04Z  BENCH  lease     action=renew expires=2026-11-01T03:14:04Z token=BENCH.pid29532.87d59094 tsn=1793500144861613748
+  2026-11-01T02:43:52Z  BENCH  lease     action=renew expires=2026-11-01T03:28:52Z token=BENCH.pid29532.87d59094 tsn=1793501033370655660
+  2026-11-01T02:49:34Z  BENCH  lease     action=renew expires=2026-11-01T03:34:34Z token=BENCH.pid29532.87d59094 tsn=1793501375403379039
+  2026-11-01T02:51:12Z  BENCH  lease     action=renew expires=2026-11-01T03:36:12Z token=BENCH.pid29532.87d59094 tsn=1793501473324509565
+  2026-11-01T02:56:47Z  BENCH  lease     action=renew expires=2026-11-01T03:41:47Z token=BENCH.pid29532.87d59094 tsn=1793501807922785050
+  2026-11-01T02:58:39Z  BENCH  lease     action=renew expires=2026-11-01T03:43:39Z token=BENCH.pid29532.87d59094 tsn=1793501919735913262
+  2026-11-01T03:02:55Z  BENCH  lease     action=renew expires=2026-11-01T03:47:55Z token=BENCH.pid29532.87d59094 tsn=1793502175951130850
+  2026-11-01T03:06:23Z  BENCH  lease     action=renew expires=2026-11-01T03:51:23Z token=BENCH.pid29532.87d59094 tsn=1793502383970972266
+  2026-11-01T03:11:24Z  BENCH  lease     action=renew expires=2026-11-01T03:56:24Z token=BENCH.pid29532.87d59094 tsn=1793502684952233016
+  2026-11-01T03:25:39Z  BENCH  lease     action=renew expires=2026-11-01T04:10:39Z token=BENCH.pid29532.87d59094 tsn=1793503539945115541
+  2026-11-01T03:26:10Z  OWNER  close     live=hook=block_agent_over_slots.py ranBy=BENCH reason=Request always records; kill waits; drain and spawn freeze live. 15 of 15 mutants killed. Sandbox probe on 3 real helpers: DEFERRED, next and spawn refused. Evidence D:\ClaudeWork\rimmandrake\closeout_probe_2026-10-31\probe.txt. Real restart proof owed: CLOSEOUT_DRAIN_PROVE_REAL_RESTART_LIVE. sha=569bc559081c tsn=1793503570943957969  | per standing ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM
+  2026-11-08T20:34:15Z  RUNNER live      detail=hook block_agent_over_slots.py is not wired in /home/mandrake/.claude/settings.json, /home/mandrake/rm/dispatch/.claude/settings.json result=broken tsn=1794170055800028877
+  2026-11-08T20:34:20Z  RUNNER raise     reason=alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH) tsn=1794170060266387896
+  2026-11-09T04:19:00Z  RUNNER live      detail=sweep: running again result=kept tsn=1794197940997251610
+  2026-11-12T03:55:12Z  OWNER  reassign  override=only BENCH or DECIDE or CODEX_ARCHMAGI_FWDRAIN or CODEX_STEVEDESKTOP_HUGETHINGS or CLAUDE_ARCHMAGI_FWLIVE or CLAUDE_STEVEDESKTOP_FWLIVE or CLAUDE_ARCHMAGI_OFFLINE1 or CLAUDE_ARCHMAGI_OFFLINE2 or CLAUDE_ARCHMAGI_OFFLINE3 or CLAUDE_STEVEDESKTOP_OFFLINE1 or CLAUDE_STEVEDESKTOP_OFFLINE2 or CLAUDE_STEVEDESKTOP_OFFLINE3 or CLAUDE_STEVEDESKTOP_OFFLINE4 may `reassign` (seat is OWNER)
+
+✅ If the OWNER told you to do this, that is not a refusal — quote him and it lands,
+   with his words recorded on the event as the authorization:
+    python3 src/RimMandrake/rimflow/cli.py reassign CLOSEOUT_TRAP_FIX_HELPERS_ALWAYS_ALIVE … --owner-said "<his words, verbatim>"
+
+⚠️  Pass what he ACTUALLY said. Bare assent ("yes", "ok", "go ahead") is refused on
+    purpose — that is him agreeing to something YOU said, and the ledger would record
+    your words as his. A short instruction is fine.
+
+✅ If the CONDUCTOR told you to, it carries his authority: same command with
+    --per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM --why "<the Conductor's text>"
+
+⛔ If neither did, the rule stands. Route it to BENCH or DECIDE or CODEX_ARCHMAGI_FWDRAIN or CODEX_STEVEDESKTOP_HUGETHINGS or CLAUDE_ARCHMAGI_FWLIVE or CLAUDE_STEVEDESKTOP_FWLIVE or CLAUDE_ARCHMAGI_OFFLINE1 or CLAUDE_ARCHMAGI_OFFLINE2 or CLAUDE_ARCHMAGI_OFFLINE3 or CLAUDE_STEVEDESKTOP_OFFLINE1 or CLAUDE_STEVEDESKTOP_OFFLINE2 or CLAUDE_STEVEDESKTOP_OFFLINE3 or CLAUDE_STEVEDESKTOP_OFFLINE4 instead. ranBy=CLAUDE_ARCHMAGI_OFFLINE1 to=CLAUDE_ARCHMAGI_OFFLINE1 tsn=1794455712036055572  | per standing ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM | agent's reason: Claude Whittle offline loop takes it: guard owed for the 2026-11-08 settings.json clobber
+  2026-11-12T03:55:25Z  CLAUDE_ARCHMAGI_OFFLINE1 lease     action=take expires=2026-11-12T04:40:25Z token=CLAUDE_ARCHMAGI_OFFLINE1.pid19644.21461abc tsn=1794455726199755265
+  2026-11-12T03:55:27Z  CLAUDE_ARCHMAGI_OFFLINE1 claim     session=394bc833-3218-4c4c-a872-537903f688ba tsn=1794455727171181424
+  2026-11-12T03:55:28Z  CLAUDE_ARCHMAGI_OFFLINE1 start     session=394bc833-3218-4c4c-a872-537903f688ba tsn=1794455728090928761
+  2026-11-12T04:12:40Z  CLAUDE_ARCHMAGI_OFFLINE1 guard     instance=--settings whittle/closeout_trap_fix_helpers_always_alive/evidence/settings_8fb9f7f2b6.json redExit=1 redTail=a shape problem, no crash (/tmp/selftest_hook_promises_wired_lcb8lrim/settings_not_json.json does not read as JSON (Expecting property name enclosed in double quotes: line 1 column 2 (char 1)))
+ok    fixture: a dropped item, a retired subject and a dropped LIVE_RESTORE_ item promise nothing
+FAIL 29
+ test=src/RimMandrake/Utils/selftest_hook_promises_wired.py testHash=97d7bc5daf10e990 tsn=1794456760202983623  | agent's reason: class guard for the 2026-11-08 settings.json clobber (8fb9f7f2b6); instance replayed from its settings copy
+  2026-11-12T04:13:44Z  CLAUDE_ARCHMAGI_OFFLINE1 verify    config=selftest_hook_promises_wired.py on .claude/settings.json (28 of 28) + run_selftests --only 5/5 evidence=whittle/closeout_trap_fix_helpers_always_alive/evidence/guard_real.txt level=L0 result=pass sha=0a9dbe0158a9a3514cf1f6cb250689960f0e09c4 tsn=1794456824649563076  | agent's reason: guard green on today's settings at the published sha
+  2026-11-12T04:13:57Z  CLAUDE_ARCHMAGI_OFFLINE1 close     live=hook=block_agent_over_slots.py reason=Class guard src/RimMandrake/Utils/selftest_hook_promises_wired.py: every hook= promise (ledger + live_baseline.txt, minus retired) wired in .claude/settings.json; shown red on 8fb9f7f2b6's settings (0 of 28), green today (28 of 28). Evidence whittle/closeout_trap_fix_helpers_always_alive/evidence/. sha=0a9dbe0158a9a3514cf1f6cb250689960f0e09c4 tsn=1794456837598064426  | agent's reason: guard owed after the 2026-11-08 settings.json clobber; recorded red, L0 pass at the sha
+--- runs (immutable; a failure stands forever) ---
+  CLOSEOUT_TRAP_FIX_HELPERS_ALWAYS_ALIVE/run-1@selftest_hook_promises_wired.py on .claude/settings.json (28 of 28) + run_selftests --only 5/5  pass    whittle/closeout_trap_fix_helpers_always_alive/evidence/guard_real.txt
+--- causal chain ---
+  (none — this item stands on its own)

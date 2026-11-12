@@ -1,0 +1,2 @@
+$ python3 src/RimMandrake/Utils/selftest_hook_promises_wired.py --settings /mnt/d/ClaudeWork/rimmandrake/whittle_claude/CLAUDE_ARCHMAGI_OFFLINE1/hpw/docstyle.json   # 2026-11-11 20:17 -0800 at 9671dc3d9b
+# today's settings with every command rewritten to python3 "$CLAUDE_PROJECT_DIR"/.claude/hooks/x.py (a reviewer's repro: before 9671dc3d9b all 28 read absent)

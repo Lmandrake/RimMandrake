@@ -1,0 +1,27 @@
+$ python3 src/RimMandrake/Utils/selftest_hook_promises_wired.py    # 2026-11-11 20:17 -0800 at 9671dc3d9b
+settings: /home/mandrake/rm/scratch/BENCH/claude-archmagi-offline1/.claude/settings.json
+promises: 28 hooks (23 from live_baseline.txt, 12 from the ledger; live_retired.txt retires 10 subjects)
+ok    every promised hook is wired in /home/mandrake/rm/scratch/BENCH/claude-archmagi-offline1/.claude/settings.json (28 of 28)
+ok    every hook line ever in live_baseline.txt is still there or retired in live_retired.txt (gone: none)
+-- the instrument (fixtures of its own, whatever the settings above) --
+ok    the ledger reads (7541 items)
+ok    the ledger yields hook promises (12 hooks, e.g. block_agent_over_slots.py, block_blanket_git_stage.py, block_blind_scan.py)
+ok    live_baseline.txt yields hook promises (23)
+ok    live_baseline.txt's git history yields hook lines (25)
+ok    block_agent_over_slots.py (this item's own promise) is among the promises read
+ok    fixture: every promised hook wired reads green (28 hooks)
+ok    fixture: a prompt hook (no command) beside the full set is no problem
+ok    fixture: the documented python3 "$CLAUDE_PROJECT_DIR"/.claude/hooks/x.py style reads wired
+ok    fixture: settings without block_agent_over_slots.py report exactly that hook (got ['block_agent_over_slots.py'])
+ok    fixture: a lookalike x_block_agent_over_slots.py does not count as wiring it (whole-name match)
+ok    fixture: a hook promised only on the ledger (block_orphan_item_prose.py, by NIGHTLY_COP_FIX_RED_ATJKEB_FBYD) is reported when dropped
+ok    fixture: disableAllHooks reports every promised hook (28 of 28)
+ok    fixture: block_agent_over_slots.py named only in a matcher, in no command, is reported (got ['block_agent_over_slots.py'])
+ok    fixture: a wired hook whose file is gone is reported (wired in /tmp/selftest_hook_promises_wired_u27wv0z6/settings_file_gone.json but /tmp/selftest_hook_promises_wired_u27wv0z6/project/.claude/hooks/block_agent_over_slots.py is absent)
+ok    fixture: a top level list settings file fails block_agent_over_slots.py with a shape problem, no crash (settings top level is a list, not an object)
+ok    fixture: a hooks string settings file fails block_agent_over_slots.py with a shape problem, no crash (`hooks` is a str, not an object of events)
+ok    fixture: a group dict settings file fails block_agent_over_slots.py with a shape problem, no crash (hooks.PreToolUse is a dict, not a list of groups)
+ok    fixture: a not json settings file fails block_agent_over_slots.py with a shape problem, no crash (/tmp/selftest_hook_promises_wired_u27wv0z6/settings_not_json.json does not read as JSON (Expecting property name enclosed in double quotes: line 1 column 2 (char 1)))
+ok    fixture: a dropped item, a retired subject and a dropped LIVE_RESTORE_ item promise nothing
+ALL OK
+exit 0

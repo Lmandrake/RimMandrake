@@ -1,0 +1,14 @@
+# a landing that rolls live_baseline.txt back along with settings.json: hook=bench_mode.py removed from the baseline and from the settings; guard at 0a9dbe0158 (2026-11-11 20:13 -0800)
+$ python3 src/RimMandrake/Utils/selftest_hook_promises_wired.py --settings <real settings minus bench_mode.py>   (fixture rows elided)
+settings: /mnt/d/ClaudeWork/rimmandrake/whittle_claude/CLAUDE_ARCHMAGI_OFFLINE1/hpw/no_bench.json
+promises: 27 hooks (22 from live_baseline.txt, 12 from the ledger; live_retired.txt retires 10 subjects)
+ok    every promised hook is wired in /mnt/d/ClaudeWork/rimmandrake/whittle_claude/CLAUDE_ARCHMAGI_OFFLINE1/hpw/no_bench.json (27 of 27)
+FAIL  every hook line ever in live_baseline.txt is still there or retired in live_retired.txt (gone: hook=bench_mode.py)
+-- the instrument (fixtures of its own, whatever the settings above) --
+ok    the ledger reads (7541 items)
+ok    the ledger yields hook promises (12 hooks, e.g. block_agent_over_slots.py, block_blanket_git_stage.py, block_blind_scan.py)
+ok    live_baseline.txt yields hook promises (22)
+ok    live_baseline.txt's git history yields hook lines (25)
+ok    block_agent_over_slots.py (this item's own promise) is among the promises read
+FAIL 1
+exit 1
