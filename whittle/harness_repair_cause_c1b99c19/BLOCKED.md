@@ -1,0 +1,1 @@
+2026-11-11 22:25 -08:00: only the re-run remains. testq J20261112T061851Z-36596f is queued at ad165c84c2, but the testq lane is PAUSED by the owner's order (FWLIVE loops hold both games, 2026-11-11 19:10 PST). It needs testq.py resume when that order ends, then retest.py passed J20261112T061851Z-36596f HARNESS_REPAIR_CAUSE_C1B99C19.

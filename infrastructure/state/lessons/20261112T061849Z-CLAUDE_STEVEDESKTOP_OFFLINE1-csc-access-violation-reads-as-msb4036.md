@@ -1,0 +1,3 @@
+On SteveDesktop under heavy multi-loop load, selftest_flowworks_stock --only 'Hose*,StyleStage3Checks' can fail with MSB4036 'The ExtractHoseShadow task was not found' (HoseShadowHarness.targets). That message is not a code fault: the line after it reads csc.exe exited with code -1073741819 (0xC0000005, access violation) while RoslynCodeTaskFactory compiled the inline task, i.e. the host's crash class. The same command at the same sha re-run immediately passed (457/457 hose assertions, 431 s). Grep a red C# build for -1073741819 before treating MSB4036 as a broken targets file; it also turns the proof_hose offline gate red, which refuses the live hose proof as driver_undelivered.
+item: HARNESS_REPAIR_CAUSE_C1B99C19
+home: infrastructure/state/facts/instrument_traps.md
