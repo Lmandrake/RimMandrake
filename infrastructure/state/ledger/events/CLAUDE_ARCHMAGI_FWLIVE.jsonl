@@ -22,3 +22,4 @@
 {"seat":"CLAUDE_ARCHMAGI_FWLIVE","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"GSS_WATER_STUB_FIX_PASSED_LAST_WEEK: final evidence run 6 + cause arms","ts":"2026-11-12T05:49:33Z","tsn":1794462573132203046}
 {"seat":"CLAUDE_ARCHMAGI_FWLIVE","event":"bridge","state":"released","ts":"2026-11-12T06:00:19Z","tsn":1794463219595957299}
 {"seat":"CLAUDE_ARCHMAGI_FWLIVE","event":"note","id":"GSS_WATER_STUB_FIX_PASSED_LAST_WEEK","text":"Claude Whittle CLAUDE_ARCHMAGI_FWLIVE released this claim: no live item file (ledger ghost); nothing was built","why":"wc.py scripted release (no model)","ts":"2026-11-12T06:05:50Z","tsn":1794463550608198962}
+{"seat":"CLAUDE_ARCHMAGI_FWLIVE","event":"claim","id":"PIT_TEMPERATURE_SOFTENING_1","ts":"2026-11-12T06:06:23Z","tsn":1794463583458550672}
