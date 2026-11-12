@@ -771,7 +771,7 @@ class Attempt:
         self._memo = None
         try:
             import deploy_memo as M
-            if M.enabled() and not os.environ.get("TESTQ_CMD_DEPLOY"):
+            if M.enabled(home=HOME) and not os.environ.get("TESTQ_CMD_DEPLOY"):
                 mp = os.path.join(HOME, "deploy_memo.json")
                 self._memo = (M, mp, M.key_for(S, CLONE, self.job["source_sha"], mods, os.path.join(RUNNER, "src")),
                               None)

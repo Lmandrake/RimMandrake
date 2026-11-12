@@ -13,7 +13,7 @@ The memo is ONE file (TESTQ_HOME/deploy_memo.json), the last job's entry:
 A hit needs the key AND the signature equal. Anything else - a different mod, a commit that touched a mod's source, a
 file in the game folder written, added or removed by anyone (the game, a hand edit, another deploy) - is a miss, and the
 job deploys and attests exactly as before. The companion DLL check is not memoised (it is cheap and has its own verdict).
-Off unless TESTQ_DEPLOY_MEMO=1; TESTQ_DEPLOY_MEMO=0 or unset behaves as the code did before this module.
+Off unless TESTQ_DEPLOY_MEMO=1 or the lane's TESTQ_HOME has a deploy_memo.on file; TESTQ_DEPLOY_MEMO=0, or neither, behaves as the code did before this module.
 """
 import hashlib
 import json
@@ -23,8 +23,13 @@ import subprocess
 DEPLOY_TOOL = "src/RimMandrake/Utils/deploy_custom_mods.py"
 
 
-def enabled(env=None):
-    return (os.environ if env is None else env).get("TESTQ_DEPLOY_MEMO") == "1"
+def enabled(env=None, home=None):
+    """TESTQ_DEPLOY_MEMO=1 turns it on, =0 off; unset: on only while the lane has a `deploy_memo.on` file in its
+    TESTQ_HOME (a lane switch that outlives the ssh sessions the worker is started from; delete the file to stop)."""
+    v = (os.environ if env is None else env).get("TESTQ_DEPLOY_MEMO")
+    if v in ("0", "1"):
+        return v == "1"
+    return bool(home) and os.path.isfile(os.path.join(home, "deploy_memo.on"))
 
 
 def _git(clone, *a):
