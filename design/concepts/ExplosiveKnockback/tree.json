@@ -211,7 +211,7 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "preserve",
-   "experience": "A pawn thrown toward a closed door stops before it, takes an impact hit and the door takes damage; a pawn thrown toward deep water stops on the last cell it can stand on and never lands in it.",
+   "experience": "A pawn thrown toward a closed door stops before it, takes an impact hit and the door takes damage (both hits scaled by the weapon's impact factor, none at 0); a pawn thrown toward deep water stops on the last cell it can stand on and never lands in it.",
    "scenario": "A colonist two cells from a closed wooden door with the blast on the far side; a second colonist two cells from deep water likewise; read landing cells, impact damage and door hit points.",
    "false_pass": [
     "the pawn passes the door",
@@ -443,7 +443,7 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "preserve",
-   "experience": "The player sees a weapon's own tuning set its throw: the projectile's setting wins over the weapon's, the weapon's over its damage type, a setting of zero turns the throw off, a weapon's own maximum caps its throw (0 means the global maximum) and the per-weapon cap scale shortens that own maximum, an impact factor of 0 makes its throws hit walls and pawns harmlessly, and its own body-size limit lets it throw a pawn bigger than the global limit.",
+   "experience": "The player sees a weapon's own tuning set its throw: the projectile's setting wins over the weapon's, the weapon's over its damage type, a setting of zero turns the throw off, a weapon's own maximum caps its throw (0 means the global maximum) and the per-weapon cap scale shortens that own maximum, an impact factor of 0 makes its throws hit walls, pawns and doors harmlessly (no hurt to the thrown or the hit, no damage to the door), and its own body-size limit lets it throw a pawn bigger than the global limit.",
    "scenario": "One explosion whose projectile, weapon and damage type each carry a different force, the same with the projectile's removed, the same with only the damage type's; a projectile saying zero; an own maximum of 2; an own maximum of 4 under ownCapScale 0.5 and a zero own maximum under the same scale; impactFactor 0 before a wall, a standing pawn and a closed door; immuneBodySizeOverride 3.6 beside an animal of body size 2.5 to 3.5.",
    "false_pass": [
     "every blast throws the same whatever its tuning",
