@@ -11,7 +11,8 @@ Rows (each gets a labelled picture; the overview picture carries all of them):
   ladders   four 3x3 pits, 3 deep. Pit k has its LOWERED ladder INSIDE the dug middle square of wall k (N,E,S,W) and a RAISED one
             on the opposite wall. Ladders are placed with the wall's own rotation INSIDE the dug square and hang on the wall
             (RM_LadderUtility.WallRotAt: the rotation faces the SHALLOWER neighbour). Raise = RM_PromotionProofs.ProofLadder "x,z,raise".
-  spikes    RM_Spikes on every square of a dry 3-deep pit, and of a pit holding 1 m of water (fill 2 notches).
+  spikes    RM_Spikes on the 8 wall-foot squares of a dry 4-deep (2 m) pit, and of one holding 1 m of water (fill 2 notches). 2 m is the shipped
+            spikeMinDropMetres: build_batch skips PlaceWorker_SpikesOnSuperdeep, so a shallower pit staged spikes no player could build.
   gates     RM_Sluice and RM_SecurityGrateDoor in E-W and N-S canals, all four facings, closed; plus one of each HELD OPEN (the
             Hold open button + a colonist walking in, water_scenes_walk.gate_open; skipped with a reason when it cannot be done).
   shallows  six separate dug pits at 0.2 / 0.5 / 1 / 1.5 / 2 / 5 m of water. A driver sets WHOLE 0.5 m notches (fill 1..10), so the
@@ -444,10 +445,11 @@ def row_spikes(s, L):
     cap = []
     for k, (wet, label) in enumerate(((0, "dry pit floor"), (2, "under 1 m of water"))):
         pit = (ox + k * 5, oz)
-        s.pit(pit, 3, 3)
+        s.pit(pit, 3, 4)
         for i in range(3):
             for j in range(3):
-                s.place("RM_Spikes", (pit[0] + i, pit[1] + j))
+                if (i, j) != (1, 1):   # the centre has no wall over it: the Architect refuses it ("tallest wall ... 0 m")
+                    s.place("RM_Spikes", (pit[0] + i, pit[1] + j))
         if wet:
             for i in range(3):
                 for j in range(3):

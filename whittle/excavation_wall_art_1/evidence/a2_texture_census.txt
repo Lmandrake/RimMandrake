@@ -1,0 +1,40 @@
+A2 census 2026-11-12 05:24 -0800
+deployed mod folder: /mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/FlowWorks
+deployed FlowWorks XML files scanned: 130 | sanity probe: 'RM_Spikes' occurrences 3
+TrapSpikeArmed in deployed FlowWorks defs (comments stripped): 0
+TrapSpikeArmed in repo FlowWorks defs (comments stripped): 0
+RM_Spikes texPaths: ['Things/Building/FlowWorks/Canals/RM_Spikes']
+RM_Ladder texPaths: ['Things/Building/FlowWorks/Canals/RM_Ladder', 'Things/Building/FlowWorks/Canals/RM_LadderRaised']
+
+RM_Spikes: 3 png
+  RM_Spikes_a.png              256x256 visible_px=7629 key_magenta_px(any alpha)=0 deployed==repo:True
+  RM_Spikes_b.png              256x256 visible_px=11488 key_magenta_px(any alpha)=0 deployed==repo:True
+  RM_Spikes_c.png              256x256 visible_px=12637 key_magenta_px(any alpha)=0 deployed==repo:True
+
+RM_Ladder: 5 png
+  RM_Ladder.png                256x256 visible_px=13927 key_magenta_px(any alpha)=0 deployed==repo:True
+  RM_Ladder_east.png           384x384 visible_px=7164 key_magenta_px(any alpha)=0 deployed==repo:True
+  RM_Ladder_north.png          384x384 visible_px=14021 key_magenta_px(any alpha)=0 deployed==repo:True
+  RM_Ladder_south.png          384x384 visible_px=991 key_magenta_px(any alpha)=0 deployed==repo:True
+  RM_Ladder_west.png           384x384 visible_px=7164 key_magenta_px(any alpha)=0 deployed==repo:True
+
+RM_LadderRaised: 5 png
+  RM_LadderRaised.png          256x256 visible_px=11961 key_magenta_px(any alpha)=0 deployed==repo:True
+  RM_LadderRaised_east.png     384x384 visible_px=7909 key_magenta_px(any alpha)=0 deployed==repo:True
+  RM_LadderRaised_north.png    384x384 visible_px=14365 key_magenta_px(any alpha)=0 deployed==repo:True
+  RM_LadderRaised_south.png    384x384 visible_px=6833 key_magenta_px(any alpha)=0 deployed==repo:True
+  RM_LadderRaised_west.png     384x384 visible_px=7909 key_magenta_px(any alpha)=0 deployed==repo:True
+
+(vanilla TrapSpikeArmed loose files on disk, for reference: 0 — vanilla art lives in resources.assets)
+
+live screenshots, key-magenta pixels (R,B>100, G<half):
+  close_D1.png                   0
+  close_D2.png                   0
+  close_D3.png                   0
+  close_D3_SPIKES_TRY.png        0
+  close_D4.png                   0
+  close_D4_LADDER.png            0
+  close_D4_SPIKES.png            0
+  close_D4_WATER.png             0
+  close_DUG_BY_COLONISTS.png     0
+  row_ordinary_zoom.png          0

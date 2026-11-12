@@ -1,0 +1,690 @@
+{
+ "script": "wall_faces_proof.py",
+ "started": "2026-11-12T05:24:36",
+ "rows": [
+  {
+   "id": "L3_FIVE_WALL_LOOKS_BY_DROP",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "WATER_DEPTH_RESKIN_HE_LOOKS_FIRST",
+   "criterion": "L3",
+   "detail": {
+    "why": "five looks distinct",
+    "faces": {
+     "D1": {
+      "drop": 1,
+      "north": 0.12,
+      "side": 0.06
+     },
+     "D2": {
+      "drop": 2,
+      "north": 0.23,
+      "side": 0.11
+     },
+     "D3": {
+      "drop": 3,
+      "north": 0.35,
+      "side": 0.17
+     },
+     "D4": {
+      "drop": 4,
+      "north": 0.5,
+      "side": 0.23
+     },
+     "D5": {
+      "drop": 5,
+      "north": 0.62,
+      "side": 0.29
+     },
+     "WET": {
+      "drop": 3,
+      "north": 0.35,
+      "side": 0.17
+     },
+     "FL4": {
+      "drop": 8,
+      "north": 0.62,
+      "side": 0.29
+     },
+     "FL8": {
+      "drop": 16,
+      "north": 0.62,
+      "side": 0.29
+     }
+    }
+   }
+  },
+  {
+   "id": "L3_FLOOR_BANDS_PAST_2M",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "WATER_DEPTH_RESKIN_HE_LOOKS_FIRST",
+   "criterion": "L3",
+   "detail": {
+    "why": "floor bands distinct",
+    "floorDarkness": {
+     "D1": 0.5,
+     "D2": 0.65,
+     "D3": 0.8,
+     "D4": 0.8375,
+     "D5": 0.8594,
+     "WET": 0.8594,
+     "FL4": 0.8969,
+     "FL8": 0.9428
+    }
+   }
+  }
+ ],
+ "args": {
+  "out": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\scratch\\BENCH\\claude-archmagi-fwlive\\whittle\\excavation_wall_art_1\\evidence\\wall_faces_proof_live.json",
+  "origin": "30,175",
+  "only": "",
+  "offline_gate": false,
+  "mock": false,
+  "mock_faults": ""
+ },
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "b4205e697d83336822893a7aa3afc9ae2996d4719d6f835b658f1b1bf4f96095",
+ "manifest": {
+  "schema": 1,
+  "script": "northstar/wall_faces_proof.py",
+  "runtime": "a4742a625adf8b6a636269cd0275849d83ce6dc4b3738035ed177981606052f9",
+  "test": "0d8fa667e382f9333d07e3a00df7987133ede4cd5ecf7232a632b5c83002cb9c",
+  "test_files": [
+   "FlowWorks/northstar/driver_stamp.py",
+   "FlowWorks/northstar/proof_hose.py",
+   "FlowWorks/northstar/wall_faces_proof.py",
+   "FlowWorks/northstar/water_looks_proof.py",
+   "FlowWorks/validation_hose.py",
+   "FlowWorks/validation_style_hose.py",
+   "Utils/await_lifecycle.py",
+   "Utils/biomes_compose.py",
+   "Utils/close_evidence.py",
+   "Utils/conds.py",
+   "Utils/conds_dsl.py",
+   "Utils/deploy_custom_mods.py",
+   "Utils/deploy_def_guard.py",
+   "Utils/evidence_covers.py",
+   "Utils/focus_heal.py",
+   "Utils/game_focus.py",
+   "Utils/game_instance.py",
+   "Utils/game_paths.py",
+   "Utils/harness_run.py",
+   "Utils/known_results.py",
+   "Utils/live_def_check.py",
+   "Utils/load_policy.json",
+   "Utils/load_policy.py",
+   "Utils/modcheck/__init__.py",
+   "Utils/modcheck/bland_world.py",
+   "Utils/modcheck/clockgate.py",
+   "Utils/modcheck/contract.py",
+   "Utils/modcheck/detectors.py",
+   "Utils/modcheck/drivers.py",
+   "Utils/modcheck/floor.py",
+   "Utils/modcheck/gate.py",
+   "Utils/modcheck/helpers.py",
+   "Utils/modcheck/jev_questions.py",
+   "Utils/modcheck/jev_triage.py",
+   "Utils/modcheck/judge.py",
+   "Utils/modcheck/launch_gate.py",
+   "Utils/modcheck/northstar.py",
+   "Utils/modcheck/play_zoom.py",
+   "Utils/modcheck/preconditions.py",
+   "Utils/modcheck/report.py",
+   "Utils/modcheck/reuse.py",
+   "Utils/modcheck/run_identity.py",
+   "Utils/modcheck/runner.py",
+   "Utils/modcheck/scene_report.py",
+   "Utils/modcheck/snapshot.py",
+   "Utils/modcheck/spoil_gate.py",
+   "Utils/modcheck/status.py",
+   "Utils/modcheck/suite.py",
+   "Utils/modcheck/surprise.py",
+   "Utils/modcheck/targeting.py",
+   "Utils/modcheck/testenv_guards.py",
+   "Utils/modcheck/validity.py",
+   "Utils/modcheck/walklint.py",
+   "Utils/modcheck/watch.py",
+   "Utils/modset_builder.py",
+   "Utils/northstar_driver/tool_schemas.json",
+   "Utils/retired_mods.py",
+   "Utils/rimbridge_client.py",
+   "Utils/rimdrive/__init__.py",
+   "Utils/rimdrive/session.py",
+   "Utils/rimdrive/verify.py",
+   "Utils/rmpaths.py",
+   "Utils/run_selftests.py",
+   "Utils/selftest_cache.py",
+   "Utils/suite_evidence.py",
+   "Utils/validation_core.py",
+   "Utils/winbuild.py",
+   "Utils/wrapup_debt.py",
+   "Utils/zoom_guard.py"
+  ],
+  "unresolved": []
+ },
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.patches"
+  ],
+  "assembly_sha256": "65277837a37d21ec77178ad025dafb6a0323a4e241bcfbab68a70d1a71f1becb"
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "Elk19322",
+    "Elk19323",
+    "Elk19324",
+    "Elk19325",
+    "Elk19326",
+    "Elk19327",
+    "Elk19328",
+    "Elk19329",
+    "Fox_Arctic19319",
+    "Hare19308",
+    "Hare19309",
+    "Hare19314",
+    "Hare19315",
+    "Hare19318",
+    "Hare19320",
+    "Megasloth19316",
+    "Snowhare19310",
+    "Snowhare19311",
+    "Snowhare19312",
+    "Snowhare19313",
+    "Snowhare19317"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  },
+  "fed": [
+   "Human939",
+   "Human942",
+   "Human945",
+   "Human19417"
+  ]
+ },
+ "staged": {
+  "D1": {
+   "cells": "9",
+   "dug": "9",
+   "filled": "0",
+   "refused": "0",
+   "maxDepth": "1"
+  },
+  "D2": {
+   "cells": "9",
+   "dug": "9",
+   "filled": "0",
+   "refused": "0",
+   "maxDepth": "2"
+  },
+  "D3": {
+   "cells": "9",
+   "dug": "9",
+   "filled": "0",
+   "refused": "0",
+   "maxDepth": "3"
+  },
+  "D4": {
+   "cells": "9",
+   "dug": "9",
+   "filled": "0",
+   "refused": "0",
+   "maxDepth": "4"
+  },
+  "D5": {
+   "cells": "9",
+   "dug": "9",
+   "filled": "0",
+   "refused": "0",
+   "maxDepth": "5"
+  },
+  "WET": {
+   "cells": "9",
+   "dug": "9",
+   "filled": "9",
+   "refused": "0",
+   "maxDepth": "5"
+  },
+  "FL4": {
+   "cells": "9",
+   "dug": "9",
+   "filled": "0",
+   "refused": "0",
+   "maxDepth": "8"
+  },
+  "FL8": {
+   "cells": "9",
+   "dug": "9",
+   "filled": "0",
+   "refused": "0",
+   "maxDepth": "16"
+  }
+ },
+ "reads": {
+  "D1": {
+   "corner": {
+    "cell": "30,177",
+    "terrain": "RM_Channel_Empty",
+    "still": "False",
+    "dug": "True",
+    "hollow": "1",
+    "waterM": "0",
+    "dlPerMetre": "20000",
+    "tint": "0",
+    "tn": "0",
+    "tw": "0",
+    "key": "0",
+    "watchKey": "0",
+    "tintOn": "True",
+    "bandOn": "True",
+    "facesOn": "True",
+    "tintVisible": "True",
+    "bandVisible": "True",
+    "lookDirty": "False"
+   },
+   "north": {
+    "cell": "30,178",
+    "terrain": "Soil",
+    "still": "False",
+    "dug": "False",
+    "hollow": "0",
+    "waterM": "0",
+    "dlPerMetre": "20000",
+    "tint": "0",
+    "tn": "0",
+    "tw": "0",
+    "key": "0",
+    "watchKey": "0",
+    "tintOn": "True",
+    "bandOn": "True",
+    "facesOn": "True",
+    "tintVisible": "True",
+    "bandVisible": "True",
+    "lookDirty": "False"
+   },
+   "fill": 0
+  },
+  "D2": {
+   "corner": {
+    "cell": "36,177",
+    "terrain": "RM_Channel_Mid",
+    "still": "False",
+    "dug": "True",
+    "hollow": "2",
+    "waterM": "0",
+    "dlPerMetre": "20000",
+    "tint": "0",
+    "tn": "0",
+    "tw": "0",
+    "key": "0",
+    "watchKey": "0",
+    "tintOn": "True",
+    "bandOn": "True",
+    "facesOn": "True",
+    "tintVisible": "True",
+    "bandVisible": "True",
+    "lookDirty": "False"
+   },
+   "north": {
+    "cell": "36,178",
+    "terrain": "Soil",
+    "still": "False",
+    "dug": "False",
+    "hollow": "0",
+    "waterM": "0",
+    "dlPerMetre": "20000",
+    "tint": "0",
+    "tn": "0",
+    "tw": "0",
+    "key": "0",
+    "watchKey": "0",
+    "tintOn": "True",
+    "bandOn": "True",
+    "facesOn": "True",
+    "tintVisible": "True",
+    "bandVisible": "True",
+    "lookDirty": "False"
+   },
+   "fill": 0
+  },
+  "D3": {
+   "corner": {
+    "cell": "42,177",
+    "terrain": "RM_Channel_Deep",
+    "still": "False",
+    "dug": "True",
+    "hollow": "3",
+    "waterM": "0",
+    "dlPerMetre": "20000",
+    "tint": "0",
+    "tn": "0",
+    "tw": "0",
+    "key": "0",
+    "watchKey": "0",
+    "tintOn": "True",
+    "bandOn": "True",
+    "facesOn": "True",
+    "tintVisible": "True",
+    "bandVisible": "True",
+    "lookDirty": "False"
+   },
+   "north": {
+    "cell": "42,178",
+    "terrain": "Soil",
+    "still": "False",
+    "dug": "False",
+    "hollow": "0",
+    "waterM": "0",
+    "dlPerMetre": "20000",
+    "tint": "0",
+    "tn": "0",
+    "tw": "0",
+    "key": "0",
+    "watchKey": "0",
+    "tintOn": "True",
+    "bandOn": "True",
+    "facesOn": "True",
+    "tintVisible": "True",
+    "bandVisible": "True",
+    "lookDirty": "False"
+   },
+   "fill": 0
+  },
+  "D4": {
+   "corner": {
+    "cell": "48,177",
+    "terrain": "RM_Channel_Superdeep",
+    "still": "False",
+    "dug": "True",
+    "hollow": "4",
+    "waterM": "0",
+    "dlPerMetre": "20000",
+    "tint": "0",
+    "tn": "0",
+    "tw": "0",
+    "key": "0",
+    "watchKey": "0",
+    "tintOn": "True",
+    "bandOn": "True",
+    "facesOn": "True",
+    "tintVisible": "True",
+    "bandVisible": "True",
+    "lookDirty": "False"
+   },
+   "north": {
+    "cell": "48,178",
+    "terrain": "Soil",
+    "still": "False",
+    "dug": "False",
+    "hollow": "0",
+    "waterM": "0",
+    "dlPerMetre": "20000",
+    "tint": "0",
+    "tn": "0",
+    "tw": "0",
+    "key": "0",
+    "watchKey": "0",
+    "tintOn": "True",
+    "bandOn": "True",
+    "facesOn": "True",
+    "tintVisible": "True",
+    "bandVisible": "True",
+    "lookDirty": "False"
+   },
+   "fill": 0
+  },
+  "D5": {
+   "corner": {
+    "cell": "54,177",
+    "terrain": "RM_Channel_Superdeep",
+    "still": "False",
+    "dug": "True",
+    "hollow": "5",
+    "waterM": "0",
+    "dlPerMetre": "20000",
+    "tint": "0",
+    "tn": "0",
+    "tw": "0",
+    "key": "0",
+    "watchKey": "0",
+    "tintOn": "True",
+    "bandOn": "True",
+    "facesOn": "True",
+    "tintVisible": "True",
+    "bandVisible": "True",
+    "lookDirty": "False"
+   },
+   "north": {
+    "cell": "54,178",
+    "terrain": "Soil",
+    "still": "False",
+    "dug": "False",
+    "hollow": "0",
+    "waterM": "0",
+    "dlPerMetre": "20000",
+    "tint": "0",
+    "tn": "0",
+    "tw": "0",
+    "key": "0",
+    "watchKey": "0",
+    "tintOn": "True",
+    "bandOn": "True",
+    "facesOn": "True",
+    "tintVisible": "True",
+    "bandVisible": "True",
+    "lookDirty": "False"
+   },
+   "fill": 0
+  },
+  "WET": {
+   "corner": {
+    "cell": "60,177",
+    "terrain": "WaterShallow",
+    "still": "True",
+    "dug": "True",
+    "hollow": "5",
+    "waterM": "1",
+    "dlPerMetre": "20000",
+    "tint": "0",
+    "tn": "0.255",
+    "tw": "0.255",
+    "key": "2080",
+    "watchKey": "0",
+    "tintOn": "True",
+    "bandOn": "True",
+    "facesOn": "True",
+    "tintVisible": "True",
+    "bandVisible": "True",
+    "lookDirty": "False"
+   },
+   "north": {
+    "cell": "60,178",
+    "terrain": "Soil",
+    "still": "False",
+    "dug": "False",
+    "hollow": "0",
+    "waterM": "0",
+    "dlPerMetre": "20000",
+    "tint": "0",
+    "tn": "0",
+    "tw": "0",
+    "key": "0",
+    "watchKey": "0",
+    "tintOn": "True",
+    "bandOn": "True",
+    "facesOn": "True",
+    "tintVisible": "True",
+    "bandVisible": "True",
+    "lookDirty": "False"
+   },
+   "fill": 2
+  },
+  "FL4": {
+   "corner": {
+    "cell": "66,177",
+    "terrain": "RM_Channel_Superdeep",
+    "still": "False",
+    "dug": "True",
+    "hollow": "8",
+    "waterM": "0",
+    "dlPerMetre": "20000",
+    "tint": "0",
+    "tn": "0",
+    "tw": "0",
+    "key": "0",
+    "watchKey": "0",
+    "tintOn": "True",
+    "bandOn": "True",
+    "facesOn": "True",
+    "tintVisible": "True",
+    "bandVisible": "True",
+    "lookDirty": "False"
+   },
+   "north": {
+    "cell": "66,178",
+    "terrain": "Soil",
+    "still": "False",
+    "dug": "False",
+    "hollow": "0",
+    "waterM": "0",
+    "dlPerMetre": "20000",
+    "tint": "0",
+    "tn": "0",
+    "tw": "0",
+    "key": "0",
+    "watchKey": "0",
+    "tintOn": "True",
+    "bandOn": "True",
+    "facesOn": "True",
+    "tintVisible": "True",
+    "bandVisible": "True",
+    "lookDirty": "False"
+   },
+   "fill": 0
+  },
+  "FL8": {
+   "corner": {
+    "cell": "72,177",
+    "terrain": "RM_Channel_Superdeep",
+    "still": "False",
+    "dug": "True",
+    "hollow": "16",
+    "waterM": "0",
+    "dlPerMetre": "20000",
+    "tint": "0",
+    "tn": "0",
+    "tw": "0",
+    "key": "0",
+    "watchKey": "0",
+    "tintOn": "True",
+    "bandOn": "True",
+    "facesOn": "True",
+    "tintVisible": "True",
+    "bandVisible": "True",
+    "lookDirty": "False"
+   },
+   "north": {
+    "cell": "72,178",
+    "terrain": "Soil",
+    "still": "False",
+    "dug": "False",
+    "hollow": "0",
+    "waterM": "0",
+    "dlPerMetre": "20000",
+    "tint": "0",
+    "tn": "0",
+    "tw": "0",
+    "key": "0",
+    "watchKey": "0",
+    "tintOn": "True",
+    "bandOn": "True",
+    "facesOn": "True",
+    "tintVisible": "True",
+    "bandVisible": "True",
+    "lookDirty": "False"
+   },
+   "fill": 0
+  }
+ },
+ "faces": {
+  "D1": {
+   "drop": 1,
+   "north": 0.12,
+   "side": 0.06
+  },
+  "D2": {
+   "drop": 2,
+   "north": 0.23,
+   "side": 0.11
+  },
+  "D3": {
+   "drop": 3,
+   "north": 0.35,
+   "side": 0.17
+  },
+  "D4": {
+   "drop": 4,
+   "north": 0.5,
+   "side": 0.23
+  },
+  "D5": {
+   "drop": 5,
+   "north": 0.62,
+   "side": 0.29
+  },
+  "WET": {
+   "drop": 3,
+   "north": 0.35,
+   "side": 0.17
+  },
+  "FL4": {
+   "drop": 8,
+   "north": 0.62,
+   "side": 0.29
+  },
+  "FL8": {
+   "drop": 16,
+   "north": 0.62,
+   "side": 0.29
+  }
+ },
+ "floorDarkness": {
+  "D1": 0.5,
+  "D2": 0.65,
+  "D3": 0.8,
+  "D4": 0.8375,
+  "D5": 0.8594,
+  "WET": 0.8594,
+  "FL4": 0.8969,
+  "FL8": 0.9428
+ },
+ "finished": "2026-11-12T05:25:09"
+}

@@ -78,6 +78,22 @@ def retexture(im, rp=None):
     return Image.fromarray(np.clip(a, 0, 255).round().astype(np.uint8), "RGBA")
 
 
+def scrub_key_fringe(im, max_alpha=48):
+    """v5's side views un-premultiply after a Lanczos resample, and the ringing leaves a few near-invisible fringe pixels in
+    pure key magenta (RM_LadderRaised_east shipped (225, 0, 225, 17); EXCAVATION_WALL_ART_1's no-magenta bar). Neither timber
+    nor outline, retexture() keeps them. Each such pixel (alpha below max_alpha, green under half of red and blue) takes the
+    alpha-weighted colour of its 5x5 neighbourhood; every other pixel is left exactly as it was."""
+    a = np.asarray(im.convert("RGBA"), dtype=np.float64).copy()
+    r, g, b, al = a[..., 0], a[..., 1], a[..., 2], a[..., 3]
+    bad = (al > 0) & (al < max_alpha) & (g < 0.5 * np.minimum(r, b)) & (np.minimum(r, b) > 100)
+    for y, x in zip(*np.nonzero(bad)):
+        win = a[max(y - 2, 0):y + 3, max(x - 2, 0):x + 3].reshape(-1, 4)
+        win = win[~bad[max(y - 2, 0):y + 3, max(x - 2, 0):x + 3].reshape(-1)]
+        w = win[:, 3]
+        a[y, x, :3] = (win[:, :3] * w[:, None]).sum(0) / w.sum() if w.sum() > 0 else 0
+    return Image.fromarray(np.clip(a, 0, 255).round().astype(np.uint8), "RGBA")
+
+
 def _dark_edge():
     p = ground_wood()
     l = p @ LUMA
@@ -92,7 +108,7 @@ def build(out_dir=OUT):
         east = v5.rail_east(v5.WOOD, raised)
         south = v5.rail_south(v5.WOOD, raised)
         for f, im in (("north", north), ("east", east), ("south", south)):
-            made["%s_%s" % (tag, f)] = retexture(im, rp)
+            made["%s_%s" % (tag, f)] = scrub_key_fringe(retexture(im, rp))
         made[tag + "_west"] = made[tag + "_east"].transpose(Image.FLIP_LEFT_RIGHT)
     if out_dir is not None:
         out_dir.mkdir(parents=True, exist_ok=True)

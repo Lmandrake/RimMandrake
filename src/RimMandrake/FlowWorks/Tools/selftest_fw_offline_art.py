@@ -449,8 +449,13 @@ def rail_ladder():
             want(np.array_equal(a, np.asarray(made[name])), "rail ladder %s: installed == rail_pale.build()" % name)
             want(np.array_equal(a[..., 3], r[..., 3]), "rail ladder %s: alpha == v5 WOOD (geometry kept)" % name)
             rf = r.astype(np.float64)
-            iron = ~rp.timber_mask(rf) & ~rp.outline_mask(rf) & (r[..., 3] > 0)
+            # scrub_key_fringe recolours v5's Lanczos key-magenta fringe pixels (EXCAVATION_WALL_ART_1): those alone may move
+            key = lambda x: (x[..., 3] > 0) & (x[..., 1] < 0.5 * np.minimum(x[..., 0], x[..., 2])) & (np.minimum(x[..., 0], x[..., 2]) > 100)
+            iron = ~rp.timber_mask(rf) & ~rp.outline_mask(rf) & (r[..., 3] > 0) & ~key(rf)
             want(np.array_equal(a[iron], r[iron]), "rail ladder %s: iron unchanged (%d px)" % (name, int(iron.sum())))
+            want(not key(a.astype(np.float64)).any(), "rail ladder %s: no key-magenta pixel (%d)" % (name, int(key(a.astype(np.float64)).sum())))
+            if name == "RM_LadderRaised_east":
+                want(key(rf).any(), "rail ladder can-fail: v5's raw raised east carries the key-magenta fringe pixel")
             tm = rp.timber_mask(rf)
             if tm.any():  # masks come from v5's colours: the pale ramp's darkest shades must not be re-read as outline
                 edge = np.round(np.clip(rp._dark_edge(), 0, 255)).astype(np.uint8)

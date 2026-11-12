@@ -42,3 +42,4 @@
 {"seat":"CLAUDE_ARCHMAGI_FWLIVE","event":"bridge","state":"released","ts":"2026-11-12T12:07:03Z","tsn":1794485223841254477}
 {"seat":"CLAUDE_ARCHMAGI_FWLIVE","event":"note","id":"PIT_TEMPERATURE_SOFTENING_1","text":"Claude Whittle CLAUDE_ARCHMAGI_FWLIVE round 3: unfinished (Whittle exit 1); the work so far is in whittle/pit_temperature_softening_1 and /mnt/d/ClaudeWork/rimmandrake/whittle_claude/CLAUDE_ARCHMAGI_FWLIVE/rounds/3","why":"wc.py scripted wrap-up (no model)","ts":"2026-11-12T12:12:43Z","tsn":1794485563776639926}
 {"seat":"CLAUDE_ARCHMAGI_FWLIVE","event":"claim","id":"EXCAVATION_WALL_ART_1","ts":"2026-11-12T12:13:16Z","tsn":1794485596404972859}
+{"seat":"CLAUDE_ARCHMAGI_FWLIVE","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"EXCAVATION_WALL_ART_1: stage D1-D4/water/spikes/ladder frames","ts":"2026-11-12T12:14:26Z","tsn":1794485666242839643}

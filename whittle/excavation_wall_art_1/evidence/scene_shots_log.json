@@ -1,0 +1,135 @@
+[
+ {
+  "hour": 5.2428
+ },
+ {
+  "shot": {
+   "name": "row_ordinary_zoom",
+   "rect": [
+    90,
+    110,
+    49,
+    7
+   ],
+   "rootSize": 14.9,
+   "file": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_ARCHMAGI_FWLIVE\\ewa\\run3\\row_ordinary_zoom.png"
+  }
+ },
+ {
+  "shot": {
+   "name": "close_D1",
+   "rect": [
+    91,
+    111,
+    5,
+    5
+   ],
+   "rootSize": 11.0,
+   "file": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_ARCHMAGI_FWLIVE\\ewa\\run3\\close_D1.png"
+  }
+ },
+ {
+  "shot": {
+   "name": "close_D2",
+   "rect": [
+    96,
+    111,
+    5,
+    5
+   ],
+   "rootSize": 11.0,
+   "file": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_ARCHMAGI_FWLIVE\\ewa\\run3\\close_D2.png"
+  }
+ },
+ {
+  "shot": {
+   "name": "close_D3",
+   "rect": [
+    101,
+    111,
+    5,
+    5
+   ],
+   "rootSize": 11.0,
+   "file": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_ARCHMAGI_FWLIVE\\ewa\\run3\\close_D3.png"
+  }
+ },
+ {
+  "shot": {
+   "name": "close_D4",
+   "rect": [
+    106,
+    111,
+    5,
+    5
+   ],
+   "rootSize": 11.0,
+   "file": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_ARCHMAGI_FWLIVE\\ewa\\run3\\close_D4.png"
+  }
+ },
+ {
+  "shot": {
+   "name": "close_D4_WATER",
+   "rect": [
+    111,
+    111,
+    5,
+    5
+   ],
+   "rootSize": 11.0,
+   "file": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_ARCHMAGI_FWLIVE\\ewa\\run3\\close_D4_WATER.png"
+  }
+ },
+ {
+  "shot": {
+   "name": "close_D4_SPIKES",
+   "rect": [
+    116,
+    111,
+    5,
+    5
+   ],
+   "rootSize": 11.0,
+   "file": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_ARCHMAGI_FWLIVE\\ewa\\run3\\close_D4_SPIKES.png"
+  }
+ },
+ {
+  "shot": {
+   "name": "close_D4_LADDER",
+   "rect": [
+    121,
+    111,
+    5,
+    5
+   ],
+   "rootSize": 11.0,
+   "file": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_ARCHMAGI_FWLIVE\\ewa\\run3\\close_D4_LADDER.png"
+  }
+ },
+ {
+  "shot": {
+   "name": "close_D3_SPIKES_TRY",
+   "rect": [
+    126,
+    111,
+    5,
+    5
+   ],
+   "rootSize": 11.0,
+   "file": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_ARCHMAGI_FWLIVE\\ewa\\run3\\close_D3_SPIKES_TRY.png"
+  }
+ },
+ {
+  "shot": {
+   "name": "close_DUG_BY_COLONISTS",
+   "rect": [
+    133,
+    111,
+    5,
+    5
+   ],
+   "rootSize": 11.0,
+   "file": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_ARCHMAGI_FWLIVE\\ewa\\run3\\close_DUG_BY_COLONISTS.png"
+  }
+ }
+]

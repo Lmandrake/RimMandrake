@@ -1,0 +1,5 @@
+Player.log 2026-11-12 05:11:03.882630800 -0800 lines 172
+texture/graphic errors (Could not load / Failed to find any textures / Graphic / FlowWorks texture):
+  none
+sanity probe (the log can see FlowWorks):
+27

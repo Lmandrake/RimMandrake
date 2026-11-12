@@ -1,0 +1,561 @@
+[
+ {
+  "reset": "RESET cells=0 levels=0 rolled=0 released=0 bodies=0 left=0"
+ },
+ {
+  "pit": {
+   "name": "D1",
+   "look_centre": "WATERLOOK cell=93,113 terrain=RM_Channel_Empty still=False dug=True hollow=1 waterM=0 dlPerMetre=20000 tint=0 tn=0 tw=0 key=0 watchKey=unread tintOn=True bandOn=True facesOn=True tintVisible=True bandVisible=True lookDirty=False"
+  }
+ },
+ {
+  "pit": {
+   "name": "D2",
+   "look_centre": "WATERLOOK cell=98,113 terrain=RM_Channel_Mid still=False dug=True hollow=2 waterM=0 dlPerMetre=20000 tint=0 tn=0 tw=0 key=0 watchKey=unread tintOn=True bandOn=True facesOn=True tintVisible=True bandVisible=True lookDirty=False"
+  }
+ },
+ {
+  "pit": {
+   "name": "D3",
+   "look_centre": "WATERLOOK cell=103,113 terrain=RM_Channel_Deep still=False dug=True hollow=3 waterM=0 dlPerMetre=20000 tint=0 tn=0 tw=0 key=0 watchKey=unread tintOn=True bandOn=True facesOn=True tintVisible=True bandVisible=True lookDirty=False"
+  }
+ },
+ {
+  "pit": {
+   "name": "D4",
+   "look_centre": "WATERLOOK cell=108,113 terrain=RM_Channel_Superdeep still=False dug=True hollow=4 waterM=0 dlPerMetre=20000 tint=0 tn=0 tw=0 key=0 watchKey=unread tintOn=True bandOn=True facesOn=True tintVisible=True bandVisible=True lookDirty=False"
+  }
+ },
+ {
+  "pit": {
+   "name": "D4_WATER",
+   "look_centre": "WATERLOOK cell=113,113 terrain=WaterShallow still=True dug=True hollow=4 waterM=1 dlPerMetre=20000 tint=0 tn=0 tw=0 key=0 watchKey=unread tintOn=True bandOn=True facesOn=True tintVisible=True bandVisible=True lookDirty=False"
+  }
+ },
+ {
+  "pit": {
+   "name": "D4_SPIKES",
+   "look_centre": "WATERLOOK cell=118,113 terrain=RM_Channel_Superdeep still=False dug=True hollow=4 waterM=0 dlPerMetre=20000 tint=0 tn=0 tw=0 key=0 watchKey=unread tintOn=True bandOn=True facesOn=True tintVisible=True bandVisible=True lookDirty=False"
+  }
+ },
+ {
+  "pit": {
+   "name": "D4_LADDER",
+   "look_centre": "WATERLOOK cell=123,113 terrain=RM_Channel_Superdeep still=False dug=True hollow=4 waterM=0 dlPerMetre=20000 tint=0 tn=0 tw=0 key=0 watchKey=unread tintOn=True bandOn=True facesOn=True tintVisible=True bandVisible=True lookDirty=False"
+  }
+ },
+ {
+  "pit": {
+   "name": "D3_SPIKES_TRY",
+   "look_centre": "WATERLOOK cell=128,113 terrain=RM_Channel_Deep still=False dug=True hollow=3 waterM=0 dlPerMetre=20000 tint=0 tn=0 tw=0 key=0 watchKey=unread tintOn=True bandOn=True facesOn=True tintVisible=True bandVisible=True lookDirty=False"
+  }
+ },
+ {
+  "dig_to_4m_designate": {
+   "success": true,
+   "rejectedCells": []
+  }
+ },
+ {
+  "spikes_designate_D4_SPIKES": {
+   "success": true,
+   "dryRun": false,
+   "designator": {
+    "id": "architect-designator:structure:build-rm-spikes",
+    "categoryId": "architect-category:structure",
+    "categoryDefName": "Structure",
+    "categoryLabel": "Structure",
+    "kind": "build",
+    "applicationKind": "build",
+    "actionable": true,
+    "supportsCellApplication": true,
+    "supportsRectangleApplication": true,
+    "dragDrawMeasurements": true,
+    "visible": true,
+    "selected": true,
+    "selectedContainer": true,
+    "index": 40,
+    "childCount": 0,
+    "label": "pit spikes",
+    "description": "Sharpened stakes driven into a pit floor. Whoever falls, is pushed or jumps into this cell lands on them: several deep stab wounds, worse for bigger creatures, armour still counts. Walking up to the edge, or moving along the pit floor, is safe. Can only be built at the foot of a sheer drop of 2 m or more (a mod setting), at any depth.",
+    "className": "RimWorld.Designator_Build",
+    "highlightTag": "Designator-Build-RM_Spikes",
+    "buildableDefName": "RM_Spikes",
+    "buildableLabel": "Pit spikes"
+   },
+   "requestedCellCount": 9,
+   "acceptedCellCount": 8,
+   "appliedCellCount": 8,
+   "rejectedCellCount": 1,
+   "acceptedCells": [
+    {
+     "x": 117,
+     "z": 112
+    },
+    {
+     "x": 118,
+     "z": 112
+    },
+    {
+     "x": 119,
+     "z": 112
+    },
+    {
+     "x": 117,
+     "z": 113
+    },
+    {
+     "x": 119,
+     "z": 113
+    },
+    {
+     "x": 117,
+     "z": 114
+    },
+    {
+     "x": 118,
+     "z": 114
+    },
+    {
+     "x": 119,
+     "z": 114
+    }
+   ],
+   "rejectedCells": [
+    {
+     "x": 118,
+     "z": 113,
+     "accepted": false,
+     "reason": "Spikes go only at the foot of a sheer drop of 2 m or more. The tallest wall over this square is 0 m."
+    }
+   ],
+   "keepSelected": true
+  }
+ },
+ {
+  "spikes_designate_D3_SPIKES_TRY": {
+   "success": false,
+   "dryRun": false,
+   "designator": {
+    "id": "architect-designator:structure:build-rm-spikes",
+    "categoryId": "architect-category:structure",
+    "categoryDefName": "Structure",
+    "categoryLabel": "Structure",
+    "kind": "build",
+    "applicationKind": "build",
+    "actionable": true,
+    "supportsCellApplication": true,
+    "supportsRectangleApplication": true,
+    "dragDrawMeasurements": true,
+    "visible": true,
+    "selected": true,
+    "selectedContainer": true,
+    "index": 40,
+    "childCount": 0,
+    "label": "pit spikes",
+    "description": "Sharpened stakes driven into a pit floor. Whoever falls, is pushed or jumps into this cell lands on them: several deep stab wounds, worse for bigger creatures, armour still counts. Walking up to the edge, or moving along the pit floor, is safe. Can only be built at the foot of a sheer drop of 2 m or more (a mod setting), at any depth.",
+    "className": "RimWorld.Designator_Build",
+    "highlightTag": "Designator-Build-RM_Spikes",
+    "buildableDefName": "RM_Spikes",
+    "buildableLabel": "Pit spikes"
+   },
+   "requestedCellCount": 9,
+   "acceptedCellCount": 0,
+   "appliedCellCount": 0,
+   "rejectedCellCount": 9,
+   "acceptedCells": [],
+   "rejectedCells": [
+    {
+     "x": 127,
+     "z": 112,
+     "accepted": false,
+     "reason": "Spikes go only at the foot of a sheer drop of 2 m or more. The tallest wall over this square is 1.5 m."
+    },
+    {
+     "x": 128,
+     "z": 112,
+     "accepted": false,
+     "reason": "Spikes go only at the foot of a sheer drop of 2 m or more. The tallest wall over this square is 1.5 m."
+    },
+    {
+     "x": 129,
+     "z": 112,
+     "accepted": false,
+     "reason": "Spikes go only at the foot of a sheer drop of 2 m or more. The tallest wall over this square is 1.5 m."
+    },
+    {
+     "x": 127,
+     "z": 113,
+     "accepted": false,
+     "reason": "Spikes go only at the foot of a sheer drop of 2 m or more. The tallest wall over this square is 1.5 m."
+    },
+    {
+     "x": 128,
+     "z": 113,
+     "accepted": false,
+     "reason": "Spikes go only at the foot of a sheer drop of 2 m or more. The tallest wall over this square is 0 m."
+    },
+    {
+     "x": 129,
+     "z": 113,
+     "accepted": false,
+     "reason": "Spikes go only at the foot of a sheer drop of 2 m or more. The tallest wall over this square is 1.5 m."
+    },
+    {
+     "x": 127,
+     "z": 114,
+     "accepted": false,
+     "reason": "Spikes go only at the foot of a sheer drop of 2 m or more. The tallest wall over this square is 1.5 m."
+    },
+    {
+     "x": 128,
+     "z": 114,
+     "accepted": false,
+     "reason": "Spikes go only at the foot of a sheer drop of 2 m or more. The tallest wall over this square is 1.5 m."
+    },
+    {
+     "x": 129,
+     "z": 114,
+     "accepted": false,
+     "reason": "Spikes go only at the foot of a sheer drop of 2 m or more. The tallest wall over this square is 1.5 m."
+    }
+   ],
+   "keepSelected": true
+  }
+ },
+ {
+  "ladder_designate": {
+   "cell": [
+    123,
+    114
+   ],
+   "rot": 0,
+   "success": true,
+   "dryRun": false,
+   "designator": {
+    "id": "architect-designator:structure:build-rm-ladder",
+    "categoryId": "architect-category:structure",
+    "categoryDefName": "Structure",
+    "categoryLabel": "Structure",
+    "kind": "build",
+    "applicationKind": "build",
+    "actionable": true,
+    "supportsCellApplication": true,
+    "supportsRectangleApplication": true,
+    "dragDrawMeasurements": true,
+    "visible": true,
+    "selected": true,
+    "selectedContainer": true,
+    "index": 36,
+    "childCount": 0,
+    "label": "wooden ladder",
+    "description": "A rough ladder hung on one wall of an excavation, like a door between the pit and the ground above. Slid down, people climb down into the pit and back up by it, and haulers fetch what lies on the floor; it works like a prison door: your people climb it, trapped enemies cannot, prisoners only in a prison break. Slid up onto the rim, nobody climbs it.",
+    "className": "RimWorld.Designator_Build",
+    "highlightTag": "Designator-Build-RM_Ladder",
+    "buildableDefName": "RM_Ladder",
+    "buildableLabel": "Wooden ladder"
+   },
+   "requestedCellCount": 1,
+   "acceptedCellCount": 1,
+   "appliedCellCount": 1,
+   "rejectedCellCount": 0,
+   "acceptedCells": [
+    {
+     "x": 123,
+     "z": 114
+    }
+   ],
+   "rejectedCells": [],
+   "keepSelected": true,
+   "sampleCell": {
+    "x": 123,
+    "z": 114,
+    "terrainDefName": "RM_Channel_Superdeep",
+    "fogged": false,
+    "walkable": true,
+    "thingCount": 1,
+    "designationCount": 0,
+    "blueprintBuildDefs": [],
+    "frameBuildDefs": [],
+    "solidThingDefs": [
+     "RM_Ladder"
+    ],
+    "areaCount": 0,
+    "areas": [],
+    "things": [
+     {
+      "defName": "RM_Ladder",
+      "label": "Wooden ladder",
+      "className": "RimMandrake.FlowWorks.RM_Building_Ladder",
+      "isBlueprint": false,
+      "isBlueprintBuild": false,
+      "isFrame": false,
+      "rotation": "north",
+      "hitPoints": 60
+     }
+    ],
+    "designations": []
+   }
+  }
+ },
+ {
+  "ladder_designate": {
+   "cell": [
+    123,
+    112
+   ],
+   "rot": 2,
+   "success": true,
+   "dryRun": false,
+   "designator": {
+    "id": "architect-designator:structure:build-rm-ladder",
+    "categoryId": "architect-category:structure",
+    "categoryDefName": "Structure",
+    "categoryLabel": "Structure",
+    "kind": "build",
+    "applicationKind": "build",
+    "actionable": true,
+    "supportsCellApplication": true,
+    "supportsRectangleApplication": true,
+    "dragDrawMeasurements": true,
+    "visible": true,
+    "selected": true,
+    "selectedContainer": true,
+    "index": 36,
+    "childCount": 0,
+    "label": "wooden ladder",
+    "description": "A rough ladder hung on one wall of an excavation, like a door between the pit and the ground above. Slid down, people climb down into the pit and back up by it, and haulers fetch what lies on the floor; it works like a prison door: your people climb it, trapped enemies cannot, prisoners only in a prison break. Slid up onto the rim, nobody climbs it.",
+    "className": "RimWorld.Designator_Build",
+    "highlightTag": "Designator-Build-RM_Ladder",
+    "buildableDefName": "RM_Ladder",
+    "buildableLabel": "Wooden ladder"
+   },
+   "requestedCellCount": 1,
+   "acceptedCellCount": 1,
+   "appliedCellCount": 1,
+   "rejectedCellCount": 0,
+   "acceptedCells": [
+    {
+     "x": 123,
+     "z": 112
+    }
+   ],
+   "rejectedCells": [],
+   "keepSelected": true,
+   "sampleCell": {
+    "x": 123,
+    "z": 112,
+    "terrainDefName": "RM_Channel_Superdeep",
+    "fogged": false,
+    "walkable": true,
+    "thingCount": 1,
+    "designationCount": 0,
+    "blueprintBuildDefs": [],
+    "frameBuildDefs": [],
+    "solidThingDefs": [
+     "RM_Ladder"
+    ],
+    "areaCount": 0,
+    "areas": [],
+    "things": [
+     {
+      "defName": "RM_Ladder",
+      "label": "Wooden ladder",
+      "className": "RimMandrake.FlowWorks.RM_Building_Ladder",
+      "isBlueprint": false,
+      "isBlueprintBuild": false,
+      "isFrame": false,
+      "rotation": "south",
+      "hitPoints": 60
+     }
+    ],
+    "designations": []
+   }
+  }
+ },
+ {
+  "ladder_raise_south": "LADDER cell=123,112 present=True raised=True want=True ordered=False top=123,111 inspect=Slid_up_onto_the_rim:_nobody_can_climb_down_or_out."
+ },
+ {
+  "colonist_in_ladder_pit": {
+   "success": true,
+   "message": "Spawned 1/1 Colonist in faction PlayerColony."
+  }
+ },
+ {
+  "things_RM_Spikes": {
+   "success": true,
+   "things": [
+    {
+     "id": "RM_Spikes19407",
+     "def": "RM_Spikes",
+     "label": "Pit spikes",
+     "x": 117,
+     "z": 112,
+     "spawned": true,
+     "rot": 0,
+     "stackCount": 1,
+     "hitPoints": 80,
+     "maxHitPoints": 80,
+     "faction": "PlayerColony",
+     "factionName": "Ewa Clan"
+    },
+    {
+     "id": "RM_Spikes19408",
+     "def": "RM_Spikes",
+     "label": "Pit spikes",
+     "x": 118,
+     "z": 112,
+     "spawned": true,
+     "rot": 0,
+     "stackCount": 1,
+     "hitPoints": 80,
+     "maxHitPoints": 80,
+     "faction": "PlayerColony",
+     "factionName": "Ewa Clan"
+    },
+    {
+     "id": "RM_Spikes19409",
+     "def": "RM_Spikes",
+     "label": "Pit spikes",
+     "x": 119,
+     "z": 112,
+     "spawned": true,
+     "rot": 0,
+     "stackCount": 1,
+     "hitPoints": 80,
+     "maxHitPoints": 80,
+     "faction": "PlayerColony",
+     "factionName": "Ewa Clan"
+    },
+    {
+     "id": "RM_Spikes19410",
+     "def": "RM_Spikes",
+     "label": "Pit spikes",
+     "x": 117,
+     "z": 113,
+     "spawned": true,
+     "rot": 0,
+     "stackCount": 1,
+     "hitPoints": 80,
+     "maxHitPoints": 80,
+     "faction": "PlayerColony",
+     "factionName": "Ewa Clan"
+    },
+    {
+     "id": "RM_Spikes19411",
+     "def": "RM_Spikes",
+     "label": "Pit spikes",
+     "x": 119,
+     "z": 113,
+     "spawned": true,
+     "rot": 0,
+     "stackCount": 1,
+     "hitPoints": 80,
+     "maxHitPoints": 80,
+     "faction": "PlayerColony",
+     "factionName": "Ewa Clan"
+    },
+    {
+     "id": "RM_Spikes19412",
+     "def": "RM_Spikes",
+     "label": "Pit spikes",
+     "x": 117,
+     "z": 114,
+     "spawned": true,
+     "rot": 0,
+     "stackCount": 1,
+     "hitPoints": 80,
+     "maxHitPoints": 80,
+     "faction": "PlayerColony",
+     "factionName": "Ewa Clan"
+    },
+    {
+     "id": "RM_Spikes19413",
+     "def": "RM_Spikes",
+     "label": "Pit spikes",
+     "x": 118,
+     "z": 114,
+     "spawned": true,
+     "rot": 0,
+     "stackCount": 1,
+     "hitPoints": 80,
+     "maxHitPoints": 80,
+     "faction": "PlayerColony",
+     "factionName": "Ewa Clan"
+    },
+    {
+     "id": "RM_Spikes19414",
+     "def": "RM_Spikes",
+     "label": "Pit spikes",
+     "x": 119,
+     "z": 114,
+     "spawned": true,
+     "rot": 0,
+     "stackCount": 1,
+     "hitPoints": 80,
+     "maxHitPoints": 80,
+     "faction": "PlayerColony",
+     "factionName": "Ewa Clan"
+    }
+   ],
+   "scanned": 16978,
+   "countReturned": 8,
+   "countMatched": 8,
+   "isCompleteList": true,
+   "truncated": 0,
+   "pawnsSkipped": 30,
+   "perDef": {
+    "RM_Spikes": 8
+   },
+   "ticksGame": 1,
+   "message": "8 of 8 matching thing(s) returned, 16978 examined."
+  }
+ },
+ {
+  "things_RM_Ladder": {
+   "success": true,
+   "things": [
+    {
+     "id": "RM_Ladder19415",
+     "def": "RM_Ladder",
+     "label": "Wooden ladder",
+     "x": 123,
+     "z": 114,
+     "spawned": true,
+     "rot": 0,
+     "stackCount": 1,
+     "hitPoints": 60,
+     "maxHitPoints": 60,
+     "faction": "PlayerColony",
+     "factionName": "Ewa Clan"
+    },
+    {
+     "id": "RM_Ladder19416",
+     "def": "RM_Ladder",
+     "label": "Wooden ladder",
+     "x": 123,
+     "z": 112,
+     "spawned": true,
+     "rot": 2,
+     "stackCount": 1,
+     "hitPoints": 60,
+     "maxHitPoints": 60,
+     "faction": "PlayerColony",
+     "factionName": "Ewa Clan"
+    }
+   ],
+   "scanned": 16978,
+   "countReturned": 2,
+   "countMatched": 2,
+   "isCompleteList": true,
+   "truncated": 0,
+   "pawnsSkipped": 30,
+   "perDef": {
+    "RM_Ladder": 2
+   },
+   "ticksGame": 1,
+   "message": "2 of 2 matching thing(s) returned, 16978 examined."
+  }
+ }
+]
