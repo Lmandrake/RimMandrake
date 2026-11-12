@@ -29,8 +29,9 @@ temperatures of A, B, C, each prisoner's RM_NorthstarProofs.ProofExposure line (
 heatstroke, room, local hour), colonists' mental state; a prisoner gone from the map is looked up (dead, carried, gone).
 ROWS
   PEX_A1_defs_resolve             jawa/get_defs resolves RM_PitExposure (HediffDef) and RM_ExposedPrisoner (ThoughtDef)
-  PEX_A2_open_pit_tracks_noon     pit A rises more from --from-hour to 12:00 than the roofed twin, and stays within 1 C
-                                  of outdoors
+  PEX_A2_open_pit_tracks_noon     both pits dry and full depth all day; pit A (open) stays within 1 C of outdoors at every
+                                  sample, the roofed twin trails outdoors by more than 2 C more somewhere (a lag test: a
+                                  rise alone misreads a twin still catching up from dawn); the rises are recorded
   PEX_A3_pit_wears_resistance     PA loses more resistance than PC (normal cell) and PB (roofed twin), and PA was hurting
   PEX_A4_compassion_not_psycho    at 12:00 every non-psychopath colonist whose ideo minds refused beggars has
                                   RM_ExposedPrisoner; the psychopath (same ideo) does not; nor does a colonist of an ideo
