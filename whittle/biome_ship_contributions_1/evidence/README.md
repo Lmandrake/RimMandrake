@@ -14,8 +14,10 @@ Rerun the check yourself (offline, ~20 s): `python3 src/RimMandrake/Utils/ship_c
 | `effective_def_lint.txt` | offline load check: the composed Baroque Biomes built from this clone (new defs included), linted in the game's effective def tree (patches applied, inheritance resolved) on a minimal mod list: VERDICT PASS |
 | `owner_card.md` | the matrix as a card to the owner (also in the lane's owner-questions file); not answered yet |
 | `code_review.md` | the fresh code-review rounds on the checker and what each changed |
+| `design_judge_r2.json` | a second fresh design judge: the water and light clusters ruled distinct in play, every row weighed for worth, six fixes (applied) |
+| `art2/` | the 20 pictures painted for the 14 stand-in gifts and the new long-shade mast: contact sheets at play scale, glasswalk tiled 2x2, two art-judge rounds |
 | `design_judge.json` | a fresh design judge's KEEP/CHANGE per row (its three changes are applied in the list) |
-| `art/` | the five new textures, ring/L/straight renders of both hull atlases, the floor tiled 2x2, the art judge's verdict |
+| `art/` | the first five textures, ring/L/straight renders of both hull atlases, the floor tiled 2x2, the art judge's verdict |
 
 Live play was not run (this lane has no game): nothing here shows a gift placed, flown or used in a running game.
 The offline load check reads defs and patches as the game does but runs no C#.

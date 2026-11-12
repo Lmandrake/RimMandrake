@@ -1,4 +1,4 @@
-run 2026-11-11 23:32 -0800, HEAD 4d551f04e0 + working tree
+run 2026-11-12 00:09 -0800, HEAD 5214ddd064 + working tree
 deck affordances (read from Odyssey Substructure): Heavy, Light, Medium, Substructure, Walkable
 shipped biome mods (Biomes.compose.json): 24
 PASS   The Abyss            RM_SummGreatBone   (also deck-placeable: 1)
@@ -14,7 +14,7 @@ PASS   Gelatinous Slime     RM_ArchiveVat   (also deck-placeable: 2)
 PASS   Greentide            RM_DryAirBlower   (also deck-placeable: 3)
 PASS   Lantern Deeps        RM_LanternstoneFloorConstructed, RM_BuiltLanternstoneWall
 PASS   Leaning Scrub        RM_WindVaporator
-PASS   Long Shade           RM_LureAwning
+PASS   Long Shade           RM_LongShadeMast   (also deck-placeable: 1)
 PASS   The Miasma           RM_DecayCell   (also deck-placeable: 1)
 PASS   Pyrelands            RM_FurnaceHideBank
 PASS   The Rust Cathedral   RM_PatternHull

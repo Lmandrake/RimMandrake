@@ -1,0 +1,124 @@
+===== RM_HullLinerRig src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_HullLinerRig.xml
+HEAD: <ThingDef ParentName="BuildingBase">
+  description : A pressure vat of ground vexxith plate and a web of spray lines clamped along the ship's frame. It keeps the outer skin glazed with a thin grey coat that acid beads off. One rig serves a whole ship, for as long as it stays aboard.
+  texPath : Things/Building/FlowWorks/Machinery/RM_LiquidTap
+  graphicClass : Graphic_Single
+  size : (1,1)
+  rotatable : false
+  color : (120,104,140)
+  altitudeLayer : Building
+===== RM_WindVaporator src/RimMandrake/LeaningScrub/Defs/ThingDefs_Buildings/RM_WindVaporator.xml
+HEAD: <ThingDef ParentName="BuildingBase">
+  description : A tall fog-catch that combs water out of the passing wind. It works wherever it stands, as long as it has power, but it only ever drips: a thin, reliable margin, never a living.
+  texPath : Things/Building/Misc/MoisturePump
+  graphicClass : Graphic_Single
+  rotatable : false
+  tickerType : Normal
+  altitudeLayer : Building
+===== RM_SunSphere src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Buildings/RM_SunSphere.xml
+HEAD: <ThingDef ParentName="BuildingBase">
+  description : A sealed glass vessel culturing the ollumin — a light-making growth that, given a floor's worth of scraps to eat, slowly becomes its own small sun. Seeded dark, it cultures dim for days, and once mature it lights and grows crops around it without a well or a lease anywhere near it. It never explodes; starved long enough, it just dims to a husk you can reseed.
+  texPath : Things/Building/Production/RM_GlowTank
+  graphicClass : Graphic_Single
+  drawSize : (2.4,2.4)
+  size : (2,2)
+  rotatable : false
+  color : (255,225,140)
+  tickerType : Normal
+  altitudeLayer : Building
+===== RM_Glasswalk src/RimMandrake/TheSump/Defs/TerrainDefs/RM_SumpWalkways.xml
+HEAD: <TerrainDef>
+  description : Bitumen poured, packed, and let cool to a hard black sheen. Nothing sticks to it, nothing tracks off it, and it never needs a scrub — but glass underfoot never lets you run flat out, and a hurrying pawn occasionally finds that out the hard way.
+  color : (20,19,22)
+===== RM_AerosolScreen src/RimMandrake/Scarlands/Defs/ThingDefs_Buildings/RM_AerosolScreen.xml
+HEAD: <ThingDef ParentName="BuildingBase">
+  description : A projector that holds a dome of still, clean air over everything inside it. Blocks toxic fallout, toxic weather and settling film. It does nothing against bullets, heat or cold. Burns dielectric gel; without it the dome shrinks to half.
+  texPath : Things/Building/Security/RM_OldLineTurret_Base
+  graphicClass : Graphic_Single
+  drawSize : (2,2)
+  size : (2,2)
+  rotatable : false
+  tickerType : Normal
+  altitudeLayer : Building
+===== RM_GlowerShieldPanel src/RimMandrake/Scarlands/Defs/ThingDefs_Buildings/RM_GlowerShielding.xml
+HEAD: <ThingDef ParentName="BuildingBase">
+  description : A slab of cured glower crust bolted to a wall. Everyone in the room breathes easier: toxic environment resistance for all, and any toxic damage in the room is halved. Needs no power; the crust does the work.
+  texPath : Things/Building/RM_LoosenedPanel
+  graphicClass : Graphic_Single
+  drawSize : (1,1)
+  size : (1,1)
+  rotatable : false
+  color : (70,70,70)
+  altitudeLayer : Building
+===== RM_WasteCaskBay src/RimMandrake/Wastes/Defs/ThingDefs_Buildings/RM_WasteCaskBay.xml
+HEAD: <ThingDef ParentName="BuildingBase">
+  description : A powered, shielded rack for waste casks. While its seals have power, anything stored in it stays contained — breached casks included — and it neither weathers nor leaks. Its readout shows seal integrity, internal heat, stored dose and whether it is safe to fly.\n\nWithout power the seals run down; below half integrity, or with the bay itself shot up, it starts to leak.\n\nBuilt on a gravship's su
+  texPath : Things/Building/Furniture/Shelf
+  graphicClass : Graphic_Multi
+  drawSize : (4.5,3)
+  size : (3,2)
+  rotatable : true
+  color : (150,160,120)
+  tickerType : Rare
+  altitudeLayer : Building
+===== RM_TractionLance src/RimMandrake/Webwork/Defs/ThingDefs_Buildings/RM_TractionLance.xml
+HEAD: <ThingDef ParentName="BuildingBase">
+  description : A crewed tether emplacement: a braced mount, a hand-cranked ratchet drum, and a launcher that throws a barbed fabric tether at a visible target and reels it in along the ground toward the lance, cell by cell. A downed colonist can be hauled out of danger, a raider dragged out of cover, a canopy-dweller pulled out into the sun. Walls stop the pull. Big targets cost more: the drum draws more power a
+  texPath : Things/Building/Natural/RM_Webwork_Anchor
+  graphicClass : Graphic_Single
+  drawSize : (1,1)
+  size : (1,1)
+  rotatable : false
+  tickerType : Normal
+  altitudeLayer : Building
+===== RM_SummGreatBone src/RimMandrake/Abyss/Defs/BroodLair/RM_BroodLair.xml
+HEAD: <ThingDef ParentName="BuildingBase">
+  description : A single bone from a brood-mother long dead, as long as a room and light enough for four to carry. Summ young are drawn to the bones of their kind: set one aboard your gravship and an egg hatched there will imprint on you. Uninstall it to move it.
+  texPath : RM_Abyss/Things/Building/SummGreatBone
+  graphicClass : Graphic_Single
+  drawSize : (6,3)
+  size : (4,2)
+  rotatable : true
+  altitudeLayer : Building
+===== RM_SekkulaathTank src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_SekkulaathTank.xml
+HEAD: <ThingDef ParentName="RM_LivingCapturePodBase">
+  description : A sealed, waterlogged cell, not a pen. Whatever is inside it did not agree to be there and is strong enough that it never has to — the tank holds because it is built to, not because the occupant tolerates it. Fed, it will produce; neglected or breached, it will not stay.
+  texPath : Things/Building/RM_SekkulaathTank/RM_SekkulaathTank
+  graphicClass : Graphic_Single
+  drawSize : (2,2)
+===== RM_LureAwning src/RimMandrake/LongShade/Defs/ThingDefs_Buildings/RM_LureAwning.xml
+HEAD: <ThingDef ParentName="BuildingBase">
+  description : Hides stretched on four poles, set where there is no shade at all. Game that has been running in the sun finds it and stops. A hunter's trick: put it one dash from a herd's route and wait with a rifle. It shades its footprint only, and a dakkra may take the tenancy before the game does.
+  texPath : Things/Building/RM_LureAwning
+  graphicClass : Graphic_Single
+  drawSize : (3,3)
+  size : (3,3)
+  rotatable : false
+  color : (176, 140, 96)
+  tickerType : Rare
+  altitudeLayer : Building
+===== RM_TarVault src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_TarVault.xml
+HEAD: <ThingDef ParentName="StorageShelfBase">
+  description : A sunk barrel-rack packed in black Sump tar. Anything lowered into it stops aging the moment the tar closes over it — food stays fresh, a corpse stays whole, a hide stays supple, for as long as it sits sealed. The tar does not let go easily: pulling something back out clean takes a solvent to cut the seal, or it comes up ruined, fused uselessly into the tar that kept it.
+  texPath : Things/Building/RM_TarVault/RM_TarVault
+  graphicClass : Graphic_Single
+  drawSize : (2,1)
+  size : (2,1)
+  rotatable : false
+  tickerType : Normal
+===== RM_FloatstoneDoor src/RimMandrake/TheForge/Defs/ThingDefs_Buildings/RM_SpunstoneParts.xml
+HEAD: <ThingDef ParentName="DoorBase">
+  description : A door of spun floatstone, so light that a push swings it wide and it falls shut on its own weight a breath later. Nobody slows for it. The threads are laid in the grain the Forge taught, so it seals tight enough to hold air in a gravship's hull.
+  texPath : Things/Building/RM_FloatstoneDoor/RM_FloatstoneDoor
+  uiIconPath : Things/Building/Door/DoorSimple_MenuIcon
+  graphicClass : Graphic_Single
+===== RM_AncientCondenserPlant src/RimMandrake/WeepingStones/Defs/ThingDefs_Buildings/RM_AncientCondenserPlant.xml
+HEAD: <ThingDef ParentName="BuildingBase">
+  description : A pump-and-lattice machine the size of a wardrobe, cut whole from the shell of the oldest gorrask. It still draws water out of dry air, slowly, without power or fuel. It is the last one that works. Carry it, install it on a ship, and it will keep on weeping into whatever you set under it.
+  texPath : Things/Building/Production/RM_AncientCondenserPlant
+  graphicClass : Graphic_Single
+  drawSize : (2,2)
+  size : (2,2)
+  rotatable : false
+  tickerType : Rare
+  altitudeLayer : Building

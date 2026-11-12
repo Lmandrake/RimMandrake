@@ -6,8 +6,9 @@
   rack of it hung in a cabin is a heater that needs no fuel and no power: the warm room a gravship can carry onto
   the night side and the ice.
   Mechanics are vanilla only: CompHeatPusher with no power, flick or fuel comp is on whenever it stands
-  (CompHeatPusher.ShouldPushHeatNow reads only those comps). heatPerSecond 6 is a third of a powered heater's 21,
-  capped at 21 C, so it takes the edge off a small cabin rather than replacing a heater. PROVISIONAL numbers.
+  (CompHeatPusher.ShouldPushHeatNow reads only those comps). heatPerSecond 10 (set by the design judge,
+  evidence/design_judge_r2.json; a powered heater pushes 21) capped at 21 C: one bank holds a small cabin, never
+  overheats it. PROVISIONAL numbers.
   Ship-buildable: Light affordance, no placeWorker; minifiable, so one bought or built ashore can be carried aboard.
   Checked by src/RimMandrake/Utils/ship_contributions.py.
 -->
@@ -52,7 +53,7 @@
     <constructionSkillPrerequisite>3</constructionSkillPrerequisite>
     <comps>
       <li Class="CompProperties_HeatPusher">
-        <heatPerSecond>6</heatPerSecond>
+        <heatPerSecond>10</heatPerSecond>
         <heatPushMaxTemperature>21</heatPushMaxTemperature>
       </li>
     </comps>

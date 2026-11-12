@@ -1,6 +1,6 @@
 # Card for the owner: the ship-gift matrix (BIOME_SHIP_CONTRIBUTIONS_1)
 
-Written Wed Nov 11, 11:31 PM PST. Not blocking: the work stands as built until you answer. Delivered to the lane's owner-questions file
+Written Thu Nov 12, 12:09 AM PST. Not blocking: the work stands as built until you answer. Delivered to the lane's owner-questions file
 (`D:\ClaudeWork\rimmandrake\whittle_claude\CLAUDE_STEVEDESKTOP_OFFLINE2\OWNER_QUESTIONS.md`) and the daily digest.
 
 ## The matrix (read this first)
@@ -8,7 +8,7 @@ Written Wed Nov 11, 11:31 PM PST. Not blocking: the work stands as built until y
 Your 2026-09-24 ask: *"how can this biome uniquely add something to the ship? ... What can they take and improve their
 ships environment with?"* Each of the 24 biomes in Baroque Biomes now has a gift that can stand on a gravship deck and
 fly with it, checked against the game's own placement rules. Each row says where it comes from: a ruling of yours, or
-"picked by an agent" (under your 2026-10-22 delegation, then checked by a fresh design judge), or "new this pass".
+"picked by an agent" (under your 2026-10-22 delegation, then weighed by two fresh design judges), or "new this pass".
 Nothing here has been placed in a running game yet.
 
 - **The Abyss**: the summ great bone: set aboard, a summ egg hatched on the ship imprints on the crew, so the ship can raise the Abyss's flyers  
@@ -31,8 +31,8 @@ Nothing here has been placed in a running game yet.
   _Where it comes from:_ LanternDeeps mod; picked by an agent
 - **Leaning Scrub**: the wind vaporator: a powered, buildable fog-catch that combs a thin, reliable margin of water out of the passing wind, any number of them  
   _Where it comes from:_ LeaningScrub mod; picked by an agent
-- **Long Shade**: the shade awning: real shade on an open deck under the Direct Sun  
-  _Where it comes from:_ long_shade_bedazzle_2026-09-27.md §6 (shade awning); picked by an agent
+- **Long Shade**: the long-shade mast: a tall black-chitin vane whose lee runs the length of an open deck under a low sun (up to 16 cells), shade a roof cannot give without closing the deck  
+  _Where it comes from:_ new this pass, picked by an agent (design judge r2: the lure awning only shaded its footprint)
 - **The Miasma**: the decay cell: power from rot, in a bed of delta loam, silt and salt  
   _Where it comes from:_ Miasma mod; picked by an agent
 - **Pyrelands**: the furnace-hide heat bank: furnace-beast hide gives back banked sun, a heater with no fuel and no power  
@@ -53,34 +53,31 @@ Nothing here has been placed in a running game yet.
   _Where it comes from:_ owner 2026-09-24 (his own examples); SUMP_WALKWAYS_1, SUMP_GASLIGHT_1, SUMP_TAR_VAULT_1
 - **Warscar**: the aerosol screen (a clean-air dome over the ship in any polluted biome) and the glower shield panel  
   _Where it comes from:_ WARSCAR_AEROSOL_SCREEN_1 (owner turn 4, 2026-09-30)
-- **The Wastes**: the waste cask bay: a shielded, powered rack that lets a ship carry waste casks safely  
-  _Where it comes from:_ wastes.md (the waste run by gravship); picked by an agent
+- **The Wastes**: the waste cask bay: the only way a gravship may carry the planet's waste at all (launch is refused with a cask aboard outside a powered, sealed, cool bay), which makes the ship the instrument of the waste run, your disposal dilemma; a tamed sloghog or sootgrazer beside it turns casks into bezoars or soot bricks in flight  
+  _Where it comes from:_ wastes.md (the waste run by gravship, owner 2026-10-12); the bay as the ship gift picked by an agent
 - **Webwork**: the traction lance: a crewed tether emplacement that reels a target or a downed colonist in  
   _Where it comes from:_ Webwork mod; picked by an agent
 - **Weeping Stones**: the ancient condenser plant: the oldest gorrask's machine, one per world, cut from its shell; it weeps water with no power or fuel wherever it is installed (unlike the Leaning Scrub vaporator: unpowered, unique, a trophy)  
   _Where it comes from:_ WeepingStones mod (its own text: "install it on a ship"); picked by an agent
 
-**Art still owed:** 14 of these would look like other things on a deck today. Eight borrow another thing's picture
-(hull liner rig, wind vaporator, sun-sphere, glasswalk, aerosol screen, glower shield panel, waste cask bay, traction
-lance) and six are declared placeholders (summ great bone, sekkulaath tank, lure awning, tar vault, floatstone door,
-ancient condenser plant). Their own art is a filed, separate piece of work. Until then the "scrapbook" shows in what the
-gifts do, not yet in how they look.
+**Art:** every gift has its own picture (20 painted and judged in this pass). Contact sheet:
+`D:\Luke\dev\RimMandrake\whittle\biome_ship_contributions_1\evidence\art2\contact_sheet_96ppc.png`.
 
 After you read that, are you ready for a question card?
 
 ## The card
 
-Wed Nov 11, 11:31 PM PST
+Thu Nov 12, 12:09 AM PST
 
 Do these 24 ship gifts stand, one per biome?
 
-1. **Keep the gifts as they are, and let the owed art follow** <- recommended - every biome has a distinct, buildable
-   gift and a judge already rebalanced the set. Why: the gifts get their first live run while the 14 pictures are
-   painted. Costs: nothing now; the ship looks patchy until the art lands; any row you later dislike is one small build round.
+1. **Keep the gifts as they are** <- recommended - every biome has a distinct, buildable gift in its own art, and two
+   design judges balanced the set. Why: the gifts get their first live run. Costs: nothing now; numbers on the new
+   gifts are provisional until play; any row you later dislike is one small build round.
 2. **Swap named rows for another thing that biome already ships** - why: you prefer a different existing building
    (each biome's alternatives are in `D:\Luke\dev\RimMandrake\whittle\biome_ship_contributions_1\evidence\deck_inventory.txt`).
-   Buys: your taste on those rows at almost no build cost. Costs: a rerun of the check; a swapped-in thing may need art too.
-3. **Redesign named gifts from scratch** - why: a row's gift feels thin or off-fiction (likely candidates: the four new
+   Buys: your taste on those rows at almost no build cost. Costs: a rerun of the check; a swapped-in thing may need art.
+3. **Redesign named gifts from scratch** - why: a row's gift feels thin or off-fiction (likely candidates: the five new
    ones, or Webwork's tether lance). Buys: a gift worth landing for. Costs: one design-and-build round per row, plus art.
 4. **Hold the matrix for the per-biome Designer sittings** - why: you want each gift argued out with that biome's
    concept tree, as the 2026-11-03 note intended. Buys: gifts that fit each biome's whole design. Costs: the gifts stay

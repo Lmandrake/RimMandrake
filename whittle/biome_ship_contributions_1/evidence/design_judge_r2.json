@@ -1,0 +1,63 @@
+{
+  "judge": "rm-judge opus, fresh",
+  "date": "2026-11-11",
+  "basis": "defs read in src/RimMandrake (condensed extract: D:\\ClaudeWork\\rimmandrake\\scratch\\dj_r2\\defs.txt); thirst rate from FlowWorks RM_ThirstMath (0.8 need/day x 3 L = ~2.4 L per pawn per day before heat); vanilla comparisons (heater/campfire 21 heat/s, small sculpture beauty ~50, sterile tile cleanliness 0.6) are from memory of vanilla defs, not re-measured",
+  "overlaps": [
+    {
+      "cluster": "water x4 (Leaning Scrub wind vaporator, Weeping Stones ancient condenser, Stillsand solar still, Blue Desert cold hold)",
+      "verdict": "ACCEPT",
+      "reason": "Four different jobs in play. Vaporator: 4 fog water/day each for 120 W, buildable, breaks down. You trade power for about one and a half pawns' water per unit and build as many as the deck holds. Condenser: 1 L per 2500 ticks (~24 L/day, cap 60), no power, one per world, has to be won from the oldest gorrask. One installed trophy waters about ten pawns, and losing it is a real loss. Solar still: not a source but a converter. It needs brine, eggs or raw meat fed in, works only in open sun, stops under a roof, and is the only one that turns corpses and meat into water. Blue Desert: the deck part is a no-power cooling rack that burns blue ice. Water is only its cargo, and players will experience it as a blackout-proof cold store, not a water machine. Different inputs (power / nothing / feedstock+sun / ice resupply) and different limits (count / uniqueness / daylight / resupply runs).",
+      "change": "none. Wording only: keep the Blue Desert row led by the rack's cooling. Its 'water stock' clause is the weakest distinction, because blue ice can be carried as cargo with or without the rack."
+    },
+    {
+      "cluster": "no-lamp light x3 (Lantern Deeps lanternstone, Sump gaslight lamp, Terminal Biomes sun-sphere)",
+      "verdict": "ACCEPT",
+      "reason": "Lanternstone is light built into structure: floor glow 2 and wall glow 3 on every tile, forever, no fuel, no furniture slot, no power. A lanternstone corridor or cabin needs no fixture at all. Gaslight is a beauty/mood fixture: beauty 14, radius 10, a warbling amber glow, and it burns tar gas (0.28/day, cap 6). It runs for about three weeks and then needs Sump tar gas again. The sun-sphere is a farm, not a lamp: its 2x2 glower (radius 6) grows crops with no power, eats 4 raw food/day and needs a culture seed. Players build the first as hull, place the second for mood, and build the third to grow food on a powerless deck.",
+      "change": "none"
+    },
+    {
+      "cluster": "unflagged, checked: cooling x2 (Blue Desert cold rack, Greentide dry-air blower)",
+      "verdict": "ACCEPT",
+      "reason": "The rack is passive (-12 energy/s, no power, eats blue ice) and holds a hold cold through a blackout. The blower is an active cabin cooler (250 W plus chemfuel 3.5/day) with no exhaust side, so it works in an interior ship room with no outside wall, and it is also a doorway barrier against the green and wild animals.",
+      "change": "none"
+    },
+    {
+      "cluster": "unflagged, checked: hull x2 (Forge spunstone hull, Rust Cathedral pattern hull)",
+      "verdict": "ACCEPT",
+      "reason": "Spunstone: 420 HP, work 300, cheap, light and quick to lay, with a 2.5-speed airtight door. Pattern hull: 480 HP and self-heals 1 HP per 500 ticks (120/day), at 1 live pattern metal per section. One is the hull you build fast, the other is the hull you stop repairing.",
+      "change": "none"
+    },
+    {
+      "cluster": "unflagged, checked: sky domes x2 (Contagion cloud repulsor, Warscar aerosol screen)",
+      "verdict": "ACCEPT",
+      "reason": "Different weather. The repulsor tears open the Contagion storm and elsewhere clears rain and fog (900 W). The aerosol screen blocks toxic fallout, toxic weather and settling film in r7.9 (400 W + dielectric gel). They do not substitute for each other.",
+      "change": "none"
+    }
+  ],
+  "rows": [
+    {"biome": "The Abyss", "worth": "YES", "reason": "Raising an imprinted summ aboard is a creature pipeline no other biome gives; beauty 12. Costs 60 summ bone and a 4x2 deck footprint, and does nothing without an egg.", "fix": ""},
+    {"biome": "Blue Desert", "worth": "YES", "reason": "Cooling with no power for 45 steel; on a power-starved gravship a cold store that survives a blackout is real. Blue-ice resupply is a reason to come back.", "fix": ""},
+    {"biome": "The Cauldron", "worth": "YES", "reason": "One 1x1 rig (40 vexxith) makes the whole ship immune to ambient acid in both acid-air biomes (Cauldron and Forge), and raiders keep burning, so acid air becomes a moat. No value in other biomes, but it opens two.", "fix": ""},
+    {"biome": "The Contagion", "worth": "YES", "reason": "The key to holding the Contagion's storm open, and it travels. Off-biome rain/fog clearing is mild for 900 W, but it is bought/won rather than built, so the cost is acceptable.", "fix": ""},
+    {"biome": "The Cracked Lands", "worth": "WEAK", "reason": "A 1x1 case at beauty 14 for a fossil skeleton (seam yield 1, deliberately seeded). An ordinary small sculpture beats it, so the scrapbook trophy is worse decor than generic art. There are no other deck parts in the inventory.", "fix": "RM_FossilCase Beauty 14 -> 40 (a 1x1 trophy that rivals a good small sculpture and cannot burn), plus MarketValue ~600 so it reads as a find, not furniture."},
+    {"biome": "Fever Wood", "worth": "WEAK", "reason": "Eats 3 raw meat/day. Returns about 0.5 tentacle flesh, 0.5 cream (value 10) and 0.3 spleen chemicals (22) per day, and carries escape risk. It is net-negative food on a ship. The def declares its numbers INVENTED placeholders owed by FEVERWOOD_DIANOGA_TANK_TUNING_1.", "fix": "Not one of the four provisional defs; route to FEVERWOOD_DIANOGA_TANK_TUNING_1 with a concrete target: fuelConsumptionRate 3 -> 1 and cream mtbDays 4 -> 2, so the tank is net-positive. The same-biome alternative RM_LureStake is weaker."},
+    {"biome": "Gelatinous Slime", "worth": "YES", "reason": "Resurrection anywhere the ship goes (120 steel, 4 spacer components, 3 days at 400 W). The strongest gift in the set.", "fix": ""},
+    {"biome": "Greentide", "worth": "YES", "reason": "A cooler with no hot side is uniquely useful in interior ship cabins, plus a doorway barrier. The chemfuel 3.5/day running cost is steep but fair.", "fix": ""},
+    {"biome": "Lantern Deeps", "worth": "YES", "reason": "Every hull/floor tile is its own light, forever, with no power and no fixtures (5 lanternstone per tile, Heavy affordance, which the deck gives).", "fix": ""},
+    {"biome": "Leaning Scrub", "worth": "YES", "reason": "Thirst is universal, and 4 fog water/day per unit for 120 W is a modest but scalable flying water supply that needs no feedstock.", "fix": ""},
+    {"biome": "Long Shade", "worth": "WEAK", "reason": "A 3x3 hide awning that shades its footprint only (depth 0.7), flammability 1. A roof already beats it on any deck, and it is functionally the cross-biome shade tent (same ShadeGear footprint mode). Its lure behaviour pulls game to your deck, which is not a ship improvement. The inventory has no other obtainable Long Shade deck part (the wrecked cart has no source).", "fix": "A new gift is needed. Direction: something from Long Shade's long-shadow / low-sun identity that works off-biome, e.g. a deck shade that also cools its footprint under any sun, so it beats a roof by not being one."},
+    {"biome": "The Miasma", "worth": "YES", "reason": "600 W from spoiled raw food over a 600-feed life. It turns a ship's rot into power, and rebuilding needs delta loam, silt and salt, which is a reason to return.", "fix": ""},
+    {"biome": "Pyrelands", "worth": "WEAK", "reason": "Heat with no fuel and no power, forever, which is the right idea. But 6 heat/s (~30% of a vanilla heater/campfire's 21) at 60 furnace hide each means several per cabin in a real cold, which contradicts its own 'one in every cabin' pitch.", "fix": "RM_FurnaceHideBank heatPerSecond 6 -> 10 (keep heatPushMaxTemperature 21 so it can never overheat a room; cost unchanged)."},
+    {"biome": "The Rust Cathedral", "worth": "YES", "reason": "480 HP hull that mends 120 HP/day with no labour. Live pattern metal is a Cathedral-only deep resource in drill portions, so 1 per section is affordable but ties you to the biome.", "fix": ""},
+    {"biome": "The Sleeping Ice", "worth": "WEAK", "reason": "Beauty 5, cleanliness 0.1, nonflammable, 1 shell per tile at 6 shells per tellurox (about 17 animals for a 10x10 deck). It is a pretty stone floor with no function a player would land for; it is the Sleeping Ice's only deck part.", "fix": "RM_TelluroxHexplate Cleanliness 0.1 -> 0.6 (sterile-tile class) keeping Beauty 5, so it is the one floor that is both sterile and beautiful (hospital, kitchen and archive-vat rooms aboard)."},
+    {"biome": "Stillsand", "worth": "YES", "reason": "A free turret in the sun (no power, no fuel, 95% accuracy) plus a still that turns brine, eggs and meat into water on an open deck. Both are strong on a gravship's exposed deck.", "fix": ""},
+    {"biome": "Terminal Biomes", "worth": "YES", "reason": "Sun-sphere: a crop light with no power (it eats 4 raw food/day). Cryoponics vat: grows Chill plants anywhere for 220 W.", "fix": ""},
+    {"biome": "The Forge", "worth": "YES", "reason": "420 HP airtight hull at work 300, plus a 2.5-speed airtight door. A light, fast, tough hull material.", "fix": ""},
+    {"biome": "The Rot", "worth": "YES", "reason": "Multiplies the ship's total range. The rarest and most strategic gift (hunt a hwelgrue; damage it with guns and you lose part of the bonus).", "fix": ""},
+    {"biome": "The Sump", "worth": "YES", "reason": "The tar vault stops aging with no power (food, corpses, hides); the gaslight gives beauty 14; glasswalk never needs cleaning. Three distinct uses for bitumen.", "fix": ""},
+    {"biome": "Warscar", "worth": "YES", "reason": "A clean-air dome against toxic fallout anywhere (expensive: 60 plasteel, 2 spacer components, a projector core, 400 W + gel) and an unpowered room tox-resist panel. Both pay off on polluted worlds.", "fix": ""},
+    {"biome": "The Wastes", "worth": "WEAK", "reason": "A 3x2 bay (150 steel, 20 plasteel, 4 components, 200 W) that lets you carry a liability, and it blocks launch when unpowered, damaged or hot. It improves the ship only for a player who runs the waste trade. The only alternative, RM_WasteTippingPad, is a ground marker and worse.", "fix": "No same-biome alternative and not a provisional def. Re-pitch the row on what the bay already does: processing (a tamed sloghog/sootgrazer beside it digests casks into bezoars or soot bricks at output factor 2), so the gift reads as 'a ship that turns waste into product'. If that loop is thin in play, a new gift is needed."},
+    {"biome": "Webwork", "worth": "YES", "reason": "Pulls a downed colonist out of fire or drags a raider out of cover. Universally useful in ship defence for 80 steel, 3 components and fabric.", "fix": ""},
+    {"biome": "Weeping Stones", "worth": "YES", "reason": "About 24 L/day with no power or fuel, enough for a whole crew. Unique, and a true trophy.", "fix": ""}
+  ]
+}

@@ -9,8 +9,8 @@
   (Core Hyperweave, relabelled by RM_Thrixweave_Rename.xml) best. The rigging is a CompRefuelable fed with fabric:
   reeling wears it by the target's body size, a snap consumes all of it, re-rigging is an ordinary refuel. The re-rig
   accepts any of the three fabrics; the building's stuff alone sets the tether's quality.
-  All numbers PROVISIONAL (FOUNDRY's first values, tuned in live play). Art: PLACEHOLDER textures (Webwork anchor
-  base, vanilla mini-turret top) until RM_TractionLance_Base/_Top are installed through the art ledger.
+  All numbers PROVISIONAL (FOUNDRY's first values, tuned in live play). Art: own texture
+  Things/Building/RM_TractionLance/RM_TractionLance (256 px, installed 2026-11-12, judged KEEP, whittle/biome_ship_contributions_1/evidence/art2/verdict_r1.md).
 -->
 <Defs>
 
@@ -20,7 +20,7 @@
     <description>A crewed tether emplacement: a braced mount, a hand-cranked ratchet drum, and a launcher that throws a barbed fabric tether at a visible target and reels it in along the ground toward the lance, cell by cell. A downed colonist can be hauled out of danger, a raider dragged out of cover, a canopy-dweller pulled out into the sun. Walls stop the pull. Big targets cost more: the drum draws more power and the tether wears faster. The fabric it is built from is the tether: cloth is weak and snaps easily, devilstrand holds better, thrixweave best of all. A snapped tether must be re-rigged with fabric before the lance fires again.</description>
     <thingClass>RimMandrake.CreatureBehaviors.RM_Building_TractionLance</thingClass>
     <graphicData>
-      <texPath>Things/Building/Natural/RM_Webwork_Anchor</texPath>
+      <texPath>Things/Building/RM_TractionLance/RM_TractionLance</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1)</drawSize>
     </graphicData>

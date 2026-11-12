@@ -291,7 +291,7 @@ SOURCE_FIELDS = {"mineableThing", "leatherDef", "harvestedThingDef", "woolDef", 
 SOURCE_DICTS = {"butcherProducts", "products", "killedLeavings", "leavings", "smeltProducts",
                 "leaveResourcesWhenKilled"}                                           # <item>n</item> under these
 THING_FIELDS = {"thingDef", "thing"}            # text == item, only under a SOURCE_OWNERS ancestor
-SOURCE_OWNERS = ("StockGenerator", "QuestNode", "ThingSetMaker", "GenStep", "Reward", "leavings")
+SOURCE_OWNERS = ("StockGenerator", "QuestNode", "ThingSetMaker", "GenStep", "Reward", "leavings", "products")
 SPAWN_CS = re.compile(r"MakeThing|GenSpawn|GenPlace|TryPlaceThing|MakeMinified|TryDropThing|ThingSetMaker|"
                       r"butcherProducts|SpawnThing|DropPod", re.S)
 _XML = None

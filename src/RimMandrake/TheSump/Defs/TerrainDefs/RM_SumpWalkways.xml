@@ -82,10 +82,8 @@
   is made from RM_KorvethPitch (2 : 1, recipeMaker in RM_Bitumen.xml), the
   RM_Korveth harvest, so the supply chain ships in this mod.
 
-  Texture reuses RM_TarDeep's own texturePath (WaterDeepRamp) — same
-  "poured/cooled tar IS the same substance" reasoning RM_TarMoat.xml
-  already gives for reusing that path — tinted with a slight sheen instead
-  of RM_TarMoat's flat matte black, to read as glazed rather than wet.
+  Texture: own seamless 1024 px glazed-black bitumen, Terrain/Surfaces/RM_Glasswalk (installed 2026-11-12,
+  judged KEEP, whittle/biome_ship_contributions_1/evidence/art2/verdict_r1.md), drawn in its own colour, so the old near-black tint is gone.
 
   Both tiers: designationCategory Floors, terrainAffordanceNeeded Light,
   affordances Light+Medium+Walkable (matches this kit's own established
@@ -138,11 +136,10 @@
     <label>glasswalk</label>
     <description>Bitumen poured, packed, and let cool to a hard black sheen. Nothing sticks to it, nothing tracks off it, and it never needs a scrub — but glass underfoot never lets you run flat out, and a hurrying pawn occasionally finds that out the hard way.</description>
     <renderPrecedence>251</renderPrecedence>
-    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <texturePath>Terrain/Surfaces/RM_Glasswalk</texturePath>
     <edgeType>FadeRough</edgeType>
     <fertility>0</fertility>
     <layerable>true</layerable>
-    <color>(20,19,22)</color>
     <pathCost>3</pathCost>
     <designationCategory>Floors</designationCategory>
     <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>

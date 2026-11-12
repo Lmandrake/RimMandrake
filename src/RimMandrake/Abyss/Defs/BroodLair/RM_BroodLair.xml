@@ -9,7 +9,8 @@
 
   ART: every texture here is a PLACEHOLDER (own art reused from Stillsand/Miasma, vanilla eggs, ship chunks
   and resources). The brood-mother building draws the RM_Summ sprite scaled up. Owed: a coiled sleeping
-  brood-mother, a summ egg, a great bone, the rescue-ship wreck, seven ship fittings.
+  brood-mother, a summ egg, the rescue-ship wreck, seven ship fittings. The great bone (RM_SummGreatBone) has its
+  own art: RM_Abyss/Things/Building/SummGreatBone (768x384, installed 2026-11-12, judged KEEP, whittle/biome_ship_contributions_1/evidence/art2/verdict_r1.md).
   Numbers are PROVISIONAL.
 -->
 <Defs>

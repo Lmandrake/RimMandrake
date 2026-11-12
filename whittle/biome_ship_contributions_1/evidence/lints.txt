@@ -1,24 +1,47 @@
+run 2026-11-12 00:10 -0800
 == lint_crackedlands_defs.py
 crackedlands lint: 28 defs + 3 patch files, 55 classes, 25 class/def refs, 14 field checks, 0 drivers, 45 settings, 0 ERROR, 0 WARN
 == lint_pyrelands_defs.py
-WARN  intentional-key: settings-scribed: field scorchFruitChance is saved under key "scorchFruitChancePerCell" (key and field differ)  [renamed on purpose with a semantics change]
 pyrelands lint: 32 defs + 6 patch files, 91 classes, 81 class/def refs, 38 field checks, 5 drivers, 40 settings, 0 ERROR, 1 WARN
 == lint_sleepingice_defs.py
 sleepingice lint: 9 defs + 1 patch files, 13 classes, 15 class/def refs, 5 field checks, 0 drivers, 13 settings, 0 ERROR, 0 WARN
 == lint_contagion_defs.py
 contagion lint: 42 defs + 3 patch files, 68 classes, 70 class/def refs, 30 field checks, 4 drivers, 24 settings, 0 ERROR, 0 WARN
+== lint_cauldron_defs.py
+cauldron lint: 34 defs + 5 patch files, 61 classes, 49 class/def refs, 41 field checks, 1 drivers, 43 settings, 0 ERROR, 0 WARN
+== lint_feverwood_defs.py
+feverwood lint: 55 defs + 8 patch files, 65 classes, 71 class/def refs, 70 field checks, 3 drivers, 50 settings, 0 ERROR, 0 WARN
+== lint_leaningscrub_defs.py
+leaningscrub lint: 51 defs + 9 patch files, 119 classes, 131 class/def refs, 92 field checks, 3 drivers, 82 settings, 0 ERROR, 0 WARN
+== lint_longshade_defs.py
+longshade lint: 32 defs + 1 patch files, 43 classes, 53 class/def refs, 41 field checks, 2 drivers, 15 settings, 0 ERROR, 0 WARN
+== lint_scarlands_defs.py
+scarlands lint: 64 defs + 5 patch files, 144 classes, 128 class/def refs, 28 field checks, 13 drivers, 90 settings, 0 ERROR, 0 WARN
+== lint_theforge_defs.py
+theforge lint: 29 defs + 1 patch files, 57 classes, 34 class/def refs, 30 field checks, 0 drivers, 52 settings, 0 ERROR, 0 WARN
+== lint_thesump_defs.py
+thesump lint (data): 3 kethrel stages, 9 tar terrains, molt default 30.0 kg (slider 10.0..80.0), 0 ERROR, 1 WARN
+== lint_wastes_defs.py
+wastes lint: 37 defs + 4 patch files, 52 classes, 47 class/def refs, 21 field checks, 2 drivers, 32 settings, 0 ERROR, 0 WARN
+== lint_webwork_defs.py
+webwork lint (data): 7 skeleton pieces (6 support links), 15 slider ranges, 3 tether factors, 0 ERROR, 0 WARN
+== lint_weepingstones_defs.py
+weepingstones lint: 28 defs + 6 patch files, 45 classes, 39 class/def refs, 6 field checks, 5 drivers, 10 settings, 0 ERROR, 0 WARN
+== lint_terminalbiomes_defs.py
+ERROR texpath-resolves: Defs/ThingDefs_Buildings/RM_FoundrySalvageCache.xml: texPath Things/Building/Production/RUT_FoundrySalvageCache has no png in Textures/Things/Building/Production
+terminalbiomes lint: 109 defs + 11 patch files, 89 classes, 112 class/def refs, 55 field checks, 5 drivers, 55 settings, 1 ERROR, 3 WARN
 == biomes_compose_sweeps.py (sweeps 0-2: paths, defNames, texPaths)
 == 0. relative-path shadowing across load roots (DirectXmlLoader TryAdd)
-   probe: 4730 content paths collected (need >50) -> OK
+   probe: 4746 content paths collected (need >50) -> OK
    clean (0)
 
 == 1. defName + abstract Name= (in-scope, and in-scope vs 102 other src mods)
-   probe: 3164 concrete defs, 92 abstracts in scope; every biome entry ships a BiomeDef -> OK
+   probe: 3166 concrete defs, 92 abstracts in scope; every biome entry ships a BiomeDef -> OK
    clean (0)
    BiomeDefs per entry: Abyss=RM_Abyss; BlueDesert=RM_BlueDesert; Cauldron=RM_Cauldron; Contagion=RM_Contagion; CrackedLands=RM_FloodedCanyon; DivingInteraction=RM_SeabedFloor,RM_SeabedFloor_GreySea,RM_SeabedFloor_TheChill,RM_SeabedFloor_TheScald,RM_SeabedFloor_TwilightSea,RM_SeabedUnavailable; FeverWood=RM_FeverWood; GelatinousSlime=RM_GelatinousSlime; Greentide=RM_Greentide; LanternDeeps=RM_LanternDeeps; LeaningScrub=RM_LeaningScrub; LongShade=RM_LongShade; Miasma=RM_Miasma; Pyrelands=RM_Pyrelands; RustCathedral=RM_RustCathedral; SleepingIce=RM_SleepingIce; Stillsand=RM_Stillsand; TerminalBiomes=RM_ChillCrater,RM_GreySea,RM_TheChill,RM_TheScald,RM_TwilightSea; TheForge=RM_TheForge; TheRot=RM_TheRot; TheSump=RM_TheSump; Warscar=RM_Warscar; Wastes=RM_Wastes; Webwork=RM_Webwork; WeepingStones=RM_WeepingStones
 
 == 2. texPath binding key
-   probe: 1412 texPath values collected, 1316 bind to a texture an in-scope entry ships (need >0) -> OK
+   probe: 1420 texPath values collected, 1325 bind to a texture an in-scope entry ships (need >0) -> OK
    clean (0)
 
 == 3. PatchOperationFindMod naming a folded mod (goes dark after the merge)

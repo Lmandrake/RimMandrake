@@ -36,10 +36,9 @@
   No researchPrerequisites: the design doc names none for the tank, and
   none was invented.
 
-  PLACEHOLDER ART: one flat-color 128x128 PNG. Searched artpipe done/
-  registry.jsonl for "tank"/"prison"/"sekkulaath"/"dianoga" first (standing
-  rule) — nothing for a containment vessel exists; canon_dianoga_v1_* is the
-  Star Wars-tier creature art, a different asset for a different tier.
+  ART: own texture Things/Building/RM_SekkulaathTank/RM_SekkulaathTankCell (256 px, installed 2026-11-12,
+  judged KEEP, whittle/biome_ship_contributions_1/evidence/art2/verdict_r1.md). A new path, because the old RM_SekkulaathTank texture is shared by
+  RM_SekkulaathYoungCask and RUT_SporefallDisplayTank.
 -->
 <Defs>
 
@@ -78,14 +77,15 @@
     <label>sekkulaath prison tank</label>
     <description>A sealed, waterlogged cell, not a pen. Whatever is inside it did not agree to be there and is strong enough that it never has to — the tank holds because it is built to, not because the occupant tolerates it. Fed, it will produce; neglected or breached, it will not stay.</description>
     <graphicData>
-      <texPath>Things/Building/RM_SekkulaathTank/RM_SekkulaathTank</texPath>
+      <texPath>Things/Building/RM_SekkulaathTank/RM_SekkulaathTankCell</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(2,2)</drawSize>
     </graphicData>
     <comps>
       <li Class="CompProperties_Refuelable">
-        <!-- INVENTED feed-rate placeholders — see file header. -->
-        <fuelConsumptionRate>3</fuelConsumptionRate>
+        <!-- INVENTED; 3 -> 1 a day on 2026-11-12 (BIOME_SHIP_CONTRIBUTIONS_1 design judge r2,
+             evidence/design_judge_r2.json): at 3 meat a day for ~1 back the tank lost food. -->
+        <fuelConsumptionRate>1</fuelConsumptionRate>
         <fuelCapacity>15</fuelCapacity>
         <initialFuelPercent>0.5</initialFuelPercent>
         <fuelFilter>
@@ -119,7 +119,7 @@
           </li>
           <li>
             <thing>RM_SekkulaathCream</thing>
-            <mtbDays>4</mtbDays>
+            <mtbDays>2</mtbDays><!-- 4 -> 2, same judge: makes the tank net-positive -->
             <countRange>1~3</countRange>
           </li>
         </products>

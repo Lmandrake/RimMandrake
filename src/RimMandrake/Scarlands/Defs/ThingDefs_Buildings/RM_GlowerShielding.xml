@@ -3,7 +3,8 @@
      NUMBERS INVENTED. Panel: 80 crust + 20 steel (48 kg of crust sits in one wall). Plate: 20 crust, Mass 8 to heavy on
      purpose: a colonist's carry capacity is 35 kg, so it competes with armour and packs. A shield belt shares its
      Waist/Belt slot, which is the other half of the balance. Crust supply is the real limit.
-     ART OWED: both defs borrow existing art (RM_LoosenedPanel, vanilla ShieldBelt). Never run in game. -->
+     ART: the panel has its own texture, Things/Building/RM_GlowerShieldPanel (256 px, installed 2026-11-12,
+     judged KEEP, whittle/biome_ship_contributions_1/evidence/art2/verdict_r1.md), untinted. ART OWED: the belt still borrows vanilla ShieldBelt. Never run in game. -->
 <Defs>
   <ThingDef ParentName="BuildingBase">
     <defName>RM_GlowerShieldPanel</defName>
@@ -11,10 +12,9 @@
     <description>A slab of cured glower crust bolted to a wall. Everyone in the room breathes easier: toxic environment resistance for all, and any toxic damage in the room is halved. Needs no power; the crust does the work.</description>
     <thingClass>Building</thingClass>
     <graphicData>
-      <texPath>Things/Building/RM_LoosenedPanel</texPath>
+      <texPath>Things/Building/RM_GlowerShieldPanel</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1)</drawSize>
-      <color>(70,70,70)</color>
     </graphicData>
     <altitudeLayer>Building</altitudeLayer>
     <passability>Standable</passability>

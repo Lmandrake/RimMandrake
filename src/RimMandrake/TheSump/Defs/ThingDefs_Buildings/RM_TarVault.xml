@@ -70,11 +70,8 @@
   logic RM_GaslightLamp.xml already costs its Sumpgas-burning fixture in
   Bitumen too.
 
-  Texture: gen_tarvault_placeholder.py, same flat-fill-plus-outline posture
-  every sibling placeholder in this pass uses — checked infrastructure/
-  artpipe/done, _artsrc and registry.jsonl for "tarvault"/"tar vault"/
-  "larder" first (0 hits) per CLAUDE.md's "check for existing regenerated
-  art before queuing more". Real (hand-authored, reviewed) art is owed.
+  Texture: own art at Things/Building/RM_TarVault/RM_TarVault (256x128 for the 2x1 footprint, installed
+  2026-11-12, judged KEEP, whittle/biome_ship_contributions_1/evidence/art2/verdict_r1.md).
 -->
 <Defs>
 

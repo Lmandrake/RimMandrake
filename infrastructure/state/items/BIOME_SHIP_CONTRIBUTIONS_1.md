@@ -35,11 +35,16 @@ Distinctness pass (Whittle judge, 2026-11-11): three biomes gave a cabin heater,
 bone and the Rot row only its drive core; the furnace-hide bank is the one heater. The two water machines stay, told
 apart in their rows (powered and buildable vs unpowered and unique).
 
-**Art still owed.** 14 gifts would look like other things on a deck: 8 borrow another thing's texture (hull liner
-rig, wind vaporator, sun-sphere, glasswalk, aerosol screen, glower shield panel, waste cask bay, traction lance) and 6
-are declared placeholders (summ great bone, sekkulaath tank, lure awning, tar vault, floatstone door, ancient condenser
-plant). Their own art is owed by `RIMMANDRAKE_PAINT_SHIP_GIFTS_OWN_ART`; until it lands the scrapbook shows in what
-the gifts do, not yet in how they look.
+A second design judge (`evidence/design_judge_r2.json`) accepted the water and no-lamp-light clusters as distinct in
+play (vaporator: powered, buildable, many; condenser: free, one per world; solar still: water from meat or brine in
+sun; the cold hold: a powerless cold store), weighed every row for worth, and set the fixes applied here: fossil case
+Beauty 40, heat bank 10 heat/s, hexplate sterile (Cleanliness 0.6), the sekkulaath tank made net-positive, the Wastes
+row re-pitched on what the bay does, and a new Long Shade gift.
+
+**Art.** Every gift now wears its own picture. The four new gifts and the spunstone hull atlas were painted first;
+the 14 that had stand-ins (8 borrowing another thing's texture, 6 declared placeholders) and the new long-shade mast
+were painted on 2026-11-12 (`RIMMANDRAKE_PAINT_SHIP_GIFTS_OWN_ART`): 20 PNGs, a fresh art judge KEEP over two rounds
+(`whittle/biome_ship_contributions_1/evidence/art2/`), installed through the art ledger.
 
 **Why agents picked rows on a design item.** The 2026-11-03 note routed this item's design to the Designer. The
 Conductor, who carries the owner's authority (`CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`, owner 2026-10-30), put it in
@@ -60,7 +65,7 @@ fresh design judge, and carded to the owner for review (`whittle/biome_ship_cont
 | Greentide | **the dry-air blower**: cools a cabin without dumping heat into any room, and holds back the wet at its threshold | `RM_DryAirBlower` | Greentide mod; *delegated* |
 | Lantern Deeps | **lanternstone aboard**: floor and wall that glow forever and need no lamp | `RM_LanternstoneFloorConstructed` `RM_BuiltLanternstoneWall` | LanternDeeps mod; *delegated* |
 | Leaning Scrub | **the wind vaporator**: a powered, buildable fog-catch that combs a thin, reliable margin of water out of the passing wind, any number of them | `RM_WindVaporator` | LeaningScrub mod; *delegated* |
-| Long Shade | **the shade awning**: real shade on an open deck under the Direct Sun | `RM_LureAwning` | `long_shade_bedazzle_2026-09-27.md` §6 (shade awning); *delegated* |
+| Long Shade | **the long-shade mast**: a tall black-chitin vane whose lee runs the length of an open deck under a low sun (up to 16 cells), shade a roof cannot give without closing the deck | `RM_LongShadeMast` | *new*, *delegated* (design judge r2: the lure awning only shaded its footprint) |
 | The Miasma | **the decay cell**: power from rot, in a bed of delta loam, silt and salt | `RM_DecayCell` | Miasma mod; *delegated* |
 | Pyrelands | **the furnace-hide heat bank**: furnace-beast hide gives back banked sun, a heater with no fuel and no power | `RM_FurnaceHideBank` | *new*, *delegated* |
 | The Rust Cathedral | **pattern hull**: hull seeded with live pattern metal that mends itself (120 HP a day) | `RM_PatternHull` | *new*, *delegated* |
@@ -71,7 +76,7 @@ fresh design judge, and carded to the owner for review (`whittle/biome_ship_cont
 | The Rot | **the swallowed drive core**: an older ship's drive coil cut out of a hwelgrue, installed as a grav-engine facility, multiplies the ship's total range | `RM_SwallowedDriveCore` | TheRot mod; *delegated* |
 | The Sump | **glasswalk** flooring, **gaslight lamps** and the **tar vault** larder | `RM_Glasswalk` `RM_GaslightLamp` `RM_TarVault` | owner 2026-09-24 (his own examples); `SUMP_WALKWAYS_1`, `SUMP_GASLIGHT_1`, `SUMP_TAR_VAULT_1` |
 | Warscar | **the aerosol screen** (a clean-air dome over the ship in any polluted biome) and the **glower shield panel** | `RM_AerosolScreen` `RM_GlowerShieldPanel` | `WARSCAR_AEROSOL_SCREEN_1` (owner turn 4, 2026-09-30) |
-| The Wastes | **the waste cask bay**: a shielded, powered rack that lets a ship carry waste casks safely | `RM_WasteCaskBay` | `wastes.md` (the waste run by gravship); *delegated* |
+| The Wastes | **the waste cask bay**: the only way a gravship may carry the planet's waste at all (launch is refused with a cask aboard outside a powered, sealed, cool bay), which makes the ship the instrument of the waste run, your disposal dilemma; a tamed sloghog or sootgrazer beside it turns casks into bezoars or soot bricks in flight | `RM_WasteCaskBay` | `wastes.md` (the waste run by gravship, owner 2026-10-12); the bay as the ship gift *delegated* |
 | Webwork | **the traction lance**: a crewed tether emplacement that reels a target or a downed colonist in | `RM_TractionLance` | Webwork mod; *delegated* |
 | Weeping Stones | **the ancient condenser plant**: the oldest gorrask's machine, one per world, cut from its shell; it weeps water with no power or fuel wherever it is installed (unlike the Leaning Scrub vaporator: unpowered, unique, a trophy) | `RM_AncientCondenserPlant` | WeepingStones mod (its own text: "install it on a ship"); *delegated* |
 

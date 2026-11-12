@@ -6,14 +6,15 @@
   world can give, banded and scarred, quick to sweep and proof against fire.
   A floor: FloorBase (Heavy affordance, which a gravship deck provides), so it lays on substructure like any floor.
   Stats PROVISIONAL, set by the design judge (evidence/design_judge.json): 1 shell a tile (a tellurox yields 6, so one
-  beast lays 6 tiles), Beauty 5 (above silver tile 4: a rare floor), CleaningTimeFactor 0.6 as metal tile,
+  beast lays 6 tiles), Beauty 5 (above silver tile 4: a rare floor), Cleanliness 0.6 (sterile tile's, Core, read 2026-11-11: the one floor
+  both sterile and beautiful, for a ship's infirmary or galley; design judge r2), CleaningTimeFactor 0.6 as metal tile,
   Flammability 0. Checked by src/RimMandrake/Utils/ship_contributions.py.
 -->
 <Defs>
   <TerrainDef ParentName="FloorBase">
     <defName>RM_TelluroxHexplate</defName>
     <label>tellurox hexplate</label>
-    <description>Hexagonal plates from the permanent shells of old tellurox, laid edge to edge. Each one was worn for a whole working life on the Sleeping Ice and carries its scars: banded, pitted, harder than any tile a forge can cast. It sweeps clean in a moment and will not burn.</description>
+    <description>Hexagonal plates from the permanent shells of old tellurox, laid edge to edge. Each one was worn for a whole working life on the Sleeping Ice and carries its scars: banded, pitted, harder than any tile a forge can cast. Dense and close-grained, it holds no rot and sweeps clean in a moment, as clean underfoot as a surgery's tile, and it will not burn.</description>
     <texturePath>Terrain/Surfaces/RM_TelluroxHexplate</texturePath>
     <edgeType>Hard</edgeType>
     <renderPrecedence>246</renderPrecedence>
@@ -22,7 +23,7 @@
     <statBases>
       <WorkToBuild>900</WorkToBuild>
       <Beauty>5</Beauty>
-      <Cleanliness>0.1</Cleanliness>
+      <Cleanliness>0.6</Cleanliness>
       <CleaningTimeFactor>0.6</CleaningTimeFactor>
       <Flammability>0</Flammability>
     </statBases>

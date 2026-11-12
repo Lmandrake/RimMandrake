@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- LONGSHADE_LURE_AWNING_1 (ideation N4). A cheap stretched-hide awning on poles, a lure for game. Reuses the shade-gear footprint
      comp for the shade itself, so it needs no new shade code. Numbers PROVISIONAL.
-     ART OWED: placeholder is the shade tent sprite, tinted. -->
+     ART: own texture Things/Building/RM_LureAwning (384 px, pale hides on four poles, drawn light for the stuff
+     colour; installed 2026-11-12, judged KEEP, whittle/biome_ship_contributions_1/evidence/art2/verdict_r1.md). -->
 <Defs>
   <ThingDef ParentName="BuildingBase">
     <defName>RM_LureAwning</defName>

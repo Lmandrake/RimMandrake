@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- WEEPINGSTONES_WALKING_CONDENSER_1. Art: RM_CorrodedCondenserStack's texture is copied as a PLACEHOLDER (item says
-     reference only); a real art job is owed (see Transient/work_CONDENSER_20261003.md). -->
+<!-- WEEPINGSTONES_WALKING_CONDENSER_1. Art: own texture Things/Building/Production/RM_AncientCondenserPlant
+     (256 px, a gorrask-shell lattice machine; installed 2026-11-12, judged KEEP, whittle/biome_ship_contributions_1/evidence/art2/verdict_r1.md). -->
 <Defs>
   <ThingDef ParentName="BuildingBase">
     <defName>RM_AncientCondenserPlant</defName>

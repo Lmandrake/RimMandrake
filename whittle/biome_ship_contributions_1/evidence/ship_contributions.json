@@ -382,22 +382,22 @@
    "folder": "LongShade",
    "row": {
     "biome": "Long Shade",
-    "contribution": "**the shade awning**: real shade on an open deck under the Direct Sun",
+    "contribution": "**the long-shade mast**: a tall black-chitin vane whose lee runs the length of an open deck under a low sun (up to 16 cells), shade a roof cannot give without closing the deck",
     "defs": [
-     "RM_LureAwning"
+     "RM_LongShadeMast"
     ],
-    "source": "`long_shade_bedazzle_2026-09-27.md` \u00a76 (shade awning); *delegated*"
+    "source": "*new*, *delegated* (design judge r2: the lure awning only shaded its footprint)"
    },
    "defs": [
     {
-     "def": "RM_LureAwning",
+     "def": "RM_LongShadeMast",
      "type": "ThingDef",
      "mod": "RimMandrake/LongShade",
      "category": "Temperature",
-     "label": "lure awning",
+     "label": "long-shade mast",
      "costs": [
-      "WoodLog",
-      "stuff:Leathery"
+      "RM_BlackChitin",
+      "Steel"
      ],
      "how": "built (Temperature tab)",
      "buildable": true,
@@ -407,7 +407,9 @@
    ],
    "verdict": "PASS",
    "problems": [],
-   "also": []
+   "also": [
+    "RM_LureAwning"
+   ]
   },
   {
    "biome": "Miasma",
@@ -891,11 +893,11 @@
    "folder": "Wastes",
    "row": {
     "biome": "The Wastes",
-    "contribution": "**the waste cask bay**: a shielded, powered rack that lets a ship carry waste casks safely",
+    "contribution": "**the waste cask bay**: the only way a gravship may carry the planet's waste at all (launch is refused with a cask aboard outside a powered, sealed, cool bay), which makes the ship the instrument of the waste run, your disposal dilemma; a tamed sloghog or sootgrazer beside it turns casks into bezoars or soot bricks in flight",
     "defs": [
      "RM_WasteCaskBay"
     ],
-    "source": "`wastes.md` (the waste run by gravship); *delegated*"
+    "source": "`wastes.md` (the waste run by gravship, owner 2026-10-12); the bay as the ship gift *delegated*"
    },
    "defs": [
     {

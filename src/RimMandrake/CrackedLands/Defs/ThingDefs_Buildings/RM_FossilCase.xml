@@ -5,7 +5,9 @@
   fossil mounted on the bulkhead) and the item's criteria ("the gravship becomes a scrapbook of everywhere it has
   been"). A whole fossil skeleton (RM_FossilSkeleton, mined only from this biome's skeleton seams) set in a steel
   and glass case: decoration, nothing more, and the most beautiful single thing a small ship can carry.
-  Beauty 14 is PROVISIONAL (a fine sculpture is ~ 25 at normal quality; this has no quality roll).
+  Beauty 40 and MarketValue 600, set by the design judge (evidence/design_judge_r2.json): a vanilla small sculpture
+  is base Beauty 50 before quality (Core SculptureSmall, read 2026-11-11), so a rare, unburnable 1x1 trophy sits just
+  under it. PROVISIONAL.
   Ship-buildable: Light affordance, no placeWorker, minifiable. Checked by ship_contributions.py.
 -->
 <Defs>
@@ -39,7 +41,8 @@
       <WorkToBuild>1800</WorkToBuild>
       <Flammability>0</Flammability>
       <Mass>18</Mass>
-      <Beauty>14</Beauty>
+      <Beauty>40</Beauty>
+      <MarketValue>600</MarketValue>
     </statBases>
     <costList>
       <RM_FossilSkeleton>1</RM_FossilSkeleton>

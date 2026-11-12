@@ -3,7 +3,8 @@
      Comp: RM_CompAerosolScreen (Scarlands/Source/RM_AerosolScreen.cs). Burns dielectric gel; half radius without it.
      Gravship-placeable: an ordinary building, nothing excludes it from a ship area.
      Research gate, rings and ring salvage are built (RM_WarscarProjectors.xml, RM_WarscarRings.cs, RM_WarscarSalvage.cs). Not yet: calibration (part 3), glower shielding (part 9).
-     ART OWED: both defs borrow existing art as a placeholder (RM_OldLineTurret_Base, RM_Etchant). -->
+     ART: the screen has its own texture, Things/Building/Security/RM_AerosolScreen (256 px, installed 2026-11-12,
+     judged KEEP, whittle/biome_ship_contributions_1/evidence/art2/verdict_r1.md). ART OWED: the core still borrows RM_Etchant. -->
 <Defs>
   <ThingDef ParentName="ResourceBase">
     <defName>RM_ProjectorCore</defName>
@@ -22,7 +23,7 @@
     <thingClass>Building</thingClass>
     <drawerType>MapMeshAndRealTime</drawerType>
     <graphicData>
-      <texPath>Things/Building/Security/RM_OldLineTurret_Base</texPath>
+      <texPath>Things/Building/Security/RM_AerosolScreen</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(2,2)</drawSize>
       <damageData><rect>(0.2,0.2,0.6,0.6)</rect></damageData>

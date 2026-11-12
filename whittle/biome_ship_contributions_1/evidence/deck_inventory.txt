@@ -77,6 +77,7 @@ shipped biome mods (Biomes.compose.json): 24
   DECK  RM_WindVaporator                   Misc         affordance Light on a deck; placeWorkers deck-safe | cost Steel,ComponentIndustrial
 
 ## Long Shade (LongShade)
+  DECK  RM_LongShadeMast                   Temperature  affordance Light on a deck; placeWorkers deck-safe | cost RM_BlackChitin,Steel
   DECK  RM_LureAwning                      Temperature  affordance Light on a deck; placeWorkers deck-safe | cost WoodLog,stuff:Leathery
   site  RM_WreckedCart                     install      install-only and nothing in src/ hands it to the player (no source names it) | cost WoodLog,Steel
 

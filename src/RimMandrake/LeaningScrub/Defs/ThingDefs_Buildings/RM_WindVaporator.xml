@@ -28,10 +28,9 @@
   vaporator" (an ordinary English coinage) and flagged on the item for the
   naming tier question, not decided here.
 
-  ART: interim textures are VANILLA paths (no magenta, no donor art): the
-  vanilla moisture pump for the vaporator, vanilla beer bottles for the water.
-  The wreck has its own art (RM_WindVaporatorWreck). The vaporator look is a sheet round in the sprint (kickoff
-  §1.3 "Art set"); repoint texPath when that art is installed.
+  ART: the vaporator has its own texture, Things/Building/Misc/RM_WindVaporator/RM_WindVaporator (256 px,
+  installed 2026-11-12, judged KEEP, whittle/biome_ship_contributions_1/evidence/art2/verdict_r1.md). The water still borrows vanilla beer bottles.
+  The wreck has its own art (RM_WindVaporatorWreck).
 
   PROVISIONAL (owner ruling 2026-10-03): 120 W, 4 fog water a day, research
   cost 600, all build costs, item value/mass/nutrition.
@@ -97,7 +96,7 @@
     <category>Building</category>
     <altitudeLayer>Building</altitudeLayer>
     <graphicData>
-      <texPath>Things/Building/Misc/MoisturePump</texPath>
+      <texPath>Things/Building/Misc/RM_WindVaporator/RM_WindVaporator</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <shadowData>
         <volume>(0.58, 0.35, 0.25)</volume>

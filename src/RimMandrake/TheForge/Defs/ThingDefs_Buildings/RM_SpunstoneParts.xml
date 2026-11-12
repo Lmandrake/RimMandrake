@@ -28,9 +28,10 @@
   hull keeps GravshipHull's 420 HP / 300 work / 7 per cell, scaled by floatstone's stuff
   factors (HP x2.2, work x3.5).
   ART: the hull has its own linked atlas (Things/Building/Linked/RM_SpunstoneHull/RM_SpunstoneHull, a 4x4
-  CornerFiller atlas; installed 2026-11-11 by BIOME_SHIP_CONTRIBUTIONS_1, judged KEEP). PLACEHOLDER ART: the door
-  still uses vanilla simple-door textures tinted by floatstone's stuff colour; its own art is owed by
-  RIMMANDRAKE_PAINT_SHIP_GIFTS_OWN_ART.
+  CornerFiller atlas; installed 2026-11-11 by BIOME_SHIP_CONTRIBUTIONS_1, judged KEEP). The door has its own
+  leaf and menu icon (Things/Building/RM_FloatstoneDoor/RM_FloatstoneDoor and _MenuIcon, 256 px, drawn pale for
+  floatstone's stuff colour; installed 2026-11-12, judged KEEP, whittle/biome_ship_contributions_1/evidence/art2/
+  verdict_r1.md and verdict_r2.md).
 -->
 <Defs>
 
@@ -50,7 +51,7 @@
         <enabled>false</enabled>
       </damageData>
     </graphicData>
-    <uiIconPath>Things/Building/Door/DoorSimple_MenuIcon</uiIconPath>
+    <uiIconPath>Things/Building/RM_FloatstoneDoor/RM_FloatstoneDoor_MenuIcon</uiIconPath>
     <stuffCategories Inherit="False">
       <li>RM_SpunstoneWeave</li>
     </stuffCategories>

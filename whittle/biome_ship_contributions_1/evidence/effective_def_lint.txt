@@ -1,25 +1,21 @@
-# Offline load check of the composed Baroque Biomes built from this clone, 2026-11-11 23:19 -0800
+# Offline load check of the composed Baroque Biomes built from this clone, 2026-11-12 00:14 -0800
 
 No game was started. src/RimMandrake/Utils/effective_def_lint.py builds the effective def tree the way the game does
 (combine every active mod's Defs, apply every patch op in load order, resolve ParentName) and runs its load-killer checks.
 Mod list (SteveDesktop has 64 of the FULL list's mods, so FULL cannot be built here): Harmony, Core + all five DLCs,
 mandrake.rm.luminouspigment, mandrake.rm.flowworks (Baroque Biomes' two non-DLC dependencies, deployed copies), and
-mandrake.rm.biomes OVERRIDDEN with the folder biomes_compose.build() made from this clone (never deployed).
+mandrake.rm.biomes OVERRIDDEN with the folder biomes_compose.build() made from this clone just now (never deployed).
 Command: RM_STEAMAPPS=/mnt/d/SteamLibrary/steamapps python3 src/RimMandrake/Utils/effective_def_lint.py <that list> --no-cache 'mandrake.rm.biomes=<composed folder>'
 
-Files read from the composed folder include (probe of the lint's own mod_files()):
-  .../RimMandrake.Biomes/Biomes/*/RM_FossilCase.xml
-  .../RimMandrake.Biomes/Biomes/*/RM_FurnaceHideBank.xml
-  .../RimMandrake.Biomes/Biomes/*/RM_PatternHull.xml
-  .../RimMandrake.Biomes/Biomes/*/RM_TelluroxHexplate.xml
-  .../RimMandrake.Biomes/Biomes/*/RM_HelixCurators.xml
+The composed folder holds the new and changed defs (RM_FossilCase, RM_FurnaceHideBank, RM_PatternHull, RM_TelluroxHexplate,
+RM_LongShadeMast, the Helix trader line, the retuned RM_SekkulaathTank, the 15 re-pointed texPaths); the lint read 2963 files.
 
 ## lint output
-[  15s] mods 10 (not installed 0) | files 2962
-[  41s] content key 1f7478f691e05696 (26s)
-[  58s] defs combined: 17659
-[  61s] patch ops 369 | unsupported 4
-meta: {"modlist": "/tmp/mc_min.xml", "active": 10, "defs": 17641, "patch_ops": 369, "unsupported_ops": 4, "key": "1f7478f691e056960fc2bfec398247e83bfa58353d6aa1d62ade482040b252b8", "when": "2026-11-12T07:18:50Z", "cache": "MISS"}
+[  15s] mods 10 (not installed 0) | files 2963
+[  22s] content key d9ab93ed6ab5a9f0 (8s)
+[  39s] defs combined: 17660
+[  41s] patch ops 369 | unsupported 4
+meta: {"modlist": "/tmp/mc_min.xml", "active": 10, "defs": 17642, "patch_ops": 369, "unsupported_ops": 4, "key": "d9ab93ed6ab5a9f02b70719f14dd86431425dfac59940a9e6752e99160ea68a8", "when": "2026-11-12T08:14:16Z", "cache": "MISS"}
 PASS        biomeworker_rivers      0 findings (0 crash) -- repo C# source, text match on the class body
 PASS        alert_leaf              0 findings (0 crash) -- repo C# source; inheritance only within our files
 PASS        compile_include         4 findings (0 crash) -- every csproj with EnableDefaultCompileItems=false

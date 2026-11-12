@@ -10,8 +10,8 @@
   its seals hold (power), leaks visibly when they fail, runs cask processing, and on a
   gravship's substructure gates the launch (Harmony postfix on Building_GravEngine.CanLaunch).
 
-  Art: PLACEHOLDER — the vanilla shelf texture (Things/Building/Furniture/Shelf, verified
-  against the decompiled 1.6 Shelf def). A bespoke sealed bay is owed.
+  Art: own texture Things/Building/RM_WasteCaskBay/RM_WasteCaskBay (_north/_south 576x384, _east 384x576,
+  installed 2026-11-12, judged KEEP, whittle/biome_ship_contributions_1/evidence/art2/verdict_r1.md), untinted.
 -->
 <Defs>
 
@@ -21,10 +21,9 @@
     <description>A powered, shielded rack for waste casks. While its seals have power, anything stored in it stays contained — breached casks included — and it neither weathers nor leaks. Its readout shows seal integrity, internal heat, stored dose and whether it is safe to fly.\n\nWithout power the seals run down; below half integrity, or with the bay itself shot up, it starts to leak.\n\nBuilt on a gravship's substructure it flies with the ship, but the ship will not launch while the bay is unpowered, damaged or running hot, or while any waste cask is loose on the deck.\n\nSwitch on processing and a tamed sloghog or sootgrazer standing beside the bay will digest the casks, one by one, into bezoars or soot bricks.</description>
     <thingClass>RimMandrake.Wastes.Building_RM_WasteCaskBay</thingClass>
     <graphicData>
-      <texPath>Things/Building/Furniture/Shelf</texPath>
+      <texPath>Things/Building/RM_WasteCaskBay/RM_WasteCaskBay</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
       <drawSize>(4.5,3)</drawSize>
-      <color>(150,160,120)</color>
     </graphicData>
     <size>(3,2)</size>
     <altitudeLayer>Building</altitudeLayer>
