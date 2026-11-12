@@ -467,7 +467,9 @@ function renderChg() {
   const both = id => names[id] && names[id].toLowerCase() !== id.toLowerCase() ? names[id] + " (" + id + ")" : (names[id] || id);
   const human = x => String(x || "").replace(/\b(?:RM|RUT)_\w+/g, both);
   // an old row is no longer a biome on the sheet: name it by what it was to the row that stands
-  const oldRow = r => { const m = /^(merged into|dropped; )\s*((?:RM|RUT)_\w+)/.exec(r.action), base = m && names[m[2]];
+  const succ = {};  // old row -> the row that stands, from any of its change lines ("dropped" alone names none)
+  D.changes.forEach(r => { const m = /^(merged into|dropped; )\s*((?:RM|RUT)_\w+)/.exec(r.action); if (m && names[m[2]]) succ[r.column] = m; });
+  const oldRow = r => { const m = succ[r.column], base = m && names[m[2]];
     if (!base) return r.action.indexOf("not a biome") >= 0 ? "sheet-only bucket (" + r.column + ")" : r.column;
     return base + (m[1] === "merged into" ? "'s sea floor" : "'s frozen twin") + " (" + r.column + ")"; };
   const CELL = {non_mineral_pull: "non-mineral pull", "(all)": "(all cells)", "mineral_homes: sand second": "sand's second biome"};

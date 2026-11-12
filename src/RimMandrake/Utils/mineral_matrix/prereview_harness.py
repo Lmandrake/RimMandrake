@@ -115,6 +115,8 @@ with sync_playwright() as pw:
         txt = pg.inner_text(f"#view-{v}"); bad = [m for m in ["NaN", "undefined", "[object"] if m in txt]
         ok(f"view {v} renders clean", len(txt) > 200 and not bad, (len(txt), bad)); pg.screenshot(path=str(W/f"prereview/desk_{v}.png"))
         if v == "chg":  # 2026-11-11 judge: the tab showed a bare '' and ids a reader cannot place
+            bare = pg.evaluate("() => [...document.querySelectorAll('#chgt tbody tr')].map(t => t.cells[0].textContent).filter(x => !/ \\(\\w+\\)$/.test(x))")
+            ok("changes tab: every old row is named by what it was, not a bare id", not bare, bare)
             ok("changes tab: no bare '' and every surviving biome named by its label", "''" not in txt
                and all(g["label"] in txt for g in BREG if g["biome"] in txt), [g["biome"] for g in BREG if g["biome"] in txt and g["label"] not in txt])
     ok("mineral cards", pg.evaluate("document.querySelectorAll('#mgrid .mcard').length") if False else True)
