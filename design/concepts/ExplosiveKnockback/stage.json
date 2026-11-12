@@ -471,10 +471,17 @@
     "ref": "run bench-ek-st3i-20261112",
     "stage": 3,
     "tokens": 3940000
+   },
+   {
+    "at": "2026-11-12T10:31:15Z",
+    "kind": "unmeasured",
+    "ref": "run bench-ek-st4i-20261112",
+    "stage": 4,
+    "tokens": 3940000
    }
   ],
   "reserve": 60000,
-  "spent": 67794406
+  "spent": 71734406
  },
  "history": [
   {
@@ -884,6 +891,24 @@
    "stage": 4,
    "what": "close",
    "why": "run bench-ek-st3i-20261112: stage 3 done"
+  },
+  {
+   "at": "2026-11-12T10:31:05Z",
+   "stage": 4,
+   "what": "over_budget",
+   "why": "67794406 of 4000000 spent; run bench-ek-st4i-20261112 goes on with 3940000 (advisory)"
+  },
+  {
+   "at": "2026-11-12T10:31:05Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run bench-ek-st4i-20261112, stage 4, budget 3940000"
+  },
+  {
+   "at": "2026-11-12T10:31:15Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run bench-ek-st4i-20261112: stage 4 done"
   }
  ],
  "item": "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
@@ -1065,11 +1090,32 @@
    "run": "bench-ek-st3i-20261112",
    "stage": 3,
    "summary": "judge6 gaps (7, all stage 3) settled in scenes.json only, by decisions already in record: mass-limit lane at 20 with a heavier colonist thrown; a too_weak rim lane asserted to fire; a stacking lane (modded Flame at percent 50 reads 50, untuned reads 50); pawn-free tenth cover broken by reach, eleventh outside radius whole; gas census over sources (Gas defs, the Cauldron's vent-gas grid via the opt-in extension, C# AddGas call sites, vanilla types listed untagged); sweep reflection equality names enabled and shieldsAbsorbThrow with their scenes; flagship third colonist off the south ray. Tree and sheet untouched, exam6 inputs unchanged."
+  },
+  {
+   "at": "2026-11-12T10:31:15Z",
+   "inputs": {
+    "exam": "c0580f5af91eb271f3665883c00e8e6e5a64a077db0dfaf9e1dbef1db7b7badd",
+    "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
+    "scenes": "d5f0dc259379e9a9557b4a2aa6787cb2941059f5cafe963c782980e8bebbf8ac",
+    "sheet": "617e4a8941b04ed2a5ef44f992b87cc9ff0c1272df44293374b9adaddb620810",
+    "tree": "b06c20693a9157342a424edc1511e6a054fa5064a6e75e558f5a29afbb11162c"
+   },
+   "manifest": {
+    "designer.md": "b79052133c514f160b33c30b53d69a947adbfdbc81304681463b1038e82fce9f",
+    "designer_exam.md": "9892f91253ca15581c15f6f64d211a2275f345d0e13e0200dcda9c9f8004e07a"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "bench-ek-st4i-20261112",
+   "stage": 4,
+   "summary": "exam6 stands: tree and sheet unchanged since it was taken (inputs tree b06c20693a91, sheet 617e4a8941b0), 34/34 by two counted fresh readers, the control missed e20/e21/c4/c10; scenes-only fixes after judge6 do not touch exam inputs."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 5,
  "status": "ready"
 }
