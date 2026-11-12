@@ -644,7 +644,10 @@ def o7_gpt_read_fixes(rows):
         miss or "%d fix shapes present; planted probe reported missing" % len(GPT_READ_FIX_SHAPES + GPT_PRERELEASE_FIX_SHAPES))
 
 
-VANILLA_FURNITURE = "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Core/Defs/ThingDefs_Buildings/Buildings_Furniture.xml"
+# The game install this machine has (Utils/game_paths.py: SteveDesktop's is on D:\SteamLibrary, not the C:\ Steam path the
+# row once hard-coded and read UNMEASURED there, 2026-11-12).
+from game_paths import GAME_DATA  # noqa: E402
+VANILLA_FURNITURE = os.path.join(GAME_DATA, "Core", "Defs", "ThingDefs_Buildings", "Buildings_Furniture.xml")
 
 
 def lamp_register_problems(ours, vanilla):
@@ -1121,7 +1124,11 @@ def lane_a_live(B, rows, log):
         {"ends": len(tips0), "rode": len(rode), "first": tips0[:2], "then": tips1[:2], "meaning": "PASS = every live floor end's spark point moves with its tail"})
     row(rows, "B3_whip_live_ends", "PASS" if w_on > 0 and m0.get("whipTails", 0) > 0 and m1.get("whipDraws") == 0 and m1b.get("whipDraws", 0) > 0 else "FAIL",
         "MOD", {"whipDraws_on": w_on, "whipTails": m0.get("whipTails"), "liveFloorEnds": m0.get("liveFloorEnds"),
-                "deadFloorEnds": m0.get("deadFloorEnds"), "whipDraws_off": m1.get("whipDraws"), "whipDraws_on_again": m1b.get("whipDraws")})
+                "deadFloorEnds": m0.get("deadFloorEnds"), "whipDraws_off": m1.get("whipDraws"), "whipDraws_on_again": m1b.get("whipDraws"),
+                "switch": "whip"})
+    # SW3/SW4 (GSS dense proofs 2026-11-12): one key flipped each, whip left ON; the control is m1b (every switch on)
+    B.probe("deselect")
+    sw_glow_rows(B, rows, m1b)
     # B4 downed-wire schedule: real time, histogram of events (counts while paused; flecks only while time runs)
     B.probe("motionreset")
     hist, t0 = {}, time.time()
@@ -1236,6 +1243,8 @@ def lane_a_live(B, rows, log):
         {"net1": [h1.get("selectedNet"), h1.get("highlightCords"), per1.get(str(h1.get("selectedNet")))],
          "net2": [h2.get("selectedNet"), h2.get("highlightCords"), per2.get(str(h2.get("selectedNet")))],
          "stubRings": [h1.get("highlightStubs"), h2.get("highlightStubs")], "deselected": h3.get("highlightCords")})
+    # SW1 (GSS dense proofs 2026-11-12): highlight off, the same net 1 selected; control h1 (highlight on)
+    sw_highlight_row(B, rows, h1, X0 + 5, Z0 + 3)
     # B8 LOD by zoom
     cam = B.call("rimworld/get_camera_state")
     # HARNESS (proof_all runs 1-2, 2026-10-05): root 58 is NOT the far zoom on every camera setup -- with the tier's camera
@@ -1247,6 +1256,8 @@ def lane_a_live(B, rows, log):
     f1 = motion(B, 3)
     while f1.get("zoom") != "Furthest" and time.time() - t_z < 5.0:
         f1 = motion(B, 2)
+    # SW2 (GSS dense proofs 2026-11-12): lod off at the same far zoom; control f1 (lod on). Read before the shot moves the camera.
+    sw_lod_row(B, rows, f1)
     shot_far = shot(B, "p1b_04_far_zoom_lod", (SITE[0] - 10, SITE[1] - 10, SITE[2] + 20, SITE[3] + 20), log, pad=0)
     # LEARNED run 1b-1: frame_cell_rect moves the camera but keeps a Furthest zoom; set the root back explicitly
     B.call("rimworld/set_camera_zoom", rootSize=cam.get("rootSize") or 24)
@@ -1455,6 +1466,155 @@ def slide_under_live(B, rows, log):
                                 "hashOff": off.get("hash"), "hashOn": on.get("hash"), "tips": side.get("tips")})
 
 
+# ---- SW rows (GSS dense proofs 2026-11-12, plan D:\ClaudeWork\rimmandrake\conductor\proofs_20261112\GSS\plan.md) ----
+# Each row flips ONE settings key, reads the game, restores the key and reads the restore back. The control is a read
+# the block already took with every switch on (h1, f1, m1b, the ON arm), so each row can fail by itself. A control that
+# saw nothing, or a readback that did not take, is UNMEASURED/HARNESS, never PASS. The detail names the key ("switch"),
+# which is how mod_completion credits the switch.
+
+def sw_set(B, key, val):
+    """set:key=val; the game's own readback of the field ("True"/"False"), or None when the probe refused."""
+    r = B.probe("set:%s=%s" % (key, val))
+    return r.get("value") if r.get("success") else None
+
+
+def sw_restore(B, rows, rid, key, val):
+    """Put the key back; a restore that does not read back is a HARNESS row (every later row would run on it)."""
+    got = sw_set(B, key, val)
+    if got != str(val):
+        row(rows, rid + "_restore", "FAIL", "HARNESS", {"switch": key, "want": str(val), "readback": got})
+    return got == str(val)
+
+
+def sw_row(rows, rid, ok, control_ok, readback_ok, d):
+    if not control_ok or not readback_ok:
+        row(rows, rid, "UNMEASURED", "HARNESS", dict(d, why="control saw nothing" if not control_ok else "setting did not read back"))
+    else:
+        row(rows, rid, "PASS" if ok else "FAIL", "MOD", d)
+
+
+def sw_glow_rows(B, rows, m_on):
+    """SW3 breakReadout off: no spark glow AND no whip. SW4 sparksOnlyOverlay on, overlay shut: no glow, but the whip
+    still draws (its gate is whip && breakReadout), so SW4 cannot pass by the readout being dead as a whole."""
+    ctl = m_on.get("glowDraws", 0) > 0 and m_on.get("whipDraws", 0) > 0
+    rb = sw_set(B, "breakReadout", False)
+    off = motion(B)
+    back = sw_restore(B, rows, "SW3_break_readout_off_no_glow_no_whip", "breakReadout", True)
+    again = motion(B)
+    sw_row(rows, "SW3_break_readout_off_no_glow_no_whip",
+           off.get("glowDraws") == 0 and off.get("whipDraws") == 0 and again.get("glowDraws", 0) > 0, ctl, rb == "False" and back,
+           {"switch": "breakReadout", "control_glow_whip": [m_on.get("glowDraws"), m_on.get("whipDraws")],
+            "off_glow_whip": [off.get("glowDraws"), off.get("whipDraws")], "restored_glow": again.get("glowDraws"),
+            "meaning": "PASS = readout off draws no spark and no whip; on again, sparks return"})
+    rb = sw_set(B, "sparksOnlyOverlay", True)
+    only = motion(B)
+    back = sw_restore(B, rows, "SW4_sparks_only_overlay_shut_no_glow", "sparksOnlyOverlay", False)
+    again = motion(B)
+    sw_row(rows, "SW4_sparks_only_overlay_shut_no_glow",
+           only.get("glowDraws") == 0 and only.get("whipDraws", 0) > 0 and again.get("glowDraws", 0) > 0, ctl, rb == "True" and back,
+           {"switch": "sparksOnlyOverlay", "control_glow_whip": [m_on.get("glowDraws"), m_on.get("whipDraws")],
+            "only_glow_whip": [only.get("glowDraws"), only.get("whipDraws")], "restored_glow": again.get("glowDraws"),
+            "untested": "the overlay-OPEN half (no bridge tool opens the power overlay)",
+            "meaning": "PASS = with the overlay shut no spark draws, the whip still does; option off, sparks return"})
+
+
+def sw_highlight_row(B, rows, h_on, x, z):
+    """SW1 highlight off: the same cell selected, the same net reported, and no ring drawn. Control h_on (highlight on)."""
+    ctl = h_on.get("highlightCords", 0) > 0 and h_on.get("selectedNet") is not None
+    rb = sw_set(B, "highlight", False)
+    sel = B.probe("select:%d,%d" % (x, z))
+    off = motion(B, 3)
+    B.probe("deselect")
+    back = sw_restore(B, rows, "SW1_highlight_off_draws_no_ring", "highlight", True)
+    sw_row(rows, "SW1_highlight_off_draws_no_ring",
+           off.get("highlightCords") == 0 and off.get("selectedNet") == h_on.get("selectedNet"),
+           ctl and bool(sel.get("success")), rb == "False" and back,
+           {"switch": "highlight", "control": [h_on.get("selectedNet"), h_on.get("highlightCords")],
+            "off": [off.get("selectedNet"), off.get("highlightCords")],
+            "meaning": "PASS = the same net is selected and no cord is ringed"})
+
+
+def sw_lod_row(B, rows, f_on):
+    """SW2 lod off at the far zoom: the full mesh draws and no LOD mesh does; on again, LOD returns. Control f_on.
+    FarNow is gated on the setting (SectionLayer_RM_MessyCords.FarNow), so with lod off it reads false at the same zoom.
+    (mod_completion skips keys under 4 letters, so this row cannot credit 'lod'; lesson filed 2026-11-12.)"""
+    ctl = bool(f_on.get("lodFarNow")) and f_on.get("lodEnabled", 0) > 0 and f_on.get("fullEnabled") == 0
+    rb = sw_set(B, "lod", False)
+    off = motion(B, 3)
+    back = sw_restore(B, rows, "SW2_lod_off_far_zoom_draws_full", "lod", True)
+    again = motion(B, 3)
+    sw_row(rows, "SW2_lod_off_far_zoom_draws_full",
+           off.get("zoom") == f_on.get("zoom") and not off.get("lodFarNow") and off.get("lodEnabled") == 0 and off.get("fullEnabled", 0) > 0 and
+           again.get("lodEnabled", 0) > 0 and again.get("fullEnabled") == 0, ctl, rb == "False" and back,
+           {"switch": "lod", "control": {k: f_on.get(k) for k in ("zoom", "lodFarNow", "lodEnabled", "fullEnabled")},
+            "off": {k: off.get(k) for k in ("zoom", "lodFarNow", "lodEnabled", "fullEnabled")},
+            "restored": {k: again.get(k) for k in ("lodEnabled", "fullEnabled")},
+            "meaning": "PASS = far zoom with lod off draws the full cord, none of the LOD cord; on again, LOD only"})
+
+
+def _sw_hookup_arm(B, x0, z0):
+    """One ordinary conduit line and a lamp in the pocket; the census hookup counters before and after, then cleared."""
+    before = B.probe("census")
+    try:
+        c = B.call("jawa/build_batch", ops=";".join("PowerConduit:%d,%d" % (x0 + i, z0) for i in range(5)), faction="player", wipeExisting=False)
+        lamp = B.call("jawa/build_batch", ops="StandingLamp:%d,%d,0" % (x0 + 2, z0 + 3), faction="player", wipeExisting=False)
+        frame_fit(B, POCKET_RECT)
+        B.ticks(3)
+        after = B.probe("census")
+    finally:
+        B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % POCKET_RECT, categories="Building")
+    built = bool(c.get("survived")) and bool(lamp.get("survived")) and after.get("hookupWiresSuppressed") is not None
+    return built, {k: int(after.get(k) or 0) - int(before.get(k) or 0) for k in ("hookupWiresSuppressed", "hookupCablesPrinted")}
+
+
+def sw_hookup_row(B, rows):
+    """SW5 hideHookupWires off: the same pocket recipe moves neither hookup counter (vanilla's wire prints). The ON arm,
+    run first on the same recipe, must have suppressed at least one hookup, or the OFF arm exercised nothing."""
+    x0, z0 = POCKET_RECT[0], POCKET_RECT[1]
+    built_on, on = _sw_hookup_arm(B, x0, z0)
+    rb = sw_set(B, "hideHookupWires", False)
+    try:
+        built_off, off = _sw_hookup_arm(B, x0, z0)
+    finally:
+        back = sw_restore(B, rows, "SW5_hide_hookup_off_leaves_vanilla_wire", "hideHookupWires", True)
+    sw_row(rows, "SW5_hide_hookup_off_leaves_vanilla_wire",
+           off["hookupWiresSuppressed"] == 0 and off["hookupCablesPrinted"] == 0,
+           built_on and built_off and on["hookupWiresSuppressed"] >= 1, rb == "False" and back,
+           {"switch": "hideHookupWires", "on_arm": on, "off_arm": off,
+            "meaning": "PASS = with the option off the mod neither hides nor redraws a conduit hookup"})
+
+
+def _sw_dump_opt(B, name):
+    r = B.probe("worlddump:" + name)
+    try:
+        with open(r.get("path") or "", encoding="utf-8") as f:
+            opt = json.load(f).get("opt") or {}
+    except (OSError, ValueError):
+        return None, r.get("path")
+    try:
+        os.remove(r["path"])           # a scratch dump: leave GssWorlds as it was
+    except OSError:
+        pass
+    return opt, r.get("path")
+
+
+def sw_needless_row(B, rows):
+    """SW6 needlessLoops off reaches the cord builder's options (opt.needless). The drawing effect (no spur) is the
+    offline SelfTest's; this row proves the live switch is the one the builder reads. Control: the dump with it on."""
+    on, p_on = _sw_dump_opt(B, "gss_sw6_on")
+    rb = sw_set(B, "needlessLoops", False)
+    try:
+        off, p_off = _sw_dump_opt(B, "gss_sw6_off")
+    finally:
+        back = sw_restore(B, rows, "SW6_needless_loops_off_reaches_builder", "needlessLoops", True)
+    sw_row(rows, "SW6_needless_loops_off_reaches_builder",
+           off is not None and off.get("needless") is False,
+           on is not None and on.get("needless") is True, rb == "False" and back,
+           {"switch": "needlessLoops", "on": (on or {}).get("needless"), "off": (off or {}).get("needless"), "dumps": [p_on, p_off],
+            "untested": "the spur's absence in the drawing (offline SelfTest)",
+            "meaning": "PASS = the builder's options read needless false with the switch off, true with it on"})
+
+
 def hidden_conduit_hookup_live(B, rows):
     """GSS_HOOKUP_CABLE_PROBE_HIDDEN_CONDUIT, GPT pre-release B13 (PLAUSIBLE): a device hooked to a HIDDEN conduit is classed
     PatchCable, and the hookup patch then PRINTS the look's thick cable to it, if vanilla reaches PrintWirePieceConnecting for
@@ -1483,6 +1643,8 @@ def hidden_conduit_hookup_live(B, rows):
     else:
         moved = int(after["hookupCablesPrinted"]) - int(before.get("hookupCablesPrinted") or 0)
         row(rows, "B13_hidden_conduit_hookup_not_drawn", "PASS" if moved == 0 else "FAIL", "MOD", dict(d, moved=moved))
+    sw_hookup_row(B, rows)
+    sw_needless_row(B, rows)
     shader_sway_far_zoom_live(B, rows)
 
 

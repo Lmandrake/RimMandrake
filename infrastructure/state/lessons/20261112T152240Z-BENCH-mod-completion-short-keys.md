@@ -1,0 +1,3 @@
+mod_completion.py credits a settings switch only when evidence names its key; keys shorter than 4 characters are skipped outright, so GSS 'lod' can never be credited however many live rows flip it (SW2_lod_off_far_zoom_draws_full, B8). Row ids name a key only in snake form; a camelCase key inside an id with underscores ('B3_whip_live_ends') does not credit 'whip' unless the row detail carries "switch": "whip". Fix belongs in mod_completion (an explicit switch field, or an allow-list for short keys), not in more rows. Found 2026-11-12 GSS dense proofs.
+item: NONE
+home: src/RimMandrake/Utils/mod_completion.py

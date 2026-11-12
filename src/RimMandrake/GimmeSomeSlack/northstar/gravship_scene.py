@@ -2,11 +2,15 @@
 """gravship_scene.py -- does a span strung on a gravship stay up through the flight, and do its cords come with it? (sc_gravship,
 keepWiresOnGravship; a live launch on a scratch quicktest, the origin map is destroyed.)
 
-    python.exe src/RimMandrake/GimmeSomeSlack/northstar/gravship_scene.py on|off [--shot NAME]
+    python.exe src/RimMandrake/GimmeSomeSlack/northstar/gravship_scene.py on|off [--shot NAME] [--out RESULT.json]
 
 Flies bridgetools/prove_gravship.py's own ship (its recipe knows every engine gate), with two masts, a floor run and a lamp staged on
 the pad, and one mast left on the ground strung to the ship. Reads, after landing: the aboard span up (on) or taken down (off), the
 ground span gone either way, the cords laid on the new map within the new map's nets. Exit 0/1/2: PASS/FAIL/UNMEASURED.
+--out writes the verdict as one row of a result JSON (script/started/mode/rows, the shape mod_completion.py folds):
+GS1_keep_wires_on_gravship_on_aboard_span_flies or GS1_keep_wires_on_gravship_off_aboard_span_taken_down, class MOD when
+measured, HARNESS when the scene could not ask (GSS_SWITCHES_PROVE_LAST_FOUR_STANDING: the switch's BEHAVIOUR row; M21e/f
+in validation_aerial.py read only the setting).
 """
 import argparse
 import json
@@ -22,13 +26,34 @@ sys.path.insert(0, os.path.join(HERE, "..", "northstar_matrix"))
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 sys.path.insert(0, os.path.dirname(PROVE))
 SHOTS = r"D:\ClaudeWork\rimmandrake\ralph_gss\shots"
+ROW_IDS = {"on": "GS1_keep_wires_on_gravship_on_aboard_span_flies", "off": "GS1_keep_wires_on_gravship_off_aboard_span_taken_down"}
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("mode", choices=("on", "off"))
     ap.add_argument("--shot", default=None)
+    ap.add_argument("--out", default=None, help="write the verdict row as a result JSON here")
     a = ap.parse_args()
+    started = time.strftime("%Y-%m-%dT%H:%M:%S")
+    det = {"setting": "keepWiresOnGravship", "value": a.mode == "on"}
+    try:
+        rc = scene(a, det)
+    except Exception as e:   # noqa: BLE001  (a crash is a verdict too: written, then raised)
+        det["error"] = "%s: %s" % (type(e).__name__, e)
+        rc = None
+        raise
+    finally:
+        if a.out:
+            st, cl = {0: ("PASS", "MOD"), 1: ("FAIL", "MOD")}.get(rc, ("UNMEASURED", "HARNESS"))
+            with open(a.out, "w", encoding="utf-8") as f:
+                json.dump({"mod": "GimmeSomeSlack", "script": "gravship_scene.py", "mode": "live", "started": started,
+                           "rows": [{"id": ROW_IDS[a.mode], "status": st, "class": cl, "detail": det}]}, f, indent=1)
+            print("wrote", a.out)
+    return rc
+
+
+def scene(a, det):
     src = open(PROVE, encoding="utf-8").read()
     head, rest = src.split("# -- 5. launch", 1)
     g = {"__file__": PROVE, "__name__": "prove_gravship_scene"}
@@ -54,6 +79,7 @@ def main():
         ids = [apos.get(c) for c in aboard + [ground]]
         if None in ids:
             print("UNMEASURED: masts did not build: %s %s" % (ids, sorted(apos)))
+            det["unmeasured"] = "masts did not build"
             return 2
         print("links", B.ap("link:%d,%d" % (ids[0], ids[1])).get("verdict"), B.ap("link:%d,%d" % (ids[0], ids[2])).get("verdict"))
         B.call("rimworld/set_god_mode", enabled=False)
@@ -76,14 +102,17 @@ def main():
         # were up before the launch (Codex review 2026-11-09)
         measured = bool(after.get("success")) and bool(gr.get("success")) and before.get("spansUp") == 2 and len(anchors) >= 2
         if not measured:
-            print("UNMEASURED: census failed or the spans were not up before launch: %s" % json.dumps(
-                {"before": before.get("spansUp"), "after": after.get("success"), "graph": gr.get("success"), "anchors": len(anchors)}))
+            why = {"before": before.get("spansUp"), "after": after.get("success"), "graph": gr.get("success"), "anchors": len(anchors)}
+            print("UNMEASURED: census failed or the spans were not up before launch: %s" % json.dumps(why))
+            det["unmeasured"] = why
             return 2
         ok = (up_aboard == (a.mode == "on")) and not to_ground and (gr.get("cordsAcrossNets") or 0) == 0 and (gr.get("verticesInUnwalkable") or 0) == 0
         if a.mode == "on":
             ok = ok and (gr.get("conduitCells") or 0) >= 7 and (gr.get("cordEdges") or 0) >= 1
-        print(json.dumps({"mode": a.mode, "before": {"spansUp": before.get("spansUp")}, "after": {"spansUp": after.get("spansUp"), "spansCut": after.get("spansCut")},
-                          "aboardSpanUp": up_aboard, "groundLinkKept": to_ground, "cords": lay, "verdict": "PASS" if ok else "FAIL"}))
+        det.update({"mode": a.mode, "before": {"spansUp": before.get("spansUp")}, "after": {"spansUp": after.get("spansUp"), "spansCut": after.get("spansCut")},
+                    "aboardSpanUp": up_aboard, "groundLinkKept": to_ground, "cords": lay, "links": links, "ids": ids,
+                    "verdict": "PASS" if ok else "FAIL"})
+        print(json.dumps(det))
         if a.shot:
             q = next((p for p in anchors if p["id"] == ids[0]), None)
             if q:
