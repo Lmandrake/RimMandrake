@@ -2241,6 +2241,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             PitDrawHoldChecks.Run(Case);       // PIT_BOAR_FIX_SUNBATHES_ON_THE_WALL: the sink holds the DRAWN (tweened) centre above the near lip (PitDrawHoldChecks.cs)
             LadderClimbSpanChecks.Run(Case);   // RIMMANDRAKE_FIX_CLIMB_SLOW_OUTLASTS_LADDER: the climb is slow only across the ladder's art (LadderClimbSpanChecks.cs)
             SpikeDrawChecks.Run(Case);         // PIT_SPIKES_FIX_OVER_WALL_AND_SUBMERGE: stakes on the floor, never the walls; gone under 1 m (SpikeDrawChecks.cs)
+            SubmergeDrawChecks.Run(Case);      // RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL: liquid covers ladders, ramp, stakes by level
             CoverFloorSurveyChecks.Run(Case);   // PIT_COVER_WIDEN_PLANKS_BEAR_BOOTS + DRILL_PLACEMENT_ENFORCE_NO_DRY_HOLES (owner cards 2026-10-22)
             DrawbridgeChecks.Run(Case);        // DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS: leaves, raise state, forced repath, never Collapse (DrawbridgeChecks.cs)
             LineCrossingChecks.Run(Case);      // PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE: line tag + P2 crossing table, style never changes permission (LineCrossingChecks.cs)

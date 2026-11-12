@@ -208,7 +208,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string apply = Between(s, "private static void ApplyChangedSettings()", "\n        }");
                 foreach (string f in new[] { "pondBedHollowEnabled", "pitRelativeClimbEnabled", "pitClimbAbilityMultiplier", "pitRampsEnabled",
                     "pitRampMaxSpan", "superdeepRoomsEnabled", "excavationWallFacesEnabled", "excavationWallMaterialEnabled",
-                    "pitOutlineEnabled", "pitScorchEnabled", "liquidLooksEnabled", "liquidSeeThroughEnabled" })
+                    "pitOutlineEnabled", "pitScorchEnabled", "liquidLooksEnabled", "liquidSeeThroughEnabled", "pitSubmergeCutEnabled" })
                 {
                     Assert(apply.Contains("!= " + f) && apply.Contains(" = " + f + ";"), "can-fail: compared and recorded: " + f);
                 }

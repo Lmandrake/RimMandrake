@@ -18,7 +18,7 @@ namespace RimMandrake.FlowWorks
 	/// ART: the four-facing earth-and-timber ramp (Things/Building/FlowWorks/Excavation/RM_PitRamp, Graphic_Multi), installed
 	/// through the art ledger at 04657a349b.
 	/// </summary>
-	public class RM_Building_PitRamp : Building
+	public partial class RM_Building_PitRamp : Building
 	{
 		public override void SpawnSetup(Map map, bool respawningAfterLoad)
 		{

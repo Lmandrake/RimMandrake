@@ -527,7 +527,7 @@ namespace RimMandrake.FlowWorks
 	}
 
 	/// <summary>Draws the raised art while raised (Building_PowerSwitch's shape).</summary>
-	public class RM_Building_Ladder : Building
+	public partial class RM_Building_Ladder : Building
 	{
 		// V2_LADDER_ROWS_DIAGNOSE_STAGE_FRIGHT: a ladder is a structural edge in the cliff masks and the pocket grid; the climb
 		// generation tells the masks. The masks re-check the generation only on a vanilla cell delta. Building.SpawnSetup and

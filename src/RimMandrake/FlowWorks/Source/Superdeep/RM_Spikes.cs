@@ -240,11 +240,28 @@ namespace RimMandrake.FlowWorks
 				base.DrawAt(drawLoc, flip);
 				return;
 			}
-			float alpha = RM_SpikeDrawMath.SubmergedAlpha(eng.FillAt(c));
-			int a = Mathf.RoundToInt(alpha * AlphaSteps);
-			if (a <= 0)
+			// RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL: each stake is cut from its foot at the liquid's TRUE level (whole notch +
+			// part-notch, quarter steps: RM_SubmergeDraw.NoteAt; RM_SubmergeMath.StakeShare, still gone at 1 m), so the liquid's
+			// own terrain shows over the drowned part; off: the old fade by whole notches.
+			bool cutMode = RM_SubmergeDraw.On;
+			int fill = eng.FillAt(c);
+			int a = AlphaSteps, step = 0;
+			if (cutMode)
 			{
-				return;
+				float level = RM_SubmergeMath.NoteLevel(RM_SubmergeDraw.NoteAt(eng, c));
+				step = RM_SubmergeMath.Step(RM_SubmergeMath.StakeShare(level));
+				if (step >= RM_SubmergeMath.Steps)
+				{
+					return;
+				}
+			}
+			else
+			{
+				a = Mathf.RoundToInt(RM_SpikeDrawMath.SubmergedAlpha(fill) * AlphaSteps);
+				if (a <= 0)
+				{
+					return;
+				}
 			}
 			Map map = Map;
 			int north = SectionLayer_RMExcavationWalls.NeighbourLevel(map, eng, c + IntVec3.North, d);
@@ -253,10 +270,10 @@ namespace RimMandrake.FlowWorks
 			int east = SectionLayer_RMExcavationWalls.NeighbourLevel(map, eng, c + IntVec3.East, d);
 			bool faces = RimMandrakeFlowWorksSettings.excavationWallFacesEnabled, outline = RimMandrakeFlowWorksSettings.pitOutlineEnabled;
 			int key = Key(d) | Key(d - north) << 4 | Key(d - south) << 8 | Key(d - west) << 12 | Key(d - east) << 16
-				| (faces ? 1 << 20 : 0) | (outline ? 1 << 21 : 0);
+				| (faces ? 1 << 20 : 0) | (outline ? 1 << 21 : 0) | step << 22;
 			if (mesh == null || key != meshKey)
 			{
-				Rebuild(d, north, south, west, east, faces, outline);
+				Rebuild(d, north, south, west, east, faces, outline, (float)step / RM_SubmergeMath.Steps);
 				meshKey = key;
 			}
 			if (mesh == null)
@@ -270,7 +287,8 @@ namespace RimMandrake.FlowWorks
 		/// <summary>A drop as a 4-bit key field (negative = a neighbour deeper than us: no wall, same as 0).</summary>
 		private static int Key(int v) => v <= 0 ? 0 : (v > 15 ? 15 : v);
 
-		private void Rebuild(int d, int north, int south, int west, int east, bool faces, bool outline)
+		/// <param name="under">the share of every stake, from its foot, under the liquid (cut away; 0 dry or fade mode)</param>
+		private void Rebuild(int d, int north, int south, int west, int east, bool faces, bool outline, float under)
 		{
 			RM_SpikeDrawMath.FloorRect(d, north, south, west, east, faces, outline, out float x0, out float z0, out float x1, out float z1);
 			int n = RM_SpikeDrawMath.Layout(variant, thingIDNumber, x0, z0, x1, z1, Quads);
@@ -291,6 +309,12 @@ namespace RimMandrake.FlowWorks
 				int o = i * RM_SpikeDrawMath.Out;
 				float x = Quads[o], z = Quads[o + 1], w = Quads[o + 2], h = Quads[o + 3];
 				float u0 = Quads[o + 4], v0 = Quads[o + 5], u1 = Quads[o + 6], v1 = Quads[o + 7];
+				if (under > 0f)
+				{
+					z += h * under;
+					h *= 1f - under;
+					v0 += (v1 - v0) * under;
+				}
 				int q = i * 4;
 				// one mesh draws its triangles in order, so Layout's far-first sort puts nearer stakes on top
 				verts.Add(new Vector3(x, 0f, z));

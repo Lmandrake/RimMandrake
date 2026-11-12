@@ -630,7 +630,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 // PathFinderMapData.Notify_BuildingChanged turns into Notify_CellDelta(OccupiedRect). The masks' incremental pass
                 // then sees the bumped climb generation in KeyFor and re-derives in full. Pinned so a refactor cannot break it.
                 string ramp = Src("Superdeep", "RM_PitRamp.cs");
-                Assert(ramp.Contains("public class RM_Building_PitRamp : Building"), "the ramp is a Building (vanilla pushes its cell delta)");
+                Assert(ramp.Contains("public partial class RM_Building_PitRamp : Building"), "the ramp is a Building (vanilla pushes its cell delta)");
                 Assert(ramp.Contains("base.SpawnSetup(map, respawningAfterLoad);") && ramp.Contains("base.DeSpawn(mode);"),
                     "the ramp keeps vanilla's spawn and despawn");
                 Assert(ramp.Split(new[] { "BumpClimbGeneration(RM_MapComponent_Excavation.Gen" }, StringSplitOptions.None).Length - 1 >= 2, "spawn and despawn move the generation");

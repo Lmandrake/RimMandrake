@@ -345,6 +345,7 @@ namespace RimMandrake.FlowWorks
         public static bool liquidBubblesEnabled = true;            // acid, slime and boiling liquid bubble (item 7)
         public static float liquidBubbleDensity = 1f;              // x every liquid's own bubble rate
         public static bool liquidSeeThroughEnabled = true;         // a cut's floor/walls show through clear liquid (item 10)
+        public static bool pitSubmergeCutEnabled = true;           // liquid in a cut covers the ladders, ramp and spikes in it up to its level
         public static bool pitWalkNormalEnabled = true;            // walking along a pit floor is normal; only climbing is slow (item 9)
         // Liquids that may fill a cut (item 4): a FluidDef named here is refused by every fill (pump, drill, debug,
         // review map). Default empty = every liquid on. Labels come from the FluidDefs, so a new liquid appears itself.
@@ -693,6 +694,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref liquidBubblesEnabled, "liquidBubblesEnabled", true);
             Scribe_Values.Look(ref liquidBubbleDensity, "liquidBubbleDensity", 1f);
             Scribe_Values.Look(ref liquidSeeThroughEnabled, "liquidSeeThroughEnabled", true);
+            Scribe_Values.Look(ref pitSubmergeCutEnabled, "pitSubmergeCutEnabled", true);
             Scribe_Values.Look(ref pitWalkNormalEnabled, "pitWalkNormalEnabled", true);
             Scribe_Collections.Look(ref disabledFluids, "disabledFluids", LookMode.Value);
             if (Scribe.mode == LoadSaveMode.PostLoadInit && disabledFluids == null)
@@ -1846,7 +1848,7 @@ namespace RimMandrake.FlowWorks
 
             }
 
-            if (Section(list, "How cuts and liquids look", new[] { "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled" }))
+            if (Section(list, "How cuts and liquids look", new[] { "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "pitSubmergeCutEnabled" }))
             {
             list.CheckboxLabeled("Pawns sink into dug channels and rise out of them", ref pitDepthDrawOffsetEnabled,
                 "A pawn standing in a dug square is drawn lower the deeper the square, and rises smoothly as it "
@@ -1934,6 +1936,10 @@ namespace RimMandrake.FlowWorks
                 "Water and other clear liquids standing in a cut let its floor and drowned walls show through, "
               + "fainter the deeper it is. Tar, oil, slime and blood stay opaque. Drawing only. Off: the liquid "
               + "surface hides the cut below it.");
+            list.CheckboxLabeled("Liquid in a cut covers the ladders, ramp and spikes standing in it", ref pitSubmergeCutEnabled,
+                "A ladder, pit ramp or spike stakes in a cut that holds liquid show only the part above its surface: "
+              + "the waterline on a ladder is the waterline on the wall it hangs on. Every liquid. Drawing only. Off: "
+              + "they draw whole over the liquid and the spikes fade out instead.");
             }
 
             if (Section(list, "Bottles, buckets, barrels: fill, use, wash", new[] { "bottleLoopEnabled", "bottleDirtyStageEnabled", "bottleRevertEnabled" }))
@@ -2118,7 +2124,7 @@ namespace RimMandrake.FlowWorks
         private static bool appliedKnown;
         private static float appliedRoomMin = -1f;
         private static bool appliedHollow, appliedClimb, appliedRamps, appliedRooms, appliedWalls, appliedMat, appliedOutline,
-            appliedScorch, appliedLooks, appliedSee, appliedPortable;
+            appliedScorch, appliedLooks, appliedSee, appliedPortable, appliedSubmerge;
         private static float appliedClimbMul;
         private static int appliedRampSpan, appliedPortableReach;
 
@@ -2150,6 +2156,14 @@ namespace RimMandrake.FlowWorks
                 {
                     SectionLayer_RMExcavationWalls.RedrawAll();
                 }
+                if (appliedSubmerge != pitSubmergeCutEnabled && Current.Game != null)
+                {
+                    foreach (Map m in Find.Maps)
+                    {
+                        m.mapDrawer.WholeMapChanged(RimWorld.MapMeshFlagDefOf.Buildings);
+                        m.mapDrawer.WholeMapChanged(RimWorld.MapMeshFlagDefOf.Things);
+                    }
+                }
                 if (appliedLooks != liquidLooksEnabled)
                 {
                     if (liquidLooksEnabled) RM_LiquidLooks.ApplyAll(); else RM_LiquidLooks.RevertAll();
@@ -2171,6 +2185,7 @@ namespace RimMandrake.FlowWorks
             appliedScorch = pitScorchEnabled;
             appliedLooks = liquidLooksEnabled;
             appliedSee = liquidSeeThroughEnabled;
+            appliedSubmerge = pitSubmergeCutEnabled;
         }
     }
 

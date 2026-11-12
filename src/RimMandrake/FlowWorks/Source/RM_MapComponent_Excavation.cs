@@ -51,6 +51,9 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>F. Always clamped to 0 &lt;= F &lt;= D.</summary>
 		private byte[] fillGrid;
+		/// <summary>RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL: cell index -> the fill a ladder/ramp on it was last printed at
+		/// (RM_SubmergeDraw). Drawing state, not saved: a load re-prints every section.</summary>
+		internal readonly Dictionary<int, byte> submergeDrawn = new Dictionary<int, byte>();
 
 		/// <summary>WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES (owner 2026-10-17, ruled exactly level by card): the decilitres below
 		/// one whole notch, per cell (0..U-1). A dug cell's water is W = F·U + part; F stays the whole-notch view every older
@@ -3723,6 +3726,10 @@ namespace RimMandrake.FlowWorks
 			if (depthGrid[i] == 0)
 			{
 				return true;   // the engine draws only its own dug squares; a lake square is RM_LiquidStock.StagePond's
+			}
+			if (submergeDrawn.Count != 0)
+			{
+				RM_SubmergeDraw.FillPictured(this, map, c, i);   // a ladder/ramp printed at another fill re-meshes (submerge cut)
 			}
 			// LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD (unified depth spec §4.1): ONE rule for every dug square, canal or pit, exact-level
 			// water or not: the look is chosen by the TRUE metres of water standing in it (under 25 cm, 0.5, 1, 1.5, 2 m and

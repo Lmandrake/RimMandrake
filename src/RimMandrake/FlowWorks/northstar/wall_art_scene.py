@@ -1,6 +1,6 @@
 """EXCAVATION_WALL_ART_1 live scene: what a player sees of the pit wall faces, spikes and ladder, on one quicktest map.
 
-    python.exe wall_art_scene.py <repo_win_path> <out_win_dir> [stage|dig|shots|things|all|save:<name>]
+    python.exe wall_art_scene.py <repo_win_path> <out_win_dir> [stage|dig|shots|things|submerge|all|save:<name>]
 
 Row of 3x3 pits from (92,112), 2 dry squares between: D1 D2 D3 D4 dry (flowworks_excavation_drive, the engine's own dig),
 D4 with 1 m of water (fill 2 notches: the face shortens, the water covers its foot), D4 spiked, D4 laddered (lowered on the
@@ -9,6 +9,11 @@ need a 2 m drop), and a 3x3 given the player's own "Dig to 4 m" order for the co
 without one is refused by design, "Needs a shovel"). Spikes and ladders go through rimworld/apply_architect_designator, so
 the placeworkers decide, as for a player (god mode on only so the blueprint completes at once).
 Shots: the whole row at an ordinary zoom (fit to the row) and each pit at the closest zoom, as PNGs + scene_<step>_<ts>.json.
+`submerge` (RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL, owner 2026-11-12: "The water really should go up to some level on
+the ladder as though it is part submerged. Same for spikes and other pit installations."): a second row at OZ-10 of six
+D4 pits, a ladder on the north wall at fill 0/2/4 and spikes at fill 0/2/4 (placed dry, then filled, so the fill change
+must re-mesh the ladder). Each fitting is read through RM_SubmergeDraw.ProofSubmerge; every row is PASS/FAIL on its own,
+then one closest-zoom capture per pit and one of the row (the owner's look).
 Findings 2026-11-12 (CLAUDE_ARCHMAGI_FWLIVE): the centre square of a 3x3 D4 pit refuses spikes (no wall over it), so a
 spiked pit shows a ring of stakes; a long `dig` wait on an unfed quicktest starves the colony (feed or keep it short).
 """
@@ -115,6 +120,79 @@ def stage():
     log("colonist_in_ladder_pit", {k: r.get(k) for k in ("success", "message") if k in r})
 
 
+SUB_OZ = OZ - 10
+SUBMERGE = [  # name, dx, fitting, fill
+    ("LADDER_F0", 0, "ladder", 0), ("LADDER_F2", 5, "ladder", 2), ("LADDER_F4", 10, "ladder", 4),
+    ("SPIKES_F0", 15, "spikes", 0), ("SPIKES_F2", 20, "spikes", 2), ("SPIKES_F4", 25, "spikes", 4),
+]
+# expected covered share (RM_SubmergeMath; ladder: of its in-pit span, wall foot to rim; spikes: of each 1 m stake)
+SUB_EXPECT = {("ladder", 0): (0.0, 0.0), ("ladder", 2): (0.30, 0.75), ("ladder", 4): (0.99, 1.0),
+              ("spikes", 0): (0.0, 0.0), ("spikes", 2): (0.99, 1.0), ("spikes", 4): (0.99, 1.0)}
+ROWS = []
+
+
+def row(name, ok, got):
+    ROWS.append({"row": name, "verdict": "PASS" if ok else "FAIL", "got": got})
+    log("row", ROWS[-1])
+
+
+def submerge_read(x, z):
+    r = call("jawa/static_call", type="RimMandrake.FlowWorks.RM_SubmergeDraw", method="ProofSubmerge", args="%d,%d" % (x, z))
+    text = str(r.get("result") or r.get("error") or r)
+    kv = dict(p.split("=", 1) for p in text.split() if "=" in p)
+    return text, kv
+
+
+def submerge():
+    """Six D4 pits on their own row; each read is its own row (PASS/FAIL alone), then the capture."""
+    site = (OX - 3, SUB_OZ - 3, 33, 9)
+    r = call("jawa/static_call", type="RimMandrake.FlowWorks.RM_NorthstarProofs", method="ProofResetRect", args="%d;%d;%d;%d" % site)
+    log("submerge_reset", str(r.get("result") or r)[:200])
+    call("jawa/set_terrain_batch", ops="Soil:%d,%d,%d,%d" % site)
+    for name, dx, kind, fill in SUBMERGE:
+        for i in range(3):
+            for j in range(3):
+                call("jawa/flowworks_excavation_drive", x=OX + dx + i, z=SUB_OZ + j, deepenLevels=4, setFill=-1, fillInLevels=0)
+    call("rimworld/set_god_mode", enabled=True)
+    for name, dx, kind, fill in SUBMERGE:
+        if kind == "ladder":
+            r = call("rimworld/apply_architect_designator", designatorId=LADDER, x=OX + dx + 1, z=SUB_OZ + 2, rotation=0)
+        else:
+            r = call("rimworld/apply_architect_designator", designatorId=SPIKES, x=OX + dx, z=SUB_OZ, width=3, height=3)
+        log("submerge_place_" + name, {k: r.get(k) for k in ("success", "message", "appliedCells", "rejectedCells") if k in r})
+    call("rimworld/set_god_mode", enabled=False)
+    time.sleep(2)   # the dry print (notes level 0), before the liquid arrives
+    for name, dx, kind, fill in SUBMERGE:
+        if fill:
+            for i in range(3):
+                for j in range(3):
+                    call("jawa/flowworks_excavation_drive", x=OX + dx + i, z=SUB_OZ + j, deepenLevels=0, setFill=fill, fillInLevels=0)
+    time.sleep(2)   # the re-mesh the fill change asked for
+    for name, dx, kind, fill in SUBMERGE:
+        # the north-middle square: the ladder hangs there; spikes stand there (the centre square refuses them)
+        text, kv = submerge_read(OX + dx + 1, SUB_OZ + 2)
+        lo, hi = SUB_EXPECT[(kind, fill)]
+        try:
+            share = float(kv.get("share", "nan"))
+        except ValueError:
+            share = float("nan")
+        found = not text.startswith("REFUSED") and kv.get("depth") == "4" and kv.get("fill") == str(fill)
+        row("%s_found_at_depth4_fill%d" % (name, fill), found, text)
+        row("%s_share_%.2f_to_%.2f" % (name, lo, hi), found and lo <= share <= hi, kv.get("share"))
+        if kind == "ladder":
+            # the map mesh re-printed at the true level now standing (quarter notches, part-notch included)
+            row("%s_printed_at_level" % name, kv.get("printedLevel") not in (None, "-") and kv.get("printedLevel") == kv.get("level"),
+                "%s vs level %s" % (kv.get("printedLevel"), kv.get("level")))
+        row("%s_setting_on" % name, kv.get("setting") == "on", kv.get("setting"))
+    midday()
+    shot("submerge_row", (OX - 2, SUB_OZ - 2, 31, 7))
+    for name, dx, kind, fill in SUBMERGE:
+        shot("submerge_" + name, (OX + dx - 1, SUB_OZ - 1, 5, 5), root=11.0)
+    fails = [r["row"] for r in ROWS if r["verdict"] != "PASS"]
+    log("submerge_verdict", {"rows": len(ROWS), "fail": fails, "verdict": "PASS" if not fails else "FAIL",
+                             "owed": "the owner's look at submerge_*.png"})
+
+
 def things():
     for d in ("RM_Spikes", "RM_Ladder"):
         r = call("jawa/list_things", defName=d, rect="%d,%d,%d,%d" % (OX - 2, OZ - 2, 50, 8))
@@ -166,6 +244,8 @@ if __name__ == "__main__":
         shots()
     if STEP == "things":
         things()
+    if STEP in ("all", "submerge"):
+        submerge()
     if STEP.startswith("save:"):   # save:<name> -> a keeper savegame of this scene for the owner's look (never overwrites)
         from modcheck.reviewmap import save_keeper
         log("save", save_keeper(B, STEP.split(":", 1)[1]))
