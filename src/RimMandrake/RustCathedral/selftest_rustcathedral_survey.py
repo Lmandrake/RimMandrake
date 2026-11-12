@@ -137,6 +137,18 @@ def criterion_1_pursuit_spine():
           all(e["incident_def"] == "RUT_GiveQuest_CathedralSurveyMisdirection"
               and e["quest_def"] == "RUT_CathedralSurveyMisdirection" for _, e in offers))
 
+    # the band's two sides, not one lucky tick: one crystal sold (Heat 8, still the low band) brings no survey;
+    # four sold at once (Heat 16) bring one the same poll
+    _, one = run(fixture(["dull"], changes={"20": {"kyber": {"Force_KyberCrystal": 5}, "trader_present": True},
+                                            "21": {"trader_present": False}}))
+    _, four = run(fixture(["dull"], changes={"20": {"kyber": {"Force_KyberCrystal": 2}, "trader_present": True},
+                                             "21": {"trader_present": False}}))
+    check("1m one crystal sold: Heat peaks at %.2f, under the band, and no survey comes"
+          % max(series(one, "heat_after")),
+          max(series(one, "heat_after")) < G.CATHEDRAL_SURVEY_MIN_HEAT and not events(one, "cathedral_survey_offer"))
+    f4 = events(four, "cathedral_survey_offer")
+    check("1n four crystals sold at once: Heat %.2f, the hail comes on the sale's poll"
+          % max(series(four, "heat_after")), f4 and f4[0][0] == 20 and f4[0][1]["heat_at_offer"] > 15)
     _, quiet = run(fixture(["dull"], changes={}))
     check("1f no kyber sale = Heat never over the band = no survey, all 40 days",
           not events(quiet, "cathedral_survey_offer"))
