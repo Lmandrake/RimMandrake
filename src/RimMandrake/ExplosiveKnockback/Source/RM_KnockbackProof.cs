@@ -39,13 +39,15 @@ namespace RimMandrake.ExplosiveKnockback
         {
             "calibration", "wall_stop", "door_stop", "over_sandbags", "pit_colonist", "pit_enemy", "no_cross",
             "cover_breaks", "items", "corpse_into_pit", "killed_by_blast", "shelf", "in_pit_skip", "heavy_skip",
-            "caps", "tick_cap", "settings_off", "emp_no_throw",
+            "all_fly_no_cap", "settings_off", "emp_no_throw",
             // 2026-10-06 finish pass (KINETIC_BLAST_WEAPONS_1): per-blast config, stun-lock guard, shields. NOT YET RUN LIVE.
             "lookup_projectile", "lookup_zero_wins", "impact_factor", "body_override", "immunity_window", "shield_counter",
             // 2026-11-12 RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD: thrown goods fly in a carrier. NOT YET RUN LIVE.
             "goods_fly_midair", "goods_fly_lands", "goods_fly_wall", "goods_fly_rebound", "goods_fly_off",
             // 2026-11-12 closed containers under a blast they survive; fire at half; unpatched harmful at full.
-            "closed_container", "fire_half", "harmful_unpatched",
+            "fire_half", "harmful_unpatched",
+            // 2026-11-12 round 2: containers thrown whole, heavy goods knock, landings never bump, burning gas clumps.
+            "container_thrown", "heavy_knock", "land_no_bump", "land_no_bump_pit", "gas_clumps",
         };
 
         private static Map Map => Find.CurrentMap;
@@ -110,6 +112,318 @@ namespace RimMandrake.ExplosiveKnockback
             }
             RM_KnockbackCompat.ForgetClosed();
             return "CLOSED " + d.defName + "=" + (kv[1] == "on");
+        }
+
+        /// <summary>Planted breaks for the mutation checks, "name=on|off" (or "flameforce=x"): throwcap (re-impose the old
+        /// 40-per-explosion cap), directfirst (the old Direct-first landing), nocontentsshield (blast damages goods in a
+        /// closed container), gasreg (the Cauldron vent gas registration), flameforce (the Flame DamageDef's force).
+        /// "reset" undoes all of them. Not saved.</summary>
+        public static string Plant(string arg)
+        {
+            string[] kv = (arg ?? "").Split('=');
+            string k = kv[0];
+            bool on = kv.Length == 2 && kv[1] == "on";
+            switch (k)
+            {
+                case "reset":
+                    RM_MapComponent_Knockback.ProofThrowCap = 0;
+                    RM_MapComponent_Knockback.ProofDirectFirst = false;
+                    RM_Patch_DamageWorker_ExplosionKnockback.ProofNoContentsShield = false;
+                    RM_KnockbackCompat.VentGasRegistered = RM_KnockbackCompat.VentGasHooked;
+                    SetFlameForce(0.5f);
+                    return "PLANT reset";
+                case "throwcap":
+                    RM_MapComponent_Knockback.ProofThrowCap = on ? 40 : 0;
+                    break;
+                case "directfirst":
+                    RM_MapComponent_Knockback.ProofDirectFirst = on;
+                    break;
+                case "nocontentsshield":
+                    RM_Patch_DamageWorker_ExplosionKnockback.ProofNoContentsShield = on;
+                    break;
+                case "gasreg":
+                    RM_KnockbackCompat.VentGasRegistered = on && RM_KnockbackCompat.VentGasHooked;
+                    break;
+                case "flameforce":
+                    if (kv.Length != 2 || !float.TryParse(kv[1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float f))
+                    {
+                        return "REFUSED: flameforce=<number>";
+                    }
+                    SetFlameForce(f);
+                    break;
+                default:
+                    return "REFUSED: no plant " + k;
+            }
+            return "PLANT " + arg + " throwcap=" + RM_MapComponent_Knockback.ProofThrowCap + " directfirst=" + RM_MapComponent_Knockback.ProofDirectFirst
+                + " nocontentsshield=" + RM_Patch_DamageWorker_ExplosionKnockback.ProofNoContentsShield + " gasreg=" + RM_KnockbackCompat.VentGasRegistered
+                + " flameforce=" + DamageDefOf.Flame.GetModExtension<RM_KnockbackExtension>()?.force;
+        }
+
+        private static void SetFlameForce(float f)
+        {
+            RM_KnockbackExtension e = DamageDefOf.Flame.GetModExtension<RM_KnockbackExtension>();
+            if (e != null)
+            {
+                e.force = f;
+            }
+        }
+
+        /// <summary>The Cauldron's vent-gas map component on the current map (reflection: no hard reference), or null.</summary>
+        private static MapComponent VentGas(out Type type)
+        {
+            type = AccessTools.TypeByName("RimMandrake.Cauldron.RM_MapComponent_VentGas");
+            if (type == null || Map == null)
+            {
+                return null;
+            }
+            foreach (MapComponent mc in Map.components)
+            {
+                if (mc != null && type.IsInstanceOfType(mc))
+                {
+                    return mc;
+                }
+            }
+            return null;
+        }
+
+        private static float Hp(Thing t) => t.def.useHitPoints ? t.HitPoints : -1f;
+
+        // ── owner look matrices (standing test principle, owner 2026-11-12: one cell prepared, then replicated with
+        //    each variable varied, with a readable grid key). Matrix("kind,x,z") clears and builds the whole grid with
+        //    its south-west corner at x,z and returns one "row|col|label|x,z|w,h" per cell, ';'-joined. Nothing is fired:
+        //    shells wait for a damage hit (fire_matrix.py), gas waits for its fire to burn (unpause). ──
+
+        private static int ShellCount(Thing t) => t.def.defName.StartsWith("Shell_") ? t.stackCount : 0;
+
+        private static Thing Spawn(string def, int count, IntVec3 c, string stuff = null)
+        {
+            ThingDef d = DefDatabase<ThingDef>.GetNamed(def);
+            Thing t = ThingMaker.MakeThing(d, d.MadeFromStuff ? (stuff != null ? DefDatabase<ThingDef>.GetNamed(stuff) : GenStuff.DefaultStuffFor(d)) : null);
+            t.stackCount = Math.Min(count, d.stackLimit);
+            GenPlace.TryPlaceThing(t, c, Map, ThingPlaceMode.Direct, out Thing placed);
+            return placed ?? t;
+        }
+
+        private static Pawn Drafted(IntVec3 c)
+        {
+            Pawn p = PawnGenerator.GeneratePawn(PawnKindDefOf.Colonist, Faction.OfPlayer);
+            p.equipment?.DestroyAllEquipment();
+            p.inventory?.DestroyAll();
+            GenSpawn.Spawn(p, c, Map);
+            if (p.drafter != null)
+            {
+                p.drafter.Drafted = true;
+            }
+            return p;
+        }
+
+        /// <summary>The radius a stack of n of this shell explodes with (CompExplosive: base plus the per-stack growth).</summary>
+        private static float ShellRadius(string def, int n)
+        {
+            CompProperties_Explosive e = DefDatabase<ThingDef>.GetNamed(def).GetCompProperties<CompProperties_Explosive>();
+            if (e == null)
+            {
+                return 0f;
+            }
+            float r = e.explosiveRadius;
+            if (e.explosiveExpandPerStackcount > 0f)
+            {
+                r += UnityEngine.Mathf.Sqrt((n - 1) * e.explosiveExpandPerStackcount);
+            }
+            return UnityEngine.Mathf.Min(r, GenRadial.MaxRadialPatternRadius - 1f);
+        }
+
+        public static string Matrix(string arg)
+        {
+            string[] a = (arg ?? "").Split(',');
+            if (a.Length != 3 || !int.TryParse(a[1], out int x0) || !int.TryParse(a[2], out int z0) || Map == null)
+            {
+                return "REFUSED: kind,x,z";
+            }
+            var cells = new List<string>();
+            try
+            {
+                switch (a[0])
+                {
+                    case "container":
+                        {
+                            // rows: container kind; cols: shells 1|3 x distance 1|2|3. Each cell: HE shells at its centre, the
+                            // container d cells east holding 20 steel and 5 medicine, the same goods loose d cells west.
+                            var kinds = new List<KeyValuePair<string, string>>();
+                            if (DefDatabase<ThingDef>.GetNamedSilentFail("RM_AncientStasisLocker_Refurbished") != null)
+                            {
+                                kinds.Add(new KeyValuePair<string, string>("RM_AncientStasisLocker_Refurbished", null));
+                            }
+                            if (DefDatabase<ThingDef>.GetNamedSilentFail("RM_EvaporativeCrock") != null)
+                            {
+                                kinds.Add(new KeyValuePair<string, string>("RM_EvaporativeCrock", "BlocksGranite"));
+                            }
+                            // the game's own 1x1 sealed crates, contents in their ThingOwner: Anomaly's unbreakable gray box, and
+                            // Odyssey's ancient safe (100 HP: any HE shell in reach destroys it, measured 2026-11-12)
+                            foreach (string cd in new[] { "GrayBox", "AncientSafe" })
+                            {
+                                if (DefDatabase<ThingDef>.GetNamedSilentFail(cd) != null)
+                                {
+                                    kinds.Add(new KeyValuePair<string, string>(cd, null));
+                                }
+                            }
+                            kinds.Add(new KeyValuePair<string, string>("ShelfSmall", "Plasteel")); // control: an OPEN shelf
+                            int[] shells = { 1, 3 };
+                            int[] dists = { 1, 2, 3 };
+                            const int pitch = 19;
+                            for (int r = 0; r < kinds.Count; r++)
+                            {
+                                for (int ci = 0; ci < shells.Length * dists.Length; ci++)
+                                {
+                                    int n = shells[ci / dists.Length], d = dists[ci % dists.Length];
+                                    var o = new IntVec3(x0 + 9 + ci * pitch, 0, z0 + 9 + r * pitch);
+                                    Prepare(o, 9);
+                                    Spawn("Shell_HighExplosive", n, o);
+                                    Thing box = Build(kinds[r].Key, o + new IntVec3(d, 0, 0), kinds[r].Value);
+                                    var steel = ThingMaker.MakeThing(ThingDefOf.Steel);
+                                    steel.stackCount = 20;
+                                    var med = ThingMaker.MakeThing(ThingDefOf.MedicineIndustrial);
+                                    med.stackCount = 5;
+                                    if (box is IThingHolder h && !(box is Building_Storage) && h.GetDirectlyHeldThings() is ThingOwner inside)
+                                    {
+                                        inside.TryAdd(steel);
+                                        inside.TryAdd(med);
+                                    }
+                                    else
+                                    {
+                                        GenPlace.TryPlaceThing(steel, box.Position, Map, ThingPlaceMode.Direct);
+                                        GenPlace.TryPlaceThing(med, box.Position, Map, ThingPlaceMode.Direct);
+                                    }
+                                    Spawn("Steel", 20, o + new IntVec3(-d, 0, 0));
+                                    Spawn("MedicineIndustrial", 5, o + new IntVec3(-d, 0, 1));
+                                    string label = kinds[r].Key.Replace("RM_AncientStasisLocker_Refurbished", "stasis locker (steel)").Replace("RM_EvaporativeCrock", "crock (clay)")
+                                        .Replace("ShelfSmall", "OPEN small shelf (control)").Replace("AncientSafe", "ancient safe (100 HP)").Replace("GrayBox", "gray box (unbreakable)") + " | " + n + " HE | d" + d + " | closed=" + RM_KnockbackCompat.IsClosedContainer(box);
+                                    cells.Add(r + "|" + ci + "|" + label + "|" + (o.x - 9) + "," + (o.z - 9) + "|19,19");
+                                }
+                            }
+                            break;
+                        }
+                    case "heavy":
+                        {
+                            // rows: the stack (15, 10, 5, 0.26 kg); cols: a drafted colonist 2|3|4 cells beyond the stack on the
+                            // throw line, outside the blast. One HE shell at each cell's centre, the stack 1 cell east.
+                            string[] defs = { "Steel", "Steel", "Steel", "Cloth" };
+                            int[] counts = { 30, 20, 10, 10 };
+                            int[] gaps = { 2, 3, 4 };
+                            const int pitch = 11;
+                            for (int r = 0; r < defs.Length; r++)
+                            {
+                                for (int ci = 0; ci < gaps.Length; ci++)
+                                {
+                                    var o = new IntVec3(x0 + 3 + ci * pitch, 0, z0 + 5 + r * pitch);
+                                    Prepare(o + new IntVec3(3, 0, 0), 5);
+                                    Spawn("Shell_HighExplosive", 1, o);
+                                    Thing st = Spawn(defs[r], counts[r], o + new IntVec3(1, 0, 0));
+                                    Drafted(o + new IntVec3(1 + gaps[ci], 0, 0));
+                                    float kg = st.GetStatValue(StatDefOf.Mass) * st.stackCount;
+                                    cells.Add(r + "|" + ci + "|" + counts[r] + " " + defs[r] + " = " + kg.ToString("0.##") + " kg (" + (kg >= RimMandrakeExplosiveKnockbackSettings.heavyGoodsMinMass ? "heavy" : "light")
+                                        + ") | person " + gaps[ci] + " beyond|" + (o.x - 2) + "," + (o.z - 3) + "|11,7");
+                                }
+                            }
+                            break;
+                        }
+                    case "gas":
+                        {
+                            // rows: cloud density 30|60|120; cols: cloud radius 1|2|3. Each cell: a cloud of the Cauldron's vent gas,
+                            // a fire at its centre (it burns on unpause), three steel stacks and a drafted colonist in it, a pit
+                            // cell under a woven cover just past its east edge, an open pit cell just past its west edge.
+                            MapComponent vg = VentGas(out Type vt);
+                            if (vg == null)
+                            {
+                                return "REFUSED: no Cauldron vent gas on this map";
+                            }
+                            int[] dens = { 80, 160, 250 };
+                            int[] rad = { 1, 2, 3 };
+                            const int pitch = 15;
+                            for (int r = 0; r < dens.Length; r++)
+                            {
+                                for (int ci = 0; ci < rad.Length; ci++)
+                                {
+                                    var o = new IntVec3(x0 + 7 + ci * pitch, 0, z0 + 7 + r * pitch);
+                                    Prepare(o, 7);
+                                    int R = rad[ci];
+                                    vt.GetMethod("SeedCloud").Invoke(null, new object[] { Map, o, R, dens[r] });
+                                    Spawn("Steel", 10, o + new IntVec3(1, 0, 0));
+                                    Spawn("Steel", 10, o + new IntVec3(-1, 0, 1));
+                                    Spawn("Steel", 10, o + new IntVec3(0, 0, -1));
+                                    Drafted(o + new IntVec3(Math.Min(R, 1), 0, Math.Min(R, 1)));
+                                    if (RM_KnockbackCompat.FlowWorks)
+                                    {
+                                        RM_KnockbackCompat.DigToSuperdeep(Map, o + new IntVec3(R + 1, 0, 0));
+                                        Build("RM_PitCover_ReinforcedFrame", o + new IntVec3(R + 1, 0, 0));
+                                        RM_KnockbackCompat.DigToSuperdeep(Map, o + new IntVec3(-R - 1, 0, 0));
+                                    }
+                                    // fuel under the starter fire: a bare-ground fire can burn out before the Cauldron's scan
+                                    // (40 ignitions a scan, map-wide) reaches it (measured: the 9th cell never lit)
+                                    Spawn("WoodLog", 10, o);
+                                    var fire = (Fire)ThingMaker.MakeThing(ThingDefOf.Fire);
+                                    fire.fireSize = 1f;
+                                    GenSpawn.Spawn(fire, o, Map);
+                                    cells.Add(r + "|" + ci + "|gas density " + dens[r] + " | radius " + R + "|" + (o.x - 7) + "," + (o.z - 7) + "|15,15");
+                                }
+                            }
+                            break;
+                        }
+                    case "land":
+                        {
+                            // rows: what lands (a revolver: stackLimit 1; 10 steel; 5 medicine) onto 10 resident wood; cols: the
+                            // landing cell is bare ground | the first cell of a superdeep pit | a full small shelf (3 stacks).
+                            // One HE shell, the lander 1 cell east; the landing cell from the kernel at the shell's radius.
+                            string[] defs = { "Gun_Revolver", "Steel", "MedicineIndustrial" };
+                            int[] counts = { 1, 10, 5 };
+                            // goods never come to rest on a shelf cell (Fillage partial), so the third column is a resident of
+                            // the SAME kind: a stack merges into it, a revolver (stackLimit 1) cannot and lands beside
+                            string[] spots = { "ground", "pit", "same kind" };
+                            const int pitch = 13;
+                            float radius = ShellRadius("Shell_HighExplosive", 1);
+                            KbSettings k = RimMandrakeExplosiveKnockbackSettings.Kernel();
+                            for (int r = 0; r < defs.Length; r++)
+                            {
+                                for (int ci = 0; ci < spots.Length; ci++)
+                                {
+                                    var o = new IntVec3(x0 + 3 + ci * pitch, 0, z0 + 6 + r * pitch);
+                                    Prepare(o + new IntVec3(4, 0, 0), 6);
+                                    Spawn("Shell_HighExplosive", 1, o);
+                                    Thing t = Spawn(defs[r], counts[r], o + new IntVec3(1, 0, 0));
+                                    float mass = t.GetStatValue(StatDefOf.Mass) * t.stackCount;
+                                    int cellsN = RM_KnockbackMath.ThrowCells(1f, radius, 1f, mass, k);
+                                    IntVec3 land = o + new IntVec3(1 + Math.Max(1, cellsN), 0, 0);
+                                    if (spots[ci] == "pit")
+                                    {
+                                        land = o + new IntVec3(Math.Min(1 + cellsN, 3), 0, 0);
+                                        foreach (IntVec3 c in new CellRect(land.x, land.z - 1, 3, 3))
+                                        {
+                                            RM_KnockbackCompat.DigToSuperdeep(Map, c);
+                                        }
+                                        Spawn("WoodLog", 10, land);
+                                    }
+                                    else if (spots[ci] == "same kind")
+                                    {
+                                        Spawn(defs[r], counts[r], land);
+                                    }
+                                    else
+                                    {
+                                        Spawn("WoodLog", 10, land);
+                                    }
+                                    cells.Add(r + "|" + ci + "|" + counts[r] + " " + defs[r] + " onto " + spots[ci] + " (resident " + (spots[ci] == "same kind" ? defs[r] : "wood") + " at " + (land.x - o.x) + " east)|" + (o.x - 2) + "," + (o.z - 3) + "|13,7");
+                                }
+                            }
+                            break;
+                        }
+                    default:
+                        return "REFUSED: no matrix " + a[0];
+                }
+            }
+            catch (Exception ex)
+            {
+                return "ERROR " + ex.GetType().Name + ": " + ex.Message + " after " + cells.Count + " cells";
+            }
+            return string.Join(";", cells);
         }
 
         /// <summary>n scene origins on a 15-cell pitch inside the current map, row-major from the south-west.</summary>
@@ -731,8 +1045,11 @@ namespace RimMandrake.ExplosiveKnockback
                     };
                     return null;
 
-                case "caps":
+                case "all_fly_no_cap":
                     {
+                        // RIMMANDRAKE_LIFT_KNOCKBACK_THROW_CAPS_PLAN_SAYS_GONE (owner 2026-11-12, "No caps please."): a 5.9 blast
+                        // over 10 colonists and 80 light stacks. The old caps were 40 throws an explosion and 60 item
+                        // throws a tick; with them gone every request is executed in the one tick the wave lands.
                         int i = 0;
                         foreach (IntVec3 c in GenRadial.RadialCellsAround(s.o, 4.9f, false))
                         {
@@ -743,9 +1060,9 @@ namespace RimMandrake.ExplosiveKnockback
                             }
                         }
                         int n = 0;
-                        foreach (IntVec3 c in GenRadial.RadialCellsAround(s.o, 4.9f, true))
+                        foreach (IntVec3 c in GenRadial.RadialCellsAround(s.o, 5.5f, true))
                         {
-                            if (n < 60 && c.GetFirstPawn(Map) == null)
+                            if (n < 80 && c.GetFirstPawn(Map) == null)
                             {
                                 Item(s, "i" + n, "Steel", 10, c);
                                 n++;
@@ -758,42 +1075,30 @@ namespace RimMandrake.ExplosiveKnockback
                     s.verdict = sc =>
                     {
                         int exp = Recs(sc, "request").Where(r => (IntVec3)r["centre"] == sc.o).Select(r => (int)r["exp"]).FirstOrDefault();
+                        int requests = Recs(sc, "request").Count(r => (int)r["exp"] == exp);
                         int launches = Recs(sc, "launch").Count(r => (int)r["exp"] == exp);
-                        var pawnIds = new HashSet<int>(sc.things.Values.OfType<Pawn>().Select(p => p.thingIDNumber));
-                        int pawnsHandled = Recs(sc, "launch").Concat(Recs(sc, "blocked"))
-                            .Count(r => (int)r["exp"] == exp && r.ContainsKey("thingId") && pawnIds.Contains((int)r["thingId"]));
-                        int moves = Recs(sc, "item_move").Count(r => (int)r["exp"] == exp);
-                        int capped = Recs(sc, "skip").Count(r => (int)r["exp"] == exp && (string)r["reason"] == "cap_per_explosion");
-                        int cap = RimMandrakeExplosiveKnockbackSettings.maxThrowsPerExplosion;
-                        bool ok = launches + moves <= cap && pawnsHandled == (int)sc.numbers["pawns"] && capped > 0;
-                        return Result(sc, ok, "pawns=" + sc.numbers["pawns"] + " pawnsHandled=" + pawnsHandled + " items=" + sc.numbers["items"] + " launches=" + launches + " itemMoves=" + moves
-                            + " cappedSkips=" + capped + " cap=" + cap);
-                    };
-                    return null;
-
-                case "tick_cap":
-                    {
-                        int n = 0;
-                        foreach (IntVec3 c in GenRadial.RadialCellsAround(s.o, 1.9f, true))
+                        var moves = Recs(sc, "item_move").Where(r => (int)r["exp"] == exp).ToList();
+                        int maxTick = moves.GroupBy(r => (int)r["tick"]).Select(g => g.Count()).DefaultIfEmpty(0).Max();
+                        int capped = Recs(sc, "skip").Count(r => (int)r["exp"] == exp && ((string)r["reason"]).StartsWith("cap_"));
+                        // every request ends in exactly one outcome line: a launch, an item move, a blocked line or a skip
+                        int outcomes = launches + moves.Count + Recs(sc, "blocked").Count(r => (int)r["exp"] == exp)
+                            + Recs(sc, "skip").Count(r => (int)r["exp"] == exp);
+                        // row no_cap: fails alone when any cap drops a throw (planted: Plant throwcap=on)
+                        bool noCap = capped == 0 && launches + moves.Count > 40;
+                        // row all_fly: fails alone when a light stack the wave reaches is left lying (the kernel says it
+                        // moves a cell or more, from its start) - every one of them flies
+                        int want = 0;
+                        for (int k = 0; k < (int)sc.numbers["items"]; k++)
                         {
-                            Item(s, "i" + n, "Steel", 10, c);
-                            n++;
+                            want += WantCells(sc, "i" + k, 5.9f) > 0 ? 1 : 0;
                         }
-                        s.numbers["items"] = n;
-                    }
-                    {
-                        int wasCap = RimMandrakeExplosiveKnockbackSettings.maxItemThrowsPerMapTick;
-                        s.restore = () => RimMandrakeExplosiveKnockbackSettings.maxItemThrowsPerMapTick = wasCap; // before the poke: a throw still undoes it
-                    }
-                    RimMandrakeExplosiveKnockbackSettings.maxItemThrowsPerMapTick = 3;
-                    Blast(s.o, 2.9f);
-                    s.verdict = sc =>
-                    {
-                        var moves = Recs(sc, "item_move");
-                        int maxPerTick = moves.GroupBy(r => (int)r["tick"]).Select(g => g.Count()).DefaultIfEmpty(0).Max();
-                        int dropped = Recs(sc, "skip").Count(r => (string)r["reason"] == "cap_per_tick");
-                        return Result(sc, maxPerTick <= 3 && dropped > 0, "items=" + sc.numbers["items"] + " moves=" + moves.Count + " maxPerTick=" + maxPerTick
-                            + " droppedByTickCap=" + dropped);
+                        bool allFly = moves.Count >= want && want > 40;
+                        bool whole = outcomes == requests;
+                        sc.numbers["want"] = want;
+                        return Result(sc, noCap && allFly && whole, "no_cap=" + noCap + " all_fly=" + allFly + " every_request_answered=" + whole
+                            + " kernelSaysMove=" + want
+                            + " requests=" + requests + " launches=" + launches + " itemMoves=" + moves.Count + " maxMovesInOneTick=" + maxTick
+                            + " cappedSkips=" + capped + " pawns=" + sc.numbers["pawns"] + " items=" + sc.numbers["items"]);
                     };
                     return null;
 
@@ -1096,43 +1401,6 @@ namespace RimMandrake.ExplosiveKnockback
                     return null;
                 }
 
-                case "closed_container":
-                    {
-                        // a small blast the Hopper survives (the 25-shell storeroom destroys every Hopper within r6,
-                        // RIMMANDRAKE_STAGE_KNOCKBACK_CONTAINER_SURVIVES_BLAST); tagged closed at runtime, untagged on restore
-                        s.restore = () => CloseStorage("Hopper=off"); // before the poke: a throw still undoes it
-                        string had = CloseStorage("Hopper=on");
-                        if (!had.StartsWith("CLOSED"))
-                        {
-                            return had;
-                        }
-                        Thing hop = Build("Hopper", O(s, 1, 0));
-                        Track(s, "hopper", hop);
-                        Item(s, "steel", "Steel", 20, hop.Position);
-                        Item(s, "open", "Steel", 20, O(s, 1, 1)); // control: the same stack on open ground beside it
-                    }
-                    Blast(s.o, 2.9f);
-                    s.verdict = sc =>
-                    {
-                        string mo = Moved(sc, "open", out Thing open, out int openCells);
-                        if (openCells < 1)
-                        {
-                            return "INVALID " + sc.name + " control stack on open ground did not move: " + mo;
-                        }
-                        Thing hop = sc.things["hopper"];
-                        Thing st = sc.things["steel"];
-                        // row hold: fails alone when the closed guard lets goods in a container be thrown
-                        // (every hit thing logs a request; a held good never logs an item_move)
-                        bool hold = !hop.Destroyed && st.Spawned && st.Position == hop.Position && ForThing(sc, "item_move", st).Count == 0;
-                        // row shove: fails alone when a held container gets no slide/jolt line
-                        var c = ForThing(sc, "container", hop);
-                        bool shove = c.Count == 1;
-                        return Result(sc, hold && shove, "hold=" + hold + " shove=" + shove + " hopperAlive=" + !hop.Destroyed
-                            + " steelAt=" + (st.Spawned ? st.Position.x + "," + st.Position.z : "gone") + " hopperAt=" + hop.Position.x + "," + hop.Position.z
-                            + (c.Count > 0 ? " [" + Rec(c[0]) + "]" : " no container line") + " control: " + mo);
-                    };
-                    return null;
-
                 case "fire_half":
                     // RIMMANDRAKE_THROW_ALL_HARMFUL_BLASTS: Flame (incendiary) throws at half a Bomb's force. Control: a Bomb
                     // 5 cells north, same radius and offset. Fails alone when the Flame patch is not 0.5.
@@ -1186,6 +1454,217 @@ namespace RimMandrake.ExplosiveKnockback
                         bool ok = rp.Count == 1 && (string)rp[0]["source"] == "unpatched" && Math.Abs(fp - fq) < 0.01f && cp == cq;
                         return Result(sc, ok, "thumpForce=" + fp + " source=" + (rp.Count == 1 ? rp[0]["source"] : "none") + " bombForce=" + fq
                             + " thumpCells=" + cp + " bombCells=" + cq + " unpatchedHarmfulPercent=" + RimMandrakeExplosiveKnockbackSettings.unpatchedHarmfulPercent);
+                    };
+                    return null;
+
+                case "container_thrown":
+                    {
+                        // RIMMANDRAKE_THROW_CLOSED_CRATES_WHOLE_CONTENTS_RIDE_SAFE: a closed container (Cold Storage's stasis
+                        // locker, a steel box; with Cold Storage absent a small shelf tagged closed for the scene) holding
+                        // steel and medicine, a Bomb of 30 at distance 1. Control: the same medicine loose on open ground at
+                        // the mirrored distance 1, and the same steel loose too.
+                        string def = DefDatabase<ThingDef>.GetNamedSilentFail("RM_AncientStasisLocker_Refurbished") != null
+                            ? "RM_AncientStasisLocker_Refurbished" : "ShelfSmall";
+                        if (def == "ShelfSmall")
+                        {
+                            s.restore = () => CloseStorage("ShelfSmall=off"); // before the poke: a throw still undoes it
+                            CloseStorage("ShelfSmall=on");
+                        }
+                        Thing box = Build(def, O(s, 1, 0), def == "ShelfSmall" ? "Plasteel" : null);
+                        Track(s, "box", box);
+                        Item(s, "steel", "Steel", 20, box.Position);
+                        Item(s, "med", "MedicineIndustrial", 5, box.Position);
+                        Item(s, "looseMed", "MedicineIndustrial", 5, O(s, -1, 0));
+                        Item(s, "looseSteel", "Steel", 20, O(s, 0, -1));
+                        s.numbers["medHp"] = Hp(s.things["med"]);
+                        s.numbers["looseMedHp"] = Hp(s.things["looseMed"]);
+                        if (!RM_KnockbackCompat.IsClosedContainer(box))
+                        {
+                            return def + " is not a closed container";
+                        }
+                        s.numbers["coldStorage"] = def == "ShelfSmall" ? 0 : 1;
+                    }
+                    Blast(s.o, 2.9f, DamageDefOf.Bomb, 30);
+                    s.verdict = sc =>
+                    {
+                        Thing box = sc.things["box"], st = sc.things["steel"], med = sc.things["med"], lm = sc.things["looseMed"];
+                        string ms = Moved(sc, "looseSteel", out Thing _, out int looseCells);
+                        if (looseCells < 1 || lm.Destroyed || Hp(lm) >= sc.numbers["looseMedHp"])
+                        {
+                            return "INVALID " + sc.name + " control: loose goods did not move or were not hurt: " + ms + " looseMedHp=" + (lm.Destroyed ? -1 : Hp(lm));
+                        }
+                        var c = ForThing(sc, "container", box);
+                        int boxCells = box.Spawned ? Cheb(box.Position, sc.starts["box"]) : -1;
+                        // row thrown: fails alone when the container stays put (planted: shoveClosedContainers off)
+                        bool thrown = !box.Destroyed && box.Spawned && boxCells >= 1 && c.Count == 1 && (string)c[0]["action"] == "thrown";
+                        // row together: fails alone when the goods are left behind or scattered apart from it
+                        bool together = st.Spawned && med.Spawned && box.Spawned && st.Position == box.Position && med.Position == box.Position
+                            && ForThing(sc, "item_move", st).Count == 0 && ForThing(sc, "item_move", med).Count == 0;
+                        // row shorter: fails alone when the container flies as far as the same goods loose (mass ignored)
+                        bool shorter = boxCells >= 1 && boxCells < looseCells;
+                        // row shielded: fails alone when blast damage reaches goods inside (planted: Plant nocontentsshield=on)
+                        bool shielded = !med.Destroyed && Hp(med) == sc.numbers["medHp"];
+                        return Result(sc, thrown && together && shorter && shielded, "thrown=" + thrown + " together=" + together + " shorter=" + shorter
+                            + " shielded=" + shielded + " box=" + box.def.defName + " boxCells=" + boxCells + " looseCells=" + looseCells
+                            + " medHp=" + (med.Destroyed ? -1 : Hp(med)) + "/" + sc.numbers["medHp"] + " looseMedHp=" + Hp(lm) + "/" + sc.numbers["looseMedHp"]
+                            + (c.Count > 0 ? " [" + Rec(c[0]) + "]" : " no container line"));
+                    };
+                    return null;
+
+                case "heavy_knock":
+                    {
+                        // RIMMANDRAKE_KNOCK_PEOPLE_HEAVY_GOODS: 30 steel (15 kg) thrown east past a colonist standing outside
+                        // the blast; 10 cloth (light) thrown west past another. Shared blast, mirrored geometry.
+                        Item(s, "heavy", "Steel", 30, O(s, 1, 0));
+                        Item(s, "light", "Cloth", 10, O(s, -1, 0));
+                        Colonist(s, "ph", O(s, 4, 0));
+                        Colonist(s, "pl", O(s, -4, 0));
+                        if (WantCells(s, "heavy", 2.9f) < 4 || WantCells(s, "light", 2.9f) < 4)
+                        {
+                            return "throws too short to reach the colonists: heavy=" + WantCells(s, "heavy", 2.9f) + " light=" + WantCells(s, "light", 2.9f);
+                        }
+                        s.numbers["phHp"] = ((Pawn)s.things["ph"]).health.summaryHealth.SummaryHealthPercent;
+                        s.numbers["plHp"] = ((Pawn)s.things["pl"]).health.summaryHealth.SummaryHealthPercent;
+                        s.numbers["heavyMass"] = s.things["heavy"].GetStatValue(StatDefOf.Mass) * 30;
+                    }
+                    Blast(s.o, 2.9f);
+                    s.verdict = sc =>
+                    {
+                        Thing heavy = sc.things["heavy"], light = sc.things["light"];
+                        Pawn ph = (Pawn)sc.things["ph"], pl = (Pawn)sc.things["pl"];
+                        var hh = ForThing(sc, "heavy_hit", heavy);
+                        var lh = ForThing(sc, "heavy_hit", light);
+                        var lp = ForThing(sc, "goods_pass", light);
+                        // row hit: fails alone when a heavy stack flies through a person (planted: heavyGoodsKnock off)
+                        bool hit = hh.Count == 1 && (int)hh[0]["pawnId"] == ph.thingIDNumber && heavy.Spawned && Cheb(heavy.Position, ph.Position) <= 1
+                            && ph.health.summaryHealth.SummaryHealthPercent < sc.numbers["phHp"];
+                        // row pass: fails alone when light goods hit people too (planted: heavyGoodsMinMass 0)
+                        bool pass = lh.Count == 0 && lp.Count >= 1 && pl.health.summaryHealth.SummaryHealthPercent == sc.numbers["plHp"]
+                            && light.Spawned && light.Position.x < pl.Position.x;
+                        return Result(sc, hit && pass, "hit=" + hit + " pass=" + pass + " heavyMass=" + sc.numbers["heavyMass"]
+                            + " heavyAt=" + (heavy.Spawned ? heavy.Position.x + "," + heavy.Position.z : "gone") + " ph=" + ph.Position.x + "," + ph.Position.z
+                            + " phHp=" + ph.health.summaryHealth.SummaryHealthPercent.ToString("0.000") + " lightAt=" + (light.Spawned ? light.Position.x + "," + light.Position.z : "gone")
+                            + (hh.Count > 0 ? " [" + Rec(hh[0]) + "]" : " no heavy_hit") + " passes=" + lp.Count);
+                    };
+                    return null;
+
+                case "land_no_bump":
+                case "land_no_bump_pit":
+                    {
+                        // RIMMANDRAKE_LAND_KNOCKBACK_GOODS_NEVER_BUMP_RESIDENTS: a revolver (stackLimit 1: Direct spawns it even
+                        // into a full cell) is thrown onto the cell a resident steel stack holds; _pit: that cell is the
+                        // first cell of a superdeep pit (the owner's station 4: a pit good pushed out to the rim).
+                        bool pit = s.name == "land_no_bump_pit";
+                        Item(s, "gun", "Gun_Revolver", 1, O(s, 1, 0));
+                        int cells = WantCells(s, "gun", 2.9f);
+                        IntVec3 land;
+                        if (pit)
+                        {
+                            if (!RM_KnockbackCompat.FlowWorks || !Pit(O(s, 3, -1), 3, 3))
+                            {
+                                return "FlowWorks not loaded / dig failed";
+                            }
+                            land = O(s, 3, 0);
+                            if (cells < 2)
+                            {
+                                return "revolver throw " + cells + " cells does not reach the pit";
+                            }
+                        }
+                        else
+                        {
+                            if (cells < 2)
+                            {
+                                return "revolver throw " + cells + " cells too short";
+                            }
+                            land = O(s, 1 + cells, 0);
+                        }
+                        Item(s, "resident", "Steel", 10, land);
+                        s.numbers["landX"] = land.x;
+                        s.numbers["landZ"] = land.z;
+                    }
+                    Blast(s.o, 2.9f);
+                    s.verdict = sc =>
+                    {
+                        Thing gun = sc.things["gun"], res = sc.things["resident"];
+                        var land = new IntVec3((int)sc.numbers["landX"], 0, (int)sc.numbers["landZ"]);
+                        var ll = ForThing(sc, "item_land", gun).Concat(ForThing(sc, "item_move", gun).Where(r => !(bool)r["flying"])).ToList();
+                        var dest = ll.Count > 0 && ll[0].ContainsKey("dest") ? (IntVec3)ll[0]["dest"] : IntVec3.Invalid;
+                        if (!dest.IsValid || dest != land)
+                        {
+                            return "INVALID " + sc.name + " the revolver did not head for the resident's cell " + land.x + "," + land.z
+                                + (ll.Count > 0 ? " [" + Rec(ll[0]) + "]" : " no landing line");
+                        }
+                        // row stays: fails alone when a landing shoves the resident (planted: Plant directfirst=on)
+                        bool stays = !res.Destroyed && res.Spawned && res.Position == land && res.stackCount == 10;
+                        // row landed: fails alone when the lander is lost instead (vanished, or never set down)
+                        bool landed = !gun.Destroyed && gun.Spawned && gun.Position != land;
+                        bool journal = ll.Count == 1 && Convert.ToInt32(ll[0]["residentsMoved"]) == 0;
+                        return Result(sc, stays && landed && journal, "stays=" + stays + " landed=" + landed + " journal_zero_moved=" + journal
+                            + " resident=" + (res.Spawned ? res.Position.x + "," + res.Position.z : "gone") + " gun=" + (gun.Spawned ? gun.Position.x + "," + gun.Position.z : "gone")
+                            + " inPit=" + (gun.Spawned && RM_KnockbackCompat.IsSuperdeep(Map, gun.Position)) + " [" + Rec(ll[0]) + "]");
+                    };
+                    return null;
+
+                case "gas_clumps":
+                    {
+                        // RIMMANDRAKE_CHAIN_FLAMMABLE_GAS_CLUMPS: a radius-2 cloud of the Cauldron's vent gas, three steel stacks
+                        // and a drafted colonist in it, a woven pit cover over a pit cell at its edge; one cell lit, the
+                        // Cauldron's own fire scan spreads it. Control (planted): Plant gasreg=off, the same lit, no bursts.
+                        MapComponent vg = VentGas(out Type vt);
+                        if (vg == null)
+                        {
+                            return "The Cauldron (RimMandrake.Biomes) not loaded: no vent gas";
+                        }
+                        vt.GetMethod("ClearOf")?.Invoke(null, new object[] { Map });
+                        // thick (250 of 255): a thin cloud diffuses under the ignite threshold (24) before the next fire scan
+                        string seeded = (string)vt.GetMethod("SeedCloud").Invoke(null, new object[] { Map, s.o, 2, 250 });
+                        Item(s, "s0", "Steel", 10, O(s, 1, 0));
+                        Item(s, "s1", "Steel", 10, O(s, -1, 1));
+                        Item(s, "s2", "Steel", 10, O(s, 0, -2));
+                        Colonist(s, "p", O(s, -1, -1));
+                        if (RM_KnockbackCompat.FlowWorks && Pit(O(s, 3, 0), 1, 1))
+                        {
+                            Thing cover = Build("RM_PitCover_ReinforcedFrame", O(s, 3, 0)); // 160 HP: the gas's own fire scorches, never fells it in 300 ticks
+                            Track(s, "cover", cover);
+                            s.numbers["coverHp"] = Hp(cover);
+                        }
+                        s.numbers["pHp"] = ((Pawn)s.things["p"]).health.summaryHealth.SummaryHealthPercent;
+                        object lit = vt.GetMethod("Ignite").Invoke(vg, new object[] { s.o, null });
+                        if (!(lit is bool b) || !b)
+                        {
+                            return "the vent gas did not light: " + seeded;
+                        }
+                        Action prev = s.restore;
+                        s.restore = () => { vt.GetMethod("ClearOf")?.Invoke(null, new object[] { Map }); prev?.Invoke(); };
+                    }
+                    s.verdict = sc =>
+                    {
+                        var bursts = Recs(sc, "gas_burst");
+                        var ids = new HashSet<int>(bursts.Select(r => (int)r["exp"]));
+                        int ticks = bursts.Select(r => (int)r["tick"]).Distinct().Count();
+                        var moves = Recs(sc, "item_move").Where(r => ids.Contains((int)r["exp"])).ToList();
+                        var launches = Recs(sc, "launch").Where(r => ids.Contains((int)r["exp"])).ToList();
+                        int goodsCap = RimMandrakeExplosiveKnockbackSettings.gasBurstGoodsCells;
+                        // row chain: fails alone when the gas burns with no bursts or all at once (planted: Plant gasreg=off)
+                        bool chain = bursts.Count >= 3 && ticks >= 2;
+                        // row goods: fails alone when no good moves or one flies past the burst cap
+                        bool goods = moves.Count >= 1 && moves.All(r => (int)r["planned"] <= goodsCap);
+                        // row shove: fails alone when a person is thrown further than a cell, hurt by the shove, or more often than the cooldown
+                        Pawn p = (Pawn)sc.things["p"];
+                        var mine = launches.Where(r => (int)r["thingId"] == p.thingIDNumber).Select(r => (int)r["tick"]).OrderBy(t => t).ToList();
+                        bool gap = true;
+                        for (int i = 1; i < mine.Count; i++)
+                        {
+                            gap &= mine[i] - mine[i - 1] >= RimMandrakeExplosiveKnockbackSettings.gasPawnCooldownTicks;
+                        }
+                        bool shove = mine.Count >= 1 && gap && launches.All(r => (int)r["planned"] <= 1 && Convert.ToSingle(r["impact"]) == 0f);
+                        // row cover: fails alone when a burst breaks the pit cover (a burst is not a blast: no deck break). The
+                        // burning gas's own fire may scorch it (vanilla fire on a flammable cover): HP is reported, not judged
+                        bool cover = !sc.things.ContainsKey("cover") || (!sc.things["cover"].Destroyed && RM_KnockbackCompat.CoverAt(Map, sc.starts["cover"]) == sc.things["cover"]);
+                        return Result(sc, chain && goods && shove && cover, "chain=" + chain + " goods=" + goods + " shove=" + shove + " cover=" + cover
+                            + " bursts=" + bursts.Count + " burstTicks=" + ticks + " goodsMoves=" + moves.Count + " maxGoodsPlanned=" + moves.Select(r => (int)r["planned"]).DefaultIfEmpty(0).Max()
+                            + " pawnShoves=" + mine.Count + " cooldownOk=" + gap + " gasReg=" + RM_KnockbackCompat.VentGasRegistered
+                            + (sc.things.ContainsKey("cover") ? " coverHp=" + (sc.things["cover"].Destroyed ? -1 : Hp(sc.things["cover"])) + "/" + sc.numbers["coverHp"] : " no cover"));
                     };
                     return null;
 

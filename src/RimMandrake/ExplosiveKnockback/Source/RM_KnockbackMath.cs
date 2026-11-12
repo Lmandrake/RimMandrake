@@ -576,28 +576,4 @@ namespace RimMandrake.ExplosiveKnockback
             launchedCur[explosionId] = n + 1;
         }
     }
-
-    /// <summary>The per-map-tick item cap: overflow is DROPPED, not deferred, so nothing accumulates.</summary>
-    public sealed class KbTickBudget
-    {
-        private int tick = int.MinValue;
-        private int used;
-
-        public bool TryTake(int now, int cap)
-        {
-            if (now != tick)
-            {
-                tick = now;
-                used = 0;
-            }
-            if (used >= cap)
-            {
-                return false;
-            }
-            used++;
-            return true;
-        }
-
-        public int Used(int now) => now == tick ? used : 0;
-    }
 }

@@ -22,7 +22,11 @@ Sources: `design/RimMandrake/explosive_knockback_design_2026-10-06.md` (§3, §5
 - A flight cut short by a wall (rebound off) lands beside it and takes today's wall impact there. → flying_goods.wall_cut_short_applies_impact
 - With rebound on, a cut-short flight bounces back with about 70% of the cells it had left; the impact applies at the bounce. → flying_goods.rebound_off_wall_at_keep_percent
 - flyingGoods off is today's instant move (no carrier). → flying_goods.off_is_the_instant_move
-- A closed container that survives the blast keeps its goods on its own cell and is shoved (slide or jolt). → light_things.closed_container_holds_goods_and_is_shoved
+- A closed container (a stasis locker, a sealed crate) that survives the blast is thrown whole, shorter than the same goods loose, its goods still in it and unhurt by the blast (owner 2026-11-12). → light_things.closed_container_thrown_whole_contents_inside_unhurt
+- A flying stack of 10 kg or more that reaches a person hits them lightly, staggers them and drops there; a light stack flies past. → flying_goods.heavy_stack_hits_and_stops_light_passes
+- A thrown stack never shoves a stack already lying where it lands (a stackLimit-1 thing into a full cell lands beside it). → flying_goods.landing_never_shoves_a_resident
+- The same in a pit: a good already on the pit floor stays there when a thrown thing lands on its cell. → pits.landing_in_a_pit_never_shoves_a_resident_out
+- Burning flammable gas (the Cauldron's vent gas) goes off clump by clump: a burst per burning cell over several ticks, goods at most 2 cells, people shoved 1 cell with no shove damage and at most once per 2 s, no pit cover damaged. → gas.burning_gas_bursts_clump_by_clump_no_damage
 - Fire and incendiary blasts throw at half a Bomb's force (owner card 2026-11-11). → throw.fire_and_incendiary_throw_at_half
 - A damaging explosion this mod does not patch throws at full force by default (owner card 2026-11-11). → throw.unpatched_harmful_blast_throws_at_full
 - A save taken mid-flight reloads with the carrier and its stack, which then lands intact. → not_driven.save_mid_flight_keeps_the_stack (proof/goods_flight_saveload.py)
@@ -32,8 +36,7 @@ Sources: `design/RimMandrake/explosive_knockback_design_2026-10-06.md` (§3, §5
 - A pawn already in a pit is never thrown (you can't climb out). → pits.pawn_already_in_pit_not_thrown
 - A corpse thrown toward a pit lies on the pit floor (owner Q10). → pits.corpse_thrown_onto_pit_floor
 - A damaging blast that reaches a pit cover breaks the whole deck and anyone on it falls (owner Q5/Q9, FlowWorks). → pits.blast_breaks_cover_and_pawn_on_it_falls
-- One explosion throws at most `maxThrowsPerExplosion` things, pawns first. → caps.per_explosion_cap_holds_pawns_first
-- At most `maxItemThrowsPerMapTick` items move per tick; the overflow is dropped. → caps.per_tick_item_cap_drops_overflow
+- No cap (owner 2026-11-12, "No caps please."): a 5.9 blast over 10 people and 80 stacks throws every one it reaches, all item throws in the one tick the wave lands (over the old 40 and 60 caps). → caps.no_cap_every_throw_in_one_tick
 - Master switch off: the blast still damages, nothing moves. → settings.master_off_nothing_moves_but_wave_hit
 - A projectile ThingDef's own knockback extension beats its DamageDef's, and the request journal names the source (design §2.1 lookup: projectile → weapon → DamageDef → unpatched). → config.projectile_extension_wins_over_damagedef
 - An explicit force 0 on the projectile wins over a DamageDef that throws: nothing is requested. → config.explicit_zero_on_projectile_throws_nothing

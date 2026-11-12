@@ -295,17 +295,7 @@ internal static class Program
             Check("K-11 cap count", kept.Count == 5);
             Check("K-11 pawn first", kept[0].index == 101 && kept[1].index == 100);
             Check("K-11 nearest items", kept[2].distance <= kept[3].distance && kept[2].index == 29);
-            var budget = new KbTickBudget();
-            int took = 0;
-            for (int i = 0; i < 100; i++)
-            {
-                if (budget.TryTake(10, 60))
-                {
-                    took++;
-                }
-            }
-            Check("K-11 tick cap", took == 60);
-            Check("K-11 tick cap resets", budget.TryTake(11, 60));
+            Check("K-11 cap = all keeps all", RM_KnockbackMath.Prioritise(all, all.Count).Count == all.Count);
         }
 
         // K-12 dedupe

@@ -8,7 +8,7 @@ using Verse;
 namespace RimMandrake.ExplosiveKnockback
 {
     /// <summary>Opt-in tag (plan step 2, dl_closed_means_hidden): put on a building def to make it a CLOSED container — goods
-    /// on its cells are never thrown, and the container itself may be shoved a little. Storage whose def hides its
+    /// on its cells are never thrown or blast-damaged, and the container itself is thrown whole. Storage whose def hides its
     /// contents (a `showContents` false field, LWM's Deep Storage) needs no tag.</summary>
     public class RM_KnockbackClosedStorage : DefModExtension
     {
@@ -82,9 +82,30 @@ namespace RimMandrake.ExplosiveKnockback
         /// <summary>Owner ruling 2026-11-10/11 (RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED): open storage (shelves, racks)
         /// gives goods no cover; only a closed container keeps them. On = the old rule, every storage building keeps its goods.</summary>
         public static bool openStorageProtectsGoods = false;
-        /// <summary>Same ruling, "(1) but the closed containers may themselves get shoved a bit": a blast-hit closed container
-        /// slides one cell away (1x1, under the light-mass limit, free cell behind) or else jolts in place. Off = it stays put.</summary>
+        /// <summary>Owner, 2026-11-12 (RIMMANDRAKE_THROW_CLOSED_CRATES_WHOLE_CONTENTS_RIDE_SAFE): "the whole crate/chest would go
+        /// flying a bit, but their contents would remain inside and protected". A blast-hit 1x1 closed container at or under
+        /// closedContainerMassLimit (its own mass plus what it holds) is thrown as ONE unit, shorter than loose goods by
+        /// mass, its contents riding inside; anything else jolts in place. Contents take no blast damage either way.
+        /// Off = containers stay put (contents still kept and protected).</summary>
         public static bool shoveClosedContainers = true;
+        public static float closedContainerMassLimit = 250f;
+        /// <summary>Vanilla's sealed crates (Building_Crate: ancient, hermetic, security crates) count as closed containers.</summary>
+        public static bool vanillaCratesClosed = true;
+        /// <summary>RIMMANDRAKE_KNOCK_PEOPLE_HEAVY_GOODS (plan step 5, dl_heavy_threshold): a flying stack of at least
+        /// heavyGoodsMinMass kg that reaches a person's cell hits them (heavyGoodsDamageMin..Max Blunt, a heavyGoodsStaggerTicks
+        /// stun) and stops there; lighter goods fly past.</summary>
+        public static bool heavyGoodsKnock = true;
+        public static float heavyGoodsMinMass = 10f;
+        public static float heavyGoodsDamageMin = 2f;
+        public static float heavyGoodsDamageMax = 5f;
+        public static int heavyGoodsStaggerTicks = 30;
+        /// <summary>RIMMANDRAKE_CHAIN_FLAMMABLE_GAS_CLUMPS (plan step 4): each cell of flammable gas that burns gives a small
+        /// burst (radius gasBurstRadius): goods fly at most gasBurstGoodsCells, people are shoved one cell with no damage, at
+        /// most once per gasPawnCooldownTicks, shield belts do not stop it, and nothing is damaged (so no pit cover breaks).</summary>
+        public static bool gasChain = true;
+        public static float gasBurstRadius = 1.9f;
+        public static int gasBurstGoodsCells = 2;
+        public static int gasPawnCooldownTicks = 120;
         public static bool sandbagsStopThrow = false;
         public static bool impactDamageEnabled = true;
         public static float impactDamagePerCell = 4f;
@@ -92,8 +113,6 @@ namespace RimMandrake.ExplosiveKnockback
         public static int landingStunMax = 120;
         public static bool doorsTakeDamage = true;
         public static bool throwIntoPits = true;
-        public static int maxThrowsPerExplosion = 40;
-        public static int maxItemThrowsPerMapTick = 60;
         public static bool debugDrawVectors = false;
         public static int recoveryWindowTicks = 120;
         public static bool shieldsAbsorbThrow = true;
@@ -146,6 +165,17 @@ namespace RimMandrake.ExplosiveKnockback
             Scribe_Values.Look(ref goodsReboundKeepPercent, "goodsReboundKeepPercent", 70f);
             Scribe_Values.Look(ref openStorageProtectsGoods, "openStorageProtectsGoods", false);
             Scribe_Values.Look(ref shoveClosedContainers, "shoveClosedContainers", true);
+            Scribe_Values.Look(ref closedContainerMassLimit, "closedContainerMassLimit", 250f);
+            Scribe_Values.Look(ref vanillaCratesClosed, "vanillaCratesClosed", true);
+            Scribe_Values.Look(ref heavyGoodsKnock, "heavyGoodsKnock", true);
+            Scribe_Values.Look(ref heavyGoodsMinMass, "heavyGoodsMinMass", 10f);
+            Scribe_Values.Look(ref heavyGoodsDamageMin, "heavyGoodsDamageMin", 2f);
+            Scribe_Values.Look(ref heavyGoodsDamageMax, "heavyGoodsDamageMax", 5f);
+            Scribe_Values.Look(ref heavyGoodsStaggerTicks, "heavyGoodsStaggerTicks", 30);
+            Scribe_Values.Look(ref gasChain, "gasChain", true);
+            Scribe_Values.Look(ref gasBurstRadius, "gasBurstRadius", 1.9f);
+            Scribe_Values.Look(ref gasBurstGoodsCells, "gasBurstGoodsCells", 2);
+            Scribe_Values.Look(ref gasPawnCooldownTicks, "gasPawnCooldownTicks", 120);
             Scribe_Values.Look(ref sandbagsStopThrow, "sandbagsStopThrow", false);
             Scribe_Values.Look(ref impactDamageEnabled, "impactDamageEnabled", true);
             Scribe_Values.Look(ref impactDamagePerCell, "impactDamagePerCell", 4f);
@@ -153,8 +183,6 @@ namespace RimMandrake.ExplosiveKnockback
             Scribe_Values.Look(ref landingStunMax, "landingStunMax", 120);
             Scribe_Values.Look(ref doorsTakeDamage, "doorsTakeDamage", true);
             Scribe_Values.Look(ref throwIntoPits, "throwIntoPits", true);
-            Scribe_Values.Look(ref maxThrowsPerExplosion, "maxThrowsPerExplosion", 40);
-            Scribe_Values.Look(ref maxItemThrowsPerMapTick, "maxItemThrowsPerMapTick", 60);
             Scribe_Values.Look(ref debugDrawVectors, "debugDrawVectors", false);
             Scribe_Values.Look(ref recoveryWindowTicks, "recoveryWindowTicks", 120);
             Scribe_Values.Look(ref shieldsAbsorbThrow, "shieldsAbsorbThrow", true);
@@ -198,7 +226,7 @@ namespace RimMandrake.ExplosiveKnockback
                 list.GapLine();
             }
 
-            if (Group(list, "What gets thrown", RimMandrake.Shared.SettingScope.Now, new[] { "throwDowned", "throwAnimals", "throwMechanoids", "immuneBodySize", "throwItems", "throwCorpses", "lightMassLimit", "thrownGoodsBlastDamagePercent", "goodsWallImpactPerCell", "openStorageProtectsGoods", "shoveClosedContainers" }))
+            if (Group(list, "What gets thrown", RimMandrake.Shared.SettingScope.Now, new[] { "throwDowned", "throwAnimals", "throwMechanoids", "immuneBodySize", "throwItems", "throwCorpses", "lightMassLimit", "thrownGoodsBlastDamagePercent", "goodsWallImpactPerCell", "openStorageProtectsGoods", "shoveClosedContainers", "closedContainerMassLimit", "vanillaCratesClosed", "heavyGoodsKnock", "heavyGoodsMinMass", "heavyGoodsDamageMin", "heavyGoodsDamageMax", "heavyGoodsStaggerTicks" }))
             {
                 list.CheckboxLabeled("Throw downed pawns", ref throwDowned);
                 list.CheckboxLabeled("Throw animals", ref throwAnimals);
@@ -215,8 +243,20 @@ namespace RimMandrake.ExplosiveKnockback
                 goodsWallImpactPerCell = Mathf.Round(list.Slider(goodsWallImpactPerCell, 0f, 50f));
                 list.CheckboxLabeled("Open shelves and racks protect their goods", ref openStorageProtectsGoods,
                     "Off (the default): goods on open storage fly like goods on the floor; only closed containers (storage that hides its contents, e.g. Deep Storage lockers) keep them. On: every storage building keeps its goods.");
-                list.CheckboxLabeled("Blasts shove closed containers", ref shoveClosedContainers,
-                    "On (the default): a small closed container hit by a blast slides one cell away when the cell behind it is free, else jolts in place. Its contents stay inside.");
+                list.CheckboxLabeled("Blasts throw closed containers whole", ref shoveClosedContainers,
+                    "On (the default): a small closed container (a locker, a sealed crate, Deep Storage) hit by a blast flies a little as one unit, shorter than loose goods because it is heavier, with its contents inside. Off: it stays put. Its contents never take blast damage either way.");
+                list.Label("Closed containers heavier than " + closedContainerMassLimit.ToString("0") + " kg (with their contents) stay put");
+                closedContainerMassLimit = Mathf.Round(list.Slider(closedContainerMassLimit, 20f, 1000f));
+                list.CheckboxLabeled("Sealed crates count as closed containers", ref vanillaCratesClosed,
+                    "On (the default): the game's sealed crates (ancient, hermetic and security crates) are closed containers.");
+                list.CheckboxLabeled("Heavy flying goods knock people", ref heavyGoodsKnock,
+                    "On (the default): a flying stack that weighs at least the limit below and reaches a person hits them lightly and staggers them, then drops there. Lighter goods fly past.");
+                list.Label("Heavy means at least " + heavyGoodsMinMass.ToString("0") + " kg; the hit deals " + heavyGoodsDamageMin.ToString("0") + "-"
+                    + heavyGoodsDamageMax.ToString("0") + " blunt and staggers for " + heavyGoodsStaggerTicks + " ticks");
+                heavyGoodsMinMass = Mathf.Round(list.Slider(heavyGoodsMinMass, 1f, 75f));
+                heavyGoodsDamageMin = Mathf.Round(list.Slider(heavyGoodsDamageMin, 0f, 20f));
+                heavyGoodsDamageMax = Mathf.Max(heavyGoodsDamageMin, Mathf.Round(list.Slider(heavyGoodsDamageMax, 0f, 20f)));
+                heavyGoodsStaggerTicks = (int)list.Slider(heavyGoodsStaggerTicks, 0f, 180f);
                 list.GapLine();
             }
 
@@ -257,6 +297,18 @@ namespace RimMandrake.ExplosiveKnockback
                 list.GapLine();
             }
 
+            if (Group(list, "Burning gas", RimMandrake.Shared.SettingScope.Now, new[] { "gasChain", "gasBurstRadius", "gasBurstGoodsCells", "gasPawnCooldownTicks" }))
+            {
+                list.CheckboxLabeled("Flammable gas goes off clump by clump", ref gasChain,
+                    "On (the default): each cell of flammable gas that catches fire (The Cauldron's vent gas) gives a small burst that scatters goods and shoves people one cell, with no damage. Off: the gas burns without bursts.");
+                list.Label("Burst radius: " + gasBurstRadius.ToString("0.0") + " cells; goods fly at most " + gasBurstGoodsCells + " cells");
+                gasBurstRadius = Mathf.Round(list.Slider(gasBurstRadius, 0.9f, 4f) * 10f) / 10f;
+                gasBurstGoodsCells = (int)list.Slider(gasBurstGoodsCells, 1f, 6f);
+                list.Label("A person is shoved by burning gas at most once every " + gasPawnCooldownTicks + " ticks  (120 = 2 seconds)");
+                gasPawnCooldownTicks = (int)list.Slider(gasPawnCooldownTicks, 0f, 600f);
+                list.GapLine();
+            }
+
             if (Group(list, "Shield belts", RimMandrake.Shared.SettingScope.Now, new[] { "shieldsAbsorbThrow", "shieldDebitPerForce" }))
             {
                 list.CheckboxLabeled("Shield belts absorb the throw", ref shieldsAbsorbThrow,
@@ -267,16 +319,10 @@ namespace RimMandrake.ExplosiveKnockback
                 list.GapLine();
             }
 
-            if (Group(list, "Performance caps and debug", RimMandrake.Shared.SettingScope.Now, new[] { "maxThrowsPerExplosion", "maxItemThrowsPerMapTick", "debugDrawVectors" }))
+            // RIMMANDRAKE_LIFT_KNOCKBACK_THROW_CAPS_PLAN_SAYS_GONE (owner 2026-11-12, "No caps please."): no throw caps
+            if (Prefs.DevMode && Group(list, "Debug", RimMandrake.Shared.SettingScope.Now, new[] { "debugDrawVectors" }))
             {
-                list.Label("Max throws per explosion: " + maxThrowsPerExplosion);
-                maxThrowsPerExplosion = (int)list.Slider(maxThrowsPerExplosion, 1f, 200f);
-                list.Label("Max item throws per map tick: " + maxItemThrowsPerMapTick);
-                maxItemThrowsPerMapTick = (int)list.Slider(maxItemThrowsPerMapTick, 1f, 500f);
-                if (Prefs.DevMode)
-                {
-                    list.CheckboxLabeled("Debug: draw throw vectors", ref debugDrawVectors);
-                }
+                list.CheckboxLabeled("Debug: draw throw vectors", ref debugDrawVectors);
                 list.GapLine();
             }
 
@@ -378,6 +424,17 @@ namespace RimMandrake.ExplosiveKnockback
             RimMandrakeExplosiveKnockbackSettings.goodsReboundKeepPercent = 70f;
             RimMandrakeExplosiveKnockbackSettings.openStorageProtectsGoods = false;
             RimMandrakeExplosiveKnockbackSettings.shoveClosedContainers = true;
+            RimMandrakeExplosiveKnockbackSettings.closedContainerMassLimit = 250f;
+            RimMandrakeExplosiveKnockbackSettings.vanillaCratesClosed = true;
+            RimMandrakeExplosiveKnockbackSettings.heavyGoodsKnock = true;
+            RimMandrakeExplosiveKnockbackSettings.heavyGoodsMinMass = 10f;
+            RimMandrakeExplosiveKnockbackSettings.heavyGoodsDamageMin = 2f;
+            RimMandrakeExplosiveKnockbackSettings.heavyGoodsDamageMax = 5f;
+            RimMandrakeExplosiveKnockbackSettings.heavyGoodsStaggerTicks = 30;
+            RimMandrakeExplosiveKnockbackSettings.gasChain = true;
+            RimMandrakeExplosiveKnockbackSettings.gasBurstRadius = 1.9f;
+            RimMandrakeExplosiveKnockbackSettings.gasBurstGoodsCells = 2;
+            RimMandrakeExplosiveKnockbackSettings.gasPawnCooldownTicks = 120;
             RimMandrakeExplosiveKnockbackSettings.sandbagsStopThrow = false;
             RimMandrakeExplosiveKnockbackSettings.impactDamageEnabled = true;
             RimMandrakeExplosiveKnockbackSettings.impactDamagePerCell = 4f;
@@ -385,8 +442,6 @@ namespace RimMandrake.ExplosiveKnockback
             RimMandrakeExplosiveKnockbackSettings.landingStunMax = 120;
             RimMandrakeExplosiveKnockbackSettings.doorsTakeDamage = true;
             RimMandrakeExplosiveKnockbackSettings.throwIntoPits = true;
-            RimMandrakeExplosiveKnockbackSettings.maxThrowsPerExplosion = 40;
-            RimMandrakeExplosiveKnockbackSettings.maxItemThrowsPerMapTick = 60;
             RimMandrakeExplosiveKnockbackSettings.debugDrawVectors = false;
             RimMandrakeExplosiveKnockbackSettings.recoveryWindowTicks = 120;
             RimMandrakeExplosiveKnockbackSettings.shieldsAbsorbThrow = true;

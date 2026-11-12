@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Closed containers (RIMMANDRAKE_THROW_CLOSED_CRATES_WHOLE_CONTENTS_RIDE_SAFE, owner 2026-11-12: "if they put things in
+     a steel crate or chest, the whole crate/chest would go flying a bit, but their contents would remain inside and
+     protected due to its enclosed nature"). Census 2026-11-12: vanilla 1.6 builds no closed storage (its sealed crates
+     count through the vanillaCratesClosed setting, in code); of ours, Cold Storage's stasis lockers (a sealed steel box)
+     and the evaporative crock (a lidded pot) are closed. Its wrecked locker is not storage. FindMod, never MayRequire
+     on an Operation (inert there). -->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Cold Storage</li>
+    </mods>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>Defs/ThingDef[defName="RM_AncientStasisLocker_Kludged" or defName="RM_AncientStasisLocker_Refurbished" or defName="RM_AncientStasisLocker_Original" or defName="RM_EvaporativeCrock"]</xpath>
+      <value>
+        <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackClosedStorage" />
+      </value>
+    </match>
+  </Operation>
+</Patch>

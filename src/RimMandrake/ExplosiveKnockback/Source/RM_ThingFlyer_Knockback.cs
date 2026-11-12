@@ -15,7 +15,11 @@ namespace RimMandrake.ExplosiveKnockback
     /// A rebound is another leg of the same carrier, never a second thing. The landing uses the very GenPlace calls the
     /// instant move used (Direct at the cell, then Near, then Near the origin), so stack merging and "no free cell" behave
     /// as before. Cost per flying stack: one Thing, one tick of O(1) work, one Graphic.Draw and one shadow mesh a frame;
-    /// a rebound adds one kernel Resolve (at most a few grid reads).</summary>
+    /// a rebound adds one kernel Resolve (at most a few grid reads).
+    ///
+    /// A closed container (owner 2026-11-12, "the whole crate/chest would go flying a bit") rides in the same carrier:
+    /// the building first, then the goods from its cell, all landed together on one free cell; no spin, no rebound, no
+    /// heavy knock. A heavy stack (RIMMANDRAKE_KNOCK_PEOPLE_HEAVY_GOODS) that reaches a person's cell hits and stops.</summary>
     [StaticConstructorOnStartup]
     public class RM_ThingFlyer_Knockback : Thing, IThingHolder
     {
@@ -48,6 +52,9 @@ namespace RimMandrake.ExplosiveKnockback
         private float arcHeight;
         private KbKind kind;
         private Thing instigator; // not saved: after a load the impact has no instigator
+        private bool container;   // innerContainer[0] is a closed container building, the rest its goods
+        private Rot4 containerRot;
+        private IntVec3 lastCell;
 
         private int lastComputed = -1;
         private Vector3 groundPos;
@@ -107,6 +114,44 @@ namespace RimMandrake.ExplosiveKnockback
             return f;
         }
 
+        /// <summary>A closed container and the goods on its cell, sent to `to` (already chosen free by ThrowContainer).
+        /// Null when it could not: everything is then where it was.</summary>
+        public static RM_ThingFlyer_Knockback LaunchContainer(Building b, List<Thing> goods, Map map, IntVec3 start, IntVec3 to, int cells,
+            float dx, float dz, float mass, int explosionId, float impactFactor, Thing instigator)
+        {
+            ThingDef def = RM_KnockbackDefOf.RM_ThingFlyer_Knockback;
+            if (def == null || b == null || !b.Spawned || map == null || to == start)
+            {
+                return null;
+            }
+            var f = (RM_ThingFlyer_Knockback)ThingMaker.MakeThing(def);
+            f.container = true;
+            f.containerRot = b.Rotation;
+            foreach (Thing h in goods)
+            {
+                h.DeSpawn();
+            }
+            b.DeSpawn();
+            f.innerContainer.TryAdd(b, canMergeWithExistingStacks: false);
+            foreach (Thing h in goods)
+            {
+                f.innerContainer.TryAdd(h, canMergeWithExistingStacks: false);
+            }
+            f.originCell = start;
+            f.explosionId = explosionId;
+            f.planned = cells;
+            f.kind = KbKind.Item;
+            f.mass = mass;
+            f.impactFactor = impactFactor;
+            f.instigator = instigator;
+            f.arcHeight = Mathf.Max(0f, RimMandrakeExplosiveKnockbackSettings.goodsArcHeight) * 0.5f;
+            f.spin0 = 0f;
+            f.spinRate = 0f;
+            f.StartLeg(start, new KbResult { destX = to.x, destZ = to.z, cellsPlanned = cells, cellsTravelled = cells, stop = KbStop.Distance }, dx, dz);
+            GenSpawn.Spawn(f, start, map);
+            return f;
+        }
+
         private void StartLeg(IntVec3 from, KbResult res, float dx, float dz)
         {
             startVec = from.ToVector3ShiftedWithAltitude(def.Altitude);
@@ -125,6 +170,7 @@ namespace RimMandrake.ExplosiveKnockback
             ticksFlightTime = Mathf.Max(6, Mathf.CeilToInt(dist / speed * 60f));
             ticksFlying = 0;
             lastComputed = -1;
+            lastCell = from;
         }
 
         private Vector3 DestinationPos => destCell.ToVector3ShiftedWithAltitude(def.Altitude);
@@ -168,10 +214,53 @@ namespace RimMandrake.ExplosiveKnockback
             {
                 Position = cell;
             }
+            if (cell != lastCell)
+            {
+                lastCell = cell;
+                if (!container && cell != originCell && cell.InBounds(Map) && HeavyHit(inner, cell))
+                {
+                    return;
+                }
+            }
             if (ticksFlying >= ticksFlightTime)
             {
                 LegEnd(inner);
             }
+        }
+
+        /// <summary>RIMMANDRAKE_KNOCK_PEOPLE_HEAVY_GOODS (plan step 5, owner card d_c_heavy_knock): a stack of at least
+        /// heavyGoodsMinMass reaching a standing person's cell deals a small Blunt hit and a short stun, then drops there.
+        /// A lighter stack flies past (journal "goods_pass"). True when the flight ended here.</summary>
+        private bool HeavyHit(Thing inner, IntVec3 cell)
+        {
+            Pawn p = cell.GetFirstPawn(Map);
+            if (p == null || p.Dead || kind != KbKind.Item || !RimMandrakeExplosiveKnockbackSettings.heavyGoodsKnock)
+            {
+                return false;
+            }
+            if (mass < RimMandrakeExplosiveKnockbackSettings.heavyGoodsMinMass)
+            {
+                RM_KnockbackJournal.Add("goods_pass", explosionId, inner, "pawn", p.ThingID, "pawnId", p.thingIDNumber, "at", cell, "mass", mass);
+                return false;
+            }
+            float lo = RimMandrakeExplosiveKnockbackSettings.heavyGoodsDamageMin;
+            float dmg = Rand.Range(lo, Mathf.Max(lo, RimMandrakeExplosiveKnockbackSettings.heavyGoodsDamageMax));
+            if (dmg > 0f)
+            {
+                p.TakeDamage(new DamageInfo(DamageDefOf.Blunt, dmg, 0f, -1f, instigator));
+            }
+            int stun = RimMandrakeExplosiveKnockbackSettings.heavyGoodsStaggerTicks;
+            if (stun > 0 && !p.Dead && p.stances?.stunner != null)
+            {
+                p.stances.stunner.StunFor(stun, instigator, addBattleLog: false, showMote: true);
+            }
+            RM_KnockbackJournal.Add("heavy_hit", explosionId, inner, "pawn", p.ThingID, "pawnId", p.thingIDNumber, "at", cell, "mass", mass,
+                "damage", dmg, "stunTicks", stun, "pawnDead", p.Dead);
+            destCell = cell;
+            stop = KbStop.Pawn;
+            cellsLeft = 0;
+            Land(inner, Map);
+            return true;
         }
 
         private bool SolidStop => stop == KbStop.Wall || stop == KbStop.Door || stop == KbStop.OutOfBounds;
@@ -215,29 +304,71 @@ namespace RimMandrake.ExplosiveKnockback
 
         private void Land(Thing inner, Map map)
         {
+            if (container)
+            {
+                LandContainer(map);
+                return;
+            }
             int count = inner.stackCount;
             innerContainer.Remove(inner);
-            bool fallback = false;
-            if (!GenPlace.TryPlaceThing(inner, destCell, map, ThingPlaceMode.Direct, out Thing placed)
-                && !GenPlace.TryPlaceThing(inner, destCell, map, ThingPlaceMode.Near, out placed)
-                && !GenPlace.TryPlaceThing(inner, originCell, map, ThingPlaceMode.Near, out placed))
-            {
-                // never vanish: the instant move had no answer here, the carrier does
-                if (!inner.Spawned && !inner.Destroyed)
-                {
-                    placed = GenSpawn.Spawn(inner, destCell, map, WipeMode.VanishOrMoveAside);
-                    fallback = true;
-                }
-            }
+            // RIMMANDRAKE_LAND_KNOCKBACK_GOODS_NEVER_BUMP_RESIDENTS: never Direct onto a cell where that shoves a resident
+            Thing landed = RM_MapComponent_Knockback.PlaceLanding(inner, destCell, originCell, map, out bool fallback, out int bumped);
             FleckMaker.ThrowDustPuff(destCell, map, 1f);
-            Thing landed = placed ?? inner;
             RM_KnockbackJournal.Add("item_land", explosionId, inner, "from", originCell, "to", landed.Spawned ? landed.Position : destCell,
                 "dest", destCell, "bounces", bounces, "stop", stop.ToString(), "count", count, "spawnFallback", fallback,
-                "ticks", ticksTotal);
+                "residentsMoved", bumped, "ticks", ticksTotal);
             if (SolidStop)
             {
                 RM_MapComponent_Knockback.GoodsImpact(landed, explosionId, stop, cellsLeft, impactFactor, instigator, "landed");
             }
+            Destroy();
+        }
+
+        /// <summary>The container lands on destCell if it is still free, else the free cell nearest it within two cells, else
+        /// back on its origin; its goods are spawned onto the same cell, so they sit in it as before the blast.</summary>
+        private void LandContainer(Map map)
+        {
+            Thing b = innerContainer.Count > 0 ? innerContainer[0] : null;
+            if (b == null)
+            {
+                Destroy();
+                return;
+            }
+            IntVec3 at = IntVec3.Invalid;
+            if (RM_MapComponent_Knockback.ContainerCellFree(map, destCell, b))
+            {
+                at = destCell;
+            }
+            else
+            {
+                foreach (IntVec3 c in GenRadial.RadialCellsAround(destCell, 2.9f, false))
+                {
+                    if (RM_MapComponent_Knockback.ContainerCellFree(map, c, b))
+                    {
+                        at = c;
+                        break;
+                    }
+                }
+            }
+            bool fallback = false;
+            if (!at.IsValid)
+            {
+                at = originCell;
+                fallback = !RM_MapComponent_Knockback.ContainerCellFree(map, at, b);
+            }
+            innerContainer.Remove(b);
+            Thing placed = GenSpawn.Spawn(b, at, map, containerRot, fallback ? WipeMode.VanishOrMoveAside : WipeMode.Vanish);
+            int goods = 0;
+            while (innerContainer.Count > 0)
+            {
+                Thing h = innerContainer[0];
+                innerContainer.Remove(h);
+                GenSpawn.Spawn(h, at, map);
+                goods++;
+            }
+            FleckMaker.ThrowDustPuff(at, map, 1.2f);
+            RM_KnockbackJournal.Add("container_land", explosionId, b, "from", originCell, "to", placed != null && placed.Spawned ? placed.Position : at,
+                "dest", destCell, "goods", goods, "spawnFallback", fallback, "ticks", ticksTotal);
             Destroy();
         }
 
@@ -268,6 +399,11 @@ namespace RimMandrake.ExplosiveKnockback
             Thing inner = Inner;
             if (inner == null || inner is Corpse)
             {
+                return;
+            }
+            if (container)
+            {
+                inner.Graphic?.Draw(effectivePos, containerRot, inner, 0f);
                 return;
             }
             float angle = spinRate == 0f ? 0f : (spin0 + spinRate * ticksTotal) % 360f;
@@ -309,6 +445,9 @@ namespace RimMandrake.ExplosiveKnockback
             Scribe_Values.Look(ref spinRate, "spinRate", 0f);
             Scribe_Values.Look(ref arcHeight, "arcHeight", 0f);
             Scribe_Values.Look(ref kind, "kind", KbKind.Item);
+            Scribe_Values.Look(ref container, "container", false);
+            Scribe_Values.Look(ref containerRot, "containerRot", Rot4.North);
+            Scribe_Values.Look(ref lastCell, "lastCell");
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 if (innerContainer == null)

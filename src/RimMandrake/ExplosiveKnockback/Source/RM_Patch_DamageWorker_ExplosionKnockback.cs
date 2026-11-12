@@ -62,6 +62,18 @@ namespace RimMandrake.ExplosiveKnockback
             {
                 return;
             }
+            spareThing = null;
+            // owner 2026-11-12: goods inside a closed container are "protected due to its enclosed nature": no blast damage
+            // from any explosion (fire included), decided before the base applies it
+            if (t.def.category == ThingCategory.Item && RM_MapComponent_Knockback.InClosedContainer(t, explosion.Map)
+#if RM_PROOFS
+                && !ProofNoContentsShield
+#endif
+                )
+            {
+                spareThing = t;
+                spareFactor = 0f; // still queued below: Execute journals it held ("closed_container") and never throws it
+            }
             KbConfig cfg = ConfigOf(explosion, __instance.def);
             if (cfg.force <= 0f)
             {
@@ -79,7 +91,7 @@ namespace RimMandrake.ExplosiveKnockback
             {
                 return;
             }
-            // a closed container itself is shoved a little (owner 2026-11-11); every other building is not ours
+            // a closed container itself is thrown whole (owner 2026-11-12); every other building is not ours
             bool container = t is Building && RimMandrakeExplosiveKnockbackSettings.shoveClosedContainers
                 && RM_KnockbackCompat.IsClosedContainer(t);
             if (!(t is Pawn) && !(t is Corpse) && t.def.category != ThingCategory.Item && !container)
@@ -91,7 +103,6 @@ namespace RimMandrake.ExplosiveKnockback
             shieldAbsorbed = null;
             // owner ruling 2026-11-12: a stack this blast WILL throw takes reduced blast damage, decided here, before the
             // base applies the damage, so a stack the full blast would destroy survives to scatter
-            spareThing = null;
             float pct = RimMandrakeExplosiveKnockbackSettings.thrownGoodsBlastDamagePercent;
             if (pct < 100f && t.def.category == ThingCategory.Item && RM_MapComponent_Knockback.ItemWillBeThrown(t, explosion, cfg))
             {
@@ -103,6 +114,10 @@ namespace RimMandrake.ExplosiveKnockback
         /// <summary>The item whose blast damage is being scaled right now (set by the prefix, read by
         /// RM_Patch_Thing_SpareThrownGoods, cleared by the postfix; TakeDamage runs synchronously inside).</summary>
         internal static Thing spareThing;
+#if RM_PROOFS
+        /// <summary>Planted break (RM_KnockbackProof.Plant nocontentsshield): goods in a closed container take blast damage.</summary>
+        internal static bool ProofNoContentsShield;
+#endif
         internal static float spareFactor = 1f;
 
         public static void Postfix(DamageWorker __instance, Explosion explosion, Thing t, KbConfig __state)
@@ -178,6 +193,7 @@ namespace RimMandrake.ExplosiveKnockback
         public Thing thing;
         public IntVec3 takeoff;
         public int tick;
+        public bool gas;            // a burning-gas clump burst (GasBurst), not an explosion
     }
 }
 

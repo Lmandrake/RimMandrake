@@ -40,8 +40,7 @@ SCENES = [
     ("in_pit_skip", "pits", "pawn_already_in_pit_not_thrown", None),
     ("corpse_into_pit", "pits", "corpse_thrown_onto_pit_floor", None),
     ("cover_breaks", "pits", "blast_breaks_cover_and_pawn_on_it_falls", None),
-    ("caps", "caps", "per_explosion_cap_holds_pawns_first", "maxThrowsPerExplosion"),
-    ("tick_cap", "caps", "per_tick_item_cap_drops_overflow", "maxItemThrowsPerMapTick"),
+    ("all_fly_no_cap", "caps", "no_cap_every_throw_in_one_tick", None),
     ("settings_off", "settings", "master_off_nothing_moves_but_wave_hit", "enabled"),
     # 2026-10-06 finish pass (KINETIC_BLAST_WEAPONS_1): per-blast config, stun-lock guard, shields
     ("lookup_projectile", "config", "projectile_extension_wins_over_damagedef", "ownCapScale"),
@@ -57,9 +56,14 @@ SCENES = [
     ("goods_fly_rebound", "flying_goods", "rebound_off_wall_at_keep_percent", "goodsReboundKeepPercent"),
     ("goods_fly_off", "flying_goods", "off_is_the_instant_move", "flyingGoods"),
     # 2026-11-12 RIMMANDRAKE_STAGE_KNOCKBACK_CONTAINER_SURVIVES_BLAST / RIMMANDRAKE_THROW_ALL_HARMFUL_BLASTS
-    ("closed_container", "light_things", "closed_container_holds_goods_and_is_shoved", "shoveClosedContainers"),
     ("fire_half", "throw", "fire_and_incendiary_throw_at_half", None),
     ("harmful_unpatched", "throw", "unpatched_harmful_blast_throws_at_full", "unpatchedHarmfulPercent"),
+    # 2026-11-12 round 2 (owner: "No caps please.", the container thrown whole, "build the unbuilt items and bug")
+    ("container_thrown", "light_things", "closed_container_thrown_whole_contents_inside_unhurt", "shoveClosedContainers"),
+    ("heavy_knock", "flying_goods", "heavy_stack_hits_and_stops_light_passes", "heavyGoodsKnock"),
+    ("land_no_bump", "flying_goods", "landing_never_shoves_a_resident", None),
+    ("land_no_bump_pit", "pits", "landing_in_a_pit_never_shoves_a_resident_out", None),
+    ("gas_clumps", "gas", "burning_gas_bursts_clump_by_clump_no_damage", "gasChain"),
 ]
 NOT_DRIVEN = [
     ("hose_carry_drops_at_takeoff", "needs a laid hose reel and a colonist mid CarryHoseEnd job; DropCarriedHose is wired "

@@ -29,6 +29,13 @@ namespace RimMandrake.ExplosiveKnockback
         private static FieldInfo reelCarrier;
         private static MethodInfo reelDropCarry;
 
+        // ── The Cauldron (mandrake.rm.cauldron): its vent gas, a defless grid, burns cell by cell ──
+        /// <summary>The gas chain's registration with the Cauldron's vent gas (RM_MapComponent_VentGas.Ignite is patched).
+        /// A proof clears it to stand in for "the grid not registered" (its control).</summary>
+        public static bool VentGasRegistered;
+        /// <summary>The patch itself went on (the Cauldron is loaded); VentGasRegistered is only ever true with it.</summary>
+        public static bool VentGasHooked;
+
         public static bool FlowWorks => excavationType != null;
         /// <summary>FlowWorks' hose reels (moved there from Gimme Some Slack at the hose port) are hooked: a thrown carrier drops the hose.</summary>
         public static bool Hoses => reelDropCarry != null;
@@ -64,6 +71,15 @@ namespace RimMandrake.ExplosiveKnockback
                 {
                     ev.AddEventHandler(null, new Action<Pawn, IntVec3>((p, c) => RM_KnockbackJournal.Add("descent", 0, p, "at", c)));
                 }
+                Type ventGas = AccessTools.TypeByName("RimMandrake.Cauldron.RM_MapComponent_VentGas");
+                MethodInfo ignite = ventGas == null ? null : AccessTools.Method(ventGas, "Ignite", new[] { typeof(IntVec3), typeof(Thing) });
+                if (ignite != null && ignite.ReturnType == typeof(bool))
+                {
+                    new Harmony("mandrake.rm.explosiveknockback.gaschain").Patch(ignite,
+                        postfix: new HarmonyMethod(typeof(RM_KnockbackCompat), nameof(VentGasIgnitePostfix)));
+                    VentGasHooked = true;
+                    VentGasRegistered = true;
+                }
                 hosesCompType = AccessTools.TypeByName("RimMandrake.FlowWorks.Hose.RM_MapComponent_Hoses");   // the hose moved to FlowWorks (hose port, 2026-10-11)
                 Type reel = AccessTools.TypeByName("RimMandrake.FlowWorks.Hose.CompHoseReel");
                 if (hosesCompType != null && reel != null)
@@ -82,6 +98,16 @@ namespace RimMandrake.ExplosiveKnockback
                 Log.Warning("[RM Explosive Knockback] compatibility probe failed, running without FlowWorks hooks (pits, hoses): " + ex.Message);
                 excavationType = null;
                 reelDropCarry = null;
+            }
+        }
+
+        /// <summary>RIMMANDRAKE_CHAIN_FLAMMABLE_GAS_CLUMPS: one vent-gas cell burned (the Cauldron's own fire scan or any
+        /// caller of Ignite) = one clump burst there. The Cauldron's chain itself spreads the fire cell by cell.</summary>
+        public static void VentGasIgnitePostfix(MapComponent __instance, IntVec3 c, Thing instigator, bool __result)
+        {
+            if (__result && VentGasRegistered && __instance?.map != null)
+            {
+                RM_MapComponent_Knockback.GasBurst(__instance.map, c, instigator, "cauldron_vent_gas");
             }
         }
 
@@ -116,12 +142,13 @@ namespace RimMandrake.ExplosiveKnockback
 
         public static bool IsCover(Thing t) => coverType != null && t != null && coverType.IsInstanceOfType(t);
 
-        // ── Closed containers (owner 2026-11-10/11; plan step 2, dl_closed_means_hidden) ──
-        // Vanilla 1.6 has no closed storage that keeps goods SPAWNED on its cell: shelves (Building_Storage) draw their
-        // goods, and crates, bookcases and outfit stands hold theirs in a ThingOwner, unspawned, where an explosion
-        // never reaches them. A closed container is therefore storage whose def says it hides its contents: a comp or
-        // extension with a bool field `showContents` set false (LWM's Deep Storage, LWM.DeepStorage.Properties), or
-        // our opt-in tag RM_KnockbackClosedStorage on any building def. Decided per def, cached.
+        // ── Closed containers (owner 2026-11-10/11; plan step 2, dl_closed_means_hidden; thrown whole, owner 2026-11-12) ──
+        // Vanilla 1.6 has no player-built closed storage: shelves (Building_Storage) show their goods, and its sealed
+        // crates (Building_Crate: ancient, hermetic, security) hold theirs in a ThingOwner, unspawned, where an explosion
+        // never reaches them. A closed container is: storage whose def hides its contents (a comp or extension with a
+        // bool field `showContents` set false: LWM's Deep Storage), our opt-in tag RM_KnockbackClosedStorage on any
+        // building def (Patches/RM_Knockback_ClosedContainers.xml tags Cold Storage's lockers and crock), or, with
+        // vanillaCratesClosed on, a Building_Crate. Decided per def (cached) plus the crate setting.
         private static readonly Dictionary<ThingDef, bool> closedByDef = new Dictionary<ThingDef, bool>();
 
         public static bool IsClosedContainer(Thing b)
@@ -135,7 +162,7 @@ namespace RimMandrake.ExplosiveKnockback
                 closed = b.def.HasModExtension<RM_KnockbackClosedStorage>() || AnyHides(b.def.comps) || AnyHides(b.def.modExtensions);
                 closedByDef[b.def] = closed;
             }
-            return closed;
+            return closed || (b is Building_Crate && RimMandrakeExplosiveKnockbackSettings.vanillaCratesClosed);
         }
 
 #if RM_PROOFS

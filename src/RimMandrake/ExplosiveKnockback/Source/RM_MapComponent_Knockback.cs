@@ -174,7 +174,9 @@ namespace RimMandrake.ExplosiveKnockback
     {
         private readonly List<KnockbackRequest> queue = new List<KnockbackRequest>();
         private readonly KbExplosionLedger ledger = new KbExplosionLedger();
-        private readonly KbTickBudget itemBudget = new KbTickBudget();
+        // burning-gas shove guard (plan step 4): pawn thingIDNumber -> tick of its last gas shove. Not saved (a 2 s window).
+        private readonly Dictionary<int, int> gasShovedAt = new Dictionary<int, int>();
+        private int gasBursts;
         // stun-lock guard (design §4): pawn thingIDNumber -> landing tick / landing-stun end tick. Saved.
         private Dictionary<int, int> landedAt = new Dictionary<int, int>();
         private Dictionary<int, int> stunEnd = new Dictionary<int, int>();
@@ -261,6 +263,10 @@ namespace RimMandrake.ExplosiveKnockback
         /// <summary>Proof scenes only (RM_KnockbackProof): actions to run at a given game tick on this map, so a scene can
         /// fire a second blast mid-run. Empty in play; one Count check per tick.</summary>
         internal static readonly List<KeyValuePair<int, Action>> ProofSchedule = new List<KeyValuePair<int, Action>>();
+        /// <summary>Proof planted breaks: re-impose the removed per-explosion cap (0 = none, as shipped), and land with the
+        /// old Direct-first placement that shoves a resident stack.</summary>
+        internal static int ProofThrowCap;
+        internal static bool ProofDirectFirst;
 
 #endif
         public override void MapComponentTick()
@@ -305,6 +311,8 @@ namespace RimMandrake.ExplosiveKnockback
                 }
                 g.Add(r);
             }
+            // RIMMANDRAKE_LIFT_KNOCKBACK_THROW_CAPS_PLAN_SAYS_GONE (owner 2026-11-12, "No caps please."): every request is
+            // executed; frame time is a measured bar, not a limit. Pawns first, nearest first (Prioritise keeps all).
             foreach (int id in order)
             {
                 List<KnockbackRequest> g = groups[id];
@@ -315,19 +323,28 @@ namespace RimMandrake.ExplosiveKnockback
                     KbKind k = t is Pawn ? KbKind.Pawn : (t is Corpse ? KbKind.Corpse : KbKind.Item);
                     cands.Add(new KbCandidate { index = i, kind = k, distance = (g[i].takeoff - g[i].centre).LengthHorizontal });
                 }
-                int used = ledger.Launched(id, Find.TickManager.TicksGame);
-                int cap = Math.Max(0, RimMandrakeExplosiveKnockbackSettings.maxThrowsPerExplosion - used);
-                List<KbCandidate> kept = RM_KnockbackMath.Prioritise(cands, cap);
-                var keptSet = new HashSet<int>();
-                foreach (KbCandidate c in kept)
+                int cap = g.Count;
+#if RM_PROOFS
+                if (ProofThrowCap > 0)
                 {
-                    keptSet.Add(c.index);
+                    // the old cap counted the whole wave, across the ticks it spreads over
+                    cap = Math.Min(cap, Math.Max(0, ProofThrowCap - ledger.Launched(id, Find.TickManager.TicksGame)));
                 }
-                for (int i = 0; i < g.Count; i++)
+#endif
+                List<KbCandidate> kept = RM_KnockbackMath.Prioritise(cands, cap);
+                if (kept.Count < g.Count)
                 {
-                    if (!keptSet.Contains(i))
+                    var keptSet = new HashSet<int>();
+                    foreach (KbCandidate c in kept)
                     {
-                        RM_KnockbackJournal.Add("skip", id, g[i].thing, "reason", "cap_per_explosion");
+                        keptSet.Add(c.index);
+                    }
+                    for (int i = 0; i < g.Count; i++)
+                    {
+                        if (!keptSet.Contains(i))
+                        {
+                            RM_KnockbackJournal.Add("skip", id, g[i].thing, "reason", "cap_per_explosion");
+                        }
                     }
                 }
                 foreach (KbCandidate c in kept)
@@ -336,7 +353,7 @@ namespace RimMandrake.ExplosiveKnockback
                     {
                         if (Execute(g[c.index]))
                         {
-                            ledger.AddLaunched(id, Find.TickManager.TicksGame);
+                            ledger.AddLaunched(id, Find.TickManager.TicksGame); // read only by the proof cap; a count, no limit
                         }
                     }
                     catch (Exception ex)
@@ -424,6 +441,85 @@ namespace RimMandrake.ExplosiveKnockback
                 "destroyed", t.Destroyed, "at", at);
         }
 
+        /// <summary>RIMMANDRAKE_THROW_CLOSED_CRATES_WHOLE_CONTENTS_RIDE_SAFE: goods inside a closed container take no blast
+        /// damage (read by the explosion prefix before the damage lands).</summary>
+        public static bool InClosedContainer(Thing t, Map map)
+        {
+            return map != null && t.Spawned && t.def.category == ThingCategory.Item && RM_KnockbackCompat.IsClosedContainer(t.Position.GetEdifice(map));
+        }
+
+        /// <summary>Would a Direct placement of t at c shove a resident stack? GenPlace's TryPlaceDirect merges first, then
+        /// spawns into a free item slot, but a stackLimit-1 thing (apparel, a weapon) is spawned even into a FULL cell, and
+        /// GenSpawn then moves a resident out (or destroys it with no free cell): the bump the owner's frozen station-4 blast
+        /// showed (RIMMANDRAKE_LAND_KNOCKBACK_GOODS_NEVER_BUMP_RESIDENTS). True when what can merge does not hold it all and
+        /// the cell's item slots are full.</summary>
+        internal static bool WouldBump(Thing t, IntVec3 c, Map map)
+        {
+            if (t.def.category != ThingCategory.Item || !c.InBounds(map))
+            {
+                return false;
+            }
+            int items = 0, room = 0;
+            List<Thing> l = c.GetThingList(map);
+            for (int i = 0; i < l.Count; i++)
+            {
+                Thing h = l[i];
+                if (h == t || h.def.category != ThingCategory.Item)
+                {
+                    continue;
+                }
+                items++;
+                if (h.CanStackWith(t))
+                {
+                    room += Math.Max(0, h.def.stackLimit - h.stackCount);
+                }
+            }
+            return room < t.stackCount && items >= c.GetMaxItemsAllowedInCell(map);
+        }
+
+        /// <summary>Lands a thrown stack (instant move and carrier alike) without ever moving a resident: Direct at dest only
+        /// when that bumps nothing, else Near dest (GenPlace's Near never picks a full cell), else Near the origin. Only when
+        /// all three fail is it spawned with VanishOrMoveAside (fallback), and then the residents it moved are counted.
+        /// residentsMoved is measured, not assumed: every item on dest before, compared after.</summary>
+        internal static Thing PlaceLanding(Thing t, IntVec3 dest, IntVec3 origin, Map map, out bool fallback, out int residentsMoved)
+        {
+            fallback = false;
+            var residents = new List<KeyValuePair<Thing, IntVec3>>();
+            foreach (Thing h in dest.GetThingList(map))
+            {
+                if (h != t && h.def.category == ThingCategory.Item)
+                {
+                    residents.Add(new KeyValuePair<Thing, IntVec3>(h, h.Position));
+                }
+            }
+            bool direct = !WouldBump(t, dest, map);
+#if RM_PROOFS
+            direct |= ProofDirectFirst;
+#endif
+            Thing placed = null;
+            if (!(direct && GenPlace.TryPlaceThing(t, dest, map, ThingPlaceMode.Direct, out placed))
+                && !GenPlace.TryPlaceThing(t, dest, map, ThingPlaceMode.Near, out placed)
+                && !GenPlace.TryPlaceThing(t, origin, map, ThingPlaceMode.Near, out placed))
+            {
+                // never vanish: no free cell anywhere near either end
+                if (!t.Spawned && !t.Destroyed)
+                {
+                    placed = GenSpawn.Spawn(t, dest, map, WipeMode.VanishOrMoveAside);
+                    fallback = true;
+                }
+            }
+            residentsMoved = 0;
+            foreach (KeyValuePair<Thing, IntVec3> kv in residents)
+            {
+                // a resident a stack merged INTO stays put; one moved aside or destroyed counts
+                if (kv.Key.Destroyed ? kv.Key != placed : (!kv.Key.Spawned || kv.Key.Position != kv.Value))
+                {
+                    residentsMoved++;
+                }
+            }
+            return placed ?? t;
+        }
+
         /// <summary>One throw. True when something actually moved.</summary>
         private bool Execute(KnockbackRequest r)
         {
@@ -435,7 +531,7 @@ namespace RimMandrake.ExplosiveKnockback
             }
             if (t is Building container)
             {
-                return ShoveContainer(r, container);
+                return ThrowContainer(r, container);
             }
             KbKind kind;
             float mass, bodySize;
@@ -491,6 +587,17 @@ namespace RimMandrake.ExplosiveKnockback
                 return false;
             }
             KbSettings s = r.config != null ? RimMandrakeExplosiveKnockbackSettings.Kernel(r.config) : RimMandrakeExplosiveKnockbackSettings.Kernel(r.ownCap);
+            if (pawn != null && r.gas)
+            {
+                // burning gas shoves a person one cell, at most once per gasPawnCooldownTicks (plan step 4)
+                int now = Find.TickManager.TicksGame;
+                if (gasShovedAt.TryGetValue(pawn.thingIDNumber, out int last) && now - last < RimMandrakeExplosiveKnockbackSettings.gasPawnCooldownTicks)
+                {
+                    RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", "gas_cooldown", "last", last);
+                    return false;
+                }
+                s.maxCells = Math.Min(s.maxCells, 1);
+            }
             if (pawn != null && r.shield != null && RimMandrakeExplosiveKnockbackSettings.shieldsAbsorbThrow)
             {
                 AbsorbByShield(r, pawn);
@@ -534,17 +641,17 @@ namespace RimMandrake.ExplosiveKnockback
             }
             if (pawn != null)
             {
-                return ThrowPawn(r, pawn, start, dest, res, mass);
+                bool thrown = ThrowPawn(r, pawn, start, dest, res, mass);
+                if (thrown && r.gas)
+                {
+                    gasShovedAt[pawn.thingIDNumber] = Find.TickManager.TicksGame;
+                }
+                return thrown;
             }
             if (!res.Moved)
             {
                 RM_KnockbackJournal.Add("blocked", r.explosionId, t, "from", start, "planned", cells, "stop", res.stop.ToString());
                 GoodsWallImpact(r, t, res, cells);
-                return false;
-            }
-            if (!itemBudget.TryTake(Find.TickManager.TicksGame, RimMandrakeExplosiveKnockbackSettings.maxItemThrowsPerMapTick))
-            {
-                RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", "cap_per_tick");
                 return false;
             }
             int count = t.stackCount;
@@ -568,24 +675,23 @@ namespace RimMandrake.ExplosiveKnockback
                 }
             }
             t.DeSpawn();
-            if (!GenPlace.TryPlaceThing(t, dest, map, ThingPlaceMode.Direct, out Thing placed)
-                && !GenPlace.TryPlaceThing(t, dest, map, ThingPlaceMode.Near, out placed))
-            {
-                GenPlace.TryPlaceThing(t, start, map, ThingPlaceMode.Near, out placed);
-            }
+            Thing placed = PlaceLanding(t, dest, start, map, out bool fallback, out int bumped);
             FleckMaker.ThrowDustPuff(dest, map, 1f);
             RM_KnockbackJournal.ItemMoves++;
-            RM_KnockbackJournal.Add("item_move", r.explosionId, t, "kind", kind.ToString(), "from", start, "to", placed?.Position ?? dest,
-                "planned", cells, "cells", res.cellsTravelled, "stop", res.stop.ToString(), "mass", mass, "count", count, "flying", false);
-            GoodsWallImpact(r, placed ?? t, res, cells);
+            RM_KnockbackJournal.Add("item_move", r.explosionId, t, "kind", kind.ToString(), "from", start, "to", placed.Spawned ? placed.Position : dest,
+                "planned", cells, "cells", res.cellsTravelled, "stop", res.stop.ToString(), "mass", mass, "count", count, "flying", false,
+                "residentsMoved", bumped, "spawnFallback", fallback);
+            GoodsWallImpact(r, placed, res, cells);
             return true;
         }
 
-        /// <summary>Owner ruling 2026-11-11, "(1) but the closed containers may themselves get shoved a bit" (plan step 2,
-        /// dl_container_shove): a 1x1 closed container at or under the light-mass limit (its own mass plus the goods on its
-        /// cell) slides one cell straight away from the blast when that cell is free open ground, carrying its goods;
-        /// anything else jolts in place. Never into a pit, a wall or onto a pawn. One journal "container" line each.</summary>
-        private bool ShoveContainer(KnockbackRequest r, Building b)
+        /// <summary>Owner, 2026-11-12 (RIMMANDRAKE_THROW_CLOSED_CRATES_WHOLE_CONTENTS_RIDE_SAFE): "the whole crate/chest would
+        /// go flying a bit, but their contents would remain inside and protected". A 1x1 closed container at or under
+        /// closedContainerMassLimit (its own mass, the goods on its cell and what it holds inside) flies as ONE carrier
+        /// with its goods: the kernel's item throw at that mass, so shorter than loose goods; never into a pit, it comes to
+        /// rest on the farthest free open cell of its path short of a person; with no such cell it jolts in place. One
+        /// journal "container" line each.</summary>
+        private bool ThrowContainer(KnockbackRequest r, Building b)
         {
             if (!RimMandrakeExplosiveKnockbackSettings.shoveClosedContainers || !RM_KnockbackCompat.IsClosedContainer(b))
             {
@@ -613,34 +719,67 @@ namespace RimMandrake.ExplosiveKnockback
                     mass += h.GetStatValue(StatDefOf.Mass) * h.stackCount;
                 }
             }
-            List<(int x, int z)> step = RM_KnockbackMath.Line(start.x, start.z, dx, dz, 1);
-            IntVec3 to = step.Count > 0 ? new IntVec3(step[0].x, 0, step[0].z) : start;
-            bool free = one && to != start && RM_KnockbackMath.ShoveCellFree(new RM_MapKbGrid(map, b, true).At(to.x, to.z), Occupied(to))
-                && !RM_KnockbackCompat.IsSuperdeep(map, to);
-            KbShove act = RM_KnockbackMath.ContainerShove(true, one, mass, RimMandrakeExplosiveKnockbackSettings.lightMassLimit, free);
-            if (act == KbShove.Slide)
+            int held = 0;
+            if (b is IThingHolder holder && holder.GetDirectlyHeldThings() is ThingOwner inside)
             {
-                Rot4 rot = b.Rotation;
-                foreach (Thing h in goods)
+                for (int i = 0; i < inside.Count; i++)
                 {
-                    h.DeSpawn();
-                }
-                b.DeSpawn();
-                GenSpawn.Spawn(b, to, map, rot);
-                foreach (Thing h in goods)
-                {
-                    GenSpawn.Spawn(h, to, map); // items never wipe a building (GenSpawn.SpawningWipes)
+                    mass += inside[i].GetStatValue(StatDefOf.Mass) * inside[i].stackCount;
+                    held++;
                 }
             }
-            FleckMaker.ThrowDustPuff(act == KbShove.Slide ? to : start, map, 1f);
-            RM_KnockbackJournal.Add("container", r.explosionId, b, "action", act == KbShove.Slide ? "slide" : "jolt",
-                "from", start, "to", act == KbShove.Slide ? to : start, "mass", mass, "goods", goods.Count, "oneByOne", one,
-                "behindFree", free);
-            return act == KbShove.Slide;
+            KbSettings s = r.config != null ? RimMandrakeExplosiveKnockbackSettings.Kernel(r.config) : RimMandrakeExplosiveKnockbackSettings.Kernel(r.ownCap);
+            s.intoPits = false; // an open pit is a wall for a container's path
+            float dist = (start - r.centre).LengthHorizontal;
+            float limit = RimMandrakeExplosiveKnockbackSettings.closedContainerMassLimit;
+            int planned = one && mass <= limit ? RM_KnockbackMath.ThrowCells(dist, r.radius, r.force, mass, s) : 0;
+            IntVec3 to = start;
+            int travelled = 0;
+            if (planned > 0)
+            {
+                var grid = new RM_MapKbGrid(map, b, true);
+                KbResult res = RM_KnockbackMath.Resolve(grid, start.x, start.z, dx, dz, planned, KbKind.Item, mass, s);
+                List<(int x, int z)> path = RM_KnockbackMath.Line(start.x, start.z, dx, dz, res.cellsTravelled);
+                for (int i = 0; i < path.Count; i++)
+                {
+                    var c = new IntVec3(path[i].x, 0, path[i].z);
+                    if (c.GetFirstPawn(map) != null)
+                    {
+                        break; // it does not fly through a person
+                    }
+                    if (ContainerCellFree(map, c, b))
+                    {
+                        to = c;
+                        travelled = i + 1;
+                    }
+                }
+            }
+            bool flew = false;
+            if (to != start)
+            {
+                flew = RM_ThingFlyer_Knockback.LaunchContainer(b, goods, map, start, to, travelled, dx, dz, mass, r.explosionId,
+                    r.config?.impactFactor ?? 1f, r.instigator) != null;
+            }
+            if (!flew)
+            {
+                FleckMaker.ThrowDustPuff(start, map, 1f);
+            }
+            RM_KnockbackJournal.Add("container", r.explosionId, b, "action", flew ? "thrown" : "jolt", "from", start, "to", flew ? to : start,
+                "planned", planned, "cells", flew ? travelled : 0, "mass", mass, "goods", goods.Count, "held", held, "oneByOne", one,
+                "overLimit", mass > limit);
+            return flew;
         }
 
-        /// <summary>A cell a shoved container may not enter: anything standing there but filth, grass and the like.</summary>
-        private bool Occupied(IntVec3 c)
+        /// <summary>A cell a thrown container may come to rest on: open ground (no wall, door, sandbag, water, pit or edge),
+        /// no pawn, nothing standing there but filth, grass and the like.</summary>
+        internal static bool ContainerCellFree(Map map, IntVec3 c, Thing self)
+        {
+            return c.InBounds(map) && RM_KnockbackMath.ShoveCellFree(new RM_MapKbGrid(map, self, true).At(c.x, c.z), Occupied(map, c))
+                && !RM_KnockbackCompat.IsSuperdeep(map, c);
+        }
+
+        /// <summary>A cell a thrown container may not land on: anything standing there but filth, grass and the like.</summary>
+        private static bool Occupied(Map map, IntVec3 c)
         {
             if (!c.InBounds(map))
             {
@@ -723,6 +862,50 @@ namespace RimMandrake.ExplosiveKnockback
                 return "in_pit"; // GPT #1 + "you can't climb out. Period."
             }
             return null;
+        }
+
+        /// <summary>RIMMANDRAKE_CHAIN_FLAMMABLE_GAS_CLUMPS (plan step 4): one clump of flammable gas burned at c. Not an
+        /// explosion: nothing is damaged (so no pit cover breaks and no belt is drained), but every pawn, corpse and loose
+        /// good within gasBurstRadius is queued like a blast's, at full force, goods capped at gasBurstGoodsCells and people
+        /// at one cell, shield belts ignored. Each burst has its own negative id. A journal "gas_burst" line each.</summary>
+        public static void GasBurst(Map map, IntVec3 c, Thing instigator, string source)
+        {
+            if (!RimMandrakeExplosiveKnockbackSettings.enabled || !RimMandrakeExplosiveKnockbackSettings.gasChain || map == null || !c.InBounds(map))
+            {
+                return;
+            }
+            RM_MapComponent_Knockback comp = map.GetComponent<RM_MapComponent_Knockback>();
+            if (comp == null)
+            {
+                return;
+            }
+            int id = -(++comp.gasBursts);
+            float radius = Mathf.Max(0.9f, RimMandrakeExplosiveKnockbackSettings.gasBurstRadius);
+            var cfg = new KbConfig { force = 1f, ownCap = Math.Max(1, RimMandrakeExplosiveKnockbackSettings.gasBurstGoodsCells), impactFactor = 0f, source = "gas" };
+            int now = Find.TickManager.TicksGame;
+            int n = 0;
+            foreach (IntVec3 cell in GenRadial.RadialCellsAround(c, radius, true))
+            {
+                if (!cell.InBounds(map))
+                {
+                    continue;
+                }
+                List<Thing> l = cell.GetThingList(map);
+                for (int i = 0; i < l.Count; i++)
+                {
+                    Thing t = l[i];
+                    if (t is Pawn || t is Corpse || t.def.category == ThingCategory.Item)
+                    {
+                        comp.Enqueue(new KnockbackRequest
+                        {
+                            explosionId = id, centre = c, radius = radius, damType = null, force = cfg.force, ownCap = cfg.ownCap,
+                            config = cfg, shield = null, instigator = instigator, thing = t, takeoff = t.Position, tick = now, gas = true,
+                        });
+                        n++;
+                    }
+                }
+            }
+            RM_KnockbackJournal.Add("gas_burst", id, null, "at", c, "source", source, "radius", radius, "queued", n);
         }
 
         private bool ThrowPawn(KnockbackRequest r, Pawn p, IntVec3 start, IntVec3 dest, KbResult res, float mass)

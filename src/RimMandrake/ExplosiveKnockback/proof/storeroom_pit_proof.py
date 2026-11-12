@@ -17,7 +17,7 @@ the proof tags as closed with RM_KnockbackProof.CloseStorage, since the next-loa
 Two arms, each reloading the save; every row can fail alone:
   SA  defaults, Hopper closed  -> SA_OPEN_SHELF_THROWN    every good on a shelf moved
                                   SA_CLOSED_GOODS_STAY    no good in the container thrown (at its start or carried)
-                                  SA_CONTAINER_RULE       one "container" line; slide = one cell, not pit/wall/pawn,
+                                  SA_CONTAINER_RULE       one "container" line; thrown = off its cell, not pit/pawn,
                                                           the goods with it; jolt = unmoved
                                   SA_NO_IN_STORAGE_SKIP   no "in_storage" skip line (the old rule is off)
   SC  enabled=False            -> SC_OFF_SHELF_GOODS_NOT_THROWN, SC_OFF_CONTAINER_STILL, SC_OFF_NO_CONTAINER_LINE
@@ -213,10 +213,11 @@ if a.storage:
         if len(cl) == 1 and S["container_after"]:
             l = cl[0]
             to, frm = tuple(l.get("to") or ()), tuple(l.get("from") or ())
-            if l.get("action") == "slide":
-                one = max(abs(to[0] - frm[0]), abs(to[1] - frm[1])) == 1 if to and frm else False
-                ok = (one and end == to and not in_pit(*to) and list(to) not in S["pawn_cells"]
-                      and all((v[2], v[3]) == to for v in S["held"].values() if v[2] is not None))
+            if l.get("action") == "thrown":
+                # owner 2026-11-12: thrown whole (RIMMANDRAKE_THROW_CLOSED_CRATES_WHOLE_CONTENTS_RIDE_SAFE); it lands on its
+                # planned cell or, if that filled meanwhile, the nearest free one, never in a pit or on a pawn, goods with it
+                ok = (bool(end) and end != frm and not in_pit(*end) and list(end) not in S["pawn_cells"]
+                      and all((v[2], v[3]) == end for v in S["held"].values() if v[2] is not None))
             elif l.get("action") == "jolt":
                 ok = end == frm == tuple(S["container"])
             det = "%s %s->%s after %s mass %s" % (l.get("action"), frm, to, end, l.get("mass"))

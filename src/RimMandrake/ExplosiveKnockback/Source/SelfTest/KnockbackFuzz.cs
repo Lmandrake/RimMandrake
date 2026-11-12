@@ -413,17 +413,6 @@ internal static class KnockbackFuzz
             Check(l0.TryAdd(1, 1, 5) && !l0.TryAdd(1, 1, 5), "a ledger built with window 0 divides by zero (the window is floored at 1)");
             var l2 = new KbExplosionLedger(10);
             Check(l2.TryAdd(1, 1, 50) && !l2.TryAdd(1, 1, 50) && l2.TryAdd(1, 1, 40), "a clock that goes backwards must start a fresh ledger");
-            // per-tick budget
-            var b = new KbTickBudget(); int tick = r.Next(0, 100); int used = 0, cap = r.Next(0, 6);
-            for (int i = 0; i < 60; i++)
-            {
-                if (r.Next(4) == 0) { tick += r.Next(1, 3); used = 0; cap = r.Next(0, 6); }
-                bool ok = b.TryTake(tick, cap);
-                Check(ok == (used < cap), $"budget at tick {tick}: took {ok} with {used}/{cap}");
-                if (ok) used++;
-                Check(b.Used(tick) == used, "budget Used()");
-                Check(b.Used(tick + 5) == 0, "Used() for another tick is not 0");
-            }
             // epicentre direction
             int ex2 = r.Next(-1000, 100000), th2 = r.Next(-1000, 100000);
             RM_KnockbackMath.EpicentreDir(ex2, th2, out float dx1, out float dz1);
