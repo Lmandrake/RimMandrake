@@ -85,7 +85,7 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "preserve",
-   "experience": "A blast never throws a pawn of body size 2.5 or more (the Mod Settings default; a weapon that sets its own body-size limit throws pawns under that limit instead), a pawn already in a pit, a pawn carrying another pawn, a pawn already airborne, or a pawn in bed, nor goods or a corpse heavier than 75 kg (the Mod Settings mass limit), a corpse of body size 2.5 or more, goods and corpses already on a pit floor, or a thing at the rim whose throw is under one cell, and the player sees them stay where they were.",
+   "experience": "A blast never throws a pawn of body size 2.5 or more (the Mod Settings default; a weapon that sets its own body-size limit throws pawns under that limit instead), a pawn already in a pit, a pawn carrying another pawn, a pawn already airborne, or a pawn in bed, nor goods or a corpse heavier than 75 kg (the Mod Settings mass limit, which weighs goods and corpses only, never a living pawn), a corpse of body size 2.5 or more, goods and corpses already on a pit floor, or a thing at the rim whose throw is under one cell, and the player sees them stay where they were.",
    "scenario": "Beside one grenade, same distance each: a thrumbo, a colonist on a pit floor, a colonist carrying a downed pawn, a colonist in a bed, a thrumbo corpse, a stack and a corpse on the pit floor, and a colonist whose airborne state is forced true by a test hook (a state read only); a plain colonist beside them. Then a thrumbo corpse and a corpse under body size 2.5 beside a grenade with the mass limit raised above the thrumbo corpse's mass, and a corpse under 2.5 but over 75 kg at default.",
    "false_pass": [
     "the blast reached none of them, so nothing was spared",
@@ -162,7 +162,7 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "preserve",
-   "experience": "A colonist thrown toward a wall stops dead on the cell before it, takes an impact hit, and the player never sees them rebound.",
+   "experience": "A colonist thrown toward a wall stops dead on the cell before it, takes an impact hit, and the player never sees them rebound or ease back off the wall, not even half a step.",
    "scenario": "A colonist two cells from a wall with the blast on the far side; read the landing cell, the impact damage and any second movement.",
    "false_pass": [
     "the colonist passes through the wall",
@@ -217,7 +217,7 @@
    "false_pass": [
     "the pawn passes the door",
     "the pawn lands in deep water",
-    "the door takes no damage"
+    "the door takes no damage under a weapon whose impact factor is above 0 with door damage on"
    ],
    "red": "a build where a throw crosses a closed door or lands in deep water",
    "tier_proposed": "live_minimal",
@@ -394,7 +394,7 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "change",
-   "experience": "Grenades, mortars and other bombs throw at full strength, fire and incendiary blasts at about half, and another mod's damaging explosion throws too, while the player sees EMP, smoke and other harmless bursts throw nothing.",
+   "experience": "Grenades, mortars and other bombs throw at full strength, fire and incendiary blasts at about half, and another mod's damaging explosion throws too (a modded damage type our patch already tunes, such as one of the fire type, keeps that tuning; the other-mods percent applies only to an untuned one, never stacked on it), while the player sees EMP, smoke and other harmless bursts throw nothing.",
    "scenario": "One colonist each beside a frag grenade, a burst of a damage type inheriting from Bomb (BombSuper), an incendiary shell, a modded damaging explosion, an EMP grenade, a smoke burst, a stun burst, an extinguish burst and a toxic gas burst, same distance; compare throw lengths and read each throw's strength from the journal.",
    "false_pass": [
     "fire blasts still throw nothing (the built force 0)",
@@ -472,14 +472,15 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "change",
-   "experience": "When a flammable gas cloud catches, the player sees it go off clump by clump as the fire runs through it, each small burst scattering the goods near it and shoving a pawn one cell without hurting them.",
+   "experience": "When a flammable gas cloud catches, the player sees it go off clump by clump as the fire runs through it, each small burst scattering the goods near it and shoving a pawn one cell without hurting them, the same pawn at most once every 2 seconds.",
    "scenario": "A 40-cell cloud of one named tagged gas over loose goods, with goods outside the cloud within 1.9 cells of its edge cells and goods beyond that, a colonist inside wearing a charged shield belt; light one edge; record each burst's cell and tick, goods moved, and the colonist's moves and damage.",
    "false_pass": [
     "the whole cloud goes off as one blast at its centre",
     "the gas only lights fires",
     "the colonist takes blast damage",
     "only goods under the cloud move",
-    "the shield belt stops the shove"
+    "the shield belt stops the shove",
+    "one pawn shoved again and again inside 2 seconds"
    ],
    "red": "a build with one centroid explosion, or none",
    "tier_proposed": "live_minimal",
@@ -554,7 +555,7 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "preserve",
-   "experience": "A pawn or a good thrown toward an open pit falls to its floor, one thrown onto a covered pit cell falls through and leaves the cover broken, and the player never sees anything thrown across a pit.",
+   "experience": "A pawn or a good thrown toward an open pit falls to its floor, one thrown onto a covered pit cell falls through and leaves the cover broken (a burning gas clump's one-cell shove is not a throw: a pawn it shoves onto a cover stands on it, the cover whole), and the player never sees anything thrown across a pit.",
    "scenario": "A colonist and a stack beside a 1-wide open pit with the blast on the far side; a raider beside another; a second colonist and stack thrown onto a covered pit cell; read where each lands and the cover's state.",
    "false_pass": [
     "the colonist is thrown over the pit to the far side",

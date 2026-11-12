@@ -19,10 +19,10 @@
 ## does
 - [leaf:people_thrown_three_cells] A mortar shell beside a colonist throws them about three cells straight away, over sandbags and barricades, alive and briefly stunned
 - [leaf:pawn_flight_arc] A thrown pawn is carried through the air to the cell chosen at the blast, never re-targeted, and goes back to work when the stun ends
-- [leaf:the_spared] Never thrown: body size 2.5 or more (the Mod Settings default; a weapon with its own body-size limit, like the grav-ram's 3.6, throws pawns under that limit instead), a pawn already in a pit, a pawn carrying a pawn, a pawn already airborne, a pawn in bed, goods or corpses heavier than 75 kg (the Mod Settings mass limit), a corpse of body size 2.5 or more, goods and corpses already on a pit floor, a thing at the rim whose throw is under one cell
+- [leaf:the_spared] Never thrown: body size 2.5 or more (the Mod Settings default; a weapon with its own body-size limit, like the grav-ram's 3.6, throws pawns under that limit instead), a pawn already in a pit, a pawn carrying a pawn, a pawn already airborne, a pawn in bed, goods or corpses heavier than 75 kg (the Mod Settings mass limit, which weighs goods and corpses only, never a living pawn), a corpse of body size 2.5 or more, goods and corpses already on a pit floor, a thing at the rim whose throw is under one cell
 - [leaf:recovery_immunity] A pawn just thrown is spared a second throw until its stun and a short recovery end, also across a save
 - [leaf:hose_drops_at_takeoff] A thrown colonist carrying a hose end drops it where they stood, owed a proof
-- [leaf:wall_stops_dead] A thrown person stops dead at a wall and takes an impact hit; people never rebound
+- [leaf:wall_stops_dead] A thrown person stops dead at a wall and takes an impact hit; people never rebound, not even half a step back
 - [leaf:pawn_hits_pawn_stops] A thrown person stops at another pawn in the way and takes an impact hit, as at a wall
 - [leaf:doors_and_deep_water_stop] A closed door stops a throw and takes damage (none under an impact factor of 0); deep water stops a throw on the last cell a pawn can stand on
 - [leaf:shield_belt_holds] A shield belt that absorbs the blast keeps its wearer in place and pays extra charge (a burning gas clump's one-cell shove is the exception: a belt does not stop it)
@@ -31,13 +31,13 @@
 - [leaf:open_shelf_scatters] Open shelves, racks and tables protect nothing. OWNER:1794468845275647261, owed
 - [leaf:closed_container_holds] Closed containers keep their goods and may themselves be shoved a little (one cell or a jolt, never into a pit, a wall or onto a pawn). OWNER:1794468845275647261, owed
 - [leaf:heavy_stack_knocks] A heavy thrown stack gives a pawn a light knock and a stagger; light goods pass. OWNER:1794468869384727517, owed
-- [leaf:every_harmful_blast_throws] Every harmful explosion throws: bombs full, fire at half strength (about half the throw), other mods too; harmless bursts nothing. OWNER:1794468840281537479, owed
+- [leaf:every_harmful_blast_throws] Every harmful explosion throws: bombs full, fire at half strength (about half the throw), other mods too (the other-mods percent only for a damage type our patch does not tune, never stacked); harmless bursts nothing. OWNER:1794468840281537479, owed
 - [leaf:only_explosions_throw] Only explosions throw; melee and bullets move nobody, by his 2026-10-06 answer
 - [leaf:per_weapon_tuning] A weapon's own tuning sets its throw, projectile first, then weapon, then damage type; zero turns it off; its own maximum caps the throw (0 = the global maximum) and the per-weapon cap scale shortens that own maximum; an impact factor of 0 makes its throws hit walls, pawns and doors harmlessly, the door undamaged; its own body-size limit lets it throw bigger pawns
 - [leaf:gas_goes_clump_by_clump] A lit flammable gas cloud goes off clump by clump, scattering goods and shoving people one cell unhurt, a person at most once every 2 seconds. OWNER:1794468860062036002, owed
 - [leaf:our_gases_burn] The Cauldron's gas and our other fitting gases carry the flammable tag. OWNER:1794468874358971350, owed
-- [leaf:blast_breaks_pit_cover] A damaging or fire blast breaks a pit cover and whoever is on it falls; a gas burst or an EMP, smoke or stun burst never does (a pawn a gas burst shoves onto a cover stands on it, the cover whole). OWNER:1794468860062036002
-- [leaf:thrown_into_pit_falls] Anything thrown toward an open pit falls to its floor, and onto a covered cell falls through and breaks the cover; nothing is thrown across
+- [leaf:blast_breaks_pit_cover] A damaging or fire blast that reaches a pit cover, landing on it or beside it within its radius, breaks it and whoever is on it falls; a gas burst or an EMP, smoke or stun burst never does (a pawn a gas burst shoves onto a cover stands on it, the cover whole). OWNER:1794468860062036002
+- [leaf:thrown_into_pit_falls] Anything thrown toward an open pit falls to its floor, and onto a covered cell falls through and breaks the cover (a gas clump's one-cell shove is not a throw and leaves a cover whole); nothing is thrown across
 - [leaf:pit_goods_fetched] A colonist can fetch thrown goods and corpses back off a pit floor, owed a proof
 - [leaf:barrage_frame_budget] A mortar barrage into a full stockpile and a long gas chain stay smooth at normal speed, owed
 - [leaf:frame_time_probe] A per-frame time probe, so the frame budget can be measured
