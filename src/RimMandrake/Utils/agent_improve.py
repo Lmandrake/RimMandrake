@@ -92,8 +92,12 @@ def norm_target(home):
     return h
 
 
-def piece(target, kind, ts, path, text):
-    return {"target": target, "kind": kind, "ts": ts, "path": path, "text": first_line(text)}
+def piece(target, kind, ts, path, text, item=None):
+    """`text` is the first line, for the packet. The task kind (design 4.3) is the kind of `item`, the piece's own
+    item when its source records one (a lesson's `item:` line), else of the first item named in the whole text, so a
+    lesson that names its item past its first 200 characters still names its source kind."""
+    return {"target": target, "kind": kind, "ts": ts, "path": path, "text": first_line(text),
+            "task_kind": kind_of_text(item) or kind_of_text(text)}
 
 
 def lesson_pieces(lessons_dir, lo, hi):
@@ -106,7 +110,7 @@ def lesson_pieces(lessons_dir, lo, hi):
             body = open(p, encoding="utf-8").read()
         except OSError:
             continue
-        out.append(piece(norm_target(lessons.home_of(p)), "lesson", t, p, body))
+        out.append(piece(norm_target(lessons.home_of(p)), "lesson", t, p, body, item=lessons.item_of(p)))
     return out
 
 
@@ -142,7 +146,9 @@ def relentless_pieces(store, lo, hi):
                 continue
             t = epoch(r.get("at"))
             if r.get("do") == "alarm" and t is not None and lo <= t < hi:
-                out.append(piece("relentless", "alarm:%s" % r.get("kind"), t, j, r.get("why") or r.get("kind")))
+                item = r.get("item") or re.sub(r"\.q\d+$", "", os.path.basename(r.get("clone") or ""))   # clones/<item>[.qN]
+                why = r.get("why") or r.get("kind")
+                out.append(piece("relentless", "alarm:%s" % r.get("kind"), t, j, "%s: %s" % (item, why) if item else why))
     return out
 
 
@@ -208,8 +214,13 @@ ITEM_TOKEN = re.compile(r"\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+){2,}\b")
 
 
 def task_kind(p):
-    """The intent word of the first item id named in a piece (BUILD, REPAIR, ...), else None."""
-    for tok in ITEM_TOKEN.findall(p.get("text") or ""):
+    """The intent word of the first item id named in a piece (BUILD, REPAIR, ...), else None. A collected piece carries
+    it read from its whole text; a bare {"text": ...} is read from that text."""
+    return p["task_kind"] if "task_kind" in p else kind_of_text(p.get("text"))
+
+
+def kind_of_text(text):
+    for tok in ITEM_TOKEN.findall(text or ""):
         parsed = model.parse_name(re.sub(r"_\d+$", "", tok))
         if parsed:
             return parsed[1]
@@ -665,7 +676,8 @@ def verdict_record(row, entry):
             "maker": "agent_improve Curator (fresh claude -p opus, no tools)",
             "judge_model": "fresh claude -p opus, no tools, blind to the Curator's reasoning",
             "verdict": row["verdict"], "reasons": row["judge"]["reasons"], "violated": row["judge"]["violated"],
-            "cites": [{"path": entry["pieces"][c]["path"], "text": entry["pieces"][c]["text"]} for c in row["cites"]],
+            "cites": [{"path": entry["pieces"][c]["path"], "text": entry["pieces"][c]["text"],
+                       "task_kind": task_kind(entry["pieces"][c])} for c in row["cites"]],
             "recheck": row["recheck"], "diff": row["diff"], "applied_sha": None, "tag": None}
 
 

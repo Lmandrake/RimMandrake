@@ -17,8 +17,9 @@ def check(name, cond, detail=""):
         print("FAIL: %s %s" % (name, detail))
 
 
-def run(root, *args):
-    env = dict(os.environ, LESSONS_ROOT=root)
+def run(root, *args, **env_over):
+    env = {k: v for k, v in os.environ.items() if k not in ("RIMFLOW_ITEM", "WC_ITEM")}   # hermetic: no session item
+    env.update(env_over, LESSONS_ROOT=root)
     return subprocess.run([sys.executable, LESSONS] + list(args), env=env, capture_output=True, text=True)
 
 
@@ -55,6 +56,31 @@ with tempfile.TemporaryDirectory() as root:
     check("add home no warn", "no --home" not in r.stderr and r.returncode == 0, r.stderr)
     newest = [n for n in sorted(os.listdir(d)) if "pi-rho" in n]
     check("home line written", newest and open(os.path.join(d, newest[0])).read().splitlines()[-1] == "home: skills/foo")
+
+    check("no session item, no item line", newest and "item:" not in open(os.path.join(d, newest[0])).read())
+
+    # item: the session's item from the environment, an explicit --item over it, NONE for none (design 4.3 kinds)
+    def body_of(word):
+        return open(os.path.join(d, [n for n in sorted(os.listdir(d)) if word in n][0])).read()
+    run(root, "add", "upsilon one", "--home", "foo", WC_ITEM="WIDGET_REPAIR_SHAPE")
+    check("item line from WC_ITEM, before home", body_of("upsilon").splitlines()[-2:]
+          == ["item: WIDGET_REPAIR_SHAPE", "home: foo"], body_of("upsilon"))
+    run(root, "add", "phi two", "--home", "foo", RIMFLOW_ITEM="GADGET_BUILD_FRAME", WC_ITEM="WIDGET_REPAIR_SHAPE")
+    check("RIMFLOW_ITEM first", "item: GADGET_BUILD_FRAME\n" in body_of("phi-two"), body_of("phi-two"))
+    run(root, "add", "chi three", "--home", "foo", "--item", "SPROCKET_AUDIT_TEETH", WC_ITEM="WIDGET_REPAIR_SHAPE")
+    check("--item over the environment", "item: SPROCKET_AUDIT_TEETH\n" in body_of("chi-three"), body_of("chi-three"))
+    run(root, "add", "psi four", "--home", "foo", "--item", "NONE", WC_ITEM="WIDGET_REPAIR_SHAPE")
+    check("--item NONE writes none", "item:" not in body_of("psi-four"), body_of("psi-four"))
+    run(root, "add", "omega five", "--home", "foo", WC_ITEM="not an id; rm -rf")
+    check("a malformed session item is ignored", "item:" not in body_of("omega-five"), body_of("omega-five"))
+    r = run(root, "add", "omega six", "--item", "lower_case")
+    check("a malformed --item refused", r.returncode != 0 and "not an item id" in (r.stderr + r.stdout), r.stderr)
+    sys.path.insert(0, HERE)
+    import lessons as L  # noqa: E402
+    check("item_of reads the line", L.item_of(os.path.join(d, [n for n in sorted(os.listdir(d)) if "upsilon" in n][0]))
+          == "WIDGET_REPAIR_SHAPE")
+    check("home_of still reads home after an item line",
+          L.home_of(os.path.join(d, [n for n in sorted(os.listdir(d)) if "upsilon" in n][0])) == "foo")
 
     r = run(root, "add", "alpha beta gamma delta", "--home", "NONE")
     check("dup hint", "possible duplicates:" in r.stdout and "alpha beta gamma" in r.stdout, r.stdout)

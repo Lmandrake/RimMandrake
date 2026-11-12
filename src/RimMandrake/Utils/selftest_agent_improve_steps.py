@@ -308,6 +308,57 @@ with tempfile.TemporaryDirectory() as tmp:
                              delegated_dir=delegated, pk_level=2)
     check("L2 apply refused without generalization", not ok and "generalization" in why, why)
 
+# design 4.3: below L2 a change records the kinds its lessons name anywhere, not only in the 200-character first line
+# the packet shows; a lesson naming no item stays kindless, and its record is still written (uncheckable by design)
+with tempfile.TemporaryDirectory() as tmp:
+    repo = os.path.join(tmp, "repo")
+    write(os.path.join(repo, "skills", "foo", "SKILL.md"), SKILL)
+    write(os.path.join(repo, "skills", "validate_skills.py"), "import sys\nsys.exit(0)\n")
+    sh(repo, "git", "init", "-q")
+    sh(repo, "git", "config", "user.email", "t@t")
+    sh(repo, "git", "config", "user.name", "t")
+    sh(repo, "git", "add", "-A")
+    sh(repo, "git", "commit", "-qm", "base")
+    A.REPO, A.ROLES, A.SKILLS = repo, os.path.join(repo, "src/RimMandrake/rimflow/roles"), os.path.join(repo, "skills")
+    changes, delegated, out = (os.path.join(repo, "infrastructure/state/agent_improve/changes"),
+                               os.path.join(repo, "infrastructure/state/delegated"), os.path.join(tmp, "out"))
+    les = os.path.join(tmp, "lessons")
+    pad = "The foo skill tells a worker to guess a defName from its label, and the guess is wrong for donor defs; " * 2
+    write(os.path.join(les, "20261101T080000Z-BENCH-named-late.md"),
+          pad + "it cost WIDGET_REPAIR_SHAPE a cold load.\nhome: foo\n")
+    write(os.path.join(les, "20261101T090000Z-FOUNDRY-names-none.md"),
+          "skills/foo/SKILL.md points at a decompiled tree that does not exist; decompile on demand.\nhome: foo\n")
+    write(os.path.join(les, "20261101T100000Z-CLAUDE_ARCHMAGI_OFFLINE1-stamped.md"),   # lessons.py add in a Whittle round
+          "Mentions WIDGET_REPAIR_SHAPE in passing; learned on another item.\nitem: GADGET_BUILD_FRAME\nhome: foo\n")
+    ent = A.target_entry("foo", 3, A.lesson_pieces(les, 0, 2 ** 31))
+    late, none, stamped = ([i for i, p in enumerate(ent["pieces"]) if p["path"].endswith(e)][0]
+                           for e in ("named-late.md", "names-none.md", "stamped.md"))
+    check("fixture: the item is past the packet's first line", "WIDGET" not in ent["pieces"][late]["text"],
+          ent["pieces"][late]["text"])
+
+    def kinded_apply(lvl, cite, line):
+        cur = open(os.path.join(repo, "skills/foo/SKILL.md")).read()
+        _nf, d, p = A.build_change(ent, A.resolve_target("foo"), cur,
+                                   dict(good, cites=[cite], edits=[{"old": "# Foo\n", "new": "# Foo\n\n" + line + "\n"}]))
+        r = {"target": "foo", "day": "2026-11-0%d" % (lvl + 2), "path": "skills/foo/SKILL.md", "verdict": "KEEP",
+             "judge": {"reasons": "r", "violated": None}, "cites": [cite], "recheck": "x", "diff": d}
+        ok, why = A.apply_change(r, ent, out, repo=repo, publish=fake_publish, changes_dir=changes,
+                                 delegated_dir=delegated, pk_level=lvl)
+        return ok, why, p
+
+    for lvl in (0, 1):
+        ok, why, p = kinded_apply(lvl, late, "- L%d: read the def." % lvl)
+        rec = json.load(open(os.path.join(changes, "foo_v%d.json" % (lvl + 1)))) if ok else {}
+        check("L%d records the kind a lesson names past its first line" % lvl, ok and not p
+              and rec["source_kinds"] == ["REPAIR"] and rec["pieces"][0].get("task_kind") == "REPAIR", (why, p, rec))
+    ok, why, p = kinded_apply(1, stamped, "- L1: stamped.")
+    rec = json.load(open(os.path.join(changes, "foo_v3.json"))) if ok else {}
+    check("a lesson's item: line is its kind, over an item its text names", ok and rec["source_kinds"] == ["BUILD"], (why, rec))
+    ok, why, p = kinded_apply(0, none, "- L0: decompile on demand.")
+    rec = json.load(open(os.path.join(changes, "foo_v4.json"))) if ok else {}
+    check("L0 applies a change from a lesson naming no item, recorded kindless", ok and rec["source_kinds"] == []
+          and rec["pieces"][0].get("task_kind", "absent") is None, (why, rec))
+
 # the ramp: one step per 10 passes, up below 0.3, down above 0.6
 with tempfile.TemporaryDirectory() as tmp:
     def fill(days, applied_every):

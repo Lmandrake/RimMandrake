@@ -60,7 +60,9 @@ with tempfile.TemporaryDirectory() as root:
           "# learned\n- 2026-11-01T08:00:00Z gen 2: the deploy plan needs --apply\n"
           "- 2026-10-30T08:00:00Z gen 1: older line\n")
     write(os.path.join(store, "journal.jsonl"),
-          json.dumps({"at": "2026-11-01T09:00:00Z", "do": "alarm", "kind": "remove_failed", "why": "gone"}) + "\n"
+          json.dumps({"at": "2026-11-01T09:00:00Z", "do": "alarm", "kind": "remove_failed", "why": "gone",
+                      "clone": "/r/clones/WIDGET_REPAIR_SHAPE.q2"}) + "\n"
+          + json.dumps({"at": "2026-10-20T09:00:00Z", "do": "alarm", "kind": "understaffed", "why": "breaker open"}) + "\n"
           + json.dumps({"at": "2026-11-01T09:00:00Z", "do": "tick"}) + "\n")
     write(alarms, json.dumps({"X": {"name": "OPS_X", "title": "disk full", "since": "2026-11-01T10:00:00Z"},
                               "Y": {"name": "OPS_Y", "title": "old", "since": "2026-10-01T10:00:00Z"}}))
@@ -77,6 +79,12 @@ with tempfile.TemporaryDirectory() as root:
     check("relentless counts rejects, learned, alarm; not finish or no-end",
           by.get("relentless", {}).get("kinds") == {"reject:blind_fail": 1, "reject:proof_weak": 1, "learned": 1,
                                                    "alarm:remove_failed": 1}, by.get("relentless", {}).get("kinds"))
+    al = [p for p in by.get("relentless", {}).get("pieces", []) if p["kind"] == "alarm:remove_failed"]
+    check("an alarm names its own item (clones/<item>[.qN]), so it carries that item's kind (4.3)",
+          al and al[0]["text"] == "WIDGET_REPAIR_SHAPE: gone" and A.task_kind(al[0]) == "REPAIR", al)
+    bare = A.relentless_pieces(store, A.day_bounds("2026-10-20")[0], A.day_bounds("2026-10-20")[1])
+    check("an alarm with no item keeps its bare why and no kind",
+          [(p["text"], A.task_kind(p)) for p in bare] == [("breaker open", None)], bare)
     check("skill-a recurs on the day", "skill-a" in names, names)
     check("skill-b recurs over the window", "skill-b" in names and by["skill-b"]["window_count"] == 2, names)
     check("skill-c lonely, not signalled", "skill-c" not in names and "skill-c" in pk["unsignalled"], pk["unsignalled"])

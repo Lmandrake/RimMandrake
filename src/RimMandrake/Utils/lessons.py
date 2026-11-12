@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """lessons.py — the lessons inbox, one file per lesson (git plan Phase 5, 2026-10-02).
 
-    python3 src/RimMandrake/Utils/lessons.py add "<the lesson, one paragraph>" [--seat BENCH] [--slug words] [--home <skill|doc path|NONE>]
+    python3 src/RimMandrake/Utils/lessons.py add "<the lesson, one paragraph>" [--seat BENCH] [--slug words] [--home <skill|doc path|NONE>] [--item <ID|NONE>]
     python3 src/RimMandrake/Utils/lessons.py render          # -> infrastructure/state/LESSONS_INBOX.md (gitignored view)
     python3 src/RimMandrake/Utils/lessons.py list            # count + newest paths
     python3 src/RimMandrake/Utils/lessons.py stats           # counts by seat/age/home; oldest undrained
@@ -16,7 +16,10 @@ would have silently resurrected (git plan §2.5).
 lesson. `LESSONS_INBOX.md` is a gitignored rendered view (listed in .gitignore, not
 tracked): rebuilt by `render` on demand; never edit it — an edit there is lost on
 the next render. A lesson's last line may be `home: <skill|doc path|NONE>`, its
-proposed durable home.
+proposed durable home. Before it may come `item: <ID>`, the item the lesson was learned on: --item, else the session's
+item from the environment (RIMFLOW_ITEM, which close_evidence also reads, or WC_ITEM, set by the Whittle loop for its
+round's one item). The daily agent-improvement pass reads a lesson's task kind from it (design
+daily_agent_improvement_2026-11-02.md 4.3); a lesson filed outside an item names none.
 """
 import argparse
 import os
@@ -28,6 +31,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.environ.get("LESSONS_ROOT") or os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 DIR = os.path.join(ROOT, "infrastructure", "state", "lessons")
 VIEW = os.path.join(ROOT, "infrastructure", "state", "LESSONS_INBOX.md")
+ITEM_ENV = ("RIMFLOW_ITEM", "WC_ITEM")
+ITEM_ID = re.compile(r"[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+")
 README = "README.md"
 
 
@@ -140,10 +145,30 @@ def print_stats(st):
         print("by home: " + ", ".join("%s=%d" % kv for kv in sorted(st["homes"].items())))
 
 
-def add(text, seat=None, slug=None, utc=None, home=None):
+def item_of(path):
+    """The `item:` line's id, or None."""
+    try:
+        with open(path, encoding="utf-8") as f:
+            for ln in f:
+                if ln.startswith("item:"):
+                    v = ln[5:].strip()
+                    return v if ITEM_ID.fullmatch(v) else None
+    except OSError:
+        pass
+    return None
+
+
+def add(text, seat=None, slug=None, utc=None, home=None, item=None):
     text = text.strip()
     if not text:
         sys.exit("FAIL: empty lesson.")
+    if item is None:   # the session's item; a malformed environment value is not an item
+        item = next((os.environ[k].strip() for k in ITEM_ENV if ITEM_ID.fullmatch(os.environ.get(k, "").strip())), "")
+    elif item.strip().upper() == "NONE":
+        item = ""
+    elif not ITEM_ID.fullmatch(item.strip()):
+        sys.exit("FAIL: --item %r is not an item id (or NONE)." % item)
+    item = item.strip()
     if not home:
         print("WARN: no --home given: say which skill/doc should own this lesson, or --home NONE",
               file=sys.stderr)
@@ -164,6 +189,8 @@ def add(text, seat=None, slug=None, utc=None, home=None):
     fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
     with os.fdopen(fd, "w", encoding="utf-8") as f:
         f.write(text + "\n")
+        if item:
+            f.write("item: %s\n" % item)
         if home:
             f.write("home: %s\n" % home.strip())
     return path
@@ -202,12 +229,13 @@ def main():
     a.add_argument("--seat")
     a.add_argument("--slug", help="a few words for the filename (default: from the text)")
     a.add_argument("--home", help="proposed durable home: a skill, a doc path, or NONE")
+    a.add_argument("--item", help="the item it was learned on (default: $RIMFLOW_ITEM, else $WC_ITEM); NONE for none")
     sub.add_parser("render", help="rebuild the gitignored (untracked) LESSONS_INBOX.md view")
     sub.add_parser("stats", help="counts by seat, age, home; oldest undrained lesson")
     sub.add_parser("list", help="count lessons and show the newest")
     args = ap.parse_args()
     if args.cmd == "add":
-        p = add(args.text, args.seat, args.slug, home=args.home)
+        p = add(args.text, args.seat, args.slug, home=args.home, item=args.item)
         print(os.path.relpath(p, ROOT))
         print("commit it: git commit %s -m 'lesson: …'" % os.path.relpath(p, ROOT))
     elif args.cmd == "render":
