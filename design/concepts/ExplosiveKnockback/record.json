@@ -654,7 +654,7 @@
   },
   {
    "id": "inv_caps",
-   "what": "Caps: 40 throws per explosion (pawns first) stays; the item overflow that is dropped and does not move is replaced by all-fly (d_c_all_fly, RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD, RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF)",
+   "what": "Caps: 40 throws per explosion (pawns first) and the per-tick item drop. Both are removed: his 'All of them fly' (d_c_all_fly) leaves no cap; frame time becomes a proven bar (barrage_frame_budget), not a limit",
    "impl": "present",
    "impl_evidence": [
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs"
@@ -663,11 +663,13 @@
    "proof_evidence": [
     "src/RimMandrake/ExplosiveKnockback/validation.py"
    ],
-   "scope": "approved",
+   "scope": "out",
    "source": [
     "src/RimMandrake/ExplosiveKnockback/",
     "design/validation_walks/RimMandrake/ExplosiveKnockback.md"
-   ]
+   ],
+   "proof_note": "contradicts d_c_all_fly",
+   "scope_note": "removed by d_c_all_fly (OWNER:1794468864684141079); removal in RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD (plan step 1), performance proven by RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF"
   },
   {
    "id": "inv_settings",
@@ -916,7 +918,155 @@
    "resolved": "ruled by d_q10_retrievable; build owed in RIMMANDRAKE_PROVE_PIT_GOODS_RETRIEVABLE"
   }
  ],
- "script_audit": [],
+ "script_audit": [
+  {
+   "scene": "calibration",
+   "lacks": [
+    "control: the same shell with the master switch off",
+    "start assertion of the carrier def RM_PawnFlyer_Knockback holding the pawn"
+   ],
+   "fix": "sc_mortar_throw",
+   "source": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::calibration"
+  },
+  {
+   "scene": "wall_stop",
+   "lacks": [
+    "control: the same throw with the wall removed lands 3 cells out"
+   ],
+   "fix": "sc_wall_stop",
+   "source": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::wall_stop"
+  },
+  {
+   "scene": "over_sandbags",
+   "lacks": [
+    "a barricade lane beside the sandbags",
+    "control: a lane with no line",
+    "start assertion that the line buildings spawned"
+   ],
+   "fix": "sc_over_sandbags",
+   "source": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::over_sandbags"
+  },
+  {
+   "scene": "items",
+   "lacks": [
+    "goods in the air, not a despawn-spawn hop (contradicts d_goods_fly)",
+    "a thing trace with spawn/despawn events"
+   ],
+   "fix": "sc_storeroom_mortar",
+   "source": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::items"
+  },
+  {
+   "scene": "shelf",
+   "lacks": [
+    "asserts the shelf skip, which d_c_wild removes",
+    "control: the same goods on the floor"
+   ],
+   "fix": "sc_open_storage",
+   "source": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::shelf"
+  },
+  {
+   "scene": "caps",
+   "lacks": [
+    "asserts the 40-throw cap, which d_c_all_fly removes",
+    "control: a 20-stack run proving moved is not instrument-capped"
+   ],
+   "fix": "sc_all_fly_no_cap",
+   "source": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::caps"
+  },
+  {
+   "scene": "tick_cap",
+   "lacks": [
+    "asserts the per-tick drop, which d_c_all_fly removes"
+   ],
+   "fix": "removed; sc_all_fly_no_cap and sc_barrage_perf take its place",
+   "source": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::tick_cap"
+  },
+  {
+   "scene": "heavy_skip",
+   "lacks": [
+    "asserts the too_heavy skip only; no control lane of a plain colonist"
+   ],
+   "fix": "sc_spared",
+   "source": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::heavy_skip"
+  },
+  {
+   "scene": "in_pit_skip",
+   "lacks": [
+    "control: a plain colonist in the same blast is thrown"
+   ],
+   "fix": "sc_spared",
+   "source": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::in_pit_skip"
+  },
+  {
+   "scene": "shield_counter",
+   "lacks": [
+    "control: shieldsAbsorbThrow off baseline (NOT YET RUN LIVE)"
+   ],
+   "fix": "sc_shield",
+   "source": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::shield_counter"
+  },
+  {
+   "scene": "immunity_window",
+   "lacks": [
+    "a save and reload inside the window",
+    "control: a third blast after the window throws (NOT YET RUN LIVE)"
+   ],
+   "fix": "sc_recovery",
+   "source": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::immunity_window"
+  },
+  {
+   "scene": "lookup_projectile",
+   "lacks": [
+    "control: no extension throws at the damage type value (NOT YET RUN LIVE)"
+   ],
+   "fix": "sc_lookup",
+   "source": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::lookup_projectile"
+  },
+  {
+   "scene": "emp_no_throw",
+   "lacks": [
+    "smoke, stun, extinguish and toxic gas lanes",
+    "control: the modded lane at percent 0 (NOT YET RUN LIVE)"
+   ],
+   "fix": "sc_blast_kinds",
+   "source": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::emp_no_throw"
+  },
+  {
+   "scene": "cover_breaks",
+   "lacks": [
+    "an incendiary cover lane",
+    "control: a cover with no pawn"
+   ],
+   "fix": "sc_cover_breaks",
+   "source": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::cover_breaks"
+  },
+  {
+   "scene": "pit_colonist",
+   "lacks": [
+    "a covered-cell landing",
+    "control: the pit filled in"
+   ],
+   "fix": "sc_pit_fall",
+   "source": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::pit_colonist"
+  },
+  {
+   "scene": "no_cross",
+   "lacks": [
+    "an ordered colonist across an open and a covered pit",
+    "control: a raider falling into a concealed pit, proving the journal sees a pathing fall"
+   ],
+   "fix": "sc_no_careless_fall",
+   "source": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::no_cross"
+  },
+  {
+   "scene": "settings_off",
+   "lacks": [
+    "control: the same scene with the switch on"
+   ],
+   "fix": "sc_settings_off",
+   "source": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::settings_off"
+  }
+ ],
  "failure_modes": [
   "It looks like teleporting, not a blast: goods blink to new cells under a dust puff, so the scatter he asked to watch (flying, spinning, bouncing loot) never happens, and every row reads green.",
   "It looks green but isn't: the live scenes were last green 2026-10-06 on a staged site with the old rules (shelf exemption, instant items); since then his 2026-11-10 rulings and the gas chain exist only on paper, so in a real raid the mod may not match what he ruled and nothing he walks would show which.",

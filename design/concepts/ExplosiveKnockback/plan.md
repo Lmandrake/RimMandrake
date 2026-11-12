@@ -11,7 +11,9 @@ Each step is one rimflow item, built by Relentless from the tree; none needs wor
    despawn and re-place hop at `src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs` (about line
    474) with a thrown-thing carrier that draws each good and corpse along an arc, spinning fast, rebounding off walls
    keeping about 70 percent per bounce until spent; throws about 1.6x the person kernel's distance. Remove the
-   per-tick overflow drop (`maxItemThrowsPerMapTick`): every good the wave reaches flies. The carrier survives a
+   per-tick overflow drop (`maxItemThrowsPerMapTick`) and the 40-throw per-explosion cap (`maxThrowsPerExplosion`):
+   his "All of them fly" (d_c_all_fly) leaves no cap, and frame time is a proven bar (item 6), not a limit; every
+   good the wave reaches flies (scene `sc_all_fly_no_cap`, inventory `inv_caps` scoped out). The carrier survives a
    save mid-air (one thing, never two). Walk row `caps.per_tick_item_cap_drops_overflow` flips. Leaves
    `goods_arc_spin_rebound`, `every_good_moves`, `no_teleport`; scene `sc_storeroom_mortar`.
 2. **Closed containers only, plus the shove** (`RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED`; d_c_closed_containers,
@@ -43,6 +45,13 @@ Each step is one rimflow item, built by Relentless from the tree; none needs wor
    `sc_pit_fetch`: a hauler fetches a thrown stack off a pit floor by the lowered ladder. If FlowWorks' haulers
    cannot (`RM_PitPathing.cs` routes non-held pawns around open pit cells), the fix is FlowWorks', filed from the
    finding.
+8. **Proof scenes with real controls** (`RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS`; the 17-row
+   `script_audit` in record.json). Rewrites `RM_KnockbackProof.cs` so every scene in scenes.json asserts its start
+   and runs its named control: edits calibration, wall_stop, over_sandbags (barricade lane), door_stop (deep-water
+   lane), shield_counter, immunity_window (reload), lookup_projectile, emp_no_throw (into `blast_kinds`), cover_breaks
+   (incendiary), pit_colonist (covered cell), settings_off; removes tick_cap and the caps/shelf/items assertions
+   that his answers reverse; adds pawn_arc, pawn_hits_pawn, spared_states (airborne state by a test hook, never a
+   live flight), settings_sweep, no_cross_ordered and hose_carry_drop. Runs the NOT YET RUN LIVE scenes live.
 
 ## Settled since
 

@@ -5,6 +5,7 @@
    "kind": "interaction",
    "features": [
     "people_thrown_three_cells",
+    "pawn_flight_arc",
     "goods_arc_spin_rebound",
     "every_good_moves",
     "open_shelf_scatters",
@@ -15,15 +16,18 @@
    "staged_by": "script",
    "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::storeroom_bomb_pit",
    "start": [
-    "a walled storeroom of open shelves, a closed crate and loose stacks (one of 10 kg or more), three colonists inside",
-    "an open pit along one side of the storeroom, one covered pit cell beside it",
-    "a per-tick trace of every thrown thing's drawn position, height and rotation, and a descent journal, are running"
+    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists storeroom_bomb_pit; INVALID otherwise)",
+    "FlowWorks loaded (asserted: Names reports flowworks=true; INVALID otherwise)",
+    "a walled 7x7 storeroom: open shelves of mixed goods along the north wall, a closed 1x1 crate of goods with a free cell behind it, loose stacks on the floor, and a 75-unit steel stack (over the 10 kg heavy threshold) placed on the ray from the impact cell to a colonist two cells beyond it",
+    "three colonists inside: one one cell east of the impact cell, two near the south wall",
+    "the storeroom's open south side gives onto an open pit two cells wide along it, with one covered pit cell in the same row",
+    "the thing trace (thing id, spawned state, drawn position, height, rotation, spawn and despawn events) and the descent journal are running (asserted: one test row each before the shell)"
    ],
-   "action": "a bomb (frag grenade or mortar shell) lands in the middle of the storeroom; step until every thrown thing is at rest",
-   "expect": "the colonists are thrown about three cells away from the blast; the goods on open shelves and floor fly with arc, spin and wall rebounds; the crate's contents stay and the crate is shoved at most one cell; some goods and at least one colonist end in the pit, one descent each; the heavy stack that reaches a colonist knocks them",
+   "action": "one high-explosive mortar shell lands on the impact cell in the middle of the storeroom; step until every thrown thing is at rest (at most 900 ticks)",
+   "expect": "the colonist one cell from the impact is carried through the air about three cells straight away from it and lands alive and stunned; the goods on the shelves and the floor fly with arc, spin and wall rebounds, every stack the blast reached moved; the crate's contents are unchanged and the crate slid at most one cell; the steel stack strikes the colonist in line, a 2 to 5 blunt hit and a stagger, and stops there; some goods and at least one colonist end on the pit floor with one descent each; whatever lands on the covered pit cell falls through and its cover is broken",
    "control": {
-    "case": "the same storeroom with the pit filled in",
-    "expect": "nothing descends; the same colonists and goods land on flat ground",
+    "case": "the same storeroom, colonists and shell with the pit filled in and the covered cell solid floor",
+    "expect": "nothing descends; the same colonists and goods land on flat ground on the cells the trace planned at launch",
     "rules_out": "anything reaching the pit by pathing or a careless walk rather than the throw"
    },
    "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
@@ -39,18 +43,19 @@
    "staged_by": "script",
    "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::calibration",
    "start": [
-    "quicktest map, minimal list, Explosive Knockback active (asserted: RM_KnockbackProof.Names lists calibration)",
-    "colonist healthy, standing, one cell from the impact point"
+    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists calibration; INVALID otherwise)",
+    "colonist healthy, standing, one cell from the impact point (asserted: position and no hediffs read before)"
    ],
    "action": "a mortar shell lands; step 300 ticks",
-   "expect": "the colonist lands 3 cells out along the blast ray, alive and stunned; journal reason thrown",
+   "expect": "the colonist lands 3 cells out along the blast ray, alive and stunned; one launch line, journal reason thrown, carried by RM_PawnFlyer_Knockback",
    "control": {
     "case": "the same shell with the master switch off (scene settings_off)",
     "expect": "the colonist takes the wave damage and does not move",
     "rules_out": "a vanilla stagger or a pawn walking away passing for a throw"
    },
    "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
-   "hold": "immediate"
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS"
   },
   {
    "id": "sc_over_sandbags",
@@ -61,17 +66,116 @@
    "staged_by": "script",
    "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::over_sandbags",
    "start": [
-    "a sandbag line two cells beyond the colonist along the ray"
+    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists over_sandbags; INVALID otherwise)",
+    "two lanes, each a colonist one cell from its impact point: a sandbag line two cells beyond in one lane, a barricade line in the other (asserted: both buildings spawned on their cells)",
+    "sandbagsStopThrow is off (asserted: setting read)"
    ],
-   "action": "a mortar shell lands; step 300 ticks",
-   "expect": "the colonist lands beyond the sandbags",
+   "action": "a mortar shell lands in each lane; step 300 ticks",
+   "expect": "both colonists land 3 cells out, past the line, on standable ground; journal stop Distance",
    "control": {
-    "case": "a wall in place of the sandbags (scene wall_stop)",
-    "expect": "the colonist stops before the wall",
-    "rules_out": "a throw that ignores every obstacle"
+    "case": "a third lane with no line, same shell and distance",
+    "expect": "the colonist lands on the same third cell",
+    "rules_out": "the line shortening or stopping the throw while the colonist still passes it"
    },
    "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
-   "hold": "immediate"
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS"
+  },
+  {
+   "id": "sc_pawn_arc",
+   "kind": "acceptance",
+   "requirement": [
+    "pawn_flight_arc"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::pawn_arc",
+   "start": [
+    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists pawn_arc; INVALID otherwise)",
+    "a colonist hauling (asserted: current job is a haul job), one cell from the impact point",
+    "a second pawn ordered to walk onto the colonist's planned landing cell, arriving after launch"
+   ],
+   "action": "a grenade lands; read every tick the colonist's holder, drawn position and job until 600 ticks after landing",
+   "expect": "mid-path the colonist is unspawned and held by a thing of def RM_PawnFlyer_Knockback whose drawn position lies strictly between the start and landing cells; it lands on the cell planned at launch (pawn-into-pawn impact if the walker stands there, no re-target); the stun ends within landingStunMax ticks and the colonist takes a job again",
+   "control": {
+    "case": "a debug teleport of a third pawn by the same distance, traced the same way",
+    "expect": "no RM_PawnFlyer_Knockback holder and no in-between drawn position on any tick",
+    "rules_out": "a teleport passing the arc check: the trace tells a carried arc from a hop"
+   },
+   "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS"
+  },
+  {
+   "id": "sc_spared",
+   "kind": "acceptance",
+   "requirement": [
+    "the_spared"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::spared_states",
+   "start": [
+    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists spared_states; INVALID otherwise)",
+    "FlowWorks loaded (asserted: Names reports flowworks=true; INVALID otherwise)",
+    "beside one grenade, all two cells from the impact: a thrumbo (body size 2.5 or more, asserted), a colonist on a pit floor, a colonist carrying a downed pawn, a colonist in a bed, and a colonist whose airborne state a test hook forces true (a state read only: nothing is launched)",
+    "a plain colonist at the same distance"
+   ],
+   "action": "the grenade lands; step 300 ticks",
+   "expect": "each spared pawn on its own cell, with journal skip reasons too_big, in_pit, carrying_pawn, in_bed and flying; the carried pawn has no request line",
+   "control": {
+    "case": "the plain colonist in the same blast",
+    "expect": "thrown, one launch line",
+    "rules_out": "the blast reaching none of them, which would pass the spared check with nothing spared"
+   },
+   "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS"
+  },
+  {
+   "id": "sc_recovery",
+   "kind": "acceptance",
+   "requirement": [
+    "recovery_immunity"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::immunity_window",
+   "start": [
+    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists immunity_window; INVALID otherwise)",
+    "a colonist standing two cells from an impact point; recoveryWindowTicks at its default (asserted: setting read)"
+   ],
+   "action": "grenade 1; a second grenade inside the window; then the same again with a save and reload between the two; a third grenade after the window ends",
+   "expect": "inside the window the second blast gives skip reason recovering and no second launch, before and after the reload",
+   "control": {
+    "case": "the third grenade after the window",
+    "expect": "the colonist is thrown again",
+    "rules_out": "the second blast simply missing or the colonist being unthrowable"
+   },
+   "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS"
+  },
+  {
+   "id": "sc_hose_drop",
+   "kind": "acceptance",
+   "requirement": [
+    "hose_drops_at_takeoff"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::hose_carry_drop",
+   "start": [
+    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists hose_carry_drop; INVALID otherwise)",
+    "FlowWorks loaded (asserted: Names reports flowworks=true; INVALID otherwise)",
+    "a colonist carrying a FlowWorks hose end (asserted: carried thing is the hose end), one cell from the impact point"
+   ],
+   "action": "a grenade lands; step 300 ticks",
+   "expect": "a launch line for the carrier; the hose end lies on the takeoff cell, connected and no longer carried; the carrier lands 3 cells out",
+   "control": {
+    "case": "the same blast with the carrier wearing a charged shield belt that absorbs it",
+    "expect": "skip reason shield; the carrier stays and still carries the hose end",
+    "rules_out": "a blast interrupting or downing the carrier, rather than the throw, dropping the hose"
+   },
+   "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS"
   },
   {
    "id": "sc_settings_off",
@@ -82,38 +186,44 @@
    "staged_by": "script",
    "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::settings_off",
    "start": [
-    "master switch off (asserted through RM_KnockbackProof.Settings)"
+    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists settings_off; INVALID otherwise)",
+    "master switch off (asserted: enabled read false after Settings)",
+    "a colonist one cell from the impact point"
    ],
-   "action": "a mortar shell lands beside a colonist",
-   "expect": "the blast still damages; nothing moves",
+   "action": "a mortar shell lands; step 300 ticks",
+   "expect": "no request and no launch line; the colonist stays",
    "control": {
     "case": "the same scene with the switch on (sc_mortar_throw)",
-    "expect": "the colonist is thrown",
-    "rules_out": "a switch that stops the damage too, or does nothing"
+    "expect": "the colonist is thrown 3 cells",
+    "rules_out": "a scene that throws nothing for any reason passing as the switch working"
    },
    "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
-   "hold": "immediate"
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS"
   },
   {
-   "id": "sc_spared",
+   "id": "sc_settings_sweep",
    "kind": "acceptance",
    "requirement": [
-    "people_thrown_three_cells"
+    "settings_scale_and_switch"
    ],
    "staged_by": "script",
-   "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::heavy_skip",
+   "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::settings_sweep",
    "start": [
-    "a body size 2.5 animal and a pawn already in a pit beside the blast (scene in_pit_skip for the second)"
+    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists settings_sweep; INVALID otherwise)",
+    "one staged lane: a colonist, an animal, a mech, a downed pawn, loose goods of 50 and 100 kg, a corpse, a 1x1 crate, a heavy stack and a tagged gas puff, each at a fixed cell (asserted)",
+    "every setting at default (asserted: Settings reset then read)"
    ],
-   "action": "a grenade lands",
-   "expect": "neither moves; journal reasons too_big and in_pit",
+   "action": "the same grenade over the lane once per changed setting: strength 0.5, maxThrowCells 2, ownCapScale 0.5, unpatchedHarmfulPercent 50, throwAnimals, throwMechanoids, throwDowned, throwItems and throwCorpses off, lightMassLimit 60, the heavy threshold raised over the stack, and each new part's switch off (goods in the air, the closed guard, the container shove, the heavy knock, the gas chain, fire at half)",
+   "expect": "each change alters only its own outcome: cells halved at strength 0.5, at most 2 cells, the cap scale and percent applied, each toggled kind skipped with its reason, the 100 kg good skipped over the mass limit, the stack no longer knocks, each switched-off part inert while everything else still throws",
    "control": {
-    "case": "a body size 1 animal at the same spot",
-    "expect": "it is thrown",
-    "rules_out": "a blast too weak to throw anything passing for the size rule"
+    "case": "the default run before and after the sweep",
+    "expect": "identical results in both, and every setting reads its default after",
+    "rules_out": "settings that drift or are left changed, or a lane that throws differently for some reason other than the setting"
    },
    "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
-   "hold": "immediate"
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS"
   },
   {
    "id": "sc_wall_stop",
@@ -124,17 +234,66 @@
    "staged_by": "script",
    "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::wall_stop",
    "start": [
-    "a wall two cells behind the colonist along the ray"
+    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists wall_stop; INVALID otherwise)",
+    "a colonist two cells from a wall, the impact on the far side (asserted: the wall cell is impassable)"
    ],
    "action": "a grenade lands; step 300 ticks",
-   "expect": "the colonist stops on the cell before the wall with impact damage above 0 and no further move",
+   "expect": "the colonist lands on the cell before the wall, journal stop Wall, impact damage above 0, no second move",
    "control": {
-    "case": "a closed door in place of the wall (scene door_stop)",
-    "expect": "the door takes a hit and the colonist stops before it",
-    "rules_out": "a path walk that never checks walls and only happens to stop short"
+    "case": "the same throw with the wall removed",
+    "expect": "the colonist lands 3 cells out",
+    "rules_out": "a throw too short to reach the wall passing as a wall stop"
    },
    "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
-   "hold": "immediate"
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS"
+  },
+  {
+   "id": "sc_pawn_hits_pawn",
+   "kind": "acceptance",
+   "requirement": [
+    "pawn_hits_pawn_stops"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::pawn_hits_pawn",
+   "start": [
+    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists pawn_hits_pawn; INVALID otherwise)",
+    "a colonist one cell from the impact, a standing pawn two cells beyond along the ray (asserted: both cells)"
+   ],
+   "action": "a grenade lands; step 300 ticks",
+   "expect": "the colonist lands on the cell before the standing pawn, journal stop Pawn, impact damage above 0",
+   "control": {
+    "case": "the same throw with no pawn in the way",
+    "expect": "the colonist lands 3 cells out",
+    "rules_out": "a short throw passing as a pawn stop"
+   },
+   "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS"
+  },
+  {
+   "id": "sc_door_water",
+   "kind": "acceptance",
+   "requirement": [
+    "doors_and_deep_water_stop"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::door_stop",
+   "start": [
+    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists door_stop; INVALID otherwise)",
+    "a colonist two cells from a closed wooden door, impact on the far side (asserted: door closed, hit points read)",
+    "a second colonist two cells from deep water, impact on the far side (asserted: the water cell is not standable)"
+   ],
+   "action": "a grenade in each lane; step 300 ticks",
+   "expect": "the first colonist lands before the door, journal stop Door, door hit points down; the second lands on the last standable cell, journal stop Water",
+   "control": {
+    "case": "the same throws with the door held open and the water cell filled",
+    "expect": "both colonists land 3 cells out",
+    "rules_out": "a short throw passing as a door or water stop"
+   },
+   "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS"
   },
   {
    "id": "sc_shield",
@@ -145,62 +304,111 @@
    "staged_by": "script",
    "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::shield_counter",
    "start": [
-    "a colonist wearing a full shield belt beside the blast (asserted energy)"
+    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists shield_counter; INVALID otherwise)",
+    "a colonist wearing a charged shield belt (asserted: energy read), two cells from the impact",
+    "shieldsAbsorbThrow on (asserted)"
    ],
-   "action": "a grenade lands",
-   "expect": "same cell after; belt energy drop larger than the plain absorb",
+   "action": "a grenade lands; step 300 ticks",
+   "expect": "the colonist stays on its cell, journal skip reason shield, energy drop larger than the plain absorb",
    "control": {
-    "case": "the same colonist without the belt",
-    "expect": "the colonist is thrown",
-    "rules_out": "a blast that throws nobody at all"
+    "case": "the same blast with shieldsAbsorbThrow off",
+    "expect": "the colonist is thrown and the belt pays only the plain absorb",
+    "rules_out": "the belt holding the wearer for some other reason, or every absorb costing extra anyway"
    },
    "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
-   "hold": "immediate"
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS"
   },
   {
    "id": "sc_storeroom_mortar",
    "kind": "acceptance",
    "requirement": [
     "goods_arc_spin_rebound",
-    "every_good_moves",
     "no_teleport"
    ],
    "staged_by": "script",
    "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::goods_fly_wild",
    "start": [
-    "a 5x5 stockpile of mixed goods and one corpse against a wall, no pawn inside",
-    "a per-tick trace of every thing's drawn position, height and rotation is running"
+    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists goods_fly_wild; INVALID otherwise)",
+    "a 5x5 stockpile of mixed goods and a corpse beside a wall (asserted: thing count per cell)",
+    "the thing trace with spawn and despawn events is running"
    ],
-   "action": "a mortar shell lands in the stockpile; step until every thrown thing is at rest",
-   "expect": "every stack the wave reached moved; each trace shows height above 0 mid-path, rotation changing and at least one wall rebound keeping about 0.7 of its speed; zero despawn-respawn pairs",
+   "action": "a mortar lands in the stockpile; step until all are at rest",
+   "expect": "each thrown thing's height rises above zero mid-path and its rotation changes; at least one rebounds off the wall with speed near 0.7 of before; no thing id despawns at one cell and spawns at another",
    "control": {
-    "case": "the same stockpile with the goods setting off",
-    "expect": "no good moves and the trace is empty",
-    "rules_out": "the built despawn and re-place hop, which also moves every stack but shows no height, spin or rebound"
+    "case": "the same trace over the shipped build's hop, run before the carrier lands (or forced by a debug hop)",
+    "expect": "every moved good shows as a despawn-spawn pair with no height",
+    "rules_out": "a trace too blind to see a hop passing as no hop"
    },
    "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
    "hold": "immediate",
    "entry_point_item": "RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD"
   },
   {
-   "id": "sc_shelves_and_crates",
+   "id": "sc_all_fly_no_cap",
    "kind": "acceptance",
    "requirement": [
-    "open_shelf_scatters",
+    "every_good_moves"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::all_fly_no_cap",
+   "start": [
+    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists all_fly_no_cap; INVALID otherwise)",
+    "a full 10x10 stockpile, one stack per cell, with three colonists among the stacks (asserted: 100 stacks spawned)"
+   ],
+   "action": "a mortar lands in the middle; step until all are at rest",
+   "expect": "stacks reached is over 40; stacks moved equals stacks reached; every colonist reached is thrown; one request per thing per explosion id; no cap_per_explosion, cap_per_tick or overflow line",
+   "control": {
+    "case": "the same mortar into a stockpile of 20 stacks",
+    "expect": "moved equals reached at 20",
+    "rules_out": "an instrument whose moved count is capped, so the 100-stack equality is real"
+   },
+   "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD"
+  },
+  {
+   "id": "sc_open_storage",
+   "kind": "acceptance",
+   "requirement": [
+    "open_shelf_scatters"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::open_storage",
+   "start": [
+    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists open_storage; INVALID otherwise)",
+    "a shelf, a weapon rack and a table each holding goods, beside a grenade impact (asserted: each holds its goods)"
+   ],
+   "action": "the grenade lands; step until at rest",
+   "expect": "every good on the open furniture moved; no in_storage line",
+   "control": {
+    "case": "the same goods on the floor at the same cells",
+    "expect": "the same goods moved the same way",
+    "rules_out": "furniture changing the throw while still emptying"
+   },
+   "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED"
+  },
+  {
+   "id": "sc_closed_containers",
+   "kind": "acceptance",
+   "requirement": [
     "closed_container_holds"
    ],
    "staged_by": "script",
-   "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::storage_closed",
+   "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::closed_containers",
    "start": [
-    "a shelf, a weapon rack and a table holding goods; a crate with a free cell behind it and a fridge against a wall, both holding goods",
-    "contents counted (asserted)"
+    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists closed_containers; INVALID otherwise)",
+    "FlowWorks loaded (asserted: Names reports flowworks=true; INVALID otherwise)",
+    "beside one grenade: 1x1 crates free-backed, wall-backed, pawn-backed and pit-backed, a 1x1 container over the mass limit, a fridge larger than 1x1 with a free cell behind, a locker, a deep storage unit, a hopper and a tagged modded container, each holding goods (asserted: each container def is loaded from the guard's census and the mod providing it is active, else that row INVALID)"
    ],
-   "action": "a grenade lands among them",
-   "expect": "the open furniture is emptied; the crate's and fridge's contents are unchanged; the crate moved one cell away, the fridge stayed and jolted",
+   "action": "the grenade lands; step until at rest",
+   "expect": "every container's contents unchanged; only the free-backed 1x1 crate under the mass limit slid one cell away from the blast; every other container stayed and jolted",
    "control": {
-    "case": "a crate with an open pit behind it",
-    "expect": "the crate stays and jolts; nothing falls",
-    "rules_out": "a shove that ignores what lies behind the container"
+    "case": "the same goods loose on the floor at the same cells",
+    "expect": "they fly",
+    "rules_out": "the blast being too weak to move goods at all, which would pass the hold check with nothing held"
    },
    "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
    "hold": "immediate",
@@ -215,14 +423,15 @@
    "staged_by": "script",
    "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::heavy_knock",
    "start": [
-    "a colonist two cells beyond a 75-steel stack and a 30-cloth stack along the ray"
+    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists heavy_knock; INVALID otherwise)",
+    "a colonist two cells beyond a 75-unit steel stack and a cloth stack on the blast ray (asserted: masses read, steel over the heavy threshold)"
    ],
-   "action": "a grenade lands",
-   "expect": "steel: 2 to 5 blunt damage and a stagger on the colonist, the stack stops at them; cloth: no damage, passes",
+   "action": "a grenade lands; step until at rest",
+   "expect": "steel: 2 to 5 blunt and a stagger on the colonist, the stack stops on the colonist's cell; cloth: passes, no damage",
    "control": {
-    "case": "the same with the colonist out of the path",
-    "expect": "no damage",
-    "rules_out": "the blast wave's own damage counted as the knock"
+    "case": "the same throw with the colonist out of the ray",
+    "expect": "the colonist takes no hit and the steel lands further out",
+    "rules_out": "the blast itself, not the stack, hurting the colonist"
    },
    "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
    "hold": "immediate",
@@ -237,37 +446,89 @@
    "staged_by": "script",
    "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::blast_kinds",
    "start": [
-    "four colonists, each one cell from a frag grenade, an incendiary shell, a modded damaging explosion (a test DamageDef from no mod of ours) and an EMP grenade"
+    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists blast_kinds; INVALID otherwise)",
+    "one colonist per lane, each two cells from its impact: frag grenade, incendiary shell, a modded damaging explosion (asserted: its mod active), EMP, smoke, stun, extinguish and toxic gas bursts",
+    "unpatchedHarmfulPercent at its default 100 (asserted)"
    ],
-   "action": "fire all four, one at a time",
-   "expect": "throw lengths: fire about half of frag, modded above 0, EMP 0 with no journal line",
+   "action": "each lane's burst; step 300 ticks",
+   "expect": "fire to frag throw length ratio near 0.5; the modded explosion's journal strength percent exactly 100; EMP, smoke, stun, extinguish and toxic gas each no request line and no move",
    "control": {
-    "case": "the EMP grenade alone (scene emp_no_throw)",
-    "expect": "nothing is thrown or enqueued",
-    "rules_out": "a force applied to every explosion whatever its harm"
+    "case": "the modded lane again at unpatchedHarmfulPercent 0",
+    "expect": "no throw",
+    "rules_out": "the modded blast throwing by some path other than the other-mods percent"
    },
    "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
    "hold": "immediate",
    "entry_point_item": "RIMMANDRAKE_THROW_ALL_HARMFUL_BLASTS"
   },
   {
+   "id": "sc_only_explosions",
+   "kind": "acceptance",
+   "requirement": [
+    "only_explosions_throw"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::only_explosions",
+   "start": [
+    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists only_explosions; INVALID otherwise)",
+    "a colonist standing, not in a recovery window (asserted)"
+   ],
+   "action": "a melee blow, then a rifle bullet, at the colonist; then a grenade two cells away",
+   "expect": "melee and bullet: no request line, no move",
+   "control": {
+    "case": "the grenade at the same colonist",
+    "expect": "thrown",
+    "rules_out": "the colonist being unthrowable, which would pass the melee and bullet checks with nothing tested"
+   },
+   "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_THROW_ALL_HARMFUL_BLASTS"
+  },
+  {
+   "id": "sc_lookup",
+   "kind": "acceptance",
+   "requirement": [
+    "per_weapon_tuning"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::lookup_projectile",
+   "start": [
+    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists lookup_projectile; INVALID otherwise)",
+    "explosions staged with a knockback extension on the projectile, on the weapon, on the damage type, a zero on the projectile, and one under ownCapScale 0.5 (asserted: extensions read back)"
+   ],
+   "action": "one colonist per explosion at the same distance; step 300 ticks",
+   "expect": "journal tuning source projectile, then weapon, then damage type; zero gives no throw (lookup_zero_wins); the cap scale halves the throw cells",
+   "control": {
+    "case": "the same explosion with no extension",
+    "expect": "throws at the damage type's value",
+    "rules_out": "every blast throwing alike whatever its tuning"
+   },
+   "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS"
+  },
+  {
    "id": "sc_gas_chain",
    "kind": "acceptance",
    "requirement": [
-    "gas_goes_clump_by_clump"
+    "gas_goes_clump_by_clump",
+    "no_teleport"
    ],
    "staged_by": "script",
    "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::gas_chain",
    "start": [
-    "a 40-cell flammable gas cloud over loose goods with a colonist inside it",
-    "the journal records each burst's cell and tick"
+    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists gas_chain; INVALID otherwise)",
+    "a 40-cell cloud of one named gas whose def carries the flammable tag (asserted: tag read)",
+    "goods under the cloud, goods outside it within 1.9 cells of an edge cell, and goods beyond that",
+    "a colonist inside wearing a charged shield belt",
+    "the thing trace with spawn and despawn events is running"
    ],
-   "action": "light one edge; step until the fire has run through",
-   "expect": "bursts follow the fire front one per clump cell; goods within about 1.9 cells of a burst moved at most 2 cells; the colonist moved 1 cell, no new injuries, at most once per 2 seconds",
+   "action": "light one edge; step until the cloud is spent",
+   "expect": "bursts on many ticks, one per clump cell, ordered by distance from the lit edge; goods within about 1.9 cells of a burst moved at most 2 cells, including those outside the cloud; goods beyond did not move; the colonist shoved 1 cell despite the belt, no new injuries, at most once per 2 s; no despawn-spawn pair",
    "control": {
-    "case": "a non-flammable gas cloud lit the same way",
-    "expect": "no bursts",
-    "rules_out": "one centroid explosion standing in for the chain"
+    "case": "a single scene-driven explosion of the same total strength at the cloud's centre",
+    "expect": "one burst tick, and the far goods move on that same tick",
+    "rules_out": "one centroid blast passing as a chain: the trace tells one burst from many"
    },
    "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
    "hold": "immediate",
@@ -282,14 +543,15 @@
    "staged_by": "script",
    "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::gas_census",
    "start": [
-    "the Cauldron's gas and each tagged gas of the census released over loose goods, one at a time"
+    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists gas_census; INVALID otherwise)",
+    "each gas in the census, the Cauldron's first, released over loose goods in turn (asserted: each def loaded and its mod active)"
    ],
-   "action": "light each",
-   "expect": "each tagged gas bursts clump by clump; the census list equals the gases that carry the tag",
+   "action": "light each cloud",
+   "expect": "each yields clump bursts; the census list equals the gases carrying the tag",
    "control": {
-    "case": "an untagged vanilla gas",
-    "expect": "no bursts",
-    "rules_out": "a chain wired to one test gas only"
+    "case": "an untagged gas lit the same way",
+    "expect": "burns with no bursts",
+    "rules_out": "fire alone scattering the goods"
    },
    "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
    "hold": "immediate",
@@ -304,41 +566,69 @@
    "staged_by": "script",
    "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::cover_breaks",
    "start": [
-    "a raider standing on a covered pit; a second covered pit under a flammable gas cloud"
+    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists cover_breaks; INVALID otherwise)",
+    "FlowWorks loaded (asserted: Names reports flowworks=true; INVALID otherwise)",
+    "three covered pits (asserted: cover hit points read), a raider on each of the first two"
    ],
-   "action": "a grenade on the first cover; light the gas over the second",
-   "expect": "the first cover is destroyed and one descent is recorded; the second cover's hit points are unchanged",
+   "action": "a grenade on the first cover, an incendiary shell on the second, a gas burst over the third",
+   "expect": "first and second covers destroyed, one descent each; third cover hit points unchanged, no descent",
    "control": {
-    "case": "EMP on a cover",
-    "expect": "the cover stands",
-    "rules_out": "a cover that breaks to anything, harmless or gas"
+    "case": "the same grenade on a fourth covered pit with no pawn",
+    "expect": "the cover is destroyed and no descent is recorded",
+    "rules_out": "a descent counted for a pawn that did not stand on a cover"
    },
    "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
    "hold": "immediate",
-   "entry_point_item": "RIMMANDRAKE_CHAIN_FLAMMABLE_GAS_CLUMPS"
+   "entry_point_item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS"
   },
   {
    "id": "sc_pit_fall",
    "kind": "acceptance",
    "requirement": [
-    "thrown_into_pit_falls",
+    "thrown_into_pit_falls"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::pit_colonist",
+   "start": [
+    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists pit_colonist; INVALID otherwise)",
+    "FlowWorks loaded (asserted: Names reports flowworks=true; INVALID otherwise)",
+    "a colonist and a stack beside a 1-wide open pit, blast on the far side",
+    "a second colonist and stack aimed at a covered pit cell (asserted: cover intact)"
+   ],
+   "action": "a grenade per lane; step until at rest",
+   "expect": "each lands in the first pit cell, one descent each; the covered cell's cover is broken",
+   "control": {
+    "case": "the same throws with the pit filled",
+    "expect": "they land on flat ground, no descent",
+    "rules_out": "a pit pulling things in by some path other than the throw"
+   },
+   "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS"
+  },
+  {
+   "id": "sc_no_careless_fall",
+   "kind": "acceptance",
+   "requirement": [
     "no_careless_fall"
    ],
    "staged_by": "script",
-   "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::no_cross",
+   "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::no_cross_ordered",
    "start": [
-    "a colonist and a stack beside a 1-wide open pit with the blast on the far side",
-    "FlowWorks active (asserted Names flowworks=True)"
+    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists no_cross_ordered; INVALID otherwise)",
+    "FlowWorks loaded (asserted: Names reports flowworks=true; INVALID otherwise)",
+    "a colonist ordered to walk to a cell across an open pit, a second across a covered pit (asserted: the order is the current job)"
    ],
-   "action": "a grenade lands; then order a second colonist to a cell across the pit",
-   "expect": "the thrown colonist and the stack land in the first pit cell, one descent each; the ordered colonist paths around",
+   "action": "step until each arrives or 2000 ticks",
+   "expect": "both arrive by a path round the pits; no descent",
    "control": {
-    "case": "the same throw with no pit",
-    "expect": "both land 3 cells out on flat ground",
-    "rules_out": "a pit that swallows the path walk early for some other reason"
+    "case": "a raider walking over a pit concealed from it",
+    "expect": "the raider falls, one descent",
+    "rules_out": "a descent journal blind to a pathing fall, which would pass with nothing seen"
    },
    "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
-   "hold": "immediate"
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS"
   },
   {
    "id": "sc_pit_fetch",
@@ -349,18 +639,43 @@
    "staged_by": "script",
    "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::pit_goods_fetch",
    "start": [
-    "a stack thrown onto a pit floor, a lowered ladder, a stockpile outside, a hauler colonist"
+    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists pit_goods_fetch; INVALID otherwise)",
+    "FlowWorks loaded (asserted: Names reports flowworks=true; INVALID otherwise)",
+    "a stack and a corpse thrown onto a pit floor with a lowered ladder (asserted: both on the pit floor)"
    ],
-   "action": "queue hauling; step up to a game day",
-   "expect": "the stack reaches the stockpile; the hauler used the ladder",
+   "action": "queue hauling; step up to one day",
+   "expect": "the stack reaches a stockpile and the corpse a grave or stockpile outside the pit; the hauler used the ladder",
    "control": {
     "case": "the same with the ladder raised",
-    "expect": "the stack stays and the hauler does not walk in",
-    "rules_out": "a hauler walking in by ordinary pathing"
+    "expect": "neither is fetched",
+    "rules_out": "goods reaching the stockpile by some path other than the ladder"
    },
    "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
    "hold": "immediate",
    "entry_point_item": "RIMMANDRAKE_PROVE_PIT_GOODS_RETRIEVABLE"
+  },
+  {
+   "id": "sc_frame_probe_check",
+   "kind": "acceptance",
+   "requirement": [
+    "frame_time_probe"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::frame_probe_selfcheck",
+   "start": [
+    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists frame_probe_selfcheck; INVALID otherwise)",
+    "the game unpaused at normal speed (asserted)"
+   ],
+   "action": "start the probe; one frame sleeps 100 ms by a test hook; fire one grenade into goods; stop the probe",
+   "expect": "one row per frame, rows per second near the frame rate; the sleeping frame shows as a row of at least 100 ms; rows carry the count of things in the air",
+   "control": {
+    "case": "the same with the game paused",
+    "expect": "rows marked paused, so a paused run cannot pass as smooth",
+    "rules_out": "a probe that samples once a second or records ticks, not frames"
+   },
+   "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF"
   },
   {
    "id": "sc_barrage_perf",
@@ -371,14 +686,17 @@
    "staged_by": "script",
    "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::barrage_perf",
    "start": [
-    "full list on Archmagi, a full 10x10 stockpile, a 40-cell gas cloud, frame_time_probe running"
+    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists barrage_perf; INVALID otherwise)",
+    "the full list on Archmagi (asserted: mod count and machine read)",
+    "a full 10x10 stockpile, a 40-cell tagged gas cloud",
+    "the frame probe running and its self-check passed"
    ],
-   "action": "a 6-shell mortar barrage, then light the cloud, at normal speed",
-   "expect": "worst frame at most 50 ms; a colonist thrown once is not thrown again until its stun plus recovery window ends",
+   "action": "a 6-shell mortar barrage into the stockpile, then light the chain, at normal speed",
+   "expect": "the worst frame across both events is at most 50 ms",
    "control": {
-    "case": "the same events with the goods setting off",
-    "expect": "worst frame well under the budget",
-    "rules_out": "a stall from something other than the thrown things"
+    "case": "the same events with the mod off",
+    "expect": "the baseline worst frame, so the cost is ours and not the scene's",
+    "rules_out": "a stall from the explosions themselves blamed on, or hidden by, the carrier"
    },
    "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
    "hold": "immediate",
@@ -393,16 +711,18 @@
    "staged_by": "script",
    "entry_point": "src/RimMandrake/ExplosiveKnockback/validation.py::walk_storeroom_raid",
    "start": [
-    "full list colony with a stocked storeroom of open shelves and crates, a covered pit trap, a gas source and a colonist carrying a hose end"
+    "full list colony (asserted: ModsConfig parsed, Explosive Knockback and FlowWorks active)",
+    "a stocked storeroom of open shelves and crates, a covered pit trap, a gas source (asserted)",
+    "the frame probe and tick-cost probe running"
    ],
-   "action": "a mortar raid; save mid-way and reload; repeat in a second order (gas first, then mortars)",
-   "expect": "journals of both orders agree on throws per blast; nothing duplicated or lost after the reload; frame budget held; the hose end dropped where the carrier stood",
+   "action": "a mortar raid with a grenadier; save while at least one thrown thing is in the air (asserted) and reload; repeat the raid in a second order, gas first, then mortars",
+   "expect": "mortar impacts and throws recorded inside the storeroom rect; the pit trap's cover broken by the grenade with a descent; journals of both orders agree on throws per blast; no duplicated or lost thing after the reload; frame budget held; the carrier's tick cost recorded",
    "control": {
-    "case": "the raid with the mod off",
-    "expect": "nothing is thrown",
-    "rules_out": "a raid that never reached the storeroom"
+    "case": "the same raid with the mod off",
+    "expect": "mortar impacts logged inside the storeroom rect and no throws",
+    "rules_out": "the raid never reaching the storeroom, which would pass the reload and order checks with nothing thrown"
    },
-   "restore": "the walk runs on a copy of the colony save; the original save is untouched",
+   "restore": "a save is made before the raid and reloaded after; the colony is a throwaway copy",
    "hold": "owner_review",
    "entry_point_item": "RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF"
   },
@@ -416,14 +736,16 @@
    "staged_by": "script",
    "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::gas_into_pit",
    "start": [
-    "a colonist one cell from an open pit inside a flammable gas cloud"
+    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists gas_into_pit; INVALID otherwise)",
+    "FlowWorks loaded (asserted: Names reports flowworks=true; INVALID otherwise)",
+    "a colonist on the edge cell of an open pit inside a tagged gas cloud (asserted)"
    ],
    "action": "light the cloud",
-   "expect": "the gas shove puts the colonist into the pit: one descent, no blast injury",
+   "expect": "the one-cell shove puts the colonist into the pit, one descent, no blast injuries",
    "control": {
-    "case": "the same with no pit",
-    "expect": "the colonist moves one cell, no descent",
-    "rules_out": "the colonist walking in by pathing"
+    "case": "the same with the cloud untagged",
+    "expect": "no shove and no descent",
+    "rules_out": "the fire or a panicked walk putting the colonist in"
    },
    "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
    "hold": "immediate",
@@ -434,12 +756,7 @@
   {
    "id": "storeroom_bomb_pit",
    "scenes": [
-    "sc_storeroom_bomb_pit",
-    "sc_storeroom_mortar",
-    "sc_shelves_and_crates",
-    "sc_mortar_throw",
-    "sc_heavy_knock",
-    "sc_pit_fall"
+    "sc_storeroom_bomb_pit"
    ],
    "exercises": [
     "inv_kernel",
@@ -450,7 +767,6 @@
     "inv_closed_guard",
     "inv_container_shove",
     "inv_heavy_knock",
-    "inv_caps",
     "inv_pits_receive"
    ],
    "source": [
@@ -465,93 +781,112 @@
    "capability": "inv_items_teleport",
    "by": [
     "no_teleport",
-    "sc_storeroom_mortar"
+    "sc_storeroom_mortar",
+    "sc_gas_chain"
    ],
-   "why": "scoped out and to be replaced by the carrier; its check is zero despawn-respawn pairs in the goods trace"
+   "why": "scoped out and replaced by the carrier; its check is zero despawn-spawn pairs in the thing trace, whose control shows the trace sees the hop"
   },
   {
    "capability": "inv_shelf_skip",
    "by": [
     "open_shelf_scatters",
-    "sc_shelves_and_crates"
+    "sc_open_storage"
    ],
    "why": "scoped out; its check is that open furniture is emptied and no in_storage line remains"
   },
   {
-   "capability": "inv_shield",
+   "capability": "inv_caps",
    "by": [
-    "sc_shield"
+    "every_good_moves",
+    "sc_all_fly_no_cap"
    ],
-   "why": "one colonist and one belt; nothing new for a showcase to add"
-  },
-  {
-   "capability": "inv_settings",
-   "by": [
-    "sc_settings_off"
-   ],
-   "why": "a switch is a yes or no; the proof scene reads it"
+   "why": "scoped out: the 40-throw per-explosion cap and the per-tick drop are removed by his all-fly answer; its check is over 40 things reached and all moved with no cap line"
   },
   {
    "capability": "inv_who_is_spared",
    "by": [
+    "the_spared",
     "sc_spared"
    ],
-   "why": "an absence; one scene reads both journal reasons"
+   "why": "a lane of spared states beside one blast with a plain-colonist control is the cheaper cover"
+  },
+  {
+   "capability": "inv_shield",
+   "by": [
+    "shield_belt_holds",
+    "sc_shield"
+   ],
+   "why": "one belt beside one grenade with the absorb-off baseline"
+  },
+  {
+   "capability": "inv_recovery",
+   "by": [
+    "recovery_immunity",
+    "sc_recovery"
+   ],
+   "why": "two grenades on one colonist, with a reload between, and a third after the window"
+  },
+  {
+   "capability": "inv_settings",
+   "by": [
+    "settings_scale_and_switch",
+    "sc_settings_sweep",
+    "sc_settings_off"
+   ],
+   "why": "one lane re-run per setting is cheaper than staging settings in a showcase"
+  },
+  {
+   "capability": "inv_pit_floor_haul",
+   "by": [
+    "pit_goods_fetched",
+    "sc_pit_fetch"
+   ],
+   "why": "a haul off a pit floor takes up to a day of game time, too slow for a showcase"
+  },
+  {
+   "capability": "inv_hose_drop",
+   "by": [
+    "hose_drops_at_takeoff",
+    "sc_hose_drop"
+   ],
+   "why": "one carrier beside one grenade with a shielded control"
   },
   {
    "capability": "inv_proof_scenes",
    "by": [
     "sc_mortar_throw",
     "sc_wall_stop",
-    "sc_pit_fall"
+    "sc_door_water",
+    "sc_pit_fall",
+    "sc_no_careless_fall"
    ],
-   "why": "the proof scenes are the instrument every scene stands on"
-  },
-  {
-   "capability": "inv_hose_drop",
-   "by": [
-    "sc_walk_raid"
-   ],
-   "why": "no scene carries a hose yet; the walk's colonist carrying a hose end is its first check"
+   "why": "the proof scenes are the instrument; each rewritten scene names its control"
   },
   {
    "capability": "inv_gas_chain",
    "by": [
+    "gas_goes_clump_by_clump",
     "sc_gas_chain",
-    "gas_goes_clump_by_clump"
+    "sc_gas_shove_into_pit"
    ],
-   "why": "his flagship (d_c_flagship) is the only showcase; the other candidates stay ordinary scenes, which check this directly"
+   "why": "his flagship is a bomb, not gas; the chain is an ordinary scene"
   },
   {
    "capability": "inv_gas_tags",
    "by": [
-    "sc_cauldron_gas",
-    "our_gases_burn"
+    "our_gases_burn",
+    "sc_cauldron_gas"
    ],
-   "why": "his flagship (d_c_flagship) is the only showcase; the other candidates stay ordinary scenes, which check this directly"
+   "why": "a census run over each tagged gas"
   },
   {
    "capability": "inv_perf_all_fly",
    "by": [
+    "barrage_frame_budget",
     "sc_barrage_perf",
-    "barrage_frame_budget"
+    "sc_frame_probe_check"
    ],
-   "why": "his flagship (d_c_flagship) is the only showcase; the other candidates stay ordinary scenes, which check this directly"
-  },
-  {
-   "capability": "inv_pit_floor_haul",
-   "by": [
-    "sc_pit_fetch",
-    "pit_goods_fetched"
-   ],
-   "why": "his flagship (d_c_flagship) is the only showcase; the other candidates stay ordinary scenes, which check this directly"
-  },
-  {
-   "capability": "inv_recovery",
-   "by": [
-    "sc_barrage_perf"
-   ],
-   "why": "a barrage hits the same colonist repeatedly, so the re-throw immunity is read there"
+   "why": "frame time is a full-list measurement, not a watchable scene"
   }
  ]
 }
