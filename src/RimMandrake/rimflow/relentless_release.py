@@ -64,7 +64,7 @@ def is_pinned(path):
 def git(cwd, *args, check=True, stdin=None, text=True, timeout=300):
     r = subprocess.run(["git", "-C", cwd, *args], capture_output=True, text=text, timeout=timeout, input=stdin)
     if check and r.returncode:
-        raise Refused("git %s: %s" % (" ".join(args), (r.stderr if text else r.stderr.decode(errors="replace"))[:300]))
+        raise Refused("git %s: %s" % (" ".join(args), (r.stderr if text else r.stderr.decode(errors="replace"))))
     return r
 
 
@@ -316,7 +316,7 @@ def write_tree(books, sha, dest):
     feed = "".join(b + "\n" for _, _, b in blobs).encode()
     p = subprocess.run(["git", "-C", books, "cat-file", "--batch"], input=feed, capture_output=True, timeout=300)
     if p.returncode:
-        raise Refused("git cat-file: %s" % p.stderr.decode(errors="replace")[:300])
+        raise Refused("git cat-file: %s" % p.stderr.decode(errors="replace"))
     data, at = p.stdout, 0
     for path, mode, blob in blobs:
         nl = data.index(b"\n", at)
@@ -350,14 +350,14 @@ def smoke_tree(tree, books):
         r = subprocess.run([sys.executable, "-c", code], cwd=here, env=env, capture_output=True, text=True,
                            timeout=SMOKE_S, stdin=subprocess.DEVNULL)
         if r.returncode:
-            return "imports: %s" % r.stderr.strip()[-400:]
+            return "imports: %s" % r.stderr.strip()
         if os.path.realpath(r.stdout.strip().splitlines()[-1]) != os.path.realpath(books):
-            return "the tree reads its data from %s, not %s" % (r.stdout.strip()[-200:], books)
+            return "the tree reads its data from %s, not %s" % (r.stdout.strip(), books)
         once = os.path.join(here, "selftest_relentless_tick_once.py")
         r = subprocess.run([sys.executable, once], cwd=here, env=env, capture_output=True, text=True, timeout=SMOKE_S,
                            stdin=subprocess.DEVNULL)
         if r.returncode:
-            return "one scratch tick: %s" % r.stdout.strip()[-400:]
+            return "one scratch tick: %s" % r.stdout.strip()
     except subprocess.TimeoutExpired as e:
         return "timed out after %s s: %s" % (SMOKE_S, e.cmd[1][:60])
     return None

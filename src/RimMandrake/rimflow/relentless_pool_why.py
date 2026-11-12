@@ -120,7 +120,7 @@ def _survey(r, verdict, now, fx):
         elif "first_touch" in rs:
             note = fx.first_touch_hold(i) or ""
         elif "blocked" in rs or "parked_by_owner" in rs:
-            note = (it.blocked_reason or "")[:100]
+            note = (it.blocked_reason or "")
         rows.append((place, i, rs, i in pool, note))
     return rows, fx._health["why"]
 

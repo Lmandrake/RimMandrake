@@ -79,8 +79,8 @@ def probe(claude, timeout=30):
         return (True, "") if state else (False, "auth status says not logged in")
     said = "%s %s" % (r.stdout, r.stderr)
     if r.returncode != 0 and GONE_RX.search(said):
-        return False, "auth status exited %d: %s" % (r.returncode, said.strip()[:120])
-    return None, "auth status unreadable (exit %d): %s" % (r.returncode, said.strip()[:120])
+        return False, "auth status exited %d: %s" % (r.returncode, said.strip())
+    return None, "auth status unreadable (exit %d): %s" % (r.returncode, said.strip())
 
 
 def healthy_logins(cfg, live, lent, now, rule=None):
@@ -334,7 +334,7 @@ def run_switch(a, fx=None):
         r = subprocess.run(argv, capture_output=True, text=True, timeout=30)
     except (OSError, subprocess.TimeoutExpired) as e:
         return "FAILED: %s" % type(e).__name__
-    return ("started: " if r.returncode == 0 else "FAILED: ") + (r.stderr or r.stdout).strip()[:200]
+    return ("started: " if r.returncode == 0 else "FAILED: ") + (r.stderr or r.stdout).strip()
 
 
 def write_rescue(a):

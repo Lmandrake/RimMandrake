@@ -221,7 +221,7 @@ def _git(clone, *args):
     r = subprocess.run(["git", "--no-optional-locks", "-c", "core.quotepath=off", *args], cwd=clone,
                        capture_output=True, timeout=60, stdin=subprocess.DEVNULL)
     if r.returncode:
-        raise RuntimeError(r.stderr.decode("utf-8", "replace")[-200:])
+        raise RuntimeError(r.stderr.decode("utf-8", "replace"))
     return r.stdout
 
 
@@ -358,7 +358,7 @@ def watch(store, fx, r, now, acts, fail):
         try:
             one = fx.circling_tree(st, outputs_of(tools))
         except (RuntimeError, OSError, ValueError, subprocess.SubprocessError) as e:
-            one = {"unmeasured": str(e)[:200]}
+            one = {"unmeasured": str(e)}
         store._append(os.path.join(store.item_dir(item), "circling.jsonl"),
                       json.dumps(dict(with_delta(store, item, gen, one), at=now, gen=gen, clone=st["clone"])))
         samples = samples_of(store, item, gen)

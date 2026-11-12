@@ -106,7 +106,7 @@ def _sanity_step(S, rec, act):
         if row.get("problems"):
             act(do="alarm", kind="scratch:sanity:" + end, note=True, conductor_log=True, raise_first=first,
                 why="scratch cleaner, %s of run: %s; item OPS_SCRATCH_DIRT_MEASURE_AT_%s" % (
-                    end, "; ".join(str(p) for p in row["problems"] + (row.get("residual") or []))[:400], end.upper()))
+                    end, "; ".join(str(p) for p in row["problems"] + (row.get("residual") or [])), end.upper()))
 
 
 def plan(cfg, unit, timers):
@@ -150,7 +150,7 @@ def _files_step(cfg, alarms, act):
         tries = a.get("tries")
         if isinstance(tries, int) and tries >= cfg["file_tries"]:
             act(do="alarm", kind="ops:file_failed:" + aid, note=True, conductor_log=True,
-                why="ops_watch could not file alarm %s after %d tries: %s" % (aid, tries, str(a["error"])[:160]),
+                why="ops_watch could not file alarm %s after %d tries: %s" % (aid, tries, str(a["error"])),
                 raise_first="An ops alarm is unfiled because its filer is broken.")
 
 
@@ -168,7 +168,7 @@ def _flags_step(cfg, S, flags, now, act, ts):
         seen[key] = now
         extra = {"conductor_log": True, "raise_first": "A trend has stood for days and its Operations note did not move it."} if told else {}
         act(do="alarm", kind="ops:flag:%s" % key, note=True,
-            why="ops flag %s has stood %.0f h: %s" % (key, (now - at) / 3600.0, str(f.get("detail"))[:160]), **extra)
+            why="ops flag %s has stood %.0f h: %s" % (key, (now - at) / 3600.0, str(f.get("detail"))), **extra)
 
 
 def step(sch, st, obs, now, act, iso, ts):
@@ -186,7 +186,7 @@ def step(sch, st, obs, now, act, iso, ts):
             fn()
         except Exception as e:  # noqa: BLE001
             act(do="alarm", kind="signal:" + name, note=True, conductor_log=True,
-                why="signal watch: %s raised %s: %s" % (name, type(e).__name__, str(e)[:200]),
+                why="signal watch: %s raised %s: %s" % (name, type(e).__name__, str(e)),
                 raise_first="A signal watch is blind.")
 
     def blind(name, why):
@@ -241,5 +241,5 @@ def repair(a, fx=None):
         except (OSError, subprocess.TimeoutExpired) as e:
             return "FAILED: %s: %s" % (args[0], type(e).__name__)
         if r.returncode != 0:
-            return "FAILED: %s: %s" % (args[0], (r.stderr or "").strip()[:160])
+            return "FAILED: %s: %s" % (args[0], (r.stderr or "").strip())
     return "repaired: %s %s" % (a["how"], a["unit"])

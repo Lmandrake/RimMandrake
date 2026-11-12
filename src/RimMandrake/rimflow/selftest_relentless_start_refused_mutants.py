@@ -15,12 +15,12 @@ WIRED = "t_refused_start_reason_reaches_hold"
 TESTS = [HELD, WIRED]
 
 START = "return None if r.returncode == 0 else refusal_words(r)"
-HOLD_WHY = '"start refused %d times: %s" % (cur["start_refusals"], str(why)[:200])'
+HOLD_WHY = '"start refused %d times: %s" % (cur["start_refusals"], str(why))'
 PUT_DOWN = 'put_down = cur["status"] == "queued" and cur["start_refusals"] >= r.get("start_refused_put_down", 3)'
 HOLD_STATUS = '"start_refused", now)\n                        cur["status"] = "held"'
 UNHOLD = 'st["hold"].get("kind") == "start_refused":    # what refused is fixed, or its wait starts over\n            st.pop("start_refusals", None)'
 LANDED = '            st.pop("start_refusals", None)      # the count is of refusals in a row\n'
-CUT = '    head = out.splitlines()[0][:cap // 2]\n    return "%s ... %s" % (head, out[-(cap - len(head) - 5):])'
+CUT = '    return (r.stderr or r.stdout or "").strip()\n'
 
 # name, [(text, replacement), ...], the tests that must go red
 MUTANTS = [
@@ -28,7 +28,7 @@ MUTANTS = [
     ("ledger_start takes every exit for a refusal", [(START, "return refusal_words(r) or 'refused'")], [WIRED]),
     ("the hold's why loses the refusal", [(HOLD_WHY, '"start refused %d times" % cur["start_refusals"]')], [HELD, WIRED]),
     ("the hold's why keeps the refusal's tail", [(HOLD_WHY, '"start refused %d times: %s" % (cur["start_refusals"], str(why)[-200:])')], [WIRED]),
-    ("refusal_words cuts the tail only", [(CUT, "    return out[-cap:]")], [HELD, WIRED]),
+    ("refusal_words cuts the tail only", [(CUT, '    return (r.stderr or r.stdout or "").strip()[-300:]\n')], [HELD, WIRED]),
     ("refused starts are never put down", [(PUT_DOWN, 'put_down = False')], [HELD, WIRED]),
     ("a reserved item is not put down", [(PUT_DOWN, 'put_down = not reserved and cur["status"] == "queued" and cur["start_refusals"] >= r.get("start_refused_put_down", 3)')], [HELD]),
     ("put down means retired again", [(HOLD_STATUS, '"start_refused", now)\n                        cur["status"] = "retired"')], [HELD, WIRED]),

@@ -478,7 +478,7 @@ def ledger_reading(read):
     try:
         r = read()
     except Exception as e:  # noqa: BLE001  (model.read raises on a malformed line: REPORTED, never skipped)
-        return {"state": "UNMEASURED", "why": "the ledger is unreadable: %s: %s" % (type(e).__name__, str(e)[:160])}
+        return {"state": "UNMEASURED", "why": "the ledger is unreadable: %s: %s" % (type(e).__name__, str(e))}
     if not isinstance(r, dict) or not r.get("events") or r.get("world") is None:
         return {"state": "UNMEASURED", "why": "the ledger read returned no events (a blind read, not an empty ledger)"}
     return dict(r, state="MEASURED")
@@ -808,7 +808,7 @@ def supervise_roles(sch, st, obs, now, act):
             busy.add(name)      # unknown: kept busy, never launched over
             act(do="alarm", kind="role:%s:supervise" % name, ticket=(by_name.get(name) or {}).get("ledger_item"),
                 note=True, why="role %s supervision raised %s: %s; its runs are kept as running and checked again "
-                "next tick" % (name, type(e).__name__, str(e)[:200]))
+                "next tick" % (name, type(e).__name__, str(e)))
     return busy
 
 
@@ -1012,7 +1012,7 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
                 blind=blind(name, "failed", run.get("mode"), run["unit"]),
                 why="%s run %s ended without a good result (%s)" % (
                     name, run["unit"], ("usage UNMEASURED: " if res and tok is None else "")
-                    + (text or "no result file")[:160]))
+                    + (text or "no result file")))
         run.pop("consumed", None)                        # read only just above; runs stay in state for 2 days
     rs["runs"] = [r for r in rs.get("runs") or [] if r.get("state") == "running" or r.get("close_owed")
                   or now - r["at"] < 2 * 86400]
@@ -1327,7 +1327,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
     if odd:
         act(do="alarm", kind="role:schedule:shape", note=True,
             why="%d roles entr(y/ies) in the schedule cannot be keyed or ordered (%s): skipped; the other roles are "
-            "decided" % (len(odd), "; ".join(odd)[:400]))
+            "decided" % (len(odd), "; ".join(odd)))
     roles = decide_order([r for r in sch.get("roles") or [] if role_shape_error(r) is None])
     def one(role):
         name = role.get("name", "?")
@@ -1663,7 +1663,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             except Exception as e:  # noqa: BLE001 - designer_stage.Refused, or an unreadable state: said, not run
                 refuse_now(rs, "stage machine: %s" % e, now, job)
                 act(do="alarm", kind="role:%s:stage_refused" % name, ticket=job["item"], note=True,
-                    why="%s run-now on %s REFUSED by designer_stage: %s" % (name, concept, str(e)[:300]))
+                    why="%s run-now on %s REFUSED by designer_stage: %s" % (name, concept, str(e)))
                 return
             pre = (obs.get("coverage_pre") or coverage_pre)(concept)
             if pre:
@@ -1733,7 +1733,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                 unlaunch(rst[nm], unit)     # it raised after consuming its slot/alarm/event: give it back (V7)
             act(do="alarm", kind="role:%s:schedule" % nm, ticket=(role.get("ledger_item") if isinstance(role, dict)
                                                                  else None), note=True,
-                why="role %s NOT RUN this tick: deciding it raised %s: %s" % (nm, type(e).__name__, str(e)[:200]))
+                why="role %s NOT RUN this tick: deciding it raised %s: %s" % (nm, type(e).__name__, str(e)))
 
 
 def unlaunch(rs, unit):
@@ -1821,7 +1821,7 @@ def alarm_rows(alarms, keys):
             continue
         aid, a = by[k]
         told = a.get("told") if isinstance(a.get("told"), dict) else {}
-        out.append("- %s = %s: %s (since %s, reading %s)" % (k, aid, str(a.get("title") or "")[:200],
+        out.append("- %s = %s: %s (since %s, reading %s)" % (k, aid, str(a.get("title") or ""),
                                                               a.get("since"), told.get("v")))
     return out
 
@@ -1959,7 +1959,7 @@ def judge_sync(concept, timeout=45, repos=None):
             r = subprocess.run(["git", "-C", repo, "fetch", "-q", "origin", "main"], capture_output=True, text=True,
                                timeout=timeout)
             if r.returncode != 0:
-                notes.append("fetch %s exited %d: %s" % (repo, r.returncode, (r.stderr or "").strip()[:160]))
+                notes.append("fetch %s exited %d: %s" % (repo, r.returncode, (r.stderr or "").strip()))
         except (OSError, subprocess.SubprocessError) as e:
             notes.append("fetch %s: %s" % (repo, e))
     return notes
@@ -2026,7 +2026,7 @@ def close_concept(name, rs, cfg, run, res, tok, now, act, obs):
             ok, errs = (obs.get("stage_close") or stage_close)(run["concept"], run["unit"], tok)
     except Exception as e:  # noqa: BLE001 - said, and owed: the next tick closes it again
         owed["tries"] = int(owed.get("tries") or 0) + 1
-        owed["why"] = "%s: %s" % (type(e).__name__, str(e)[:200])
+        owed["why"] = "%s: %s" % (type(e).__name__, str(e))
         # designer_stage.Refused (the run is no longer the concept's open run: reopened, or closed another way) is
         # final, and so is a close still failing after CLOSE_OWED_MAX_S: both are said once and stop retrying
         final = type(e).__name__ == "Refused" or now - owed["since"] >= CLOSE_OWED_MAX_S
@@ -2035,7 +2035,7 @@ def close_concept(name, rs, cfg, run, res, tok, now, act, obs):
         act(do="alarm", kind="role:%s:stage_close" % name, ticket=run.get("item"), note=True,
             conductor_log=final or None,
             why="%s run %s on %s: designer_stage close failed: %s; %s (try %d, owed since %s)" % (
-                name, run["unit"], run["concept"], str(e)[:300],
+                name, run["unit"], run["concept"], str(e),
                 "NOT retried: refused by the stage machine" if type(e).__name__ == "Refused" else
                 "given up after %d h: a person closes it (designer_stage.py)" % (CLOSE_OWED_MAX_S // 3600)
                 if final else "retried next tick", owed["tries"], iso(owed["since"])))
@@ -2054,7 +2054,7 @@ def close_concept(name, rs, cfg, run, res, tok, now, act, obs):
         except Exception as e:  # noqa: BLE001 - said; the files stay on disk and the next close lands them
             act(do="alarm", kind="role:%s:stage_land" % name, ticket=run.get("item"), note=True,
                 why="%s run %s on %s: its stage state did not land on origin/main: %s" % (
-                    name, run["unit"], run["concept"], str(e)[:300]))
+                    name, run["unit"], run["concept"], str(e)))
         t = (obs.get("stage_turn") or stage_turn)(run["concept"]) if ok else None
         if t:
             escalate_turn(name, run, t, act)
@@ -2066,7 +2066,7 @@ def close_concept(name, rs, cfg, run, res, tok, now, act, obs):
     except Exception as e:  # noqa: BLE001 - the close itself happened: said, never retried (it would refuse)
         act(do="alarm", kind="role:%s:stage_close" % name, ticket=run.get("item"), note=True,
             why="%s run %s on %s: after its designer_stage close: %s: %s" % (name, run["unit"], run["concept"],
-                                                                      type(e).__name__, str(e)[:300]))
+                                                                      type(e).__name__, str(e)))
 
 
 def stage_close(concept, unit, tokens, sync=True):
@@ -2111,7 +2111,7 @@ def chain_next(name, rs, cfg, run, now, act, status):
     except Exception as e:  # noqa: BLE001 - said; a hand run-now still works
         act(do="alarm", kind="role:%s:chain" % name, ticket=run.get("item"), note=True,
             why="%s run %s on %s: next stage NOT chained, its stage.json is unreadable: %s" % (
-                name, run["unit"], concept, str(e)[:200]))
+                name, run["unit"], concept, str(e)))
         return None
     if not isinstance(st, dict) or st.get("status") != "ready":
         return None
@@ -2217,8 +2217,8 @@ def chain_sweep(name, rs, cfg, now, act, concepts, parked=None):
         if not rs.get("sweep_blind"):
             act(do="alarm", kind="role:%s:chain_sweep" % name, ticket=cfg.get("ledger_item"), note=True,
                 why="%s: orphaned ready concepts NOT swept, the concepts cannot be read: %s; alarmed once per outage"
-                % (name, str(e)[:200]))
-        rs["sweep_blind"] = str(e)[:200]
+                % (name, str(e)))
+        rs["sweep_blind"] = str(e)
         return []
     rs.pop("sweep_blind", None)
     grace = cfg.get("chain_sweep_grace_s", CHAIN_SWEEP_GRACE_S)
@@ -2238,7 +2238,7 @@ def chain_sweep(name, rs, cfg, now, act, concepts, parked=None):
             try:
                 why = parked(st)
             except Exception as e:  # noqa: BLE001 - an unreadable cause is parked (no blind retry); the stall reader
-                why = "parked rule raised: %s" % str(e)[:120]   # meets the same raise and reports itself blind
+                why = "parked rule raised: %s" % str(e)   # meets the same raise and reports itself blind
             if why:
                 parked_record(name, rs, cfg, concept, st, res[-1], why, now, act)
                 still_parked.add(concept)
@@ -2278,7 +2278,7 @@ def parked_record(name, rs, cfg, concept, st, last, why, now, act):
         ticket=st.get("item") or cfg.get("ledger_item"), note=True, conductor_log=True,
         why="%s: %s stage %s is PARKED, the orphan sweep will not re-chain it: %s. Rejected run %s at %s: %s" % (
             name, mod, st.get("stage"), why, last.get("run"), last.get("at"),
-            "; ".join(str(w) for w in (last.get("why") or [])[:4])[:400]))
+            "; ".join(str(w) for w in (last.get("why") or [])[:4])))
 
 
 def chain_pop(rs, now):
@@ -2525,7 +2525,7 @@ def route_rejection(name, rs, cfg, run, res, errs, now, act, obs, classes=None):
             req = None
             if cfg.get("chain_stages") is True:
                 req = chain_ask(name, rs, cfg, concept, stage, now, act, run["unit"], item, run.get("mode") or "run",
-                                "%s run %s rejected (%s): %s%s" % (name, run["unit"], cls, "; ".join(errs[:4])[:400],
+                                "%s run %s rejected (%s): %s%s" % (name, run["unit"], cls, "; ".join(errs[:4]),
                                                                    " (%d reasons in full in the launch message)"
                                                                    % len(errs) if len(errs) > 4 else ""),
                                 "after its rejected run %s" % run["unit"], reasons=errs)
@@ -2533,7 +2533,7 @@ def route_rejection(name, rs, cfg, run, res, errs, now, act, obs, classes=None):
                 "chain_stages, cap reached or already asked): alarm stands"
             taken = "builder" if req else "alarm"
     except Exception as e:  # noqa: BLE001 - said; the stage_rejected alarm already stands
-        said, taken = "route %s failed: %s: %s" % (route, type(e).__name__, str(e)[:200]), "alarm"
+        said, taken = "route %s failed: %s: %s" % (route, type(e).__name__, str(e)), "alarm"
     act(do="role_hold", role=name, ticket=item, note=True, why="%s -> %s: %s" % (head, route, said))
     return taken
 
@@ -2826,7 +2826,7 @@ def launch(role, unit, msg, root, claude, runner=subprocess.run):
     tmpdir = run_tmp.prepare(unit) if runner is subprocess.run else None
     r = runner(launch_argv(role, unit, msg, out, err, claude, session, tmpdir), capture_output=True, text=True, timeout=60,
                stdin=subprocess.DEVNULL)
-    text = ((r.stdout or "") + (r.stderr or "")).strip()[-200:]
+    text = ((r.stdout or "") + (r.stderr or "")).strip()
     if r.returncode:
         return False, "systemd-run exit %d: %s" % (r.returncode, text), {}
     scope = role_scope(role["seat"], unit)
@@ -2884,7 +2884,7 @@ def read_result(run):
     except (OSError, ValueError, KeyError, TypeError):
         try:
             with open(run.get("err") or "", encoding="utf-8", errors="replace") as f:
-                run["err_tail"] = f.read()[-300:]
+                run["err_tail"] = f.read()
         except OSError:
             pass
         return None
@@ -2899,7 +2899,7 @@ def _stop_call(runner, argv, timeout):
     if r.returncode == 0:
         return "%s %s ok" % (argv[2], argv[-1])
     return "%s %s exit %d: %s" % (argv[2], argv[-1], r.returncode,
-                                  ((r.stdout or "") + (r.stderr or "")).strip()[-120:])
+                                  ((r.stdout or "") + (r.stderr or "")).strip())
 
 
 def _signal_marked(marker, force, procs, kill, since=None):

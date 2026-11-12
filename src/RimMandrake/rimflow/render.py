@@ -330,7 +330,7 @@ def acceptance_lines(it):
                              or "nothing")]
     for c in owed[:6]:
         if c.get("text"):
-            out.append("  %-6s %-10s %s" % (c["id"], c["level"], c["text"][:110]))
+            out.append("  %-6s %-10s %s" % (c["id"], c["level"], c["text"]))
     return out
 
 

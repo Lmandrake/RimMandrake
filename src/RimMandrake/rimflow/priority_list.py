@@ -94,7 +94,7 @@ def load(root):
     except FileNotFoundError:
         return {"state": "missing", "why": "%s does not exist" % p, "doc": None, "entries": []}
     except (OSError, ValueError) as e:
-        return {"state": "torn", "why": "%s: %s" % (p, str(e)[:160]), "doc": None, "entries": []}
+        return {"state": "torn", "why": "%s: %s" % (p, str(e)), "doc": None, "entries": []}
     bad = problem(doc)
     if bad:
         return {"state": bad[0], "why": bad[1], "doc": doc, "entries": []}
@@ -144,7 +144,7 @@ def read_reading(spec, root, status_rank):
         with open(os.path.join(str(root), rel), encoding="utf-8") as f:
             doc = json.load(f)
     except (OSError, ValueError) as e:
-        return None, "%s: %s" % (rel, str(e)[:120])
+        return None, "%s: %s" % (rel, str(e))
     if mod:
         v = read_key({"m": doc.get(mod) if isinstance(doc, dict) else None}, "m.status")
         return (status_rank[v], None) if isinstance(v, str) and v in status_rank else (None, "%s status %r has no rank" % (mod, v))

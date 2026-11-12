@@ -79,7 +79,7 @@ def pick(snap, audits, now, n=CAP):
         at, verdict, _ = cl[i]
         rows.append({"kind": "draw", "sample": name, "stratum": "random", "item": i, "at": dm.iso(now), "seed": seed,
                      "population": len(pool), "population_sha1": pool_sha, "closed_at": dm.iso(at) if at else None,
-                     "sha": s.get("last_sha"), "verdict": verdict, "proof": ((s.get("contract") or {}).get("proof") or "")[:600],
+                     "sha": s.get("last_sha"), "verdict": verdict, "proof": ((s.get("contract") or {}).get("proof") or ""),
                      "source": "store", "reasons": None, "regrade": True})
     return rows
 
@@ -96,7 +96,7 @@ def grade_row(audits, sample, item, verdict, by, how, evidence, tag, now):
         raise SystemExit("%s already graded %s; a second grade must come from a different grader" % (by, item))
     row = dm.audit_row(audits, sample, item, verdict, by, how, evidence, now)
     if tag:
-        row["tag"] = tag[:200]
+        row["tag"] = tag
     return row
 
 

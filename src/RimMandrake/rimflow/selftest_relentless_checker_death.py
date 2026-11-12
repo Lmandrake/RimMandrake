@@ -37,7 +37,7 @@ def t_reader():
     with open(err, "w") as f:
         f.write("noise\n" * 100 + EACCES + "\n")
     got = R.death_note(run)
-    ok(got and got.endswith(EACCES) and len(got) <= 300, "an empty .json and .err text: its tail is the note")
+    ok(got == ("noise\n" * 100 + EACCES).strip(), "an empty .json and .err text: the whole .err is the note (no 300 cut)")
     with open(out, "w") as f:
         json.dump({"result": "done", "is_error": False}, f)
     ok(R.death_note(run) is None, "a result object on .json: the run spoke, stderr is not its death")

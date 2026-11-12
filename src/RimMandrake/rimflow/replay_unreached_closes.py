@@ -113,7 +113,7 @@ def main(argv=None):
         print("items %d, closed %d, closing check readable %d, closes the unreached-first rule refuses %d"
               % (got["items"], got["closed"], got["seen"], len(got["refused"])))
         for r in got["refused"]:
-            print("  %s  %s  unreached: %s" % (r["item"], r["word"], "; ".join(r["unreached"])[:200]))
+            print("  %s  %s  unreached: %s" % (r["item"], r["word"], "; ".join(r["unreached"])))
     return 2 if not got["seen"] else 0
 
 

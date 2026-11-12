@@ -43,6 +43,14 @@ MAX_AGE_S = 3 * 86400     # older transcripts are not read; `collect --since-day
 MAX_READS = 6             # transcripts parsed in one call, so one tick stays cheap; the rest come next tick
 REPORT_CHARS = 1500
 
+
+def _report_tail(final, transcript):
+    """The report's last REPORT_CHARS for the receipt row, saying so: the whole report is in the transcript."""
+    final = final or ""
+    if len(final) <= REPORT_CHARS:
+        return final
+    return "[+%d chars earlier; whole report: %s] %s" % (len(final) - REPORT_CHARS, transcript, final[-REPORT_CHARS:])
+
 NOTICE = re.compile(r"<task-id>([^<\\]+)</task-id>.{0,700}?<status>(\w+)</status>", re.S)
 BG_ID = re.compile(r"running in background with ID: (\w+)")
 BG_OUT = re.compile(r"written to: (\S+?\.output)")
@@ -120,9 +128,9 @@ def _read_main(path):
                 if not isinstance(c, dict):
                     continue
                 if c.get("type") == "tool_use" and c.get("name") == "Bash" and (c.get("input") or {}).get("run_in_background"):
-                    rows["bg"][c["id"]] = {"cmd": (c.get("input") or {}).get("command", "")[:300]}
+                    rows["bg"][c["id"]] = {"cmd": (c.get("input") or {}).get("command", "")}
                 elif c.get("type") == "tool_result":
-                    body = json.dumps(c.get("content"))[:2000]
+                    body = json.dumps(c.get("content"))
                     tu = c.get("tool_use_id")
                     if tu in rows["bg"]:
                         got, out = BG_ID.search(body), BG_OUT.search(body)
@@ -150,7 +158,7 @@ def _helper_detail(path):
             d["final"] = _text_of(r) or d["final"]
             for c in (r.get("message") or {}).get("content") or []:
                 if isinstance(c, dict) and c.get("type") == "tool_use":
-                    d["last_cmd"] = str((c.get("input") or {}).get("command") or c.get("name"))[:300]
+                    d["last_cmd"] = str((c.get("input") or {}).get("command") or c.get("name"))
     return d
 
 
@@ -212,7 +220,7 @@ def harvest(path, seat, now=None, root=None):
         one = {"id": aid, "desc": h.get("desc"), "last_at": d["last_at"], "transcript": f, "cwd": d["cwd"]}
         if not h["alive"] or aid in rows["notes"]:
             rec["unread"].append(dict(one, status=(rows["notes"].get(aid) or ("no notice",))[0],
-                                      report=d["final"][-REPORT_CHARS:]))
+                                      report=_report_tail(d["final"], f)))
         else:
             rec["died"].append(dict(one, last_cmd=d["last_cmd"], tree=tree_of(d["cwd"])))
     for b in rows["bg"].values():
@@ -326,7 +334,7 @@ def render(rec):
         tree = "clone %s: %s dirty, %s unlanded" % (t["clone"], t["dirty"], t["unlanded"]) if t else \
             "clone UNMEASURED (cwd %s)" % h.get("cwd")
         out.append("  DIED MID-WORK %s (%s), last at %s; %s. Last command: %s. Its transcript: %s" % (
-            h["id"], h.get("desc") or "?", SR._iso(h.get("last_at") or 0), tree, (h.get("last_cmd") or "?")[:200],
+            h["id"], h.get("desc") or "?", SR._iso(h.get("last_at") or 0), tree, (h.get("last_cmd") or "?"),
             h["transcript"]))
     for h in rec["unread"]:
         out.append("  REPORT NOBODY READ %s (%s, %s). Its transcript: %s\n  | %s" % (
@@ -334,7 +342,7 @@ def render(rec):
             (h.get("report") or "(no final text)").replace("\n", "\n  | ")))
     for b in rec["bash"]:
         out.append("  BACKGROUND COMMAND WITH NO READER %s: %s. Output: %s. It ended with the window or runs unwatched; "
-                   "if what it watched still matters, start it again." % (b["id"], b["cmd"][:200], b.get("output")))
+                   "if what it watched still matters, start it again." % (b["id"], b["cmd"], b.get("output")))
     return out
 
 

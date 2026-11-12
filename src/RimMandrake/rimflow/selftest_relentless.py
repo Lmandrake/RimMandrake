@@ -2045,11 +2045,12 @@ def t_refused_start_is_held():
     ok(x.st("I0")["status"] == "held" and x.st("I0")["hold"]["kind"] == "start_refused" and x.w.takes == ["I0"],
        "a foreign item is held too, taken once: %s %s" % (x.st("I0")["status"], x.w.takes))
     x.done()
-    # the reason survives the cut
+    # the reason is kept whole: no cut at all (RIMMANDRAKE_STORE_TEXT_WHOLE_NO_CUTS)
     long_advice = "\n".join(["advice line %d, of no use as a reason" % i for i in range(40)])
     r = types.SimpleNamespace(stderr="BENCH may not `start` I0: it belongs to OWNER.\n" + long_advice, stdout="")
     w = R.refusal_words(r)
-    ok("belongs to OWNER" in w and len(w) <= 300, "the first line stays: %r" % w)
+    ok(w.startswith("BENCH may not") and "advice line 20," in w and w.endswith("advice line 39, of no use as a reason"),
+       "the first line stays, and the whole refusal with it: %r" % w[:120])
     r = types.SimpleNamespace(stderr="Traceback (most recent call last):\n" + long_advice + "\nKeyError: 'x'", stdout="")
     ok("KeyError" in R.refusal_words(r), "and a traceback's last line")
     ok(R.refusal_words(types.SimpleNamespace(stderr="", stdout="short")) == "short", "a short one is whole")
@@ -4424,10 +4425,10 @@ def t_review_wrong_verdicts():
         ok(R.Effects.paused(None) is True, "an unreadable pause gate holds the launch")
     finally:
         del sys.modules["dispatcher"]
-    # a refusal survives the cut
+    # the close gate's answer is kept whole, refusal words and all
     out = "w" * 650 + " I0 has not earned its close"
-    ok("has not earned its close" in R.close_why(out) and len(R.close_why(out)) <= 700, "the refusal words survive the cut")
-    ok(R.close_why("x" * 900) == "x" * 400, "other output keeps its tail")
+    ok(R.close_why(out) == out, "the refusal words are kept, with the whole answer")
+    ok(R.close_why("x" * 900) == "x" * 900, "other output is kept whole")
     # an origin that cannot be asked is a wait, not a verdict on the candidate
     x = Rig(n=1, share=1.0)
     x.w.is_pub = None

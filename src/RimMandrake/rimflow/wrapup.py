@@ -146,7 +146,7 @@ def _append(path, row):
 
 
 def safe_key(s):
-    return "".join(c if c.isalnum() or c in "-_." else "_" for c in str(s))[:120]
+    return "".join(c if c.isalnum() or c in "-_." else "_" for c in str(s))[:120]  # cut-ok: a filename
 
 
 # ---------------------------------------------------------------- debts (forced settings, staged scenes)
@@ -260,7 +260,7 @@ class World(object):
                                text=True, timeout=120, stdin=subprocess.DEVNULL)
         except (OSError, subprocess.SubprocessError) as e:
             return False, "%s: %s" % (type(e).__name__, e)
-        return r.returncode == 0, ((r.stdout or "") + (r.stderr or "")).strip()[-300:]
+        return r.returncode == 0, ((r.stdout or "") + (r.stderr or "")).strip()
 
     def doing_claims(self, seat, since, session=None):
         """-> [(item, ts)] this session's (else `seat`'s) claims/starts at or after `since`, still doing; raises when
@@ -599,7 +599,7 @@ def restore(call, world=None):
                 try:
                     why = D.step_ok(st, call(st["tool"], dict(st.get("params") or {})))
                 except Exception as e:  # noqa: BLE001  one debt's failure never stops the rest
-                    why = "%s raised %s: %s" % (st.get("tool"), type(e).__name__, str(e)[:160])
+                    why = "%s raised %s: %s" % (st.get("tool"), type(e).__name__, str(e))
                 if why:
                     break
             if why:
@@ -641,7 +641,7 @@ def probe(call, world=None):
         r = call("jawa/debug_settings", {"action": "list"})
         was = dict((x["name"], x["value"]) for x in r["fields"]).get(PROBE_FIELD)
     except Exception as e:  # noqa: BLE001
-        return 2, "UNMEASURED: debug_settings list failed: %s: %s" % (type(e).__name__, str(e)[:160])
+        return 2, "UNMEASURED: debug_settings list failed: %s: %s" % (type(e).__name__, str(e))
     if not isinstance(was, bool):
         return 2, "UNMEASURED: %s is not a readable bool debug field (%r)" % (PROBE_FIELD, was)
     D = _door()
@@ -653,7 +653,7 @@ def probe(call, world=None):
     w = call("jawa/debug_settings", {"action": "set", "field": PROBE_FIELD, "value": not was})
     if D.step_ok(D.step("jawa/debug_settings", field=PROBE_FIELD, value=not was), w):
         paid(tok)
-        return 2, "UNMEASURED: the probe could not force %s: %s" % (PROBE_FIELD, str(w)[:160])
+        return 2, "UNMEASURED: the probe could not force %s: %s" % (PROBE_FIELD, str(w))
     res = restore(call, world)
     now = dict((x["name"], x["value"]) for x in call("jawa/debug_settings", {"action": "list"})["fields"]).get(
         PROBE_FIELD)
@@ -719,7 +719,7 @@ def main(argv=None):
         try:
             rb = _bridge_call()
         except Exception as e:  # noqa: BLE001
-            print("UNMEASURED: no bridge: %s: %s" % (type(e).__name__, str(e)[:200]))
+            print("UNMEASURED: no bridge: %s: %s" % (type(e).__name__, str(e)))
             return 2
         try:
             if a.probe:

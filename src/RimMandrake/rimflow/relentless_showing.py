@@ -142,7 +142,7 @@ def blockers(iid, it, items, evs, now, waits_on_look=lambda i: False, days=OWNER
     waiting only on his look) blocks it; so does his note on this item after its build, a ledger block, an open
     superseding item, or an open item it caused."""
     if getattr(it, "blocked", False):
-        return (getattr(it, "blocked_on", None) or "?", "blocked in the ledger: %s" % (getattr(it, "blocked_reason", None) or "")[:160])
+        return (getattr(it, "blocked_on", None) or "?", "blocked in the ledger: %s" % (getattr(it, "blocked_reason", None) or ""))
     sup = getattr(it, "superseded_by", None)
     if sup and getattr(items.get(sup), "open", False):
         return (sup, "superseded by %s, still open" % sup)
@@ -298,7 +298,7 @@ def status(man, judge, sha, deployed_fp, judge_unit, saves=None, item=None):
     if not isinstance(judge.get("sha"), str) or not same_sha(judge["sha"], man.get("sha")):
         return STALE, "judged at another sha (or none)"
     if judge.get("verdict") != "pass":
-        return FAILED, str(judge.get("why") or "the judge did not pass it")[:200]
+        return FAILED, str(judge.get("why") or "the judge did not pass it")
     notes = judge.get("stations") if isinstance(judge.get("stations"), dict) else {}
     unread = [str(x["n"]) for x in man["stations"] if not str(notes.get(str(x["n"])) or "").strip()]
     if unread:
@@ -415,8 +415,8 @@ def tick(store, fx, r, now, acts, sup):
             stop = fly or ("on %s: %s" % blk if blk else None) or gone
             if stop:    # a flyer, a new blocker or a lost bridge stops a running build now, not at its renewal
                 fx.stop(run, True)
-                acts.append({"do": "showing_stopped", "item": iid, "why": stop[:200]})
-                items[iid] = {"state": HELD, "why": "stopping: %s" % stop[:180], "dir": win_dir(iid)}
+                acts.append({"do": "showing_stopped", "item": iid, "why": stop})
+                items[iid] = {"state": HELD, "why": "stopping: %s" % stop, "dir": win_dir(iid)}
                 if gone:
                     row["bridge"] = False
                 row["tries"] = max(0, row.get("tries", 0) - 1)      # stopped, not failed: the try is given back
@@ -431,7 +431,7 @@ def tick(store, fx, r, now, acts, sup):
                     else:       # someone else holds it now (his OWNER hold, the Conductor): the build stops at once
                         fx.stop(run, True)
                         row["bridge"] = False
-                        acts.append({"do": "showing_stopped", "item": iid, "why": "bridge: %s" % str(lost)[:200]})
+                        acts.append({"do": "showing_stopped", "item": iid, "why": "bridge: %s" % str(lost)})
                 continue
             if fx.alive(run):
                 fx.stop(run, True)
@@ -463,7 +463,7 @@ def tick(store, fx, r, now, acts, sup):
         elif blk:       # never READY TO SHOW on a build his later word has not reached
             state, swhy = BLOCKED, "on %s: %s" % blk
         elif os.path.isfile(os.path.join(d, "blocked.txt")) and state != READY:
-            state, swhy = HELD, open(os.path.join(d, "blocked.txt"), encoding="utf-8", errors="replace").read().strip()[:200]
+            state, swhy = HELD, open(os.path.join(d, "blocked.txt"), encoding="utf-8", errors="replace").read().strip()
         if state == STALE and (row.get("built_sha") != item_sha(it) or
                                ("route" in swhy and row.get("route_reset") != rt) or
                                ("deployed mod changed" in swhy and row.get("deploy_reset") != fp)):
@@ -487,7 +487,7 @@ def tick(store, fx, r, now, acts, sup):
     except Exception as e:  # noqa: BLE001  no fresh answer asked for: the next pass walks inline what the cache lacks
         why = "%s: %s" % (type(e).__name__, e)
     if why:
-        acts.append({"do": "error", "item": None, "why": "mods_fp job: %s" % str(why)[:200]})
+        acts.append({"do": "error", "item": None, "why": "mods_fp job: %s" % str(why)})
     s["mods_fp"] = {"hits": fpr.hits, "inline": fpr.inline}
     _start(store, fx, r, c, s, enrolled, now, acts, sup)
     s["at"] = now
@@ -568,7 +568,7 @@ def _start(store, fx, r, c, s, enrolled, now, acts, sup):
                 continue
             took = fx.bridge_take("relentless showing %s: review savegame for the owner's look" % iid)
             if took:        # an OWNER or Conductor hold refuses this take: nothing deploys or restarts under it
-                acts.append({"do": "showing_waits", "item": iid, "why": "bridge: %s" % took[:200]})
+                acts.append({"do": "showing_waits", "item": iid, "why": "bridge: %s" % took})
                 building = True
                 continue
             row["bridge"], row["taken_at"] = True, now
@@ -609,7 +609,7 @@ def _launch(store, fx, r, c, s, row, iid, unit, phase, prompt, agent, max_s, now
     if why:
         row.update(phase=None, run=None)
         row.pop("judge_run_unit", None)
-        acts.append({"do": "showing_launch_failed", "item": iid, "phase": phase, "why": why[:200]})
+        acts.append({"do": "showing_launch_failed", "item": iid, "phase": phase, "why": why})
         return False
     acts.append({"do": "showing_%s" % phase, "item": iid, "unit": unit})
     s["items"].setdefault(iid, {"dir": win_dir(iid)})["state"] = BUILDING if phase == "build" else JUDGING

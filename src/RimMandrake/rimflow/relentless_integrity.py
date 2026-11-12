@@ -90,7 +90,7 @@ def clone_damage(c, timeout=600):
     matches its blob is no damage. Raises when git cannot list the clone (the caller treats that as damage)."""
     r = subprocess.run(["git", "ls-files", "-s", "-z"], cwd=c, capture_output=True, timeout=timeout)
     if r.returncode:
-        raise RuntimeError("git ls-files: %s" % r.stderr.decode("utf-8", "replace")[-200:])
+        raise RuntimeError("git ls-files: %s" % r.stderr.decode("utf-8", "replace"))
     suspect = []
     for rec in r.stdout.split(b"\0"):
         if not rec:
@@ -217,13 +217,13 @@ def quarantine(store, fx, c, bad, now):
     r = subprocess.run(["git", "checkout-index", "-f", "-z", "--stdin"], cwd=c, capture_output=True, timeout=600,
                        input="\0".join(paths).encode("utf-8", "surrogateescape"))
     if r.returncode:
-        return "restore from the index: %s" % r.stderr.decode("utf-8", "replace")[-200:]
+        return "restore from the index: %s" % r.stderr.decode("utf-8", "replace")
     if clone_damage(c):
         return "still damaged after the restore from the index"
     try:
         bundle = fx.bundle_clone(item, c)
     except (RuntimeError, OSError, ValueError, subprocess.SubprocessError) as e:
-        return "bundle: %s" % str(e)[:200]
+        return "bundle: %s" % str(e)
     with store.lock():
         cur = store.load(item) if st else None
         if cur and kind == "work" and bundle:
@@ -239,7 +239,7 @@ def quarantine(store, fx, c, bad, now):
     except FileNotFoundError:
         pass
     except OSError as e:
-        return "remove: %s" % str(e)[:200]
+        return "remove: %s" % str(e)
     store.journal({"at": iso(now), "do": "clone_quarantined", "clone": os.path.basename(c), "item": item,
                    "damaged": len(paths), "bundle": bundle})
     return None
@@ -316,7 +316,7 @@ def scan(store, fx, r, now, objstore=None):
         try:
             bad = clone_damage(c)
         except (RuntimeError, OSError, subprocess.SubprocessError) as e:
-            blocking.append({"what": "clone", "path": c, "why": "unreadable: %s" % str(e)[:200]})
+            blocking.append({"what": "clone", "path": c, "why": "unreadable: %s" % str(e)})
             continue
         if not bad:
             continue
@@ -350,9 +350,9 @@ def gate(store, fx, r, now, acts, objstore=None):
             why, len(res["found"]), len(res["blocking"]),
             "; ".join("%s %s: %s" % (x["what"], os.path.basename(x.get("path") or x.get("item") or ""), x["why"])
                       for x in (res["blocking"] + res["found"])[:6]))
-        store.journal({"at": iso(now), "do": "alarm", "kind": "integrity_damage", "why": text[:300]})
+        store.journal({"at": iso(now), "do": "alarm", "kind": "integrity_damage", "why": text})
         if res["blocking"] and sig != said:      # once per distinct damage, not once per two-minute tick
             rec["blocking_said"] = sig
             store._write(record_path(store), json.dumps(rec, sort_keys=True))
-            fx.conductor_alarm(text[:600] + " - relentless staffs nothing until this is repaired; record: " + record_path(store))
+            fx.conductor_alarm(text + " - relentless staffs nothing until this is repaired; record: " + record_path(store))
     return not res["blocking"]

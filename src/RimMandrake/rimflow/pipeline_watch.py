@@ -282,7 +282,7 @@ def render_event(d, width=110):
         k = b.get("type")
         if t == "assistant" and k == "text" and b.get("text", "").strip():
             txt = _clean(b["text"]).strip()
-            txt = txt if len(txt) <= TEXT_MAX else txt[:TEXT_MAX - 1] + "…"
+            txt = txt if len(txt) <= TEXT_MAX else txt[:TEXT_MAX] + " … (+%d chars, full: the transcript)" % (len(txt) - TEXT_MAX)
             wrapped = []
             for para in txt.splitlines():
                 wrapped += textwrap.wrap(para, width - 11) or [""]

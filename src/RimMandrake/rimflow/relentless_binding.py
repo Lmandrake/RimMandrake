@@ -153,7 +153,7 @@ def screen(old_contract, new_binding, comparison, item=None, obligation=None):
     old_ob = obligation_of(old_contract, item)
     if obligation is not None and obligation.strip() != old_ob["text"].strip():
         why.append("changes the obligation (%r -> %r): what must be true moves only in a redesign"
-                   % (old_ob["text"][:120], obligation[:120]))
+                   % (old_ob["text"], obligation))
     c = comparison or {}
     for k, what in (("before", "what the old binding measured"), ("after", "what the new binding measures"),
                     ("defect", "the evidence that the old binding is broken")):

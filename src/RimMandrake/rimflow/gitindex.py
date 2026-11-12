@@ -96,7 +96,7 @@ def parse_commit(sha, ts, subject, body, files):
                 named[iid] = how
     if not named:
         return None
-    return [sha, ts, (subject or "")[:160], _bookkeeping(files), named]
+    return [sha, ts, (subject or ""), _bookkeeping(files), named]
 
 
 def _utc(epoch):

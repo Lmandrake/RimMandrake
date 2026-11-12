@@ -1488,6 +1488,8 @@ def append(ev, path=None):
     line = json.dumps(ev, separators=(",", ":"), ensure_ascii=False) + "\n"
     blob = line.encode("utf-8")
     if len(blob) >= PIPE_BUF:
+        ev, line, blob = _spill_prose(ev, line, blob)
+    if len(blob) >= PIPE_BUF:
         raise EventTooLargeError(
             "event is %d bytes; O_APPEND is only atomic below %d, and a torn line "
             "corrupts the ledger irrecoverably. Move the prose into items/%s.md."
@@ -1515,6 +1517,30 @@ def _dir_lock(d):
         os.close(fd)
         return None
     return fd
+
+
+SPILL_FIELDS = ("text", "reason", "detail", "why", "note", "noCode", "evidence", "redTail")
+SPILL_KEEP = 300                # chars of a spilled field kept on the line, pointer included
+
+
+def _spill_prose(ev, line, blob):
+    """An event over the line bound keeps its prose WHOLE in a side file instead of being refused or cut: the largest
+    free-text field (SPILL_FIELDS; never an owner quote, an id or a sha) becomes its head plus
+    `[+N chars; whole text (M chars): <path>]` until the line fits (RIMMANDRAKE_STORE_TEXT_WHOLE_NO_CUTS, spec T9).
+    -> (ev, line, blob), still too large when the rest of the event is."""
+    try:
+        from . import fulltext
+    except ImportError:
+        import fulltext  # noqa: E402
+    ev = dict(ev)
+    for key in sorted((k for k in SPILL_FIELDS if isinstance(ev.get(k), str) and len(ev[k]) > SPILL_KEEP),
+                      key=lambda k: -len(ev[k].encode("utf-8"))):
+        ev[key] = fulltext.fit(ev[key], SPILL_KEEP)
+        line = json.dumps(ev, separators=(",", ":"), ensure_ascii=False) + "\n"
+        blob = line.encode("utf-8")
+        if len(blob) < PIPE_BUF:
+            break
+    return ev, line, blob
 
 
 def _append_locked(path, blob):
@@ -2488,7 +2514,7 @@ def marker_lock(item, sha, no_code=False):
     if newest is None or not _marker_fail(newest):
         return None
     return "the Marker (blind check) failed it at %s, run %s%s" % (
-        str(newest.sha)[:12], newest.name, (": " + str(newest.evidence)[:200]) if newest.evidence else "")
+        str(newest.sha)[:12], newest.name, (": " + str(newest.evidence)) if newest.evidence else "")
 
 
 def close_refusals(item, sha, no_code=False, owner=False):

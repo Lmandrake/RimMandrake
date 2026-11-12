@@ -113,7 +113,7 @@ def _git(root, *args):
     except subprocess.TimeoutExpired:
         raise Unmeasured(f"git {' '.join(args)}: timed out after 120 s") from None
     if r.returncode:
-        raise Unmeasured(f"git {' '.join(args)}: {r.stderr.strip()[:200]}")
+        raise Unmeasured(f"git {' '.join(args)}: {r.stderr.strip()}")
     return r.stdout
 
 

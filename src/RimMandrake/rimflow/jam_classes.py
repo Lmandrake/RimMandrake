@@ -51,7 +51,7 @@ def epoch(s):
 
 def reason(row):
     """The jam's reason: the alarm's why, first 400 chars, without the breaker's 'open until' prefix."""
-    return BREAKER_PREFIX.sub("", str(row.get("why") or "")).strip()[:400]
+    return BREAKER_PREFIX.sub("", str(row.get("why") or "")).strip()
 
 
 def hits(pattern, text):
@@ -322,9 +322,9 @@ def main(argv=None):
         c["window_days"], c["jams"], json.dumps(c["by_class"], sort_keys=True), len(c["unnamed"]), len(c["repeats"]),
         ", ".join(c["open"]) or "none"))
     for r in c["unnamed"]:
-        print("  UNNAMED %s %s: %s" % (r["at"], r["kind"], r["why"][:160].replace("\n", " ")))
+        print("  UNNAMED %s %s: %s" % (r["at"], r["kind"], r["why"].replace("\n", " ")))
     for r in c["repeats"]:
-        print("  REPEAT  %s %s: %s" % (r["at"], r["cls"], r["why"][:160].replace("\n", " ")))
+        print("  REPEAT  %s %s: %s" % (r["at"], r["cls"], r["why"].replace("\n", " ")))
     return 0
 
 

@@ -20,6 +20,10 @@ import os
 import re
 import subprocess
 import sys
+try:                                    # whole text, never a silent cut (RIMMANDRAKE_STORE_TEXT_WHOLE_NO_CUTS)
+    from . import fulltext
+except ImportError:
+    import fulltext  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
@@ -96,12 +100,12 @@ def main(argv=None):
             print(("SKIP (owner %s) " % r["owner"] if a.apply else "WOULD ") + line)
             continue
         cmd = [sys.executable, os.path.join(HERE, "cli.py"), "block", r["id"], "--kind", r["kind"],
-               "--reason", r["reason"][:600], "--why", "block_migrate: text-only blocker made structured"]
+               "--reason", fulltext.fit(r["reason"], 600), "--why", "block_migrate: text-only blocker made structured"]
         for x in r["on"]:
             cmd += ["--on", x]
         p = subprocess.run(cmd, capture_output=True, text=True, env=dict(os.environ, RIMFLOW_SEAT=a.seat))
         print(("WROTE " if p.returncode == 0 else "FAILED ") + line + ("" if p.returncode == 0 else
-                                                                      " :: " + (p.stderr or p.stdout)[-200:]))
+                                                                      " :: " + (p.stderr or p.stdout)))
         rc = rc or p.returncode
     print("%d row(s)" % len(rows))
     return rc

@@ -202,7 +202,7 @@ def menu_cmds(text, side=None):
     for cmd in live_menu(text):
         if TOGGLE_MARK in cmd:
             if side not in TOGGLE_SIDES:
-                raise ValueError("live-menu %r asks for {toggle} but this staging has no live-toggle side" % cmd[:120])
+                raise ValueError("live-menu %r asks for {toggle} but this staging has no live-toggle side" % cmd)
             cmd = cmd.replace(TOGGLE_MARK, side)
         out.append(cmd)
     return out
@@ -642,7 +642,7 @@ def mod_gap(fx, sha, text, running=True, item=None):
     try:
         build = item_mods(fx, item, sha)
     except ValueError as e:
-        out["error"] = str(e)[:200]
+        out["error"] = str(e)
         return out
     nd = infer(fx, text, chk["mods"], build)
     mods = sorted(set(build) | set(chk["mods"]) | {a["mod"] for a in (nd or {}).get("add") or []})
@@ -681,7 +681,7 @@ def batch_gap(fx, builds):
         try:
             build = item_mods(fx, item, sha)
         except ValueError as e:
-            out["error"] = str(e)[:200]
+            out["error"] = str(e)
             continue
         nd = infer(fx, text, chk["mods"], build)
         own = set(build) | set(chk["mods"]) | {a["mod"] for a in (nd or {}).get("add") or []}
@@ -724,7 +724,7 @@ def _plan_into(fx, mods, out):
         return
     rc, plan = fx.deploy_plan(deploy_args(mods, fx.folded()) + " --gate", L.live_rules({})["gate_plan_max_s"])
     if rc not in (0, 1):
-        out["error"] = "the deploy plan failed (exit %s): %s" % (rc, (plan or "")[-200:])
+        out["error"] = "the deploy plan failed (exit %s): %s" % (rc, (plan or ""))
         return
     _covered, drift, off = L.plan_sections(plan)
     out["off"] = off
@@ -841,7 +841,7 @@ def run_round(fx, root, r, now=None, max_items=None, run=L.run, only=None):
     sick = fx.canary(root, r, now) if hasattr(fx, "canary") else None     # in THIS process: the service's own context
     if sick:
         summary["canary"] = sick
-        return done("stopped: %s" % sick[:300])
+        return done("stopped: %s" % sick)
     todo, counts = plan(fx, root, r, now, only, L.iso(started))
     summary.update(eligible=len(todo), skipped=counts, **({"only": only} if only else {}))
     folded, ran, cap, gated = None, 0, len(todo) if max_items is None else max_items, set()
@@ -854,7 +854,7 @@ def run_round(fx, root, r, now=None, max_items=None, run=L.run, only=None):
         try:
             mods = item_mods(fx, item_id, sha)
         except ValueError as e:
-            summary["runs"].append({"item": item_id, "criterion": cid, "outcome": "UNMEASURED", "why": str(e)[:200]})
+            summary["runs"].append({"item": item_id, "criterion": cid, "outcome": "UNMEASURED", "why": str(e)})
             continue
         if folded is None:
             folded = fx.folded()
@@ -869,7 +869,7 @@ def run_round(fx, root, r, now=None, max_items=None, run=L.run, only=None):
         try:
             comp = {"companion": True} if companion_line(text) else {}
         except ValueError as e:
-            summary["runs"].append({"item": item_id, "criterion": cid, "outcome": "UNMEASURED", "why": str(e)[:200]})
+            summary["runs"].append({"item": item_id, "criterion": cid, "outcome": "UNMEASURED", "why": str(e)})
             continue
         try:    # GAMEENV_FIX_PROOFSITE_0DB67BE7_ITEMS_WAIT: its exit 2 asks for its own staging (relentless_live.MENU_WAIT)
             if live_menu(text) or live_toggle(text):
@@ -885,7 +885,7 @@ def run_round(fx, root, r, now=None, max_items=None, run=L.run, only=None):
         why = row.get("why") or ""
         if row["outcome"] in L.NO_VERDICT and (any(why.startswith(s) for s in STOP) or BRIDGE_DUD.search(why)):
             summary["left"] = len(todo) - k - 1     # clauses this round did not run into the same wall: the next round has them
-            return done("stopped: %s" % why[:200])
+            return done("stopped: %s" % why)
     return done("done")
 
 

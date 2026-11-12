@@ -169,7 +169,7 @@ def back_why(gone, what):
             "adapter covers: no reach repair can give the Judge these eyes, so the binding goes back to its builder. Rebind "
             "(proof only, the code stays): read it through a supervisor offbox adapter (relentless_rules.json "
             "offbox_adapters; add one if none fits) or prove it from what the box shows. The Judge said: %s"
-            % (", ".join(gone[:6]), (what or "")[:300]))
+            % (", ".join(gone[:6]), (what or "")))
 
 
 def _hand_over(store, fx, book, name, item, now, acts):
@@ -383,7 +383,7 @@ def _wait(st, kind_on, cls, now, detail, ledger_on=None):
     st["blocked_at"] = now
     st["wait"] = {"kind": WAIT, "on": kind_on, "class": cls, "attributed_at": now}
     if ledger_on:
-        st["block_pending"] = {"kind": "item", "on": [ledger_on], "class": "reach", "detail": detail[:600]}
+        st["block_pending"] = {"kind": "item", "on": [ledger_on], "class": "reach", "detail": detail}
 
 
 def on_blind(store, st, r, now, said, blind):
@@ -405,18 +405,18 @@ def on_blind(store, st, r, now, said, blind):
         st.pop("block_pending", None)
         st["_reach_back"] = back_why(gone, what)
         return ("blind check at %s: UNMEASURED (Marker said %s) on what no reach repair may open (%s): no repair, no "
-                "ticket; the binding goes back to its builder: %s" % (sha, said, ", ".join(gone[:6]), what[:300]))
+                "ticket; the binding goes back to its builder: %s" % (sha, said, ", ".join(gone[:6]), what))
     if prev.get("status") == "applied" and prev.get("sha") == sha:
         # the probe passed and the Judge is still blind on the same sha: the repair did not give it its eyes
         cls = prev["class"]
-        st["reach"] = dict(prev, status="failed", at=now, still_blind=what[:300])
+        st["reach"] = dict(prev, status="failed", at=now, still_blind=what)
         ent = book.setdefault(cls, {})
         ent.update(owner=item, status="failed", since=now, why="its repair passed the probe, yet the Judge is still blind: "
-                   + what[:250])
+                   + what)
         save(store, book)
         _wait(st, item, cls, now, "", None)
         return ("blind again at %s after its %s repair passed its probe: Relentless cannot fix this itself, so it files %s "
-                "and waits on it: %s" % (sha, cls, _ticket_of(r, cls), what[:300]))
+                "and waits on it: %s" % (sha, cls, _ticket_of(r, cls), what))
     cls = classify(r, [what] + list(chk.get("unreached") or []))
     prop = propose(r, cls, chk.get("proposals"), chk.get("unreached"), what, store.root)
     name = cls["class"]
@@ -425,13 +425,13 @@ def on_blind(store, st, r, now, said, blind):
     if owner and owner != item and ent.get("status") in ("probe", "ticket", "failed"):
         st["reach"] = {"class": name, "proposal": prop, "sha": sha, "status": "waiting", "on": owner, "at": now}
         _wait(st, owner, name, now, "the Judge could not reach the evidence (%s): it waits on %s, which owns the %s reach "
-              "repair" % (what[:300], owner, name), ledger_on=owner)
+              "repair" % (what, owner, name), ledger_on=owner)
         book.setdefault(name, ent).setdefault("waiters", [])
         if item not in ent["waiters"]:
             ent["waiters"].append(item)
         save(store, book)
         return ("blind check at %s: UNMEASURED (Marker said %s); no re-check. The %s gap's repair is %s's, so this item "
-                "waits on it: %s" % (sha, said, name, owner, what[:300]))
+                "waits on it: %s" % (sha, said, name, owner, what))
     st["reach"] = {"class": name, "proposal": prop, "sha": sha, "status": "probe", "at": now}
     book[name] = {"owner": item, "status": "probe", "since": now, "waiters": [w for w in ent.get("waiters") or []
                                                                              if w != item]}
@@ -440,7 +440,7 @@ def on_blind(store, st, r, now, said, blind):
     return ("blind check at %s: UNMEASURED (Marker said %s); no re-check. This item owns the %s reach repair (%s "
             "proposal: adapters %s, read paths %s%s); it is probed from inside the Judge's wall, then the same sha is "
             "checked once: %s" % (sha, said, name, prop["by"], prop["adapters"] or "-", prop["paths"] or "-",
-                                  "; refused %s" % prop["refused"] if prop["refused"] else "", what[:300]))
+                                  "; refused %s" % prop["refused"] if prop["refused"] else "", what))
 
 
 def stale(fx, r, name, ent, sha):
@@ -475,7 +475,7 @@ def _apply(st, prop, name, now, how):
         have = relentless_wall.offbox_cmds(k)
         k["offbox"] = (have + [x for x in prop.get("adapters") or [] if x not in have])[:relentless_wall.OFFBOX_MAX]
         k["reach_ok"] = ("reach repair %s (%s): adapters %s, read paths %s, box grants %s" % (
-            name, how, prop.get("adapters") or "-", prop.get("paths") or "-", prop.get("grants") or "-"))[:400]
+            name, how, prop.get("adapters") or "-", prop.get("paths") or "-", prop.get("grants") or "-"))
         if not k["offbox"]:
             k.pop("offbox")
     st["reach"] = dict(st.get("reach") or {}, proposal=prop, status="applied", applied_at=now)
@@ -573,7 +573,7 @@ def sweep(store, fx, r, now, acts, iso, back=None):
             if moved:
                 continue
             if pwhy:
-                why += "; and the rest of the repair failed its probe too: " + pwhy[:300]
+                why += "; and the rest of the repair failed its probe too: " + pwhy
         elif not prop.get("adapters") and not prop.get("paths") and not prop.get("grants"):
             # nothing to probe: a closed ticket is the repair, and the one re-check is its probe (blind again -> ticket)
             good = status == "ticket"
@@ -589,9 +589,9 @@ def sweep(store, fx, r, now, acts, iso, back=None):
                 cur = store.load(owner)
                 if not cur or cur["status"] != "blocked" or (cur.get("wait") or {}).get("kind") != WAIT:
                     continue
-                _apply(cur, prop, name, now, "probe passed: %s" % (why or "")[:200])
+                _apply(cur, prop, name, now, "probe passed: %s" % (why or ""))
                 store.attempt(owner, {"at": iso(now), "gen": cur["gen"], "end": "reach_repaired", "class": name,
-                                      "detail": ("probe passed: %s" % why)[:600], "sha": rp.get("sha")})
+                                      "detail": ("probe passed: %s" % why), "sha": rp.get("sha")})
                 store.save(cur)
             if status == "ticket":
                 fx.ledger_unblock(owner, "reach repair %s: %s closed and the probe passes" % (name, ent["ticket"]))
@@ -652,7 +652,7 @@ def split(store, fx, r, book, name, owner, st, prop, gaps, why, now, acts, iso):
             return False, None
         dent = book.get(dn) or {}
         cur["reach"] = dict(cur.get("reach") or {}, **{"class": dn, "split_from": visited, "proposal": prop,
-                                                       "split_why": why[:300]})
+                                                       "split_why": why})
         cur.pop("block_pending", None)
         if dent.get("owner") and dent["owner"] != owner and dent.get("status") in ("probe", "ticket", "failed"):
             on = dent["ticket"] if dent.get("status") == "ticket" and dent.get("ticket") else dent["owner"]
@@ -669,7 +669,7 @@ def split(store, fx, r, book, name, owner, st, prop, gaps, why, now, acts, iso):
             book[dn] = dict({k: dent[k] for k in ("successors",) if k in dent}, owner=owner, status="probe", since=now,
                             waiters=[w for w in dent.get("waiters") or [] if w != owner])
         store.attempt(owner, {"at": iso(now), "gen": cur["gen"], "end": "reach_split", "class": name, "to": dn,
-                              "detail": ("the %s repair passed its probe without %s: %s" % (name, gaps[:6], pwhy))[:600]})
+                              "detail": ("the %s repair passed its probe without %s: %s" % (name, gaps[:6], pwhy))})
         store.save(cur)
     waiters = list(ent.get("waiters") or [])
     book[name] = dict(ent, status="ok", owner=None, waiters=[], ok_at=now, last_owner=None, ok_prop=rest,
@@ -708,7 +708,7 @@ def file_successor(store, fx, r, book, name, owner, why, now, acts, iso):
     text = ("Successor of %s, which closed while the %s reach probe still fails for %s and %d waiter(s): %s. Give the "
             "Marker a way to read it (relentless_box.json for what every box carries, an offbox adapter, or a read path "
             "the wall may bind); closing this re-probes and releases the waiting items."
-            % (old, name, owner, len(ent.get("waiters") or []), (why or "")[:300]))
+            % (old, name, owner, len(ent.get("waiters") or []), (why or "")))
     if not file_ticket(store, fx, r, book, name, owner, why, now, acts, iso, ticket=new, text=text):
         return None
     ent = book[name]
@@ -729,11 +729,11 @@ def file_ticket(store, fx, r, book, name, owner, why, now, acts, iso, ticket=Non
     bad = fx.reach_ticket(ticket, text or "Relentless could not repair its own %s reach: the Judge's proposal for %s failed its "
                           "probe from inside the wall (%s). Give the Marker a way to read it (an offbox adapter in "
                           "relentless_rules.json or a read path the wall may bind); closing this re-probes and releases "
-                          "the waiting items." % (name, owner, (why or "")[:300]))
+                          "the waiting items." % (name, owner, (why or "")))
     if bad:
         acts.append({"do": "reach_ticket_failed", "item": owner, "why": bad})
         return False
-    ent.update(status="ticket", ticket=ticket, ticket_at=now, why=(why or "")[:300])
+    ent.update(status="ticket", ticket=ticket, ticket_at=now, why=(why or ""))
     save(store, book)
     for it in [owner] + list(ent.get("waiters") or []):
         with store.lock():
@@ -742,12 +742,12 @@ def file_ticket(store, fx, r, book, name, owner, why, now, acts, iso, ticket=Non
                 continue
             cur["wait"]["on"] = ticket
             cur["block_pending"] = {"kind": "item", "on": [ticket], "class": "reach",
-                                    "detail": "the Judge's %s reach repair failed its probe: %s" % (name, (why or "")[:300])}
+                                    "detail": "the Judge's %s reach repair failed its probe: %s" % (name, (why or ""))}
             if cur.get("reach"):
                 cur["reach"]["status"] = "ticket"
             store.save(cur)
     store.journal({"at": iso(now), "do": "reach_ticket", "item": owner, "class": name, "ticket": ticket})
-    acts.append({"do": "reach_ticket", "item": owner, "class": name, "ticket": ticket, "why": (why or "")[:200]})
+    acts.append({"do": "reach_ticket", "item": owner, "class": name, "ticket": ticket, "why": (why or "")})
     return True
 
 

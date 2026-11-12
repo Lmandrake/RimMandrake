@@ -145,7 +145,7 @@ def t_fixture_output_bounded():
         _, peak = tracemalloc.get_traced_memory()
     finally:
         tracemalloc.stop()
-    ok(rc == 3 and tail.endswith("END") and len(tail) <= 600, "#8 exit and tail read: %s %r" % (rc, tail[-20:]))
+    ok(rc == 3 and tail.endswith("END") and len(tail) <= 8192 + 120 and tail.startswith("[+"), "#8 exit and tail read: %s %r" % (rc, tail[-20:]))
     ok(peak < 8 * 1048576, "#8 40 MB of fixture output never sits in memory: peak %d bytes" % peak)
 
 

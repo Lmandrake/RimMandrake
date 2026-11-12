@@ -65,7 +65,7 @@ def from_snag(klass, detail, r, on=None, kind=None):
     k = blocker_kind(klass, r, on, kind)
     if k is None:
         return None
-    return {"kind": k, "on": list(on or []), "class": klass, "detail": (detail or "")[:600]}
+    return {"kind": k, "on": list(on or []), "class": klass, "detail": (detail or "")}
 
 
 def resolve(pending, item, item_state):
@@ -98,7 +98,7 @@ def resolve(pending, item, item_state):
         filed = [x for x in named if x not in unfiled]
         reason = "never filed: %s; the wait cannot lift by a close, so a person files it or unblocks%s. " % (
             ", ".join(unfiled), (" (also named, filed: %s)" % ", ".join(filed)) if filed else "") + reason
-    return kind, ons, reason[:600]
+    return kind, ons, reason
 
 
 def ledger_holds(led):
@@ -135,7 +135,7 @@ def fence_run(store, fx, item, led, now, acts, iso):
         cur["stopping_since"] = now
         cur["returned_at"] = now        # back at the top once the block ends
         store.attempt(item, {"at": iso(now), "gen": cur["gen"] - 1, "end": "blocked_while_running",
-                             "detail": (led.get("block") or "ledger block")[:600]})
+                             "detail": (led.get("block") or "ledger block")})
         store.save(cur)
     if run:
         fx.stop(run, force=False)
@@ -375,7 +375,7 @@ def main(argv):
                 raise ValueError("not a store row")
             states.append(row)
         except (OSError, ValueError) as e:
-            bad.append((p, str(e)[:120]))
+            bad.append((p, str(e)))
     if not states and not bad:
         print("UNMEASURED: no store rows under %s" % a.root)
         return 2

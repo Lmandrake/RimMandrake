@@ -13,7 +13,9 @@ and it runs entirely against a throwaway ledger — never the real one.
 
     python3 src/RimMandrake/rimflow/selftest_model.py
 """
+import json
 import os
+import re
 import shutil
 import sys
 import tempfile
@@ -64,10 +66,25 @@ def filed(iid="SANDSTORM_WEATHER_TUNING_1", seat="DECIDE", for_="BUILD", **kw):
 
 # --------------------------------------------------------------------------
 def t_atomicity_guard():
-    big = ev(seat="BUILD", event="note", id="X_Y_1", text="z" * 5000)
+    # a 5 KB note keeps its text WHOLE in a side file and the line stays under PIPE_BUF
+    # (RIMMANDRAKE_STORE_TEXT_WHOLE_NO_CUTS): never a refusal that loses the note, never a silent cut
+    os.environ["RM_FULLTEXT_DIR"] = os.path.join(TMP, "fulltext")
+    import fulltext
+    p = os.path.join(TMP, "e.jsonl")
+    text = "".join("word%d " % i for i in range(900))[:5000]
+    model.append(ev(seat="BUILD", event="note", id="X_Y_1", text=text), p)
+    with open(p, encoding="utf-8") as f:
+        raw = f.read().splitlines()[-1]
+    assert len(raw.encode("utf-8")) < model.PIPE_BUF, "the spilled line is still over PIPE_BUF"
+    kept = json.loads(raw)["text"]
+    m = re.search(r"whole text \((\d+) chars\): (\S+)\]$", kept)
+    assert kept.startswith("word0 word1") and m and int(m.group(1)) == 5000, kept[-160:]
+    assert fulltext.read(m.group(2)) == text, "the side file does not hold the whole 5000 chars"
+    # what cannot be spilled (an owner quote is never moved off the line) is still refused
+    big = ev(seat="BUILD", event="note", id="X_Y_1", text="t", ownerSaid="z" * 5000)
     refuses(lambda: model.append(big, os.path.join(TMP, "e.jsonl")),
             "atomic",
-            "a 5 KB event was accepted. Above PIPE_BUF the O_APPEND atomicity "
+            "a 5 KB owner quote was accepted. Above PIPE_BUF the O_APPEND atomicity "
             "guarantee is gone and a concurrent writer can tear the line in half.")
 
 

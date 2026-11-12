@@ -128,7 +128,7 @@ def _update(store, fn):
 
 def fault(store, where, exc):
     """Record a broker fault. Never raises: a fault in the fault path still leaves the caller on the old lane."""
-    rec = {"at": time.time(), "where": where, "why": ("%s: %s" % (type(exc).__name__, exc))[:400], "code_fp": code_fp()}
+    rec = {"at": time.time(), "where": where, "why": ("%s: %s" % (type(exc).__name__, exc)), "code_fp": code_fp()}
     try:
         _write(os.path.join(_dir(store), "fault.json"), rec)
         store.journal({"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "do": "alarm", "kind": "broker_fault",
@@ -329,9 +329,9 @@ def drain(store, fx, r, now, acts):
     if launch_why:      # never started: the entries are lost at once and their items walk on
         def lose(q):
             for item in batch:
-                q["items"][item].update(state="lost", why=("launch: %s" % launch_why)[:200], ended=now)
+                q["items"][item].update(state="lost", why=("launch: %s" % launch_why), ended=now)
         _update(store, lose)
-        acts.append({"do": "broker_launch_failed", "batch": bid, "why": str(launch_why)[:200]})
+        acts.append({"do": "broker_launch_failed", "batch": bid, "why": str(launch_why)})
         return "launch failed: %s" % launch_why
     acts.append({"do": "broker_round", "batch": bid, "items": batch})
     return "launched %s" % bid
@@ -354,8 +354,8 @@ def _bridge_why(root):
         # fails CLOSED: an unanswered check is never "idle" (RELENTLESS_BROKER_HARDEN_BRIDGE_CHECK_TOCTOU). Raising here
         # faulted the whole job and held the broker off on this code; a skip just lets the item walk on and retry.
         return ("bridge check failed: %s" % ("no answer in %ss" % BRIDGE_CHECK_S
-                                             if isinstance(e, subprocess.TimeoutExpired) else e))[:300]
-    return None if r.returncode == 0 else ((r.stdout or "") + (r.stderr or "")).strip()[-300:] or "bridge not idle"
+                                             if isinstance(e, subprocess.TimeoutExpired) else e))
+    return None if r.returncode == 0 else ((r.stdout or "") + (r.stderr or "")).strip() or "bridge not idle"
 
 
 TAKE_REFUSED = "bridge not taken"     # relentless_live.run's admit() words when its own `bridge take --idle-ok` refuses
@@ -379,7 +379,7 @@ def _round(root, item, timeout):
                            env=dict(os.environ, RELENTLESS_ROOT=root, RELENTLESS_PROOF_SOURCE="broker"))
         return r.returncode, (r.stdout or "") + (r.stderr or "")
     except subprocess.TimeoutExpired as e:
-        return 124, "timeout after %ss: %s" % (timeout, (e.stdout or "")[-400:] if isinstance(e.stdout, str) else "")
+        return 124, "timeout after %ss: %s" % (timeout, (e.stdout or "") if isinstance(e.stdout, str) else "")
 
 
 def _wake(root):
@@ -425,7 +425,7 @@ def job(store):
                 continue
             why = BRIDGE_WHY(root)
             if why:     # an owner hold or another holder arrived between rounds: the rest walk on, nothing overridden
-                _update(store, lambda q, item=item: q["items"][item].update(state="skipped", why=why[:200],
+                _update(store, lambda q, item=item: q["items"][item].update(state="skipped", why=why,
                                                                           ended=time.time()))
                 continue
             code, out = ROUND(root, item, c["round_timeout_s"])
@@ -439,12 +439,12 @@ def job(store):
             if refused:     # the TOCTOU: a hold arrived after the check; the round's own take refused it, nothing ran
                 _update(store, lambda q, item=item: q["items"][item].update(
                     state="skipped", ended=t, code=code, outcomes=outcomes,
-                    why=("the round's own take refused: %s" % refused)[:200]))
+                    why=("the round's own take refused: %s" % refused)))
                 WAKE(root)
                 continue
             _update(store, lambda q, item=item: q["items"][item].update(
                 state="ran", ran_at=t, ended=t, code=code, outcomes=outcomes,
-                why=(summ.get("why") or ("" if summ else out[-200:]))[:200]))
+                why=(summ.get("why") or ("" if summ else out))))
             ran += 1
             WAKE(root)      # the item settles on the next game pass
         return {"batch": bid, "ran": ran}
@@ -490,8 +490,8 @@ def sli_line(s):
     age = s.get("oldest_queued_s")
     return ("broker: %d clause(s) completed/24h (%d run), oldest queued %s, %d queued, %d running, %d lost%s%s"
             % (s["clauses_completed_day"], s["clauses_run_day"], ("%ds" % age) if age is not None else "-",
-               s["queued"], s["running"], s["lost_total"], (" | held: %s" % s["held"][:120]) if s.get("held") else "",
-               (" | FAULT (old lane in use): %s" % s["fault"][:160]) if s.get("fault") else
+               s["queued"], s["running"], s["lost_total"], (" | held: %s" % s["held"]) if s.get("held") else "",
+               (" | FAULT (old lane in use): %s" % s["fault"]) if s.get("fault") else
                ("" if s.get("enabled") else " | disabled")))
 
 

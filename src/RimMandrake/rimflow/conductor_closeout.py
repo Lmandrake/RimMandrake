@@ -34,7 +34,7 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 ECHO_S = 600                     # a queued message's echo arrives within its turn
-TEXT_KEEP = 2000                 # one gap's shown text; `miss` keeps every unquoted sentence, so the cut clears nothing
+# a gap's text is kept whole (RIMMANDRAKE_STORE_TEXT_WHOLE_NO_CUTS; the old 2000-char cut cleared nothing)
 MIN_FUZZY_WORDS = 4              # below this a quote must match word for word
 EXCERPT_SHARE = 0.75             # a quote this share of his sentence stands for the sentence
 FUZZY_RATIO = 0.85               # his typos fixed in the quote (--owner-said allows that, meaning unchanged)
@@ -169,7 +169,7 @@ def hint_for(text, miss=()):
     if not (text or "").strip():
         return "no text (an image?): open the record in the transcript"
     if miss and len(miss) < len(sentences(text)):
-        return "partly on the ledger; no quote for: %s" % " / ".join(miss)[:300]
+        return "partly on the ledger; no quote for: %s" % " / ".join(miss)
     return ""
 
 
@@ -195,7 +195,7 @@ def evaluate(msgs, is_goodbye=None, root=None, dismissed=None):
         elif m["key"] in gone:
             out["dismissed"] += 1
         else:
-            out["gaps"].append({"key": m["key"], "ts": m.get("ts"), "text": (m["text"] or "")[:TEXT_KEEP],
+            out["gaps"].append({"key": m["key"], "ts": m.get("ts"), "text": m["text"] or "",
                                 "hint": hint_for(m["text"], miss), "miss": miss})
     out["closeout"] = "partial" if out["gaps"] else "ok"
     return out
@@ -290,7 +290,7 @@ def report(res):
             res["closeout"].upper(), res["messages"], res["recorded"], res["dismissed"], res["exempt"], len(res["gaps"]))]
     for g in res["gaps"]:
         lines.append("- key %s at %s: %s" % (g["key"], time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(g["ts"] or 0)),
-                                            " ".join((g["text"] or "(no text)").split())[:300]))
+                                            " ".join((g["text"] or "(no text)").split())))
         if g["hint"]:
             lines.append("    %s" % g["hint"])
     return lines

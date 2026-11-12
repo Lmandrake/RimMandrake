@@ -113,7 +113,7 @@ def kick(store, item, pid, tries, runner=subprocess.run):
         r = runner(argv, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
     except (OSError, subprocess.SubprocessError) as e:
         return "%s: %s" % (type(e).__name__, e)
-    return ("systemd-run exit %d: %s" % (r.returncode, ((r.stdout or "") + (r.stderr or ""))[-200:])) if r.returncode else None
+    return ("systemd-run exit %d: %s" % (r.returncode, ((r.stdout or "") + (r.stderr or "")))) if r.returncode else None
 
 
 def _in_flight(book, now):
@@ -235,7 +235,7 @@ def rule(R, store, item, judge, verdict, why, env=None):
     except ValueError as e:
         if verdict != "approve":
             raise
-        return R.bind_judge(store, item, judge, "reject", "The judge approved (%s), the machine refused: %s" % (why[:300], e), env=env, cwd=cwd, give_back=True)
+        return R.bind_judge(store, item, judge, "reject", "The judge approved (%s), the machine refused: %s" % (why, e), env=env, cwd=cwd, give_back=True)
 
 
 def work(store, item, pid, runner=subprocess.run, env=None):

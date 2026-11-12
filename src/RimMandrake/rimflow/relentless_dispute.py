@@ -207,7 +207,7 @@ def kick(store, item, job, cfg=None, runner=subprocess.run):
         r = runner(argv, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
     except (OSError, subprocess.SubprocessError) as e:
         return "%s: %s" % (type(e).__name__, e)
-    return ("systemd-run exit %d: %s" % (r.returncode, ((r.stdout or "") + (r.stderr or ""))[-200:])) if r.returncode else None
+    return ("systemd-run exit %d: %s" % (r.returncode, ((r.stdout or "") + (r.stderr or "")))) if r.returncode else None
 
 
 def unit_alive(item, job, runner=subprocess.run):
@@ -274,7 +274,7 @@ def ask(store, item, gen, clauses, claim, evidence, text="", cfg=None, kicker=No
                 raise ValueError("the whole exam already went back to the Setter once this run")
             kind = "malformed"
         job = "d%s-%s" % (time.strftime("%Y%m%dT%H%M%S", time.gmtime()), uuid.uuid4().hex[:6])
-        j = {"id": job, "item": item, "gen": gen, "clauses": clauses, "claim": claim, "kind": kind, "text": (text or "")[:4000],
+        j = {"id": job, "item": item, "gen": gen, "clauses": clauses, "claim": claim, "kind": kind, "text": (text or ""),
              "evidence": os.path.abspath(evidence), "evidence_text": ev_text, "exam_hash": exam.get("exam_hash"),
              "state": "asked", "asked_at": now_iso(), "attempts": 0, "arb_attempts": 0, "delivered": [],
              "history": [{"state": "asked", "at": now_iso()}]}
@@ -304,7 +304,7 @@ def reply(store, item, gen, job, text, cfg=None, kicker=None, waiter=wait, say=p
             raise ValueError("job %s already has your reply: one reply, then the arbiter rules" % job)
         if j.get("state") != "answered":
             raise ValueError("job %s is %s: a reply answers a Setter's stand (nothing to reply to)" % (job, j.get("state")))
-        j["reply"] = {"text": text[:4000], "at": now_iso()}
+        j["reply"] = {"text": text, "at": now_iso()}
         j["state"] = "replied"
         j["history"].append({"state": "replied", "at": now_iso()})
         E._write(job_path(store, item, job), j)
@@ -440,8 +440,8 @@ def _write_answer_prompt(j, exam, answer, exam_json, files, n):
     view = {k: exam.get(k) for k in ("clauses", "maps", "no_code")}
     return ANSWER_BRIEF.format(item=j["item"], claim=j["claim"], clauses=",".join(j["clauses"]),
                                kindline=KIND_MALFORMED.format(n=n) if j.get("kind") == "malformed" else "",
-                               text=j.get("text") or "(none)", evidence=j.get("evidence"), ev=j.get("evidence_text", "")[:6000],
-                               exam_hash=exam.get("exam_hash"), exam=json.dumps(view, indent=1)[:12000], answer=answer,
+                               text=j.get("text") or "(none)", evidence=j.get("evidence"), ev=j.get("evidence_text", ""),
+                               exam_hash=exam.get("exam_hash"), exam=json.dumps(view, indent=1), answer=answer,
                                exam_json=exam_json, files=files)
 
 
@@ -469,8 +469,8 @@ def _dispute_body(j, exam):
     a = j.get("answer") or {}
     return ("Clause(s) challenged ({kind}):\n{cl}\n\nBuilder's challenge (claim {claim}): {text}\nBuilder's evidence:\n---\n"
             "{ev}\n---\nSetter's answer: {av}: {aw}\nBuilder's reply: {reply}").format(
-        kind=j.get("kind"), cl=json.dumps(cl, indent=1)[:8000], claim=j["claim"], text=j.get("text") or "(none)",
-        ev=j.get("evidence_text", "")[:6000], av=a.get("verdict"), aw=a.get("why", "")[:3000],
+        kind=j.get("kind"), cl=json.dumps(cl, indent=1), claim=j["claim"], text=j.get("text") or "(none)",
+        ev=j.get("evidence_text", ""), av=a.get("verdict"), aw=a.get("why", ""),
         reply=(j.get("reply") or {}).get("text") or "(none: the Setter's answer could not stand on its own)")
 
 
@@ -577,7 +577,7 @@ def _answer(store, j, cfg, deps):
         update(store, item, job, state="replied", route="no_answer",
                answer={"verdict": "no_answer", "why": "the resumed Setter wrote no answer in two turns"})
         return
-    ans = {"verdict": ans["verdict"], "why": str(ans.get("why", ""))[:3000], "at": now_iso()}
+    ans = {"verdict": ans["verdict"], "why": str(ans.get("why", "")), "at": now_iso()}
     if ans["verdict"] == "stand":         # the clauses it stood on, as defended: the arbiter judges THESE, even if a later
         defended = [c for c in exam.get("clauses") or [] if c.get("id") in j["clauses"]]   # amend moves the exam on
         row(store, update(store, item, job, state="answered", answer=dict(ans, exam_hash=exam.get("exam_hash"),
@@ -728,7 +728,7 @@ def _arbiter_run(store, item, base, prompt, ruling_path, out, cfg, deps, winners
         E._write(excl, cur)
     r = E._read(ruling_path)
     if isinstance(r, dict) and r.get("winner") in winners:
-        return {"winner": r["winner"], "why": str(r.get("why", ""))[:3000], "session": sid, "at": now_iso()}, sid
+        return {"winner": r["winner"], "why": str(r.get("why", "")), "session": sid, "at": now_iso()}, sid
     return None, sid
 
 
@@ -742,7 +742,7 @@ def _arbitrate(store, j, cfg, deps):
         exam = dict(exam, clauses=a["clauses"])  # the Setter defended an exam since amended: judge what it defended,
         kept = files_of(E.item_dir(store, item), a.get("exam_hash"))                   # with that exam's own files
         files = kept if os.path.isdir(kept) else None
-    prompt = ARBITER_BRIEF.format(item=item, base=exam.get("base_sha"), text=deps.text_of(item)[:8000],
+    prompt = ARBITER_BRIEF.format(item=item, base=exam.get("base_sha"), text=deps.text_of(item),
                                   body=_dispute_body(j, exam), ruling=os.path.join(jobs_dir(store, item), job + ".ruling.json"),
                                   choices=DISPUTE_CHOICES, winners="|".join(WINNERS))
     ruling = None
@@ -811,7 +811,7 @@ def _arbitrate_exam(store, item, cfg, deps):
     refs = "\n".join("- %s %s: %s" % (r.get("code"), r.get("clause") or "", r.get("why")) for r in st.get("refusals") or [])
     d = E.item_dir(store, item)
     ruling_path = os.path.join(d, "exam_ruling.json")
-    prompt = ARBITER_BRIEF.format(item=item, base=st.get("base"), text=deps.text_of(item)[:8000],
+    prompt = ARBITER_BRIEF.format(item=item, base=st.get("base"), text=deps.text_of(item),
                                   body=EXAM_ARBITER_BODY.format(refusals=refs or "(none recorded)"), ruling=ruling_path,
                                   choices=EXAM_CHOICES, winners="|".join(EXAM_WINNERS))
     ruling = None
@@ -854,8 +854,8 @@ def role_stage_dispute(role, concept, item, sig, reasons, store=None, cfg=None, 
         d = E.item_dir(store, key)
         ruling_path = os.path.join(d, "role_ruling.json")
         prompt = ARBITER_BRIEF.format(
-            item=key, base=base, text=deps.text_of(item)[:8000] if item else "(no ledger item)",
-            body=ROLE_BODY.format(role=role, concept=concept, sig=sig, reasons="\n".join("- %s" % r for r in reasons)[:6000]),
+            item=key, base=base, text=deps.text_of(item) if item else "(no ledger item)",
+            body=ROLE_BODY.format(role=role, concept=concept, sig=sig, reasons="\n".join("- %s" % r for r in reasons)),
             ruling=ruling_path, choices=ROLE_CHOICES, winners="|".join(WINNERS))
         ruling = None
         for _ in range(int(cfg.get("arbiter_tries", 2))):
@@ -867,7 +867,7 @@ def role_stage_dispute(role, concept, item, sig, reasons, store=None, cfg=None, 
         E._append(os.path.join(d, "role_dispute.jsonl"), {
             "role": role, "concept": concept, "sig": sig, "winner": ruling["winner"], "final": True,
             "arbiter": ruling.get("session"), "at": now_iso()})
-        return "arbiter ruled %s (shadow; %s; nothing filed)" % (ruling["winner"], str(ruling.get("why", ""))[:200])
+        return "arbiter ruled %s (shadow; %s; nothing filed)" % (ruling["winner"], str(ruling.get("why", "")))
     except Exception:  # noqa: BLE001 - the caller's alarm already stands; a fault here must not break the role launch
         return None
 
@@ -939,7 +939,7 @@ def main(argv=None):
         try:
             print(work(store, a.item, a.job))
         except Exception as e:  # noqa: BLE001 - recorded on the job; deliver() restarts or routes it
-            update(store, a.item, a.job, worker_error="%s: %s" % (type(e).__name__, str(e)[:300]))
+            update(store, a.item, a.job, worker_error="%s: %s" % (type(e).__name__, str(e)))
             print("worker failed: %s" % e)
             return 1
         return 0

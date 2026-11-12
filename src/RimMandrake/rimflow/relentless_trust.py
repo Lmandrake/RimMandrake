@@ -134,7 +134,7 @@ def render(c, live, label, frame=None):
         if c[name]:
             notes.append("%s: %s" % (name, ", ".join(c[name])))
     for item, why in c["control"]["reasons"].items():
-        notes.append("control FAIL %s: %s" % (item, (why or "")[:300]))
+        notes.append("control FAIL %s: %s" % (item, (why or "")))
     if frame:
         notes.append("Population: %s" % json.dumps({k: (len(v) if k == "dropped_at_delivery" else v) for k, v in frame.items()},
                                                    sort_keys=True))

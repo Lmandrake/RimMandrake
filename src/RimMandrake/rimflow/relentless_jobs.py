@@ -110,7 +110,7 @@ def _launch(store, kind, launch, t):
     except Exception as e:  # noqa: BLE001  a launch that cannot start leaves the row queued; reconcile retries
         why = "%s: %s" % (type(e).__name__, e)
     t["launched"] = time.time()
-    t["launch_why"] = (str(why)[:200] if why else None)
+    t["launch_why"] = (str(why) if why else None)
     return why
 
 
@@ -228,7 +228,7 @@ def mode(kind):
 def systemd_launch(kind):
     r = subprocess.run(["systemctl", "--user", "start", "--no-block", UNIT % kind], capture_output=True, text=True,
                        timeout=30)
-    return None if r.returncode == 0 else ("systemctl exit %d: %s" % (r.returncode, r.stderr.strip()))[:200]
+    return None if r.returncode == 0 else ("systemctl exit %d: %s" % (r.returncode, r.stderr.strip()))
 
 
 def launcher(store, kind):

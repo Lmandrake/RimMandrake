@@ -267,7 +267,7 @@ def main(argv=None):
                 print("%s  gen %s  %-9s  sent %s by %s%s\n    %s" % (
                     n["id"], n.get("gen"), n["state"], n.get("at"), n.get("by"),
                     ("  delivered %s at %s" % (n.get("delivered_at"), n.get("event"))) if n["state"] == "delivered"
-                    else "", n["text"][:300]))
+                    else "", n["text"]))
             if not ns:
                 print("no notes for %s" % a.item)
         return 0

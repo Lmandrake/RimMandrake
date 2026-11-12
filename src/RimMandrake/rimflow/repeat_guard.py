@@ -90,7 +90,7 @@ def grown_from(root, sha, test, red_hash):
         return "the red version (%s) of %s is committed nowhere in %s's history" % (red_hash, test, str(sha)[:12])
     d = git("diff", "--no-color", "-U0", "%s:%s" % (red, test), "%s:%s" % (sha, test))
     if d.returncode not in (0, 1):
-        return "git diff failed: %s" % d.stderr.decode(errors="replace")[-200:]
+        return "git diff failed: %s" % d.stderr.decode(errors="replace")
     added = {}
     at = None   # the next line number in the test at `sha`; None is still the file header, whose ---/+++ are no content
     for line in d.stdout.decode(errors="replace").split("\n"):   # not splitlines: a form feed in a line would throw the count off
@@ -123,7 +123,7 @@ def run(root, test, instance="", timeout=TIMEOUT_S):
                            timeout=timeout, stdin=subprocess.DEVNULL)
     except subprocess.TimeoutExpired:
         return 124, "ran past %d s" % timeout
-    return r.returncode, ((r.stdout or "") + (r.stderr or ""))[-1500:]
+    return r.returncode, ((r.stdout or "") + (r.stderr or ""))
 
 
 def red_problem(rc, out):
@@ -131,7 +131,7 @@ def red_problem(rc, out):
     if rc == 0:
         return "it passed: a guard shown failing on the instance fails there (run it before the fix lands, or replay the instance with --instance)"
     if rc < 0 or rc >= 124:
-        return "it died (exit %d), which shows nothing about the instance: %s" % (rc, out[-200:])
+        return "it died (exit %d), which shows nothing about the instance: %s" % (rc, out)
     if "Traceback (most recent call last)" in out and CRASH.search(out.rsplit("Traceback (most recent call last)", 1)[1]):
-        return "it crashed before its checks ran: %s" % out[-300:]
+        return "it crashed before its checks ran: %s" % out
     return None

@@ -95,7 +95,7 @@ def result_error(out):
     except (OSError, TypeError, ValueError):
         return None
     text = str(rec.get("result") or "") if isinstance(rec, dict) and rec.get("is_error") is True else ""
-    return text[:200] if RESULT_RX.search(text) else None
+    return text if RESULT_RX.search(text) else None
 
 
 def box_transcripts(box, since):

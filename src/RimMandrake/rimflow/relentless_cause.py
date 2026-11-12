@@ -92,8 +92,8 @@ def sweep(store, fx, now, acts, iso):
         if why:
             store._write(store.p("breaker.json"), json.dumps({"opens": br["opens"]} if br.get("opens") else {}))
             store.journal({"at": iso(now), "do": "backoff_cause_closed", "key": "breaker_cool_s",
-                           "cause": br["cause"].get("kind"), "why": why[:300]})
-            acts.append({"do": "backoff_cause_closed", "key": "breaker_cool_s", "why": why[:300]})
+                           "cause": br["cause"].get("kind"), "why": why})
+            acts.append({"do": "backoff_cause_closed", "key": "breaker_cool_s", "why": why})
             n += 1
     for st in store.states():
         if not any(st.get(c) for _, c, _ in ITEM_BACKOFFS):
@@ -128,8 +128,8 @@ def sweep(store, fx, now, acts, iso):
                 store.save(cur)
         for clock, kind, why in ended:
             store.journal({"at": iso(now), "do": "backoff_cause_closed", "item": item, "key": clock, "cause": kind,
-                           "why": why[:300]})
-            acts.append({"do": "backoff_cause_closed", "item": item, "key": clock, "why": why[:300]})
+                           "why": why})
+            acts.append({"do": "backoff_cause_closed", "item": item, "key": clock, "why": why})
             n += 1
     return n
 

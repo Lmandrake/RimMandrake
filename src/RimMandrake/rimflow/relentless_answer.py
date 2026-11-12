@@ -56,7 +56,7 @@ def words(ev):
     for k in ("byCard", "ownerSaid", "perRuling", "text", "reason", "why"):
         if ev.get(k):
             parts.append("%s=%s" % (k, ev[k]))
-    return "; ".join(parts)[:900]
+    return "; ".join(parts)
 
 
 def reconcile(store, fx, item, st, now, acts, iso, journal_alarm=True):
@@ -70,7 +70,7 @@ def reconcile(store, fx, item, st, now, acts, iso, journal_alarm=True):
             store.journal({"at": iso(now), "do": "alarm", "kind": ALARM, "item": item,
                            "why": "%s: owner_call hold with no question_id (prose only), unmatchable: needs the "
                                   "Conductor (answer, then `relentless.py unhold %s`): %s"
-                                  % (item, item, (h.get("why") or "")[:300])})
+                                  % (item, item, (h.get("why") or ""))})
             with store.lock():
                 cur = store.load(item)
                 if cur and cur.get("status") == "held" and (cur.get("hold") or {}).get("kind") == "owner_call" \

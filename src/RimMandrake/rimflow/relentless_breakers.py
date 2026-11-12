@@ -176,7 +176,7 @@ def note(store, item, klass, detail, r, now):
         changed = True
         if not inc["open"] and len(inc["items"]) >= r.get("incident_items", 3):
             first = min(inc["items"], key=lambda i: (inc["items"][i], i))
-            inc.update({"open": True, "opened": now, "probe": first, "told": False, "why": (detail or "")[:600],
+            inc.update({"open": True, "opened": now, "probe": first, "told": False, "why": (detail or ""),
                         "class": klass})
             store.journal({"at": _iso(now), "do": "incident_open", "key": sig, "items": sorted(inc["items"]),
                            "probe": first})
@@ -277,7 +277,7 @@ def tell(store, fx, now, acts):
             continue
         text = ("INCIDENT: %d items failed on one capability (%s); they wait behind one probe (%s) and come back when it "
                 "passes or `relentless.py incident-release --key '%s' --evidence ...`. Last: %s"
-                % (len(inc["items"]), key, inc.get("probe"), key, (inc.get("why") or "")[:300]))
+                % (len(inc["items"]), key, inc.get("probe"), key, (inc.get("why") or "")))
         if inc.get("repair"):
             text += (" | the same fault is diagnosed: repair item %s; its close with fixtures that hold releases this "
                      "too; one book: `relentless.py incidents`" % inc["repair"])

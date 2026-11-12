@@ -10,7 +10,8 @@ Conductor instead of turning again. The per-item token cap is `item_spend_limit`
 same summary, so whoever reads the hold sees what was tried without opening the store.
 """
 
-SUMMARY_MAX = 380       # the hold reaches the ledger through `rimflow needs --reason`, cut at relentless.NOTE_MAX (400)
+# The hold is stored whole; its ledger copy goes through `rimflow needs --reason`, where relentless.ledger_needs fits it under
+# NOTE_MAX with a pointer to the whole text (fulltext.fit). SUMMARY_MAX was a cut to 380 for that copy and is gone.
 
 
 def summary(st):
@@ -19,8 +20,8 @@ def summary(st):
     last = st.get("last_fail") or {}
     line = "gen %d, %.1fM weighted tokens, %d returns (%s), approach %s after %d change(s); last: %s: %s" % (
         st.get("gen", 0), (st.get("spent") or 0) / 1e6, st.get("total_failures", 0), ends or "none open",
-        st.get("approach"), st.get("approach_changes", 0), last.get("class", "-"), (last.get("detail") or "")[:160])
-    return line[:SUMMARY_MAX]
+        st.get("approach"), st.get("approach_changes", 0), last.get("class", "-"), (last.get("detail") or ""))
+    return line
 
 
 def out_of_tacks(st, r):
@@ -30,5 +31,5 @@ def out_of_tacks(st, r):
 
 
 def hold(st, why, kind, now):
-    st["hold"] = {"why": ("%s. %s" % (why, summary(st)))[:SUMMARY_MAX + 120], "kind": kind, "delivered": False,
+    st["hold"] = {"why": ("%s. %s" % (why, summary(st))), "kind": kind, "delivered": False,
                   "at": now}

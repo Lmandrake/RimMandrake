@@ -40,6 +40,10 @@ import re
 import subprocess
 import sys
 import time
+try:                                    # whole text, never a silent cut (RIMMANDRAKE_STORE_TEXT_WHOLE_NO_CUTS)
+    from . import fulltext
+except ImportError:
+    import fulltext  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -298,7 +302,7 @@ def session_note(store, started, item, served=False, reload_why=None, mods=None,
         if served and item not in e["served"]:
             e["served"].append(item)
         if reload_why:
-            e["reload_needed"][item] = reload_why[:300]
+            e["reload_needed"][item] = reload_why
         e["loads_saved"] = max(0, len(e["served"]) - 1)
         e["last"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now))
         for k in sorted(book, key=lambda k: int(k))[:-50]:
@@ -361,7 +365,7 @@ def reenter(store, st, now, why):
     st.pop("put_down", None)
     enter(store, st, green["sha"], now)
     st["game"]["offline_green"] = green
-    st["game"]["reentered"] = {"at": now, "why": why[:300]}
+    st["game"]["reentered"] = {"at": now, "why": why}
     store.save(st)
 
 
@@ -385,7 +389,7 @@ def void_rows(root, item, sha, why, now):
     p = os.path.join(root, "live", "runs.jsonl")
     os.makedirs(os.path.dirname(p), exist_ok=True)
     with open(p, "a", encoding="utf-8") as f:
-        f.write(json.dumps({"item": item, "sha": sha, "void": True, "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "why": (why or "")[:300]}) + "\n")
+        f.write(json.dumps({"item": item, "sha": sha, "void": True, "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "why": (why or "")}) + "\n")
 
 
 def outcomes(rows, item, sha, clauses):
@@ -547,7 +551,7 @@ def steve_unmeasured(detail):
     # the worker's row is "exit 1: <the log's tail>": the head is the worker's, the lines are the proof's
     for line in STEVE_HEAD.sub("", detail or "", count=1).splitlines():
         if L.EXIT1_HARNESS.search(line) or L.EXIT1_RELOAD.search(line.strip()):
-            return line.strip()[:200]
+            return line.strip()
     return None
 
 
@@ -575,7 +579,7 @@ def steve_rows(job, res, item, sha, clauses, now):
                    "proof_exit": 0 if v["verdict"] == "PASS" else 1,
                    "why": ("SteveDesktop %s, tier %s exact (%d running mods): %s"
                            % (res.get("attempt"), job_tier(job), len(res.get("running") or []),
-                              (v.get("detail") or "")[-300:]))}
+                              (v.get("detail") or "")))}
     return rows, unmeasured
 
 
@@ -663,7 +667,7 @@ def steve_sync(store, fx, r, item, g, sha, now, acts):
             if not dud:
                 jobs[tier] = dict(jb, finished=now)
                 continue
-            jb["last_why"] = "; ".join("%s: %s" % (k, w[:160]) for k, w in sorted(dud.items()))[:400]
+            jb["last_why"] = "; ".join("%s: %s" % (k, w) for k, w in sorted(dud.items()))
             open_ = sorted(dud)
         elif state == "quarantined" or (state == "done" and verdict[0] == "quarantine"):
             jb["last_why"] = "testq %s ran inside a SteveDesktop fault window: quarantined, never counted" % jb["job"]
@@ -873,7 +877,7 @@ def stage_prompt(st, r, sha, others=(), enable=(), dlls=(), trees=None, remedy=N
              "%s at %s" % (o["item"], (o.get("game") or {}).get("sha", "?")[:12]) for o in others)) if others else
         "   No other game item waits for a reload.",
         ("   LANE FIX (an earlier read measured nothing for an environment reason: %s): deploy %s (plan, read, --apply) "
-         "and hold them in this load%s." % ((remedy.get("why") or "")[:300], ", ".join(remedy.get("mods") or []) or "nothing more",
+         "and hold them in this load%s." % ((remedy.get("why") or ""), ", ".join(remedy.get("mods") or []) or "nothing more",
                                             "; then, with the game up, run each producer once and keep its exit and last "
                                             "lines for game-ready: %s" % " ; ".join("`%s`" % c for c in remedy["cmds"])
                                             if remedy.get("cmds") else "")) if remedy else
@@ -893,7 +897,7 @@ def stage_prompt(st, r, sha, others=(), enable=(), dlls=(), trees=None, remedy=N
         "Never fullscreen or focus the game. Never a flyer's flight. Never touch a canonical world save "
         "(infrastructure/state/CANONICAL_SAVE.md). Never `rimflow bridge take/release` or any ledger write on this "
         "item: the supervisor owns both. Foreground commands, timeouts under 540 s, no subagents.",
-        "", "--- live proofs it will rerun ---", st.get("_proofs_text", "")[:3000]])
+        "", "--- live proofs it will rerun ---", st.get("_proofs_text", "")])
 
 
 # ---------------------------------------------------------------- effects (mixed into relentless.Effects)
@@ -987,7 +991,7 @@ def no_code_rebuild(st, sha, touched):
         return None
     if w.get("gen") is None or w.get("gen") != cand.get("gen") or w.get("unchanged") is not True:
         return None
-    return ("gen %s rebuild, ledger-only; warrant: %s" % (w["gen"], w["changed"]))[:400]
+    return ("gen %s rebuild, ledger-only; warrant: %s" % (w["gen"], w["changed"]))
 
 
 def enable_set(gaps):
@@ -1033,7 +1037,7 @@ class GameFx(object):
         if live:
             args += ["--live", live]
         r = self.rimflow(*args, timeout=180)
-        return None if r.returncode == 0 else (r.stderr or r.stdout)[-400:]
+        return None if r.returncode == 0 else (r.stderr or r.stdout)
 
     def game_ledger(self, item):
         """-> {state, built_sha, owed: {criterion: level}} from the ledger, or None."""
@@ -1078,7 +1082,7 @@ class GameFx(object):
             import belt_watchdog
             return stall_evidence(belt_watchdog.gather(bridge=False))
         except Exception as e:  # noqa: BLE001  reported up as blind, never read as no evidence
-            return "%s%s: %s" % (STALL_BLIND, type(e).__name__, str(e)[:200])
+            return "%s%s: %s" % (STALL_BLIND, type(e).__name__, str(e))
 
     def bridge_reading(self):
         """-> {"holder", "purpose", "since"} of the bridge lock as the ledger reads now."""
@@ -1088,15 +1092,15 @@ class GameFx(object):
 
     def bridge_idle(self, purpose):
         r = self.rimflow("bridge", "idle", "--for", purpose)
-        return None if r.returncode == 0 else ((r.stdout or "") + (r.stderr or "")).strip()[-300:]
+        return None if r.returncode == 0 else ((r.stdout or "") + (r.stderr or "")).strip()
 
     def bridge_take(self, purpose):
         r = self.rimflow("bridge", "take", "--idle-ok", "--for", purpose)
-        return None if r.returncode == 0 else ((r.stderr or "") + (r.stdout or "")).strip()[-300:]
+        return None if r.returncode == 0 else ((r.stderr or "") + (r.stdout or "")).strip()
 
     def bridge_release(self):
         r = self.rimflow("bridge", "release", "--mine")
-        return None if r.returncode == 0 else ((r.stderr or "") + (r.stdout or "")).strip()[-300:]
+        return None if r.returncode == 0 else ((r.stderr or "") + (r.stdout or "")).strip()
 
     def game_preflight(self, item, lines, sites=None):
         """relentless_live.preflight on the ledger and books as a live run would read them: [{cid, why, fp, kind}]."""
@@ -1161,7 +1165,7 @@ class GameFx(object):
             except OSError:
                 return ""
         scripts = relentless_names.gather_scripts(text, read)
-        saves = relentless_names.gather_saves(text, lambda p: read(p)[:262144])
+        saves = relentless_names.gather_saves(text, lambda p: read(p)[:262144])  # cut-ok: a search window for save names
         why = relentless_names.refusal(chk["refused"])
         try:
             build = sorted(relentless_live_round.item_mods(self._round_fx(), item, sha))
@@ -1265,7 +1269,7 @@ class GameFx(object):
         got = R.read_fallback(self.base)
         old = got.get(item) or {}
         keep = list(old.get("clauses") or []) if old.get("sha") and same_sha(old["sha"], sha) else []
-        got[item] = {"sha": sha, "clauses": sorted(set(keep) | set(clauses)), "why": why[:400],
+        got[item] = {"sha": sha, "clauses": sorted(set(keep) | set(clauses)), "why": why,
                      "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
         p = self._fallback_path()
         os.makedirs(os.path.dirname(p), exist_ok=True)
@@ -1294,7 +1298,7 @@ class GameFx(object):
                 continue
             if isinstance(o, dict) and o.get("job"):
                 return o["job"], None
-        return None, ((r.stdout or "") + (r.stderr or "")).strip()[-400:] or "exit %d, no job" % r.returncode
+        return None, ((r.stdout or "") + (r.stderr or "")).strip() or "exit %d, no job" % r.returncode
 
     def testq_job(self, job):
         """-> {"state": pending|running|done|quarantined|cancelled|None, "rec": the record or None, "gate":
@@ -1313,9 +1317,9 @@ class GameFx(object):
     def steve_verify(self, item, criterion, level, sha, result, evidence, config):
         """rimflow verify for one clause SteveDesktop measured -> None, or why it did not land."""
         v = self.rimflow("verify", item, "--criterion", criterion, "--level", level, "--sha", sha, "--result", result,
-                         "--config", config[:300], "--evidence", evidence[:300],
+                         "--config", fulltext.fit(config, 300), "--evidence", fulltext.fit(evidence, 300),
                          "--why", "relentless exact tier: SteveDesktop through testq, the tier loaded whole and checked")
-        return None if v.returncode == 0 else ((v.stderr or v.stdout) or "")[-300:]
+        return None if v.returncode == 0 else ((v.stderr or v.stdout) or "")
 
     def game_row_append(self, row):
         p = os.path.join(self.base, "live", "runs.jsonl")
@@ -1337,7 +1341,7 @@ class GameFx(object):
         r = subprocess.run(["python3", os.path.join(self.books, "src/RimMandrake/Utils/modlist_swap.py"), "--enable",
                             *mods, "--apply"], cwd=self.books, capture_output=True, text=True, timeout=180,
                            stdin=subprocess.DEVNULL)
-        return None if r.returncode == 0 else ((r.stdout or "") + (r.stderr or "")).strip()[-400:]
+        return None if r.returncode == 0 else ((r.stdout or "") + (r.stderr or "")).strip()
 
     def modlist_disable(self, mods):
         """modlist_swap.py --disable <mods> --apply on the live ModsConfig.xml -> None, or why it could not."""
@@ -1345,7 +1349,7 @@ class GameFx(object):
         r = subprocess.run(["python3", os.path.join(self.books, "src/RimMandrake/Utils/modlist_swap.py"), "--disable",
                             *mods, "--apply"], cwd=self.books, capture_output=True, text=True, timeout=180,
                            stdin=subprocess.DEVNULL)
-        return None if r.returncode == 0 else ((r.stdout or "") + (r.stderr or "")).strip()[-400:]
+        return None if r.returncode == 0 else ((r.stdout or "") + (r.stderr or "")).strip()
 
     def prove_launch(self, item):
         import model
@@ -1449,14 +1453,14 @@ def lapse_holds(store, fx, r, now, acts):
                 li = st.pop("live_iter", None)
                 if st["status"] != "running" or li is None:
                     continue
-                st["live_lapsed"] = dict(li, lapsed_at=now, why=why[:300])
+                st["live_lapsed"] = dict(li, lapsed_at=now, why=why)
                 store.learn(item, "- %s: the game hold lapsed (%s); the game is free for the next item. Work offline; "
                             "a live iteration needs the game again through a game phase" % (
                                 time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), why))
             store.save(st)
         store.journal({"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "do": "game_hold_released",
-                       "item": item, "kind": kind, "why": why[:300]})
-        acts.append({"do": "game_hold_released", "item": item, "kind": kind, "why": why[:200]})
+                       "item": item, "kind": kind, "why": why})
+        acts.append({"do": "game_hold_released", "item": item, "kind": kind, "why": why})
 
 
 # ---------------------------------------------------------------- the step
@@ -1484,7 +1488,7 @@ def _back(store, fx, sup, r, item, klass, why, now, acts, live=None):
         elif live:
             st["live_iter"] = live
         store.save(st)
-    acts.append({"do": klass, "item": item, "why": why[:200], **({"gated": True} if gated else {})})
+    acts.append({"do": klass, "item": item, "why": why, **({"gated": True} if gated else {})})
     fx.ledger_note(item, "relentless game phase: %s%s: %s" % (klass, " (withheld for attribution, no strike)" if gated
                                                               else "", why))
 
@@ -1526,18 +1530,18 @@ def _load_gate(store, fx, r, item, g, rd, now, acts):
         # a probe that cannot see would wait this load for ever: the deadline ends the ATTEMPT (a counted
         # harness failure and an alarm), and the game, which may still be loading, is left running
         _harness(store, fx, r, item, "%s; the stall probe is blind (%s), so the attempt ends and the game is "
-                 "left loading" % (msg, ev[len(STALL_BLIND):][:200]), now, acts)
+                 "left loading" % (msg, ev[len(STALL_BLIND):]), now, acts)
         _save(store, item, lambda s: s["game"].update(spare_load={"started": rd.get("started")}))
         return True, None
     if not ev:
         why = "%s; no stall evidence (belt_watchdog), so it is waited, not restaged" % msg
-        _save(store, item, lambda s: (s.update(put_down={"on": why[:300], "at": now}),
+        _save(store, item, lambda s: (s.update(put_down={"on": why, "at": now}),
                                       s["game"].update(loading={"started": rd.get("started"), "bound": bound})))
-        acts.append({"do": "game_loading_past_deadline", "item": item, "why": why[:300]})
+        acts.append({"do": "game_loading_past_deadline", "item": item, "why": why})
         return True, None
     if g.get("spare_load") is not None:     # evidence, not the clock: this load is restaged after all
         _save(store, item, lambda s: s["game"].pop("spare_load", None))
-    return False, "%s; stall evidence: %s" % (msg, ev[:200])
+    return False, "%s; stall evidence: %s" % (msg, ev)
 
 
 def _env(store, fx, r, item, rows, since, now, acts):
@@ -1603,15 +1607,15 @@ def _env_fix(store, item, envs, now, acts):
         s["env_tried"] = _keep(s.get("env_tried"), {e.fp: [now, e["at"]] for e in envs})
         rem = s["game"].get("remedy") or {}
         s["game"]["remedy"] = {"mods": sorted(set(rem.get("mods") or []) | set(mods)),
-                               "cmds": sorted(set(rem.get("cmds") or []) | set(cmds)), "why": detail[:600], "at": now}
+                               "cmds": sorted(set(rem.get("cmds") or []) | set(cmds)), "why": detail, "at": now}
         if not rides:
             s["game"].update(phase="stage", stages=0, retry_at=None, ready=None, snag=None, waits_reload=None)
-            s["put_down"] = {"on": ("the lane fixes the environment once: %s" % detail)[:200], "at": now}
+            s["put_down"] = {"on": ("the lane fixes the environment once: %s" % detail), "at": now}
     if _save(store, item, f) is None:
         return True
     store.attempt(item, {"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "gen": st["gen"], "end": "game_env_fix",
-                         "detail": detail[:600], "sha": sha})
-    acts.append({"do": "game_env_fix", "item": item, "why": detail[:200], "mods": mods, "cmds": cmds})
+                         "detail": detail, "sha": sha})
+    acts.append({"do": "game_env_fix", "item": item, "why": detail, "mods": mods, "cmds": cmds})
     return not rides
 
 
@@ -1653,43 +1657,43 @@ def _env_route(store, fx, item, envs, now, acts, head=None):
         if rep in repairs:
             continue
         title = ("Game-lane environment cause (%s) no lane step can fix stops live proofs: %s"
-                 % (e.kind, (e.why or "no row named the cause")[-120:]))
+                 % (e.kind, (e.why or "no row named the cause")))
         text = ("relentless: %s at %s waits on this repair (blocked; it resumes its game phase on the same sha when this "
                 "closes, no builder is sent to it): %s" % (item, sha[:12], relentless_envcause.line(e)))
         err = fx.env_repair(rep, title, text)
         if err:
             store.journal({"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "do": "alarm",
-                           "kind": "game_env_route_failed", "item": item, "why": ("%s: %s" % (rep, err))[:300]})
-            acts.append({"do": "game_env_route_failed", "item": item, "repair": rep, "why": str(err)[:200]})
+                           "kind": "game_env_route_failed", "item": item, "why": ("%s: %s" % (rep, err))})
+            acts.append({"do": "game_env_route_failed", "item": item, "repair": rep, "why": str(err)})
             return
         repairs.append(rep)
-    why = ("%s | waits on %s" % (why, ", ".join(repairs)))[:900]
+    why = ("%s | waits on %s" % (why, ", ".join(repairs)))
 
     def f(s):
         s["env_routed"] = _keep(s.get("env_routed"), {e.fp: now for e in envs})
         s["status"] = "blocked"
         s["blocked_at"] = now
-        s["wait"] = {"kind": relentless_attrib.WAIT_DEPENDENCY, "class": "game_env", "detail": why[:2000], "since": now,
+        s["wait"] = {"kind": relentless_attrib.WAIT_DEPENDENCY, "class": "game_env", "detail": why, "since": now,
                      "sha": sha, "resume": GAME, "on": repairs[0], "incident": None, "attributed_at": now}
-        s["block_pending"] = {"kind": "item", "on": list(repairs), "class": "game_env", "detail": why[:600]}
-        s["put_down"] = {"on": ("waits on %s: %s" % (", ".join(repairs), detail))[:200], "at": now}
+        s["block_pending"] = {"kind": "item", "on": list(repairs), "class": "game_env", "detail": why}
+        s["put_down"] = {"on": ("waits on %s: %s" % (", ".join(repairs), detail)), "at": now}
     if _save(store, item, f) is None:
         return
     void_rows(store.root, item, sha, "routed: %s" % detail, now)
     store.attempt(item, {"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "gen": st["gen"],
-                         "end": "game_env_route", "detail": detail[:600], "sha": sha, "repairs": repairs})
+                         "end": "game_env_route", "detail": detail, "sha": sha, "repairs": repairs})
     store.journal({"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "do": "alarm", "kind": "game_env",
-                   "item": item, "repairs": repairs, "why": why[:300]})
-    acts.append({"do": "game_env_route", "item": item, "repairs": repairs, "why": why[:200]})
+                   "item": item, "repairs": repairs, "why": why})
+    acts.append({"do": "game_env_route", "item": item, "repairs": repairs, "why": why})
 
 
 def _hold(store, fx, item, why, now, acts):
     def f(st):
         st["status"] = "held"
         st["hold"] = {"why": why, "kind": "game", "delivered": False, "at": now}
-        st["put_down"] = {"on": why[:200], "at": now}
+        st["put_down"] = {"on": why, "at": now}
     _save(store, item, f)
-    acts.append({"do": "game_held", "item": item, "why": why[:200]})
+    acts.append({"do": "game_held", "item": item, "why": why})
 
 
 NOT_REPRODUCED = "not reproduced"
@@ -1699,20 +1703,20 @@ def _not_reproduced(store, fx, item, missed, now, acts):
     """repro_miss_limit misses on one build: a game hold (unhold returns it to the prove phase, with fresh tries), the
     attempt ending `not_reproduced`, and last_fail carrying every miss's verdict line, never only a log path."""
     detail = "; ".join("%s: %d repro misses on its site: %s" % (k, n, " | ".join(ws))
-                       for k, (n, ws) in sorted(missed.items()))[:2000]
+                       for k, (n, ws) in sorted(missed.items()))
     why = "game phase: %s: %s" % (NOT_REPRODUCED, detail)
 
     def f(st):
         st["status"] = "held"
-        st["hold"] = {"why": why[:900], "kind": "game", "delivered": False, "at": now}
-        st["put_down"] = {"on": why[:200], "at": now}
+        st["hold"] = {"why": why, "kind": "game", "delivered": False, "at": now}
+        st["put_down"] = {"on": why, "at": now}
         st["last_fail"] = {"class": "not_reproduced", "detail": detail, "at": now}
         st["game"]["missed_at"] = now
     _save(store, item, f)
     store.attempt(item, {"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "gen": store.load(item)["gen"],
-                         "end": "not_reproduced", "detail": detail[:600]})
-    acts.append({"do": "game_not_reproduced", "item": item, "why": detail[:200]})
-    fx.ledger_note(item, ("relentless game phase: held, %s: %s" % (NOT_REPRODUCED, detail))[:400])
+                         "end": "not_reproduced", "detail": detail})
+    acts.append({"do": "game_not_reproduced", "item": item, "why": detail})
+    fx.ledger_note(item, ("relentless game phase: held, %s: %s" % (NOT_REPRODUCED, detail)))
 
 
 FLYER = "flyer:"
@@ -1790,7 +1794,7 @@ def _rerecord(store, fx, item, sha, acts):
     # does, so a re-record never drops an owed clause (Codex cd905b re-review)
     again = fx.game_implement(item, sha, with_kept(text, (led or {}).get("criteria") or {}),
                               (store.load(item).get("contract") or {}).get("live"))
-    acts.append({"do": "game_rerecorded", "item": item, "why": (again or "ok")[:200]})
+    acts.append({"do": "game_rerecorded", "item": item, "why": (again or "ok")})
     return again
 
 
@@ -1844,7 +1848,7 @@ def close_rerecord(store, fx, item, sha, acts):
                               (store.load(item).get("contract") or {}).get("live"),
                               why="relentless: blind PASS; the candidate's .criteria re-tiers %s, recorded again "
                                   "before the close" % ", ".join(moved))
-    acts.append({"do": "close_rerecorded", "item": item, "moved": moved, "why": (again or "ok")[:200]})
+    acts.append({"do": "close_rerecorded", "item": item, "moved": moved, "why": (again or "ok")})
     return again
 
 CARRY_MAX = 8      # carries per game entry: a build carried this often is waiting on something else, and goes back
@@ -1890,7 +1894,7 @@ def _carry(store, fx, item, sha, now, acts):
     # the carried manifest keeps every ledger criterion the file does not name, as _rerecord does (Codex cd905b round 2)
     if fx.game_implement(item, new, with_kept(fx.proofs_at(item, new, ".criteria"), (led or {}).get("criteria") or {}),
                          (store.load(item).get("contract") or {}).get("live"),
-                         why="relentless: carried from %s, %s" % (origin[:12], why)[:300]) is not None:
+                         why="relentless: carried from %s, %s" % (origin[:12], why)) is not None:
         return None
 
     def mv(s):
@@ -1898,7 +1902,7 @@ def _carry(store, fx, item, sha, now, acts):
         green = dict(gg.get("offline_green") or {})
         green.update(sha=new, carried_from=green.get("carried_from") or sha)
         gg.update(sha=new, offline_green=green, carries=gg.get("carries", 0) + 1, proved_at=None,
-                  carried={"from": sha, "to": new, "at": now, "why": why[:300]})
+                  carried={"from": sha, "to": new, "at": now, "why": why})
     _save(store, item, mv)
     acts.append({"do": "game_carried", "item": item, "from": sha[:12], "to": new[:12]})
     fx.ledger_note(item, "relentless game phase: build carried %s -> %s, no worker: %s" % (sha[:12], new[:12], why))
@@ -1940,7 +1944,7 @@ def recarry_returned(store, fx, now, acts):
                 continue
             reenter(store, cur, now, why)
             store.attempt(item, {"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "gen": cur["gen"],
-                                 "routed": "recarried", "sha": green["sha"], "detail": why[:300], "to": GAME})
+                                 "routed": "recarried", "sha": green["sha"], "detail": why, "to": GAME})
         acts.append({"do": "game_recarried", "item": item, "from": origin[:12], "to": got[0][:12]})
         fx.ledger_note(item, "relentless game phase: %s; back to the game step, no worker" % why)
 
@@ -2002,14 +2006,14 @@ def _harness(store, fx, r, item, why, now, acts):
         n = gg.get("harness", 0) + 1
         wait = int(min(c["harness_retry_s"] * n, c["harness_retry_max_s"]))
         out.update(n=n, wait=wait)
-        gg.update(phase="stage", stages=0, harness=n, retry_at=now + wait, harness_why=why[:300])
+        gg.update(phase="stage", stages=0, harness=n, retry_at=now + wait, harness_why=why)
         gg.pop("spare_load", None)      # only the blind-probe deadline spares a load; it sets it after this
-        s["put_down"] = {"on": ("harness #%d, staged again in %ds: %s" % (n, wait, why))[:200], "at": now}
+        s["put_down"] = {"on": ("harness #%d, staged again in %ds: %s" % (n, wait, why)), "at": now}
     if _save(store, item, f) is None:
         return
     store.journal({"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "do": "alarm", "kind": "game_harness",
-                   "item": item, "why": why[:300]})
-    acts.append({"do": "game_harness", "item": item, "why": why[:200], "retry_s": out["wait"]})
+                   "item": item, "why": why})
+    acts.append({"do": "game_harness", "item": item, "why": why, "retry_s": out["wait"]})
     fx.ledger_note(item, "relentless game phase: a harness failure, not an owner question (#%d): %s; staged again in %ds"
                    % (out["n"], why, out["wait"]))
 
@@ -2040,7 +2044,7 @@ def _stage_stop(store, fx, sup, r, item, detail, now, acts):
         # the repair could not be filed: _env_route's alarm is out, and the restage below retries it on the next stop
     _save(store, item, lambda s: s.update(env_tried=_keep(s.get("env_tried"), {e.fp: [now, now]})))
     store.attempt(item, {"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "gen": st["gen"], "end": "game_env_fix",
-                         "detail": ("stager stop, restaged: %s" % detail)[:600], "sha": st["game"]["sha"]})
+                         "detail": ("stager stop, restaged: %s" % detail), "sha": st["game"]["sha"]})
     _harness(store, fx, r, item, "the stager stopped before any proof ran: %s" % detail, now, acts)
 
 
@@ -2050,7 +2054,7 @@ def _waits(store, fx, item, why, now, acts):
     (owner 2026-11-02: "put down blocked items once they become blocked and go do something else")."""
     if why.startswith(FLYER):
         return _hold(store, fx, item, "game phase: %s" % why, now, acts)
-    _save(store, item, lambda s: s.update(put_down={"on": why[:200], "at": now}))
+    _save(store, item, lambda s: s.update(put_down={"on": why, "at": now}))
     acts.append({"do": "game_waits", "item": item, "why": why})
 
 
@@ -2060,19 +2064,19 @@ def _reload(store, fx, r, item, rd, why, now, acts):
     c = cfg(r)
     g = store.load(item)["game"]
     first = g.get("waits_reload") or now
-    mark = {"game": rd.get("started"), "why": why[:300], "at": now}
-    acts.append({"do": "game_mod_gap", "item": item, "why": why[:200]})
+    mark = {"game": rd.get("started"), "why": why, "at": now}
+    acts.append({"do": "game_mod_gap", "item": item, "why": why})
     other = untried(store.states(), item, rd["started"]) if rd.get("started") and now - first < c["batch_wait_s"] else None
     if other:
-        w = "waits for one reload: the running game may serve %s first (%s)" % (other, why[:120])
-        _save(store, item, lambda s: (s.update(put_down={"on": w[:200], "at": now}),
+        w = "waits for one reload: the running game may serve %s first (%s)" % (other, why)
+        _save(store, item, lambda s: (s.update(put_down={"on": w, "at": now}),
                                       s["game"].update(waits_reload=first, mod_gap=mark)))
         return
     if g["stages"] >= stage_tries(c, g):
         _save(store, item, lambda s: s["game"].update(mod_gap=mark))
         return _harness(store, fx, r, item, "%d staging(s) and the game still cannot serve it: %s" % (g["stages"], why),
                         now, acts)
-    _save(store, item, lambda s: (s.update(put_down={"on": why[:200], "at": now}),
+    _save(store, item, lambda s: (s.update(put_down={"on": why, "at": now}),
                                   s["game"].update(phase="stage", mod_gap=mark, waits_reload=None,
                                                    full=True if s["game"].get("final_since") else s["game"].get("full"))))
 
@@ -2290,10 +2294,10 @@ def step(store, fx, r, item, now, acts, sup):
             other = untried(store.states(), item, rd["started"]) if now - first < c["batch_wait_s"] else None
             if other:
                 why = ("waits for one reload: the running game may serve %s first (%s)"
-                       % (other, (stale[0].get("why") or "")[:120]))
-                _save(store, item, lambda s: (s.update(put_down={"on": why[:200], "at": now}),
+                       % (other, (stale[0].get("why") or "")))
+                _save(store, item, lambda s: (s.update(put_down={"on": why, "at": now}),
                                               s["game"].update(waits_reload=first)))
-                acts.append({"do": "game_batch_wait", "item": item, "why": why[:200]})
+                acts.append({"do": "game_batch_wait", "item": item, "why": why})
                 return
         if stale or state == "DOWN":
             if g["stages"] >= stage_tries(c, g):
@@ -2414,12 +2418,12 @@ def step(store, fx, r, item, now, acts, sup):
         bad = sorted({x["item"] for x in gaps[0].get("refused") or [] if x.get("pos")})
         if bad:     # a rider whose names resolve nowhere drops itself only; its own preflight sends it back
             acts.append({"do": "game_rider_names_refused", "item": item, "riders": bad,
-                         "why": "; ".join(x["why"] for x in gaps[0]["refused"] if x.get("pos"))[:300]})
+                         "why": "; ".join(x["why"] for x in gaps[0]["refused"] if x.get("pos"))})
             others = [o for o in others if o["item"] not in bad]
         split = sorted({x["item"] for x in gaps[0].get("split") or []})
         if split:   # needs X / live-without X: never one load; the rider stages on a load of its own later
             acts.append({"do": "game_rider_without_split", "item": item, "riders": split,
-                         "why": "; ".join(x["why"] for x in gaps[0]["split"])[:300]})
+                         "why": "; ".join(x["why"] for x in gaps[0]["split"])})
             others = [o for o in others if o["item"] not in split]
         if bad or split:    # the dropped riders' mods and menu steps leave with them (Codex cd905b re-review)
             gaps = [fx.game_batch_gap([(item, built)] + [(o["item"], o["game"]["sha"]) for o in others
@@ -2447,13 +2451,13 @@ def step(store, fx, r, item, now, acts, sup):
                 alone = sorted(set(enable_set(gaps)) | set(remedy.get("mods") or []))
                 menu = staging_menu(fx, item, sha, g["stages"])     # its riders' menu steps leave with them
                 acts.append({"do": "game_modlist_riders_dropped", "item": item, "riders": [o["item"] for o in others],
-                             "why": why[:200]})
+                             "why": why})
                 others = []
                 want = alone
                 why = fx.modlist_enable(want) if want else None
             if why:     # no restart path holds these mods: held with the reason, never a load that cannot serve it
                 store.journal({"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "do": "alarm",
-                               "kind": "game_modlist", "item": item, "why": why[:300]})
+                               "kind": "game_modlist", "item": item, "why": why})
                 fx.ledger_note(item, "relentless game phase: held, the next load cannot hold its mods: %s" % why)
                 return _hold(store, fx, item, "game phase: modlist_swap.py --enable %s refused: %s"
                              % (" ".join(want), why), now, acts)
@@ -2512,7 +2516,7 @@ def step(store, fx, r, item, now, acts, sup):
             fx.bridge_release()
             _save(store, item, lambda s: (s["game"].update(phase="stage", **({"remedy": g["remedy"]} if g.get("remedy") else {})),
                                           s["game"].pop("remedy_carried", None)))
-            acts.append({"do": "game_stage_launch_failed", "item": item, "why": why[:200]})
+            acts.append({"do": "game_stage_launch_failed", "item": item, "why": why})
             return
         for o in others:        # this staging carries each rider's remedy too, spent as the item's is
             if (o.get("game") or {}).get("remedy"):
@@ -2600,7 +2604,7 @@ def merged_remedy(rems):
         return None
     return {"mods": sorted({m for x in rems for m in x.get("mods") or []}),
             "cmds": sorted({c for x in rems for c in x.get("cmds") or []}),
-            "why": "; ".join(x.get("why") or "" for x in rems if x.get("why"))[:600],
+            "why": "; ".join(x.get("why") or "" for x in rems if x.get("why")),
             "at": max(x.get("at") or 0 for x in rems)}
 
 
@@ -2736,7 +2740,7 @@ def ready(store, item, gen, note, now=None):
         st = store.load(item)
         if not staging(st, gen):
             raise ValueError("%s gen %d is not staging (now %s)" % (item, gen, (st or {}).get("status")))
-        st["game"]["ready"] = {"at": now, "note": (note or "")[:600]}
+        st["game"]["ready"] = {"at": now, "note": (note or "")}
         st["last_beat"] = now
         store.save(st)
 

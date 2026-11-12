@@ -84,7 +84,7 @@ pos = []
 while a:
     x = a.pop(0)
     if x in ("--defect", "--unreached", "--propose", "--control") and a:
-        y = " ".join(a.pop(0).split())[:600]      # the reader's own normalisation (relentless_wall.clean_list): agree on it
+        y = " ".join(a.pop(0).split())      # the reader's own normalisation (relentless_wall.clean_list): agree on it
         if y:
             {"--defect": defects, "--unreached": unreached, "--propose": proposals, "--control": controls}[x].append(y)
     else:
@@ -380,7 +380,7 @@ def toolchain_probe(prof, box, extra=(), cfg=None, timeout=300):
                 + ["--", "/bin/bash", "-c", cmd])
         try:
             p = subprocess.run(argv, capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL)
-            rows.append({"name": name, "exit": p.returncode, "out": ((p.stdout or "") + (p.stderr or "")).strip()[-600:]})
+            rows.append({"name": name, "exit": p.returncode, "out": ((p.stdout or "") + (p.stderr or "")).strip()})
         except (OSError, subprocess.SubprocessError) as e:
             rows.append({"name": name, "exit": -1, "out": "%s: %s" % (type(e).__name__, e)})
     return rows
@@ -443,7 +443,7 @@ def make_box(prof, source, sha, nonce, grants=(), base=None, item=None, cfg=None
                        input=names, capture_output=True, timeout=500)
     (box / "export.index").unlink(missing_ok=True)
     if x.returncode:
-        raise RuntimeError("export failed: %s" % x.stderr[-200:])
+        raise RuntimeError("export failed: %s" % x.stderr)
     if subprocess.run(["git", "rev-parse", "-q", "--verify", sha + "^"], cwd=source, capture_output=True).returncode:
         # a root commit's change is all of it: diff from the empty tree, named by the repo's own hash
         parent = subprocess.run(["git", "hash-object", "-t", "tree", "--stdin"], cwd=source, input=b"", capture_output=True,
@@ -467,7 +467,7 @@ def make_box(prof, source, sha, nonce, grants=(), base=None, item=None, cfg=None
         except (OSError, RuntimeError, ValueError, subprocess.SubprocessError) as e:
             shutil.rmtree(tree / ITEMS, ignore_errors=True)
             (box / ITEM_NOTE).unlink(missing_ok=True)
-            (box / "item_grant_failed").write_text(str(e)[-400:], encoding="utf-8")
+            (box / "item_grant_failed").write_text(str(e), encoding="utf-8")
     if GIT_GRANT in (grants or ()):
         try:
             grant_git(box, source, sha)
@@ -475,7 +475,7 @@ def make_box(prof, source, sha, nonce, grants=(), base=None, item=None, cfg=None
             # a grant that cannot be made leaves the plain box (its prompt says no git history), never a crashed tick
             shutil.rmtree(tree / ".git", ignore_errors=True)
             (box / GIT_NOTE).unlink(missing_ok=True)
-            (box / "git_grant_failed").write_text(str(e)[-400:], encoding="utf-8")
+            (box / "git_grant_failed").write_text(str(e), encoding="utf-8")
     return str(box)
 
 
@@ -575,7 +575,7 @@ def grant_git(box, source, sha):
             _copy_objects(d, str(gd / "objects"))
             continue
         if not _SAFE.match(d):
-            raise RuntimeError("git grant: an object store systemd cannot bind: %s" % d[:200])
+            raise RuntimeError("git grant: an object store systemd cannot bind: %s" % d)
         dst = str(box / "gitobj" / str(len(binds)))
         os.makedirs(dst)
         binds.append([d, dst])
@@ -586,7 +586,7 @@ def grant_git(box, source, sha):
     env = dict(os.environ, GIT_DIR=str(gd), GIT_WORK_TREE=str(tree), GIT_ALTERNATE_OBJECT_DIRECTORIES=":".join(host))
     r = subprocess.run(["git", "read-tree", sha], env=env, capture_output=True, text=True, timeout=300)
     if r.returncode:
-        raise RuntimeError("git grant: read-tree %s: %s" % (sha, r.stderr[-200:]))
+        raise RuntimeError("git grant: read-tree %s: %s" % (sha, r.stderr))
     # the tree_exclude folders are not in the export: skip-worktree, so `git status` shows the tree, not 3000 deletions
     names = subprocess.run(["git", "ls-files", "-z"], env=env, capture_output=True, timeout=300, check=True).stdout
     gone = [n for n in names.split(b"\0") if n and not os.path.lexists(os.path.join(os.fsencode(str(tree)), n))]
@@ -644,7 +644,7 @@ def _snapshot(source, parent, paths, tree, box):
             x = subprocess.run(["git", "checkout-index", "-z", "--stdin", "--prefix=%s/" % tree], cwd=source, env=env,
                                input=names, capture_output=True, timeout=500)
             if x.returncode:
-                raise RuntimeError("snapshot failed: %s" % x.stderr[-200:])
+                raise RuntimeError("snapshot failed: %s" % x.stderr)
     finally:
         (box / "snap.index").unlink(missing_ok=True)
     for p in paths:     # read only: a proof reads this state and cannot change it
@@ -733,7 +733,7 @@ def clean_list(v):
         return None
     if not isinstance(v, (list, tuple)):
         v = [v]
-    return [y for y in (" ".join(str(x).split())[:600] for x in v) if y][:20]
+    return [y for y in (" ".join(str(x).split()) for x in v) if y][:20]
 
 
 _strs = clean_list
@@ -876,7 +876,7 @@ def causes(defects, controls=None, changed=(), proof=None):
     has_control = bool(clean_list(controls))
     for d in clean_list(defects) or []:
         c, text = parse_defect(d)
-        row = {"cause": c, "text": text[:600]}
+        row = {"cause": c, "text": text}
         if c == PRODUCT:
             row["valid"] = has_control and cites(text, changed, proof)
             if not row["valid"]:
@@ -960,7 +960,7 @@ def blind_reason(reasons):
     """-> the words that say the checker could not reach its evidence, or None. Pure: a reading of the reasons."""
     text = reasons or ""
     if text.lstrip().upper().startswith(REACH_TAG):
-        return text.lstrip()[:200]
+        return text.lstrip()
     for rx in _REACH + [_HIDDEN_ABSENT]:
         m = rx.search(text)
         if m:
@@ -984,14 +984,14 @@ def read_as(word, reasons, defects=None, unreached=None):
         if defects:
             return "FAIL", None
         if unreached:       # every word, WEAK included: a GAP:OTHER WEAK narrows to PASS (CHECKER_WEAK_FIX_UNREACHED_READ_AS_PASS)
-            return UNMEASURED, "; ".join(unreached)[:600]
+            return UNMEASURED, "; ".join(unreached)
         if word == UNMEASURED:      # the script refuses this; a hand-written file is read as prose
             return read_as(word, reasons)
         return acted_weak(word, reasons), None
     if word == UNMEASURED:
         if defect_said(reasons):
             return "FAIL", None
-        return UNMEASURED, blind_reason(reasons) or (reasons or "")[:200]
+        return UNMEASURED, blind_reason(reasons) or (reasons or "")
     if word == "FAIL":
         b = blind_reason(reasons)
         if b and not defect_said(reasons):

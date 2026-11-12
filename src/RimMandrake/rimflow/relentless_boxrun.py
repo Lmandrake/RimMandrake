@@ -122,7 +122,7 @@ def extract(proof):
             # with a runner (`&& make test`, `&& grep -c x f`, `&& ! grep ...`, `&& b/y.py`) is a check that would not
             # run. Guessing it is prose by its first word let a plain command word through (blind check 2026-11-06).
             return None, ("a later `&&` part after prose is not a %s command: %r (running only the parts before it "
-                          "would be a green for checks that never ran)" % ("/".join(RUNNERS), seg.strip()[:120]))
+                          "would be a green for checks that never ran)" % ("/".join(RUNNERS), seg.strip()))
         head, tail = _cut(seg)
         parts.append(head.strip())
         tails.append(tail)
@@ -142,9 +142,9 @@ def extract(proof):
         later = " (part %d of %d: running only the parts before it would be a green for checks that never ran)" % (
             n + 1, len(parts)) if n else ""
         if not part:
-            return None, "an empty part in %r" % head[:120]
+            return None, "an empty part in %r" % head
         if _SHELL_META.search(part):
-            return None, "shell syntax beyond `&&` and `!` (pipe, redirect, expansion, glob): %r%s" % (part[:120], later)
+            return None, "shell syntax beyond `&&` and `!` (pipe, redirect, expansion, glob): %r%s" % (part, later)
         try:
             words = shlex.split(part)
         except ValueError as e:
@@ -155,17 +155,17 @@ def extract(proof):
         while words and re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*=\S*", words[0]):
             envs.append(words.pop(0))
         if not words or words[0] not in RUNNERS:
-            return None, "not a %s command: %r%s" % ("/".join(RUNNERS), part[:120], later)
+            return None, "not a %s command: %r%s" % ("/".join(RUNNERS), part, later)
         keep = envs + words[:1]
         rest = words[1:]
         if words[0] != "bash" and rest[:1] == ["-c"]:
-            return None, "inline code (-c) is not run: %r" % part[:120]
+            return None, "inline code (-c) is not run: %r" % part
         if rest[:1] == ["-m"] and len(rest) > 1:
             keep += rest[:2]
             rest = rest[2:]
         elif rest:
             if not (rest[0].endswith((".py", ".sh")) or "/" in rest[0]):
-                return None, "no script after %s: %r%s" % (words[0], part[:120], later)
+                return None, "no script after %s: %r%s" % (words[0], part, later)
             keep.append(rest[0])
             rest = rest[1:]
         else:
@@ -176,9 +176,9 @@ def extract(proof):
                     (not (_WORD_OK.match(w) or _PLAIN.match(w)) and not (w and " " in w)):
                 if n < len(parts) - 1:      # prose inside a part that a later `&&` part follows: what runs is unclear
                     return None, "prose (%r) inside part %d of %d, before a later `&&` part: %r" % (
-                        w[:40], n + 1, len(parts), part[:120])
+                        w[:40], n + 1, len(parts), part)
                 if _LATER_CMD.search(" ".join(rest[i:])):   # `x.py foo bar python3 b/y.py`: b would not run
-                    return None, "the proof's prose names a command extract() would not run: %r" % " ".join(rest[i:])[:120]
+                    return None, "the proof's prose names a command extract() would not run: %r" % " ".join(rest[i:])
                 break
             keep.append(w)
             prev = w
@@ -315,7 +315,7 @@ def run_in_box(cmd, sha, source, store_root, rules, timeout_s, nonce=None, base=
         return dict(res, exit=rc, box_error=None)
     except (OSError, RuntimeError, ValueError, subprocess.SubprocessError) as e:
         return {"exit": None, "out": "", "secs": round(time.time() - t0, 1), "setup_secs": setup,
-                "box_error": "%s: %s" % (type(e).__name__, str(e)[-300:])}
+                "box_error": "%s: %s" % (type(e).__name__, str(e))}
     finally:
         if box:
             relentless_wall.remove_box(box)
@@ -347,7 +347,7 @@ def check(store, item, gen, sha, contract, source, rules, cfg=None, kind="finish
     try:
         src = toplevel(source)
     except (OSError, RuntimeError, subprocess.SubprocessError) as e:
-        rec.update(verdict="box_error", why=str(e)[-300:])
+        rec.update(verdict="box_error", why=str(e))
         _receipt(store, rec, contract, cmd, source)
         return rec
     got = RUN(cmd, sha, src, store.root, rules, int(cfg.get("timeout_s") or 420), base=base, item=item,
@@ -416,7 +416,7 @@ def _receipt(store, rec, contract, cmd, source):
         e = evidence.run_receipt(store.dir, rec.get("item"), sha, rec, contract_hash(contract), argv_of(cmd))
         rec["evidence"] = {"n": e["n"], "hash": e["hash"], "path": evidence.record_path(store.dir, rec["item"], sha)}
     except (OSError, ValueError) as ex:      # TamperError is a ValueError
-        rec["evidence_error"] = "%s: %s" % (type(ex).__name__, str(ex)[:300])
+        rec["evidence_error"] = "%s: %s" % (type(ex).__name__, str(ex))
         print("relentless boxrun: the evidence receipt was NOT written: %s" % rec["evidence_error"], file=sys.stderr)
 
 

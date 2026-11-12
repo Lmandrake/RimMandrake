@@ -126,7 +126,7 @@ def measure_live(case):
     finally:
         shutil.rmtree(root, ignore_errors=True)
     out = {"outcome": row["outcome"], "verdict": row.get("verdict"), "verified": verified,
-           "harness": bool(row.get("harness")), "why": (row.get("why") or "")[:160],
+           "harness": bool(row.get("harness")), "why": (row.get("why") or ""),
            "unresolved_kept": bool(row.get("unresolved"))}
     out.update(_game_route(row))
     return out

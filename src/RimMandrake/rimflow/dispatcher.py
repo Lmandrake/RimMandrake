@@ -244,13 +244,13 @@ def observe_agents(timeout=60):
         r = subprocess.run([claude_exe(), "agents", "--json"], capture_output=True, text=True, timeout=timeout,
                            stdin=subprocess.DEVNULL)
         if r.returncode:
-            return {"state": "UNMEASURED", "why": "claude agents exit %d: %s" % (r.returncode, r.stderr.strip()[-160:])}
+            return {"state": "UNMEASURED", "why": "claude agents exit %d: %s" % (r.returncode, r.stderr.strip())}
         data = json.loads(r.stdout)
         if not sessions_ok(data):
             return {"state": "UNMEASURED", "why": "claude agents --json is not a list of session objects"}
         return {"state": "MEASURED", "sessions": data}
     except Exception as e:  # noqa: BLE001 - every failure is UNMEASURED
-        return {"state": "UNMEASURED", "why": "%s: %s" % (type(e).__name__, str(e)[:160])}
+        return {"state": "UNMEASURED", "why": "%s: %s" % (type(e).__name__, str(e))}
 
 
 def peek_ticket(clone, seat, timeout=120):
@@ -508,7 +508,7 @@ def signal_alarm(sch, st, kind, why, now):
     try:
         IN.signal(sch, kind, why, now)
     except Exception as e:  # noqa: BLE001
-        st["incident_failed"] = "signal of %s lost: %s: %s" % (kind, type(e).__name__, str(e)[:160])
+        st["incident_failed"] = "signal of %s lost: %s: %s" % (kind, type(e).__name__, str(e))
 
 
 def incident_run(sch, st, role, mode, why, now, ids=None):
@@ -523,7 +523,7 @@ def incident_run(sch, st, role, mode, why, now, ids=None):
         return "a run of %s is already asked for" % role
     if len(runs) >= limit:
         return "held: %d runs this hour, the budget" % len(runs)
-    rs["run_now"] = RL.run_now_request(sch, {"role": role, "by": "DISPATCHER", "why": why[:300], "mode": mode}, now)
+    rs["run_now"] = RL.run_now_request(sch, {"role": role, "by": "DISPATCHER", "why": why, "mode": mode}, now)
     if role == "Operations":
         rs["run_now"]["covers_slot"] = True
         rs["run_now"]["ids"] = list(ids or [])
@@ -572,7 +572,7 @@ def conductor_hand(sch, st, ids, text, now):
     if rs.get("run_now"):
         req = rs["run_now"]
         req["ids"] = sorted(set(req.get("ids") or []) | set(ids))
-        req["why"] = (req.get("why", "") + " | " + text)[:600]
+        req["why"] = (req.get("why", "") + " | " + text)
         return "the pending Conductor run takes %s" % ", ".join(ids)
     res = incident_run(sch, st, "Conductor", "quick", text, now)
     if res.startswith("held"):
@@ -642,7 +642,7 @@ def ledger_structural(r, run=subprocess.run):
     def rf(*args):
         p = run([sys.executable, cli, *args, "--seat", "RUNNER"], cwd=REPO, env=env, capture_output=True, text=True,
                 timeout=120, stdin=subprocess.DEVNULL)
-        return p.returncode == 0, ((p.stdout or "") + (p.stderr or "")).strip()[-300:]
+        return p.returncode == 0, ((p.stdout or "") + (p.stderr or "")).strip()
     ok, out = rf("spawn", "--from", r["from"], "--for", "BENCH", "--needs", "offline", "--kind", "bug", "--name", r["item"],
                  "--title", r["title"], "--why", "incident ladder (deterministic, no AI): %s tamed" % r["id"])
     ok2, out2 = rf("note", r["item"], "--text", r["text"])
@@ -737,7 +737,7 @@ def decide(sch, st, obs, now, apply, out=None):
             # every role with a run on record counts as busy: nothing is launched over a run nobody could check
             role_busy = {n for n, rs in (st.get("roles") or {}).items() if isinstance(rs, dict) and rs.get("runs")}
             act(do="alarm", kind="role:supervise", note=True, why="supervise_roles raised %s: %s; roles with runs on "
-                "record are held as busy this tick" % (type(e).__name__, str(e)[:200]))
+                "record are held as busy this tick" % (type(e).__name__, str(e)))
     gate = login_gate(sch, st, obs, now, act, account_gate(sch, st, obs, now, act))
     carried = st.pop("alarm_carry", None)       # a raised tick could only journal: said here, by the next tick
     if carried:
@@ -751,12 +751,12 @@ def decide(sch, st, obs, now, apply, out=None):
         SW.step(sch, st, obs, now, act, iso, SR._ts)
     except Exception as e:  # noqa: BLE001 - never stops the tick, and alarms
         act(do="alarm", kind="signal:watch", note=True, conductor_log=True,
-            why="signal watch raised %s: %s" % (type(e).__name__, str(e)[:200]))
+            why="signal watch raised %s: %s" % (type(e).__name__, str(e)))
     try:
         incident_step(sch, st, obs, now, act, gate)
     except Exception as e:  # noqa: BLE001 - never stops the tick, and alarms
         act(do="alarm", kind="incident:step", note=True, conductor_log=True, raise_first="The incident ledger is not running.",
-            why="incident step raised %s: %s" % (type(e).__name__, str(e)[:200]))
+            why="incident step raised %s: %s" % (type(e).__name__, str(e)))
     if obs.get("paused"):
         act(do="skip", why="PAUSE file present: %s" % obs["paused"])
         for seat, ss in sorted(st["seats"].items()):     # a ring already in an inbox would still wake its window
@@ -787,7 +787,7 @@ def decide(sch, st, obs, now, apply, out=None):
                         "disabled" if not cfg.get("enabled", True) else "wake off"))
         except Exception as e:  # noqa: BLE001 - one malformed seat never stops the others
             act(do="alarm", kind="decide:" + seat, seat=seat, note=True,
-                why="seat %s switch-off withdrawal NOT decided: %s: %s" % (seat, type(e).__name__, str(e)[:200]))
+                why="seat %s switch-off withdrawal NOT decided: %s: %s" % (seat, type(e).__name__, str(e)))
     agents = obs["agents"]
     if agents.get("state") == "MEASURED" and not sessions_ok(agents.get("sessions")):
         # a list of non-objects is not a reading (review dispatcher-full #5): blind, so nothing is done for the seats
@@ -807,7 +807,7 @@ def decide(sch, st, obs, now, apply, out=None):
             SR.decide(sch, st, obs, now, sr_apply(sch, apply), act)
         except Exception as e:  # noqa: BLE001
             act(do="alarm", kind="restart:decide", note=True,
-                why="seat restart NOT decided: %s: %s" % (type(e).__name__, str(e)[:200]))
+                why="seat restart NOT decided: %s: %s" % (type(e).__name__, str(e)))
     lr = RLD.rule(sch)
     ro = dict(RAISE_OBS_NONE, **(obs.get("raise") or {}))
     try:
@@ -883,7 +883,7 @@ def decide(sch, st, obs, now, apply, out=None):
                     said = ""
                     if ans:
                         said = "%s on %s: %s" % (ans.get("event"), ans.get("id"),
-                                                 " ".join(str(ans.get("text") or "").split())[:200])
+                                                 " ".join(str(ans.get("text") or "").split()))
                         act(do="woke_answered", seat=seat, ring_id=pend["ring_id"], ticket=pend.get("ticket"), note=True,
                             why="%s answered the ring without taking new work (%s); re-ring in %d s (streak %d)"
                                 % (seat, said, wait, streak))
@@ -939,7 +939,7 @@ def decide(sch, st, obs, now, apply, out=None):
             elif now - rv["at"] >= sch["recover_verify_s"]:
                 act(do="alarm", kind="recover:" + seat, seat=seat, note=True,
                     why="recover of %s did not bring a session back in %d s: %s" % (seat, sch["recover_verify_s"],
-                                                                                    rv.get("out", "")[:160]))
+                                                                                    rv.get("out", "")))
                 ss.pop("recover")
                 # the raise never brought it back: a death on the register, charged to that raise; the ladder decides
                 # the next one (no flat cooldown: the ladder's backoff is the wait)
@@ -1080,7 +1080,7 @@ def decide(sch, st, obs, now, apply, out=None):
             one_seat(seat, cfg)
         except Exception as e:  # noqa: BLE001
             act(do="alarm", kind="decide:" + seat, seat=seat, note=True,
-                why="seat %s NOT decided this tick: %s: %s" % (seat, type(e).__name__, str(e)[:200]))
+                why="seat %s NOT decided this tick: %s: %s" % (seat, type(e).__name__, str(e)))
 
     # prune the cap windows
     st["wakes"] = [w for w in st["wakes"] if now - w["at"] < 86400]
@@ -1100,7 +1100,7 @@ def login_gate(sch, st, obs, now, act, gate):
         hold = LW.step(sch, st, obs, now, act, iso)
     except Exception as e:  # noqa: BLE001
         act(do="alarm", kind="login:watch", note=True, conductor_log=True,
-            why="login watch raised %s: %s; a dead login would go unseen" % (type(e).__name__, str(e)[:200]),
+            why="login watch raised %s: %s; a dead login would go unseen" % (type(e).__name__, str(e)),
             raise_first="The login watch is broken.")
         return gate
     return (lambda kind: (False, {"why": hold})) if hold else gate
@@ -1231,7 +1231,7 @@ def withdraw(root, seat, ring_id, consumed=None):
         if not still and os.path.exists(dst):
             return {"outcome": "withdrawn", "ring_id": ring_id, "why": "withdrawn by a concurrent call"}
         return {"outcome": "failed", "ring_id": ring_id,
-                "why": "rename %s: %s; %s" % (type(e).__name__, str(e)[:120],
+                "why": "rename %s: %s; %s" % (type(e).__name__, str(e),
                                              "still in the inbox" if still else "gone without a consumed record")}
 
 
@@ -1239,7 +1239,7 @@ def withdraw_reading(res):
     """A withdraw result as {"outcome", ...}; anything not one of WITHDRAW_OUTCOMES is "unknown" (state untouched)."""
     if isinstance(res, dict) and res.get("outcome") in WITHDRAW_OUTCOMES:
         return res
-    return {"outcome": "unknown", "why": str(res)[:160]}
+    return {"outcome": "unknown", "why": str(res)}
 
 
 def sr_apply(sch, apply):
@@ -1255,9 +1255,9 @@ def recover(cfg, session_id, msg, runner=subprocess.run):
     try:
         r = runner(argv, cwd=cfg["clone"], env=env, capture_output=True, text=True, timeout=120,
                    stdin=subprocess.DEVNULL)
-        return r.returncode == 0, ((r.stdout or "") + (r.stderr or "")).strip()[-200:]
+        return r.returncode == 0, ((r.stdout or "") + (r.stderr or "")).strip()
     except Exception as e:  # noqa: BLE001
-        return False, "%s: %s" % (type(e).__name__, str(e)[:160])
+        return False, "%s: %s" % (type(e).__name__, str(e))
 
 
 def claude_env(seat):
@@ -1275,7 +1275,7 @@ def ledger_note(item, text, run=subprocess.run):
     env = dict(os.environ, RIMFLOW_SEAT="DISPATCHER", CLAUDE_PROJECT_DIR=REPO)
     r = run([sys.executable, cli, "note", item, "--text", text, "--seat", "DISPATCHER"], cwd=REPO, env=env,
             capture_output=True, text=True, timeout=120, stdin=subprocess.DEVNULL)
-    return r.returncode == 0, ((r.stdout or "") + (r.stderr or "")).strip()[-200:]
+    return r.returncode == 0, ((r.stdout or "") + (r.stderr or "")).strip()
 
 
 def stand(st, scope, keys, now):
@@ -1310,7 +1310,7 @@ def long_helper_alarms(sch, obs, now, act, st=None):
     except Exception as e:  # noqa: BLE001
         stand(st, "long_helper", False, now)
         act(do="alarm", kind="long_helper:reader", note=True, why="long-helper reader raised %s: %s" % (
-            type(e).__name__, str(e)[:200]))
+            type(e).__name__, str(e)))
         return
     stand(st, "long_helper", ["long_helper:" + str(h["id"])[:12] for h in found if float(h.get("age_s") or 0) > limit],
           now)
@@ -1338,7 +1338,7 @@ def helper_lost_alarms(sch, obs, act, st=None, now=None):
     except Exception as e:  # noqa: BLE001
         stand(st, "helper_lost", False, now)
         act(do="alarm", kind="helper_lost:reader", note=True, why="helper-receipt reader raised %s: %s" % (
-            type(e).__name__, str(e)[:200]))
+            type(e).__name__, str(e)))
         return
     stand(st, "helper_lost", ["helper_lost:" + str(r["session"])[:8] for r in found], now)
     for r in found:
@@ -1458,7 +1458,7 @@ def publish_bounded(n, timeout, argv=None, kill_wait=10):
         return "publish KILLED after %d s (tick budget; the commit stays local, the next tick retries)" % timeout
     out = (out or "").strip()
     if p.returncode:
-        return "publish child exit %d: %s" % (p.returncode, out[-200:])
+        return "publish child exit %d: %s" % (p.returncode, out)
     return None if out == "None" else (out.splitlines() or [""])[-1]
 
 
@@ -1511,7 +1511,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
         lk = None
         actions.append(dict(do="alarm", kind="tick:ingest_lock", at=iso(now), conductor_log=True,
                             why="ingest.lock could not be taken (%s: %s): no ledger notes or publish until it can" % (
-                                type(e).__name__, str(e)[:160]), raise_first="Ledger notes are off."))
+                                type(e).__name__, str(e)), raise_first="Ledger notes are off."))
     ledger_ok = lk is not None
     notes = 0
     deferred = []
@@ -1546,7 +1546,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                          # must not forget the restart (Codex closeout review #1)
                     res = SR.execute(a, sch, st, sr_apply(sch, apply), now, fx.get("seat_restart"))
                 except Exception as e:  # noqa: BLE001 - the state save must still run
-                    res = "FAILED: %s: %s" % (type(e).__name__, str(e)[:200])
+                    res = "FAILED: %s: %s" % (type(e).__name__, str(e))
                     rs = (st.get("seat_restart") or {}).get(a.get("seat")) or {}
                     rs["alarm_pending"] = "seat restart %s of %s raised: %s" % (a["do"], a.get("seat"), res)
             elif apply:
@@ -1571,7 +1571,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                             res = incident_execute(a, sch, st, root, now, fx.get("incident_ring", lambda rt, s, rid, m: ring(rt, s, rid, m)), do_conductor,
                                                    fx.get("incident_file", ledger_structural) if ledger_ok and time.time() < deadline else None)
                         except Exception as e:  # noqa: BLE001 - said by the next tick; the deadman reads incidents.json's age
-                            st["incident_failed"] = res = "FAILED: %s: %s" % (type(e).__name__, str(e)[:200])
+                            st["incident_failed"] = res = "FAILED: %s: %s" % (type(e).__name__, str(e))
                     elif a["do"] == "unit_repair":
                         paused = do_paused()
                         if paused:
@@ -1696,7 +1696,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                     runs.remove(run)            # systemd-run said no: nothing started
                                     a["why"] = "%s — LAUNCH FAILED: %s" % (a["why"], out)
                             except Exception as e:  # noqa: BLE001 - the run stays tracked: it may have started
-                                out = "%s: %s" % (type(e).__name__, str(e)[:160])
+                                out = "%s: %s" % (type(e).__name__, str(e))
                                 raise
                             finally:
                                 if not ok:
@@ -1733,7 +1733,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                         try:
                             res = do_stamp(a["path"], a["at"], a.get("unit"))
                         except Exception as e:  # noqa: BLE001
-                            res = "error: %s: %s" % (type(e).__name__, str(e)[:160])
+                            res = "error: %s: %s" % (type(e).__name__, str(e))
                             actions.append(dict(
                                 do="alarm", kind="role:%s:stamp" % a.get("role"), at=iso(now), note=True,
                                 ticket=a.get("ticket"), role=a.get("role"),
@@ -1745,7 +1745,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                         try:
                             res = do_resit(a["item"], a.get("resit_why") or "", a.get("resit_at"))
                         except Exception as e:  # noqa: BLE001
-                            res = "error: %s: %s" % (type(e).__name__, str(e)[:160])
+                            res = "error: %s: %s" % (type(e).__name__, str(e))
                             actions.append(dict(
                                 do="alarm", kind="role:%s:setter_resit" % a.get("role"), at=iso(now), note=True,
                                 ticket=a.get("ticket"), role=a.get("role"),
@@ -1776,7 +1776,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                             res = "deferred: %s; retried next tick%s" % (e, "; the oldest owed attach (%s) dropped"
                                                                         % dropped.get("key") if dropped else "")
                         except Exception as e:  # noqa: BLE001 - said and not retried (an unreadable book stays so)
-                            res = "error: %s: %s" % (type(e).__name__, str(e)[:160])
+                            res = "error: %s: %s" % (type(e).__name__, str(e))
                             RL.settle_cause_owed(st, a)
                             actions.append(dict(
                                 do="alarm", kind="role:%s:cause_attach" % a.get("role"), at=iso(now), note=True,
@@ -1787,7 +1787,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                         res = do_stop(a["unit"], a.get("scope"), seat=a.get("seat"), unit_gone=a.get("unit_gone", False),
                                       marker=a.get("marker"), force=a.get("force", False), since=a.get("since"))
                 except Exception as e:  # noqa: BLE001
-                    res = "error: %s: %s" % (type(e).__name__, str(e)[:160])
+                    res = "error: %s: %s" % (type(e).__name__, str(e))
                     if a["do"] == "role_launch" and not started:
                         # raised before any run existed (role gone from the schedule, off/PAUSE read, run_paths):
                         # nothing can have started, so the reservation is given back and the note says so, never
@@ -1827,7 +1827,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                         try:
                             ok, out = do_note(item, text)
                         except Exception as e:  # noqa: BLE001 - a rimflow timeout
-                            ok, out = False, "%s: %s" % (type(e).__name__, str(e)[:160])
+                            ok, out = False, "%s: %s" % (type(e).__name__, str(e))
                         notes += ok
                         a["ledger"] = "noted" if ok else "note failed: " + out
             if stamped:      # a stamp means somebody was told: an alarm no destination took is retried next tick
@@ -1857,7 +1857,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
             try:
                 out = do_publish(notes)       # also retries an earlier publish that stopped (ingest.unpublished)
             except Exception as e:  # noqa: BLE001
-                out = "error: %s: %s" % (type(e).__name__, str(e)[:160])
+                out = "error: %s: %s" % (type(e).__name__, str(e))
             if out is not None:
                 journal(root, {"at": iso(now), "do": "publish", "result": out})
             # the next tick retries a failed publish by itself; one that stays failed is a stuck clone. Each publish
@@ -1874,9 +1874,9 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                 key = "publish:index_lock" if jam else "publish:stuck"
                 if now - st["alarms"].get(key, -1e18) >= sch.get("alarm_every_s", 6 * 3600):
                     st["alarms"][key] = now
-                    signal_alarm(sch, st, key, "ledger publish: " + out[:240], now)
+                    signal_alarm(sch, st, key, "ledger publish: " + out, now)
                     al = dict(do="alarm", kind=key, at=iso(now), note=True, result="raised",
-                              why="ledger publish: " + out[:240])
+                              why="ledger publish: " + out)
                     al["conductor"] = do_conductor(sch, dict(al, raise_first="Ledger publishing is stuck."), now)
                     # routed like every other note: never raw onto a token-blind item (night review N4)
                     item, text = route_note(sch, sch.get("alarm_item"), "dispatcher alarm: " + al["why"])
@@ -1885,7 +1885,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                             ok, o2 = do_note(item, text)
                             al["ledger"] = "noted" if ok else "note failed: " + o2
                         except Exception as e:  # noqa: BLE001
-                            al["ledger"] = "note failed: %s" % str(e)[:160]
+                            al["ledger"] = "note failed: %s" % str(e)
                     journal(root, al)
     finally:
         if lk is not None:
@@ -2335,7 +2335,7 @@ def tick(sch, apply, obs=None, now=None, fx=None, still_owner=None, beat_end=Non
             back = unreserve(st)
             rings = unreleased(st, acts, now)    # rings/recovers given back, withdraws kept pending
             st["alarm_carry"] = ("tick raised %s: %s; launches given back: %s; rings/recovers/withdraws undone: %s" % (
-                type(e).__name__, str(e)[:200], ", ".join(back) or "none", ", ".join(rings) or "none"))
+                type(e).__name__, str(e), ", ".join(back) or "none", ", ".join(rings) or "none"))
             journal(root, {"at": iso(now), "do": "alarm", "kind": "tick:raised", "why": st["alarm_carry"]})
             raise
         finally:     # the caps and pending rings are in st: save them even when a step raised

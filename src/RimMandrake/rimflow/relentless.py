@@ -36,6 +36,10 @@ import subprocess
 import sys
 import time
 import types
+try:                                    # whole text, never a silent cut (RIMMANDRAKE_STORE_TEXT_WHOLE_NO_CUTS)
+    from . import fulltext
+except ImportError:
+    import fulltext  # noqa: E402
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import circling  # noqa: E402
@@ -450,7 +454,7 @@ def health_order(verdict, why, fallback):
         try:
             ids, said = list(fallback() or []), "%s; every open system item first, at once" % said
         except Exception as e:  # noqa: BLE001  no classifier: ordinary order, said aloud
-            ids, said = [], "%s; system items unknown (%s: %s): ordinary order" % (said, type(e).__name__, str(e)[:120])
+            ids, said = [], "%s; system items unknown (%s: %s): ordinary order" % (said, type(e).__name__, str(e))
     unmeasured = bool(verdict) and verdict.get("state") == "unmeasured"
     if unmeasured:      # the assessment is broken, not healthy: its measurement repair goes first; pause_scope: global
         rep = [i for i in verdict.get("repair") or () if isinstance(i, str)]
@@ -491,7 +495,7 @@ def pilot_count(store, st, klass, detail, r, now):
     st["live_since_pilot"] = (st.get("live_since_pilot") or 0) + 1
     if n <= 0 or st["live_since_pilot"] < n:
         return
-    st["pilot_step"] = {"at": now, "after": st["live_since_pilot"], "class": klass, "detail": (detail or "")[:600]}
+    st["pilot_step"] = {"at": now, "after": st["live_since_pilot"], "class": klass, "detail": (detail or "")}
     st["live_since_pilot"] = 0
     store.journal({"at": iso(now), "do": "pilot_step", "item": st["item"], "after": st["pilot_step"]["after"], "class": klass})
     store.learn(st["item"], "- %s %d live endings since the last pilot sitting (last %s): the next worker is a Test Pilot sitting (%s), to "
@@ -546,19 +550,19 @@ def fail(store, st, klass, detail, r, now, time_not_work=False, attributed=None)
     st["total_failures"] += 1
     if time_not_work:   # a wait is no failed approach: it counts toward its own class's wait, never the unchanged tally
         st["total_at_change"] = (st.get("total_at_change") or 0) + 1
-    st["last_fail"] = {"class": klass, "detail": (detail or "")[:2000], "at": now}
+    st["last_fail"] = {"class": klass, "detail": (detail or ""), "at": now}
     limit = r["same_failure_limit"]
     if klass in ("proof_weak", relentless_attrib.PROOF_OWED):
         st["proof_only"] = {"sha": st["candidate"]["sha"], "at": now,
                             "contract": copy.deepcopy(st.get("contract"))}     # what proof_gate compares a re-finish with
         if klass == "proof_weak":
-            st["proof_only"]["weak"] = (detail or "")[:600]     # the verdict that set it, re-read under today's WEAK rule
+            st["proof_only"]["weak"] = (detail or "")     # the verdict that set it, re-read under today's WEAK rule
         if "CONTRACT" in ((attributed or {}).get("targets") or []):
             st["proof_only"]["binding"] = True      # the binding may live off the sha (the contract, a ledger criterion)
             # every live row on this sha was read under the binding just found wrong: the repaired binding is judged
             # fresh, never by the old REFUSED/FAIL (or PASS) rows (relentless_live_round.history keys rows by sha)
             relentless_game.void_rows(store.root, st["item"], st["candidate"]["sha"],
-                                      "binding attributed CONTRACT: %s" % ((attributed or {}).get("evidence") or "")[:200], now)
+                                      "binding attributed CONTRACT: %s" % ((attributed or {}).get("evidence") or ""), now)
     elif klass in ("blind_fail", PROOF_DEFECT):     # the work itself is in doubt again: the code may move
         st["proof_only"] = None
         for k in PROOF_ENDS:
@@ -570,9 +574,9 @@ def fail(store, st, klass, detail, r, now, time_not_work=False, attributed=None)
         n = sum(st["failures"].get(k, 0) for k in PROOF_ENDS)
         if n >= limit:
             relentless_strikes.hold(st, "%d returns and the proof still reads weak" % n, "proof_weak", now)
-        store.attempt_once(st["item"], {"at": iso(now), "gen": st["gen"] - 1, "end": klass, "detail": (detail or "")[:600],
+        store.attempt_once(st["item"], {"at": iso(now), "gen": st["gen"] - 1, "end": klass, "detail": (detail or ""),
                                          "sha": (st.get("candidate") or {}).get("sha")})
-        store.learn(st["item"], "- %s gen %d ended %s: %s" % (iso(now), st["gen"] - 1, klass, (detail or "")[:600]))
+        store.learn(st["item"], "- %s gen %d ended %s: %s" % (iso(now), st["gen"] - 1, klass, (detail or "")))
         store.save(st)
         return
     # rotating slugs cannot dodge this: enough returns with no new sha also change the approach
@@ -595,11 +599,11 @@ def fail(store, st, klass, detail, r, now, time_not_work=False, attributed=None)
         wanted = "pilot" if st.get("pilot_wanted") else "redesign"
         st["approach"] = ("redesign" if wall or st["approach"] == "pilot" else
                           "pilot" if st["approach"] == "redesign" else wanted)
-    rec = {"at": iso(now), "gen": st["gen"] - 1, "end": klass, "detail": (detail or "")[:600], "approach_next": st["approach"]}
+    rec = {"at": iso(now), "gen": st["gen"] - 1, "end": klass, "detail": (detail or ""), "approach_next": st["approach"]}
     if time_not_work:
         rec["wait"] = True
     store.attempt_once(st["item"], rec)
-    store.learn(st["item"], "- %s gen %d ended %s: %s" % (iso(now), st["gen"] - 1, klass, (detail or "")[:600]))
+    store.learn(st["item"], "- %s gen %d ended %s: %s" % (iso(now), st["gen"] - 1, klass, (detail or "")))
     # loop breakers that redirect (CHURN_BREAKER_BUILD_RETRY_NEEDS_A_WARRANT): the next worker owes a retry warrant; one
     # capability failing many items is one incident; the same signature on three builds suspends rebuilding
     relentless_breakers.owe_warrant(st, klass, time_not_work)
@@ -610,7 +614,7 @@ def fail(store, st, klass, detail, r, now, time_not_work=False, attributed=None)
         if why:
             relentless_strikes.hold(st, why, "signature", now)
     if klass in DIAGNOSE_ENDS and not attributed:
-        st["diagnose_owed"] = {"class": klass, "detail": (detail or "")[:600], "at": now, "gen": st["gen"]}
+        st["diagnose_owed"] = {"class": klass, "detail": (detail or ""), "at": now, "gen": st["gen"]}
     if klass == "circling":     # under this lock, so no tick can lease the next worker ahead of the consult
         st["circling_hits"] = st.get("circling_hits", 0) + 1
         force_help(store, st, r, now)
@@ -627,11 +631,11 @@ def unmeasured(store, st, said, blind, r, now):
     reasons = chk.get("reasons") or ""
     prev = st.get("blind") or {}
     n = prev.get("n", 0) + 1 if prev.get("sha") == sha else 1
-    st["blind"] = {"n": n, "sha": sha, "at": now, "said": said, "what": (blind or reasons)[:600],
+    st["blind"] = {"n": n, "sha": sha, "at": now, "said": said, "what": (blind or reasons),
                    "box": relentless_reach.fingerprint(r, st.get("contract"))}     # what a repair of the box would change
     st["check"] = None
     store.attempt_once(st["item"], {"at": iso(now), "gen": st["gen"], "end": "unmeasured", "said": said, "nonce": chk.get("nonce"),
-                                     "detail": reasons[:600], "sha": sha})
+                                     "detail": reasons, "sha": sha})
     if relentless_reachfix.on(r):
         # BLIND_JUDGE_BUILD_FIXES_OWN_EYES: the first blind check ends the checking; the Judge's proposal is probed,
         # applied by the supervisor and the same sha checked once (relentless_reachfix.py). No clock re-check.
@@ -644,7 +648,7 @@ def unmeasured(store, st, said, blind, r, now):
                 what = st["blind"]["what"]
                 st["blind"] = None
                 line = ("blind check at %s: UNMEASURED (Marker said %s) on evidence the worker owes (%s), not a reach the "
-                        "box can repair: back to its worker: %s" % (sha, said, owed["class"], what[:300]))
+                        "box can repair: back to its worker: %s" % (sha, said, owed["class"], what))
                 st["ledger_note_owed"] = line
                 fail(store, st, "evidence_owed", "the Judge could not see evidence the worker owes (%s): produce it and "
                      "name its path under D:\\ClaudeWork in the finish evidence, which the box binds read only: %s"
@@ -666,7 +670,7 @@ def unmeasured(store, st, said, blind, r, now):
         # legacy route, rule reach_repair false only
         relentless_strikes.hold(st, "the checker could not reach the evidence on %d checks running of %s, so the box needs "
                                 "repair, not the work: %s. Fix the box, or unhold --offbox NAME with a supervisor adapter (relentless_rules.json offbox_adapters) that reads it from outside; "
-                                "either way unhold checks this sha again" % (n, sha, (blind or reasons)[:300]), "unmeasured", now)
+                                "either way unhold checks this sha again" % (n, sha, (blind or reasons)), "unmeasured", now)
         st["status"] = "held"
         st.pop("recheck_at", None)
     else:
@@ -675,7 +679,7 @@ def unmeasured(store, st, said, blind, r, now):
         relentless_cause.record(st, "recheck_cause", relentless_cause.of(blind or reasons, st["item"]), now)
     line = ("blind check at %s: UNMEASURED (Marker said %s), the checker could not reach the evidence; no work goes back, "
             "%s: %s" % (sha, said, "held for repair of the box" if n >= limit else "checked again in %d s"
-                        % r.get("unmeasured_recheck_s", 1800), (blind or reasons)[:400]))
+                        % r.get("unmeasured_recheck_s", 1800), (blind or reasons)))
     st["ledger_note_owed"] = line
     store.save(st)
     return line
@@ -688,7 +692,7 @@ def reach_back(store, st, why, r, now):
     st["blind"] = None
     st.pop("recheck_at", None)
     fail(store, st, relentless_attrib.PROOF_OWED, why, r, now,
-         attributed={"targets": ["CONTRACT"], "evidence": why[:300]})
+         attributed={"targets": ["CONTRACT"], "evidence": why})
 
 
 def account_lost(store, st, lost, r, now):
@@ -710,10 +714,10 @@ def account_lost(store, st, lost, r, now):
         st["resume"] = {"session": lost["session"], "gen": st["gen"], "at": now}
     else:
         st.pop("resume", None)
-    store.attempt(st["item"], {"at": iso(now), "gen": st["gen"] - 1, "end": "account_lost", "detail": lost["why"][:600],
+    store.attempt(st["item"], {"at": iso(now), "gen": st["gen"] - 1, "end": "account_lost", "detail": lost["why"],
                                **({"session": lost["session"]} if lost.get("session") else {})})
     store.learn(st["item"], "- %s gen %d ended account_lost, no strike%s: %s" % (
-        iso(now), st["gen"] - 1, ", its session is resumed" if lost.get("session") else "", lost["why"][:600]))
+        iso(now), st["gen"] - 1, ", its session is resumed" if lost.get("session") else "", lost["why"]))
     store.save(st)
     if lost["kind"] == "account_error":
         launch_failed(store, r, now, lost["why"])
@@ -834,9 +838,11 @@ def run_fixture_cmd(cmd, cwd, timeout):
         return None, "%s: %s" % (type(e).__name__, e)
     import threading
     tail = bytearray()
+    seen = [0]
 
     def drain():        # only a bounded tail is kept: a fixture that floods its output never grows our memory (r5 #8)
         for chunk in iter(lambda: p.stdout.read(65536), b""):
+            seen[0] += len(chunk)
             tail.extend(chunk)
             del tail[:-8192]
     reader = threading.Thread(target=drain, daemon=True)
@@ -860,7 +866,9 @@ def run_fixture_cmd(cmd, cwd, timeout):
     finally:
         kill_group()        # the shell is done; a child it left running is not part of the answer
     reader.join(10)         # the group is dead, so the pipe ends
-    return p.returncode, bytes(tail).decode("utf-8", errors="replace")[-600:]
+    lost = seen[0] - len(tail)  # the memory bound above, said out loud (RIMMANDRAKE_STORE_TEXT_WHOLE_NO_CUTS)
+    return p.returncode, ("[+%d bytes earlier not kept: the fixture's output ran past 8192 bytes] " % lost if lost > 0 else "") + \
+        bytes(tail).decode("utf-8", errors="replace")
 
 
 # ---------------------------------------------------------------- what a worker may call (all fenced)
@@ -895,7 +903,7 @@ def learn(store, item, gen, text, now=None):
         m = CLASSIFY_RX.match(text or "")
         if m and st.get("diagnose_owed"):     # a label, recorded whole; only `explain` pays the debt
             store.attempt(item, {"at": iso(st["last_beat"]), "gen": gen, "classified": m.group(1),
-                                 "evidence": m.group(2)[:4000]})      # whole: the next role reads the attribution, not a cut
+                                 "evidence": m.group(2)})      # whole: the next role reads the attribution, not a cut
         w = relentless_breakers.take_warrant(st, text, gen, st["last_beat"])
         if w:
             store.attempt(item, {"at": iso(st["last_beat"]), "gen": gen, "warrant": w})
@@ -921,14 +929,14 @@ def explain(store, item, gen, klass, a, now=None, state_of=None, note=None):
         owed = st.pop("diagnose_owed", None)
         ending = (owed or st.get("last_fail") or {}).get("class")
         if owed:
-            st["diagnosed"] = {"class": klass, "evidence": rec["mechanism"][:4000], "gen": gen, "at": now, "of": owed,
+            st["diagnosed"] = {"class": klass, "evidence": rec["mechanism"], "gen": gen, "at": now, "of": owed,
                                "cause": rec["cause"]}
         new = relentless_explain.keep(store, item, gen, rec, ending, (st.get("candidate") or {}).get("sha"),
                                       "worker gen %d" % gen, now)
         store.save(st)
     if note:
         note(item, "relentless: %s explained (%s): %s | follow-up: %s" % (ending or "the last ending", klass,
-                                                                          rec["mechanism"][:600], rec["cause"]))
+                                                                          rec["mechanism"], rec["cause"]))
         if new and rec["cause"] != item:
             note(rec["cause"], relentless_explain.note_text(item, dict(rec, ending=ending)))
     return rec["cause"]
@@ -947,7 +955,7 @@ def reload_needed(store, item, gen, text, now=None):
         li = st.pop("live_iter", None) or st.get("live_lapsed")     # a lapsed hold (lapse_holds) still takes its proof
         if li is None:
             raise ValueError("%s is not iterating on the running game (no live_iter): nothing to free" % item)
-        st["reload_needed"] = {"at": now, "gen": gen, "why": text[:1000], "session": li.get("started")}
+        st["reload_needed"] = {"at": now, "gen": gen, "why": text, "session": li.get("started")}
         st["last_beat"] = now
         store.learn(item, "- %s gen %d: RELOAD NEEDED: %s" % (iso(now), gen, text))
         store.save(st)
@@ -969,14 +977,14 @@ def reach_hold(store, r, item, now):
         elif relentless_reach.repays(st, r):
             why = ("held before the recheck, no Marker paid: %s was UNMEASURED and the box is unchanged since (walls, adapters "
                    "and contract fingerprint %s), so a second Marker would buy the same answer: %s. Fix the box, or unhold "
-                   "--offbox NAME" % (st["blind"]["sha"], st["blind"]["box"], (st["blind"].get("what") or "")[:300]))
+                   "--offbox NAME" % (st["blind"]["sha"], st["blind"]["box"], (st["blind"].get("what") or "")))
         else:
             return None
         relentless_strikes.hold(st, why, "unmeasured", now)
         st["hold"]["reach"] = bool(found)
         st["status"] = "held"
         st.pop("recheck_at", None)
-        store.attempt(item, {"at": iso(now), "gen": st["gen"], "end": "reach_held", "detail": why[:600],
+        store.attempt(item, {"at": iso(now), "gen": st["gen"], "end": "reach_held", "detail": why,
                              "sha": (st.get("candidate") or {}).get("sha")})
         store.save(st)
     return why
@@ -1071,7 +1079,7 @@ def contract(store, item, gen, proof, live=None, why=None, now=None, game=None, 
             if v:
                 st["contract"][k] = v
         if reach_ok:
-            st["contract"]["reach_ok"] = reach_ok[:400]
+            st["contract"]["reach_ok"] = reach_ok
         if game:
             st["contract"]["game"] = game
         if offbox:
@@ -1128,7 +1136,7 @@ def rebind(store, item, gen, binding, comparison, obligation=None, now=None, r=N
         if dead:
             why.append(dead)
         if why:
-            store.attempt(item, {"at": iso(now), "gen": gen, "end": "rebind_refused", "detail": "; ".join(why)[:1200]})
+            store.attempt(item, {"at": iso(now), "gen": gen, "end": "rebind_refused", "detail": "; ".join(why)})
             raise ValueError("binding repair refused: " + "; ".join(why))
         st["binding_proposal"] = {
             "by": "gen %d of %s" % (gen, item), "gen": gen, "at": iso(now), "binding": new,
@@ -1139,7 +1147,7 @@ def rebind(store, item, gen, binding, comparison, obligation=None, now=None, r=N
         st["last_beat"] = now
         store.attempt(item, {"at": iso(now), "gen": gen, "end": "rebind_proposed", "proposal": st["binding_proposal"]})
         store.learn(item, "- %s gen %d proposed a binding repair (waits for bind-judge): %s"
-                    % (iso(now), gen, (comparison.get("defect") or "")[:300]))
+                    % (iso(now), gen, (comparison.get("defect") or "")))
         store.save(st)
     store.journal({"at": iso(now), "do": "rebind_proposed", "item": item, "gen": gen})
     return relentless_binding.packet(st)
@@ -1164,8 +1172,8 @@ def rebind_withdraw(store, item, gen, why, now=None):
                              % p["ambiguous"]["judge"])
         st.pop("binding_proposal")
         st["last_beat"] = now
-        store.attempt(item, {"at": iso(now), "gen": gen, "end": "rebind_withdrawn", "why": why[:1200], "proposal": p})
-        store.learn(item, "- %s gen %d withdrew its binding repair: %s" % (iso(now), gen, why[:300]))
+        store.attempt(item, {"at": iso(now), "gen": gen, "end": "rebind_withdrawn", "why": why, "proposal": p})
+        store.learn(item, "- %s gen %d withdrew its binding repair: %s" % (iso(now), gen, why))
         store.save(st)
     store.journal({"at": iso(now), "do": "rebind_withdrawn", "item": item, "gen": gen})
 
@@ -1206,7 +1214,7 @@ def bind_judge(store, item, judge, verdict, why, env=None, now=None, r=None, cwd
             if c and (here + os.sep).startswith(os.path.realpath(c) + os.sep):
                 raise ValueError("a binding repair is not judged from the item's own clone (%s): the judge stands outside "
                                  "the work" % c)
-        rec = {"at": iso(now), "end": "rebind_" + verdict, "judge": judge, "why": why[:1200],
+        rec = {"at": iso(now), "end": "rebind_" + verdict, "judge": judge, "why": why,
                "proposal": p, "before": relentless_binding.split(st["contract"], item)}
         if verdict == "approve":
             if st["status"] == "closing":   # no check will read the repair: the close would stand on a PASS of the old binding
@@ -1227,7 +1235,7 @@ def bind_judge(store, item, judge, verdict, why, env=None, now=None, r=None, cwd
             c = {k: v for k, v in st["contract"].items() if k not in relentless_binding.BINDING_KEYS}
             c.update(p["binding"])
             c["binding_version"] = relentless_binding.binding_of(st["contract"])["version"] + 1
-            c["why"] = ("binding repair approved by %s: %s" % (judge, why))[:600]
+            c["why"] = ("binding repair approved by %s: %s" % (judge, why))
             st["contract"] = c
             rec["after"] = relentless_binding.split(c, item)
             if st.get("proof_only"):    # the held sha is judged again under the repaired binding, never the old rows
@@ -1237,14 +1245,14 @@ def bind_judge(store, item, judge, verdict, why, env=None, now=None, r=None, cwd
             st["bindings_rejected"] = (st.get("bindings_rejected") or []) + [relentless_binding.binding_hash(p["binding"])]
             st.pop("binding_proposal", None)
         else:
-            p["ambiguous"] = {"judge": judge, "why": why[:600], "at": iso(now)}
+            p["ambiguous"] = {"judge": judge, "why": why, "at": iso(now)}
             if give_back:
                 st.pop("binding_proposal", None)
                 rec["end"] = "rebind_ambiguous_returned"
         if "binding_proposal" not in st:
             st["binding_ruled"] = {"verdict": verdict, "at": iso(now)}
         store.attempt(item, rec)
-        store.learn(item, "- %s binding repair %s by %s: %s" % (iso(now), verdict.upper(), judge, why[:1200]))
+        store.learn(item, "- %s binding repair %s by %s: %s" % (iso(now), verdict.upper(), judge, why))
         store.save(st)
     store.journal({"at": iso(now), "do": rec["end"], "item": item, "judge": judge})
     return "%s: binding repair %s" % (item, verdict.upper())
@@ -1265,7 +1273,7 @@ def snag(store, item, gen, klass, detail, r, section=None, now=None, wait_hours=
         if (klass or "").lower() == "binding_repair" and not st.get("binding_proposal"):
             raise ValueError("no binding repair is waiting: propose it first with `rebind` (relentless_binding)")
         if relentless_game.staging(st, gen):    # the supervisor releases the bridge first, then returns the item
-            st["game"]["snag"] = {"class": klass, "detail": (detail or "")[:2000], "at": now}
+            st["game"]["snag"] = {"class": klass, "detail": (detail or ""), "at": now}
             store.save(st)
             return
         if klass == "owner_call" and section:
@@ -1273,7 +1281,7 @@ def snag(store, item, gen, klass, detail, r, section=None, now=None, wait_hours=
             st["status"] = "stopping"
             st["stopping_since"] = now
             qid = relentless_answer.question_id(item, gen, now)     # the answer cites it; a tick releases on it
-            st["hold"] = {"why": "delegation_policy section 2: %s: %s %s" % (section, (detail or "")[:600],
+            st["hold"] = {"why": "delegation_policy section 2: %s: %s %s" % (section, (detail or ""),
                                                                             relentless_answer.ask_line(qid)),
                           "kind": "owner_call", "delivered": False, "at": now, "question_id": qid}
             store.attempt(item, {"at": iso(now), "gen": gen, "end": "owner_call", "detail": st["hold"]["why"]})
@@ -1298,10 +1306,10 @@ def snag(store, item, gen, klass, detail, r, section=None, now=None, wait_hours=
             st["block_pending"] = blk
             if (klass or "").lower() == INSTRUMENT:     # one incident per shared fault; the item rejoins on its close
                 relentless_attrib.snag_incident(store, st, blk["on"], detail, now)
-            store.attempt(item, {"at": iso(now), "gen": gen, "end": "blocked", "detail": (detail or "")[:600],
+            store.attempt(item, {"at": iso(now), "gen": gen, "end": "blocked", "detail": (detail or ""),
                                  "kind": blk["kind"], "on": blk["on"], "class": klass})
             store.learn(item, "- %s gen %d blocked (%s%s): %s" % (iso(now), gen, blk["kind"], " on " + ", ".join(blk["on"])
-                                                                  if blk["on"] else "", (detail or "")[:600]))
+                                                                  if blk["on"] else "", (detail or "")))
             store.save(st)
             return
         again = st["failures"].get(SLUG_RX.sub("_", (klass or "snag").lower()).strip("_")[:40] or "snag", 0)
@@ -1721,7 +1729,7 @@ def _want_help(store, st, why, by, now):
     """Any consult uses up the hits so far: a worker's own call and the forced one are not two. `round` counts consults,
     never launch tries: a retry of round one is still round one, and stays with the same vendor."""
     st["help_round"] = st.get("help_round", 0) + 1
-    st["help"] = {"status": "wanted", "why": (why or "")[:600], "by": by, "at": now, "tries": 0, "gen": st["gen"],
+    st["help"] = {"status": "wanted", "why": (why or ""), "by": by, "at": now, "tries": 0, "gen": st["gen"],
                   "round": st["help_round"]}
     st["help_last_at"] = now
     st["help_hits_used"] = st.get("circling_hits", 0)
@@ -1773,7 +1781,7 @@ def parse_options(options, r):
         idea, _, see = o.partition("|")
         if not idea.strip() or not see.strip():
             raise ValueError("an option is 'idea | the one observation that confirms or kills it': %s" % o[:80])
-        out.append({"idea": idea.strip()[:600], "observe": see.strip()[:600]})
+        out.append({"idea": idea.strip(), "observe": see.strip()})
     return out
 
 
@@ -1823,7 +1831,7 @@ def help_vendor_run(store, item, prompt_file, r, nonce=None, consult=None):
         if got or text or time.monotonic() - t0 > VENDOR_FAST_FAIL_S:
             break       # only an empty answer inside seconds is retried here: WSL interop's accept4 flake, a known lesson
     if not got:
-        print("help-vendor: no OPTION lines in the answer (%d chars): %s" % (len(text or ""), (text or "")[-300:]),
+        print("help-vendor: no OPTION lines in the answer (%d chars): %s" % (len(text or ""), (text or "")),
               file=sys.stderr)
         return 3
     help_answer(store, item, nonce, got, r)
@@ -1846,7 +1854,7 @@ def gpt_consult(prompt_file, out, timeout):
     except subprocess.TimeoutExpired:
         print("help-vendor: gpt_consult over %d s" % timeout, file=sys.stderr)
         return ""
-    print(res.stderr[-2000:], file=sys.stderr)
+    print(res.stderr, file=sys.stderr)
     if res.returncode:
         print("help-vendor: gpt_consult exit %d" % res.returncode, file=sys.stderr)
     try:
@@ -1895,13 +1903,13 @@ def cause_fail(store, st, r, now):
     st["cause"] = {"route": cause, "rows": rows, "sha": sha, "at": now}
     store.journal({"at": iso(now), "do": "cause_routed", "item": st["item"], "cause": cause, "sha": sha,
                    "causes": [x["acts"] for x in rows]})
-    texts = "; ".join("%s: %s" % (x["cause"], x["text"]) for x in rows)[:1600]
-    store.learn(st["item"], "- %s gen %d checker FAIL routed %s (%s)" % (iso(now), st["gen"], cause, texts[:600]))
+    texts = "; ".join("%s: %s" % (x["cause"], x["text"]) for x in rows)
+    store.learn(st["item"], "- %s gen %d checker FAIL routed %s (%s)" % (iso(now), st["gen"], cause, texts))
     if cause == relentless_wall.PRODUCT:
         good = [x for x in rows if x["acts"] == relentless_wall.PRODUCT]
-        rec = relentless_attrib.record(["PRODUCT"], texts, now, "checker verdict", sha, obligation=good[0]["text"][:600],
-                                       observed=reasons[:600],
-                                       why_product="control: %s" % "; ".join(chk.get("controls") or [])[:600])
+        rec = relentless_attrib.record(["PRODUCT"], texts, now, "checker verdict", sha, obligation=good[0]["text"],
+                                       observed=reasons,
+                                       why_product="control: %s" % "; ".join(chk.get("controls") or []))
         st["attribution"] = rec
         fail(store, st, "blind_fail", reasons, r, now, attributed=rec)
     elif cause == relentless_wall.MEASUREMENT:
@@ -1913,7 +1921,7 @@ def cause_fail(store, st, r, now):
         deps = sorted({relentless_wall.dependency(x["text"]) for x in rows if x["acts"] == relentless_wall.ENVIRONMENT})
         for dep in deps:
             store.journal({"at": iso(now), "do": "alarm", "kind": "environment_defect", "item": st["item"],
-                           "dependency": dep, "sha": sha, "why": texts[:400]})
+                           "dependency": dep, "sha": sha, "why": texts})
         relentless_attrib.withhold(store, st, "blind_fail", "environment (%s): %s" % (", ".join(deps), texts), r, now,
                                    sys.modules[__name__])
         st["wait"].update(cause=relentless_wall.ENVIRONMENT, dependency=deps)
@@ -1945,10 +1953,10 @@ def quarantine(store, st, word, returns, spent, now):
     if back == "stopping":
         back = "blocked" if st.get("block_pending") or st.get("wait") else "queued"
     under = st.get("hold") or None      # a strikes hold fail() set on a stopping return included
-    reasons = ((st.get("last_fail") or {}).get("detail") or (st.get("blind") or {}).get("what") or "")[:300]
+    reasons = ((st.get("last_fail") or {}).get("detail") or (st.get("blind") or {}).get("what") or "")
     why = ("quarantine: bounced from checking at pass %d, %d tokens; the Judge said %s on %s: %s. No build, consult or "
            "check runs until a ruling unholds it" % (returns + 1, spent, word, (st.get("candidate") or {}).get("sha"), reasons))
-    st["hold"] = {"why": why[:900], "kind": QUARANTINE, "at": now, "from": "checking", "back": back, "under": under,
+    st["hold"] = {"why": why, "kind": QUARANTINE, "at": now, "from": "checking", "back": back, "under": under,
                   "verdict": word, "pass": returns + 1, "spent": spent}
     if st["status"] != "stopping":
         st["status"] = "held"
@@ -1957,7 +1965,7 @@ def quarantine(store, st, word, returns, spent, now):
                                "spent": spent, "sha": (st.get("candidate") or {}).get("sha")})
     store.save(st)
     return "%s %s. Look: relentless.py show %s; release: relentless.py unhold %s with a ruling" % (
-        st["item"], why[:400], st["item"], st["item"])
+        st["item"], why, st["item"], st["item"])
 
 
 def verdict(store, item, nonce, word, reasons, now=None, defects=None, unreached=None, strict=True, proposals=None,
@@ -1987,12 +1995,12 @@ def verdict(store, item, nonce, word, reasons, now=None, defects=None, unreached
         if late:
             raise Fenced("%s: this check's verdict %s" % (item, late))
         chk["verdict"] = word
-        chk["reasons"] = (reasons or "")[:4000]
+        chk["reasons"] = (reasons or "")
         if defects is not None:
             chk["defects"], chk["unreached"] = defects, unreached
             chk["controls"] = relentless_wall.clean_list(controls) or []
         if changed is not None:         # the candidate's diff paths, read from the box while it stands (cause validation)
-            chk["changed"] = list(changed)[:200]
+            chk["changed"] = list(changed)[:200]  # cut-ok: a list of paths, not text
         if word == "UNMEASURED" and relentless_wall.clean_list(proposals):     # the Judge's own reach repair
             chk["proposals"] = relentless_wall.clean_list(proposals)[:relentless_reachfix.PROPOSE_MAX]
         chk["verdict_at"] = now
@@ -2017,7 +2025,7 @@ def marker_receipt(store, item, sha, word, nonce, reasons, defects, session=None
                                reasons=reasons or "")
     except Exception as ex:      # noqa: BLE001 - a receipt never costs the verdict
         print("relentless: %s: the Marker's evidence receipt was NOT written (%s: %s)" % (item, type(ex).__name__,
-                                                                                      str(ex)[:200]), file=sys.stderr)
+                                                                                      str(ex)), file=sys.stderr)
 
 
 def harvest_receipts(store, now, acts):
@@ -2030,10 +2038,10 @@ def harvest_receipts(store, now, acts):
     if got:
         acts.append({"do": "evidence_harvest", "n": len(got), "items": sorted({i for i, _, _ in got})[:20]})
     if failed:
-        why = "; ".join("%s: %s" % (i, w[:160]) for i, w in failed[:3])
-        acts.append({"do": "evidence_harvest_failed", "n": len(failed), "why": why[:300]})
+        why = "; ".join("%s: %s" % (i, w) for i, w in failed[:3])
+        acts.append({"do": "evidence_harvest_failed", "n": len(failed), "why": why})
         store.journal({"at": iso(now), "do": "alarm", "kind": "evidence_harvest_failed", "n": len(failed),
-                       "why": why[:300]})
+                       "why": why})
     return got
 
 
@@ -2158,7 +2166,7 @@ def hook_fence(toplevel, store=None):
     except FileNotFoundError:
         return None
     except (OSError, ValueError, KeyError, TypeError) as e:
-        return "fence marker unreadable, no push: %s" % str(e)[:120]
+        return "fence marker unreadable, no push: %s" % str(e)
     store = store or Store()
     why = fence_check(store, item, gen)
     if why:     # GAMELANE_LAND_FIX_SEVEN_STRANDINGS: the generation that finished may still land its trailing records
@@ -2231,7 +2239,7 @@ def hold(store, item, said, now=None):
             raise ValueError("%s is not in the Relentless store" % item)
         if st["status"] == "held":
             raise ValueError("%s is held already (%s): %s" % (item, (st.get("hold") or {}).get("kind"),
-                                                              ((st.get("hold") or {}).get("why") or "")[:200]))
+                                                              ((st.get("hold") or {}).get("why") or "")))
         if st["status"] in HOLD_REFUSED:
             raise ValueError("%s is %s: %s" % (item, st["status"], HOLD_REFUSED[st["status"]]))
         if st["status"] not in HOLD_FROM:
@@ -2239,7 +2247,7 @@ def hold(store, item, said, now=None):
         was = st["status"]
         back = "candidate" if was == "candidate" and (st.get("candidate") or {}).get("sha") else \
             "blocked" if was == "blocked" else "queued"     # a blocked item keeps its blocker (Codex r5 part1 #2)
-        st["hold"] = {"why": ("hold: %s" % said)[:900], "kind": MANUAL_HOLD, "delivered": True, "routed": SEAT_QUEUE,
+        st["hold"] = {"why": ("hold: %s" % said), "kind": MANUAL_HOLD, "delivered": True, "routed": SEAT_QUEUE,
                       "at": now, "from": was, "back": back}
         if was == "running":
             st["gen"] += 1
@@ -2330,7 +2338,7 @@ def unhold(store, item, said, now=None, offbox=None):
             blind_back = blind_back or (st.get("candidate") or {}).get("sha") is not None
         was_his = hold_is_his(st["hold"])
         if st["hold"].get("reach") and st.get("contract") and not relentless_wall.offbox_cmds(st["contract"]):
-            st["contract"]["reach_ok"] = ("unhold: %s" % said)[:400]    # the lift is the why; else it holds again next tick
+            st["contract"]["reach_ok"] = ("unhold: %s" % said)    # the lift is the why; else it holds again next tick
         st["hold"] = None
         st["returned_at"] = now
         if game_back:       # a game hold back to its game phase, not a new worker: the offline proof stands on its sha
@@ -2390,22 +2398,18 @@ def rediagnose(store, item, said, now=None, r=None):
 
 # ---------------------------------------------------------------- what the world does (the selftest plants these)
 
-def refusal_words(r, cap=300):
-    """A ledger refusal, its reason kept. The gate's reason is its FIRST line and the rest is advice, so a tail cut kept only
-    the advice: 53 refused starts of EGROWTH_SWELL_DECIDE_FLIP_OR_GROAN read as a wrong prose file when its first line said
-    "BENCH may not `start` it, it belongs to OWNER". A traceback ends in its reason, so the tail stays beside the head."""
-    out = (r.stderr or r.stdout or "").strip()
-    if len(out) <= cap:
-        return out
-    head = out.splitlines()[0][:cap // 2]
-    return "%s ... %s" % (head, out[-(cap - len(head) - 5):])
+def refusal_words(r):
+    """A ledger refusal, its reason kept WHOLE. The gate's reason is its FIRST line and the rest is advice, so a tail cut kept
+    only the advice: 53 refused starts of EGROWTH_SWELL_DECIDE_FLIP_OR_GROAN read as a wrong prose file when its first line
+    said "BENCH may not `start` it, it belongs to OWNER"; the head-and-tail cut that followed still lost the middle. The
+    store has no size bound, so nothing is cut (RIMMANDRAKE_STORE_TEXT_WHOLE_NO_CUTS); a ledger write fits it there."""
+    return (r.stderr or r.stdout or "").strip()
 
 
 def close_why(out):
-    """The gate's reasons are at the top, but the caller finds a refusal by its words: keep them in the cut."""
-    if "has not earned its close" in out:
-        return (out if "has not earned its close" in out[:560] else "has not earned its close: " + out)[:600]
-    return out[-400:]
+    """The close gate's whole answer: the caller finds a refusal by its words, and nothing is cut
+    (RIMMANDRAKE_STORE_TEXT_WHOLE_NO_CUTS; the 600-char cut here once hid the gate's reasons)."""
+    return out or ""
 
 
 def filed_needs(it, evs):
@@ -2483,7 +2487,7 @@ def offbox_readings(fx, contract, r, values=None):
     for name in relentless_wall.offbox_cmds(contract)[:relentless_wall.OFFBOX_MAX]:
         left = int(end - time.time())
         if name not in known:
-            out.append({"cmd": str(name)[:200], "exit": "refused: not a supervisor offbox adapter, not run", "out": "",
+            out.append({"cmd": str(name), "exit": "refused: not a supervisor offbox adapter, not run", "out": "",
                         "at": time.time()})
         elif left <= 0:
             out.append({"cmd": name, "exit": "not run: the check's offbox time was spent", "out": "", "at": time.time()})
@@ -2541,7 +2545,7 @@ class Effects(relentless_game.GameFx):
         try:
             got = self.git(self.books, "fetch", "--quiet", "origin")
             if got.returncode:      # every check below reads origin/main: an old one passes them all and says nothing
-                return "books cannot fetch: %s" % got.stderr[-300:]
+                return "books cannot fetch: %s" % got.stderr
             why = self.ignored_collision()
             if why:
                 return why
@@ -2549,7 +2553,7 @@ class Effects(relentless_game.GameFx):
                 self.git(self.books, "merge", "--ff-only", "--quiet", "origin/main")    # while git replaces them
             return self.level_books()
         except (RuntimeError, OSError, ValueError, subprocess.SubprocessError) as e:
-            return "books cannot level: %s" % str(e)[:300]
+            return "books cannot level: %s" % str(e)
 
     @contextlib.contextmanager
     def shards_locked(self, extra=()):
@@ -2829,7 +2833,7 @@ class Effects(relentless_game.GameFx):
         with self.shards_locked(extra=sorted(shuffled)):    # no append to a restored shard while git replaces it
             got = self.git(self.books, "reset", "--keep", "origin/main", timeout=300)
         if got.returncode:      # git names the file it would not overwrite: say so, not just "cannot level"
-            return "books %s behind: reset --keep refused: %s" % (behind, " ".join(got.stderr.split())[-400:])
+            return "books %s behind: reset --keep refused: %s" % (behind, " ".join(got.stderr.split()))
         if shuffled:    # only now: a level that refuses above restored nothing
             self.store.journal({"at": iso(time.time()), "do": "books_reorder_restored", "paths": sorted(shuffled)})
         return None
@@ -2871,7 +2875,7 @@ class Effects(relentless_game.GameFx):
                                env=dict(os.environ, RELENTLESS_NO_WAKE="1"))  # its own landing wakes nobody
         except subprocess.TimeoutExpired:       # a slow push is a retry next tick, not a failed unit (OPS_TIMER_REPAIR_PRXC)
             return "publish timed out after 90 s"
-        return None if r.returncode == 0 else "publish exit %d: %s" % (r.returncode, (r.stderr or r.stdout)[-300:])
+        return None if r.returncode == 0 else "publish exit %d: %s" % (r.returncode, (r.stderr or r.stdout))
 
     def prose_moves(self):
         """-> both paths of each item whose prose `rimflow close` moved to items/closed/. The ledger line lands; unpublished,
@@ -3020,7 +3024,7 @@ class Effects(relentless_game.GameFx):
                              "relentless: first touch of %s by %s; the owner 2026-11-03: the first time an item names a mod, "
                              "it gets a deep Designer pass" % (mod, item))
             if r.returncode != 0:
-                why += " [filing %s failed: %s]" % (pid, (r.stderr or r.stdout)[-200:])
+                why += " [filing %s failed: %s]" % (pid, (r.stderr or r.stdout))
         memo[item] = why
         return why
 
@@ -3130,7 +3134,7 @@ class Effects(relentless_game.GameFx):
         r = self.rimflow("reassign", item, "--to", self.r["seat"], "--reason", "relentless staffs it",
                          "--why", "relentless filler takes a proposed item of the other seat")
         self._ledger = None
-        return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
+        return None if r.returncode == 0 else (r.stderr or r.stdout)
 
     def focus_cap(self):
         """The Producer's WIP cap from the schedule (RO2), the number `next` holds: relentless's open work obeys it too.
@@ -3188,18 +3192,18 @@ class Effects(relentless_game.GameFx):
         st = self.item_state(item)
         if st is None:
             r = self.rimflow("file", item, "--for", self.r["seat"], "--kind", "bug", "--needs", "offline",
-                             "--title", text[:200], "--why", "relentless filler: staffing alarm")
+                             "--title", fulltext.fit(text, 200), "--why", "relentless filler: staffing alarm")
         elif st["state"] in ("done", "built", "validated"):
-            r = self.rimflow("live", item, "--result", "broken", "--detail", text[:300], seat="RUNNER")
+            r = self.rimflow("live", item, "--result", "broken", "--detail", fulltext.fit(text, 300), seat="RUNNER")
         elif st["state"] in ("dropped", "superseded"):
             return "%s is %s: nowhere for the alarm to land" % (item, st["state"])
         else:
-            r = self.rimflow("note", item, "--text", text[:NOTE_MAX], "--why", "relentless filler: staffing alarm")
-        return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
+            r = self.rimflow("note", item, "--text", fulltext.fit(text, NOTE_MAX), "--why", "relentless filler: staffing alarm")
+        return None if r.returncode == 0 else (r.stderr or r.stdout)
 
     def item_text(self, item):
         r = self.rimflow("show", item)
-        return (r.stdout or "")[:12000]
+        return r.stdout or ""          # whole: a judge reads it (RIMMANDRAKE_STORE_TEXT_WHOLE_NO_CUTS)
 
     def ledger_start(self, item):
         r = self.rimflow("start", item, "--why", "relentless supervisor takes the item")
@@ -3207,7 +3211,7 @@ class Effects(relentless_game.GameFx):
 
     def ledger_reclaim(self, item):
         r = self.rimflow("reclaim", item, "--why", "relentless supervisor: excluded in the rules, back to the pool")
-        return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
+        return None if r.returncode == 0 else (r.stderr or r.stdout)
 
     def ledger_close(self, item, sha, reason, live=None):
         # Idempotent: a close that already landed (a retry after a timeout, a crash between the ledger and the store)
@@ -3237,9 +3241,9 @@ class Effects(relentless_game.GameFx):
             # the work commit never ran the check itself: its record says where it ran (close provenance, Codex r7)
             said = reason if at == sha else "the blind check ran at %s, not at this commit: %s" % (sha[:12], reason)
             r = self.rimflow("verify", item, "--sha", at, "--result", "pass", "--level", "L0",
-                             "--config", pkg("model").MARKER_CONFIG, "--evidence", said[:300], seat="RUNNER")
+                             "--config", pkg("model").MARKER_CONFIG, "--evidence", fulltext.fit(said, 300), seat="RUNNER")
             if r.returncode != 0:
-                return (r.stderr or r.stdout)[-400:]
+                return (r.stderr or r.stdout)
             self.marked.add((item, at))
         r = self.rimflow("close", item, *close_at, "--reason", reason, "--why", "relentless: blind check passed",
                          *(("--live", live) if live else ()),      # the sweep keeps checking what the contract promised
@@ -3308,17 +3312,17 @@ class Effects(relentless_game.GameFx):
         if self.marker_said(item, sha) == "fail":
             return None
         r = self.rimflow("verify", item, "--sha", sha, "--result", "fail", "--level", "L0", "--config", pkg("model").MARKER_CONFIG,
-                         "--evidence", ("blind check FAIL: %s" % (reasons or "no reasons given"))[:300], seat="RUNNER")
-        return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
+                         "--evidence", fulltext.fit(("blind check FAIL: %s" % (reasons or "no reasons given")), 300), seat="RUNNER")
+        return None if r.returncode == 0 else (r.stderr or r.stdout)
 
     def ledger_note(self, item, text):
-        r = self.rimflow("note", item, "--text", text[:NOTE_MAX], "--why", "relentless supervisor")
-        return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
+        r = self.rimflow("note", item, "--text", fulltext.fit(text, NOTE_MAX), "--why", "relentless supervisor")
+        return None if r.returncode == 0 else (r.stderr or r.stdout)
 
     def ledger_note_once(self, item, text):
         """ledger_note, unless the ledger already holds this line: the one a tick killed before clearing its debt wrote."""
         for e in pkg("model").read():
-            if e.get("id") == item and e.get("event") == "note" and e.get("text") == text[:NOTE_MAX]:
+            if e.get("id") == item and e.get("event") == "note" and e.get("text") == fulltext.fit(text, NOTE_MAX):
                 return None
         return self.ledger_note(item, text)
 
@@ -3329,8 +3333,8 @@ class Effects(relentless_game.GameFx):
 
     def expedite_note(self, item, text):
         """One use of the lane on the ledger; the `delegated:` why is what puts it in the daily digest."""
-        r = self.rimflow("note", item, "--text", text[:NOTE_MAX], "--why", "delegated: expedite lane, set by Operations or the Conductor")
-        return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
+        r = self.rimflow("note", item, "--text", fulltext.fit(text, NOTE_MAX), "--why", "delegated: expedite lane, set by Operations or the Conductor")
+        return None if r.returncode == 0 else (r.stderr or r.stdout)
 
     def ledger_needs_owner(self, item, why):
         return self.ledger_needs(item, "owner", why)
@@ -3388,16 +3392,16 @@ class Effects(relentless_game.GameFx):
         return False
 
     def ledger_block(self, item, kind, ons, reason):
-        a = ["block", item, "--kind", kind, "--reason", reason[:NOTE_MAX], "--why", "relentless supervisor: a worker's snag names a blocker"]
+        a = ["block", item, "--kind", kind, "--reason", fulltext.fit(reason, NOTE_MAX), "--why", "relentless supervisor: a worker's snag names a blocker"]
         for on in ons:
             a += ["--on", on]
         r = self.rimflow(*a)
         self._ledger = None
-        return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
+        return None if r.returncode == 0 else (r.stderr or r.stdout)
 
     def ledger_needs(self, item, to, why):
-        r = self.rimflow("needs", item, "--to", to, "--reason", why[:NOTE_MAX], "--why", SUPERVISOR_WHY)
-        return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
+        r = self.rimflow("needs", item, "--to", to, "--reason", fulltext.fit(why, NOTE_MAX), "--why", SUPERVISOR_WHY)
+        return None if r.returncode == 0 else (r.stderr or r.stdout)
 
     # the clones
     def clone_path(self, item, q=0):
@@ -3464,7 +3468,7 @@ class Effects(relentless_game.GameFx):
                 try:
                     bundle = self.bundle_clone(st["item"], c)
                 except (RuntimeError, OSError, ValueError, subprocess.SubprocessError) as e:
-                    return "clone lacks %s and its bundle failed: %s" % (gap, str(e)[-200:])
+                    return "clone lacks %s and its bundle failed: %s" % (gap, str(e))
             else:       # no git to bundle from: the tree itself is kept, moved aside whole (Codex #3)
                 kept, why = self.keep_gitless(st["item"], c)
                 if why:
@@ -3491,7 +3495,7 @@ class Effects(relentless_game.GameFx):
                                cwd=self.books, env=env, capture_output=True, text=True, timeout=400,
                                stdin=subprocess.DEVNULL)
             if r.returncode:
-                return "clone failed: %s" % (r.stderr or r.stdout)[-300:]
+                return "clone failed: %s" % (r.stderr or r.stdout)
             gap = clone_gap(c)
             if gap:
                 return "clone failed: made without %s" % gap
@@ -3567,7 +3571,7 @@ class Effects(relentless_game.GameFx):
     def git_ok(self, cwd, *args):
         r = self.git(cwd, *args, timeout=300)
         if r.returncode:
-            raise RuntimeError("git %s: %s" % (args[0], r.stderr[-200:]))
+            raise RuntimeError("git %s: %s" % (args[0], r.stderr))
         return r.stdout
 
     def changed_paths(self, c):
@@ -3589,7 +3593,7 @@ class Effects(relentless_game.GameFx):
             empty = not any(files or any(os.path.islink(os.path.join(dp, x)) for x in dirs)    # a symlinked dir
                             for dp, dirs, files in os.walk(c, onerror=unreadable))  # is a thing to keep too (a dir to os.walk)
         except OSError as e:
-            return None, "its tree could not be read: %s" % str(e)[:200]
+            return None, "its tree could not be read: %s" % str(e)
         if empty:
             return None, None
         home = self.store.p("items", item) if item and os.path.isdir(self.store.p("items", item)) else self.store.p("orphans")
@@ -3601,7 +3605,7 @@ class Effects(relentless_game.GameFx):
             os.makedirs(os.path.dirname(out), exist_ok=True)
             os.rename(c, out)
         except OSError as e:
-            return None, "its git-less tree could not be kept aside: %s" % str(e)[:200]
+            return None, "its git-less tree could not be kept aside: %s" % str(e)
         return out, None
 
     def bundle_clone(self, item, c):
@@ -3688,7 +3692,7 @@ class Effects(relentless_game.GameFx):
             open(os.path.join(out, "carry"), "w").close()
             r = self.git(c, "bundle", "create", os.path.join(out, "commits.bundle"), "HEAD", "--all", "--not", "--remotes")
             if r.returncode:
-                raise RuntimeError("git bundle: %s" % r.stderr[-200:])
+                raise RuntimeError("git bundle: %s" % r.stderr)
         size = bundle_bytes(out)
         if size > BUNDLE_MAX:
             raise RuntimeError("bundle is %d bytes, over the cap %d: read this clone before it goes" % (size, BUNDLE_MAX))
@@ -3701,12 +3705,12 @@ class Effects(relentless_game.GameFx):
             bad.extend(self.restore_commits(item, bundle, cb, c))
             if bad:
                 self.store.journal({"at": iso(time.time()), "do": "alarm", "kind": "restore_incomplete", "item": item,
-                                    "bundle": bundle, "why": "; ".join(bad)[:300]})
+                                    "bundle": bundle, "why": "; ".join(bad)})
         patch = os.path.join(bundle, "real.patch")
         if os.path.exists(patch) and os.path.getsize(patch):
             r = self.git(c, "apply", "--3way", "--whitespace=nowarn", patch, timeout=300)
             if r.returncode:
-                bad.append("patch: %s" % r.stderr[-200:])
+                bad.append("patch: %s" % r.stderr)
         bad.extend(restore_deleted(bundle, c))
         index, whole = (os.path.join(bundle, x) for x in ("index.patch", "diff.patch"))
         if os.path.exists(index) and os.path.getsize(index):
@@ -3725,7 +3729,7 @@ class Effects(relentless_game.GameFx):
                 bad.append("%s kept in the bundle, upstream has them: %s" % (name, ", ".join(clash[:5])))
             r = subprocess.run(["tar", "--skip-old-files", "-C", c, "-xf", tar], capture_output=True, text=True, timeout=300)
             if r.returncode:
-                bad.append("%s: %s" % (name, r.stderr[-200:]))
+                bad.append("%s: %s" % (name, r.stderr))
         if bad:
             self.store.learn(item, "\n%s relentless: your clone was evicted from a full pool and its WIP did not all "
                              "come back; it is in %s (%s)\n" % (iso(time.time()), bundle, "; ".join(bad)))
@@ -3738,11 +3742,11 @@ class Effects(relentless_game.GameFx):
         listed = self.git(c, "bundle", "list-heads", cb, timeout=300)
         heads = [ln.split(None, 1) for ln in listed.stdout.splitlines() if " " in ln]
         if listed.returncode or not heads:
-            return ["commits.bundle: %s" % (listed.stderr[-200:] or "no refs in it")]
+            return ["commits.bundle: %s" % (listed.stderr or "no refs in it")]
         temp = ["refs/rm-carried/%d" % i for i in range(len(heads))]
         r = self.git(c, "fetch", "-q", "--no-tags", cb, *("+%s:%s" % (h[1], t) for h, t in zip(heads, temp)), timeout=300)
         if r.returncode:
-            return ["commits.bundle: %s" % r.stderr[-200:]]
+            return ["commits.bundle: %s" % r.stderr]
         bad, picked, landed, side, stashes = [], 0, 0, [], []
         tip = next((sha for sha, ref in heads if ref == "HEAD"), None)
         shas = self.git(c, "rev-list", "--reverse", "--first-parent", tip, "--not", "--remotes", timeout=300).stdout.split() if tip else []
@@ -3761,7 +3765,7 @@ class Effects(relentless_game.GameFx):
                 landed += 1
                 continue
             self.git(c, "cherry-pick", "--abort", timeout=60)
-            bad.append("commit %s did not re-apply: %s" % (sha[:10], r.stderr[-120:]))
+            bad.append("commit %s did not re-apply: %s" % (sha[:10], r.stderr))
             break
         for sha, ref in heads:
             if not ref.startswith(("refs/heads/", "refs/tags/")):
@@ -3775,14 +3779,14 @@ class Effects(relentless_game.GameFx):
                 n += 1      # (Codex, ..._TEN_MORE #4)
             r = self.git(c, "update-ref", want, sha, "0" * 40, timeout=60)     # old value zero: refuses if it now exists
             if r.returncode:
-                bad.append("%s did not come back: %s" % (ref, r.stderr[-120:]))
+                bad.append("%s did not come back: %s" % (ref, r.stderr))
             else:
                 side.append(want)
         for sha, ref in sorted((h for h in heads if h[1].startswith("refs/rm-stash/")), key=lambda h: -int(h[1].rsplit("/", 1)[1])):
             subject = self.git(c, "log", "-1", "--format=%s", sha, timeout=60).stdout.strip()
             r = self.git(c, "-c", "user.name=relentless", "-c", "user.email=relentless@localhost", "stash", "store", "-m", subject, sha, timeout=60)
             if r.returncode:
-                bad.append("stash %s did not come back: %s" % (sha[:10], r.stderr[-120:]))
+                bad.append("stash %s did not come back: %s" % (sha[:10], r.stderr))
             else:
                 stashes.append(sha)
         for t in temp:
@@ -3811,7 +3815,7 @@ class Effects(relentless_game.GameFx):
             try:
                 out = self.bundle_clone(st.get("item") or clone_item(c), c)
             except (RuntimeError, OSError, ValueError, subprocess.SubprocessError) as e:
-                self.store.journal({"at": iso(time.time()), "do": "alarm", "kind": "bundle_failed", "clone": c, "why": str(e)[:300]})
+                self.store.journal({"at": iso(time.time()), "do": "alarm", "kind": "bundle_failed", "clone": c, "why": str(e)})
                 return None
         elif os.path.isdir(c):  # no git to bundle from: its files are moved aside whole, never deleted (Codex #3)
             kept, why = self.keep_gitless(st.get("item") or clone_item(c), c)
@@ -3851,7 +3855,7 @@ class Effects(relentless_game.GameFx):
             with open(path, "a", encoding="utf-8") as f:
                 f.write("\n%s — RELENTLESS JAM: %s\n  RAISE FIRST: relentless is stalled\n" % (iso(time.time()), text))
         except OSError as e:
-            return str(e)[:200]
+            return str(e)
         return None
 
     def conductor_attention(self, text):
@@ -3865,7 +3869,7 @@ class Effects(relentless_game.GameFx):
             with open(path, "a", encoding="utf-8") as f:
                 f.write("\n%s — RELENTLESS ATTENTION (advisory, nothing stopped): %s\n" % (iso(time.time()), text))
         except OSError as e:
-            return str(e)[:200]
+            return str(e)
         return None
 
     def told(self, row):
@@ -3875,7 +3879,7 @@ class Effects(relentless_game.GameFx):
             with open(os.path.join(d, "told.jsonl"), "a", encoding="utf-8") as f:
                 f.write(json.dumps(row, sort_keys=True) + "\n")
         except OSError as e:
-            return str(e)[:200]
+            return str(e)
         return None
 
     def alarm_signal(self, rec):
@@ -3898,7 +3902,7 @@ class Effects(relentless_game.GameFx):
                 self.store._write(path, json.dumps(said))
         except Exception as e:  # noqa: BLE001
             self.store._append(self.store.p("journal.jsonl"), json.dumps({
-                "at": iso(now), "do": "told_failed", "kind": kind, "why": "%s: %s" % (type(e).__name__, str(e)[:200])}))
+                "at": iso(now), "do": "told_failed", "kind": kind, "why": "%s: %s" % (type(e).__name__, str(e))}))
 
     def check_path(self, st):
         """A new path per check: a quarantined checker may still be running in the last one."""
@@ -3933,7 +3937,7 @@ class Effects(relentless_game.GameFx):
         gone = [p for p in paths or () if not os.path.lexists(p)]
         paths = [p for p in paths or () if p not in gone]
         if gone:
-            seen.append(("skipped, gone from the host: %s" % ", ".join(gone))[-400:])
+            seen.append(("skipped, gone from the host: %s" % ", ".join(gone)))
         if paths:
             prof = relentless_wall.profile(r)
             os.makedirs(prof["box_root"], exist_ok=True)
@@ -3951,7 +3955,7 @@ class Effects(relentless_game.GameFx):
                     p = subprocess.run(argv, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
                 except (OSError, subprocess.SubprocessError) as e:
                     return False, "probe unit: %s: %s" % (type(e).__name__, e)
-                seen.append(("paths exit %d: %s" % (p.returncode, ((p.stdout or "") + (p.stderr or "")).strip()))[-400:])
+                seen.append(("paths exit %d: %s" % (p.returncode, ((p.stdout or "") + (p.stderr or "")).strip())))
                 if p.returncode != 0:
                     return False, "; ".join(seen)
             finally:
@@ -3979,7 +3983,7 @@ class Effects(relentless_game.GameFx):
             try:
                 relentless_wall.grant_git(box, repo, sha)
             except (OSError, RuntimeError, subprocess.SubprocessError) as e:
-                return False, "git_history: the grant could not be made at %s: %s" % (sha[:10], str(e)[-200:])
+                return False, "git_history: the grant could not be made at %s: %s" % (sha[:10], str(e))
             body = 'h=$(git -C "$1" rev-parse HEAD) && git -C "$1" cat-file -e "$2^{commit}" && echo "HEAD $h"'
             argv = (["systemd-run", "--user", "--wait", "--pipe", "--collect", "--quiet"]
                     + relentless_wall.props(prof, box, [store_root])
@@ -3990,7 +3994,7 @@ class Effects(relentless_game.GameFx):
                 return False, "probe unit: %s: %s" % (type(e).__name__, e)
             out = ((p.stdout or "") + (p.stderr or "")).strip()
             good = p.returncode == 0 and ("HEAD " + sha) in out
-            return good, ("git_history exit %d: %s" % (p.returncode, out))[-400:]
+            return good, ("git_history exit %d: %s" % (p.returncode, out))
         finally:
             shutil.rmtree(box, ignore_errors=True)
 
@@ -4010,7 +4014,7 @@ class Effects(relentless_game.GameFx):
             try:
                 relentless_wall.grant_items(box, repo, relentless_wall.item_rev(sha))
             except (OSError, RuntimeError, subprocess.SubprocessError) as e:
-                return False, "item_prose: the grant could not be made at %s: %s" % (sha[:10], str(e)[-200:])
+                return False, "item_prose: the grant could not be made at %s: %s" % (sha[:10], str(e))
             # positional only: systemd substitutes $name in the command line (a named shell variable reads empty)
             body = 'set -- "$1"/*.md; [ -r "$1" ] && head -c 1 -- "$1" >/dev/null && echo "read $1"'
             argv = (["systemd-run", "--user", "--wait", "--pipe", "--collect", "--quiet"]
@@ -4021,7 +4025,7 @@ class Effects(relentless_game.GameFx):
             except (OSError, subprocess.SubprocessError) as e:
                 return False, "probe unit: %s: %s" % (type(e).__name__, e)
             out = ((p.stdout or "") + (p.stderr or "")).strip()
-            return p.returncode == 0 and "read " in out, ("item_prose exit %d: %s" % (p.returncode, out))[-400:]
+            return p.returncode == 0 and "read " in out, ("item_prose exit %d: %s" % (p.returncode, out))
         finally:
             shutil.rmtree(box, ignore_errors=True)
 
@@ -4031,15 +4035,15 @@ class Effects(relentless_game.GameFx):
         st = self.item_state(item)
         if st is None:
             r = self.rimflow("file", item, "--for", self.r["seat"], "--kind", "bug", "--needs", "offline",
-                             "--title", text[:200], "--why", "relentless supervisor: a blind Judge's reach repair failed its probe")
+                             "--title", fulltext.fit(text, 200), "--why", "relentless supervisor: a blind Judge's reach repair failed its probe")
         elif st["state"] in ("done", "built", "validated"):
-            r = self.rimflow("live", item, "--result", "broken", "--detail", text[:300], seat="RUNNER")
+            r = self.rimflow("live", item, "--result", "broken", "--detail", fulltext.fit(text, 300), seat="RUNNER")
         elif st["state"] in ("dropped", "superseded"):
             return "%s is %s: nowhere for the reach ticket to land" % (item, st["state"])
         else:
-            r = self.rimflow("note", item, "--text", text[:NOTE_MAX], "--why", "relentless supervisor: reach repair failed")
+            r = self.rimflow("note", item, "--text", fulltext.fit(text, NOTE_MAX), "--why", "relentless supervisor: reach repair failed")
         self._ledger = None
-        return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
+        return None if r.returncode == 0 else (r.stderr or r.stdout)
 
     def env_repair(self, item, title, text):
         """ENV_HOLDS_FIX_ROUTE_TO_BUILDERS: the repair item a game-lane environment cause waits on (relentless_game.
@@ -4048,23 +4052,23 @@ class Effects(relentless_game.GameFx):
         st = self.item_state(item)
         if st is None:
             r = self.rimflow("file", item, "--for", self.r["seat"], "--kind", "bug", "--needs", "offline",
-                             "--title", title[:200], "--why", "relentless supervisor: a game-lane environment cause "
+                             "--title", fulltext.fit(title, 200), "--why", "relentless supervisor: a game-lane environment cause "
                                                             "no lane step can fix")
             if r.returncode == 0:
-                r = self.rimflow("note", item, "--text", text[:NOTE_MAX], "--why", "relentless supervisor: env route")
+                r = self.rimflow("note", item, "--text", fulltext.fit(text, NOTE_MAX), "--why", "relentless supervisor: env route")
         elif st["state"] in ("done", "built", "validated"):
-            r = self.rimflow("live", item, "--result", "broken", "--detail", text[:300], seat="RUNNER")
+            r = self.rimflow("live", item, "--result", "broken", "--detail", fulltext.fit(text, 300), seat="RUNNER")
         elif st["state"] in ("dropped", "superseded"):
             return "%s is %s: nowhere for the environment cause to land" % (item, st["state"])
         else:
-            r = self.rimflow("note", item, "--text", text[:NOTE_MAX], "--why", "relentless supervisor: env route")
+            r = self.rimflow("note", item, "--text", fulltext.fit(text, NOTE_MAX), "--why", "relentless supervisor: env route")
         self._ledger = None
-        return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
+        return None if r.returncode == 0 else (r.stderr or r.stdout)
 
     def ledger_unblock(self, item, reason):
-        r = self.rimflow("unblock", item, "--reason", reason[:NOTE_MAX], "--why", "relentless supervisor: " + reason[:200])
+        r = self.rimflow("unblock", item, "--reason", fulltext.fit(reason, NOTE_MAX), "--why", "relentless supervisor: " + fulltext.fit(reason, 200))
         self._ledger = None
-        return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
+        return None if r.returncode == 0 else (r.stderr or r.stdout)
 
     def bindjudge_kick(self, store, item, pid, tries):
         return relentless_bindjudge.kick(store, item, pid, tries)
@@ -4090,7 +4094,7 @@ class Effects(relentless_game.GameFx):
                            cwd=self.books, env=env, capture_output=True, text=True, timeout=400,
                            stdin=subprocess.DEVNULL)
         if r.returncode:
-            return None, "%s clone failed: %s" % ({"check": "checker"}.get(what, what), (r.stderr or r.stdout)[-300:])
+            return None, "%s clone failed: %s" % ({"check": "checker"}.get(what, what), (r.stderr or r.stdout))
         r = self.git(d, "checkout", "--quiet", "--detach", sha)
         if r.returncode and self.git(d, "cat-file", "-e", sha + "^{tree}").returncode:
             # the sha or its tree is not in the clone yet (a lagging object store): ask origin once before calling it failed
@@ -4102,10 +4106,10 @@ class Effects(relentless_game.GameFx):
             # so a tracked-files-only check/help tree is removed and made again once, never parked warm for the next taker.
             gone = relentless_disk.remove_tree(d)
             self.store.journal({"at": iso(time.time()), "do": "clone_remade", "clone": os.path.basename(d), "item": item,
-                                "missing": "tree of %s" % sha[:12], "why": (r.stderr or "")[-200:], "remove": gone})
+                                "missing": "tree of %s" % sha[:12], "why": (r.stderr or ""), "remove": gone})
             if gone is None:
                 return self._detached_clone(d, sha, what, item, remade=True)
-        return (d, None) if r.returncode == 0 else (None, "checkout %s: %s" % (sha, r.stderr[-200:]))
+        return (d, None) if r.returncode == 0 else (None, "checkout %s: %s" % (sha, r.stderr))
 
     def help_path(self, st):
         """The first help-ITEM-cN folder nobody holds, from help_count + 1. A failed removal leaves the last try's folder
@@ -4181,7 +4185,7 @@ class Effects(relentless_game.GameFx):
             if r.returncode:    # an unread log is no short list: the whole range instead, a superset (Codex r6 #12)
                 r = self.git(self.books, "diff", "--name-only", "--no-renames", base, sha)
             if r.returncode:
-                raise RuntimeError("changed(%s..%s): git cannot list the range: %s" % (base, sha, (r.stderr or "")[-200:]))
+                raise RuntimeError("changed(%s..%s): git cannot list the range: %s" % (base, sha, (r.stderr or "")))
             got |= set(x for x in r.stdout.splitlines() if x.strip())
         return sorted(got)
 
@@ -4262,7 +4266,7 @@ class Effects(relentless_game.GameFx):
             argv = argv[:at] + list(wall) + sum((["--setenv", "%s=%s" % kv] for kv in extra_env.items()), []) + \
                 ["--", sys.executable, tool, "run", "--plan", pf]
             r = subprocess.run(argv, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
-            return ("systemd-run exit %d: %s" % (r.returncode, (r.stdout + r.stderr)[-200:])) if r.returncode else None
+            return ("systemd-run exit %d: %s" % (r.returncode, (r.stdout + r.stderr))) if r.returncode else None
         if agent == VENDOR_AGENT:       # the Consult port: a python body in the same unit shape, so alive/stop/settle hold
             pf = os.path.splitext(run["out"])[0] + ".prompt.md"
             with open(pf, "w", encoding="utf-8") as f:
@@ -4271,7 +4275,7 @@ class Effects(relentless_game.GameFx):
             argv = argv[:at] + list(wall) + sum((["--setenv", "%s=%s" % kv] for kv in extra_env.items()), []) + \
                 ["--", sys.executable, tool, "help-vendor", "--item", st["item"], "--prompt-file", pf]
             r = subprocess.run(argv, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
-            return ("systemd-run exit %d: %s" % (r.returncode, (r.stdout + r.stderr)[-200:])) if r.returncode else None
+            return ("systemd-run exit %d: %s" % (r.returncode, (r.stdout + r.stderr))) if r.returncode else None
         env = []
         for k, v in extra_env.items():
             env += ["--setenv", "%s=%s" % (k, v)]
@@ -4279,7 +4283,7 @@ class Effects(relentless_game.GameFx):
         o = argv.index("--cwd") if codex else argv.index("--output-format")
         argv[o:o] = ["--agent", agent] + (["--resume", run["resume"]] if run.get("resume") else [])
         r = subprocess.run(argv, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
-        return ("systemd-run exit %d: %s" % (r.returncode, (r.stdout + r.stderr)[-200:])) if r.returncode else None
+        return ("systemd-run exit %d: %s" % (r.returncode, (r.stdout + r.stderr))) if r.returncode else None
 
     def sweep_run_tmp(self):
         """Every run dir whose run is over goes (run_tmp.sweep): each end path, a crash and a dead engine alike."""
@@ -4495,7 +4499,7 @@ def hand_note(why, makers):
     """The bounce, one ledger note under NOTE_MAX: what to do first, so a cut never loses it, then who and why."""
     head = "%s (maker %s): Relentless will not enrol or recheck it, %s. Why: " % (
         HAND_CHECK_SAID, ", ".join(makers) or "unknown", HAND_CHECK_RULING_SHORT)
-    return (head + why)[:NOTE_MAX]
+    return fulltext.fit((head + why), NOTE_MAX)
 
 
 def hand_check_lint(r, items):
@@ -4543,7 +4547,7 @@ def hand_checks_cli(r, lint=False, bounce=False):
                                   "--why", "relentless hand-checks --bounce: the 2026-11-05 queue sweep"],
                                  capture_output=True, text=True, timeout=120)
             if res.returncode:
-                print("  note refused: " + (res.stderr or res.stdout)[-300:])
+                print("  note refused: " + (res.stderr or res.stdout))
                 rc = 1
     return rc
 
@@ -4663,7 +4667,7 @@ def learned_view(learned, listed, log=None, cap=LEARNED_MAX):
     entries = [e for e in re.split(r"\n+(?=(?:- )?\d{4}-\d\d-\d\dT)", learned.strip()) if e.strip()]
     def carried(entry):
         m = re.match(r"- \S+ gen \d+ ended [^:]*: (.+)", entry, re.S)
-        said = " ".join(m.group(1).split())[:120] if m else ""
+        said = " ".join(m.group(1).split()) if m else ""
         return bool(said) and any(" ended " in x and said in x for x in listed)
     keep = [e for e in entries if not carried(e)]
     whole = "\n".join(keep)
@@ -4906,7 +4910,7 @@ def checker_prompt(st, text, nonce, readings=()):
         % (rc, i, nonce, relentless_wall.REACH_TAG),
         *relentless_game.checker_lines(st["contract"]),
         *["Off-box reading %d (the supervisor ran it just now; judge whether it measures its clause): $ %s -> exit %s\n%s"
-          % (n, x["cmd"], x["exit"], (x["out"] or "")[-4000:]) for n, x in enumerate(readings, 1)],
+          % (n, x["cmd"], x["exit"], fulltext.fit((x["out"] or ""), 20000, tail=True)) for n, x in enumerate(readings, 1)],
         *relentless_wall.blind_lines(st),
         "See the change with: git show %s" % c["sha"], "", "--- item ---", text])
 
@@ -4940,7 +4944,7 @@ def run_output(run):
         with open(run["err"], "rb") as f:
             f.seek(max(os.path.getsize(run["err"]) - 2048, 0))
             lines = [x for x in f.read().decode("utf-8", "replace").splitlines() if x.strip()]
-        got["err_tail"] = lines[-1][:200] if lines else ""
+        got["err_tail"] = lines[-1] if lines else ""
     except (OSError, KeyError, TypeError):
         pass
     return got
@@ -5000,7 +5004,7 @@ def admission(store, fx, r, now, active, extra=0, holds_place=False):
         br["until"] = now + r["breaker_cool_max_s"]
         store._write(store.p("breaker.json"), json.dumps(br))
     if br.get("until", 0) > now:        # the cause, not only the state: the alarm quotes this line
-        return "breaker open until %s: %s" % (iso(br["until"]), (br.get("why") or "no cause recorded").strip()[:200])
+        return "breaker open until %s: %s" % (iso(br["until"]), (br.get("why") or "no cause recorded").strip())
     if not holds_place and active >= worker_cap(fx, r, extra, store):
         return "max_workers"
     if fx.paused():
@@ -5063,7 +5067,7 @@ def attention(store, fx, key, text, now, level=None):
     sig = getattr(fx, "alarm_signal", None)
     if sig:
         sig({"kind": "relentless_attention_" + key, "why": text})
-    store.journal({"at": iso(now), "do": "attention", "key": key, "why": text[:500], "advisory": True,
+    store.journal({"at": iso(now), "do": "attention", "key": key, "why": text, "advisory": True,
                    "told_failed": fails or None})
     return True
 
@@ -5079,11 +5083,11 @@ def load_breaker(store):
 def cause_key(why):
     """Same fault, same key: run names, paths and numbers differ between tries, the words do not. The tail, because
     launch and clone errors arrive cut to their last 200-300 characters, so their first words shift with a name's length."""
-    return re.sub(r"\s+", " ", CAUSE_TOKEN.sub("#", why)).strip().lower()[-120:]
+    return re.sub(r"\s+", " ", CAUSE_TOKEN.sub("#", why)).strip().lower()[-120:]  # cut-ok: a cause key, not stored text
 
 
 def death_note(run):
-    """-> the last 300 characters of `run`'s .err when its .json holds no result object, else None (no .err text: a
+    """-> the whole of `run`'s .err when its .json holds no result object, else None (no .err text: a
     plain lost run, the checker_lost count's business)."""
     if not run:
         return None
@@ -5098,7 +5102,7 @@ def death_note(run):
             text = f.read().strip()
     except OSError:
         return None
-    return text[-300:] or None
+    return text or None             # whole: the old last-300 cut lost the cause (RIMMANDRAKE_STORE_TEXT_WHOLE_NO_CUTS)
 
 
 def launch_failed(store, r, now, why):
@@ -5118,8 +5122,8 @@ def launch_failed(store, r, now, why):
             # each opening's time, so the emergency counts openings INSIDE the window, never the incident's total
             # (0, 40 and 80 s with a 60 s window are two, not three: Codex r4 part2 #1)
             ts = [t for t in c.get("ts") or [] if now - t < r["breaker_same_cause_window_s"]] + [now]
-            c.update(n=len(ts), ts=ts, last=now, why=why[:300])
-    br["why"] = why[:300]
+            c.update(n=len(ts), ts=ts, last=now, why=why)
+    br["why"] = why
     br["at"] = now
     store._write(store.p("breaker.json"), json.dumps(br))
 
@@ -5162,7 +5166,7 @@ def breaker_emergency(store, fx, r, now, acts):
         if c["n"] < r["breaker_same_cause_opens"]:
             continue
         said = c.setdefault("said", [])
-        text = "EMERGENCY: the breaker opened %d times on the same cause: %s" % (c["n"], c["why"][:200])
+        text = "EMERGENCY: the breaker opened %d times on the same cause: %s" % (c["n"], c["why"])
         row = {"class": "emergency", "cause": "relentless.breaker:" + key, "metric": "relentless.breaker_same_cause",
                "reader": r["breaker_reader"], "told_at": iso(now), "ack_due": iso(now + r["breaker_ack_min"] * 60),
                "recover_by": None, "item": item, "opens": c["n"], "why": c["why"]}
@@ -5908,7 +5912,7 @@ def marker_fail_record(store, fx, item, acts):
         return True
     err = fx.ledger_marker_fail(item, owe[0], owe[1])
     if err:
-        acts.append({"do": "marker_fail_unrecorded", "item": item, "why": err[:200]})
+        acts.append({"do": "marker_fail_unrecorded", "item": item, "why": err})
         return False
     with store.lock():
         cur = store.load(item)
@@ -5926,7 +5930,7 @@ def ledger_note_record(store, fx, item, acts):
         return
     err = fx.ledger_note_once(item, owe)
     if err:
-        acts.append({"do": "ledger_note_unrecorded", "item": item, "why": err[:200]})
+        acts.append({"do": "ledger_note_unrecorded", "item": item, "why": err})
         return
     with store.lock():
         cur = store.load(item)
@@ -6260,9 +6264,9 @@ def step(store, fx, r, item, now, acts):
                     cur = store.load(item)
                     if cur and cur["status"] == "checking" and cur["check"].get("nonce") == chk["nonce"]:
                         cur["check"]["expired"] = True
-                        cur["check"]["malformed"] = str(e)[:300]
+                        cur["check"]["malformed"] = str(e)
                         store.save(cur)
-                acts.append({"do": "verdict_malformed", "item": item, "why": str(e)[:200]})
+                acts.append({"do": "verdict_malformed", "item": item, "why": str(e)})
             chk = store.load(item)["check"]
         word = chk.get("verdict")
         if word is None and fx.alive(chk.get("run")) and now - chk["at"] < r["check_max_s"] + r["launch_grace_s"]:
@@ -6300,7 +6304,7 @@ def step(store, fx, r, item, now, acts):
                     # it read the evidence before the cut: the same checker, clone, box and nonce resume once the breaker
                     # closes (check_resume), its context kept (RELENTLESS_RESUME_BUILD_ACCOUNT_LOST_RUNS)
                     st["check"]["resume"] = {"session": lost["session"], "at": now}
-                    store.attempt(item, {"at": iso(now), "gen": st["gen"], "end": "account_lost", "detail": lost["why"][:600],
+                    store.attempt(item, {"at": iso(now), "gen": st["gen"], "end": "account_lost", "detail": lost["why"],
                                          "session": lost["session"]})
                     store.save(st)
                     if lost["kind"] == "account_error":
@@ -6311,7 +6315,7 @@ def step(store, fx, r, item, now, acts):
                     drop.append({"check": dict(st["check"]), "quarantined": list(st["quarantined"])})
                     st["status"] = "candidate"
                     st["check"] = None
-                    store.attempt(item, {"at": iso(now), "gen": st["gen"], "end": "account_lost", "detail": lost["why"][:600]})
+                    store.attempt(item, {"at": iso(now), "gen": st["gen"], "end": "account_lost", "detail": lost["why"]})
                     store.save(st)
                     if lost["kind"] == "account_error":
                         launch_failed(store, r, now, lost["why"])
@@ -6330,10 +6334,10 @@ def step(store, fx, r, item, now, acts):
                         drop.append({"check": dict(st["check"]), "quarantined": list(st["quarantined"])})
                         st["status"] = "candidate"
                         st["check"] = None
-                        store.attempt(item, {"at": iso(now), "gen": st["gen"], "end": "check_launch_fail", "detail": why[:600]})
+                        store.attempt(item, {"at": iso(now), "gen": st["gen"], "end": "check_launch_fail", "detail": why})
                         store.save(st)
                         launch_failed(store, r, now, why)
-                        acts.append({"do": "check_launch_fail", "item": item, "why": why[:200]})
+                        acts.append({"do": "check_launch_fail", "item": item, "why": why})
                         return
                     n = st.get("check_lost", 0) + 1
                     st["check_lost"] = n
@@ -6354,9 +6358,9 @@ def step(store, fx, r, item, now, acts):
                     drop.append({"check": dict(st["check"]), "quarantined": list(st["quarantined"])})
                     st["status"] = "candidate"
                     st["check"] = None
-                    store.attempt(item, {"at": iso(now), "gen": st["gen"], "end": "check_rebound", "detail": moved[:600]})
+                    store.attempt(item, {"at": iso(now), "gen": st["gen"], "end": "check_rebound", "detail": moved})
                     store.save(st)
-                    acts.append({"do": "check_rebound", "item": item, "why": moved[:200]})
+                    acts.append({"do": "check_rebound", "item": item, "why": moved})
                     return
                 acted, blind = relentless_wall.read_as(word, st["check"].get("reasons"), st["check"].get("defects"),
                                                        st["check"].get("unreached"))
@@ -6400,7 +6404,7 @@ def step(store, fx, r, item, now, acts):
             for t in told:
                 if t:       # one line per quarantine: the key is the item and its pass, never re-told on a timer
                     attention(store, fx, "quarantine:%s" % item, t, now, level=(QUARANTINE_RETURNS, returns0))
-                    acts.append({"do": "quarantined", "item": item, "why": t[:200]})
+                    acts.append({"do": "quarantined", "item": item, "why": t})
         if failed:          # the verdict the Close gate reads, out of the store's lock (MARKER_FAIL_WIRE_INTO_CLOSE_LOCK)
             marker_fail_record(store, fx, item, acts)
             return
@@ -6496,7 +6500,7 @@ def step(store, fx, r, item, now, acts):
                 acts.append({"do": "live_broken", "item": item})
                 return
         reason = "relentless: blind PASS at %s after %d return(s): %s" % (c["sha"], st["returns"],
-                                                                         (st["check"].get("reasons") or "")[:220])
+                                                                         (st["check"].get("reasons") or ""))
         # the candidate's .criteria may re-tier a criterion the ledger still holds at the old level: `close` reads the
         # ledger manifest and would refuse for ever, so it is recorded again first (CLOSE_RETIER_FIX_LEDGER_STILL_OWES_L1)
         if relentless_prooflines.is_job(st):     # lines job: the store is done, the ledger stays built for the live round
@@ -6591,7 +6595,7 @@ def check_resume(store, fx, r, item, now, acts):
         st["check"] = None
         store.save(st)
     remove_check_clone(fx, gone)      # its box is an ended check's now: the reaper takes it, as on every other road
-    acts.append({"do": "check_resume_dropped", "item": item, "why": why[:200]})
+    acts.append({"do": "check_resume_dropped", "item": item, "why": why})
 
 
 def help_over(store, fx, item, word, now, acts):
@@ -6620,14 +6624,14 @@ def help_retry(store, fx, item, why, r, now, acts):
     with store.lock():
         st = store.load(item)
         h = st["help"]
-        h["end"] = why[:200]
+        h["end"] = why
         again = h["tries"] < r["circling"]["help_launch_tries"]
         if again:
             # at: this try's wait for room starts now; the old one ran out while the last try ran (Codex r7)
             h.update(status="wanted", run=None, nonce=None, clone=None, at=now)
         store.save(st)
     if again:
-        acts.append({"do": "help_retry", "item": item, "why": why[:200]})
+        acts.append({"do": "help_retry", "item": item, "why": why})
     else:
         help_over(store, fx, item, "failed", now, acts)
 
@@ -6644,8 +6648,8 @@ def help_start(store, fx, r, item, now, acts):
                 cur = store.load(item)
                 cur["help"]["at"] = now
                 store.save(cur)
-            store.journal({"at": iso(now), "do": "help_account_wait", "item": item, "why": (br.get("why") or "")[:200]})
-            acts.append({"do": "help_waits", "item": item, "why": "account: " + (br.get("why") or "")[:160]})
+            store.journal({"at": iso(now), "do": "help_account_wait", "item": item, "why": (br.get("why") or "")})
+            acts.append({"do": "help_waits", "item": item, "why": "account: " + (br.get("why") or "")})
             return
         if h.get("mode") == relentless_attrib.DIAGNOSE:
             # RELENTLESS_ATTRIB_FIX_CONSULT_NO_ROOM_HOLDS: a diagnosis owed holds no worker back (the item waits blocked
@@ -6775,7 +6779,7 @@ def help_account_lost(store, fx, r, item, lost, now, acts):
         else:
             h.pop("resume", None)
             h.update(nonce=None, clone=None)
-        store.attempt(item, {"at": iso(now), "gen": st["gen"], "help": "account_lost", "detail": lost["why"][:600],
+        store.attempt(item, {"at": iso(now), "gen": st["gen"], "help": "account_lost", "detail": lost["why"],
                              **({"session": lost["session"]} if keep else {})})
         store.save(st)
     if drop and not any(q.get("clone") == drop for q in st["quarantined"]):
@@ -6872,7 +6876,7 @@ def live_wait(store, fx, item, why, now, acts, st):
             store.save(cur)
         if cur["status"] == "checking":
             remove_check_clone(fx, cur)
-        acts.append({"do": "live_waiting", "item": item, "why": str(why)[:200]})
+        acts.append({"do": "live_waiting", "item": item, "why": str(why)})
     return True
 
 
@@ -7103,7 +7107,7 @@ def lease(store, fx, r, now, acts, wake=None, late=None):
         try:
             pause_alarm(store, fx, seen, now, acts)
         except Exception as e:  # noqa: BLE001  the alarm's clock never stops a lease; said on the journal
-            store.journal({"at": iso(now), "do": "pause_alarm_failed", "why": "%s: %s" % (type(e).__name__, str(e)[:200])})
+            store.journal({"at": iso(now), "do": "pause_alarm_failed", "why": "%s: %s" % (type(e).__name__, str(e))})
 
 
 def fenced_meanwhile(store, item, st):
@@ -7264,12 +7268,12 @@ def _lease(store, fx, r, now, acts, seen, wake=None, late=None):
                     # ledger state refused it: the next landed commit (a wake poke) may be the change that lets it
                     relentless_cause.record(cur, "start_again_cause", relentless_cause.of(why, item, poke=True), now)
                     cur["start_refusals"] = cur.get("start_refusals", 0) + 1
-                    cur["start_refused_why"] = str(why)[:300]
+                    cur["start_refused_why"] = str(why)
                     # the same refusal again is a retry loop (53 of them on one item): held and told, never retired, which
                     # would drop work he ordered in silence. Unhold, once what refuses is fixed, gives a fresh count.
                     put_down = cur["status"] == "queued" and cur["start_refusals"] >= r.get("start_refused_put_down", 3)
                     if put_down:
-                        relentless_strikes.hold(cur, "start refused %d times: %s" % (cur["start_refusals"], str(why)[:200]),
+                        relentless_strikes.hold(cur, "start refused %d times: %s" % (cur["start_refusals"], str(why)),
                                                 "start_refused", now)
                         cur["status"] = "held"
                     store.save(cur)
@@ -7346,7 +7350,7 @@ def _lease(store, fx, r, now, acts, seen, wake=None, late=None):
                 cur["status"] = "queued"
                 cur["returned_at"] = cur["returned_at"] or now
                 cur["run"] = None
-                store.attempt(item, {"at": iso(now), "gen": cur["gen"] - 1, "end": "launch_fail", "detail": why[:300]})
+                store.attempt(item, {"at": iso(now), "gen": cur["gen"] - 1, "end": "launch_fail", "detail": why})
                 store.save(cur)
                 if POOL_REFUSED not in why:
                     launch_failed(store, r, now, why)
@@ -7389,7 +7393,7 @@ def live_slis(store, now):
         return relentless_live.live_slis(relentless_live.read_rows(os.path.join(store.root, "live", "runs.jsonl")), now,
                                          relentless_live.commit_time, fired=lambda row: action_fired(store, row))
     except Exception as e:      # noqa: BLE001  an unread SLI is a reading that failed, never a dead tick
-        return {"unread": "%s: %s" % (type(e).__name__, str(e)[:200])}
+        return {"unread": "%s: %s" % (type(e).__name__, str(e))}
 
 
 def reading(store, r, now, acts, clock=None, fx=None):
@@ -7443,11 +7447,11 @@ def put_down_on(st):
         return "its check"
     if st["status"] == "held":
         return "%s: %s" % ("owner" if hold_is_his(st.get("hold")) else SEAT_QUEUE,
-                           ((st.get("hold") or {}).get("why") or "")[:160])
+                           ((st.get("hold") or {}).get("why") or ""))
     if st["status"] == "blocked":
         b = st.get("block_pending") or {}
-        return "ledger block%s" % (": %s" % (b.get("detail") or "")[:160] if b else "")
-    return ((st.get("put_down") or {}).get("on") or (st.get("game") or {}).get("phase") or "")[:200]
+        return "ledger block%s" % (": %s" % (b.get("detail") or "") if b else "")
+    return ((st.get("put_down") or {}).get("on") or (st.get("game") or {}).get("phase") or "")
 
 
 NO_ALARM = ("paused", "budget 0", "share 0")
@@ -7760,7 +7764,7 @@ def game_pass(store, fx, r, now, acts, began=None, between=None):
             step(store, fx, r, s["item"], now, acts)
         except Exception as e:  # noqa: BLE001  one bad item never stops the others; the next tick resumes it
             acts.append({"do": "error", "item": s["item"], "why": "%s: %s" % (type(e).__name__, e)})
-            store.journal({"at": iso(now), "do": "alarm", "kind": "step_raised", "item": s["item"], "why": str(e)[:300]})
+            store.journal({"at": iso(now), "do": "alarm", "kind": "step_raised", "item": s["item"], "why": str(e)})
         if between:
             between()
     broker_drain(store, fx, r, now, acts)
@@ -7780,7 +7784,7 @@ def broker_slis(store, now):
     try:
         return relentless_broker.slis(store, now)
     except Exception as e:  # noqa: BLE001  an unread SLI is a reading that failed, never a dead tick
-        return {"unread": "%s: %s" % (type(e).__name__, str(e)[:200])}
+        return {"unread": "%s: %s" % (type(e).__name__, str(e))}
 
 
 def ready_staging(store):
@@ -7955,7 +7959,7 @@ def _tick(store, fx, r, now, prof):
             relentless_bindjudge.sweep(store, fx, now, acts, iso, paused=bool(getattr(fx, "paused", bool)() or owner_pause(fx, store.states())))
         except Exception as e:  # noqa: BLE001  a judge launch never costs the tick its workers
             acts.append({"do": "error", "item": None, "why": "bindjudge %s: %s" % (type(e).__name__, e)})
-            store.journal({"at": iso(now), "do": "alarm", "kind": "bindjudge_raised", "why": str(e)[:300]})
+            store.journal({"at": iso(now), "do": "alarm", "kind": "bindjudge_raised", "why": str(e)})
         relentless_block.sweep(store, fx, now, acts, iso)
         relentless_cause.sweep(store, fx, now, acts, iso)
         serve_poke()    # a poke waiting at tick start enrols now: live 2026-11-06 the prelude's end came 66 s later
@@ -7973,7 +7977,7 @@ def _tick(store, fx, r, now, prof):
             relentless_game.lapse_holds(store, fx, r, now, acts)
         except Exception as e:  # noqa: BLE001  a failed read keeps the holds as they are; the steps still run
             acts.append({"do": "error", "item": None, "why": "lapse_holds %s: %s" % (type(e).__name__, e)})
-            store.journal({"at": iso(now), "do": "alarm", "kind": "lapse_holds_raised", "why": str(e)[:300]})
+            store.journal({"at": iso(now), "do": "alarm", "kind": "lapse_holds_raised", "why": str(e)})
         try:        # a returned stale build that carries now goes back to its game step before a worker is sent for it
             relentless_game.recarry_returned(store, fx, now, acts)
         except Exception as e:  # noqa: BLE001  a failed git read leaves the item queued, as before
@@ -8004,7 +8008,7 @@ def _tick(store, fx, r, now, prof):
                 except Exception as e:  # noqa: BLE001  one bad item never stops the others; next tick resumes it
                     acts.append({"do": "error", "item": item, "why": "%s: %s" % (type(e).__name__, e)})
                     store.journal({"at": iso(now), "do": "alarm", "kind": "step_raised", "item": item,
-                                   "why": str(e)[:300]})
+                                   "why": str(e)})
                 if wall() - one >= SLOW_STEP_S:
                     slow.append({"item": item, "s": round(wall() - one, 1)})
                 serve_poke()
@@ -8021,7 +8025,7 @@ def _tick(store, fx, r, now, prof):
                 help_step(store, fx, r, item, now, acts)
             except Exception as e:  # noqa: BLE001  a consult is an extra: it never costs the tick its workers
                 acts.append({"do": "error", "item": item, "why": "help %s: %s" % (type(e).__name__, e)})
-                store.journal({"at": iso(now), "do": "alarm", "kind": "help_raised", "item": item, "why": str(e)[:300]})
+                store.journal({"at": iso(now), "do": "alarm", "kind": "help_raised", "item": item, "why": str(e)})
         try:
             circling.watch(store, fx, r, now, acts, fail)
         except Exception as e:  # noqa: BLE001  the watch never stops the belt
@@ -8046,7 +8050,7 @@ def _tick(store, fx, r, now, prof):
             relentless_expedite.sync(store, fx, now, acts)
         except Exception as e:  # noqa: BLE001
             acts.append({"do": "error", "item": None, "why": "expedite %s: %s" % (type(e).__name__, e)})
-            store.journal({"at": iso(now), "do": "alarm", "kind": "expedite_raised", "why": str(e)[:300]})
+            store.journal({"at": iso(now), "do": "alarm", "kind": "expedite_raised", "why": str(e)})
         enrol_acts = enrol(store, fx, r, now)
         acts += [{"do": "enrol", "item": i} for i in enrol_acts]
         relentless_wake.mark_served_through(store.dir, synced[0])     # this enrol read every poke before the last sync
@@ -8054,13 +8058,13 @@ def _tick(store, fx, r, now, prof):
         if h:       # what Relentless obeyed this tick; a missing or stale verdict is said here (Operations raises it)
             acts.append({"do": "health", "fresh": h["fresh"], "degraded": h["degraded"], "first": len(h["first"]),
                          "unmeasured": bool(h.get("unmeasured")), "pause": h.get("pause"),
-                         "why": h["why"][:300]})
+                         "why": h["why"]})
         try:        # after enrol, which reads the verdict the choice of victim needs
             active = sum(1 for x in store.states() if x["status"] in RUNS_A_PLACE) + helps_running(store)
             relentless_expedite.make_room(store, fx, r, now, acts, active, admission(store, fx, r, now, active), fail)
         except Exception as e:  # noqa: BLE001
             acts.append({"do": "error", "item": None, "why": "expedite interrupt %s: %s" % (type(e).__name__, e)})
-            store.journal({"at": iso(now), "do": "alarm", "kind": "expedite_raised", "why": str(e)[:300]})
+            store.journal({"at": iso(now), "do": "alarm", "kind": "expedite_raised", "why": str(e)})
         try:        # after enrol, which sets this tick's plan; a broken reading costs the page its list, never the tick
             write_queue_next(store, fx, r, now)
         except Exception as e:  # noqa: BLE001
@@ -8071,7 +8075,7 @@ def _tick(store, fx, r, now, prof):
                   late=lambda: tick_past(r, "tick_lease_budget_s", wall, whole))
         except Exception as e:  # noqa: BLE001  a hung rimflow must not lose the tick's flush; a reservation resumes next tick
             acts.append({"do": "error", "item": None, "why": "lease %s: %s" % (type(e).__name__, e)})
-            store.journal({"at": iso(now), "do": "alarm", "kind": "lease_raised", "why": str(e)[:300]})
+            store.journal({"at": iso(now), "do": "alarm", "kind": "lease_raised", "why": str(e)})
         try:
             breaker_emergency(store, fx, r, now, acts)
         except Exception as e:  # noqa: BLE001  a torn cause record must not lose the tick's flush
@@ -8094,7 +8098,7 @@ def _tick(store, fx, r, now, prof):
             relentless_showing.tick(store, fx, r, now, acts, sys.modules[__name__])
         except Exception as e:  # noqa: BLE001  the showing stage never costs the tick its flush
             acts.append({"do": "error", "item": None, "why": "showings %s: %s" % (type(e).__name__, e)})
-            store.journal({"at": iso(now), "do": "alarm", "kind": "showings_raised", "why": str(e)[:300]})
+            store.journal({"at": iso(now), "do": "alarm", "kind": "showings_raised", "why": str(e)})
         run_tmp_sweep(store, fx, now, acts, "end")
         at = phase("staffing_live", at)
         why = fx.flush()

@@ -63,6 +63,10 @@ import signal
 import subprocess
 import sys
 import time
+try:                                    # whole text, never a silent cut (RIMMANDRAKE_STORE_TEXT_WHOLE_NO_CUTS)
+    from . import fulltext
+except ImportError:
+    import fulltext  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 BOOKS = os.path.dirname(os.path.realpath(os.path.join(HERE, "..", "..", "..", ".git")))     # a release tree's .git links to books
@@ -646,7 +650,7 @@ def refused_site(site):
     """-> why a live-site command may not run, or None. Only live_site.py, plain arguments: the site step is the one
     change this tier makes to the game, so it is one reviewed tool, never a free command."""
     if site and not SITE_CMD.match(site.strip()):
-        return "the live-site command %r is not `python.exe src/RimMandrake/Utils/live_site.py <plain args>`" % site[:200]
+        return "the live-site command %r is not `python.exe src/RimMandrake/Utils/live_site.py <plain args>`" % site
     return None
 
 
@@ -655,7 +659,7 @@ def cause(why):
     w = DEFECT_HEAD.sub("", why or "")      # the head would eat the whole cap, and every defect would read alike
     # a number with its unit attached is still a number ("mean=50.176ms" made every run its own cause)
     w = re.sub(r"\([^()]*\.log\)|/\S+|\b\d[\d:.TZ-]*[A-Za-z]*\b", "", w)
-    return re.sub(r"\s+", " ", w).strip()[:120]
+    return re.sub(r"\s+", " ", w).strip()
 
 
 def voids(row, item_id, sha):
@@ -1042,7 +1046,7 @@ def run_launched(fx, cmd, log, timeout):
 def last_line(path):
     """The last non-blank line of a log, cut to 200, or "" when it cannot be read."""
     lines = [x.strip() for x in read_text(path).splitlines() if x.strip()]
-    return lines[-1][:200] if lines else ""
+    return lines[-1] if lines else ""
 
 
 def tail_lines(path):
@@ -1056,8 +1060,8 @@ def exit_reason(path):
     lines = tail_lines(path)
     for line in reversed(lines):
         if not NO_REASON.match(line):
-            return line[:200]
-    return lines[-1][:200] if lines else ""
+            return line
+    return lines[-1] if lines else ""
 
 
 def last_verdict(path):
@@ -1070,7 +1074,7 @@ def last_verdict(path):
     lines = tail_lines(path)
     for line in reversed(lines):
         if VERDICT_LINE.match(line) or FAIL_ROW.match(line):
-            return line[:200]
+            return line
     return exit_reason(path)
 
 
@@ -1078,7 +1082,7 @@ def broken_call(path):
     """-> the log line showing the proof's own call is wrong (BROKEN_CALL), or None."""
     for line in reversed(tail_lines(path)):
         if BROKEN_CALL.search(line):
-            return line[:200]
+            return line
     return None
 
 
@@ -1110,7 +1114,7 @@ def side_lines(proof):
     """The non-blank lines of every file the proof redirected its output into (redirect_targets), last 400 of each."""
     out = []
     for f in redirect_targets(proof):
-        out += [x.strip() for x in read_text(f).splitlines() if x.strip()][-400:]
+        out += [x.strip() for x in read_text(f).splitlines() if x.strip()]
     return out
 
 
@@ -1137,10 +1141,10 @@ def could_not_ask(path, proof=None):
     for kind, rx in (("harness", EXIT1_HARNESS), ("reload", EXIT1_RELOAD)):
         for line in reversed(side + lines):
             if marker_hit(rx, line):
-                return kind, line[:200]
+                return kind, line
     for line in reversed(lines):
         if marker_hit(EXIT1_UNLOADED, line):
-            return "reload", line[:200]
+            return "reload", line
     if any(observed_fail(x) for x in lines):
         return None             # a FAIL the proof reached, mixed rows or not: the worker explains it
     verdicts = [(i, m.group(1)) for i, m in ((i, VERDICT_LINE.match(x)) for i, x in enumerate(lines)) if m]
@@ -1152,15 +1156,15 @@ def could_not_ask(path, proof=None):
                 if m]
         if ends:
             return "unknown", ("the proof crashed: %s (UNKNOWN: an exception names neither the product nor the "
-                               "instrument)" % ends[-1])[:200]
+                               "instrument)" % ends[-1])
     if verdicts and verdicts[-1][1] in REPRO_MISS_VERDICTS:
-        return "miss", lines[at].strip()[:200]
+        return "miss", lines[at].strip()
     if verdicts and all(v == "UNMEASURED" for _, v in verdicts):
-        return "dud", lines[at].strip()[:200]
+        return "dud", lines[at].strip()
     for line in reversed(lines):
         if read_nothing(line):
             return "unknown", ("UNKNOWN: a None or zero-row read (a measured absence or a blind instrument; RMOBS "
-                               "absence says which): %s" % line)[:200]
+                               "absence says which): %s" % line)
     return None
 
 
@@ -1170,7 +1174,7 @@ def setup_refused(path, proof=None):
     step judged whatever map stood: the exit is that step's, 0 as readily as 1, and neither says anything about the mod."""
     for line in reversed(side_lines(proof) + tail_lines(path)):
         if re.search(GUARD_REFUSAL, line):
-            return line[:200]
+            return line
     return None
 
 
@@ -1305,9 +1309,9 @@ def deploy_gap(files, plan_rc, plan_text, trees=(), folded=None):
     a deploy item commits no mod file). Any file the deploy would write counts, not only .xml and .dll; a `-` line does not
     (--apply leaves a file the repo lacks alone without --prune, so no staging could ever clear it) nor an H (held on purpose)."""
     if plan_failed(plan_rc, plan_text):
-        return "the deploy plan failed (exit %s): %s" % (plan_rc, plan_text[-300:])
+        return "the deploy plan failed (exit %s): %s" % (plan_rc, plan_text)
     if "def guard" in plan_text and "REFUSED" in plan_text:
-        return "the deploy plan refused: %s" % plan_text[-300:]
+        return "the deploy plan refused: %s" % plan_text
     covered, drift, off = plan_sections(plan_text)
     named = {folded_key(folded, m): m for m in [m for m, _ in files] + list(trees)}
     files = [(folded_key(folded, m), rel) for m, rel in files]
@@ -1464,7 +1468,7 @@ class Fx(object):
         r = subprocess.run(["git", "log", "--no-merges", "-F", "--grep=%s" % item_id, "--format=%H%x09%s", sha],
                            cwd=self.books, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
         if r.returncode:
-            raise ValueError("git log %s: %s" % (sha, r.stderr[-200:]))
+            raise ValueError("git log %s: %s" % (sha, r.stderr))
         return [h for h, _, subj in (ln.partition("\t") for ln in r.stdout.splitlines()) if h and cites(subj, item_id)]
 
     def last_commit(self, sha, paths):
@@ -1487,13 +1491,13 @@ class Fx(object):
         r = subprocess.run(["git", "rev-list", "--parents", "-n", "1", sha], cwd=self.books, capture_output=True, text=True,
                            timeout=60, stdin=subprocess.DEVNULL)
         if r.returncode or not r.stdout.strip():
-            raise ValueError("git rev-list %s: %s" % (sha, r.stderr[-200:]))
+            raise ValueError("git rev-list %s: %s" % (sha, r.stderr))
         if len(r.stdout.split()) > 2:
             raise ValueError("%s is a merge commit: its game files cannot be listed" % sha)
         r = subprocess.run(["git", "diff-tree", "-z", "--root", "--no-commit-id", "--name-only", "-r", *extra, sha],
                            cwd=self.books, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
         if r.returncode:
-            raise ValueError("git diff-tree %s: %s" % (sha, r.stderr[-200:]))
+            raise ValueError("git diff-tree %s: %s" % (sha, r.stderr))
         return [p for p in r.stdout.split("\0") if p.strip()]
 
     def deployable(self, tier, mod):
@@ -1539,7 +1543,7 @@ class Fx(object):
             r = subprocess.run(["git", "ls-files", "-z", "--", "*.csproj"], cwd=self.books, capture_output=True,
                                text=True, timeout=60, stdin=subprocess.DEVNULL)
             if r.returncode:
-                raise ValueError("git ls-files *.csproj: %s" % r.stderr[-200:])
+                raise ValueError("git ls-files *.csproj: %s" % r.stderr)
             out = set()
             for proj in (x for x in r.stdout.split("\0") if x.strip()):
                 own = SRC_MOD.match(proj)
@@ -1585,7 +1589,7 @@ class Fx(object):
         r = subprocess.run(["git", "diff", "-z", "--name-only", sha, "HEAD", "--", *paths], cwd=self.books,
                            capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
         if r.returncode:
-            raise ValueError("git diff %s: %s" % (sha, r.stderr[-200:]))
+            raise ValueError("git diff %s: %s" % (sha, r.stderr))
         out = []
         for p in (x for x in r.stdout.split("\0") if x.strip()):
             c = subprocess.run(["git", "log", "-1", "--format=%h", "%s..HEAD" % sha, "--", p], cwd=self.books,
@@ -1750,10 +1754,10 @@ class Fx(object):
             out["ping"] = r.returncode
             if r.returncode:
                 out["why"] = "the bridge does not answer rimbridge/ping from python.exe (exit %d): %s" % (
-                    r.returncode, (r.stderr or r.stdout).strip()[-200:])
+                    r.returncode, (r.stderr or r.stdout).strip())
                 return out
         except (OSError, ValueError, subprocess.TimeoutExpired) as e:
-            out["ping"], out["why"] = None, "the bridge ping from python.exe did not finish: %s" % str(e)[:200]
+            out["ping"], out["why"] = None, "the bridge ping from python.exe did not finish: %s" % str(e)
             return out
         src = os.path.join(self.books, "src")
         tiers = sorted(d for d in os.listdir(src) if d.startswith("Rim") and os.path.isdir(os.path.join(src, d)))
@@ -1937,7 +1941,7 @@ def admission_replay(rows):
         out["pre_bridge"] += 1
         c = admit_cause(row.get("why"))
         if c is None:
-            out["unclassified"].append((row.get("why") or "")[:160])
+            out["unclassified"].append((row.get("why") or ""))
         else:
             out["by_cause"][c] = out["by_cause"].get(c, 0) + 1
     return out
@@ -2074,7 +2078,7 @@ WRAPUP_RESTORE_S = 180
 
 def last_text(text):
     lines = [x for x in (text or "").strip().splitlines() if x.strip()]
-    return lines[-1][:300] if lines else ""
+    return lines[-1] if lines else ""
 
 
 def wrapup_restore(fx):
@@ -2087,7 +2091,7 @@ def wrapup_restore(fx):
     try:
         code, line = hook()
     except Exception as e:  # noqa: BLE001  the restore never stops the release
-        code, line = None, "%s: %s" % (type(e).__name__, str(e)[:200])
+        code, line = None, "%s: %s" % (type(e).__name__, str(e))
     return {"exit": code, "line": line}
 
 
@@ -2228,7 +2232,7 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
     try:
         gap = (fx.running_load_gap(need) if need else None) or (fx.full_list_gap() if level == FINAL else None)
     except Exception as e:                          # noqa: BLE001  an unread list is the harness's, never a verdict
-        gap = "the running load's mod list could not be read: %s: %s" % (type(e).__name__, str(e)[:200])
+        gap = "the running load's mod list could not be read: %s: %s" % (type(e).__name__, str(e))
     if env is not None and getattr(fx, "last_running", None):
         row["env"] = dict(env, running=running_ref(root, *fx.last_running, inferred=env.get("inferred") or ()))
     log, code, crashed = None, None, gap
@@ -2243,9 +2247,9 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
                 fx.rimflow("bridge", "release", "--mine")
             except Exception:       # noqa: BLE001  the stale-hold rule frees it in 45 minutes
                 pass
-            return admit("bridge not taken: the take raised %s: %s" % (type(e).__name__, str(e)[:200]))
+            return admit("bridge not taken: the take raised %s: %s" % (type(e).__name__, str(e)))
         if took.returncode != 0:
-            return admit("bridge not taken: %s" % (took.stderr or took.stdout).strip()[-300:])
+            return admit("bridge not taken: %s" % (took.stderr or took.stdout).strip())
         marks["taken"] = time.time()
         crashed, exited = None, False    # exited: the last proof launch returned an exit (or timed out), never raised
         try:        # from the take on, every path ends in the release below (Codex cd905b: acquisition bypassed it)
@@ -2260,7 +2264,7 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
                 try:
                     h = fx.health(files, sha, lr["health_max_s"]) or {}
                 except Exception as e:      # noqa: BLE001  a health check that cannot run is no health
-                    h = {"why": "the health check could not run: %s: %s" % (type(e).__name__, str(e)[:200])}
+                    h = {"why": "the health check could not run: %s: %s" % (type(e).__name__, str(e))}
                 row["health"] = {k: v for k, v in h.items() if k != "why"}
                 row["health"]["ok"] = not h.get("why")
                 if h.get("why"):
@@ -2300,7 +2304,7 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
                                              or (files and stamps != [fx.mtime(m, rel) for m, rel in files])):
                     crashed, code = "the game or its deployed files changed while the proof ran", None
         except Exception as e:                          # the proof never ran to an exit code: no verdict, but the row stands
-            crashed, code = "the proof could not run: %s: %s" % (type(e).__name__, str(e)[:200]), None
+            crashed, code = "the proof could not run: %s: %s" % (type(e).__name__, str(e)), None
             if "proof_exit" in row and not exited:
                 row.pop("proof_exit")   # a launch that raised gave no exit: the harness's (INFRA), never a FAIL verdict
         finally:
@@ -2308,9 +2312,9 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
                 row["wrapup_restore"] = wrapup_restore(fx)
             try:
                 gave = fx.rimflow("bridge", "release", "--mine")
-                row["released"], gave_why = gave.returncode == 0, (gave.stderr or gave.stdout).strip()[-200:]
+                row["released"], gave_why = gave.returncode == 0, (gave.stderr or gave.stdout).strip()
             except Exception as e:                      # a timed-out release still leaves the row
-                row["released"], gave_why = False, "%s: %s" % (type(e).__name__, str(e)[:150])
+                row["released"], gave_why = False, "%s: %s" % (type(e).__name__, str(e))
             marks["released"] = time.time()
         if not row["released"]:
             return done("UNMEASURED", "the bridge release failed (%s), so no verdict is written" % gave_why, log=log)
@@ -2354,7 +2358,7 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
         # defect. The round may run it again; relentless_game holds the item after repro_miss_limit of these
         why = "%s: the defect-repro proof ran on its site and did not reproduce the defect: %s" % (REPRO_MISS, unable[1])
         game = iso(started) if started else game_iso(fx)
-        note = fx.rimflow("note", item_id, "--text", ("relentless live %s %s %s (%s)" % (criterion, level, why, log))[:400],
+        note = fx.rimflow("note", item_id, "--text", fulltext.fit(("relentless live %s %s %s (%s)" % (criterion, level, why, log)), 400),
                           "--why", "relentless live tier: a repro miss, no verdict recorded")
         return done("UNMEASURED", why, log=log, game=game, miss=True, noted=note.returncode == 0)
     if code not in (PASS, FAIL) or unable:
@@ -2409,16 +2413,16 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
             why = "%s: the same cause %d times on this game (%s): %s" % (RELOAD, n, game, why)
         elif n > 1:     # said once already, or the reload request stands: a row, no ledger note
             return done("UNMEASURED", why, log=log)
-        note = fx.rimflow("note", item_id, "--text", "relentless live %s %s UNMEASURED: %s (%s)" % (criterion, level, why,
-                                                                                                  log)[:400],
+        note = fx.rimflow("note", item_id, "--text", fulltext.fit("relentless live %s %s UNMEASURED: %s (%s)" % (criterion, level, why,
+                                                                                                  log), 400),
                           "--why", "relentless live tier: no verdict, no run recorded")
         return done("UNMEASURED", why, log=log, noted=note.returncode == 0)
     result = "pass" if code == PASS else "fail"
     v = fx.rimflow("verify", item_id, "--criterion", criterion, "--level", level, "--sha", sha, "--result", result,
-                   "--config", ("relentless-live: %s" % proof)[:300], "--evidence", log,
+                   "--config", fulltext.fit(("relentless-live: %s" % proof), 300), "--evidence", log,
                    "--why", "relentless live tier: the running game, deployed build, supervisor-run proof")
     if v.returncode != 0:
-        return done("UNMEASURED", "the verdict %s did not land: %s" % (result.upper(), (v.stderr or v.stdout)[-300:]),
+        return done("UNMEASURED", "the verdict %s did not land: %s" % (result.upper(), (v.stderr or v.stdout)),
                     log=log)
     return done("PASS" if code == PASS else "FAIL", reading.why if row.get("observe") else "proof exit %d" % code,
                 log=log, **({"verdict_line": last_verdict(log)} if code == FAIL else {}))

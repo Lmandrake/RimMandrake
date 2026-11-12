@@ -137,7 +137,7 @@ def make_row(source, item, clause, sha, tier, outcome, marks, tokens=None, why=N
            "outcome": outcome, "verdict": verdict_of(outcome), "tokens": tokens}
     row.update(split(marks))
     if why:
-        row["why"] = str(why)[:200]
+        row["why"] = str(why)
     row.update(extra)
     return row
 
@@ -158,7 +158,7 @@ def record(root, *a, **kw):
         append(root, row)
         return row
     except Exception as e:      # noqa: BLE001  the instrument failing is a note, never the proof's failure
-        return {"unwritten": "%s: %s" % (type(e).__name__, str(e)[:200])}
+        return {"unwritten": "%s: %s" % (type(e).__name__, str(e))}
 
 
 def read(path):
@@ -255,7 +255,7 @@ def driven_share(since, until, repo=REPO):
         r.pop("gaps", None)
         return r
     except Exception as e:      # noqa: BLE001  an unread share is UNMEASURED, never 0
-        return {"unread": "%s: %s" % (type(e).__name__, str(e)[:200])}
+        return {"unread": "%s: %s" % (type(e).__name__, str(e))}
 
 
 def line(rep):
@@ -287,7 +287,7 @@ def reading_line(root, now, hours=24.0, repo=REPO):
             since = now - hours * 3600.0
         return line(throughput(rows, since, now, driven_share(since, now, repo), min_hours=1.0))
     except Exception as e:      # noqa: BLE001
-        return "proof cost: COULD NOT READ (%s: %s)" % (type(e).__name__, str(e)[:200])
+        return "proof cost: COULD NOT READ (%s: %s)" % (type(e).__name__, str(e))
 
 
 def main(argv=None):

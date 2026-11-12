@@ -49,7 +49,7 @@ def test_stop_call_failed_is_not_ok():
     ok = RL._stop_call(lambda a, **k: cp(0), ["systemctl", "--user", "kill", "--signal=SIGKILL", "S.scope"], 30)
     check(ok == "kill S.scope ok", "success line: %r" % ok)
     long = RL._stop_call(lambda a, **k: cp(1, "x" * 200, "y" * 200), ["systemctl", "--user", "stop", "U"], 30)
-    check(long.split(": ", 1)[1] == "y" * 120, "tail is the last 120 chars: %r" % long[-130:])
+    check(long.split(": ", 1)[1] == "x" * 200 + "y" * 200, "the whole output, no cut: %r" % long[-130:])
     check(RL._stop_call(lambda a, **k: cp(1, None, None), ["systemctl", "--user", "stop", "U"], 30) == "stop U exit 1: ",
           "None output tolerated")
 
@@ -143,9 +143,9 @@ def test_launch_result():
         kw.update(k)
         return cp(7, "o" * 300, "e" * 10)
     ok, out, rec = RL.launch(role, "rm-role-r-1", "msg", root, "/usr/bin/claude", runner=bad)
-    check(ok is False and rec == {} and out.startswith("systemd-run exit 7: ") and out.endswith("o" * 190 + "e" * 10),
-          "failed systemd-run -> (False, tail of 200 chars, {}): %r" % out[-30:])
-    check(len(out.split(": ", 1)[1]) == 200, "tail is exactly 200 chars")
+    check(ok is False and rec == {} and out.startswith("systemd-run exit 7: ") and out.endswith("o" * 300 + "e" * 10),
+          "failed systemd-run -> (False, its whole output, {}): %r" % out[-30:])
+    check(len(out.split(": ", 1)[1]) == 310, "the output is whole (310 chars, no cut)")
     check(kw.get("capture_output") is True and kw.get("text") is True and kw.get("timeout") == 60, "launch call args %r" % kw)
     ok, out, rec = RL.launch(role, "rm-role-r-1", "msg", root, "/usr/bin/claude", runner=lambda a, **k: cp(0))
     check(ok is True and rec["marker"] == "rm-role-r-1" and rec["scope"] == "claude-seat-SEAT-rm-role-r-1.scope"

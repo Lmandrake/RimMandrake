@@ -115,39 +115,39 @@ def run_checks(fx, c, nonce):
 
     code, said = fx.shell('python.exe -c "print(\'%s\')"' % nonce, t)
     if not step("interop", code == 0 and nonce in said,
-                "python.exe from the proof shell: exit %s: %s" % (code, said.strip()[-200:])):
+                "python.exe from the proof shell: exit %s: %s" % (code, said.strip())):
         return out
     if not step("game", fx.game_started() is not None, "no single running RimWorld whose start time reads"):
         return out
     took = fx.rimflow("bridge", "take", "--idle-ok", "--for", "relentless live canary: read-only harness checks")
     if took.returncode != 0:
-        out.append((NOT_TAKEN, None, (took.stderr or took.stdout).strip()[-300:]))
+        out.append((NOT_TAKEN, None, (took.stderr or took.stdout).strip()))
         return out
     try:
         who = fx.rimflow("bridge", "who")
         text = (who.stdout or "") + (who.stderr or "")
         if not step("holder", who.returncode == 0 and HELD_BY_US in text,
-                    "bridge who does not name RELENTLESS after our take: %s" % text.strip()[-200:]):
+                    "bridge who does not name RELENTLESS after our take: %s" % text.strip()):
             return out
         client = os.path.join(UTILS, "rimbridge_client.py")
         code, said = fx.shell('python.exe "$(wslpath -w %s)" --timeout 30 --call rimbridge/ping' % client, t)
-        if not step("bridge", code == 0, "rimbridge/ping from python.exe: exit %s: %s" % (code, said.strip()[-200:])):
+        if not step("bridge", code == 0, "rimbridge/ping from python.exe: exit %s: %s" % (code, said.strip())):
             return out
         code, said = fx.shell('python.exe "$(wslpath -w %s)" --timeout 60 --call jawa/running_mods --json '
                               '\'{"details": false, "assembly": ""}\'' % client, t)
         if not step("load", code == 0 and "ludeon.rimworld" in said.lower(),
                     "jawa/running_mods: exit %s, base game %s: %s" % (
-                        code, "named" if "ludeon.rimworld" in said.lower() else "not named", said.strip()[-160:])):
+                        code, "named" if "ludeon.rimworld" in said.lower() else "not named", said.strip())):
             return out
         check = "python3 %s --has %s" % (os.path.join(UTILS, "live_def_check.py"), "%s")
         code, said = fx.shell(check % KNOWN, t)
         if not step("known", code == 0, "the known observation %s: exit %s (want 0): %s" % (
-                KNOWN, code, said.strip()[-200:])):
+                KNOWN, code, said.strip())):
             return out
         code, said = fx.shell(check % WRONG, t)
         step("wrong", code == 1, "the wrong expectation %s: exit %s (want 1: %s): %s" % (
             WRONG, code, "the instrument says yes to anything" if code == 0 else "it could not answer",
-            said.strip()[-200:]))
+            said.strip()))
         return out
     finally:
         fx.rimflow("bridge", "release", "--mine")

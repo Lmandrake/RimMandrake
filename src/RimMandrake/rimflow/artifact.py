@@ -224,7 +224,7 @@ def run_validators(kind):
                                capture_output=True, text=True, cwd=ROOT, timeout=300)
             tail = (r.stdout or r.stderr or "").strip().splitlines()
             out.append((name, "pass" if r.returncode == 0 else "FAIL",
-                        tail[-1][:160] if tail else ""))
+                        tail[-1] if tail else ""))
         except Exception as e:
             out.append((name, "UNRUN", "%s: %s" % (type(e).__name__, e)))
     return out
@@ -336,7 +336,7 @@ def accept(path, kind, official=False, by="owner", write=False, at=None):
     if not dangling:
         w("_None._\n")
     else:
-        for n in sorted(dangling)[:200]:
+        for n in sorted(dangling)[:200]:  # cut-ok: a list of names, not text
             where = dangling[n]
             w("- `%s` — %d citation(s): %s%s"
               % (n, len(where), ", ".join(where[:4]),

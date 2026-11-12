@@ -111,7 +111,7 @@ def apply_fix(rec, fix):
     if fix["at"] <= rec.get("fix_at", 0):
         return False
     rec["fix_at"] = rec["day_reset_at"] = fix["at"]
-    rec["fix"] = str(fix["fix"])[:120]
+    rec["fix"] = str(fix["fix"])
     rec["day_reset_why"] = "named fix " + rec["fix"]
     rec.pop("stopped", None)
     rec.pop("gate", None)
@@ -225,7 +225,7 @@ def oom_killed(seat, now=None, path=None):
             import memwatch
             path = memwatch.state_dir() / "events.jsonl"
         with open(path, encoding="utf-8") as f:
-            lines = f.read().splitlines()[-200:]
+            lines = f.read().splitlines()[-200:]  # cut-ok: the last 200 lines read, not stored text
     except Exception:  # noqa: BLE001 - no memwatch reading: not an oom ending
         return False
     now = now or time.time()
@@ -283,8 +283,8 @@ def model_ok(model, claude=None, timeout=90):
     if p.returncode == 0 and said and not LIMIT_RX.search(said):
         return True, ""
     if LIMIT_RX.search(said):
-        return False, said[:120]
-    return None, "exit %d: %s" % (p.returncode, said[:120])
+        return False, said
+    return None, "exit %d: %s" % (p.returncode, said)
 
 
 def resets_dir(root):

@@ -134,9 +134,9 @@ def sync(store, fx, now, acts):
     n = told.get("rows", 0)
     for row in rows[n:]:
         failed = _note(fx, row["item"], "expedite %s: %s by %s: %s" % (row.get("verb"), row.get("level") or "-", row.get("by"),
-                                                                       (row.get("why") or "")[:300]))
+                                                                       (row.get("why") or "")))
         if failed:
-            acts.append({"do": "expedite_note_failed", "item": row["item"], "why": str(failed)[:200]})
+            acts.append({"do": "expedite_note_failed", "item": row["item"], "why": str(failed)})
             break
         n += 1
     if n != told.get("rows", 0):
@@ -173,7 +173,7 @@ def make_room(store, fx, r, now, acts, active, why_not, fail):
             if cur["status"] != "running":
                 continue
             fail(store, cur, "interrupted", "stopped for INTERRUPT %s (%s): %s" % (
-                want["item"], want["expedite"].get("by"), (want["expedite"].get("why") or "")[:200]), r, now, time_not_work=True)
+                want["item"], want["expedite"].get("by"), (want["expedite"].get("why") or "")), r, now, time_not_work=True)
         store.journal({"do": "expedite_interrupted", "item": victim["item"], "for": want["item"]})
         acts.append({"do": "expedite_interrupted", "item": victim["item"], "for": want["item"]})
         _note(fx, want["item"], "expedite interrupt stopped the running worker of %s to make room" % victim["item"])

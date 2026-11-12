@@ -822,7 +822,7 @@ def rimflow_note(repo, item, text):
     except (OSError, subprocess.SubprocessError) as e:
         return "rimflow note failed: %s" % e
     if r.returncode != 0:
-        return "rimflow note refused (exit %d): %s" % (r.returncode, (r.stderr or r.stdout).strip()[-300:])
+        return "rimflow note refused (exit %d): %s" % (r.returncode, (r.stderr or r.stdout).strip())
     return None
 
 

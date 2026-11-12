@@ -64,6 +64,10 @@ import sys
 import threading
 import time
 import uuid
+try:                                    # whole text, never a silent cut (RIMMANDRAKE_STORE_TEXT_WHOLE_NO_CUTS)
+    from . import fulltext
+except ImportError:
+    import fulltext  # noqa: E402
 
 # `--seat CONDUCTOR` names the Conductor's window, whose config key is BENCH (SEAT_BENCH_RENAME_WORD_OUTLIVED_ITS_WORKSHOP).
 SEAT_ALIAS = {"CONDUCTOR": "BENCH"}
@@ -388,7 +392,7 @@ def _is_human_input(rec, peers):
     if o.get("kind") in HUMAN_ORIGINS or rec.get("turnOrigin") in HUMAN_TURNS \
             or rec.get("promptSource") in HUMAN_SOURCES:
         return True
-    if text.startswith(MACHINE_MARKERS) or RING_MARK in text[:200]:   # fallback: a record with no origin fields
+    if text.startswith(MACHINE_MARKERS) or RING_MARK in text[:200]:   # fallback: a record with no origin fields; cut-ok: a search window
         return False
     return True
 
@@ -672,7 +676,7 @@ def _turn_ended_since(path, at):
 
 def _msg_key(r):
     """One owner message across transcripts and recoveries."""
-    return r.get("uuid") or "%s|%s" % (r.get("timestamp"), _text(r)[:200])
+    return r.get("uuid") or "%s|%s" % (r.get("timestamp"), _text(r)[:200])  # cut-ok: a dedup key
 
 
 def recovered_done(rec):
@@ -1212,7 +1216,7 @@ def decide(sch, st, obs, now, apply, act):
                 _bringback(seat, cfg, R, st, obs, now, rule, act, sch)
         except Exception as e:  # noqa: BLE001 - one seat's fault never stops the tick
             act(do="alarm", kind="restart:decide:" + seat, seat=seat, note=True,
-                why="seat restart NOT decided for %s: %s: %s" % (seat, type(e).__name__, str(e)[:200]))
+                why="seat restart NOT decided for %s: %s: %s" % (seat, type(e).__name__, str(e)))
 
 
 def bb_rule(sch):
@@ -1876,7 +1880,7 @@ def _refused_alarm(seat, st, ro, cur, now, act):
         act(do="alarm", kind="restart:%s:handoff_refused" % seat, seat=seat, note=True, conductor_log=True,
             raise_first="%s said HANDOFF READY and no restart followed." % seat,
             why="%s's handoff was refused and stands unanswered after %d s: %s" % (seat, now - ref["ts"],
-                                                                                   str(ref.get("why"))[:300]))
+                                                                                   str(ref.get("why"))))
 
 
 def _handoff_spin(seat, cfg, new, old, ro, now, act):
@@ -2254,7 +2258,7 @@ def consume_request(seat, root=None, ts=None):
 def run_fallback(argv):
     env = {k: v for k, v in os.environ.items() if k not in ("AGENT_SEAT", "RIMFLOW_SEAT", "CLAUDE_CODE_SESSION_ID")}
     r = subprocess.run(argv, env=env, cwd=os.path.expanduser("~"), capture_output=True, text=True, timeout=180)
-    return "rc=%d %s" % (r.returncode, (r.stderr or r.stdout).strip()[-200:])
+    return "rc=%d %s" % (r.returncode, (r.stderr or r.stdout).strip())
 
 
 def _kill_record(seat, a, sch, rs, start, now):
@@ -2308,7 +2312,7 @@ def execute(a, sch, st, apply, now, fx=None):
         try:
             return fx.get("fallback", run_fallback)(a["argv"])
         except Exception as e:  # noqa: BLE001
-            return "fallback failed: %s: %s" % (type(e).__name__, str(e)[:160])
+            return "fallback failed: %s: %s" % (type(e).__name__, str(e))
     if a["do"] == "restart_abort":
         rec = _read_json(killed_path(seat, fx.get("root"))) or {}
         if rec.get("aborted") or rec.get("req_ts") != a.get("req_ts"):
@@ -2502,7 +2506,7 @@ def _cmdline(pid, proc="/proc"):
         return "(gone)"
     body = argv[-1] if argv else ""
     body = body.split("&& eval ", 1)[-1] if "&& eval " in body else body
-    return "`%s`" % " ".join(body.split())[:120]
+    return "`%s`" % " ".join(body.split())
 
 
 def queue_holds(path):
@@ -2891,7 +2895,7 @@ def publish_shard(seat, clone=None):
     except (OSError, subprocess.SubprocessError) as e:
         return "./publish failed to run: %s" % e
     if r.returncode:
-        return "./publish rc %d: %s" % (r.returncode, (r.stderr or r.stdout).strip()[-300:])
+        return "./publish rc %d: %s" % (r.returncode, (r.stderr or r.stdout).strip())
     return None
 
 
@@ -3172,7 +3176,7 @@ def _wake_conductor(seat, cfg, rec, gen=None, root=None, me=None):
         return
     if rec.get("aborted"):
         print("\n== no restart record: the last restart (%s) was ABORTED before any kill (%s); the old window was "
-              "never killed, so there is nothing to recover." % (rec.get("gen") or "?", str(rec["aborted"])[:160]))
+              "never killed, so there is nothing to recover." % (rec.get("gen") or "?", str(rec["aborted"])))
         return
     _wake_gaps(rec, cfg)
     if answered(rec):
@@ -3269,7 +3273,7 @@ def open_items(clone, seat):
         from rimflow import model
         items = model.replay(model.read()).items
         now = model.epoch_now()
-        return ["%s (lease %s): %s" % (i.id, model.lease_status(i, now), (i.title or "")[:160]) for i in items.values()
+        return ["%s (lease %s): %s" % (i.id, model.lease_status(i, now), (i.title or "")) for i in items.values()
                 if i.state == "doing" and i.owner == seat]
     except Exception as e:               # a wake must still print: said as UNMEASURED by the caller
         sys.stderr.write("open_items: %r\n" % e)
@@ -3319,9 +3323,9 @@ def wake_digest(rec, clone=None, seat=None, reader=None, tree=None, inputs=6, fi
         out.append("UNMEASURED: the old transcript cannot be read (%s). Read the seat log and the ledger instead." % e)
     else:
         out.append("\n-- the last inputs it took:")
-        out += ["%s %s" % (at, t[:600]) for at, t in said[-inputs:]] or ["(none in the tail)"]
+        out += ["%s %s" % (at, fulltext.fit(t, 600)) for at, t in said[-inputs:]] or ["(none in the tail)"]
         out.append("\n-- its last words:")
-        out += [t[-1500:] for t in texts] or ["(none in the tail)"]
+        out += [fulltext.fit(t, 1500, tail=True) for t in texts] or ["(none in the tail)"]
         left = [t for t in todos or [] if isinstance(t, dict) and t.get("status") != "completed"]
         if left:
             out.append("\n-- its open todos:")

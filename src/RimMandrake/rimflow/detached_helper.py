@@ -47,6 +47,10 @@ REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 if HERE not in sys.path:
     sys.path.insert(0, HERE)
 import run_tmp  # noqa: E402  (its own TMPDIR: TMP_SCRATCH_ENFORCE_MUTANTS_CLEAN_UP)
+try:                                    # whole text, never a silent cut (RIMMANDRAKE_STORE_TEXT_WHOLE_NO_CUTS)
+    from . import fulltext
+except ImportError:
+    import fulltext  # noqa: E402
 
 DEFAULT_MAX_S = None    # unbounded: no RuntimeMaxSec on the unit, no CLAUDE_SCOPE_RUNTIME_MAX (owner 2026-11-08)
 MIN_MAX_S = 60
@@ -209,13 +213,13 @@ def take_clone(item, runner=subprocess.run):
     dest = os.path.join(pool_root(), "clones", name)
     if os.path.isdir(os.path.join(dest, ".git")):
         r = runner(["./sync"], cwd=dest, capture_output=True, text=True, timeout=300, stdin=subprocess.DEVNULL)
-        return dest, "reused %s (sync exit %d: %s)" % (dest, r.returncode, ((r.stdout or "") + (r.stderr or "")).strip()[-160:])
+        return dest, "reused %s (sync exit %d: %s)" % (dest, r.returncode, ((r.stdout or "") + (r.stderr or "")).strip())
     env = dict(os.environ, RM_SCRATCH_ROOT=pool_root(), RM_SEAT="clones")
     r = runner(["python3", os.path.join(REPO, "src", "RimMandrake", "Utils", "scratch_clone.py"), "clone",
                 "detached run for " + item, "--name", name, "--checkout", "--fetch"],
                env=env, capture_output=True, text=True, timeout=540, stdin=subprocess.DEVNULL)
     if r.returncode or not os.path.isdir(os.path.join(dest, ".git")):
-        raise RuntimeError("scratch_clone failed (exit %d): %s" % (r.returncode, ((r.stdout or "") + (r.stderr or ""))[-300:]))
+        raise RuntimeError("scratch_clone failed (exit %d): %s" % (r.returncode, ((r.stdout or "") + (r.stderr or ""))))
     return dest, "made " + dest
 
 
@@ -359,7 +363,7 @@ def return_clone(unit, now=None, runner=subprocess.run, evictor=None, busy=None,
     try:
         bundle, kept = (evictor or evict_clone)(item, clone, before)
     except Exception as e:  # noqa: BLE001  never lose the clone to a surprise: it stays
-        bundle, kept = None, "eviction raised: %s" % str(e)[:200]
+        bundle, kept = None, "eviction raised: %s" % str(e)
     steps.append("bundle " + (bundle or "none (nothing left to bundle)"))
     if kept:
         steps.append("KEPT: " + kept)
@@ -370,7 +374,7 @@ def return_clone(unit, now=None, runner=subprocess.run, evictor=None, busy=None,
     if bundle or kept:
         try:
             conductor_line("%s on %s: clone %s %s. %s. READ: rimflow show %s." % (
-                unit, item, clone, "KEPT" if kept else "returned, leftovers bundled at %s" % bundle, "; ".join(steps)[-300:], item),
+                unit, item, clone, "KEPT" if kept else "returned, leftovers bundled at %s" % bundle, "; ".join(steps), item),
                 now, log_path)
         except Exception as e:  # noqa: BLE001
             steps.append("conductor log FAILED: %s" % e)
@@ -473,7 +477,7 @@ def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.
                stdin=subprocess.DEVNULL)
     if r.returncode:
         rec["status"] = "launch_failed"
-        rec["why"] = ((r.stdout or "") + (r.stderr or "")).strip()[-300:]
+        rec["why"] = ((r.stdout or "") + (r.stderr or "")).strip()
         write_record(rec, root)
         return 1, "LAUNCH FAILED %s: %s" % (unit, rec["why"])
     rec["status"] = "running"
@@ -518,14 +522,12 @@ def outcome(rec, env):
     tokens = RL.run_tokens(res) if isinstance(res, dict) else None
     if isinstance(res, dict):
         tail = str(res.get("result") or res.get("subtype") or "")
-        if len(tail) > 400:   # the end of the reply, cut at a word
-            tail = "..." + tail[-400:].split(" ", 1)[-1]
         if res.get("is_error"):
             svc = svc + "/claude-error"
     else:
         try:
             with open(rec["err"], encoding="utf-8", errors="replace") as f:
-                tail = "no result JSON; stderr tail: " + f.read()[-300:]
+                tail = "no result JSON; stderr tail: " + f.read()
         except OSError:
             tail = "no result JSON, no stderr"
     return "%s (%s %s)" % (svc, code, status), tokens, " ".join(tail.split())
@@ -543,7 +545,7 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None):
     st, tokens, tail = outcome(rec, env)
     took = int(now - rec["at"])
     text = ("DETACHED run %s ended %s after %d s, %s tokens (model %s). Result: %s. Output %s; clone %s."
-            % (unit, st, took, "UNMEASURED" if tokens is None else tokens, rec["model"], (tail if len(tail) <= 300 else "..." + tail[-300:].split(" ", 1)[-1]) or "-",
+            % (unit, st, took, "UNMEASURED" if tokens is None else tokens, rec["model"], tail or "-",
                rec["out"], rec["clone"]))
     clone, seat, item = rec["clone"], rec["seat"], rec["item"]
     cli = os.path.join(clone, "src", "RimMandrake", "rimflow", "cli.py")
@@ -556,11 +558,11 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None):
                cwd=clone, capture_output=True, text=True, timeout=300, stdin=subprocess.DEVNULL)
     pub = ((r.stdout or "") + (r.stderr or "")).strip()
     m = re.search(r"PUBLISHED ([0-9a-f]{7,40})", pub)
-    steps.append("publish " + (m.group(1)[:10] if m else "exit %d: %s" % (r.returncode, pub[-120:])))
+    steps.append("publish " + (m.group(1)[:10] if m else "exit %d: %s" % (r.returncode, pub)))
     try:
         path = conductor_line("%s on %s (%s seat): %s, %d s, %s tokens. %s. READ: rimflow show %s."
                               % (unit, item, seat, st, took, "UNMEASURED" if tokens is None else tokens,
-                                 (tail if len(tail) <= 200 else "..." + tail[-200:].split(" ", 1)[-1]) or "-", item), now, log_path)
+                                 fulltext.clip(tail, 200, rec["out"]) or "-", item), now, log_path)
         steps.append("conductor log " + path)
     except Exception as e:  # noqa: BLE001
         steps.append("conductor log FAILED: %s" % e)

@@ -64,10 +64,10 @@ import sys
 import time
 
 try:                                                    # python3 -m rimflow.cli
-    from . import driver_lock, host_guard, lease, model, owner_interaction, priority, priority_list, probe, reconcile, testpilot_route
+    from . import driver_lock, fulltext, host_guard, lease, model, owner_interaction, priority, priority_list, probe, reconcile, testpilot_route
 except ImportError:                                     # python3 .../rimflow/cli.py
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    from rimflow import driver_lock, host_guard, lease, model, owner_interaction, priority, priority_list, probe, reconcile, testpilot_route   # noqa: F401
+    from rimflow import driver_lock, fulltext, host_guard, lease, model, owner_interaction, priority, priority_list, probe, reconcile, testpilot_route   # noqa: F401
 
 PROSE_BUDGET = 2400          # chars of items/<ID>.md that `next` will print, ~600 tokens
 
@@ -314,7 +314,7 @@ def _stamp_role_unit(ev):
         return
     if not ROLE_UNIT_RE.fullmatch(unit):
         die("RM_ROLE_UNIT=%r is not a systemd unit name (letters, digits, _.@:- , at most 96); "
-            "refusing to write an event with a garbled role stamp" % unit[:120])
+            "refusing to write an event with a garbled role stamp" % unit)
     ev["role_unit"] = unit
 
 
@@ -2093,7 +2093,7 @@ def cmd_block(args, seat):
         print("replaces the current block: on %s (until %s): %s"
               % (cur.blocked_on or "(nothing named)",
                  (cur.blocked_until or "done") if cur.blocked_on else "-",
-                 (cur.blocked_reason or "")[:100]))
+                 fulltext.clip(cur.blocked_reason, 100, "rimflow show %s" % cur.id)))
     for on in ons:
         tgt = w.items.get(on)
         if on == args.id:
@@ -2315,7 +2315,7 @@ def _announce_unblocks(target):
           % (len(ended), target, ended[0][2].state))
     for f in ended:
         print("   " + priority.frontier_line(*f))
-        print("     %s" % (f[0].blocked_reason or "")[:140])
+        print("     %s" % fulltext.clip(f[0].blocked_reason, 140, "rimflow show %s" % f[0].id))
 
 
 def _unpublished_commit(sha):
@@ -2393,7 +2393,7 @@ def cmd_live(args, seat):
     _, w = load()
     ev = {"seat": seat, "event": "live", "id": args.id, "result": args.result}
     if args.detail:
-        ev["detail"] = args.detail[:300]
+        ev["detail"] = fulltext.fit(args.detail, 300)
     _emit(ev, w, quiet=True)
     it = _replay_now().items[args.id]
     print("%s live %s -> %s, outage %d" % (args.id, args.result, it.state, it.live_repeats))
@@ -2452,7 +2452,7 @@ def _carried_work(it, sha):
         return None, "its recorded build is no work: %s" % bad[0][1]
     r = run("log", "--no-merges", "--format=%H%x09%s", "-F", "--grep=" + it.id, "%s..%s" % (work, sha))
     if r.returncode:
-        return None, "git log %s..%s: %s" % (work[:12], sha[:12], r.stderr[-200:])
+        return None, "git log %s..%s: %s" % (work[:12], sha[:12], r.stderr)
     name = re.compile(r"(?<![A-Za-z0-9_])%s(?![A-Za-z0-9_])" % re.escape(it.id))
     for line in r.stdout.splitlines():
         h, _, subject = line.partition("\t")
@@ -2463,7 +2463,7 @@ def _carried_work(it, sha):
     r = run("diff", "--name-only", work, sha, "--", *own)
     if r.returncode or r.stdout.strip():
         return None, ("the build %s's own files differ at %s (%s): the work changed, so this is no carry"
-                      % (work[:12], sha[:12], ", ".join(r.stdout.split()[:4]) or r.stderr[-200:]))
+                      % (work[:12], sha[:12], ", ".join(r.stdout.split()[:4]) or r.stderr))
     return work, None
 
 
@@ -2506,7 +2506,7 @@ def _guard_refusals(it, sha):
                           "of it since the red; the red version grown by added lines only counts): show the new one red "
                           "with `rimflow guard %s`" % (test, str(sha)[:12], it.id))]
     rc, out = RG.run(model.ROOT, test)
-    return [("guard", "%s still fails (exit %d): %s" % (test, rc, out[-200:]))] if rc else []
+    return [("guard", "%s still fails (exit %d): %s" % (test, rc, out))] if rc else []
 
 
 def cmd_guard(args, seat):
@@ -2524,7 +2524,7 @@ def cmd_guard(args, seat):
     if why:
         die("guard: %s %s: %s. Nothing recorded." % (test, args.instance or "", why))
     ev = {"seat": seat, "event": "guard", "id": args.id, "test": test, "testHash": RG.file_hash(model.ROOT, test), "redExit": rc,
-          "redTail": out[-300:]}
+          "redTail": fulltext.fit(out, 300, tail=True)}
     if args.instance:
         ev["instance"] = args.instance
     _emit(ev, w, quiet=True)
@@ -2780,7 +2780,7 @@ def _manifest(args, iid):
             "Tag each: `- A1 L1: <what is observed>` — levels %s.\n"
             "L0 = offline (attested by this event); the rest are OWED and decide `needs`."
             % (len(untagged), source,
-               "\n".join("    " + l[:120] for l in untagged[:10]),
+               "\n".join("    " + l for l in untagged[:10]),
                " ".join(model.LEVELS)))
     if not crit and not args.none_owed:
         die("implemented: %s has no level-tagged criteria (%s). Without a manifest this "

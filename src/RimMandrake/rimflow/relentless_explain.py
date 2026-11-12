@@ -64,7 +64,7 @@ def _pairs(name, vals, what):
         a, b = (x.strip() for x in v.split(SEP, 1))
         if len(a) < 4 or len(b) < 4 or PLACEHOLDER.search(a + b):
             raise ValueError("--%s: both sides of %r must be said (no <placeholder>): got %r" % (name.replace("_", "-"), SEP, v[:80]))
-        out.append({what[0]: a[:600], what[1]: b[:1200]})
+        out.append({what[0]: a, what[1]: b})
     if not out:
         raise ValueError("give at least one --%s \"%s %s %s\"" % (name.replace("_", "-"), what[0], SEP, what[1]))
     return out
@@ -119,12 +119,12 @@ def keep(store, item, gen, rec, ending, sha, by, now):
     full = dict(rec, item=item, gen=gen, ending=ending, sha=sha, by=by, at=iso(now))
     store._append(os.path.join(store.item_dir(item), "explanations.jsonl"), json.dumps(full, sort_keys=True))
     store.attempt(item, {"at": iso(now), "gen": gen, "explained": "+".join(rec["kinds"]), "cause": rec["cause"],
-                         "ending": ending, "mechanism": rec["mechanism"][:2000]})
+                         "ending": ending, "mechanism": rec["mechanism"]})
     store.learn(item, render(full, head="- %s gen %s EXPLAINED %s" % (iso(now), gen, ending or "the last ending")))
     if rec["cause"] == item:        # the item's own fault: its next worker carries it, nothing to share
         return False
     b = book(store)
-    c = b.setdefault(rec["cause"], {"first": iso(now), "mechanism": rec["mechanism"][:600], "items": {}})
+    c = b.setdefault(rec["cause"], {"first": iso(now), "mechanism": rec["mechanism"], "items": {}})
     new = item not in c["items"]
     c["items"].setdefault(item, []).append(iso(now))
     store._write(_book_path(store), json.dumps(b, indent=1, sort_keys=True))
@@ -159,9 +159,9 @@ def render(e, head=None):
 
 def note_text(item, e):
     return ("relentless: %s's %s is explained with this item as its cause (%s). Expected: %s | Observed: %s | Mechanism: "
-            "%s | Steps: %s" % (item, e.get("ending") or "failure", "+".join(e.get("kinds") or []), e["expected"][:200],
-                                e["observed"][:200], e["mechanism"][:400],
-                                "; ".join("%s [%s]" % (s["claim"][:120], s["evidence"][:120]) for s in e["steps"][:4])))
+            "%s | Steps: %s" % (item, e.get("ending") or "failure", "+".join(e.get("kinds") or []), e["expected"],
+                                e["observed"], e["mechanism"],
+                                "; ".join("%s [%s]" % (s["claim"], s["evidence"]) for s in e["steps"][:4])))
 
 
 def open_causes(store, state_of=None, limit=12):
@@ -177,7 +177,7 @@ def open_causes(store, state_of=None, limit=12):
         rows.append((max(max(v) for v in c["items"].values()) if c.get("items") else c.get("first", ""), cause, c))
     rows.sort(reverse=True)
     return ["  %s (%d item%s: %s): %s" % (cause, len(c["items"]), "" if len(c["items"]) == 1 else "s",
-                                         ", ".join(sorted(c["items"]))[:160], c.get("mechanism", "")[:200])
+                                         ", ".join(sorted(c["items"])), c.get("mechanism", ""))
             for _, cause, c in rows[:limit]]
 
 

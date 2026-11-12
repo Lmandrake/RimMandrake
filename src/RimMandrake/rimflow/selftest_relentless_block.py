@@ -604,12 +604,58 @@ def t_stale_block_tells_a_real_wait_from_an_ended_one():
     ok(relentless_block.stale_report(world(*fx[1][2]), [], NOW)[0] == 1, "the whole-ledger census sees it too")
 
 
+def t_whole_detail_round_trip():
+    """RIMMANDRAKE_STORE_TEXT_WHOLE_NO_CUTS (owner 2026-11-12: "please get rid of these arbitrary cuts!"): a 5,000-char
+    snag detail is read back whole from every place it is stored: the attempt row, the pending block, the learned
+    line, the ledger block's reason (via its side file: the ledger line has a real 4096-byte bound)."""
+    import fulltext
+    side = tempfile.mkdtemp(prefix="rt_fulltext_")
+    old = os.environ.get("RM_FULLTEXT_DIR")
+    os.environ["RM_FULLTEXT_DIR"] = side
+    try:
+        detail = "Predecessor I1 still proposed. " + "".join("%05d|" % i for i in range(830))
+        detail = (detail + "x" * 5000)[:5000]   # cut-ok: builds the 5,000-char probe itself
+        ok(len(detail) == 5000, "the probe is 5,000 chars")
+        x = rig()
+        x.run_one("I0")
+        st = x.st("I0")
+        R.snag(x.s, "I0", st["gen"], "blocked_by_predecessor", detail, x.r, now=x.now, on=["I1"])
+        att = [a for a in x.s.attempts("I0") if a.get("end") == "blocked"]
+        ok(att and att[-1]["detail"] == detail, "attempt row holds all 5,000 chars (%d)" % len(att[-1]["detail"] if att else ""))
+        pend = x.st("I0").get("block_pending") or {}
+        ok(pend.get("detail") == detail, "pending block holds all 5,000 chars")
+        with open(x.s.p("items", "I0", "learned.md"), encoding="utf-8") as fh:
+            ok(detail in fh.read(), "learned line holds all 5,000 chars")
+        x.w.up[st["run"]["unit"]] = False
+        for _ in range(3):
+            x.tick()
+        reason = x.w.blocks.get("I0", (None, None, ""))[2]
+        ok(detail in reason, "the block reason handed to the ledger holds all 5,000 chars (%d)" % len(reason))
+        field = fulltext.fit(reason, R.NOTE_MAX)            # what Fx.ledger_block puts on the ledger line
+        ok(len(field) <= R.NOTE_MAX and ("(%d chars)" % len(reason)) in field, "the ledger field fits and names the length")
+        path = field.rsplit(": ", 1)[-1].rstrip("]")
+        back = fulltext.read(path)
+        ok(back == reason and detail in back, "the side file gives back all %d chars" % len(back))
+        out = os.environ.get("RT_EVIDENCE")
+        if out:
+            with open(out, "w", encoding="utf-8") as fh:
+                json.dump({"detail_len": len(detail), "attempt_len": len(att[-1]["detail"]), "pending_len": len(pend.get("detail", "")),
+                           "ledger_field": field, "side_file": path, "side_len": len(back), "whole": detail in back}, fh, indent=1)
+        x.done()
+    finally:
+        if old is None:
+            os.environ.pop("RM_FULLTEXT_DIR", None)
+        else:
+            os.environ["RM_FULLTEXT_DIR"] = old
+        shutil.rmtree(side, ignore_errors=True)
+
+
 def main():
     for t in (t_fields_and_schema, t_holds_and_lifts, t_relentless_eligible, t_cli, t_snag_blocks,
               t_ledger_block_leaves_line, t_returned_run_not_restaffed, t_strikes, t_scope_snag_blocks,
               t_unfiled_wait_refused_at_write, t_store_ledger_diff_and_three_day_gate, t_diff_cli_counts_unreadable_rows,
               t_timer_fired_counts_timer_nights_only, t_diff_cli_records_who_took_the_reading,
-              t_stale_block_tells_a_real_wait_from_an_ended_one):
+              t_stale_block_tells_a_real_wait_from_an_ended_one, t_whole_detail_round_trip):
         print("--", t.__name__)
         try:
             t()

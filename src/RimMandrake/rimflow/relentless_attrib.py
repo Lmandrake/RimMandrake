@@ -64,7 +64,7 @@ def mechanical(klass, st):
 
 
 def record(targets, evidence, now, by, sha, **kw):
-    rec = {"targets": list(targets), "evidence": (evidence or "")[:2000], "at": now, "by": by, "sha": sha}
+    rec = {"targets": list(targets), "evidence": (evidence or ""), "at": now, "by": by, "sha": sha}
     rec.update({k: v for k, v in kw.items() if v})
     return rec
 
@@ -85,7 +85,7 @@ def gate(store, st, klass, detail, r, now, sup):
         rec = record([m], detail, now, "mechanical", sha)
         st["attribution"] = rec
         sup.fail(store, st, PROOF_OWED, "%s (%s, attributed %s: repair the proof or its binding, not the code)"
-                 % ((detail or "")[:1600], klass, m), r, now, attributed=rec)
+                 % ((detail or ""), klass, m), r, now, attributed=rec)
         return "routed"
     withhold(store, st, klass, detail, r, now, sup)
     return "gated"
@@ -97,13 +97,13 @@ def withhold(store, st, klass, detail, r, now, sup, diagnose=True):
     resume = "game" if st["status"] == sup.relentless_game.GAME else "candidate"
     st["status"] = "stopping"
     st["stopping_since"] = now
-    st["wait"] = {"kind": WAIT_ATTRIB, "class": klass, "detail": (detail or "")[:2000], "since": now,
+    st["wait"] = {"kind": WAIT_ATTRIB, "class": klass, "detail": (detail or ""), "since": now,
                   "sha": st["candidate"]["sha"], "resume": resume}
-    st["last_fail"] = {"class": klass, "detail": (detail or "")[:2000], "at": now}
-    store.attempt_once(st["item"], {"at": iso(now), "gen": st["gen"], "end": klass, "detail": (detail or "")[:600],
+    st["last_fail"] = {"class": klass, "detail": (detail or ""), "at": now}
+    store.attempt_once(st["item"], {"at": iso(now), "gen": st["gen"], "end": klass, "detail": (detail or ""),
                                "gated": WAIT_ATTRIB, "sha": st["candidate"]["sha"]})
     store.learn(st["item"], "- %s gen %d %s withheld: no strike until it is attributed: %s"
-                % (iso(now), st["gen"], klass, (detail or "")[:600]))
+                % (iso(now), st["gen"], klass, (detail or "")))
     if not diagnose:
         no_diagnosis(st, "the candidate left origin/main: re-land it, then unhold to re-check the same sha", now, sup)
     elif not r.get("circling"):
@@ -116,7 +116,7 @@ def withhold(store, st, klass, detail, r, now, sup, diagnose=True):
 
 def want(store, st, now):
     """A diagnostic consult. Not a circling consult: no round, no cool-down, no failed approach needed."""
-    st["help"] = {"status": "wanted", "why": "attribute %s: %s" % (st["wait"]["class"], st["wait"]["detail"][:400]),
+    st["help"] = {"status": "wanted", "why": "attribute %s: %s" % (st["wait"]["class"], st["wait"]["detail"]),
                   "by": "attribution", "at": now, "tries": 0, "gen": st["gen"], "round": st.get("help_round") or 0,
                   "mode": DIAGNOSE}
     store.journal({"at": iso(now), "do": "help_wanted", "item": st["item"], "by": "attribution"})
@@ -145,7 +145,7 @@ def help_over(store, st, word, now, sup):
             want(store, st, now)
         return
     # the wait is still an attribution's, so no `attribute` routed it: answered or not, nobody attributed it
-    no_diagnosis(st, "the diagnostic consult %s: %s" % (word, (st["help"].get("end") or "no attribution")[:200]), now, sup)
+    no_diagnosis(st, "the diagnostic consult %s: %s" % (word, (st["help"].get("end") or "no attribution")), now, sup)
 
 
 def prompt(st, text, attempts, nonce, r):
@@ -153,7 +153,7 @@ def prompt(st, text, attempts, nonce, r):
     rc = "python3 src/RimMandrake/rimflow/relentless.py"
     w, i = st["wait"], st["item"]
     rows = ["  %s gen %s ended %s%s: %s" % (a.get("at"), a.get("gen"), a.get("end"), " (withheld)" if a.get("gated") else "",
-                                            (a.get("detail") or "")[:300]) for a in attempts[-12:] if a.get("end")]
+                                            (a.get("detail") or "")) for a in attempts[-12:] if a.get("end")]
     return "\n".join([
         "You are the DIAGNOSTICIAN for one failed validation. You attribute it; you fix nothing. Your cwd is a clean tree "
         "at origin/main. Read anything: the logs named below, the proof, the code at %s, the checker's words, "
@@ -196,12 +196,12 @@ def brief_line(at):
         return ("ATTRIBUTED PRODUCT (%s): the work was observed violating an obligation; fix the product, not the proof. "
                 "Obligation: %s. Observed: %s. Mechanism: %s. Evidence: %s%s" % (at.get("by"), at.get("obligation") or "-",
                                                                    at.get("observed") or "-", at.get("mechanism") or "-",
-                                                                   at.get("evidence", "")[:600],
+                                                                   at.get("evidence", ""),
                 "" if ts == ["PRODUCT"] else ". The %s part is tracked on %s; do not work round it"
                 % ("/".join(t for t in ts if t != "PRODUCT"), at.get("repair") or at.get("on") or "its repair item")))
     return ("ATTRIBUTED %s (%s): the code at %s was not shown broken; repair the proof or its binding so it can show the "
             "obligation, and leave the code as it is. Mechanism: %s. Evidence: %s"
-            % ("+".join(ts), at.get("by"), (at.get("sha") or "")[:12], at.get("mechanism") or "-", at.get("evidence", "")[:600]))
+            % ("+".join(ts), at.get("by"), (at.get("sha") or "")[:12], at.get("mechanism") or "-", at.get("evidence", "")))
 
 
 def validate(targets, a):
@@ -298,14 +298,14 @@ def answer(store, item, nonce, targets, a, r, now, sup, known=None, root=None, n
                      expected=expl["expected"], cause=expl["cause"])
         st["attribution"] = rec
         store.attempt(item, {"at": iso(now), "gen": st["gen"], "attributed": ts, "by": by, "ending": w["class"],
-                             "sha": w["sha"], "evidence": rec["evidence"][:600]})
+                             "sha": w["sha"], "evidence": rec["evidence"]})
         new = relentless_explain.keep(store, item, st["gen"], expl, w["class"], w["sha"], by, now)
         route = _route(store, st, ts, a, rec, r, now, sup)
         store.journal({"at": iso(now), "do": "attributed", "item": item, "targets": ts, "route": route})
         store.save(st)
     if note:
         note(item, "relentless: %s at %s explained (%s): %s | follow-up: %s" % (rec["ending"], rec["sha"][:12], "+".join(ts),
-                                                                             expl["mechanism"][:600], expl["cause"]))
+                                                                             expl["mechanism"], expl["cause"]))
         if new and expl["cause"] != item:
             note(expl["cause"], relentless_explain.note_text(item, dict(expl, ending=rec["ending"])))
     if lint_whys and route.startswith("wait:"):
@@ -319,7 +319,7 @@ def flag_no_verdict(store, repair, item, why, now, note=None):
     the line or releases nothing."""
     import relentless_incident
     store.journal({"at": iso(now), "do": "alarm", "kind": relentless_incident.NO_VERDICT, "item": repair,
-                   "parent": item, "why": why[:400]})
+                   "parent": item, "why": why})
     if note:
         note(repair, "relentless: %s waits on this repair, and its release fixtures do not print FIXTURE_VERDICT: "
                      "PASS|FAIL, so closing this releases nothing until they do: %s" % (item, why))
@@ -337,8 +337,8 @@ def _route(store, st, ts, a, rec, r, now, sup):
                                  [t for t in ts if t in INSTRUMENTS], waits="PRODUCT" not in ts)
     if "PRODUCT" in ts:     # an observed violation: the builder, with the strike it earned
         st.pop("wait", None)
-        detail = "%s | attributed PRODUCT: %s observed %s (%s)" % (w["detail"][:1200], rec.get("obligation"),
-                                                                    rec.get("observed"), rec["evidence"][:400])
+        detail = "%s | attributed PRODUCT: %s observed %s (%s)" % (w["detail"], rec.get("obligation"),
+                                                                    rec.get("observed"), rec["evidence"])
         sup.fail(store, st, w["class"], detail, r, now, attributed=rec)
         if w.get("live"):
             st["live_iter"] = w["live"]
@@ -346,7 +346,7 @@ def _route(store, st, ts, a, rec, r, now, sup):
     if any(t in INSTRUMENTS for t in ts):
         return _wait(st, ts, rec, WAIT_INSTRUMENT, a["repair"].strip(), now)
     st.pop("wait", None)        # PROOF / CONTRACT: the proof road on the same candidate, never the code
-    sup.fail(store, st, PROOF_OWED, "%s | attributed %s: %s" % (w["detail"][:1200], "+".join(ts), rec["evidence"][:600]),
+    sup.fail(store, st, PROOF_OWED, "%s | attributed %s: %s" % (w["detail"], "+".join(ts), rec["evidence"]),
              r, now, attributed=rec)
     return "proof"
 
@@ -355,7 +355,7 @@ def _wait(st, ts, rec, kind, on, now):
     w = st["wait"]
     w.update(kind=kind, on=on, incident=on if kind == WAIT_INSTRUMENT else None, attributed_at=now)
     st["block_pending"] = {"kind": "item", "on": [on], "class": kind,
-                           "detail": "attributed %s at %s: %s" % ("+".join(ts), w["sha"][:12], rec["evidence"][:400])}
+                           "detail": "attributed %s at %s: %s" % ("+".join(ts), w["sha"][:12], rec["evidence"])}
     return "wait:" + on
 
 
@@ -368,7 +368,7 @@ def snag_incident(store, st, ons, detail, now):
     if not rep:
         return
     relentless_incident.link(store, rep, st["item"], None, now, None, detail, None, ["worker_snag"])
-    st["wait"] = {"kind": WAIT_INSTRUMENT, "class": INSTRUMENT_SNAG, "detail": (detail or "")[:2000], "since": now,
+    st["wait"] = {"kind": WAIT_INSTRUMENT, "class": INSTRUMENT_SNAG, "detail": (detail or ""), "since": now,
                   "sha": None, "resume": "queued", "on": rep, "incident": rep}
 
 
@@ -389,14 +389,14 @@ def _refuse(store, fx, item, w, event, now, why, note, acts, kind=None):
             cur["wait"]["refused_event"] = event
             store.save(cur)
     if fresh:
-        store.journal({"at": iso(now), "do": "alarm", "item": item, "why": why[:400],
+        store.journal({"at": iso(now), "do": "alarm", "item": item, "why": why,
                        "kind": kind or ("instrument_fixture_refused" if w.get("incident") else "dependency_refused")})
         fx.ledger_note(item, note)
         if kind == "instrument_fixture_no_verdict":     # the repair's close owes the line: say so on the repair
             fx.ledger_note(w["on"], "relentless: this repair closed but its release fixtures printed no "
-                                    "FIXTURE_VERDICT line, so %s keeps waiting: %s" % (item, why[:600]))
+                                    "FIXTURE_VERDICT line, so %s keeps waiting: %s" % (item, why))
         acts.append({"do": "incident_refused" if w.get("incident") else "dependency_refused", "item": item,
-                     "on": w["on"], "why": why[:200]})
+                     "on": w["on"], "why": why})
     return False
 
 
@@ -504,12 +504,12 @@ def resume(store, st, now, why):
     w = st.pop("wait")
     sha = w["sha"]
     if w["resume"] == "queued" or not sha:      # a worker's snag: its unfinished work goes back to the line
-        store.attempt(st["item"], {"at": iso(now), "gen": st["gen"], "end": "released", "detail": why[:600], "to": "queued"})
+        store.attempt(st["item"], {"at": iso(now), "gen": st["gen"], "end": "released", "detail": why, "to": "queued"})
         st["status"] = "queued"
         st["returned_at"] = now
         st["not_before"] = 0
         return
-    store.attempt(st["item"], {"at": iso(now), "gen": st["gen"], "end": "released", "detail": why[:600], "sha": sha,
+    store.attempt(st["item"], {"at": iso(now), "gen": st["gen"], "end": "released", "detail": why, "sha": sha,
                                "to": w["resume"]})
     if w["resume"] == "game" and (st.get("contract") or {}).get("game") and (st.get("candidate") or {}).get("sha") == sha:
         import relentless_game

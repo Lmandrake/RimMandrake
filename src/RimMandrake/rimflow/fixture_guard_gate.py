@@ -46,7 +46,7 @@ def main():
         def git(*a):
             r = subprocess.run(["git", *a], cwd=tmp, env=env, capture_output=True, text=True, stdin=subprocess.DEVNULL)
             if r.returncode:
-                print("setup: git %s: %s" % (" ".join(a), r.stderr[-200:]))
+                print("setup: git %s: %s" % (" ".join(a), r.stderr))
                 sys.exit(2)
             return r.stdout.strip()
 

@@ -37,6 +37,10 @@ import json
 import os
 import re
 import time
+try:                                    # whole text, never a silent cut (RIMMANDRAKE_STORE_TEXT_WHOLE_NO_CUTS)
+    from . import fulltext
+except ImportError:
+    import fulltext  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROUTES = os.path.join(HERE, "alarm_routes.json")
@@ -214,7 +218,7 @@ def revisit_ring(inc, was_plan, news=()):
         "INCIDENT %s (%s, at his rung, revisit %d). News: %s. Its plan ran out%s. Re-read it now: fixed, say so (it closes "
         "on its readings); else rimflow ack %s --plan \"<the current next step>\" [--recover-min N]; and rewrite his line, "
         "rimflow incident-line %s \"<line>\". Metrics: %s." % (
-            i, inc["class"], inc.get("revisits", 0), "; ".join(news)[:120] or "none recorded",
+            i, inc["class"], inc.get("revisits", 0), "; ".join(news) or "none recorded",
             " (was: %s)" % str(was_plan)[:60] if was_plan else "", i, i, ", ".join(sorted(inc["metrics"]))))}
 
 
@@ -301,7 +305,7 @@ def relapse_rows(rows, ids, now, window_h):
 def ack_quotes(rows, ids, n=6):
     """The acks of these incidents, newest last: who, when, the plan. What a structural item must quote."""
     acks = [r for r in rows if r.get("ev") == "acked" and r.get("id") in ids and r.get("plan")]
-    return ["%s by %s: %s" % (r.get("at"), r.get("ack_by"), str(r["plan"])[:200]) for r in acks[-n:]]
+    return ["%s by %s: %s" % (r.get("at"), r.get("ack_by"), str(r["plan"])) for r in acks[-n:]]
 
 
 def structural_name(cause):
@@ -319,7 +323,7 @@ def structural_ring(inc):
                 inc["id"], inc["cause"], inc.get("relapses", 0), inc.get("tame_window_h", 24),
                 " | ".join(acks) if acks else "none recorded (no run acked it)"))
     return {"id": inc["id"], "how": "structural", "reader": None, "seat": None, "item": inc["structural"],
-            "title": title[:200], "text": text[:1800]}
+            "title": fulltext.fit(title, 200), "text": fulltext.fit(text, 1800)}
 
 
 def template(inc):
@@ -580,7 +584,7 @@ def write_line(iid, seat, line, path=None, now=None):
     inc = fold(rows or [])[0].get(iid)
     if not inc or inc.get("state") != "open":
         raise ValueError("%s is not an open incident" % iid)
-    row = {"ev": "line", "id": iid, "at": iso(now), "t": now, "line": line.strip()[:300], "line_by": seat}
+    row = {"ev": "line", "id": iid, "at": iso(now), "t": now, "line": line.strip(), "line_by": seat}
     append([row], path)
     return row
 
@@ -592,7 +596,7 @@ def signal(sch, kind, why, now, path=None):
     table = load_table()
     rt = route_of(table, kind)
     if rt is None or rt["route"] != "program":
-        append([{"kind": kind, "metric": kind, "why": str(why)[:300], "told_at": iso(now), "class": (rt or {}).get("class")}], path)
+        append([{"kind": kind, "metric": kind, "why": str(why), "told_at": iso(now), "class": (rt or {}).get("class")}], path)
         return True
     return False
 

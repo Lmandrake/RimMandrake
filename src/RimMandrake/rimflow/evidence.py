@@ -497,7 +497,7 @@ def box_tools(box_cfg=None):
         for name, argv in probes.items():
             try:
                 r = subprocess.run(argv, capture_output=True, text=True, timeout=30, stdin=subprocess.DEVNULL)
-                tools[name] = (r.stdout.strip() or r.stderr.strip()[-120:]) if r.returncode == 0 else "absent (exit %d)" % r.returncode
+                tools[name] = (r.stdout.strip() or r.stderr.strip()) if r.returncode == 0 else "absent (exit %d)" % r.returncode
             except (OSError, subprocess.SubprocessError) as e:
                 tools[name] = "absent (%s)" % type(e).__name__
         tools["toolchain"] = [str(t.get("name")) for t in box_cfg.get("toolchain") or [] if isinstance(t, dict)]

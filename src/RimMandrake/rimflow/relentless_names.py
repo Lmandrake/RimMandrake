@@ -619,7 +619,7 @@ def advise(text, scripts, have, index, named=None, build=None, saves=None, exclu
         need = have if need is None else need
         if mod and mod not in need and index.repo_pids.get(mod) not in need and pid_of.get(mod) not in need \
                 and not mod.startswith(BASE):
-            entry = {"mod": mod, "at": at, "line": line.strip()[:160], "src": src}
+            entry = {"mod": mod, "at": at, "line": line.strip(), "src": src}
             if mod not in seen:
                 seen[mod] = len(out)
                 out.append(entry)

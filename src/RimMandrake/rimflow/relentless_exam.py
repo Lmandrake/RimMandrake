@@ -192,7 +192,7 @@ def kick(store, item, cfg=None, runner=subprocess.run):
         r = runner(argv, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
     except (OSError, subprocess.SubprocessError) as e:
         return "%s: %s" % (type(e).__name__, e)
-    return ("systemd-run exit %d: %s" % (r.returncode, ((r.stdout or "") + (r.stderr or ""))[-200:])) if r.returncode else None
+    return ("systemd-run exit %d: %s" % (r.returncode, ((r.stdout or "") + (r.stderr or "")))) if r.returncode else None
 
 
 def live_roots():
@@ -215,14 +215,14 @@ def on_contract(store, item, base, now=None, clone=None, cfg=None, kicker=None, 
         why = (kicker or kick)(store, item, cfg)
         if why:
             if (status(store, item) or {}).get("state") != "owed":
-                return "exam unit reported %s but has already moved the exam on" % why[:200]   # a slow start that did start
-            set_status(store, item, state="owed", kick_failed=why[:300])
+                return "exam unit reported %s but has already moved the exam on" % why   # a slow start that did start
+            set_status(store, item, state="owed", kick_failed=why)
             return "exam owed; unit did not start: " + why
         set_status(store, item, kick_failed=None, hook_error=None)
         return "exam owed; Setter unit " + unit_name(item)
     except Exception as e:  # noqa: BLE001 - shadow: a fault here is recorded, never the builder's
         try:
-            set_status(store, item, state="owed", hook_error="%s: %s" % (type(e).__name__, str(e)[:200]))
+            set_status(store, item, state="owed", hook_error="%s: %s" % (type(e).__name__, str(e)))
         except Exception:  # noqa: BLE001
             pass
         return None
@@ -424,7 +424,7 @@ def lint(exam, item_text, prose=""):
     mapped = set()
     for sentence, cids in maps.items():
         if not _norm(sentence) or _norm(sentence) not in text:      # "" is a substring of everything
-            no(None, "MAP_UNKNOWN_SENTENCE", "not the item's words: %r" % sentence[:120])
+            no(None, "MAP_UNKNOWN_SENTENCE", "not the item's words: %r" % sentence)
         for cid in cids or []:
             if cid not in ids:
                 no(cid, "SCHEMA", "maps names a clause that does not exist")
@@ -434,7 +434,7 @@ def lint(exam, item_text, prose=""):
     keys = [_norm(k) for k in maps if _norm(k)]
     for b in done_when(prose):
         if not any(_norm(b) in k or k in _norm(b) for k in keys):
-            no(None, "MAP_DONE_WHEN", "done-when not mapped: %r" % b[:120])
+            no(None, "MAP_DONE_WHEN", "done-when not mapped: %r" % b)
     return bad
 
 
@@ -630,7 +630,7 @@ def validate(exam, run, item_text, prose="", read_file=None, exam_files=None):
         if brk["kind"] == "base_red":
             e, out, to = run(chk["argv"], None, t)
             k = red_kind(c, e, out, to)
-            rows.append({"clause": cid, "at": "base", "exit": e, "kind": k, "out": (out or "")[-800:]})
+            rows.append({"clause": cid, "at": "base", "exit": e, "kind": k, "out": (out or "")})
             if k == "green":
                 refusals.append({"clause": cid, "code": "STAYS_GREEN", "why": "base_red: the check passes on the base sha"})
             elif k != "assert":
@@ -638,18 +638,18 @@ def validate(exam, run, item_text, prose="", read_file=None, exam_files=None):
         else:
             e, out, to = run(chk["argv"], None, t)
             k = red_kind(c, e, out, to)
-            rows.append({"clause": cid, "at": "base", "exit": e, "kind": k, "out": (out or "")[-800:]})
+            rows.append({"clause": cid, "at": "base", "exit": e, "kind": k, "out": (out or "")})
             if k != "green":
                 refusals.append({"clause": cid, "code": "BASE_NOT_GREEN",
                                  "why": "patch: preserved behaviour must pass on the base sha first (%s)" % k})
                 continue
             e, out, to = run(chk["argv"], brk["patch"], t)
             if e is None and str(out).startswith("PATCH_FAILED"):
-                rows.append({"clause": cid, "at": "break", "exit": None, "kind": "patch_failed", "out": str(out)[-800:]})
-                refusals.append({"clause": cid, "code": "PATCH_FAILED", "why": str(out)[:300]})
+                rows.append({"clause": cid, "at": "break", "exit": None, "kind": "patch_failed", "out": str(out)})
+                refusals.append({"clause": cid, "code": "PATCH_FAILED", "why": str(out)})
                 continue
             k = red_kind(c, e, out, to)
-            rows.append({"clause": cid, "at": "break", "exit": e, "kind": k, "out": (out or "")[-800:]})
+            rows.append({"clause": cid, "at": "break", "exit": e, "kind": k, "out": (out or "")})
             if k == "green":
                 refusals.append({"clause": cid, "code": "STAYS_GREEN", "why": "the check stays green under the planted break"})
             elif k != "assert":
@@ -676,7 +676,7 @@ def apply_patch(patch, tree, runner=subprocess.run):
     env = {k: v for k, v in os.environ.items() if not k.startswith("GIT_")}
     env["GIT_CEILING_DIRECTORIES"] = os.path.dirname(os.path.abspath(tree))
     p = runner(["git", "apply", "-"], cwd=tree, input=patch, capture_output=True, text=True, timeout=60, env=env)
-    return (p.stderr or p.stdout or "git apply exit %d" % p.returncode)[-300:] if p.returncode else None
+    return (p.stderr or p.stdout or "git apply exit %d" % p.returncode) if p.returncode else None
 
 
 def box_runner(rules, source, sha, files_dir, item=None, nonce=None, runner=subprocess.run):
@@ -722,7 +722,7 @@ def box_runner(rules, source, sha, files_dir, item=None, nonce=None, runner=subp
                 q = runner(unit, capture_output=True, text=True, timeout=timeout + 60, stdin=subprocess.DEVNULL)
                 return q.returncode, _cap((q.stdout or "") + (q.stderr or "")), False
             except subprocess.TimeoutExpired as e:
-                return None, str(e)[-300:], True
+                return None, str(e), True
         finally:
             if rbox:
                 relentless_wall.remove_box(rbox)
@@ -792,13 +792,13 @@ End with one line: EXAM WRITTEN <n clauses>."""
 
 
 def setter_prompt(item, text, base, exam_json, files):
-    return SETTER_BRIEF.format(item=item, text=(text or "")[:8000], base=base, exam_json=exam_json, files=files)
+    return SETTER_BRIEF.format(item=item, text=(text or ""), base=base, exam_json=exam_json, files=files)
 
 
 def refusal_prompt(v):
     lines = ["The supervisor REFUSED your exam. Fix every refusal below and rewrite the same files; this is your one retry.", ""]
     lines += ["- %s %s: %s" % (r["code"], r.get("clause") or "", r["why"]) for r in v["refusals"]]
-    lines += ["", "Runs:"] + ["- %s at %s: exit %s, %s; %s" % (x["clause"], x["at"], x["exit"], x["kind"], x["out"][-300:])
+    lines += ["", "Runs:"] + ["- %s at %s: exit %s, %s; %s" % (x["clause"], x["at"], x["exit"], x["kind"], x["out"])
                               for x in v["rows"]]
     return "\n".join(lines)
 
@@ -838,7 +838,7 @@ def _item_text(item):
     cli = os.path.join(HERE, "cli.py")
     try:
         r = subprocess.run([sys.executable, cli, "show", item], capture_output=True, text=True, timeout=120)
-        return (r.stdout or "")[:12000]
+        return r.stdout or ""          # whole: an examiner reads it (RIMMANDRAKE_STORE_TEXT_WHOLE_NO_CUTS)
     except (OSError, subprocess.SubprocessError):
         return ""
 
@@ -1014,7 +1014,7 @@ def run_exam(exam, run):
         if not isinstance(c, dict) or c.get("kind") in ("live", "owner"):
             continue
         e, out, to = run(c["check"]["argv"], None, int(c["check"].get("timeout_s", 300)))
-        rows.append({"clause": c["id"], "exit": e, "kind": red_kind(c, e, out, to), "out": (out or "")[-400:]})
+        rows.append({"clause": c["id"], "exit": e, "kind": red_kind(c, e, out, to), "out": (out or "")})
     return rows
 
 
@@ -1041,7 +1041,7 @@ def catch(store, item, rules, boxer=box_runner, repo=None):
             try:
                 run, _, close = boxer(rules, source, sha, os.path.join(d, "files"), item=item)
             except Exception as e:  # noqa: BLE001 - an unexportable sha is recorded, not retried for ever
-                row = {"sha": sha, "role": role, "end": end, "error": "%s: %s" % (type(e).__name__, str(e)[:200]),
+                row = {"sha": sha, "role": role, "end": end, "error": "%s: %s" % (type(e).__name__, str(e)),
                        "at": iso(time.time())}
                 _append(path, row)
                 wrote.append(row)
@@ -1180,14 +1180,14 @@ def main(argv=None):
             print(state)
         except Exception as e:  # noqa: BLE001 - recorded on the item, the unit ends
             state = None
-            set_status(store, a.item, state="setter_failed", error="%s: %s" % (type(e).__name__, str(e)[:300]))
+            set_status(store, a.item, state="setter_failed", error="%s: %s" % (type(e).__name__, str(e)))
             print("setter_failed: %s" % e)
         if state in ("arbiter_owed", "arbitrating"):   # R4: the second refusal's arbiter (relentless_dispute, WP-08);
             import relentless_dispute                   # `arbitrating` left by a dead arbiter is retried, not stranded
             try:
                 print("arbiter: %s" % relentless_dispute.arbitrate_exam(store, a.item))
             except Exception as e:  # noqa: BLE001 - the status stays `arbitrating`: the next run retries it
-                print("arbiter failed: %s: %s" % (type(e).__name__, str(e)[:300]))
+                print("arbiter failed: %s: %s" % (type(e).__name__, str(e)))
         print("catch: %d item(s)" % catch_some(store, rules))
         return 0
     if a.cmd == "catch":

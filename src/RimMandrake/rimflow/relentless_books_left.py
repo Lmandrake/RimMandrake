@@ -38,7 +38,7 @@ def moved_rows(books, rows, prefixes):
                         *sorted({p for _s, p in left})], capture_output=True, text=True, timeout=120,
                        stdin=subprocess.DEVNULL)
     if r.returncode:
-        raise RuntimeError("git diff: %s" % r.stderr[-200:])
+        raise RuntimeError("git diff: %s" % r.stderr)
     moved = set(filter(None, r.stdout.split("\0")))
     return [(s, p) for s, p in left if p in moved]
 
@@ -181,7 +181,7 @@ def hand_back(books, held, keep, journal):
         try:
             merged, carried = merge_registry(_entries(head), _entries(mine), _entries(there))
         except (ValueError, UnicodeDecodeError) as e:   # conflict markers, a torn write: origin's stands, books' is kept
-            journal({"at": iso(time.time()), "do": "books_registry_unmergeable", "path": p, "why": str(e)[:200],
+            journal({"at": iso(time.time()), "do": "books_registry_unmergeable", "path": p, "why": str(e),
                      "kept": os.path.join(keep, p)})
             continue
         if carried:

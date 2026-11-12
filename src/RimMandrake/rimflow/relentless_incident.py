@@ -78,13 +78,13 @@ def link(store, repair, item, sha, now, component=None, repro=None, fixtures=Non
                "targets": [], "status": OPEN, "opened_at": now, "released_at": None}
         incs[repair] = inc
     if component and not inc.get("component"):
-        inc["component"] = component[:300]
+        inc["component"] = component
     if repro:
-        inc["repro"] = (inc.get("repro") or []) + [{"item": item, "at": now, "evidence": repro[:1200]}]
+        inc["repro"] = (inc.get("repro") or []) + [{"item": item, "at": now, "evidence": repro}]
         inc["repro"] = inc["repro"][-12:]
     for k, v in (fixtures or {}).items():
         if v and not inc["fixtures"].get(k):
-            inc["fixtures"][k] = v[:600]
+            inc["fixtures"][k] = v
     inc["targets"] = sorted(set(inc.get("targets") or []) | set(targets or ()))
     # a mixed diagnosis (PRODUCT too) sends the item to its builder: it is recorded as affected, not as waiting
     inc["items"][item] = {"sha": sha, "since": now, "released_at": None if waits else now, "waits": bool(waits)}
@@ -125,7 +125,7 @@ def lint(cmd, root):
     named = _paths(cmd)
     if not named:
         return LINT_NEVER, ("%r names no script and does not print %s: it can never give a verdict, so it can never "
-                            "release a parent" % (cmd[:200], VERDICT_WORD))
+                            "release a parent" % (cmd, VERDICT_WORD))
     missing, silent = [], []
     for n in named:
         f = n if os.path.isabs(n) else os.path.join(root or ".", n)
@@ -141,7 +141,7 @@ def lint(cmd, root):
             continue
         silent.append(n)
     return LINT_PENDING, ("%r does not print %s yet (%s): its repair must make it print `%s: PASS|FAIL` or its close "
-                          "releases nothing" % (cmd[:200], VERDICT_WORD, "; ".join(
+                          "releases nothing" % (cmd, VERDICT_WORD, "; ".join(
                               ["%s absent" % m for m in missing] + ["%s has no verdict line" % x for x in silent]),
                               VERDICT_WORD))
 
@@ -174,7 +174,7 @@ def owed_by(store, item, root):
     return ("%s repairs an instrument incident whose release fixtures cannot give a verdict, so closing it would release "
             "none of its waiting parents (%s): make them print `%s: PASS` (good, exit 0) and `%s: FAIL` (bad, a "
             "non-zero exit), commit that, then finish. %s" % (item, ", ".join(sorted(inc["items"])), VERDICT_WORD,
-                                                             VERDICT_WORD, " | ".join(whys)))[:1500]
+                                                             VERDICT_WORD, " | ".join(whys)))
 
 
 def no_verdict_at(store, repair, event):
@@ -253,7 +253,7 @@ def check(store, repair, run, now, event, need_fixtures=True):
         why = ("fixtures hold: good exit 0 PASS, bad exit %s FAIL" % bad[0] if ok else
                "fixtures refuse the repair: good exit %s verdict %s (wants 0 PASS): %s | bad exit %s verdict %s (wants a "
                "non-zero exit it chose, not a timeout, 126/127 or a signal, and FAIL): %s"
-               % (good[0], verdict(good[1]), (good[1] or "")[-200:], bad[0], verdict(bad[1]), (bad[1] or "")[-200:]))
+               % (good[0], verdict(good[1]), (good[1] or ""), bad[0], verdict(bad[1]), (bad[1] or "")))
     with store.lock():
         incs = load(store)
         inc = incs.get(repair)
@@ -268,7 +268,7 @@ def check(store, repair, run, now, event, need_fixtures=True):
             return False, "the incident %s was released and reopened while its fixtures ran: the next sweep runs them" % repair
         if dict(inc.get("fixtures") or {}) != fx:
             return False, "the fixtures changed while they ran: the next sweep runs the new ones"
-        inc.setdefault("checks", []).append({"key": key, "event": event, "at": now, "ok": ok, "why": why[:800],
+        inc.setdefault("checks", []).append({"key": key, "event": event, "at": now, "ok": ok, "why": why,
                                              "good": good and good[0], "bad": bad and bad[0],
                                              "no_verdict": bool(good and bad and (verdict(good[1]) is None or
                                                                                   verdict(bad[1]) is None))})
@@ -304,7 +304,7 @@ def _release_capabilities(store, inc, now):
         # the link is the capability incident's own `repair`: a signature that was released and reopened later for other
         # items is a new incident this repair never explained, so it is not released on this evidence
         if (caps.get(k) or {}).get("open") and caps[k].get("repair") == inc["repair"]:
-            B.release(store, caps, k, "the repair %s closed and its fixtures held (%s)" % (inc["repair"], last["why"][:200]),
+            B.release(store, caps, k, "the repair %s closed and its fixtures held (%s)" % (inc["repair"], last["why"]),
                       now)
             done.append(k)
     if done:
@@ -343,14 +343,14 @@ def book(store, everything=False):
                      "status": inc.get("status"), "component": inc.get("component"), "capability": sigs,
                      "items": sorted(items), "probe": [live[k].get("probe") for k in sigs if live[k].get("probe")],
                      "opened": inc.get("opened_at"), "shares": shares,
-                     "why": ((inc.get("repro") or [{}])[-1].get("evidence") or "")[:300]})
+                     "why": ((inc.get("repro") or [{}])[-1].get("evidence") or "")})
     for k, c in sorted(live.items(), key=lambda kv: (kv[1].get("opened") or kv[1].get("last") or 0, kv[0])):
         if k in used:
             continue
         rows.append({"book": "capability", "repair": c.get("repair"), "status": "open" if c.get("open") else "counting",
                      "component": None, "capability": [k], "items": sorted(c.get("items") or {}),
                      "probe": [c["probe"]] if c.get("probe") else [], "opened": c.get("opened"), "shares": [],
-                     "why": (c.get("why") or "")[:300]})
+                     "why": (c.get("why") or "")})
     return rows
 
 
@@ -366,5 +366,5 @@ def book_text(rows):
         if x.get("shares"):
             out.append("      shares items with: %s (shown in its repair's row)" % " | ".join(s[:60] for s in x["shares"]))
         if x.get("component"):
-            out.append("      component: %s" % x["component"][:160])
+            out.append("      component: %s" % x["component"])
     return "\n".join(out)

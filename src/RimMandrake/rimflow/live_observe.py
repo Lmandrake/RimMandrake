@@ -57,8 +57,8 @@ class Reading:
 
     def summary(self):
         """The runs.jsonl field: small, every decision input named."""
-        return {"status": self.status, "why": self.why[:300], "stage": self.stage, "rows": len(self.rows),
-                "problems": [p[:160] for p in self.problems[:5]], "cut": self.cut}
+        return {"status": self.status, "why": self.why, "stage": self.stage, "rows": len(self.rows),
+                "problems": [p for p in self.problems[:5]], "cut": self.cut}
 
 
 def row_problem(row, run_id):
@@ -150,7 +150,7 @@ def read(text, run_id, clause):
             r = hit[0]
             what = (r.get("note") or ("observed null without absence: a blind read, not a measurement"
                                       if r["result"] in MEASURED else "no reason given"))
-            return Reading(want, "%s %s at %s: %s" % (clause, want, r["stage"], str(what)[:200]), stage, rows,
+            return Reading(want, "%s %s at %s: %s" % (clause, want, r["stage"], str(what)), stage, rows,
                            problems, cut)
     if stage != "result":
         return Reading("UNKNOWN", "%s: every row SATISFIED but the proof stopped at %s, never reporting its result"

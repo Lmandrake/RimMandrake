@@ -535,9 +535,9 @@ def draw(snap, audits, n_random, seed, now, name=None, into=None):
             at, sha, verdict, reasons = targeted_row(snap, cl, i)
             rows.append({"kind": "draw", "sample": name, "stratum": stratum, "item": i, "at": iso(now), "seed": seed,
                          "population": len(pool), "population_sha1": pool_sha, "closed_at": iso(at) if at else None,
-                         "sha": sha, "verdict": verdict, "proof": (c.get("proof") or "")[:600],
+                         "sha": sha, "verdict": verdict, "proof": (c.get("proof") or ""),
                          "source": "store" if i in cl else "ledger",
-                         "reasons": reasons[:600] if stratum == "narrow_weak" else None})
+                         "reasons": reasons if stratum == "narrow_weak" else None})
     return rows
 
 
@@ -598,8 +598,8 @@ def audit_row(audits, sample, item, verdict, by, how, evidence, now):
         raise SystemExit("%s is not drawn in sample %s" % (item, sample))
     if not (by and how and evidence):
         raise SystemExit("an audit names its auditor (--by), its method (--how) and what it showed (--evidence)")
-    return {"kind": "audit", "sample": sample, "item": item, "verdict": verdict, "by": by, "how": how[:600],
-            "evidence": evidence[:1200], "at": iso(now)}
+    return {"kind": "audit", "sample": sample, "item": item, "verdict": verdict, "by": by, "how": how,
+            "evidence": evidence, "at": iso(now)}
 
 
 # ---------------------------------------------------------------- report

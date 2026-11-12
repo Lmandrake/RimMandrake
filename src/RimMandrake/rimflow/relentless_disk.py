@@ -33,7 +33,7 @@ def warm_clones(root):
 def _git(c, *a, timeout=300):
     r = subprocess.run(["git", *a], cwd=c, capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL)
     if r.returncode:
-        raise RuntimeError("git %s: %s" % (a[0], r.stderr[-200:]))
+        raise RuntimeError("git %s: %s" % (a[0], r.stderr))
     return r.stdout
 
 
@@ -50,7 +50,7 @@ def remove_tree(c):
     except FileNotFoundError:
         pass
     except OSError as e:
-        return str(e)[:300]
+        return str(e)
     return None if not os.path.lexists(c) else "still present after the removal"
 
 

@@ -309,7 +309,7 @@ def test_withdraw():
         os.rename = failing(msg=long_msg)
         r = D.withdraw(root, seat, rid, consumed=none)
         check(r["outcome"] == "failed" and r["ring_id"] == rid and r["why"] == "rename PermissionError: %s; still in the inbox"
-              % ("[Errno 13] " + long_msg)[:120], "withdraw: rename fails with the ring still there -> failed, still in the inbox (%r)" % r["why"][:60])
+              % ("[Errno 13] " + long_msg), "withdraw: rename fails with the ring still there -> failed, still in the inbox, whole message (%r)" % r["why"][:60])
         r = D.withdraw(root, seat, rid, consumed=lambda *a: rec)
         check(r["outcome"] == "consumed" and r["why"] == "rename PermissionError; the doorbell consumed it",
               "withdraw: rename fails, a doorbell consumed it -> consumed")
@@ -561,7 +561,7 @@ def test_stop_runs_lock():
 
 def test_withdraw_reading_long():
     r = D.withdraw_reading("x" * 300)
-    check(r["outcome"] == "unknown" and r["why"] == "x" * 160, "withdraw_reading: the odd result is cut to 160 chars")
+    check(r["outcome"] == "unknown" and r["why"] == "x" * 300, "withdraw_reading: the odd result is kept whole")
 
 
 
@@ -702,7 +702,7 @@ def test_decide_recover():
     acts, ss = rv_case("sid-OLD", [T.sess(), bench], 300)
     al = one(acts, "alarm")
     check(len(al) == 1 and al[0]["kind"] == "recover:FOUNDRY" and al[0]["note"] is True and al[0]["seat"] == "FOUNDRY"
-          and al[0]["why"] == "recover of FOUNDRY did not bring a session back in 300 s: " + "o" * 160
+          and al[0]["why"] == "recover of FOUNDRY did not bring a session back in 300 s: " + "o" * 300
           and "recover" not in ss and "cooldown_until" not in ss, "recover timed out at recover_verify_s (%r)" % [a["why"][-20:] for a in al])
     st2 = fresh()
     st2["seats"]["FOUNDRY"] = {"recover": {"at": NOW - 300, "session_id": "sid-OLD", "out": ""}, "dead_since": NOW - 700}
@@ -972,7 +972,7 @@ def test_decide_misc():
           and "ring" not in st["seats"]["ZZZ"] and "ring" in st["seats"]["AAA"] and "ring" in st["seats"]["DDD"]
           and "ring" in st["seats"]["EEE"],
           "switch-off: reason text names the cause; the ring moves into `pending`")
-    # an exception in one seat is one alarm for that seat, 200 chars of message
+    # an exception in one seat is one alarm for that seat, its whole message
     class Bad(dict):
         def get(self, *a):
             raise RuntimeError("e" * 300)
@@ -982,8 +982,8 @@ def test_decide_misc():
     al = {a["why"][:60]: a for a in one(acts, "alarm")}
     both = [a for a in one(acts, "alarm") if a["kind"] == "decide:ZZZ"]
     check(len(both) == 2 and all(a["seat"] == "ZZZ" and a["note"] is True for a in both), "a malformed seat alarms twice (switch-off pass, decide pass), others carry on")
-    check(both[0]["why"] == "seat ZZZ switch-off withdrawal NOT decided: RuntimeError: " + "e" * 200
-          and both[1]["why"] == "seat ZZZ NOT decided this tick: RuntimeError: " + "e" * 200, "malformed-seat alarm texts, message cut to 200 (%r)" % [a["why"][:50] for a in both])
+    check(both[0]["why"] == "seat ZZZ switch-off withdrawal NOT decided: RuntimeError: " + "e" * 300
+          and both[1]["why"] == "seat ZZZ NOT decided this tick: RuntimeError: " + "e" * 300, "malformed-seat alarm texts, whole message (%r)" % [a["why"][:50] for a in both])
     # agents blind
     o = obs(agents_ok=False)
     acts = D.decide(sched(), fresh(), o, NOW, True)
@@ -1017,7 +1017,7 @@ def test_decide_misc():
         D.RL.supervise_roles, D.RL.decide_roles = saved
     al = one(acts, "alarm")
     check(len(al) == 1 and al[0]["kind"] == "role:supervise" and al[0]["note"] is True
-          and al[0]["why"] == "supervise_roles raised RuntimeError: " + "s" * 200 + "; roles with runs on record are held as busy this tick"
+          and al[0]["why"] == "supervise_roles raised RuntimeError: " + "s" * 300 + "; roles with runs on record are held as busy this tick"
           and got["busy"] == {"R1"} and callable(got["gate"]) and got["ro"] is o["roles"] and got["now"] == NOW,
           "supervise_roles raised: alarm, roles with runs held busy, decide_roles still called (%r)" % got.get("busy"))
     D.RL.supervise_roles = lambda *a, **k: {"fromsup"}
@@ -1047,7 +1047,7 @@ def test_decide_misc():
     finally:
         D.SR.decide = saved_sr
     al = [a for a in acts if a.get("kind") == "restart:decide"]
-    check(len(al) == 1 and al[0]["note"] is True and al[0]["why"] == "seat restart NOT decided: RuntimeError: " + "r" * 200, "seat_restart raising -> one alarm")
+    check(len(al) == 1 and al[0]["note"] is True and al[0]["why"] == "seat restart NOT decided: RuntimeError: " + "r" * 300, "seat_restart raising -> one alarm")
     # the `out` list is the one appended to; every action carries `at`
     out = []
     r = D.decide(sched(), fresh(), obs(), NOW, True, out=out)
@@ -1148,7 +1148,7 @@ def test_tick():
         j = [json.loads(x) for x in open(os.path.join(rig.root, "journal.jsonl"))]
         check(len(j) == 1 and j[0]["kind"] == "tick:raised" and j[0]["do"] == "alarm" and j[0]["at"] == lts(now)
               and j[0]["why"] == "tick raised ValueError: %s; launches given back: u9, u8; rings/recovers/withdraws undone: none"
-              % ("b" * 200), "tick: a raise is journalled with the type, 200 chars, the launches given back (%r)" % j[0]["why"][:80])
+              % ("b" * 300), "tick: a raise is journalled with the type, the whole message, the launches given back (%r)" % j[0]["why"][:80])
         stt = rig.state()
         check(stt["last_tick"] == lts(now) and stt["apply"] is True and stt["last_ok_tick"] is None,
               "tick: a raised tick still saves last_tick/apply and is not an OK tick")
@@ -1391,7 +1391,7 @@ def test_execute_ring_withdraw():
     check(a["result"].startswith("error: ZeroDivisionError: ") and a["released"], "a raising ring is an error result: %r" % a.get("result"))
     a = {"do": "ring", "seat": "FOUNDRY", "ring_id": "R1", "message": "m"}
     ex([a], ring=lambda *x: (_ for _ in ()).throw(RuntimeError("x" * 500)))
-    check(len(a["result"]) == len("error: RuntimeError: ") + 160, "error text truncated to 160: %d" % len(a["result"]))
+    check(len(a["result"]) == len("error: RuntimeError: ") + 500, "error text kept whole: %d" % len(a["result"]))
 
     # withdraw
     def wd(outcome, why="", consumed_at=None, pending=True, ss=None, extra=None):
@@ -1718,7 +1718,7 @@ def test_execute_stop_notes_publish():
         want = case in ("first", "after", "custom_after")
         check(bool(notes) == want and (st["alarms"]["publish:index_lock"] == NOW) == want, "index.lock alarm %s: notes=%d" % (case, len(notes)))
         if want:
-            check(notes[0][0] == "DISPATCHER_ALARMS_X" and notes[0][1] == "dispatcher alarm: ledger publish: " + lockmsg[:240]
+            check(notes[0][0] == "DISPATCHER_ALARMS_X" and notes[0][1] == "dispatcher alarm: ledger publish: " + lockmsg
                   and "\"kind\": \"publish:index_lock\"" in "".join(glob_journal(root)) and "raised" in "".join(glob_journal(root)) and "noted" in "".join(glob_journal(root)),
                   "index.lock alarm text and journal: %r" % notes)
     root = wd_root("ex_il_f")
@@ -1730,7 +1730,7 @@ def test_execute_stop_notes_publish():
     root = wd_root("ex_il_e2")
     ex([], sch=sched(publish=True), root=root, publish=lambda n: "index.lock", note=lambda i, t: (_ for _ in ()).throw(RuntimeError("z" * 300)))
     jj = "".join(glob_journal(root))
-    check(("note failed: " + "z" * 160 + "\"") in jj and "z" * 161 not in jj and '"note": true' in jj, "index.lock raising note cut at 160, alarm marked note")
+    check(("note failed: " + "z" * 300 + "\"") in jj and '"note": true' in jj, "index.lock raising note kept whole, alarm marked note")
     notes.clear()
     D.execute([], sched(publish=True), fresh(), wd_root("ex_il_d"), True, NOW, {"lock": lambda: _Lk(), "publish": lambda n: "index.lock", "paused": lambda: None,
                                                                               "note": lambda i, t: notes.append(1) or (True, "")}, deadline=time.time() - 1)
@@ -1744,15 +1744,15 @@ def test_execute_stop_notes_publish():
 def test_execute_truncation_and_counts():
     def long_exc(*x, **k):
         raise RuntimeError("y" * 500)
-    L = 160
+    L = 500   # the whole message (RIMMANDRAKE_STORE_TEXT_WHOLE_NO_CUTS)
     # note raise
     a = {"do": "skip", "why": "w", "note": True}
     ex([a], note=long_exc)
-    check(a["ledger"] == "note failed: RuntimeError: " + "y" * L, "note raise cut at 160: %d" % len(a["ledger"]))
+    check(a["ledger"] == "note failed: RuntimeError: " + "y" * L, "note raise kept whole: %d" % len(a["ledger"]))
     # publish raise
     root = wd_root("ex_tr")
     ex([], sch=sched(publish=True), root=root, publish=long_exc)
-    check(("error: RuntimeError: " + "y" * L + "\"") in "".join(glob_journal(root)), "publish raise cut at 160")
+    check(("error: RuntimeError: " + "y" * L + "\"") in "".join(glob_journal(root)), "publish raise kept whole")
     # launch raise: the alarm why carries out
     role = T.conductor()
     acts = [_role_act()]

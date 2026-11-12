@@ -64,7 +64,7 @@ def load_prescreen(path, now, max_age_s):
                          % (path, d["generated"], age, max_age_s))
     for r in d["ranked"]:
         if not isinstance(r, dict) or not r.get("item") or not isinstance(r.get("hard"), list):
-            raise ValueError("%s has a row with no item or no hard list: %r" % (path, r)[:300])
+            raise ValueError("%s has a row with no item or no hard list: %r" % (path, r))
     rows_hard = sorted(r["item"] for r in d["ranked"] if r["hard"])
     if sorted(d.get("hard_flagged") or []) != rows_hard:
         raise ValueError("%s hard_flagged %r disagrees with its rows %r" % (path, d.get("hard_flagged"), rows_hard))
@@ -113,7 +113,7 @@ def plan(doc, events, owners, conf, known_ids):
         known.add(name)
         todo.append({"name": name, "item": r["item"], "sha": sha, "hard": r["hard"], "for": seat,
                      "title": ("Auditor hard flag on %s close %s: %s" % (r["item"], sha or "(no sha)",
-                                                                         ", ".join(r["hard"])))[:200],
+                                                                         ", ".join(r["hard"]))),
                      "why": "audit hard flag, filed with no AI by audit_hardflag_file.py %s: %s"
                             % (mk, ", ".join(r["hard"])),
                      "caused_by": r["item"]})
@@ -202,8 +202,8 @@ def main(argv=None, events=None, owners=None, filer=None):
         else:
             if path and os.path.exists(path):
                 os.remove(path)
-            failed.append(dict({k: t[k] for k in ("name", "item", "sha", "hard", "for")}, error=out[-300:]))
-            print("FAILED to file %s on %s: %s" % (t["name"], t["item"], out[-300:]), file=sys.stderr)
+            failed.append(dict({k: t[k] for k in ("name", "item", "sha", "hard", "for")}, error=out))
+            print("FAILED to file %s on %s: %s" % (t["name"], t["item"], out), file=sys.stderr)
     rec = {"generated": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)),
            "prescreen": a.prescreen, "prescreen_generated": doc["generated"],
            "status": "PARTIAL" if failed else "OK", "seat": a.seat,

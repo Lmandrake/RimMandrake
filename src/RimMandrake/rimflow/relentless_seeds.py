@@ -57,7 +57,7 @@ def sh(*a, cwd=None, check=True, env=None, inp=None, timeout=300):
     r = subprocess.run(a, cwd=cwd, env=env, input=inp, capture_output=True, text=True, timeout=timeout,
                        stdin=None if inp is not None else subprocess.DEVNULL)
     if check and r.returncode:
-        raise RuntimeError("%s: %s" % (" ".join(a)[:120], (r.stderr or r.stdout)[-400:]))
+        raise RuntimeError("%s: %s" % (" ".join(a), (r.stderr or r.stdout)))
     return r
 
 
@@ -191,7 +191,7 @@ def sandbox_run(clone, proof):
     finally:
         shutil.rmtree(state, ignore_errors=True)
     text = r.stdout + r.stderr
-    return {"rc": r.returncode, "s": round(time.time() - t0, 1), "out": outcome(r.returncode, text), "tail": text[-600:]}
+    return {"rc": r.returncode, "s": round(time.time() - t0, 1), "out": outcome(r.returncode, text), "tail": text}
 
 
 def reset(clone, sha):
@@ -319,7 +319,7 @@ def cmd_census(a):
             try:
                 census_task(clone, t, hid, done, log)
             except Exception as e:          # noqa: BLE001  one bad task must not stop the census
-                append_row(log, {"task": t["id"], "kind": "error", "why": repr(e)[-300:]})
+                append_row(log, {"task": t["id"], "kind": "error", "why": repr(e)})
             print("done", t["id"], len(todo), flush=True)
 
     with cf.ThreadPoolExecutor(a.workers) as ex:
@@ -513,11 +513,11 @@ def cmd_pick(a):
                 deliver(source, k, dest)
                 r = sandbox_run(dest, k["proof"])
                 shutil.rmtree(dest, ignore_errors=True)
-                r = {"cls": k["cls"], "task": k["task"], "hunk": k.get("hunk"), "item": k["item"], "out": r["out"], "tail": r["tail"][-300:]}
+                r = {"cls": k["cls"], "task": k["task"], "hunk": k.get("hunk"), "item": k["item"], "out": r["out"], "tail": r["tail"]}
                 append_row(log, r)
                 print("verified", k["cls"], k["task"], r["out"], flush=True)
             if r["out"] != want:
-                dropped.append({"item": k["item"], "cls": k["cls"], "task": k["task"], "out": r["out"], "tail": r["tail"][-300:]})
+                dropped.append({"item": k["item"], "cls": k["cls"], "task": k["task"], "out": r["out"], "tail": r["tail"]})
                 continue
         kept.append(k)
     frame["dropped_at_delivery"] = dropped
@@ -959,7 +959,7 @@ def cmd_run(a):
             r = run_case(k, sources, a.wall, a.arm)
             print(r["item"], r["verdict"], round(r["secs"]), flush=True)
         except Exception as e:          # noqa: BLE001  the set goes on; a case with no verdict is reported, never hidden
-            print("ERROR", k["item"], repr(e)[-300:], flush=True)
+            print("ERROR", k["item"], repr(e), flush=True)
 
     with cf.ThreadPoolExecutor(a.concurrency) as ex:
         list(ex.map(one, todo))

@@ -45,8 +45,8 @@ def test_observe_agents():
     with_run(ok, lambda: D.observe_agents(timeout=7))
     check(seen["kw"]["timeout"] == 7, "timeout passed through")
     r = with_run(lambda a, **k: FakeProc(3, "", "x" * 300 + "boom"), lambda: D.observe_agents())
-    check(r["state"] == "UNMEASURED" and r["why"] == "claude agents exit 3: " + ("x" * 156) + "boom",
-          "exit text keeps the last 160 chars: %r" % r)
+    check(r["state"] == "UNMEASURED" and r["why"] == "claude agents exit 3: " + ("x" * 300) + "boom",
+          "exit text is whole (no 160 cut): %r" % r)
     r = with_run(lambda a, **k: FakeProc(0, "{}"), lambda: D.observe_agents())
     check(r == {"state": "UNMEASURED", "why": "claude agents --json is not a list of session objects"}, "not a list: %r" % r)
     r = with_run(lambda a, **k: FakeProc(0, "[1]"), lambda: D.observe_agents())
@@ -57,7 +57,7 @@ def test_observe_agents():
     def boom(argv, **kw):
         raise OSError("e" * 300)
     r = with_run(boom, lambda: D.observe_agents())
-    check(r == {"state": "UNMEASURED", "why": "OSError: " + "e" * 160}, "exception text cut at 160: %r" % r)
+    check(r == {"state": "UNMEASURED", "why": "OSError: " + "e" * 300}, "exception text whole (no 160 cut): %r" % r)
 
 
 def test_window_live():
@@ -142,7 +142,7 @@ def test_ledger_note():
     r = D.ledger_note("I", "t", run=lambda a, **k: FakeProc(0, "o", None))
     check(r == (True, "o"), "None stderr: %r" % (r,))
     r = D.ledger_note("I", "t", run=lambda a, **k: FakeProc(0, "  " + "x" * 150, "y" * 150 + "\n"))
-    check(r[1] == ("x" * 50) + ("y" * 150), "tail 200 of the stripped text: %d" % len(r[1]))
+    check(r[1] == ("x" * 150) + ("y" * 150), "the whole stripped text (no 200 tail): %d" % len(r[1]))
 
 
 def test_publish_bounded():
@@ -156,7 +156,7 @@ def test_publish_bounded():
     r = D.publish_bounded(1, 30, argv=[py, "-c", "pass"])
     check(r == "", "silent child -> empty string: %r" % (r,))
     r = D.publish_bounded(1, 30, argv=[py, "-c", "import sys; print('z'*300); sys.exit(4)"])
-    check(r == "publish child exit 4: " + "z" * 200, "failed child: %r" % (r,))
+    check(r == "publish child exit 4: " + "z" * 300, "failed child, its whole output: %r" % (r,))
     r = D.publish_bounded(1, 1, argv=[py, "-c", "import time; time.sleep(60)"])
     check(r == "publish KILLED after 1 s (tick budget; the commit stays local, the next tick retries)", "killed: %r" % (r,))
     # text mode: a str comes back (bytes mode would break .strip()/splitlines semantics)

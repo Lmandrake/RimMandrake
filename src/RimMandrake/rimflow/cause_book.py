@@ -119,7 +119,7 @@ def attach(book, key, aid, said, now, own_item=None, open_ids=None):
         raise KeyError("no live record for cause %s" % key)
     if aid not in rec["aids"]:
         rec["aids"].append(aid)
-    rec["readings"] = (rec.get("readings") or [])[-(READINGS_CAP - 1):] + [{"t": iso(now), "aid": aid, "said": str(said or "")[:200]}]
+    rec["readings"] = (rec.get("readings") or [])[-(READINGS_CAP - 1):] + [{"t": iso(now), "aid": aid, "said": str(said or "")}]
     if own_item and own_item != rec["item"] and own_item in (open_ids or ()) \
             and own_item not in rec.setdefault("dependents", {}):
         rec["dependents"][own_item] = "queued"

@@ -602,9 +602,9 @@ def settle(world, path=None, rules=None, ts=None, reasons=None):
             if to == "co_occurred":
                 why += "; no causal link to this observation is recorded (record real_bug --cause to make one)"
             if it.state == "dropped" and admin.search(reasons.get(ev["item"], "")):
-                to, why = "abandoned", why + " for an administrative reason: " + reasons[ev["item"]][:120]
+                to, why = "abandoned", why + " for an administrative reason: " + reasons[ev["item"]]
             elif it.state == "dropped":
-                why += ": " + (reasons.get(ev["item"]) or "no reason read")[:120]
+                why += ": " + (reasons.get(ev["item"]) or "no reason read")
             lines = _outcome(events, ev["kind"], ev["context"], ev["sitting"], to, why, ev["item"], False, rules,
                              ts, ev.get("id") or "legacy")
             settled.add(ev.get("id"))

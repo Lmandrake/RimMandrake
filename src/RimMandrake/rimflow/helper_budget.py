@@ -180,7 +180,7 @@ def attention(sch, st, rec, now, journal=None, tell=None):
                   "slot_allocator why: %s" % (
                       adv.get("token_mode"),
                       ", ".join("%s %s" % (k, paced.get(k, 0)) for k in sorted(placed)), sum(short.values()),
-                      ", ".join("%s %s" % (k, placed[k]) for k in sorted(placed)), str(adv.get("why") or "")[:300]),
+                      ", ".join("%s %s" % (k, placed[k]) for k in sorted(placed)), str(adv.get("why") or "")),
            "raise_first": "Token pacing is past its line; nothing stopped. Judge on evidence whether anything should."}
     for f in (journal, tell):
         if f:
@@ -209,7 +209,7 @@ def tick_step(sch, st, root, now, sa=None, journal=None, tell=None):
         _stand(st, ATTENTION_KIND, "unknown", now)    # no published advice this tick: the pacing reading is not current
         rec = {"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "do": "alarm", "kind": key,
                "why": "helper budget not published (%s: %s); the spawn hook computes for itself"
-                      % (type(e).__name__, str(e)[:200])}
+                      % (type(e).__name__, str(e))}
         if now - alarms.get(key, -1e18) >= sch.get("alarm_every_s", 6 * 3600):
             alarms[key] = now
             if journal:

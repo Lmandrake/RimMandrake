@@ -253,7 +253,7 @@ def check_retired(root=ROOT, retired=None, kept=None, probes=True, installed=Non
 def _git(root, *args, check=True):
     p = subprocess.run(["git", "-C", root] + list(args), capture_output=True, text=True, timeout=300)
     if check and p.returncode:
-        raise RuntimeError("git %s: %s" % (" ".join(args[:3]), p.stderr.strip()[:300]))
+        raise RuntimeError("git %s: %s" % (" ".join(args[:3]), p.stderr.strip()))
     return p.stdout.strip()
 
 

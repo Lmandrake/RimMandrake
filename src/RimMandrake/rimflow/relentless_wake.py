@@ -86,7 +86,7 @@ def poke(source, why="", root=None, now=None):
                 return dst
             tmp = os.path.join(d, TMP_DIR, "%s.%d" % (src, os.getpid()))
             with open(tmp, "w", encoding="utf-8") as f:
-                json.dump({"at": at, "source": src, "why": str(why)[:200], "pid": os.getpid()}, f)
+                json.dump({"at": at, "source": src, "why": str(why), "pid": os.getpid()}, f)
             os.replace(tmp, dst)
         return dst
     except Exception:  # noqa: BLE001  a wake is a courtesy: the heartbeat still comes
@@ -196,7 +196,7 @@ def serve(sdir, now, do, acts, tick_state, cfg=None, wall=time.monotonic):
     failed = isinstance(got, dict)     # raised or refused (a books sync that did not run): nothing was enrolled
     with _state(sdir) as st:
         if failed:      # served_at stays put: the next boundary (or a fire) retries; the per-tick caps bound it
-            st["last_failed_serve"] = {"at": now, "why": str(got.get("why"))[:300]}
+            st["last_failed_serve"] = {"at": now, "why": str(got.get("why"))}
         else:
             st["served_at"] = max(float(st["served_at"]), upto)
             st["last_serve"] = {"at": now, "lag_s": round(now - min(p["at"] for p in new), 1),
@@ -204,7 +204,7 @@ def serve(sdir, now, do, acts, tick_state, cfg=None, wall=time.monotonic):
     row = {"do": "wake_serve", "lag_s": round(now - min(p["at"] for p in new), 1), "took_s": took,
            "sources": sorted({p.get("source", "?") for p in new})}
     if failed:
-        row["why"] = str(got.get("why"))[:300]
+        row["why"] = str(got.get("why"))
     else:
         row["enrolled"] = list(got or [])
     acts.append(row)
@@ -229,7 +229,7 @@ def tick_active():
 def start_tick():
     got = subprocess.run(["systemctl", "--user", "start", "--no-block", TICK_UNIT], capture_output=True, text=True,
                          timeout=20)
-    return None if got.returncode == 0 else (got.stderr or got.stdout).strip()[:300] or "exit %d" % got.returncode
+    return None if got.returncode == 0 else (got.stderr or got.stdout).strip() or "exit %d" % got.returncode
 
 
 def main(argv=None):

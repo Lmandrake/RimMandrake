@@ -167,7 +167,7 @@ def line(e):
             e.criterion or "?", e.kind, e.type, e.type.rsplit(".", 1)[0],
             ("live-mods packageIds " + ", ".join(e.mods)) if e.mods else
             "no live-mods line names its mod by packageId: name it (e.g. live-mods: 7f.alienworlds)",
-            ("; log " + e.log) if e.log else "", (e.why or "")[-200:])
+            ("; log " + e.log) if e.log else "", (e.why or ""))
     return "%s %s (%s%s%s): %s" % (e.criterion or "?", e.kind, ", ".join(e.mods) or "no mod named",
                                    ("; " + e.cmd) if e.cmd else "", ("; log " + e.log) if e.log else "",
-                                   (e.why or "")[-300:])
+                                   (e.why or ""))

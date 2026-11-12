@@ -35,6 +35,10 @@ import subprocess
 import sys
 import time
 import traceback
+try:                                    # whole text, never a silent cut (RIMMANDRAKE_STORE_TEXT_WHOLE_NO_CUTS)
+    from . import fulltext
+except ImportError:
+    import fulltext  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.realpath(os.path.join(HERE, "..", "..", "..", ".git")))     # a release tree's .git links to books
@@ -86,7 +90,7 @@ def first_exception(text):
     """Player.log text -> its first exception-like line (stripped, <=300 chars), or None."""
     for ln in (text or "").splitlines():
         if FIRST_EXC.search(ln):
-            return ln.strip()[:300]
+            return ln.strip()
     return None
 
 
@@ -99,7 +103,7 @@ def death_rule(first):
 
 
 def tail(text, n=TAIL_LINES):
-    return "\n".join((text or "").splitlines()[-n:])[-6000:]
+    return fulltext.fit("\n".join((text or "").splitlines()[-n:]), 6000, tail=True)
 
 
 # ---------------------------------------------------------------- the world it acts on (faked in the selftest)
@@ -120,7 +124,7 @@ class Ops(object):
             p = subprocess.run(argv, cwd=self.cwd, capture_output=True, text=True, timeout=timeout,
                                encoding="utf-8", errors="replace", stdin=subprocess.DEVNULL)
         except subprocess.TimeoutExpired:
-            return 124, "timed out after %d s: %s" % (timeout, " ".join(argv)[:200])
+            return 124, "timed out after %d s: %s" % (timeout, " ".join(argv))
         return p.returncode, (p.stdout or "") + (p.stderr or "")
 
     def instance(self):
@@ -220,7 +224,7 @@ class Ops(object):
     def report(self, verb, text, klass=None):
         argv = [sys.executable, os.path.join(self.cwd, "src", "RimMandrake", "rimflow", "relentless.py"), verb,
                 "--item", self.plan["item"], "--gen", str(self.plan["gen"])]
-        argv += (["--class", klass] if klass else []) + [text[:1800]]
+        argv += (["--class", klass] if klass else []) + [fulltext.fit(text, fulltext.ARGV_MAX)]
         return self.sh(argv, timeout=120)
 
 
@@ -235,9 +239,9 @@ def plan_hazards(out):
             len(hand), ", ".join(hand[:6]))
     bad = [ln.strip() for ln in out.splitlines() if REFUSAL.search(ln)]
     if bad:
-        return "the deploy plan refuses: %s" % " | ".join(bad[:3])[:400]
+        return "the deploy plan refuses: %s" % " | ".join(bad[:3])
     if not PLAN_END.search(out):
-        return "the deploy plan did not finish (no closing line): %s" % out.strip()[-300:]
+        return "the deploy plan did not finish (no closing line): %s" % out.strip()
     return None
 
 
@@ -266,7 +270,7 @@ class Clock(object):
 
 def _ok(rc, out, what):
     if rc != 0:
-        raise Stop("%s exit %d: %s" % (what, rc, out.strip()[-400:]))
+        raise Stop("%s exit %d: %s" % (what, rc, out.strip()))
     return out
 
 
@@ -310,7 +314,7 @@ def run(plan, ops, clock=None):
             if why:
                 raise Stop("deploy %s: %s" % (args, why))
             if rc not in (0, 1):
-                raise Stop("deploy plan %s exit %d: %s" % (args, rc, out.strip()[-300:]))
+                raise Stop("deploy plan %s exit %d: %s" % (args, rc, out.strip()))
         clock.lap("deploy_plan")
         want = plan.get("companion")   # the built shas whose companion BridgeTools/JawaBench lacks, or None
         if isinstance(want, str):   # a plan written before COMPANION_DEPLOY_LIVE_ROUND_FORGETS: a source hash, no sha
@@ -401,19 +405,19 @@ def run(plan, ops, clock=None):
         for cmd in (plan.get("menu_cmds") or []):       # 6a. at the main menu, before anything starts a game
             left = int(REMEDY_TOTAL_S - (ops.now() - t_rem))
             if left < 30:
-                log.append("menu `%s` NOT RUN: the %d s budget after the load is spent" % (cmd[:120], REMEDY_TOTAL_S))
+                log.append("menu `%s` NOT RUN: the %d s budget after the load is spent" % (cmd, REMEDY_TOTAL_S))
                 continue
             rc, out = ops.sh(["bash", "-c", cmd], timeout=min(MENU_MAX_S, left))
-            log.append("menu `%s` exit %d: %s" % (cmd[:120], rc, " / ".join(out.strip().splitlines()[-3:])[:300]))
+            log.append("menu `%s` exit %d: %s" % (cmd, rc, " / ".join(out.strip().splitlines()[-3:])))
         if plan.get("menu_cmds"):
             clock.lap("menu")
         for cmd in (plan.get("remedy_cmds") or []):     # 6. the lane fix's producers, once, with the game up
             left = int(REMEDY_TOTAL_S - (ops.now() - t_rem))
             if left < 30:
-                log.append("remedy `%s` NOT RUN: the producers' %d s budget is spent" % (cmd[:120], REMEDY_TOTAL_S))
+                log.append("remedy `%s` NOT RUN: the producers' %d s budget is spent" % (cmd, REMEDY_TOTAL_S))
                 continue
             rc, out = ops.sh(["bash", "-c", cmd], timeout=min(REMEDY_MAX_S, left))
-            log.append("remedy `%s` exit %d: %s" % (cmd[:120], rc, " / ".join(out.strip().splitlines()[-3:])[:300]))
+            log.append("remedy `%s` exit %d: %s" % (cmd, rc, " / ".join(out.strip().splitlines()[-3:])))
         if plan.get("remedy_cmds"):
             clock.lap("remedy")
         return "ready", "python stager: " + "; ".join(log)
@@ -428,7 +432,7 @@ def brief(fallback, state, detail, tail_text, clock_line):
     fb = list(fallback)
     lead = ("THE PYTHON STAGER STOPPED ON A STATE IT HAS NO RULE FOR. State: %s. Detail: %s. %s\nStart from here: what "
             "it already did is listed; do not redo it unless the state needs it.\n--- Player.log tail ---\n%s\n--- end "
-            "of tail ---\n\n" % (state, detail[:1500], clock_line, tail_text or "(empty or unreadable)"))
+            "of tail ---\n\n" % (state, detail, clock_line, tail_text or "(empty or unreadable)"))
     if "-p" in fb and fb.index("-p") + 1 < len(fb):
         i = fb.index("-p") + 1
         fb[i] = lead + fb[i]
@@ -452,10 +456,10 @@ def main_run(path, ops=None, execv=os.execvp):
     except Exception as e:      # noqa: BLE001  the one road to an LLM: a state no rule names, or what no step handles
         if isinstance(e, Unknown):
             state, detail, tl = e.state, e.detail, e.tail
-            last = "%s: %s" % (state, detail[:500])
+            last = "%s: %s" % (state, detail)
         else:
             tb = traceback.format_exc()
-            state, detail, last = "unhandled exception", tb[-2500:], tb.strip().splitlines()[-1][:600]
+            state, detail, last = "unhandled exception", tb, tb.strip().splitlines()[-1]
             try:
                 tl = tail(ops.log_text())
             except Exception:   # noqa: BLE001  a blind log is no reason not to hand over
@@ -476,7 +480,7 @@ def main_run(path, ops=None, execv=os.execvp):
     _record(ops, plan, clock, verdict, text=text)
     rc, out = ops.report("game-ready" if verdict == "ready" else "snag", text,
                          None if verdict == "ready" else "game_stage")
-    print("relentless_stage: %s: %s\n%s" % (verdict, text, out.strip()[-300:]), flush=True)
+    print("relentless_stage: %s: %s\n%s" % (verdict, text, out.strip()), flush=True)
     return 0 if rc == 0 else 3
 
 
