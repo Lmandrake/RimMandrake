@@ -392,7 +392,7 @@ def truth(ledger, iid):
         out["word"] = "closed in the ledger%s%s" % (" %s" % clock(out["at"]) if out["at"] else "",
                                                     ", commit %s" % it.closed_sha if it.closed_sha else "")
     elif state in ("dropped", "superseded"):
-        out["word"] = "%s in the ledger" % state + (" by %s" % it.superseded_by if it.superseded_by else "")
+        out["word"] = "%s in the ledger" % state + (" by %s" % getattr(it, "superseded_by", None) if getattr(it, "superseded_by", None) else "")
     else:
         lease = getattr(it, "lease", None)
         holder = lease.get("seat") if isinstance(lease, dict) else getattr(lease, "seat", None) if lease else None
@@ -569,9 +569,9 @@ def item_title(iid, t):
 # ---- the picture -------------------------------------------------------------------------------------
 
 OUT_COLOUR = {"closed": "#2aa98a", "parked": "#b28a00", "dropped": "#6b7380", "failed": "#ff5a4d",
-              "running": "#4f97d6", "other": "#b277d6"}
+              "running": "#4f97d6", "other": "#b277d6", "noend": "url(#arcHatch)"}
 OUT_WORD = {"closed": "closed", "parked": "parked", "dropped": "dropped", "failed": "failed", "running": "running now",
-            "other": "other end"}
+            "other": "other end", "noend": "no end line, unit not running"}
 
 
 def picture(recs):
@@ -588,7 +588,7 @@ def picture(recs):
         return left + (max(t, t_from) - t_from) / span * (right - left)
 
     x0 = 12
-    for k in ("closed", "parked", "dropped", "failed", "running", "other"):
+    for k in ("closed", "parked", "dropped", "failed", "running", "other", "noend"):
         P.rect(x0, 12, 11, 11, OUT_COLOUR[k], rx=2)
         P.text(x0 + 15, 22, OUT_WORD[k])
         x0 += 15 + A.text_w(OUT_WORD[k], 11) + 16
@@ -611,20 +611,21 @@ def picture(recs):
         y = top + i * row_h
         alert = any(rank <= 2 for rank, _ in needs_for(r))
         P.text(12, y + 18, short(r["name"], 18), size=14, weight="700", colour=A.ALERT if alert else A.TEXT)
-        P.text(12, y + 34, short(r["state_word"], 22), size=10.5, colour=A.ALERT if alert else A.DIM)
+        P.text(12, y + 34, short(r["state_word"].replace("machine unreachable", "unreachable"), 24), size=10.5, colour=A.ALERT if alert else A.DIM)
         P.line(left, y + row_h - 4, right, y + row_h - 4, "#262b34")
         for x in r["rounds_sorted"]:
             a = x["start"] or x["end"]
             b = x["end"] or (now if x is r["live_round"] else None)
             if a is None or b is None or b < t_from:
                 continue
-            kind = "running" if not x["end"] else (x["outcome"] if x["outcome"] in OUT_COLOUR else "other")
+            up = (r.get("unit_state") or {}).get("word") in ("active", "activating", "unreachable", "UNMEASURED", None)
+            kind = ("running" if up else "noend") if not x["end"] else (x["outcome"] if x["outcome"] in OUT_COLOUR else "other")
             xa, xb = X(a), X(b)
             tip = "round %d: %s, %s%s" % (x["n"], x["item"] or "no item", OUT_WORD.get(kind, kind) if kind != "other" else x["outcome"],
                                           ", ledger: %s" % x["truth"]["word"] if x["item"] else "")
             P.rect(xa, y + 8, max(2.5, xb - xa - 1), 24, OUT_COLOUR[kind], rx=2, title=tip)
             if xb - xa > 20:
-                P.text((xa + xb) / 2, y + 24, x["n"], size=10.5, colour=A.INK, weight="600", anchor="middle")
+                P.text((xa + xb) / 2, y + 24, x["n"], size=10.5, colour=A.TEXT if kind == "noend" else A.INK, weight="600", anchor="middle")
         side = "%d closed today" % len(r["closed_today"])
         if r["closed_today"] and len(r["accepted_today"]) != len(r["closed_today"]):
             side += ", %d in ledger" % len(r["accepted_today"])
@@ -683,7 +684,8 @@ def round_rows(r):
     rows = ["| Round | Started | Took | Item | Ended | Ledger now | Commit | Tokens |", "|---|---|---|---|---|---|---|---|"]
     for x in r["rounds_sorted"][-ROUNDS_SHOWN:][::-1]:
         took = A.hm((x["end"] or now_s()) - x["start"]) if x["start"] else "-"
-        ended = x["outcome"] or ("**running**" if x is r["live_round"] else "no end line")
+        up = (r.get("unit_state") or {}).get("word") in ("active", "activating", "unreachable", "UNMEASURED", None)
+        ended = x["outcome"] or ("**running**" if x is r["live_round"] and up else "no end line" + (", unit not running" if x is r["live_round"] else ""))
         rows.append("| %d | %s | %s | %s | %s | %s | %s | %s |" % (
             x["n"], cell(clock(x["start"]) if x["start"] else "-"), cell(took), cell(item_title(x["item"], x["truth"])),
             cell(ended), cell(x["truth"]["word"] if x["item"] else "-"), cell("`%s`" % x["sha"] if x["sha"] else "-"),
