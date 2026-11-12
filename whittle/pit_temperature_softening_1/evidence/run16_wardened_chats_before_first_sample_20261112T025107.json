@@ -1,0 +1,2081 @@
+{
+ "script": "pit_exposure_live.py",
+ "item": "PIT_TEMPERATURE_SOFTENING_1",
+ "stamp": "20261112T025107",
+ "started": "2026-11-12T02:51:07",
+ "rows": [
+  {
+   "id": "PEX_A1_defs_resolve",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "PIT_TEMPERATURE_SOFTENING_1",
+   "detail": {
+    "found": [
+     "RM_ExposedPrisoner",
+     "RM_PitExposure"
+    ],
+    "notFound": [],
+    "foundCount": 2
+   }
+  },
+  {
+   "id": "PEX_A2_open_pit_tracks_noon",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "PIT_TEMPERATURE_SOFTENING_1",
+   "detail": {
+    "hours": [
+     6.0,
+     12.0
+    ],
+    "gameHour": [
+     "5.77",
+     "11.77"
+    ],
+    "outdoor": [
+     36.704937,
+     44.9368858
+    ],
+    "pitA_open": [
+     36.69074,
+     44.90096
+    ],
+    "pitB_roofed": [
+     39.9874725,
+     40.87371
+    ],
+    "cellC": [
+     37.58915,
+     43.57447
+    ],
+    "riseA": 8.21,
+    "riseB": 0.89,
+    "maxLagA": 0.07,
+    "maxLagB": 5.39,
+    "outdoorRoomA": "True",
+    "outdoorRoomB": "False"
+   }
+  },
+  {
+   "id": "PEX_A3_pit_wears_resistance",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "PIT_TEMPERATURE_SOFTENING_1",
+   "detail": {
+    "start": {
+     "PA": 12.08,
+     "PB": 15.335,
+     "PC": 15.805
+    },
+    "end": {
+     "PA": 6.496,
+     "PB": 14.517,
+     "PC": 15.805
+    },
+    "drop": {
+     "PA": 5.584,
+     "PB": 0.818,
+     "PC": 0.0
+    },
+    "PA_hurting_from_to": [
+     6.0,
+     15.0
+    ],
+    "interaction": "ReduceResistance",
+    "chats_max": {
+     "PA": 2,
+     "PB": 2,
+     "PC": 2
+    },
+    "mood_end": {
+     "PA": "0.030",
+     "PB": "0.280",
+     "PC": "0.230"
+    },
+    "safeMax": {
+     "PA": "38.0",
+     "PB": "46.0",
+     "PC": "46.0"
+    },
+    "ambient_end": {
+     "PA": "48.11",
+     "PB": "42.74",
+     "PC": "47.31"
+    },
+    "heatstroke_end": {
+     "PA": "0.168",
+     "PB": "0.000",
+     "PC": "0.019"
+    },
+    "hours": [
+     6.0,
+     15.0
+    ]
+   }
+  },
+  {
+   "id": "PEX_A4_compassion_not_psycho",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "PIT_TEMPERATURE_SOFTENING_1",
+   "detail": {
+    "has_thought": {
+     "Human823": true,
+     "Human829": false,
+     "Human826": false
+    },
+    "ideo_minds_beggars": {
+     "Human823": true,
+     "Human829": true,
+     "Human826": false
+    },
+    "psychopath": "Human829",
+    "hard_morality": [
+     "Human826"
+    ],
+    "ideos": {
+     "Human823": "Rhydellian Philosophy",
+     "Human829": "Rhydellian Philosophy",
+     "Human826": "Neo-Archotechnics"
+    },
+    "thought_rows": {
+     "Human823": [
+      [
+       "RM_ExposedPrisoner",
+       -3.0,
+       "Alligator left exposed in a pit"
+      ]
+     ],
+     "Human829": [],
+     "Human826": []
+    }
+   }
+  }
+ ],
+ "samples": [
+  {
+   "hour": 6.0,
+   "TA": 36.69074,
+   "out": 36.704937,
+   "TB": 39.9874725,
+   "TC": 37.58915,
+   "PA": {
+    "exposed": "True",
+    "marker": "True",
+    "prisoner": "True",
+    "resistance": "12.080",
+    "will": "0.213",
+    "ambient": "36.69",
+    "safeMin": "4.0",
+    "safeMax": "38.0",
+    "hurting": "True",
+    "heatstroke": "0.026",
+    "hypothermia": "0.000",
+    "room": "558",
+    "roomTemp": "36.69",
+    "outdoorRoom": "True",
+    "openRoof": "25",
+    "cells": "25",
+    "hour": "5.77",
+    "outdoor": "36.70",
+    "mood": "0.560",
+    "mode": "ReduceResistance",
+    "chatsToday": "1"
+   },
+   "PB": {
+    "exposed": "False",
+    "marker": "False",
+    "prisoner": "True",
+    "resistance": "15.335",
+    "will": "0.662",
+    "ambient": "39.99",
+    "safeMin": "-4.0",
+    "safeMax": "46.0",
+    "hurting": "False",
+    "heatstroke": "0.000",
+    "hypothermia": "0.000",
+    "room": "607",
+    "roomTemp": "39.99",
+    "outdoorRoom": "False",
+    "openRoof": "0",
+    "cells": "25",
+    "hour": "5.77",
+    "outdoor": "36.70",
+    "mood": "0.410",
+    "mode": "ReduceResistance",
+    "chatsToday": "1"
+   },
+   "PC": {
+    "exposed": "False",
+    "marker": "False",
+    "prisoner": "True",
+    "resistance": "15.805",
+    "will": "0.474",
+    "ambient": "37.59",
+    "safeMin": "-4.0",
+    "safeMax": "46.0",
+    "hurting": "False",
+    "heatstroke": "0.000",
+    "hypothermia": "0.000",
+    "room": "610",
+    "roomTemp": "37.59",
+    "outdoorRoom": "False",
+    "openRoof": "0",
+    "cells": "25",
+    "hour": "5.77",
+    "outdoor": "36.70",
+    "mood": "0.400",
+    "mode": "ReduceResistance",
+    "chatsToday": "2"
+   },
+   "depthA": [
+    8,
+    8
+   ],
+   "fillA": 0,
+   "depthB": [
+    8,
+    8
+   ],
+   "fillB": 0,
+   "colonists": {
+    "Human823": {
+     "mental": false,
+     "job": "PrisonerAttemptRecruit",
+     "mood": 0.6
+    },
+    "Human826": {
+     "mental": false,
+     "job": "PrisonerAttemptRecruit",
+     "mood": 0.65
+    },
+    "Human829": {
+     "mental": false,
+     "job": "Wait_Wander",
+     "mood": 0.56
+    }
+   },
+   "PA_at": {
+    "x": 131,
+    "z": 125,
+    "job": "Wait_Wander",
+    "mental": false,
+    "downed": false,
+    "climb": "CLIMB k=2 held=True trapped=True cell=131,125 | POCKET k=2 comp=1 pocket=True size=25 depth=8 gen=402 built=402 rebuilds=52"
+   },
+   "PB_at": {
+    "x": 135,
+    "z": 123,
+    "job": "Wait_Wander",
+    "mental": false,
+    "downed": false,
+    "climb": "CLIMB k=2 held=True trapped=True cell=135,123 | POCKET k=2 comp=2 pocket=True size=25 depth=8 gen=402 built=402 rebuilds=52"
+   },
+   "PC_at": {
+    "x": 146,
+    "z": 124,
+    "job": "GotoWander",
+    "mental": false,
+    "downed": false,
+    "climb": "CLIMB k=2 held=False trapped=False cell=146,124 | POCKET k=2 comp=0 pocket=False size=62450 depth=0 gen=402 built=402 rebuilds=52"
+   }
+  },
+  {
+   "hour": 7.0,
+   "TA": 37.4906044,
+   "out": 37.4906044,
+   "TB": 40.0174141,
+   "TC": 37.98382,
+   "PA": {
+    "exposed": "True",
+    "marker": "True",
+    "prisoner": "True",
+    "resistance": "10.496",
+    "will": "0.213",
+    "ambient": "37.49",
+    "safeMin": "4.0",
+    "safeMax": "38.0",
+    "hurting": "True",
+    "heatstroke": "0.026",
+    "hypothermia": "0.000",
+    "room": "558",
+    "roomTemp": "37.49",
+    "outdoorRoom": "True",
+    "openRoof": "25",
+    "cells": "25",
+    "hour": "6.77",
+    "outdoor": "37.49",
+    "mood": "0.400",
+    "mode": "ReduceResistance",
+    "chatsToday": "2"
+   },
+   "PB": {
+    "exposed": "False",
+    "marker": "False",
+    "prisoner": "True",
+    "resistance": "15.335",
+    "will": "0.662",
+    "ambient": "40.02",
+    "safeMin": "-4.0",
+    "safeMax": "46.0",
+    "hurting": "False",
+    "heatstroke": "0.000",
+    "hypothermia": "0.000",
+    "room": "607",
+    "roomTemp": "40.02",
+    "outdoorRoom": "False",
+    "openRoof": "0",
+    "cells": "25",
+    "hour": "6.77",
+    "outdoor": "37.49",
+    "mood": "0.410",
+    "mode": "ReduceResistance",
+    "chatsToday": "1"
+   },
+   "PC": {
+    "exposed": "False",
+    "marker": "False",
+    "prisoner": "True",
+    "resistance": "15.805",
+    "will": "0.474",
+    "ambient": "37.98",
+    "safeMin": "-4.0",
+    "safeMax": "46.0",
+    "hurting": "False",
+    "heatstroke": "0.000",
+    "hypothermia": "0.000",
+    "room": "610",
+    "roomTemp": "37.98",
+    "outdoorRoom": "False",
+    "openRoof": "0",
+    "cells": "25",
+    "hour": "6.77",
+    "outdoor": "37.49",
+    "mood": "0.400",
+    "mode": "ReduceResistance",
+    "chatsToday": "2"
+   },
+   "depthA": [
+    8,
+    8
+   ],
+   "fillA": 0,
+   "depthB": [
+    8,
+    8
+   ],
+   "fillB": 0,
+   "colonists": {
+    "Human823": {
+     "mental": false,
+     "job": "LayDown",
+     "mood": 0.6
+    },
+    "Human826": {
+     "mental": false,
+     "job": "PrisonerAttemptRecruit",
+     "mood": 0.7
+    },
+    "Human829": {
+     "mental": false,
+     "job": "GotoWander",
+     "mood": 0.52
+    }
+   },
+   "PA_at": {
+    "x": 131,
+    "z": 122,
+    "job": "Wait_Wander",
+    "mental": false,
+    "downed": false,
+    "climb": "CLIMB k=2 held=True trapped=True cell=131,122 | POCKET k=2 comp=1 pocket=True size=25 depth=8 gen=402 built=402 rebuilds=52"
+   },
+   "PB_at": {
+    "x": 137,
+    "z": 123,
+    "job": "GotoWander",
+    "mental": false,
+    "downed": false,
+    "climb": "CLIMB k=2 held=True trapped=True cell=137,123 | POCKET k=2 comp=2 pocket=True size=25 depth=8 gen=402 built=402 rebuilds=52"
+   },
+   "PC_at": {
+    "x": 146,
+    "z": 121,
+    "job": "Wait_Wander",
+    "mental": false,
+    "downed": false,
+    "climb": "CLIMB k=2 held=False trapped=False cell=146,121 | POCKET k=2 comp=0 pocket=False size=62450 depth=0 gen=402 built=402 rebuilds=52"
+   }
+  },
+  {
+   "hour": 8.0,
+   "TA": 38.598053,
+   "out": 38.66094,
+   "TB": 40.03104,
+   "TC": 38.8430977,
+   "PA": {
+    "exposed": "True",
+    "marker": "True",
+    "prisoner": "True",
+    "resistance": "9.996",
+    "will": "0.213",
+    "ambient": "38.60",
+    "safeMin": "4.0",
+    "safeMax": "38.0",
+    "hurting": "True",
+    "heatstroke": "0.034",
+    "hypothermia": "0.000",
+    "room": "558",
+    "roomTemp": "38.60",
+    "outdoorRoom": "True",
+    "openRoof": "25",
+    "cells": "25",
+    "hour": "7.77",
+    "outdoor": "38.66",
+    "mood": "0.360",
+    "mode": "ReduceResistance",
+    "chatsToday": "2"
+   },
+   "PB": {
+    "exposed": "False",
+    "marker": "False",
+    "prisoner": "True",
+    "resistance": "14.517",
+    "will": "0.662",
+    "ambient": "40.03",
+    "safeMin": "-4.0",
+    "safeMax": "46.0",
+    "hurting": "False",
+    "heatstroke": "0.000",
+    "hypothermia": "0.000",
+    "room": "607",
+    "roomTemp": "40.03",
+    "outdoorRoom": "False",
+    "openRoof": "0",
+    "cells": "25",
+    "hour": "7.77",
+    "outdoor": "38.66",
+    "mood": "0.410",
+    "mode": "ReduceResistance",
+    "chatsToday": "2"
+   },
+   "PC": {
+    "exposed": "False",
+    "marker": "False",
+    "prisoner": "True",
+    "resistance": "15.805",
+    "will": "0.474",
+    "ambient": "38.84",
+    "safeMin": "-4.0",
+    "safeMax": "46.0",
+    "hurting": "False",
+    "heatstroke": "0.000",
+    "hypothermia": "0.000",
+    "room": "610",
+    "roomTemp": "38.84",
+    "outdoorRoom": "False",
+    "openRoof": "0",
+    "cells": "25",
+    "hour": "7.77",
+    "outdoor": "38.66",
+    "mood": "0.400",
+    "mode": "ReduceResistance",
+    "chatsToday": "2"
+   },
+   "depthA": [
+    8,
+    8
+   ],
+   "fillA": 0,
+   "depthB": [
+    8,
+    8
+   ],
+   "fillB": 0,
+   "colonists": {
+    "Human823": {
+     "mental": false,
+     "job": "LayDown",
+     "mood": 0.6
+    },
+    "Human826": {
+     "mental": false,
+     "job": "GotoWander",
+     "mood": 0.64
+    },
+    "Human829": {
+     "mental": false,
+     "job": "GotoWander",
+     "mood": 0.52
+    }
+   },
+   "PA_at": {
+    "x": 128,
+    "z": 123,
+    "job": "GotoWander",
+    "mental": false,
+    "downed": false,
+    "climb": "CLIMB k=2 held=True trapped=True cell=128,123 | POCKET k=2 comp=1 pocket=True size=25 depth=8 gen=402 built=402 rebuilds=52"
+   },
+   "PB_at": {
+    "x": 137,
+    "z": 121,
+    "job": "GotoWander",
+    "mental": false,
+    "downed": false,
+    "climb": "CLIMB k=2 held=True trapped=True cell=137,121 | POCKET k=2 comp=2 pocket=True size=25 depth=8 gen=402 built=402 rebuilds=52"
+   },
+   "PC_at": {
+    "x": 146,
+    "z": 122,
+    "job": "GotoWander",
+    "mental": false,
+    "downed": false,
+    "climb": "CLIMB k=2 held=False trapped=False cell=146,122 | POCKET k=2 comp=0 pocket=False size=62450 depth=0 gen=402 built=402 rebuilds=52"
+   }
+  },
+  {
+   "hour": 9.0,
+   "TA": 40.03734,
+   "out": 40.11116,
+   "TB": 40.044426,
+   "TC": 39.9760742,
+   "PA": {
+    "exposed": "True",
+    "marker": "True",
+    "prisoner": "True",
+    "resistance": "9.496",
+    "will": "0.213",
+    "ambient": "40.04",
+    "safeMin": "4.0",
+    "safeMax": "38.0",
+    "hurting": "True",
+    "heatstroke": "0.049",
+    "hypothermia": "0.000",
+    "room": "558",
+    "roomTemp": "40.04",
+    "outdoorRoom": "True",
+    "openRoof": "25",
+    "cells": "25",
+    "hour": "8.77",
+    "outdoor": "40.11",
+    "mood": "0.360",
+    "mode": "ReduceResistance",
+    "chatsToday": "2"
+   },
+   "PB": {
+    "exposed": "False",
+    "marker": "False",
+    "prisoner": "True",
+    "resistance": "14.517",
+    "will": "0.662",
+    "ambient": "40.04",
+    "safeMin": "-4.0",
+    "safeMax": "46.0",
+    "hurting": "False",
+    "heatstroke": "0.000",
+    "hypothermia": "0.000",
+    "room": "607",
+    "roomTemp": "40.04",
+    "outdoorRoom": "False",
+    "openRoof": "0",
+    "cells": "25",
+    "hour": "8.77",
+    "outdoor": "40.11",
+    "mood": "0.410",
+    "mode": "ReduceResistance",
+    "chatsToday": "2"
+   },
+   "PC": {
+    "exposed": "False",
+    "marker": "False",
+    "prisoner": "True",
+    "resistance": "15.805",
+    "will": "0.474",
+    "ambient": "39.98",
+    "safeMin": "-4.0",
+    "safeMax": "46.0",
+    "hurting": "False",
+    "heatstroke": "0.000",
+    "hypothermia": "0.000",
+    "room": "610",
+    "roomTemp": "39.98",
+    "outdoorRoom": "False",
+    "openRoof": "0",
+    "cells": "25",
+    "hour": "8.77",
+    "outdoor": "40.11",
+    "mood": "0.400",
+    "mode": "ReduceResistance",
+    "chatsToday": "2"
+   },
+   "depthA": [
+    8,
+    8
+   ],
+   "fillA": 0,
+   "depthB": [
+    8,
+    8
+   ],
+   "fillB": 0,
+   "colonists": {
+    "Human823": {
+     "mental": false,
+     "job": "LayDown",
+     "mood": 0.6
+    },
+    "Human826": {
+     "mental": false,
+     "job": "GotoWander",
+     "mood": 0.58
+    },
+    "Human829": {
+     "mental": false,
+     "job": "GotoWander",
+     "mood": 0.53
+    }
+   },
+   "PA_at": {
+    "x": 130,
+    "z": 123,
+    "job": "GotoWander",
+    "mental": false,
+    "downed": false,
+    "climb": "CLIMB k=2 held=True trapped=True cell=130,123 | POCKET k=2 comp=1 pocket=True size=25 depth=8 gen=402 built=402 rebuilds=52"
+   },
+   "PB_at": {
+    "x": 137,
+    "z": 123,
+    "job": "Wait_Wander",
+    "mental": false,
+    "downed": false,
+    "climb": "CLIMB k=2 held=True trapped=True cell=137,123 | POCKET k=2 comp=2 pocket=True size=25 depth=8 gen=402 built=402 rebuilds=52"
+   },
+   "PC_at": {
+    "x": 145,
+    "z": 122,
+    "job": "Wait_Wander",
+    "mental": false,
+    "downed": false,
+    "climb": "CLIMB k=2 held=False trapped=False cell=145,122 | POCKET k=2 comp=0 pocket=False size=62450 depth=0 gen=402 built=402 rebuilds=52"
+   }
+  },
+  {
+   "hour": 10.0,
+   "TA": 41.6507378,
+   "out": 41.69027,
+   "TB": 40.1448135,
+   "TC": 40.7044563,
+   "PA": {
+    "exposed": "True",
+    "marker": "True",
+    "prisoner": "True",
+    "resistance": "8.996",
+    "will": "0.213",
+    "ambient": "41.65",
+    "safeMin": "4.0",
+    "safeMax": "38.0",
+    "hurting": "True",
+    "heatstroke": "0.065",
+    "hypothermia": "0.000",
+    "room": "558",
+    "roomTemp": "41.65",
+    "outdoorRoom": "True",
+    "openRoof": "25",
+    "cells": "25",
+    "hour": "9.77",
+    "outdoor": "41.69",
+    "mood": "0.360",
+    "mode": "ReduceResistance",
+    "chatsToday": "2"
+   },
+   "PB": {
+    "exposed": "False",
+    "marker": "False",
+    "prisoner": "True",
+    "resistance": "14.517",
+    "will": "0.662",
+    "ambient": "40.14",
+    "safeMin": "-4.0",
+    "safeMax": "46.0",
+    "hurting": "False",
+    "heatstroke": "0.000",
+    "hypothermia": "0.000",
+    "room": "607",
+    "roomTemp": "40.14",
+    "outdoorRoom": "False",
+    "openRoof": "0",
+    "cells": "25",
+    "hour": "9.77",
+    "outdoor": "41.69",
+    "mood": "0.410",
+    "mode": "ReduceResistance",
+    "chatsToday": "2"
+   },
+   "PC": {
+    "exposed": "False",
+    "marker": "False",
+    "prisoner": "True",
+    "resistance": "15.805",
+    "will": "0.474",
+    "ambient": "40.70",
+    "safeMin": "-4.0",
+    "safeMax": "46.0",
+    "hurting": "False",
+    "heatstroke": "0.000",
+    "hypothermia": "0.000",
+    "room": "610",
+    "roomTemp": "40.70",
+    "outdoorRoom": "False",
+    "openRoof": "0",
+    "cells": "25",
+    "hour": "9.77",
+    "outdoor": "41.69",
+    "mood": "0.400",
+    "mode": "ReduceResistance",
+    "chatsToday": "2"
+   },
+   "depthA": [
+    8,
+    8
+   ],
+   "fillA": 0,
+   "depthB": [
+    8,
+    8
+   ],
+   "fillB": 0,
+   "colonists": {
+    "Human823": {
+     "mental": false,
+     "job": "GotoWander",
+     "mood": 0.57
+    },
+    "Human826": {
+     "mental": false,
+     "job": "Wait_Wander",
+     "mood": 0.5
+    },
+    "Human829": {
+     "mental": false,
+     "job": "GotoWander",
+     "mood": 0.51
+    }
+   },
+   "PA_at": {
+    "x": 128,
+    "z": 123,
+    "job": "GotoWander",
+    "mental": false,
+    "downed": false,
+    "climb": "CLIMB k=2 held=True trapped=True cell=128,123 | POCKET k=2 comp=1 pocket=True size=25 depth=8 gen=402 built=402 rebuilds=52"
+   },
+   "PB_at": {
+    "x": 138,
+    "z": 123,
+    "job": "GotoWander",
+    "mental": false,
+    "downed": false,
+    "climb": "CLIMB k=2 held=True trapped=True cell=138,123 | POCKET k=2 comp=2 pocket=True size=25 depth=8 gen=402 built=402 rebuilds=52"
+   },
+   "PC_at": {
+    "x": 148,
+    "z": 124,
+    "job": "GotoWander",
+    "mental": false,
+    "downed": false,
+    "climb": "CLIMB k=2 held=False trapped=False cell=148,124 | POCKET k=2 comp=0 pocket=False size=62450 depth=0 gen=402 built=402 rebuilds=52"
+   }
+  },
+  {
+   "hour": 11.0,
+   "TA": 43.3139534,
+   "out": 43.3530922,
+   "TB": 40.4292564,
+   "TC": 41.6709366,
+   "PA": {
+    "exposed": "True",
+    "marker": "True",
+    "prisoner": "True",
+    "resistance": "8.496",
+    "will": "0.213",
+    "ambient": "43.31",
+    "safeMin": "4.0",
+    "safeMax": "38.0",
+    "hurting": "True",
+    "heatstroke": "0.081",
+    "hypothermia": "0.000",
+    "room": "558",
+    "roomTemp": "43.31",
+    "outdoorRoom": "True",
+    "openRoof": "25",
+    "cells": "25",
+    "hour": "10.77",
+    "outdoor": "43.35",
+    "mood": "0.230",
+    "mode": "ReduceResistance",
+    "chatsToday": "2"
+   },
+   "PB": {
+    "exposed": "False",
+    "marker": "False",
+    "prisoner": "True",
+    "resistance": "14.517",
+    "will": "0.662",
+    "ambient": "40.43",
+    "safeMin": "-4.0",
+    "safeMax": "46.0",
+    "hurting": "False",
+    "heatstroke": "0.000",
+    "hypothermia": "0.000",
+    "room": "607",
+    "roomTemp": "40.43",
+    "outdoorRoom": "False",
+    "openRoof": "0",
+    "cells": "25",
+    "hour": "10.77",
+    "outdoor": "43.35",
+    "mood": "0.320",
+    "mode": "ReduceResistance",
+    "chatsToday": "2"
+   },
+   "PC": {
+    "exposed": "False",
+    "marker": "False",
+    "prisoner": "True",
+    "resistance": "15.805",
+    "will": "0.474",
+    "ambient": "41.67",
+    "safeMin": "-4.0",
+    "safeMax": "46.0",
+    "hurting": "False",
+    "heatstroke": "0.000",
+    "hypothermia": "0.000",
+    "room": "610",
+    "roomTemp": "41.67",
+    "outdoorRoom": "False",
+    "openRoof": "0",
+    "cells": "25",
+    "hour": "10.77",
+    "outdoor": "43.35",
+    "mood": "0.310",
+    "mode": "ReduceResistance",
+    "chatsToday": "2"
+   },
+   "depthA": [
+    8,
+    8
+   ],
+   "fillA": 0,
+   "depthB": [
+    8,
+    8
+   ],
+   "fillB": 0,
+   "colonists": {
+    "Human823": {
+     "mental": false,
+     "job": "GotoWander",
+     "mood": 0.49
+    },
+    "Human826": {
+     "mental": false,
+     "job": "GotoWander",
+     "mood": 0.46
+    },
+    "Human829": {
+     "mental": false,
+     "job": "GotoWander",
+     "mood": 0.49
+    }
+   },
+   "PA_at": {
+    "x": 131,
+    "z": 121,
+    "job": "Wait_Wander",
+    "mental": false,
+    "downed": false,
+    "climb": "CLIMB k=2 held=True trapped=True cell=131,121 | POCKET k=2 comp=1 pocket=True size=25 depth=8 gen=402 built=402 rebuilds=52"
+   },
+   "PB_at": {
+    "x": 136,
+    "z": 124,
+    "job": "GotoWander",
+    "mental": false,
+    "downed": false,
+    "climb": "CLIMB k=2 held=True trapped=True cell=136,124 | POCKET k=2 comp=2 pocket=True size=25 depth=8 gen=402 built=402 rebuilds=52"
+   },
+   "PC_at": {
+    "x": 147,
+    "z": 121,
+    "job": "GotoWander",
+    "mental": false,
+    "downed": false,
+    "climb": "CLIMB k=2 held=False trapped=False cell=147,121 | POCKET k=2 comp=0 pocket=False size=62450 depth=0 gen=402 built=402 rebuilds=52"
+   }
+  },
+  {
+   "hour": 12.0,
+   "TA": 44.90096,
+   "out": 44.9368858,
+   "TB": 40.87371,
+   "TC": 43.57447,
+   "PA": {
+    "exposed": "True",
+    "marker": "True",
+    "prisoner": "True",
+    "resistance": "7.996",
+    "will": "0.213",
+    "ambient": "44.90",
+    "safeMin": "4.0",
+    "safeMax": "38.0",
+    "hurting": "True",
+    "heatstroke": "0.097",
+    "hypothermia": "0.000",
+    "room": "558",
+    "roomTemp": "44.90",
+    "outdoorRoom": "True",
+    "openRoof": "25",
+    "cells": "25",
+    "hour": "11.77",
+    "outdoor": "44.94",
+    "mood": "0.130",
+    "mode": "ReduceResistance",
+    "chatsToday": "2"
+   },
+   "PB": {
+    "exposed": "False",
+    "marker": "False",
+    "prisoner": "True",
+    "resistance": "14.517",
+    "will": "0.662",
+    "ambient": "40.87",
+    "safeMin": "-4.0",
+    "safeMax": "46.0",
+    "hurting": "False",
+    "heatstroke": "0.000",
+    "hypothermia": "0.000",
+    "room": "607",
+    "roomTemp": "40.87",
+    "outdoorRoom": "False",
+    "openRoof": "0",
+    "cells": "25",
+    "hour": "11.77",
+    "outdoor": "44.94",
+    "mood": "0.320",
+    "mode": "ReduceResistance",
+    "chatsToday": "2"
+   },
+   "PC": {
+    "exposed": "False",
+    "marker": "False",
+    "prisoner": "True",
+    "resistance": "15.805",
+    "will": "0.474",
+    "ambient": "43.57",
+    "safeMin": "-4.0",
+    "safeMax": "46.0",
+    "hurting": "False",
+    "heatstroke": "0.000",
+    "hypothermia": "0.000",
+    "room": "610",
+    "roomTemp": "43.57",
+    "outdoorRoom": "False",
+    "openRoof": "0",
+    "cells": "25",
+    "hour": "11.77",
+    "outdoor": "44.94",
+    "mood": "0.310",
+    "mode": "ReduceResistance",
+    "chatsToday": "2"
+   },
+   "depthA": [
+    8,
+    8
+   ],
+   "fillA": 0,
+   "depthB": [
+    8,
+    8
+   ],
+   "fillB": 0,
+   "colonists": {
+    "Human823": {
+     "mental": false,
+     "job": "GotoWander",
+     "mood": 0.43
+    },
+    "Human826": {
+     "mental": false,
+     "job": "GotoWander",
+     "mood": 0.43
+    },
+    "Human829": {
+     "mental": false,
+     "job": "GotoWander",
+     "mood": 0.41
+    }
+   },
+   "PA_at": {
+    "x": 128,
+    "z": 121,
+    "job": "Wait_Wander",
+    "mental": false,
+    "downed": false,
+    "climb": "CLIMB k=2 held=True trapped=True cell=128,121 | POCKET k=2 comp=1 pocket=True size=25 depth=8 gen=402 built=402 rebuilds=52"
+   },
+   "PB_at": {
+    "x": 138,
+    "z": 124,
+    "job": "GotoWander",
+    "mental": false,
+    "downed": false,
+    "climb": "CLIMB k=2 held=True trapped=True cell=138,124 | POCKET k=2 comp=2 pocket=True size=25 depth=8 gen=402 built=402 rebuilds=52"
+   },
+   "PC_at": {
+    "x": 146,
+    "z": 124,
+    "job": "GotoWander",
+    "mental": false,
+    "downed": false,
+    "climb": "CLIMB k=2 held=False trapped=False cell=146,124 | POCKET k=2 comp=0 pocket=False size=62450 depth=0 gen=402 built=402 rebuilds=52"
+   }
+  },
+  {
+   "hour": 13.0,
+   "TA": 46.299572,
+   "out": 46.299572,
+   "TB": 41.4429359,
+   "TC": 44.9558945,
+   "PA": {
+    "exposed": "True",
+    "marker": "True",
+    "prisoner": "True",
+    "resistance": "7.496",
+    "will": "0.213",
+    "ambient": "46.30",
+    "safeMin": "4.0",
+    "safeMax": "38.0",
+    "hurting": "True",
+    "heatstroke": "0.118",
+    "hypothermia": "0.000",
+    "room": "558",
+    "roomTemp": "46.30",
+    "outdoorRoom": "True",
+    "openRoof": "25",
+    "cells": "25",
+    "hour": "12.77",
+    "outdoor": "46.30",
+    "mood": "0.130",
+    "mode": "ReduceResistance",
+    "chatsToday": "2"
+   },
+   "PB": {
+    "exposed": "False",
+    "marker": "False",
+    "prisoner": "True",
+    "resistance": "14.517",
+    "will": "0.662",
+    "ambient": "41.44",
+    "safeMin": "-4.0",
+    "safeMax": "46.0",
+    "hurting": "False",
+    "heatstroke": "0.000",
+    "hypothermia": "0.000",
+    "room": "607",
+    "roomTemp": "41.44",
+    "outdoorRoom": "False",
+    "openRoof": "0",
+    "cells": "25",
+    "hour": "12.77",
+    "outdoor": "46.30",
+    "mood": "0.280",
+    "mode": "ReduceResistance",
+    "chatsToday": "2"
+   },
+   "PC": {
+    "exposed": "False",
+    "marker": "False",
+    "prisoner": "True",
+    "resistance": "15.805",
+    "will": "0.474",
+    "ambient": "44.96",
+    "safeMin": "-4.0",
+    "safeMax": "46.0",
+    "hurting": "False",
+    "heatstroke": "0.000",
+    "hypothermia": "0.000",
+    "room": "610",
+    "roomTemp": "44.96",
+    "outdoorRoom": "False",
+    "openRoof": "0",
+    "cells": "25",
+    "hour": "12.77",
+    "outdoor": "46.30",
+    "mood": "0.310",
+    "mode": "ReduceResistance",
+    "chatsToday": "2"
+   },
+   "depthA": [
+    8,
+    8
+   ],
+   "fillA": 0,
+   "depthB": [
+    8,
+    8
+   ],
+   "fillB": 0,
+   "colonists": {
+    "Human823": {
+     "mental": false,
+     "job": "GotoWander",
+     "mood": 0.35
+    },
+    "Human826": {
+     "mental": false,
+     "job": "GotoWander",
+     "mood": 0.36
+    },
+    "Human829": {
+     "mental": false,
+     "job": "GotoWander",
+     "mood": 0.35
+    }
+   },
+   "PA_at": {
+    "x": 129,
+    "z": 121,
+    "job": "GotoWander",
+    "mental": false,
+    "downed": false,
+    "climb": "CLIMB k=2 held=True trapped=True cell=129,121 | POCKET k=2 comp=1 pocket=True size=25 depth=8 gen=402 built=402 rebuilds=52"
+   },
+   "PB_at": {
+    "x": 135,
+    "z": 121,
+    "job": "Wait_Wander",
+    "mental": false,
+    "downed": false,
+    "climb": "CLIMB k=2 held=True trapped=True cell=135,121 | POCKET k=2 comp=2 pocket=True size=25 depth=8 gen=402 built=402 rebuilds=52"
+   },
+   "PC_at": {
+    "x": 147,
+    "z": 125,
+    "job": "GotoWander",
+    "mental": false,
+    "downed": false,
+    "climb": "CLIMB k=2 held=False trapped=False cell=147,125 | POCKET k=2 comp=0 pocket=False size=62450 depth=0 gen=402 built=402 rebuilds=52"
+   }
+  },
+  {
+   "hour": 14.0,
+   "TA": 47.3610229,
+   "out": 47.4057159,
+   "TB": 42.06095,
+   "TC": 46.1318741,
+   "PA": {
+    "exposed": "True",
+    "marker": "True",
+    "prisoner": "True",
+    "resistance": "6.996",
+    "will": "0.213",
+    "ambient": "47.36",
+    "safeMin": "4.0",
+    "safeMax": "38.0",
+    "hurting": "True",
+    "heatstroke": "0.142",
+    "hypothermia": "0.000",
+    "room": "558",
+    "roomTemp": "47.36",
+    "outdoorRoom": "True",
+    "openRoof": "25",
+    "cells": "25",
+    "hour": "13.77",
+    "outdoor": "47.41",
+    "mood": "0.070",
+    "mode": "ReduceResistance",
+    "chatsToday": "2"
+   },
+   "PB": {
+    "exposed": "False",
+    "marker": "False",
+    "prisoner": "True",
+    "resistance": "14.517",
+    "will": "0.662",
+    "ambient": "42.06",
+    "safeMin": "-4.0",
+    "safeMax": "46.0",
+    "hurting": "False",
+    "heatstroke": "0.000",
+    "hypothermia": "0.000",
+    "room": "607",
+    "roomTemp": "42.06",
+    "outdoorRoom": "False",
+    "openRoof": "0",
+    "cells": "25",
+    "hour": "13.77",
+    "outdoor": "47.41",
+    "mood": "0.280",
+    "mode": "ReduceResistance",
+    "chatsToday": "2"
+   },
+   "PC": {
+    "exposed": "False",
+    "marker": "False",
+    "prisoner": "True",
+    "resistance": "15.805",
+    "will": "0.474",
+    "ambient": "46.13",
+    "safeMin": "-4.0",
+    "safeMax": "46.0",
+    "hurting": "True",
+    "heatstroke": "0.004",
+    "hypothermia": "0.000",
+    "room": "610",
+    "roomTemp": "46.13",
+    "outdoorRoom": "False",
+    "openRoof": "0",
+    "cells": "25",
+    "hour": "13.77",
+    "outdoor": "47.41",
+    "mood": "0.230",
+    "mode": "ReduceResistance",
+    "chatsToday": "2"
+   },
+   "depthA": [
+    8,
+    8
+   ],
+   "fillA": 0,
+   "depthB": [
+    8,
+    8
+   ],
+   "fillB": 0,
+   "colonists": {
+    "Human823": {
+     "mental": false,
+     "job": "GotoWander",
+     "mood": 0.32
+    },
+    "Human826": {
+     "mental": false,
+     "job": "GotoWander",
+     "mood": 0.34
+    },
+    "Human829": {
+     "mental": false,
+     "job": "GotoWander",
+     "mood": 0.35
+    }
+   },
+   "PA_at": {
+    "x": 129,
+    "z": 122,
+    "job": "GotoWander",
+    "mental": false,
+    "downed": false,
+    "climb": "CLIMB k=2 held=True trapped=True cell=129,122 | POCKET k=2 comp=1 pocket=True size=25 depth=8 gen=402 built=402 rebuilds=52"
+   },
+   "PB_at": {
+    "x": 135,
+    "z": 123,
+    "job": "GotoWander",
+    "mental": false,
+    "downed": false,
+    "climb": "CLIMB k=2 held=True trapped=True cell=135,123 | POCKET k=2 comp=2 pocket=True size=25 depth=8 gen=402 built=402 rebuilds=52"
+   },
+   "PC_at": {
+    "x": 146,
+    "z": 123,
+    "job": "Wait_Wander",
+    "mental": false,
+    "downed": false,
+    "climb": "CLIMB k=2 held=False trapped=False cell=146,123 | POCKET k=2 comp=0 pocket=False size=62450 depth=0 gen=402 built=402 rebuilds=52"
+   }
+  },
+  {
+   "hour": 15.0,
+   "TA": 48.10909,
+   "out": 48.1342278,
+   "TB": 42.7416573,
+   "TC": 47.30964,
+   "PA": {
+    "exposed": "True",
+    "marker": "True",
+    "prisoner": "True",
+    "resistance": "6.496",
+    "will": "0.213",
+    "ambient": "48.11",
+    "safeMin": "4.0",
+    "safeMax": "38.0",
+    "hurting": "True",
+    "heatstroke": "0.168",
+    "hypothermia": "0.000",
+    "room": "558",
+    "roomTemp": "48.11",
+    "outdoorRoom": "True",
+    "openRoof": "25",
+    "cells": "25",
+    "hour": "14.77",
+    "outdoor": "48.13",
+    "mood": "0.030",
+    "mode": "ReduceResistance",
+    "chatsToday": "2"
+   },
+   "PB": {
+    "exposed": "False",
+    "marker": "False",
+    "prisoner": "True",
+    "resistance": "14.517",
+    "will": "0.662",
+    "ambient": "42.74",
+    "safeMin": "-4.0",
+    "safeMax": "46.0",
+    "hurting": "False",
+    "heatstroke": "0.000",
+    "hypothermia": "0.000",
+    "room": "607",
+    "roomTemp": "42.74",
+    "outdoorRoom": "False",
+    "openRoof": "0",
+    "cells": "25",
+    "hour": "14.77",
+    "outdoor": "48.13",
+    "mood": "0.280",
+    "mode": "ReduceResistance",
+    "chatsToday": "2"
+   },
+   "PC": {
+    "exposed": "False",
+    "marker": "False",
+    "prisoner": "True",
+    "resistance": "15.805",
+    "will": "0.474",
+    "ambient": "47.31",
+    "safeMin": "-4.0",
+    "safeMax": "46.0",
+    "hurting": "True",
+    "heatstroke": "0.019",
+    "hypothermia": "0.000",
+    "room": "610",
+    "roomTemp": "47.31",
+    "outdoorRoom": "False",
+    "openRoof": "0",
+    "cells": "25",
+    "hour": "14.77",
+    "outdoor": "48.13",
+    "mood": "0.230",
+    "mode": "ReduceResistance",
+    "chatsToday": "2"
+   },
+   "depthA": [
+    8,
+    8
+   ],
+   "fillA": 0,
+   "depthB": [
+    8,
+    8
+   ],
+   "fillB": 0,
+   "colonists": {
+    "Human823": {
+     "mental": false,
+     "job": "GotoWander",
+     "mood": 0.31
+    },
+    "Human826": {
+     "mental": false,
+     "job": "GotoWander",
+     "mood": 0.32
+    },
+    "Human829": {
+     "mental": false,
+     "job": "GotoWander",
+     "mood": 0.29
+    }
+   },
+   "PA_at": {
+    "x": 130,
+    "z": 123,
+    "job": "GotoWander",
+    "mental": false,
+    "downed": false,
+    "climb": "CLIMB k=2 held=True trapped=True cell=130,123 | POCKET k=2 comp=1 pocket=True size=25 depth=8 gen=402 built=402 rebuilds=52"
+   },
+   "PB_at": {
+    "x": 137,
+    "z": 122,
+    "job": "GotoWander",
+    "mental": false,
+    "downed": false,
+    "climb": "CLIMB k=2 held=True trapped=True cell=137,122 | POCKET k=2 comp=2 pocket=True size=25 depth=8 gen=402 built=402 rebuilds=52"
+   },
+   "PC_at": {
+    "x": 147,
+    "z": 125,
+    "job": "Wait_Wander",
+    "mental": false,
+    "downed": false,
+    "climb": "CLIMB k=2 held=False trapped=False cell=147,125 | POCKET k=2 comp=0 pocket=False size=62450 depth=0 gen=402 built=402 rebuilds=52"
+   }
+  }
+ ],
+ "args": {
+  "day": 22,
+  "tile_temp": 28.0,
+  "from_hour": 6.0,
+  "to_hour": 15.0,
+  "every": 1.0,
+  "save_name": "RM_PitExposure_Review",
+  "interaction": "ReduceResistance",
+  "day_used": 22
+ },
+ "shots_dir": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_ARCHMAGI_FWLIVE\\pex_warden\\shots2",
+ "biome_rolls": [
+  "Desert"
+ ],
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "819eb634a86f84caa78844e654320c6de9ec169b9a27287f465068d412448c8f",
+ "manifest": {
+  "schema": 1,
+  "script": "northstar/pit_exposure_live.py",
+  "runtime": "769b623f5033233ee3feeb50e1b4955eda56d05c7d6d3fd5accf66f3d50552b0",
+  "test": "e734877bbdb4971d5ac2f758d118cd47abb3bffbcc7464614938d15d99c510d6",
+  "test_files": [
+   "FlowWorks/northstar/driver_stamp.py",
+   "FlowWorks/northstar/pit_exposure_live.py",
+   "FlowWorks/northstar/proof_hose.py",
+   "FlowWorks/validation_hose.py",
+   "FlowWorks/validation_style_hose.py",
+   "Utils/await_lifecycle.py",
+   "Utils/biomes_compose.py",
+   "Utils/close_evidence.py",
+   "Utils/conds.py",
+   "Utils/conds_dsl.py",
+   "Utils/deploy_custom_mods.py",
+   "Utils/deploy_def_guard.py",
+   "Utils/evidence_covers.py",
+   "Utils/focus_heal.py",
+   "Utils/game_focus.py",
+   "Utils/game_instance.py",
+   "Utils/game_paths.py",
+   "Utils/harness_run.py",
+   "Utils/known_results.py",
+   "Utils/live_def_check.py",
+   "Utils/load_policy.json",
+   "Utils/load_policy.py",
+   "Utils/modcheck/__init__.py",
+   "Utils/modcheck/bland_world.py",
+   "Utils/modcheck/clockgate.py",
+   "Utils/modcheck/contract.py",
+   "Utils/modcheck/detectors.py",
+   "Utils/modcheck/drivers.py",
+   "Utils/modcheck/floor.py",
+   "Utils/modcheck/gate.py",
+   "Utils/modcheck/helpers.py",
+   "Utils/modcheck/jev_questions.py",
+   "Utils/modcheck/jev_triage.py",
+   "Utils/modcheck/judge.py",
+   "Utils/modcheck/launch_gate.py",
+   "Utils/modcheck/northstar.py",
+   "Utils/modcheck/play_zoom.py",
+   "Utils/modcheck/preconditions.py",
+   "Utils/modcheck/report.py",
+   "Utils/modcheck/reuse.py",
+   "Utils/modcheck/run_identity.py",
+   "Utils/modcheck/runner.py",
+   "Utils/modcheck/scene_report.py",
+   "Utils/modcheck/snapshot.py",
+   "Utils/modcheck/spoil_gate.py",
+   "Utils/modcheck/status.py",
+   "Utils/modcheck/suite.py",
+   "Utils/modcheck/surprise.py",
+   "Utils/modcheck/targeting.py",
+   "Utils/modcheck/testenv_guards.py",
+   "Utils/modcheck/validity.py",
+   "Utils/modcheck/walklint.py",
+   "Utils/modcheck/watch.py",
+   "Utils/modset_builder.py",
+   "Utils/northstar_driver/tool_schemas.json",
+   "Utils/retired_mods.py",
+   "Utils/rimbridge_client.py",
+   "Utils/rimdrive/__init__.py",
+   "Utils/rimdrive/session.py",
+   "Utils/rimdrive/verify.py",
+   "Utils/rmpaths.py",
+   "Utils/run_selftests.py",
+   "Utils/selftest_cache.py",
+   "Utils/suite_evidence.py",
+   "Utils/validation_core.py",
+   "Utils/winbuild.py",
+   "Utils/wrapup_debt.py",
+   "Utils/zoom_guard.py"
+  ],
+  "unresolved": []
+ },
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.patches"
+  ],
+  "assembly_sha256": "4baffc1e0fcb0054f9ed013f0b175ae25d56ffce8e80590ee649e9a5f436cda3"
+ },
+ "map": {
+  "tile": 1242,
+  "mapBiome": "Desert",
+  "latitude": 27.90713,
+  "longitude": -11.48162,
+  "season": "Spring",
+  "tileInfo": {
+   "biome": "Desert",
+   "hilliness": "SmallHills",
+   "hillinessInt": 2,
+   "elevation": 280.6419,
+   "rainfall": 171.793961,
+   "swampiness": 0.0,
+   "temperature": 19.0868053,
+   "pollution": 0.0,
+   "waterCovered": false,
+   "isSurfaceTile": true
+  }
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "Dromedary14126",
+    "Dromedary14127",
+    "Dromedary14128",
+    "Iguana14124",
+    "Ostrich14125"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  },
+  "fed": [
+   "Human823",
+   "Human826",
+   "Human829"
+  ]
+ },
+ "weather": "True",
+ "clock": {
+  "startAbs": 17500,
+  "midnightAbs": 1322500,
+  "jump": "True",
+  "date": "8th of Jugust, 5500",
+  "tileSet": "True",
+  "cacheReset": "True"
+ },
+ "site": {
+  "origin": [
+   126,
+   120
+  ],
+  "rect": [
+   125,
+   119,
+   27,
+   9
+  ],
+  "probes": {
+   "A": [
+    129,
+    123
+   ],
+   "B": [
+    137,
+    123
+   ],
+   "C": [
+    146,
+    123
+   ]
+  },
+  "pit_cells": {
+   "A": [
+    [
+     127,
+     121
+    ],
+    [
+     127,
+     122
+    ],
+    [
+     127,
+     123
+    ],
+    [
+     127,
+     124
+    ],
+    [
+     127,
+     125
+    ],
+    [
+     128,
+     121
+    ],
+    [
+     128,
+     122
+    ],
+    [
+     128,
+     123
+    ],
+    [
+     128,
+     124
+    ],
+    [
+     128,
+     125
+    ],
+    [
+     129,
+     121
+    ],
+    [
+     129,
+     122
+    ],
+    [
+     129,
+     123
+    ],
+    [
+     129,
+     124
+    ],
+    [
+     129,
+     125
+    ],
+    [
+     130,
+     121
+    ],
+    [
+     130,
+     122
+    ],
+    [
+     130,
+     123
+    ],
+    [
+     130,
+     124
+    ],
+    [
+     130,
+     125
+    ],
+    [
+     131,
+     121
+    ],
+    [
+     131,
+     122
+    ],
+    [
+     131,
+     123
+    ],
+    [
+     131,
+     124
+    ],
+    [
+     131,
+     125
+    ]
+   ],
+   "B": [
+    [
+     135,
+     121
+    ],
+    [
+     135,
+     122
+    ],
+    [
+     135,
+     123
+    ],
+    [
+     135,
+     124
+    ],
+    [
+     135,
+     125
+    ],
+    [
+     136,
+     121
+    ],
+    [
+     136,
+     122
+    ],
+    [
+     136,
+     123
+    ],
+    [
+     136,
+     124
+    ],
+    [
+     136,
+     125
+    ],
+    [
+     137,
+     121
+    ],
+    [
+     137,
+     122
+    ],
+    [
+     137,
+     123
+    ],
+    [
+     137,
+     124
+    ],
+    [
+     137,
+     125
+    ],
+    [
+     138,
+     121
+    ],
+    [
+     138,
+     122
+    ],
+    [
+     138,
+     123
+    ],
+    [
+     138,
+     124
+    ],
+    [
+     138,
+     125
+    ],
+    [
+     139,
+     121
+    ],
+    [
+     139,
+     122
+    ],
+    [
+     139,
+     123
+    ],
+    [
+     139,
+     124
+    ],
+    [
+     139,
+     125
+    ]
+   ]
+  },
+  "dug_depths": {
+   "8": 50
+  },
+  "room": {
+   "success": true,
+   "doorAt": {
+    "x": 146,
+    "z": 120
+   },
+   "message": null
+  },
+  "roomA": "ROOM split=True pitRoom=True proper=True edge=False prison=True roomsOn=True pitId=558 lipId=487",
+  "roomB": "ROOM split=True pitRoom=True proper=True edge=False prison=True roomsOn=True pitId=607 lipId=487"
+ },
+ "prisoners": {
+  "PA": "Human14212",
+  "PB": "Human14217",
+  "PC": "Human14222"
+ },
+ "interaction_set": {
+  "PA": "MODE pawn=Human14212 mode=ReduceResistance",
+  "PB": "MODE pawn=Human14217 mode=ReduceResistance",
+  "PC": "MODE pawn=Human14222 mode=ReduceResistance"
+ },
+ "colonists": {
+  "ids": [
+   "Human823",
+   "Human829",
+   "Human826"
+  ],
+  "psychopath": "Human829",
+  "trait_added": 1,
+  "psycho_trait": true,
+  "ideos": {
+   "Human823": "Rhydellian Philosophy",
+   "Human829": "Rhydellian Philosophy",
+   "Human826": "Neo-Archotechnics"
+  },
+  "charity": {
+   "Neo-Archotechnics": [],
+   "Rhydellian Philosophy": [
+    "Charity_Important"
+   ]
+  },
+  "moved": {
+   "Human823": "True",
+   "Human829": "True",
+   "Human826": "True"
+  },
+  "precept_added": "{'success': True, 'action': 'add', 'ideo': {'id': 8, 'name': 'Rhydellian Philosophy'}, 'precept': {'def': 'Charity_Important', 'label': 'charity'}, 'preceptCoun"
+ },
+ "next_hour": 16.0,
+ "resumes": [
+  "2026-11-12T02:59:00"
+ ],
+ "noon_thoughts": {
+  "Human823": [
+   [
+    "NewColonyOptimism",
+    10.0,
+    "Initial optimism"
+   ],
+   [
+    "SleepDisturbed",
+    -1.0,
+    "Disturbed sleep"
+   ],
+   [
+    "SleepDisturbed",
+    -1.0,
+    "Disturbed sleep"
+   ],
+   [
+    "SleepDisturbed",
+    -1.0,
+    "Disturbed sleep"
+   ],
+   [
+    "SleptInHeat",
+    -4.0,
+    "Slept in the heat"
+   ],
+   [
+    "SleptOnGround",
+    -4.0,
+    "Slept on ground"
+   ],
+   [
+    "RM_ExposedPrisoner",
+    -3.0,
+    "Alligator left exposed in a pit"
+   ],
+   [
+    "EnvironmentDark",
+    -5.0,
+    "Darkness"
+   ],
+   [
+    "EnvironmentHot",
+    -8.0,
+    "Hot"
+   ],
+   [
+    "NeedFood",
+    -6.0,
+    "Hungry"
+   ],
+   [
+    "NeedJoy",
+    10.0,
+    "Recreation fully satisfied"
+   ],
+   [
+    "NeedComfort",
+    -3.0,
+    "Uncomfortable"
+   ],
+   [
+    "NeedBeauty",
+    -5.0,
+    "Unsightly environment"
+   ],
+   [
+    "NeedRoomSize",
+    5.0,
+    "Spacious interior"
+   ],
+   [
+    "Pain",
+    -5.0,
+    "Minor pain"
+   ],
+   [
+    "Expectations",
+    24.0,
+    "Very low expectations"
+   ]
+  ],
+  "Human829": [
+   [
+    "NewColonyOptimism",
+    10.0,
+    "Initial optimism"
+   ],
+   [
+    "EnvironmentHot",
+    -8.0,
+    "Hot"
+   ],
+   [
+    "NeedFood",
+    -6.0,
+    "Hungry"
+   ],
+   [
+    "NeedJoy",
+    -5.0,
+    "Recreation unfulfilled"
+   ],
+   [
+    "NeedComfort",
+    -3.0,
+    "Uncomfortable"
+   ],
+   [
+    "NeedBeauty",
+    -5.0,
+    "Unsightly environment"
+   ],
+   [
+    "Pain",
+    -5.0,
+    "Minor pain"
+   ],
+   [
+    "Expectations",
+    24.0,
+    "Very low expectations"
+   ],
+   [
+    "RM_Thought_Thirsty",
+    -4.0,
+    "Thirsty"
+   ]
+  ],
+  "Human826": [
+   [
+    "NewColonyOptimism",
+    10.0,
+    "Initial optimism"
+   ],
+   [
+    "Nuzzled",
+    4.0,
+    "Nuzzled"
+   ],
+   [
+    "EnvironmentHot",
+    -8.0,
+    "Hot"
+   ],
+   [
+    "NeedFood",
+    -6.0,
+    "Hungry"
+   ],
+   [
+    "NeedJoy",
+    -5.0,
+    "Recreation unfulfilled"
+   ],
+   [
+    "NeedComfort",
+    -3.0,
+    "Uncomfortable"
+   ],
+   [
+    "NeedBeauty",
+    -5.0,
+    "Unsightly environment"
+   ],
+   [
+    "Pain",
+    -5.0,
+    "Minor pain"
+   ],
+   [
+    "Expectations",
+    24.0,
+    "Very low expectations"
+   ],
+   [
+    "RM_Thought_Thirsty",
+    -4.0,
+    "Thirsty"
+   ]
+  ]
+ },
+ "save": {
+  "name": "RM_PitExposure_Review_20261112T025107",
+  "result": "{'success': True, 'saveName': 'RM_PitExposure_Review_20261112T025107', 'path': 'C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\\\Saves\\\\RM_PitExposure_Review_20261112T0251"
+ },
+ "inspect_PA": "{\"success\": true, \"message\": \"1 thing(s) inspected, 11875 examined.\", \"matched\": 1, \"examined\": 11875, \"threw\": 0, \"things\": [{\"id\": \"Human14212\", \"defName\": \"Human\", \"label\": \"Alligator<color=#999999FF>, Treehouse builder</color>\", \"x\": 128, \"z\": 121, \"className\": \"Verse.Pawn\", \"inspect\": [\"Male, age 28, villager of <color=#FF3333FF>Sulga Covenant</color>\", \"Wandering.\", \"In restraints (slowed)\", \"Climbs out of steps up to 1 m deep.\", \"Held in a pit: it cannot climb out without a ladder.\"]}], \"ticksGame\": 1334432, \"operation\": {\"OperationId\": \"op_e4eb3915fa614a0a9b43aabbc4910383\", \"Status\": \"Completed\", \"Success\": true, \"DurationMs\": 42}, \"state\": {\"programState\": \"Playing\", \"hasCurrentGame\": true, \"paused\": true, \"timeSpeed\": \"Paused\", \"tick\": 1334432}}",
+ "shots": {
+  "site": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_ARCHMAGI_FWLIVE\\pex_warden\\shots2\\pit_exposure_site_20261112T025107.png",
+  "selected": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_ARCHMAGI_FWLIVE\\pex_warden\\shots2\\pit_exposure_selected_20261112T025107.png",
+  "prisoner_tab": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_ARCHMAGI_FWLIVE\\pex_warden\\shots2\\pit_exposure_prisoner_tab_20261112T025107.png",
+  "needs_Human823": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_ARCHMAGI_FWLIVE\\pex_warden\\shots2\\pit_exposure_needs_Human823_20261112T025107.png",
+  "needs_Human829": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_ARCHMAGI_FWLIVE\\pex_warden\\shots2\\pit_exposure_needs_Human829_20261112T025107.png",
+  "needs_Human826": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_ARCHMAGI_FWLIVE\\pex_warden\\shots2\\pit_exposure_needs_Human826_20261112T025107.png"
+ },
+ "finished": "2026-11-12T03:03:01"
+}
