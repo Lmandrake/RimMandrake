@@ -1,0 +1,7 @@
+{
+  "_comment": "Whittle hard stops (owner order 2026-11-12). One place; env WC_LIMIT_<NAME> overrides for a test. round_usd: kill a round at this many dollars, priced from the live session transcripts. broaden_usd: dollars allowed after the judge/broaden stage begins. max_runs: Whittle runs per round (2 = at most one rerun, and only when the first left something new).",
+  "round_usd": 20,
+  "broaden_usd": 3,
+  "max_runs": 2,
+  "poll_s": 60
+}

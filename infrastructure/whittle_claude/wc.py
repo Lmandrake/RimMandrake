@@ -22,6 +22,15 @@ Archmagi, one ticket at a time, never two loops on one item.
     wc.py wrapup <WORKER> <ID> --dir D --rc RC   the mechanical endings (ghost, closed already, BLOCKED, incomplete):
                                          last line RESULT ...; exit 5 = rc 0, a model must judge the close
     wc.py recent [--json]                ids whose round ended failed/released/parked in the last WC_RECENT_HOURS (12)
+    wc.py admission [LANE] [--out F]     DRY RUN of the admission rules (below) over the lane's open items: a table of
+                                         admitted / refused with the reason; default lane fwlive. No model, no writes
+                                         but --out. (owner order 2026-11-12: "Yes to Whittle admission script and hard stops")
+    wc.py limit <name>                   one value from limits.json (round_usd, broaden_usd, max_runs, poll_s)
+    wc.py guard <W> <ID> --rd RD --dir D -- CMD...   run CMD (the Whittle run) under the hard stops: kills it at the
+                                         round dollar cap (exit 90), at the post-DONE (broaden) cap (91), the moment the
+                                         item closes in the ledger (92); else CMD's own exit code
+    wc.py fingerprint <DIR>              what a run left behind (HEAD, tree, the Whittle dir): a rerun needs it to change
+    wc.py rerun-ok <N> <RC> <FP0> <FP1> <DIR>   exit 0 when one more run is allowed (fewer than max_runs, new information)
     wc.py spend <ROUND_DIR> [--clone C]  per phase raw / weighted (cache reads at 0.1) / cost_usd; a killed Whittle run
                                          is read from its session transcripts. Writes <ROUND_DIR>/spend.json
 
@@ -32,6 +41,13 @@ fwlive: a FlowWorks lane id with needs offline|bridge|game-up; never owner); not
 Pilot (testpilot_route.judge, or 3 non-pass runs in a row); not have ended failed|released|parked in a round in the
 last WC_RECENT_HOURS. A thin item (no ## spec / ## verify / ## criteria) is NOT skipped (owner ruling 2026-08-22: a
 missing field is not a rejection): it ranks after every full item and its STATEMENT.md names the gaps.
+
+ADMISSION (owner order 2026-11-12, recommendation 1 of design/RimMandrake/agent_systems_assessment_2026-11-12.md;
+supersedes the 2026-08-22 "a missing field is not a rejection" for the Whittle pick): after the checks above, a ticket
+is refused, with a named reason, unless it has an items/<ID>.md; a done-line (ledger criteria, or content under
+## criteria / ## verify); a named source path that exists in the repo; a proof route (a selftest or proof/validation
+script it names that exists); is not an epic/parent/design (kind, open children, blocked); is not closed, doing or held;
+and targets v1. See admit(). Hard stops (recommendation 2): limits.json, guard(), rerun_ok().
 
 A candidate must have a live item file, infrastructure/state/items/<ID>.md (CLAUDE.md: that glob is the live set).
 Ledger-open alone counts ~97 FlowWorks ghosts (RIMMANDRAKE_RECONCILE_FLOWWORKS_LEDGER_OPEN_WITHOUT_ITEM_FILE).
@@ -50,6 +66,7 @@ import json
 import os
 import re
 import shlex
+import signal
 import subprocess
 import sys
 from pathlib import Path
@@ -163,6 +180,14 @@ def status(a):
 
 
 LOG_MAX = 5 * 1024 * 1024
+
+
+def log_line(worker, text):
+    if REMOTE:      # the one loop.log lives on Archmagi (see main(): "log" is forwarded there)
+        subprocess.run(SSH + [REMOTE, "python3 %s log %s %s" % (REMOTE_WC, shlex.quote(worker), shlex.quote(text))],
+                       capture_output=True, timeout=60)
+        return
+    log(argparse.Namespace(worker=worker, text=[text]))
 
 
 def log(a):
@@ -385,19 +410,152 @@ def recent_ends():
         return {}
 
 
+# --- ticket admission (no model) --------------------------------------------------------------------------------------
+LIMITS_FILE = Path(__file__).resolve().parent / "limits.json"
+LIMIT_DEFAULTS = {"round_usd": 20.0, "broaden_usd": 3.0, "max_runs": 2, "poll_s": 60}
+EPIC_KINDS = ("epic", "design", "decision", "decide", "spike", "system", "finding", "card", "review", "innovation")
+PROOF_NAME = re.compile(r"(selftest|proof|validation)", re.I)   # not validate_patch.py and the like: tools, not a proof
+TOKEN = re.compile(r"[A-Za-z0-9_][A-Za-z0-9_./\-]*")
+_REPO_FILES = {}
+
+
+def limit(name):
+    """one hard-stop value: env WC_LIMIT_<NAME> over limits.json over LIMIT_DEFAULTS"""
+    env = os.environ.get("WC_LIMIT_" + name.upper())
+    if env:
+        return type(LIMIT_DEFAULTS[name])(float(env))
+    try:
+        d = json.loads(LIMITS_FILE.read_text(encoding="utf-8"))
+        if name in d:
+            return type(LIMIT_DEFAULTS[name])(d[name])
+    except (OSError, ValueError):
+        pass
+    return LIMIT_DEFAULTS[name]
+
+
+def repo_files():
+    """-> (tracked paths, {path suffix after a '/': [full paths]}, directories); built once per process"""
+    if "f" not in _REPO_FILES:
+        rc, out = sh(["git", "ls-files"], timeout=120)
+        files = set(out.splitlines()) if rc == 0 else set()
+        suf, dirs = {}, set()
+        for f in files:
+            parts = f.split("/")
+            for i in range(len(parts)):
+                suf.setdefault("/".join(parts[i:]), []).append(f)
+            for i in range(1, len(parts)):
+                dirs.add("/".join(parts[:i]))
+        _REPO_FILES["f"] = (files, suf, dirs)
+    return _REPO_FILES["f"]
+
+
+def clean_token(t):
+    return t.rstrip(".,:;-")
+
+
+def source_paths(text, index=None):
+    """paths under src/ that the text names and that exist: a token with a slash, or a unique bare .cs/.xml/.py name"""
+    files, suf, dirs = index or repo_files()
+    found = []
+    for raw in TOKEN.findall(text):
+        t = clean_token(raw)
+        if t in found:
+            continue
+        if "/" in t:
+            hits = [t] if (t in files or t in dirs) else suf.get(t, [])
+            hits = hits + [h for h in suf.get(t, []) if h not in hits]
+        elif re.search(r"\.(cs|xml|py)$", t):
+            hits = [h for h in suf.get(t, []) if h.startswith("src/")]
+            hits = hits if len(hits) == 1 else []
+        else:
+            hits = []
+        if any(h.startswith("src/") for h in hits):
+            found.append(t)
+    return found
+
+
+def proof_routes(text, index=None):
+    """selftests and proof/validation scripts the text names that exist on disk"""
+    files, suf, _ = index or repo_files()
+    found = set()
+    for raw in TOKEN.findall(text):
+        t = clean_token(raw)
+        base = t.rsplit("/", 1)[-1]
+        base = base if base.endswith(".py") else base + ".py"
+        if re.fullmatch(r"(selftest|test)_\w+\.py", base) and base in suf:
+            found.add(base)
+        elif t.endswith(".py") and PROOF_NAME.search(t.rsplit("/", 1)[-1]) and (t in files or t in suf):
+            found.add(t)
+    for m in re.finditer(r"--only\s+([\w,]+)", text):
+        found.update(n for n in m[1].split(",") if ("selftest_%s.py" % n) in suf or ("%s.py" % n) in suf)
+    return sorted(found)
+
+
+def done_line(v, text):
+    for c in getattr(v, "criteria", None) or []:
+        if oneline(c.get("text") if isinstance(c, dict) else c):
+            return True
+    for sec in ("criteria", "verify"):
+        body = re.sub(r"(?i)\b(tbd|todo|n/a|none)\b", "", section(text, sec))
+        if re.search(r"[A-Za-z]{3,}", body):
+            return True
+    return False
+
+
+def open_children(v_id, items):
+    """open items that wait on, or were caused by, this one"""
+    return sorted(x.id for x in items if x.open and x.id != v_id and (
+        getattr(x, "caused_by", None) == v_id or getattr(x, "blocked_on", None) == v_id))
+
+
+def admit(v, ctx, worker=None):
+    """-> [reason, ...]: every admission rule the ticket fails; empty when it is admitted. No model."""
+    text = ctx.text(v.id)
+    if not text.strip():
+        return ["no item file: infrastructure/state/items/%s.md is missing" % v.id]
+    why = []
+    if not done_line(v, text):
+        why.append("no done-line: no ledger criteria and nothing under ## criteria or ## verify")
+    if not source_paths(text, ctx.index):
+        why.append("no named mod/source path: no existing src/ path in the item file")
+    if not proof_routes(text, ctx.index):
+        why.append("no proof route: names no existing selftest or proof/validation script")
+    kind = str(getattr(v, "kind", "") or "").lower()
+    if kind in EPIC_KINDS or re.search(r"\bepic\b", str(getattr(v, "title", "") or ""), re.I):
+        why.append("epic/design: kind=%s" % (kind or "?"))
+    if getattr(v, "blocked", False):
+        why.append("epic/parent: BLOCKED")
+    kids = ctx.children(v.id) if ctx.children else []
+    if kids:
+        why.append("epic/parent: %d open children (%s)" % (len(kids), ", ".join(kids[:3])))
+    if not getattr(v, "open", True):
+        why.append("closed in the ledger")
+    elif getattr(v, "state", "") == "doing" and getattr(v, "owner", "BENCH") not in ("BENCH", worker):
+        why.append("doing: held by seat %s" % v.owner)
+    elif getattr(v, "held", None):
+        why.append("held in the ledger")
+    if getattr(v, "target", None) != "v1":
+        why.append("target=%s, not v1" % getattr(v, "target", None))
+    return why
+
+
 class Ctx:
     """What the gate reads besides the item. Built from the real clone by Ctx.real(); a selftest builds one by hand."""
 
-    def __init__(self, pats=(), claims=None, origin=None, recent=None, live=live_file, pilot=None, missing=None):
+    def __init__(self, pats=(), claims=None, origin=None, recent=None, live=live_file, pilot=None, missing=None,
+                 admission=False, text=None, index=None, children=None):
         self.pats, self.claims, self.origin, self.recent = list(pats), claims or {}, origin, recent or {}
+        self.admission, self.text, self.index, self.children = admission, text or item_text, index, children
         self.live, self.pilot, self.missing = live, pilot or (lambda v: None), missing or (lambda v: [])
 
     @classmethod
     def real(cls):
         evs, _ = loaded()
         _, model, tpr = rimflow_mods()
+        items = list(world().items.values())
         return cls(pats=lane_patterns(), claims=shared_claims(), origin=origin_live_ids(), recent=recent_ends(),
-                   pilot=lambda v: tpr.judge(v, evs), missing=model._missing)
+                   pilot=lambda v: tpr.judge(v, evs), missing=model._missing, admission=True, index=repo_files(),
+                   children=lambda i: open_children(i, items))
 
 
 def gate(v, worker, lane, ctx):
@@ -438,6 +596,10 @@ def gate(v, worker, lane, ctx):
         return False, "Test Pilot: %d non-pass runs in a row" % nonpass_of(v), None
     if v.id in ctx.recent:
         return False, "recent round: %s (within %g h)" % (ctx.recent[v.id], RECENT_HOURS), None
+    if ctx.admission:
+        refused = admit(v, ctx, worker)
+        if refused:
+            return False, "admission: " + "; ".join(refused), None
     gaps = ctx.missing(v)
     if gaps:
         return True, "eligible, thin (no ## %s): ranked last" % ", ## ".join(gaps), rank + 10
@@ -750,7 +912,14 @@ def setup_run(worker, lane, rnd, rows=None, quiet=False):
             say("stale claim %s fails the gate (%s): releasing it" % (held, reason))
             release_run(worker, held, "stale claim at round start: %s" % reason)
     if rows is None:
-        rows = candidates(worker, lane, ctx)
+        why = []
+        rows = candidates(worker, lane, ctx, why)
+        refused = [(i, r) for i, r in why if r.startswith("admission: ")]
+        for i, r in refused[:40]:      # the named reason in the worker's loop.log; the ticket is skipped, not claimed
+            log_line(worker, "admission refused %s: %s" % (i, r[len("admission: "):]))
+        if refused:
+            log_line(worker, "admission refused %d tickets this round%s" % (
+                len(refused), "" if len(refused) <= 40 else " (first 40 listed; wc.py admission prints all)"))
     held = mine_ids(worker)
     order = [w.items[i] for i in held if i in w.items] + [r[2] for r in rows if r[2].id not in held]
     for v in order[:15]:
@@ -842,6 +1011,21 @@ def wrapup_run(worker, item_id, d, rc, rnd=None):
         return "RESULT %s released sha=none" % item_id
     if str(rc) == "0":
         return None
+    if str(rc) == "capped":     # a hard stop (guard_run exit 90/91): PARK it for the owner, claim and bridge released by the loop
+        g = read_json(Path(os.environ["WC_DIR"]) / "rounds" / str(rnd) / "guard.json", {}) if rnd and os.environ.get(
+            "WC_DIR") else {}
+        why = "parked by a hard stop: %s (spent about $%s); %s. Decide: resize or split it, or raise the cap in " \
+              "infrastructure/whittle_claude/limits.json" % (g.get("stop") or "a cost cap", g.get("cost", "?"), tail)
+        if os.environ.get("WC_DIR"):
+            with open(Path(os.environ["WC_DIR"]) / "OWNER_QUESTIONS.md", "a", encoding="utf-8") as fh:
+                fh.write("\n## %s %s (%s)\n%s\n" % (now(), item_id, worker, why))
+        rimflow(worker, "note", item_id, "--text", "Claude Whittle %s round %s: %s" % (worker, rnd or "?", why),
+                "--why", "wc.py hard stop (no model)")
+        if v.owner == worker:
+            rimflow(worker, "reassign", item_id, "--to", "BENCH", "--per-ruling", RULING)
+        table_call("unclaim", worker, item_id)
+        sha = land(worker, [d, SHARD % worker, OWNER_SHARD], "whittle wrap-up: %s parked by a hard stop" % item_id)
+        return "RESULT %s parked sha=%s" % (item_id, sha)
     blocked = ""
     if (wd / "BLOCKED.md").exists():
         blocked = oneline((wd / "BLOCKED.md").read_text(encoding="utf-8", errors="replace"), 300)
@@ -1041,6 +1225,168 @@ def spend_of(rd, clone):
     return out
 
 
+def admission_table(worker, lane, ctx=None):
+    """-> (rows, text): every open ledger item the lane could ever take, with the gate verdict and every admission rule it
+    fails (standalone, so a ticket another gate rule stops first still shows what admission says)"""
+    ctx = ctx or Ctx.real()
+    w = world()
+    fw = lane == "fwlive"
+    rows = []
+    for v in sorted(w.items.values(), key=lambda x: x.id):
+        if not v.open or (fw and not any(p.search(v.id) for p in ctx.pats)):
+            continue
+        ok, reason, _ = gate(v, worker, lane, ctx)
+        fails = admit(v, ctx, worker)
+        rows.append((v.id, ok, reason, fails, v))
+    adm = [r for r in rows if not r[3]]
+    gated = [r for r in rows if r[1]]
+    kinds = {}
+    for r in rows:
+        for f in r[3]:
+            k = f.split(":")[0]
+            kinds[k] = kinds.get(k, 0) + 1
+    lines = ["# Whittle ticket admission, dry run (%s, lane %s)" % (now(), lane), "",
+             "Written by `wc.py admission` (no model, no writes but this file). Rules: infrastructure/whittle_claude/wc.py "
+             "admit(). Owner order 2026-11-12: \"Yes to Whittle admission script and hard stops.\"", "",
+             "- open ledger items in the lane: **%d**" % len(rows),
+             "- pass every admission rule: **%d**" % len(adm),
+             "- pass the whole gate (admission + lane, claims, blocks, recent rounds), i.e. would be picked: **%d**" % len(gated),
+             "- refused by admission: **%d**" % (len(rows) - len(adm)), "",
+             "Admission refusals by rule (a ticket can fail several):", ""]
+    lines += ["- %d x %s" % (n, k) for k, n in sorted(kinds.items(), key=lambda t: -t[1])]
+    lines += ["", "| ticket | picked | admission | gate says |", "|---|---|---|---|"]
+    for i, ok, reason, fails, v in sorted(rows, key=lambda r: (not r[1], bool(r[3]), r[0])):
+        lines.append("| %s | %s | %s | %s |" % (i, "YES" if ok else "no", "admitted" if not fails else
+                                                  "REFUSED: " + "; ".join(fails), reason.replace("|", "/")[:150]))
+    return rows, "\n".join(lines) + "\n"
+
+
+def admission(a):
+    worker = a.worker or "CLAUDE_ARCHMAGI_FWLIVE"
+    rows, text = admission_table(worker, a.lane)
+    if a.out:
+        Path(a.out).parent.mkdir(parents=True, exist_ok=True)
+        Path(a.out).write_text(text, encoding="utf-8")
+    print("\n".join(text.splitlines()[:16] if a.out else text.splitlines()))
+    if a.out:
+        print("table: %s" % a.out)
+
+
+# --- hard stops (owner order 2026-11-12, recommendation 2) -----------------------------------------------------------
+def live_cost(clone, t0):
+    """dollars the clone's Claude sessions have spent since t0 (epoch s), priced from the growing session transcripts
+    (PRICE below). The CLI only prints its own cost_usd at the end of a run, so this is the mid-round feed."""
+    acc = blank()
+    transcript_usage(clone, t0, dt.datetime.now().timestamp() + 5, set(), acc)
+    return acc["cost_usd"]
+
+
+def ledger_closed(item_id):
+    _LOADED.clear()
+    v = world().items.get(item_id)
+    return v is not None and not v.open
+
+
+def guard_run(cmd, cost_feed, closed_feed, broaden_feed, cap, broaden_cap, poll, note=None, sleep_grace=30,
+              popen=subprocess.Popen):
+    """run cmd under the hard stops, polling every `poll` s: -> its exit code, or 90 (the round's dollar cap), 91 (the
+    broaden/judge window's cap: dollars spent since broaden_feed() first said True), 92 (the item closed in the ledger).
+    cost_feed() -> dollars so far this round; closed_feed(), broaden_feed() -> bool. note(dict) gets every reading."""
+    p = popen(cmd, start_new_session=True)
+    base = None
+    why = None
+    while True:
+        try:
+            return p.wait(timeout=poll) if why is None else p.wait()
+        except subprocess.TimeoutExpired:
+            pass
+        cost = cost_feed()
+        if base is None and broaden_feed():
+            base = cost
+        if cost >= cap:
+            why = (90, "the round reached $%.2f of the $%.2f cap" % (cost, cap))
+        elif base is not None and cost - base >= broaden_cap:
+            why = (91, "$%.2f spent since the judge/broaden stage began (cap $%.2f)" % (cost - base, broaden_cap))
+        elif closed_feed():
+            why = (92, "the item closed in the ledger: the round ends here")
+        if note:
+            note({"cost": round(cost, 2), "cap": cap, "broaden_base": base, "stop": why[1] if why else None})
+        if why:
+            for sig in (signal.SIGTERM, signal.SIGKILL):
+                try:
+                    os.killpg(p.pid, sig)
+                except OSError:
+                    pass
+                try:
+                    p.wait(timeout=sleep_grace if sig == signal.SIGTERM else 10)
+                    break
+                except subprocess.TimeoutExpired:
+                    continue
+            return why[0]
+
+
+def guard(a):
+    cmd = a.run[1:] if a.run and a.run[0] == "--" else a.run
+    rd, clone = Path(a.rd), a.clone or REPO
+    t0f = rd / "round.t0"
+    if not t0f.exists():
+        t0f.write_text("%d" % int(dt.datetime.now().timestamp()))
+    t0 = float(t0f.read_text())
+    started = dt.datetime.now().timestamp()
+    wd = REPO / a.dir
+
+    def broaden():
+        for n in ("BROADEN.md", "JUDGE.md"):
+            f = wd / n
+            if f.exists() and f.stat().st_size > 20 and f.stat().st_mtime >= started:
+                return True
+        return False
+
+    def note(d):
+        write_json(rd / "guard.json", dict(d, at=now(), item=a.id))
+
+    rc = guard_run(cmd, lambda: live_cost(clone, t0), lambda: ledger_closed(a.id), broaden, limit("round_usd"),
+                   limit("broaden_usd"), limit("poll_s"), note)
+    return rc
+
+
+def rerun_ok_cmd(a):
+    blocked = (REPO / a.dir / "BLOCKED.md").exists() and (REPO / a.dir / "BLOCKED.md").stat().st_size > 0
+    ok, why = rerun_ok(int(a.n), a.rc, a.fp0, a.fp1, blocked)
+    print(("RERUN " if ok else "NO-RERUN ") + why)
+    return 0 if ok else 1
+
+
+def fingerprint_of(d):
+    import hashlib
+    h = hashlib.sha1()
+    rc, head = sh(["git", "rev-parse", "HEAD"])
+    rc, st = sh(["git", "status", "--porcelain", "--untracked-files=all"])
+    h.update((head + "\n" + st).encode())
+    for line in st.splitlines():
+        f = REPO / line[3:].strip().split(" -> ")[-1]
+        try:
+            h.update(("%s %d %d" % (f, f.stat().st_size, f.stat().st_mtime_ns)).encode())
+        except OSError:
+            pass
+    return h.hexdigest()[:16]
+
+
+def rerun_ok(n_done, rc, fp0, fp1, blocked, max_runs=None):
+    """-> (ok, reason): may the failed run n_done be run again? At most max_runs runs, never after a cap or a close,
+    never after BLOCKED, and only when the run left something new behind (fingerprint changed)."""
+    max_runs = limit("max_runs") if max_runs is None else max_runs
+    if str(rc) in ("90", "91", "92"):
+        return False, "exit %s is a hard stop, not a failure" % rc
+    if n_done >= max_runs:
+        return False, "run %d of %d done: no more reruns" % (n_done, max_runs)
+    if blocked:
+        return False, "BLOCKED.md names a blocker: a rerun has no new information"
+    if fp0 == fp1:
+        return False, "the run left nothing new (same commit, tree and Whittle files): no new information"
+    return True, "rerun %d of %d: the run changed the tree" % (n_done + 1, max_runs)
+
+
 def human(n):
     return "%.2fM" % (n / 1e6) if n >= 1e6 else "%dk" % round(n / 1e3)
 
@@ -1108,6 +1454,24 @@ def main(argv=None):
     s.add_argument("worker")
     s = sub.add_parser("nonpass")
     s.add_argument("id")
+    s = sub.add_parser("admission")
+    s.add_argument("lane", nargs="?", default="fwlive")
+    s.add_argument("--worker")
+    s.add_argument("--out")
+    s = sub.add_parser("limit")
+    s.add_argument("name")
+    s = sub.add_parser("guard")
+    s.add_argument("worker")
+    s.add_argument("id")
+    s.add_argument("--rd", required=True)
+    s.add_argument("--dir", required=True)
+    s.add_argument("--clone")
+    s.add_argument("run", nargs=argparse.REMAINDER)
+    s = sub.add_parser("fingerprint")
+    s.add_argument("dir")
+    s = sub.add_parser("rerun-ok")
+    for x in ("n", "rc", "fp0", "fp1", "dir"):
+        s.add_argument(x)
     sub.add_parser("diskfree")
     sub.add_parser("hardstop")
     s = sub.add_parser("tokens")
@@ -1125,7 +1489,8 @@ def main(argv=None):
     fn = {"status": status, "log": log, "shortlist": shortlist, "lane-open": lane_open, "claim": claim,
           "unclaim": unclaim, "mine": mine, "diskfree": diskfree, "hardstop": hardstop, "nonpass": nonpass, "tokens": tokens,
           "gate": gate_cmd, "setup": setup, "release": release, "wrapup": wrapup, "recent": recent,
-          "spend": spend}[a.cmd]
+          "spend": spend, "admission": admission, "guard": guard, "limit": lambda a: print(limit(a.name)),
+          "fingerprint": lambda a: print(fingerprint_of(a.dir)), "rerun-ok": rerun_ok_cmd}[a.cmd]
     return fn(a) or 0
 
 

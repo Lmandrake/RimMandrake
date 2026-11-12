@@ -9,7 +9,10 @@
 #           claims (shared table + ledger), whittle/<dir>/ STATEMENT, NOTES, MODE, PROMPT; commit and publish.
 #           Last line PICKED <ID> <dir> <mode> | NONE <why>.
 #   WHITTLE MandrakeWorkflows whittle/run.py --runner claude with WHITTLE=1 WHITTLE_DIR=whittle/<dir>: builds until its
-#           Stop hook (DONE + BROADEN + a fresh judge) lets it stop. rc 1 (incomplete) runs again, at most 3 runs.
+#           Stop hook (DONE + BROADEN + a fresh judge) lets it stop. rc 1 (incomplete) runs again ONCE at most, and
+#           only when the run left something new (wc.py rerun-ok). HARD STOPS (owner order 2026-11-12): the run is started
+#           under wc.py guard, which kills it at the round dollar cap, at the broaden cap, and when the item closes; a
+#           capped round is PARKED for the owner by the wrap-up. Values: limits.json.
 #   WRAPUP  wc.py wrapup, no model, for every mechanical ending (ghost, closed upstream, failed, parked). Only a Whittle
 #           exit 0 needs a model to read DONE.md and the judge and close: claude -p (wrapup.md) on sonnet with a slim
 #           context (no CLAUDE.md layers, no MCP, Bash+Read, turn and dollar caps). Last line RESULT <ID> <ending> sha=.
@@ -263,20 +266,32 @@ while :; do
             [ -s "$DIR/PROMPT.md" ] || sed "s#whittle/#$DIR/#g" "$WC_TEMPLATE/PROMPT.md" > "$DIR/PROMPT.md"
             sed -e "s#\$WC_LANE#$BRIEF#g" -e "s#\$WC_ITEM#$ID#g" -e "s#\$WHITTLE_DIR#$DIR#g" -e "s#\$RIMFLOW_SEAT#$W#g" \
                 "$HERE/builder.md" >> "$DIR/PROMPT.md"; }
-        N=$((TRIES + 1))
-        st --state working --item "$ID" --note "round $ROUND: $ID Whittle run $N of 3"
-        lg "round $ROUND $ID whittle run $N"
+        N=$((TRIES + 1)); MAXRUNS=$($WC limit max_runs 2>/dev/null || echo 2)
+        st --state working --item "$ID" --note "round $ROUND: $ID Whittle run $N of $MAXRUNS"
+        lg "round $ROUND $ID whittle run $N of $MAXRUNS (hard stops: round \$$($WC limit round_usd 2>/dev/null), broaden \$$($WC limit broaden_usd 2>/dev/null))"
         date +%s > "$RD/whittle.$N.t0"   # the window wc.py spend reads the session transcripts in, if this run is killed
+        FP0=$($WC fingerprint "$DIR" 2>/dev/null)
+        # HARD STOPS (owner order 2026-11-12): wc.py guard runs the Whittle run and kills it at the round's dollar cap
+        # (exit 90), at the broaden/judge cap (91), or the moment the item closes in the ledger (92)
         WHITTLE=1 WHITTLE_DIR="$DIR" WHITTLE_LOOP_LIMIT=3 WC_ITEM="$ID" \
+            $WC guard "$W" "$ID" --rd "$RD" --dir "$DIR" --clone "$CLONE" -- \
             timeout -k 120 23000 python3 "$RUNPY" --runner claude --cwd "$CLONE" --log "$RD/whittle.$N.log" --model opus \
             >"$RD/whittle.$N.out" 2>&1
         rc=$?; date +%s > "$RD/whittle.$N.t1"; mirror
+        FP1=$($WC fingerprint "$DIR" 2>/dev/null)
         if [ "$rc" = 0 ] || [ "$rc" = 2 ]; then
             setcur phase=wrapup whittle_rc="$rc" tries=0
+        elif [ "$rc" = 90 ] || [ "$rc" = 91 ]; then   # capped: the wrap-up PARKS it for the owner (not failed and requeued)
+            lg "round $ROUND $ID HARD STOP: $(python3 -c 'import json,sys; print(json.load(open(sys.argv[1])).get("stop"))' "$RD/guard.json" 2>/dev/null): parking it"
+            setcur phase=wrapup whittle_rc=capped tries=0
+        elif [ "$rc" = 92 ]; then                     # the ticket closed in the ledger: the round ends, no broaden
+            lg "round $ROUND $ID closed in the ledger while Whittle ran: ending the round"
+            setcur phase=wrapup whittle_rc=closed tries=0
         else
             if hard_stop >/dev/null; then wait_hard_stop; continue; fi   # killed by the switcher: same run again
             TRIES=$N; setcur tries="$TRIES" whittle_rc="$rc"
-            [ "$TRIES" -ge 3 ] && setcur phase=wrapup tries=0
+            if RR=$($WC rerun-ok "$N" "$rc" "$FP0" "$FP1" "$DIR" 2>&1); then lg "round $ROUND $ID $RR"
+            else lg "round $ROUND $ID $RR: to wrap-up"; setcur phase=wrapup tries=0; fi
         fi
         lg "round $ROUND $ID whittle run $N exit $rc" ;;
     wrapup)
