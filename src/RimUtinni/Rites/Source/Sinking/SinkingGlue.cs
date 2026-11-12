@@ -288,7 +288,7 @@ namespace RimMandrake.Utinni.Rites
             if (plan.rider == SinkingRider.BeastLull)
             {
                 StartCondition(map, BeastLullDef, plan.beastLullTicks);
-                sb.Append("\n\nPitch given back to the pitch. The bulges lie still (").Append((plan.beastLullTicks / 60000f).ToString("0.#")).Append(" days): building, digging and pumping will not wake what sleeps in them.");
+                sb.Append("\n\nPitch given back to the pitch. The bulges lie still (").Append((plan.beastLullTicks / 60000f).ToString("0.#")).Append(" days): building, digging and pumping will not wake what sleeps in them. An explosion still will.");
             }
             if (plan.rider == SinkingRider.TrapFizzle)
             {
