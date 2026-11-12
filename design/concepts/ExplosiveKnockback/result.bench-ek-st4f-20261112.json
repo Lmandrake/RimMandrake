@@ -1,0 +1,6 @@
+{
+ "run": "bench-ek-st4f-20261112",
+ "stage": 3,
+ "outcome": "done",
+ "summary": "Stage 3 touch-up from the exam5 cold readers' notes, no rule change: the sheet's shield-belt line now names the gas-shove exception (already in the gas how line), fire at half reads half strength, a pawn a gas burst shoves onto a cover stands on it with the cover whole (d_c_gas_shove: gas bursts never break covers), and the container line states its shove limits (one cell or a jolt, never into a pit, wall or pawn). Tree experiences of shield_belt_holds and blast_breaks_pit_cover match."
+}

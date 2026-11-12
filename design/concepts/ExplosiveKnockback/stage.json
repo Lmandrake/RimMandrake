@@ -289,10 +289,73 @@
     "ref": "run bench-ek-st3f-20261112",
     "stage": 3,
     "tokens": 3940000
+   },
+   {
+    "at": "2026-11-12T09:39:33Z",
+    "kind": "helper",
+    "ref": "a6cf79a679b547b85",
+    "stage": 4,
+    "tokens": 37546
+   },
+   {
+    "at": "2026-11-12T09:40:30Z",
+    "kind": "helper",
+    "ref": "a97a011e189a4baf3",
+    "stage": 4,
+    "tokens": 35980
+   },
+   {
+    "at": "2026-11-12T09:41:18Z",
+    "kind": "helper",
+    "ref": "a36763a12fa641e80",
+    "stage": 4,
+    "tokens": 38353
+   },
+   {
+    "at": "2026-11-12T09:42:40Z",
+    "kind": "helper",
+    "ref": "a222487fbc7ba6847",
+    "stage": 4,
+    "tokens": 38567
+   },
+   {
+    "at": "2026-11-12T09:43:31Z",
+    "kind": "helper",
+    "ref": "a9d83d9bdf1474465",
+    "stage": 4,
+    "tokens": 37949
+   },
+   {
+    "at": "2026-11-12T09:44:44Z",
+    "kind": "helper",
+    "ref": "a1b99f6a45d0ea158",
+    "stage": 4,
+    "tokens": 37829
+   },
+   {
+    "at": "2026-11-12T09:45:34Z",
+    "kind": "helper",
+    "ref": "a1436b7159a9973c8",
+    "stage": 4,
+    "tokens": 38665
+   },
+   {
+    "at": "2026-11-12T09:46:24Z",
+    "kind": "helper",
+    "ref": "a886b9d5addd507a5",
+    "stage": 4,
+    "tokens": 37566
+   },
+   {
+    "at": "2026-11-12T09:46:42Z",
+    "kind": "unmeasured",
+    "ref": "run bench-ek-st4f-20261112",
+    "stage": 3,
+    "tokens": 3940000
    }
   ],
   "reserve": 60000,
-  "spent": 42195030
+  "spent": 46437485
  },
  "history": [
   {
@@ -570,6 +633,30 @@
    "stage": 4,
    "what": "close",
    "why": "run bench-ek-st3f-20261112: stage 3 done"
+  },
+  {
+   "at": "2026-11-12T09:46:32Z",
+   "stage": 3,
+   "what": "invalidated",
+   "why": "inputs changed since stage 3 was accepted: sheet, tree; back to stage 3"
+  },
+  {
+   "at": "2026-11-12T09:46:32Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "42497485 of 4000000 spent; run bench-ek-st4f-20261112 goes on with 3940000 (advisory)"
+  },
+  {
+   "at": "2026-11-12T09:46:32Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run bench-ek-st4f-20261112, stage 3, budget 3940000"
+  },
+  {
+   "at": "2026-11-12T09:46:42Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run bench-ek-st4f-20261112: stage 3 done"
   }
  ],
  "item": "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
@@ -707,15 +794,21 @@
    "why": "inputs changed since stage 3 was accepted: sheet, tree, scenes; back to stage 3"
   },
   {
-   "at": "2026-11-12T09:36:53Z",
+   "at": "2026-11-12T09:46:32Z",
+   "outcome": "invalidated",
+   "stage": 3,
+   "why": "inputs changed since stage 3 was accepted: sheet, tree; back to stage 3"
+  },
+  {
+   "at": "2026-11-12T09:46:42Z",
    "inputs": {
     "exam": "f2914f96f9c793bd486145d74cc88f895a7999ba576c024548c3e6115d7491ba",
     "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
     "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
     "scenes": "a3aa1713add4003c57676e121813628fe01c48e1139b861e3f322783ca246794",
-    "sheet": "691526bf0c0089d63c6db340ca8e16dfa306152a9a947814b4ce78a9a271da3d",
-    "tree": "46cde2fef79e26b0dbf36f2e923f344b064363db52789f772d96976eb0ff9055"
+    "sheet": "af8293a3788cc5e5ed3510abe522b8376496d0f8f211ad104146e4d31b04dae6",
+    "tree": "fa1bd6b1f62017952604a800d8ee9cd1c231196e101628807d33dfc5c25e843b"
    },
    "manifest": {
     "designer.md": "b79052133c514f160b33c30b53d69a947adbfdbc81304681463b1038e82fce9f",
@@ -724,9 +817,9 @@
    },
    "outcome": "done",
    "owner_uncited": [],
-   "run": "bench-ek-st3f-20261112",
+   "run": "bench-ek-st4f-20261112",
    "stage": 3,
-   "summary": "Judge4's six gaps fixed: sc_all_fly_no_cap is a 5.9-radius blast reaching over 60 light stacks with a cap-hook control; 'reached' means a throw of at least one cell; the 75 kg mass limit and rim too_weak skip are inventoried (inv_mass_limit_skip, inv_too_weak_skip) and stated in the_spared, every_good_moves and the sheet; the sweep's gas-off row expects no burst; smoke and stun cover lanes added; the flagship has geometry and launch asserts that a colonist and a good plan into the open pit; the walk's oracle is order-independent with a scripted grenade on the cover. No owner decision needed."
+   "summary": "Stage 3 touch-up from the exam5 cold readers' notes, no rule change: the sheet's shield-belt line now names the gas-shove exception (already in the gas how line), fire at half reads half strength, a pawn a gas burst shoves onto a cover stands on it with the cover whole (d_c_gas_shove: gas bursts never break covers), and the container line states its shove limits (one cell or a jolt, never into a pit, wall or pawn). Tree experiences of shield_belt_holds and blast_breaks_pit_cover match."
   }
  ],
  "runner": "claude",
