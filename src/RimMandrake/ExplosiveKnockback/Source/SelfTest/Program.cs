@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using RimMandrake.ExplosiveKnockback;
 
-// Offline kernel tests K-01..K-12 (design §8.1). Compiles the PRODUCTION RM_KnockbackMath.cs.
+// Offline kernel tests K-01..K-17 (design §8.1). Compiles the PRODUCTION RM_KnockbackMath.cs.
 internal sealed class Grid : IKbGrid
 {
     public readonly int W, H;

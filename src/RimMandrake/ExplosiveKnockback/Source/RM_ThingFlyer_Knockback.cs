@@ -16,12 +16,15 @@ namespace RimMandrake.ExplosiveKnockback
     /// instant move used (Direct at the cell, then Near, then Near the origin), so stack merging and "no free cell" behave
     /// as before. Cost per flying stack: one Thing, one tick of O(1) work, one Graphic.Draw and one shadow mesh a frame;
     /// a rebound adds one kernel Resolve (at most a few grid reads).</summary>
+    [StaticConstructorOnStartup]
     public class RM_ThingFlyer_Knockback : Thing, IThingHolder
     {
         public const int MaxBounces = 6;
         private const string ShadowTex = "Things/Skyfaller/SkyfallerShadowCircle"; // PawnFlyerProperties' shadow
 
-        private static Material shadowMat;
+        // loaded on the main thread at startup (a static Material without the attribute is logged by RimWorld's
+        // startup check, measured 2026-11-12)
+        private static readonly Material shadowMat = MaterialPool.MatFrom(ShadowTex, ShaderDatabase.Transparent);
 
         private ThingOwner<Thing> innerContainer;
         private Vector3 startVec;
@@ -273,10 +276,6 @@ namespace RimMandrake.ExplosiveKnockback
 
         private void DrawShadow()
         {
-            if (shadowMat == null)
-            {
-                shadowMat = MaterialPool.MatFrom(ShadowTex, ShaderDatabase.Transparent);
-            }
             float s = Mathf.Lerp(1f, 0.6f, height);
             var scale = new Vector3(s, 1f, s);
             Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(groundPos, Quaternion.identity, scale), shadowMat, 0);

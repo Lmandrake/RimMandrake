@@ -75,7 +75,7 @@ namespace RimMandrake.ExplosiveKnockback
 
     public static class KbLookup
     {
-        /// <summary>First non-null wins whole. With none: a harmful blast throws at the unpatched fraction (default 0),
+        /// <summary>First non-null wins whole. With none: a harmful blast throws at the unpatched fraction (default 1.0),
         /// a harmless one not at all.</summary>
         public static KbConfig Resolve(KbConfig projectile, KbConfig weapon, KbConfig damageDef, bool harmsHealth, float unpatchedFraction)
         {

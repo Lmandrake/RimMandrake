@@ -22,6 +22,9 @@ Sources: `design/RimMandrake/explosive_knockback_design_2026-10-06.md` (§3, §5
 - A flight cut short by a wall (rebound off) lands beside it and takes today's wall impact there. → flying_goods.wall_cut_short_applies_impact
 - With rebound on, a cut-short flight bounces back with about 70% of the cells it had left; the impact applies at the bounce. → flying_goods.rebound_off_wall_at_keep_percent
 - flyingGoods off is today's instant move (no carrier). → flying_goods.off_is_the_instant_move
+- A closed container that survives the blast keeps its goods on its own cell and is shoved (slide or jolt). → light_things.closed_container_holds_goods_and_is_shoved
+- Fire and incendiary blasts throw at half a Bomb's force (owner card 2026-11-11). → throw.fire_and_incendiary_throw_at_half
+- A damaging explosion this mod does not patch throws at full force by default (owner card 2026-11-11). → throw.unpatched_harmful_blast_throws_at_full
 - A save taken mid-flight reloads with the carrier and its stack, which then lands intact. → not_driven.save_mid_flight_keeps_the_stack (proof/goods_flight_saveload.py)
 - A colonist thrown into an open pit lands on its floor and FlowWorks records exactly one descent. → pits.colonist_thrown_into_open_pit_falls
 - An enemy thrown into an open pit lands on its floor and falls (one descent). → pits.enemy_thrown_into_open_pit_falls

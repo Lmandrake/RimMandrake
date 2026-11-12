@@ -137,6 +137,15 @@ namespace RimMandrake.ExplosiveKnockback
                 tick = Find.TickManager.TicksGame,
             });
         }
+
+        /// <summary>Runs even when ExplosionDamageThing throws (the postfix then does not): a watch left set would scale an
+        /// unrelated later hit on the same stack, or credit an unrelated shield absorb to this blast.</summary>
+        public static void Finalizer()
+        {
+            spareThing = null;
+            shieldWatch = null;
+            shieldAbsorbed = null;
+        }
     }
 
     /// <summary>Records the shield that absorbed an explosion's damage AT DAMAGE TIME (GPT #5): "still active afterwards"

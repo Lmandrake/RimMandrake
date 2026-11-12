@@ -44,6 +44,8 @@ namespace RimMandrake.ExplosiveKnockback
             "lookup_projectile", "lookup_zero_wins", "impact_factor", "body_override", "immunity_window", "shield_counter",
             // 2026-11-12 RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD: thrown goods fly in a carrier. NOT YET RUN LIVE.
             "goods_fly_midair", "goods_fly_lands", "goods_fly_wall", "goods_fly_rebound", "goods_fly_off",
+            // 2026-11-12 closed containers under a blast they survive; fire at half; unpatched harmful at full.
+            "closed_container", "fire_half", "harmful_unpatched",
         };
 
         private static Map Map => Find.CurrentMap;
@@ -1093,6 +1095,99 @@ namespace RimMandrake.ExplosiveKnockback
                     };
                     return null;
                 }
+
+                case "closed_container":
+                    {
+                        // a small blast the Hopper survives (the 25-shell storeroom destroys every Hopper within r6,
+                        // RIMMANDRAKE_STAGE_KNOCKBACK_CONTAINER_SURVIVES_BLAST); tagged closed at runtime, untagged on restore
+                        s.restore = () => CloseStorage("Hopper=off"); // before the poke: a throw still undoes it
+                        string had = CloseStorage("Hopper=on");
+                        if (!had.StartsWith("CLOSED"))
+                        {
+                            return had;
+                        }
+                        Thing hop = Build("Hopper", O(s, 1, 0));
+                        Track(s, "hopper", hop);
+                        Item(s, "steel", "Steel", 20, hop.Position);
+                        Item(s, "open", "Steel", 20, O(s, 1, 1)); // control: the same stack on open ground beside it
+                    }
+                    Blast(s.o, 2.9f);
+                    s.verdict = sc =>
+                    {
+                        string mo = Moved(sc, "open", out Thing open, out int openCells);
+                        if (openCells < 1)
+                        {
+                            return "INVALID " + sc.name + " control stack on open ground did not move: " + mo;
+                        }
+                        Thing hop = sc.things["hopper"];
+                        Thing st = sc.things["steel"];
+                        // row hold: fails alone when the closed guard lets goods in a container be thrown
+                        // (every hit thing logs a request; a held good never logs an item_move)
+                        bool hold = !hop.Destroyed && st.Spawned && st.Position == hop.Position && ForThing(sc, "item_move", st).Count == 0;
+                        // row shove: fails alone when a held container gets no slide/jolt line
+                        var c = ForThing(sc, "container", hop);
+                        bool shove = c.Count == 1;
+                        return Result(sc, hold && shove, "hold=" + hold + " shove=" + shove + " hopperAlive=" + !hop.Destroyed
+                            + " steelAt=" + (st.Spawned ? st.Position.x + "," + st.Position.z : "gone") + " hopperAt=" + hop.Position.x + "," + hop.Position.z
+                            + (c.Count > 0 ? " [" + Rec(c[0]) + "]" : " no container line") + " control: " + mo);
+                    };
+                    return null;
+
+                case "fire_half":
+                    // RIMMANDRAKE_THROW_ALL_HARMFUL_BLASTS: Flame (incendiary) throws at half a Bomb's force. Control: a Bomb
+                    // 5 cells north, same radius and offset. Fails alone when the Flame patch is not 0.5.
+                    Colonist(s, "p", O(s, 1, 0));
+                    Colonist(s, "q", O(s, 1, 5));
+                    Blast(s.o, 2.9f, DamageDefOf.Flame, 1);
+                    Blast(O(s, 0, 5), 2.9f);
+                    s.verdict = sc =>
+                    {
+                        var rq = ForThing(sc, "request", sc.things["q"]);
+                        var rp = ForThing(sc, "request", sc.things["p"]);
+                        if (rq.Count != 1)
+                        {
+                            return "INVALID " + sc.name + " Bomb control made " + rq.Count + " requests";
+                        }
+                        float fq = Convert.ToSingle(rq[0]["force"]);
+                        float fp = rp.Count == 1 ? Convert.ToSingle(rp[0]["force"]) : -1f;
+                        Moved(sc, "p", out Thing _, out int cp);
+                        Moved(sc, "q", out Thing _, out int cq);
+                        bool ok = rp.Count == 1 && Math.Abs(fp - 0.5f * fq) < 0.01f && (string)rp[0]["damType"] == "Flame" && cp <= cq;
+                        return Result(sc, ok, "flameForce=" + fp + " bombForce=" + fq + " flameCells=" + cp + " bombCells=" + cq);
+                    };
+                    return null;
+
+                case "harmful_unpatched":
+                    {
+                        // a damaging DamageDef this mod does not patch (vanilla Thump) throws at unpatchedHarmfulPercent,
+                        // default 100. Control: a Bomb 5 cells south. Fails alone when the default is not 100.
+                        DamageDef thump = DefDatabase<DamageDef>.GetNamedSilentFail("Thump");
+                        if (thump == null || thump.GetModExtension<RM_KnockbackExtension>() != null || !thump.harmsHealth)
+                        {
+                            return "Thump absent, patched or harmless: not an unpatched harmful blast";
+                        }
+                        Colonist(s, "p", O(s, 1, 0));
+                        Colonist(s, "q", O(s, 1, -5));
+                        Blast(s.o, 2.9f, thump, 1);
+                        Blast(O(s, 0, -5), 2.9f);
+                    }
+                    s.verdict = sc =>
+                    {
+                        var rq = ForThing(sc, "request", sc.things["q"]);
+                        var rp = ForThing(sc, "request", sc.things["p"]);
+                        if (rq.Count != 1)
+                        {
+                            return "INVALID " + sc.name + " Bomb control made " + rq.Count + " requests";
+                        }
+                        float fq = Convert.ToSingle(rq[0]["force"]);
+                        float fp = rp.Count == 1 ? Convert.ToSingle(rp[0]["force"]) : -1f;
+                        Moved(sc, "p", out Thing _, out int cp);
+                        Moved(sc, "q", out Thing _, out int cq);
+                        bool ok = rp.Count == 1 && (string)rp[0]["source"] == "unpatched" && Math.Abs(fp - fq) < 0.01f && cp == cq;
+                        return Result(sc, ok, "thumpForce=" + fp + " source=" + (rp.Count == 1 ? rp[0]["source"] : "none") + " bombForce=" + fq
+                            + " thumpCells=" + cp + " bombCells=" + cq + " unpatchedHarmfulPercent=" + RimMandrakeExplosiveKnockbackSettings.unpatchedHarmfulPercent);
+                    };
+                    return null;
 
                 case "emp_no_throw":
                     Colonist(s, "p", O(s, 1, 0));

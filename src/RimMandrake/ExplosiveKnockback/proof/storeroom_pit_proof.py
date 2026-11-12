@@ -20,7 +20,7 @@ Two arms, each reloading the save; every row can fail alone:
                                   SA_CONTAINER_RULE       one "container" line; slide = one cell, not pit/wall/pawn,
                                                           the goods with it; jolt = unmoved
                                   SA_NO_IN_STORAGE_SKIP   no "in_storage" skip line (the old rule is off)
-  SC  enabled=False            -> SC_OFF_SHELF_GOODS_STILL, SC_OFF_CONTAINER_STILL, SC_OFF_NO_CONTAINER_LINE
+  SC  enabled=False            -> SC_OFF_SHELF_GOODS_NOT_THROWN, SC_OFF_CONTAINER_STILL, SC_OFF_NO_CONTAINER_LINE
 
 Usage (python.exe from WSL, bridge held):
   storeroom_pit_proof.py [--save NAME] [--site x,z,w,h] [--pit x,z,w,h] [--k 3] [--out evidence.json]
@@ -205,6 +205,9 @@ if a.storage:
         row("SA_CLOSED_GOODS_STAY", bool(S["held"]) and len(stay) == len(S["held"]) and S["skips"].get("closed_container", 0) >= 1,
             "%d/%d container goods at start or carried; closed_container skips %d" % (
                 len(stay), len(S["held"]), S["skips"].get("closed_container", 0)))
+        # fails alone when the blast destroys the container (a staging defect, not the rule): the 25-shell storeroom
+        # destroys every Hopper (RIMMANDRAKE_STAGE_KNOCKBACK_CONTAINER_SURVIVES_BLAST); Station 5 uses 3 shells
+        row("SA_CONTAINER_SURVIVES", S["container_after"] is not None, "container %s -> %s" % (S["container"], S["container_after"]))
         cl = S["container_lines"]
         ok, det = False, "lines %s" % cl
         if len(cl) == 1 and S["container_after"]:
@@ -221,7 +224,11 @@ if a.storage:
         row("SA_NO_IN_STORAGE_SKIP", S["skips"].get("in_storage", 0) == 0, str(dict(S["skips"])))
     S = storage_arm("SC", ["enabled=False"])
     if S:
-        row("SC_OFF_SHELF_GOODS_STILL", not any(moved(v) for v in S["shelf"].values()), str(S["shelf"])[:150])
+        # a shelf the blast destroys drops leavings that vanilla GenSpawn may nudge a stack one cell aside, so "still" is
+        # wrong (RIMMANDRAKE_STAGE_KNOCKBACK_CONTAINER_SURVIVES_BLAST): off means no item_move line and no stack >1 cell away
+        far = [i for i, v in S["shelf"].items() if v[2] is not None and max(abs(v[2] - v[0]), abs(v[3] - v[1])) > 1]
+        row("SC_OFF_SHELF_GOODS_NOT_THROWN", S["journal"].get("item_move", 0) == 0 and not far,
+            "item_move %d; >1 cell %s; %s" % (S["journal"].get("item_move", 0), far, str(S["shelf"])[:120]))
         row("SC_OFF_CONTAINER_STILL", S["container_after"] == S["container"], "%s -> %s" % (S["container"], S["container_after"]))
         row("SC_OFF_NO_CONTAINER_LINE", not S["container_lines"], str(dict(S["journal"])))
     A = Bm = C = None

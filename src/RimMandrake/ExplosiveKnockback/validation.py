@@ -56,6 +56,10 @@ SCENES = [
     ("goods_fly_wall", "flying_goods", "wall_cut_short_applies_impact", "goodsRebound"),
     ("goods_fly_rebound", "flying_goods", "rebound_off_wall_at_keep_percent", "goodsReboundKeepPercent"),
     ("goods_fly_off", "flying_goods", "off_is_the_instant_move", "flyingGoods"),
+    # 2026-11-12 RIMMANDRAKE_STAGE_KNOCKBACK_CONTAINER_SURVIVES_BLAST / RIMMANDRAKE_THROW_ALL_HARMFUL_BLASTS
+    ("closed_container", "light_things", "closed_container_holds_goods_and_is_shoved", "shoveClosedContainers"),
+    ("fire_half", "throw", "fire_and_incendiary_throw_at_half", None),
+    ("harmful_unpatched", "throw", "unpatched_harmful_blast_throws_at_full", "unpatchedHarmfulPercent"),
 ]
 NOT_DRIVEN = [
     ("hose_carry_drops_at_takeoff", "needs a laid hose reel and a colonist mid CarryHoseEnd job; DropCarriedHose is wired "
@@ -72,7 +76,7 @@ NOT_DRIVEN = [
 # The validation ladder (rimflow model.LEVELS): L0 offline, L1 resolved-live on the minimal list, L2 behaviour scenes,
 # L4 human. `python3 validation.py --criteria` prints these as `ID LEVEL: text` for `rimflow implemented --criteria-file`.
 CRITERIA = [
-    ("EK.K", "L0", "kernel selftest K-01..K-16 PASS (selftest_explosiveknockback_kernel.py)"),
+    ("EK.K", "L0", "kernel selftest K-01..K-17 PASS (selftest_explosiveknockback_kernel.py)"),
     ("EK.static", "L0", "validation.py STATIC PASS: config lookup, shield/landing hooks, settings saved+reset, walk coverage"),
     ("EK.mock", "L0", "validation.py --mock stages every scene"),
     ("EK.load", "L1", "explosiveknockback tier loads with no red error from this mod; Harmony patches applied"),

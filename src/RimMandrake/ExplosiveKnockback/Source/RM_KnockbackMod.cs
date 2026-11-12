@@ -14,8 +14,8 @@ namespace RimMandrake.ExplosiveKnockback
     {
     }
 
-    /// <summary>A DamageDef's throw strength (design §3.1). Bomb ships 1.0; Flame, EMP, Smoke, Extinguish and
-    /// ToxGas ship an explicit 0. Other mods' explosive DamageDefs get one by patch, never by guess.
+    /// <summary>A DamageDef's throw strength (design §3.1). Bomb ships 1.0, Flame 0.5; EMP, Smoke, Extinguish and
+    /// ToxGas ship an explicit 0. Any other harmful explosion throws at the unpatched-harmful percent (default 100).
     /// maxThrowCells: this blast's own maximum throw (cells); 0 = the global "Maximum throw distance".
     /// impactFactor: scales wall / pawn / door impact damage for this blast (0 = no impact: an arrest tool).
     /// immuneBodySizeOverride: replaces the global "too big to throw" body size for this blast (0 = unset); eligibility is
@@ -55,7 +55,9 @@ namespace RimMandrake.ExplosiveKnockback
         public static float strength = 1f;
         public static int maxThrowCells = 6;
         public static float ownCapScale = 1f;
-        public static float unpatchedHarmfulPercent = 0f;
+        /// <summary>RIMMANDRAKE_THROW_ALL_HARMFUL_BLASTS (owner card 2026-11-11, d_c_which_blasts): any damaging explosion with no
+        /// knockback extension throws at this percent. Harmless ones (harmsHealth false) never throw.</summary>
+        public static float unpatchedHarmfulPercent = 100f;
         public static bool throwDowned = true;
         public static bool throwAnimals = true;
         public static bool throwMechanoids = true;
@@ -126,7 +128,7 @@ namespace RimMandrake.ExplosiveKnockback
             Scribe_Values.Look(ref strength, "strength", 1f);
             Scribe_Values.Look(ref maxThrowCells, "maxThrowCells", 6);
             Scribe_Values.Look(ref ownCapScale, "ownCapScale", 1f);
-            Scribe_Values.Look(ref unpatchedHarmfulPercent, "unpatchedHarmfulPercent", 0f);
+            Scribe_Values.Look(ref unpatchedHarmfulPercent, "unpatchedHarmfulPercent", 100f);
             Scribe_Values.Look(ref throwDowned, "throwDowned", true);
             Scribe_Values.Look(ref throwAnimals, "throwAnimals", true);
             Scribe_Values.Look(ref throwMechanoids, "throwMechanoids", true);
@@ -358,7 +360,7 @@ namespace RimMandrake.ExplosiveKnockback
             RimMandrakeExplosiveKnockbackSettings.strength = 1f;
             RimMandrakeExplosiveKnockbackSettings.maxThrowCells = 6;
             RimMandrakeExplosiveKnockbackSettings.ownCapScale = 1f;
-            RimMandrakeExplosiveKnockbackSettings.unpatchedHarmfulPercent = 0f;
+            RimMandrakeExplosiveKnockbackSettings.unpatchedHarmfulPercent = 100f;
             RimMandrakeExplosiveKnockbackSettings.throwDowned = true;
             RimMandrakeExplosiveKnockbackSettings.throwAnimals = true;
             RimMandrakeExplosiveKnockbackSettings.throwMechanoids = true;
