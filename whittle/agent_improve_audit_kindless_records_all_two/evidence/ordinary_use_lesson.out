@@ -3,11 +3,12 @@ $ WC_ITEM=AGENT_IMPROVE_AUDIT_KINDLESS_RECORDS_ALL_TWO python3 src/RimMandrake/U
 infrastructure/state/lessons/20261112T043802Z-CLAUDE_ARCHMAGI_OFFLINE1-lesson-item-footer-feeds-kinds.md
 commit it: git commit infrastructure/state/lessons/20261112T043802Z-CLAUDE_ARCHMAGI_OFFLINE1-lesson-item-footer-feeds-kinds.md -m 'lesson: …'
 
+# re-read 2026-11-11 20:49 -0800 at HEAD 5cebb3a38a
 $ tail -2 infrastructure/state/lessons/20261112T043802Z-CLAUDE_ARCHMAGI_OFFLINE1-lesson-item-footer-feeds-kinds.md
 item: AGENT_IMPROVE_AUDIT_KINDLESS_RECORDS_ALL_TWO
 home: design/RimMandrake/daily_agent_improvement_2026-11-02.md
 
-# the pass's collector on the real inbox (agent_improve.lesson_pieces, today's UTC day):
+# the pass's collector on the real inbox (agent_improve.lesson_pieces, UTC day 2026-11-12):
   task_kind=None     target=None                                 20261112T033316Z-BENCH-notice-json-has-no-system-pct.md
   task_kind=None     target=None                                 20261112T035822Z-CLAUDE_STEVEDESKTOP_OFFLINE1-stevedesktop-whittle-clones-rm-claude-offline1.md
   task_kind=BUILD    target=selftest_codex_seats.py              20261112T040055Z-BENCH-codex-seats-selftest-reads-live-steve.md
@@ -21,23 +22,17 @@ home: design/RimMandrake/daily_agent_improvement_2026-11-02.md
   task_kind=None     target=CLAUDE.md                            20261112T041548Z-BENCH-stevedesktop-already-held-claude-vaults.md
   task_kind=FIX      target=None                                 20261112T041623Z-CLAUDE_ARCHMAGI_OFFLINE1-class-guard-s-sanity-fixtures-must.md
   task_kind=None     target=None                                 20261112T041933Z-CLAUDE_STEVEDESKTOP_FWLIVE-rimflow-bridge-release-host-stevedesktop-force.md
+  task_kind=None     target=None                                 20261112T042646Z-BENCH-claude-whittle-loops-2026-11-11.md
   task_kind=AUDIT    target=daily_agent_improvement_2026-11-02.md 20261112T043802Z-CLAUDE_ARCHMAGI_OFFLINE1-lesson-item-footer-feeds-kinds.md
+  task_kind=None     target=None                                 20261112T044100Z-CLAUDE_STEVEDESKTOP_OFFLINE2-stevedesktop-wsl-had-no-playwright-2026.md
+  task_kind=REBUILD  target=None                                 20261112T044100Z-CLAUDE_STEVEDESKTOP_OFFLINE2-whittle-setup-stevedesktop-left-done-md.md
+  task_kind=FIX      target=None                                 20261112T044201Z-CLAUDE_ARCHMAGI_OFFLINE3-givequest-incident-world-target.md
 
-$ python3 src/RimMandrake/Utils/agent_improve.py gather --day 2026-11-12 --dry-run --out <scratch>   (L0, no state there)
+$ python3 src/RimMandrake/Utils/agent_improve.py gather --day 2026-11-12 --dry-run --out <scratch, L0>
 # Agent improvement packet 2026-11-12
 
-14 pieces today; 0 signalled targets (>= 2 pieces in 7 days), cap 6.
+18 pieces today; 0 signalled targets (>= 2 pieces in 7 days), cap 6.
 
 ## unrouted (the Curator routes these or leaves them)
-- [lesson] The account switcher's D:\ClaudeWork\rimmandrake\switching_plan\notice.json holds the switcher's current account (steven), pct_left and its switch line, not the Claude System account's weekly %. That 
-- [lesson] SteveDesktop Whittle clones (~/rm/claude-offline1..4, ~/rm/claude-fwlive) push to git@github.com, which resolves to ~/.ssh/id_ed25519: a READ-ONLY key (GitHub: 'marked as read only'), so ./publish ret
-- [lesson] SteveDesktop Whittle loop clones claude-offline2 and claude-offline3 were created with push URL git@github.com:... , which authenticates with the machine's READ-ONLY default key, so ./publish retries 
-- [lesson] SteveDesktop Whittle clones (~/rm/claude-offline*) set no core.sshCommand, so ./publish pushes with the read-only id_ed25519 and is REFUSED ('key ... marked as read only'). Publish with GIT_SSH_COMMAN
-- [lesson] The whittle_claude offline-lane gate hook (infrastructure/whittle_claude/gate.py) refuses ANY Bash command whose text contains the rimflow close flag for running-promises, even inside a heredoc of pro
-- [lesson] On SteveDesktop the bound for adding Claude worker clones is C: free space, not CPU or RAM. The WSL ext4.vhdx is on C: (C:\Users\sjlewis\AppData\Local\wsl\{353db0b6-...}\ext4.vhdx, 107.7 GB on 2026-11
-- [lesson] A WSL2 restart on SteveDesktop (2026-11-11 20:08) zero-filled files mid-write in a Whittle clone: 37 empty .git/objects (HEAD 'bad object'), files truncated to 0 bytes, and a ledger tail of NUL bytes 
-- [lesson] A WSL2 ext4 emergency read-only remount (errors=remount-ro) can leave NUL-padded files in a clone after reboot; a Whittle runner then dies with 'ValueError: embedded null byte' reading PROMPT.md. Afte
-- [lesson] A class guard's sanity fixtures must not be cut from the file it judges: selftest_hook_promises_wired first derived its 'minus one hook' fixture from the repo's settings.json, so on a clobbered clone 
-- [lesson] rimflow bridge release --host stevedesktop --force releases the ledger bridge but NOT the stevedesktop guard driver lock when its holder pid (a Whittle phase's proof run) has died; the guard still rea
 
 Not signalled today: CLAUDE.md, daily_agent_improvement_2026-11-02.md, install.sh, selftest_codex_seats.py

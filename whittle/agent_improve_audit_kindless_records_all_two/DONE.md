@@ -17,18 +17,18 @@ a lesson names past its first line" and "a lesson's item: line is its kind" pass
 or L1 whose cited pieces still name no item applies and stays uncheckable by design, and why: no sound source
 remains, since seat-at-time and the adding commit were measured and both fail; refusing would be a new gate; and it
 would drag down the ramp's acceptance rate. The code agrees: the selftest "L0 applies a change from a lesson naming no
-item, recorded kindless" passes. The cadence still shows such a record `unmeasured` (selftest_agent_improve_cadence,
+item, recorded kindless" and "L1 applies it too, recorded kindless" pass. The cadence still shows such a record `unmeasured` (selftest_agent_improve_cadence,
 unchanged and green), and only the L2 gate refuses one.
 Bullet 2: 2 of 2 records have `source_kinds == []`. The sanity probe shows the same reader reads a non-empty list as
 kinded. The share is stated on the item (`rimflow note`, ledger shard CLAUDE_ARCHMAGI_OFFLINE1) and in §4.3.
 
 ## What I'm least sure about
-- The whole-text fallback is a proxy. Its first-named item is corroborated by the seat's own ledger for only 48% (27%
+- The whole-text fallback is a proxy. Its first-named item is corroborated by the seat's own ledger for only 49% (27%
   for the old first-line rule), so a non-empty kind from prose can be wrong, and a wrong kind would let a source-kind
   item into the "held-out" sample. Only the `item:` footer is sound. The doc says so with the numbers.
-- 2 records is the whole population, so the share is 100% of a tiny sample. In the live inbox only 5 of 105 older
-  lessons name an item at all. Most skill changes stay unmeasured until lessons carry footers. 8 of today's 14
-  lessons come from Whittle loops, which now stamp one.
+- 2 records is the whole population, so the share is 100% of a tiny sample. In the live inbox (20:48 PST) only 8 of 110
+  lessons name an item at all, 1 by a footer. Most skill changes stay unmeasured until lessons carry footers. Most of today's lessons
+  come from Whittle loops, which now stamp one.
 
 ## What I did not test
 - A real agent-improvement pass applying a change (`run --apply`) on live data: none was due, and the live state under
