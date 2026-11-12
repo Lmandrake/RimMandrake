@@ -10,6 +10,7 @@ stuck boundary moved, unreachable read as stopped) must each turn a check red.
 """
 
 import json
+import re
 import os
 import shutil
 import sys
@@ -96,7 +97,7 @@ def plant(root):
     worker("closer", {"worker": "closer", "unit": "rm-whittle-closer.service", "machine": "SteveDesktop",
                       "lane": "offline", "item": None, "round": 4, "state": "working"},
            ["%s round 1 start, open=5 item=RM_DONE_ITEM_ONE" % stamp(48),
-            "%s round 1 end: RM_DONE_ITEM_ONE closed sha=abc1234 tokens=1.2M" % stamp(41),
+            "%s round 1 end: RM_DONE_ITEM_ONE closed sha=abc1234def56789012abc1234def5678901234ab tokens=1.2M" % stamp(41),
             "[%s:07] round #2 started open=4 item=RM_CLAIM_ITEM_ONE" % stamp(38),
             "%s round 2 end: RM_CLAIM_ITEM_ONE closed sha=def5678 tokens=300k" % stamp(25),
             "%s note: drained the easy ones" % stamp(24),
@@ -158,6 +159,17 @@ def wire(mod, root, lane_file, steve_up=False):
             "notice": lambda sources: {"account": "steven", "pct_left": 80.0, "line": 30}}
 
 
+def narrow_tables(text):
+    """Table rows that would run off the right edge: over 200 chars, or holding a run of 28+ non-space chars."""
+    bad = []
+    for l in text.splitlines():
+        if l.startswith("|"):
+            plain = l.replace("\u200b", " ")
+            if len(plain) > 200 or re.search(r"[^\s|]{28,}", plain) or re.search(r"[0-9a-f]{40}", plain):
+                bad.append(l[:80])
+    return bad
+
+
 def checks(mod, tmp):
     root = os.path.join(tmp, "w")
     os.makedirs(root)
@@ -181,7 +193,7 @@ def checks(mod, tmp):
         ("unreachable not stopped", "**unreachable**" in page and "closer: stopped" not in page.lower()),
         ("stopped unit said", "`rm-whittle-edgy.service` on Archmagi: **inactive**" in page),
         ("claim not accepted", near_midnight or "closer said it closed `RM_CLAIM_ITEM_ONE`" in needs),
-        ("ledger close accepted", "closed in the ledger" in page and "commit abc1234" in page),
+        ("ledger close accepted", "closed in the ledger" in page and "`abc1234def`" in page and "abc1234def5" not in page),
         ("closed today split", near_midnight or "2 said, 1 in ledger" in page),
         ("tokens summed", near_midnight or "~1.51M" in page),
         ("drifted start line read", "| 2 |" in page.split("## closer", 1)[1]),
@@ -193,7 +205,8 @@ def checks(mod, tmp):
         ("system account", "Claude System account: 42%" in page),
         ("svg one line", page.count("<svg") == 1 and not any(l.strip() == "" for l in page.split("<svg", 1)[1].split("</svg>", 1)[0].splitlines())),
         ("phone has needs", "NEEDS YOU" in phone and "stuckone" in phone),
-        ("item titles beside ids", "`RM_DONE_ITEM_ONE` (A thing really closed)" in page),
+        ("item titles under the table", "`RM_\u200bDONE_\u200bITEM_\u200bONE`: A thing really closed" in page),
+        ("tables fit: short rows, no long unbreakable run, no 40-hex", narrow_tables(page) == [] and narrow_tables(phone) == []),
     ]
     empty = os.path.join(tmp, "empty")
     os.makedirs(empty)

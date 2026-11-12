@@ -38,7 +38,7 @@ from html import escape
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import artisan_now as A  # noqa: E402  (the shared readers and the picture's drawing kit)
-from artisan_now import Unmeasured, ago, cell, clock, mtime, now_s, read_tail, read_text, run, short, toks, write_atomic  # noqa: E402
+from artisan_now import Unmeasured, ago, cell as _cell, clock, mtime, now_s, read_tail, read_text, run, short, toks, write_atomic  # noqa: E402
 
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 RIMFLOW = os.path.join(REPO, "src", "RimMandrake", "rimflow")
@@ -121,6 +121,46 @@ def int_of(text):
         return None
     return int(n * {"": 1, "k": 1e3, "m": 1e6}[m[2].lower()])
 
+
+
+HASH40 = re.compile(r"\b[0-9a-f]{40}\b")
+
+
+def cell(text):
+    """Text safe inside a Markdown table cell. A full 40-char commit hash is cut to 10: an unbreakable run
+    pushes the table off the right edge of the window."""
+    return _cell(HASH40.sub(lambda m: m[0][:10], str(text)))
+
+
+def wrap_id(iid):
+    """An UPPER_SNAKE id in a code span that may break after each underscore: a zero-width space follows each one
+    (Typora does not render <wbr>; it prints the tag and reads the underscores as emphasis)."""
+    return "`%s`" % str(iid).replace("_", "_\u200b")
+
+
+def sha_cell(sha):
+    return "`%s`" % sha[:10] if sha else "-"
+
+
+def word_cell(truth):
+    """The ledger word without its ', commit <hash>' tail: the Commit column already says it."""
+    return re.sub(r",? commit [0-9a-fA-F]+", "", truth["word"])
+
+
+def item_ref(iid):
+    return wrap_id(iid) if iid else "no item"
+
+
+def titles_below(pairs):
+    """Long titles live under the table, once per item."""
+    seen, out = set(), []
+    for iid, t in pairs:
+        if iid and iid not in seen:
+            seen.add(iid)
+            title = t.get("title") if t else None
+            if title:
+                out.append("- %s: %s" % (wrap_id(iid), short(title, 160)))
+    return out
 
 # ---- the loop log ------------------------------------------------------------------------------------
 
@@ -698,34 +738,37 @@ def lane_word(info):
 
 
 def glance(recs):
-    rows = ["| Worker | State | Machine | Kind | Now on | On it for | Round | Closed today | Tokens today |",
-            "|---|---|---|---|---|---|---|---|---|"]
+    rows = ["| Worker | State | Machine | Now on | On it for | Round | Closed today | Tokens today |",
+            "|---|---|---|---|---|---|---|---|"]
     for r in recs:
         info = r["info"]
         closed = "%d" % len(r["closed_today"])
         if len(r["accepted_today"]) != len(r["closed_today"]):
             closed += " said, %d in ledger" % len(r["accepted_today"])
-        on = item_title(r["item"], r["item_truth"]) if r["item"] else "no item"
-        rows.append("| **%s** | %s | %s | %s | %s | %s | %s | %s | %s |" % (
-            cell(r["name"]), cell(r["state_word"].upper() if r["state_word"] not in ("working",) else "working"),
-            cell(info.get("machine") or "UNMEASURED"), cell(lane_word(info)), cell(on),
+        on = item_ref(r["item"])
+        rows.append("| **%s** | %s | %s | %s | %s | %s | %s | %s |" % (
+            wrap_id(r["name"]), cell(r["state_word"].upper() if r["state_word"] not in ("working",) else "working"),
+            cell(info.get("machine") or "UNMEASURED"), cell(on),
             cell(A.hm(now_s() - r["item_since"]) if r["item"] and r["item_since"] else "-"),
             cell(r["round_no"] if r["round_no"] is not None else "-"), cell(closed),
             cell("~" + toks(r["tokens_today"]) if r["tokens_seen"] else "not logged")))
-    return rows
+    below = titles_below((r["item"], r["item_truth"]) for r in recs)
+    return rows + ([""] + below if below else [])
 
 
 def round_rows(r):
     rows = ["| Round | Started | Took | Item | Ended | Ledger now | Commit | Tokens |", "|---|---|---|---|---|---|---|---|"]
+    seen = []
     for x in r["rounds_sorted"][-ROUNDS_SHOWN:][::-1]:
         took = A.hm((x["end"] or now_s()) - x["start"]) if x["start"] else "-"
         up = (r.get("unit_state") or {}).get("word") in ("active", "activating", "unreachable", "UNMEASURED", None)
         ended = x["outcome"] or ("**running**" if x is r["live_round"] and up else "no end line" + (", unit not running" if x is r["live_round"] else ""))
         rows.append("| %d | %s | %s | %s | %s | %s | %s | %s |" % (
-            x["n"], cell(clock(x["start"]) if x["start"] else "-"), cell(took), cell(item_title(x["item"], x["truth"])),
-            cell(ended), cell(x["truth"]["word"] if x["item"] else "-"), cell("`%s`" % x["sha"] if x["sha"] else "-"),
+            x["n"], cell(clock(x["start"]) if x["start"] else "-"), cell(took), cell(item_ref(x["item"])),
+            cell(ended), cell(word_cell(x["truth"]) if x["item"] else "-"), cell(sha_cell(x["sha"])),
             cell(toks(x["tokens"]) if x["tokens"] is not None else "-")))
-    return rows
+    below = titles_below((x["item"], x["truth"]) for x in r["rounds_sorted"][-ROUNDS_SHOWN:][::-1])
+    return rows + ([""] + below if below else [])
 
 
 def demote(text, by=3):
@@ -982,8 +1025,8 @@ def build(stubs=None):
     if closed:
         P += ["| Time | Worker | Item | Ledger now | Commit |", "|---|---|---|---|---|"]
         for t, name, x in closed:
-            P.append("| %s | %s | %s | %s | %s |" % (cell(clock(t)), cell(name), cell(item_title(x["item"], x["truth"])),
-                                                    cell(x["truth"]["word"]), cell("`%s`" % x["sha"] if x["sha"] else "-")))
+            P.append("| %s | %s | %s | %s | %s |" % (cell(clock(t)), wrap_id(name), cell(item_ref(x["item"])),
+                                                    cell(word_cell(x["truth"])), cell(sha_cell(x["sha"]))))
     else:
         P += ["No worker has logged a closed round today."]
     P += [""]
