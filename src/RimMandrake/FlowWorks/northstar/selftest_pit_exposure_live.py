@@ -71,6 +71,9 @@ def main():
     r = base()
     r["samples"][6]["PB"]["outdoorRoom"] = "True"
     check(judge(r)["PEX_A2_open_pit_tracks_noon"][0] == "UNMEASURED", "a 'roofed' twin reading outdoors is UNMEASURED")
+    r = base()   # run 8: rain filled the open pit
+    r["samples"][3]["fillA"] = 5
+    check(judge(r)["PEX_A2_open_pit_tracks_noon"][0] == "UNMEASURED", "a flooded open pit is UNMEASURED")
     r = base()   # the normal cell's prisoner loses as much: the pit is not what wore it down
     for k, s in enumerate(r["samples"]):
         s["PC"]["resistance"] = "%.3f" % (12.0 - 0.5 * k)

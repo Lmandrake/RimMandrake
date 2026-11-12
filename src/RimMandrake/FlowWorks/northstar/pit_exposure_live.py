@@ -101,14 +101,15 @@ def verdicts(res, row):
         return next((s for s in samples if abs(s["hour"] - h) < 0.01), None)
     s0, s12, sl = at(res["args"]["from_hour"]), at(12.0), samples[-1] if samples else None
     full = [NOTCHES, NOTCHES]
-    shallow = [s["hour"] for s in samples if s.get("depthA") != full or s.get("depthB") != full]
+    shallow = [s["hour"] for s in samples if s.get("depthA") != full or s.get("depthB") != full
+               or s.get("fillA") not in (0, None) or s.get("fillB") not in (0, None)]   # a dry pit, full depth
     if not (s0 and s12) or None in (s0.get("TA"), s0.get("TB"), s12.get("TA"), s12.get("TB")):
         row("PEX_A2_open_pit_tracks_noon", "UNMEASURED", "HARNESS", {"why": "no start/12:00 temperature read"})
     elif shallow or s12["PA"].get("exposed") != "True" or s12["PA"].get("outdoorRoom") != "True" \
             or s12["PB"].get("outdoorRoom") != "False":
         # flat ground or a half-dug pit also reads outdoors: the row is about a 4 m open pit and its roofed twin
         row("PEX_A2_open_pit_tracks_noon", "UNMEASURED", "SITE",
-            {"why": "the pits are not a full-depth open pit and a roofed twin", "hours_not_full_depth": shallow[:6],
+            {"why": "the pits are not a dry full-depth open pit and a roofed twin", "hours_not_dry_full_depth": shallow[:6],
              "A_exposed": s12["PA"].get("exposed"), "A_outdoorRoom": s12["PA"].get("outdoorRoom"),
              "B_outdoorRoom": s12["PB"].get("outdoorRoom")})
     else:
@@ -262,6 +263,9 @@ def main():
         res["map"] = {k: mi.get(k) for k in ("tile", "mapBiome", "latitude", "longitude", "season", "tileInfo")}
         lon = fnum(mi.get("longitude"), 0.0)
         res["site_calm"] = V.site_calm(B)
+        # a desert noon is a clear sky: overnight rain fills an open pit and its prisoner swims out (run 8, 2026-11-11;
+        # RIMMANDRAKE_SLOW_RAIN_FILL_PIT_BRIMS_IN_ONE_NIGHT), which is a different mechanism from this one
+        res["weather"] = str((B.call("jawa/weather_set", weather="Clear", lockWeather=True) or {}).get("success"))
 
         # 1. the desert and the date, set once before the site exists
         tile = mi.get("tile")
@@ -398,9 +402,11 @@ def main():
             if "resistance" not in s[name] and name not in res.setdefault("lost", {}):
                 res["lost"][name] = {"hour": hour, "pawn_get": str((B.call("jawa/pawn_get", pawn=pid) or {}).get("message"))[:300]}
         for pit, cells in (res["site"].get("pit_cells") or {}).items():
-            ds = [(B.call("jawa/flowworks_pit_report", x=c[0], z=c[1]) or {}).get("depthRaw") for c in cells]
-            ds = [d for d in ds if d is not None]
+            reps = [B.call("jawa/flowworks_pit_report", x=c[0], z=c[1]) or {} for c in cells]
+            ds = [r.get("depthRaw") for r in reps if r.get("depthRaw") is not None]
+            fs = [r.get("fillRaw") for r in reps if r.get("fillRaw") is not None]
             s["depth" + pit] = [min(ds), max(ds)] if ds else None
+            s["fill" + pit] = max(fs) if fs else None
         cen = (B.call("jawa/pawn_census") or {}).get("pawns") or []
         s["colonists"] = {p.get("id"): {"mental": p.get("inMentalState"), "job": (p.get("job") or {}).get("def"),
                                         "mood": round(fnum((p.get("needs") or {}).get("mood"), -1), 2)}
