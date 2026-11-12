@@ -1,0 +1,1 @@
+jawa/review_label add: size must be tiny/small/medium. A 'large' label is dropped with success=false and refused=0, so a count check (added vs sent) is the only sign (pit_fittings_matrix 2026-11-12: 44 of 53 landed).

@@ -1,0 +1,1 @@
+A map-mesh read (ProofSubmerge printedLevel, anything a SectionLayer prints) reads '-' for squares the camera has not visited since a change: off-screen sections re-print only when drawn. Capture first, read after (pit_fittings_matrix 2026-11-12: 476 false FAILs).

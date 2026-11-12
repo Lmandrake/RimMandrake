@@ -1,0 +1,1 @@
+While colonists are drafted RimWorld draws a red outlined bar across every shut door, our sluice and grate included; undrafted it is gone. Not a mod defect; leave review-save colonists undrafted (MEASURED 2026-11-12, repro/redbar_undraft.png).
