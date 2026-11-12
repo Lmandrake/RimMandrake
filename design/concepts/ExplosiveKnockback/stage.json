@@ -359,10 +359,24 @@
     "ref": "run bench-ek-st4g-20261112",
     "stage": 4,
     "tokens": 3940000
+   },
+   {
+    "at": "2026-11-12T10:03:28Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794477408",
+    "stage": 5,
+    "tokens": 629449
+   },
+   {
+    "at": "2026-11-12T10:08:12Z",
+    "kind": "unmeasured",
+    "ref": "run bench-ek-st3g-20261112",
+    "stage": 3,
+    "tokens": 3940000
    }
   ],
   "reserve": 60000,
-  "spent": 50377485
+  "spent": 54946934
  },
  "history": [
   {
@@ -682,6 +696,30 @@
    "stage": 5,
    "what": "close",
    "why": "run bench-ek-st4g-20261112: stage 4 done"
+  },
+  {
+   "at": "2026-11-12T10:07:54Z",
+   "stage": 3,
+   "what": "invalidated",
+   "why": "inputs changed since stage 3 was accepted: sheet, tree, scenes; back to stage 3"
+  },
+  {
+   "at": "2026-11-12T10:07:54Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "51006934 of 4000000 spent; run bench-ek-st3g-20261112 goes on with 3940000 (advisory)"
+  },
+  {
+   "at": "2026-11-12T10:07:54Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run bench-ek-st3g-20261112, stage 3, budget 3940000"
+  },
+  {
+   "at": "2026-11-12T10:08:12Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run bench-ek-st3g-20261112: stage 3 done"
   }
  ],
  "item": "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
@@ -825,15 +863,21 @@
    "why": "inputs changed since stage 3 was accepted: sheet, tree; back to stage 3"
   },
   {
-   "at": "2026-11-12T09:46:42Z",
+   "at": "2026-11-12T10:07:54Z",
+   "outcome": "invalidated",
+   "stage": 3,
+   "why": "inputs changed since stage 3 was accepted: sheet, tree, scenes; back to stage 3"
+  },
+  {
+   "at": "2026-11-12T10:08:12Z",
    "inputs": {
-    "exam": "f2914f96f9c793bd486145d74cc88f895a7999ba576c024548c3e6115d7491ba",
+    "exam": "8a3a9eb3ed14ceb72633c1fa0ec7d7b0fac25e31cd9ffd54f24e66c736bc11af",
     "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
     "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
-    "scenes": "a3aa1713add4003c57676e121813628fe01c48e1139b861e3f322783ca246794",
-    "sheet": "af8293a3788cc5e5ed3510abe522b8376496d0f8f211ad104146e4d31b04dae6",
-    "tree": "fa1bd6b1f62017952604a800d8ee9cd1c231196e101628807d33dfc5c25e843b"
+    "scenes": "df8a3b13469b922311320744be51ca5934ebe9bc6dba4470c1b3a89bf97426d2",
+    "sheet": "a9ddad415cb298b9150b8caa7b278fc0ed10c612d3d3c621bfd901e29cca9eea",
+    "tree": "b1ecf1403c8b721431a2f8288d08f7afb7d481bcf0202f44c0f3a877a0135d7b"
    },
    "manifest": {
     "designer.md": "b79052133c514f160b33c30b53d69a947adbfdbc81304681463b1038e82fce9f",
@@ -842,35 +886,14 @@
    },
    "outcome": "done",
    "owner_uncited": [],
-   "run": "bench-ek-st4f-20261112",
+   "run": "bench-ek-st3g-20261112",
    "stage": 3,
-   "summary": "Stage 3 touch-up from the exam5 cold readers' notes, no rule change: the sheet's shield-belt line now names the gas-shove exception (already in the gas how line), fire at half reads half strength, a pawn a gas burst shoves onto a cover stands on it with the cover whole (d_c_gas_shove: gas bursts never break covers), and the container line states its shove limits (one cell or a jolt, never into a pit, wall or pawn). Tree experiences of shield_belt_holds and blast_breaks_pit_cover match."
-  },
-  {
-   "at": "2026-11-12T09:47:11Z",
-   "inputs": {
-    "exam": "8a3a9eb3ed14ceb72633c1fa0ec7d7b0fac25e31cd9ffd54f24e66c736bc11af",
-    "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
-    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
-    "scenes": "a3aa1713add4003c57676e121813628fe01c48e1139b861e3f322783ca246794",
-    "sheet": "af8293a3788cc5e5ed3510abe522b8376496d0f8f211ad104146e4d31b04dae6",
-    "tree": "fa1bd6b1f62017952604a800d8ee9cd1c231196e101628807d33dfc5c25e843b"
-   },
-   "manifest": {
-    "designer.md": "b79052133c514f160b33c30b53d69a947adbfdbc81304681463b1038e82fce9f",
-    "designer_exam.md": "9892f91253ca15581c15f6f64d211a2275f345d0e13e0200dcda9c9f8004e07a"
-   },
-   "outcome": "done",
-   "owner_uncited": [],
-   "run": "bench-ek-st4g-20261112",
-   "stage": 4,
-   "summary": "Cold Reader exam on the judge4 rework (exam5): fresh opus Examiner (24) and Challenger (10, 8 rejects), 34 frozen scenarios; both counted readers 34/34 on the settled sheet; control with closed_container_holds stripped accepted the container rejects e22 and c8 (control missed). Three earlier readers (each 34/34) flagged thin wording, settled from the record and voided."
+   "summary": "Stage 3 reworked against the fifth coverage judge's 9 gaps (rm-coverage-judge-1794477408), each settled from the record: sc_spared lanes isolate the big-corpse body-size rule (mass limit raised) and the corpse mass limit; pit_fall and pit_enemy assert the planned landing cell past the far rim; sc_cover_breaks adds a gas shove onto a cover and a grenade that only reaches a cover (d_q5_cover_breaks 'reaches'); settings sweep checks its list against the settings fields by reflection and names the goods-in-the-air and closed-guard off observables; offline storage and gas census completeness checks and the container scene's mod list; a Bomb-child (BombSuper) lane; the flagship's east colonist expects the wall stop; the sheet adds goods 1.6x and the gas shove's 2 s limit, places per-type strengths in the def patch (dl_modded_strength) and credits the greedy showcase rule."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 5,
+ "stage": 4,
  "status": "ready"
 }
