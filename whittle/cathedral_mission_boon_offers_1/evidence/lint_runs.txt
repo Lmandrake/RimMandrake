@@ -1,4 +1,4 @@
-# generated 2026-11-11 20:46 -0800 at 00381361cb (+ working tree: 0 dirty src file(s))
+# generated 2026-11-11 21:08 -0800 at 12b1764649 (+ working tree: 2 dirty src file(s))
 $ python3 src/RimMandrake/RustCathedral/cathedral_arc_lint.py --xml src/RimUtinni/CathedralPass/Defs/QuestScriptDefs/RUT_CathedralAssailantMissions.xml --xml src/RimUtinni/CathedralPass/Defs/IncidentDefs/RUT_CathedralFavours.xml --stage -1
 cathedral_arc_lint: 38 player-facing strings read from 2 file(s) at stage -1
 cathedral_arc_lint: PASS (0 findings)

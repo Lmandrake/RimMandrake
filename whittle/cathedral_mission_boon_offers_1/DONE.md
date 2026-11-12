@@ -22,14 +22,21 @@
   the existing demo hooks (a pursuit event and a lowered threshold), because no live pursuit signal exists. Heat in
   the high band (40 or more) at VOUCHED is shown with a heat value set directly on the board; that row is labelled
   SYNTHETIC. A kyber sale large enough to reach it would cost more Regard than VOUCHED holds.
-- **Tuning numbers are mine** (GM tuning, not owner-ruled): heat ceilings 15/5, re-offer intervals of 15/45 days, a
+- **Tuning numbers are mine** (GM tuning, not owner-ruled): heat ceilings 15/5, a gravcore waiting 3 game days after any kyber sale (Heat decays per poll, so at the live
+  2000-tick cadence Heat alone would clear in about 0.23 days), re-offer intervals of 15/45 days, a
   5-day gap between requests, a 10-day hold after go-dark, and no gift within 2 days of a completion. The dark hold
   is my reading of §6.1 ("it hides from the player again"). Without it, item 1's stage machine re-climbs and reopens
   the favours within about 1.5 days of a go-dark.
+- **The arc linter matches words, not meaning.** A paraphrased attribution would pass (filed as
+  RIMMANDRAKE_HARDEN_ARC_LINT_PARAPHRASE_WALKS_PAST); every favour string was also read for attribution by me, a second
+  model and the judge.
 - **The success letters repeat word for word.** There is one per channel. Inline variants are not possible through
   `QuestNode_Letter`'s `SlateRef<RulePack>`. The six request descriptions are distinct and cycle before any repeats.
 - **The Utinni is named as a channel.** The spec itself says "the Utinni insists"; she is the player's ship, not the
   patron. The patron is never named.
+
+- **Code review state.** A separate Opus reviewer read every touched file in full over six passes. It found 10 issues,
+  all fixed; every touched file is now marked CLEAN (`code_review_status.py check`).
 
 ## What I did not test
 - Nothing in a live game. That covers: the quest window (does it show any giver?), the manhunter pack spawning on
@@ -39,5 +46,6 @@
 - Save/reload, and restarting the blackboard mid-campaign. I reasoned about these in BROADEN.md but did not run them.
   A restart resets gift cooldowns.
 - Two colonies, or the ship away from home.
-- The JawaBench `root` field built cleanly but was not deployed. Without it, the blackboard falls back to
+- The JawaBench `root` field compiles (winbuild: 0 errors), but winbuild copies no companion DLL back. The companion
+  ships through its own build.py --gm, which the live lane runs. Without it, the blackboard falls back to
   case-insensitive name matching; the selftest covers that fallback offline.

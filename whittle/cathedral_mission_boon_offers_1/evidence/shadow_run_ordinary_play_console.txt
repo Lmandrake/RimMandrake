@@ -1,4 +1,4 @@
-# generated 2026-11-11 20:46 -0800 at 00381361cb (+ working tree: 0 dirty src file(s))
+# generated 2026-11-11 21:08 -0800 at 12b1764649 (+ working tree: 2 dirty src file(s))
 $ python3 src/RimMandrake/Utils/gm_blackboard_shadow.py --fixture src/RimMandrake/Utils/fixtures/cathedral_offers_ordinary_play.json --log whittle/cathedral_mission_boon_offers_1/evidence/shadow_log_ordinary_play.jsonl
 gm_blackboard_shadow: no --story-flags-file -- mission/restore-choice/misdirection/reveal inputs all sit at their honest 0/False default this run.
 gm_blackboard_shadow: shadow mode, read-only, logging to whittle/cathedral_mission_boon_offers_1/evidence/shadow_log_ordinary_play.jsonl

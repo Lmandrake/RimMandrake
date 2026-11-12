@@ -1,4 +1,4 @@
-# generated 2026-11-11 20:46 -0800 at 00381361cb (+ working tree: 0 dirty src file(s))
+# generated 2026-11-11 21:08 -0800 at 12b1764649 (+ working tree: 2 dirty src file(s))
 # player's-eye letters from shadow_log_ordinary_play.jsonl; [bracketed] lines are hidden mechanics
 Day  0.00  [stage None -> WARY, Regard 0.3, Heat 0.0]
 Day 12.25  [stage WARY -> TOLERATED, Regard 15.1, Heat 0.0]
@@ -77,7 +77,7 @@ Day 41.75  [Regard +4.0 this poll from the completion; Heat 0.00]
 Day 43.75  LETTER  Panels on the ramp
             At first light the deck crew found a stack of gravlite panels on the cargo ramp, squared off neatly and still cold from the night. No tracks led to them and none led away.
             
-            Nobody aboard claims them, and nobody wants to ask too loudly. There was no patrol overhead last night.
+            Nobody aboard claims them, and nobody wants to ask too loudly. The night crew swears nothing crossed the perimeter.
 
 Day 43.75  [gift: {'GravlitePanel': 30}; Heat 0.0, ceiling 15]
 Day 46.00  [RUT_CathedralGravtechBoon_Gravcore: open -> withheld_heat at Heat 10.9]
@@ -129,7 +129,7 @@ Day 69.75  LETTER  Quest available  --  The Utinni insists
 Day 69.75  LETTER  Panels on the ramp
             At first light the deck crew found a stack of gravlite panels on the cargo ramp, squared off neatly and still cold from the night. No tracks led to them and none led away.
             
-            Nobody aboard claims them, and nobody wants to ask too loudly. There was no patrol overhead last night.
+            Nobody aboard claims them, and nobody wants to ask too loudly. The night crew swears nothing crossed the perimeter.
 
 Day 69.75  [gift: {'GravlitePanel': 30}; Heat 0.0, ceiling 15]
 Day 70.25  [the player accepts quest 1007]

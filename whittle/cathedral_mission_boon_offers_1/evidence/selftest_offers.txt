@@ -1,4 +1,4 @@
-# generated 2026-11-11 20:46 -0800 at 00381361cb (+ working tree: 0 dirty src file(s))
+# generated 2026-11-11 21:08 -0800 at 12b1764649 (+ working tree: 2 dirty src file(s))
 $ python3 src/RimMandrake/RustCathedral/selftest_rustcathedral_offers.py
 
 [1] Offer appears only at the correct stage (ordinary-play fixture, WARY -> TOLERATED -> VOUCHED)
@@ -73,6 +73,10 @@ ok    3 hot run, same poll 18, same stage: gravcore withheld for Heat 10.11 > 5,
 ok    3 hot run: stage never left VOUCHED across the Heat rise 
 ok    3 hot run: panels (ceiling 15) stay open at the same Heat 
 ok    3 hot run: gravcore offered again once Heat cools to its ceiling (poll 31, Heat 4.914) 
+      poll  60  day  1.97  stage VOUCHED   heat   7.60  regard  54.90 | missions True                         | panels open           gravcore withheld_heat  |  
+      poll  67  day  2.20  stage VOUCHED   heat   4.80  regard  57.00 | missions True                         | panels open           gravcore withheld_recent_sale |  
+      poll 150  day  4.97  stage VOUCHED   heat   0.00  regard  81.90 | missions True                         | panels open           gravcore open           | ['boon_offer'] 
+ok    3 live cadence (2000-tick polls): Heat is under the gravcore ceiling 0.23 days after one sale, but the gravcore waits 3 days (withheld_recent_sale) and comes at day 3.00 after the sale 
       poll  12  day  2.75  stage VOUCHED   heat  44.60  regard  44.95 | missions True                         | panels withheld_heat  gravcore withheld_heat  |  <- SYNTHETIC: board.heat set to 45 before this poll
 ok    3 synthetic high Heat (>= HEAT_HIGH_BAND) at VOUCHED: both boons withheld 
 
@@ -103,7 +107,7 @@ ok    5 fixture run exits 0 with the Oracle absent
 ok    5 11 offers logged, every one carrying its full shipped def text 
 ok    5 blackboard source: no subprocess/Popen/os.system/claude call 
 ok    5 in-game C# (CathedralFavours.cs): no Process/claude call 
-      300 polls, 11 offers, PATH=/tmp/st_selftest_rustcathedral_offers_t4_2agux/tmpd95h7xxx
+      300 polls, 11 offers, PATH=/tmp/st_selftest_rustcathedral_offers_efmh4h24/tmpjtuyrmu0
 
 [6] K2 anti-laundering + [7] Regard feedback (paired runs: the player completes every request vs ignores it)
       poll  stage     heat before heat after  heat(ctrl)  from comp.  regard(comp) regard(ctrl) event
@@ -159,5 +163,5 @@ ok    R ignored request with a quest waiting: the blackboard waits for the game'
 ok    R pure shadow (nothing fired, no quest row): the offer lapses at the 3-day floor (3.00 days) 
 ok    R the quest window's C# progress line lints clean at stage 1 (['Animals gone wrong not yet down: ']) 
 
-86/86 checks passed
+87/87 checks passed
 exit=0

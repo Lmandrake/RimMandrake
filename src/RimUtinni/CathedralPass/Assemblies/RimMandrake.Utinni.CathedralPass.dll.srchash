@@ -1,5 +1,5 @@
 # project: RimUtinni/CathedralPass/Source/RimMandrake.Utinni.CathedralPass.csproj
-# dll: 0fd484e86df3450fbb166b3a2c7d4e0af994962ddf842acf627f0d46e8edfc96
+# dll: e69034134d7ea645d43212cc4f3fe86eab3551adaae28f9df5d1e4383b8c5342
 0ffab1e8b56df2d542c98991ddc26eb48aaed445551a01c17f5ba0e3a6a49ca9 CathedralFavours.cs
 1477cbba0ae8d933ac91f75340163aeac9ddac9befb6c03fc8142f793e93dec2 ../../../RimMandrake/_Shared/HarmonyResilience/PatchApplier.cs
 28477b7ceeeb7e1b65406a88160919447409e41d26891b1278de9f9e3dd5f37e ../../../RimMandrake/_Shared/SettingsKit/SettingsKitCore.cs
