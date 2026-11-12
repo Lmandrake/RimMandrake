@@ -20,7 +20,7 @@ mod built from this clone loads clean in the offline effective def tree (`eviden
 ## What I'm least sure about
 - Nothing was placed, flown or used in a running game (offline lane). Placement is the engine's rules read from
   decompiled 1.6 and the defs; the load check reads defs and patches as the game does but runs no C#.
-- 20 rows are agent picks under the delegation (each row says where it comes from), and the 4 new gifts' numbers are
+- 19 rows are agent picks under the delegation (each row says where it comes from), and the 5 new gifts' numbers are
   provisional; the owner card is not answered yet (keep-as-is recommended, non-blocking).
 - The art is judged as stills and contact sheets at play scale, not on a deck in game; the mast's base top face is a
   little thin (the art judge's note, judged shippable).
