@@ -10,7 +10,12 @@ import re
 ENV = "RIMFLOW_BRIDGE_SEAT"
 IN_TEST_ENV = "RIMFLOW_BRIDGE_SEAT_IN_TEST"
 RELENTLESS = "RELENTLESS"
-CODEX_SEATS = ("CODEX_ARCHMAGI_FWDRAIN", "CODEX_STEVEDESKTOP_HUGETHINGS")
+# Worker seats with their own ledger shard, queue view, bridge hold and host guard. The tuple keeps its first name
+# (it began with the Codex loops); the CLAUDE_* seats are the Claude Whittle loops (infrastructure/whittle_claude/,
+# owner order 2026-11-11: two live FlowWorks loops, one per game, plus offline loops on Archmagi).
+CODEX_SEATS = ("CODEX_ARCHMAGI_FWDRAIN", "CODEX_STEVEDESKTOP_HUGETHINGS",
+               "CLAUDE_ARCHMAGI_FWLIVE", "CLAUDE_STEVEDESKTOP_FWLIVE",
+               "CLAUDE_ARCHMAGI_OFFLINE1", "CLAUDE_ARCHMAGI_OFFLINE2", "CLAUDE_ARCHMAGI_OFFLINE3")
 HOLDERS = (RELENTLESS,) + CODEX_SEATS
 
 

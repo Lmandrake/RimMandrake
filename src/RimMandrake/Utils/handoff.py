@@ -158,7 +158,7 @@ def require_worker_seat(s, env=None):
     """Codex helpers never write the Conductor's handoff, even with --force."""
     env = os.environ if env is None else env
     codex = any(env.get(k) for k in ("CODEX_THREAD_ID", "CODEX_SESSION_ID", "CODEX_CI"))
-    codex = codex or (env.get("RIMFLOW_BRIDGE_SEAT") or "").startswith("CODEX_")
+    codex = codex or (env.get("RIMFLOW_BRIDGE_SEAT") or "").startswith(("CODEX_", "CLAUDE_"))   # a worker loop, Codex or Claude
     if codex and s in ("BENCH", "CONDUCTOR"):
         raise SystemExit("REFUSED: a Codex worker cannot write a BENCH/CONDUCTOR handoff; "
                          "export RIMFLOW_SEAT=CODEX_<MACHINE>_<LANE> using a registered seat.")
