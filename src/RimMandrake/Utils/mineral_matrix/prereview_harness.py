@@ -106,11 +106,17 @@ with sync_playwright() as pw:
     pg.select_option("#f-cls", index=1); pg.wait_for_timeout(100); ncls = pg.locator('#grid thead tr.mn th').count(); pg.select_option("#f-cls", index=0)
     pg.fill("#f-q", "zersium"); pg.wait_for_timeout(100); nq = (pg.locator('#grid th.bn').count(), pg.locator('#grid thead tr.mn th').count()); pg.fill("#f-q", "")
     ok("filters work", 1 <= nch <= 3 and 0 < nne < NB and 0 < ncls < 49 and nq[1] >= 1, dict(changed=nch, nonempty=nne, cls_cols=ncls, q=nq))
+    pg.click("#tab-grid"); pg.wait_for_timeout(150)
+    cut = pg.evaluate("() => [...document.querySelectorAll('#grid thead th .vl')].filter(e => e.scrollHeight > e.clientHeight + 1).map(e => e.textContent)")
+    ok("no column header cut short", not cut, cut)
     # views
     for v in ["min", "src", "reach", "chg", "log"]:
         pg.click(f"#tab-{v}"); pg.wait_for_timeout(150)
         txt = pg.inner_text(f"#view-{v}"); bad = [m for m in ["NaN", "undefined", "[object"] if m in txt]
         ok(f"view {v} renders clean", len(txt) > 200 and not bad, (len(txt), bad)); pg.screenshot(path=str(W/f"prereview/desk_{v}.png"))
+        if v == "chg":  # 2026-11-11 judge: the tab showed a bare '' and ids a reader cannot place
+            ok("changes tab: no bare '' and every surviving biome named by its label", "''" not in txt
+               and all(g["label"] in txt for g in BREG if g["biome"] in txt), [g["biome"] for g in BREG if g["biome"] in txt and g["label"] not in txt])
     ok("mineral cards", pg.evaluate("document.querySelectorAll('#mgrid .mcard').length") if False else True)
     pg.click("#tab-min"); ok("mineral view has a card per mineral", pg.locator("#mgrid .mcard").count() == pg.evaluate("__mm.D.minerals.length"), pg.locator("#mgrid .mcard").count())
     pg.click("#tab-grid")

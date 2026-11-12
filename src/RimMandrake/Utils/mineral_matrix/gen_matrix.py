@@ -39,6 +39,9 @@ TOOL = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(TOOL, "..", "..", "..", ".."))
 R2_REL = "design/RimMandrake/mineral_matrix/round_two_2026-10-28/"
 RECORD_REL = "design/RimMandrake/mineral_matrix/index.prereview.json"  # the judged record; valid only while rows match
+OUTPUTS = ["biomes.csv", "draft_matrix.csv", "reasons.csv", "mineral_homes.csv", "inventory.csv", "reach_summary.csv",
+           "column_changes.csv", "stats.json", "check.json", "page/data.json", "page/items.json", "page/index.html",
+           "page/index.prereview.json"]
 BASELINE_REL = "design/RimMandrake/mineral_matrix/build_2026-10-30.sha256"  # the 2026-10-30 build's output hashes
 
 # The ruled list (audit table rows 1-27, then the two marked extras). kind: land | sea | aftermath | cave
@@ -108,6 +111,14 @@ def src_def_folders(repo):
     return out
 
 
+def pull_note(succ, pull):
+    """What happens to a dropped twin's non-mineral pull. The 10-30 build wrote "<succ> pull stays: ''" for an empty
+    pull, which read as code; the words now say the pull is not carried (2026-11-11 judge finding)."""
+    if pull.strip():
+        return "%s pull stays: %s" % (succ, pull.strip())
+    return "%s has no pull of its own; this one is not carried over (no ruling on twin values)" % succ
+
+
 def fnum(v):
     try:
         return float(v)
@@ -125,6 +136,10 @@ def main():
     R2 = os.path.join(a.repo, R2_REL)
     HERE = os.path.abspath(a.out or os.path.join(a.repo, "Transient", "mineral_matrix")) + "/"
     os.makedirs(HERE, exist_ok=True)
+    # a run that fails part-way must not leave an older run's outputs looking like its own
+    for f in OUTPUTS:
+        if os.path.exists(HERE + f):
+            os.remove(HERE + f)
     labels = src_labels(a.repo)
 
     rows = list(csv.DictReader(open(R2 + "draft_matrix_v2.csv")))
@@ -180,7 +195,7 @@ def main():
                                 cell=c, old=v, new="", note=("%s holds %s" % (succ, sv or "0")) if succ else "sheet-only bucket"))
         if R[tw]["non_mineral_pull"].strip():
             changes.append(dict(column=tw, action="dropped", cell="non_mineral_pull", old=R[tw]["non_mineral_pull"],
-                                new="", note="%s pull stays: %r" % (succ, R[succ]["non_mineral_pull"]) if succ else ""))
+                                new="", note=pull_note(succ, R[succ]["non_mineral_pull"]) if succ else ""))
 
     # homes: retarget floor/twin references
     for h in homes:
@@ -322,15 +337,32 @@ def main():
     return finish(a.repo, HERE)
 
 
+# Changes made on purpose since the 2026-10-30 build. Each maps an output file to a function that turns today's text
+# back into the 10-30 text; the file counts as "explained" only if the result hashes to the 10-30 build exactly.
+EXPLAINED = {
+    "column_changes.csv": lambda t: re.sub(r"(\w+) has no pull of its own; this one is not carried over \(no ruling on twin values\)",
+                                           lambda m: "%s pull stays: ''" % m.group(1), t),
+}
+
+
 def compare_baseline(repo, out):
     """Say which outputs differ from the 2026-10-30 build. A difference is not a failure (a src label may have been
     fixed since), but it must be explained: column_changes.csv and biomes.csv say what moved."""
     import hashlib
-    same, diff = [], []
+    same, explained, diff = [], [], []
     for line in open(os.path.join(repo, BASELINE_REL)):
         h, name = line.split()
-        (same if hashlib.sha256(open(out + name, "rb").read()).hexdigest() == h else diff).append(name)
-    print("vs the 2026-10-30 build: %d identical%s" % (len(same), "; DIFFERENT: " + " ".join(diff) if diff else " (all)"))
+        data = open(out + name, "rb").read()
+        if hashlib.sha256(data).hexdigest() == h:
+            same.append(name)
+            continue
+        undo = EXPLAINED.get(name)
+        if undo and hashlib.sha256(undo(data.decode("utf-8")).encode("utf-8")).hexdigest() == h:
+            explained.append(name)
+        else:
+            diff.append(name)
+    print("vs the 2026-10-30 build: %d identical; %d differ only by an explained change (%s); %d UNEXPLAINED%s" % (
+        len(same), len(explained), " ".join(explained) or "-", len(diff), (": " + " ".join(diff)) if diff else ""))
     return diff
 
 

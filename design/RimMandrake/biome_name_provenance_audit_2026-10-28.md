@@ -37,7 +37,7 @@ world carries must BE the RimMandrake def. Never a RUT_ twin"). Its one exceptio
 | 6 | RM_SleepingIce | the Sleeping Ice | surface land | RUT_SleepingIce | nightside_ice.md |
 | 7 | RM_BlueDesert | the Blue Desert | surface land | RUT_BlueDesert | the_blue_desert.md |
 | 8 | RM_TheRot | the Rot | surface land | RUT_TheRot | the_rot.md |
-| 9 | RM_GelatinousSlime | the Gelatinous Slime | surface land | RUT_Slime | the_slime.md |
+| 9 | RM_GelatinousSlime | the Slime | surface land | RUT_Slime | the_slime.md |
 | 10 | RM_Contagion | the Contagion | surface land | RUT_Contagion | the_contagion.md |
 | 11 | RM_FloodedCanyon | the Cracked Lands | surface land | RUT_CrackedLands | the_cracked_lands.md (architecture §7 Q4: FloodedCanyon IS the Cracked Lands) |
 | 12 | RM_WeepingStones | the Weeping Stones | surface land | RUT_WeepingStones | weeping_stones.md |

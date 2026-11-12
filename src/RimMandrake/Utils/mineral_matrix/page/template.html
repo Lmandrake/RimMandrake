@@ -76,8 +76,8 @@ table.g { border-collapse: separate; border-spacing: 0; font-size: .8rem; }
 table.g th, table.g td { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 0; }
 table.g thead th { position: sticky; background: var(--panel); z-index: 3; }
 table.g thead tr.grp th { top: 0; height: 26px; font-family: var(--f-display); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; font-size: .72rem; color: var(--muted); text-align: left; padding: 0 6px; white-space: nowrap; }
-table.g thead tr.mn th { top: 26px; height: 112px; vertical-align: bottom; }
-table.g thead th .vl { writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; padding: 6px 0; font-family: var(--f-display); font-size: .9rem; font-weight: 500; display: inline-block; max-height: 104px; overflow: hidden; text-overflow: ellipsis; }
+table.g thead tr.mn th { top: 26px; height: 168px; vertical-align: bottom; }
+table.g thead th .vl { writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; padding: 6px 0; font-family: var(--f-display); font-size: .9rem; font-weight: 500; display: inline-block; max-height: 160px; overflow: hidden; text-overflow: ellipsis; }
 table.g thead th.corner { left: 0; z-index: 5; text-align: left; vertical-align: bottom; padding: 6px 8px; min-width: var(--namew); }
 table.g th.bn { position: sticky; left: 0; z-index: 2; background: var(--panel); text-align: left; font-weight: 400; min-width: var(--namew); max-width: var(--namew); height: var(--rowh); padding: 0 8px; cursor: pointer; }
 table.g th.bn .nm { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; font-size: .85rem; line-height: 1.1; }
@@ -462,7 +462,12 @@ function renderChg() {
   const h = t.createTHead().insertRow();
   ["Old row", "What happened", "Cell", "Old value", "Now", "Note"].forEach(x => { const th = document.createElement("th"); th.textContent = x; h.appendChild(th); });
   const tb = t.createTBody();
-  D.changes.forEach(r => { const tr = tb.insertRow(); [r.column, r.action, r.cell, r.old, r.new, r.note].forEach(x => { const td = tr.insertCell(); td.textContent = x || "-"; }); });
+  // ids read as names: "RM_TheScald" -> "the Scald (RM_TheScald)", a mineral column id -> its label
+  const names = Object.assign({}, ...D.biomes.map(b => ({[b.id]: b.label})), ...D.columns.map(c => ({[c.id]: c.label})));
+  const both = id => names[id] && names[id].toLowerCase() !== id.toLowerCase() ? names[id] + " (" + id + ")" : (names[id] || id);
+  const human = x => String(x || "").replace(/\b(?:RM|RUT)_\w+/g, both);
+  D.changes.forEach(r => { const tr = tb.insertRow(); [r.column, r.action, r.cell, r.old, r.new, r.note].forEach((x, i) => {
+    const td = tr.insertCell(); td.textContent = (i === 2 && names[x] ? both(x) : human(x)) || "-"; }); });
 }
 function renderLog() {
   const t = fv("logt"); t.textContent = "";
@@ -667,7 +672,7 @@ function initStatic() {
   const st = D.stats;
   fv("stats").innerHTML = "";
   [["Cells filled (planet minerals, steel aside)", st.planet_nonsteel_nonzero + " of " + st.planet_nonsteel_cells + " (" + st.sparsity_pct + "%)"],
-   ["Including deep and river cells", st.nonzero_incl_deep_river], ["Minerals with a second biome", st.with_second + " of " + st.minerals],
+   ["All filled cells, steel, deep finds and river placers included", st.nonzero_incl_deep_river], ["Minerals with a second biome", st.with_second + " of " + st.minerals],
    ["Home only", st.none.length], ["Moved or merged cells (draft)", st.draft_cells]].forEach(([k, v]) => { const s = document.createElement("span"); s.textContent = k + ": "; const b = document.createElement("b"); b.textContent = v; s.appendChild(b); fv("stats").appendChild(s); });
   const ff = fv("f-fam"); ff.innerHTML = '<option value="">All biome families</option>'; D.families.forEach(f => { const o = document.createElement("option"); o.value = f; o.textContent = f; ff.appendChild(o); });
   const fc = fv("f-cls"); fc.innerHTML = '<option value="">All mineral classes</option>'; D.groups.forEach(f => { const o = document.createElement("option"); o.value = f; o.textContent = f; fc.appendChild(o); });

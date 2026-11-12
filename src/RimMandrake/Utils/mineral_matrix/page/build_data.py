@@ -14,7 +14,9 @@ homes = {r["mineral"]: r for r in csv.DictReader(open(W + "mineral_homes.csv"))}
 reach = list(csv.DictReader(open(W + "reach_summary.csv")))
 changes = list(csv.DictReader(open(W + "column_changes.csv")))
 stats = json.load(open(W + "stats.json"))
-FAM_ORDER = ["Mountain country (up to 50-100% mountain)", "Hills and uplands (up to 20-40%)", "Flats and lowlands (up to 15%)",
+# family = the biome's highest allowed mountain share (mtn_pct_max): 50 or more, 20-49, under 20
+FAM_ORDER = ["Mountain country (mountain share can reach 50-100%)", "Hills and uplands (mountain share can reach 20-40%)",
+             "Flats and lowlands (mountain share 15% at most)",
              "Seas (each row includes its sea floor)", "Not on the painted map (kept, marked)"]
 def fam(r):
     g = breg[r["biome"]]
