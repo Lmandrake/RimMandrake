@@ -16,8 +16,9 @@ Already exists; runs before anything touches the game.
 ## L1 — Resolved-live (the workhorse; ~22 s per cycle for XML)
 
 Deploy XML → **restart on the 19-mod minimal list (22 s)** → `jawa/get_defs` batch
-reads → offline diff against the build's **expectations manifest**. Every build item
-ships one (defName/field → expected); one shared runner consumes them all.
+reads. Each live criterion is proved by a script named on the item's `live-proof` line
+(`infrastructure/state/live_proofs/<ID>.txt`); there is no shared manifest format (the
+expectations-manifest runner was deleted by the owner's pick, 2026-11-12).
 Canonical cycle: `skills/rimworld-modding/SKILL.md` §2.
 Blocked on: deep-serialize upgrade to `jawa/get_defs` (scalar-only today).
 
@@ -72,7 +73,6 @@ the bridge on a throwaway map, everything already machine-passed at L0–L3.
 
 - A batch of builds validates through L2 in one bridge sitting, zero restarts.
 - `jawa/get_defs` reads nested fields (stages etc.) after its upgrade.
-- One manifest format, one runner; no bespoke V&V scripts per item.
 - ~~One measured `hot_reload_defs` trial on the full list, owner-blessed.~~
   ⛔ **VOID — the trial ran 2026-09-03 and the capability was retired on its result**
   (owner's ruling; `skills/rimworld-modding/SKILL.md` §2). Nothing is owed here.

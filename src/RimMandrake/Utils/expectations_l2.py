@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-"""expectations_l2.py - the L2 (behaviour gauntlet) half of the ONE manifest format.
+"""expectations_l2.py - the L2 (behaviour gauntlet) batch: spawn, tick, log, screenshot, once.
 
-MASS_VALIDATION_LADDER_1, criterion 1: "A batch of builds validates through L2 in one
-bridge sitting, zero restarts." VALIDATION_LADDER.md's L2: "One quicktest map per
-batch: spawn everything new, step ticks once, harvest the log once, screenshot once.
-Catches NREs, missing/magenta art, eaten defs. Art presence is proven HERE, by machine."
+VALIDATION_LADDER.md's L2: "One quicktest map per batch: spawn everything new, step
+ticks once, harvest the log once, screenshot once. Catches NREs, missing/magenta art,
+eaten defs. Art presence is proven HERE, by machine." Its caller is art_fold_live.py,
+which hands `run_l2_live` objects with `.item` and `.l2` (an L2Spec).
 
-THE SECTION
-===========
-A manifest (expectations_manifest.py) may carry an optional "l2" object:
+THE SPEC
+========
+`parse_l2` reads an "l2" object of this shape:
 
     "l2": {
       "spawn": [{"pawnKind": "RSW_Moornak", "count": 2},
@@ -19,9 +19,9 @@ A manifest (expectations_manifest.py) may carry an optional "l2" object:
 `pawnKind` spawns a WILD pawn (faction none, so nothing fights the colony on purpose)
 through jawa/spawn_pawn; `thing` spawns through jawa/spawn_batch (`count` is a STACK
 size there, not a repeat - see that tool's description). `ticks` is how long the batch
-runs after spawning; the batch runs the LONGEST ticks any of its manifests asks for.
+runs after spawning; the batch runs the LONGEST ticks any of its specs asks for.
 
-The runner (`run_expectations.py --l2`) puts EVERY manifest's spawns on ONE map in one
+`run_l2_live` puts EVERY spec's spawns on ONE map in one
 pass, steps the ticks once, reads the log once (a LogTap, so nothing scrolls out of the
 1,000-entry journal ring unseen), screenshots the batch rect once and counts magenta
 pixels in it. One sitting, zero restarts: the runner records the map id and the game
@@ -95,7 +95,7 @@ class Row:
 
 
 def parse_l2(raw: Any) -> L2Spec:
-    """Validate a manifest's "l2" object. Raises ValueError on anything malformed."""
+    """Validate an "l2" object. Raises ValueError on anything malformed."""
     if not isinstance(raw, dict):
         raise ValueError("l2 must be an object")
     unknown = set(raw) - {"spawn", "ticks", "note"}

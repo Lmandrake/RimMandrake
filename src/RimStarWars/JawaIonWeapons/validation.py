@@ -155,7 +155,7 @@ def def_wiring(t):
     """No pawns, no map mutation beyond clear_area -- a pure def-field read.
     Confirms the DamageDef fields the whole mechanism depends on actually
     carry the shipped numbers (top-level scalar fields only -- `jawa/get_defs`
-    is scalar-only, per `expectations_manifest.py`; nested fields like
+    is scalar-only; nested fields like
     `verbs[0].defaultProjectile` are out of its reach and not checked here)."""
     t.clear_area(size=10)
     with t.component("ion_damagedef_fields", beyond_toggle=True):

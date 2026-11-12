@@ -1,24 +1,20 @@
 #!/usr/bin/env python3
-"""selftest_expectations_l2.py - offline proof of the L2 half of the one manifest format
-(expectations_l2.py) and of `run_expectations.py --l2 --plan-only` over the real manifests.
+"""selftest_expectations_l2.py - offline proof of the L2 batch (expectations_l2.py), which
+art_fold_live.py drives live.
 
 Every verdict branch is driven with synthetic readbacks/log entries; the magenta counter is
-run on a real PNG written to a temp dir; the CLI is run as a subprocess against
-infrastructure/state/expectations/. MASS_VALIDATION_LADDER_1.
+run on a real PNG written to a temp dir. MASS_VALIDATION_LADDER_1.
 """
 from __future__ import annotations
 
 import os
-import subprocess
 import sys
 import tempfile
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-REPO = HERE.parents[2]
 sys.path.insert(0, str(HERE))
 import expectations_l2 as l2  # noqa: E402
-import expectations_manifest as em  # noqa: E402
 
 FAILS = []
 
@@ -32,7 +28,7 @@ def check(name, cond, detail=""):
 def raises(fn, *a):
     try:
         fn(*a)
-    except (ValueError, em.ManifestError):
+    except ValueError:
         return True
     return False
 
@@ -48,16 +44,16 @@ for bad, why in [([], "not an object"), ({"spawn": []}, "empty spawn"), ({"spawn
                  ({"spawn": [{"thing": "A"}], "ticks": l2.MAX_TICKS + 1}, "ticks over max"), ({"spawn": [{"thing": "A"}], "tick": 5}, "unknown key")]:
     check("parse refuses: " + why, raises(l2.parse_l2, bad))
 
-# ---- manifest integration: a bad l2 section fails the manifest LOUD
-base = {"item": "X_1", "checks": [{"defType": "ThingDef", "defName": "A", "path": "label", "expected": "a"}]}
-check("manifest without l2 -> l2 None", em.parse_manifest(dict(base)).l2 is None)
-check("manifest with l2 parsed", em.parse_manifest(dict(base, l2={"spawn": [{"pawnKind": "A"}]})).l2.spawn[0].defName == "A")
-check("manifest with bad l2 -> ManifestError", raises(em.parse_manifest, dict(base, l2={"spawn": "A"})))
+# ---- plan_batch / batch_rect / batch_ticks (the caller's shape: .item and .l2, as art_fold_live._M)
+class _M(object):
+    def __init__(self, item, raw_l2):
+        self.item = item
+        self.l2 = l2.parse_l2(raw_l2) if raw_l2 is not None else None
 
-# ---- plan_batch / batch_rect / batch_ticks
-m1 = em.parse_manifest(dict(base, item="M1", l2={"spawn": [{"pawnKind": "P%d" % i} for i in range(10)], "ticks": 300}))
-m2 = em.parse_manifest(dict(base, item="M2", l2={"spawn": [{"thing": "T"}], "ticks": 800}))
-m3 = em.parse_manifest(dict(base, item="M3"))
+
+m1 = _M("M1", {"spawn": [{"pawnKind": "P%d" % i} for i in range(10)], "ticks": 300})
+m2 = _M("M2", {"spawn": [{"thing": "T"}], "ticks": 800})
+m3 = _M("M3", None)
 plan = l2.plan_batch([m1, m2, m3], (250, 250))
 check("plan: one cell per op across manifests", len(plan) == 11 and plan[-1].item == "M2" and plan[-1].kind == "thing")
 check("plan: cells distinct", len({(p.x, p.z) for p in plan}) == 11)
@@ -152,25 +148,7 @@ LIVE_MAP_INFO = {"success": True, "tile": 43716, "mapId": 0, "sizeX": 250, "size
 check("map_size reads sizeX/sizeZ from the live shape", l2.map_size(LIVE_MAP_INFO) == (250, 250), l2.map_size(LIVE_MAP_INFO))
 check("map_size refuses a response with no size", raises(l2.map_size, {"success": True, "mapId": 0, "mapSize": {}}))
 check("map_size refuses a zero size", raises(l2.map_size, dict(LIVE_MAP_INFO, sizeX=0)))
-check("the live shape plans the real batch", len(l2.plan_batch(
-    [em.load_manifest(str(p)) for p in sorted((REPO / "infrastructure/state/expectations").glob("*.expectations.json"))],
-    l2.map_size(LIVE_MAP_INFO))) > 0)
-
-# ---- CLI over the real manifests (offline plan) and flag guards
-RUN = [sys.executable, str(HERE / "run_expectations.py")]
-GLOB = str(REPO / "infrastructure/state/expectations/*.expectations.json")
-r = subprocess.run(RUN + ["--l2", "--glob", GLOB, "--plan-only"], capture_output=True, text=True, timeout=60)
-check("cli: --l2 --plan-only over the real manifests exits 0", r.returncode == 0, r.stdout[-400:] + r.stderr[-400:])
-check("cli: plan names no flyer (RSW_Hawkbat)", "RSW_Hawkbat" not in r.stdout)
-check("cli: every real manifest parses", "0 manifest(s) unparsable" in r.stdout, r.stdout[-300:])
-for argv in (["--l2", "--glob", GLOB], ["--l2", "--glob", GLOB, "--plan-only", "--live"], ["--glob", GLOB, "--plan-only"]):
-    r = subprocess.run(RUN + argv, capture_output=True, text=True, timeout=60)
-    check("cli refuses %s" % " ".join(a for a in argv if a.startswith("--")), r.returncode == 2, r.returncode)
-with tempfile.TemporaryDirectory() as td:
-    pth = Path(td) / "bad.expectations.json"
-    pth.write_text('{"item": "B_1", "checks": [{"defType": "ThingDef", "defName": "A", "path": "label", "expected": 1}], "l2": {"spawn": "x"}}')
-    r = subprocess.run(RUN + ["--l2", "--manifest", str(pth), "--plan-only"], capture_output=True, text=True, timeout=60)
-    check("cli: a bad l2 section exits 1 and says MANIFEST-ERROR", r.returncode == 1 and "MANIFEST-ERROR" in r.stdout, r.stdout[-300:])
+check("the live shape plans a batch", len(l2.plan_batch([m1, m2], l2.map_size(LIVE_MAP_INFO))) == 11)
 
 print("\n%d failing" % len(FAILS))
 sys.exit(1 if FAILS else 0)

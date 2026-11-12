@@ -36,8 +36,7 @@ How ids are handled in code:
   (commit subjects and `Closes:` trailers in `gitindex.ids_in`, and queue headings in
   `is_item_heading`) and `citations_lint._ID_RE` (doc citations). This is the real cost of
   dropping the number. Without it, `MAX_FLIGHT_TIME` has the same shape as an item id.
-- Templates that made up ids: `queue_lint.py`'s cross-seat hint (`CORRECT_<bits>_1`) and
-  `l1_batch_manifest.py`'s line parser.
+- Templates that made up ids: `queue_lint.py`'s cross-seat hint (`CORRECT_<bits>_1`).
 
 ## The grammar
 
@@ -177,5 +176,4 @@ is true, and whether it is kind beyond the short ban list.
 - `src/RimMandrake/rimflow/citations_lint.py`: a new-form token counts as a citation only
   when the ledger knows it.
 - `.claude/hooks/queue_lint.py`: the cross-seat hint now suggests `<BITS>_ASK_<HOLDER>_<TWIST>`.
-- `src/RimMandrake/Utils/l1_batch_manifest.py`: the line parser accepts both forms.
 - Selftest: `src/RimMandrake/rimflow/selftest_naming.py`.
