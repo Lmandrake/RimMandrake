@@ -50,8 +50,9 @@
   ships through its own build.py --gm, which the live lane runs. Without it, the blackboard falls back to
   case-insensitive name matching; the selftest covers that fallback offline.
 
-## Evidence refresh, 2026-11-11 21:16 -08:00
-- Publishing brought in 9 commits from other lanes; none touch this item's code, defs or fixtures.
-  `make_evidence.sh` re-ran every evidence file at 4de5e82144. The output differs only in stamps, tmp paths and
-  timings, and `shadow_log_ordinary_play.jsonl` is byte-identical. The rebuilt CathedralPass DLL (same source; the build
-  is not deterministic) was put back to the committed binary and .srchash.
+## Evidence refresh, 2026-11-11 21:23 -08:00
+- Each landing brings in other lanes' commits; none touch this item's code, defs or fixtures. `make_evidence.sh`
+  re-ran every evidence file at 2e1dae4dd7. The output differs from the judged 12b1764649 run only in stamps, tmp
+  paths and timings, and `shadow_log_ordinary_play.jsonl` is byte-identical. The script now puts the committed
+  CathedralPass DLL and .srchash back right after winbuild (same source; the build is not deterministic), so the tree
+  reads 0 dirty src files.

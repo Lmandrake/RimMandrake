@@ -1,4 +1,4 @@
-# generated 2026-11-11 21:15 -0800 at 4de5e82144 (+ working tree: 2 dirty src file(s))
+# generated 2026-11-11 21:22 -0800 at 2e1dae4dd7 (+ working tree: 0 dirty src file(s))
 # the LIVE RUN RECIPE, verbatim from src/RimUtinni/CathedralPass/validation.py
 LIVE RUN RECIPE (the item's last criterion: >=1 mission shape + the boon-offer gate end to end on a quicktest).
 Bridge held by the live lane; every step reads its result back, none is assumed:

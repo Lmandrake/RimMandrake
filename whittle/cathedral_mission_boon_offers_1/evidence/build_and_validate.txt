@@ -1,9 +1,9 @@
-# generated 2026-11-11 21:14 -0800 at 4de5e82144 (+ working tree: 0 dirty src file(s))
+# generated 2026-11-11 21:22 -0800 at 2e1dae4dd7 (+ working tree: 0 dirty src file(s))
 $ python3 src/RimMandrake/Utils/winbuild.py src/RimUtinni/CathedralPass/Source/RimMandrake.Utinni.CathedralPass.csproj
 Build succeeded.
     0 Warning(s)
     0 Error(s)
-BUILT src/RimUtinni/CathedralPass/Assemblies/RimMandrake.Utinni.CathedralPass.dll (source 4de5e8214408)
+BUILT src/RimUtinni/CathedralPass/Assemblies/RimMandrake.Utinni.CathedralPass.dll (source 2e1dae4dd7a4)
 
 $ python3 src/RimMandrake/Utils/winbuild.py src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBench.BridgeTools.csproj   (quest_lifecycle root field)
 Build succeeded.
@@ -38,12 +38,12 @@ exit=0
 
 $ run_selftests.py --only selftest_rustcathedral_offers,selftest_gm_cathedral_fall,selftest_rustcathedral_commentary,selftest_settings_screens,selftest_cathedralpass_retaliation
 PASS          0.0s  src/RimMandrake/RustCathedral/selftest_rustcathedral_commentary.py
-PASS          0.7s  src/RimMandrake/RustCathedral/selftest_rustcathedral_offers.py
+PASS          0.6s  src/RimMandrake/RustCathedral/selftest_rustcathedral_offers.py
 PASS          0.2s  src/RimMandrake/Utils/selftest_gm_cathedral_fall.py
 PASS          0.0s  src/RimMandrake/Utils/selftest_settings_screens.py
-PASS          0.1s  src/RimUtinni/CathedralPass/selftest_cathedralpass_retaliation.py
+PASS          0.0s  src/RimUtinni/CathedralPass/selftest_cathedralpass_retaliation.py
 
-PASS 5/5  FAIL 0/5  UNMEASURED 0/5  CRASH 0/5  SKIPPED 0/5  (wall 0.7s) — contained in rm-harness.slice (max 24G), 6 workers
+PASS 5/5  FAIL 0/5  UNMEASURED 0/5  CRASH 0/5  SKIPPED 0/5  (wall 0.6s) — contained in rm-harness.slice (max 24G), 6 workers
 RESULT: GREEN (green = FAIL 0 and CRASH 0)
 
 # gravtech gift defNames, read from the 2026-11-06 def dump (ThingDef.json): Gravcore (Item, ludeon.rimworld.odyssey), GravlitePanel (Item, ludeon.rimworld.odyssey)
