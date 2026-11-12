@@ -1,0 +1,21 @@
+# Claude Whittle worker loop (infrastructure/whittle_claude/loop.sh): one ticket at a time, forever.
+# Installed by install.sh into ~/.config/systemd/user/ with a drop-in whittle-claude@<WORKER>.service.d/clone.conf
+# that sets WC_CLONE. Stop at a round boundary: touch /mnt/d/ClaudeWork/rimmandrake/whittle_claude/<WORKER>/STOP.
+[Unit]
+Description=Claude Whittle worker %i
+After=network-online.target
+
+[Service]
+Type=simple
+# a systemd user unit has no ~/.local/bin on PATH: without it claude fails with rc 127
+Environment=PATH=%h/.local/bin:/usr/local/bin:/usr/bin:/bin
+Environment=WC_CLONE=/nonexistent
+ExecStart=/bin/bash ${WC_CLONE}/infrastructure/whittle_claude/loop.sh %i
+Restart=on-failure
+RestartSec=60
+# the loop ends its own children at a phase boundary; a stop kills claude too, and the next start resumes the phase
+KillMode=control-group
+TimeoutStopSec=30
+
+[Install]
+WantedBy=default.target
