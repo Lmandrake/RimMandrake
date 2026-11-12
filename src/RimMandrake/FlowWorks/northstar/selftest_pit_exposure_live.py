@@ -131,6 +131,20 @@ def main():
         s["PA"]["hour"] = "%.2f" % (s["hour"] - 0.23)
     check(judge(r)["PEX_A2_open_pit_tracks_noon"][0] == "PASS", "a fixed zone offset between label and game hour still passes")
 
+    r = base(); r["args"]["interaction"] = "ReduceResistance"
+    for sm in r["samples"]:
+        for n in ("PA", "PB", "PC"):
+            sm[n]["chatsToday"] = "2"
+    check(judge(r)["PEX_A3_pit_wears_resistance"][0] == "PASS", "wardened (ReduceResistance), chats to all: the pit still wins -> PASS")
+    for sm in r["samples"]:
+        sm["PC"]["chatsToday"] = "0"
+    check(judge(r)["PEX_A3_pit_wears_resistance"] == ("UNMEASURED", "HARNESS"),
+          "wardened, but no warden ever chatted with the cell prisoner: UNMEASURED, never PASS")
+    r = base()
+    check(judge(r)["PEX_A3_pit_wears_resistance"][0] == "PASS", "no interaction set (older runs): no chat read is needed")
+    r = base(); r["placed"] = {"PA": {"resistance": "12.000"}, "PB": {"resistance": "15.000"}, "PC": {"resistance": "17.000"}}
+    check(judge(r)["PEX_A3_pit_wears_resistance"][0] == "FAIL",
+          "a cell prisoner chatted down 5 before the first sample counts: the pit no longer wins -> FAIL")
     check(L.kv("REFUSED: no spawned pawn x") == {"raw": "REFUSED: no spawned pawn x"}, "a refusal parses to raw, no fields")
     check(L.kv("EXPOSURE exposed=True resistance=4.500")["resistance"] == "4.500", "kv reads the proof line")
     check(L.tick_for(22, 0.0, 0.0) == 22 * 60000, "local midnight at longitude 0")

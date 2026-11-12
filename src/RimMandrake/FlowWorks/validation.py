@@ -1604,8 +1604,9 @@ PIT_EXPOSURE_LIVE = [
     ("PEX_A1_defs_resolve", None, "jawa/get_defs resolves the RM_PitExposure hediff and the RM_ExposedPrisoner thought"),
     ("PEX_A2_open_pit_tracks_noon", "pitExposureEnabled", "the open pit stays within 1 C of outdoors from 06:00 to "
      "15:00 of a hot day while the roofed twin trails outdoors by more than 2 C more"),
-    ("PEX_A3_pit_wears_resistance", "pitExposureEnabled", "the open-pit prisoner, hurting in the heat, loses more resistance "
-     "than the roofed twin's and the walled cell's prisoners, who lose none to the heat"),
+    ("PEX_A3_pit_wears_resistance", "pitExposureEnabled", "with wardens reducing every prisoner's resistance, the open-pit "
+     "prisoner, hurting in the heat, loses more resistance than the roofed twin's and the walled cell's prisoners, who lose "
+     "only what the wardens' chats take"),
     ("PEX_A4_compassion_not_psycho", "pitExposureEnabled", "at 12:00 a colonist of a Charity ideoligion has "
      "RM_ExposedPrisoner; the psychopath of that ideoligion and a colonist of an ideoligion without Charity do not"),
 ]
@@ -1827,7 +1828,8 @@ suite.live_drivers = [
     # PIT_TEMPERATURE_SOFTENING_1: a fresh map (up to 8 re-rolls for a desert, ~70 s each; no desert = one UNMEASURED
     # SITE row, never a forest judged as a desert) + a site + 15 game hours sampled hourly; the desk runs took ~12 min
     # (2026-11-11) -> 1800.
-    {"name": "pit_exposure_live", "script": "northstar/pit_exposure_live.py", "args": ["--fresh-map", "--rolls", "8"],
+    {"name": "pit_exposure_live", "script": "northstar/pit_exposure_live.py", "args": ["--fresh-map", "--rolls", "8",
+     "--interaction", "ReduceResistance"],   # wardens work every prisoner, as a player sets them (ordinary use)
      "chains": ["pit_exposure"], "timeout_s": 1800},
     # RIVER_CHAINS_WIRE_SWEEP_TO_RIVER_SITE: the river chains need a map with a river (they ran on AridShrubland). The
     # river site replaces the current map, so it is settled on demand by the FIRST river chain, which the composition

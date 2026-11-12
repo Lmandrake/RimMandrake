@@ -21,9 +21,11 @@ Prisoners: hostile Villagers made prisoners of the colony, gear cleared (the sam
 safe range is read and recorded). Colonists: the quicktest three, needs topped up once at the start (a quicktest colony
 starts starving and bedless and breaks within hours), one given Psychopath. Their ideoligion is read for a Charity
 precept listening for refused beggars (the shipping test, RM_PitExposure.FeelsForExposedPrisoners); if none has one,
-Charity_Important is added to the player ideoligion. Colonists are left to their own work (wardens included): a new
-prisoner's interaction mode is vanilla's default, so no warden recruits, and any resistance change not the pit's shows in
-PC.
+Charity_Important is added to the player ideoligion. Colonists are left to their own work (wardens included). With
+--interaction ReduceResistance (the suite's run: a player's usual setting) every prisoner's Prisoner-tab mode is set and
+wardens chat with all three, the pit prisoner served from the lip; A3 then needs a chat read on PA and PC (chatsToday,
+vanilla's interactionsToday) or reads UNMEASURED. Without it a new prisoner keeps vanilla's default and no warden works
+them, so only the pit's own loss shows.
 Timeline: settle 00:00 -> --from-hour, then one sample every --every hours to --to-hour. Each sample: outdoor and cell
 temperatures of A, B, C, each prisoner's RM_NorthstarProofs.ProofExposure line (exposure, resistance, safe range, hurting,
 heatstroke, room, local hour), colonists' mental state; a prisoner gone from the map is looked up (dead, carried, gone).
@@ -32,7 +34,8 @@ ROWS
   PEX_A2_open_pit_tracks_noon     both pits dry and full depth all day; pit A (open) stays within 1 C of outdoors at every
                                   sample, the roofed twin trails outdoors by more than 2 C more somewhere (a lag test: a
                                   rise alone misreads a twin still catching up from dawn); the rises are recorded
-  PEX_A3_pit_wears_resistance     PA loses more resistance than PC (normal cell) and PB (roofed twin), and PA was hurting
+  PEX_A3_pit_wears_resistance     PA loses more resistance than PC (normal cell) and PB (roofed twin), counted from placement
+                                  (00:00), and PA was hurting
   PEX_A4_compassion_not_psycho    at 12:00 every non-psychopath colonist whose ideo minds refused beggars has
                                   RM_ExposedPrisoner; the psychopath (same ideo) does not; nor does a colonist of an ideo
                                   with no Charity precept (hard morality), when the planet has one
@@ -132,7 +135,9 @@ def verdicts(res, row):
              "cellC": [s0["TC"], s12["TC"]], "riseA": round(riseA, 2), "riseB": round(riseB, 2),
              "maxLagA": round(max(lags("TA")), 2), "maxLagB": round(max(lags("TB")), 2),
              "outdoorRoomA": s12["PA"].get("outdoorRoom"), "outdoorRoomB": s12["PB"].get("outdoorRoom")})
-    r0 = {n: fnum(samples[0][n].get("resistance")) for n in pris} if samples else {}
+    # from placement when it was read (a warden's chat in the settle counts), else from the first sample (older runs)
+    first = res.get("placed") or (samples[0] if samples else None)
+    r0 = {n: fnum((first.get(n) or {}).get("resistance")) for n in pris} if first and samples else {}
     r1 = {n: fnum(sl[n].get("resistance")) for n in pris} if sl else {}
     not_prisoner = sorted({n for s in samples for n in pris if s[n].get("prisoner") != "True"})
     if not_prisoner and not lost:
@@ -144,10 +149,21 @@ def verdicts(res, row):
         d = {n: round(r0[n] - r1[n], 3) for n in pris}
         hurt = [s["hour"] for s in samples if s["PA"].get("hurting") == "True"]
         ok3 = d["PA"] > d["PC"] + 0.1 and d["PA"] > d["PB"] + 0.1 and bool(hurt)
-        row("PEX_A3_pit_wears_resistance", "PASS" if ok3 else "FAIL", "MOD",
-            {"start": r0, "end": r1, "drop": d, "PA_hurting_from_to": [hurt[0], hurt[-1]] if hurt else None,
-             "safeMax": {n: sl[n].get("safeMax") for n in pris}, "ambient_end": {n: sl[n].get("ambient") for n in pris},
-             "heatstroke_end": {n: sl[n].get("heatstroke") for n in pris}, "hours": [samples[0]["hour"], sl["hour"]]})
+        mode = (res.get("args") or {}).get("interaction") or ""
+        # chatsToday: vanilla's interactionsToday (2 a day at most); the largest read per prisoner says wardens came
+        chats = {n: max([int(fnum(s[n].get("chatsToday"), -1)) for s in samples] or [-1]) for n in pris}
+        detail = {"start": r0, "end": r1, "drop": d, "PA_hurting_from_to": [hurt[0], hurt[-1]] if hurt else None,
+                  "interaction": mode or "vanilla default", "chats_max": chats,
+                  "mood_end": {n: sl[n].get("mood") for n in pris},
+                  "safeMax": {n: sl[n].get("safeMax") for n in pris}, "ambient_end": {n: sl[n].get("ambient") for n in pris},
+                  "heatstroke_end": {n: sl[n].get("heatstroke") for n in pris},
+                  "from": "placement (00:00)" if res.get("placed") else "first sample", "hours": [samples[0]["hour"], sl["hour"]]}
+        if mode and (chats["PC"] < 1 or chats["PA"] < 1):
+            # the wardened comparison holds only if wardens worked both the pit and the cell
+            detail["why"] = "wardens never chatted with %s" % [n for n in ("PA", "PC") if chats[n] < 1]
+            row("PEX_A3_pit_wears_resistance", "UNMEASURED", "HARNESS", detail)
+        else:
+            row("PEX_A3_pit_wears_resistance", "PASS" if ok3 else "FAIL", "MOD", detail)
     nt = res.get("noon_thoughts") or {}
     psycho, charity, ideos = res["colonists"]["psychopath"], res["colonists"]["charity"], res["colonists"]["ideos"]
     if not nt:
@@ -188,6 +204,9 @@ def main():
     ap.add_argument("--from-hour", type=float, default=6.0)
     ap.add_argument("--to-hour", type=float, default=15.0)
     ap.add_argument("--every", type=float, default=1.0)
+    ap.add_argument("--interaction", default="",
+                    help="every prisoner's Prisoner-tab mode, e.g. ReduceResistance (a player's usual choice: wardens chat "
+                         "twice a day); empty = vanilla's default for a new prisoner")
     ap.add_argument("--budget", type=float, default=0.0, help="seconds before this call saves and exits 3 (0: no limit)")
     ap.add_argument("--shots-dir", default=None, help="where the 12:00 captures go (default Transient/pit_exposure/)")
     a = ap.parse_args()
@@ -208,7 +227,7 @@ def main():
         out = os.path.join(out_dir, "pit_exposure_result_%s.json" % stamp)
         res = {"script": "pit_exposure_live.py", "item": ITEM, "stamp": stamp, "started": time.strftime("%Y-%m-%dT%H:%M:%S"),
                "rows": [], "samples": [], "args": {k: getattr(a, k) for k in ("day", "tile_temp", "from_hour", "to_hour",
-                                                                                  "every", "save_name")}}
+                                                                                  "every", "save_name", "interaction")}}
     rows, samples = res["rows"], res["samples"]
     if a.resume and res.get("finished"):
         print("REFUSED: %s finished at %s: start a fresh run" % (out, res["finished"]))
@@ -353,6 +372,12 @@ def main():
         if not all(pris.values()):
             row("PEX_site", "UNMEASURED", "HARNESS", {"why": "a prisoner did not spawn", "prisoners": pris})
             return 2
+        if args.get("interaction"):
+            res["interaction_set"] = {n: sc("ProofSetInteraction", "%s;%s" % (pid, args["interaction"])) for n, pid in pris.items()}
+            if any(not v.startswith("MODE ") for v in res["interaction_set"].values()):
+                row("PEX_site", "UNMEASURED", "HARNESS", {"why": "a prisoner's interaction mode did not set",
+                                                          "set": res["interaction_set"]})
+                return 2
 
         # 4. the colonists: short of three adults, new colonists join (the player's ideoligion, like any newcomer)
         while len(cids) < 3:
@@ -401,6 +426,8 @@ def main():
                             "ideos": ideos,
                             "charity": {n: charity.get(n) for n in set(ideos.values())}, "moved": moved,
                             "precept_added": str(added)[:160] if added else None}
+        # each prisoner as placed, before the settle: wardens may chat in it, so A3 counts every loss from here
+        res["placed"] = {n: kv(sc("ProofExposure", pid)) for n, pid in pris.items()}
         step(args["from_hour"] * HOUR_TICKS)
         res["next_hour"] = args["from_hour"]
         save()

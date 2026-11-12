@@ -251,7 +251,31 @@ namespace RimMandrake.FlowWorks
 				+ " openRoof=" + (room != null ? room.OpenRoofCount : -1)
 				+ " cells=" + (room != null ? room.CellCount : -1)
 				+ " hour=" + GenLocalDate.HourFloat(map).ToString("F2")
-				+ " outdoor=" + map.mapTemperature.OutdoorTemp.ToString("F2");
+				+ " outdoor=" + map.mapTemperature.OutdoorTemp.ToString("F2")
+				+ " mood=" + (p.needs?.mood != null ? p.needs.mood.CurInstantLevelPercentage : -1f).ToString("F3")
+				+ " mode=" + (p.guest?.ExclusiveInteractionMode?.defName ?? "none")
+				+ " chatsToday=" + (p.mindState != null ? p.mindState.interactionsToday : -1);
+		}
+
+		/// <summary>PIT_TEMPERATURE_SOFTENING_1 (pit_exposure_live.py --interaction). arg "pawnId;ModeDefName": the player's
+		/// Prisoner-tab choice (vanilla Pawn_GuestTracker.SetExclusiveInteraction), so wardens work the prisoner as in a real
+		/// game. Returns "MODE pawn=id mode=defName" or REFUSED.</summary>
+		public static string ProofSetInteraction(string arg)
+		{
+			Map map = Find.CurrentMap;
+			string[] a = (arg ?? "").Split(';');
+			Pawn p = map == null || a.Length != 2 ? null : PawnById(map, a[0].Trim());
+			if (p == null || p.guest == null || !p.IsPrisonerOfColony)
+			{
+				return "REFUSED: no spawned prisoner " + arg;
+			}
+			PrisonerInteractionModeDef mode = DefDatabase<PrisonerInteractionModeDef>.GetNamedSilentFail(a[1].Trim());
+			if (mode == null)
+			{
+				return "REFUSED: no PrisonerInteractionModeDef " + a[1];
+			}
+			p.guest.SetExclusiveInteraction(mode);
+			return "MODE pawn=" + p.ThingID + " mode=" + p.guest.ExclusiveInteractionMode.defName;
 		}
 
 		/// <summary>PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP (design §8.6). arg "x,z;K" (a cell and a climb band) →
