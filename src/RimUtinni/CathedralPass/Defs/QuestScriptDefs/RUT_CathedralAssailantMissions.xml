@@ -31,6 +31,9 @@
 
   <QuestScriptDef Abstract="True" Name="RUT_CathedralAssailantMissionBase">
     <rootSelectionWeight>0</rootSelectionWeight>
+    <!-- a root quest fired only by its incident: isRootSpecial, or defaultChallengeRating is a config error
+         ("non-root quest has defaultChallengeRating", QuestScriptDef.ConfigErrors) -->
+    <isRootSpecial>true</isRootSpecial>
     <rootMinPoints>0</rootMinPoints>
     <defaultChallengeRating>2</defaultChallengeRating>
     <expireDaysRange>3~4</expireDaysRange>

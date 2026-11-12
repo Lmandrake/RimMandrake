@@ -105,8 +105,8 @@ namespace RimMandrake.Utinni.CathedralPass
     }
 
     /// <summary>Completes when every pawn that carried the quest's pack tag is dead. Sends outSignalPackLost instead if
-    /// the pack never reaches the map within PackArrivalTicks, or if no pack animal is left on the map while one is still
-    /// alive somewhere else (it walked off): neither is a kill, so neither earns the mission.</summary>
+    /// the pack never reaches the map within PackArrivalTicks, or if the last living pack animal is off the map (it
+    /// walked off) or the colony's own (tamed): none of those is a kill, so none earns the mission.</summary>
     public class RUT_QuestPart_PackDown : QuestPartActivable
     {
         public const int PackArrivalTicks = 2 * GenDate.TicksPerDay;
@@ -120,7 +120,7 @@ namespace RimMandrake.Utinni.CathedralPass
             get
             {
                 if (State != QuestPartState.Enabled || pack.Count == 0) return null;
-                return "Animals gone wrong still alive: " + pack.Count(p => p != null && !p.Dead) + " / " + pack.Count;
+                return "Animals gone wrong not yet down: " + pack.Count(p => p != null && !p.Dead) + " / " + pack.Count;
             }
         }
 
@@ -138,10 +138,10 @@ namespace RimMandrake.Utinni.CathedralPass
                 if (Find.TickManager.TicksGame - enableTick > PackArrivalTicks) Lost();
                 return;
             }
-            bool aliveHere = pack.Any(p => p != null && !p.Dead && p.Spawned && p.Map == map);
-            if (aliveHere) return;
+            // MapHeld, not Map: a downed pack animal being carried is still here, not gone
+            if (pack.Any(p => p != null && !p.Dead && p.Faction != Faction.OfPlayer && p.MapHeld == map)) return;
             if (pack.All(p => p == null || p.Dead)) Complete();
-            else Lost();
+            else Lost();   // one walked off alive, or now belongs to the colony: either way it was not culled
         }
 
         private void Lost()

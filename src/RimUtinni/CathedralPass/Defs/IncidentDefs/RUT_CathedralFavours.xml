@@ -9,14 +9,16 @@
   number is written twice.
 
   MISSIONS (TOLERATED and up): one GiveQuest incident per RUT_CathedralAssailantMission_* quest (six), gated on the
-  missions toggle (IncidentWorker_GiveQuest_CathedralMission). The quest's own name and description are the
+  missions toggle (IncidentWorker_GiveQuest_CathedralMission). Each overrides GiveQuestBase's targetTags (World) with
+  Map_PlayerHome: jawa/storyteller_fire targets the home map, and a World-tagged incident fails TargetAllowed there. The quest's own name and description are the
   offer the player reads.
 
   GRAVTECH BOONS (VOUCHED only, and only while Imperial Heat is under the boon's heatCeiling: "when the Empire is
   looking, it does not act"): gravtech set down by the ship with no sender, no tracks and no explanation
   (IncidentWorker_CathedralBoon). The bigger the gift, the lower the ceiling and the longer before it comes again
-  (reofferDays): the panels can come while a patrol or two still passes, every couple of weeks at most; a gravcore
-  comes only when the sky has been empty for days, and not twice in a season. Items are Odyssey's
+  (reofferDays): the panels can come while a patrol or two still passes (Heat 15, under the blackboard's high band
+  of 40), every couple of weeks at most; a gravcore only at Heat 5, days after the last kyber sale (Heat decays
+  0.4 a poll), so its letter's "empty of Imperial traffic for days" is true, and not twice in a season. Items are Odyssey's
   (GravlitePanel, Gravcore; ludeon.rimworld.odyssey, read from the 2026-11-06 def dump), which every player has.
   The letter text never says who left them.
 -->
@@ -26,6 +28,9 @@
     <defName>RUT_GiveQuest_CathedralAssailantMission_EnclaveRunner</defName>
     <label>a request from the enclaves</label>
     <letterLabel>Quest available</letterLabel>
+    <targetTags Inherit="False">
+      <li>Map_PlayerHome</li>
+    </targetTags>
     <workerClass>RimMandrake.Utinni.CathedralPass.IncidentWorker_GiveQuest_CathedralMission</workerClass>
     <questScriptDef>RUT_CathedralAssailantMission_EnclaveRunner</questScriptDef>
     <baseChance>0</baseChance>
@@ -35,6 +40,9 @@
     <defName>RUT_GiveQuest_CathedralAssailantMission_UtinniInsists</defName>
     <label>the Utinni insists</label>
     <letterLabel>Quest available</letterLabel>
+    <targetTags Inherit="False">
+      <li>Map_PlayerHome</li>
+    </targetTags>
     <workerClass>RimMandrake.Utinni.CathedralPass.IncidentWorker_GiveQuest_CathedralMission</workerClass>
     <questScriptDef>RUT_CathedralAssailantMission_UtinniInsists</questScriptDef>
     <baseChance>0</baseChance>
@@ -44,6 +52,9 @@
     <defName>RUT_GiveQuest_CathedralAssailantMission_EnclaveShrineRoad</defName>
     <label>the shrine-road</label>
     <letterLabel>Quest available</letterLabel>
+    <targetTags Inherit="False">
+      <li>Map_PlayerHome</li>
+    </targetTags>
     <workerClass>RimMandrake.Utinni.CathedralPass.IncidentWorker_GiveQuest_CathedralMission</workerClass>
     <questScriptDef>RUT_CathedralAssailantMission_EnclaveShrineRoad</questScriptDef>
     <baseChance>0</baseChance>
@@ -53,6 +64,9 @@
     <defName>RUT_GiveQuest_CathedralAssailantMission_UtinniFrequency</defName>
     <label>a frequency nobody uses</label>
     <letterLabel>Quest available</letterLabel>
+    <targetTags Inherit="False">
+      <li>Map_PlayerHome</li>
+    </targetTags>
     <workerClass>RimMandrake.Utinni.CathedralPass.IncidentWorker_GiveQuest_CathedralMission</workerClass>
     <questScriptDef>RUT_CathedralAssailantMission_UtinniFrequency</questScriptDef>
     <baseChance>0</baseChance>
@@ -62,6 +76,9 @@
     <defName>RUT_GiveQuest_CathedralAssailantMission_EnclaveBeacon</defName>
     <label>a beacon in the night</label>
     <letterLabel>Quest available</letterLabel>
+    <targetTags Inherit="False">
+      <li>Map_PlayerHome</li>
+    </targetTags>
     <workerClass>RimMandrake.Utinni.CathedralPass.IncidentWorker_GiveQuest_CathedralMission</workerClass>
     <questScriptDef>RUT_CathedralAssailantMission_EnclaveBeacon</questScriptDef>
     <baseChance>0</baseChance>
@@ -71,6 +88,9 @@
     <defName>RUT_GiveQuest_CathedralAssailantMission_UtinniRestless</defName>
     <label>the Utinni will not rest</label>
     <letterLabel>Quest available</letterLabel>
+    <targetTags Inherit="False">
+      <li>Map_PlayerHome</li>
+    </targetTags>
     <workerClass>RimMandrake.Utinni.CathedralPass.IncidentWorker_GiveQuest_CathedralMission</workerClass>
     <questScriptDef>RUT_CathedralAssailantMission_UtinniRestless</questScriptDef>
     <baseChance>0</baseChance>
@@ -93,7 +113,7 @@
         <gifts>
           <GravlitePanel>30</GravlitePanel>
         </gifts>
-        <heatCeiling>25</heatCeiling>
+        <heatCeiling>15</heatCeiling>
         <reofferDays>15</reofferDays>
       </li>
     </modExtensions>
@@ -116,7 +136,7 @@
         <gifts>
           <Gravcore>1</Gravcore>
         </gifts>
-        <heatCeiling>10</heatCeiling>
+        <heatCeiling>5</heatCeiling>
         <reofferDays>45</reofferDays>
       </li>
     </modExtensions>

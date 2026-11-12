@@ -287,7 +287,10 @@ CATHEDRAL_MOURNING_REGISTER = [
 # GM tuning in game ticks, so a poll's tick step does not change how often the player is asked.
 CATHEDRAL_MISSION_MIN_POSTURE = 1
 CATHEDRAL_BOON_MIN_POSTURE = 2
-CATHEDRAL_MISSION_OFFER_EXPIRY_TICKS = 3 * 60_000   # = the quests' expireDaysRange floor (3~4 days)
+CATHEDRAL_MISSION_OFFER_EXPIRY_TICKS = 3 * 60_000   # = the quests' expireDaysRange floor (3~4 days): lapses an offer
+                                                    # no quest ever answered (the shadow case: nothing was fired)
+CATHEDRAL_MISSION_OFFER_STALE_TICKS = 5 * 60_000    # a quest that IS waiting is left to the game's own expiry (up to
+                                                    # 4 days); past this the row is stale and the offer lapses anyway
 CATHEDRAL_MISSION_REOFFER_GAP_TICKS = 5 * 60_000    # quiet days between one request resolving and the next
 CATHEDRAL_BOON_ANY_GAP_TICKS = 3 * 60_000           # never two gifts within three days, whichever they are
 # A gift is the place answering the clan's conduct, not a fee for a cull: none lands within two days of a completed
@@ -492,8 +495,9 @@ def quest_root(row, catalogue):
     fixed string (no grammar tokens). Returns (defName or None, how)."""
     if row.get("root"):
         return row["root"], "root"
+    name = (row.get("name") or "").strip().casefold()   # the game title-cases a quest's name; the rule is lower-case
     for m in catalogue["missions"]:
-        if row.get("name") in m["quest_names"]:
+        if name in (n.casefold() for n in m["quest_names"]):
             return m["quest_def"], "name"
     return None, None
 
@@ -632,6 +636,9 @@ class ShadowBlackboard:
         self.mission_quest_ids_seen = set()
         self.mission_completed_quest_ids = set()
         self.mission_completions_observed = 0
+        self.mission_quests_observed_once = False
+        self.mission_history_seeded = 0   # ended missions found on the first poll and left to the story flag
+        self.story_flag_missions = int(self.story_flags.get("assailant_mission_completions", 0))
         self.boon_last_given_tick = {}
         self.boon_any_last_tick = None
         self.boons_given = 0
@@ -725,6 +732,8 @@ class ShadowBlackboard:
         through acceptance to its end. Returns this poll's completion count."""
         completed_now = 0
         mission_rows = []
+        first_look = not self.mission_quests_observed_once
+        self.mission_quests_observed_once = True
         for row in rows or []:
             root, how = quest_root(row, self.offer_catalogue)
             if not root or not root.startswith(CATHEDRAL_MISSION_QUEST_PREFIX):
@@ -733,12 +742,18 @@ class ShadowBlackboard:
             qid, state = row.get("id"), row.get("state")
             if state == "EndedSuccess" and qid not in self.mission_completed_quest_ids:
                 self.mission_completed_quest_ids.add(qid)
-                completed_now += 1
-                would_fire.append({
-                    "type": "cathedral_mission_completed", "quest_id": qid, "quest_def": root,
-                    "detail": "mission quest %s (%s) ended in success -- SHADOW MODE: would gain %.2f Regard; "
-                              "Imperial Heat is not an input of a completion (K2) and does not move; fired nothing."
-                              % (qid, root, CATHEDRAL_REGARD_GAIN_MISSION_COMPLETION)})
+                if first_look and self.story_flag_missions > 0:
+                    # already ended when this run began, and --story-flags-file already counts the missions from
+                    # before the run: one source, never both (a restart without the flag credits them here instead,
+                    # rebuilding the mission share of a Regard that restarted at 0)
+                    self.mission_history_seeded += 1
+                else:
+                    completed_now += 1
+                    would_fire.append({
+                        "type": "cathedral_mission_completed", "quest_id": qid, "quest_def": root,
+                        "detail": "mission quest %s (%s) ended in success -- SHADOW MODE: would gain %.2f Regard; "
+                                  "Imperial Heat is not an input of a completion (K2) and does not move; fired "
+                                  "nothing." % (qid, root, CATHEDRAL_REGARD_GAIN_MISSION_COMPLETION)})
             offer = self.mission_offer
             if offer and offer["quest_def"] == root and qid not in offer["quest_ids_before_offer"]:
                 offer["quest_id"] = qid
@@ -786,7 +801,8 @@ class ShadowBlackboard:
                                          "offer lapse with no letter (the request simply is not repeated); fired "
                                          "nothing." % (closed_reason, offer["quest_def"])})
             self.mission_offer, self.mission_last_resolved_tick = None, ticks
-        elif offer and offer["status"] == "posted" and ticks - offer["posted_tick"] >= CATHEDRAL_MISSION_OFFER_EXPIRY_TICKS:
+        elif offer and offer["status"] == "posted" and ticks - offer["posted_tick"] >= (
+                CATHEDRAL_MISSION_OFFER_EXPIRY_TICKS if offer["quest_id"] is None else CATHEDRAL_MISSION_OFFER_STALE_TICKS):
             would_fire.append({"type": "cathedral_mission_offer_lapsed", "quest_def": offer["quest_def"],
                                "detail": "the request went unanswered for %d ticks and lapses (the quest's own "
                                          "expiry); fired nothing." % (ticks - offer["posted_tick"])})
@@ -1099,6 +1115,7 @@ class ShadowBlackboard:
         record["mission_quests"] = mission_rows
         record["mission_completions_this_poll"] = completions_now
         record["mission_completions_observed_total"] = self.mission_completions_observed
+        record["mission_history_left_to_story_flag"] = self.mission_history_seeded
         record["mission_completion_regard_gain_this_poll"] = round(mission_gain, 3)
 
         # --- Regard: fold every §2 input into one delta this poll. Never-
@@ -1229,6 +1246,7 @@ class FixtureBridge:
                    "factions": {"Mechanoid": {"goodwill": 0, "hostile": false},
                                 "RUT_Jawa_HuttCartel": {"goodwill": 0, "hostile": false}}},
        "changes": {"<poll>": {<any state keys, merged from that poll on>}},
+       "existing_quests": [{"id": 7, "name": "...", "root": "...", "state": "EndedSuccess"}],   (optional)
        "player":  {"mission_responses": ["complete", "ignore", "fail", ...],
                    "accept_after_ticks": 30000, "finish_after_ticks": 60000}}
 
@@ -1245,14 +1263,19 @@ class FixtureBridge:
         self.tick = int(fixture.get("start_tick", 0))
         self.state = json.loads(json.dumps(fixture["state"]))
         self.poll_no = 0
-        self.quests = []
+        self.quests = [dict(q, _made=self.tick, _response="history") for q in fixture.get("existing_quests", [])]
         self.next_quest_id = 1000
         self.offers_seen = 0
         self.catalogue = None
+        # no "player" key = pure shadow: nothing is fired, so no request ever becomes a quest row
+        self.simulate = fixture.get("player") is not None
         player = fixture.get("player") or {}
         self.responses = player.get("mission_responses") or ["ignore"]
         self.accept_after = int(player.get("accept_after_ticks", 30_000))
         self.finish_after = int(player.get("finish_after_ticks", 60_000))
+        # the game rolls each quest's expiry in expireDaysRange 3~4 days; the fixture takes the middle, so the
+        # blackboard's own 3-day lapse for an UNanswered offer and the game's later expiry are both exercised
+        self.offer_expiry = int(player.get("offer_expiry_ticks", 3.5 * 60_000))
 
     def __enter__(self):
         return self
@@ -1274,12 +1297,14 @@ class FixtureBridge:
                 q["state"] = "Ongoing"
             elif q["state"] == "Ongoing" and self.tick - q["_made"] >= self.accept_after + self.finish_after:
                 q["state"] = "EndedSuccess" if q["_response"] == "complete" else "EndedFailed"
-            elif q["state"] == "NotYetAccepted" and self.tick - q["_made"] >= CATHEDRAL_MISSION_OFFER_EXPIRY_TICKS:
+            elif q["state"] == "NotYetAccepted" and self.tick - q["_made"] >= self.offer_expiry:
                 q["state"] = "EndedOfferExpired"
 
     def observe(self, record, catalogue):
         """After each poll: the simulated firer and player react to what the blackboard would have fired."""
-        names = {m["quest_def"]: m["quest_names"][0] for m in catalogue["missions"]}
+        if not self.simulate:
+            return
+        names = {m["quest_def"]: m["quest_names"][0].title() for m in catalogue["missions"]}  # as the game shows it
         for ev in record["would_fire"]:
             if ev["type"] == "cathedral_mission_offer":
                 resp = self.responses[min(self.offers_seen, len(self.responses) - 1)]
@@ -1341,7 +1366,8 @@ def main():
                           "assailant_mission_completions (int), restore_choice_made (bool), "
                           "misdirection_quest_success (bool), reveal_beat_fired (bool). "
                           "assailant_mission_completions counts missions completed BEFORE this "
-                          "run (later ones are read off the quest list); the other three have "
+                          "run (later ones are read off the quest list; when it is set, missions "
+                          "already ended on the first poll are left to it, never counted twice); the other three have "
                           "no live bridge signal yet (items 5/7 unbuilt) -- omit this flag for "
                           "a real live run, which correctly leaves them at 0/False.")
     ap.add_argument("--exposure-godark-threshold", type=float, default=CATHEDRAL_EXPOSURE_GODARK_THRESHOLD,

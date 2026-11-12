@@ -215,26 +215,34 @@ def criterion_3_heat():
     g_l = next(r for r in L if "cathedral_boon_offer" in types(r) and boon_state(r, "Gravcore") == "open"
                and any(e.get("incident_def", "").endswith("Gravcore") for e in r["would_fire"]))
     k = g_l["poll"]
+    gc = next(b["heat_ceiling"] for b in CAT["boons"] if b["incident_def"].endswith("Gravcore"))
+    pc = next(b["heat_ceiling"] for b in CAT["boons"] if b["incident_def"].endswith("Panels"))
     print("    calm run (no sale):")
     for r in L[k - 4:k + 1]:
         row(r)
     print("    hot run (two kyber sold on poll 16, everything else identical):")
-    for r in H[13:k + 4]:
+    for r in H[13:k + 1]:
         row(r)
+    print("      ...")
+    reopen_row = next((r for r in H[k:] if any(e.get("incident_def", "").endswith("Gravcore") for e in r["would_fire"])), None)
+    if reopen_row:
+        for r in H[reopen_row["poll"] - 3:reopen_row["poll"]]:
+            row(r)
     g_h = H[k - 1]
     reopen = next((r for r in H[k:] if any(e.get("incident_def", "").endswith("Gravcore") for e in r["would_fire"])), None)
-    check("3 calm run: gravcore offered on poll %d at low Heat (%.2f <= ceiling 10), VOUCHED" % (k, g_l["heat_after"]),
-          g_l["conduct_posture_label"] == "VOUCHED" and g_l["heat_after"] <= 10)
-    check("3 hot run, same poll %d, same stage: gravcore withheld for Heat %.2f, not offered" % (k, g_h["heat_after"]),
+    check("3 calm run: gravcore offered on poll %d at low Heat (%.2f <= its ceiling %.0f), VOUCHED"
+          % (k, g_l["heat_after"], gc), g_l["conduct_posture_label"] == "VOUCHED" and g_l["heat_after"] <= gc)
+    check("3 hot run, same poll %d, same stage: gravcore withheld for Heat %.2f > %.0f, not offered"
+          % (k, g_h["heat_after"], gc),
           g_h["conduct_posture_label"] == "VOUCHED" and boon_state(g_h, "Gravcore") == "withheld_heat"
           and not any(e.get("incident_def", "").endswith("Gravcore") for e in g_h["would_fire"]))
     check("3 hot run: stage never left VOUCHED across the Heat rise",
           all(r["conduct_posture_label"] == "VOUCHED" for r in H[5:k + 4]))
-    check("3 hot run: panels (ceiling 25) stay open at the same Heat",
-          all(boon_state(r, "Panels") == "open" for r in H[15:k]))
-    check("3 hot run: gravcore offered again once Heat cools under 10 (poll %s, Heat %s)"
+    check("3 hot run: panels (ceiling %.0f) stay open at the same Heat" % pc,
+          all(boon_state(r, "Panels") == "open" for r in H[15:k]) and all(r["heat_after"] <= pc for r in H[15:k]))
+    check("3 hot run: gravcore offered again once Heat cools to its ceiling (poll %s, Heat %s)"
           % (reopen and reopen["poll"], reopen and reopen["heat_after"]),
-          reopen is not None and reopen["heat_after"] <= 10 and reopen["conduct_posture_label"] == "VOUCHED")
+          reopen is not None and reopen["heat_after"] <= gc and reopen["conduct_posture_label"] == "VOUCHED")
 
     # Heat in the HIGH band (>= 40): a kyber sale that size would also cost far more Regard than VOUCHED holds, so
     # this row sets Heat directly on the board (SYNTHETIC, labelled) to show what the gate does there.
@@ -426,6 +434,59 @@ def broadened():
     check("B ordinary play: the gravcore comes at most once in 75 days (%d)" % len(gc), len(gc) <= 1)
 
 
+def reviewed():
+    print("\n[R] code-review findings, each pinned (2026-11-11)")
+    import xml.etree.ElementTree as ET
+    inc = ET.parse(G.CATHEDRAL_FAVOUR_DEFS[1]).getroot()
+    givers = [e for e in inc if e.findtext("questScriptDef")]
+    check("R all %d mission incidents override GiveQuestBase's World target with Map_PlayerHome (storyteller_fire "
+          "targets the home map)" % len(givers), len(givers) == 6 and all(
+              e.find("targetTags") is not None and e.find("targetTags").get("Inherit") == "False"
+              and [li.text for li in e.find("targetTags")] == ["Map_PlayerHome"] for e in givers))
+    qs = ET.parse(G.CATHEDRAL_FAVOUR_DEFS[0]).getroot()
+    base = next(e for e in qs if e.get("Name") == "RUT_CathedralAssailantMissionBase")
+    check("R mission base is isRootSpecial (else defaultChallengeRating is a load-time config error)",
+          base.findtext("isRootSpecial") == "true" and base.findtext("defaultChallengeRating") is not None)
+    # history on the first poll: counted once, by one source
+    hist = [{"id": 7 + i, "name": "A Request From The Enclaves", "root": None, "state": "EndedSuccess",
+             "historical": True} for i in range(3)]
+    _, W, _ = run(fixture(polls=3, existing_quests=hist), story_flags=dict(NO_FLAGS, assailant_mission_completions=3))
+    check("R ended missions already in the quest list + story flag 3: none re-credited (total %d, left to flag %d)"
+          % (W[0]["mission_completions_total"], W[0]["mission_history_left_to_story_flag"]),
+          W[0]["mission_completions_this_poll"] == 0 and W[0]["mission_completions_total"] == 3
+          and W[0]["mission_history_left_to_story_flag"] == 3)
+    _, N, _ = run(fixture(polls=3, existing_quests=hist))
+    check("R same list, no story flag (a blackboard restart): credited once on poll 1 (%d), never again"
+          % N[0]["mission_completions_this_poll"], N[0]["mission_completions_this_poll"] == 3
+          and N[1]["mission_completions_this_poll"] == 0 and N[-1]["mission_completions_total"] == 3)
+    check("R a title-cased quest name with no root field still matches its def (name fallback)",
+          N[0]["mission_quests"] and all(q["matched_by"] == "name" for q in N[0]["mission_quests"]))
+    # an answered-but-waiting quest is left to the game's own 3~4 day expiry; an unanswered offer lapses at 3 days
+    sim = fixture(polls=40)
+    _, S, _ = run(sim, story_flags=VOUCHED_FAST)
+    first = next(r for r in S if "cathedral_mission_offer" in types(r))
+    end = next(r for r in S[first["poll"]:] if {"cathedral_mission_resolved", "cathedral_mission_offer_lapsed"}
+               & set(types(r)))
+    waited = (end["ticksGame"] - first["ticksGame"]) / 60000.0
+    check("R ignored request with a quest waiting: the blackboard waits for the game's expiry (%.2f days, resolved "
+          "EndedOfferExpired), not its own 3-day lapse" % waited,
+          "cathedral_mission_resolved" in types(end) and waited > 3.0)
+    pure = fixture(polls=40)
+    del pure["player"]
+    _, P, _ = run(pure, story_flags=VOUCHED_FAST)
+    first = next(r for r in P if "cathedral_mission_offer" in types(r))
+    lapse = next(r for r in P[first["poll"]:] if "cathedral_mission_offer_lapsed" in types(r))
+    check("R pure shadow (nothing fired, no quest row): the offer lapses at the 3-day floor (%.2f days)"
+          % ((lapse["ticksGame"] - first["ticksGame"]) / 60000.0),
+          lapse["ticksGame"] - first["ticksGame"] == G.CATHEDRAL_MISSION_OFFER_EXPIRY_TICKS
+          and not P[-1]["mission_quests"])
+    cs = open(os.path.join(HERE, "..", "..", "RimUtinni", "CathedralPass", "Source", "CathedralFavours.cs"),
+              encoding="utf-8").read()
+    shown = re.findall(r'return "([^"]+)"', cs)
+    check("R the quest window's C# progress line lints clean at stage 1 (%s)" % shown,
+          shown and not any(LINT.findings(t, 1) for t in shown))
+
+
 def main():
     criterion_1_stage_gate()
     criterion_2_text()
@@ -435,6 +496,7 @@ def main():
     criterion_6_7_k2_and_regard()
     guards()
     broadened()
+    reviewed()
     print("\n%d/%d checks passed" % (len(RAN) - len(FAILS), len(RAN)))
     return 1 if FAILS else 0
 
