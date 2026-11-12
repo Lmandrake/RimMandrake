@@ -1,0 +1,179 @@
+{
+ "now_2026_11_11_fix": {
+  "row": {
+   "id": "MX_F60_T15_S0",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": "graph ok: 2 edges, 2 strands, 1 nets, hash ba936a9d2dced007",
+   "block": "matrix"
+  },
+  "expected": {
+   "junctions": 0,
+   "terminals": 0,
+   "terminals_live": 0,
+   "stubs": 2,
+   "tangles": 0,
+   "cord_edges": 2,
+   "cords_min": 2,
+   "cords_max": 2,
+   "nets": 1,
+   "cross_net_edges": 0,
+   "unwalkable_vertices": 0,
+   "wall_terminals": 0,
+   "node_types": {
+    "battery": 1,
+    "consumer": 1,
+    "stub_water": 2
+   }
+  },
+  "got": {
+   "junctions": 0,
+   "terminals": 0,
+   "terminals_live": 0,
+   "stubs": 2,
+   "tangles": 0,
+   "cord_edges": 2,
+   "strands": 2,
+   "nets": 1,
+   "cross_net_edges": 0,
+   "unwalkable_vertices": 0,
+   "wall_terminals": 0,
+   "node_types": {
+    "battery": 1,
+    "consumer": 1,
+    "stub_water": 2
+   },
+   "ends_without_net": 0
+  },
+  "started": "2026-11-11T20:43:43",
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes"
+  ],
+  "tier_label": "fw_gss_sitting"
+ },
+ "before_2026_10_23_no_fix": {
+  "row": {
+   "id": "MX_F60_T15_S0",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": [
+    {
+     "field": "stubs",
+     "expected": 2,
+     "got": 0
+    },
+    {
+     "field": "cord_edges",
+     "expected": 2,
+     "got": 1
+    },
+    {
+     "field": "node_types",
+     "expected": {
+      "battery": 1,
+      "consumer": 1,
+      "stub_water": 2
+     },
+     "got": {
+      "battery": 1,
+      "consumer": 1
+     }
+    },
+    {
+     "field": "strands",
+     "expected": [
+      2,
+      2
+     ],
+     "got": 1
+    }
+   ],
+   "block": "matrix"
+  },
+  "expected": {
+   "junctions": 0,
+   "terminals": 0,
+   "terminals_live": 0,
+   "stubs": 2,
+   "tangles": 0,
+   "cord_edges": 2,
+   "cords_min": 2,
+   "cords_max": 2,
+   "nets": 1,
+   "cross_net_edges": 0,
+   "unwalkable_vertices": 0,
+   "wall_terminals": 0,
+   "node_types": {
+    "battery": 1,
+    "consumer": 1,
+    "stub_water": 2
+   }
+  },
+  "got": {
+   "junctions": 0,
+   "terminals": 0,
+   "terminals_live": 0,
+   "stubs": 0,
+   "tangles": 0,
+   "cord_edges": 1,
+   "strands": 1,
+   "nets": 1,
+   "cross_net_edges": 0,
+   "unwalkable_vertices": 0,
+   "wall_terminals": 0,
+   "node_types": {
+    "battery": 1,
+    "consumer": 1
+   },
+   "ends_without_net": 0
+  },
+  "started": "2026-10-23T16:56:41",
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes"
+  ],
+  "tier_label": "gimmesomeslack"
+ },
+ "same_list": true,
+ "tier_measured": {
+  "name": "fw_gss_sitting",
+  "written_for": "gimmesomeslack",
+  "source": "ModsConfig.xml activeMods",
+  "active": 14,
+  "active_equals_running": true,
+  "matched_list": "fw_gss_sitting"
+ },
+ "flowworks_swim_read_live": {
+  "deepSwimEnabled": "True",
+  "swimOpenWaterEnabled": "False"
+ },
+ "offline_gate": [],
+ "all_rows": {
+  "PASS": 36
+ }
+}
