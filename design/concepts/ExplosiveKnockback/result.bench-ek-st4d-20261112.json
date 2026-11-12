@@ -1,0 +1,6 @@
+{
+ "run": "bench-ek-st4d-20261112",
+ "stage": 3,
+ "outcome": "done",
+ "summary": "Stage 3 touch-up from a cold reader's flag: impact factor 0 now leaves doors undamaged as well as walls and pawns (per_weapon_tuning and doors_and_deep_water_stop leaves, two sheet lines); scenes already staged the door lane."
+}
