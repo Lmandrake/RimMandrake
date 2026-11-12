@@ -239,17 +239,28 @@ namespace RimMandrake.FlowWorks
 			RM_PitTrapMath.GateLiftOffset(LiftCells, OpenPct, out float dx, out float dz);
 			float alt = AltitudeLayer.DoorMoveable.AltitudeFor();
 			Vector3 scale = new Vector3(def.size.x, 1f, def.size.z);
+			// RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL: liquid standing in the gate's dug square covers it from its foot
+			// (RM_SubmergeMath.GateShare); the lifted panel is cut at the same waterline, so it rises out of the water
+			float under = RM_SubmergeDraw.GateUnder(this);
+			float h = frameGraphic.drawSize.y * scale.z;
 			Vector3 panelPos = drawLoc;
 			panelPos.y = alt;
 			panelPos.x += dx;
 			panelPos.z += dz;
-			UnityEngine.Graphics.DrawMesh(panelGraphic.MeshAt(Rotation), Matrix4x4.TRS(panelPos, Quaternion.identity, scale),
-				panelGraphic.MatAt(Rotation, this), 0);
+			float panelUnder = h > 0f ? RM_SubmergeMath.Clamp01(under - dz / h) : 0f;
+			Mesh panelMesh = RM_SubmergeDraw.CutMesh(panelGraphic.MeshAt(Rotation), panelGraphic.drawSize, panelUnder);
+			if (panelMesh != null)
+			{
+				UnityEngine.Graphics.DrawMesh(panelMesh, Matrix4x4.TRS(panelPos, Quaternion.identity, scale), panelGraphic.MatAt(Rotation, this), 0);
+			}
 			Vector3 framePos = drawLoc;
 			framePos.y = alt + Altitudes.AltInc * 0.5f;
-			UnityEngine.Graphics.DrawMesh(frameGraphic.MeshAt(Rotation), Matrix4x4.TRS(framePos, Quaternion.identity, scale),
-				frameGraphic.MatAt(Rotation, this), 0);
-			Graphic.ShadowGraphic?.DrawWorker(framePos, Rotation, def, this, 0f);
+			Mesh frameMesh = RM_SubmergeDraw.CutMesh(frameGraphic.MeshAt(Rotation), frameGraphic.drawSize, under);
+			if (frameMesh != null)
+			{
+				UnityEngine.Graphics.DrawMesh(frameMesh, Matrix4x4.TRS(framePos, Quaternion.identity, scale), frameGraphic.MatAt(Rotation, this), 0);
+				Graphic.ShadowGraphic?.DrawWorker(framePos, Rotation, def, this, 0f);
+			}
 			Comps_PostDraw();
 		}
 

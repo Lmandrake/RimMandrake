@@ -171,6 +171,56 @@ namespace RimMandrake.FlowWorks
 			return rot == 1 ? 1f - w : w;
 		}
 
+		/// <summary>The share of a gate (Building_RM_FlowDoor) under the liquid in its dug square, from its foot, in cut steps
+		/// (RM_SubmergeMath.GateShare at the true level, quarter notches): 0 dry, off the dug squares or with the setting off.</summary>
+		public static float GateUnder(Thing t)
+		{
+			if (!On || !t.Spawned)
+			{
+				return 0f;
+			}
+			RM_MapComponent_Excavation eng = t.Map.GetComponent<RM_MapComponent_Excavation>();
+			int d = eng != null ? eng.HollowDepthAt(t.Position) : 0;
+			if (d <= 0)
+			{
+				return 0f;
+			}
+			int step = RM_SubmergeMath.Step(RM_SubmergeMath.GateShare(RM_SubmergeMath.NoteLevel(NoteAt(eng, t.Position)), d));
+			return (float)step / RM_SubmergeMath.Steps;
+		}
+
+		private static readonly Dictionary<long, Mesh> cutMeshes = new Dictionary<long, Mesh>();
+
+		/// <summary>A realtime plane of <paramref name="size"/> with the <paramref name="under"/> share nearest its foot cut
+		/// away (uvs lerped, unflipped art: the gates have no flipped facing): <paramref name="whole"/> itself at 0, null when
+		/// all of it is under. Cached per size and cut step, so a frame allocates nothing.</summary>
+		public static Mesh CutMesh(Mesh whole, Vector2 size, float under)
+		{
+			int step = RM_SubmergeMath.Step(under);
+			if (step <= 0)
+			{
+				return whole;
+			}
+			if (step >= RM_SubmergeMath.Steps)
+			{
+				return null;
+			}
+			long key = ((long)Mathf.RoundToInt(size.x * 1000f) << 40) | ((long)Mathf.RoundToInt(size.y * 1000f) << 8) | (long)step;
+			if (cutMeshes.TryGetValue(key, out Mesh m) && m != null)
+			{
+				return m;
+			}
+			float s = (float)step / RM_SubmergeMath.Steps, hw = size.x * 0.5f, hh = size.y * 0.5f, z0 = -hh + size.y * s;
+			m = new Mesh { name = "RM_SubmergeCut" };
+			m.vertices = new[] { new Vector3(-hw, 0f, z0), new Vector3(-hw, 0f, hh), new Vector3(hw, 0f, hh), new Vector3(hw, 0f, z0) };
+			m.uv = new[] { new Vector2(0f, s), new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(1f, s) };
+			m.triangles = new[] { 0, 1, 2, 0, 2, 3 };
+			m.RecalculateNormals();
+			m.RecalculateBounds();
+			cutMeshes[key] = m;
+			return m;
+		}
+
 		/// <summary>RM_Building_PitRamp.Print: covered from the downhill end by level / rise.</summary>
 		public static bool PrintRamp(Thing t, SectionLayer layer)
 		{
@@ -343,16 +393,20 @@ namespace RimMandrake.FlowWorks
 				{
 					share = d <= 0 ? 0f : RM_SubmergeMath.StakeShare(lv);
 				}
+				else if (t is Building_RM_FlowDoor)
+				{
+					share = GateUnder(t);
+				}
 				else
 				{
 					continue;
 				}
-				string printed = t is Building_RM_Spikes || !eng.submergeDrawn.TryGetValue(map.cellIndices.CellToIndex(c), out int pf)
+				string printed = t is Building_RM_Spikes || t is Building_RM_FlowDoor || !eng.submergeDrawn.TryGetValue(map.cellIndices.CellToIndex(c), out int pf)
 					? "-" : RM_SubmergeMath.KeyLevel(pf).ToString("F2", CultureInfo.InvariantCulture);
 				return "def=" + t.def.defName + " class=" + kind + " rot=" + t.Rotation.AsInt + " depth=" + d + " fill=" + f
 					+ " level=" + lv.ToString("F2", CultureInfo.InvariantCulture) + faces + " share=" + share.ToString("F3", CultureInfo.InvariantCulture) + " printedLevel=" + printed + " setting=" + (On ? "on" : "off");
 			}
-			return "REFUSED: no ladder, ramp or spikes at " + x + "," + z + " (depth=" + d + " fill=" + f + ")";
+			return "REFUSED: no ladder, ramp, spikes or gate at " + x + "," + z + " (depth=" + d + " fill=" + f + ")";
 		}
 	}
 

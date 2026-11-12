@@ -143,6 +143,16 @@ namespace RimMandrake.FlowWorks
 			return rise <= 0 ? 1f : Clamp01(level / rise);
 		}
 
+		/// <summary>A gate's (RM_Sluice, RM_SecurityGrateDoor) covered share from its foot under <paramref name="level"/>
+		/// notches in a channel <paramref name="depth"/> notches deep: the gate stands on the floor and its head clears the
+		/// bank by one notch, so level / (depth + 1); a brim-full channel still shows the gate's head. Matrix review
+		/// 2026-11-12 (pit_fittings_matrix.py): both gates were drawn whole at every fill, brim included.</summary>
+		public static float GateShare(float level, int depth)
+		{
+			if (level <= 0f || depth <= 0) return 0f;
+			return Clamp01(level / (depth + 1));
+		}
+
 		/// <summary>A stake's covered share from its foot under <paramref name="level"/> notches of liquid (0.5 m each).</summary>
 		public static float StakeShare(float level)
 		{

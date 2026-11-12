@@ -97,6 +97,21 @@ namespace RimMandrake.FlowWorks.SelfTest
 				Assert(draw.Contains("RM_SubmergeMath.HungLadderLevel(eng.FillAt(t.Position))") && draw.Contains("float cut = LadderCut(t, eng, d);")
 					&& draw.Contains("Wet(t, true, out"), "can-fail: PrintLadder cuts at its face's fill");
 			});
+			Case("Submerge_gates_go_under_from_their_foot", () =>
+			{
+				// matrix review 2026-11-12: the sluice and the grate drew whole at every fill
+				Assert(RM_SubmergeMath.GateShare(0f, 4) == 0f && RM_SubmergeMath.GateShare(2f, 0) == 0f, "can-fail: dry or undug: whole");
+				Assert(Near(RM_SubmergeMath.GateShare(2f, 4), 0.4f), "can-fail: 1 m in a 2 m pit covers 2 of 5 notches");
+				Assert(Near(RM_SubmergeMath.GateShare(4f, 4), 0.8f) && RM_SubmergeMath.GateShare(4f, 4) < 1f,
+					"can-fail: brim-full still shows the gate's head");
+				Assert(RM_SubmergeMath.GateShare(1f, 1) > RM_SubmergeMath.GateShare(1f, 4), "can-fail: a full shallow canal covers more of its gate");
+				string doors = RiverSwitchFlipChecks.Src("Superdeep/RM_FlowDoors.cs");
+				string draw = RiverSwitchFlipChecks.Src("Superdeep/RM_SubmergeDraw.cs");
+				Assert(doors.Contains("RM_SubmergeDraw.GateUnder(this)") && doors.Contains("RM_SubmergeDraw.CutMesh(frameGraphic.MeshAt(Rotation)")
+					&& doors.Contains("RM_SubmergeDraw.CutMesh(panelGraphic.MeshAt(Rotation)"), "can-fail: frame and panel draw through the cut");
+				Assert(draw.Contains("RM_SubmergeMath.GateShare(RM_SubmergeMath.NoteLevel(NoteAt(eng, t.Position)), d)") && draw.Contains("cutMeshes[key] = m;"),
+					"can-fail: gate cut at the true level, meshes cached");
+			});
 			Case("Submerge_span_share_of_a_sprite", () =>
 			{
 				// the north ladder sprite spans cell-local z 0.50..1.105: a waterline at 0.65 covers a quarter of it
