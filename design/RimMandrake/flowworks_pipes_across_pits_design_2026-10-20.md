@@ -53,7 +53,9 @@ feasible, and built behind a Mod Setting. The offline selftests pass, and so did
 - **Cost per tick (offline, MEASURED by the selftest).** The kernel plans a hard budget of 64 links per cycle; the rest
   rotate in later and catch up by up to 8 cycles' worth. The test scene had 200 bodies, 40 of them 40,000-square basins,
   and 400 links. Planning took **89 µs per cycle, about 0.36 µs per tick**.
-  - The adapter's walk of dug runs is capped at 20,000 squares per run and 60,000 squares per cycle. MEASURED live
+  - The adapter's walk of dug runs is capped at 20,000 squares per run (`RM_Levelling.MaxRunCells`) and 120,000 squares per
+    cycle (`WalkBudget`; a square is walked at most once per cycle). A 40,000-square basin reached from ends in both its
+    halves is walked as two capped runs, so the two A3 basins walked ~80,000 squares a cycle (79,748 read live). MEASURED live
     2026-11-12 (SteveDesktop, FlowWorks tier, 325×325 map, two 40,000-square basins with edge sinks held off for the run,
     200 links, 60 timed cycles): the whole `RM_Levelling.Tick` averaged **6.6 ms per cycle (0.027 ms per tick)** and grew
     the managed heap ~330 KB per cycle, no GC. The worst cycle, 52-73 ms, is the first after the network changed (200

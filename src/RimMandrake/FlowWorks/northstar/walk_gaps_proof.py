@@ -66,7 +66,7 @@ Rows (plot coords from --origin, default 40,40; site rect origin-(2,6) .. +64 x 
      each reel was its own component with one port (Ports.Count < 2): three belt runs read linked=False, moves=0. Before any
      tick the coupling is read back (ProofLevelLink intakes>=1 and outflows>=1 on each reel = both ends on one component);
      not so = UNMEASURED/SITE. Reel 1 laid to the lip (3,-3) and set Intake, reel 2 to (3,9) and set Outflow. A5: pool 1 water F=4,
-     pool 2 RM_Fluid_Chemfuel F=1; EXPECT RM_Levelling.Moves +0 over 1500 ticks, both pools' dL unchanged and a reel's inspect
+     pool 2 RM_Fluid_Oil F=1; EXPECT RM_Levelling.Moves +0 over 1500 ticks, both pools' dL unchanged and a reel's inspect
      reads "different liquids never mix". A4: pool 1 water F=4, pool 2 water F=1; EXPECT Moves > 0, the per-square dL gap
      <= 100 dL (1 cm over a square metre) within --level-ticks, the total dL conserved within 1 %, and a reel read
      "Levelling: flowing" while it moved. LIES: a rig with no link (ProofLevelLink links=0 at every read) moves nothing and is
@@ -114,7 +114,7 @@ FLUIDP = "RimMandrake.FlowWorks.RM_FluidIdentityProof"
 COVER_DEF = "RM_PitCover_PlankLattice"
 WATER_LIQ = "RM_Liquid_FreshWater"        # tank liquid (proof_hose.LIQUID_WATER)
 WATER_FLUID = "RM_Fluid_Water"            # dug-cell fluid (scenario C7)
-OIL_FLUID = "RM_Fluid_Chemfuel"           # dug-cell fluid (scenario C5)
+OIL_FLUID = "RM_Fluid_Oil"                # dug-cell fluid: the A5 line names an oil pit (Defs/Canals/FluidDefs/FlowWorks_PitFluids.xml)
 FLYER_KIND = "Duck"                       # Core Races_Animal_ChickenGroup.xml: MaxFlightTime 30
 MARKED_RACES = ["RM_Huldu", "RM_Sipper", "RSW_Tooke", "RSW_FrogDog", "RSW_SandLeaper", "RSW_CaveLemming", "RM_Bulloo",
                 "RM_Drifter", "RM_Gawpsack", "RM_OcularJelly", "RM_Garsulix"]   # Patches/Canals/FlowWorks_PitTravel.xml

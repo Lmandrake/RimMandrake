@@ -7,14 +7,15 @@
 - true: **A1 (L0):** offline built baa270b9e8+0ac23150a2: SelfTest LEVELLING_* (Source/SelfTest/LevellingChecks.cs) green: exact volume incl. limitless net, energy never rises, two- | evidence: `whittle/pipe_levelling_build_water_finds_its_level/evidence/A1_A2_selftest_LEVELLING.txt`
 - true: **A2 (L0):** budget case: 200 bodies (40 of 40,000 squares), 400 links, 64 links per cycle: kernel 89 us per 250-tick cycle; feasibility written in the design doc's ### Leve | evidence: `whittle/pipe_levelling_build_water_finds_its_level/evidence/A1_A2_selftest_LEVELLING.txt` `whittle/pipe_levelling_build_water_finds_its_level/evidence/A2_feasibility_section.md`
 - true: **A3 (L1):** 325x325 map, two 40,000-cell basins, 200 links: live tick time and allocations of RM_Levelling.Tick (the dug-run walk is unmeasured offline). | evidence: `whittle/pipe_levelling_build_water_finds_its_level/evidence/A3_perf_timed_200_links_40000_basins.json` `whittle/pipe_levelling_build_water_finds_its_level/evidence/A3_perf_phases.json` `whittle/pipe_levelling_build_water_finds_its_level/evidence/A3_levelling_tick_breakdown.txt`
-- true: **A4 (L2):** two ponds of unequal height joined by a hose with two open ends level out (HoseNetProbe levelMoves > 0, surfaces within 1 cm), the hose reads "Levelling: flowin | evidence: `whittle/pipe_levelling_build_water_finds_its_level/evidence/A4_A5_walk_gaps_ponds.json` `whittle/pipe_levelling_build_water_finds_its_level/evidence/A4_A5_levels_over_time.png` `whittle/pipe_levelling_build_water_finds_its_level/evidence/lev_a4_refilled_flowing_pane.png` `whittle/pipe_levelling_build_water_finds_its_level/evidence/lev_a4_relevelled_pane.png` `whittle/pipe_levelling_build_water_finds_its_level/evidence/lev_a4_relevelled_outflow_pane.png` `whittle/pipe_levelling_build_water_finds_its_level/evidence/A4_A5_look_ponds.json` `whittle/pipe_levelling_build_water_finds_its_level/evidence/broaden_saveload_roles.json`
+- true: **A4 (L2):** two ponds of unequal height joined by a hose with two open ends level out (HoseNetProbe levelMoves > 0, surfaces within 1 cm), the hose reads "Levelling: flowin | evidence: `whittle/pipe_levelling_build_water_finds_its_level/evidence/A4_A5_walk_gaps_ponds.json` `whittle/pipe_levelling_build_water_finds_its_level/evidence/A4_A5_levels_over_time.png` `whittle/pipe_levelling_build_water_finds_its_level/evidence/lev_a4_refilled_flowing_pane.png` `whittle/pipe_levelling_build_water_finds_its_level/evidence/lev_a4_relevelled_pane.png` `whittle/pipe_levelling_build_water_finds_its_level/evidence/lev_a4_relevelled_outflow_pane.png` `whittle/pipe_levelling_build_water_finds_its_level/evidence/A4_A5_look_ponds.json` `whittle/pipe_levelling_build_water_finds_its_level/evidence/broaden_saveload_roles.json` `whittle/pipe_levelling_build_water_finds_its_level/evidence/A4_mixed_rigs_surfaces.png` `whittle/pipe_levelling_build_water_finds_its_level/evidence/A4_mixed_rigs_depths_and_natural_pond.json`
 - true: **A5 (L2):** a water pond and an oil pit joined the same way exchange nothing; the hose reads "different liquids never mix". | evidence: `whittle/pipe_levelling_build_water_finds_its_level/evidence/A4_A5_walk_gaps_ponds.json` `whittle/pipe_levelling_build_water_finds_its_level/evidence/A4_A5_levels_over_time.png` `whittle/pipe_levelling_build_water_finds_its_level/evidence/lev_a5_nomix_pane.png` `whittle/pipe_levelling_build_water_finds_its_level/evidence/lev_a5_nomix_outflow_pane.png` `whittle/pipe_levelling_build_water_finds_its_level/evidence/lev_a5_nomix_desktop.jpg`
 
 ## What each piece shows
 - A1/A2: the C# SelfTest on the final source: LEVELLING_* 11/11 (17/17 with the Outflow_* and HoseText_* text pins I touched);
   300 fuzz scenes all reach a fixed point; the budget case (200 bodies, 400 links, 64 per cycle) reads 80.5 us per cycle this
   run (79.7-88.9 us across today's runs; the criterion's 89 us). The design doc's "Levelling feasibility" section (excerpt)
-  now carries the live results.
+  now carries the live results and the walk caps as the code has them (20,000 squares per run, 120,000 per cycle; it said
+  60,000 per cycle).
 - A3: the scene the line names: a fresh 325x325 map (tile 17067, AridShrubland), two 125x320 basins of exactly 40,000 squares
   each (dug and filled 40,000 of 40,000, `A3_perf_phases.json` staged), edge sinks held off for every phase so the basins'
   edge rows do not drain off the map (`--basins edge --sinks-off`; the proof's default interior scene is 38,125 squares and
@@ -27,8 +28,14 @@
   level." at tick 4750, when the pits stood at 225,234 / 224,766 dL (52 dL per square apart, under 1 cm), total conserved.
   Topping one pit back up made it flow again cycle by cycle and re-level (`A4_A5_levels_over_time.png`, middle panel),
   total conserved; save/reload mid-flow replays exactly; roles swapped or both Intake still level, Capped stops it.
-- A5: water F=4 vs chemfuel F=1 on the same rig: 0 moves over 1,500 ticks, both pits' dL unchanged, both reels' panes read
-  "Levelling: stopped, different liquids never mix." (the chemfuel pit is orange in the desktop capture).
+  Two more rigs (`A4_mixed_rigs_surfaces.png`): a 3x3 pit 3 m deep against a 5x5 pit 1 m deep levels to equal SURFACES
+  (-0.36 / -0.37 m by the mouse-over depth text) with very different water per square (52,703 vs 12,626 dL), total 790,000
+  dL before and after; and a natural 5x5 shallow pond at 90% runs down into a 3x3 pit 2 m deep until both stand at -0.47 m,
+  where pond loss plus the pond's own natural refill (an unlinked control pond, +156 L over the run) equals the pit's gain
+  to 0.0 L.
+- A5: water F=4 vs oil (RM_Fluid_Oil) F=1 on the same rig: 0 moves over 1,500 ticks, both pits' dL unchanged, both reels'
+  panes read "Levelling: stopped, different liquids never mix." (the oil pit is dark in the desktop capture). The proof used
+  chemfuel until the judge pointed out the line names an oil pit and the mod has one.
 
 ## What I changed this round
 - The reel's inspect pane contradicted itself ("Intake needs a working pump on this network." above "Levelling: flowing (no
@@ -55,6 +62,6 @@
   desktop captures have other agents' terminal windows over the left of the game window; the rig and the pane are clear.
 
 ## What I did not test
-- A natural (undug) pond, a river or a limitless sea end live (offline A1 covers sea to brim and dry receiver); a pump switched
+- A river or a limitless sea end live (offline A1 covers sea to brim and dry receiver); a pump switched
   on mid-flow (owner ruling: off while pumping, resumes after); a third open end; freezing; rain filling a pit mid-link;
   deconstructing a reel mid-flow; the owner's full mod list (all runs: FlowWorks tier, all five DLC, SteveDesktop game A).

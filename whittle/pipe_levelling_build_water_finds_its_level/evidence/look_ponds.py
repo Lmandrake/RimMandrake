@@ -89,7 +89,7 @@ shot("lev_a4_level", A4, 0, "A4 rig after the proof: pools level, intake reel se
 for c, role in zip(A5["reels"], ("Intake", "Outflow")):
     static(LPROOF, "ProofHoseRole", "%d,%d;%s" % (c + (role,)))
 ticks(520)                                      # two levelling cycles, so the readout is this rig's own
-shot("lev_a5_nomix", A5, 0, "A5 rig: water pool vs chemfuel pool, intake reel selected")
+shot("lev_a5_nomix", A5, 0, "A5 rig: water pit vs oil pit, intake reel selected")
 shot("lev_a5_nomix_outflow", A5, 1, "A5 rig: the outflow reel says the same")
 # ordinary use: pool 1 gets water again (rain, a pump, a bucket brigade): top it to 4 notches on all 9 squares
 for i in range(3):

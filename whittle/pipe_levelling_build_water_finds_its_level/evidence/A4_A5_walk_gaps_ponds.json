@@ -1,6 +1,6 @@
 {
  "script": "walk_gaps_proof.py",
- "started": "2026-11-12T03:39:32",
+ "started": "2026-11-12T03:59:13",
  "rows": [
   {
    "id": "PONDS_DIFFERENT_LIQUIDS_NO_MIX",
@@ -66,7 +66,7 @@
        240000,
        210000
       ],
-      2381,
+      2424,
       "flowing (no "
      ],
      [
@@ -75,7 +75,7 @@
        232500,
        217500
       ],
-      2382,
+      2425,
       "flowing (no "
      ],
      [
@@ -84,7 +84,7 @@
        228750,
        221250
       ],
-      2383,
+      2426,
       "flowing (no "
      ],
      [
@@ -93,7 +93,7 @@
        226875,
        223125
       ],
-      2384,
+      2427,
       "flowing (no "
      ],
      [
@@ -102,7 +102,7 @@
        225937,
        224063
       ],
-      2385,
+      2428,
       "flowing (no "
      ],
      [
@@ -111,7 +111,7 @@
        225468,
        224532
       ],
-      2386,
+      2429,
       "flowing (no "
      ],
      [
@@ -120,7 +120,7 @@
        225234,
        224766
       ],
-      2387,
+      2430,
       "flowing (no "
      ],
      [
@@ -129,7 +129,7 @@
        225234,
        224766
       ],
-      2387,
+      2430,
       "level."
      ]
     ],
@@ -160,12 +160,12 @@
  "missingHooks": {},
  "mode": "live",
  "mod": "FlowWorks",
- "mod_hash": "5c763157abb801f527dfc222ce0dd1579c029c3b5ee3d203305622118542e460",
+ "mod_hash": "0bc42ec9ceef8d355f91fe348a616c6f9f2ba3030303335fe5b3b4e1f7f8b2bc",
  "manifest": {
   "schema": 1,
   "script": "northstar/walk_gaps_proof.py",
-  "runtime": "99f9e7372005acb73b5226733b69e116a28ce54ad379a3b653051de3892b3bd5",
-  "test": "fae5a3fb09013d224198e41e89f8f03ff765c2290cd440e6fc9a7216b6456e70",
+  "runtime": "40984caee0f3b5bc92d0f627fe0f509089abcc92544690c825059a8414739bf5",
+  "test": "97f5bd37ad4ab1ddbd4630de2363dfc97abd75ab488dc1a180d6facf63d2a3c4",
   "test_files": [
    "FlowWorks/northstar/driver_stamp.py",
    "FlowWorks/northstar/proof_hose.py",
@@ -268,62 +268,61 @@
   "wildSpawner": "blocked (read back)",
   "removed": {
    "removed": [
-    "Bear_Grizzly23951",
-    "Crow23952",
-    "Crow23953",
-    "Hare23932",
-    "Hare23934",
-    "Ibex23954",
-    "Ibex23955",
-    "Ibex23956",
-    "Megasloth23929",
-    "Muffalo23935",
-    "Muffalo23936",
-    "Muffalo23937",
-    "Muffalo23938",
-    "Muffalo23939",
-    "Muffalo23940",
-    "Muffalo23941",
-    "Muffalo23942",
-    "Muffalo23943",
-    "Raccoon23949",
-    "Rat23928",
-    "Rat23931",
-    "Rat23945",
-    "Rat23947",
-    "Rat23948",
-    "Squirrel23944",
-    "Turkey23930",
-    "Turkey23933",
-    "Turkey23946",
-    "Wolf_Timber23950"
+    "Gazelle18463",
+    "Gazelle18464",
+    "Gazelle18465",
+    "Gazelle18466",
+    "Gazelle18467",
+    "Gazelle18468",
+    "Gazelle18469",
+    "Gazelle18470",
+    "Gazelle18471",
+    "Gazelle18472",
+    "Iguana18462"
    ],
    "left": []
   },
   "threatStructures": {
-   "removed": [],
+   "removed": [
+    [
+     "Hive",
+     "Hive14034"
+    ],
+    [
+     "GlowPod",
+     "GlowPod14046"
+    ],
+    [
+     "GlowPod",
+     "GlowPod14047"
+    ],
+    [
+     "EggSac",
+     "EggSac14048"
+    ]
+   ],
    "threatsAfter": 0,
    "error": null
   },
   "fed": [
-   "Human1046",
-   "Human1050",
-   "Human1059"
+   "Human372",
+   "Human376",
+   "Human380"
   ]
  },
  "startColonistsDrafted": [
   [
-   "Human1046",
+   "Human372",
    true
   ],
   [
-   "Human1050",
+   "Human376",
    true
   ],
   [
-   "Human1059",
+   "Human380",
    true
   ]
  ],
- "finished": "2026-11-12T03:42:25"
+ "finished": "2026-11-12T04:02:04"
 }
