@@ -127,7 +127,9 @@ def _hook(name, settings, root=None):
         readable += 1
         if rx.search(text):
             home = root or os.path.dirname(os.path.dirname(path))     # the commands name it relative to the project
-            tokens = re.findall(r"[^\s\"']*/" + re.escape(name), text) or [os.path.join(".claude", "hooks", name)]
+            # the documented `"$CLAUDE_PROJECT_DIR"/.claude/hooks/x.py` closes its quote before the path: join them back
+            norm = re.sub(r'\\?"\$\{?CLAUDE_PROJECT_DIR(?::-[^}"\\]*)?\}?\\?"/', "$CLAUDE_PROJECT_DIR/", text)
+            tokens = re.findall(r"[^\s\"']*/" + re.escape(name), norm) or [os.path.join(".claude", "hooks", name)]
             found = [os.path.join(home, os.path.expandvars(os.path.expanduser(re.sub(r"^\$\{?CLAUDE_PROJECT_DIR(:-[^}]*)?\}?/", "", t)))) for t in tokens]
             if not any(os.path.exists(t) for t in found):
                 return "hook %s is wired in %s but %s is absent" % (name, path, found[0])

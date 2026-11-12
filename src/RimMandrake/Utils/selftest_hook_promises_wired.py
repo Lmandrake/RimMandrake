@@ -46,7 +46,8 @@ FAILS = []
 BASELINE = "live_baseline.txt"
 TARGET = "block_agent_over_slots.py"      # this item's own promise
 FIX = ("fix   wire each back in .claude/settings.json (a landing that replaced the file: restore it from the commit "
-       "before), or retire a hook removed on purpose with a hook=<file> line in src/RimMandrake/rimflow/live_retired.txt")
+       "before), or retire a hook removed on purpose in src/RimMandrake/rimflow/live_retired.txt with one line per "
+       "spelling it was promised as (hook=x.py and hook=.claude/hooks/x.py are two lines)")
 
 
 def check(ok, msg):
@@ -166,7 +167,8 @@ def baseline_history():
 def plain(promises):
     """The promises as the fixtures use them: an absolute or ~ spelling becomes its bare file name, so a fixture file is
     never written outside the fixtures' own root."""
-    out = {h: {(h if n.startswith(("/", "~")) else n): w for n, w in sp.items() if not n.startswith("<unparsed")}
+    out = {h: {(h if n.startswith(("/", "~")) or ".." in n.split("/") else n): w for n, w in sp.items()
+               if not n.startswith("<unparsed")}
            for h, sp in promises.items()}
     return {h: sp for h, sp in out.items() if sp}
 
@@ -205,16 +207,19 @@ def fake_settings(promises, tag, drop=(), rename=None, extra=None):
     return p
 
 
-def sanity(promises, items, baseline_names, ever):
+def sanity(promises, items, baseline_names, ever, retired=()):
     """The guard can see: it read the ledger and the baseline, and on fixtures of its own a missing hook is named."""
     ledger = {n for n, sp in promises.items() if any(s != BASELINE for s in sources(sp))}
     check(len(items) > 0, "the ledger reads (%d items)" % len(items))
     check(bool(ledger), "the ledger yields hook promises (%d hooks, e.g. %s)" % (len(ledger), ", ".join(sorted(ledger)[:3])))
     check(bool(baseline_names), "live_baseline.txt yields hook promises (%d)" % len(baseline_names))
     check(bool(ever), "live_baseline.txt's git history yields hook lines (%d)" % len(ever or ()))
-    check(TARGET in promises, "%s (this item's own promise) is among the promises read" % TARGET)
+    gone_on_purpose = any(s == "hook=" + TARGET or s.endswith("/" + TARGET) for s in retired)
+    check(TARGET in promises or gone_on_purpose, "%s (this item's own promise) is among the promises read%s"
+          % (TARGET, " (retired on purpose)" if gone_on_purpose else ""))
     promises = plain(promises)
-    promises.setdefault(TARGET, {TARGET: ["fixture"]})
+    target = TARGET if TARGET in promises else min(promises, default=TARGET)
+    promises.setdefault(target, {target: ["fixture"]})
     root = fake_project(promises)
 
     def run(path, proms=promises, at=root):
@@ -225,10 +230,14 @@ def sanity(promises, items, baseline_names, ever):
     cfg["hooks"]["Stop"] = [{"hooks": [{"type": "prompt", "prompt": "check the work"}]}]
     p.write_text(json.dumps(cfg), encoding="utf-8")
     check(unwired(promises, p, root=root) == ({}, []), "fixture: a prompt hook (no command) beside the full set is no problem")
-    got = run(fake_settings(promises, "minus_one", drop={TARGET}))
-    check(set(got) == {TARGET}, "fixture: settings without %s report exactly that hook (got %s)" % (TARGET, sorted(got)))
-    got = run(fake_settings(promises, "lookalike", rename=(TARGET, "x_" + TARGET)))
-    check(set(got) == {TARGET}, "fixture: a lookalike x_%s does not count as wiring it (whole-name match)" % TARGET)
+    p = fake_settings(promises, "quoted_var_style")
+    p.write_text(p.read_text(encoding="utf-8").replace('\\"${CLAUDE_PROJECT_DIR:-.}/', '\\"$CLAUDE_PROJECT_DIR\\"/')
+                 .replace('.py\\" 2>', '.py 2>'), encoding="utf-8")
+    check(run(p) == {}, "fixture: the documented python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/x.py style reads wired")
+    got = run(fake_settings(promises, "minus_one", drop={target}))
+    check(set(got) == {target}, "fixture: settings without %s report exactly that hook (got %s)" % (target, sorted(got)))
+    got = run(fake_settings(promises, "lookalike", rename=(target, "x_" + target)))
+    check(set(got) == {target}, "fixture: a lookalike x_%s does not count as wiring it (whole-name match)" % target)
     only_ledger = sorted(ledger - baseline_names)
     if only_ledger:
         name = only_ledger[0]
@@ -239,24 +248,24 @@ def sanity(promises, items, baseline_names, ever):
         print("note  every ledger hook promise is also in the baseline: the ledger-only row has nothing to drop")
     got = run(fake_settings(promises, "disabled", extra={"disableAllHooks": True}))
     check(len(got) == len(promises), "fixture: disableAllHooks reports every promised hook (%d of %d)" % (len(got), len(promises)))
-    p = fake_settings(promises, "matcher_only", drop={TARGET})
+    p = fake_settings(promises, "matcher_only", drop={target})
     cfg = json.loads(p.read_text(encoding="utf-8"))
-    cfg["hooks"]["PreToolUse"].append({"matcher": TARGET, "hooks": []})
+    cfg["hooks"]["PreToolUse"].append({"matcher": target, "hooks": []})
     p.write_text(json.dumps(cfg), encoding="utf-8")
     got = run(p)
-    check(set(got) == {TARGET}, "fixture: %s named only in a matcher, in no command, is reported (got %s)" % (TARGET, sorted(got)))
-    target_file = root / fixture_path(sorted(promises[TARGET])[0])
+    check(set(got) == {target}, "fixture: %s named only in a matcher, in no command, is reported (got %s)" % (target, sorted(got)))
+    target_file = root / fixture_path(sorted(promises[target])[0])
     target_file.unlink()
     got = run(fake_settings(promises, "file_gone"))
     target_file.touch()
-    check("absent" in got.get(TARGET, ""), "fixture: a wired hook whose file is gone is reported (%s)" % got.get(TARGET))
-    for tag, body in (("top_level_list", "[]"), ("hooks_string", '{"hooks": "%s"}' % TARGET),
-                      ("group_dict", '{"hooks": {"PreToolUse": {"hooks": [{"command": "%s"}]}}}' % TARGET), ("not_json", "{")):
+    check("absent" in got.get(target, ""), "fixture: a wired hook whose file is gone is reported (%s)" % got.get(target))
+    for tag, body in (("top_level_list", "[]"), ("hooks_string", '{"hooks": "%s"}' % target),
+                      ("group_dict", '{"hooks": {"PreToolUse": {"hooks": [{"command": "%s"}]}}}' % target), ("not_json", "{")):
         p = TMP / ("settings_%s.json" % tag)
         p.write_text(body, encoding="utf-8")
         got, probs = unwired(promises, p, root=root)
-        check(TARGET in got and probs, "fixture: a %s settings file fails %s with a shape problem, no crash (%s)"
-              % (tag.replace("_", " "), TARGET, (probs or ["none"])[0]))
+        check(target in got and probs, "fixture: a %s settings file fails %s with a shape problem, no crash (%s)"
+              % (tag.replace("_", " "), target, (probs or ["none"])[0]))
     ex = {"OLD": type("It", (), {"state": "dropped", "live": "hook=%s" % TARGET})()}
     check(TARGET not in promised(ex, [], set()) and TARGET not in promised({}, ["hook=" + TARGET], {"hook=" + TARGET})
           and "bench_mode.py" not in promised({"LIVE_RESTORE_BENCH_MODE": ex["OLD"]}, ["hook=bench_mode.py"], set()),
@@ -266,8 +275,16 @@ def sanity(promises, items, baseline_names, ever):
 def main(settings=None):
     settings = Path(settings) if settings else SETTINGS
     items = DM.read_items()
-    baseline = DM.load_baseline()
-    retired = DM.load_retired()
+    try:
+        baseline = DM.load_baseline()
+    except ValueError as e:      # the deadman refuses it too: a red row, not a crash
+        check(False, "%s parses (%s)" % (BASELINE_REL, e))
+        baseline = []
+    try:
+        retired = DM.load_retired()
+    except ValueError as e:
+        check(False, "src/RimMandrake/rimflow/live_retired.txt parses (%s)" % e)
+        retired = set()
     promises = promised(items, baseline, retired)
     baseline_names = {n for n, sp in promises.items() if BASELINE in sources(sp)}
     print("settings: %s" % settings)
@@ -291,7 +308,7 @@ def main(settings=None):
         check(not gone, "every hook line ever in %s is still there or retired in live_retired.txt (gone: %s)"
               % (BASELINE, ", ".join(gone) or "none"))
     print("-- the instrument (fixtures of its own, whatever the settings above) --")
-    sanity(promises, items, baseline_names, ever)
+    sanity(promises, items, baseline_names, ever, retired)
 
 
 if __name__ == "__main__":
