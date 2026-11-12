@@ -50,3 +50,9 @@ Visibility the one Empire attention meter** ("No Imperial heat variable is added
 - Mod Settings: one switch per feature and the numbers. Spec updated to match.
 - Offline proof: `python3 src/RimMandrake/Utils/selftest_kyber_trade_plot.py`. Not yet seen live: a real trade
   window sale, the visitors spawning, the quest generating and completing (`validation.py` lists the first pokes).
+- Hardened 2026-11-11 after a GPT broaden pass and a fresh Opus code review (`449116ac5a`): the fixer door can no
+  longer strand, a visit that cannot arrive for 15 days gives way to it, visitors arrested or recruited end the visit,
+  dev-mode fires obey the once/off gates, the trade hook can never break the trade window, the visit lands only on a
+  ground home map with colonists, the donation's goodwill skips a missing Homestead, and the asked value is the
+  kyber's real market value. Fresh judge: would show "no" until the live clauses are seen; parked for a live lane
+  (needs=bridge).
