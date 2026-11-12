@@ -168,9 +168,15 @@ def main():
     # lifted here, and any alarm a case raised would land in a temp dir, never the real rows
     CJ.NOT_COVERED_LIMIT = CJ.JUDGE_RUNS_MAX = 10 ** 6
     CJ.JUDGE_SPEND_MAX = 10 ** 15
+    # an alarm a case raises tells through incident.signal: the ops dir and the dispatcher state must be temp too, or a
+    # tripped case opens a real incident for the Conductor (it did once: refusals-20261112233646)
+    env = {k: os.environ.get(k) for k in ("RM_REFUSAL_DIR", "RM_OPS_WATCH_DIR", "RM_DISPATCHER_STATE")}
     try:
         with tempfile.TemporaryDirectory() as root:
-            os.environ["RM_REFUSAL_DIR"] = os.path.join(root, "refusals")
+            ops = os.path.join(root, "ops")
+            os.makedirs(ops)
+            os.environ.update(RM_REFUSAL_DIR=os.path.join(root, "refusals"), RM_OPS_WATCH_DIR=ops,
+                              RM_DISPATCHER_STATE=os.path.join(root, "dispatcher"))
             d = concept(root)
             calls = []
 
@@ -235,7 +241,12 @@ def main():
             check("role_launch: unreadable concept, no pre-launch step", RL.coverage_pre(os.path.join(root, "x")) is None)
     finally:
         CT.coverage_problem, CT.sign, DS.exam_errors = saved
-    sched = json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))
+        for k, v in env.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+    sched =json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))
     des = [r for r in sched["roles"] if r.get("name") == "Designer"]
     check("the Designer's schedule bounds the pre-launch step above the judge's own timeout",
           des and des[0].get("pre_launch_max_s", 0) > CJ.TIMEOUT_S, des and des[0].get("pre_launch_max_s"))

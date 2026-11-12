@@ -1,0 +1,3 @@
+A selftest that can trip an alarm must point RM_OPS_WATCH_DIR and RM_DISPATCHER_STATE at temp dirs, not only its own state dir (RM_REFUSAL_DIR): incident.signal writes the real told.jsonl and opens a real incident unless RM_DISPATCHER_STATE is temp. selftest_coverage_judge set only RM_REFUSAL_DIR, and a run at 2026-11-12T23:17Z opened incident refusals-20261112233646 for the Conductor (acked with a plan; the real alarm row cleared). Fixed by saving, setting and restoring all three, as selftest_coverage_judge_loop does. Check: count told.jsonl lines before and after the run.
+item: RIMMANDRAKE_STOP_COVERAGE_LOOP_AT_THIRD_REFUSAL
+home: infrastructure/state/facts/instrument_traps.md
