@@ -113,7 +113,7 @@ items) · **Status** (LIVE / DORMANT / DEAD / DESIGNED-NEVER-BUILT / STOPPED = s
 | **Prereview record** | A naive judge read a review sheet before it reaches Mandrake | no game | to judge | one Opus or GPT read | sheet tools refuse without it | `Utils\art\prereview.py`, `<stem>.prereview.json` | `UNMEASURED` | 16 prereview files vs 363 `.decisions.json` sheets `[measured: find]` | LIVE, thin |
 | **North-star frame judge** (must-show bar on a screenshot) | A frame shows what the bar says the player sees | game for the shot; judge offline | to judge | `UNMEASURED` | north-star run | `Utils\northstar_driver\judge_cli.py` | "no FlowWorks bar has a judge verdict" `[measured there: production map §7]` | `UNMEASURED` | DORMANT |
 | **Naive judge / blind evaluation** ("nothing reaches the owner unread") | A fresh Opus that did not make the thing finds it not obviously broken | depends | to judge | one Opus run | before anything reaches Mandrake | skills `blind-evaluation`, `evaluation-independence`; folders `D:\ClaudeWork\rimmandrake\judge_*` | `judge_levelling_20261112` exists `[measured]` | any deliverable | LIVE as habit |
-| **Findings judge** (daily judging, Friday memory sweep) | Filed findings are real, not duplicates, not contradicted | no game | to judge (Opus) | about $1 a run `[measured: findings_judge\history.jsonl]` | timer `rm-findings-judge` 07:20, **disabled** `[measured: systemctl is-enabled]` | `Utils\findings_judge.sh` | last run 2026-11-06 15:25 UTC `[measured]` | the ledger | DORMANT (CLAUDE.md says it runs) |
+| **Findings judge** (daily judging, Friday memory sweep) | Filed findings are real, not duplicates, not contradicted | no game | to judge (Opus) | about $1 a run `[measured: findings_judge\history.jsonl]` | timer `rm-findings-judge` 07:20, re-enabled 2026-11-12 (it had been stopped with the pipeline on the owner's order of 2026-11-07, PIPELINE_RETHINK_OWNER_STOPPED_BURN) | `Utils\findings_judge.sh` | run 2026-11-12 23:07-23:16 UTC, rc 0, $2.13 `[measured: findings_judge\last.json]` | the ledger | RUNNING (owner pick 8, 2026-11-12) |
 | **Test Pilot** (rm-testpilot, surprise book) | One live debugging sitting on an item that failed 3 times in a row: experiments instead of code-and-retest; the surprise book records what is "boring" where | game; bridge | to run and to judge | one Opus sitting `UNMEASURED $` | `rimflow pilot` route after 3 non-pass runs or a live-only defect | `rimflow\testpilot_route.py`, `.claude\agents\rm-testpilot.md`, `rimflow\surprise_book.py` | newest sitting folder 2026-11-05 11:34; surprise book 2026-11-04 `[measured]` | a handful of items | DORMANT since 2026-11-05 `[guess ~70%]` |
 
 ### 1F. The owner (L4)
@@ -245,8 +245,8 @@ lightspeed_2026-11-06.md]`. Most of the remaining LLM use is judging a look, not
 
 - STOPPED with Relentless on 2026-11-06: exam (exam), live round (live round), Marker (Marker). Their self-tests still run nightly.
 - DORMANT: mutmut (last record 2026-10-28), generic north-star driver (last results 2026-10-19), L1 expectations
-    manifests (4 items), Test Pilot (last sitting 2026-11-05), findings judge (timer disabled, last run 2026-11-06,
-    although CLAUDE.md describes it as running), player-truth sweep, V&V shipped matrix, frame judge, human review map.
+    manifests (4 items; deleted 2026-11-12), Test Pilot (last sitting 2026-11-05), findings judge (re-enabled 2026-11-12,
+    owner pick 8), player-truth sweep, V&V shipped matrix, frame judge, human review map.
 - DESIGNED-NEVER-BUILT: the shared in-game C# scene runner (fast-testing step 8); the
     bridge validation observatory (`design\RimMandrake\bridge_validation_observatory.md`, "Nothing is built").
 - **Stale text that disagrees with the code:** the levels addendum and `testing_policy_2026-10-28.md` §2.10 still
