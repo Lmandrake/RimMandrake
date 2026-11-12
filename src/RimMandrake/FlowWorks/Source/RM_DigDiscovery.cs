@@ -510,11 +510,13 @@ namespace RimMandrake.FlowWorks
 			return RM_DigDiscoveryMath.Budget(units, RimMandrakeFlowWorksSettings.digFindBudgetPercent);
 		}
 
-		/// <summary>The nearest standable cell that is not dug — the bank the lump is thrown onto.</summary>
+		/// <summary>The nearest standable cell that is not dug — the bank the lump is thrown onto. Searched out to 12 squares
+		/// (PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS: a quarry pit 13 or more squares across has no bank within 6 of its middle,
+		/// and the old fallback, the cut square itself, dropped the find back into the pit the letter says it lies beside).</summary>
 		public static IntVec3 LipCellNear(Map map, IntVec3 c)
 		{
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
-			foreach (IntVec3 n in GenRadial.RadialCellsAround(c, 6f, false))
+			foreach (IntVec3 n in GenRadial.RadialCellsAround(c, 12f, false))
 			{
 				if (n.InBounds(map) && n.Standable(map) && (eng == null || !eng.IsExcavated(n)))
 				{
@@ -632,6 +634,45 @@ namespace RimMandrake.FlowWorks
 			return pool.Count > 0 ? pool[RM_DigDiscoveryMath.PickIndex(seed, pool.Count)] : null;
 		}
 
+		/// <summary>static_call surface (RM_DigDiscoveryProof "surface"): the stone this map actually shows, measured on the
+		/// map itself rather than read from the world tile, so "a stone not on this map's surface" is a count, not a promise:
+		/// natural rock walls by def (edifice grid, every cell) and loose stone chunks by def.</summary>
+		public static string SurfaceReport(Map map)
+		{
+			if (map == null)
+			{
+				return "REFUSED: no map";
+			}
+			Dictionary<string, int> walls = new Dictionary<string, int>();
+			foreach (IntVec3 c in map.AllCells)
+			{
+				Building b = map.edificeGrid[c];
+				if (b != null && b.def.IsNonResourceNaturalRock)
+				{
+					walls.TryGetValue(b.def.defName, out int n);
+					walls[b.def.defName] = n + 1;
+				}
+			}
+			Dictionary<string, int> chunks = new Dictionary<string, int>();
+			foreach (Thing t in map.listerThings.ThingsInGroup(ThingRequestGroup.Chunk))
+			{
+				chunks.TryGetValue(t.def.defName, out int n);
+				chunks[t.def.defName] = n + 1;
+			}
+			return "SURFACE walls " + Join(walls) + " | chunks " + Join(chunks);
+		}
+
+		private static string Join(Dictionary<string, int> d)
+		{
+			List<string> parts = new List<string>();
+			foreach (KeyValuePair<string, int> kv in d)
+			{
+				parts.Add(kv.Key + ":" + kv.Value);
+			}
+			parts.Sort(string.CompareOrdinal);
+			return parts.Count == 0 ? "none" : string.Join(",", parts);
+		}
+
 		/// <summary>static_call surface (RM_DigDiscoveryProof "deepstone"): what lies under the current map and why.</summary>
 		public static string Report(Map map)
 		{
@@ -643,7 +684,7 @@ namespace RimMandrake.FlowWorks
 	}
 
 	/// <summary>static_call surface: "" reports; "force" makes the next cut roll with certainty; "deepstone" names the
-	/// stone a superdeep cut on this map breaks through.</summary>
+	/// stone a superdeep cut on this map breaks through; "surface" counts the stone the map itself shows.</summary>
 	public static class RM_DigDiscoveryProof
 	{
 		public static string ProofReport(string arg)
@@ -662,6 +703,10 @@ namespace RimMandrake.FlowWorks
 			if (arg == "deepstone")
 			{
 				return RM_DeepStone.Report(map);
+			}
+			if (arg == "surface")
+			{
+				return RM_DeepStone.SurfaceReport(map);
 			}
 			return ex.DigDiscovery.Report(map);
 		}

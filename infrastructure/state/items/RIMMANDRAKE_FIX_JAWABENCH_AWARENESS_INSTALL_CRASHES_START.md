@@ -14,3 +14,10 @@ Found by CLAUDE_STEVEDESKTOP_FWLIVE while proving PIT_DEEPSTONE_BUILD_DIGGING_FI
 `D:\ClaudeWork\rimmandrake\whittle_claude\CLAUDE_STEVEDESKTOP_FWLIVE\up.log`, `...\up3.log`.
 NEXT: read the crash report under `C:\Users\sjlewis\AppData\Local\Temp\Ludeon Studios\RimWorld by Ludeon Studios\Crashes` on
 SteveDesktop and the `<Install>b__11` lambda in JawaBenchAwareness.cs; check whether it patches from a non-main thread.
+
+## 2026-11-11 22:00 -0800 — third crash, a pattern
+A third crash at 21:58 PST, this time earlier (right after `[FlowWorks] hose essential patches`, before the FlowWorks
+Harmony count line), so the JawaBench awareness frame is not the only crash site. Across this sitting the first `steve.sh up`
+after a `steve.sh deploy` crashed 3 of 3 times, and every `steve.sh restart` (down, init, up) came up clean (4 of 4).
+Separately, run 4/5 at 21:29 and 21:33 had a fresh quicktest map come up with `Verse.MapDrawer.get_SectionCount` NRE
+in FinalizeInit (every bridge batch op then NREs); a restart cleared it.

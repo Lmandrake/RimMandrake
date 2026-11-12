@@ -12,7 +12,7 @@ PROVE  the bridge deepens one square of a cleared plot to 1.5 m (D3: excavation_
        after): digDeepStoneEnabled on, digRockChunksEnabled on, digFindsEnabled off (no mineral find competes for the cut),
        digFindLetterEnabled on. The chunk multiplier, labour and depth cost stay as the player has them: a map's FIRST
        deep-stone cut always turns up the stone (RM_DigDiscoveryMath.DeepChunkChance), so no multiplier is staged.
-EXPECT RM_DigDiscoveryProof "deepstone" names a rock (DS_map_has_deep_stone); after the cut, depth 3 -> 4, the report's
+EXPECT RM_DigDiscoveryProof "deepstone" names a rock and "surface" counts 0 walls of it on the map (DS_map_has_deep_stone); after the cut, depth 3 -> 4, the report's
        last find reads "<chunk> x1 ... D=4 (deep stone)" with <chunk> = the named rock's chunk, a new thing of that def within
        6 squares, and a new letter starting "Deep stone" (DS_superdeep_cut_turns_up_deep_stone).
 LIES   a cut never made measures nothing -> UNMEASURED(SITE); a chunk already lying there is excluded by the before/after
@@ -56,7 +56,7 @@ def job_gate(probe, order):
     return True, "ordered"
 
 
-def look(B, c, chunk, tag):
+def look(B, c, chunk, tag, half=0):
     """What the player sees after the cut: the deep-stone letter in full (label and text, as the letter stack holds it), a
     framed capture of the pit square, its lip and the chunk, and a capture of the opened letter. Paths are the game
     machine's; the caller fetches them."""
@@ -66,8 +66,10 @@ def look(B, c, chunk, tag):
     out["letter"] = deep[-1] if deep else None
     B.call("jawa/clear_ui", all=True)
     # rootSize 11 is the closest vanilla zoom: a 9 x 9 frame at the default zoom is ~21 px a square, too small to read
-    s = B.call("rimworld/screenshot_cell_rect", x=c[0] - 3, z=c[1] - 3, width=7, height=7, paddingCells=1, rootSize=11,
-               fileName="deep_stone_%s_pit" % tag, suppressMessage=True) or {}
+    r = max(3, half + 2)  # a wide pit's frame reaches its rim, where the chunk must land
+    zoom = {"rootSize": 11} if r <= 3 else {}
+    s = B.call("rimworld/screenshot_cell_rect", x=c[0] - r, z=c[1] - r, width=2 * r + 1, height=2 * r + 1, paddingCells=1,
+               fileName="deep_stone_%s_pit" % tag, suppressMessage=True, **zoom) or {}
     out["pit"] = s.get("path") or s.get("filePath") or str(s)[:200]
     lid = (out["letter"] or {}).get("id") or (out["letter"] or {}).get("letterId")
     if lid is not None:
@@ -83,6 +85,12 @@ def main():
     ap.add_argument("out", nargs="?", default=None)
     ap.add_argument("--origin", default="40,40")
     ap.add_argument("--fresh-map", action="store_true")
+    ap.add_argument("--from-surface", action="store_true",
+                    help="BROADEN: a colonist digs untouched ground notch by notch to D4, re-designated each notch as a player would,"
+                    " mineral finds left as the player has them (row DS_broaden_from_surface)")
+    ap.add_argument("--wide-pit", type=int, default=0,
+                    help="BROADEN: pre-dig an N x N pit to D3 and cut only its middle to D4: the chunk must still land on undug"
+                    " ground (row DS_broaden_wide_pit)")
     ap.add_argument("--order", action="store_true", help="order the dig job instead of leaving it to the work scan")
     ap.add_argument("--shots", default=None, help="tag: after the cut, capture the pit, the chunk and the opened letter")
     a = ap.parse_args()
@@ -116,7 +124,13 @@ def main():
         return str((B.call("jawa/static_call", type=DPROOF, method="ProofReport", args=arg, _answer=True) or {}).get("result"))
 
     ox, oz = (int(v) for v in a.origin.split(","))
-    c = (ox + 5, oz + 5)
+    half = max(a.wide_pit // 2, 0)
+    size = max(11, 2 * half + 15)
+    c = (ox + size // 2, oz + size // 2)
+    rid = "DS_broaden_from_surface" if a.from_surface else ("DS_broaden_wide_pit" if a.wide_pit else "DS_superdeep_cut_turns_up_deep_stone")
+    run_settings = dict(RUN_SETTINGS)
+    if a.from_surface:
+        run_settings.pop("digFindsEnabled")  # ordinary play: mineral finds stay as the player has them
     if a.fresh_map:
         B.call("rimworld/go_to_main_menu")
         B.call("rimworld/start_debug_game_ready", readiness="mapData", pauseIfNeeded=True, timeoutMs=280000)
@@ -133,22 +147,36 @@ def main():
         return 2
     cids = []
     try:
-        for k, v in RUN_SETTINGS.items():
+        for k, v in run_settings.items():
             sset(k, v)
         ds = report("deepstone")
         rock = ds.split("DEEPSTONE ")[1].split()[0] if ds.startswith("DEEPSTONE ") else None
         chunk = ds.split("chunk=")[1].split()[0] if "chunk=" in ds else None
-        row("DS_map_has_deep_stone", "PASS" if rock and rock != "none" and chunk else "FAIL", "MOD", {"report": ds})
+        # "a stone not on this map's surface", measured on the map (every cell's natural rock wall), not the world tile
+        surf = report("surface")
+        walls = None
+        if surf.startswith("SURFACE walls ") and surf.split("walls ")[1].split(" |")[0] != "none":
+            walls = dict(x.split(":") for x in surf.split("walls ")[1].split(" |")[0].split(","))
+        # a map showing no rock wall at all proves nothing about "not on the surface": the instrument must see some stone
+        on_surface = None if walls is None else int(walls.get(rock, 0))
+        named = bool(rock and rock != "none" and chunk)
+        row("DS_map_has_deep_stone", "PASS" if named and on_surface == 0 else ("UNMEASURED" if walls is None else "FAIL"),
+            "MOD" if walls is not None else "HARNESS", {"report": ds, "surface": surf, "deepRockWallsOnMap": on_surface})
         if not chunk:
             return 1
-        rect = (ox, oz, 11, 11)
+        rect = (ox, oz, size, size)
         B.call("jawa/static_call", type=NSP, method="ProofResetRect", args="%d;%d;%d;%d" % rect)
         site_rows = []
         V.prepare_site(B, rect, site_rows, "deep_stone_site")
         if [r for r in site_rows if r.get("status") not in (None, "PASS")]:
             row("DS_superdeep_cut_turns_up_deep_stone", "UNMEASURED", "SITE", {"why": "site not prepared", "site": site_rows[:2]})
             return 2
-        drive = B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=3, setFill=-1) or {}
+        drive = {}
+        if not a.from_surface:
+            for dx in range(-half, half + 1):
+                for dz in range(-half, half + 1):
+                    drive = B.call("jawa/flowworks_excavation_drive", x=c[0] + dx, z=c[1] + dz, deepenLevels=3, setFill=-1) or {}
+        r_things = half + 8
         for p in (B.call("jawa/list_pawns", limit=400) or {}).get("pawns") or []:
             if not p.get("dead") and p.get("isPlayer"):
                 B.call("jawa/pawn_force_incapacitate", pawn=p.get("id"), action="vanish")
@@ -164,20 +192,22 @@ def main():
             return 2
 
         def things():
-            lt = B.call("jawa/list_things", rect="%d,%d,13,13" % (c[0] - 6, c[1] - 6), limit=200) or {}
+            lt = B.call("jawa/list_things", rect="%d,%d,%d,%d" % (c[0] - r_things, c[1] - r_things, 2 * r_things + 1,
+                                                                  2 * r_things + 1), limit=400) or {}
             return {t.get("id"): (t.get("def"), t.get("x"), t.get("z")) for t in lt.get("things") or []}
 
         def letters():
             lt = B.call("rimworld/list_letters") or {}
             return [str(x.get("label") or x.get("title") or x)[:80] for x in lt.get("letters") or []]
 
-        def depth():
-            return (B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=0, setFill=-1) or {}).get("depth")
+        def depth(at=None):
+            at = at or c
+            return (B.call("jawa/flowworks_excavation_drive", x=at[0], z=at[1], deepenLevels=0, setFill=-1) or {}).get("depth")
         r0 = report("report")
         t0, l0, d0 = things(), letters(), depth()
-        if d0 != 3:
+        if d0 != (0 if a.from_surface else 3):
             row("DS_superdeep_cut_turns_up_deep_stone", "UNMEASURED", "HARNESS",
-                {"why": "the square is not at D3 before the colonist cut", "depth": d0, "drive": str(drive)[:200]})
+                {"why": "the square is not at its start depth before the colonist cut", "depth": d0, "drive": str(drive)[:200]})
             return 2
         des = B.call("jawa/designate_batch", action="add", designation="RM_DigCanal", rect="%d,%d,1,1" % c) or {}
         # a random colonist can be incapable of Mining (run 2 of 2026-11-11 drew one): the digger is the first who can
@@ -200,32 +230,47 @@ def main():
             row("DS_superdeep_cut_turns_up_deep_stone", "UNMEASURED", "SITE",
                 {"why": "the dig job was not taken: " + job_why, "designate": str(des)[:200], "probe": str(probe)[:300]})
             return 2
-        t, cut_at = 0, None
-        while t < WAIT_TICKS:
+        t, cut_at, timeline = 0, None, []
+        last_d = d0
+        budget = WAIT_TICKS * (3 if a.from_surface else 1)
+        while t < budget:
             step(500)
             t += 500
-            if depth() not in (None, d0):
+            d = depth()
+            if d not in (None, last_d):
+                timeline.append([t, d, report("report").split("| last ")[-1]])
+                last_d = d
+            if a.from_surface and d is not None and d < 4:
+                # one designation, one notch (vanilla AffectFloor): the player clicks dig again on the same square
+                B.call("jawa/designate_batch", action="add", designation="RM_DigCanal", rect="%d,%d,1,1" % c)
+            if d == 4 or (not a.from_surface and d not in (None, d0)):
                 cut_at = t
                 break
+        res["timeline"] = timeline
         step(10)
         r1 = report("report")
         t1, l1, d1 = things(), letters(), depth()
         new = {k: v for k, v in t1.items() if k not in t0}
         new_letters = [x for x in l1 if x not in l0]
         det = {"deepstone": ds, "before": r0, "after": r1, "depth": [d0, d1], "cutAt": cut_at, "newThings": new,
-               "newLetters": new_letters, "designate": str(des)[:200]}
+               "newLetters": new_letters, "designate": str(des)[:200], "timeline": timeline}
         if cut_at is None:
-            row("DS_superdeep_cut_turns_up_deep_stone", "UNMEASURED", "SITE", dict(det, why="no colonist cut the square in %d ticks" % WAIT_TICKS))
+            row(rid, "UNMEASURED", "SITE", dict(det, why="no colonist cut the square to D4 in %d ticks" % budget))
             return 2
         last = r1.split("| last ")[1] if "| last " in r1 else ""
         got_chunk = [v for v in new.values() if v[0] == chunk]
         deep_letter = [x for x in new_letters if x.startswith("Deep stone")]
         good = (d0, d1) == (3, 4) and last.startswith(chunk + " x1") and "D=4 (deep stone)" in last and bool(got_chunk) and bool(deep_letter)
+        if rid != "DS_superdeep_cut_turns_up_deep_stone":
+            # broaden rows: the chunk and the letter, the chunk on undug ground (the lip), whatever else the cut turned up
+            det["chunkDepth"] = [depth((v[1], v[2])) for v in got_chunk]
+            det["deepCutLogged"] = [x for x in timeline if "(deep stone)" in x[2]]
+            good = d1 == 4 and bool(got_chunk) and bool(deep_letter) and all(x == 0 for x in det["chunkDepth"])
         if not good and r1 == r0 and float(before.get("digRockChunkMultiplier") or 0) <= 0:
-            row("DS_superdeep_cut_turns_up_deep_stone", "UNMEASURED", "SITE", dict(det, why="the player's chunk multiplier is 0"))
+            row(rid, "UNMEASURED", "SITE", dict(det, why="the player's chunk multiplier is 0"))
             return 2
-        det["shots"] = look(B, c, chunk, a.shots) if a.shots else None
-        row("DS_superdeep_cut_turns_up_deep_stone", "PASS" if good else "FAIL", "MOD", det)
+        det["shots"] = look(B, c, chunk, a.shots, half) if a.shots else None
+        row(rid, "PASS" if good else "FAIL", "MOD", det)
         return 0 if good else 1
     finally:
         for c_ in cids:
