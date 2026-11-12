@@ -344,6 +344,9 @@ def criterion_6_7_k2_and_regard():
           abs(d - G.CATHEDRAL_REGARD_GAIN_MISSION_COMPLETION) < 1e-9)
     check("7 the completions also count toward VOUCHED (mission_completions_total)",
           C[-1]["mission_completions_total"] == n)
+    check("7 the completing run reaches VOUCHED; the ignoring run is still %s after %d polls" % (
+        I[-1]["conduct_posture_label"], len(I)),
+        C[-1]["conduct_posture_label"] == "VOUCHED" and I[-1]["conduct_posture_label"] == "TOLERATED")
 
 
 def guards():
@@ -369,6 +372,60 @@ def guards():
     check("+ boons disabled: no gift ever offered", not any("cathedral_boon_offer" in types(r) for r in R))
 
 
+def broadened():
+    print("\n[B] tests a second model proposed (BROADEN.md)")
+    # all six requests, every channel, before any repeats
+    fx = fixture(polls=320)
+    fx["player"]["mission_responses"] = ["complete", "fail", "ignore"]
+    _, R, _ = run(fx)
+    order = [e["quest_def"] for r in R for e in r["would_fire"] if e["type"] == "cathedral_mission_offer"]
+    print("      offer order: %s" % [q.replace("RUT_CathedralAssailantMission_", "") for q in order])
+    check("B the first six requests are six different quests (no description repeats before the seventh)",
+          len(order) >= 7 and len(set(order[:6])) == 6 and order[6] == order[0], order)
+    descs = [m["quest_description"] for m in CAT["missions"]]
+    check("B six distinct request descriptions ship", len(set(descs)) == 6)
+    # Heat exactly at a ceiling is open; a hair above is withheld
+    for b in CAT["boons"]:
+        c = b["heat_ceiling"]
+        at = dict((x["incident_def"], x["state"]) for x in G.compute_cathedral_offer_gate(2, c, CAT["boons"])[1])
+        above = dict((x["incident_def"], x["state"]) for x in G.compute_cathedral_offer_gate(2, c + 1e-6, CAT["boons"])[1])
+        print("      %s ceiling %.0f: Heat %.0f -> %s; Heat %.6f -> %s" % (b["incident_def"], c, c, at[b["incident_def"]],
+                                                                        c + 1e-6, above[b["incident_def"]]))
+        check("B %s: open at Heat == ceiling, withheld just above" % b["incident_def"],
+              at[b["incident_def"]] == "open" and above[b["incident_def"]] == "withheld_heat")
+    # an ACCEPTED request spanning a go-dark: it plays out, credits once, and opens nothing early
+    fx = _fast_vouched(polls=60)
+    fx["player"]["mission_responses"] = ["complete"]
+    fx["player"]["finish_after_ticks"] = 4 * 60000
+    _, D, _ = run(fx, story_flags=VOUCHED_FAST, pursuit_event_on_poll=8, exposure_godark_threshold=15.0)
+    dark = next(r for r in D if r["go_dark_fired_this_poll"])
+    done = [r for r in D if r["mission_completions_this_poll"]]
+    for r in [D[dark["poll"] - 2], dark] + done[:1]:
+        row(r)
+    hold_end = dark["ticksGame"] + G.CATHEDRAL_FAVOURS_DARK_HOLD_TICKS
+    check("B accepted request in progress at the go-dark is not withdrawn",
+          D[dark["poll"] - 2]["cathedral_offers"]["missions"]["current"]["status"] == "in_progress"
+          and "cathedral_mission_offer_withdrawn" not in types(dark))
+    check("B it completes during the dark hold and is credited exactly once",
+          len(done) == 1 and done[0]["ticksGame"] < hold_end and sum(r["mission_completions_this_poll"] for r in D) == 1)
+    check("B no offer of any kind until the hold ends",
+          not any(t.endswith(("mission_offer", "boon_offer")) for r in D
+                  if dark["ticksGame"] <= r["ticksGame"] < hold_end for t in types(r)))
+    # gifts never land within two days of a completed mission (they answer conduct, not culls)
+    with open(FIXTURE, encoding="utf-8") as f:
+        fo = json.load(f)
+    _, O, _ = run(fo, pursuit_event_on_poll=fo["board"]["pursuit_event_on_poll"],
+                  exposure_godark_threshold=fo["board"]["exposure_godark_threshold"])
+    comp_ticks = [r["ticksGame"] for r in O if r["mission_completions_this_poll"]]
+    gifts = [r for r in O if "cathedral_boon_offer" in types(r)]
+    close = [(g["poll"], t) for g in gifts for t in comp_ticks
+             if 0 <= g["ticksGame"] - t < G.CATHEDRAL_BOON_AFTER_COMPLETION_GAP_TICKS]
+    check("B ordinary play: %d gifts, none within two days after any of %d completions" % (len(gifts), len(comp_ticks)),
+          gifts and not close, close)
+    gc = [g for g in gifts if any(e.get("incident_def", "").endswith("Gravcore") for e in g["would_fire"])]
+    check("B ordinary play: the gravcore comes at most once in 75 days (%d)" % len(gc), len(gc) <= 1)
+
+
 def main():
     criterion_1_stage_gate()
     criterion_2_text()
@@ -377,6 +434,7 @@ def main():
     criterion_5_oracle_absent()
     criterion_6_7_k2_and_regard()
     guards()
+    broadened()
     print("\n%d/%d checks passed" % (len(RAN) - len(FAILS), len(RAN)))
     return 1 if FAILS else 0
 

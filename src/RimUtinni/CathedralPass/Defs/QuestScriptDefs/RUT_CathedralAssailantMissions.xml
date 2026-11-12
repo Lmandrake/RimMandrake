@@ -4,7 +4,7 @@
 
   The first favours. Once the clan is TOLERATED, missions against what the Assailant left behind (the
   self-replicating rot of 03_deep_history.md §The Assailant) reach the clan through the two deniable
-  channels the spec names: a Free Droid enclave runner, or the Utinni herself. Nothing in any string ties them
+  channels the spec names: the Free Droid enclaves, or the Utinni herself. Nothing in any string ties them
   to the Cathedral, names an asker, or says what a mission is for; the player only notices, afterwards, that the
   ground has been easier. Every string here passes cathedral_arc_lint.py at stage 1 and at -1 (the linter also
   forbids the word "Assailant" in player text: it is §GM truth).
@@ -15,16 +15,17 @@
   alternate).
 
   SHAPE (one, shared by both channels): accept, and a pack of animals gone wrong walks in (vanilla
-  QuestNode_ManhunterPack, the same incident the Royalty threat quests use); kill as many of that race as the pack
-  holds (vanilla QuestNode_PawnsKilled, the Decree_Hunt node) and the mission ends in Success. If too few of
-  that race are left alive to finish it, it fails; so does losing the map. No asker, no faction, no reward roll:
+  QuestNode_ManhunterPack, the same incident the Royalty threat quests use, tagging each animal with the quest);
+  kill that pack (the tagged animals, nothing else) and the mission ends in Success (RUT_QuestNode_PackDown).
+  If the pack never arrives, or walks off alive, it fails; so does losing the map. No asker, no faction, no reward roll:
   what a completed mission earns is Regard, which the blackboard reads from the ended quest (EndedSuccess, root
   defName RUT_CathedralAssailantMission_*) and never Imperial Heat (K2). Fallback text is the whole text: the
   Oracle, if present, may only revoice it.
 
   TRIGGER: rootSelectionWeight 0 (never rolled); fired only by the paired RUT_GiveQuest_CathedralAssailantMission_*
-  incidents (baseChance 0) when the GM blackboard offers them. RUT_QuestNode_GetRaceOfKind is this mod's one
-  custom node (Source/CathedralFavours.cs): a SlateRef cannot read $animalKindDef.race.
+  incidents (baseChance 0) when the GM blackboard offers them. RUT_QuestNode_PackDown is this mod's one custom
+  node (Source/CathedralFavours.cs): vanilla QuestNode_PawnsKilled counts any animal of the race the colony kills,
+  so slaughtering its own tame ones would have finished the mission.
 -->
 <Defs>
 
@@ -50,27 +51,20 @@
           <customLetterLabel TKey="LetterLabelRUTEnclaveCullArrived">The pack the enclaves warned of</customLetterLabel>
           <customLetterText TKey="LetterTextRUTEnclaveCullArrived">The animals the enclaves warned of are here. They move wrong, too stiff in the shoulders and too quick to turn, and they are coming straight for the colony.</customLetterText>
         </li>
-        <li Class="RimMandrake.Utinni.CathedralPass.RUT_QuestNode_GetRaceOfKind">
-          <kind>$animalKindDef</kind>
-          <storeAs>blightedRace</storeAs>
+        <li Class="RimMandrake.Utinni.CathedralPass.RUT_QuestNode_PackDown">
+          <tag>blightedPack</tag>
+          <outSignalPackDown>PackDown</outSignalPackDown>
+          <outSignalPackLost>PackNotAvailable</outSignalPackLost>
         </li>
-
-        <li Class="QuestNode_PawnsKilled">
-          <race>$blightedRace</race>
-          <count>$animalCount</count>
-          <outSignalPawnsNotAvailable>PackNotAvailable</outSignalPawnsNotAvailable>
-          <node Class="QuestNode_Sequence">
-            <nodes>
-              <li Class="QuestNode_Letter">
-                <label TKey="LetterLabelRUTEnclaveCullDone">The pack is down</label>
-                <letterDef>PositiveEvent</letterDef>
-                <text TKey="LetterTextRUTEnclaveCullDone">The last of them is dead. Burn what is left of them before it starts to spread.\n\nNobody from the enclaves comes to thank you. But the next time the crews work the plates out past the old works, the ground seems a little easier under them, and nobody can say why.</text>
-              </li>
-              <li Class="QuestNode_End">
-                <outcome>Success</outcome>
-              </li>
-            </nodes>
-          </node>
+        <li Class="QuestNode_Letter">
+          <inSignal>PackDown</inSignal>
+          <label TKey="LetterLabelRUTEnclaveCullDone">The pack is down</label>
+          <letterDef>PositiveEvent</letterDef>
+          <text TKey="LetterTextRUTEnclaveCullDone">The last of them is dead. Burn what is left of them before it starts to spread.\n\nNobody from the enclaves comes to thank you. But the next time the crews work the plates out past the old works, the ground seems a little easier under them, and nobody can say why.</text>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>PackDown</inSignal>
+          <outcome>Success</outcome>
         </li>
 
         <li Class="QuestNode_End">
@@ -99,27 +93,20 @@
           <customLetterLabel TKey="LetterLabelRUTUtinniCullArrived">The pack on the screens</customLetterLabel>
           <customLetterText TKey="LetterTextRUTUtinniCullArrived">The pack the Utinni tracked has reached the colony. Up close the rot shows in how they run: as if each of them had been put together from two animals that never agreed.</customLetterText>
         </li>
-        <li Class="RimMandrake.Utinni.CathedralPass.RUT_QuestNode_GetRaceOfKind">
-          <kind>$animalKindDef</kind>
-          <storeAs>blightedRace</storeAs>
+        <li Class="RimMandrake.Utinni.CathedralPass.RUT_QuestNode_PackDown">
+          <tag>blightedPack</tag>
+          <outSignalPackDown>PackDown</outSignalPackDown>
+          <outSignalPackLost>PackNotAvailable</outSignalPackLost>
         </li>
-
-        <li Class="QuestNode_PawnsKilled">
-          <race>$blightedRace</race>
-          <count>$animalCount</count>
-          <outSignalPawnsNotAvailable>PackNotAvailable</outSignalPawnsNotAvailable>
-          <node Class="QuestNode_Sequence">
-            <nodes>
-              <li Class="QuestNode_Letter">
-                <label TKey="LetterLabelRUTUtinniCullDone">The screens go quiet</label>
-                <letterDef>PositiveEvent</letterDef>
-                <text TKey="LetterTextRUTUtinniCullDone">The pack is dead and the Utinni clears her screens without a word.\n\nThat night the drone from the old works runs low and even, the calmest anyone has heard it.</text>
-              </li>
-              <li Class="QuestNode_End">
-                <outcome>Success</outcome>
-              </li>
-            </nodes>
-          </node>
+        <li Class="QuestNode_Letter">
+          <inSignal>PackDown</inSignal>
+          <label TKey="LetterLabelRUTUtinniCullDone">The screens go quiet</label>
+          <letterDef>PositiveEvent</letterDef>
+          <text TKey="LetterTextRUTUtinniCullDone">The pack is dead and the Utinni clears her screens without a word.\n\nThat night the drone from the old works runs low and even, the calmest anyone has heard it.</text>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>PackDown</inSignal>
+          <outcome>Success</outcome>
         </li>
 
         <li Class="QuestNode_End">
@@ -157,7 +144,7 @@
     </questNameRules>
     <questDescriptionRules>
       <rulesStrings>
-        <li>questDescription->The Utinni will not let it go. For three nights her receivers have followed something moving out past the old works, and this morning she put it on every screen aboard: a pack of animals gone wrong, with the same rot in them that there is in the breached vaults. She wants them dead before they get any closer.\n\nShe will not say how she knew where to look.\n\nAccept, and they will come to you. Kill every one of them.</li>
+        <li>questDescription->The Utinni will not let it go. For three nights her receivers have followed something moving out past the old works, and this morning she put it on every screen aboard: a pack of animals gone wrong, with the same rot in them that there is in the breached vaults, drifting closer to the ship.\n\nThe crew clears the screens. By morning the mark is back.\n\nAccept, and they will come to you. Kill every one of them.</li>
       </rulesStrings>
     </questDescriptionRules>
   </QuestScriptDef>
@@ -171,7 +158,7 @@
     </questNameRules>
     <questDescriptionRules>
       <rulesStrings>
-        <li>questDescription->The enclave droids who keep the shrine-road sent word ahead of their next pilgrimage. A pack of animals has gone wrong in the dunes past the old works, sick with the same rot that seeps out of the breached vaults, and the road is not safe while they are on it.\n\nThey ask the clan to clear it. They do not say why it has to be the clan.\n\nAccept, and the pack will come to you. Kill every one of them.</li>
+        <li>questDescription->The enclave droids who keep the shrine-road sent word ahead of their next pilgrimage. A pack of animals has gone wrong in the dunes past the old works, sick with the same rot that seeps out of the breached vaults, and the road is not safe while they are on it.\n\nThey ask the clan to clear it before the pilgrims set out.\n\nAccept, and the pack will come to you. Kill every one of them.</li>
       </rulesStrings>
     </questDescriptionRules>
   </QuestScriptDef>
@@ -185,7 +172,7 @@
     </questNameRules>
     <questDescriptionRules>
       <rulesStrings>
-        <li>questDescription->Something the Utinni hears on a frequency nobody else uses has her restless. She has marked a place out past the old works where a pack of animals has gone wrong, and she will not stop asking until they are dead.\n\nAsk her how she knows, and she changes the subject.\n\nAccept, and they will come to you. Kill every one of them.</li>
+        <li>questDescription->Something the Utinni hears on a frequency nobody else uses has her restless. She has marked a place out past the old works where a pack of animals has gone wrong, and the mark will not come off the screens.\n\nAsk her how she knows, and she changes the subject.\n\nAccept, and they will come to you. Kill every one of them.</li>
       </rulesStrings>
     </questDescriptionRules>
   </QuestScriptDef>
@@ -199,7 +186,7 @@
     </questNameRules>
     <questDescriptionRules>
       <rulesStrings>
-        <li>questDescription->An enclave beacon lit up on the ship's board overnight, repeating one short request in trade-cant until the deck crew answered it: animals gone wrong out past the old works, the rot in their blood, close enough now to smell. The enclaves have no fighters to send.\n\nNobody at the enclave could say who had asked them to pass the request on.\n\nAccept, and the pack will come to you. Kill every one of them.</li>
+        <li>questDescription->An enclave beacon lit up on the ship's board overnight, repeating one short request in trade-cant until the deck crew answered it: animals gone wrong out past the old works, the rot in their blood, close enough now to smell. The enclaves have no fighters to send.\n\nThe beacon went dark the moment the crew acknowledged it.\n\nAccept, and the pack will come to you. Kill every one of them.</li>
       </rulesStrings>
     </questDescriptionRules>
   </QuestScriptDef>
@@ -213,7 +200,7 @@
     </questNameRules>
     <questDescriptionRules>
       <rulesStrings>
-        <li>questDescription->For the third morning running the Utinni has woken the crew early with the same picture on every screen: a pack of animals gone wrong, the rot from the vaults in them, ranging nearer the ship each day. She is not frightened of them. She is impatient.\n\nShe has not said what she is impatient for.\n\nAccept, and they will come to you. Kill every one of them.</li>
+        <li>questDescription->For the third morning running the Utinni has woken the crew early with the same picture on every screen: a pack of animals gone wrong, the rot from the vaults in them, ranging nearer the ship each day. She is not frightened of them. She is impatient.\n\nAccept, and they will come to you. Kill every one of them.</li>
       </rulesStrings>
     </questDescriptionRules>
   </QuestScriptDef>

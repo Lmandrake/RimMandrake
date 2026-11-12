@@ -290,6 +290,9 @@ CATHEDRAL_BOON_MIN_POSTURE = 2
 CATHEDRAL_MISSION_OFFER_EXPIRY_TICKS = 3 * 60_000   # = the quests' expireDaysRange floor (3~4 days)
 CATHEDRAL_MISSION_REOFFER_GAP_TICKS = 5 * 60_000    # quiet days between one request resolving and the next
 CATHEDRAL_BOON_ANY_GAP_TICKS = 3 * 60_000           # never two gifts within three days, whichever they are
+# A gift is the place answering the clan's conduct, not a fee for a cull: none lands within two days of a completed
+# mission, so the two never arrive together and read as payment (second-model test pass, 2026-11-11).
+CATHEDRAL_BOON_AFTER_COMPLETION_GAP_TICKS = 2 * 60_000
 # (each boon's own re-offer interval is its def's reofferDays: the rarer the gift, the longer it waits)
 # After a go-dark flip the stage machine lets posture re-climb as soon as Regard and a short clean streak allow
 # (item 1's hysteresis: Regard is not erased), which on its own would reopen every favour a day or two after the
@@ -633,6 +636,7 @@ class ShadowBlackboard:
         self.boon_any_last_tick = None
         self.boons_given = 0
         self.last_go_dark_tick = None
+        self.last_completion_tick = None
         self.record_extra = {}  # merged into every record before it is logged (fixture mode marks its records)
 
     def advance_fall_chain(self, record, would_fire, hutt_goodwill):
@@ -749,6 +753,8 @@ class ShadowBlackboard:
                     self.mission_last_resolved_tick = ticks
             self.mission_quest_ids_seen.add(qid)
         self.mission_completions_observed += completed_now
+        if completed_now:
+            self.last_completion_tick = ticks
         return completed_now, mission_rows
 
     def advance_cathedral_offers(self, record, would_fire, ticks, go_dark_fired):
@@ -814,6 +820,10 @@ class ShadowBlackboard:
             if last is not None and ticks - last < boon["reoffer_ticks"]:
                 continue
             if self.boon_any_last_tick is not None and ticks - self.boon_any_last_tick < CATHEDRAL_BOON_ANY_GAP_TICKS:
+                continue
+            if (self.last_completion_tick is not None
+                    and ticks - self.last_completion_tick < CATHEDRAL_BOON_AFTER_COMPLETION_GAP_TICKS):
+                row["state_note"] = "waiting: a mission ended within two days"
                 continue
             given = boon
             self.boon_last_given_tick[boon["incident_def"]] = ticks

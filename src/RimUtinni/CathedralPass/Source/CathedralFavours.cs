@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using RimWorld.Planet;
 using RimWorld;
 using RimWorld.QuestGen;
 using Verse;
@@ -12,7 +14,7 @@ namespace RimMandrake.Utinni.CathedralPass
     // VOUCHED, each boon only while Imperial Heat is under its own heatCeiling, both closed by a go-dark flip. The
     // blackboard fires these defs through jawa/storyteller_fire; every one is baseChance 0 / rootSelectionWeight 0,
     // so the storyteller never rolls them on its own. What lives here is only what an XML-only def cannot do:
-    // read the Mod Settings toggles, hand a manhunter pack's race to QuestNode_PawnsKilled, and set a gift down by
+    // read the Mod Settings toggles, finish a mission only when its own pack is dead, and set a gift down by
     // the ship with its letter. No Harmony, no LLM, nothing that names the Cathedral.
 
     /// <summary>A GiveQuest incident for one RUT_CathedralAssailantMission_* quest, gated on the missions toggle.</summary>
@@ -71,33 +73,91 @@ namespace RimMandrake.Utinni.CathedralPass
         }
     }
 
-    /// <summary>Stores the race of a PawnKindDef already on the slate (QuestNode_ManhunterPack leaves the pack's kind in
-    /// animalKindDef; QuestNode_PawnsKilled wants a race ThingDef, and a SlateRef cannot read a member).</summary>
-    public class RUT_QuestNode_GetRaceOfKind : QuestNode
+    /// <summary>Adds a RUT_QuestPart_PackDown for the pack QuestNode_ManhunterPack spawned under the same quest tag.
+    /// Replaces vanilla QuestNode_PawnsKilled, which counts ANY pawn of the pack's race the colony kills: slaughtering
+    /// your own tame animals of that race finished the mission while the pack still roamed (found 2026-11-11).</summary>
+    public class RUT_QuestNode_PackDown : QuestNode
     {
-        public SlateRef<PawnKindDef> kind;
+        [NoTranslate] public SlateRef<string> inSignalEnable;
+        [NoTranslate] public SlateRef<string> tag;
+        [NoTranslate] public SlateRef<string> outSignalPackDown;
+        [NoTranslate] public SlateRef<string> outSignalPackLost;
 
-        [NoTranslate]
-        public SlateRef<string> storeAs;
-
-        // QuestNode_ManhunterPack sets animalKindDef only in RunInt, never in its TestRun, so at test time the kind is
-        // simply not there yet: that is not a refusal (refusing would make the quest ungeneratable).
         protected override bool TestRunInt(Slate slate)
         {
-            return kind.GetValue(slate) == null || SetVar(slate);
+            return slate.Exists("map") && !tag.GetValue(slate).NullOrEmpty();
         }
 
         protected override void RunInt()
         {
-            SetVar(QuestGen.slate);
+            Slate slate = QuestGen.slate;
+            var part = new RUT_QuestPart_PackDown
+            {
+                inSignalEnable = QuestGenUtility.HardcodedSignalWithQuestID(inSignalEnable.GetValue(slate)) ?? slate.Get<string>("inSignal"),
+                questTag = QuestGenUtility.HardcodedTargetQuestTagWithQuestID(tag.GetValue(slate)),
+                mapParent = slate.Get<Map>("map").Parent,
+                outSignalPackLost = QuestGenUtility.HardcodedSignalWithQuestID(outSignalPackLost.GetValue(slate)),
+            };
+            if (!outSignalPackDown.GetValue(slate).NullOrEmpty())
+                part.outSignalsCompleted.Add(QuestGenUtility.HardcodedSignalWithQuestID(outSignalPackDown.GetValue(slate)));
+            QuestGen.quest.AddPart(part);
+        }
+    }
+
+    /// <summary>Completes when every pawn that carried the quest's pack tag is dead. Sends outSignalPackLost instead if
+    /// the pack never reaches the map within PackArrivalTicks, or if no pack animal is left on the map while one is still
+    /// alive somewhere else (it walked off): neither is a kill, so neither earns the mission.</summary>
+    public class RUT_QuestPart_PackDown : QuestPartActivable
+    {
+        public const int PackArrivalTicks = 2 * GenDate.TicksPerDay;
+        public string questTag;
+        public MapParent mapParent;
+        public string outSignalPackLost;
+        private List<Pawn> pack = new List<Pawn>();
+
+        public override string DescriptionPart
+        {
+            get
+            {
+                if (State != QuestPartState.Enabled || pack.Count == 0) return null;
+                return "Animals gone wrong still alive: " + pack.Count(p => p != null && !p.Dead) + " / " + pack.Count;
+            }
         }
 
-        private bool SetVar(Slate slate)
+        public override void QuestPartTick()
         {
-            PawnKindDef k = kind.GetValue(slate);
-            if (k?.race == null) return false;
-            slate.Set(storeAs.GetValue(slate), k.race);
-            return true;
+            base.QuestPartTick();
+            if (Find.TickManager.TicksGame % 250 != 0) return;
+            Map map = mapParent?.Map;
+            if (map == null) return;   // map.MapRemoved ends the quest in XML
+            foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
+                if (p.questTags != null && p.questTags.Contains(questTag) && !pack.Contains(p))
+                    pack.Add(p);
+            if (pack.Count == 0)
+            {
+                if (Find.TickManager.TicksGame - enableTick > PackArrivalTicks) Lost();
+                return;
+            }
+            bool aliveHere = pack.Any(p => p != null && !p.Dead && p.Spawned && p.Map == map);
+            if (aliveHere) return;
+            if (pack.All(p => p == null || p.Dead)) Complete();
+            else Lost();
+        }
+
+        private void Lost()
+        {
+            if (!outSignalPackLost.NullOrEmpty()) Find.SignalManager.SendSignal(new Signal(outSignalPackLost));
+            Disable();
+        }
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Values.Look(ref questTag, "questTag");
+            Scribe_References.Look(ref mapParent, "mapParent");
+            Scribe_Values.Look(ref outSignalPackLost, "outSignalPackLost");
+            Scribe_Collections.Look(ref pack, "pack", LookMode.Reference);
+            if (Scribe.mode == LoadSaveMode.PostLoadInit && pack == null) pack = new List<Pawn>();
         }
     }
 }

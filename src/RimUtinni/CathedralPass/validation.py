@@ -14,9 +14,42 @@ WHAT IT PROVES (live, through existing bridge tools):
   * the shipped HediffDef is loaded and its scalar fields read back equal to the XML
 
 CATHEDRAL_MISSION_BOON_OFFERS_1 (the favours) -- offline proof: src/RimMandrake/RustCathedral/
-selftest_rustcathedral_offers.py; the live recipe (one request end to end + the boon gate on a quicktest) is in
-infrastructure/state/items/CATHEDRAL_MISSION_BOON_OFFERS_1.md §live recipe. Static here: the favour defs load
-(shipped_defs sanity below) and their strings pass cathedral_arc_lint at stage 1 (favour_text_problems).
+selftest_rustcathedral_offers.py. Static here: the favour defs load (shipped_defs sanity below) and their strings
+pass cathedral_arc_lint at stage 1 (favour_text_problems).
+
+LIVE RUN RECIPE (the item's last criterion: >=1 mission shape + the boon-offer gate end to end on a quicktest).
+Bridge held by the live lane; every step reads its result back, none is assumed:
+  0. Build + deploy: winbuild.py src/RimUtinni/CathedralPass/Source/RimMandrake.Utinni.CathedralPass.csproj;
+     deploy_custom_mods.py --mod CathedralPass (plan) then --apply. Companion: JawaBench built with --gm
+     (jawa/storyteller_fire is #if JAWA_GM_TOOLS) and with the quest_lifecycle `root` field (daeea61eb8); without
+     `root` the blackboard falls back to matching the quest's fixed name. Mod list: Harmony + CathedralPass + all
+     five DLC (+ JawaBench); a quicktest map is enough -- no Cathedral biome needed for the quest itself.
+  1. Defs loaded: jawa/get_defs for RUT_CathedralAssailantMission_EnclaveRunner (QuestScriptDef) and
+     RUT_CathedralGravtechBoon_Gravcore (IncidentDef). Player.log: no "Could not find type" for
+     RimMandrake.Utinni.CathedralPass.* (a missing Class throws the whole def away).
+  2. Mission offer: jawa/storyteller_fire incidentDef=RUT_GiveQuest_CathedralAssailantMission_EnclaveRunner
+     dryRun=true (canFireNow must be true), then dryRun=false. jawa/quest_lifecycle action=list: a row
+     name "A request from the enclaves", root RUT_CathedralAssailantMission_EnclaveRunner, state NotYetAccepted.
+     Screenshot the quest tab: description is the def text, and NO asker / faction is shown.
+  3. Mission run: quest_lifecycle action=accept questId=<id>. Expect the "The pack the enclaves warned of" letter
+     and a manhunter pack on the map (jawa/list_things or map pawns). Exploit check first: spawn a tame animal of the
+     pack's race for the colony and kill it -- the quest must stay Ongoing (RUT_QuestPart_PackDown counts only
+     pawns carrying the quest's tag; vanilla QuestNode_PawnsKilled would have counted it). Then jawa/kill_hostiles;
+     expect the "The pack is down" letter and state EndedSuccess. A pack that never arrives within 2 days, or walks
+     off alive, fails the quest by design (no Regard).
+  4. Regard feedback live: gm_blackboard_shadow.py --polls 2 --log <file> (live, no --fixture): the poll after
+     step 3 logs mission_completions_this_poll=1 and mission_completion_regard_gain_this_poll=4.0, heat unchanged.
+  5. Boon gate: gm_blackboard_shadow.py live with --story-flags-file holding {"assailant_mission_completions": 3,
+     "restore_choice_made": true} on a Cathedral-ground map (biome RM_RustCathedral) so posture reaches VOUCHED in
+     ~6 polls; read cathedral_offers.boons[*].state == open and a cathedral_boon_offer would_fire. Then fire it:
+     jawa/storyteller_fire incidentDef=RUT_CathedralGravtechBoon_Gravcore dryRun=false -> letter "A gravcore in
+     the sand" and one Gravcore at the trade drop spot (jawa/list_things defName=Gravcore count +1). Heat side:
+     drop the colony's Force_KyberCrystal count by 2 between polls (sell to a trader, or destroy for the read):
+     the next poll's Gravcore row reads withheld_heat and no boon would_fire, same stage.
+  6. Settings: jawa/mod_settings_field cathedralBoonsEnabled=false -> storyteller_fire dryRun=true canFireNow false.
+NOT PROVEN offline (owed to that run): that QuestNode_ManhunterPack's pack spawns on accept with the quest tag
+and that RUT_QuestPart_PackDown sees it to EndedSuccess in this mod list; that the boon lands at TradeDropSpot on a
+gravship map.
 
 NOT PROVEN HERE (first pokes for the next live pass -- the item's own verify bar):
   * on a Cathedral-biome quicktest with hostile faction-13 mechs, MANY pass-holders are untargeted and
