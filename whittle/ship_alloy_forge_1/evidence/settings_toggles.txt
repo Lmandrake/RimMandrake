@@ -1,0 +1,54 @@
+SHIP_ALLOY_FORGE_1 L4: the forge's Mod Settings toggles, read from source at e08969370e, 2026-11-11 21:43 -0800
+Each: field default | Scribe (saved-settings) default | the settings-window label and tooltip | its group | who applies it
+
+== alloyForgeProgressiveGate (src/RimMandrake/WreckedMachines/Source/WreckedMachinesMod.cs)
+82:        public static bool alloyForgeProgressiveGate = true;
+114:            Scribe_Values.Look(ref alloyForgeProgressiveGate, "alloyForgeProgressiveGate", true, true);
+245:                    ref alloyForgeProgressiveGate,
+246-                    "On (shipped default): the alloy forge needs Alloy Forge Restoration, "
+247-                    + "an early project right after the smelter, costs industrial components "
+248-                    + "only (no advanced ones), and its plasteel recipe needs Plasteel "
+249-                    + "Alloying, a late one. Off: the forge and its plasteel recipe use "
+250-                    + "VFE Factory's own research gates and cost. The research gates change "
+241:            if (Group(list, "The alloy forge", RimMandrake.Shared.SettingScope.Now, new[] { "alloyForgeProgressiveGate", "plasteelAlloyEnabled" }))
+
+== plasteelAlloyEnabled (src/RimMandrake/WreckedMachines/Source/WreckedMachinesMod.cs)
+86:        public static bool plasteelAlloyEnabled = true;
+115:            Scribe_Values.Look(ref plasteelAlloyEnabled, "plasteelAlloyEnabled", true, true);
+254:                    ref plasteelAlloyEnabled,
+255-                    "On (shipped default): the forge's plasteel recipe exists. Off: the "
+256-                    + "forge cannot make plasteel, so it comes only from salvage and trade. "
+257-                    + "Machines already built pick this up after your next game load.");
+258-                list.GapLine();
+259-            }
+241:            if (Group(list, "The alloy forge", RimMandrake.Shared.SettingScope.Now, new[] { "alloyForgeProgressiveGate", "plasteelAlloyEnabled" }))
+
+== durasteelAlloyEnabled (src/RimStarWars/Armoury/Source/RSW_ArmourySettings.cs)
+70:        public static bool durasteelAlloyEnabled = true;
+175:            Scribe_Values.Look(ref durasteelAlloyEnabled, "durasteelAlloyEnabled", true, true);
+314:                list.CheckboxLabeled("Alloy forge makes durasteel from steel and zersium", ref durasteelAlloyEnabled,
+315-                    "On (shipped default): the ship's alloy forge (VFE Factory) has a durasteel recipe, "
+316-                  + "steel plus zersium ore, as its first alloy. Off: durasteel comes only from salvage "
+317-                  + "and trade.");
+318-                list.CheckboxLabeled("Doonium ore on asteroid maps", ref dooniumAsteroidEnabled,
+319-                    "On (shipped default): Odyssey asteroid maps carry doonium ore. Off: doonium comes only from "
+312:            if (Group(list, "Ship alloys, doonium and slag re-melt", RimMandrake.Shared.SettingScope.Now, new[] { "durasteelAlloyEnabled", "dooniumAsteroidEnabled", "dooniumSmeltEnabled", "phrikSmeltEnabled", "slagRemeltAboardEnabled" }, "[next game start]"))
+
+== zersiumForgeEnabled (src/RimUtinni/UtinniPatches/Source/UtinniPatchesSettings.cs)
+47:        public static bool zersiumForgeEnabled = true;
+65:            Scribe_Values.Look(ref zersiumForgeEnabled, "zersiumForgeEnabled", true);
+153:                list.CheckboxLabeled("Zersium ore in the Forge", ref zersiumForgeEnabled,
+154-                    "On: newly generated Forge maps carry a few small seams of zersium ore, the mineral that turns steel into durasteel, and the only place on the planet it can be mined. Off: no zersium seams anywhere.");
+155-                list.CheckboxLabeled("Phrikite ore in the extreme desert", ref phrikiteDesertEnabled,
+156-                    "On: newly generated extreme-desert (Stillsand) maps carry a few small seams of phrikite ore, smelted aboard into phrik, and the only place on the planet it can be mined. Off: no phrikite seams anywhere.");
+157-                list.GapLine();
+158-            }
+149:            if (Group(list, "Ores in new maps (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "mindstoneGalleryEnabled", "zersiumForgeEnabled", "phrikiteDesertEnabled" }))
+
+== appliers
+492:            bool gated = WreckedMachinesSettings.alloyForgeProgressiveGate;
+517:                WreckedMachinesSettings.plasteelAlloyEnabled, PlasteelProcessNext);
+7:    // SHIP_ALLOY_FORGE_1 — applies RSW_ArmourySettings.durasteelAlloyEnabled to the
+26:            if (RSW_ArmourySettings.durasteelAlloyEnabled) return;
+29:        protected virtual bool Enabled => UtinniPatchesSettings.zersiumForgeEnabled;
+123:            return "allowed=" + allowed + " enabled=" + UtinniPatchesSettings.zersiumForgeEnabled

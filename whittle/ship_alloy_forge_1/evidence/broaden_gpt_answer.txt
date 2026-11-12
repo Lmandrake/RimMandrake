@@ -1,0 +1,14 @@
+[consult] 2215 chars, 0 file(s), 0 image(s), model gpt-6.1-sol, round -, job /home/mandrake/.local/state/rimmandrake/scratch/codex/consult-20261111-214001-107129-ac4cd3
+[consult] receipt job consult-20261111-214001-107129-ac4cd3
+[consult] answered in 45s
+1. **Fresh-colony progression, minimal mods:** Play through smelter restoration → forge restoration → build forge → hopper-fed durasteel, without research/resource cheats. Inspect costs, prerequisites, recipe availability, and startup logs. **Exposes:** hidden plasteel dependencies, inaccessible early resources, broken hopper processing, config errors.
+
+2. **Attack the plasteel unlock:** Supply steel, chemfuel, and gold before late research; try selecting and starting plasteel. Finish `RM_WM_PlasteelAlloying` with the forge already built and selected, then run a batch. **Exposes:** premature production, stale recipe menus, unlocks requiring reconstruction/reload.
+
+3. **Find zersium as a newcomer:** Start several Forge maps, prospect and mine normally, then visit non-Forge maps and inspect mine-shaft bills. Confirm the mineral’s displayed name and description. **Exposes:** missing or impractically scarce veins, off-biome sources, misleading presentation, shaft availability bypasses.
+
+4. **Interrupt real production:** During each alloy recipe, cut power, exhaust one hopper, block output, change recipes, and save/reload mid-batch. Check consumed ingredients and delivered products. **Exposes:** stalls, duplication, ingredient loss, incorrect batches, process state corruption.
+
+5. **Exercise every setting across restarts:** Reset defaults; flip each toggle separately, checking both new and existing forges. Disable/re-enable plasteel with a batch queued; check ordering, gating, construction costs, and newly generated Forge maps. **Exposes:** ineffective toggles, stale startup state, queue bypasses, incorrect shipped defaults.
+
+6. **Upgrade a messy established save:** Load a backup with existing forges, partial/completed research, queued processes, and the usual mod stack. Run alloys, generate another map, save, quit, reload. **Exposes:** migration failures, grandfathered fabrication routes, compatibility overrides, persistent load errors.

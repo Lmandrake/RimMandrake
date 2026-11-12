@@ -1,0 +1,23 @@
+SHIP_ALLOY_FORGE_1 offline proof; 39 def files merged, 29 ThingDefs, 95 ProcessDefs (sanity probe)
+forge (patched): researchPrerequisites=['RM_WM_AlloyForgeRestoration']
+forge (patched): processes, in bill order=['RSW_AlloyDurasteel', 'VFEFactory_AlloyPlasteel', 'VFEFactory_AlloyGravlite', 'VFEFactory_CreateObsidian', 'VFEFactory_AlloyBronze', 'VFEFactory_AlloySkySteel', 'VFEFactory_AlloyStainlessSteel']
+forge cost: stock {'Steel': 460, 'ComponentIndustrial': 14, 'ComponentSpacer': 4} -> gated (C# mirror) {'Steel': 460, 'ComponentIndustrial': 18}
+RSW_AlloyDurasteel: [('Steel', '10'), ('RSW_Zersium', '2')] -> [('RSW_Durasteel', '10')], research=[]
+VFEFactory_AlloyPlasteel: [('Steel', '10'), ('Chemfuel', '7'), ('Gold', '1')] -> [('Plasteel', '5')], research=['RM_WM_PlasteelAlloying']
+RM_WM_PlasteelAlloying prerequisite closure (in this file set): ['AdvancedFabrication', 'RM_WM_AlloyForgeRestoration', 'RM_WM_AutomatedSmelterRestoration']
+research tabs after RUT_ResearchTabAssign: {'RM_WM_AlloyForgeRestoration': 'RUT_Tree_Workshop', 'RM_WM_PlasteelAlloying': 'RUT_Tree_Workshop'}
+RSW_Zersium description: A dense, dull grey-green mineral ore, heavy for its size and oddly cold to the touch. On its own it is little use; smelted into steel it is what makes durasteel, the hard structural alloy of walls, blast doors and starship plating. It is found in only a few places, and here only in the mountain forge's rock.
+RSW_MineableZersium: scatter=0 preventMeteorite=true; deepCommonality on RSW_Zersium=(unset = 0); GenStep RUT_ZersiumForgeLumps allowedBiomes=['RM_TheForge']
+capture census 2026-11-06T19:19:59Z (317 mods), 1867 RecipeDefs, 398 ProcessDefs read:
+  Plasteel <- RecipeDef KotORRecipe_PlasteelFromSlag [mandrake.rsw.armoury] research=None
+  Plasteel <- ProcessDef VFEFactory_AlloyPlasteel [vanillaexpanded.vfefactory] [('Steel', 10), ('Chemfuel', 7), ('Gold', 1)] research=['RM_WM_PlasteelAlloying']
+  Plasteel <- ProcessDef RSW_SmeltPlasteelFromSlag [None] [('KotORChunk_plasteel', 1)] research=None
+  RSW_Durasteel <- RecipeDef KotORRecipe_DurasteelFromSlag [mandrake.rsw.armoury] research=None
+  RSW_Durasteel <- ProcessDef RSW_AlloyDurasteel [None] [('Steel', 10), ('RSW_Zersium', 2)] research=None
+  RSW_Durasteel <- ProcessDef RSW_SmeltDurasteelFromSlag [None] [('KotORChunk_durasteel', 1)] research=None
+  RSW_Zersium <- RecipeDef RM_MineShaft_RSW_MineableZersium [mandrake.rm.mineshaft] research=RM_Research_MineShaft
+
+L1  PASS       zersium placed only by the Forge-gated GenStep (no scatter, no meteorite, no deep deposit)
+L2  PASS       steel + RSW_Zersium -> RSW_Durasteel is the alloy forge's first process
+L3  PASS       plasteel needs RM_WM_PlasteelAlloying (after the forge's own project; durasteel needs none); fabricated plasteel routes in the capture: 1 (ProcessDef VFEFactory_AlloyPlasteel), the rest are slag re-melt
+E   PASS       the forge is early: gated by the smelter's follow-on, no advanced components, research on the smelter's tab

@@ -41,10 +41,20 @@ Built 2026-10-09 (FOUNDRY):
 - **PROVISIONAL numbers** (no calibration, no ruling): research 1500 / 4000; durasteel 10 steel + 2 zersium → 10,
   9000 ticks (one Forge map's ~660 zersium ⇒ ~3300 durasteel). Plasteel recipe kept at VFE's stock ingredients.
 - **Not done here:** spec point 4 (placing the forge in the ship layout; the deck plan already puts it in Wing E,
-  the export has no forge). L2 stays open until `RSW_Durasteel` exists. The forge building still needs VFE factory
+  the export has no forge). `RSW_Durasteel` now exists (CANON_MATERIALS_BUILD_1) and the durasteel process loads. The forge building still needs VFE factory
   floor (`VFE_BasicFactories`), as the smelter ladder does. No art owed (VFE's forge art; no new item).
 - **First scripts:** `WreckedMachines/validation.py` (`alloy_forge_gated` + two setting drives + static checks),
   `Armoury/validation.py` (`alloy_forge_durasteel`); both walks carry the new `## must be true` lines.
+
+Whittle round 2026-11-11 (CLAUDE_STEVEDESKTOP_OFFLINE5, published e08969370e):
+- **Forge cost:** VFE's stock forge needs 4 `ComponentSpacer`, which need plasteel + `AdvancedFabrication` (the late
+  plasteel gate), so the "early" forge was a late one. With `alloyForgeProgressiveGate` on, each is swapped for a
+  `ComponentIndustrial` (460 steel + 18 industrial), set once at startup (a live change alters deconstruct refunds).
+- **Research tab:** `RM_WM_AlloyForgeRestoration` / `RM_WM_PlasteelAlloying` sat alone on Main while the smelter
+  restoration and `AdvancedFabrication` were on `RUT_Tree_Workshop`; `RUT_ResearchTabAssign.xml` now moves both.
+- **Plasteel toggle:** re-enabling put plasteel at index 0, ahead of durasteel; it now returns before its loaded neighbour.
+- Offline proof: `src/RimMandrake/WreckedMachines/prove_alloy_forge_offline.py` (lxml; `--vfef <VFE Factory dir>
+  --capture <DefDump capture>`). Live rows added to `alloy_forge_gated`. L5 (live minimal-list load) still owed.
 
 ## criteria
 - L1 L4: zersium's home biome is The Forge (ruled 2026-10-09)
