@@ -1,0 +1,10 @@
+types read from the built DLL's metadata table: 40
+ok   QuestNode_GetKyberRendezvous  namespace=RimMandrake.Utinni.KyberTradePlot
+ok   IncidentWorker_KyberHomesteadVisit  namespace=RimMandrake.Utinni.KyberTradePlot
+ok   ChoiceLetter_KyberHomesteadQuestion  namespace=RimMandrake.Utinni.KyberTradePlot
+ok   IncidentWorker_GiveQuest_KyberTradePlot  namespace=RimMandrake.Utinni.KyberTradePlot
+ok   GameComponent_KyberTrade  namespace=RimMandrake.Utinni.KyberTradePlot
+ok   Patch_TradeDeal_TryExecute_KyberSale  namespace=RimMandrake.Utinni.KyberTradePlot
+ok   KyberTradeHarmony  namespace=RimMandrake.Utinni.KyberTradePlot
+ok   KyberPlotState  namespace=RimMandrake.Utinni.KyberTradePlot
+ok   KyberTradePlotMod  namespace=RimMandrake.Utinni.KyberTradePlot

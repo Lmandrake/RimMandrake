@@ -1,0 +1,5 @@
+2026-11-11 22:45 -0800
+STATIC: PASS (0 findings)
+      RimMandrake.Utinni.KyberTradePlot.QuestNode_GetKyberRendezvous is another assembly's node. That is a hard dependency and a load-order constraint - name the mod in <modDependencies> and confirm the namespace by READING that assembly's metadata: point DLL in src/RimMandrake/Utils/ilprobe/meta_core.py at the mod's dll, then look for QuestNode_GetKyberRendezvous in meta_core.typedefs (the name is there with its namespace). Do NOT `strings` it - the blind-scan hook refuses a byte scan of a .dll, and it earns the refusal: strings found 16 of 115 names on our own companion, so a miss is not absence.
+
+1 QuestScriptDef(s) checked - 0 error(s), 0 warning(s)

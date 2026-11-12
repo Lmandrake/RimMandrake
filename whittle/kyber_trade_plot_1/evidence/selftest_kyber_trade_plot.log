@@ -1,0 +1,137 @@
+2026-11-11 22:45 -0800
+HEAD 7fd2d784d9
+$ python3 src/RimMandrake/Utils/selftest_kyber_trade_plot.py
+== the shipped defs ==
+ok    the donation quest pays no reward and creates no faction, pawn or site  [19 nodes read]
+ok    on delivery: goodwill to the Homestead, a memory, the letter of thanks, the end - nothing else  [QuestNode_ChangeFactionGoodwill, QuestNode_End, QuestNode_Letter, QuestNode_RecordHistoryEvent]
+ok    the delivery's goodwill goes to the live Homestead faction, modestly, and only when one exists
+ok    the rendezvous node stores the Homestead faction and the kyber's real market value the quest reads
+ok    the letter of thanks says it plainly: no way to help it here
+ok    the rendezvous is picked by this mod's lane-only node, not vanilla's any-faction picker
+ok    the donation asks for kyber by its def
+ok    no def in the mod names a Rebellion faction or ally
+ok    both incidents exist and neither is ever rolled by the storyteller (baseChance 0)
+ok    the visit is this mod's own visitor worker
+ok    every key the C# translates is in the English Keyed file
+ok    the visitor never says 'Jedi' of themself: the word appears only as what nobody says
+
+staging src/RimUtinni/KyberTradePlot/Source/SelfTest/KyberTradePlot.SelfTest.csproj -> D:\ClaudeWork\rimmandrake\build\SelfTest_kyber_trade_plot
+  src/RimMandrake/Visibility/Source/
+  src/RimMandrake/_Shared/SettingsKit/
+  src/RimUtinni/KyberTradePlot/Source/
+  src/RimMandrake/_Shared/HarmonyResilience/
++ dotnet.exe build D:\ClaudeWork\rimmandrake\build\SelfTest_kyber_trade_plot\src\RimUtinni\KyberTradePlot\Source\SelfTest\KyberTradePlot.SelfTest.csproj -c Release
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  KyberTradePlot.SelfTest -> D:\ClaudeWork\rimmandrake\build\SelfTest_kyber_trade_plot\src\RimUtinni\KyberTradePlot\Source\SelfTest\bin\Release\net48\KyberTradePlot.SelfTest.exe
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:00.59
+== the trade hook binds to the real game ==
+ok    TradeDeal.TryExecute(out bool) exists and returns bool
+ok    the patch class targets exactly TradeDeal.TryExecute
+ok    Prefix(TradeDeal __instance, out int __state) and Postfix(bool __result, int __state), as Harmony injects them
+ok    the mod applies its patches through the shared PatchApplier at startup
+ok    the donation's delivery (TradeRequestComp.Fulfill) never runs a trade deal, so it is never a sale  [63 IL instructions read]
+ok    the Cartel and the kyber family are named as the defs on disk
+== what counts as a sale (real Tradeable and TradeDeal objects) ==
+ok    selling 3 kyber + 1 mindstone beside steel and a lightsaber counts 4  [counted 4]
+ok    buying kyber from the trader is not a sale
+ok    kyber left in the window at 0 is not a sale
+ok    the same kyber given as a gift is not a sale
+ok    the patch's prefix reads 4 before the deal resolves
+ok    with 'a kyber sale draws the Empire' off, the prefix reads 0
+ok    the postfix is harmless with no game loaded (and does nothing for a refused deal)
+      crafting a crystal into a lightsaber, a raid carrying one off, or a crystal rotting in a stockpile never
+      enters a TradeDeal, so none of them reaches this count: the count is the trade session, not the inventory.
+== the heat lands on the real Colony Visibility meter ==
+ok    the binding reads shipVisibility (a new game starts at 10, Hidden)
+ok    Adjust through the binding moves it: 10 + 21.2 = 31.2 (Discreet)  [31.21 Discreet]
+ok    the meter's own clamp holds at 100
+ok    the binding reports a missing component as 'no meter', not a crash
+== a run of sales, the visit answered straight, the donation, and more sales after ==
+      day   3.0  SALE 2 kyber to a passing grey trader: Imperial attention 10.0 -> 31.2 (Discreet), Hutt interest 6, first-sale letter
+ok    sale 1: Imperial attention rises substantially (more than a band-crossing's worth of a small deed)  [21.2]
+ok    sale 1: Hutt interest rises from a non-Hutt buyer (word gets around)
+ok    sale 1 is deniable: no visit yet
+      day   9.0  SALE 1 kyber to the Hutt Cartel: Imperial attention 31.2 -> 46.2 (Noticed), Hutt interest 9, Cartel goodwill +4, the Homestead visit is now due at day  10.0
+ok    sale 2 to the Cartel: attention, interest and Cartel goodwill all rise
+ok    sale 2 makes a pattern: the visit is due a day later
+      day  10.0  VISIT: three Homestead moisture farmers walk in; the quiet one is unarmed. The letter asks how the kyber was obtained.
+      day  10.1  the player answers "We bought it." -> Forthright, door: Homestead
+      day  12.6  DONATION ASKED through the Homestead door (quest: bring 6-12 kyber to a settlement on the lane)
+      day  15.0  SALE 3 kyber to a passing grey trader: Imperial attention 46.2 -> 72.2 (Marked), Hutt interest 18
+      day  20.0  SALE 3 kyber to the Hutt Cartel: Imperial attention 72.2 -> 98.2 (Exposed), Hutt interest 27, Cartel goodwill +4
+ok    over 120 days and four sales, the visit fired exactly once  [1 visits]
+ok    the donation was asked exactly once, through the Homestead door
+ok    the fixer door never opened: the straight answer was the front door
+ok    the donation moved no Imperial attention (K2: heat unchanged)  [no code path from the donation reaches the meter; meter 98.2]
+== the visit answered with nothing; the Hutts' fixer becomes the door ==
+      day   0.0  SALE 1 kyber to a passing grey trader: Imperial attention 10.0 -> 25.0 (Discreet), Hutt interest 3, first-sale letter
+      day   2.0  SALE 1 kyber to a passing grey trader: Imperial attention 25.0 -> 40.0 (Noticed), Hutt interest 6, the Homestead visit is now due at day   3.0
+      day   3.0  VISIT: three Homestead moisture farmers walk in; the quiet one is unarmed. The letter asks how the kyber was obtained.
+      day   3.0  the player answers by telling them nothing -> Evasive
+ok    evasive: no door, no punishment
+      day   6.0  SALE 2 kyber to the Hutt Cartel: Imperial attention 40.0 -> 61.2 (Marked), Hutt interest 12, Cartel goodwill +4
+ok    Hutt interest 12 is still short of the fixer (15)  [12]
+      day   9.0  SALE 1 kyber to the Hutt Cartel: Imperial attention 61.2 -> 76.2 (Marked), Hutt interest 15, Cartel goodwill +4
+      day   9.0  the Cartel fixer passes the ask along (Hutt interest 15)
+      day  11.5  DONATION ASKED through the HuttFixer door (quest: bring 6-12 kyber to a settlement on the lane)
+      day  60.0  SALE 5 kyber to the Hutt Cartel: Imperial attention 76.2 -> 100.0 (Exposed), Hutt interest 30, Cartel goodwill +4
+ok    at interest 15 the fixer door opens once, and only once
+ok    the donation is asked once, through the fixer
+ok    the visit still fired exactly once
+== the visitors leave before anyone answers ==
+      day   0.0  SALE 1 kyber to a passing grey trader: Imperial attention 10.0 -> 25.0 (Discreet), Hutt interest 3, first-sale letter
+      day   0.0  SALE 1 kyber to a passing grey trader: Imperial attention 25.0 -> 40.0 (Noticed), Hutt interest 6, the Homestead visit is now due at day   1.0
+      day   1.0  VISIT: three Homestead moisture farmers walk in; the quiet one is unarmed. The letter asks how the kyber was obtained.
+      day   2.0  the visitors left unanswered: evasive, no punishment
+ok    leaving unanswered is evasive
+== there is no friendly Homestead faction to send anyone ==
+      day   0.0  SALE 3 kyber to the Hutt Cartel: Imperial attention 10.0 -> 36.0 (Discreet), Hutt interest 9, Cartel goodwill +4, first-sale letter
+      day   0.0  SALE 3 kyber to the Hutt Cartel: Imperial attention 36.0 -> 62.0 (Marked), Hutt interest 18, Cartel goodwill +4, the Homestead visit is now due at day   1.0
+      day   1.0  no friendly Homestead faction can send anyone: the visit never comes
+      day   1.0  the Cartel fixer passes the ask along
+      day   3.5  DONATION ASKED through the HuttFixer door (quest: bring 6-12 kyber to a settlement on the lane)
+ok    the visit never comes, and never fires
+ok    Hutt interest 18 opens the fixer door instead, and the donation is asked
+== the plot switched off in Mod Settings ==
+      day   0.0  SALE 1 kyber to a passing grey trader: Imperial attention 10.0 -> 25.0 (Discreet), Hutt interest 3, first-sale letter
+      day   0.0  SALE 1 kyber to a passing grey trader: Imperial attention 25.0 -> 40.0 (Noticed), Hutt interest 6, the Homestead visit is now due at day   1.0
+ok    no visit and no donation while the plot is off; sales still draw the Empire
+      day  30.0  VISIT: three Homestead moisture farmers walk in; the quiet one is unarmed. The letter asks how the kyber was obtained.
+ok    switched back on, the visit that fell due comes, once
+== a dev-mode fire of the visit before any sale ==
+ok    it counts as the one visit
+      day   0.0  SALE 1 kyber to a passing grey trader: Imperial attention 10.0 -> 25.0 (Discreet), Hutt interest 3, first-sale letter
+      day   0.0  SALE 1 kyber to a passing grey trader: Imperial attention 25.0 -> 40.0 (Noticed), Hutt interest 6
+      day   2.5  DONATION ASKED through the Homestead door (quest: bring 6-12 kyber to a settlement on the lane)
+ok    the second sale does not bring a second visit
+== one huge sale ==
+      day   0.0  SALE 50 kyber to the Hutt Cartel: Imperial attention 10.0 -> 50.0 (Noticed), Hutt interest 150, Cartel goodwill +4, first-sale letter
+ok    50 crystals at once is capped at 40 attention (two bands), not 750
+ok    quantity scales sublinearly: 4 crystals draw twice one, not four times
+ok    one sale, however large, is still one sale: no visit yet
+ok    zero crystals moves nothing
+== the plot is switched off while unanswered visitors leave, then back on (no further sale) ==
+      day   0.0  SALE 3 kyber to the Hutt Cartel: Imperial attention 10.0 -> 36.0 (Discreet), Hutt interest 9, Cartel goodwill +4, first-sale letter
+      day   0.0  SALE 3 kyber to the Hutt Cartel: Imperial attention 36.0 -> 62.0 (Marked), Hutt interest 18, Cartel goodwill +4, the Homestead visit is now due at day   1.0
+      day   1.0  VISIT: three Homestead moisture farmers walk in; the quiet one is unarmed. The letter asks how the kyber was obtained.
+      day   1.0  the visitors left unanswered: evasive, no punishment
+ok    the departure is still noticed while the plot is off (evasive), and no door opens while off
+      day   5.0  the Cartel fixer passes the ask along (on the tick)
+      day   7.5  DONATION ASKED through the HuttFixer door (quest: bring 6-12 kyber to a settlement on the lane)
+ok    switched back on with Hutt interest 18, the fixer door opens on its own and the donation is asked
+== a friendly Homestead exists but the visitors can never arrive (every attempt fails) ==
+      day   0.0  SALE 3 kyber to the Hutt Cartel: Imperial attention 10.0 -> 36.0 (Discreet), Hutt interest 9, Cartel goodwill +4, first-sale letter
+      day   0.0  SALE 3 kyber to the Hutt Cartel: Imperial attention 36.0 -> 62.0 (Marked), Hutt interest 18, Cartel goodwill +4, the Homestead visit is now due at day   1.0
+      visit attempts that failed: 16; visit Impossible; door HuttFixer
+ok    after 15 days of failed arrivals the visit counts as never coming
+ok    so the fixer door opens and the donation is still asked, once
+
+RESULT PASS (46 ok, 0 failed)
+STATIC PASS (12 ok, 0 failed); C# exit 0
+exit 0
