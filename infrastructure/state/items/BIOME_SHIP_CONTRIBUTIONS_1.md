@@ -28,7 +28,7 @@ Normalized 2026-11-11 (CLAUDE_STEVEDESKTOP_OFFLINE2, Whittle). One row per biome
 stand on a gravship deck the way the engine decides it, and each row's gift is the biome's own). "built" = from the
 architect menu on the deck; "installed" = a minifiable thing the player acquires and installs aboard. Rows marked
 *delegated* were chosen by an agent under `delegation_policy.md` §2 (owner, 2026-10-22: agents decide nearly
-everything), not ruled by him; the four new builds of this pass are marked *new*. A fresh design judge (opus) read every
+everything), not ruled by him; the five new builds of this pass are marked *new*. A fresh design judge (opus) read every
 row against the alternatives each biome ships (`whittle/biome_ship_contributions_1/evidence/design_judge.json`); its three
 changes are applied (Greentide's sealed floor dropped, the hexplate rebalanced, Terminal Biomes led by the sun-sphere).
 Distinctness pass (Whittle judge, 2026-11-11): three biomes gave a cabin heater, so the Abyss row keeps only its great
@@ -41,10 +41,11 @@ sun; the cold hold: a powerless cold store), weighed every row for worth, and se
 Beauty 40, heat bank 10 heat/s, hexplate sterile (Cleanliness 0.6), the sekkulaath tank made net-positive, the Wastes
 row re-pitched on what the bay does, and a new Long Shade gift.
 
-**Art.** Every gift now wears its own picture. The four new gifts and the spunstone hull atlas were painted first;
-the 14 that had stand-ins (8 borrowing another thing's texture, 6 declared placeholders) and the new long-shade mast
-were painted on 2026-11-12 (`RIMMANDRAKE_PAINT_SHIP_GIFTS_OWN_ART`): 20 PNGs, a fresh art judge KEEP over two rounds
-(`whittle/biome_ship_contributions_1/evidence/art2/`), installed through the art ledger.
+**Art.** Every gift on the list wears its own picture. The first four new gifts and the spunstone hull atlas were
+painted first; on 2026-11-12 (`RIMMANDRAKE_PAINT_SHIP_GIFTS_OWN_ART`) the 13 listed gifts that had stand-ins (8 borrowing
+another thing's texture, 5 declared placeholders) and the new long-shade mast were painted, together with the lure awning
+(on the stand-in list when the batch began, no longer Long Shade's gift since the mast replaced it): 20 PNGs, a fresh
+art judge KEEP over two rounds (`whittle/biome_ship_contributions_1/evidence/art2/`), installed through the art ledger.
 
 **Why agents picked rows on a design item.** The 2026-11-03 note routed this item's design to the Designer. The
 Conductor, who carries the owner's authority (`CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`, owner 2026-10-30), put it in
