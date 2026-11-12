@@ -933,6 +933,9 @@ namespace RimMandrake.FlowWorks.Hose
                 // PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL: an end in a gravity-levelling link moves water with no pump, and its
                 // own "Levelling: ..." line says so; a need line here would contradict it and push it below the pane (live 2026-11-12)
                 if (Machinery.RM_Levelling.StateOf(parent.Map, this) != null) return "";
+                // just loaded: no levelling cycle yet, so two open ends with no pump may well be levelling (live 2026-11-12: the
+                // reloaded rig said "Intake needs a working pump" until the first cycle); say nothing rather than something false
+                if (!pump && c.Ports.Count >= 2 && RM_HoseSettings.gravityLevellingEnabled && !Machinery.RM_Levelling.HasRun(parent.Map)) return "";
                 if (freeEndRole == Machinery.RM_FreeEndRole.Intake && !pump) return " Intake needs a working pump on this network.";
                 if (freeEndRole == Machinery.RM_FreeEndRole.Outflow && !pump && !dump) return " Nothing drains here: needs a pump or a tank set to Dump.";
                 return "";
@@ -982,8 +985,11 @@ namespace RimMandrake.FlowWorks.Hose
             CompHoseReel relay = comp?.RelayOf(this);
             string to = relay != null ? " to a relay reel" : "";
             // the free end: what it is coupled to (another faction's tank names its faction) or "lying in <water> (no intake ...)"
-            bool intakeSet = RM_HoseSettings.freeEndRolesEnabled && freeEndRole == Machinery.RM_FreeEndRole.Intake;
-            string endLine = relay == null ? "\nFree end: " + this.FreeEnd().Describe(intakeHint: !intakeSet) + "." : "";
+            // the "(taking water in needs a pump: set this end to Intake)" hint is noise on an end already set to Intake, and false
+            // on one in a gravity-levelling link, whose own Levelling line says water moves with no pump
+            bool quietHint = RM_HoseSettings.freeEndRolesEnabled && freeEndRole == Machinery.RM_FreeEndRole.Intake
+                             || Machinery.RM_Levelling.StateOf(parent.Map, this) != null;
+            string endLine = relay == null ? "\nFree end: " + this.FreeEnd().Describe(intakeHint: !quietHint) + "." : "";
             if (relay == null && RM_HoseSettings.freeEndRolesEnabled)
                 endLine += (heldUnits > 0 ? " Holding " + RM_Volume.FormatUnits(heldUnits) + " " + heldLiquid?.label + "." : "") + " Role: " + freeEndRole + (this.FreeEnd().Port != null && freeEndRole != Machinery.RM_FreeEndRole.Capped ? " (inert while coupled)." : ".") + RoleNeed();
             // PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL (design P9): what passive levelling did at this end last cycle

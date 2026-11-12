@@ -3,11 +3,11 @@
   {
    "name": "lev_a4_level",
    "label": "A4 rig after the proof: pools level, intake reel selected",
-   "reel": "RM_HoseReel22657",
+   "reel": "RM_HoseReel51375",
    "inspect": [
     "Connected to universal pipe (pipe).",
     "Hose leaves to the west.",
-    "Hose laid, 10 of 40 squares (plump).",
+    "Hose laid, 9 of 40 squares (plump).",
     "Free end: lying free. Role: Intake.",
     "Levelling: level."
    ],
@@ -20,7 +20,7 @@
   {
    "name": "lev_a5_nomix",
    "label": "A5 rig: water pool vs chemfuel pool, intake reel selected",
-   "reel": "RM_HoseReel22650",
+   "reel": "RM_HoseReel51360",
    "inspect": [
     "Connected to universal pipe (pipe).",
     "Hose leaves to the west.",
@@ -37,7 +37,7 @@
   {
    "name": "lev_a5_nomix_outflow",
    "label": "A5 rig: the outflow reel says the same",
-   "reel": "RM_HoseReel22651",
+   "reel": "RM_HoseReel51361",
    "inspect": [
     "Connected to universal pipe (pipe).",
     "Hose leaves to the west.",
@@ -54,11 +54,11 @@
   {
    "name": "lev_a4_refilled_flowing",
    "label": "A4 rig 500 ticks after pool 1 was topped up again: flowing again",
-   "reel": "RM_HoseReel22657",
+   "reel": "RM_HoseReel51375",
    "inspect": [
     "Connected to universal pipe (pipe).",
     "Hose leaves to the west.",
-    "Hose laid, 10 of 40 squares (plump).",
+    "Hose laid, 9 of 40 squares (plump).",
     "Free end: lying free. Role: Intake.",
     "Levelling: flowing (no pump; the higher water runs to the lower)."
    ],
@@ -71,11 +71,11 @@
   {
    "name": "lev_a4_relevelled",
    "label": "A4 rig after the refill has levelled again",
-   "reel": "RM_HoseReel22657",
+   "reel": "RM_HoseReel51375",
    "inspect": [
     "Connected to universal pipe (pipe).",
     "Hose leaves to the west.",
-    "Hose laid, 10 of 40 squares (plump).",
+    "Hose laid, 9 of 40 squares (plump).",
     "Free end: lying free. Role: Intake.",
     "Levelling: level."
    ],
@@ -88,7 +88,7 @@
   {
    "name": "lev_a4_relevelled_outflow",
    "label": "A4 rig, outflow reel",
-   "reel": "RM_HoseReel22658",
+   "reel": "RM_HoseReel51376",
    "inspect": [
     "Connected to universal pipe (pipe).",
     "Hose leaves to the west.",

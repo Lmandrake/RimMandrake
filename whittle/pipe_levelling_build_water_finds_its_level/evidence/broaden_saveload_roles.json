@@ -1,0 +1,150 @@
+{
+ "steps": [
+  {
+   "step": "flowing before the save",
+   "dl": [
+    353204,
+    348673
+   ],
+   "inspect": [
+    "Free end: lying free. Role: Intake. / Levelling: flowing (no pump; the higher water runs to the lower).",
+    "Free end: lying beside deep water. Role: Outflow. / Levelling: flowing (no pump; the higher water runs to the lower)."
+   ],
+   "total": 701877
+  },
+  {
+   "step": "750 ticks on, no reload",
+   "dl": [
+    351222,
+    350655
+   ],
+   "inspect": [
+    "Free end: lying free. Role: Intake. / Levelling: flowing (no pump; the higher water runs to the lower).",
+    "Free end: lying free. Role: Outflow. / Levelling: flowing (no pump; the higher water runs to the lower)."
+   ],
+   "total": 701877
+  },
+  {
+   "step": "right after the reload (expect = before the save)",
+   "dl": [
+    353204,
+    348673
+   ],
+   "inspect": [
+    "Free end: lying free. Role: Intake.",
+    "Free end: lying free. Role: Outflow."
+   ],
+   "total": 701877
+  },
+  {
+   "step": "750 ticks after the reload (expect = the no-reload run)",
+   "dl": [
+    351222,
+    350655
+   ],
+   "inspect": [
+    "Free end: lying free. Role: Intake. / Levelling: flowing (no pump; the higher water runs to the lower).",
+    "Free end: lying free. Role: Outflow. / Levelling: flowing (no pump; the higher water runs to the lower)."
+   ],
+   "total": 701877
+  },
+  {
+   "step": "refilled, roles Intake/Outflow",
+   "dl": [
+    357664,
+    352991
+   ],
+   "inspect": [
+    "Free end: lying free. Role: Intake. / Levelling: flowing (no pump; the higher water runs to the lower).",
+    "Free end: lying beside deep water. Role: Outflow. / Levelling: flowing (no pump; the higher water runs to the lower)."
+   ],
+   "total": 710655
+  },
+  {
+   "step": "roles swapped Outflow/Intake",
+   "dl": [
+    355912,
+    354743
+   ],
+   "inspect": [
+    "Free end: lying free. Role: Outflow. / Levelling: flowing (no pump; the higher water runs to the lower).",
+    "Free end: lying free. Role: Intake. / Levelling: flowing (no pump; the higher water runs to the lower)."
+   ],
+   "total": 710655
+  },
+  {
+   "step": "both Intake",
+   "dl": [
+    355620,
+    355035
+   ],
+   "inspect": [
+    "Free end: lying free. Role: Intake. / Levelling: level.",
+    "Free end: lying free. Role: Intake. / Levelling: level."
+   ],
+   "total": 710655
+  },
+  {
+   "step": "reel 2 Capped (one cycle to settle)",
+   "dl": [
+    355620,
+    355035
+   ],
+   "inspect": [
+    "Free end: lying free. Role: Intake. Intake needs a working pump on this network.",
+    "Free end: lying free. Role: Capped."
+   ],
+   "total": 710655
+  },
+  {
+   "step": "reel 2 Capped, 500 ticks later (expect no change)",
+   "dl": [
+    355620,
+    355035
+   ],
+   "inspect": [
+    "Free end: lying free. Role: Intake. Intake needs a working pump on this network.",
+    "Free end: lying free. Role: Capped."
+   ],
+   "total": 710655
+  },
+  {
+   "step": "reel 2 back to Outflow",
+   "dl": [
+    355620,
+    355035
+   ],
+   "inspect": [
+    "Free end: lying free. Role: Intake. / Levelling: level.",
+    "Free end: lying free. Role: Outflow. / Levelling: level."
+   ],
+   "total": 710655
+  }
+ ],
+ "save": {
+  "success": true,
+  "message": null,
+  "saveName": "lev_broaden_midflow",
+  "path": "C:/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Saves\\lev_broaden_midflow.rws"
+ },
+ "load": {
+  "success": true,
+  "s": 8.2,
+  "message": "RimWorld has a loaded visual-ready game and is paused for automation.",
+  "readableAfterS": 8.3
+ },
+ "afterReloadDesktop": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_STEVEDESKTOP_FWLIVE\\lev_after_reload_desktop.bmp",
+ "saveLoad": {
+  "reloadMatchesSave": true,
+  "replayMatchesNoReload": true,
+  "conserved": true
+ },
+ "roles": {
+  "swappedStillLevels": true,
+  "bothIntakeStillLevels": true,
+  "cappedStops": true,
+  "cappedReadsNoLevelling": true,
+  "uncappedResumes": true,
+  "conserved": true
+ }
+}

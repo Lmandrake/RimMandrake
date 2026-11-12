@@ -32,7 +32,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("HoseText_reel_inspect_names_free_end", () =>
             {
                 string reel = RiverSwitchFlipChecks.Src(Path.Combine("Hose", "CompHoseReel.cs"));
-                Assert(reel.Contains("\"\\nFree end: \" + this.FreeEnd().Describe(intakeHint: !intakeSet)"), "the laid reel's inspect text carries the free end's Describe()");
+                Assert(reel.Contains("\"\\nFree end: \" + this.FreeEnd().Describe(intakeHint: !quietHint)"), "the laid reel's inspect text carries the free end's Describe()");
                 Assert(reel.IndexOf("no pump yet", StringComparison.OrdinalIgnoreCase) < 0, "no 'no pump yet' text (FlowWorks has pumps)");
             });
         }

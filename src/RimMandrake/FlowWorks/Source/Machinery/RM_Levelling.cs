@@ -199,6 +199,10 @@ namespace RimMandrake.FlowWorks.Machinery
 			return st.portState.TryGetValue(reel, out RM_LevelLinkState s) ? s : (RM_LevelLinkState?)null;
 		}
 
+		/// <summary>True once a levelling cycle has run on this Map object (a loaded game builds new Maps: false until its first
+		/// cycle, so a readout cannot yet say whether an end is in a link).</summary>
+		public static bool HasRun(Map map) => map != null && states.TryGetValue(map, out _);
+
 		/// <summary>The hose's inspect line for levelling ("" when the end was in no levelling link last cycle).</summary>
 		public static string Readout(Map map, CompHoseReel reel)
 		{
