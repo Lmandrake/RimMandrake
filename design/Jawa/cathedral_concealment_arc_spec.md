@@ -265,7 +265,9 @@ origin canon's, and binds at their builds.
   she knows the Cathedral is alive, and it makes her the natural reveal
   usher. New lore mechanism this creates: the Utinni is a receiver on
   dead Rakatan frequencies (bears on her bond with the player's Rakatan
-  gravship; propagate when the arc builds).
+  gravship). PROPAGATED with the arc's build (`CATHEDRAL_DESCENT_REVEAL_SITE_1`):
+  `reconciled_lore/03_deep_history.md` §The Rust Cathedral and §The Utinni was
+  there at the beginning, `reconciled_lore/06_the_ship.md` §The mind.
 - **A2 — RULED (2026-09-12): aliveness + scale only.** §5 stands as written;
   purpose (the Assailants, the decline, the reserves) is held back for a later
   sitting's content.

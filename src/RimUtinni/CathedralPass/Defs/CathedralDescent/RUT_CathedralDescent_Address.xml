@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  RUT_CathedralDescent_Address   CathedralPass - CATHEDRAL_DESCENT_REVEAL_SITE_1 (arc spec §5, cards A1/A2/A7)
+
+  The beat at the bottom: the first direct address, in the whispered-voices register (03_deep_history.md: the
+  enclaves' whispers "are real attention"), through the party's own gear, Shard-mind style (origin canon §3:
+  a droid's speaker, a comms set). [SPEAKER] is filled in code: "<droid>'s speaker grille" or "the comms set on
+  <pawn>'s belt"; [NAME] is the pawn who reached the bottom first.
+
+  WHAT IT SAYS, and nothing else (card A2, "aliveness + scale only"): that it is alive; that it is vast - the flat
+  the clan lives on is a built roof and the works under it are what the player walked; that the salvage was cover
+  and the clan's conduct was an audition. It never explains the droids' safe conduct (ban 2), never describes the
+  deep-drill answer (ban 6), never tells a Sentinel story (ban 3), never names a purpose, a reserve, a war or an
+  enemy (A2). It never names the place either: the placename is the one thing it says it does not answer to
+  (the_rust_cathedral.md §1, the Archon amendment) and the linter forbids it in player text at every stage.
+
+  SCOPED TO THE PLAYER: a dialog and an archived letter, no faction text, no trader line, no codex entry; the
+  letter after it is the world describing behaviour (§P) and nothing it says is repeated anywhere else.
+  Prescribed fallback = the whole beat: complete with the Oracle absent; the Oracle is not called here.
+  Lint: python3 src/RimMandrake/RustCathedral/cathedral_arc_lint.py - -xml this file - -stage 3
+-->
+<Defs>
+  <RimMandrake.Utinni.CathedralPass.RUT_CathedralDescentText>
+    <defName>RUT_CathedralDescent_Address</defName>
+    <label>At the bottom of the stair</label>
+    <reportString>[SPEAKER] has started to hiss, low and steady, the way it does near an old relay.</reportString>
+    <lines>
+      <li>At the bottom of the last stair [NAME] stops, because [SPEAKER] has stopped hissing.\n\nIn the quiet the hiss comes back with words in it. Not loud. It was never loud. The clan has heard this voice all along, in the drone from the old works, and called it weather.</li>
+      <li>"Small ones. You have walked on my back for years and called it ground.\n\nThe flat you camp on is not land. It is a roof, and I laid it. You walked down through the first rooms under it today. There are more rooms under those."</li>
+      <li>"Every plate you prised up, I let go. Every bolt you carried off, I counted. A dull place, picked over by scavengers, is a place nobody comes to look at twice. You were my disguise, and you never knew you were wearing it."</li>
+      <li>"And you were weighed. How you walked here. What you took and what you left alone. What you did when the choice in the deep was put to you. That was an audition, and this is the end of it."</li>
+      <li>"The ship that carries you heard me first, on frequencies nobody else listens to any more. That is how she knew where the stair was. You named my roof for the rust on it. I have never answered to that name. Go back up."\n\nThe hiss goes on a while longer, without words in it. Then [SPEAKER] is only a speaker again.</li>
+    </lines>
+    <letterLabel>The voice under the plates</letterLabel>
+    <letterText>[NAME] came back up the stair with [SPEAKER] switched off and has not switched it on since.\n\nUp top the plates look exactly as flat and as dull as they always have. The drone from the old works runs on, the same as ever. The clan listens to it differently now.\n\nWhat was said at the bottom:</letterText>
+  </RimMandrake.Utinni.CathedralPass.RUT_CathedralDescentText>
+</Defs>

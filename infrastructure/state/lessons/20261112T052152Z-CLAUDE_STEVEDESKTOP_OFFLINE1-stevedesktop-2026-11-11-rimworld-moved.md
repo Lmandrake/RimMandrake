@@ -1,0 +1,2 @@
+SteveDesktop 2026-11-11: RimWorld moved to D:\SteamLibrary\steamapps\common\RimWorld (C: copy holds only Mods). winbuild needs /p:RimWorldManaged=<D: Managed> and /p:HarmonyDll=D:\SteamLibrary\steamapps\workshop\content\294100\2009463077\1.6\Assemblies\0Harmony.dll after --; the offline whittle gate refuses a command containing the literal game exe folder name, so build the path from a shell variable.
+item: CATHEDRAL_DESCENT_REVEAL_SITE_1

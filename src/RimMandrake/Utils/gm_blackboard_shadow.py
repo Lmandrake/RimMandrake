@@ -303,6 +303,15 @@ CATHEDRAL_BOON_AFTER_COMPLETION_GAP_TICKS = 2 * 60_000
 # this long after the flip, whatever the posture does meanwhile.
 CATHEDRAL_FAVOURS_DARK_HOLD_TICKS = 10 * 60_000
 CATHEDRAL_MISSION_QUEST_PREFIX = "RUT_CathedralAssailantMission_"
+
+# CATHEDRAL_DESCENT_REVEAL_SITE_1 (arc §5, card A7): the reveal beat. The trigger set is RULED: VOUCHED conduct posture
+# plus the post-restore-choice story flag (the choice itself, either answer -- "the choice itself, not its answer, is
+# the maturity test"), never Regard alone, once. The blackboard opens the way down by firing the opening incident; the
+# reveal flag (knowledge_revealed, stage 3) is set only when the descent quest ends in Success, i.e. when the party
+# heard the address at the bottom (CathedralDescent.SpeakAddress ends it). Nothing else sets knowledge_revealed.
+CATHEDRAL_REVEAL_OPENING_INCIDENT = "RUT_CathedralDescent_Opening"
+CATHEDRAL_REVEAL_QUEST_ROOT = "RUT_CathedralDescent_Quest"
+CATHEDRAL_REVEAL_QUEST_NAME = "the way down"   # questName rule; matched case-folded when a row carries no root
 CATHEDRAL_FAVOUR_DEFS = (
     Path(__file__).resolve().parents[2] / "RimUtinni" / "CathedralPass" / "Defs" / "QuestScriptDefs"
     / "RUT_CathedralAssailantMissions.xml",
@@ -473,6 +482,26 @@ def load_cathedral_offer_catalogue(paths=CATHEDRAL_FAVOUR_DEFS):
     return {"missions": missions, "boons": boons}
 
 
+def compute_reveal_beat_gate(conduct_posture, restore_choice_made, opened, revealed, enabled=True):
+    """The ruled trigger set for the reveal beat (arc §5 'Trigger discipline'), as a pure function: (may_open, reason).
+    Opens only from VOUCHED posture (2) AND the post-restore-choice flag; once opened (or revealed) it never opens
+    again. Regard is not an argument: it reaches this gate only through the posture, which also needs the missions."""
+    if not enabled:
+        return False, "descent_disabled"
+    if revealed:
+        return False, "already_revealed"
+    if opened:
+        return False, "already_opened"
+    vouched = conduct_posture == 2
+    if not vouched and not restore_choice_made:
+        return False, "neither_vouched_nor_restore_choice"
+    if not vouched:
+        return False, "restore_choice_without_vouched"
+    if not restore_choice_made:
+        return False, "vouched_without_restore_choice"
+    return True, "open"
+
+
 def compute_cathedral_offer_gate(conduct_posture, heat, boons, ticks_since_sale=None):
     """The pure gate (arc §1/§3): which favours MAY be offered this poll. Missions at TOLERATED+, boons at VOUCHED+
     and each only at Heat <= its own ceiling ("when the Empire is looking, it does not act"). A go-dark flip needs
@@ -596,7 +625,8 @@ class ShadowBlackboard:
                  story_flags=None, exposure_godark_threshold=CATHEDRAL_EXPOSURE_GODARK_THRESHOLD,
                  pursuit_event_on_poll=None,
                  full_discovery_threshold=CATHEDRAL_FULL_DISCOVERY_THRESHOLD,
-                 fall_enabled=True, offer_catalogue=None, missions_enabled=True, boons_enabled=True):
+                 fall_enabled=True, offer_catalogue=None, missions_enabled=True, boons_enabled=True,
+                 descent_enabled=True):
         self.log_path = log_path
         self.heat = 0.0
         self.hutt_interest = 0.0
@@ -650,6 +680,16 @@ class ShadowBlackboard:
         self.last_go_dark_tick = None
         self.last_completion_tick = None
         self.last_sale_tick = None   # the last poll a kyber-family drop raised Heat
+        # CATHEDRAL_DESCENT_REVEAL_SITE_1: the beat's own state. A reveal from before this run (the story flag) counts
+        # as opened; the restore choice is a story flag only (the §4 site has no quest yet: mirror only).
+        self.descent_enabled = descent_enabled   # mirrors the mod's cathedralDescentEnabled setting
+        self.restore_choice_made = bool(self.story_flags.get("restore_choice_made", False))
+        self.reveal_opened = self.knowledge_revealed
+        self.reveal_opened_tick = None
+        self.reveal_quest_id = None
+        self.reveal_quest_state = None
+        self.reveal_fired_tick = None
+        self.reveal_refused_since_open = 0   # polls on which the trigger set held again after the beat was spent
         self.record_extra = {}  # merged into every record before it is logged (fixture mode marks its records)
 
     def advance_fall_chain(self, record, would_fire, hutt_goodwill):
@@ -731,6 +771,62 @@ class ShadowBlackboard:
 
         record["warzone_posture"] = self.warzone_posture
         record["hutt_extraction_offer"] = self.hutt_extraction_offer
+
+    def advance_reveal_beat(self, record, would_fire, ticks, quest_rows):
+        """CATHEDRAL_DESCENT_REVEAL_SITE_1: one poll of the reveal beat, after this poll's conduct posture is set and
+        before effective_stage is computed. Reads the descent quest off the quest list (an ended-in-Success row is the
+        reveal: the address was heard), then asks compute_reveal_beat_gate whether the way down may open. Pure state on
+        self: selftest_cathedral_reveal_beat.py drives it through poll()."""
+        rows = []
+        for row in quest_rows or []:
+            root = row.get("root")
+            name = (row.get("name") or "").strip().casefold()
+            if root == CATHEDRAL_REVEAL_QUEST_ROOT or (not root and name == CATHEDRAL_REVEAL_QUEST_NAME):
+                rows.append(row)
+        revealed_now = False
+        for row in rows:
+            if not self.reveal_opened:
+                # the quest exists but this run never opened it: a dev action or an earlier run. The beat is spent
+                # either way (it opens once); say so rather than open a second one.
+                would_fire.append({"type": "cathedral_descent_opened_elsewhere", "quest_id": row.get("id"),
+                                   "detail": "a %s quest is on the list that this run did not open; the beat is "
+                                             "spent and will not be opened again." % CATHEDRAL_REVEAL_QUEST_ROOT})
+                self.reveal_opened = True
+                self.reveal_opened_tick = ticks
+            self.reveal_quest_id, self.reveal_quest_state = row.get("id"), row.get("state")
+            if row.get("state") == "EndedSuccess" and not self.knowledge_revealed:
+                self.knowledge_revealed = True
+                self.reveal_fired_tick = ticks
+                revealed_now = True
+                would_fire.append({
+                    "type": "cathedral_reveal_beat", "quest_id": row.get("id"),
+                    "detail": "the descent quest %s ended in success: the address was heard at the bottom. The reveal "
+                              "flag is set (knowledge_revealed, stage 3 REVEALED) for the player alone, once; it "
+                              "never unfires. No faction-visible text changes." % row.get("id")})
+
+        may_open, reason = compute_reveal_beat_gate(self.conduct_posture, self.restore_choice_made,
+                                                    self.reveal_opened, self.knowledge_revealed, self.descent_enabled)
+        if may_open:
+            self.reveal_opened = True
+            self.reveal_opened_tick = ticks
+            would_fire.append({
+                "type": "cathedral_descent_opening", "incident_def": CATHEDRAL_REVEAL_OPENING_INCIDENT,
+                "quest_def": CATHEDRAL_REVEAL_QUEST_ROOT,
+                "detail": "VOUCHED posture and the restore choice made: SHADOW MODE: would fire %s through "
+                          "jawa/storyteller_fire (dryRun=false), once; fired nothing." % CATHEDRAL_REVEAL_OPENING_INCIDENT})
+        elif reason in ("already_opened", "already_revealed") and self.conduct_posture == 2 and self.restore_choice_made:
+            # the trigger set holds again after the beat was spent: a re-trigger, refused
+            self.reveal_refused_since_open += 1
+        record["reveal_gate"] = reason
+        record["reveal_gate_inputs"] = {"conduct_posture": self.conduct_posture,
+                                        "restore_choice_made": self.restore_choice_made,
+                                        "descent_enabled": self.descent_enabled}
+        record["reveal_opened"] = self.reveal_opened
+        record["reveal_opened_tick"] = self.reveal_opened_tick
+        record["reveal_quest"] = {"id": self.reveal_quest_id, "state": self.reveal_quest_state}
+        record["reveal_fired_this_poll"] = revealed_now
+        record["reveal_fired_tick"] = self.reveal_fired_tick
+        record["reveal_retrigger_refused_polls"] = self.reveal_refused_since_open
 
     def observe_mission_quests(self, rows, ticks, would_fire):
         """Read the quest list (jawa/quest_lifecycle action=list) for Cathedral missions: a row newly in EndedSuccess
@@ -1228,6 +1324,7 @@ class ShadowBlackboard:
                            (CATHEDRAL_STAGE_LABELS[previous_posture], CATHEDRAL_STAGE_LABELS[posture]),
             })
         self.conduct_posture = posture
+        self.advance_reveal_beat(record, would_fire, game_info.get("ticksGame") or 0, quest_rows)
         effective_stage = 3 if self.knowledge_revealed else posture
         record["conduct_posture"] = posture
         record["conduct_posture_label"] = CATHEDRAL_STAGE_LABELS[posture]
@@ -1300,6 +1397,9 @@ class FixtureBridge:
         self.offer_expiry = int(player.get("offer_expiry_ticks", 3.5 * 60_000))
         # false = the firer does NOT end a withdrawn request, so the player can still accept it (the game allows it)
         self.firer_ends_withdrawn = bool(player.get("firer_ends_withdrawn", True))
+        # CATHEDRAL_DESCENT_REVEAL_SITE_1: "complete" (walk to the bottom) or "never" (the site is left unwalked)
+        self.descent_response = player.get("descent_response", "complete")
+        self.descent_walk_ticks = int(player.get("descent_walk_ticks", 60_000))
 
     def __enter__(self):
         return self
@@ -1316,6 +1416,12 @@ class FixtureBridge:
 
     def _advance_quests(self):
         for q in self.quests:
+            if q.get("_descent"):
+                # no fail, no expiry: it ends only when the party reaches the bottom
+                if q["state"] == "Ongoing" and q["_response"] == "complete" and \
+                        self.tick - q["_made"] >= self.descent_walk_ticks:
+                    q["state"] = "EndedSuccess"
+                continue
             if q["state"] == "NotYetAccepted" and q["_response"] in ("complete", "fail") \
                     and self.tick - q["_made"] >= self.accept_after:
                 q["state"] = "Ongoing"
@@ -1336,6 +1442,12 @@ class FixtureBridge:
                 self.quests.append({"id": self.next_quest_id, "name": names[ev["quest_def"]], "root": ev["quest_def"],
                                     "state": "NotYetAccepted", "historical": False, "simulated": True,
                                     "_made": self.tick, "_response": resp})
+                self.next_quest_id += 1
+            elif ev["type"] == "cathedral_descent_opening":
+                # auto-accepted and never expiring: Ongoing at once; "complete" = the party walks to the bottom
+                self.quests.append({"id": self.next_quest_id, "name": "The Way Down", "root": ev["quest_def"],
+                                    "state": "Ongoing", "historical": False, "simulated": True,
+                                    "_made": self.tick, "_response": self.descent_response, "_descent": True})
                 self.next_quest_id += 1
             elif ev["type"] == "cathedral_mission_offer_withdrawn" and self.firer_ends_withdrawn:
                 # the simulated live firer's quest_lifecycle end (outcome unknown, no letter)
@@ -1419,6 +1531,9 @@ def main():
                           "off -- no request is ever offered.")
     ap.add_argument("--disable-cathedral-boons", action="store_true",
                      help="CATHEDRAL_MISSION_BOON_OFFERS_1: mirrors cathedralBoonsEnabled off -- no gift.")
+    ap.add_argument("--disable-cathedral-descent", action="store_true",
+                    help="CATHEDRAL_DESCENT_REVEAL_SITE_1 off (mirrors the mod's cathedralDescentEnabled): the way "
+                         "down never opens, so the reveal never fires")
     ap.add_argument("--disable-cathedral-fall", action="store_true",
                      help="CATHEDRAL_EXPOSURE_COMPLETION_1 off: no full discovery, no fall "
                           "letters, no warzone flip, no Hutt extraction, no mourning. "
@@ -1455,6 +1570,7 @@ def main():
         pursuit_event_on_poll=args.pursuit_event_on_poll,
         full_discovery_threshold=args.exposure_full_discovery_threshold,
         fall_enabled=not args.disable_cathedral_fall,
+        descent_enabled=not args.disable_cathedral_descent,
         missions_enabled=not args.disable_cathedral_missions,
         boons_enabled=not args.disable_cathedral_boons,
     )

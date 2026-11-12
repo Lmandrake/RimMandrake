@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  RUT_CathedralDescent_Opening   CathedralPass - CATHEDRAL_DESCENT_REVEAL_SITE_1 (arc spec §5, card A7)
+
+  The way down opening. This is the last text the player reads BEFORE the reveal, so it is held to the
+  pre-reveal rules: cathedral_arc_lint.py - -xml this file - -stage 2 (no agency, no "alive", nothing that
+  names the place). The Utinni is the usher (card A1): she has heard something on a frequency nobody else
+  listens to, and she will not let it go; the text says what she does, never what she knows.
+
+  TRIGGER: baseChance 0 / rootSelectionWeight 0. Only the GM blackboard fires it (gm_blackboard_shadow.py,
+  compute_reveal_beat_gate: VOUCHED conduct posture + the post-restore-choice story flag, never Regard alone),
+  through jawa/storyteller_fire. A second fire is refused in game (IncidentWorker_CathedralDescentOpening:
+  GameComponent_CathedralDescent.opened), so the beat opens once whoever asks.
+  The quest is auto-accepted and never expires: the site stays until the party has walked it. The text at the
+  bottom lives in RUT_CathedralDescent_Address.xml (linted at stage 3).
+-->
+<Defs>
+  <IncidentDef ParentName="GiveQuestBase">
+    <defName>RUT_CathedralDescent_Opening</defName>
+    <label>the way down</label>
+    <letterLabel>The way down</letterLabel>
+    <targetTags Inherit="False">
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <workerClass>RimMandrake.Utinni.CathedralPass.IncidentWorker_CathedralDescentOpening</workerClass>
+    <questScriptDef>RUT_CathedralDescent_Quest</questScriptDef>
+    <baseChance>0</baseChance>
+  </IncidentDef>
+  <QuestScriptDef>
+    <defName>RUT_CathedralDescent_Quest</defName>
+    <rootSelectionWeight>0</rootSelectionWeight>
+    <isRootSpecial>true</isRootSpecial>
+    <rootMinPoints>0</rootMinPoints>
+    <autoAccept>true</autoAccept>
+    <everAcceptableInSpace>false</everAcceptableInSpace>
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->The way down</li>
+      </rulesStrings>
+    </questNameRules>
+    <questDescriptionRules>
+      <rulesStrings>
+        <li>questDescription->Since the choice in the deep was made, the Utinni has kept one receiver turned to a frequency no one aboard can hear. This morning she put a mark on the map, out on the flats: a seam in the plates where the ground has opened onto a stair.\n\nNothing on the surface opened it. It is wide enough to drive a crawler down, and it goes down a long way. Every screen aboard carries the same mark now, and the hatches nearest the ramp have stood open since dawn.\n\nThe machines down there walk their own rounds. Let them. Walk the stair to the bottom.</li>
+      </rulesStrings>
+    </questDescriptionRules>
+    <root Class="QuestNode_Sequence">
+      <nodes>
+        <li Class="QuestNode_QuestUnique">
+          <tag>RUT_CathedralDescent</tag>
+        </li>
+        <li Class="RimMandrake.Utinni.CathedralPass.RUT_QuestNode_CathedralDescentSite">
+          <storeAs>site</storeAs>
+        </li>
+        <!-- success is ended from code at the bottom (CathedralDescent.SpeakAddress); there is no fail and no expiry -->
+      </nodes>
+    </root>
+  </QuestScriptDef>
+
+</Defs>

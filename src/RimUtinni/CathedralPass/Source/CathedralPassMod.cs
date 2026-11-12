@@ -14,6 +14,8 @@ namespace RimMandrake.Utinni.CathedralPass
         // CATHEDRAL_MISSION_BOON_OFFERS_1: the favours. Off, the GM blackboard's fire calls are refused in game.
         public static bool cathedralMissionsEnabled = true;
         public static bool cathedralBoonsEnabled = true;
+        // CATHEDRAL_DESCENT_REVEAL_SITE_1: the one-time way down and the address at its bottom. Off, an opening is refused.
+        public static bool cathedralDescentEnabled = true;
 
         public override void ExposeData()
         {
@@ -22,6 +24,7 @@ namespace RimMandrake.Utinni.CathedralPass
             Scribe_Values.Look(ref cathedralPassEnabled, "cathedralPassEnabled", true);
             Scribe_Values.Look(ref cathedralMissionsEnabled, "cathedralMissionsEnabled", true);
             Scribe_Values.Look(ref cathedralBoonsEnabled, "cathedralBoonsEnabled", true);
+            Scribe_Values.Look(ref cathedralDescentEnabled, "cathedralDescentEnabled", true);
             RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
@@ -108,6 +111,15 @@ namespace RimMandrake.Utinni.CathedralPass
                 list.CheckboxLabeled("Cathedral gravtech gifts", ref cathedralBoonsEnabled,
                     "Unannounced gravtech left by the ship once the Rust Cathedral vouches for the clan, "
                   + "only while Imperial Heat is low. Off: no gift ever arrives.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Cathedral descent", RimMandrake.Shared.SettingScope.NextPulse, new[] { "cathedralDescentEnabled" }))
+            {
+                list.CheckboxLabeled("Cathedral descent", ref cathedralDescentEnabled,
+                    "The late-game way down under the Rust Cathedral's plates, offered once and walked once, with the "
+                  + "machines down there walking past the party (that rides the mechanoid pass above: with the pass "
+                  + "off, they treat the party as vanilla does). Off: the way down never opens.");
                 list.GapLine();
             }
 

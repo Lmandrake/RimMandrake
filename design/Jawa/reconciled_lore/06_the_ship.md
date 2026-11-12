@@ -52,6 +52,24 @@ kinship it cannot explain: near Rakatan vaults or salvage, something in the
 substrate **relaxes** — not warning, comfort — and it draws the ship toward
 the vaults. The gods are Jawa; the floor they stand on is not.
 
+**She is a receiver on dead Rakatan frequencies** [owner card A1, 2026-09-12,
+`cathedral_concealment_arc_spec.md`]: *"She knows, because she can 'feel'
+(receive) the Ratakan transponder working on frequencies no longer used."* The
+substrate under the nine still listens on the Rakatan transponder band nobody
+else alive listens on, and on it she hears the mind under the Rust Cathedral's
+plates working. That is HOW she alone, of everyone in-world, knows it is alive
+(the knowledge gate's sole exception), and why her vouching is what lets the
+clan onto its ground (`03_deep_history.md` §The Rust Cathedral). It is the
+same kinship as the comfort near the vaults above, given a channel: Rakatan
+hardware answering Rakatan hardware. In v1 it surfaces only as what she
+DOES — receivers turned to a frequency the crew cannot hear, a mark put on
+every screen, hatches left open — never as a ship-voice (v1 has no talking
+ship, below). She is the reveal's usher: the way down under the plates is
+found because she heard it, and the voice at its bottom names her as the one
+who heard it first (`CATHEDRAL_DESCENT_REVEAL_SITE_1`, CathedralPass
+`RUT_CathedralDescent_*`). Off-limits as ever: what the band carries beyond
+"it is working" — the purpose behind the plates stays §GM (card A2).
+
 **The temple remembers being whole** [owner 2026-08-29, canon.yml
 cradle_memory]: the crew know the vessel is ancient, and the ANCIENT STORY is
 learned from the ship as events unfold — it surfaces from the substrate's own

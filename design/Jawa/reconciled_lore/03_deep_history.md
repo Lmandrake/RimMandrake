@@ -147,7 +147,12 @@ what it was built not to do. It **hates the Helix** from the moment they
 side with the Assailants, urging Forgotten Sentinels against them. It
 despises the Empire too, but is in no position to oust them — it wants to
 survive, so **it slumbers**, deliberately dormant, to draw no attention.
-The player Jawa are tolerated **only because the Utinni vouches for them**;
+The player Jawa are tolerated **only because the Utinni vouches for them**
+— and she can vouch because she alone KNOWS it is there: she receives the
+dead Rakatan transponder band nobody else listens on, and hears it working
+(owner card A1, 2026-09-12: *"She knows, because she can 'feel' (receive) the
+Ratakan transponder working on frequencies no longer used."*; the receiver
+lore and its bond with the ship: `06_the_ship.md` §The mind);
 it mistrusts even her ("what is WRONG with you?") but cannot deny she is of
 the empire it once served — so the clan may run its missions against the
 Assailant to prove her value, while the Cathedral privately hopes she
@@ -184,6 +189,12 @@ and still refuses them awake — the sentence above, read twice. Detail:
 The ship is a Forsaken **initiator** — one of the vessels that started this
 world (`06_the_ship.md`). Every ruin is her people's; a woken sleeper who sees
 her sees an initiator with the wrong crew aboard.
+
+Her receivers still hear the old Rakatan frequencies: on them the mind under
+the Rust Cathedral is audible to her, and to nobody else (card A1). It makes
+her the usher of the Cathedral's one reveal — the late-game descent under the
+plates, found because she heard it (`cathedral_concealment_arc_spec.md` §5; built as
+`CATHEDRAL_DESCENT_REVEAL_SITE_1`).
 
 ## The woken [owner 2026-08-30]
 
