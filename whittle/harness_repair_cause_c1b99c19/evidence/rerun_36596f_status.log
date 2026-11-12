@@ -1,3 +1,18 @@
-2026-11-11T22:19:20-08:00
+2026-11-11T22:21:15-08:00
 UNMEASURED: J20261112T061851Z-36596f has no result yet
 exit=2
+archmagi paused.json:
+{
+ "attempt": null,
+ "cause": null,
+ "job": null,
+ "note": "paused by hand",
+ "outcome": null,
+ "reason": "Claude Whittle FWLIVE loops hold both games (owner order 2026-11-11 19:10 PST; helper of BENCH)",
+ "since": "2026-11-12T03:23:22Z",
+ "until": "2026-11-19T03:23:22Z"
+}
+J20261112T032115Z-a51f47.json
+J20261112T053705Z-c7a2a7.json
+J20261112T060227Z-995858.json
+J20261112T061851Z-36596f.json
