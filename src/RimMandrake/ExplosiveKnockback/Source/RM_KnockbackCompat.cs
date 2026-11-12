@@ -116,6 +116,48 @@ namespace RimMandrake.ExplosiveKnockback
 
         public static bool IsCover(Thing t) => coverType != null && t != null && coverType.IsInstanceOfType(t);
 
+        // ── Closed containers (owner 2026-11-10/11; plan step 2, dl_closed_means_hidden) ──
+        // Vanilla 1.6 has no closed storage that keeps goods SPAWNED on its cell: shelves (Building_Storage) draw their
+        // goods, and crates, bookcases and outfit stands hold theirs in a ThingOwner, unspawned, where an explosion
+        // never reaches them. A closed container is therefore storage whose def says it hides its contents: a comp or
+        // extension with a bool field `showContents` set false (LWM's Deep Storage, LWM.DeepStorage.Properties), or
+        // our opt-in tag RM_KnockbackClosedStorage on any building def. Decided per def, cached.
+        private static readonly Dictionary<ThingDef, bool> closedByDef = new Dictionary<ThingDef, bool>();
+
+        public static bool IsClosedContainer(Thing b)
+        {
+            if (b?.def == null || b.def.category != ThingCategory.Building)
+            {
+                return false;
+            }
+            if (!closedByDef.TryGetValue(b.def, out bool closed))
+            {
+                closed = b.def.HasModExtension<RM_KnockbackClosedStorage>() || AnyHides(b.def.comps) || AnyHides(b.def.modExtensions);
+                closedByDef[b.def] = closed;
+            }
+            return closed;
+        }
+
+        /// <summary>Forget the cached answers (a proof hook tagging a def at runtime).</summary>
+        public static void ForgetClosed() => closedByDef.Clear();
+
+        private static bool AnyHides(IList list)
+        {
+            if (list == null)
+            {
+                return false;
+            }
+            foreach (object o in list)
+            {
+                FieldInfo f = o?.GetType().GetField("showContents", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                if (f != null && f.FieldType == typeof(bool) && !(bool)f.GetValue(o))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         /// <summary>Dig a cell to superdeep (runner scenes only). False if FlowWorks is absent.</summary>
         public static bool DigToSuperdeep(Map map, IntVec3 c)
         {

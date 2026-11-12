@@ -352,10 +352,24 @@ namespace RimMandrake.ExplosiveKnockback
             return t;
         }
 
-        private static bool InStorage(Thing t, Map map)
+        /// <summary>Owner ruling 2026-11-10/11 (RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED): goods on open storage (shelves,
+        /// racks) fly like floor goods; only a CLOSED container (RM_KnockbackCompat.IsClosedContainer) keeps them. Goods
+        /// on a shelf are ordinary spawned things on the shelf's cell, so this is decided by the edifice under them. The
+        /// old every-storage rule returns only with openStorageProtectsGoods. Returns the journal reason, or null.</summary>
+        private static string HeldReason(Thing t, Map map)
         {
             Building ed = t.Position.GetEdifice(map);
-            return ed is Building_Storage || (ed != null && ed.def.building != null && ed.def.building.fixedStorageSettings != null);
+            if (ed == null)
+            {
+                return null;
+            }
+            bool closed = RM_KnockbackCompat.IsClosedContainer(ed);
+            bool storage = closed || ed is Building_Storage || (ed.def.building != null && ed.def.building.fixedStorageSettings != null);
+            if (!RM_KnockbackMath.GoodsHeld(storage, closed, RimMandrakeExplosiveKnockbackSettings.openStorageProtectsGoods))
+            {
+                return null;
+            }
+            return closed ? "closed_container" : "in_storage";
         }
 
         /// <summary>Called from the explosion prefix BEFORE the blast damages the item: will Execute throw it (same gates,
@@ -364,7 +378,7 @@ namespace RimMandrake.ExplosiveKnockback
         public static bool ItemWillBeThrown(Thing t, Explosion explosion, KbConfig cfg)
         {
             Map map = explosion.Map;
-            if (map == null || !t.Spawned || !RimMandrakeExplosiveKnockbackSettings.throwItems || InStorage(t, map)
+            if (map == null || !t.Spawned || !RimMandrakeExplosiveKnockbackSettings.throwItems || HeldReason(t, map) != null
                 || RM_KnockbackCompat.IsSuperdeep(map, t.Position))
             {
                 return false;
@@ -409,6 +423,10 @@ namespace RimMandrake.ExplosiveKnockback
                 RM_KnockbackJournal.Add("skip", r.explosionId, r.thing, "reason", "not_spawned");
                 return false;
             }
+            if (t is Building container)
+            {
+                return ShoveContainer(r, container);
+            }
             KbKind kind;
             float mass, bodySize;
             Pawn pawn = t as Pawn;
@@ -443,9 +461,10 @@ namespace RimMandrake.ExplosiveKnockback
                     RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", "items_off");
                     return false;
                 }
-                if (InStorage(t, map))
+                string held = HeldReason(t, map);
+                if (held != null)
                 {
-                    RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", "in_storage");
+                    RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", held, "at", t.Position);
                     return false;
                 }
                 kind = KbKind.Item;
@@ -531,6 +550,84 @@ namespace RimMandrake.ExplosiveKnockback
                 "planned", cells, "cells", res.cellsTravelled, "stop", res.stop.ToString(), "mass", mass, "count", count);
             GoodsWallImpact(r, placed ?? t, res, cells);
             return true;
+        }
+
+        /// <summary>Owner ruling 2026-11-11, "(1) but the closed containers may themselves get shoved a bit" (plan step 2,
+        /// dl_container_shove): a 1x1 closed container at or under the light-mass limit (its own mass plus the goods on its
+        /// cell) slides one cell straight away from the blast when that cell is free open ground, carrying its goods;
+        /// anything else jolts in place. Never into a pit, a wall or onto a pawn. One journal "container" line each.</summary>
+        private bool ShoveContainer(KnockbackRequest r, Building b)
+        {
+            if (!RimMandrakeExplosiveKnockbackSettings.shoveClosedContainers || !RM_KnockbackCompat.IsClosedContainer(b))
+            {
+                return false;
+            }
+            IntVec3 start = b.Position;
+            float dx, dz;
+            if (start == r.centre)
+            {
+                RM_KnockbackMath.EpicentreDir(r.explosionId, b.thingIDNumber, out dx, out dz);
+            }
+            else
+            {
+                dx = start.x - r.centre.x;
+                dz = start.z - r.centre.z;
+            }
+            bool one = b.def.size.x == 1 && b.def.size.z == 1;
+            var goods = new List<Thing>();
+            float mass = b.GetStatValue(StatDefOf.Mass);
+            foreach (Thing h in start.GetThingList(map))
+            {
+                if (h != b && h.def.category == ThingCategory.Item)
+                {
+                    goods.Add(h);
+                    mass += h.GetStatValue(StatDefOf.Mass) * h.stackCount;
+                }
+            }
+            List<(int x, int z)> step = RM_KnockbackMath.Line(start.x, start.z, dx, dz, 1);
+            IntVec3 to = step.Count > 0 ? new IntVec3(step[0].x, 0, step[0].z) : start;
+            bool free = one && to != start && RM_KnockbackMath.ShoveCellFree(new RM_MapKbGrid(map, b, true).At(to.x, to.z), Occupied(to))
+                && !RM_KnockbackCompat.IsSuperdeep(map, to);
+            KbShove act = RM_KnockbackMath.ContainerShove(true, one, mass, RimMandrakeExplosiveKnockbackSettings.lightMassLimit, free);
+            if (act == KbShove.Slide)
+            {
+                Rot4 rot = b.Rotation;
+                foreach (Thing h in goods)
+                {
+                    h.DeSpawn();
+                }
+                b.DeSpawn();
+                GenSpawn.Spawn(b, to, map, rot);
+                foreach (Thing h in goods)
+                {
+                    GenSpawn.Spawn(h, to, map); // items never wipe a building (GenSpawn.SpawningWipes)
+                }
+            }
+            FleckMaker.ThrowDustPuff(act == KbShove.Slide ? to : start, map, 1f);
+            RM_KnockbackJournal.Add("container", r.explosionId, b, "action", act == KbShove.Slide ? "slide" : "jolt",
+                "from", start, "to", act == KbShove.Slide ? to : start, "mass", mass, "goods", goods.Count, "oneByOne", one,
+                "behindFree", free);
+            return act == KbShove.Slide;
+        }
+
+        /// <summary>A cell a shoved container may not enter: anything standing there but filth, grass and the like.</summary>
+        private bool Occupied(IntVec3 c)
+        {
+            if (!c.InBounds(map))
+            {
+                return true;
+            }
+            foreach (Thing th in c.GetThingList(map))
+            {
+                ThingCategory k = th.def.category;
+                if (k == ThingCategory.Item || k == ThingCategory.Building || k == ThingCategory.Pawn
+                    || (k == ThingCategory.Plant && th.def.passability != Traversability.Standable)
+                    || th.def.IsBlueprint || th.def.IsFrame)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private static readonly AccessTools.FieldRef<CompShield, float> ShieldEnergy = AccessTools.FieldRefAccess<CompShield, float>("energy");

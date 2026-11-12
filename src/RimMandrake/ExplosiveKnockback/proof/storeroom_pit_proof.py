@@ -11,8 +11,20 @@ Three arms, each reloading the save:
   B  thrownGoodsBlastDamagePercent=100 (vanilla damage)                    -> >=1 fragile stack destroyed, nothing spared
   C  enabled=False (knockback off)                                         -> no goods stack and no colonist thrown
 
+--storage (RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED, owner ruling 2026-11-11 "(1) but the closed containers may
+themselves get shoved a bit"): the scene staged by stage_station1_v2.py --variant storage (two open shelves, one Hopper
+the proof tags as closed with RM_KnockbackProof.CloseStorage, since the next-load list has no hidden-storage mod).
+Two arms, each reloading the save; every row can fail alone:
+  SA  defaults, Hopper closed  -> SA_OPEN_SHELF_THROWN    every good on a shelf moved
+                                  SA_CLOSED_GOODS_STAY    no good in the container thrown (at its start or carried)
+                                  SA_CONTAINER_RULE       one "container" line; slide = one cell, not pit/wall/pawn,
+                                                          the goods with it; jolt = unmoved
+                                  SA_NO_IN_STORAGE_SKIP   no "in_storage" skip line (the old rule is off)
+  SC  enabled=False            -> SC_OFF_SHELF_GOODS_STILL, SC_OFF_CONTAINER_STILL, SC_OFF_NO_CONTAINER_LINE
+
 Usage (python.exe from WSL, bridge held):
   storeroom_pit_proof.py [--save NAME] [--site x,z,w,h] [--pit x,z,w,h] [--k 3] [--out evidence.json]
+  storeroom_pit_proof.py --storage [--save EK_SITTING_STATION1_STORAGE_20261112] [--shelves x,z;x,z] [--container x,z]
 Prints one PASS/FAIL/UNMEASURED table. Exit 0 only if every row passes."""
 import argparse, collections, json, math, os, sys, time
 
@@ -22,13 +34,18 @@ import proof_hose as PH  # noqa: E402
 
 KP = "RimMandrake.ExplosiveKnockback.RM_KnockbackProof"
 ap = argparse.ArgumentParser()
-ap.add_argument("--save", default="EK_SITTING_STATION1_STOREROOM_PIT_20261112")
+ap.add_argument("--save", default=None, help="default EK_SITTING_STATION1_STOREROOM_PIT_20261112 (--storage: _STORAGE_)")
+ap.add_argument("--storage", action="store_true", help="run the open-shelf / closed-container arms instead")
+ap.add_argument("--shelves", default="120,122;120,126", help="shelf anchor cells (stage_station1_v2 storage layout)")
+ap.add_argument("--container", default="122,126", help="the container's cell")
+ap.add_argument("--container-def", default="Hopper", help="building def the proof tags closed")
 ap.add_argument("--site", default="114,117,22,15", help="census rect x,z,w,h around the room and pit")
 ap.add_argument("--pit", default="128,122,4,5", help="pit cells x,z,w,h")
 ap.add_argument("--k", type=int, default=3, help="min goods stacks that must end in pit cells (arm A)")
 ap.add_argument("--ticks", type=int, default=300)
 ap.add_argument("--out", default=None)
 a = ap.parse_args()
+a.save = a.save or ("EK_SITTING_STATION1_STORAGE_20261112" if a.storage else "EK_SITTING_STATION1_STOREROOM_PIT_20261112")
 B = PH.PB()
 px, pz, pw, ph = (int(v) for v in a.pit.split(","))
 rows, ev = [], {"save": a.save}
@@ -114,7 +131,96 @@ def arm(name, settings):
     return res
 
 
-A = arm("A", [])
+def buildings(rect):
+    return c("jawa/list_things", rect=rect, group="BuildingArtificial", limit=400).get("things") or []
+
+
+def storage_arm(name, settings):
+    """One reload: tag the container def closed, apply settings, fire the bomb, and return before/after of the shelf
+    goods, the container goods and the container itself, plus the journal lines."""
+    load()
+    c("jawa/static_call", type=KP, method="Settings", args="reset")
+    cs = str(c("jawa/static_call", type=KP, method="CloseStorage", args=a.container_def + "=on").get("result"))
+    if not cs.startswith("CLOSED"):
+        row(name + "_CLOSE_TAG", False, cs[:120])
+        return None
+    for kv in settings:
+        r = str(c("jawa/static_call", type=KP, method="Settings", args=kv).get("result"))
+        if not r.startswith("SET"):
+            row(name + "_SETTING", False, "%s -> %s" % (kv, r[:120]))
+    cx, cz = (int(v) for v in a.container.split(","))
+    shelf_cells = set()
+    for sxz in a.shelves.split(";"):
+        sx, sz = (int(v) for v in sxz.split(","))
+        shelf_cells |= {(sx - 1, sz), (sx, sz), (sx + 1, sz)}  # a 2x1 shelf covers its anchor and one side
+    cont = [b for b in buildings("%d,%d,1,1" % (cx, cz)) if b.get("def") == a.container_def]
+    things = census()
+    shells = [t for t in things if str(t.get("def")).startswith("Shell_")]
+    if not cont or not shells:
+        row(name + "_START", False, "container %s at %s: %d; bombs %d" % (a.container_def, a.container, len(cont), len(shells)))
+        return None
+    on_shelf = {t["id"]: t for t in things if (t["x"], t["z"]) in shelf_cells}
+    in_cont = {t["id"]: t for t in things if (t["x"], t["z"]) == (cx, cz)}
+    row(name + "_START", len(on_shelf) >= 2 and len(in_cont) >= 1,
+        "%d goods on shelves %s, %d in %s" % (len(on_shelf), sorted(shelf_cells), len(in_cont), a.container_def))
+    bomb = shells[0]
+    c("jawa/static_call", type=KP, method="Clear", args="x")
+    c("jawa/damage", thingId=bomb["id"], damageDef="Crush", amount=float(bomb.get("hitPoints") or 60) + 40.0)
+    for _ in range(max(1, a.ticks // 25)):
+        c("rimworld/step_game_ticks", ticks=25, pauseFirst=True, timeoutMs=60000)
+    after = {t["id"]: t for t in census()}
+    x, z, w, h = (int(v) for v in a.site.split(","))
+    cont2 = [b for b in buildings(a.site) if b.get("def") == a.container_def and b.get("id") == cont[0].get("id")]
+    jl = [json.loads(l) for l in (c("jawa/static_call", type=KP, method="Journal", args="400").get("result") or "").splitlines()
+          if l.startswith("{")]
+    res = {"container": [cx, cz], "container_after": [cont2[0]["x"], cont2[0]["z"]] if cont2 else None,
+           "shelf": {i: [t["x"], t["z"], (after.get(i) or {}).get("x"), (after.get(i) or {}).get("z")] for i, t in on_shelf.items()},
+           "held": {i: [t["x"], t["z"], (after.get(i) or {}).get("x"), (after.get(i) or {}).get("z")] for i, t in in_cont.items()},
+           "pawn_cells": [[p.get("x"), p.get("z")] for p in pawns_in_site().values()],
+           "container_lines": [j for j in jl if j.get("type") == "container"],
+           "skips": collections.Counter(j.get("reason") for j in jl if j.get("type") == "skip"),
+           "journal": collections.Counter(j.get("type") for j in jl)}
+    ev[name] = res
+    return res
+
+
+def moved(v):
+    return v[2] is not None and (v[2], v[3]) != (v[0], v[1])
+
+
+if a.storage:
+    S = storage_arm("SA", [])
+    if S:
+        sh = S["shelf"].values()
+        row("SA_OPEN_SHELF_THROWN", bool(sh) and all(moved(v) for v in sh),
+            "%d/%d shelf goods moved (destroyed counts as not moved)" % (sum(moved(v) for v in sh), len(S["shelf"])))
+        end = tuple(S["container_after"] or ())
+        stay = [v for v in S["held"].values() if v[2] is not None and (v[2], v[3]) in {(v[0], v[1]), end}]
+        row("SA_CLOSED_GOODS_STAY", bool(S["held"]) and len(stay) == len(S["held"]) and S["skips"].get("closed_container", 0) >= 1,
+            "%d/%d container goods at start or carried; closed_container skips %d" % (
+                len(stay), len(S["held"]), S["skips"].get("closed_container", 0)))
+        cl = S["container_lines"]
+        ok, det = False, "lines %s" % cl
+        if len(cl) == 1 and S["container_after"]:
+            l = cl[0]
+            to, frm = tuple(l.get("to") or ()), tuple(l.get("from") or ())
+            if l.get("action") == "slide":
+                one = max(abs(to[0] - frm[0]), abs(to[1] - frm[1])) == 1 if to and frm else False
+                ok = (one and end == to and not in_pit(*to) and list(to) not in S["pawn_cells"]
+                      and all((v[2], v[3]) == to for v in S["held"].values() if v[2] is not None))
+            elif l.get("action") == "jolt":
+                ok = end == frm == tuple(S["container"])
+            det = "%s %s->%s after %s mass %s" % (l.get("action"), frm, to, end, l.get("mass"))
+        row("SA_CONTAINER_RULE", ok, det)
+        row("SA_NO_IN_STORAGE_SKIP", S["skips"].get("in_storage", 0) == 0, str(dict(S["skips"])))
+    S = storage_arm("SC", ["enabled=False"])
+    if S:
+        row("SC_OFF_SHELF_GOODS_STILL", not any(moved(v) for v in S["shelf"].values()), str(S["shelf"])[:150])
+        row("SC_OFF_CONTAINER_STILL", S["container_after"] == S["container"], "%s -> %s" % (S["container"], S["container_after"]))
+        row("SC_OFF_NO_CONTAINER_LINE", not S["container_lines"], str(dict(S["journal"])))
+    A = Bm = C = None
+else:
+    A = arm("A", [])
 if A:
     row("A_GOODS_IN_PIT", A["goods"].get("in_pit", 0) >= a.k, "%s (need >=%d in pit)" % (A["goods"], a.k))
     row("A_PAWN_IN_PIT", A["pawns"].get("in_pit", 0) >= 1, str(A["pawns"]))
@@ -122,17 +228,19 @@ if A:
     row("A_NO_COLONIST_DEAD", A["pawns"].get("dead", 0) == 0, str(A["pawns"]))
     row("A_SPARED_JOURNALLED", A["journal"].get("spared", 0) >= 1, str(A["journal"]))
     row("A_WALL_IMPACT_JOURNALLED", A["journal"].get("goods_impact", 0) >= 1, str(A["journal"]))
-Bm = arm("B", ["thrownGoodsBlastDamagePercent=100"])
+Bm = None if a.storage else arm("B", ["thrownGoodsBlastDamagePercent=100"])
 if Bm:
     row("B_VANILLA_DESTROYS_FRAGILE", Bm["goods"].get("destroyed", 0) >= 1, str(Bm["goods"]))
     row("B_NOTHING_SPARED", Bm["journal"].get("spared", 0) == 0, str(Bm["journal"]))
-C = arm("C", ["enabled=False"])
+C = None if a.storage else arm("C", ["enabled=False"])
 if C:
     row("C_OFF_NO_GOODS_THROWN", C["goods"].get("moved", 0) + C["goods"].get("in_pit", 0) == 0, str(C["goods"]))
     row("C_OFF_NO_PAWN_IN_PIT", C["pawns"].get("in_pit", 0) == 0, str(C["pawns"]))
     row("C_OFF_JOURNAL_EMPTY", sum(C["journal"].values()) == 0, str(C["journal"]))
 load()  # leave the scene as saved, defaults restored
 c("jawa/static_call", type=KP, method="Settings", args="reset")
+if a.storage:
+    c("jawa/static_call", type=KP, method="CloseStorage", args=a.container_def + "=off")
 out = a.out or os.path.join(os.environ.get("RM_SCRATCH", r"D:\ClaudeWork\rimmandrake"), "ek_proof",
                             "storeroom_pit_%s.json" % time.strftime("%Y%m%dT%H%M%S"))
 os.makedirs(os.path.dirname(out), exist_ok=True)

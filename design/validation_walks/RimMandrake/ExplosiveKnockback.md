@@ -15,7 +15,7 @@ Sources: `design/RimMandrake/explosive_knockback_design_2026-10-06.md` (§3, §5
 - A pawn of body size >= 2.5 is not thrown. → throw.body_size_2_5_is_not_thrown
 - EMP (and every zero-force blast) throws nothing and enqueues nothing. → throw.emp_blast_throws_nothing
 - Light items are thrown by the same kernel (lighter flies farther, stack intact); an item over 75 kg stays (owner Q4). → light_things.items_thrown_by_mass_heavy_stays
-- An item on a shelf stays in the shelf. → light_things.item_on_a_shelf_stays
+- An item on an open shelf scatters; an item in a closed container stays. → light_things.item_on_an_open_shelf_scatters
 - A pawn the blast kills is thrown as a corpse. → light_things.pawn_killed_by_blast_thrown_as_corpse
 - A colonist thrown into an open pit lands on its floor and FlowWorks records exactly one descent. → pits.colonist_thrown_into_open_pit_falls
 - An enemy thrown into an open pit lands on its floor and falls (one descent). → pits.enemy_thrown_into_open_pit_falls

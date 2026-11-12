@@ -81,6 +81,30 @@ namespace RimMandrake.ExplosiveKnockback
             return "SET " + kv[0] + "=" + f.GetValue(null);
         }
 
+        /// <summary>"DefName=on|off": adds or removes the RM_KnockbackClosedStorage tag on a building def at runtime, so a
+        /// proof on a list with no hidden-storage mod can stand a vanilla def (e.g. Hopper) in for a closed container.
+        /// Not saved; a reload of the game restores the defs.</summary>
+        public static string CloseStorage(string arg)
+        {
+            string[] kv = (arg ?? "").Split('=');
+            ThingDef d = kv.Length == 2 ? DefDatabase<ThingDef>.GetNamedSilentFail(kv[0]) : null;
+            if (d == null || d.category != ThingCategory.Building)
+            {
+                return "REFUSED: no building def " + kv[0];
+            }
+            if (d.modExtensions == null)
+            {
+                d.modExtensions = new List<DefModExtension>();
+            }
+            d.modExtensions.RemoveAll(e => e is RM_KnockbackClosedStorage);
+            if (kv[1] == "on")
+            {
+                d.modExtensions.Add(new RM_KnockbackClosedStorage());
+            }
+            RM_KnockbackCompat.ForgetClosed();
+            return "CLOSED " + d.defName + "=" + (kv[1] == "on");
+        }
+
         /// <summary>n scene origins on a 15-cell pitch inside the current map, row-major from the south-west.</summary>
         public static string Origins(string arg)
         {
@@ -570,7 +594,10 @@ namespace RimMandrake.ExplosiveKnockback
                     s.verdict = sc =>
                     {
                         string m = Moved(sc, "steel", out Thing t, out int cells);
-                        return Result(sc, cells == 0, m + " (on a shelf: must stay)");
+                        // owner ruling 2026-11-11: open storage protects nothing; the old rule only behind its toggle
+                        bool keep = RimMandrakeExplosiveKnockbackSettings.openStorageProtectsGoods;
+                        return Result(sc, keep ? cells == 0 : cells > 0,
+                            m + (keep ? " (openStorageProtectsGoods: must stay)" : " (on an open shelf: must move)"));
                     };
                     return null;
 

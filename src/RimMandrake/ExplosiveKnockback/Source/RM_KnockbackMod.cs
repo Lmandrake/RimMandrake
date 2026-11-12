@@ -7,6 +7,13 @@ using Verse;
 
 namespace RimMandrake.ExplosiveKnockback
 {
+    /// <summary>Opt-in tag (plan step 2, dl_closed_means_hidden): put on a building def to make it a CLOSED container — goods
+    /// on its cells are never thrown, and the container itself may be shoved a little. Storage whose def hides its
+    /// contents (a `showContents` false field, LWM's Deep Storage) needs no tag.</summary>
+    public class RM_KnockbackClosedStorage : DefModExtension
+    {
+    }
+
     /// <summary>A DamageDef's throw strength (design §3.1). Bomb ships 1.0; Flame, EMP, Smoke, Extinguish and
     /// ToxGas ship an explicit 0. Other mods' explosive DamageDefs get one by patch, never by guess.
     /// maxThrowCells: this blast's own maximum throw (cells); 0 = the global "Maximum throw distance".
@@ -61,6 +68,12 @@ namespace RimMandrake.ExplosiveKnockback
         /// <summary>Same ruling, "worse damage if they then hit a solid object": a thrown stack stopped by a wall, door or
         /// the map edge takes this much Blunt damage per cell of throw it had left. 0 = off.</summary>
         public static float goodsWallImpactPerCell = 10f;
+        /// <summary>Owner ruling 2026-11-10/11 (RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED): open storage (shelves, racks)
+        /// gives goods no cover; only a closed container keeps them. On = the old rule, every storage building keeps its goods.</summary>
+        public static bool openStorageProtectsGoods = false;
+        /// <summary>Same ruling, "(1) but the closed containers may themselves get shoved a bit": a blast-hit closed container
+        /// slides one cell away (1x1, under the light-mass limit, free cell behind) or else jolts in place. Off = it stays put.</summary>
+        public static bool shoveClosedContainers = true;
         public static bool sandbagsStopThrow = false;
         public static bool impactDamageEnabled = true;
         public static float impactDamagePerCell = 4f;
@@ -114,6 +127,8 @@ namespace RimMandrake.ExplosiveKnockback
             Scribe_Values.Look(ref lightMassLimit, "lightMassLimit", 75f);
             Scribe_Values.Look(ref thrownGoodsBlastDamagePercent, "thrownGoodsBlastDamagePercent", 25f);
             Scribe_Values.Look(ref goodsWallImpactPerCell, "goodsWallImpactPerCell", 10f);
+            Scribe_Values.Look(ref openStorageProtectsGoods, "openStorageProtectsGoods", false);
+            Scribe_Values.Look(ref shoveClosedContainers, "shoveClosedContainers", true);
             Scribe_Values.Look(ref sandbagsStopThrow, "sandbagsStopThrow", false);
             Scribe_Values.Look(ref impactDamageEnabled, "impactDamageEnabled", true);
             Scribe_Values.Look(ref impactDamagePerCell, "impactDamagePerCell", 4f);
@@ -166,7 +181,7 @@ namespace RimMandrake.ExplosiveKnockback
                 list.GapLine();
             }
 
-            if (Group(list, "What gets thrown", RimMandrake.Shared.SettingScope.Now, new[] { "throwDowned", "throwAnimals", "throwMechanoids", "immuneBodySize", "throwItems", "throwCorpses", "lightMassLimit", "thrownGoodsBlastDamagePercent", "goodsWallImpactPerCell" }))
+            if (Group(list, "What gets thrown", RimMandrake.Shared.SettingScope.Now, new[] { "throwDowned", "throwAnimals", "throwMechanoids", "immuneBodySize", "throwItems", "throwCorpses", "lightMassLimit", "thrownGoodsBlastDamagePercent", "goodsWallImpactPerCell", "openStorageProtectsGoods", "shoveClosedContainers" }))
             {
                 list.CheckboxLabeled("Throw downed pawns", ref throwDowned);
                 list.CheckboxLabeled("Throw animals", ref throwAnimals);
@@ -181,6 +196,10 @@ namespace RimMandrake.ExplosiveKnockback
                 thrownGoodsBlastDamagePercent = Mathf.Round(list.Slider(thrownGoodsBlastDamagePercent, 0f, 100f));
                 list.Label("Thrown goods hitting a wall or door: " + goodsWallImpactPerCell.ToString("0") + " damage per cell of throw left  (0 = off)");
                 goodsWallImpactPerCell = Mathf.Round(list.Slider(goodsWallImpactPerCell, 0f, 50f));
+                list.CheckboxLabeled("Open shelves and racks protect their goods", ref openStorageProtectsGoods,
+                    "Off (the default): goods on open storage fly like goods on the floor; only closed containers (storage that hides its contents, e.g. Deep Storage lockers) keep them. On: every storage building keeps its goods.");
+                list.CheckboxLabeled("Blasts shove closed containers", ref shoveClosedContainers,
+                    "On (the default): a small closed container hit by a blast slides one cell away when the cell behind it is free, else jolts in place. Its contents stay inside.");
                 list.GapLine();
             }
 
@@ -317,6 +336,8 @@ namespace RimMandrake.ExplosiveKnockback
             RimMandrakeExplosiveKnockbackSettings.lightMassLimit = 75f;
             RimMandrakeExplosiveKnockbackSettings.thrownGoodsBlastDamagePercent = 25f;
             RimMandrakeExplosiveKnockbackSettings.goodsWallImpactPerCell = 10f;
+            RimMandrakeExplosiveKnockbackSettings.openStorageProtectsGoods = false;
+            RimMandrakeExplosiveKnockbackSettings.shoveClosedContainers = true;
             RimMandrakeExplosiveKnockbackSettings.sandbagsStopThrow = false;
             RimMandrakeExplosiveKnockbackSettings.impactDamageEnabled = true;
             RimMandrakeExplosiveKnockbackSettings.impactDamagePerCell = 4f;

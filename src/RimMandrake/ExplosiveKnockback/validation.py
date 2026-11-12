@@ -30,7 +30,7 @@ SCENES = [
     ("heavy_skip", "throw", "body_size_2_5_is_not_thrown", "immuneBodySize"),
     ("emp_no_throw", "throw", "emp_blast_throws_nothing", "unpatchedHarmfulPercent"),
     ("items", "light_things", "items_thrown_by_mass_heavy_stays", "throwItems"),
-    ("shelf", "light_things", "item_on_a_shelf_stays", None),
+    ("shelf", "light_things", "item_on_an_open_shelf_scatters", "openStorageProtectsGoods"),
     ("killed_by_blast", "light_things", "pawn_killed_by_blast_thrown_as_corpse", "throwCorpses"),
     ("pit_colonist", "pits", "colonist_thrown_into_open_pit_falls", "throwIntoPits"),
     ("pit_enemy", "pits", "enemy_thrown_into_open_pit_falls", None),

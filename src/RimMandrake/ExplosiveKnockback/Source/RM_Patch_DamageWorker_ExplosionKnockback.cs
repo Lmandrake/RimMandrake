@@ -79,7 +79,10 @@ namespace RimMandrake.ExplosiveKnockback
             {
                 return;
             }
-            if (!(t is Pawn) && !(t is Corpse) && t.def.category != ThingCategory.Item)
+            // a closed container itself is shoved a little (owner 2026-11-11); every other building is not ours
+            bool container = t is Building && RimMandrakeExplosiveKnockbackSettings.shoveClosedContainers
+                && RM_KnockbackCompat.IsClosedContainer(t);
+            if (!(t is Pawn) && !(t is Corpse) && t.def.category != ThingCategory.Item && !container)
             {
                 return;
             }

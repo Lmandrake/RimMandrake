@@ -121,6 +121,26 @@ internal static class Program
         Check("K-03 human corpse", RM_KnockbackMath.Eligible(KbKind.Corpse, 60f, 1f, s));
         Check("K-03 big corpse", !RM_KnockbackMath.Eligible(KbKind.Corpse, 60f, 3f, s));
 
+        // K-14 storage (owner 2026-11-10/11, RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED): open shelves give no cover,
+        // closed containers keep their goods, the old rule only behind its setting
+        Check("K-14 floor good is not held", !RM_KnockbackMath.GoodsHeld(false, false, false));
+        Check("K-14 open shelf does not hold", !RM_KnockbackMath.GoodsHeld(true, false, false));
+        Check("K-14 closed container holds", RM_KnockbackMath.GoodsHeld(true, true, false));
+        Check("K-14 old rule: open shelf holds when set", RM_KnockbackMath.GoodsHeld(true, false, true));
+        Check("K-14 old rule never holds floor goods", !RM_KnockbackMath.GoodsHeld(false, false, true));
+        Check("K-14 shove: 1x1 light free -> slide", RM_KnockbackMath.ContainerShove(true, true, 20f, 75f, true) == KbShove.Slide);
+        Check("K-14 shove: at the limit -> slide", RM_KnockbackMath.ContainerShove(true, true, 75f, 75f, true) == KbShove.Slide);
+        Check("K-14 shove: blocked -> jolt", RM_KnockbackMath.ContainerShove(true, true, 20f, 75f, false) == KbShove.Jolt);
+        Check("K-14 shove: heavy -> jolt", RM_KnockbackMath.ContainerShove(true, true, 76f, 75f, true) == KbShove.Jolt);
+        Check("K-14 shove: 2x1 -> jolt", RM_KnockbackMath.ContainerShove(true, false, 20f, 75f, true) == KbShove.Jolt);
+        Check("K-14 shove off -> none", RM_KnockbackMath.ContainerShove(false, true, 20f, 75f, true) == KbShove.None);
+        bool shoveCells = RM_KnockbackMath.ShoveCellFree(KbCell.Open, false) && !RM_KnockbackMath.ShoveCellFree(KbCell.Open, true);
+        foreach (KbCell bad in new[] { KbCell.Wall, KbCell.Door, KbCell.Partial, KbCell.Pawn, KbCell.Pit, KbCell.CoveredPit, KbCell.Water, KbCell.OutOfBounds })
+        {
+            shoveCells &= !RM_KnockbackMath.ShoveCellFree(bad, false);
+        }
+        Check("K-14 shove never into pit, wall, door, pawn, water, edge", shoveCells);
+
         // K-04/K-05 property: random grids, never end on a blocked cell, never pass through a wall
         var rnd = new Random(1234);
         bool neverBlocked = true, neverThrough = true, cornerOk = true;

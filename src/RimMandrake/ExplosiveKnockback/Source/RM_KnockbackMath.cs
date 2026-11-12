@@ -22,6 +22,9 @@ namespace RimMandrake.ExplosiveKnockback
 
     public enum KbKind : byte { Pawn = 0, Item = 1, Corpse = 2 }
 
+    /// <summary>What a blast does to a closed container (plan step 2, dl_container_shove).</summary>
+    public enum KbShove : byte { None = 0, Slide = 1, Jolt = 2 }
+
     public enum KbStop : byte
     {
         None = 0,        // no move at all
@@ -224,6 +227,32 @@ namespace RimMandrake.ExplosiveKnockback
                 return false;
             }
             return true;
+        }
+
+        /// <summary>Owner ruling 2026-11-10/11: does the storage under a loose good keep it from being thrown? Only a CLOSED
+        /// container does (storage that hides its contents, or carries the opt-in tag); an open shelf only when the player
+        /// turned the old rule back on.</summary>
+        public static bool GoodsHeld(bool onStorage, bool closed, bool openStorageProtects)
+        {
+            return onStorage && (closed || openStorageProtects);
+        }
+
+        /// <summary>dl_container_shove: a 1x1 closed container at or under the light-mass limit slides one cell when the cell
+        /// behind it (away from the blast) is free open ground; anything else jolts in place. Off = nothing.</summary>
+        public static KbShove ContainerShove(bool enabled, bool oneByOne, float mass, float lightMassLimit, bool behindFree)
+        {
+            if (!enabled)
+            {
+                return KbShove.None;
+            }
+            return oneByOne && mass <= lightMassLimit && behindFree ? KbShove.Slide : KbShove.Jolt;
+        }
+
+        /// <summary>The cell a shove may enter: only open ground with nothing on it. Never a pit (open or covered), a wall,
+        /// a door, sandbags, water, the map edge or a pawn.</summary>
+        public static bool ShoveCellFree(KbCell c, bool hasThings)
+        {
+            return c == KbCell.Open && !hasThings;
         }
 
         /// <summary>A deterministic direction for a thing on the blast's own cell, keyed on (explosion, thing).</summary>
