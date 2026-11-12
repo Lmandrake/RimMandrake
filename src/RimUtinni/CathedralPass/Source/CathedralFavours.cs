@@ -124,6 +124,13 @@ namespace RimMandrake.Utinni.CathedralPass
             }
         }
 
+        // Keep the pack's pawns (dead ones too) out of world-pawn GC while the part runs: the list holds them by
+        // reference, and a discarded pawn reloads as a "Could not resolve reference" warning (WorldPawnGC).
+        public override bool QuestPartReserves(Pawn p)
+        {
+            return State == QuestPartState.Enabled && pack.Contains(p);
+        }
+
         public override void QuestPartTick()
         {
             base.QuestPartTick();

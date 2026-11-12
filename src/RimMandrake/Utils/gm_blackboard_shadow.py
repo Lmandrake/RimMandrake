@@ -757,7 +757,7 @@ class ShadowBlackboard:
             offer = self.mission_offer
             if offer and offer["quest_def"] == root and qid not in offer["quest_ids_before_offer"]:
                 offer["quest_id"] = qid
-                if state == "Ongoing" and offer["status"] == "posted":
+                if state == "Ongoing" and offer["status"] in ("posted", "withdrawn"):
                     offer["status"] = "in_progress"
                     offer["accepted_tick"] = ticks
                 elif state and state.startswith("Ended"):
@@ -795,12 +795,25 @@ class ShadowBlackboard:
 
         offer = self.mission_offer
         if offer and offer["status"] == "posted" and not missions_open:
+            # The blackboard cannot end a quest (read-only). If the request reached the quest list, the live firer
+            # ends it (jawa/quest_lifecycle action=end, no letter) and this offer is kept, as "withdrawn", until the
+            # list shows it ended: a player who accepts it first is still tracked as in progress, so no second
+            # request overlaps it (QuestUnique would refuse one anyway) and its completion is still read.
+            qid = offer["quest_id"]
             would_fire.append({"type": "cathedral_mission_offer_withdrawn", "quest_def": offer["quest_def"],
-                               "reason": closed_reason,
-                               "detail": "missions closed (%s) while %s was on offer -- SHADOW MODE: would let the "
-                                         "offer lapse with no letter (the request simply is not repeated); fired "
-                                         "nothing." % (closed_reason, offer["quest_def"])})
-            self.mission_offer, self.mission_last_resolved_tick = None, ticks
+                               "quest_id": qid, "reason": closed_reason,
+                               "detail": "missions closed (%s) while %s was on offer -- SHADOW MODE: %s; no letter "
+                                         "(the request simply is not repeated); fired nothing." % (
+                                             closed_reason, offer["quest_def"],
+                                             "would end quest %s via jawa/quest_lifecycle action=end "
+                                             "sendLetter=false" % qid if qid is not None else
+                                             "never reached the quest list, so the offer just lapses")})
+            if qid is None:
+                self.mission_offer, self.mission_last_resolved_tick = None, ticks
+            else:
+                offer["status"], offer["withdrawn_tick"] = "withdrawn", ticks
+        elif offer and offer["status"] == "withdrawn" and ticks - offer["withdrawn_tick"] >= CATHEDRAL_MISSION_OFFER_STALE_TICKS:
+            self.mission_offer, self.mission_last_resolved_tick = None, ticks   # its quest row never ended: stale
         elif offer and offer["status"] == "posted" and ticks - offer["posted_tick"] >= (
                 CATHEDRAL_MISSION_OFFER_EXPIRY_TICKS if offer["quest_id"] is None else CATHEDRAL_MISSION_OFFER_STALE_TICKS):
             would_fire.append({"type": "cathedral_mission_offer_lapsed", "quest_def": offer["quest_def"],
@@ -1276,6 +1289,8 @@ class FixtureBridge:
         # the game rolls each quest's expiry in expireDaysRange 3~4 days; the fixture takes the middle, so the
         # blackboard's own 3-day lapse for an UNanswered offer and the game's later expiry are both exercised
         self.offer_expiry = int(player.get("offer_expiry_ticks", 3.5 * 60_000))
+        # false = the firer does NOT end a withdrawn request, so the player can still accept it (the game allows it)
+        self.firer_ends_withdrawn = bool(player.get("firer_ends_withdrawn", True))
 
     def __enter__(self):
         return self
@@ -1313,10 +1328,11 @@ class FixtureBridge:
                                     "state": "NotYetAccepted", "historical": False, "simulated": True,
                                     "_made": self.tick, "_response": resp})
                 self.next_quest_id += 1
-            elif ev["type"] == "cathedral_mission_offer_withdrawn":
+            elif ev["type"] == "cathedral_mission_offer_withdrawn" and self.firer_ends_withdrawn:
+                # the simulated live firer's quest_lifecycle end (outcome unknown, no letter)
                 for q in self.quests:
-                    if q["root"] == ev["quest_def"] and q["state"] == "NotYetAccepted":
-                        q["state"] = "EndedOfferExpired"
+                    if q["id"] == ev.get("quest_id") and q["state"] == "NotYetAccepted":
+                        q["state"] = "EndedUnknownOutcome"
 
     def call(self, tool, params, check=True):
         st = self.state

@@ -47,6 +47,10 @@ Bridge held by the live lane; every step reads its result back, none is assumed:
      drop the colony's Force_KyberCrystal count by 2 between polls (sell to a trader, or destroy for the read):
      the next poll's Gravcore row reads withheld_heat and no boon would_fire, same stage.
   6. Settings: jawa/mod_settings_field cathedralBoonsEnabled=false -> storyteller_fire dryRun=true canFireNow false.
+  7. Go-dark withdrawal: with a request fired but not accepted, run the blackboard with --pursuit-event-on-poll N
+     --exposure-godark-threshold 15: poll N logs cathedral_mission_offer_withdrawn naming the quest id; the firer's
+     act is jawa/quest_lifecycle action=end questId=<id> outcome=unknown sendLetter=false (the blackboard itself is
+     read-only); the list then reads EndedUnknownOutcome and no request or gift is offered for 10 game days.
 NOT PROVEN offline (owed to that run): that QuestNode_ManhunterPack's pack spawns on accept with the quest tag
 and that RUT_QuestPart_PackDown sees it to EndedSuccess in this mod list; that the boon lands at TradeDropSpot on a
 gravship map.

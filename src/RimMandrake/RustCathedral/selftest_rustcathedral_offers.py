@@ -271,7 +271,7 @@ def criterion_4_go_dark():
           dark["cathedral_offers"]["missions"]["open"] is False
           and dark["cathedral_offers"]["missions"]["closed_reason"] == "go_dark"
           and "cathedral_mission_offer_withdrawn" in types(dark)
-          and dark["cathedral_offers"]["missions"]["current"] is None)
+          and (dark["cathedral_offers"]["missions"]["current"] or {}).get("status", "withdrawn") == "withdrawn")
     check("4 go-dark poll: both boons closed_go_dark, nothing offered",
           boon_state(dark, "Panels") == boon_state(dark, "Gravcore") == "closed_go_dark"
           and not {"cathedral_mission_offer", "cathedral_boon_offer"} & set(types(dark)))
@@ -281,9 +281,24 @@ def criterion_4_go_dark():
         hold and not any(t.endswith(("mission_offer", "boon_offer")) for r in hold for t in types(r)))
     after = R[10 + len(hold):]
     check("4 after the hold, favours reopen", any("cathedral_mission_offer" in types(r) for r in after))
-    check("4 the withdrawn request lapsed in the quest list too (no letter)",
-          any(q["state"] == "EndedOfferExpired" for q in dark["mission_quests"]) or
-          any(q["state"] == "EndedOfferExpired" for q in R[10]["mission_quests"]))
+    wd = next(e for e in dark["would_fire"] if e["type"] == "cathedral_mission_offer_withdrawn")
+    check("4 the withdrawal names the live act (end quest %s via quest_lifecycle, no letter) and the quest list then "
+          "shows it ended" % wd["quest_id"], wd["quest_id"] is not None and "action=end" in wd["detail"]
+          and any(q["id"] == wd["quest_id"] and q["state"] == "EndedUnknownOutcome" for q in R[10]["mission_quests"]))
+    # the game lets a player accept a request nobody ended: then it is tracked, not forgotten
+    fx2 = _fast_vouched(polls=60)
+    fx2["player"].update({"mission_responses": ["complete"], "firer_ends_withdrawn": False, "accept_after_ticks": 45000})
+    _, K, _ = run(fx2, story_flags=VOUCHED_FAST, pursuit_event_on_poll=6, exposure_godark_threshold=15.0)
+    kd = next(r for r in K if r["go_dark_fired_this_poll"])
+    later = K[kd["poll"]:]
+    acc = next((r for r in later if r["cathedral_offers"]["missions"]["current"] and
+                r["cathedral_offers"]["missions"]["current"]["status"] == "in_progress"), None)
+    hold_end = kd["ticksGame"] + G.CATHEDRAL_FAVOURS_DARK_HOLD_TICKS
+    check("4 a withdrawn request the player accepts anyway is tracked in progress (poll %s), credited once, and no "
+          "second request overlaps it" % (acc and acc["poll"]),
+          acc is not None and sum(1 for r in K for e in r["would_fire"] if e["type"] == "cathedral_mission_completed"
+                                  and e["quest_id"] == acc["cathedral_offers"]["missions"]["current"]["quest_id"]) == 1
+          and not any("cathedral_mission_offer" in types(r) for r in later if r["ticksGame"] < hold_end))
 
 
 def criterion_5_oracle_absent():
