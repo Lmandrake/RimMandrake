@@ -22,8 +22,8 @@
         "pawns": [
          {
           "ok": true,
-          "id": "Human47120",
-          "name": "Olsen",
+          "id": "Human18880",
+          "name": "Hooke",
           "kindRequested": "Colonist",
           "kindActual": "Colonist",
           "kindSubstituted": false,
@@ -38,10 +38,10 @@
         ],
         "ticksGame": 1,
         "operation": {
-         "OperationId": "op_75cd18697f3847cf9e97447e099082f2",
+         "OperationId": "op_1232af02fb1a4b729dd06d32b290083b",
          "Status": "Completed",
          "Success": true,
-         "DurationMs": 35
+         "DurationMs": 34
         },
         "state": {
          "programState": "Playing",
@@ -67,81 +67,69 @@
         "count": 1,
         "pawns": [
          {
-          "thingId": "Human47120",
-          "thingIdNumber": 47120,
-          "name": "Izolda Olsen",
-          "nameShort": "Olsen",
-          "title": "nurse",
+          "thingId": "Human18880",
+          "thingIdNumber": 18880,
+          "name": "Hooke Hunter",
+          "nameShort": "Hooke",
+          "title": "quarry worker",
           "kindDef": "Colonist",
           "faction": "PlayerColony",
           "factionName": "New Arrivals",
-          "gender": "Female",
-          "ageBiologicalYears": 42,
-          "ageChronologicalYears": 70,
+          "gender": "Male",
+          "ageBiologicalYears": 22,
+          "ageChronologicalYears": 819,
           "developmentalStage": "Adult",
           "xenotype": "Baseliner",
-          "ideo": "Post-Archotechnics",
-          "childhood": "MedievalSlave49",
-          "adulthood": "Nurse61",
-          "headType": "Female_NarrowNormal",
-          "bodyType": "Female",
-          "hair": "Cute",
-          "beard": "NoBeard",
+          "ideo": "Blood Hungry Crypt",
+          "childhood": "SicklyChild55",
+          "adulthood": "QuarryWorker29",
+          "headType": "Male_NarrowWide",
+          "bodyType": "Male",
+          "hair": "Richard",
+          "beard": "Curtain",
           "position": {
-           "x": 83,
+           "x": 84,
            "z": 161
           },
           "traits": [
            {
-            "def": "PsychicSensitivity",
-            "degree": 1,
-            "label": "Psychically sensitive",
-            "forced": false
-           },
-           {
-            "def": "Immunity",
-            "degree": 1,
-            "label": "Super-immune",
-            "forced": false
-           },
-           {
-            "def": "FastLearner",
-            "degree": 0,
-            "label": "Fast learner",
+            "def": "Nerves",
+            "degree": -2,
+            "label": "Volatile",
             "forced": false
            }
           ],
           "skills": [
            {
             "skill": "Shooting",
-            "levelRaw": 0,
-            "levelEffective": 0,
+            "levelRaw": 2,
+            "levelEffective": 2,
             "passion": "None",
             "xpSinceLastLevel": 0.0,
-            "disabled": true
+            "disabled": false
            },
            {
             "skill": "Melee",
-            "levelRaw": 0,
-            "levelEffective": 0,
+            "levelRaw": 2,
+            "levelEffective": 2,
             "passion": "None",
             "xpSinceLastLevel": 0.0,
-            "disabled": true
+            "disabled": false
            },
            {
             "skill": "Construction",
-            "levelRaw": 6,
-            "levelEffective": 6,
-            "passion": "Minor",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
             "xpSinceLastLevel": 0.0,
             "disabled": false
            },
            {
             "skill": "Mining",
-            "levelRaw": 4,
-            "levelEffective": 4,
-            "passion": "None",
-            "xpSinceLastLevel": 0.0,
+            "levelRaw": 12,
+            "levelEffective": 12,
+            "passion": "Major",
+            "xpSinceLastLevel": -2.4,
             "disabled": false
            },
            {
@@ -154,46 +142,38 @@
            },
            {
             "skill": "Plants",
-            "levelRaw": 6,
-            "levelEffective": 6,
+            "levelRaw": 4,
+            "levelEffective": 4,
             "passion": "Minor",
             "xpSinceLastLevel": 0.0,
             "disabled": false
            },
            {
             "skill": "Animals",
-            "levelRaw": 11,
-            "levelEffective": 11,
-            "passion": "Major",
-            "xpSinceLastLevel": -1.0,
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
             "disabled": false
            },
            {
             "skill": "Crafting",
-            "levelRaw": 4,
-            "levelEffective": 4,
+            "levelRaw": 3,
+            "levelEffective": 3,
             "passion": "None",
             "xpSinceLastLevel": 0.0,
             "disabled": false
            },
            {
             "skill": "Artistic",
-            "levelRaw": 2,
-            "levelEffective": 2,
+            "levelRaw": 1,
+            "levelEffective": 1,
             "passion": "None",
             "xpSinceLastLevel": 0.0,
             "disabled": false
            },
            {
             "skill": "Medicine",
-            "levelRaw": 11,
-            "levelEffective": 11,
-            "passion": "Minor",
-            "xpSinceLastLevel": -1.0,
-            "disabled": false
-           },
-           {
-            "skill": "Social",
             "levelRaw": 7,
             "levelEffective": 7,
             "passion": "Minor",
@@ -201,30 +181,43 @@
             "disabled": false
            },
            {
-            "skill": "Intellectual",
+            "skill": "Social",
             "levelRaw": 0,
             "levelEffective": 0,
             "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 8,
+            "levelEffective": 8,
+            "passion": "Major",
             "xpSinceLastLevel": 0.0,
             "disabled": false
            }
           ],
           "apparel": [
            {
-            "def": "Apparel_Pants",
-            "defName": "Apparel_Pants",
+            "def": "Apparel_BasicShirt",
+            "defName": "Apparel_BasicShirt",
             "stuff": "Synthread",
             "hp": 130
            },
            {
-            "def": "Apparel_BasicShirt",
-            "defName": "Apparel_BasicShirt",
+            "def": "Apparel_Pants",
+            "defName": "Apparel_Pants",
             "stuff": "Synthread",
             "hp": 130
            }
           ],
           "equipment": [],
           "hediffs": [
+           {
+            "def": "Scratch",
+            "part": "Hand",
+            "severity": 5.0
+           },
            {
             "def": "RM_PitExposure",
             "severity": 0.5
@@ -233,8 +226,8 @@
           "needs": [
            {
             "need": "Mood",
-            "level": 0.510399938,
-            "pct": 0.510399938
+            "level": 0.52639997,
+            "pct": 0.52639997
            },
            {
             "need": "Food",
@@ -243,13 +236,13 @@
            },
            {
             "need": "Rest",
-            "level": 0.9539595,
-            "pct": 0.9539595
+            "level": 0.889566541,
+            "pct": 0.889566541
            },
            {
             "need": "Joy",
-            "level": 0.4949813,
-            "pct": 0.4949813
+            "level": 0.5885444,
+            "pct": 0.5885444
            },
            {
             "need": "Beauty",
@@ -278,18 +271,18 @@
            },
            {
             "need": "RM_Thirst",
-            "level": 0.784146667,
-            "pct": 0.784146667
+            "level": 0.7860002,
+            "pct": 0.7860002
            }
           ]
          }
         ],
         "ticksGame": 1001,
         "operation": {
-         "OperationId": "op_e6b7280094e14ccc80dccc10880dbc4d",
+         "OperationId": "op_36f6bcac010e48c292b852bbc5e5b28a",
          "Status": "Completed",
          "Success": true,
-         "DurationMs": 49
+         "DurationMs": 47
         },
         "state": {
          "programState": "Playing",
@@ -335,8 +328,8 @@
         "pawns": [
          {
           "ok": true,
-          "id": "Human47126",
-          "name": "Svejgaard",
+          "id": "Human18886",
+          "name": "Friedman",
           "kindRequested": "Colonist",
           "kindActual": "Colonist",
           "kindSubstituted": false,
@@ -351,10 +344,10 @@
         ],
         "ticksGame": 1001,
         "operation": {
-         "OperationId": "op_d6f907f08eb24435bbf818112a7c8d87",
+         "OperationId": "op_e6f5ec234aa2401ea7e288e5947ae5a3",
          "Status": "Completed",
          "Success": true,
-         "DurationMs": 34
+         "DurationMs": 45
         },
         "state": {
          "programState": "Playing",
@@ -380,62 +373,62 @@
         "count": 1,
         "pawns": [
          {
-          "thingId": "Human47126",
-          "thingIdNumber": 47126,
-          "name": "Benjamin Svejgaard",
-          "nameShort": "Svejgaard",
-          "title": "medical scientist",
+          "thingId": "Human18886",
+          "thingIdNumber": 18886,
+          "name": "Angus Friedman",
+          "nameShort": "Friedman",
+          "title": "medieval lord",
           "kindDef": "Colonist",
           "faction": "PlayerColony",
           "factionName": "New Arrivals",
           "gender": "Male",
-          "ageBiologicalYears": 32,
-          "ageChronologicalYears": 285,
+          "ageBiologicalYears": 37,
+          "ageChronologicalYears": 62,
           "developmentalStage": "Adult",
           "xenotype": "Baseliner",
-          "ideo": "Post-Archotechnics",
-          "childhood": "HillbillyProdigy60",
-          "adulthood": "MedicalScientist16",
-          "headType": "Male_AverageWide",
+          "ideo": "Blood Hungry Crypt",
+          "childhood": "ShelterChild50",
+          "adulthood": "MedievalLord57",
+          "headType": "Male_AverageNormal",
           "bodyType": "Hulk",
-          "hair": "Shaved",
+          "hair": "Henry",
           "beard": "NoBeard",
           "position": {
            "x": 85,
-           "z": 160
+           "z": 159
           },
           "traits": [
            {
-            "def": "Kind",
+            "def": "SlowLearner",
             "degree": 0,
-            "label": "Kind",
+            "label": "Slow learner",
             "forced": false
            }
           ],
           "skills": [
            {
             "skill": "Shooting",
-            "levelRaw": 0,
-            "levelEffective": 0,
-            "passion": "None",
+            "levelRaw": 7,
+            "levelEffective": 7,
+            "passion": "Minor",
             "xpSinceLastLevel": 0.0,
             "disabled": false
            },
            {
             "skill": "Melee",
-            "levelRaw": 6,
-            "levelEffective": 6,
+            "levelRaw": 9,
+            "levelEffective": 9,
             "passion": "Minor",
             "xpSinceLastLevel": 0.0,
             "disabled": false
            },
            {
             "skill": "Construction",
-            "levelRaw": 3,
-            "levelEffective": 3,
-            "passion": "Minor",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
             "xpSinceLastLevel": 0.0,
-            "disabled": false
+            "disabled": true
            },
            {
             "skill": "Mining",
@@ -443,7 +436,7 @@
             "levelEffective": 0,
             "passion": "None",
             "xpSinceLastLevel": 0.0,
-            "disabled": false
+            "disabled": true
            },
            {
             "skill": "Cooking",
@@ -451,26 +444,18 @@
             "levelEffective": 0,
             "passion": "None",
             "xpSinceLastLevel": 0.0,
-            "disabled": false
+            "disabled": true
            },
            {
             "skill": "Plants",
-            "levelRaw": 2,
-            "levelEffective": 2,
-            "passion": "Minor",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
             "xpSinceLastLevel": 0.0,
-            "disabled": false
+            "disabled": true
            },
            {
             "skill": "Animals",
-            "levelRaw": 4,
-            "levelEffective": 4,
-            "passion": "Minor",
-            "xpSinceLastLevel": 0.0,
-            "disabled": false
-           },
-           {
-            "skill": "Crafting",
             "levelRaw": 1,
             "levelEffective": 1,
             "passion": "None",
@@ -478,7 +463,7 @@
             "disabled": false
            },
            {
-            "skill": "Artistic",
+            "skill": "Crafting",
             "levelRaw": 0,
             "levelEffective": 0,
             "passion": "None",
@@ -486,40 +471,48 @@
             "disabled": true
            },
            {
+            "skill": "Artistic",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
             "skill": "Medicine",
-            "levelRaw": 8,
-            "levelEffective": 8,
-            "passion": "Major",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "None",
             "xpSinceLastLevel": 0.0,
             "disabled": false
            },
            {
             "skill": "Social",
-            "levelRaw": 0,
-            "levelEffective": 0,
-            "passion": "None",
-            "xpSinceLastLevel": 0.0,
-            "disabled": true
+            "levelRaw": 11,
+            "levelEffective": 11,
+            "passion": "Major",
+            "xpSinceLastLevel": -1.0,
+            "disabled": false
            },
            {
             "skill": "Intellectual",
-            "levelRaw": 12,
-            "levelEffective": 12,
-            "passion": "Major",
-            "xpSinceLastLevel": -2.4,
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
             "disabled": false
            }
           ],
           "apparel": [
            {
-            "def": "Apparel_Pants",
-            "defName": "Apparel_Pants",
+            "def": "Apparel_BasicShirt",
+            "defName": "Apparel_BasicShirt",
             "stuff": "Synthread",
             "hp": 130
            },
            {
-            "def": "Apparel_BasicShirt",
-            "defName": "Apparel_BasicShirt",
+            "def": "Apparel_Pants",
+            "defName": "Apparel_Pants",
             "stuff": "Synthread",
             "hp": 130
            }
@@ -529,33 +522,33 @@
           "needs": [
            {
             "need": "Mood",
-            "level": 0.52639997,
-            "pct": 0.52639997
+            "level": 0.5312,
+            "pct": 0.5312
            },
            {
             "need": "Food",
-            "level": 0.771999955,
-            "pct": 0.771999955
+            "level": 0.775999963,
+            "pct": 0.775999963
            },
            {
             "need": "Rest",
-            "level": 0.9610238,
-            "pct": 0.9610238
+            "level": 0.98518616,
+            "pct": 0.98518616
            },
            {
             "need": "Joy",
-            "level": 0.547169447,
-            "pct": 0.547169447
+            "level": 0.538536549,
+            "pct": 0.538536549
            },
            {
             "need": "Beauty",
-            "level": 0.466400057,
-            "pct": 0.466400057
+            "level": 0.471200049,
+            "pct": 0.471200049
            },
            {
             "need": "Comfort",
-            "level": 0.483199924,
-            "pct": 0.483199924
+            "level": 0.485599935,
+            "pct": 0.485599935
            },
            {
             "need": "Outdoors",
@@ -574,15 +567,15 @@
            },
            {
             "need": "RM_Thirst",
-            "level": 0.7860002,
-            "pct": 0.7860002
+            "level": 0.788000166,
+            "pct": 0.788000166
            }
           ]
          }
         ],
         "ticksGame": 2001,
         "operation": {
-         "OperationId": "op_f9a2b26eba60461781fdd692c0b2db25",
+         "OperationId": "op_b6b87813b14b40eb84a4683bfd863c80",
          "Status": "Completed",
          "Success": true,
          "DurationMs": 48
@@ -614,7 +607,7 @@
     "companion": true,
     "bland_problems": [],
     "bland_notes": [
-     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+     "restore_colonists acted 10 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
     ],
     "policy": "abort",
     "chunk": 600,
@@ -639,7 +632,7 @@
       "tool": "jawa/spawn_pawn",
       "requestedKind": "Colonist",
       "returnedIds": [
-       "Human47120"
+       "Human18880"
       ],
       "toolKinds": [
        "Colonist"
@@ -656,7 +649,7 @@
       "tool": "jawa/spawn_pawn",
       "requestedKind": "Colonist",
       "returnedIds": [
-       "Human47126"
+       "Human18886"
       ],
       "toolKinds": [
        "Colonist"
@@ -670,7 +663,7 @@
      }
     ],
     "receiptProblems": [],
-    "baselineScene": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\scratch\\BENCH\\claude-archmagi-fwlive\\Transient\\modcheck\\surprises\\20261112T001756\\FlowWorksExtensions_toggle_pit_exposure_scene_baseline.json"
+    "baselineScene": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\scratch\\BENCH\\claude-archmagi-fwlive\\Transient\\modcheck\\surprises\\20261112T010633\\FlowWorksExtensions_toggle_pit_exposure_scene_baseline.json"
    },
    "modal_check": {
     "found_open": false,
@@ -694,9 +687,9 @@
     "gas_things": "ok"
    },
    "phase_s": {
-    "hold": 6.214,
-    "body": 10.586,
-    "teardown": 1.002
+    "hold": 5.777,
+    "body": 9.838,
+    "teardown": 0.953
    }
   }
  ],
@@ -755,7 +748,7 @@
   118
  ],
  "site_save": null,
- "wall_s": 31.4,
+ "wall_s": 28.3,
  "chains_run": [
   "toggle_pit_exposure"
  ],
@@ -823,7 +816,7 @@
  "script": "extension_proof",
  "mod": "FlowWorks",
  "mode": "live",
- "mod_hash": "dd46c4d55262549516494e75f392c3c0f0f5aac6ac3b71b930a7fdb9cadb40ba",
+ "mod_hash": "512ff10a52035aa10c6836521d7b584450465bacc307883f07e42f68a4ee3d6f",
  "env": {
   "running": [
    "brrainz.harmony",

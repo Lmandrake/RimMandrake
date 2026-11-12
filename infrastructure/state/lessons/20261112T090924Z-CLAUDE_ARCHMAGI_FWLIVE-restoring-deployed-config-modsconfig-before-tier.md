@@ -1,0 +1,2 @@
+Restoring deployed/config/ModsConfig.before-tier-<tier>.xml to HEAD (it shows dirty because modset_builder rewrites it) breaks the swap marker's md5 check: every later --tier --apply refuses 'before-copy missing or changed'. Leave it alone; if already broken, move deployed/config/ModsConfig.swap-active.json aside (the owner does not want his list restored, 2026-10-24).
+item: PIT_TEMPERATURE_SOFTENING_1
