@@ -1,16 +1,3 @@
-staging src/RimUtinni/Rites/Source/SelfTest/RimMandrake.Utinni.Rites.SelfTest.csproj -> D:\ClaudeWork\rimmandrake\build\SinkingKernelSelfTest
-  src/RimUtinni/Rites/Source/
-+ dotnet.exe build D:\ClaudeWork\rimmandrake\build\SinkingKernelSelfTest\src\RimUtinni\Rites\Source\SelfTest\RimMandrake.Utinni.Rites.SelfTest.csproj -c Release
-  Determining projects to restore...
-  All projects are up-to-date for restore.
-  RimMandrake.Utinni.Rites.SelfTest -> D:\ClaudeWork\rimmandrake\build\SinkingKernelSelfTest\src\RimUtinni\Rites\Source\SelfTest\bin\Release\net8.0\RimMandrake.Utinni.Rites.SelfTest.dll
-
-Build succeeded.
-    0 Warning(s)
-    0 Error(s)
-
-Time Elapsed 00:00:00.82
-PASS  kernel_guards (Source/Kernel engine-free, compiled into the mod and the selftest)
 PASS  sinking/pitch_bitumen_is_pitch
 PASS  sinking/pitch_korveth_is_pitch
 PASS  sinking/dig_find_is_dig_find
@@ -60,5 +47,29 @@ PASS  sinking/toggle_riteEnabled
 PASS  sinking/toggle_trapFizzleEnabled_off_mid_count_arms
 PASS  sinking/toggle_beastLullEnabled_off_mid_lull_wakes
 PASS  sinking/toggle_raidLullEnabled_off_mid_lull_full_chance
-sinking kernel: 49 passed, 0 failed
-PASS selftest_sinking_kernel
+PASS  sinking/away_from_tar_refused
+PASS  sinking/away_from_tar_refused_dig_too
+PASS  sinking/away_from_tar_pawn_still_pawn_refusal
+PASS  sinking/away_from_tar_is_refusal
+PASS  sinking/tar_terrain_defs
+PASS  sinking/tar_spent_crust_not_tar
+PASS  sinking/tar_vault_is_tar_building
+PASS  sinking/tar_radius_default_3
+PASS  sinking/tar_radius_clamped
+PASS  sinking/roundup
+PASS  sinking/shift_inside_window_moves_past_end
+PASS  sinking/shift_keeps_warning_gap
+PASS  sinking/shift_never_sooner
+PASS  sinking/shift_idempotent
+PASS  sinking/shift_beyond_window_untouched
+PASS  sinking/shift_past_raid_untouched
+PASS  sinking/shift_raid_only_when_warning_sent
+PASS  sinking/shift_no_warning
+PASS  sinking/shift_holdoff_over_untouched
+PASS  sinking/letter_none_scheduled
+PASS  sinking/letter_moved_old_new
+PASS  sinking/letter_unchanged_says_as_before
+PASS  sinking/droid_before_humanlike
+PASS  sinking/humanlike_category
+PASS  sinking/default_exclusions_humanlike_only
+sinking kernel: 74 passed, 0 failed

@@ -42,6 +42,7 @@ namespace RimMandrake.Utinni.Rites
                 beastLullDays = RM_NinefoldSettings.sinkingBeastLullDays,
                 trapCount = RM_NinefoldSettings.sinkingTrapCount,
                 ownershipExclusions = RM_NinefoldSettings.sinkingOwnershipExclusions,
+                tarRadius = RM_NinefoldSettings.sinkingTarRadius,
             };
         }
 
@@ -77,7 +78,27 @@ namespace RimMandrake.Utinni.Rites
             return lotteryFinds.Contains(def.defName);
         }
 
-        public static SinkingOfferingFacts Facts(Thing t)
+        /// <summary>Tar terrain (the mere, the poured moat, a tar-filled channel) or a tar building (the tar vault) within
+        /// the configured radius of <paramref name="t"/>'s cell. The defs are the kernel's lists.</summary>
+        public static bool NearTar(Thing t)
+        {
+            Map map = t?.MapHeld;
+            if (map == null) return false;
+            IntVec3 at = t.PositionHeld;
+            foreach (IntVec3 c in GenRadial.RadialCellsAround(at, SinkingKernel.TarRadius(Config()), true))
+            {
+                if (!c.InBounds(map)) continue;
+                if (SinkingKernel.IsTarTerrain(map.terrainGrid.TerrainAt(c)?.defName)) return true;
+                List<Thing> here = map.thingGrid.ThingsListAtFast(c);
+                for (int i = 0; i < here.Count; i++)
+                    if (SinkingKernel.IsTarBuilding(here[i]?.def?.defName)) return true;
+            }
+            return false;
+        }
+
+        public static SinkingOfferingFacts Facts(Thing t) { return Facts(t, t != null && NearTar(t)); }
+
+        public static SinkingOfferingFacts Facts(Thing t, bool nearTar)
         {
             return new SinkingOfferingFacts
             {
@@ -86,12 +107,15 @@ namespace RimMandrake.Utinni.Rites
                 isCorpse = t is Corpse,
                 inLotteryTable = t != null && IsLotteryFind(t.def),
                 marketValue = t == null ? 0f : t.MarketValue * t.stackCount,
+                nearTar = nearTar,
             };
         }
 
-        public static SinkingPlan PlanFor(Thing t)
+        public static SinkingPlan PlanFor(Thing t) { return PlanFor(Facts(t)); }
+
+        public static SinkingPlan PlanFor(SinkingOfferingFacts f)
         {
-            return SinkingKernel.Plan(Facts(t), Config(), OfferingUtility.ValueAtSmall, OfferingUtility.ValueAtLarge,
+            return SinkingKernel.Plan(f, Config(), OfferingUtility.ValueAtSmall, OfferingUtility.ValueAtLarge,
                                       EventMagnitude.Small, EventMagnitude.Large);
         }
 
@@ -157,21 +181,85 @@ namespace RimMandrake.Utinni.Rites
             return true;
         }
 
-        /// <summary>Moves the next scheduled Imperial raid (and its warning) on the map out by the multiplier. Returns a
-        /// line for the letter/probe, or null when no Imperial incident is scheduled.</summary>
-        public static string MoveImperialTimers(Map map, float multiplier)
+        /// <summary>EmpirePursuit acts on multiples of this (EmpireLadderTimers.TickInterval / the scenpart's TickInterval).</summary>
+        public const int PursuitInterval = 2500;
+
+        /// <summary>Absolute tick the hold-off ends on <paramref name="map"/>, or -1 when it does not hold there.</summary>
+        public static int HoldOffEnd(Map map)
         {
+            if (!RM_NinefoldSettings.sinkingEnabled || !RM_NinefoldSettings.sinkingHoldOffEnabled) return -1;
+            int left = TicksLeft(map, HoldOffDef);
+            if (left < 0) return -1;
+            long end = (long)Find.TickManager.TicksGame + left;
+            return end >= int.MaxValue ? int.MaxValue : (int)end;
+        }
+
+        public static bool HeldOff(Map map) { return HoldOffEnd(map) >= 0; }
+
+        /// <summary>What MoveImperialTimers did: whether a raid was on the clock, and its tick before and after.</summary>
+        public struct TimerMove
+        {
+            public bool scheduled;
+            public int now, oldRaid, newRaid;
+            public override string ToString() { return scheduled ? "imperial raid tick " + oldRaid + " -> " + newRaid : "no imperial raid scheduled"; }
+        }
+
+        /// <summary>Moves the next scheduled Imperial raid (and its warning) on the map out by the multiplier, then (while the
+        /// hold-off holds) past the hold-off's end. Reports what it actually did.</summary>
+        public static TimerMove MoveImperialTimers(Map map, float multiplier)
+        {
+            var r = new TimerMove { now = Find.TickManager.TicksGame };
             object part = PursuitPart();
-            if (part == null || map == null) return null;
+            if (part == null || map == null) return r;
             var raids = AccessTools.Field(part.GetType(), "mapRaidTimers")?.GetValue(part) as Dictionary<Map, int>;
             var warns = AccessTools.Field(part.GetType(), "mapWarningTimers")?.GetValue(part) as Dictionary<Map, int>;
-            if (raids == null || !raids.TryGetValue(map, out int raid)) return null;
-            int now = Find.TickManager.TicksGame;
+            if (raids == null || !raids.TryGetValue(map, out int raid)) return r;
+            int now = r.now;
             int moved = SinkingKernel.MoveOut(now, raid, multiplier);
+            int warn = -1;
+            bool hasWarn = warns != null && warns.TryGetValue(map, out warn);
+            if (hasWarn) warn = SinkingKernel.MoveOutWarning(now, warn, moved, multiplier);
+            int end = HoldOffEnd(map);
+            if (end >= 0) SinkingKernel.ShiftPastHoldOff(now, end, PursuitInterval, ref moved, ref warn);
             raids[map] = moved;
-            if (warns != null && warns.TryGetValue(map, out int warn))
-                warns[map] = SinkingKernel.MoveOutWarning(now, warn, moved, multiplier);
-            return "imperial raid tick " + raid + " -> " + moved;
+            if (hasWarn) warns[map] = warn;
+            r.scheduled = true; r.oldRaid = raid; r.newRaid = moved;
+            return r;
+        }
+
+        /// <summary>The per-tick guard (Patch_Sinking_PursuitTick): every held map's pending pursuit timers are kept past the
+        /// hold-off's end. Returns how many maps it moved.</summary>
+        public static int GuardPursuitTimers(object part)
+        {
+            if (part == null) return 0;
+            var raids = AccessTools.Field(part.GetType(), "mapRaidTimers")?.GetValue(part) as Dictionary<Map, int>;
+            var warns = AccessTools.Field(part.GetType(), "mapWarningTimers")?.GetValue(part) as Dictionary<Map, int>;
+            if (raids == null || raids.Count == 0) return 0;
+            int now = Find.TickManager.TicksGame, n = 0;
+            foreach (Map map in raids.Keys.ToList())
+            {
+                int end = HoldOffEnd(map);
+                if (end < 0) continue;
+                int raid = raids[map];
+                int warn = -1;
+                bool hasWarn = warns != null && warns.TryGetValue(map, out warn);
+                if (!SinkingKernel.ShiftPastHoldOff(now, end, PursuitInterval, ref raid, ref warn)) continue;
+                raids[map] = raid;
+                if (hasWarn) warns[map] = warn;
+                n++;
+            }
+            return n;
+        }
+
+        /// <summary>Fires a deferred pursuit raid through the scenpart's own FireRaid_NewTemp (the hold-off having ended).</summary>
+        public static bool FirePursuitRaid(Map map, float pointsMultiplier, float minPoints)
+        {
+            object part = PursuitPart();
+            MethodInfo fire = part == null ? null : AccessTools.Method(part.GetType(), "FireRaid_NewTemp");
+            var raids = part == null ? null : AccessTools.Field(part.GetType(), "mapRaidTimers")?.GetValue(part) as Dictionary<Map, int>;
+            if (fire == null || map == null || raids == null || !raids.ContainsKey(map)) return false; // pursuit gone or off this map
+            fire.Invoke(part, new object[] { map, pointsMultiplier, minPoints });
+            return true;
         }
 
         // ---------------------------------------------------------------- the beasts
@@ -188,12 +276,20 @@ namespace RimMandrake.Utinni.Rites
             if (t is Pawn p)
             {
                 if (p.RaceProps == null) return "Item";
-                if (p.RaceProps.Humanlike) return "Humanlike";
-                if (p.RaceProps.IsMechanoid) return "Mech";
-                return "Animal";
+                return SinkingKernel.PawnCategory(p.RaceProps.Humanlike, p.RaceProps.IsMechanoid, IsDroid(p));
             }
             if (t is Building) return "Building";
             return "Item";
+        }
+
+        /// <summary>A droid by this project's two conventions: Droidworks' flesh type (DroidFormatTierUtility.IsDroid,
+        /// RSW_DW_FleshType_Droid) or a humanlike that is not flesh (Patch_DroidOnline).</summary>
+        public static bool IsDroid(Pawn p)
+        {
+            RaceProperties rp = p?.RaceProps;
+            if (rp == null) return false;
+            if (rp.FleshType?.defName == "RSW_DW_FleshType_Droid") return true;
+            return rp.Humanlike && !rp.IsFlesh;
         }
 
         public static bool ColonyOwned(Thing t)
@@ -275,10 +371,10 @@ namespace RimMandrake.Utinni.Rites
             if (plan.holdOff)
             {
                 StartCondition(map, HoldOffDef, plan.holdOffTicks);
-                string moved = MoveImperialTimers(map, plan.holdOffMultiplier);
+                TimerMove moved = MoveImperialTimers(map, plan.holdOffMultiplier);
                 sb.Append("\n\nThe Empire's eye slides off this ground for a while (").Append((plan.holdOffTicks / 60000f).ToString("0.#"))
-                  .Append(" days). Their next probe comes later than it would have.");
-                if (moved != null) Log.Message("[Sinking] " + moved);
+                  .Append(" days). ").Append(SinkingKernel.HoldOffLine(moved.scheduled, moved.now, moved.oldRaid, moved.newRaid, plan.holdOffTicks));
+                Log.Message("[Sinking] " + moved);
             }
             if (plan.raidLull)
             {

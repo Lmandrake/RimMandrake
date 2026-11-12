@@ -56,7 +56,7 @@
   <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RUT_Ritual_Sinking</defName>
     <label>the Sinking</label>
-    <description>What the tar takes, no one can find. Worshippers give a thing of worth to the tar for Ishko, the Unmaskable, and it sinks out of every ledger. The Empire's eye slides off the colony for a while, ordinary raiders think twice, and foreign claims on the colony's things are wiped. Pitch given back calms the bulges; a find given back to the depth spoils the next traps in the dig. Never a person, never a body.</description>
+    <description>What the tar takes, no one can find. Worshippers give a thing of worth to the tar for Ishko, the Unmaskable, and it sinks out of every ledger. The offering must lie at the tar's edge. The Empire's eye slides off the colony for a while, ordinary raiders think twice, and foreign claims on the colony's things are wiped. Pitch given back calms the bulges; a find given back to the depth spoils the next traps in the dig. Never a person, never a body.</description>
     <issue>Ritual</issue>
     <impact>Medium</impact>
     <iconPath>UI/Icons/Rituals/RitualScarification</iconPath>
@@ -88,6 +88,7 @@
 
   <RitualBehaviorDef MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RUT_SinkingBehavior</defName>
+    <workerClass>RimMandrake.Utinni.Rites.RUT_RitualBehaviorWorker_Sinking</workerClass><!-- forbids the offering at the start, unforbids it on cancel -->
     <durationTicks>2500</durationTicks>
     <roles /><!-- Dialog_BeginRitual.CreateRitualRoleAssignments foreach-es behavior.def.roles; null NREs the rite start -->
     <spectatorsLabel>Witnesses</spectatorsLabel>
@@ -111,6 +112,16 @@
     <workerClass>RimMandrake.Utinni.Rites.RUT_RitualOutcomeEffectWorker_Sinking</workerClass>
     <startingQuality>0.3</startingQuality>
     <comps>
+      <li Class="RimMandrake.Utinni.Rites.RUT_RitualOutcomeComp_OfferingValue">
+        <label>offering's worth</label>
+        <curve>
+          <points>
+            <li>(50, 0.0)</li>
+            <li>(500, 0.15)</li>
+            <li>(3000, 0.3)</li>
+          </points>
+        </curve>
+      </li>
       <li Class="RitualOutcomeComp_ParticipantCount">
         <label>witnesses</label>
         <curve>

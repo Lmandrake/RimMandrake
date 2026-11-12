@@ -71,6 +71,7 @@ namespace RimMandrake.Utinni.Rites
     /// <summary>A trap roll while the counter holds fizzles: no fuse, no explosion, one charge spent, and the click, hiss
     /// and puff of tar to read it by.</summary>
     [HarmonyPatch]
+    // Review item 8 skipped on purpose: not calling ArmTrap (the find fizzles instead of arming) IS the spec's "disarm".
     [RimMandrake.Shared.PatchFeature("Sinking: dig-find trap fizzle", typeof(RM_NinefoldSettings), "sinkingTrapFizzleEnabled")]
     public static class Patch_Sinking_TrapFizzle
     {
@@ -146,6 +147,70 @@ namespace RimMandrake.Utinni.Rites
             if (!RM_NinefoldSettings.sinkingEnabled || !RM_NinefoldSettings.sinkingHoldOffEnabled) return;
             if (SinkingGlue.Active(map, SinkingGlue.HoldOffDef))
                 SinkingGlue.MoveImperialTimers(map, RM_NinefoldSettings.sinkingHoldOffMultiplier);
+        }
+    }
+
+    /// <summary>EmpirePursuit's own clock: its raids are fired with parms.forced (FireRaid_NewTemp), which TryFire and
+    /// FactionCanBeGroupSource both let through. So on every pursuit tick, before the scenpart reads its timers, each held
+    /// map's pending raid and warning timers are pushed to after the hold-off's end (kernel ShiftPastHoldOff: never
+    /// lost, never sooner, the warning-to-raid gap kept).</summary>
+    [HarmonyPatch]
+    [RimMandrake.Shared.PatchFeature("Sinking: Imperial hold-off holds EmpirePursuit's timers", typeof(RM_NinefoldSettings), "sinkingHoldOffEnabled")]
+    public static class Patch_Sinking_PursuitTick
+    {
+        public static int Moved;
+        private static MethodBase target;
+        public static bool Prepare() { target = SinkingPatchUtil.Find("RuthlessPursuingMechanoids.ScenPart_RuthlessPursuingMechanoids", "Tick"); return target != null; }
+        public static MethodBase TargetMethod() => target;
+        public static void Prefix(object __instance)
+        {
+            if (!RM_NinefoldSettings.sinkingEnabled || !RM_NinefoldSettings.sinkingHoldOffEnabled) return;
+            if (Find.TickManager.TicksGame % SinkingGlue.PursuitInterval != 0) return;
+            Moved += SinkingGlue.GuardPursuitTimers(__instance);
+        }
+    }
+
+    /// <summary>The waves the timers do not hold (the second raid and endless waves fire off a past raid tick): a pursuit
+    /// raid on a held map is not fired but kept in MapComponent_SinkingHeldRaids, which fires it once the hold-off ends.</summary>
+    [HarmonyPatch]
+    [RimMandrake.Shared.PatchFeature("Sinking: Imperial hold-off defers EmpirePursuit's raids", typeof(RM_NinefoldSettings), "sinkingHoldOffEnabled")]
+    public static class Patch_Sinking_PursuitRaid
+    {
+        public static int Deferred;
+        private static MethodBase target;
+        public static bool Prepare() { target = SinkingPatchUtil.Find("RuthlessPursuingMechanoids.ScenPart_RuthlessPursuingMechanoids", "FireRaid_NewTemp"); return target != null; }
+        public static MethodBase TargetMethod() => target;
+        public static bool Prefix(Map map, float pointsMultiplier, float minPoints)
+        {
+            if (!SinkingGlue.HeldOff(map)) return true;
+            MapComponent_SinkingHeldRaids held = map.GetComponent<MapComponent_SinkingHeldRaids>();
+            if (held == null) return true; // no keeper on this map: never lose the raid
+            held.Hold(pointsMultiplier, minPoints);
+            Deferred++;
+            return false;
+        }
+    }
+
+    /// <summary>The ladder (MapComponent_EmpireSearch.FireNextRung: probe, spotter, bombardment, raid rung): on a held map
+    /// the rung does not fire; it returns a postpone to one pursuit tick past the hold-off, which TickLadder writes into
+    /// the raid and warning timers.</summary>
+    [HarmonyPatch]
+    [RimMandrake.Shared.PatchFeature("Sinking: Imperial hold-off postpones the ladder's rungs", typeof(RM_NinefoldSettings), "sinkingHoldOffEnabled")]
+    public static class Patch_Sinking_LadderRung
+    {
+        public static int Postponed;
+        private static MethodBase target;
+        public static bool Prepare() { target = SinkingPatchUtil.Find("RuthlessPursuingMechanoids.MapComponent_EmpireSearch", "FireNextRung"); return target != null; }
+        public static MethodBase TargetMethod() => target;
+        public static bool Prefix(object __instance, ref int __result)
+        {
+            Map map = (__instance as MapComponent)?.map;
+            int end = SinkingGlue.HoldOffEnd(map);
+            if (end < 0) return true;
+            long wait = (long)end - Find.TickManager.TicksGame + SinkingGlue.PursuitInterval;
+            __result = wait > int.MaxValue / 2 ? int.MaxValue / 2 : (int)Math.Max(SinkingGlue.PursuitInterval, wait);
+            Postponed++;
+            return false;
         }
     }
 

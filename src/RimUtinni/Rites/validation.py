@@ -908,8 +908,17 @@ def sinking(t):
             now0, raid0 = int(timers_before["now"]), int(timers_before["raid"])
             raid1 = int(after["raid"])
             want = now0 + 5 * (raid0 - now0)
-            _sk_expect(raid0 > now0 and abs(raid1 - want) <= 2 * max(1, raid0 - now0) // 100 + 5,
-                       "imperial raid %d -> %d, wanted ~%d" % (raid0, raid1, want))
+            tol = 2 * max(1, raid0 - now0) // 100 + 5
+            # 5x out, or (a raid due inside the hold-off) pushed past its end: never sooner than 5x
+            moved_5x = abs(raid1 - want) <= tol
+            past_hold = raid1 >= want - tol and raid1 > now0 + 5 * 60000
+            _sk_expect(raid0 > now0 and (moved_5x or past_hold),
+                       "imperial raid %d -> %d, wanted ~%d (or past the 5-day hold-off)" % (raid0, raid1, want))
+    with _independent(t, "letter_says_what_the_timers_did"):
+        if _live(t):
+            letter = _sk(t, "LastLetter")
+            _sk_expect(any(k in letter for k in ("was due in", "as before", "No Imperial raid was scheduled")),
+                       "the Sinking letter does not say what happened to the Imperial timers: %s" % letter[:300])
     with _independent(t, "heat_events_unchanged"):
         if _live(t):
             if "heatEvents" not in heat_before:
@@ -939,6 +948,13 @@ def sinking(t):
                 r = _sk(t, "RefuseKind", "current", kind)
                 _sk_expect(r.startswith("PASS refused") and ":" in r, "a %s was not refused with a reason: %s" % (kind, r))
             _sk_expect(_sk_fields(_sk(t, "HediffTotal", "current")).get("hediffs") == hediffs_before, "a colonist gained a hediff")
+    with _independent(t, "offering_away_from_tar_refused"):
+        if _live(t):
+            _sk(t, "Reset", "current")
+            away = _sk_fields(_sk_need(t, _sk(t, "SpawnOfferingAwayFromTar", "current", SK_PLAIN, 100), "SpawnOfferingAwayFromTar"))["id"]
+            line = _sk(t, "Sink", "current", away)
+            _sk_expect(line.startswith("INFO refused RefusedAwayFromTar") and "tar's edge" in line,
+                       "an offering away from the tar was not refused at the tar's edge: %s" % line)
 
     # each toggle off removes exactly its effect; the rest stay
     effects = {"sinkingHoldOffEnabled": ("RUT_ImperialHoldOff", SK_PLAIN),

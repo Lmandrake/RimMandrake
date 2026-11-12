@@ -19,9 +19,9 @@ namespace RimMandrake.Utinni.Rites.SelfTest
         // the production constants of OfferingUtility / EventMagnitude (Offerings.cs, EventMagnitude.cs)
         private const float VS = 200f, VL = 3000f, MS = 3f, ML = 15f;
 
-        private static SinkingOfferingFacts Pitch() { return new SinkingOfferingFacts { defName = "RM_Bitumen", marketValue = 150f }; }
-        private static SinkingOfferingFacts Dig() { return new SinkingOfferingFacts { defName = "RM_PreservedDrawJoint", inLotteryTable = true, marketValue = 900f }; }
-        private static SinkingOfferingFacts Goods() { return new SinkingOfferingFacts { defName = "Silver", marketValue = 400f }; }
+        private static SinkingOfferingFacts Pitch() { return new SinkingOfferingFacts { nearTar = true, defName = "RM_Bitumen", marketValue = 150f }; }
+        private static SinkingOfferingFacts Dig() { return new SinkingOfferingFacts { nearTar = true, defName = "RM_PreservedDrawJoint", inLotteryTable = true, marketValue = 900f }; }
+        private static SinkingOfferingFacts Goods() { return new SinkingOfferingFacts { nearTar = true, defName = "Silver", marketValue = 400f }; }
 
         private static SinkingPlan P(SinkingOfferingFacts f, SinkingConfig c) { return SinkingKernel.Plan(f, c, VS, VL, MS, ML); }
 
@@ -33,16 +33,16 @@ namespace RimMandrake.Utinni.Rites.SelfTest
             // --- classification and refusals ---
             string why;
             Case("pitch_bitumen_is_pitch", SinkingKernel.Classify(Pitch(), on, out why) == SinkingOfferingKind.Pitch);
-            Case("pitch_korveth_is_pitch", SinkingKernel.Classify(new SinkingOfferingFacts { defName = "RM_KorvethPitch", marketValue = 100f }, on, out why) == SinkingOfferingKind.Pitch);
+            Case("pitch_korveth_is_pitch", SinkingKernel.Classify(new SinkingOfferingFacts { nearTar = true, defName = "RM_KorvethPitch", marketValue = 100f }, on, out why) == SinkingOfferingKind.Pitch);
             Case("dig_find_is_dig_find", SinkingKernel.Classify(Dig(), on, out why) == SinkingOfferingKind.DigFind);
-            Case("placeholder_chunk_is_other", SinkingKernel.Classify(new SinkingOfferingFacts { defName = "ChunkSlagSteel", inLotteryTable = true, marketValue = 100f }, on, out why) == SinkingOfferingKind.Other
-                 && SinkingKernel.Classify(new SinkingOfferingFacts { defName = "ShipChunk", inLotteryTable = true, marketValue = 100f }, on, out why) == SinkingOfferingKind.Other);
+            Case("placeholder_chunk_is_other", SinkingKernel.Classify(new SinkingOfferingFacts { nearTar = true, defName = "ChunkSlagSteel", inLotteryTable = true, marketValue = 100f }, on, out why) == SinkingOfferingKind.Other
+                 && SinkingKernel.Classify(new SinkingOfferingFacts { nearTar = true, defName = "ShipChunk", inLotteryTable = true, marketValue = 100f }, on, out why) == SinkingOfferingKind.Other);
             Case("goods_is_other", SinkingKernel.Classify(Goods(), on, out why) == SinkingOfferingKind.Other);
-            var pawn = P(new SinkingOfferingFacts { defName = "Human", isPawn = true, marketValue = 2000f }, on);
+            var pawn = P(new SinkingOfferingFacts { nearTar = true, defName = "Human", isPawn = true, marketValue = 2000f }, on);
             Case("refused_pawn_with_reason", pawn.kind == SinkingOfferingKind.RefusedPawn && !pawn.accepted && !string.IsNullOrEmpty(pawn.reason), pawn.Signature());
-            var corpse = P(new SinkingOfferingFacts { defName = "Corpse_Human", isCorpse = true, marketValue = 2000f }, on);
+            var corpse = P(new SinkingOfferingFacts { nearTar = true, defName = "Corpse_Human", isCorpse = true, marketValue = 2000f }, on);
             Case("refused_corpse_with_reason", corpse.kind == SinkingOfferingKind.RefusedCorpse && !corpse.accepted && !string.IsNullOrEmpty(corpse.reason), corpse.Signature());
-            var cheap = P(new SinkingOfferingFacts { defName = "RM_Bitumen", marketValue = 10f }, on);
+            var cheap = P(new SinkingOfferingFacts { nearTar = true, defName = "RM_Bitumen", marketValue = 10f }, on);
             Case("refused_below_floor_with_reason", cheap.kind == SinkingOfferingKind.RefusedBelowFloor && cheap.reason.Contains("50"), cheap.reason);
             Case("refusal_applies_no_effect", !pawn.holdOff && !pawn.raidLull && !pawn.ownershipErase && pawn.rider == SinkingRider.None && pawn.ishkoDelta == 0f, pawn.Signature());
 
@@ -112,6 +112,60 @@ namespace RimMandrake.Utinni.Rites.SelfTest
             Case("toggle_trapFizzleEnabled_off_mid_count_arms", !SinkingKernel.FizzleTrap(ref disabledCounter, false) && disabledCounter == 3);
             Case("toggle_beastLullEnabled_off_mid_lull_wakes", SinkingKernel.WakeAllowed(SinkingWakeCause.Construction, true, false));
             Case("toggle_raidLullEnabled_off_mid_lull_full_chance", SinkingKernel.RaidChanceMultiplier(new SinkingConfig { raidLullEnabled = false }, true) == 1f);
+
+            // ---- the tar's edge (review fix 2)
+            var away = Pitch(); away.nearTar = false;
+            var awayPlan = P(away, on);
+            Case("away_from_tar_refused", awayPlan.kind == SinkingOfferingKind.RefusedAwayFromTar && !awayPlan.accepted
+                 && awayPlan.reason != null && awayPlan.reason.Contains("tar's edge") && !awayPlan.holdOff && !awayPlan.raidLull, awayPlan.Signature() + " " + awayPlan.reason);
+            var awayDig = Dig(); awayDig.nearTar = false;
+            Case("away_from_tar_refused_dig_too", P(awayDig, on).kind == SinkingOfferingKind.RefusedAwayFromTar);
+            var awayPawn = new SinkingOfferingFacts { defName = "Human", isPawn = true, marketValue = 2000f };
+            Case("away_from_tar_pawn_still_pawn_refusal", P(awayPawn, on).kind == SinkingOfferingKind.RefusedPawn, P(awayPawn, on).kind.ToString());
+            Case("away_from_tar_is_refusal", SinkingKernel.IsRefusal(SinkingOfferingKind.RefusedAwayFromTar));
+            Case("tar_terrain_defs", SinkingKernel.IsTarTerrain("RM_TarShallow") && SinkingKernel.IsTarTerrain("RM_TarDeep") && SinkingKernel.IsTarTerrain("RM_TarMoat")
+                 && SinkingKernel.IsTarTerrain("RM_Fill_Tar_Trace") && SinkingKernel.IsTarTerrain("RM_Fill_Tar_Superdeep"));
+            Case("tar_spent_crust_not_tar", !SinkingKernel.IsTarTerrain("RM_TarSpent") && !SinkingKernel.IsTarTerrain("Soil") && !SinkingKernel.IsTarTerrain(null));
+            Case("tar_vault_is_tar_building", SinkingKernel.IsTarBuilding("RM_TarVault") && !SinkingKernel.IsTarBuilding("RM_TarShallow") && !SinkingKernel.IsTarBuilding(null));
+            Case("tar_radius_default_3", SinkingKernel.TarRadius(new SinkingConfig()) == 3);
+            Case("tar_radius_clamped", SinkingKernel.TarRadius(new SinkingConfig { tarRadius = 0 }) == 1 && SinkingKernel.TarRadius(new SinkingConfig { tarRadius = 99 }) == 10);
+
+            // ---- EmpirePursuit timers under the hold-off (review fix 1)
+            const int I = 2500;
+            Case("roundup", SinkingKernel.RoundUp(2500, I) == 2500 && SinkingKernel.RoundUp(2501, I) == 5000 && SinkingKernel.RoundUp(1, I) == 2500);
+            int now0 = 100000, end0 = now0 + 300000;
+            int raid = now0 + 60000, warn = now0 + 30000;
+            bool sh = SinkingKernel.ShiftPastHoldOff(now0, end0, I, ref raid, ref warn);
+            Case("shift_inside_window_moves_past_end", sh && SinkingKernel.RoundUp(warn, I) > end0 && SinkingKernel.RoundUp(raid, I) > end0, raid + "/" + warn);
+            Case("shift_keeps_warning_gap", raid - warn == 30000, (raid - warn).ToString());
+            Case("shift_never_sooner", raid >= now0 + 60000 && warn >= now0 + 30000);
+            int raid2 = raid, warn2 = warn;
+            Case("shift_idempotent", !SinkingKernel.ShiftPastHoldOff(now0, end0, I, ref raid2, ref warn2) && raid2 == raid && warn2 == warn);
+            int far = end0 + 50000, farW = end0 + 10000;
+            Case("shift_beyond_window_untouched", !SinkingKernel.ShiftPastHoldOff(now0, end0, I, ref far, ref farW) && far == end0 + 50000 && farW == end0 + 10000);
+            int past = now0 - 10000, pastW = now0 - 20000;
+            Case("shift_past_raid_untouched", !SinkingKernel.ShiftPastHoldOff(now0, end0, I, ref past, ref pastW) && past == now0 - 10000);
+            int r3 = now0 + 5000, w3 = now0 - 50000; // warning already sent, raid pending inside the window
+            Case("shift_raid_only_when_warning_sent", SinkingKernel.ShiftPastHoldOff(now0, end0, I, ref r3, ref w3) && SinkingKernel.RoundUp(r3, I) > end0 && w3 == now0 - 50000, r3 + "/" + w3);
+            int r4 = now0 + 5000, w4 = -1;
+            Case("shift_no_warning", SinkingKernel.ShiftPastHoldOff(now0, end0, I, ref r4, ref w4) && SinkingKernel.RoundUp(r4, I) > end0 && w4 == -1);
+            int r5 = now0 + 5000, w5 = now0 + 1000;
+            Case("shift_holdoff_over_untouched", !SinkingKernel.ShiftPastHoldOff(now0, now0 - 1, I, ref r5, ref w5) && r5 == now0 + 5000);
+
+            // ---- the letter's line comes from what was done (review fix 7)
+            string none = SinkingKernel.HoldOffLine(false, 0, 0, 0, 600000);
+            Case("letter_none_scheduled", none.Contains("No Imperial raid was scheduled") && none.Contains("10 days"), none);
+            string moved = SinkingKernel.HoldOffLine(true, 0, 120000, 600000, 600000);
+            Case("letter_moved_old_new", moved.Contains("was due in 2 days") && moved.Contains("now comes in 10 days"), moved);
+            string same = SinkingKernel.HoldOffLine(true, 0, 900000, 900000, 600000);
+            Case("letter_unchanged_says_as_before", same.Contains("as before") && same.Contains("15 days"), same);
+
+            // ---- droids are their own category (review fix 9)
+            Case("droid_before_humanlike", SinkingKernel.PawnCategory(true, false, true) == "Droid");
+            Case("humanlike_category", SinkingKernel.PawnCategory(true, false, false) == "Humanlike" && SinkingKernel.PawnCategory(false, true, false) == "Mech"
+                 && SinkingKernel.PawnCategory(false, false, false) == "Animal");
+            var exDefault = SinkingKernel.ParseExclusions(new SinkingConfig().ownershipExclusions);
+            Case("default_exclusions_humanlike_only", exDefault.Contains("Humanlike") && !exDefault.Contains("Droid") && exDefault.Count == 1, string.Join(",", exDefault));
 
             Console.WriteLine(string.Format("sinking kernel: {0} passed, {1} failed", passes, fails));
             return fails == 0;

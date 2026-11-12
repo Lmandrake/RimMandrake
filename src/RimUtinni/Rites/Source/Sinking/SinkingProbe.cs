@@ -192,7 +192,48 @@ namespace RimMandrake.Utinni.Rites
             if (!CellFinder.TryFindRandomCellNear(map.Center, map, 12, c => c.Standable(map) && c.GetFirstItem(map) == null, out IntVec3 at))
                 return "FAIL no free cell";
             GenSpawn.Spawn(t, at, map);
-            return "INFO id=" + t.ThingID + " value=" + (t.MarketValue * t.stackCount).ToString("0");
+            // The offering must lie at the tar's edge (kernel RefusedAwayFromTar): when none is in reach, pour a cell of
+            // the mere's shallow tar beside it so the chain tests the rite, not the map.
+            string tar = "found";
+            if (!SinkingGlue.NearTar(t))
+            {
+                TerrainDef shallow = DefDatabase<TerrainDef>.GetNamedSilentFail("RM_TarShallow");
+                if (shallow == null) return "FAIL no tar in reach and no TerrainDef RM_TarShallow id=" + t.ThingID;
+                IntVec3 pour = IntVec3.Invalid;
+                foreach (IntVec3 c in GenAdj.CellsAdjacent8Way(t))
+                    if (c.InBounds(map) && c.GetEdifice(map) == null && c.GetFirstItem(map) == null) { pour = c; break; }
+                if (!pour.IsValid) return "FAIL no cell beside the offering to pour tar id=" + t.ThingID;
+                map.terrainGrid.SetTerrain(pour, shallow);
+                tar = "spawned@" + pour.x + "," + pour.z;
+                if (!SinkingGlue.NearTar(t)) return "FAIL poured tar but NearTar still false id=" + t.ThingID;
+            }
+            return "INFO id=" + t.ThingID + " value=" + (t.MarketValue * t.stackCount).ToString("0") + " tar=" + tar;
+        }
+
+        /// <summary>Spawns the offering on a cell with no tar terrain or tar building within the radius, for the refusal
+        /// leg of the chain; "INFO id=... value=... tar=none".</summary>
+        public static string SpawnOfferingAwayFromTar(Map map, string defName, int count)
+        {
+            ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail(defName);
+            if (map == null || def == null) return "FAIL no map or no ThingDef " + defName;
+            Thing t = ThingMaker.MakeThing(def, def.MadeFromStuff ? GenStuff.DefaultStuffFor(def) : null);
+            t.stackCount = Math.Max(1, Math.Min(count, def.stackLimit));
+            int r = SinkingKernel.TarRadius(SinkingGlue.Config());
+            bool clear(IntVec3 c)
+            {
+                if (!c.Standable(map) || c.GetFirstItem(map) != null) return false;
+                foreach (IntVec3 n in GenRadial.RadialCellsAround(c, r + 1, true))
+                {
+                    if (!n.InBounds(map)) continue;
+                    if (SinkingKernel.IsTarTerrain(map.terrainGrid.TerrainAt(n)?.defName)) return false;
+                    foreach (Thing h in map.thingGrid.ThingsListAtFast(n)) if (SinkingKernel.IsTarBuilding(h?.def?.defName)) return false;
+                }
+                return true;
+            }
+            if (!CellFinder.TryFindRandomCellNear(map.Center, map, 40, clear, out IntVec3 at)) return "FAIL no cell away from tar";
+            GenSpawn.Spawn(t, at, map);
+            if (SinkingGlue.NearTar(t)) { t.Destroy(DestroyMode.Vanish); return "FAIL spawned away from tar but NearTar true"; }
+            return "INFO id=" + t.ThingID + " value=" + (t.MarketValue * t.stackCount).ToString("0") + " tar=none";
         }
 
         /// <summary>Makes a throwaway pawn ("pawn") or its corpse ("corpse"), asks the filter, and removes it again.</summary>

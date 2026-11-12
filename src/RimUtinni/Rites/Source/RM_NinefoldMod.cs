@@ -84,6 +84,7 @@ namespace RimMandrake.Utinni.Rites
         public static bool sinkingTrapFizzleEnabled = true;
         public static float sinkingValueFloor = 50f;
         public static float sinkingHoldOffMultiplier = 5f;
+        public static int sinkingTarRadius = 3;
         public static float sinkingNormalHoldOffDays = 1f;
         public static float sinkingRaidLullDays = 10f;
         public static float sinkingRaidLullStrength = 0.5f;
@@ -111,6 +112,7 @@ namespace RimMandrake.Utinni.Rites
             Scribe_Values.Look(ref sinkingTrapFizzleEnabled, "sinkingTrapFizzleEnabled", true);
             Scribe_Values.Look(ref sinkingValueFloor, "sinkingValueFloor", 50f);
             Scribe_Values.Look(ref sinkingHoldOffMultiplier, "sinkingHoldOffMultiplier", 5f);
+            Scribe_Values.Look(ref sinkingTarRadius, "sinkingTarRadius", 3);
             Scribe_Values.Look(ref sinkingNormalHoldOffDays, "sinkingNormalHoldOffDays", 1f);
             Scribe_Values.Look(ref sinkingRaidLullDays, "sinkingRaidLullDays", 10f);
             Scribe_Values.Look(ref sinkingRaidLullStrength, "sinkingRaidLullStrength", 0.5f);
@@ -137,7 +139,7 @@ namespace RimMandrake.Utinni.Rites
             "sinkingEnabled", "sinkingHoldOffEnabled", "sinkingRaidLullEnabled", "sinkingOwnershipEraseEnabled",
             "sinkingBeastLullEnabled", "sinkingTrapFizzleEnabled", "sinkingValueFloor", "sinkingHoldOffMultiplier",
             "sinkingNormalHoldOffDays", "sinkingRaidLullDays", "sinkingRaidLullStrength", "sinkingBeastLullDays",
-            "sinkingTrapCount", "sinkingOwnershipExclusions" };
+            "sinkingTrapCount", "sinkingOwnershipExclusions", "sinkingTarRadius" };
 
         public static void ResetFields(string[] names)
         {
@@ -257,6 +259,8 @@ namespace RimMandrake.Utinni.Rites
                 list.CheckboxLabeled("Imperial hold-off", ref sinkingHoldOffEnabled,
                     "After a Sinking the Empire's next probe or raid on this map comes several times later than it would. "
                   + "It never lowers Imperial Heat.");
+                list.Label("Offering must lie within " + sinkingTarRadius + " cells of tar");
+                sinkingTarRadius = Mathf.RoundToInt(list.Slider(sinkingTarRadius, 1f, 10f));
                 list.Label("Hold-off multiplier: " + sinkingHoldOffMultiplier.ToString("0.0") + "x");
                 sinkingHoldOffMultiplier = list.Slider(sinkingHoldOffMultiplier, 1f, 10f);
                 list.Label("Normal Empire hold-off: " + sinkingNormalHoldOffDays.ToString("0.0") + " days");

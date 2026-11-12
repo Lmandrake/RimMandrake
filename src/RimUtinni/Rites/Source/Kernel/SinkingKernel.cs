@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace RimMandrake.Utinni.Rites
 {
-    public enum SinkingOfferingKind { Pitch, DigFind, Other, RefusedPawn, RefusedCorpse, RefusedBelowFloor, RefusedDisabled }
+    public enum SinkingOfferingKind { Pitch, DigFind, Other, RefusedPawn, RefusedCorpse, RefusedBelowFloor, RefusedDisabled, RefusedAwayFromTar }
 
     public enum SinkingRider { None, BeastLull, TrapFizzle }
 
@@ -34,6 +34,7 @@ namespace RimMandrake.Utinni.Rites
         public float beastLullDays = 15f;
         public int trapCount = 3;
         public string ownershipExclusions = "Humanlike";
+        public int tarRadius = 3;                   // the offering must lie within this many cells of tar
 
         public SinkingConfig Clone() { return (SinkingConfig)MemberwiseClone(); }
     }
@@ -46,6 +47,7 @@ namespace RimMandrake.Utinni.Rites
         public bool isCorpse;
         public bool inLotteryTable;    // a row thingDef of some RM_LotteryTableDef (a dig find)
         public float marketValue;      // of the whole stack
+        public bool nearTar;           // tar terrain or a tar building within cfg.tarRadius cells (the glue looks)
     }
 
     /// <summary>Everything one Sinking does, decided before anything is touched. Absent effects read false / 0.</summary>
@@ -87,6 +89,22 @@ namespace RimMandrake.Utinni.Rites
         /// <summary>Lottery rows that are spoil, not a find: the placeholder chunks in RM_DigStratumTable.</summary>
         public static readonly string[] PlaceholderFinds = { "ChunkSlagSteel", "ChunkMechanoidSlag", "ShipChunk" };
 
+        /// <summary>Terrain that is tar: the mere (FlowWorks Defs/LiquidTypes/TerrainDefs/RM_Tar.xml), the poured moat
+        /// (TheSump Defs/TerrainDefs/RM_TarMoat.xml) and tar standing in a dug channel (FlowWorks Canals
+        /// FlowWorks_Terrain.xml). RM_TarSpent (burned-down crust) is not tar any more.</summary>
+        public static readonly string[] TarTerrainDefs = { "RM_TarShallow", "RM_TarDeep", "RM_TarMoat",
+            "RM_Fill_Tar_Trace", "RM_Fill_Tar_Half", "RM_Fill_Tar_Brim", "RM_Fill_Tar_Superdeep" };
+
+        /// <summary>Buildings that hold tar (TheSump Defs/ThingDefs_Buildings/RM_TarVault.xml).</summary>
+        public static readonly string[] TarBuildingDefs = { "RM_TarVault" };
+
+        public static bool IsTarTerrain(string defName) { return defName != null && Array.IndexOf(TarTerrainDefs, defName) >= 0; }
+
+        public static bool IsTarBuilding(string defName) { return defName != null && Array.IndexOf(TarBuildingDefs, defName) >= 0; }
+
+        /// <summary>The search radius the glue uses, clamped to 1..10 cells.</summary>
+        public static int TarRadius(SinkingConfig cfg) { return Math.Max(1, Math.Min(10, cfg.tarRadius)); }
+
         public static bool IsPitch(string defName)
         {
             return defName != null && Array.IndexOf(PitchDefs, defName) >= 0;
@@ -115,6 +133,12 @@ namespace RimMandrake.Utinni.Rites
                 reason = "The tar keeps its own dead. A corpse cannot be sunk.";
                 return SinkingOfferingKind.RefusedCorpse;
             }
+            if (!f.nearTar)
+            {
+                reason = string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                    "It must lie at the tar's edge (within {0} cells of tar).", TarRadius(cfg));
+                return SinkingOfferingKind.RefusedAwayFromTar;
+            }
             if (f.marketValue < cfg.valueFloor)
             {
                 reason = string.Format(System.Globalization.CultureInfo.InvariantCulture,
@@ -138,7 +162,8 @@ namespace RimMandrake.Utinni.Rites
         public static bool IsRefusal(SinkingOfferingKind k)
         {
             return k == SinkingOfferingKind.RefusedPawn || k == SinkingOfferingKind.RefusedCorpse
-                || k == SinkingOfferingKind.RefusedBelowFloor || k == SinkingOfferingKind.RefusedDisabled;
+                || k == SinkingOfferingKind.RefusedBelowFloor || k == SinkingOfferingKind.RefusedDisabled
+                || k == SinkingOfferingKind.RefusedAwayFromTar;
         }
 
         public static SinkingRider RiderFor(SinkingOfferingKind k, SinkingConfig cfg)
@@ -173,6 +198,58 @@ namespace RimMandrake.Utinni.Rites
         public static int MoveOutWarning(int now, int warning, int movedRaid, float multiplier)
         {
             return Math.Min(MoveOut(now, warning, multiplier), movedRaid);
+        }
+
+        /// <summary>EmpirePursuit's TimerIntervalTick: the scenpart only acts on multiples of <paramref name="interval"/>, so a
+        /// timer fires on the first multiple at or after it.</summary>
+        public static int RoundUp(int tick, int interval)
+        {
+            if (interval <= 0) return tick;
+            long r = ((long)tick + interval - 1) / interval * interval;
+            return r >= int.MaxValue ? int.MaxValue : (int)r;
+        }
+
+        /// <summary>The hold-off's guard on the EmpirePursuit timers of a held map: when the next pending timer (the warning
+        /// or the raid; one is pending while its rounded tick is not yet past) would fire at or before
+        /// <paramref name="holdOffEnd"/>, both pending timers move out by the same amount so the earliest lands one interval
+        /// after the hold-off ends; the warning-to-raid gap is kept. Never sooner, never dropped. A raid whose tick already
+        /// passed is not re-timed (that would fire it twice): its follow-up waves are deferred by the glue instead.
+        /// Returns true when it moved anything.</summary>
+        public static bool ShiftPastHoldOff(int now, int holdOffEnd, int interval, ref int raid, ref int warning)
+        {
+            if (holdOffEnd < now || RoundUp(raid, interval) < now) return false;
+            bool warnPending = warning >= 0 && RoundUp(warning, interval) >= now;
+            int earliest = warnPending ? Math.Min(warning, raid) : raid;
+            if (RoundUp(earliest, interval) > holdOffEnd) return false;
+            long delta = (long)holdOffEnd + interval - earliest;
+            raid = (int)Math.Min(int.MaxValue, raid + delta);
+            if (warnPending) warning = (int)Math.Min(raid, warning + delta);
+            return true;
+        }
+
+        /// <summary>The letter's line for the Imperial timers. <paramref name="scheduled"/> false: no Imperial raid was on the
+        /// map's clock, and the line says so plainly (the hold-off condition still turns away any that comes).</summary>
+        public static string HoldOffLine(bool scheduled, int now, int oldRaid, int newRaid, int holdOffTicks)
+        {
+            var ci = System.Globalization.CultureInfo.InvariantCulture;
+            if (!scheduled)
+                return string.Format(ci, "No Imperial raid was scheduled against this colony; for the next {0:0.#} days any that comes is turned away.",
+                    holdOffTicks / (float)TicksPerDay);
+            if (newRaid <= oldRaid)
+                return string.Format(ci, "Their next probe is due in {0:0.#} days, as before (it was already past the hold-off).",
+                    (oldRaid - now) / (float)TicksPerDay);
+            return string.Format(ci, "Their next probe was due in {0:0.#} days; it now comes in {1:0.#} days.",
+                (oldRaid - now) / (float)TicksPerDay, (newRaid - now) / (float)TicksPerDay);
+        }
+
+        /// <summary>The ownership category of a pawn. A droid (Droidworks flesh type, or a non-flesh humanlike) is "Droid",
+        /// decided before the humanlike check, so the default "Humanlike" exclusion does not cover it.</summary>
+        public static string PawnCategory(bool humanlike, bool mechanoid, bool droid)
+        {
+            if (droid) return "Droid";
+            if (humanlike) return "Humanlike";
+            if (mechanoid) return "Mech";
+            return "Animal";
         }
 
         /// <summary>The chance a non-Empire raid roll keeps while the lull holds.</summary>
@@ -248,7 +325,7 @@ namespace RimMandrake.Utinni.Rites
             return p;
         }
 
-        /// <summary>The ownership exclusion list: comma/space separated tokens among Humanlike, Animal, Mech, Building,
+        /// <summary>The ownership exclusion list: comma/space separated tokens among Humanlike, Droid, Animal, Mech, Building,
         /// Item (case-insensitive; unknown tokens are kept and match nothing).</summary>
         public static HashSet<string> ParseExclusions(string list)
         {
