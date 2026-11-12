@@ -1,0 +1,19 @@
+## stage -1
+cathedral_arc_lint: 17 player-facing strings read from 2 file(s) at stage -1
+cathedral_arc_lint: PASS (0 findings)
+## stage 0
+cathedral_arc_lint: 17 player-facing strings read from 2 file(s) at stage 0
+cathedral_arc_lint: PASS (0 findings)
+## stage 1
+cathedral_arc_lint: 17 player-facing strings read from 2 file(s) at stage 1
+cathedral_arc_lint: PASS (0 findings)
+## stage 2
+cathedral_arc_lint: 17 player-facing strings read from 2 file(s) at stage 2
+cathedral_arc_lint: PASS (0 findings)
+## stage 3
+cathedral_arc_lint: 17 player-facing strings read from 2 file(s) at stage 3
+cathedral_arc_lint: PASS (0 findings)
+## shipped pools
+cathedral_arc_lint: PASS (0 findings)
+## settings
+cathedral_arc_lint: PASS (0 findings)

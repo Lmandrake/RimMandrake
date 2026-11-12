@@ -1,0 +1,20 @@
+# ordinary-play fixture (src/RimMandrake/Utils/fixtures/cathedral_survey_ordinary_play.json); the simulated player answers every survey hail: silent
+# rc=0; heat/regard/exposure are the blackboard's own numbers after each poll
+
+gm_blackboard_shadow: FIXTURE MODE (/tmp/tmpu_anqh2k.json) -- no bridge, no game: CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1 ordinary play: a clan parked on Rust Cathedral ground, quarter-day polls (40 days). It mines quietly, then on day 5 sells two kyber crystals to a passing trader: Imperial Heat jumps over the low band and the Empire's survey team turns up on the plates and hails the ship. A month later it sells two more, and a second survey comes. The simulated player answers each hail as the test says (survey_responses); nothing is staged past any gate.
+poll 19  tick=270000  heat=0.00  hutt=0.00  regard=5.75  stage=WARY       exposure=0.00  orbit=56200  dark=False  kyber_total=6  would_fire=0  
+poll 20  tick=285000  heat=10.91  hutt=5.85  regard=-4.30  stage=WARY       exposure=1.00  orbit=56000  dark=False  kyber_total=4  would_fire=2  survey_offer
+poll 22  tick=315000  heat=10.11  hutt=5.55  regard=-3.90  stage=WARY       exposure=0.40  orbit=55600  dark=False  kyber_total=4  would_fire=1  survey_answered
+poll 23  tick=330000  heat=9.71  hutt=5.40  regard=-3.50  stage=WARY       exposure=0.10  orbit=55400  dark=False  kyber_total=4  would_fire=0  
+poll 141  tick=2100000  heat=0.00  hutt=0.00  regard=32.80  stage=TOLERATED  exposure=0.00  orbit=31800  dark=False  kyber_total=4  would_fire=0  
+poll 142  tick=2115000  heat=10.91  hutt=5.85  regard=22.75  stage=TOLERATED  exposure=1.00  orbit=31600  dark=False  kyber_total=2  would_fire=2  survey_offer
+poll 144  tick=2145000  heat=10.11  hutt=5.55  regard=22.95  stage=TOLERATED  exposure=0.40  orbit=31200  dark=False  kyber_total=2  would_fire=1  survey_answered
+poll 151  tick=2250000  heat=7.31  hutt=4.50  regard=25.05  stage=TOLERATED  exposure=0.00  orbit=29800  dark=False  kyber_total=2  would_fire=0  
+Final: heat=3.71 hutt_interest=3.15 cathedral_regard=27.75 orbital_timer=28000 stage=TOLERATED exposure_pressure=0.00 go_dark_flips=0
+Survey: 2 hail(s) fired; answers {'dull_answer': 0, 'pointed_at_anomaly': 0, 'no_answer': 2} (Regard +0.0, exposure +0.0)
+
+# survey events from the shadow log (what it WOULD fire / what it read):
+poll 20 day 4.75 heat 10.91 regard -4.30 exposure 1.00  cathedral_survey_offer: the clan is on Cathedral ground and Imperial Heat 10.91 >= 10.00 (the Empire is looking) -- SHADOW MODE: would fire RUT_GiveQuest_CathedralSurveyMisdirection through jawa/storyteller_fire (dryRun=false); fired nothing.
+poll 22 day 5.25 heat 10.11 regard -3.90 exposure 0.40  cathedral_survey_answered: (a) the hail went unanswered -- nothing moves: not Regard, not exposure, not Heat.
+poll 142 day 35.25 heat 10.91 regard 22.75 exposure 1.00  cathedral_survey_offer: the clan is on Cathedral ground and Imperial Heat 10.91 >= 10.00 (the Empire is looking) -- SHADOW MODE: would fire RUT_GiveQuest_CathedralSurveyMisdirection through jawa/storyteller_fire (dryRun=false); fired nothing.
+poll 144 day 35.75 heat 10.11 regard 22.95 exposure 0.40  cathedral_survey_answered: (a) the hail went unanswered -- nothing moves: not Regard, not exposure, not Heat.

@@ -1,0 +1,19 @@
+contained in rm-harness.slice (max 12G), 6 workers
+KNOWN PASS src/RimMandrake/RustCathedral/selftest_rustcathedral_commentary.py inputs unchanged since 2026-11-11 21:30 (06417a9e59), 0.4s not spent
+[1/4] PASS          0.2s  src/RimMandrake/Utils/selftest_gm_cathedral_fall.py
+[2/4] PASS          0.6s  src/RimUtinni/CathedralPass/selftest_cathedral_reveal_beat.py
+[3/4] PASS          0.7s  src/RimMandrake/RustCathedral/selftest_rustcathedral_survey.py
+[4/4] PASS          0.8s  src/RimMandrake/RustCathedral/selftest_rustcathedral_offers.py
+evidence: 0 eligible, 0 SKIPPED as unchanged, 0 PASS recorded, 0 PASS not recordable — runner 65716eff3278c68e
+cache: 0 CACHED PASS, 0 declared test(s) ran
+known results: 1/5 answered from the ledger (selftests.cache_hit_share 0.200), 0s not spent; 4 ran, 0 recorded, 0 checked against a stored PASS, 0 known red
+  ran (4): no record
+  not recordable (4): external: src/RimMandrake/RustCathedral/selftest_rustcathedral_offers.py, src/RimMandrake/RustCathedral/selftest_rustcathedral_survey.py, src/RimMandrake/Utils/selftest_gm_cathedral_fall.py, src/RimUtinni/CathedralPass/selftest_cathedral_reveal_beat.py
+PASS          0.0s  src/RimMandrake/RustCathedral/selftest_rustcathedral_commentary.py
+PASS          0.8s  src/RimMandrake/RustCathedral/selftest_rustcathedral_offers.py
+PASS          0.7s  src/RimMandrake/RustCathedral/selftest_rustcathedral_survey.py
+PASS          0.2s  src/RimMandrake/Utils/selftest_gm_cathedral_fall.py
+PASS          0.6s  src/RimUtinni/CathedralPass/selftest_cathedral_reveal_beat.py
+
+PASS 5/5  FAIL 0/5  UNMEASURED 0/5  CRASH 0/5  SKIPPED 0/5  (wall 0.8s) — contained in rm-harness.slice (max 12G), 6 workers
+RESULT: GREEN (green = FAIL 0 and CRASH 0)

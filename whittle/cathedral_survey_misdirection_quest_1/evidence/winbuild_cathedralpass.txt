@@ -1,0 +1,16 @@
+# build log of the current source (first attempt exited 5 with no compiler error, a transient dotnet failure; immediate rerun below). The DLL it wrote was set back to the committed one, which publish built from the same source.
+staging src/RimUtinni/CathedralPass/Source/RimMandrake.Utinni.CathedralPass.csproj -> D:\ClaudeWork\rimmandrake\build\CathedralPass
+  src/RimUtinni/CathedralPass/Source/
+  src/RimMandrake/_Shared/SettingsKit/
+  src/RimMandrake/_Shared/HarmonyResilience/
++ dotnet.exe build D:\ClaudeWork\rimmandrake\build\CathedralPass\src\RimUtinni\CathedralPass\Source\RimMandrake.Utinni.CathedralPass.csproj -c Release
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  RimMandrake.Utinni.CathedralPass -> D:\ClaudeWork\rimmandrake\build\CathedralPass\src\RimUtinni\CathedralPass\Assemblies\RimMandrake.Utinni.CathedralPass.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:04.71
+BUILT src/RimUtinni/CathedralPass/Assemblies/RimMandrake.Utinni.CathedralPass.dll (source b0a7ab672fe6)

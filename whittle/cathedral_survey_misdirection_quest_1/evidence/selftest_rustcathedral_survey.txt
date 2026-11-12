@@ -1,0 +1,116 @@
+
+[1] fires from the pursuit spine dressing, without inventing a faction
+      poll  20  day  4.75  heat  10.91  regard  -4.30  exposure   1.00  survey True                             <- hail fired
+      poll 142  day 35.25  heat  10.91  regard  33.75  exposure   1.00  survey True                             <- hail fired
+ok    1a the ordinary-play clan is hailed twice in 40 days (day 5 and a month later) 
+ok    1b every hail fires with Heat at or over the pursuit band, on Cathedral ground 
+ok    1c before the sale (Heat under the band) no hail, closed as heat_below_pursuit_band 
+ok    1d the second hail waits out the month (30.5 days apart) 
+ok    1e the hail fires the shipped GiveQuest incident for the shipped quest 
+ok    1m one crystal sold: Heat peaks at 7.60, under the band, and no survey comes 
+ok    1n four crystals sold at once: Heat 15.60, the hail comes on the sale's poll 
+ok    1f no kyber sale = Heat never over the band = no survey, all 40 days 
+ok    1g the same sale off Cathedral ground: no survey (it works Cathedral-adjacent ground) 
+ok    1h the survey toggle off: never fires 
+ok    1i after full discovery: no survey (closed full_discovery) 
+ok    1j CathedralPass ships no FactionDef 
+ok    1k the C# binds EmpireSearch.Part / ScenPart_RuthlessPursuingMechanoids.PursuitFaction, falls back to Faction.OfEmpire 
+ok    1l those names exist in EmpirePursuit's source (a renamed member would silently fall back) 
+
+[2] (b) the guild's answer: Regard up in shadow mode, Heat not at all (K2)
+      poll  21  day  5.00  heat  10.51  regard  -4.10  exposure   0.70  survey False hail_already_out           
+      poll  22  day  5.25  heat  10.11  regard   8.10  exposure   0.40  survey False waiting_reoffer_gap        <- answered: guild's answer
+      poll  23  day  5.50  heat   9.71  regard   8.40  exposure   0.10  survey False heat_below_pursuit_band    
+ok    2a the answer is read off the quest list as EndedSuccess = dull_answer 
+ok    2b that poll's record carries the Regard gain (12.0) 
+ok    2c Regard first differs from the lapse run on that same poll, by +12.0 
+ok    2d the gain is 'large': at least two missions' worth and more than the TOLERATED gap a sale opens 
+ok    2e K2: Imperial Heat identical poll for poll, all 160 polls 
+ok    2f K2: Hutt Interest and the orbital timer identical too 
+ok    2g the two dull answers are credited exactly twice over 160 polls (an ended row is read once) 
+ok    2h an answer from before the run is credited once (story flag), never again off the quest list 
+
+[3] (c) pointing them at the plates moves exposure pressure
+      poll  21  day  5.00  heat  10.51  regard  -4.10  exposure   0.70  survey False hail_already_out           
+      poll  22  day  5.25  heat  10.11  regard  -3.90  exposure  20.40  survey False waiting_reoffer_gap        <- answered: told them
+      poll  23  day  5.50  heat   9.71  regard  -3.50  exposure  20.10  survey False heat_below_pursuit_band    
+ok    3a read as EndedFailed = pointed_at_anomaly 
+ok    3b exposure pressure first differs on that poll, up by 20.0 
+ok    3c it is §6.1's own number: the go-dark threshold is reachable from it 
+ok    3d Heat identical poll for poll 
+ok    3e Regard is not raised by it (identical while no go-dark) 
+ok    3f a place near its limit (go-dark at 15): one pointed survey flips it dark 
+
+[a] no answer: refused, or left to lapse -- nothing moves
+ok    a1 a refused hail reads EndedUnknownOutcome = no_answer 
+ok    a2 an ignored hail ends itself after its 2 days (2.00 days after firing) 
+ok    a3 cathedral_regard_after identical to the survey-disabled run (refused and lapsed) 
+ok    a3 exposure_pressure_after identical to the survey-disabled run (refused and lapsed) 
+ok    a3 heat_after identical to the survey-disabled run (refused and lapsed) 
+
+[4] all dialog passes item 3's linter; no line explains what the player protected
+ok    4a every survey string lints clean at stages -1, 0, 1, 2 and 3 
+ok    4b the linter read all 13 strings the player can be shown (hail, 3 answers, 4 letters) 
+ok    4c planted lines that explain the concealment are refused (7/7) 
+ok    4d the (b) letter says what the surveyors did, never why: no 'because', 'so that', 'for its sake' 
+ok    4e no string names the place, the Empire's Heat, or a reward for loyalty 
+
+[5] completes Oracle-absent with prescribed fallback text
+ok    5a the blackboard runs the ordinary-play fixture with no `claude` on PATH 
+ok    5b the survey path calls no LLM and starts no process 
+ok    5c every hail the blackboard logs carries the shipped def text 
+ok    5d every branch ends the quest with its outcome: dull=Success, pointed=Fail, silent/lapse=Unknown 
+ok    5e and each of the four sends its own shipped letter 
+ok    5f the outcome names match the blackboard's reading (Success/Fail/Unknown -> dull/pointed/none) 
+ok    5g the lapse delay is the 2 days the fixture and the letters assume 
+ok    5h hidden, auto-accepted, no 'quest available' letter: no Quests-tab row prints a verdict 
+
+[6] reloads and restarts: the credit follows the save
+      poll  23  day  5.00  heat   9.71  regard  -3.60  exposure   0.10  survey False heat_below_pursuit_band    <- reloaded: the (b) answer is no longer in the save
+ok    6a the reload is seen (the credited quest reads Ongoing again) and (b)'s Regard is taken back 
+ok    6b then (c) is credited: exposure +20, and the tally is one pointed, no dull 
+ok    6c net over the run: survey Regard 0, survey exposure +20 -- not both 
+ok    6d no second hail is fired while the reloaded one is out (it is tracked as hailing) 
+ok    6e a reload from before the hail: the quest is gone, its (c) exposure credit is reversed 
+ok    6f restart: old (c)s add no exposure (no +60 at once), no go-dark 
+ok    6g restart: old (b)s rebuild Regard once each (+24), as old missions do 
+ok    6h restart: Heat is over the band early (a sale on poll 2), yet no hail in the month after the first look 
+ok    6i a quest row without `root` is still read, by the quest's fixed name 
+
+[+] the in-game half
+ok    +a CathedralSurvey.cs is compiled (csproj lists it) 
+ok    +b the toggle exists, is saved, shown, and gates the incident 
+ok    +c the incident is baseChance 0, targets the home map, uses the gated worker 
+ok    +d the hail's LetterDef names the class the C# defines and the part fetches it by name 
+ok    +e an answer is taken once, and only while the quest runs 
+ok    +f nothing in the survey C# touches Heat, visibility or goodwill 
+ok    +g the committed DLL carries the survey types 
+
+[what the player reads] (shipped fallback text; {FACTION} is the pursuing faction's name)
+  LETTER  An Imperial survey hails the ship
+  A survey team of {FACTION} has set down out past the old works, among the rust plates. For two days their lamps have crept from plate to plate: sounding rods, core samplers, a crawler that stops every few paces to listen to the ground.
+  
+  This morning their officer opened a channel to the ship. If he knows whose ship this is, he does not say so. Salvage crews work these plates, he says; they must see things. What is out there? What have your people seen?
+    [ Give him the guild's answer: scrap, bad ground, nothing worth the trip ]
+    [ Tell him what the crews have seen: the hollow plates, the drone from the old works, the ground that settles overnight ]
+    [ Leave the channel unanswered ]
+    [ Postpone ]
+
+  (b)  The survey moves on
+  The clan's trade-speaker gives the officer the answer every salvage guild on this world has given for as long as there have been guilds: old plate and scrap, a few bolts worth the hauling, ground too soft for repulsors, a noise in the wind that nobody pays any heed. The prices are poor. The pickings are poorer.
+  
+  The officer stops taking notes halfway through. By evening the survey lamps have moved on to the next grid square of their charts, and they do not come back.
+
+  (c)  The survey stays
+  The clan's trade-speaker tells the officer what the crews have seen out there: plates that ring hollow underfoot, the drone from the old works that changes pitch for no reason anyone can find, ground that settles overnight where nobody has dug. The officer has every word of it repeated, slowly, and records it all.
+  
+  Before dawn a small pod comes down by the ship with silver in it and no message. Out past the old works the survey lamps have stopped moving. They are setting up camp.
+
+  (a) refused  The channel goes quiet
+  Nobody aboard answers. The officer calls twice more, then the channel goes quiet. For a few days the survey lamps keep moving over the plates; then one night they are gone, and there is no telling what they took away with them.
+
+  (a) lapsed  The survey leaves
+  The officer's hail goes unanswered until it stops coming. A few days later the survey lamps are gone from the plates, and nobody aboard can say what they found out there.
+
+62 checks, 0 failed
+PASS
