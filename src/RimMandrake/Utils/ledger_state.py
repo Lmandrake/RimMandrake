@@ -35,7 +35,9 @@ MAX_LINES = 50
 CAP = 8
 WIDTH = 160
 REGEN = "python3 src/RimMandrake/Utils/ledger_state.py"
-NEXT_RE = re.compile(r"NEXT:[ \t]*([^\n]*)")      # never across a line: an empty NEXT: borrows nothing
+# "NEXT:" and its spoken forms, "NEXT then:", "NEXT (after the load):" — an owner note said "NEXT then:" and the first
+# reader missed it (fresh-reader test, 2026-11-11). Never across a line: an empty NEXT: borrows nothing.
+NEXT_RE = re.compile(r"\bNEXT\b[^:\n]{0,24}:[ \t]*([^\n]*)")
 PACIFIC = ZoneInfo("America/Los_Angeles")     # the owner's clock (2026-11-06), whatever TZ the host runs
 
 
