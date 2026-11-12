@@ -31,7 +31,21 @@ def _read(p):
 
 
 def sources(mod_dir):
-    return sorted(glob.glob(os.path.join(mod_dir, "Source", "**", "*.cs"), recursive=True))
+    """The mod's own C#: every Source/**/*.cs except those under a subfolder with its own .csproj (a SelfTest
+    console app compiles its Program.cs into itself, not into the mod)."""
+    src = os.path.join(mod_dir, "Source")
+    out = []
+    for p in glob.glob(os.path.join(src, "**", "*.cs"), recursive=True):
+        d = os.path.dirname(p)
+        nested = False
+        while os.path.normpath(d) != os.path.normpath(src) and d.startswith(src):
+            if glob.glob(os.path.join(d, "*.csproj")):
+                nested = True
+                break
+            d = os.path.dirname(d)
+        if not nested:
+            out.append(p)
+    return sorted(out)
 
 
 def settings_class(mod_dir):

@@ -44,15 +44,13 @@ colony for value: caravan trade, orbital/settlement trade, trade-shuttle session
 (the reskinned MiningCo Hutt shuttles included). A **gift** to the smuggle plot (§5)
 is explicitly *not* a sale — that is the plot's hinge.
 
-**Detection is GM-layer, not in-game.** Imperial Heat is canonical as an *external
-blackboard* number owned by the RimBridge GM layer (`build_plan.md` §2 and M4 —
-shadow mode first), not a stat in the save. The GM layer detects sales by polling
-kyber/mindstone counts across trade sessions and diffing against the colony ledger;
-consequences fire back through the bridge/CQF injection lane. No new in-game
-"wanted" system is invented — the heat/wanted representation already exists and this
-spec only adds an input to it. ⚠️ Build note: verify a count-diff actually
-distinguishes *sold* from *crafted-away* (lightsaber crafting consumes crystals)
-before trusting the poll — reconcile against the trade session, not raw inventory.
+**Detection is in-game, at the trade session** (built 2026-11-11, `src/RimUtinni/KyberTradePlot/Source/KyberTrade.cs`):
+a Harmony prefix on `TradeDeal.TryExecute` counts the kyber-family rows the colony sells before the deal resolves.
+Every trade window goes through it (caravans, settlements, orbital traders, trade shuttles), so crafting, theft,
+gifts (`TradeSession.giftMode`) and the donation's delivery (`TradeRequestComp`, not a trade deal) are never sales.
+**Heat is the one Empire attention meter already built, Colony Visibility** (`mandrake.rm.visibility`), per
+`design/Jawa/proposals/empire_escalation_ladder_design_2026-10-02.md` §2 ("No Imperial heat variable is added"): it
+paces the pursuit ladder and scales its raids, so a sale rides the existing pursuit spine. No new "wanted" system.
 
 ## 3. Heat wiring (the Empire side)
 
@@ -60,8 +58,7 @@ before trusting the poll — reconcile against the trade session, not raw invent
   than a season of open-sky loitering — the owner's word is "extremely illegal," and
   the gauge's other inputs (orbital timer, Hutt trade generally) are slow burns.
   Scale with quantity, sublinearly (the crime is *selling kyber*, not the invoice
-  total). Exact constants are M4 GM-layer tuning, like every other Heat rate
-  (`desert_world_design.md` movement-leash constraint).
+  total). Shipped: 15 Visibility × √crystals, at most 40 per sale (bands are 20 wide), Mod Settings sliders.
 - **Consequences ride the existing pursuit spine** — Act I bounties → Act II targeted
   raids → Act III blockade (`required_mods.md` CQF sections; `faction_roster_v2.md`
   §"Two dynamic hooks"). Kyber sales are an *accelerant* on that arc, not a parallel
@@ -83,8 +80,8 @@ Canon already holds the devil's-bargain coupling: **Hutt trade raises Imperial H
   `RUT_Jawa_HuttCartel` (verified defName, `src/RimUtinni/UtinniPatches/Defs/FactionDefs/JawaHuttCartel.xml`)
   — the Hutts like a supplier with nerve. Goodwill is the in-game representation;
   no new stat.
-- **GM-layer half:** a **Hutt Interest** counter on the same external blackboard as
-  Heat, fed by kyber sales to *any* buyer (word gets around). Thresholds unlock, in
+- **Hutt Interest:** a counter kept in the save (`GameComponent_KyberTrade`), fed by kyber
+  sales to *any* buyer (word gets around), 3 per crystal. Thresholds unlock, in
   order: (a) a Hutt trade shuttle "requested" visit that pays a kyber premium;
   (b) a named Cartel fixer beat (text/menu) who becomes the standing kyber buyer;
   (c) the fixer is the discovery channel for the smuggle plot's contact (§5) — the
@@ -102,9 +99,8 @@ Canon already holds the devil's-bargain coupling: **Hutt trade raises Imperial H
   `src/RimUtinni/UtinniPatches/Patches/HomesteadDefenseLeague.xml`). This is the
   roster's *secondary sheltered-Jedi channel* (roster, Global system 5): a rare Jedi
   may shelter within a sympathetic Homestead group.
-- **Trigger:** fires **once per campaign**, after kyber sales cross a small cumulative
-  threshold (GM-layer; suggested: the second sale — the first is deniable, the
-  second is a pattern).
+- **Trigger:** fires **once per campaign**, a day after the second sale (the first is
+  deniable, the second is a pattern; Mod Settings slider).
 - **Shape (v1):** a visitor group event/quest — two or three Homestead pawns, one of
   whom is the "alleged" Jedi: light kit, plain clothes, **no powers, no psylink,
   nothing on the pawn that confirms anything** (`FORCE_POWERS_ARE_V2_1`; in v1 they
@@ -157,21 +153,19 @@ The small plot, owner-shaped end to end:
 
 | Piece | Surface | Owner of the number |
 |---|---|---|
-| Heat bump per sale, Hutt Interest thresholds | GM blackboard (Python, M4) | GM tuning, shadow-mode first |
-| Hutt goodwill on Cartel sales | bridge consequence injection | GM layer |
-| Homestead visit + conversation | CQF quest/event (or bridge-injected letter+visitor group) | quest authoring skill |
-| Rendezvous site quest | CQF site quest, vetted template | quest authoring skill |
+| Heat bump per sale, Hutt Interest, fixer threshold | `GameComponent_KyberTrade` + `KyberTradeKernel.cs` (in-game; Colony Visibility is the meter) | Mod Settings |
+| Hutt goodwill on Cartel sales | the same sale hook, `TryAffectGoodwillWith` | Mod Settings |
+| Homestead visit + conversation | `IncidentWorker_KyberHomesteadVisit` (a visitor group) + `ChoiceLetter_KyberHomesteadQuestion` | quest authoring |
+| Rendezvous | `RUT_KyberDonationSmuggle`: a trade request at a Homestead or Cartel settlement (`QuestNode_GetKyberRendezvous`); no "smuggler's cache" SitePartDef exists | quest authoring |
 | Trader buy-filter (if any) | Jawa_Patches tier ① | config |
 
-⚠️ `build_plan.md` §6.1's CQF-vs-thin-config contradiction is still unreconciled in
-the corpus; this spec assumes CQF for the two quests, and inherits whatever that
-reconciliation decides. Nothing here deepens the dependency beyond what the pursuit
-arc already assumes.
+Neither piece uses CQF: the visit is a vanilla-shaped visitor incident with its own letter, and the donation is a
+vanilla QuestScriptDef, so `build_plan.md` §6.1's CQF question does not touch this plot.
 
 ## 8. Verify (mirrors the item)
 
-- A sale of `Force_KyberCrystal` raises Heat and Hutt Interest on the blackboard in a
-  shadow-mode test; a crafting consumption of the same quantity raises neither.
+- A sale of `Force_KyberCrystal` raises Heat and Hutt Interest in a test; a crafting
+  consumption of the same quantity raises neither (`python3 src/RimMandrake/Utils/selftest_kyber_trade_plot.py`).
 - The Homestead visit fires exactly once, and never grants a power or a recruit.
 - The smuggle quest completes with the ruled non-outcome: no Rebellion presence
   exists on the world after completion, and the reward matches §6.4.

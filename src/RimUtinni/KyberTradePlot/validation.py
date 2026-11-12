@@ -4,20 +4,24 @@ KYBER_TRADE_PLOT_FIRST_SCRIPT_1 (KYBER_TRADE_PLOT_1). Run:
 
     python.exe src/RimMandrake/Utils/modcheck/cli.py run KyberTradePlot
 
-INTENDED FUNCTION (About.xml): the alleged-Jedi Homestead visit (a one-shot conversation quest, Forthright vs Evasive, no punishment) and the donate-and-smuggle quest (kyber given, not sold, for a letter and modest goodwill), gated by the kyberTradePlotEnabled setting.
-
-WHAT IT PROVES (live, through existing bridge tools; no proof hooks were added, so no DLL was rebuilt):
-  * both GiveQuest incidents answer a dry run
+INTENDED FUNCTION (About.xml): every kyber/mindstone sale in a trade window raises Imperial attention on the Colony
+Visibility meter, Hutt interest, and Cartel goodwill when the Cartel buys; after the second sale the Homestead visit
+(three moisture farmers, one unarmed, a choice letter asking how the kyber was obtained) comes once; a straight answer,
+or the Cartel fixer when the visit went nowhere, brings the one donation quest (no reward, no Heat, no Rebellion).
+WHAT IT PROVES (live, through existing bridge tools; no proof hooks were added):
+  * the GiveQuest incident and the visit incident answer a dry run
   * every Mod Settings bool flips and reads back through jawa/mod_settings_field (class and field names resolve)
-  * every attribute-declared Harmony patch lists this mod's Harmony id as an owner (jawa/harmony_patches)
-  * every shipped IncidentDef answers a fire_incident dry run (the worker resolves and CanFireNow does not throw)
+  * every attribute-declared Harmony patch (the TradeDeal.TryExecute kyber-sale hook) lists this mod's Harmony id as an
+    owner (jawa/harmony_patches)
   * every shipped def is loaded and its scalar fields read back equal to the XML (modcheck.shipped_defs)
-
-NOT PROVEN HERE (first pokes for the next live pass):
-  * either quest generating (QuestScriptDef node tree resolving its slate) and being offered
-  * accepting / expiring the visit recording RUT_KyberHomesteadDoorOpened
-  * completing the donation recording RUT_KyberDonatedToCause and paying out
-
+OFFLINE (python3 src/RimMandrake/Utils/selftest_kyber_trade_plot.py): the sale count over real Tradeable/TradeDeal
+objects, the patch's target and injected parameters, the donation's delivery never being a trade deal (IL of
+TradeRequestComp.Fulfill), the heat landing on a real GameComponent_ColonyVisibility, and the plot's state machine tick
+by tick: the visit once, the donation once through either door.
+NOT PROVEN HERE OR OFFLINE (first pokes for the next live pass):
+  * a real trade window sale: the first-sale letter, Visibility up, Cartel goodwill up
+  * the visit spawning its three pawns and the choice letter's answers
+  * the donation quest generating at a lane settlement and its delivery paying the letter of thanks
 STATIC (offline): `python3 validation.py` runs modcheck.mod_static over the mod -- every Defs/Patches XML parses, no
 inert top-level `<Operation MayRequire>`, every Source/*.cs is in the csproj, a ModSettings class exists and every
 Scribed setting has a control.

@@ -1,51 +1,21 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-  RUT_KyberDonationSmuggle - KYBER_TRADE_PLOT_1 spec SS6, "The donation and the
-  smuggle". Written against skills/rimworld-quests/SKILL.md, reusing vanilla's own
-  TradeRequestComp/QuestNode_TradeRequest_* system - the exact mechanism Core uses
-  for "a settlement asks a caravan to bring specific goods within a time window,"
-  already proven in this repo by src/RimUtinni/FungalSoilTrade/Defs/QuestScriptDefs/
-  RUT_FungalSoilTradeRequest.xml (that file's own header cites Core's
-  Script_TradeRequest.xml). No node class or field below is guessed - QuestNode_
-  ChangeFactionGoodwill's field names were confirmed against decompiled source
-  (RimWorld/QuestGen/QuestNode_ChangeFactionGoodwill.cs) after an earlier draft of
-  this file had them wrong; the corrected names (canSendLetter, canSendMessage) are
-  what ships here.
+  RUT_KyberDonationSmuggle - KYBER_TRADE_PLOT_1 spec SS6, "The donation and the smuggle". Fired once per campaign by
+  GameComponent_KyberTrade (Source/KyberTrade.cs) when a door to it opens: the Homestead visitors answered straight
+  (SS5), or, when that visit went nowhere, Hutt interest reaching the Cartel fixer (SS4c). Built on vanilla's
+  TradeRequestComp/QuestNode_TradeRequest_* (bring N of a named thing to a place inside a window), as
+  src/RimUtinni/FungalSoilTrade/Defs/QuestScriptDefs/RUT_FungalSoilTradeRequest.xml does.
 
-  THE TWO NAMED SIMPLIFICATIONS/SUBSTITUTIONS:
+  THE RENDEZVOUS is a settlement of the smuggling lane, picked by QuestNode_GetKyberRendezvous
+  (Source/QuestNode_GetKyberRendezvous.cs): non-hostile, Homestead (OutlanderCivil) or Hutt Cartel, the door's own
+  faction first - never an Imperial outpost. The spec's "smuggler's cache" site template does not exist as a
+  SitePartDef in this repo; a trade request at the lane's own settlement is the delivery mechanism instead.
 
-  1. THE "SITE" IS A SETTLEMENT-SHAPED CONTACT, NOT A NEW SitePartDef. The spec
-     (SS6.2) calls for a rendezvous SITE from the "smuggler's cache" curated-ruin
-     template - that template does not exist as a SitePartDef/StructureLayoutDef in
-     this repo yet (grepped, absent), and authoring one from scratch is a much
-     larger, riskier task (see VAULT_THAW_QUEST_FAMILY_1 for how much a real
-     SitePartDef+GenStep costs) than this pass's scope. TradeRequestComp is
-     purpose-built for exactly the mechanical shape needed - "bring N of a named
-     Thing to a place within a time window, no payment goes back the other way
-     unless the def says so" - so it is reused wholesale via
-     QuestNode_GetNearbySettlement (any nearby visitable settlement stands in for
-     "wherever the smuggling lane's fixer currently is," the same open-question
-     simplification RUT_FungalSoilTradeRequest.xml already accepted and documented
-     for not gating to a specific faction - QuestNode_GetNearbySettlement has no
-     faction-filter field, confirmed by reading its source). Flavor text narrates
-     the contact as "someone working the same lanes the Hutts do," never claiming
-     the settlement itself is Hutt Cartel-owned.
-
-  2. NO SILVER OR GOODS COME BACK. K2 RULED 2026-09-11: "the smuggle scrubs
-     nothing - donation is pure cost, never laundering." Unlike
-     RUT_FungalSoilTradeRequest (which pays QuestNode_GiveRewards on fulfillment),
-     this quest's TradeRequestFulfilled branch adds ONLY a HistoryEventDef, a
-     modest OutlanderCivil (Homestead) goodwill bump, and a letter - no
-     QuestNode_GiveRewards node exists in this file at all, by design. Zero Heat
-     change is trivially true: nothing here touches Heat, because nothing in this
-     repo currently CAN (see the item file - the GM blackboard is unbuilt).
-
-  Fires only through RUT_GiveQuest_KyberDonationSmuggle (baseChance 0) - the real
-  trigger (either door from spec SS5/SS4c) lives on the same unbuilt GM layer as
-  RUT_KyberHomesteadVisit's trigger. rootSelectionWeight 0: never randomly offered.
-  QuestNode_QuestUnique blocks a second ONGOING copy only, same documented limit as
-  the vault-quest family - "one Rebellion cell, one chance" ever is the firer's
-  responsibility until the GM layer exists to enforce it itself.
+  THE REWARD THAT IS NOT VICTORY (SS6.4, K2 RULED 2026-09-11 "the smuggle scrubs nothing - donation is pure cost,
+  never laundering"): on fulfilment only a modest Homestead goodwill bump, a HistoryEvent and the letter of thanks.
+  No QuestNode_GiveRewards, no silver back, no Heat change (the delivery is TradeRequestComp's, not a trade deal, so
+  the kyber-sale hook never sees it), and nothing here or anywhere in this mod creates a faction, a pawn or a site for
+  the Rebellion: "still no way to help it here: they lost, that's it."
 -->
 <Defs>
 
@@ -72,7 +42,9 @@
 
     <questDescriptionRules>
       <rulesStrings>
-        <li>questDescription->Someone working the same lanes the Hutts do has a request, passed along quietly: [requestedThingCount]x [requestedThing_label] (worth [requestedThingMarketValue_money]), given rather than sold, to be smuggled offworld to a cause still fighting the Empire somewhere it hasn't already lost.\n\nThere is no payment coming back. What you get is the knowledge that it went somewhere the fight is still alive, and their thanks - nothing more, because there is still no way to help it here. Bring the kyber to [settlement_label] before the window closes, or don't; nobody will hold it against you either way.[travelTime]</li>
+        <li>questDescription->[theAsk]\n\n[requestedThingCount]x [requestedThing_label] (worth [requestedThingMarketValue_money]), given rather than sold, to be smuggled offworld on lanes the Hutts have run longer than the Empire has existed, to a cause still fighting it somewhere the war is not yet lost.\n\nThere is no payment coming back, and nothing it buys will ever reach this world: there is still no way to help it here. What you get is their thanks and the knowledge of where it went. Bring the kyber to [settlement_label] before the window closes, or don't; nobody will hold it against you either way. It will not be asked twice.[travelTime]</li>
+        <li>theAsk(viaFixer==True,priority=1)->The Cartel's fixer passes along the message he swears he only carries: someone working the same lanes the Hutts do has a request.</li>
+        <li>theAsk->The Homestead visitors you answered straight sent word, quietly: someone they trust has a request.</li>
         <li>travelTime(canCaravan==True,priority=1)-> The estimated travel time is [estimatedTravelTime_duration].</li>
         <li>travelTime-></li>
       </rulesStrings>
@@ -89,20 +61,16 @@
           <tag>RUT_KyberDonationSmuggle</tag>
         </li>
 
-        <li Class="QuestNode_GetNearbySettlement">
-          <allowActiveTradeRequest>false</allowActiveTradeRequest>
+        <!-- The rendezvous: a non-hostile settlement on the smuggling lane, never an Imperial one (vanilla's picker takes
+             any faction). The door's own people first: the Homestead's for a straight answer, the Hutts' for the fixer. -->
+        <li Class="RimMandrake.Utinni.KyberTradePlot.QuestNode_GetKyberRendezvous">
           <maxTileDistance>60</maxTileDistance>
           <storeAs>settlement</storeAs>
+          <storeFactionAs>faction</storeFactionAs>
           <storeFactionLeaderAs>asker</storeFactionLeaderAs>
           <storeCanCaravanAs>canCaravan</storeCanCaravanAs>
-          <canBeSpace>false</canBeSpace>
+          <storeViaFixerAs>viaFixer</storeViaFixerAs>
         </li>
-
-        <li Class="QuestNode_GetFactionOf">
-          <thing>$asker</thing>
-          <storeAs>faction</storeAs>
-        </li>
-
         <li Class="QuestNode_Letter">
           <inSignal>faction.BecameHostileToPlayer</inSignal>
           <label TKey="LetterLabelQuestFailed">Quest failed: [resolvedQuestName]</label>

@@ -5,23 +5,34 @@ using Verse;
 
 namespace RimMandrake.Utinni.KyberTradePlot
 {
-    // MOD_OPTIONS_RETROFIT_1 / KYBER_TRADE_PLOT_1 — Mod Settings for this mod.
-    //
-    // The mod ships two quest-content beats (RUT_KyberHomesteadVisit,
-    // RUT_KyberDonationSmuggle), both fired only through their own baseChance-0
-    // GiveQuest incidents (dev mode, a bridge call, or eventually the GM layer
-    // once it exists — see the item file for what's still owed there). Neither
-    // is worldgen-affecting and neither is on the natural quest pool, so the
-    // one thing worth exposing is a single kill switch: whether either quest
-    // can ever be offered at all.
+    // MOD_OPTIONS_RETROFIT_1 / KYBER_TRADE_PLOT_1 — Mod Settings for this mod. Two switches, one per feature: what a
+    // kyber sale moves (Imperial Heat on the Colony Visibility meter, Hutt interest, Cartel goodwill), and the plot that
+    // follows (the Homestead visit and the donation). Off, each simply stops; nothing else reads them. The numbers are
+    // the ones the experience is made of; defaults are the shipped behaviour.
     public class KyberTradePlotSettings : ModSettings
     {
         public static bool kyberTradePlotEnabled = true;
+        public static bool kyberSalesDrawHeat = true;
+        public static float heatPerSale = 15f;
+        public static float heatCapPerSale = 40f;
+        public static float huttInterestPerCrystal = 3f;
+        public static int cartelGoodwillPerSale = 4;
+        public static int visitAfterSales = 2;
+        public static float fixerInterest = 15f;
+        public static int homesteadGoodwillForthright = 8;
 
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref kyberTradePlotEnabled, "kyberTradePlotEnabled", true);
+            Scribe_Values.Look(ref kyberSalesDrawHeat, "kyberSalesDrawHeat", true);
+            Scribe_Values.Look(ref heatPerSale, "heatPerSale", 15f);
+            Scribe_Values.Look(ref heatCapPerSale, "heatCapPerSale", 40f);
+            Scribe_Values.Look(ref huttInterestPerCrystal, "huttInterestPerCrystal", 3f);
+            Scribe_Values.Look(ref cartelGoodwillPerSale, "cartelGoodwillPerSale", 4);
+            Scribe_Values.Look(ref visitAfterSales, "visitAfterSales", 2);
+            Scribe_Values.Look(ref fixerInterest, "fixerInterest", 15f);
+            Scribe_Values.Look(ref homesteadGoodwillForthright, "homesteadGoodwillForthright", 8);
         }
 
         // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
@@ -88,16 +99,40 @@ namespace RimMandrake.Utinni.KyberTradePlot
             list.Begin(view);
             searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
-            if (Group(list, "Kyber trade plot content", RimMandrake.Shared.SettingScope.NextPulse, new[] { "kyberTradePlotEnabled" }))
+            if (Group(list, "Selling kyber", RimMandrake.Shared.SettingScope.NextPulse,
+                    new[] { "kyberSalesDrawHeat", "heatPerSale", "heatCapPerSale", "huttInterestPerCrystal", "cartelGoodwillPerSale" }))
             {
-                list.CheckboxLabeled("Kyber trade plot content", ref kyberTradePlotEnabled,
-                    "The Homestead 'alleged Jedi' visit and the donate-and-smuggle rendezvous "
-                  + "quest that can follow a run of kyber sales. Both are triggered by dev mode, "
-                  + "a bridge call, or (once built) the GM layer - never by the ordinary quest "
-                  + "pool. Off: neither quest can ever be offered.");
+                list.CheckboxLabeled("A kyber sale draws the Empire and the Hutts", ref kyberSalesDrawHeat,
+                    "Selling kyber (or a mindstone) in any trade window raises Imperial attention on the Colony Visibility meter, "
+                  + "raises Hutt interest, and pleases the Hutt Cartel when they are the buyer. Gifts, crafting and the donation "
+                  + "quest are never sales. Off: kyber sells like any other good.");
+                list.Label("Imperial attention for a one-crystal sale: " + heatPerSale.ToString("F0")
+                    + " (larger sales grow with the square root of the count)");
+                heatPerSale = list.Slider(heatPerSale, 1f, 40f);
+                list.Label("Most attention one sale can draw: " + heatCapPerSale.ToString("F0") + " (the meter's bands are 20 wide)");
+                heatCapPerSale = list.Slider(heatCapPerSale, 5f, 100f);
+                list.Label("Hutt interest per crystal sold: " + huttInterestPerCrystal.ToString("F1"));
+                huttInterestPerCrystal = list.Slider(huttInterestPerCrystal, 0f, 10f);
+                list.Label("Hutt Cartel goodwill per sale to the Cartel: " + cartelGoodwillPerSale);
+                cartelGoodwillPerSale = (int)list.Slider(cartelGoodwillPerSale, 0f, 20f);
                 list.GapLine();
             }
-
+            if (Group(list, "The kyber plot", RimMandrake.Shared.SettingScope.NextPulse,
+                    new[] { "kyberTradePlotEnabled", "visitAfterSales", "fixerInterest", "homesteadGoodwillForthright" }))
+            {
+                list.CheckboxLabeled("The alleged Jedi and the donation", ref kyberTradePlotEnabled,
+                    "Once per campaign, after enough kyber sales, Homestead moisture farmers come to ask how the kyber was obtained. "
+                  + "An answer opens the door to one ask: donate kyber to a cause fighting somewhere else, smuggled offworld. "
+                  + "If the visit goes nowhere, the Hutts' fixer passes the ask along once Hutt interest is high enough. "
+                  + "Off: neither ever comes.");
+                list.Label("Sales before the Homestead visit: " + visitAfterSales);
+                visitAfterSales = (int)list.Slider(visitAfterSales, 1f, 10f);
+                list.Label("Hutt interest at which the fixer passes the ask along: " + fixerInterest.ToString("F0"));
+                fixerInterest = list.Slider(fixerInterest, 1f, 100f);
+                list.Label("Homestead goodwill for a straight answer: " + homesteadGoodwillForthright);
+                homesteadGoodwillForthright = (int)list.Slider(homesteadGoodwillForthright, 0f, 30f);
+                list.GapLine();
+            }
             viewHeight = list.CurHeight + 20f;
             list.End();
             Widgets.EndScrollView();

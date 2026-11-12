@@ -6,28 +6,34 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
-  <description>Ash'karr campaign content: the alleged-Jedi Homestead visit and the
-  donate-and-smuggle plot (KYBER_TRADE_PLOT_1, design/Jawa/kyber_trade_plot_spec.md,
-  K1/K2 RULED 2026-09-11). Ships RUT_KyberHomesteadVisit (a one-shot conversation
-  quest: Homestead Defense League visitors ask how the kyber was obtained; accepting
-  is the Forthright branch, letting it expire is Evasive — no punishment either way)
-  and RUT_KyberDonationSmuggle (the donation-and-rendezvous quest: a fixer on the
-  smuggling lane asks for a real quantity of kyber, given not sold; completing it
-  pays a letter of thanks and a modest Homestead goodwill bump only — zero Heat
-  change, per K2, and no Rebellion faction or presence is ever created). Both quests
-  are pure vanilla QuestScriptDef/QuestNode content (no C#) and are never rolled by
-  the storyteller (rootSelectionWeight 0) — they fire only through the paired
-  RUT_GiveQuest_* IncidentDefs (baseChance 0), the deterministic dev-mode/bridge hook
-  already established by VAULT_THAW_QUEST_FAMILY_1. The GM-layer Heat/Hutt-Interest
-  blackboard that is meant to fire these on a real kyber-sale-count threshold does
-  not exist yet (M4 unstarted per build_plan.md) — see the item file for exactly
-  what that leaves undone. Requires RUT_Jawa_HuttCartel and the HomesteadDefenseLeague
-  patch (both UtinniPatches) to be loaded for their flavor text to make sense, but
-  has no hard load-order dependency on them (no defName from either is referenced).
+  <description>Ash'karr campaign content: selling kyber (KYBER_TRADE_PLOT_1, design/Jawa/kyber_trade_plot_spec.md,
+  K1/K2 RULED 2026-09-11).
 
-  Ships one small C# assembly (Source/) per the standing Mod Settings rule: a
-  single kill switch (both quests off entirely), read by a plain
-  IncidentWorker_GiveQuest subclass named directly in this mod's own
-  IncidentDefs — no Harmony, same idiom as UtinniPatches' own settings-gated
-  subclasses.</description>
+  Every kyber crystal (or mindstone) sold in any trade window is a crime the Empire hunts: Imperial attention rises
+  substantially on the Colony Visibility meter (the campaign's one Empire attention meter, which paces the pursuit),
+  Hutt interest rises, and the Hutt Cartel's goodwill rises when they are the buyer. Gifts, crafting and the donation
+  are never sales.
+
+  After the second sale, once per campaign, Homestead Defense League moisture farmers walk in to ask how the kyber
+  was obtained. One of them carries no weapon and nothing that confirms anything; nobody says "Jedi". Any answer is
+  forthright (goodwill, a warning, and a door); saying nothing is evasive, with no punishment.
+
+  Through that door, or through the Cartel fixer once Hutt interest is high when the visit went nowhere, one ask
+  comes: donate kyber, smuggled offworld from a settlement on the lane, to a cause fighting somewhere else. It pays a
+  letter of thanks and modest Homestead goodwill, moves no Heat, and nothing ever helps the Rebellion here: they
+  lost, that's it. Refused or failed, it never comes again.
+
+  Mod Settings: one switch for what a sale moves, one for the plot, and the numbers.</description>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+      <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>mandrake.rm.visibility</li>
+  </loadAfter>
 </ModMetaData>

@@ -4,10 +4,10 @@
     RimWorld 1.6 runs Unity/Mono against a .NET Framework 4.7.2 profile, so the
     mod DLL must target net472. Same shape as
     src/RimUtinni/LongHunger/Source/LongHunger.csproj — copy that file's own
-    header if this one goes stale. No Harmony reference: the one C# class here
-    (IncidentWorker_GiveQuest_KyberTradePlot) is a plain IncidentWorker_GiveQuest
-    subclass, discovered by naming it directly in this mod's own IncidentDefs'
-    <workerClass>; no patch registration call needed.
+    header if this one goes stale. One Harmony patch (TradeDeal.TryExecute, the
+    kyber-sale hook in KyberTrade.cs), applied through the shared PatchApplier.
+    The selftest (SelfTest/, python3 src/RimMandrake/Utils/selftest_kyber_trade_plot.py)
+    compiles KyberTradeKernel.cs in directly; this project leaves SelfTest/ alone.
 
     Build from a clone (never the read-only D:\Luke\dev\RimMandrake mirror):
       python3 src/RimMandrake/Utils/winbuild.py src/RimUtinni/KyberTradePlot/Source/RimMandrake.Utinni.KyberTradePlot.csproj   (from a clone; stages on D:\ClaudeWork\rimmandrake\build)
@@ -41,9 +41,18 @@
   <ItemGroup>
     <Compile Include="KyberTradePlotSettings.cs" />
     <Compile Include="KyberTradePlotIncidentWorker.cs" />
+    <Compile Include="KyberTradeKernel.cs" />
+    <Compile Include="KyberTrade.cs" />
+    <Compile Include="KyberHomesteadVisit.cs" />
+    <Compile Include="QuestNode_GetKyberRendezvous.cs" />
+    <Compile Include="..\..\..\RimMandrake\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="..\..\..\RimMandrake\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
     <Compile Include="..\..\..\RimMandrake\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
   </ItemGroup>
+
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
@@ -60,6 +69,10 @@
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>

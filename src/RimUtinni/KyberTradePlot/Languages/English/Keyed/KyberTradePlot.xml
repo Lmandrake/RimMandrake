@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- A sale. {0} crystals, {1} the Imperial line, {2} Hutt interest. -->
+  <RUT_KyberSold>Kyber sold ({0}). {1} Hutt interest is now {2}: word gets around.</RUT_KyberSold>
+  <RUT_KyberSold_Heat>Selling kyber is a crime the Empire hunts: Imperial attention +{1}, now {0} ({2}).</RUT_KyberSold_Heat>
+  <RUT_KyberSold_NoMeter>Selling kyber is a crime the Empire hunts.</RUT_KyberSold_NoMeter>
+  <RUT_KyberFirstSaleLabel>Kyber sold</RUT_KyberFirstSaleLabel>
+  <RUT_KyberFirstSaleText>{0}\n\nTo the Empire, selling kyber crystal is about as illegal as anything gets. Every sale puts the clan's name a little higher on someone's list, and Imperial attention brings the hunt sooner and harder. The Hutts feel the opposite: a supplier with that much nerve is worth knowing.\n\nThe first sale can be denied. A second makes a pattern, and patterns get noticed by more than the Empire.</RUT_KyberFirstSaleText>
+
+  <!-- The Homestead visit. {0} faction name, {1} the quiet one. -->
+  <RUT_KyberVisitLabel>Homestead visitors: questions</RUT_KyberVisitLabel>
+  <RUT_KyberVisitTitle>Questions about the kyber</RUT_KyberVisitTitle>
+  <RUT_KyberVisitText>Moisture farmers of the {0} have come in on foot, unannounced, and ask to speak with whoever is trading kyber. Two of them carry themselves like farmers who have walked a long way. The third, {1}, carries no weapon, stands very still and says nothing while the others talk. Nobody uses the word "Jedi". Nobody needs to.\n\nThey want a straight answer to one question: how was the kyber obtained? It does not change what they think of you, they say, only whether they can trust what you say next.</RUT_KyberVisitText>
+  <RUT_KyberAnswerMined>"We dug it out of the Deeps ourselves."</RUT_KyberAnswerMined>
+  <RUT_KyberAnswerDead>"We took it off the dead."</RUT_KyberAnswerDead>
+  <RUT_KyberAnswerBought>"We bought it."</RUT_KyberAnswerBought>
+  <RUT_KyberAnswerStolen>"We stole it."</RUT_KyberAnswerStolen>
+  <RUT_KyberAnswerNothing>Tell them nothing.</RUT_KyberAnswerNothing>
+  <RUT_KyberVisitForthrightLabel>Homestead visitors: satisfied</RUT_KyberVisitForthrightLabel>
+  <RUT_KyberVisitForthrightText>{0}\n\nTrue or not, it was an answer. The quiet one never spoke. The two who did thanked you and said, on the way out, that word travels: others are watching the same trades, and not all of them will ask so politely.\n\nWhatever door that was, it is open now.</RUT_KyberVisitForthrightText>
+  <RUT_KyberVisitEvasive>The Homestead visitors got no answer. They do not argue; suspicion is not a crime, even to them.</RUT_KyberVisitEvasive>
+  <RUT_KyberVisitLeft>The Homestead visitors left without an answer about the kyber.</RUT_KyberVisitLeft>
+
+  <!-- The Hutt fixer (spec SS4b/c). {0} Hutt interest. -->
+  <RUT_KyberFixerLabel>A Cartel fixer</RUT_KyberFixerLabel>
+  <RUT_KyberFixerText>Hutt interest in the clan's kyber has reached {0}. The Cartel now keeps a fixer whose whole business is your crystals: a soft-voiced broker who buys at a fair price and asks nothing.\n\nNearly nothing. Along with the price list comes a message he swears he only carries: someone working the same smuggling lanes would like a word about kyber that is given, not sold.</RUT_KyberFixerText>
+</LanguageData>

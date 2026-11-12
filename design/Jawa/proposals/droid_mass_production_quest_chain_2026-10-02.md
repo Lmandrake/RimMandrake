@@ -81,8 +81,9 @@ There are 12 shipped `QuestScriptDef`s. The relevant precedents:
 
 - **`RUT_DroidRepairJob`** (`src/RimUtinni/DroidRepairJobs/`) uses custom `QuestNode_DroidRepairJob`
   and `QuestPart_DroidRepairJobOutcome`. Beat 1 is built directly on it.
-- **`RUT_KyberHomesteadVisit` / `RUT_KyberDonationSmuggle`** are signal-fired, weight-0 chain links
-  (`src/RimUtinni/KyberTradePlot/`). They are our existing proof of a chained quest.
+- **`RUT_KyberHomesteadVisit` / `RUT_KyberDonationSmuggle`** are a chain fired by a GameComponent, never the
+  storyteller (`src/RimUtinni/KyberTradePlot/`): the visit is a baseChance-0 incident due after the second kyber
+  sale, and its answer opens the donation quest. Our existing proof of a chained beat.
 - **`RM_Quest_RiteOfTipping`** is incident-fired and carries a custom `QuestPartActivable`.
 - **`RUT_VaultThaw_V1_RustCathedral`** uses `isRootSpecial` plus a GiveQuest incident.
 

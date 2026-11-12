@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- KYBER_TRADE_PLOT_1: the goodwill reasons and the memory of a straight answer. -->
+  <HistoryEventDef>
+    <defName>RUT_KyberHomesteadDoorOpened</defName>
+    <label>answered the Homestead visitors straight about the kyber</label>
+  </HistoryEventDef>
+  <HistoryEventDef>
+    <defName>RUT_KyberSoldToCartel</defName>
+    <label>sold kyber to the Hutts</label>
+  </HistoryEventDef>
+  <!-- The question the visitors ask: a choice letter whose answers are the player's (spec SS5, text/menu authority). -->
+  <LetterDef ParentName="CustomChoiceLetterBase">
+    <defName>RUT_KyberHomesteadQuestion</defName>
+    <color>(95, 151, 191)</color>
+    <flashInterval>-1</flashInterval>
+    <letterClass>RimMandrake.Utinni.KyberTradePlot.ChoiceLetter_KyberHomesteadQuestion</letterClass>
+  </LetterDef>
+</Defs>

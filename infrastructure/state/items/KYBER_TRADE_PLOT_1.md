@@ -31,101 +31,22 @@ donate-and-smuggle quest). Cards K1 (who were the later parties in the old
 mines) and K2 (does the smuggle scrub heat) await the owner; implementation
 owed after his rulings.
 
-## Progress 2026-09-11 — quest content built (FOUNDRY); BLOCKED on GM-layer infra
+## Built 2026-11-11 (CLAUDE_ARCHMAGI_OFFLINE1, Whittle) — the whole plot runs in-game
 
-**Built and offline-validated** (`python3 skills/rimworld-quests/scripts/validate_quest.py
---dir src/RimUtinni/KyberTradePlot/Defs/QuestScriptDefs` — 2 QuestScriptDef(s),
-0 errors, 0 warnings), new mod `src/RimUtinni/KyberTradePlot/`:
-- `RUT_KyberHomesteadVisit` (spec §5) — one-shot conversation quest; Accept =
-  Forthright (Homestead/`OutlanderCivil` goodwill +8, `RUT_KyberHomesteadDoorOpened`
-  HistoryEventDef, letter), letting it expire = Evasive (nothing fires — no
-  punishment, matches spec exactly).
-- `RUT_KyberDonationSmuggle` (spec §6) — donation/rendezvous quest built on
-  vanilla `TradeRequestComp`/`QuestNode_TradeRequest_*` (the proven mechanism
-  already shipped in `RUT_FungalSoilTradeRequest.xml`). Fulfillment: Homestead
-  goodwill +5, `RUT_KyberDonatedToCause` HistoryEventDef, letter of thanks — **no
-  `QuestNode_GiveRewards` anywhere in the file**, so K2 (zero Heat, never
-  laundering) holds trivially. No Rebellion faction or presence is created by
-  anything in this file, ever (spec §6.4/§6.5).
-- Both fire only through paired `RUT_GiveQuest_*` IncidentDefs (`baseChance 0`,
-  `ParentName="GiveQuestBase"`) — the same deterministic dev-mode/bridge trigger
-  pattern `VAULT_THAW_QUEST_FAMILY_1` established. Neither is
-  `rootSelectionWeight` > 0; neither can be rolled by the storyteller.
-
-**Two named, documented substitutions** (see each file's own header comment for
-the full reasoning): (1) the Homestead visit has no live pawn group walking the
-map — vanilla has no multi-button mid-scene dialogue node (`QuestPart_Choice` is
-a pre-accept reward-picker, not a narrative branch; confirmed by reading
-`RimWorld/QuestPart_Choice.cs`), so Forthright/Evasive is the quest's own
-Accept/let-expire choice, matching how every other quest in this repo
-represents a decision; (2) the rendezvous is a nearby settlement standing in
-for "the smuggling lane's fixer," not a new `smuggler's cache` SitePartDef —
-no such site template exists yet in this repo (grepped, absent) and authoring
-one is materially larger scope than this pass.
-
-**BLOCKED, not closed — the item's own `## verify` first clause cannot be met
-today:** "A sale raises heat and Hutt interest in a test." The spec is explicit
-that Heat/Hutt-Interest live on an **external GM blackboard** (`build_plan.md`
-§2, §M4 "Heat in shadow mode") that **does not exist as buildable
-infrastructure** — searched the repo (`grep`, `find`) for any Python state
-machine, blackboard file, or trade-session poller and found none; `build_plan.md`
-itself lists M4 as unstarted ("fast-follow at M4, not v1") and the CQF-vs-thin-
-config question in §6.1 is still open. Building a parallel in-mod Heat/Hutt-
-Interest counter would be exactly the "invent a parallel system" this task was
-told not to do. **What's owed before this item can close:** (a) the M4 Heat
-shadow-mode blackboard itself; (b) whatever polls trade sessions and diffs
-kyber/mindstone counts to detect a sale (spec §2's "reconcile against the trade
-session, not raw inventory" warning still applies); (c) the wiring that fires
-`RUT_GiveQuest_KyberHomesteadVisit` at the second sale and
-`RUT_GiveQuest_KyberDonationSmuggle` from either door (§5 forthright or §4c Hutt
-fixer) — none of which this item's own build surfaces table (spec §7) claimed
-were done already. The in-game Hutt goodwill bump on ordinary Cartel kyber
-sales (spec §4 "in-game half") is equally blocked: the spec ties its trigger to
-the same GM-layer sale detection, not a standalone Harmony hook, so it rides
-the same missing infra rather than being separately buildable.
-
-## Progress 2026-09-11 — Mod Settings retrofit (FOUNDRY, second pass)
-
-The mod as first built shipped no `Source/` and no settings screen, against
-CLAUDE.md's standing "every mod ships superb Mod Settings" rule. Added
-`Source/KyberTradePlotSettings.cs` (one checkbox, `kyberTradePlotEnabled`,
-default on) and `Source/KyberTradePlotIncidentWorker.cs` — a plain
-`IncidentWorker_GiveQuest` subclass (no Harmony) that reads the toggle before
-falling through to the base worker, named directly in both IncidentDefs'
-`<workerClass>`. Built clean (`dotnet build … -c Release`, 0 errors); both
-QuestScriptDefs re-validated after the edit (`validate_quest.py --dir
-src/RimUtinni/KyberTradePlot/Defs/QuestScriptDefs` — 0 errors, 0 warnings).
-No change to the BLOCKED status or to anything above — this only closes the
-Mod Settings gap.
-
-## Correction 2026-09-26 (FOUNDRY) — the 2026-09-11 block premise is now false
-
-The 2026-09-11 BLOCKED note above says the external GM blackboard "does not
-exist as buildable infrastructure" and that a repo grep found none. **That is
-no longer true and should not be relied on.** `GM_BLACKBOARD_SHADOW_M4_1`
-(filed and built 2026-09-13, `bdc930b32`) shipped exactly that blackboard —
-`src/RimMandrake/Utils/gm_blackboard_shadow.py`, a read-only Python state
-machine polling the live bridge that computes Heat, Hutt Interest, Cathedral
-Regard and an orbital-detection timer, proven against a real live session
-(shadow log evidence in that item's own file). `CATHEDRAL_REGARD_BLACKBOARD_1`
-extended it further (Regard/stage/exposure), and `CATHEDRAL_EXPOSURE_COMPLETION_1`
-(2026-09-17) independently re-confirmed its Hutt-Interest number as "genuinely
-live and shadow-tested." So the *shape* of the sale-detection/Heat/Hutt-Interest
-infra this item's verify clause depends on now exists.
-
-**What is still actually missing, and why this item stays BLOCKED rather than
-closing:** both blackboard items were deliberately left `doing`, not closed,
-because neither built the **live injection flip** — build_plan.md's own M4
-spec sequence is "shadow mode... then flip injection... then for real," and
-only the shadow half has shipped. Nothing yet reads the blackboard's Heat/
-Hutt-Interest numbers and actually fires `RUT_GiveQuest_KyberHomesteadVisit`/
-`RUT_GiveQuest_KyberDonationSmuggle` or bumps Hutt goodwill in a live game —
-that live-fire mechanism is GM_BLACKBOARD_SHADOW_M4_1's own next-half scope
-(the architecture keeps GM state outside the game on purpose, per
-build_plan.md §2 — "Put all GM state outside the game" — so this is that
-script's job, not a new parallel mechanism inside the Kyber mod), and it
-needs live bridge access to build and prove safely. This FOUNDRY pass had no
-bridge access (reserved for concurrent agents) and was scoped to offline
-authoring only, so it did not attempt that build. Re-blocking `--on
-GM_BLACKBOARD_SHADOW_M4_1` to reflect the real, current dependency instead of
-the stale "no infra exists" reason.
+The 2026-09-11/09-26 notes that stood here said the plot was blocked on a GM blackboard's "live injection flip".
+That premise is gone: `design/Jawa/proposals/empire_escalation_ladder_design_2026-10-02.md` §2 made **Colony
+Visibility the one Empire attention meter** ("No Imperial heat variable is added"), and the GM blackboard
+(`gm_blackboard_shadow.py`) stays shadow-only. So the plot is wired in the game, mod `src/RimUtinni/KyberTradePlot/`:
+- **Sale** = a kyber-family row (`Force_KyberCrystal`, `RUT_Mindstone`) the colony sells in an executed trade deal
+  (Harmony on `TradeDeal.TryExecute`). Gifts, crafting, theft and the donation's delivery are never sales.
+- **Heat**: Colony Visibility +15 × √crystals (cap 40); **Hutt interest** +3 per crystal from any buyer; **Cartel
+  goodwill** +4 when the Cartel buys. First sale: a letter; later sales: a message with the numbers.
+- **Alleged Jedi**: a day after the second sale, once per campaign, three Homestead moisture farmers walk in (one
+  unarmed, no psylink); a choice letter asks how the kyber was obtained. Any answer = forthright (+8 Homestead
+  goodwill, a warning, the door); nothing / leaving unanswered = evasive.
+- **Donation**: once, 2.5 days after a door opens (the straight answer, or the Cartel fixer at Hutt interest 15 when
+  the visit went nowhere): `RUT_KyberDonationSmuggle`, a trade request for 6–12 kyber at a Homestead or Cartel
+  settlement. Delivery pays +5 Homestead goodwill and the letter of thanks: no reward, no Heat, no Rebellion.
+- Mod Settings: one switch per feature and the numbers. Spec updated to match.
+- Offline proof: `python3 src/RimMandrake/Utils/selftest_kyber_trade_plot.py`. Not yet seen live: a real trade
+  window sale, the visitors spawning, the quest generating and completing (`validation.py` lists the first pokes).

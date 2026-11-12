@@ -1,31 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-  <!-- KYBER_TRADE_PLOT_1: a named GiveQuest incident per quest, baseChance 0 - never
-       rolled by the storyteller (both quests are also rootSelectionWeight 0). Same
-       shape and same purpose as VAULT_THAW_QUEST_FAMILY_1's IncidentDefs_Vaults.xml:
-       the deterministic trigger - dev mode -> Incidents -> the def, or a bridge call
-       - for a quest whose REAL trigger (a kyber-sale-count threshold on the Imperial
-       Heat GM blackboard) lives on infrastructure that does not exist yet
-       (build_plan.md SSM4 is unstarted). Whoever builds that layer fires these two
-       incidents; nothing here invents a parallel counter.
-
-       <workerClass> points at this mod's own IncidentWorker_GiveQuest_
-       KyberTradePlot (Source/KyberTradePlotIncidentWorker.cs) rather than
-       inheriting GiveQuestBase's plain IncidentWorker_GiveQuest: the subclass's
-       only job is reading the Mod Settings kill switch
-       (KyberTradePlotSettings.kyberTradePlotEnabled) before falling through to
-       the base implementation - same no-Harmony plain-subclass-in-workerClass
-       idiom UtinniPatches already uses for its own SymbolResolver override. -->
-
-  <IncidentDef ParentName="GiveQuestBase">
-    <defName>RUT_GiveQuest_KyberHomesteadVisit</defName>
-    <label>kyber homestead visit</label>
-    <letterLabel>Quest available</letterLabel>
-    <workerClass>RimMandrake.Utinni.KyberTradePlot.IncidentWorker_GiveQuest_KyberTradePlot</workerClass>
-    <questScriptDef>RUT_KyberHomesteadVisit</questScriptDef>
+  <!-- KYBER_TRADE_PLOT_1. Neither incident is ever rolled by the storyteller (baseChance 0): GameComponent_KyberTrade
+       (Source/KyberTrade.cs) fires each one when the kyber trade calls for it - the visit a day after the second sale,
+       the donation once a door to it is open. Dev mode can fire either; the visit still comes only once per campaign. -->
+  <IncidentDef>
+    <defName>RUT_KyberHomesteadVisit</defName>
+    <label>Homestead visitors asking about the kyber</label>
+    <category>Misc</category>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <workerClass>RimMandrake.Utinni.KyberTradePlot.IncidentWorker_KyberHomesteadVisit</workerClass>
+    <requireColonistsPresent>true</requireColonistsPresent>
     <baseChance>0</baseChance>
   </IncidentDef>
-
+  <!-- The donation is a quest (an ask the player can refuse); its plain GiveQuest worker subclass only reads the kill
+       switch. -->
   <IncidentDef ParentName="GiveQuestBase">
     <defName>RUT_GiveQuest_KyberDonationSmuggle</defName>
     <label>kyber donation smuggle</label>
@@ -34,5 +24,4 @@
     <questScriptDef>RUT_KyberDonationSmuggle</questScriptDef>
     <baseChance>0</baseChance>
   </IncidentDef>
-
 </Defs>
