@@ -1,0 +1,69 @@
+$ python3 .claude/hooks/selftest_promised_hooks_wired.py 
+ok: .claude/settings.json wires all 30 promised hooks (sanity probe saw an unwired block_blanket_git_stage.py)
+exit=0
+$ python3 .claude/hooks/selftest_promised_hooks_wired.py --rev 8fb9f7f2b6
+FAIL: 8fb9f7f2b6:.claude/settings.json unwires 30 of 30 promised hooks:
+  .claude/hooks/conductor_goodbye.py promised by GOODBYE_CANCEL_FIX_PEER_ATE_THE_NIGHT
+                                     hook .claude/hooks/conductor_goodbye.py is not wired in 8fb9f7f2b6:.claude/settings.json
+  .claude/hooks/handoff_restart.py   promised by CONDUCTOR_REBOOT_FIX_THREE_WASTED_MINUTES
+                                     hook .claude/hooks/handoff_restart.py is not wired in 8fb9f7f2b6:.claude/settings.json
+  auto_allow_bash_permission.py      promised by live_baseline.txt
+                                     hook auto_allow_bash_permission.py is not wired in 8fb9f7f2b6:.claude/settings.json
+  bench_mode.py                      promised by live_baseline.txt
+                                     hook bench_mode.py is not wired in 8fb9f7f2b6:.claude/settings.json
+  block_agent_over_slots.py          promised by live_baseline.txt, CLOSEOUT_TRAP_FIX_HELPERS_ALWAYS_ALIVE, SPAWN_HOOK_FIX_TYPING_BEATS_OWNER_CAP
+                                     hook block_agent_over_slots.py is not wired in 8fb9f7f2b6:.claude/settings.json
+  block_agent_without_model.py       promised by live_baseline.txt
+                                     hook block_agent_without_model.py is not wired in 8fb9f7f2b6:.claude/settings.json
+  block_blanket_git_stage.py         promised by live_baseline.txt, AMEND_HOOK_HARDEN_SWEPT_A_NEIGHBOUR, HOOKS_VERIFY_TRUE_SUFFIX_MAY_MUTE_REFUSALS
+                                     hook block_blanket_git_stage.py is not wired in 8fb9f7f2b6:.claude/settings.json
+  block_blind_scan.py                promised by live_baseline.txt, HOOKS_BLINDSCAN_TUNE_DRIVE_D_IMPORT_TOLL, HOOKS_SCANGUARD_FIX_QUOTED_PIPE_SLIPS_PAST
+                                     hook block_blind_scan.py is not wired in 8fb9f7f2b6:.claude/settings.json
+  block_canon_contradiction.py       promised by live_baseline.txt
+                                     hook block_canon_contradiction.py is not wired in 8fb9f7f2b6:.claude/settings.json
+  block_delegated_cards.py           promised by live_baseline.txt, DELEGATED_CARDS_FIX_HELD_OUT_RECALL
+                                     hook block_delegated_cards.py is not wired in 8fb9f7f2b6:.claude/settings.json
+  block_dll_source_mismatch.py       promised by live_baseline.txt
+                                     hook block_dll_source_mismatch.py is not wired in 8fb9f7f2b6:.claude/settings.json
+  block_forged_validation.py         promised by live_baseline.txt, MODCHECK_VALIDATE_BUILD_DELEGATED_NEW_BARS
+                                     hook block_forged_validation.py is not wired in 8fb9f7f2b6:.claude/settings.json
+  block_hand_edited_sheet.py         promised by live_baseline.txt
+                                     hook block_hand_edited_sheet.py is not wired in 8fb9f7f2b6:.claude/settings.json
+  block_ledger_lint.py               promised by live_baseline.txt
+                                     hook block_ledger_lint.py is not wired in 8fb9f7f2b6:.claude/settings.json
+  block_orphan_item_prose.py         promised by NIGHTLY_COP_FIX_RED_ATJKEB_FBYD
+                                     hook block_orphan_item_prose.py is not wired in 8fb9f7f2b6:.claude/settings.json
+  block_paste_handoff.py             promised by live_baseline.txt
+                                     hook block_paste_handoff.py is not wired in 8fb9f7f2b6:.claude/settings.json
+  block_shared_tree_merge.py         promised by live_baseline.txt
+                                     hook block_shared_tree_merge.py is not wired in 8fb9f7f2b6:.claude/settings.json
+  block_tmpfs_clone.py               promised by live_baseline.txt
+                                     hook block_tmpfs_clone.py is not wired in 8fb9f7f2b6:.claude/settings.json
+  block_unbounded_agent.py           promised by live_baseline.txt
+                                     hook block_unbounded_agent.py is not wired in 8fb9f7f2b6:.claude/settings.json
+  block_unbounded_robocopy.py        promised by CALL_DEADLINES_ENFORCE_130_OPEN_ENDED
+                                     hook block_unbounded_robocopy.py is not wired in 8fb9f7f2b6:.claude/settings.json
+  block_unledgered_texture.py        promised by live_baseline.txt
+                                     hook block_unledgered_texture.py is not wired in 8fb9f7f2b6:.claude/settings.json
+  block_worktrees.py                 promised by live_baseline.txt
+                                     hook block_worktrees.py is not wired in 8fb9f7f2b6:.claude/settings.json
+  conductor_goodbye.py               promised by live_baseline.txt, CONDUCTOR_CLOSEOUT_BUILD_LEDGER_CHECK, CONDUCTOR_RESET_FIX_KILLED_MID_READ
+                                     hook conductor_goodbye.py is not wired in 8fb9f7f2b6:.claude/settings.json
+  handoff_restart.py                 promised by HANDOFF_HOOK_FIX_QUOTED_READY_COUNTS, HANDOFF_RESTART_AUDIT_FILES_OWED
+                                     hook handoff_restart.py is not wired in 8fb9f7f2b6:.claude/settings.json
+  notebox_deliver.py                 promised by STATION_NOTEBOX_BUILD_WHISPER_AT_NEXT_TURN
+                                     hook notebox_deliver.py is not wired in 8fb9f7f2b6:.claude/settings.json
+  queue_lint.py                      promised by live_baseline.txt, SEAT_BENCH_RENAME_WORD_OUTLIVED_ITS_WORKSHOP
+                                     hook queue_lint.py is not wired in 8fb9f7f2b6:.claude/settings.json
+  set_session_title.py               promised by live_baseline.txt
+                                     hook set_session_title.py is not wired in 8fb9f7f2b6:.claude/settings.json
+  warn_skill_unwired.py              promised by live_baseline.txt
+                                     hook warn_skill_unwired.py is not wired in 8fb9f7f2b6:.claude/settings.json
+  warn_unclosed_queue_item.py        promised by live_baseline.txt
+                                     hook warn_unclosed_queue_item.py is not wired in 8fb9f7f2b6:.claude/settings.json
+  wrapup_hook.py                     promised by AGENT_WRAPUP_ENFORCE_ASKING_NEVER_WORKED
+                                     hook wrapup_hook.py is not wired in 8fb9f7f2b6:.claude/settings.json
+exit=1
+$ python3 .claude/hooks/selftest_promised_hooks_wired.py --rev 943a7a66da
+ok: 943a7a66da:.claude/settings.json wires all 30 promised hooks (sanity probe saw an unwired block_blanket_git_stage.py)
+exit=0

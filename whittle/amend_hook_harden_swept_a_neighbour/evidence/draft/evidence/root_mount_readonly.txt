@@ -1,0 +1,3 @@
+/dev/sdd / ext4 rw,relatime,discard,errors=remount-ro,data=ordered,emergency_ro 0 0
+/dev/sdd /mnt/wslg/distro ext4 ro,relatime,discard,errors=remount-ro,data=ordered,emergency_ro 0 0
+2026-11-11 20:06 -0800

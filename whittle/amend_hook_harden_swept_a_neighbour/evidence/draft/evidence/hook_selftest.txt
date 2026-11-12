@@ -1,0 +1,64 @@
+ok    want=deny  got=deny   git add -A
+ok    want=deny  got=deny   git add --all
+ok    want=deny  got=deny   git add .
+ok    want=deny  got=deny   git add -u
+ok    want=deny  got=deny   git add -An
+ok    want=deny  got=deny   git commit -a -m 'x'
+ok    want=deny  got=deny   git commit -am 'x'
+ok    want=deny  got=deny   git commit --all -m 'x'
+ok    want=deny  got=deny   git -C /mnt/d/Luke/dev/Rimworld add -A
+ok    want=deny  got=deny   echo hi && git add -A && echo done
+ok    want=deny  got=deny   git commit -m 'x'
+ok    want=deny  got=deny   git commit -F - <<'EOF'
+ok    want=deny  got=deny   git commit
+ok    want=deny  got=deny   git commit --no-verify -m 'x'
+ok    want=deny  got=deny   git add file.md && git commit -m 'x'
+ok    want=deny  got=deny   git commit -m 'touch file.md now'
+ok    want=deny  got=deny   bash -c 'cd /x && git add -A'
+ok    want=deny  got=deny   sh -c "git commit -am x"
+ok    want=deny  got=deny   bash <<'EOF'
+cd /x
+git add .
+EOF
+ok    want=deny  got=deny   cat > f.py <<'EOF'
+print(1)
+EOF
+git add -A
+ok    want=deny  got=deny   GIT_AUTHOR_NAME=x git add -A
+ok    want=deny  got=deny   env FOO=1 git commit -m 'x'
+ok    want=deny  got=deny   command git add .
+ok    want=allow got=allow  FOO=1 git commit path/one.md -m 'x'
+ok    want=allow got=allow  git commit path/one.md -m 'x'
+ok    want=allow got=allow  git commit path/one.md path/two.xml -F - <<'EOF'
+ok    want=allow got=allow  git commit -m 'x' path/one.md
+ok    want=allow got=allow  git commit -F - path/one.md <<'EOF'
+ok    want=allow got=allow  git commit -- path/one.md
+ok    want=deny  got=deny   git commit --amend
+ok    want=deny  got=deny   git commit --amend --no-edit
+ok    want=deny  got=deny   git commit --amend -m 'x'
+ok    want=deny  got=deny   git commit --amend -F - <<'EOF'
+ok    want=allow got=allow  git commit --amend path/one.md
+ok    want=allow got=allow  git commit --amend --no-edit -- path/one.md
+ok    want=allow got=allow  git commit --amend -m 'x' path/one.md
+ok    want=allow got=allow  git commit --amend --pathspec-from-file=paths.txt
+ok    want=allow got=allow  git commit --pathspec-from-file=paths.txt
+ok    want=allow got=allow  git add path/new.md
+ok    want=allow got=allow  git add path/one.md path/two.xml
+ok    want=allow got=allow  git diff --cached --stat
+ok    want=allow got=allow  git restore --staged path/one.md
+ok    want=allow got=allow  git status --porcelain
+ok    want=allow got=allow  git log --oneline -5
+ok    want=allow got=allow  python3 src/RimMandrake/Utils/refresh.py
+ok    want=allow got=allow  echo 'git add -A is a bad idea'
+ok    want=allow got=allow  python3 - <<'EOF'
+BLANKET = ['git add .', 'git add -A']
+git add .
+EOF
+ok    want=allow got=allow  cat > notes.md <<EOF
+git add -A
+git commit -m x
+EOF
+ok    want=allow got=allow  python3 -c "import re; re.compile('x; git add .')"
+ok    want=allow got=allow  grep -n 'git add .; git commit -a' f.md
+
+50/50 passed
