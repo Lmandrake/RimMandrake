@@ -16,10 +16,19 @@ What A1 rests on (published `c68c7e8a91f4`, `b231dc0b0b32`):
 - Ledger: `implemented` at `b231dc0b0b32`, needs=bridge, A2 L2 owed.
 
 ## What I'm least sure about
-- The drivers are DIRTY (never code-reviewed) and never run live. Helper-listed HARNESS risks for the first run: the T3
-  may detour around the wall (detour factor 2.5) or drop its Goto (re-ordered after 600 stalled ticks); T3 walking speed
+- Round 2: a fresh Opus reviewer read the probe and both drivers and found 9 faults. Fixed: (1) trunk_doors_live's
+  `repr(exc)` begins `AssertionError('SITE:...`, so every site or harness fault in the door scene read as FAIL MOD;
+  (2) the plant run never checked the loaded DLL; (3) the door scene's ticks come from another save, so
+  `phases_in_order` was always False (it is now ordered per scene, and the door phase is marked foreignClock);
+  (4) `corpseSiteEnabled` was never set; (5) the line wall left the lane open, and titan clearing acts only on an
+  unreachable goal, so one crushed oak passed CROSSING_destroys. The goal is now sealed by a 24-wall ring and the row
+  needs a ring wall broken; (6) selection overreach (ring hits) is now judged, and the ring is cells wholly outside
+  the quad. Open, low, noted on the item: a 530 s timeout SIGKILLs the door script before its `finally` restores
+  settings; a failed settings snapshot can write PRE_ready twice; the probe replays the same Rand order as the mod.
+  The files are still DIRTY by the hash tool, since nobody has done a full clean re-review after the fixes.
+- Still open from round 1: the T3 may drop its Goto (re-ordered now only after 1800 stalled ticks); T3 walking speed
   vs the 12,000-tick budget; the clock stop list drops death/hurt/hostile_arrival/threat_structure so the run is not
-  halted mid-phase (check it hides no real colony harm); whether `list_things` lists rubble; 400-pt bullets may not kill
+  halted mid-phase (check that this hides no real colony harm); whether `list_things` lists rubble; 400-pt bullets may not kill
   a body-size-20 titan, falling back to `KillTitanAt` (labelled STAGED); `trunk_doors_live` demands exactly 17 mods; the
   titan lane (x20..120, z155..175) and plant plot (40,200) are unchecked against the calm site's buildings.
 - Round 2 (published `b72e5aa81dda`): `plant_click_selects_picture` now has an instrument,
