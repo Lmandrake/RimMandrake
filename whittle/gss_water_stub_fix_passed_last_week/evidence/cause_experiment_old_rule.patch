@@ -1,0 +1,12 @@
+diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotBlock.cs b/src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotBlock.cs
+index adb155dffb..35ebdef0e6 100644
+--- a/src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotBlock.cs
++++ b/src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotBlock.cs
+@@ -17,7 +17,6 @@ namespace RimMandrake.GimmeSomeSlack.Core
+         internal static BlockKind? Of(bool walkable, bool hasEdifice, bool edificeRock, bool edificePowered,
+                                     bool water, bool terrainImpassable)
+         {
+-            if (!hasEdifice && water && terrainImpassable) return BlockKind.Water;
+             if (walkable) return null;
+             if (hasEdifice) return edificeRock ? BlockKind.Rock : edificePowered ? BlockKind.Device : BlockKind.Wall;
+             return water ? BlockKind.Water : BlockKind.Wall;

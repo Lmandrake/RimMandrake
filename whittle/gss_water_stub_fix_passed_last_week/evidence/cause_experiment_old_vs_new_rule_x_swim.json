@@ -1,0 +1,161 @@
+{
+ "what": "MX_F60_T15_S0 alone (run_live.py --only F60_T15_S0), same calm site save, same 14-mod fw_gss_sitting list, GSS at origin/main 487769d00c56 with ONLY the line below removed for the old-rule DLL. Swim set via jawa/mod_settings_field then jawa/static_call RM_SwimWater.Reapply; canal walkability read from the path grid per cell.",
+ "old_rule_patch": "diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotBlock.cs b/src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotBlock.cs\nindex adb155dffb..35ebdef0e6 100644\n--- a/src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotBlock.cs\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotBlock.cs\n@@ -17,7 +17,6 @@ namespace RimMandrake.GimmeSomeSlack.Core\n         internal static BlockKind? Of(bool walkable, bool hasEdifice, bool edificeRock, bool edificePowered,\n                                     bool water, bool terrainImpassable)\n         {\n-            if (!hasEdifice && water && terrainImpassable) return BlockKind.Water;\n             if (walkable) return null;\n             if (hasEdifice) return edificeRock ? BlockKind.Rock : edificePowered ? BlockKind.Device : BlockKind.Wall;\n             return water ? BlockKind.Water : BlockKind.Wall;\n",
+ "old_rule_dll_sha256": "db0195192cf60ea5f2328903c52f263faa4053a628552d322eaa6d57da15b4e2",
+ "new_rule_dll_sha256": "c16983bc5d9b43998aec695a26f8f097b181f738ed553fcbe2cdc46f47411e6d",
+ "arms": {
+  "oldrule_swimON": {
+   "at": "2026-11-11T21:16:47",
+   "gss_assembly_sha256": [
+    "db0195192cf60ea5f2328903c52f263faa4053a628552d322eaa6d57da15b4e2"
+   ],
+   "deepSwimEnabled_read_back": "True",
+   "reapply_ok": true,
+   "canal_walkable": [
+    true
+   ],
+   "canal_terrain": [
+    "WaterDeep"
+   ],
+   "scene_status": "FAIL",
+   "got": {
+    "stubs": 0,
+    "cord_edges": 1,
+    "strands": 1,
+    "node_types": {
+     "battery": 1,
+     "consumer": 1
+    }
+   },
+   "mismatches": [
+    {
+     "field": "stubs",
+     "expected": 2,
+     "got": 0
+    },
+    {
+     "field": "cord_edges",
+     "expected": 2,
+     "got": 1
+    },
+    {
+     "field": "node_types",
+     "expected": {
+      "battery": 1,
+      "consumer": 1,
+      "stub_water": 2
+     },
+     "got": {
+      "battery": 1,
+      "consumer": 1
+     }
+    },
+    {
+     "field": "strands",
+     "expected": [
+      2,
+      2
+     ],
+     "got": 1
+    }
+   ],
+   "edgeHashes": {
+    "consumer:35,20|battery:20,20": "f458b8309c740bf7"
+   },
+   "running_mods": 14
+  },
+  "oldrule_swimOFF": {
+   "at": "2026-11-11T21:17:01",
+   "gss_assembly_sha256": [
+    "db0195192cf60ea5f2328903c52f263faa4053a628552d322eaa6d57da15b4e2"
+   ],
+   "deepSwimEnabled_read_back": "False",
+   "reapply_ok": true,
+   "canal_walkable": [
+    false
+   ],
+   "canal_terrain": [
+    "WaterDeep"
+   ],
+   "scene_status": "PASS",
+   "got": {
+    "stubs": 2,
+    "cord_edges": 2,
+    "strands": 2,
+    "node_types": {
+     "battery": 1,
+     "consumer": 1,
+     "stub_water": 2
+    }
+   },
+   "mismatches": [],
+   "edgeHashes": {
+    "battery:20,20|stub_water:29,20": "5bb0b7614f43dc7c",
+    "consumer:35,20|stub_water:32,20": "88a9f60a7f9a9810"
+   },
+   "running_mods": 14
+  },
+  "newrule_swimON": {
+   "at": "2026-11-11T21:38:16",
+   "gss_assembly_sha256": [
+    "c16983bc5d9b43998aec695a26f8f097b181f738ed553fcbe2cdc46f47411e6d"
+   ],
+   "deepSwimEnabled_read_back": "True",
+   "reapply_ok": true,
+   "canal_walkable": [
+    true
+   ],
+   "canal_terrain": [
+    "WaterDeep"
+   ],
+   "scene_status": "PASS",
+   "got": {
+    "stubs": 2,
+    "cord_edges": 2,
+    "strands": 2,
+    "node_types": {
+     "battery": 1,
+     "consumer": 1,
+     "stub_water": 2
+    }
+   },
+   "mismatches": [],
+   "edgeHashes": {
+    "battery:20,20|stub_water:29,20": "5bb0b7614f43dc7c",
+    "consumer:35,20|stub_water:32,20": "88a9f60a7f9a9810"
+   },
+   "running_mods": 14
+  },
+  "newrule_swimOFF": {
+   "at": "2026-11-11T21:37:59",
+   "gss_assembly_sha256": [
+    "c16983bc5d9b43998aec695a26f8f097b181f738ed553fcbe2cdc46f47411e6d"
+   ],
+   "deepSwimEnabled_read_back": "False",
+   "reapply_ok": true,
+   "canal_walkable": [
+    false
+   ],
+   "canal_terrain": [
+    "WaterDeep"
+   ],
+   "scene_status": "PASS",
+   "got": {
+    "stubs": 2,
+    "cord_edges": 2,
+    "strands": 2,
+    "node_types": {
+     "battery": 1,
+     "consumer": 1,
+     "stub_water": 2
+    }
+   },
+   "mismatches": [],
+   "edgeHashes": {
+    "battery:20,20|stub_water:29,20": "5bb0b7614f43dc7c",
+    "consumer:35,20|stub_water:32,20": "88a9f60a7f9a9810"
+   },
+   "running_mods": 14
+  }
+ }
+}
