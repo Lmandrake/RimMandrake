@@ -1,6 +1,36 @@
 {
  "scenes": [
   {
+   "id": "sc_storeroom_bomb_pit",
+   "kind": "interaction",
+   "features": [
+    "people_thrown_three_cells",
+    "goods_arc_spin_rebound",
+    "every_good_moves",
+    "open_shelf_scatters",
+    "closed_container_holds",
+    "heavy_stack_knocks",
+    "thrown_into_pit_falls"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::storeroom_bomb_pit",
+   "start": [
+    "a walled storeroom of open shelves, a closed crate and loose stacks (one of 10 kg or more), three colonists inside",
+    "an open pit along one side of the storeroom, one covered pit cell beside it",
+    "a per-tick trace of every thrown thing's drawn position, height and rotation, and a descent journal, are running"
+   ],
+   "action": "a bomb (frag grenade or mortar shell) lands in the middle of the storeroom; step until every thrown thing is at rest",
+   "expect": "the colonists are thrown about three cells away from the blast; the goods on open shelves and floor fly with arc, spin and wall rebounds; the crate's contents stay and the crate is shoved at most one cell; some goods and at least one colonist end in the pit, one descent each; the heavy stack that reaches a colonist knocks them",
+   "control": {
+    "case": "the same storeroom with the pit filled in",
+    "expect": "nothing descends; the same colonists and goods land on flat ground",
+    "rules_out": "anything reaching the pit by pathing or a careless walk rather than the throw"
+   },
+   "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
+   "hold": "owner_review",
+   "entry_point_item": "RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF"
+  },
+  {
    "id": "sc_mortar_throw",
    "kind": "acceptance",
    "requirement": [
@@ -344,7 +374,7 @@
     "full list on Archmagi, a full 10x10 stockpile, a 40-cell gas cloud, frame_time_probe running"
    ],
    "action": "a 6-shell mortar barrage, then light the cloud, at normal speed",
-   "expect": "worst frame at most 50 ms",
+   "expect": "worst frame at most 50 ms; a colonist thrown once is not thrown again until its stun plus recovery window ends",
    "control": {
     "case": "the same events with the goods setting off",
     "expect": "worst frame well under the budget",
@@ -402,12 +432,14 @@
  ],
  "showcases": [
   {
-   "id": "storeroom_mortar",
+   "id": "storeroom_bomb_pit",
    "scenes": [
+    "sc_storeroom_bomb_pit",
     "sc_storeroom_mortar",
     "sc_shelves_and_crates",
     "sc_mortar_throw",
-    "sc_heavy_knock"
+    "sc_heavy_knock",
+    "sc_pit_fall"
    ],
    "exercises": [
     "inv_kernel",
@@ -418,37 +450,14 @@
     "inv_closed_guard",
     "inv_container_shove",
     "inv_heavy_knock",
-    "inv_caps"
+    "inv_caps",
+    "inv_pits_receive"
    ],
-   "source": [],
-   "decision": "",
-   "pending": "his pick: ask a_flagship (recommended option A)"
-  },
-  {
-   "id": "gas_chain",
-   "scenes": [
-    "sc_gas_chain",
-    "sc_cauldron_gas",
-    "sc_barrage_perf"
+   "source": [
+    "OWNER:1794470697182934051"
    ],
-   "exercises": [
-    "inv_gas_chain",
-    "inv_gas_tags",
-    "inv_perf_all_fly"
-   ]
-  },
-  {
-   "id": "pit_trap_raid",
-   "scenes": [
-    "sc_cover_breaks",
-    "sc_pit_fall",
-    "sc_pit_fetch"
-   ],
-   "exercises": [
-    "inv_pits_receive",
-    "inv_pit_floor_haul",
-    "inv_recovery"
-   ]
+   "decision": "d_c_flagship",
+   "said": "Just put a bomb into a storeroom with people in it beside a pit. Shows some items falling into the pit and some people as well."
   }
  ],
  "coverage_rest": [
@@ -504,6 +513,45 @@
     "sc_walk_raid"
    ],
    "why": "no scene carries a hose yet; the walk's colonist carrying a hose end is its first check"
+  },
+  {
+   "capability": "inv_gas_chain",
+   "by": [
+    "sc_gas_chain",
+    "gas_goes_clump_by_clump"
+   ],
+   "why": "his flagship (d_c_flagship) is the only showcase; the other candidates stay ordinary scenes, which check this directly"
+  },
+  {
+   "capability": "inv_gas_tags",
+   "by": [
+    "sc_cauldron_gas",
+    "our_gases_burn"
+   ],
+   "why": "his flagship (d_c_flagship) is the only showcase; the other candidates stay ordinary scenes, which check this directly"
+  },
+  {
+   "capability": "inv_perf_all_fly",
+   "by": [
+    "sc_barrage_perf",
+    "barrage_frame_budget"
+   ],
+   "why": "his flagship (d_c_flagship) is the only showcase; the other candidates stay ordinary scenes, which check this directly"
+  },
+  {
+   "capability": "inv_pit_floor_haul",
+   "by": [
+    "sc_pit_fetch",
+    "pit_goods_fetched"
+   ],
+   "why": "his flagship (d_c_flagship) is the only showcase; the other candidates stay ordinary scenes, which check this directly"
+  },
+  {
+   "capability": "inv_recovery",
+   "by": [
+    "sc_barrage_perf"
+   ],
+   "why": "a barrage hits the same colonist repeatedly, so the re-throw immunity is read there"
   }
  ]
 }

@@ -44,7 +44,9 @@ Each step is one rimflow item, built by Relentless from the tree; none needs wor
    cannot (`RM_PitPathing.cs` routes non-held pawns around open pit cells), the fix is FlowWorks', filed from the
    finding.
 
-## Still his
+## Settled since
 
-- Showcase 1 (ask `a_flagship`, recommended the mortar into a stocked storeroom) and validation of the drafted
-  north-star bars (ask `a_northstar_bars`, then `modcheck validate ExplosiveKnockback --by-card`).
+- Showcase 1 is his write-in (d_c_flagship, OWNER:1794470697182934051): a bomb into a stocked storeroom with
+  colonists, beside a pit; some goods and some people end in the pit. Scene `sc_storeroom_bomb_pit`, staged by
+  `RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF` once builds 1, 2 and 5 land. The north-star bars are VALIDATED as
+  written (d_c_bars, OWNER:1794470702467936205; hash 5d06c98d8b13).

@@ -13,6 +13,8 @@
 - 2026-11-11, by card: goods beyond the smooth cap -> all of them fly. OWNER:1794468864684141079
 - 2026-11-11, by card: thrown goods hitting people -> light knock, heavy only. OWNER:1794468869384727517
 - 2026-11-11, gas source: "2 and remember the gas in the Cauldron" OWNER:1794468874358971350
+- 2026-11-12, flagship: "Just put a bomb into a storeroom with people in it beside a pit. Shows some items falling into the pit and some people as well." OWNER:1794470697182934051
+- 2026-11-12, by card: the 16 north-star bars -> Approve as written. OWNER:1794470702467936205
 
 ## does
 - [leaf:people_thrown_three_cells] A mortar shell beside a colonist throws them about three cells straight away, over sandbags, alive and briefly stunned
@@ -44,8 +46,6 @@
 ## waived
 
 ## open
-- The north star's bars are drafted from your answers and wait for your validation; the build is judged by them
-- Showcase 1, the mod's face, is your pick; the recommended one is the mortar into a stocked storeroom beside colonists
 
 ## delegated
 - Closed means storage that does not draw its contents: crates, lockers, fridges, deep storage, hoppers, plus an opt-in tag for other mods
@@ -55,7 +55,7 @@
 - The gas census: TheForge's gas, the Scarlands bileworm's, EnvironmentalHazards' and the Cauldron's, through an opt-in extension; this mod adds no gas of its own
 - One gas clump bursts at radius 1.9, throws goods at most 2 cells, one burst per clump cell, advancing with the fire front; a shield belt does not stop the shove
 - The frame budget is no frame over 50 ms through a 6-shell barrage and a 40-cell chain; advisory until a first measurement calibrates it
-- Showcase order after the flagship, and the cheaper ordinary scene checks, are set by coverage
+- The gas chain and the pit-trap raid stay ordinary scenes (coverage_rest), not showcases, by his flagship answer
 
 ## pruning
 - people_thrown_three_cells: yes, it is the mod

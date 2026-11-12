@@ -411,12 +411,36 @@
    "date": "2026-11-11",
    "delegated": "test numbers for a ruled proof",
    "what": "All goods fly by pooled carriers drawn in one batch; the proof is a 6-shell mortar barrage into a 10x10 full stockpile and a 40-cell gas chain, each keeping the game at normal speed without a frame over 50 ms on the owner's machine (advisory until calibrated)."
+  },
+  {
+   "id": "d_c_flagship",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1794470697182934051"
+   ],
+   "date": "2026-11-12 ~00:0x PST (question card, write-in)",
+   "by_card": "Which scene is Explosive Knockback's face? -> Other (write-in)",
+   "said": "Just put a bomb into a storeroom with people in it beside a pit. Shows some items falling into the pit and some people as well.",
+   "flagship": "storeroom_bomb_pit",
+   "what": "Showcase 1 is one scene: a bomb into a stocked storeroom with colonists in it, beside a pit; some goods and some people end in the pit. The gas chain and the pit-trap raid stay as ordinary scenes."
+  },
+  {
+   "id": "d_c_bars",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1794470702467936205"
+   ],
+   "date": "2026-11-12 ~00:0x PST (question card)",
+   "by_card": "Approve the 16 Explosive Knockback north-star bars? -> Approve as written",
+   "what": "The 16 drafted north-star bars (14 must-show, 2 cannot-show) are validated as written: design/validation_walks/RimMandrake/ExplosiveKnockback.md VALIDATED at 5d06c98d8b13."
   }
  ],
  "asks": [
   {
    "id": "a_flagship",
-   "status": "drafted",
+   "status": "answered",
    "author": "BENCH builder (agent)",
    "source": [
     "ITEM:RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH"
@@ -432,11 +456,15 @@
     "OWNER:1794468855146168085",
     "OWNER:1794468845275647261"
    ],
-   "text": "Which scene is Explosive Knockback's face, the one every build is shown on first? A. Mortar into a stocked storeroom beside colonists: people thrown, open-shelf goods flying wild off the walls, closed crates holding and shifting (rec). B. A gas cloud catching and going off clump by clump. C. A raid blasted over a covered pit trap, cover breaking, raiders falling in."
+   "text": "Which scene is Explosive Knockback's face, the one every build is shown on first? A. Mortar into a stocked storeroom beside colonists: people thrown, open-shelf goods flying wild off the walls, closed crates holding and shifting (rec). B. A gas cloud catching and going off clump by clump. C. A raid blasted over a covered pit trap, cover breaking, raiders falling in.",
+   "answer": "d_c_flagship",
+   "answered_by": [
+    "OWNER:1794470697182934051"
+   ]
   },
   {
    "id": "a_northstar_bars",
-   "status": "drafted",
+   "status": "answered",
    "author": "BENCH builder (agent)",
    "source": [
     "ITEM:RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH"
@@ -450,7 +478,11 @@
    "owner_cites": [
     "OWNER:1794468835221748501"
    ],
-   "text": "These 16 lines, written only from your answers tonight, become the bars every Explosive Knockback build is judged by (design/validation_walks/RimMandrake/ExplosiveKnockback.md, north star). Approve as written / change a line."
+   "text": "These 16 lines, written only from your answers tonight, become the bars every Explosive Knockback build is judged by (design/validation_walks/RimMandrake/ExplosiveKnockback.md, north star). Approve as written / change a line.",
+   "answer": "d_c_bars",
+   "answered_by": [
+    "OWNER:1794470702467936205"
+   ]
   }
  ],
  "inventory": [
