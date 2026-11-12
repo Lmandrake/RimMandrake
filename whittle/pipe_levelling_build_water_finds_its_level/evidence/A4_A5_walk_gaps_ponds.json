@@ -1,0 +1,331 @@
+{
+ "script": "walk_gaps_proof.py",
+ "started": "2026-11-12T01:17:18",
+ "rows": [
+  {
+   "id": "PONDS_DIFFERENT_LIQUIDS_NO_MIX",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL",
+   "criterion": "A5",
+   "detail": {
+    "dl": [
+     [
+      360000,
+      90000
+     ],
+     [
+      360000,
+      90000
+     ]
+    ],
+    "moves": 0,
+    "linked": true,
+    "readout": " | DifferentLiquids(in=1 out=1 on=True) | DifferentLiquids(in=1 out=1 on=True)",
+    "inspect": "Levelling: stopped, different liquids never mix. || Levelling: stopped, different liquids never mix.",
+    "coupling": [
+     [
+      1,
+      1
+     ],
+     [
+      1,
+      1
+     ]
+    ],
+    "rigProblems": []
+   }
+  },
+  {
+   "id": "PONDS_HOSE_LEVEL",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL",
+   "criterion": "A4",
+   "detail": {
+    "dl": [
+     [
+      360000,
+      90000
+     ],
+     [
+      225234,
+      224766
+     ]
+    ],
+    "moves": 18,
+    "linked": true,
+    "inspectFlowing": "tick 250: Levelling: flowing (no pump; the higher water runs to the lower).",
+    "inspectLevel": "tick 4750: Levelling: level.",
+    "closeTick": 4500,
+    "ticks": 4750,
+    "trail": [
+     [
+      3000,
+      [
+       240000,
+       210000
+      ],
+      12,
+      "flowing (no "
+     ],
+     [
+      3250,
+      [
+       232500,
+       217500
+      ],
+      13,
+      "flowing (no "
+     ],
+     [
+      3500,
+      [
+       228750,
+       221250
+      ],
+      14,
+      "flowing (no "
+     ],
+     [
+      3750,
+      [
+       226875,
+       223125
+      ],
+      15,
+      "flowing (no "
+     ],
+     [
+      4000,
+      [
+       225937,
+       224063
+      ],
+      16,
+      "flowing (no "
+     ],
+     [
+      4250,
+      [
+       225468,
+       224532
+      ],
+      17,
+      "flowing (no "
+     ],
+     [
+      4500,
+      [
+       225234,
+       224766
+      ],
+      18,
+      "flowing (no "
+     ],
+     [
+      4750,
+      [
+       225234,
+       224766
+      ],
+      18,
+      "level."
+     ]
+    ],
+    "coupling": [
+     [
+      1,
+      1
+     ],
+     [
+      1,
+      1
+     ]
+    ],
+    "rigProblems": []
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/lev/walk_gaps_ponds7.json",
+  "origin": "40,40",
+  "fresh_map": true,
+  "only": "PONDS_DIFFERENT_LIQUIDS_NO_MIX,PONDS_HOSE_LEVEL",
+  "job_ticks": 3000,
+  "level_ticks": 6000,
+  "mock": false,
+  "mock_faults": ""
+ },
+ "missingHooks": {},
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "6dc15bf81c839a38f0afd72e32735a1c02d0655651f2a4951fffab8fb831c9d3",
+ "manifest": {
+  "schema": 1,
+  "script": "northstar/walk_gaps_proof.py",
+  "runtime": "40ef49f52d21c14b588b338d423bf53d459af7596a061641a0fd796a15676d4c",
+  "test": "0fa5dbf36d309b26c7a74bd2c096f96f5b4ee081314cf00195279edf3260c947",
+  "test_files": [
+   "FlowWorks/northstar/driver_stamp.py",
+   "FlowWorks/northstar/proof_hose.py",
+   "FlowWorks/northstar/walk_gaps_proof.py",
+   "FlowWorks/validation_hose.py",
+   "FlowWorks/validation_style_hose.py",
+   "Utils/await_lifecycle.py",
+   "Utils/biomes_compose.py",
+   "Utils/close_evidence.py",
+   "Utils/conds.py",
+   "Utils/conds_dsl.py",
+   "Utils/deploy_custom_mods.py",
+   "Utils/deploy_def_guard.py",
+   "Utils/evidence_covers.py",
+   "Utils/focus_heal.py",
+   "Utils/game_focus.py",
+   "Utils/game_instance.py",
+   "Utils/game_paths.py",
+   "Utils/harness_run.py",
+   "Utils/known_results.py",
+   "Utils/live_def_check.py",
+   "Utils/load_policy.json",
+   "Utils/load_policy.py",
+   "Utils/modcheck/__init__.py",
+   "Utils/modcheck/bland_world.py",
+   "Utils/modcheck/clockgate.py",
+   "Utils/modcheck/contract.py",
+   "Utils/modcheck/detectors.py",
+   "Utils/modcheck/drivers.py",
+   "Utils/modcheck/floor.py",
+   "Utils/modcheck/gate.py",
+   "Utils/modcheck/helpers.py",
+   "Utils/modcheck/jev_questions.py",
+   "Utils/modcheck/jev_triage.py",
+   "Utils/modcheck/judge.py",
+   "Utils/modcheck/launch_gate.py",
+   "Utils/modcheck/northstar.py",
+   "Utils/modcheck/play_zoom.py",
+   "Utils/modcheck/preconditions.py",
+   "Utils/modcheck/report.py",
+   "Utils/modcheck/reuse.py",
+   "Utils/modcheck/run_identity.py",
+   "Utils/modcheck/runner.py",
+   "Utils/modcheck/scene_report.py",
+   "Utils/modcheck/snapshot.py",
+   "Utils/modcheck/spoil_gate.py",
+   "Utils/modcheck/status.py",
+   "Utils/modcheck/suite.py",
+   "Utils/modcheck/surprise.py",
+   "Utils/modcheck/targeting.py",
+   "Utils/modcheck/testenv_guards.py",
+   "Utils/modcheck/validity.py",
+   "Utils/modcheck/walklint.py",
+   "Utils/modcheck/watch.py",
+   "Utils/modset_builder.py",
+   "Utils/northstar_driver/tool_schemas.json",
+   "Utils/retired_mods.py",
+   "Utils/rimbridge_client.py",
+   "Utils/rimdrive/__init__.py",
+   "Utils/rimdrive/session.py",
+   "Utils/rimdrive/verify.py",
+   "Utils/rmpaths.py",
+   "Utils/run_selftests.py",
+   "Utils/selftest_cache.py",
+   "Utils/suite_evidence.py",
+   "Utils/validation_core.py",
+   "Utils/winbuild.py",
+   "Utils/wrapup_debt.py",
+   "Utils/zoom_guard.py"
+  ],
+  "unresolved": []
+ },
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.patches"
+  ],
+  "assembly_sha256": "f393bbe6893504656c9ba5d893151370b65a59096c8f0d01d0c8a78f8706c996"
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "Boomalope22580",
+    "Boomalope22581",
+    "Boomalope22582",
+    "Boomalope22583",
+    "Boomrat22566",
+    "Fox_Fennec22572",
+    "Hare22567",
+    "Hare22573",
+    "Hare22579",
+    "Megasloth22574",
+    "MonitorLizard22576",
+    "MonitorLizard22577",
+    "Rat22578",
+    "Rhinoceros22568",
+    "Rhinoceros22569",
+    "Rhinoceros22570",
+    "Rhinoceros22571",
+    "Vulture22575"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [
+    [
+     "Hive",
+     "Hive10358"
+    ],
+    [
+     "GlowPod",
+     "GlowPod10374"
+    ],
+    [
+     "EggSac",
+     "EggSac10375"
+    ]
+   ],
+   "threatsAfter": 0,
+   "error": null
+  },
+  "fed": [
+   "Human862",
+   "Human865",
+   "Human868"
+  ]
+ },
+ "startColonistsDrafted": [
+  [
+   "Human862",
+   true
+  ],
+  [
+   "Human865",
+   true
+  ],
+  [
+   "Human868",
+   true
+  ]
+ ],
+ "finished": "2026-11-12T01:20:10"
+}

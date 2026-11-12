@@ -1,0 +1,270 @@
+{
+ "script": "pipe_levelling_perf_proof.py",
+ "started": "2026-11-12T01:59:53",
+ "rows": [
+  {
+   "id": "LEVEL_PERF_TICK_TIME",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL",
+   "criterion": "A3",
+   "detail": {
+    "perf": "LEVELPERF calls=20 msAvg=13.988 msMax=53.795 msPerTick=0.05595 allocKBAvg=459.8 allocCalls=19 gcs=1 links=200 moves=680 cycleTicks=250",
+    "levelLink": "LEVELLINK reel=90995 state=Flowing role=Intake laid=True intakes=1 outflows=1 on=True cycles=41 links=200 moves=45 movedDl=702108",
+    "links": 200,
+    "wantLinks": 200,
+    "stagedOk": true,
+    "layFailures": 0,
+    "mapSize": [
+     325,
+     325
+    ],
+    "basins": "interior",
+    "noDrain": true,
+    "bandSquares": 0,
+    "edgeSinks": "True",
+    "rehearsal": false
+   }
+  },
+  {
+   "id": "LEVEL_PERF_ALLOC",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL",
+   "criterion": "A3",
+   "detail": {
+    "perf": "LEVELPERF calls=20 msAvg=13.988 msMax=53.795 msPerTick=0.05595 allocKBAvg=459.8 allocCalls=19 gcs=1 links=200 moves=680 cycleTicks=250",
+    "levelLink": "LEVELLINK reel=90995 state=Flowing role=Intake laid=True intakes=1 outflows=1 on=True cycles=41 links=200 moves=45 movedDl=702108",
+    "links": 200,
+    "wantLinks": 200,
+    "stagedOk": true,
+    "layFailures": 0,
+    "mapSize": [
+     325,
+     325
+    ],
+    "basins": "interior",
+    "noDrain": true,
+    "bandSquares": 0,
+    "edgeSinks": "True",
+    "rehearsal": false
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/lev/perf_timed.json",
+  "rigs": 200,
+  "calls": 20,
+  "rehearsal": false,
+  "basins": "interior",
+  "sinks_off": false,
+  "budget_s": null,
+  "hard_cap_s": 540.0,
+  "resume": true,
+  "lay": "0:0",
+  "no_time": false,
+  "restore_length": "40",
+  "mock": false,
+  "mock_faults": ""
+ },
+ "budget": {
+  "requested": null,
+  "effective": 490.0,
+  "restoreS": 15.0,
+  "callCapS": 120.0,
+  "hardCapS": 540.0
+ },
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "0ff78b509cda806ef03a1efa3fd8e9190d03d37aebdfabd23de5911e5a9e409f",
+ "manifest": {
+  "schema": 1,
+  "script": "northstar/pipe_levelling_perf_proof.py",
+  "runtime": "bf4846259dfe95b5c1572779f413170277bd6f2e346cce3910a7827d2b22d2e8",
+  "test": "95861ef38d49e62dbfb35acfb1e404cfe0843698487c6b0fd6e7a6c7dcc019ff",
+  "test_files": [
+   "FlowWorks/northstar/driver_stamp.py",
+   "FlowWorks/northstar/pipe_levelling_perf_proof.py",
+   "FlowWorks/northstar/proof_hose.py",
+   "FlowWorks/validation_hose.py",
+   "FlowWorks/validation_style_hose.py",
+   "Utils/await_lifecycle.py",
+   "Utils/biomes_compose.py",
+   "Utils/close_evidence.py",
+   "Utils/conds.py",
+   "Utils/conds_dsl.py",
+   "Utils/deploy_custom_mods.py",
+   "Utils/deploy_def_guard.py",
+   "Utils/evidence_covers.py",
+   "Utils/focus_heal.py",
+   "Utils/game_focus.py",
+   "Utils/game_instance.py",
+   "Utils/game_paths.py",
+   "Utils/harness_run.py",
+   "Utils/known_results.py",
+   "Utils/live_def_check.py",
+   "Utils/load_policy.json",
+   "Utils/load_policy.py",
+   "Utils/modcheck/__init__.py",
+   "Utils/modcheck/bland_world.py",
+   "Utils/modcheck/clockgate.py",
+   "Utils/modcheck/contract.py",
+   "Utils/modcheck/detectors.py",
+   "Utils/modcheck/drivers.py",
+   "Utils/modcheck/floor.py",
+   "Utils/modcheck/gate.py",
+   "Utils/modcheck/helpers.py",
+   "Utils/modcheck/jev_questions.py",
+   "Utils/modcheck/jev_triage.py",
+   "Utils/modcheck/judge.py",
+   "Utils/modcheck/launch_gate.py",
+   "Utils/modcheck/northstar.py",
+   "Utils/modcheck/play_zoom.py",
+   "Utils/modcheck/preconditions.py",
+   "Utils/modcheck/report.py",
+   "Utils/modcheck/reuse.py",
+   "Utils/modcheck/run_identity.py",
+   "Utils/modcheck/runner.py",
+   "Utils/modcheck/scene_report.py",
+   "Utils/modcheck/snapshot.py",
+   "Utils/modcheck/spoil_gate.py",
+   "Utils/modcheck/status.py",
+   "Utils/modcheck/suite.py",
+   "Utils/modcheck/surprise.py",
+   "Utils/modcheck/targeting.py",
+   "Utils/modcheck/testenv_guards.py",
+   "Utils/modcheck/validity.py",
+   "Utils/modcheck/walklint.py",
+   "Utils/modcheck/watch.py",
+   "Utils/modset_builder.py",
+   "Utils/northstar_driver/tool_schemas.json",
+   "Utils/retired_mods.py",
+   "Utils/rimbridge_client.py",
+   "Utils/rimdrive/__init__.py",
+   "Utils/rimdrive/session.py",
+   "Utils/rimdrive/verify.py",
+   "Utils/rmpaths.py",
+   "Utils/run_selftests.py",
+   "Utils/selftest_cache.py",
+   "Utils/suite_evidence.py",
+   "Utils/validation_core.py",
+   "Utils/winbuild.py",
+   "Utils/wrapup_debt.py",
+   "Utils/zoom_guard.py"
+  ],
+  "unresolved": []
+ },
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.patches"
+  ],
+  "assembly_sha256": "f393bbe6893504656c9ba5d893151370b65a59096c8f0d01d0c8a78f8706c996"
+ },
+ "calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  },
+  "fed": []
+ },
+ "killHostiles": "{'success': True, 'mapId': 1, 'dryRun': False, 'matched': 0, 'killed': 0, 'killedPawns': [], 'survivorsNonHostile': 1, 'hostilesLeft': 0, 'operation': {'Operati",
+ "mapSize": [
+  325,
+  325
+ ],
+ "layout": {
+  "basins": [
+   [
+    10,
+    10,
+    125,
+    305,
+    4
+   ],
+   [
+    190,
+    10,
+    125,
+    305,
+    1
+   ]
+  ],
+  "rigs": 200,
+  "lipA": 135,
+  "lipB": 189,
+  "kind": "interior",
+  "bandSquares": 0
+ },
+ "site": {
+  "resume": true
+ },
+ "edgeSinks": {
+  "before": "True",
+  "during": "True",
+  "gate": "DRAINGATE gate=True setting=True drainEdge=False sunk=0",
+  "noDrain": true
+ },
+ "staged": [
+  {
+   "basin": [
+    10,
+    10,
+    125,
+    305
+   ],
+   "cells": 38125,
+   "dug": 38125,
+   "filled": 38125,
+   "refusedFills": 0
+  },
+  {
+   "basin": [
+    190,
+    10,
+    125,
+    305
+   ],
+   "cells": 38125,
+   "dug": 38125,
+   "filled": 38125,
+   "refusedFills": 0
+  }
+ ],
+ "hoseMaxLength": {
+  "before": "40",
+  "set80": true
+ },
+ "laySlice": [
+  0,
+  0
+ ],
+ "layFailures": 0,
+ "finished": "2026-11-12T02:00:35",
+ "calmRestore": "False"
+}

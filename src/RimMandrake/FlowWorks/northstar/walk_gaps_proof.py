@@ -228,8 +228,9 @@ def tanks_verdict(u0, u1, caps):
     return "PASS", "MOD", d
 
 
-def ponds_level_verdict(moves, dl0, dl1, cells, linked, flowing_seen):
-    """moves: Moves delta; dl0/dl1: (pool1, pool2) dL before / at the end; cells per pool; linked: levelLinks ever > 0."""
+def ponds_level_verdict(moves, dl0, dl1, cells, linked, flowing_seen, level_seen):
+    """moves: Moves delta; dl0/dl1: (pool1, pool2) dL before / at the end; cells per pool; linked: levelLinks ever > 0;
+    flowing_seen / level_seen: the reel's inspect pane (what the player reads) said "Levelling: flowing" / "Levelling: level"."""
     if None in (moves,) or not dl0 or not dl1 or None in dl0 or None in dl1 or not cells:
         return "UNMEASURED", "HARNESS"
     if not linked:
@@ -241,7 +242,7 @@ def ponds_level_verdict(moves, dl0, dl1, cells, linked, flowing_seen):
     if gap > DL_PER_CM_SQUARE:
         start_gap = abs(dl0[0] - dl0[1]) / float(cells)
         return ("UNMEASURED", "HARNESS") if gap < start_gap else ("FAIL", "MOD")   # moving but the window ended first
-    return ("PASS" if flowing_seen else "FAIL"), "MOD"
+    return ("PASS" if flowing_seen and level_seen else "FAIL"), "MOD"
 
 
 def ponds_nomix_verdict(moves, dl0, dl1, linked, readout):
@@ -249,8 +250,7 @@ def ponds_nomix_verdict(moves, dl0, dl1, linked, readout):
         return "UNMEASURED", "HARNESS"
     if not linked:
         return "UNMEASURED", "SITE"
-    ok = moves == 0 and tuple(dl0) == tuple(dl1) and ("DifferentLiquids" in (readout or "") or
-                                                      "different liquids never mix" in (readout or ""))
+    ok = moves == 0 and tuple(dl0) == tuple(dl1) and "different liquids never mix" in (readout or "")   # the inspect text
     return ("PASS" if ok else "FAIL"), "MOD"
 
 
@@ -794,6 +794,17 @@ def _pond_reads(ctx, rig):
     return dl, moves, links, readout, coup
 
 
+def _reel_inspect(ctx, reel):
+    """The reel's own inspect pane, the Levelling line(s) only: the text a player reads when the reel is selected."""
+    B = ctx["B"]
+    lt = B.call("jawa/list_things", defName="RM_HoseReel", rect="%d,%d,2,2" % reel, limit=1, _answer=True) or {}
+    rid = ((lt.get("things") or [{}])[0]).get("id")
+    if not rid:
+        return ""
+    ins = B.call("jawa/inspect_string", thingIds=str(rid), _answer=True) or {}
+    return " | ".join(ln.strip() for t in (ins.get("things") or []) for ln in (t.get("inspect") or []) if "Levelling" in ln)
+
+
 def scene_ponds(ctx, mine):
     row = ctx["row"]
     if "PONDS_DIFFERENT_LIQUIDS_NO_MIX" in mine:
@@ -805,9 +816,11 @@ def scene_ponds(ctx, mine):
             dl1, m1, l1, r1, _c1 = _pond_reads(ctx, rig)
             linked = linked or bool(l1)
             readout = r1 or readout
+        inspect = " || ".join(_reel_inspect(ctx, r) for r in rig["reels"])
         moves = None if m0 is None or m1 is None else m1 - m0
-        st, cls = ponds_nomix_verdict(moves, dl0, dl1, linked, readout)
+        st, cls = ponds_nomix_verdict(moves, dl0, dl1, linked, inspect)
         row("PONDS_DIFFERENT_LIQUIDS_NO_MIX", st, {"dl": [dl0, dl1], "moves": moves, "linked": linked, "readout": readout,
+                                                   "inspect": inspect,
                                                    "coupling": rig["coupling"], "rigProblems": rig["problems"]}, cls=cls)
         # retire the A5 rig's hoses so its link cannot move anything during A4 (it moves nothing by design; the cap is belt-and-braces)
         for r in rig["reels"]:
@@ -815,22 +828,32 @@ def scene_ponds(ctx, mine):
     if "PONDS_HOSE_LEVEL" in mine:
         rig = _pond_rig(ctx, 20, WATER_FLUID, 1)
         dl0, m0, _l, _r, _c = _pond_reads(ctx, rig)
-        linked, flowing, trail, waited = False, False, [], 0
+        linked, trail, waited, close_at = False, [], 0, None
+        seen_flowing, seen_level = "", ""          # the first inspect text that said each (the player's view, reel 1)
         dl1, m1 = dl0, m0
+        # run until the pools are within 1 cm AND the reel says "level" (one more cycle: the kernel's LevelTolerance is the same
+        # 100 dL per square, so the cycle after the gap closes plans Level), at most 3 cycles past the close
         while waited < ctx["a"].level_ticks:
             if not ctx["ticks"](250):
                 break
             waited += 250
             dl1, m1, l1, r1, _c1 = _pond_reads(ctx, rig)
             linked = linked or bool(l1)
-            flowing = flowing or "Flowing" in (r1 or "") or "flowing" in (r1 or "")
-            trail.append((waited, dl1, m1))
-            if None not in dl1 and abs(dl1[0] - dl1[1]) / 9.0 <= DL_PER_CM_SQUARE:
+            ins = _reel_inspect(ctx, rig["reels"][0])
+            if not seen_flowing and "Levelling: flowing" in ins:
+                seen_flowing = "tick %d: %s" % (waited, ins)
+            if not seen_level and seen_flowing and "Levelling: level" in ins:
+                seen_level = "tick %d: %s" % (waited, ins)
+            trail.append((waited, dl1, m1, ins.replace("Levelling: ", "")[:12]))
+            if close_at is None and None not in dl1 and abs(dl1[0] - dl1[1]) / 9.0 <= DL_PER_CM_SQUARE:
+                close_at = waited
+            if close_at is not None and (seen_level or waited - close_at >= 750):
                 break
         moves = None if m0 is None or m1 is None else m1 - m0
-        st, cls = ponds_level_verdict(moves, dl0, dl1, 9, linked, flowing)
-        row("PONDS_HOSE_LEVEL", st, {"dl": [dl0, dl1], "moves": moves, "linked": linked, "flowingSeen": flowing,
-                                     "ticks": waited, "trail": trail[-6:], "coupling": rig["coupling"],
+        st, cls = ponds_level_verdict(moves, dl0, dl1, 9, linked, bool(seen_flowing), bool(seen_level))
+        row("PONDS_HOSE_LEVEL", st, {"dl": [dl0, dl1], "moves": moves, "linked": linked, "inspectFlowing": seen_flowing,
+                                     "inspectLevel": seen_level, "closeTick": close_at,
+                                     "ticks": waited, "trail": trail[-8:], "coupling": rig["coupling"],
                                      "rigProblems": rig["problems"]}, cls=cls)
 
 
@@ -986,7 +1009,7 @@ class FakeBridge(object):
             if "no_level" in self.f:
                 continue
             sa, sb = sum(self.cells[c][0] for c in a_cells), sum(self.cells[c][0] for c in b_cells)
-            if sa == sb:
+            if abs(sa - sb) < DL_PER_CM_SQUARE * len(a_cells):     # RM_LevellingMath.LevelTolerance, per square
                 ends[0]["state"] = ends[1]["state"] = "level"
                 continue
             step = min(abs(sa - sb) // 2, 20000 * max(1, n // 250))

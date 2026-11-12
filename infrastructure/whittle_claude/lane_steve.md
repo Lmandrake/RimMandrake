@@ -27,7 +27,7 @@ SteveDesktop being unreachable (steve.sh exit 75, STEVE_UNREACHABLE) is weather:
 Never test a flyer's flight live.
 
 ## Screenshots and modal dialogs (read before any live look)
-- Load `rimbridge` and `rimworld-live-review` once before a live look. `jawa/clear_ui` first (the dev log window sits in frame), frame with a camera tool (`jawa/jump_camera_to_cell`, `rimworld/set_camera_zoom`; take_screenshot ignores x/z/zoom), then:
+- Load `rimbridge` and `rimworld-live-review` once before a live look. `jawa/clear_ui` first (the dev log window sits in frame; it hides the HUD for 20 s unless you pass `hideHud:false`, so a shot of an inspect pane or gizmo needs that), frame with a camera tool (`jawa/jump_camera_to_cell`, `rimworld/set_camera_zoom`; take_screenshot ignores x/z/zoom), then:
   `python.exe "$(wslpath -w src/RimMandrake/Utils/rimbridge_client.py)" --call jawa/take_screenshot --json '{"fileName":"<bare_name>"}' --yes-i-know-this-is-live`
   (`.png` is appended; the result's `filePath` is a Windows path under `...\RimWorld by Ludeon Studios\Screenshots\`; `wslpath -u` it, copy under `/mnt/d/ClaudeWork/rimmandrake/whittle_claude/$RIMFLOW_SEAT/`). Then LOOK at the PNG with the Read tool before you claim any visual bar; success:true is not a picture.
 - Whole desktop incl. dialogs: `python.exe "$(wslpath -w src/RimMandrake/Utils/system_screenshot.py)" 'D:\ClaudeWork\rimmandrake\whittle_claude\x.bmp'` (WSL `python3` only prints "Windows-only").

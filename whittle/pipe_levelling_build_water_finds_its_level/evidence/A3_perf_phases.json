@@ -1,0 +1,242 @@
+[
+ {
+  "phase": "perf_0",
+  "args": {
+   "lay": "0:0",
+   "no_time": true,
+   "resume": false,
+   "rigs": 200,
+   "restore_length": null
+  },
+  "started": "2026-11-12T01:27:50",
+  "finished": "2026-11-12T01:28:26",
+  "mapSize": [
+   325,
+   325
+  ],
+  "rows": [
+   {
+    "id": "LEVEL_PERF_TICK_TIME",
+    "status": "UNMEASURED",
+    "class": "HARNESS",
+    "why": "phase only (--no-time): rigs 0:0 laid, 0 failures; time with --resume --lay 0:0"
+   },
+   {
+    "id": "LEVEL_PERF_ALLOC",
+    "status": "UNMEASURED",
+    "class": "HARNESS",
+    "why": "phase only (--no-time): rigs 0:0 laid, 0 failures; time with --resume --lay 0:0"
+   }
+  ]
+ },
+ {
+  "phase": "perf_25",
+  "args": {
+   "lay": "0:25",
+   "no_time": true,
+   "resume": true,
+   "rigs": 200,
+   "restore_length": null
+  },
+  "started": "2026-11-12T01:28:32",
+  "finished": "2026-11-12T01:32:39",
+  "mapSize": [
+   325,
+   325
+  ],
+  "rows": [
+   {
+    "id": "LEVEL_PERF_TICK_TIME",
+    "status": "UNMEASURED",
+    "class": "HARNESS",
+    "why": "phase only (--no-time): rigs 0:25 laid, 0 failures; time with --resume --lay 0:0"
+   },
+   {
+    "id": "LEVEL_PERF_ALLOC",
+    "status": "UNMEASURED",
+    "class": "HARNESS",
+    "why": "phase only (--no-time): rigs 0:25 laid, 0 failures; time with --resume --lay 0:0"
+   }
+  ]
+ },
+ {
+  "phase": "perf_65",
+  "args": {
+   "lay": "25:65",
+   "no_time": true,
+   "resume": true,
+   "rigs": 200,
+   "restore_length": null
+  },
+  "started": "2026-11-12T01:32:46",
+  "finished": "2026-11-12T01:38:48",
+  "mapSize": [
+   325,
+   325
+  ],
+  "rows": [
+   {
+    "id": "LEVEL_PERF_TICK_TIME",
+    "status": "UNMEASURED",
+    "class": "HARNESS",
+    "why": "phase only (--no-time): rigs 25:65 laid, 0 failures; time with --resume --lay 0:0"
+   },
+   {
+    "id": "LEVEL_PERF_ALLOC",
+    "status": "UNMEASURED",
+    "class": "HARNESS",
+    "why": "phase only (--no-time): rigs 25:65 laid, 0 failures; time with --resume --lay 0:0"
+   }
+  ]
+ },
+ {
+  "phase": "perf_105",
+  "args": {
+   "lay": "65:105",
+   "no_time": true,
+   "resume": true,
+   "rigs": 200,
+   "restore_length": null
+  },
+  "started": "2026-11-12T01:39:03",
+  "finished": "2026-11-12T01:45:12",
+  "mapSize": [
+   325,
+   325
+  ],
+  "rows": [
+   {
+    "id": "LEVEL_PERF_TICK_TIME",
+    "status": "UNMEASURED",
+    "class": "HARNESS",
+    "why": "phase only (--no-time): rigs 65:105 laid, 0 failures; time with --resume --lay 0:0"
+   },
+   {
+    "id": "LEVEL_PERF_ALLOC",
+    "status": "UNMEASURED",
+    "class": "HARNESS",
+    "why": "phase only (--no-time): rigs 65:105 laid, 0 failures; time with --resume --lay 0:0"
+   }
+  ]
+ },
+ {
+  "phase": "perf_145",
+  "args": {
+   "lay": "105:145",
+   "no_time": true,
+   "resume": true,
+   "rigs": 200,
+   "restore_length": null
+  },
+  "started": "2026-11-12T01:45:19",
+  "finished": "2026-11-12T01:51:22",
+  "mapSize": [
+   325,
+   325
+  ],
+  "rows": [
+   {
+    "id": "LEVEL_PERF_TICK_TIME",
+    "status": "UNMEASURED",
+    "class": "HARNESS",
+    "why": "phase only (--no-time): rigs 105:145 laid, 0 failures; time with --resume --lay 0:0"
+   },
+   {
+    "id": "LEVEL_PERF_ALLOC",
+    "status": "UNMEASURED",
+    "class": "HARNESS",
+    "why": "phase only (--no-time): rigs 105:145 laid, 0 failures; time with --resume --lay 0:0"
+   }
+  ]
+ },
+ {
+  "phase": "perf_185",
+  "args": {
+   "lay": "145:185",
+   "no_time": true,
+   "resume": true,
+   "rigs": 200,
+   "restore_length": null
+  },
+  "started": "2026-11-12T01:51:37",
+  "finished": "2026-11-12T01:57:43",
+  "mapSize": [
+   325,
+   325
+  ],
+  "rows": [
+   {
+    "id": "LEVEL_PERF_TICK_TIME",
+    "status": "UNMEASURED",
+    "class": "HARNESS",
+    "why": "phase only (--no-time): rigs 145:185 laid, 0 failures; time with --resume --lay 0:0"
+   },
+   {
+    "id": "LEVEL_PERF_ALLOC",
+    "status": "UNMEASURED",
+    "class": "HARNESS",
+    "why": "phase only (--no-time): rigs 145:185 laid, 0 failures; time with --resume --lay 0:0"
+   }
+  ]
+ },
+ {
+  "phase": "perf_200",
+  "args": {
+   "lay": "185:200",
+   "no_time": true,
+   "resume": true,
+   "rigs": 200,
+   "restore_length": null
+  },
+  "started": "2026-11-12T01:57:52",
+  "finished": "2026-11-12T01:59:52",
+  "mapSize": [
+   325,
+   325
+  ],
+  "rows": [
+   {
+    "id": "LEVEL_PERF_TICK_TIME",
+    "status": "UNMEASURED",
+    "class": "HARNESS",
+    "why": "phase only (--no-time): rigs 185:200 laid, 0 failures; time with --resume --lay 0:0"
+   },
+   {
+    "id": "LEVEL_PERF_ALLOC",
+    "status": "UNMEASURED",
+    "class": "HARNESS",
+    "why": "phase only (--no-time): rigs 185:200 laid, 0 failures; time with --resume --lay 0:0"
+   }
+  ]
+ },
+ {
+  "phase": "perf_timed",
+  "args": {
+   "lay": "0:0",
+   "no_time": false,
+   "resume": true,
+   "rigs": 200,
+   "restore_length": "40"
+  },
+  "started": "2026-11-12T01:59:53",
+  "finished": "2026-11-12T02:00:35",
+  "mapSize": [
+   325,
+   325
+  ],
+  "rows": [
+   {
+    "id": "LEVEL_PERF_TICK_TIME",
+    "status": "PASS",
+    "class": "MOD",
+    "why": null
+   },
+   {
+    "id": "LEVEL_PERF_ALLOC",
+    "status": "PASS",
+    "class": "MOD",
+    "why": null
+   }
+  ]
+ }
+]

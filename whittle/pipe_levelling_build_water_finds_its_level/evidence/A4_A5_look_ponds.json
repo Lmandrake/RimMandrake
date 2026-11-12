@@ -1,0 +1,215 @@
+{
+ "shots": [
+  {
+   "name": "lev_a4_level",
+   "label": "A4 rig after the proof: pools level, intake reel selected",
+   "reel": "RM_HoseReel22657",
+   "inspect": [
+    "Connected to universal pipe (pipe).",
+    "Hose leaves to the west.",
+    "Hose laid, 10 of 40 squares (plump).",
+    "Free end: lying free. Role: Intake.",
+    "Levelling: level."
+   ],
+   "pools": [
+    "PITWATER dl=225234 wet=9 cells=9",
+    "PITWATER dl=224766 wet=9 cells=9"
+   ],
+   "desktop": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_STEVEDESKTOP_FWLIVE\\lev_a4_level_desktop.bmp"
+  },
+  {
+   "name": "lev_a5_nomix",
+   "label": "A5 rig: water pool vs chemfuel pool, intake reel selected",
+   "reel": "RM_HoseReel22650",
+   "inspect": [
+    "Connected to universal pipe (pipe).",
+    "Hose leaves to the west.",
+    "Hose laid, 10 of 40 squares (flat).",
+    "Free end: lying beside deep water. Role: Intake.",
+    "Levelling: stopped, different liquids never mix."
+   ],
+   "pools": [
+    "PITWATER dl=360000 wet=9 cells=9",
+    "PITWATER dl=90000 wet=9 cells=9"
+   ],
+   "desktop": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_STEVEDESKTOP_FWLIVE\\lev_a5_nomix_desktop.bmp"
+  },
+  {
+   "name": "lev_a5_nomix_outflow",
+   "label": "A5 rig: the outflow reel says the same",
+   "reel": "RM_HoseReel22651",
+   "inspect": [
+    "Connected to universal pipe (pipe).",
+    "Hose leaves to the west.",
+    "Hose laid, 9 of 40 squares (flat).",
+    "Free end: lying free. Role: Outflow.",
+    "Levelling: stopped, different liquids never mix."
+   ],
+   "pools": [
+    "PITWATER dl=360000 wet=9 cells=9",
+    "PITWATER dl=90000 wet=9 cells=9"
+   ],
+   "desktop": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_STEVEDESKTOP_FWLIVE\\lev_a5_nomix_outflow_desktop.bmp"
+  },
+  {
+   "name": "lev_a4_refilled_flowing",
+   "label": "A4 rig 500 ticks after pool 1 was topped up again: flowing again",
+   "reel": "RM_HoseReel22657",
+   "inspect": [
+    "Connected to universal pipe (pipe).",
+    "Hose leaves to the west.",
+    "Hose laid, 10 of 40 squares (plump).",
+    "Free end: lying free. Role: Intake.",
+    "Levelling: flowing (no pump; the higher water runs to the lower)."
+   ],
+   "pools": [
+    "PITWATER dl=340000 wet=9 cells=9",
+    "PITWATER dl=244766 wet=9 cells=9"
+   ],
+   "desktop": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_STEVEDESKTOP_FWLIVE\\lev_a4_refilled_flowing_desktop.bmp"
+  },
+  {
+   "name": "lev_a4_relevelled",
+   "label": "A4 rig after the refill has levelled again",
+   "reel": "RM_HoseReel22657",
+   "inspect": [
+    "Connected to universal pipe (pipe).",
+    "Hose leaves to the west.",
+    "Hose laid, 10 of 40 squares (plump).",
+    "Free end: lying free. Role: Intake.",
+    "Levelling: level."
+   ],
+   "pools": [
+    "PITWATER dl=292658 wet=9 cells=9",
+    "PITWATER dl=292108 wet=9 cells=9"
+   ],
+   "desktop": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_STEVEDESKTOP_FWLIVE\\lev_a4_relevelled_desktop.bmp"
+  },
+  {
+   "name": "lev_a4_relevelled_outflow",
+   "label": "A4 rig, outflow reel",
+   "reel": "RM_HoseReel22658",
+   "inspect": [
+    "Connected to universal pipe (pipe).",
+    "Hose leaves to the west.",
+    "Hose laid, 9 of 40 squares (plump).",
+    "Free end: lying free. Role: Outflow.",
+    "Levelling: level."
+   ],
+   "pools": [
+    "PITWATER dl=292658 wet=9 cells=9",
+    "PITWATER dl=292108 wet=9 cells=9"
+   ],
+   "desktop": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_STEVEDESKTOP_FWLIVE\\lev_a4_relevelled_outflow_desktop.bmp"
+  }
+ ],
+ "reads": [],
+ "refill": {
+  "before": [
+   "PITWATER dl=360000 wet=9 cells=9",
+   "PITWATER dl=224766 wet=9 cells=9"
+  ],
+  "trail": [
+   {
+    "tick": 750,
+    "pools": [
+     "PITWATER dl=330000 wet=9 cells=9",
+     "PITWATER dl=254766 wet=9 cells=9"
+    ],
+    "inspect": [
+     "Levelling: flowing (no pump; the higher water runs to the lower)."
+    ]
+   },
+   {
+    "tick": 1000,
+    "pools": [
+     "PITWATER dl=320000 wet=9 cells=9",
+     "PITWATER dl=264766 wet=9 cells=9"
+    ],
+    "inspect": [
+     "Levelling: flowing (no pump; the higher water runs to the lower)."
+    ]
+   },
+   {
+    "tick": 1250,
+    "pools": [
+     "PITWATER dl=310000 wet=9 cells=9",
+     "PITWATER dl=274766 wet=9 cells=9"
+    ],
+    "inspect": [
+     "Levelling: flowing (no pump; the higher water runs to the lower)."
+    ]
+   },
+   {
+    "tick": 1500,
+    "pools": [
+     "PITWATER dl=301191 wet=9 cells=9",
+     "PITWATER dl=283575 wet=9 cells=9"
+    ],
+    "inspect": [
+     "Levelling: flowing (no pump; the higher water runs to the lower)."
+    ]
+   },
+   {
+    "tick": 1750,
+    "pools": [
+     "PITWATER dl=296787 wet=9 cells=9",
+     "PITWATER dl=287979 wet=9 cells=9"
+    ],
+    "inspect": [
+     "Levelling: flowing (no pump; the higher water runs to the lower)."
+    ]
+   },
+   {
+    "tick": 2000,
+    "pools": [
+     "PITWATER dl=294585 wet=9 cells=9",
+     "PITWATER dl=290181 wet=9 cells=9"
+    ],
+    "inspect": [
+     "Levelling: flowing (no pump; the higher water runs to the lower)."
+    ]
+   },
+   {
+    "tick": 2250,
+    "pools": [
+     "PITWATER dl=293484 wet=9 cells=9",
+     "PITWATER dl=291282 wet=9 cells=9"
+    ],
+    "inspect": [
+     "Levelling: flowing (no pump; the higher water runs to the lower)."
+    ]
+   },
+   {
+    "tick": 2500,
+    "pools": [
+     "PITWATER dl=292933 wet=9 cells=9",
+     "PITWATER dl=291833 wet=9 cells=9"
+    ],
+    "inspect": [
+     "Levelling: flowing (no pump; the higher water runs to the lower)."
+    ]
+   },
+   {
+    "tick": 2750,
+    "pools": [
+     "PITWATER dl=292658 wet=9 cells=9",
+     "PITWATER dl=292108 wet=9 cells=9"
+    ],
+    "inspect": [
+     "Levelling: flowing (no pump; the higher water runs to the lower)."
+    ]
+   },
+   {
+    "tick": 3000,
+    "pools": [
+     "PITWATER dl=292658 wet=9 cells=9",
+     "PITWATER dl=292108 wet=9 cells=9"
+    ],
+    "inspect": [
+     "Levelling: level."
+    ]
+   }
+  ]
+ }
+}

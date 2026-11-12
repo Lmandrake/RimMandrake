@@ -24,12 +24,14 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>The terrain under the end, and the water terrain it lies in or touches (null when none).</summary>
         public TerrainDef Terrain, Water;
 
-        public string Describe() =>
+        /// <param name="intakeHint">false when the end is already set to Intake: the "set this end to Intake" advice is then noise
+        /// in an inspect pane that is too short for it (PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL, live 2026-11-12)</param>
+        public string Describe(bool intakeHint = true) =>
             Kind == HoseEndKind.Relay ? "coupled to a relay reel"
             : Kind == HoseEndKind.Port ? "coupled to " + Port?.LabelShort + (Port?.Faction != null && Port.Faction != Faction.OfPlayer ? " (" + Port.Faction.Name + ")" : "")
             // WaterAt also returns water the end only touches: a shore end reads "beside", not "in".
             : Kind == HoseEndKind.Water ? (Terrain != null && Terrain.IsWater ? "lying in " : "lying beside ") + Water?.label
-                + " (taking water in needs a pump: set this end to Intake)"   // owner ruling 2026-10-11 #3; rev 2 §3.6
+                + (intakeHint ? " (taking water in needs a pump: set this end to Intake)" : "")   // owner ruling 2026-10-11 #3; rev 2 §3.6
             : Kind == HoseEndKind.Free ? "lying free" : "none";
     }
 

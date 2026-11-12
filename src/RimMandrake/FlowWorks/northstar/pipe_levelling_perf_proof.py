@@ -253,11 +253,16 @@ def main(argv=None):
         res["budget"]["clamped"] = "requested %.0f s does not fit the %.0f s cap; phase the run (--no-time --lay, --resume)" % (
             a.budget_s, a.hard_cap_s)
         print("budget: " + res["budget"]["clamped"] + "; running %.0f s" % budget_s, flush=True)
+    stamp_done = True
     if a.mock:
         res["mode"] = "mock"
     else:
         import driver_stamp
-        V.bounded(driver_stamp.stamp, restore_s, res, raw.call)     # counted inside the budget (B's deadline runs from t0)
+        # counted inside the budget (B's deadline runs from t0). The stamp hashes the runtime files first (slow from python.exe
+        # over \\wsl.localhost), THEN makes two bridge calls: abandoned at restore_s (15 s) it made them while the run's own
+        # calls were in flight and the shared socket desynced ("unexpected response id", live 2026-11-12, 2 runs of 2). So it
+        # is waited on up to the per-call cap, and one still running then refuses the run instead of racing it.
+        stamp_done = V.bounded(driver_stamp.stamp, max(restore_s, call_cap_s or 0.0), res, raw.call)[0]
 
     def restore(what, fn, *args, **kw):
         """A restore through G, waited on for at most restore_s: a frozen game must not hold the run past the cap."""
@@ -315,6 +320,9 @@ def main(argv=None):
         ok = True if a.mock else V._wait_playing(B, leave_s=0)[0]
         if not ok:
             all_rows("UNMEASURED", "no game in Playing", "HARNESS")
+            return finish(2)
+        if not stamp_done:
+            all_rows("UNMEASURED", "driver stamp still running after the per-call cap: its bridge calls would race this run's", "HARNESS")
             return finish(2)
         if not a.mock:
             # LEVEL_REHEARSAL_UNSTICK_WAITS_FOR_GODOT: a fresh quicktest map rolled a mech raid mid-rehearsal (RM_HullBolt,
