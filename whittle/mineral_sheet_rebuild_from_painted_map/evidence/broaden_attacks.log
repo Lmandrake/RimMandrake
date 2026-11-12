@@ -1,0 +1,24 @@
+### T2 a referenced BiomeDef vanishes (outputs from a passing run present)
+removed: src/RimMandrake/Webwork/Defs/BiomeDefs/RM_Webwork_Biome.xml
+exit=1
+AssertionError: ('no BiomeDef in src for', {'RM_Webwork'})
+files left in out:
+
+### T3 stale approval: one nonzero input cell changed, the judged record kept
+changed RM_Cauldron cave_crystal 0.3 -> 7
+exit=4
+REFUSED index.prereview.json: 1 problem(s): RM_Cauldron: changed since it was looked at. Look at every row yourself (or have a naive judge do it: a fresh Opus that did not make it, or gpt_consult.py for a big sheet), fix or drop what is obviously broken, then record it: `python3 src/RimMandrake/Util
+vs the 2026-10-30 build: 4 identical; 1 differ only by an explained change (column_changes.csv); 3 UNEXPLAINED: draft_matrix.csv reasons.csv mineral_homes.csv
+CHECKS FAILED (see above) - /home/mandrake/rm/scratch/CLAUDE_STEVEDESKTOP_OFFLINE2/mm_fresh/Transient/mineral_matrix/
+
+### T5 hostile label in a def: commas, quotes, markup, formula
+    <label>=1+1, "the" &lt;b&gt;Wastes&lt;/b&gt;</label>
+exit=4
+PASS every row's src_def is a real file holding that BiomeDef, and its label matches
+REFUSED index.prereview.json: 1 problem(s): RM_Wastes: changed since it was looked at. Look at every row yourself (or have a naive judge do it: a fresh Opus that did not make it, or gpt_consult.py for
+CHECKS FAILED (see above) - /home/mandrake/rm/scratch/CLAUDE_STEVEDESKTOP_OFFLINE2/mm_fresh/Transient/mineral_matrix/
+RM_Wastes,"=1+1, ""the"" <b>Wastes</b>","=1+1, ""the"" <b>Wastes</b>",,land,yes,
+['=1+1, "the" <b>Wastes</b>']
+
+### T5b browser harness on the hostile-label build
+checks 58 fails 0

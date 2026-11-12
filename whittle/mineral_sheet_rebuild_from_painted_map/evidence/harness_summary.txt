@@ -1,0 +1,59 @@
+PASS desktop all rows render
+PASS desktop all columns render
+PASS no empty labels
+PASS no NaN/undefined/null text
+PASS body no horizontal scroll desktop
+PASS nonzero cells shown = data
+PASS status connected
+PASS row labels = src labels (Warscar with article)
+PASS ChillCrater + LanternDeeps marked, nothing else
+PASS 10 draft-marked cells
+PASS 11 D4 rows hatched
+PASS no dropped ids or Jawa tags in rows
+PASS ITEMS = one per row
+PASS ladder button writes db record
+PASS ladder updates cell + mine highlight
+PASS all ladder rungs apply
+PASS free entry
+PASS reset returns to draft, record kept
+PASS band edit saves two records
+PASS others highlight
+PASS filters work
+PASS no column header cut short
+PASS view min renders clean
+PASS view src renders clean
+PASS view reach renders clean
+PASS view chg renders clean
+PASS changes tab: every old row is named by what it was, not a bare id
+PASS changes tab: no bare '' and every surviving biome named by its label
+PASS view log renders clean
+PASS mineral cards
+PASS mineral view has a card per mineral
+PASS xlsx saved via downloads
+PASS xlsx sheets
+PASS xlsx Values shape 30x54
+PASS xlsx Bands 30 rows
+PASS xlsx Homes 32 rows
+PASS xlsx carries edited band
+PASS xlsx no NaN/undefined
+PASS xlsx change log rows
+PASS desktop no page errors
+PASS dark no errors
+PASS phone light no body h-scroll
+PASS phone light 29 cards, grid hidden
+PASS phone chip edit writes record
+PASS phone add-select opens editor
+PASS phone view min no body h-scroll
+PASS phone view src no body h-scroll
+PASS phone view reach no body h-scroll
+PASS phone view chg no body h-scroll
+PASS phone view log no body h-scroll
+PASS phone light no errors
+PASS phone dark no body h-scroll
+PASS phone dark 29 cards, grid hidden
+PASS phone dark no errors
+PASS nodb: banner + local edit
+PASS nodb: no errors
+PASS none: banner + local edit
+PASS none: no errors
+PASS no external requests (self-contained)

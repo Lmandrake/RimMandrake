@@ -1,0 +1,361 @@
+{
+ "audit_painted": [
+  "RM_Stillsand",
+  "RM_LongShade",
+  "RM_LeaningScrub",
+  "RM_Wastes",
+  "RM_Abyss",
+  "RM_SleepingIce",
+  "RM_BlueDesert",
+  "RM_TheRot",
+  "RM_GelatinousSlime",
+  "RM_Contagion",
+  "RM_FloodedCanyon",
+  "RM_WeepingStones",
+  "RM_Greentide",
+  "RM_Webwork",
+  "RM_Warscar",
+  "RM_RustCathedral",
+  "RM_Miasma",
+  "RM_FeverWood",
+  "RM_TheSump",
+  "RM_Pyrelands",
+  "RM_TheForge",
+  "RM_Cauldron",
+  "RUT_Umbra",
+  "RM_TheScald",
+  "RM_TheChill",
+  "RM_GreySea",
+  "RM_TwilightSea"
+ ],
+ "audit_extras": [
+  "RM_ChillCrater",
+  "RM_LanternDeeps"
+ ],
+ "rows": [
+  "RM_Stillsand",
+  "RM_LongShade",
+  "RM_LeaningScrub",
+  "RM_Wastes",
+  "RM_Abyss",
+  "RM_SleepingIce",
+  "RM_BlueDesert",
+  "RM_TheRot",
+  "RM_GelatinousSlime",
+  "RM_Contagion",
+  "RM_FloodedCanyon",
+  "RM_WeepingStones",
+  "RM_Greentide",
+  "RM_Webwork",
+  "RM_Warscar",
+  "RM_RustCathedral",
+  "RM_Miasma",
+  "RM_FeverWood",
+  "RM_TheSump",
+  "RM_Pyrelands",
+  "RM_TheForge",
+  "RM_Cauldron",
+  "RUT_Umbra",
+  "RM_TheScald",
+  "RM_TheChill",
+  "RM_GreySea",
+  "RM_TwilightSea",
+  "RM_ChillCrater",
+  "RM_LanternDeeps"
+ ],
+ "src": {
+  "RM_Stillsand": {
+   "src_def": "src/RimMandrake/Stillsand/Defs/BiomeDefs/RM_Stillsand_Biome.xml",
+   "label_in_def": "the Stillsand",
+   "generatesNaturally": "",
+   "sheet_label": "the Stillsand"
+  },
+  "RM_LongShade": {
+   "src_def": "src/RimMandrake/LongShade/Defs/BiomeDefs/RM_LongShade.xml",
+   "label_in_def": "the Long Shade",
+   "generatesNaturally": "",
+   "sheet_label": "the Long Shade"
+  },
+  "RM_LeaningScrub": {
+   "src_def": "src/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml",
+   "label_in_def": "the Leaning Scrub",
+   "generatesNaturally": "",
+   "sheet_label": "the Leaning Scrub"
+  },
+  "RM_Wastes": {
+   "src_def": "src/RimMandrake/Wastes/Defs/BiomeDefs/RM_Wastes_Biome.xml",
+   "label_in_def": "the Wastes",
+   "generatesNaturally": "false",
+   "sheet_label": "the Wastes"
+  },
+  "RM_Abyss": {
+   "src_def": "src/RimMandrake/Abyss/Defs/BiomeDefs/RM_Abyss.xml",
+   "label_in_def": "the Abyss",
+   "generatesNaturally": "",
+   "sheet_label": "the Abyss"
+  },
+  "RM_SleepingIce": {
+   "src_def": "src/RimMandrake/SleepingIce/Defs/BiomeDefs/RM_SleepingIce.xml",
+   "label_in_def": "the Sleeping Ice",
+   "generatesNaturally": "",
+   "sheet_label": "the Sleeping Ice"
+  },
+  "RM_BlueDesert": {
+   "src_def": "src/RimMandrake/BlueDesert/Defs/BiomeDefs/RM_BlueDesert.xml",
+   "label_in_def": "the Blue Desert",
+   "generatesNaturally": "",
+   "sheet_label": "the Blue Desert"
+  },
+  "RM_TheRot": {
+   "src_def": "src/RimMandrake/TheRot/Defs/BiomeDefs/RM_TheRot_Biome.xml",
+   "label_in_def": "the Rot",
+   "generatesNaturally": "",
+   "sheet_label": "the Rot"
+  },
+  "RM_GelatinousSlime": {
+   "src_def": "src/RimMandrake/GelatinousSlime/Defs/BiomeDefs/GelatinousSlime.xml",
+   "label_in_def": "the Slime",
+   "generatesNaturally": "",
+   "sheet_label": "the Slime"
+  },
+  "RM_Contagion": {
+   "src_def": "src/RimMandrake/Contagion/Defs/BiomeDefs/RM_Contagion.xml",
+   "label_in_def": "the Contagion",
+   "generatesNaturally": "",
+   "sheet_label": "the Contagion"
+  },
+  "RM_FloodedCanyon": {
+   "src_def": "src/RimMandrake/CrackedLands/Defs/BiomeDefs/RM_CrackedLands_Biome.xml",
+   "label_in_def": "the Cracked Lands",
+   "generatesNaturally": "",
+   "sheet_label": "the Cracked Lands"
+  },
+  "RM_WeepingStones": {
+   "src_def": "src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml",
+   "label_in_def": "the Weeping Stones",
+   "generatesNaturally": "false",
+   "sheet_label": "the Weeping Stones"
+  },
+  "RM_Greentide": {
+   "src_def": "src/RimMandrake/Greentide/Defs/BiomeDefs/RM_Greentide_Biome.xml",
+   "label_in_def": "the Greentide",
+   "generatesNaturally": "",
+   "sheet_label": "the Greentide"
+  },
+  "RM_Webwork": {
+   "src_def": "src/RimMandrake/Webwork/Defs/BiomeDefs/RM_Webwork_Biome.xml",
+   "label_in_def": "the Webwork",
+   "generatesNaturally": "",
+   "sheet_label": "the Webwork"
+  },
+  "RM_Warscar": {
+   "src_def": "src/RimMandrake/Scarlands/Defs/BiomeDefs/RM_Warscar.xml",
+   "label_in_def": "Warscar",
+   "generatesNaturally": "",
+   "sheet_label": "the Warscar"
+  },
+  "RM_RustCathedral": {
+   "src_def": "src/RimMandrake/RustCathedral/Defs/BiomeDefs/RM_RustCathedral_Biome.xml",
+   "label_in_def": "the Rust Cathedral",
+   "generatesNaturally": "",
+   "sheet_label": "the Rust Cathedral"
+  },
+  "RM_Miasma": {
+   "src_def": "src/RimMandrake/Miasma/Defs/BiomeDefs/RM_Miasma.xml",
+   "label_in_def": "the Miasma",
+   "generatesNaturally": "",
+   "sheet_label": "the Miasma"
+  },
+  "RM_FeverWood": {
+   "src_def": "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml",
+   "label_in_def": "the Fever Wood",
+   "generatesNaturally": "false",
+   "sheet_label": "the Fever Wood"
+  },
+  "RM_TheSump": {
+   "src_def": "src/RimMandrake/TheSump/Defs/BiomeDefs/RM_TheSump_Biome.xml",
+   "label_in_def": "the Sump",
+   "generatesNaturally": "",
+   "sheet_label": "the Sump"
+  },
+  "RM_Pyrelands": {
+   "src_def": "src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml",
+   "label_in_def": "the Pyrelands",
+   "generatesNaturally": "",
+   "sheet_label": "the Pyrelands"
+  },
+  "RM_TheForge": {
+   "src_def": "src/RimMandrake/TheForge/Defs/BiomeDefs/RM_TheForge_Biome.xml",
+   "label_in_def": "the Forge",
+   "generatesNaturally": "",
+   "sheet_label": "the Forge"
+  },
+  "RM_Cauldron": {
+   "src_def": "src/RimMandrake/Cauldron/Defs/BiomeDefs/RM_Cauldron.xml",
+   "label_in_def": "the Cauldron",
+   "generatesNaturally": "",
+   "sheet_label": "the Cauldron"
+  },
+  "RUT_Umbra": {
+   "src_def": "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Umbra.xml",
+   "label_in_def": "Auroral Umbra",
+   "generatesNaturally": "",
+   "sheet_label": "Auroral Umbra"
+  },
+  "RM_TheScald": {
+   "src_def": "src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TheScald.xml",
+   "label_in_def": "the Scald",
+   "generatesNaturally": "",
+   "sheet_label": "the Scald"
+  },
+  "RM_TheChill": {
+   "src_def": "src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TheChill.xml",
+   "label_in_def": "the Chill",
+   "generatesNaturally": "",
+   "sheet_label": "the Chill"
+  },
+  "RM_GreySea": {
+   "src_def": "src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_GreySea.xml",
+   "label_in_def": "the Grey Sea",
+   "generatesNaturally": "",
+   "sheet_label": "the Grey Sea"
+  },
+  "RM_TwilightSea": {
+   "src_def": "src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TwilightSea.xml",
+   "label_in_def": "the Twilight Sea",
+   "generatesNaturally": "",
+   "sheet_label": "the Twilight Sea"
+  },
+  "RM_ChillCrater": {
+   "src_def": "src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_ChillCrater.xml",
+   "label_in_def": "the Chill crater",
+   "generatesNaturally": "false",
+   "sheet_label": "the Chill crater"
+  },
+  "RM_LanternDeeps": {
+   "src_def": "src/RimMandrake/LanternDeeps/Defs/Biomes/RM_LanternDeeps.xml",
+   "label_in_def": "the Lantern Deeps",
+   "generatesNaturally": "false",
+   "sheet_label": "the Lantern Deeps"
+  }
+ },
+ "scanned_files": [
+  "biomes.csv",
+  "column_changes.csv",
+  "draft_matrix.csv",
+  "inventory.csv",
+  "mineral_homes.csv",
+  "page/data.json",
+  "page/index.html",
+  "page/index.prereview.json",
+  "page/items.json",
+  "reach_summary.csv",
+  "reasons.csv",
+  "stats.json"
+ ],
+ "jawa_probe": [
+  [
+   "biomes.csv",
+   1
+  ]
+ ],
+ "jawa_hits": [],
+ "checks": [
+  {
+   "check": "audit table parses to 27 painted + 2 extras",
+   "ok": true,
+   "detail": {
+    "painted": 27,
+    "extras": [
+     "RM_ChillCrater",
+     "RM_LanternDeeps"
+    ]
+   }
+  },
+  {
+   "check": "biomes.csv rows = audit list, each once",
+   "ok": true,
+   "detail": {
+    "missing": [],
+    "extra": [],
+    "dupes": 0
+   }
+  },
+  {
+   "check": "draft_matrix.csv biome rows = audit list, each once (SRC_ rows are the 4 other-source rows)",
+   "ok": true,
+   "detail": {
+    "missing": [],
+    "extra": [],
+    "src_rows": [
+     "SRC_salvage_UPY",
+     "SRC_trade_UPY",
+     "SRC_meteorite_pct",
+     "SRC_asteroid_map_DPM"
+    ]
+   }
+  },
+  {
+   "check": "painted=yes on exactly the 27 painted",
+   "ok": true,
+   "detail": []
+  },
+  {
+   "check": "the two extras are marked as what they are, nothing else is marked",
+   "ok": true,
+   "detail": {
+    "RM_ChillCrater": [
+     "aftermath",
+     "no",
+     "not painted: aftermath biome (generatesNaturally=false), made when the Chill burns"
+    ],
+    "RM_LanternDeeps": [
+     "cave",
+     "no",
+     "not painted: cave layer injected under cold maps, not a worldmap biome"
+    ]
+   }
+  },
+  {
+   "check": "every row's src_def is a real file holding that BiomeDef, and its label matches",
+   "ok": true,
+   "detail": []
+  },
+  {
+   "check": "label overrides are only the noted Warscar article",
+   "ok": true,
+   "detail": {
+    "RM_Warscar": [
+     "Warscar",
+     "the Warscar",
+     "src label is 'Warscar'; sheet shows 'the Warscar' per WARSCAR_LABEL_RESTORE_THE_ARTICLE (2026-09-26 every-label-is-the-Xxx ruling)"
+    ]
+   }
+  },
+  {
+   "check": "ChillCrater def says generatesNaturally=false",
+   "ok": true,
+   "detail": {
+    "src_def": "src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_ChillCrater.xml",
+    "label_in_def": "the Chill crater",
+    "generatesNaturally": "false",
+    "sheet_label": "the Chill crater"
+   }
+  },
+  {
+   "check": "sanity probe: the scan finds one planted '(Jawa)'",
+   "ok": true,
+   "detail": [
+    [
+     "biomes.csv",
+     1
+    ]
+   ]
+  },
+  {
+   "check": "no '(Jawa)' tag in any of 12 output files",
+   "ok": true,
+   "detail": []
+  }
+ ]
+}

@@ -1,0 +1,30 @@
+# Nothing shipped: every commit of this item after the Whittle setup (52c51a89cf..HEAD) and every path it touched
+00b0c15a9f MINERAL_SHEET_REBUILD_FROM_PAINTED_MAP: pre-review record cites the harness's 59 checks, not 58
+6422c72814 MINERAL_SHEET_REBUILD_FROM_PAINTED_MAP: Changes tab names every old row; harness checks it
+7319c7c876 MINERAL_SHEET_REBUILD_FROM_PAINTED_MAP: gen_matrix.py names a missing input in one line instead of a traceback
+bcbb7db6c6 MINERAL_SHEET_REBUILD_FROM_PAINTED_MAP: the sheet's pre-review record (two fresh Opus judges, 29/29) and Changes-tab names
+d16950e9a9 MINERAL_SHEET_REBUILD_FROM_PAINTED_MAP: fix what the naive judge saw on the sheet
+7d76a99ac2 MINERAL_SHEET_REBUILD_FROM_PAINTED_MAP: gen_matrix.py and its round-two inputs in the repo
+
+design/RimMandrake/biome_name_provenance_audit_2026-10-28.md
+design/RimMandrake/mineral_matrix/README.md
+design/RimMandrake/mineral_matrix/build_2026-10-30.sha256
+design/RimMandrake/mineral_matrix/index.prereview.json
+design/RimMandrake/mineral_matrix/round_two_2026-10-28/design.md
+design/RimMandrake/mineral_matrix/round_two_2026-10-28/draft_matrix_v2.csv
+design/RimMandrake/mineral_matrix/round_two_2026-10-28/inventory.csv
+design/RimMandrake/mineral_matrix/round_two_2026-10-28/mineral_homes_v2.csv
+design/RimMandrake/mineral_matrix/round_two_2026-10-28/reach_summary.csv
+design/RimMandrake/mineral_matrix/round_two_2026-10-28/reasons_v2.csv
+src/RimMandrake/Utils/mineral_matrix/check_matrix.py
+src/RimMandrake/Utils/mineral_matrix/gen_matrix.py
+src/RimMandrake/Utils/mineral_matrix/page/build_data.py
+src/RimMandrake/Utils/mineral_matrix/page/build_page.py
+src/RimMandrake/Utils/mineral_matrix/page/template.html
+src/RimMandrake/Utils/mineral_matrix/page/xlsx.full.min.js
+src/RimMandrake/Utils/mineral_matrix/prereview_harness.py
+src/RimMandrake/Utils/mineral_matrix/selftest_mineral_matrix.py
+
+files under any Defs/, Patches/, About/, Assemblies/ or Textures/ in these commits:
+(none)
+No deploy_custom_mods.py --apply, bridge or game command was run (offline lane).

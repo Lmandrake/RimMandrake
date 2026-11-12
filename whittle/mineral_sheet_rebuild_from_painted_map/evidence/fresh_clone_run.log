@@ -1,0 +1,20 @@
+# 2026-11-11 20:38 -0800 fresh clone of 00b0c15a MINERAL_SHEET_REBUILD_FROM_PAINTED_MAP: pre-review record cites the harness's 59 checks, not 58, run from $HOME
+$ python3 <clone>/src/RimMandrake/Utils/mineral_matrix/gen_matrix.py
+29 biomes 49 columns 82 nonzero 127 reasons 4 src rows 29 items
+index.html 1047091
+PASS audit table parses to 27 painted + 2 extras
+PASS biomes.csv rows = audit list, each once
+PASS draft_matrix.csv biome rows = audit list, each once (SRC_ rows are the 4 other-source rows)
+PASS painted=yes on exactly the 27 painted
+PASS the two extras are marked as what they are, nothing else is marked
+PASS every row's src_def is a real file holding that BiomeDef, and its label matches
+PASS label overrides are only the noted Warscar article
+PASS ChillCrater def says generatesNaturally=false
+PASS sanity probe: the scan finds one planted '(Jawa)'
+PASS no '(Jawa)' tag in any of 12 output files
+check_matrix: 10/10 pass -> /home/mandrake/rm/scratch/CLAUDE_STEVEDESKTOP_OFFLINE2/mm_fresh/Transient/mineral_matrix/check.json
+OK pre-reviewed by judge:claude-opus-5-5: 29 rows (24 OK, 0 fixed, 5 flagged), 0 dropped; caught: Two fresh Opus judges (claude-opus-5-5) checked all 29 rows against the audit's list, the def labels, the drops and merges, and D3/D4: every row passed both times, nothing missing or extra. A browser test passed 59 of 59 checks (render, cell edits, xlsx, phone, dark, no network). Fixed before you saw it, from the first judge: mineral names were cut short in the column headers; the '82 filled cells' line read as if steel were excluded; the family headings said 'up to 50-100%'; the Changes tab showed raw ids and a bare ''; the D4 note did not say which four rows left. Five rows are flagged for your call: the Stillsand has no steel, the Long Shade loses its twin's krayt pearl pull, the Warscar's article, the Grey Sea merge, the Scald leaving D4. Not changed: the grid scrolls sideways inside its box, and the browser test used a stand-in database, so live saving is proven only where you open it.
+{"biomes": 29, "painted": 27, "marked": ["RM_ChillCrater", "RM_LanternDeeps"], "planet_nonsteel_nonzero": 43, "planet_nonsteel_cells": 899, "sparsity_pct": 4.8, "nonzero_incl_deep_river": 82, "minerals": 31, "with_second": 19, "none": ["zersium", "phrikite", "chimney_iron", "uraninite", "scaldpearl", "kyber", "stygium", "mindstone", "lanternstone", "sand", "brine_plate", "bezoars"], "reasons_rows": 127, "d4_empty": ["RM_Abyss", "RM_FeverWood", "RM_GelatinousSlime", "RM_Greentide", "RM_LeaningScrub", "RM_LongShade", "RM_Miasma", "RM_Pyrelands", "RM_TheRot", "RM_Webwork", "RM_TwilightSea"], "d4_left": ["RM_TheScald", "RM_SeabedFloor_TwilightSea", "RM_SeabedFloor_TheChill", "RUT_AridShrubland"], "draft_cells": 10, "new_column_cells": 0, "dropped_columns": ["RUT_AridShrubland", "RUT_Desert", "RUT_ExtremeDesert", "OTHER_vanilla"], "merged_columns": {"RM_SeabedFloor_TheScald": "RM_TheScald", "RM_SeabedFloor_GreySea": "RM_GreySea", "RM_SeabedFloor_TwilightSea": "RM_TwilightSea", "RM_SeabedFloor_TheChill": "RM_TheChill"}, "dropped_reason_rows": 15, "column_changes": 18}
+vs the 2026-10-30 build: 7 identical; 1 differ only by an explained change (column_changes.csv); 0 UNEXPLAINED
+ALL CHECKS PASS - /home/mandrake/rm/scratch/CLAUDE_STEVEDESKTOP_OFFLINE2/mm_fresh/Transient/mineral_matrix/
+exit=0

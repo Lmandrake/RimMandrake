@@ -1,0 +1,3 @@
+biome,label,src_label,label_note,kind,painted,mark,frozen_twin,src_def,generatesNaturally,d4_empty
+RM_ChillCrater,the Chill crater,the Chill crater,,aftermath,no,"not painted: aftermath biome (generatesNaturally=false), made when the Chill burns",,src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_ChillCrater.xml,false,
+RM_LanternDeeps,the Lantern Deeps,the Lantern Deeps,,cave,no,"not painted: cave layer injected under cold maps, not a worldmap biome",,src/RimMandrake/LanternDeeps/Defs/Biomes/RM_LanternDeeps.xml,false,

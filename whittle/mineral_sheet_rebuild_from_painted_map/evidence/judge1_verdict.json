@@ -1,0 +1,132 @@
+{
+ "rows": {
+  "RM_Stillsand": {
+   "verdict": "OK",
+   "note": "label matches src; RUT_ExtremeDesert dropped, sand 99 kept; no steel now (twin had 3, RM holds 0, logged) - owner may want to see that"
+  },
+  "RM_LongShade": {
+   "verdict": "OK",
+   "note": "label ok; D4 steel-only 10; RUT_Desert dropped and logged"
+  },
+  "RM_LeaningScrub": {
+   "verdict": "OK",
+   "note": "label ok; D4 steel-only 8; RUT_AridShrubland steel 10 dropped and logged"
+  },
+  "RM_Wastes": {
+   "verdict": "OK",
+   "note": "label ok; uranium/cooking_salt/brine_plate/bezoars homes, crystal_salts second; D3 holds"
+  },
+  "RM_Abyss": {
+   "verdict": "OK",
+   "note": "label ok; D4 steel-only 8"
+  },
+  "RM_SleepingIce": {
+   "verdict": "OK",
+   "note": "label ok; sapphire home, blue_ice second; D3 holds"
+  },
+  "RM_BlueDesert": {
+   "verdict": "OK",
+   "note": "label ok; silver/blue_ice home, sapphire second; D3 holds"
+  },
+  "RM_TheRot": {
+   "verdict": "OK",
+   "note": "label ok; D4 steel-only 8"
+  },
+  "RM_GelatinousSlime": {
+   "verdict": "OK",
+   "note": "src label is 'the Slime' (checked XML); audit's 'the Gelatinous Slime' is a recall error, sheet is right; D4 empty"
+  },
+  "RM_Contagion": {
+   "verdict": "OK",
+   "note": "label ok; steel 15 only (not D4)"
+  },
+  "RM_FloodedCanyon": {
+   "verdict": "OK",
+   "note": "label 'the Cracked Lands' matches src; fossils home, gold river/jade second; D3 holds"
+  },
+  "RM_WeepingStones": {
+   "verdict": "OK",
+   "note": "label ok; jade home, ruby second; D3 holds"
+  },
+  "RM_Greentide": {
+   "verdict": "OK",
+   "note": "label ok; D4, no cells at all"
+  },
+  "RM_Webwork": {
+   "verdict": "OK",
+   "note": "label ok; D4 steel-only 5"
+  },
+  "RM_Warscar": {
+   "verdict": "OK",
+   "note": "shows 'the Warscar' over src 'Warscar' per WARSCAR_LABEL_RESTORE_THE_ARTICLE (item exists in BENCH queue); deep LPM + smartsteel seconds; D3 holds"
+  },
+  "RM_RustCathedral": {
+   "verdict": "OK",
+   "note": "label ok; LPM + dead smartsteel home; D3 holds"
+  },
+  "RM_Miasma": {
+   "verdict": "OK",
+   "note": "label ok; D4, no cells"
+  },
+  "RM_FeverWood": {
+   "verdict": "OK",
+   "note": "label ok; D4 steel-only 3"
+  },
+  "RM_TheSump": {
+   "verdict": "OK",
+   "note": "label ok; deepchem home, fossils second; no steel"
+  },
+  "RM_Pyrelands": {
+   "verdict": "OK",
+   "note": "label ok; D4 steel-only 8"
+  },
+  "RM_TheForge": {
+   "verdict": "OK",
+   "note": "label ok; zersium/ruby/obsidian home; D3 holds"
+  },
+  "RM_Cauldron": {
+   "verdict": "OK",
+   "note": "label ok; cave_crystal second; D3 holds"
+  },
+  "RUT_Umbra": {
+   "verdict": "OK",
+   "note": "kept (painted, not a twin); label 'Auroral Umbra' matches src; deepchem/helixien deep seconds; D3 holds"
+  },
+  "RM_TheScald": {
+   "verdict": "OK",
+   "note": "label ok; 8 floor cells moved unchanged and logged; D3 holds for every mineral"
+  },
+  "RM_TheChill": {
+   "verdict": "OK",
+   "note": "label ok; floor held nothing (logged); row empty"
+  },
+  "RM_GreySea": {
+   "verdict": "OK",
+   "note": "label ok; crystal_salts sea 5/floor 3 -> 5 draft, logged"
+  },
+  "RM_TwilightSea": {
+   "verdict": "OK",
+   "note": "label ok; D4; floor steel 2 moved, logged"
+  },
+  "RM_ChillCrater": {
+   "verdict": "OK",
+   "note": "marked not painted; label matches src; helixien home, diamond/obsidian second"
+  },
+  "RM_LanternDeeps": {
+   "verdict": "OK",
+   "note": "marked not painted; label matches src; D3 holds for its 7 minerals"
+  }
+ },
+ "page": [
+  "Stats line misleads: 'Cells filled (planet minerals, steel aside): 43' is right, but the 'Including deep and river cells: 82' beside it counts the 20 steel cells too; with steel aside it is 62",
+  "Desktop grid: column headers clipped ('live pattern m...', 'Mother-of-Sc...', 'glass sand / fi...'), and the 'cooking salt' column is cut off at the right edge (the grid scrolls sideways inside the page)",
+  "Family header 'Mountain country (up to 50-100% mountain)' is confusing: 'up to 50-100%' reads oddly next to row ranges like 30-60% and 20-50%, and it wraps in the cramped label column",
+  "Changes tab shows raw ids and internal tokens a non-programmer must decode (RM_SeabedFloor_*, non_mineral_pull, \"RM_LongShade pull stays: ''\" with empty quotes, 'RM_Stillsand holds 0')",
+  "desk_chg shows '9 changes saved so far': harness edits (ladder, band, reset, phone chip) were written to the db collection 'edits'; confirm they went to a test collection or clear them before the owner opens it, or BENCH will read test edits back as his",
+  "Legend: the '25 many, high end' swatch sits alone on its row and '99 terrain' is pushed to mid-page; minor layout wobble",
+  "Stillsand loses all steel (twin had 3, RM holds 0) while it is not D4; correct by the rule but worth calling out to the owner",
+  "audit_list.md itself labels RM_GelatinousSlime 'the Gelatinous Slime'; src says 'the Slime' (sheet correct, audit recall wrong)"
+ ],
+ "missing_or_extra_biomes": [],
+ "judge_model": "claude-opus-5-5"
+}

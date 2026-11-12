@@ -1,0 +1,15 @@
+# outputs of the fresh-clone run (00b0c15a) vs Archmagi D:\ClaudeWork\rimmandrake\mineral_matrix_2026-10-30\ (copied 2026-11-11)
+IDENTICAL biomes.csv
+IDENTICAL draft_matrix.csv
+IDENTICAL reasons.csv
+IDENTICAL mineral_homes.csv
+IDENTICAL inventory.csv
+IDENTICAL reach_summary.csv
+DIFFERS   column_changes.csv:
+14c14
+< RUT_Desert,dropped,non_mineral_pull,krayt pearl (fauna),,RM_LongShade pull stays: ''
+---
+> RUT_Desert,dropped,non_mineral_pull,krayt pearl (fauna),,RM_LongShade has no pull of its own; this one is not carried over (no ruling on twin values)
+IDENTICAL stats.json
+
+Explanation: the one changed line is the note on RUT_Desert's dropped krayt-pearl pull. The 10-30 build wrote RM_LongShade pull stays: '' (a Python repr of an empty string); it now says in words that the Long Shade has no pull and this one is not carried. gen_matrix.py's EXPLAINED map undoes exactly that wording and the result hashes to the 10-30 file.
