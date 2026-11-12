@@ -282,7 +282,7 @@ def _canvas_for(rel):
     if n in ("EndFrayed_Dead", "EndFrayed_Live", "SparkGlow"):
         return (64, 64)
     if n == "PowerStrip":
-        return (64, 32)
+        return (256, 128)          # owner-approved cord look (b05e9ce45d): authored at 4x, still 2:1 (DecalAspect 0.5; O7 A19 checks the ratio)
     if n in ("AerialMast", "AerialLampMast"):
         return (128, 256)
     return (128, 128)
@@ -558,7 +558,7 @@ GPT_PRERELEASE_FIX_SHAPES = [
     ("C17 ground counts per map", "Aerial/AerialProbe.cs", "comp.groundPrinted.Values.Sum(v => v.verts)"),
     ("D12 placement made nothing is a failure", "Aerial/ConduitStyleProbe.cs", "if (made == null) return AerialProbe.Fail(cmd,"),
     ("D14 cline refuses an unequal diagonal", "Aerial/ConduitStyleProbe.cs", "ConduitStyles.StraightOrDiagonal(b.x - a.x, b.z - a.z)"),
-    ("D8 a modded conduit joins a run without becoming a member", "Aerial/RM_MapComponent_ConduitRuns.cs", "if (x == seed || !IsBridgeConduit(x.def)) res.Add(x);"),
+    ("D8 a modded conduit joins a run without becoming a member", "Aerial/ConduitStyles.cs", "if (x == seed || !isBridgeConduit(x)) res.Add(x);"),
     ("A4 felling or planting a tree re-plans the cords", "RM_MapComponent_CordGraph.cs", "if (had != has && (tc.Reach == null || tc.Reach.Reaches(CordWorldAdapter.C(loc)))) tc.StaleOffscreen = true;"),
     ("C9 a lay change drops only that anchor's lays", "Aerial/RM_MapComponent_Aerial.cs", "kv.Value.a.Position == c || !kv.Value.a.Spawned || !kv.Value.a.fallen.Contains(kv.Key)"),
 ]
