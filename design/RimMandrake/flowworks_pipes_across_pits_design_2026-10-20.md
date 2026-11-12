@@ -19,7 +19,7 @@ deck (`suspension_bridge_construction_design_2026-10-18.md` §1.4); each side of
 ### Levelling feasibility
 
 Item `PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL`, 2026-10-20 (owner: *"Let's see if we can do this"*). **Verdict:
-feasible, and built behind a Mod Setting. The offline selftests pass; the live run is owed.**
+feasible, and built behind a Mod Setting. The offline selftests pass, and so did the live runs (2026-11-12, below).**
 
 - **What already existed (MEASURED).** Every body already stores exact decilitres, and all bodies share one surface
   convention (dL per square, 0 = brim, negative below ground). A dug square is `WaterDl − depth·U`. A pond is
@@ -53,8 +53,11 @@ feasible, and built behind a Mod Setting. The offline selftests pass; the live r
 - **Cost per tick (offline, MEASURED by the selftest).** The kernel plans a hard budget of 64 links per cycle; the rest
   rotate in later and catch up by up to 8 cycles' worth. The test scene had 200 bodies, 40 of them 40,000-square basins,
   and 400 links. Planning took **89 µs per cycle, about 0.36 µs per tick**.
-  - The adapter's walk of dug runs is capped at 20,000 squares per run and 60,000 squares per cycle. Its live cost is
-    UNMEASURED, so the L1 benchmark on a 325×325 map with 200 links is owed live.
+  - The adapter's walk of dug runs is capped at 20,000 squares per run and 60,000 squares per cycle. MEASURED live
+    2026-11-12 (SteveDesktop, FlowWorks tier, 325×325 map, two 38,125-square basins, 200 links, 20 timed cycles): the whole
+    `RM_Levelling.Tick` averaged **14.0 ms per cycle (0.056 ms per tick)**, worst 53.8 ms in the one cycle that held a GC,
+    and grew the managed heap ~460 KB per cycle (`pipe_levelling_perf_proof.py`; evidence in
+    `whittle/pipe_levelling_build_water_finds_its_level/evidence/A3_perf_timed_200_links.json`).
 - **Selftests** (`Source/SelfTest/LevellingChecks.cs`, all green). The four gates were checked every cycle:
   - volume exact, counting what limitless bodies gave or took;
   - energy never rising, and in two-body scenes the gap never growing;
@@ -70,10 +73,12 @@ feasible, and built behind a Mod Setting. The offline selftests pass; the live r
   3. The pour lands near the receiving end and the pulse spreads it. Between pulses, that end reads high, which errs
      toward moving less.
   4. A hose's held contents do not fill from a passive move.
-  5. Levelling stops whenever a working pump is on the network. That is an owner question below.
-  6. Nothing has run live: the ruled L2 rows (two ponds level; a pond and an oil pit do not) are owed.
-- **Owner question.** *"When a hose network has a running pump on it, should passive levelling still run alongside the
-  pump, or should the pump alone decide (as built)?"*
+  5. Levelling stops whenever a working pump is on the network, and resumes when it stops: the owner kept that by card
+     (2026-10-21, "With pump → Off while pumping").
+- **Live (2026-11-12).** Two 3×3 pits of unequal height joined by two reels on one pipe run level out: the reel reads
+  "Levelling: flowing" from the first cycle and "Levelling: level." once the surfaces are within 1 cm, total conserved;
+  a water pit and a chemfuel pit joined the same way exchange nothing and both reels read "different liquids never mix".
+  Save/reload mid-flow replays exactly. Evidence: `whittle/pipe_levelling_build_water_finds_its_level/evidence/`.
 
 ## Ruled design
 

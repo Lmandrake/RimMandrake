@@ -1,0 +1,2 @@
+validation_core.bounded() abandons a thread that still holds the shared bridge socket: pipe_levelling_perf_proof bounded driver_stamp.stamp at 15 s, the stamp (slow manifest hashing from python.exe over \\wsl.localhost) then made its two bridge calls mid-run and the next call died 'unexpected response id' (2 runs of 2, 2026-11-12). Never let a bounded thread that makes bridge calls outlive its bound: wait for it or refuse the run.
+item: PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL
