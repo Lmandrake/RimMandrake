@@ -8,16 +8,16 @@ talking to Mandrake.
 
 | Term | Means |
 |---|---|
-| **Conductor** | The one window he talks to: it decides, routes the work and starts helpers. |
-| **Relentless** | The automatic builder, test-builder and judge pipeline — not an everything pipeline. |
-| **Artisan** | One loop per mod: fresh passes against a fixed checklist, judged by someone who did not do the work. |
-| **Whittle** | A worker that takes one small ticket per round and proves it before taking the next. |
-| **Designer** | The role that argues a mod idea into a written concept before any code. |
+| **Conductor** | The one window he talks to: it decides, routes the work and starts helpers. Also provides collaborative live-game development and testing for smaller items or generates excellent tickets for large work orders. |
+| **Relentless Pipeline** | Supervisor pipeline: no AI, tickets on disk, staffs builder/fixers until blind judge passes each one. Different builder/fixers may be chosen. |
+| **Artisan** | One loop on one whole piece of work (e.g. mod). Fresh passes are held to a frozen experience description. Blind judge screens each done-claim. |
+| **Whittle** | Minimalist artisan that takes one small well defined ticket with acceptance criteria per round and proves it before taking the next. |
+| **Designer** | Experimental agent: Interactive analysis to produce better fleshed out mod ideas before any code or when inconsistencies are discovered that need refinement. |
 | **Operations** | The role that watches the production system's health and raises the alarm. |
 | **Dispatcher** | The clock that starts scheduled roles; there is no AI in it. |
-| **Test Pilot** | One live debugging sitting on one stuck item: experiments in the running game instead of code-and-retest. |
-| **Foundry** | The second builder window; retired, folded into the Conductor. |
-| **Bench** | The old name for the window he talks to; retired, it is the Conductor. |
+| **Test Pilot** | One live debugging sitting on one stuck item/ticket, ending in measured cause and check that it produces the fail. |
+| **Foundry** | The old builder window; retired, folded into the Conductor now. |
+| **Bench** | The old name for the window he talks to; retired, it is the Conductor now. |
 
 ## The game and the proof
 
