@@ -1,0 +1,42 @@
+[consult] 25554 chars, 2 file(s), 0 image(s), model gpt-6.1-sol, round -, job /home/mandrake/.local/state/rimmandrake/scratch/codex/consult-20261111-203255-2149000-1d5e6e
+[consult] receipt job consult-20261111-203255-2149000-1d5e6e
+[consult] answered in 162s
+The most revealing gap is **attribution accuracy**. Increased coverage and unchanged signalled targets don’t establish that the assigned kind belongs to the originating item.
+
+## Two experiments
+
+1. **Audit newly recovered kinds against actual provenance.** Sample 20 lessons that acquire a kind only through whole-body scanning, including comparisons, quoted logs, and multiple item IDs. Establish the originating item independently where possible, leaving unresolved cases unknown. Count correct, wrong, and unknown assignments. Carry one wrong-kind case through L1 apply and the generalization check’s sample selection. Check whether the recorded kind causes it to admit examples from the actual source kind.
+
+2. **Exercise environment lifetime through the real launchers.** Start Rimflow on `GADGET_BUILD_FRAME`, then enter a Whittle round on `WIDGET_REPAIR_SHAPE` through your supported workflow. File an itemless lesson during that round, then another after switching or leaving the item context. Capture `RIMFLOW_ITEM`, `WC_ITEM`, the actual active item, the written footer, and the gathered kind at each step. Conflicting valid variables always select `RIMFLOW_ITEM` here. This experiment establishes whether that precedence encounters stale inherited values in practice.
+
+## Correctness findings
+
+**`item_of()` can read a body example as authoritative metadata.** I reproduced this using the shown function in memory. Suppose the lesson text contains
+
+```text
+Example from another task
+item: WIDGET_REPAIR_SHAPE
+Apply the pattern carefully.
+```
+
+Calling `add(..., item="GADGET_BUILD_FRAME", home="foo")` appends the correct footer, but `item_of()` returns the earlier `WIDGET_REPAIR_SHAPE`. A body line such as `item: <ID>` also makes it return `None` immediately, ignoring the generated footer. This defeats the claimed explicit-item precedence. Give metadata a defined location and parse that location.
+
+**The two identifier grammars disagree, allowing explicit metadata to lose silently to prose.** `ITEM_ID` accepts `GADGET_BUILD`, while `ITEM_TOKEN` requires at least three underscore-separated components. Consequently,
+
+```text
+text = "Example WIDGET_REPAIR_SHAPE"
+item = "GADGET_BUILD"
+```
+
+is accepted by `add()`, but `piece()` assigns `REPAIR` through its fallback. Either validation must reject that explicit ID or extraction must understand it, according to the canonical item grammar. The authoritative-item path should resolve this before considering prose.
+
+**The first body ID remains an attribution assumption.** A comparison can mention a foreign item first, and reordering that paragraph changes the assigned kind. That agrees with the new design text, but can produce an incorrect nonempty `source_kinds`. The first experiment measures this failure rate.
+
+Two further edges deserve explicit expectations.
+
+- `--item NONE` suppresses the footer and environment lookup. Body scanning still assigns a kind if the lesson mentions an item. Your current test establishes only that no footer is written.
+- The extractor strips every terminal `_digits` before parsing. For example, `WIDGET_REPAIR_123` becomes `WIDGET_REPAIR`. That logic predates this diff, but now processes explicit metadata too. Whether it rejects a legitimate ID depends on the canonical grammar.
+
+The stale-environment risk needs the launcher experiment to establish an actual lifecycle bug. Syntactic validation cannot detect a stale, well-formed value.
+
+The supplied diff omits `home_of()`, `model.parse_name()`, and the launchers, so those implementations remain unverified. The new `home_of` test covers the ordinary generated footer with both `item:` and `home:` present.

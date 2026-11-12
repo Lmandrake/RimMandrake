@@ -1,0 +1,29 @@
+# today's selftests run against the pre-change code (git archive 66ab8395fd), 2026-11-11 20:41 -0800
+## selftest_agent_improve
+FAIL: an alarm names its own item (clones/<item>[.qN]), so it carries that item's kind (4.3) [{'target': 'relentless', 'kind': 'alarm:remove_failed', 'ts': 1793523600, 'path': '/tmp/tmpjd660oa9/store/journal.jsonl', 'text': 'gone'}]
+FAIL: lesson kinds: footer item, NONE, kindless own item, a quoted item: line, none recorded {'bare': 'REPAIR', 'legacy': 'REPAIR', 'none': 'REPAIR', 'own': 'REPAIR', 'quoted': 'REPAIR'}
+selftest_agent_improve: FAIL 2
+exit 1
+## selftest_agent_improve_steps
+FAIL: L0 records the kind a lesson names past its first line ('agent/foo/v1 8cde060d3708b888a0f5167be6fece0fc9f7b623 (tag push FAILED; local tag only)', [], {'target': 'foo', 'version': 1, 'tag': 'agent/foo/v1', 'day': '2026-11-02', 'path':
+FAIL: L1 records the kind a lesson names past its first line ('agent/foo/v2 cf5e85a1b0947cf43c45d50553b0365abd17e1e7 (tag push FAILED; local tag only)', [], {'target': 'foo', 'version': 2, 'tag': 'agent/foo/v2', 'day': '2026-11-03', 'path':
+FAIL: a lesson's item: line is its kind, over an item its text names ('agent/foo/v3 54f167f0069758e7129229af34fe83a8c963280c (tag push FAILED; local tag only)', {'target': 'foo', 'version': 3, 'tag': 'agent/foo/v3', 'day': '2026-11-03', 'pa
+FAIL: L0 applies a change from a lesson naming no item, recorded kindless ('agent/foo/v4 b784a8dffdea0733a28d0ae2983f486248b7b2f6 (tag push FAILED; local tag only)', {'target': 'foo', 'version': 4, 'tag': 'agent/foo/v4', 'day': '2026-11-02'
+selftest_agent_improve_steps: FAIL 4
+exit 1
+## selftest_lessons
+FAIL: item line from WC_ITEM, before home upsilon one
+home: foo
+
+FAIL: RIMFLOW_ITEM first phi two
+home: foo
+
+Traceback (most recent call last):
+  File "/tmp/aik/old/src/RimMandrake/Utils/selftest_lessons.py", line 71, in <module>
+    check("--item over the environment", "item: SPROCKET_AUDIT_TEETH\n" in body_of("chi-three"), body_of("chi-three"))
+                                                                           ~~~~~~~^^^^^^^^^^^^^
+  File "/tmp/aik/old/src/RimMandrake/Utils/selftest_lessons.py", line 64, in body_of
+    return open(os.path.join(d, [n for n in sorted(os.listdir(d)) if word in n][0])).read()
+                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^
+IndexError: list index out of range
+exit 1

@@ -1,0 +1,23 @@
+# 2026-11-11 20:36 -0800  WINDOW +-3 h; corroborated = the lesson's own seat wrote a ledger event on that item in the window
+first line       lessons  158  corroborated   42 (27%)
+whole text only  lessons  418  corroborated  202 (48%)
+
+sample of 8, first line:
+  no    20261105T104943Z-BENCH-live-proof-that-lets-bridge-exception.md        PIT_LIP_OCCLUDER_FIX_GHOSTED_HALVES
+  no    20261106T160240Z-BENCH-ops-scratch-outside-cap-drain-clci.md           OPS_SCRATCH_OUTSIDE_CAP_DRAIN_CLCI
+  yes   20261104T092223Z-BENCH-incidents-fix-one-reader-eleven-open.md         INCIDENTS_FIX_ONE_READER_ELEVEN_OPEN
+  no    20261106T212619Z-BENCH-steve-ls-reads-pacific.md                       STEVE_DEPLOY_FIX_AURORA_TYPE_MISSING
+  no    20261106T190412Z-BENCH-scratch-reap-selftest-blind-checked-relentless. ENACT_SELFTEST_FIX_NO_SCRATCH_IN_BOX
+  yes   20261031T112341Z-FOUNDRY-arena-reject-triage-overturn-rate.md          ARENA_BANK_REPAIR_MOST_DROPS_NEVER_READ
+  no    20261106T175832Z-BENCH-review-only-item-s-proof-code.md                ART_LEDGER_VET_PURGE_BAN_REVIEW_OWED
+  no    20261105T061012Z-BENCH-selftest-arena-judge-py-flaky-not.md            NIGHTLY_COP_FIX_RED_ZHIYUZ_VVZU
+
+sample of 8, whole text only:
+  yes   20261030T220555Z-FOUNDRY-frozen-modules-bypass-audit-pycache.md        ARENA_RUNNER_FIX_FROZEN_PATHLIB_DENIED
+  no    20261106T191355Z-BENCH-relentless-boxrun-reads-hyphenated-subcommand-a CARD_PARAPHRASE_AUDIT_SAID_IN_DISGUISE
+  yes   20261103T030621Z-BENCH-jawabench-jawa-list-pawns-omits-faction.md      SCRUB_WILDLIFE_PROVE_NOBODY_CAME
+  no    20261106T024650Z-BENCH-relentless-py-finish-refuses-sha-whose.md       FIREWASP_FLIGHT_BUILD_AFTER_BROWN_REGEN
+  no    20261106T220555Z-BENCH-relentless-boxrun-reads-hyphenated-subcommand-p RIMFLOW_RETIRE_DEAD_MODULES
+  no    20261106T163006Z-BENCH-relentless-boxrun-close-evidence-py-cannot.md   LIVE_STAGING_BUILD_STAGEHAND_WITHOUT_TOKENS
+  yes   20261104T033856Z-BENCH-relentless-proof-unrunnable-end-set-proof.md    OPS_RELENTLESS_BOOKS_UNSTICK_WGYL
+  yes   20261104T055318Z-BENCH-relentless-item-ending-checker-lost-may.md      PIPELINE_BUDGET_ENFORCE_HEAL_THYSELF
