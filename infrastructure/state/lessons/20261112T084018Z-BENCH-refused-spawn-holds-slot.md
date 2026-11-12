@@ -1,0 +1,3 @@
+A helper's Agent call refused by block_unbounded_agent.py (subagent_type general-purpose) still left a 90 s spawn reservation from block_agent_over_slots.py (both PreToolUse Agent hooks run, the slot gate reserved before the other refused), so with CONDUCTOR_WINDOW N=2 the corrected rm-judge spawn was refused 'Running: <me>, reserved-0' for ~90 s, three times. Seen 2026-11-12 ~08:38-08:42Z on the ExplosiveKnockback exam. Workaround: wait for spawn_reservations.json age > reserve_s, then spawn. Fix idea: the slot hook should reserve only after the type check passes (or check subagent_type itself).
+item: NONE
+home: .claude/hooks/block_agent_over_slots.py
