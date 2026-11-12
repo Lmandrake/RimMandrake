@@ -1,0 +1,2 @@
+SteveDesktop has no VFE Factory (3686924415) and no DefDump captures, and a loop shell lacks testcentre_env.sh, so winbuild of a mod referencing VanillaFurnitureExpandedFactory fails and prove_canon_materials reads UNMEASURED. Archmagi is reachable read-only over Tailscale (ssh mandrake@archmagi-wsl): copy the workshop folder's 1.6/Assemblies into a scratch WorkshopRoot and pass HarmonyDll/RimWorldManaged/WorkshopRoot through WSLENV to dotnet.exe; run big capture queries (ThingDef.json 244 MB) on Archmagi itself.
+item: SHIP_ALLOY_FORGE_1

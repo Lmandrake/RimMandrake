@@ -76,8 +76,8 @@ namespace RimMandrake.WreckedMachines
         // ── The alloy forge aboard, SHIP_ALLOY_FORGE_1 (Patches/
         // WreckedMachines_AlloyForgeGates.xml). Shipped default: ON. The forge
         // needs Alloy Forge Restoration (early), costs industrial components in
-        // place of VFE's 4 advanced ones (those need plasteel and AdvancedFabrication,
-        // so the stock cost made the early forge a late one), and its plasteel recipe
+        // place of VFE's 4 advanced ones (set at startup; those need plasteel and
+        // AdvancedFabrication, so the stock cost made the early forge a late one), and its plasteel recipe
         // needs Plasteel Alloying (late). Off: VFE Factory's stock gates and cost.
         public static bool alloyForgeProgressiveGate = true;
 
@@ -247,7 +247,8 @@ namespace RimMandrake.WreckedMachines
                     + "an early project right after the smelter, costs industrial components "
                     + "only (no advanced ones), and its plasteel recipe needs Plasteel "
                     + "Alloying, a late one. Off: the forge and its plasteel recipe use "
-                    + "VFE Factory's own research gates and cost.");
+                    + "VFE Factory's own research gates and cost. The research gates change "
+                    + "at once; the cost changes at the next game start.");
                 list.CheckboxLabeled(
                     "Alloy forge can make plasteel",
                     ref plasteelAlloyEnabled,
@@ -410,16 +411,20 @@ namespace RimMandrake.WreckedMachines
         private static readonly List<ResearchProjectDef> PlasteelProcessPrereq =
             AlloyForgeReflection.ResearchPrereqs(PlasteelProcess);
 
-        // Where the plasteel process sits on the forge as loaded (after the Armoury's durasteel
-        // process, which is prepended so it is the forge's first recipe). Re-enabling the
-        // plasteel toggle puts it back HERE, never at 0, so it cannot jump ahead of durasteel.
-        private static readonly int PlasteelProcessIndex =
-            AlloyForgeReflection.IndexOf(AlloyForge, PlasteelProcess);
+        // The process that FOLLOWS plasteel on the forge as loaded (VFE's gravlite). Plasteel sits
+        // after the Armoury's durasteel process, which is prepended so it is the forge's first
+        // recipe. Re-enabling the plasteel toggle puts it back just before this neighbour (or last),
+        // never at 0 and never by a stored index, which the Armoury's own startup removal of
+        // durasteel (its toggle off; the two static ctors run in no fixed order) would shift.
+        private static readonly Def PlasteelProcessNext =
+            AlloyForgeReflection.Following(AlloyForge, PlasteelProcess);
 
         // The forge's cost as loaded (VFE Factory's: 460 steel, 14 industrial + 4 SPACER components). Spacer
         // components are made from plasteel behind AdvancedFabrication, the very gate the late plasteel recipe
         // sits behind, so with the stock cost the "early" durasteel forge could not be built until late game.
         // Gated, each spacer component is swapped for an industrial one; off, the stock list comes back.
+        private static bool forgeCostApplied;
+
         private static readonly List<ThingDefCountClass> StockForgeCost =
             AlloyForge != null && AlloyForge.costList != null
                 ? AlloyForge.costList.Select(e => new ThingDefCountClass(e.thingDef, e.count)).ToList()
@@ -492,9 +497,14 @@ namespace RimMandrake.WreckedMachines
                     : new List<ResearchProjectDef> { StockForgeResearch };
             }
 
-            if (AlloyForge != null && StockForgeCost != null)
-                AlloyForge.costList = gated ? EarlyForgeCost(StockForgeCost)
-                    : StockForgeCost.Select(e => new ThingDefCountClass(e.thingDef, e.count)).ToList();
+            // The cost is set ONCE, at startup: a live change would alter what a standing forge refunds
+            // on deconstruction (build cheap, flip the gate, deconstruct for spacer components) and
+            // what a half-built frame still wants. The settings window says so.
+            if (!forgeCostApplied && AlloyForge != null && StockForgeCost != null)
+            {
+                forgeCostApplied = true;
+                if (gated) AlloyForge.costList = EarlyForgeCost(StockForgeCost);
+            }
 
             if (PlasteelProcess != null && PlasteelProcessPrereq != null)
             {
@@ -504,7 +514,7 @@ namespace RimMandrake.WreckedMachines
             }
 
             AlloyForgeReflection.SetProcessPresent(AlloyForge, PlasteelProcess,
-                WreckedMachinesSettings.plasteelAlloyEnabled, PlasteelProcessIndex);
+                WreckedMachinesSettings.plasteelAlloyEnabled, PlasteelProcessNext);
         }
 
         /// <summary>The stock forge cost with every spacer component counted as an industrial one (merged into the
@@ -580,22 +590,26 @@ namespace RimMandrake.WreckedMachines
             return null;
         }
 
-        /// <summary>The process's position on the building's processor as loaded; the list's end if absent.</summary>
-        public static int IndexOf(ThingDef building, Def process)
+        /// <summary>The process right after `process` on the building's processor as loaded, or null (last, or absent).</summary>
+        public static Def Following(ThingDef building, Def process)
         {
             var list = Processes(building);
-            if (list == null) return 0;
-            int i = process == null ? -1 : list.IndexOf(process);
-            return i >= 0 ? i : list.Count;
+            if (list == null || process == null) return null;
+            int i = list.IndexOf(process);
+            return i >= 0 && i + 1 < list.Count ? list[i + 1] as Def : null;
         }
 
-        /// <summary>Adds (at index, clamped) or removes one process on the building's processor.</summary>
-        public static void SetProcessPresent(ThingDef building, Def process, bool present, int index)
+        /// <summary>Adds (just before `before` when it is on the list, else last) or removes one process.</summary>
+        public static void SetProcessPresent(ThingDef building, Def process, bool present, Def before)
         {
             var list = Processes(building);
             if (list == null || process == null) return;
             bool has = list.Contains(process);
-            if (present && !has) list.Insert(System.Math.Min(System.Math.Max(index, 0), list.Count), process);
+            if (present && !has)
+            {
+                int at = before == null ? -1 : list.IndexOf(before);
+                if (at >= 0) list.Insert(at, process); else list.Add(process);
+            }
             else if (!present && has) list.Remove(process);
         }
     }
