@@ -5,7 +5,7 @@ An in-process helper (the Agent tool) dies with its window, so a window past its
 one runs. A detached run lives in its own transient systemd unit and survives the window's restart:
 
   python3 src/RimMandrake/rimflow/detached_helper.py launch --seat BENCH --item ITEM_ID --brief-file F \
-      [--model opus|sonnet] [--max-s none|SECONDS] [--budget-usd 15]
+      [--model fable|opus|sonnet] [--max-s none|SECONDS] [--budget-usd 15]
   python3 src/RimMandrake/rimflow/detached_helper.py status [--all]
   python3 src/RimMandrake/rimflow/detached_helper.py finish --unit U     (the unit's ExecStopPost; never by hand)
   python3 src/RimMandrake/rimflow/detached_helper.py return --unit U [--no-publish-ledger]   (the unit's last ExecStopPost)
@@ -52,7 +52,7 @@ DEFAULT_MAX_S = None    # unbounded: no RuntimeMaxSec on the unit, no CLAUDE_SCO
 MIN_MAX_S = 60
 GRACE_S = 120          # finish + publish time on top of the run's own bound
 DEFAULT_BUDGET_USD = 15.0
-MODELS = ("opus", "sonnet", "haiku")
+MODELS = ("fable", "opus", "sonnet")  # owner ladder 2026-11-12: Fable for blank-page design; Haiku is banned
 SEATS = ("BENCH", "STEVE", "RUNNER")   # FOUNDRY retired (owner by card 2026-11-02)
 REAL_LOG = "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md"
 ORIGIN_REF = "origin/main"
