@@ -67,7 +67,8 @@ SOURCE_DIR = "Source"
 
 # player-facing text-bearing tags; a <li> counts when its parent is one of LIST_PARENTS
 TEXT_TAGS = {"label", "description", "text", "letterLabel", "letterText", "reportString", "baseInspectLine",
-             "jobString", "customLabel", "messageText", "successMessage", "failMessage", "rejectInputMessage"}
+             "jobString", "customLabel", "messageText", "successMessage", "failMessage", "rejectInputMessage",
+             "customLetterLabel", "customLetterText"}   # quest-node letters (QuestNode_ManhunterPack, _DropPods, ...)
 LIST_PARENTS = {"lines", "rulesStrings", "rulesRaw"}
 
 
@@ -129,8 +130,9 @@ def pool_problems(mod_root=None):
     return bad
 
 
-def xml_findings(path, stage):
-    """Lint every player-facing text node in a def/patch XML file at one stage."""
+def xml_findings(path, stage, seen=None):
+    """Lint every player-facing text node in a def/patch XML file at one stage. seen (a list) collects every string
+    read, so a caller can tell a clean file from a file whose text the linter never reached."""
     out = []
     root = ET.parse(path).getroot()
     parents = {c: p for p in root.iter() for c in p}
@@ -139,6 +141,8 @@ def xml_findings(path, stage):
             continue
         if el.tag in TEXT_TAGS or (el.tag == "li" and parents.get(el) is not None and parents[el].tag in LIST_PARENTS):
             text = el.text.split("->", 1)[-1]
+            if seen is not None:
+                seen.append(text.strip())
             for rule, term in findings(text, stage):
                 out.append("%s: %s -- %r in <%s>: %r" % (os.path.basename(path), rule, term, el.tag, text.strip()[:60]))
     return out
@@ -225,7 +229,11 @@ def main(argv=None):
     elif a.text is not None:
         bad = ["%s -- %r" % f for f in findings(a.text, a.stage)]
     elif a.xml:
-        bad = [b for p in a.xml for b in xml_findings(p, a.stage)]
+        seen = []
+        bad = [b for p in a.xml for b in xml_findings(p, a.stage, seen)]
+        print("cathedral_arc_lint: %d player-facing strings read from %d file(s) at stage %d" % (len(seen), len(a.xml), a.stage))
+        if not seen:
+            bad.append("--xml: no player-facing string found (sanity probe failed: nothing was linted)")
     else:
         bad = pool_problems()
     print("cathedral_arc_lint: %s" % ("PASS (0 findings)" if not bad else "FAIL (%d)" % len(bad)))

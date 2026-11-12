@@ -13,6 +13,11 @@ WHAT IT PROVES (live, through existing bridge tools):
   * GenHostility.HostileTo lists this mod's Harmony id as an owner (jawa/harmony_patches)
   * the shipped HediffDef is loaded and its scalar fields read back equal to the XML
 
+CATHEDRAL_MISSION_BOON_OFFERS_1 (the favours) -- offline proof: src/RimMandrake/RustCathedral/
+selftest_rustcathedral_offers.py; the live recipe (one request end to end + the boon gate on a quicktest) is in
+infrastructure/state/items/CATHEDRAL_MISSION_BOON_OFFERS_1.md §live recipe. Static here: the favour defs load
+(shipped_defs sanity below) and their strings pass cathedral_arc_lint at stage 1 (favour_text_problems).
+
 NOT PROVEN HERE (first pokes for the next live pass -- the item's own verify bar):
   * on a Cathedral-biome quicktest with hostile faction-13 mechs, MANY pass-holders are untargeted and
     non-holders are targeted (one pawn is RNG)
@@ -32,8 +37,24 @@ sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 from modcheck import mod_static  # noqa: E402
 
 
+def favour_text_problems():
+    """Every player-facing string in the favour defs passes the arc linter at TOLERATED (the earliest stage any of
+    them can appear), and the linter actually read them."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "cathedral_arc_lint", os.path.join(REPO, "src", "RimMandrake", "RustCathedral", "cathedral_arc_lint.py"))
+    lint = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(lint)
+    seen, bad = [], []
+    for rel in ("Defs/QuestScriptDefs/RUT_CathedralAssailantMissions.xml", "Defs/IncidentDefs/RUT_CathedralFavours.xml"):
+        bad += lint.xml_findings(os.path.join(HERE, rel), 1, seen)
+    if len(seen) < 30:
+        bad.append("favours: only %d strings read from the favour defs (sanity probe failed)" % len(seen))
+    return bad
+
+
 def static_checks():
-    return mod_static.static_findings(HERE)
+    return mod_static.static_findings(HERE) + favour_text_problems()
 
 
 def _build_suite():
@@ -43,7 +64,8 @@ def _build_suite():
 
     mod_static.add_settings_chain(suite, __file__)
     mod_static.add_harmony_chain(suite, __file__)
-    shipped_defs.add_chain(suite, __file__, sanity=('RUT_CathedralPass',), min_count=1)
+    shipped_defs.add_chain(suite, __file__, sanity=('RUT_CathedralPass', 'RUT_CathedralGravtechBoon_Gravcore',
+                                                    'RUT_CathedralAssailantMission_EnclaveRunner'), min_count=1)
     return suite
 
 

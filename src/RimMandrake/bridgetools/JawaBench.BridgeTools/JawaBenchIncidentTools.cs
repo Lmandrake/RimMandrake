@@ -385,7 +385,7 @@ namespace JawaBench.BridgeTools
                 "Log.Errors and returns on an already-ended or expired quest. This is UNGATED, matching " +
                 "jawa/fire_quest's own ungated accept for the identical effect.",
             ResultDescription =
-                "success; for 'list': quests[] (id, name, state, points, requiresAccepter, historical); " +
+                "success; for 'list': quests[] (id, name, root (QuestScriptDef defName), state, points, requiresAccepter, historical); " +
                 "for 'accept'/'end': stateBefore/stateAfter READ BACK off the Quest, not assumed from " +
                 "the call succeeding.")]
         public static async Task<object> QuestLifecycle(
@@ -415,6 +415,9 @@ namespace JawaBench.BridgeTools
                 {
                     id = q.id,
                     name = q.name,
+                    // CATHEDRAL_MISSION_BOON_OFFERS_1: the QuestScriptDef, so a reader (the GM blackboard) can tell
+                    // which quests are its own without matching on generated names.
+                    root = q.root != null ? q.root.defName : null,
                     state = q.State.ToString(),
                     points = q.points,
                     requiresAccepter = q.RequiresAccepter,

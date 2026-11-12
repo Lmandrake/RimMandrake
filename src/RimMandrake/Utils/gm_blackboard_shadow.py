@@ -44,6 +44,18 @@ pre-reveal rules, since the fall can come before or after the reveal:
 selftest_gm_cathedral_fall.py runs it. --disable-cathedral-fall turns the
 whole completion chain off; the rest of the blackboard is unchanged.
 
+CATHEDRAL_MISSION_BOON_OFFERS_1 adds the Cathedral's favours to the same poll
+(advance_cathedral_offers): Assailant-register missions offered at TOLERATED
+and up through the enclave and Utinni channels, gravtech boons at VOUCHED
+only while Heat is under each boon's own ceiling, both closed (and held shut
+for CATHEDRAL_FAVOURS_DARK_HOLD_TICKS) by a go-dark flip. The offers, their
+text and the boons' Heat ceilings are read from the shipped defs in
+src/RimUtinni/CathedralPass (load_cathedral_offer_catalogue); mission
+completions are read off the quest list (jawa/quest_lifecycle, list only)
+and feed Regard, never Heat (K2). The offer path calls no LLM.
+selftest_rustcathedral_offers.py drives it; cathedral_offer_letters.py turns
+a log into the letters the player would read.
+
 Inputs (cross-checked against the specs that consume this blackboard):
   - kyber/mindstone sales           design/Jawa/kyber_trade_plot_spec.md §2/§3
   - Hutt Cartel goodwill            kyber_trade_plot_spec.md §4
@@ -53,11 +65,13 @@ Inputs (cross-checked against the specs that consume this blackboard):
   - anomaly (bolt-shed/eel) sales   cathedral_concealment_arc_spec.md §2 (card A5, by volume)
   - trader-pawn presence            corroborating evidence only (see _sale_heat's
                                      sold-vs-crafted caveat, restated below)
-  - story-flag hooks (missions, restore choice, misdirection quest, the
-    reveal beat) -- optional --story-flags-file; NO live bridge signal exists
-    for any of these yet (items 2-8, item 7, are unbuilt), so in a run with no
-    file passed they all sit at their honest default of "no signal" -- see
-    the module-level KNOWN GAPS note near ShadowBlackboard.
+  - Cathedral mission quests        jawa/quest_lifecycle action=list (ended
+                                     RUT_CathedralAssailantMission_* quests)
+  - story-flag hooks (missions completed BEFORE this run, restore choice,
+    misdirection quest, the reveal beat) -- optional --story-flags-file; NO
+    live bridge signal exists for the last three yet, so in a run with no
+    file passed they sit at their honest default of "no signal" -- see the
+    module-level KNOWN GAPS note near ShadowBlackboard.
 
 State lives ONLY in this process's own JSONL log (`--log`), never in the save
 -- which is also how this sidesteps `enrichment_agents.md` §7.1's reload-
@@ -68,8 +82,10 @@ reused per this item's brief -- not re-derived).
 Run:
     python.exe gm_blackboard_shadow.py --polls 20 --tick-step 2000
     python.exe gm_blackboard_shadow.py --polls 20 --exposure-godark-threshold 8   # demo the go-dark flip
+    python3 gm_blackboard_shadow.py --fixture fixtures/cathedral_offers_ordinary_play.json --log /tmp/x.jsonl
 
-Requires the bridge taken (`rimflow bridge take`) and a live game loaded.
+A live run requires the bridge taken (`rimflow bridge take`) and a live game
+loaded; --fixture (offline/fixture mode, FixtureBridge) needs neither.
 """
 
 import argparse
@@ -107,7 +123,13 @@ READ_TOOLS = frozenset({
     # the bridge; confirmed absent -- see JawaBenchTradeExecuteTools.cs, which EXECUTES
     # trades and is correctly excluded from this allowlist entirely, dryRun default or not).
     "jawa/trade_price_probe",
+    # CATHEDRAL_MISSION_BOON_OFFERS_1: the quest list, for which Cathedral missions were accepted and which ended
+    # in success (a completion is a Regard input). The same tool also accepts and ends quests, so it is allowed
+    # ONLY with action='list' (READ_ONLY_PARAMS below); safe_call refuses any other action before the bridge is asked.
+    "jawa/quest_lifecycle",
 })
+# A tool that both reads and acts is read-only here only with these exact parameter values.
+READ_ONLY_PARAMS = {"jawa/quest_lifecycle": {"action": "list"}}
 TIME_TOOLS = frozenset({"rimworld/step_game_ticks"})
 ALLOWED_TOOLS = READ_TOOLS | TIME_TOOLS
 
@@ -120,6 +142,10 @@ def safe_call(rb, tool, params=None, check=True):
             "by construction; extend ALLOWED_TOOLS deliberately, never "
             "ad hoc." % tool
         )
+    for key, required in READ_ONLY_PARAMS.get(tool, {}).items():
+        if (params or {}).get(key) != required:
+            raise RuntimeError("gm_blackboard_shadow refuses %s with %s=%r -- only %s=%r is read-only."
+                               % (tool, key, (params or {}).get(key), key, required))
     return rb.call(tool, params or {}, check=check)
 
 
@@ -181,7 +207,7 @@ CATHEDRAL_REGARD_GAIN_MANNERS_PROXY_PER_CLEAN_POLL = 0.1
 # record's own "manners_proxy_used" field, always true while this gap stands.
 CATHEDRAL_REGARD_CLEAN_STREAK_TOLERATED_FLOOR = 5
 CATHEDRAL_REGARD_GAIN_ZERO_SALE_CREDIT_PER_POLL = 0.05   # arc §2: zero sales IS a standing credit, distinct from "no loss"
-CATHEDRAL_REGARD_GAIN_MISSION_COMPLETION = 4.0           # per Assailant-register mission (story flag; item 2's own build)
+CATHEDRAL_REGARD_GAIN_MISSION_COMPLETION = 4.0           # per Assailant-register mission (quest list, or story flag for earlier ones)
 CATHEDRAL_REGARD_GAIN_RESTORE_CHOICE = 30.0              # arc §2: "the single largest gain"; §4 pricing owned elsewhere
 CATHEDRAL_REGARD_GAIN_MISDIRECTION_SUCCESS = 6.0         # item 5's own beat (card A4)
 # --- Regard §2 additions (down) ---------------------------------------------
@@ -254,6 +280,30 @@ CATHEDRAL_MOURNING_REGISTER = [
     "Something the crew never had a word for used to sit in the static. It "
     "isn't there now.",
 ]
+# --- CATHEDRAL_MISSION_BOON_OFFERS_1 (arc §1/§3 bullet 3): the offer gate. Missions open at TOLERATED (1) and up,
+# gravtech boons at VOUCHED (2) and up, each boon only while Imperial Heat is at or under its own heatCeiling (read
+# from the boon's def, RUT_CathedralBoonExtension), both closed by the conduct posture a go-dark flip forces to WARY.
+# Gated on the CONDUCT posture, never on effective_stage: the reveal is knowledge, not standing. Cadence numbers are
+# GM tuning in game ticks, so a poll's tick step does not change how often the player is asked.
+CATHEDRAL_MISSION_MIN_POSTURE = 1
+CATHEDRAL_BOON_MIN_POSTURE = 2
+CATHEDRAL_MISSION_OFFER_EXPIRY_TICKS = 3 * 60_000   # = the quests' expireDaysRange floor (3~4 days)
+CATHEDRAL_MISSION_REOFFER_GAP_TICKS = 5 * 60_000    # quiet days between one request resolving and the next
+CATHEDRAL_BOON_ANY_GAP_TICKS = 3 * 60_000           # never two gifts within three days, whichever they are
+# (each boon's own re-offer interval is its def's reofferDays: the rarer the gift, the longer it waits)
+# After a go-dark flip the stage machine lets posture re-climb as soon as Regard and a short clean streak allow
+# (item 1's hysteresis: Regard is not erased), which on its own would reopen every favour a day or two after the
+# Empire landed on Cathedral ground. Arc §6.1: "it hides from the player again". So the favours stay shut for
+# this long after the flip, whatever the posture does meanwhile.
+CATHEDRAL_FAVOURS_DARK_HOLD_TICKS = 10 * 60_000
+CATHEDRAL_MISSION_QUEST_PREFIX = "RUT_CathedralAssailantMission_"
+CATHEDRAL_FAVOUR_DEFS = (
+    Path(__file__).resolve().parents[2] / "RimUtinni" / "CathedralPass" / "Defs" / "QuestScriptDefs"
+    / "RUT_CathedralAssailantMissions.xml",
+    Path(__file__).resolve().parents[2] / "RimUtinni" / "CathedralPass" / "Defs" / "IncidentDefs"
+    / "RUT_CathedralFavours.xml",
+)
+
 HUTT_EXTRACTION_MIN_INTEREST = 20.0              # gates the offer on the fixer channel existing (kyber §4b/c)
 HUTT_EXTRACTION_BASE_PRICE = 100_000.0           # silver, GM-tuning placeholder
 HUTT_EXTRACTION_PRICE_DISCOUNT_PER_INTEREST = 400.0
@@ -353,6 +403,98 @@ def compute_hutt_extraction_offer(hutt_interest, hutt_goodwill):
     }
 
 
+def _game_text(raw):
+    """A def string as a letter shows it: RimWorld turns the two characters \\n into a line break."""
+    return (raw or "").strip().replace("\\n", "\n")
+
+
+def load_cathedral_offer_catalogue(paths=CATHEDRAL_FAVOUR_DEFS):
+    """CATHEDRAL_MISSION_BOON_OFFERS_1: every mission and boon the blackboard can offer, with the text the player
+    will read, parsed from the shipped defs so no string or heat ceiling has a second home. Missions pair each
+    RUT_CathedralAssailantMission_* QuestScriptDef with the GiveQuest IncidentDef that fires it; boons are the
+    IncidentDefs carrying a RUT_CathedralBoonExtension. Refuses (raises) on an empty catalogue: a blackboard that
+    offers nothing because it could not read the defs must not look like one that has nothing to offer."""
+    import xml.etree.ElementTree as ET
+    quests, givers, boons, named = {}, {}, [], {}
+    for path in paths:
+        for el in ET.parse(path).getroot():
+            if el.tag == "QuestScriptDef" and el.get("Name"):
+                named[el.get("Name")] = el
+    for path in paths:
+        for el in ET.parse(path).getroot():
+            name = (el.findtext("defName") or "").strip()
+            if el.tag == "QuestScriptDef" and name.startswith(CATHEDRAL_MISSION_QUEST_PREFIX):
+                rules = lambda tag: [li.text.split("->", 1)[1] for li in el.findall(tag + "/rulesStrings/li")]
+                root, parent = el.find("root"), el.get("ParentName")
+                while root is None and parent in named:   # the channel parent carries the quest and its letters
+                    root, parent = named[parent].find("root"), named[parent].get("ParentName")
+                if root is None:
+                    raise RuntimeError("cathedral offers: quest %s has no root, own or inherited" % name)
+                quests[name] = {
+                    "quest_def": name,
+                    "channel": el.get("ParentName"),
+                    "quest_names": [_game_text(t) for t in rules("questNameRules")],
+                    "quest_description": _game_text((rules("questDescriptionRules") or [""])[0]),
+                    "arrival_letter": {"label": _game_text(root.findtext(".//customLetterLabel")),
+                                       "text": _game_text(root.findtext(".//customLetterText"))},
+                    "success_letter": {"label": _game_text(root.findtext(".//li[@Class='QuestNode_Letter']/label")),
+                                       "text": _game_text(root.findtext(".//li[@Class='QuestNode_Letter']/text"))},
+                }
+            elif el.tag == "IncidentDef" and el.findtext("questScriptDef"):
+                givers[el.findtext("questScriptDef").strip()] = (name, _game_text(el.findtext("letterLabel")))
+            elif el.tag == "IncidentDef":
+                ext = el.find("modExtensions/li[@Class='RimMandrake.Utinni.CathedralPass.RUT_CathedralBoonExtension']")
+                if ext is None:
+                    continue
+                boons.append({
+                    "incident_def": name,
+                    "letter_label": _game_text(el.findtext("letterLabel")),
+                    "letter_text": _game_text(el.findtext("letterText")),
+                    "gifts": {g.tag: int(g.text) for g in ext.find("gifts")},
+                    "heat_ceiling": float(ext.findtext("heatCeiling")),
+                    "reoffer_ticks": int(float(ext.findtext("reofferDays")) * 60_000),
+                })
+    missions = []
+    for qdef in quests:   # file order: the order requests are offered in (the channels alternate)
+        if qdef not in givers:
+            raise RuntimeError("cathedral offers: quest %s has no GiveQuest IncidentDef to fire it" % qdef)
+        missions.append(dict(quests[qdef], incident_def=givers[qdef][0], offer_letter_label=givers[qdef][1]))
+    if not missions or not boons:
+        raise RuntimeError("cathedral offers: catalogue read %d missions and %d boons from %s -- refusing to run "
+                           "an offer gate that can offer nothing" % (len(missions), len(boons), [str(p) for p in paths]))
+    boons.sort(key=lambda b: -b["heat_ceiling"])
+    return {"missions": missions, "boons": boons}
+
+
+def compute_cathedral_offer_gate(conduct_posture, heat, boons):
+    """The pure gate (arc §1/§3): which favours MAY be offered this poll. Missions at TOLERATED+, boons at VOUCHED+
+    and each only at Heat <= its own ceiling ("when the Empire is looking, it does not act"). A go-dark flip needs
+    no clause here: it forces the conduct posture to WARY on the same poll, which closes both."""
+    missions_open = conduct_posture >= CATHEDRAL_MISSION_MIN_POSTURE
+    boon_rows = []
+    for b in boons:
+        if conduct_posture < CATHEDRAL_BOON_MIN_POSTURE:
+            state = "closed_stage"
+        elif heat > b["heat_ceiling"]:
+            state = "withheld_heat"
+        else:
+            state = "open"
+        boon_rows.append({"incident_def": b["incident_def"], "heat_ceiling": b["heat_ceiling"], "state": state})
+    return missions_open, boon_rows
+
+
+def quest_root(row, catalogue):
+    """The root QuestScriptDef of one jawa/quest_lifecycle row: the row's own `root` (companion builds from
+    CATHEDRAL_MISSION_BOON_OFFERS_1 on), else matched by the quest's generated name, which for these quests is a
+    fixed string (no grammar tokens). Returns (defName or None, how)."""
+    if row.get("root"):
+        return row["root"], "root"
+    for m in catalogue["missions"]:
+        if row.get("name") in m["quest_names"]:
+            return m["quest_def"], "name"
+    return None, None
+
+
 def _count_matched(things, defname):
     """countMatched of a list_things reply. A reply without it (tool refused / failed) is UNMEASURED, never 0:
     a false 0 reads as the whole stock being sold on that poll and bumps Heat/Regard."""
@@ -377,7 +519,9 @@ def _sale_heat(delta_lost):
 #   - manners / band-history (kit's RM_MapComponent_BiomeAttitude.currentBand
 #     -- private field, no [Tool] exposes it; a "manners_proxy" substitutes,
 #     see CATHEDRAL_REGARD_GAIN_MANNERS_PROXY_PER_CLEAN_POLL above)
-#   - Assailant-register mission completions (item 2, unbuilt)
+#   - (Assailant-register mission completions: BUILT since
+#     CATHEDRAL_MISSION_BOON_OFFERS_1 -- read off jawa/quest_lifecycle; the
+#     story flag now only carries completions from before the run)
 #   - the §4 restore choice (already specced elsewhere, but no quest exists
 #     yet to fire it)
 #   - the misdirection-quest success beat (item 5, unbuilt, card A4)
@@ -440,7 +584,7 @@ class ShadowBlackboard:
                  story_flags=None, exposure_godark_threshold=CATHEDRAL_EXPOSURE_GODARK_THRESHOLD,
                  pursuit_event_on_poll=None,
                  full_discovery_threshold=CATHEDRAL_FULL_DISCOVERY_THRESHOLD,
-                 fall_enabled=True):
+                 fall_enabled=True, offer_catalogue=None, missions_enabled=True, boons_enabled=True):
         self.log_path = log_path
         self.heat = 0.0
         self.hutt_interest = 0.0
@@ -474,6 +618,22 @@ class ShadowBlackboard:
         self.fall_stage = -1  # -1 = not started; index into CATHEDRAL_FALL_STAGES once full_discovery fires
         self.warzone_posture = None
         self.hutt_extraction_offer = None
+
+        # CATHEDRAL_MISSION_BOON_OFFERS_1: the favours (see advance_cathedral_offers)
+        self.offer_catalogue = offer_catalogue or load_cathedral_offer_catalogue()
+        self.missions_enabled = missions_enabled  # mirrors the mod's cathedralMissionsEnabled setting
+        self.boons_enabled = boons_enabled        # mirrors cathedralBoonsEnabled
+        self.mission_rotation = 0
+        self.mission_offer = None              # the request currently posted or in progress, if any
+        self.mission_last_resolved_tick = None
+        self.mission_quest_ids_seen = set()
+        self.mission_completed_quest_ids = set()
+        self.mission_completions_observed = 0
+        self.boon_last_given_tick = {}
+        self.boon_any_last_tick = None
+        self.boons_given = 0
+        self.last_go_dark_tick = None
+        self.record_extra = {}  # merged into every record before it is logged (fixture mode marks its records)
 
     def advance_fall_chain(self, record, would_fire, hutt_goodwill):
         """CATHEDRAL_EXPOSURE_COMPLETION_1 (item 8): one poll's step of the
@@ -555,6 +715,130 @@ class ShadowBlackboard:
         record["warzone_posture"] = self.warzone_posture
         record["hutt_extraction_offer"] = self.hutt_extraction_offer
 
+    def observe_mission_quests(self, rows, ticks, would_fire):
+        """Read the quest list (jawa/quest_lifecycle action=list) for Cathedral missions: a row newly in EndedSuccess
+        is a completion (a Regard input, never a Heat one -- K2), and the posted request is tracked from offer
+        through acceptance to its end. Returns this poll's completion count."""
+        completed_now = 0
+        mission_rows = []
+        for row in rows or []:
+            root, how = quest_root(row, self.offer_catalogue)
+            if not root or not root.startswith(CATHEDRAL_MISSION_QUEST_PREFIX):
+                continue
+            mission_rows.append({"id": row.get("id"), "quest_def": root, "state": row.get("state"), "matched_by": how})
+            qid, state = row.get("id"), row.get("state")
+            if state == "EndedSuccess" and qid not in self.mission_completed_quest_ids:
+                self.mission_completed_quest_ids.add(qid)
+                completed_now += 1
+                would_fire.append({
+                    "type": "cathedral_mission_completed", "quest_id": qid, "quest_def": root,
+                    "detail": "mission quest %s (%s) ended in success -- SHADOW MODE: would gain %.2f Regard; "
+                              "Imperial Heat is not an input of a completion (K2) and does not move; fired nothing."
+                              % (qid, root, CATHEDRAL_REGARD_GAIN_MISSION_COMPLETION)})
+            offer = self.mission_offer
+            if offer and offer["quest_def"] == root and qid not in offer["quest_ids_before_offer"]:
+                offer["quest_id"] = qid
+                if state == "Ongoing" and offer["status"] == "posted":
+                    offer["status"] = "in_progress"
+                    offer["accepted_tick"] = ticks
+                elif state and state.startswith("Ended"):
+                    would_fire.append({"type": "cathedral_mission_resolved", "quest_id": qid, "quest_def": root,
+                                       "detail": "the posted request ended %s; the next one waits %d ticks." %
+                                                 (state, CATHEDRAL_MISSION_REOFFER_GAP_TICKS)})
+                    self.mission_offer = None
+                    self.mission_last_resolved_tick = ticks
+            self.mission_quest_ids_seen.add(qid)
+        self.mission_completions_observed += completed_now
+        return completed_now, mission_rows
+
+    def advance_cathedral_offers(self, record, would_fire, ticks, go_dark_fired):
+        """CATHEDRAL_MISSION_BOON_OFFERS_1: one poll of the favours, after the stage machine and the go-dark flip
+        have set this poll's conduct posture. Posts at most one request at a time (alternating the enclave and
+        Utinni channels), withdraws a posted request the moment missions close, lets an ignored one lapse at the
+        quests' own expiry, and leaves at most one gravtech gift a day among the boons whose Heat ceiling is
+        clear. Pure state on self (no bridge): selftest_rustcathedral_offers.py drives it through poll()."""
+        cat = self.offer_catalogue
+        if go_dark_fired:
+            self.last_go_dark_tick = ticks
+        dark_hold = self.last_go_dark_tick is not None and ticks - self.last_go_dark_tick < CATHEDRAL_FAVOURS_DARK_HOLD_TICKS
+        missions_open, boon_rows = compute_cathedral_offer_gate(self.conduct_posture, self.heat, cat["boons"])
+        if go_dark_fired:
+            closed_reason = "go_dark"
+        elif dark_hold:
+            closed_reason = "dark_hold"
+        elif not self.missions_enabled:
+            closed_reason = "missions_disabled"
+        else:
+            closed_reason = None if missions_open else "stage_below_TOLERATED"
+        missions_open = missions_open and self.missions_enabled and not dark_hold
+
+        offer = self.mission_offer
+        if offer and offer["status"] == "posted" and not missions_open:
+            would_fire.append({"type": "cathedral_mission_offer_withdrawn", "quest_def": offer["quest_def"],
+                               "reason": closed_reason,
+                               "detail": "missions closed (%s) while %s was on offer -- SHADOW MODE: would let the "
+                                         "offer lapse with no letter (the request simply is not repeated); fired "
+                                         "nothing." % (closed_reason, offer["quest_def"])})
+            self.mission_offer, self.mission_last_resolved_tick = None, ticks
+        elif offer and offer["status"] == "posted" and ticks - offer["posted_tick"] >= CATHEDRAL_MISSION_OFFER_EXPIRY_TICKS:
+            would_fire.append({"type": "cathedral_mission_offer_lapsed", "quest_def": offer["quest_def"],
+                               "detail": "the request went unanswered for %d ticks and lapses (the quest's own "
+                                         "expiry); fired nothing." % (ticks - offer["posted_tick"])})
+            self.mission_offer, self.mission_last_resolved_tick = None, ticks
+
+        if (missions_open and self.mission_offer is None and (self.mission_last_resolved_tick is None
+                or ticks - self.mission_last_resolved_tick >= CATHEDRAL_MISSION_REOFFER_GAP_TICKS)):
+            m = cat["missions"][self.mission_rotation % len(cat["missions"])]
+            self.mission_rotation += 1
+            self.mission_offer = {"quest_def": m["quest_def"], "incident_def": m["incident_def"], "posted_tick": ticks,
+                                  "status": "posted", "quest_id": None,
+                                  "quest_ids_before_offer": sorted(self.mission_quest_ids_seen)}
+            would_fire.append({
+                "type": "cathedral_mission_offer", "incident_def": m["incident_def"], "quest_def": m["quest_def"],
+                "letter": {"label": m["offer_letter_label"], "quest_name": m["quest_names"][0],
+                           "text": m["quest_description"]},
+                "detail": "SHADOW MODE: would fire %s through jawa/storyteller_fire (dryRun=false); fired nothing."
+                          % m["incident_def"]})
+
+        given = None
+        for row in boon_rows:
+            boon = next(b for b in cat["boons"] if b["incident_def"] == row["incident_def"])
+            last = self.boon_last_given_tick.get(row["incident_def"])
+            row["next_eligible_tick"] = None if last is None else last + boon["reoffer_ticks"]
+            if dark_hold:
+                row["state"] = "closed_go_dark"
+            elif not self.boons_enabled and row["state"] == "open":
+                row["state"] = "boons_disabled"
+            if row["state"] != "open" or given is not None:
+                continue
+            if last is not None and ticks - last < boon["reoffer_ticks"]:
+                continue
+            if self.boon_any_last_tick is not None and ticks - self.boon_any_last_tick < CATHEDRAL_BOON_ANY_GAP_TICKS:
+                continue
+            given = boon
+            self.boon_last_given_tick[boon["incident_def"]] = ticks
+            self.boon_any_last_tick = ticks
+            self.boons_given += 1
+            row["given_this_poll"] = True
+            would_fire.append({
+                "type": "cathedral_boon_offer", "incident_def": boon["incident_def"], "gifts": boon["gifts"],
+                "heat_at_offer": round(self.heat, 3), "heat_ceiling": boon["heat_ceiling"],
+                "letter": {"label": boon["letter_label"], "text": boon["letter_text"]},
+                "detail": "SHADOW MODE: would fire %s through jawa/storyteller_fire (dryRun=false); fired nothing."
+                          % boon["incident_def"]})
+
+        offer = self.mission_offer
+        record["cathedral_offers"] = {
+            "imperial_heat": round(self.heat, 3),
+            "conduct_posture": CATHEDRAL_STAGE_LABELS[self.conduct_posture],
+            "dark_hold_until_tick": (self.last_go_dark_tick + CATHEDRAL_FAVOURS_DARK_HOLD_TICKS) if dark_hold else None,
+            "missions": {"open": missions_open, "closed_reason": closed_reason,
+                         "current": None if offer is None else {k: offer[k] for k in
+                                                                ("quest_def", "status", "posted_tick", "quest_id")}},
+            "boons": boon_rows,
+            "text_source": "shipped defs (fallback text); the offer path calls no LLM",
+        }
+
     def poll(self, rb):
         self.poll_index += 1
         game_info = safe_call(rb, "rimworld/get_game_info")
@@ -611,6 +895,14 @@ class ShadowBlackboard:
         trader_probe = safe_call(rb, "jawa/trade_price_probe", {})
         trader_pawn_present = bool(trader_probe.get("success"))
         trader_probe_reason = trader_probe.get("error") or trader_probe.get("reason") or None
+
+        # CATHEDRAL_MISSION_BOON_OFFERS_1: the quest list (read-only: action='list' is enforced in safe_call). A
+        # reply without a quests list is UNMEASURED, never "no quests": a false empty list would lapse a request
+        # the player had accepted.
+        quest_reply = safe_call(rb, "jawa/quest_lifecycle", {"action": "list"})
+        quest_rows = quest_reply.get("quests") if isinstance(quest_reply, dict) else None
+        if not isinstance(quest_rows, list):
+            raise RuntimeError("jawa/quest_lifecycle list returned no quests[] (UNMEASURED): %r" % str(quest_reply)[:160])
 
         record = {
             "poll": self.poll_index,
@@ -789,6 +1081,16 @@ class ShadowBlackboard:
             self.story_flags_pending_applied = True
         record["story_beat_gain_this_poll"] = round(story_gain, 3)
 
+        # --- CATHEDRAL_MISSION_BOON_OFFERS_1: missions completed THIS poll, read off the quest list. Each one is
+        # a Regard gain; none is a Heat input (K2 anti-laundering: no term below lets a mission scrub Heat).
+        completions_now, mission_rows = self.observe_mission_quests(quest_rows, game_info.get("ticksGame") or 0,
+                                                                    would_fire)
+        mission_gain = CATHEDRAL_REGARD_GAIN_MISSION_COMPLETION * completions_now
+        record["mission_quests"] = mission_rows
+        record["mission_completions_this_poll"] = completions_now
+        record["mission_completions_observed_total"] = self.mission_completions_observed
+        record["mission_completion_regard_gain_this_poll"] = round(mission_gain, 3)
+
         # --- Regard: fold every §2 input into one delta this poll. Never-
         # movers (bulk salvage, provoked-Sentinel kills, anything unknowable)
         # are correctly absent from this sum by construction -- no term below
@@ -801,6 +1103,7 @@ class ShadowBlackboard:
             + manners_proxy_gain
             + zero_sale_credit
             + story_gain
+            + mission_gain
         )
         if cathedral_ground:
             if self.heat >= HEAT_HIGH_BAND:
@@ -847,7 +1150,10 @@ class ShadowBlackboard:
         # mission counts, or the streak's history beyond this poll's own
         # reset -- "demotes posture without erasing history" (item criteria).
         previous_posture = self.conduct_posture
-        mission_completions_total = int(self.story_flags.get("assailant_mission_completions", 0))
+        # the story flag is completions from before this run; the quest list supplies the rest
+        mission_completions_total = (int(self.story_flags.get("assailant_mission_completions", 0))
+                                     + self.mission_completions_observed)
+        record["mission_completions_total"] = mission_completions_total
         posture = compute_conduct_posture(
             self.cathedral_regard, self.clean_streak, mission_completions_total, previous_posture)
 
@@ -883,6 +1189,7 @@ class ShadowBlackboard:
         record["go_dark_fired_this_poll"] = go_dark_fired
         record["go_dark_flip_count"] = self.go_dark_flip_count
 
+        self.advance_cathedral_offers(record, would_fire, game_info.get("ticksGame") or 0, go_dark_fired)
         self.advance_fall_chain(record, would_fire, hutt_goodwill)
 
         record["would_fire"] = would_fire
@@ -894,15 +1201,122 @@ class ShadowBlackboard:
         self.prev_cathedral_goodwill = cathedral_goodwill
         self.prev_cathedral_hostile = cathedral_hostile
 
+        record.update(self.record_extra)
         with open(self.log_path, "a", encoding="utf-8") as f:
             f.write(json.dumps(record) + "\n")
         return record
 
 
+class FixtureBridge:
+    """Offline/fixture mode (--fixture): answers the blackboard's read tools from a scripted JSON world instead of a
+    live game, so the whole poll -- Heat, Regard, the stage machine, go-dark, the favours -- runs with no bridge and
+    no RimWorld. Shape of the file:
+
+      {"about": "...", "polls": 200, "tick_step": 15000, "start_tick": 0,
+       "state":   {"mapBiome": "...", "tile": 678, "settlement": "...", "trader_present": false,
+                   "kyber": {"Force_KyberCrystal": 4, "RUT_Mindstone": 0},
+                   "anomaly": {"RM_BoltShedCuriosity": 0, "RM_CoolantEelCatch": 0},
+                   "factions": {"Mechanoid": {"goodwill": 0, "hostile": false},
+                                "RUT_Jawa_HuttCartel": {"goodwill": 0, "hostile": false}}},
+       "changes": {"<poll>": {<any state keys, merged from that poll on>}},
+       "player":  {"mission_responses": ["complete", "ignore", "fail", ...],
+                   "accept_after_ticks": 30000, "finish_after_ticks": 60000}}
+
+    "player" is a SIMULATED player, and every quest row it makes is marked simulated: in shadow mode nothing is
+    fired, so no request ever reaches a real quest list; the simulation stands in for what the live firer would
+    do (fire the GiveQuest incident on a cathedral_mission_offer), and for the player answering it -- complete,
+    fail, or ignore until the offer lapses -- one response per request in order (the last repeats). A request the
+    blackboard withdraws (missions closed) lapses in the quest list too."""
+
+    QUEST_NAMES = None
+
+    def __init__(self, fixture):
+        self.fx = fixture
+        self.tick = int(fixture.get("start_tick", 0))
+        self.state = json.loads(json.dumps(fixture["state"]))
+        self.poll_no = 0
+        self.quests = []
+        self.next_quest_id = 1000
+        self.offers_seen = 0
+        self.catalogue = None
+        player = fixture.get("player") or {}
+        self.responses = player.get("mission_responses") or ["ignore"]
+        self.accept_after = int(player.get("accept_after_ticks", 30_000))
+        self.finish_after = int(player.get("finish_after_ticks", 60_000))
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *exc):
+        return False
+
+    def _merge(self, dst, src):
+        for k, v in src.items():
+            if isinstance(v, dict) and isinstance(dst.get(k), dict):
+                self._merge(dst[k], v)
+            else:
+                dst[k] = v
+
+    def _advance_quests(self):
+        for q in self.quests:
+            if q["state"] == "NotYetAccepted" and q["_response"] in ("complete", "fail") \
+                    and self.tick - q["_made"] >= self.accept_after:
+                q["state"] = "Ongoing"
+            elif q["state"] == "Ongoing" and self.tick - q["_made"] >= self.accept_after + self.finish_after:
+                q["state"] = "EndedSuccess" if q["_response"] == "complete" else "EndedFailed"
+            elif q["state"] == "NotYetAccepted" and self.tick - q["_made"] >= CATHEDRAL_MISSION_OFFER_EXPIRY_TICKS:
+                q["state"] = "EndedOfferExpired"
+
+    def observe(self, record, catalogue):
+        """After each poll: the simulated firer and player react to what the blackboard would have fired."""
+        names = {m["quest_def"]: m["quest_names"][0] for m in catalogue["missions"]}
+        for ev in record["would_fire"]:
+            if ev["type"] == "cathedral_mission_offer":
+                resp = self.responses[min(self.offers_seen, len(self.responses) - 1)]
+                self.offers_seen += 1
+                self.quests.append({"id": self.next_quest_id, "name": names[ev["quest_def"]], "root": ev["quest_def"],
+                                    "state": "NotYetAccepted", "historical": False, "simulated": True,
+                                    "_made": self.tick, "_response": resp})
+                self.next_quest_id += 1
+            elif ev["type"] == "cathedral_mission_offer_withdrawn":
+                for q in self.quests:
+                    if q["root"] == ev["quest_def"] and q["state"] == "NotYetAccepted":
+                        q["state"] = "EndedOfferExpired"
+
+    def call(self, tool, params, check=True):
+        st = self.state
+        if tool == "rimworld/get_game_info":
+            self.poll_no += 1
+            change = (self.fx.get("changes") or {}).get(str(self.poll_no))
+            if change:
+                self._merge(st, change)
+            self._advance_quests()
+            return {"ticksGame": self.tick, "fixture_poll": self.poll_no}
+        if tool == "jawa/map_info":
+            return {"mapBiome": st.get("mapBiome"), "tile": st.get("tile"),
+                    "mapParent": {"label": st.get("settlement", "")}}
+        if tool == "jawa/list_factions":
+            return {"factions": [dict(v, defName=k) for k, v in st.get("factions", {}).items()]}
+        if tool == "jawa/list_things":
+            d = params.get("defName")
+            pool = st.get("kyber", {}) if d in st.get("kyber", {}) else st.get("anomaly", {})
+            return {"countMatched": int(pool.get(d, 0))}
+        if tool == "jawa/trade_price_probe":
+            return {"success": bool(st.get("trader_present"))} if st.get("trader_present") else \
+                {"success": False, "error": "fixture: no trader pawn on the map"}
+        if tool == "jawa/quest_lifecycle":
+            rows = [{k: v for k, v in q.items() if not k.startswith("_")} for q in self.quests]
+            return {"success": True, "action": "list", "count": len(rows), "quests": rows}
+        if tool == "rimworld/step_game_ticks":
+            self.tick += int(params.get("ticks", 0))
+            return {"success": True}
+        raise RuntimeError("FixtureBridge: no fixture answer for %s" % tool)
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--polls", type=int, default=20, help="number of poll iterations")
-    ap.add_argument("--tick-step", type=int, default=2000,
+    ap.add_argument("--polls", type=int, default=None, help="number of poll iterations (default 20, or the fixture's)")
+    ap.add_argument("--tick-step", type=int, default=None,
                      help="game ticks to advance between polls via step_game_ticks "
                           "(paused throughout -- see capability-matrix.md)")
     ap.add_argument("--log", default=None, help="output JSONL path (default: "
@@ -915,10 +1329,11 @@ def main():
     ap.add_argument("--story-flags-file", default=None,
                      help="CATHEDRAL_REGARD_BLACKBOARD_1: optional JSON file with "
                           "assailant_mission_completions (int), restore_choice_made (bool), "
-                          "misdirection_quest_success (bool), reveal_beat_fired (bool). No "
-                          "live bridge signal exists for any of these yet (items 2/5/7 are "
-                          "unbuilt) -- omit this flag for a real live run, which correctly "
-                          "leaves every one of them at 0/False.")
+                          "misdirection_quest_success (bool), reveal_beat_fired (bool). "
+                          "assailant_mission_completions counts missions completed BEFORE this "
+                          "run (later ones are read off the quest list); the other three have "
+                          "no live bridge signal yet (items 5/7 unbuilt) -- omit this flag for "
+                          "a real live run, which correctly leaves them at 0/False.")
     ap.add_argument("--exposure-godark-threshold", type=float, default=CATHEDRAL_EXPOSURE_GODARK_THRESHOLD,
                      help="§6.1 go-dark threshold -- a GM-tuning placeholder; lower it to "
                           "observe the demotion flip within a short demo run")
@@ -933,6 +1348,16 @@ def main():
                           "threshold ABOVE go-dark -- lower it (together with "
                           "--exposure-godark-threshold) to observe the whole completion "
                           "chain within a short demo run.")
+    ap.add_argument("--fixture", default=None,
+                     help="OFFLINE/FIXTURE MODE: replay a scripted world from this JSON file instead of a live "
+                          "bridge (see FixtureBridge's docstring for the shape). Needs no game and no bridge; "
+                          "--polls and --tick-step default to the fixture's own. Quest rows the fixture's "
+                          "simulated player makes are marked simulated in every record.")
+    ap.add_argument("--disable-cathedral-missions", action="store_true",
+                     help="CATHEDRAL_MISSION_BOON_OFFERS_1: mirrors the mod setting cathedralMissionsEnabled "
+                          "off -- no request is ever offered.")
+    ap.add_argument("--disable-cathedral-boons", action="store_true",
+                     help="CATHEDRAL_MISSION_BOON_OFFERS_1: mirrors cathedralBoonsEnabled off -- no gift.")
     ap.add_argument("--disable-cathedral-fall", action="store_true",
                      help="CATHEDRAL_EXPOSURE_COMPLETION_1 off: no full discovery, no fall "
                           "letters, no warzone flip, no Hutt extraction, no mourning. "
@@ -953,33 +1378,57 @@ def main():
         print("gm_blackboard_shadow: no --story-flags-file -- mission/restore-choice/"
               "misdirection/reveal inputs all sit at their honest 0/False default this run.")
 
-    host, port, token = resolve_endpoint()
+    fixture = None
+    if args.fixture:
+        with open(args.fixture, encoding="utf-8") as f:
+            fixture = json.load(f)
+    polls = args.polls or (fixture or {}).get("polls") or 20
+    # a fixture may carry the demo hooks its scenario needs ("board"); an explicit CLI value still wins
+    for key, val in ((fixture or {}).get("board") or {}).items():
+        if getattr(args, key) == ap.get_default(key):
+            setattr(args, key, val)
+    tick_step = args.tick_step or (fixture or {}).get("tick_step") or 2000
     board = ShadowBlackboard(
         log_path, orbital_timer_start=args.orbital_timer_start,
         story_flags=story_flags, exposure_godark_threshold=args.exposure_godark_threshold,
         pursuit_event_on_poll=args.pursuit_event_on_poll,
         full_discovery_threshold=args.exposure_full_discovery_threshold,
         fall_enabled=not args.disable_cathedral_fall,
+        missions_enabled=not args.disable_cathedral_missions,
+        boons_enabled=not args.disable_cathedral_boons,
     )
     print("gm_blackboard_shadow: shadow mode, read-only, logging to %s" % log_path)
 
-    with RimBridge(host, port, token) as rb:
-        for i in range(args.polls):
+    if fixture is not None:
+        print("gm_blackboard_shadow: FIXTURE MODE (%s) -- no bridge, no game: %s"
+              % (args.fixture, fixture.get("about", "")))
+        bridge = FixtureBridge(fixture)
+        board.record_extra = {"fixture": {"file": str(args.fixture), "simulated_player": bool(fixture.get("player"))}}
+    else:
+        host, port, token = resolve_endpoint()
+        bridge = RimBridge(host, port, token)
+    with bridge as rb:
+        for i in range(polls):
             record = board.poll(rb)
+            if fixture is not None:
+                rb.observe(record, board.offer_catalogue)
             print(
                 "poll %2d  tick=%s  heat=%.2f  hutt=%.2f  regard=%.2f  stage=%-9s  "
-                "exposure=%.2f  orbit=%s  dark=%s  kyber_total=%s  would_fire=%d"
+                "exposure=%.2f  orbit=%s  dark=%s  kyber_total=%s  would_fire=%d  %s"
                 % (
                     record["poll"], record["ticksGame"], record["heat_after"],
                     record["hutt_interest_after"], record["cathedral_regard_after"],
                     record["effective_stage_label"], record["exposure_pressure_after"],
                     record["orbital_timer_after"], record["dark_tile"],
                     record["kyber_family_total"], len(record["would_fire"]),
+                    " ".join(e["type"].replace("cathedral_", "") for e in record["would_fire"]
+                             if e["type"].startswith("cathedral_m") or e["type"].startswith("cathedral_b")),
                 )
             )
-            if i < args.polls - 1:
-                safe_call(rb, "rimworld/step_game_ticks", {"ticks": args.tick_step})
-                time.sleep(0.05)
+            if i < polls - 1:
+                safe_call(rb, "rimworld/step_game_ticks", {"ticks": tick_step})
+                if fixture is None:
+                    time.sleep(0.05)
 
     print("\n%d would-fire events logged; 0 incidents fired, 0 letters sent, "
           "0 saves written." % len(board.would_fire_log))
@@ -988,6 +1437,9 @@ def main():
           % (board.heat, board.hutt_interest, board.cathedral_regard, board.orbital_timer,
              CATHEDRAL_STAGE_LABELS[3 if board.knowledge_revealed else board.conduct_posture],
              board.exposure_pressure, board.go_dark_flip_count))
+    print("Favours: %d mission request(s) posted, %d completed (%d Regard), %d gravtech gift(s) left"
+          % (board.mission_rotation, board.mission_completions_observed,
+             board.mission_completions_observed * CATHEDRAL_REGARD_GAIN_MISSION_COMPLETION, board.boons_given))
     print("Item 8: full_discovery=%s fall_stage=%s warzone_active=%s hutt_extraction=%s"
           % (board.full_discovery,
              CATHEDRAL_FALL_STAGES[board.fall_stage]["id"] if board.fall_stage >= 0 else None,

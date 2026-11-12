@@ -748,6 +748,7 @@ MODS = {
     }, ()),
     "CathedralPass": ("CathedralPassMod.cs", "RimMandrake.Utinni.CathedralPass.csproj", {
         "Cathedral mechanoid pass": "Now",
+        "Cathedral favours": "NextPulse",   # read in CanFireNowSub: the next offer the blackboard fires
     }, ()),
     "DroidRepairJobs": ("DroidRepairJobsMod.cs", "RimMandrake.Utinni.DroidRepairJobs.csproj", {
         "Repair-job payment": "NextPulse",

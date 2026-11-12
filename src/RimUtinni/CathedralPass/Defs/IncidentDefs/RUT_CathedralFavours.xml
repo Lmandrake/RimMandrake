@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CathedralPass - CATHEDRAL_MISSION_BOON_OFFERS_1: the triggers for the Cathedral's favours.
+
+  Every incident here is baseChance 0: the storyteller never rolls one. The GM blackboard
+  (src/RimMandrake/Utils/gm_blackboard_shadow.py, compute_cathedral_offers) decides each poll which are on offer
+  and fires them through jawa/storyteller_fire; in shadow mode it only logs what it would fire, with these
+  defs' own text. The blackboard reads this file for that text and for each boon's heatCeiling, so no string or
+  number is written twice.
+
+  MISSIONS (TOLERATED and up): one GiveQuest incident per RUT_CathedralAssailantMission_* quest (six), gated on the
+  missions toggle (IncidentWorker_GiveQuest_CathedralMission). The quest's own name and description are the
+  offer the player reads.
+
+  GRAVTECH BOONS (VOUCHED only, and only while Imperial Heat is under the boon's heatCeiling: "when the Empire is
+  looking, it does not act"): gravtech set down by the ship with no sender, no tracks and no explanation
+  (IncidentWorker_CathedralBoon). The bigger the gift, the lower the ceiling and the longer before it comes again
+  (reofferDays): the panels can come while a patrol or two still passes, every couple of weeks at most; a gravcore
+  comes only when the sky has been empty for days, and not twice in a season. Items are Odyssey's
+  (GravlitePanel, Gravcore; ludeon.rimworld.odyssey, read from the 2026-11-06 def dump), which every player has.
+  The letter text never says who left them.
+-->
+<Defs>
+
+  <IncidentDef ParentName="GiveQuestBase">
+    <defName>RUT_GiveQuest_CathedralAssailantMission_EnclaveRunner</defName>
+    <label>a request from the enclaves</label>
+    <letterLabel>Quest available</letterLabel>
+    <workerClass>RimMandrake.Utinni.CathedralPass.IncidentWorker_GiveQuest_CathedralMission</workerClass>
+    <questScriptDef>RUT_CathedralAssailantMission_EnclaveRunner</questScriptDef>
+    <baseChance>0</baseChance>
+  </IncidentDef>
+
+  <IncidentDef ParentName="GiveQuestBase">
+    <defName>RUT_GiveQuest_CathedralAssailantMission_UtinniInsists</defName>
+    <label>the Utinni insists</label>
+    <letterLabel>Quest available</letterLabel>
+    <workerClass>RimMandrake.Utinni.CathedralPass.IncidentWorker_GiveQuest_CathedralMission</workerClass>
+    <questScriptDef>RUT_CathedralAssailantMission_UtinniInsists</questScriptDef>
+    <baseChance>0</baseChance>
+  </IncidentDef>
+
+  <IncidentDef ParentName="GiveQuestBase">
+    <defName>RUT_GiveQuest_CathedralAssailantMission_EnclaveShrineRoad</defName>
+    <label>the shrine-road</label>
+    <letterLabel>Quest available</letterLabel>
+    <workerClass>RimMandrake.Utinni.CathedralPass.IncidentWorker_GiveQuest_CathedralMission</workerClass>
+    <questScriptDef>RUT_CathedralAssailantMission_EnclaveShrineRoad</questScriptDef>
+    <baseChance>0</baseChance>
+  </IncidentDef>
+
+  <IncidentDef ParentName="GiveQuestBase">
+    <defName>RUT_GiveQuest_CathedralAssailantMission_UtinniFrequency</defName>
+    <label>a frequency nobody uses</label>
+    <letterLabel>Quest available</letterLabel>
+    <workerClass>RimMandrake.Utinni.CathedralPass.IncidentWorker_GiveQuest_CathedralMission</workerClass>
+    <questScriptDef>RUT_CathedralAssailantMission_UtinniFrequency</questScriptDef>
+    <baseChance>0</baseChance>
+  </IncidentDef>
+
+  <IncidentDef ParentName="GiveQuestBase">
+    <defName>RUT_GiveQuest_CathedralAssailantMission_EnclaveBeacon</defName>
+    <label>a beacon in the night</label>
+    <letterLabel>Quest available</letterLabel>
+    <workerClass>RimMandrake.Utinni.CathedralPass.IncidentWorker_GiveQuest_CathedralMission</workerClass>
+    <questScriptDef>RUT_CathedralAssailantMission_EnclaveBeacon</questScriptDef>
+    <baseChance>0</baseChance>
+  </IncidentDef>
+
+  <IncidentDef ParentName="GiveQuestBase">
+    <defName>RUT_GiveQuest_CathedralAssailantMission_UtinniRestless</defName>
+    <label>the Utinni will not rest</label>
+    <letterLabel>Quest available</letterLabel>
+    <workerClass>RimMandrake.Utinni.CathedralPass.IncidentWorker_GiveQuest_CathedralMission</workerClass>
+    <questScriptDef>RUT_CathedralAssailantMission_UtinniRestless</questScriptDef>
+    <baseChance>0</baseChance>
+  </IncidentDef>
+
+  <IncidentDef>
+    <defName>RUT_CathedralGravtechBoon_GravlitePanels</defName>
+    <label>panels on the ramp</label>
+    <category>Misc</category>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <workerClass>RimMandrake.Utinni.CathedralPass.IncidentWorker_CathedralBoon</workerClass>
+    <baseChance>0</baseChance>
+    <letterLabel>Panels on the ramp</letterLabel>
+    <letterText>At first light the deck crew found a stack of gravlite panels on the cargo ramp, squared off neatly and still cold from the night. No tracks led to them and none led away.\n\nNobody aboard claims them, and nobody wants to ask too loudly. There was no patrol overhead last night.</letterText>
+    <letterDef>PositiveEvent</letterDef>
+    <modExtensions>
+      <li Class="RimMandrake.Utinni.CathedralPass.RUT_CathedralBoonExtension">
+        <gifts>
+          <GravlitePanel>30</GravlitePanel>
+        </gifts>
+        <heatCeiling>25</heatCeiling>
+        <reofferDays>15</reofferDays>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+
+  <IncidentDef>
+    <defName>RUT_CathedralGravtechBoon_Gravcore</defName>
+    <label>a gravcore in the sand</label>
+    <category>Misc</category>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <workerClass>RimMandrake.Utinni.CathedralPass.IncidentWorker_CathedralBoon</workerClass>
+    <baseChance>0</baseChance>
+    <letterLabel>A gravcore in the sand</letterLabel>
+    <letterText>The perimeter lights caught it an hour before dawn: a gravcore, whole and faintly warm, set upright in the sand just outside the ship's shadow. It is older than anything in your stores, and it fits the Utinni's sockets as if it had been cut for them.\n\nThe sky has been empty of Imperial traffic for days.</letterText>
+    <letterDef>PositiveEvent</letterDef>
+    <modExtensions>
+      <li Class="RimMandrake.Utinni.CathedralPass.RUT_CathedralBoonExtension">
+        <gifts>
+          <Gravcore>1</Gravcore>
+        </gifts>
+        <heatCeiling>10</heatCeiling>
+        <reofferDays>45</reofferDays>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+
+</Defs>

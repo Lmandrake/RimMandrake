@@ -1,0 +1,77 @@
+{
+  "about": "CATHEDRAL_MISSION_BOON_OFFERS_1 ordinary play: a clan parked on Rust Cathedral ground from campaign start, quarter-day polls (75 days). Mines clean and sells nothing for weeks (one bolt-shed curiosity to a passing trader); answers most requests it gets, ignores two and loses one; once vouched for, sells two kyber crystals to a trader, and two more four days later; then an Imperial pursuit ends on Cathedral ground (the synthetic pursuit hook, with the go-dark threshold lowered so one pursuit is enough).",
+  "polls": 300,
+  "tick_step": 15000,
+  "start_tick": 0,
+  "board": {
+    "pursuit_event_on_poll": 240,
+    "exposure_godark_threshold": 15.0
+  },
+  "state": {
+    "mapBiome": "RM_RustCathedral",
+    "tile": 678,
+    "settlement": "Utinni landing (Rust Cathedral plates)",
+    "trader_present": false,
+    "kyber": {
+      "Force_KyberCrystal": 6,
+      "RUT_Mindstone": 0
+    },
+    "anomaly": {
+      "RM_BoltShedCuriosity": 3,
+      "RM_CoolantEelCatch": 0
+    },
+    "factions": {
+      "Mechanoid": {
+        "goodwill": 0,
+        "hostile": false
+      },
+      "RUT_Jawa_HuttCartel": {
+        "goodwill": 0,
+        "hostile": false
+      }
+    }
+  },
+  "changes": {
+    "30": {
+      "anomaly": {
+        "RM_BoltShedCuriosity": 2
+      },
+      "trader_present": true
+    },
+    "31": {
+      "trader_present": false
+    },
+    "185": {
+      "kyber": {
+        "Force_KyberCrystal": 4
+      },
+      "trader_present": true
+    },
+    "186": {
+      "trader_present": false
+    },
+    "201": {
+      "kyber": {
+        "Force_KyberCrystal": 2
+      },
+      "trader_present": true
+    },
+    "202": {
+      "trader_present": false
+    }
+  },
+  "player": {
+    "mission_responses": [
+      "complete",
+      "ignore",
+      "complete",
+      "fail",
+      "complete",
+      "complete",
+      "ignore",
+      "complete"
+    ],
+    "accept_after_ticks": 30000,
+    "finish_after_ticks": 60000
+  }
+}

@@ -32,5 +32,13 @@
   blackboard and are not built here; until then the pass is granted and revoked
   through the dev-mode debug actions or the public CathedralPass.Grant/Revoke API.
 
-  Mod Settings: one kill switch — off, the pass has no effect anywhere.</description>
+  The Cathedral's favours (CATHEDRAL_MISSION_BOON_OFFERS_1, arc spec §3 bullet 3) also
+  live here: six requests to cull a pack of animals gone wrong (RUT_CathedralAssailantMission_*,
+  vanilla quests with no asker, reaching the clan through the droid enclaves or the Utinni)
+  and two gravtech gifts left by the ship unannounced (RUT_CathedralGravtechBoon_*). None is
+  ever rolled by the storyteller: the GM blackboard (gm_blackboard_shadow.py) offers them —
+  requests once the Cathedral tolerates the clan, gifts once it vouches for it and only while
+  Imperial Heat is low — and fires them through the bridge. No text names the Cathedral.
+
+  Mod Settings: the pass kill switch, and one toggle each for the requests and the gifts.</description>
 </ModMetaData>

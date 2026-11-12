@@ -11,12 +11,17 @@ namespace RimMandrake.Utinni.CathedralPass
     public class CathedralPassSettings : ModSettings
     {
         public static bool cathedralPassEnabled = true;
+        // CATHEDRAL_MISSION_BOON_OFFERS_1: the favours. Off, the GM blackboard's fire calls are refused in game.
+        public static bool cathedralMissionsEnabled = true;
+        public static bool cathedralBoonsEnabled = true;
 
         public override void ExposeData()
         {
             RimMandrake.Shared.PatchApplier.BeforeExpose();
             base.ExposeData();
             Scribe_Values.Look(ref cathedralPassEnabled, "cathedralPassEnabled", true);
+            Scribe_Values.Look(ref cathedralMissionsEnabled, "cathedralMissionsEnabled", true);
+            Scribe_Values.Look(ref cathedralBoonsEnabled, "cathedralBoonsEnabled", true);
             RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
@@ -91,6 +96,18 @@ namespace RimMandrake.Utinni.CathedralPass
                     "Clan members granted the Cathedral's pass are not treated as hostile by the "
                   + "mechanoid faction's machines, on Rust Cathedral maps only. Off: the pass "
                   + "flag does nothing anywhere and the machines treat everyone as vanilla does.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Cathedral favours", RimMandrake.Shared.SettingScope.NextPulse, new[] { "cathedralMissionsEnabled", "cathedralBoonsEnabled" }))
+            {
+                list.CheckboxLabeled("Cathedral missions", ref cathedralMissionsEnabled,
+                    "Requests that reach the clan through the droid enclaves or the Utinni once the "
+                  + "Rust Cathedral tolerates the clan: cull a pack of animals gone wrong. Off: no such "
+                  + "request is ever offered.");
+                list.CheckboxLabeled("Cathedral gravtech gifts", ref cathedralBoonsEnabled,
+                    "Unannounced gravtech left by the ship once the Rust Cathedral vouches for the clan, "
+                  + "only while Imperial Heat is low. Off: no gift ever arrives.");
                 list.GapLine();
             }
 
