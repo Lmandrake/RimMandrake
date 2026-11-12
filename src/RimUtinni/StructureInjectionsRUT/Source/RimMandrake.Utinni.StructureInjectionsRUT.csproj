@@ -52,6 +52,8 @@
     <Compile Include="Spire\SpireEntryKernel.cs" />
     <Compile Include="Spire\SpireEntry.cs" />
     <Compile Include="Spire\GenStep_SpireRoof.cs" />
+    <Compile Include="CathedralDescent\GenStep_CathedralDescent.cs" />
+    <Compile Include="CathedralDescent\CathedralDescentPatrol.cs" />
     <Compile Include="StructureInjectionsRUTSettings.cs" />
   </ItemGroup>
 
