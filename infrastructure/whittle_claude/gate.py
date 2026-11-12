@@ -53,6 +53,7 @@ def split_segments(cmd):
 
 def substitutions(seg):
     """Bodies of $(...) and `...` in a segment: bash runs them before the command they sit in."""
+    seg = re.sub(r"'[^']*'", "''", seg)   # inside single quotes bash substitutes nothing
     out, i = [], 0
     while True:
         i = seg.find("$(", i)
@@ -76,6 +77,14 @@ def first_word(seg):
     return ""
 
 
+def runs_steve_sh(seg):
+    """True when the segment's command IS steve.sh (directly or via bash/sh), not a comment or argument naming it."""
+    w = [x for x in seg.split() if not ("=" in x and x.split("=", 1)[0].replace("_", "").isalnum())]
+    if w and w[0] in ("bash", "sh") and len(w) > 1:
+        w = w[1:]
+    return bool(w) and w[0].rsplit("/", 1)[-1] == "steve.sh"
+
+
 def verdict(lane, cmd):
     segs = split_segments(cmd)
     for s in segs:
@@ -83,7 +92,7 @@ def verdict(lane, cmd):
             v = verdict(lane, body)
             if v.startswith("REFUSE"):
                 return v
-        if first_word(s) in INERT:
+        if first_word(s) in INERT and not (first_word(s) == "find" and re.search(r"-(exec|execdir|ok|okdir|delete)\b", s)):
             continue
         rf = RIMFLOW.search(s)
         verb = rf.group(1) if rf else None
@@ -93,14 +102,14 @@ def verdict(lane, cmd):
         if verb == "bridge" and not re.search(r"bridge\s+take", s):
             continue
         if lane == "offline":
-            if GAME.search(s):
+            if GAME.search(s) or runs_steve_sh(s):
                 return "REFUSE: an offline loop drives no game (%r); finish the offline part and park the live step" % s[:120]
         elif lane == "archmagi":
             if STEVE.search(s):
                 return ("REFUSE: SteveDesktop's game belongs to CLAUDE_STEVEDESKTOP_FWLIVE (%r); this loop drives "
                         "Archmagi's game only" % s[:120])
         elif lane == "steve":
-            if "whittle_claude/steve.sh" in s:
+            if runs_steve_sh(s):
                 continue
             if re.search(r"bridge\s+take", s):
                 if not re.search(r"--host\s+stevedesktop\b(?!\.)", s):

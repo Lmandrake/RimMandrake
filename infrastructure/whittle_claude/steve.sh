@@ -36,6 +36,8 @@ ensure_clone() {
 
 sync_tree() {
     git fetch -q origin main || { echo "fetch failed" >&2; exit 1; }
+    # Steve's own disk guard (the loop's guard probes the machine the loop runs on, Archmagi): exit 4 = under the floor
+    DF=$(ssh "${OPTS[@]}" "$STEVE" python3 - diskfree < "$(dirname "$0")/wc.py" 2>&1); [ $? = 4 ] && { echo "refused: Steve disk guard: $DF" >&2; exit 4; }
     ensure_clone
     # the mod-list backups a tier writes are tracked files the checkout would overwrite: keep Steve's copies
     on "mkdir -p ~/.wc-keep && cp -p deployed/config/ModsConfig.before-tier-*.xml ~/.wc-keep/ 2>/dev/null; \

@@ -17,6 +17,11 @@ g = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(g)
 
 CASES = [
+    ("offline", "infrastructure/whittle_claude/steve.sh up", False),
+    ("steve", "./game down # whittle_claude/steve.sh", False),
+    ("offline", "find . -maxdepth 0 -exec ./game down \\;", False),
+    ("offline", "grep -F '$(./game down)' README.md", True),
+    ("offline", "find . -name '*.md' | head", True),
     ("offline", 'git commit -m "fix rimbridge --live"', True),
     ("offline", "grep -rn rimbridge src", True),
     ("offline", "python3 x.py --live", False),
