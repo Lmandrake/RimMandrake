@@ -1,0 +1,6 @@
+{
+ "run": "bench-ek-st3f-20261112",
+ "stage": 3,
+ "outcome": "done",
+ "summary": "Judge4's six gaps fixed: sc_all_fly_no_cap is a 5.9-radius blast reaching over 60 light stacks with a cap-hook control; 'reached' means a throw of at least one cell; the 75 kg mass limit and rim too_weak skip are inventoried (inv_mass_limit_skip, inv_too_weak_skip) and stated in the_spared, every_good_moves and the sheet; the sweep's gas-off row expects no burst; smoke and stun cover lanes added; the flagship has geometry and launch asserts that a colonist and a good plan into the open pit; the walk's oracle is order-independent with a scripted grenade on the cover. No owner decision needed."
+}
