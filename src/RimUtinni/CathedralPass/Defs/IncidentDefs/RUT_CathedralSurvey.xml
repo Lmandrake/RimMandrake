@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1: the trigger for RUT_CathedralSurveyMisdirection. baseChance 0: the
+     storyteller never rolls it. The GM blackboard (gm_blackboard_shadow.py, advance_cathedral_survey) fires it through
+     jawa/storyteller_fire when the clan is on Cathedral ground while the Empire is looking; in shadow mode it only logs
+     that it would. Gated in game on the cathedralSurveyEnabled setting (IncidentWorker_GiveQuest_CathedralSurvey).
+     Map_PlayerHome, as the favours' GiveQuest incidents: jawa/storyteller_fire targets the home map. -->
+<Defs>
+  <IncidentDef ParentName="GiveQuestBase">
+    <defName>RUT_GiveQuest_CathedralSurveyMisdirection</defName>
+    <label>an Imperial survey on the plates</label>
+    <letterLabel>An Imperial survey</letterLabel>
+    <targetTags Inherit="False">
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <workerClass>RimMandrake.Utinni.CathedralPass.IncidentWorker_GiveQuest_CathedralSurvey</workerClass>
+    <questScriptDef>RUT_CathedralSurveyMisdirection</questScriptDef>
+    <baseChance>0</baseChance>
+  </IncidentDef>
+</Defs>

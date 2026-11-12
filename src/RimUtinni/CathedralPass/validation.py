@@ -51,6 +51,24 @@ Bridge held by the live lane; every step reads its result back, none is assumed:
      --exposure-godark-threshold 15: poll N logs cathedral_mission_offer_withdrawn naming the quest id; the firer's
      act is jawa/quest_lifecycle action=end questId=<id> outcome=unknown sendLetter=false (the blackboard itself is
      read-only); the list then reads EndedUnknownOutcome and no request or gift is offered for 10 game days.
+  8. CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1 -- the survey, all three branches (offline proof:
+     src/RimMandrake/RustCathedral/selftest_rustcathedral_survey.py). Mod list as above plus EmpirePursuit (the pursuit
+     spine), on a scenario whose pursuit faction is the Empire. jawa/get_defs RUT_CathedralSurveyMisdirection
+     (QuestScriptDef) and RUT_CathedralSurveyHail (LetterDef); Player.log has no "Could not find type
+     RimMandrake.Utinni.CathedralPass.RUT_*". Three rounds, one per answer (b, c, a), each:
+       - jawa/storyteller_fire incidentDef=RUT_GiveQuest_CathedralSurveyMisdirection dryRun=true (canFireNow true), then
+         dryRun=false. quest_lifecycle list: a row root RUT_CathedralSurveyMisdirection, state Ongoing (auto-accepted),
+         and NOT on the Quests tab (hidden). The letter stack holds "An Imperial survey hails the ship"; open it: the
+         faction strip shows the pursuing faction, the text names it in place of {FACTION}, four buttons (three answers
+         + Postpone). Screenshot it.
+       - (b) "Give him the guild's answer..." -> letter "The survey moves on", row EndedSuccess; blackboard poll after:
+         survey_regard_gain_this_poll=12.0, heat unchanged against the poll before.
+       - (c) "Tell him what the crews have seen..." -> a drop pod with 150~250 silver at the trade drop spot, letter
+         "The survey stays", row EndedFailed; blackboard: survey_exposure_gain_this_poll=20.0, heat unchanged.
+       - (a) "Leave the channel unanswered" -> letter "The channel goes quiet", row EndedUnknownOutcome; nothing moves.
+         Also once with no answer: step 2 game days; the hail letter leaves the stack, "The survey leaves", Unknown.
+       - Save and reload with a hail unanswered: the letter is still there and still answers (part found by quest).
+     Settings: jawa/mod_settings_field cathedralSurveyEnabled=false -> storyteller_fire dryRun=true canFireNow false.
 NOT PROVEN offline (owed to that run): that QuestNode_ManhunterPack's pack spawns on accept with the quest tag
 and that RUT_QuestPart_PackDown sees it to EndedSuccess in this mod list; that the boon lands at TradeDropSpot on a
 gravship map.
@@ -85,7 +103,10 @@ def favour_text_problems():
     seen, bad = [], []
     for rel in ("Defs/QuestScriptDefs/RUT_CathedralAssailantMissions.xml", "Defs/IncidentDefs/RUT_CathedralFavours.xml"):
         bad += lint.xml_findings(os.path.join(HERE, rel), 1, seen)
-    if len(seen) < 30:
+    # CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1: the survey can come at any stage, so its strings meet the any-stage rules
+    for rel in ("Defs/QuestScriptDefs/RUT_CathedralSurveyMisdirection.xml", "Defs/IncidentDefs/RUT_CathedralSurvey.xml"):
+        bad += lint.xml_findings(os.path.join(HERE, rel), -1, seen)
+    if len(seen) < 45:
         bad.append("favours: only %d strings read from the favour defs (sanity probe failed)" % len(seen))
     return bad
 
@@ -102,7 +123,8 @@ def _build_suite():
     mod_static.add_settings_chain(suite, __file__)
     mod_static.add_harmony_chain(suite, __file__)
     shipped_defs.add_chain(suite, __file__, sanity=('RUT_CathedralPass', 'RUT_CathedralGravtechBoon_Gravcore',
-                                                    'RUT_CathedralAssailantMission_EnclaveRunner'), min_count=1)
+                                                    'RUT_CathedralAssailantMission_EnclaveRunner',
+                                                    'RUT_CathedralSurveyMisdirection'), min_count=1)
     return suite
 
 

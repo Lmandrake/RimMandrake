@@ -56,6 +56,18 @@ and feed Regard, never Heat (K2). The offer path calls no LLM.
 selftest_rustcathedral_offers.py drives it; cathedral_offer_letters.py turns
 a log into the letters the player would read.
 
+CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1 (arc §4, card A4) adds the Imperial
+survey to the same poll (advance_cathedral_survey / observe_survey_quests):
+while the clan is on Cathedral ground and the Empire is looking (Heat at or
+over HEAT_LOW_BAND: the pursuit spine's attention, the same Heat number), at
+most one survey hail is offered per CATHEDRAL_SURVEY_REOFFER_GAP_TICKS,
+firing RUT_GiveQuest_CathedralSurveyMisdirection (src/RimUtinni/
+CathedralPass). Its outcome is read off the quest list: EndedSuccess (b, the
+guild's dull answer) is a large Regard gain and moves no Heat (K2);
+EndedFailed (c, pointing them at the plates) is an exposure-pressure input;
+EndedUnknownOutcome (a, no answer) moves nothing. selftest_cathedral_survey.py
+drives it.
+
 Inputs (cross-checked against the specs that consume this blackboard):
   - kyber/mindstone sales           design/Jawa/kyber_trade_plot_spec.md §2/§3
   - Hutt Cartel goodwill            kyber_trade_plot_spec.md §4
@@ -67,6 +79,8 @@ Inputs (cross-checked against the specs that consume this blackboard):
                                      sold-vs-crafted caveat, restated below)
   - Cathedral mission quests        jawa/quest_lifecycle action=list (ended
                                      RUT_CathedralAssailantMission_* quests)
+  - the Imperial survey quest       jawa/quest_lifecycle action=list (ended
+                                     RUT_CathedralSurveyMisdirection quests)
   - story-flag hooks (missions completed BEFORE this run, restore choice,
     misdirection quest, the reveal beat) -- optional --story-flags-file; NO
     live bridge signal exists for the last three yet, so in a run with no
@@ -209,7 +223,7 @@ CATHEDRAL_REGARD_CLEAN_STREAK_TOLERATED_FLOOR = 5
 CATHEDRAL_REGARD_GAIN_ZERO_SALE_CREDIT_PER_POLL = 0.05   # arc §2: zero sales IS a standing credit, distinct from "no loss"
 CATHEDRAL_REGARD_GAIN_MISSION_COMPLETION = 4.0           # per Assailant-register mission (quest list, or story flag for earlier ones)
 CATHEDRAL_REGARD_GAIN_RESTORE_CHOICE = 30.0              # arc §2: "the single largest gain"; §4 pricing owned elsewhere
-CATHEDRAL_REGARD_GAIN_MISDIRECTION_SUCCESS = 6.0         # item 5's own beat (card A4)
+CATHEDRAL_REGARD_GAIN_MISDIRECTION_SUCCESS = 12.0        # item 5's (b): "a large Regard gain" (arc §4) -- three missions' worth
 # --- Regard §2 additions (down) ---------------------------------------------
 CATHEDRAL_REGARD_LOSS_SACRILEGE_GOODWILL_RATIO = 1.0     # "one act, two ledgers" -- mirrors a goodwill DROP 1:1
 CATHEDRAL_REGARD_LOSS_ANOMALY_BULK_SALE = 3.0            # per bulk-volume threshold crossing (A5)
@@ -318,6 +332,23 @@ CATHEDRAL_FAVOUR_DEFS = (
     Path(__file__).resolve().parents[2] / "RimUtinni" / "CathedralPass" / "Defs" / "IncidentDefs"
     / "RUT_CathedralFavours.xml",
 )
+
+# --- CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1 (arc §4, card A4): the Imperial survey. GM tuning, like every number here.
+CATHEDRAL_SURVEY_QUEST_DEF = "RUT_CathedralSurveyMisdirection"
+CATHEDRAL_SURVEY_DEFS = (
+    Path(__file__).resolve().parents[2] / "RimUtinni" / "CathedralPass" / "Defs" / "QuestScriptDefs"
+    / "RUT_CathedralSurveyMisdirection.xml",
+    Path(__file__).resolve().parents[2] / "RimUtinni" / "CathedralPass" / "Defs" / "IncidentDefs"
+    / "RUT_CathedralSurvey.xml",
+)
+CATHEDRAL_SURVEY_MIN_HEAT = HEAT_LOW_BAND            # the pursuit spine: a survey comes only while the Empire is looking
+CATHEDRAL_SURVEY_REOFFER_GAP_TICKS = 30 * 60_000     # one survey a month at most: it is a beat, not a chore
+CATHEDRAL_SURVEY_UNSEEN_LAPSE_TICKS = 3 * 60_000     # a hail that never reached the quest list (shadow mode) lapses
+CATHEDRAL_SURVEY_STALE_TICKS = 4 * 60_000            # the quest ends itself in 2 days; past this its row is stale
+CATHEDRAL_EXPOSURE_GAIN_SURVEY_POINTED = 20.0        # (c): §6.1's door -- the Empire told where to look, by the clan
+# The answer the player gave, as the quest list shows it (RimWorld QuestState names)
+CATHEDRAL_SURVEY_OUTCOMES = {"EndedSuccess": "dull_answer", "EndedFailed": "pointed_at_anomaly",
+                             "EndedUnknownOutcome": "no_answer"}
 
 HUTT_EXTRACTION_MIN_INTEREST = 20.0              # gates the offer on the fixer channel existing (kyber §4b/c)
 HUTT_EXTRACTION_BASE_PRICE = 100_000.0           # silver, GM-tuning placeholder
@@ -502,6 +533,36 @@ def compute_reveal_beat_gate(conduct_posture, restore_choice_made, opened, revea
     return True, "open"
 
 
+def load_cathedral_survey_catalogue(paths=CATHEDRAL_SURVEY_DEFS):
+    """CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1: the survey hail the blackboard can fire and every string the player can
+    read in it, parsed from the shipped defs (one home per string). Refuses (raises) on a missing piece: a blackboard
+    that cannot read the defs must not look like one that has nothing to offer."""
+    import xml.etree.ElementTree as ET
+    out = {"quest_def": None, "incident_def": None, "hail": None, "after": {}}
+    for path in paths:
+        for el in ET.parse(path).getroot():
+            name = (el.findtext("defName") or "").strip()
+            if el.tag == "QuestScriptDef" and name == CATHEDRAL_SURVEY_QUEST_DEF:
+                out["quest_def"] = name
+                for node in el.iter("li"):
+                    cls = node.get("Class") or ""
+                    if cls.endswith("RUT_QuestNode_SurveyHail"):
+                        out["hail"] = {k: _game_text(node.findtext(k)) for k in (
+                            "letterLabel", "letterText", "answerDullLabel", "answerPointedLabel", "answerSilentLabel")}
+                        out["signals"] = {k: (node.findtext(k) or "").strip() for k in (
+                            "outSignalDull", "outSignalPointed", "outSignalSilent")}
+                    elif cls == "QuestNode_Letter":
+                        out["after"][(node.findtext("inSignal") or "").strip()] = {
+                            "label": _game_text(node.findtext("label")), "text": _game_text(node.findtext("text"))}
+            elif el.tag == "IncidentDef" and (el.findtext("questScriptDef") or "").strip() == CATHEDRAL_SURVEY_QUEST_DEF:
+                out["incident_def"] = name
+    missing = [k for k in ("quest_def", "incident_def", "hail") if not out[k]]
+    if missing or len(out["after"]) < 4:
+        raise RuntimeError("cathedral survey: defs incomplete (missing %s, %d after-letters) in %s"
+                           % (missing, len(out["after"]), [str(p) for p in paths]))
+    return out
+
+
 def compute_cathedral_offer_gate(conduct_posture, heat, boons, ticks_since_sale=None):
     """The pure gate (arc §1/§3): which favours MAY be offered this poll. Missions at TOLERATED+, boons at VOUCHED+
     and each only at Heat <= its own ceiling ("when the Empire is looking, it does not act"). A go-dark flip needs
@@ -565,7 +626,9 @@ def _sale_heat(delta_lost):
 #     story flag now only carries completions from before the run)
 #   - the §4 restore choice (already specced elsewhere, but no quest exists
 #     yet to fire it)
-#   - the misdirection-quest success beat (item 5, unbuilt, card A4)
+#   - (the misdirection-quest beat: BUILT since
+#     CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1 -- read off jawa/quest_lifecycle;
+#     the story flag now only carries a success from before the run)
 #   - pursuit-spine events resolving on Cathedral ground (Act II+, unbuilt)
 #   - the reveal beat itself (item 7's own beat; deliberately NEVER wired
 #     into this file's own computation -- see compute_conduct_posture below)
@@ -626,7 +689,8 @@ class ShadowBlackboard:
                  pursuit_event_on_poll=None,
                  full_discovery_threshold=CATHEDRAL_FULL_DISCOVERY_THRESHOLD,
                  fall_enabled=True, offer_catalogue=None, missions_enabled=True, boons_enabled=True,
-                 descent_enabled=True):
+                 descent_enabled=True,
+                 survey_enabled=True, survey_catalogue=None):
         self.log_path = log_path
         self.heat = 0.0
         self.hutt_interest = 0.0
@@ -690,6 +754,18 @@ class ShadowBlackboard:
         self.reveal_quest_state = None
         self.reveal_fired_tick = None
         self.reveal_refused_since_open = 0   # polls on which the trigger set held again after the beat was spent
+        # CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1: the Imperial survey (see advance_cathedral_survey)
+        self.survey_catalogue = survey_catalogue or load_cathedral_survey_catalogue()
+        self.survey_enabled = survey_enabled     # mirrors the mod's cathedralSurveyEnabled setting
+        self.survey_offer = None                 # the hail currently fired and not yet ended, if any
+        self.survey_last_resolved_tick = None
+        self.survey_quest_ids_seen = set()
+        self.survey_resolved_quest_ids = set()
+        self.survey_outcome_counts = {"dull_answer": 0, "pointed_at_anomaly": 0, "no_answer": 0}
+        self.survey_offers_fired = 0
+        self.survey_observed_once = False
+        self.survey_history_seeded = 0
+        self.story_flag_misdirection = bool(self.story_flags.get("misdirection_quest_success", False))
         self.record_extra = {}  # merged into every record before it is logged (fixture mode marks its records)
 
     def advance_fall_chain(self, record, would_fire, hutt_goodwill):
@@ -873,6 +949,106 @@ class ShadowBlackboard:
         if completed_now:
             self.last_completion_tick = ticks
         return completed_now, mission_rows
+
+    def observe_survey_quests(self, rows, ticks, would_fire):
+        """CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1: read the quest list for ended survey quests. Each ended one is read
+        ONCE: (b) EndedSuccess = a Regard gain, (c) EndedFailed = an exposure gain, (a) EndedUnknownOutcome = nothing.
+        No outcome is a Heat input (K2: protecting the place scrubs none of the Empire's suspicion of the clan).
+        Returns (regard_gain, exposure_gain, rows)."""
+        regard_gain = exposure_gain = 0.0
+        survey_rows = []
+        first_look = not self.survey_observed_once
+        self.survey_observed_once = True
+        for row in rows or []:
+            if row.get("root") != CATHEDRAL_SURVEY_QUEST_DEF:
+                continue
+            qid, state = row.get("id"), row.get("state")
+            survey_rows.append({"id": qid, "state": state, "simulated": bool(row.get("simulated"))})
+            offer = self.survey_offer
+            if offer and offer["quest_id"] is None and qid not in offer["quest_ids_before_offer"]:
+                offer["quest_id"], offer["status"] = qid, "hailing"
+            self.survey_quest_ids_seen.add(qid)
+            if not (state or "").startswith("Ended") or qid in self.survey_resolved_quest_ids:
+                continue
+            self.survey_resolved_quest_ids.add(qid)
+            outcome = CATHEDRAL_SURVEY_OUTCOMES.get(state)
+            if offer and offer["quest_id"] == qid:
+                self.survey_offer, self.survey_last_resolved_tick = None, ticks
+            if first_look and outcome == "dull_answer" and self.story_flag_misdirection:
+                # already ended before this run, and the story flag already credits it: one source, never both
+                self.survey_history_seeded += 1
+                continue
+            if outcome is None:
+                would_fire.append({"type": "cathedral_survey_resolved", "quest_id": qid, "outcome": state,
+                                   "detail": "survey quest %s ended %s: not an answer the clan gave; nothing moves."
+                                             % (qid, state)})
+                continue
+            self.survey_outcome_counts[outcome] += 1
+            if outcome == "dull_answer":
+                regard_gain += CATHEDRAL_REGARD_GAIN_MISDIRECTION_SUCCESS
+                detail = ("(b) the clan gave the surveyors the guild's dull answer -- SHADOW MODE: would gain %.2f "
+                          "Regard; Imperial Heat is not an input of the answer (K2) and does not move; fired nothing."
+                          % CATHEDRAL_REGARD_GAIN_MISDIRECTION_SUCCESS)
+            elif outcome == "pointed_at_anomaly":
+                exposure_gain += CATHEDRAL_EXPOSURE_GAIN_SURVEY_POINTED
+                detail = ("(c) the clan pointed the surveyors at the plates -- SHADOW MODE: would raise exposure "
+                          "pressure by %.2f (§6.1); Regard and Heat are not inputs of it; fired nothing."
+                          % CATHEDRAL_EXPOSURE_GAIN_SURVEY_POINTED)
+            else:
+                detail = "(a) the hail went unanswered -- nothing moves: not Regard, not exposure, not Heat."
+            would_fire.append({"type": "cathedral_survey_answered", "quest_id": qid, "state": state,
+                               "outcome": outcome, "simulated": bool(row.get("simulated")), "detail": detail})
+        return regard_gain, exposure_gain, survey_rows
+
+    def advance_cathedral_survey(self, record, would_fire, ticks, cathedral_ground):
+        """CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1: one poll of the survey's trigger, after the stage machine and the
+        fall chain. It fires (shadow: would fire) the survey hail when the clan is on Cathedral ground, Imperial Heat
+        is at or over CATHEDRAL_SURVEY_MIN_HEAT (the Empire is looking: the pursuit spine), the Empire has not already
+        found the place (full discovery), no hail is out, and the last one resolved at least a month ago. Pure state
+        on self (no bridge)."""
+        offer = self.survey_offer
+        if offer and ticks - offer["fired_tick"] >= (
+                CATHEDRAL_SURVEY_UNSEEN_LAPSE_TICKS if offer["quest_id"] is None else CATHEDRAL_SURVEY_STALE_TICKS):
+            would_fire.append({"type": "cathedral_survey_lapsed", "quest_id": offer["quest_id"],
+                               "detail": "the survey hail %s; it is dropped from tracking after %d ticks." % (
+                                   "never reached the quest list" if offer["quest_id"] is None
+                                   else "quest never ended", ticks - offer["fired_tick"])})
+            self.survey_offer, self.survey_last_resolved_tick = None, ticks
+            offer = None
+        if not self.survey_enabled:
+            closed = "survey_disabled"
+        elif self.full_discovery:
+            closed = "full_discovery"
+        elif not cathedral_ground:
+            closed = "not_on_cathedral_ground"
+        elif self.heat < CATHEDRAL_SURVEY_MIN_HEAT:
+            closed = "heat_below_pursuit_band"
+        elif offer is not None:
+            closed = "hail_already_out"
+        elif (self.survey_last_resolved_tick is not None
+              and ticks - self.survey_last_resolved_tick < CATHEDRAL_SURVEY_REOFFER_GAP_TICKS):
+            closed = "waiting_reoffer_gap"
+        else:
+            closed = None
+        if closed is None:
+            cat = self.survey_catalogue
+            self.survey_offer = {"fired_tick": ticks, "quest_id": None, "status": "fired",
+                                 "quest_ids_before_offer": sorted(self.survey_quest_ids_seen)}
+            self.survey_offers_fired += 1
+            would_fire.append({
+                "type": "cathedral_survey_offer", "incident_def": cat["incident_def"], "quest_def": cat["quest_def"],
+                "heat_at_offer": round(self.heat, 3), "pursuit_band": CATHEDRAL_SURVEY_MIN_HEAT,
+                "letter": dict(cat["hail"]),
+                "detail": "the clan is on Cathedral ground and Imperial Heat %.2f >= %.2f (the Empire is looking) -- "
+                          "SHADOW MODE: would fire %s through jawa/storyteller_fire (dryRun=false); fired nothing."
+                          % (self.heat, CATHEDRAL_SURVEY_MIN_HEAT, cat["incident_def"])})
+        cur = self.survey_offer
+        record["cathedral_survey"] = {
+            "open": closed is None, "closed_reason": closed, "imperial_heat": round(self.heat, 3),
+            "current": None if cur is None else {k: cur[k] for k in ("status", "fired_tick", "quest_id")},
+            "outcomes_so_far": dict(self.survey_outcome_counts),
+            "text_source": "shipped defs (fallback text); the survey path calls no LLM",
+        }
 
     def advance_cathedral_offers(self, record, would_fire, ticks, go_dark_fired):
         """CATHEDRAL_MISSION_BOON_OFFERS_1: one poll of the favours, after the stage machine and the go-dark flip
@@ -1236,6 +1412,13 @@ class ShadowBlackboard:
         record["mission_history_left_to_story_flag"] = self.mission_history_seeded
         record["mission_completion_regard_gain_this_poll"] = round(mission_gain, 3)
 
+        # --- CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1: survey answers given THIS poll, read off the quest list
+        survey_regard_gain, survey_exposure_gain, survey_rows = self.observe_survey_quests(
+            quest_rows, game_info.get("ticksGame") or 0, would_fire)
+        record["survey_quests"] = survey_rows
+        record["survey_regard_gain_this_poll"] = round(survey_regard_gain, 3)
+        record["survey_exposure_gain_this_poll"] = round(survey_exposure_gain, 3)
+
         # --- Regard: fold every §2 input into one delta this poll. Never-
         # movers (bulk salvage, provoked-Sentinel kills, anything unknowable)
         # are correctly absent from this sum by construction -- no term below
@@ -1249,6 +1432,7 @@ class ShadowBlackboard:
             + zero_sale_credit
             + story_gain
             + mission_gain
+            + survey_regard_gain
         )
         if cathedral_ground:
             if self.heat >= HEAT_HIGH_BAND:
@@ -1272,6 +1456,7 @@ class ShadowBlackboard:
             exposure_delta += CATHEDRAL_EXPOSURE_GAIN_HEAT_NEAR
         exposure_delta += CATHEDRAL_EXPOSURE_GAIN_SALE_VOLUME_PER_KYBER * delta_lost
         exposure_delta += CATHEDRAL_EXPOSURE_GAIN_ANOMALY_BULK_CROSSING * anomaly_bulk_crossings_this_poll
+        exposure_delta += survey_exposure_gain   # (c): the clan pointed the Imperial survey at the plates
         # Demo/mechanism-testing hook ONLY (mirrors M4's own --orbital-timer-start
         # pattern) -- no live pursuit-spine event exists to read (Act II+ is
         # unbuilt), so this never fires unless --pursuit-event-on-poll names
@@ -1337,6 +1522,7 @@ class ShadowBlackboard:
 
         self.advance_cathedral_offers(record, would_fire, game_info.get("ticksGame") or 0, go_dark_fired)
         self.advance_fall_chain(record, would_fire, hutt_goodwill)
+        self.advance_cathedral_survey(record, would_fire, game_info.get("ticksGame") or 0, cathedral_ground)
 
         record["would_fire"] = would_fire
         self.would_fire_log.extend(would_fire)
@@ -1367,7 +1553,12 @@ class FixtureBridge:
        "changes": {"<poll>": {<any state keys, merged from that poll on>}},
        "existing_quests": [{"id": 7, "name": "...", "root": "...", "state": "EndedSuccess"}],   (optional)
        "player":  {"mission_responses": ["complete", "ignore", "fail", ...],
-                   "accept_after_ticks": 30000, "finish_after_ticks": 60000}}
+                   "accept_after_ticks": 30000, "finish_after_ticks": 60000,
+                   "survey_responses": ["dull", "pointed", "silent", "lapse", ...], "survey_answer_after_ticks": 20000}}
+
+    A survey hail the blackboard would fire becomes an Ongoing (auto-accepted, hidden) quest row; the simulated player
+    answers it after survey_answer_after_ticks -- dull -> EndedSuccess, pointed -> EndedFailed, silent ->
+    EndedUnknownOutcome -- or, for "lapse", never answers and the quest's own 2-day delay ends it EndedUnknownOutcome.
 
     "player" is a SIMULATED player, and every quest row it makes is marked simulated: in shadow mode nothing is
     fired, so no request ever reaches a real quest list; the simulation stands in for what the live firer would
@@ -1400,6 +1591,9 @@ class FixtureBridge:
         # CATHEDRAL_DESCENT_REVEAL_SITE_1: "complete" (walk to the bottom) or "never" (the site is left unwalked)
         self.descent_response = player.get("descent_response", "complete")
         self.descent_walk_ticks = int(player.get("descent_walk_ticks", 60_000))
+        self.survey_responses = player.get("survey_responses") or ["lapse"]
+        self.survey_answer_after = int(player.get("survey_answer_after_ticks", 20_000))
+        self.surveys_seen = 0
 
     def __enter__(self):
         return self
@@ -1421,6 +1615,15 @@ class FixtureBridge:
                 if q["state"] == "Ongoing" and q["_response"] == "complete" and \
                         self.tick - q["_made"] >= self.descent_walk_ticks:
                     q["state"] = "EndedSuccess"
+                continue
+            if q.get("_survey"):   # the survey hail: auto-accepted, answered or lapsed, never "accepted"
+                if q["state"] != "Ongoing":
+                    continue
+                if q["_response"] == "lapse":
+                    if self.tick - q["_made"] >= 120_000:   # the quest's own QuestNode_Delay
+                        q["state"] = "EndedUnknownOutcome"
+                elif self.tick - q["_made"] >= self.survey_answer_after:
+                    q["state"] = {"dull": "EndedSuccess", "pointed": "EndedFailed"}.get(q["_response"], "EndedUnknownOutcome")
                 continue
             if q["state"] == "NotYetAccepted" and q["_response"] in ("complete", "fail") \
                     and self.tick - q["_made"] >= self.accept_after:
@@ -1448,6 +1651,13 @@ class FixtureBridge:
                 self.quests.append({"id": self.next_quest_id, "name": "The Way Down", "root": ev["quest_def"],
                                     "state": "Ongoing", "historical": False, "simulated": True,
                                     "_made": self.tick, "_response": self.descent_response, "_descent": True})
+                self.next_quest_id += 1
+            elif ev["type"] == "cathedral_survey_offer":
+                resp = self.survey_responses[min(self.surveys_seen, len(self.survey_responses) - 1)]
+                self.surveys_seen += 1
+                self.quests.append({"id": self.next_quest_id, "name": "An Imperial Survey On The Plates",
+                                    "root": ev["quest_def"], "state": "Ongoing", "historical": False,
+                                    "simulated": True, "_made": self.tick, "_response": resp, "_survey": True})
                 self.next_quest_id += 1
             elif ev["type"] == "cathedral_mission_offer_withdrawn" and self.firer_ends_withdrawn:
                 # the simulated live firer's quest_lifecycle end (outcome unknown, no letter)
@@ -1534,6 +1744,8 @@ def main():
     ap.add_argument("--disable-cathedral-descent", action="store_true",
                     help="CATHEDRAL_DESCENT_REVEAL_SITE_1 off (mirrors the mod's cathedralDescentEnabled): the way "
                          "down never opens, so the reveal never fires")
+    ap.add_argument("--disable-cathedral-survey", action="store_true",
+                     help="CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1: mirrors cathedralSurveyEnabled off -- no survey hail.")
     ap.add_argument("--disable-cathedral-fall", action="store_true",
                      help="CATHEDRAL_EXPOSURE_COMPLETION_1 off: no full discovery, no fall "
                           "letters, no warzone flip, no Hutt extraction, no mourning. "
@@ -1573,6 +1785,7 @@ def main():
         descent_enabled=not args.disable_cathedral_descent,
         missions_enabled=not args.disable_cathedral_missions,
         boons_enabled=not args.disable_cathedral_boons,
+        survey_enabled=not args.disable_cathedral_survey,
     )
     print("gm_blackboard_shadow: shadow mode, read-only, logging to %s" % log_path)
 
@@ -1599,7 +1812,7 @@ def main():
                     record["orbital_timer_after"], record["dark_tile"],
                     record["kyber_family_total"], len(record["would_fire"]),
                     " ".join(e["type"].replace("cathedral_", "") for e in record["would_fire"]
-                             if e["type"].startswith("cathedral_m") or e["type"].startswith("cathedral_b")),
+                             if e["type"].startswith(("cathedral_m", "cathedral_b", "cathedral_survey"))),
                 )
             )
             if i < polls - 1:
@@ -1617,6 +1830,10 @@ def main():
     print("Favours: %d mission request(s) posted, %d completed (%d Regard), %d gravtech gift(s) left"
           % (board.mission_rotation, board.mission_completions_observed,
              board.mission_completions_observed * CATHEDRAL_REGARD_GAIN_MISSION_COMPLETION, board.boons_given))
+    print("Survey: %d hail(s) fired; answers %s (Regard +%.1f, exposure +%.1f)"
+          % (board.survey_offers_fired, board.survey_outcome_counts,
+             board.survey_outcome_counts["dull_answer"] * CATHEDRAL_REGARD_GAIN_MISDIRECTION_SUCCESS,
+             board.survey_outcome_counts["pointed_at_anomaly"] * CATHEDRAL_EXPOSURE_GAIN_SURVEY_POINTED))
     print("Item 8: full_discovery=%s fall_stage=%s warzone_active=%s hutt_extraction=%s"
           % (board.full_discovery,
              CATHEDRAL_FALL_STAGES[board.fall_stage]["id"] if board.fall_stage >= 0 else None,

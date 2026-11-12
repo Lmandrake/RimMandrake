@@ -1,0 +1,29 @@
+{
+  "about": "CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1 ordinary play: a clan parked on Rust Cathedral ground, quarter-day polls (40 days). It mines quietly, then on day 5 sells two kyber crystals to a passing trader: Imperial Heat jumps over the low band and the Empire's survey team turns up on the plates and hails the ship. A month later it sells two more, and a second survey comes. The simulated player answers each hail as the test says (survey_responses); nothing is staged past any gate.",
+  "polls": 160,
+  "tick_step": 15000,
+  "start_tick": 0,
+  "state": {
+    "mapBiome": "RM_RustCathedral",
+    "tile": 678,
+    "settlement": "Utinni landing (Rust Cathedral plates)",
+    "trader_present": false,
+    "kyber": {"Force_KyberCrystal": 6, "RUT_Mindstone": 0},
+    "anomaly": {"RM_BoltShedCuriosity": 0, "RM_CoolantEelCatch": 0},
+    "factions": {
+      "Mechanoid": {"goodwill": 0, "hostile": false},
+      "RUT_Jawa_HuttCartel": {"goodwill": 0, "hostile": false}
+    }
+  },
+  "changes": {
+    "20": {"kyber": {"Force_KyberCrystal": 4}, "trader_present": true},
+    "21": {"trader_present": false},
+    "142": {"kyber": {"Force_KyberCrystal": 2}, "trader_present": true},
+    "143": {"trader_present": false}
+  },
+  "player": {
+    "mission_responses": ["ignore"],
+    "survey_responses": ["dull", "lapse"],
+    "survey_answer_after_ticks": 20000
+  }
+}

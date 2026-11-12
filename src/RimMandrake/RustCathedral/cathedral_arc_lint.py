@@ -46,6 +46,13 @@ ALWAYS = (
     ("§GM truth (ban 1)", r"\bkyber\b|\bcrystals?\b|\bmindstone\b|\bfactor(y|ies)\b|\bplasma\b|\bmicromachines?\b"
                           r"|\bsmart metal\b|\bdynamo\b|\bassailants?\b|\bterramanufacture\b"),
     ("mechanic named (ban 1)", r"\bgoodwill\b|\birritation\b|\bband\b|\bstanding\b|\bregard\b|\bstage\b|\bcomposite\b"),
+    # arc §4 (item 5's verify): no line explains what the player's concealment protected -- the act is shown, its
+    # meaning never named (cover, misdirection, keeping something hidden or safe from the Empire)
+    ("concealment explained (§4)", r"\bsecrets?\b|\bcover(ed|ing)? for\b|\bcover story\b|\bshield(s|ed|ing)?\b"
+                                   r"|\bmisdirect\w*|\bmislead\w*|\bmisled\b|\bdecei\w*|\bdecoy\w*|\bthrow (them|him|her) off\b"
+                                   r"|\bthrew (them|him|her) off\b|\bkept (it|them) (hidden|quiet|safe)\b|\bsafe from\b"
+                                   r"|\bnever (find|found|learn|learned)\b|\bwhat (lies|lay|sleeps|slept) (beneath|below)\b"
+                                   r"|\bhidden from\b|\bkeep (it|them) hidden\b"),
 )
 # (rule, regex) -- before stage 3 only: agency attributed to the place
 PRE_REVEAL = (
@@ -68,7 +75,8 @@ SOURCE_DIR = "Source"
 # player-facing text-bearing tags; a <li> counts when its parent is one of LIST_PARENTS
 TEXT_TAGS = {"label", "description", "text", "letterLabel", "letterText", "reportString", "baseInspectLine",
              "jobString", "customLabel", "messageText", "successMessage", "failMessage", "rejectInputMessage",
-             "customLetterLabel", "customLetterText"}   # quest-node letters (QuestNode_ManhunterPack, _DropPods, ...)
+             "customLetterLabel", "customLetterText",   # quest-node letters (QuestNode_ManhunterPack, _DropPods, ...)
+             "answerDullLabel", "answerPointedLabel", "answerSilentLabel"}   # the survey hail's answers (item 5)
 LIST_PARENTS = {"lines", "rulesStrings", "rulesRaw"}
 
 

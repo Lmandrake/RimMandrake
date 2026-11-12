@@ -11,6 +11,18 @@
   <PropertyGroup>
     <_HarmonyRoot>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077</_HarmonyRoot>
   </PropertyGroup>
+  <!--
+    STEAM_LIBRARY_ON_D: a machine whose Steam library lives at D:\SteamLibrary (SteveDesktop since 2026-11-11, when
+    the install moved off C:) has neither the C: workshop folder nor the C: RimWorld Managed folder. Each is taken
+    from D: only when the C: one is absent, so a C: machine is unchanged, and the csprojs' own RimWorldManaged
+    default (set only when empty) never fires there.
+  -->
+  <PropertyGroup Condition="!Exists('$(_HarmonyRoot)') and Exists('D:\SteamLibrary\steamapps\workshop\content\294100\2009463077')">
+    <_HarmonyRoot>D:\SteamLibrary\steamapps\workshop\content\294100\2009463077</_HarmonyRoot>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(RimWorldManaged)' == '' and !Exists('C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Assembly-CSharp.dll') and Exists('D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Assembly-CSharp.dll')">
+    <RimWorldManaged>D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(HarmonyDll)' == '' and Exists('$(_HarmonyRoot)\1.6\Assemblies\0Harmony.dll')">
     <HarmonyDll>$(_HarmonyRoot)\1.6\Assemblies\0Harmony.dll</HarmonyDll>
   </PropertyGroup>

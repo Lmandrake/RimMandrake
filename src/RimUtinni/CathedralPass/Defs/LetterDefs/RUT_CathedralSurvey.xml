@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1: the Imperial survey's hail, a choice letter with the clan's three answers
+     (RimMandrake.Utinni.CathedralPass.RUT_ChoiceLetter_SurveyHail, Source/CathedralSurvey.cs). The vanilla custom
+     choice-letter colour; it does not flash, it waits. -->
+<Defs>
+  <LetterDef ParentName="CustomChoiceLetterBase">
+    <defName>RUT_CathedralSurveyHail</defName>
+    <letterClass>RimMandrake.Utinni.CathedralPass.RUT_ChoiceLetter_SurveyHail</letterClass>
+  </LetterDef>
+</Defs>

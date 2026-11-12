@@ -16,6 +16,8 @@ namespace RimMandrake.Utinni.CathedralPass
         public static bool cathedralBoonsEnabled = true;
         // CATHEDRAL_DESCENT_REVEAL_SITE_1: the one-time way down and the address at its bottom. Off, an opening is refused.
         public static bool cathedralDescentEnabled = true;
+        // CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1: the Imperial survey's hail. Off, the blackboard's fire call is refused in game.
+        public static bool cathedralSurveyEnabled = true;
 
         public override void ExposeData()
         {
@@ -25,6 +27,7 @@ namespace RimMandrake.Utinni.CathedralPass
             Scribe_Values.Look(ref cathedralMissionsEnabled, "cathedralMissionsEnabled", true);
             Scribe_Values.Look(ref cathedralBoonsEnabled, "cathedralBoonsEnabled", true);
             Scribe_Values.Look(ref cathedralDescentEnabled, "cathedralDescentEnabled", true);
+            Scribe_Values.Look(ref cathedralSurveyEnabled, "cathedralSurveyEnabled", true);
             RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
@@ -102,7 +105,7 @@ namespace RimMandrake.Utinni.CathedralPass
                 list.GapLine();
             }
 
-            if (Group(list, "Cathedral favours", RimMandrake.Shared.SettingScope.NextPulse, new[] { "cathedralMissionsEnabled", "cathedralBoonsEnabled" }))
+            if (Group(list, "Cathedral favours", RimMandrake.Shared.SettingScope.NextPulse, new[] { "cathedralMissionsEnabled", "cathedralBoonsEnabled", "cathedralSurveyEnabled" }))
             {
                 list.CheckboxLabeled("Cathedral missions", ref cathedralMissionsEnabled,
                     "Requests that reach the clan through the droid enclaves or the Utinni once the "
@@ -111,6 +114,10 @@ namespace RimMandrake.Utinni.CathedralPass
                 list.CheckboxLabeled("Cathedral gravtech gifts", ref cathedralBoonsEnabled,
                     "Unannounced gravtech left by the ship once the Rust Cathedral vouches for the clan, "
                   + "only while Imperial Heat is low. Off: no gift ever arrives.");
+                list.CheckboxLabeled("Imperial survey on the plates", ref cathedralSurveyEnabled,
+                    "While the Empire is searching for the clan, a survey team of the pursuing faction may "
+                  + "hail the ship from the rust plates around the Rust Cathedral and ask what the clan's "
+                  + "crews have seen there. How the clan answers is the player's choice. Off: no survey ever hails.");
                 list.GapLine();
             }
 

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  RUT_CathedralSurveyMisdirection   CathedralPass - CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1 (arc spec §4, card A4 RULED IN)
+
+  The one place the player actively practises concealment. A survey team of the Empire that is hunting the clan (the
+  pursuit spine's own faction, resolved in Source/CathedralSurvey.cs: EmpirePursuit's pursuing faction, else vanilla
+  Empire; no new faction) works the rust plates out past the old works and hails the ship: what is out there?
+
+  THREE OUTS, one dialog (RUT_QuestNode_SurveyHail):
+    (b) the guild's answer   -> Success. The GM blackboard reads it off the quest list as a large Regard gain; it
+                                scrubs no Imperial Heat (K2). The letter that follows says only what the surveyors did.
+    (c) tell them            -> Fail. The blackboard reads it as an exposure-pressure input (§6.1's door). The
+                                surveyors drop a small finder's fee by the ship: the choice has a price on both sides.
+    (a) no answer            -> Unknown, whether the player refuses the channel or simply lets it lapse (2 days).
+  Hidden quest (defaultHidden): no Quests-tab row, so the game never prints "succeeded" or "failed" next to an answer.
+  No line anywhere says what the answer did, for whom, or why (sheet §6 bans, arc §4 "without one line of text saying
+  so"); every string here passes cathedral_arc_lint.py at stage -1 (every stage).
+
+  TRIGGER: rootSelectionWeight 0, never rolled. Fired only by RUT_GiveQuest_CathedralSurveyMisdirection (baseChance 0)
+  when the GM blackboard (gm_blackboard_shadow.py, advance_cathedral_survey) sees the clan on Cathedral ground while
+  the Empire is looking (Heat at or over the low band). Fallback text is the whole text; the Oracle may only revoice it.
+-->
+<Defs>
+
+  <QuestScriptDef>
+    <defName>RUT_CathedralSurveyMisdirection</defName>
+    <rootSelectionWeight>0</rootSelectionWeight>
+    <isRootSpecial>true</isRootSpecial>
+    <rootMinPoints>0</rootMinPoints>
+    <autoAccept>true</autoAccept>
+    <defaultHidden>true</defaultHidden>
+    <sendAvailableLetter>false</sendAvailableLetter>
+    <everAcceptableInSpace>false</everAcceptableInSpace>
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->An Imperial survey on the plates</li>
+      </rulesStrings>
+    </questNameRules>
+    <questDescriptionRules>
+      <rulesStrings>
+        <li>questDescription->A survey team of the Empire is working the rust plates out past the old works, and its officer has asked the clan what is out there.</li>
+      </rulesStrings>
+    </questDescriptionRules>
+    <root Class="QuestNode_Sequence">
+      <nodes>
+        <li Class="QuestNode_GetMap" />
+        <li Class="QuestNode_QuestUnique">
+          <tag>RUT_CathedralSurveyMisdirection</tag>
+        </li>
+
+        <li Class="RimMandrake.Utinni.CathedralPass.RUT_QuestNode_SurveyHail">
+          <letterLabel>An Imperial survey hails the ship</letterLabel>
+          <letterText>A survey team of {FACTION} has set down out past the old works, among the rust plates. For two days their lamps have crept from plate to plate: sounding rods, core samplers, a crawler that stops every few paces to listen to the ground.\n\nThis morning their officer opened a channel to the ship. If he knows whose ship this is, he does not say so. The clan's crews have worked these plates for years, he says. What is out there? What have your people seen?</letterText>
+          <answerDullLabel>Give him the guild's answer: scrap, bad ground, nothing worth the trip</answerDullLabel>
+          <answerPointedLabel>Tell him what the crews have seen out there</answerPointedLabel>
+          <answerSilentLabel>Leave the channel unanswered</answerSilentLabel>
+          <outSignalDull>AnsweredDull</outSignalDull>
+          <outSignalPointed>PointedThem</outSignalPointed>
+          <outSignalSilent>LeftSilent</outSignalSilent>
+          <finderFee>150~250</finderFee>
+        </li>
+
+        <!-- (a) by default: nobody answers for two days and the hail stops coming -->
+        <li Class="QuestNode_Delay">
+          <delayTicks>120000</delayTicks>
+          <outSignalComplete>HailLapsed</outSignalComplete>
+        </li>
+
+        <!-- (b) -->
+        <li Class="QuestNode_Letter">
+          <inSignal>AnsweredDull</inSignal>
+          <label TKey="LetterLabelRUTSurveyDull">The survey moves on</label>
+          <letterDef>NeutralEvent</letterDef>
+          <text TKey="LetterTextRUTSurveyDull">The clan's trade-speaker gives the officer the answer every salvage guild on this world has given for as long as there have been guilds: old plate and scrap, a few bolts worth the hauling, ground too soft for repulsors, a noise in the wind that nobody pays any heed. The prices are poor. The pickings are poorer.\n\nThe officer stops taking notes halfway through. By evening the survey lamps are moving west, away from the old works, and they do not come back.</text>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>AnsweredDull</inSignal>
+          <outcome>Success</outcome>
+        </li>
+
+        <!-- (c) -->
+        <li Class="QuestNode_Letter">
+          <inSignal>PointedThem</inSignal>
+          <label TKey="LetterLabelRUTSurveyPointed">The survey stays</label>
+          <letterDef>NeutralEvent</letterDef>
+          <text TKey="LetterTextRUTSurveyPointed">The clan's trade-speaker tells the officer what the crews have seen out there: plates that ring hollow underfoot, the low sound that comes up through the sand at night, old works that run on further down than any wreck has a right to. The officer has every word of it repeated, slowly, and records it all.\n\nBefore dawn a small pod comes down by the ship with silver in it and no message. Out past the old works the survey lamps have stopped moving. They are setting up camp.</text>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>PointedThem</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+
+        <!-- (a), refused -->
+        <li Class="QuestNode_Letter">
+          <inSignal>LeftSilent</inSignal>
+          <label TKey="LetterLabelRUTSurveySilent">The channel goes quiet</label>
+          <letterDef>NeutralEvent</letterDef>
+          <text TKey="LetterTextRUTSurveySilent">Nobody aboard answers. The officer calls twice more, then the channel goes quiet. For a few days the survey lamps keep moving over the plates; then one night they are gone, and there is no telling what they took away with them.</text>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>LeftSilent</inSignal>
+          <outcome>Unknown</outcome>
+        </li>
+
+        <!-- (a), lapsed -->
+        <li Class="QuestNode_Letter">
+          <inSignal>HailLapsed</inSignal>
+          <label TKey="LetterLabelRUTSurveyLapsed">The survey leaves</label>
+          <letterDef>NeutralEvent</letterDef>
+          <text TKey="LetterTextRUTSurveyLapsed">The officer's hail goes unanswered until it stops coming. A few days later the survey lamps are gone from the plates, and nobody aboard can say what they found out there.</text>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>HailLapsed</inSignal>
+          <outcome>Unknown</outcome>
+        </li>
+
+        <li Class="QuestNode_End">
+          <inSignal>map.MapRemoved</inSignal>
+          <outcome>Unknown</outcome>
+        </li>
+      </nodes>
+    </root>
+  </QuestScriptDef>
+
+</Defs>
