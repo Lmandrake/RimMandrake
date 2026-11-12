@@ -1,59 +1,42 @@
-# Judge verdict: BIOME_SHIP_CONTRIBUTIONS_1 (round 5)
+# BIOME_SHIP_CONTRIBUTIONS_1: judge verdict, round 6
 
-Judge: CLAUDE_STEVEDESKTOP_OFFLINE2 (fresh judge seat, blind to DONE/BROADEN), 2026-11-12. Tree at 5fae0c0159.
+Judge: claude-opus-5-5, blind (I did not read DONE.md, BROADEN.md or other builder self-reports). 2026-11-12.
+My own scratch: `D:\ClaudeWork\rimmandrake\judge_bsc1\` (rerun output, texture audit).
 
 ## Statement line
 
 > Every-biome pass ... is done as `infrastructure/state/items/BIOME_SHIP_CONTRIBUTIONS_1.md` says, shown by fresh evidence.
 
-**false**, because of one small but factual error in the item's own prose. The substance holds up.
+**true.** Here is what shows it, checked against the item's spec, verify and criteria:
 
-### What holds (I checked these myself)
-- **Coverage and placement.** I reran `python3 src/RimMandrake/Utils/ship_contributions.py` on this tree: exit 0, 24/24 PASS. Its
-  verdict lines match `evidence/ship_contributions_run.txt` exactly. The checker reads the deck affordances from Odyssey's
-  Substructure def rather than assuming them, fails unknown placeWorkers as UNMEASURED, checks `bringAlongOnGravship`,
-  and its selftest makes 12 mutated lists fail. That meets the verify clause: every shipped biome mod has a ship-buildable
-  contribution, and the list matches the defs.
-- **Prose numbers.** I spot-checked them against the defs: fossil case Beauty 40, hexplate Cleanliness 0.6 (description
-  "as clean ... as a surgery's tile"), heat bank (with `prose_numbers_audit.md`), long-shade mast capped at 16 cells (XML
-  comment and RM_MapComponent_ShadeGrid). The drive core is a real CompProperties_GravshipFacility with a GravshipRange
-  stat part, as its row says.
-- **Art.** I hashed all 20 `art2/final` PNGs and the 5 `art/` textures. Each one is byte-identical to its texture in
-  `src/` (SummGreatBone lives at `Abyss/Textures/RM_Abyss/Things/Building/SummGreatBone.png`). For each listed def I
-  checked the texPath. Every gift has its own file. Texture sharing goes outward only (WringingStill borrows the solar
-  still's art, and SignalMirror borrows the sun lance base's). It is same-material for lanternstone (built and natural)
-  and same-device for the cloud repulsor's ship variant. All of that is acceptable. The contact sheet at 96 ppc reads well.
-- **Owner card.** The card exists and carries the five options. It is in the lane's OWNER_QUESTIONS.md, which now also
-  holds the correction from beauty 14 to 40. The offline effective-def lint says VERDICT PASS.
+- **Every shipped biome has a gift that can go on a ship (verify, first half).** I reran `python3 src/RimMandrake/Utils/ship_contributions.py` myself. It exited 0 with 24/24 PASS and 0 problems, and its output is line for line the same as `evidence/ship_contributions_run.txt` (only the header and footer differ). Its own selftest log says the 12 false lists each fail. I ran the selftest again (result below). The 24 is not a count that cannot see: I listed every mod that carries a `<BiomeDef`. The only ones outside Biomes.compose.json are TheBazaar (a `<BiomeDef>` in a comment only), Utils, and UtinniPatches (RUT_Umbra and the Jawa background water). None of those is a shipped biome mod.
+- **The list matches what the mods ship (verify, second half).** I opened the defs behind the claims that are new or carry mechanics, and each one is backed:
+  - The mast's ShadeGear comp exists, and `MaxCastCells = 16f` is in RM_MapComponent_ShadeGrid.cs.
+  - The heat bank is a bare HeatPusher at 10/s, with no power or fuel comp.
+  - The pattern hull has SelfhealHitpoints with ticksPerHeal 500. On a rare tick that comes to 120 HP a day.
+  - The hexplate has Cleanliness 0.6.
+  - The waste cask bay is a powered containment building, and Wastes C# exists that touches gravship launch.
+  - The drive core is a GravshipFacility, and a StatPart multiplies GravshipRange.
+  - The cold rack has no power comp (a ColdSink comp plus refuel).
+  - The lanternstone floor and wall both carry glow.
+  - The repulsor hardpoint is a variant of the Helix device and is stocked by RM_HelixCurators.
+  
+  The numbers in the prose agree with `evidence/prose_numbers_audit.md`.
+- **Sweep and balance (spec, end of pass).** Two design-judge files are present and their fixes show in the table. The heater, water and light overlaps are each settled in their rows. The row the previous judge objected to now reads "five new builds", and exactly five rows are marked *new* (Cracked Lands, Long Shade, Pyrelands, Rust Cathedral, Sleeping Ice).
+- **Card to the owner (spec).** The card is in `evidence/owner_card.md`, and the lane's OWNER_QUESTIONS.md mentions the item 5 times. It is not blocking and has not been answered.
+- **Art.** Each claimed def points at a texture that exists in its mod.
+  - Every PNG under `evidence/art/` and `evidence/art2/final/` is byte-identical to its installed copy under src/.../Textures. The summ great bone is installed under the def's own path, `SummGreatBone.png`.
+  - None of the gift textures is a stand-in borrowed from another thing. Three are shared, all for good reason:
+    - The lanternstone floor and wall share art with the natural lanternstone, which is the same material.
+    - The repulsor hardpoint shares the Helix repulsor's art, which is the same device.
+    - The solar still and sun lance own their art. The wringing still (a variant of the solar still) and the signal mirror borrow it from them, not the other way round.
+  - I viewed the 96 ppc contact sheet and the glasswalk 2x2. Everything reads as what it claims to be. The glasswalk tiles with no visible seam, and the facings on the mast and the cask bay agree.
 
-### What is wrong (the reason for "false")
-1. The item's prose says (line 31) "the four new builds of this pass are marked *new*", but **five** rows are marked
-   *new*: Cracked Lands, Long Shade, Pyrelands, Rust Cathedral and Sleeping Ice. The long-shade mast was added by design
-   judge r2, and the count was not updated. The owner card (line 80) correctly says "the five new ones", so the item and
-   the card disagree.
-2. The Art paragraph says "the 14 that had stand-ins" were painted. That count includes RM_LureAwning (`art2/final/RM_LureAwning.png`,
-   shown on the contact sheet), which is no longer a gift on the list because the mast replaced it. So "every gift now wears
-   its own picture ... the 14" counts a gift the list dropped. The count should either say 13 gifts plus the retired
-   awning, or say why the awning was repainted.
+## Where the evidence is thin or flattering
 
-Both are one-line prose fixes. The previous round failed on the same kind of drift (a number in the list differed from
-what ships), so I am holding to the same standard.
+- **No live play.** The README says so plainly. Nothing shows a gift placed, flown or working in a running game. That covers the mast's 16-cell lee, the cask bay's launch refusal, the drive core's range factor, the summ imprinting and the lanternstone glow on a deck. "Can stand on a deck" is checked offline against the engine's affordance rules, plus an effective-def load lint that passes. That suits an offline lane, but "worth landing for" is still the design judges' call, not play.
+- **The art is shown in its best light.** The contact sheet shows each sprite alone on a flat backdrop, not on a deck next to vanilla things. The 48 ppc sheet partly makes up for that.
+- **One small wording slip, in the evidence README only.** It says "20 pictures painted for the 14 stand-in gifts". The item itself correctly says 13 gifts plus the mast plus the retired lure awning. The text the owner sees (the item and the card) is consistent.
+- **Process.** The 2026-11-03 owner note routed this item's design to the Designer. It was taken under Conductor authority instead, and the item says so openly. Option 4 on the card hands the owner that choice back. I record this as disclosed, not as a defect.
 
-### Where the evidence is flattering or cannot show the claim
-- Nothing has been placed, flown or used in a running game. The README says so honestly. "Ship-placeable" is the checker's
-  reading of the engine rules, not an observed placement. These mechanical claims cannot be confirmed from offline
-  evidence: the range multiplier, the sun-sphere's crop growth, the mast's lee, and the waste-cask launch refusal. A live
-  BENCH look (place each gift on a substructure deck, launch, land, and confirm it is still there and working) would settle them.
-  The item's verify clause does not demand that, so I do not count it against this round.
-- The contact sheets are clean single renders on a flat backdrop. They show no deck context, no neighbouring vanilla
-  things for scale, and no damaged or powered-off states. The mast's plinth is thin (the art judge noted this too).
-  RM_FloatstoneDoor and its icon are plain white slabs that read more like a fridge panel than stone. That is a matter
-  of taste, not a blocker.
-- Most rows (19 of 24) are agent picks under delegation, not owner rulings. They are marked as such and carded. That is
-  disclosed, not hidden.
-
-## To pass next round
-Fix "four new builds" to five on line 31. Fix the Art paragraph's "14" so it does not count the retired lure awning as a
-gift. Nothing else is owed from this judge.
-
-would show: no
+would show: yes
