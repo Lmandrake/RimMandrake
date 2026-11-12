@@ -29,7 +29,8 @@ Each verify and criteria clause:
   survey hails that poll. A lone later sale (7.6) brings nobody (8a-8c). CathedralPass ships no FactionDef (1j), and the reflection names it binds exist in
   EmpirePursuit's source (1l).
 - true: (b) success moves Regard up in shadow mode and Heat not at all | evidence: `whittle/cathedral_survey_misdirection_quest_1/evidence/selftest_rustcathedral_survey.txt` `whittle/cathedral_survey_misdirection_quest_1/evidence/broaden2_late_answer.txt`
-  Regard is +12 on the poll the answer is read, against the same run with the hail left to lapse. Heat, Hutt Interest
+  Regard is +12 on the poll the answer is read, against the same run with the hail left to lapse.
+  Is +12 "large" (the judge's open question)? On the shipped scale in `src/RimMandrake/Utils/gm_blackboard_shadow.py`, yes. It is the second-largest single gain, after the restore choice (+30). It equals three missions (+4 each) or 2.4 kyber sales' loss (-5 each), and it is 80% of the TOLERATED floor (15). A clan starting at zero crosses into TOLERATED with one dull answer plus a few clean polls. Heat, Hutt Interest
   and the orbital timer are identical poll for poll across all 160 polls (2a-2g), and again in the messy run (8e, 8f). A late answer,
   given after the clan left the ground or the toggle went off, still settles once (`broaden2_late_answer.txt`).
 - true: (c) moves exposure pressure | evidence: `whittle/cathedral_survey_misdirection_quest_1/evidence/selftest_rustcathedral_survey.txt`
