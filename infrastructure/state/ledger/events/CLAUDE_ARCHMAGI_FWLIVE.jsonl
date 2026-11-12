@@ -1,1 +1,4 @@
 {"seat":"CLAUDE_ARCHMAGI_FWLIVE","event":"claim","id":"BLEED_WELL_BUILD_SWITCH_AND_SAY_WHY","session":"49f68869-8ece-43a7-b13f-dce38b8a5a02","ts":"2026-11-12T03:50:15Z","tsn":1794455415571737036}
+{"seat":"CLAUDE_ARCHMAGI_FWLIVE","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"BLEED_WELL_BUILD_SWITCH_AND_SAY_WHY: live proof","ts":"2026-11-12T03:53:18Z","tsn":1794455598669937694}
+{"seat":"CLAUDE_ARCHMAGI_FWLIVE","event":"bridge","state":"released","ts":"2026-11-12T04:16:57Z","tsn":1794457017152569415}
+{"seat":"CLAUDE_ARCHMAGI_FWLIVE","event":"note","id":"BLEED_WELL_BUILD_SWITCH_AND_SAY_WHY","text":"Claude Whittle CLAUDE_ARCHMAGI_FWLIVE released this claim: no live item file (ledger ghost)","why":"picker took a ledger-open id with no items/<ID>.md","ts":"2026-11-12T04:18:16Z","tsn":1794457096738449439}
