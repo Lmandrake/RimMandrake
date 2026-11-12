@@ -1,0 +1,6 @@
+{
+ "run": "bench-ek-st3e-20261112",
+ "stage": 3,
+ "outcome": "done",
+ "summary": "Stage 3 reworked against the third judge's 11 gaps: recovery reads skip reason immune; door lane reads the pawn's impact; impactFactor 0 against a pawn and a door; sweep gains an unpatched lane and an immuneBodySize row; flagship crate slides exactly one cell; container jolt journaled and traced; sc_pit_enemy split from sc_pit_fall; EMP lane over a covered pit; wild goods throw checked 1.3-2.0x kernel and farther than a colonist; killed scene asserts a death; pit-floor and big-corpse skips inventoried (kept) and covered in sc_spared."
+}
