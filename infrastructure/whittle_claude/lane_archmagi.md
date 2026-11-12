@@ -24,3 +24,11 @@ CLAUDE_STEVEDESKTOP_FWLIVE: never touch `infrastructure/whittle_claude/steve.sh`
    game in a broken state; then stop it (`live_session.stop_game()`) and mark it `./game --why "..." down`.
 
 Never test a flyer's flight live. A dev quicktest colony (`rimworld-debug-testing`) is the usual site.
+
+## Screenshots and modal dialogs (read before any live look)
+- Load `rimbridge` and `rimworld-live-review` once before a live look. `jawa/clear_ui` first (the dev log window sits in frame), frame with a camera tool (`jawa/jump_camera_to_cell`, `rimworld/set_camera_zoom`; take_screenshot ignores x/z/zoom), then:
+  `python.exe "$(wslpath -w src/RimMandrake/Utils/rimbridge_client.py)" --call jawa/take_screenshot --json '{"fileName":"<bare_name>"}' --yes-i-know-this-is-live`
+  (`.png` is appended; the result's `filePath` is a Windows path under `...\RimWorld by Ludeon Studios\Screenshots\`; `wslpath -u` it, copy under `/mnt/d/ClaudeWork/rimmandrake/whittle_claude/$RIMFLOW_SEAT/`). Then LOOK at the PNG with the Read tool before you claim any visual bar; success:true is not a picture.
+- Whole desktop incl. dialogs: `python.exe "$(wslpath -w src/RimMandrake/Utils/system_screenshot.py)" 'D:\ClaudeWork\rimmandrake\whittle_claude\x.bmp'` (WSL `python3` only prints "Windows-only").
+- After any new colony or map call `jawa/name_colony` (factionName, settlementName): the naming dialog `Dialog_NamePlayerFactionAndSettlement` force-pauses and re-raises every ~1000 ticks until named; closing never sticks. Stuck already: `jawa/name_colony` then `rimworld/close_window`.
+- Before trusting a timed run, `rimworld/get_ui_state`: `windowsForcePause=true` means a blocked run, not a result. Fix table: `skills/northstar-validation/SKILL.md` row `modal_open`; `belt_watchdog.py` BAD_MODALS.

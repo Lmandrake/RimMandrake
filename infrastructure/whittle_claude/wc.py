@@ -717,7 +717,7 @@ def prompt_md(v, d, lane):
     t = re.sub(r"\A\s*<!--.*?-->\s*", "", t, flags=re.S)
     verify = oneline(section(item_text(v.id), "verify"), 300)
     see = ("its proof script or a bridge session on your lane's game only (the lane file says which, and how to hold "
-           "the bridge), screenshots through the bridge" if lane == "fwlive" else
+           "the bridge), in-game screenshots through the bridge that you then Read (lane file: how, and modal dialogs)" if lane == "fwlive" else
            "the offline check the item names (a selftest, a validator, a build), and its output")
     fills = ["`%s` (%s)" % (v.id, oneline(v.title, 200)),
              "built so every bullet in its STATEMENT.md is true in ordinary use, shown by fresh evidence",
