@@ -1,4 +1,4 @@
-# 2026-11-11 21:32 -0800 at HEAD f70be4f719 ordinary use: lessons in the real inbox and what the pass's own collector makes of them
+# 2026-11-11 21:35 -0800 at HEAD d997662cf9 ordinary use: lessons in the real inbox and what the pass's own collector makes of them
 # this round's lesson, filed with WC_ITEM set by the Whittle loop; the commit that added it:
   13c3626830 2026-11-11 20:42:33 -0800 AGENT_IMPROVE_AUDIT_KINDLESS_RECORDS_ALL_TWO: evidence, broaden, lessons README names --item
 
@@ -12,6 +12,7 @@
   20261112T052032Z-CLAUDE_STEVEDESKTOP_OFFLINE2-whittle-loop-re-ran-worl item: WORLD_REMAKE_FINAL_STEP_1
   20261112T052044Z-CLAUDE_ARCHMAGI_FWLIVE-jawa-mod-settings-field-writes item: GSS_WATER_STUB_FIX_PASSED_LAST_WEEK
   20261112T052044Z-CLAUDE_ARCHMAGI_FWLIVE-vanilla-waterdeep-has-no-water item: GSS_WATER_STUB_FIX_PASSED_LAST_WEEK
+  20261112T052152Z-CLAUDE_STEVEDESKTOP_OFFLINE1-stevedesktop-2026-11-11- item: CATHEDRAL_DESCENT_REVEAL_SITE_1
   20261112T052305Z-BENCH-steve-wsl-vhdx-moved-hdd.md                     item: NONE
   20261112T052312Z-BENCH-ssh-remote-powershell-eats-stdin.md             item: NONE
 
@@ -46,13 +47,14 @@ home: design/RimMandrake/daily_agent_improvement_2026-11-02.md
   task_kind=None     target=None                                   20261112T052032Z-CLAUDE_STEVEDESKTOP_OFFLINE2-whittle-loop-re-ran-world-remake.md
   task_kind=FIX      target=None                                   20261112T052044Z-CLAUDE_ARCHMAGI_FWLIVE-jawa-mod-settings-field-writes-flowworks.md
   task_kind=FIX      target=None                                   20261112T052044Z-CLAUDE_ARCHMAGI_FWLIVE-vanilla-waterdeep-has-no-waterproofconduitable-affordance.md
+  task_kind=None     target=None                                   20261112T052152Z-CLAUDE_STEVEDESKTOP_OFFLINE1-stevedesktop-2026-11-11-rimworld-moved.md
   task_kind=None     target=steve_c_drive_fill_2026-11-03.md       20261112T052305Z-BENCH-steve-wsl-vhdx-moved-hdd.md
   task_kind=None     target=wsl-windows-plumbing                   20261112T052312Z-BENCH-ssh-remote-powershell-eats-stdin.md
 
 $ python3 src/RimMandrake/Utils/agent_improve.py gather --day 2026-11-12 --dry-run --out <scratch, L0>
 # Agent improvement packet 2026-11-12
 
-28 pieces today; 2 signalled targets (>= 2 pieces in 7 days), cap 6.
+29 pieces today; 2 signalled targets (>= 2 pieces in 7 days), cap 6.
 
 ## loop.sh (2 in window, 2 today)
 kinds: lesson 2
@@ -82,5 +84,6 @@ kinds: lesson 2
 - [lesson] Whittle loop re-ran WORLD_REMAKE_FINAL_STEP_1 three times on 2026-11-11 although the ledger blocks it (on BIOME_PAINT_ONCE_AT_THE_END_1, owner BENCH, never offered): wc.py setup should skip items with
 - [lesson] jawa/mod_settings_field writes a FlowWorks swim switch WITHOUT running RM_SwimWater.Reapply, so the deep band on a live map does not change: follow it with jawa/static_call type=RimMandrake.FlowWorks.
 - [lesson] Vanilla WaterDeep has no WaterproofConduitable affordance (live jawa/build_check refuses WaterproofConduit there), so a matrix scene that spawns conduit on WaterDeep is a layout no player can build; F
+- [lesson] SteveDesktop 2026-11-11: RimWorld moved to D:\SteamLibrary\steamapps\common\RimWorld (C: copy holds only Mods). winbuild needs /p:RimWorldManaged=<D: Managed> and /p:HarmonyDll=D:\SteamLibrary\steamap
 
 Not signalled today: CLAUDE.md, common.md, daily_agent_improvement_2026-11-02.md, install.sh, selftest_codex_seats.py, steve_c_drive_fill_2026-11-03.md, wsl-windows-plumbing

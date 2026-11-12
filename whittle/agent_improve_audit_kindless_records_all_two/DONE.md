@@ -7,7 +7,7 @@
 - true: **A change applied below L2 either records source kinds, or the decision to let it stay uncheckable is written in | evidence: `whittle/agent_improve_audit_kindless_records_all_two/evidence/selftests_new_code.out` `whittle/agent_improve_audit_kindless_records_all_two/evidence/selftests_old_code.out` `whittle/agent_improve_audit_kindless_records_all_two/evidence/ordinary_use_lesson.out` `whittle/agent_improve_audit_kindless_records_all_two/evidence/attribution_audit.out`
 - true: **The share of change records with no source kinds is measured from `infrastructure/state/agent_improve/changes/` and | evidence: `whittle/agent_improve_audit_kindless_records_all_two/evidence/measure_kindless.out` `whittle/agent_improve_audit_kindless_records_all_two/evidence/measure_kindless.py`
 
-Every evidence file was re-run 2026-11-11 21:32-21:38 PST at HEAD f70be4f719 plus the §4.3 figure update. The
+Every evidence file was re-run 2026-11-11 after the last landing (stamps in each file); figures as of 21:38 PST. The
 figures hold (attribution 206 of 422, still 49%; lessons ever filed 2406, whole text kinds 584; 2 of 2 records
 kindless); §4.3 now cites these, not the earlier 2400/582 and 8-of-114 run. `measure_kindless.py` is unchanged since it
 was committed (only re-run). `ordinary_use_lesson.out` no longer carries a hand-copied `lessons.py add` line (its
