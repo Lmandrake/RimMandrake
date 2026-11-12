@@ -1,0 +1,279 @@
+{
+ "script": "deep_stone_live.py",
+ "started": "2026-11-11T23:34:08",
+ "rows": [
+  {
+   "id": "DS_map_has_deep_stone",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS",
+   "detail": {
+    "report": "DEEPSTONE Sandstone chunk=ChunkSandstone | source fallback | enabled True",
+    "surface": "SURFACE walls Granite:1060,Limestone:2181,Marble:386 | chunks ChunkGranite:440,ChunkLimestone:526,ChunkMarble:403,ChunkMechanoidSlag:7",
+    "deepRockWallsOnMap": 0
+   }
+  },
+  {
+   "id": "DS_broaden_finds_on",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS",
+   "detail": {
+    "deepstone": "DEEPSTONE Sandstone chunk=ChunkSandstone | source fallback | enabled True",
+    "before": "DIGFINDS finds 0 | gravel 0 | ice 0 | budget unset | first-found 0 | last ",
+    "after": "DIGFINDS finds 2 | gravel 0 | ice 0 | budget 728 | first-found 2 | last Steel x10 @47,47 D=4",
+    "depth": [
+     3,
+     4
+    ],
+    "cutAt": 26000,
+    "newThings": {
+     "ChunkSandstone38843": [
+      "ChunkSandstone",
+      48,
+      47
+     ],
+     "Steel38844": [
+      "Steel",
+      47,
+      48
+     ]
+    },
+    "newLetters": [
+     "Found while digging: Steel",
+     "Deep stone: Sandstone"
+    ],
+    "designate": "{'success': True, 'action': 'add', 'designation': 'RM_DigCanal', 'added': 1, 'removed': 0, 'alreadyPresent': 0, 'alreadyAbsent': 0, 'skippedWrongType': 0, 'targetType': 'Cell', 'targetedThings': False",
+    "timeline": [
+     [
+      26000,
+      4,
+      "Steel x10 @47,47 D=4"
+     ]
+    ],
+    "chunkDepth": [
+     0
+    ],
+    "deepCutLogged": [],
+    "shots": {
+     "letter": {
+      "id": "Letter_2",
+      "type": "Verse.StandardLetter",
+      "letterDef": "PositiveEvent",
+      "label": "Deep stone: Sandstone",
+      "text": "Rei dug 2 m down and broke through into a layer of sandstone. The surface rock here does not show it. A sandstone chunk lies at the pit's edge; every cut this deep may turn up more.",
+      "arrivalTick": 25975,
+      "ageTicks": 68,
+      "canDismissWithRightClick": true,
+      "shouldAutomaticallyOpenLetter": false,
+      "lookTargets": {
+       "isValid": true,
+       "any": true,
+       "targetCount": 1,
+       "targetsTruncated": false,
+       "primaryTarget": {
+        "kind": "thing",
+        "id": "Thing_ChunkSandstone38843",
+        "label": "sandstone chunk",
+        "thingType": "Verse.Thing",
+        "defName": "ChunkSandstone",
+        "mapId": "Map_0",
+        "mapIndex": 0,
+        "position": {
+         "x": 48,
+         "z": 47
+        }
+       },
+       "targets": [
+        {
+         "kind": "thing",
+         "id": "Thing_ChunkSandstone38843",
+         "label": "sandstone chunk",
+         "thingType": "Verse.Thing",
+         "defName": "ChunkSandstone",
+         "mapId": "Map_0",
+         "mapIndex": 0,
+         "position": {
+          "x": 48,
+          "z": 47
+         }
+        }
+       ]
+      },
+      "choiceCount": 2,
+      "choices": [
+       {
+        "index": 1,
+        "text": "Close",
+        "disabled": false,
+        "closesDialog": true,
+        "hasAction": true,
+        "hasLink": false
+       },
+       {
+        "index": 2,
+        "text": "Jump to location",
+        "disabled": false,
+        "closesDialog": true,
+        "hasAction": true,
+        "hasLink": false
+       }
+      ]
+     },
+     "pit": "C:\\Users\\sjlewis\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\deep_stone_finds_pit__cell_rect.png",
+     "open": "{'success': True, 'requestedLetterId': 'Letter_2', 'letter': {'id': 'Letter_2', 'type': 'Verse.StandardLetter', 'letterDef': 'PositiveEvent', 'label': 'Deep stone: Sandstone', 'text': \"Rei dug 2 m dow",
+     "letterShot": "C:/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Screenshots\\deep_stone_finds_letter.png"
+    }
+   }
+  }
+ ],
+ "args": {
+  "out": "D:/ClaudeWork/rimmandrake/scratch/ds_finds.json",
+  "origin": "40,40",
+  "fresh_map": true,
+  "from_surface": false,
+  "wide_pit": 0,
+  "finds_on": true,
+  "order": false,
+  "shots": "finds"
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "Badger38626",
+    "Cougar38636",
+    "Cougar38637",
+    "Cougar38638",
+    "Deer38616",
+    "Deer38617",
+    "Deer38618",
+    "Deer38619",
+    "Deer38620",
+    "Deer38621",
+    "Deer38647",
+    "Deer38648",
+    "Deer38649",
+    "Deer38650",
+    "Deer38651",
+    "Deer38652",
+    "Deer38653",
+    "Deer38654",
+    "Deer38655",
+    "Hare38622",
+    "Hare38630",
+    "Hare38631",
+    "Hare38639",
+    "Ibex38623",
+    "Ibex38624",
+    "Ibex38625",
+    "Ibex38644",
+    "Ibex38645",
+    "Ibex38646",
+    "Megasloth38627",
+    "Mink38657",
+    "Porcupine38634",
+    "Rat38615",
+    "Rat38629",
+    "Rat38632",
+    "Rat38656",
+    "Rhinoceros38640",
+    "Rhinoceros38641",
+    "Rhinoceros38642",
+    "Rhinoceros38643",
+    "Squirrel38628",
+    "Squirrel38635",
+    "Turkey38633"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  },
+  "fed": [
+   "Human596",
+   "Human599",
+   "Human602"
+  ]
+ },
+ "settings_before": {
+  "digDeepStoneEnabled": "True",
+  "digRockChunksEnabled": "True",
+  "digFindsEnabled": "True",
+  "digFindLetterEnabled": "True",
+  "digRockChunkMultiplier": "1",
+  "digLabourMultiplier": "4"
+ },
+ "armed": "ARMED: the next canal cut rolls with certainty | DIGFINDS finds 0 | gravel 0 | ice 0 | budget unset | first-found 0 | last ",
+ "digger": "Human38718",
+ "job_probe": {
+  "success": true,
+  "kind": "dig",
+  "cell": {
+   "x": 47,
+   "z": 47
+  },
+  "fogged": false,
+  "terrain": "RM_Channel_Deep",
+  "designationPresent": true,
+  "designator": {
+   "accepted": false,
+   "reason": "Already being dug as a canal."
+  },
+  "workGiver": {
+   "def": "RM_DigCanalWorkGiver",
+   "shouldSkip": false,
+   "cellInPotentialWorkCells": true,
+   "hasJobOnCell": true,
+   "jobDef": "RM_DigCanalJob",
+   "designationDeletedByWorkGiver": false,
+   "designationRestored": false
+  },
+  "pawn": {
+   "id": "Human38718",
+   "workType": "Mining",
+   "workTypeDisabled": false,
+   "workActive": true,
+   "priority": 3,
+   "giverInNormalList": true,
+   "canReach": true
+  },
+  "ticksGame": 33,
+  "operation": {
+   "OperationId": "op_e3ea6c4cf352411e84ab3ccd1a2bcffc",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 46
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 33
+  }
+ },
+ "job_order": {
+  "accepted": true,
+  "note": "not ordered: left to the work scan"
+ },
+ "timeline": [
+  [
+   26000,
+   4,
+   "Steel x10 @47,47 D=4"
+  ]
+ ],
+ "finished": "2026-11-11T23:42:06"
+}
