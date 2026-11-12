@@ -1,6 +1,6 @@
 # Done claim
 
-- true: A1 L0: implementation and current specifications agree with the cited owner answer; focused offline checks pass. | evidence: `whittle/rimmandrake_split_hugethings_plant_and_titan_promises/evidence/a1_spec_split.txt` `whittle/rimmandrake_split_hugethings_plant_and_titan_promises/evidence/a1_selftest_showcases.txt` `whittle/rimmandrake_split_hugethings_plant_and_titan_promises/evidence/a1_selftest_showcases_verbose.txt` `whittle/rimmandrake_split_hugethings_plant_and_titan_promises/evidence/a1b_selftest_showcases_selection_probe.txt`
+- true: A1 L0: implementation and current specifications agree with the cited owner answer; focused offline checks pass. | evidence: `whittle/rimmandrake_split_hugethings_plant_and_titan_promises/evidence/a1_spec_split.txt` `whittle/rimmandrake_split_hugethings_plant_and_titan_promises/evidence/a1_selftest_showcases.txt` `whittle/rimmandrake_split_hugethings_plant_and_titan_promises/evidence/a1_selftest_showcases_verbose.txt`
 - unseen: A2 L2: Separate restored disposable-site demonstrations support both promises; titan showcase orders crossing, death, crowd. L4 feel remains with owner. | evidence: none: this is an offline lane, the two drivers have never run against a game.
 - true: - | evidence: `whittle/rimmandrake_split_hugethings_plant_and_titan_promises/STATEMENT.md` (the three blank `- ` bullets setup wrote: no claim, nothing owed)
 
