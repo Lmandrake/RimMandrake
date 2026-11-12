@@ -148,9 +148,9 @@ the newest version of each target:
   Whittle loop's `WC_ITEM`; `item: NONE`, or an id with no intent word, gives no kind and is never second-guessed from
   the text), a Relentless reject or learned line's item, a Relentless alarm's `item` or its `clones/<item>` path, an
   owner note's item, an ops alarm's own id. Otherwise it is the first item named anywhere in the piece's whole text, not
-  only the 200 characters the packet shows: of the 2391 lessons ever filed, the first line names a kind for 158 (7%), the
-  whole text for 579 (24%). That fallback is a proxy, not provenance: the lesson's own seat wrote a ledger event on that
-  item within 3 hours of filing for 27% of the first-line cases and 48% of the whole-text-only ones, so reading the whole
+  only the 200 characters the packet shows: of the 2396 lessons ever filed, the first line names a kind for 159 (7%), the
+  whole text for 582 (24%). That fallback is a proxy, not provenance: the lesson's own seat wrote a ledger event on that
+  item within 3 hours of filing for 27% of the first-line cases and 49% of the whole-text-only ones, so reading the whole
   text is no less sound than the first line was, and only the footer is sound. Each cited piece in a change record
   carries its `task_kind`.
   **A change at L0 or L1 whose cited pieces still name no item is applied, and its record says `source_kinds: []`: it
@@ -162,7 +162,7 @@ the newest version of each target:
   for no extra evidence (4.1: gross bugs first), and a refused diff counts as proposed and not applied, which pulls down
   the acceptance rate the ramp reads. Measured 2026-11-11: 2 of 2 change records on file have `source_kinds: []`
   (rimworld-modding v1 and using-rimflow v1, both L0, one lesson each). Neither lesson names an item anywhere, so this
-  reading gives them none either. In the live inbox, 5 of 105 lessons name an item (1 by their first line), so most
+  reading gives them none either. In the live inbox at 20:48 PST, 8 of 110 lessons name an item (2 by their first line, 1 by a footer), so most
   skill changes will stay unmeasured until lessons are filed inside an item and so carry its `item:` line. Measurement:
   `whittle/agent_improve_audit_kindless_records_all_two/evidence/measure_kindless.py` and `attribution_audit.py` beside it.
 - The L2 gate (`AGENT_IMPROVE_TUNE_L2_GATE_SAMPLE_POWER`, decided before the ramp first reached L2, with

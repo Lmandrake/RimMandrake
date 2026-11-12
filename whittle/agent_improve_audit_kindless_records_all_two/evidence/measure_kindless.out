@@ -1,4 +1,4 @@
-# 2026-11-11 20:38 -0800  repo HEAD 991be3c29b; old code = 66ab8395fd (before this item's changes)
+# 2026-11-11 20:46 -0800  repo HEAD 06a258f90f; old code = 66ab8395fd (before this item's changes)
 # command: python3 whittle/agent_improve_audit_kindless_records_all_two/evidence/measure_kindless.py /tmp/aik/old/src/RimMandrake/Utils
 ## 1. change records on file: source_kinds == [] out of all
   rimworld-modding_v1.json     level-day 2026-11-01  pieces 1  source_kinds []
@@ -11,8 +11,9 @@
   using-rimflow_v1.json (20261102T021348Z-BENCH-rimflow-seat-after-verb.md): whole lesson body names an item -> kind None; adding commit "aa1853fc18 relentless_live: read drift-only plans, get_defs ';' keys, refuse later-changed and cut criteria" -> kind None; seat BENCH touched 41 distinct items within 1 h of it (?, BUILD, CENSUS, DECIDE, DEPLOY, DESIGN, DIAGNOSE, ENFORCE, FIX, INSTALL, MEASURE, REDRAW, RENAME, REPAIR, RETIRE, TUNE, UNIFY, VET, WIDEN, WIRE)
 
 ## 3. how often a piece names its kind: first line (old) vs whole text (new)
-  every lesson ever filed (body at its adding commit): 2391; kinded by first line 158 (7%), by whole body 579 (24%)
-  every piece collect() sees now (new code), n / kinded: {'alarm': '458 / 304', 'learned': '3906 / 3393', 'lesson': '106 / 6', 'owner_said': '2609 / 2184', 'reject': '2032 / 1636'}
+  every lesson ever filed (body at its adding commit): 2396; kinded by first line 159 (7%), by whole body 582 (24%)
+  the live inbox: 110 lessons; an item named in the first line 2, anywhere in the text 8, an item: footer 1
+  every piece collect() sees now (new code), n / kinded: {'alarm': '458 / 304', 'learned': '3906 / 3393', 'lesson': '110 / 8', 'owner_said': '2609 / 2184', 'reject': '2032 / 1636'}
 
 ## 4. ordinary use: gather at L1 (bar: 2 task kinds) on the real sources, old code vs new
   2026-11-04  signalled old ['relentless']           new ['relentless']                           held-for-kinds old 0 new 0
