@@ -352,10 +352,17 @@
     "ref": "run bench-ek-st4f-20261112",
     "stage": 3,
     "tokens": 3940000
+   },
+   {
+    "at": "2026-11-12T09:47:11Z",
+    "kind": "unmeasured",
+    "ref": "run bench-ek-st4g-20261112",
+    "stage": 4,
+    "tokens": 3940000
    }
   ],
   "reserve": 60000,
-  "spent": 46437485
+  "spent": 50377485
  },
  "history": [
   {
@@ -657,6 +664,24 @@
    "stage": 4,
    "what": "close",
    "why": "run bench-ek-st4f-20261112: stage 3 done"
+  },
+  {
+   "at": "2026-11-12T09:47:02Z",
+   "stage": 4,
+   "what": "over_budget",
+   "why": "46437485 of 4000000 spent; run bench-ek-st4g-20261112 goes on with 3940000 (advisory)"
+  },
+  {
+   "at": "2026-11-12T09:47:02Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run bench-ek-st4g-20261112, stage 4, budget 3940000"
+  },
+  {
+   "at": "2026-11-12T09:47:11Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run bench-ek-st4g-20261112: stage 4 done"
   }
  ],
  "item": "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
@@ -820,11 +845,32 @@
    "run": "bench-ek-st4f-20261112",
    "stage": 3,
    "summary": "Stage 3 touch-up from the exam5 cold readers' notes, no rule change: the sheet's shield-belt line now names the gas-shove exception (already in the gas how line), fire at half reads half strength, a pawn a gas burst shoves onto a cover stands on it with the cover whole (d_c_gas_shove: gas bursts never break covers), and the container line states its shove limits (one cell or a jolt, never into a pit, wall or pawn). Tree experiences of shield_belt_holds and blast_breaks_pit_cover match."
+  },
+  {
+   "at": "2026-11-12T09:47:11Z",
+   "inputs": {
+    "exam": "8a3a9eb3ed14ceb72633c1fa0ec7d7b0fac25e31cd9ffd54f24e66c736bc11af",
+    "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
+    "scenes": "a3aa1713add4003c57676e121813628fe01c48e1139b861e3f322783ca246794",
+    "sheet": "af8293a3788cc5e5ed3510abe522b8376496d0f8f211ad104146e4d31b04dae6",
+    "tree": "fa1bd6b1f62017952604a800d8ee9cd1c231196e101628807d33dfc5c25e843b"
+   },
+   "manifest": {
+    "designer.md": "b79052133c514f160b33c30b53d69a947adbfdbc81304681463b1038e82fce9f",
+    "designer_exam.md": "9892f91253ca15581c15f6f64d211a2275f345d0e13e0200dcda9c9f8004e07a"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "bench-ek-st4g-20261112",
+   "stage": 4,
+   "summary": "Cold Reader exam on the judge4 rework (exam5): fresh opus Examiner (24) and Challenger (10, 8 rejects), 34 frozen scenarios; both counted readers 34/34 on the settled sheet; control with closed_container_holds stripped accepted the container rejects e22 and c8 (control missed). Three earlier readers (each 34/34) flagged thin wording, settled from the record and voided."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 5,
  "status": "ready"
 }

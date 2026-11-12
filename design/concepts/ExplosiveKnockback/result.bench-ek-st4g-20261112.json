@@ -1,0 +1,6 @@
+{
+ "run": "bench-ek-st4g-20261112",
+ "stage": 4,
+ "outcome": "done",
+ "summary": "Cold Reader exam on the judge4 rework (exam5): fresh opus Examiner (24) and Challenger (10, 8 rejects), 34 frozen scenarios; both counted readers 34/34 on the settled sheet; control with closed_container_holds stripped accepted the container rejects e22 and c8 (control missed). Three earlier readers (each 34/34) flagged thin wording, settled from the record and voided."
+}
