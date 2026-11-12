@@ -35,6 +35,6 @@ test_titan_phases_run_in_order_with_stamps (__main__.T.test_titan_phases_run_in_
 ok
 
 ----------------------------------------------------------------------
-Ran 6 tests in 0.145s
+Ran 6 tests in 0.143s
 
 OK

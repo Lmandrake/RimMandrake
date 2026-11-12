@@ -1,7 +1,10 @@
-2026-11-11T22:09:31-08:00
-c68c7e8a91f466b9613da6259f55c03f31c8d222
+2026-11-11T22:33:40-08:00
+fddee3a09d551c730816f59b168b7f2814b0578d
 {
- "state": "DRAFT",
+ "present": true,
+ "declared_state": "DRAFT",
+ "recorded_hash": "",
+ "current_hash": "eec265620aa344b74182fba8752efba2e939e64c90b847b25a9d43f75998da62",
  "must_show": [
   "plant_trunk_solid_where_art_meets_ground",
   "plant_cap_space_open",
@@ -23,47 +26,22 @@ c68c7e8a91f466b9613da6259f55c03f31c8d222
  "cannot_show": [
   "one_demo_for_both_promises",
   "showcase_out_of_order"
- ]
+ ],
+ "cannot_show_text": {
+  "one_demo_for_both_promises": "one scene offered as the proof of both giant plants and titans",
+  "showcase_out_of_order": "the crowd at the remains before the crossing or the death"
+ },
+ "kinds": {
+  "plant_trunk_solid_where_art_meets_ground": "state",
+  "plant_cap_space_open": "state",
+  "plant_click_selects_picture": "state",
+  "plant_growth_seals_door_until_cut": "change",
+  "titan_crossing_destroys": "change",
+  "titan_dies_into_remains": "change",
+  "titan_crowd_comes_for_remains": "change",
+  "one_demo_for_both_promises": "state",
+  "showcase_out_of_order": "state"
+ },
+ "state": "DRAFT",
+ "reason": "state: is DRAFT, not VALIDATED"
 }
-record.root_draft: HugeThings makes two promises, each with its own demonstration (owner, by card 2026-11-11, OWNER:1794385279040012420). GIANT PLANTS: a giant fungus is as big as it looks. Its stem and roots are solid where its picture touches the ground, the space under its cap stays open, clicking its picture selects it, and a trunk that grows across a doorway seals it until colonists cut the fungus down (demonstration: src/RimMandrake/HugeThings/northstar/showcase_plants_live.py). TITANS: a broad body has physical consequences. A titan's crossing breaks what it walks through, its death leaves remains worked over days under ordinary meat rot, and a crowd of scavengers and visiting people comes to compete for them. The first demonstration is the titan's: the destructive crossing, then its death, then the crowd at the remains, in that order (demonstration: src/RimMandrake/HugeThings/northstar/showcase_titan_live.py). HugeThings supplies the common machinery; the biomes supply the living things, Large Pawns their larger bodies when loaded, and each promise has its own master setting. Must-show bars for both promises: design/validation_walks/RimMandrake/HugeThings.md#north-star (DRAFT).
-  <description>Huge plants and huge animals that behave like their size. Mass has consequences.
-
-The engine gives every plant and every pawn one cell, however big it is drawn. A
-mushroom twenty cells across can only be clicked on the cell it grows from,
-pawns walk straight through its stem, and walls get built inside it. A beast
-the size of a house walks through a doorway, hides behind a sandbag and gets
-penned like a chicken.
-
-Huge Things makes two promises for anything that opts in.
-
-GIANT PLANTS are as big as they look.
-- A huge plant gets a solid trunk. The cells where its art touches the ground
-  are solid (measured per species, and grown into as the plant grows), so pawns
-  walk around it and nothing can be built inside it. You still walk under its
-  cap. Clicking anywhere on its picture selects it. Trunks give partial cover,
-  and shots into them hurt the plant.
-- A trunk that grows across a doorway seals it: cut the plant down to get in
-  or out.
-
-TITANS have bodies with consequences.
-- A huge animal gets a selection hitbox the size of its drawn body.
-- A titan (any creature of body size 4 or more, or one a mod opts in) gets a
-  size tier. Its crossing breaks what it walks through: heavy, colossal and
-  titanic creatures crush crates and plants, breach walls, hole thin roofs and
-  leave rubble, struggle under overhead mountain, and the biggest smash through
-  giant plants while smaller titans go around the trunks like walls.
-- Its death leaves remains: the largest become a harvest site worked over
-  days, and scavengers and visitors come to compete for them. Smaller titans
-  butcher for a curved yield.
-
-With Large Pawns (neku.largepawns) loaded, titans also occupy 2x2 to 4x4
-cells, using this mod's tiers; without it they stay one cell and everything
-else still works.
-
-Mod Settings: one master switch for giant plants and one for giant animals,
-each with every detailed behaviour and its tuning beneath. All off is vanilla.
-
-This is the engine only. A plant opts in with the RM_HugePlantExtension, a
-race with the RM_HugePawnExtension or RM_TitanicExtension modExtension (or
-simply a large enough body size). This mod replaces "RimMandrake: Titanic
-Creatures" (mandrake.rm.titaniccreatures), which is now part of it.</description>

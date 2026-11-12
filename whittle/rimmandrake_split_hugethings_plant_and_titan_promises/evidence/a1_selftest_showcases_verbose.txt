@@ -1,24 +1,40 @@
-  PRE_ready                  PASS       HARNESS fake preflight
+test_failed_crossing_gates_death_and_crowd (__main__.T.test_failed_crossing_gates_death_and_crowd) ...   PRE_ready                  PASS       HARNESS fake preflight
   CROSSING_walked            FAIL       MOD     did not reach the goal: path 101 samples [(26, 165)]..[(26, 165)], max step 0.0 cells/120 ticks, 12000 ticks, re-orders 20
   CROSSING_destroys          UNMEASURED HARNESS no full crossing to judge; before {'wall': 13, 'tree': 5, 'giant': 1, 'rubble': 0, 'blocker': 0} after {'wall': 13, 'tree': 5, 'giant': 1, 'rubble': 0, 'blocker': 0} destroyed {'wall': 0, 'tree': 0, 'giant': 0} rubble +0
   DEATH_titan_dies           UNMEASURED HARNESS gated: phase CROSSING ended UNMEASURED, so DEATH was not run (the order is fixed, never reordered)
   DEATH_corpse_site          UNMEASURED HARNESS gated: phase CROSSING ended UNMEASURED, so DEATH was not run (the order is fixed, never reordered)
   CROWD_arrives              UNMEASURED HARNESS gated: phase CROSSING ended UNMEASURED, so CROWD was not run (the order is fixed, never reordered)
   CROWD_targets_site         UNMEASURED HARNESS gated: phase CROSSING ended UNMEASURED, so CROWD was not run (the order is fixed, never reordered)
-..  PLANT_grown                PASS       MOD     blockers around=10 south=0 (allowed [10, 13, 17]) | probe: registered=True realized=True
+ok
+test_help (__main__.T.test_help) ... ok
+test_plants_rows_and_door_orchestration (__main__.T.test_plants_rows_and_door_orchestration) ...   PLANT_grown                PASS       MOD     blockers around=10 south=0 (allowed [10, 13, 17]) | probe: registered=True realized=True
   PLANT_trunk_solid          PASS       MOD     colonist Col1; [((38, 200), False), ((38, 201), False), ((39, 200), False), ((39, 201), False), ((40, 200), False), ((40, 201), False)]
-  PLANT_cap_open             PASS       MOD     drawRect {'x': 36.0, 'z': 199.0, 'w': 9.0, 'h': 9.0}; [((36, 206), True), ((37, 205), True), ((38, 204), True), ((39, 203), True), ((40, 202), True), ((43, 200), True)]
-  PLANT_selection            UNMEASURED HARNESS no instrument: CompHugeFootprint.SelectRect() is an instance method with no bridge or static hook; picture drawRect for the comparison: {'x': 36.0, 'z': 199.0, 'w': 9.0, 'h': 9.0}
+  PLANT_cap_open             PASS       MOD     picture (37.4, 200.2, 44.6, 211.8); [((44, 211), True), ((38, 210), True), ((40, 208), True), ((42, 206), True), ((44, 204), True), ((38, 203), True)]
+  PLANT_selection            PASS       MOD     96/96 picture cells select it (90 first); ring overreach 0/60; plant=Plant_RM_Nogtyl1 growth=1 selectionOn=True variant=Nogtyl_A flip=False quad=34.5,200 side=12 picture=37.4,200.2..44.6,211.8 selectRect=(37,200)-(44,211) pictureCells=96 hits=96 first=90 missed=none ringCells=60 ringHits=0 aheadOfPl
   PLANT_door_seal            PASS       MOD     ok=True error= restoration={'ok': True} exit=None
-..  PRE_ready                  PASS       HARNESS fake preflight
+ok
+test_selection_miss_fails_and_off_is_site (__main__.T.test_selection_miss_fails_and_off_is_site) ...   PLANT_grown                PASS       MOD     blockers around=10 south=0 (allowed [10, 13, 17]) | probe: registered=True realized=True
+  PLANT_trunk_solid          PASS       MOD     colonist Col1; [((38, 200), False), ((38, 201), False), ((39, 200), False), ((39, 201), False), ((40, 200), False), ((40, 201), False)]
+  PLANT_cap_open             PASS       MOD     picture (37.4, 200.2, 44.6, 211.8); [((44, 211), True), ((38, 210), True), ((40, 208), True), ((42, 206), True), ((44, 204), True), ((38, 203), True)]
+  PLANT_selection            FAIL       MOD     95/96 picture cells select it (90 first); ring overreach 0/60; plant=Plant_RM_Nogtyl1 growth=1 selectionOn=True variant=Nogtyl_A flip=False quad=34.5,200 side=12 picture=37.4,200.2..44.6,211.8 selectRect=(37,200)-(44,211) pictureCells=96 hits=95 first=90 missed=44,211 ringCells=60 ringHits=0 aheadOf
+  PLANT_door_seal            PASS       MOD     ok=True error= restoration={'ok': True} exit=None
+  PLANT_grown                PASS       MOD     blockers around=10 south=0 (allowed [10, 13, 17]) | probe: registered=True realized=True
+  PLANT_trunk_solid          PASS       MOD     colonist Col1; [((38, 200), False), ((38, 201), False), ((39, 200), False), ((39, 201), False), ((40, 200), False), ((40, 201), False)]
+  PLANT_cap_open             PASS       MOD     picture (37.4, 200.2, 44.6, 211.8); [((44, 211), True), ((38, 210), True), ((40, 208), True), ((42, 206), True), ((44, 204), True), ((38, 203), True)]
+  PLANT_selection            UNMEASURED SITE    plant selection is off in Mod Settings: plant=Plant_RM_Nogtyl1 growth=1 selectionOn=False variant=Nogtyl_A flip=False quad=34.5,200 side=12 picture=37.4,200.2..44.6,211.8 selectRect=(37,200)-(44,211) pictureCells=96 hits=96 first=90 missed=none ringCells=60 ringHits=0 aheadOfPlant=none
+  PLANT_door_seal            PASS       MOD     ok=True error= restoration={'ok': True} exit=None
+ok
+test_separate_entrypoints_and_sites (__main__.T.test_separate_entrypoints_and_sites) ... ok
+test_titan_phases_run_in_order_with_stamps (__main__.T.test_titan_phases_run_in_order_with_stamps) ...   PRE_ready                  PASS       HARNESS fake preflight
   CROSSING_walked            PASS       MOD     path 29 samples [(26, 165)]..[(110, 165)], max step 3.0 cells/120 ticks, 3360 ticks, re-orders 0
   CROSSING_destroys          PASS       MOD     before {'wall': 13, 'tree': 5, 'giant': 1, 'rubble': 0, 'blocker': 0} after {'wall': 0, 'tree': 0, 'giant': 0, 'rubble': 17, 'blocker': 0} destroyed {'wall': 13, 'tree': 5, 'giant': 1} rubble +17
   DEATH_titan_dies           PASS       MOD     ORDINARY death path: 3 x jawa/damage Bullet 400 (Thing.TakeDamage; the cause is staged)
   DEATH_corpse_site          PASS       MOD     death cell (110, 165); new sites [('RM_TitanicCorpseSite1', (110, 165))]
   CROWD_arrives              PASS       MOD     SiteDailyStep stepped 1; site RM_TitanicCorpseSite1 at 110,165 meat=100 eaten=0 scav=2 camp=1 S[RM_Scav tier=T1 homedHere=True pred=True spawned=True atSite=True] S[RM_Scav tier=T1 homedHere=True pred=True spawned=True atSite=True]
   CROWD_targets_site         PASS       MOD     a scavenger atSite=True after 1000 ticks: ['RM_Scav tier=T1 homedHere=True pred=True spawned=True atSite=True', 'RM_Scav tier=T1 homedHere=True pred=True spawned=True atSite=True']
-.
+ok
+
 ----------------------------------------------------------------------
-Ran 5 tests in 0.120s
+Ran 6 tests in 0.143s
 
 OK
