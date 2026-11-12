@@ -932,6 +932,38 @@
     "src/RimMandrake/ExplosiveKnockback/"
    ],
    "scope_note": "kept: the same limit that spares a thrumbo spares its corpse"
+  },
+  {
+   "id": "inv_mass_limit_skip",
+   "what": "Goods and corpses heavier than lightMassLimit (75 kg, Mod Settings 5-200) are never thrown (skip reason too_heavy)",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs::Eligible"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::heavy_skip"
+   ],
+   "scope": "approved",
+   "source": [
+    "src/RimMandrake/ExplosiveKnockback/"
+   ],
+   "scope_note": "kept: his 2026-10-06 card throws 'everything light, items and corpses'; all-fly removed a count cap, not the mass limit"
+  },
+  {
+   "id": "inv_too_weak_skip",
+   "what": "A thing at the blast's rim whose kernel throw rounds to 0 cells is not thrown (skip reason too_weak)",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs"
+   ],
+   "proof": "missing",
+   "proof_evidence": [],
+   "scope": "approved",
+   "source": [
+    "src/RimMandrake/ExplosiveKnockback/"
+   ],
+   "scope_note": "kept: a throw of under one cell is no throw; 'reached' in the oracles means a throw of at least one cell"
   }
  ],
  "built_reviewed": [],

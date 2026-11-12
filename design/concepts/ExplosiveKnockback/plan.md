@@ -13,7 +13,9 @@ Each step is one rimflow item, built by Relentless from the tree; none needs wor
    keeping about 70 percent per bounce until spent; throws about 1.6x the person kernel's distance; each good's request line logs its kernel and wild cells. Remove the
    per-tick overflow drop (`maxItemThrowsPerMapTick`) and the 40-throw per-explosion cap (`maxThrowsPerExplosion`):
    his "All of them fly" (d_c_all_fly) leaves no cap, and frame time is a proven bar (item 6), not a limit; every
-   good the wave reaches flies (scene `sc_all_fly_no_cap`, inventory `inv_caps` scoped out). The carrier survives a
+   light good the wave reaches with a throw of a cell or more flies (scene `sc_all_fly_no_cap`, a 5.9-radius blast reaching
+   over 60 in one tick, with a test hook re-imposing the old cap as its control; inventory `inv_caps` scoped out; the
+   mass limit and the rim too_weak skip stay, `inv_mass_limit_skip`, `inv_too_weak_skip`). The carrier survives a
    save mid-air (one thing, never two). Walk row `caps.per_tick_item_cap_drops_overflow` flips. Leaves
    `goods_arc_spin_rebound`, `every_good_moves`, `no_teleport`; scene `sc_storeroom_mortar`.
 2. **Closed containers only, plus the shove** (`RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED`; d_c_closed_containers,
