@@ -115,6 +115,9 @@ def wire(mod, root, lane_file):
     mod.ROOT = root
     mod.OUT_DIR = root
     mod.LANE_FILE = lane_file
+    mod.ITEMS_DIR = os.path.join(root, "items")
+    os.makedirs(mod.ITEMS_DIR, exist_ok=True)
+    open(os.path.join(mod.ITEMS_DIR, "RM_FWLIVE_LANE_ONE.md"), "w").write("live\n")
 
     def local(units):
         return {u: ({"Id": u, "LoadState": "loaded", "ActiveState": "active", "SubState": "running",
@@ -162,7 +165,8 @@ def checks(mod, tmp):
         ("other log line kept", "drained the easy ones" in page),
         ("odd line counted", "1 line with no time stamp" in page),
         ("tools folder not a worker", "## tools" not in page),
-        ("lane count", "Open in the ledger: 2**" in page),
+        ("lane count", "Left to work: 1** FlowWorks" in page and "(1 ready)" in page),
+        ("unfiled lane items apart", "1 more is open in the ledger but has no live item file (1 doing)" in page),
         ("system account", "Claude System account: 42%" in page),
         ("svg one line", page.count("<svg") == 1 and not any(l.strip() == "" for l in page.split("<svg", 1)[1].split("</svg>", 1)[0].splitlines())),
         ("phone has needs", "NEEDS YOU" in phone and "stuckone" in phone),

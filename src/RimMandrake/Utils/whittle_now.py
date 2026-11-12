@@ -48,6 +48,7 @@ OUT_DIR = os.environ.get("WHITTLE_NOW_OUT", "/mnt/d/ClaudeWork/rimmandrake/condu
 NATIVE_OUT = r"D:\ClaudeWork\rimmandrake\conductor"
 NOTICE = os.environ.get("WHITTLE_NOTICE", "/mnt/d/ClaudeWork/rimmandrake/switching_plan/notice.json")
 LANE_FILE = os.path.join(REPO, "infrastructure", "state", "flowworks_lane.json")
+ITEMS_DIR = os.path.join(REPO, "infrastructure", "state", "items")   # items/<ID>.md = the live set (CLAUDE.md)
 STEVE_HOST = os.environ.get("WHITTLE_STEVE_SSH", "stevedesktop-wsl")
 
 STALE_PAGE_S = 180
@@ -402,7 +403,8 @@ def truth(ledger, iid):
 
 
 def lane_count(ledger, sources):
-    """FlowWorks items still open in the ledger, by the lane file's id patterns."""
+    """FlowWorks items left to work (open in the ledger AND a live items/<ID>.md), by the lane file's id patterns;
+    open-in-the-ledger-only items are counted apart."""
     if ledger is None:
         raise Unmeasured("ledger unread")
     data, why = read_json(LANE_FILE)
@@ -421,13 +423,20 @@ def lane_count(ledger, sources):
     evs, w = ledger
     fw = [it for it in w.items.values() if any(p.search(it.id) for p in pats)]
     opened = [it for it in fw if it.open]
+    # "Left to work" is the live set: an open item with a prose file in items/. The rest are open in the ledger only.
+    live = [it for it in opened if os.path.exists(os.path.join(ITEMS_DIR, it.id + ".md"))]
+    unfiled = [it for it in opened if it not in live]
     by_state = {}
-    for it in opened:
+    for it in live:
         by_state[it.state] = by_state.get(it.state, 0) + 1
+    unfiled_by_state = {}
+    for it in unfiled:
+        unfiled_by_state[it.state] = unfiled_by_state.get(it.state, 0) + 1
     t0 = today_start()
     closed_today = [it for it in fw if it.state == "done" and (event_time(evs, it.done_index) or 0) >= t0]
-    owner = sum(1 for it in opened if it.needs == "owner")
-    return {"open": len(opened), "by_state": by_state, "closed_today": len(closed_today), "needs_owner": owner,
+    owner = sum(1 for it in live if it.needs == "owner")
+    return {"open": len(live), "ledger_open": len(opened), "unfiled": len(unfiled), "unfiled_by_state": unfiled_by_state,
+            "by_state": by_state, "closed_today": len(closed_today), "needs_owner": owner,
             "total": len(fw)}
 
 
@@ -772,7 +781,7 @@ def headline(recs, lane, needs, ledger_ok):
             s += " Closed today: %d said, %d in the ledger." % (said, acc)
         if any(r["tokens_seen"] for r in recs):
             s += " Tokens today: ~%s." % toks(sum(r["tokens_today"] for r in recs))
-    s += " FlowWorks lane: %s open." % (lane["open"] if isinstance(lane, dict) else "UNMEASURED")
+    s += " FlowWorks lane: %s left to work." % (lane["open"] if isinstance(lane, dict) else "UNMEASURED")
     s += " Needs you: %d." % len(needs)
     return "**%s**" % s
 
@@ -846,7 +855,10 @@ def build(stubs=None):
     if isinstance(lane, dict):
         order = ("proposed", "ready", "doing", "built", "validated")
         parts = ", ".join("%d %s" % (lane["by_state"][k], k) for k in sorted(lane["by_state"], key=lambda k: order.index(k) if k in order else 9))
-        P += ["- **Open in the ledger: %d** FlowWorks and GSS items%s." % (lane["open"], " (%s)" % parts if parts else ""),
+        uparts = ", ".join("%d %s" % (lane["unfiled_by_state"][k], k) for k in sorted(lane["unfiled_by_state"], key=lambda k: order.index(k) if k in order else 9))
+        P += ["- **Left to work: %d** FlowWorks and GSS items with a live item file%s." % (lane["open"], " (%s)" % parts if parts else ""),
+              "- %d more %s open in the ledger but %s no live item file%s: not counted above." % (
+                  lane["unfiled"], "is" if lane["unfiled"] == 1 else "are", "has" if lane["unfiled"] == 1 else "have", " (%s)" % uparts if uparts else ""),
               "- Of them, %d %s you live (marked needs owner)." % (lane["needs_owner"], "needs" if lane["needs_owner"] == 1 else "need"),
               "- Closed in the ledger today, by any seat: %d." % lane["closed_today"]]
     else:
@@ -928,7 +940,7 @@ def phone_page(head, recs, needs, lane, machines):
         L.append("%s: %s, %s, %s" % (r["name"], r["state_word"], r["info"].get("machine") or "?", item))
         L.append("  closed today %d (ledger %d)%s" % (len(r["closed_today"]), len(r["accepted_today"]),
                                                        ", on item %s" % A.hm(now_s() - r["item_since"]) if r["item"] and r["item_since"] else ""))
-    L += ["", "LANE", "FlowWorks open: %s" % (lane["open"] if isinstance(lane, dict) else "UNMEASURED"), "", "GAMES"]
+    L += ["", "LANE", "FlowWorks left to work: %s" % (lane["open"] if isinstance(lane, dict) else "UNMEASURED"), "", "GAMES"]
     for name in ("Archmagi", "SteveDesktop"):
         m = machines.get(name)
         d = m and m.get("data")
