@@ -148,7 +148,7 @@ the newest version of each target:
   Whittle loop's `WC_ITEM`), a Relentless reject or learned line's item, a Relentless alarm's `item` or its
   `clones/<item>` path, an owner note's item, an ops alarm's own name. That own item decides: `item: NONE`, or an id
   with no intent word, gives no kind and is never second-guessed from the text. Otherwise it is the first item named anywhere in the piece's whole text, not
-  only the 200 characters the packet shows: of the 2411 lessons ever filed (measured 2026-11-11 21:43 PST), the first line names a kind for 159 (7%),
+  only the 200 characters the packet shows: of the 2412 lessons ever filed (measured 2026-11-11 21:49 PST), the first line names a kind for 159 (7%),
   the whole text for 584 (24%). That fallback is a proxy, not provenance: the lesson's own seat wrote a ledger event on that
   item within 3 hours of filing for 27% of the first-line cases and 49% of the whole-text-only ones, so reading the whole
   text is no less sound than the first line was, and only the footer is sound. The footer names the item the lesson
@@ -163,11 +163,12 @@ the newest version of each target:
   for no extra evidence (4.1: gross bugs first), and a refused diff counts as proposed and not applied, which pulls down
   the acceptance rate the ramp reads. Measured 2026-11-11: 2 of 2 change records on file have `source_kinds: []`
   (rimworld-modding v1 and using-rimflow v1, both L0, one lesson each). Neither lesson names an item anywhere, so this
-  reading gives them none either. In the live inbox at 21:43 PST, 10 of 125 lessons name an item in their text (2 by their first line) and 16 carry an
-  `item:` footer: 7 say `NONE`, 6 name legacy `_1` ids with no intent word, and 3 give a kind (FIX twice, AUDIT once).
+  reading gives them none either. In the live inbox at 21:49 PST, 10 of 126 lessons name an item in their text (2 by their first line) and 17 carry an
+  `item:` footer: 6 say `NONE`, 8 name legacy `_1` ids with no intent word, and 3 give a kind (FIX twice, AUDIT once).
   So a footer alone is not enough: most skill changes will stay unmeasured until lessons are filed inside items whose
   names carry an intent word, as new names do and legacy ids never will. Measurement:
-  `whittle/agent_improve_audit_kindless_records_all_two/evidence/measure_kindless.py` and `attribution_audit.py` beside it.
+  `whittle/agent_improve_audit_kindless_records_all_two/evidence/measure_kindless.py` and `attribution_audit.py` beside it;
+  the run these figures come from is saved as `measure_kindless_cited_in_4.3.out` there (the inbox moves hourly).
 - The L2 gate (`AGENT_IMPROVE_TUNE_L2_GATE_SAMPLE_POWER`, decided before the ramp first reached L2, with
   two noise-floor checks on record, both no_signal, so mostly from computation: 2 of 2 is no rate). It applies what reads general,
   and a narrow or no_signal that does not lean to harm (wins >= losses on 6 or more judged held-out pairs); it refuses overfit,

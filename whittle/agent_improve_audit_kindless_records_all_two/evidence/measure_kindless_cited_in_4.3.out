@@ -1,0 +1,44 @@
+# 2026-11-11 21:49 -0800  repo HEAD 09d0489744; old code = 66ab8395fd (before this item's changes)
+# command: python3 whittle/agent_improve_audit_kindless_records_all_two/evidence/measure_kindless.py /tmp/aik2/old/src/RimMandrake/Utils
+## 1. change records on file: source_kinds == [] out of all
+  rimworld-modding_v1.json     day 2026-11-01  pieces 1  source_kinds []
+  using-rimflow_v1.json        day 2026-11-02  pieces 1  source_kinds []
+  KINDLESS 2 of 2 records
+  sanity probe: apply_change (L0, temp repo) on the real lesson 20261112T043802Z-CLAUDE_ARCHMAGI_OFFLINE1-lesson-item-footer-feeds-kinds.md (item: AGENT_IMPROVE_AUDIT_KINDLESS_RECORDS_ALL_TWO) wrote probe_v1.json with source_kinds ['AUDIT']; the same reader counts KINDLESS 0 of 1 there (apply ok=True)
+
+## 2. could the two records regain kinds from a sound source?
+  rimworld-modding_v1.json (20261101T133144Z-FOUNDRY-decompiled-path-missing-use-ilspycmd.md): whole lesson body names an item -> kind None; adding commit '51ca29c716 wave 74: 8 mark-clean records, 4 lessons, FOUNDRY ledger note' -> kind None; seat FOUNDRY touched 8 distinct items within 1 h of it (?, AUDIT, BUILD, CODE, CORRECT, FIX)
+  using-rimflow_v1.json (20261102T021348Z-BENCH-rimflow-seat-after-verb.md): whole lesson body names an item -> kind None; adding commit "aa1853fc18 relentless_live: read drift-only plans, get_defs ';' keys, refuse later-changed and cut criteria" -> kind None; seat BENCH touched 41 distinct items within 1 h of it (?, BUILD, CENSUS, DECIDE, DEPLOY, DESIGN, DIAGNOSE, ENFORCE, FIX, INSTALL, MEASURE, REDRAW, RENAME, REPAIR, RETIRE, TUNE, UNIFY, VET, WIDEN, WIRE)
+
+## 3. how often a piece names its kind: first line (old) vs whole text (new)
+  every lesson ever filed (body at its adding commit): 2412; kinded by first line 159 (7%), by whole body 584 (24%)
+  the live inbox: 126 lessons; an item named in the first line 2, anywhere in the text 10, an item: footer 17
+  every piece collect() sees now (new code), n / kinded: {'alarm': '458 / 302', 'learned': '3906 / 3337', 'lesson': '126 / 10', 'owner_said': '2609 / 2184', 'reject': '2032 / 1613'}
+
+## 4. ordinary use: gather at L1 (bar: 2 task kinds) on the real sources, old code vs new
+  2026-11-04  signalled old ['relentless']           new ['relentless']                           held-for-kinds old 0 new 0
+  2026-11-05  signalled old ['relentless', 'operations'] new ['relentless', 'operations']             held-for-kinds old 0 new 0
+  2026-11-06  signalled old ['relentless', 'operations'] new ['relentless', 'operations']             held-for-kinds old 0 new 0
+  2026-11-07  signalled old ['relentless', 'operations'] new ['relentless', 'operations']             held-for-kinds old 0 new 0
+  2026-11-08  signalled old ['relentless']           new ['relentless']                           held-for-kinds old 1 new 1
+  2026-11-09  signalled old []                       new []                                       held-for-kinds old 0 new 0
+  2026-11-10  signalled old []                       new []                                       held-for-kinds old 0 new 0
+  2026-11-11  signalled old []                       new []                                       held-for-kinds old 5 new 5
+# footers of the same run (from ordinary_use_lesson.out at 2026-11-11 21:49 -080)
+  20261112T043802Z-CLAUDE_ARCHMAGI_OFFLINE1-lesson-item-footer-feeds-kin item: AGENT_IMPROVE_AUDIT_KINDLESS_RECORDS_ALL_TWO
+  20261112T045615Z-BENCH-claude-p-default-context-cost.md                item: NONE
+  20261112T045615Z-BENCH-ledger-open-ghosts.md                           item: NONE
+  20261112T045615Z-BENCH-private-run-copy-never-adopts.md                item: NONE
+  20261112T045616Z-BENCH-empty-out-mtime-birth.md                        item: NONE
+  20261112T052005Z-CLAUDE_ARCHMAGI_OFFLINE3-whittle-stop-hook-staled-by- item: CATHEDRAL_MISSION_BOON_OFFERS_1
+  20261112T052032Z-CLAUDE_STEVEDESKTOP_OFFLINE2-whittle-loop-re-ran-worl item: WORLD_REMAKE_FINAL_STEP_1
+  20261112T052044Z-CLAUDE_ARCHMAGI_FWLIVE-jawa-mod-settings-field-writes item: GSS_WATER_STUB_FIX_PASSED_LAST_WEEK
+  20261112T052044Z-CLAUDE_ARCHMAGI_FWLIVE-vanilla-waterdeep-has-no-water item: GSS_WATER_STUB_FIX_PASSED_LAST_WEEK
+  20261112T052152Z-CLAUDE_STEVEDESKTOP_OFFLINE1-stevedesktop-2026-11-11- item: CATHEDRAL_DESCENT_REVEAL_SITE_1
+  20261112T052305Z-BENCH-steve-wsl-vhdx-moved-hdd.md                     item: NONE
+  20261112T052312Z-BENCH-ssh-remote-powershell-eats-stdin.md             item: NONE
+  20261112T053617Z-CLAUDE_STEVEDESKTOP_OFFLINE5-stevedesktop-has-no-vfe- item: SHIP_ALLOY_FORGE_1
+  20261112T053617Z-CLAUDE_STEVEDESKTOP_OFFLINE5-stevedesktop-whittle-clo item: SHIP_ALLOY_FORGE_1
+  20261112T053641Z-CLAUDE_STEVEDESKTOP_OFFLINE1-wc-py-statement-md-for-i item: CATHEDRAL_DESCENT_REVEAL_SITE_1
+  20261112T054039Z-CLAUDE_STEVEDESKTOP_OFFLINE3-stevedesktop-s-steam-lib item: CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1
+  20261112T054039Z-CLAUDE_STEVEDESKTOP_OFFLINE3-wc-py-setup-wrote-whittl item: CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1
