@@ -280,6 +280,9 @@ for _s in ("BENCH", "CONDUCTOR"):
     os.environ["RIMFLOW_SEAT"] = _s
     check(sorted(handoff.handoff_files()) == ["BENCH_REBOOT_HANDOFF_202611111355.md", "CONDUCTOR_HANDOFF_202611110123.md"],
           "seat %s sees both spellings and no other seat's: %s" % (_s, sorted(handoff.handoff_files())))
+for _raw in ("Conductor", "CONDUCTOR", "BENCH"):
+    os.environ["RIMFLOW_SEAT"] = _raw
+    check(handoff.seat() == "BENCH", "RIMFLOW_SEAT=%s is seat BENCH, as rimflow resolves it: %r" % (_raw, handoff.seat()))
 handoff.HANDOFFS = _old[0]
 if _old[1] is None:
     os.environ.pop("RIMFLOW_SEAT", None)

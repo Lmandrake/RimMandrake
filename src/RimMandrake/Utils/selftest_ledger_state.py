@@ -105,6 +105,9 @@ rf(O, "unblock", UNBLOCKED)
 SUPERSEDED = "STATENOW_TEST_PTR_SUPERSEDED"
 rf(O, "file", SUPERSEDED, "--for", O, "--title", "replaced by another item")
 rf(O, "supersede", SUPERSEDED, "--by", ids[5])
+CHAINED = "STATENOW_TEST_PTR_CHAINED"                   # CHAINED -> SUPERSEDED -> ids[5], which is open
+rf(O, "file", CHAINED, "--for", O, "--title", "replaced by an item that was itself replaced")
+rf(O, "supersede", CHAINED, "--by", SUPERSEDED)
 with open(os.path.join(TMP, "events", "BENCH.jsonl")) as fh:            # a hand-mangled line: text that is not a string
     bad = dict(json.loads([ln for ln in fh if '"note"' in ln][0]), text=["NEXT:", 3])
 with open(os.path.join(TMP, "events", "BENCH.jsonl"), "a") as fh:
@@ -210,7 +213,7 @@ with open(os.path.join(hdir, "BENCH_REBOOT_HANDOFF_209901010000.md"), "w") as fh
     fh.write("# BENCH_REBOOT_HANDOFF_209901010000 — READ FIRST on wake\n\n## What is half-done, and where it stops\n\n"
              "<!-- TEMPLATE GUIDANCE for the writer -->\n"
              "- `%s` — probing; NEXT: something the ledger has since overtaken\n" % ids[0]
-             + "".join("- `%s` — x; NEXT: y\n" % i for i in (ids[11], REOPENED, UNBLOCKED, ids[3], SUPERSEDED))
+             + "".join("- `%s` — x; NEXT: y\n" % i for i in (ids[11], REOPENED, UNBLOCKED, ids[3], SUPERSEDED, CHAINED))
              + "\n## Filed and still open (1)\n- `%s` — filed, hidden from the view, so no pointer\n" % ids[9])
 handoff.HANDOFFS = hdir
 handoff.previous_handoff = lambda: ("BENCH_REBOOT_HANDOFF_209901010000.md", "2000-01-01T00:00:00Z")
@@ -241,6 +244,8 @@ check("open pointers: 4 " in tail, "the dropped and superseded pointers are not 
 check(prow(ids[9]) == "", "an id in the hidden filed list is no pointer: the reader cannot see it")
 check(prow(SUPERSEDED).endswith("SUPERSEDED  *** CLOSED -- do NOT act on this pointer; work its successor %s ***" % ids[5]),
       "a superseded pointer names its successor: %r" % prow(SUPERSEDED))
+check(prow(CHAINED).endswith("work its successor %s (via %s) ***" % (ids[5], SUPERSEDED)),
+      "a chain of supersessions is followed to its open end: %r" % prow(CHAINED))
 check("  now: ledger as of " in tail, "the line under it says the game and bridge as the ledger has them now")
 got = open(path).read() if os.path.isfile(path) else ""
 check("NEXT: an action written after the last build" in got, "regenerated from the ledger as it is at the wake")
@@ -259,7 +264,8 @@ except Exception as e:      # noqa: BLE001
     rc = "raised %r" % e
 sys.modules["ledger_state"] = ledger_state
 w = out.getvalue()
-check(rc == 0 and "POINTER STATUS: UNMEASURED" in w and ids[0] in w and "LEDGER STATE NOW: UNMEASURED" in w,
+unm = next((ln for ln in w.splitlines() if ln.startswith("POINTER STATUS: UNMEASURED")), "")
+check(rc == 0 and ids[0] in unm and REOPENED in unm and "LEDGER STATE NOW: UNMEASURED" in w,
       "a ledger_state that cannot load: the wake still prints the handoff and names every pointer UNMEASURED (rc %r)" % rc)
 
 print("ledger_state: a stress ledger of 400 more items stays one screen")

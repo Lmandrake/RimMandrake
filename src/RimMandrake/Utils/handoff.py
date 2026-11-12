@@ -139,8 +139,8 @@ def seat():
     tell, so it will not guess.
     """
     for v in (os.environ.get("RIMFLOW_SEAT"), os.environ.get("AGENT_SEAT")):
-        if v:
-            return v.strip().upper()
+        if v:       # folded as rimflow folds it: RIMFLOW_SEAT=Conductor is BENCH, or every per-seat query reads empty
+            return _canonical(v.strip().upper())
     out = sh("python3", os.path.join(ROOT, "src", "RimMandrake", "rimflow", "cli.py"),
              "seat", "ready")
     seat = seat_from_ready(out)
@@ -553,6 +553,23 @@ def pointer_states(world):
     return dict(world.items)
 
 
+def _successor(items, it):
+    """'; work its successor X' for a superseded item, following the chain to its end: A -> B -> C with C open is C (one
+    link said "B is SUPERSEDED too, do NOT act" over live work, review 2026-11-11). '' when it has no successor."""
+    chain, cur = [], it
+    while cur is not None and cur.superseded_by and cur.superseded_by not in chain and len(chain) < 20:
+        chain.append(cur.superseded_by)
+        cur = items.get(cur.superseded_by)
+    if not chain:
+        return ""
+    end, via = chain[-1], (" (via %s)" % ", ".join(chain[:-1]) if len(chain) > 1 else "")
+    if cur is None:
+        return "; its successor %s%s is not in the ledger" % (end, via)
+    if cur.state in TERMINAL:
+        return "; its successor %s%s is %s too" % (end, via, cur.state.upper())
+    return "; work its successor %s%s" % (end, via)
+
+
 def pointer_ids(text):
     """Item ids a handoff points at: `- `ID`` (backticked) or `- ID -- state` / `- ID — state` (the template's own
     form, `- ITEM_ID -- state; NEXT:`). The backtick-only reader missed five of six pointers on 2026-11-11."""
@@ -599,10 +616,7 @@ def wake():
         for i in dict.fromkeys(ids):
             it = last.get(i)
             if it is not None and it.state in TERMINAL:
-                nxt = last.get(it.superseded_by) if it.superseded_by else None
-                after = "" if not it.superseded_by else (
-                    "; its successor %s is %s too" % (it.superseded_by, nxt.state.upper()) if nxt and nxt.state in TERMINAL
-                    else "; work its successor %s" % it.superseded_by)
+                after = _successor(last, it)
                 print("  %-48s %s  *** CLOSED -- do NOT act on this pointer%s ***" % (i, it.state.upper(), after))
                 continue
             whose = "" if it is None or _canonical(it.owner or me) == me else ", %s's" % it.owner
