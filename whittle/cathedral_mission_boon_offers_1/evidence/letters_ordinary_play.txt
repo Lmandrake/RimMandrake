@@ -1,4 +1,4 @@
-# generated 2026-11-11 21:08 -0800 at 12b1764649 (+ working tree: 2 dirty src file(s))
+# generated 2026-11-11 21:15 -0800 at 4de5e82144 (+ working tree: 2 dirty src file(s))
 # player's-eye letters from shadow_log_ordinary_play.jsonl; [bracketed] lines are hidden mechanics
 Day  0.00  [stage None -> WARY, Regard 0.3, Heat 0.0]
 Day 12.25  [stage WARY -> TOLERATED, Regard 15.1, Heat 0.0]

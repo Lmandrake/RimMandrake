@@ -1,4 +1,4 @@
-# generated 2026-11-11 21:08 -0800 at 12b1764649 (+ working tree: 2 dirty src file(s))
+# generated 2026-11-11 21:15 -0800 at 4de5e82144 (+ working tree: 2 dirty src file(s))
 $ python3 src/RimMandrake/RustCathedral/selftest_rustcathedral_offers.py
 
 [1] Offer appears only at the correct stage (ordinary-play fixture, WARY -> TOLERATED -> VOUCHED)
@@ -107,7 +107,7 @@ ok    5 fixture run exits 0 with the Oracle absent
 ok    5 11 offers logged, every one carrying its full shipped def text 
 ok    5 blackboard source: no subprocess/Popen/os.system/claude call 
 ok    5 in-game C# (CathedralFavours.cs): no Process/claude call 
-      300 polls, 11 offers, PATH=/tmp/st_selftest_rustcathedral_offers_efmh4h24/tmpjtuyrmu0
+      300 polls, 11 offers, PATH=/tmp/st_selftest_rustcathedral_offers_k_kqkhbf/tmpzj1dy_se
 
 [6] K2 anti-laundering + [7] Regard feedback (paired runs: the player completes every request vs ignores it)
       poll  stage     heat before heat after  heat(ctrl)  from comp.  regard(comp) regard(ctrl) event

@@ -1,62 +1,65 @@
-# JUDGE — CATHEDRAL_MISSION_BOON_OFFERS_1 (blind, 2026-11-11)
+# JUDGE — CATHEDRAL_MISSION_BOON_OFFERS_1 (blind, CLAUDE_ARCHMAGI_OFFLINE3 judge seat, 2026-11-11)
 
-Read: STATEMENT.md, NOTES.md, every file in evidence/ (no images exist), the two shipped def files
-(src/RimUtinni/CathedralPass/Defs/QuestScriptDefs/RUT_CathedralAssailantMissions.xml,
-.../IncidentDefs/RUT_CathedralFavours.xml), the offer gate in gm_blackboard_shadow.py (compute_cathedral_offer_gate,
-advance_cathedral_offers) and the C# string literals in CathedralFavours.cs. DONE.md / BROADEN.md not read.
-
-Reruns at 12b1764649 (logs in /tmp):
-- selftest_rustcathedral_offers.py: 87/87, exit 0. Matches evidence/selftest_offers.txt line for line (only tmp paths differ).
-- gm_blackboard_shadow.py on the ordinary-play fixture: exit 0, 300 polls, same final line as the evidence (Regard 86.15,
-  8 requests, 5 completed, 3 gifts). cathedral_offer_letters.py on it: identical to evidence/letters_ordinary_play.txt.
-- cathedral_arc_lint.py --xml (both def files) at --stage 1 and --stage 2: 38 strings, PASS, exit 0.
-- validation.py (static, offline): STATIC PASS, exit 0.
-- My own read of the 300-record log: would_fire types by stage show no cathedral_mission_offer at WARY and no
-  cathedral_boon_offer at TOLERATED (the counter does see these types: 5 mission offers at TOLERATED, 3 boon offers at VOUCHED).
+Read: STATEMENT.md, NOTES.md, every file in evidence/. Not read: DONE.md, BROADEN.md, the earlier JUDGE.md.
+Re-ran at clean HEAD 4de5e82144 (src tree clean; the evidence headers say "2 dirty src file(s)", so I re-ran rather than trust them):
+- `selftest_rustcathedral_offers.py`: exit 0, 87/87. The `ok` lines are identical to evidence/selftest_offers.txt.
+- `gm_blackboard_shadow.py --fixture cathedral_offers_ordinary_play.json --log /tmp/judge_shadow.jsonl`: exit 0. The 300 records match
+  evidence/shadow_log_ordinary_play.jsonl exactly, timestamps excepted (0 rows differ).
+- `cathedral_arc_lint.py --xml <both shipped def files> --stage 1` and `--stage 2`: 38 strings, PASS, exit 0. Instrument probe (temp copies
+  in /tmp): "Cathedral" planted in a mission `<customLetterText>` and in the gravcore `<letterText>` were both refused, exit 1, at stage 2
+  (and at 3 for the letter). So the --xml path reads the letter fields, not just the labels. 38 = 8 parent letter strings + 12 child
+  name/description + 12 GiveQuest label/letterLabel + 6 boon strings, which accounts for every player-facing string in the two files.
+- Vanilla check: QuestNode_ManhunterPack takes `tag`, `customLetterLabel` and `customLetterText` in Royalty's own QuestScriptDefs
+  (Scripts_ItemPodThreat.xml, Script_Intro_Wimp.xml). validate_patch.py does not scan field names, so I checked these myself.
+- code_review_status: CathedralFavours.cs, gm_blackboard_shadow.py, the selftest, both def files and validation.py are all CLEAN.
+- Ledger: `rimflow show` reads `ready, needs bridge, owner BENCH`, with an offline-landed note naming the recipe (2026-11-12T04:44Z).
 
 ## Lines
 
-1. Offer appears only at the correct stage — TRUE. Selftest [1] drives the fixture WARY -> TOLERATED -> VOUCHED and prints
-   each poll's offer set: WARY polls are missions False (stage_below_TOLERATED) with both boons closed_stage; TOLERATED offers
-   missions with boons closed_stage on every poll; boons open from VOUCHED (poll 168). My log census agrees. The gate
-   reads conduct_posture >= TOLERATED / >= VOUCHED; a reveal flag alone opens nothing (pinned).
-2. Never attributed to the Cathedral before stage 3 — TRUE. Lint on the shipped files exits 0 at stages -1, 1 and 2 (rerun
-   by me at 1 and 2); planted lines are refused with exit 1 (names-the-place, agency, §GM truth). The selftest lints the
-   inherited, resolved strings (46) and the C# progress line. I also read every string: none names the place, an asker
-   behind the enclaves, or the Assailant. Note: the linter is word-pattern only (a paraphrase walks past it, filed as
-   RIMMANDRAKE_HARDEN_ARC_LINT_PARAPHRASE_WALKS_PAST); the criterion is the linter, and my own read found no paraphrased
-   attribution either.
-3. Boon availability flips with a shadow Heat change — TRUE. Selftest [3] paired runs: poll 18, VOUCHED in both; calm run
-   Heat 0 -> gravcore offered; hot run (two kyber sold poll 16) Heat 10.11 > ceiling 5 -> withheld_heat, stage never leaves
-   VOUCHED, and the gravcore reopens when Heat cools (poll 31). Synthetic Heat 45 withholds both boons. Ceiling edge
-   (== open, +1e-6 withheld) pinned.
-4. The dark flip closes both — TRUE. Selftest [4] poll 10: go_dark fired, missions closed (go_dark), the posted request
-   withdrawn, both boons closed_go_dark, nothing offered; 10-day hold with no offer though posture re-climbs.
-5. Every beat completes Oracle-absent — TRUE (offline scope). oracle_absent_run.txt: PATH resolves no `claude`, fixture run
-   exits 0, 11/11 offers carry full def text; no subprocess/Popen/claude in the blackboard or CathedralFavours.cs. All
-   text ships in the defs. The in-game quest run itself is part of line 8's live step.
-6. K2: completions scrub zero Heat — TRUE. Selftest [6]: 6 completions, Heat identical poll for poll to the ignoring run,
-   including one completion at Heat 10.66 (moves only by the 0.4/poll decay both runs share). The only Heat write in the
-   blackboard is decay + sale heat (gm_blackboard_shadow.py:982).
-7. Regard feedback in shadow logs — TRUE. My rerun's log, poll 56: mission_completions_this_poll=1,
-   mission_completion_regard_gain_this_poll=4.0, Regard delta 4.3 vs 0.3 on the polls either side, Heat 0 unchanged.
-8. Live end to end on a quicktest — TRUE for what this lane owes; the live run itself has not happened and is owed.
-   Offline owed: winbuild of CathedralPass succeeded (0 warnings/errors); validate_patch.py against the game's def set
-   0 errors; validation.py static PASS (rerun); the exact recipe is in validation.py and quoted in live_run_recipe.txt,
-   with what it does not prove named. Ledger: CLAUDE_ARCHMAGI_OFFLINE3 noted the handoff (04:44:21Z) and set needs=bridge
-   (04:44:26Z). Factual correction to the brief: the last event is an OWNER reassign to RELENTLESS (04:48:06Z, per-ruling
-   CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM), not BENCH. That follows the standing ruling (Relentless builds; BENCH takes
-   only needs=owner looks), so the statement's "BENCH" is out of date. It is not a defect in the work.
-   infrastructure/state/queue/BENCH.md (last committed 2026-10-02) is a stale projection; I did not rely on it.
+1. **Offer appears only at the correct stage: TRUE.** Selftest [1] drives the real `ShadowBlackboard.poll` with the ordinary-play
+   fixture. It goes from WARY (missions False, stage_below_TOLERATED, both boons closed_stage) to TOLERATED at day 12.25 (mission_offer,
+   boons still closed_stage) to VOUCHED at day 41.75 (panels/gravcore open, boon_offer at day 43.75). The checks hold on every poll:
+   no offer on any WARY poll, no boon on any TOLERATED poll. The gate is `compute_cathedral_offer_gate` (posture >= TOLERATED for missions,
+   >= VOUCHED for boons). Both the defs and the incidents are baseChance 0 / rootSelectionWeight 0, so nothing else can roll them.
+2. **Never attributed to the Cathedral before stage 3: TRUE.** The CLI lint on both shipped files exits 0 at stages -1, 1 and 2 (my rerun
+   at 1 and 2). The planted lines are refused with exit 1 (names-the-place, agency, §GM-truth "assailant"), and my own plants are refused
+   too. When I read the strings myself, none names the place, an asker or the Assailant. The nearest to a hint is the gravcore letter's
+   "fits the Utinni's sockets as if it had been cut for them", which is deniable and passes the linter.
+3. **Boon availability flips with a shadow-mode Heat change: TRUE.** In the selftest [3] paired runs, the calm run offers the gravcore on
+   poll 18 at Heat 0. The hot run (two kyber sold on poll 16, nothing else changed) withholds it on the same poll at Heat 10.11
+   (`withheld_heat`). Stage is VOUCHED throughout, and the gravcore reopens at Heat 4.91. Note: this organic flip uses the gravcore's own
+   ceiling of 5, so the "high" Heat here is 10.11, barely above the board's HEAT_LOW_BAND of 10. The case at or above HEAT_HIGH_BAND
+   (both boons withheld) uses a synthetic `board.heat = 45`. The line's own evidence clause (open at low, closed after a rise, same
+   stage) is met.
+4. **The dark flip closes both: TRUE.** Selftest [4], go-dark poll 10: missions closed with reason `go_dark`, the posted request withdrawn
+   (`mission_offer_withdrawn`), and both boons `closed_go_dark`. The hold lasts 39 polls even after posture climbs back to VOUCHED, so the
+   closing is the dark flip and not just the stage drop. The pursuit trigger is staged: the go-dark threshold is lowered to 15 so that one
+   pursuit fires it.
+5. **Every beat completes Oracle-absent: TRUE.** All 46 offer/letter strings ship as def text (the two def files). evidence/oracle_absent_run.txt
+   runs the fixture with a PATH holding no `claude`: exit 0, and 11 of 11 offers carry the full def text. The grep finds no
+   subprocess/Popen/os.system/claude in the blackboard or in CathedralFavours.cs. Selftest [5] repeats this on its own scratch PATH.
+6. **K2 anti-laundering, zero Heat scrubbed: TRUE.** Selftest [6] compares a run that completes 6 missions with one that ignores them all.
+   Heat is identical poll for poll, including poll 108, where Heat is non-zero (10.656 to 10.256, the shared 0.4 decay). Regard ends
+   24.0 higher in the completing run. The only Heat write in the code is `max(0, heat - decay + sale_heat)`.
+7. **Regard feedback observed in shadow logs: TRUE.** In the committed shadow log, and in my independent rerun, poll 56 records
+   `mission_completions_this_poll=1`, `mission_completion_regard_gain_this_poll=4.0` and `cathedral_regard_delta_this_poll=4.3`. The same
+   record appears at polls 116, 168, 194 and 286.
+8. **≥1 mission + boon gate live on a quicktest: TRUE for what this lane owes; the live proof is still owed.** The statement takes the
+   live run out of this lane. What the offline lane owes is all present: the CathedralPass DLL is built (0 warnings, 0 errors, source
+   4de5e82144, and the committed DLL is not dirty after the build); validate_patch.py passes 3 files with 0 errors (the `info` lines are
+   the mod's own C# classes); static validation.py PASS; the exact recipe is in validation.py, and its "NOT PROVEN offline" section is
+   honest. The item is noted, set needs=bridge and owned by BENCH. Weak point: the JawaBench build "wrote no DLL ... nothing copied
+   back", so the quest_lifecycle `root` field is not shown landing anywhere deployable. The recipe covers this (the name-match fallback).
 
-## Staging / flattery notes
-- All evidence comes from offline, fixture-driven shadow runs. No screenshot exists and none is claimed. The quest tab look,
-  pack spawn on accept, PackDown reaching EndedSuccess, and the gift landing on a gravship map are explicitly owed to the
-  live run (the recipe's NOT PROVEN list says so).
-- The Heat flip uses a scripted two-kyber sale. It is not cherry-picked: the paired runs share every other input, and a
-  separate test checks the live 2000-tick cadence (the 3-day quiet window keeps the gravcore from coming back hours after a sale).
-- Oracle-absent is close to true by construction (the path has no LLM call). The PATH test plus the source grep is enough.
-- Hygiene, not substance: the working tree holds an uncommitted rebuilt CathedralPass DLL + .srchash. The source hashes
-  are identical to the committed stamp; only the DLL hash differs (the build is not deterministic).
+## Where the evidence is staged or flattering
+- Everything is fixture or shadow. The "offers" are `would_fire` records, and letters_ordinary_play.txt is the builder's rendering of the
+  log, not game letters. The builder wrote the "ordinary play" fixture, and it is a tidy arc that climbs to VOUCHED in 42 days.
+- The high-band Heat case is set by hand (heat=45). The go-dark case lowers the threshold to 15.
+- Nothing shows the in-game half: the manhunter pack spawning tagged on accept, RUT_QuestNode_PackDown reaching EndedSuccess, the boon
+  landing at TradeDropSpot. This is said openly and owed to the BENCH live loop.
+
+## Verdict
+Each statement line holds on evidence I re-ran myself, and the one live line is scoped out and correctly handed to BENCH (needs=bridge).
+I would show it to the owner as finished for this offline lane.
 
 would show: yes

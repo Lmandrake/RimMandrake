@@ -1,7 +1,7 @@
-# generated 2026-11-11 21:08 -0800 at 12b1764649 (+ working tree: 2 dirty src file(s))
-$ PATH=/tmp/tmp.trk1yyVUBr command -v claude
+# generated 2026-11-11 21:15 -0800 at 4de5e82144 (+ working tree: 2 dirty src file(s))
+$ PATH=/tmp/tmp.J9SClHcyzz command -v claude
 exit=1 (1 = not found)
-$ env PATH=/tmp/tmp.trk1yyVUBr /usr/bin/python3 src/RimMandrake/Utils/gm_blackboard_shadow.py --fixture src/RimMandrake/Utils/fixtures/cathedral_offers_ordinary_play.json --log /tmp/oracle_absent.jsonl
+$ env PATH=/tmp/tmp.J9SClHcyzz /usr/bin/python3 src/RimMandrake/Utils/gm_blackboard_shadow.py --fixture src/RimMandrake/Utils/fixtures/cathedral_offers_ordinary_play.json --log /tmp/oracle_absent.jsonl
 34 would-fire events logged; 0 incidents fired, 0 letters sent, 0 saves written.
 Final: heat=0.00 hutt_interest=0.00 cathedral_regard=86.15 orbital_timer=60000 stage=VOUCHED exposure_pressure=0.00 go_dark_flips=1
 Favours: 8 mission request(s) posted, 5 completed (20 Regard), 3 gravtech gift(s) left
