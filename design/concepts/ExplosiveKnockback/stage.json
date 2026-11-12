@@ -576,10 +576,17 @@
     "ref": "run bench-ek-st4k-20261112",
     "stage": 4,
     "tokens": 3940000
+   },
+   {
+    "at": "2026-11-12T11:17:13Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794481849",
+    "stage": 5,
+    "tokens": 739503
    }
   ],
   "reserve": 60000,
-  "spent": 89308279
+  "spent": 90047782
  },
  "history": [
   {
