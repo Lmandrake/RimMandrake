@@ -19533,3 +19533,4 @@
 {"seat":"CONDUCTOR","event":"bridge","state":"released","ts":"2026-11-12T13:50:07Z","tsn":1794491407578307068}
 {"seat":"CONDUCTOR","event":"seat","state":"ready","ts":"2026-11-12T13:59:48Z","tsn":1794491988195882360}
 {"seat":"CONDUCTOR","event":"close","id":"RIMMANDRAKE_FIX_PARKED_WHITTLE_RUN_READS_AS_FAILED","sha":"6bdf5bc28f","reason":"run.py now counts history/BLOCKED_*.md written during the run as parked (exit 2)","noCode":"fixed in MandrakeWorkflows 137199540f2f91b788e1d9d735e74b5b8bf3b61f (whittle/run.py parked_since; test in tests/test_codex_runners.py, fail-before/pass-after)","ts":"2026-11-12T14:05:11Z","tsn":1794492311889156886}
+{"seat":"CONDUCTOR","event":"bridge","state":"taken","purpose":"owner sitting: Explosive Knockback staging","ts":"2026-11-12T14:05:48Z","tsn":1794492348338252409}
