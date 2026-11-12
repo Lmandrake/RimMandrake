@@ -1,0 +1,114 @@
+{
+ "final_run10_pit_exposure_result_20261112T005328.json": {
+  "PEX_A2_open_pit_tracks_noon": [
+   "PASS",
+   null
+  ],
+  "PEX_A3_pit_wears_resistance": [
+   "PASS",
+   null
+  ],
+  "PEX_A4_compassion_not_psycho": [
+   "PASS",
+   null
+  ]
+ },
+ "run11_desert_pit_exposure_result_20261112T011827.json": {
+  "PEX_A2_open_pit_tracks_noon": [
+   "PASS",
+   null
+  ],
+  "PEX_A3_pit_wears_resistance": [
+   "PASS",
+   null
+  ],
+  "PEX_A4_compassion_not_psycho": [
+   "PASS",
+   null
+  ]
+ },
+ "run13_desert_pit_exposure_result_20261112T014420.json": {
+  "PEX_A2_open_pit_tracks_noon": [
+   "PASS",
+   null
+  ],
+  "PEX_A3_pit_wears_resistance": [
+   "PASS",
+   null
+  ],
+  "PEX_A4_compassion_not_psycho": [
+   "PASS",
+   null
+  ]
+ },
+ "run14_aridshrubland_pit_exposure_result_20261112T020521.json": {
+  "PEX_A2_open_pit_tracks_noon": [
+   "PASS",
+   null
+  ],
+  "PEX_A3_pit_wears_resistance": [
+   "PASS",
+   null
+  ],
+  "PEX_A4_compassion_not_psycho": [
+   "PASS",
+   null
+  ]
+ },
+ "run15_wardened_fullday_pit_exposure_result_20261112T023124.json": {
+  "PEX_A2_open_pit_tracks_noon": [
+   "PASS",
+   null
+  ],
+  "PEX_A3_pit_wears_resistance": [
+   "UNMEASURED",
+   "no reading at placement: chats before the first sample are lost"
+  ],
+  "PEX_A4_compassion_not_psycho": [
+   "PASS",
+   null
+  ]
+ },
+ "run17_wardened_desert_pit_exposure_result_20261112T030349.json": {
+  "PEX_A2_open_pit_tracks_noon": [
+   "PASS",
+   null
+  ],
+  "PEX_A3_pit_wears_resistance": [
+   "PASS",
+   null
+  ],
+  "PEX_A4_compassion_not_psycho": [
+   "PASS",
+   null
+  ]
+ },
+ "run18_wardened_desert_pit_exposure_result_20261112T032231.json": {
+  "PEX_A2_open_pit_tracks_noon": [
+   "PASS",
+   null
+  ],
+  "PEX_A3_pit_wears_resistance": [
+   "PASS",
+   null
+  ],
+  "PEX_A4_compassion_not_psycho": [
+   "PASS",
+   null
+  ]
+ },
+ "run16_wardened_chats_before_first_sample_20261112T025107.json": {
+  "PEX_A2_open_pit_tracks_noon": [
+   "PASS",
+   null
+  ],
+  "PEX_A3_pit_wears_resistance": [
+   "UNMEASURED",
+   "no reading at placement: chats before the first sample are lost"
+  ],
+  "PEX_A4_compassion_not_psycho": [
+   "PASS",
+   null
+  ]
+ }
+}

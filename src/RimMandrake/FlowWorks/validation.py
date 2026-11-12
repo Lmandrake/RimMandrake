@@ -1604,9 +1604,9 @@ PIT_EXPOSURE_LIVE = [
     ("PEX_A1_defs_resolve", None, "jawa/get_defs resolves the RM_PitExposure hediff and the RM_ExposedPrisoner thought"),
     ("PEX_A2_open_pit_tracks_noon", "pitExposureEnabled", "the open pit stays within 1 C of outdoors from 06:00 to "
      "15:00 of a hot day while the roofed twin trails outdoors by more than 2 C more"),
-    ("PEX_A3_pit_wears_resistance", "pitExposureEnabled", "with wardens reducing every prisoner's resistance, the open-pit "
-     "prisoner, hurting in the heat, loses more resistance than the roofed twin's and the walled cell's prisoners, who lose "
-     "only what the wardens' chats take"),
+    ("PEX_A3_pit_wears_resistance", "pitExposureEnabled", "the open-pit prisoner, hurting in the heat, loses more resistance "
+     "from placement than the roofed twin's and the walled cell's prisoners (the suite's run: wardens reduce all three, the "
+     "pit prisoner chatted no more than the others; a run without --interaction: no warden, the others lose none)"),
     ("PEX_A4_compassion_not_psycho", "pitExposureEnabled", "at 12:00 a colonist of a Charity ideoligion has "
      "RM_ExposedPrisoner; the psychopath of that ideoligion and a colonist of an ideoligion without Charity do not"),
 ]

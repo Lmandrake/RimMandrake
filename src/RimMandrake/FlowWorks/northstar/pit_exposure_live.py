@@ -158,9 +158,17 @@ def verdicts(res, row):
                   "safeMax": {n: sl[n].get("safeMax") for n in pris}, "ambient_end": {n: sl[n].get("ambient") for n in pris},
                   "heatstroke_end": {n: sl[n].get("heatstroke") for n in pris},
                   "from": "placement (00:00)" if res.get("placed") else "first sample", "hours": [samples[0]["hour"], sl["hour"]]}
-        if mode and (chats["PC"] < 1 or chats["PA"] < 1):
-            # the wardened comparison holds only if wardens worked both the pit and the cell
-            detail["why"] = "wardens never chatted with %s" % [n for n in ("PA", "PC") if chats[n] < 1]
+        # the wardened comparison is fair only when counted from placement (a chat in the settle counts), wardens worked
+        # all three, and the pit prisoner got no more chats than either other (an extra chat alone could beat 0.1)
+        unfair = []
+        if mode and not res.get("placed"):
+            unfair.append("no reading at placement: chats before the first sample are lost")
+        if mode and any(chats[n] < 1 for n in pris):
+            unfair.append("wardens never chatted with %s" % [n for n in sorted(pris) if chats[n] < 1])
+        if mode and chats["PA"] > min(chats["PB"], chats["PC"]):
+            unfair.append("the pit prisoner had more chats than another (%s)" % chats)
+        if unfair:
+            detail["why"] = "; ".join(unfair)
             row("PEX_A3_pit_wears_resistance", "UNMEASURED", "HARNESS", detail)
         else:
             row("PEX_A3_pit_wears_resistance", "PASS" if ok3 else "FAIL", "MOD", detail)

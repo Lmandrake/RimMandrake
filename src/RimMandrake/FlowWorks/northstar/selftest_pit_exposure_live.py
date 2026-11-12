@@ -132,6 +132,7 @@ def main():
     check(judge(r)["PEX_A2_open_pit_tracks_noon"][0] == "PASS", "a fixed zone offset between label and game hour still passes")
 
     r = base(); r["args"]["interaction"] = "ReduceResistance"
+    r["placed"] = {"PA": {"resistance": "12.000"}, "PB": {"resistance": "14.000"}, "PC": {"resistance": "12.000"}}
     for sm in r["samples"]:
         for n in ("PA", "PB", "PC"):
             sm[n]["chatsToday"] = "2"
@@ -140,8 +141,19 @@ def main():
         sm["PC"]["chatsToday"] = "0"
     check(judge(r)["PEX_A3_pit_wears_resistance"] == ("UNMEASURED", "HARNESS"),
           "wardened, but no warden ever chatted with the cell prisoner: UNMEASURED, never PASS")
-    r = base()
-    check(judge(r)["PEX_A3_pit_wears_resistance"][0] == "PASS", "no interaction set (older runs): no chat read is needed")
+    def wardened(pa=2, pb=2, pc=2, placed=True):
+        r = base(); r["args"]["interaction"] = "ReduceResistance"
+        if placed:
+            r["placed"] = {"PA": {"resistance": "12.000"}, "PB": {"resistance": "14.000"}, "PC": {"resistance": "12.000"}}
+        for sm in r["samples"]:
+            sm["PA"]["chatsToday"], sm["PB"]["chatsToday"], sm["PC"]["chatsToday"] = str(pa), str(pb), str(pc)
+        return judge(r)["PEX_A3_pit_wears_resistance"]
+    check(wardened()[0] == "PASS", "wardened from placement, equal chats: the pit wins -> PASS")
+    check(wardened(placed=False) == ("UNMEASURED", "HARNESS"), "wardened with no placement read: UNMEASURED (settle chats lost)")
+    check(wardened(pb=0) == ("UNMEASURED", "HARNESS"), "wardened but the roofed twin never chatted: UNMEASURED")
+    check(wardened(pa=0) == ("UNMEASURED", "HARNESS"), "wardened but the pit prisoner never chatted: UNMEASURED")
+    check(wardened(pa=2, pc=1) == ("UNMEASURED", "HARNESS"), "the pit prisoner chatted more than the cell's: UNMEASURED")
+    check(wardened(pa=1, pb=2, pc=2)[0] == "PASS", "the pit prisoner chatted less (run 17's shape): still a fair PASS")
     r = base(); r["placed"] = {"PA": {"resistance": "12.000"}, "PB": {"resistance": "15.000"}, "PC": {"resistance": "17.000"}}
     check(judge(r)["PEX_A3_pit_wears_resistance"][0] == "FAIL",
           "a cell prisoner chatted down 5 before the first sample counts: the pit no longer wins -> FAIL")
