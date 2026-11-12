@@ -9,7 +9,7 @@
 | 5 | wildcard xpath selectors, ParentName attribute rewrites | cheap styles fixed; the rest is a stated limit (xpath is pattern-matched, not evaluated; the patched tree is effective_def_lint.py's job) |
 
 | 6 | the caching edit indented the patch check under a `continue`, so it never ran (no wrong verdict today: the 4 patches it should report are label/comp edits) | dedented; selftest now proves the check runs on real patches and flags a synthetic placeWorkers patch |
-| 7 | see the result appended below | |
+| 7 | NO BLOCKING FINDINGS (patch check probed on every named def and its parent chain; new selftest cases can fail) | both files marked CLEAN at b8cff1c759 (`code_review_status.py check`) |
 
 Real-data effects found along the way: `RM_CloudRepulsorShip` had no source at all (fixed in the Helix trader);
 `RM_SunSphere`'s seed fuel is fished (Odyssey `fishTypes`), which the checker now reads. Each review's fixes are covered
