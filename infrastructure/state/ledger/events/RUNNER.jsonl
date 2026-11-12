@@ -6421,3 +6421,4 @@
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_DISPATCHER","result":"broken","detail":"dispatcher last ran 15 min ago (limit 15 min)","ts":"2026-11-12T18:03:06Z","tsn":1794506586275083698}
 {"seat":"RUNNER","event":"raise","id":"LIVE_RESTORE_DISPATCHER","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-12T18:03:11Z","tsn":1794506591640538993}
 {"seat":"RUNNER","event":"spawn","name":"STEVE_LANE_UNSTICK_PAUSED_UNOWNED_0196","kind":"task","needs":"offline","title":"SteveDesktop lane PAUSED, unowned 11 min: fill stopped: /mnt/d/ClaudeWork/rimmandrake/testq/fill.stop exists","for":"RELENTLESS","from":"STEVE_STEWARD_BUILD_NO_LLM_OWNER","ts":"2026-11-12T18:14:51Z","tsn":1794507291471541390}
+{"seat":"RUNNER","event":"raise","id":"STEVE_LANE_UNSTICK_PAUSED_UNOWNED_0196","reason":"steward: lane unowned 31 min (PAUSED)","ts":"2026-11-12T18:35:12Z","tsn":1794508512835214081}
