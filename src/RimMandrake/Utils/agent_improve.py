@@ -93,11 +93,12 @@ def norm_target(home):
 
 
 def piece(target, kind, ts, path, text, item=None):
-    """`text` is the first line, for the packet. The task kind (design 4.3) is the kind of `item`, the piece's own
-    item when its source records one (a lesson's `item:` line), else of the first item named in the whole text, so a
-    lesson that names its item past its first 200 characters still names its source kind."""
+    """`text` is the first line, for the packet. The task kind (design 4.3) is the kind of `item`, the piece's own item
+    when its source records one (a lesson's `item:` footer; NONE or an id with no intent word gives no kind, never a
+    guess from the text), else of the first item named in the whole text, so a lesson that names its item past its
+    first 200 characters still names its source kind."""
     return {"target": target, "kind": kind, "ts": ts, "path": path, "text": first_line(text),
-            "task_kind": kind_of_text(item) or kind_of_text(text)}
+            "task_kind": kind_of_text(item) if item else kind_of_text(text)}
 
 
 def lesson_pieces(lessons_dir, lo, hi):

@@ -144,11 +144,15 @@ the newest version of each target:
   checked as usual.
 - Where a piece's kind comes from, and why a change below L2 may still name none (2026-11-11,
   `AGENT_IMPROVE_AUDIT_KINDLESS_RECORDS_ALL_TWO`). A piece's kind is the kind of its own item when its source records
-  one: a lesson's `item:` line (`lessons.py add` writes it from `--item`, else the session's `RIMFLOW_ITEM` or the
-  Whittle loop's `WC_ITEM`), a Relentless reject or learned line's item, a Relentless alarm's `item` or its
-  `clones/<item>` path, an owner note's item, an ops alarm's own id. Otherwise it is the first item named anywhere in the
-  piece's whole text, not only the 200 characters the packet shows: of the 2391 lessons ever filed, the first line names a
-  kind for 158 (7%), the whole text for 579 (24%). Each cited piece in a change record carries its `task_kind`.
+  one: a lesson's `item:` footer (`lessons.py add` writes it from `--item`, else the session's `RIMFLOW_ITEM` or the
+  Whittle loop's `WC_ITEM`; `item: NONE`, or an id with no intent word, gives no kind and is never second-guessed from
+  the text), a Relentless reject or learned line's item, a Relentless alarm's `item` or its `clones/<item>` path, an
+  owner note's item, an ops alarm's own id. Otherwise it is the first item named anywhere in the piece's whole text, not
+  only the 200 characters the packet shows: of the 2391 lessons ever filed, the first line names a kind for 158 (7%), the
+  whole text for 579 (24%). That fallback is a proxy, not provenance: the lesson's own seat wrote a ledger event on that
+  item within 3 hours of filing for 27% of the first-line cases and 48% of the whole-text-only ones, so reading the whole
+  text is no less sound than the first line was, and only the footer is sound. Each cited piece in a change record
+  carries its `task_kind`.
   **A change at L0 or L1 whose cited pieces still name no item is applied, and its record says `source_kinds: []`: it
   stays uncheckable by design** (shown `unmeasured` while due, as above; refused only by the L2 gate). Why: no other
   sound source remains, and a guessed kind would make a held-out sample that is not held out, which is worse than an
@@ -160,7 +164,7 @@ the newest version of each target:
   (rimworld-modding v1 and using-rimflow v1, both L0, one lesson each). Neither lesson names an item anywhere, so this
   reading gives them none either. In the live inbox, 5 of 105 lessons name an item (1 by their first line), so most
   skill changes will stay unmeasured until lessons are filed inside an item and so carry its `item:` line. Measurement:
-  `whittle/agent_improve_audit_kindless_records_all_two/evidence/measure_kindless.py`.
+  `whittle/agent_improve_audit_kindless_records_all_two/evidence/measure_kindless.py` and `attribution_audit.py` beside it.
 - The L2 gate (`AGENT_IMPROVE_TUNE_L2_GATE_SAMPLE_POWER`, decided before the ramp first reached L2, with
   two noise-floor checks on record, both no_signal, so mostly from computation: 2 of 2 is no rate). It applies what reads general,
   and a narrow or no_signal that does not lean to harm (wins >= losses on 6 or more judged held-out pairs); it refuses overfit,

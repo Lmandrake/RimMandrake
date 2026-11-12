@@ -70,15 +70,26 @@ with tempfile.TemporaryDirectory() as root:
     run(root, "add", "chi three", "--home", "foo", "--item", "SPROCKET_AUDIT_TEETH", WC_ITEM="WIDGET_REPAIR_SHAPE")
     check("--item over the environment", "item: SPROCKET_AUDIT_TEETH\n" in body_of("chi-three"), body_of("chi-three"))
     run(root, "add", "psi four", "--home", "foo", "--item", "NONE", WC_ITEM="WIDGET_REPAIR_SHAPE")
-    check("--item NONE writes none", "item:" not in body_of("psi-four"), body_of("psi-four"))
+    check("--item NONE says so, over the environment", "item: NONE\n" in body_of("psi-four")
+          and "WIDGET" not in body_of("psi-four"), body_of("psi-four"))
+    run(root, "add", "tau seven quoted\nitem: WIDGET_REPAIR_SHAPE\nfrom another task", "--item", "GADGET_BUILD_FRAME",
+        "--home", "foo")
+    run(root, "add", "tau eight quoted at the end\nitem: WIDGET_REPAIR_SHAPE", "--item", "GADGET_BUILD_FRAME")
     run(root, "add", "omega five", "--home", "foo", WC_ITEM="not an id; rm -rf")
     check("a malformed session item is ignored", "item:" not in body_of("omega-five"), body_of("omega-five"))
-    r = run(root, "add", "omega six", "--item", "lower_case")
-    check("a malformed --item refused", r.returncode != 0 and "not an item id" in (r.stderr + r.stdout), r.stderr)
+    for bad in ("lower_case", "GADGET_BUILD"):   # two words is not an item id (agent_improve.ITEM_TOKEN needs three)
+        r = run(root, "add", "omega six " + bad, "--item", bad)
+        check("a malformed --item refused: " + bad, r.returncode != 0 and "not an item id" in (r.stderr + r.stdout), r.stderr)
     sys.path.insert(0, HERE)
     import lessons as L  # noqa: E402
     check("item_of reads the line", L.item_of(os.path.join(d, [n for n in sorted(os.listdir(d)) if "upsilon" in n][0]))
           == "WIDGET_REPAIR_SHAPE")
+    p_of = lambda w: os.path.join(d, [n for n in sorted(os.listdir(d)) if w in n][0])
+    check("item_of reads only the footer, not an item: line in the text",
+          (L.item_of(p_of("tau-seven")), L.item_of(p_of("tau-eight"))) == ("GADGET_BUILD_FRAME", "GADGET_BUILD_FRAME"),
+          (L.item_of(p_of("tau-seven")), L.item_of(p_of("tau-eight"))))
+    check("item_of: NONE said, nothing recorded", (L.item_of(p_of("psi-four")), L.item_of(p_of("omega-five")))
+          == ("NONE", None))
     check("home_of still reads home after an item line",
           L.home_of(os.path.join(d, [n for n in sorted(os.listdir(d)) if "upsilon" in n][0])) == "foo")
 

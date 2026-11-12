@@ -16,10 +16,11 @@ would have silently resurrected (git plan §2.5).
 lesson. `LESSONS_INBOX.md` is a gitignored rendered view (listed in .gitignore, not
 tracked): rebuilt by `render` on demand; never edit it — an edit there is lost on
 the next render. A lesson's last line may be `home: <skill|doc path|NONE>`, its
-proposed durable home. Before it may come `item: <ID>`, the item the lesson was learned on: --item, else the session's
-item from the environment (RIMFLOW_ITEM, which close_evidence also reads, or WC_ITEM, set by the Whittle loop for its
-round's one item). The daily agent-improvement pass reads a lesson's task kind from it (design
-daily_agent_improvement_2026-11-02.md 4.3); a lesson filed outside an item names none.
+proposed durable home. Before it may come `item: <ID|NONE>`, the item the lesson was learned on: --item, else the
+session's item from the environment (RIMFLOW_ITEM, which close_evidence also reads, or WC_ITEM, set by the Whittle loop
+for its round's one item). The daily agent-improvement pass reads a lesson's task kind from it (design
+daily_agent_improvement_2026-11-02.md 4.3). Only the footer counts: the `item:`/`home:` lines at the end of the file,
+never a line of that shape inside the lesson text.
 """
 import argparse
 import os
@@ -32,7 +33,7 @@ ROOT = os.environ.get("LESSONS_ROOT") or os.path.dirname(os.path.dirname(os.path
 DIR = os.path.join(ROOT, "infrastructure", "state", "lessons")
 VIEW = os.path.join(ROOT, "infrastructure", "state", "LESSONS_INBOX.md")
 ITEM_ENV = ("RIMFLOW_ITEM", "WC_ITEM")
-ITEM_ID = re.compile(r"[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+")
+ITEM_ID = re.compile(r"[A-Z][A-Z0-9]*(?:_[A-Z0-9]+){2,}")   # agent_improve.ITEM_TOKEN's grammar: three words or more
 README = "README.md"
 
 
@@ -146,15 +147,18 @@ def print_stats(st):
 
 
 def item_of(path):
-    """The `item:` line's id, or None."""
+    """The footer's `item:` id, "NONE" when the lesson was filed as learned on no item, else None (not recorded)."""
     try:
         with open(path, encoding="utf-8") as f:
-            for ln in f:
-                if ln.startswith("item:"):
-                    v = ln[5:].strip()
-                    return v if ITEM_ID.fullmatch(v) else None
+            lines = f.read().strip().splitlines()
     except OSError:
-        pass
+        return None
+    for ln in reversed(lines):   # the footer: trailing item:/home: lines, nearest the end first
+        if ln.startswith("item:"):
+            v = ln[5:].strip()
+            return v if v == "NONE" or ITEM_ID.fullmatch(v) else None
+        if not ln.startswith("home:"):
+            return None
     return None
 
 
@@ -165,7 +169,7 @@ def add(text, seat=None, slug=None, utc=None, home=None, item=None):
     if item is None:   # the session's item; a malformed environment value is not an item
         item = next((os.environ[k].strip() for k in ITEM_ENV if ITEM_ID.fullmatch(os.environ.get(k, "").strip())), "")
     elif item.strip().upper() == "NONE":
-        item = ""
+        item = "NONE"   # said: learned on no item, so no kind is read from the text either
     elif not ITEM_ID.fullmatch(item.strip()):
         sys.exit("FAIL: --item %r is not an item id (or NONE)." % item)
     item = item.strip()

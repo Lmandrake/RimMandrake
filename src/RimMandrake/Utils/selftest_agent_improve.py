@@ -85,6 +85,17 @@ with tempfile.TemporaryDirectory() as root:
     bare = A.relentless_pieces(store, A.day_bounds("2026-10-20")[0], A.day_bounds("2026-10-20")[1])
     check("an alarm with no item keeps its bare why and no kind",
           [(p["text"], A.task_kind(p)) for p in bare] == [("breaker open", None)], bare)
+    # a lesson's item: footer is its kind and is never second-guessed from the text (design 4.3)
+    lk = os.path.join(root, "lessons_kinds")
+    for name, body in [("own", "Names WIDGET_REPAIR_SHAPE first.\nitem: GADGET_BUILD_FRAME\nhome: x\n"),
+                       ("none", "Names WIDGET_REPAIR_SHAPE.\nitem: NONE\nhome: x\n"),
+                       ("legacy", "Names WIDGET_REPAIR_SHAPE.\nitem: SEA_DIVE_HATCH_REMOVE_1\nhome: x\n"),
+                       ("quoted", "Names WIDGET_REPAIR_SHAPE.\nitem: NONE\nquoted from a log, not the footer\nhome: x\n"),
+                       ("bare", "Names WIDGET_REPAIR_SHAPE.\nhome: x\n")]:
+        write(os.path.join(lk, "20261101T010000Z-BENCH-%s.md" % name), body)
+    got = {os.path.basename(p["path"])[23:-3]: A.task_kind(p) for p in A.lesson_pieces(lk, 0, 2 ** 31)}
+    check("lesson kinds: footer item, NONE, kindless own item, a quoted item: line, none recorded",
+          got == {"own": "BUILD", "none": None, "legacy": None, "quoted": "REPAIR", "bare": "REPAIR"}, got)
     check("skill-a recurs on the day", "skill-a" in names, names)
     check("skill-b recurs over the window", "skill-b" in names and by["skill-b"]["window_count"] == 2, names)
     check("skill-c lonely, not signalled", "skill-c" not in names and "skill-c" in pk["unsignalled"], pk["unsignalled"])
