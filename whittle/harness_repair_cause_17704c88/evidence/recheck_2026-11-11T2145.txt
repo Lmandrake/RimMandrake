@@ -1,0 +1,4 @@
+2026-11-11T21:39:33-08:00
+retest.py passed J20261112T053705Z-c7a2a7 -> exit 2 UNMEASURED (no result yet)
+archmagi testq/YIELDED_TO_CLAUDE_WHITTLE.txt present: Steve lane paused 168 h (owner order 2026-11-11 ~19:10 PST); archmagi.stop and fill.stop set
+runner clone ~/rm/runner: tracked-clean (git status --untracked-files=no empty), HEAD 21b2b3c052; worker.py unpin() self-heals tracked dirt, so the earlier REFUSED/SYNC should not recur
