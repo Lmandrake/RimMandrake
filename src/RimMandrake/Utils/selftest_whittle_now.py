@@ -177,6 +177,22 @@ def narrow_tables(text):
     return bad
 
 
+def head_of(page):
+    return next(l for l in page.splitlines() if "Spent since start" in l)
+
+
+def midnight_keeps(mod, stubs, page):
+    """Local midnight falls 30 minutes ago, between rounds of every worker: the headline must not change."""
+    old = mod.midnight
+    mod.midnight = lambda: time.time() - 1800
+    try:
+        page2, _, _ = mod.build(stubs)
+    finally:
+        mod.midnight = old
+    strip = lambda h: re.sub(r"\(Nov.*?\)|FlowWorks lane.*", "", h)
+    return strip(head_of(page)) == strip(head_of(page2)) and "none yet" not in head_of(page2) and "$0.00" not in head_of(page2)
+
+
 def checks(mod, tmp):
     root = os.path.join(tmp, "w")
     os.makedirs(root)
@@ -191,7 +207,6 @@ def checks(mod, tmp):
     page, phone, _ = mod.build(stubs)
     needs = page.split("## Needs you", 1)[1].split("## Workers at a glance", 1)[0].split("\n## Alarms", 1)[0]
     edge_part = page.split("## edgy", 1)[1] if "## edgy" in page else ""
-    near_midnight = time.localtime().tm_hour == 0 and time.localtime().tm_min < 55
     out = [
         ("questions asked in needs", "stuckone asks you 1 question" in needs and "Which pipe should win?" in needs),
         ("question text in full", "The north pipe or the south pipe, and why it matters." in page),
@@ -203,12 +218,14 @@ def checks(mod, tmp):
         ("edge item from log", "`RM_EDGE_ITEM_TWO` (On the boundary)" in edge_part),
         ("unreachable not stopped", "**unreachable**" in page and "closer: stopped" not in page.lower()),
         ("stopped unit said", "`rm-whittle-edgy.service` on Archmagi: **inactive**" in page),
-        ("claim not accepted", near_midnight or "closer said it closed `RM_CLAIM_ITEM_ONE`" in needs),
+        ("claim not accepted", "closer said it closed `RM_CLAIM_ITEM_ONE`" in needs),
         ("ledger close accepted", "closed in the ledger" in page and "`abc1234def`" in page and "abc1234def5" not in page),
-        ("closed today split", near_midnight or "2 said, 1 in ledger" in page),
-        ("spend from round-end line + spend.json", near_midnight or "Spent today: $15.75 (2.50M weighted tokens)" in page),
-        ("unmeasured rounds counted, not guessed", near_midnight or "rounds unmeasured" in page),
-        ("dollars per close", near_midnight or "$15.75 per close" in page),
+        ("closed today split", "1 in the ledger (2 said by workers)" in page),
+        ("spend from round-end line + spend.json", "Spent since start: $15.75 (2.50M weighted tokens)" in page),
+        ("unmeasured rounds counted, not guessed", "rounds unmeasured" in page),
+        ("dollars per close", "$15.75 per close" in page),
+        ("headline counts since the fleet started", "since the fleet started (" in page and "last 24 h: $15.75" in page and "Closed today" not in page),
+        ("midnight between rounds keeps the totals", midnight_keeps(mod, stubs, page)),
         ("raw token sum gone", "Tokens today" not in page),
         ("accounts line is first under the title", page.splitlines()[2].startswith("**Accounts left") and page.index("<svg") > page.index("Accounts left")),
         ("drifted start line read", "| 2 |" in page.split("## closer", 1)[1]),
@@ -258,7 +275,7 @@ def checks(mod, tmp):
     out.append(("empty root", "No Whittle workers yet" in page2 and "none yet" in phone2))
     line = [l for l in page.splitlines() if l.startswith("**Accounts left")]
     out.append(("accounts line: remaining, drop since start, ? for missing source, live marked",
-                len(line) == 1 and "system 58% (\u221212 since 19:48" in line[0] and "steven ?" in line[0] and "lukas ?" in line[0]
+                len(line) == 1 and re.search(r"system 58% \(\u221212 since (Nov 11 )?19:48", line[0]) and "steven ?" in line[0] and "lukas ?" in line[0]
                 and "Codex 70%" in line[0] and "live: steven" in line[0] and "OLD" not in line[0] and phone.splitlines()[1].startswith("Accounts left")))
     sa = dict(stubs)
     sa["accounts"] = lambda sources: [{"name": "system", "used": 42.0, "resets": None, "t": time.time() - 1200, "why": None, "slope": None}]

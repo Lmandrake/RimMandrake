@@ -101,7 +101,31 @@ def read_json(path):
         return None, "unreadable (%s)" % short(e, 80)
 
 
+FLEET = {"t0": None, "why": None}   # set by build(): the clock every "since the fleet started" figure counts from
+
+
+def fleet_start(recs, roster_start=None):
+    """The fleet's start: FLEET_START in workers.json, else the earliest 'loop start' line in any worker loop.log,
+    else the earliest round line. -> (epoch or None, how)."""
+    if roster_start:
+        t = parse_when(roster_start)
+        if t:
+            return t, "FLEET_START in workers.json"
+    starts = [t for r in recs for (t, txt) in r["other"] if t and re.match(r"loop\s+start", txt, re.I)]
+    if starts:
+        return min(starts), "earliest loop start"
+    firsts = [x["start"] or x["end"] for r in recs for x in r["rounds"].values() if x["start"] or x["end"]]
+    return (min(firsts), "earliest round") if firsts else (None, None)
+
+
 def today_start():
+    """Start of the counting period: the fleet start once known (so midnight resets nothing), else local midnight."""
+    if FLEET["t0"]:
+        return FLEET["t0"]
+    return midnight()
+
+
+def midnight():
     d = dt.datetime.fromtimestamp(now_s()).astimezone()
     return d.replace(hour=0, minute=0, second=0, microsecond=0).timestamp()
 
@@ -252,6 +276,7 @@ def read_roster(root, sources):
         sources.add("roster workers.json", None, "%s: %s" % (why, path))
         return {}, why
     sources.file("roster workers.json", path)
+    FLEET["roster_start"] = data.get("FLEET_START") if isinstance(data, dict) else None
     if isinstance(data, dict) and isinstance(data.get("workers"), (list, dict)):
         data = data["workers"]
     out = {}
@@ -566,6 +591,16 @@ def assess(r, ledger):
     ended = [x for x in rounds if x["end"]]
     r["closed_today"] = [x for x in ended if x["outcome"] == "closed" and x["end"] >= t0]
     r["accepted_today"] = [x for x in r["closed_today"] if x["truth"].get("closed")]
+    # ledger closes of items this worker claimed since the fleet started, whatever the round said (rimflow verify auto-closes)
+    r["ledger_items"] = {}
+    for x in rounds:
+        for iid in (x["item"], x.get("end_item")):
+            tr = truth(ledger, iid) if iid else {}
+            if tr.get("closed") and (tr.get("at") or 0) >= t0:
+                r["ledger_items"][iid] = tr["at"]
+    t24 = now_s() - 86400
+    r["ledger_24h"] = sum(1 for t in r["ledger_items"].values() if t >= t24)
+    r["spend_24h"] = 0.0
     r["tokens_today"] = sum(x["tokens"] or 0 for x in ended if x["end"] >= t0)
     r["tokens_all"] = sum(x["tokens"] or 0 for x in ended)
     r["tokens_seen"] = any(x["tokens"] is not None for x in ended)
@@ -578,6 +613,8 @@ def assess(r, ledger):
         r["spend_all"] += x["usd"]
         if x["end"] >= t0:
             r["spend_today"] += x["usd"]
+            if x["end"] >= t24:
+                r["spend_24h"] += x["usd"]
             r["weighted_today"] += x["wtd"] or 0
     r["counts"] = {}
     for x in ended:
@@ -742,9 +779,9 @@ def picture(recs):
             P.rect(xa, y + 8, max(2.5, xb - xa - 1), 24, OUT_COLOUR[kind], rx=2, title=tip)
             if xb - xa > 20:
                 P.text((xa + xb) / 2, y + 24, x["n"], size=10.5, colour=A.TEXT if kind == "noend" else A.INK, weight="600", anchor="middle")
-        side = "%d closed today" % len(r["closed_today"])
-        if r["closed_today"] and len(r["accepted_today"]) != len(r["closed_today"]):
-            side += ", %d in ledger" % len(r["accepted_today"])
+        side = "%d closed since start" % len(r["ledger_items"])
+        if len(r["closed_today"]) != len(r["ledger_items"]):
+            side += ", %d said" % len(r["closed_today"])
         P.text(right + 12, y + 18, side, size=11, weight="600")
         sub = usd_word(r)
         P.text(right + 12, y + 33, sub, size=10.5, colour=A.DIM)
@@ -787,13 +824,13 @@ def usd_word(r):
 
 
 def glance(recs):
-    rows = ["| Worker | State | Machine | Now on | On it for | Round | Closed today | Spent today |",
+    rows = ["| Worker | State | Machine | Now on | On it for | Round | Closed since start | Spent since start |",
             "|---|---|---|---|---|---|---|---|"]
     for r in recs:
         info = r["info"]
-        closed = "%d" % len(r["closed_today"])
-        if len(r["accepted_today"]) != len(r["closed_today"]):
-            closed += " said, %d in ledger" % len(r["accepted_today"])
+        closed = "%d" % len(r["ledger_items"])
+        if len(r["closed_today"]) != len(r["ledger_items"]):
+            closed += " in ledger (%d said)" % len(r["closed_today"])
         on = item_ref(r["item"])
         rows.append("| **%s** | %s | %s | %s | %s | %s | %s | %s |" % (
             wrap_id(r["name"]), cell(r["state_word"].upper() if r["state_word"] not in ("working",) else "working"),
@@ -851,9 +888,9 @@ def worker_section(r):
     c = r["counts"]
     if c:
         L.append("- **Rounds ended:** %s." % ", ".join("%d %s" % (v, k) for k, v in sorted(c.items(), key=lambda kv: -kv[1])))
-    L.append("- **Closed today:** %d said by the worker, %d closed in the ledger." % (len(r["closed_today"]), len(r["accepted_today"])))
-    L.append("- **Spent:** %s today, $%.2f on record%s; raw tokens ~%s today." % (
-        usd_word(r), r["spend_all"], ", %d round%s today unmeasured" % (r["unmeasured_today"], "" if r["unmeasured_today"] == 1 else "s") if r["unmeasured_today"] else "",
+    L.append("- **Closed since the fleet started:** %d said by the worker, %d closed in the ledger." % (len(r["closed_today"]), len(r["ledger_items"])))
+    L.append("- **Spent:** %s since the fleet started (last 24 h $%.2f), $%.2f on record%s; raw tokens ~%s since start." % (
+        usd_word(r), r["spend_24h"], r["spend_all"], ", %d round%s unmeasured" % (r["unmeasured_today"], "" if r["unmeasured_today"] == 1 else "s") if r["unmeasured_today"] else "",
         toks(r["tokens_today"]) if r["tokens_seen"] else "not logged"))
     ages = ", ".join("%s %s" % (f, "%s ago" % ago(now_s() - t) if t else "missing") for f, t in r["files"].items())
     L.append("- **Files:** %s. Folder `%s\\%s`." % (ages, NATIVE_ROOT, r["name"]))
@@ -1056,17 +1093,21 @@ def headline(recs, lane, needs, ledger_ok):
         s = "%d worker%s: %s." % (len(recs), "" if len(recs) == 1 else "s",
                                    ", ".join("%d %s" % (v, k) for k, v in sorted(states.items(), key=lambda kv: -kv[1])))
         said = sum(len(r["closed_today"]) for r in recs)
-        acc = sum(len(r["accepted_today"]) for r in recs)
+        led = {}
+        for r in recs:
+            led.update(r["ledger_items"])
+        acc = len(led)
+        acc24 = sum(1 for t in led.values() if t >= now_s() - 86400)
+        since = "since the fleet started (%s)" % (dt.datetime.fromtimestamp(FLEET["t0"]).astimezone().strftime("%b %-d %H:%M %Z") if FLEET["t0"] else "start unknown")
         if not ledger_ok:
-            s += " Closed today: %d said, ledger UNMEASURED." % said
-        elif said == acc:
-            s += " Closed today: %d, all in the ledger." % acc if said else " Closed today: none yet."
+            s += " Closed %s: %d said, ledger UNMEASURED." % (since, said)
         else:
-            s += " Closed today: %d said, %d in the ledger." % (said, acc)
+            s += " Closed %s: %d in the ledger%s; last 24 h: %d." % (since, acc, " (%d said by workers)" % said if said != acc else "", acc24)
         spent = sum(r["spend_today"] for r in recs)
+        s24 = sum(r["spend_24h"] for r in recs)
         unm = sum(r["unmeasured_today"] for r in recs)
         wtd = sum(r["weighted_today"] for r in recs)
-        s += " Spent today: $%.2f (%.2fM weighted tokens)%s." % (spent, wtd / 1e6, ", %d round%s unmeasured" % (unm, "" if unm == 1 else "s") if unm else "")
+        s += " Spent since start: $%.2f (%.2fM weighted tokens)%s; last 24 h: $%.2f." % (spent, wtd / 1e6, ", %d round%s unmeasured" % (unm, "" if unm == 1 else "s") if unm else "", s24)
         if ledger_ok and acc:
             s += " $%.2f per close." % (spent / acc)
         elif ledger_ok:
@@ -1105,6 +1146,7 @@ def build(stubs=None):
     else:
         ledger_why = None
     (stubs.get("transcripts") or read_transcripts)(recs, sources)
+    FLEET["t0"], FLEET["why"] = fleet_start(recs, FLEET.get("roster_start"))
     for r in recs:
         assess(r, ledger)
     try:
@@ -1160,12 +1202,12 @@ def build(stubs=None):
               "- %d more %s open in the ledger but %s no live item file%s: not counted above." % (
                   lane["unfiled"], "is" if lane["unfiled"] == 1 else "are", "has" if lane["unfiled"] == 1 else "have", " (%s)" % uparts if uparts else ""),
               "- Of them, %d %s you live (marked needs owner)." % (lane["needs_owner"], "needs" if lane["needs_owner"] == 1 else "need"),
-              "- Closed in the ledger today, by any seat: %d." % lane["closed_today"]]
+              "- Closed in the ledger since the fleet started, by any seat: %d." % lane["closed_today"]]
     else:
         P += ["- UNMEASURED: %s." % lane]
     P += [""]
 
-    P += ["## Closed today", ""]
+    P += ["## Closed since the fleet started (worker said closed)", ""]
     closed = sorted(((x["end"], r["name"], x) for r in recs for x in r["closed_today"]), key=lambda z: z[0], reverse=True)
     if closed:
         P += ["| Time | Worker | Item | Ledger now | Commit |", "|---|---|---|---|---|"]
@@ -1173,7 +1215,7 @@ def build(stubs=None):
             P.append("| %s | %s | %s | %s | %s |" % (cell(clock(t)), wrap_id(name), cell(item_ref(x["item"])),
                                                     cell(word_cell(x["truth"])), cell(sha_cell(x["sha"]))))
     else:
-        P += ["No worker has logged a closed round today."]
+        P += ["No worker has logged a closed round since the fleet started."]
     P += [""]
 
     P += ["## Games and machines", ""]
@@ -1238,7 +1280,7 @@ def phone_page(head, recs, needs, lane, machines, acct_line=""):
     for r in recs:
         item = r["item"] or "no item"
         L.append("%s: %s, %s, %s" % (r["name"], r["state_word"], r["info"].get("machine") or "?", item))
-        L.append("  closed today %d (ledger %d)%s" % (len(r["closed_today"]), len(r["accepted_today"]),
+        L.append("  closed since start %d said, %d ledger%s" % (len(r["closed_today"]), len(r["ledger_items"]),
                                                        ", on item %s" % A.hm(now_s() - r["item_since"]) if r["item"] and r["item_since"] else ""))
     L += ["", "LANE", "FlowWorks left to work: %s" % (lane["open"] if isinstance(lane, dict) else "UNMEASURED"), "", "GAMES"]
     for name in ("Archmagi", "SteveDesktop"):
