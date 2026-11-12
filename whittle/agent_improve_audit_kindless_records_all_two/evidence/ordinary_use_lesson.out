@@ -1,4 +1,4 @@
-# 2026-11-11 21:58 -0800 at HEAD cb52ef37dd ordinary use: lessons in the real inbox and what the pass's own collector makes of them
+# 2026-11-11 22:03 -0800 at HEAD 0e9631bb4c ordinary use: lessons in the real inbox and what the pass's own collector makes of them
 # this round's lesson, filed with WC_ITEM set by the Whittle loop; the commit that added it:
   13c3626830 2026-11-11 20:42:33 -0800 AGENT_IMPROVE_AUDIT_KINDLESS_RECORDS_ALL_TWO: evidence, broaden, lessons README names --item
 
@@ -21,6 +21,9 @@
   20261112T054039Z-CLAUDE_STEVEDESKTOP_OFFLINE3-stevedesktop-s-steam-lib item: CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1
   20261112T054039Z-CLAUDE_STEVEDESKTOP_OFFLINE3-wc-py-setup-wrote-whittl item: CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1
   20261112T054845Z-CLAUDE_STEVEDESKTOP_OFFLINE4-whittle-evidence-green-s item: SEA_FLOOR_AND_CATCH_PASS_1
+  20261112T055625Z-CLAUDE_STEVEDESKTOP_OFFLINE4-sea-catch-judge-findings item: SEA_FLOOR_AND_CATCH_PASS_1
+  20261112T055933Z-CLAUDE_STEVEDESKTOP_OFFLINE5-stevedesktop-clone-claud item: SHIP_ALLOY_FORGE_1
+  20261112T060309Z-CLAUDE_STEVEDESKTOP_OFFLINE6-testq-py-submit-run-stev item: HARNESS_REPAIR_CAUSE_8135787B
 
 $ tail -2 infrastructure/state/lessons/20261112T043802Z-CLAUDE_ARCHMAGI_OFFLINE1-lesson-item-footer-feeds-kinds.md
 item: AGENT_IMPROVE_AUDIT_KINDLESS_RECORDS_ALL_TWO
@@ -62,11 +65,14 @@ home: design/RimMandrake/daily_agent_improvement_2026-11-02.md
   task_kind=None     target=None                                   20261112T054039Z-CLAUDE_STEVEDESKTOP_OFFLINE3-stevedesktop-s-steam-library-moved-d.md
   task_kind=None     target=None                                   20261112T054039Z-CLAUDE_STEVEDESKTOP_OFFLINE3-wc-py-setup-wrote-whittle-cathedral.md
   task_kind=None     target=None                                   20261112T054845Z-CLAUDE_STEVEDESKTOP_OFFLINE4-whittle-evidence-green-subset.md
+  task_kind=None     target=None                                   20261112T055625Z-CLAUDE_STEVEDESKTOP_OFFLINE4-sea-catch-judge-findings.md
+  task_kind=None     target=None                                   20261112T055933Z-CLAUDE_STEVEDESKTOP_OFFLINE5-stevedesktop-clone-claude-offline5-had-origin.md
+  task_kind=REPAIR   target=None                                   20261112T060309Z-CLAUDE_STEVEDESKTOP_OFFLINE6-testq-py-submit-run-stevedesktop-used.md
 
 $ python3 src/RimMandrake/Utils/agent_improve.py gather --day 2026-11-12 --dry-run --out <scratch, L0>
 # Agent improvement packet 2026-11-12
 
-35 pieces today; 2 signalled targets (>= 2 pieces in 7 days), cap 6.
+38 pieces today; 2 signalled targets (>= 2 pieces in 7 days), cap 6.
 
 ## wc.py (3 in window, 3 today)
 kinds: lesson 3
@@ -80,7 +86,6 @@ kinds: lesson 2
 - [lesson] A loop that execs a private copy of itself (loop.run.sh) never adopts a new loop.sh: only wc.py and the *.md briefs it re-reads each round reach a running unit. Fixes for running loops must ride wc.py  (/home/mandrake/rm/scratch/BENCH/claude-archmagi-offline1/infrastructure/state/lessons/20261112T045615Z-BENCH-private-run-copy-never-adopts.md)
 
 ## unrouted (the Curator routes these or leaves them)
-- [lesson] The account switcher's D:\ClaudeWork\rimmandrake\switching_plan\notice.json holds the switcher's current account (steven), pct_left and its switch line, not the Claude System account's weekly %. That 
 - [lesson] SteveDesktop Whittle clones (~/rm/claude-offline1..4, ~/rm/claude-fwlive) push to git@github.com, which resolves to ~/.ssh/id_ed25519: a READ-ONLY key (GitHub: 'marked as read only'), so ./publish ret
 - [lesson] SteveDesktop Whittle loop clones claude-offline2 and claude-offline3 were created with push URL git@github.com:... , which authenticates with the machine's READ-ONLY default key, so ./publish retries 
 - [lesson] SteveDesktop Whittle clones (~/rm/claude-offline*) set no core.sshCommand, so ./publish pushes with the read-only id_ed25519 and is REFUSED ('key ... marked as read only'). Publish with GIT_SSH_COMMAN
@@ -103,5 +108,9 @@ kinds: lesson 2
 - [lesson] SteveDesktop's Steam library moved to D:/SteamLibrary on 2026-11-11 (the C: RimWorld folder keeps only Mods and logs), so every winbuild failed on Harmony and Assembly-CSharp; src/Directory.Build.prop
 - [lesson] wc.py setup wrote whittle/cathedral_survey_misdirection_quest_1/STATEMENT.md with an empty bullet and a fragment ('- *Depends on:** item 1 ..., pursuit'): it cut the item file at a bold Depends-on lin
 - [lesson] Whittle evidence for SEA_FLOOR_AND_CATCH_PASS_1 showed only the green selftest subset (3/5 cache KNOWN PASS) while its own chain audit listed red/crashed build-dependent tests (selftest_seashores, swi
+- [lesson] Blind judge of SEA_FLOOR_AND_CATCH_PASS_1 (2026-11-11): (1) the item's verify clause exempts live proof only 'while QUICKTEST_RIVER_WATER_MISSING_1 stands' - that item is done (a8a1b92c2), so the exem
+- [lesson] SteveDesktop clone claude-offline5 had origin's push URL on github.com (read-only deploy key) instead of github-rimmandrake-write like offline1-4/6: ./publish retried 'push failed' for two rounds and 
+- [lesson] testq.py submit run on SteveDesktop used to write a local queue no dispatcher reads and print pending; since 780f797c48 it forwards to Archmagi's ~/rm/dispatch. A test that disables that forward submi
+(showing the newest 25 of 26)
 
 Not signalled today: CLAUDE.md, common.md, daily_agent_improvement_2026-11-02.md, install.sh, selftest_codex_seats.py, steve_c_drive_fill_2026-11-03.md, wsl-windows-plumbing

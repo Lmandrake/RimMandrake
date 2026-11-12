@@ -7,8 +7,8 @@
 - true: **A change applied below L2 either records source kinds, or the decision to let it stay uncheckable is written in | evidence: `whittle/agent_improve_audit_kindless_records_all_two/evidence/selftests_new_code.out` `whittle/agent_improve_audit_kindless_records_all_two/evidence/selftests_old_code.out` `whittle/agent_improve_audit_kindless_records_all_two/evidence/ordinary_use_lesson.out` `whittle/agent_improve_audit_kindless_records_all_two/evidence/attribution_audit.out`
 - true: **The share of change records with no source kinds is measured from `infrastructure/state/agent_improve/changes/` and | evidence: `whittle/agent_improve_audit_kindless_records_all_two/evidence/measure_kindless.out` `whittle/agent_improve_audit_kindless_records_all_two/evidence/measure_kindless.py`
 
-Every evidence file was re-run 2026-11-11 21:58 PST, after the last landing (cb52ef37dd; stamps in each file). The
-figures hold: attribution 206 of 422, still 49%; lessons ever filed 2413, whole-text kinds 584; 2 of 2 records
+Every evidence file was re-run 2026-11-11 22:04 PST, after the last landing (0e9631bb4c; stamps in each file). The
+figures hold: attribution 207 of 423, still 49%; lessons ever filed 2416, whole-text kinds 585; 2 of 2 records
 kindless. `measure_kindless.py` is unchanged since it was committed (only re-run). This sitting also corrected §4.3,
 which said a lesson gains a kind once it carries an `item:` footer. It does not when the footer names a legacy `_1` id,
 and 8 of the 17 inbox footers do. §4.3's inbox figures now cite a saved run,
@@ -39,8 +39,8 @@ Bullet 2: 2 of 2 records have `source_kinds == []`. The sanity probe: the produc
 - 2 records is the whole population, so the share is 100% of a tiny sample. In the frozen 21:49 PST run §4.3 cites,
   10 of 126 inbox lessons give a kind when the whole file is read (8 from their own words, 2 only from the footer line),
   and 17 carry an `item:` footer: 6 say `NONE`, 8 name legacy `_1` ids with no intent word, which give no kind by
-  design, and 3 give a kind (FIX twice from a FlowWorks round, AUDIT from this round). At 21:58 the live inbox is 127
-  lessons with 18 footers. Most skill changes stay unmeasured until lessons are filed on items whose names carry an
+  design, and 3 give a kind (FIX twice from a FlowWorks round, AUDIT from this round). At 22:04 the live inbox is 130
+  lessons with 21 footers. Most skill changes stay unmeasured until lessons are filed on items whose names carry an
   intent word.
 
 ## What I did not test

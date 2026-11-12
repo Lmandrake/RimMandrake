@@ -1,7 +1,7 @@
-# at HEAD cb52ef37dd
-# 2026-11-11 21:58 -0800  WINDOW +-3 h; corroborated = the lesson's own seat wrote a ledger event on that item in the window
+# at HEAD 0e9631bb4c
+# 2026-11-11 22:04 -0800  WINDOW +-3 h; corroborated = the lesson's own seat wrote a ledger event on that item in the window
 first line       lessons  159  corroborated   43 (27%)
-whole text only  lessons  422  corroborated  206 (49%)
+whole text only  lessons  423  corroborated  207 (49%)
 
 sample of 8, first line:
   no    20261105T210722Z-BENCH-artsheet-fix-reference-textures-pickable-nightl ARTSHEET_FIX_REFERENCE_TEXTURES_PICKABLE
@@ -14,11 +14,11 @@ sample of 8, first line:
   no    20261105T072707Z-BENCH-relentless-game-stage-loop-offline-rebuild.md   TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING
 
 sample of 8, whole text only:
-  yes   20261031T170957Z-FOUNDRY-direct-raid-no-shovels.md                     CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP
-  no    20261106T204659Z-BENCH-owner-s-delegated-digest-blind-allowlist.md     AGENT_IMPROVE_WIRE_GENCHECK_HAND_RUN_ONLY
-  yes   20261103T042329Z-BENCH-round-series-regen-counts-apply-rounds.md       SERIES_STOP_FIX_RENAMED_DEF_ESCAPES
-  no    20261106T033212Z-BENCH-owner-look-acceptance-clause-live-proof.md      WATER_DEPTH_RESKIN_HE_LOOKS_FIRST
-  no    20261106T230741Z-BENCH-relentless-proof-that-reads-ledger-sees.md      RELENTLESS_REMEASURE_TICK_P95_DETACH_NEXT
-  no    20261106T165644Z-BENCH-list-things-read-with-limit-n.md                GAMEENV_FIX_PROOFSITE_28883863_ITEMS_WAIT
-  yes   20261104T044038Z-BENCH-relentless-blind-checker-box-relentless-wall.md FOUNDRY_CLONE_UNITS_MIGRATE_TO_BENCH
-  yes   20261104T065753Z-BENCH-selftest-that-fakes-rimbridge-request-default.m AGENT_WRAPUP_ENFORCE_ASKING_NEVER_WORKED
+  yes   20261101T000014Z-FOUNDRY-arena-gate-test-env.md                        GATE_TAMPER_FIX_CTYPES_HALTS_ARM
+  no    20261106T204941Z-BENCH-relentless-boxrun-mark-clean-commit-reads.md    REACH_GATE_HARDEN_PARENS_HIDE_THE_TOOL
+  yes   20261103T052252Z-BENCH-flowworks-body-claims-outlive-plot-reset.md     PLOT_D_BODY_PRUNE_STALE_SEA
+  no    20261106T043006Z-BENCH-fill-queue-s-drawsize-x128-ceiling.md           FACING_AUDIT_BUILD_REDRAW_BATCH
+  no    20261106T232243Z-BENCH-before-small-sample-test-gates-anything.md      AGENT_IMPROVE_TUNE_L2_GATE_SAMPLE_POWER
+  no    20261106T171010Z-BENCH-run-rimflow-guard-only-test-as.md               OPS_SCRATCH_DIRT_MEASURE_AT_END_YOGQ
+  yes   20261104T044520Z-BENCH-dirt-deploy-checkout-whose-every-path.md        PULSE_DEPLOY_GUARD_SOMEONE_WALKED_IN
+  yes   20261104T073357Z-BENCH-live-proof-can-now-say-what.md                  LIVE_ROWS_FIX_STOP_GUESSING_LOGS
