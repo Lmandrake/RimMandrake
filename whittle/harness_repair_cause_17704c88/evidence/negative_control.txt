@@ -1,0 +1,4 @@
+2026-11-11T21:37:20-08:00
+$ retest.py passed J20261106T092531Z-820498 HARNESS_REPAIR_CAUSE_17704C88   (on SteveDesktop, at 361469752f)
+FAIL: J20261106T092531Z-820498 still carries the cause: HARNESS: modcheck exit 1, no sheet (RuntimeError)
+exit=1

@@ -1,0 +1,86 @@
+{
+ "attempts": [
+  "J20261106T092531Z-820498.a1"
+ ],
+ "cancelled": false,
+ "finished": "2026-11-06T09:37:28Z",
+ "ingested": {
+  "at": "2026-11-06T09:41:47Z",
+  "note": true
+ },
+ "job": {
+  "canary": true,
+  "deploy": [],
+  "gate": null,
+  "id": "J20261106T092531Z-820498",
+  "item": null,
+  "lane": "stevedesktop",
+  "mod": "Pyrelands",
+  "not_before": null,
+  "owner_gate": null,
+  "priority": 20,
+  "profile": "targeted",
+  "purpose": "guard",
+  "requested_by": "BENCH.filler",
+  "row_items": {
+   "burrowers": "PYRELANDS_GREEN_MINIMAL_1",
+   "gpt_hunt_plausible": "ASH_FIELD_FIX_FORGETS_THE_WATER",
+   "opening_front": "PYRE_OPENING_FRONT_BUILD_SMOKE_ON_ARRIVAL"
+  },
+  "schema": "testq.job/1",
+  "selector": {
+   "chains": [
+    "burrowers",
+    "gpt_hunt_plausible",
+    "opening_front"
+   ]
+  },
+  "source_sha": "119296d6fe",
+  "submitted": "2026-11-06T09:25:31Z",
+  "supersedes": null,
+  "timeout_s": 7200,
+  "validity": true
+ },
+ "result": {
+  "artifacts": [],
+  "attempt": "J20261106T092531Z-820498.a1",
+  "cause": "HARNESS",
+  "counts": {},
+  "deployed": {
+   "companion": {
+    "build_commit": "4cd86c10ee786e9bd9c9f57cf56a0d5cb7b99cc4",
+    "dll": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/BridgeTools/JawaBench/JawaBench.BridgeTools.dll",
+    "dll_sha256": "d705e7774c47ab58498df597cf58ca3a01fa6fd948163e2ccb97bacb9adf4db9",
+    "embedded": "c648701c526baa69b3f868e09d946d420e53f21c101e7424bf39a97633852243",
+    "state": "FRESH",
+    "want": "c648701c526baa69b3f868e09d946d420e53f21c101e7424bf39a97633852243"
+   },
+   "mods": {
+    "RimMandrake.Biomes": {
+     "defs_sha256": "9761c71e756e5bc5a1dc508753b228f3d1ef347648cc78b2c89c320c870d2991",
+     "dll_sha256": "e2945c97d2d61a35210b95b9d446ca45290412b7b74589c4caff0e2f53255664",
+     "files": 4703
+    }
+   },
+   "modsconfig_sha256_prerun": "43f8bac5ba69e98e33fb7b3de87039351c3340ebd89870bb69857ed59e559e0a"
+  },
+  "finished": "2026-11-06T09:36:30Z",
+  "host": "stevedesktop",
+  "job": "J20261106T092531Z-820498",
+  "modcheck_exit": 1,
+  "note": "modcheck exit 1 and no sheet JSON: andrake\\Utils\\modcheck\\runner.py\", line 125, in ensure_playing_map\n    raise RuntimeError(\"launch gate REFUSES to start a map: %s\" % \"; \".join(gate[\"problems\"]))\nRuntimeError: launch gate REFUSES to start a map: 1 missing type(s) of our own: RimMandrake.StarWars.WeatherSuite.PerpetualAuroraExtension",
+  "outcome": "INVALID",
+  "phase_s": {
+   "attest": 52,
+   "deploy": 324,
+   "load": 198,
+   "run": 3
+  },
+  "retries": 0,
+  "rows": [],
+  "runner_sha": "119296d6fe4086082f36b33e34587baa8f3d031d",
+  "schema": "testq.result/1",
+  "started": "2026-11-06T09:26:50Z"
+ },
+ "sent": "2026-11-06T09:26:50Z"
+}

@@ -1,0 +1,53 @@
+2026-11-11T21:37:20-08:00
+{
+ "canary": true,
+ "deploy": [],
+ "gate": null,
+ "id": "J20261112T053705Z-c7a2a7",
+ "item": null,
+ "lane": "stevedesktop",
+ "mod": "Pyrelands",
+ "not_before": null,
+ "owner_gate": null,
+ "priority": 50,
+ "profile": "targeted",
+ "purpose": "guard",
+ "requested_by": "BENCH",
+ "row_items": {
+  "burrowers": "PYRELANDS_GREEN_MINIMAL_1",
+  "gpt_hunt_plausible": "ASH_FIELD_FIX_FORGETS_THE_WATER",
+  "opening_front": "PYRE_OPENING_FRONT_BUILD_SMOKE_ON_ARRIVAL"
+ },
+ "schema": "testq.job/1",
+ "selector": {
+  "chains": [
+   "burrowers",
+   "gpt_hunt_plausible",
+   "opening_front"
+  ]
+ },
+ "situational": false,
+ "source_sha": "361469752f",
+ "submitted": "2026-11-12T05:37:05Z",
+ "supersedes": null,
+ "timeout_s": 2700,
+ "validity": true
+}
+
+paused:
+{
+ "attempt": null,
+ "cause": null,
+ "job": null,
+ "note": "paused by hand",
+ "outcome": null,
+ "reason": "Claude Whittle FWLIVE loops hold both games (owner order 2026-11-11 19:10 PST; helper of BENCH)",
+ "since": "2026-11-12T03:23:22Z",
+ "until": "2026-11-19T03:23:22Z"
+}
+
+2026-11-11 19:25 PST: testq yielded both games to the Claude Whittle FWLIVE loops (owner order 2026-11-11 ~19:10 PST).
+Done: testq.py pause --hours 168 (Steve lane), archmagi.stop, fill.stop, cancelled running filler J20261112T032108Z-a45933 (Watchers guard).
+RESUME (after stopping rm-whittle-claude-*fwlive units):
+  cd /home/mandrake/rm/bench && python3 src/RimMandrake/Utils/testq/testq.py resume --reason "Claude Whittle FWLIVE loops ended"
+  rm /mnt/d/ClaudeWork/rimmandrake/testq/archmagi.stop /mnt/d/ClaudeWork/rimmandrake/testq/fill.stop
