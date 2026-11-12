@@ -325,7 +325,10 @@ CATHEDRAL_MISSION_QUEST_PREFIX = "RUT_CathedralAssailantMission_"
 # heard the address at the bottom (CathedralDescent.SpeakAddress ends it). Nothing else sets knowledge_revealed.
 CATHEDRAL_REVEAL_OPENING_INCIDENT = "RUT_CathedralDescent_Opening"
 CATHEDRAL_REVEAL_QUEST_ROOT = "RUT_CathedralDescent_Quest"
-CATHEDRAL_REVEAL_QUEST_NAME = "the way down"   # questName rule; matched case-folded when a row carries no root
+# The game confirms an opening by putting the descent quest on the list. If no row with that root appears within this
+# long of the opening (the game refused it: the mod is off, the site mod is missing, no tile), the beat was never
+# delivered and the gate re-arms. A real second quest is impossible either way: the game's once-flag refuses it.
+CATHEDRAL_REVEAL_CONFIRM_TICKS = 60_000
 CATHEDRAL_FAVOUR_DEFS = (
     Path(__file__).resolve().parents[2] / "RimUtinni" / "CathedralPass" / "Defs" / "QuestScriptDefs"
     / "RUT_CathedralAssailantMissions.xml",
@@ -857,9 +860,8 @@ class ShadowBlackboard:
         self: selftest_cathedral_reveal_beat.py drives it through poll()."""
         rows = []
         for row in quest_rows or []:
-            root = row.get("root")
-            name = (row.get("name") or "").strip().casefold()
-            if root == CATHEDRAL_REVEAL_QUEST_ROOT or (not root and name == CATHEDRAL_REVEAL_QUEST_NAME):
+            # root only, never the quest's name: a name match would be a third way to set the reveal flag
+            if row.get("root") == CATHEDRAL_REVEAL_QUEST_ROOT:
                 rows.append(row)
         revealed_now = False
         for row in rows:
@@ -882,6 +884,14 @@ class ShadowBlackboard:
                               "flag is set (knowledge_revealed, stage 3 REVEALED) for the player alone, once; it "
                               "never unfires. No faction-visible text changes." % row.get("id")})
 
+        if (self.reveal_opened and not rows and not self.knowledge_revealed and self.reveal_opened_tick is not None
+                and ticks - self.reveal_opened_tick >= CATHEDRAL_REVEAL_CONFIRM_TICKS):
+            would_fire.append({"type": "cathedral_descent_opening_unconfirmed",
+                               "detail": "no %s quest reached the list %d ticks after the opening: the game did not "
+                                         "take it; the gate re-arms (the game's own once-flag still refuses a second)."
+                                         % (CATHEDRAL_REVEAL_QUEST_ROOT, ticks - self.reveal_opened_tick)})
+            self.reveal_opened = False
+            self.reveal_opened_tick = None
         may_open, reason = compute_reveal_beat_gate(self.conduct_posture, self.restore_choice_made,
                                                     self.reveal_opened, self.knowledge_revealed, self.descent_enabled)
         if may_open:
@@ -1651,6 +1661,7 @@ class FixtureBridge:
         self.survey_responses = player.get("survey_responses") or ["lapse"]
         self.survey_answer_after = int(player.get("survey_answer_after_ticks", 20_000))
         self.surveys_seen = 0
+        self.descent_refusals_left = int(player.get("descent_game_refuses", 0))
 
     def __enter__(self):
         return self
@@ -1704,6 +1715,10 @@ class FixtureBridge:
                                     "_made": self.tick, "_response": resp})
                 self.next_quest_id += 1
             elif ev["type"] == "cathedral_descent_opening":
+                # the simulated game may refuse the first N openings (descent_game_refuses: the mod off, no tile...)
+                if self.descent_refusals_left > 0:
+                    self.descent_refusals_left -= 1
+                    continue
                 # auto-accepted and never expiring: Ongoing at once; "complete" = the party walks to the bottom
                 self.quests.append({"id": self.next_quest_id, "name": "The Way Down", "root": ev["quest_def"],
                                     "state": "Ongoing", "historical": False, "simulated": True,

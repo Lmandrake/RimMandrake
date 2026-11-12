@@ -30,7 +30,7 @@ namespace RimMandrake.Utinni.CathedralPass
     {
         public static void Postfix(Thing a, Thing b, ref bool __result)
         {
-            if (!__result || !CathedralPassSettings.cathedralPassEnabled || a == null || b == null)
+            if (!__result || a == null || b == null)
             {
                 return;
             }
@@ -68,7 +68,8 @@ namespace RimMandrake.Utinni.CathedralPass
             }
             // CATHEDRAL_DESCENT_REVEAL_SITE_1: on the descent map the party is escorted without the hediff.
             bool escorted = CathedralDescent.EscortApplies(map, holder);
-            if (!escorted && (!CathedralPass.IsCathedralMap(map) || !CathedralPass.Holds(holder)))
+            if (!escorted && (!CathedralPassSettings.cathedralPassEnabled || !CathedralPass.IsCathedralMap(map)
+                || !CathedralPass.Holds(holder)))
             {
                 return false;
             }
@@ -108,7 +109,7 @@ namespace RimMandrake.Utinni.CathedralPass
     {
         public static void Prefix(Thing __instance, DamageInfo dinfo)
         {
-            if (!CathedralPassSettings.cathedralPassEnabled || !(dinfo.Instigator is Pawn holder) || dinfo.Amount <= 0f)
+            if (!(dinfo.Instigator is Pawn holder) || dinfo.Amount <= 0f)
             {
                 return;
             }
@@ -133,9 +134,9 @@ namespace RimMandrake.Utinni.CathedralPass
             if (CathedralDescent.IsDescentMap(map) && CathedralDescent.EscortApplies(map, holder)
                 && IsDeliberateStrike(holder, __instance, dinfo))
             {
-                map.GetComponent<MapComponent_CathedralDescent>()?.BreakEscort(holder);
+                CathedralDescent.BreakEscort(holder);
             }
-            if (!CathedralPass.IsCathedralMap(map))
+            if (!CathedralPassSettings.cathedralPassEnabled || !CathedralPass.IsCathedralMap(map))
             {
                 return;
             }

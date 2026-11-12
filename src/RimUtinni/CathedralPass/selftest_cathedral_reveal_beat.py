@@ -68,7 +68,7 @@ FLAGS = {"assailant_mission_completions": 0, "restore_choice_made": False,
          "misdirection_quest_success": False, "reveal_beat_fired": False}
 
 
-def ordinary(polls=260, missions="complete", descent="complete"):
+def ordinary(polls=260, missions="complete", descent="complete", refuses=0):
     with open(FIXTURE, encoding="utf-8") as f:
         fx = json.load(f)
     fx["board"] = {}
@@ -76,6 +76,7 @@ def ordinary(polls=260, missions="complete", descent="complete"):
     fx.setdefault("player", {})
     fx["player"]["mission_responses"] = [missions]
     fx["player"]["descent_response"] = descent
+    fx["player"]["descent_game_refuses"] = refuses
     return fx
 
 
@@ -211,11 +212,38 @@ def criterion_3(recs, reveal_poll):
           len(o) == 1 and not events(recs4, "cathedral_reveal_beat")
           and all(r["effective_stage"] < 3 for r in recs4) and recs4[-1]["reveal_gate"] == "already_opened")
 
+    _, recs5, rb5 = run(ordinary(refuses=1), restore=True)
+    o = [p for p, _ in events(recs5, "cathedral_descent_opening")]
+    un = [p for p, _ in events(recs5, "cathedral_descent_opening_unconfirmed")]
+    rows5 = [q for q in rb5.quests if q.get("root") == G.CATHEDRAL_REVEAL_QUEST_ROOT]
+    print("      game refuses the first opening: openings at %s, unconfirmed at %s, descent quests %d, reveals %d"
+          % (o, un, len(rows5), len(events(recs5, "cathedral_reveal_beat"))))
+    check("the game refuses the first opening: the gate re-arms once unconfirmed, the second is delivered, one quest, "
+          "one reveal", len(o) == 2 and len(un) == 1 and un[0] <= o[1] and len(rows5) == 1
+          and len(events(recs5, "cathedral_reveal_beat")) == 1, (o, un, len(rows5)))
+
+    fx = ordinary()
+    fx["existing_quests"] = [{"id": 9, "name": "The Way Down", "state": "EndedSuccess"}]   # no root: some other quest
+    _, recs6, _ = run(fx, restore=False)
+    check("a quest merely NAMED like the descent (no root) sets no reveal flag",
+          not events(recs6, "cathedral_reveal_beat") and all(r["effective_stage"] < 3 for r in recs6))
+
     cs = open(CS, encoding="utf-8").read()
-    check("in game: a second opening is refused by the save's once-flag (OpeningRefusal checks opened and revealed)",
+    check("source lint: a second opening is refused by the save's once-flag and by an existing descent quest",
+          'if (st.opened) return "the descent has already opened' in cs and "if (st.revealed) return" in cs
+          and "DescentQuests().Any()" in cs and "OpeningRefusal() == null && CathedralDescent.TryFindTile" in cs)
+    check("source lint: the incident marks opened only once its quest has a site",
+          "if (ok && hasSite)" in cs)
+    check("source lint: the address ends THIS site's quest before it sets the flag, and refuses without one",
+          cs.index("quest.End(QuestEndOutcome.Success") < cs.index("st.revealed = true;")
+          and "QuestOfSite(listener.Map?.Parent)" in cs)
+    check("source lint: only an awake clan colonist/droid with a clear line to the terminus hears it",
+          "CathedralDescent.CanHear(p)" in cs and "GenSight.LineOfSight" in cs and "p.CanReach(terminus" in cs
+          and "p.RaceProps.Humanlike || p.RaceProps.IsMechanoid" in cs)
+    check("in game (source lint): a second opening is refused by the save's once-flag (OpeningRefusal checks opened and revealed)",
           'if (st.opened) return "the descent has already opened' in cs and "if (st.revealed) return" in cs
           and "CanFireNowSub" in cs and "OpeningRefusal() == null" in cs)
-    check("in game: the address is spoken once (SpeakAddress returns on revealed before it sets it)",
+    check("source lint: the address is spoken once (SpeakAddress returns on revealed before it sets it)",
           re.search(r"if \(st == null \|\| st\.revealed\) return false;\s*RUT_CathedralDescentText txt", cs) is not None)
 
 
@@ -235,6 +263,14 @@ def criterion_5():
     text = open(ADDRESS_XML, encoding="utf-8").read() + open(OPENING_XML, encoding="utf-8").read()
     tokens = set(re.findall(r"\[([A-Z]+)\]", text))
     check("every [TOKEN] in the text is one the C# fills", tokens <= {"SPEAKER", "NAME"}, tokens)
+    cs = open(CS, encoding="utf-8").read()
+    hard = re.findall(r'(?:ListenOption|CloseOption) = "([^"]+)"', cs) + \
+        [" ".join(re.findall(r'"([^"]*)"', re.search(r"EscortBrokenMessage\(string name\) => (.*);", cs).group(1)))] + \
+        re.findall(r'return p\.LabelShort \+ "([^"]+)"', cs) + re.findall(r'return "(the comms set on )"', cs)
+    bad = [(h, LINT.findings(h, 3)) for h in hard if LINT.findings(h, 3)]
+    print("      hardcoded C# strings linted at stage 3: %r" % hard)
+    check("the C#'s own player-facing strings (dialog options, escort message, speaker phrase) lint clean at stage 3",
+          len(hard) >= 5 and not bad, (len(hard), bad))
 
 
 def criterion_6():
@@ -249,9 +285,9 @@ def criterion_6():
     check("no `claude` on PATH: opening and reveal both happen", events(recs, "cathedral_descent_opening")
           and events(recs, "cathedral_reveal_beat"))
     cs = open(CS, encoding="utf-8").read()
-    check("the in-game beat calls no Oracle, no process, no LLM",
+    check("source lint: the in-game beat calls no Oracle, no process, no LLM",
           not re.search(r"Oracle\w*\.|Process\.Start|claude", cs.replace("Oracle is not called", "")), "")
-    check("the address dialog is built only from the def's fallback text", "Text;" in cs and "txt.lines" in cs)
+    check("source lint: the address pages are the def's fallback lines", "txt.lines.Select" in cs)
 
 
 def criterion_7():
@@ -260,7 +296,7 @@ def criterion_7():
     code = "\n".join(l for l in cs.split("\n") if not l.strip().startswith("//") and not l.strip().startswith("///"))
     hits = re.findall(r"TryAffectGoodwill\w*|Goodwill\w*\(|TraderKind\w*|\.Name\s*=|EntityCodex\w*|SetRelation\w*"
                       r"|Faction\.Notify\w*|Find\.Archive\.Add|ResearchManager", code)
-    check("CathedralDescent.cs writes no faction, goodwill, trader, codex or research state", not hits, hits)
+    check("source lint: CathedralDescent.cs writes no faction, goodwill, trader, codex or research state", not hits, hits)
     import xml.etree.ElementTree as ET
     types = set()
     for p in (OPENING_XML, ADDRESS_XML):

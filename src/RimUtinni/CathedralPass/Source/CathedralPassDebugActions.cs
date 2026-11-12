@@ -41,5 +41,37 @@ namespace RimMandrake.Utinni.CathedralPass
             Messages.Message("Cathedral map: " + CathedralPass.IsCathedralMap(map) + " (biome " + map?.Biome?.defName + ")",
                 MessageTypeDefOf.NeutralEvent, false);
         }
+
+        // CATHEDRAL_DESCENT_REVEAL_SITE_1: fire the opening exactly as the blackboard does (the worker's own refusal
+        // applies, so a second attempt is refused and says why), and read the once-only state back.
+        [DebugAction("Cathedral pass", "Descent: try to open the way down", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void DescentOpen()
+        {
+            IncidentDef def = DefDatabase<IncidentDef>.GetNamedSilentFail(CathedralDescentDefNames.Opening);
+            string why = CathedralDescent.OpeningRefusal();
+            if (def == null || why != null)
+            {
+                GameComponent_CathedralDescent st = GameComponent_CathedralDescent.Get();
+                if (st != null && def != null) st.refusedOpenings++;
+                Messages.Message("Descent opening refused: " + (def == null ? CathedralDescentDefNames.Opening + " not loaded" : why),
+                    MessageTypeDefOf.RejectInput, false);
+                return;
+            }
+            IncidentParms parms = StorytellerUtility.DefaultParmsNow(def.category, Find.AnyPlayerHomeMap);
+            bool ok = def.Worker.TryExecute(parms);
+            Messages.Message("Descent opening " + (ok ? "fired." : "failed (see log)."), MessageTypeDefOf.NeutralEvent, false);
+        }
+
+        [DebugAction("Cathedral pass", "Descent: report state", allowedGameStates = AllowedGameStates.Playing)]
+        private static void DescentState()
+        {
+            GameComponent_CathedralDescent st = GameComponent_CathedralDescent.Get();
+            Map map = Find.CurrentMap;
+            string msg = st == null ? "no state" : "opened " + st.opened + " (tick " + st.openedTick + "), revealed " + st.revealed
+                + " (tick " + st.revealedTick + "), refused openings " + st.refusedOpenings
+                + "; this map is the descent: " + CathedralDescent.IsDescentMap(map);
+            Log.Message(CathedralDescentDefNames.LogTag + " state: " + msg);
+            Messages.Message("Descent: " + msg, MessageTypeDefOf.NeutralEvent, false);
+        }
     }
 }

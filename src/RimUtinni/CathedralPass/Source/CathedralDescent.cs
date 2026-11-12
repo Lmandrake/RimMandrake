@@ -57,6 +57,7 @@ namespace RimMandrake.Utinni.CathedralPass
         public bool revealed;
         public int revealedTick = -1;
         public int refusedOpenings;
+        public HashSet<int> escortBroken = new HashSet<int>();   // pawn ids that struck a machine on the descent
 
         public GameComponent_CathedralDescent(Game game) { }
 
@@ -72,12 +73,29 @@ namespace RimMandrake.Utinni.CathedralPass
             Scribe_Values.Look(ref revealed, "revealed", false);
             Scribe_Values.Look(ref revealedTick, "revealedTick", -1);
             Scribe_Values.Look(ref refusedOpenings, "refusedOpenings", 0);
+            Scribe_Collections.Look(ref escortBroken, "escortBroken", LookMode.Value);
+            if (escortBroken == null) escortBroken = new HashSet<int>();
         }
     }
 
     public static class CathedralDescent
     {
-        public static SitePartDef SitePartDef => DefDatabase<SitePartDef>.GetNamedSilentFail(CathedralDescentDefNames.SitePart);
+        private static SitePartDef sitePartDef;
+        private static bool sitePartLooked;
+
+        /// <summary>Looked up once (the hostility postfix asks on every mech-vs-clan check).</summary>
+        public static SitePartDef SitePartDef
+        {
+            get
+            {
+                if (!sitePartLooked)
+                {
+                    sitePartDef = DefDatabase<SitePartDef>.GetNamedSilentFail(CathedralDescentDefNames.SitePart);
+                    sitePartLooked = sitePartDef != null || DefDatabase<SitePartDef>.DefCount > 0;
+                }
+                return sitePartDef;
+            }
+        }
         public static ThingDef TerminusDef => DefDatabase<ThingDef>.GetNamedSilentFail(CathedralDescentDefNames.Terminus);
         public static QuestScriptDef QuestDef => DefDatabase<QuestScriptDef>.GetNamedSilentFail(CathedralDescentDefNames.Quest);
         public static RUT_CathedralDescentText Text => DefDatabase<RUT_CathedralDescentText>.GetNamedSilentFail(CathedralDescentDefNames.Address);
@@ -95,28 +113,77 @@ namespace RimMandrake.Utinni.CathedralPass
             if (QuestDef == null) return CathedralDescentDefNames.Quest + " is not loaded";
             if (Text == null) return CathedralDescentDefNames.Address + " is not loaded";
             if (Find.AnyPlayerHomeMap == null) return "no player home map";
+            if (DescentQuests().Any()) return "a " + CathedralDescentDefNames.Quest + " quest already exists; it opens once";
+            return null;
+        }
+
+        /// <summary>Every descent quest in the save, ended or not (a dev "generate quest" bypasses the incident).</summary>
+        public static IEnumerable<Quest> DescentQuests()
+        {
+            QuestScriptDef def = QuestDef;
+            if (def == null || Find.QuestManager == null) yield break;
+            foreach (Quest q in Find.QuestManager.QuestsListForReading)
+                if (q.root == def) yield return q;
+        }
+
+        /// <summary>The descent quest whose site this map is, if any.</summary>
+        public static Quest QuestOfSite(MapParent parent)
+        {
+            foreach (Quest q in DescentQuests())
+                foreach (QuestPart part in q.PartsListForReading)
+                    if (part is QuestPart_SpawnWorldObject sw && sw.worldObject == parent) return q;
             return null;
         }
 
         public static bool IsDescentMap(Map map)
         {
-            if (map?.Parent is Site site)
-            {
-                SitePartDef def = SitePartDef;
-                return def != null && site.parts != null && site.parts.Any(p => p.def == def);
-            }
+            if (!(map?.Parent is Site site) || site.parts == null) return false;
+            SitePartDef def = SitePartDef;
+            if (def == null) return false;
+            for (int i = 0; i < site.parts.Count; i++)
+                if (site.parts[i].def == def) return true;
             return false;
         }
 
         /// <summary>The escort (item 6's pass exception, scoped to this map and to the party): a clan pawn on the
-        /// descent map, until it strikes one of the machines.</summary>
+        /// descent map, until it strikes one of the machines. Not gated on the setting: the setting decides whether the
+        /// way down opens; a party already underground keeps its escort if the setting is switched off mid-walk.</summary>
         public static bool EscortApplies(Map map, Pawn holder)
         {
-            if (!CathedralPassSettings.cathedralDescentEnabled || holder == null || holder.Faction != Faction.OfPlayer)
-                return false;
-            if (!IsDescentMap(map)) return false;
-            MapComponent_CathedralDescent mc = map.GetComponent<MapComponent_CathedralDescent>();
-            return mc == null || !mc.EscortBroken(holder);
+            if (holder == null || holder.Faction != Faction.OfPlayer || !IsDescentMap(map)) return false;
+            GameComponent_CathedralDescent st = GameComponent_CathedralDescent.Get();
+            return st == null || !st.escortBroken.Contains(holder.thingIDNumber);
+        }
+
+        public static void BreakEscort(Pawn p)
+        {
+            GameComponent_CathedralDescent st = GameComponent_CathedralDescent.Get();
+            if (st != null && st.escortBroken.Add(p.thingIDNumber))
+            {
+                Messages.Message(EscortBrokenMessage(p.LabelShort), new LookTargets(p), MessageTypeDefOf.NegativeEvent);
+            }
+        }
+
+        // the hardcoded player-facing strings, one place each, linted by selftest_cathedral_reveal_beat.py at stage 3
+        public const string ListenOption = "Listen.";
+        public const string CloseOption = "Go back up.";
+        public static string EscortBrokenMessage(string name) => "The old sentinels no longer look away from " + name + ".";
+
+        /// <summary>Who may hear the address: a clan colonist or one of the clan's droids/mechs, awake and on its feet.
+        /// Never an animal.</summary>
+        public static bool CanHear(Pawn p)
+        {
+            return p != null && !p.Dead && !p.Downed && p.Spawned && p.Faction == Faction.OfPlayer
+                && (p.RaceProps.Humanlike || p.RaceProps.IsMechanoid) && !p.InMentalState;
+        }
+
+        /// <summary>The address fires only for a pawn that has come to the bottom: within reach of the terminus, with a
+        /// clear line to it (not through rock from a side passage) and able to walk to it.</summary>
+        public static bool AtTheBottom(Pawn p, Thing terminus, float radius)
+        {
+            if (p.Position.DistanceTo(terminus.Position) > radius) return false;
+            if (!GenSight.LineOfSight(p.Position, terminus.Position, p.Map, skipFirstCell: true)) return false;
+            return p.CanReach(terminus, Verse.AI.PathEndMode.Touch, Danger.Deadly);
         }
 
         /// <summary>Picks the tile: the Rust Cathedral tile nearest the colony; if none is painted yet (the world is
@@ -146,8 +213,15 @@ namespace RimMandrake.Utinni.CathedralPass
                 Log.Error(CathedralDescentDefNames.LogTag + " no address text (" + CathedralDescentDefNames.Address + ")");
                 return false;
             }
-            st.revealed = true;
-            st.revealedTick = Find.TickManager.TicksGame;
+            Quest quest = QuestOfSite(listener.Map?.Parent);
+            if (quest == null || quest.State != QuestState.Ongoing)
+            {
+                // the beat belongs to the quest that set this site down; without it the blackboard could never see the
+                // reveal, so it is not spent here
+                Log.Error(CathedralDescentDefNames.LogTag + " the address was reached but this site's quest is "
+                    + (quest == null ? "missing" : quest.State.ToString()) + "; the reveal is not spent");
+                return false;
+            }
 
             string speaker = SpeakerPhrase(listener);
             List<string> pages = txt.lines.Select(l => Fill(l, speaker, listener)).ToList();
@@ -158,25 +232,21 @@ namespace RimMandrake.Utinni.CathedralPass
                 if (first == null) first = node;
                 if (prev != null)
                 {
-                    var next = new DiaOption("Listen.") { link = node };
+                    var next = new DiaOption(ListenOption) { link = node };
                     prev.options.Add(next);
                 }
                 prev = node;
             }
-            prev.options.Add(new DiaOption("Go back up.") { resolveTree = true });
+            prev.options.Add(new DiaOption(CloseOption) { resolveTree = true });
             Find.WindowStack.Add(new Dialog_NodeTree(first, delayInteractivity: true, radioMode: true, title: txt.label));
 
             // the archive keeps the whole address; the letter after it is the world describing behaviour only
             Find.LetterStack.ReceiveLetter(txt.letterLabel, Fill(txt.letterText, speaker, listener) + "\n\n"
                 + string.Join("\n\n", pages), LetterDefOf.NeutralEvent, new LookTargets(listener));
 
-            foreach (Quest q in Find.QuestManager.QuestsListForReading)
-            {
-                if (q.root == QuestDef && q.State == QuestState.Ongoing)
-                {
-                    q.End(QuestEndOutcome.Success, sendLetter: false);
-                }
-            }
+            quest.End(QuestEndOutcome.Success, sendLetter: false);
+            st.revealed = true;                      // last: every part of the beat above has happened
+            st.revealedTick = Find.TickManager.TicksGame;
             Log.Message(CathedralDescentDefNames.LogTag + " the address was heard by " + listener.LabelShort + " at "
                 + terminus.Position + "; reveal flag set at tick " + st.revealedTick);
             return true;
@@ -199,27 +269,18 @@ namespace RimMandrake.Utinni.CathedralPass
     public class MapComponent_CathedralDescent : MapComponent
     {
         public const float AddressRadius = 6f;
-        private HashSet<int> escortBroken = new HashSet<int>();
         private bool hissed;
+        private int isDescent = -1;   // -1 unknown, 0 no, 1 yes: a map's parent never changes
 
         public MapComponent_CathedralDescent(Map map) : base(map) { }
 
-        public bool EscortBroken(Pawn p) => escortBroken.Contains(p.thingIDNumber);
-
-        public void BreakEscort(Pawn p)
-        {
-            if (escortBroken.Add(p.thingIDNumber))
-            {
-                Messages.Message("The old sentinels no longer look away from " + p.LabelShort + ".",
-                    new LookTargets(p), MessageTypeDefOf.NegativeEvent);
-            }
-        }
-
         public override void MapComponentTick()
         {
-            if (Find.TickManager.TicksGame % 60 != 0 || !CathedralDescent.IsDescentMap(map)) return;
+            if (isDescent == 0 || Find.TickManager.TicksGame % 60 != 0) return;
+            if (isDescent < 0) isDescent = CathedralDescent.IsDescentMap(map) ? 1 : 0;
+            if (isDescent == 0) return;
             GameComponent_CathedralDescent st = GameComponent_CathedralDescent.Get();
-            if (st == null || st.revealed || !CathedralPassSettings.cathedralDescentEnabled) return;
+            if (st == null || st.revealed) return;
             ThingDef tdef = CathedralDescent.TerminusDef;
             if (tdef == null) return;
             Thing terminus = map.listerThings.ThingsOfDef(tdef).FirstOrDefault();
@@ -228,9 +289,9 @@ namespace RimMandrake.Utinni.CathedralPass
             float best = float.MaxValue;
             foreach (Pawn p in map.mapPawns.SpawnedPawnsInFaction(Faction.OfPlayer))
             {
-                if (p.Dead || p.Downed) continue;
+                if (!CathedralDescent.CanHear(p)) continue;
                 float d = p.Position.DistanceTo(terminus.Position);
-                if (d <= AddressRadius && d < best) { best = d; listener = p; }
+                if (d < best && CathedralDescent.AtTheBottom(p, terminus, AddressRadius)) { best = d; listener = p; }
                 else if (!hissed && d <= AddressRadius * 4f)
                 {
                     hissed = true;
@@ -245,9 +306,7 @@ namespace RimMandrake.Utinni.CathedralPass
 
         public override void ExposeData()
         {
-            Scribe_Collections.Look(ref escortBroken, "escortBroken", LookMode.Value);
             Scribe_Values.Look(ref hissed, "hissed", false);
-            if (escortBroken == null) escortBroken = new HashSet<int>();
         }
     }
 
@@ -271,14 +330,19 @@ namespace RimMandrake.Utinni.CathedralPass
                 return false;
             }
             bool ok = base.TryExecuteWorker(parms);
-            if (ok)
+            Quest made = CathedralDescent.DescentQuests().FirstOrDefault(q => q.State == QuestState.Ongoing);
+            bool hasSite = made != null && made.PartsListForReading.Any(pt => pt is QuestPart_SpawnWorldObject);
+            if (ok && hasSite)
             {
                 GameComponent_CathedralDescent st = GameComponent_CathedralDescent.Get();
                 st.opened = true;
                 st.openedTick = Find.TickManager.TicksGame;
-                Log.Message(CathedralDescentDefNames.LogTag + " opened at tick " + st.openedTick);
+                Log.Message(CathedralDescentDefNames.LogTag + " opened at tick " + st.openedTick + " (quest " + made.id + ")");
+                return true;
             }
-            return ok;
+            Log.Warning(CathedralDescentDefNames.LogTag + " opening did not produce a quest with a site (worker " + ok
+                + ", quest " + (made?.id.ToString() ?? "none") + "); not marked opened");
+            return false;
         }
     }
 
@@ -289,13 +353,16 @@ namespace RimMandrake.Utinni.CathedralPass
 
         protected override bool TestRunInt(Slate slate)
         {
-            return CathedralDescent.SitePartDef != null && CathedralDescent.TryFindTile(out _);
+            return CathedralDescent.OpeningRefusal() == null && CathedralDescent.TryFindTile(out _);
         }
 
         protected override void RunInt()
         {
             Slate slate = QuestGen.slate;
-            if (!CathedralDescent.TryFindTile(out PlanetTile tile)) return;
+            if (!CathedralDescent.TryFindTile(out PlanetTile tile))
+            {
+                throw new System.InvalidOperationException("no tile for the descent site (test run found one)");
+            }
             Site site = QuestGen_Sites.GenerateSite(
                 new[] { new SitePartDefWithParams(CathedralDescent.SitePartDef, new SitePartParams()) }, tile, null);
             slate.Set(storeAs.GetValue(slate), site);
