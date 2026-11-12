@@ -1824,9 +1824,10 @@ suite.live_drivers = [
     # DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL row 3: fresh map (~3-5 min) + two pawns + at most 15,000 ticks of digging -> 1200.
     {"name": "droid_dig_live", "script": "northstar/droid_dig_live.py", "args": ["--origin", "40,40", "--fresh-map"],
      "chains": ["droid_dig"], "timeout_s": 1200},
-    # PIT_TEMPERATURE_SOFTENING_1: a fresh map (up to --rolls 6 re-rolls for a desert, ~70 s each) + a site + 15 game hours
-    # sampled hourly; the desk runs took ~12 min (2026-11-11) -> 1800.
-    {"name": "pit_exposure_live", "script": "northstar/pit_exposure_live.py", "args": ["--fresh-map", "--rolls", "2"],
+    # PIT_TEMPERATURE_SOFTENING_1: a fresh map (up to 8 re-rolls for a desert, ~70 s each; no desert = one UNMEASURED
+    # SITE row, never a forest judged as a desert) + a site + 15 game hours sampled hourly; the desk runs took ~12 min
+    # (2026-11-11) -> 1800.
+    {"name": "pit_exposure_live", "script": "northstar/pit_exposure_live.py", "args": ["--fresh-map", "--rolls", "8"],
      "chains": ["pit_exposure"], "timeout_s": 1800},
     # RIVER_CHAINS_WIRE_SWEEP_TO_RIVER_SITE: the river chains need a map with a river (they ran on AridShrubland). The
     # river site replaces the current map, so it is settled on demand by the FIRST river chain, which the composition

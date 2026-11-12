@@ -1,0 +1,873 @@
+{
+ "chains": [
+  {
+   "name": "toggle_pit_exposure",
+   "components": [
+    {
+     "name": "pit_exposure_on",
+     "toggle": "pitExposureEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "execution": "ran",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human39141",
+          "name": "AJ",
+          "kindRequested": "Colonist",
+          "kindActual": "Colonist",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 84,
+          "z": 160,
+          "spawned": true,
+          "xenotype": "Baseliner",
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_3b30e9b712da45da87f8effb5c852ee1",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 39
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(1000) [watched] -> 1000 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 1000,
+        "requested": 1000
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "Human39141",
+          "thingIdNumber": 39141,
+          "name": "Alan 'AJ' Ely-Spiers",
+          "nameShort": "AJ",
+          "title": "corporate drone",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "factionName": "Pit Proof",
+          "gender": "Male",
+          "ageBiologicalYears": 32,
+          "ageChronologicalYears": 79,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Iwamurian Way",
+          "childhood": "SicklyChild55",
+          "adulthood": "CorporateDrone10",
+          "headType": "Male_NarrowNormal",
+          "bodyType": "Male",
+          "hair": "Afro",
+          "beard": "Stubble",
+          "position": {
+           "x": 85,
+           "z": 161
+          },
+          "traits": [
+           {
+            "def": "Kind",
+            "degree": 0,
+            "label": "Kind",
+            "forced": false
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 7,
+            "levelEffective": 7,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 10,
+            "levelEffective": 10,
+            "passion": "Major",
+            "xpSinceLastLevel": -0.5,
+            "disabled": false
+           }
+          ],
+          "apparel": [
+           {
+            "def": "Apparel_Pants",
+            "defName": "Apparel_Pants",
+            "stuff": "Synthread",
+            "hp": 130
+           },
+           {
+            "def": "Apparel_CollarShirt",
+            "defName": "Apparel_CollarShirt",
+            "stuff": "Synthread",
+            "hp": 130
+           }
+          ],
+          "equipment": [],
+          "hediffs": [
+           {
+            "def": "RM_PitExposure",
+            "severity": 0.5
+           }
+          ],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.510399938,
+            "pct": 0.510399938
+           },
+           {
+            "need": "Food",
+            "level": 0.771999955,
+            "pct": 0.771999955
+           },
+           {
+            "need": "Rest",
+            "level": 0.9237822,
+            "pct": 0.9237822
+           },
+           {
+            "need": "Joy",
+            "level": 0.564005554,
+            "pct": 0.564005554
+           },
+           {
+            "need": "Beauty",
+            "level": 0.466400057,
+            "pct": 0.466400057
+           },
+           {
+            "need": "Comfort",
+            "level": 0.483199924,
+            "pct": 0.483199924
+           },
+           {
+            "need": "Outdoors",
+            "level": 1.0,
+            "pct": 1.0
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.25,
+            "pct": 0.25
+           },
+           {
+            "need": "RM_Thirst",
+            "level": 0.7860002,
+            "pct": 0.7860002
+           }
+          ]
+         }
+        ],
+        "ticksGame": 1001,
+        "operation": {
+         "OperationId": "op_1adc4de8b8d84f49b993bce6ce95c357",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1001
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null,
+     "freshness": "fresh",
+     "validity": null,
+     "suspected_cause": null,
+     "cause_confidence": null,
+     "lead": null
+    },
+    {
+     "name": "pit_exposure_off",
+     "toggle": "pitExposureEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "execution": "ran",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'pitExposureEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human39146",
+          "name": "Riku",
+          "kindRequested": "Colonist",
+          "kindActual": "Colonist",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 84,
+          "z": 159,
+          "spawned": true,
+          "xenotype": "Baseliner",
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 1001,
+        "operation": {
+         "OperationId": "op_9601c32cb78d428386c33d0ee9ae5e1b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 38
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1001
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(1000) [watched] -> 1000 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 1000,
+        "requested": 1000
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "Human39146",
+          "thingIdNumber": 39146,
+          "name": "Riku Sheckley",
+          "nameShort": "Riku",
+          "title": "medieval minstrel",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "factionName": "Pit Proof",
+          "gender": "Male",
+          "ageBiologicalYears": 65,
+          "ageChronologicalYears": 130,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Iwamurian Way",
+          "childhood": "SicklyChild55",
+          "adulthood": "MedievalMinstrel95",
+          "headType": "Male_AverageWide",
+          "bodyType": "Fat",
+          "hair": "Messy",
+          "beard": "BushyStyled",
+          "position": {
+           "x": 83,
+           "z": 160
+          },
+          "traits": [
+           {
+            "def": "TooSmart",
+            "degree": 0,
+            "label": "Too smart",
+            "forced": false
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 9,
+            "levelEffective": 9,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 10,
+            "levelEffective": 10,
+            "passion": "Minor",
+            "xpSinceLastLevel": -0.5,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 11,
+            "levelEffective": 11,
+            "passion": "Major",
+            "xpSinceLastLevel": -1.0,
+            "disabled": false
+           }
+          ],
+          "apparel": [
+           {
+            "def": "Apparel_Pants",
+            "defName": "Apparel_Pants",
+            "stuff": "Synthread",
+            "hp": 130
+           },
+           {
+            "def": "Apparel_CollarShirt",
+            "defName": "Apparel_CollarShirt",
+            "stuff": "Synthread",
+            "hp": 130
+           }
+          ],
+          "equipment": [],
+          "hediffs": [
+           {
+            "def": "Scratch",
+            "part": "Arm",
+            "severity": 3.0
+           }
+          ],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.500399947,
+            "pct": 0.500399947
+           },
+           {
+            "need": "Food",
+            "level": 0.771999955,
+            "pct": 0.771999955
+           },
+           {
+            "need": "Rest",
+            "level": 0.8936023,
+            "pct": 0.8936023
+           },
+           {
+            "need": "Joy",
+            "level": 0.5085422,
+            "pct": 0.5085422
+           },
+           {
+            "need": "Beauty",
+            "level": 0.466400057,
+            "pct": 0.466400057
+           },
+           {
+            "need": "Comfort",
+            "level": 0.483199924,
+            "pct": 0.483199924
+           },
+           {
+            "need": "Outdoors",
+            "level": 1.0,
+            "pct": 1.0
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.25,
+            "pct": 0.25
+           },
+           {
+            "need": "RM_Thirst",
+            "level": 0.7860002,
+            "pct": 0.7860002
+           }
+          ]
+         }
+        ],
+        "ticksGame": 2001,
+        "operation": {
+         "OperationId": "op_17421ee4e69a470eb9a065378b30d49d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2001
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null,
+     "freshness": "fresh",
+     "validity": null,
+     "suspected_cause": null,
+     "cause_confidence": null,
+     "lead": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 5,
+    "fed": 0,
+    "ticks_spent": 2000,
+    "surprises": [],
+    "hits_seen": [
+     {
+      "tick": 601,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Area revealed"
+     },
+     {
+      "tick": 1001,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Area revealed"
+     },
+     {
+      "tick": 1601,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Area revealed"
+     },
+     {
+      "tick": 2001,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Area revealed"
+     },
+     {
+      "tick": 2001,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Area revealed"
+     }
+    ],
+    "close_problems": [],
+    "runValidity": {
+     "verdict": "CLEAN",
+     "note": "CLEAN: no visitor observed",
+     "visitors": [],
+     "letters": [],
+     "disruptions": [],
+     "observationFailures": [],
+     "abortedBy": null
+    },
+    "receipts": [
+     {
+      "actionId": "A1",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human39141"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A2",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human39146"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     }
+    ],
+    "receiptProblems": [],
+    "baselineScene": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\scratch\\BENCH\\claude-archmagi-fwlive\\Transient\\modcheck\\surprises\\20261112T015826\\FlowWorksExtensions_toggle_pit_exposure_scene_baseline.json"
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   },
+   "site_hold": null,
+   "env_reset": {
+    "log_reset": "ok",
+    "weather": "ok",
+    "map_info": "ok",
+    "unroof": "ok",
+    "gas_ToxGas": "ok",
+    "gas_BlindSmoke": "ok",
+    "gas_RotStink": "ok",
+    "gas_DeadlifeDust": "ok",
+    "gas_things": "ok"
+   },
+   "phase_s": {
+    "hold": 5.834,
+    "body": 10.075,
+    "teardown": 0.953
+   }
+  }
+ ],
+ "all_green": true,
+ "findings": [],
+ "refused": "",
+ "walk": null,
+ "acceptance": {
+  "overall": "GREEN",
+  "rows": [
+   {
+    "row": "toggle_pit_exposure/pit_exposure_on",
+    "verdict": "PASS",
+    "class": "other",
+    "grade": "PASS",
+    "notes": []
+   },
+   {
+    "row": "toggle_pit_exposure/pit_exposure_off",
+    "verdict": "PASS",
+    "class": "other",
+    "grade": "PASS",
+    "notes": []
+   }
+  ],
+  "spoils": [],
+  "counts": {
+   "PASS": 2,
+   "FAIL": 0,
+   "INDETERMINATE": 0,
+   "UNMEASURED": 0
+  },
+  "classes": []
+ },
+ "reuse": {
+  "reused": [],
+  "reusable": []
+ },
+ "host": "Archmagi",
+ "offline_chains": [],
+ "fresh_green": true,
+ "invalid": [],
+ "leads": [],
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "run_validity": "CLEAN",
+ "anchor": [
+  113,
+  118
+ ],
+ "site_save": null,
+ "wall_s": 27.8,
+ "chains_run": [
+  "toggle_pit_exposure"
+ ],
+ "chains_declared": [
+  "current",
+  "swept",
+  "taken_by_land",
+  "works",
+  "placer",
+  "plot_A_dug_channel",
+  "plot_B_fill_tiers",
+  "plot_C_limitless_canal",
+  "plot_C2_tar_and_fluids",
+  "plot_D_limited_pond",
+  "plot_E_fire",
+  "plot_F_slime",
+  "plot_H_depth_ladder",
+  "plot_G_pit",
+  "toggle_fill_in",
+  "toggle_fill_in_displacement",
+  "toggle_recession",
+  "toggle_refill",
+  "toggle_liquid_ignition",
+  "all_off_still_digs",
+  "toggle_canal_fire",
+  "toggle_liquid_corrosion",
+  "toggle_superdeep_capture",
+  "toggle_ladder_required",
+  "ladder_prison_door",
+  "pit_cover_fall",
+  "canal_spikes",
+  "flow_doors",
+  "toggle_superdeep_shooting",
+  "toggle_pit_exposure",
+  "toggle_pit_depth_draw",
+  "pit_fill_effects",
+  "toggle_pit_fill_effects",
+  "slime_slip",
+  "toggle_bottle_loop",
+  "toggle_bottle_dirty",
+  "toggle_tank_loop",
+  "toggle_liquid_drilling",
+  "toggle_typed_shores",
+  "toggle_trap_trigger",
+  "toggle_fall_damage",
+  "toggle_river_steam",
+  "fluid_identity_recorded",
+  "swale_enrichment",
+  "fire_explosion",
+  "fire_foam",
+  "fire_rain",
+  "fire_queue_origin",
+  "fuel_moat_chemfuel",
+  "fuel_moat_astrofuel",
+  "fuel_moat_propane",
+  "pit_prison_room",
+  "liquid_pump",
+  "bottle_revert",
+  "wall_faces",
+  "dig_finds",
+  "machinery_pipes",
+  "machinery_found_works",
+  "liquid_heat"
+ ],
+ "script": "extension_proof",
+ "mod": "FlowWorks",
+ "mode": "live",
+ "mod_hash": "512ff10a52035aa10c6836521d7b584450465bacc307883f07e42f68a4ee3d6f",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.patches"
+  ],
+  "running_sha256": "e364f764eb17a9cb083eaa69863d9e37668a07e76505a789afe21ed86c9d22bc",
+  "assembly_sha256": "ea772b7c2d924683ee0823cfdd468900940566d1f241ab74b2de29ae013e92b5",
+  "assembly_matches": 1
+ },
+ "aborted": null,
+ "site": "all"
+}

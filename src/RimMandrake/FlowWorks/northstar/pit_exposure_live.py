@@ -174,7 +174,7 @@ def main():
     ap.add_argument("--fresh-map", action="store_true")
     ap.add_argument("--want-biome", default="Desert,AridShrubland,ExtremeDesert",
                     help="with --fresh-map: re-roll the quicktest (up to --rolls maps) until its biome is one of these")
-    ap.add_argument("--rolls", type=int, default=6)
+    ap.add_argument("--rolls", type=int, default=12)
     ap.add_argument("--save-name", default=None, help="save the game at 12:00 under <name>_<stamp> (an owner review save)")
     ap.add_argument("--day", type=int, default=22, help="year-day (22 = mid Jugust, northern midsummer)")
     ap.add_argument("--tile-temp", type=float, default=28.0, help="the map tile's mean temperature (C); NaN-free")
@@ -252,6 +252,11 @@ def main():
             if not want or mi.get("mapBiome") in want:
                 break
         res["biome_rolls"] = rolled
+        if want and rolled[-1] not in want:
+            # A2 is a DESERT noon: a forest map that merely got hot is not the line, so no row is judged on it
+            row("PEX_site", "UNMEASURED", "SITE", {"why": "no %s map in %d roll(s)" % ("/".join(want), len(rolled)), "rolled": rolled})
+            save()
+            return 2
         import driver_stamp  # noqa: E402  (mode/mod_hash/env: what validation.py checks before it reads this result)
         driver_stamp.stamp(res, B.call)
         gd = B.call("jawa/get_defs", defs="HediffDef/RM_PitExposure;ThoughtDef/RM_ExposedPrisoner", fields="defName") or {}
@@ -432,7 +437,7 @@ def main():
             if args.get("save_name"):
                 sn = "%s_%s" % (args["save_name"], stamp)
                 res["save"] = {"name": sn, "result": str(B.call("rimworld/save_game", saveName=sn))[:200]}
-            B.call("jawa/clear_ui", all=True)
+            B.call("jawa/clear_ui", all=True, hideHudSeconds=1)   # its default 20 s screenshot mode would hide the inspect pane below
             sh = B.call("rimworld/screenshot_cell_rect", x=rect[0], z=rect[1], width=rect[2], height=rect[3], paddingCells=2,
                         fileName="pit_exposure_site_%s" % stamp, suppressMessage=True) or {}
             src = local(sh.get("path"))
@@ -446,12 +451,30 @@ def main():
             B.call("jawa/clear_ui", hideHud=True, hideHudSeconds=1)
             time.sleep(2.5)
             B.call("rimworld/jump_camera_to_cell", x=pa[0], z=pa[1])
-            B.call("rimworld/select_pawn", pawnId="Thing_%s" % pris["PA"])
-            sh = B.call("rimworld/take_screenshot", fileName="pit_exposure_selected_%s" % stamp, suppressMessage=True) or {}
-            src = local(sh.get("path"))
-            if src and os.path.isfile(src):
-                shots["selected"] = os.path.join(shots_dir, "pit_exposure_selected_%s.png" % stamp)
-                shutil.copyfile(src, shots["selected"])
+
+            def tab_shot(key, pid, tab):
+                # rimworld/select_pawn refuses a prisoner (a non-colonist), so select by id; then open the pawn's tab
+                B.call("rimworld/clear_selection")
+                sel = B.call("jawa/select_things", ids=str(pid), action="select") or {}
+                for _ in range(20):   # no inspect pane (so no tabs) until a frame after the selection, or while screenshot mode is on
+                    time.sleep(0.5)
+                    tr = B.call("rimworld/open_inspect_tab", inspectTabId=tab) or {}
+                    if tr.get("success"):
+                        break
+                time.sleep(0.5)
+                sh = B.call("rimworld/take_screenshot", fileName="pit_exposure_%s_%s" % (key, stamp), suppressMessage=True) or {}
+                src = local(sh.get("path"))
+                if sel.get("success") and tr.get("success") and src and os.path.isfile(src):
+                    shots[key] = os.path.join(shots_dir, "pit_exposure_%s_%s.png" % (key, stamp))
+                    shutil.copyfile(src, shots[key])
+                else:
+                    shots[key] = {"select": sel.get("message") or sel.get("success"), "tab": tr.get("message")}
+
+            # what a player sees: the prisoner's Health tab (Pit exposure), then each colonist's Needs tab (the thought)
+            tab_shot("selected", pris["PA"], "Health")
+            tab_shot("prisoner_tab", pris["PA"], "Prisoner")
+            for cid in cids:
+                tab_shot("needs_" + cid, cid, "Needs")
             res["inspect_PA"] = json.dumps(B.call("jawa/inspect_string", thingIds=str(pris["PA"])) or {}, default=str)[:1500]
             B.call("rimworld/clear_selection")
             res["shots"] = shots
