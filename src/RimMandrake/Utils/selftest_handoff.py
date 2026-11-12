@@ -130,6 +130,10 @@ print("handoff: the doing-gate is scoped, and a handoff discharges it")
 # A future timestamp means "nothing was started in this window" — the gate must
 # then be silent about `doing` no matter how much old work is open.
 future = "2999-01-01T00:00:00Z"
+# gates() asks `rimflow bridge who`, which rewrites the real infrastructure/state/BRIDGE mirror (it repairs it on the
+# way); these checks are about the doing-gate, so the bridge reading is stubbed and the test writes nothing tracked
+_real_sh = handoff.sh
+handoff.sh = lambda *a, **k: "bridge is FREE" if a[-2:] == ("bridge", "who") else _real_sh(*a, **k)
 problems = handoff.gates(future)
 check(not any("still open" in p for p in problems),
       "with an empty window, the doing-gate says nothing (%d other problem(s))"
@@ -161,6 +165,7 @@ finally:
         os.unlink(accounted)
     except OSError:
         pass
+    handoff.sh = _real_sh
 
 print("handoff: selection is by timestamp, and filenames are not a clock")
 # This repo has BOTH schemes live: ..._20260906C and ..._202609062326. Digits sort
