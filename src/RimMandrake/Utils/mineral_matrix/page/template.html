@@ -157,7 +157,7 @@ table.t td.n { font-family: var(--f-data); text-align: right; white-space: nowra
     <section class="legend" aria-label="How to read the numbers">
       <p><strong>The numbers count deposits per map:</strong> how many separate finds of that mineral a typical colony map of the biome holds. Read them like this:</p>
       <div class="ladder" id="ladder"></div>
-      <p class="muted">Two column blocks use other units. <strong>Deep finds</strong> give the share (%) of a deep scanner's finds in that biome, with iron filling the rest. <strong>River placers</strong> count deposits along rivers. Hatched rows are the biomes ruled empty (D4): no mineral but steel. There were fifteen; four of those rows are gone or merged, so eleven remain.</p>
+      <p class="muted">Two column blocks use other units. <strong>Deep finds</strong> give the share (%) of a deep scanner's finds in that biome, with iron filling the rest. <strong>River placers</strong> count deposits along rivers. Hatched rows are the biomes ruled empty (D4): no mineral but steel. There were fifteen. Four left the list: the Twilight Sea's and the Chill's floor rows merged into their seas, the Leaning Scrub's frozen twin (RUT_AridShrubland) is gone, and the Scald now holds its floor's minerals. Eleven remain.</p>
       <div class="stats" id="stats"></div>
     </section>
   </header>
@@ -466,8 +466,13 @@ function renderChg() {
   const names = Object.assign({}, ...D.biomes.map(b => ({[b.id]: b.label})), ...D.columns.map(c => ({[c.id]: c.label})));
   const both = id => names[id] && names[id].toLowerCase() !== id.toLowerCase() ? names[id] + " (" + id + ")" : (names[id] || id);
   const human = x => String(x || "").replace(/\b(?:RM|RUT)_\w+/g, both);
+  // an old row is no longer a biome on the sheet: name it by what it was to the row that stands
+  const oldRow = r => { const m = /^(merged into|dropped; )\s*((?:RM|RUT)_\w+)/.exec(r.action), base = m && names[m[2]];
+    if (!base) return r.action.indexOf("not a biome") >= 0 ? "sheet-only bucket (" + r.column + ")" : r.column;
+    return base + (m[1] === "merged into" ? "'s sea floor" : "'s frozen twin") + " (" + r.column + ")"; };
+  const CELL = {non_mineral_pull: "non-mineral pull", "(all)": "(all cells)", "mineral_homes: sand second": "sand's second biome"};
   D.changes.forEach(r => { const tr = tb.insertRow(); [r.column, r.action, r.cell, r.old, r.new, r.note].forEach((x, i) => {
-    const td = tr.insertCell(); td.textContent = (i === 2 && names[x] ? both(x) : human(x)) || "-"; }); });
+    const td = tr.insertCell(); td.textContent = (i === 0 ? oldRow(r) : i === 2 ? (names[x] ? both(x) : CELL[x] || x) : human(x)) || "-"; }); });
 }
 function renderLog() {
   const t = fv("logt"); t.textContent = "";

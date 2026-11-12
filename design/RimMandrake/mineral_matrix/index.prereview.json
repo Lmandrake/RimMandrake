@@ -1,0 +1,160 @@
+{
+ "sheet": "index.html",
+ "looked_by": "judge:claude-opus-5-5",
+ "when": "2026-11-11T20:23:55-0800",
+ "caught": "Two fresh Opus judges (claude-opus-5-5) checked all 29 rows against the audit's list, the def labels, the drops and merges, and D3/D4: every row passed both times, nothing missing or extra. A browser test passed 58 of 58 checks (render, cell edits, xlsx, phone, dark, no network). Fixed before you saw it, from the first judge: mineral names were cut short in the column headers; the '82 filled cells' line read as if steel were excluded; the family headings said 'up to 50-100%'; the Changes tab showed raw ids and a bare ''; the D4 note did not say which four rows left. Five rows are flagged for your call: the Stillsand has no steel, the Long Shade loses its twin's krayt pearl pull, the Warscar's article, the Grey Sea merge, the Scald leaving D4. Not changed: the grid scrolls sideways inside its box, and the browser test used a stand-in database, so live saving is proven only where you open it.",
+ "criteria": [
+  "renders, and is recognisable as the named thing",
+  "every candidate in a question depicts the same object",
+  "coupled states are offered as sets",
+  "does not repeat a ruling he already made"
+ ],
+ "rows": {
+  "RM_Contagion": {
+   "fp": "fb319e89ae7bbaa5",
+   "verdict": "OK",
+   "note": "label matches src; steel only"
+  },
+  "RM_FloodedCanyon": {
+   "fp": "872a1a7262eebd8f",
+   "verdict": "OK",
+   "note": "label 'the Cracked Lands' matches src; jade 2nd, fossils home, RIVER_gold 2nd match homes"
+  },
+  "RM_TheForge": {
+   "fp": "71ad0b24c878797f",
+   "verdict": "OK",
+   "note": "label matches src; zersium/ruby/obsidian home match"
+  },
+  "RM_RustCathedral": {
+   "fp": "0d466f8a0b13bd75",
+   "verdict": "OK",
+   "note": "label matches src; dead_smartsteel/live_pattern_metal home match"
+  },
+  "RM_WeepingStones": {
+   "fp": "c2e94b01217f30b0",
+   "verdict": "OK",
+   "note": "label matches src; jade home, ruby 2nd match; src generatesNaturally=false but painted, not a defect"
+  },
+  "RM_Abyss": {
+   "fp": "ae3a8c18cbec43bf",
+   "verdict": "OK",
+   "note": "label matches src; D4 steel-only"
+  },
+  "RUT_Umbra": {
+   "fp": "019db68fbedce7f0",
+   "verdict": "OK",
+   "note": "kept as painted non-twin; label 'Auroral Umbra' matches src (no article, as src); DEEP deepchem/helixien seconds match"
+  },
+  "RM_LongShade": {
+   "fp": "ae151b5ded345aca",
+   "verdict": "FLAG",
+   "note": "Its frozen twin RUT_Desert carried a krayt pearl pull (fauna); the Long Shade has none, so that pull is not carried over. Yours to keep or drop. Judge: label matches src; D4 steel-only (10); RUT_Desert steel 10 and krayt pearl pull logged as dropped"
+  },
+  "RM_TheRot": {
+   "fp": "c1acf04c2fca6c3c",
+   "verdict": "OK",
+   "note": "label matches src; D4 steel-only"
+  },
+  "RM_SleepingIce": {
+   "fp": "0aaa465ae555ec29",
+   "verdict": "OK",
+   "note": "label matches src; sapphire home, blue_ice second match homes"
+  },
+  "RM_Warscar": {
+   "fp": "ae9f28fa83d6f426",
+   "verdict": "FLAG",
+   "note": "Sheet shows 'the Warscar'; the def still says 'Warscar' until WARSCAR_LABEL_RESTORE_THE_ARTICLE lands. Judge: src label 'Warscar'; shows 'the Warscar' per noted repair override; dead_smartsteel and DEEP live_pattern_metal seconds match"
+  },
+  "RM_Webwork": {
+   "fp": "2bc713ddb97297fc",
+   "verdict": "OK",
+   "note": "label matches src; D4 steel-only"
+  },
+  "RM_BlueDesert": {
+   "fp": "29c94514e86ec1a4",
+   "verdict": "OK",
+   "note": "label matches src; silver/blue_ice home, sapphire second match"
+  },
+  "RM_Cauldron": {
+   "fp": "4108a42f4728267f",
+   "verdict": "OK",
+   "note": "label matches src; cave_crystal 2nd match"
+  },
+  "RM_FeverWood": {
+   "fp": "e38a4fbd3bce55ed",
+   "verdict": "OK",
+   "note": "label matches src; D4 steel-only; src generatesNaturally=false but painted, not a defect"
+  },
+  "RM_Greentide": {
+   "fp": "98df0cba6a6468c9",
+   "verdict": "OK",
+   "note": "label matches src; D4, no cells"
+  },
+  "RM_LeaningScrub": {
+   "fp": "0c6d632b2364787f",
+   "verdict": "OK",
+   "note": "label matches src; D4 steel-only (8); RUT_AridShrubland steel 10 dropped, logged"
+  },
+  "RM_Miasma": {
+   "fp": "8767f20c2bb6d803",
+   "verdict": "OK",
+   "note": "label matches src; D4, no cells"
+  },
+  "RM_Pyrelands": {
+   "fp": "03c72da3de47fddc",
+   "verdict": "OK",
+   "note": "label matches src; D4 steel-only"
+  },
+  "RM_GelatinousSlime": {
+   "fp": "07a77b4ab5fd5605",
+   "verdict": "OK",
+   "note": "label 'the Slime' matches src; D4, no cells"
+  },
+  "RM_Stillsand": {
+   "fp": "4f666bfa2ef65cd4",
+   "verdict": "FLAG",
+   "note": "Steel 0: its frozen twin's steel 3 was dropped with the twin, and round two held 0 here. Rule-compliant, but D2 says rocky biomes sit near 10; yours to set. Sand is now home-only (its old second was this biome's own twin). Judge: label matches src; RUT_ExtremeDesert dropped, its steel 3 not carried (Stillsand holds no steel at all; rule-compliant, owner may notice) and sand 99 accounted; magnetite/phrikite/sand/cooking_salt match homes"
+  },
+  "RM_TheSump": {
+   "fp": "65e3fa7daeea0abf",
+   "verdict": "OK",
+   "note": "label matches src; deepchem home, fossils 2nd match"
+  },
+  "RM_Wastes": {
+   "fp": "ff09d0207f3e91ed",
+   "verdict": "OK",
+   "note": "label matches src; uranium/crystal_salts/cooking_salt/brine_plate/bezoars match homes; src generatesNaturally=false but painted, not a defect"
+  },
+  "RM_TheChill": {
+   "fp": "75f74b45ed3c0206",
+   "verdict": "OK",
+   "note": "label matches src; floor held nothing, logged; row empty (no steel), consistent"
+  },
+  "RM_GreySea": {
+   "fp": "9eeadb8b163a922a",
+   "verdict": "FLAG",
+   "note": "Crystal salts: sea row 5, floor row 3; merged to the larger, 5, both reasons kept (draft-marked). Judge: label matches src; crystal_salts sea 5 / floor 3 -> 5 larger stands, draft, logged"
+  },
+  "RM_TheScald": {
+   "fp": "2e310640634bf295",
+   "verdict": "FLAG",
+   "note": "Its floor's 8 minerals moved onto this row (draft-marked), so it is no longer D4 'ruled empty'; D4 went 15 -> 11. Judge: label matches src; 8 floor cells moved unchanged, all logged; gold/chimney_iron/magnetite/uraninite/scaldpearl home, silver/uranium/pyrinth 2nd match"
+  },
+  "RM_TwilightSea": {
+   "fp": "8cdad639d9109bf8",
+   "verdict": "OK",
+   "note": "label matches src; D4 with floor steel 2 moved, logged; steel allowed"
+  },
+  "RM_ChillCrater": {
+   "fp": "798298dbcd81a324",
+   "verdict": "OK",
+   "note": "marked not painted; label 'the Chill crater' matches src (audit table shows only '(aftermath)'); homes helixien, second for diamond/obsidian, consistent"
+  },
+  "RM_LanternDeeps": {
+   "fp": "e519559b6f1e3ab3",
+   "verdict": "OK",
+   "note": "marked not painted; label matches src; diamond/pyrinth/kyber/stygium/mindstone/cave_crystal/lanternstone homes match"
+  }
+ },
+ "dropped": []
+}
