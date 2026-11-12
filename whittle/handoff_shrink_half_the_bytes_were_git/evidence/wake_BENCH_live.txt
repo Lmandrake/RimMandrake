@@ -1,0 +1,76 @@
+$ RIMFLOW_SEAT=BENCH python3 src/RimMandrake/Utils/handoff.py --wake    # run 2026-11-11 21:59 PST at eb4690e8ff, live ledger, ordinary use
+
+== the old window's LAST REPLY (window 7ab8542a-44fc-4686-999d-3c232a958dab, last written 2026-11-12T00:52:40Z; no restart recorded it: a boot, crash or account switch). He may have been reading it when it died:
+<<<
+Mandrake, the cleanup is finished and landed. One more correction first: my lock change didn't cause the Pyrelands failures, as I told you earlier.
+
+**What actually broke:** the loop's background runner couldn't find the `claude` command, because `~/.local/bin` was missing from its search path. The lock change was fine. The path fix is landed as `6329eddd1e`. The helper proved it in a stripped-down shell, but couldn't test it under a real background unit. FlowWorks would hit the same problem if its loop restarts, so this is the gap to watch.
+
+**Done:**
+- **Pyrelands loop:** its stop file is back, now saying "mod closed by owner 2026-11-08; do not restart". Its failed state is cleared.
+- **Graffiti:** the old ticket is retired in favour of the one you closed. The judge's file now opens with a correction: your close is already on main, so the "not merged" claim was false.
+- **Wrong finding:** a note on the item now corrects it. I restarted that loop; it didn't restart itself. The ledger has no way to rewrite an item's title, so the note sits beside the old text.
+- **Handoff tool:** the wake check now reads every pointer, and prints CLOSED loudly when a pointer's item is already closed. That would have stopped all of this. It has a passing test (`34107cc54f`), and the lesson is filed.
+
+**Still running:** the Codex wind-down is waiting on its last two rounds.
+
+**Waiting on you whenever suits:**
+- The comparison research: `D:\Luke\dev\RimMandrake\infrastructure\state\items\RIMMANDRAKE_COMPARE_ARTISAN_WHITTLE_COST_PER_CLOSED_ITEM.md`.
+- The HugeThings questions: `D:\ClaudeWork\rimmandrake\codex_steve\ht-loop\OWNER_QUESTIONS.md`.
+- The FlowWorks loop's questions, listed on the status board: `D:\ClaudeWork\rimmandrake\conductor\ARTISAN_NOW.md`.
+>>>
+Copy it whole and word for word to the very top of your first reply, under the line "Last reply from the old window:", with its <<< and >>> lines, and only then answer or report. Do not summarize it.
+
+# BENCH_REBOOT_HANDOFF_202611111355 — READ FIRST on wake
+
+Follows `BENCH_REBOOT_HANDOFF_202611111231`. Everything below is committed and pushed unless a
+line says otherwise. **Game and bridge state is the last section — read it
+before touching the game.**
+
+## The one thing to carry forward
+
+<!-- The single most important thing learned. Not a list — the thing that would cost the next seat hours if it had to rediscover it. If nothing qualifies, write 'nothing this wave' and mean it. -->
+The 05:15 PST window deaths were the account switcher's planned HARD STOP (every account at its line; `claude-account fleet-stop`), not a crash; it is silent, so a waking window blames "a boot, crash or account switch". Read `D:\ClaudeWork\rimmandrake\switching_plan\notice.json` first. Codex is fixing it (codex_wsl/worker-names). The 23:59 reboot was Windows Update KB5132061.
+
+## What the owner should see
+
+<!-- Findings that need HIS eye or HIS decision: a number nobody ruled on, a mod that vanished from his list, a change he can veto. Say what you shipped deliberately with a flag raised. Empty is a legitimate answer. -->
+Owner orders this window (2026-11-11, verbatim):
+- "Please ensure that you switch to the System account before it resets today, to ensure you can resume the Artisan runs on the mods we're trying to finish when the reset occurs." Scheduled: rm-switch-system-1157 (11:57 PST, `use system --no-relaunch`), rm-fleetstart-system-1208 (12:08, fleet-start only if no claude runs); log D:\ClaudeWork\rimmandrake\conductor\switch_to_system_20261111.log.
+- "Yes." to: resume Pyrelands and GSS Artisan loops at noon (GSS gets more tokens past its 43M limit), run the Graffiti blind judge, keep the FlowWorks Artisan loop paused while Codex drains FlowWorks.
+- "once System is restored, please wind down the CODEX workers. They are a stopgap workforce while we're waiting to get more Claude tokens, so they should not continue past the rest except to finish out their round and store their work". Scheduled rm-codex-winddown-1200 (12:00): kills the fw-drain round loop (current round finishes), STOP file + disable codex-ht-loop on SteveDesktop, then resumes testq on both lanes once both rounds end; log D:\ClaudeWork\rimmandrake\conductor\codex_winddown_20261111.log.
+- Worker naming: Conductor recommended CODEX_<MACHINE>_<LANE> over his CODEXWhittle#; he did not object.
+
+## What is half-done, and where it stops
+
+<!-- Anything left mid-flight, one bullet each: `- ITEM_ID -- state; NEXT: <one imperative action>`. A pointer without a ledger item id does not survive a seat change, and a pointer without a NEXT: measured ~0% pickup. An item in `doing` with no line here is a trap for the next seat. -->
+- PYRELANDS_FINISH_ARTISAN_THIRD_TIME_WISER -- Artisan loop dead 2.9 days, 1 bar left (unit rm-ralph-pyrelands, Archmagi game); NEXT: after 12:08 confirm the fleet is on system, read its last pass, restart rm-ralph-pyrelands.
+- GSS_FINISH_RALPH_LOOP_WAITS_GAME_TURN -- GSS Artisan paused at its 43M limit, 1 left (unit rm-ralph-gss-steve, SteveDesktop game); NEXT: once codex_winddown log says DONE, raise its limit and restart rm-ralph-gss-steve.
+- GRAFFITI_NORTHSTAR_SHIP_1 -- Graffiti Artisan claims done; NEXT: spawn an rm-judge blind judge on it, then put it to the owner.
+- RIMMANDRAKE_COMPARE_ARTISAN_WHITTLE_COST_PER_CLOSED_ITEM -- filed 25a1da95d0, first ticket after the reset; NEXT: spawn one opus helper to write the comparison from ARTISAN_NOW + both Codex progress.md files.
+- RIMMASTER_FIX_HUGETHINGS_GPT_REVIEW_THREE_P1_FOUND -- P2/design rest was in the Steve Codex lane, which winds down at noon; NEXT: put HugeThings OWNER_QUESTIONS (D:\ClaudeWork\rimmandrake\codex_steve\ht-loop\OWNER_QUESTIONS.md) to him at the next sitting.
+- Codex job worker-names (no item; D:\ClaudeWork\rimmandrake\codex_wsl\worker-names\final.md) -- worker names + visible hard stop; NEXT: read final.md and report its shas to the owner.
+
+## Game / bridge / tree state at wrap
+
+- running   : NOT RUNNING   (tasklist.exe lists no RimWorldWin64)
+- recorded  : DOWN
+- Bridge: FREE    since 2026-11-11T13:08:21Z
+
+(Traps, closed/filed lists, commits and the uncommitted list are in the full handoff: /home/mandrake/rm/scratch/BENCH/claude-archmagi-offline3/infrastructure/state/handoffs/BENCH_REBOOT_HANDOFF_202611111355.md)
+
+==================================================================
+POINTER STATUS (ledger, re-derived now — the handoff above is a
+snapshot and may be stale; written 2026-11-11 05:56 PST, 16.1 h before this wake):
+  RIMMANDRAKE_COMPARE_ARTISAN_WHITTLE_COST_PER_CLOSED_ITEM open (no start on the ledger)
+      since the handoff: 2 ledger events; newest note 11-11 12:24 (BENCH): "Comparison written (as of 2026-11-11 12:20 PST; Whittle rounds were still finishing): inf…" (rimflow show for the rest)
+  PYRELANDS_FINISH_ARTISAN_THIRD_TIME_WISER        CLOSE  *** CLOSED -- do NOT act on this pointer ***
+  GSS_FINISH_RALPH_LOOP_WAITS_GAME_TURN            CLOSE  *** CLOSED -- do NOT act on this pointer ***
+  GRAFFITI_NORTHSTAR_SHIP_1                        SUPERSEDE  *** CLOSED -- do NOT act on this pointer ***
+  RIMMASTER_FIX_HUGETHINGS_GPT_REVIEW_THREE_P1_FOUND open (no start on the ledger)
+open pointers: 2 — pick each up, close it, or say in your first
+reply why not. Silence is how 60% of pointers died.
+LEDGER STATE NOW (regenerated by this wake: open items, owner-pending, live helpers, NEXT lines;
+read it before acting on any pointer above): /home/mandrake/rm/scratch/BENCH/claude-archmagi-offline3/infrastructure/state/derived/state_now/BENCH_STATE_NOW.md
+  now: ledger as of 2026-11-11 21:55 PST · generated 2026-11-11 21:59 PST · game UP · bridge free (a game/bridge section above is as at the handoff)
+[exit 0]

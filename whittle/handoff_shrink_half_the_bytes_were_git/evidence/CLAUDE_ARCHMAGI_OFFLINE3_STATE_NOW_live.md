@@ -1,0 +1,27 @@
+# CLAUDE_ARCHMAGI_OFFLINE3 — ledger state now (generated; never edit, never commit)
+ledger as of 2026-11-11 21:55 PST · generated 2026-11-11 21:59 PST · game UP · bridge free
+regenerate: python3 src/RimMandrake/Utils/ledger_state.py --seat CLAUDE_ARCHMAGI_OFFLINE3 (handoff.py --wake does it)
+
+## Open items — this seat's 1 (doing 1)
+- `HANDOFF_SHRINK_HALF_THE_BYTES_WERE_GIT` — doing, leased by CLAUDE_ARCHMAGI_OFFLINE3: Wake prints only next actions,…
+
+## Owner-pending — 17 items in 16 topics, every seat (10 more answered by him, ours to move)
+- `BEER_CUT_DECIDE_BARREL_STILL_BREWS_IT`: ThingDef/Beer is on the Cherry Picker kill list from the weapons sheet (obse…
+- `BENCH_WIRE_BACKSTOP_STILL_ON_GOODBYE`: BENCH has no context backstop (wake false, backstop false): a fresh window st…
+- `CANON_RULINGS_DECIDE_SNAKE_NEVER_SHIPPED`: Two owner rulings on canon entries disagree with Wookieepedia: dragonsnak…
+- `CLEANER_SANITY_REVIEW_FINISH_FULL_FILES`: full-file review owed: scratch_reap.py and the other files in 5015555778,…
+- `DDRIVE_NVME_REPAIR_RESEAT_NEXT_SITTING`: Archmagi D: NVMe (Kingston SFYRD4000G, root port 0:6.3) throws WHEA-17 corr…
+- `DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS`: Look at the drawbridges in game: do they look and work right?
+- `FLIER_AFTERNOON_EXPERIMENT_PROVE_STILL_TORSO`: Uvak south, frames v2, offline preview: does the motion read as lifti…
+- … and 9 more: python3 src/RimMandrake/Utils/owner_queue.py
+
+## Live helpers — 5 unexpired leases, every seat (a lease is a claim, not a running process)
+- CLAUDE_STEVEDESKTOP_OFFLINE2 holds `BIOME_SHIP_CONTRIBUTIONS_1` (doing), lease to 22:06 PST
+- CLAUDE_ARCHMAGI_OFFLINE3 holds `HANDOFF_SHRINK_HALF_THE_BYTES_WERE_GIT` (doing), lease to 22:13 PST
+- CLAUDE_STEVEDESKTOP_OFFLINE6 holds `HARNESS_REPAIR_CAUSE_8135787B` (doing), lease to 22:26 PST
+- CLAUDE_STEVEDESKTOP_OFFLINE1 holds `HARNESS_REPAIR_CAUSE_C1B99C19` (doing), lease to 22:39 PST
+- CLAUDE_STEVEDESKTOP_OFFLINE3 holds `LIVE_NEEDS_ENFORCE_ABSENCE_NOW_EXPLICIT` (doing), lease to 22:40 PST
+
+## NEXT — newest NEXT note on 1 of this seat's open items, as written then (Pacific time)
+- `HANDOFF_SHRINK_HALF_THE_BYTES_WERE_GIT` — doing, leased (NEXT 11-11 21:54 by CLAUDE_ARCHMAGI_OFFLINE3)
+    NEXT: second fresh reader, DONE.md, blind judge

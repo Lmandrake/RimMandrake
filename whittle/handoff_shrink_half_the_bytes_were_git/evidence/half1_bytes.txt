@@ -1,0 +1,19 @@
+# Half 1, measured 2026-11-11 21:59 PST at eb4690e8ff: the wake's handoff view against the whole handoff file
+handoff file: /home/mandrake/rm/scratch/BENCH/claude-archmagi-offline3/infrastructure/state/handoffs/BENCH_REBOOT_HANDOFF_202611111355.md
+whole file: 8531 bytes, 98 lines; its sections:
+    ## The one thing to carry forward
+    ## What the owner should see
+    ## What is half-done, and where it stops
+    ## Traps learned
+    ## Closed since the last handoff (0)
+    ## Filed and still open (1) — the next seat's queue
+    ## Commits
+    ## Game / bridge / tree state at wrap
+wake view of it: 4335 bytes, 37 lines; its sections:
+    ## The one thing to carry forward
+    ## What the owner should see
+    ## What is half-done, and where it stops
+    ## Game / bridge / tree state at wrap
+dropped from the view (still in the file): ## Closed since the last handoff (0);## Commits;## Filed and still open (1) — the next seat's queue;## Traps learned;
+uncommitted list in the view: 0 line(s)
+the item's own measuring file, re-measured now: infrastructure/state/handoffs/BENCH_REBOOT_HANDOFF_202611071817.md: whole file 12351 bytes, wake view 7403 bytes (59%); the item recorded 14141 before half 1, 9217 after
