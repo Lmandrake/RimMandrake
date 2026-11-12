@@ -1,9 +1,9 @@
 # CLAUDE_ARCHMAGI_OFFLINE3 — ledger state now (generated; never edit, never commit)
-ledger as of 2026-11-11 22:22 PST · generated 2026-11-11 22:22 PST · game UP · bridge free
+ledger as of 2026-11-11 23:58 PST · generated 2026-11-11 23:58 PST · game UP · bridge CLAUDE_ARCHMAGI_FWLIVE
 regenerate: python3 src/RimMandrake/Utils/ledger_state.py --seat CLAUDE_ARCHMAGI_OFFLINE3 (handoff.py --wake does it)
 
 ## Open items — this seat's 1 (doing 1)
-- `HANDOFF_SHRINK_HALF_THE_BYTES_WERE_GIT` — doing, leased by CLAUDE_ARCHMAGI_OFFLINE3: Wake prints only next actions,…
+- `HANDOFF_SHRINK_HALF_THE_BYTES_WERE_GIT` — doing: Wake prints only next actions, open items and the last reply; then…
 
 ## Owner-pending — 17 items in 16 topics, every seat (10 more answered by him, ours to move)
 - `BEER_CUT_DECIDE_BARREL_STILL_BREWS_IT`: ThingDef/Beer is on the Cherry Picker kill list from the weapons sheet (obse…
@@ -15,15 +15,9 @@ regenerate: python3 src/RimMandrake/Utils/ledger_state.py --seat CLAUDE_ARCHMAGI
 - `FLIER_AFTERNOON_EXPERIMENT_PROVE_STILL_TORSO`: Uvak south, frames v2, offline preview: does the motion read as lifti…
 - … and 9 more: python3 src/RimMandrake/Utils/owner_queue.py
 
-## Live helpers — 7 unexpired leases, every seat (a lease is a claim, not a running process)
-- CLAUDE_STEVEDESKTOP_OFFLINE1 holds `HARNESS_REPAIR_CAUSE_C1B99C19` (doing), lease to 22:39 PST
-- CLAUDE_STEVEDESKTOP_OFFLINE3 holds `LIVE_NEEDS_ENFORCE_ABSENCE_NOW_EXPLICIT` (doing), lease to 22:40 PST
-- CLAUDE_STEVEDESKTOP_OFFLINE5 holds `RIMMANDRAKE_SPLIT_HUGETHINGS_PLANT_AND_TITAN_PROMISES` (doing), lease to 22:45 PST
-- CLAUDE_STEVEDESKTOP_OFFLINE6 holds `FASCINATING_WORLD_JUNK_1` (doing), lease to 22:53 PST
-- CLAUDE_ARCHMAGI_OFFLINE1 holds `KYBER_TRADE_PLOT_1` (doing), lease to 22:54 PST
-- CLAUDE_STEVEDESKTOP_OFFLINE4 holds `SUMP_SINKING_RITE_BUILD_1` (doing), lease to 23:01 PST
-- CLAUDE_ARCHMAGI_OFFLINE3 holds `HANDOFF_SHRINK_HALF_THE_BYTES_WERE_GIT` (doing), lease to 23:01 PST
+## Live helpers — 0 unexpired leases, every seat (a lease is a claim, not a running process)
+- none
 
 ## NEXT — newest NEXT note on 1 of this seat's open items, as written then (Pacific time)
-- `HANDOFF_SHRINK_HALF_THE_BYTES_WERE_GIT` — doing, leased (NEXT 11-11 22:22 by CLAUDE_ARCHMAGI_OFFLINE3)
-    NEXT: blind judge
+- `HANDOFF_SHRINK_HALF_THE_BYTES_WERE_GIT` — doing (NEXT 11-11 23:58 by CLAUDE_ARCHMAGI_OFFLINE3)
+    NEXT: fresh blind judge

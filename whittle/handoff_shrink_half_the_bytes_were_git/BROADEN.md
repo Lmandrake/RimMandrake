@@ -91,3 +91,20 @@ The first test checks whether the summary respects changed circumstances; the se
 
 What remains: the live BENCH file is 45 lines at up to 120 columns: one screen on a 120x50 terminal. On an 80-column
 terminal the long rows still wrap. A cut NEXT action needs `rimflow show <ID>`, which the file says.
+
+## Round 3 (2026-11-11, 22:30 to 23:20 PST): four full-file reviews instead of another model's test list
+
+The last judge's remaining gap was code no review had passed. So this round's broadening was four fresh Opus reviewers,
+each new to the code, briefed to try to break it on real inputs: the live ledger, all 43 handoffs on disk, and temp
+ledgers written by the CLI. That is the same model family, not a different model. The GPT broaden above still stands
+for its two tests. The machine was under a token alarm (lane STOP: no new offline rounds), so I did not spend a second
+GPT consult.
+
+The reviews found real defects that ordinary use hits. The worst:
+- **Live state misread.** The wake told a fresh window "CLOSED -- do NOT act" on 132 open items, from a last-verb reading of the ledger.
+- **Phantom pointers.** It counted the hidden filed list (another seat's items included) as "open pointers — pick each up".
+- **Owner wait hidden.** It never showed an owner's dated `wait`.
+
+All of them are fixed, each with a selftest check that the matching mutation turns red (30 of 30 in
+`evidence/mutations.txt`). Each pass, its findings and its fixes are in `evidence/review_passes.md`. The fourth pass
+found nothing significant.
