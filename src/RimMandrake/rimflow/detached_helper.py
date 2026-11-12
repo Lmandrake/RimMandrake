@@ -53,6 +53,8 @@ MIN_MAX_S = 60
 GRACE_S = 120          # finish + publish time on top of the run's own bound
 DEFAULT_BUDGET_USD = 15.0
 MODELS = ("fable", "opus", "sonnet")  # owner ladder 2026-11-12: Fable for blank-page design; Haiku is banned
+# The CLI alias "fable" resolved to claude-fable-5-1 (measured 2026-11-12); the ladder means Fable 5.2, so pass the full id.
+MODEL_IDS = {"fable": "claude-fable-5-2"}
 SEATS = ("BENCH", "STEVE", "RUNNER")   # FOUNDRY retired (owner by card 2026-11-02)
 REAL_LOG = "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md"
 ORIGIN_REF = "origin/main"
@@ -404,7 +406,7 @@ def launch_argv(rec, msg, claude):
         shlex.quote(os.path.join(os.path.dirname(os.path.abspath(__file__)), "wrapup.py")), shlex.quote(unit),
         shlex.quote(seat), shlex.quote(clone))
     back = "-" + shlex.join(return_argv(rec))
-    cmd = [bounded, "-p", msg, "--model", rec["model"], "--name", "DETACHED %s %s" % (seat, rec["item"]),
+    cmd = [bounded, "-p", msg, "--model", MODEL_IDS.get(rec["model"], rec["model"]), "--name", "DETACHED %s %s" % (seat, rec["item"]),
            "--max-budget-usd", "%g" % rec["budget_usd"], "--output-format", "json", "--dangerously-skip-permissions"]
     return ["systemd-run", "--user", "--quiet", "--collect", "--unit", unit,
             "-p", "StandardOutput=file:" + rec["out"], "-p", "StandardError=file:" + rec["err"],
