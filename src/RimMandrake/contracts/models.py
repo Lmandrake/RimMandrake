@@ -143,7 +143,7 @@ def close_evidence_kind(d):
 
 TESTQ_OUTCOMES = Literal["DONE", "INVALID", "INTERRUPTED", "REFUSED"]
 TESTQ_CAUSES = Optional[Literal["GUARD_HELD", "SOURCE_SHA_MISSING", "SYNC", "DEPLOY", "LOAD", "CANARY", "HANG",
-                                "HARNESS", "BLOCKED_SELECTION", "CRASH", "GAME_DIED"]]
+                                "HARNESS", "BLOCKED_SELECTION", "CRASH", "GAME_DIED", "PREFLIGHT"]]
 
 
 class TestqRow(Strict):

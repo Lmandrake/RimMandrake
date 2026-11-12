@@ -228,7 +228,8 @@
       "HARNESS",
       "BLOCKED_SELECTION",
       "CRASH",
-      "GAME_DIED"
+      "GAME_DIED",
+      "PREFLIGHT"
      ]
     },
     "chain_versions": {

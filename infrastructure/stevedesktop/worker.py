@@ -138,7 +138,8 @@ def capture_outer():
     With CLONE == RUNNER the pin checks these very files out at source_sha; copying them after it ran the OLD outer
     worker, the thing the copy exists to prevent. Like contract_models(), spawn writes these bytes, not the disk's."""
     _OUTER.clear()
-    for src in (os.path.abspath(__file__), S.__file__, CI.__file__):
+    memo = os.path.join(os.path.dirname(os.path.abspath(__file__)), "deploy_memo.py")
+    for src in (os.path.abspath(__file__), S.__file__, CI.__file__) + ((memo,) if os.path.isfile(memo) else ()):
         with open(src, "rb") as f:
             _OUTER[os.path.basename(src)] = f.read()
 
@@ -422,6 +423,12 @@ def cmd_start(retry):
                        note="runner HEAD %s does not contain source_sha %s" % (head[:10], job["source_sha"]))
             publish_result(d, res)
             return out({"attempt": aid, "state": "finished", "outcome": "REFUSED", "cause": "SOURCE_SHA_MISSING"})
+        pre = preflight_job(job, d)     # RIMMANDRAKE_TESTQ_PREFLIGHT_REFUSE_BEFORE_THE_GAME: what would end INVALID is refused here
+        if pre and pre["refused"]:
+            res = base_result(job["id"], aid, head)
+            res.update(outcome="REFUSED", cause="PREFLIGHT", note=PF.note_of(pre))
+            publish_result(d, res)
+            return out({"attempt": aid, "state": "finished", "outcome": "REFUSED", "cause": "PREFLIGHT"})
         # the attempt runs at EXACTLY source_sha, not at whatever newer HEAD happens to contain it (bolt 1)
         want = git("rev-parse", "--verify", job["source_sha"] + "^{commit}")[1]
         capture_outer()     # before the pin: with CLONE == RUNNER it rewrites these very files
@@ -440,6 +447,26 @@ def cmd_start(retry):
         write_text(p("current"), aid)
         unit = spawn(aid, d)
     return out({"attempt": aid, "state": "started", "runner_sha": head, "unit": unit})
+
+
+PF = None   # the preflight module, once preflight_job has imported it
+
+
+def preflight_job(job, d):
+    """preflight.check on the pulled tree (a worker older than the module, or a check that crashed, lets the job
+    through); what it fixed or skipped is written to the attempt's preflight.json for the result note."""
+    global PF
+    try:
+        import preflight as PF      # noqa: PLW0603 - beside this worker; the outer copy is not involved here
+    except ImportError:
+        return None
+    try:
+        res = PF.check(job, RUNNER, clone=CLONE)
+    except Exception as e:      # noqa: BLE001 - a preflight that crashes must not stop a job
+        sys.stderr.write("worker: preflight crashed: %s: %s\n" % (type(e).__name__, str(e)[:200]))
+        return None
+    S.dump(res, os.path.join(d, "preflight.json"))
+    return res
 
 
 def guard_held_by_other():
@@ -718,6 +745,8 @@ class Attempt:
             if rc != 0 and refused_line(tail):     # a lane that may not deploy here (archmagi_phases.py): not a fault
                 return self.fail("REFUSED", "DEPLOY", refused_line(tail))
             return (rc == 0 or self.fail("INVALID", "DEPLOY", "deploy failed: " + tail)) and self.companion()
+        if self.memo_hit(mods):
+            return self.companion()
         # a folded source (Pyrelands) or the composed target (RimMandrake.Biomes) is `--compose biomes`, never `--mod`
         args = " ".join(f + " " + shlex.quote(v) for f, v in S.deploy_flags(mods, os.path.join(RUNNER, "src")))
         plan = "python3 src/RimMandrake/Utils/deploy_custom_mods.py " + args
@@ -733,6 +762,38 @@ class Attempt:
             return self.fail("INVALID", "DEPLOY", "game down before deploy failed: " + tail)
         rc, tail = self.sh(plan + " --apply", timeout=1200)
         return (rc == 0 or self.fail("INVALID", "DEPLOY", "deploy --apply failed: " + tail)) and self.companion()
+
+    def memo_state(self, mods):
+        """-> (deploy_memo module, memo path, key, game signature) or None: TESTQ_DEPLOY_MEMO=1, and only on a lane that
+        deploys itself (a TESTQ_CMD_DEPLOY lane has its own rules). Cached for the attest that follows."""
+        if getattr(self, "_memo", 0) != 0:
+            return self._memo
+        self._memo = None
+        try:
+            import deploy_memo as M
+            if M.enabled() and not os.environ.get("TESTQ_CMD_DEPLOY"):
+                mp = os.path.join(HOME, "deploy_memo.json")
+                self._memo = (M, mp, M.key_for(S, CLONE, self.job["source_sha"], mods, os.path.join(RUNNER, "src")),
+                              None)
+        except Exception as e:      # noqa: BLE001 - a memo that cannot run is no memo
+            self.say("deploy memo unavailable: %s: %s" % (type(e).__name__, str(e)[:120]))
+        return self._memo
+
+    def memo_hit(self, mods):
+        """Nothing deployed changed since the previous job: skip the plan, keep its attest record. -> bool."""
+        st = self.memo_state(mods)
+        if not st or st[2] is None:
+            return False
+        M, mp, key, _ = st
+        sig = M.game_sig(self.mods_dir(), key["mods"])
+        hit = M.lookup(mp, key, sig)
+        _, folded, _c = S.deploy_catalog(os.path.join(RUNNER, "src"))
+        if not hit or set(hit[0]) != {folded.get(m, m) for m in self.deploy_mods()}:
+            return False        # the attest record must cover exactly the mods THIS job attests
+        self.memo_mods = hit[0]
+        self.say("deploy: UNCHANGED since %s (same sources, game files untouched): plan and attest hashing skipped" % hit[1])
+        self.res["deploy_memo"] = {"hit": True, "since": hit[1]}
+        return True
 
     def deploy_mods(self):
         """The mods this attempt deploys and attests: the job's mod and its --deploy list; an exact-tier job's `mod` is
@@ -1017,7 +1078,8 @@ class Attempt:
         if self.companion_state:
             dep["companion"] = self.companion_state
         _, folded, _c = S.deploy_catalog(os.path.join(RUNNER, "src"))
-        for m in self.deploy_mods():
+        memo_mods = getattr(self, "memo_mods", None)
+        for m in ([] if memo_mods else self.deploy_mods()):
             m = folded.get(m, m)                   # a folded source is deployed as its composed target
             root = os.path.join(mods_dir, m)
             dll, defs, n = hashlib.sha256(), hashlib.sha256(), 0
@@ -1031,10 +1093,26 @@ class Attempt:
                 elif f.endswith(".xml") and "/Defs/" in "/" + rel:
                     defs.update(rel.encode() + b"\0" + sha256_file(f).encode())
             dep["mods"][m] = {"dll_sha256": dll.hexdigest(), "defs_sha256": defs.hexdigest(), "files": n}
+        if memo_mods:
+            dep["mods"] = memo_mods
+        else:
+            self.memo_save(dep["mods"])
         mc = os.path.join(os.environ.get("RM_GAME_USERDATA", ""), "Config", "ModsConfig.xml")
         dep["modsconfig_sha256_prerun"] = sha256_file(mc) if os.path.isfile(mc) else None
         self.res["deployed"] = dep
         return True
+
+    def memo_save(self, dep_mods):
+        """Record this attempt's deploy+attest as the lane's memo, or forget a stale one."""
+        st = getattr(self, "_memo", None)
+        if not st:
+            return
+        M, mp, key, _ = st
+        sig = M.game_sig(self.mods_dir(), key["mods"]) if key else None
+        if key is None or sig is None or not dep_mods:
+            M.forget(mp)
+            return
+        M.save(mp, key, sig, dep_mods, self.job.get("id"))
 
     # exact-tier jobs -----------------------------------------------------
     def tier_reading(self, tier):
@@ -1378,6 +1456,12 @@ class Attempt:
                 self.say("could not put the clone back on main (the next start retries): %s" % msg[-300:])
             if self.res["outcome"] != "DONE":   # a failed load is where the crash reset lands; after the unpin: see RESET_REPAIR
                 repair_reset_list(self.d)
+            try:        # what preflight fixed before this attempt (a moved swap marker) belongs in its record
+                fixed = (read_json(os.path.join(self.d, "preflight.json")) or {}).get("fixed") or []
+            except (OSError, ValueError, AttributeError):
+                fixed = []
+            if fixed:
+                self.res["note"] = ("%s; %s" % (self.res.get("note") or "", " | ".join(fixed))).lstrip("; ")[-600:]
             repaired = reset_repair_note(self.d)
             if repaired:
                 self.say(repaired)
