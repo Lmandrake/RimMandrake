@@ -12,3 +12,6 @@
 {"seat":"CLAUDE_ARCHMAGI_FWLIVE","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"judge: GSS_WATER_STUB_FIX_PASSED_LAST_WEEK re-run","ts":"2026-11-12T05:05:22Z","tsn":1794459922756870398}
 {"seat":"CLAUDE_ARCHMAGI_FWLIVE","event":"bridge","state":"released","ts":"2026-11-12T05:11:31Z","tsn":1794460291245316243}
 {"seat":"CLAUDE_ARCHMAGI_FWLIVE","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"GSS_WATER_STUB_FIX_PASSED_LAST_WEEK: cause experiment (old vs new rule x swim)","ts":"2026-11-12T05:13:31Z","tsn":1794460411941743659}
+{"seat":"CLAUDE_ARCHMAGI_FWLIVE","event":"bridge","state":"released","ts":"2026-11-12T05:27:06Z","tsn":1794461226058107484}
+{"seat":"CLAUDE_ARCHMAGI_FWLIVE","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"GSS_WATER_STUB_FIX_PASSED_LAST_WEEK: D2 one-off FAIL repro on board B00","ts":"2026-11-12T05:28:12Z","tsn":1794461292058104769}
+{"seat":"CLAUDE_ARCHMAGI_FWLIVE","event":"file","id":"RIMMANDRAKE_EXPLAIN_GSS_D2_SPLIT_ONCE_IN_TWELVE","title":"GSS D2 fresh-vs-incremental CordBuilder split once in 12 builds (B00, missing 1 + extra 1)","kind":"bug","target":"v1","needs":"offline","for":"RELENTLESS","ts":"2026-11-12T05:31:39Z","tsn":1794461499369498283}

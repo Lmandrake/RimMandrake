@@ -1,0 +1,51 @@
+offline gate: 0 red [], accepted [] (128.4s)
+== preflight
+P1_fresh_map                       PASS       SITE     {"fresh": false, "mapMode": "save", "start": true, "programState": "Playing", "map": {"sizeX": 250, "sizeZ": 250, "mapBiome": "AridShrubland", "longit
+P2_tier_running_startup_log_clean  PASS       SITE     {"running": 14, "mod_on": true, "assembly_matches": 1, "modSettingsEntries": ["RimMandrake: Gimme Some Slack"], "modHandles": 2, "startupErrorsNamingM
+P3_probes_site_pinned_region_empty PASS       SITE     {"channels": {"cord": true, "aerial": true}, "weatherLocked": true, "local_hour_before": 6, "pinned_noon": true, "nonColonistsDestroyed": 0, "hostileB
+== matrix
+MX_D00_n1_S0                       PASS       MOD      "graph ok: 1 edges, 1 strands, 1 nets, hash e1d6aae35e104312"
+MX_F00_T0_S0                       PASS       MOD      "graph ok: 1 edges, 1 strands, 1 nets, hash f4959f5263d6a60b"
+MX_F04_T1_S0                       PASS       MOD      "graph ok: 3 edges, 3 strands, 1 nets, hash 12045550ce4881b2"
+MX_F11_T2_S3                       PASS       MOD      "graph ok: 4 edges, 4 strands, 1 nets, hash 183afb49b502c17e"
+MX_D05_n10_S1                      PASS       MOD      "graph ok: 1 edges, 1 strands, 2 nets, hash 111464cd42eb2548"
+MX_F13_T3_S1                       PASS       MOD      "graph ok: 6 edges, 6 strands, 1 nets, hash fef62239a32d46c3"
+MX_F18_T4_S2                       PASS       MOD      "graph ok: 2 edges, 7 strands, 1 nets, hash 82b804d6da9908e9"
+MX_F21_T5_S1                       PASS       MOD      "graph ok: 12 edges, 12 strands, 1 nets, hash 7a813c76db992327"
+MX_F25_T6_S1                       PASS       MOD      "graph ok: 1 edges, 1 strands, 1 nets, hash 3045aa5c3c7c2514"
+MX_F30_T7_S2                       PASS       MOD      "graph ok: 7 edges, 10 strands, 3 nets, hash 5a4dc85345d49ad8"
+MX_F33_T8_S1                       PASS       MOD      "graph ok: 8 edges, 8 strands, 4 nets, hash 8419ad75aeeaa00c"
+MX_D15_n1000_S3                    PASS       MOD      "graph ok: 1 edges, 24 strands, 1 nets, hash a001d417d21b1bfa"
+MX_F39_T9_S3                       PASS       MOD      "graph ok: 3 edges, 3 strands, 3 nets, hash 920b6b410d9604c2"
+MX_D10_n100_S2                     PASS       MOD      "graph ok: 2 edges, 28 strands, 1 nets, hash 824db3eb9015cb45"
+MX_F42_T10_S2                      PASS       MOD      "graph ok: 12 edges, 16 strands, 1 nets, hash 7e41027b9560cbb9"
+MX_F47_T11_S3                      PASS       MOD      "graph ok: 1 edges, 1 strands, 1 nets, hash 37dcd1e489cf4db6"
+MX_F51_T12_S3                      PASS       MOD      "graph ok: 4 edges, 6 strands, 1 nets, hash f090358544e120df"
+MX_F54_T13_S2                      PASS       MOD      "graph ok: 4 edges, 7 strands, 1 nets, hash 06d7925d9b40f1b3"
+MX_F56_T14_S0                      PASS       MOD      "graph ok: 4 edges, 4 strands, 1 nets, hash 9e4c6679aa9b026d"
+MX_F60_T15_S0                      PASS       MOD      "graph ok: 2 edges, 2 strands, 1 nets, hash ba936a9d2dced007"
+MX_A04_N3_R12_fallen               PASS       MOD      "graph ok: 2 edges, 2 strands, 2 nets, hash 08de5028ed9796ae"
+MX_A05_N3_R19_up                   PASS       MOD      "graph ok: 2 edges, 2 strands, 1 nets, hash 235962651a3ccd1e"
+MX_A06_N5_R6_fallen                PASS       MOD      "graph ok: 2 edges, 2 strands, 2 nets, hash f85e513ea3c08832"
+MX_A07_N5_R12_up                   PASS       MOD      "graph ok: 2 edges, 2 strands, 1 nets, hash 109ef2dff206ce4e"
+MX_A08_N5_R19_cut                  PASS       MOD      "graph ok: 2 edges, 2 strands, 2 nets, hash 095c9f07743b9f6e"
+MX_A09_N2_R6_cut                   PASS       MOD      "graph ok: 2 edges, 2 strands, 2 nets, hash 37d8ddab608c7bc3"
+MX_A10_N2_R12_fallen               PASS       MOD      "graph ok: 2 edges, 2 strands, 2 nets, hash 610b968288323167"
+MX_A11_N2_R19_up                   PASS       MOD      "graph ok: 2 edges, 2 strands, 1 nets, hash 55defe584086f7c2"
+MX_A12_N3_R6_fallen                PASS       MOD      "graph ok: 2 edges, 2 strands, 2 nets, hash d36447fa68d4f5b2"
+MX_C00_empty                       PASS       MOD      "graph ok: 0 edges, 0 strands, 0 nets, hash 14650fb0739d0383"
+== determinism
+D1_zero_tick_rereads_same          PASS       MOD      "30/30 scenes: geometry hash + census identical on 2 re-reads after all view toggles"
+D2_fresh_builder_same              FAIL       MOD      ["B00_ground ['F00_T0_S0', 'D00_n1_S0'] {'edges': 2, 'different': 0, 'missing': 1, 'extra': 1, 'success': True, 'error': None}"]
+== log_budget
+Z_log_budget                       PASS       MOD      {"errors": [], "throwers": [], "newWarnings": 0, "siteClearErrorsExcluded": 0, "donorMapInitErrorsExcluded": 0, "controlNoiseExcluded": 0, "controlNoi
+
+====================================================================================================
+proof_all partial  2026-11-11T21:23:16  tier fw_gss_sitting  rows 36 {'PASS': 35, 'FAIL': 1}  wall 225.6s  shots on
+FlowWorks swim settings (read live): {'deepSwimEnabled': 'True', 'swimOpenWaterEnabled': 'False'}
+  preflight     29.4s  {'PASS': 3}
+  matrix       185.2s  {'PASS': 30}
+  determinism    0.2s  {}
+  log_budget     0.1s  {}
+  NOT PASS  D2_fresh_builder_same              FAIL       ["B00_ground ['F00_T0_S0', 'D00_n1_S0'] {'edges': 2, 'different': 0, 'missing': 1, 'extra': 1, 'success': True, 'error':
+  -> D:/ClaudeWork/rimmandrake/whittle_claude/CLAUDE_ARCHMAGI_FWLIVE/gss_ws/run4.json
