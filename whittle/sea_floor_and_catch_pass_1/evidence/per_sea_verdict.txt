@@ -1,0 +1,76 @@
+# Per-sea verdict at 6039084c72 (parsed from src/, 10080 defs indexed)
+
+## RM_TheScald (src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TheScald.xml)
+- shore: RimMandrake.SeaShores.RM_SeaShoreExtension on the BiomeDef -> land tiles beside it get the RM_SeaCoast mutator; terrains {'deepTerrain': 'RM_ScaldWaterOceanDeep', 'shallowTerrain': 'RM_ScaldWaterOceanShallow'}; terrain defs missing from src: none
+- floor: RM_SeabedFloor_TheScald (exists: True), animalDensityFactor 30 -> floor animalDensity 4.50; generator RM_SeabedGenerator_TheScald (exists: True), fauna genstep present: True
+- floor cast: 10 wildAnimals; races with no same-named PawnKindDef in src: none
+- catch: 9 fishTypes rows; rows lacking a living body on this floor: none
+    RM_EeshCatch           freshwater_Common    body RM_Eesh
+    RM_MuddalCatch         freshwater_Common    body RM_Muddal
+    RM_DossCatch           freshwater_Common    body RM_Doss
+    RM_ThuumCatch          freshwater_Common    body RM_Thuum
+    RM_ShullaCatch         freshwater_Common    body RM_Shulla
+    RM_KarrashCatch        freshwater_Uncommon  body RM_Karrash
+    RM_Saal                freshwater_Uncommon  body RM_Noohm
+    RM_BladderboilCatch    freshwater_Uncommon  body RM_Bladderboil
+    RM_EkkelCatch          freshwater_Uncommon  body RM_Ekkel
+    rare RM_EkkelCatch          in RM_RareScaldCatches: item
+    rare RM_KarrashCatch        in RM_RareScaldCatches: item
+- description: A perched ocean in the world's hottest basin, held in a vast crater by the ring of mountains that feed it. It boils where it is shallow and simmers where it is deep, and it spills outward through every river that nourishes the world. On its floor, where only a gravship can carry you, clouds of eesh drift among doss, shulla and shimmer eels, with saal and karrash among them; a line cast from its shore brings up the same eesh, doss and iridai, and now and then a karrash or an ekkel.
+
+## RM_GreySea (src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_GreySea.xml)
+- shore: RimMandrake.SeaShores.RM_SeaShoreExtension on the BiomeDef -> land tiles beside it get the RM_SeaCoast mutator; terrains {'deepTerrain': 'RM_WaterBrineDeep', 'shallowTerrain': 'RM_WaterBrineShallow', 'beachTerrain': 'RM_SaltCrustShore'}; terrain defs missing from src: none
+- floor: RM_SeabedFloor_GreySea (exists: True), animalDensityFactor 30 -> floor animalDensity 3.00; generator RM_SeabedGenerator_GreySea (exists: True), fauna genstep present: True
+- floor cast: 9 wildAnimals; races with no same-named PawnKindDef in src: none
+- catch: 4 fishTypes rows; rows lacking a living body on this floor: none
+    RM_EssarnCatch         saltwater_Common     body RM_Essarn
+    RM_NissikCatch         saltwater_Common     body RM_Nissik
+    RM_ThollimCatch        saltwater_Common     body RM_Thollim
+    RM_GruskCatch          saltwater_Common     body RM_Grusk
+    rare RM_SaltCameo           in RM_RareGreyCatches: item
+    rare Silver                 in RM_RareGreyCatches: engine/donor def
+- description: A hypersaline terminal sea on the terminator band, its own endemic mat holding it alone the way the Twilight Sea's holds that one. Salt-encrusted and shrinking faster than its sister sea — the planet's chemical works, and the retreating shoreline is free surveying for anyone who can read the terraces. On its floor, reached only by gravship, nissik, grusk and essarn graze the salt beds under the slow shadow of reefbacks; its shore yields essarn, nissik, thollim and grusk, and sometimes a salt cameo.
+
+## RM_TwilightSea (src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TwilightSea.xml)
+- shore: RimMandrake.SeaShores.RM_SeaShoreExtension on the BiomeDef -> land tiles beside it get the RM_SeaCoast mutator; terrains {}; terrain defs missing from src: none
+- floor: RM_SeabedFloor_TwilightSea (exists: True), animalDensityFactor 30 -> floor animalDensity 3.00; generator RM_SeabedGenerator_TwilightSea (exists: True), fauna genstep present: True
+- floor cast: 22 wildAnimals; races with no same-named PawnKindDef in src: none
+- catch: 14 fishTypes rows; rows lacking a living body on this floor: none
+    RM_NiimCatch           saltwater_Common     body RM_Niim
+    RM_PalluCatch          saltwater_Common     body RM_Pallu
+    RM_TikkarrCatch        saltwater_Common     body RM_Tikkarr
+    RM_NuudalCatch         saltwater_Common     body RM_Nuudal
+    RM_AluunCatch          saltwater_Common     body RM_Aluun
+    RM_NoolimCatch         saltwater_Common     body RM_Noolim
+    RM_KelluCatch          saltwater_Uncommon   body RM_Kellu
+    RM_MurrolCatch         saltwater_Uncommon   body RM_Murrol
+    RM_HolluCatch          saltwater_Uncommon   body RM_Hollu
+    RM_OoboCatch           saltwater_Uncommon   body RM_Oobo
+    RM_LiiruCatch          saltwater_Uncommon   body RM_Liiru
+    RM_WeloonCatch         saltwater_Uncommon   body RM_Weloon
+    RSW_MeeCatch           saltwater_Common     body RSW_Mee
+    RSW_FaaCatch           saltwater_Uncommon   body RSW_Faa
+    rare Corpse_RSW_ColoClawFish in RM_RareTwilightCatches: engine/donor def
+    rare RM_AluunCatch          in RM_RareTwilightCatches: item
+    rare RM_LampBlack           in RM_RareTwilightCatches: item
+    rare RM_NiimCatch           in RM_RareTwilightCatches: item
+- description: A hypersaline terminal sea on the terminator band, lidded from shore to shore by one organism that has never had to share it: the waveglass, a blue-green sheen on the water from the shore and a ceiling of living stained glass from far beneath. It has no outflow and it is shrinking — the stranded shoreline terraces mark where it used to reach. Under the lid, reached only by gravship, niim, noolim and pallu shoal with mee and faa scalefish, while lanternwhales and gripping terrors keep to the deep dark; from the shore come niim, pallu, aluun and scalefish, and once in a long while the remains of a colo claw.
+
+## RM_TheChill (src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TheChill.xml)
+- shore: RimMandrake.SeaShores.RM_SeaShoreExtension on the BiomeDef -> land tiles beside it get the RM_SeaCoast mutator; terrains {'deepTerrain': 'RM_PropaneDeep', 'shallowTerrain': 'RM_PropaneShallow'}; terrain defs missing from src: none
+- floor: RM_SeabedFloor_TheChill (exists: True), animalDensityFactor 30 -> floor animalDensity 2.40; generator RM_SeabedGenerator_TheChill (exists: True), fauna genstep present: True
+- floor cast: 10 wildAnimals; races with no same-named PawnKindDef in src: none
+- catch: 9 fishTypes rows; rows lacking a living body on this floor: none
+    RM_FessuCatch          saltwater_Common     body RM_Fessu
+    RM_KrellikCatch        saltwater_Common     body RM_Krellik
+    RM_OdduCatch           saltwater_Common     body RM_Oddu
+    RM_OovuCatch           saltwater_Common     body RM_Oovu
+    RM_HeeminCatch         saltwater_Common     body RM_Heemin
+    RM_IlissCatch          saltwater_Uncommon   body RM_Iliss
+    RM_TarnnCatch          saltwater_Uncommon   body RM_Tarnn
+    RM_ZhiilCatch          saltwater_Uncommon   body RM_Zhiil
+    RM_OovanamCatch        saltwater_Uncommon   body RM_Oovanam
+    rare Chemfuel               in RM_RareChillCatches: engine/donor def
+    rare RM_OdduCatch           in RM_RareChillCatches: item
+- description: A black mirror of liquid fuel under the brightest sky on the planet, ringed by a crust of the same compound frozen solid. The cold here is total, and the stillness is older than anyone's records. Yet the fuel is not empty: on its floor, reached only by gravship, heemin, fessu and krellik move slowly through the dark liquid; a line dropped from the crust's edge draws up fessu, krellik, oddu and heemin, and sometimes a slug of raw chemfuel.
+
