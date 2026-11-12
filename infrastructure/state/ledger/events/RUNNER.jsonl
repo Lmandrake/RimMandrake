@@ -6327,3 +6327,4 @@
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_DISPATCHER","result":"kept","detail":"sweep: running again","ts":"2026-11-12T14:03:07Z","tsn":1794492187635749221}
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_DISPATCHER","result":"broken","detail":"dispatcher last ran 22 min ago (limit 15 min)","ts":"2026-11-12T14:18:07Z","tsn":1794493087348254905}
 {"seat":"RUNNER","event":"raise","id":"LIVE_RESTORE_DISPATCHER","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-12T14:18:12Z","tsn":1794493092273713494}
+{"seat":"RUNNER","event":"spawn","name":"STEVE_LANE_UNSTICK_PAUSED_UNOWNED_3D50","kind":"task","needs":"offline","title":"SteveDesktop lane PAUSED, unowned 10 min: lane RUNNING again (running J20261112T144249Z-2ac601) but no DONE+canary job since 2026-11-12T14:42:22Z","for":"RELENTLESS","from":"STEVE_STEWARD_BUILD_NO_LLM_OWNER","ts":"2026-11-12T14:52:52Z","tsn":1794495172811178547}
