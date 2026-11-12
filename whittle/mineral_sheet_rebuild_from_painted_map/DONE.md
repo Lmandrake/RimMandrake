@@ -9,14 +9,14 @@
 - true: [ ] **The two extras are marked.** RM_ChillCrater (aftermath) and RM_LanternDeeps (cave layer) carry rows marked as | evidence: `whittle/mineral_sheet_rebuild_from_painted_map/evidence/extras_rows.csv` `whittle/mineral_sheet_rebuild_from_painted_map/evidence/check.json`
 - true: [ ] **Every row's `src` names a real source.** Each label and src comes from a BiomeDef that exists in `src/` at run | evidence: `whittle/mineral_sheet_rebuild_from_painted_map/evidence/check.json`
 - true: [ ] **No (Jawa) tag remains** in any output file. Evidence: a measured zero over the outputs, with a sanity probe | evidence: `whittle/mineral_sheet_rebuild_from_painted_map/evidence/check.json` `whittle/mineral_sheet_rebuild_from_painted_map/evidence/broaden_attacks.log`
-- true: [ ] **Prereview recorded.** The sheet built from these outputs has a passing prereview record | evidence: `whittle/mineral_sheet_rebuild_from_painted_map/evidence/prereview_check.txt` `whittle/mineral_sheet_rebuild_from_painted_map/evidence/harness_summary.txt` `whittle/mineral_sheet_rebuild_from_painted_map/evidence/judge2_verdict.json` `whittle/mineral_sheet_rebuild_from_painted_map/evidence/desk_light.png` `whittle/mineral_sheet_rebuild_from_painted_map/evidence/desk_chg.png` `whittle/mineral_sheet_rebuild_from_painted_map/evidence/phone_light.png`
+- true: [ ] **Prereview recorded.** The sheet built from these outputs has a passing prereview record | evidence: `whittle/mineral_sheet_rebuild_from_painted_map/evidence/prereview_check.txt` `whittle/mineral_sheet_rebuild_from_painted_map/evidence/harness_summary.txt` `whittle/mineral_sheet_rebuild_from_painted_map/evidence/desk_light.png` `whittle/mineral_sheet_rebuild_from_painted_map/evidence/desk_chg.png` `whittle/mineral_sheet_rebuild_from_painted_map/evidence/phone_light.png`
 - true: [ ] **Nothing shipped.** No mod file or deployed def changes (D10 hold). Evidence: the diff stat of the closing commit. | evidence: `whittle/mineral_sheet_rebuild_from_painted_map/evidence/nothing_shipped.txt`
 
 ## How each line is shown
 
 - **Regenerates from the repo.** The tool is `src/RimMandrake/Utils/mineral_matrix/gen_matrix.py`. Its round-two
   inputs, byte-identical to Archmagi's originals, are in `design/RimMandrake/mineral_matrix/round_two_2026-10-28/`
-  (README.md beside them). The final run was in a shallow clone of the published commit 00b0c15a, started from
+  (README.md beside them). The final run was in a shallow clone of the published commit 7d935d3e, started from
   `$HOME`, as one command, exit 0. Seven of the eight outputs hash to the 10-30 build. `column_changes.csv` differs in
   one line, `RM_LongShade pull stays: ''`, which now reads in words. `diff_vs_2026-10-30.txt` shows the diff, and the
   generator checks that undoing that wording gives the 10-30 hash exactly.
@@ -29,10 +29,10 @@
   generatesNaturally. The one sheet label that differs from its def is the Warscar ("the Warscar" vs "Warscar"), noted
   per WARSCAR_LABEL_RESTORE_THE_ARTICLE, which is still open.
 - **(Jawa).** `check.json` → `jawa_probe` is `[["biomes.csv", 1]]`: the scan found the tag planted in a copy. Then
-  `jawa_hits` is `[]` over the 12 output files. `broaden_attacks.log` shows a run in which the scan caught a tag inside a
-  stray judge brief in the output folder (since moved out).
+  `jawa_hits` is `[]` over the 12 output files. `broaden_attacks.log` T6 plants one in `reach_summary.csv` of a real
+  run and the check fails on it, then passes on a clean regeneration.
 - **Prereview.** `prereview_check.txt` shows `check` OK on the fresh-clone sheet with the committed record: 29 rows,
-  24 OK, 5 FLAG, 0 dropped. A fresh Opus judge (`judge2_verdict.json`) passed all 29 rows. The browser harness passed
+  24 OK, 5 FLAG, 0 dropped. Two fresh Opus judges passed all 29 rows; the record carries their notes. The browser harness passed
   59 of 59 checks. The five flags are decisions for the owner, not defects.
 - **Nothing shipped.** No commit of this item touched a Defs/, Patches/, About/, Assemblies/ or Textures/ path. No
   deploy, bridge or game command was run.

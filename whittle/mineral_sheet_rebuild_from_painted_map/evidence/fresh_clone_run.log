@@ -1,4 +1,4 @@
-# 2026-11-11 20:38 -0800 fresh clone of 00b0c15a MINERAL_SHEET_REBUILD_FROM_PAINTED_MAP: pre-review record cites the harness's 59 checks, not 58, run from $HOME
+# 2026-11-11 20:45 -0800 fresh clone of 7d935d3e MINERAL_SHEET_REBUILD_FROM_PAINTED_MAP: a run also clears the old browser-harness results, which describe the previous sheet, run from $HOME
 $ python3 <clone>/src/RimMandrake/Utils/mineral_matrix/gen_matrix.py
 29 biomes 49 columns 82 nonzero 127 reasons 4 src rows 29 items
 index.html 1047091

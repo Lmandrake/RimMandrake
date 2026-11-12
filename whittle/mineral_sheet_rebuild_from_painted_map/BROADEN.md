@@ -32,8 +32,8 @@ log in `evidence/broaden_attacks.log`.
   `column_changes.csv`, differs by one deliberate wording fix, and the generator proves that is its only difference
   (`evidence/diff_vs_2026-10-30.txt`).
 - **2, a def vanishes:** removed `RM_Webwork_Biome.xml` with a passing run's outputs in place. The run stopped (exit 1)
-  and **the output folder was left empty**: the generator clears its own old outputs before reading anything, a change
-  this test prompted. The message used to be a Python traceback. It is now one line:
+  and **the output folder was left empty**. The generator clears its own old outputs, and the browser harness's old
+  screenshots, before reading anything. The second part was added when a rerun of this test found stale screenshots left behind. The message used to be a Python traceback. It is now one line:
   `gen_matrix: STOPPED (outputs incomplete; no older run left beside them): ('no BiomeDef in src for', {'RM_Webwork'})`.
 - **3, stale approval:** changed RM_Cauldron's cave_crystal 0.3 → 7 in the round-two input and kept the judged record.
   `prereview.py check` REFUSED: "RM_Cauldron: changed since it was looked at". The generator exits 4, and its 10-30

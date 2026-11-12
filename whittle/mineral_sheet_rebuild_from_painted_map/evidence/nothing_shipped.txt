@@ -1,4 +1,6 @@
-# Nothing shipped: every commit of this item after the Whittle setup (52c51a89cf..HEAD) and every path it touched
+# Nothing shipped: every commit of this item after the Whittle setup (52c51a89cf..7d935d3e) and every path it touched
+7d935d3e82 MINERAL_SHEET_REBUILD_FROM_PAINTED_MAP: a run also clears the old browser-harness results, which describe the previous sheet
+66445d5dc4 MINERAL_SHEET_REBUILD_FROM_PAINTED_MAP: Whittle claim, broaden, evidence and judge (would show: yes); two lessons
 00b0c15a9f MINERAL_SHEET_REBUILD_FROM_PAINTED_MAP: pre-review record cites the harness's 59 checks, not 58
 6422c72814 MINERAL_SHEET_REBUILD_FROM_PAINTED_MAP: Changes tab names every old row; harness checks it
 7319c7c876 MINERAL_SHEET_REBUILD_FROM_PAINTED_MAP: gen_matrix.py names a missing input in one line instead of a traceback
@@ -16,6 +18,8 @@ design/RimMandrake/mineral_matrix/round_two_2026-10-28/inventory.csv
 design/RimMandrake/mineral_matrix/round_two_2026-10-28/mineral_homes_v2.csv
 design/RimMandrake/mineral_matrix/round_two_2026-10-28/reach_summary.csv
 design/RimMandrake/mineral_matrix/round_two_2026-10-28/reasons_v2.csv
+infrastructure/state/lessons/20261112T044100Z-CLAUDE_STEVEDESKTOP_OFFLINE2-stevedesktop-wsl-had-no-playwright-2026.md
+infrastructure/state/lessons/20261112T044100Z-CLAUDE_STEVEDESKTOP_OFFLINE2-whittle-setup-stevedesktop-left-done-md.md
 src/RimMandrake/Utils/mineral_matrix/check_matrix.py
 src/RimMandrake/Utils/mineral_matrix/gen_matrix.py
 src/RimMandrake/Utils/mineral_matrix/page/build_data.py
@@ -24,7 +28,24 @@ src/RimMandrake/Utils/mineral_matrix/page/template.html
 src/RimMandrake/Utils/mineral_matrix/page/xlsx.full.min.js
 src/RimMandrake/Utils/mineral_matrix/prereview_harness.py
 src/RimMandrake/Utils/mineral_matrix/selftest_mineral_matrix.py
+whittle/mineral_sheet_rebuild_from_painted_map/BROADEN.md
+whittle/mineral_sheet_rebuild_from_painted_map/DONE.md
+whittle/mineral_sheet_rebuild_from_painted_map/JUDGE.md
+whittle/mineral_sheet_rebuild_from_painted_map/evidence/broaden_attacks.log
+whittle/mineral_sheet_rebuild_from_painted_map/evidence/check.json
+whittle/mineral_sheet_rebuild_from_painted_map/evidence/desk_chg.png
+whittle/mineral_sheet_rebuild_from_painted_map/evidence/desk_light.png
+whittle/mineral_sheet_rebuild_from_painted_map/evidence/diff_vs_2026-10-30.txt
+whittle/mineral_sheet_rebuild_from_painted_map/evidence/extras_rows.csv
+whittle/mineral_sheet_rebuild_from_painted_map/evidence/fresh_clone_run.log
+whittle/mineral_sheet_rebuild_from_painted_map/evidence/harness_run.log
+whittle/mineral_sheet_rebuild_from_painted_map/evidence/harness_summary.txt
+whittle/mineral_sheet_rebuild_from_painted_map/evidence/judge1_verdict.json
+whittle/mineral_sheet_rebuild_from_painted_map/evidence/judge2_verdict.json
+whittle/mineral_sheet_rebuild_from_painted_map/evidence/nothing_shipped.txt
+whittle/mineral_sheet_rebuild_from_painted_map/evidence/phone_light.png
+whittle/mineral_sheet_rebuild_from_painted_map/evidence/prereview_check.txt
 
 files under any Defs/, Patches/, About/, Assemblies/ or Textures/ in these commits:
 (none)
-No deploy_custom_mods.py --apply, bridge or game command was run (offline lane).
+This item ran in the offline lane: nothing was copied to the game's Mods folder and no game was touched.

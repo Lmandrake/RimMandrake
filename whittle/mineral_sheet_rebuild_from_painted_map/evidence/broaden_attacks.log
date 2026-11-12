@@ -1,8 +1,10 @@
+# 2026-11-11 20:46 -0800 broaden attacks on fresh clone 7d935d3e
 ### T2 a referenced BiomeDef vanishes (outputs from a passing run present)
 removed: src/RimMandrake/Webwork/Defs/BiomeDefs/RM_Webwork_Biome.xml
+gen_matrix: STOPPED (outputs incomplete; no older run left beside them): ('no BiomeDef in src for', {'RM_Webwork'})
 exit=1
-AssertionError: ('no BiomeDef in src for', {'RM_Webwork'})
 files left in out:
+(end)
 
 ### T3 stale approval: one nonzero input cell changed, the judged record kept
 changed RM_Cauldron cave_crystal 0.3 -> 7
@@ -17,8 +19,11 @@ exit=4
 PASS every row's src_def is a real file holding that BiomeDef, and its label matches
 REFUSED index.prereview.json: 1 problem(s): RM_Wastes: changed since it was looked at. Look at every row yourself (or have a naive judge do it: a fresh Opus that did not make it, or gpt_consult.py for
 CHECKS FAILED (see above) - /home/mandrake/rm/scratch/CLAUDE_STEVEDESKTOP_OFFLINE2/mm_fresh/Transient/mineral_matrix/
-RM_Wastes,"=1+1, ""the"" <b>Wastes</b>","=1+1, ""the"" <b>Wastes</b>",,land,yes,
-['=1+1, "the" <b>Wastes</b>']
-
+csv round-trip: ['=1+1, "the" <b>Wastes</b>']
 ### T5b browser harness on the hostile-label build
-checks 58 fails 0
+checks 59 fails 0
+
+### T6 the (Jawa) scan sees a planted tag in a far output file
+PASS sanity probe: the scan finds one planted '(Jawa)'
+FAIL no '(Jawa)' tag in any of 12 output files  <- [["reach_summary.csv", 1]]
+regenerated clean: check_matrix: 10/10 pass -> /home/mandrake/rm/scratch/CLAUDE_STEVEDESKTOP_OFFLINE2/mm_fresh/Transient/mineral_matrix/check.json

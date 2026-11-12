@@ -1,4 +1,4 @@
-# outputs of the fresh-clone run (00b0c15a) vs Archmagi D:\ClaudeWork\rimmandrake\mineral_matrix_2026-10-30\ (copied 2026-11-11)
+# outputs of the fresh-clone run (7d935d3e) vs Archmagi D:\ClaudeWork\rimmandrake\mineral_matrix_2026-10-30\ (copied 2026-11-11)
 IDENTICAL biomes.csv
 IDENTICAL draft_matrix.csv
 IDENTICAL reasons.csv
