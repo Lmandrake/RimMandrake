@@ -459,38 +459,38 @@ def patches_touching(dn, parents=()):
     if _PATCHES is None:
         _PATCHES = [(p, p.read_text(encoding="utf-8", errors="replace")) for tier, mod in shipped_mod_dirs()
                     for p, rel in mod_files(mod, ".xml") if "Patches" in rel]
-    keys = [dn] + list(parents) + ["defName,", "defName ,", "defName,"]
+    keys = [dn] + list(parents)
     for p, t in _PATCHES:
-        if not any(k in t for k in keys[:1 + len(parents)]) and "(defName" not in t.replace(" ", ""):
+        if not any(k in t for k in keys) and "(defName" not in t.replace(" ", ""):
+            continue                                       # cheap prefilter: no name and no defName selector
+        for m in re.finditer(r"(contains|starts-with|ends-with)\(\s*defName\s*,\s*[\"']([^\"']*)[\"']", t):
+            fn, sub = m.group(1), m.group(2)
+            hit = (sub in dn if fn == "contains" else dn.startswith(sub) if fn == "starts-with"
+                   else dn.endswith(sub))
+            if not hit:
+                t = t.replace(m.group(0), "")                                  # a selector not matching dn
+        if not pat.search(t):
             continue
-            for m in re.finditer(r"(contains|starts-with|ends-with)\(\s*defName\s*,\s*[\"']([^\"']*)[\"']", t):
-                fn, sub = m.group(1), m.group(2)
-                hit = (sub in dn if fn == "contains" else dn.startswith(sub) if fn == "starts-with"
-                       else dn.endswith(sub))
-                if not hit:
-                    t = t.replace(m.group(0), "")                                  # a selector not matching dn
-            if not pat.search(t):
+        try:
+            root = ET.fromstring(t.encode("utf-8"))
+        except ET.ParseError:
+            out.append((str(p.relative_to(ROOT)), True))   # unreadable patch on a claimed def: fail safe
+            continue
+        hot = False
+        for op in root.iter():
+            xp = op.findtext("xpath") if isinstance(op.tag, str) else None
+            if not xp or not pat.search(xp):
                 continue
-            try:
-                root = ET.fromstring(t.encode("utf-8"))
-            except ET.ParseError:
-                out.append((str(p.relative_to(ROOT)), True))   # unreadable patch on a claimed def: fail safe
-                continue
-            hot = False
-            for op in root.iter():
-                xp = op.findtext("xpath") if isinstance(op.tag, str) else None
-                if not xp or not pat.search(xp):
-                    continue
-                tail = xp[pat.search(xp).end():]
-                value = op.find("value")
-                vtags = {e.tag for e in value.iter()} if value is not None else set()
-                cls = op.get("Class") or ""
-                if any(re.search(r"\b%s\b" % f, tail) for f in PLACEMENT_FIELDS) or any(
-                        f in vtags for f in PLACEMENT_FIELDS) or (
-                        ("Remove" in cls and tail.strip(" ]/") == "") or (
-                        "Attribute" in cls and (op.findtext("attribute") or "").strip() == "ParentName")):
-                    hot = True
-            out.append((str(p.relative_to(ROOT)), hot))
+            tail = xp[pat.search(xp).end():]
+            value = op.find("value")
+            vtags = {e.tag for e in value.iter()} if value is not None else set()
+            cls = op.get("Class") or ""
+            if any(re.search(r"\b%s\b" % f, tail) for f in PLACEMENT_FIELDS) or any(
+                    f in vtags for f in PLACEMENT_FIELDS) or (
+                    ("Remove" in cls and tail.strip(" ]/") == "") or (
+                    "Attribute" in cls and (op.findtext("attribute") or "").strip() == "ParentName")):
+                hot = True
+        out.append((str(p.relative_to(ROOT)), hot))
     return out
 
 

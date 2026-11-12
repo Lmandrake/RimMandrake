@@ -53,6 +53,19 @@ def unit_checks():
     for item, want in (("RM_X", 1), ("RM_Y", 0), ("RM_Z", 1)):
         if len(list(sc._xml_source_hits(x, item))) != want:
             errs.append("synthetic source context %s: wanted %d hit(s)" % (item, want))
+    # sixth review: the patch check must actually run (a prefilter once disabled it silently)
+    real = sc.patches_touching("RM_SekkulaathTank")
+    if len(real) < 3 or any(hot for _, hot in real):
+        errs.append("patches_touching(RM_SekkulaathTank): wanted its 3 label/comp patches, none placement: %s" % real)
+    saved = sc._PATCHES
+    sc._PATCHES = [(sc.ROOT / "src/x/Patches/fake.xml",
+                    '<Patch><Operation Class="PatchOperationAdd"><xpath>Defs/ThingDef[defName="RM_FossilCase"]'
+                    '/placeWorkers</xpath><value><li>PlaceWorker_OnSteamGeyser</li></value></Operation></Patch>')]
+    if sc.patches_touching("RM_FossilCase") != [(str((sc.ROOT / "src/x/Patches/fake.xml").relative_to(sc.ROOT)), True)]:
+        errs.append("a synthetic placeWorkers patch on RM_FossilCase was not flagged as placement-relevant")
+    if sc.patches_touching("RM_PatternHull"):
+        errs.append("a patch on RM_FossilCase was attributed to RM_PatternHull")
+    sc._PATCHES = saved
     ix = sc.build_index(sc.find_data(None))
     if sc.obtainable(ix, "RM_ToxinSealant"):
         errs.append("RM_ToxinSealant: its machining-table recipe was not accepted: %s" % sc.obtainable(ix, "RM_ToxinSealant"))

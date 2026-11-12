@@ -1,0 +1,49 @@
+# Offline load check of the composed Baroque Biomes built from this clone, 2026-11-11 23:19 -0800
+
+No game was started. src/RimMandrake/Utils/effective_def_lint.py builds the effective def tree the way the game does
+(combine every active mod's Defs, apply every patch op in load order, resolve ParentName) and runs its load-killer checks.
+Mod list (SteveDesktop has 64 of the FULL list's mods, so FULL cannot be built here): Harmony, Core + all five DLCs,
+mandrake.rm.luminouspigment, mandrake.rm.flowworks (Baroque Biomes' two non-DLC dependencies, deployed copies), and
+mandrake.rm.biomes OVERRIDDEN with the folder biomes_compose.build() made from this clone (never deployed).
+Command: RM_STEAMAPPS=/mnt/d/SteamLibrary/steamapps python3 src/RimMandrake/Utils/effective_def_lint.py <that list> --no-cache 'mandrake.rm.biomes=<composed folder>'
+
+Files read from the composed folder include (probe of the lint's own mod_files()):
+  .../RimMandrake.Biomes/Biomes/*/RM_FossilCase.xml
+  .../RimMandrake.Biomes/Biomes/*/RM_FurnaceHideBank.xml
+  .../RimMandrake.Biomes/Biomes/*/RM_PatternHull.xml
+  .../RimMandrake.Biomes/Biomes/*/RM_TelluroxHexplate.xml
+  .../RimMandrake.Biomes/Biomes/*/RM_HelixCurators.xml
+
+## lint output
+[  15s] mods 10 (not installed 0) | files 2962
+[  41s] content key 1f7478f691e05696 (26s)
+[  58s] defs combined: 17659
+[  61s] patch ops 369 | unsupported 4
+meta: {"modlist": "/tmp/mc_min.xml", "active": 10, "defs": 17641, "patch_ops": 369, "unsupported_ops": 4, "key": "1f7478f691e056960fc2bfec398247e83bfa58353d6aa1d62ade482040b252b8", "when": "2026-11-12T07:18:50Z", "cache": "MISS"}
+PASS        biomeworker_rivers      0 findings (0 crash) -- repo C# source, text match on the class body
+PASS        alert_leaf              0 findings (0 crash) -- repo C# source; inheritance only within our files
+PASS        compile_include         4 findings (0 crash) -- every csproj with EnableDefaultCompileItems=false
+     warn  src/RimMandrake/RaidRedesigner/Sou src/RimMandrake/RaidRedesigner/Sourc not in any <Compile Include>: compiles into nothing, no build error
+     warn  src/RimMandrake/GimmeSomeSlack/Sou src/RimMandrake/GimmeSomeSlack/Sourc not in any <Compile Include>: compiles into nothing, no build error
+     warn  src/RimMandrake/FlowWorks/Source/S src/RimMandrake/FlowWorks/Source/Sel not in any <Compile Include>: compiles into nothing, no build error
+     warn  src/RimUtinni/EmpirePursuit/Source src/RimUtinni/EmpirePursuit/Source/S not in any <Compile Include>: compiles into nothing, no build error
+PASS        costlist                0 findings (0 crash) -- sanity: {'Steel': True, 'ComponentIndustrial': True, 'WoodLog': True, 'Beer': True}
+PASS        recipe_refs             0 findings (0 crash) 
+PASS        stuff_refs              0 findings (0 crash) -- StuffCategoryDefs 11
+PASS        removed_refs            0 findings (0 crash) -- 0 whole defs removed by our patches
+PASS        op_mayrequire           0 findings (0 crash) 
+PASS        drug_comp               0 findings (0 crash) -- sanity Beer present=True
+PASS        pawnkind_race           0 findings (0 crash) 
+PASS        biome_worker            0 findings (0 crash) 
+PASS        li_custom_loader        0 findings (0 crash) 
+PASS        member_mayrequire       0 findings (0 crash) -- 32 member ids
+PASS        plant_purpose           0 findings (0 crash) 
+PASS        faction_name            0 findings (0 crash) -- error for our mods, warn for others (calibrated against vanilla)
+PASS        failed_ops              0 findings (0 crash) -- our mods only; <success>Always</success> exempt
+UNSUPPORTED unsupported_patch_ops    4 findings (0 crash) -- 4 custom-class ops not simulated, 0 mention costList
+     warn  mandrake.rm.biomes                 mandrake.rm.biomes RM_Greatbole_Cros RimMandrake.Greentide.RM_PatchOperationGreentideSettingGate: no xpath
+     warn  mandrake.rm.biomes                 mandrake.rm.biomes RM_Greatbole_Cros RimMandrake.Greentide.RM_PatchOperationGreentideSettingGate: no xpath
+     warn  mandrake.rm.biomes                 mandrake.rm.biomes RM_TraderCarriers RimMandrake.Biomes.RM_PatchOperationBiomesSettingGate: no xpath
+     warn  mandrake.rm.biomes                 mandrake.rm.biomes RM_TraderCarriers RimMandrake.Biomes.RM_PatchOperationBiomesSettingGate: no xpath
+UNSUPPORTED donor_types             0 findings (0 crash) -- XML naming types from donor assemblies cannot be resolved offline; our namespaces are lint_def_type_refs.py
+VERDICT PASS

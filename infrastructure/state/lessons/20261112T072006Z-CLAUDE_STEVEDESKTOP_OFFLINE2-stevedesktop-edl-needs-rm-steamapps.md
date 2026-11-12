@@ -1,0 +1,3 @@
+On SteveDesktop a helper's shell may lack RM_STEAMAPPS, so game_paths falls back to C:\Program Files (x86)\Steam and effective_def_lint.py reports the workshop/Data 'absent' (a helper then wrote 'this machine has none' into evidence: false; the game and 64 workshop mods are on D:\SteamLibrary). Set RM_STEAMAPPS=/mnt/d/SteamLibrary/steamapps; lxml for python3 is in D:\ClaudeWork\rimmandrake\whittle_claude\CLAUDE_STEVEDESKTOP_OFFLINE6\pylib. The FULL list still cannot be built there (64 of ~316 mods); lint a minimal list (Harmony, Core+DLCs, the mod and its deps) with a packageId=<folder> override instead.
+item: BIOME_SHIP_CONTRIBUTIONS_1
+home: infrastructure/state/facts/instrument_traps.md

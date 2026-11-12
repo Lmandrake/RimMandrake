@@ -13,12 +13,11 @@
    "folder": "Abyss",
    "row": {
     "biome": "The Abyss",
-    "contribution": "**the summ great bone**: set aboard, a summ egg hatched on the ship imprints on the crew; plus the fold lamp's warm air lane",
+    "contribution": "**the summ great bone**: set aboard, a summ egg hatched on the ship imprints on the crew, so the ship can raise the Abyss's flyers",
     "defs": [
-     "RM_SummGreatBone",
-     "RM_FoldLamp"
+     "RM_SummGreatBone"
     ],
-    "source": "Abyss mod; *delegated*"
+    "source": "Abyss mod (its own text: \"set one aboard your gravship\"); *delegated*"
    },
    "defs": [
     {
@@ -37,25 +36,13 @@
      "sources": [
       "src/RimMandrake/Abyss/Defs/BroodLair/RM_BroodLair.xml"
      ]
-    },
-    {
-     "def": "RM_FoldLamp",
-     "type": "ThingDef",
-     "mod": "RimMandrake/Abyss",
-     "category": "Temperature",
-     "label": "fold-lamp",
-     "costs": [
-      "Steel"
-     ],
-     "how": "built (Temperature tab)",
-     "buildable": true,
-     "deck": true,
-     "why": "affordance Light on a deck; placeWorkers deck-safe"
     }
    ],
    "verdict": "PASS",
    "problems": [],
-   "also": []
+   "also": [
+    "RM_FoldLamp"
+   ]
   },
   {
    "biome": "BlueDesert",
@@ -63,11 +50,11 @@
    "folder": "BlueDesert",
    "row": {
     "biome": "Blue Desert",
-    "contribution": "**the cold hold**: a blue-ice cold-sink rack keeps a hold cold through a blackout with no power",
+    "contribution": "**the cold hold**: blue-ice blocks (RM_BlueIce) stowed as the ship's distilled-purity water stock, and cold wax (RM_ColdWax, the natives' gland and flora fuel, inert only while cold) carried as a chemfuel windfall, in a hold the **blue-ice cold rack** keeps cold with no power through a blackout; one cooling failure and the pantry is a bomb. The rack is the deck part; ice and wax are its cargo",
     "defs": [
      "RM_ColdSinkRack"
     ],
-    "source": "owner by card 2026-09-24 (`the_blue_desert.md` \u00a77)"
+    "source": "owner by card 2026-09-24 (`the_blue_desert.md` \u00a77, THE COLD HOLD)"
    },
    "defs": [
     {
@@ -227,6 +214,11 @@
    ],
    "verdict": "PASS",
    "problems": [],
+   "warnings": [
+    "a patch names `RM_SekkulaathTank` (no placement field): src/RimUtinni/UtinniPatches/Patches/RUT_BroodRansom_Campaign.xml",
+    "a patch names `RM_SekkulaathTank` (no placement field): src/RimStarWars/SWBestiary/Patches/RSW_SekkulaathTank_DianogaSwap.xml",
+    "a patch names `RM_SekkulaathTank` (no placement field): src/RimStarWars/SWBestiary/Patches/RSW_Sekkulaath_DianogaGiant.xml"
+   ],
    "also": [
     "RM_LureStake"
    ]
@@ -357,7 +349,7 @@
    "folder": "LeaningScrub",
    "row": {
     "biome": "Leaning Scrub",
-    "contribution": "**the wind vaporator**: combs a thin, reliable margin of water out of the passing wind",
+    "contribution": "**the wind vaporator**: a powered, buildable fog-catch that combs a thin, reliable margin of water out of the passing wind, any number of them",
     "defs": [
      "RM_WindVaporator"
     ],
@@ -720,10 +712,9 @@
    "folder": "TheRot",
    "row": {
     "biome": "The Rot",
-    "contribution": "**the swallowed drive core** (multiplies the ship's range) and **the living mat root** (a warm creeping deck mat)",
+    "contribution": "**the swallowed drive core**: an older ship's drive coil cut out of a hwelgrue, installed as a grav-engine facility, multiplies the ship's total range",
     "defs": [
-     "RM_SwallowedDriveCore",
-     "RM_LivingMatRoot"
+     "RM_SwallowedDriveCore"
     ],
     "source": "TheRot mod; *delegated*"
    },
@@ -743,23 +734,6 @@
       "src/RimMandrake/TheRot/Source/RM_Hwelgrue.cs",
       "src/RimMandrake/TheRot/Source/RM_SwallowedCore.cs"
      ]
-    },
-    {
-     "def": "RM_LivingMatRoot",
-     "type": "ThingDef",
-     "mod": "RimMandrake/TheRot",
-     "category": "",
-     "label": "living mat root",
-     "costs": [],
-     "how": "installed (minified; never constructed)",
-     "buildable": true,
-     "deck": true,
-     "why": "affordance Light on a deck; placeWorkers deck-safe",
-     "sources": [
-      "src/RimMandrake/TheRot/Defs/Misc/RM_NavigatorLog.xml",
-      "src/RimMandrake/TheRot/Source/RM_LivingMatRoot.cs",
-      "src/RimMandrake/TheRot/Source/RM_NavigatorLog.cs"
-     ]
     }
    ],
    "verdict": "PASS",
@@ -771,6 +745,7 @@
     "RM_GlowGooTorch",
     "RM_GrownFurnace",
     "RM_GutMotherVat",
+    "RM_LivingMatRoot",
     "RM_MoonlessCarpet",
     "RM_MushroomFloor",
     "RM_MycelialMatting",
@@ -841,6 +816,9 @@
    ],
    "verdict": "PASS",
    "problems": [],
+   "warnings": [
+    "a patch names `RM_GaslightLamp` (no placement field): src/RimUtinni/UtinniPatches/Patches/RUT_TarGas_SumpgasLabel.xml"
+   ],
    "also": [
     "RM_CapstanTurret",
     "RM_CapstanTurret_PitRigged",
@@ -983,7 +961,7 @@
    "folder": "WeepingStones",
    "row": {
     "biome": "Weeping Stones",
-    "contribution": "**the ancient condenser plant**: the oldest gorrask's air-water machine, installed on the ship",
+    "contribution": "**the ancient condenser plant**: the oldest gorrask's machine, one per world, cut from its shell; it weeps water with no power or fuel wherever it is installed (unlike the Leaning Scrub vaporator: unpowered, unique, a trophy)",
     "defs": [
      "RM_AncientCondenserPlant"
     ],
