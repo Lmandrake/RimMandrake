@@ -1,0 +1,2 @@
+The account switcher's D:\ClaudeWork\rimmandrake\switching_plan\notice.json holds the switcher's current account (steven), pct_left and its switch line, not the Claude System account's weekly %. That figure lives in account_usage/latest.json (accounts.system.week_pct_used), which whittle_now.py and artisan_now.py read; whittle_now shows both. A brief that names notice.json as the source of the System % has the wrong file.
+home: NONE
