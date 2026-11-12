@@ -442,8 +442,7 @@
    "speaker": "agent",
    "source": [
     "ITEM:RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
-    "OWNER:1794468874358971350",
-    "PER_RULING:CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM"
+    "OWNER:1794468874358971350"
    ],
    "date": "2026-11-12",
    "delegated": "consequence of the gas-source ruling and the Cauldron's existing burn rule",
@@ -455,8 +454,7 @@
    "speaker": "agent",
    "source": [
     "ITEM:RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
-    "OWNER:1794468855146168085",
-    "PER_RULING:CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM"
+    "OWNER:1794468855146168085"
    ],
    "date": "2026-11-12",
    "delegated": "consequence of 'goods rebound off walls' and the path rules",
