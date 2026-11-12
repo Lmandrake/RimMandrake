@@ -1,0 +1,817 @@
+{
+ "_doc": "The nine real coverage-judge verdicts on ExplosiveKnockback, 2026-11-12 08:12Z-11:10Z, read from design/concepts/ExplosiveKnockback/coverage_verdict.json at each commit named (checklists dropped; gaps whole). selftest_coverage_judge_loop.py replays them: the loop must stop at the third. Item RIMMANDRAKE_BIND_REFUSALS_TO_FIXES_NO_CEREMONY_LOOPS, spec design/specs/2026-11-12-refusal-contract-for-judges-and-gates.md.",
+ "rounds": [
+  {
+   "commit": "34d78acd2a",
+   "judge": "rm-coverage-judge-1794471169",
+   "at": "2026-11-12T08:12:49Z",
+   "verdict": "not_covered",
+   "tokens": null,
+   "gaps": [
+    {
+     "what": "The per-explosion cap. inv_caps says the 40-throw cap 'stays', but d_c_all_fly ruled that every good flies with no overflow. The existing caps scene requires items capped > 0 and tick_cap asserts the overflow is dropped. No scene stages more goods than the cap: sc_storeroom_mortar is 5x5 (25 stacks), not the leaf's 10x10, and it has no overflow-journal check. Pawns-first priority and one-queue-entry-per-explosion are untested. The flagship claims inv_caps without staging it. Fix: limit the cap to pawns, or remove it; stage more goods than the cap; assert no cap_per_explosion or overflow skip.",
+     "where": "record.json inv_caps; scenes.json sc_storeroom_mortar, showcase exercises; RM_KnockbackProof.cs caps/tick_cap",
+     "return_to": 3,
+     "ids": [
+      "inv_caps",
+      "every_good_moves",
+      "inv_goods_fly",
+      "inv_hook"
+     ]
+    },
+    {
+     "what": "The recovery window is credited to sc_barrage_perf, which stages no colonist and whose control is about frame time. The existing immunity_window scene is not cited. Save/reload of the recovery stamps (UNMEASURED) has no scene.",
+     "where": "scenes.json coverage_rest inv_recovery",
+     "return_to": 3,
+     "ids": [
+      "inv_recovery"
+     ]
+    },
+    {
+     "what": "sc_spared covers only body size 2.5 and pawns already in a pit, and the in-pit half has no control. Pawns carrying a pawn, flying pawns (state read only, never a live flight test), and pawns in bed or carried have no scene.",
+     "where": "scenes.json sc_spared",
+     "return_to": 3,
+     "ids": [
+      "inv_who_is_spared"
+     ]
+    },
+    {
+     "what": "Mod Settings are covered only by the master switch. Untested: the strength scale (d_q7), max distance, per-weapon cap scale, the other-mod % (default moving to 100), the toggles, the mass limit, the heavy threshold, and the floor's 'every new part switches off cleanly' (goods fly, closed guard, container shove, heavy knock, gas chain, fire 50%).",
+     "where": "scenes.json coverage_rest inv_settings; floor mod_settings",
+     "return_to": 3,
+     "ids": [
+      "inv_settings"
+     ]
+    },
+    {
+     "what": "sc_blast_kinds tests only EMP among the harmless bursts; smoke, stun, extinguish and tox gas are untested. It asserts the modded explosion only 'above 0', not the delegated 100% default. The lookup order (projectile, weapon, DamageDef) and the per-weapon cap (d_cap_per_weapon; the existing lookup_projectile and lookup_zero_wins scenes) are not cited.",
+     "where": "scenes.json sc_blast_kinds",
+     "return_to": 3,
+     "ids": [
+      "inv_which_blasts",
+      "every_harmful_blast_throws"
+     ]
+    },
+    {
+     "what": "No scene shows a pawn is carried by RM_PawnFlyer_Knockback (a visible arc, not a teleport). The leaf's first false_pass passes sc_mortar_throw, whose master-off control cannot tell a throw from a teleport. Pawn-into-pawn impact damage, 'never re-targets', barricades (d_q3) and the stun ending ('briefly') are untested.",
+     "where": "scenes.json sc_mortar_throw, sc_over_sandbags",
+     "return_to": 3,
+     "ids": [
+      "inv_pawn_flyer",
+      "people_thrown_three_cells"
+     ]
+    },
+    {
+     "what": "sc_wall_stop's control (a door) is the same mechanism and does not rule out a throw that just ended short. It needs the same throw without the wall, landing further out.",
+     "where": "scenes.json sc_wall_stop control",
+     "return_to": 3,
+     "ids": [
+      "wall_stops_dead"
+     ]
+    },
+    {
+     "what": "The shield's 'extra charge' is compared with a plain absorb the scene never measures; it needs a baseline, e.g. the same blast with shieldsAbsorbThrow off. The delegated 'a shield belt does not stop the gas shove' (on the sheet) has no scene.",
+     "where": "scenes.json sc_shield",
+     "return_to": 3,
+     "ids": [
+      "shield_belt_holds",
+      "inv_shield"
+     ]
+    },
+    {
+     "what": "Pits and covers. A fire blast breaking a cover (d_q9 '1+3', the leaf's 'damaging or fire') is untested. A pawn or good thrown onto a covered pit cell falling through and leaving the cover broken (inv_pits_receive, d_fall_breaks_cover) is untested: the flagship stages a covered cell but expects nothing of it. Corpses fetched off a pit floor are untested.",
+     "where": "scenes.json sc_cover_breaks, sc_storeroom_bomb_pit, sc_pit_fetch",
+     "return_to": 3,
+     "ids": [
+      "inv_pits_receive",
+      "blast_breaks_pit_cover",
+      "thrown_into_pit_falls",
+      "inv_pit_floor_haul",
+      "pit_goods_fetched"
+     ]
+    },
+    {
+     "what": "no_careless_fall's tree experience and sheet line say only force puts 'anyone' in a pit. d_pit_only_forced lets enemies fall into a concealed pit by walking. Narrow it to colonists or open pits. sc_pit_fall's no-pit control covers the throw, not the ordered colonist's path.",
+     "where": "tree.json no_careless_fall; sheet.md does-not; scenes.json sc_pit_fall",
+     "return_to": 3,
+     "ids": [
+      "no_careless_fall"
+     ]
+    },
+    {
+     "what": "The teleport check needs spawn/despawn events, but the trace only logs thrown things' drawn position, height and rotation. A hopped stack never enters it, so zero despawn-respawn pairs and every stack moved would both pass. Gas-scattered goods (wild tuning applies) have no trace or hop check.",
+     "where": "scenes.json sc_storeroom_mortar start, sc_gas_chain",
+     "return_to": 3,
+     "ids": [
+      "no_teleport",
+      "inv_items_teleport",
+      "every_good_moves",
+      "gas_goes_clump_by_clump",
+      "inv_goods_fly"
+     ]
+    },
+    {
+     "what": "In sc_gas_chain, goods sit only under the cloud, so 'scatter within any burst's radius, inside or outside the gas' (d_gas_per_clump) is untested. The start does not assert which tagged gas forms the 40-cell cloud; this mod adds none. The control (non-flammable gas) does not rule out its stated 'one centroid explosion'.",
+     "where": "scenes.json sc_gas_chain",
+     "return_to": 3,
+     "ids": [
+      "gas_goes_clump_by_clump",
+      "inv_gas_chain"
+     ]
+    },
+    {
+     "what": "Closed containers are tested on a crate and a fridge only; lockers, deep storage, hoppers and the opt-in tag are untested. The fridge is both larger than 1x1 and against a wall, so its jolt has two possible causes. An over-mass 1x1 container and 'never onto a pawn' are untested. The fridge's mod is not asserted loaded.",
+     "where": "scenes.json sc_shelves_and_crates",
+     "return_to": 3,
+     "ids": [
+      "closed_container_holds",
+      "inv_closed_guard",
+      "inv_container_shove"
+     ]
+    },
+    {
+     "what": "The hose drop has no leaf and no scene of its own. It appears only in the nondeterministic full-list walk, which never asserts the carrier was thrown; the mod-off control cannot tell a throw drop from a downed or interrupted carrier. validation.py lists hose_carry_drops_at_takeoff as uncovered.",
+     "where": "scenes.json coverage_rest inv_hose_drop; tree.json",
+     "return_to": 3,
+     "ids": [
+      "inv_hose_drop"
+     ]
+    },
+    {
+     "what": "frame_time_probe has no scene validating it (rows per frame, a 100 ms sleep shows as a 100 ms row) and no named entry point or build item. Both perf checks rest on an unvalidated instrument.",
+     "where": "scenes.json; tree.json frame_time_probe",
+     "return_to": 3,
+     "ids": [
+      "frame_time_probe",
+      "barrage_frame_budget",
+      "inv_perf_all_fly"
+     ]
+    },
+    {
+     "what": "The walk scene drops the leaf's grenade on the pit trap and the cover break. Its save is not asserted to happen while things are in the air (save_mid_flight is uncovered in validation.py). The mod-off control cannot rule out 'a raid that never reached the storeroom'. The sheet says the floor tick_cost is 'measured on the walk', but the walk's expect does not measure it.",
+     "where": "scenes.json sc_walk_raid; sheet.md floor:tick_cost",
+     "return_to": 3,
+     "ids": [
+      "walk_storeroom_raid"
+     ]
+    },
+    {
+     "what": "Proof script and entry points. record.json script_audit is empty although RM_KnockbackProof.cs and validation.py exist; the cited existing scenes (calibration, wall_stop, door_stop, heavy_skip, in_pit_skip, no_cross, shield_counter, the last not yet run live) are unaudited for asserted start, control and restore. Old scenes that encode scoped-out rules (items hop, shelf stays, tick_cap drops overflow, caps capped>0) have no named rewrite or removal. Edits to existing entry points have no entry_point_item: the no_cross ordered colonist, the calibration flyer assertion. Many starts are not asserted, including which mods are loaded: sc_over_sandbags, sc_wall_stop, sc_spared, sc_heavy_knock, sc_blast_kinds, sc_cover_breaks, sc_pit_fetch, sc_cauldron_gas, sc_gas_shove_into_pit.",
+     "where": "record.json script_audit; scenes.json entry_point_item and start fields",
+     "return_to": 3,
+     "ids": [
+      "inv_proof_scenes",
+      "our_gases_burn",
+      "inv_gas_tags"
+     ]
+    },
+    {
+     "what": "The flagship showcase. His pick and d_c_flagship say one scene, but showcase 1 groups six, crediting his face with capabilities his scene does not exercise (inv_caps). sc_storeroom_bomb_pit fires 'frag grenade or mortar shell' yet expects the mortar's three cells. Its heavy-knock expectation is conditional ('the heavy stack that reaches a colonist'), with no stack staged in line, so it can pass vacuously. It stages a covered pit cell but expects nothing of it.",
+     "where": "scenes.json showcases[0], sc_storeroom_bomb_pit",
+     "return_to": 3,
+     "ids": []
+    },
+    {
+     "what": "The sheet a player reads, and the tree, omit approved shipped behaviours: who is spared (large animals, pawns in bed or carried), the recovery immunity, the per-explosion cap, the hose drop, doors and deep water stopping a throw, explosions only (no melee or bullet throw, d_q2), per-weapon caps. None has a leaf or a sheet line.",
+     "where": "sheet.md does/does-not; tree.json leaves",
+     "return_to": 3,
+     "ids": []
+    }
+   ]
+  },
+  {
+   "commit": "dc53c70d29",
+   "judge": "rm-coverage-judge-1794473090",
+   "at": "2026-11-12T08:44:50Z",
+   "verdict": "not_covered",
+   "tokens": 720977,
+   "gaps": [
+    {
+     "what": "No scene over the old caps checks for a hop. sc_all_fly_no_cap (100 stacks) runs no spawn/despawn or height trace and counts a hopped stack as 'moved', so every_good_moves' false_pass 'far stacks hop instantly while near ones fly' and no_teleport's 'the hop survives as the overflow path' are both untested. The flagship runs the trace but expects nothing of it. Fix: run the spawn/despawn and height trace in sc_all_fly_no_cap and assert zero despawn-spawn pairs and height above zero for every moved stack.",
+     "where": "scenes.json sc_all_fly_no_cap (and sc_storeroom_bomb_pit expect)",
+     "return_to": 3,
+     "ids": [
+      "no_teleport",
+      "every_good_moves",
+      "inv_items_teleport",
+      "inv_goods_fly",
+      "inv_caps"
+     ]
+    },
+    {
+     "what": "sc_pawn_arc's 'never re-targets' can pass with nothing tested. The walker 'arriving after launch' is never asserted to be on the landing cell before landing, and the expect is conditional ('pawn-into-pawn impact if the walker stands there'). The leaf's 'goes back to what it was doing' is checked only as 'takes a job again', not the haul it had.",
+     "where": "scenes.json sc_pawn_arc start and expect",
+     "return_to": 3,
+     "ids": [
+      "pawn_flight_arc",
+      "inv_pawn_flyer"
+     ]
+    },
+    {
+     "what": "Fire at half is checked as a throw-length ratio of an incendiary shell to a frag grenade. These are different weapons with different radii and strengths, so a 0.5 ratio does not show the 50% fire factor, and nothing controls for it. Fix: read the journal strength percent (50) for the Flame blast, or fire the same projectile with the damage type swapped.",
+     "where": "scenes.json sc_blast_kinds",
+     "return_to": 3,
+     "ids": [
+      "every_harmful_blast_throws",
+      "inv_which_blasts"
+     ]
+    },
+    {
+     "what": "Per-weapon tuning. (1) Projectile over weapon is never set against itself: each source is staged on its own explosion. (2) The cap scale: CapFor (RM_KnockbackMath.cs:207, 'if (ownCap <= 0) return globalCap;') ignores ownCapScale unless the blast has its own maxThrowCells, and sc_lookup's ownCapScale lane is never given one. (3) d_cap_per_weapon ('Let each weapon set it': a weapon's own maximum throw, 0 = the global maximum) has no scene. (4) The built RM_KnockbackExtension fields impactFactor (0 = no impact) and immuneBodySizeOverride ship, with existing scenes impact_factor and body_override, but are not inventoried and have no leaf or scene.",
+     "where": "scenes.json sc_lookup; record.json inventory; tree.json per_weapon_tuning",
+     "return_to": 3,
+     "ids": [
+      "per_weapon_tuning",
+      "inv_which_blasts"
+     ]
+    },
+    {
+     "what": "Mod Settings sweep. (1) The ownCapScale 0.5 row is a no-op: the sweep fires a plain grenade, which has no own cap (see CapFor). (2) The lightMassLimit 60 row cannot change anything: the 50 and 100 kg goods sit on the same side of both 60 and the 75 default. A good between 60 and 75 kg is needed. (3) One frag grenade cannot exercise the fire-at-half switch (it is not a fire blast) or the gas-chain switch (nothing lights the gas puff). (4) Lines on the page that no scene changes: sandbagsStopThrow, impactDamageEnabled, impactDamagePerCell, landingStunMin/Max, recoveryWindowTicks, doorsTakeDamage, throwIntoPits, shieldDebitPerForce, debugDrawVectors. (5) maxThrowsPerExplosion is still a settings line although the caps are scoped out; nothing checks it is removed (the leaf's false_pass 'a setting saves but changes nothing').",
+     "where": "scenes.json sc_settings_sweep; RM_KnockbackMod.cs settings",
+     "return_to": 3,
+     "ids": [
+      "settings_scale_and_switch",
+      "inv_settings",
+      "inv_caps"
+     ]
+    },
+    {
+     "what": "Gas shove. In sc_gas_chain the colonist wears a charged belt, so 'no new injuries' could come from the belt absorbing a damaging burst. The no-damage half of d_c_gas_shove is then checked only in an interaction scene, sc_gas_shove_into_pit. Belt energy is never read, so dl_gas_ignores_belts (belt never triggers, no charge lost) is untested. 'At most once every 2 seconds per person' is not set up: nothing asserts two bursts reached the colonist within 2 s.",
+     "where": "scenes.json sc_gas_chain",
+     "return_to": 3,
+     "ids": [
+      "gas_goes_clump_by_clump",
+      "inv_gas_chain",
+      "inv_shield",
+      "shield_belt_holds"
+     ]
+    },
+    {
+     "what": "sc_cover_breaks says 'a gas burst over the third' cover, but no tagged cloud is staged there and no burst on or beside that cover is asserted. 'Hit points unchanged, no descent' (no pawn stands on it) can pass with no burst at all.",
+     "where": "scenes.json sc_cover_breaks start",
+     "return_to": 3,
+     "ids": [
+      "blast_breaks_pit_cover",
+      "inv_pits_receive"
+     ]
+    },
+    {
+     "what": "Enemies thrown into a pit: d_pit_only_forced ('Enemies can fall if \u2026 forced/blown in') and the walk row pits.enemy_thrown_into_open_pit_falls (existing scene pit_enemy) have no current scene. sc_pit_fall and the flagship throw colonists only, and sc_cover_breaks drops raiders through a broken cover, which is not a throw.",
+     "where": "scenes.json sc_pit_fall; tree.json thrown_into_pit_falls",
+     "return_to": 3,
+     "ids": [
+      "thrown_into_pit_falls",
+      "inv_pits_receive"
+     ]
+    },
+    {
+     "what": "sc_hose_drop's control (an absorbing shield belt) removes the blast's damage as well as the throw. It cannot rule out its stated alternative, the blast hitting or downing the carrier rather than the throw dropping the hose. The control needs the damage without the throw.",
+     "where": "scenes.json sc_hose_drop control",
+     "return_to": 3,
+     "ids": [
+      "hose_drops_at_takeoff",
+      "inv_hose_drop"
+     ]
+    },
+    {
+     "what": "sc_barrage_perf's start asserts both 'quicktest map, minimal list' and 'the full list on Archmagi'. Both cannot hold; the leaf is live_full.",
+     "where": "scenes.json sc_barrage_perf start",
+     "return_to": 3,
+     "ids": [
+      "barrage_frame_budget",
+      "inv_perf_all_fly"
+     ]
+    },
+    {
+     "what": "The walk's expect asserts no gas outcome, although the leaf's experience includes 'a gas cloud lit' and its second order is 'gas first'. A walk whose gas never catches, or catches as one centroid blast, passes.",
+     "where": "scenes.json sc_walk_raid expect; tree.json walk_storeroom_raid oracle",
+     "return_to": 3,
+     "ids": [
+      "walk_storeroom_raid",
+      "inv_gas_chain"
+     ]
+    },
+    {
+     "what": "Built behaviour outside the inventory. (1) RM_KnockbackProof.cs has scenes the script_audit omits: door_stop (sc_door_water's entry point), pit_enemy, corpse_into_pit, killed_by_blast, lookup_zero_wins, impact_factor, body_override. (2) 'A pawn the blast kills is thrown as a corpse' (walk row light_things.pawn_killed_by_blast_thrown_as_corpse, scene killed_by_blast) ships with no inventory entry, leaf or scene. (3) immuneBodySizeOverride makes the sheet's and the_spared's 'Never thrown: body size 2.5 or more' false for a weapon that sets it: inventory it and cover it, or remove it, and make the sheet true. (4) The must-be-true row light_things.item_on_a_shelf_stays still states the old rule, and no step names its rewrite.",
+     "where": "record.json inventory and script_audit; tree.json the_spared; sheet.md does; design/validation_walks/RimMandrake/ExplosiveKnockback.md must be true",
+     "return_to": 3,
+     "ids": [
+      "inv_proof_scenes",
+      "inv_who_is_spared",
+      "the_spared",
+      "doors_and_deep_water_stop"
+     ]
+    },
+    {
+     "what": "The sheet's pruning line 'no_careless_fall: yes, pits are entered only by force' still overstates his ruling. His does-not line and d_pit_only_forced let an enemy walk into a pit hidden from it.",
+     "where": "sheet.md pruning",
+     "return_to": 3,
+     "ids": [
+      "no_careless_fall"
+     ]
+    },
+    {
+     "what": "The flagship's covered-cell expectation is conditional ('whatever lands on the covered pit cell falls through'). Nothing is placed to land there, so his face can show a covered cell that nothing tests.",
+     "where": "scenes.json sc_storeroom_bomb_pit start and expect",
+     "return_to": 3,
+     "ids": []
+    }
+   ]
+  },
+  {
+   "commit": "52dc501b99",
+   "judge": "rm-coverage-judge-1794474443",
+   "at": "2026-11-12T09:07:23Z",
+   "verdict": "not_covered",
+   "tokens": 751818,
+   "gaps": [
+    {
+     "what": "sc_recovery (and the leaf's oracle) expects skip reason 'recovering', but the built code logs reason 'immune' (RM_MapComponent_Knockback.cs:425; the shipped immunity_window scene checks 'immune'), and no build item renames it. A correct build fails the scene, or a reader reads the wrong line. Fix: use the reason the code emits, or file the rename.",
+     "where": "scenes.json sc_recovery expect; tree.json recovery_immunity oracle_proposed",
+     "return_to": 3,
+     "ids": [
+      "recovery_immunity",
+      "inv_recovery"
+     ]
+    },
+    {
+     "what": "The leaf says a pawn thrown toward a closed door 'takes an impact hit', but sc_door_water's expect asserts only 'lands before the door, journal stop Door, door hit points down'. The thrown pawn's impact damage is never read.",
+     "where": "scenes.json sc_door_water expect; tree.json doors_and_deep_water_stop oracle_proposed",
+     "return_to": 3,
+     "ids": [
+      "doors_and_deep_water_stop"
+     ]
+    },
+    {
+     "what": "impactFactor 0 is tested only at a wall (sc_lookup lane h). The leaf says its throws hit 'walls and pawns harmlessly', and the inventory says it 'scales wall, pawn and door impact'. Add a pawn-in-the-way lane (and a door lane) under impactFactor 0.",
+     "where": "scenes.json sc_lookup (h)",
+     "return_to": 3,
+     "ids": [
+      "per_weapon_tuning",
+      "inv_weapon_ext_fields"
+     ]
+    },
+    {
+     "what": "Mod Settings sweep: (1) the unpatchedHarmfulPercent 50 row is a no-op. The sweep's bursts are a plain frag grenade, an own-cap frag and an incendiary shell; none is another mod's explosion, so 'the other-mod percent applied' cannot be read. (2) immuneBodySize (RM_KnockbackMod.cs:54, the 'Mod Settings default' the sheet and the_spared cite) is a line on the page that no scene ever changes.",
+     "where": "scenes.json sc_settings_sweep start, action and expect",
+     "return_to": 3,
+     "ids": [
+      "settings_scale_and_switch",
+      "inv_settings",
+      "the_spared"
+     ]
+    },
+    {
+     "what": "The flagship showcase lists inv_container_shove in exercises, but sc_storeroom_bomb_pit expects the free-backed 1x1 crate to have 'slid at most one cell', which passes when it does not move. Under dl_container_shove it must slide exactly one cell. The face does not really use the shove.",
+     "where": "scenes.json sc_storeroom_bomb_pit expect; showcases[0].exercises",
+     "return_to": 3,
+     "ids": [
+      "inv_container_shove"
+     ]
+    },
+    {
+     "what": "Container jolt: sc_closed_containers expects 'every other container stayed and jolted', and the leaf promises the player sees it 'shift a cell or jolt'. No reading for a jolt is named (no journal line, no trace field), so that half cannot be measured.",
+     "where": "scenes.json sc_closed_containers expect",
+     "return_to": 3,
+     "ids": [
+      "closed_container_holds",
+      "inv_container_shove"
+     ]
+    },
+    {
+     "what": "sc_pit_fall stages the raider lane, which belongs to the shipped pit_enemy scene, but its entry_point names only RM_KnockbackProof.cs::pit_colonist. Its start assertion is garbled: 'Names lists pit_colonist; INVALID otherwise) and pit_enemy'. Per the contract the scene must be created by one named entry point: name a combined entry point, or split the scene in two.",
+     "where": "scenes.json sc_pit_fall entry_point and start",
+     "return_to": 3,
+     "ids": [
+      "thrown_into_pit_falls",
+      "inv_pits_receive"
+     ]
+    },
+    {
+     "what": "Harmless blasts leaving a pit cover whole is untested. His d_q9 ('1+3': damaging and fire, not EMP, smoke or stun) and the shipped FlowWorks guard (Building_PitCover.cs, '!explosion.damType.harmsHealth' returns) both say so, but sc_cover_breaks tests only grenade, incendiary and gas. Add an EMP (or smoke) lane over a covered pit with a rider.",
+     "where": "scenes.json sc_cover_breaks; tree.json blast_breaks_pit_cover",
+     "return_to": 3,
+     "ids": [
+      "blast_breaks_pit_cover",
+      "inv_pits_receive"
+     ]
+    },
+    {
+     "what": "Wild goods throw about 1.6 times as far (d_c_wild, his card option C). No scene checks any form of it. The tree advisory says 'the scene checks the shape, not the exact numbers', but no scene compares a good's throw with the unwild kernel distance, so the shape is not checked either. Add a lane (e.g. the kernel's planned cells vs the landing, or the wild switch off vs on), or state honestly that it is unchecked.",
+     "where": "scenes.json sc_storeroom_mortar; tree.json advisory and goods_arc_spin_rebound",
+     "return_to": 3,
+     "ids": [
+      "goods_arc_spin_rebound",
+      "inv_goods_fly"
+     ]
+    },
+    {
+     "what": "sc_killed_thrown can pass with no death. Its expect allows every colonist to survive ('any survivor is thrown as a pawn'), and nothing asserts that at least one died. A 9999 explosion hit on a limb is not certain to kill. Assert at least one blast kill, INVALID otherwise.",
+     "where": "scenes.json sc_killed_thrown expect",
+     "return_to": 3,
+     "ids": [
+      "inv_killed_corpse",
+      "goods_arc_spin_rebound"
+     ]
+    },
+    {
+     "what": "Built skips not in the inventory: goods and corpses already on a pit floor are never thrown (RM_MapComponent_Knockback.cs: 'if (kind != KbKind.Pawn && RM_KnockbackCompat.IsSuperdeep(map, t.Position)) ... \"in_pit\"'), and corpses of body size 2.5 or more are spared (Eligible). Both make every_good_moves' 'Every loose good the blast reaches moves' and the sheet's goods lines overbroad. Inventory them (keep or remove), state them in the leaf and the sheet, and cover them.",
+     "where": "record.json inventory; tree.json every_good_moves and the_spared; sheet.md does",
+     "return_to": 3,
+     "ids": [
+      "every_good_moves",
+      "inv_who_is_spared"
+     ]
+    }
+   ]
+  },
+  {
+   "commit": "6224af0f75",
+   "judge": "rm-coverage-judge-1794475615",
+   "at": "2026-11-12T09:26:55Z",
+   "verdict": "not_covered",
+   "tokens": 729994,
+   "gaps": [
+    {
+     "what": "sc_all_fly_no_cap (and every_good_moves' scenario, 'more than 40 stacks inside the blast radius') stages one HE mortar into a 10x10 stockpile with one stack per cell. Bullet_Shell_HighExplosive's explosionRadius is 2.9 (Core Items_Resource_Shell.xml; the kernel's own calibration comment says 'mortar r 2.9'), and 2.9 covers 25 cells. So 'stacks reached is over 40' can never hold: a correct build fails. Worse, neither shipped cap (maxThrowsPerExplosion 40, maxItemThrowsPerMapTick 60) can trigger, so the red build passes the 'no cap line' check and the scene cannot see the defect it exists for. The 20-stack control has the same blindness. Fix: reach over 60 things in one explosion tick, e.g. a wider scripted blast as the shipped caps scene did (radius 5.9), several stacks per cell, or simultaneous shells, and assert reached > 60 (INVALID otherwise).",
+     "where": "scenes.json sc_all_fly_no_cap start/expect/control; tree.json every_good_moves scenario/oracle; coverage_rest inv_caps",
+     "return_to": 3,
+     "ids": [
+      "every_good_moves",
+      "inv_caps",
+      "inv_goods_fly"
+     ]
+    },
+    {
+     "what": "Built skips not stated and not allowed for. RM_MapComponent_Knockback.Execute skips goods and corpses over lightMassLimit (75 kg; 'too_heavy', via RM_KnockbackMath.Eligible), and skips any thing whose kernel throw rounds to 0 ('too_weak'). A 5 kg stack at the corner cells (2.83 of 2.9) gets 8*(1-2.83/2.9) = 0.19, which rounds to 0. So every_good_moves' 'Every loose good the blast reaches moves' and the sheet's 'bar those spared above' are false, the_spared and the sheet's 'never thrown' line omit the mass limit, and the expects 'stacks moved equals stacks reached' (sc_all_fly_no_cap) and 'every stack the blast reached moved' (sc_storeroom_bomb_pit) fail a correct build. The default 75 kg limit is also never asserted: the sweep's 100 kg good has no expect at default. Fix: say in the leaf and sheet which goods move (light, given a nonzero kernel throw) or file the change, define 'reached' in the oracles, and assert the 100 kg good skipped too_heavy at default.",
+     "where": "tree.json every_good_moves and the_spared; sheet.md does; scenes.json sc_all_fly_no_cap, sc_storeroom_bomb_pit, sc_settings_sweep expect; record.json inventory (no capability for the mass-limit or too_weak skip)",
+     "return_to": 3,
+     "ids": [
+      "every_good_moves",
+      "the_spared",
+      "inv_goods_fly",
+      "inv_settings"
+     ]
+    },
+    {
+     "what": "The Mod Settings sweep expects 'each switched-off part inert, the puff bursting as one blast with the gas chain off'. With the chain off the part should be inert: the gas burns with no bursts, as sc_cauldron_gas's untagged control expects. 'One blast' is the centroid explosion his d_gas_per_clump rules out ('not just \"the centroid of the large gas cloud\"'). A correct build fails the row, or the row asks for a fallback he rejected.",
+     "where": "scenes.json sc_settings_sweep expect",
+     "return_to": 3,
+     "ids": [
+      "settings_scale_and_switch",
+      "inv_settings",
+      "gas_goes_clump_by_clump",
+      "inv_gas_chain"
+     ]
+    },
+    {
+     "what": "blast_breaks_pit_cover's text (and d_q9 '1+3': not EMP, smoke or stun) says a smoke or stun burst never breaks a cover. sc_cover_breaks stages only EMP among the harmless kinds. Add a smoke lane and a stun lane over covered pits with riders.",
+     "where": "scenes.json sc_cover_breaks; tree.json blast_breaks_pit_cover oracle",
+     "return_to": 3,
+     "ids": [
+      "blast_breaks_pit_cover",
+      "inv_pits_receive"
+     ]
+    },
+    {
+     "what": "The flagship (his words: 'Shows some items falling into the pit and some people as well') expects 'some goods and at least one colonist end on the pit floor', but the start asserts a planned pit landing only for the stack aimed at the covered cell. Nothing asserts that a colonist's, or an open-pit good's, planned landing cell (read at launch from the trace) is in the open pit, INVALID otherwise. A 2.9-radius mortar in the middle of a 7x7 room may not reach colonists 'near the south wall' (3 cells out) or the north-wall shelves at all. Fix: give the room's interior size and the colonists' and shelves' distances, and assert at launch that at least one colonist and one loose good plan into the open pit.",
+     "where": "scenes.json sc_storeroom_bomb_pit start",
+     "return_to": 3,
+     "ids": []
+    },
+    {
+     "what": "The walk's oracle is not reproducible. 'journals of both orders agree on throws per blast' compares two live raids whose mortar impacts and grenades land differently, so per-blast throw counts cannot agree even on a correct build. 'the pit trap's cover broken by the grenade with a descent' depends on a raider's grenadier choosing the cover, which nothing steers or asserts (INVALID otherwise). Fix: name an order-independent invariant (e.g. each blast's throws match the kernel's plan for the things it reached, and no thing duplicated or lost), and script or assert the grenade on the cover.",
+     "where": "scenes.json sc_walk_raid start/expect; tree.json walk_storeroom_raid oracle",
+     "return_to": 3,
+     "ids": [
+      "walk_storeroom_raid"
+     ]
+    }
+   ]
+  },
+  {
+   "commit": "f5d97a0b3c",
+   "judge": "rm-coverage-judge-1794477408",
+   "at": "2026-11-12T09:56:48Z",
+   "verdict": "not_covered",
+   "tokens": 629449,
+   "gaps": [
+    {
+     "what": "The big-corpse rule is never isolated. sc_spared's thrumbo corpse is also over the 75 kg mass limit, and RM_MapComponent_Knockback.cs:430 writes reason too_big whenever bodySize >= immuneBodySize, whichever rule actually failed. So the expected 'too_big' passes even when no body-size rule for corpses exists. Add a lane with lightMassLimit raised above the corpse's mass (or a 2.5+ corpse under the limit), so only the body-size rule can spare it, with a control corpse under 2.5 thrown at the same setting. The mass limit on corpses (a corpse over 75 kg with body size under 2.5) has no lane either: give it one, or state the sweep corpse's mass.",
+     "where": "scenes.json sc_spared / sc_settings_sweep; tree.json the_spared",
+     "return_to": 3,
+     "ids": [
+      "inv_big_corpse_spared",
+      "inv_mass_limit_skip",
+      "the_spared"
+     ]
+    },
+    {
+     "what": "'Nothing is thrown across a pit' is not ruled out. sc_pit_fall's control (pits filled, lands on flat ground) never asserts that the uncapped landing cell lies beyond the pit's far edge. A throw too short to cross a 1-wide pit lands in it anyway and passes. Assert the kernel's planned cell past the far rim at start, or in the filled-pit control.",
+     "where": "scenes.json sc_pit_fall (and sc_pit_enemy)",
+     "return_to": 3,
+     "ids": [
+      "thrown_into_pit_falls",
+      "inv_kernel"
+     ]
+    },
+    {
+     "what": "Two pit-cover parts are untested. (1) The sheet and tree say a pawn that a gas burst shoves ONTO a cover stands on it and the cover stays whole, but sc_cover_breaks only has a raider already standing on the third cover. Stage a pawn one cell off a cover, shoved onto it, with the cover's HP and the pawn's cell read after. (2) d_q5 says a blast that REACHES a cover breaks it, but every lane lands the blast on the cover itself. Add a grenade landing beside a cover within its radius, or state in the leaf that only a blast centred on the cover counts.",
+     "where": "scenes.json sc_cover_breaks; tree.json blast_breaks_pit_cover",
+     "return_to": 3,
+     "ids": [
+      "blast_breaks_pit_cover",
+      "inv_pits_receive",
+      "inv_gas_chain"
+     ]
+    },
+    {
+     "what": "The settings sweep is incomplete. (1) The sheet's delegated line puts the per-kind strengths on Mod Settings (fire 50, EMP/smoke/stun/extinguish/toxic gas 0: 'all of it on Mod Settings'), but the sweep changes none of them; only a 'fire at half' switch is swept. (2) For the 'goods in the air' and 'closed guard' switches, 'each switched-off part inert' names no observable: what do goods do with the carrier off now the hop is gone, and what happens to container contents with the guard off? (3) Nothing checks that the swept list equals the fields on the page, so a new line can be missed while the leaf claims every line.",
+     "where": "scenes.json sc_settings_sweep; tree.json settings_scale_and_switch",
+     "return_to": 3,
+     "ids": [
+      "settings_scale_and_switch",
+      "inv_settings"
+     ]
+    },
+    {
+     "what": "The closed/open storage classification is checked only on hand-picked examples. Nothing checks that every storage def on the owner's list is classed by the 'does not draw its contents' rule, with a modded open shelf counted open and a modded locker closed. Also, sc_closed_containers runs on the minimal list, where the locker, fridge and deep-storage rows may be INVALID forever: name the list that loads them.",
+     "where": "scenes.json sc_closed_containers; tree.json closed_container_holds",
+     "return_to": 3,
+     "ids": [
+      "closed_container_holds",
+      "inv_closed_guard"
+     ]
+    },
+    {
+     "what": "Gas census completeness is circular. 'The census list equals the gases carrying the tag' cannot catch a gas of ours that was never put in the census. Add a check, offline is enough, that every gas def our mods define appears in the census table, tagged or with its reason.",
+     "where": "scenes.json sc_cauldron_gas; tree.json our_gases_burn",
+     "return_to": 3,
+     "ids": [
+      "our_gases_burn",
+      "inv_gas_tags"
+     ]
+    },
+    {
+     "what": "Bomb's child damage types are untested. inv_which_blasts ships 'Bomb (and its children) force 1.0', and the leaf says bombs throw full, but no lane uses a DamageDef inheriting from Bomb. Add one, with its tuning source and strength read from the journal.",
+     "where": "scenes.json sc_blast_kinds",
+     "return_to": 3,
+     "ids": [
+      "inv_which_blasts",
+      "every_harmful_blast_throws"
+     ]
+    },
+    {
+     "what": "The flagship's geometry contradicts its expect. In a walled 7x7 interior with the impact at the centre, the east colonist one cell from the impact is thrown toward a wall 3 cells beyond it, so it stops after 2 cells with an impact hit. Yet the expect says it is carried 'about three cells' and is silent on the wall. Move the colonist or the wall, or expect the wall stop.",
+     "where": "scenes.json sc_storeroom_bomb_pit (showcase storeroom_bomb_pit)",
+     "return_to": 3,
+     "ids": []
+    },
+    {
+     "what": "The sheet does not say what the tree tests. Scenes assert that goods fly about 1.6 times as far as a person (ratio 1.3 to 2.0, d_c_wild) and that a gas shove moves a person at most once per 2 seconds (d_c_gas_shove), but neither appears in the sheet's does lines. The delegated line also says the gas chain and pit-trap raid stay non-showcases 'by his flagship answer', which his words do not say: in fact the greedy showcase rule decides that.",
+     "where": "sheet.md does / delegated",
+     "return_to": 3,
+     "ids": []
+    }
+   ]
+  },
+  {
+   "commit": "2e580ad0fd",
+   "judge": "rm-coverage-judge-1794479008",
+   "at": "2026-11-12T10:23:28Z",
+   "verdict": "not_covered",
+   "tokens": 644464,
+   "gaps": [
+    {
+     "what": "Nothing tests that the mass limit never weighs a living pawn. Eligible (RM_KnockbackMath.cs:222) leaves pawns out of the mass check, and the sheet, the_spared and exam e23 all promise it. But no scene puts a pawn whose mass is read above the limit beside a blast and asserts it is thrown. At the sweep's limit of 60, the colonist's mass is never asserted to be over 60. Add that assertion, for example limit 20 with the colonist's mass read and the colonist thrown.",
+     "where": "scenes.json sc_settings_sweep (or sc_spared); tree.json the_spared",
+     "return_to": 3,
+     "ids": [
+      "the_spared",
+      "inv_mass_limit_skip"
+     ]
+    },
+    {
+     "what": "The too_weak rule can pass vacuously. sc_all_fly_no_cap only says where a too_weak skip may occur (the outermost ring). It never asserts that at least one happens. If every rim stack throws a cell or more, 'a thing at the rim whose throw is under one cell is spared' is never exercised. Assert at least one too_weak skip, with that stack still on its cell, or stage a rim lane that the kernel plans at 0 cells.",
+     "where": "scenes.json sc_all_fly_no_cap; coverage_rest inv_too_weak_skip",
+     "return_to": 3,
+     "ids": [
+      "inv_too_weak_skip",
+      "the_spared"
+     ]
+    },
+    {
+     "what": "'Never stacked' is untested. The leaf and sheet say a modded damage type our patch already tunes (fire-type, say) keeps that tuning, and the other-mods percent applies only to an untuned type. No lane runs a modded explosion of a tuned damage type with unpatchedHarmfulPercent set away from 100. At the default 100, a stacked result and an unstacked one are identical. Add a lane: a modded Flame-type explosion at percent 50 reads exactly 50 percent, not 25.",
+     "where": "scenes.json sc_blast_kinds or sc_settings_sweep; tree.json every_harmful_blast_throws",
+     "return_to": 3,
+     "ids": [
+      "every_harmful_blast_throws",
+      "inv_which_blasts"
+     ]
+    },
+    {
+     "what": "The ninth-cover lane ('a blast that reaches a cover from beside it breaks it') does not rule out the obvious alternative. Its raider stands inside the grenade's radius, so the same grenade throws him. A cover destroyed with one descent also passes if the throw lands him on a covered cell and he falls through (thrown_into_pit_falls), with no reach rule at work. sc_cover_breaks' only control (the fourth cover, no pawn) is for a grenade landing ON the cover. Add a pawn-free cover two cells from a grenade, inside its radius, and require it destroyed.",
+     "where": "scenes.json sc_cover_breaks",
+     "return_to": 3,
+     "ids": [
+      "blast_breaks_pit_cover",
+      "inv_pits_receive"
+     ]
+    },
+    {
+     "what": "The gas census cannot see the gases it is meant to tag. The Cauldron's gas, the one he named, is not a def. It is a byte grid on RM_MapComponent_VentGas (Cauldron/Source/RM_VentGas.cs:14-20), so a DefModExtension tag cannot sit on it, and sc_cauldron_gas's 'each def loaded' cannot hold for it. Our other gases are mostly emitted from C# as vanilla GasType: TheForge's plume is BlindSmoke (RM_ForgePlumeFronts.cs:176), and Wastes, FlowWorks and TileFeatures emit ToxGas, GelatinousSlime RotStink. The offline check scans our mods' Defs only, so it never sees these sources. Rewrite the census over gas sources (Gas ThingDefs, AddGas/GasType emitters, our own gas grids), give the Cauldron's grid a tag route that does not need a def, and state how a vanilla GasType such as BlindSmoke is handled without making every smoke burst. The same fix goes into the sheet's delegated census line ('through an opt-in extension') and sc_gas_chain's 'gas whose def carries the flammable tag'.",
+     "where": "scenes.json sc_cauldron_gas, sc_gas_chain; tree.json our_gases_burn; sheet.md delegated (gas census)",
+     "return_to": 3,
+     "ids": [
+      "our_gases_burn",
+      "inv_gas_tags"
+     ]
+    },
+    {
+     "what": "The settings sweep contradicts itself. It asserts that its setting list equals the settings class's saved fields by reflection, and that any unswept field fails the scene. Its own list leaves out two saved fields: enabled and shieldsAbsorbThrow (RM_KnockbackMod.cs:97, 120). Those two are switched in sc_settings_off and sc_shield. As written, the scene fails on itself, or relies on an exemption it never states. Either sweep the two fields, or make the equality explicit: swept here, plus those two, which are swept by the named scenes.",
+     "where": "scenes.json sc_settings_sweep",
+     "return_to": 3,
+     "ids": [
+      "settings_scale_and_switch",
+      "inv_settings"
+     ]
+    },
+    {
+     "what": "The flagship puts two colonists on the same southward ray, one and two cells south of the impact. It expects the nearer one to be 'carried about three cells straight south', which passes through the farther one's cell. pawn_hits_pawn_stops says a thrown pawn stops at another pawn in the way. Nothing in the tree or sheet says whether pawns launched by the same explosion block each other. So the expect relies on an unstated rule, and pawn_hits_pawn_stops, read as written, contradicts it. Move one colonist off the ray, or state the same-explosion rule in a leaf and give it a lane.",
+     "where": "scenes.json sc_storeroom_bomb_pit (showcase storeroom_bomb_pit); tree.json pawn_hits_pawn_stops",
+     "return_to": 3,
+     "ids": []
+    }
+   ]
+  },
+  {
+   "commit": "0eb66f7620",
+   "judge": "rm-coverage-judge-1794479519",
+   "at": "2026-11-12T10:31:59Z",
+   "verdict": "not_covered",
+   "tokens": 786885,
+   "gaps": [
+    {
+     "what": "Every gas scene except sc_cauldron_gas stages a gas that does not exist. sc_gas_chain says 'one named gas whose def carries the flammable tag (asserted: tag read)'. sc_settings_sweep stages 'a tagged gas puff', sc_cover_breaks 'a tagged flammable gas cloud/puff' (third and eighth covers), sc_gas_shove_into_pit 'a tagged gas cloud', sc_barrage_perf 'a 40-cell tagged gas cloud' and sc_walk_raid 'a gas source'. In code, no mod of ours ships a concrete gas def: EnvironmentalHazards/Defs/ThingDefs/RM_GasBases.xml holds abstract parents only. sc_cauldron_gas's own census lists the vanilla GasTypes we emit (BlindSmoke, ToxGas, RotStink) as untagged. So the only gas that can carry the tag is the Cauldron's vent grid (RM_MapComponent_VentGas), and it has no def. As written, these starts either cannot be asserted, or they are met by an unnamed test gas whose path is not the real one. Each scene should name the gas it stages: the Cauldron's vent gas with Cauldron on the list, or a labelled test-only gas def using the same opt-in route, plus one lane on the real Cauldron grid. The previous verdict asked for the sc_gas_chain wording fix; it was not made.",
+     "where": "scenes.json sc_gas_chain, sc_settings_sweep, sc_cover_breaks, sc_gas_shove_into_pit, sc_barrage_perf, sc_walk_raid",
+     "return_to": 3,
+     "ids": [
+      "inv_gas_chain",
+      "gas_goes_clump_by_clump",
+      "blast_breaks_pit_cover",
+      "inv_pits_receive",
+      "settings_scale_and_switch",
+      "barrage_frame_budget",
+      "inv_perf_all_fly",
+      "walk_storeroom_raid"
+     ]
+    },
+    {
+     "what": "Part of the previous verdict's gas-census gap is still open: only scenes.json changed in 4e161179b5. The tree's our_gases_burn oracle still reads 'offline: every gas def our mods define appears in the census table', which is Defs only and contradicts sc_cauldron_gas's source census. The sheet still says our gases 'carry the flammable tag'. Its delegated line still says the census covers 'TheForge's gas, the Scarlands bileworm's, EnvironmentalHazards' and the Cauldron's, through an opt-in extension'. The code says otherwise. The bileworm's 'gas' is an aura comp that emits no gas (Scarlands/Source/RM_BilewormGas.cs). EnvironmentalHazards ships no concrete gas. TheForge's plume is vanilla BlindSmoke (RM_ForgePlumeFronts.cs:176), which the scene lists as untagged. A grid cannot carry a DefModExtension. The fix: rewrite the leaf's oracle over sources, and make the sheet's census line say what will actually be tagged (in practice, the Cauldron's grid) and how that grid is registered.",
+     "where": "tree.json our_gases_burn (oracle_proposed); sheet.md does (our_gases_burn) and delegated (gas census); record.json dl_gas_census",
+     "return_to": 3,
+     "ids": [
+      "our_gases_burn",
+      "inv_gas_tags"
+     ]
+    },
+    {
+     "what": "Nothing says what lights a gas cloud in play. The root says 'When gas catches'. The tree says 'when a flammable gas cloud catches' / 'a lit cloud'. Every scene just says 'light one edge', 'lit at its far edge' or 'a fuse cell', and never names the means. Vanilla gas never ignites. If the scenes call the chain's own entry point, a build where no fire, incendiary or blast ever starts a chain in real play passes every gas scene. State the in-play igniters (for example fire spreading onto a gas cell, or a damaging or fire explosion reaching the cloud), light sc_gas_chain by one of them, and add a control: the same igniter beside the cloud but not touching it starts no burst.",
+     "where": "tree.json gas_goes_clump_by_clump; scenes.json sc_gas_chain, sc_cauldron_gas, sc_walk_raid; sheet.md does (gas)",
+     "return_to": 3,
+     "ids": [
+      "inv_gas_chain",
+      "gas_goes_clump_by_clump",
+      "our_gases_burn",
+      "walk_storeroom_raid"
+     ]
+    },
+    {
+     "what": "wall_stops_dead promises 'never ... rebound or ease back off the wall, not even half a step', and the sheet says the same. sc_wall_stop checks only 'lands on the cell before the wall ... no second move', with no drawn-position trace in its start. A flyer that eases back half a cell and settles on the same cell passes. Add the per-tick drawn-position trace that sc_pawn_arc already uses, and assert that the drawn position never moves back toward the blast after contact.",
+     "where": "scenes.json sc_wall_stop",
+     "return_to": 3,
+     "ids": [
+      "wall_stops_dead",
+      "inv_pawn_flyer"
+     ]
+    },
+    {
+     "what": "Under the new carrier, nothing says what a flying good does at a closed door, at deep water or at a sandbag line. The tree specifies walls only (rebound at about 70 percent). The kernel's path rules (stop at doors and deep water, pass over sandbags) are proven for pawns only. A good that flies into deep water and is lost or hidden would break 'goods never vanish' (no_teleport) with no scene to see it. State the rule (for example: a door rebounds like a wall, deep water stops a good on the last standable cell, sandbags are passed over), and add a lane to sc_storeroom_mortar or a small acceptance scene with a control.",
+     "where": "tree.json goods_arc_spin_rebound, no_teleport; scenes.json sc_storeroom_mortar",
+     "return_to": 3,
+     "ids": [
+      "inv_kernel",
+      "inv_goods_fly",
+      "goods_arc_spin_rebound",
+      "no_teleport"
+     ]
+    },
+    {
+     "what": "sc_pit_fetch's start asserts the stack and the corpse on the pit floor and a lowered ladder. It asserts no stockpile that accepts the stack, no grave or corpse stockpile that accepts the corpse, and no hauler able to do the job. Its expect depends on all three. A map without them fails the positive case for a reason that has nothing to do with the mod, and passes the ladder-raised control trivially. Assert the destinations and a capable hauler in the start (INVALID otherwise).",
+     "where": "scenes.json sc_pit_fetch",
+     "return_to": 3,
+     "ids": [
+      "pit_goods_fetched",
+      "inv_pit_floor_haul"
+     ]
+    }
+   ]
+  },
+  {
+   "commit": "edd4a39b00",
+   "judge": "rm-coverage-judge-1794480428",
+   "at": "2026-11-12T10:47:08Z",
+   "verdict": "not_covered",
+   "tokens": 706708,
+   "gaps": [
+    {
+     "what": "Several container and furniture rows stage things that do not exist on the list they name. RimSage finds no storage crate in vanilla RimWorld or our mods: the Ancient*Crate and SealedCrate things are ruin props and openable containers, not storage. Yet sc_storeroom_bomb_pit (the flagship, on 'quicktest map, minimal list' plus FlowWorks) stages 'a closed 1x1 crate of goods', sc_settings_sweep stages 'a 1x1 crate', and sc_closed_containers stages four 1x1 crate rows plus an over-mass 1x1 container. Its provider clause covers only 'the locker, fridge, deep storage, hopper or tagged container rows', never the crates. sc_open_storage stages 'a weapon rack', and no such def exists either. As written, these starts cannot be met: the flagship, the sweep's closed-guard and container-shove switches, and the crate slide and jolt rows can never pass. The hopper is a separate problem. The vanilla Hopper is a plain Building_Storage that draws its contents, so the stated rule ('classed closed exactly when it does not draw its contents or carries the opt-in tag') classes it open, while the sheet's delegated line lists hoppers as closed. Fix: name each def and its providing mod (or a labelled test-only def carrying the opt-in tag), add the provider to each scene's asserted list (the flagship's and the sweep's included), and settle the hopper by the rule or by a tag. The same unnamed-provider problem holds in sc_blast_kinds: 'a modded damaging explosion (asserted: its mod active)', the modded Flame-typed explosion and 'a modded explosion of an untuned damaging type' name no def or mod. Name them, or stage a labelled test damage type as sc_settings_sweep already does.",
+     "where": "scenes.json sc_storeroom_bomb_pit, sc_settings_sweep, sc_closed_containers, sc_open_storage, sc_blast_kinds; sheet.md delegated (closed means)",
+     "return_to": 3,
+     "ids": [
+      "inv_closed_guard",
+      "inv_container_shove",
+      "closed_container_holds",
+      "open_shelf_scatters",
+      "settings_scale_and_switch",
+      "every_harmful_blast_throws",
+      "inv_which_blasts"
+     ]
+    },
+    {
+     "what": "The airborne lane of sc_spared is 'a colonist whose airborne state a test hook forces true'. It never says which state the hook sets. If the hook overrides the mod's own airborne predicate, the lane proves nothing about the shipped check: a build that never reads the real flight state (Pawn_FlightTracker, or the pawn being held in a flyer) passes. Fix: say the hook sets the vanilla flight state that the shipped skip reads (a deterministic state write and read; no live flight, per his flyer rule), and that the mod's predicate is not touched.",
+     "where": "scenes.json sc_spared",
+     "return_to": 3,
+     "ids": [
+      "the_spared",
+      "inv_who_is_spared"
+     ]
+    },
+    {
+     "what": "sc_settings_sweep expects 'the incendiary at full strength with fire at half off'. Neither the tree's settings_scale_and_switch nor any sheet line says what switching off the fire-at-half part does. The built behaviour was fire force 0, so a player could read 'off' either way, and the sweep fixes an unstated choice. Fix: state the off behaviour in the leaf and the sheet line (full strength, or the old no-throw), and make the sweep assert that.",
+     "where": "tree.json settings_scale_and_switch; sheet.md does (settings) / delegated (fire-half switch); scenes.json sc_settings_sweep",
+     "return_to": 3,
+     "ids": [
+      "settings_scale_and_switch",
+      "inv_settings"
+     ]
+    },
+    {
+     "what": "Stale descriptions disagree with their scene. The tree's hose_drops_at_takeoff oracle_proposed, and coverage_rest's inv_hose_drop 'why' ('with a shielded control'), name a shield-belt control. sc_hose_drop actually runs Settings enabled false. Bring the oracle and the 'why' into line with the scene. In the same spirit, sc_gas_shove_into_pit's control 'the same with the cloud untagged' should say what it means for the defless Cauldron grid: its registration with the gas chain removed, as sc_cauldron_gas puts it.",
+     "where": "tree.json hose_drops_at_takeoff; scenes.json coverage_rest inv_hose_drop, sc_gas_shove_into_pit control",
+     "return_to": 3,
+     "ids": [
+      "hose_drops_at_takeoff",
+      "inv_hose_drop"
+     ]
+    }
+   ]
+  },
+  {
+   "commit": "780b1d1e85",
+   "judge": "rm-coverage-judge-1794481849",
+   "at": "2026-11-12T11:10:49Z",
+   "verdict": "not_covered",
+   "tokens": 739503,
+   "gaps": [
+    {
+     "what": "The hopper gap from the previous verdict is not fixed. RimSage shows the vanilla Hopper as a plain Building_Storage, drawn by MapMeshOnly with surfaceType Item and no hide flag, so it draws what it holds. The stated census rule ('classed closed exactly when it does not draw its contents or carries the opt-in tag') therefore classes it open. Yet sc_closed_containers expects the hopper's contents unchanged, and the tree leaf, sheet delegated line, dl_closed_means_hidden and exam y6 all call hoppers closed. Settle it one way everywhere: either our patch gives the Hopper the opt-in tag (say so in the delegated line, the census and the scene's row), or the hopper leaves the closed list in the leaf, sheet, record and exam.",
+     "where": "scenes.json sc_closed_containers; tree.json closed_container_holds; sheet.md delegated (closed means); record.json dl_closed_means_hidden; exam.json y6",
+     "return_to": 3,
+     "ids": [
+      "inv_closed_guard",
+      "closed_container_holds"
+     ]
+    },
+    {
+     "what": "The unnamed-provider gap in sc_blast_kinds from the previous verdict is not fixed. Three lanes name no def or mod: 'a modded damaging explosion (asserted: its mod active)', 'a modded explosion whose damage type is Flame', and 'a modded explosion of an untuned damaging type'. As written, nothing shows such a mod exists on the scene's minimal list, so the other-mods-at-100% row and the never-stacked row cannot be staged. Name each def and its mod and add the mod to the asserted list, or stage a labelled test damage type as sc_settings_sweep already does (one untuned, one Flame-typed).",
+     "where": "scenes.json sc_blast_kinds",
+     "return_to": 3,
+     "ids": [
+      "inv_which_blasts",
+      "every_harmful_blast_throws"
+     ]
+    },
+    {
+     "what": "Racks are claimed but never tested. The leaf open_shelf_scatters ('an open shelf, rack or table'), the sheet line ('Open shelves, racks and tables protect nothing') and inventory inv_closed_guard all promise racks, but sc_open_storage now stages only Shelf, ShelfSmall and Table2x2c (the weapon rack was dropped when it was found not to exist). There is no vanilla rack (RimSage); the only one on disk comes from the provider mod Aelanna.WeaponRacks. Either stage a rack from a named provider, asserted active, or remove 'rack' from the leaf, the sheet and the inventory text.",
+     "where": "tree.json open_shelf_scatters; sheet.md does (open_shelf_scatters); record.json inv_closed_guard; scenes.json sc_open_storage",
+     "return_to": 3,
+     "ids": [
+      "open_shelf_scatters",
+      "inv_closed_guard"
+     ]
+    },
+    {
+     "what": "The flagship stages its closed container as a vanilla small shelf (ShelfSmall) with the opt-in closed tag. A small shelf draws its goods on top, so when he looks at the storeroom (hold: owner_review) he sees an ordinary shelf keep its goods while it slides. That is the shelf exemption he ruled out ('no exemption for ordinary shelves'). The tag is a def extension, so it also lands on every ShelfSmall in the scene, while the flagship's 'row of open shelves' names no def: open small shelves there would hold their goods too. Fix: name the open shelves' def (Shelf), and stage the closed container as a real container that hides its contents, from a census provider (e.g. a RimFridge fridge or the ASF/LWM deep-storage locker, small enough to slide, with the mod added to the asserted list), or as a labelled test container that does not draw its contents.",
+     "where": "scenes.json sc_storeroom_bomb_pit (showcase storeroom_bomb_pit)",
+     "return_to": 3,
+     "ids": [
+      "inv_closed_guard",
+      "inv_container_shove",
+      "open_shelf_scatters"
+     ]
+    }
+   ]
+  }
+ ]
+}

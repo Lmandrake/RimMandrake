@@ -103,7 +103,7 @@ def one_pass(root, calls, runner_of, signed):
                   answer("not_covered", [gap], checklist=[row("inv_a", False, "")])]
     rec, _ = CJ.run(d, os.path.join(root, "onepass"), script)
     check("not_covered, rows still missing -> gaps stand, the rest on file as unchecked",
-          rec["verdict"] == "not_covered" and rec["gaps"] == [gap] and rec["unchecked"] == ["inv_b", "leaf_c"] and not rec["signed"], rec)
+          rec["verdict"] == "not_covered" and bare(rec["gaps"]) == [gap] and rec["unchecked"] == ["inv_b", "leaf_c"] and not rec["signed"], rec)
     answers[:] = [answer("covered", checklist=full[:2]), "not json"]
     rec, _ = CJ.run(d, os.path.join(root, "onepass"), script)
     check("a broken re-ask leaves the first answer, not signed",
@@ -125,7 +125,7 @@ def one_pass(root, calls, runner_of, signed):
           rec["verdict"] == "not_covered" and not rec["signed"] and not signed
           and [g["ids"] for g in rec["gaps"]] == [["inv_a"]], rec)
     rec, _ = CJ.run(d, os.path.join(root, "onepass"), runner_of(answer("not_covered", [gap], checklist=failing)))
-    check("a failed part its gap already names is not listed twice", rec["gaps"] == [gap], rec)
+    check("a failed part its gap already names is not listed twice", bare(rec["gaps"]) == [gap], rec)
     failing[1] = row("inv_b", False, "sc_b")
     rec, _ = CJ.run(d, os.path.join(root, "onepass"), runner_of(answer("not_covered", [gap], checklist=failing)))
     check("a failed part no gap names joins the list",
@@ -149,6 +149,11 @@ def one_pass(root, calls, runner_of, signed):
     check("an errored earlier run is no previous verdict", "previous judge" not in calls[n][0][2], calls[n][0][2][-300:])
 
 
+def bare(gaps):
+    """The gaps without the program's round tags (new_since, judge_said): selftest_coverage_judge_loop tests those."""
+    return [{k: v for k, v in g.items() if k not in ("new_since", "judge_said", "since")} for g in gaps]
+
+
 def main():
     saved = (CT.coverage_problem, CT.sign, DS.exam_errors)
     signed, seen = [], {}
@@ -159,8 +164,13 @@ def main():
         signed.append((by, os.environ.get("RM_ROLE_UNIT")))
         return []
     CT.sign = fake_sign
+    # these cases judge one concept a dozen times: the loop limit is selftest_coverage_judge_loop's to test, so it is
+    # lifted here, and any alarm a case raised would land in a temp dir, never the real rows
+    CJ.NOT_COVERED_LIMIT = CJ.JUDGE_RUNS_MAX = 10 ** 6
+    CJ.JUDGE_SPEND_MAX = 10 ** 15
     try:
         with tempfile.TemporaryDirectory() as root:
+            os.environ["RM_REFUSAL_DIR"] = os.path.join(root, "refusals")
             d = concept(root)
             calls = []
 

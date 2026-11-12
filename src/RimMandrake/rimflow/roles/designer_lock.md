@@ -17,7 +17,11 @@ Injected with `designer.md` at stage 5. One versioned order, no avoidable rework
    and your seat's ledger shard (the gate wants both; the signature does not change the tree hash the launcher tracks).
    `not_covered`: each gap names `return_to` 3 (yours to fix) or 2 (needs his answer); `return` there with the gaps as
    the decision. One pass lists them all: its `checklist` has a row per inventory capability and leaf, and any `unchecked`
-   ids it could not reach go in your return too, so stage 3 fixes the whole list in one run. No verdict (an error in the file): `blocked` on the error text. A signature the retired Arbiter already
+   ids it could not reach go in your return too, so stage 3 fixes the whole list in one run. No verdict (an error in the file): `blocked` on the error text.
+   The judge stops at the third `not_covered` (or a fourth judge run, or judge spend past 4x its p90): the concept is
+   blocked on `REFUSAL_NOTHING_COULD_EVER_PASS`, the Conductor is told, and this run never starts; only
+   `coverage_judge.py release <dir> --why ...` grants one more look. So the first `not_covered` is the list to fix whole:
+   each gap carries `new_since` (`unfixed`, `changed`, `regression`, `late`), and a `late` gap is the earlier judge's miss. A signature the retired Arbiter already
    recorded still counts.
 4. **The gate**: `concept_tree.py gate <dir>` passes, and `designer_stage.py showcases <dir>` accepts the showcase set:
    the lock is refused while a record.json inventory capability is exercised by no showcase and no scene, and the

@@ -23,8 +23,18 @@ missing row is re-asked once in the same session and still missing is kept in `u
 never signs); a failed part no gap names becomes a gap. A re-judge reads the previous verdict, so a passed row whose scene
 did not change reopens only for a defect it can quote.
 
-Exit: 0 always for a no-op, a verdict or a refusal the Designer reads (the pre-launch step must not stop the Designer's
-run: its stage-5 gate refuses without the signature anyway); 2 for an unreadable concept.
+  release <dir> --why TEXT     a concept stopped by the loop limit gets one more judge look; a look that does not cover
+                               stops it again
+
+The loop limit (RIMMANDRAKE_STOP_COVERAGE_LOOP_AT_THIRD_REFUSAL): every verdict is a round in stage.json coverage_rounds
+(judges charged before the limit existed count from the budget charges). The third not_covered, a fourth judge run or
+judge spend past JUDGE_SPEND_MAX stops judging: the concept is blocked on REFUSAL_NOTHING_COULD_EVER_PASS, the alarm row is
+raised (refusal_contract.py) and `run` exits 3, so the Designer's run never starts. A later gap on ids no earlier verdict
+named, that the judge does not tie to a change, is tagged late: the earlier pass missed it.
+
+Exit: 0 for a no-op, a verdict or a refusal the Designer reads (the pre-launch step must not stop the Designer's run: its
+stage-5 gate refuses without the signature anyway); 3 when judging is stopped (the run must not start); 2 for an
+unreadable concept.
 What this cannot do, said plainly: a verdict of "covered" is one model's judgment, not proof; RM_ROLE_UNIT is an
 environment variable, so a writer who sets it by hand forges the ledger note too (an attributable line in git).
 """
@@ -47,7 +57,21 @@ VERDICT_FILE = "coverage_verdict.json"
 TIMEOUT_S = 1500        # the judge's own wall bound; the Designer schedule's pre_launch_max_s holds it plus slack
 MODEL = "opus"
 REASK_MIN_S = 120       # less judge time than this left: no re-ask, the missing rows go on file as unchecked
-SCHEMA = {"type": "object", "additionalProperties": False, "required": ["verdict", "checklist", "gaps", "reasons"],
+# The loop limit (RIMMANDRAKE_STOP_COVERAGE_LOOP_AT_THIRD_REFUSAL, spec 2026-11-12 refusal contract §3). EK's judge said
+# not_covered 9 times in 3 h. The third not_covered on one concept, a 4th judge run, or judge spend past 4x the measured
+# p90 stops judging: the concept is blocked on the alarm and the Designer's run never starts. `release` grants one look.
+NOT_COVERED_LIMIT = 3
+JUDGE_RUNS_MAX = 4
+JUDGE_P90_TOKENS = 751818   # measured 2026-11-12: 12 measured judge runs (EK 8, GimmeSomeSlack 2, Pyrelands 2), median 706,708
+JUDGE_SPEND_MAX = 4 * JUDGE_P90_TOKENS   # an unmeasured judge run counts at the p90, never at 0
+STOP_EXIT = 3               # `run` exit when stopped: the pre-launch chain ends and the Designer's claude never starts
+UNIT_PREFIX = "rm-coverage-judge-"
+# how a later round's gap stands against the earlier verdicts: first (round 1 only), unfixed (named before, still open),
+# changed (new because an artifact changed since; `since` names it), regression (passed before, broken by a change),
+# late (it was there before and the earlier judge missed it). The program tags `late` itself when the ids are new and
+# the judge claims no change: a judge miss, counted in the round.
+TAGS = ("first", "unfixed", "changed", "regression", "late")
+SCHEMA ={"type": "object", "additionalProperties": False, "required": ["verdict", "checklist", "gaps", "reasons"],
           "properties": {"verdict": {"enum": ["covered", "not_covered"]},
                          "checklist": {"type": "array", "items": {
                              "type": "object", "additionalProperties": False, "required": ["id", "parts"],
@@ -59,12 +83,15 @@ SCHEMA = {"type": "object", "additionalProperties": False, "required": ["verdict
                                                                "scene": {"type": "string"},
                                                                "ok": {"type": "boolean"}}}}}}},
                          "gaps": {"type": "array", "items": {"type": "object", "additionalProperties": False,
-                                                             "required": ["what", "where", "return_to", "ids"],
+                                                             "required": ["what", "where", "return_to", "ids",
+                                                                          "new_since"],
                                                              "properties": {"what": {"type": "string"},
                                                                             "where": {"type": "string"},
                                                                             "return_to": {"enum": [2, 3]},
                                                                             "ids": {"type": "array",
-                                                                                    "items": {"type": "string"}}}}},
+                                                                                    "items": {"type": "string"}},
+                                                                            "new_since": {"enum": list(TAGS)},
+                                                                            "since": {"type": "string"}}}},
                          "reasons": {"type": "string"}}}
 
 
@@ -111,11 +138,151 @@ def prior_verdict(d):
     return rec if isinstance(rec, dict) and rec.get("verdict") in ("covered", "not_covered") else None
 
 
-def prompt(d, repo, ids=(), prior=False):
+def rounds(st, d=None):
+    """-> every judge round on this concept, oldest first: stage.json's coverage_rounds, plus each earlier judge the
+    budget charges name with no round on file (before the loop limit existed). An old round's verdict is known only when
+    coverage_verdict.json is that judge's; its tokens are its charges, or the p90 when it was charged unmeasured."""
+    recorded = [r for r in st.get("coverage_rounds") or [] if isinstance(r, dict)]
+    known = {r.get("judge") for r in recorded}
+    last = prior_verdict(d) if d else None
+    legacy = {}
+    for c in (st.get("budget") or {}).get("charges") or []:
+        ref = c.get("ref") if isinstance(c, dict) else None
+        if isinstance(ref, str) and ref.startswith(UNIT_PREFIX) and ref not in known:
+            r = legacy.setdefault(ref, {"judge": ref, "at": c.get("at"), "verdict": None, "tokens": 0, "legacy": True})
+            if c.get("kind") == "unmeasured" or r["tokens"] is None:
+                r["tokens"] = None
+            else:
+                r["tokens"] += int(c.get("tokens") or 0)
+    for r in legacy.values():
+        if last and last.get("judge") == r["judge"]:
+            r["verdict"] = last.get("verdict")
+    return sorted(legacy.values(), key=lambda r: str(r.get("at"))) + recorded
+
+
+def spend(rs):
+    return sum(JUDGE_P90_TOKENS if r.get("tokens") is None else int(r["tokens"]) for r in rs)
+
+
+def stop_reason(st, d=None):
+    """-> why judging stops on this concept now, or None. After a release, exactly one more look: a look that did
+    not cover stops again."""
+    rs = rounds(st, d)
+    rel = [x for x in st.get("coverage_releases") or [] if isinstance(x, dict)]
+    if rel:
+        after = rs[int(rel[-1].get("rounds_at") or 0):]
+        if after and after[-1].get("verdict") != "covered":
+            return "released for one more look at round %d; that look was %s" % (
+                len(rs) - len(after) + 1, after[-1].get("verdict") or "no verdict")
+        return None
+    nc = sum(1 for r in rs if r.get("verdict") == "not_covered")
+    if nc >= NOT_COVERED_LIMIT:
+        return "%d not_covered verdicts (limit %d)" % (nc, NOT_COVERED_LIMIT)
+    if len(rs) >= JUDGE_RUNS_MAX:
+        return "%d judge runs (limit %d)" % (len(rs), JUDGE_RUNS_MAX)
+    if spend(rs) >= JUDGE_SPEND_MAX:
+        return "judge spend %d tokens (limit %d, 4x the p90)" % (spend(rs), JUDGE_SPEND_MAX)
+    return None
+
+
+def subject(d):
+    return "concept:%s" % os.path.basename(os.path.abspath(d))
+
+
+def hold(d, why, now=None):
+    """Stop judging: the concept goes blocked on the alarm (designer_stage open_run refuses a blocked concept, so no
+    Designer run opens; one already open never starts its claude, as `run` exits STOP_EXIT), and the alarm row is
+    raised or updated. An open run is left for the launcher's close, which rejects it (no result) and keeps the block."""
+    import refusal_contract as RC
+    st = DS.load_state(d)
+    rs = rounds(st, d)
+    on = "%s: %s; judging stopped on %s (coverage_judge.py release <dir> --why ... grants one more look)" % (
+        RC.ALARM_ID, why, os.path.basename(os.path.abspath(d)))
+    if st.get("status") != "blocked" or st.get("blocked_on") != on:
+        st["status"], st["blocked_on"] = "blocked", on
+        st["coverage_stop"] = {"at": DS.now_iso(), "why": why}
+        DS.hist(st, "coverage_stop", on)
+        DS.write_json(DS.state_path(d), st)
+    return RC.alarm(subject(d), why, now=now, family="coverage_judge", detail={
+        "item": st.get("item"), "rounds": len(rs), "spend": spend(rs),
+        "verdicts": [r.get("verdict") for r in rs], "late": sum(len(r.get("late") or []) for r in rs)})
+
+
+def release(d, why, now=None):
+    """One more look, said with a reason: the block lifts and the next judge run counts as the last before a stop."""
+    import refusal_contract as RC
+    if not CT.txt(why):
+        raise DS.Refused("a release says why")
+    st = DS.load_state(d)
+    st.setdefault("coverage_releases", []).append({"at": DS.now_iso(), "why": why, "rounds_at": len(rounds(st, d))})
+    st.pop("coverage_stop", None)
+    if st.get("status") == "blocked" and str(st.get("blocked_on") or "").startswith(RC.ALARM_ID):
+        st["status"] = "ready"
+    DS.hist(st, "coverage_release", why)
+    DS.write_json(DS.state_path(d), st)
+    RC.clear(subject(d), why, now=now)
+    return st
+
+
+def tag_gaps(gaps, earlier):
+    """Program-side tags: round 1's gaps are first; a later gap naming only ids no earlier gap named, that the judge
+    does not say changed or regressed, is late. -> the late gaps' ids."""
+    seen = {i for g in earlier for i in g.get("ids") or []}
+    late = []
+    for g in gaps:
+        said = g.get("new_since")
+        if not earlier:
+            g["new_since"] = "first"
+        elif said not in ("changed", "regression"):
+            ids = list(g.get("ids") or [])
+            if ids and not (set(ids) & seen):
+                if said != "late":
+                    g["judge_said"] = said
+                g["new_since"] = "late"
+                late += ids
+            elif said not in TAGS or said == "first":
+                g["judge_said"] = said
+                g["new_since"] = "unfixed"
+    return late
+
+
+def record_round(d, rec):
+    """stage.json coverage_rounds gets this round: verdict, gap count and ids, tags, late ids, tokens, tree."""
+    st = DS.load_state(d)
+    gaps = rec.get("gaps") or []
+    st.setdefault("coverage_rounds", []).append({
+        "judge": rec["judge"], "at": rec["at"], "verdict": rec.get("verdict"), "tree": rec.get("tree"),
+        "tokens": rec.get("tokens"), "gaps": len(gaps),
+        "ids": sorted({i for g in gaps for i in g.get("ids") or []}),
+        "tags": {t: sum(1 for g in gaps if g.get("new_since") == t) for t in TAGS if any(
+            g.get("new_since") == t for g in gaps)},
+        "late": rec.get("late") or [], "error": rec.get("error")})
+    DS.write_json(DS.state_path(d), st)
+    return st
+
+
+def earlier_gaps(st, d):
+    """The gaps earlier rounds named: the previous verdict's in full, and every recorded round's ids."""
+    out = [{"ids": r.get("ids") or []} for r in st.get("coverage_rounds") or [] if isinstance(r, dict)]
+    last = prior_verdict(d)
+    if last:
+        out += [g for g in last.get("gaps") or [] if isinstance(g, dict)]
+    return out
+
+
+def prompt(d, repo, ids=(), prior=False, round_no=1):
     rel = CT.concept_rel(d, repo)
     again = ("A previous judge's verdict is in %s/%s. Check each of its gaps first. A part it passed whose scene has not "
-             "changed since stays passed unless you can quote the defect in the scene or the code. " % (rel, VERDICT_FILE)
-             ) if prior else ""
+             "changed since stays passed unless you can quote the defect in the scene or the code. Tag every gap's "
+             "`new_since`: `unfixed` (that verdict named it and it is still open), `changed` (it is new because an "
+             "artifact changed since that verdict; `since` names the file and what changed), `regression` (that verdict "
+             "passed it and a change broke it; `since` names the change), or `late` (it was there then and that judge "
+             "missed it: say so). A gap on ids no earlier verdict named, with no change you can name, is recorded as "
+             "late: a miss of the earlier pass. " % (rel, VERDICT_FILE)) if prior else (
+        "This is the first verdict on this concept: tag every gap `new_since` `first`, and leave nothing for later: a gap "
+        "a later judge finds that was already there is recorded as this pass's miss. ")
+    again += ("This is judge round %d. The third not_covered verdict on a concept stops judging and blocks it for the "
+              "Conductor, so the list must be whole now. " % round_no)
     return (
         "You are the coverage judge for the RimMandrake concept at %(rel)s. You did not write it and you sign nothing "
         "yourself: you return a verdict and a program signs on it. Read, in this order: "
@@ -169,6 +336,9 @@ def plan(d, repo=None):
     why = CT.coverage_problem(d, repo, tree)
     if not why:
         return "skip", "already signed at tree %s" % CT.tree_hash(tree)[:10]
+    stop = stop_reason(st, d)
+    if stop:
+        return "stopped", stop
     return "judge", why
 
 
@@ -176,16 +346,21 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
     """-> (verdict record or None, message). Signs only on a well-formed `covered` verdict over unchanged inputs."""
     repo = repo or DS.clone_of(d) or DS.REPO
     what, why = plan(d, repo)
+    if what == "stopped":
+        hold(d, why, now)
+        return {"stopped": why}, "stopped: %s" % why
     if what != "judge":
         return None, "%s: %s" % (what, why)
     tree = CT.load(d)
     before = (CT.tree_hash(tree), CT.sheet_hash(d))
     ids = required_ids(d, tree)
-    unit = "rm-coverage-judge-%d" % int(now or time.time())
+    st0 = DS.load_state(d)
+    earlier = earlier_gaps(st0, d)
+    unit = UNIT_PREFIX + "%d" % int(now or time.time())
     env = dict(os.environ, RM_ROLE_UNIT=unit)
     tail = ["--model", MODEL, "--name", "COVERAGE JUDGE %s" % unit, "--output-format", "json",
             "--json-schema", json.dumps(SCHEMA, separators=(",", ":")), "--dangerously-skip-permissions"]
-    argv = [CLAUDE, "-p", prompt(d, repo, ids, prior_verdict(d) is not None)] + tail
+    argv = [CLAUDE, "-p", prompt(d, repo, ids, prior_verdict(d) is not None, len(rounds(st0, d)) + 1)] + tail
     rec = {"judge": unit, "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now or time.time())),
            "tree": before[0], "sheet": before[1], "verdict": None, "signed": False}
 
@@ -239,6 +414,9 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
             rec["verdict"] = "not_covered"  # its own rows failed: the rows outrank the word
         if missing:
             rec["unchecked"] = missing
+        late = tag_gaps(rec["gaps"], earlier)
+        if late:
+            rec["late"] = late
     tree2 = CT.load(d)
     if rec["verdict"] == "covered":
         if missing:
@@ -262,8 +440,15 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
             else:
                 rec["signed"] = True
     DS.write_json(os.path.join(d, VERDICT_FILE), rec)
-    return rec, ("signed" if rec["signed"] else "not signed: %s" % (rec.get("error") or
-                                                                    "%d gap(s)" % len(rec.get("gaps") or [])))
+    st = record_round(d, rec)
+    msg = "signed" if rec["signed"] else "not signed: %s" % (rec.get("error") or "%d gap(s)" % len(rec.get("gaps") or []))
+    stop = None if rec["signed"] else stop_reason(st, d)
+    if stop:
+        rec["stopped"] = stop
+        DS.write_json(os.path.join(d, VERDICT_FILE), rec)
+        hold(d, stop, now)
+        msg += "; stopped: %s" % stop
+    return rec, msg
 
 
 def main(argv=None):
@@ -274,19 +459,30 @@ def main(argv=None):
     r.add_argument("--timeout", type=int, default=TIMEOUT_S)
     s = sub.add_parser("status")
     s.add_argument("dir")
+    rl = sub.add_parser("release", help="one more judge look on a stopped concept")
+    rl.add_argument("dir")
+    rl.add_argument("--why", required=True)
     a = ap.parse_args(argv)
     d = os.path.abspath(a.dir)
     if a.cmd == "status":
         what, why = plan(d)
         print("%s: %s" % (what, why))
         return 2 if what == "error" else 0
+    if a.cmd == "release":
+        try:
+            st = release(d, a.why)
+        except (DS.Refused, OSError, ValueError) as e:
+            print("coverage_judge: release refused: %s" % e)
+            return 2
+        print("coverage_judge: released %s for one more look (status %s)" % (os.path.basename(d), st.get("status")))
+        return 0
     what, why = plan(d)
     if what == "error":
         print("coverage_judge: %s" % why)
         return 2
-    _rec, msg = run(d, timeout=a.timeout)
+    rec, msg = run(d, timeout=a.timeout)
     print("coverage_judge: %s" % msg)
-    return 0
+    return STOP_EXIT if isinstance(rec, dict) and rec.get("stopped") else 0
 
 
 if __name__ == "__main__":
