@@ -1,18 +1,78 @@
 [
  {
-  "phase": "perf_0",
+  "phase": "perfE_0",
   "args": {
    "lay": "0:0",
    "no_time": true,
    "resume": false,
    "rigs": 200,
+   "calls": 20,
+   "basins": "edge",
+   "sinks_off": true,
    "restore_length": null
   },
-  "started": "2026-11-12T01:27:50",
-  "finished": "2026-11-12T01:28:26",
+  "started": "2026-11-12T02:58:38",
+  "finished": "2026-11-12T02:59:22",
   "mapSize": [
    325,
    325
+  ],
+  "layout": {
+   "basins": [
+    [
+     10,
+     2,
+     125,
+     320,
+     4
+    ],
+    [
+     190,
+     2,
+     125,
+     320,
+     1
+    ]
+   ],
+   "rigs": 200,
+   "lipA": 135,
+   "lipB": 189,
+   "kind": "edge",
+   "bandSquares": 3750
+  },
+  "edgeSinks": {
+   "before": "True",
+   "setOff": true,
+   "during": "False",
+   "gate": "DRAINGATE gate=False setting=False drainEdge=False sunk=0",
+   "noDrain": true,
+   "restored": "{'success': True, 'action': 'set', 'field': 'edgeSinksEnabled', 'fieldKind': 'static', 'valueBefore': 'False', 'valueAft"
+  },
+  "staged": [
+   {
+    "basin": [
+     10,
+     2,
+     125,
+     320
+    ],
+    "cells": 40000,
+    "dug": 40000,
+    "filled": 40000,
+    "refusedFills": 0
+   },
+   {
+    "basin": [
+     190,
+     2,
+     125,
+     320
+    ],
+    "cells": 40000,
+    "dug": 40000,
+    "filled": 40000,
+    "refusedFills": 0
+   }
   ],
   "rows": [
    {
@@ -30,199 +90,529 @@
   ]
  },
  {
-  "phase": "perf_25",
+  "phase": "perfE_40",
   "args": {
-   "lay": "0:25",
+   "lay": "0:40",
    "no_time": true,
    "resume": true,
    "rigs": 200,
+   "calls": 20,
+   "basins": "edge",
+   "sinks_off": true,
    "restore_length": null
   },
-  "started": "2026-11-12T01:28:32",
-  "finished": "2026-11-12T01:32:39",
+  "started": "2026-11-12T02:59:31",
+  "finished": "2026-11-12T03:05:29",
   "mapSize": [
    325,
    325
+  ],
+  "layout": {
+   "basins": [
+    [
+     10,
+     2,
+     125,
+     320,
+     4
+    ],
+    [
+     190,
+     2,
+     125,
+     320,
+     1
+    ]
+   ],
+   "rigs": 200,
+   "lipA": 135,
+   "lipB": 189,
+   "kind": "edge",
+   "bandSquares": 3750
+  },
+  "edgeSinks": {
+   "before": "True",
+   "setOff": true,
+   "during": "False",
+   "gate": "DRAINGATE gate=False setting=False drainEdge=False sunk=0",
+   "noDrain": true,
+   "restored": "{'success': True, 'action': 'set', 'field': 'edgeSinksEnabled', 'fieldKind': 'static', 'valueBefore': 'False', 'valueAft"
+  },
+  "staged": [
+   {
+    "basin": [
+     10,
+     2,
+     125,
+     320
+    ],
+    "cells": 40000,
+    "dug": 40000,
+    "filled": 40000,
+    "refusedFills": 0
+   },
+   {
+    "basin": [
+     190,
+     2,
+     125,
+     320
+    ],
+    "cells": 40000,
+    "dug": 40000,
+    "filled": 40000,
+    "refusedFills": 0
+   }
   ],
   "rows": [
    {
     "id": "LEVEL_PERF_TICK_TIME",
     "status": "UNMEASURED",
     "class": "HARNESS",
-    "why": "phase only (--no-time): rigs 0:25 laid, 0 failures; time with --resume --lay 0:0"
+    "why": "phase only (--no-time): rigs 0:40 laid, 0 failures; time with --resume --lay 0:0"
    },
    {
     "id": "LEVEL_PERF_ALLOC",
     "status": "UNMEASURED",
     "class": "HARNESS",
-    "why": "phase only (--no-time): rigs 0:25 laid, 0 failures; time with --resume --lay 0:0"
+    "why": "phase only (--no-time): rigs 0:40 laid, 0 failures; time with --resume --lay 0:0"
    }
   ]
  },
  {
-  "phase": "perf_65",
+  "phase": "perfE_80",
   "args": {
-   "lay": "25:65",
+   "lay": "40:80",
    "no_time": true,
    "resume": true,
    "rigs": 200,
+   "calls": 20,
+   "basins": "edge",
+   "sinks_off": true,
    "restore_length": null
   },
-  "started": "2026-11-12T01:32:46",
-  "finished": "2026-11-12T01:38:48",
+  "started": "2026-11-12T03:05:46",
+  "finished": "2026-11-12T03:11:47",
   "mapSize": [
    325,
    325
+  ],
+  "layout": {
+   "basins": [
+    [
+     10,
+     2,
+     125,
+     320,
+     4
+    ],
+    [
+     190,
+     2,
+     125,
+     320,
+     1
+    ]
+   ],
+   "rigs": 200,
+   "lipA": 135,
+   "lipB": 189,
+   "kind": "edge",
+   "bandSquares": 3750
+  },
+  "edgeSinks": {
+   "before": "True",
+   "setOff": true,
+   "during": "False",
+   "gate": "DRAINGATE gate=False setting=False drainEdge=False sunk=0",
+   "noDrain": true,
+   "restored": "{'success': True, 'action': 'set', 'field': 'edgeSinksEnabled', 'fieldKind': 'static', 'valueBefore': 'False', 'valueAft"
+  },
+  "staged": [
+   {
+    "basin": [
+     10,
+     2,
+     125,
+     320
+    ],
+    "cells": 40000,
+    "dug": 40000,
+    "filled": 40000,
+    "refusedFills": 0
+   },
+   {
+    "basin": [
+     190,
+     2,
+     125,
+     320
+    ],
+    "cells": 40000,
+    "dug": 40000,
+    "filled": 40000,
+    "refusedFills": 0
+   }
   ],
   "rows": [
    {
     "id": "LEVEL_PERF_TICK_TIME",
     "status": "UNMEASURED",
     "class": "HARNESS",
-    "why": "phase only (--no-time): rigs 25:65 laid, 0 failures; time with --resume --lay 0:0"
+    "why": "phase only (--no-time): rigs 40:80 laid, 0 failures; time with --resume --lay 0:0"
    },
    {
     "id": "LEVEL_PERF_ALLOC",
     "status": "UNMEASURED",
     "class": "HARNESS",
-    "why": "phase only (--no-time): rigs 25:65 laid, 0 failures; time with --resume --lay 0:0"
+    "why": "phase only (--no-time): rigs 40:80 laid, 0 failures; time with --resume --lay 0:0"
    }
   ]
  },
  {
-  "phase": "perf_105",
+  "phase": "perfE_120",
   "args": {
-   "lay": "65:105",
+   "lay": "80:120",
    "no_time": true,
    "resume": true,
    "rigs": 200,
+   "calls": 20,
+   "basins": "edge",
+   "sinks_off": true,
    "restore_length": null
   },
-  "started": "2026-11-12T01:39:03",
-  "finished": "2026-11-12T01:45:12",
+  "started": "2026-11-12T03:11:55",
+  "finished": "2026-11-12T03:17:58",
   "mapSize": [
    325,
    325
+  ],
+  "layout": {
+   "basins": [
+    [
+     10,
+     2,
+     125,
+     320,
+     4
+    ],
+    [
+     190,
+     2,
+     125,
+     320,
+     1
+    ]
+   ],
+   "rigs": 200,
+   "lipA": 135,
+   "lipB": 189,
+   "kind": "edge",
+   "bandSquares": 3750
+  },
+  "edgeSinks": {
+   "before": "True",
+   "setOff": true,
+   "during": "False",
+   "gate": "DRAINGATE gate=False setting=False drainEdge=False sunk=0",
+   "noDrain": true,
+   "restored": "{'success': True, 'action': 'set', 'field': 'edgeSinksEnabled', 'fieldKind': 'static', 'valueBefore': 'False', 'valueAft"
+  },
+  "staged": [
+   {
+    "basin": [
+     10,
+     2,
+     125,
+     320
+    ],
+    "cells": 40000,
+    "dug": 40000,
+    "filled": 40000,
+    "refusedFills": 0
+   },
+   {
+    "basin": [
+     190,
+     2,
+     125,
+     320
+    ],
+    "cells": 40000,
+    "dug": 40000,
+    "filled": 40000,
+    "refusedFills": 0
+   }
   ],
   "rows": [
    {
     "id": "LEVEL_PERF_TICK_TIME",
     "status": "UNMEASURED",
     "class": "HARNESS",
-    "why": "phase only (--no-time): rigs 65:105 laid, 0 failures; time with --resume --lay 0:0"
+    "why": "phase only (--no-time): rigs 80:120 laid, 0 failures; time with --resume --lay 0:0"
    },
    {
     "id": "LEVEL_PERF_ALLOC",
     "status": "UNMEASURED",
     "class": "HARNESS",
-    "why": "phase only (--no-time): rigs 65:105 laid, 0 failures; time with --resume --lay 0:0"
+    "why": "phase only (--no-time): rigs 80:120 laid, 0 failures; time with --resume --lay 0:0"
    }
   ]
  },
  {
-  "phase": "perf_145",
+  "phase": "perfE_160",
   "args": {
-   "lay": "105:145",
+   "lay": "120:160",
    "no_time": true,
    "resume": true,
    "rigs": 200,
+   "calls": 20,
+   "basins": "edge",
+   "sinks_off": true,
    "restore_length": null
   },
-  "started": "2026-11-12T01:45:19",
-  "finished": "2026-11-12T01:51:22",
+  "started": "2026-11-12T03:18:15",
+  "finished": "2026-11-12T03:24:21",
   "mapSize": [
    325,
    325
+  ],
+  "layout": {
+   "basins": [
+    [
+     10,
+     2,
+     125,
+     320,
+     4
+    ],
+    [
+     190,
+     2,
+     125,
+     320,
+     1
+    ]
+   ],
+   "rigs": 200,
+   "lipA": 135,
+   "lipB": 189,
+   "kind": "edge",
+   "bandSquares": 3750
+  },
+  "edgeSinks": {
+   "before": "True",
+   "setOff": true,
+   "during": "False",
+   "gate": "DRAINGATE gate=False setting=False drainEdge=False sunk=0",
+   "noDrain": true,
+   "restored": "{'success': True, 'action': 'set', 'field': 'edgeSinksEnabled', 'fieldKind': 'static', 'valueBefore': 'False', 'valueAft"
+  },
+  "staged": [
+   {
+    "basin": [
+     10,
+     2,
+     125,
+     320
+    ],
+    "cells": 40000,
+    "dug": 40000,
+    "filled": 40000,
+    "refusedFills": 0
+   },
+   {
+    "basin": [
+     190,
+     2,
+     125,
+     320
+    ],
+    "cells": 40000,
+    "dug": 40000,
+    "filled": 40000,
+    "refusedFills": 0
+   }
   ],
   "rows": [
    {
     "id": "LEVEL_PERF_TICK_TIME",
     "status": "UNMEASURED",
     "class": "HARNESS",
-    "why": "phase only (--no-time): rigs 105:145 laid, 0 failures; time with --resume --lay 0:0"
+    "why": "phase only (--no-time): rigs 120:160 laid, 0 failures; time with --resume --lay 0:0"
    },
    {
     "id": "LEVEL_PERF_ALLOC",
     "status": "UNMEASURED",
     "class": "HARNESS",
-    "why": "phase only (--no-time): rigs 105:145 laid, 0 failures; time with --resume --lay 0:0"
+    "why": "phase only (--no-time): rigs 120:160 laid, 0 failures; time with --resume --lay 0:0"
    }
   ]
  },
  {
-  "phase": "perf_185",
+  "phase": "perfE_200",
   "args": {
-   "lay": "145:185",
+   "lay": "160:200",
    "no_time": true,
    "resume": true,
    "rigs": 200,
+   "calls": 20,
+   "basins": "edge",
+   "sinks_off": true,
    "restore_length": null
   },
-  "started": "2026-11-12T01:51:37",
-  "finished": "2026-11-12T01:57:43",
+  "started": "2026-11-12T03:24:28",
+  "finished": "2026-11-12T03:30:04",
   "mapSize": [
    325,
    325
+  ],
+  "layout": {
+   "basins": [
+    [
+     10,
+     2,
+     125,
+     320,
+     4
+    ],
+    [
+     190,
+     2,
+     125,
+     320,
+     1
+    ]
+   ],
+   "rigs": 200,
+   "lipA": 135,
+   "lipB": 189,
+   "kind": "edge",
+   "bandSquares": 3750
+  },
+  "edgeSinks": {
+   "before": "True",
+   "setOff": true,
+   "during": "False",
+   "gate": "DRAINGATE gate=False setting=False drainEdge=False sunk=0",
+   "noDrain": true,
+   "restored": "{'success': True, 'action': 'set', 'field': 'edgeSinksEnabled', 'fieldKind': 'static', 'valueBefore': 'False', 'valueAft"
+  },
+  "staged": [
+   {
+    "basin": [
+     10,
+     2,
+     125,
+     320
+    ],
+    "cells": 40000,
+    "dug": 40000,
+    "filled": 40000,
+    "refusedFills": 0
+   },
+   {
+    "basin": [
+     190,
+     2,
+     125,
+     320
+    ],
+    "cells": 40000,
+    "dug": 40000,
+    "filled": 40000,
+    "refusedFills": 0
+   }
   ],
   "rows": [
    {
     "id": "LEVEL_PERF_TICK_TIME",
     "status": "UNMEASURED",
     "class": "HARNESS",
-    "why": "phase only (--no-time): rigs 145:185 laid, 0 failures; time with --resume --lay 0:0"
+    "why": "phase only (--no-time): rigs 160:200 laid, 0 failures; time with --resume --lay 0:0"
    },
    {
     "id": "LEVEL_PERF_ALLOC",
     "status": "UNMEASURED",
     "class": "HARNESS",
-    "why": "phase only (--no-time): rigs 145:185 laid, 0 failures; time with --resume --lay 0:0"
+    "why": "phase only (--no-time): rigs 160:200 laid, 0 failures; time with --resume --lay 0:0"
    }
   ]
  },
  {
-  "phase": "perf_200",
-  "args": {
-   "lay": "185:200",
-   "no_time": true,
-   "resume": true,
-   "rigs": 200,
-   "restore_length": null
-  },
-  "started": "2026-11-12T01:57:52",
-  "finished": "2026-11-12T01:59:52",
-  "mapSize": [
-   325,
-   325
-  ],
-  "rows": [
-   {
-    "id": "LEVEL_PERF_TICK_TIME",
-    "status": "UNMEASURED",
-    "class": "HARNESS",
-    "why": "phase only (--no-time): rigs 185:200 laid, 0 failures; time with --resume --lay 0:0"
-   },
-   {
-    "id": "LEVEL_PERF_ALLOC",
-    "status": "UNMEASURED",
-    "class": "HARNESS",
-    "why": "phase only (--no-time): rigs 185:200 laid, 0 failures; time with --resume --lay 0:0"
-   }
-  ]
- },
- {
-  "phase": "perf_timed",
+  "phase": "perfE_timed",
   "args": {
    "lay": "0:0",
    "no_time": false,
    "resume": true,
    "rigs": 200,
+   "calls": 60,
+   "basins": "edge",
+   "sinks_off": true,
    "restore_length": "40"
   },
-  "started": "2026-11-12T01:59:53",
-  "finished": "2026-11-12T02:00:35",
+  "started": "2026-11-12T03:30:25",
+  "finished": "2026-11-12T03:31:10",
   "mapSize": [
    325,
    325
+  ],
+  "layout": {
+   "basins": [
+    [
+     10,
+     2,
+     125,
+     320,
+     4
+    ],
+    [
+     190,
+     2,
+     125,
+     320,
+     1
+    ]
+   ],
+   "rigs": 200,
+   "lipA": 135,
+   "lipB": 189,
+   "kind": "edge",
+   "bandSquares": 3750
+  },
+  "edgeSinks": {
+   "before": "True",
+   "setOff": true,
+   "during": "False",
+   "gate": "DRAINGATE gate=False setting=False drainEdge=False sunk=0",
+   "noDrain": true,
+   "restored": "{'success': True, 'action': 'set', 'field': 'edgeSinksEnabled', 'fieldKind': 'static', 'valueBefore': 'False', 'valueAft"
+  },
+  "staged": [
+   {
+    "basin": [
+     10,
+     2,
+     125,
+     320
+    ],
+    "cells": 40000,
+    "dug": 40000,
+    "filled": 40000,
+    "refusedFills": 0
+   },
+   {
+    "basin": [
+     190,
+     2,
+     125,
+     320
+    ],
+    "cells": 40000,
+    "dug": 40000,
+    "filled": 40000,
+    "refusedFills": 0
+   }
   ],
   "rows": [
    {

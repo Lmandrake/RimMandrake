@@ -987,13 +987,22 @@ namespace RimMandrake.FlowWorks.Hose
             // the free end: what it is coupled to (another faction's tank names its faction) or "lying in <water> (no intake ...)"
             // the "(taking water in needs a pump: set this end to Intake)" hint is noise on an end already set to Intake, and false
             // on one in a gravity-levelling link, whose own Levelling line says water moves with no pump
-            bool quietHint = RM_HoseSettings.freeEndRolesEnabled && freeEndRole == Machinery.RM_FreeEndRole.Intake
-                             || Machinery.RM_Levelling.StateOf(parent.Map, this) != null;
+            bool levelling = Machinery.RM_Levelling.StateOf(parent.Map, this) != null;
+            bool quietHint = RM_HoseSettings.freeEndRolesEnabled && freeEndRole == Machinery.RM_FreeEndRole.Intake || levelling;
             string endLine = relay == null ? "\nFree end: " + this.FreeEnd().Describe(intakeHint: !quietHint) + "." : "";
+            // a lip end beside a pit whose water stands below the lip reads "lying free" (hose band rule: water across a sheer
+            // wall is out of a free end's reach), yet levelling, which resolves the end square and its 8 neighbours like a pump,
+            // draws through it: say where it actually lies (judge, 2026-11-12)
+            if (relay == null && levelling && this.FreeEnd().Kind == HoseEndKind.Free) endLine = "\nFree end: lying at the water's edge.";
             if (relay == null && RM_HoseSettings.freeEndRolesEnabled)
                 endLine += (heldUnits > 0 ? " Holding " + RM_Volume.FormatUnits(heldUnits) + " " + heldLiquid?.label + "." : "") + " Role: " + freeEndRole + (this.FreeEnd().Port != null && freeEndRole != Machinery.RM_FreeEndRole.Capped ? " (inert while coupled)." : ".") + RoleNeed();
             // PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL (design P9): what passive levelling did at this end last cycle
-            endLine += Machinery.RM_Levelling.Readout(parent.Map, this);
+            string levelLine = Machinery.RM_Levelling.Readout(parent.Map, this);
+            // just loaded: no levelling cycle has run on this map yet, so there is no state to report (judge, 2026-11-12)
+            if (levelLine.Length == 0 && relay == null && freeEndRole != Machinery.RM_FreeEndRole.Capped && RM_HoseSettings.enabled
+                && RM_HoseSettings.gravityLevellingEnabled && RM_MapComponent_Excavation.LevelExact && !Machinery.RM_Levelling.HasRun(parent.Map))
+                levelLine = "\nLevelling: checked on the next cycle.";
+            endLine += levelLine;
             return conn + "\nHose laid" + to + len + " (" + sm.State.ToString().ToLower() + ")." + CrossingLines() + endLine + order;
         }
     }

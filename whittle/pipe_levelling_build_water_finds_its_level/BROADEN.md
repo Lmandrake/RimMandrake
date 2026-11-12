@@ -70,8 +70,9 @@ run on the A4 rig `walk_gaps_proof.py --fresh-map` leaves (SteveDesktop game A, 
   stalled transfer.
 - **Found and fixed on the way:** right after a load, before the first levelling cycle, the intake reel said "Intake needs a
   working pump on this network." on a rig that was about to level (the per-reel levelling state is not saved; a paused,
-  just-loaded game shows that line until unpaused). Now a no-pump network with two open ends says nothing about a pump until
-  levelling has run its first cycle on the map (`RM_Levelling.HasRun`). Capture: `whittle/pipe_levelling_build_water_finds_its_level/evidence/lev_after_reload_pane.png`.
+  just-loaded game shows that line until unpaused). Now, until levelling has run its first cycle on the map
+  (`RM_Levelling.HasRun`), a no-pump network with two open ends makes no pump claim and the reel reads "Levelling: checked on
+  the next cycle." (added after the judge's first pass). Capture: `whittle/pipe_levelling_build_water_finds_its_level/evidence/lev_after_reload_pane.png`.
 - **Roles (7): holds.** Swapped (Outflow/Intake) and both-Intake still level (roles do not set the direction: higher runs to
   lower); one end Capped stops it dead (volumes unchanged over 500 ticks, the Levelling line goes); back to Outflow resumes.
   Total dL constant across all of it.

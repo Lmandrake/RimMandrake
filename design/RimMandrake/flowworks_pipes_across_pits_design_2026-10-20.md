@@ -54,10 +54,12 @@ feasible, and built behind a Mod Setting. The offline selftests pass, and so did
   rotate in later and catch up by up to 8 cycles' worth. The test scene had 200 bodies, 40 of them 40,000-square basins,
   and 400 links. Planning took **89 µs per cycle, about 0.36 µs per tick**.
   - The adapter's walk of dug runs is capped at 20,000 squares per run and 60,000 squares per cycle. MEASURED live
-    2026-11-12 (SteveDesktop, FlowWorks tier, 325×325 map, two 38,125-square basins, 200 links, 20 timed cycles): the whole
-    `RM_Levelling.Tick` averaged **14.0 ms per cycle (0.056 ms per tick)**, worst 53.8 ms in the one cycle that held a GC,
-    and grew the managed heap ~460 KB per cycle (`pipe_levelling_perf_proof.py`; evidence in
-    `whittle/pipe_levelling_build_water_finds_its_level/evidence/A3_perf_timed_200_links.json`).
+    2026-11-12 (SteveDesktop, FlowWorks tier, 325×325 map, two 40,000-square basins with edge sinks held off for the run,
+    200 links, 60 timed cycles): the whole `RM_Levelling.Tick` averaged **6.6 ms per cycle (0.027 ms per tick)** and grew
+    the managed heap ~330 KB per cycle, no GC. The worst cycle, 52-73 ms, is the first after the network changed (200
+    components and the hose links rebuilt, 46 ms of it resolving links), a one-off hitch on a topology change
+    (`pipe_levelling_perf_proof.py --basins edge --sinks-off`; evidence in
+    `whittle/pipe_levelling_build_water_finds_its_level/evidence/A3_perf_timed_200_links_40000_basins.json`).
 - **Selftests** (`Source/SelfTest/LevellingChecks.cs`, all green). The four gates were checked every cycle:
   - volume exact, counting what limitless bodies gave or took;
   - energy never rising, and in two-body scenes the gap never growing;

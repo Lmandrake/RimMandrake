@@ -1,6 +1,6 @@
 {
  "script": "walk_gaps_proof.py",
- "started": "2026-11-12T02:31:47",
+ "started": "2026-11-12T03:39:32",
  "rows": [
   {
    "id": "PONDS_DIFFERENT_LIQUIDS_NO_MIX",
@@ -66,7 +66,7 @@
        240000,
        210000
       ],
-      12,
+      2381,
       "flowing (no "
      ],
      [
@@ -75,7 +75,7 @@
        232500,
        217500
       ],
-      13,
+      2382,
       "flowing (no "
      ],
      [
@@ -84,7 +84,7 @@
        228750,
        221250
       ],
-      14,
+      2383,
       "flowing (no "
      ],
      [
@@ -93,7 +93,7 @@
        226875,
        223125
       ],
-      15,
+      2384,
       "flowing (no "
      ],
      [
@@ -102,7 +102,7 @@
        225937,
        224063
       ],
-      16,
+      2385,
       "flowing (no "
      ],
      [
@@ -111,7 +111,7 @@
        225468,
        224532
       ],
-      17,
+      2386,
       "flowing (no "
      ],
      [
@@ -120,7 +120,7 @@
        225234,
        224766
       ],
-      18,
+      2387,
       "flowing (no "
      ],
      [
@@ -129,7 +129,7 @@
        225234,
        224766
       ],
-      18,
+      2387,
       "level."
      ]
     ],
@@ -160,12 +160,12 @@
  "missingHooks": {},
  "mode": "live",
  "mod": "FlowWorks",
- "mod_hash": "9b2b1b82d5c0f4681f0751738ab93c7f37a55196282a354c1d31551afdfcfbd8",
+ "mod_hash": "5c763157abb801f527dfc222ce0dd1579c029c3b5ee3d203305622118542e460",
  "manifest": {
   "schema": 1,
   "script": "northstar/walk_gaps_proof.py",
-  "runtime": "8980c14212886e262b1259340556be2a472c88bbb5b6284787e39badfa6ccccb",
-  "test": "8a814dbf9aacb4c21158686797327b7bd088a8449cf5e1089ba83a33def3c8d9",
+  "runtime": "99f9e7372005acb73b5226733b69e116a28ce54ad379a3b653051de3892b3bd5",
+  "test": "fae5a3fb09013d224198e41e89f8f03ff765c2290cd440e6fc9a7216b6456e70",
   "test_files": [
    "FlowWorks/northstar/driver_stamp.py",
    "FlowWorks/northstar/proof_hose.py",
@@ -253,7 +253,7 @@
    "mandrake.rm.flowworks",
    "mandrake.rm.patches"
   ],
-  "assembly_sha256": "23fe019e2c391fe89e652bde0d0c0b06ed032f729b55b6506c063acaafbfadc3"
+  "assembly_sha256": "52539f5100abaa432ae694c0f6fce587e6ddf98d0a3da8313282866fdfc4b4d2"
  },
  "site_calm": {
   "ok": true,
@@ -268,90 +268,62 @@
   "wildSpawner": "blocked (read back)",
   "removed": {
    "removed": [
-    "Hare51253",
-    "Hare51260",
-    "Hare51286",
-    "Ibex51254",
-    "Ibex51255",
-    "Ibex51256",
-    "Ibex51277",
-    "Ibex51278",
-    "Ibex51279",
-    "Mastodon51273",
-    "Mastodon51274",
-    "Mastodon51275",
-    "Mastodon51276",
-    "Megascarab51240",
-    "Megaspider51239",
-    "Megaspider51242",
-    "Muffalo51280",
-    "Muffalo51281",
-    "Muffalo51282",
-    "Muffalo51283",
-    "Muffalo51284",
-    "Muffalo51285",
-    "Porcupine51263",
-    "PrairieDog51259",
-    "PrairieDog51262",
-    "PrairieDog51269",
-    "PrairieDog51271",
-    "Sparrow51266",
-    "Sparrow51267",
-    "Sparrow51268",
-    "Spelopede51241",
-    "Squirrel51261",
-    "Squirrel51264",
-    "Squirrel51265",
-    "Squirrel51287",
-    "Vulture51252",
-    "Vulture51257",
-    "Vulture51258",
-    "Vulture51270",
-    "Vulture51272"
+    "Bear_Grizzly23951",
+    "Crow23952",
+    "Crow23953",
+    "Hare23932",
+    "Hare23934",
+    "Ibex23954",
+    "Ibex23955",
+    "Ibex23956",
+    "Megasloth23929",
+    "Muffalo23935",
+    "Muffalo23936",
+    "Muffalo23937",
+    "Muffalo23938",
+    "Muffalo23939",
+    "Muffalo23940",
+    "Muffalo23941",
+    "Muffalo23942",
+    "Muffalo23943",
+    "Raccoon23949",
+    "Rat23928",
+    "Rat23931",
+    "Rat23945",
+    "Rat23947",
+    "Rat23948",
+    "Squirrel23944",
+    "Turkey23930",
+    "Turkey23933",
+    "Turkey23946",
+    "Wolf_Timber23950"
    ],
    "left": []
   },
   "threatStructures": {
-   "removed": [
-    [
-     "Hive",
-     "Hive51229"
-    ],
-    [
-     "GlowPod",
-     "GlowPod51249"
-    ],
-    [
-     "GlowPod",
-     "GlowPod51250"
-    ],
-    [
-     "EggSac",
-     "EggSac51251"
-    ]
-   ],
+   "removed": [],
    "threatsAfter": 0,
    "error": null
   },
   "fed": [
-   "Human526",
-   "Human529",
-   "Human532"
+   "Human1046",
+   "Human1050",
+   "Human1059"
   ]
  },
  "startColonistsDrafted": [
   [
-   "Human526",
+   "Human1046",
    true
   ],
   [
-   "Human529",
+   "Human1050",
    true
   ],
   [
-   "Human532",
+   "Human1059",
    true
   ]
  ],
- "finished": "2026-11-12T02:35:06"
+ "finished": "2026-11-12T03:42:25"
 }

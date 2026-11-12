@@ -3,122 +3,122 @@
   {
    "step": "flowing before the save",
    "dl": [
-    353204,
-    348673
+    340000,
+    312108
    ],
    "inspect": [
-    "Free end: lying free. Role: Intake. / Levelling: flowing (no pump; the higher water runs to the lower).",
+    "Free end: lying at the water's edge. Role: Intake. / Levelling: flowing (no pump; the higher water runs to the lower).",
     "Free end: lying beside deep water. Role: Outflow. / Levelling: flowing (no pump; the higher water runs to the lower)."
    ],
-   "total": 701877
+   "total": 652108
   },
   {
    "step": "750 ticks on, no reload",
    "dl": [
-    351222,
-    350655
+    327797,
+    324311
    ],
    "inspect": [
-    "Free end: lying free. Role: Intake. / Levelling: flowing (no pump; the higher water runs to the lower).",
-    "Free end: lying free. Role: Outflow. / Levelling: flowing (no pump; the higher water runs to the lower)."
+    "Free end: lying at the water's edge. Role: Intake. / Levelling: flowing (no pump; the higher water runs to the lower).",
+    "Free end: lying at the water's edge. Role: Outflow. / Levelling: flowing (no pump; the higher water runs to the lower)."
    ],
-   "total": 701877
+   "total": 652108
   },
   {
    "step": "right after the reload (expect = before the save)",
    "dl": [
-    353204,
-    348673
+    340000,
+    312108
    ],
    "inspect": [
-    "Free end: lying free. Role: Intake.",
-    "Free end: lying free. Role: Outflow."
+    "Free end: lying free. Role: Intake. / Levelling: checked on the next cycle.",
+    "Free end: lying free. Role: Outflow. / Levelling: checked on the next cycle."
    ],
-   "total": 701877
+   "total": 652108
   },
   {
    "step": "750 ticks after the reload (expect = the no-reload run)",
    "dl": [
-    351222,
-    350655
+    327797,
+    324311
    ],
    "inspect": [
-    "Free end: lying free. Role: Intake. / Levelling: flowing (no pump; the higher water runs to the lower).",
-    "Free end: lying free. Role: Outflow. / Levelling: flowing (no pump; the higher water runs to the lower)."
+    "Free end: lying at the water's edge. Role: Intake. / Levelling: flowing (no pump; the higher water runs to the lower).",
+    "Free end: lying at the water's edge. Role: Outflow. / Levelling: flowing (no pump; the higher water runs to the lower)."
    ],
-   "total": 701877
+   "total": 652108
   },
   {
    "step": "refilled, roles Intake/Outflow",
    "dl": [
-    357664,
-    352991
+    351078,
+    333233
    ],
    "inspect": [
-    "Free end: lying free. Role: Intake. / Levelling: flowing (no pump; the higher water runs to the lower).",
+    "Free end: lying at the water's edge. Role: Intake. / Levelling: flowing (no pump; the higher water runs to the lower).",
     "Free end: lying beside deep water. Role: Outflow. / Levelling: flowing (no pump; the higher water runs to the lower)."
    ],
-   "total": 710655
+   "total": 684311
   },
   {
    "step": "roles swapped Outflow/Intake",
    "dl": [
-    355912,
-    354743
+    344386,
+    339925
    ],
    "inspect": [
-    "Free end: lying free. Role: Outflow. / Levelling: flowing (no pump; the higher water runs to the lower).",
-    "Free end: lying free. Role: Intake. / Levelling: flowing (no pump; the higher water runs to the lower)."
+    "Free end: lying at the water's edge. Role: Outflow. / Levelling: flowing (no pump; the higher water runs to the lower).",
+    "Free end: lying at the water's edge. Role: Intake. / Levelling: flowing (no pump; the higher water runs to the lower)."
    ],
-   "total": 710655
+   "total": 684311
   },
   {
    "step": "both Intake",
    "dl": [
-    355620,
-    355035
+    342713,
+    341598
    ],
    "inspect": [
-    "Free end: lying free. Role: Intake. / Levelling: level.",
-    "Free end: lying free. Role: Intake. / Levelling: level."
+    "Free end: lying at the water's edge. Role: Intake. / Levelling: flowing (no pump; the higher water runs to the lower).",
+    "Free end: lying at the water's edge. Role: Intake. / Levelling: flowing (no pump; the higher water runs to the lower)."
    ],
-   "total": 710655
+   "total": 684311
   },
   {
    "step": "reel 2 Capped (one cycle to settle)",
    "dl": [
-    355620,
-    355035
+    342713,
+    341598
    ],
    "inspect": [
     "Free end: lying free. Role: Intake. Intake needs a working pump on this network.",
     "Free end: lying free. Role: Capped."
    ],
-   "total": 710655
+   "total": 684311
   },
   {
    "step": "reel 2 Capped, 500 ticks later (expect no change)",
    "dl": [
-    355620,
-    355035
+    342713,
+    341598
    ],
    "inspect": [
     "Free end: lying free. Role: Intake. Intake needs a working pump on this network.",
     "Free end: lying free. Role: Capped."
    ],
-   "total": 710655
+   "total": 684311
   },
   {
    "step": "reel 2 back to Outflow",
    "dl": [
-    355620,
-    355035
+    342434,
+    341877
    ],
    "inspect": [
-    "Free end: lying free. Role: Intake. / Levelling: level.",
-    "Free end: lying free. Role: Outflow. / Levelling: level."
+    "Free end: lying at the water's edge. Role: Intake. / Levelling: level.",
+    "Free end: lying at the water's edge. Role: Outflow. / Levelling: level."
    ],
-   "total": 710655
+   "total": 684311
   }
  ],
  "save": {
@@ -129,11 +129,12 @@
  },
  "load": {
   "success": true,
-  "s": 8.2,
+  "s": 5.0,
   "message": "RimWorld has a loaded visual-ready game and is paused for automation.",
-  "readableAfterS": 8.3
+  "readableAfterS": 5.1
  },
  "afterReloadDesktop": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_STEVEDESKTOP_FWLIVE\\lev_after_reload_desktop.bmp",
+ "afterReloadDesktopWritten": true,
  "saveLoad": {
   "reloadMatchesSave": true,
   "replayMatchesNoReload": true,

@@ -1,6 +1,6 @@
 {
  "script": "pipe_levelling_perf_proof.py",
- "started": "2026-11-12T01:59:53",
+ "started": "2026-11-12T03:30:25",
  "rows": [
   {
    "id": "LEVEL_PERF_TICK_TIME",
@@ -9,8 +9,8 @@
    "item": "PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL",
    "criterion": "A3",
    "detail": {
-    "perf": "LEVELPERF calls=20 msAvg=13.988 msMax=53.795 msPerTick=0.05595 allocKBAvg=459.8 allocCalls=19 gcs=1 links=200 moves=680 cycleTicks=250",
-    "levelLink": "LEVELLINK reel=90995 state=Flowing role=Intake laid=True intakes=1 outflows=1 on=True cycles=41 links=200 moves=45 movedDl=702108",
+    "perf": "LEVELPERF calls=60 msAvg=6.629 msMax=51.945 msPerTick=0.02652 allocKBAvg=329.8 allocCalls=60 gcs=0 links=200 moves=2310 cycleTicks=250",
+    "levelLink": "LEVELLINK reel=68752 state=Flowing role=Intake laid=True intakes=1 outflows=1 on=True cycles=1 links=200 moves=16 movedDl=500000",
     "links": 200,
     "wantLinks": 200,
     "stagedOk": true,
@@ -19,10 +19,10 @@
      325,
      325
     ],
-    "basins": "interior",
+    "basins": "edge",
     "noDrain": true,
-    "bandSquares": 0,
-    "edgeSinks": "True",
+    "bandSquares": 3750,
+    "edgeSinks": "False",
     "rehearsal": false
    }
   },
@@ -33,8 +33,8 @@
    "item": "PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL",
    "criterion": "A3",
    "detail": {
-    "perf": "LEVELPERF calls=20 msAvg=13.988 msMax=53.795 msPerTick=0.05595 allocKBAvg=459.8 allocCalls=19 gcs=1 links=200 moves=680 cycleTicks=250",
-    "levelLink": "LEVELLINK reel=90995 state=Flowing role=Intake laid=True intakes=1 outflows=1 on=True cycles=41 links=200 moves=45 movedDl=702108",
+    "perf": "LEVELPERF calls=60 msAvg=6.629 msMax=51.945 msPerTick=0.02652 allocKBAvg=329.8 allocCalls=60 gcs=0 links=200 moves=2310 cycleTicks=250",
+    "levelLink": "LEVELLINK reel=68752 state=Flowing role=Intake laid=True intakes=1 outflows=1 on=True cycles=1 links=200 moves=16 movedDl=500000",
     "links": 200,
     "wantLinks": 200,
     "stagedOk": true,
@@ -43,21 +43,21 @@
      325,
      325
     ],
-    "basins": "interior",
+    "basins": "edge",
     "noDrain": true,
-    "bandSquares": 0,
-    "edgeSinks": "True",
+    "bandSquares": 3750,
+    "edgeSinks": "False",
     "rehearsal": false
    }
   }
  ],
  "args": {
-  "out": "Transient/lev/perf_timed.json",
+  "out": "Transient/lev/perfE_timed.json",
   "rigs": 200,
-  "calls": 20,
+  "calls": 60,
   "rehearsal": false,
-  "basins": "interior",
-  "sinks_off": false,
+  "basins": "edge",
+  "sinks_off": true,
   "budget_s": null,
   "hard_cap_s": 540.0,
   "resume": true,
@@ -76,11 +76,11 @@
  },
  "mode": "live",
  "mod": "FlowWorks",
- "mod_hash": "0ff78b509cda806ef03a1efa3fd8e9190d03d37aebdfabd23de5911e5a9e409f",
+ "mod_hash": "9e6ca711144a024d75f7973f8e9d59692b1a9f1b957483dd07786f7a0dbc5f06",
  "manifest": {
   "schema": 1,
   "script": "northstar/pipe_levelling_perf_proof.py",
-  "runtime": "bf4846259dfe95b5c1572779f413170277bd6f2e346cce3910a7827d2b22d2e8",
+  "runtime": "f93bd60e3ec4d853a08242dc79947b3ba66b26cfd76bfb7bde5aaaa3ce3d7ac7",
   "test": "95861ef38d49e62dbfb35acfb1e404cfe0843698487c6b0fd6e7a6c7dcc019ff",
   "test_files": [
    "FlowWorks/northstar/driver_stamp.py",
@@ -169,7 +169,7 @@
    "mandrake.rm.flowworks",
    "mandrake.rm.patches"
   ],
-  "assembly_sha256": "f393bbe6893504656c9ba5d893151370b65a59096c8f0d01d0c8a78f8706c996"
+  "assembly_sha256": "52539f5100abaa432ae694c0f6fce587e6ddf98d0a3da8313282866fdfc4b4d2"
  },
  "calm": {
   "ok": true,
@@ -202,57 +202,59 @@
   "basins": [
    [
     10,
-    10,
+    2,
     125,
-    305,
+    320,
     4
    ],
    [
     190,
-    10,
+    2,
     125,
-    305,
+    320,
     1
    ]
   ],
   "rigs": 200,
   "lipA": 135,
   "lipB": 189,
-  "kind": "interior",
-  "bandSquares": 0
+  "kind": "edge",
+  "bandSquares": 3750
  },
  "site": {
   "resume": true
  },
  "edgeSinks": {
   "before": "True",
-  "during": "True",
-  "gate": "DRAINGATE gate=True setting=True drainEdge=False sunk=0",
-  "noDrain": true
+  "setOff": true,
+  "during": "False",
+  "gate": "DRAINGATE gate=False setting=False drainEdge=False sunk=0",
+  "noDrain": true,
+  "restored": "{'success': True, 'action': 'set', 'field': 'edgeSinksEnabled', 'fieldKind': 'static', 'valueBefore': 'False', 'valueAft"
  },
  "staged": [
   {
    "basin": [
     10,
-    10,
+    2,
     125,
-    305
+    320
    ],
-   "cells": 38125,
-   "dug": 38125,
-   "filled": 38125,
+   "cells": 40000,
+   "dug": 40000,
+   "filled": 40000,
    "refusedFills": 0
   },
   {
    "basin": [
     190,
-    10,
+    2,
     125,
-    305
+    320
    ],
-   "cells": 38125,
-   "dug": 38125,
-   "filled": 38125,
+   "cells": 40000,
+   "dug": 40000,
+   "filled": 40000,
    "refusedFills": 0
   }
  ],
@@ -265,6 +267,6 @@
   0
  ],
  "layFailures": 0,
- "finished": "2026-11-12T02:00:35",
+ "finished": "2026-11-12T03:31:10",
  "calmRestore": "False"
 }

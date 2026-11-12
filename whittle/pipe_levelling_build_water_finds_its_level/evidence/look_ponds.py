@@ -62,8 +62,16 @@ def shot(name, rig, which=0, label=""):
     ticks(2)
     time.sleep(1.5)
     desk = DESK_DIR + "\\" + name + "_desktop.bmp"
-    subprocess.run([sys.executable, os.path.join(REPO, "src", "RimMandrake", "Utils", "system_screenshot.py"), desk], timeout=60)
-    rec = {"name": name, "label": label, "reel": rid, "inspect": inspect(rid), "pools": pools(rig), "desktop": desk}
+    # the old file goes first: a capture whose subprocess crashed (a 'Fatal Python error' interop flake, 2026-11-12) left the
+    # previous run's image in place under this name, showing an older build's text. One retry; written or not is recorded.
+    if os.path.exists(desk):
+        os.remove(desk)
+    for _ in range(2):
+        subprocess.run([sys.executable, os.path.join(REPO, "src", "RimMandrake", "Utils", "system_screenshot.py"), desk], timeout=60)
+        if os.path.exists(desk):
+            break
+    rec = {"name": name, "label": label, "reel": rid, "inspect": inspect(rid), "pools": pools(rig), "desktop": desk,
+           "desktopWritten": os.path.exists(desk), "capturedAt": time.strftime("%Y-%m-%dT%H:%M:%S")}
     out["shots"].append(rec)
     print(json.dumps(rec)[:600], flush=True)
 

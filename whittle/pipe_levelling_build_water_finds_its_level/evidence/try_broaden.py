@@ -100,8 +100,14 @@ B.call("rimworld/jump_camera_to_cell", x=46, z=63)
 B.call("jawa/select_things", ids=str(((lt.get("things") or [{}])[0]).get("id")), action="select")
 time.sleep(2.0)
 desk = r"D:\ClaudeWork\rimmandrake\whittle_claude\CLAUDE_STEVEDESKTOP_FWLIVE\lev_after_reload_desktop.bmp"
-subprocess.run([sys.executable, os.path.join(REPO, "src", "RimMandrake", "Utils", "system_screenshot.py"), desk], timeout=60)
+if os.path.exists(desk):            # never leave an older run's image under this name (see look_ponds.py)
+    os.remove(desk)
+for _ in range(2):
+    subprocess.run([sys.executable, os.path.join(REPO, "src", "RimMandrake", "Utils", "system_screenshot.py"), desk], timeout=60)
+    if os.path.exists(desk):
+        break
 out["afterReloadDesktop"] = desk
+out["afterReloadDesktopWritten"] = os.path.exists(desk)
 B.call("jawa/select_things", action="clear")
 tick(750)
 sb = note("750 ticks after the reload (expect = the no-reload run)")

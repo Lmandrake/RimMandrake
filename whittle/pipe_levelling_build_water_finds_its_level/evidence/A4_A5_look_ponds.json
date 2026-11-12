@@ -3,24 +3,26 @@
   {
    "name": "lev_a4_level",
    "label": "A4 rig after the proof: pools level, intake reel selected",
-   "reel": "RM_HoseReel51375",
+   "reel": "RM_HoseReel24037",
    "inspect": [
     "Connected to universal pipe (pipe).",
     "Hose leaves to the west.",
-    "Hose laid, 9 of 40 squares (plump).",
-    "Free end: lying free. Role: Intake.",
+    "Hose laid, 10 of 40 squares (plump).",
+    "Free end: lying at the water's edge. Role: Intake.",
     "Levelling: level."
    ],
    "pools": [
     "PITWATER dl=225234 wet=9 cells=9",
     "PITWATER dl=224766 wet=9 cells=9"
    ],
-   "desktop": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_STEVEDESKTOP_FWLIVE\\lev_a4_level_desktop.bmp"
+   "desktop": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_STEVEDESKTOP_FWLIVE\\lev_a4_level_desktop.bmp",
+   "desktopWritten": true,
+   "capturedAt": "2026-11-12T03:42:28"
   },
   {
    "name": "lev_a5_nomix",
    "label": "A5 rig: water pool vs chemfuel pool, intake reel selected",
-   "reel": "RM_HoseReel51360",
+   "reel": "RM_HoseReel24028",
    "inspect": [
     "Connected to universal pipe (pipe).",
     "Hose leaves to the west.",
@@ -32,75 +34,85 @@
     "PITWATER dl=360000 wet=9 cells=9",
     "PITWATER dl=90000 wet=9 cells=9"
    ],
-   "desktop": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_STEVEDESKTOP_FWLIVE\\lev_a5_nomix_desktop.bmp"
+   "desktop": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_STEVEDESKTOP_FWLIVE\\lev_a5_nomix_desktop.bmp",
+   "desktopWritten": true,
+   "capturedAt": "2026-11-12T03:42:39"
   },
   {
    "name": "lev_a5_nomix_outflow",
    "label": "A5 rig: the outflow reel says the same",
-   "reel": "RM_HoseReel51361",
+   "reel": "RM_HoseReel24029",
    "inspect": [
     "Connected to universal pipe (pipe).",
     "Hose leaves to the west.",
-    "Hose laid, 9 of 40 squares (flat).",
-    "Free end: lying free. Role: Outflow.",
+    "Hose laid, 10 of 40 squares (flat).",
+    "Free end: lying at the water's edge. Role: Outflow.",
     "Levelling: stopped, different liquids never mix."
    ],
    "pools": [
     "PITWATER dl=360000 wet=9 cells=9",
     "PITWATER dl=90000 wet=9 cells=9"
    ],
-   "desktop": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_STEVEDESKTOP_FWLIVE\\lev_a5_nomix_outflow_desktop.bmp"
+   "desktop": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_STEVEDESKTOP_FWLIVE\\lev_a5_nomix_outflow_desktop.bmp",
+   "desktopWritten": true,
+   "capturedAt": "2026-11-12T03:42:41"
   },
   {
    "name": "lev_a4_refilled_flowing",
    "label": "A4 rig 500 ticks after pool 1 was topped up again: flowing again",
-   "reel": "RM_HoseReel51375",
+   "reel": "RM_HoseReel24037",
    "inspect": [
     "Connected to universal pipe (pipe).",
     "Hose leaves to the west.",
-    "Hose laid, 9 of 40 squares (plump).",
-    "Free end: lying free. Role: Intake.",
+    "Hose laid, 10 of 40 squares (plump).",
+    "Free end: lying at the water's edge. Role: Intake.",
     "Levelling: flowing (no pump; the higher water runs to the lower)."
    ],
    "pools": [
     "PITWATER dl=340000 wet=9 cells=9",
     "PITWATER dl=244766 wet=9 cells=9"
    ],
-   "desktop": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_STEVEDESKTOP_FWLIVE\\lev_a4_refilled_flowing_desktop.bmp"
+   "desktop": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_STEVEDESKTOP_FWLIVE\\lev_a4_refilled_flowing_desktop.bmp",
+   "desktopWritten": true,
+   "capturedAt": "2026-11-12T03:42:52"
   },
   {
    "name": "lev_a4_relevelled",
    "label": "A4 rig after the refill has levelled again",
-   "reel": "RM_HoseReel51375",
+   "reel": "RM_HoseReel24037",
    "inspect": [
     "Connected to universal pipe (pipe).",
     "Hose leaves to the west.",
-    "Hose laid, 9 of 40 squares (plump).",
-    "Free end: lying free. Role: Intake.",
+    "Hose laid, 10 of 40 squares (plump).",
+    "Free end: lying at the water's edge. Role: Intake.",
     "Levelling: level."
    ],
    "pools": [
     "PITWATER dl=292658 wet=9 cells=9",
     "PITWATER dl=292108 wet=9 cells=9"
    ],
-   "desktop": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_STEVEDESKTOP_FWLIVE\\lev_a4_relevelled_desktop.bmp"
+   "desktop": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_STEVEDESKTOP_FWLIVE\\lev_a4_relevelled_desktop.bmp",
+   "desktopWritten": true,
+   "capturedAt": "2026-11-12T03:43:40"
   },
   {
    "name": "lev_a4_relevelled_outflow",
    "label": "A4 rig, outflow reel",
-   "reel": "RM_HoseReel51376",
+   "reel": "RM_HoseReel24038",
    "inspect": [
     "Connected to universal pipe (pipe).",
     "Hose leaves to the west.",
     "Hose laid, 9 of 40 squares (plump).",
-    "Free end: lying free. Role: Outflow.",
+    "Free end: lying at the water's edge. Role: Outflow.",
     "Levelling: level."
    ],
    "pools": [
     "PITWATER dl=292658 wet=9 cells=9",
     "PITWATER dl=292108 wet=9 cells=9"
    ],
-   "desktop": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_STEVEDESKTOP_FWLIVE\\lev_a4_relevelled_outflow_desktop.bmp"
+   "desktop": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_STEVEDESKTOP_FWLIVE\\lev_a4_relevelled_outflow_desktop.bmp",
+   "desktopWritten": true,
+   "capturedAt": "2026-11-12T03:43:42"
   }
  ],
  "reads": [],
