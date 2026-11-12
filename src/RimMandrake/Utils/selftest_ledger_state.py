@@ -74,6 +74,7 @@ rf(B, "note", ids[0], "--text", "first look; NEXT: the stale action")
 time.sleep(1.1)                                                     # a later second, so "newest" means something
 rf(B, "note", ids[0], "--text", "probe ran; NEXT: write the fix into the proof script")
 rf(B, "note", ids[4], "--text", "NEXT: read the first exception in Player.log\nnot this second line")
+rf(B, "note", ids[9], "--text", "fixed the reader (NEXT then: is read now); NEXT: re-run the judge")    # a NEXT quoted, then the real one
 rf(B, "note", ids[11], "--text", "NEXT: a dropped item's action")
 rf(B, "drop", ids[11], "--reason", "selftest: dropped items leave every section")
 rf(O, "note", "STATENOW_TEST_OTHER_SEAT", "--text", "NEXT: the other seat's action")
@@ -137,6 +138,8 @@ check(i4 > 0 and "(NEXT 11-" in sec["NEXT"][i4] and "by BENCH)" in sec["NEXT"][i
       "NEXT: two lines, the stamp and writer on the first, one line of the note on the second")
 check("dropped item's action" not in body("NEXT") and "other seat's action" not in body("NEXT"),
       "NEXT: nothing from a dropped item or another seat")
+check("    NEXT: re-run the judge" in sec["NEXT"] and "is read now" not in body("NEXT"),
+      "NEXT: a quoted NEXT earlier on the line does not swallow the real one after it")
 check("    NOT BEFORE Wed 3 PM. NEXT then: deploy it with him" in sec["NEXT"] and "Looked at it" not in body("NEXT"),
       "NEXT: the spoken form \"NEXT then:\" is a NEXT too, and keeps the sentence it leans on (its date gate)")
 check("other seat's action" not in body("NEXT") and ("`%s`" % ids[6]) not in body("NEXT"),

@@ -38,7 +38,9 @@ WIDTH = 120         # 160 wrapped past one screen on a 120-column terminal (fres
 REGEN = "python3 src/RimMandrake/Utils/ledger_state.py"
 # "NEXT:" and its spoken forms, "NEXT then:", "NEXT (after the load):" — an owner note said "NEXT then:" and the first
 # reader missed it (fresh-reader test, 2026-11-11). Never across a line: an empty NEXT: borrows nothing.
-NEXT_RE = re.compile(r"\bNEXT\b([^:\n]{0,24}):[ \t]*([^\n]*)")
+# An action ends at the line's end or at the next NEXT on the line: "fixed (NEXT then: x); NEXT: y" is two, and y is the
+# newest (one of this round's own notes swallowed its real NEXT into the quoted one, 2026-11-11).
+NEXT_RE = re.compile(r"\bNEXT\b([^:\n]{0,24}):[ \t]*([^\n]*?)(?=\bNEXT\b[^:\n]{0,24}:|\n|$)")
 SENTENCE_END = re.compile(r"(?:[.;!?]\s|\n)")
 
 
