@@ -142,10 +142,24 @@
     "ref": "run bench-ek-st4b-20261112",
     "stage": 4,
     "tokens": 3940000
+   },
+   {
+    "at": "2026-11-12T08:52:09Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794473090",
+    "stage": 5,
+    "tokens": 720977
+   },
+   {
+    "at": "2026-11-12T08:57:31Z",
+    "kind": "unmeasured",
+    "ref": "run bench-ek-st5b-20261112",
+    "stage": 3,
+    "tokens": 3940000
    }
   ],
   "reserve": 60000,
-  "spent": 11995776
+  "spent": 16656753
  },
  "history": [
   {
@@ -273,6 +287,30 @@
    "stage": 5,
    "what": "close",
    "why": "run bench-ek-st4b-20261112: stage 4 done"
+  },
+  {
+   "at": "2026-11-12T08:57:18Z",
+   "stage": 3,
+   "what": "invalidated",
+   "why": "inputs changed since stage 3 was accepted: sheet, tree, scenes; back to stage 3"
+  },
+  {
+   "at": "2026-11-12T08:57:18Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "12716753 of 4000000 spent; run bench-ek-st5b-20261112 goes on with 3940000 (advisory)"
+  },
+  {
+   "at": "2026-11-12T08:57:18Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run bench-ek-st5b-20261112, stage 3, budget 3940000"
+  },
+  {
+   "at": "2026-11-12T08:57:31Z",
+   "stage": 3,
+   "what": "retry",
+   "why": "run bench-ek-st5b-20261112 result rejected: result is for stage 5; the state is at stage 3"
   }
  ],
  "item": "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
@@ -345,49 +383,6 @@
    "summary": "All 5 core contradictions resolved by his 2026-11-11 card answers (d_c_root..d_c_gas_source). Delegable choices decided by the agent and recorded as dl_* (closed=hidden contents, container shove, modded strength, heavy threshold, gas census, clump strength, gas ignores belts, perf budget). Two non-core asks kept ready, not sent: a_flagship (which showcase leads) and a_northstar_bars (validate the 16 drafted walk bars); neither changes core scope."
   },
   {
-   "at": "2026-11-12T08:07:09Z",
-   "inputs": {
-    "exam": null,
-    "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
-    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
-    "scenes": "e5fb1b677162c33a2b767380d9e4b238f3e361d741d0a29c51fed96efbbb063f",
-    "sheet": "fa445148d77cde3bd8dcbc85f9b7cb14ed9cc289c546bb54a1fc9e1fc4313f8f",
-    "tree": "0980d1464ff3ee3a7e696307c4e5e91298f57436170584df911791e82788ae44"
-   },
-   "manifest": {
-    "designer.md": "b79052133c514f160b33c30b53d69a947adbfdbc81304681463b1038e82fce9f",
-    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
-    "designer_write.md": "2d93c81308fff5f7a37cf5c40cbfae398599cd0aa6a238d1a325a1fabff2e441"
-   },
-   "outcome": "done",
-   "owner_uncited": [],
-   "run": "bench-ek-st3-20261112",
-   "stage": 3,
-   "summary": "tree.json (19 leaves, Gate A lint PASS), sheet.md, plan.md, scenes.json and floor.json written. Showcase 1 is his write-in flagship (d_c_flagship, OWNER:1794470697182934051): a bomb into a stocked storeroom with colonists beside a pit, scene sc_storeroom_bomb_pit; the other candidates stay ordinary scenes via coverage_rest. Showcase set accepted. North star VALIDATED as written (d_c_bars). Owed builds and proofs are filed as 7 rimflow items."
-  },
-  {
-   "at": "2026-11-12T08:12:44Z",
-   "inputs": {
-    "exam": "581bd143532b80540ea42d98e2ed414c9d9d362eb290450fbad9736aa11e1c4d",
-    "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
-    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
-    "scenes": "e5fb1b677162c33a2b767380d9e4b238f3e361d741d0a29c51fed96efbbb063f",
-    "sheet": "fa445148d77cde3bd8dcbc85f9b7cb14ed9cc289c546bb54a1fc9e1fc4313f8f",
-    "tree": "0980d1464ff3ee3a7e696307c4e5e91298f57436170584df911791e82788ae44"
-   },
-   "manifest": {
-    "designer.md": "b79052133c514f160b33c30b53d69a947adbfdbc81304681463b1038e82fce9f",
-    "designer_exam.md": "9892f91253ca15581c15f6f64d211a2275f345d0e13e0200dcda9c9f8004e07a"
-   },
-   "outcome": "done",
-   "owner_uncited": [],
-   "run": "bench-ek-st4-20261112",
-   "stage": 4,
-   "summary": "Cold Reader exam passed: 18 frozen scenarios (12 from the examiner, 6 from the challenger), both fresh readers matched every expect (18/18), no reader accepted a core reject, and no challenger scenario fooled a reader. The control reader on a tree with wall_stops_dead removed (its three sheet lines stripped) accepted e2 and c2, a thrown person bouncing off a wall, so the scenarios discriminate."
-  },
-  {
    "at": "2026-11-12T08:20:55Z",
    "decision": "Coverage judge not_covered (19 gaps, all return_to 3, none needs the owner: each is settled by a record decision). Rewrite scenes/tree/sheet per coverage_verdict.json gaps: limit the 40-throw cap to pawns or remove it (d_c_all_fly) and stage more goods than the cap; showcase 1 is his one flagship scene only, with one named weapon, an in-line heavy stack and an expectation on the covered pit cell; narrow no_careless_fall to d_pit_only_forced (enemies may fall into a concealed pit by walking); add leaves and sheet lines for the shipped behaviours the sheet omits (who is spared, recovery immunity, per-weapon caps, hose drop, doors and deep water stopping a throw, explosions only); give wall_stop, shield, gas-chain, containers, teleport trace, frame probe, hose drop, settings and the walk real controls or scenes; fill record.json script_audit. Also set tree.json root_state VALIDATED and root_hash to the walk's (gate refusal). Then re-run the stage 4 exam on refrozen scenarios and the judge.",
    "inputs": {
@@ -420,52 +415,24 @@
    ]
   },
   {
-   "at": "2026-11-12T08:36:39Z",
-   "inputs": {
-    "exam": "581bd143532b80540ea42d98e2ed414c9d9d362eb290450fbad9736aa11e1c4d",
-    "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
-    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
-    "scenes": "32caa4c3d7fa17b080c91c4604a6ca040672f8c5a5302884b39c0daa521bee6d",
-    "sheet": "957e7e15f612223dbeca4164071a93d28e1d0ccfdfb3c2a76d1c70095ad33a20",
-    "tree": "8a505de1de0300786322ee6aa309fecee50d30238fdbcab81ba31cddb7a53b9c"
-   },
-   "manifest": {
-    "designer.md": "b79052133c514f160b33c30b53d69a947adbfdbc81304681463b1038e82fce9f",
-    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
-    "designer_write.md": "2d93c81308fff5f7a37cf5c40cbfae398599cd0aa6a238d1a325a1fabff2e441"
-   },
-   "outcome": "done",
-   "owner_uncited": [],
-   "run": "bench-ek-st3c-20261112",
+   "at": "2026-11-12T08:57:18Z",
+   "outcome": "invalidated",
    "stage": 3,
-   "summary": "Returned stage 3 reworked against the 19 coverage gaps. tree.json re-written (28 leaves; root VALIDATED 5d06c98d8b13 re-synced): the 40-throw cap and per-tick drop removed by d_c_all_fly (inv_caps scoped out, performance a proven bar); shipped behaviour added as leaves (pawn arc carrier, the spared, recovery window, pawn and door/deep-water stops, only explosions throw, per-weapon tuning, settings, hose drop); no_careless_fall narrowed to colonists by his 2026-10-06 answer. Showcase 1 is ONE scene, his flagship verbatim (sc_storeroom_bomb_pit). scenes.json: 31 scenes, each with a start assertion and a real control; record.json script_audit lists 17 existing scenes' gaps; plan.md step 8 filed as RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS. Lint PASS, showcase set accepted."
+   "why": "inputs changed since stage 3 was accepted: sheet, tree, scenes; back to stage 3"
   },
   {
-   "at": "2026-11-12T08:43:53Z",
-   "inputs": {
-    "exam": "6447f1416ca218592561dc407e911c9c4c83ae3570459206ecabbaeb60d01e3b",
-    "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
-    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
-    "scenes": "32caa4c3d7fa17b080c91c4604a6ca040672f8c5a5302884b39c0daa521bee6d",
-    "sheet": "957e7e15f612223dbeca4164071a93d28e1d0ccfdfb3c2a76d1c70095ad33a20",
-    "tree": "8a505de1de0300786322ee6aa309fecee50d30238fdbcab81ba31cddb7a53b9c"
-   },
-   "manifest": {
-    "designer.md": "b79052133c514f160b33c30b53d69a947adbfdbc81304681463b1038e82fce9f",
-    "designer_exam.md": "9892f91253ca15581c15f6f64d211a2275f345d0e13e0200dcda9c9f8004e07a"
-   },
-   "outcome": "done",
-   "owner_uncited": [],
-   "run": "bench-ek-st4b-20261112",
-   "stage": 4,
-   "summary": "Cold Reader exam on the reworked tree (28 leaves) and sheet: 33 frozen scenarios (25 Examiner, 8 Challenger; 19 reject cases), both fresh Readers 33/33, accept_where_reject_core 0, no Challenger misses. Control on a copy with shield_belt_holds and every shield/belt mention stripped missed e6, e7 and c5. Five fresh opus agents, run one at a time under the N=2 slot cap; each charged."
+   "at": "2026-11-12T08:57:31Z",
+   "outcome": "rejected",
+   "run": "bench-ek-st5b-20261112",
+   "stage": 3,
+   "why": [
+    "result is for stage 5; the state is at stage 3"
+   ]
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 5,
+ "stage": 3,
  "status": "ready"
 }
