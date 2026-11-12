@@ -1,0 +1,4 @@
+spawnable: 80
+covered by a kept kind: 80
+on the cut list (FAILURE: patches applied): 0
+absent from the roster (FAILURE): 0

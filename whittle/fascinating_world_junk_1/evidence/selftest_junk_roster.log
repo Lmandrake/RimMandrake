@@ -1,0 +1,33 @@
+ok    base game Data is readable 
+ok    roster well formed (15 kinds, 123 kept defs, 20 cut defs, 5 cut prefabs) 
+ok    probe: a planted unknown def is refused 
+ok    AncientJunk_RosterCut.xml == gen_junk_roster_cut.py output 
+ok    one Operation, the junkRosterCut setting gate 
+ok    junkRosterCut is in the C# switch and the settings (default true) 
+ok    every cut xpath matches in its GenStep 
+ok    probe: a typo'd cut matches nothing 
+ok    no scatter group is emptied by the cut (measured before the sweep) 
+ok    no cut def left in its GenStep after the patch 
+ok    no car/truck/tank on a kept def's label or a reskin description 
+ok    probe: the noun check sees 'ancient car' 
+ok    AncientJunk_RosterText.xml == gen_junk_roster_cut.py output 
+ok    the text patch sits in the junkReskin gate 
+ok    every vanilla-look kept def (59) is re-texted (45) or exempt with a reason (14) 
+ok    every re-texted def is a base-game def 
+ok    no re-text is empty or says car/truck/tank/road 
+ok    re-text labels are distinct 
+ok    probe: the census sees AncientTank before any patch 
+spawnable: 80
+covered by a kept kind: 80
+on the cut list (FAILURE: patches applied): 0
+absent from the roster (FAILURE): 0
+ok    census with the patches: every spawnable def is kept, none cut (exit 0) 
+ok    every Zeddo's Yard template def (17) is in a kind ruled for zeddos_yard 
+ok    RUT_FallLine_NoOldJunk prevents every vanilla junk source the census reads (14) 
+ok    the base game's own surface map generators' old-junk steps (14, derived from MapCommonBase + Base_Player) are all prevented 
+ok    every prevented step exists in the base game 
+ok    FallLineArrivals: noOldJunk ships true and sets RUT_FallLine.junkDensityFactor 
+ok    noOldJunk is declared before the shippedDefaults snapshot 
+ok    RimMandrake.Utinni.FallLineArrivals.dll matches its .srchash 
+ok    RimMandrakeStarWarsPatches.dll matches its .srchash 
+all junk-roster checks passed

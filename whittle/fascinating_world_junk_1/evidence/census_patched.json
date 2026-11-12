@@ -1,0 +1,456 @@
+{
+ "vanilla:ScatterRuinsSimple": [
+  "Column",
+  "Door",
+  "Drape",
+  "Sarcophagus",
+  "SteleGrand",
+  "SteleLarge",
+  "Table1x2c",
+  "Table2x2c",
+  "Urn",
+  "Wall"
+ ],
+ "vanilla:ScatterRoadDebris": [
+  "AncientHydrant",
+  "AncientLargeRustedEngineBlock",
+  "AncientPodCar",
+  "AncientRustedCar",
+  "AncientRustedCarFrame",
+  "AncientRustedEngineBlock",
+  "AncientRustedJeep",
+  "AncientTank"
+ ],
+ "vanilla:ScatterCaveDebris": [
+  "AncientBed"
+ ],
+ "vanilla:AncientUtilityBuilding": [
+  "AncientFence",
+  "AncientGenerator",
+  "Door",
+  "Table1x2c",
+  "Wall"
+ ],
+ "vanilla:MechanoidRemains": [
+  "AncientMechDropBeacon",
+  "ChunkMechanoidSlag"
+ ],
+ "vanilla:AncientTurret": [
+  "AncientSecurityTurret"
+ ],
+ "vanilla:AncientMechs": [
+  "AncientMiniWarwalkerRemains",
+  "AncientWarspiderRemains",
+  "AncientWarwalkerClaw",
+  "AncientWarwalkerFoot",
+  "AncientWarwalkerLeg",
+  "AncientWarwalkerTorso"
+ ],
+ "vanilla:AncientLandingPad": [
+  "AncientShipBeacon"
+ ],
+ "vanilla:AncientFences": [
+  "AncientFence",
+  "AncientRazorWire"
+ ],
+ "vanilla:AncientPipelineSection": [
+  "AncientPipelineSection"
+ ],
+ "vanilla:AncientJunkClusters": [
+  "AncientAPC",
+  "AncientBarrel",
+  "AncientBed",
+  "AncientCrate",
+  "AncientDropshipEngine",
+  "AncientGenerator",
+  "AncientGiantWheel",
+  "AncientJetEngine",
+  "AncientLamp",
+  "AncientLargeContainer",
+  "AncientLargeCrate",
+  "AncientLargeRustedEngineBlock",
+  "AncientLockerBank",
+  "AncientLongCrate",
+  "AncientMegaCannonBarrel",
+  "AncientMegaCannonTripod",
+  "AncientMilitaryCrate",
+  "AncientMiniWarwalkerRemains",
+  "AncientPipes",
+  "AncientPodCar",
+  "AncientRustedCar",
+  "AncientRustedCarFrame",
+  "AncientRustedDropship",
+  "AncientRustedEngineBlock",
+  "AncientRustedJeep",
+  "AncientSecurityTurret",
+  "AncientSmallCrate",
+  "AncientSpacerCrate",
+  "AncientStorageCylinder",
+  "AncientTank",
+  "AncientTankTrap",
+  "AncientWarspiderRemains",
+  "AncientWarwalkerClaw",
+  "AncientWarwalkerFoot",
+  "AncientWarwalkerLeg",
+  "AncientWarwalkerShell",
+  "AncientWarwalkerTorso",
+  "AncientWheel"
+ ],
+ "vanilla:AncientPollutionJunk": [
+  "AncientBandNode",
+  "AncientToxifierGenerator"
+ ],
+ "vanilla:ScarlandsJunkClusters": [
+  "AncientAmmoStack",
+  "AncientBed",
+  "AncientChembarrel",
+  "AncientChembarrelPallet",
+  "AncientCraneBase",
+  "AncientCraneColumn",
+  "AncientCratePallet",
+  "AncientIndustrialShelf",
+  "AncientMediumContainer",
+  "AncientMetalCrate",
+  "AncientMilitaryCrate",
+  "AncientMilitaryGeneratorSmall",
+  "AncientOpenContainer",
+  "AncientPipe",
+  "AncientSmallContainer",
+  "AncientSpacerCrate",
+  "AncientWoodenCrate"
+ ],
+ "vanilla:ScarlandsJunkPrefabs": [
+  "AncientBarrel",
+  "AncientBox_ComponentIndustrial",
+  "AncientMilitaryBarrier",
+  "AncientPipe",
+  "AncientRazorWire",
+  "Door",
+  "Wall"
+ ],
+ "ours:RUT_FoundryFloor_SalvageCache": [],
+ "ours:RUT_Jawa_ScatterScrapfields": [
+  "ChunkSlagSteel"
+ ],
+ "ours:RUT_Jawa_StampGroundHulk": [
+  "AncientCryptosleepCasket",
+  "ShipChunk_Mech"
+ ],
+ "ours:RUT_ScarlandsSprungDangers": [
+  "AncientBarrel",
+  "AncientFortifiedWall",
+  "ChunkSlagSteel"
+ ],
+ "ours:RUT_ScatterShrinesRare": [],
+ "ours:zeddos_yard": [
+  "AncientCraneArm",
+  "AncientCraneBase",
+  "AncientCraneColumn",
+  "AncientDropshipEngine",
+  "AncientFortifiedWall",
+  "AncientJetEngine",
+  "AncientLargeRustedEngineBlock",
+  "AncientMediumContainer",
+  "AncientOpenContainer",
+  "AncientPallet_SteelSlag",
+  "AncientPodCar",
+  "AncientRustedDropship",
+  "AncientRustedEngineBlock",
+  "AncientSmallContainer",
+  "ChunkSlagSteel",
+  "ShipChunk",
+  "ShipChunk_Mech"
+ ],
+ "all": [
+  "AncientAPC",
+  "AncientAmmoStack",
+  "AncientBandNode",
+  "AncientBarrel",
+  "AncientBed",
+  "AncientBox_ComponentIndustrial",
+  "AncientChembarrel",
+  "AncientChembarrelPallet",
+  "AncientCraneArm",
+  "AncientCraneBase",
+  "AncientCraneColumn",
+  "AncientCrate",
+  "AncientCratePallet",
+  "AncientCryptosleepCasket",
+  "AncientDropshipEngine",
+  "AncientFence",
+  "AncientFortifiedWall",
+  "AncientGenerator",
+  "AncientGiantWheel",
+  "AncientHydrant",
+  "AncientIndustrialShelf",
+  "AncientJetEngine",
+  "AncientLamp",
+  "AncientLargeContainer",
+  "AncientLargeCrate",
+  "AncientLargeRustedEngineBlock",
+  "AncientLockerBank",
+  "AncientLongCrate",
+  "AncientMechDropBeacon",
+  "AncientMediumContainer",
+  "AncientMegaCannonBarrel",
+  "AncientMegaCannonTripod",
+  "AncientMetalCrate",
+  "AncientMilitaryBarrier",
+  "AncientMilitaryCrate",
+  "AncientMilitaryGeneratorSmall",
+  "AncientMiniWarwalkerRemains",
+  "AncientOpenContainer",
+  "AncientPallet_SteelSlag",
+  "AncientPipe",
+  "AncientPipelineSection",
+  "AncientPipes",
+  "AncientPodCar",
+  "AncientRazorWire",
+  "AncientRustedCar",
+  "AncientRustedCarFrame",
+  "AncientRustedDropship",
+  "AncientRustedEngineBlock",
+  "AncientRustedJeep",
+  "AncientSecurityTurret",
+  "AncientShipBeacon",
+  "AncientSmallContainer",
+  "AncientSmallCrate",
+  "AncientSpacerCrate",
+  "AncientStorageCylinder",
+  "AncientTank",
+  "AncientTankTrap",
+  "AncientToxifierGenerator",
+  "AncientWarspiderRemains",
+  "AncientWarwalkerClaw",
+  "AncientWarwalkerFoot",
+  "AncientWarwalkerLeg",
+  "AncientWarwalkerShell",
+  "AncientWarwalkerTorso",
+  "AncientWheel",
+  "AncientWoodenCrate",
+  "ChunkMechanoidSlag",
+  "ChunkSlagSteel",
+  "Column",
+  "Door",
+  "Drape",
+  "Sarcophagus",
+  "ShipChunk",
+  "ShipChunk_Mech",
+  "SteleGrand",
+  "SteleLarge",
+  "Table1x2c",
+  "Table2x2c",
+  "Urn",
+  "Wall"
+ ],
+ "unresolved": [
+  "ours:RUT_FoundryFloor_SalvageCache: class RimMandrake.EnvironmentalHazards.RM_GenStep_PlacedSetPieces not statically resolved (set-piece elements spawn a marker whose C# places the contents)",
+  "ours:RUT_Jawa_ScatterScrapfields: custom class RimMandrake.Utinni.UtinniPatches.RUT_GenStep_ScatterThingsPlacedFilth: thingDef field read, C# not evaluated",
+  "ours:RUT_ScatterShrinesRare: class GenStep_ScatterShrines not statically resolved (BaseGen ancient-shrine symbol resolvers: contents not followed)",
+  "vanilla:AncientUtilityBuilding: LayoutSketch wall/door fields may be overridden by the caller; defaults Wall/Door assumed",
+  "vanilla:ScatterRuinsSimple: SketchResolver_Monument furniture branch conditions and AddInnerMonuments recursion not evaluated; stuff for walls is random"
+ ],
+ "excluded_nonjunk": {
+  "ours:RUT_ContagionRingScatter": {
+   "reason": "filth band, no things",
+   "defs": []
+  },
+  "ours:RUT_FoundryFloor_MeltChannels": {
+   "reason": "terrain channels",
+   "defs": []
+  },
+  "ours:RUT_FoundryFloor_TenderSpawn": {
+   "reason": "anchored pawn (Mech_Pikeman)",
+   "defs": []
+  },
+  "ours:RUT_FoundryTowerScatter": {
+   "reason": "structure entrance marker, not scatter junk",
+   "defs": []
+  },
+  "ours:RUT_Jawa_ScatterWastesBrineDrazz": {
+   "reason": "brine deposit (resource)",
+   "defs": [
+    "RUT_BrineDeposit_Drazz"
+   ]
+  },
+  "ours:RUT_Jawa_ScatterWastesBrinePlate": {
+   "reason": "brine deposit (resource)",
+   "defs": [
+    "RUT_BrineDeposit_BrinePlate"
+   ]
+  },
+  "ours:RUT_Jawa_ScatterWastesBrineTekk": {
+   "reason": "brine deposit (resource)",
+   "defs": [
+    "RUT_BrineDeposit_Tekk"
+   ]
+  },
+  "ours:RUT_LanternDeepKyberScatter": {
+   "reason": "kyber crystal formations (resource)",
+   "defs": [
+    "Force_CrystalFormation_Large",
+    "Force_CrystalFormation_Medium",
+    "Force_CrystalFormation_Small"
+   ]
+  },
+  "ours:RUT_LanternDeepMindstoneGallery": {
+   "reason": "mineable veins",
+   "defs": [
+    "RUT_MindstoneVein"
+   ]
+  },
+  "ours:RUT_PhrikiteDesertLumps": {
+   "reason": "mineable lumps",
+   "defs": [
+    "RSW_MineablePhrikite"
+   ]
+  },
+  "ours:RUT_ScarlandsGraveWardScatter": {
+   "reason": "sentinel grave wards (hazard)",
+   "defs": [
+    "RUT_SentinelGraveWard"
+   ]
+  },
+  "ours:RUT_ZersiumForgeLumps": {
+   "reason": "mineable lumps",
+   "defs": [
+    "RSW_MineableZersium"
+   ]
+  },
+  "filth_in_sources": {
+   "ours:RUT_ScarlandsSprungDangers": [
+    "Filth_BlastMark",
+    "Filth_MachineBits",
+    "Filth_RubbleBuilding",
+    "Filth_ScatteredDocuments"
+   ]
+  }
+ },
+ "patch_report": [
+  {
+   "file": "AncientJunk_RosterCut.xml",
+   "xpath": "/Defs/GenStepDef[defName=\"AncientJunkClusters\"]/genStep/groups/li/things/AncientShoppingCart",
+   "removed": 1
+  },
+  {
+   "file": "AncientJunk_RosterCut.xml",
+   "xpath": "/Defs/GenStepDef[defName=\"AncientJunkClusters\"]/genStep/groups/li/things/AncientATM",
+   "removed": 1
+  },
+  {
+   "file": "AncientJunk_RosterCut.xml",
+   "xpath": "/Defs/GenStepDef[defName=\"AncientJunkClusters\"]/genStep/groups/li/things/AncientVendingMachine",
+   "removed": 1
+  },
+  {
+   "file": "AncientJunk_RosterCut.xml",
+   "xpath": "/Defs/GenStepDef[defName=\"AncientJunkClusters\"]/genStep/groups/li/things/AncientRefrigerator",
+   "removed": 2
+  },
+  {
+   "file": "AncientJunk_RosterCut.xml",
+   "xpath": "/Defs/GenStepDef[defName=\"AncientJunkClusters\"]/genStep/groups/li/things/AncientStove",
+   "removed": 1
+  },
+  {
+   "file": "AncientJunk_RosterCut.xml",
+   "xpath": "/Defs/GenStepDef[defName=\"AncientJunkClusters\"]/genStep/groups/li/things/AncientOven",
+   "removed": 1
+  },
+  {
+   "file": "AncientJunk_RosterCut.xml",
+   "xpath": "/Defs/GenStepDef[defName=\"AncientJunkClusters\"]/genStep/groups/li/things/AncientKitchenSink",
+   "removed": 2
+  },
+  {
+   "file": "AncientJunk_RosterCut.xml",
+   "xpath": "/Defs/GenStepDef[defName=\"AncientJunkClusters\"]/genStep/groups/li/things/AncientWashingMachine",
+   "removed": 1
+  },
+  {
+   "file": "AncientJunk_RosterCut.xml",
+   "xpath": "/Defs/GenStepDef[defName=\"AncientJunkClusters\"]/genStep/groups/li/things/AncientAirConditioner",
+   "removed": 2
+  },
+  {
+   "file": "AncientJunk_RosterCut.xml",
+   "xpath": "/Defs/GenStepDef[defName=\"AncientJunkClusters\"]/genStep/groups/li/things/AncientPostbox",
+   "removed": 1
+  },
+  {
+   "file": "AncientJunk_RosterCut.xml",
+   "xpath": "/Defs/GenStepDef[defName=\"AncientJunkClusters\"]/genStep/groups/li/things/AncientMicrowave",
+   "removed": 1
+  },
+  {
+   "file": "AncientJunk_RosterCut.xml",
+   "xpath": "/Defs/GenStepDef[defName=\"AncientJunkClusters\"]/genStep/groups/li/things/AncientToilet",
+   "removed": 2
+  },
+  {
+   "file": "AncientJunk_RosterCut.xml",
+   "xpath": "/Defs/GenStepDef[defName=\"AncientJunkClusters\"]/genStep/groups/li/things/AncientOperatingTable",
+   "removed": 1
+  },
+  {
+   "file": "AncientJunk_RosterCut.xml",
+   "xpath": "/Defs/GenStepDef[defName=\"ScarlandsJunkClusters\"]/genStep/groups/li/things/AncientIndustrialTruck",
+   "removed": 2
+  },
+  {
+   "file": "AncientJunk_RosterCut.xml",
+   "xpath": "/Defs/GenStepDef[defName=\"ScarlandsJunkClusters\"]/genStep/groups/li/things/AncientChemtruck",
+   "removed": 1
+  },
+  {
+   "file": "AncientJunk_RosterCut.xml",
+   "xpath": "/Defs/GenStepDef[defName=\"ScarlandsJunkClusters\"]/genStep/groups/li/things/AncientWindTurbineBody",
+   "removed": 1
+  },
+  {
+   "file": "AncientJunk_RosterCut.xml",
+   "xpath": "/Defs/GenStepDef[defName=\"ScarlandsJunkClusters\"]/genStep/groups/li/things/AncientTableTailorHand",
+   "removed": 1
+  },
+  {
+   "file": "AncientJunk_RosterCut.xml",
+   "xpath": "/Defs/GenStepDef[defName=\"ScarlandsJunkClusters\"]/genStep/groups/li/things/AncientTableTailorElectric",
+   "removed": 1
+  },
+  {
+   "file": "AncientJunk_RosterCut.xml",
+   "xpath": "/Defs/GenStepDef[defName=\"ScarlandsJunkClusters\"]/genStep/groups/li/things/AncientTableStoveElectric",
+   "removed": 2
+  },
+  {
+   "file": "AncientJunk_RosterCut.xml",
+   "xpath": "/Defs/GenStepDef[defName=\"ScarlandsJunkClusters\"]/genStep/groups/li/things/AncientPlantPot",
+   "removed": 1
+  },
+  {
+   "file": "AncientJunk_RosterCut.xml",
+   "xpath": "/Defs/GenStepDef[defName=\"ScarlandsJunkPrefabs\"]/genStep/groups/Exterior_AncientRoad_Short",
+   "removed": 1
+  },
+  {
+   "file": "AncientJunk_RosterCut.xml",
+   "xpath": "/Defs/GenStepDef[defName=\"ScarlandsJunkPrefabs\"]/genStep/groups/Exterior_AncientRoad_Long",
+   "removed": 1
+  },
+  {
+   "file": "AncientJunk_RosterCut.xml",
+   "xpath": "/Defs/GenStepDef[defName=\"ScarlandsJunkPrefabs\"]/genStep/groups/Exterior_AncientContainerForklift",
+   "removed": 1
+  },
+  {
+   "file": "AncientJunk_RosterCut.xml",
+   "xpath": "/Defs/GenStepDef[defName=\"ScarlandsJunkPrefabs\"]/genStep/groups/Exterior_CrashedCrane",
+   "removed": 1
+  },
+  {
+   "file": "AncientJunk_RosterCut.xml",
+   "xpath": "/Defs/GenStepDef[defName=\"ScarlandsJunkPrefabs\"]/genStep/groups/Exterior_ContainerSite",
+   "removed": 1
+  }
+ ]
+}
