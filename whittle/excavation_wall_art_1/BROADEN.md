@@ -79,6 +79,10 @@ Ranked by my estimate of defect likelihood:
   afterwards (#10), and raising or lowering an existing ladder in every rotation (#6; the scene raises one and the owner
   review stage covers all four walls).
 
+Cause of the half-covered spiked pit (the judge's flag; first E4 frame, `D:\ClaudeWork\rimmandrake\whittle_claude\CLAUDE_ARCHMAGI_FWLIVE\ewa\broaden\sheet_e1_e4.png`, panel 5): HARNESS. `broaden.py` filled x=116..118 at 0.5 m, but the spiked pit is x=117..119, so the
+east column stayed dry and the stray 116 column is the water strip at the panel's left edge. `broaden_e4fix.py` filled 117..119
+and the whole pit draws under water (`evidence/broaden_e4_spike_fade_half_metre.png`). Not a water-render defect.
+
 Found and fixed this round: a near-transparent pure-magenta pixel in RM_LadderRaised east/west (`c39192a556`, see
 DONE.md). Found, harness: owner_review_stage staged spikes in a 1.5 m pit and on the pit centre, where a player cannot
 build them (fixed in the same commit).
