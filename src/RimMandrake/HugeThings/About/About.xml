@@ -14,21 +14,27 @@ pawns walk straight through its stem, and walls get built inside it. A beast
 the size of a house walks through a doorway, hides behind a sandbag and gets
 penned like a chicken.
 
-Huge Things fixes that for anything that opts in:
+Huge Things makes two promises for anything that opts in.
 
-- A huge PLANT gets a solid trunk. The cells where its art touches the ground
+GIANT PLANTS are as big as they look.
+- A huge plant gets a solid trunk. The cells where its art touches the ground
   are solid (measured per species, and grown into as the plant grows), so pawns
   walk around it and nothing can be built inside it. You still walk under its
   cap. Clicking anywhere on its picture selects it. Trunks give partial cover,
   and shots into them hurt the plant.
-- A huge ANIMAL gets a selection hitbox the size of its drawn body.
-- A TITAN (any creature of body size 4 or more, or one a mod opts in) gets a
-  size tier. Heavy, colossal and titanic creatures crush crates and plants,
-  breach walls, hole thin roofs and leave rubble as they walk, struggle under
-  overhead mountain, butcher for a curved yield, and the largest leave a corpse
-  that becomes a harvest site worked over days.
-- The biggest titans smash through giant plants, damaging them as they push
-  past; smaller titans go around the trunks like walls.
+- A trunk that grows across a doorway seals it: cut the plant down to get in
+  or out.
+
+TITANS have bodies with consequences.
+- A huge animal gets a selection hitbox the size of its drawn body.
+- A titan (any creature of body size 4 or more, or one a mod opts in) gets a
+  size tier. Its crossing breaks what it walks through: heavy, colossal and
+  titanic creatures crush crates and plants, breach walls, hole thin roofs and
+  leave rubble, struggle under overhead mountain, and the biggest smash through
+  giant plants while smaller titans go around the trunks like walls.
+- Its death leaves remains: the largest become a harvest site worked over
+  days, and scavengers and visitors come to compete for them. Smaller titans
+  butcher for a curved yield.
 
 With Large Pawns (neku.largepawns) loaded, titans also occupy 2x2 to 4x4
 cells, using this mod's tiers; without it they stay one cell and everything

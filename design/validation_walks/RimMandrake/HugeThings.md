@@ -22,7 +22,7 @@ Sources: `About/About.xml`, `Defs/**` (trunk blocker, tier def, 5 crush rules, c
 - After save/load a trunk re-links to its plant (no duplicates, no orphans). → not_driven.trunk_relinks_after_save_load (UNMEASURED)
 - Giants generated with a new map get their trunks once generation finishes. → not_driven.mapgen_giants_get_trunks (UNMEASURED)
 - A shot or blast into a trunk cell damages the plant, once per projectile / beam / blast. → not_driven.shot_into_trunk_damages_the_plant_once (UNMEASURED live; offline kernel fuzz `damage` + static patch checks)
-- A growing footprint never traps a pawn, never destroys an item (items are pushed outside every footprint or the cell waits), never cuts a giant's root off from cutting access. → not_driven.growth_never_traps_a_pawn (UNMEASURED live; offline kernel fuzz `planner`)
+- A growing footprint may seal a doorway: it stays sealed until colonists cut the giant down, and cutting restores access (owner, by card 2026-11-11). Items are never wiped (last line of this list). → not_driven.growth_seals_door_then_cut_restores_access (live: `northstar/trunk_doors_live.py`)
 - Blockers never carve or split zones. → not_driven.zone_cells_survive_blockers (UNMEASURED live; static patch check)
 - Every def the mod ships (trunk blocker, tier def, crush rules, corpse site, harvest job, harvest work giver) resolves. → defs_resolve.every_shipped_def_resolves
 - The size ladder is the one tier def (T1 4, T2 8, T3 20), strictly ascending, as deployed. → tier_ladder.thresholds_match_xml_and_ascend
@@ -60,7 +60,46 @@ Sources: `About/About.xml`, `Defs/**` (trunk blocker, tier def, 5 crush rules, c
 state: DRAFT
 validated-hash:
 
-No owner north-star bars are drafted for this mod yet.
+HugeThings makes two promises, kept apart: **giant plants** and **titans**. Each has its own demonstration on its
+own restored disposable site, and neither is proven by the other's. Every bar below was drafted by an agent from
+his words in this section, for him to cut, reword or keep; none is validated.
+
+### the experience  (OWNER'S WORDS — verbatim)
+
+The promise and the first demonstration, by question card, 2026-11-11 (`design/RimMandrake/hugethings_codex_2026-11-09/ANSWERS_OWNER.md`):
+
+> **What the promise leads with:** *Two promises. Giant plants and titans are two different experiences; split the
+> root into two promises, each with its own demonstration.*
+
+> **First demonstration:** *B, the titan's destructive crossing, then its death and the crowd that comes for the
+> remains.*
+
+A root across a doorway, same sitting:
+
+> *"To be honest I don't really like the safety rule. I think they have to cut it down to get in or out after it
+> grows."*
+
+### must show — promise 1: giant plants  (demonstration: `src/RimMandrake/HugeThings/northstar/showcase_plants_live.py`)
+
+- [ ] `plant_trunk_solid_where_art_meets_ground` — a full-grown giant fungus's stem and roots are solid where its
+      picture touches the ground: pawns walk round them and nothing is built inside them
+- [ ] `plant_cap_space_open` — the ground under its cap, away from the stem, stays open: pawns walk under it
+- [ ] `plant_click_selects_picture` — clicking on its drawn picture, not only its root cell, selects the plant
+- [ ] `plant_growth_seals_door_until_cut` (change) — a giant that grows across a doorway seals it; the colonists get
+      in or out only by cutting the fungus down, and the doorway opens when it falls
+
+### must show — promise 2: titans, showcase 1 in this order  (demonstration: `src/RimMandrake/HugeThings/northstar/showcase_titan_live.py`)
+
+- [ ] `titan_crossing_destroys` (change) — first: a titan walks across the site and what it walks through is broken by
+      its passage (walls, plants, crates) because something that large went by, not because it attacked
+- [ ] `titan_dies_into_remains` (change) — then: the titan dies on the map and its body stays as remains to be worked
+- [ ] `titan_crowd_comes_for_remains` (change) — then: a crowd comes for those remains, and it arrives after the death,
+      never before it
+
+### cannot show
+
+- [ ] `one_demo_for_both_promises` — one scene offered as the proof of both giant plants and titans
+- [ ] `showcase_out_of_order` — the crowd at the remains before the crossing or the death
 
 ## anti-guessing notes
 RULED OUT: "give the plant def a size > 1" — a Plant registers in ThingGrid by def.size and prints from its Position; a multi-cell plant def breaks wild-plant spawning and cutting (vanilla has none). Blockers keep the plant 1x1.
