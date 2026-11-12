@@ -358,6 +358,10 @@ with tempfile.TemporaryDirectory() as tmp:
     rec = json.load(open(os.path.join(changes, "foo_v4.json"))) if ok else {}
     check("L0 applies a change from a lesson naming no item, recorded kindless", ok and rec["source_kinds"] == []
           and rec["pieces"][0].get("task_kind", "absent") is None, (why, rec))
+    ok, why, p = kinded_apply(1, none, "- L1: decompile on demand.")
+    rec = json.load(open(os.path.join(changes, "foo_v5.json"))) if ok else {}
+    check("L1 applies it too, recorded kindless (4.3: uncheckable by design below L2)", ok and rec["source_kinds"] == [],
+          (why, rec))
 
 # the ramp: one step per 10 passes, up below 0.3, down above 0.6
 with tempfile.TemporaryDirectory() as tmp:

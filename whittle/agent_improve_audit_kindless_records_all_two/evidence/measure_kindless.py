@@ -66,6 +66,12 @@ for f, c in first_add.items():
         k_new += bool(A.kind_of_text(body))
 print("  every lesson ever filed (body at its adding commit): %d; kinded by first line %d (%.0f%%), by whole body %d (%.0f%%)"
       % (n, k_old, 100.0 * k_old / n, k_new, 100.0 * k_new / n))
+live = sorted(glob.glob(os.path.join(REPO, "infrastructure/state/lessons/*.md")))
+live = [p for p in live if A.lessons.parse_name(p)[0] is not None]
+lb = [open(p, encoding="utf-8").read() for p in live]
+print("  the live inbox: %d lessons; an item named in the first line %d, anywhere in the text %d, an item: footer %d"
+      % (len(lb), sum(bool(A.kind_of_text(A.first_line(b))) for b in lb), sum(bool(A.kind_of_text(b)) for b in lb),
+         sum(bool(A.lessons.item_of(p)) for p in live)))
 src = A.default_src()
 ps = A.collect(0, time.time() + 1, src)
 c, k = collections.Counter(), collections.Counter()
