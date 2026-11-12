@@ -1,0 +1,96 @@
+kind,id,label,defNames,mod,def_status,market_value,vanilla_deepCommonality,vanilla_scatterCommonality,units_per_deposit,tier,sheet_block,lore_source,home_this_pass,notes
+mineral,steel,steel (iron),MineableSteel>Steel,Core,MEASURED,1.9,4,1,1400 (lump 30-40 cells x40),T0,PLANET,owner 2026-09-25 'no significant ore ... other than things like iron'; 10-03 'some doesn't even have iron',"most rocky biomes; none in seas, dunes, mud, slime",the only broadly present metal
+mineral,gold,gold,MineableGold>Gold,Core,MEASURED,10,0.5,0.07,200 (lump 2-8 x40),T3,PLANET,10-09 Q3.1 home biomes only; Scald floor sea_dive_maps_spec.md:517; Blue Desert meteoritic (10-02 design),SeabedFloor_TheScald (nodules); BlueDesert (meteoritic); FloodedCanyon rivers,
+mineral,silver,silver,MineableSilver>Silver,Core,MEASURED,1,0.5,0.1,320 (lump 4-12 x40),T2,PLANET,10-09 Q3.1; Scald :518; Blue Desert PROPOSED 10-02,"BlueDesert (meteoritic, primary); SeabedFloor_TheScald",vanilla's currency; trade covers the shortfall
+mineral,uranium,uranium,MineableUranium>Uranium,Core,MEASURED,6,1,0.12,360 (lump 6-12 x40),T2,PLANET,10-09 Q3.1; Scald :519; Wastes 'radiologically live' (baroque list),"Wastes (primary, vein + deep); SeabedFloor_TheScald",
+mineral,jade,jade,MineableJade>Jade,Core,MEASURED,5,0.5,0.065,200 (lump 2-8 x40),T2,PLANET,10-09 Q3.1; 10-02 PROPOSED canyon walls; this pass moves the home to the Weeping Stones,"WeepingStones (vein, deep, river cobbles)",CHANGE vs 10-03 draft (was FloodedCanyon)
+mineral,diamond,diamond,MineableDiamond>Diamond,Jewelry,MEASURED,7.5,0.4,0.06,70 (lump 2-5 x20),T3,PLANET,10-09 Q3.1 gems home-only; 10-03 Lantern Deeps,LanternDeeps,
+mineral,ruby,ruby,MineableRuby>Ruby,Jewelry,MEASURED,6,0.5,0.08,80 (lump 2-6 x20),T3,PLANET,10-09 Q3.1; 10-03 Forge GUESS,TheForge,this pass: one gem per home (was all three in the Deeps)
+mineral,sapphire,sapphire,MineableSapphire>Sapphire,Jewelry,MEASURED,6,0.5,0.08,80 (lump 2-6 x20),T3,PLANET,10-09 Q3.1; 10-03 Sleeping Ice GUESS,SleepingIce,
+mineral,obsidian,obsidian,Obsidian,Odyssey,MEASURED,5,0,0,UNMEASURED (no scatter mineable in dump),T1,PLANET,the_forge.md:140 PROMISED; Chill crater 'cracked black glass' (baroque list),TheForge; ChillCrater,Pyrelands dropped (savanna fire is not volcanic)
+mineral,zersium,zersium,RSW_Zersium,Jawa Armoury Rebalance,MEASURED,5,0,0,UNMEASURED (RUT_ZersiumForgeLumps),T3,PLANET,RULED 2026-10-09 Forge biome mineral; durasteel = steel + zersium,TheForge,BUILT; counts PROVISIONAL
+mineral,phrikite,phrikite,RSW_Phrikite,Jawa Armoury Rebalance,MEASURED,8,0,0,UNMEASURED,T4,PLANET,RULED 2026-10-09 phrik 'Both': rare desert phrikite deposit in ONE desert,Stillsand (BUILT PROVISIONAL; owner question open: Stillsand / BlueDesert / RUT_ExtremeDesert),
+mineral,chimney_iron,chimney iron,(no def),-,PROMISED_NO_DEF,,,,-,T1,PLANET,sea_dive_maps_spec.md:520,SeabedFloor_TheScald,Scald floor 'Ore is NODULES you simply gather'
+mineral,magnetite,magnetite,(no def),-,PROMISED_NO_DEF,,,,-,T3,PLANET,sea_dive_maps_spec.md:522,SeabedFloor_TheScald,
+mineral,uraninite,uraninite,(no def),-,PROMISED_NO_DEF,,,,-,T3,PLANET,sea_dive_maps_spec.md:523,SeabedFloor_TheScald,
+mineral,scaldpearl,Mother-of-Scaldpearl,(no def),-,PROMISED_NO_DEF,,,,-,T4,PLANET,sea_dive_maps_spec.md:521 (vent growth),SeabedFloor_TheScald,regrows: deposits per map per year
+mineral,pyrinth,pyrinth,DV_Pyrinth,RimMandrake: Pyrinth,MEASURED,7,0.4,0,UNMEASURED,T3,PLANET,BUILT gate Lantern Deeps; Scald :525 PROMISED,LanternDeeps; SeabedFloor_TheScald (minor),
+mineral,kyber,kyber crystal,Force_KyberCrystal,Jawa Armoury Rebalance,MEASURED,100,0,0,formation,T4,PLANET,BUILT Deeps generator only; canon Ilum (ice-world crystal caves),LanternDeeps,
+mineral,stygium,stygium,RSW_Stygium,Jawa Armoury Rebalance,MEASURED,2980,0,0,formation,T4,PLANET,RULED 2026-10-09 only in the Lantern Deeps crystal formations,LanternDeeps,
+mineral,mindstone,mindstone,RUT_Mindstone,RimUtinni Patches,MEASURED,900,0,0,custom location,T4,PLANET,the_lantern_deeps.md:168 PROMISED (F12),LanternDeeps,
+mineral,lanternstone,lanternstone,RM_Lanternstone,RimMandrake: Baroque Biomes,MEASURED,1,1,0,biome rock,T1,PLANET,BUILT; deep leak closed,LanternDeeps,terrain-scale (99)
+mineral,cave_crystal,cave crystal (Bestiary),RSW_ResourceBlueCrystal,RimMandrake: SW Bestiary,MEASURED,1,1,0,UNMEASURED,T1,PLANET,def text 'mined from crystal caves'; purpose UNMEASURED in 10-03,LanternDeeps,vanilla deepCommonality 1 must be zeroed outside home
+mineral,live_pattern_metal,live pattern metal,RM_LivePatternMetal,RimMandrake: Baroque Biomes,MEASURED,14,4,0,deep lump,T2,PLANET,"BUILT deep-only, Rust Cathedral",RustCathedral (deep only),
+mineral,dead_smartsteel,dead smartsteel,RM_DeadSmartsteel,RimMandrake: Baroque Biomes,MEASURED,8,0,0,UNMEASURED,T2,PLANET,BUILT salvage seam,RustCathedral,
+mineral,crystal_salts,crystal salts (coarse + white/pink/violet/amber + cameo),RM_RawSalt RM_SaltWhite RM_SaltPink RM_SaltViolet RM_SaltAmber RM_SaltCameo,RimMandrake: Baroque Biomes,MEASURED,0.9/9/12/18/11/30,0,0,great crystal,T1,PLANET,BUILT TerminalBiomes great crystals,GreySea + its seabed floor,one column: the four colours are zones inside one home
+mineral,cooking_salt,cooking salt (VCE),VCE_Salt,Vanilla Cooking Expanded,MEASURED,1.76,0.5,0,crust patch,T1,PLANET,wasteland.md:246 PROMISED basin crust,Wastes,Stillsand dropped (dunes hold no brine)
+mineral,fossils,fossils (impression/skeleton/deep-stratum),RM_FossilImpression RM_FossilSkeleton RM_FossilDeepStratum,RimMandrake: Baroque Biomes,MEASURED,18/140/650,0,0,stratum seam,T3,PLANET,BUILT seams Cracked Lands,FloodedCanyon,
+mineral,sand,glass sand / fine sand (transparisteel feed),RM_GlassSand>RM_FineSand,RimMandrake: Baroque Biomes,MEASURED,0.3/2.2,0,0,terrain,T0,PLANET,RULED 2026-10-09 transparisteel sifted from the extreme desert's fine sand; BUILT sieve Stillsand,Stillsand; RUT_ExtremeDesert,terrain-scale (99)
+mineral,deepchem,deepchem,VCHE_Deepchem,Vanilla Chemfuel Expanded,MEASURED,4,2,0,deep lump,T2,PLANET,10-03 PROPOSED Sump deep only,TheSump (deep only),
+mineral,helixien,helixien gas,VHGE_Helixien,Vanilla Helixien Gas Expanded,MEASURED,0,1,0,deep lump,T2,PLANET,10-03 PROPOSED Chill deep only,"ChillCrater, RUT_Umbra (deep only)",the Chill itself is a propane sea: no drilling
+mineral,blue_ice,blue ice,RM_BlueIce,RimMandrake: Baroque Biomes,MEASURED,8,0,0,terrain,T1,PLANET,"def text 'oldest ice on the plateau, quarried'",BlueDesert,terrain-scale (99)
+mineral,brine_plate,brine plate (and drazz/tekk),RM_BrinePlate,RimMandrake: Baroque Biomes,MEASURED,28,0,0,colony bed,T2,PLANET,BUILT F7 colony beds; registry row,Wastes,organism-made but registry-tracked and found loose
+mineral,bezoars,bezoars (contaminant/vitrified/metal-salt),RM_ContaminantBezoar RM_VitrifiedBezoar RUT_MetalSaltBezoar,RimMandrake,MEASURED,18/65/3.5,0,0,carcass seam,T3,PLANET,BUILT F7 registry row,Wastes,
+mineral,components,industrial components,ComponentIndustrial (MineableComponentsIndustrial zeroed R2),Core,MEASURED,32,0,1,-,X,OFF,RULED 09-25 never mined,salvage + trade,
+mineral,adv_components,advanced components,ComponentSpacer,Core,MEASURED,200,0,0,-,X,OFF,RULED never mined,salvage + trade,
+mineral,plasteel,plasteel,Plasteel (MineablePlasteel + deep zeroed R2),Core,MEASURED,9,1,0.05,-,X,OFF,RULED 09-25 never mined; 10-09 own material; alloy forge late,salvage + trade + alloy forge,
+mineral,durasteel,durasteel,RSW_Durasteel (+ KotORChunk_durasteel slag),Jawa Armoury Rebalance,MEASURED,5,0,0,-,X,OFF,RULED 10-09 one def; steel + zersium at the alloy forge,salvage (Warscar slag) + trade + alloy forge,
+mineral,duranium,duranium,RSW_Duranium,Jawa Armoury Rebalance,MEASURED,40,0,0,-,X,OFF,"RULED 10-03/10-09 made offworld; mostly salvage, rare trade",salvage + rare trade,
+mineral,doonium,doonium (+ ore),RSW_Doonium RSW_DooniumOre,Jawa Armoury Rebalance,MEASURED,45/6,0,0,-,X,OFF,RULED 10-09 mostly salvage; 'Also asteroid ore',salvage + rare trade + Odyssey asteroid maps,ore smelted with RM_GlowerCrust (Warscar plant)
+mineral,beskar,beskar,KOTOR_RawBeskar KOTOR_IngotBeskar OuterRim_Beskar (zeroed R2),Jawa Armoury Rebalance / Outer Rim,MEASURED,100/150/11.5,0.001,0,-,X,OFF,RULED 09-25 salvage-only; reforge only at Blackstar quest,salvage + quest site,
+mineral,cortosis,cortosis,KOTOR_IngotCortosis (vein zeroed R2),Jawa Armoury Rebalance,MEASURED,35,0.75,0.065,-,X,OFF,RULED not mined (10-02 s3),salvage + trade,
+mineral,rhydonium,rhydonium,KOTOR_RawRhydonium (vein zeroed R2),Jawa Armoury Rebalance,MEASURED,60,1,0.0875,-,X,OFF,RULED not mined,salvage + trade,
+mineral,spice,KotOR spice,KOTOR_Spice (vein zeroed R2),Jawa Armoury Rebalance,MEASURED,75,0,0.05,-,X,OFF,RULED not mined,trade only,
+mineral,coaxium,coaxium,RSW_Coaxium,Jawa Armoury Rebalance,MEASURED,60,0,0,-,X,OFF,"RULED 10-09 trade-only, never on the planet",trade only,
+mineral,phrik,phrik,RSW_Phrik,Jawa Armoury Rebalance,MEASURED,90,0,0,-,X,OFF,RULED 10-09 'Both': trade + smelted aboard from phrikite,trade + smelt,
+mineral,gravitonium,gravitonium,Gravitonium,Research Retag,MEASURED,12,0.4,0,-,X,OFF,def text: an alloy made on a grav forge; deepCommonality 0.4 is a donor error,made + rare trade,zero its deep weight
+mineral,tibanna,tibanna gas,KOTOR_Tibanna OuterRim_Tibanna (zeroed R2),Jawa Armoury Rebalance / Outer Rim,MEASURED,50/1,2,0,-,X,OFF,RULED the_forge.md:127 beldon herds only,Forge beldon herds (fauna) + trade,
+mineral,glower_crust,glower crust,RM_GlowerCrust,RimMandrake: Baroque Biomes,MEASURED,4.5,0,0,-,ORG,ORG,RULED 10-09 'more lore than anything else but connects them',Warscar plant RM_Glower harvest,doonium-ore flux: makes Warscar a must-visit for doonium
+mineral,glass_pearl,glass pearl,RM_GlassPearl,RimMandrake: Baroque Biomes,MEASURED,38,0,0,-,ORG,ORG,sand-fishing rare catch (RSW_RareSandCatches),sand-fishing biomes,
+mineral,biosilica,biosilica,RM_Biosilica RM_BiosilicaGrit,RimMandrake: Baroque Biomes,MEASURED,7/1.5,0,0,-,ORG,ORG,light-pipe nub flora,dune-sea flora,
+mineral,charlace,char-lace,RM_CharLace,RimMandrake: Baroque Biomes,MEASURED,4,0,0,-,ORG,ORG,kethevar coil flora,BlueDesert,
+mineral,ossrith,ossrith crystal,RM_OssrithCrystal,RimMandrake: Baroque Biomes,MEASURED,65,0,0,-,ORG,ORG,shed from an ossrith's spine; refines to uranium,ossrith range,a second uranium route outside the Wastes
+mineral,vexxith,vexxith,RM_Vexxith,RimMandrake: Baroque Biomes,MEASURED,18,0,0,-,ORG,ORG,PROMISED shear from the vexxiss,Cauldron,
+mineral,tollhorn,tollhorn core,RM_TollhornCore,RimMandrake: Baroque Biomes,MEASURED,45,0,0,-,ORG,ORG,horn-coral core,coral seas,
+mineral,gallium,gallium,(no def),-,PROMISED_NO_DEF,,,,-,ORG,ORG,the_contagion.md:210 off Red Spore shells,Contagion,
+mineral,rime_nodules,rime nodules,(no mineral def; RM_RimeNoduleEuphoric is the drug),-,PROMISED_NO_DEF,,,,-,ORG,ORG,the_propane_lakes.md:47 plant,TheChill,
+mineral,amber,amber,BMT_AmberResource,(mod not active),INACTIVE,,,,-,-,INACTIVE,10-03 PROPOSED FloodedCanyon,-,binding unresolved in the 2026-10-28 dump
+mineral,glowstone,glowstone,GLO_GlowstoneCluster,(mod not active; no licence),INACTIVE,,,,-,-,INACTIVE,10-03 PROPOSED Deeps,-,
+mineral,others_inactive,"skysteel, uranium crystals, alcyonite, sangonite, mineral sand, BMT fossils",AA_SkySteel AA_UraniumCrystals AB_AlcyoniteChunk DA_Sangonite GravTide_MineralSandConcentrate BMT_FossilResource,(mods not active),INACTIVE,,,,-,-,INACTIVE,10-03 inventory,-,
+biome,RM_Abyss,the Abyss,,Baroque Biomes,MEASURED,,,,,baroque,ROW,signature: darkness that behaves like a substance,"mountain % band 0-25, hilliness Flat-Mountainous",no relief lore; neutral band
+biome,RM_BlueDesert,the Blue Desert,,Baroque Biomes,MEASURED,,,,,baroque,ROW,signature: night-side hydrocarbon-haze ice plateau,"mountain % band 0-10, hilliness Flat-LargeHills",a plateau is flat-topped; ice keeps meteorites at the surface
+biome,RM_Cauldron,the Cauldron,,Baroque Biomes,MEASURED,,,,,baroque,ROW,signature: terminator toxic forest; ground breathes gas,"mountain % band 0-15, hilliness Flat-LargeHills",wet forest floor
+biome,RM_ChillCrater,the Chill crater,,Baroque Biomes,MEASURED,,,,,baroque (background),ROW,"signature: burned propane-lake scar, cracked black glass","mountain % band 0-10, hilliness Flat-SmallHills",a crater floor; rim only
+biome,RM_Contagion,the Contagion,,Baroque Biomes,MEASURED,,,,,baroque,ROW,signature: day-side red storm valley,"mountain % band 30-60, hilliness SmallHills-Impassable",a valley between peaks; the Contagion lives on the peaks (mountain_system 2026-10-20)
+biome,RM_FeverWood,the Fever Wood,,Baroque Biomes,MEASURED,,,,,baroque,ROW,"signature: hot canopy swamp, still water","mountain % band 0-5, hilliness Flat-SmallHills",swamp
+biome,RM_FloodedCanyon,the Cracked Lands,,Baroque Biomes,MEASURED,,,,,baroque,ROW,signature: canyons that flood wall to wall,"mountain % band 20-50, hilliness SmallHills-Mountainous",the canyon walls are the mountain cells
+biome,RM_GelatinousSlime,the Slime,,Baroque Biomes,MEASURED,,,,,baroque,ROW,signature: green slime superorganism,"mountain % band 0-10, hilliness Flat-LargeHills",slime spreads over low ground
+biome,RM_Greentide,the Greentide,,Baroque Biomes,MEASURED,,,,,baroque,ROW,signature: humid green flood plain,"mountain % band 0-5, hilliness Flat-SmallHills",flood plain (85% river)
+biome,RM_GreySea,the Grey Sea,,Baroque Biomes,MEASURED,,,,,baroque sea,ROW,signature: hypersaline terminal sea,"mountain % band 0-0, hilliness Flat",sea surface
+biome,RM_LanternDeeps,the Lantern Deeps,,Baroque Biomes,MEASURED,,,,,baroque (cave layer),ROW,signature: cave layer under maps at or below -40 C,"mountain % band n/a-n/a, hilliness n/a",not painted on the world; injected below cold maps
+biome,RM_LeaningScrub,the Leaning Scrub,,Baroque Biomes,MEASURED,,,,,baroque,ROW,signature: low-sun windswept scrub,"mountain % band 0-15, hilliness Flat-LargeHills",rolling windward country
+biome,RM_LongShade,the Long Shade,,Baroque Biomes,MEASURED,,,,,baroque,ROW,signature: shade economy under a low sun,"mountain % band 10-40, hilliness SmallHills-Mountainous",long shadows need relief to cast them
+biome,RM_Miasma,the Miasma,,Baroque Biomes,MEASURED,,,,,baroque,ROW,"signature: mangal delta, brackish channels","mountain % band 0-0, hilliness Flat",a delta
+biome,RM_SleepingIce,the Sleeping Ice,,Baroque Biomes,MEASURED,,,,,baroque,ROW,signature: deep-night dirty flowing ice; Lantern Deeps host,"mountain % band 5-30, hilliness Flat-Mountainous",ice ridges and nunataks
+biome,RM_Pyrelands,the Pyrelands,,Baroque Biomes,MEASURED,,,,,baroque,ROW,signature: savanna that burns on a cycle,"mountain % band 0-10, hilliness Flat-LargeHills",savanna
+biome,RM_RustCathedral,the Rust Cathedral,,Baroque Biomes,MEASURED,,,,,baroque,ROW,signature: mechanoid plateau of deck plate,"mountain % band 15-50, hilliness SmallHills-Impassable","a raised plateau; the walls are built, the scarps are rock"
+biome,RM_Stillsand,the Stillsand,,Baroque Biomes,MEASURED,,,,,baroque,ROW,signature: extreme dune desert,"mountain % band 0-5, hilliness Flat-LargeHills","dunes are hills, not mountains"
+biome,RM_TheChill,the Chill,,Baroque Biomes,MEASURED,,,,,baroque sea,ROW,signature: anti-stellar propane sea,"mountain % band 0-0, hilliness Flat",sea surface
+biome,RM_TheForge,the Forge,,Baroque Biomes,MEASURED,,,,,baroque,ROW,"signature: one mountain of foundry towers, lava seams","mountain % band 60-100, hilliness LargeHills-Impassable",'one mountain'
+biome,RM_TheRot,the Rot,,Baroque Biomes,MEASURED,,,,,baroque,ROW,signature: pale fungal night,"mountain % band 0-20, hilliness Flat-Mountainous",no relief lore; low band
+biome,RM_TheScald,the Scald,,Baroque Biomes,MEASURED,,,,,baroque sea,ROW,signature: boiling substellar lake,"mountain % band 0-0, hilliness Flat",sea surface
+biome,RM_TheSump,the Sump,,Baroque Biomes,MEASURED,,,,,baroque,ROW,signature: flat black tar basin,"mountain % band 0-2, hilliness Flat",'flat black basin'
+biome,RM_TwilightSea,the Twilight Sea,,Baroque Biomes,MEASURED,,,,,baroque sea,ROW,signature: the last ordinary sea,"mountain % band 0-0, hilliness Flat",sea surface
+biome,RM_Warscar,Warscar,,Baroque Biomes,MEASURED,,,,,baroque,ROW,"signature: shattered megastructure, slag hills","mountain % band 10-35, hilliness SmallHills-Mountainous",slag hills and crater rims are mostly LargeHills
+biome,RM_Wastes,the Wastes,,Baroque Biomes,MEASURED,,,,,baroque,ROW,"signature: dry, radiologically live brine pans","mountain % band 0-15, hilliness Flat-LargeHills",basins and pans
+biome,RM_Webwork,the Webwork,,Baroque Biomes,MEASURED,,,,,baroque,ROW,signature: jungle that drank its river,"mountain % band 0-20, hilliness Flat-LargeHills",no relief lore; low band
+biome,RM_WeepingStones,the Weeping Stones,,Baroque Biomes,MEASURED,,,,,baroque,ROW,signature: stone country of weeping rock,"mountain % band 30-70, hilliness SmallHills-Impassable",'stone country'
+biome,RM_SeabedFloor_TheScald,Scald floor,,Baroque Biomes,MEASURED,,,,,seabed (dive map),ROW,"signature: vent fields, nodule floor","mountain % band n/a-n/a, hilliness n/a",dive map; no world tile of its own
+biome,RM_SeabedFloor_GreySea,Grey Sea floor,,Baroque Biomes,MEASURED,,,,,seabed (dive map),ROW,signature: great salt crystals,"mountain % band n/a-n/a, hilliness n/a",dive map
+biome,RM_SeabedFloor_TwilightSea,Twilight Sea floor,,Baroque Biomes,MEASURED,,,,,seabed (dive map),ROW,signature: ordinary sea floor,"mountain % band n/a-n/a, hilliness n/a",dive map
+biome,RM_SeabedFloor_TheChill,Chill floor,,Baroque Biomes,MEASURED,,,,,seabed (dive map),ROW,signature: propane-sea floor,"mountain % band n/a-n/a, hilliness n/a",dive map
+biome,RUT_AridShrubland,arid shrubland (Jawa),,RimUtinni Patches,MEASURED,,,,,RUT,ROW,signature: Tatooine-like scrub,"mountain % band 0-15, hilliness Flat-LargeHills",grammar mean hilliness 1.0 (Flat)
+biome,RUT_Desert,desert (Jawa),,RimUtinni Patches,MEASURED,,,,,RUT,ROW,"signature: Tatooine-like desert, mesas","mountain % band 5-30, hilliness Flat-Mountainous",grammar mean hilliness 2.0; Jundland-style mesas
+biome,RUT_ExtremeDesert,extreme desert (Jawa),,RimUtinni Patches,MEASURED,,,,,RUT,ROW,signature: deep sand,"mountain % band 0-10, hilliness Flat-LargeHills",grammar mean hilliness 1.0
+biome,RUT_Umbra,Umbra / Fuel Snows (coldest land),,RimUtinni Patches,MEASURED,,,,,RUT (duplicate of Fuel Snows; FuelSnows absent from 10-28 dump),ROW,signature: coldest land on the planet,"mountain % band 0-20, hilliness Flat-Mountainous",no relief lore; low band
+biome,OTHER_vanilla,any other (vanilla or donor) biome,,-,-,,,,,-,ROW,signature: unregistered: keeps vanilla behaviour unless the owner rules otherwise,"mountain % band n/a-n/a, hilliness -",not ours: no band
