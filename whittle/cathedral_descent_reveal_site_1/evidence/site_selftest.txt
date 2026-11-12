@@ -1,0 +1,9 @@
+# selftest_cathedral_descent_site.py on published main 2b51bf3116, 2026-11-11 21:46 -0800
+  audit: walk: 1045 cells; terminus at row 232 col 33; arrival north edge cols 113-137; map 250x250; sentinels 7
+  audit: PASS: every invariant holds
+  ok   committed defs are the generator's output (5 files)
+  ok   lint stage 3: 8 strings read, 0 findings
+  ok   planted second terminus is caught
+  ok   planted unknown symbol is caught
+  ok   planted hole in the line is caught
+PASS: selftest_cathedral_descent_site (audit, determinism, lint, 3 planted faults caught)

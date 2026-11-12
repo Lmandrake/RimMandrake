@@ -1,0 +1,7 @@
+# string surface: every faction-visible string (FactionDef, TraderKindDef, PawnKindDef, codex, research, ideo, namers, Keyed, patches on those) before vs after each landing of this item
+## landing 1
+string_surface: base 5dba1df0f6^ = 3864 faction-visible strings (sha 7b150e2a5b8788dd); head 5dba1df0f6 = 3864 (sha 7b150e2a5b8788dd)
+string_surface: UNCHANGED (0 added, 0 removed)
+## landings 2-7 (6cb6c65922..c221b98938)
+string_surface: base 88f6f4e1cd = 3864 faction-visible strings (sha 7b150e2a5b8788dd); head c221b98938 = 3864 (sha 7b150e2a5b8788dd)
+string_surface: UNCHANGED (0 added, 0 removed)

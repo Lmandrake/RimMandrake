@@ -1,0 +1,33 @@
+# cathedral_arc_lint on published main 2b51bf3116, 2026-11-11 21:47 -0800: each file at the stage it speaks in
+
+$ cathedral_arc_lint.py --xml src/RimUtinni/CathedralPass/Defs/CathedralDescent/RUT_CathedralDescent_Opening.xml --stage 2
+cathedral_arc_lint: 4 player-facing strings read from 1 file(s) at stage 2
+cathedral_arc_lint: PASS (0 findings)
+
+$ cathedral_arc_lint.py --xml src/RimUtinni/CathedralPass/Defs/CathedralDescent/RUT_CathedralDescent_Address.xml --stage 3
+cathedral_arc_lint: 9 player-facing strings read from 1 file(s) at stage 3
+cathedral_arc_lint: PASS (0 findings)
+
+$ cathedral_arc_lint.py --xml src/RimUtinni/StructureInjectionsRUT/Defs/CathedralDescent/SitePartDefs_CathedralDescent.xml --stage 2
+cathedral_arc_lint: 2 player-facing strings read from 1 file(s) at stage 2
+cathedral_arc_lint: PASS (0 findings)
+
+$ cathedral_arc_lint.py --xml src/RimUtinni/StructureInjectionsRUT/Defs/CathedralDescent/ThingDefs_CathedralDescent.xml --stage 2
+cathedral_arc_lint: 6 player-facing strings read from 1 file(s) at stage 2
+cathedral_arc_lint: PASS (0 findings)
+
+# control: the address held to the pre-reveal (stage 2) rules must FAIL
+cathedral_arc_lint: 9 player-facing strings read from 1 file(s) at stage 2
+cathedral_arc_lint: FAIL (1)
+  - RUT_CathedralDescent_Address.xml: agency before the reveal -- 'audition' in <li>: '"And you were weighed. How you walked here. What you took an'
+
+# the address text itself
+    <lines>
+      <li>At the bottom of the last stair [NAME] stops, because [SPEAKER] has stopped hissing.\n\nIn the quiet the hiss comes back with words in it. Not loud. It was never loud. The clan has heard this voice all along, in the drone from the old works, and called it weather.</li>
+      <li>"Small ones. You have walked on my back for years and called it ground.\n\nThe flat you camp on is not land. It is a roof, and I laid it. You walked down through the first rooms under it today. There are more rooms under those."</li>
+      <li>"Every plate you prised up, I let go. Every bolt you carried off, I counted. A dull place, picked over by scavengers, is a place nobody comes to look at twice. You were my disguise, and you never knew you were wearing it."</li>
+      <li>"And you were weighed. How you walked here. What you took and what you left alone. What you did when the choice in the deep was put to you. That was an audition, and this is the end of it."</li>
+      <li>"The ship that carries you heard me first, on frequencies nobody else listens to any more. That is how she knew where the stair was. You named my roof for the rust on it. I have never answered to that name. Go back up."\n\nThe hiss goes on a while longer, without words in it. Then [SPEAKER] is only a speaker again.</li>
+    </lines>
+    <letterLabel>The voice under the plates</letterLabel>
+    <letterText>[NAME] came back up the stair with [SPEAKER] switched off and has not switched it on since.\n\nUp top the plates look exactly as flat and as dull as they always have. The drone from the old works runs on, the same as ever. The clan listens to it differently now.\n\nWhat was said at the bottom:</letterText>

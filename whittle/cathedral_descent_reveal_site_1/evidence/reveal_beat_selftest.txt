@@ -1,0 +1,71 @@
+# selftest_cathedral_reveal_beat.py on published main 2b51bf3116, 2026-11-11 21:46 -0800
+
+[1] gate matrix (pure function)
+ok    72 combinations: opens only at VOUCHED + restore choice, unopened, unrevealed, enabled 
+ok    reasons name the missing half 
+
+[2] dev-flag matrix on the ordinary-play fixture (missions done as offered; the party walks the descent)
+      VOUCHED, no restore flag           first VOUCHED poll 108   openings at []       reveal at []       first stage-3 poll None  gate reasons ['neither_vouched_nor_restore_choice', 'vouched_without_restore_choice']
+ok    VOUCHED without the restore flag: VOUCHED is reached 
+ok    VOUCHED without the restore flag: no opening, no reveal, never stage 3 
+      restore flag, missions ignored     first VOUCHED poll None  openings at []       reveal at []       first stage-3 poll None  gate reasons ['restore_choice_without_vouched']
+ok    restore flag without VOUCHED: VOUCHED never reached 
+ok    restore flag without VOUCHED: no opening, no reveal, never stage 3 
+      Regard forced 1000, no missions    first VOUCHED poll None  openings at []       reveal at []       first stage-3 poll None  gate reasons ['restore_choice_without_vouched']
+ok    Regard alone (1000, restore flag set, no missions): no opening 
+      both, descent off in settings      first VOUCHED poll 63    openings at []       reveal at []       first stage-3 poll None  gate reasons ['descent_disabled']
+ok    descent off: VOUCHED + flag opens nothing 
+      VOUCHED + restore flag             first VOUCHED poll 63    openings at [63]     reveal at [67]     first stage-3 poll 67    gate reasons ['already_opened', 'already_revealed', 'open', 'restore_choice_without_vouched']
+ok    both: exactly one opening, on the first VOUCHED poll 
+ok    both: exactly one reveal, after the opening 
+ok    both: one descent quest on the list, ended in success 
+ok    reveal flag published in the poll's record 
+
+[4] stage 3 entered by this beat and only this beat
+ok    effective_stage is 3 from the reveal poll on 
+ok    effective_stage is never 3 before the reveal poll 
+ok    conduct posture alone never reports 3 
+ok    knowledge_revealed is written in exactly two places: the before-this-run flag and the descent's success 
+
+[3] once: re-trigger attempts refused
+ok    after the beat, the trigger set still holds and is refused (already_revealed) every later VOUCHED poll 
+      demotion at poll 72: lowest posture after 0, last posture 2, openings [63]
+ok    demote and re-climb to VOUCHED: still one opening, stage 3 never lost 
+ok    a descent already on the quest list (dev-opened): never opened a second time 
+ok    descent opened but never walked: one opening, no reveal, stage 3 shut 
+      game refuses the first opening: openings at [63, 67], unconfirmed at [67], descent quests 1, reveals 1
+ok    the game refuses the first opening: the gate re-arms once unconfirmed, the second is delivered, one quest, one reveal 
+ok    a quest merely NAMED like the descent (no root) sets no reveal flag 
+ok    source lint: a second opening is refused by the save's once-flag and by an existing descent quest 
+ok    source lint: the incident marks opened only once its quest has a site 
+ok    source lint: the address ends THIS site's quest before it sets the flag, and refuses without one 
+ok    source lint: only an awake clan colonist/droid with a clear line to the terminus hears it 
+ok    in game (source lint): a second opening is refused by the save's once-flag (OpeningRefusal checks opened and revealed) 
+ok    source lint: the address is spoken once (SpeakAddress returns on revealed before it sets it) 
+
+[5] text: the linter, at the stage each string speaks in
+      RUT_CathedralDescent_Opening.xml at stage 2: 4 strings read, 0 findings
+ok    RUT_CathedralDescent_Opening.xml lints clean at stage 2 (4 strings) 
+      RUT_CathedralDescent_Address.xml at stage 3: 9 strings read, 0 findings
+ok    RUT_CathedralDescent_Address.xml lints clean at stage 3 (9 strings) 
+ok    the address held to the pre-reveal rules is refused (linter discriminates) 
+ok    planted line refused at stage 3: 'The droids are spared because they are mine.' 
+ok    planted line refused at stage 3: 'I answer the drill from below.' 
+ok    planted line refused at stage 3: 'This is the Cathedral speaking.' 
+ok    planted line refused at stage 3: 'My factory is dark.' 
+ok    every [TOKEN] in the text is one the C# fills 
+      hardcoded C# strings linted at stage 3: ['Listen.', 'Go back up.', 'The old sentinels no longer look away from  .', "'s speaker grille", 'the comms set on ']
+ok    the C#'s own player-facing strings (dialog options, escort message, speaker phrase) lint clean at stage 3 
+
+[6] Oracle-absent end to end
+ok    no `claude` on PATH: opening and reveal both happen 
+ok    source lint: the in-game beat calls no Oracle, no process, no LLM 
+ok    source lint: the address pages are the def's fallback lines 
+
+[7] scoped to the player
+ok    source lint: CathedralDescent.cs writes no faction, goodwill, trader, codex or research state 
+ok    the beat's defs are none of the faction-visible types 
+ok    string_surface.py sees a planted FactionDef string 
+ok    string_surface.py sees a Keyed string 
+
+44/44 checks passed

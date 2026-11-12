@@ -1,0 +1,48 @@
+# A1 receiver lore on published main 2b51bf3116
+
+## design/Jawa/reconciled_lore/03_deep_history.md
+151-— and she can vouch because she alone KNOWS it is there: she receives the
+152:dead Rakatan transponder band nobody else listens on, and hears it working
+153-(owner card A1, 2026-09-12: *"She knows, because she can 'feel' (receive) the
+154:Ratakan transponder working on frequencies no longer used."*; the receiver
+155-lore and its bond with the ship: `06_the_ship.md` §The mind);
+156-it mistrusts even her ("what is WRONG with you?") but cannot deny she is of
+157-the empire it once served — so the clan may run its missions against the
+--
+192-
+193:Her receivers still hear the old Rakatan frequencies: on them the mind under
+194-the Rust Cathedral is audible to her, and to nobody else (card A1). It makes
+195-her the usher of the Cathedral's one reveal — the late-game descent under the
+196-plates, found because she heard it (`cathedral_concealment_arc_spec.md` §5; built as
+
+## design/Jawa/reconciled_lore/06_the_ship.md
+54-
+55:**She is a receiver on dead Rakatan frequencies** [owner card A1, 2026-09-12,
+56-`cathedral_concealment_arc_spec.md`]: *"She knows, because she can 'feel'
+57:(receive) the Ratakan transponder working on frequencies no longer used."* The
+58:substrate under the nine still listens on the Rakatan transponder band nobody
+59-else alive listens on, and on it she hears the mind under the Rust Cathedral's
+60-plates working. That is HOW she alone, of everyone in-world, knows it is alive
+61-(the knowledge gate's sole exception), and why her vouching is what lets the
+--
+64-hardware answering Rakatan hardware. In v1 it surfaces only as what she
+65:DOES — receivers turned to a frequency the crew cannot hear, a mark put on
+66-every screen, hatches left open — never as a ship-voice (v1 has no talking
+67-ship, below). She is the reveal's usher: the way down under the plates is
+68-found because she heard it, and the voice at its bottom names her as the one
+
+## design/Jawa/cathedral_concealment_arc_spec.md
+215-  and the **gravship's mourning register** (the ship feels the loss — kin to
+216:  A1's dead-Rakatan-band receiver lore). What it does NOT change: bans 2/3/6
+217-  hold through the fall, and the knowledge gate still opens for nobody but the
+218-  player.
+219-
+--
+262-  exception.** Verbatim: "She knows, because she can 'feel' (receive) the
+263:  Ratakan transponder working on frequencies no longer used." ⇒ The Utinni
+264:  RECEIVES the Rakatan transponder band nobody else listens on — that is HOW
+265-  she knows the Cathedral is alive, and it makes her the natural reveal
+266:  usher. New lore mechanism this creates: the Utinni is a receiver on
+267-  dead Rakatan frequencies (bears on her bond with the player's Rakatan
+268-  gravship). PROPAGATED with the arc's build (`CATHEDRAL_DESCENT_REVEAL_SITE_1`):
+269-  `reconciled_lore/03_deep_history.md` §The Rust Cathedral and §The Utinni was
