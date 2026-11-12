@@ -1,53 +1,59 @@
-# Judge: BIOME_SHIP_CONTRIBUTIONS_1
+# Judge verdict: BIOME_SHIP_CONTRIBUTIONS_1 (round 5)
 
-Judge: claude-opus-5-5, fresh, blind to DONE.md / BROADEN.md. Date 2026-11-12. Clone /home/mandrake/rm/claude-offline2.
-
-## What I checked myself
-
-- Reran `python3 src/RimMandrake/Utils/ship_contributions.py` at HEAD d262fe3b2d: exit 0, 24/24 biomes PASS, 0 problems.
-  Output matches `evidence/ship_contributions_run.txt` line for line, except the header (that run was at HEAD 047ba6f2ae).
-  My copy: `D:\ClaudeWork\rimmandrake\judge_bsc1\run.txt`.
-- Read the checker's docstring. It reads the substructure affordances from the Odyssey defs and checks build category,
-  placeWorkers, bringAlongOnGravship, obtainability, and whether each gift is the biome's own. Its selftest log says it
-  rejects 12 mutated false lists. That is a real instrument for the verify line's first half.
-- Checked the row claims against the defs:
-  - Pattern hull 120 HP/day: CompSelfhealHitpoints, ticksPerHeal 500 on a Rare ticker. Consistent.
-  - Hexplate Cleanliness 0.6 and furnace bank heatPerSecond 10: both in the defs.
-  - Long-shade mast lee, capped at 16 cells: the lee mode exists in `RM_ShadeGear.cs` / `RM_MapComponent_ShadeGrid.cs`.
-- Art: opened `evidence/art2/contact_sheet_96ppc.png`. All 20 pictures read as their things at a consistent house style.
-  Every final PNG is installed byte-identical in the mod Textures folder (the great bone under the name
-  `SummGreatBone.png`, which is the def's texPath).
+Judge: CLAUDE_STEVEDESKTOP_OFFLINE2 (fresh judge seat, blind to DONE/BROADEN), 2026-11-12. Tree at 5fae0c0159.
 
 ## Statement line
 
-**"Every-biome pass ... is done as the item file says, shown by fresh evidence." FALSE.**
+> Every-biome pass ... is done as `infrastructure/state/items/BIOME_SHIP_CONTRIBUTIONS_1.md` says, shown by fresh evidence.
 
-- What holds: coverage (24/24 shipped biome mods each have a row naming a real, deck-buildable def that is the biome's
-  own), the distinctness sweep, the design-judge fixes, the art, and the owner card. The checker reproduces.
-- What fails: the item's verify is "the list here matches what the mods actually ship", and it does not.
-  - The Cracked Lands row says the fossil case is "(beauty 14)".
-  - `src/RimMandrake/CrackedLands/Defs/ThingDefs_Buildings/RM_FossilCase.xml:44` ships `<Beauty>40</Beauty>`.
-  - The item file's own preamble says the change to Beauty 40 was applied.
-  - The stale "beauty 14" is also in `evidence/owner_card.md:22`, the matrix going to the owner. So the card would hand
-    him a number that is wrong for the def it describes. The checker cannot catch this because it checks def names,
-    not the numbers in the prose.
-  - The fix is one edit in the list row and one in the card. Until then the list does not match the mod.
+**false**, because of one small but factual error in the item's own prose. The substance holds up.
 
-## Where the evidence is flattering or cannot show
+### What holds (I checked these myself)
+- **Coverage and placement.** I reran `python3 src/RimMandrake/Utils/ship_contributions.py` on this tree: exit 0, 24/24 PASS. Its
+  verdict lines match `evidence/ship_contributions_run.txt` exactly. The checker reads the deck affordances from Odyssey's
+  Substructure def rather than assuming them, fails unknown placeWorkers as UNMEASURED, checks `bringAlongOnGravship`,
+  and its selftest makes 12 mutated lists fail. That meets the verify clause: every shipped biome mod has a ship-buildable
+  contribution, and the list matches the defs.
+- **Prose numbers.** I spot-checked them against the defs: fossil case Beauty 40, hexplate Cleanliness 0.6 (description
+  "as clean ... as a surgery's tile"), heat bank (with `prose_numbers_audit.md`), long-shade mast capped at 16 cells (XML
+  comment and RM_MapComponent_ShadeGrid). The drive core is a real CompProperties_GravshipFacility with a GravshipRange
+  stat part, as its row says.
+- **Art.** I hashed all 20 `art2/final` PNGs and the 5 `art/` textures. Each one is byte-identical to its texture in
+  `src/` (SummGreatBone lives at `Abyss/Textures/RM_Abyss/Things/Building/SummGreatBone.png`). For each listed def I
+  checked the texPath. Every gift has its own file. Texture sharing goes outward only (WringingStill borrows the solar
+  still's art, and SignalMirror borrows the sun lance base's). It is same-material for lanternstone (built and natural)
+  and same-device for the cloud repulsor's ship variant. All of that is acceptable. The contact sheet at 96 ppc reads well.
+- **Owner card.** The card exists and carries the five options. It is in the lane's OWNER_QUESTIONS.md, which now also
+  holds the correction from beauty 14 to 40. The offline effective-def lint says VERDICT PASS.
 
-- No live play: nothing shows a gift placed, flown or used. The README says so plainly. These behaviours are claimed
-  from defs and C# reading only: the great bone's imprint, the drive core's range multiplier, the waste-bay launch
-  refusal, and the mast's lee on a real deck.
-  - For a list-and-design item whose verify is def-level, I do not count this against it.
-  - The criteria line ("the gravship becomes a scrapbook") is a play feel that no still or def check can show.
-- The contact sheets are clean isolated renders on a flat ground, not in-game on a deck. They show legibility, not fit
-  beside vanilla things.
-- The row numbers are prose the checker does not verify. A spot check of five found one wrong. Nothing has checked
-  the other rows' numbers ("beauty 14" for the gaslight, "radius 10", etc.) against their defs either.
+### What is wrong (the reason for "false")
+1. The item's prose says (line 31) "the four new builds of this pass are marked *new*", but **five** rows are marked
+   *new*: Cracked Lands, Long Shade, Pyrelands, Rust Cathedral and Sleeping Ice. The long-shade mast was added by design
+   judge r2, and the count was not updated. The owner card (line 80) correctly says "the five new ones", so the item and
+   the card disagree.
+2. The Art paragraph says "the 14 that had stand-ins" were painted. That count includes RM_LureAwning (`art2/final/RM_LureAwning.png`,
+   shown on the contact sheet), which is no longer a gift on the list because the mast replaced it. So "every gift now wears
+   its own picture ... the 14" counts a gift the list dropped. The count should either say 13 gifts plus the retired
+   awning, or say why the awning was repainted.
 
-## What would settle it
+Both are one-line prose fixes. The previous round failed on the same kind of drift (a number in the list differed from
+what ships), so I am holding to the same standard.
 
-Correct the Cracked Lands row and `owner_card.md` to Beauty 40. Better still, the other rows' prose numbers should be
-diffed against their defs, or the numbers dropped from the prose.
+### Where the evidence is flattering or cannot show the claim
+- Nothing has been placed, flown or used in a running game. The README says so honestly. "Ship-placeable" is the checker's
+  reading of the engine rules, not an observed placement. These mechanical claims cannot be confirmed from offline
+  evidence: the range multiplier, the sun-sphere's crop growth, the mast's lee, and the waste-cask launch refusal. A live
+  BENCH look (place each gift on a substructure deck, launch, land, and confirm it is still there and working) would settle them.
+  The item's verify clause does not demand that, so I do not count it against this round.
+- The contact sheets are clean single renders on a flat backdrop. They show no deck context, no neighbouring vanilla
+  things for scale, and no damaged or powered-off states. The mast's plinth is thin (the art judge noted this too).
+  RM_FloatstoneDoor and its icon are plain white slabs that read more like a fridge panel than stone. That is a matter
+  of taste, not a blocker.
+- Most rows (19 of 24) are agent picks under delegation, not owner rulings. They are marked as such and carded. That is
+  disclosed, not hidden.
+
+## To pass next round
+Fix "four new builds" to five on line 31. Fix the Art paragraph's "14" so it does not count the retired lure awning as a
+gift. Nothing else is owed from this judge.
 
 would show: no
