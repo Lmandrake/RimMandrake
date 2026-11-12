@@ -7,13 +7,15 @@
 - true: **A change applied below L2 either records source kinds, or the decision to let it stay uncheckable is written in | evidence: `whittle/agent_improve_audit_kindless_records_all_two/evidence/selftests_new_code.out` `whittle/agent_improve_audit_kindless_records_all_two/evidence/selftests_old_code.out` `whittle/agent_improve_audit_kindless_records_all_two/evidence/ordinary_use_lesson.out` `whittle/agent_improve_audit_kindless_records_all_two/evidence/attribution_audit.out`
 - true: **The share of change records with no source kinds is measured from `infrastructure/state/agent_improve/changes/` and | evidence: `whittle/agent_improve_audit_kindless_records_all_two/evidence/measure_kindless.out` `whittle/agent_improve_audit_kindless_records_all_two/evidence/measure_kindless.py`
 
-Every evidence file was re-run 2026-11-11 after the last landing (stamps in each file); figures as of 21:38 PST. The
-figures hold (attribution 206 of 422, still 49%; lessons ever filed 2406, whole text kinds 584; 2 of 2 records
-kindless); §4.3 now cites these, not the earlier 2400/582 and 8-of-114 run. `measure_kindless.py` is unchanged since it
-was committed (only re-run). `ordinary_use_lesson.out` no longer carries a hand-copied `lessons.py add` line (its
-`--home` did not match the file); it shows the lesson's real adding commit and every footered lesson in the inbox, by
-any seat. The item's 04:41Z note described an older probe; a correcting note (2026-11-12T05:18:29Z) states the
-apply_change probe.
+Every evidence file was re-run 2026-11-11 21:58 PST, after the last landing (cb52ef37dd; stamps in each file). The
+figures hold: attribution 206 of 422, still 49%; lessons ever filed 2413, whole-text kinds 584; 2 of 2 records
+kindless. `measure_kindless.py` is unchanged since it was committed (only re-run). This sitting also corrected §4.3,
+which said a lesson gains a kind once it carries an `item:` footer. It does not when the footer names a legacy `_1` id,
+and 8 of the 17 inbox footers do. §4.3's inbox figures now cite a saved run,
+`whittle/agent_improve_audit_kindless_records_all_two/evidence/measure_kindless_cited_in_4.3.out` (21:49 PST; the
+inbox moves hourly, so it is frozen rather than re-run). §4.3 also now separates the kinds a lesson's own words give
+(8 of 126) from the 2 that come only from its `item:` footer line; before, it counted both as "name an item in their text". A review of this item's code diff against the live journal
+(21:41 PST) found every Relentless alarm's kind right, including 56 from `check-<ITEM>-cN`/`help-` clones.
 
 ## How each is true
 Bullet 1 is true both ways: (a) and (b), and they agree.
@@ -34,11 +36,12 @@ Bullet 2: 2 of 2 records have `source_kinds == []`. The sanity probe: the produc
 - The whole-text fallback is a proxy. Its first-named item is corroborated by the seat's own ledger for only 49% (27%
   for the old first-line rule), so a non-empty kind from prose can be wrong, and a wrong kind would let a source-kind
   item into the "held-out" sample. Only the `item:` footer is sound. The doc says so with the numbers.
-- 2 records is the whole population, so the share is 100% of a tiny sample. In the live inbox (21:31 PST) 10 of 120
-  lessons name an item in their text and 11 carry an `item:` footer. Of the footers, 6 say `NONE` (BENCH, no item)
-  and 2 name legacy `_1` ids with no intent word (CATHEDRAL_MISSION_BOON_OFFERS_1, WORLD_REMAKE_FINAL_STEP_1), which
-  give no kind by design; 2 from a live FlowWorks round give FIX and this round's own gives AUDIT. Most skill changes stay unmeasured until lessons carry
-  footers that name new-grammar items.
+- 2 records is the whole population, so the share is 100% of a tiny sample. In the frozen 21:49 PST run §4.3 cites,
+  10 of 126 inbox lessons give a kind when the whole file is read (8 from their own words, 2 only from the footer line),
+  and 17 carry an `item:` footer: 6 say `NONE`, 8 name legacy `_1` ids with no intent word, which give no kind by
+  design, and 3 give a kind (FIX twice from a FlowWorks round, AUDIT from this round). At 21:58 the live inbox is 127
+  lessons with 18 footers. Most skill changes stay unmeasured until lessons are filed on items whose names carry an
+  intent word.
 
 ## What I did not test
 - A real agent-improvement pass applying a change (`run --apply`) on live data: none was due, and the live state under

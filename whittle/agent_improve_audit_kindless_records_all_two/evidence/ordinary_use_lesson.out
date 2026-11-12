@@ -1,4 +1,4 @@
-# 2026-11-11 21:35 -0800 at HEAD d997662cf9 ordinary use: lessons in the real inbox and what the pass's own collector makes of them
+# 2026-11-11 21:58 -0800 at HEAD cb52ef37dd ordinary use: lessons in the real inbox and what the pass's own collector makes of them
 # this round's lesson, filed with WC_ITEM set by the Whittle loop; the commit that added it:
   13c3626830 2026-11-11 20:42:33 -0800 AGENT_IMPROVE_AUDIT_KINDLESS_RECORDS_ALL_TWO: evidence, broaden, lessons README names --item
 
@@ -15,6 +15,12 @@
   20261112T052152Z-CLAUDE_STEVEDESKTOP_OFFLINE1-stevedesktop-2026-11-11- item: CATHEDRAL_DESCENT_REVEAL_SITE_1
   20261112T052305Z-BENCH-steve-wsl-vhdx-moved-hdd.md                     item: NONE
   20261112T052312Z-BENCH-ssh-remote-powershell-eats-stdin.md             item: NONE
+  20261112T053617Z-CLAUDE_STEVEDESKTOP_OFFLINE5-stevedesktop-has-no-vfe- item: SHIP_ALLOY_FORGE_1
+  20261112T053617Z-CLAUDE_STEVEDESKTOP_OFFLINE5-stevedesktop-whittle-clo item: SHIP_ALLOY_FORGE_1
+  20261112T053641Z-CLAUDE_STEVEDESKTOP_OFFLINE1-wc-py-statement-md-for-i item: CATHEDRAL_DESCENT_REVEAL_SITE_1
+  20261112T054039Z-CLAUDE_STEVEDESKTOP_OFFLINE3-stevedesktop-s-steam-lib item: CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1
+  20261112T054039Z-CLAUDE_STEVEDESKTOP_OFFLINE3-wc-py-setup-wrote-whittl item: CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1
+  20261112T054845Z-CLAUDE_STEVEDESKTOP_OFFLINE4-whittle-evidence-green-s item: SEA_FLOOR_AND_CATCH_PASS_1
 
 $ tail -2 infrastructure/state/lessons/20261112T043802Z-CLAUDE_ARCHMAGI_OFFLINE1-lesson-item-footer-feeds-kinds.md
 item: AGENT_IMPROVE_AUDIT_KINDLESS_RECORDS_ALL_TWO
@@ -50,21 +56,28 @@ home: design/RimMandrake/daily_agent_improvement_2026-11-02.md
   task_kind=None     target=None                                   20261112T052152Z-CLAUDE_STEVEDESKTOP_OFFLINE1-stevedesktop-2026-11-11-rimworld-moved.md
   task_kind=None     target=steve_c_drive_fill_2026-11-03.md       20261112T052305Z-BENCH-steve-wsl-vhdx-moved-hdd.md
   task_kind=None     target=wsl-windows-plumbing                   20261112T052312Z-BENCH-ssh-remote-powershell-eats-stdin.md
+  task_kind=None     target=None                                   20261112T053617Z-CLAUDE_STEVEDESKTOP_OFFLINE5-stevedesktop-has-no-vfe-factory-3686924415.md
+  task_kind=None     target=None                                   20261112T053617Z-CLAUDE_STEVEDESKTOP_OFFLINE5-stevedesktop-whittle-clones-rm-claude-offline.md
+  task_kind=None     target=wc.py                                  20261112T053641Z-CLAUDE_STEVEDESKTOP_OFFLINE1-wc-py-statement-md-for-item.md
+  task_kind=None     target=None                                   20261112T054039Z-CLAUDE_STEVEDESKTOP_OFFLINE3-stevedesktop-s-steam-library-moved-d.md
+  task_kind=None     target=None                                   20261112T054039Z-CLAUDE_STEVEDESKTOP_OFFLINE3-wc-py-setup-wrote-whittle-cathedral.md
+  task_kind=None     target=None                                   20261112T054845Z-CLAUDE_STEVEDESKTOP_OFFLINE4-whittle-evidence-green-subset.md
 
 $ python3 src/RimMandrake/Utils/agent_improve.py gather --day 2026-11-12 --dry-run --out <scratch, L0>
 # Agent improvement packet 2026-11-12
 
-29 pieces today; 2 signalled targets (>= 2 pieces in 7 days), cap 6.
+35 pieces today; 2 signalled targets (>= 2 pieces in 7 days), cap 6.
+
+## wc.py (3 in window, 3 today)
+kinds: lesson 3
+- [lesson] Of 1865 ledger-open ids on 2026-11-11, 1191 had no infrastructure/state/items/<ID>.md on origin/main (ghosts): a picker that trusts ledger state alone hands a model a ticket that does not exist. wc.py  (/home/mandrake/rm/scratch/BENCH/claude-archmagi-offline1/infrastructure/state/lessons/20261112T045615Z-BENCH-ledger-open-ghosts.md)
+- [lesson] The mtime of an empty output file a killed process redirected into is its creation time, not when the run ended: ending a killed claude run's spend window there counted 0 tokens. End it at the next ph  (/home/mandrake/rm/scratch/BENCH/claude-archmagi-offline1/infrastructure/state/lessons/20261112T045616Z-BENCH-empty-out-mtime-birth.md)
+- [lesson] wc.py statement_md, for an item with no ledger criteria, keeps item-file ## criteria lines whose first char is - or * and drops x[0]: a prose criteria paragraph yields junk bullets. CATHEDRAL_DESCENT_  (/home/mandrake/rm/scratch/BENCH/claude-archmagi-offline1/infrastructure/state/lessons/20261112T053641Z-CLAUDE_STEVEDESKTOP_OFFLINE1-wc-py-statement-md-for-item.md)
 
 ## loop.sh (2 in window, 2 today)
 kinds: lesson 2
 - [lesson] A bare 'claude -p' in a seat clone loads the full CLAUDE.md layers (~48k tokens) plus a ~134k MCP deferred-tool delta on every call: Claude Whittle setup paid $1.2-1.8 of opus per round (21 turns) jus  (/home/mandrake/rm/scratch/BENCH/claude-archmagi-offline1/infrastructure/state/lessons/20261112T045615Z-BENCH-claude-p-default-context-cost.md)
 - [lesson] A loop that execs a private copy of itself (loop.run.sh) never adopts a new loop.sh: only wc.py and the *.md briefs it re-reads each round reach a running unit. Fixes for running loops must ride wc.py  (/home/mandrake/rm/scratch/BENCH/claude-archmagi-offline1/infrastructure/state/lessons/20261112T045615Z-BENCH-private-run-copy-never-adopts.md)
-
-## wc.py (2 in window, 2 today)
-kinds: lesson 2
-- [lesson] Of 1865 ledger-open ids on 2026-11-11, 1191 had no infrastructure/state/items/<ID>.md on origin/main (ghosts): a picker that trusts ledger state alone hands a model a ticket that does not exist. wc.py  (/home/mandrake/rm/scratch/BENCH/claude-archmagi-offline1/infrastructure/state/lessons/20261112T045615Z-BENCH-ledger-open-ghosts.md)
-- [lesson] The mtime of an empty output file a killed process redirected into is its creation time, not when the run ended: ending a killed claude run's spend window there counted 0 tokens. End it at the next ph  (/home/mandrake/rm/scratch/BENCH/claude-archmagi-offline1/infrastructure/state/lessons/20261112T045616Z-BENCH-empty-out-mtime-birth.md)
 
 ## unrouted (the Curator routes these or leaves them)
 - [lesson] The account switcher's D:\ClaudeWork\rimmandrake\switching_plan\notice.json holds the switcher's current account (steven), pct_left and its switch line, not the Claude System account's weekly %. That 
@@ -85,5 +98,10 @@ kinds: lesson 2
 - [lesson] jawa/mod_settings_field writes a FlowWorks swim switch WITHOUT running RM_SwimWater.Reapply, so the deep band on a live map does not change: follow it with jawa/static_call type=RimMandrake.FlowWorks.
 - [lesson] Vanilla WaterDeep has no WaterproofConduitable affordance (live jawa/build_check refuses WaterproofConduit there), so a matrix scene that spawns conduit on WaterDeep is a layout no player can build; F
 - [lesson] SteveDesktop 2026-11-11: RimWorld moved to D:\SteamLibrary\steamapps\common\RimWorld (C: copy holds only Mods). winbuild needs /p:RimWorldManaged=<D: Managed> and /p:HarmonyDll=D:\SteamLibrary\steamap
+- [lesson] SteveDesktop has no VFE Factory (3686924415) and no DefDump captures, and a loop shell lacks testcentre_env.sh, so winbuild of a mod referencing VanillaFurnitureExpandedFactory fails and prove_canon_m
+- [lesson] SteveDesktop Whittle clones (~/rm/claude-offline*) have no core.sshCommand, so ./publish retries forever on the read-only default key; run it as GIT_SSH_COMMAND="ssh -i ~/.ssh/deploy_rimmandrake_write
+- [lesson] SteveDesktop's Steam library moved to D:/SteamLibrary on 2026-11-11 (the C: RimWorld folder keeps only Mods and logs), so every winbuild failed on Harmony and Assembly-CSharp; src/Directory.Build.prop
+- [lesson] wc.py setup wrote whittle/cathedral_survey_misdirection_quest_1/STATEMENT.md with an empty bullet and a fragment ('- *Depends on:** item 1 ..., pursuit'): it cut the item file at a bold Depends-on lin
+- [lesson] Whittle evidence for SEA_FLOOR_AND_CATCH_PASS_1 showed only the green selftest subset (3/5 cache KNOWN PASS) while its own chain audit listed red/crashed build-dependent tests (selftest_seashores, swi
 
 Not signalled today: CLAUDE.md, common.md, daily_agent_improvement_2026-11-02.md, install.sh, selftest_codex_seats.py, steve_c_drive_fill_2026-11-03.md, wsl-windows-plumbing

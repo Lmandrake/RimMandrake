@@ -1,49 +1,41 @@
-# Judge: AGENT_IMPROVE_AUDIT_KINDLESS_RECORDS_ALL_TWO
+# Judge — AGENT_IMPROVE_AUDIT_KINDLESS_RECORDS_ALL_TWO (fresh-eyes, 2026-11-11, CLAUDE_ARCHMAGI_OFFLINE1 judge seat)
 
-Judged 2026-11-11 by a fresh judge (CLAUDE_ARCHMAGI_OFFLINE1 judge seat), blind to DONE.md, BROADEN.md and the old JUDGE.md.
-Read: STATEMENT.md, NOTES.md, every file in evidence/, `git diff 66ab8395fd HEAD` of agent_improve.py, lessons.py,
-selftest_agent_improve.py, selftest_agent_improve_steps.py and design §4.3. Re-ran it myself: the five selftests (GREEN 5/5),
-`measure_kindless.py` with no argument (exit 0, same section 1 output), `rimflow show` on the item, and my own count of
-`infrastructure/state/agent_improve/changes/*.json`.
+Read: STATEMENT.md, NOTES.md, evidence/*, `git diff 66ab8395fd HEAD` of agent_improve.py, lessons.py, the selftests and
+design §4.3. Re-ran myself at HEAD cb52ef37dd: the 5 selftests -> PASS 5/5 GREEN; `measure_kindless.py` (no argument) ->
+KINDLESS 2 of 2, probe source_kinds ['AUDIT'], identical to evidence/measure_kindless.out apart from the inbox moving
+(127 lessons, 18 footers). I also opened both change records myself (source_kinds [] and 1 piece each) and grepped both
+lessons' bodies at the commits that added them: neither names any id of the item grammar.
 
-## Line 1: a change applied below L2 either records source kinds, or design 4.3 holds the dated by-design decision and its reason; doc and code agree. TRUE
+## Line 1 — below L2 a change records kinds, or the decision to leave it uncheckable is in §4.3 with its reason: TRUE
+- (b) is met: §4.3 has a dated paragraph (2026-11-11, naming the item) saying in bold that an L0/L1 change whose cited
+  pieces name no item is applied with `source_kinds: []` and "stays uncheckable by design". It gives the reasons: no
+  sound source is left, a guessed kind would spoil the held-out sample, refusing the change would be a new gate, and a
+  refusal would pull down the ramp's acceptance rate. The two other sources were measured and failed: the seat touched
+  8/41 items within an hour, and the adding commits name no item (evidence §2, which I reproduced).
+- (a) is partly done as well, and the doc matches the code: `piece()` now records `task_kind` from the piece's own item
+  (lesson `item:` footer, Relentless item, alarm clone path, ops alarm name, owner id), and falls back to the whole
+  text. Each cited piece carries `task_kind`. selftest_agent_improve_steps passes on the new code. On the old code
+  (selftests_old_code.out) it fails 4 checks: "L0/L1 records the kind a lesson names past its first line" and "a
+  lesson's item: line is its kind". selftest_agent_improve and selftest_lessons also fail on the old code. That the doc
+  and code agree on the kindless case is shown by "L0/L1 applies it too, recorded kindless".
+- Loose, not false: no apply_change test covers a lesson whose words name no item but whose footer gives a kind. Every
+  footer fixture also names an item in its text. Footer precedence is tested, so footer-alone follows from it.
 
-- Route (b) is taken. `design/RimMandrake/daily_agent_improvement_2026-11-02.md` §4.3 has a new paragraph dated 2026-11-11
-  that names the item, in bold: "A change at L0 or L1 whose cited pieces still name no item is applied, and its record says
-  `source_kinds: []`: it stays uncheckable by design". It gives the reason: no other sound source remains, and a guessed kind
-  would make a held-out sample that is not held out. It also says why the two other candidates were rejected (the seat at
-  the time was busy on 8 and 41 items; the commits that added the lessons name no item), and why refusing the change would be a new gate.
-- Some of route (a) is done too. Kinds now come from a piece's own item when its source records one (a lesson's `item:` footer
-  written by `lessons.py add --item` / RIMFLOW_ITEM / WC_ITEM, a Relentless row's item, an alarm's `clones/<item>`, an owner note's id,
-  an ops alarm's name). If there is none, they come from the whole text and no longer only from the 200-character first line.
-  The new selftests in `selftest_agent_improve_steps.py` ("L0/L1 records the kind a lesson names past its first line",
-  "a lesson's item: line is its kind", "L0/L1 applies ... recorded kindless") fail on 66ab8395fd (evidence/selftests_old_code.out:
-  4 FAIL in steps, 3 in agent_improve, a crash in lessons) and pass at HEAD (evidence/selftests_new_code.out, and my re-run).
-- Doc and code agree. I checked each sentence of the paragraph against the diff. `piece()` uses `kind_of_text(item) if item else
-  kind_of_text(text)`, so `item: NONE` or a legacy id with no intent word gives None, with no fallback to the text, as the doc says.
-  `apply_change` below L2 still writes `source_kinds: []` without refusing, and `general_gate` still runs only at L2.
-  `verdict_record` cites now carry `task_kind`, as the doc says. Nothing elsewhere in the doc (l.110, l.140, l.173) contradicts it.
-- Real use, which I checked myself: on the live inbox, footers written by other seats' `lessons.py add` calls give AUDIT/FIX.
-  CATHEDRAL_MISSION_BOON_OFFERS_1 and WORLD_REMAKE_FINAL_STEP_1 give None, and the doc says this will happen. Section 4 of
-  measure_kindless.out shows the L1 gather unchanged, old against new, over 8 real days.
+## Line 2 — share of kindless records measured, saved, sanity-probed, stated on the item and in §4.3: TRUE
+- evidence/measure_kindless.py and its .out: "KINDLESS 2 of 2 records". The sanity probe runs the production
+  apply_change at L0 in a temp repo on a real inbox lesson with a footer. It writes source_kinds ['AUDIT'] and the same
+  `count()` reads 0 of 1, so the reader can see a non-empty list. The 2 of 2 appears in a ledger note on the item, and
+  in a 05:18Z correction note that replaces an earlier note's wrong probe description. §4.3 states it too.
+- Flattering, not fatal: the probe's lesson is the builder's own, filed during this item. It is still a real file going
+  through the real code path. The .out header shows the run was given the old-code path as an argument. Without it
+  section 1 is the same.
 
-## Line 2: the share of kindless change records is measured from changes/, saved with its command, with a sanity probe, and stated on the item and in §4.3. TRUE
-
-- evidence/measure_kindless.out section 1 gives "KINDLESS 2 of 2 records" (rimworld-modding_v1, using-rimflow_v1) and the command line.
-  My independent count of the directory agrees: two files, both `source_kinds == []`, one piece each. My re-run of the script reproduces it.
-- The sanity probe is real, not a hand-made JSON. The production `apply_change` at L0, in a temp git repo, on a real inbox lesson with an
-  `item:` footer, wrote `source_kinds ['AUDIT']`, and the same `count()` reader reads it as 0 of 1 kindless. It could have failed.
-- It is stated on the item: the ledger notes of 04:41Z and 05:18Z say "2 of 2 change records on file have source_kinds []". It is stated in §4.3: "Measured
-  2026-11-11: 2 of 2 change records on file have `source_kinds: []`".
-
-## Where the evidence is flattering or loose (none of it changes a verdict)
-
-- The sanity probe takes `real[0]`, the first footer lesson in sort order. That is the builder's own lesson, filed this round with a
-  footer whose item has an intent word, so it is the tidy best case. Most real footers are `NONE` (7) or legacy ids with no intent
-  word (3 of 6 non-NONE), and give no kind. The doc admits this ("most skill changes will stay unmeasured").
-- The selftest fixtures are synthetic (WIDGET_REPAIR_SHAPE and the like). Only the measurement script shows real data.
-- The secondary figures in §4.3 are stamped 21:31 PST (2406 lessons, inbox 120, 11 footers). They do not match the saved .out, which was
-  re-run at 21:35 (2407, 121, 12). The inbox grew between the two runs. The figure the criterion asks for (2 of 2) matches everywhere.
-- The sample is 2 records, both L0. This is the whole population, so it is a census and not an estimate.
+## Loose spots (none decide the verdict)
+- lessons.py docstring: "never a line of that shape inside the lesson text". A lesson whose own last line is
+  `item: X`, filed with no --item, no session item and no --home, has that line read as its footer.
+- §4.3 gives 584 whole-text-kinded vs 159 first-line, but attribution_audit.out counts 422 "whole text only" (584-159 =
+  425). 3 lessons are unexplained, and the 27%/49% corroboration rates rest on that base.
+- The §4.3 inbox figures (126 lessons, 17 footers) are a snapshot. The doc says so and points at the saved
+  measure_kindless_cited_in_4.3.out.
 
 would show: yes
