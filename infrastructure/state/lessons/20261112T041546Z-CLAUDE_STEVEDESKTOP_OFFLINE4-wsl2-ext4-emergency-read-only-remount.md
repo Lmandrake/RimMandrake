@@ -1,0 +1,1 @@
+A WSL2 ext4 emergency read-only remount (errors=remount-ro) can leave NUL-padded files in a clone after reboot; a Whittle runner then dies with 'ValueError: embedded null byte' reading PROMPT.md. After any WSL disk fault, scan the round's Whittle dir for NUL bytes before rerunning.
