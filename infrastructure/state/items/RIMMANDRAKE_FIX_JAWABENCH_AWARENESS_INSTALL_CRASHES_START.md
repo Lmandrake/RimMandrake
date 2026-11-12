@@ -21,3 +21,8 @@ Harmony count line), so the JawaBench awareness frame is not the only crash site
 after a `steve.sh deploy` crashed 3 of 3 times, and every `steve.sh restart` (down, init, up) came up clean (4 of 4).
 Separately, run 4/5 at 21:29 and 21:33 had a fresh quicktest map come up with `Verse.MapDrawer.get_SectionCount` NRE
 in FinalizeInit (every bridge batch op then NREs); a restart cleared it.
+
+## 2026-11-11 23:30 -0800 — a mid-run native crash too
+At ~23:23 PST game A crashed natively ~7 minutes into a fresh quicktest map, while a proof stepped ticks: "Crash!!!" after
+`DrawGUITexture: texture is null` lines, no managed frame in the stack. It was the fifth fresh map in one game process
+(started 22:10 PST). A `steve.sh restart` brought it back. So the instability is not only at startup.
