@@ -11,15 +11,40 @@ ExplosiveKnockback coverage judge said not_covered nine times in three hours (~9
                                     tells nobody again; a release closes it, and the next trip after a release tells again.
                                     Never a new queue item per trip.
 
+and the contract's record (spec section 1). A verdict is one JSON object:
+
+  {"item": ID, "family": <judge brief or gate clause set>, "sha": SHA,
+   "given": {"inputs": [ref, ...] or {ref: text}, "criteria": {clause_id: clause_text}, "root": dir?},
+   "passed": [{"clause": id, "evidence": [ref, ...]}, ...],
+   "refusals": [{"clause", "criterion_hash", "evidence": [ref[:line[-line]], ...], "observed", "would_pass",
+                 "smallest_fix": {"what", "attainable": yes|no, "cost": edit|rerun|new instrument|owner},
+                 "criterion_verdict": sound|flawed|unattainable, "criterion_why", "new_since"}, ...]}
+
+`given` is written by the launcher, never the judge (it may also come from --given). `check` refuses a malformed verdict;
+it never counts against the item. `submit` checks, stores every record whole (refusals.jsonl, a pointer per repeat key),
+answers a repeat (same item, clause, criterion hash, evidence content and sha) from the cache uncounted, and counts:
+
+  the 3rd refusal of one clause on one item      -> repair_due (the neutral fixer, T5) and the item's alarm row
+  the 4th refused verdict on one item            -> the item's alarm row; may_judge(item) is False until it is cleared
+  a 2nd malformed verdict from one brief         -> the family's alarm row (brief FAILED)
+  a family refusing >70% of its last 20, or all of its last 8 across >=3 items -> the family's alarm row
+
+    python3 src/RimMandrake/rimflow/refusal_contract.py check <verdict.json> [--given <given.json>]   errors, exit 1
+    python3 src/RimMandrake/rimflow/refusal_contract.py submit <verdict.json> [--given <given.json>]  the result JSON
+    python3 src/RimMandrake/rimflow/refusal_contract.py counters [<item>]                            the counts
     python3 src/RimMandrake/rimflow/refusal_contract.py alarms          the open alarm rows, one line each
 
 The rows live in RM_REFUSAL_DIR, default /mnt/d/ClaudeWork/rimmandrake/refusal_contract (a program reads them: scratch,
 not the repo). The told row goes through incident.signal when dispatcher_schedule.json has the incident ledger on.
 """
+import fcntl
+import hashlib
 import json
 import os
+import re
 import sys
 import time
+from contextlib import contextmanager
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -119,9 +144,404 @@ def open_alarms():
     return [r for r in _read(alarms_path()).values() if isinstance(r, dict) and r.get("open")]
 
 
+# ---- the record (spec section 1) ------------------------------------------------------------------------------
+
+FIELDS = ("clause", "criterion_hash", "evidence", "observed", "would_pass", "smallest_fix", "criterion_verdict",
+          "criterion_why")
+VERDICTS = ("sound", "flawed", "unattainable")
+COSTS = ("edit", "rerun", "new instrument", "owner")
+NEW_SINCE = ("unfixed", "changed", "regression")       # each as "<tag>:<what>"; or the bare "late"
+# Phrases that say a thing failed without saying what would pass. A would_pass/smallest_fix left with fewer than
+# MIN_WORDS content words once these and the stopwords are struck is empty.
+EMPTY = ("does not pass", "doesn't pass", "not passing", "insufficient", "needs more work", "needs work", "weak",
+         "not convincing", "unconvincing", "not good enough", "inadequate", "make it better", "improve it", "fix it",
+         "do better", "try again", "unclear", "not sufficient", "more detail", "more evidence", "be more")
+STOP = set("a an the it this that these those is are be been was were to of in on for with and or as at by from so "
+           "its it's should must needs need more better do does not no yes".split())
+MIN_WORDS = 3
+CLAUSE_REPAIR_AT = 3        # the 3rd refusal of one clause on one item (spec section 3)
+ITEM_ALARM_AT = 4           # the 4th refused verdict on one item
+MALFORMED_ALARM_AT = 2      # a 2nd malformed verdict from one brief on one item
+FAMILY_WINDOW, FAMILY_RATE = 20, 0.70
+FAMILY_ALL_WINDOW, FAMILY_ALL_ITEMS = 8, 3
+FAMILY_KEEP = 50
+LINE_RE = re.compile(r"^(?P<ref>.+?):(?P<a>\d+)(?:-(?P<b>\d+))?$")
+WORD_RE = re.compile(r"[A-Za-z0-9_][A-Za-z0-9_.'-]*")
+
+
+def criterion_hash(text):
+    return hashlib.sha256(" ".join(str(text).split()).encode("utf-8")).hexdigest()[:16]
+
+
+def _words(text):
+    return [w.lower().strip(".'-") for w in WORD_RE.findall(str(text or ""))]
+
+
+def _content(text):
+    t = " %s " % " ".join(_words(text))
+    for p in sorted(EMPTY, key=len, reverse=True):
+        t = t.replace(" %s " % p, " ")
+    return [w for w in t.split() if w and w not in STOP]
+
+
+def _inputs(given):
+    """-> {ref: text or None} from given.inputs (a list of refs or a {ref: text} map)."""
+    inp = (given or {}).get("inputs") or {}
+    if isinstance(inp, list):
+        return {str(r): None for r in inp}
+    return {str(k): v for k, v in inp.items()}
+
+
+def _split(ev):
+    """'path:12-14' -> ('path', 12, 14); 'path' -> ('path', None, None)."""
+    m = LINE_RE.match(ev)
+    if not m:
+        return ev, None, None
+    a = int(m.group("a"))
+    return m.group("ref"), a, int(m.group("b") or a)
+
+
+def _text_of(ref, given):
+    """The text of a given input: its value in given.inputs, else the file under given.root. None if neither."""
+    txt = _inputs(given).get(ref)
+    if txt is not None:
+        return str(txt)
+    path = ref if os.path.isabs(ref) else os.path.join((given or {}).get("root") or os.getcwd(), ref)
+    try:
+        with open(path, encoding="utf-8", errors="replace") as f:
+            return f.read()
+    except (OSError, ValueError):
+        return None
+
+
+def _evidence(rec):
+    ev = rec.get("evidence")
+    if isinstance(ev, str):
+        return [ev]
+    return [str(e) for e in ev] if isinstance(ev, list) else []
+
+
+def _passed(verdict):
+    out = []
+    for p in verdict.get("passed") or []:
+        out.append({"clause": str(p), "evidence": []} if isinstance(p, str) else
+                   {"clause": str(p.get("clause")), "evidence": _evidence(p)})
+    return out
+
+
+def check(verdict, given=None, prior=0):
+    """-> the list of reasons `verdict` is malformed (empty = well formed). Pure: reads only the given inputs.
+    `prior` is the item's earlier counted refusals: after the first, every refusal must say what is new since."""
+    if not isinstance(verdict, dict):
+        return ["the verdict is not a JSON object"]
+    given = given if given is not None else verdict.get("given")
+    errs = []
+    for k in ("item", "family", "sha"):
+        if not str(verdict.get(k) or "").strip():
+            errs.append("verdict: no %s" % k)
+    if not isinstance(given, dict) or not given.get("criteria") or not given.get("inputs"):
+        return errs + ["verdict: no given criteria and inputs to check it against (the launcher writes `given`)"]
+    crit = {str(k): v for k, v in given["criteria"].items()}
+    inputs = _inputs(given)
+    refs = verdict.get("refusals")
+    if not isinstance(refs, list):
+        return errs + ["verdict: refusals is not a list"]
+    seen_ev, clauses = set(), {}
+    for i, rec in enumerate(refs):
+        where = "refusal %d" % i
+        if not isinstance(rec, dict):
+            errs.append("%s: not an object" % where)
+            continue
+        c = str(rec.get("clause") or "")
+        where = "refusal %d (%s)" % (i, c or "no clause")
+        for f in FIELDS:
+            v = rec.get(f)
+            if v is None or (isinstance(v, (str, list, dict)) and not (v.strip() if isinstance(v, str) else v)):
+                errs.append("%s: %s is missing or empty" % (where, f))
+        if c:
+            clauses[c] = clauses.get(c, 0) + 1
+            if c not in crit:
+                errs.append("%s: clause is not in the criterion set" % where)
+            elif rec.get("criterion_hash") and rec["criterion_hash"] != criterion_hash(crit[c]):
+                errs.append("%s: criterion_hash %s is not the hash of the clause's text (%s)"
+                            % (where, rec["criterion_hash"], criterion_hash(crit[c])))
+        texts = []
+        for ev in _evidence(rec):
+            ref, a, b = _split(ev)
+            if ref not in inputs and ev in inputs:
+                ref, a, b = ev, None, None
+            if ref not in inputs:
+                errs.append("%s: evidence %r is not one of the inputs the judge was given" % (where, ev))
+                continue
+            seen_ev.add(ref)
+            txt = _text_of(ref, given)
+            if txt is None:
+                continue
+            if a is not None:
+                lines = txt.splitlines()
+                if not 1 <= a <= b <= len(lines):
+                    errs.append("%s: evidence %r names lines outside %s (%d lines)" % (where, ev, ref, len(lines)))
+                    continue
+                txt = "\n".join(lines[a - 1:b])
+            texts.append(txt)
+        if texts and rec.get("observed"):
+            have = set(_words(" ".join(texts)))
+            if not [w for w in _words(rec["observed"]) if len(w) >= 3 and w not in STOP and w in have]:
+                errs.append("%s: observed quotes no token of its evidence" % where)
+        if rec.get("would_pass") and len(_content(rec["would_pass"])) < MIN_WORDS:
+            errs.append("%s: would_pass says nothing checkable (%r)" % (where, rec["would_pass"]))
+        elif c in crit and rec.get("would_pass"):
+            extra = set(_content(rec["would_pass"])) - set(_content(crit[c]))
+            if not extra:
+                errs.append("%s: would_pass restates the clause" % where)
+        fix = rec.get("smallest_fix")
+        if fix is not None and not isinstance(fix, dict):
+            errs.append("%s: smallest_fix is not an object {what, attainable, cost}" % where)
+        elif isinstance(fix, dict):
+            if len(_content(fix.get("what"))) < MIN_WORDS:
+                errs.append("%s: smallest_fix.what names no change (%r)" % (where, fix.get("what")))
+            if fix.get("attainable") not in ("yes", "no"):
+                errs.append("%s: smallest_fix.attainable is not yes/no" % where)
+            if fix.get("cost") not in COSTS:
+                errs.append("%s: smallest_fix.cost is not one of %s" % (where, "/".join(COSTS)))
+        if rec.get("criterion_verdict") and rec["criterion_verdict"] not in VERDICTS:
+            errs.append("%s: criterion_verdict is not one of %s" % (where, "/".join(VERDICTS)))
+        if rec.get("criterion_why") and len(_words(rec["criterion_why"])) < 4:
+            errs.append("%s: criterion_why is not a sentence" % where)
+        ns = str(rec.get("new_since") or "")
+        if prior and not ns:
+            errs.append("%s: new_since is required after the item's first refusal" % where)
+        elif ns and ns not in ("first", "late") and not (ns.split(":", 1)[0] in NEW_SINCE and ns.split(":", 1)[1:]
+                                                         and ns.split(":", 1)[1].strip()):
+            errs.append("%s: new_since %r is not unfixed:<clause>, changed:<input>, regression:<clause> or late"
+                        % (where, ns))
+    passed = _passed(verdict)
+    for p in passed:
+        if p["clause"] not in crit:
+            errs.append("passed: %r is not in the criterion set" % p["clause"])
+        for ev in p["evidence"]:
+            ref = _split(ev)[0] if _split(ev)[0] in inputs else ev
+            if ref in inputs:
+                seen_ev.add(ref)
+            else:
+                errs.append("passed %s: evidence %r is not one of the given inputs" % (p["clause"], ev))
+    both = sorted(set(clauses) & {p["clause"] for p in passed})
+    if both:
+        errs.append("clauses both passed and refused: %s" % ", ".join(both))
+    dup = sorted(c for c, n in clauses.items() if n > 1)
+    if dup:
+        errs.append("one record per clause; repeated: %s" % ", ".join(dup))
+    unjudged = sorted(set(crit) - set(clauses) - {p["clause"] for p in passed})
+    if unjudged:
+        errs.append("coverage: clauses neither passed nor refused: %s" % ", ".join(unjudged))
+    unread = sorted(set(inputs) - seen_ev)
+    if unread:
+        errs.append("coverage: given inputs in no passed or refused evidence: %s" % ", ".join(unread))
+    return errs
+
+
+# ---- the store: whole records, the repeat cache, the counters ----------------------------------------------------
+
+def records_path():
+    return os.path.join(state_dir(), "refusals.jsonl")
+
+
+def counters_path():
+    return os.path.join(state_dir(), "counters.json")
+
+
+@contextmanager
+def _locked():
+    os.makedirs(state_dir(), exist_ok=True)
+    with open(os.path.join(state_dir(), ".lock"), "w") as fh:
+        fcntl.flock(fh, fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(fh, fcntl.LOCK_UN)
+
+
+def evidence_hash(rec, given):
+    """The hash of what the record's evidence holds now: each ref with its text (or the ref alone if it has none)."""
+    h = hashlib.sha256()
+    for ev in sorted(_evidence(rec)):
+        ref, a, b = _split(ev)
+        if ref not in _inputs(given):
+            ref = ev
+        txt = _text_of(ref, given)
+        h.update(("%s\0%s\0" % (ev, "" if txt is None else hashlib.sha256(txt.encode("utf-8")).hexdigest()))
+                 .encode("utf-8"))
+    return h.hexdigest()[:16]
+
+
+def repeat_key(item, rec, given, sha):
+    raw = "\0".join([str(item), str(rec.get("clause")), str(rec.get("criterion_hash")), evidence_hash(rec, given),
+                     str(sha)])
+    return hashlib.sha256(raw.encode("utf-8")).hexdigest()[:20]
+
+
+def _store(row):
+    """Append one whole row to refusals.jsonl. -> its pointer 'refusals.jsonl:<line>'."""
+    path = records_path()
+    n = 0
+    if os.path.exists(path):
+        with open(path, "rb") as f:
+            n = sum(1 for _ in f)
+    with open(path, "a", encoding="utf-8") as f:
+        f.write(json.dumps(row, sort_keys=True, ensure_ascii=False) + "\n")
+    return "%s:%d" % (os.path.basename(path), n + 1)
+
+
+def _row_at(pointer):
+    name, line = pointer.rsplit(":", 1)
+    with open(os.path.join(state_dir(), name), encoding="utf-8") as f:
+        for i, x in enumerate(f, 1):
+            if i == int(line):
+                return json.loads(x)
+    return None
+
+
+def counters():
+    c = _read(counters_path())
+    for k in ("items", "families", "cache"):
+        c.setdefault(k, {})
+    return c
+
+
+def _item(c, item):
+    return c["items"].setdefault(item, {"refused": 0, "verdicts": 0, "clauses": {}, "malformed": {}})
+
+
+def prejudge(item, sha, given):
+    """Before a judge is spent: -> {clause: the stored refusal} for each clause already refused on this item at this
+    sha whose criterion and evidence are unchanged. Those clauses are not judged again."""
+    c = counters()
+    crit = {str(k): v for k, v in (given.get("criteria") or {}).items()}
+    out = {}
+    for key, ent in c["cache"].items():
+        if ent.get("item") != item or ent.get("sha") != sha or ent.get("clause") not in crit:
+            continue
+        rec = _row_at(ent["pointer"])["record"]
+        if rec.get("criterion_hash") == criterion_hash(crit[ent["clause"]]) and \
+                repeat_key(item, rec, given, sha) == key:
+            out[ent["clause"]] = rec
+    return out
+
+
+def may_judge(item):
+    row = _read(alarms_path()).get("item:%s" % item)
+    return not (isinstance(row, dict) and row.get("open"))
+
+
+def _family_trip(hist):
+    last = hist[-FAMILY_WINDOW:]
+    if len(last) >= FAMILY_WINDOW:
+        share = sum(1 for h in last if h["refused"]) / float(len(last))
+        if share > FAMILY_RATE:
+            return "refused %d of its last %d verdicts (limit %d%%)" % (
+                sum(1 for h in last if h["refused"]), len(last), int(FAMILY_RATE * 100))
+    tail = hist[-FAMILY_ALL_WINDOW:]
+    if len(tail) >= FAMILY_ALL_WINDOW and all(h["refused"] for h in tail) and \
+            len({h["item"] for h in tail}) >= FAMILY_ALL_ITEMS:
+        return "refused all of its last %d verdicts across %d items" % (len(tail), len({h["item"] for h in tail}))
+    return None
+
+
+def submit(verdict, given=None, now=None):
+    """Check, store and count one verdict. -> {ok, errors, counted, cached, repair_due, alarms, may_judge}."""
+    now = time.time() if now is None else now
+    given = given if given is not None else (verdict or {}).get("given")
+    item, fam = str((verdict or {}).get("item") or ""), str((verdict or {}).get("family") or "")
+    res = {"ok": False, "errors": [], "counted": False, "cached": [], "repair_due": [], "alarms": []}
+    with _locked():
+        c = counters()
+        it = _item(c, item) if item else {"refused": 0}
+        res["errors"] = check(verdict, given, prior=it["refused"])
+        stored = {"at": iso(now), "item": item, "family": fam, "sha": (verdict or {}).get("sha")}
+        if res["errors"]:
+            stored.update(kind="malformed", errors=res["errors"], verdict=verdict)
+            res["pointer"] = _store(stored)
+            if item and fam:
+                it["malformed"][fam] = it["malformed"].get(fam, 0) + 1
+                if it["malformed"][fam] >= MALFORMED_ALARM_AT:
+                    _write(counters_path(), c)
+                    res["alarms"].append(alarm("family:%s" % fam, "brief FAILED: %d malformed verdicts in a row on %s"
+                                               % (it["malformed"][fam], item), now, family=fam,
+                                               detail={"item": item, "errors": res["errors"]}))
+                _write(counters_path(), c)
+            res["may_judge"] = may_judge(item) if item else False
+            return res
+        res["ok"] = True
+        it["malformed"].pop(fam, None)
+        sha, fresh = verdict["sha"], []
+        for rec in verdict["refusals"]:
+            key = repeat_key(item, rec, given, sha)
+            if key in c["cache"]:
+                res["cached"].append(rec["clause"])
+                continue
+            ptr = _store(dict(stored, kind="refusal", key=key, record=rec))
+            c["cache"][key] = {"item": item, "clause": rec["clause"], "sha": sha, "pointer": ptr, "at": iso(now)}
+            fresh.append(rec)
+        if fresh or not verdict["refusals"]:
+            res["counted"] = True
+            it["verdicts"] += 1
+            refused = bool(fresh)
+            if refused:
+                it["refused"] += 1
+            for rec in fresh:
+                n = it["clauses"][rec["clause"]] = it["clauses"].get(rec["clause"], 0) + 1
+                if n >= CLAUSE_REPAIR_AT:
+                    res["repair_due"].append(rec["clause"])
+            hist = c["families"].setdefault(fam, [])
+            hist.append({"item": item, "refused": refused, "at": iso(now)})
+            del hist[:-FAMILY_KEEP]
+            _write(counters_path(), c)
+            why = []
+            if it["refused"] >= ITEM_ALARM_AT:
+                why.append("%d refused verdicts (limit %d)" % (it["refused"], ITEM_ALARM_AT))
+            if res["repair_due"]:
+                why.append("clause %s refused %d times: criteria repair due" % (
+                    ", ".join(res["repair_due"]), CLAUSE_REPAIR_AT))
+            if why:
+                res["alarms"].append(alarm("item:%s" % item, "; ".join(why), now, family=fam,
+                                           detail={"clauses": it["clauses"], "repair_due": res["repair_due"]}))
+            trip = _family_trip(hist) if refused else None
+            if trip:
+                res["alarms"].append(alarm("family:%s" % fam, trip, now, family=fam))
+        _write(counters_path(), c)
+    res["may_judge"] = may_judge(item)
+    return res
+
+
+def _load(path):
+    with open(path, encoding="utf-8") as f:
+        return json.load(f)
+
+
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
-    if argv[:1] != ["alarms"]:
+    cmd = argv[:1]
+    if cmd in (["check"], ["submit"]) and len(argv) >= 2:
+        verdict = _load(argv[1])
+        given = _load(argv[argv.index("--given") + 1]) if "--given" in argv else None
+        if cmd == ["check"]:
+            item = str((verdict or {}).get("item") or "") if isinstance(verdict, dict) else ""
+            prior = (counters()["items"].get(item) or {}).get("refused", 0)
+            errs = check(verdict, given, prior=prior)
+            for e in errs:
+                print("MALFORMED " + e)
+            print("%s: %d error(s)" % ("refused" if errs else "well formed", len(errs)))
+            return 1 if errs else 0
+        res = submit(verdict, given)
+        print(json.dumps(res, indent=1, sort_keys=True))
+        return 0 if res["ok"] else 1
+    if cmd == ["counters"]:
+        c = counters()
+        items = {k: v for k, v in c["items"].items() if len(argv) < 2 or k == argv[1]}
+        print(json.dumps({"items": items, "families": {k: len(v) for k, v in c["families"].items()},
+                          "cached": len(c["cache"])}, indent=1, sort_keys=True))
+        return 0
+    if cmd != ["alarms"]:
         print(__doc__)
         return 2
     rows = open_alarms()
