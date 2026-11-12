@@ -194,6 +194,8 @@ class _SettingsTrackingSession(object):
         if tool == "jawa/mod_settings_field" and kw.get("action") == "set" and kw.get("field") \
                 and kw.get("typeName"):
             self._ctx.remember_settings(kw["typeName"], [kw["field"]], session=self._s)
+        elif tool == "jawa/mod_settings_fields" and kw.get("setField") and kw.get("typeName"):
+            self._ctx.remember_settings(kw["typeName"], [kw["setField"]], session=self._s)   # its one set, same as above
         return self._s.call(tool, *a, **kw)
 
 

@@ -70,7 +70,7 @@ def paid(token):
 # A stager that owes its own coarser row (scenelib.setting, SettingsTransaction, validation_v2.sset) still does: a run
 # killed inside one files that row too, beside the door's exact per-field rows.
 
-SETTING_TOOLS = ("jawa/mod_settings_field", "jawa/debug_settings", "jawa/difficulty_tune")
+SETTING_TOOLS = ("jawa/mod_settings_field", "jawa/mod_settings_fields", "jawa/debug_settings", "jawa/difficulty_tune")
 # >0 while wrapup.restore replays plans in this process: its writes still PAY what they put back, but never OWE the
 # reverse change (a legacy plan's difficulty write, with no keyed debt left open, would otherwise owe the forced value
 # back and the next restore would force it again)
@@ -103,6 +103,14 @@ def setting_changes(tool, params, out):
         t, f = params.get("typeName"), params.get("field")
         return [("mod_settings_field:%s.%s" % (t, f), out.get("valueBefore"), out.get("valueAfter"),
                  "jawa/mod_settings_field typeName=%s action=set field=%s value=%s" % (t, f, out.get("valueBefore")))]
+    if tool == "jawa/mod_settings_fields":
+        # the batched form: its one optional set, same key and undo as the single-field tool's
+        st = out.get("set")
+        if not isinstance(st, dict) or "valueBefore" not in st:
+            return []
+        t, f = params.get("typeName"), st.get("field") or params.get("setField")
+        return [("mod_settings_field:%s.%s" % (t, f), st.get("valueBefore"), st.get("valueAfter"),
+                 "jawa/mod_settings_field typeName=%s action=set field=%s value=%s" % (t, f, st.get("valueBefore")))]
     if tool == "jawa/debug_settings":
         if _norm(params.get("action")) != "set" or "valueBefore" not in out:
             return []

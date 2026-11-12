@@ -45,6 +45,7 @@ quiet = PRE.quiet
 # SHARED (set by a proof driver): one session, one map. A harness/site row is then written only when it is NOT PASS (a
 # fault still surfaces under its own id; a green one becomes a site note).
 SHARED = False
+FIELDS_BATCH = "jawa/mod_settings_fields"   # many settings fields in one call (probe_of); old companions lack it
 SITE_NOTES = []
 
 
@@ -123,6 +124,14 @@ class _BridgeBase(object):
         return r if isinstance(r, dict) else {"success": False, "raw": r}
 
     def probe_of(self, probe_type, cmd, wait_s=20.0, poll_s=0.3):
+        """Post `cmd` to probe_type's static request field and wait for the frame that services it (serial moves), then
+        return its parsed result. Two calls through jawa/mod_settings_fields (reads serial and posts the request in one
+        main-thread pass, then polls serial+result together); the old four single-field calls when the companion lacks
+        it (speed_20261112 step 2b: GSS proof_all's 1,600 single-field reads were this loop)."""
+        if self.__dict__.get("_fields_batch_ok") is not False:
+            got = self._probe_batched(probe_type, cmd, wait_s, poll_s)
+            if got is not None:
+                return got
         before = self.call("jawa/mod_settings_field", typeName=probe_type, action="get", field="serial").get("value")
         if before is None:
             # an unreadable serial would let ANY later serial look "changed" and return the PREVIOUS probe's result as this answer
@@ -139,6 +148,37 @@ class _BridgeBase(object):
                     return json.loads(res)
                 except Exception:  # noqa: BLE001
                     return {"success": False, "raw": res}
+            time.sleep(poll_s)
+        return {"success": False, "error": "probe timed out (no frame serviced it)"}
+
+    def _probe_batched(self, probe_type, cmd, wait_s, poll_s):
+        """probe_of over jawa/mod_settings_fields. None when the companion has no such tool (the caller falls back);
+        the real tool's reply always carries `values` (and `ticksGame`), an absent tool's error reply does not."""
+        try:
+            s = self.call(FIELDS_BATCH, typeName=probe_type, fields="serial", setField="request", setValue=cmd)
+        except Exception:  # noqa: BLE001 - a transport that raises on an unknown tool: the four-call probe still works
+            if self.__dict__.get("_fields_batch_ok"):
+                raise           # the tool exists here: this request may have been posted, so never post it twice
+            s = {}
+        if not isinstance(s.get("values"), dict):
+            self.__dict__["_fields_batch_ok"] = False
+            return None
+        self.__dict__["_fields_batch_ok"] = True
+        before = s["values"].get("serial")
+        if before is None:
+            # the tool refuses to post when a read fails, so nothing was requested
+            return {"success": False, "error": "probe set failed: serial unreadable before the request", "raw": s}
+        if not s.get("success") or not s.get("set"):
+            return {"success": False, "error": "probe set failed", "raw": s}
+        t0 = time.time()
+        while time.time() - t0 < wait_s:
+            r = self.call(FIELDS_BATCH, typeName=probe_type, fields="serial,result")
+            vals = r.get("values") if isinstance(r.get("values"), dict) else {}
+            if vals.get("serial") is not None and vals.get("serial") != before:
+                try:
+                    return json.loads(vals.get("result"))
+                except Exception:  # noqa: BLE001
+                    return {"success": False, "raw": vals.get("result")}
             time.sleep(poll_s)
         return {"success": False, "error": "probe timed out (no frame serviced it)"}
 

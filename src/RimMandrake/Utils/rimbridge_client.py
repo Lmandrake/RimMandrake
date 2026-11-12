@@ -257,7 +257,7 @@ def _settings_debt(tool, params, out):
         pass
 
 
-_SETTING_TOOLS = ("jawa/mod_settings_field", "jawa/debug_settings", "jawa/difficulty_tune")   # = wrapup_debt.SETTING_TOOLS
+_SETTING_TOOLS = ("jawa/mod_settings_field", "jawa/mod_settings_fields", "jawa/debug_settings", "jawa/difficulty_tune")   # = wrapup_debt.SETTING_TOOLS
 
 
 LOAD_READY_TOOL = "rimworld/load_game_ready"
