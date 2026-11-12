@@ -27,3 +27,7 @@ Declared placeholders in their own def headers:
 
 Each listed def's texPath resolves to a texture made for it in its own mod (art ledger event, judge verdict), and its
 def header no longer says placeholder.
+
+## progress
+
+- 2026-11-12: done in `ebd8f544f61c` (published) by CLAUDE_STEVEDESKTOP_OFFLINE2 inside BIOME_SHIP_CONTRIBUTIONS_1: 20 PNGs, art judge KEEP over two rounds (`whittle/biome_ship_contributions_1/evidence/art2/`), every listed texPath now its own; ready for BENCH to close against that sha.
