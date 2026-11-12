@@ -58,6 +58,9 @@ namespace RimMandrake.FlowWorks.Machinery
 			public readonly List<IntVec3> queue = new List<IntVec3>();
 			public readonly List<int> depths = new List<int>();
 			public readonly Dictionary<object, RM_LevelLinkState> portState = new Dictionary<object, RM_LevelLinkState>();
+			// the map's topology revision (RM_LiquidNet.RevisionOf) the last cycle ran on: a newer one means pipes, hoses or ends
+			// changed since, so an end's readout is not known yet (SeenTopology)
+			public int revisionSeen = int.MinValue;
 			// the cycle's working sets, cleared each cycle instead of allocated (LEVELLING_TICK_DIAGNOSE_DRY_GC_SPIKE)
 			public readonly List<RM_LevelBody> bodies = new List<RM_LevelBody>();
 			public readonly List<FluidDef> bodyFluid = new List<FluidDef>();
@@ -199,9 +202,11 @@ namespace RimMandrake.FlowWorks.Machinery
 			return st.portState.TryGetValue(reel, out RM_LevelLinkState s) ? s : (RM_LevelLinkState?)null;
 		}
 
-		/// <summary>True once a levelling cycle has run on this Map object (a loaded game builds new Maps: false until its first
-		/// cycle, so a readout cannot yet say whether an end is in a link).</summary>
-		public static bool HasRun(Map map) => map != null && states.TryGetValue(map, out _);
+		/// <summary>True once a levelling cycle has run on this map since its pipe and hose topology last changed. False just after a
+		/// load (a loaded game builds new Maps) and just after a pipe, hose or end changes, until the next cycle: a readout then
+		/// cannot yet say whether an end is in a link (judge, 2026-11-12: a freshly laid pair said "Intake needs a working pump").</summary>
+		public static bool SeenTopology(Map map) => map != null && states.TryGetValue(map, out MapState st)
+			&& st.revisionSeen == RM_LiquidNet.RevisionOf(map);
 
 		/// <summary>The hose's inspect line for levelling ("" when the end was in no levelling link last cycle).</summary>
 		public static string Readout(Map map, CompHoseReel reel)
@@ -240,6 +245,10 @@ namespace RimMandrake.FlowWorks.Machinery
 			lastMap = map?.Index ?? -1;
 			lastWalked = lastPorts = 0;
 			TickCore(map);
+			if (map != null && states.TryGetValue(map, out MapState ran))
+			{
+				ran.revisionSeen = RM_LiquidNet.RevisionOf(map);
+			}
 			Note(t0, gc0, mem0);
 		}
 

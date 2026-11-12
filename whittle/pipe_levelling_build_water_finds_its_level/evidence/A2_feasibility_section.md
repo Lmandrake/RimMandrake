@@ -1,4 +1,4 @@
-<!-- excerpt of design/RimMandrake/flowworks_pipes_across_pits_design_2026-10-20.md, section ### Levelling feasibility, as of 2026-11-12 04:19 -0800 -->
+<!-- excerpt of design/RimMandrake/flowworks_pipes_across_pits_design_2026-10-20.md, section ### Levelling feasibility, as of 2026-11-12 05:16 -0800 -->
 ### Levelling feasibility
 
 Item `PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL`, 2026-10-20 (owner: *"Let's see if we can do this"*). **Verdict:
@@ -40,9 +40,10 @@ feasible, and built behind a Mod Setting. The offline selftests pass, and so did
     cycle (`WalkBudget`; a square is walked at most once per cycle). A 40,000-square basin reached from ends in both its
     halves is walked as two capped runs, so the two A3 basins walked ~80,000 squares a cycle (79,748 read live). MEASURED live
     2026-11-12 (SteveDesktop, FlowWorks tier, 325×325 map, two 40,000-square basins with edge sinks held off for the run,
-    200 links, 60 timed cycles): the whole `RM_Levelling.Tick` averaged **6.6 ms per cycle (0.027 ms per tick)** and grew
-    the managed heap ~330 KB per cycle, no GC. The worst cycle, 52-73 ms, is the first after the network changed (200
-    components and the hose links rebuilt, 46 ms of it resolving links), a one-off hitch on a topology change
+    200 links, 60 timed cycles, two runs on two maps): the whole `RM_Levelling.Tick` averaged **5.4-6.6 ms per cycle
+    (0.022-0.027 ms per tick)** and grew the managed heap ~306-330 KB per cycle, no GC. The worst cycle, 34-88 ms, is the
+    first after the network changed (200 components and the hose links rebuilt, ~46 ms of it resolving links), a one-off
+    hitch on a topology change
     (`pipe_levelling_perf_proof.py --basins edge --sinks-off`; evidence in
     `whittle/pipe_levelling_build_water_finds_its_level/evidence/A3_perf_timed_200_links_40000_basins.json`).
 - **Selftests** (`Source/SelfTest/LevellingChecks.cs`, all green). The four gates were checked every cycle:

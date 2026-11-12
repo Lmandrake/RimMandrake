@@ -71,12 +71,12 @@ def inspect_level(r):
     lt = B.call("jawa/list_things", defName="RM_HoseReel", rect="%d,%d,2,2" % r, limit=1, _answer=True) or {}
     rid = ((lt.get("things") or [{}])[0]).get("id")
     ins = B.call("jawa/inspect_string", thingIds=str(rid), _answer=True) or {}
-    return " / ".join(x for t in (ins.get("things") or []) for x in (t.get("inspect") or []) if "Levelling" in x or "Free end" in x)
+    return " / ".join(x.strip() for t in (ins.get("things") or []) for x in (t.get("inspect") or []) if "Levelling" in x or "Free end" in x)
 
 
 B.call("rimworld/pause_game", pause=True)
 site = []
-for rect in ((144, 30, 22, 26), (126, 90, 40, 24)):
+for rect in ((144, 30, 22, 26), (126, 90, 40, 24), (144, 150, 22, 26)):
     V.prepare_site(B, rect, site, "ponds_mixed_site")
 out["site"] = site
 # rig M: origin (150, 40): pool A 3x3 at (150,36) depth 6 full; pool B 5x5 at (148,48) depth 2, F=1
@@ -120,6 +120,11 @@ def read(name, t):
     return rec
 
 
+# rig D (control for the "checked on the next cycle" line): the same hose pair with both ends on dry ground. Just laid, no
+# cycle has seen it: "Levelling: checked on the next cycle." and no pump claim. After a cycle it is in no link, so the reel
+# must say what an Intake with no pump and no water does ("Intake needs a working pump ...") and never stay "checked ..."
+d_reels = rig(150, 160)
+out["dryRig"] = [{"tick": 0, "reels": [inspect_level(r) for r in d_reels]}]
 for name in RIGS:
     print(json.dumps(read(name, 0))[:700], flush=True)
 done = {n: False for n in RIGS}
@@ -127,6 +132,8 @@ t = 0
 while t < 9000 and not all(done.values()):
     tick(250)
     t += 250
+    if t <= 1000:
+        out["dryRig"].append({"tick": t, "reels": [inspect_level(r) for r in d_reels]})
     for name in RIGS:
         if done[name]:
             continue
@@ -135,6 +142,11 @@ while t < 9000 and not all(done.values()):
             done[name] = True
             print(json.dumps(rec)[:900], flush=True)
 out["levelledAt"] = {n: (out["rigs"][n][-1]["tick"] if done[n] else None) for n in RIGS}
+dr = out["dryRig"]
+out["dryRigVerdict"] = {"pendingWhenJustLaid": all("checked on the next cycle" in x and "needs a working pump" not in x for x in dr[0]["reels"]),
+                        "settledAfterACycle": all("checked on the next cycle" not in x for x in dr[-1]["reels"]),
+                        "intakeSaysNeedsPump": "Intake needs a working pump" in dr[-1]["reels"][0]}
+print(json.dumps(out["dryRigVerdict"]), flush=True)
 print(json.dumps(out["levelledAt"]), flush=True)
 with open(sys.argv[1], "w", encoding="utf-8") as f:
     json.dump(out, f, indent=1, default=str)

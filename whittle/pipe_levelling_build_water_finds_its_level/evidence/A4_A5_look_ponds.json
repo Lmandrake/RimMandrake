@@ -3,7 +3,7 @@
   {
    "name": "lev_a4_level",
    "label": "A4 rig after the proof: pools level, intake reel selected",
-   "reel": "RM_HoseReel18531",
+   "reel": "RM_HoseReel38720",
    "inspect": [
     "Connected to universal pipe (pipe).",
     "Hose leaves to the west.",
@@ -17,12 +17,12 @@
    ],
    "desktop": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_STEVEDESKTOP_FWLIVE\\lev_a4_level_desktop.bmp",
    "desktopWritten": true,
-   "capturedAt": "2026-11-12T04:02:08"
+   "capturedAt": "2026-11-12T05:09:29"
   },
   {
    "name": "lev_a5_nomix",
    "label": "A5 rig: water pit vs oil pit, intake reel selected",
-   "reel": "RM_HoseReel18525",
+   "reel": "RM_HoseReel38709",
    "inspect": [
     "Connected to universal pipe (pipe).",
     "Hose leaves to the west.",
@@ -36,12 +36,12 @@
    ],
    "desktop": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_STEVEDESKTOP_FWLIVE\\lev_a5_nomix_desktop.bmp",
    "desktopWritten": true,
-   "capturedAt": "2026-11-12T04:02:19"
+   "capturedAt": "2026-11-12T05:09:41"
   },
   {
    "name": "lev_a5_nomix_outflow",
    "label": "A5 rig: the outflow reel says the same",
-   "reel": "RM_HoseReel18526",
+   "reel": "RM_HoseReel38710",
    "inspect": [
     "Connected to universal pipe (pipe).",
     "Hose leaves to the west.",
@@ -55,12 +55,12 @@
    ],
    "desktop": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_STEVEDESKTOP_FWLIVE\\lev_a5_nomix_outflow_desktop.bmp",
    "desktopWritten": true,
-   "capturedAt": "2026-11-12T04:02:21"
+   "capturedAt": "2026-11-12T05:09:43"
   },
   {
    "name": "lev_a4_refilled_flowing",
    "label": "A4 rig 500 ticks after pool 1 was topped up again: flowing again",
-   "reel": "RM_HoseReel18531",
+   "reel": "RM_HoseReel38720",
    "inspect": [
     "Connected to universal pipe (pipe).",
     "Hose leaves to the west.",
@@ -74,12 +74,12 @@
    ],
    "desktop": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_STEVEDESKTOP_FWLIVE\\lev_a4_refilled_flowing_desktop.bmp",
    "desktopWritten": true,
-   "capturedAt": "2026-11-12T04:02:33"
+   "capturedAt": "2026-11-12T05:09:55"
   },
   {
    "name": "lev_a4_relevelled",
    "label": "A4 rig after the refill has levelled again",
-   "reel": "RM_HoseReel18531",
+   "reel": "RM_HoseReel38720",
    "inspect": [
     "Connected to universal pipe (pipe).",
     "Hose leaves to the west.",
@@ -93,12 +93,12 @@
    ],
    "desktop": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_STEVEDESKTOP_FWLIVE\\lev_a4_relevelled_desktop.bmp",
    "desktopWritten": true,
-   "capturedAt": "2026-11-12T04:03:21"
+   "capturedAt": "2026-11-12T05:10:42"
   },
   {
    "name": "lev_a4_relevelled_outflow",
    "label": "A4 rig, outflow reel",
-   "reel": "RM_HoseReel18532",
+   "reel": "RM_HoseReel38721",
    "inspect": [
     "Connected to universal pipe (pipe).",
     "Hose leaves to the west.",
@@ -112,7 +112,7 @@
    ],
    "desktop": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_STEVEDESKTOP_FWLIVE\\lev_a4_relevelled_outflow_desktop.bmp",
    "desktopWritten": true,
-   "capturedAt": "2026-11-12T04:03:23"
+   "capturedAt": "2026-11-12T05:10:45"
   }
  ],
  "reads": [],

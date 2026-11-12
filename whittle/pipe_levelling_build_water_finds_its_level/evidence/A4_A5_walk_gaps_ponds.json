@@ -1,6 +1,6 @@
 {
  "script": "walk_gaps_proof.py",
- "started": "2026-11-12T03:59:13",
+ "started": "2026-11-12T05:06:23",
  "rows": [
   {
    "id": "PONDS_DIFFERENT_LIQUIDS_NO_MIX",
@@ -66,7 +66,7 @@
        240000,
        210000
       ],
-      2424,
+      4911,
       "flowing (no "
      ],
      [
@@ -75,7 +75,7 @@
        232500,
        217500
       ],
-      2425,
+      4912,
       "flowing (no "
      ],
      [
@@ -84,7 +84,7 @@
        228750,
        221250
       ],
-      2426,
+      4913,
       "flowing (no "
      ],
      [
@@ -93,7 +93,7 @@
        226875,
        223125
       ],
-      2427,
+      4914,
       "flowing (no "
      ],
      [
@@ -102,7 +102,7 @@
        225937,
        224063
       ],
-      2428,
+      4915,
       "flowing (no "
      ],
      [
@@ -111,7 +111,7 @@
        225468,
        224532
       ],
-      2429,
+      4916,
       "flowing (no "
      ],
      [
@@ -120,7 +120,7 @@
        225234,
        224766
       ],
-      2430,
+      4917,
       "flowing (no "
      ],
      [
@@ -129,7 +129,7 @@
        225234,
        224766
       ],
-      2430,
+      4917,
       "level."
      ]
     ],
@@ -148,7 +148,7 @@
   }
  ],
  "args": {
-  "out": "Transient/lev/walk_gaps_final.json",
+  "out": "Transient/lev/walk_gaps_F.json",
   "origin": "40,40",
   "fresh_map": true,
   "only": "PONDS_DIFFERENT_LIQUIDS_NO_MIX,PONDS_HOSE_LEVEL",
@@ -160,12 +160,12 @@
  "missingHooks": {},
  "mode": "live",
  "mod": "FlowWorks",
- "mod_hash": "0bc42ec9ceef8d355f91fe348a616c6f9f2ba3030303335fe5b3b4e1f7f8b2bc",
+ "mod_hash": "4851dbfbf6f51db433f51148c3f5f9e1d38aa24818b36abad2326bc107f954e2",
  "manifest": {
   "schema": 1,
   "script": "northstar/walk_gaps_proof.py",
-  "runtime": "40984caee0f3b5bc92d0f627fe0f509089abcc92544690c825059a8414739bf5",
-  "test": "97f5bd37ad4ab1ddbd4630de2363dfc97abd75ab488dc1a180d6facf63d2a3c4",
+  "runtime": "e9ed8fd52f962a3c5f24cd73d463a5d65b0cf3de18232af06cfd69cbfe77f2c5",
+  "test": "10141eabea687959902efe9bb044e368e09e31efdc75f10a858432066f070d52",
   "test_files": [
    "FlowWorks/northstar/driver_stamp.py",
    "FlowWorks/northstar/proof_hose.py",
@@ -268,61 +268,81 @@
   "wildSpawner": "blocked (read back)",
   "removed": {
    "removed": [
-    "Gazelle18463",
-    "Gazelle18464",
-    "Gazelle18465",
-    "Gazelle18466",
-    "Gazelle18467",
-    "Gazelle18468",
-    "Gazelle18469",
-    "Gazelle18470",
-    "Gazelle18471",
-    "Gazelle18472",
-    "Iguana18462"
+    "Bear_Grizzly38631",
+    "Bluebird38620",
+    "Boomrat38613",
+    "Boomrat38637",
+    "Boomrat38639",
+    "Hare38608",
+    "Hare38609",
+    "Hare38617",
+    "Hare38630",
+    "Hare38632",
+    "Hare38634",
+    "Ibex38615",
+    "Ibex38616",
+    "Megasloth38606",
+    "Muffalo38621",
+    "Muffalo38622",
+    "Muffalo38623",
+    "Muffalo38624",
+    "Muffalo38625",
+    "Muffalo38626",
+    "Muffalo38627",
+    "Muffalo38628",
+    "Porcupine38612",
+    "Raccoon38592",
+    "Raccoon38607",
+    "Raccoon38633",
+    "Rat38593",
+    "Rat38610",
+    "Rat38611",
+    "Rat38614",
+    "Rat38618",
+    "Rat38638",
+    "Sparrow38594",
+    "Sparrow38595",
+    "Sparrow38596",
+    "Squirrel38605",
+    "Squirrel38636",
+    "Swan38604",
+    "Swan38635",
+    "Tortoise38597",
+    "Tortoise38629",
+    "WildBoar38598",
+    "WildBoar38599",
+    "WildBoar38600",
+    "WildBoar38601",
+    "WildBoar38602",
+    "WildBoar38603",
+    "Wolverine38619"
    ],
    "left": []
   },
   "threatStructures": {
-   "removed": [
-    [
-     "Hive",
-     "Hive14034"
-    ],
-    [
-     "GlowPod",
-     "GlowPod14046"
-    ],
-    [
-     "GlowPod",
-     "GlowPod14047"
-    ],
-    [
-     "EggSac",
-     "EggSac14048"
-    ]
-   ],
+   "removed": [],
    "threatsAfter": 0,
    "error": null
   },
   "fed": [
-   "Human372",
-   "Human376",
-   "Human380"
+   "Human700",
+   "Human703",
+   "Human706"
   ]
  },
  "startColonistsDrafted": [
   [
-   "Human372",
+   "Human700",
    true
   ],
   [
-   "Human376",
+   "Human703",
    true
   ],
   [
-   "Human380",
+   "Human706",
    true
   ]
  ],
- "finished": "2026-11-12T04:02:04"
+ "finished": "2026-11-12T05:09:26"
 }

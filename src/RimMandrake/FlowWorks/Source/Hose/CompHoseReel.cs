@@ -933,9 +933,10 @@ namespace RimMandrake.FlowWorks.Hose
                 // PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL: an end in a gravity-levelling link moves water with no pump, and its
                 // own "Levelling: ..." line says so; a need line here would contradict it and push it below the pane (live 2026-11-12)
                 if (Machinery.RM_Levelling.StateOf(parent.Map, this) != null) return "";
-                // just loaded: no levelling cycle yet, so two open ends with no pump may well be levelling (live 2026-11-12: the
-                // reloaded rig said "Intake needs a working pump" until the first cycle); say nothing rather than something false
-                if (!pump && c.Ports.Count >= 2 && RM_HoseSettings.gravityLevellingEnabled && !Machinery.RM_Levelling.HasRun(parent.Map)) return "";
+                // just loaded, or the pipes/hoses just changed: no levelling cycle has seen this network yet, so two open ends with no
+                // pump may well be levelling (live 2026-11-12: a reloaded rig, and a freshly laid one, said "Intake needs a working
+                // pump" until the next cycle); say nothing rather than something false
+                if (!pump && c.Ports.Count >= 2 && RM_HoseSettings.gravityLevellingEnabled && !Machinery.RM_Levelling.SeenTopology(parent.Map)) return "";
                 if (freeEndRole == Machinery.RM_FreeEndRole.Intake && !pump) return " Intake needs a working pump on this network.";
                 if (freeEndRole == Machinery.RM_FreeEndRole.Outflow && !pump && !dump) return " Nothing drains here: needs a pump or a tank set to Dump.";
                 return "";
@@ -998,9 +999,9 @@ namespace RimMandrake.FlowWorks.Hose
                 endLine += (heldUnits > 0 ? " Holding " + RM_Volume.FormatUnits(heldUnits) + " " + heldLiquid?.label + "." : "") + " Role: " + freeEndRole + (this.FreeEnd().Port != null && freeEndRole != Machinery.RM_FreeEndRole.Capped ? " (inert while coupled)." : ".") + RoleNeed();
             // PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL (design P9): what passive levelling did at this end last cycle
             string levelLine = Machinery.RM_Levelling.Readout(parent.Map, this);
-            // just loaded: no levelling cycle has run on this map yet, so there is no state to report (judge, 2026-11-12)
+            // just loaded or just re-plumbed: no levelling cycle has seen this network yet, so there is no state to report
             if (levelLine.Length == 0 && relay == null && freeEndRole != Machinery.RM_FreeEndRole.Capped && RM_HoseSettings.enabled
-                && RM_HoseSettings.gravityLevellingEnabled && RM_MapComponent_Excavation.LevelExact && !Machinery.RM_Levelling.HasRun(parent.Map))
+                && RM_HoseSettings.gravityLevellingEnabled && RM_MapComponent_Excavation.LevelExact && !Machinery.RM_Levelling.SeenTopology(parent.Map))
                 levelLine = "\nLevelling: checked on the next cycle.";
             endLine += levelLine;
             return conn + "\nHose laid" + to + len + " (" + sm.State.ToString().ToLower() + ")." + CrossingLines() + endLine + order;

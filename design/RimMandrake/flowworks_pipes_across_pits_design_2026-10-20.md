@@ -52,14 +52,16 @@ feasible, and built behind a Mod Setting. The offline selftests pass, and so did
   - Settings: `gravityLevellingEnabled` (on) and `levellingLitresPerCycle`, in the Flexible hoses section.
 - **Cost per tick (offline, MEASURED by the selftest).** The kernel plans a hard budget of 64 links per cycle; the rest
   rotate in later and catch up by up to 8 cycles' worth. The test scene had 200 bodies, 40 of them 40,000-square basins,
-  and 400 links. Planning took **89 µs per cycle, about 0.36 µs per tick**.
+  and 400 links. Planning took **about 80-90 µs per cycle (77.5-88.9 µs across the 2026-11-12 runs), about 0.35 µs per
+  tick**.
   - The adapter's walk of dug runs is capped at 20,000 squares per run (`RM_Levelling.MaxRunCells`) and 120,000 squares per
     cycle (`WalkBudget`; a square is walked at most once per cycle). A 40,000-square basin reached from ends in both its
     halves is walked as two capped runs, so the two A3 basins walked ~80,000 squares a cycle (79,748 read live). MEASURED live
     2026-11-12 (SteveDesktop, FlowWorks tier, 325×325 map, two 40,000-square basins with edge sinks held off for the run,
-    200 links, 60 timed cycles): the whole `RM_Levelling.Tick` averaged **6.6 ms per cycle (0.027 ms per tick)** and grew
-    the managed heap ~330 KB per cycle, no GC. The worst cycle, 52-73 ms, is the first after the network changed (200
-    components and the hose links rebuilt, 46 ms of it resolving links), a one-off hitch on a topology change
+    200 links, 60 timed cycles, two runs on two maps): the whole `RM_Levelling.Tick` averaged **5.4-6.6 ms per cycle
+    (0.022-0.027 ms per tick)** and grew the managed heap ~306-330 KB per cycle, no GC. The worst cycle, 34-88 ms, is the
+    first after the network changed (200 components and the hose links rebuilt, ~46 ms of it resolving links), a one-off
+    hitch on a topology change
     (`pipe_levelling_perf_proof.py --basins edge --sinks-off`; evidence in
     `whittle/pipe_levelling_build_water_finds_its_level/evidence/A3_perf_timed_200_links_40000_basins.json`).
 - **Selftests** (`Source/SelfTest/LevellingChecks.cs`, all green). The four gates were checked every cycle:
@@ -81,7 +83,9 @@ feasible, and built behind a Mod Setting. The offline selftests pass, and so did
      (2026-10-21, "With pump → Off while pumping").
 - **Live (2026-11-12).** Two 3×3 pits of unequal height joined by two reels on one pipe run level out: the reel reads
   "Levelling: flowing" from the first cycle and "Levelling: level." once the surfaces are within 1 cm, total conserved;
-  a water pit and a chemfuel pit joined the same way exchange nothing and both reels read "different liquids never mix".
+  a water pit and an oil pit (`RM_Fluid_Oil`) joined the same way exchange nothing and both reels read "different liquids
+  never mix". Pits of different depth and area level to one surface (not one volume per square), and a natural pond runs
+  down into a dug pit until the surfaces meet, pond loss plus its own natural refill equal to the pit's gain.
   Save/reload mid-flow replays exactly. Evidence: `whittle/pipe_levelling_build_water_finds_its_level/evidence/`.
 
 ## Ruled design
