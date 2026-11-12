@@ -77,6 +77,27 @@ ok    6g restart: old (b)s rebuild Regard once each (+24), as old missions do
 ok    6h restart: Heat is over the band early (a sale on poll 2), yet no hail in the month after the first look 
 ok    6i a quest row without `root` is still read, by the quest's fixed name 
 
+[7] same surface and caveat as item 4 (the Assailant missions)
+ok    7a both quest scripts are roots never rolled by the storyteller (rootSelectionWeight 0, isRootSpecial) 
+ok    7b both are fired by GiveQuestBase incidents at baseChance 0 on the home map, with a gated worker of this mod 
+ok    7c the caveat is settled the same way: every node is vanilla or this mod's own (no CQF class) 
+ok    7d neither needs a quest framework: CathedralPass depends on Harmony only 
+ok    7e the blackboard fires both through jawa/storyteller_fire and reads each outcome off the quest list 
+
+[8] messy ordinary play: single-crystal sales creeping over the band
+      poll  12  day  2.75  heat   7.60  regard  -1.50  exposure   0.50  survey False heat_below_pursuit_band    
+      poll  24  day  5.75  heat  10.80  regard  -2.85  exposure   0.50  survey True                             cathedral_survey_offer
+      poll  26  day  6.25  heat  10.00  regard  -2.25  exposure  20.00  survey False heat_below_pursuit_band    cathedral_survey_answered
+      poll  70  day 17.25  heat   7.60  regard   6.40  exposure   7.30  survey False heat_below_pursuit_band    
+      poll 150  day 37.25  heat  10.91  regard  20.05  exposure   1.00  survey True                             cathedral_survey_offer
+      poll 152  day 37.75  heat  10.11  regard  32.25  exposure   0.40  survey False waiting_reoffer_gap        cathedral_survey_answered
+ok    8a the first single sale (poll 12) brings no survey: Heat 7.60 is under the band 
+ok    8b the second sale tips Heat over the band and the survey comes that poll 
+ok    8c the lone sale on poll 70 stays under the band: no survey 
+ok    8d (c) to the first survey: exposure +20 on its poll; Regard unchanged there 
+ok    8e (b) to the second: Regard +12 over the run that let it lapse 
+ok    8f across the whole messy run Heat is identical to the lapse run, poll for poll (K2) 
+
 [+] the in-game half
 ok    +a CathedralSurvey.cs is compiled (csproj lists it) 
 ok    +b the toggle exists, is saved, shown, and gates the incident 
@@ -112,5 +133,5 @@ ok    +g the committed DLL carries the survey types
   (a) lapsed  The survey leaves
   The officer's hail goes unanswered until it stops coming. A few days later the survey lamps are gone from the plates, and nobody aboard can say what they found out there.
 
-62 checks, 0 failed
+73 checks, 0 failed
 PASS

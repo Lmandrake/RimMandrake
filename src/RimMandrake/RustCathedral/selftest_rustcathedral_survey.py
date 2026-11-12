@@ -461,6 +461,88 @@ def plus_wiring():
                                            "RUT_ChoiceLetter_SurveyHail", "IncidentWorker_GiveQuest_CathedralSurvey")))
 
 
+def criterion_7_item4_surface():
+    """Spec: "Same CQF/bridge-letter surface and caveat as item 4" (CATHEDRAL_MISSION_BOON_OFFERS_1). Item 4 settled
+    the inherited CQF caveat by shipping vanilla quest machinery fired by baseChance-0 GiveQuest incidents that the GM
+    blackboard fires through jawa/storyteller_fire and reads back off the quest list. The survey must be the same."""
+    print("\n[7] same surface and caveat as item 4 (the Assailant missions)")
+    fav_q = ET.parse(os.path.join(MOD, "Defs", "QuestScriptDefs", "RUT_CathedralAssailantMissions.xml")).getroot()
+    fav_i = ET.parse(os.path.join(MOD, "Defs", "IncidentDefs", "RUT_CathedralFavours.xml")).getroot()
+    sur_q = ET.parse(QUEST_XML).getroot()
+    sur_i = ET.parse(INCIDENT_XML).getroot()
+    fav_base = next(q for q in fav_q.findall("QuestScriptDef") if q.get("Name") == "RUT_CathedralAssailantMissionBase")
+    sur = sur_q.find("QuestScriptDef")
+    check("7a both quest scripts are roots never rolled by the storyteller (rootSelectionWeight 0, isRootSpecial)",
+          all(q.findtext("rootSelectionWeight") == "0" and q.findtext("isRootSpecial") == "true"
+              for q in (fav_base, sur)))
+    fav_incs = [i for i in fav_i.findall("IncidentDef") if "GiveQuest_CathedralAssailantMission" in (i.findtext("defName") or "")]
+    sur_inc = sur_i.find("IncidentDef")
+    check("7b both are fired by GiveQuestBase incidents at baseChance 0 on the home map, with a gated worker of this mod",
+          len(fav_incs) >= 2 and all(
+              i.get("ParentName") == "GiveQuestBase" and i.findtext("baseChance") == "0"
+              and [li.text for li in i.findall("targetTags/li")] == ["Map_PlayerHome"]
+              and i.findtext("workerClass").startswith("RimMandrake.Utinni.CathedralPass.IncidentWorker_GiveQuest_")
+              for i in fav_incs + [sur_inc]), [i.findtext("defName") for i in fav_incs])
+    classes = set()
+    for root in (fav_q, sur_q):
+        classes |= {el.get("Class") for el in root.iter() if el.get("Class")}
+    foreign = sorted(c for c in classes
+                     if not (re.fullmatch(r"(QuestNode|QuestPart)_\w+", c) or c.startswith("RimMandrake.Utinni.CathedralPass.")))
+    check("7c the caveat is settled the same way: every node is vanilla or this mod's own (no CQF class)",
+          not foreign, foreign)
+    about = open(os.path.join(MOD, "About", "About.xml"), encoding="utf-8").read()
+    check("7d neither needs a quest framework: CathedralPass depends on Harmony only",
+          re.findall(r"<packageId>([^<]+)</packageId>", about.split("<modDependencies>")[1].split("</modDependencies>")[0])
+          == ["brrainz.harmony"])
+    _, recs = run(fixture(["dull", "lapse"]))
+    sur_fire = [e for _, e in events(recs, "cathedral_survey_offer")]
+    src = open(os.path.join(UTILS, "gm_blackboard_shadow.py"), encoding="utf-8").read()
+    check("7e the blackboard fires both through jawa/storyteller_fire and reads each outcome off the quest list",
+          sur_fire and all("jawa/storyteller_fire" in e["detail"] for e in sur_fire)
+          and src.count("through jawa/storyteller_fire (dryRun=false)") >= 2
+          and "survey_quest_ids_seen" in src and "mission_quest_ids_seen" in src)
+
+
+def criterion_8_messy_play():
+    """Not the fixture's tidy day-5 sale: the clan sells one crystal at a time, so Heat creeps toward the band and only
+    the second small sale tips it over; a later single sale stays under the band and brings nobody. The player tells
+    the first survey everything and feeds the second the guild's answer."""
+    print("\n[8] messy ordinary play: single-crystal sales creeping over the band")
+    ch = {"12": {"kyber": {"Force_KyberCrystal": 5}, "trader_present": True}, "13": {"trader_present": False},
+          "24": {"kyber": {"Force_KyberCrystal": 4}, "trader_present": True}, "25": {"trader_present": False},
+          "70": {"kyber": {"Force_KyberCrystal": 3}, "trader_present": True}, "71": {"trader_present": False},
+          "150": {"kyber": {"Force_KyberCrystal": 1}, "trader_present": True}, "151": {"trader_present": False}}
+    _, recs = run(fixture(["pointed", "dull"], changes=ch))
+    _, lapse = run(fixture(["lapse", "lapse"], changes=ch))
+    for r in recs:
+        evs = [e["type"] for e in r["would_fire"] if "survey" in e["type"]]
+        if evs or r["poll"] in (12, 70):
+            show_row(r, " ".join(evs))
+    fired = [p for p, _ in events(recs, "cathedral_survey_offer")]
+    at = {r["poll"]: r for r in recs}
+    check("8a the first single sale (poll 12) brings no survey: Heat %.2f is under the band"
+          % at[12]["heat_after"], not any(12 <= p < 24 for p in fired) and at[12]["heat_after"] < G.CATHEDRAL_SURVEY_MIN_HEAT)
+    check("8b the second sale tips Heat over the band and the survey comes that poll", fired[:1] == [24], fired)
+    check("8c the lone sale on poll 70 stays under the band: no survey", not any(60 <= p < 140 for p in fired)
+          and at[70]["heat_after"] < G.CATHEDRAL_SURVEY_MIN_HEAT, at[70]["heat_after"])
+    ans = events(recs, "cathedral_survey_answered")
+    exp, lexp = series(recs, "exposure_pressure_after"), series(lapse, "exposure_pressure_after")
+    reg, lreg = series(recs, "cathedral_regard_after"), series(lapse, "cathedral_regard_after")
+    idx = {r["poll"]: i for i, r in enumerate(recs)}
+    p1 = idx[ans[0][0]]
+    check("8d (c) to the first survey: exposure +%.0f on its poll; Regard unchanged there"
+          % G.CATHEDRAL_EXPOSURE_GAIN_SURVEY_POINTED,
+          abs(exp[p1] - lexp[p1] - G.CATHEDRAL_EXPOSURE_GAIN_SURVEY_POINTED) < 1e-6 and abs(reg[p1] - lreg[p1]) < 1e-6,
+          (p1, exp[p1], lexp[p1]))
+    p2 = idx[ans[1][0]] if len(ans) > 1 else None
+    check("8e (b) to the second: Regard +%.0f over the run that let it lapse"
+          % G.CATHEDRAL_REGARD_GAIN_MISDIRECTION_SUCCESS,
+          p2 is not None and abs((reg[p2] - lreg[p2]) - (reg[p2 - 1] - lreg[p2 - 1])
+                                 - G.CATHEDRAL_REGARD_GAIN_MISDIRECTION_SUCCESS) < 1e-6, p2)
+    check("8f across the whole messy run Heat is identical to the lapse run, poll for poll (K2)",
+          series(recs, "heat_after") == series(lapse, "heat_after"))
+
+
 def show_player_view():
     print("\n[what the player reads] (shipped fallback text; {FACTION} is the pursuing faction's name)")
     h = SURVEY["hail"]
@@ -481,6 +563,8 @@ def main():
     criterion_4_linter()
     criterion_5_oracle_absent(recs)
     criterion_6_reload_restart()
+    criterion_7_item4_surface()
+    criterion_8_messy_play()
     plus_wiring()
     show_player_view()
     print("\n%d checks, %d failed" % (len(RAN), len(FAILS)))
