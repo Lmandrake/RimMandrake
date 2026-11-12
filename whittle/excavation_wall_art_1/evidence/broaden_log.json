@@ -1,0 +1,149 @@
+[
+ {
+  "shot": "e1_a_D1"
+ },
+ {
+  "e1_after_deepen": {
+   "hollow": "4",
+   "waterM": "0",
+   "terrain": "RM_Channel_Superdeep"
+  }
+ },
+ {
+  "shot": "e1_b_deepened_to_D4_same_camera"
+ },
+ {
+  "e1_after_fill": {
+   "hollow": "4",
+   "waterM": "1",
+   "terrain": "WaterShallow"
+  }
+ },
+ {
+  "shot": "e1_c_filled_1m_same_camera"
+ },
+ {
+  "e1_after_drain": {
+   "hollow": "4",
+   "waterM": "0",
+   "terrain": "RM_Channel_Superdeep"
+  }
+ },
+ {
+  "shot": "e1_d_drained_same_camera"
+ },
+ {
+  "e2_looks": {
+   "ns_south_deeper": [
+    {
+     "hollow": "1",
+     "waterM": "0",
+     "terrain": "RM_Channel_Empty"
+    },
+    {
+     "hollow": "2",
+     "waterM": "0",
+     "terrain": "RM_Channel_Mid"
+    },
+    {
+     "hollow": "3",
+     "waterM": "0",
+     "terrain": "RM_Channel_Deep"
+    },
+    {
+     "hollow": "4",
+     "waterM": "0",
+     "terrain": "RM_Channel_Superdeep"
+    }
+   ],
+   "ew": [
+    {
+     "hollow": "1",
+     "waterM": "0",
+     "terrain": "RM_Channel_Empty"
+    },
+    {
+     "hollow": "2",
+     "waterM": "0",
+     "terrain": "RM_Channel_Mid"
+    },
+    {
+     "hollow": "3",
+     "waterM": "0",
+     "terrain": "RM_Channel_Deep"
+    },
+    {
+     "hollow": "4",
+     "waterM": "0",
+     "terrain": "RM_Channel_Superdeep"
+    }
+   ],
+   "ns_north_deeper": [
+    {
+     "hollow": "1",
+     "waterM": "0",
+     "terrain": "RM_Channel_Empty"
+    },
+    {
+     "hollow": "2",
+     "waterM": "0",
+     "terrain": "RM_Channel_Mid"
+    },
+    {
+     "hollow": "3",
+     "waterM": "0",
+     "terrain": "RM_Channel_Deep"
+    },
+    {
+     "hollow": "4",
+     "waterM": "0",
+     "terrain": "RM_Channel_Superdeep"
+    }
+   ]
+  }
+ },
+ {
+  "shot": "e2_staircases"
+ },
+ {
+  "spikes_128_135": {
+   "accepted": 1,
+   "rejected": []
+  }
+ },
+ {
+  "spikes_132_134": {
+   "accepted": 3,
+   "rejected": []
+  }
+ },
+ {
+  "spikes_136_135": {
+   "accepted": 3,
+   "rejected": []
+  }
+ },
+ {
+  "shot": "e3_spikes_single_and_trenches"
+ },
+ {
+  "e4_fill_0_5m": {
+   "hollow": "4",
+   "waterM": "0.5",
+   "terrain": "RM_WaterThin"
+  }
+ },
+ {
+  "shot": "e4_spikes_under_half_metre"
+ },
+ {
+  "e4_drained": {
+   "hollow": "4",
+   "waterM": "0",
+   "terrain": "RM_Channel_Superdeep"
+  }
+ },
+ {
+  "shot": "e4_spikes_drained_again"
+ }
+]

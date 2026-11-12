@@ -1,0 +1,22 @@
+[
+ {
+  "e4_fill_0_5m": {
+   "hollow": "4",
+   "waterM": "0.5",
+   "terrain": "RM_WaterThin"
+  }
+ },
+ {
+  "shot": "e4fix_spikes_under_half_metre"
+ },
+ {
+  "e4_drained": {
+   "hollow": "4",
+   "waterM": "0",
+   "terrain": "RM_Channel_Superdeep"
+  }
+ },
+ {
+  "shot": "e4fix_spikes_drained_again"
+ }
+]
