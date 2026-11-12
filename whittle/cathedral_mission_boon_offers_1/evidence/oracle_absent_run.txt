@@ -1,0 +1,14 @@
+# generated 2026-11-11 20:46 -0800 at 00381361cb (+ working tree: 0 dirty src file(s))
+$ PATH=/tmp/tmp.fs1vJpcrH4 command -v claude
+exit=1 (1 = not found)
+$ env PATH=/tmp/tmp.fs1vJpcrH4 /usr/bin/python3 src/RimMandrake/Utils/gm_blackboard_shadow.py --fixture src/RimMandrake/Utils/fixtures/cathedral_offers_ordinary_play.json --log /tmp/oracle_absent.jsonl
+34 would-fire events logged; 0 incidents fired, 0 letters sent, 0 saves written.
+Final: heat=0.00 hutt_interest=0.00 cathedral_regard=86.15 orbital_timer=60000 stage=VOUCHED exposure_pressure=0.00 go_dark_flips=1
+Favours: 8 mission request(s) posted, 5 completed (20 Regard), 3 gravtech gift(s) left
+Item 8: full_discovery=False fall_stage=None warzone_active=False hutt_extraction=None
+exit=0
+offers with full def text: 11 of 11
+  e.g. RUT_GiveQuest_CathedralAssailantMission_EnclaveRunner -> Quest available | A Free Droid runner came in at dusk with a request it had plainly been made to learn word  ...
+  e.g. RUT_GiveQuest_CathedralAssailantMission_UtinniInsists -> Quest available | The Utinni will not let it go. For three nights her receivers have followed something movi ...
+$ grep -nE 'subprocess|Popen|os\.system|claude -p' gm_blackboard_shadow.py CathedralFavours.cs   (expect nothing)
+exit=1 (1 = no match)

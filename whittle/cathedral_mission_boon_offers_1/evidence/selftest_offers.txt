@@ -1,0 +1,163 @@
+# generated 2026-11-11 20:46 -0800 at 00381361cb (+ working tree: 0 dirty src file(s))
+$ python3 src/RimMandrake/RustCathedral/selftest_rustcathedral_offers.py
+
+[1] Offer appears only at the correct stage (ordinary-play fixture, WARY -> TOLERATED -> VOUCHED)
+      poll   1  day  0.00  stage WARY      heat   0.00  regard   0.35 | missions False stage_below_TOLERATED  | panels closed_stage   gravcore closed_stage   |  
+      poll  50  day 12.25  stage TOLERATED heat   0.00  regard  15.05 | missions True                         | panels closed_stage   gravcore closed_stage   | ['mission_offer'] 
+      poll  76  day 18.75  stage TOLERATED heat   0.00  regard  26.85 | missions True                         | panels closed_stage   gravcore closed_stage   | ['mission_offer'] 
+      poll 110  day 27.25  stage TOLERATED heat   0.00  regard  37.05 | missions True                         | panels closed_stage   gravcore closed_stage   | ['mission_offer'] 
+      poll 136  day 33.75  stage TOLERATED heat   0.00  regard  48.85 | missions True                         | panels closed_stage   gravcore closed_stage   | ['mission_offer'] 
+      poll 162  day 40.25  stage TOLERATED heat   0.00  regard  56.65 | missions True                         | panels closed_stage   gravcore closed_stage   | ['mission_offer'] 
+      poll 168  day 41.75  stage VOUCHED   heat   0.00  regard  62.45 | missions True                         | panels open           gravcore open           | ['mission_completed', 'mission_resolved'] 
+      poll 176  day 43.75  stage VOUCHED   heat   0.00  regard  64.85 | missions True                         | panels open           gravcore open           | ['boon_offer'] 
+      poll 188  day 46.75  stage VOUCHED   heat   9.71  regard  57.70 | missions True                         | panels open           gravcore withheld_heat  | ['mission_offer'] 
+ok    1 fixture climbs WARY -> TOLERATED -> VOUCHED 
+ok    1 WARY: no mission and no boon offered on any WARY poll 
+ok    1 TOLERATED: missions offered, no boon ever 
+ok    1 VOUCHED: gravtech boons offered 
+ok    1 every WARY/TOLERATED poll shows both boons closed_stage 
+ok    1 reveal flag alone (effective_stage REVEALED, posture WARY) opens no favour 
+
+[2] Never attributed to the Cathedral before stage 3 (cathedral_arc_lint on every offer string)
+ok    2 RUT_CathedralAssailantMission_EnclaveRunner clean at stage -1 (7 strings) 
+ok    2 RUT_CathedralAssailantMission_EnclaveRunner clean at stage 1 (7 strings) 
+ok    2 RUT_CathedralAssailantMission_EnclaveRunner clean at stage 2 (7 strings) 
+ok    2 RUT_CathedralAssailantMission_UtinniInsists clean at stage -1 (7 strings) 
+ok    2 RUT_CathedralAssailantMission_UtinniInsists clean at stage 1 (7 strings) 
+ok    2 RUT_CathedralAssailantMission_UtinniInsists clean at stage 2 (7 strings) 
+ok    2 RUT_CathedralAssailantMission_EnclaveShrineRoad clean at stage -1 (7 strings) 
+ok    2 RUT_CathedralAssailantMission_EnclaveShrineRoad clean at stage 1 (7 strings) 
+ok    2 RUT_CathedralAssailantMission_EnclaveShrineRoad clean at stage 2 (7 strings) 
+ok    2 RUT_CathedralAssailantMission_UtinniFrequency clean at stage -1 (7 strings) 
+ok    2 RUT_CathedralAssailantMission_UtinniFrequency clean at stage 1 (7 strings) 
+ok    2 RUT_CathedralAssailantMission_UtinniFrequency clean at stage 2 (7 strings) 
+ok    2 RUT_CathedralAssailantMission_EnclaveBeacon clean at stage -1 (7 strings) 
+ok    2 RUT_CathedralAssailantMission_EnclaveBeacon clean at stage 1 (7 strings) 
+ok    2 RUT_CathedralAssailantMission_EnclaveBeacon clean at stage 2 (7 strings) 
+ok    2 RUT_CathedralAssailantMission_UtinniRestless clean at stage -1 (7 strings) 
+ok    2 RUT_CathedralAssailantMission_UtinniRestless clean at stage 1 (7 strings) 
+ok    2 RUT_CathedralAssailantMission_UtinniRestless clean at stage 2 (7 strings) 
+ok    2 RUT_CathedralGravtechBoon_GravlitePanels clean at stage -1 
+ok    2 RUT_CathedralGravtechBoon_GravlitePanels clean at stage 2 
+ok    2 RUT_CathedralGravtechBoon_Gravcore clean at stage -1 
+ok    2 RUT_CathedralGravtechBoon_Gravcore clean at stage 2 
+ok    2 no player-facing offer string names the place, the Assailant, or an asker (46 strings) 
+      46 offer strings linted across 6 missions and 2 boons
+ok    2 planted: quest description names the place -> refused (names-the-place) 
+ok    2 planted: quest description names the place -> lint CLI exits 1 
+ok    2 planted: boon letter gives the gift agency -> refused (agency before the reveal) 
+ok    2 planted: boon letter gives the gift agency -> lint CLI exits 1 
+ok    2 planted: quest name leaks the Assailant -> refused (§GM truth) 
+ok    2 planted: quest name leaks the Assailant -> lint CLI exits 1 
+
+[3] Boon availability flips with a shadow-mode Heat change (same stage, paired runs)
+    calm run (no sale):
+      poll  15  day  3.50  stage VOUCHED   heat   0.00  regard  46.55 | missions True                         | panels open           gravcore open           |  
+      poll  16  day  3.75  stage VOUCHED   heat   0.00  regard  46.85 | missions True                         | panels open           gravcore open           |  
+      poll  17  day  4.00  stage VOUCHED   heat   0.00  regard  47.15 | missions True                         | panels open           gravcore open           |  
+      poll  18  day  4.25  stage VOUCHED   heat   0.00  regard  47.45 | missions True                         | panels open           gravcore open           | ['boon_offer'] 
+      poll  19  day  4.50  stage VOUCHED   heat   0.00  regard  47.75 | missions True                         | panels open           gravcore open           | ['mission_resolved'] 
+    hot run (two kyber sold on poll 16, everything else identical):
+      poll  14  day  3.25  stage VOUCHED   heat   0.00  regard  46.25 | missions True                         | panels open           gravcore open           |  
+      poll  15  day  3.50  stage VOUCHED   heat   0.00  regard  46.55 | missions True                         | panels open           gravcore open           |  
+      poll  16  day  3.75  stage VOUCHED   heat  10.91  regard  36.50 | missions True                         | panels open           gravcore withheld_heat  |  
+      poll  17  day  4.00  stage VOUCHED   heat  10.51  regard  36.60 | missions True                         | panels open           gravcore withheld_heat  |  
+      poll  18  day  4.25  stage VOUCHED   heat  10.11  regard  36.70 | missions True                         | panels open           gravcore withheld_heat  |  
+      poll  19  day  4.50  stage VOUCHED   heat   9.71  regard  37.00 | missions True                         | panels open           gravcore withheld_heat  | ['mission_resolved'] 
+      ...
+      poll  29  day  7.00  stage VOUCHED   heat   5.71  regard  40.00 | missions True                         | panels open           gravcore withheld_heat  |  
+      poll  30  day  7.25  stage VOUCHED   heat   5.31  regard  40.30 | missions True                         | panels open           gravcore withheld_heat  |  
+      poll  31  day  7.50  stage VOUCHED   heat   4.91  regard  40.60 | missions True                         | panels open           gravcore open           | ['boon_offer'] 
+ok    3 calm run: gravcore offered on poll 18 at low Heat (0.00 <= its ceiling 5), VOUCHED 
+ok    3 hot run, same poll 18, same stage: gravcore withheld for Heat 10.11 > 5, not offered 
+ok    3 hot run: stage never left VOUCHED across the Heat rise 
+ok    3 hot run: panels (ceiling 15) stay open at the same Heat 
+ok    3 hot run: gravcore offered again once Heat cools to its ceiling (poll 31, Heat 4.914) 
+      poll  12  day  2.75  stage VOUCHED   heat  44.60  regard  44.95 | missions True                         | panels withheld_heat  gravcore withheld_heat  |  <- SYNTHETIC: board.heat set to 45 before this poll
+ok    3 synthetic high Heat (>= HEAT_HIGH_BAND) at VOUCHED: both boons withheld 
+
+[4] The dark flip closes both (pursuit event on Cathedral ground, go-dark threshold 15)
+      poll   8  day  1.75  stage VOUCHED   heat   0.00  regard  44.45 | missions True                         | panels open           gravcore open           |  
+      poll   9  day  2.00  stage VOUCHED   heat   0.00  regard  44.75 | missions True                         | panels open           gravcore open           |  
+      poll  10  day  2.25  stage WARY      heat   0.00  regard  45.05 | missions False go_dark                | panels closed_go_dark gravcore closed_go_dark | ['mission_offer_withdrawn'] 
+      poll  11  day  2.50  stage WARY      heat   0.00  regard  45.35 | missions False dark_hold              | panels closed_go_dark gravcore closed_go_dark | ['mission_resolved'] 
+      poll  12  day  2.75  stage WARY      heat   0.00  regard  45.65 | missions False dark_hold              | panels closed_go_dark gravcore closed_go_dark |  
+      poll  47  day 11.50  stage VOUCHED   heat   0.00  regard  56.15 | missions False dark_hold              | panels closed_go_dark gravcore closed_go_dark |  
+      poll  48  day 11.75  stage VOUCHED   heat   0.00  regard  56.45 | missions False dark_hold              | panels closed_go_dark gravcore closed_go_dark |  
+      poll  49  day 12.00  stage VOUCHED   heat   0.00  regard  56.75 | missions False dark_hold              | panels closed_go_dark gravcore closed_go_dark |  
+      poll  50  day 12.25  stage VOUCHED   heat   0.00  regard  57.05 | missions True                         | panels open           gravcore open           | ['mission_offer', 'boon_offer'] 
+      poll  51  day 12.50  stage VOUCHED   heat   0.00  regard  57.35 | missions True                         | panels open           gravcore open           |  
+      poll  52  day 12.75  stage VOUCHED   heat   0.00  regard  57.65 | missions True                         | panels open           gravcore open           |  
+ok    4 the poll before: VOUCHED, a request posted, both boons open 
+ok    4 go-dark poll 10: go_dark fired 
+ok    4 go-dark poll: missions closed (reason go_dark) and the posted request withdrawn 
+ok    4 go-dark poll: both boons closed_go_dark, nothing offered 
+ok    4 dark hold: 39 polls (10 days) with no offer, though posture re-climbs to VOUCHED 
+ok    4 after the hold, favours reopen 
+ok    4 the withdrawal names the live act (end quest 1000 via quest_lifecycle, no letter) and the quest list then shows it ended 
+ok    4 a withdrawn request the player accepts anyway is tracked in progress (poll 8), credited once, and no second request overlaps it 
+
+[5] Every beat completes Oracle-absent (no claude on PATH, no LLM call in the offer path)
+ok    5 child PATH resolves no `claude` 
+ok    5 fixture run exits 0 with the Oracle absent 
+ok    5 11 offers logged, every one carrying its full shipped def text 
+ok    5 blackboard source: no subprocess/Popen/os.system/claude call 
+ok    5 in-game C# (CathedralFavours.cs): no Process/claude call 
+      300 polls, 11 offers, PATH=/tmp/st_selftest_rustcathedral_offers_t4_2agux/tmpd95h7xxx
+
+[6] K2 anti-laundering + [7] Regard feedback (paired runs: the player completes every request vs ignores it)
+      poll  stage     heat before heat after  heat(ctrl)  from comp.  regard(comp) regard(ctrl) event
+      56    TOLERATED 0.000       0.000       0.000       0.000       20.85        16.85        +1 completion, Regard gain 4.0 in this poll's record
+      82    TOLERATED 0.000       0.000       0.000       0.000       32.65        24.65        +1 completion, Regard gain 4.0 in this poll's record
+      108   TOLERATED 10.656      10.256      10.256      0.000       27.50        15.50        +1 completion, Regard gain 4.0 in this poll's record
+      134   TOLERATED 0.256       0.000       0.000       0.000       39.30        23.30        +1 completion, Regard gain 4.0 in this poll's record
+      160   VOUCHED   0.000       0.000       0.000       0.000       51.10        31.10        +1 completion, Regard gain 4.0 in this poll's record
+      186   VOUCHED   0.000       0.000       0.000       0.000       62.90        38.90        +1 completion, Regard gain 4.0 in this poll's record
+      (heat(ctrl) = the same poll in the run where every request is ignored; 'from comp.' = the Heat the completions themselves added. Heat before -> after moves only by the 0.4/poll decay both runs share.)
+ok    6 6 missions completed, with Heat non-zero during at least one (a sale on poll 100) 
+ok    6 Heat identical poll for poll across the paired runs (completions scrub zero Heat) 
+ok    6 on every completion poll the Heat change equals the no-mission run's (decay only) 
+ok    6 Regard rose: completing run ends 24.00 Regard above the ignoring run 
+ok    7 completion poll 56 record: mission_completions_this_poll=1, gain 4.0 = CATHEDRAL_REGARD_GAIN_MISSION_COMPLETION 
+ok    7 that poll's Regard delta exceeds the ignoring run's by exactly the gain (4.000) 
+ok    7 the completions also count toward VOUCHED (mission_completions_total) 
+ok    7 the completing run reaches VOUCHED; the ignoring run is still TOLERATED after 200 polls 
+
+[+] read-only guard and the Mod Settings mirrors
+ok    + safe_call refuses jawa/quest_lifecycle action='accept' 
+ok    + safe_call refuses jawa/quest_lifecycle action='end' 
+ok    + safe_call refuses jawa/quest_lifecycle action=None 
+ok    + safe_call refuses jawa/storyteller_fire (shadow mode fires nothing) 
+ok    + missions disabled: no request ever offered 
+ok    + shadow run made no acting call 
+ok    + boons disabled: no gift ever offered 
+
+[B] tests a second model proposed (BROADEN.md)
+      offer order: ['EnclaveRunner', 'UtinniInsists', 'EnclaveShrineRoad', 'UtinniFrequency', 'EnclaveBeacon', 'UtinniRestless', 'EnclaveRunner', 'UtinniInsists', 'EnclaveShrineRoad']
+ok    B the first six requests are six different quests (no description repeats before the seventh) 
+ok    B six distinct request descriptions ship 
+      RUT_CathedralGravtechBoon_GravlitePanels ceiling 15: Heat 15 -> open; Heat 15.000001 -> withheld_heat
+ok    B RUT_CathedralGravtechBoon_GravlitePanels: open at Heat == ceiling, withheld just above 
+      RUT_CathedralGravtechBoon_Gravcore ceiling 5: Heat 5 -> open; Heat 5.000001 -> withheld_heat
+ok    B RUT_CathedralGravtechBoon_Gravcore: open at Heat == ceiling, withheld just above 
+      poll   7  day  1.50  stage VOUCHED   heat   0.00  regard  44.15 | missions True                         | panels open           gravcore open           |  
+      poll   8  day  1.75  stage WARY      heat   0.00  regard  44.45 | missions False go_dark                | panels closed_go_dark gravcore closed_go_dark |  
+      poll  23  day  5.50  stage VOUCHED   heat   0.00  regard  52.95 | missions False dark_hold              | panels closed_go_dark gravcore closed_go_dark | ['mission_completed', 'mission_resolved'] 
+ok    B accepted request in progress at the go-dark is not withdrawn 
+ok    B it completes during the dark hold and is credited exactly once 
+ok    B no offer of any kind until the hold ends 
+ok    B ordinary play: 3 gifts, none within two days after any of 5 completions 
+ok    B ordinary play: the gravcore comes at most once in 75 days (1) 
+
+[R] code-review findings, each pinned (2026-11-11)
+ok    R all 6 mission incidents override GiveQuestBase's World target with Map_PlayerHome (storyteller_fire targets the home map) 
+ok    R mission base is isRootSpecial (else defaultChallengeRating is a load-time config error) 
+ok    R ended missions already in the quest list + story flag 3: none re-credited (total 3, left to flag 3) 
+ok    R same list, no story flag (a blackboard restart): credited once on poll 1 (3), never again 
+ok    R a title-cased quest name with no root field still matches its def (name fallback) 
+ok    R ignored request with a quest waiting: the blackboard waits for the game's expiry (3.50 days, resolved EndedOfferExpired), not its own 3-day lapse 
+ok    R pure shadow (nothing fired, no quest row): the offer lapses at the 3-day floor (3.00 days) 
+ok    R the quest window's C# progress line lints clean at stage 1 (['Animals gone wrong not yet down: ']) 
+
+86/86 checks passed
+exit=0

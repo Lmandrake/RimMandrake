@@ -1,0 +1,40 @@
+# generated 2026-11-11 20:46 -0800 at 00381361cb (+ working tree: 0 dirty src file(s))
+$ python3 src/RimMandrake/RustCathedral/cathedral_arc_lint.py --xml src/RimUtinni/CathedralPass/Defs/QuestScriptDefs/RUT_CathedralAssailantMissions.xml --xml src/RimUtinni/CathedralPass/Defs/IncidentDefs/RUT_CathedralFavours.xml --stage -1
+cathedral_arc_lint: 38 player-facing strings read from 2 file(s) at stage -1
+cathedral_arc_lint: PASS (0 findings)
+exit=0
+
+$ python3 src/RimMandrake/RustCathedral/cathedral_arc_lint.py --xml src/RimUtinni/CathedralPass/Defs/QuestScriptDefs/RUT_CathedralAssailantMissions.xml --xml src/RimUtinni/CathedralPass/Defs/IncidentDefs/RUT_CathedralFavours.xml --stage 1
+cathedral_arc_lint: 38 player-facing strings read from 2 file(s) at stage 1
+cathedral_arc_lint: PASS (0 findings)
+exit=0
+
+$ python3 src/RimMandrake/RustCathedral/cathedral_arc_lint.py --xml src/RimUtinni/CathedralPass/Defs/QuestScriptDefs/RUT_CathedralAssailantMissions.xml --xml src/RimUtinni/CathedralPass/Defs/IncidentDefs/RUT_CathedralFavours.xml --stage 2
+cathedral_arc_lint: 38 player-facing strings read from 2 file(s) at stage 2
+cathedral_arc_lint: PASS (0 findings)
+exit=0
+
+--- planted attributed lines (must be refused, exit 1) ---
+$ python3 src/RimMandrake/RustCathedral/cathedral_arc_lint.py --text "The Cathedral asks the clan to clear the old works." --stage 1
+cathedral_arc_lint: FAIL (1)
+  - names-the-place -- 'cathedral'
+exit=1
+
+$ python3 src/RimMandrake/RustCathedral/cathedral_arc_lint.py --text "A pack of animals has gone wrong. It knows you will come." --stage 1
+cathedral_arc_lint: FAIL (1)
+  - agency before the reveal -- 'it knows'
+exit=1
+
+$ python3 src/RimMandrake/RustCathedral/cathedral_arc_lint.py --text "Someone in the old works wants them dead." --stage 1
+cathedral_arc_lint: FAIL (1)
+  - agency before the reveal -- 'someone'
+exit=1
+
+$ python3 src/RimMandrake/RustCathedral/cathedral_arc_lint.py --text "The runner speaks for the Assailant's enemy." --stage 1
+cathedral_arc_lint: FAIL (1)
+  - §GM truth (ban 1) -- 'assailant'
+exit=1
+
+$ python3 src/RimMandrake/RustCathedral/cathedral_arc_lint.py --selftest
+selftest ok (shipped settings clean; planted label + tooltip caught; colonists learning passes)
+exit=0

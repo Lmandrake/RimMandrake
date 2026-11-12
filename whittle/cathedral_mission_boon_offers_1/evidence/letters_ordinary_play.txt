@@ -1,0 +1,144 @@
+# generated 2026-11-11 20:46 -0800 at 00381361cb (+ working tree: 0 dirty src file(s))
+# player's-eye letters from shadow_log_ordinary_play.jsonl; [bracketed] lines are hidden mechanics
+Day  0.00  [stage None -> WARY, Regard 0.3, Heat 0.0]
+Day 12.25  [stage WARY -> TOLERATED, Regard 15.1, Heat 0.0]
+Day 12.25  LETTER  Quest available  --  A request from the enclaves
+            A Free Droid runner came in at dusk with a request it had plainly been made to learn word for word. The animals that range out past the old works have gone wrong, the way things go wrong near the breached vaults, and the enclaves want them put down before the rot in them spreads.
+            
+            The runner would not say who asked the enclaves. It did not wait for an answer.
+            
+            Accept, and the pack will come to you. Kill every one of them.
+
+Day 12.75  [the player accepts quest 1000]
+Day 12.75  LETTER  The pack the enclaves warned of
+            The animals the enclaves warned of are here. They move wrong, too stiff in the shoulders and too quick to turn, and they are coming straight for the colony.
+
+Day 13.75  LETTER  The pack is down
+            The last of them is dead. Burn what is left of them before it starts to spread.
+            
+            Nobody from the enclaves comes to thank you. But the next time the crews work the plates out past the old works, the ground seems a little easier under them, and nobody can say why.
+
+Day 13.75  [Regard +4.0 this poll from the completion; Heat 0.00]
+Day 18.75  LETTER  Quest available  --  The Utinni insists
+            The Utinni will not let it go. For three nights her receivers have followed something moving out past the old works, and this morning she put it on every screen aboard: a pack of animals gone wrong, with the same rot in them that there is in the breached vaults, drifting closer to the ship.
+            
+            The crew clears the screens. By morning the mark is back.
+            
+            Accept, and they will come to you. Kill every one of them.
+
+Day 22.25  [quest 1001 lapsed unanswered -- no letter]
+Day 27.25  LETTER  Quest available  --  The shrine-road
+            The enclave droids who keep the shrine-road sent word ahead of their next pilgrimage. A pack of animals has gone wrong in the dunes past the old works, sick with the same rot that seeps out of the breached vaults, and the road is not safe while they are on it.
+            
+            They ask the clan to clear it before the pilgrims set out.
+            
+            Accept, and the pack will come to you. Kill every one of them.
+
+Day 27.75  [the player accepts quest 1002]
+Day 27.75  LETTER  The pack the enclaves warned of
+            The animals the enclaves warned of are here. They move wrong, too stiff in the shoulders and too quick to turn, and they are coming straight for the colony.
+
+Day 28.75  LETTER  The pack is down
+            The last of them is dead. Burn what is left of them before it starts to spread.
+            
+            Nobody from the enclaves comes to thank you. But the next time the crews work the plates out past the old works, the ground seems a little easier under them, and nobody can say why.
+
+Day 28.75  [Regard +4.0 this poll from the completion; Heat 0.00]
+Day 33.75  LETTER  Quest available  --  A frequency nobody uses
+            Something the Utinni hears on a frequency nobody else uses has her restless. She has marked a place out past the old works where a pack of animals has gone wrong, and the mark will not come off the screens.
+            
+            Ask her how she knows, and she changes the subject.
+            
+            Accept, and they will come to you. Kill every one of them.
+
+Day 34.25  [the player accepts quest 1003]
+Day 34.25  LETTER  The pack on the screens
+            The pack the Utinni tracked has reached the colony. Up close the rot shows in how they run: as if each of them had been put together from two animals that never agreed.
+
+Day 35.25  [quest 1003 failed: no Regard]
+Day 40.25  LETTER  Quest available  --  A beacon in the night
+            An enclave beacon lit up on the ship's board overnight, repeating one short request in trade-cant until the deck crew answered it: animals gone wrong out past the old works, the rot in their blood, close enough now to smell. The enclaves have no fighters to send.
+            
+            The beacon went dark the moment the crew acknowledged it.
+            
+            Accept, and the pack will come to you. Kill every one of them.
+
+Day 40.75  [the player accepts quest 1004]
+Day 40.75  LETTER  The pack the enclaves warned of
+            The animals the enclaves warned of are here. They move wrong, too stiff in the shoulders and too quick to turn, and they are coming straight for the colony.
+
+Day 41.75  [stage TOLERATED -> VOUCHED, Regard 62.5, Heat 0.0]
+Day 41.75  LETTER  The pack is down
+            The last of them is dead. Burn what is left of them before it starts to spread.
+            
+            Nobody from the enclaves comes to thank you. But the next time the crews work the plates out past the old works, the ground seems a little easier under them, and nobody can say why.
+
+Day 41.75  [Regard +4.0 this poll from the completion; Heat 0.00]
+Day 43.75  LETTER  Panels on the ramp
+            At first light the deck crew found a stack of gravlite panels on the cargo ramp, squared off neatly and still cold from the night. No tracks led to them and none led away.
+            
+            Nobody aboard claims them, and nobody wants to ask too loudly. There was no patrol overhead last night.
+
+Day 43.75  [gift: {'GravlitePanel': 30}; Heat 0.0, ceiling 15]
+Day 46.00  [RUT_CathedralGravtechBoon_Gravcore: open -> withheld_heat at Heat 10.9]
+Day 46.75  LETTER  Quest available  --  The Utinni will not rest
+            For the third morning running the Utinni has woken the crew early with the same picture on every screen: a pack of animals gone wrong, the rot from the vaults in them, ranging nearer the ship each day. She is not frightened of them. She is impatient.
+            
+            Accept, and they will come to you. Kill every one of them.
+
+Day 47.25  [the player accepts quest 1005]
+Day 47.25  LETTER  The pack on the screens
+            The pack the Utinni tracked has reached the colony. Up close the rot shows in how they run: as if each of them had been put together from two animals that never agreed.
+
+Day 48.25  LETTER  The screens go quiet
+            The pack is dead and the Utinni clears her screens without a word.
+            
+            That night the drone from the old works runs low and even, the calmest anyone has heard it.
+
+Day 48.25  [Regard +4.0 this poll from the completion; Heat 7.31]
+Day 49.75  [RUT_CathedralGravtechBoon_Gravcore: withheld_heat -> open at Heat 4.9]
+Day 50.00  [RUT_CathedralGravtechBoon_GravlitePanels: open -> withheld_heat at Heat 15.8]
+Day 50.00  [RUT_CathedralGravtechBoon_Gravcore: open -> withheld_heat at Heat 15.8]
+Day 50.75  [RUT_CathedralGravtechBoon_GravlitePanels: withheld_heat -> open at Heat 14.6]
+Day 53.25  LETTER  Quest available  --  A request from the enclaves
+            A Free Droid runner came in at dusk with a request it had plainly been made to learn word for word. The animals that range out past the old works have gone wrong, the way things go wrong near the breached vaults, and the enclaves want them put down before the rot in them spreads.
+            
+            The runner would not say who asked the enclaves. It did not wait for an answer.
+            
+            Accept, and the pack will come to you. Kill every one of them.
+
+Day 56.75  [quest 1006 lapsed unanswered -- no letter]
+Day 57.00  LETTER  A gravcore in the sand
+            The perimeter lights caught it an hour before dawn: a gravcore, whole and faintly warm, set upright in the sand just outside the ship's shadow. It is older than anything in your stores, and it fits the Utinni's sockets as if it had been cut for them.
+            
+            The sky has been empty of Imperial traffic for days.
+
+Day 57.00  [gift: {'Gravcore': 1}; Heat 4.6, ceiling 5]
+Day 57.00  [RUT_CathedralGravtechBoon_Gravcore: withheld_heat -> open at Heat 4.6]
+Day 59.75  [stage VOUCHED -> WARY, Regard 64.2, Heat 0.2]
+Day 59.75  [GO-DARK: favours closed, held shut until tick 4185000]
+Day 61.00  [stage WARY -> TOLERATED, Regard 65.7, Heat 0.0]
+Day 61.25  [stage TOLERATED -> VOUCHED, Regard 66.0, Heat 0.0]
+Day 69.75  LETTER  Quest available  --  The Utinni insists
+            The Utinni will not let it go. For three nights her receivers have followed something moving out past the old works, and this morning she put it on every screen aboard: a pack of animals gone wrong, with the same rot in them that there is in the breached vaults, drifting closer to the ship.
+            
+            The crew clears the screens. By morning the mark is back.
+            
+            Accept, and they will come to you. Kill every one of them.
+
+Day 69.75  LETTER  Panels on the ramp
+            At first light the deck crew found a stack of gravlite panels on the cargo ramp, squared off neatly and still cold from the night. No tracks led to them and none led away.
+            
+            Nobody aboard claims them, and nobody wants to ask too loudly. There was no patrol overhead last night.
+
+Day 69.75  [gift: {'GravlitePanel': 30}; Heat 0.0, ceiling 15]
+Day 70.25  [the player accepts quest 1007]
+Day 70.25  LETTER  The pack on the screens
+            The pack the Utinni tracked has reached the colony. Up close the rot shows in how they run: as if each of them had been put together from two animals that never agreed.
+
+Day 71.25  LETTER  The screens go quiet
+            The pack is dead and the Utinni clears her screens without a word.
+            
+            That night the drone from the old works runs low and even, the calmest anyone has heard it.
+
+Day 71.25  [Regard +4.0 this poll from the completion; Heat 0.00]
