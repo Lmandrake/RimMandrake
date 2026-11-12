@@ -1,5 +1,5 @@
 {
- "at": "2026-11-12T09:56:48Z",
+ "at": "2026-11-12T10:23:28Z",
  "checklist": [
   {
    "id": "inv_kernel",
@@ -7,32 +7,27 @@
     {
      "ok": true,
      "scene": "sc_mortar_throw",
-     "what": "distance from blast strength (3 cells for a mortar beside a human)"
-    },
-    {
-     "ok": true,
-     "scene": "sc_walk_raid",
-     "what": "falloff and mass in the plan, checked against live requests"
+     "what": "throw distance from strength, falloff and mass (offline kernel selftest K-01..K-16, proof current)"
     },
     {
      "ok": true,
      "scene": "sc_wall_stop",
-     "what": "path stops at walls, closed doors, deep water"
+     "what": "path stops at walls"
+    },
+    {
+     "ok": true,
+     "scene": "sc_door_water",
+     "what": "path stops at closed doors and deep water"
     },
     {
      "ok": true,
      "scene": "sc_over_sandbags",
-     "what": "goes over sandbags and barricades"
-    },
-    {
-     "ok": false,
-     "scene": "sc_pit_fall",
-     "what": "stops inside the first open pit cell, never across (the control never shows a crossing was possible)"
+     "what": "path goes over sandbags and barricades"
     },
     {
      "ok": true,
-     "scene": "",
-     "what": "offline maths K-01..K-16 (offline tier, exempt)"
+     "scene": "sc_pit_fall",
+     "what": "stops inside the first open pit cell, never crosses (far-rim planned cell now asserted)"
     }
    ]
   },
@@ -42,12 +37,12 @@
     {
      "ok": true,
      "scene": "sc_all_fly_no_cap",
-     "what": "each thing reached queued once per explosion"
+     "what": "each thing reached queued exactly once per explosion id"
     },
     {
      "ok": true,
-     "scene": "sc_storeroom_bomb_pit",
-     "what": "thrown at the end of the explosion tick (implementation detail, exercised by every throw scene)"
+     "scene": "sc_all_fly_no_cap",
+     "what": "thrown at the end of the explosion tick"
     }
    ]
   },
@@ -57,27 +52,22 @@
     {
      "ok": true,
      "scene": "sc_pawn_arc",
-     "what": "own flyer def carries the pawn"
+     "what": "pawn carried by RM_PawnFlyer_Knockback, arc not teleport"
     },
     {
      "ok": true,
-     "scene": "sc_wall_stop",
-     "what": "impact damage at a wall or pawn"
+     "scene": "sc_pawn_arc",
+     "what": "never re-targets when the landing cell is taken"
     },
     {
      "ok": true,
      "scene": "sc_settings_sweep",
-     "what": "impact scales per cell not travelled"
+     "what": "impact damage on wall or pawn, scaled per cell"
     },
     {
      "ok": true,
-     "scene": "sc_pawn_arc",
+     "scene": "sc_settings_sweep",
      "what": "landing stun"
-    },
-    {
-     "ok": true,
-     "scene": "sc_pawn_arc",
-     "what": "never re-targets"
     }
    ]
   },
@@ -87,27 +77,32 @@
     {
      "ok": true,
      "scene": "sc_blast_kinds",
-     "what": "Bomb force full (frag, mortar)"
+     "what": "Bomb force 1.0"
+    },
+    {
+     "ok": true,
+     "scene": "sc_blast_kinds",
+     "what": "Bomb children inherit (BombSuper lane)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_blast_kinds",
+     "what": "Flame at half (changed per d_c_which_blasts)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_blast_kinds",
+     "what": "EMP, smoke, stun, extinguish, toxic gas at 0"
+    },
+    {
+     "ok": true,
+     "scene": "sc_blast_kinds",
+     "what": "other mods' explosions at 100 percent by default, 0 turns them off"
     },
     {
      "ok": false,
      "scene": "",
-     "what": "Bomb's children (e.g. a vanilla DamageDef with ParentName Bomb) throw at full: no lane"
-    },
-    {
-     "ok": true,
-     "scene": "sc_blast_kinds",
-     "what": "Flame at half (change owed)"
-    },
-    {
-     "ok": true,
-     "scene": "sc_blast_kinds",
-     "what": "EMP, smoke, stun, extinguish, toxic gas 0"
-    },
-    {
-     "ok": true,
-     "scene": "sc_blast_kinds",
-     "what": "other mods 100% default"
+     "what": "other-mods percent applies only to an untuned type, never stacked on a tuned modded type: no lane runs a modded explosion of a tuned damage type at a percent other than 100"
     },
     {
      "ok": true,
@@ -122,7 +117,7 @@
     {
      "ok": true,
      "scene": "sc_storeroom_mortar",
-     "what": "scoped out; removal checked by zero despawn-spawn pairs with a hop-seeing control"
+     "what": "scoped out: absence of the despawn-respawn hop, via coverage_rest, with a control that shows the trace sees a hop"
     }
    ]
   },
@@ -132,7 +127,7 @@
     {
      "ok": true,
      "scene": "sc_open_storage",
-     "what": "scoped out; removal checked by open furniture emptied, no in_storage line"
+     "what": "scoped out: open furniture emptied, no in_storage line (coverage_rest)"
     }
    ]
   },
@@ -147,27 +142,22 @@
     {
      "ok": true,
      "scene": "sc_spared",
-     "what": "in a pit"
+     "what": "pawn already in a pit"
     },
     {
      "ok": true,
      "scene": "sc_spared",
-     "what": "carrying a pawn"
+     "what": "pawn carrying a pawn, and the carried pawn"
     },
     {
      "ok": true,
      "scene": "sc_spared",
-     "what": "flying (state hook, the sanctioned flight state read)"
+     "what": "flying pawn (test-hook state)"
     },
     {
      "ok": true,
      "scene": "sc_spared",
-     "what": "in bed"
-    },
-    {
-     "ok": true,
-     "scene": "sc_spared",
-     "what": "carried"
+     "what": "pawn in bed"
     }
    ]
   },
@@ -177,17 +167,12 @@
     {
      "ok": true,
      "scene": "sc_shield",
-     "what": "belt absorbs the throw, wearer stays"
+     "what": "belt absorbing the blast holds the wearer"
     },
     {
      "ok": true,
      "scene": "sc_shield",
-     "what": "extra charge drained"
-    },
-    {
-     "ok": true,
-     "scene": "sc_gas_chain",
-     "what": "gas shove not stopped by a belt"
+     "what": "extra charge paid, against the absorb-off baseline"
     }
    ]
   },
@@ -197,12 +182,17 @@
     {
      "ok": true,
      "scene": "sc_recovery",
-     "what": "immune until stun plus window"
+     "what": "immune during stun plus window"
     },
     {
      "ok": true,
      "scene": "sc_recovery",
-     "what": "held across save and reload"
+     "what": "immunity survives save and reload"
+    },
+    {
+     "ok": true,
+     "scene": "sc_recovery",
+     "what": "thrown again after the window"
     }
    ]
   },
@@ -212,17 +202,12 @@
     {
      "ok": true,
      "scene": "sc_all_fly_no_cap",
-     "what": "scoped out; 40-per-explosion cap gone, with a re-imposed-cap control"
-    },
-    {
-     "ok": true,
-     "scene": "sc_all_fly_no_cap",
-     "what": "per-tick drop gone"
+     "what": "scoped out: 40 per-explosion cap and per-tick drop removed, cap-reimposing hook as control (coverage_rest)"
     },
     {
      "ok": true,
      "scene": "sc_settings_sweep",
-     "what": "cap lines gone from page and saved settings"
+     "what": "cap lines gone from the page and saved settings"
     }
    ]
   },
@@ -242,7 +227,7 @@
     {
      "ok": true,
      "scene": "sc_settings_sweep",
-     "what": "downed/animals/mechs/items/corpses toggles, immuneBodySize"
+     "what": "downed, animals, mechs, items, corpses toggles; immune body size"
     },
     {
      "ok": true,
@@ -252,17 +237,12 @@
     {
      "ok": true,
      "scene": "sc_shield",
-     "what": "shieldsAbsorbThrow"
+     "what": "shieldsAbsorbThrow toggle"
     },
     {
      "ok": false,
-     "scene": "",
-     "what": "per-damage-kind strengths the sheet says are on Mod Settings (fire 50, EMP/smoke/stun/extinguish/toxic 0) are never changed"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "no check that the swept list equals the page's fields"
+     "scene": "sc_settings_sweep",
+     "what": "the sweep asserts its list equals the class's saved fields by reflection and fails on any unswept field, but its own list leaves out the saved fields enabled and shieldsAbsorbThrow (RM_KnockbackMod.cs:97,120), so the scene as written fails itself or carries an exemption it never states"
     }
    ]
   },
@@ -277,17 +257,17 @@
     {
      "ok": true,
      "scene": "sc_pit_fall",
-     "what": "landing on a covered cell falls through, cover broken"
+     "what": "landing on a covered pit cell falls through"
     },
     {
      "ok": true,
      "scene": "sc_cover_breaks",
-     "what": "damaging or fire blast ON a cover breaks it and drops the pawn"
+     "what": "damaging or fire blast on a cover breaks it and drops the pawn"
     },
     {
      "ok": false,
-     "scene": "",
-     "what": "a blast that reaches a cover without landing on it (d_q5 'a blast that reaches a pit cover breaks it'): no lane"
+     "scene": "sc_cover_breaks",
+     "what": "blast that reaches a cover from beside it breaks it (ninth cover): the raider on it is also inside the grenade's radius and thrown, so a cover broken by the raider being thrown onto a covered cell is not ruled out; no pawn-free beside-the-cover control"
     }
    ]
   },
@@ -297,12 +277,12 @@
     {
      "ok": true,
      "scene": "sc_pit_fetch",
-     "what": "pit-floor goods and corpse fetched down a lowered ladder"
+     "what": "pit-floor goods and corpse hauled up a lowered ladder, none fetched with it raised"
     },
     {
      "ok": true,
-     "scene": "sc_pit_fetch",
-     "what": "not fetched with the ladder raised (haulers route around)"
+     "scene": "sc_no_careless_fall",
+     "what": "haulers route around open pit cells"
     }
    ]
   },
@@ -312,7 +292,7 @@
     {
      "ok": true,
      "scene": "sc_hose_drop",
-     "what": "hose end drops on the takeoff cell, connected"
+     "what": "hose end drops on the takeoff cell, connected, with a not-thrown control (master off in the scene; the tree's oracle names a shield-belt control instead, harmless)"
     }
    ]
   },
@@ -322,12 +302,7 @@
     {
      "ok": true,
      "scene": "sc_mortar_throw",
-     "what": "every one of the 24 built SceneNames audited and mapped to a rewritten scene"
-    },
-    {
-     "ok": true,
-     "scene": "sc_walk_raid",
-     "what": "runner and validation.py drive them"
+     "what": "proof scenes and runner rewritten with controls (coverage_rest; entry_point_item filed)"
     }
    ]
   },
@@ -337,37 +312,27 @@
     {
      "ok": true,
      "scene": "sc_gas_chain",
-     "what": "clump by clump, ordered from the lit edge, one burst per clump cell"
+     "what": "clump-by-clump bursts ordered from the lit edge, one per clump cell"
     },
     {
      "ok": true,
      "scene": "sc_gas_chain",
-     "what": "radius 1.9, goods at most 2 cells, outside the cloud too"
+     "what": "radius 1.9, goods at most 2 cells, goods outside the cloud too"
     },
     {
      "ok": true,
      "scene": "sc_gas_chain",
-     "what": "people shoved 1 cell unhurt, at most once per 2 s"
+     "what": "people shoved 1 cell unhurt, at most once per 2 s, belt does not stop it"
     },
     {
      "ok": true,
      "scene": "sc_gas_chain",
-     "what": "never a centroid blast"
-    },
-    {
-     "ok": true,
-     "scene": "sc_cover_breaks",
-     "what": "gas burst over a cover leaves it whole"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "a pawn gas-shoved ONTO a cover stands on it, cover whole: not staged (sc_cover_breaks' raider already stands on it)"
+     "what": "never one centroid blast (control)"
     },
     {
      "ok": true,
      "scene": "sc_gas_shove_into_pit",
-     "what": "shove into an open pit"
+     "what": "gas shove into an open pit"
     }
    ]
   },
@@ -377,27 +342,22 @@
     {
      "ok": true,
      "scene": "sc_storeroom_mortar",
-     "what": "arc (height above zero)"
+     "what": "arc (height above zero) and fast spin"
     },
     {
      "ok": true,
      "scene": "sc_storeroom_mortar",
-     "what": "spin (rotation changes)"
+     "what": "wall rebounds keeping about 0.7 speed"
     },
     {
      "ok": true,
      "scene": "sc_storeroom_mortar",
-     "what": "rebound keeping about 70%"
+     "what": "about 1.6 times a person's throw (shape 1.3 to 2.0, advisory)"
     },
     {
      "ok": true,
-     "scene": "sc_storeroom_mortar",
-     "what": "about 1.6x farther (ratio 1.3-2.0, advisory)"
-    },
-    {
-     "ok": true,
-     "scene": "sc_storeroom_mortar",
-     "what": "corpses fly"
+     "scene": "sc_killed_thrown",
+     "what": "corpses fly too"
     },
     {
      "ok": true,
@@ -416,13 +376,13 @@
     },
     {
      "ok": true,
-     "scene": "sc_open_storage",
-     "what": "open shelf, rack, table protect nothing"
+     "scene": "sc_closed_containers",
+     "what": "classification by does-not-draw rule over the owner's list, offline census"
     },
     {
-     "ok": false,
-     "scene": "",
-     "what": "the closed/open classification rule (does not draw its contents) checked over every storage def on the owner's list: no check; container rows may be permanently INVALID on the minimal list"
+     "ok": true,
+     "scene": "sc_open_storage",
+     "what": "open shelves, racks, tables protect nothing"
     }
    ]
   },
@@ -432,12 +392,12 @@
     {
      "ok": true,
      "scene": "sc_closed_containers",
-     "what": "free-backed 1x1 under mass limit slides one cell"
+     "what": "free-backed 1x1 under the mass limit slides one cell"
     },
     {
      "ok": true,
      "scene": "sc_closed_containers",
-     "what": "wall-, pawn-, pit-backed, over-mass and larger containers jolt"
+     "what": "wall-, pawn-, pit-backed, over-mass and larger containers jolt in place"
     }
    ]
   },
@@ -447,12 +407,17 @@
     {
      "ok": true,
      "scene": "sc_heavy_knock",
-     "what": "heavy stack: 2-5 blunt, stagger, stops"
+     "what": "heavy stack: 2 to 5 blunt, stagger, stops at the pawn"
     },
     {
      "ok": true,
      "scene": "sc_heavy_knock",
-     "what": "light goods pass"
+     "what": "light goods pass unhurt"
+    },
+    {
+     "ok": true,
+     "scene": "sc_settings_sweep",
+     "what": "threshold is a setting"
     }
    ]
   },
@@ -462,17 +427,17 @@
     {
      "ok": true,
      "scene": "sc_cauldron_gas",
-     "what": "Cauldron's gas tagged and bursts"
-    },
-    {
-     "ok": true,
-     "scene": "sc_cauldron_gas",
-     "what": "every tagged gas bursts, untagged control"
+     "what": "each tagged gas yields clump bursts; an untagged one burns without"
     },
     {
      "ok": false,
-     "scene": "",
-     "what": "census completeness: 'census list equals the tagged gases' is circular; nothing checks every gas our mods define appears in the census, tagged or with a reason"
+     "scene": "sc_cauldron_gas",
+     "what": "the Cauldron's gas carries the tag: its vent gas is no def but a byte grid on RM_MapComponent_VentGas (Cauldron/Source/RM_VentGas.cs:14-20), so a DefModExtension tag cannot sit on it and the scene's 'each def loaded' cannot hold for it"
+    },
+    {
+     "ok": false,
+     "scene": "sc_cauldron_gas",
+     "what": "census completeness: the offline check scans our mods' Defs only, but our gases are mostly emitted from C# as vanilla GasType (TheForge BlindSmoke, RM_ForgePlumeFronts.cs:176; Wastes, FlowWorks, TileFeatures ToxGas; GelatinousSlime RotStink) or the Cauldron's own grid, which a Defs scan never sees"
     }
    ]
   },
@@ -482,12 +447,12 @@
     {
      "ok": true,
      "scene": "sc_barrage_perf",
-     "what": "barrage and 40-cell chain at most 50 ms per frame, full list"
+     "what": "barrage and gas chain under 50 ms per frame on the full list, mod-off baseline"
     },
     {
      "ok": true,
      "scene": "sc_frame_probe_check",
-     "what": "probe self-check"
+     "what": "probe sees frames, not ticks, and marks paused rows"
     }
    ]
   },
@@ -497,12 +462,12 @@
     {
      "ok": true,
      "scene": "sc_lookup",
-     "what": "impactFactor 0 at wall, pawn, door"
+     "what": "impactFactor 0 at wall, pawn and door (door undamaged), nonzero control"
     },
     {
      "ok": true,
      "scene": "sc_lookup",
-     "what": "immuneBodySizeOverride 3.6"
+     "what": "immuneBodySizeOverride 3.6 throws a 2.5 to 3.5 animal, plain grenade spares it"
     }
    ]
   },
@@ -512,7 +477,7 @@
     {
      "ok": true,
      "scene": "sc_killed_thrown",
-     "what": "pawn killed by the blast thrown as a corpse, in the air"
+     "what": "a pawn the blast kills is thrown as a corpse, with height and no hop; pre-killed and throwCorpses-off controls"
     }
    ]
   },
@@ -522,7 +487,7 @@
     {
      "ok": true,
      "scene": "sc_spared",
-     "what": "stack and corpse on a pit floor skipped in_pit"
+     "what": "stack and corpse on a pit floor unmoved, skip in_pit, plain-colonist control"
     }
    ]
   },
@@ -530,9 +495,9 @@
    "id": "inv_big_corpse_spared",
    "parts": [
     {
-     "ok": false,
+     "ok": true,
      "scene": "sc_spared",
-     "what": "corpse of body size 2.5+ spared: the thrumbo corpse is also over 75 kg, and RM_MapComponent_Knockback.cs:430 labels any ineligible thing too_big whenever bodySize >= limit, so the skip reason cannot tell the body-size rule from the mass rule"
+     "what": "corpse of body size 2.5 or more spared too_big with the mass limit raised, under-2.5 corpse thrown at the same setting (lane B)"
     }
    ]
   },
@@ -542,12 +507,17 @@
     {
      "ok": true,
      "scene": "sc_settings_sweep",
-     "what": "goods over 75 kg skipped too_heavy; 65 kg at limit 60"
+     "what": "goods over the limit skipped too_heavy (100 kg at default, 65 kg at 60)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_spared",
+     "what": "corpse over 75 kg under body size 2.5 skipped too_heavy (lane C)"
     },
     {
      "ok": false,
      "scene": "",
-     "what": "corpses over the mass limit (body size under 2.5) skipped: no lane, the sweep's corpse has no stated mass"
+     "what": "the limit never weighs a living pawn: no scene puts a pawn whose mass is read above the limit beside a blast and asserts it is thrown (at limit 60 the sweep's colonist is not asserted heavier than 60; exam e23 relies on this case)"
     }
    ]
   },
@@ -555,9 +525,9 @@
    "id": "inv_too_weak_skip",
    "parts": [
     {
-     "ok": true,
+     "ok": false,
      "scene": "sc_all_fly_no_cap",
-     "what": "rim thing under one cell skipped too_weak, only on the outer ring"
+     "what": "a rim thing whose throw rounds to 0 is not thrown, skip too_weak: sc_all_fly_no_cap only bounds where too_weak may occur and never asserts that at least one too_weak skip happens, with its stack still on its cell, so the rule passes vacuously when every rim stack throws one cell or more"
     }
    ]
   },
@@ -567,17 +537,22 @@
     {
      "ok": true,
      "scene": "sc_mortar_throw",
-     "what": "about 3 cells straight away from a mortar"
+     "what": "about three cells straight away from a mortar beside a colonist"
     },
     {
      "ok": true,
      "scene": "sc_over_sandbags",
-     "what": "over sandbags and barricades"
+     "what": "over sandbags and barricades, no-line control"
     },
     {
      "ok": true,
      "scene": "sc_mortar_throw",
      "what": "alive and briefly stunned"
+    },
+    {
+     "ok": true,
+     "scene": "sc_settings_off",
+     "what": "master-off counterpart"
     }
    ]
   },
@@ -587,17 +562,17 @@
     {
      "ok": true,
      "scene": "sc_pawn_arc",
-     "what": "carried through the air (flyer, in-between position)"
+     "what": "carried through the air (carrier, in-between position), teleport control"
     },
     {
      "ok": true,
      "scene": "sc_pawn_arc",
-     "what": "lands on the cell planned at launch, never re-targeted"
+     "what": "lands on the cell planned at launch even when it is taken"
     },
     {
      "ok": true,
      "scene": "sc_pawn_arc",
-     "what": "back to work when the stun ends"
+     "what": "stun ends and the pawn returns to its job"
     }
    ]
   },
@@ -607,12 +582,12 @@
     {
      "ok": true,
      "scene": "sc_spared",
-     "what": "body size 2.5+ pawn"
+     "what": "body size 2.5 or more (default), immuneBodySize setting"
     },
     {
      "ok": true,
      "scene": "sc_lookup",
-     "what": "weapon's own body-size limit"
+     "what": "a weapon's own body-size limit throws pawns under it"
     },
     {
      "ok": true,
@@ -622,17 +597,22 @@
     {
      "ok": true,
      "scene": "sc_settings_sweep",
-     "what": "goods heavier than 75 kg"
+     "what": "goods over 75 kg"
+    },
+    {
+     "ok": true,
+     "scene": "sc_spared",
+     "what": "corpses over 75 kg (lane C)"
     },
     {
      "ok": false,
      "scene": "",
-     "what": "corpses heavier than 75 kg"
+     "what": "mass limit never weighs a living pawn"
     },
     {
-     "ok": false,
+     "ok": true,
      "scene": "sc_spared",
-     "what": "corpse of body size 2.5+ (confounded by mass)"
+     "what": "corpse of body size 2.5 or more, isolated from the mass limit (lane B)"
     },
     {
      "ok": true,
@@ -640,9 +620,14 @@
      "what": "goods and corpses on a pit floor"
     },
     {
-     "ok": true,
+     "ok": false,
      "scene": "sc_all_fly_no_cap",
-     "what": "rim thing under one cell"
+     "what": "a rim thing whose throw is under one cell (never shown to occur)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_spared",
+     "what": "control: a plain colonist at the same distance is thrown"
     }
    ]
   },
@@ -652,17 +637,17 @@
     {
      "ok": true,
      "scene": "sc_recovery",
-     "what": "spared a second throw in the window"
+     "what": "no second throw inside stun plus window"
     },
     {
      "ok": true,
      "scene": "sc_recovery",
-     "what": "across a save"
+     "what": "holds across save and reload"
     },
     {
      "ok": true,
      "scene": "sc_recovery",
-     "what": "thrown again after"
+     "what": "thrown again after the window (control)"
     }
    ]
   },
@@ -672,7 +657,7 @@
     {
      "ok": true,
      "scene": "sc_hose_drop",
-     "what": "hose end dropped on the takeoff cell, control rules out blast damage"
+     "what": "hose end on the takeoff cell, connected, not carried, not-thrown control"
     }
    ]
   },
@@ -687,12 +672,12 @@
     {
      "ok": true,
      "scene": "sc_wall_stop",
-     "what": "impact hit"
+     "what": "impact hit above 0"
     },
     {
      "ok": true,
      "scene": "sc_wall_stop",
-     "what": "never rebounds"
+     "what": "no rebound, not even half a step (no second move)"
     }
    ]
   },
@@ -702,7 +687,7 @@
     {
      "ok": true,
      "scene": "sc_pawn_hits_pawn",
-     "what": "stops before the pawn with an impact hit"
+     "what": "stops on the cell before a standing pawn, impact hit, no-pawn control"
     }
    ]
   },
@@ -712,17 +697,17 @@
     {
      "ok": true,
      "scene": "sc_door_water",
-     "what": "closed door stops, impact, door damaged"
+     "what": "closed door stops the throw, pawn impact hit, door damaged"
     },
     {
      "ok": true,
      "scene": "sc_lookup",
-     "what": "none at impact factor 0"
+     "what": "no door or pawn damage under impact factor 0"
     },
     {
      "ok": true,
      "scene": "sc_door_water",
-     "what": "deep water: last standable cell"
+     "what": "deep water: last standable cell, never in it"
     }
    ]
   },
@@ -732,17 +717,12 @@
     {
      "ok": true,
      "scene": "sc_shield",
-     "what": "wearer kept in place"
-    },
-    {
-     "ok": true,
-     "scene": "sc_shield",
-     "what": "extra charge"
+     "what": "belt keeps wearer in place and pays extra charge"
     },
     {
      "ok": true,
      "scene": "sc_gas_chain",
-     "what": "gas shove exception"
+     "what": "exception: a gas clump's shove still moves a belted pawn"
     }
    ]
   },
@@ -752,22 +732,22 @@
     {
      "ok": true,
      "scene": "sc_storeroom_mortar",
-     "what": "high arc, fast spin"
+     "what": "high arc and fast spin"
     },
     {
      "ok": true,
      "scene": "sc_storeroom_mortar",
-     "what": "rebounds near 0.7, until spent"
+     "what": "rebounds off walls keeping about 70 percent"
+    },
+    {
+     "ok": true,
+     "scene": "sc_storeroom_mortar",
+     "what": "about 1.6 times a person's throw (shape, advisory)"
     },
     {
      "ok": true,
      "scene": "sc_killed_thrown",
-     "what": "corpses among them, and a pawn the blast kills"
-    },
-    {
-     "ok": true,
-     "scene": "sc_storeroom_mortar",
-     "what": "wild distance about 1.6x (tested, advisory shape)"
+     "what": "corpses, a pawn the blast kills among them"
     }
    ]
   },
@@ -777,17 +757,17 @@
     {
      "ok": true,
      "scene": "sc_all_fly_no_cap",
-     "what": "every light good reached with a throw of a cell or more moves"
+     "what": "every light good reached with a throw of a cell or more moves; over 60 in one tick"
     },
     {
      "ok": true,
      "scene": "sc_all_fly_no_cap",
-     "what": "no cap, nothing skipped over a cap"
+     "what": "no 40-throw cap and no per-tick drop, cap-hook control"
     },
     {
      "ok": true,
-     "scene": "sc_spared",
-     "what": "exceptions: pit floor goods, big corpses"
+     "scene": "sc_all_fly_no_cap",
+     "what": "one request per thing per explosion"
     }
    ]
   },
@@ -797,7 +777,7 @@
     {
      "ok": true,
      "scene": "sc_open_storage",
-     "what": "shelf, rack, table emptied like the floor"
+     "what": "shelf, rack and table goods scatter like floor goods, floor control"
     }
    ]
   },
@@ -807,17 +787,17 @@
     {
      "ok": true,
      "scene": "sc_closed_containers",
-     "what": "contents kept, every listed kind"
+     "what": "contents kept in every closed kind, tagged modded one included"
     },
     {
      "ok": true,
      "scene": "sc_closed_containers",
-     "what": "slide one cell or jolt; never into a pit, wall or onto a pawn"
+     "what": "classing every storage def on his list (offline census) and the provider list named"
     },
     {
-     "ok": false,
-     "scene": "",
-     "what": "closed means 'does not draw its contents' over the owner's list (census unchecked)"
+     "ok": true,
+     "scene": "sc_closed_containers",
+     "what": "1x1 slides one cell; never into a pit, a wall or onto a pawn; larger or over-mass jolts"
     }
    ]
   },
@@ -827,7 +807,7 @@
     {
      "ok": true,
      "scene": "sc_heavy_knock",
-     "what": "heavy stack: light knock and stagger, stops"
+     "what": "heavy stack: light blunt hit, stagger, stops; out-of-ray control"
     },
     {
      "ok": true,
@@ -842,27 +822,27 @@
     {
      "ok": true,
      "scene": "sc_blast_kinds",
-     "what": "bombs full"
+     "what": "bombs full, Bomb children full"
+    },
+    {
+     "ok": true,
+     "scene": "sc_blast_kinds",
+     "what": "fire at half (about half the throw)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_blast_kinds",
+     "what": "other mods' untuned damaging explosions at the other-mods percent (100, 50, 0)"
     },
     {
      "ok": false,
      "scene": "",
-     "what": "Bomb's child damage types"
+     "what": "a modded damage type our patch already tunes keeps that tuning, the percent never stacked: untested, and at the default 100 a stacked and an unstacked result are identical"
     },
     {
      "ok": true,
      "scene": "sc_blast_kinds",
-     "what": "fire at half"
-    },
-    {
-     "ok": true,
-     "scene": "sc_blast_kinds",
-     "what": "other mods too"
-    },
-    {
-     "ok": true,
-     "scene": "sc_blast_kinds",
-     "what": "harmless bursts nothing"
+     "what": "harmless bursts (EMP, smoke, stun, extinguish, toxic gas) throw nothing"
     }
    ]
   },
@@ -882,7 +862,7 @@
     {
      "ok": true,
      "scene": "sc_lookup",
-     "what": "projectile, weapon, damage type order"
+     "what": "projectile over weapon over damage type"
     },
     {
      "ok": true,
@@ -892,12 +872,12 @@
     {
      "ok": true,
      "scene": "sc_lookup",
-     "what": "own maximum; 0 = global; cap scale shortens own maximum"
+     "what": "own maximum caps; 0 means global; cap scale shortens an own maximum"
     },
     {
      "ok": true,
      "scene": "sc_lookup",
-     "what": "impact factor 0 harmless at wall, pawn, door"
+     "what": "impact factor 0 harmless at wall, pawn and door"
     },
     {
      "ok": true,
@@ -912,22 +892,22 @@
     {
      "ok": true,
      "scene": "sc_gas_chain",
-     "what": "clump by clump with the fire front"
+     "what": "clump by clump along the fire front, centroid control"
     },
     {
      "ok": true,
      "scene": "sc_gas_chain",
-     "what": "scatters goods in each burst's radius"
+     "what": "each burst scatters goods in its own radius, outside the cloud too"
     },
     {
      "ok": true,
      "scene": "sc_gas_chain",
-     "what": "shoves people one cell unhurt, once per 2 s"
+     "what": "people shoved one cell unhurt"
     },
     {
      "ok": true,
      "scene": "sc_gas_chain",
-     "what": "no teleport"
+     "what": "a person at most once every 2 seconds"
     }
    ]
   },
@@ -937,12 +917,17 @@
     {
      "ok": true,
      "scene": "sc_cauldron_gas",
-     "what": "Cauldron's gas carries the tag and bursts"
+     "what": "tagged gases go off clump by clump, untagged control"
     },
     {
      "ok": false,
-     "scene": "",
-     "what": "other fitting gases tagged: census completeness unchecked"
+     "scene": "sc_cauldron_gas",
+     "what": "the Cauldron's gas carries the tag: it has no def to carry one"
+    },
+    {
+     "ok": false,
+     "scene": "sc_cauldron_gas",
+     "what": "no gas of ours missing from the census: the Defs-only scan is blind to C#-emitted GasType gases and the Cauldron's grid"
     }
    ]
   },
@@ -952,27 +937,27 @@
     {
      "ok": true,
      "scene": "sc_cover_breaks",
-     "what": "damaging blast on a cover breaks it, pawn falls"
+     "what": "damaging blast on a cover breaks it, pawn falls; no-pawn control"
     },
     {
      "ok": true,
      "scene": "sc_cover_breaks",
-     "what": "fire blast likewise"
+     "what": "fire blast breaks it"
     },
     {
      "ok": false,
-     "scene": "",
-     "what": "blast reaching a cover without landing on it"
+     "scene": "sc_cover_breaks",
+     "what": "blast beside a cover within its radius breaks it: the ninth raider is thrown by that same grenade, so 'cover destroyed, one descent' also passes if the throw lands him on a covered cell (thrown_into_pit_falls) and the reach rule is absent"
     },
     {
      "ok": true,
      "scene": "sc_cover_breaks",
-     "what": "gas, EMP, smoke, stun leave a cover whole"
+     "what": "gas, EMP, smoke, stun bursts leave covers whole"
     },
     {
-     "ok": false,
-     "scene": "",
-     "what": "pawn gas-shoved onto a cover stands on it, cover whole"
+     "ok": true,
+     "scene": "sc_cover_breaks",
+     "what": "a pawn gas-shoved onto a cover stands on it, cover whole (eighth cover)"
     }
    ]
   },
@@ -982,17 +967,22 @@
     {
      "ok": true,
      "scene": "sc_pit_fall",
-     "what": "pawn and good thrown toward an open pit fall to its floor (colonist, raider, stack)"
+     "what": "thrown toward an open pit falls to its floor (colonist, stack, raider)"
     },
     {
      "ok": true,
      "scene": "sc_pit_fall",
-     "what": "onto a covered cell: falls through, cover broken"
+     "what": "onto a covered cell falls through and breaks the cover"
     },
     {
-     "ok": false,
-     "scene": "sc_pit_fall",
-     "what": "nothing thrown across: the filled-pit control only says 'flat ground', never that the uncapped landing lies beyond the pit's far edge, so a throw too short to cross passes"
+     "ok": true,
+     "scene": "sc_pit_enemy",
+     "what": "nothing thrown across: planned cell beyond the far rim asserted, filled-pit control"
+    },
+    {
+     "ok": true,
+     "scene": "sc_cover_breaks",
+     "what": "a gas shove is not a throw: cover left whole"
     }
    ]
   },
@@ -1002,7 +992,7 @@
     {
      "ok": true,
      "scene": "sc_pit_fetch",
-     "what": "stack and corpse fetched up the ladder, ladder-raised control"
+     "what": "stack and corpse fetched up the ladder, raised-ladder control"
     }
    ]
   },
@@ -1012,12 +1002,12 @@
     {
      "ok": true,
      "scene": "sc_storeroom_mortar",
-     "what": "mortar goods: zero despawn-spawn pairs, hop-seeing control"
+     "what": "zero despawn-spawn pairs over mortar goods, hop-trace control"
     },
     {
      "ok": true,
      "scene": "sc_gas_chain",
-     "what": "gas-scattered goods"
+     "what": "zero pairs over gas-scattered goods"
     }
    ]
   },
@@ -1027,12 +1017,12 @@
     {
      "ok": true,
      "scene": "sc_no_careless_fall",
-     "what": "colonist paths round open and covered pits"
+     "what": "colonists path round open and covered pits"
     },
     {
      "ok": true,
      "scene": "sc_no_careless_fall",
-     "what": "enemy may fall into a concealed pit (the control)"
+     "what": "an enemy may walk into a concealed pit (control proves the journal sees it)"
     }
    ]
   },
@@ -1042,7 +1032,7 @@
     {
      "ok": true,
      "scene": "sc_settings_sweep",
-     "what": "every existing line takes effect"
+     "what": "every line takes effect, each change only its own outcome"
     },
     {
      "ok": true,
@@ -1050,19 +1040,14 @@
      "what": "removed cap lines gone"
     },
     {
-     "ok": false,
-     "scene": "",
-     "what": "per-damage-kind strength lines (fire, EMP, smoke, stun, extinguish, toxic) on Mod Settings"
+     "ok": true,
+     "scene": "sc_settings_sweep",
+     "what": "each new part switches off cleanly (goods in the air, closed guard, container shove, heavy knock, gas chain, fire at half) with the rest working"
     },
     {
      "ok": false,
      "scene": "sc_settings_sweep",
-     "what": "each new part switch: the observable for 'goods in the air' off and 'closed guard' off is only 'inert'"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "swept list proven equal to the page's fields"
+     "what": "'every line' proven by the reflection equality: contradicted by the sweep's own list, which omits enabled and shieldsAbsorbThrow"
     }
    ]
   },
@@ -1072,7 +1057,7 @@
     {
      "ok": true,
      "scene": "sc_barrage_perf",
-     "what": "worst frame at most 50 ms through barrage and chain, mod-off baseline"
+     "what": "worst frame at most 50 ms through a 6-shell barrage and a 40-cell chain on the full list, mod-off baseline (advisory number)"
     }
    ]
   },
@@ -1082,7 +1067,7 @@
     {
      "ok": true,
      "scene": "sc_frame_probe_check",
-     "what": "per-frame rows, 100 ms sleep seen, paused marked"
+     "what": "one row per frame with things-in-air count; 100 ms sleep shows; paused rows marked"
     }
    ]
   },
@@ -1092,32 +1077,32 @@
     {
      "ok": true,
      "scene": "sc_walk_raid",
-     "what": "mortar raid on the storeroom, throws inside the rect"
+     "what": "raid on a stocked colony on the full list, mortars into the storeroom, mod-off control"
     },
     {
      "ok": true,
      "scene": "sc_walk_raid",
-     "what": "grenade breaks the pit trap cover"
+     "what": "grenade on the pit trap breaks the cover"
     },
     {
      "ok": true,
      "scene": "sc_walk_raid",
-     "what": "gas lit clump by clump"
+     "what": "gas cloud lit, clump by clump"
     },
     {
      "ok": true,
      "scene": "sc_walk_raid",
-     "what": "mid-air save and reload, nothing duplicated or lost"
+     "what": "save with a thing in the air and reload, nothing lost or duplicated"
     },
     {
      "ok": true,
      "scene": "sc_walk_raid",
-     "what": "second order matches the kernel plan"
+     "what": "repeat in a second order, journal matched to the kernel plan"
     },
     {
      "ok": true,
      "scene": "sc_walk_raid",
-     "what": "frame budget and tick cost"
+     "what": "frame budget and carrier tick cost recorded"
     }
    ]
   }
@@ -1125,50 +1110,39 @@
  "gaps": [
   {
    "ids": [
-    "inv_big_corpse_spared",
-    "inv_mass_limit_skip",
-    "the_spared"
+    "the_spared",
+    "inv_mass_limit_skip"
    ],
    "return_to": 3,
-   "what": "The big-corpse rule is never isolated. sc_spared's thrumbo corpse is also over the 75 kg mass limit, and RM_MapComponent_Knockback.cs:430 writes reason too_big whenever bodySize >= immuneBodySize, whichever rule actually failed. So the expected 'too_big' passes even when no body-size rule for corpses exists. Add a lane with lightMassLimit raised above the corpse's mass (or a 2.5+ corpse under the limit), so only the body-size rule can spare it, with a control corpse under 2.5 thrown at the same setting. The mass limit on corpses (a corpse over 75 kg with body size under 2.5) has no lane either: give it one, or state the sweep corpse's mass.",
-   "where": "scenes.json sc_spared / sc_settings_sweep; tree.json the_spared"
+   "what": "Nothing tests that the mass limit never weighs a living pawn. Eligible (RM_KnockbackMath.cs:222) leaves pawns out of the mass check, and the sheet, the_spared and exam e23 all promise it. But no scene puts a pawn whose mass is read above the limit beside a blast and asserts it is thrown. At the sweep's limit of 60, the colonist's mass is never asserted to be over 60. Add that assertion, for example limit 20 with the colonist's mass read and the colonist thrown.",
+   "where": "scenes.json sc_settings_sweep (or sc_spared); tree.json the_spared"
   },
   {
    "ids": [
-    "thrown_into_pit_falls",
-    "inv_kernel"
+    "inv_too_weak_skip",
+    "the_spared"
    ],
    "return_to": 3,
-   "what": "'Nothing is thrown across a pit' is not ruled out. sc_pit_fall's control (pits filled, lands on flat ground) never asserts that the uncapped landing cell lies beyond the pit's far edge. A throw too short to cross a 1-wide pit lands in it anyway and passes. Assert the kernel's planned cell past the far rim at start, or in the filled-pit control.",
-   "where": "scenes.json sc_pit_fall (and sc_pit_enemy)"
+   "what": "The too_weak rule can pass vacuously. sc_all_fly_no_cap only says where a too_weak skip may occur (the outermost ring). It never asserts that at least one happens. If every rim stack throws a cell or more, 'a thing at the rim whose throw is under one cell is spared' is never exercised. Assert at least one too_weak skip, with that stack still on its cell, or stage a rim lane that the kernel plans at 0 cells.",
+   "where": "scenes.json sc_all_fly_no_cap; coverage_rest inv_too_weak_skip"
+  },
+  {
+   "ids": [
+    "every_harmful_blast_throws",
+    "inv_which_blasts"
+   ],
+   "return_to": 3,
+   "what": "'Never stacked' is untested. The leaf and sheet say a modded damage type our patch already tunes (fire-type, say) keeps that tuning, and the other-mods percent applies only to an untuned type. No lane runs a modded explosion of a tuned damage type with unpatchedHarmfulPercent set away from 100. At the default 100, a stacked result and an unstacked one are identical. Add a lane: a modded Flame-type explosion at percent 50 reads exactly 50 percent, not 25.",
+   "where": "scenes.json sc_blast_kinds or sc_settings_sweep; tree.json every_harmful_blast_throws"
   },
   {
    "ids": [
     "blast_breaks_pit_cover",
-    "inv_pits_receive",
-    "inv_gas_chain"
+    "inv_pits_receive"
    ],
    "return_to": 3,
-   "what": "Two pit-cover parts are untested. (1) The sheet and tree say a pawn that a gas burst shoves ONTO a cover stands on it and the cover stays whole, but sc_cover_breaks only has a raider already standing on the third cover. Stage a pawn one cell off a cover, shoved onto it, with the cover's HP and the pawn's cell read after. (2) d_q5 says a blast that REACHES a cover breaks it, but every lane lands the blast on the cover itself. Add a grenade landing beside a cover within its radius, or state in the leaf that only a blast centred on the cover counts.",
-   "where": "scenes.json sc_cover_breaks; tree.json blast_breaks_pit_cover"
-  },
-  {
-   "ids": [
-    "settings_scale_and_switch",
-    "inv_settings"
-   ],
-   "return_to": 3,
-   "what": "The settings sweep is incomplete. (1) The sheet's delegated line puts the per-kind strengths on Mod Settings (fire 50, EMP/smoke/stun/extinguish/toxic gas 0: 'all of it on Mod Settings'), but the sweep changes none of them; only a 'fire at half' switch is swept. (2) For the 'goods in the air' and 'closed guard' switches, 'each switched-off part inert' names no observable: what do goods do with the carrier off now the hop is gone, and what happens to container contents with the guard off? (3) Nothing checks that the swept list equals the fields on the page, so a new line can be missed while the leaf claims every line.",
-   "where": "scenes.json sc_settings_sweep; tree.json settings_scale_and_switch"
-  },
-  {
-   "ids": [
-    "closed_container_holds",
-    "inv_closed_guard"
-   ],
-   "return_to": 3,
-   "what": "The closed/open storage classification is checked only on hand-picked examples. Nothing checks that every storage def on the owner's list is classed by the 'does not draw its contents' rule, with a modded open shelf counted open and a modded locker closed. Also, sc_closed_containers runs on the minimal list, where the locker, fridge and deep-storage rows may be INVALID forever: name the list that loads them.",
-   "where": "scenes.json sc_closed_containers; tree.json closed_container_holds"
+   "what": "The ninth-cover lane ('a blast that reaches a cover from beside it breaks it') does not rule out the obvious alternative. Its raider stands inside the grenade's radius, so the same grenade throws him. A cover destroyed with one descent also passes if the throw lands him on a covered cell and he falls through (thrown_into_pit_falls), with no reach rule at work. sc_cover_breaks' only control (the fourth cover, no pawn) is for a grenade landing ON the cover. Add a pawn-free cover two cells from a grenade, inside its radius, and require it destroyed.",
+   "where": "scenes.json sc_cover_breaks"
   },
   {
    "ids": [
@@ -1176,36 +1150,30 @@
     "inv_gas_tags"
    ],
    "return_to": 3,
-   "what": "Gas census completeness is circular. 'The census list equals the gases carrying the tag' cannot catch a gas of ours that was never put in the census. Add a check, offline is enough, that every gas def our mods define appears in the census table, tagged or with its reason.",
-   "where": "scenes.json sc_cauldron_gas; tree.json our_gases_burn"
+   "what": "The gas census cannot see the gases it is meant to tag. The Cauldron's gas, the one he named, is not a def. It is a byte grid on RM_MapComponent_VentGas (Cauldron/Source/RM_VentGas.cs:14-20), so a DefModExtension tag cannot sit on it, and sc_cauldron_gas's 'each def loaded' cannot hold for it. Our other gases are mostly emitted from C# as vanilla GasType: TheForge's plume is BlindSmoke (RM_ForgePlumeFronts.cs:176), and Wastes, FlowWorks and TileFeatures emit ToxGas, GelatinousSlime RotStink. The offline check scans our mods' Defs only, so it never sees these sources. Rewrite the census over gas sources (Gas ThingDefs, AddGas/GasType emitters, our own gas grids), give the Cauldron's grid a tag route that does not need a def, and state how a vanilla GasType such as BlindSmoke is handled without making every smoke burst. The same fix goes into the sheet's delegated census line ('through an opt-in extension') and sc_gas_chain's 'gas whose def carries the flammable tag'.",
+   "where": "scenes.json sc_cauldron_gas, sc_gas_chain; tree.json our_gases_burn; sheet.md delegated (gas census)"
   },
   {
    "ids": [
-    "inv_which_blasts",
-    "every_harmful_blast_throws"
+    "settings_scale_and_switch",
+    "inv_settings"
    ],
    "return_to": 3,
-   "what": "Bomb's child damage types are untested. inv_which_blasts ships 'Bomb (and its children) force 1.0', and the leaf says bombs throw full, but no lane uses a DamageDef inheriting from Bomb. Add one, with its tuning source and strength read from the journal.",
-   "where": "scenes.json sc_blast_kinds"
+   "what": "The settings sweep contradicts itself. It asserts that its setting list equals the settings class's saved fields by reflection, and that any unswept field fails the scene. Its own list leaves out two saved fields: enabled and shieldsAbsorbThrow (RM_KnockbackMod.cs:97, 120). Those two are switched in sc_settings_off and sc_shield. As written, the scene fails on itself, or relies on an exemption it never states. Either sweep the two fields, or make the equality explicit: swept here, plus those two, which are swept by the named scenes.",
+   "where": "scenes.json sc_settings_sweep"
   },
   {
    "ids": [],
    "return_to": 3,
-   "what": "The flagship's geometry contradicts its expect. In a walled 7x7 interior with the impact at the centre, the east colonist one cell from the impact is thrown toward a wall 3 cells beyond it, so it stops after 2 cells with an impact hit. Yet the expect says it is carried 'about three cells' and is silent on the wall. Move the colonist or the wall, or expect the wall stop.",
-   "where": "scenes.json sc_storeroom_bomb_pit (showcase storeroom_bomb_pit)"
-  },
-  {
-   "ids": [],
-   "return_to": 3,
-   "what": "The sheet does not say what the tree tests. Scenes assert that goods fly about 1.6 times as far as a person (ratio 1.3 to 2.0, d_c_wild) and that a gas shove moves a person at most once per 2 seconds (d_c_gas_shove), but neither appears in the sheet's does lines. The delegated line also says the gas chain and pit-trap raid stay non-showcases 'by his flagship answer', which his words do not say: in fact the greedy showcase rule decides that.",
-   "where": "sheet.md does / delegated"
+   "what": "The flagship puts two colonists on the same southward ray, one and two cells south of the impact. It expects the nearer one to be 'carried about three cells straight south', which passes through the farther one's cell. pawn_hits_pawn_stops says a thrown pawn stops at another pawn in the way. Nothing in the tree or sheet says whether pawns launched by the same explosion block each other. So the expect relies on an unstated rule, and pawn_hits_pawn_stops, read as written, contradicts it. Move one colonist off the ray, or state the same-explosion rule in a leaf and give it a lane.",
+   "where": "scenes.json sc_storeroom_bomb_pit (showcase storeroom_bomb_pit); tree.json pawn_hits_pawn_stops"
   }
  ],
- "judge": "rm-coverage-judge-1794477408",
- "reasons": "Not covered: I found 9 gaps, and the Designer can fix every one at stage 3. None needs his answer. Every capability and leaf has a contract-shaped acceptance or interaction scene, and the scoped-out entries are covered through coverage_rest. The gaps are parts of those claims that no scene actually tests. The big-corpse rule is masked by the mass limit, because the journal's too_big label is chosen by body size alone (RM_MapComponent_Knockback.cs:430). Corpse mass, Bomb's child damage types, a gas shove onto a cover and a blast that reaches a cover without landing on it have no lane. The pit-crossing control is too weak to show a crossing was possible. The settings sweep leaves out the per-kind strength lines and never names what two part-switches do when off. The container and gas censuses are unchecked, the gas one circularly. The flagship has a wall-geometry contradiction. And the sheet leaves out two things the tree tests.",
- "sheet": "af8293a3788cc5e5ed3510abe522b8376496d0f8f211ad104146e4d31b04dae6",
+ "judge": "rm-coverage-judge-1794479008",
+ "reasons": "Not covered. I found 7 gaps, and the Designer can fix all of them at stage 3; none needs his answer. The scenes changed after the previous verdict (commit f5d97a0b3c). Its 9 gaps are fixed in the current text: lanes B and C in sc_spared, far-rim planned cells in the pit scenes, the eighth and ninth covers, observables for the switched-off parts plus a reflection check, the container census with its provider list, an offline gas check, a BombSuper lane, the flagship's east-wall stop, and the sheet's 1.6x, 2 s and greedy-rule wording. The new gaps are below. (1) Nothing tests that the mass limit never weighs a living pawn. (2) The too_weak rule is never shown to fire, so it passes vacuously. (3) 'Never stacked' for the other-mods percent on a tuned modded type is untested, and invisible at the default 100. (4) The ninth-cover lane cannot tell a cover broken by the blast's reach from a raider thrown onto a covered cell. (5) The gas census is Defs-only. The Cauldron's gas is a MapComponent byte grid with no def, and our other gases are vanilla GasType emitted from C#, so the tag mechanism and the completeness check both miss the gas he named. (6) The settings sweep's reflection equality contradicts its own list, which omits enabled and shieldsAbsorbThrow. (7) The flagship has two colonists on one ray, and its expect relies on an unstated rule for pawns launched by the same explosion. Every other capability and leaf has a scene that meets the contract. The scoped-out entries are covered through coverage_rest, and no leaf is accepted only by an exploration or mock scene.",
+ "sheet": "617e4a8941b04ed2a5ef44f992b87cc9ff0c1272df44293374b9adaddb620810",
  "signed": false,
- "tokens": 629449,
- "tree": "fa1bd6b1f62017952604a800d8ee9cd1c231196e101628807d33dfc5c25e843b",
+ "tokens": 644464,
+ "tree": "b06c20693a9157342a424edc1511e6a054fa5064a6e75e558f5a29afbb11162c",
  "verdict": "not_covered"
 }
