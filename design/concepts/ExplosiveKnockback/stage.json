@@ -373,10 +373,87 @@
     "ref": "run bench-ek-st3g-20261112",
     "stage": 3,
     "tokens": 3940000
+   },
+   {
+    "at": "2026-11-12T10:10:47Z",
+    "kind": "helper",
+    "ref": "a5cd357ecfa0e2d50",
+    "stage": 4,
+    "tokens": 38456
+   },
+   {
+    "at": "2026-11-12T10:11:51Z",
+    "kind": "helper",
+    "ref": "a536a9b74278bf061",
+    "stage": 4,
+    "tokens": 36636
+   },
+   {
+    "at": "2026-11-12T10:12:48Z",
+    "kind": "helper",
+    "ref": "a972b4b17db852860",
+    "stage": 4,
+    "tokens": 39958
+   },
+   {
+    "at": "2026-11-12T10:14:02Z",
+    "kind": "helper",
+    "ref": "a1f346649b9e19d6e",
+    "stage": 4,
+    "tokens": 38924
+   },
+   {
+    "at": "2026-11-12T10:15:25Z",
+    "kind": "helper",
+    "ref": "a817bb85427e3ef7a",
+    "stage": 4,
+    "tokens": 39296
+   },
+   {
+    "at": "2026-11-12T10:16:43Z",
+    "kind": "helper",
+    "ref": "a75f21812265b31e8",
+    "stage": 4,
+    "tokens": 38389
+   },
+   {
+    "at": "2026-11-12T10:17:57Z",
+    "kind": "helper",
+    "ref": "a72a69b694b3c3a40",
+    "stage": 4,
+    "tokens": 35008
+   },
+   {
+    "at": "2026-11-12T10:19:19Z",
+    "kind": "helper",
+    "ref": "a52e3d1c3bf2a60ff",
+    "stage": 4,
+    "tokens": 38911
+   },
+   {
+    "at": "2026-11-12T10:20:28Z",
+    "kind": "helper",
+    "ref": "aeb5a0482c7b186e7",
+    "stage": 4,
+    "tokens": 39014
+   },
+   {
+    "at": "2026-11-12T10:21:23Z",
+    "kind": "helper",
+    "ref": "a628d75e01e23bde4",
+    "stage": 4,
+    "tokens": 38416
+   },
+   {
+    "at": "2026-11-12T10:21:43Z",
+    "kind": "unmeasured",
+    "ref": "run bench-ek-st3h-20261112",
+    "stage": 3,
+    "tokens": 3940000
    }
   ],
   "reserve": 60000,
-  "spent": 54946934
+  "spent": 59269942
  },
  "history": [
   {
@@ -720,6 +797,30 @@
    "stage": 4,
    "what": "close",
    "why": "run bench-ek-st3g-20261112: stage 3 done"
+  },
+  {
+   "at": "2026-11-12T10:21:32Z",
+   "stage": 3,
+   "what": "invalidated",
+   "why": "inputs changed since stage 3 was accepted: sheet, tree; back to stage 3"
+  },
+  {
+   "at": "2026-11-12T10:21:32Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "55329942 of 4000000 spent; run bench-ek-st3h-20261112 goes on with 3940000 (advisory)"
+  },
+  {
+   "at": "2026-11-12T10:21:32Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run bench-ek-st3h-20261112, stage 3, budget 3940000"
+  },
+  {
+   "at": "2026-11-12T10:21:43Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run bench-ek-st3h-20261112: stage 3 done"
   }
  ],
  "item": "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
@@ -869,15 +970,21 @@
    "why": "inputs changed since stage 3 was accepted: sheet, tree, scenes; back to stage 3"
   },
   {
-   "at": "2026-11-12T10:08:12Z",
+   "at": "2026-11-12T10:21:32Z",
+   "outcome": "invalidated",
+   "stage": 3,
+   "why": "inputs changed since stage 3 was accepted: sheet, tree; back to stage 3"
+  },
+  {
+   "at": "2026-11-12T10:21:43Z",
    "inputs": {
-    "exam": "8a3a9eb3ed14ceb72633c1fa0ec7d7b0fac25e31cd9ffd54f24e66c736bc11af",
+    "exam": "c0580f5af91eb271f3665883c00e8e6e5a64a077db0dfaf9e1dbef1db7b7badd",
     "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
     "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
     "scenes": "df8a3b13469b922311320744be51ca5934ebe9bc6dba4470c1b3a89bf97426d2",
-    "sheet": "a9ddad415cb298b9150b8caa7b278fc0ed10c612d3d3c621bfd901e29cca9eea",
-    "tree": "b1ecf1403c8b721431a2f8288d08f7afb7d481bcf0202f44c0f3a877a0135d7b"
+    "sheet": "617e4a8941b04ed2a5ef44f992b87cc9ff0c1272df44293374b9adaddb620810",
+    "tree": "b06c20693a9157342a424edc1511e6a054fa5064a6e75e558f5a29afbb11162c"
    },
    "manifest": {
     "designer.md": "b79052133c514f160b33c30b53d69a947adbfdbc81304681463b1038e82fce9f",
@@ -886,9 +993,9 @@
    },
    "outcome": "done",
    "owner_uncited": [],
-   "run": "bench-ek-st3g-20261112",
+   "run": "bench-ek-st3h-20261112",
    "stage": 3,
-   "summary": "Stage 3 reworked against the fifth coverage judge's 9 gaps (rm-coverage-judge-1794477408), each settled from the record: sc_spared lanes isolate the big-corpse body-size rule (mass limit raised) and the corpse mass limit; pit_fall and pit_enemy assert the planned landing cell past the far rim; sc_cover_breaks adds a gas shove onto a cover and a grenade that only reaches a cover (d_q5_cover_breaks 'reaches'); settings sweep checks its list against the settings fields by reflection and names the goods-in-the-air and closed-guard off observables; offline storage and gas census completeness checks and the container scene's mod list; a Bomb-child (BombSuper) lane; the flagship's east colonist expects the wall stop; the sheet adds goods 1.6x and the gas shove's 2 s limit, places per-type strengths in the def patch (dl_modded_strength) and credits the greedy showcase rule."
+   "summary": "Stage 3 touch-up from exam6 readers' wording flags, each settled from the record or the shipped code: a gas clump's one-cell shove is not a throw (thrown_into_pit_falls, d_c_gas_shove); the other-mods percent applies only to damage types our patch does not tune (dl_modded_strength); people never ease back off a wall (wall_stops_dead); the mass limit weighs goods and corpses only (RM_KnockbackMath.Eligible); the 2 s shove limit added to gas_goes_clump_by_clump; the door false_pass allows impact factor 0; the sheet's cover line covers a blast landing beside a cover within its radius (d_q5_cover_breaks)."
   }
  ],
  "runner": "claude",
