@@ -91,6 +91,9 @@ def main():
     ap.add_argument("--wide-pit", type=int, default=0,
                     help="BROADEN: pre-dig an N x N pit to D3 and cut only its middle to D4: the chunk must still land on undug"
                     " ground (row DS_broaden_wide_pit)")
+    ap.add_argument("--finds-on", action="store_true",
+                    help="BROADEN: mineral finds on and the proof's force armed, so the D3->D4 cut rolls a mineral find AND the"
+                    " deep stone together: neither may swallow the other's chunk or letter (row DS_broaden_finds_on)")
     ap.add_argument("--order", action="store_true", help="order the dig job instead of leaving it to the work scan")
     ap.add_argument("--shots", default=None, help="tag: after the cut, capture the pit, the chunk and the opened letter")
     a = ap.parse_args()
@@ -127,8 +130,11 @@ def main():
     half = max(a.wide_pit // 2, 0)
     size = max(11, 2 * half + 15)
     c = (ox + size // 2, oz + size // 2)
-    rid = "DS_broaden_from_surface" if a.from_surface else ("DS_broaden_wide_pit" if a.wide_pit else "DS_superdeep_cut_turns_up_deep_stone")
+    rid = "DS_broaden_from_surface" if a.from_surface else ("DS_broaden_wide_pit" if a.wide_pit else (
+        "DS_broaden_finds_on" if a.finds_on else "DS_superdeep_cut_turns_up_deep_stone"))
     run_settings = dict(RUN_SETTINGS)
+    if a.finds_on:
+        run_settings["digFindsEnabled"] = True
     if a.from_surface:
         run_settings.pop("digFindsEnabled")  # ordinary play: mineral finds stay as the player has them
     if a.fresh_map:
@@ -210,6 +216,8 @@ def main():
                 {"why": "the square is not at its start depth before the colonist cut", "depth": d0, "drive": str(drive)[:200]})
             return 2
         des = B.call("jawa/designate_batch", action="add", designation="RM_DigCanal", rect="%d,%d,1,1" % c) or {}
+        if a.finds_on:
+            res["armed"] = report("force")  # the next cut's mineral roll is certain
         # a random colonist can be incapable of Mining (run 2 of 2026-11-11 drew one): the digger is the first who can
         probe, digger = {}, None
         for c_ in cids:
@@ -246,6 +254,12 @@ def main():
             if d == 4 or (not a.from_surface and d not in (None, d0)):
                 cut_at = t
                 break
+            if t % 5000 == 0 and not [p_ for p_ in (B.call("jawa/list_pawns", limit=400) or {}).get("pawns") or []
+                                      if p_.get("isPlayer") and not p_.get("dead")]:
+                # a fresh quicktest map can hold an ancient complex whose turrets shoot the diggers (2026-11-11 broaden run:
+                # four "Death:" letters by tick 20,000): stop at once instead of stepping out the budget over corpses
+                res["deaths"] = [x for x in letters() if x.startswith("Death")]
+                break
         res["timeline"] = timeline
         step(10)
         r1 = report("report")
@@ -255,7 +269,9 @@ def main():
         det = {"deepstone": ds, "before": r0, "after": r1, "depth": [d0, d1], "cutAt": cut_at, "newThings": new,
                "newLetters": new_letters, "designate": str(des)[:200], "timeline": timeline}
         if cut_at is None:
-            row(rid, "UNMEASURED", "SITE", dict(det, why="no colonist cut the square to D4 in %d ticks" % budget))
+            why = ("every colonist died before the cut: %s" % res["deaths"]) if res.get("deaths") is not None else \
+                "no colonist cut the square to D4 in %d ticks" % budget
+            row(rid, "UNMEASURED", "SITE", dict(det, why=why))
             return 2
         last = r1.split("| last ")[1] if "| last " in r1 else ""
         got_chunk = [v for v in new.values() if v[0] == chunk]

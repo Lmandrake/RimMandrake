@@ -1,0 +1,2 @@
+Killing a live proof script mid-run skips its finally block, so mod settings it overrode for the run stay overridden in the running game (deep_stone_live left digFindsEnabled False on Steve game A, 2026-11-11; the next finds-on broaden run silently ran with finds off, caught only by reading settings_before). After killing a proof, read back every setting it touches and restore the shipped defaults before the next run, and reconcile the bridge call it left in flight (the bridge client's --reconcile).
+item: PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS
