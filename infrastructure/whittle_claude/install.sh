@@ -40,6 +40,9 @@ if [ "$MACHINE" = Archmagi ]; then
     [ -d "$CLONE/.git" ] || { echo "no clone at $CLONE" >&2; exit 1; }
     git -C "$CLONE" remote set-url origin git@github.com:Lmandrake/RimMandrake.git
     git -C "$CLONE" fetch -q origin main
+    # never rewind an existing clone that holds unpublished commits or edits (a round may be mid-flight in it)
+    if [ -n "$(git -C "$CLONE" status --porcelain 2>/dev/null)" ] || [ "$(git -C "$CLONE" rev-list --count origin/main..HEAD 2>/dev/null || echo 0)" != 0 ]; then
+        echo "refused: $CLONE has unpublished commits or uncommitted edits; publish or clean them first" >&2; exit 5; fi
     git -C "$CLONE" checkout -q -B main origin/main
     git -C "$CLONE" branch -q --set-upstream-to=origin/main main
     [ -e "$CLONE/infrastructure/whittle_claude/loop.sh" ] || { echo "origin/main has no infrastructure/whittle_claude: publish it first" >&2; exit 1; }
@@ -62,6 +65,8 @@ ssh "${OPTS[@]}" "$STEVE" "set -e; C=$CLONE
     if [ ! -d \$C/.git ]; then git clone -q --local ~/rm/runner \$C; fi
     git -C \$C remote set-url origin git@github.com:Lmandrake/RimMandrake.git
     git -C \$C fetch -q origin main
+    if [ -n \"\$(git -C \$C status --porcelain 2>/dev/null)\" ] || [ \"\$(git -C \$C rev-list --count origin/main..HEAD 2>/dev/null || echo 0)\" != 0 ]; then
+        echo \"refused: \$C has unpublished commits or uncommitted edits\" >&2; exit 5; fi
     git -C \$C checkout -q -B main origin/main
     git -C \$C branch -q --set-upstream-to=origin/main main
     [ -e \$C/infrastructure/whittle_claude/loop.sh ] || { echo 'origin/main has no infrastructure/whittle_claude' >&2; exit 1; }

@@ -51,6 +51,23 @@ def split_segments(cmd):
     return [s.strip() for s in segs if s.strip()]
 
 
+def substitutions(seg):
+    """Bodies of $(...) and `...` in a segment: bash runs them before the command they sit in."""
+    out, i = [], 0
+    while True:
+        i = seg.find("$(", i)
+        if i < 0:
+            break
+        depth, j = 1, i + 2
+        while j < len(seg) and depth:
+            depth += {"(": 1, ")": -1}.get(seg[j], 0)
+            j += 1
+        out.append(seg[i + 2:j - 1 if depth == 0 else j])
+        i += 2
+    out += re.findall(r"`([^`]*)`", seg)
+    return [b for b in out if not re.match(r"\s*cat\s+<<", b)]   # a commit message heredoc is text
+
+
 def first_word(seg):
     for w in seg.split():
         if "=" in w and not w.startswith(("-", "/", ".")) and w.split("=", 1)[0].replace("_", "").isalnum():
@@ -62,6 +79,10 @@ def first_word(seg):
 def verdict(lane, cmd):
     segs = split_segments(cmd)
     for s in segs:
+        for body in substitutions(s):
+            v = verdict(lane, body)
+            if v.startswith("REFUSE"):
+                return v
         if first_word(s) in INERT:
             continue
         rf = RIMFLOW.search(s)

@@ -26,6 +26,10 @@ CASES = [
     ("steve", 'infrastructure/whittle_claude/steve.sh run "cd x && ./rw_game.sh up | tail"', True),
     ("steve", "FOO=1 python3 cli.py bridge take --host stevedesktop", True),
     ("steve", "python3 cli.py bridge take", False),
+    ("steve", "infrastructure/whittle_claude/steve.sh status && ./game down", False),
+    ("offline", 'rimflow note X --text "$(./game down)"', False),
+    ("archmagi", 'rimflow note X --text "$(infrastructure/whittle_claude/steve.sh down)"', False),
+    ("offline", "git commit -m \"$(cat <<'EOF'\nfix rimbridge --live\nEOF\n)\"", True),
     ("archmagi", "ssh mandrake@stevedesktop-wsl x", False),
     ("archmagi", "cd x && python3 x.py --live", True),
 ]

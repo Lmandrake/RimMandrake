@@ -22,10 +22,12 @@ G=infrastructure/stevedesktop/rw_game.sh
 ENVS="export RM_GAME_INSTANCE=a RM_GUARD_SEAT=$SEAT RIMFLOW_SEAT=$SEAT AGENT_SEAT=$SEAT RIMFLOW_BRIDGE_SEAT=$SEAT; \
 gen=\$(python3 src/RimMandrake/rimflow/host_guard.py status --json 2>/dev/null | python3 -c 'import json,sys; d=json.load(sys.stdin); print(d.get(\"generation\") or \"\") if d.get(\"state\")!=\"free\" else print(\"\")' 2>/dev/null); \
 [ -n \"\$gen\" ] && export RM_HOST_GUARD_GEN=\$gen WSLENV=\"\${WSLENV:+\$WSLENV:}RM_HOST_GUARD_GEN/u:RIMFLOW_SEAT/u:AGENT_SEAT/u:RIMFLOW_BRIDGE_SEAT/u\""
-on() { ssh "${OPTS[@]}" "$STEVE" "cd ~/$DIR && $ENVS; $1"; }
+on() { ssh "${OPTS[@]}" "$STEVE" "cd ~/$DIR || exit 97; $ENVS; $1"; }   # a failed cd must not run the payload elsewhere
+# tailed <cmd...>: run it, show the last 5 lines, return ITS status (a bare pipe into tail would report success)
+TAILED='tailed() { local o r; o=$("$@" 2>&1); r=$?; printf "%s\n" "$o" | tail -n 5; return $r; }; '
 SG=/home/mandrake/rm/scratch/BENCH/steve_games.py   # shared game rule; `tiered` records whose mod list is on a game
 dead() { echo "STEVE_UNREACHABLE: $1. Weather, not your bug: do the offline part and end the round." >&2; exit 75; }
-tier() { on "$G down; python3 src/RimMandrake/Utils/modset_builder.py --tier flowworks --apply --not-my-bridge 'Claude Whittle FWLIVE on Steve game A' 2>&1 | tail -n 5" || dead "tier failed"; python3 "$SG" tiered flowworks; }
+tier() { on "$TAILED$G down; tailed python3 src/RimMandrake/Utils/modset_builder.py --tier flowworks --apply --not-my-bridge 'Claude Whittle FWLIVE on Steve game A'" || dead "tier failed"; python3 "$SG" tiered flowworks; }
 
 ensure_clone() {
     ssh "${OPTS[@]}" "$STEVE" "[ -d ~/$DIR/.git ] || { git clone -q --local ~/rm/runner ~/$DIR && git -C ~/$DIR remote set-url origin \"\$(git -C ~/rm/runner remote get-url origin)\"; }" \
@@ -37,12 +39,16 @@ sync_tree() {
     ensure_clone
     # the mod-list backups a tier writes are tracked files the checkout would overwrite: keep Steve's copies
     on "mkdir -p ~/.wc-keep && cp -p deployed/config/ModsConfig.before-tier-*.xml ~/.wc-keep/ 2>/dev/null; \
-        git fetch -q origin main && git checkout -qf -B whittle-claude FETCH_HEAD; \
-        cp -p ~/.wc-keep/ModsConfig.before-tier-*.xml deployed/config/ 2>/dev/null; true" || dead "the checkout on Steve failed"
+        git status --porcelain -- infrastructure/state | grep -q . && git diff HEAD -- infrastructure/state > ~/.wc-keep/state-\$(date +%s).patch; \
+        git fetch -q origin main && git checkout -qf -B whittle-claude FETCH_HEAD; rc=\$?; \
+        cp -p ~/.wc-keep/ModsConfig.before-tier-*.xml deployed/config/ 2>/dev/null; exit \$rc" || dead "the checkout on Steve failed"
     { git diff --name-only origin/main -- src/RimMandrake whittle infrastructure/whittle_claude
       git ls-files -o --exclude-standard -- src/RimMandrake whittle; } \
         | grep -v 'northstar/proof_all_' | sort -u \
         | rsync -a --ignore-missing-args --files-from=- -e "ssh ${OPTS[*]}" . "$STEVE:$DIR/" || dead "the overlay rsync failed"
+    # files deleted here but present in origin/main: the checkout restored them on Steve, so remove them there too
+    git diff --name-only --diff-filter=D origin/main -- src/RimMandrake whittle infrastructure/whittle_claude \
+        | ssh "${OPTS[@]}" "$STEVE" "cd ~/$DIR && xargs -r rm -f --" || dead "removing deleted files on Steve failed"
     echo "steve: ~/$DIR at origin/main $(git rev-parse --short origin/main) plus this clone's src/ and whittle/ differences"
 }
 
@@ -57,7 +63,7 @@ case "${1:-}" in
     sync) sync_tree ;;
     deploy)
         sync_tree
-        on "$G down; python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod FlowWorks --apply 2>&1 | tail -n 3" || dead "deploy failed" ;;
+        on "$TAILED$G down; tailed python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod FlowWorks --apply" || dead "deploy failed" ;;
     tier) ensure_clone; tier ;;
     up) ensure_clone
         if python3 "$SG" needs-tier flowworks; then echo "up: another loop's tier is on game A, applying flowworks first"; tier; fi
