@@ -216,7 +216,7 @@ Ordered command list it runs (and what an agent types today, until it exists):
    core site (`live_battery`) -> aerial -> hose live -> maze -> relay -> carry -> style -> style-hose -> D1/D2 ->
    log budget Z.
 4. One save (Saves folder stat'd before/after), one load, SL1-SL4.
-5. `--extended removal` only when asked: one cold load onto `--tier flowworks`, one removal row on that save.
+5. `validation.py --removal-check NAME` only when asked: one cold load onto `--tier flowworks`, one removal row on that save.
 6. Then (not a proof) `human_review.py --build --fresh-map` for the owner, and `rimflow bridge release`.
 
 Implementation notes: the scripts each set probe defaults and pin weather/clock; hoist that into `proof_all` and pass a

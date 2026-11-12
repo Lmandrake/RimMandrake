@@ -281,8 +281,8 @@ typical checkout process but can be requested."*
   the mod is removed from a save, and any other concern that ordinary Utinni play never meets. **They never run by
   default and never block a basic checkout.** An extended item that is not covered is not a gap in the basic checkout.
 - **They run only on request.** A script runs them only behind an explicit flag (for example
-  `validation.py --removal-check NAME`), and the walk names that flag on the item. The planned modcheck verb is
-  `modcheck run <Mod> --extended`. It is not built yet, so until it exists the walk's flags are the interface.
+  `validation.py --removal-check NAME`), and the walk names that flag on the item. The walk's flags are the whole
+  interface; there is no modcheck verb for extended concerns (owner, 2026-11-12: delete that design).
 - Each item in `## extended` is written as `- E<n>. <what> -> <flag or UNBUILT>; <state>`.
 
 ### 6c. The human review map

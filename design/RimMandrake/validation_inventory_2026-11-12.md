@@ -50,7 +50,7 @@ items) · **Status** (LIVE / DORMANT / DEAD / DESIGNED-NEVER-BUILT / STOPPED = s
 | **Designer concept tree + coverage judge** ("tree", "leaves", "stage 5") | A fresh Opus that did not make the tree agrees the tree, sheet and scenes cover the concept | no game | to judge | one Opus run `UNMEASURED $` | Designer stage 5 | `rimflow\coverage_judge.py`, `rimflow\designer_stage.py` | `UNMEASURED` (no run log found) | 5 trees, 116 leaves; 2 verdicts, both "not covered" `[measured there: production_system_map_2026-11-12.md §4]` | DORMANT `[guess ~70%]` |
 | **Artisan bars** | The owner would accept the mod's quality | judged only by the owner's look | none to run; owner judges | owner time | Artisan loop | `design\RimMandrake\...` per mod (Pyrelands 22, GSS 11, Graffiti 22, FlowWorks 30 bars `[measured there: production map §4]`) | `UNMEASURED` | 4 mods | LIVE as text; nothing automatic reads it |
 | **Relentless acceptance exam** (Setter / exam / VALIDATE) | Before the build, a Setter who is not the builder writes checks that must go RED on the base sha (or green on base and red under a planted break); the supervisor checks this mechanically | no game (box) | to write (Opus Setter); mechanical validate | `UNMEASURED` | Relentless, per item | `rimflow\relentless_exam.py` | last exam written 2026-11-06 18:20 `[measured: \home\mandrake\rm\relentless\store\exams, 102 files]` | 102 items | STOPPED |
-| **Extended concerns** (`## extended`, mod-mod compatibility, removal from a save) | Only on request: what ordinary Utinni play never meets | game | none | `UNMEASURED` | on request | planned `modcheck run <Mod> --extended`; the flag does not exist `[measured: 0 matches of --extended in Utils\modcheck\cli.py]` | none | per-walk flags only | DESIGNED-NEVER-BUILT (the verb); flags per walk `UNMEASURED` |
+| **Extended concerns** (`## extended`, mod-mod compatibility, removal from a save) | Only on request: what ordinary Utinni play never meets | game | none | `UNMEASURED` | on request | the walk's own flags (e.g. `validation.py --removal-check`) | none | per-walk flags only | flags per walk `UNMEASURED`; the never-built `modcheck run --extended` design DELETED 2026-11-12 (owner pick 13) |
 | **Player-truth sweep** | A list of player-obvious truths (ladders face the wall they lean on, a pit prisoner can walk around) checked offline | no game | to write the truths | `UNMEASURED` | one pilot | `design\RimMandrake\player_truth_testing_pilot_2026-10-26.md` | 2026-10-26: 19 truths, 1 violation class filed `[measured there]` | 1 pilot | DORMANT |
 
 ### 1B. Code stage: checks on code and XML, no game
@@ -144,7 +144,7 @@ items) · **Status** (LIVE / DORMANT / DEAD / DESIGNED-NEVER-BUILT / STOPPED = s
 | proof_weak, proof_rework, proof_unchanged, blind_fail | `rimflow\relentless.py` line 239 | Marker outcomes that send work back to strengthen the proof | Relentless only; stopped |
 | built / validated / done / proven / accepted | `rimflow\model.py` states; prose | built = code published, proof owed; validated = at least one live proof passed | "validated" also names an owner-signed north star and a script result `[measured there: production map §7 point 2]` |
 | CLEAN / DIRTY / ORPHANED / NEVER ENTERED | `Utils\code_review_status.py` | Reviewed since the content last changed | Consistent |
-| Basic checkout / extended | `debug_process.md` §6b (owner, 2026-10-04) | Basic runs every time; extended only on request | The extended verb was never built |
+| Basic checkout / extended | `debug_process.md` §6b (owner, 2026-10-04) | Basic runs every time; extended only on request | Extended runs through each walk's own flags (the verb's design was deleted 2026-11-12) |
 | Lightspeed | `design\RimMandrake\lightspeed_2026-11-06.md` | The test queue plus scripts that decide every verdict, no LLM | Not a separate system: it is the name for testq used that way |
 
 ---
@@ -247,7 +247,7 @@ lightspeed_2026-11-06.md]`. Most of the remaining LLM use is judging a look, not
 - DORMANT: mutmut (last record 2026-10-28), generic north-star driver (last results 2026-10-19), L1 expectations
     manifests (4 items), Test Pilot (last sitting 2026-11-05), findings judge (timer disabled, last run 2026-11-06,
     although CLAUDE.md describes it as running), player-truth sweep, V&V shipped matrix, frame judge, human review map.
-- DESIGNED-NEVER-BUILT: `modcheck run --extended`; the shared in-game C# scene runner (fast-testing step 8); the
+- DESIGNED-NEVER-BUILT: the shared in-game C# scene runner (fast-testing step 8); the
     bridge validation observatory (`design\RimMandrake\bridge_validation_observatory.md`, "Nothing is built").
 - **Stale text that disagrees with the code:** the levels addendum and `testing_policy_2026-10-28.md` §2.10 still
     name FOUNDRY as owner of acceptance and FlowWorks; FOUNDRY was retired 2026-11-02. I did not edit them (this
