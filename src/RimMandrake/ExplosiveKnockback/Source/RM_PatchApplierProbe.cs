@@ -1,3 +1,6 @@
+#if RM_PROOFS
+// Proof build only (RM_PROOFS, csproj property RmProofs=true): the release DLL carries no proof type or
+// bridge entry point. Build: python3 src/RimMandrake/Utils/winbuild.py ExplosiveKnockback -- -p:RmProofs=true
 using System.Reflection;
 using HarmonyLib;
 using Verse;
@@ -67,3 +70,4 @@ namespace RimMandrake.ExplosiveKnockback.ForcedMissProbe
         }
     }
 }
+#endif

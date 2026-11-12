@@ -138,8 +138,10 @@ namespace RimMandrake.ExplosiveKnockback
             return closed;
         }
 
+#if RM_PROOFS
         /// <summary>Forget the cached answers (a proof hook tagging a def at runtime).</summary>
         public static void ForgetClosed() => closedByDef.Clear();
+#endif
 
         private static bool AnyHides(IList list)
         {
@@ -173,6 +175,7 @@ namespace RimMandrake.ExplosiveKnockback
             return isSuperdeep(ex, c);
         }
 
+#if RM_PROOFS
         /// <summary>Fill a dug cell back to the surface (proof scenes only: a pit an earlier scene dug at a reused origin
         /// otherwise catches the next scene's throw — live 2026-10-07, thump cannon "2 cells" was a stop in a leftover pit).
         /// True when the cell ends at the surface or FlowWorks is absent.</summary>
@@ -193,6 +196,7 @@ namespace RimMandrake.ExplosiveKnockback
             return false;
         }
 
+#endif
         /// <summary>Owner Q6: a carried hose end drops where the carrier stood. True if one was dropped.</summary>
         public static bool DropCarriedHose(Pawn p)
         {

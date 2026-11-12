@@ -17,6 +17,12 @@ Sources: `design/RimMandrake/explosive_knockback_design_2026-10-06.md` (§3, §5
 - Light items are thrown by the same kernel (lighter flies farther, stack intact); an item over 75 kg stays (owner Q4). → light_things.items_thrown_by_mass_heavy_stays
 - An item on an open shelf scatters; an item in a closed container stays. → light_things.item_on_an_open_shelf_scatters
 - A pawn the blast kills is thrown as a corpse. → light_things.pawn_killed_by_blast_thrown_as_corpse
+- Thrown goods truly fly (RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD): mid-flight the stack is inside a carrier, count intact. → flying_goods.stack_inside_carrier_mid_flight
+- A flown stack lands on the cell the instant move would choose, count intact, no carrier left. → flying_goods.lands_on_the_instant_cell_count_intact
+- A flight cut short by a wall (rebound off) lands beside it and takes today's wall impact there. → flying_goods.wall_cut_short_applies_impact
+- With rebound on, a cut-short flight bounces back with about 70% of the cells it had left; the impact applies at the bounce. → flying_goods.rebound_off_wall_at_keep_percent
+- flyingGoods off is today's instant move (no carrier). → flying_goods.off_is_the_instant_move
+- A save taken mid-flight reloads with the carrier and its stack, which then lands intact. → not_driven.save_mid_flight_keeps_the_stack (proof/goods_flight_saveload.py)
 - A colonist thrown into an open pit lands on its floor and FlowWorks records exactly one descent. → pits.colonist_thrown_into_open_pit_falls
 - An enemy thrown into an open pit lands on its floor and falls (one descent). → pits.enemy_thrown_into_open_pit_falls
 - Nothing is thrown across a pit: a throw stops IN the first open pit cell. → pits.throw_stops_inside_a_1_wide_pit

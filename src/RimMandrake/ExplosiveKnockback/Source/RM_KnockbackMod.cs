@@ -39,6 +39,7 @@ namespace RimMandrake.ExplosiveKnockback
     public static class RM_KnockbackDefOf
     {
         public static ThingDef RM_PawnFlyer_Knockback;
+        public static ThingDef RM_ThingFlyer_Knockback;
 
         static RM_KnockbackDefOf()
         {
@@ -68,6 +69,14 @@ namespace RimMandrake.ExplosiveKnockback
         /// <summary>Same ruling, "worse damage if they then hit a solid object": a thrown stack stopped by a wall, door or
         /// the map edge takes this much Blunt damage per cell of throw it had left. 0 = off.</summary>
         public static float goodsWallImpactPerCell = 10f;
+        /// <summary>RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD (owner sitting 2026-11-12 answer 5, "C, wild"): thrown goods fly an
+        /// arc in a carrier (RM_ThingFlyer_Knockback), spinning, and rebound off walls. Off = the old instant move.</summary>
+        public static bool flyingGoods = true;
+        public static float goodsFlightSpeed = 14f;        // cells per second
+        public static float goodsArcHeight = 1.2f;         // cells the arc's top is drawn above the ground line
+        public static float goodsSpinDegPerTick = 18f;     // 18 = three turns a second
+        public static bool goodsRebound = true;
+        public static float goodsReboundKeepPercent = 70f; // of the cells left at the hit; rounded down, so a chain ends
         /// <summary>Owner ruling 2026-11-10/11 (RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED): open storage (shelves, racks)
         /// gives goods no cover; only a closed container keeps them. On = the old rule, every storage building keeps its goods.</summary>
         public static bool openStorageProtectsGoods = false;
@@ -127,6 +136,12 @@ namespace RimMandrake.ExplosiveKnockback
             Scribe_Values.Look(ref lightMassLimit, "lightMassLimit", 75f);
             Scribe_Values.Look(ref thrownGoodsBlastDamagePercent, "thrownGoodsBlastDamagePercent", 25f);
             Scribe_Values.Look(ref goodsWallImpactPerCell, "goodsWallImpactPerCell", 10f);
+            Scribe_Values.Look(ref flyingGoods, "flyingGoods", true);
+            Scribe_Values.Look(ref goodsFlightSpeed, "goodsFlightSpeed", 14f);
+            Scribe_Values.Look(ref goodsArcHeight, "goodsArcHeight", 1.2f);
+            Scribe_Values.Look(ref goodsSpinDegPerTick, "goodsSpinDegPerTick", 18f);
+            Scribe_Values.Look(ref goodsRebound, "goodsRebound", true);
+            Scribe_Values.Look(ref goodsReboundKeepPercent, "goodsReboundKeepPercent", 70f);
             Scribe_Values.Look(ref openStorageProtectsGoods, "openStorageProtectsGoods", false);
             Scribe_Values.Look(ref shoveClosedContainers, "shoveClosedContainers", true);
             Scribe_Values.Look(ref sandbagsStopThrow, "sandbagsStopThrow", false);
@@ -200,6 +215,23 @@ namespace RimMandrake.ExplosiveKnockback
                     "Off (the default): goods on open storage fly like goods on the floor; only closed containers (storage that hides its contents, e.g. Deep Storage lockers) keep them. On: every storage building keeps its goods.");
                 list.CheckboxLabeled("Blasts shove closed containers", ref shoveClosedContainers,
                     "On (the default): a small closed container hit by a blast slides one cell away when the cell behind it is free, else jolts in place. Its contents stay inside.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Flying goods", RimMandrake.Shared.SettingScope.Now, new[] { "flyingGoods", "goodsFlightSpeed", "goodsArcHeight", "goodsSpinDegPerTick", "goodsRebound", "goodsReboundKeepPercent" }))
+            {
+                list.CheckboxLabeled("Thrown goods fly", ref flyingGoods,
+                    "On (the default): a thrown stack flies an arc, spinning, and lands where the throw ends. Off: it moves there instantly.");
+                list.Label("Flight speed: " + goodsFlightSpeed.ToString("0") + " cells a second");
+                goodsFlightSpeed = Mathf.Round(list.Slider(goodsFlightSpeed, 4f, 40f));
+                list.Label("Arc height: " + goodsArcHeight.ToString("0.0") + " cells");
+                goodsArcHeight = Mathf.Round(list.Slider(goodsArcHeight, 0f, 3f) * 10f) / 10f;
+                list.Label("Spin: " + goodsSpinDegPerTick.ToString("0") + " degrees a tick  (0 = no spin)");
+                goodsSpinDegPerTick = Mathf.Round(list.Slider(goodsSpinDegPerTick, 0f, 60f));
+                list.CheckboxLabeled("Thrown goods rebound off walls", ref goodsRebound,
+                    "On (the default): a flying stack that hits a wall, door or the map edge bounces off and flies on with part of the throw it had left.");
+                list.Label("Each rebound keeps " + goodsReboundKeepPercent.ToString("0") + "% of the throw left");
+                goodsReboundKeepPercent = Mathf.Round(list.Slider(goodsReboundKeepPercent, 0f, 100f));
                 list.GapLine();
             }
 
@@ -336,6 +368,12 @@ namespace RimMandrake.ExplosiveKnockback
             RimMandrakeExplosiveKnockbackSettings.lightMassLimit = 75f;
             RimMandrakeExplosiveKnockbackSettings.thrownGoodsBlastDamagePercent = 25f;
             RimMandrakeExplosiveKnockbackSettings.goodsWallImpactPerCell = 10f;
+            RimMandrakeExplosiveKnockbackSettings.flyingGoods = true;
+            RimMandrakeExplosiveKnockbackSettings.goodsFlightSpeed = 14f;
+            RimMandrakeExplosiveKnockbackSettings.goodsArcHeight = 1.2f;
+            RimMandrakeExplosiveKnockbackSettings.goodsSpinDegPerTick = 18f;
+            RimMandrakeExplosiveKnockbackSettings.goodsRebound = true;
+            RimMandrakeExplosiveKnockbackSettings.goodsReboundKeepPercent = 70f;
             RimMandrakeExplosiveKnockbackSettings.openStorageProtectsGoods = false;
             RimMandrakeExplosiveKnockbackSettings.shoveClosedContainers = true;
             RimMandrakeExplosiveKnockbackSettings.sandbagsStopThrow = false;

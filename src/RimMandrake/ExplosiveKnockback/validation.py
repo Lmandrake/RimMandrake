@@ -18,6 +18,8 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 PROOF = "RimMandrake.ExplosiveKnockback.RM_KnockbackProof"
+sys.path.insert(0, HERE)
+from proof_build_gate import MESSAGE as PROOF_BUILD_MESSAGE, is_release_answer  # noqa: E402
 WALK = os.path.join(REPO, "design", "validation_walks", "RimMandrake", "ExplosiveKnockback.md")
 _FIELD = re.compile(r"public\s+static\s+(bool|int|float)\s+(\w+)\s*=\s*([^;]+);")
 
@@ -48,6 +50,12 @@ SCENES = [
     ("body_override", "config", "body_override_throws_a_3_body_global_does_not", None),
     ("immunity_window", "guards", "second_blast_in_recovery_window_is_immune", "recoveryWindowTicks"),
     ("shield_counter", "guards", "shield_belt_absorbs_throw_and_drains", "shieldsAbsorbThrow"),
+    # 2026-11-12 RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD: thrown goods fly in a carrier (proof build only)
+    ("goods_fly_midair", "flying_goods", "stack_inside_carrier_mid_flight", "flyingGoods"),
+    ("goods_fly_lands", "flying_goods", "lands_on_the_instant_cell_count_intact", "goodsFlightSpeed"),
+    ("goods_fly_wall", "flying_goods", "wall_cut_short_applies_impact", "goodsRebound"),
+    ("goods_fly_rebound", "flying_goods", "rebound_off_wall_at_keep_percent", "goodsReboundKeepPercent"),
+    ("goods_fly_off", "flying_goods", "off_is_the_instant_move", "flyingGoods"),
 ]
 NOT_DRIVEN = [
     ("hose_carry_drops_at_takeoff", "needs a laid hose reel and a colonist mid CarryHoseEnd job; DropCarriedHose is wired "
@@ -56,6 +64,8 @@ NOT_DRIVEN = [
     ("raid_lord_resumes_duty", "a real assault raid hit by a mortar: needs a raid site"),
     ("vef_active_same_results", "VEF patches PawnFlyer.MakeFlyer/RecomputePosition; needs a VEF tier (ship gate)"),
     ("barrage_perf_ms_per_tick", "performance has no Boolean check (debug_process §4); counts are in the caps chain"),
+    ("save_mid_flight_keeps_the_stack", "a save taken with a goods carrier in the air, then a reload: driven by "
+     "proof/goods_flight_saveload.py (needs bridge save/load), not a scene"),
     ("immunity_survives_reload", "the landing/stun stamps are Scribed on the map component; needs a save/load half"),
 ]
 
@@ -203,6 +213,8 @@ def _build_suite():
         r = t.bridge_call("jawa/static_call", type=PROOF, method=method, args=arg)
         if isinstance(r, dict):
             if r.get("success") is False:
+                if is_release_answer(r):                 # the release DLL has no proof type: say so, never a bare FAIL
+                    raise ExpectationFailed(PROOF_BUILD_MESSAGE)
                 raise ExpectationFailed("static_call %s failed: %r" % (method, r))
             return str(r.get("result", r.get("value", "")))
         return str(r)

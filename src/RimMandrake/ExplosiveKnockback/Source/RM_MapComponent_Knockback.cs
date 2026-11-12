@@ -257,12 +257,15 @@ namespace RimMandrake.ExplosiveKnockback
                 "shieldAbsorbed", r.shield != null);
         }
 
+#if RM_PROOFS
         /// <summary>Proof scenes only (RM_KnockbackProof): actions to run at a given game tick on this map, so a scene can
         /// fire a second blast mid-run. Empty in play; one Count check per tick.</summary>
         internal static readonly List<KeyValuePair<int, Action>> ProofSchedule = new List<KeyValuePair<int, Action>>();
 
+#endif
         public override void MapComponentTick()
         {
+#if RM_PROOFS
             if (ProofSchedule.Count > 0)
             {
                 int now = Find.TickManager.TicksGame;
@@ -283,6 +286,7 @@ namespace RimMandrake.ExplosiveKnockback
                     }
                 }
             }
+#endif
             if (queue.Count == 0)
             {
                 return;
@@ -397,21 +401,27 @@ namespace RimMandrake.ExplosiveKnockback
         /// the map edge takes Blunt damage per cell of throw it had left.</summary>
         private void GoodsWallImpact(KnockbackRequest r, Thing t, KbResult res, int cells)
         {
+            GoodsImpact(t, r.explosionId, res.stop, cells - res.cellsTravelled, r.config?.impactFactor ?? 1f, r.instigator, "instant");
+        }
+
+        /// <summary>The goods wall impact itself, shared by the instant move and a flying stack (RM_ThingFlyer_Knockback),
+        /// which takes it where its flight is cut short: on landing, or in flight at a rebound. `at` is journal only.</summary>
+        internal static void GoodsImpact(Thing t, int explosionId, KbStop stop, int left, float impactFactor, Thing instigator, string at)
+        {
             float per = RimMandrakeExplosiveKnockbackSettings.goodsWallImpactPerCell;
-            int left = cells - res.cellsTravelled;
             if (per <= 0f || left <= 0 || t == null || t.Destroyed
-                || !(res.stop == KbStop.Wall || res.stop == KbStop.Door || res.stop == KbStop.OutOfBounds))
+                || !(stop == KbStop.Wall || stop == KbStop.Door || stop == KbStop.OutOfBounds))
             {
                 return;
             }
-            float dmg = per * left * (r.config?.impactFactor ?? 1f);
+            float dmg = per * left * impactFactor;
             if (dmg <= 0f)
             {
                 return;
             }
-            t.TakeDamage(new DamageInfo(DamageDefOf.Blunt, dmg, 0f, -1f, r.instigator));
-            RM_KnockbackJournal.Add("goods_impact", r.explosionId, t, "stop", res.stop.ToString(), "left", left, "damage", dmg,
-                "destroyed", t.Destroyed);
+            t.TakeDamage(new DamageInfo(DamageDefOf.Blunt, dmg, 0f, -1f, instigator));
+            RM_KnockbackJournal.Add("goods_impact", explosionId, t, "stop", stop.ToString(), "left", left, "damage", dmg,
+                "destroyed", t.Destroyed, "at", at);
         }
 
         /// <summary>One throw. True when something actually moved.</summary>
@@ -538,6 +548,25 @@ namespace RimMandrake.ExplosiveKnockback
                 return false;
             }
             int count = t.stackCount;
+            if (RimMandrakeExplosiveKnockbackSettings.flyingGoods)
+            {
+                // RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD: the stack flies to the very cell the instant move would choose; the
+                // carrier lands it with the same GenPlace calls and takes the wall impact where the flight is cut short
+                RM_ThingFlyer_Knockback f = RM_ThingFlyer_Knockback.Launch(t, map, start, res, dx, dz, kind, mass, r.explosionId,
+                    r.config?.impactFactor ?? 1f, r.instigator);
+                if (f != null)
+                {
+                    RM_KnockbackJournal.ItemMoves++;
+                    RM_KnockbackJournal.Add("item_move", r.explosionId, t, "kind", kind.ToString(), "from", start, "to", dest,
+                        "planned", cells, "cells", res.cellsTravelled, "stop", res.stop.ToString(), "mass", mass, "count", count,
+                        "flying", true, "flyer", f.thingIDNumber, "flightTicks", f.TicksLeft);
+                    return true;
+                }
+                if (!t.Spawned)
+                {
+                    return false;
+                }
+            }
             t.DeSpawn();
             if (!GenPlace.TryPlaceThing(t, dest, map, ThingPlaceMode.Direct, out Thing placed)
                 && !GenPlace.TryPlaceThing(t, dest, map, ThingPlaceMode.Near, out placed))
@@ -547,7 +576,7 @@ namespace RimMandrake.ExplosiveKnockback
             FleckMaker.ThrowDustPuff(dest, map, 1f);
             RM_KnockbackJournal.ItemMoves++;
             RM_KnockbackJournal.Add("item_move", r.explosionId, t, "kind", kind.ToString(), "from", start, "to", placed?.Position ?? dest,
-                "planned", cells, "cells", res.cellsTravelled, "stop", res.stop.ToString(), "mass", mass, "count", count);
+                "planned", cells, "cells", res.cellsTravelled, "stop", res.stop.ToString(), "mass", mass, "count", count, "flying", false);
             GoodsWallImpact(r, placed ?? t, res, cells);
             return true;
         }

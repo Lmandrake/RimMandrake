@@ -381,6 +381,44 @@ internal static class Program
             Check("K-16 zero debit setting", KbShield.EnergyAfter(1.1f, 4f, 0f, 0.033f) == 1.1f);
         }
 
+        // K-17 flying goods rebound (RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD): the block cell, the reflection, the 70% rule
+        {
+            var kg = new KbSettings();
+            var g1 = new Grid(12, 5).Set(6, 2, KbCell.Wall);
+            KbResult w = RM_KnockbackMath.Resolve(g1, 2, 2, 1f, 0f, 6, KbKind.Item, 10f, kg);
+            Check("K-17 wall block cell recorded", w.hasBlock && w.blockX == 6 && w.blockZ == 2 && w.blockFromX == 5
+                && w.destX == 5 && w.cellsTravelled == 3, "block " + w.blockX + "," + w.blockZ + " dest " + w.destX);
+            Check("K-17 straight hit flips x", RM_KnockbackMath.Reflect(g1, w, 1f, 0.2f, out float rx, out float rz)
+                && rx == -1f && rz == 0.2f, rx + "," + rz);
+            KbResult far = RM_KnockbackMath.Resolve(g1, 2, 2, 0f, 1f, 2, KbKind.Item, 10f, kg);
+            Check("K-17 no solid hit, no block, no reflect", !far.hasBlock && far.stop == KbStop.Distance
+                && !RM_KnockbackMath.Reflect(g1, far, 0f, 1f, out _, out _));
+            var g2 = new Grid(10, 10);
+            for (int x = 0; x < 10; x++) g2.Set(x, 6, KbCell.Wall);
+            KbResult d = RM_KnockbackMath.Resolve(g2, 2, 2, 1f, 1f, 6, KbKind.Item, 10f, kg);
+            RM_KnockbackMath.Reflect(g2, d, 1f, 1f, out float dx2, out float dz2);
+            Check("K-17 diagonal into a long wall flips z only", d.hasBlock && dx2 == 1f && dz2 == -1f,
+                "block " + d.blockX + "," + d.blockZ + " -> " + dx2 + "," + dz2);
+            var g3 = new Grid(10, 10).Set(5, 5, KbCell.Wall);
+            KbResult c = RM_KnockbackMath.Resolve(g3, 2, 2, 1f, 1f, 6, KbKind.Item, 10f, kg);
+            RM_KnockbackMath.Reflect(g3, c, 1f, 1f, out float cx, out float cz);
+            Check("K-17 bare corner flips both", c.hasBlock && cx == -1f && cz == -1f, cx + "," + cz);
+            KbResult e = RM_KnockbackMath.Resolve(new Grid(6, 3), 2, 1, 1f, 0f, 6, KbKind.Item, 10f, kg);
+            Check("K-17 map edge is a block", e.stop == KbStop.OutOfBounds && e.hasBlock && e.blockX == 6);
+            Check("K-17 rebound 70% rounds down", RM_KnockbackMath.ReboundCells(5, 70f) == 3
+                && RM_KnockbackMath.ReboundCells(3, 70f) == 2 && RM_KnockbackMath.ReboundCells(1, 70f) == 0
+                && RM_KnockbackMath.ReboundCells(10, 70f) == 7);
+            Check("K-17 rebound 0% / 100% / none left", RM_KnockbackMath.ReboundCells(5, 0f) == 0
+                && RM_KnockbackMath.ReboundCells(5, 100f) == 5 && RM_KnockbackMath.ReboundCells(0, 70f) == 0
+                && RM_KnockbackMath.ReboundCells(5, 150f) == 5);
+            // a chain always ends: 8 cells at 70% -> 5, 3, 2, 1, 0
+            int n = 8, legs = 0;
+            while (n > 0 && legs < 50) { n = RM_KnockbackMath.ReboundCells(n, 70f); legs++; }
+            Check("K-17 chain is finite", n == 0 && legs == 5, "legs " + legs);
+            KbResult pit = RM_KnockbackMath.Resolve(new Grid(12, 3).Set(4, 1, KbCell.Pit), 2, 1, 1f, 0f, 6, KbKind.Item, 10f, kg);
+            Check("K-17 a pit landing is no block", pit.stop == KbStop.Pit && !pit.hasBlock);
+        }
+
         Console.WriteLine("explosive knockback kernel: " + pass + "/" + (pass + fail) + " passed");
         return fail == 0 ? 0 : 1;
     }

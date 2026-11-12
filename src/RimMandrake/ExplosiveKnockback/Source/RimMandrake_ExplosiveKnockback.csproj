@@ -26,6 +26,21 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
 
+  <!--
+    Proof code (RM_KnockbackProof, RM_PatchApplierProbe, MapComponent.ProofSchedule, Compat.ForgetClosed/FillToSurface)
+    compiles only under RM_PROOFS, so the release DLL (the one committed and deployed by default) has no proof type or
+    bridge entry point. Opt IN, never out, as JawaBench does with JAWA_GM_TOOLS:
+      python3 src/RimMandrake/Utils/winbuild.py ExplosiveKnockback, then a double dash, then -p:RmProofs=true
+    That overwrites Assemblies/ in the clone: never commit it (selftest_explosiveknockback_proofgate.py refuses a
+    committed DLL that carries a proof type); rebuild without the flag after the live proof.
+  -->
+  <PropertyGroup>
+    <RmProofs Condition="'$(RmProofs)' == ''">false</RmProofs>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(RmProofs)' == 'true'">
+    <DefineConstants>$(DefineConstants);RM_PROOFS</DefineConstants>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(HarmonyDll)' == ''">
     <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
   </PropertyGroup>
@@ -43,6 +58,7 @@
     <Compile Include="RM_KnockbackCompat.cs" />
     <Compile Include="RM_Patch_DamageWorker_ExplosionKnockback.cs" />
     <Compile Include="RM_MapComponent_Knockback.cs" />
+    <Compile Include="RM_ThingFlyer_Knockback.cs" />
     <Compile Include="RM_PawnFlyerPatches.cs" />
     <Compile Include="RM_KnockbackProof.cs" />
     <Compile Include="RM_PatchApplierProbe.cs" />

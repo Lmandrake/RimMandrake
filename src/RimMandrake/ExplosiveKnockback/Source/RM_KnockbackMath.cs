@@ -155,6 +155,10 @@ namespace RimMandrake.ExplosiveKnockback
         public bool hitDoor;
         public int doorX, doorZ;
         public KbStop stop;
+        // the solid cell (wall / door / map edge) the throw broke on, and the cell it was in when it did: what a
+        // rebound reflects off (flying goods, RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD). hasBlock false = no solid hit.
+        public bool hasBlock;
+        public int blockX, blockZ, blockFromX, blockFromZ;
 
         public bool Moved => cellsTravelled > 0;
     }
@@ -332,22 +336,26 @@ namespace RimMandrake.ExplosiveKnockback
                     if (Solid(grid.At(x, pz)) || Solid(grid.At(px, z)))
                     {
                         stop = KbStop.Wall;
+                        SetBlock(ref r, x, z, px, pz);
                         break;
                     }
                 }
                 if (c == KbCell.OutOfBounds)
                 {
                     stop = KbStop.OutOfBounds;
+                    SetBlock(ref r, x, z, px, pz);
                     break;
                 }
                 if (c == KbCell.Wall)
                 {
                     stop = KbStop.Wall;
+                    SetBlock(ref r, x, z, px, pz);
                     break;
                 }
                 if (c == KbCell.Door)
                 {
                     stop = KbStop.Door;
+                    SetBlock(ref r, x, z, px, pz);
                     r.hitDoor = true;
                     r.doorX = x;
                     r.doorZ = z;
@@ -361,6 +369,7 @@ namespace RimMandrake.ExplosiveKnockback
                 if (c == KbCell.Pit && !s.intoPits)
                 {
                     stop = KbStop.Wall; // "throw into pits" off: an open pit is a wall for the path
+                    SetBlock(ref r, x, z, px, pz);
                     break;
                 }
                 if (c == KbCell.Partial && pawn && s.sandbagsStop)
@@ -418,6 +427,65 @@ namespace RimMandrake.ExplosiveKnockback
                 }
             }
             return r;
+        }
+
+        private static void SetBlock(ref KbResult r, int bx, int bz, int fx, int fz)
+        {
+            r.hasBlock = true;
+            r.blockX = bx;
+            r.blockZ = bz;
+            r.blockFromX = fx;
+            r.blockFromZ = fz;
+        }
+
+        /// <summary>A rebound's new direction (flying goods): reflect (dx,dz) off the solid cell the throw broke on.
+        /// A straight hit flips the axis it struck along; a diagonal hit flips the axis whose orthogonal neighbour is
+        /// solid (both if both, or a bare corner). Returns false when there was no solid hit to reflect off.</summary>
+        public static bool Reflect(IKbGrid grid, KbResult res, float dx, float dz, out float rx, out float rz)
+        {
+            rx = dx;
+            rz = dz;
+            if (!res.hasBlock)
+            {
+                return false;
+            }
+            int sx = res.blockX - res.blockFromX, sz = res.blockZ - res.blockFromZ;
+            if (sx != 0 && sz != 0)
+            {
+                bool sideX = Solid(grid.At(res.blockX, res.blockFromZ));
+                bool sideZ = Solid(grid.At(res.blockFromX, res.blockZ));
+                bool flipX = sideX || !sideZ;
+                bool flipZ = sideZ || !sideX;
+                if (flipX)
+                {
+                    rx = -dx;
+                }
+                if (flipZ)
+                {
+                    rz = -dz;
+                }
+            }
+            else if (sx != 0)
+            {
+                rx = -dx;
+            }
+            else if (sz != 0)
+            {
+                rz = -dz;
+            }
+            return true;
+        }
+
+        /// <summary>Cells a rebound still flies: `keepPercent` of the cells left when the throw hit, rounded DOWN so a
+        /// throw always runs out (1 cell left at 70% = 0, no rebound).</summary>
+        public static int ReboundCells(int cellsLeft, float keepPercent)
+        {
+            if (cellsLeft <= 0 || keepPercent <= 0f)
+            {
+                return 0;
+            }
+            float k = keepPercent > 100f ? 100f : keepPercent;
+            return Math.Min(cellsLeft, (int)Math.Floor(cellsLeft * k / 100f + 1e-4f));
         }
 
         /// <summary>Per-explosion cap (§4.4): pawns first, then corpses, then items nearest the centre.

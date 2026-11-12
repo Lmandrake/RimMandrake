@@ -1,3 +1,6 @@
+#if RM_PROOFS
+// Proof build only (RM_PROOFS, csproj property RmProofs=true): the release DLL carries no proof type or
+// bridge entry point. Build: python3 src/RimMandrake/Utils/winbuild.py ExplosiveKnockback -- -p:RmProofs=true
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +42,8 @@ namespace RimMandrake.ExplosiveKnockback
             "caps", "tick_cap", "settings_off", "emp_no_throw",
             // 2026-10-06 finish pass (KINETIC_BLAST_WEAPONS_1): per-blast config, stun-lock guard, shields. NOT YET RUN LIVE.
             "lookup_projectile", "lookup_zero_wins", "impact_factor", "body_override", "immunity_window", "shield_counter",
+            // 2026-11-12 RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD: thrown goods fly in a carrier. NOT YET RUN LIVE.
+            "goods_fly_midair", "goods_fly_lands", "goods_fly_wall", "goods_fly_rebound", "goods_fly_off",
         };
 
         private static Map Map => Find.CurrentMap;
@@ -343,6 +348,97 @@ namespace RimMandrake.ExplosiveKnockback
             }
             cells = Cheb(t.Position, s.starts[key]);
             return key + " " + s.starts[key].x + "," + s.starts[key].z + "->" + t.Position.x + "," + t.Position.z + " (" + cells + " cells)";
+        }
+
+        // ── flying goods (RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD) ─────────
+
+        /// <summary>The knockback carrier holding t on this map, or null.</summary>
+        private static RM_ThingFlyer_Knockback CarrierOf(Map map, Thing t)
+        {
+            foreach (Thing f in map.listerThings.ThingsOfDef(RM_KnockbackDefOf.RM_ThingFlyer_Knockback))
+            {
+                if (f is RM_ThingFlyer_Knockback k && k.Inner == t)
+                {
+                    return k;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>Looks for s.things[key] inside a carrier on each tick stagedTick+from..to; the first sighting writes
+        /// key_airTick, key_airCount, key_airDestX/Z, key_airTicksLeft. A stale action after a reload sees another map
+        /// and does nothing.</summary>
+        private static void SampleFlight(Scene s, string key, int from, int to)
+        {
+            Map m0 = Map;
+            Thing t = s.things[key];
+            for (int d = from; d <= to; d++)
+            {
+                int dd = d;
+                RM_MapComponent_Knockback.ProofSchedule.Add(new KeyValuePair<int, Action>(s.stagedTick + d, () =>
+                {
+                    if (m0 != Find.CurrentMap || s.numbers.ContainsKey(key + "_airTick"))
+                    {
+                        return;
+                    }
+                    RM_ThingFlyer_Knockback c = CarrierOf(m0, t);
+                    if (c != null && c.Spawned && !t.Spawned)
+                    {
+                        s.numbers[key + "_airTick"] = dd;
+                        s.numbers[key + "_airCount"] = t.stackCount;
+                        s.numbers[key + "_airDestX"] = c.DestCell.x;
+                        s.numbers[key + "_airDestZ"] = c.DestCell.z;
+                        s.numbers[key + "_airTicksLeft"] = c.TicksLeft;
+                    }
+                }));
+            }
+        }
+
+        /// <summary>Bridge read, also after a reload (no scene state): every carrier on the current map as
+        /// "id inner=def xN innerId=n at=x,z dest=x,z left=ticks bounces=n", one per line; "NONE" when there is none.</summary>
+        public static string Flights(string _)
+        {
+            if (Map == null)
+            {
+                return "NONE no map";
+            }
+            var l = new List<string>();
+            foreach (Thing f in Map.listerThings.ThingsOfDef(RM_KnockbackDefOf.RM_ThingFlyer_Knockback))
+            {
+                if (f is RM_ThingFlyer_Knockback k)
+                {
+                    Thing i = k.Inner;
+                    l.Add(k.ThingID + " inner=" + (i?.def.defName ?? "none") + " x" + (i?.stackCount ?? 0) + " innerId=" + (i?.ThingID ?? "none")
+                          + " at=" + k.Position.x + "," + k.Position.z + " dest=" + k.DestCell.x + "," + k.DestCell.z
+                          + " left=" + k.TicksLeft + " bounces=" + k.Bounces);
+                }
+            }
+            return l.Count == 0 ? "NONE" : string.Join("\n", l);
+        }
+
+        /// <summary>Restore flyingGoods, goodsFlightSpeed and goodsRebound when the scene ends (the caller assigns it to s.restore before any poke).</summary>
+        private static Action FlightRestore(Scene s)
+        {
+            bool fg = RimMandrakeExplosiveKnockbackSettings.flyingGoods;
+            float sp = RimMandrakeExplosiveKnockbackSettings.goodsFlightSpeed;
+            bool rb = RimMandrakeExplosiveKnockbackSettings.goodsRebound;
+            Action prev = s.restore;
+            return () =>
+            {
+                RimMandrakeExplosiveKnockbackSettings.flyingGoods = fg;
+                RimMandrakeExplosiveKnockbackSettings.goodsFlightSpeed = sp;
+                RimMandrakeExplosiveKnockbackSettings.goodsRebound = rb;
+                prev?.Invoke();
+            };
+        }
+
+        /// <summary>The cells the kernel throws s.things[key] from a blast at s.o of radius r (0 when too heavy).</summary>
+        private static int WantCells(Scene s, string key, float r)
+        {
+            KbSettings k = RimMandrakeExplosiveKnockbackSettings.Kernel();
+            Thing t = s.things[key];
+            float mass = t.GetStatValue(StatDefOf.Mass) * t.stackCount;
+            return mass > k.lightMassLimit ? 0 : RM_KnockbackMath.ThrowCells((s.starts[key] - s.o).LengthHorizontal, r, 1f, mass, k);
         }
 
         // ── the scenes ───────────────────────────────────────────────────
@@ -861,6 +957,143 @@ namespace RimMandrake.ExplosiveKnockback
                     return null;
                 }
 
+                case "goods_fly_midair":
+                case "goods_fly_lands":
+                {
+                    // midair: the stack is inside a carrier, unspawned, count intact, a few ticks after the blast.
+                    // lands: it ends spawned on the cell the instant move would pick (ThrowCells), count intact, no carrier
+                    // left, one item_move flying=true and one item_land. Slow speed so the flight spans the sampling ticks.
+                    s.restore = FlightRestore(s);
+                    RimMandrakeExplosiveKnockbackSettings.flyingGoods = true;
+                    RimMandrakeExplosiveKnockbackSettings.goodsFlightSpeed = 6f;
+                    Item(s, "steel", "Steel", 75, O(s, 1, 0));
+                    s.numbers["want"] = WantCells(s, "steel", 2.9f);
+                    SampleFlight(s, "steel", 1, 30);
+                    Blast(s.o, 2.9f);
+                    s.verdict = sc =>
+                    {
+                        Thing t = sc.things["steel"];
+                        int want = (int)sc.numbers["want"];
+                        if (want < 1)
+                        {
+                            return "INVALID " + sc.name + " steel would not be thrown (want=0): the scene proves nothing";
+                        }
+                        if (sc.name == "goods_fly_midair")
+                        {
+                            bool seen = sc.numbers.TryGetValue("steel_airTick", out float at);
+                            bool count = seen && (int)sc.numbers["steel_airCount"] == 75;
+                            return Result(sc, seen && count, seen
+                                ? "in carrier at +" + at + " ticks, count=" + sc.numbers["steel_airCount"] + " dest=" + sc.numbers["steel_airDestX"] + ","
+                                  + sc.numbers["steel_airDestZ"] + " ticksLeft=" + sc.numbers["steel_airTicksLeft"]
+                                : "never seen inside a carrier on ticks +1..+30");
+                        }
+                        string m = Moved(sc, "steel", out Thing tt, out int cells);
+                        var mv = ForThing(sc, "item_move", t);
+                        var land = ForThing(sc, "item_land", t);
+                        bool flew = mv.Count == 1 && Equals(mv[0]["flying"], true);
+                        bool landed = land.Count == 1 && tt.Spawned && Convert.ToInt32(land[0]["count"]) == 75;
+                        bool none = CarrierOf(tt.MapHeld ?? Map, t) == null;
+                        bool ok = flew && landed && none && tt.Spawned && cells == want && tt.stackCount == 75;
+                        return Result(sc, ok, m + " want=" + want + " count=" + tt.stackCount + " flying=" + flew + " item_land=" + land.Count
+                                              + " carrierLeft=" + !none + (land.Count > 0 ? " [" + Rec(land[0]) + "]" : ""));
+                    };
+                    return null;
+                }
+
+                case "goods_fly_wall":
+                {
+                    // the flight is cut short by a wall: rebound off, so the stack lands beside the wall and the wall impact
+                    // (goods_impact stop=Wall, damage>0) applies to it there, exactly as the instant move does today
+                    s.restore = FlightRestore(s);
+                    RimMandrakeExplosiveKnockbackSettings.flyingGoods = true;
+                    RimMandrakeExplosiveKnockbackSettings.goodsRebound = false;
+                    Item(s, "comp", "ComponentIndustrial", 1, O(s, 1, 0));
+                    Build("Wall", O(s, 3, 0), "BlocksGranite");
+                    s.numbers["want"] = WantCells(s, "comp", 2.9f);
+                    Blast(s.o, 2.9f);
+                    s.verdict = sc =>
+                    {
+                        Thing t = sc.things["comp"];
+                        int want = (int)sc.numbers["want"];
+                        if (want < 2)
+                        {
+                            return "INVALID " + sc.name + " component planned " + want + " cells: does not reach the wall";
+                        }
+                        string m = Moved(sc, "comp", out Thing tt, out int cells);
+                        var imp = ForThing(sc, "goods_impact", t);
+                        bool hit = imp.Count == 1 && (string)imp[0]["stop"] == "Wall" && Convert.ToSingle(imp[0]["damage"]) > 0f;
+                        // the impact may break the component: then it is gone at the wall, which is still the cut-short rule
+                        bool beside = tt.Spawned ? tt.Position == O(sc, 2, 0) : imp.Count == 1 && Equals(imp[0]["destroyed"], true);
+                        bool flew = ForThing(sc, "item_move", t).Any(r => Equals(r["flying"], true));
+                        return Result(sc, hit && beside && flew, m + " want=" + want + " flying=" + flew
+                                                                   + (imp.Count > 0 ? " [" + Rec(imp[0]) + "]" : " no goods_impact"));
+                    };
+                    return null;
+                }
+
+                case "goods_fly_rebound":
+                {
+                    // rebound on: the cut-short flight bounces back off the wall with about goodsReboundKeepPercent of the
+                    // cells it had left; the impact applies at the bounce, the stack ends west of the wall, no carrier left
+                    s.restore = FlightRestore(s);
+                    RimMandrakeExplosiveKnockbackSettings.flyingGoods = true;
+                    RimMandrakeExplosiveKnockbackSettings.goodsRebound = true;
+                    Item(s, "comp", "ComponentIndustrial", 1, O(s, 1, 0));
+                    Build("Wall", O(s, 3, 0), "BlocksGranite");
+                    s.numbers["want"] = WantCells(s, "comp", 2.9f);
+                    Blast(s.o, 2.9f);
+                    s.verdict = sc =>
+                    {
+                        Thing t = sc.things["comp"];
+                        int want = (int)sc.numbers["want"];
+                        int left = want - 1;                       // one cell to O(2,0), the rest is cut short
+                        int back = RM_KnockbackMath.ReboundCells(left, RimMandrakeExplosiveKnockbackSettings.goodsReboundKeepPercent);
+                        if (back < 1)
+                        {
+                            return "INVALID " + sc.name + " planned " + want + " cells leaves no rebound (back=" + back + ")";
+                        }
+                        string m = Moved(sc, "comp", out Thing tt, out int cells);
+                        var rb = ForThing(sc, "item_rebound", t);
+                        var imp = ForThing(sc, "goods_impact", t);
+                        bool bounced = rb.Count >= 1 && (string)rb[0]["hit"] == "Wall";
+                        bool atRebound = imp.Any(r => (string)r["at"] == "rebound");
+                        bool west = tt.Spawned && tt.Position.x < O(sc, 2, 0).x;
+                        bool none = !tt.Spawned || CarrierOf(tt.Map, t) == null;
+                        return Result(sc, bounced && atRebound && west && none, m + " want=" + want + " back=" + back + " rebounds=" + rb.Count
+                                                                               + " impactAtRebound=" + atRebound + (rb.Count > 0 ? " [" + Rec(rb[0]) + "]" : ""));
+                    };
+                    return null;
+                }
+
+                case "goods_fly_off":
+                {
+                    // control: flyingGoods off -> today's instant move (item_move flying=false, never inside a carrier),
+                    // same cell and count as a flight would land on
+                    s.restore = FlightRestore(s);
+                    RimMandrakeExplosiveKnockbackSettings.flyingGoods = false;
+                    Item(s, "steel", "Steel", 75, O(s, 1, 0));
+                    s.numbers["want"] = WantCells(s, "steel", 2.9f);
+                    SampleFlight(s, "steel", 1, 30);
+                    Blast(s.o, 2.9f);
+                    s.verdict = sc =>
+                    {
+                        Thing t = sc.things["steel"];
+                        int want = (int)sc.numbers["want"];
+                        if (want < 1)
+                        {
+                            return "INVALID " + sc.name + " steel would not be thrown (want=0)";
+                        }
+                        string m = Moved(sc, "steel", out Thing tt, out int cells);
+                        var mv = ForThing(sc, "item_move", t);
+                        bool instant = mv.Count == 1 && Equals(mv[0]["flying"], false);
+                        bool neverAir = !sc.numbers.ContainsKey("steel_airTick");
+                        bool ok = instant && neverAir && tt.Spawned && cells == want && tt.stackCount == 75
+                                  && ForThing(sc, "item_land", t).Count == 0;
+                        return Result(sc, ok, m + " want=" + want + " instant=" + instant + " seenInCarrier=" + !neverAir);
+                    };
+                    return null;
+                }
+
                 case "emp_no_throw":
                     Colonist(s, "p", O(s, 1, 0));
                     Blast(s.o, 2.9f, DamageDefOf.EMP, 10);
@@ -875,3 +1108,4 @@ namespace RimMandrake.ExplosiveKnockback
         }
     }
 }
+#endif

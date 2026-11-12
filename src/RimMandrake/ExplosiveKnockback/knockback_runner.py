@@ -82,6 +82,8 @@ def main():
     ap.add_argument("--out", default=os.path.join(REPO, "Transient", "explosive_knockback"))
     a = ap.parse_args()
     from rimbridge_client import RimBridge, resolve_endpoint
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from proof_build_gate import require_proof_build
     host, port, token = resolve_endpoint()
     os.makedirs(a.out, exist_ok=True)
     stamp = datetime.datetime.now().strftime("%Y%m%dT%H%M%S")
@@ -89,6 +91,7 @@ def main():
     rows = []
     with RimBridge(host=host, port=port, token=token) as b:
         names = call(b, "Names", "x")
+        require_proof_build(names)          # release DLL: exit 3 PROOF BUILD REQUIRED, never a table of FAILs
         print("scenes available:", names)
         scenes = [s for s in (a.scenes.split(",") if a.scenes else names.split(" ")[0].split(",")) if s]
         origins = call(b, "Origins", str(len(scenes))).split(";")

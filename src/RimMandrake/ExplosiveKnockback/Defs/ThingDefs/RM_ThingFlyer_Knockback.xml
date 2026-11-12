@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- A thrown stack of goods in flight (RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD). A sibling of RM_PawnFlyer_Knockback, not a
+       PawnFlyer: other mods' PawnFlyer patches assume a pawn, and PawnFlyer.RespawnPawn drops with Direct only, which can
+       strand a stack. The carrier holds ONE stack in its own container (saved with it mid-flight), copies the vanilla
+       flyer's arc, spins it, and lands it with the same GenPlace calls the instant move used. -->
+  <ThingDef ParentName="EtherealThingBase">
+    <defName>RM_ThingFlyer_Knockback</defName>
+    <label>thrown goods</label>
+    <thingClass>RimMandrake.ExplosiveKnockback.RM_ThingFlyer_Knockback</thingClass>
+    <category>Ethereal</category>
+    <altitudeLayer>Skyfaller</altitudeLayer>
+    <drawerType>RealtimeOnly</drawerType>
+    <drawOffscreen>true</drawOffscreen>
+    <tickerType>Normal</tickerType>
+    <useHitPoints>false</useHitPoints>
+    <selectable>false</selectable>
+  </ThingDef>
+</Defs>

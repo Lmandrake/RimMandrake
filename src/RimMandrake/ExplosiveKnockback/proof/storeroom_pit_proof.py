@@ -47,6 +47,8 @@ ap.add_argument("--out", default=None)
 a = ap.parse_args()
 a.save = a.save or ("EK_SITTING_STATION1_STORAGE_20261112" if a.storage else "EK_SITTING_STATION1_STOREROOM_PIT_20261112")
 B = PH.PB()
+sys.path.insert(0, os.path.join(HERE, ".."))
+from proof_build_gate import require_proof_build  # noqa: E402
 px, pz, pw, ph = (int(v) for v in a.pit.split(","))
 rows, ev = [], {"save": a.save}
 
@@ -188,6 +190,8 @@ def moved(v):
     return v[2] is not None and (v[2], v[3]) != (v[0], v[1])
 
 
+# release DLL (no RM_KnockbackProof): exit 3 PROOF BUILD REQUIRED before any load, never a table of FAILs
+require_proof_build(c("jawa/static_call", type=KP, method="Names", args="x"))
 if a.storage:
     S = storage_arm("SA", [])
     if S:
