@@ -368,6 +368,50 @@ def _RI():
     return run_identity
 
 
+TIERS_KNOWN = ("gimmesomeslack", "fw_gss_sitting", "flowworks")
+SWIM_SETTINGS = "RimMandrake.FlowWorks.Swimming.RM_SwimSettings"
+
+
+def measured_tier(running, tiers=TIERS_KNOWN, tier_ids=None, config=None):
+    """The tier this run is ON, measured (GSS_WATER_STUB_FIX_PASSED_LAST_WEEK, 2026-11-11): the result used to say V.TIER
+    whatever loaded, so an A1 run on fw_gss_sitting was labelled gimmesomeslack. ModsConfig's active list, parsed now, is
+    named for the tier whose exact modset_builder list it equals (order ignored), and must equal the running packageIds;
+    name None when nothing matches (the result then reads UNMATCHED, never a guess)."""
+    import xml.etree.ElementTree as ET
+    out = {"name": None, "written_for": V.TIER, "source": "ModsConfig.xml activeMods"}
+    try:
+        if tier_ids is None:
+            sys.path.insert(0, os.path.join(V.UTILS, "modcheck"))
+            from test_site_saves import tier_ids  # noqa: E402
+        if config is None:
+            import modset_builder as MB  # noqa: E402
+            config = MB.CONFIG
+        active = [(li.text or "").strip().lower() for li in ET.parse(config).getroot().find("activeMods")]
+    except Exception as ex:  # noqa: BLE001
+        out["error"] = repr(ex)
+        return out
+    out["active"] = len(active)
+    out["active_equals_running"] = running is not None and sorted(active) == sorted(running)
+    for t in tiers:
+        try:
+            if sorted(tier_ids(t)) == sorted(active):
+                out["name"] = t if out["active_equals_running"] else None
+                out["matched_list"] = t
+                break
+        except Exception as ex:  # noqa: BLE001
+            out.setdefault("tier_errors", {})[t] = repr(ex)
+    return out
+
+
+def flowworks_swim(B):
+    """FlowWorks' swim switches as the running game holds them (deep swim makes WaterDeep walkable: the 2026-10-23 cause)."""
+    got = {}
+    for f in ("deepSwimEnabled", "swimOpenWaterEnabled"):
+        r = B.call("jawa/mod_settings_field", typeName=SWIM_SETTINGS, action="get", field=f)
+        got[f] = r.get("value") if r.get("success") else "UNMEASURED: %s" % str(r.get("error") or r)[:120]
+    return got
+
+
 # ============================================================================ the session
 class Proof(object):
     def __init__(self, args):
@@ -504,6 +548,10 @@ class Proof(object):
             ms = (rm.get("assembly") or {}).get("matches") or []
             env["assembly_matches"] = len(ms)
             env["assembly_sha256"] = ms[0].get("sha256") if len(ms) == 1 else None
+        env["tier"] = measured_tier(env.get("running"))
+        self.res["tier"] = env["tier"]["name"] or "UNMATCHED"
+        if "mandrake.rm.flowworks" in env.get("running", []):
+            env["flowworks_swim"] = flowworks_swim(B)
         self.res["env"] = env
         try:
             sys.path.insert(0, os.path.join(V.UTILS, "modcheck"))
@@ -998,8 +1046,11 @@ class Proof(object):
 def summary(res):
     t = collections.Counter(r["status"] for r in res["rows"])
     print("\n" + "=" * 100)
-    print("proof_all %s  %s  rows %d %s  wall %ss  shots %s" % (res["mode"], res.get("started"), len(res["rows"]), dict(t),
-                                                               res.get("wall_s"), "off" if res.get("no_shots") else "on"))
+    print("proof_all %s  %s  tier %s  rows %d %s  wall %ss  shots %s" % (
+        res["mode"], res.get("started"), res.get("tier"), len(res["rows"]), dict(t), res.get("wall_s"),
+        "off" if res.get("no_shots") else "on"))
+    if (res.get("env") or {}).get("flowworks_swim"):
+        print("FlowWorks swim settings (read live): %s" % res["env"]["flowworks_swim"])
     for name, b in res["blocks"].items():
         bt = collections.Counter(r["status"] for r in res["rows"] if r.get("block") == name)
         print("  %-11s %6.1fs  %s%s" % (name, b["wall_s"], dict(bt), ("  RAISED " + b["raised"][:60]) if b.get("raised") else ""))

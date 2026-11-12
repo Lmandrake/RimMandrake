@@ -451,5 +451,21 @@ check("10 D2: clean fresh build PASSes", d2_case({"edges": 1, "same": 1, "differ
 check("10 control: an extra stale edge FAILs D2", d2_case({"edges": 1, "same": 1, "different": 0, "missing": 0, "extra": 1, "success": True}) == ["FAIL"])
 check("10 control: an empty fresh read FAILs D2", d2_case({}) == ["FAIL"])
 
+
+# 11. The result's tier is measured from ModsConfig, never V.TIER (GSS_WATER_STUB_FIX_PASSED_LAST_WEEK, 2026-11-11: an
+#     fw_gss_sitting run was labelled gimmesomeslack)
+def tier_case(active, running):
+    ids = {"gimmesomeslack": ["core", "gss"], "fw_gss_sitting": ["core", "gss", "fw"]}
+    p = os.path.join(tempfile.mkdtemp(), "ModsConfig.xml")
+    with open(p, "w") as f:
+        f.write("<ModsConfigData><activeMods>%s</activeMods></ModsConfigData>" % "".join("<li>%s</li>" % a for a in active))
+    return PA.measured_tier(running, tiers=tuple(ids), tier_ids=ids.__getitem__, config=p)["name"]
+
+
+check("11 tier: the fw_gss list (any order, any case) reads fw_gss_sitting", tier_case(["FW", "core", "gss"], ["gss", "fw", "core"]) == "fw_gss_sitting")
+check("11 tier: the gss list reads gimmesomeslack", tier_case(["core", "gss"], ["core", "gss"]) == "gimmesomeslack")
+check("11 control: an extra mod matches no tier", tier_case(["core", "gss", "fw", "x"], ["core", "gss", "fw", "x"]) is None)
+check("11 control: ModsConfig not what is running (edited mid-session) names no tier", tier_case(["core", "gss", "fw"], ["core", "gss"]) is None)
+
 print("\n%s" % ("ALL PASS" if not FAILS else "FAILED: %s" % FAILS))
 sys.exit(1 if FAILS else 0)
