@@ -47,5 +47,12 @@ Absorbed RimUtinni: Vault Dungeons (mandrake.rut.injections).</description>
            rest of the plan still places); see mandrake.rm.injections' About.xml for
            the full rationale. -->
     <li>dubwise.dubsbadhygiene.lite</li>
+      <!-- CATHEDRAL_DESCENT_REVEAL_SITE_1 (2026-11-11): Defs/CathedralDescent places the
+           rust kit's rock, ridge, pillars and floors (mandrake.rm.rustcathedral, shipped
+           folded into mandrake.rm.biomes) and FlowWorks' coolant terrains
+           (mandrake.rm.flowworks). Soft: the site is never placed on a tile by this mod. -->
+    <li>mandrake.rm.rustcathedral</li>
+    <li>mandrake.rm.biomes</li>
+    <li>mandrake.rm.flowworks</li>
   </loadAfter>
 </ModMetaData>
