@@ -4,11 +4,11 @@
      change: screenshots, rendered output, logs, a recorded run. Paths relative to the project, inside it. -->
 # Done claim
 
-- unseen: Every sea describes BOTH its floor (animals you meet by diving) and its catch (fish from the shore): the floor half is unbuilt across all four seas is done as `infrastructure/state/items/SEA_FLOOR_AND_CATCH_PASS_1.md` says, shown by fresh evidence. | evidence: `whittle/sea_floor_and_catch_pass_1/evidence/per_sea_verdict.txt` `whittle/sea_floor_and_catch_pass_1/evidence/offline_checks.txt` `whittle/sea_floor_and_catch_pass_1/evidence/offline_chain_audit.md` `whittle/sea_floor_and_catch_pass_1/evidence/selftests_fresh_all.txt` `whittle/sea_floor_and_catch_pass_1/evidence/swim_shore_reach_direct.txt`
+- unseen: Every sea describes BOTH its floor (animals you meet by diving) and its catch (fish from the shore): the floor half is unbuilt across all four seas is done as `infrastructure/state/items/SEA_FLOOR_AND_CATCH_PASS_1.md` says, shown by fresh evidence. | evidence: `whittle/sea_floor_and_catch_pass_1/evidence/per_sea_verdict.txt` `whittle/sea_floor_and_catch_pass_1/evidence/offline_checks.txt` `whittle/sea_floor_and_catch_pass_1/evidence/offline_chain_audit.md` `whittle/sea_floor_and_catch_pass_1/evidence/selftests_fresh_all.txt` `whittle/sea_floor_and_catch_pass_1/evidence/swim_shore_reach_direct.txt` `whittle/sea_floor_and_catch_pass_1/evidence/fuzz_fresh.txt`
 
 Why "unseen" and not "true": the item's verify asks, for each sea, for "a floor the gravship flies down to and that is populated". Its criteria are "Flying the gravship down to a sea's floor shows you the animals…". Neither has ever been seen in a game. This lane is offline and drives no game. SEABED_DESCENT_ASCENT_1, the flight itself, is `built` but BLOCKED on a harness fault (PROVEGRAVSHIP_FIX_PIPES_FOR_ABSENT_VGE: the proof lays a VGE pipe on a game without VGE). Everything that can be shown offline is shown, and it holds. In the item's own words, it is "authored, not live-proven".
 
-Per sea, measured at the published HEAD (`evidence/per_sea_verdict.txt`):
+Per sea, measured at the published HEAD (`evidence/per_sea_verdict.txt`, re-run 2026-11-11 at 820f2d57c3: `python3 -I whittle/sea_floor_and_catch_pass_1/evidence/per_sea.py`):
 
 | sea | shore verdict | floor | floor cast / catch rows / catch without a living floor body | catch-only, with its reason |
 |---|---|---|---|---|
@@ -42,4 +42,4 @@ After the judges (both would show: no):
 
 ## What I did not test
 - Any live game: the descent and return, animals spawning and being met on the floor map, a fishing zone on a coast beside each sea, and the re-sync's log line on a real save.
-- `selftest_seashores` (the compiled one) and the three fuzz selftests did not reach a verdict on this seat. They need RimWorld assemblies at the C: path and `/mnt/d/Luke/dev`. I built the DLL by passing the D:\SteamLibrary assembly paths as MSBuild environment properties.
+- ~~The three fuzz selftests did not reach a verdict on this seat.~~ Fixed 2026-11-11 (`d181c2ca93`): `winbuild._interop_tries` now falls back to the build stage root when the hard-coded `/mnt/d/Luke/dev` cwd is absent (77 fuzz tests carried it). divinginteraction, seashores and terminalbiomes fuzz: 3/3 PASS, seashores 22003 cases 0 failures (`whittle/sea_floor_and_catch_pass_1/evidence/fuzz_fresh.txt`). `per_sea.py` now runs its own census with no argument and reproduces `evidence/per_sea_verdict.txt` exactly (only the header sha differs).
