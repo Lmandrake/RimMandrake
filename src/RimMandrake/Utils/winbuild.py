@@ -209,6 +209,13 @@ def run_interop_captured(cmd, **kwargs):
 
 
 def _interop_tries(cmd, echo_stderr, **kwargs):
+    # 77 fuzz selftests pass cwd="/mnt/d/Luke/dev", Archmagi's tree; SteveDesktop has no such dir, so every one
+    # crashed with FileNotFoundError before reaching a verdict (2026-11-11). The cwd only has to be a folder a Windows
+    # exe can start in; the build stage root is one on every machine.
+    cwd = kwargs.get("cwd")
+    if cwd and not os.path.isdir(cwd):
+        os.makedirs(BUILD_ROOT, exist_ok=True)
+        kwargs["cwd"] = BUILD_ROOT
     for attempt in range(INTEROP_TRIES):
         r = subprocess.run(cmd, **kwargs)
         err = r.stderr or ""

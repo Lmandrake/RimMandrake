@@ -1,0 +1,17 @@
+# 2026-11-11 22:12-0800 at 820f2d57c3 + winbuild cwd fix
+
+## run_selftests --only the three fuzz tests (were CRASH: cwd /mnt/d/Luke/dev absent on SteveDesktop)
+PASS          4.9s  src/RimMandrake/Utils/selftest_terminalbiomes_fuzz.py
+
+PASS 3/3  FAIL 0/3  UNMEASURED 0/3  CRASH 0/3  SKIPPED 0/3  (wall 11.6s) — contained in rm-harness.slice (max 12G), 1 workers
+RESULT: GREEN (green = FAIL 0 and CRASH 0)
+
+## selftest_seashores_fuzz.py direct
+fuzz primary: 8000 cases, 32000 steps, 0.14s, 0 failures
+fuzz cell: 1 cases, 52 steps, 0.00s, 0 failures
+fuzz band: 3000 cases, 3000 steps, 0.02s, 0 failures
+fuzz heal: 1 cases, 32 steps, 0.00s, 0 failures
+fuzz coast: 3000 cases, 3000 steps, 0.07s, 0 failures
+fuzz gates: 1 cases, 41 steps, 0.00s, 0 failures
+reached: exclusive terrains 9134, ambiguous terrains 7940, tied faced seas 1835, empty-band fallbacks 752, heals 3, replaces 2
+seashores fuzz: 22003 cases, 66125 steps, 0.38s total -> OK

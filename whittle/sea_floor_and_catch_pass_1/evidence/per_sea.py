@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 """Per-sea verdict for SEA_FLOOR_AND_CATCH_PASS_1, from the defs on disk (XML elements, never <li> counts).
-Run from the repo root: python3 -I per_sea.py <census out.json>"""
+Run from the repo root: python3 -I whittle/sea_floor_and_catch_pass_1/evidence/per_sea.py [census.json]
+With no argument it runs census.py (beside this file) on src/ itself."""
 import json, os, re, subprocess, sys
 import xml.etree.ElementTree as ET
 
-census = json.load(open(sys.argv[1]))
+if len(sys.argv) > 1:
+    census = json.load(open(sys.argv[1]))
+else:
+    census = json.loads(subprocess.check_output([sys.executable, "-I", os.path.join(os.path.dirname(os.path.abspath(__file__)), "census.py"), "src"], text=True))
 SEAS = ["RM_TheScald", "RM_GreySea", "RM_TwilightSea", "RM_TheChill"]
 defs = {}
 for dp, _, fns in os.walk("src"):
