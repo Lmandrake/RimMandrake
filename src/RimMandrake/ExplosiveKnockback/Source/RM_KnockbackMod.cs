@@ -55,6 +55,12 @@ namespace RimMandrake.ExplosiveKnockback
         public static bool throwItems = true;
         public static bool throwCorpses = true;
         public static float lightMassLimit = 75f;
+        /// <summary>Owner ruling 2026-11-12 (RIMMANDRAKE_SPARE_THROWN_GOODS_SO_THEY_SCATTER): a stack the blast will throw
+        /// takes only this percent of the blast's damage, so the player sees it scatter instead of vanish. 100 = vanilla.</summary>
+        public static float thrownGoodsBlastDamagePercent = 25f;
+        /// <summary>Same ruling, "worse damage if they then hit a solid object": a thrown stack stopped by a wall, door or
+        /// the map edge takes this much Blunt damage per cell of throw it had left. 0 = off.</summary>
+        public static float goodsWallImpactPerCell = 10f;
         public static bool sandbagsStopThrow = false;
         public static bool impactDamageEnabled = true;
         public static float impactDamagePerCell = 4f;
@@ -106,6 +112,8 @@ namespace RimMandrake.ExplosiveKnockback
             Scribe_Values.Look(ref throwItems, "throwItems", true);
             Scribe_Values.Look(ref throwCorpses, "throwCorpses", true);
             Scribe_Values.Look(ref lightMassLimit, "lightMassLimit", 75f);
+            Scribe_Values.Look(ref thrownGoodsBlastDamagePercent, "thrownGoodsBlastDamagePercent", 25f);
+            Scribe_Values.Look(ref goodsWallImpactPerCell, "goodsWallImpactPerCell", 10f);
             Scribe_Values.Look(ref sandbagsStopThrow, "sandbagsStopThrow", false);
             Scribe_Values.Look(ref impactDamageEnabled, "impactDamageEnabled", true);
             Scribe_Values.Look(ref impactDamagePerCell, "impactDamagePerCell", 4f);
@@ -158,7 +166,7 @@ namespace RimMandrake.ExplosiveKnockback
                 list.GapLine();
             }
 
-            if (Group(list, "What gets thrown", RimMandrake.Shared.SettingScope.Now, new[] { "throwDowned", "throwAnimals", "throwMechanoids", "immuneBodySize", "throwItems", "throwCorpses", "lightMassLimit" }))
+            if (Group(list, "What gets thrown", RimMandrake.Shared.SettingScope.Now, new[] { "throwDowned", "throwAnimals", "throwMechanoids", "immuneBodySize", "throwItems", "throwCorpses", "lightMassLimit", "thrownGoodsBlastDamagePercent", "goodsWallImpactPerCell" }))
             {
                 list.CheckboxLabeled("Throw downed pawns", ref throwDowned);
                 list.CheckboxLabeled("Throw animals", ref throwAnimals);
@@ -169,6 +177,10 @@ namespace RimMandrake.ExplosiveKnockback
                 list.CheckboxLabeled("Throw corpses", ref throwCorpses);
                 list.Label("Items and corpses heavier than " + lightMassLimit.ToString("0") + " kg stay put");
                 lightMassLimit = list.Slider(lightMassLimit, 5f, 200f);
+                list.Label("Blast damage taken by goods that get thrown: " + thrownGoodsBlastDamagePercent.ToString("0") + "%  (100% = vanilla: fragile goods are destroyed instead of scattering)");
+                thrownGoodsBlastDamagePercent = Mathf.Round(list.Slider(thrownGoodsBlastDamagePercent, 0f, 100f));
+                list.Label("Thrown goods hitting a wall or door: " + goodsWallImpactPerCell.ToString("0") + " damage per cell of throw left  (0 = off)");
+                goodsWallImpactPerCell = Mathf.Round(list.Slider(goodsWallImpactPerCell, 0f, 50f));
                 list.GapLine();
             }
 
@@ -303,6 +315,8 @@ namespace RimMandrake.ExplosiveKnockback
             RimMandrakeExplosiveKnockbackSettings.throwItems = true;
             RimMandrakeExplosiveKnockbackSettings.throwCorpses = true;
             RimMandrakeExplosiveKnockbackSettings.lightMassLimit = 75f;
+            RimMandrakeExplosiveKnockbackSettings.thrownGoodsBlastDamagePercent = 25f;
+            RimMandrakeExplosiveKnockbackSettings.goodsWallImpactPerCell = 10f;
             RimMandrakeExplosiveKnockbackSettings.sandbagsStopThrow = false;
             RimMandrakeExplosiveKnockbackSettings.impactDamageEnabled = true;
             RimMandrakeExplosiveKnockbackSettings.impactDamagePerCell = 4f;

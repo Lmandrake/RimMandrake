@@ -86,11 +86,26 @@ namespace RimMandrake.ExplosiveKnockback
             __state = cfg;
             shieldWatch = t as Pawn;
             shieldAbsorbed = null;
+            // owner ruling 2026-11-12: a stack this blast WILL throw takes reduced blast damage, decided here, before the
+            // base applies the damage, so a stack the full blast would destroy survives to scatter
+            spareThing = null;
+            float pct = RimMandrakeExplosiveKnockbackSettings.thrownGoodsBlastDamagePercent;
+            if (pct < 100f && t.def.category == ThingCategory.Item && RM_MapComponent_Knockback.ItemWillBeThrown(t, explosion, cfg))
+            {
+                spareThing = t;
+                spareFactor = pct < 0f ? 0f : pct / 100f;
+            }
         }
+
+        /// <summary>The item whose blast damage is being scaled right now (set by the prefix, read by
+        /// RM_Patch_Thing_SpareThrownGoods, cleared by the postfix; TakeDamage runs synchronously inside).</summary>
+        internal static Thing spareThing;
+        internal static float spareFactor = 1f;
 
         public static void Postfix(DamageWorker __instance, Explosion explosion, Thing t, KbConfig __state)
         {
             CompShield shield = shieldWatch == t ? shieldAbsorbed : null;
+            spareThing = null;
             shieldWatch = null;
             shieldAbsorbed = null;
             if (__state == null)
@@ -151,5 +166,25 @@ namespace RimMandrake.ExplosiveKnockback
         public Thing thing;
         public IntVec3 takeoff;
         public int tick;
+    }
+}
+
+namespace RimMandrake.ExplosiveKnockback
+{
+    /// <summary>Owner ruling 2026-11-12 (RIMMANDRAKE_SPARE_THROWN_GOODS_SO_THEY_SCATTER): scales the blast's DamageInfo for
+    /// the one stack the explosion prefix marked as about to be thrown. Reference compare only on every other call.</summary>
+    [HarmonyPatch(typeof(Thing), nameof(Thing.TakeDamage))]
+    public static class RM_Patch_Thing_SpareThrownGoods
+    {
+        public static void Prefix(Thing __instance, ref DamageInfo dinfo)
+        {
+            if (RM_Patch_DamageWorker_ExplosionKnockback.spareThing == null || __instance != RM_Patch_DamageWorker_ExplosionKnockback.spareThing)
+            {
+                return;
+            }
+            float before = dinfo.Amount;
+            dinfo.SetAmount(before * RM_Patch_DamageWorker_ExplosionKnockback.spareFactor);
+            RM_KnockbackJournal.Add("spared", -1, __instance, "blast", before, "taken", dinfo.Amount);
+        }
     }
 }

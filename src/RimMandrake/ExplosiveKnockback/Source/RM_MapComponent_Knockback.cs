@@ -352,6 +352,54 @@ namespace RimMandrake.ExplosiveKnockback
             return t;
         }
 
+        private static bool InStorage(Thing t, Map map)
+        {
+            Building ed = t.Position.GetEdifice(map);
+            return ed is Building_Storage || (ed != null && ed.def.building != null && ed.def.building.fixedStorageSettings != null);
+        }
+
+        /// <summary>Called from the explosion prefix BEFORE the blast damages the item: will Execute throw it (same gates,
+        /// same kernel, measured now)? Pit landing and path blocks are not predicted; a stack spared and then blocked is
+        /// still spared.</summary>
+        public static bool ItemWillBeThrown(Thing t, Explosion explosion, KbConfig cfg)
+        {
+            Map map = explosion.Map;
+            if (map == null || !t.Spawned || !RimMandrakeExplosiveKnockbackSettings.throwItems || InStorage(t, map)
+                || RM_KnockbackCompat.IsSuperdeep(map, t.Position))
+            {
+                return false;
+            }
+            KbSettings s = RimMandrakeExplosiveKnockbackSettings.Kernel(cfg);
+            float mass = t.GetStatValue(StatDefOf.Mass) * t.stackCount;
+            if (!RM_KnockbackMath.Eligible(KbKind.Item, mass, 0f, s))
+            {
+                return false;
+            }
+            float dist = (t.Position - explosion.Position).LengthHorizontal;
+            return RM_KnockbackMath.ThrowCells(dist, explosion.radius, cfg.force, mass, s) > 0;
+        }
+
+        /// <summary>Owner ruling 2026-11-12, "worse damage if they then hit a solid object": a stack stopped by a wall, door or
+        /// the map edge takes Blunt damage per cell of throw it had left.</summary>
+        private void GoodsWallImpact(KnockbackRequest r, Thing t, KbResult res, int cells)
+        {
+            float per = RimMandrakeExplosiveKnockbackSettings.goodsWallImpactPerCell;
+            int left = cells - res.cellsTravelled;
+            if (per <= 0f || left <= 0 || t == null || t.Destroyed
+                || !(res.stop == KbStop.Wall || res.stop == KbStop.Door || res.stop == KbStop.OutOfBounds))
+            {
+                return;
+            }
+            float dmg = per * left * (r.config?.impactFactor ?? 1f);
+            if (dmg <= 0f)
+            {
+                return;
+            }
+            t.TakeDamage(new DamageInfo(DamageDefOf.Blunt, dmg, 0f, -1f, r.instigator));
+            RM_KnockbackJournal.Add("goods_impact", r.explosionId, t, "stop", res.stop.ToString(), "left", left, "damage", dmg,
+                "destroyed", t.Destroyed);
+        }
+
         /// <summary>One throw. True when something actually moved.</summary>
         private bool Execute(KnockbackRequest r)
         {
@@ -395,8 +443,7 @@ namespace RimMandrake.ExplosiveKnockback
                     RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", "items_off");
                     return false;
                 }
-                Building ed = t.Position.GetEdifice(map);
-                if (ed is Building_Storage || (ed != null && ed.def.building != null && ed.def.building.fixedStorageSettings != null))
+                if (InStorage(t, map))
                 {
                     RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", "in_storage");
                     return false;
@@ -463,6 +510,7 @@ namespace RimMandrake.ExplosiveKnockback
             if (!res.Moved)
             {
                 RM_KnockbackJournal.Add("blocked", r.explosionId, t, "from", start, "planned", cells, "stop", res.stop.ToString());
+                GoodsWallImpact(r, t, res, cells);
                 return false;
             }
             if (!itemBudget.TryTake(Find.TickManager.TicksGame, RimMandrakeExplosiveKnockbackSettings.maxItemThrowsPerMapTick))
@@ -481,6 +529,7 @@ namespace RimMandrake.ExplosiveKnockback
             RM_KnockbackJournal.ItemMoves++;
             RM_KnockbackJournal.Add("item_move", r.explosionId, t, "kind", kind.ToString(), "from", start, "to", placed?.Position ?? dest,
                 "planned", cells, "cells", res.cellsTravelled, "stop", res.stop.ToString(), "mass", mass, "count", count);
+            GoodsWallImpact(r, placed ?? t, res, cells);
             return true;
         }
 
