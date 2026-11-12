@@ -1,0 +1,10 @@
+# Notes (newest first)
+
+## 2026-11-11 setup (CLAUDE_STEVEDESKTOP_OFFLINE5, wc.py, no model)
+- Ledger: state=ready needs=offline owner=CLAUDE_STEVEDESKTOP_OFFLINE5; 1 runs, non-pass tail 0.
+- The item file: `infrastructure/state/items/SHIP_ALLOY_FORGE_1.md`; the full record: `rimflow show SHIP_ALLOY_FORGE_1`.
+- run 2026-10-10T06:02 full-565 (superset of the minimal list), debug quicktest pass sha 637498f0c0 evidence `live get_defs: VFEFactory_AutomatedAlloyForge researchPrerequisites=[RM_WM_AlloyForgeRestoration]; PipeSystem.ProcessDef VFEFactory_AlloyPlasteel researchPrerequisites=[RM_WM_PlasteelAlloying]; both ResearchProjectDefs load; RSW_AlloyDurasteel absent as designed (RSW_Durasteel not defined yet, CANON_MATERIALS_BUILD_1). Player.log: 0 errors naming Zersium/AlloyForge/AlloyDurasteel/PlasteelAlloying; 29 Config errors = baseline. Transient/belt_bridge7_defs_out_20261009r.txt`
+- note 2026-10-10T02:52 FOUNDRY: Correction 2 (owner 2026-10-09, 'No. The Forge biome.'): zersium's source is THE FORGE BIOME (src/RimMandrake/TheForge), not asteroid ore and not this item's ship forge. This item keeps only the steel + zersium durasteel recipe (early) and consumes RSW_Zersium. Supersedes both earlier notes on zersi
+- note 2026-10-10T02:52 FOUNDRY: Correction, owner 2026-10-09: the zersium mineral belongs to THIS item, not ASTEROID_DESERT_ORES_1. Scope here: RSW_Zersium def, its asteroid ore source and smelt aboard, and the steel + zersium durasteel recipe (early). Ignore my earlier note's line adding it to ASTEROID_DESERT_ORES_1.
+- note 2026-10-10T02:50 FOUNDRY: Decision taken by question card 2026-10-09: zersium comes from asteroid ore smelted aboard (like doonium); forge makes durasteel early, right after the smelter. Resolves the TO CONFIRM in canon_materials_design §3.2/§3.4. Add zersium to ASTEROID_DESERT_ORES_1 scope.
+- note 2026-10-09T21:59 BENCH: Decision taken by question card 2026-10-09 14:58: durasteel = steel + zersium on the ship smelter; zersium is a rare local ore in ONE home biome (pick the biome in design, owner confirms). Natural glasses (biosilica, lanternstone etc.) stay separate from transparisteel.
