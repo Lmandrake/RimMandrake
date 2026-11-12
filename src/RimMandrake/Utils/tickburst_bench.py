@@ -463,9 +463,13 @@ def _throughput_arm(call, arm, mock, ticks):
 
 
 def cmd_throughput(call, list_name, out_dir, mock=False, ticks=MEASURE, repeats=REPEATS, seed=None, fixture=None,
-                   reload=None):
+                   reload=None, arms=THROUGHPUT_ARMS):
+    """`arms` narrows the run (speed_20261112: A against B40 at 25,000 ticks fits one sitting; all six arms do not)."""
+    bad = [a for a in arms if a not in THROUGHPUT_ARMS]
+    if bad or not arms:
+        raise ValueError("unknown throughput arm(s) %s; known %s" % (bad or "none", ",".join(THROUGHPUT_ARMS)))
     seed = int(time.time()) if seed is None else seed
-    order = balanced_order(THROUGHPUT_ARMS, repeats, seed)
+    order = balanced_order(tuple(arms), repeats, seed)
     trials = []
     for i, arm in enumerate(order):
         if reload:
@@ -475,7 +479,7 @@ def cmd_throughput(call, list_name, out_dir, mock=False, ticks=MEASURE, repeats=
         row["provenance"] = provenance(call, arm, None if arm in ("A", "U", "U+") else "budget", fixture, mock)
         trials.append(row)
     summary = {}
-    for arm in THROUGHPUT_ARMS:
+    for arm in arms:
         tps = [t["tps"] for t in trials if t["arm"] == arm and t["tps"] is not None]
         summary[arm] = {"n": len(tps), "tps": tps, "meanTps": sum(tps) / len(tps) if tps else None}
     res = {"item": "TICKBURST_PROVE_MANY_TICKS_ONE_FRAME", "list": list_name, "seed": seed, "order": order, "warmup": WARMUP,
@@ -485,7 +489,7 @@ def cmd_throughput(call, list_name, out_dir, mock=False, ticks=MEASURE, repeats=
     with open(path, "w", encoding="utf-8") as f:
         json.dump(res, f, indent=1, default=str)
     rows = []
-    for arm in THROUGHPUT_ARMS:
+    for arm in arms:
         s = summary[arm]
         rows.append({"id": "A2_" + arm, "verdict": "PASS" if s["n"] == repeats else "UNMEASURED", "meanTps": s["meanTps"],
                      "n": s["n"]})
@@ -968,6 +972,13 @@ def selftest():
     res = json.load(open(path))
     s = res["summary"]
     check(all(s[a]["n"] == 3 for a in THROUGHPUT_ARMS), "throughput_three_repeats_each", str({a: s[a]["n"] for a in s}))
+    try:
+        _r2, p2 = cmd_throughput(MockGame(), "minimal", tmp, mock=True, ticks=600, repeats=2, seed=2, arms=("A", "B40"))
+        r2 = json.load(open(p2))
+        check(sorted(r2["summary"]) == ["A", "B40"] and len(r2["order"]) == 4, "throughput_arms_narrowed",
+              str(sorted(r2["summary"])))
+    except TypeError as e:
+        check(False, "throughput_arms_narrowed", str(e))
     check(s["B40"]["meanTps"] > s["A"]["meanTps"] * 5, "throughput_mock_burst_faster_than_one_per_frame",
           "%s vs %s" % (s["B40"]["meanTps"], s["A"]["meanTps"]))
     t = res["trials"][0]
@@ -1057,6 +1068,7 @@ def main(argv=None):
     ap.add_argument("--out-dir", default=None)
     ap.add_argument("--ticks", type=int, default=MEASURE)
     ap.add_argument("--repeats", type=int, default=REPEATS)
+    ap.add_argument("--arms", default=",".join(THROUGHPUT_ARMS), help="throughput: comma list of arms to run")
     ap.add_argument("--trials", type=int, default=5)
     ap.add_argument("--configs", default="v2,lines,glow_mid,glow_dusk")
     ap.add_argument("--site", default="calm", help="the fixture every throughput trial reloads (test_site_saves.py)")
@@ -1082,7 +1094,8 @@ def main(argv=None):
         return _exit(cmd_readback(call))
     if a.cmd == "throughput":
         rows, _ = cmd_throughput(call, a.list, out, ticks=a.ticks, repeats=a.repeats, fixture=None if a.no_reload else a.site,
-                                 reload=(lambda: rel(a.site)) if rel else None)
+                                 reload=(lambda: rel(a.site)) if rel else None,
+                                 arms=tuple(x for x in a.arms.split(",") if x))
         return _exit(rows)
     if a.cmd == "equiv":
         rows, code = cmd_equiv(call, out, [c for c in a.configs.split(",") if c], a.trials, a.max_seconds, reload=rel)
