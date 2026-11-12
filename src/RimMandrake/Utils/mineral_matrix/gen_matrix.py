@@ -385,4 +385,7 @@ def finish(repo, out):
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    try:
+        sys.exit(main())
+    except AssertionError as e:  # every assert here guards an input fact; say which, without a traceback
+        sys.exit("gen_matrix: STOPPED (outputs incomplete; no older run left beside them): %s" % (e.args[0] if len(e.args) == 1 else e.args,))
