@@ -265,6 +265,7 @@
     <description>Strips dried in a box of hot sand under the open sky. Light and slow to spoil, which makes it good travel food.</description>
     <graphicData>
       <texPath>Things/Item/Resource/Kibble</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <ingestible>
       <ingestEffect>EatMeat</ingestEffect>
@@ -291,6 +292,7 @@
     <description>Strips dried in a box of hot sand under the open sky. Light and slow to spoil, which makes it good travel food.</description>
     <graphicData>
       <texPath>Things/Item/Resource/Kibble</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <ingestible>
       <ingestEffect>EatVegetarian</ingestEffect>
@@ -317,6 +319,7 @@
     <description>Strips dried in a box of hot sand under the open sky. Light and slow to spoil, which makes it good travel food.</description>
     <graphicData>
       <texPath>Things/Item/Resource/Kibble</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <ingestible>
       <ingestEffect>EatVegetarian</ingestEffect>
