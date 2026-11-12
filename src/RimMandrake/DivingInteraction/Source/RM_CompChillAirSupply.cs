@@ -24,8 +24,14 @@ namespace RimMandrake.DivingInteraction
     // Vanilla's CompLowPowerInSpace (earlier in the comps list) drops the
     // pump to 10% wherever the room is not in vacuum, which the seabed never
     // is; this comp runs after it on the same rare tick and overrides the
-    // draw. Vanilla's own "power mode: low" inspect line can therefore read
-    // wrong on the seabed; this comp's own line says what it actually does.
+    // draw. Patch_ChillAirPump_PowerModeLine makes vanilla's "power mode"
+    // inspect line say High there too, so the two lines agree with the
+    // watts the pump really takes.
+    //
+    // Switching a pump off, a breakdown or a power cut takes effect at once
+    // (ReceiveCompSignal refreshes every pump in the room), and a loaded save
+    // re-fills its pumped rooms as soon as loading finishes, rather than
+    // leaving them airless until the first rare tick.
     //
     // Off the Chill seabed it does nothing at all: the vanilla pump is
     // untouched everywhere else.
@@ -53,6 +59,62 @@ namespace RimMandrake.DivingInteraction
             power = parent.GetComp<CompPowerTrader>();
             breakdown = parent.GetComp<CompBreakdownable>();
             flick = parent.GetComp<CompFlickable>();
+            if (respawningAfterLoad)
+            {
+                // Rooms and power nets are rebuilt by the time loading finishes; the oxygen ledger is not saved.
+                LongEventHandler.ExecuteWhenFinished(() => { if (parent.Spawned) Refresh(); });
+            }
+            else
+            {
+                RefreshRoom();
+            }
+        }
+
+        /// <summary>On the Chill seabed with the feature on and the pump not switched off or unpowered: it draws the full setting.</summary>
+        public bool DrawsFullPower => parent.Spawned && RM_DivingSettings.masterEnabled && RM_DivingSettings.chillAirPumpEnabled
+            && RM_ChillFireGate.IsChillSeabedMap(parent.Map) && power != null && !power.Off;
+
+        public override void ReceiveCompSignal(string signal)
+        {
+            base.ReceiveCompSignal(signal);
+            switch (signal)
+            {
+                case "FlickedOff":
+                case "FlickedOn":
+                case "Breakdown":
+                case "PowerTurnedOff":
+                case "PowerTurnedOn":
+                    if (parent.Spawned)
+                    {
+                        RefreshRoom();
+                    }
+                    break;
+            }
+        }
+
+        /// <summary>This pump and every other pump in its room: one pump stopping can leave the rest too few for the room.</summary>
+        private void RefreshRoom()
+        {
+            Room room = parent.GetRoom();
+            if (room == null)
+            {
+                Refresh();
+                return;
+            }
+            bool self = false;
+            foreach (Thing t in room.ContainedAndAdjacentThings)
+            {
+                RM_CompChillAirSupply other = t.TryGetComp<RM_CompChillAirSupply>();
+                if (other != null && t.Spawned && t.GetRoom() == room)
+                {
+                    other.Refresh();
+                    self |= other == this;
+                }
+            }
+            if (!self)
+            {
+                Refresh();
+            }
         }
 
         /// <summary>Running on the Chill seabed with the feature on: powered, switched on, not broken down.</summary>
@@ -83,7 +145,7 @@ namespace RimMandrake.DivingInteraction
             Refresh();
         }
 
-        private void Refresh()
+        internal void Refresh()
         {
             Map map = parent.Map;
             if (map == null)
@@ -92,7 +154,7 @@ namespace RimMandrake.DivingInteraction
             }
             bool onSeabed = RM_DivingSettings.masterEnabled && RM_DivingSettings.chillAirPumpEnabled
                 && RM_ChillFireGate.IsChillSeabedMap(map);
-            if (onSeabed && power != null && !power.Off)
+            if (DrawsFullPower)
             {
                 power.PowerOutput = -RM_DivingSettings.chillAirPumpWatts; // air costs power
             }

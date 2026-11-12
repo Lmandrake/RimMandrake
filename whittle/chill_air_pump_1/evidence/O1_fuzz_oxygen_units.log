@@ -1,0 +1,20 @@
+## --fuzz-only oxygen
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:00.82
+fuzz oxygen: 3002 cases, 90043 steps, 0.73s, 0 failures
+diving fuzz: 3002 cases, 90043 steps, 0.74s total -> OK
+rc=0
+## --fuzz-only units
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:00.87
+fuzz units: 303 cases, 58103 steps, 0.01s, 0 failures
+diving fuzz: 303 cases, 58103 steps, 0.01s total -> OK
+rc=0

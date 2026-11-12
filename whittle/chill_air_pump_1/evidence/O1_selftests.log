@@ -1,0 +1,19 @@
+contained in rm-harness.slice (max 12G), 6 workers
+[1/3] PASS          0.2s  src/RimMandrake/Utils/selftest_lint_harmony_targets.py
+[2/3] PASS          0.8s  src/RimMandrake/Utils/selftest_divinginteraction_lint.py
+[3/3] PASS          5.3s  src/RimMandrake/Utils/selftest_divinginteraction_fuzz.py
+evidence: 1 eligible, 0 SKIPPED as unchanged, 0 PASS recorded, 1 PASS not recordable — runner 65716eff3278c68e
+  not recordable (1): reads outside the repo: /home/mandrake/dev/Lodestar/bin/lib/__init__.py: src/RimMandrake/Utils/selftest_divinginteraction_fuzz.py
+cache: 0 CACHED PASS, 0 declared test(s) ran
+known results: 0/3 answered from the ledger (selftests.cache_hit_share 0.000), 0s not spent; 3 ran, 0 recorded, 0 checked against a stored PASS, 0 known red
+  ran (1): an input changed: src/RimMandrake/Utils/selftest_divinginteraction_lint.py <- env PATH
+  ran (2): no record
+  not recordable (1): external: src/RimMandrake/Utils/selftest_lint_harmony_targets.py
+  not recordable (1): changed during the run: src/RimMandrake/Utils/selftest_divinginteraction_lint.py
+  not recordable (1): clock: src/RimMandrake/Utils/selftest_divinginteraction_fuzz.py
+PASS          5.3s  src/RimMandrake/Utils/selftest_divinginteraction_fuzz.py
+PASS          0.8s  src/RimMandrake/Utils/selftest_divinginteraction_lint.py
+PASS          0.2s  src/RimMandrake/Utils/selftest_lint_harmony_targets.py
+
+PASS 3/3  FAIL 0/3  UNMEASURED 0/3  CRASH 0/3  SKIPPED 0/3  (wall 5.4s) — contained in rm-harness.slice (max 12G), 6 workers
+RESULT: GREEN (green = FAIL 0 and CRASH 0)
