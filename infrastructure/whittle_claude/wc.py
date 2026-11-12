@@ -12,6 +12,13 @@ Archmagi, one ticket at a time, never two loops on one item.
     wc.py lane-open <fwlive|offline>     count of open items the lane could take
     wc.py nonpass <ID>                   trailing run of non-pass results on the item
     wc.py tokens <claude json log>...    total tokens the logs report (input+output+cache), or 0
+    wc.py diskfree                       free GB on the Windows drive that backs this WSL distro's ext4.vhdx; exit 4
+                                         when under WC_MIN_FREE_GB (default 15): no new round, no new clone
+
+A candidate must have a live item file, infrastructure/state/items/<ID>.md (CLAUDE.md: that glob is the live set).
+Ledger-open alone counts ~97 FlowWorks ghosts (RIMMANDRAKE_RECONCILE_FLOWWORKS_LEDGER_OPEN_WITHOUT_ITEM_FILE).
+While the backing drive is under the floor the lane has no candidates. On 2026-11-11 SteveDesktop C: filled, its
+vhdx could not grow, and WSL went read-only.
 
 Files live in /mnt/d/ClaudeWork/rimmandrake/whittle_claude (WC_HOME overrides): <WORKER>/worker.json, loop.log,
 claims.json (under claims.lock), workers.json (the roster). On SteveDesktop WC_REMOTE=mandrake@archmagi-wsl: status, log,
@@ -36,6 +43,12 @@ SSH = ["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=10", "-o", "LogLevel=
 REPO = Path(__file__).resolve().parents[2]
 LIVE_NEEDS = ("bridge", "game-up")
 NEVER_NEEDS = ("owner",)
+MIN_FREE_GB = float(os.environ.get("WC_MIN_FREE_GB", "15"))
+PS = "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe"
+# the default distro's BasePath (where ext4.vhdx lives) -> its drive's free bytes
+PS_FREE = ("$ProgressPreference='SilentlyContinue'; $k='HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Lxss';"
+           " $g=(Get-ItemProperty $k).DefaultDistribution; $b=(Get-ItemProperty \"$k\\$g\").BasePath -replace '^\\\\\\?\\\\','';"
+           " $d=$b.Substring(0,1); \"$d \" + (Get-PSDrive $d).Free")
 
 
 def now():
@@ -143,12 +156,44 @@ def shared_claims():
         return {}
 
 
+def backing_free():
+    """(drive, free GB) of the Windows drive holding this distro's vhdx, or (None, None) when it cannot be read."""
+    try:
+        r = subprocess.run([PS, "-NoProfile", "-Command", PS_FREE], capture_output=True, text=True, timeout=60)
+        drive, free = r.stdout.strip().split()[-2:]
+        return drive, int(free) / 1e9
+    except (OSError, ValueError, subprocess.SubprocessError):
+        return None, None
+
+
+def disk_low():
+    drive, gb = backing_free()
+    if gb is not None and gb < MIN_FREE_GB:
+        return "%s: free %.1f GB < %.0f GB floor (the vhdx backing this WSL)" % (drive, gb, MIN_FREE_GB)
+    return None
+
+
+def diskfree(a):
+    drive, gb = backing_free()
+    if gb is None:
+        print("unknown (could not read the backing drive)")
+        return 0
+    print("%s: %.1f GB free (floor %.0f GB)" % (drive, gb, MIN_FREE_GB))
+    return 4 if gb < MIN_FREE_GB else 0
+
+
+def live_file(item_id):
+    return (REPO / "infrastructure/state/items" / (item_id + ".md")).exists()
+
+
 def candidates(worker, lane):
+    if disk_low():
+        return []
     w, pats = world(), lane_patterns()
     claims = shared_claims()
     out = []
     for v in w.items.values():
-        if not v.open or v.needs in NEVER_NEEDS:
+        if not v.open or v.needs in NEVER_NEEDS or not live_file(v.id):
             continue
         held = claims.get(v.id)
         if held and held.get("worker") != worker:
@@ -176,6 +221,10 @@ def candidates(worker, lane):
 
 
 def shortlist(a):
+    low = disk_low()
+    if low:
+        print("# NO CANDIDATES: disk guard: %s. Answer NONE." % low)
+        return
     rows = candidates(a.worker, a.lane)
     for rank, _, v in rows[:a.n]:
         print("%s | state=%s needs=%s owner=%s runs=%d nonpass_tail=%d blocked=%s | %s" % (
@@ -268,6 +317,7 @@ def main(argv=None):
     s.add_argument("worker")
     s = sub.add_parser("nonpass")
     s.add_argument("id")
+    sub.add_parser("diskfree")
     s = sub.add_parser("tokens")
     s.add_argument("logs", nargs="+")
     a = ap.parse_args(argv)
@@ -276,7 +326,7 @@ def main(argv=None):
         r = subprocess.run(SSH + [REMOTE, "python3 %s %s" % (REMOTE_WC, shlex.join(args))], timeout=120)
         return r.returncode
     fn = {"status": status, "log": log, "shortlist": shortlist, "lane-open": lane_open, "claim": claim,
-          "unclaim": unclaim, "mine": mine, "nonpass": nonpass, "tokens": tokens}[a.cmd]
+          "unclaim": unclaim, "mine": mine, "diskfree": diskfree, "nonpass": nonpass, "tokens": tokens}[a.cmd]
     return fn(a) or 0
 
 

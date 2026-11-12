@@ -143,6 +143,10 @@ while :; do
     ROUND=$(cur round); RD="$WC_DIR/rounds/$ROUND"; mkdir -p "$RD"; TRIES=$(cur tries); TRIES=${TRIES:-0}
     case "$PHASE" in
     setup)
+        if ! DF=$($WC diskfree 2>&1); then   # the backing drive is under the floor: no new round (SteveDesktop C:, 2026-11-11)
+            lg "idle: disk guard: $DF; next look in 30 min"; st --state idle --item - --note "disk guard: $DF"
+            stopped_by_file && { lg "loop end: STOP file"; exit 0; }; sleep 1800; continue
+        fi
         OPEN=$($WC lane-open "$LANE" 2>/dev/null || echo "?")
         st --state working --round "$ROUND" --item - --note "round $ROUND: picking from $OPEN open $LANE items"
         SL=$($WC shortlist "$W" "$LANE" --n 15 2>&1 | tail -n 16)
@@ -174,6 +178,10 @@ while :; do
         esac ;;
     whittle)
         ID=$(cur item); DIR=$(cur dir)
+        if [ ! -e "infrastructure/state/items/$ID.md" ]; then   # a ledger ghost: no live item file, nothing to build
+            lg "round $ROUND $ID has no live item file (ghost): to wrap-up to release it"
+            setcur phase=wrapup whittle_rc=ghost tries=0; continue
+        fi
         mkdir -p "$DIR/evidence"
         # the Whittle machinery: the templates with their paths pointed at this item's directory
         for f in DONE.md JUDGE_PROMPT.md; do [ -e "$DIR/$f" ] || sed "s#whittle/#$DIR/#g" "$WC_TEMPLATE/$f" > "$DIR/$f"; done

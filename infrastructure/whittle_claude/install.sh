@@ -26,6 +26,11 @@ unit_files() {   # unit_files <dir>: the template and this worker's drop-in unde
     printf '[Service]\nEnvironment=WC_CLONE=%s\n' "$CLONE" > "$1/whittle-claude@$W.service.d/clone.conf"
 }
 
+# disk guard: no new worker while the backing drive of this machine's WSL disk is under the floor (2026-11-11: Steve C:
+# filled, its WSL root went read-only and a clone lost its work)
+if [ "$MACHINE" = Archmagi ]; then DF=$(python3 "$HERE/wc.py" diskfree); else DF=$(ssh "${OPTS[@]}" "$STEVE" python3 - diskfree < "$HERE/wc.py"); fi \
+    || { echo "refused: disk guard: $DF" >&2; exit 4; }
+
 if [ "$MACHINE" = Archmagi ]; then
     if [ ! -d "$CLONE/.git" ]; then
         name=$(basename "$CLONE")

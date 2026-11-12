@@ -3,6 +3,13 @@
 The Whittle phase for the item below has finished (its exit code and log tail are below: 0 the stop checker passed,
 1 incomplete after the allowed runs, 2 BLOCKED or STOP). Keep this phase short (under 20 minutes).
 
+0. If `infrastructure/state/items/<ID>.md` does not exist (or the Whittle exit code is `ghost`), the item is a ledger
+   ghost: open in the ledger but not in the live set (CLAUDE.md: the items/<ID>.md glob is the live set; filed as
+   RIMMANDRAKE_RECONCILE_FLOWWORKS_LEDGER_OPEN_WITHOUT_ITEM_FILE). Do not build, close or drop it.
+   `rimflow note <ID> --text "Claude Whittle $RIMFLOW_SEAT released this claim: no live item file (ledger ghost)"
+   --why "picker took a ledger-open id with no items/<ID>.md"`, then `rimflow reassign <ID> --to BENCH --per-ruling
+   CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`. List any uncommitted files in progress.md and leave them. Do steps 3-6,
+   and end with `RESULT <ID> released sha=<sha or none>`.
 1. Read `$WHITTLE_DIR/DONE.md`, `JUDGE.md`, `NOTES.md`, any `BLOCKED.md`, and `rimflow show <ID>`.
 2. Decide the ending, one of:
    - **closed**: every criterion is true with evidence on disk and the judge ended `would show: yes`. Close it with
@@ -27,4 +34,4 @@ The Whittle phase for the item below has finished (its exit code and log tail ar
    round should know (a blockage you met, a harness fault you fixed).
 
 Your FINAL line of output must be exactly:
-`RESULT <ID> closed|parked|dropped|failed sha=<published sha or none>`
+`RESULT <ID> closed|parked|dropped|failed|released sha=<published sha or none>` (released: a ghost, step 0 only)
