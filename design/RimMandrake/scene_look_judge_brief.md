@@ -51,3 +51,7 @@ refusal, never a pass. Then one line: the single thing a player would notice fir
 | date | scene | what he saw | what our proof said |
 |---|---|---|---|
 | 2026-11-12 | FlowWorks pit submerge matrix, 2 m water (`RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL`) | north ladder drawn behind the pit wall art (south ladder and 1 m correct) | 21/21 live rows PASS; no look at ordering. Calibration (n=1): naive judges missed it; this brief got PARTIAL, `D:\ClaudeWork\rimmandrake\conductor\scene_judge_20261112\RESULT.md` |
+
+## Keep the exact image judged (owner, 2026-11-12)
+
+*"Please save that precise ingested image ... Asking me to judge on precisely the images they took for their own judgements is the very best comparison."* Every judge pass saves, beside its verdict, the exact file(s) it was given (same pixels, no re-encode), and its verdict names each file with its pixel size and how it was made from the source (crop box, scale factor). A showing to the owner lists those files first. A crop that was only enlarged holds no more detail than its source: say the source pixel size of the object judged.
