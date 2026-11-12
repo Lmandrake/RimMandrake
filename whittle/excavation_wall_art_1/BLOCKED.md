@@ -1,0 +1,1 @@
+A5 (L4) needs the owner's own look: load `EWA_WALL_ART_REVIEW_20261112.rws` (FlowWorks tier) and keep or redo the D1-D4 wall faces, the spike ring and the wooden ladder; A1-A4 are shown and judged (question: `D:\ClaudeWork\rimmandrake\whittle_claude\CLAUDE_ARCHMAGI_FWLIVE\OWNER_QUESTIONS.md`, 2026-11-12 05:50).
