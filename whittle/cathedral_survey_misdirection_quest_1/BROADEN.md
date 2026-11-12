@@ -62,3 +62,17 @@ linter's agency rule refused it ("somebody").
 
 Not acted on: GPT's view that "the officer stops taking notes" still implies success is a judgment call. The spec
 allows describing what the surveyors did, and the line explains nothing. The judge and the owner can overrule.
+
+# Round 2 (2026-11-11, after the item-4 parity and messy-play sections [7] and [8])
+
+## The question (verbatim)
+"A RimWorld mod quest: an Imperial survey hails the player when Imperial Heat >= 10 on Rust Cathedral ground; 3 answers: dull (Regard +12, Heat untouched), pointed (exposure +20), silent/lapse. Driven by a Python GM blackboard in shadow mode; the selftest output is attached. Previous broaden round covered: reload/restart exploits, toggle off, off-cathedral, full discovery, planted explanatory lines, band boundary (1 vs 4 crystals). New this round: item-4 surface parity and a messy run of single-crystal sales creeping over the band. In 6 lines max: the one or two most revealing things a real player (new, experienced, adversarial, messy) would do that these offline tests still miss, each testable OFFLINE with the blackboard fixture."
+(asked of GPT, gpt-6.1-sol, through `gpt_consult.py --codex wsl`, with `evidence/selftest_rustcathedral_survey.txt` attached)
+
+## The answer (verbatim)
+- Postpone the hail, leave Cathedral ground, then answer from the old letter; repeat with the toggle switched off after the hail. Fixture: change eligibility between offer and answer; verify the existing answer settles exactly once (+12 Regard or +20 exposure), while new offers remain blocked.
+- Answer around the two-day deadline while a GM poll is skipped. Fixture: supply answer-before-expiry and lapse-before-late-click histories, then repeat their terminal snapshots; verify only the winning outcome counts, no duplicate credit occurs, and "hail already out" clears.
+
+## What I tried, and what it found
+Tried the first (`evidence/broaden2_late_answer.txt`): a late answer, given after the clan left Cathedral ground or after the toggle went off, settles exactly once and clears the hail; no second hail opens. No defect. One thing to know: a slow answer moves the month's re-offer gap later, so a sale just inside it brings no second hail. That is the designed gap.
+Not run as a new probe: the second. A repeated terminal snapshot is the same as the round-1 reload and restart cases ([6] 6a-6i: credit per quest id, taken back if the row changes). The blackboard reads quest state, not clicks, so a "late click" past the lapse cannot reach it: the quest has already ended Unknown.

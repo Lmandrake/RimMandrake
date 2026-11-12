@@ -9,7 +9,7 @@ as a single bullet (copied exactly below). The statement's header says the item 
 owner's words, so after the bullet there is a verdict for every clause of the item's verify and criteria. The
 truncation is filed as a lesson (`infrastructure/state/lessons/20261112T054039Z-CLAUDE_STEVEDESKTOP_OFFLINE3-wc-py-setup-wrote-whittle-cathedral.md`).
 
-- true: - *Depends on:** item 1 (Regard/exposure sinks), item 3 (linter), pursuit | evidence: `whittle/cathedral_survey_misdirection_quest_1/evidence/selftest_rustcathedral_survey.txt` `whittle/cathedral_survey_misdirection_quest_1/evidence/ordinary_play_dull.txt` `whittle/cathedral_survey_misdirection_quest_1/evidence/ordinary_play_pointed.txt` `whittle/cathedral_survey_misdirection_quest_1/evidence/arc_lint.txt`
+- true: - *Depends on:** item 1 (Regard/exposure sinks), item 3 (linter), pursuit | evidence: `whittle/cathedral_survey_misdirection_quest_1/evidence/selftest_rustcathedral_survey.txt` `whittle/cathedral_survey_misdirection_quest_1/evidence/arc_lint.txt` `whittle/cathedral_survey_misdirection_quest_1/evidence/broaden2_late_answer.txt`
 
   The quest is built on all three dependencies and invents none of them:
   - **Item 1's sinks.** (b) feeds item 1's Regard counter (`CATHEDRAL_REGARD_GAIN_MISDIRECTION_SUCCESS`, the slot
@@ -21,24 +21,33 @@ truncation is filed as a lesson (`infrastructure/state/lessons/20261112T054039Z-
 
 Each verify and criteria clause:
 
-- true: Fires from the pursuit spine dressing without inventing a faction | evidence: `whittle/cathedral_survey_misdirection_quest_1/evidence/selftest_rustcathedral_survey.txt` `whittle/cathedral_survey_misdirection_quest_1/evidence/ordinary_play_lapse.txt`
+- true: Fires from the pursuit spine dressing without inventing a faction | evidence: `whittle/cathedral_survey_misdirection_quest_1/evidence/selftest_rustcathedral_survey.txt`
   In ordinary play the clan sells two kyber crystals on day 5 and is hailed that poll; a second sale a month later
   brings a second hail. There is no hail at low Heat, off Cathedral ground, after full discovery, or with the toggle
-  off (checks 1a-1i). CathedralPass ships no FactionDef (1j), and the reflection names it binds exist in
+  off (checks 1a-1i). New this round, [8]: in messier play the clan sells one crystal at a
+  time. The first sale leaves Heat at 7.6, under the band, and nobody comes. The second tips it to 10.8 and the
+  survey hails that poll. A lone later sale (7.6) brings nobody (8a-8c). CathedralPass ships no FactionDef (1j), and the reflection names it binds exist in
   EmpirePursuit's source (1l).
-- true: (b) success moves Regard up in shadow mode and Heat not at all | evidence: `whittle/cathedral_survey_misdirection_quest_1/evidence/selftest_rustcathedral_survey.txt` `whittle/cathedral_survey_misdirection_quest_1/evidence/ordinary_play_dull.txt`
+- true: (b) success moves Regard up in shadow mode and Heat not at all | evidence: `whittle/cathedral_survey_misdirection_quest_1/evidence/selftest_rustcathedral_survey.txt` `whittle/cathedral_survey_misdirection_quest_1/evidence/broaden2_late_answer.txt`
   Regard is +12 on the poll the answer is read, against the same run with the hail left to lapse. Heat, Hutt Interest
-  and the orbital timer are identical poll for poll across all 160 polls (2a-2g).
-- true: (c) moves exposure pressure | evidence: `whittle/cathedral_survey_misdirection_quest_1/evidence/selftest_rustcathedral_survey.txt` `whittle/cathedral_survey_misdirection_quest_1/evidence/ordinary_play_pointed.txt`
-  Exposure pressure is +20 on the answer poll; Heat and Regard are identical to the lapse run (3a-3f).
+  and the orbital timer are identical poll for poll across all 160 polls (2a-2g), and again in the messy run (8e, 8f). A late answer,
+  given after the clan left the ground or the toggle went off, still settles once (`broaden2_late_answer.txt`).
+- true: (c) moves exposure pressure | evidence: `whittle/cathedral_survey_misdirection_quest_1/evidence/selftest_rustcathedral_survey.txt`
+  Exposure pressure is +20 on the answer poll; Heat and Regard are identical to the lapse run (3a-3f; messy run 8d).
 - true: all dialog passes item 3's linter (no line explains what the player protected) | evidence: `whittle/cathedral_survey_misdirection_quest_1/evidence/arc_lint.txt` `whittle/cathedral_survey_misdirection_quest_1/evidence/selftest_rustcathedral_survey.txt`
-  All 15 strings pass at stages -1 to 3 (13 the player can be shown, plus quest name and description). Seven planted
+  All 17 strings in the quest, letter and incident defs pass at stages -1 to 3 (re-run this round). Seven planted
   explanatory lines are refused (4c), and the (b) letter says only what the surveyors did (4d).
 - true: completes Oracle-absent with prescribed fallback text | evidence: `whittle/cathedral_survey_misdirection_quest_1/evidence/selftest_rustcathedral_survey.txt`
   The blackboard runs with no `claude` on PATH and the survey path starts no process (5a, 5b). Every hail carries the
   shipped def text (5c), and every branch ends in its own shipped letter and outcome (5d, 5e). The full dialog and
   the four letters are printed at the end of the selftest file.
-- true: consequences logged on the blackboard | evidence: `whittle/cathedral_survey_misdirection_quest_1/evidence/ordinary_play_dull.txt` `whittle/cathedral_survey_misdirection_quest_1/evidence/ordinary_play_pointed.txt` `whittle/cathedral_survey_misdirection_quest_1/evidence/ordinary_play_silent.txt` `whittle/cathedral_survey_misdirection_quest_1/evidence/ordinary_play_lapse.txt`
+- true: consequences logged on the blackboard | evidence: `whittle/cathedral_survey_misdirection_quest_1/evidence/selftest_rustcathedral_survey.txt` `whittle/cathedral_survey_misdirection_quest_1/evidence/broaden2_late_answer.txt`
+  Each answer writes a `cathedral_survey_answered` row with its outcome and deltas, and `outcomes_so_far` counts them.
+- true: same CQF/bridge-letter surface and caveat as item 4 | evidence: `whittle/cathedral_survey_misdirection_quest_1/evidence/selftest_rustcathedral_survey.txt`
+  New check [7]. Item 4 (`CATHEDRAL_MISSION_BOON_OFFERS_1`) settled the inherited CQF caveat with vanilla quest
+  machinery: a baseChance-0 GiveQuestBase incident on the home map, fired by the blackboard through
+  jawa/storyteller_fire, with the outcome read back off the quest list. The survey matches it point for point
+  (7a-7e). Every quest node is vanilla or this mod's own, and CathedralPass depends on Harmony only, so no CQF.
 - unseen: Quest lands, all three branches playable on a quicktest | evidence: `src/RimUtinni/CathedralPass/validation.py`
   This lane drives no game. The C# builds clean against this machine's RimWorld 1.6 assemblies (0 warnings,
   `whittle/cathedral_survey_misdirection_quest_1/evidence/winbuild_cathedralpass.txt`), and the engine paths it

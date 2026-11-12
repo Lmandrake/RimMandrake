@@ -1,0 +1,14 @@
+Broaden round 2 probe (2026-11-11, CLAUDE_STEVEDESKTOP_OFFLINE3): the ordinary-play fixture, the hail answered
+100000 ticks (~1.7 days) after it opens (Postpone), with the clan leaving Cathedral ground or the survey toggle
+switched off two polls after the hail. The board is ShadowBlackboard, the bridge FixtureBridge, as the selftest.
+
+base dull        offers [20] answered [(27, 'dull_answer')]         regard_gain_total 12.0 exp_max  1.0 final_cur None {'dull_answer': 1, 'pointed_at_anomaly': 0, 'no_answer': 0}
+dull, away       offers [20] answered [(27, 'dull_answer')]         regard_gain_total 12.0 exp_max  1.0 final_cur None {'dull_answer': 1, 'pointed_at_anomaly': 0, 'no_answer': 0}
+dull, toggle off offers [20] answered [(27, 'dull_answer')]         regard_gain_total 12.0 exp_max  1.0 final_cur None {'dull_answer': 1, 'pointed_at_anomaly': 0, 'no_answer': 0}
+pointed, away    offers [20] answered [(27, 'pointed_at_anomaly')]  regard_gain_total  0.0 exp_max 20.0 final_cur None {'dull_answer': 0, 'pointed_at_anomaly': 1, 'no_answer': 0}
+pointed base     offers [20] answered [(27, 'pointed_at_anomaly')]  regard_gain_total  0.0 exp_max 20.0 final_cur None {'dull_answer': 0, 'pointed_at_anomaly': 1, 'no_answer': 0}
+
+Read: an answer given late, from another map or after the toggle is off, settles once (+12 Regard or +20 exposure),
+and the hail clears (final_cur None). With the slow answer the fixture's second sale (poll 142) brings no second
+hail: the month's gap runs from the answer (poll 27, gap ends ~poll 147) and Heat has decayed under the band by then.
+That is the designed re-offer gap, not a defect.
