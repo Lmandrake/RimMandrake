@@ -240,8 +240,19 @@ def handoff_files(all_seats=False):
              if _HANDOFF_RE.match(fn) and fn.endswith(".md")]
     if all_seats:
         return names
-    s = seat()
-    return [fn for fn in names if _HANDOFF_RE.match(fn).group(1) == s]
+    s = _canonical(seat())
+    return [fn for fn in names if _canonical(_HANDOFF_RE.match(fn).group(1)) == s]
+
+
+def _canonical(name):
+    """The ledger seat key: the handoff skill writes CONDUCTOR_HANDOFF_*, this tool BENCH_REBOOT_HANDOFF_*, and both are
+    one seat (model.SEAT_ALIAS). Matching the raw name hid CONDUCTOR_HANDOFF_202611110123 from a BENCH wake (review,
+    2026-11-11)."""
+    try:
+        import ledger_state
+        return ledger_state.model.canonical(name)
+    except Exception:       # noqa: BLE001  the alias table unreadable: the one alias it holds today
+        return {"CONDUCTOR": "BENCH"}.get(name, name)
 
 
 _HANDOFF_RE = re.compile(r"^(.+?)_(?:REBOOT_)?HANDOFF_\d")
@@ -539,7 +550,7 @@ def pointer_states(world):
     `live --result broken` or failed `verify` after a close reopens an item, `implemented` plus a `verify` pass ends one
     with no close, and `unblock` lifts a block. A last-verb reader called 132 open items CLOSED and 744 done ones open on
     the live ledger (review, 2026-11-11)."""
-    return {i: (it.state, bool(it.blocked)) for i, it in world.items.items()}
+    return dict(world.items)
 
 
 def pointer_ids(text):
@@ -566,8 +577,11 @@ def wake():
         print(ledger_state_line(pointers=False))
         return 0
     text = io.open(os.path.join(HANDOFFS, prev_name), encoding="utf-8").read()
-    print(_wake_view(text, os.path.join(HANDOFFS, prev_name)))
-    ids = pointer_ids(text)
+    view = _wake_view(text, os.path.join(HANDOFFS, prev_name))
+    print(view)
+    # pointers are the ids in what was printed: the hidden closed and filed lists made every filed item, another seat's
+    # included, an "open pointer — pick each up" that the reader could not see (review, 2026-11-11)
+    ids = pointer_ids(view)
     if ids:
         print("=" * 66)
         try:
@@ -581,14 +595,19 @@ def wake():
             return 0
         print("POINTER STATUS (ledger, re-derived now — the handoff above is a")
         print("snapshot and may be stale; %s):" % handoff_age(prev_ts))
-        open_ids = []
+        open_ids, me = [], _canonical(seat())
         for i in dict.fromkeys(ids):
-            st, blocked = last.get(i, ("not in ledger", False))
-            if st in TERMINAL:
-                print("  %-48s %s  *** CLOSED -- do NOT act on this pointer ***" % (i, st.upper()))
+            it = last.get(i)
+            if it is not None and it.state in TERMINAL:
+                nxt = last.get(it.superseded_by) if it.superseded_by else None
+                after = "" if not it.superseded_by else (
+                    "; its successor %s is %s too" % (it.superseded_by, nxt.state.upper()) if nxt and nxt.state in TERMINAL
+                    else "; work its successor %s" % it.superseded_by)
+                print("  %-48s %s  *** CLOSED -- do NOT act on this pointer%s ***" % (i, it.state.upper(), after))
                 continue
-            print("  %-48s %s" % (i, "not in ledger" if st == "not in ledger" else
-                                  "open (%s%s)" % (st, ", BLOCKED" if blocked else "")))
+            whose = "" if it is None or _canonical(it.owner or me) == me else ", %s's" % it.owner
+            print("  %-48s %s" % (i, "not in ledger" if it is None else
+                                  "open (%s%s%s)" % (it.state, ", BLOCKED" if it.blocked else "", whose)))
             moved = since_handoff(evs, i, prev_ts)
             if moved:
                 print("      " + moved)

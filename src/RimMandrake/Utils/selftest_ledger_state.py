@@ -102,6 +102,9 @@ rf(O, "verify", REOPENED, "--result", "fail", "--config", "selftest", "--level",
 rf(O, "file", UNBLOCKED, "--for", O, "--title", "blocked, then unblocked")
 rf(O, "block", UNBLOCKED, "--reason", "a block that is lifted", "--kind", "external")
 rf(O, "unblock", UNBLOCKED)
+SUPERSEDED = "STATENOW_TEST_PTR_SUPERSEDED"
+rf(O, "file", SUPERSEDED, "--for", O, "--title", "replaced by another item")
+rf(O, "supersede", SUPERSEDED, "--by", ids[5])
 with open(os.path.join(TMP, "events", "BENCH.jsonl")) as fh:            # a hand-mangled line: text that is not a string
     bad = dict(json.loads([ln for ln in fh if '"note"' in ln][0]), text=["NEXT:", 3])
 with open(os.path.join(TMP, "events", "BENCH.jsonl"), "a") as fh:
@@ -207,7 +210,8 @@ with open(os.path.join(hdir, "BENCH_REBOOT_HANDOFF_209901010000.md"), "w") as fh
     fh.write("# BENCH_REBOOT_HANDOFF_209901010000 — READ FIRST on wake\n\n## What is half-done, and where it stops\n\n"
              "<!-- TEMPLATE GUIDANCE for the writer -->\n"
              "- `%s` — probing; NEXT: something the ledger has since overtaken\n" % ids[0]
-             + "".join("- `%s` — x; NEXT: y\n" % i for i in (ids[11], REOPENED, UNBLOCKED, ids[3])))
+             + "".join("- `%s` — x; NEXT: y\n" % i for i in (ids[11], REOPENED, UNBLOCKED, ids[3], SUPERSEDED))
+             + "\n## Filed and still open (1)\n- `%s` — filed, hidden from the view, so no pointer\n" % ids[9])
 handoff.HANDOFFS = hdir
 handoff.previous_handoff = lambda: ("BENCH_REBOOT_HANDOFF_209901010000.md", "2000-01-01T00:00:00Z")
 handoff.show_last_reply = lambda: None
@@ -229,11 +233,14 @@ check("open (doing)" in tail and 'newest note' in tail and "write the fix into t
       and "the stale action" not in tail, "an open pointer shows what the ledger recorded after the handoff, newest note")
 prow = lambda iid: next((ln for ln in tail.splitlines() if ln.strip().startswith(iid + " ")), "")    # noqa: E731
 check("DROPPED" in prow(ids[11]) and "do NOT act" in prow(ids[11]), "a dropped pointer is CLOSED: %r" % prow(ids[11]))
-check(prow(REOPENED).endswith("open (ready)") and prow(UNBLOCKED).endswith("open (proposed)")
+check(prow(REOPENED).endswith("open (ready, %s's)" % O) and prow(UNBLOCKED).endswith("open (proposed, %s's)" % O)
       and prow(ids[3]).endswith("open (proposed, BLOCKED)"),
       "pointer states are the ledger's own: reopened after a close is open, an unblocked one is not BLOCKED:\n        "
       + "\n        ".join(prow(i) for i in (REOPENED, UNBLOCKED, ids[3])))
-check("open pointers: 4 " in tail, "the dropped pointer is not counted open")
+check("open pointers: 4 " in tail, "the dropped and superseded pointers are not counted open")
+check(prow(ids[9]) == "", "an id in the hidden filed list is no pointer: the reader cannot see it")
+check(prow(SUPERSEDED).endswith("SUPERSEDED  *** CLOSED -- do NOT act on this pointer; work its successor %s ***" % ids[5]),
+      "a superseded pointer names its successor: %r" % prow(SUPERSEDED))
 check("  now: ledger as of " in tail, "the line under it says the game and bridge as the ledger has them now")
 got = open(path).read() if os.path.isfile(path) else ""
 check("NEXT: an action written after the last build" in got, "regenerated from the ledger as it is at the wake")

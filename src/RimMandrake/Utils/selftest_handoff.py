@@ -266,9 +266,25 @@ check("(Left out of this view, in the full handoff /p/H2.md: the uncommitted lis
 check("Traps learned; Closed since the last handoff (1); Filed and still open (1); Commits; the uncommitted list" in _v,
       "the template's dropped sections are named in the closing line")
 
-print("\n%s: %d failure(s)" % (os.path.basename(__file__), len(fails)))
 print("handoff: pointer_ids reads the template's `- ID -- state; NEXT:` form")
 _ptxt = "- `A_ONE_1` -- x; NEXT: y\n- B_TWO_2 -- s; NEXT: t\n- C_THREE_3 \u2014 s; NEXT: t\n- not an id -- z\n"
 check(handoff.pointer_ids(_ptxt) == ["A_ONE_1", "B_TWO_2", "C_THREE_3"], "backtick, double hyphen and em dash pointers all found")
 
+print("handoff: a BENCH wake reads CONDUCTOR_HANDOFF_* too (one seat, two spellings)")
+_hd = tempfile.mkdtemp(prefix="selftest_handoff_alias.")
+for _n in ("CONDUCTOR_HANDOFF_202611110123.md", "BENCH_REBOOT_HANDOFF_202611111355.md", "CODEX_X_REBOOT_HANDOFF_202611110000.md"):
+    open(os.path.join(_hd, _n), "w").close()
+_old = (handoff.HANDOFFS, os.environ.get("RIMFLOW_SEAT"))
+handoff.HANDOFFS = _hd
+for _s in ("BENCH", "CONDUCTOR"):
+    os.environ["RIMFLOW_SEAT"] = _s
+    check(sorted(handoff.handoff_files()) == ["BENCH_REBOOT_HANDOFF_202611111355.md", "CONDUCTOR_HANDOFF_202611110123.md"],
+          "seat %s sees both spellings and no other seat's: %s" % (_s, sorted(handoff.handoff_files())))
+handoff.HANDOFFS = _old[0]
+if _old[1] is None:
+    os.environ.pop("RIMFLOW_SEAT", None)
+else:
+    os.environ["RIMFLOW_SEAT"] = _old[1]
+
+print("\n%s: %d failure(s)" % (os.path.basename(__file__), len(fails)))
 sys.exit(1 if fails else 0)
