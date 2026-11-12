@@ -24,6 +24,9 @@ import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
+# The seat is pinned: the handoff-selection checks read the repo's real handoffs, and only BENCH is sure to have them.
+# Run from a worker seat with none (CLAUDE_ARCHMAGI_OFFLINE3, 2026-11-11) they failed on the window, not the code.
+os.environ["RIMFLOW_SEAT"] = "BENCH"
 
 import handoff  # noqa: E402
 

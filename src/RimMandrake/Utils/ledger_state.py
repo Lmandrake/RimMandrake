@@ -1,0 +1,217 @@
+#!/usr/bin/env python3
+"""ledger_state.py - one screen of ledger state for a waking window (HANDOFF_SHRINK_HALF_THE_BYTES_WERE_GIT, half 2).
+
+Owner, by card 2026-11-07 ("How should handoffs change? -> Trim now, generate later"): a waking window reads ledger state
+rather than a narrated copy of it. A handoff's prose says what an item was doing when it was written; this file says what
+the ledger says NOW, so it is generated, never written by hand, and never committed.
+
+Four sections, each a count and at most CAP lines, so the whole file is at most MAX_LINES (one screen) on any ledger:
+  Open items      this seat's open items by state; in progress first (doing, or a live lease), newest start first
+  Owner-pending   what waits on the owner, every seat: owner_queue.needs_you, the same answer the status board gives
+  Live helpers    every live lease on the ledger, any seat: a worker that holds an item right now
+  NEXT            the newest `NEXT:` written in a ledger note on each of this seat's open items, newest first
+
+    python3 src/RimMandrake/Utils/ledger_state.py [--seat S]     write the file, print its path
+    python3 src/RimMandrake/Utils/ledger_state.py --print        build it to stdout, write nothing
+
+`handoff.py --wake` runs write() on every wake and names the file in its pointer lines, so nobody has to remember to
+regenerate it. The ledger is the one `RIMFLOW_LEDGER` names (default: the repo's); the file goes beside it, in
+`<state>/derived/state_now/<SEAT>_STATE_NOW.md` (gitignored), so a test ledger never writes the real one.
+"""
+import argparse
+import os
+import re
+import sys
+import time
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+sys.path.insert(0, os.path.dirname(HERE))
+from rimflow import model, priority  # noqa: E402
+
+MAX_LINES = 50
+CAP = 8
+WIDTH = 160
+REGEN = "python3 src/RimMandrake/Utils/ledger_state.py"
+NEXT_RE = re.compile(r"NEXT:\s*(.+)")
+
+
+def ledger_head():
+    """The ledger in use: RIMFLOW_LEDGER when set (the CLI's own redirect), else the repo's. It is bound onto
+    model.EVENTS, because only model.read() with NO path merges the per-seat shards: read(path) reads that one file,
+    the history frozen at the 2026-09-23 cutover (the first draft of this file showed BENCH as of that day)."""
+    if os.environ.get("RIMFLOW_LEDGER"):
+        model.EVENTS = os.environ["RIMFLOW_LEDGER"]
+    return model.EVENTS
+
+
+def out_path(seat, head=None):
+    """<state root of the ledger in use>/derived/state_now/<SEAT>_STATE_NOW.md (the root by shape, as cli._state_root)."""
+    d = os.path.dirname(os.path.abspath(head or ledger_head()))
+    root = os.path.dirname(d) if os.path.basename(d) == "ledger" else d
+    return os.path.join(root, "derived", "state_now", "%s_STATE_NOW.md" % seat)
+
+
+def local(ts):
+    """A ledger UTC stamp (or epoch) -> local Pacific 'YYYY-MM-DD HH:MM PST'; '?' when unreadable."""
+    e = ts if isinstance(ts, (int, float)) else model.epoch(ts)
+    return time.strftime("%Y-%m-%d %H:%M %Z", time.localtime(e)) if e is not None else "?"
+
+
+def clip(s, n=WIDTH):
+    s = " ".join(str(s or "").split())
+    n = max(n, 2)
+    return s if len(s) <= n else s[:n - 1].rstrip() + "…"
+
+
+def short_title(it, n=70):
+    return clip(it.title or "(no title)", n)
+
+
+def section(title, rows, more_cmd, total=None):
+    """A heading, at most CAP rows, and one 'and N more' line naming where the rest are."""
+    total = len(rows) if total is None else total
+    out = ["", title]
+    out += [clip(r) for r in rows[:CAP]] or ["- none"]
+    if total > min(len(rows), CAP):
+        out.append("- … and %d more: %s" % (total - min(len(rows), CAP), more_cmd))
+    return out
+
+
+def open_items(world, seat, now):
+    mine = [i for i in world.items.values() if i.owner == seat and i.open]
+    live = {i.id for i in mine if model.lease_status(i, now) == "live"}
+    counts = {}
+    for i in mine:
+        k = "blocked" if i.blocked else i.state
+        counts[k] = counts.get(k, 0) + 1
+    order = ("doing", "ready", "proposed", "built", "validated", "blocked")
+    tally = " · ".join("%s %d" % (k, counts[k]) for k in order if counts.get(k)) or "none"
+    inprog = sorted((i for i in mine if i.state == "doing" or i.id in live),
+                    key=lambda i: i.started_at or i.created_at or "", reverse=True)
+    blocked = sorted((i for i in mine if i.blocked and i not in inprog), key=lambda i: i.created_at or "")
+    seen = {i.id for i in inprog + blocked}
+    ranked = [i for i in priority.rank(world, seat, "v1", {"now": now}) if i.id not in seen]
+    rows = []
+    for i in inprog:
+        rows.append("- `%s` — %s%s, needs %s: %s" % (i.id, i.state, " (leased)" if i.id in live else "",
+                                                   i.needs, short_title(i)))
+    for i in blocked:
+        rows.append("- `%s` — BLOCKED: %s" % (i.id, clip(i.blocked_reason or "unexplained", 80)))
+    for i in ranked:
+        rows.append("- `%s` — %s, next to offer, needs %s: %s" % (i.id, i.state, i.needs, short_title(i)))
+    # then the rest, newest first: a seat holding only proposed or built work must still see some of it by name
+    seen |= {i.id for i in ranked}
+    rest = ("ready", "proposed", "built", "validated")
+    for i in sorted((i for i in mine if i.id not in seen and i.state in rest),
+                    key=lambda i: (rest.index(i.state), -(model.epoch(i.created_at) or 0))):
+        rows.append("- `%s` — %s, needs %s: %s" % (i.id, i.state, i.needs, short_title(i)))
+    return section("## Open items — %d (%s)" % (len(mine), tally), rows,
+                   "rimflow queue %s" % seat, total=len(mine))
+
+
+def owner_pending(world, evs):
+    """owner_queue.needs_you over the ledger and Relentless's holds: the status board's own answer."""
+    try:
+        import owner_queue
+        import fleet_mods
+        rel = fleet_mods.relentless_states()
+        n = owner_queue.needs_you(world.items, rel, questions=owner_queue.load_questions(), evs=evs, turns={})
+    except Exception as e:      # noqa: BLE001  a reader that fails says so; it never reads as "nothing waits"
+        return ["", "## Owner-pending — UNMEASURED (%s)" % clip(e, 100)]
+    rows = []
+    for t in n["topics"]:
+        if len(t["items"]) == 1:
+            rows.append("- `%s`: %s" % (t["items"][0], clip(t["q"], 110)))
+        else:
+            rows.append("- %s_* (%d items, e.g. `%s`): %s" % (t["topic"], len(t["items"]), t["items"][0],
+                                                            clip(t["q"], 80)))
+    head = "## Owner-pending — %d item%s in %d topic%s, every seat" % (
+        n["count"], "" if n["count"] == 1 else "s", len(n["topics"]), "" if len(n["topics"]) == 1 else "s")
+    if n["answered"]:
+        head += " (%d more answered by him, ours to move)" % len(n["answered"])
+    return section(head, rows, "python3 src/RimMandrake/Utils/owner_queue.py")
+
+
+def live_helpers(world, now):
+    held = sorted((i for i in world.items.values() if i.open and model.lease_status(i, now) == "live"),
+                  key=lambda i: i.lease.get("expires") or "")
+    rows = ["- %s holds `%s` (%s), lease to %s" % (i.lease.get("seat") or i.owner, i.id, i.state,
+                                                  local(i.lease.get("expires"))[11:])
+            for i in held]
+    return section("## Live helpers — %d live lease%s on the ledger, every seat" % (len(held), "" if len(held) == 1 else "s"),
+                   rows, "rimflow queue <SEAT> (IN PROGRESS)")
+
+
+def next_lines(world, evs, seat):
+    mine = {i.id: i for i in world.items.values() if i.owner == seat and i.open}
+    last = {}
+    for e in evs:
+        if e.get("event") != "note" or e.get("id") not in mine:
+            continue
+        m = None
+        for m in NEXT_RE.finditer(e.get("text") or ""):
+            pass
+        if m:       # model.read() is in ledger order (ts, tsn), so the last NEXT read is the newest
+            last[e["id"]] = (e.get("ts") or "", m.group(1).splitlines()[0].strip(), e.get("seat") or "?")
+    rows = []
+    for iid, (ts, nxt, who) in sorted(last.items(), key=lambda kv: kv[1][0], reverse=True):
+        # the action is cut to fit, never the stamp: an old NEXT is only safe to act on when its date shows
+        head, tail = "- `%s` — %s; NEXT: " % (iid, mine[iid].state), " (%s, %s)" % (local(ts)[5:16], who)
+        rows.append(head + clip(nxt.rstrip(".… "), max(30, WIDTH - len(head) - len(tail))) + tail)
+    return section("## NEXT — the newest `NEXT:` note on %d of this seat's open items (newest first; note time PST, writer)" % len(rows), rows,
+                   "rimflow show <ID>")
+
+
+def build(seat, evs=None, world=None, now=None):
+    """-> the file's text, at most MAX_LINES lines. Pure over (seat, events, now) apart from the Relentless store."""
+    if evs is None:
+        ledger_head()
+        evs = model.read()
+    world = world if world is not None else model.replay(evs)
+    now = now if now is not None else model.epoch_now()
+    as_of = next((e["ts"] for e in reversed(evs) if e.get("ts")), None)
+    L = ["# %s — ledger state now (generated; never edit, never commit)" % seat,
+         "ledger as of %s · generated %s · game %s · bridge %s" % (local(as_of), local(now), world.game or "?",
+                                                                  world.bridge_holder or "free"),
+         "regenerate: %s --seat %s (handoff.py --wake does it)" % (REGEN, seat)]
+    L += open_items(world, seat, now)
+    L += owner_pending(world, evs)
+    L += live_helpers(world, now)
+    L += next_lines(world, evs, seat)
+    if len(L) > MAX_LINES:      # cannot happen with the caps above; kept so a new section can never scroll him
+        L = L[:MAX_LINES - 1] + ["(cut at %d lines: %s --print)" % (MAX_LINES, REGEN)]
+    return "\n".join(L) + "\n"
+
+
+def write(seat, path=None):
+    """Build and write atomically; -> the path written."""
+    path = path or out_path(seat)
+    text = build(seat)
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    tmp = path + ".tmp.%d" % os.getpid()
+    with open(tmp, "w", encoding="utf-8") as fh:
+        fh.write(text)
+    os.replace(tmp, path)
+    return path
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap.add_argument("--seat", help="default: RIMFLOW_SEAT or AGENT_SEAT")
+    ap.add_argument("--print", action="store_true", help="build to stdout, write nothing")
+    a = ap.parse_args(argv)
+    seat = (a.seat or os.environ.get("RIMFLOW_SEAT") or os.environ.get("AGENT_SEAT") or "").strip().upper()
+    if not seat:
+        print("REFUSED: no seat. Pass --seat or set RIMFLOW_SEAT; a guessed seat shows another seat's items.",
+              file=sys.stderr)
+        return 2
+    if a.print:
+        sys.stdout.write(build(seat))
+    else:
+        print(write(seat))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
