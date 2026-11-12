@@ -58,8 +58,9 @@ Printed by `python3 src/RimMandrake/ExplosiveKnockback/validation.py --criteria`
 - EK.feel L4: owner watches a blast and a shield belt — owed
 
 ## north star
-state: DRAFT
-validated-hash:
+state: VALIDATED
+validated-hash: 5d06c98d8b13c2ef219df6639d4164548ccf3cc25eadeb675a172c558a492585
+validated-by: BY CARD: Approve the 16 Explosive Knockback north-star bars (14 must-show, 2 cannot-show)? -> Approve as written (Thu 2026-11-12 ~00:0x PST)
 
 Drafted 2026-11-11 by the Designer from the root he approved by card ("Approve as written",
 OWNER:1794468835221748501) and his card answers that night (record.json `d_c_*`). Each line is
