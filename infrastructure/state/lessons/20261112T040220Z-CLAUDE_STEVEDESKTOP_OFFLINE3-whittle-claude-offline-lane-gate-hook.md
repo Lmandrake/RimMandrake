@@ -1,0 +1,1 @@
+The whittle_claude offline-lane gate hook (infrastructure/whittle_claude/gate.py) refuses ANY Bash command whose text contains the rimflow close flag for running-promises, even inside a heredoc of prose, reading it as driving a game. Write prose that names it with the Write tool; pass close arguments from a file.

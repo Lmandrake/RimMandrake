@@ -1,0 +1,1 @@
+SteveDesktop Whittle clones (~/rm/claude-offline*) set no core.sshCommand, so ./publish pushes with the read-only id_ed25519 and is REFUSED ('key ... marked as read only'). Publish with GIT_SSH_COMMAND='ssh -i ~/.ssh/deploy_rimmandrake_write -o IdentitiesOnly=yes' ./publish (or set the clone's core.sshCommand to that key).
