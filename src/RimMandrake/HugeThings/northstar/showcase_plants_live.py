@@ -5,11 +5,13 @@ open (cap space you walk under), the selection covers the picture, and growth ma
   GROWN      stage RM_Nogtyl at growth 1 (jawa/artboard_stage, STAGED), 120 ticks; MapComponent_HugeFootprints
              .DebugPlantState reads it realized; trunk_live.judge on the RM_HugeTrunkBlocker counts (the measured
              contact counts of TheRot/Patches/RotGiants_HugeFootprint.xml, never a hand number).
-  BODY       trunk/root cells SOLID: a colonist cannot path onto sampled blocker cells; cap cells OPEN: cells under the
-             plant's drawRect (artboard_stage readBack, world units) that hold no blocker are reachable. Paused path
-             reads (jawa/order_pawn waitTicks=0, then stop_job), nothing walks.
-  SELECTION  CompHugeFootprint.SelectRect() has no bridge/static instrument: written UNMEASURED/HARNESS honestly, with
-             the drawRect recorded as the picture to compare against when one exists.
+  BODY       trunk/root cells SOLID: a colonist cannot path onto sampled blocker cells; cap cells OPEN: cells on the
+             drawn picture that hold no blocker are reachable. Paused path reads (jawa/order_pawn waitTicks=0, then
+             stop_job), nothing walks. The picture comes from HugePlantSelectionProbe (vanilla Plant.Print replayed:
+             growth-scaled quad, flip, variant, the variant's art-measured opaque box), NOT artboard_stage's drawRect,
+             which is Graphic.drawSize (1x1 for a giant: plants scale by plant.visualSizeRange).
+  SELECTION  HugePlantSelectionProbe.ClickPicture clicks every cell of the visible picture through GenUI.ThingsUnderMouse
+             with the Selector's parameters: PASS when every picture cell selects the plant, FAIL on any miss.
   DOOR       orchestrates trunk_doors_live.py (its own registered-site load, scene-begin snapshot and restore) AFTER this
              showcase's site is restored: growth seals a door until RM_CutHugePlantFromTrunk cuts it.
 
@@ -37,6 +39,30 @@ ROWS = dict(GROWN=["PLANT_grown"], BODY=["PLANT_trunk_solid", "PLANT_cap_open"],
             DOOR=["PLANT_door_seal"])
 REQUIRED = [r for k in ("GROWN", "BODY", "SELECTION", "DOOR") for r in ROWS[k]]
 SAMPLES = 6
+PROBE = "RimMandrake.HugeThings.HugePlantSelectionProbe"
+
+
+def parse_probe(txt):
+    """key=value tokens of HugePlantSelectionProbe.ClickPicture; picture/quad as float tuples."""
+    d = dict(tok.split("=", 1) for tok in txt.split() if "=" in tok)
+    try:
+        a, b = d["picture"].split("..")
+        d["picture"] = tuple(float(v) for v in a.split(",") + b.split(","))
+    except (KeyError, ValueError):
+        d.pop("picture", None)
+    return d
+
+
+def picture_cells(p):
+    """Cells whose centre lies on the visible picture box (x0,z0,x1,z1), south to north."""
+    try:
+        x0, z0, x1, z1 = p["picture"]
+    except (KeyError, TypeError, ValueError):
+        return []
+    import math
+    xs = range(int(math.ceil(x0 - 0.5)), int(math.floor(x1 - 0.5)) + 1)
+    zs = range(int(math.ceil(z0 - 0.5)), int(math.floor(z1 - 0.5)) + 1)
+    return [(x, z) for z in zs for x in xs]
 
 
 def door_subprocess(out):
@@ -56,6 +82,7 @@ class PlantShowcase(object):
     def __init__(self, sc, cell, door_runner):
         self.sc, (self.x, self.z), self.door_runner = sc, cell, door_runner
         self.draw, self.blockers, self.colonist = None, [], None
+        self.pic, self.pic_txt = None, ""
 
     def grown(self, sc):
         bad = TL.settings_ok(dict((f, sc.call("jawa/mod_settings_field", typeName=SC.SETTINGS, action="get", field=f)
@@ -83,6 +110,7 @@ class PlantShowcase(object):
         south = sc.things(south_r, TL.BLOCKER)
         self.blockers = [(t.get("x"), t.get("z")) for t in rows or []]
         _, probe = sc.hook(TL.MC, "DebugPlantState", "current|%d,%d" % (x, z))
+        self.read_picture(sc)
         status, d = TL.judge(None if rows is None else len(rows), None if south is None else len(south),
                              TL.allowed_counts(), probe[:500])
         return sc.row("PLANT_grown", "a full-grown RM_Nogtyl with its measured trunk footprint", status,
@@ -105,26 +133,35 @@ class PlantShowcase(object):
         st = "UNMEASURED" if not solid or any(r is None for _, r in solid) else ("FAIL" if bad else "PASS")
         sc.row("PLANT_trunk_solid", "a colonist cannot path onto the trunk/root (blocker) cells", st,
                "MOD" if st != "UNMEASURED" else "HARNESS", "colonist %s; %s" % (self.colonist, solid))
-        d = self.draw or {}
-        try:
-            x0, z0, w, h = int(d["x"] + 0.999), int(d["z"] + 0.999), int(d["w"]), int(d["h"])
-        except (KeyError, TypeError, ValueError):
+        if not self.pic:
             return sc.row("PLANT_cap_open", "cap cells under the picture are open", "UNMEASURED", "HARNESS",
-                          "no drawRect from artboard_stage: %s" % d)
+                          "no picture from HugePlantSelectionProbe: %s" % self.pic_txt[:300])
         solidset = set(self.blockers)
-        cap = [(cx, cz) for cz in range(z0 + h - 2, z0 - 1, -1) for cx in range(x0, x0 + w - 1)
-               if (cx, cz) not in solidset and (cx, cz) != (self.x, self.z)]
+        cap = [c for c in picture_cells(self.pic)[::-1] if c not in solidset and c != (self.x, self.z)]
         cap = cap[::max(1, len(cap) // SAMPLES)][:SAMPLES]
         opened = [(c, sc.reach(self.colonist, c[0], c[1])) for c in cap]
         closed = [c for c, r in opened if r is not True]
         st = "UNMEASURED" if not opened or any(r is None for _, r in opened) else ("FAIL" if closed else "PASS")
         return sc.row("PLANT_cap_open", "cells under the picture that are not trunk are open to walking pawns", st,
-                      "MOD" if st != "UNMEASURED" else "HARNESS", "drawRect %s; %s" % (d, opened))
+                      "MOD" if st != "UNMEASURED" else "HARNESS", "picture %s; %s" % (self.pic.get("picture"), opened))
+
+    def read_picture(self, sc):
+        ok, self.pic_txt = sc.hook(PROBE, "ClickPicture", "current|%d,%d" % (self.x, self.z))
+        self.pic = parse_probe(self.pic_txt) if ok else None
 
     def selection(self, sc):
-        return sc.row("PLANT_selection", "the selection rect covers the picture", "UNMEASURED", "HARNESS",
-                      "no instrument: CompHugeFootprint.SelectRect() is an instance method with no bridge or static hook; "
-                      "picture drawRect for the comparison: %s" % (self.draw,))
+        crit = "a click on any cell of the visible picture selects the plant (GenUI.ThingsUnderMouse, Selector parameters)"
+        self.read_picture(sc)   # fresh: BODY's path reads must not have changed anything, and this shows it
+        p = self.pic
+        if not p or "pictureCells" not in p:
+            return sc.row("PLANT_selection", crit, "UNMEASURED", "HARNESS", "probe gave no reading: %s" % self.pic_txt[:400])
+        if p.get("selectionOn") != "True":
+            return sc.row("PLANT_selection", crit, "UNMEASURED", "SITE", "plant selection is off in Mod Settings: %s" % self.pic_txt)
+        cells, hits = int(p["pictureCells"]), int(p["hits"])
+        st = "UNMEASURED" if cells == 0 else ("PASS" if hits == cells else "FAIL")
+        return sc.row("PLANT_selection", crit, st, "MOD" if cells else "HARNESS",
+                      "%d/%d picture cells select it (%s first); ring overreach %s/%s; %s"
+                      % (hits, cells, p.get("first"), p.get("ringHits"), p.get("ringCells"), self.pic_txt[:600]))
 
     def door(self, sc):
         rec = self.door_runner()
@@ -149,11 +186,11 @@ def run(args, bridge, site, ticker=None, door_runner=None):
     try:
         try:
             sc.rec["site"] = site.begin()
-            sc.run_phases([("GROWN", show.grown, ROWS["GROWN"]), ("BODY", show.body, ROWS["BODY"])])
+            sc.run_phases([("GROWN", show.grown, ROWS["GROWN"]), ("BODY", show.body, ROWS["BODY"]),
+                           ("SELECTION", show.selection, ROWS["SELECTION"])])
         finally:
             sc.rec["site_restore_errors"] = site.restore()
-        # SELECTION has no instrument (always UNMEASURED); it is recorded, not a gate on DOOR, which needs no state of ours.
-        show.selection(sc)
+        sc.stopped_by = None if sc.stopped_by in (None, "SELECTION") else sc.stopped_by  # DOOR needs no state of ours
         if sc.rec["site_restore_errors"] and sc.stopped_by is None:
             sc.stopped_by = "SITE_RESTORE"   # never stage a second scene on an unrestored site
         sc.run_phases([("DOOR", show.door, ROWS["DOOR"])])

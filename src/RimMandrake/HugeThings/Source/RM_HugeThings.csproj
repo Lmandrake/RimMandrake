@@ -53,6 +53,7 @@
     <Compile Include="HugePlantCutting.cs" />
     <Compile Include="PlantCutToilRewrite.cs" />
     <Compile Include="TrunkDoorValidationHooks.cs" />
+    <Compile Include="HugePlantSelectionProbe.cs" />
     <Compile Include="MapComponent_HugeFootprints.cs" />
     <Compile Include="RM_HugeThingsSettings.cs" />
     <Compile Include="..\..\_Shared\DrawnExtent\DrawnExtentKernel.cs" Link="Shared\DrawnExtentKernel.cs" />

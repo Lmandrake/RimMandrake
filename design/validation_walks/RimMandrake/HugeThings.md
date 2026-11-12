@@ -17,7 +17,7 @@ Sources: `About/About.xml`, `Defs/**` (trunk blocker, tier def, 5 crush rules, c
 - Cutting or killing the plant removes its trunk at once. → trunk.cutting_the_plant_removes_the_trunk
 - A young huge plant (growth below `minGrowthToBlock`) blocks nothing. → trunk.young_giant_blocks_nothing
 - The footprint follows the drawn picture, growth and the measured masks. → UNCOVERED: offline, pinned by `selftest_hugethings_footprint.py`, the kernel fuzz `Utils/selftest_hugethings_fuzz.py` (+ `mutate_hugethings_fuzz.py`) and `Utils/selftest_hugethings_lint.py`; no live component needed
-- Clicking anywhere on a huge plant's drawn picture selects it. → not_driven.click_anywhere_on_picture_selects_plant (UNMEASURED: no selection-rect read tool)
+- Clicking anywhere on a huge plant's drawn picture selects it. → not_driven.click_anywhere_on_picture_selects_plant (UNMEASURED here; driven by northstar/showcase_plants_live.py SELECTION through HugePlantSelectionProbe.ClickPicture)
 - Clicking anywhere on a huge pawn's drawn body selects it. → not_driven.huge_pawn_hitbox_covers_drawn_body (UNMEASURED)
 - After save/load a trunk re-links to its plant (no duplicates, no orphans). → not_driven.trunk_relinks_after_save_load (UNMEASURED)
 - Giants generated with a new map get their trunks once generation finishes. → not_driven.mapgen_giants_get_trunks (UNMEASURED)

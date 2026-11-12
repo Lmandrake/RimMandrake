@@ -657,7 +657,7 @@ def _build_suite():
     @suite.chain("not_driven")
     def not_driven(t):
         for name, toggle, why in (
-                ("click_anywhere_on_picture_selects_plant", "plantSelectionEnabled", "no bridge tool reads Thing.CustomRectForSelector or simulates a map click"),
+                ("click_anywhere_on_picture_selects_plant", "plantSelectionEnabled", "driven by northstar/showcase_plants_live.py SELECTION (HugePlantSelectionProbe.ClickPicture: every picture cell clicked through GenUI.ThingsUnderMouse), not this suite"),
                 ("huge_pawn_hitbox_covers_drawn_body", "pawnHitboxEnabled", "no selection-rect read tool"),
                 ("trunk_relinks_after_save_load", None, "needs a save/load round on a map with a giant"),
                 ("shot_into_trunk_damages_the_plant_once", "plantTrunkDamageEnabled", "no bridge tool fires a projectile or explosion at a cell; offline: kernel fuzz `damage`, static patch checks"),

@@ -32,8 +32,9 @@ class FakeSite(object):
 class Fake(object):
     """A tiny world: a clock, settings, things in the lane, one walking titan, a SiteReport."""
 
-    def __init__(self, stuck=False):
+    def __init__(self, stuck=False, misses=0, selection_on=True):
         self.tick, self.stuck, self.settings, self.calls = 1000, stuck, {}, []
+        self.misses, self.selection_on = misses, selection_on
         self.things = [dict(def_="Wall", x=TT.WALL_X, z=z) for z in TT.STAGED_Z] + \
                       [dict(def_="Plant_TreeOak", x=TT.TREE_X, z=z) for z in TT.STAGED_Z[::3]] + \
                       [dict(def_="RM_Nogtyl", x=TT.GIANT[0], z=TT.GIANT[1])]
@@ -107,6 +108,12 @@ class Fake(object):
                 return dict(success=True, result="stepped %d" % len(self.sites))
             if m == "DebugPlantState":
                 return dict(success=True, result="registered=True realized=True")
+            if m == "ClickPicture":   # a 12-cell Nogtyl quad; visible box 37.4..44.6 x 200.2..211.8 = 8 x 12 = 96 cells
+                return dict(success=True, result=(
+                    "plant=Plant_RM_Nogtyl1 growth=1 selectionOn=%s variant=Nogtyl_A flip=False quad=34.5,200 side=12 "
+                    "picture=37.4,200.2..44.6,211.8 selectRect=(37,200)-(44,211) pictureCells=96 hits=%d first=90 "
+                    "missed=%s ringCells=60 ringHits=0 aheadOfPlant=none"
+                    % (self.selection_on, 96 - self.misses, "none" if not self.misses else "44,211")))
             return dict(success=True, result="FAIL unknown %s" % m)
         if tool == "jawa/artboard_stage":
             return dict(success=True, ops=[dict(ok=True, drawRect=dict(x=36.0, z=199.0, w=9.0, h=9.0))])
@@ -178,11 +185,30 @@ class T(unittest.TestCase):
         with open(out) as fh:
             rec = json.load(fh)
         st = dict((r["id"], (r["status"], r["cls"])) for r in rec["rows"])
-        self.assertEqual(st["PLANT_selection"], ("UNMEASURED", "HARNESS"))
+        self.assertEqual(st["PLANT_selection"], ("PASS", "MOD"))
+        cap = next(r["detail"] for r in rec["rows"] if r["id"] == "PLANT_cap_open")
+        self.assertIn("(37.4, 200.2, 44.6, 211.8)", cap)              # cap samples come from the probe's picture
+        self.assertNotIn("(40, 200)", cap.split(";", 1)[1])           # never the root, never a blocker
         for rid in ("PLANT_trunk_solid", "PLANT_cap_open", "PLANT_door_seal"):
             self.assertEqual(st[rid][0], "PASS", (rid, [r["detail"] for r in rec["rows"] if r["id"] == rid]))
         self.assertEqual(st["PLANT_grown"][0], "PASS")  # 10 blockers: a count trunk_live.allowed_counts reads from the patch
         self.assertEqual(door, [1])
+
+    def plants(self, **kw):
+        f = Fake(**kw)
+        out = os.path.join(self.tmp, "plants_%d.json" % len(os.listdir(self.tmp)))
+        PP.run(Args(out, "40,200"), f, FakeSite(PP.SNAP_PREFIX), ticker=f.advance,
+               door_runner=lambda: dict(ok=True, restoration=dict(ok=True)))
+        with open(out) as fh:
+            rec = json.load(fh)
+        return dict((r["id"], (r["status"], r["cls"])) for r in rec["rows"])
+
+    def test_selection_miss_fails_and_off_is_site(self):
+        st = self.plants(misses=1)
+        self.assertEqual(st["PLANT_selection"], ("FAIL", "MOD"))
+        self.assertEqual(st["PLANT_door_seal"][0], "PASS")             # a selection failure does not gate the door scene
+        self.assertEqual(self.plants(selection_on=False)["PLANT_selection"], ("UNMEASURED", "SITE"))
+        self.assertEqual(PP.picture_cells(PP.parse_probe("picture=37.4,200.2..44.6,211.8")).__len__(), 96)
 
     def test_separate_entrypoints_and_sites(self):
         self.assertNotEqual(TT.SNAP_PREFIX, PP.SNAP_PREFIX)
