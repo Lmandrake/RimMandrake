@@ -1,0 +1,2 @@
+A live dig proof's tick budget must come from the cut's real work, not a fixed number: deep_stone_live waited 6000 ticks for a D3->D4 notch that the hours-of-shovel-work tune (labour x4) had made 51,200 work (~25,000 ticks), so three rounds read 'job running, depth unchanged' as SITE trouble. When a dig row times out with the job accepted, compute WorkToDeepen x digLabourMultiplier / (1.7 x MiningSpeed) before suspecting the site.
+item: PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS
