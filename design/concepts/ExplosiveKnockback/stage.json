@@ -268,10 +268,17 @@
     "ref": "run bench-ek-st4d-20261112",
     "stage": 3,
     "tokens": 3940000
+   },
+   {
+    "at": "2026-11-12T09:26:08Z",
+    "kind": "unmeasured",
+    "ref": "run bench-ek-st4e-20261112",
+    "stage": 4,
+    "tokens": 3940000
    }
   ],
   "reserve": 60000,
-  "spent": 33585036
+  "spent": 37525036
  },
  "history": [
   {
@@ -507,6 +514,24 @@
    "stage": 4,
    "what": "close",
    "why": "run bench-ek-st4d-20261112: stage 3 done"
+  },
+  {
+   "at": "2026-11-12T09:25:58Z",
+   "stage": 4,
+   "what": "over_budget",
+   "why": "33585036 of 4000000 spent; run bench-ek-st4e-20261112 goes on with 3940000 (advisory)"
+  },
+  {
+   "at": "2026-11-12T09:25:58Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run bench-ek-st4e-20261112, stage 4, budget 3940000"
+  },
+  {
+   "at": "2026-11-12T09:26:09Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run bench-ek-st4e-20261112: stage 4 done"
   }
  ],
  "item": "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
@@ -658,11 +683,32 @@
    "run": "bench-ek-st4d-20261112",
    "stage": 3,
    "summary": "Stage 3 touch-up from a cold reader's flag: impact factor 0 now leaves doors undamaged as well as walls and pawns (per_weapon_tuning and doors_and_deep_water_stop leaves, two sheet lines); scenes already staged the door lane."
+  },
+  {
+   "at": "2026-11-12T09:26:09Z",
+   "inputs": {
+    "exam": "f2914f96f9c793bd486145d74cc88f895a7999ba576c024548c3e6115d7491ba",
+    "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
+    "scenes": "69bd6f8c91836a85ad4eb15a50bed217a700ea92615ef61f1b8c6b1ed56cea5a",
+    "sheet": "399158538b077009c7458b55392cc422675f3044e0eaa7218c26ddf1d8aa46b6",
+    "tree": "ff0a3b1db5ead537aee2cbabb86c807e8ad0ed3c14b75f40f46ca2b0e34491c4"
+   },
+   "manifest": {
+    "designer.md": "b79052133c514f160b33c30b53d69a947adbfdbc81304681463b1038e82fce9f",
+    "designer_exam.md": "9892f91253ca15581c15f6f64d211a2275f345d0e13e0200dcda9c9f8004e07a"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "bench-ek-st4e-20261112",
+   "stage": 4,
+   "summary": "Stage 4 exam on the judge3 rework: 34 scenarios (24 examiner, 10 challenger, 22 reject), two fresh readers 34/34 each, 0 accept-where-reject-core, challenger misses none; control (only_explosions_throw stripped) missed e1. Exam folder D:\\ClaudeWork\\rimmandrake\\designer\\ExplosiveKnockback\\exam4."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 5,
  "status": "ready"
 }
