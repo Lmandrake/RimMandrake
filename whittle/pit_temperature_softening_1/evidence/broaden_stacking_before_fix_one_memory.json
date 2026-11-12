@@ -1,0 +1,32 @@
+{
+ "charity_ideo": "Loyaltism",
+ "kind": {
+  "pawn": "Human731",
+  "ideo": "Loyaltism"
+ },
+ "prisoners": [
+  "Human37771",
+  "Human37778",
+  "Human37783",
+  "Human37788",
+  "Human37794",
+  "Human37811"
+ ],
+ "E1_after_1h": {
+  "count": 1,
+  "offsets": [
+   -3.0
+  ],
+  "total": 42.0
+ },
+ "E1_after_leave_5h": {
+  "count": 0,
+  "offsets": [],
+  "total": 45.0
+ },
+ "E1_after_leave_10h": {
+  "count": 0,
+  "offsets": [],
+  "total": 42.0
+ }
+}

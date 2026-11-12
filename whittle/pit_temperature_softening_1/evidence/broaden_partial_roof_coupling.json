@@ -1,0 +1,63 @@
+{
+ "kind": {
+  "pawn": "Human945",
+  "ideo": "Post-Archotechnics"
+ },
+ "prisoners": [
+  "Human47133",
+  "Human47138",
+  "Human47144",
+  "Human47150",
+  "Human47156",
+  "Human47163"
+ ],
+ "E1_after_1h": {
+  "count": 0,
+  "offsets": [],
+  "total": 42.0
+ },
+ "E4_room": "ROOM split=True pitRoom=True proper=True edge=False prison=True roomsOn=True pitId=139 lipId=12",
+ "E4_k": {
+  "1.0": [
+   [
+    0.0181,
+    0.0181,
+    0.0181,
+    0.0181,
+    0.0181,
+    0.0181
+   ],
+   [
+    0.018,
+    0.018,
+    0.018,
+    0.0179,
+    0.018,
+    0.018
+   ]
+  ],
+  "3.0": [
+   [
+    0.0314,
+    0.0465,
+    0.0311,
+    0.0311,
+    0.0312,
+    0.0312
+   ],
+   [
+    0.0312,
+    0.046,
+    0.0306,
+    0.0305,
+    0.0307,
+    0.0306
+   ]
+  ]
+ },
+ "E1_after_leave_12h": {
+  "count": 0,
+  "offsets": [],
+  "total": 41.0
+ }
+}

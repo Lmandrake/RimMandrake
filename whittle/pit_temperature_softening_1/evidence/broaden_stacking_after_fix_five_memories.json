@@ -1,0 +1,53 @@
+{
+ "charity_ideo": "Aturan School",
+ "kind": {
+  "pawn": "Human890",
+  "ideo": "Aturan School"
+ },
+ "prisoners": [
+  "Human37759",
+  "Human37765",
+  "Human37771",
+  "Human37777",
+  "Human37795",
+  "Human37801"
+ ],
+ "E1_after_1h": {
+  "count": 5,
+  "offsets": [
+   -3.0,
+   -3.0,
+   -3.0,
+   -3.0,
+   -3.0
+  ],
+  "labels": [
+   "Oyster left exposed in a pit",
+   "Duck left exposed in a pit",
+   "Vole left exposed in a pit",
+   "Rana left exposed in a pit",
+   "Nave left exposed in a pit"
+  ],
+  "sum": -15.0,
+  "total": -1.0
+ },
+ "E1_after_leave_6h": {
+  "count": 5,
+  "offsets": [
+   -3.0,
+   -3.0,
+   -3.0,
+   -3.0,
+   -3.0
+  ],
+  "labels": [
+   "Oyster left exposed in a pit",
+   "Duck left exposed in a pit",
+   "Vole left exposed in a pit",
+   "Rana left exposed in a pit",
+   "Nave left exposed in a pit"
+  ],
+  "sum": -15.0,
+  "total": -1.0
+ }
+}

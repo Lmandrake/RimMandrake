@@ -4,7 +4,10 @@
        Compassionate colonists mind a captive left to roast in an open pit; psychopaths do not (nullifyingTraits).
        Ideoligion: felt only by members of an ideoligion that minds refused beggars (a Charity precept
        listening for CharityRefused_Beggars) - the owner's "borrow their structure" ruling, read in
-       RM_PitExposure.FeelsForExposedPrisoners. -->
+       RM_PitExposure.FeelsForExposedPrisoners.
+       One memory per exposed prisoner, up to five: the label names the prisoner ({0}) because vanilla's
+       Thought_Memory.GroupsWith groups memories about DIFFERENT pawns whose labels match, and stackLimitForSameOtherPawn
+       then trims that group to one. With a fixed label six prisoners read as one -3 (measured live 2026-11-11). -->
   <ThoughtDef>
     <defName>RM_ExposedPrisoner</defName>
     <thoughtClass>Thought_Memory</thoughtClass>
@@ -16,8 +19,8 @@
     </nullifyingTraits>
     <stages>
       <li>
-        <label>prisoner left exposed in a pit</label>
-        <description>We are leaving someone to bake in the bottom of a hole.</description>
+        <label>{0} left exposed in a pit</label>
+        <description>We are leaving {OTHERPAWN_labelShort} to bake in the bottom of a hole.</description>
         <baseMoodEffect>-3</baseMoodEffect>
       </li>
     </stages>
