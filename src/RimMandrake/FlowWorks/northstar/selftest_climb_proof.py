@@ -137,5 +137,48 @@ pid, hp, ref = C.pick_hauler(lambda: None, lambda p: {"success": True}, parked.a
 check("hauler: a failed spawn is a logged refusal, never a hauler", pid is None and ref[0]["pawn"] is None
       and "no pawn" in ref[0]["message"])
 
+# RIMMANDRAKE_FIX_CLIMB_SLOW_OUTLASTS_LADDER: span_verdict over synthetic per-tick ProofLadderClimbDraw reads
+def lclimb(ticks, pa, pb, lo, hi, remap, walk=13, tail=3):
+    """A ladder step (20,3) -> (19,3) on x drawn steadily (remap False) or walk pace off the span and slow on it."""
+    n, out = abs(pb - pa), []
+    u0, u1 = (min(max((lo - pa) / (pb - pa), 0), 1), min(max((hi - pa) / (pb - pa), 0), 1))
+    u0, u1 = min(u0, u1), max(u0, u1)
+    r = min(1.0, n * walk / float(ticks))
+    m0, m1 = u0 * r, 1 - (1 - u1) * r
+    for i in range(1, ticks + 1):
+        m = i / float(ticks)
+        if not remap:
+            u = m
+        elif m < m0:
+            u = m / r
+        elif m > m1:
+            u = 1 - (1 - m) / r
+        else:
+            u = u0 + (u1 - u0) * (m - m0) / (m1 - m0)
+        x = pa + (pb - pa) * u
+        out.append(C.parse("LCLIMB id=H cell=20,3 next=19,3 moving=True m=%.3f cost=%d walk=%d drawX=%.4f drawZ=3.2 "
+                           "ladder=RM_Ladder@20,3 axis=x lo=%.3f hi=%.3f onSpan=x" % (m, ticks, walk, x, lo, hi)))
+    out += [C.parse("LCLIMB id=H cell=19,3 next=18,3 moving=True m=0.5 cost=13 walk=13 drawX=19.0 drawZ=3.5 ladder=none")] * tail
+    return out
+
+
+up_new = lclimb(450, 20.5, 19.5, 20.1, 20.4, True)
+up_old = lclimb(450, 20.5, 19.5, 20.1, 20.4, False)
+check("span: walk off the art, slow on it -> PASS", C.span_verdict(up_new, (20, 3), (19, 3))[0] == "PASS")
+check("span: can-fail: the old steady tween -> FAIL", C.span_verdict(up_old, (20, 3), (19, 3))[0] == "FAIL")
+d = C.span_verdict(up_new, (20, 3), (19, 3))[1]
+check("span: enter/exit tick and position recorded", d["enterTick"] is not None and d["leaveTick"] > d["enterTick"]
+      and 20.0 <= d["leaveAt"] <= 20.5 and 20.0 <= d["enterAt"] <= 20.5)
+check("span: a step that never completes is UNMEASURED", C.span_verdict(up_new[:-3], (20, 3), (19, 3))[0] == "UNMEASURED")
+check("span: no ladder step seen is UNMEASURED", C.span_verdict(up_new[-3:], (20, 3), (19, 3))[0] == "UNMEASURED")
+check("span: the other direction's step is not this row's", C.span_verdict(up_new, (19, 3), (20, 3))[0] == "UNMEASURED")
+gap = [dict(k) for k in up_new]
+mid = len(gap) // 2
+for k in gap[mid:mid + 5]:
+    k["drawX"] = "21.5"                     # drawn off the art for 5 ticks in the middle of the climb
+check("span: can-fail: an on-span run broken in two -> FAIL", C.span_verdict(gap, (20, 3), (19, 3))[0] == "FAIL")
+stall = up_new[:447] + [dict(up_new[446]) for _ in range(6)] + up_new[447:]   # parked off the art below the span
+check("span: can-fail: slow ticks off the art -> FAIL", C.span_verdict(stall, (20, 3), (19, 3))[0] == "FAIL")
+
 print("%s: %d failure(s)" % ("PASS" if not fails else "FAIL", len(fails)))
 sys.exit(1 if fails else 0)

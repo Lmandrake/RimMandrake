@@ -97,6 +97,7 @@
     <Compile Include="PitCoverBeneathChecks.cs" />
     <Compile Include="PitCoverLookChecks.cs" />
     <Compile Include="PitDrawHoldChecks.cs" />
+    <Compile Include="LadderClimbSpanChecks.cs" />
     <Compile Include="CoverFloorSurveyChecks.cs" />
     <Compile Include="..\RM_DrawbridgeMath.cs" />
     <Compile Include="DrawbridgeChecks.cs" />

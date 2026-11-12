@@ -62,6 +62,11 @@
     </building>
     <comps>
       <li Class="RimMandrake.FlowWorks.RM_CompProperties_Ladder">
+        <!-- RIMMANDRAKE_FIX_CLIMB_SLOW_OUTLASTS_LADDER: the lowered art's opaque span per facing, share of drawSize (z for N/S, x for E/W). -->
+        <climbSpanNorth>0.19~0.83</climbSpanNorth>
+        <climbSpanEast>0.31~0.94</climbSpanEast>
+        <climbSpanSouth>0.33~0.40</climbSpanSouth>
+        <climbSpanWest>0.06~0.69</climbSpanWest>
         <portable>true</portable>
         <shortGraphicData>
           <texPath>Things/Building/FlowWorks/Canals/RM_LadderPortableFlat</texPath>

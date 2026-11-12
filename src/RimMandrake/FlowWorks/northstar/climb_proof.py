@@ -45,6 +45,12 @@ out to (17, 11) again and again; two Colonists on the surface at (14, 8) and (20
 straight line runs over the pit (the legal way goes round it, z 6 or z 10); a CHURN cell (22, 11) dug D 4 and filled back
 EVERY sample (MS_STEP ticks), so the climb generation moves and RM_CliffMask.FullDerive runs again and again while path
 requests are queued on the Burst A*. Positions sampled by jawa/list_pawns every MS_STEP ticks; maskswap_verdict.
+CLIMB_ladder_span_D4_up/_down + CLIMB_ladder_span_D1_up/_down (RIMMANDRAKE_FIX_CLIMB_SLOW_OUTLASTS_LADDER, owner 2026-11-12:
+slow "only ... when they are crossing the ladder texture itself"): scene D's colonist climbs out west over the RM_Ladder and
+back in; a 1x1 D 1 cell at (8, 8) with an RM_LadderPortable hung north and its own Colonist climbs out to (8, 10) and back.
+Each leg is one drafted order (waitTicks 0) then 1 tick + one RM_PromotionProofs.ProofLadderClimbDraw read per tick;
+span_verdict needs >= 0.8 of the ladder step's ticks drawn on the art's span, one contiguous on-span run (enter/exit tick and
+position recorded) and <= 2 slow ticks off it. The old steady tween reads 0.28 (D4) / 0.47 (D1) and fails.
 Site 46 x 12 (x 0..45).  OWED (always UNMEASURED, see OWED below): CLIMB_save_reload_pockets_identical (live_session B7).
 
 ANTI-GUESSING NOTES
@@ -109,6 +115,50 @@ def state_verdict(kv, want_held=None, want_trapped=None, want_pocket=None):
     want = {"held": want_held, "trapped": want_trapped, "pocket": want_pocket}
     bad = {k: (got[k], w) for k, w in want.items() if w is not None and got[k] != w}
     return ("FAIL" if bad else "PASS"), {"kv": kv, "mismatch": bad}
+
+
+SPAN_TOL = 0.05        # cells: the drawn centre's distance outside the art span still counted as on it
+SPAN_ON_SHARE = 0.8    # share of the ladder step's ticks drawn on the art (the old steady tween: 0.28 at D4, 0.47 at D1)
+SPAN_SLOW_OFF = 2      # slow ticks drawn off the art allowed (sampling slack at the two edges)
+
+
+def span_verdict(samples, from_cell, to_cell):
+    """RIMMANDRAKE_FIX_CLIMB_SLOW_OUTLASTS_LADDER: the ladder step from_cell -> to_cell, sampled once per tick through
+    ProofLadderClimbDraw (dicts from parse()). PASS iff the step was seen and completed, at least SPAN_ON_SHARE of its ticks
+    are drawn on the ladder art's span (axis lo..hi +- SPAN_TOL), the on-span ticks are one contiguous run (enter once, exit
+    once), and at most SPAN_SLOW_OFF ticks off the span move slower than half walking pace. No ladder step seen: UNMEASURED."""
+    fc, tc = "%d,%d" % tuple(from_cell), "%d,%d" % tuple(to_cell)
+    step = [k for k in samples if k.get("cell") == fc and k.get("next") == tc and k.get("ladder", "none") != "none"]
+    done = any(k.get("cell") == tc for k in samples[samples.index(step[-1]) + 1:]) if step else False
+    if len(step) < 3:
+        return "UNMEASURED", {"why": "the ladder step %s -> %s was not seen over 3+ ticks" % (fc, tc), "ticks": len(step),
+                              "cells": sorted({k.get("cell") for k in samples})[:12]}
+    try:
+        axis, lo, hi, walk = step[0]["axis"], float(step[0]["lo"]), float(step[0]["hi"]), float(step[0]["walk"])
+        along = [float(k["drawZ"] if axis == "z" else k["drawX"]) for k in step]
+    except (KeyError, ValueError):
+        return "UNMEASURED", {"why": "a sample line missing its span or position", "first": step[0]}
+    on = [lo - SPAN_TOL <= p <= hi + SPAN_TOL for p in along]
+    flips = sum(1 for i in range(1, len(on)) if on[i] != on[i - 1])
+    enter = on.index(True) if True in on else None
+    leave = len(on) - 1 - on[::-1].index(True) if True in on else None
+    slow = 0.5 / walk if walk > 0 else 0.0
+    slow_off = sum(1 for i in range(1, len(along)) if not on[i] and not on[i - 1] and abs(along[i] - along[i - 1]) < slow)
+    share = sum(on) / float(len(on))
+    det = {"ticks": len(step), "axis": axis, "span": [lo, hi], "onShare": round(share, 3), "enterTick": enter,
+           "leaveTick": leave, "enterAt": along[enter] if enter is not None else None,
+           "leaveAt": along[leave] if leave is not None else None, "flips": flips, "slowOffSpan": slow_off,
+           "cost": step[0].get("cost"), "walk": walk, "completed": done, "path": [along[0], along[-1]]}
+    if not done:
+        return "UNMEASURED", dict(det, why="the step never reached %s in the sampled ticks" % tc)
+    bad = []
+    if share < SPAN_ON_SHARE:
+        bad.append("only %.2f of the step's ticks on the art (want >= %.2f)" % (share, SPAN_ON_SHARE))
+    if enter is None or flips > 2 or (flips == 2 and not (on[0] is False and on[-1] is False)):
+        bad.append("the on-span ticks are not one run (flips=%d)" % flips)
+    if slow_off > SPAN_SLOW_OFF:
+        bad.append("%d slow ticks drawn off the art" % slow_off)
+    return ("FAIL" if bad else "PASS"), dict(det, why="; ".join(bad))
 
 
 def mask_verdict(person, big):
@@ -360,6 +410,58 @@ def require_exit(rows, want):
     return 0 if need and all(got.get(w) == "PASS" for w in need) else 1
 
 
+PROMO = "RimMandrake.FlowWorks.RM_PromotionProofs"
+SPAN_BUDGET = 900      # ticks per leg: a depth-4 climb is capped at 450, plus the walk to and from the wall
+
+
+def span_leg(B, pid, goal, from_cell, to_cell, budget=SPAN_BUDGET):
+    """One drafted, non-blocking order to goal, then one tick + one ProofLadderClimbDraw read at a time until the pawn
+    stands on goal (or the budget runs out). -> (span_verdict, samples' raw lines kept short)."""
+    o = B.call("jawa/order_pawn", pawnId=pid, x=goal[0], z=goal[1], waitTicks=0, draft=True, unpause=False) or {}
+    accepted = any(p.get("id") == pid and p.get("orderAccepted") is True for p in o.get("pawns") or [])
+    samples, gl = [], "%d,%d" % tuple(goal)
+    for _ in range(budget if accepted else 0):
+        B.ticks(1)
+        r = B.call("jawa/static_call", type=PROMO, method="ProofLadderClimbDraw", args=pid) or {}
+        txt = str(r.get("result") or r.get("message") or r.get("error") or "")
+        kv = parse(txt) if r.get("success") is True and txt.startswith("LCLIMB") else {}
+        samples.append(kv)
+        if kv.get("cell") == gl and kv.get("moving") == "False":
+            break
+    st, det = span_verdict([k for k in samples if k], from_cell, to_cell)
+    det = dict(det, orderAccepted=accepted, sampled=len(samples), readFails=sum(1 for k in samples if not k))
+    if not accepted:
+        st, det["why"] = "UNMEASURED", "order_pawn did not accept the order"
+    return st, det
+
+
+def span_rows(B, P, row, spawn, dig, col_d):
+    """RIMMANDRAKE_FIX_CLIMB_SLOW_OUTLASTS_LADDER (owner 2026-11-12): slow only while crossing the ladder's art, up and
+    down, both ladder kinds. D4: scene D's RM_Ladder at (20, 3) hung on the west wall (an x climb, lip (19, 3)), col_d.
+    D1: a 1x1 D 1 cell at (8, 8) with an RM_LadderPortable hung north (a z climb, lip (8, 9)) and its own Colonist."""
+    if not col_d:
+        for rid in ("CLIMB_ladder_span_D4_up", "CLIMB_ladder_span_D4_down"):
+            row(rid, "UNMEASURED", "SITE", {"why": "scene D's colonist did not spawn"})
+    else:
+        st, det = span_leg(B, col_d, P(18, 3), P(20, 3), P(19, 3))
+        row("CLIMB_ladder_span_D4_up", st, "MOD", det)
+        st, det = span_leg(B, col_d, P(21, 3), P(19, 3), P(20, 3))
+        row("CLIMB_ladder_span_D4_down", st, "MOD", det)
+    d1 = dig(P(8, 8), 1)
+    lad = B.call("jawa/spawn_batch", ops="RM_LadderPortable:%d,%d" % P(8, 8)) or {}
+    col = spawn("Colonist", P(8, 8), "player")
+    B.ticks(SETTLE)
+    if not lad.get("thingsPlaced") or not col or d1.get("success") is False:
+        for rid in ("CLIMB_ladder_span_D1_up", "CLIMB_ladder_span_D1_down"):
+            row(rid, "UNMEASURED", "SITE", {"why": "D1 scene not staged", "ladder": {k: lad.get(k) for k in ("success", "thingsPlaced", "failed")},
+                                            "colonist": col, "dig": str(d1)[:160]})
+        return
+    st, det = span_leg(B, col, P(8, 10), P(8, 8), P(8, 9))
+    row("CLIMB_ladder_span_D1_up", st, "MOD", det)
+    st, det = span_leg(B, col, P(8, 8), P(8, 9), P(8, 8))
+    row("CLIMB_ladder_span_D1_down", st, "MOD", det)
+
+
 def maskswap_row(B, P, row, spawn, climb):
     """H: CLIMB_maskswap_no_wall_crossing (the pit at (16..18, 7..9) is dug with the other scenes)."""
     rect = (P(16, 7)[0], P(16, 7)[1], 3, 3)
@@ -584,6 +686,8 @@ def main():
             st = "UNMEASURED"
         row("CLIMB_ladder_prison_door", st, "MOD" if st != "UNMEASURED" or lad.get("thingsPlaced") else "SITE",
             {"colonist": d1, "rat": d2, "txt": [tc, tr], "ladder": {k: lad.get(k) for k in ("success", "thingsPlaced", "failed")}})
+        # the ladder climb is drawn slow only on the ladder's art (RIMMANDRAKE_FIX_CLIMB_SLOW_OUTLASTS_LADDER)
+        span_rows(B, P, row, spawn, dig, col_d)
         # the cliff masks (PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS): on pit B's west lip (D 0 beside D 3) a person's A* has no
         # east step and a muffalo's does
         km, tm = climb("mask:%d,%d;2" % P(9, 3))

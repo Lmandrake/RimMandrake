@@ -80,6 +80,11 @@
            prison-door climbing rule. raisedGraphicData is the raised state's own art (ladder slid up the rails,
            empty rails below); the lowered state draws the graphicData above. -->
       <li Class="RimMandrake.FlowWorks.RM_CompProperties_Ladder">
+        <!-- RIMMANDRAKE_FIX_CLIMB_SLOW_OUTLASTS_LADDER: the lowered art's opaque span per facing, share of drawSize (z for N/S, x for E/W). -->
+        <climbSpanNorth>0.33~0.74</climbSpanNorth>
+        <climbSpanEast>0.67~0.87</climbSpanEast>
+        <climbSpanSouth>0.31~0.39</climbSpanSouth>
+        <climbSpanWest>0.13~0.33</climbSpanWest>
         <raisedGraphicData>
           <texPath>Things/Building/FlowWorks/Canals/RM_LadderRaised</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
@@ -140,6 +145,11 @@
            prison-door climbing rule. raisedGraphicData is the raised state's own art (ladder slid up the rails,
            empty rails below); the lowered state draws the graphicData above. -->
       <li Class="RimMandrake.FlowWorks.RM_CompProperties_Ladder">
+        <!-- RIMMANDRAKE_FIX_CLIMB_SLOW_OUTLASTS_LADDER: the lowered art's opaque span per facing, share of drawSize (z for N/S, x for E/W). -->
+        <climbSpanNorth>0.33~0.74</climbSpanNorth>
+        <climbSpanEast>0.67~0.87</climbSpanEast>
+        <climbSpanSouth>0.31~0.39</climbSpanSouth>
+        <climbSpanWest>0.13~0.33</climbSpanWest>
         <raisedGraphicData>
           <texPath>Things/Building/FlowWorks/Canals/RM_LadderSteelRaised</texPath>
           <graphicClass>Graphic_Multi</graphicClass>

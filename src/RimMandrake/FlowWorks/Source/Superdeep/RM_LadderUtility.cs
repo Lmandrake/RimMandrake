@@ -335,6 +335,28 @@ namespace RimMandrake.FlowWorks
 		/// <summary>The portable ladder's art while it does not reach its wall (lying flat on the pit floor). Null = the def's.</summary>
 		public GraphicData shortGraphicData;
 
+		/// <summary>RIMMANDRAKE_FIX_CLIMB_SLOW_OUTLASTS_LADDER: where the lowered ladder's picture is, per facing, as a share of
+		/// its drawn size (0 = the bottom/left edge of the drawn quad, 1 = the top/right): the axis the climb runs on, z for
+		/// north/south, x for east/west. A pawn crossing a ladder step is drawn going slowly only across this span and at
+		/// walking pace off it (RM_PitDrawMath.ClimbProgress). Measured off the PNGs' opaque pixels (alpha &gt; 32), and checked
+		/// against them by selftest_flowworks_ladder_climb_span.py. Default 0~1 = the whole drawn quad.</summary>
+		public FloatRange climbSpanNorth = new FloatRange(0f, 1f);
+		public FloatRange climbSpanEast = new FloatRange(0f, 1f);
+		public FloatRange climbSpanSouth = new FloatRange(0f, 1f);
+		public FloatRange climbSpanWest = new FloatRange(0f, 1f);
+
+		/// <summary>The <see cref="climbSpanNorth"/> family for a facing.</summary>
+		public FloatRange ClimbSpan(Rot4 rot)
+		{
+			switch (rot.AsInt)
+			{
+				case 1: return climbSpanEast;
+				case 2: return climbSpanSouth;
+				case 3: return climbSpanWest;
+				default: return climbSpanNorth;
+			}
+		}
+
 		public RM_CompProperties_Ladder()
 		{
 			compClass = typeof(RM_CompLadder);

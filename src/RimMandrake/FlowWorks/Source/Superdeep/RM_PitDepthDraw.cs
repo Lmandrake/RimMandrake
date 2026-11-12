@@ -2,6 +2,7 @@ using System;
 using HarmonyLib;
 using UnityEngine;
 using Verse;
+using Verse.AI;
 
 namespace RimMandrake.FlowWorks
 {
@@ -49,11 +50,88 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
+			ClimbOnLadderSpan(pawn, ref __result);
 			float sink = SinkOf(pawn, __result);
 			if (sink > 0f)
 			{
 				__result.z -= sink;
 			}
+		}
+
+		/// <summary>RIMMANDRAKE_FIX_CLIMB_SLOW_OUTLASTS_LADDER (owner 2026-11-12: pawns "remain in the slowed/climbing mode long
+		/// after they visually leave the ladder ... should be altered to only correspond when they are crossing the ladder
+		/// texture itself"). A ladder climb is ONE path step (pit floor to lip) costing RM_PitStepCost's ladder cost, and vanilla
+		/// tweens the pawn along it at one steady pace, so with the sink the slow crawl covered 1 + sink cells (2.2 at depth 4)
+		/// while the ladder's picture spans 0.6. The step's time is left as it is; only where the pawn is DRAWN within it moves:
+		/// walking pace off the ladder's span, all the rest of the time on it (RM_PitDrawMath.ClimbProgress). The drawn
+		/// position is moved along the step before the sink is read, so the sink follows the same progress.</summary>
+		private static void ClimbOnLadderSpan(Pawn pawn, ref Vector3 drawPos)
+		{
+			Pawn_PathFollower pather = pawn.pather;
+			if (pather == null || !pather.Moving || !pather.nextCell.IsValid || pather.nextCellCostTotal <= 0f)
+			{
+				return;
+			}
+			IntVec3 from = pawn.Position, to = pather.nextCell;
+			if (from.x != to.x && from.z != to.z || from == to || ExcavationOf(pawn.Map) == null)
+			{
+				return;
+			}
+			Thing ladder = ClimbLadderOf(pawn.Map, from, to);
+			bool alongZ = from.x == to.x;
+			if (!LadderArtSpan(ladder, alongZ, out float lo, out float hi))
+			{
+				return;
+			}
+			Vector3 a = from.ToVector3Shifted(), b = to.ToVector3Shifted();
+			// the drawn centre's path on the step axis: the sink moves it on z only
+			float pa = alongZ ? a.z - RestingSinkAt(pawn, from) : a.x;
+			float pb = alongZ ? b.z - RestingSinkAt(pawn, to) : b.x;
+			if (!RM_PitDrawMath.LadderSpanOnStep(pa, pb, lo, hi, out float u0, out float u1))
+			{
+				return;
+			}
+			float r = RM_PitDrawMath.WalkShare(Math.Abs(pb - pa), pawn.TicksPerMoveCardinal, pather.nextCellCostTotal);
+			// t: where vanilla's (sprung) tween draws it along the step; u: where it belongs at this share of the step's time
+			float t = RM_PitDrawMath.StepProgress(a.x, a.z, b.x, b.z, drawPos.x, drawPos.z);
+			float u = RM_PitDrawMath.ClimbProgress(pather.MovePercentage, u0, u1, r);
+			drawPos.x += (b.x - a.x) * (u - t);
+			drawPos.z += (b.z - a.z) * (u - t);
+		}
+
+		/// <summary>The lowered ladder a step from <paramref name="from"/> to <paramref name="to"/> climbs: one in either end, hung
+		/// on the wall toward the other (up and down alike), or null. Public for the proof read (ProofLadderClimbDraw).</summary>
+		public static Thing ClimbLadderOf(Map map, IntVec3 from, IntVec3 to)
+		{
+			if (RM_ClimbJoins.LoweredLadderAt(map, from) && RM_LadderUtility.HangsToward(RM_LadderUtility.LadderAt(map, from), to))
+			{
+				return RM_LadderUtility.LadderAt(map, from);
+			}
+			if (RM_ClimbJoins.LoweredLadderAt(map, to) && RM_LadderUtility.HangsToward(RM_LadderUtility.LadderAt(map, to), from))
+			{
+				return RM_LadderUtility.LadderAt(map, to);
+			}
+			return null;
+		}
+
+		/// <summary>The ladder art's opaque extent in world cells on the climb's axis (z when <paramref name="alongZ"/>, else x):
+		/// the def's climbSpan for its facing over the quad its graphic is drawn on.</summary>
+		public static bool LadderArtSpan(Thing ladder, bool alongZ, out float lo, out float hi)
+		{
+			lo = hi = 0f;
+			RM_CompProperties_Ladder props = ladder?.def.GetCompProperties<RM_CompProperties_Ladder>();
+			Graphic g = ladder?.Graphic;
+			if (props == null || g == null)
+			{
+				return false;
+			}
+			Vector3 centre = ladder.Position.ToVector3Shifted() + g.DrawOffset(ladder.Rotation);
+			float size = alongZ ? g.drawSize.y : g.drawSize.x;
+			float edge = (alongZ ? centre.z : centre.x) - size * 0.5f;
+			FloatRange span = props.ClimbSpan(ladder.Rotation);
+			lo = edge + span.min * size;
+			hi = edge + span.max * size;
+			return true;
 		}
 
 		/// <summary>The current sink of a spawned pawn, in cells. Public so a companion

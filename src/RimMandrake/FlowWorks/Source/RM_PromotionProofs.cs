@@ -76,6 +76,54 @@ namespace RimMandrake.FlowWorks
 				+ " enabled=" + RimMandrakeFlowWorksSettings.pitDepthDrawOffsetEnabled;
 		}
 
+		/// <summary>RIMMANDRAKE_FIX_CLIMB_SLOW_OUTLASTS_LADDER, read once per tick by climb_proof.py's CLIMB_ladder_span_* rows.
+		/// arg = a pawn's ThingID. The pawn's REAL DrawPos (through the depth-draw postfix, whose ladder remap sets the step-axis
+		/// position from the pather's MovePercentage, so it does not lag on the tweener's spring) against the art span of the
+		/// ladder its current step climbs: "LCLIMB id=.. cell=x,z next=x,z moving=b m=M cost=C walk=W ladder=def@x,z|none
+		/// axis=z|x lo=L hi=H drawX=X drawZ=Z onSpan=b". lo/hi/onSpan are on the climb's axis; ladder=none off a ladder step.</summary>
+		public static string ProofLadderClimbDraw(string pawnId)
+		{
+			Map map = Find.CurrentMap;
+			Pawn pawn = null;
+			if (map != null)
+			{
+				foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
+				{
+					if (p.ThingID == pawnId)
+					{
+						pawn = p;
+						break;
+					}
+				}
+			}
+			if (pawn == null)
+			{
+				return "REFUSED: no spawned pawn " + pawnId + " on the current map";
+			}
+			Verse.AI.Pawn_PathFollower pather = pawn.pather;
+			IntVec3 from = pawn.Position;
+			IntVec3 to = pather != null && pather.Moving ? pather.nextCell : IntVec3.Invalid;
+			Vector3 draw = pawn.DrawPos;
+			string head = "LCLIMB id=" + pawnId + " cell=" + from.x + "," + from.z
+				+ " next=" + (to.IsValid ? to.x + "," + to.z : "none") + " moving=" + (pather != null && pather.Moving)
+				+ " m=" + F(pather != null && pather.Moving ? pather.MovePercentage : 0f)
+				+ " cost=" + F(pather != null ? pather.nextCellCostTotal : 0f) + " walk=" + pawn.TicksPerMoveCardinal
+				+ " drawX=" + F(draw.x) + " drawZ=" + F(draw.z);
+			if (!to.IsValid || from == to || from.x != to.x && from.z != to.z)
+			{
+				return head + " ladder=none";
+			}
+			Thing ladder = RM_Patch_PitDepthDrawOffset.ClimbLadderOf(map, from, to);
+			bool alongZ = from.x == to.x;
+			if (!RM_Patch_PitDepthDrawOffset.LadderArtSpan(ladder, alongZ, out float lo, out float hi))
+			{
+				return head + " ladder=none";
+			}
+			float along = alongZ ? draw.z : draw.x;
+			return head + " ladder=" + ladder.def.defName + "@" + ladder.Position.x + "," + ladder.Position.z
+				+ " axis=" + (alongZ ? "z" : "x") + " lo=" + F(lo) + " hi=" + F(hi) + " onSpan=" + (along >= lo && along <= hi);
+		}
+
 		/// <summary>FLOWWORKS_PIT_TRAVEL_BUILD_FLY_JUMP_FLOAT, a STATE read (never a flight watch: owner 2026-09-25). arg = "x,z":
 		/// the first pawn standing there -> "PITTRAVEL pawn=<label> canFly=b jumps=b floats=b free=b held=b flying=b". Free
 		/// travellers are never held and take no fall on arriving.</summary>

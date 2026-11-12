@@ -305,5 +305,71 @@ namespace RimMandrake.FlowWorks
 			}
 			return SinkFor(depth, sinkPerLevel) / feetToHeadTop;
 		}
+
+		/// <summary>RIMMANDRAKE_FIX_CLIMB_SLOW_OUTLASTS_LADDER (owner 2026-11-12: the climb should be slow "only ... when they
+		/// are crossing the ladder texture itself"). The share of a climb step, 0..1 along it, on which the pawn's drawn centre
+		/// is on the ladder's picture: <paramref name="pa"/> and <paramref name="pb"/> are the drawn centre at the step's two ends
+		/// on the step's axis (z for a north/south step, x for east/west), <paramref name="lo"/>..<paramref name="hi"/> the
+		/// ladder art's opaque extent on that axis. False (0..1, the whole step) when the path has no length on the axis or the
+		/// art does not cross it: the step is then drawn as before.</summary>
+		public static bool LadderSpanOnStep(float pa, float pb, float lo, float hi, out float u0, out float u1)
+		{
+			u0 = 0f;
+			u1 = 1f;
+			float d = pb - pa;
+			if (Math.Abs(d) < 1e-6f || !(hi > lo))
+			{
+				return false;
+			}
+			float ua = (lo - pa) / d, ub = (hi - pa) / d;
+			float a = Math.Min(ua, ub), b = Math.Max(ua, ub);
+			a = a < 0f ? 0f : (a > 1f ? 1f : a);
+			b = b < 0f ? 0f : (b > 1f ? 1f : b);
+			if (!(b - a > 1e-4f))
+			{
+				return false;
+			}
+			u0 = a;
+			u1 = b;
+			return true;
+		}
+
+		/// <summary>The time share per unit of step a pawn spends OFF the ladder when it walks that part at its normal speed:
+		/// <paramref name="pathCells"/> drawn cells for the whole step at <paramref name="walkTicks"/> a cell, against the
+		/// step's <paramref name="stepTicks"/>. 1 (no remap) when the step is no slower than walking it.</summary>
+		public static float WalkShare(float pathCells, float walkTicks, float stepTicks)
+		{
+			if (!(pathCells > 0f) || !(walkTicks > 0f) || !(stepTicks > 0f))
+			{
+				return 1f;
+			}
+			float r = pathCells * walkTicks / stepTicks;
+			return r < 0f ? 0f : (r > 1f ? 1f : r);
+		}
+
+		/// <summary>Where along a ladder step (0..1) the pawn is DRAWN at time share <paramref name="m"/> of it (vanilla's
+		/// move percentage, read off the tween). The step's time is unchanged (the climb cost is RM_PitStepCost's): the parts off
+		/// the ladder, 0..<paramref name="u0"/> and <paramref name="u1"/>..1, go by at walking pace (<paramref name="r"/> = the
+		/// <see cref="WalkShare"/>), and all the rest of the step is spent on the ladder's span. Continuous and monotone; the
+		/// identity when r is 1 or the span is empty.</summary>
+		public static float ClimbProgress(float m, float u0, float u1, float r)
+		{
+			m = m < 0f ? 0f : (m > 1f ? 1f : m);
+			if (!(u1 > u0) || r >= 1f)
+			{
+				return m;
+			}
+			r = r > 0f ? r : 0f;
+			float m0 = u0 * r, m1 = 1f - (1f - u1) * r;
+			if (r > 0f && m <= m0)
+			{
+				return m / r;
+			}
+			if (r > 0f && m >= m1)
+			{
+				return 1f - (1f - m) / r;
+			}
+			return u0 + (u1 - u0) * (m - m0) / (m1 - m0);
+		}
 	}
 }
