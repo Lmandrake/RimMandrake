@@ -217,6 +217,43 @@ namespace RimMandrake.FlowWorks
 				+ " pitId=" + pit.ID + " lipId=" + lip.ID;
 		}
 
+		/// <summary>PIT_TEMPERATURE_SOFTENING_1 (northstar/pit_exposure_live.py). arg = a spawned pawn's id. Reads only:
+		/// "EXPOSURE exposed=b marker=b prisoner=b resistance=R will=W ambient=T safeMin=a safeMax=b hurting=b heatstroke=S
+		/// hypothermia=S room=n roomTemp=T outdoorRoom=b openRoof=n cells=n hour=H outdoor=T" (resistance/will -1 when not a guest;
+		/// S 0 when absent; H the map's local hour).</summary>
+		public static string ProofExposure(string arg)
+		{
+			Map map = Find.CurrentMap;
+			Pawn p = map == null ? null : PawnById(map, (arg ?? "").Trim());
+			if (p == null)
+			{
+				return "REFUSED: no spawned pawn " + arg;
+			}
+			RM_MapComponent_Excavation eng = RM_SuperdeepShooting.EngineFor(map);
+			FloatRange safe = p.SafeTemperatureRange();
+			HediffDef marker = RimMandrakeFlowWorks_DefOf.RM_PitExposure;
+			Hediff hs = p.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.Heatstroke);
+			Hediff hy = p.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.Hypothermia);
+			Room room = p.GetRoom();
+			return "EXPOSURE exposed=" + (eng != null && RM_PitExposure.IsExposed(map, eng, p))
+				+ " marker=" + (marker != null && p.health.hediffSet.HasHediff(marker))
+				+ " prisoner=" + p.IsPrisonerOfColony
+				+ " resistance=" + (p.guest != null && p.IsPrisonerOfColony ? p.guest.resistance : -1f).ToString("F3")
+				+ " will=" + (p.guest != null && p.IsPrisonerOfColony ? p.guest.will : -1f).ToString("F3")
+				+ " ambient=" + p.AmbientTemperature.ToString("F2")
+				+ " safeMin=" + safe.min.ToString("F1") + " safeMax=" + safe.max.ToString("F1")
+				+ " hurting=" + RM_PitExposure.ElementsHurting(p)
+				+ " heatstroke=" + (hs != null ? hs.Severity : 0f).ToString("F3")
+				+ " hypothermia=" + (hy != null ? hy.Severity : 0f).ToString("F3")
+				+ " room=" + (room != null ? room.ID : -1)
+				+ " roomTemp=" + (room != null ? room.Temperature : float.NaN).ToString("F2")
+				+ " outdoorRoom=" + (room != null && room.UsesOutdoorTemperature)
+				+ " openRoof=" + (room != null ? room.OpenRoofCount : -1)
+				+ " cells=" + (room != null ? room.CellCount : -1)
+				+ " hour=" + GenLocalDate.HourFloat(map).ToString("F2")
+				+ " outdoor=" + map.mapTemperature.OutdoorTemp.ToString("F2");
+		}
+
 		/// <summary>PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP (design §8.6). arg "x,z;K" (a cell and a climb band) →
 		/// RM_PocketGrid.ProofPocket; or "pawn:&lt;id&gt;" → "CLIMB k=K held=b trapped=b cell=x,z depth=D " + its pocket line; or
 		/// "mask:x,z;K" (the cliff mask) or "cost:fx,fz;tx,tz;&lt;pawnId&gt;" (one step's cost).</summary>

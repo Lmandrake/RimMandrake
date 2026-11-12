@@ -1084,7 +1084,7 @@ def container_styles(t):
 DRIVER_RESULTS = ("thirst_live_result_*.json", "sprinkler_live_result_*.json", "drawbridge_result_*.json", "lines_result_*.json",
                   "suspension_bridge_result_*.json", "trench_cover_proof_result_*.json", "live_session_result_*.json",
                   "mission_fixture_result_*.json", "sheet_overflow_result_*.json",
-                  "droid_dig_result_*.json")
+                  "droid_dig_result_*.json", "pit_exposure_result_*.json")
 DRIVER_OF = {"T21_drinking_reserve": "sprinkler_live.py", "T22_no_brine_spray": "sprinkler_live.py"}
 
 
@@ -1598,6 +1598,25 @@ def droid_dig(t):
     _driver_live_report(t, DROID_DIG_LIVE, "droid_dig_live.py", "DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL")
 
 
+# PIT_TEMPERATURE_SOFTENING_1: an open pit at a desert noon beside a roofed twin and a normal prison cell
+# (northstar/pit_exposure_live.py, its rows named in its PLAN).
+PIT_EXPOSURE_LIVE = [
+    ("PEX_A1_defs_resolve", None, "jawa/get_defs resolves the RM_PitExposure hediff and the RM_ExposedPrisoner thought"),
+    ("PEX_A2_open_pit_tracks_noon", "pitExposureEnabled", "the open pit stays within 1 C of outdoors from 06:00 to "
+     "15:00 of a hot day while the roofed twin trails outdoors by more than 2 C more"),
+    ("PEX_A3_pit_wears_resistance", "pitExposureEnabled", "the open-pit prisoner, hurting in the heat, loses more resistance "
+     "than the roofed twin's and the walled cell's prisoners, who lose none to the heat"),
+    ("PEX_A4_compassion_not_psycho", "pitExposureEnabled", "at 12:00 a colonist of a Charity ideoligion has "
+     "RM_ExposedPrisoner; the psychopath of that ideoligion and a colonist of an ideoligion without Charity do not"),
+]
+
+
+@suite.chain("pit_exposure")
+def pit_exposure(t):
+    """Live rows only (PIT_TEMPERATURE_SOFTENING_1): read from the newest pit_exposure_live results at the current mod hash."""
+    _driver_live_report(t, PIT_EXPOSURE_LIVE, "pit_exposure_live.py", "PIT_TEMPERATURE_SOFTENING_1")
+
+
 # the extension suites, registered unchanged (their chains carry their own toggle=/shows= claims): the main
 # extensions and, since the River Works merge (409d1f57c), the rivers suite
 import extensions_rivers as RIV  # noqa: E402
@@ -1805,6 +1824,10 @@ suite.live_drivers = [
     # DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL row 3: fresh map (~3-5 min) + two pawns + at most 15,000 ticks of digging -> 1200.
     {"name": "droid_dig_live", "script": "northstar/droid_dig_live.py", "args": ["--origin", "40,40", "--fresh-map"],
      "chains": ["droid_dig"], "timeout_s": 1200},
+    # PIT_TEMPERATURE_SOFTENING_1: a fresh map (up to --rolls 6 re-rolls for a desert, ~70 s each) + a site + 15 game hours
+    # sampled hourly; the desk runs took ~12 min (2026-11-11) -> 1800.
+    {"name": "pit_exposure_live", "script": "northstar/pit_exposure_live.py", "args": ["--fresh-map", "--rolls", "2"],
+     "chains": ["pit_exposure"], "timeout_s": 1800},
     # RIVER_CHAINS_WIRE_SWEEP_TO_RIVER_SITE: the river chains need a map with a river (they ran on AridShrubland). The
     # river site replaces the current map, so it is settled on demand by the FIRST river chain, which the composition
     # above puts after every other chain. toggle_river_steam's biome-gate half
