@@ -1,8 +1,0 @@
-{
- "run": "bench-ek-st5b-20261112",
- "stage": 5,
- "outcome": "return",
- "to": 3,
- "decision": "Second coverage judge (rm-coverage-judge-1794473090) not_covered: all 19 earlier gaps fixed, 14 new gaps, all return_to 3, none needs the owner (each is settled by a record decision or by shipped behaviour the sheet must state). Fixed in the same pass: hop trace in sc_all_fly_no_cap and the flagship; sc_pawn_arc walker asserted and haul resumed; fire at half by the same shell with its damage type swapped; sc_lookup lanes for precedence on one explosion, own cap, the cap scale on an own cap, impactFactor and immuneBodySizeOverride; sc_settings_sweep covers every line and the removed cap lines; gas belt split; cover gas cloud staged; enemy thrown into a pit; hose control is damage without throw; barrage on the full list only; walk gas outcome; inventory and audit of the shipped fields and seven proof scenes; sc_killed_thrown; sheet the_spared and no_careless_fall wording; flagship covered cell has a stack aimed at it.",
- "summary": "Stage 5: gate REFUSED (no coverage signature). Coverage judge verdict not_covered with 14 gaps, all stage 3; returned to stage 3. The stage 4 exam (33/33) is void once the tree and sheet change."
-}
