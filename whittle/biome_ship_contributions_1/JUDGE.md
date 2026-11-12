@@ -1,36 +1,53 @@
-# Blind judge: BIOME_SHIP_CONTRIBUTIONS_1 (round 3)
+# Judge: BIOME_SHIP_CONTRIBUTIONS_1
 
-Judge: fresh blind judge, 2026-11-11. Read STATEMENT.md, NOTES.md, the item file (`infrastructure/state/items/BIOME_SHIP_CONTRIBUTIONS_1.md`: owner words, spec, verify, criteria) and `evidence/`. Did not read DONE.md, BROADEN.md or the earlier JUDGE.md.
+Judge: claude-opus-5-5, fresh, blind to DONE.md / BROADEN.md. Date 2026-11-12. Clone /home/mandrake/rm/claude-offline2.
 
 ## What I checked myself
 
-- Reran `python3 src/RimMandrake/Utils/ship_contributions.py` in this clone: exit 0, `24/24 biomes PASS or EXEMPT; 0 problem(s)`, the same rows as `evidence/ship_contributions_run.txt`. Output kept at `D:\ClaudeWork\rimmandrake\scratch\judge_bsc\run.txt`.
-- Selftest evidence: the real list passes, 12 mutated lists each fail. The checker can see a failure, so its pass means something.
-- Read defs by hand: `RM_SummGreatBone` (PlaceWorker_OnSubstructure; the BroodLair comp names it as `greatBoneDef`), `RM_PatternHull` (Wall parent, Odyssey category, Substructure affordance, vanilla CompSelfhealHitpoints at 500 ticks/HP with tickerType Rare: 120 HP a day as claimed), `RM_FurnaceHideBank` (unpowered CompHeatPusher of 6/s, capped at 21 C; its cost item `RM_FurnaceHide` is the Pyrelands furnace beast's leatherDef). The cost materials exist and can be obtained in game (`RM_LivePatternMetal` is in the deep-drill table and drops from hull bolts).
-- `effective_def_lint.txt`: VERDICT PASS. The only warnings are unrelated (orphan .cs files, setting-gate patches with no xpath). `lints.txt`: the four mods with new defs show 0 ERROR.
-- Art (I opened the images): pattern hull and spunstone hull ring/L/straight renders link cleanly with no broken corners. Tellurox hexplate 2x2 shows no visible seam. Fossil case and furnace-hide bank read clearly at in-game size. The five new textures are good enough to ship.
-- The 14 art-owed gifts' texPaths: `RM_WindVaporator` uses vanilla `MoisturePump`, `RM_WasteCaskBay` uses vanilla `Shelf`, `RM_AerosolScreen` uses `RM_OldLineTurret_Base`, `RM_HullLinerRig` uses `RM_LiquidTap`, `RM_SunSphere` uses `RM_GlowTank`, `RM_TractionLance` uses the Webwork anchor, and so on. The item file admits all 14.
+- Reran `python3 src/RimMandrake/Utils/ship_contributions.py` at HEAD d262fe3b2d: exit 0, 24/24 biomes PASS, 0 problems.
+  Output matches `evidence/ship_contributions_run.txt` line for line, except the header (that run was at HEAD 047ba6f2ae).
+  My copy: `D:\ClaudeWork\rimmandrake\judge_bsc1\run.txt`.
+- Read the checker's docstring. It reads the substructure affordances from the Odyssey defs and checks build category,
+  placeWorkers, bringAlongOnGravship, obtainability, and whether each gift is the biome's own. Its selftest log says it
+  rejects 12 mutated false lists. That is a real instrument for the verify line's first half.
+- Checked the row claims against the defs:
+  - Pattern hull 120 HP/day: CompSelfhealHitpoints, ticksPerHeal 500 on a Rare ticker. Consistent.
+  - Hexplate Cleanliness 0.6 and furnace bank heatPerSecond 10: both in the defs.
+  - Long-shade mast lee, capped at 16 cells: the lee mode exists in `RM_ShadeGear.cs` / `RM_MapComponent_ShadeGrid.cs`.
+- Art: opened `evidence/art2/contact_sheet_96ppc.png`. All 20 pictures read as their things at a consistent house style.
+  Every final PNG is installed byte-identical in the mod Textures folder (the great bone under the name
+  `SummGreatBone.png`, which is the def's texPath).
 
 ## Statement line
 
-> Every-biome pass ... is done as `infrastructure/state/items/BIOME_SHIP_CONTRIBUTIONS_1.md` says, shown by fresh evidence.
+**"Every-biome pass ... is done as the item file says, shown by fresh evidence." FALSE.**
 
-**false.**
+- What holds: coverage (24/24 shipped biome mods each have a row naming a real, deck-buildable def that is the biome's
+  own), the distinctness sweep, the design-judge fixes, the art, and the owner card. The checker reproduces.
+- What fails: the item's verify is "the list here matches what the mods actually ship", and it does not.
+  - The Cracked Lands row says the fossil case is "(beauty 14)".
+  - `src/RimMandrake/CrackedLands/Defs/ThingDefs_Buildings/RM_FossilCase.xml:44` ships `<Beauty>40</Beauty>`.
+  - The item file's own preamble says the change to Beauty 40 was applied.
+  - The stale "beauty 14" is also in `evidence/owner_card.md:22`, the matrix going to the owner. So the card would hand
+    him a number that is wrong for the def it describes. The checker cannot catch this because it checks def names,
+    not the numbers in the prose.
+  - The fix is one edit in the list row and one in the card. Until then the list does not match the mod.
 
-What holds: the `## verify` section ("every shipped biome mod has at least one ship-buildable contribution ... the list matches what the mods actually ship") is shown. Every one of the 24 composed biomes has a row, each def named exists and can be placed on a deck, the checker was rerun fresh, and it is not toothless. The matrix is carded to the owner (`evidence/owner_card.md`).
+## Where the evidence is flattering or cannot show
 
-What fails:
-1. **The criterion is not met as it stands.** The criterion reads: "the gravship becomes a scrapbook of everywhere it has been." 14 of the gifts (8 borrowed textures, 6 declared placeholders) look like other things on a deck. The Leaning Scrub gift is drawn as a vanilla moisture pump, and the Wastes gift as a vanilla shelf. The item file says so itself: "until it lands the scrapbook shows in what the gifts do, not yet in how they look". The follow-up item `RIMMANDRAKE_PAINT_SHIP_GIFTS_OWN_ART` is the thing that would finish this. Filing that debt does not finish the scrapbook. I would have to caveat this line, so the line is false.
-2. **"Balance the set so every biome's gift is distinct" is only partly done.** Four rows give water: Leaning Scrub vaporator, Weeping Stones condenser, the Stillsand solar still, and Blue Desert's ice as water stock. Three rows give light that needs no lamp: lanternstone, Sump gaslight lamps, the sun-sphere. The rows try to tell them apart in words, but in play these overlap. The heater overlap was fixed; these were not.
-3. **"Worth landing for" is not shown for most rows.** 20 of 24 rows are *delegated* agent picks. The owner card is unanswered. Several new numbers are marked PROVISIONAL in the defs (for example, the furnace-hide bank gives a third of a heater's output). No evidence weighs a gift's value against its cost or the trip.
-
-## Staged or flattering evidence
-
-- No gift was seen placed, used or carried in a running game (the README says so). All proof of "can stand on a deck" comes from the checker reading the engine rules, not from the engine. The five art renders are wallsims and tiles on a flat field, not on a real deck next to vanilla hull, so they are a best case.
-- The checker's PASS proves that a def exists and that its placement rules allow a deck. It does not check that the effect a row describes works (summ imprinting, drive-core range, archive-vat resurrection, aerosol dome). Those effects are claimed in the row text and only partly backed by the C# I saw referenced.
+- No live play: nothing shows a gift placed, flown or used. The README says so plainly. These behaviours are claimed
+  from defs and C# reading only: the great bone's imprint, the drive core's range multiplier, the waste-bay launch
+  refusal, and the mast's lee on a real deck.
+  - For a list-and-design item whose verify is def-level, I do not count this against it.
+  - The criteria line ("the gravship becomes a scrapbook") is a play feel that no still or def check can show.
+- The contact sheets are clean isolated renders on a flat ground, not in-game on a deck. They show legibility, not fit
+  beside vanilla things.
+- The row numbers are prose the checker does not verify. A spot check of five found one wrong. Nothing has checked
+  the other rows' numbers ("beauty 14" for the gaslight, "radius 10", etc.) against their defs either.
 
 ## What would settle it
 
-The `RIMMANDRAKE_PAINT_SHIP_GIFTS_OWN_ART` art landed for all 14, or an owner ruling that the scrapbook may ship with stand-in art. Either the overlapping water and light rows cut down or ruled acceptable. An owner answer on the card. A live look at one deck carrying several gifts.
+Correct the Cracked Lands row and `owner_card.md` to Beauty 40. Better still, the other rows' prose numbers should be
+diffed against their defs, or the numbers dropped from the prose.
 
 would show: no
