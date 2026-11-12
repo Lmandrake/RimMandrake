@@ -163,10 +163,52 @@
     "ref": "run bench-ek-st3d-20261112",
     "stage": 3,
     "tokens": 3940000
+   },
+   {
+    "at": "2026-11-12T09:06:20Z",
+    "kind": "helper",
+    "ref": "afe4fa3a5242576d3",
+    "stage": 4,
+    "tokens": 38650
+   },
+   {
+    "at": "2026-11-12T09:06:20Z",
+    "kind": "helper",
+    "ref": "a1453c90605b18e9f",
+    "stage": 4,
+    "tokens": 37111
+   },
+   {
+    "at": "2026-11-12T09:06:20Z",
+    "kind": "helper",
+    "ref": "a7225cd4f21ed8f04",
+    "stage": 4,
+    "tokens": 38398
+   },
+   {
+    "at": "2026-11-12T09:06:20Z",
+    "kind": "helper",
+    "ref": "ada712a89e625a419",
+    "stage": 4,
+    "tokens": 38629
+   },
+   {
+    "at": "2026-11-12T09:06:20Z",
+    "kind": "helper",
+    "ref": "a34cb5b111d5760cd",
+    "stage": 4,
+    "tokens": 38526
+   },
+   {
+    "at": "2026-11-12T09:06:44Z",
+    "kind": "unmeasured",
+    "ref": "run bench-ek-st4c-20261112",
+    "stage": 4,
+    "tokens": 3940000
    }
   ],
   "reserve": 60000,
-  "spent": 20596753
+  "spent": 24728067
  },
  "history": [
   {
@@ -336,6 +378,24 @@
    "stage": 4,
    "what": "close",
    "why": "run bench-ek-st3d-20261112: stage 3 done"
+  },
+  {
+   "at": "2026-11-12T09:06:20Z",
+   "stage": 4,
+   "what": "over_budget",
+   "why": "20788067 of 4000000 spent; run bench-ek-st4c-20261112 goes on with 3940000 (advisory)"
+  },
+  {
+   "at": "2026-11-12T09:06:20Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run bench-ek-st4c-20261112, stage 4, budget 3940000"
+  },
+  {
+   "at": "2026-11-12T09:06:45Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run bench-ek-st4c-20261112: stage 4 done"
   }
  ],
  "item": "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
@@ -475,11 +535,32 @@
    "run": "bench-ek-st3d-20261112",
    "stage": 3,
    "summary": "Stage 3 reworked against the second coverage judge's 14 gaps (rm-coverage-judge-1794473090: all 19 earlier gaps fixed; 14 new, all stage 3, none needs the owner). Hop trace asserted in sc_all_fly_no_cap and the flagship; the flagship's covered pit cell has a stack aimed at it; sc_pawn_arc walker asserted on the landing cell and the haul resumed; fire at half read from the same shell with its damage type swapped; sc_lookup lanes for precedence on one explosion, own maximum, the cap scale on an own maximum, impactFactor and immuneBodySizeOverride; sc_settings_sweep exercises every settings line and asserts the removed cap lines are gone; gas shove split from the belt with two bursts inside 2 s; a lit cloud over the third cover; a raider thrown into a pit; the hose control is damage without the throw; the barrage on the full list only; the walk asserts its gas; the shipped fields and killed-pawn corpse inventoried (inv_weapon_ext_fields, inv_killed_corpse, new scene sc_killed_thrown) and 7 more proof scenes audited (24 rows); sheet the_spared, per_weapon_tuning and no_careless_fall made true. 32 scenes. The stage 4 exam is void and is rerun."
+  },
+  {
+   "at": "2026-11-12T09:06:44Z",
+   "inputs": {
+    "exam": "f1f4e5c6f0cf3632ae17f7dbe139a2bf493673222ca55047f4d4c5f60b60dd9e",
+    "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
+    "scenes": "fc8d3bc1bd09fe25a28d383982e7f04af578467d47d0b0f0cf80f69774363dd4",
+    "sheet": "9266326be3ca2add9213e9664550fc65e8534198f266debe0cc7e8cf8bf778d9",
+    "tree": "9facb819518d31a3d572654a640e32067cf4e7ad27ec3bee18fd029b47b116b0"
+   },
+   "manifest": {
+    "designer.md": "b79052133c514f160b33c30b53d69a947adbfdbc81304681463b1038e82fce9f",
+    "designer_exam.md": "9892f91253ca15581c15f6f64d211a2275f345d0e13e0200dcda9c9f8004e07a"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "bench-ek-st4c-20261112",
+   "stage": 4,
+   "summary": "Cold Reader exam rerun on the stage 3 rework (tree 9facb819518d, sheet 9266326be3ca, 28 leaves): 34 frozen scenarios (24 Examiner, 10 Challenger; 25 reject cases), both fresh Readers 34/34, accept_where_reject_core 0, no Challenger misses. Control on a copy with wall_stops_dead and every mention of the people-at-a-wall rule stripped accepted c2 (a slight rebound), so it missed; it still caught e4 through pawn_flight_arc's planned landing cell. Five fresh opus agents, none of them used before on this work, run one at a time under the N=2 slot cap; each charged."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 5,
  "status": "ready"
 }
