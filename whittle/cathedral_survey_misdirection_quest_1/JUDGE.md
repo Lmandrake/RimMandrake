@@ -1,50 +1,49 @@
-# CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1: judge verdict
+# Judge: CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1 (fresh judge, 2026-11-11, round after broaden 2)
 
-Judge: CLAUDE_STEVEDESKTOP_OFFLINE3 judge seat, 2026-11-11. I did not read DONE.md or BROADEN.md.
-I ran: `selftest_rustcathedral_survey.py` (exit 0, 60 checks, 0 failed) and
-`gm_blackboard_shadow.py --fixture .../cathedral_survey_ordinary_play.json --log /tmp/judge_gm.jsonl`
-(exit 0, 160 polls). I also ran `cathedral_arc_lint.py --xml` on both survey XML files at stages -1, 0 and 3 (all PASS, 0 findings).
+STATEMENT.md is malformed: it holds one empty bullet and a "Depends on" fragment, with no real lines. I judged against the
+item file's spec, verify and criteria (`infrastructure/state/items/CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1.md`), which
+STATEMENT.md says are the owner's words. I read the evidence/ files, reran `selftest_rustcathedral_survey.py` (73 checks,
+0 failed, exit 0) and linted both shipped XML files myself at stage 0 (QuestScriptDef 15 strings, IncidentDef 2 strings,
+both PASS, 0 findings).
 
-## The statement as written
+## Lines
 
-STATEMENT.md has no real claims. It holds one blank bullet and a cut-off `*Depends on:**` fragment.
-A lesson about this already exists: `infrastructure/state/lessons/20261112T054039Z-CLAUDE_STEVEDESKTOP_OFFLINE3-wc-py-setup-wrote-whittle-cathedral.md`.
+1. **Fires from the pursuit spine dressing, without inventing a faction**: true (offline). Selftest [1]: the hail fires only on
+   Cathedral ground with Heat at or over the band (1b, 1c, 1m, 1n, 1f). 1j: no FactionDef ships. 1k: the C# binds to
+   EmpireSearch / ScenPart_RuthlessPursuingMechanoids.PursuitFaction and falls back to Faction.OfEmpire. These are source
+   and fixture checks. No live run shows the quest firing in the game.
+2. **(b) success moves Regard up in shadow mode and Heat not at all (K2)**: true. ordinary_play_dull.txt: +12 Regard per
+   answer (+24 total). Heat matches the other branches poll for poll (10.91 to 10.11 to 9.71, the same in the pointed and
+   silent files). Selftest 2e: Heat is identical across all 160 polls. The spec says "large Regard gain". +12 moves the
+   stage band (WARY to TOLERATED sooner), but I cannot judge "large" without the Regard scale.
+3. **(c) moves exposure pressure**: true. ordinary_play_pointed.txt: exposure goes up 20 per answer (1.00 to 20.40), and
+   Regard and Heat do not move with it. Selftest 3a and 3d agree.
+4. **All dialog passes item 3's linter; no line explains what the player protected**: true. arc_lint.txt passes at stages
+   -1 to 3, and my own runs pass. I read the shipped text (hail, three answers, four letters). The (b) letter tells what the
+   surveyors did and never why. Nothing names the Cathedral, Heat or a loyalty reward. Small gap: the selftest says "13
+   strings" and the lint reads 17. Probably def labels; it does not change the verdict.
+5. **Completes Oracle-absent with prescribed fallback text**: true. Selftest [5]: no `claude` on PATH, no LLM and no
+   process started. Each branch ends the quest with its own shipped letter.
+6. **Criteria: "Quest lands, all three branches playable on a quicktest, consequences logged on the blackboard"**: false
+   as it stands. "Consequences logged on the blackboard" is shown, but only in ShadowBlackboard with FixtureBridge.
+   "Quest lands" and "playable on a quicktest" have no live evidence: no screenshot of the hail, no in-game run of any
+   branch, no game log. The successful winbuild and the committed DLL show that the code compiles. They do not show that
+   the QuestScriptDef resolves, that the dialog buttons work, or that the Postpone and reload paths behave in RimWorld.
+   What would settle it: the live recipe (validation.py LIVE RUN RECIPE step 8). Fire
+   `RUT_GiveQuest_CathedralSurveyMisdirection`, play each of the three answers, take a screenshot of the hail and each
+   letter, and capture the blackboard lines from a real bridge.
 
-- `- ` (blank): cannot tell. There is nothing to judge.
-- "Depends on: item 1 (Regard/exposure sinks), item 3 (linter), pursuit ...": true as a description. The blackboard has Regard and exposure sinks, the item 3 linter runs, and the C# binds the EmpirePursuit pursuit faction (selftest 1k, 1l). It is a dependency note, not a claim that the work is done.
+## Staging / flattery
+- All behavioural evidence comes from one scripted fixture (`cathedral_survey_ordinary_play.json`): a clean two-sale arc
+  with a simulated player who answers on cue. The selftest's "messy" run (section 8) and broaden-2's late-answer probes
+  widen it somewhat, but they are still fixture runs.
+- "would fire ... fired nothing" means shadow mode. Not one hail has been put in front of a player.
+- The winbuild log admits a first attempt that exited 5 with no compiler error, and it restored the committed DLL.
+  Harmless, but the DLL it proves is the committed one, not this rerun's output.
 
-Because of that, I judged the item file's own spec, verify and criteria lines (`infrastructure/state/items/CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1.md`):
-
-## Verify lines
-
-1. **Fires from the pursuit spine dressing without inventing a faction: true (offline).** In the shadow log the hail fires only when Heat is at or over 10 on Cathedral ground (polls 20 and 142). It stays closed as `heat_below_pursuit_band` otherwise. No FactionDef is shipped in CathedralPass. The C# falls back to `Faction.OfEmpire` (selftest 1a-1l). This is shadow mode, so the incident is never actually fired.
-2. **(b) success moves Regard up in shadow mode and Heat not at all: true.** My run, poll 22: `survey_regard_gain_this_poll=12.0`, Regard -4.1 to 8.1. Heat goes 10.514 to 10.114, the same 0.4 per-poll decay as every other poll. Selftest 2e/2f: Heat, Hutt Interest and the orbital timer match the lapse run poll for poll.
-3. **(c) moves exposure pressure: true.** In `evidence/ordinary_play_pointed.txt`, exposure goes 0.40 to 20.40 at each pointed answer, while Regard and Heat match the silent run. Selftest 3a-3f show it can flip go-dark.
-4. **All dialog passes item 3's linter, and no line explains what the player protected: true.** I re-ran the linter myself and it passed. I read the shipped text (see the selftest output): the (b) letter says what the surveyors did, never why. One judgement note: the (c) letter has a silver pod arriving. Nothing in the spec asks for that, but it does not break any rule I can see.
-5. **Completes Oracle-absent with prescribed fallback text: true (offline).** `text_source` says "shipped defs (fallback text); the survey path calls no LLM" on every row. Selftest 5a-5h agree.
-
-## Spec lines
-
-- Three outs (a)/(b)/(c), success = large Regard gain, zero text saying why: true. +12 is more than the 10.05 a sale costs.
-- No new faction: true.
-- K2, (b) scrubs no Imperial Heat: true.
-- NEW defName `RUT_CathedralSurveyMisdirection`, RUT_ tier: true. It is in `Defs/QuestScriptDefs/RUT_CathedralSurveyMisdirection.xml`.
-- "Same CQF/bridge-letter surface and caveat as item 4": cannot tell. Settling it needs a side-by-side with item 4's surface. Nothing in the evidence shows one.
-
-## Criteria (the owner's done bar)
-
-- **"Quest lands": cannot tell.** Nothing shows the quest landing in RimWorld. The only in-game evidence is static: a C# build log, a static validation PASS, and the selftest's `+a..+g` source and DLL checks. A quicktest log or screenshot of the hail letter, plus the dialog, would settle it.
-- **"All three branches playable on a quicktest": false as evidenced.** Every branch was played by a simulated player in a fixture (`"simulated": true` on every quest row). No quicktest was run. The ledger says needs=offline, but the owner's criterion names a quicktest.
-- **"Consequences logged on the blackboard": true.** Each answer writes a `cathedral_survey_answered` row with the outcome and the deltas.
-
-## Staged or flattering
-
-- All four ordinary_play runs use one hand-built fixture. That fixture's sale pushes Heat to 10.91, just over the 10.0 band, so the hail fires exactly on cue. It is a tidy best case. No run shows Heat hovering near the band or a sale off the pursuit timeline.
-- The evidence is all shadow mode, "fired nothing". No incident, letter, dialog or save was exercised in the game.
-- The offline half is strong and has real negative controls: no sale, off-Cathedral ground, toggle off, after full discovery, and reload/restart. Planted explanatory lines are refused (7/7).
-
-## What is owed
-
-A quicktest (BENCH, needs=owner live look or the quicktest lane) that fires `RUT_GiveQuest_CathedralSurveyMisdirection` and plays all three answers. It should capture the hail dialog, each outcome letter, and the blackboard rows the live bridge reads. The statement also needs regenerating from the item file.
+## Verdict
+Offline the design work is solid and well tested: every verify line holds there. The owner's criterion asks for a quicktest
+of all three branches, and no live evidence exists. This round did not change that. I would not show it as finished until
+the live step has run.
 
 would show: no
