@@ -109,8 +109,9 @@ def settings_paths():
             os.path.normpath(os.path.join(here, "..", "..", "..", ".claude", "settings.json"))]
 
 
-def _hook(name, settings):
-    """None | why not. A whole-name match: `foo.py` is not wired by `block_foo.py`. The file must exist too."""
+def _hook(name, settings, root=None):
+    """None | why not. A whole-name match: `foo.py` is not wired by `block_foo.py`. The file must exist too, under the
+    project the settings file sits in, or under `root` for a settings copy kept elsewhere (selftest_hook_promises_wired)."""
     paths = [settings] if settings else settings_paths()
     rx = re.compile(r"(?<![\w.-])%s(?![\w.-])" % re.escape(name))
     readable = 0
@@ -125,7 +126,7 @@ def _hook(name, settings):
             continue
         readable += 1
         if rx.search(text):
-            home = os.path.dirname(os.path.dirname(path))     # the commands name it relative to the project
+            home = root or os.path.dirname(os.path.dirname(path))     # the commands name it relative to the project
             tokens = re.findall(r"[^\s\"']*/" + re.escape(name), text) or [os.path.join(".claude", "hooks", name)]
             found = [os.path.join(home, os.path.expandvars(os.path.expanduser(re.sub(r"^\$\{?CLAUDE_PROJECT_DIR(:-[^}]*)?\}?/", "", t)))) for t in tokens]
             if not any(os.path.exists(t) for t in found):
