@@ -59,6 +59,14 @@ namespace RimMandrake.FlowWorks
 			return c < 0f ? 0f : (c > 1f ? 1f : c);
 		}
 
+		/// <summary>PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS: the first cut on a map that breaks into the deep stone always
+		/// turns up a chunk of it (the breakthrough is the news, and a 25% roll could leave a whole first pit silent); later
+		/// deep cuts roll the wall-mining rate. A rate the player set to zero stays zero.</summary>
+		public static float DeepChunkChance(float chance, bool firstOnMap)
+		{
+			return firstOnMap && chance > 0f ? 1f : chance;
+		}
+
 		/// <summary>Very rare chunk through non-rock ground: <paramref name="percent"/> % per cut (default 0.5).</summary>
 		public static float SoilChunkChance(float percent)
 		{

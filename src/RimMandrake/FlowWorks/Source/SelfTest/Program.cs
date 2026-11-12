@@ -1462,6 +1462,11 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "the chunk roll asks StrikesDeepStone at the superdeep level, behind the switch");
                 Assert(src.Contains("surface.Contains(d)") && src.Contains("biomeSpecific"), "the fallback skips surface rocks and foreign biome-specific ones");
                 Assert(src.Contains("pool.Sort("), "the fallback pool is name-sorted: load order never moves a tile's stone");
+                AssertClose(RM_DigDiscoveryMath.DeepChunkChance(0.25f, true), 1f, "the map's first deep cut always turns up the stone");
+                AssertClose(RM_DigDiscoveryMath.DeepChunkChance(0.25f, false), 0.25f, "later deep cuts roll the wall-mining rate");
+                AssertClose(RM_DigDiscoveryMath.DeepChunkChance(0f, true), 0f, "chunks set to never stay never");
+                Assert(src.Contains("DeepChunkChance(chance, !found.Contains(chunk))") && src.Contains("bool firstDeep = deep != null && found.Add(chunk);"),
+                    "the roll is certain until the map's found-set holds the deep chunk, and placing one records it, letter or not");
             });
             // ── DIG_ROCK_TUNE_STONE_FIGHTS_BACK: rock ground, chunks, work ──
             Case("DigRock_chunk_chance_and_work", () =>

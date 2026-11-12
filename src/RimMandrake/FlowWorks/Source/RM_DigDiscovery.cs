@@ -232,6 +232,10 @@ namespace RimMandrake.FlowWorks
 			{
 				chunk = rock.building.mineableThing;
 				chance = RM_DigDiscoveryMath.RockChunkChance(rock.building.mineableDropChance, RimMandrakeFlowWorksSettings.digRockChunkMultiplier);
+				if (deep != null)
+				{
+					chance = RM_DigDiscoveryMath.DeepChunkChance(chance, !found.Contains(chunk));
+				}
 			}
 			else
 			{
@@ -276,11 +280,15 @@ namespace RimMandrake.FlowWorks
 			LastFind = chunk.defName + " x1 @" + c.x + "," + c.z + " D=" + newDepth
 				+ (deep != null ? " (deep stone)" : rock != null ? " (rock ground)" : " (chunk, non-rock)");
 			Thing target = placed != null && !placed.Destroyed ? placed : made;
-			if (deep != null && RimMandrakeFlowWorksSettings.digFindLetterEnabled && found.Add(chunk))
+			// recorded whether or not letters are on, so the first-strike certainty above is spent once per map
+			bool firstDeep = deep != null && found.Add(chunk);
+			if (firstDeep && RimMandrakeFlowWorksSettings.digFindLetterEnabled)
 			{
 				// the first deep stone a map turns up is news: the pit has broken through to a new layer
-				Find.LetterStack.ReceiveLetter("RMFlow_DeepStoneLetterLabel".Translate(chunk.LabelCap),
-					"RMFlow_DeepStoneLetterText".Translate(chunk.label, digger?.LabelShort ?? ""),
+				// the letter names the STONE ("Deep stone: Marble"), not the chunk item
+				Find.LetterStack.ReceiveLetter("RMFlow_DeepStoneLetterLabel".Translate(deep.LabelCap),
+					"RMFlow_DeepStoneLetterText".Translate(deep.label, digger?.LabelShort ?? "", chunk.label,
+						RM_ExcavationDepth.LabelOf((byte)newDepth)),
 					LetterDefOf.PositiveEvent, target);
 				return;
 			}

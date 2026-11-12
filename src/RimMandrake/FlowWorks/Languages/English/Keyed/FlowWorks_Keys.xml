@@ -76,7 +76,7 @@
   <RMFlow_DigFindMessage>{0} dug up {1} {2} while cutting the canal.</RMFlow_DigFindMessage>
   <!-- PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS: the first deep-stone chunk a map turns up. -->
   <RMFlow_DeepStoneLetterLabel>Deep stone: {0}</RMFlow_DeepStoneLetterLabel>
-  <RMFlow_DeepStoneLetterText>{1} dug 2 m or more down and broke through to a deeper layer: {0}. The surface rock here does not show it; deep pits are the only way to quarry it.</RMFlow_DeepStoneLetterText>
+  <RMFlow_DeepStoneLetterText>{1} dug {3} down and broke through into a layer of {0}. The surface rock here does not show it. A {2} lies at the pit's edge; every cut this deep may turn up more.</RMFlow_DeepStoneLetterText>
 
   <!-- FLOWWORKS_BUILD_PROGRAM_1 Phase 8: the pump. -->
   <RMFlow_PumpModeDraw>Drawing into the tank</RMFlow_PumpModeDraw>
