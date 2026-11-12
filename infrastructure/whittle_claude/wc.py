@@ -826,14 +826,16 @@ def wrapup_run(worker, item_id, d, rc, rnd=None):
     wd = REPO / d
     rd = (Path(os.environ["WC_DIR"]) / "rounds" / str(rnd)) if rnd and os.environ.get("WC_DIR") else rnd
     tail = "the work so far is in %s%s" % (d, (" and %s" % rd) if rd else "")
-    if rc == "ghost" or v is None or not live_file(item_id):
-        sha = release_run(worker, item_id, "no live item file (ledger ghost); nothing was built")
-        return "RESULT %s released sha=%s" % (item_id, sha)
-    if not v.open:
+    if v is not None and not v.open:
+        # the ledger decides the ending, read first: a closer (or `rimflow verify`) may already have moved the item to
+        # done, which also removes its live file, so the ghost test below would call a win "released"
         table_call("unclaim", worker, item_id)
         sha = land(worker, [d, SHARD % worker, OWNER_SHARD], "whittle wrap-up: %s %s" % (item_id, v.state))
         end = "closed" if v.state == "done" else "dropped"
         return "RESULT %s %s sha=%s" % (item_id, end, v.closed_sha[:10] if v.closed_sha else sha)
+    if rc == "ghost" or v is None or not live_file(item_id):
+        sha = release_run(worker, item_id, "no live item file (ledger ghost); nothing was built")
+        return "RESULT %s released sha=%s" % (item_id, sha)
     if v.owner != worker and item_id not in mine_ids(worker):
         # a replayed wrap-up (killed after it gave the item back): it is someone else's now, so touch nothing
         say("%s is no longer %s's (owner %s, not in its claims): this wrap-up already ran" % (item_id, worker, v.owner))

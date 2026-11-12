@@ -171,6 +171,20 @@ check("whittle priced", abs(s["whittle"]["cost_usd"] - wc.priced("opus", 200, 0,
 check("setup from its result line", s["setup"]["raw"] == 1030 and s["setup"]["cost_usd"] == 0.01, s["setup"])
 check("total sums the phases", s["total"]["raw"] == 1030 + 20200 + 10, s["total"]["raw"])
 
+# the round-end outcome is the ledger's: an item already done (verify auto-closed it, live file gone) is "closed", not
+# "released"; dropped/superseded is "dropped"
+_saved = (wc.loaded, wc.table_call, wc.land, wc.live_file)
+wc.table_call = lambda *a, **k: None
+wc.land = lambda *a, **k: "landedsha01"
+wc.live_file = lambda i: False
+for st_, sha_, want in (("done", "8215b899c6aabbcc", "closed"), ("dropped", None, "dropped"), ("superseded", None, "dropped")):
+    it = item("RM_TEST_ITEM_ONE", open=False, state=st_, closed_sha=sha_, owner="BENCH")
+    wc.loaded = lambda it=it: (None, SimpleNamespace(items={"RM_TEST_ITEM_ONE": it}))
+    r = wc.wrapup_run("W1", "RM_TEST_ITEM_ONE", "x/dir", "1", 2)
+    check("ledger %s before wrapup => %s" % (st_, want), r.startswith("RESULT RM_TEST_ITEM_ONE %s sha=" % want), r)
+check("closed carries the ledger sha", wc.wrapup_run("W1", "RM_TEST_ITEM_ONE", "x/dir", "ghost", 2).endswith("landedsha01"))
+wc.loaded, wc.table_call, wc.land, wc.live_file = _saved
+
 shutil.rmtree(TMP, ignore_errors=True)
 print("%d failed" % len(FAILS) if FAILS else "all ok")
 sys.exit(1 if FAILS else 0)
