@@ -1,8 +1,12 @@
 """showcase_titan_live.py -- the TITAN promise of HugeThings, one demonstration in the owner's order (ANSWERS_OWNER.md
-answers 1-2, 2026-11-11): CROSSING, then DEATH, then the CROWD at the remains. Gated: a phase that does not PASS stops
+answers 1-2, 2026-11-11): CONTROL, CROSSING, then DEATH, then the CROWD at the remains. Gated: a phase that does not PASS stops
 the run and every later phase is UNMEASURED (never reordered, never run out of order). Each phase carries start/end
 tick stamps in the output JSON.
 
+  CONTROL   the scene's one control, before the titan: a same-mass UNTIERED RM_TestTitanT2Control on the same staged
+            lane gets the titan's Goto GOAL (sealed by the ring), then a Goto to the open cell touching the ring. The ring
+            must stay whole (broken -> FAIL MOD: walls break without a tier); a control that never reaches the ring or
+            gets inside it is UNMEASURED SITE. It is vanished afterwards; CROSSING re-stages the lane.
   CROSSING  a real RM_TestTitanT3Adult (HugeThingsTestRaces, faction none) walks a staged lane on the registered calm
             site: a player WoodLog wall column, a row of grown Plant_TreeOak, a grown RM_Nogtyl giant. Census of the
             staged things and Filth_RubbleRock before vs after; the walk is sampled every 120 ticks (no step longer
@@ -16,6 +20,7 @@ tick stamps in the output JSON.
 
 The scene runs on a scene-begin snapshot of the registered calm site and is restored in `finally` (settings first,
 then the snapshot reload). LIVE: needs the game and the bridge; offline proof is selftest_showcases.py.
+Exit 0 every required row PASS, 1 a MOD FAIL, 2 UNMEASURED (could not ask) -- the Lightspeed proof contract.
 """
 import argparse
 import os
@@ -47,9 +52,13 @@ FIELDS = ("giantAnimalsEnabled", "wakeEnabled", "titanClearingEnabled", "titanEv
           "corpseSiteEnabled", "corpseSiteScavengersEnabled", "corpseSiteScavengerDailyChance", "corpseSiteCampsEnabled",
           "corpseSiteCampDailyChance", "giantPlantsEnabled")
 PACKAGES = ("mandrake.rm.hugethings", "mandrake.rm.hugethingstestraces")
-ROWS = dict(PRE=["PRE_ready"], CROSSING=["CROSSING_walked", "CROSSING_destroys"],
+CONTROL_KIND = "RM_TestTitanT2Control"   # bodySize 8, forceEnabled=false: same mass, NO tier (HugeThingsTestRaces)
+CONTROL_TICKS, CONTROL_SWITCH, CONTROL_DWELL = 3600, 600, 600   # the titan's own order (Goto GOAL, sealed) first;
+OUTSIDE = (GOAL[0] - RING_R - 1, GOAL[1])  # then Goto the open cell touching the ring, and stand there DWELL ticks
+ROWS = dict(PRE=["PRE_ready"], CONTROL=["CONTROL_untiered_leaves_ring"], CROSSING=["CROSSING_walked", "CROSSING_destroys"],
             DEATH=["DEATH_titan_dies", "DEATH_corpse_site"], CROWD=["CROWD_arrives", "CROWD_targets_site"])
-REQUIRED = [r for k in ("PRE", "CROSSING", "DEATH", "CROWD") for r in ROWS[k]]
+PHASES = ("PRE", "CONTROL", "CROSSING", "DEATH", "CROWD")
+REQUIRED = [r for k in PHASES for r in ROWS[k]]
 
 
 def arrived(cell):
@@ -135,6 +144,57 @@ class TitanShowcase(object):
             return sc.row("PRE_ready", "settings on and the lane empty of pawns", "UNMEASURED", "SITE",
                           "settings not written %s; pawns already in the lane %s" % (bad, there[:8]))
         return sc.row("PRE_ready", "build, settings and an empty lane", "PASS", "HARNESS", why)
+
+    def control(self, sc):
+        """The scene's shared control: the same lane, the same Goto GOAL, a same-mass UNTIERED walker. If the ring
+        breaks anyway, CROSSING_destroys could not tell the titan's passage from anything else that breaks walls."""
+        rid, crit = "CONTROL_untiered_leaves_ring", "an untiered same-mass walker sent to the sealed goal leaves the ring whole"
+        self.stage_lane()
+        c0 = self.census()
+        if not c0 or c0.get("ring", 0) != len(RING):
+            return sc.row(rid, crit, "UNMEASURED", "SITE", "the ring was not built whole: %s" % c0)
+        r = sc.call("jawa/spawn_pawn", kindDef=CONTROL_KIND, x=START[0], z=START[1], faction="none", count=1)
+        ps = r.get("pawns") or []
+        cid = ps[0].get("id") if ps else None
+        if not cid:
+            return sc.row(rid, crit, "UNMEASURED", "HARNESS", "spawn_pawn %s: %s" % (CONTROL_KIND, str(r)[:200]))
+        sc.rec.setdefault("staged", []).append("control: spawn %s at %s faction none; Goto %s then %s" % (
+            CONTROL_KIND, START, GOAL, OUTSIDE))
+        sc.call("jawa/pawn_need", pawn=cid, action="need", need="Food", level=1.0)
+        sc.call("jawa/ordered_job", pawnId=cid, jobDef="Goto", targetAX=GOAL[0], targetAZ=GOAL[1], waitTicks=1)
+        spent, nearest, inside, p, second, dwell = 0, None, False, None, False, 0
+        while spent < CONTROL_TICKS and dwell < CONTROL_DWELL:
+            if not second and spent >= CONTROL_SWITCH:
+                sc.call("jawa/ordered_job", pawnId=cid, jobDef="Goto", targetAX=OUTSIDE[0], targetAZ=OUTSIDE[1], waitTicks=1)
+                second = True
+            d = sc.ticks(CHUNK)
+            spent += d if d else CHUNK
+            p = sc.pawn(cid)
+            if not p or p.get("dead") or not p.get("spawned"):
+                break
+            cell = (p.get("x"), p.get("z"))
+            if None not in cell:
+                gap = max(abs(cell[0] - GOAL[0]), abs(cell[1] - GOAL[1]))
+                nearest = gap if nearest is None else min(nearest, gap)
+                inside = inside or gap < RING_R
+                dwell = dwell + (d if d else CHUNK) if gap <= RING_R + 1 else 0
+        c1 = self.census()
+        alive = bool(p and not p.get("dead") and p.get("spawned"))
+        gone = sc.call("jawa/pawn_force_incapacitate", pawn=cid, action="vanish")
+        sc.rec["control_vanished"] = gone.get("destroyedAfter")
+        dd = "ring %s -> %s of %d; %d ticks; nearest approach %s cells from goal; alive %s; vanished %s" % (
+            c0.get("ring"), (c1 or {}).get("ring"), len(RING), spent, nearest, alive, gone.get("destroyedAfter"))
+        if not c1:
+            return sc.row(rid, crit, "UNMEASURED", "HARNESS", "after-census unreadable; " + dd)
+        if c1.get("ring", 0) < len(RING):
+            return sc.row(rid, crit, "FAIL", "MOD", "an UNTIERED walker broke the ring: " + dd)
+        if inside:
+            return sc.row(rid, crit, "UNMEASURED", "SITE", "the control got inside a whole ring (the ring leaks): " + dd)
+        if nearest is None or nearest > RING_R + 1:
+            return sc.row(rid, crit, "UNMEASURED", "SITE", "the control never reached the ring, so it tested nothing: " + dd)
+        if not alive or gone.get("destroyedAfter") is not True:
+            return sc.row(rid, crit, "UNMEASURED", "HARNESS", "control died/despawned or was not removed: " + dd)
+        return sc.row(rid, crit, "PASS", "MOD", dd)
 
     def crossing(self, sc):
         self.stage_lane()
@@ -274,14 +334,15 @@ class TitanShowcase(object):
 def run(args, bridge, site, ticker=None):
     """One gated showcase. bridge: .call(tool, **kw) -> dict; site: .begin()/.restore() (LiveSite or a fake)."""
     sc = SC.Showcase(bridge, args.out, "showcase_titan_live.py", ITEM, REQUIRED, ticker=ticker)
-    sc.rec.update(promise="titans", site_key=SITE_KEY, snapshot_prefix=SNAP_PREFIX, order=["CROSSING", "DEATH", "CROWD"])
+    sc.rec.update(promise="titans", site_key=SITE_KEY, snapshot_prefix=SNAP_PREFIX, order=["CONTROL", "CROSSING", "DEATH", "CROWD"])
     st = SC.Settings(sc, FIELDS)
     show = TitanShowcase(sc, st)
     try:
         sc.rec["site"] = site.begin()
         if not st.snapshot():
             sc.row("PRE_ready", "settings readable", "UNMEASURED", "HARNESS", "settings snapshot unreadable %s" % st.prior)
-        sc.run_phases([("PRE", show.pre, ROWS["PRE"]), ("CROSSING", show.crossing, ROWS["CROSSING"]),
+        sc.run_phases([("PRE", show.pre, ROWS["PRE"]), ("CONTROL", show.control, ROWS["CONTROL"]),
+                       ("CROSSING", show.crossing, ROWS["CROSSING"]),
                        ("DEATH", show.death, ROWS["DEATH"]), ("CROWD", show.crowd, ROWS["CROWD"])])
     except Exception as ex:  # noqa: BLE001
         sc.rec["error"] = repr(ex)
@@ -298,10 +359,14 @@ def main(argv=None):
     ap.add_argument("--out", default=os.path.join("/mnt/d/ClaudeWork/rimmandrake/showcases",
                                                   "showcase_titan_%s.json" % time.strftime("%Y%m%dT%H%M%S")))
     a = ap.parse_args(argv)
-    b, ticker = SC.live_bridge()
+    try:
+        b, ticker = SC.live_bridge()
+    except Exception as ex:  # noqa: BLE001 -- no bridge is "could not ask", never a mod FAIL
+        print("UNMEASURED HARNESS: no live bridge: %r" % ex)
+        return 2
     sc = run(a, b, SC.LiveSite(b.call, SITE_KEY, SNAP_PREFIX), ticker)
     print("wrote %s  summary %s" % (a.out, sc.summary()))
-    return 0 if sc.summary().get("gameplay_pass") else 1
+    return sc.exit_code()
 
 
 if __name__ == "__main__":

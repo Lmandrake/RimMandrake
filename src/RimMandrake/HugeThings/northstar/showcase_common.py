@@ -181,6 +181,18 @@ class Showcase(object):
         s["stopped_by"] = self.stopped_by
         return s
 
+    def exit_code(self):
+        """Lightspeed exit (proof contract): 0 every required row PASS; 1 a MOD FAIL among them; 2 could not ask.
+        A run that only went UNMEASURED (site, harness, a crash) never exits 1: that would charge the mod.
+        An unrestored site or settings is never 0: the scene was not left as found."""
+        unrestored = self.rec.get("site_restore_errors") or self.rec.get("settings_restore_bad")
+        if self.summary().get("gameplay_pass") and not self.rec.get("error") and not unrestored:
+            return 0
+        req = set(self.required)
+        if any(r["id"] in req and r.get("status") == "FAIL" and r.get("cls") == "MOD" for r in self.rows):
+            return 1
+        return 2
+
     def save(self):
         if not self.out:
             return

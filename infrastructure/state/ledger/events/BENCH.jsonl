@@ -19542,3 +19542,5 @@
 {"seat":"CONDUCTOR","event":"close","id":"RIMMANDRAKE_SPARE_THROWN_GOODS_SO_THEY_SCATTER","sha":"a593f1668f1a","why":"(a)+(b) built, deployed, live proof 13/13 PASS","ts":"2026-11-12T15:06:50Z","tsn":1794496010482410479}
 {"seat":"CONDUCTOR","event":"bridge","state":"released","ts":"2026-11-12T15:07:04Z","tsn":1794496024881837211}
 {"seat":"CONDUCTOR","event":"drop","id":"STEVE_LANE_UNSTICK_PAUSED_UNOWNED_3D50","reason":"steward: SteveDesktop lane RUNNING again (running J20261112T144256Z-a08f37)","why":"steward: the lane recovered by itself","ts":"2026-11-12T15:08:41Z","tsn":1794496121317200678}
+{"seat":"CONDUCTOR","event":"bridge","state":"taken","purpose":"owner ask: raise water pit to max","ts":"2026-11-12T15:23:43Z","tsn":1794497023135434572}
+{"seat":"CONDUCTOR","event":"bridge","state":"released","ts":"2026-11-12T15:26:06Z","tsn":1794497166616433313}

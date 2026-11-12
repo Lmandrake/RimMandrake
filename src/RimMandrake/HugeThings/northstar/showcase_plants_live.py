@@ -193,9 +193,12 @@ class PlantShowcase(object):
 
 def run(args, bridge, site, ticker=None, door_runner=None):
     """bridge: .call(tool, **kw) -> dict; site: .begin()/.restore(); door_runner() -> trunk_doors_live record."""
-    sc = SC.Showcase(bridge, args.out, "showcase_plants_live.py", ITEM, REQUIRED, ticker=ticker)
+    no_door = bool(getattr(args, "no_door", False))
+    required = [r for r in REQUIRED if not (no_door and r in ROWS["DOOR"])]
+    sc = SC.Showcase(bridge, args.out, "showcase_plants_live.py", ITEM, required, ticker=ticker)
     cell = tuple(int(v) for v in args.cell.split(",")) if args.cell else DEFAULT_CELL
-    sc.rec.update(promise="giant plants", site_key=SITE_KEY, snapshot_prefix=SNAP_PREFIX, cell=cell)
+    sc.rec.update(promise="giant plants", site_key=SITE_KEY, snapshot_prefix=SNAP_PREFIX, cell=cell,
+                  door="skipped (--no-door: BLOCKED, proven separately or not at all)" if no_door else "run")
     door_out = os.path.splitext(args.out)[0] + "_doors.json"
     show = PlantShowcase(sc, cell, door_runner or (lambda: door_subprocess(door_out)))
     try:
@@ -208,9 +211,10 @@ def run(args, bridge, site, ticker=None, door_runner=None):
         sc.stopped_by = None if sc.stopped_by in (None, "SELECTION") else sc.stopped_by  # DOOR needs no state of ours
         if sc.rec["site_restore_errors"] and sc.stopped_by is None:
             sc.stopped_by = "SITE_RESTORE"   # never stage a second scene on an unrestored site
-        sc.scene += 1                    # trunk_doors_live loads its own registered site: a new scene, a new clock
-        sc.run_phases([("DOOR", show.door, ROWS["DOOR"])])
-        sc.phases[-1]["foreignClock"] = "trunk_doors_live.py loads and restores its own registered site"
+        if not no_door:
+            sc.scene += 1                # trunk_doors_live loads its own registered site: a new scene, a new clock
+            sc.run_phases([("DOOR", show.door, ROWS["DOOR"])])
+            sc.phases[-1]["foreignClock"] = "trunk_doors_live.py loads and restores its own registered site"
     except Exception as ex:  # noqa: BLE001
         sc.rec["error"] = repr(ex)
     finally:
@@ -222,13 +226,19 @@ def run(args, bridge, site, ticker=None, door_runner=None):
 def main(argv=None):
     ap = argparse.ArgumentParser(description="HugeThings GIANT PLANT promise: grown, solid trunk, open cap, selection, door seal.")
     ap.add_argument("--cell", default="", help="X,Z of the giant (default %d,%d)" % DEFAULT_CELL)
+    ap.add_argument("--no-door", action="store_true",
+                    help="skip the DOOR phase (trunk_doors_live.py) and drop PLANT_door_seal from the required rows")
     ap.add_argument("--out", default=os.path.join("/mnt/d/ClaudeWork/rimmandrake/showcases",
                                                   "showcase_plants_%s.json" % time.strftime("%Y%m%dT%H%M%S")))
     a = ap.parse_args(argv)
-    b, ticker = SC.live_bridge()
+    try:
+        b, ticker = SC.live_bridge()
+    except Exception as ex:  # noqa: BLE001 -- no bridge is "could not ask", never a mod FAIL
+        print("UNMEASURED HARNESS: no live bridge: %r" % ex)
+        return 2
     sc = run(a, b, SC.LiveSite(b.call, SITE_KEY, SNAP_PREFIX), ticker)
     print("wrote %s  summary %s" % (a.out, sc.summary()))
-    return 0 if sc.summary().get("gameplay_pass") else 1
+    return sc.exit_code()
 
 
 if __name__ == "__main__":

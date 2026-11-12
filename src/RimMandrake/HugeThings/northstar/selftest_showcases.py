@@ -1,6 +1,8 @@
 """Offline selftest of showcase_titan_live.py / showcase_plants_live.py on a fake bridge (no game):
-the titan phases run CROSSING -> DEATH -> CROWD with ordered tick stamps; a failed crossing leaves DEATH and CROWD
-UNMEASURED (never run); the plant and titan showcases are separate entrypoints with separate site snapshots; --help works.
+the titan phases run CONTROL -> CROSSING -> DEATH -> CROWD with ordered tick stamps; a failed crossing leaves DEATH and CROWD
+UNMEASURED (never run); the untiered control goes red (FAIL MOD, exit 1) when it breaks the ring and UNMEASURED SITE when the
+ring leaks or it never arrives; exit codes 0/1/2; --no-door drops only the door row; the plant and titan showcases are
+separate entrypoints with separate site snapshots; --help works.
 """
 import json
 import os
@@ -32,8 +34,9 @@ class FakeSite(object):
 class Fake(object):
     """A tiny world: a clock, settings, things in the lane, one walking titan, a SiteReport."""
 
-    def __init__(self, stuck=False, misses=0, selection_on=True, ring_hits=0):
+    def __init__(self, stuck=False, misses=0, selection_on=True, ring_hits=0, control="ok"):
         self.tick, self.stuck, self.settings, self.calls = 1000, stuck, {}, []
+        self.control_mode, self.ctl = control, None     # ok | break (mutant: breaks a ring wall) | leak | lame
         self.misses, self.selection_on, self.ring_hits = misses, selection_on, ring_hits
         self.things = [dict(def_="Wall", x=TT.WALL_X, z=z) for z in TT.STAGED_Z] + \
                       [dict(def_="Wall", x=x, z=z) for x, z in TT.RING] + \
@@ -43,6 +46,14 @@ class Fake(object):
 
     def advance(self, n):
         self.tick += n
+        c = self.ctl
+        if c and self.control_mode != "lame":               # the untiered control walks up to the ring and stops there
+            for _ in range(n // 20):
+                stop = TT.GOAL[0] if self.control_mode == "leak" else TT.OUTSIDE[0]
+                if c["x"] < stop:
+                    c["x"] += 1
+                elif self.control_mode == "break":
+                    self.things = [th for th in self.things if (th["x"], th["z"]) != (TT.OUTSIDE[0] + 1, TT.GOAL[1])]
         t = self.titan
         if t and not t["dead"] and not self.stuck:
             for _ in range(n // 40):
@@ -86,9 +97,18 @@ class Fake(object):
             ps = [dict(id="Col1", x=10, z=10, spawned=True, dead=False, downed=False, isPlayer=True, intelligence="Humanlike")]
             if self.titan and not self.titan["dead"]:
                 ps.append(dict(self.titan, spawned=True, downed=False, isPlayer=False))
+            if self.ctl:
+                ps.append(dict(self.ctl, spawned=True, dead=False, downed=False, isPlayer=False))
             if kw["rect"] != SC.MAP_RECT:
                 ps = []
             return dict(success=True, pawns=ps)
+        if tool == "jawa/spawn_pawn" and kw.get("kindDef") == TT.CONTROL_KIND:
+            self.ctl = dict(id="Ctl1", x=kw["x"], z=kw["z"])
+            return dict(success=True, pawns=[dict(id="Ctl1")])
+        if tool == "jawa/pawn_force_incapacitate":
+            gone = bool(self.ctl and kw["pawn"] == self.ctl["id"])
+            self.ctl = None if gone else self.ctl
+            return dict(success=True, destroyedAfter=gone)
         if tool == "jawa/spawn_pawn":
             self.titan = dict(id="Titan1", x=kw["x"], z=kw["z"], dead=False, hp=1000)
             return dict(success=True, pawns=[dict(id="Titan1")])
@@ -124,8 +144,8 @@ class Fake(object):
 
 
 class Args(object):
-    def __init__(self, out, cell=""):
-        self.out, self.cell = out, cell
+    def __init__(self, out, cell="", no_door=False):
+        self.out, self.cell, self.no_door = out, cell, no_door
 
 
 class T(unittest.TestCase):
@@ -137,23 +157,28 @@ class T(unittest.TestCase):
     def tearDown(self):
         SC.preflight = self._pf
 
-    def titan(self, stuck):
-        f = Fake(stuck=stuck)
-        out = os.path.join(self.tmp, "titan_%s.json" % stuck)
+    def titan(self, stuck, control="ok"):
+        f = Fake(stuck=stuck, control=control)
+        out = os.path.join(self.tmp, "titan_%s_%s.json" % (stuck, control))
         site = FakeSite(TT.SNAP_PREFIX)
-        TT.run(Args(out), f, site, ticker=f.advance)
+        self.sc = TT.run(Args(out), f, site, ticker=f.advance)
         with open(out) as fh:
             return json.load(fh), site, f
 
     def test_titan_phases_run_in_order_with_stamps(self):
         rec, site, f = self.titan(False)
         st = dict((r["id"], r["status"]) for r in rec["rows"])
-        self.assertEqual([p["phase"] for p in rec["phases"]], ["PRE", "CROSSING", "DEATH", "CROWD"], rec["phases"])
+        self.assertEqual([p["phase"] for p in rec["phases"]], ["PRE", "CONTROL", "CROSSING", "DEATH", "CROWD"],
+                         rec["phases"])
         self.assertTrue(all(v == "PASS" for v in st.values()), [(r["id"], r["status"], r["detail"]) for r in rec["rows"]])
         ticks = [(p["startTick"], p["endTick"]) for p in rec["phases"]]
         self.assertTrue(all(type(a) is int and type(b) is int and a <= b for a, b in ticks), ticks)
         self.assertTrue(all(ticks[i][1] <= ticks[i + 1][0] for i in range(len(ticks) - 1)), ticks)
-        self.assertLess(ticks[1][0], ticks[1][1])            # the crossing took game time
+        self.assertLess(ticks[1][0], ticks[1][1])            # the control walked in game time
+        self.assertLess(ticks[2][0], ticks[2][1])            # the crossing took game time
+        self.assertTrue(rec["control_vanished"])
+        self.assertIsNone(f.ctl)                             # the control is gone before the titan is staged
+        self.assertEqual(self.sc.exit_code(), 0)
         self.assertTrue(rec["summary"]["phases_in_order"] and rec["summary"]["gameplay_pass"], rec["summary"])
         self.assertEqual((site.began, site.restored), (1, 1))
         # the crossing call came before the death call, and the death before the crowd's daily step
@@ -173,6 +198,31 @@ class T(unittest.TestCase):
         self.assertNotIn("SiteDailyStep", str(rec["calls"]))
         self.assertFalse(rec["summary"]["gameplay_pass"])
         self.assertEqual(site.restored, 1)                    # restore still ran
+        self.assertEqual(self.sc.exit_code(), 1)              # a MOD FAIL among the required rows
+
+    def test_control_breaking_the_ring_is_a_mod_fail_and_gates_the_crossing(self):
+        rec, site, f = self.titan(False, control="break")
+        row = next(r for r in rec["rows"] if r["id"] == "CONTROL_untiered_leaves_ring")
+        self.assertEqual((row["status"], row["cls"]), ("FAIL", "MOD"), row["detail"])
+        st = dict((r["id"], r["status"]) for r in rec["rows"])
+        self.assertEqual(st["CROSSING_walked"], "UNMEASURED")
+        self.assertEqual(f.calls.count("jawa/spawn_pawn"), 1)  # the titan was never spawned
+        self.assertEqual(self.sc.exit_code(), 1)
+
+    def test_control_that_leaks_or_never_arrives_is_site_not_mod(self):
+        for mode in ("leak", "lame"):
+            rec, site, f = self.titan(False, control=mode)
+            row = next(r for r in rec["rows"] if r["id"] == "CONTROL_untiered_leaves_ring")
+            self.assertEqual((row["status"], row["cls"]), ("UNMEASURED", "SITE"), (mode, row["detail"]))
+            self.assertEqual(self.sc.exit_code(), 2, mode)  # could not ask: never charged to the mod
+
+    def test_exit_code_unrestored_or_crashed_is_never_zero(self):
+        rec, site, f = self.titan(False)
+        self.sc.rec["site_restore_errors"] = ["fake"]
+        self.assertEqual(self.sc.exit_code(), 2)
+        self.sc.rec.pop("site_restore_errors")
+        self.sc.rec["error"] = "Traceback"
+        self.assertEqual(self.sc.exit_code(), 2)
 
     def test_plants_rows_and_door_orchestration(self):
         f = Fake()
@@ -203,6 +253,21 @@ class T(unittest.TestCase):
         with open(out) as fh:
             rec = json.load(fh)
         return dict((r["id"], (r["status"], r["cls"])) for r in rec["rows"])
+
+    def test_no_door_drops_only_the_door_row(self):
+        f, called = Fake(), []
+        out = os.path.join(self.tmp, "plants_nodoor.json")
+        sc = PP.run(Args(out, "40,200", no_door=True), f, FakeSite(PP.SNAP_PREFIX), ticker=f.advance,
+                    door_runner=lambda: called.append(1) or dict(ok=True, restoration=dict(ok=True)))
+        with open(out) as fh:
+            rec = json.load(fh)
+        self.assertEqual(called, [])
+        self.assertNotIn("PLANT_door_seal", [r["id"] for r in rec["rows"]])
+        self.assertNotIn("PLANT_door_seal", sc.required)
+        self.assertEqual(sorted(sc.required), sorted(r for r in PP.REQUIRED if r != "PLANT_door_seal"))
+        self.assertTrue(rec["summary"]["gameplay_pass"], rec["summary"])
+        self.assertEqual(sc.exit_code(), 0)
+        self.assertIn("--no-door", rec["door"])
 
     def test_selection_miss_fails_and_off_is_site(self):
         st = self.plants(misses=1)

@@ -1,0 +1,7 @@
+# LOAD: tier mods__mandrake_rm_hugethings__mandrake_rm_hugethingstestraces__mandrake_rm_biomes__neku_largepawns (+ deps, all DLC).
+# A2 and A3 load the registered calm site and restore it; A4 runs on the current Playing map. Exit 0 PASS, 1 MOD FAIL, 2 UNMEASURED.
+# Plan: D:\ClaudeWork\rimmandrake\conductor\proofs_20261112\HugeThings\plan.md. The door seal is BLOCKED (--no-door).
+live-mods: HugeThings, HugeThingsTestRaces, RimMandrake.Biomes, neku.largepawns
+live-proof A2: python.exe src/RimMandrake/HugeThings/northstar/showcase_plants_live.py --no-door < /dev/null
+live-proof A3: python.exe src/RimMandrake/HugeThings/northstar/showcase_titan_live.py < /dev/null
+live-proof A4: python.exe src/RimMandrake/HugeThings/northstar/test_titan_footprint_live.py < /dev/null
