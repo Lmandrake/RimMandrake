@@ -1,4 +1,4 @@
-run 2026-11-12 00:21 -0800, HEAD 047ba6f2ae
+run 2026-11-12 00:29 -0800, HEAD 2c1275bec1
 deck affordances (read from Odyssey Substructure): Heavy, Light, Medium, Substructure, Walkable
 shipped biome mods (Biomes.compose.json): 24
 PASS   The Abyss            RM_SummGreatBone   (also deck-placeable: 1)

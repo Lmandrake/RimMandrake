@@ -19,7 +19,7 @@ Nothing here has been placed in a running game yet.
   _Where it comes from:_ Cauldron mod; picked by an agent
 - **The Contagion**: the ship-mounted cloud repulsor: the Helix field device as a gravship hardpoint, bought or won, installed on substructure  
   _Where it comes from:_ the_contagion.md (devices ruled); Helix trader/quest owner by card 2026-10-15
-- **The Cracked Lands**: the fossil case: a whole fossil skeleton from the skeleton seams, cased for the bulkhead (beauty 14)  
+- **The Cracked Lands**: the fossil case: a whole fossil skeleton from the skeleton seams, cased for the bulkhead (beauty 40, the most beautiful single thing a small ship carries short of a sculpture)  
   _Where it comes from:_ new this pass, picked by an agent, from the cast doc's bulkhead fossil
 - **Fever Wood**: the sekkulaath tank: the swamp's captive producer carried as ship stock  
   _Where it comes from:_ FeverWood mod; picked by an agent

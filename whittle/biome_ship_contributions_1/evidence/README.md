@@ -12,6 +12,7 @@ Rerun the check yourself (offline, ~20 s): `python3 src/RimMandrake/Utils/ship_c
 | `selftest_ship_contributions.txt` | the checker's selftest: unit checks on real data + 11 mutated lists that must each fail |
 | `lints.txt` | the per-mod def lints for the four mods given new defs, Contagion's lint, and the compose collision sweeps |
 | `effective_def_lint.txt` | offline load check: the composed Baroque Biomes built from this clone (new defs included), linted in the game's effective def tree (patches applied, inheritance resolved) on a minimal mod list: VERDICT PASS |
+| `prose_numbers_audit.md` | every number in the list's prose checked against the def or code that ships it |
 | `owner_card.md` | the matrix as a card to the owner (also in the lane's owner-questions file); not answered yet |
 | `code_review.md` | the fresh code-review rounds on the checker and what each changed |
 | `design_judge_r2.json` | a second fresh design judge: the water and light clusters ruled distinct in play, every row weighed for worth, six fixes (applied) |
