@@ -86,7 +86,7 @@
    "leaf_kind": "experience",
    "clause_kind": "preserve",
    "experience": "A blast never throws a pawn of body size 2.5 or more (the Mod Settings default; a weapon that sets its own body-size limit throws pawns under that limit instead), a pawn already in a pit, a pawn carrying another pawn, a pawn already airborne, or a pawn in bed, nor goods or a corpse heavier than 75 kg (the Mod Settings mass limit, which weighs goods and corpses only, never a living pawn), a corpse of body size 2.5 or more, goods and corpses already on a pit floor, or a thing at the rim whose throw is under one cell, and the player sees them stay where they were.",
-   "scenario": "Beside one grenade, same distance each: a thrumbo, a colonist on a pit floor, a colonist carrying a downed pawn, a colonist in a bed, a thrumbo corpse, a stack and a corpse on the pit floor, and a colonist whose airborne state is forced true by a test hook (a state read only); a plain colonist beside them. Then a thrumbo corpse and a corpse under body size 2.5 beside a grenade with the mass limit raised above the thrumbo corpse's mass, and a corpse under 2.5 but over 75 kg at default.",
+   "scenario": "Beside one grenade, same distance each: a thrumbo, a colonist on a pit floor, a colonist carrying a downed pawn, a colonist in a bed, a thrumbo corpse, a stack and a corpse on the pit floor, and an animal whose race can leave the ground, its vanilla airborne state (the Pawn_FlightTracker field the shipped skip reads) set true by a test hook's field write, while the mod's own skip check is untouched (nothing is launched, nothing leaves the ground); a plain colonist beside them. Then a thrumbo corpse and a corpse under body size 2.5 beside a grenade with the mass limit raised above the thrumbo corpse's mass, and a corpse under 2.5 but over 75 kg at default.",
    "false_pass": [
     "the blast reached none of them, so nothing was spared",
     "a spared pawn is thrown",
@@ -126,7 +126,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "journal launch line for the carrier; the hose end on the takeoff cell, connected, not carried; control: the same blast with the carrier's shield belt absorbing it leaves them unthrown and still carrying the hose, so the throw, not the blast, drops it",
+   "oracle_proposed": "journal launch line for the carrier; the hose end on the takeoff cell, connected, not carried; control: the same blast with Settings enabled false leaves the carrier unthrown and still carrying the hose, so the throw, not the blast, drops it",
    "tier_reason": "the throw, the landing and the scatter are runtime (PawnFlyer, map things, the explosion wave); the kernel selftest proves only the path maths",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -318,7 +318,7 @@
    "leaf_kind": "experience",
    "clause_kind": "change",
    "experience": "Goods on an open shelf, rack or table scatter like goods on the floor, and the player sees the shelf emptied by the blast.",
-   "scenario": "A shelf, a weapon rack and a table each holding goods beside a grenade blast; read where the goods are after.",
+   "scenario": "A shelf (Shelf), a small shelf (ShelfSmall) and a table (Table2x2c) each holding goods beside a grenade blast; read where the goods are after.",
    "false_pass": [
     "goods on any storage building are skipped (the built in_storage rule)",
     "only floor goods move"
@@ -331,7 +331,7 @@
    "bundle": "storage",
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "every container's contents count unchanged; only the free-backed 1x1 crate under the mass limit moved, one cell away from the blast; the walled, pawn-backed, pit-backed and over-mass 1x1 crates and the larger fridge stayed on their cells and jolted (journal container line, action slide or jolt, and a drawn offset in the trace); offline: every storage def on the owner's list classed by the does-not-draw-contents rule or the tag (a modded open shelf open, a modded locker closed); the live list is the minimal list plus the census's provider mods",
+   "oracle_proposed": "every container's contents count unchanged; only the free-backed closed 1x1 container (a small shelf given the opt-in closed tag) under the mass limit moved, one cell away from the blast; the walled, pawn-backed, pit-backed and over-mass tagged 1x1 containers and the larger fridge stayed on their cells and jolted (journal container line, action slide or jolt, and a drawn offset in the trace); offline: every storage def on the owner's list classed by the does-not-draw-contents rule or the tag (a modded open shelf open, a modded locker closed); the live list is the minimal list plus the census's provider mods",
    "tier_reason": "the throw, the landing and the scatter are runtime (PawnFlyer, map things, the explosion wave); the kernel selftest proves only the path maths",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -343,7 +343,7 @@
    "leaf_kind": "experience",
    "clause_kind": "change",
    "experience": "Goods inside a closed container (a crate, locker, fridge, deep storage, hopper or any container carrying the opt-in tag) stay inside it, and the player sees the container itself shift a cell or jolt.",
-   "scenario": "Beside a grenade blast: a 1x1 crate with a free cell behind it, a 1x1 crate against a wall, a 1x1 crate with a colonist behind it, a 1x1 crate with an open pit behind it, a 1x1 container over the mass limit, a fridge (larger than 1x1) with a free cell behind it, a locker, a deep storage unit, a hopper and a tagged modded container, each holding goods; read contents and container cells after.",
+   "scenario": "Beside a grenade blast, four closed 1x1 containers (small shelves, ShelfSmall, given the opt-in closed tag): one with a free cell behind it, one against a wall, one with a colonist behind it, one with an open pit behind it; the same tagged small shelf over the mass limit (the limit set below its mass); a fridge (larger than 1x1) with a free cell behind it, a locker, a deep storage unit, a hopper and a tagged modded container, each holding goods; read contents and container cells after.",
    "false_pass": [
     "closed containers spill their goods",
     "the container never moves at all",
@@ -351,7 +351,7 @@
     "a container larger than 1x1 slides",
     "a storage def on his list misclassed because only hand-picked examples were checked"
    ],
-   "red": "a build where a fridge's contents scatter, or a crate is shoved into a pit",
+   "red": "a build where a fridge's contents scatter, or a closed container is shoved into a pit",
    "tier_proposed": "live_minimal",
    "owner_part": "no"
   },
@@ -662,8 +662,8 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "change",
-   "experience": "The player sees every Mod Settings line do what it says: strength and max distance scale the throw, the per-weapon cap scale and other-mod percent apply, each toggle and the mass limit and heavy threshold take effect, and each new part (goods in the air, the closed guard, the container shove, the heavy knock, the gas chain, fire at half) switches off cleanly with the rest still working.",
-   "scenario": "The same bursts (a plain grenade, the grenade with an own maximum of 4, an incendiary shell) over one staged lane of a colonist, an animal, a mech, a downed pawn, loose goods of 50, 65 and 100 kg, a corpse, a crate, a heavy stack, a tagged gas puff lit each run, sandbags, a wall, a closed door, an open pit cell and a belted colonist, run once per setting changed from default, every line on the page among them.",
+   "experience": "The player sees every Mod Settings line do what it says: strength and max distance scale the throw, the per-weapon cap scale and other-mod percent apply, each toggle and the mass limit and heavy threshold take effect, and each new part (goods in the air, the closed guard, the container shove, the heavy knock, the gas chain, fire at half) switches off cleanly with the rest still working; a part switched off gives back what ships today, so with fire at half off fire and incendiary blasts throw nothing, as now.",
+   "scenario": "The same bursts (a plain grenade, the grenade with an own maximum of 4, an incendiary shell) over one staged lane of a colonist, an animal, a mech, a downed pawn, loose goods of 50, 65 and 100 kg, a corpse, a closed 1x1 container (a small shelf given the opt-in closed tag), a heavy stack, a tagged gas puff lit each run, sandbags, a wall, a closed door, an open pit cell and a belted colonist, run once per setting changed from default, every line on the page among them.",
    "false_pass": [
     "a setting saves but changes nothing",
     "switching one part off breaks another",
@@ -744,7 +744,7 @@
    "leaf_kind": "walk",
    "clause_kind": "change",
    "experience": "The player plays a raid on a stocked colony on the full list: mortars into the storeroom, a grenade on a covered pit trap that breaks it, a gas cloud lit, and every throw and scatter reads as a blast.",
-   "scenario": "Full list colony with a stocked storeroom of open shelves and crates, a covered pit trap and a gas source; a mortar raid with one grenade scripted onto the pit trap's cover; save while at least one thrown thing is in the air and reload; repeat the raid in a second order (gas first, then mortars); check each order's journal against the kernel's plan; the frame probe and tick-cost probe run throughout.",
+   "scenario": "Full list colony with a stocked storeroom of open shelves and closed containers, a covered pit trap and a gas source; a mortar raid with one grenade scripted onto the pit trap's cover; save while at least one thrown thing is in the air and reload; repeat the raid in a second order (gas first, then mortars); check each order's journal against the kernel's plan; the frame probe and tick-cost probe run throughout.",
    "false_pass": [
     "the scenes pass alone but the raid stutters",
     "a reload loses a thing in the air",

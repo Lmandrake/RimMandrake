@@ -459,6 +459,18 @@
    "date": "2026-11-12",
    "delegated": "consequence of 'goods rebound off walls' and the path rules",
    "what": "A flying good treats a closed door as a wall (rebounds keeping about 70 percent), passes over sandbags and barricades as a person does, and never enters deep water: it stops on the last cell before it, so no good is lost or hidden."
+  },
+  {
+   "id": "dl_fire_half_off",
+   "kind": "delegated",
+   "speaker": "agent",
+   "source": [
+    "ITEM:RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
+    "OWNER:1794468840281537479"
+   ],
+   "date": "2026-11-12",
+   "delegated": "off-state of a Mod Settings switch whose default is his ruling",
+   "what": "Every new part's Mod Settings switch, turned off, gives back what ships today: with fire at half off, fire and incendiary blasts throw nothing (the shipped force 0); the default stays his ruling, fire at half."
   }
  ],
  "asks": [

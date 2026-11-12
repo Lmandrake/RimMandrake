@@ -1,10 +1,10 @@
 {
- "author": "BENCH builder run a0034a1c20bdb097d (exam7)",
- "examiner": "a4bba087a119f036b (x1..x10); e1..e24 by a5cd357ecfa0e2d50",
- "challenger": "a536a9b74278bf061 (c1..c10)",
+ "author": "BENCH builder run a0034a1c20bdb097d (exam8)",
+ "examiner": "a72e84062fb3c66b6",
+ "challenger": "exam7 prior (exam6 examiner and challenger)",
  "inputs": {
-  "tree": "ee5b8a8a974b230b028fc5078f49e4da622dc14e4b573c28017d5f57bd5fdf33",
-  "sheet": "82218136360778a66d122430e78faf175d304cc8ecc134aaac96294b6883a2dc"
+  "tree": "052301404e081d7c1d5e00afeae1b8d11d0e6aaa3ac4f414e8fe9f79dcd07eb2",
+  "sheet": "decd62e555e47fb236d2bb0e16dedff3b2f3c8bd42434f1495887a0ed3c36137"
  },
  "scenarios": [
   {
@@ -270,24 +270,72 @@
    "text": "A frag grenade throws a colonist across the kitchen toward its stone wall. She stops on the cell right before the wall, takes a hit from the impact, and lies there stunned on that same cell.",
    "expect": "accept: a thrown person stops dead at a wall with an impact hit and never rebounds",
    "expect_source": "leaf:wall_stops_dead"
+  },
+  {
+   "id": "y1",
+   "text": "A grenade throws a raider across the yard. While he is still in the air, a second grenade goes off right under his flight path. He carries on along his first arc to the cell he was aimed at and lands there.",
+   "expect": "accept: a pawn already airborne is never thrown again; the flight keeps the cell chosen at the first blast",
+   "expect_source": "leaf:the_spared"
+  },
+  {
+   "id": "y2",
+   "text": "A frag grenade hurls a colonist toward the barracks. Mid-flight a mortar shell lands beside her and she jerks sideways in the air, flying off three more cells in a new direction before landing.",
+   "expect": "reject: a pawn already airborne is never thrown by another blast",
+   "expect_source": "leaf:the_spared"
+  },
+  {
+   "id": "y3",
+   "text": "A grenade lands in the dining room beside a table set with simple meals. The meals fly off the table in spinning arcs and scatter across the floor, leaving the table bare.",
+   "expect": "accept: goods on an open table scatter like floor goods and the table is emptied",
+   "expect_source": "leaf:open_shelf_scatters"
+  },
+  {
+   "id": "y4",
+   "text": "A mortar shell hits a workshop. Components lying on the floor fly in every direction, but the stacks of steel and medicine on the small shelf by the door stay exactly where they were.",
+   "expect": "reject: a small shelf is open storage and protects nothing; its goods must scatter like floor goods",
+   "expect_source": "leaf:open_shelf_scatters"
+  },
+  {
+   "id": "y5",
+   "text": "A grenade goes off beside a wooden crate of silver standing at the lip of an open pit. The crate slides one cell straight over the edge and drops to the pit floor with its silver.",
+   "expect": "reject: a closed container may shift a cell or jolt but is never shoved into a pit",
+   "expect_source": "leaf:closed_container_holds"
+  },
+  {
+   "id": "y6",
+   "text": "A mortar shell lands beside a hopper full of rice, with a colonist standing on the cell right behind it. The hopper does not move off its cell but shudders in place, and every bit of rice stays inside.",
+   "expect": "accept: with the cell behind taken by a pawn a 1x1 closed container jolts in place, contents kept",
+   "expect_source": "leaf:closed_container_holds"
+  },
+  {
+   "id": "y7",
+   "text": "The player switches off the fire-at-half part in Mod Settings and reloads the colony. An incendiary shell lands among a pirate squad; the fire spreads and each pirate is pushed a cell or so away from the impact.",
+   "expect": "reject: with fire at half switched off, fire and incendiary blasts throw nothing, as shipped today",
+   "expect_source": "leaf:settings_scale_and_switch"
+  },
+  {
+   "id": "y8",
+   "text": "A colonist is dragging a hose end across the yard when a grenade throws him four cells. The hose end lies on the cell where he was standing, and he lands empty-handed.",
+   "expect": "accept: a thrown carrier drops the hose end on the cell they were thrown from",
+   "expect_source": "leaf:hose_drops_at_takeoff"
   }
  ],
- "scenarios_hash": "0acf83613a99285493fa7b547f8f5097c9ed3153eae804fc3a2b44f4c73abe33",
+ "scenarios_hash": "bcb622a3114cf0841386abc29470a602e8e6a290e8dd058dc45f29c811001c7b",
  "readers": [
-  "reader ab26ee520ac362cf0",
-  "reader a6cc6d75374649311"
+  "reader ac616aa8cb545a0b0",
+  "reader a4d2ed50f2592fc96"
  ],
  "control": {
   "broken_leaf": "closed_container_holds",
   "missed": true,
-  "reader": "ac0970978fbf267c2",
-  "note": "tree without closed_container_holds (and its root id and two mentions in settings_scale_and_switch) and sheet with every closed-container line stripped; the control reader accepted ['e21', 'c10'] of the scenarios ['e20', 'e21', 'c4', 'c10'] sourced on that leaf (and rejected e20, so it missed two). Exam7 on the sheet and tree reworked against the seventh coverage judge (gas census over sources, the Cauldron vent gas as the tagged gas, the touching-fire igniter, goods at doors, sandbags and deep water). Scenarios: the 34 frozen from exam6 (examiner and challenger of that exam) plus 10 new (x1..x10) by a fresh examiner on the changed leaves; 44 total, 28 rejects. Counted readers notes: x2, x4, x5 settled by the sheet delegated lines rather than a leaf; c10 slide-vs-jolt only in delegated; e24 throws either way; every verdict settled"
+  "reader": "aaf66ffa98c940cc4",
+  "note": "tree without closed_container_holds (its root id and mentions in settings_scale_and_switch and the walk) and sheet with every closed-container line stripped; the control reader got ['e20', 'e21', 'c10', 'y6'] wrong of the scenarios ['e20', 'e21', 'c4', 'c10', 'y5', 'y6'] sourced on that leaf (48 of 52 overall). Exam8 on the sheet and tree reworked against the eighth coverage judge (real defs for closed and open storage, the airborne lane on the vanilla state, fire at half off giving back the shipped no-throw, hose and gas controls aligned). Scenarios: the 44 frozen from exam7 plus 8 new (y1..y8) by a fresh examiner on the changed leaves"
  },
  "score": {
-  "right": 44,
-  "total": 44
+  "right": 52,
+  "total": 52
  },
  "accept_where_reject_core": 0,
  "challenger_misses": [],
- "verdicts": "D:\\ClaudeWork\\rimmandrake\\designer\\ExplosiveKnockback\\exam7\\verdicts_r1.json, verdicts_r2.json, verdicts_control.json (control)"
+ "verdicts": "D:\\ClaudeWork\\rimmandrake\\designer\\ExplosiveKnockback\\exam8\\verdicts_r1.json, verdicts_r2.json, verdicts_control.json (control)"
 }

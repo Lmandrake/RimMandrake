@@ -42,7 +42,7 @@
 - [leaf:barrage_frame_budget] A mortar barrage into a full stockpile and a long gas chain stay smooth at normal speed, owed
 - [leaf:frame_time_probe] A per-frame time probe, so the frame budget can be measured
 - [leaf:walk_storeroom_raid] A raid on a stocked colony on the full list, with a mid-way reload, a repeat and a second order
-- [leaf:settings_scale_and_switch] Superb Mod Settings: every line takes effect (the removed cap settings are gone from the page), and every new part switches off cleanly with the rest still working
+- [leaf:settings_scale_and_switch] Superb Mod Settings: every line takes effect (the removed cap settings are gone from the page), and every new part switches off cleanly with the rest still working; switched off, a part gives back what ships today (fire at half off: fire and incendiary blasts throw nothing)
 - [floor:mod_settings] Superb Mod Settings: master switch, strengths and every new part switch off cleanly
 - [floor:tick_cost] The thrown-thing carrier's own tick cost, measured on the walk
 
@@ -59,7 +59,7 @@
 ## delegated
 - Closed means storage that does not draw its contents: crates, lockers, fridges, deep storage, hoppers, plus an opt-in tag for other mods
 - A 1x1 closed container under the mass limit slides one cell if the cell behind it is free, else it jolts in place; never into a pit, a wall or onto a pawn
-- Other mods' damaging explosions throw at 100 percent by default; EMP, smoke, stun, extinguish and toxic gas at 0, fire at half; the other-mods percent and the fire-half switch are on Mod Settings, the per-type strengths sit in the def patch and any weapon can be tamed per weapon
+- Other mods' damaging explosions throw at 100 percent by default; EMP, smoke, stun, extinguish and toxic gas at 0, fire at half; the other-mods percent and the fire-half switch are on Mod Settings (off: fire throws nothing, as shipped), the per-type strengths sit in the def patch and any weapon can be tamed per weapon
 - Heavy means a stack of 10 kg or more; the knock is 2 to 5 blunt and about half a second of stagger, then the stack stops; a setting
 - The gas census covers every gas source of ours (gas defs, our gas grids, every place our code adds gas); today the one that burns is the Cauldron's vent gas, which opts in by registering its grid; the others add vanilla smoke, tox gas or rot stink, which do not burn; this mod adds no gas of its own
 - A gas cloud catches the way it already does in play, from a fire touching it; a fire not touching it lights nothing
