@@ -1640,10 +1640,11 @@ suite.toggles += [t for t in ["sprinklersEnabled", "sprinklerNonWaterEffects", "
 # 2026-10-11 re-review: liquidIgnition (water fill + vanilla Fire could not tell ON from OFF), riverSteam (setting
 # read-back only) and the three machinery rows that were UNMEASURED by construction joined it. riverSteamEnabled and
 # bottleDirtyStageEnabled left it 2026-10-15 (toggle_river_steam, toggle_bottle_dirty claim both sides).
-EXTENSION_TOGGLES_OWED = ["fallDamageEnabled", "liquidCorrosionEnabled",
-                          "liquidDrillingEnabled", "liquidIgnitionEnabled", "liquidWorksRuinStockEnabled",
+# 2026-11-12 (proofs_20261112 plan): fallDamage, liquidCorrosion, liquidIgnition and superdeepShootingRule left it
+# (toggle_fall_damage, toggle_liquid_corrosion, toggle_liquid_ignition, toggle_superdeep_shooting claim both sides).
+EXTENSION_TOGGLES_OWED = ["liquidDrillingEnabled", "liquidWorksRuinStockEnabled",
                           "liquidWorksRuinsEnabled", "pipeAdaptersEnabled",
-                          "superdeepShootingRuleEnabled", "typedLiquidShoresEnabled",
+                          "typedLiquidShoresEnabled",
                           "machineDigEnabled",   # DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL: needs a staged colony mech (design §8)
                           # review 7.10 (2026-10-26): THIRST_LIVE T3 runs with heat scaling OFF, so no row claims ON
                           "thirstHeatScaling"]

@@ -629,7 +629,7 @@ def _fight_expected(t, pawn_ids, hediff="Bruise"):
     (clockgate.expected_disturbance + testenv_guards.expected_hurt). Nothing else widens."""
     import clockgate  # noqa: E402 - the same module instance suite.wait_ticks advances through
     import testenv_guards as TG  # noqa: E402
-    with clockgate.expected_disturbance("fixture fight (%s)" % hediff, TG.expected_hurt(pawn_ids, hediff)):
+    with clockgate.expected_disturbance("fixture fight (%s)" % (hediff,), TG.expected_hurt(pawn_ids, hediff)):
         yield
 
 
@@ -1613,20 +1613,77 @@ def toggle_refill(t):
                 _expect(b <= a + 1e-6, "pond stock rose with refill OFF (%.3f -> %.3f)" % (a, b))
 
 
+SAP = "RM_FuelSapShallow"          # RM_LiquidProperties flammable=true, extinguishesFire=false (Defs/LiquidTypes/TerrainDefs/RM_FuelSap.xml)
+IGNITE_SAMPLES, IGNITE_STEP = 10, 50   # 10 reads 50 ticks apart = 2 LiquidIgnition scans (TickInterval 250)
+
+
+def _ignition_strip(t, x0, z):
+    """A 3-cell sap strip at (x0+6..8, z) and a burning WoodLog on the dry Soil cell west of it (x0+5, z): the vanilla
+    Fire LiquidIgnitionMapComponent looks for beside flammable liquid terrain. -> (sap cells, wood cell). A log that does
+    not catch is UNMEASURED: no Fire beside the sap means the scan was never offered anything."""
+    sap, wood = _line(x0 + 6, z, 3), (x0 + 5, z)
+    _stage(t, "jawa/set_terrain_batch", ops="%s:%s" % (SAP, _rect(sap[0][0], z, 3, 1)))
+    _stage(t, "jawa/spawn_batch", ops="WoodLog:%d,%d" % wood)
+    r = t.bridge_call("jawa/map_fire", action="start", rect=_rect(wood[0], wood[1], 1, 1))
+    if t._guard() and not (isinstance(r, dict) and (r.get("firesStarted") or 0) >= 1):
+        raise ExpectationFailed("UNMEASURED: the WoodLog source at %s never caught: %r" % (wood, str(r)[:200]))
+    return sap, wood
+
+
+def _sap_fire_watch(t, sap, wood):
+    """Sample every IGNITE_STEP ticks for IGNITE_SAMPLES reads -> (sap cells ever seen holding a vanilla Fire, the
+    source still burning at the first read). A vanilla Fire on 0-Flammability terrain can burn out between scans, so
+    one end-of-wait read could miss a real ignition."""
+    seen, source = set(), None
+    for i in range(IGNITE_SAMPLES):
+        t.wait_ticks(IGNITE_STEP)
+        seen |= _things_at(t, "Fire", sap)
+        if i == 0:
+            source = bool(_things_at(t, "Fire", [wood]))
+    return seen, source
+
+
+def _sap_prior(t, x0, z0):
+    """Diagnosis only, never a verdict: can vanilla FireUtility start a Fire straight on sap terrain at all? (jawa/map_fire
+    is gated by the same ChanceToStartFireIn that LiquidIgnition's TryStartFireIn is.) A far cell, put out at once."""
+    c = (x0 + 18, z0 + 12)
+    _stage(t, "jawa/set_terrain_batch", ops="%s:%s" % (SAP, _rect(c[0], c[1], 1, 1)))
+    r = t.bridge_call("jawa/map_fire", action="start", rect=_rect(c[0], c[1], 1, 1)) or {}
+    t.bridge_call("jawa/map_fire", action="extinguish", rect=_rect(c[0], c[1], 1, 1))
+    return "map_fire straight onto sap: firesStarted=%s cellsFailed=%s" % (r.get("firesStarted"), r.get("cellsFailed"))
+
+
 @suite.chain("toggle_liquid_ignition")
 def toggle_liquid_ignition(t):
+    """LiquidIgnition.cs: every 250 ticks a vanilla Fire lights the flammable liquid TERRAIN 8-adjacent to it
+    (FireUtility.TryStartFireIn). ON strip z0+4, OFF strip z0+9 (four dry rows apart), each a 3-cell RM_FuelSapShallow
+    run beside a burning WoodLog. canalFireEnabled is held OFF on both: RM_LiquidFire (fills, RM_LiquidFlame) cannot
+    confound a terrain read. Each row fails alone: ON when no Fire ever stands on the sap (the scan never lights it, or
+    vanilla refuses the terrain), OFF when one does with the setting off. OFF runs FIRST: a non-PASS row ends a modcheck
+    chain, and ON is the row in doubt (vanilla may refuse a Fire on 0-Flammability terrain), so OFF keeps its verdict."""
     x0, z0 = _prep_plot(t, "E")
-    cells = _line(x0 + 4, z0 + 6, 6)
-    _dig_run(t, cells, 1)
-    for c in cells:
-        _fill(t, c[0], c[1], 1)
-    # Owed both sides (review 2026-10-11): the old OFF side filled with the map's WATER (not flammable) and counted
-    # vanilla Fire, which dies on liquid terrain, so ON and OFF read the same. A real pair stages a flammable fill
-    # (LiquidIgnition.cs ignites only props.flammable terrain beside a Fire) and counts RM_LiquidFlame.
-    with _owed(t, "liquid_ignition_off", "liquidIgnitionEnabled OFF: water fill + vanilla Fire count cannot tell ON from OFF"):
-        pass
-    with _owed(t, "liquid_ignition_on", "liquidIgnitionEnabled ON: nothing reads the spread (the old block lit and waited)"):
-        pass
+    t.expect("fire", {"def": "Fire"})          # the burning log and the lit sap are vanilla Fire on purpose
+    with _setting_in(t, S_FW, "canalFireEnabled", False):
+        prior = _sap_prior(t, x0, z0)
+        with t.component("liquid_ignition_off", toggle="liquidIgnitionEnabled"):
+            with _setting_in(t, S_FW, "liquidIgnitionEnabled", False):
+                sap, wood = _ignition_strip(t, x0, z0 + 9)
+                seen, source = _sap_fire_watch(t, sap, wood)
+                t.bridge_call("jawa/map_fire", action="extinguish", rect=_rect(wood[0], wood[1], 4, 1))
+                if t._guard():
+                    if not source:
+                        raise ExpectationFailed("UNMEASURED: OFF: the source log was not burning at the first read")
+                    _expect(not seen, "OFF: sap cells %s burned with liquidIgnitionEnabled OFF (%s)" % (sorted(seen), prior))
+        with t.component("liquid_ignition_on", toggle="liquidIgnitionEnabled"):
+            sap, wood = _ignition_strip(t, x0, z0 + 4)
+            seen, source = _sap_fire_watch(t, sap, wood)
+            t.bridge_call("jawa/map_fire", action="extinguish", rect=_rect(wood[0], wood[1], 4, 1))
+            if t._guard():
+                if not seen and not source:
+                    raise ExpectationFailed("UNMEASURED: the source log was not burning at the first read, so no scan "
+                                            "had a Fire beside the sap (%s)" % prior)
+                _expect(seen, "ON: a burning log beside %s for %d ticks lit no sap cell (%s)"
+                        % (SAP, IGNITE_SAMPLES * IGNITE_STEP, prior))
 
 
 ALL_OFF_DRY_DZ = 1   # plot T row clear of plot_C2's tar strip (z0+4..z0+9) and of every pond this file stages on T
@@ -1677,12 +1734,71 @@ def toggle_canal_fire(t):
             _expect(_flames(t, [cells[0]]) == {cells[0]}, "ON: lit %s but list_things shows no %s there" % (cells[0], FLAME))
 
 
+CORRODE = "RM_ReactionLiquorShallow"    # damageOnContact AcidBurn 2 (Defs/LiquidTypes/TerrainDefs/RM_ReactionLiquor.xml)
+CORRODE_HURTS = ("AcidBurn", "Burn", "ChemicalBurn")
+
+
+def _hediff_defs(t, pid):
+    """jawa/pawn_get -> the pawn's hediff defNames (a list, repeats kept), or None when the reply is unreadable."""
+    r = t.bridge_call("jawa/pawn_get", pawn=pid)
+    pw = ((r or {}).get("pawns") or [None])[0] if isinstance(r, dict) else None
+    if not isinstance(pw, dict) or not isinstance(pw.get("hediffs"), list):
+        return None
+    return [h.get("def") for h in pw["hediffs"]]
+
+
+def _corrode_stand(t, x, z, on):
+    """A drafted, stripped colonist on one CORRODE square for 2 pulses -> the hediffs it gained (a list), or raises
+    UNMEASURED when it was not read or did not stay on the square (a pawn that walked off was never exposed)."""
+    _stage(t, "jawa/set_terrain_batch", ops="%s:%s" % (CORRODE, _rect(x, z, 1, 1)))
+    pid = _spawn_pawn_at(t, "Colonist", x, z)
+    t.bridge_call("jawa/pawn_gear", pawn=pid, action="clear")       # bare skin: no apparel soaks the contact damage
+    t.bridge_call("jawa/set_draft", pawnId=pid, drafted=True)
+    before = _hediff_defs(t, pid)
+    if on:
+        with _fight_expected(t, [pid], CORRODE_HURTS):
+            _wait(t, 2 * PULSE)
+    else:
+        _wait(t, 2 * PULSE)
+    after = _hediff_defs(t, pid)
+    where = _pawn_xz(t, pid)
+    _vanish_fixture(t, pid)
+    if not t._guard():
+        return []
+    if before is None or after is None:
+        raise ExpectationFailed("UNMEASURED: jawa/pawn_get gave no hediff list for %s" % pid)
+    if where != (x, z):
+        raise ExpectationFailed("UNMEASURED: the colonist left the %s square (%d,%d) for %s" % (CORRODE, x, z, where))
+    left = list(before)
+    gained = []
+    for d in after:
+        if d in left:
+            left.remove(d)
+        else:
+            gained.append(d)
+    return gained
+
+
 @suite.chain("toggle_liquid_corrosion")
 def toggle_liquid_corrosion(t):
-    # Contract to read first: LiquidCorrosion.cs (which fluid, which targets). ON predicate = HP falls. Owed: the old
-    # block built a wall beside a filled cell and only waited, with neither side read.
-    with _owed(t, "liquid_corrosion_both_sides", "liquidCorrosionEnabled: no HP read on either side"):
-        pass
+    """LiquidCorrosion.cs: every 250 ticks a spawned PAWN standing on terrain with damageOnContact takes that damage
+    (walls and things are not its targets). ON: a bare colonist on RM_ReactionLiquorShallow gains a hediff within 2
+    pulses. OFF: the same stand with liquidCorrosionEnabled OFF gains none. OFF is UNMEASURED unless ON saw a hurt in
+    this run (the shared control: the stand can hurt)."""
+    x0, z0 = _prep_plot(t, "E")
+    hurt = {"on": None}
+    with t.component("liquid_corrosion_on", toggle="liquidCorrosionEnabled"):
+        gained = _corrode_stand(t, x0 + 6, z0 + 4, True)
+        hurt["on"] = bool(gained)
+        if t._guard():
+            _expect(gained, "ON: a bare colonist on %s for %d ticks gained no hediff" % (CORRODE, 2 * PULSE))
+    with t.component("liquid_corrosion_off", toggle="liquidCorrosionEnabled"):
+        with _setting_in(t, S_FW, "liquidCorrosionEnabled", False):
+            gained = _corrode_stand(t, x0 + 6, z0 + 9, False)
+            if t._guard():
+                if not hurt["on"]:
+                    raise ExpectationFailed("UNMEASURED: OFF: the ON stand hurt nobody in this run, so a clean OFF proves nothing")
+                _expect(not gained, "OFF: the colonist gained %s with liquidCorrosionEnabled OFF" % gained)
 
 
 @suite.chain("toggle_superdeep_capture")
@@ -1710,24 +1826,40 @@ def toggle_superdeep_capture(t):
 
 @suite.chain("toggle_ladder_required")
 def toggle_ladder_required(t):
+    """ladder_required_on: a colonist forced into a ladderless D=4 pit is held. ladder_required_off: the SAME held pawn,
+    with ladderRequiredToExitEnabled flipped OFF, is no longer held (RM_SuperdeepTrap.RuleOn is read live by IsHeld), read
+    by ProofTrap and the pit report alike. OFF is UNMEASURED unless ON read held in this run. (The ladder letting a held
+    colonist out is ladder_prison_door.lowered_lets_colonist_out; the duplicate row here was removed.)"""
     x0, z0 = _prep_plot(t, "G")
     pit = _pit_cells(x0, z0)
     _dig_run(t, pit, 4)
-    with t.component("ladder_required_on", toggle="ladderRequiredToExitEnabled"):
-        # TOGGLE_LADDER_FIX_REQUIRED_PAWN_ESCAPES_PIT (HARNESS): pitRescueLadderEnabled (RM_PitAccess.cs, RM_MapComponent_PitRescueLadder,
-        # every 250 ticks) queues a ladder for a colonist stuck in a pit; the stuck fixture colonist (or a spawned neighbour) builds it
-        # and climbs out inside the 10-pulse wait (flaky: the job-J20261026T081140Z-d4950f evidence has hasLadder=True on a pit cell
-        # and no pawn on any). That is the designed rescue, not a hole in ladderRequiredToExitEnabled, so this row holds it off.
-        with _setting(t, "superdeepCapturesOwnFaction", True), _setting_in(t, S_FW, "pitRescueLadderEnabled", False):
+    held_on = {"v": None, "pid": None}
+    # TOGGLE_LADDER_FIX_REQUIRED_PAWN_ESCAPES_PIT (HARNESS): pitRescueLadderEnabled (RM_PitAccess.cs, RM_MapComponent_PitRescueLadder,
+    # every 250 ticks) queues a ladder for a colonist stuck in a pit; the stuck fixture colonist (or a spawned neighbour) builds it
+    # and climbs out inside the 10-pulse wait (flaky: the job-J20261026T081140Z-d4950f evidence has hasLadder=True on a pit cell
+    # and no pawn on any). That is the designed rescue, not a hole in ladderRequiredToExitEnabled, so this chain holds it off.
+    with _setting(t, "superdeepCapturesOwnFaction", True), _setting_in(t, S_FW, "pitRescueLadderEnabled", False):
+        with t.component("ladder_required_on", toggle="ladderRequiredToExitEnabled"):
             pid = _spawn_pawn_at(t, "Colonist", pit[0][0] - 3, pit[0][1])
             _force_into(t, pid, pit[4][0], pit[4][1])     # a colonist never paths in (ruling 10-06); forced = a jumper
             _wait(t, 10 * PULSE)
             if t._guard():
-                _expect(_pit_held(t, pid, pit) is True, "pawn not held in the pit without a ladder")
-    with _owed(t, "ladder_required_ladder_lets_out", "ladderRequiredToExitEnabled: the placed ladder's effect was never read"):
-        pass
-    with _owed(t, "ladder_required_off", "ladderRequiredToExitEnabled OFF: nothing read"):
-        pass
+                held = _pit_held(t, pid, pit)
+                held_on.update(v=held, pid=pid)
+                _expect(held is True, "pawn not held in the pit without a ladder")
+        with t.component("ladder_required_off", toggle="ladderRequiredToExitEnabled"):
+            with _setting_in(t, S_FW, "ladderRequiredToExitEnabled", False):
+                if t._guard():
+                    if held_on["v"] is not True:
+                        raise ExpectationFailed("UNMEASURED: OFF: the pawn was not held with the rule ON (%s), so a "
+                                                "release proves nothing" % held_on["v"])
+                    pid = held_on["pid"]
+                    tr, rep = _trap(t, pid), _pit_held(t, pid, pit)
+                    if tr.get("held") is None:
+                        raise ExpectationFailed("UNMEASURED: OFF: ProofTrap gave no held= for %s: %r" % (pid, tr))
+                    _expect(tr["held"] is False and rep is not True,
+                            "OFF: still held with ladderRequiredToExitEnabled OFF (ProofTrap held=%s, pit report held=%s)"
+                            % (tr["held"], rep))
 
 
 @suite.chain("ladder_prison_door")
@@ -1975,13 +2107,59 @@ def flow_doors(t):
                 _expect(_verdict(txt, held) == "OPEN", "sealed rule off but the held human still cannot open the factionless grate: %s" % txt)
 
 
+def _pick(r):
+    """jawa/attack_target_probe's picked target as bare ThingID digits, or None for no pick."""
+    return _num((r.get("picked") or {}).get("id")) if isinstance(r, dict) else None
+
+
 @suite.chain("toggle_superdeep_shooting")
 def toggle_superdeep_shooting(t):
-    # needs an occupant + two shooters (lip vs 5 cells); live_probes/fw_superdeep_target.py is the hand-run predicate
-    with _owed(t, "shooting_rule_on", "superdeepShootingRuleEnabled: no target-legality read"):
-        pass
-    with _owed(t, "shooting_rule_off", "superdeepShootingRuleEnabled OFF: no target-legality read"):
-        pass
+    """SUPERDEEP_TARGET_VALIDATOR_1, ported from live_probes/fw_superdeep_target.py: a ranged hostile (x0+13) with one
+    enemy on the D=4 pit floor (6 cells, nearer) and one on open ground (x0+22, 9 cells). jawa/attack_target_probe asks
+    the game's own AttackTargetFinder.BestAttackTarget with JobGiver_AIFightEnemy's flags, so FlowWorks' validator runs.
+    shooting_rule_on: picks the open-ground enemy. shooting_rule_off: picks the nearer pit enemy (also the scene's
+    control: it can tell the two apart). shooting_rule_on_pit_only: the open enemy gone, rule ON picks nobody (the rule
+    forbids, not merely re-ranks). No ticks pass between the probes; the hostile and both enemies vanish at the end."""
+    x0, z0 = _prep_plot(t, "G")
+    pit = _pit_cells(x0, z0)
+    _dig_run(t, pit, 4)
+    pc = pit[4]
+    a = _spawn_pawn_at(t, "Colonist", pc[0], pc[1])
+    b = _spawn_pawn_at(t, "Colonist", x0 + 22, pc[1])
+    h = _spawn_pawn_at(t, "Mercenary_Gunner", x0 + 13, pc[1], faction="hostile")
+    try:
+        t.bridge_call("jawa/pawn_gear", pawn=h, action="equip", **{"def": "Gun_AssaultRifle"})
+        for p in (a, b):
+            t.bridge_call("jawa/set_draft", pawnId=p, drafted=True, fireAtWill=False)
+
+        def probe(what):
+            r = t.bridge_call("jawa/attack_target_probe", pawn=h, maxDist=40)
+            if t._guard():
+                if not isinstance(r, dict) or r.get("success") is not True:
+                    raise ExpectationFailed("UNMEASURED: attack_target_probe (%s) did not answer: %r" % (what, str(r)[:200]))
+                if not r.get("primaryVerbRanged"):
+                    raise ExpectationFailed("UNMEASURED: the hostile has no ranged verb (%s)" % r.get("primary"))
+            return r
+
+        with t.component("shooting_rule_on", toggle="superdeepShootingRuleEnabled"):
+            r = probe("rule ON")
+            if t._guard():
+                _expect(_pick(r) == _num(b), "ON: picked %s, want the open-ground enemy %s (pit enemy %s)"
+                        % (_pick(r), b, a))
+        with t.component("shooting_rule_off", toggle="superdeepShootingRuleEnabled"):
+            with _setting_in(t, S_FW, "superdeepShootingRuleEnabled", False):
+                r = probe("rule OFF")
+                if t._guard():
+                    _expect(_pick(r) == _num(a), "OFF: picked %s, want the nearer pit enemy %s" % (_pick(r), a))
+        with t.component("shooting_rule_on_pit_only", toggle="superdeepShootingRuleEnabled"):
+            _vanish_fixture(t, b)
+            b = None
+            r = probe("rule ON, pit enemy only")
+            if t._guard():
+                _expect(_pick(r) is None, "ON with only the pit enemy left: picked %s, want nobody" % _pick(r))
+    finally:
+        for p in (a, b, h):
+            _vanish_fixture(t, p)
 
 
 @suite.chain("toggle_pit_exposure")
@@ -2585,13 +2763,70 @@ def toggle_trap_trigger(t):
                         "woven cover gave way with trapTriggerEnabled OFF: %r" % (r,))
 
 
+FALL_HURTS = ("Bruise", "Crush", "Crack")
+
+
+def _num(s):
+    """Trailing digits of a ThingID ('Human460415', 'Thing_Human460415', '460415') -> '460415', or None."""
+    m = re.search(r"(\d+)$", str(s or ""))
+    return m.group(1) if m else None
+
+
+def _trap(t, pid):
+    """RM_NorthstarProofs.ProofTrap -> {descents:int, held:bool|None, lastPawn, fall:float|None}; UNMEASURED when unread.
+    `last` is the newest descent on the map ('<ThingID>@x,z_t=N_fall=F'), so lastPawn/fall belong to it, not to pid."""
+    txt = _sc(t, NS_PROOF, "ProofTrap", pid)
+    if not t._guard():
+        return {}
+    if not txt.startswith("TRAP"):
+        raise ExpectationFailed("UNMEASURED: ProofTrap %s gave no answer: %r" % (pid, txt[:160]))
+    kv = _kv(txt)
+    last = kv.get("last", "-")
+    m = re.search(r"fall=([-0-9.]+)", last)
+    try:
+        n = int(kv.get("descents"))
+    except (TypeError, ValueError):
+        n = None
+    return {"descents": n, "held": {"True": True, "False": False}.get(kv.get("held")),
+            "lastPawn": _num(last.split("@", 1)[0]), "fall": float(m.group(1)) if m else None}
+
+
+def _thrown_fall(t, pid, x, z):
+    """Throw `pid` onto (x,z) and read ITS descent -> the fall damage the descent recorded. UNMEASURED when no new
+    descent of this pawn was recorded (the throw landed nowhere, or another pawn's descent is the newest)."""
+    n0 = _trap(t, pid).get("descents")
+    with _fight_expected(t, [pid], FALL_HURTS):
+        _force_into(t, pid, x, z)
+    tr = _trap(t, pid)
+    if not t._guard():
+        return None
+    if n0 is None or tr.get("descents") is None or tr["descents"] <= n0 or tr.get("lastPawn") != _num(pid) \
+            or tr.get("fall") is None:
+        raise ExpectationFailed("UNMEASURED: no new descent of %s recorded (before=%s after=%r)" % (pid, n0, tr))
+    return tr["fall"]
+
+
 @suite.chain("toggle_fall_damage")
 def toggle_fall_damage(t):
-    # RM_SuperdeepTrap.cs gates the fall's damage on fallDamageEnabled; no row makes a pawn fall and reads its injuries
-    with _owed(t, "fall_damage_on", "fallDamageEnabled: no fall staged, no injury read"):
-        pass
-    with _owed(t, "fall_damage_off", "fallDamageEnabled OFF: no fall staged"):
-        pass
+    """RM_SuperdeepTrap.OnDescent: a pawn forced onto a D=4 floor takes Blunt fall damage by metres fallen, gated on
+    fallDamageEnabled (RM_PitAccessMath.FallHurts); RecordDescent keeps the damage it dealt ('fall=F'), read through
+    ProofTrap. ON: a thrown colonist's descent dealt fall>0. OFF: a second colonist thrown onto the same pit with the
+    setting off has fall=0.0. fallDeathEnabled is held OFF so a deep fall cannot end a row through another rule."""
+    x0, z0 = _prep_plot(t, "G")
+    pit = _pit_cells(x0, z0)
+    _dig_run(t, pit, 4)
+    with _setting_in(t, S_FW, "fallDeathEnabled", False):
+        with t.component("fall_damage_on", toggle="fallDamageEnabled"):
+            pid = _spawn_pawn_at(t, "Colonist", pit[0][0] - 3, pit[0][1])
+            fall = _thrown_fall(t, pid, pit[4][0], pit[4][1])
+            if t._guard():
+                _expect(fall > 0, "ON: the forced fall onto D=4 recorded fall=%s, want > 0" % fall)
+        with t.component("fall_damage_off", toggle="fallDamageEnabled"):
+            with _setting_in(t, S_FW, "fallDamageEnabled", False):
+                pid = _spawn_pawn_at(t, "Colonist", pit[0][0] - 3, pit[2][1])
+                fall = _thrown_fall(t, pid, pit[5][0], pit[5][1])
+                if t._guard():
+                    _expect(fall == 0, "OFF: the forced fall recorded fall=%s with fallDamageEnabled OFF" % fall)
 
 
 STEAM_PROOF = "RimMandrake.FlowWorks.ManyWaters.RM_RiverSteamProof"

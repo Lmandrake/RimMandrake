@@ -148,6 +148,7 @@ def main():
     probs += ["bottle spawn_batch without stuff=: %s" % x for x in _bad]
     # (8) code review 2026-10-11: checks that could PASS without a reading now FAIL or record UNMEASURED
     probs += _vacuous_check_probs(EXT)
+    probs += _proofs_1112_probes(EXT)
 
     # the offline tier's declared ids are the ids it really emits (a stale list declared 3 phantom components)
     with contextlib.redirect_stdout(io.StringIO()):
@@ -460,6 +461,136 @@ def _rect_xz(p):
     return int(x), int(z)
 
 
+def _proofs_1112_probes(EXT):
+    """FlowWorks dense proofs 2026-11-12 (plan: D:\\ClaudeWork\\rimmandrake\\conductor\\proofs_20261112\\FlowWorks\\plan.md):
+    each new row PASSes on the designed game, FAILs on the one defect it names (and that defect fails no sibling row
+    that is meant to stay independent), and reads UNMEASURED when its instrument is blind. A non-PASS component ends a
+    modcheck chain (upstream_failed), so the rows after a FAIL read UNMEASURED, never PASS or FAIL."""
+    out = []
+    serial = [7000]     # ids unique across runs: _spawn_pawn_at sweeps every EARLIER chain's ids (module-global _SPAWNED)
+
+    def game(defect=None, blind=None):
+        """A scripted game: `settings` is live; `defect` names the one broken rule; `blind` the instrument that is dark."""
+        live = {}
+        st = {"n": 0, "pos": {}, "descents": 0, "last": "-", "gone": set(), "fires": set(), "seen_get": {}}
+
+        def on(field):
+            return live.get(field, EXT.REG.BY_KEY[field]["default"])
+
+        def h(tl, p):
+            m = p.get("method")
+            if tl == "jawa/static_call" and m == "ProofResetRect":
+                return {"result": "RESET x left=0"}
+            if tl in ("jawa/flowworks_excavation_drive", "jawa/flowworks_excavation_report"):
+                return {"success": True, "depth": 4, "fill": 0}
+            if tl == "jawa/spawn_pawn":
+                st["n"] += 1
+                serial[0] += 1
+                pid = "Human%d" % serial[0]
+                st.setdefault("order", []).append(pid)
+                st["pos"][pid] = (int(p.get("x")), int(p.get("z")))
+                return {"pawns": [{"id": pid}]}
+            if tl == "jawa/pawn_force_incapacitate" and p.get("action") == "vanish":
+                st["gone"].add(p.get("pawn"))
+                return {"success": True}
+            if tl == "jawa/list_pawns":
+                return {"pawns": [{"id": k, "x": v[0], "z": v[1]} for k, v in st["pos"].items() if k not in st["gone"]]}
+            if tl == "jawa/static_call" and m == "ProofForcedFlyer":
+                pid, x, z = p.get("args").split(",")
+                st["descents"] += 1
+                fall = 0.0 if (defect == "no_fall_damage" or (not on("fallDamageEnabled") and defect != "fall_ignores_setting")) else 6.2
+                st["last"] = "%s@%s,%s_t=1_fall=%.1f" % (pid, x, z, fall)
+                st["pos"][pid] = (int(x), int(z))
+                return {"result": "FLYER id=%s from=0,0 to=%s,%s depth=4 launched=True def=PawnFlyer_Stun" % (pid, x, z)}
+            held = on("ladderRequiredToExitEnabled") or defect == "ladder_ignores_setting"
+            if defect == "never_held":
+                held = False
+            if tl == "jawa/static_call" and m == "ProofTrap":
+                if blind == "trap":
+                    return {"result": "REFUSED: no spawned pawn"}
+                return {"result": "TRAP descents=%d lastCell=none pos=0,0 held=%s last=%s" % (st["descents"], held, st["last"])}
+            if tl == "jawa/flowworks_pit_report":
+                return {"success": True, "pawns": [{"id": k, "held": held} for k in st["pos"] if k not in st["gone"]]
+                        if p.get("x") is not None else []}
+            if tl == "jawa/attack_target_probe":
+                if blind == "probe":
+                    return {"success": False, "message": "no tool"}
+                ids = set(k for k in st["pos"] if k not in st["gone"])
+                pit_enemy, open_enemy = st["order"][0], st["order"][1]     # spawned first: the pit enemy, then the open one
+                rule = on("superdeepShootingRuleEnabled") or defect == "shoot_ignores_setting"
+                alive = [i for i in (pit_enemy, open_enemy) if i in ids]
+                if rule and defect != "shoot_no_skip":
+                    cands = [i for i in alive if i != pit_enemy] or ([pit_enemy] if defect == "shoot_rerank_only" and alive else [])
+                else:
+                    cands = alive
+                pick = cands[0] if cands else None
+                return {"success": True, "primaryVerbRanged": True, "picked": {"id": "Thing_" + pick} if pick else None}
+            if tl == "jawa/map_fire" and p.get("action") == "start":
+                if blind == "source":
+                    return {"success": True, "firesStarted": 0, "cellsFailed": 1}
+                x, z = _rect_xz(p)
+                st["fires"].add((x, z))
+                lit = on("liquidIgnitionEnabled") or defect == "ignite_ignores_setting"
+                if lit and defect != "never_ignites":
+                    st["fires"] |= {(x + 1, z), (x + 2, z)}
+                return {"success": True, "firesStarted": 1, "cellsFailed": 0}
+            if tl == "jawa/map_fire" and p.get("action") == "extinguish":
+                return {"success": True}
+            if tl == "jawa/list_things":
+                if blind == "things":
+                    return {"success": False}
+                x, z = _rect_xz(p)
+                return _things([{"def": "Fire", "x": x, "z": z}] if (x, z) in st["fires"] else [])
+            if tl == "jawa/pawn_get":
+                pid = p.get("pawn")
+                if blind == "hediffs":
+                    return {"success": True, "pawns": []}
+                k = st["seen_get"][pid] = st["seen_get"].get(pid, 0) + 1
+                hurts = k >= 2 and (on("liquidCorrosionEnabled") or defect == "corrode_ignores_setting") \
+                    and defect != "never_corrodes"
+                return {"success": True, "pawns": [{"hediffs": [{"def": "AcidBurn"}] if hurts else []}]}
+            return {"success": True}
+        return h, live
+
+    def run(chain, **kw):
+        h, live = game(**kw)
+        return _ext_run(EXT, chain, h, settings=live)
+
+    cases = (
+        ("toggle_fall_damage", {}, {"fall_damage_on": "PASS", "fall_damage_off": "PASS"}),
+        ("toggle_fall_damage", {"defect": "no_fall_damage"}, {"fall_damage_on": "FAIL", "fall_damage_off": "UNMEASURED"}),
+        ("toggle_fall_damage", {"defect": "fall_ignores_setting"}, {"fall_damage_on": "PASS", "fall_damage_off": "FAIL"}),
+        ("toggle_fall_damage", {"blind": "trap"}, {"fall_damage_on": "UNMEASURED", "fall_damage_off": "UNMEASURED"}),
+        ("toggle_ladder_required", {}, {"ladder_required_on": "PASS", "ladder_required_off": "PASS"}),
+        ("toggle_ladder_required", {"defect": "ladder_ignores_setting"}, {"ladder_required_on": "PASS", "ladder_required_off": "FAIL"}),
+        ("toggle_ladder_required", {"defect": "never_held"}, {"ladder_required_on": "FAIL", "ladder_required_off": "UNMEASURED"}),
+        ("toggle_ladder_required", {"blind": "trap"}, {"ladder_required_on": "PASS", "ladder_required_off": "UNMEASURED"}),
+        ("toggle_superdeep_shooting", {}, dict.fromkeys(("shooting_rule_on", "shooting_rule_off", "shooting_rule_on_pit_only"), "PASS")),
+        ("toggle_superdeep_shooting", {"defect": "shoot_ignores_setting"},
+         {"shooting_rule_on": "PASS", "shooting_rule_off": "FAIL", "shooting_rule_on_pit_only": "UNMEASURED"}),
+        ("toggle_superdeep_shooting", {"defect": "shoot_rerank_only"},
+         {"shooting_rule_on": "PASS", "shooting_rule_off": "PASS", "shooting_rule_on_pit_only": "FAIL"}),
+        ("toggle_superdeep_shooting", {"defect": "shoot_no_skip"},
+         {"shooting_rule_on": "FAIL", "shooting_rule_off": "UNMEASURED", "shooting_rule_on_pit_only": "UNMEASURED"}),
+        ("toggle_superdeep_shooting", {"blind": "probe"},
+         dict.fromkeys(("shooting_rule_on", "shooting_rule_off", "shooting_rule_on_pit_only"), "UNMEASURED")),
+        ("toggle_liquid_ignition", {}, {"liquid_ignition_on": "PASS", "liquid_ignition_off": "PASS"}),
+        ("toggle_liquid_ignition", {"defect": "never_ignites"}, {"liquid_ignition_on": "FAIL", "liquid_ignition_off": "PASS"}),
+        ("toggle_liquid_ignition", {"defect": "ignite_ignores_setting"}, {"liquid_ignition_on": "UNMEASURED", "liquid_ignition_off": "FAIL"}),
+        ("toggle_liquid_ignition", {"blind": "source"}, {"liquid_ignition_on": "UNMEASURED", "liquid_ignition_off": "UNMEASURED"}),
+        ("toggle_liquid_ignition", {"blind": "things"}, {"liquid_ignition_on": "UNMEASURED", "liquid_ignition_off": "UNMEASURED"}),
+        ("toggle_liquid_corrosion", {}, {"liquid_corrosion_on": "PASS", "liquid_corrosion_off": "PASS"}),
+        ("toggle_liquid_corrosion", {"defect": "never_corrodes"}, {"liquid_corrosion_on": "FAIL", "liquid_corrosion_off": "UNMEASURED"}),
+        ("toggle_liquid_corrosion", {"defect": "corrode_ignores_setting"}, {"liquid_corrosion_on": "PASS", "liquid_corrosion_off": "FAIL"}),
+        ("toggle_liquid_corrosion", {"blind": "hediffs"}, {"liquid_corrosion_on": "UNMEASURED", "liquid_corrosion_off": "UNMEASURED"}),
+    )
+    for chain, kw, want in cases:
+        got = run(chain, **kw)
+        if got != want:
+            out.append("proofs_1112 %s %s: %s, want %s" % (chain, kw or "designed", got, want))
+    return out
+
+
 def _vacuous_check_probs(EXT):
     out = []
     # _expect: an empty list (list_things found nothing) used to PASS because only `is False` raised
@@ -487,15 +618,7 @@ def _vacuous_check_probs(EXT):
             return {"pawns": [{"id": "P1"}]}
         return {"success": True}
 
-    # owed components record UNMEASURED (never PASS) and do not end the chain
-    got = _ext_run(EXT, "toggle_fall_damage", base)
-    if got != {"fall_damage_on": "UNMEASURED", "fall_damage_off": "UNMEASURED"}:
-        out.append("owed fall_damage components: %s" % got)
-    # liquid ignition: the OFF side counted vanilla Fire on a WATER fill, so an empty reply PASSed it (re-review
-    # 2026-10-11); both sides are owed now and must never PASS
-    got = _ext_run(EXT, "toggle_liquid_ignition", lambda tl, p: _things([]) if tl == "jawa/list_things" else base(tl, p))
-    if got != {"liquid_ignition_off": "UNMEASURED", "liquid_ignition_on": "UNMEASURED"}:
-        out.append("liquid ignition sides must both be owed (UNMEASURED): %s" % got)
+    # fall_damage / liquid_ignition are measured now: _proofs_1112_probes (PASS, FAIL on the defect, UNMEASURED when blind)
     # placement checks: list_things finding nothing FAILs (was PASS)
     got = _ext_run(EXT, "toggle_trap_trigger", lambda tl, p: _things([]) if tl == "jawa/list_things" else base(tl, p))
     if got.get("trap_trigger_off") != "FAIL":
