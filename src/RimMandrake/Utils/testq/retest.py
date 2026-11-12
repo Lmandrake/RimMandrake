@@ -191,6 +191,38 @@ def repaired_by(res, name):
     return True, "%d row(s) carry a verdict and none carries %s's cause" % (len(judged), base)
 
 
+QUEUE_HOST = "archmagi"     # the dispatcher's machine: its queue dir is the only one that holds job records
+
+
+def remote_record(job_id, qhome):
+    """-> (record or None, a clause saying what was asked of whom). Off the dispatcher's machine the job is read from
+    its queue over SSH (TESTQ_QUEUE_SSH, default mandrake@archmagi-wsl; set it empty to stay local). Read-only."""
+    import json
+    import os
+    import shlex
+    import socket
+    import subprocess
+    me = (os.environ.get("RM_HOST") or socket.gethostname()).strip().lower()
+    target = os.environ.get("TESTQ_QUEUE_SSH", "mandrake@archmagi-wsl")
+    if me == QUEUE_HOST or not target:
+        return None, ""
+    paths = " ".join(shlex.quote("%s/%s/%s.json" % (qhome, st, job_id)) for st in ("done", "running", "pending", "cancelled"))
+    cmd = "for f in %s; do [ -f \"$f\" ] && exec cat \"$f\"; done; exit 3" % paths
+    try:
+        r = subprocess.run(["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=15", "-o", "LogLevel=ERROR", target, cmd],
+                           capture_output=True, text=True, timeout=60)
+    except (OSError, subprocess.TimeoutExpired) as e:
+        return None, ", nor could %s be asked (%s)" % (target, e)
+    if r.returncode == 3:
+        return None, " here or on %s" % target
+    if r.returncode != 0:
+        return None, ", and %s did not answer (ssh exit %d: %s)" % (target, r.returncode, r.stderr.strip()[-200:])
+    try:
+        return json.loads(r.stdout), ""
+    except ValueError:
+        return None, ", and %s returned an unreadable record" % target
+
+
 def main(argv=None):
     """`retest.py passed <job-id|record.json> <REPAIR_ITEM>`: exit 0 when that job's result passes the repair item, 1
     when it does not, 2 when there is no finished record to read."""
@@ -204,19 +236,30 @@ def main(argv=None):
     p.add_argument("job", help="a testq job id (looked up in the queue) or a path to its done record")
     p.add_argument("item")
     a = ap.parse_args(argv)
+    rec = None
     if os.path.isfile(a.job):
-        path = a.job
+        try:
+            with open(a.job, encoding="utf-8") as f:
+                rec = json.load(f)
+        except (OSError, ValueError) as e:
+            print("UNMEASURED: cannot read the record %s (%s)" % (a.job, e))
+            return 2
     else:
         sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
         import testq as T
         st = T.where(a.job)
-        path = T.q(st, a.job + ".json") if st else None
-    try:
-        with open(path, encoding="utf-8") as f:
-            rec = json.load(f)
-    except (TypeError, OSError, ValueError) as e:
-        print("UNMEASURED: no finished record for %s (%s)" % (a.job, e))
-        return 2
+        if st:
+            rec = T.read_json(T.q(st, a.job + ".json"))
+        else:
+            # The queue is the dispatcher's (Archmagi): on SteveDesktop the local queue dir is empty, and the item's
+            # verify command crashed into "expected str ... not NoneType" there (HARNESS_REPAIR_CAUSE_17704C88).
+            rec, where_ = remote_record(a.job, T.QHOME)
+            if rec is None:
+                print("UNMEASURED: %s is in no queue state under %s%s" % (a.job, T.QHOME, where_))
+                return 2
+        if rec is None:
+            print("UNMEASURED: the record of %s under %s is unreadable" % (a.job, T.QHOME))
+            return 2
     res = rec.get("result")
     if not res:
         print("UNMEASURED: %s has no result yet" % a.job)

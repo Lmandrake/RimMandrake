@@ -73,6 +73,63 @@ def rank(recs, versions, moved=False, w=None, item_chains=None):
     return G.rank(MOD, 5, NOW, recs, lambda c: False, world=w or world(), g=fake_git(moved), prober=prober)
 
 
+def remote_lookup():
+    """`retest.py passed <job-id>` off the dispatcher's machine (HARNESS_REPAIR_CAUSE_17704C88): the local queue is
+    empty there, so the job is read from the dispatcher's queue over ssh; a job in neither is a clean exit 2, never a
+    TypeError. A fake `ssh` on PATH serves the remote queue from a temp dir."""
+    import contextlib
+    import io
+    d = tempfile.mkdtemp(prefix="retest_remote_")
+    keep = {k: os.environ.get(k) for k in ("PATH", "RM_HOST", "TESTQ_QUEUE_SSH", "FAKE_REMOTE_Q")}
+    try:
+        remote_q = os.path.join(d, "remote")
+        os.makedirs(os.path.join(remote_q, "done"))
+        bad = rec(1, [], outcome="INVALID", cause="HARNESS",
+                  note="modcheck exit 1 and no sheet JSON: RuntimeError: launch gate REFUSES to start a map")
+        good = rec(2, [row("c", "r", "PASS")])
+        for name, r in (("JBAD", bad), ("JGOOD", good)):
+            with open(os.path.join(remote_q, "done", name + ".json"), "w") as f:
+                json.dump(r, f)
+        bindir = os.path.join(d, "bin")
+        os.makedirs(bindir)
+        with open(os.path.join(bindir, "ssh"), "w") as f:     # last arg is the remote command; the queue path is rewritten
+            f.write('#!/bin/sh\nfor a; do last="$a"; done\nexec sh -c "$(printf %%s "$last" | sed "s#%s#$FAKE_REMOTE_Q#g")"\n'
+                    % R_QHOME())
+        os.chmod(os.path.join(bindir, "ssh"), 0o755)
+        os.environ.update(PATH=bindir + os.pathsep + os.environ["PATH"], RM_HOST="stevedesktop",
+                          TESTQ_QUEUE_SSH="fake@host", FAKE_REMOTE_Q=remote_q)
+        item = R.repair_base(R.job_cause(bad["result"]))
+        check(item == "HARNESS_REPAIR_CAUSE_17704C88", "the fixture carries the real sighting's cause: %s" % item)
+
+        def run(job):
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out):
+                code = R.main(["passed", job, item])
+            return code, out.getvalue()
+        code, out = run("JBAD")
+        check(code == 1 and "still carries the cause" in out, "a remote record that carries the cause exits 1: %r" % out)
+        code, out = run("JGOOD")
+        check(code == 0, "a remote record with verdicts exits 0: %d %r" % (code, out))
+        code, out = run("JNONE")
+        check(code == 2 and "in no queue state" in out and "fake@host" in out,
+              "a job in no queue is a clean exit 2 naming where it looked: %r" % out)
+        os.environ["TESTQ_QUEUE_SSH"] = ""
+        code, out = run("JBAD")
+        check(code == 2 and "NoneType" not in out, "with the remote off, a missing job is exit 2, no TypeError: %r" % out)
+    finally:
+        for k, v in keep.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+        shutil.rmtree(d, ignore_errors=True)
+
+
+def R_QHOME():
+    import testq as T
+    return T.QHOME
+
+
 def main():
     gap = [row("a", "r1", "PASS"), row("a", "r2", "UNMEASURED", OWED)]
     passed = [row("b", "r3", "PASS")]
@@ -276,6 +333,7 @@ def main():
         shutil.rmtree(d, ignore_errors=True)
     sm = {"chains": [{"name": "a", "gate": {"code_version": "v"}}, {"name": "b", "gate": {}}, {"name": "c"}]}
     check(S.chain_versions(sm) == {"a": "v"}, "the sheet's versions reach the result")
+    remote_lookup()
     if FAILS:
         print("%d FAILED" % len(FAILS))
         return 1
