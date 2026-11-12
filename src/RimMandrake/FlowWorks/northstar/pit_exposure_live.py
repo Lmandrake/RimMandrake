@@ -263,7 +263,12 @@ def main():
         return str(r.get("result") or r.get("message") or "")
 
     def step(n):
-        B.call("rimworld/step_game_ticks", ticks=int(n), pauseFirst=True, timeoutMs=240000)
+        # the client sends this through tickburst_step.advance (many ticks per frame); RM_STEP_PATH=slow is one per frame
+        t0 = time.time()
+        r = B.call("rimworld/step_game_ticks", ticks=int(n), pauseFirst=True, timeoutMs=240000) or {}
+        res.setdefault("steps", []).append({"ticks": int(n), "wallS": round(time.time() - t0, 2),
+                                            "path": r.get("path") or "rimworld/step_game_ticks", "success": r.get("success")})
+        print("STEP %d ticks %.2f s via %s" % (int(n), time.time() - t0, res["steps"][-1]["path"]), flush=True)
 
     def temp(c):
         r = B.call("jawa/cell_temperature", cell="%d,%d" % tuple(c)) or {}

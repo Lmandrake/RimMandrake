@@ -3246,7 +3246,8 @@ def phase_P(L, args):
             df = r_fc.get("descentCount") or 0
             ok_f, lf, tf = _proof(B, "ProofForcedFlyer", "%s,%d,%d" % (fp, wc[0], wc[1]))
             tk_land0 = L.eng().get("ticksGame")
-            st_land = B.call("rimworld/step_game_ticks", ticks=FLYER_LAND_TICKS, pauseFirst=True, timeoutMs=120000)
+            with TS.one_tick_per_frame():   # a flyer's landing stays frame by frame: the client must not reroute it
+                st_land = B.call("rimworld/step_game_ticks", ticks=FLYER_LAND_TICKS, pauseFirst=True, timeoutMs=120000)
             tk_land = (L.eng().get("ticksGame") or 0) - (tk_land0 or 0)
             r_f = B.call("jawa/flowworks_pit_report", x=wc[0], z=wc[1])
             pf = _pit_pawn(r_f, fp)

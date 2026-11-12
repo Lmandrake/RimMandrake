@@ -105,8 +105,9 @@ def arm(name, settings):
     pawns = {i: p for i, p in pawns_in_site().items() if near(p)}
     c("jawa/static_call", type=KP, method="Clear", args="x")
     c("jawa/damage", thingId=bomb["id"], damageDef="Crush", amount=float(bomb.get("hitPoints") or 60) + 40.0)
-    for _ in range(max(1, a.ticks // 25)):
-        c("rimworld/step_game_ticks", ticks=25, pauseFirst=True, timeoutMs=60000)
+    # one step of the same ticks (it was a.ticks//25 calls of 25 with nothing read between): the client sends it through
+    # tickburst_step.advance, many ticks per frame (speed_20261112; RM_STEP_PATH=slow is one tick per frame)
+    c("rimworld/step_game_ticks", ticks=max(1, a.ticks // 25) * 25, pauseFirst=True, timeoutMs=120000)
     after = {t["id"]: t for t in census()}
     lp2 = pawns_in_site()
     g = collections.Counter()
@@ -168,8 +169,9 @@ def storage_arm(name, settings):
     bomb = shells[0]
     c("jawa/static_call", type=KP, method="Clear", args="x")
     c("jawa/damage", thingId=bomb["id"], damageDef="Crush", amount=float(bomb.get("hitPoints") or 60) + 40.0)
-    for _ in range(max(1, a.ticks // 25)):
-        c("rimworld/step_game_ticks", ticks=25, pauseFirst=True, timeoutMs=60000)
+    # one step of the same ticks (it was a.ticks//25 calls of 25 with nothing read between): the client sends it through
+    # tickburst_step.advance, many ticks per frame (speed_20261112; RM_STEP_PATH=slow is one tick per frame)
+    c("rimworld/step_game_ticks", ticks=max(1, a.ticks // 25) * 25, pauseFirst=True, timeoutMs=120000)
     after = {t["id"]: t for t in census()}
     x, z, w, h = (int(v) for v in a.site.split(","))
     cont2 = [b for b in buildings(a.site) if b.get("def") == a.container_def and b.get("id") == cont[0].get("id")]

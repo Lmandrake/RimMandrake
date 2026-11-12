@@ -183,6 +183,67 @@ _ACTIVE = set()                       # cids in flight in THIS process
 _UNRESOLVED = {}
 
 
+# speed_20261112 step 2c: what a run spent, per tool, and the habits that make proofs slow. Printed to stderr at exit
+# (RM_BRIDGE_SPLIT=0 silences it): a time split (load / ticks / reads / other), a warning for any tool called more than
+# CALLS_WARN times, and one for every rimworld/step_game_ticks of more than STEP_WARN_TICKS that reached the game.
+CALLS_WARN, STEP_WARN_TICKS = 50, 60
+_TOOL_STATS = {}          # tool -> [calls, ms]
+_LONG_STEPS = []          # ticks of each long step_game_ticks actually sent
+_T_START = time.time()
+_LOAD_TOOLS = ("rimworld/load_game", "rimworld/load_game_ready", "rimworld/start_debug_game", "rimworld/start_debug_game_ready",
+               "rimworld/go_to_main_menu", "rimworld/save_game")
+_TICK_TOOLS = ("rimworld/step_game_ticks", "jawa/safe_advance")
+
+
+def _note_call(tool, params, ms, read_only):
+    st = _TOOL_STATS.setdefault(tool, [0, 0, "read" if read_only else "other"])
+    st[0] += 1
+    st[1] += ms
+    if tool == "rimworld/step_game_ticks":
+        try:
+            n = int((params or {}).get("ticks") or 1)
+        except (TypeError, ValueError):
+            n = 0
+        if n > STEP_WARN_TICKS:
+            _LONG_STEPS.append(n)
+
+
+def split_report():
+    """-> the lines the exit report prints ([] when no call was made)."""
+    if not _TOOL_STATS:
+        return []
+    cat = {"load": 0, "ticks": 0, "reads": 0, "other": 0}
+    for tool, (n, ms, kind) in _TOOL_STATS.items():
+        k = "load" if tool in _LOAD_TOOLS else "ticks" if tool in _TICK_TOOLS else "reads" if kind == "read" else "other"
+        cat[k] += ms
+    wall = time.time() - _T_START
+    inside = sum(cat.values()) / 1000.0
+    out = ["[bridge split] %.1f s wall: load %.1f / ticks %.1f / reads %.1f / other %.1f / outside calls %.1f s"
+           % (wall, cat["load"] / 1000.0, cat["ticks"] / 1000.0, cat["reads"] / 1000.0, cat["other"] / 1000.0,
+              max(0.0, wall - inside))]
+    for tool, (n, ms, _) in sorted(_TOOL_STATS.items(), key=lambda kv: -kv[1][0]):
+        if n > CALLS_WARN:
+            out.append("[bridge split] WARN %d calls of %s (%.1f s): batch them" % (n, tool, ms / 1000.0))
+    if _LONG_STEPS:
+        out.append("[bridge split] WARN %d rimworld/step_game_ticks call(s) over %d ticks reached the game (%d ticks, one "
+                   "per frame): use tickburst_step.advance" % (len(_LONG_STEPS), STEP_WARN_TICKS, sum(_LONG_STEPS)))
+    return out
+
+
+def _split_at_exit():
+    if os.environ.get("RM_BRIDGE_SPLIT", "").strip() == "0":
+        return
+    try:
+        for line in split_report():
+            print(line, file=sys.stderr)
+    except Exception:  # noqa: BLE001 - a report is never a crash at exit
+        pass
+
+
+import atexit  # noqa: E402
+atexit.register(_split_at_exit)
+
+
 def _settings_debt(tool, params, out):
     """AGENT_WRAPUP_ENFORCE_ASKING_NEVER_WORKED: every answered settings write goes on the wrap-up's debt register
     (wrapup_debt.settings_write: a change owes, a write back to the original pays), so no caller has to remember to.
@@ -1243,6 +1304,23 @@ class RimBridge:
         return None
 
     def call(self, tool, params=None, check=True):
+        """tools/call (see _call_one). A paused rimworld/step_game_ticks of more than tickburst_step.ONE_FRAME_MAX
+        ticks is sent through tickburst_step.advance instead (many ticks per frame; RM_STEP_PATH=slow undoes it, a
+        `with tickburst_step.one_tick_per_frame():` block keeps one call literal)."""
+        if tool == "rimworld/step_game_ticks":
+            import tickburst_step as TS
+            p = params or {}
+            try:
+                n = int(p.get("ticks") or 1)
+            except (TypeError, ValueError):
+                n = 0
+            if n and TS.fast_wanted(n, p.get("pauseFirst", True)):
+                if getattr(self, "_gate_session", None) is None:
+                    self._gate_session = TS._GateSession(lambda t, **kw: self._call_one(t, kw, check=False))
+                return TS.advance(self._gate_session.call, n, session=self._gate_session, timeout_ms=p.get("timeoutMs"))
+        return self._call_one(tool, params, check)
+
+    def _call_one(self, tool, params=None, check=True):
         """tools/call. NOTHING here stops you calling a destructive tool.
 
         🔑 It DOES stop you calling one with a misspelled argument: `check` runs the
@@ -1357,6 +1435,7 @@ class RimBridge:
         _inflight_clear(cid)
         _ACTIVE.discard(cid)
         _settings_debt(tool, params, out)
+        _note_call(tool, params, int((time.time() - t0) * 1000), not mutating)
         if tool == LOAD_READY_TOOL:
             out = self._settle_load_ready(params, out)
         return out

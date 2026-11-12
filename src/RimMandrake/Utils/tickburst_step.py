@@ -36,6 +36,80 @@ COMMITTED_ADOPTION = os.path.join(REPO, "design", "RimMandrake", "tickburst_2026
 PLAY_STALL_S = 5.0          # an unpaused clock that does not move in this long is a stall, not a slow game
 PLAY_POLL_S = 0.05
 
+# ---------------------------------------------------------------- the shared advance (speed_20261112 step 1d)
+# ONE function every shared helper moves the clock through, and ONE switch to put them all back on one tick per frame.
+# rimbridge_client.RimBridge.call sends a rimworld/step_game_ticks of more than ONE_FRAME_MAX ticks here, so the
+# scripts that still name step_game_ticks get the fast path without being edited (live_test_speed_assessment rule 1).
+# The fast path is clockgate.advance_chunk (jawa/safe_advance: <=60 ticks per sub-step inside a 40 ms frame budget) with
+# stopOn=cancel: like step_game_ticks it does NOT stop on the vitals latch (a proof that hurts pawns on purpose would
+# otherwise stop), and its SAFE_CHUNK_MAX pieces stay under the 30000-tick populated-map refusal.
+ENV_PATH = "RM_STEP_PATH"           # "slow" = every shared advance is rimworld/step_game_ticks again (the fallback switch)
+ONE_FRAME_MAX = 60                  # a step_game_ticks of at most this many ticks is left alone by the client
+SHARED_STOP_ON = "cancel"
+STEP_TOOL = "rimworld/step_game_ticks"
+_SLOW_DEPTH = [0]
+SPLIT = {"fast_calls": 0, "slow_calls": 0, "ticks": 0, "wall_s": 0.0}
+
+
+class one_tick_per_frame(object):
+    """`with one_tick_per_frame(): call("rimworld/step_game_ticks", ...)` reaches the real tool: a deliberate
+    frame-by-frame step (a flyer's landing, the tickburst arm A, the fast path's own fallback)."""
+
+    def __enter__(self):
+        _SLOW_DEPTH[0] += 1
+        return self
+
+    def __exit__(self, *exc):
+        _SLOW_DEPTH[0] -= 1
+        return False
+
+
+def fast_wanted(n, pause_first=True):
+    """True when a step of `n` ticks should take the fast path: the switch is not slow, no one_tick_per_frame block
+    is open, the step is paused (safe_advance always pauses) and longer than ONE_FRAME_MAX unless forced."""
+    if os.environ.get(ENV_PATH, "").strip().lower() == "slow" or _SLOW_DEPTH[0] > 0 or pause_first is False:
+        return False
+    return int(n) > ONE_FRAME_MAX
+
+
+def advance(call, n, session=None, timeout_ms=None, force_fast=False):
+    """Move the clock `n` ticks, paused. -> a reply shaped like rimworld/step_game_ticks's (success, status,
+    requestedTicks, completedTicks, remainingTicks) plus `path`. `call(tool, **kw)`. `session` (a _GateSession) keeps
+    the has_safe_advance answer between calls; pass the same one for one bridge. RM_STEP_PATH=slow sends every call to
+    step_game_ticks; with force_fast a short step (<= ONE_FRAME_MAX) goes fast too (still not under RM_STEP_PATH=slow)."""
+    n = int(n)
+    w0 = time.time()
+    slow = os.environ.get(ENV_PATH, "").strip().lower() == "slow" or _SLOW_DEPTH[0] > 0
+    if n <= 0:
+        return {"success": True, "status": "completed", "requestedTicks": n, "completedTicks": 0, "remainingTicks": 0}
+    if slow or not (force_fast or n > ONE_FRAME_MAX):
+        with one_tick_per_frame():
+            r = call(STEP_TOOL, ticks=n, pauseFirst=True, timeoutMs=int(timeout_ms or max(60000, n * 100)))
+        SPLIT["slow_calls"] += 1
+        SPLIT["ticks"] += n
+        SPLIT["wall_s"] += time.time() - w0
+        return r
+    cg = _clockgate()
+    sess = session if session is not None else _GateSession(call)
+    left, ex, path = n, 0, None
+    try:
+        with one_tick_per_frame():          # advance_chunk's own legacy fallback is the literal tool
+            while left > 0:
+                req = min(left, cg.SAFE_CHUNK_MAX)
+                e = cg.advance_chunk(sess, req, stop_on=SHARED_STOP_ON)
+                ex += int(e if e is not None else req)
+                left -= req
+        path = "jawa/safe_advance" if sess._safe_advance_ok else STEP_TOOL
+        out = {"success": True, "status": "completed"}
+    except cg.GovernorStop as g:
+        out = {"success": False, "status": "stopped", "error": "safe_advance did not finish: %s" % (_short(getattr(g, "result", None) or {}),)}
+        path = "jawa/safe_advance"
+    SPLIT["fast_calls"] += 1
+    SPLIT["ticks"] += ex
+    SPLIT["wall_s"] += time.time() - w0
+    out.update(requestedTicks=n, completedTicks=ex, remainingTicks=n - ex, path=path, wallS=round(time.time() - w0, 3))
+    return out
+
 
 def evidence_adoption_path():
     """<agent storage>/rimmandrake/tickburst/equiv/adoption.json, or None when the storage root cannot be read."""
@@ -159,7 +233,8 @@ class Stepper:
             return self._done(rec, w0)
         timeout_ms = int(timeout_ms or max(60000, n * 40))
         if self.mode == "step":
-            rec["reply"] = _short(self.call("rimworld/step_game_ticks", ticks=n, pauseFirst=True, timeoutMs=timeout_ms))
+            with one_tick_per_frame():      # arm A IS one tick per frame: the client must not reroute it
+                rec["reply"] = _short(self.call("rimworld/step_game_ticks", ticks=n, pauseFirst=True, timeoutMs=timeout_ms))
         elif self.mode == "safe":
             r = self.call("jawa/safe_advance", ticks=n, chunk=60, frameBudgetMs=self.budget_ms, perFrameTickCap=self.cap,
                           timeoutMs=timeout_ms, frameSamples=True) or {}
@@ -194,11 +269,12 @@ class Stepper:
         sess = _GateSession(self.call)
         left, ex = n, 0
         try:
-            while left > 0:
-                req = min(left, cg.SAFE_CHUNK_MAX)
-                e = cg.advance_chunk(sess, req)
-                ex += int(e if e is not None else req)
-                left -= req
+            with one_tick_per_frame():      # the legacy fallback inside advance_chunk is the literal tool
+                while left > 0:
+                    req = min(left, cg.SAFE_CHUNK_MAX)
+                    e = cg.advance_chunk(sess, req)
+                    ex += int(e if e is not None else req)
+                    left -= req
             rec["reply"] = {"success": True, "executed": ex, "path": "safe_advance" if sess._safe_advance_ok else "step_game_ticks"}
         except cg.GovernorStop as g:
             rec["reply"] = {"success": False, "executed": ex}
