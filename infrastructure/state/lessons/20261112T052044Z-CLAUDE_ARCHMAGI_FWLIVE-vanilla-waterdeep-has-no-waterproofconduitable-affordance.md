@@ -1,0 +1,2 @@
+Vanilla WaterDeep has no WaterproofConduitable affordance (live jawa/build_check refuses WaterproofConduit there), so a matrix scene that spawns conduit on WaterDeep is a layout no player can build; FlowWorks' RM_Fill_* pit water inherits WaterShallow (Standable, WaterproofConduitable) and is where a player really lays a buried crossing. Test both before calling a water fix ordinary use (2026-11-11)
+item: GSS_WATER_STUB_FIX_PASSED_LAST_WEEK

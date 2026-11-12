@@ -13,12 +13,14 @@ lay waterproof conduit on it, unlike vanilla WaterDeep, where `jawa/build_check`
 which GSS cannot see without a cross-mod contract.
 
 **Live readings** (matrix F60 canal scene with the water terrain swapped, `run_live.py --scenes full --only XW`):
-- XW1 RM_Fill_Water_Superdeep: stubs 0, cord_edges 1 (cord on the water) — swim on AND off
+- XW1 RM_Fill_Water_Superdeep: stubs 0, cord_edges 1 (cord on the water) — swim on AND off; the cell is path-walkable
+  in both (swim set through `jawa/mod_settings_field` + `jawa/static_call RM_SwimWater.Reapply`, proved by XW4's
+  WaterDeep flipping walkable True/False), so this is not the deep-swim bug: GSS has always drawn a cord here
 - XW2 RM_Fill_Water_Brim (1.5 m, wadeable): stubs 0, cord_edges 1 — consistent with GSS's "walkable = ground" rule
 - XW3 WaterMovingChestDeep (vanilla river, wadeable): stubs 0, cord_edges 1 — same
 - XW4 WaterDeep: stubs 2, cord_edges 2 (PASS)
-Evidence: `whittle/gss_water_stub_fix_passed_last_week/evidence/sibling_water_variants_swimON.json`,
-`…/sibling_water_variants_swimOFF.json`, `…/sibling_XW1_fw_superdeep_cord_on_water.png`, `…/sibling_XW4_waterdeep_two_stubs.png`.
+Evidence: `whittle/gss_water_stub_fix_passed_last_week/evidence/sibling_water_variants_swimON_reapplied.json`,
+`…/sibling_water_variants_swimOFF_reapplied.json` (each carries `swim_setting` and `canal_cell_walkable`), `…/sibling_XW1_fw_superdeep_cord_on_water.png`, `…/sibling_XW4_waterdeep_two_stubs.png`.
 
 **To decide (Designer):** should a cord dive under swim-depth water that is def-Standable? If yes, the contract: e.g. a
 terrain tag or DefModExtension FlowWorks puts on its swim-depth terrains that GSS reads by name (no assembly reference),

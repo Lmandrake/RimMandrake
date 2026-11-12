@@ -44,6 +44,12 @@ export WC_DIR="$WC_HOME/$W" WC_HOME
 # folder): wc.py forwards to Archmagi's copy over ssh, and progress.md / OWNER_QUESTIONS.md are mirrored after each phase.
 [ "$MACHINE" = SteveDesktop ] && export WC_REMOTE=${WC_REMOTE:-mandrake@archmagi-wsl}
 export PATH="$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin"
+# WSL interop: the live tools call python.exe / tasklist.exe / powershell.exe; a bare PATH hid them, so `./game` read
+# UNMEASURED and every bridge script failed to start (GSS_WATER_STUB_FIX_PASSED_LAST_WEEK, 2026-11-11)
+for d in /mnt/c/Windows/System32 /mnt/c/Windows /mnt/c/Windows/System32/WindowsPowerShell/v1.0 \
+         /mnt/c/Users/Mandrake/AppData/Local/Microsoft/WindowsApps; do
+    [ -d "$d" ] && PATH="$PATH:$d"
+done
 export RIMFLOW_SEAT=$W AGENT_SEAT=$W RIMFLOW_BRIDGE_SEAT=$W
 export WSLENV="${WSLENV:+$WSLENV:}RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT"
 # the Whittle runner: MandrakeWorkflows whittle/ and tools/ (install.sh copies them to SteveDesktop, whose checkout is old)

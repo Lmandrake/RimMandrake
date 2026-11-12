@@ -52,10 +52,12 @@ a player really meets. Each was a one-scene copy of the F60 canal with only the 
   `RIMMANDRAKE_BURY_GSS_CORDS_IN_FW_SUPERDEEP_PIT_WATER` with the readings and the options rather than guess the
   contract. Screenshot: `evidence/sibling_XW1_fw_superdeep_cord_on_water.png` (the cord crosses the blue pit),
   beside `evidence/sibling_XW4_waterdeep_two_stubs.png`.
-- **Caveat on the swim-OFF column:** I set `RM_SwimSettings.deepSwimEnabled=false` through
-  `jawa/mod_settings_field` (static field). I did not re-read path-grid walkability afterwards, so I can't say whether
-  FlowWorks re-closed the deep band on the live map. The column shows only that the cord result didn't change. I set
-  the field back to True and read True.
+- **How swim was switched (corrected 21:20):** the first pass at 20:52 wrote only the static field, which does not run
+  FlowWorks' `RM_SwimWater.Reapply`, so its OFF column was unproven, and the judge rightly flagged it. I re-ran all four
+  scenes with the field write plus `jawa/static_call RM_SwimWater.Reapply` (what Mod Settings runs) and read each canal
+  cell's walkability. WaterDeep flips walkable True/False with the switch. Superdeep, Brim and chest-deep stay walkable
+  either way. Same cord results as the table. Files: `evidence/sibling_water_variants_swimON_reapplied.json`,
+  `evidence/sibling_water_variants_swimOFF_reapplied.json`. The misleading first-pass files are deleted.
 
 Not tried: GPT's 1 (terrain changing under a powered crossing: bridge build/remove, freeze, flood), 3 (save/load at
 awkward stages; proof_all's save block wasn't in this `--only matrix` run) and 5 (incremental rewiring of a busy

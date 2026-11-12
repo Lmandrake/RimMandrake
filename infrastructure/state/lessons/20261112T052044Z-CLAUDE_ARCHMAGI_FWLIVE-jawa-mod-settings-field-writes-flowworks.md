@@ -1,0 +1,2 @@
+jawa/mod_settings_field writes a FlowWorks swim switch WITHOUT running RM_SwimWater.Reapply, so the deep band on a live map does not change: follow it with jawa/static_call type=RimMandrake.FlowWorks.Swimming.RM_SwimWater method=Reapply (what Mod Settings' WriteSettings runs) and read a WaterDeep cell's walkable (rimworld/get_cell_info) to prove it took (GSS_WATER_STUB_FIX_PASSED_LAST_WEEK, 2026-11-11)
+item: GSS_WATER_STUB_FIX_PASSED_LAST_WEEK
