@@ -1,3 +1,4 @@
 {"seat":"CLAUDE_STEVEDESKTOP_OFFLINE1","event":"lease","id":"BIOME_TRANSITIONS_JUDGE_VS_BAROQUE","action":"take","token":"CLAUDE_STEVEDESKTOP_OFFLINE1.pid37619.a2e4b7ad","expires":"2026-11-12T04:38:14Z","ts":"2026-11-12T03:53:14Z","tsn":1794455597084877055}
 {"seat":"CLAUDE_STEVEDESKTOP_OFFLINE1","event":"claim","id":"BIOME_TRANSITIONS_JUDGE_VS_BAROQUE","session":"e611f7c9-5309-48fa-9771-48d7f4cc1053","ts":"2026-11-12T03:53:19Z","tsn":1794455599133668891}
 {"seat":"CLAUDE_STEVEDESKTOP_OFFLINE1","event":"start","id":"BIOME_TRANSITIONS_JUDGE_VS_BAROQUE","session":"e611f7c9-5309-48fa-9771-48d7f4cc1053","ts":"2026-11-12T03:53:21Z","tsn":1794455601188491413}
+{"seat":"CLAUDE_STEVEDESKTOP_OFFLINE1","event":"note","id":"BIOME_TRANSITIONS_JUDGE_VS_BAROQUE","text":"Claude Whittle CLAUDE_STEVEDESKTOP_OFFLINE1 released this claim: no live item file (ledger ghost); nothing was built","why":"wc.py scripted release (no model)","ts":"2026-11-12T05:10:05Z","tsn":1794460205996473171}
