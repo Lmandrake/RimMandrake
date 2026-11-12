@@ -16,15 +16,14 @@ and not a fact about the gateway. Anything in this file that is a claim about mo
 
 ## 🔴 The seat models — fleet ladder updated by the owner, 2026-10-20
 
-> `opus` for design work and complex code generation; `sonnet` for everything else, including
-> mechanical bulk work with a checkable outcome (OS-level searches, greps, globs, inventories,
-> file sweeps, extraction, classification, dedup pre-screens). **Sonnet is the lowest rung; no
-> Haiku, no Fable.** Pass `model` on every spawn. Owner, 2026-10-31: "Please do not use Haiku for
-> RimMandrake. Sonnet 5.5 is the lowest model to consider, due to Haiku's error rate. That is a
-> project-wide setting." Read the environment (`ANTHROPIC_DEFAULT_*_MODEL`) before trusting a rung;
-> name no account. Ladder source of truth: `~/dev/Lodestar/claude/global/45-subagents.md`.
-
-`fable` is the name that genuinely 400s (the harness expands it to a literal id).
+> `fable` for the Conductor's window and for single-agent whole-mod or blank-page design work under a
+> hard budget; `opus` for bounded tickets, complex code generation and judging; `sonnet` for
+> everything else with a checkable outcome. **Sonnet is the lowest rung; no Haiku** (owner,
+> 2026-10-31). Fable is on the ladder from 2026-11-12 (owner: "It only said no fable because Opus 5.5
+> was outperforming Fable 5.1."). Never Fable for fan-out helpers, reruns, fleets, unvetted tickets,
+> game-waiting or fast mode. Pass `model` on every spawn. Read the environment
+> (`ANTHROPIC_DEFAULT_*_MODEL`) before trusting a rung; name no account. Ladder source of truth:
+> `~/dev/Lodestar/claude/global/45-subagents.md`.
 
 The Conductor runs on Opus 5.5 and orchestrates. It does not do design in-window and does not grind:
 it holds the owner's attention, backgrounds design to an **Opus** subagent, and keeps the
@@ -58,12 +57,9 @@ loud, and dangerous exactly where it is silent.
 
 | | Alias | For |
 |---|---|---|
-| **Opus 5.5** (+fast mode) | `opus` | **Design** — design judgment, decision drafting, synthesis across contradictory evidence, rosters, specs, skill curation — always as a backgrounded subagent from the Conductor. **Complex code generation** — Harmony/C#, new systems, multi-file forensics, bridge writes, the frozen world. **the Conductor's window**, the orchestrator |
+| **Fable 5.2** | `fable` | **The Conductor's window.** One agent finishing a whole mod against its checklist; design from a blank page; one escalation attempt on a clean ticket Opus failed at high effort. Hard dollar budget on every run. Never a helper, a rerun, a fleet worker or a game-waiter. Price: 2× Opus fresh, 1× cached. |
+| **Opus 5.5** (+fast mode) | `opus` | **Design** — design judgment, decision drafting, synthesis across contradictory evidence, rosters, specs, skill curation — always as a backgrounded subagent from the Conductor. **Complex code generation** — Harmony/C#, new systems, multi-file forensics, bridge writes, the frozen world.  |
 | **Sonnet 5.5** | `sonnet` | **Well-defined coding with a checkable outcome** — patches, defs, deploys, quicktests, fixes a selftest or validator proves. Log triage, interpretive sweeps, first drafts. **OS-level searches** — greps, globs, censuses, existence checks, inventories (folded in 2026-10-01; see below). FOUNDRY's default |
-
-Fable is not on the ladder (owner, 2026-09-29). Pass `opus` or `sonnet`; read the environment
-(`ANTHROPIC_DEFAULT_*_MODEL`) before trusting any alias.
-
 ### 🔴 Sonnet vs Opus — owner ruling, 2026-10-29 (replaces "Sonnet default, self-escalate after one failed attempt")
 
 > "Sonnet for building code that can easily be checked right via tests and output. Opus for code

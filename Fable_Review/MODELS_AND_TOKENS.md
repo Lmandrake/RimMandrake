@@ -37,7 +37,7 @@ and paid *output* (ceremony prose, reports, re-verification narration).
 Current line: **Haiku 4.5 · Sonnet 5 · Opus 5 (+fast mode) · Fable 5** (this model;
 Mythos-class tier above Opus). External free tier: NVIDIA nemotron (§4).
 
-> Current ladder as of 2026-10-20 (owner): opus = design and complex code; sonnet = well-defined coding, prose, cross-context judgment; haiku = STRUCK 2026-10-31 (owner: Sonnet 5.5 is the lowest rung). No Fable. See `infrastructure/agents/Agent_Policy.md`.
+> Current ladder as of 2026-10-20 (owner): opus = design and complex code; sonnet = well-defined coding, prose, cross-context judgment; haiku = STRUCK 2026-10-31 (owner: Sonnet 5.5 is the lowest rung). Fable 5.2 joined the ladder 2026-11-12 (owner); see `infrastructure/agents/Agent_Policy.md`.
 
 | model | use it for (this project's actions) | do not use it for |
 |---|---|---|
