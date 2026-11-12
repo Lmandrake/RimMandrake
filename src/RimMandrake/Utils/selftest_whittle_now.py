@@ -154,6 +154,7 @@ def wire(mod, root, lane_file, steve_up=False):
     return {"ledger": fake_ledger, "machines": lambda state, sources: {},
             "accounts": lambda sources: [{"name": "system", "used": 42.0, "resets": time.time() + 86400, "t": time.time(),
                                           "why": None, "slope": None}],
+            "codex": lambda sources: {"used": 30.0, "t": time.time(), "exact": True, "reset": None},
             "notice": lambda sources: {"account": "steven", "pct_left": 80.0, "line": 30}}
 
 
@@ -216,6 +217,14 @@ def checks(mod, tmp):
         ("steve down not crash", "steveon" not in needs and "**unreachable**" in page),
     ]
     out.append(("empty root", "No Whittle workers yet" in page2 and "none yet" in phone2))
+    line = [l for l in page.splitlines() if l.startswith("Accounts left this week")]
+    out.append(("accounts line: remaining, ? for missing source, live marked",
+                len(line) == 1 and "system 58%" in line[0] and "steven ?" in line[0] and "lukas ?" in line[0]
+                and "Codex 70%" in line[0] and "live: steven" in line[0] and phone.splitlines()[2].startswith("Accounts left")))
+    stubs2 = dict(stubs)
+    stubs2["codex"] = lambda sources: (_ for _ in ()).throw(mod.Unmeasured("planted codex failure"))
+    pageC, _, _ = mod.build(stubs2)
+    out.append(("codex missing -> ?", "Codex ?" in pageC))
     stubs["ledger"] = lambda sources: (_ for _ in ()).throw(mod.Unmeasured("planted ledger failure"))
     page3, _, _ = mod.build(stubs)
     out.append(("ledger failure said", "The ledger could not be read" in page3 and "UNMEASURED" in page3))
