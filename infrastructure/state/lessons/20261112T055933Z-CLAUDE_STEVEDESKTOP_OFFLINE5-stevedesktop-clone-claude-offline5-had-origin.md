@@ -1,0 +1,2 @@
+SteveDesktop clone claude-offline5 had origin's push URL on github.com (read-only deploy key) instead of github-rimmandrake-write like offline1-4/6: ./publish retried 'push failed' for two rounds and nothing landed (wc.py release said sha=none). Check 'git remote get-url --push origin' when publish keeps failing; fix with set-url --push origin git@github-rimmandrake-write:Lmandrake/RimMandrake.git.
+item: SHIP_ALLOY_FORGE_1
