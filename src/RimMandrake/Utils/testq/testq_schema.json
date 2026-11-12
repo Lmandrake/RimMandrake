@@ -289,6 +289,9 @@
       "REFUSED"
      ]
     },
+    "deploy_memo": {
+     "type": "object"
+    },
     "phase_s": {
      "type": "object"
     },
