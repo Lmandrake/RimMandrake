@@ -93,10 +93,17 @@
     "ref": "run bench-ek-st3b-20261112",
     "stage": 3,
     "tokens": 2386989
+   },
+   {
+    "at": "2026-11-12T08:36:39Z",
+    "kind": "unmeasured",
+    "ref": "run bench-ek-st3c-20261112",
+    "stage": 3,
+    "tokens": 3940000
    }
   ],
   "reserve": 60000,
-  "spent": 3940000
+  "spent": 7880000
  },
  "history": [
   {
@@ -188,6 +195,24 @@
    "stage": 3,
    "what": "retry",
    "why": "run bench-ek-st3b-20261112 result rejected: no result.json (a closing message is not a result)"
+  },
+  {
+   "at": "2026-11-12T08:36:36Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "3940000 of 4000000 spent; run bench-ek-st3c-20261112 goes on with 3940000 (advisory)"
+  },
+  {
+   "at": "2026-11-12T08:36:36Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run bench-ek-st3c-20261112, stage 3, budget 3940000"
+  },
+  {
+   "at": "2026-11-12T08:36:39Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run bench-ek-st3c-20261112: stage 3 done"
   }
  ],
  "item": "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
@@ -333,11 +358,33 @@
    "why": [
     "no result.json (a closing message is not a result)"
    ]
+  },
+  {
+   "at": "2026-11-12T08:36:39Z",
+   "inputs": {
+    "exam": "581bd143532b80540ea42d98e2ed414c9d9d362eb290450fbad9736aa11e1c4d",
+    "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
+    "scenes": "32caa4c3d7fa17b080c91c4604a6ca040672f8c5a5302884b39c0daa521bee6d",
+    "sheet": "957e7e15f612223dbeca4164071a93d28e1d0ccfdfb3c2a76d1c70095ad33a20",
+    "tree": "8a505de1de0300786322ee6aa309fecee50d30238fdbcab81ba31cddb7a53b9c"
+   },
+   "manifest": {
+    "designer.md": "b79052133c514f160b33c30b53d69a947adbfdbc81304681463b1038e82fce9f",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
+    "designer_write.md": "2d93c81308fff5f7a37cf5c40cbfae398599cd0aa6a238d1a325a1fabff2e441"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "bench-ek-st3c-20261112",
+   "stage": 3,
+   "summary": "Returned stage 3 reworked against the 19 coverage gaps. tree.json re-written (28 leaves; root VALIDATED 5d06c98d8b13 re-synced): the 40-throw cap and per-tick drop removed by d_c_all_fly (inv_caps scoped out, performance a proven bar); shipped behaviour added as leaves (pawn arc carrier, the spared, recovery window, pawn and door/deep-water stops, only explosions throw, per-weapon tuning, settings, hose drop); no_careless_fall narrowed to colonists by his 2026-10-06 answer. Showcase 1 is ONE scene, his flagship verbatim (sc_storeroom_bomb_pit). scenes.json: 31 scenes, each with a start assertion and a real control; record.json script_audit lists 17 existing scenes' gaps; plan.md step 8 filed as RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS. Lint PASS, showcase set accepted."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 3,
+ "stage": 4,
  "status": "ready"
 }
