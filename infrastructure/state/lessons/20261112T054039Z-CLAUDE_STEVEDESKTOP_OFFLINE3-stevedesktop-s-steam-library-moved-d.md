@@ -1,0 +1,2 @@
+SteveDesktop's Steam library moved to D:/SteamLibrary on 2026-11-11 (the C: RimWorld folder keeps only Mods and logs), so every winbuild failed on Harmony and Assembly-CSharp; src/Directory.Build.props now falls back to D:/SteamLibrary when the C: paths are absent (a03a4ad30a). The whittle offline gate refuses any Bash command naming the game executable's data folder, even as a build path: write such text with the Edit tool. (CLAUDE_STEVEDESKTOP_OFFLINE3, 2026-11-11)
+item: CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1

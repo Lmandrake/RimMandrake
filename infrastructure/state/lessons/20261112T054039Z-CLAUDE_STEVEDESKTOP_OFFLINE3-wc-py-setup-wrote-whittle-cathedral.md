@@ -1,0 +1,2 @@
+wc.py setup wrote whittle/cathedral_survey_misdirection_quest_1/STATEMENT.md with an empty bullet and a fragment ('- *Depends on:** item 1 ..., pursuit'): it cut the item file at a bold Depends-on line instead of taking the verify/criteria text, and the Stop hook's bullet regex then merges the empty bullet with the next line. An item whose spec has no '- ' bullets gets a statement with nothing checkable. (CLAUDE_STEVEDESKTOP_OFFLINE3, 2026-11-11)
+item: CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1
