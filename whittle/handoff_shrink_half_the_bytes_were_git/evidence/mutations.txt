@@ -1,10 +1,10 @@
-# Mutation check: each line breaks one property of ledger_state.py / handoff.py on purpose, runs selftest_ledger_state.py, restores. 2026-11-11 22:12 PST at d7ff8762de
+# Mutation check: each line breaks one property of ledger_state.py / handoff.py on purpose, runs selftest_ledger_state.py, restores. 2026-11-11 22:19 PST at a85f6f86fc
 # A mutation the selftest does not fail on (failed_checks=0) would be a check that cannot see.
 exit=1 failed_checks=2  cap 7 -> 60 rows per section  [first: open items: 7 shown, the rest counted and named:]
 exit=1 failed_checks=2  a released lease counts as a live helper  [first: live helpers: both live leases, every seat: '## Live helpers — 3 unexpired leases, ]
 exit=1 failed_checks=1  the oldest NEXT on an item wins  [first: NEXT: the newest NEXT on an item, not an older one]
 exit=1 failed_checks=1  later events never mark a NEXT overtaken  [first: NEXT: an overtaken NEXT carries the block and a later-events warning:]
-exit=1 failed_checks=2  NEXT may cross a newline  [first: NEXT: two lines, the stamp and writer on the first, one line of the note on the sec]
+exit=1 failed_checks=2  NEXT may cross a newline  [first: NEXT: a quoted NEXT earlier on the line does not swallow the real one after it]
 exit=1 failed_checks=1  only the bare "NEXT:" form is read  [first: NEXT: the spoken form "NEXT then:" is a NEXT too, and keeps the sentence it leans o]
 exit=1 failed_checks=1  a quoted NEXT swallows the real one after it  [first: NEXT: a quoted NEXT earlier on the line does not swallow the real one after it]
 exit=1 failed_checks=1  a spoken NEXT loses the sentence it leans on  [first: NEXT: the spoken form "NEXT then:" is a NEXT too, and keeps the sentence it leans o]

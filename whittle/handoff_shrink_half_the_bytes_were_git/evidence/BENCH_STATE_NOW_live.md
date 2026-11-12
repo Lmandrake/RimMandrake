@@ -1,8 +1,8 @@
 # BENCH — ledger state now (generated; never edit, never commit)
-ledger as of 2026-11-11 22:12 PST · generated 2026-11-11 22:15 PST · game UP · bridge free
+ledger as of 2026-11-11 22:22 PST · generated 2026-11-11 22:22 PST · game UP · bridge free
 regenerate: python3 src/RimMandrake/Utils/ledger_state.py --seat BENCH (handoff.py --wake does it)
 
-## Open items — this seat's 1816 (doing 30 · ready 163 · proposed 663 · built 391 · validated 162 · blocked 407)
+## Open items — this seat's 1817 (doing 30 · ready 163 · proposed 664 · built 391 · validated 162 · blocked 407)
 - `LOOP_MEMORY_DESIGN_SHORT_AND_HASH_BOUND` — doing: Efficient memory for relentless loops: result cache by hash, tried…
 - `DEAD_FIXES_REPAIR_TEN_NOT_WORKING` — doing: 10 of 39 sampled implemented fixes are not working and 16 are unprove…
 - `EVIDENCE_METRICS_WIRE_ONE_ROW_EVER` — doing: Give evidence_metrics.py record a daily caller; the owner's record ha…
@@ -10,7 +10,7 @@ regenerate: python3 src/RimMandrake/Utils/ledger_state.py --seat BENCH (handoff.
 - `OPS_CHURN_DIAGNOSE_EXAM_XUMI_TVAQ` — doing, BLOCKED: relentless snag binding_repair: Proof's cli.py sh…: Ops alarm C…
 - `RIMFLOW_AUDIT_SIX_ZERO_ENTRY_MODULES_LEFT` — doing, BLOCKED: relentless snag binding_repair: Work landed at c4…: Jud…
 - `PROOFLINT_FIX_ARGS_READ_AS_SCRIPTS` — doing: relentless_live.proof_scripts treats any repo-shaped .py/.sh token as…
-- … and 1809 more: rimflow queue BENCH
+- … and 1810 more: rimflow queue BENCH
 
 ## Owner-pending — 17 items in 16 topics, every seat (10 more answered by him, ours to move)
 - `BEER_CUT_DECIDE_BARREL_STILL_BREWS_IT`: ThingDef/Beer is on the Cherry Picker kill list from the weapons sheet (obse…
@@ -22,14 +22,18 @@ regenerate: python3 src/RimMandrake/Utils/ledger_state.py --seat BENCH (handoff.
 - `FLIER_AFTERNOON_EXPERIMENT_PROVE_STILL_TORSO`: Uvak south, frames v2, offline preview: does the motion read as lifti…
 - … and 9 more: python3 src/RimMandrake/Utils/owner_queue.py
 
-## Live helpers — 5 unexpired leases, every seat (a lease is a claim, not a running process)
+## Live helpers — 7 unexpired leases, every seat (a lease is a claim, not a running process)
 - CLAUDE_STEVEDESKTOP_OFFLINE1 holds `HARNESS_REPAIR_CAUSE_C1B99C19` (doing), lease to 22:39 PST
 - CLAUDE_STEVEDESKTOP_OFFLINE3 holds `LIVE_NEEDS_ENFORCE_ABSENCE_NOW_EXPLICIT` (doing), lease to 22:40 PST
 - CLAUDE_STEVEDESKTOP_OFFLINE5 holds `RIMMANDRAKE_SPLIT_HUGETHINGS_PLANT_AND_TITAN_PROMISES` (doing), lease to 22:45 PST
 - CLAUDE_STEVEDESKTOP_OFFLINE6 holds `FASCINATING_WORLD_JUNK_1` (doing), lease to 22:53 PST
 - CLAUDE_ARCHMAGI_OFFLINE1 holds `KYBER_TRADE_PLOT_1` (doing), lease to 22:54 PST
+- CLAUDE_STEVEDESKTOP_OFFLINE4 holds `SUMP_SINKING_RITE_BUILD_1` (doing), lease to 23:01 PST
+- CLAUDE_ARCHMAGI_OFFLINE3 holds `HANDOFF_SHRINK_HALF_THE_BYTES_WERE_GIT` (doing), lease to 23:01 PST
 
-## NEXT — newest NEXT note on 182 of this seat's open items, as written then (Pacific time)
+## NEXT — newest NEXT note on 183 of this seat's open items, as written then (Pacific time)
+- `SEA_FLOOR_AND_CATCH_PASS_1` — ready, needs bridge
+    (NEXT 11-11 22:13 by CLAUDE_STEVEDESKTOP_OFFLINE4; ⚠ 2 later events) NEXT: live lane runs PROVEGRAVSHIP_FIX_PIPES_F…
 - `HARNESS_REPAIR_CAUSE_8135787B` — ready (NEXT 11-11 22:03 by CLAUDE_STEVEDESKTOP_OFFLINE6; ⚠ 2 later events)
     NEXT: when it finishes, python3 src/RimMandrake/Utils/testq/retest.py passed J20261112T060227Z-995858 HARNESS_REPAI…
 - `HARNESS_REPAIR_CAUSE_17704C88` — ready (NEXT 11-11 21:37 by CLAUDE_STEVEDESKTOP_OFFLINE6; ⚠ 2 later events)
@@ -40,6 +44,4 @@ regenerate: python3 src/RimMandrake/Utils/ledger_state.py --seat BENCH (handoff.
     NEXT: leave open until an authorized recurring monitor supplies a post-fix reading (Operations run, or proven activ…
 - `RIMMASTER_WEIGH_POCOCK_SKILLS_TRIAL_BEFORE_INSTALL` — proposed (NEXT 11-08 19:56 by OWNER)
     NOT BEFORE Wed 2026-11-11 ~3 PM PST (Claude week reset). NEXT then: write the first of the 10 seed-set caller scena…
-- `RIMMASTER_FIX_ASH_FOOTPRINTS_AND_SAND_LABEL_AFTER_CLOSE` — proposed (NEXT 11-08 19:44 by OWNER)
-    NOT BEFORE Wed 2026-11-11. NEXT then: deploy Pyrelands, read ash footprints and the sand label by bridge, with him
-- … and 176 more: rimflow show <ID>; a ⚠ or a cut (…) row: rimflow show <ID> before acting
+- … and 177 more: rimflow show <ID>; a ⚠ or a cut (…) row: rimflow show <ID> before acting

@@ -1,4 +1,4 @@
-# Half 1, measured 2026-11-11 22:15 PST at d7ff8762de: the wake's handoff view against the whole handoff file
+# Half 1, measured 2026-11-11 22:22 PST at a85f6f86fc: the wake's handoff view against the whole handoff file
 handoff file: /home/mandrake/rm/scratch/BENCH/claude-archmagi-offline3/infrastructure/state/handoffs/BENCH_REBOOT_HANDOFF_202611111355.md
 whole file: 8531 bytes, 98 lines; its sections:
     ## The one thing to carry forward
