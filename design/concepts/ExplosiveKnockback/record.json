@@ -862,6 +862,44 @@
     "src/RimMandrake/ExplosiveKnockback/",
     "OWNER:1794468864684141079"
    ]
+  },
+  {
+   "id": "inv_weapon_ext_fields",
+   "what": "RM_KnockbackExtension per-blast fields beyond force and maxThrowCells: impactFactor (scales wall, pawn and door impact; 0 = no impact, the palm thumper's arrest tool) and immuneBodySizeOverride (replaces the global too-big body size for this blast; the grav-ram's 3.6 throws a 3.5 body)",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::impact_factor",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::body_override"
+   ],
+   "scope": "approved",
+   "source": [
+    "src/RimMandrake/ExplosiveKnockback/",
+    "design/RimMandrake/kinetic_blast_weapons_design_2026-10-06.md"
+   ],
+   "scope_note": "shipping behaviour kept as built; the_spared's body-size line and per_weapon_tuning now state it"
+  },
+  {
+   "id": "inv_killed_corpse",
+   "what": "A pawn the blast kills is thrown as a corpse",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::killed_by_blast"
+   ],
+   "scope": "approved",
+   "source": [
+    "src/RimMandrake/ExplosiveKnockback/",
+    "design/validation_walks/RimMandrake/ExplosiveKnockback.md"
+   ],
+   "scope_note": "walk row light_things.pawn_killed_by_blast_thrown_as_corpse; under the new carrier the corpse flies as a good"
   }
  ],
  "built_reviewed": [],
@@ -1017,7 +1055,9 @@
   {
    "scene": "lookup_projectile",
    "lacks": [
-    "control: no extension throws at the damage type value (NOT YET RUN LIVE)"
+    "control: no extension throws at the damage type value (NOT YET RUN LIVE)",
+    "projectile, weapon and damage type set against each other on one explosion",
+    "an own maxThrowCells under ownCapScale (CapFor ignores the scale without one)"
    ],
    "fix": "sc_lookup",
    "source": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::lookup_projectile"
@@ -1065,6 +1105,67 @@
    ],
    "fix": "sc_settings_off",
    "source": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::settings_off"
+  },
+  {
+   "scene": "door_stop",
+   "lacks": [
+    "the deep-water lane",
+    "control: the door held open and the water filled"
+   ],
+   "fix": "sc_door_water",
+   "source": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::door_stop"
+  },
+  {
+   "scene": "pit_enemy",
+   "lacks": [
+    "a stack in the lane",
+    "control: the pit filled"
+   ],
+   "fix": "sc_pit_fall",
+   "source": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::pit_enemy"
+  },
+  {
+   "scene": "corpse_into_pit",
+   "lacks": [
+    "the haul back off the pit floor",
+    "control: the same corpse with no pit"
+   ],
+   "fix": "sc_pit_fetch",
+   "source": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::corpse_into_pit"
+  },
+  {
+   "scene": "killed_by_blast",
+   "lacks": [
+    "the thing trace (height, no despawn-spawn pair)",
+    "control: corpses killed before a 1-damage blast, and throwCorpses off"
+   ],
+   "fix": "sc_killed_thrown",
+   "source": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::killed_by_blast"
+  },
+  {
+   "scene": "lookup_zero_wins",
+   "lacks": [
+    "the projectile's zero set against a damage type's nonzero on one explosion is present; control: no extension anywhere"
+   ],
+   "fix": "sc_lookup (d)",
+   "source": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::lookup_zero_wins"
+  },
+  {
+   "scene": "impact_factor",
+   "lacks": [
+    "no-new-injury read",
+    "control: the same blast with impactFactor 1 takes a nonzero impact"
+   ],
+   "fix": "sc_lookup (h)",
+   "source": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::impact_factor"
+  },
+  {
+   "scene": "body_override",
+   "lacks": [
+    "control: the same animal under the plain grenade spared too_big is present only as a second pawn; read its skip reason"
+   ],
+   "fix": "sc_lookup (i)",
+   "source": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::body_override"
   }
  ],
  "failure_modes": [

@@ -20,7 +20,9 @@ Each step is one rimflow item, built by Relentless from the tree; none needs wor
    dl_closed_means_hidden, dl_container_shove). The in_storage skip (about line 399) becomes a closed-container
    guard: storage that does not draw its contents, plus an opt-in tag. A 1x1 container under the mass limit slides
    one cell when the cell behind is free, else jolts; never into a pit, a wall or onto a pawn. Walk row
-   `light_things.item_on_a_shelf_stays` is reversed. Leaves `open_shelf_scatters`, `closed_container_holds`.
+   `light_things.item_on_a_shelf_stays` (which still states the old rule) is rewritten in
+   design/validation_walks/RimMandrake/ExplosiveKnockback.md's must-be-true list, outside its validated north-star
+   section, to "an item on an open shelf scatters; an item in a closed container stays". Leaves `open_shelf_scatters`, `closed_container_holds`.
 3. **All harmful explosions** (`RIMMANDRAKE_THROW_ALL_HARMFUL_BLASTS`; d_c_which_blasts, dl_modded_strength).
    `Patches/RM_Knockback_DamageDefs.xml`: Flame and incendiary at 0.5; the other-mods default goes from 0 to 100
    percent for any damaging explosion; EMP, smoke, stun, extinguish and toxic gas stay 0. Leaf
@@ -45,13 +47,14 @@ Each step is one rimflow item, built by Relentless from the tree; none needs wor
    `sc_pit_fetch`: a hauler fetches a thrown stack off a pit floor by the lowered ladder. If FlowWorks' haulers
    cannot (`RM_PitPathing.cs` routes non-held pawns around open pit cells), the fix is FlowWorks', filed from the
    finding.
-8. **Proof scenes with real controls** (`RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS`; the 17-row
+8. **Proof scenes with real controls** (`RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS`; the 24-row
    `script_audit` in record.json). Rewrites `RM_KnockbackProof.cs` so every scene in scenes.json asserts its start
    and runs its named control: edits calibration, wall_stop, over_sandbags (barricade lane), door_stop (deep-water
    lane), shield_counter, immunity_window (reload), lookup_projectile, emp_no_throw (into `blast_kinds`), cover_breaks
    (incendiary), pit_colonist (covered cell), settings_off; removes tick_cap and the caps/shelf/items assertions
    that his answers reverse; adds pawn_arc, pawn_hits_pawn, spared_states (airborne state by a test hook, never a
-   live flight), settings_sweep, no_cross_ordered and hose_carry_drop. Runs the NOT YET RUN LIVE scenes live.
+   live flight), settings_sweep, no_cross_ordered and hose_carry_drop; extends pit_enemy, corpse_into_pit, killed_by_blast (trace), lookup_zero_wins,
+   impact_factor and body_override (lanes of `sc_lookup`), and adds the proof's debug-vector draw counter. Runs the NOT YET RUN LIVE scenes live.
 
 ## Settled since
 
