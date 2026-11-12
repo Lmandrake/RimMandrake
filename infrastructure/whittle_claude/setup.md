@@ -2,6 +2,11 @@
 
 Do these steps in order and keep this phase short (under 20 minutes). You do not build anything here.
 
+**If the last line of the shortlist below starts with `PRE-PICKED:`, wc.py has already done every step of this phase
+without a model (the gate, both claims, the Whittle directory, the commit and publish; owner order 2026-11-11 ~20:40
+PST: check the tickets deterministically first). Make no tool call at all: your whole answer is the text after
+`PRE-PICKED: ` on one line.** Otherwise do the steps below.
+
 1. The clone is already level with origin/main (the loop synced it). The shortlist below is ranked for your lane; it
    already excludes needs=owner items, items another loop claims, and items owned by a seat other than BENCH or you.
 2. Take the first item on the shortlist that you can finish in one Whittle (hours, not days). For each candidate, read

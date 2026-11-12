@@ -3,6 +3,12 @@
 The Whittle phase for the item below has finished (its exit code and log tail are below: 0 the stop checker passed,
 1 incomplete after the allowed runs, 2 BLOCKED or STOP). Keep this phase short (under 20 minutes).
 
+First, before anything else, run the scripted wrap-up (owner order 2026-11-11 ~20:40 PST: check deterministically
+first): `python3 infrastructure/whittle_claude/wc.py wrapup $RIMFLOW_SEAT <ID> --dir <Whittle directory> --rc <Whittle
+exit code>`. If it prints a `RESULT ...` line it has done every step below (note, reassign, unclaim, commit, publish):
+make no other tool call and give that line as your final line. Only when it exits 5 (`MODEL: ...`, a Whittle exit 0
+that needs DONE.md and the judge read) do the steps below.
+
 0. If `infrastructure/state/items/<ID>.md` does not exist (or the Whittle exit code is `ghost`), the item is a ledger
    ghost: open in the ledger but not in the live set (CLAUDE.md: the items/<ID>.md glob is the live set; filed as
    RIMMANDRAKE_RECONCILE_FLOWWORKS_LEDGER_OPEN_WITHOUT_ITEM_FILE). Do not build, close or drop it.

@@ -4,13 +4,18 @@
 #
 #   loop.sh <WORKER>
 #
-# A round is three phases, each a fresh Claude so no context outlives its ticket:
-#   SETUP   claude -p (setup.md): pick one item from wc.py's shortlist, claim it (shared claims table + ledger), write
-#           whittle/<dir>/ STATEMENT, NOTES, MODE, PROMPT; commit and publish. Last line PICKED <ID> <dir> <mode> | NONE.
+# A round is three phases (owner order 2026-11-11 ~20:40 PST: "check the tickets deterministically first"):
+#   SETUP   wc.py setup, no model: the eligibility gate (wc.py gate prints every pick and skip with its reason), both
+#           claims (shared table + ledger), whittle/<dir>/ STATEMENT, NOTES, MODE, PROMPT; commit and publish.
+#           Last line PICKED <ID> <dir> <mode> | NONE <why>.
 #   WHITTLE MandrakeWorkflows whittle/run.py --runner claude with WHITTLE=1 WHITTLE_DIR=whittle/<dir>: builds until its
 #           Stop hook (DONE + BROADEN + a fresh judge) lets it stop. rc 1 (incomplete) runs again, at most 3 runs.
-#   WRAPUP  claude -p (wrapup.md): close | park (OWNER_QUESTIONS.md) | drop | failed; release the bridge; commit, publish,
-#           unclaim. Last line RESULT <ID> <ending> sha=<sha>.
+#   WRAPUP  wc.py wrapup, no model, for every mechanical ending (ghost, closed upstream, failed, parked). Only a Whittle
+#           exit 0 needs a model to read DONE.md and the judge and close: claude -p (wrapup.md) on sonnet with a slim
+#           context (no CLAUDE.md layers, no MCP, Bash+Read, turn and dollar caps). Last line RESULT <ID> <ending> sha=.
+# Each round's spend (setup / whittle / wrapup, raw, weighted with cache reads at 0.1, and cost_usd; a killed Whittle
+# run read from its session transcripts) goes to rounds/<N>/spend.json and onto the round's end line.
+# At each round boundary the loop re-runs itself when the clone's loop.sh changed (its private copy is replaced first).
 # The round's phase is in $WC_DIR/current.json, so a restart (WSL restart, unit restart, the account switcher's hard
 # stop) resumes the same phase on the same item. While the switcher's notice says hard stop the loop waits, state
 # "stopped". $WC_DIR/STOP (or the clone's infrastructure/whittle_claude/STOP.<WORKER>) ends the loop cleanly at a round
@@ -45,13 +50,16 @@ export WSLENV="${WSLENV:+$WSLENV:}RIMFLOW_SEAT:AGENT_SEAT:RIMFLOW_BRIDGE_SEAT"
 MW=${WC_MW:-$HOME/dev/MandrakeWorkflows}
 [ -e "$MW/whittle/run.py" ] || MW="$HOME/.local/share/whittle-claude/mw"
 export WC_LANE=$BRIEF WC_TEMPLATE="$MW/whittle/template"
+export WC_LOOP=2   # wc.py: this loop runs setup itself (an older loop gets its pick through the shortlist instead)
 RUNPY="$MW/whittle/run.py"
 unset WHITTLE WHITTLE_DIR CLAUDECODE
 
 # run from a private copy, so a pull that rewrites loop.sh never changes the script under a running bash
 if [ "${WC_RUNCOPY:-}" != 1 ]; then
     mkdir -p "$WC_DIR"
-    cp "$0" "$WC_DIR/loop.run.sh" && WC_RUNCOPY=1 exec /bin/bash "$WC_DIR/loop.run.sh" "$W"
+    cp "$0" "$WC_DIR/loop.run.sh.tmp" && mv -f "$WC_DIR/loop.run.sh.tmp" "$WC_DIR/loop.run.sh" \
+        && WC_RUNCOPY=1 exec /bin/bash "$WC_DIR/loop.run.sh" "$W"
+    echo "could not make the private run copy $WC_DIR/loop.run.sh: not running the clone's mutable loop.sh" >&2; exit 1
 fi
 mkdir -p "$WC_DIR/rounds"
 touch "$WC_DIR/progress.md" "$WC_DIR/OWNER_QUESTIONS.md"
@@ -75,7 +83,15 @@ EOF
 }
 mirror() { [ -n "${WC_REMOTE:-}" ] && rsync -a -e "ssh -o BatchMode=yes -o ConnectTimeout=10" "$WC_DIR/progress.md" "$WC_DIR/OWNER_QUESTIONS.md" "$WC_REMOTE:$WC_DIR/" >/dev/null 2>&1; true; }
 stopped_by_file() { [ -e "$WC_DIR/STOP" ] || [ -e "$CLONE/infrastructure/whittle_claude/STOP.$W" ]; }
-hard_stop() { python3 -c 'import sys; sys.path.insert(0, "src/RimMandrake/Utils"); import account_stop_notice as a; r = a.hard_stop_reason(); print(r or ""); sys.exit(0 if r else 1)' 2>/dev/null; }
+hard_stop() {   # exit 0 and the reason while nothing new may start: a hard stop, or a notice that cannot be read (fail safe;
+    # on SteveDesktop wc.py asks Archmagi's copy over ssh, where the switcher writes notice.json)
+    local r rc; r=$($WC hardstop 2>&1); rc=$?
+    case $rc in
+        0) echo "$r" ;;
+        1) return 1 ;;
+        *) echo "the account switcher's notice cannot be read (wc.py hardstop exit $rc: $(tr '\n' ' ' <<<"$r" | cut -c1-200)); waiting, fail safe" ;;
+    esac
+}
 wait_hard_stop() {   # the account switcher stopped the fleet: wait for its notice to clear, then go on where we were
     local r; r=$(hard_stop) || return 0
     lg "round $(cur round) paused: account hard stop: $r"
@@ -99,8 +115,21 @@ brief() {   # the prompt for a claude -p phase: common + lane + phase brief, wit
     { cat "$HERE/common.md" "$HERE/lane_$BRIEF.md" "$HERE/$1"; shift; printf '\n%s\n' "$@"; } \
         | sed -e "s#\$RIMFLOW_SEAT#$W#g" -e "s#\$WC_DIR#$WC_DIR#g" -e "s#\$WC_TEMPLATE#$WC_TEMPLATE#g" -e "s#\$WC_LANE#$BRIEF#g"
 }
-claude_phase() {   # claude_phase <log> <prompt>: one headless Claude, 2 h at most
-    timeout 7200 claude -p "$2" --model opus --output-format json --dangerously-skip-permissions >"$1" 2>"$1.err"
+claude_slim() {   # claude_slim <log> <prompt>: one headless sonnet with only what the brief needs, 40 min at most.
+    # No settings files (so no CLAUDE.md layers and no claude.ai connectors), no MCP, no skills; the lane's PreToolUse
+    # gate passed inline because the clone's settings.local.json is not read; turns and dollars capped.
+    local hook
+    hook=$(printf '{"hooks":{"PreToolUse":[{"matcher":"Bash","hooks":[{"type":"command","command":"python3 %s %s"}]}]}}' \
+        "$HERE/gate.py" "$BRIEF")
+    timeout -k 120 2400 claude -p "$2" --model sonnet --output-format json --setting-sources "" --strict-mcp-config \
+        --mcp-config '{"mcpServers":{}}' --disable-slash-commands --tools "Bash,Read" --settings "$hook" \
+        --max-turns "${WC_MAX_TURNS:-40}" --max-budget-usd "${WC_MAX_USD:-2}" --dangerously-skip-permissions \
+        >"$1" 2>"$1.err"
+}
+spend_line() {   # the round's spend: rounds/<N>/spend.json, one readable log line, and the key=value tail for the end line
+    local out; out=$($WC spend "$RD" --clone "$CLONE" 2>/dev/null) || { echo "tokens=unknown"; return; }
+    lg "round $ROUND spend: $(head -n 1 <<<"$out")" >/dev/null
+    tail -n 1 <<<"$out"
 }
 level_clone() {   # only between tickets: bring the clone to origin/main
     ./sync >>"$WC_DIR/sync.log" 2>&1 || lg "note: ./sync failed before round $(( $(cat "$WC_DIR/round.txt" 2>/dev/null || echo 0) + 1 )); see $WC_DIR/sync.log"
@@ -119,14 +148,36 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
 EOF
     ./publish >/dev/null 2>&1 || lg "round $(cur round) note: ./publish of the ledger leftovers failed"
 }
-release_bridge() {
+release_bridge() {   # only the live lanes ever take the bridge; a failed release is logged, not hidden
+    local out rc=0
     case "$BRIEF" in
-        archmagi) python3 src/RimMandrake/rimflow/cli.py bridge release --mine >/dev/null 2>&1 ;;
-        steve) python3 src/RimMandrake/rimflow/cli.py bridge release --host stevedesktop --mine >/dev/null 2>&1 ;;
+        archmagi) out=$(python3 "$CLONE/src/RimMandrake/rimflow/cli.py" bridge release --mine 2>&1) || rc=$? ;;
+        steve) out=$(python3 "$CLONE/src/RimMandrake/rimflow/cli.py" bridge release --host stevedesktop --mine 2>&1) || rc=$? ;;
+        *) return 0 ;;
     esac
+    [ "$rc" = 0 ] || lg "note: bridge release failed (rc=$rc): $(tail -n 2 <<<"$out" | tr '\n' ' ' | cut -c1-200)" >/dev/null
     true
 }
+unclaim_logged() {   # unclaim_logged <ID>: a failed unclaim (ssh from SteveDesktop) is said, not swallowed
+    local out; out=$($WC unclaim "$W" "$1" 2>&1) || lg "note: unclaim $1 failed: $(tr '\n' ' ' <<<"$out" | cut -c1-200)" >/dev/null
+}
+housekeeping() {   # at a round start: sync.log rotated at 5 MB, round folders older than 14 days removed
+    local f="$WC_DIR/sync.log"
+    [ -f "$f" ] && [ "$(stat -c %s "$f" 2>/dev/null || echo 0)" -gt 5242880 ] && mv -f "$f" "$f.1"
+    find "$WC_DIR/rounds" -mindepth 1 -maxdepth 1 -type d -mtime +14 -exec rm -rf {} + 2>/dev/null
+    true
+}
+disk_guard() {   # the drive this round fills: the SteveDesktop live lane builds on SteveDesktop, so ask SteveDesktop
+    if [ "$BRIEF" = steve ]; then
+        ssh -o BatchMode=yes -o ConnectTimeout=10 -o LogLevel=ERROR mandrake@stevedesktop-wsl python3 - diskfree \
+            < "$HERE/wc.py" 2>&1
+    else
+        $WC diskfree 2>&1
+    fi
+}
 
+trap 'release_bridge' EXIT
+trap 'exit 143' TERM INT
 st --state idle --note "loop started on $MACHINE (pid $$)"
 lg "loop start: $W on $MACHINE, clone $CLONE, unit $UNIT"
 FAILS=0
@@ -136,26 +187,39 @@ while :; do
     PHASE=$(cur phase)
     if [ -z "$PHASE" ]; then   # ---------------------------------------------------- a new round: SETUP
         level_clone
+        if ! cmp -s "$HERE/loop.sh" "$0"; then   # the clone's loop.sh changed: run the new one from here
+            cp "$HERE/loop.sh" "$WC_DIR/loop.run.sh.tmp" && mv -f "$WC_DIR/loop.run.sh.tmp" "$WC_DIR/loop.run.sh" && {
+                lg "loop.sh changed in the clone: re-running the new copy at this round boundary"
+                WC_RUNCOPY=1 exec /bin/bash "$WC_DIR/loop.run.sh" "$W"; }
+        fi
         ROUND=$(( $(cat "$WC_DIR/round.txt" 2>/dev/null || echo 0) + 1 ))   # written once an item is picked
-        rm -f "$CUR"; setcur round="$ROUND" phase=setup tries=0
+        housekeeping
+        rm -f "$CUR"; setcur round="$ROUND" phase=setup tries=0 || { lg "note: cannot write $CUR; next look in 5 min"; sleep 300; }
         continue
     fi
     ROUND=$(cur round); RD="$WC_DIR/rounds/$ROUND"; mkdir -p "$RD"; TRIES=$(cur tries); TRIES=${TRIES:-0}
     case "$PHASE" in
     setup)
-        if ! DF=$($WC diskfree 2>&1); then   # the backing drive is under the floor: no new round (SteveDesktop C:, 2026-11-11)
+        if ! DF=$(disk_guard); then   # the backing drive is under the floor: no new round (SteveDesktop C:, 2026-11-11)
             lg "idle: disk guard: $DF; next look in 30 min"; st --state idle --item - --note "disk guard: $DF"
             stopped_by_file && { lg "loop end: STOP file"; exit 0; }; sleep 1800; continue
         fi
         OPEN=$($WC lane-open "$LANE" 2>/dev/null || echo "?")
         st --state working --round "$ROUND" --item - --note "round $ROUND: picking from $OPEN open $LANE items"
-        SL=$($WC shortlist "$W" "$LANE" --n 15 2>&1 | tail -n 16)
-        claude_phase "$RD/setup.json" "$(brief setup.md "## Your shortlist (wc.py shortlist $W $LANE, ranked)" "$SL")"
-        rc=$?; LAST=$(last_line "$RD/setup.json"); mirror
+        # every open item's pick or skip with its reason, for a person to read (the setup below re-runs the same gate)
+        $WC shortlist "$W" "$LANE" --no-pick --why --n 15 >"$RD/gate.txt" 2>&1
+        $WC setup "$W" "$LANE" --round "$ROUND" >"$RD/setup.out" 2>>"$RD/setup.log"
+        rc=$?; LAST=$(tail -n 1 "$RD/setup.out"); mirror
         case "$LAST" in
             PICKED\ *)
                 read -r _ ID DIR MODE <<<"$LAST"
-                setcur phase=whittle item="$ID" dir="whittle/$DIR" mode="${MODE:-whittle}" tries=0 open="$OPEN"
+                if ! [[ "$ID" =~ ^[A-Z][A-Z0-9_]+$ ]] || [ "$DIR" != "${ID,,}" ] || [ ! -e "infrastructure/state/items/$ID.md" ] \
+                    || ! $WC mine "$W" 2>/dev/null | grep -qx "$ID"; then
+                    lg "round $ROUND setup said '$LAST' but it does not check (id, dir, live file, our claim): not started"
+                    unclaim_logged "$ID"; rm -f "$CUR"; FAILS=$((FAILS + 1)); sleep 120; continue
+                fi
+                setcur phase=whittle item="$ID" dir="whittle/$DIR" mode="${MODE:-whittle}" tries=0 open="$OPEN" \
+                    || { lg "note: cannot write $CUR; next look in 5 min"; unclaim_logged "$ID"; sleep 300; continue; }
                 echo "$ROUND" > "$WC_DIR/round.txt"
                 lg "round $ROUND start, open=$OPEN item=$ID"
                 lg "round $ROUND $ID claimed, mode ${MODE:-whittle}, whittle/$DIR"
@@ -166,12 +230,12 @@ while :; do
                 st --state idle --item - --note "nothing to take (${LAST#NONE }); next look in 30 min"
                 rm -f "$CUR"; publish_leftovers; sleep 1800 ;;
             *)
-                wait_hard_stop
+                if hard_stop >/dev/null; then wait_hard_stop; continue; fi   # stopped by the switcher: not a try
                 TRIES=$((TRIES + 1)); setcur tries="$TRIES"
-                lg "round $ROUND setup did not finish (rc=$rc, try $TRIES): $(tail -c 300 "$RD/setup.json.err" | tr '\n' ' ')"
+                lg "round $ROUND setup did not finish (rc=$rc, try $TRIES): $(tail -c 300 "$RD/setup.log" | tr '\n' ' ')"
                 if [ "$TRIES" -ge 3 ]; then
                     # a half-done pick: whatever it claimed goes back, so no other loop waits on it
-                    for id in $($WC mine "$W" 2>/dev/null); do $WC unclaim "$W" "$id" >/dev/null 2>&1; done
+                    for id in $($WC mine "$W" 2>/dev/null); do unclaim_logged "$id"; done
                     lg "setup failed 3 times without a pick (round $ROUND not started)"; rm -f "$CUR"; FAILS=$((FAILS + 1))
                 fi
                 st --state blocked --note "round $ROUND setup failed (rc=$rc), retrying"; sleep $((120 * (FAILS + 1))) ;;
@@ -192,10 +256,11 @@ while :; do
         N=$((TRIES + 1))
         st --state working --item "$ID" --note "round $ROUND: $ID Whittle run $N of 3"
         lg "round $ROUND $ID whittle run $N"
+        date +%s > "$RD/whittle.$N.t0"   # the window wc.py spend reads the session transcripts in, if this run is killed
         WHITTLE=1 WHITTLE_DIR="$DIR" WHITTLE_LOOP_LIMIT=3 WC_ITEM="$ID" \
-            timeout 23000 python3 "$RUNPY" --runner claude --cwd "$CLONE" --log "$RD/whittle.$N.log" --model opus \
+            timeout -k 120 23000 python3 "$RUNPY" --runner claude --cwd "$CLONE" --log "$RD/whittle.$N.log" --model opus \
             >"$RD/whittle.$N.out" 2>&1
-        rc=$?; mirror
+        rc=$?; date +%s > "$RD/whittle.$N.t1"; mirror
         if [ "$rc" = 0 ] || [ "$rc" = 2 ]; then
             setcur phase=wrapup whittle_rc="$rc" tries=0
         else
@@ -207,26 +272,30 @@ while :; do
     wrapup)
         ID=$(cur item); DIR=$(cur dir); WRC=$(cur whittle_rc)
         st --state working --item "$ID" --note "round $ROUND: $ID wrapping up (Whittle exit $WRC)"
-        claude_phase "$RD/wrapup.json" "$(brief wrapup.md "## This round" "Item: $ID" "Whittle directory: $DIR" \
-            "Whittle exit code: $WRC" "Whittle runner output tail:" "$(tail -n 20 "$RD"/whittle.*.out 2>/dev/null | tail -n 20)")"
-        rc=$?; LAST=$(last_line "$RD/wrapup.json"); mirror
+        $WC wrapup "$W" "$ID" --dir "$DIR" --rc "$WRC" --round "$ROUND" >"$RD/wrapup.out" 2>>"$RD/wrapup.log"
+        rc=$?; LAST=$(tail -n 1 "$RD/wrapup.out")
+        if [ "$rc" = 5 ]; then   # a Whittle exit 0: a model reads DONE.md and the judge, and closes
+            claude_slim "$RD/wrapup.json" "$(brief wrapup.md "## This round" "Item: $ID" "Whittle directory: $DIR" \
+                "Whittle exit code: $WRC" "Whittle runner output tail:" "$(tail -n 20 "$RD"/whittle.*.out 2>/dev/null | tail -n 20)")"
+            rc=$?; LAST=$(last_line "$RD/wrapup.json")
+        fi
+        mirror
         case "$LAST" in
-            RESULT\ *)
+            RESULT\ "$ID"\ closed\ *|RESULT\ "$ID"\ parked\ *|RESULT\ "$ID"\ dropped\ *|RESULT\ "$ID"\ failed\ *|RESULT\ "$ID"\ released\ *)
                 read -r _ RID END SHA <<<"$LAST"
-                TOK=$($WC tokens "$RD"/setup.json "$RD"/wrapup.json "$RD"/whittle.*.log 2>/dev/null || echo "")
-                release_bridge; $WC unclaim "$W" "$ID" >/dev/null 2>&1; publish_leftovers
-                lg "round $ROUND end: $ID $END $SHA tokens=${TOK:-unknown}"
+                release_bridge; unclaim_logged "$ID"; publish_leftovers
+                lg "round $ROUND end: $ID $END $SHA $(spend_line)"
                 st --state idle --item - --note "round $ROUND: $ID $END ($SHA)"
                 rm -f "$CUR"; FAILS=0 ;;
             *)
-                wait_hard_stop
+                if hard_stop >/dev/null; then wait_hard_stop; continue; fi   # stopped by the switcher: not a try
                 TRIES=$((TRIES + 1)); setcur tries="$TRIES"
-                lg "round $ROUND wrapup did not finish (rc=$rc, try $TRIES)"
+                lg "round $ROUND wrapup did not finish (rc=$rc, try $TRIES): last line '$(cut -c1-160 <<<"$LAST")'"
                 if [ "$TRIES" -ge 3 ]; then
-                    release_bridge; $WC unclaim "$W" "$ID" >/dev/null 2>&1; publish_leftovers
+                    release_bridge; unclaim_logged "$ID"; publish_leftovers
                     python3 src/RimMandrake/rimflow/cli.py note "$ID" --text "Claude Whittle $W round $ROUND: the wrap-up failed 3 times; the work so far is in $DIR and $RD" \
                         --why "loop.sh: wrap-up never returned a RESULT line" >/dev/null 2>&1; publish_leftovers
-                    lg "round $ROUND end: $ID failed sha=none tokens=unknown"
+                    lg "round $ROUND end: $ID failed sha=none $(spend_line)"
                     st --state idle --item - --note "round $ROUND: $ID wrap-up failed 3 times"
                     rm -f "$CUR"; FAILS=$((FAILS + 1))
                 fi
