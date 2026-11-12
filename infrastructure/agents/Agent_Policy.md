@@ -25,7 +25,7 @@ and not a fact about the gateway. Anything in this file that is a claim about mo
 > (`ANTHROPIC_DEFAULT_*_MODEL`) before trusting a rung; name no account. Ladder source of truth:
 > `~/dev/Lodestar/claude/global/45-subagents.md`.
 
-The Conductor runs on Opus 5.5 and orchestrates. It does not do design in-window and does not grind:
+The Conductor runs on Fable 5.2 and orchestrates. It does not do design in-window and does not grind:
 it holds the owner's attention, backgrounds design to an **Opus** subagent, and keeps the
 conclusion. Relentless's workers (Sonnet 5.5) classify each item by the
 rule below and hand Opus-class items to an `rm-builder` (Opus) subagent; an item `rimflow next` routes to a Test Pilot goes to an
