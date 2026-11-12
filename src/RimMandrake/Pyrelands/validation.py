@@ -412,9 +412,23 @@ def _on_site(t):
     t.session.call("jawa/set_current_map", mapId=site)
     r = t.session.call("jawa/map_info") or {}
     t._record("on_site: current map was not the Pyrelands site; restored", r.get("mapId"))
-    if r.get("mapBiome") != "RM_Pyrelands":
-        raise ExpectationFailed("could not make the Pyrelands site (map %s) current: %r"
-                                % (site, r.get("mapBiome")))
+    if r.get("mapBiome") == "RM_Pyrelands":
+        return
+    # PYRELANDS_SITE_DIAGNOSE_WRONG_BIOME_TWICE (3 testq jobs, map 1 read RM_TheRot / AridShrubland): the site was never
+    # recorded and map 1 is not it. Ask the game which loaded map IS Pyrelands (set_current_map refuses an unknown id
+    # and lists loadedMaps) instead of assuming map 1; with none loaded the run could not ask -> UNMEASURED SITE.
+    probe = t.session.call("jawa/set_current_map", mapId=-1) or {}
+    loaded = probe.get("loadedMaps") or []
+    pyre = [m.get("mapId") for m in loaded if m.get("biome") == "RM_Pyrelands"]
+    if pyre:
+        t.session.call("jawa/set_current_map", mapId=pyre[0])
+        r = t.session.call("jawa/map_info") or {}
+        t._record("on_site: found the Pyrelands site among loaded maps", {"mapId": pyre[0], "loaded": loaded})
+        if r.get("mapBiome") == "RM_Pyrelands":
+            _GEN["site_map"] = pyre[0]
+            return
+    raise ExpectationFailed("UNMEASURED SITE: could not make a Pyrelands site current (tried map %s, read %r; "
+                            "loadedMaps %r)" % (site, r.get("mapBiome"), loaded))
 
 
 def _pad(t, xz):

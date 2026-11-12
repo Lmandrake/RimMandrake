@@ -1481,13 +1481,115 @@ def test_furnace_heat_and_sleep_2026_11_08():
           "<heatPushMaxTemperature>1000</heatPushMaxTemperature>" in patch)
 
 
+def test_on_site_finds_the_site_2026_11_12():
+    """PYRELANDS_SITE_DIAGNOSE_WRONG_BIOME_TWICE: with no recorded site and a foreign map 1, _on_site finds the loaded
+    RM_Pyrelands map from set_current_map's loadedMaps; with none loaded it raises an UNMEASURED SITE (never a mod FAIL)."""
+    v = _load_validation("pyre_validation_onsite")
+
+    class _S(object):
+        def __init__(self, maps):
+            self.maps, self.cur, self.calls = maps, 1, []
+
+        def call(self, tool, **p):
+            self.calls.append(tool)
+            if tool == "jawa/map_info":
+                return {"mapId": self.cur, "mapBiome": self.maps.get(self.cur)}
+            if tool == "jawa/set_current_map":
+                if p["mapId"] not in self.maps:
+                    return {"success": False, "loadedMaps": [{"mapId": k, "biome": b} for k, b in self.maps.items()]}
+                self.cur = p["mapId"]
+            if tool == "jawa/name_colony":
+                return {"success": True, "settlements": [{"tile": 5}]}
+            return {"success": True}
+
+    class _T(object):
+        upstream_failed, watch = False, None
+
+        def __init__(self, maps):
+            self.session, self.rec = _S(maps), []
+
+        def _record(self, *a):
+            self.rec.append(a)
+
+    v._GEN.clear()
+    t = _T({1: "RM_TheRot", 4: "RM_Pyrelands"})
+    v._on_site(t)
+    check("foreign map 1, site loaded as map 4 -> map 4 current and recorded",
+          t.session.cur == 4 and v._GEN.get("site_map") == 4, (t.session.calls, v._GEN))
+    v._GEN.clear()
+    t = _T({1: "RM_TheRot", 2: "AridShrubland"})
+    try:
+        v._on_site(t)
+        raised = None
+    except v.ExpectationFailed as ex:
+        raised = str(ex)
+    check("no Pyrelands map loaded -> 'UNMEASURED SITE' naming the loaded maps",
+          bool(raised) and raised.startswith("UNMEASURED") and "AridShrubland" in raised, raised)
+    v._GEN.clear()
+    t = _T({1: "RM_Pyrelands"})
+    v._on_site(t)
+    check("already on the site -> no set_current_map", "jawa/set_current_map" not in t.session.calls, t.session.calls)
+
+
+def offline_acceptance_rows(biome_xml, fauna_xml, capacity_xml, damage_xml, shipped_texts):
+    """Pure. Three leaves provable from defs, each failing alone -> {row: (ok, why)}.
+    biome_text_says_engineered | flamefang_bite_carries_venom | paved_strip_excised."""
+    out = {}
+    m = re.search(r"<defName>RM_Pyrelands</defName>.*?<description>(.*?)</description>", biome_xml, re.S)
+    desc = m.group(1) if m else ""
+    out["biome_text_says_engineered"] = ("genetically engineered" in desc, desc[:120])
+    race = re.search(r"<defName>RM_Flamefang</defName>(.*?)</ThingDef>", fauna_xml, re.S)
+    hops = {
+        "race bite uses RM_FlamefangBite": bool(race) and "<li>RM_FlamefangBite</li>" in race.group(1),
+        "maneuver RM_FlamefangBite deals RM_FlamefangVenomBite": bool(re.search(
+            r"<requiredCapacity>RM_FlamefangBite</requiredCapacity>.*?<meleeDamageDef>RM_FlamefangVenomBite</meleeDamageDef>",
+            capacity_xml, re.S)),
+        "RM_FlamefangVenomBite applies hediff RM_FlamefangVenom": bool(re.search(
+            r"<defName>RM_FlamefangVenomBite</defName>.*?<hediff>RM_FlamefangVenom</hediff>", damage_xml, re.S)),
+    }
+    out["flamefang_bite_carries_venom"] = (all(hops.values()), [k for k, ok in hops.items() if not ok])
+    hits = [p for p, txt in shipped_texts.items() if re.search(r"firebreak|paved.?strip", txt, re.I)]
+    out["paved_strip_excised"] = (not hits, hits)
+    return out
+
+
+def test_offline_acceptance_2026_11_12():
+    """Proof plan 2026-11-12 B2: the leaves a def read settles, each with a mutant that must fail it ALONE."""
+    rd = lambda *p: open(os.path.join(HERE, *p), encoding="utf-8").read()
+    files = (rd("Defs", "BiomeDefs", "Pyrelands.xml"), rd("Defs", "ThingDefs_Races", "RM_PyrelandsPortedFauna.xml"),
+             rd("Defs", "ToolCapacityDefs", "RM_FlamefangBite.xml"), rd("Defs", "DamageDefs", "RM_FlamefangVenomBite.xml"))
+    shipped = {}
+    for sub in ("Defs", "Patches", "Languages"):
+        for root, _d, names in os.walk(os.path.join(HERE, sub)):
+            for n in names:
+                if n.endswith(".xml"):
+                    p = os.path.join(root, n)
+                    shipped[os.path.relpath(p, HERE)] = open(p, encoding="utf-8").read()
+    check("offline acceptance read %d shipped xml files (instrument sees)" % len(shipped), len(shipped) > 20, len(shipped))
+    rows = offline_acceptance_rows(*files, shipped_texts=shipped)
+    for row, (ok, why) in sorted(rows.items()):
+        check("leaf %s holds on the shipped defs" % row, ok, why)
+    mutants = {
+        "biome_text_says_engineered": (files[0].replace("genetically engineered", "wild"),) + files[1:],
+        "flamefang_bite_carries_venom": files[:3] + (files[3].replace("<hediff>RM_FlamefangVenom</hediff>", "<hediff>Cut</hediff>"),),
+    }
+    for row, fs in mutants.items():
+        got = offline_acceptance_rows(*fs, shipped_texts=shipped)
+        others = [r for r in got if r != row and got[r][0] != rows[r][0]]
+        check("mutant for %s fails it and only it" % row, not got[row][0] and not others, (got[row], others))
+    got = offline_acceptance_rows(*files, shipped_texts=dict(shipped, **{"Defs/X.xml": "<defName>RM_PavedStrip</defName>"}))
+    check("mutant: a shipped paved strip def fails paved_strip_excised alone",
+          not got["paved_strip_excised"][0] and got["biome_text_says_engineered"][0], got["paved_strip_excised"])
+
+
 def main():
     for t in (test_tier, test_manifests_match_suite, test_defaults_match_source, test_gate_a, test_gate_b,
               test_gate_c, test_site_pure, test_site_build, test_site_offsite_refused, test_naming_dialog_lesson, test_plan_refuses_on_gate_b,
               test_suite_reads_no_genstep_as_a_thing, test_suite_wait_names_colony_and_reasserts_site,
               test_harness_fixes_2026_10_12, test_probe_skips_rock_and_food_and_clock, test_fixture_tag, test_tick_rate_probe_math, test_plan_offline, test_menu_guard_refuses_foreign_client,
               test_ash_control_and_herd_drive_2026_10_14, test_heat_guard_2026_10_15,
-              test_furnace_heat_and_sleep_2026_11_08):
+              test_furnace_heat_and_sleep_2026_11_08, test_on_site_finds_the_site_2026_11_12,
+              test_offline_acceptance_2026_11_12):
         try:
             t()
         except Exception as ex:
