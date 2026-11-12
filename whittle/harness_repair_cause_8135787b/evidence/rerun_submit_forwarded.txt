@@ -1,0 +1,7 @@
+$ (SteveDesktop, 2026-11-11T22:02:28-08:00) python3 src/RimMandrake/Utils/testq/testq.py submit FlowWorks --full --purpose sweep --by BENCH --sha 780f797c48 --for-item KNOWN_GOOD_AUDIT_MEASURE_SWEEP_MISSES --profile full-list --retest-why ...
+testq: this queue (/mnt/d/ClaudeWork/rimmandrake/testq) is not the dispatcher's; submitting on mandrake@archmagi-wsl (~/rm/dispatch)
+{"job": "J20261112T060227Z-995858", "state": "pending", "drivers": ["thirst_live", "sprinkler_live", "drawbridge_proof", "lines_proof", "suspension_bridge_proof", "trench_cover_proof", "live_session_B2_B4", "validation_v2_live", "mission_fixture_probe", "proof_hose_live", "sheet_overflow_proof", "droid_dig_live"], "driver_need_s": 16740, "timeout_s": 14400, "timeout_raised_from": 2700, "warning": 
+exit=0
+# local pending after: 0
+{"job": "J20261112T055049Z-3dc736", "was": "pending", "cancelled": true}
+archmagi pending record: J20261112T060227Z-995858 780f797c484acdd8f8915d2570589a4a102cc5c9 stevedesktop {'full': True} KNOWN_GOOD_AUDIT_MEASURE_SWEEP_MISSES
