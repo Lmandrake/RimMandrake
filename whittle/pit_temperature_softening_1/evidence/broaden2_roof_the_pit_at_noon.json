@@ -1,0 +1,375 @@
+{
+ "save": "RM_PitExposure_Review_20261112T032231",
+ "samples": [
+  {
+   "label": "noon, open (before roof)",
+   "hour": "11.77",
+   "exposed": "True",
+   "marker": "True",
+   "resistance": "4.940",
+   "heatstroke": "0.185",
+   "hurting": "True",
+   "roomTemp": "45.44",
+   "outdoor": "45.53",
+   "outdoorRoom": "True",
+   "Manuel_RM_ExposedPrisoner": [
+    [
+     "RM_ExposedPrisoner",
+     -3.0,
+     "Cambarseacha left exposed in a pit"
+    ]
+   ]
+  },
+  {
+   "label": "+1h, still open",
+   "hour": "12.77",
+   "exposed": "True",
+   "marker": "True",
+   "resistance": "4.440",
+   "heatstroke": "0.207",
+   "hurting": "True",
+   "roomTemp": "46.78",
+   "outdoor": "46.78",
+   "outdoorRoom": "True",
+   "Manuel_RM_ExposedPrisoner": [
+    [
+     "RM_ExposedPrisoner",
+     -3.0,
+     "Cambarseacha left exposed in a pit"
+    ]
+   ]
+  },
+  {
+   "label": "roof just placed",
+   "hour": "12.77",
+   "exposed": "False",
+   "marker": "True",
+   "resistance": "4.440",
+   "heatstroke": "0.207",
+   "hurting": "True",
+   "roomTemp": "46.78",
+   "outdoor": "46.78",
+   "outdoorRoom": "False",
+   "Manuel_RM_ExposedPrisoner": [
+    [
+     "RM_ExposedPrisoner",
+     -3.0,
+     "Cambarseacha left exposed in a pit"
+    ]
+   ]
+  },
+  {
+   "label": "after roof",
+   "hour": "13.77",
+   "exposed": "False",
+   "marker": "False",
+   "resistance": "4.440",
+   "heatstroke": "0.223",
+   "hurting": "True",
+   "roomTemp": "46.84",
+   "outdoor": "47.81",
+   "outdoorRoom": "False",
+   "Manuel_RM_ExposedPrisoner": [
+    [
+     "RM_ExposedPrisoner",
+     -3.0,
+     "Cambarseacha left exposed in a pit"
+    ]
+   ]
+  },
+  {
+   "label": "after roof",
+   "hour": "14.77",
+   "exposed": "False",
+   "marker": "False",
+   "resistance": "4.440",
+   "heatstroke": "0.238",
+   "hurting": "True",
+   "roomTemp": "47.00",
+   "outdoor": "48.49",
+   "outdoorRoom": "False",
+   "Manuel_RM_ExposedPrisoner": [
+    [
+     "RM_ExposedPrisoner",
+     -3.0,
+     "Cambarseacha left exposed in a pit"
+    ]
+   ]
+  },
+  {
+   "label": "after roof",
+   "hour": "15.77",
+   "exposed": "False",
+   "marker": "False",
+   "resistance": "4.440",
+   "heatstroke": "0.254",
+   "hurting": "True",
+   "roomTemp": "47.19",
+   "outdoor": "48.76",
+   "outdoorRoom": "False",
+   "Manuel_RM_ExposedPrisoner": [
+    [
+     "RM_ExposedPrisoner",
+     -3.0,
+     "Cambarseacha left exposed in a pit"
+    ]
+   ]
+  },
+  {
+   "label": "after roof",
+   "hour": "16.77",
+   "exposed": "False",
+   "marker": "False",
+   "resistance": "4.440",
+   "heatstroke": "0.270",
+   "hurting": "True",
+   "roomTemp": "47.37",
+   "outdoor": "48.60",
+   "outdoorRoom": "False",
+   "Manuel_RM_ExposedPrisoner": [
+    [
+     "RM_ExposedPrisoner",
+     -3.0,
+     "Cambarseacha left exposed in a pit"
+    ]
+   ]
+  },
+  {
+   "label": "after roof",
+   "hour": "17.77",
+   "exposed": "False",
+   "marker": "False",
+   "resistance": "4.440",
+   "heatstroke": "0.285",
+   "hurting": "True",
+   "roomTemp": "47.49",
+   "outdoor": "48.00",
+   "outdoorRoom": "False",
+   "Manuel_RM_ExposedPrisoner": [
+    [
+     "RM_ExposedPrisoner",
+     -3.0,
+     "Cambarseacha left exposed in a pit"
+    ]
+   ]
+  },
+  {
+   "label": "after roof",
+   "hour": "18.77",
+   "exposed": "False",
+   "marker": "False",
+   "resistance": "4.440",
+   "heatstroke": "0.301",
+   "hurting": "True",
+   "roomTemp": "47.49",
+   "outdoor": "47.01",
+   "outdoorRoom": "False",
+   "Manuel_RM_ExposedPrisoner": [
+    [
+     "RM_ExposedPrisoner",
+     -3.0,
+     "Cambarseacha left exposed in a pit"
+    ]
+   ]
+  },
+  {
+   "label": "after roof",
+   "hour": "19.77",
+   "exposed": "False",
+   "marker": "False",
+   "resistance": "4.440",
+   "heatstroke": "0.316",
+   "hurting": "True",
+   "roomTemp": "47.36",
+   "outdoor": "45.66",
+   "outdoorRoom": "False",
+   "Manuel_RM_ExposedPrisoner": [
+    [
+     "RM_ExposedPrisoner",
+     -3.0,
+     "Cambarseacha left exposed in a pit"
+    ]
+   ]
+  },
+  {
+   "label": "after roof",
+   "hour": "22.77",
+   "exposed": "False",
+   "marker": "False",
+   "resistance": "4.440",
+   "heatstroke": "0.363",
+   "hurting": "True",
+   "roomTemp": "45.98",
+   "outdoor": "40.47",
+   "outdoorRoom": "False",
+   "Manuel_RM_ExposedPrisoner": [
+    [
+     "RM_ExposedPrisoner",
+     -3.0,
+     "Cambarseacha left exposed in a pit"
+    ]
+   ]
+  },
+  {
+   "label": "after roof",
+   "hour": "1.77",
+   "exposed": "False",
+   "marker": "False",
+   "resistance": "4.440",
+   "heatstroke": "0.363",
+   "hurting": "True",
+   "roomTemp": "43.46",
+   "outdoor": "35.92",
+   "outdoorRoom": "False",
+   "Manuel_RM_ExposedPrisoner": [
+    [
+     "RM_ExposedPrisoner",
+     -3.0,
+     "Cambarseacha left exposed in a pit"
+    ]
+   ]
+  },
+  {
+   "label": "after roof",
+   "hour": "4.77",
+   "exposed": "False",
+   "marker": "False",
+   "resistance": "4.440",
+   "heatstroke": "0.363",
+   "hurting": "True",
+   "roomTemp": "40.75",
+   "outdoor": "34.56",
+   "outdoorRoom": "False",
+   "Manuel_RM_ExposedPrisoner": [
+    [
+     "RM_ExposedPrisoner",
+     -3.0,
+     "Cambarseacha left exposed in a pit"
+    ]
+   ]
+  },
+  {
+   "label": "after roof",
+   "hour": "9.77",
+   "exposed": "False",
+   "marker": "False",
+   "resistance": "4.223",
+   "heatstroke": "0.363",
+   "hurting": "True",
+   "roomTemp": "40.02",
+   "outdoor": "40.26",
+   "outdoorRoom": "False",
+   "Manuel_RM_ExposedPrisoner": [
+    [
+     "RM_ExposedPrisoner",
+     -3.0,
+     "Cambarseacha left exposed in a pit"
+    ]
+   ]
+  },
+  {
+   "label": "after roof",
+   "hour": "11.77",
+   "exposed": "False",
+   "marker": "False",
+   "resistance": "4.223",
+   "heatstroke": "0.363",
+   "hurting": "True",
+   "roomTemp": "40.49",
+   "outdoor": "43.79",
+   "outdoorRoom": "False",
+   "Manuel_RM_ExposedPrisoner": [
+    [
+     "RM_ExposedPrisoner",
+     -3.0,
+     "Cambarseacha left exposed in a pit"
+    ]
+   ]
+  },
+  {
+   "label": "after roof",
+   "hour": "12.27",
+   "exposed": "False",
+   "marker": "False",
+   "resistance": "4.223",
+   "heatstroke": "0.363",
+   "hurting": "True",
+   "roomTemp": "40.70",
+   "outdoor": "44.56",
+   "outdoorRoom": "False",
+   "Manuel_RM_ExposedPrisoner": [
+    [
+     "RM_ExposedPrisoner",
+     -3.0,
+     "Cambarseacha left exposed in a pit"
+    ]
+   ]
+  },
+  {
+   "label": "after roof",
+   "hour": "12.77",
+   "exposed": "False",
+   "marker": "False",
+   "resistance": "4.223",
+   "heatstroke": "0.363",
+   "hurting": "True",
+   "roomTemp": "40.98",
+   "outdoor": "45.31",
+   "outdoorRoom": "False",
+   "Manuel_RM_ExposedPrisoner": []
+  },
+  {
+   "label": "after roof",
+   "hour": "13.27",
+   "exposed": "False",
+   "marker": "False",
+   "resistance": "4.223",
+   "heatstroke": "0.363",
+   "hurting": "True",
+   "roomTemp": "41.25",
+   "outdoor": "45.99",
+   "outdoorRoom": "False",
+   "Manuel_RM_ExposedPrisoner": []
+  },
+  {
+   "label": "after roof",
+   "hour": "13.77",
+   "exposed": "False",
+   "marker": "False",
+   "resistance": "4.223",
+   "heatstroke": "0.363",
+   "hurting": "True",
+   "roomTemp": "41.55",
+   "outdoor": "46.58",
+   "outdoorRoom": "False",
+   "Manuel_RM_ExposedPrisoner": []
+  }
+ ],
+ "roof": {
+  "success": true,
+  "message": "Roofed 25 cell(s) across 1 op(s).",
+  "opsRequested": 1,
+  "cellsChanged": 25,
+  "cellsFailedVerify": 0,
+  "cellsOutOfBounds": 0,
+  "perDef": {
+   "RoofConstructed": 25
+  },
+  "errors": [],
+  "ticksGame": 1036932,
+  "operation": {
+   "OperationId": "op_98e78e8049be4ed8bb656b4b25f6db6e",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 36
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 1036932
+  }
+ },
+ "roomA_after_roof": "ROOM split=True pitRoom=True proper=True edge=False prison=True roomsOn=True pitId=288 lipId=264"
+}

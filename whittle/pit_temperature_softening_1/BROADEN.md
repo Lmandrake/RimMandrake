@@ -59,9 +59,66 @@ with no Charity ideoligion and read 0 memories, as it should; it is not the stac
 
 ## Not tried, and why
 - 2 (settings mid-game): each number is read every 250 ticks (`ApplyNarrowing`). Not run live this round.
-- 3 (full capture-to-recruit route): capture-down and pit wardening belong to other items (`SUPERDEEP_PRISON_ROOM_1`,
-  capture-down); here the prisoners were placed.
+- 3 (full capture-to-recruit route): capture-down belongs to other items (`SUPERDEEP_PRISON_ROOM_1`, capture-down); the
+  prisoners were placed. Wardening them was tried in the second round, below.
 - 5-9: not run. 7's unwaveringly-loyal prisoners did appear in runs 2 and 4 (the inspect pane said so); resistance
   still fell in the pit, as coded.
 - 10: moot by standing ruling (every DLC is assumed). A colonist with no ideoligion (a child) does count as caring in
   the code; the proof excludes children.
+
+# Second round (2026-11-12, after the judge's "would show: yes")
+
+## What the first round's proof never tried, found by reading it
+Every earlier run left each prisoner on vanilla's default mode, so **no warden ever worked a prisoner**: A3 compared an
+unwardened pit against an unwardened cell, which no player does. A player sets "Reduce resistance". If wardens could not
+reach a pit prisoner, or their chats did much less to a miserable one (vanilla scales each chat by the prisoner's mood,
+0.2x at mood 0), a wardened cell could out-pace the pit and A3 would be false in ordinary use.
+
+Built: `ProofSetInteraction` (the Prisoner tab's choice, vanilla `SetExclusiveInteraction`); `pit_exposure_live.py
+--interaction ReduceResistance`, now the suite's run; A3 counted from placement (run 16 showed both cell chats landing
+before the first 06:00 sample, which made the cell look untouched); A3 is UNMEASURED unless all three prisoners were
+chatted and the pit prisoner no more often than the others (code review found an extra chat alone could beat the margin).
+
+Result, three fresh desert maps: run 18 (HEAD's DLL) pit 13.0 -> 3.4, roofed twin 12.0 -> 10.5, walled cell 17.0 ->
+14.9 by 15:00, two chats each; run 17 pit 11.0 -> 3.4, cell 11.0 -> 10.4; run 15 to 22:00 pit 9.7 -> 1.2, cell and twin
+about -0.5 each (run 15 re-judges UNMEASURED under the stricter gate: it has no placement read). The pit prisoner's
+Prisoner tab reads "Reduce resistance only" and a colonist's inspect line reads "Reducing resistance of Peza"
+(`evidence/run17_a6_panels.jpg`). So with wardens on, the pit is several times faster; A3 holds in ordinary use.
+
+**Found on the way, filed (not this item):** in run 18 a colonist, Thib, ended up inside the roofed twin pit. Ordered out,
+he moved 0 cells, yet the pocket grid reads him `trapped=False`, so no rescue queues
+(`RIMMANDRAKE_FIX_STRANDED_COLONIST_READS_UNTRAPPED_NO_RESCUE`, evidence `evidence/run18_colonist_stranded_in_roofed_pit.json`).
+
+## The question to the second model
+GPT (`gpt_consult.py`, gpt-6.1-sol), given the statement, the two source files and everything above. The question and
+full answer: `D:\ClaudeWork\rimmandrake\whittle_claude\CLAUDE_ARCHMAGI_FWLIVE\broaden2\question.md` and `answer.md`.
+In short: "what would a real player try that I still have not, that could show A2-A4 false in ordinary use, or misbehave
+in a way the owner would hate? Rank the 5 most revealing, each with one observation and its cost."
+
+## The answer (GPT's five, ranked)
+1. A warden feeding a downed pit prisoner from the lip (food delivery, not chat).
+2. Roof the pit over a prisoner who already has heatstroke: the pit's resistance loss must stop at once, though the hole
+   stays hot.
+3. A prisoner protected well enough (clothes, mild weather) that nothing hurts: resistance must stay flat.
+4. The thought's expiry after exposure ends: about one day after the last refresh, not sooner, not never.
+5. A mostly-roofed pit room over 400 cells: the coupling multiplier is skipped above 400 cells (a scope limit).
+
+## What I tried and found
+**2 and 4 together** (the commonest player reaction to a roasting prisoner is to roof the hole): the run 18 noon save,
+the open pit roofed 1 h after noon, sampled for 25 game hours (`evidence/broaden2_roof_the_pit_at_noon.json`, script
+`evidence/broaden2_roof_exp.py`).
+- Open: resistance 4.94 -> 4.44 in the hour before the roof.
+- Roof on (12:46): `exposed` False at once, the exposure marker gone within 250 ticks, and **resistance flat at 4.44
+  for 17 hours** while the roofed hole stayed 40-47 C and heatstroke rose to 0.363. The only later loss (4.44 -> 4.22,
+  next morning) is a warden's chat, the marker off throughout. So the pit's own loss is the exposure, not the heat.
+- Manuel's "Cambarseacha left exposed in a pit -3" stays all night and **expires between 12:16 and 12:46 the next day**:
+  one day after the roof, as the def says.
+- Side observation, vanilla: heatstroke held at 0.363 overnight in the 40 C roofed hole; vanilla heals it only below the
+  pawn's comfortable maximum, not merely the safe one. Not a mod defect.
+
+**3** was shown in the first round (run 1: a mild spring desert, nobody hurt, no resistance lost).
+
+## Not tried, and why
+- 1 (feeding from the lip): `RM_PitPrisonCare` belongs to `SUPERDEEP_PRISON_ROOM_1`, not this item's statement.
+- 5 (rooms over 400 cells): the bound is the coupling's own (`RM_PitExposure`), a scope limit of the provisional
+  multiplier; A2's open pit is a fully unroofed room, which vanilla already treats as outdoors.
