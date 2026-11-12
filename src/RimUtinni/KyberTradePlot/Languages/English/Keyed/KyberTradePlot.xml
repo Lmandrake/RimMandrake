@@ -3,6 +3,7 @@
   <!-- A sale. {0} crystals, {1} the Imperial line, {2} Hutt interest. -->
   <RUT_KyberSold>Kyber sold ({0}). {1} Hutt interest is now {2}: word gets around.</RUT_KyberSold>
   <RUT_KyberSold_Heat>Selling kyber is a crime the Empire hunts: Imperial attention +{1}, now {0} ({2}).</RUT_KyberSold_Heat>
+  <RUT_KyberSold_HeatTop>Selling kyber is a crime the Empire hunts, and its attention is already at the top ({0}).</RUT_KyberSold_HeatTop>
   <RUT_KyberSold_NoMeter>Selling kyber is a crime the Empire hunts.</RUT_KyberSold_NoMeter>
   <RUT_KyberFirstSaleLabel>Kyber sold</RUT_KyberFirstSaleLabel>
   <RUT_KyberFirstSaleText>{0}\n\nTo the Empire, selling kyber crystal is about as illegal as anything gets. Every sale puts the clan's name a little higher on someone's list, and Imperial attention brings the hunt sooner and harder. The Hutts feel the opposite: a supplier with that much nerve is worth knowing.\n\nThe first sale can be denied. A second makes a pattern, and patterns get noticed by more than the Empire.</RUT_KyberFirstSaleText>

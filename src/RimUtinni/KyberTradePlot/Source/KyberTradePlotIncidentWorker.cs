@@ -25,7 +25,27 @@ namespace RimMandrake.Utinni.KyberTradePlot
             {
                 return false;
             }
+            GameComponent_KyberTrade comp = KyberTrade.Component;
+            if (comp != null && comp.state.donation == KyberDonationState.Offered)
+            {
+                return false; // one Rebellion cell, one chance (spec §6.5)
+            }
             return base.CanFireNowSub(parms);
+        }
+
+        // The dev-mode "execute incident" action never calls CanFireNow, so the same gates are asked again here, and a
+        // donation quest really made marks the plot's one ask as spent, whoever fired it.
+        protected override bool TryExecuteWorker(IncidentParms parms)
+        {
+            GameComponent_KyberTrade comp = KyberTrade.Component;
+            if (!KyberTradePlotSettings.kyberTradePlotEnabled || (comp != null && comp.state.donation == KyberDonationState.Offered))
+            {
+                return false;
+            }
+            int before = Find.QuestManager.QuestsListForReading.Count;
+            bool made = base.TryExecuteWorker(parms);
+            if (made && Find.QuestManager.QuestsListForReading.Count > before) comp?.Notify_DonationQuestMade();
+            return made;
         }
     }
 }

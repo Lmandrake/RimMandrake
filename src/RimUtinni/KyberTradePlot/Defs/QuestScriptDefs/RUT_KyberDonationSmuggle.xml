@@ -70,6 +70,8 @@
           <storeFactionLeaderAs>asker</storeFactionLeaderAs>
           <storeCanCaravanAs>canCaravan</storeCanCaravanAs>
           <storeViaFixerAs>viaFixer</storeViaFixerAs>
+          <storeHomesteadAs>homestead</storeHomesteadAs>
+          <storeKyberUnitValueAs>kyberUnitValue</storeKyberUnitValueAs>
         </li>
         <li Class="QuestNode_Letter">
           <inSignal>faction.BecameHostileToPlayer</inSignal>
@@ -108,7 +110,7 @@
         </li>
         <li Class="QuestNode_Set">
           <name>requestedThingMarketValue</name>
-          <value>$($requestedThingCount * 350)</value>
+          <value>$($requestedThingCount * $kyberUnitValue)</value>
         </li>
 
         <li Class="QuestNode_TradeRequest_Initiate">
@@ -121,13 +123,17 @@
         <!-- Fulfillment: NO QuestNode_GiveRewards anywhere in this file (K2 - pure
              cost, never laundering). Only the goodwill bump, the memory, and the
              letter of thanks that is the reward the spec ruled. -->
-        <li Class="QuestNode_ChangeFactionGoodwill">
-          <inSignal>settlement.TradeRequestFulfilled</inSignal>
-          <faction>OutlanderCivil</faction>
-          <change>5</change>
-          <canSendMessage>false</canSendMessage>
-          <canSendLetter>false</canSendLetter>
-          <reason>RUT_KyberDonatedToCause</reason>
+        <!-- Only when a Homestead faction is left to remember it (the fixer door can be the only door). -->
+        <li Class="QuestNode_IsSet">
+          <name>homestead</name>
+          <node Class="QuestNode_ChangeFactionGoodwill">
+            <inSignal>settlement.TradeRequestFulfilled</inSignal>
+            <faction>$homestead</faction>
+            <change>5</change>
+            <canSendMessage>false</canSendMessage>
+            <canSendLetter>false</canSendLetter>
+            <reason>RUT_KyberDonatedToCause</reason>
+          </node>
         </li>
 
         <li Class="QuestNode_RecordHistoryEvent">
@@ -139,7 +145,7 @@
           <inSignal>settlement.TradeRequestFulfilled</inSignal>
           <letterDef>NeutralEvent</letterDef>
           <label TKey="LetterLabelKyberDonationSmuggle">The crystals are gone</label>
-          <text TKey="LetterTextKyberDonationSmuggle">The kyber changed hands and kept moving - past whatever the Empire calls a blockade, on lanes the Hutts have used longer than the Empire has existed. A short message comes back, once, secondhand: thanks, and nothing else. No word of how it will be spent, no promise it will change anything here.\n\nIt won't. There is still no way to help it here. Whatever war that kyber buys, it is a war fought somewhere else, by people who will never send anyone back for you.\n\nThe Homestead sympathizers who arranged it will remember the gesture.</text>
+          <text TKey="LetterTextKyberDonationSmuggle">The kyber changed hands and kept moving - past whatever the Empire calls a blockade, on lanes the Hutts have used longer than the Empire has existed. A short message comes back, once, secondhand: thanks, and nothing else. No word of how it will be spent, no promise it will change anything here.\n\nIt won't. There is still no way to help it here. Whatever war that kyber buys, it is a war fought somewhere else, by people who will never send anyone back for you.\n\nWord of it will reach the Homestead's sympathizers, and they will remember the gesture.</text>
         </li>
 
         <li Class="QuestNode_End">

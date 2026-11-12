@@ -12,6 +12,7 @@ using System.Linq;
 using HarmonyLib;
 using RimWorld;
 using Verse;
+using Verse.AI.Group;
 
 namespace RimMandrake.Utinni.KyberTradePlot
 {
@@ -76,9 +77,17 @@ namespace RimMandrake.Utinni.KyberTradePlot
                 .OrderBy(f => f.HostileTo(Faction.OfPlayer) ? 1 : 0).FirstOrDefault();
         }
 
-        /// <summary>One visitor still standing on a home map, not hostile: the letter and the tick both ask this.</summary>
-        public static bool VisitorStillHere(Pawn p) => p != null && p.Spawned && !p.Dead && p.Faction != null
-            && !p.Faction.HostileTo(Faction.OfPlayer) && p.Map != null && p.Map.IsPlayerHome;
+        /// <summary>One visitor still visiting: spawned on a home map, alive, free (not a prisoner, not recruited), not
+        /// hostile, and still in the visit's lord. The letter and the tick both ask this.</summary>
+        public static bool VisitorStillHere(Pawn p) => p != null && p.Spawned && !p.Dead && !p.IsPrisoner && p.Faction != null
+            && p.Faction != Faction.OfPlayer && !p.Faction.HostileTo(Faction.OfPlayer) && p.Map != null && p.Map.IsPlayerHome
+            && p.GetLord()?.LordJob is LordJob_VisitColony;
+
+        /// <summary>Where the plot's beats land: a home map on the ground with free colonists on it, the most populated
+        /// first (an orbital gravship map, or an empty outpost, is never the place visitors walk into).</summary>
+        public static Map PlotMap() => Find.Maps
+            .Where(m => m.IsPlayerHome && !m.Tile.LayerDef.isSpace && m.mapPawns.FreeColonistsSpawnedCount > 0)
+            .OrderByDescending(m => m.mapPawns.FreeColonistsSpawnedCount).FirstOrDefault();
 
         public static KyberTuning Tuning() => new KyberTuning
         {
@@ -102,7 +111,9 @@ namespace RimMandrake.Utinni.KyberTradePlot
         public static void Postfix(bool __result, int __state)
         {
             if (!__result || __state <= 0) return;
-            KyberTrade.Component?.Notify_KyberSold(__state, TradeSession.trader?.Faction);
+            // The goods have already changed hands: nothing here may break the trade window's own close.
+            try { KyberTrade.Component?.Notify_KyberSold(__state, TradeSession.trader?.Faction); }
+            catch (System.Exception e) { Log.Error("[KyberTrade] a kyber sale of " + __state + " could not be recorded: " + e); }
         }
     }
 
@@ -127,7 +138,9 @@ namespace RimMandrake.Utinni.KyberTradePlot
                 buyer.TryAffectGoodwillWith(Faction.OfPlayer, e.cartelGoodwill, canSendMessage: true, canSendHostilityLetter: false,
                     reason: KyberDefOf.RUT_KyberSoldToCartel);
 
-            string heatText = raised
+            string heatText = raised && after - before < 0.5f
+                ? "RUT_KyberSold_HeatTop".Translate(KyberTrade.BandOf(vis)).Resolve()
+                : raised
                 ? "RUT_KyberSold_Heat".Translate(after.ToString("F0"), (after - before).ToString("F0"), KyberTrade.BandOf(vis)).Resolve()
                 : "RUT_KyberSold_NoMeter".Translate().Resolve();
             string text = "RUT_KyberSold".Translate(crystals.ToString(), heatText, state.huttInterest.ToString("F0")).Resolve();
@@ -173,6 +186,7 @@ namespace RimMandrake.Utinni.KyberTradePlot
                 TryOpenFixerDoor(now);
             }
             Log.Message("[KyberTrade] the Homestead visitors were answered " + (forthright ? "straight" : "with nothing") + "; door " + state.door);
+            visitors.Clear();
         }
 
         private void TryOpenFixerDoor(int now)
@@ -196,6 +210,7 @@ namespace RimMandrake.Utinni.KyberTradePlot
             {
                 case KyberTickAction.VisitorsLeftUnanswered:
                     state.VisitLeftUnanswered();
+                    visitors.Clear();
                     Messages.Message("RUT_KyberVisitLeft".Translate(), MessageTypeDefOf.NeutralEvent, historical: true);
                     Log.Message("[KyberTrade] the Homestead visitors left unanswered");
                     TryOpenFixerDoor(now);
@@ -219,36 +234,45 @@ namespace RimMandrake.Utinni.KyberTradePlot
 
         private void TryFireVisit(int now, Faction homestead)
         {
-            Map map = Find.AnyPlayerHomeMap;
-            bool fired = false;
-            if (map != null)
+            Map map = KyberTrade.PlotMap();
+            try
             {
-                IncidentDef def = KyberDefOf.RUT_KyberHomesteadVisit;
-                IncidentParms parms = StorytellerUtility.DefaultParmsNow(def.category, map);
-                parms.faction = homestead;
-                parms.forced = true;
-                fired = def.Worker.CanFireNow(parms) && def.Worker.TryExecute(parms);
+                if (map != null)
+                {
+                    IncidentDef def = KyberDefOf.RUT_KyberHomesteadVisit;
+                    IncidentParms parms = StorytellerUtility.DefaultParmsNow(def.category, map);
+                    parms.faction = homestead;
+                    if (def.Worker.CanFireNow(parms)) def.Worker.TryExecute(parms);
+                }
             }
-            if (!fired) state.VisitPostponed(now, GenDate.TicksPerDay);
+            catch (System.Exception e) { Log.Error("[KyberTrade] the Homestead visit failed to arrive: " + e); }
+            // Arrived is set by the worker itself; anything else (no map, no entry cell, a raid on, a throw) waits a day.
+            if (state.visit == KyberVisitState.Due) state.VisitPostponed(now, GenDate.TicksPerDay);
         }
 
         private void TryFireDonation(int now)
         {
-            Map map = Find.AnyPlayerHomeMap;
-            bool fired = false;
-            if (map != null)
+            Map map = KyberTrade.PlotMap();
+            try
             {
-                IncidentDef def = KyberDefOf.RUT_GiveQuest_KyberDonationSmuggle;
-                IncidentParms parms = StorytellerUtility.DefaultParmsNow(def.category, map);
-                parms.forced = true;
-                fired = def.Worker.CanFireNow(parms) && def.Worker.TryExecute(parms);
+                if (map != null)
+                {
+                    IncidentDef def = KyberDefOf.RUT_GiveQuest_KyberDonationSmuggle;
+                    IncidentParms parms = StorytellerUtility.DefaultParmsNow(def.category, map);
+                    if (def.Worker.CanFireNow(parms)) def.Worker.TryExecute(parms);
+                }
             }
-            if (fired)
-            {
-                state.DonationOffered();
+            catch (System.Exception e) { Log.Error("[KyberTrade] the donation quest failed to generate: " + e); }
+            if (state.donation == KyberDonationState.Offered)
                 Log.Message("[KyberTrade] the donation was asked for, through the " + state.door + " door");
-            }
             else state.DonationPostponed(now, GenDate.TicksPerDay);
+        }
+
+        /// <summary>The donation quest was really made (by the plot or by dev mode): the cause never calls again.</summary>
+        public void Notify_DonationQuestMade()
+        {
+            if (state.donation == KyberDonationState.Due) state.DonationOffered();
+            else state.donation = KyberDonationState.Offered;
         }
 
         public override void ExposeData()

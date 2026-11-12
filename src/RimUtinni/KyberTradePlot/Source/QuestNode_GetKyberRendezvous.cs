@@ -3,7 +3,9 @@
 // node keeps its rules (visitable, no live trade request on it, reachable inside maxTileDistance or any distance with a
 // grav engine) and adds one: the settlement belongs to a faction on the smuggling lane, non-hostile to the player, the
 // door's own faction first. The Homestead door hands it to the sympathizers' own people; the fixer door to the Hutts,
-// whose lanes run past the blockade (spec §4c, §6.3). Stores viaFixer for the description rules.
+// whose lanes run past the blockade (spec §4c, §6.3). Stores viaFixer for the description rules, the live Homestead
+// faction (only when one exists: the delivery's goodwill is guarded by QuestNode_IsSet) and the kyber's real market
+// value. With no kyber def loaded there is nothing to ask for, and the test run says no.
 using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
@@ -22,6 +24,10 @@ namespace RimMandrake.Utinni.KyberTradePlot
         [NoTranslate] public SlateRef<string> storeFactionLeaderAs;
         [NoTranslate] public SlateRef<string> storeCanCaravanAs;
         [NoTranslate] public SlateRef<string> storeViaFixerAs;
+        [NoTranslate] public SlateRef<string> storeHomesteadAs;
+        [NoTranslate] public SlateRef<string> storeKyberUnitValueAs;
+
+        private static ThingDef Kyber => DefDatabase<ThingDef>.GetNamedSilentFail(KyberTrade.FamilyDefNames[0]);
 
         private static bool ViaFixer => KyberTrade.Component?.state.door == KyberDonationDoor.HuttFixer;
 
@@ -67,6 +73,11 @@ namespace RimMandrake.Utinni.KyberTradePlot
             if (!storeFactionAs.GetValue(slate).NullOrEmpty()) slate.Set(storeFactionAs.GetValue(slate), s.Faction);
             if (!storeFactionLeaderAs.GetValue(slate).NullOrEmpty()) slate.Set(storeFactionLeaderAs.GetValue(slate), s.Faction.leader);
             if (!storeViaFixerAs.GetValue(slate).NullOrEmpty()) slate.Set(storeViaFixerAs.GetValue(slate), ViaFixer);
+            Faction homestead = KyberTrade.Homestead();
+            if (homestead != null && !homestead.HostileTo(Faction.OfPlayer) && !storeHomesteadAs.GetValue(slate).NullOrEmpty())
+                slate.Set(storeHomesteadAs.GetValue(slate), homestead);
+            if (Kyber != null && !storeKyberUnitValueAs.GetValue(slate).NullOrEmpty())
+                slate.Set(storeKyberUnitValueAs.GetValue(slate), Kyber.BaseMarketValue);
             if (!storeCanCaravanAs.GetValue(slate).NullOrEmpty())
                 slate.Set(storeCanCaravanAs.GetValue(slate), s.Tile.Valid && map.Tile.Valid && s.Tile.Layer == map.Tile.Layer
                     && s.Tile.LayerDef.SurfaceTiles);
@@ -83,7 +94,7 @@ namespace RimMandrake.Utinni.KyberTradePlot
         protected override bool TestRunInt(Slate slate)
         {
             Map map = slate.Get<Map>("map");
-            if (map == null) return false;
+            if (map == null || Kyber == null) return false;
             Settlement s = Pick(map.Tile, slate);
             if (s == null) return false;
             Store(slate, map, s);

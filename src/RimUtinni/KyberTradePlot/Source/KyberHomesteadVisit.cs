@@ -35,11 +35,20 @@ namespace RimMandrake.Utinni.KyberTradePlot
             return f != null && f.def == FactionDefOf.OutlanderCivil && base.FactionCanBeGroupSource(f, parms, desperate);
         }
 
+        /// <summary>The plot is on and the one visit has not happened. Asked again inside TryExecuteWorker because the
+        /// dev-mode "execute incident" action never calls CanFireNow.</summary>
+        private static bool PlotAllows()
+        {
+            GameComponent_KyberTrade comp = KyberTrade.Component;
+            return KyberTradePlotSettings.kyberTradePlotEnabled && comp != null && comp.VisitCanStillHappen;
+        }
+
         protected override bool CanFireNowSub(IncidentParms parms)
         {
-            if (!KyberTradePlotSettings.kyberTradePlotEnabled) return false;
-            GameComponent_KyberTrade comp = KyberTrade.Component;
-            if (comp == null || !comp.VisitCanStillHappen) return false; // once per campaign, dev mode included
+            if (!PlotAllows()) return false;
+            // A preset faction skips the base's candidate search, and with it the hostile-lord, Peaceful-group and
+            // arrival-layer checks: ask them here.
+            if (parms.faction != null && !FactionCanBeGroupSource(parms.faction, parms)) return false;
             return base.CanFireNowSub(parms);
         }
 
@@ -51,7 +60,8 @@ namespace RimMandrake.Utinni.KyberTradePlot
         protected override bool TryExecuteWorker(IncidentParms parms)
         {
             Map map = (Map)parms.target;
-            if (!TryResolveParms(parms) || parms.faction == null) return false;
+            if (!PlotAllows()) return false;
+            if (!TryResolveParms(parms) || parms.faction == null || !FactionCanBeGroupSource(parms.faction, parms)) return false;
             List<Pawn> pawns = new List<Pawn>();
             foreach (Pawn p in PawnGroupMakerUtility.GeneratePawns(IncidentParmsUtility.GetDefaultPawnGroupMakerParms(PawnGroupKindDefOf.Peaceful,
                          parms, ensureCanGenerateAtLeastOnePawn: true), warnOnZeroResults: false))
@@ -67,7 +77,8 @@ namespace RimMandrake.Utinni.KyberTradePlot
             }
             if (pawns.Count == 0) return false;
 
-            Pawn quiet = pawns[0];
+            // The quiet one is an adult; with no adult in the group, the first of them.
+            Pawn quiet = pawns.FirstOrDefault(p => p.DevelopmentalStage.Adult()) ?? pawns[0];
             MakeUnconfirmable(quiet);
             foreach (Pawn p in pawns)
                 GenSpawn.Spawn(p, CellFinder.RandomClosewalkCellNear(parms.spawnCenter, map, 5), map);

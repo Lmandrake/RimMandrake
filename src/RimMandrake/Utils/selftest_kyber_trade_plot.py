@@ -37,23 +37,31 @@ def static_checks():
         (oks if ok else fails).append(name + (("  [" + detail + "]") if detail else ""))
 
     quest = ET.parse(os.path.join(MOD, "Defs", "QuestScriptDefs", "RUT_KyberDonationSmuggle.xml")).getroot()
-    classes = [li.get("Class") for li in quest.iter("li") if li.get("Class")]
+    nodes = [e for e in quest.iter() if e.get("Class")]
+    classes = [e.get("Class") for e in nodes]
     bad = sorted({c for c in classes if any(c.startswith(f) for f in FORBIDDEN_NODES)})
     check("the donation quest pays no reward and creates no faction, pawn or site", not bad, ", ".join(bad) or "%d nodes read" % len(classes))
-    fulfilled = [li for li in quest.iter("li") if (li.findtext("inSignal") or "") == "settlement.TradeRequestFulfilled"]
+    fulfilled = [e for e in nodes if (e.findtext("inSignal") or "") == "settlement.TradeRequestFulfilled"]
     kinds = sorted(li.get("Class") for li in fulfilled)
     check("on delivery: goodwill to the Homestead, a memory, the letter of thanks, the end - nothing else",
           kinds == sorted(["QuestNode_ChangeFactionGoodwill", "QuestNode_RecordHistoryEvent", "QuestNode_Letter", "QuestNode_End"]),
           ", ".join(kinds))
     gw = [li for li in fulfilled if li.get("Class") == "QuestNode_ChangeFactionGoodwill"]
-    check("the delivery's goodwill goes to the Homestead (OutlanderCivil), modestly",
-          len(gw) == 1 and gw[0].findtext("faction") == "OutlanderCivil" and 0 < int(gw[0].findtext("change")) <= 10)
+    guard = [e for e in nodes if e.get("Class") == "QuestNode_IsSet" and e.findtext("name") == "homestead"]
+    check("the delivery's goodwill goes to the live Homestead faction, modestly, and only when one exists",
+          len(gw) == 1 and gw[0].findtext("faction") == "$homestead" and 0 < int(gw[0].findtext("change")) <= 10
+          and len(guard) == 1 and guard[0].find("node") is gw[0])
+    rendezvous = [e for e in nodes if e.get("Class", "").endswith("QuestNode_GetKyberRendezvous")]
+    check("the rendezvous node stores the Homestead faction and the kyber's real market value the quest reads",
+          len(rendezvous) == 1 and rendezvous[0].findtext("storeHomesteadAs") == "homestead"
+          and rendezvous[0].findtext("storeKyberUnitValueAs") == "kyberUnitValue"
+          and any("$kyberUnitValue" in (e.findtext("value") or "") for e in nodes))
     letter = next((li for li in fulfilled if li.get("Class") == "QuestNode_Letter"), None)
     text = (letter.findtext("text") if letter is not None else "") or ""
     check("the letter of thanks says it plainly: no way to help it here", "no way to help it here" in text)
     check("the rendezvous is picked by this mod's lane-only node, not vanilla's any-faction picker",
           "RimMandrake.Utinni.KyberTradePlot.QuestNode_GetKyberRendezvous" in classes and "QuestNode_GetNearbySettlement" not in classes)
-    check("the donation asks for kyber by its def", any((li.findtext("value") or "") == "Force_KyberCrystal" for li in quest.iter("li")))
+    check("the donation asks for kyber by its def", any((e.findtext("value") or "") == "Force_KyberCrystal" for e in nodes))
     alltext = ""
     for root, _, files in os.walk(os.path.join(MOD, "Defs")):
         for f in files:
