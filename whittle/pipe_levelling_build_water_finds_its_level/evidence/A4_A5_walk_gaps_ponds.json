@@ -1,6 +1,6 @@
 {
  "script": "walk_gaps_proof.py",
- "started": "2026-11-12T05:06:23",
+ "started": "2026-11-12T06:10:24",
  "rows": [
   {
    "id": "PONDS_DIFFERENT_LIQUIDS_NO_MIX",
@@ -66,7 +66,7 @@
        240000,
        210000
       ],
-      4911,
+      2388,
       "flowing (no "
      ],
      [
@@ -75,7 +75,7 @@
        232500,
        217500
       ],
-      4912,
+      2389,
       "flowing (no "
      ],
      [
@@ -84,7 +84,7 @@
        228750,
        221250
       ],
-      4913,
+      2390,
       "flowing (no "
      ],
      [
@@ -93,7 +93,7 @@
        226875,
        223125
       ],
-      4914,
+      2391,
       "flowing (no "
      ],
      [
@@ -102,7 +102,7 @@
        225937,
        224063
       ],
-      4915,
+      2392,
       "flowing (no "
      ],
      [
@@ -111,7 +111,7 @@
        225468,
        224532
       ],
-      4916,
+      2393,
       "flowing (no "
      ],
      [
@@ -120,7 +120,7 @@
        225234,
        224766
       ],
-      4917,
+      2394,
       "flowing (no "
      ],
      [
@@ -129,7 +129,7 @@
        225234,
        224766
       ],
-      4917,
+      2394,
       "level."
      ]
     ],
@@ -148,7 +148,7 @@
   }
  ],
  "args": {
-  "out": "Transient/lev/walk_gaps_F.json",
+  "out": "Transient/lev/walk_gaps_H.json",
   "origin": "40,40",
   "fresh_map": true,
   "only": "PONDS_DIFFERENT_LIQUIDS_NO_MIX,PONDS_HOSE_LEVEL",
@@ -160,11 +160,11 @@
  "missingHooks": {},
  "mode": "live",
  "mod": "FlowWorks",
- "mod_hash": "4851dbfbf6f51db433f51148c3f5f9e1d38aa24818b36abad2326bc107f954e2",
+ "mod_hash": "d865db2bc73374de440526c9926a0c37ece4744da6ff7acc04d221c89782cc86",
  "manifest": {
   "schema": 1,
   "script": "northstar/walk_gaps_proof.py",
-  "runtime": "e9ed8fd52f962a3c5f24cd73d463a5d65b0cf3de18232af06cfd69cbfe77f2c5",
+  "runtime": "31a739cc7802a8bf767f71609b6983ec6b7bf132025806c12b9d432bf2baba3e",
   "test": "10141eabea687959902efe9bb044e368e09e31efdc75f10a858432066f070d52",
   "test_files": [
    "FlowWorks/northstar/driver_stamp.py",
@@ -253,7 +253,7 @@
    "mandrake.rm.flowworks",
    "mandrake.rm.patches"
   ],
-  "assembly_sha256": "52539f5100abaa432ae694c0f6fce587e6ddf98d0a3da8313282866fdfc4b4d2"
+  "assembly_sha256": "3f749eda1977107545be1f47563d7b0a84f19df4d4beb5f47b052ca8ec7d40c6"
  },
  "site_calm": {
   "ok": true,
@@ -268,54 +268,10 @@
   "wildSpawner": "blocked (read back)",
   "removed": {
    "removed": [
-    "Bear_Grizzly38631",
-    "Bluebird38620",
-    "Boomrat38613",
-    "Boomrat38637",
-    "Boomrat38639",
-    "Hare38608",
-    "Hare38609",
-    "Hare38617",
-    "Hare38630",
-    "Hare38632",
-    "Hare38634",
-    "Ibex38615",
-    "Ibex38616",
-    "Megasloth38606",
-    "Muffalo38621",
-    "Muffalo38622",
-    "Muffalo38623",
-    "Muffalo38624",
-    "Muffalo38625",
-    "Muffalo38626",
-    "Muffalo38627",
-    "Muffalo38628",
-    "Porcupine38612",
-    "Raccoon38592",
-    "Raccoon38607",
-    "Raccoon38633",
-    "Rat38593",
-    "Rat38610",
-    "Rat38611",
-    "Rat38614",
-    "Rat38618",
-    "Rat38638",
-    "Sparrow38594",
-    "Sparrow38595",
-    "Sparrow38596",
-    "Squirrel38605",
-    "Squirrel38636",
-    "Swan38604",
-    "Swan38635",
-    "Tortoise38597",
-    "Tortoise38629",
-    "WildBoar38598",
-    "WildBoar38599",
-    "WildBoar38600",
-    "WildBoar38601",
-    "WildBoar38602",
-    "WildBoar38603",
-    "Wolverine38619"
+    "Donkey10196",
+    "Donkey10197",
+    "Donkey10198",
+    "Donkey10199"
    ],
    "left": []
   },
@@ -325,24 +281,24 @@
    "error": null
   },
   "fed": [
-   "Human700",
-   "Human703",
-   "Human706"
+   "Human474",
+   "Human478",
+   "Human482"
   ]
  },
  "startColonistsDrafted": [
   [
-   "Human700",
+   "Human474",
    true
   ],
   [
-   "Human703",
+   "Human478",
    true
   ],
   [
-   "Human706",
+   "Human482",
    true
   ]
  ],
- "finished": "2026-11-12T05:09:26"
+ "finished": "2026-11-12T06:13:16"
 }

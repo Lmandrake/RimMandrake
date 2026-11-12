@@ -129,9 +129,9 @@
  },
  "load": {
   "success": true,
-  "s": 6.1,
+  "s": 4.2,
   "message": "RimWorld has a loaded visual-ready game and is paused for automation.",
-  "readableAfterS": 6.2
+  "readableAfterS": 4.4
  },
  "afterReloadDesktop": "D:\\ClaudeWork\\rimmandrake\\whittle_claude\\CLAUDE_STEVEDESKTOP_FWLIVE\\lev_after_reload_desktop.bmp",
  "afterReloadDesktopWritten": true,

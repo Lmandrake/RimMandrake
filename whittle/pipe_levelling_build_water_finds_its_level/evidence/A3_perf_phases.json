@@ -1,6 +1,6 @@
 [
  {
-  "phase": "perfF_0",
+  "phase": "perfH_0",
   "args": {
    "lay": "0:0",
    "no_time": true,
@@ -11,8 +11,8 @@
    "sinks_off": true,
    "restore_length": null
   },
-  "started": "2026-11-12T04:33:43",
-  "finished": "2026-11-12T04:34:25",
+  "started": "2026-11-12T05:37:44",
+  "finished": "2026-11-12T05:38:24",
   "mapSize": [
    325,
    325
@@ -90,7 +90,7 @@
   ]
  },
  {
-  "phase": "perfF_40",
+  "phase": "perfH_40",
   "args": {
    "lay": "0:40",
    "no_time": true,
@@ -101,8 +101,8 @@
    "sinks_off": true,
    "restore_length": null
   },
-  "started": "2026-11-12T04:34:31",
-  "finished": "2026-11-12T04:40:30",
+  "started": "2026-11-12T05:38:30",
+  "finished": "2026-11-12T05:44:29",
   "mapSize": [
    325,
    325
@@ -180,7 +180,7 @@
   ]
  },
  {
-  "phase": "perfF_80",
+  "phase": "perfH_80",
   "args": {
    "lay": "40:80",
    "no_time": true,
@@ -191,8 +191,8 @@
    "sinks_off": true,
    "restore_length": null
   },
-  "started": "2026-11-12T04:40:45",
-  "finished": "2026-11-12T04:46:49",
+  "started": "2026-11-12T05:44:43",
+  "finished": "2026-11-12T05:50:46",
   "mapSize": [
    325,
    325
@@ -270,7 +270,7 @@
   ]
  },
  {
-  "phase": "perfF_120",
+  "phase": "perfH_120",
   "args": {
    "lay": "80:120",
    "no_time": true,
@@ -281,8 +281,8 @@
    "sinks_off": true,
    "restore_length": null
   },
-  "started": "2026-11-12T04:46:56",
-  "finished": "2026-11-12T04:53:02",
+  "started": "2026-11-12T05:50:54",
+  "finished": "2026-11-12T05:56:57",
   "mapSize": [
    325,
    325
@@ -360,7 +360,7 @@
   ]
  },
  {
-  "phase": "perfF_160",
+  "phase": "perfH_160",
   "args": {
    "lay": "120:160",
    "no_time": true,
@@ -371,8 +371,8 @@
    "sinks_off": true,
    "restore_length": null
   },
-  "started": "2026-11-12T04:53:17",
-  "finished": "2026-11-12T04:59:23",
+  "started": "2026-11-12T05:57:13",
+  "finished": "2026-11-12T06:03:17",
   "mapSize": [
    325,
    325
@@ -450,7 +450,7 @@
   ]
  },
  {
-  "phase": "perfF_200",
+  "phase": "perfH_200",
   "args": {
    "lay": "160:200",
    "no_time": true,
@@ -461,8 +461,8 @@
    "sinks_off": true,
    "restore_length": null
   },
-  "started": "2026-11-12T04:59:30",
-  "finished": "2026-11-12T05:05:07",
+  "started": "2026-11-12T06:03:25",
+  "finished": "2026-11-12T06:09:01",
   "mapSize": [
    325,
    325
@@ -540,7 +540,7 @@
   ]
  },
  {
-  "phase": "perfF_timed",
+  "phase": "perfH_timed",
   "args": {
    "lay": "0:0",
    "no_time": false,
@@ -551,8 +551,8 @@
    "sinks_off": true,
    "restore_length": "40"
   },
-  "started": "2026-11-12T05:05:25",
-  "finished": "2026-11-12T05:06:12",
+  "started": "2026-11-12T06:09:23",
+  "finished": "2026-11-12T06:10:07",
   "mapSize": [
    325,
    325

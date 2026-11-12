@@ -1,4 +1,4 @@
-<!-- excerpt of design/RimMandrake/flowworks_pipes_across_pits_design_2026-10-20.md, section ### Levelling feasibility, as of 2026-11-12 05:16 -0800 -->
+<!-- excerpt of design/RimMandrake/flowworks_pipes_across_pits_design_2026-10-20.md, section ### Levelling feasibility, as of 2026-11-12 06:21 -0800 -->
 ### Levelling feasibility
 
 Item `PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL`, 2026-10-20 (owner: *"Let's see if we can do this"*). **Verdict:
@@ -35,7 +35,8 @@ feasible, and built behind a Mod Setting. The offline selftests pass, and so did
   - Settings: `gravityLevellingEnabled` (on) and `levellingLitresPerCycle`, in the Flexible hoses section.
 - **Cost per tick (offline, MEASURED by the selftest).** The kernel plans a hard budget of 64 links per cycle; the rest
   rotate in later and catch up by up to 8 cycles' worth. The test scene had 200 bodies, 40 of them 40,000-square basins,
-  and 400 links. Planning took **89 µs per cycle, about 0.36 µs per tick**.
+  and 400 links. Planning took **about 80-90 µs per cycle (77.5-88.9 µs across the 2026-11-12 runs), about 0.35 µs per
+  tick**.
   - The adapter's walk of dug runs is capped at 20,000 squares per run (`RM_Levelling.MaxRunCells`) and 120,000 squares per
     cycle (`WalkBudget`; a square is walked at most once per cycle). A 40,000-square basin reached from ends in both its
     halves is walked as two capped runs, so the two A3 basins walked ~80,000 squares a cycle (79,748 read live). MEASURED live
@@ -65,6 +66,8 @@ feasible, and built behind a Mod Setting. The offline selftests pass, and so did
      (2026-10-21, "With pump → Off while pumping").
 - **Live (2026-11-12).** Two 3×3 pits of unequal height joined by two reels on one pipe run level out: the reel reads
   "Levelling: flowing" from the first cycle and "Levelling: level." once the surfaces are within 1 cm, total conserved;
-  a water pit and a chemfuel pit joined the same way exchange nothing and both reels read "different liquids never mix".
+  a water pit and an oil pit (`RM_Fluid_Oil`) joined the same way exchange nothing and both reels read "different liquids
+  never mix". Pits of different depth and area level to one surface (not one volume per square), and a natural pond runs
+  down into a dug pit until the surfaces meet, pond loss plus its own natural refill equal to the pit's gain.
   Save/reload mid-flow replays exactly. Evidence: `whittle/pipe_levelling_build_water_finds_its_level/evidence/`.
 
