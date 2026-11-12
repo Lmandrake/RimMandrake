@@ -50,9 +50,9 @@
 
         <li Class="RimMandrake.Utinni.CathedralPass.RUT_QuestNode_SurveyHail">
           <letterLabel>An Imperial survey hails the ship</letterLabel>
-          <letterText>A survey team of {FACTION} has set down out past the old works, among the rust plates. For two days their lamps have crept from plate to plate: sounding rods, core samplers, a crawler that stops every few paces to listen to the ground.\n\nThis morning their officer opened a channel to the ship. If he knows whose ship this is, he does not say so. The clan's crews have worked these plates for years, he says. What is out there? What have your people seen?</letterText>
+          <letterText>A survey team of {FACTION} has set down out past the old works, among the rust plates. For two days their lamps have crept from plate to plate: sounding rods, core samplers, a crawler that stops every few paces to listen to the ground.\n\nThis morning their officer opened a channel to the ship. If he knows whose ship this is, he does not say so. Salvage crews work these plates, he says; they must see things. What is out there? What have your people seen?</letterText>
           <answerDullLabel>Give him the guild's answer: scrap, bad ground, nothing worth the trip</answerDullLabel>
-          <answerPointedLabel>Tell him what the crews have seen out there</answerPointedLabel>
+          <answerPointedLabel>Tell him what the crews have seen: the hollow plates, the drone from the old works, the ground that settles overnight</answerPointedLabel>
           <answerSilentLabel>Leave the channel unanswered</answerSilentLabel>
           <outSignalDull>AnsweredDull</outSignalDull>
           <outSignalPointed>PointedThem</outSignalPointed>
@@ -71,7 +71,7 @@
           <inSignal>AnsweredDull</inSignal>
           <label TKey="LetterLabelRUTSurveyDull">The survey moves on</label>
           <letterDef>NeutralEvent</letterDef>
-          <text TKey="LetterTextRUTSurveyDull">The clan's trade-speaker gives the officer the answer every salvage guild on this world has given for as long as there have been guilds: old plate and scrap, a few bolts worth the hauling, ground too soft for repulsors, a noise in the wind that nobody pays any heed. The prices are poor. The pickings are poorer.\n\nThe officer stops taking notes halfway through. By evening the survey lamps are moving west, away from the old works, and they do not come back.</text>
+          <text TKey="LetterTextRUTSurveyDull">The clan's trade-speaker gives the officer the answer every salvage guild on this world has given for as long as there have been guilds: old plate and scrap, a few bolts worth the hauling, ground too soft for repulsors, a noise in the wind that nobody pays any heed. The prices are poor. The pickings are poorer.\n\nThe officer stops taking notes halfway through. By evening the survey lamps have moved on to the next grid square of their charts, and they do not come back.</text>
         </li>
         <li Class="QuestNode_End">
           <inSignal>AnsweredDull</inSignal>
@@ -83,7 +83,7 @@
           <inSignal>PointedThem</inSignal>
           <label TKey="LetterLabelRUTSurveyPointed">The survey stays</label>
           <letterDef>NeutralEvent</letterDef>
-          <text TKey="LetterTextRUTSurveyPointed">The clan's trade-speaker tells the officer what the crews have seen out there: plates that ring hollow underfoot, the low sound that comes up through the sand at night, old works that run on further down than any wreck has a right to. The officer has every word of it repeated, slowly, and records it all.\n\nBefore dawn a small pod comes down by the ship with silver in it and no message. Out past the old works the survey lamps have stopped moving. They are setting up camp.</text>
+          <text TKey="LetterTextRUTSurveyPointed">The clan's trade-speaker tells the officer what the crews have seen out there: plates that ring hollow underfoot, the drone from the old works that changes pitch for no reason anyone can find, ground that settles overnight where nobody has dug. The officer has every word of it repeated, slowly, and records it all.\n\nBefore dawn a small pod comes down by the ship with silver in it and no message. Out past the old works the survey lamps have stopped moving. They are setting up camp.</text>
         </li>
         <li Class="QuestNode_End">
           <inSignal>PointedThem</inSignal>

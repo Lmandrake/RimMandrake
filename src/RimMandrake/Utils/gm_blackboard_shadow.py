@@ -544,6 +544,8 @@ def load_cathedral_survey_catalogue(paths=CATHEDRAL_SURVEY_DEFS):
             name = (el.findtext("defName") or "").strip()
             if el.tag == "QuestScriptDef" and name == CATHEDRAL_SURVEY_QUEST_DEF:
                 out["quest_def"] = name
+                out["quest_names"] = [li.text.split("->", 1)[1].strip()
+                                      for li in el.findall("questNameRules/rulesStrings/li")]
                 for node in el.iter("li"):
                     cls = node.get("Class") or ""
                     if cls.endswith("RUT_QuestNode_SurveyHail"):
@@ -760,7 +762,7 @@ class ShadowBlackboard:
         self.survey_offer = None                 # the hail currently fired and not yet ended, if any
         self.survey_last_resolved_tick = None
         self.survey_quest_ids_seen = set()
-        self.survey_resolved_quest_ids = set()
+        self.survey_resolved = {}                # quest id -> {"outcome", "regard", "exposure"}: what was credited
         self.survey_outcome_counts = {"dull_answer": 0, "pointed_at_anomaly": 0, "no_answer": 0}
         self.survey_offers_fired = 0
         self.survey_observed_once = False
@@ -954,13 +956,26 @@ class ShadowBlackboard:
         """CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1: read the quest list for ended survey quests. Each ended one is read
         ONCE: (b) EndedSuccess = a Regard gain, (c) EndedFailed = an exposure gain, (a) EndedUnknownOutcome = nothing.
         No outcome is a Heat input (K2: protecting the place scrubs none of the Empire's suspicion of the clan).
-        Returns (regard_gain, exposure_gain, rows)."""
+
+        A reload can take back an answer the blackboard already credited (its state lives in this process, the answer
+        in the save): the same quest id reads Ongoing again, or ends with a different answer. Then the credit for the
+        answer the save no longer holds is taken back (Regard or exposure, the same amount), so answering (b), reloading
+        and answering (c) for the silver leaves exactly (c)'s exposure, not (b)'s Regard on top.
+        The FIRST look is history, not news: a survey that had already ended when this run began was answered in a
+        game this process never saw. Its (b) rebuilds Regard (which restarts at 0, as the missions' history does) unless
+        --story-flags-file already says so (one source, never both); its (c) adds no exposure (pressure decays, and a
+        restart reset it: re-adding every old +20 at once could flip the place dark on an old save); and the month's
+        gap restarts from now, so a restart never brings a hail on its first poll.
+        Returns (regard_gain, exposure_gain, rows); either may be negative on a rewind."""
         regard_gain = exposure_gain = 0.0
         survey_rows = []
         first_look = not self.survey_observed_once
         self.survey_observed_once = True
+        names = {n.casefold() for n in self.survey_catalogue.get("quest_names", [])}
         for row in rows or []:
-            if row.get("root") != CATHEDRAL_SURVEY_QUEST_DEF:
+            # the row's `root`, or (a companion build without `root`) the quest's fixed name, as quest_root does
+            if row.get("root") != CATHEDRAL_SURVEY_QUEST_DEF and not (
+                    not row.get("root") and (row.get("name") or "").strip().casefold() in names):
                 continue
             qid, state = row.get("id"), row.get("state")
             survey_rows.append({"id": qid, "state": state, "simulated": bool(row.get("simulated"))})
@@ -968,28 +983,50 @@ class ShadowBlackboard:
             if offer and offer["quest_id"] is None and qid not in offer["quest_ids_before_offer"]:
                 offer["quest_id"], offer["status"] = qid, "hailing"
             self.survey_quest_ids_seen.add(qid)
-            if not (state or "").startswith("Ended") or qid in self.survey_resolved_quest_ids:
-                continue
-            self.survey_resolved_quest_ids.add(qid)
+            ended = (state or "").startswith("Ended")
             outcome = CATHEDRAL_SURVEY_OUTCOMES.get(state)
+            if qid in self.survey_resolved:
+                prior = self.survey_resolved[qid]["outcome"]
+                if ended and outcome == prior:
+                    continue   # already read
+                # the save no longer holds the answer that was credited: a reload rewound it (or changed it)
+                dr, de = self._reverse_survey_credit(qid, state, would_fire)
+                regard_gain, exposure_gain = regard_gain + dr, exposure_gain + de
+                if not ended:
+                    if self.survey_offer is None:   # the hail is out again in the reloaded game: track it, fire no second
+                        self.survey_offer = {"fired_tick": ticks, "quest_id": qid, "status": "hailing",
+                                             "quest_ids_before_offer": []}
+                    continue
+            elif not ended:
+                continue
+            credit = self.survey_resolved[qid] = {"outcome": outcome, "regard": 0.0, "exposure": 0.0}
             if offer and offer["quest_id"] == qid:
                 self.survey_offer, self.survey_last_resolved_tick = None, ticks
-            if first_look and outcome == "dull_answer" and self.story_flag_misdirection:
-                # already ended before this run, and the story flag already credits it: one source, never both
-                self.survey_history_seeded += 1
-                continue
+            if first_look and outcome is not None:
+                self.survey_last_resolved_tick = ticks   # the month's gap restarts from this run's first look
+                if outcome != "dull_answer" or self.story_flag_misdirection:
+                    # history: an old (c) is not new exposure, an old (a) moved nothing, and a set story flag already
+                    # credits the old (b)s -- one source, never both
+                    self.survey_history_seeded += 1
+                    would_fire.append({"type": "cathedral_survey_history", "quest_id": qid, "outcome": outcome,
+                                       "detail": "survey quest %s ended (%s) before this run: history, nothing "
+                                                 "credited now." % (qid, outcome)})
+                    continue
             if outcome is None:
                 would_fire.append({"type": "cathedral_survey_resolved", "quest_id": qid, "outcome": state,
                                    "detail": "survey quest %s ended %s: not an answer the clan gave; nothing moves."
                                              % (qid, state)})
                 continue
             self.survey_outcome_counts[outcome] += 1
+            credit["counted"] = True
             if outcome == "dull_answer":
+                credit["regard"] = CATHEDRAL_REGARD_GAIN_MISDIRECTION_SUCCESS
                 regard_gain += CATHEDRAL_REGARD_GAIN_MISDIRECTION_SUCCESS
                 detail = ("(b) the clan gave the surveyors the guild's dull answer -- SHADOW MODE: would gain %.2f "
                           "Regard; Imperial Heat is not an input of the answer (K2) and does not move; fired nothing."
                           % CATHEDRAL_REGARD_GAIN_MISDIRECTION_SUCCESS)
             elif outcome == "pointed_at_anomaly":
+                credit["exposure"] = CATHEDRAL_EXPOSURE_GAIN_SURVEY_POINTED
                 exposure_gain += CATHEDRAL_EXPOSURE_GAIN_SURVEY_POINTED
                 detail = ("(c) the clan pointed the surveyors at the plates -- SHADOW MODE: would raise exposure "
                           "pressure by %.2f (§6.1); Regard and Heat are not inputs of it; fired nothing."
@@ -998,7 +1035,27 @@ class ShadowBlackboard:
                 detail = "(a) the hail went unanswered -- nothing moves: not Regard, not exposure, not Heat."
             would_fire.append({"type": "cathedral_survey_answered", "quest_id": qid, "state": state,
                                "outcome": outcome, "simulated": bool(row.get("simulated")), "detail": detail})
+        # RimWorld never drops an ended quest from the list (only a debug action or a subquest generator removes one),
+        # so a credited survey that is gone from it means the game was reloaded from before it was fired.
+        listed = {r["id"] for r in survey_rows}
+        for qid in [q for q in self.survey_resolved if q not in listed]:
+            dr, de = self._reverse_survey_credit(qid, None, would_fire)
+            regard_gain, exposure_gain = regard_gain + dr, exposure_gain + de
         return regard_gain, exposure_gain, survey_rows
+
+    def _reverse_survey_credit(self, qid, now_state, would_fire):
+        """Take back what a survey answer was credited, because the save no longer holds that answer (now_state: the
+        quest's state now, None when it is gone from the list). Returns the (regard, exposure) deltas."""
+        credit = self.survey_resolved.pop(qid)
+        prior, dr, de = credit["outcome"], -credit["regard"], -credit["exposure"]   # only what was really credited
+        if credit.get("counted"):
+            self.survey_outcome_counts[prior] -= 1
+        would_fire.append({"type": "cathedral_survey_rewound", "quest_id": qid, "was": prior, "now": now_state,
+                           "regard_reversed": dr, "exposure_reversed": de,
+                           "detail": "survey quest %s was read as %s and now reads %s: a reload took that answer back, "
+                                     "so its credit is reversed -- SHADOW MODE: fired nothing."
+                                     % (qid, prior, now_state or "absent (reloaded from before it)")})
+        return dr, de
 
     def advance_cathedral_survey(self, record, would_fire, ticks, cathedral_ground):
         """CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1: one poll of the survey's trigger, after the stage machine and the

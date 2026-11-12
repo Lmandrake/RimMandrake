@@ -17,6 +17,9 @@ two more a month later) with a simulated player answering each hail, and reads t
                    all of them, and planted lines that explain what the clan protected are refused
   5 Oracle-absent  the survey path runs with no `claude` on PATH, starts no process, and every hail carries the
                    shipped def text; every branch ends in a shipped letter
+  6 reload/restart the answer lives in the save, the credit in this process: answering (b), reloading and answering
+                   (c) for the silver leaves (c)'s exposure and not (b)'s Regard; a reload from before the hail takes
+                   its credit back; a restart over an old save credits no old exposure and brings no hail at once
   plus             the C# toggle mirror, hidden quest (no Quests-tab verdict), and the quest's signal wiring
 Prints the dialog and each branch's letter exactly as the player reads them (fallback text, no LLM).
 """
@@ -237,10 +240,11 @@ def criterion_3_pointed():
     check("3d Heat identical poll for poll", series(pt, "heat_after") == series(lapse, "heat_after"))
     check("3e Regard is not raised by it (identical while no go-dark)",
           series(pt, "cathedral_regard_after") == series(lapse, "cathedral_regard_after"))
-    # a clan that points every survey it meets, with the default threshold: the place goes dark
+    # §6.1's door: with the go-dark threshold lowered to 15 (a place already near its limit), one pointed survey flips
+    # it dark. At the default 50 a survey alone never does: +20 decays away before the next one a month later.
     fx = fixture(["pointed"], polls=160)
     b, recs = run(fx, exposure_godark_threshold=15.0)
-    check("3f with a low go-dark threshold one pointed survey flips the place dark (the §6.1 door opens)",
+    check("3f a place near its limit (go-dark at 15): one pointed survey flips it dark",
           any(r["go_dark_fired_this_poll"] for r in recs) and b.go_dark_flip_count >= 1)
 
     print("\n[a] no answer: refused, or left to lapse -- nothing moves")
@@ -339,6 +343,82 @@ def criterion_5_oracle_absent(recs):
           and q.findtext("sendAvailableLetter") == "false" and q.find("expireDaysRange") is None)
 
 
+def _step(board, rb, recs, n=1):
+    for _ in range(n):
+        r = board.poll(rb)
+        rb.observe(r, OFFERS)
+        recs.append(r)
+        G.safe_call(rb, "rimworld/step_game_ticks", {"ticks": 15000})
+
+
+def criterion_6_reload_restart():
+    print("\n[6] reloads and restarts: the credit follows the save")
+    # 6a save-scum: answer (b), see it credited, reload the save from before the answer, answer (c) for the silver
+    log = tempfile.mktemp(suffix=".jsonl")
+    board = G.ShadowBlackboard(log, offer_catalogue=OFFERS, survey_catalogue=SURVEY)
+    rb = G.FixtureBridge(fixture(["dull"]))
+    recs = []
+    while not events(recs, "cathedral_survey_answered"):
+        _step(board, rb, recs)
+    q = next(x for x in rb.quests if x.get("_survey"))
+    regard_after_b = recs[-1]["cathedral_regard_after"]
+    # the reload (simulated): the game is back at the tick the hail was still open, the quest Ongoing again; this time
+    # the player answers (c) two polls later
+    rb.tick -= 2 * 15000
+    q.update(state="Ongoing", _response="pointed", _made=rb.tick)
+    _step(board, rb, recs, 8)
+    rew = events(recs, "cathedral_survey_rewound")
+    ans = events(recs, "cathedral_survey_answered")
+    show_row(recs[rew[0][0] - 1] if rew else recs[-1], "<- reloaded: the (b) answer is no longer in the save")
+    check("6a the reload is seen (the credited quest reads Ongoing again) and (b)'s Regard is taken back",
+          len(rew) == 1 and rew[0][1]["regard_reversed"] == -G.CATHEDRAL_REGARD_GAIN_MISDIRECTION_SUCCESS
+          and recs[rew[0][0] - 1]["cathedral_regard_after"] < regard_after_b - 10, rew)
+    check("6b then (c) is credited: exposure +%.0f, and the tally is one pointed, no dull" %
+          G.CATHEDRAL_EXPOSURE_GAIN_SURVEY_POINTED,
+          [e["outcome"] for _, e in ans] == ["dull_answer", "pointed_at_anomaly"]
+          and board.survey_outcome_counts == {"dull_answer": 0, "pointed_at_anomaly": 1, "no_answer": 0})
+    check("6c net over the run: survey Regard 0, survey exposure +%.0f -- not both" % G.CATHEDRAL_EXPOSURE_GAIN_SURVEY_POINTED,
+          sum(r["survey_regard_gain_this_poll"] for r in recs) == 0
+          and sum(r["survey_exposure_gain_this_poll"] for r in recs) == G.CATHEDRAL_EXPOSURE_GAIN_SURVEY_POINTED)
+    check("6d no second hail is fired while the reloaded one is out (it is tracked as hailing)",
+          len(events(recs, "cathedral_survey_offer")) == 1)
+    # 6e a reload from before the hail existed: the credited quest is gone from the list
+    rb.quests = [x for x in rb.quests if not x.get("_survey")]
+    _step(board, rb, recs)
+    gone = events(recs, "cathedral_survey_rewound")[-1][1]
+    check("6e a reload from before the hail: the quest is gone, its (c) exposure credit is reversed",
+          gone["now"] is None and gone["exposure_reversed"] == -G.CATHEDRAL_EXPOSURE_GAIN_SURVEY_POINTED
+          and board.survey_outcome_counts["pointed_at_anomaly"] == 0)
+
+    # 6f restart over an old save: three old (c)s and two old (b)s, no story flag
+    old = [{"id": i, "name": "An Imperial Survey On The Plates", "root": "RUT_CathedralSurveyMisdirection",
+            "state": st, "historical": True} for i, st in
+           enumerate(["EndedFailed", "EndedFailed", "EndedFailed", "EndedSuccess", "EndedSuccess"], start=11)]
+    fx = fixture(["dull"], changes={"2": {"kyber": {"Force_KyberCrystal": 2}, "trader_present": True},
+                                    "3": {"trader_present": False}})
+    fx["existing_quests"] = old
+    b, recs = run(fx)
+    first = recs[0]
+    check("6f restart: old (c)s add no exposure (no +60 at once), no go-dark",
+          first["survey_exposure_gain_this_poll"] == 0 and not any(r["go_dark_fired_this_poll"] for r in recs))
+    check("6g restart: old (b)s rebuild Regard once each (+%.0f), as old missions do"
+          % (2 * G.CATHEDRAL_REGARD_GAIN_MISDIRECTION_SUCCESS),
+          first["survey_regard_gain_this_poll"] == 2 * G.CATHEDRAL_REGARD_GAIN_MISDIRECTION_SUCCESS
+          and sum(r["survey_regard_gain_this_poll"] for r in recs) == 2 * G.CATHEDRAL_REGARD_GAIN_MISDIRECTION_SUCCESS)
+    hot = [r for r in recs if r["heat_after"] >= G.CATHEDRAL_SURVEY_MIN_HEAT]
+    early = [p for p, _ in events(recs, "cathedral_survey_offer")
+             if recs[p - 1]["ticksGame"] - recs[0]["ticksGame"] < G.CATHEDRAL_SURVEY_REOFFER_GAP_TICKS]
+    check("6h restart: Heat is over the band early (a sale on poll 2), yet no hail in the month after the first look",
+          bool(hot) and hot[0]["poll"] <= 5 and not early, ([r["poll"] for r in hot][:3], early))
+    # without the bridge's `root` field (an older companion build), the survey is still found by its fixed name
+    nr = [dict(q, root=None) for q in old[3:]]
+    fx2 = fixture(["dull"], changes={})
+    fx2["existing_quests"] = nr
+    _, recs2 = run(fx2)
+    check("6i a quest row without `root` is still read, by the quest's fixed name",
+          recs2[0]["survey_regard_gain_this_poll"] == 2 * G.CATHEDRAL_REGARD_GAIN_MISDIRECTION_SUCCESS)
+
+
 def plus_wiring():
     print("\n[+] the in-game half")
     cs = open(SURVEY_CS, encoding="utf-8").read()
@@ -388,6 +468,7 @@ def main():
     criterion_3_pointed()
     criterion_4_linter()
     criterion_5_oracle_absent(recs)
+    criterion_6_reload_restart()
     plus_wiring()
     show_player_view()
     print("\n%d checks, %d failed" % (len(RAN), len(FAILS)))
