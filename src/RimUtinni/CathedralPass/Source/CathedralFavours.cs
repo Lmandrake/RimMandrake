@@ -131,6 +131,14 @@ namespace RimMandrake.Utinni.CathedralPass
             return State == QuestPartState.Enabled && pack.Contains(p);
         }
 
+        // An ended quest no longer reserves anything, so world-pawn GC may still discard a pack animal later (one that
+        // walked off, or whose corpse is gone); drop it from the list then, or the save holds a dead reference.
+        public override void Notify_PawnDiscarded(Pawn pawn)
+        {
+            base.Notify_PawnDiscarded(pawn);
+            pack.Remove(pawn);
+        }
+
         public override void QuestPartTick()
         {
             base.QuestPartTick();
