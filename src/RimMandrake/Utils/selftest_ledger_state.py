@@ -77,6 +77,18 @@ rf(B, "note", ids[4], "--text", "NEXT: read the first exception in Player.log\nn
 rf(B, "note", ids[11], "--text", "NEXT: a dropped item's action")
 rf(B, "drop", ids[11], "--reason", "selftest: dropped items leave every section")
 rf(O, "note", "STATENOW_TEST_OTHER_SEAT", "--text", "NEXT: the other seat's action")
+rf(B, "note", ids[6], "--text", "closed the loop. NEXT:\nno further step, this line is not an action")
+# GPT broaden, 2026-11-11: a NEXT the ledger has since overtaken (blocked for him, then called off in a plain note)
+rf(B, "note", ids[7], "--text", "NEXT: deploy the DLL")
+rf(B, "block", ids[7], "--reason", "deploy waits on his approval", "--kind", "owner")
+rf(B, "note", ids[7], "--text", "Deployment cancelled; wait for the owner.")
+LONG = "RIMMANDRAKE_LENGTHEN_STATENOWTESTITEMNAME_UNTIL_THEY_HIT_CAPSXX"
+rf(B, "file", LONG, "--for", B, "--title", "long id")
+rf(O, "note", LONG, "--text", "NEXT: " + "z" * 200)
+with open(os.path.join(TMP, "events", "BENCH.jsonl")) as fh:            # a hand-mangled line: text that is not a string
+    bad = dict(json.loads([ln for ln in fh if '"note"' in ln][0]), text=["NEXT:", 3])
+with open(os.path.join(TMP, "events", "BENCH.jsonl"), "a") as fh:
+    fh.write(json.dumps(bad) + "\n")
 
 os.environ.update(env(B))
 sys.path.insert(0, HERE)
@@ -97,21 +109,22 @@ body = lambda name: "\n".join(sec.get(name, []))   # noqa: E731
 
 print("ledger_state: the four sections, from a CLI-written ledger")
 check(list(sec) == ["Open items", "Owner-pending", "Live helpers", "NEXT"], "four sections, in order: %s" % list(sec))
-check("## Open items — 11 (doing 1 · proposed 9 · blocked 1)" in body("Open items"),
-      "open items: 11 of BENCH's, the dropped one gone, counts by state: %r" % sec["Open items"][0])
-check("`%s` — doing (leased)" % ids[0] in sec["Open items"][1], "open items: the leased one first")
+check("## Open items — 12 (doing 1 · proposed 9 · blocked 2)" in body("Open items"),
+      "open items: 12 of BENCH's, the dropped one gone, counts by state: %r" % sec["Open items"][0])
+check("`%s` — doing, leased by BENCH:" % ids[0] in sec["Open items"][1], "open items: the leased one first: %r"
+      % sec["Open items"][1])
 check("BLOCKED: the pump eats its own hose" in body("Open items"), "open items: the blocked one with its reason")
-check(len([x for x in sec["Open items"] if x]) == 10 and "… and 3 more: rimflow queue BENCH" in body("Open items"),
+check(len([x for x in sec["Open items"] if x]) == 10 and "… and 4 more: rimflow queue BENCH" in body("Open items"),
       "open items: 8 shown, the rest counted and named:\n        " + "\n        ".join(sec["Open items"]))
 check("STATENOW_TEST_OTHER" not in body("Open items") and ids[11] not in body("Open items"),
       "open items: no other seat's item, no dropped item")
-check(sec["Owner-pending"][0].startswith("## Owner-pending — 2 items in 1 topic")
-      and "STATENOW_* (2 items, e.g. `%s`)" % ids[1] in body("Owner-pending"),
-      "owner-pending: both needs=owner items, folded by leading word as the board does:\n        "
+check(sec["Owner-pending"][0].startswith("## Owner-pending — 3 items in 1 topic")
+      and "STATENOW_* (3 items, e.g. `%s`)" % ids[1] in body("Owner-pending"),
+      "owner-pending: both needs=owner items and the one blocked on him, folded by leading word as the board does:\n        "
       + "\n        ".join(sec["Owner-pending"]))
 check(ids[0] not in body("Owner-pending") and ids[3] not in body("Owner-pending"),
       "owner-pending: nothing that is not his")
-check("2 live leases" in sec["Live helpers"][0] and "BENCH holds `%s`" % ids[0] in body("Live helpers")
+check("2 unexpired leases" in sec["Live helpers"][0] and "BENCH holds `%s`" % ids[0] in body("Live helpers")
       and "%s holds `STATENOW_TEST_OTHER_SEAT`" % O in body("Live helpers"),
       "live helpers: both live leases, every seat: %r" % sec["Live helpers"][0])
 check("STATENOW_TEST_OTHER_RELEASED" not in body("Live helpers"), "live helpers: a released lease is not one")
@@ -121,6 +134,21 @@ check("NEXT: read the first exception in Player.log (" in body("NEXT") and "seco
       "NEXT: one line of the note, with its date and writer")
 check("dropped item's action" not in body("NEXT") and "other seat's action" not in body("NEXT"),
       "NEXT: nothing from a dropped item or another seat")
+check("other seat's action" not in body("NEXT") and ("`%s`" % ids[6]) not in body("NEXT"),
+      "NEXT: an empty NEXT: borrows nothing from the next line")
+row7 = next((ln for ln in sec["NEXT"] if ("`%s`" % ids[7]) in ln), "")
+check("BLOCKED: deploy waits on his approval" in row7 and "⚠ 2 later events" in row7,
+      "NEXT: an overtaken NEXT carries the block and a later-events warning:\n        " + row7)
+rowl = next((ln for ln in sec["NEXT"] if LONG in ln), "")
+check(rowl.endswith(", %s)" % O) and len(rowl) <= ledger_state.WIDTH,
+      "NEXT: a 64-char id keeps its stamp and writer, the action is what gets cut:\n        " + rowl)
+check(ledger_state.build("CONDUCTOR").splitlines()[3:] == lines[3:] and
+      ledger_state.out_path("BENCH") == ledger_state.out_path(ledger_state.model.canonical("CONDUCTOR")),
+      "the CONDUCTOR alias reads BENCH's items, not an empty seat")
+os.environ["TZ"] = "UTC"
+time.tzset()
+check(ledger_state.local("2026-11-12T05:33:39Z") == "2026-11-11 21:33 PST"
+      and ledger_state.local("2026-07-01T19:00:00Z") == "2026-07-01 12:00 PDT", "times are Pacific on a UTC host, PDT in summer")
 check(len(lines) <= ledger_state.MAX_LINES and max(map(len, lines)) <= ledger_state.WIDTH,
       "one screen: %d lines (<= %d), widest %d (<= %d)" % (len(lines), ledger_state.MAX_LINES,
                                                          max(map(len, lines)), ledger_state.WIDTH))
@@ -128,7 +156,6 @@ check(len(lines) <= ledger_state.MAX_LINES and max(map(len, lines)) <= ledger_st
 print("ledger_state: the file lands beside the ledger in use, never in the real repo")
 path = ledger_state.out_path(B)
 check(path == os.path.join(TMP, "derived", "state_now", "BENCH_STATE_NOW.md"), "path under the test root: %s" % path)
-check(not path.startswith(REAL_STATE), "not the real infrastructure/state")
 
 print("handoff --wake: regenerates the file and its pointer lines name it")
 hdir = os.path.join(TMP, "handoffs")

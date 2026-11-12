@@ -23,6 +23,8 @@ import os
 import re
 import sys
 import time
+from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -33,7 +35,8 @@ MAX_LINES = 50
 CAP = 8
 WIDTH = 160
 REGEN = "python3 src/RimMandrake/Utils/ledger_state.py"
-NEXT_RE = re.compile(r"NEXT:\s*(.+)")
+NEXT_RE = re.compile(r"NEXT:[ \t]*([^\n]*)")      # never across a line: an empty NEXT: borrows nothing
+PACIFIC = ZoneInfo("America/Los_Angeles")     # the owner's clock (2026-11-06), whatever TZ the host runs
 
 
 def ledger_head():
@@ -53,9 +56,9 @@ def out_path(seat, head=None):
 
 
 def local(ts):
-    """A ledger UTC stamp (or epoch) -> local Pacific 'YYYY-MM-DD HH:MM PST'; '?' when unreadable."""
+    """A ledger UTC stamp (or epoch) -> Pacific 'YYYY-MM-DD HH:MM PST' (PDT in summer); '?' when unreadable."""
     e = ts if isinstance(ts, (int, float)) else model.epoch(ts)
-    return time.strftime("%Y-%m-%d %H:%M %Z", time.localtime(e)) if e is not None else "?"
+    return datetime.fromtimestamp(e, timezone.utc).astimezone(PACIFIC).strftime("%Y-%m-%d %H:%M %Z") if e is not None else "?"
 
 
 def clip(s, n=WIDTH):
@@ -71,11 +74,24 @@ def short_title(it, n=70):
 def section(title, rows, more_cmd, total=None):
     """A heading, at most CAP rows, and one 'and N more' line naming where the rest are."""
     total = len(rows) if total is None else total
-    out = ["", title]
+    out = ["", clip(title)]
     out += [clip(r) for r in rows[:CAP]] or ["- none"]
     if total > min(len(rows), CAP):
         out.append("- … and %d more: %s" % (total - min(len(rows), CAP), more_cmd))
     return out
+
+
+def standing(i, now, short=False):
+    """The item's state as it stands now, with what would stop a reader acting on it: blocked (and why), needs, and
+    whose live lease it is. A row without these read a blocked, owner-gated item as plain `doing` (GPT broaden, 2026-11-11)."""
+    out = [i.state]
+    if i.blocked:
+        out.append("BLOCKED" if short else "BLOCKED: %s" % clip(i.blocked_reason or "unexplained", 50))
+    if i.needs and i.needs != "offline":
+        out.append("needs %s" % i.needs)
+    if model.lease_status(i, now) == "live":
+        out.append("leased" if short else "leased by %s" % (i.lease.get("seat") or "?"))
+    return ", ".join(out)
 
 
 def open_items(world, seat, now):
@@ -93,19 +109,16 @@ def open_items(world, seat, now):
     seen = {i.id for i in inprog + blocked}
     ranked = [i for i in priority.rank(world, seat, "v1", {"now": now}) if i.id not in seen]
     rows = []
-    for i in inprog:
-        rows.append("- `%s` — %s%s, needs %s: %s" % (i.id, i.state, " (leased)" if i.id in live else "",
-                                                   i.needs, short_title(i)))
-    for i in blocked:
-        rows.append("- `%s` — BLOCKED: %s" % (i.id, clip(i.blocked_reason or "unexplained", 80)))
+    for i in inprog + blocked:
+        rows.append("- `%s` — %s: %s" % (i.id, standing(i, now), short_title(i)))
     for i in ranked:
-        rows.append("- `%s` — %s, next to offer, needs %s: %s" % (i.id, i.state, i.needs, short_title(i)))
+        rows.append("- `%s` — %s, next to offer: %s" % (i.id, standing(i, now), short_title(i)))
     # then the rest, newest first: a seat holding only proposed or built work must still see some of it by name
     seen |= {i.id for i in ranked}
     rest = ("ready", "proposed", "built", "validated")
     for i in sorted((i for i in mine if i.id not in seen and i.state in rest),
                     key=lambda i: (rest.index(i.state), -(model.epoch(i.created_at) or 0))):
-        rows.append("- `%s` — %s, needs %s: %s" % (i.id, i.state, i.needs, short_title(i)))
+        rows.append("- `%s` — %s: %s" % (i.id, standing(i, now), short_title(i)))
     return section("## Open items — %d (%s)" % (len(mine), tally), rows,
                    "rimflow queue %s" % seat, total=len(mine))
 
@@ -116,7 +129,8 @@ def owner_pending(world, evs):
         import owner_queue
         import fleet_mods
         rel = fleet_mods.relentless_states()
-        n = owner_queue.needs_you(world.items, rel, questions=owner_queue.load_questions(), evs=evs, turns={})
+        n = owner_queue.needs_you(world.items, rel, questions=owner_queue.load_questions(), evs=evs,
+                                  turns=owner_queue.designer_turns())
     except Exception as e:      # noqa: BLE001  a reader that fails says so; it never reads as "nothing waits"
         return ["", "## Owner-pending — UNMEASURED (%s)" % clip(e, 100)]
     rows = []
@@ -139,28 +153,44 @@ def live_helpers(world, now):
     rows = ["- %s holds `%s` (%s), lease to %s" % (i.lease.get("seat") or i.owner, i.id, i.state,
                                                   local(i.lease.get("expires"))[11:])
             for i in held]
-    return section("## Live helpers — %d live lease%s on the ledger, every seat" % (len(held), "" if len(held) == 1 else "s"),
+    return section("## Live helpers — %d unexpired lease%s, every seat (a lease is a claim on the ledger, not proof its worker "
+                   "still runs)" % (len(held), "" if len(held) == 1 else "s"),
                    rows, "rimflow queue <SEAT> (IN PROGRESS)")
 
 
-def next_lines(world, evs, seat):
+# Events that only keep a claim alive say nothing new about the work, so they never mark a NEXT as overtaken.
+QUIET = ("lease", "renew", "claim", "start")
+
+
+def next_lines(world, evs, seat, now):
+    """The newest NEXT: on each open item of this seat. A NEXT is advice as it was written: a row says so when the item
+    has moved since (a later note, block, needs, verify...) or when the action is cut, and the heading says what to do."""
     mine = {i.id: i for i in world.items.values() if i.owner == seat and i.open}
-    last = {}
-    for e in evs:
-        if e.get("event") != "note" or e.get("id") not in mine:
+    last, later = {}, {}
+    for e in evs:       # model.read() is in ledger order (ts, tsn): the last NEXT read is the newest
+        iid = e.get("id")
+        if iid not in mine:
             continue
         m = None
-        for m in NEXT_RE.finditer(e.get("text") or ""):
-            pass
-        if m:       # model.read() is in ledger order (ts, tsn), so the last NEXT read is the newest
-            last[e["id"]] = (e.get("ts") or "", m.group(1).splitlines()[0].strip(), e.get("seat") or "?")
+        if e.get("event") == "note":
+            for m in NEXT_RE.finditer(str(e.get("text") or "")):
+                pass
+        if m and m.group(1).strip():
+            last[iid] = (e.get("ts") or "", m.group(1).splitlines()[0].strip(), e.get("seat") or "?")
+            later[iid] = 0
+        elif iid in last and e.get("event") not in QUIET:
+            later[iid] += 1
     rows = []
     for iid, (ts, nxt, who) in sorted(last.items(), key=lambda kv: kv[1][0], reverse=True):
-        # the action is cut to fit, never the stamp: an old NEXT is only safe to act on when its date shows
-        head, tail = "- `%s` — %s; NEXT: " % (iid, mine[iid].state), " (%s, %s)" % (local(ts)[5:16], who)
+        tail = " (%s, %s%s)" % (local(ts)[5:16], who, "; ⚠ %d later event%s" % (later[iid], "" if later[iid] == 1 else "s")
+                                                      if later[iid] else "")
+        head = "- `%s` — %s; NEXT: " % (iid, standing(mine[iid], now))
+        if len(head) + len(tail) > WIDTH - 30:      # a long id: the flags go short before the stamp could be cut
+            head = "- `%s` — %s; NEXT: " % (iid, standing(mine[iid], now, short=True))
+        # the action is cut to fit, never the stamp or the warning: those are what make an old NEXT safe to read
         rows.append(head + clip(nxt.rstrip(".… "), max(30, WIDTH - len(head) - len(tail))) + tail)
-    return section("## NEXT — the newest `NEXT:` note on %d of this seat's open items (newest first; note time PST, writer)" % len(rows), rows,
-                   "rimflow show <ID>")
+    return section("## NEXT — newest `NEXT:` note on %d of this seat's open items, as written then (Pacific time, writer); a ⚠ or a cut "
+                   "(…) row: rimflow show <ID> first" % len(rows), rows, "rimflow show <ID>")
 
 
 def build(seat, evs=None, world=None, now=None):
@@ -171,6 +201,7 @@ def build(seat, evs=None, world=None, now=None):
     world = world if world is not None else model.replay(evs)
     now = now if now is not None else model.epoch_now()
     as_of = next((e["ts"] for e in reversed(evs) if e.get("ts")), None)
+    seat = model.canonical(seat) or seat      # CONDUCTOR and RELENTLESS are BENCH on the ledger
     L = ["# %s — ledger state now (generated; never edit, never commit)" % seat,
          "ledger as of %s · generated %s · game %s · bridge %s" % (local(as_of), local(now), world.game or "?",
                                                                   world.bridge_holder or "free"),
@@ -178,7 +209,8 @@ def build(seat, evs=None, world=None, now=None):
     L += open_items(world, seat, now)
     L += owner_pending(world, evs)
     L += live_helpers(world, now)
-    L += next_lines(world, evs, seat)
+    L += next_lines(world, evs, seat, now)
+    L = [clip(x) for x in "\n".join(L).split("\n")]      # a stray newline in any field is a line, and is counted
     if len(L) > MAX_LINES:      # cannot happen with the caps above; kept so a new section can never scroll him
         L = L[:MAX_LINES - 1] + ["(cut at %d lines: %s --print)" % (MAX_LINES, REGEN)]
     return "\n".join(L) + "\n"
@@ -186,7 +218,7 @@ def build(seat, evs=None, world=None, now=None):
 
 def write(seat, path=None):
     """Build and write atomically; -> the path written."""
-    path = path or out_path(seat)
+    path = path or out_path(model.canonical(seat) or seat)
     text = build(seat)
     os.makedirs(os.path.dirname(path), exist_ok=True)
     tmp = path + ".tmp.%d" % os.getpid()
