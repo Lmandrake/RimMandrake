@@ -24,7 +24,7 @@
   <BiomeDef>
     <defName>RM_GreySea</defName>
     <label>the Grey Sea</label>
-    <description>A hypersaline terminal sea on the terminator band, its own endemic mat holding it alone the way the Twilight Sea's holds that one. Salt-encrusted and shrinking faster than its sister sea — the planet's chemical works, and the retreating shoreline is free surveying for anyone who can read the terraces.</description>
+    <description>A hypersaline terminal sea on the terminator band, its own endemic mat holding it alone the way the Twilight Sea's holds that one. Salt-encrusted and shrinking faster than its sister sea — the planet's chemical works, and the retreating shoreline is free surveying for anyone who can read the terraces. On its floor, reached only by gravship, nissik, grusk and essarn graze the salt beds under the slow shadow of reefbacks; its shore yields essarn, nissik, thollim and grusk, and sometimes a salt cameo.</description>
     <workerClass>BiomeWorker_Ocean</workerClass>
     <isWaterBiome>true</isWaterBiome>
     <canBuildBase>false</canBuildBase>

@@ -28,7 +28,7 @@
   <BiomeDef>
     <defName>RM_TheScald</defName>
     <label>the Scald</label>
-    <description>A perched ocean in the world's hottest basin, held in a vast crater by the ring of mountains that feed it. It boils where it is shallow and simmers where it is deep, and it spills outward through every river that nourishes the world.</description>
+    <description>A perched ocean in the world's hottest basin, held in a vast crater by the ring of mountains that feed it. It boils where it is shallow and simmers where it is deep, and it spills outward through every river that nourishes the world. On its floor, where only a gravship can carry you, clouds of eesh drift among doss, shulla and shimmer eels, with saal and karrash among them; a line cast from its shore brings up the same eesh, doss and iridai, and now and then a karrash or an ekkel.</description>
     <workerClass>BiomeWorker_Ocean</workerClass>
     <isWaterBiome>true</isWaterBiome>
     <canBuildBase>false</canBuildBase>

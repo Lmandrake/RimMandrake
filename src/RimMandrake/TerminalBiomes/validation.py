@@ -240,6 +240,47 @@ def sea_catch_alive_checks(defs_dir=None):
     return bad
 
 
+def sea_description_checks(defs_dir=None):
+    """SEA_FLOOR_AND_CATCH_PASS_1 (owner 2026-09-21: "The biomes should be describing the sea floors (what you
+    encounter as an animal there) as well as what you can FISH out of the oceans on the shore."): the text a
+    player reads on each sea names at least one animal of its floor (a wildAnimals race, by label) and one fish
+    of its catch (a fishTypes row, by label), says the floor is reached by gravship, and names the shore."""
+    defs_dir = defs_dir or os.path.join(HERE, "Defs")
+    biomes, labels = {}, {}
+    for dp, _, fns in os.walk(defs_dir):
+        for fn in fns:
+            if fn.endswith(".xml"):
+                for d in ET.parse(os.path.join(dp, fn)).getroot():
+                    n = d.findtext("defName")
+                    if d.tag == "BiomeDef" and n in SEAS:
+                        biomes[n] = d
+                    elif d.tag == "ThingDef" and n and d.findtext("label"):
+                        labels[n] = d.findtext("label").strip().lower()
+    bad = [] if len(labels) >= 20 else ["sanity probe: only %d labelled ThingDefs parsed" % len(labels)]
+
+    def named(text, defs):
+        return [labels[x] for x in defs if x in labels and re.search(r"\b%s\b" % re.escape(labels[x]), text)]
+
+    for sea in SEAS:
+        b = biomes.get(sea)
+        if b is None:
+            bad.append("%s BiomeDef not found" % sea)
+            continue
+        text = (b.findtext("description") or "").lower()
+        wa = [c.tag for c in (b.find("wildAnimals") if b.find("wildAnimals") is not None else [])]
+        ft = b.find("fishTypes")
+        rows = [c.tag for g in (ft if ft is not None else []) if g.tag != "rareCatchesSetMaker" for c in g]
+        if not named(text, wa):
+            bad.append("%s: description names no animal of its floor" % sea)
+        if not named(text, rows):
+            bad.append("%s: description names no fish of its catch" % sea)
+        if "gravship" not in text:
+            bad.append("%s: description does not say the floor is reached by gravship" % sea)
+        if not re.search(r"\bshore\b|crust's edge", text):
+            bad.append("%s: description does not say where the catch is fished (the shore)" % sea)
+    return bad
+
+
 def saal_name_checks():
     """SCALD_SAAL_ONE_NAME_1: creature and catch are both labelled saal; no label says noohm."""
     bad = []
@@ -902,7 +943,7 @@ else:
 if __name__ == "__main__":
     problems = (static_checks() + roster_checks() + catch_checks() + saal_name_checks() + ekkel_lore_checks()
                 + wax_checks() + settings_checks() + sea_catch_alive_checks() + scald_native_tag_checks()
-                + steam_catch_checks())
+                + steam_catch_checks() + sea_description_checks())
     print("STATIC: %s" % ("PASS (0 findings)" if not problems else "FAIL"))
     for p in problems:
         print("  - " + p)

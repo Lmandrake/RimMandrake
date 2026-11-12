@@ -243,8 +243,60 @@ namespace RimMandrake.DivingInteraction
                     Rand.PopState();
                 }
             }
+            else if (generate && layer.Tiles.Count == layer.TilesCount)
+            {
+                ResyncStaleFloors(layer);
+            }
 
             return layer;
+        }
+
+        /// <summary>
+        /// SEA_FLOOR_AND_CATCH_PASS_1: a save mirrors its floor ONCE, when it first builds the layer, so
+        /// a floor tile keeps the biome it got then. A save built before the per-sea floor wiring carries the
+        /// empty generic floor under every sea, and a surface repainted on an existing save (the planned
+        /// paint-once) leaves the floor beneath as it was: impassable where the tile used to be land. Players
+        /// receive a save, never a fresh world, so the floor is re-derived from the surface on every load.
+        /// Only a tile whose floor biome disagrees with the surface above it is touched, and never one that
+        /// carries a world object (a floor map or site already standing there keeps what it was made on).
+        /// Returns the number of tiles re-derived.
+        /// </summary>
+        public static int ResyncStaleFloors(PlanetLayer layer)
+        {
+            if (layer == null || !IsSeabedLayer(layer) || Find.WorldObjects == null)
+            {
+                return 0;
+            }
+
+            int changed = 0;
+            for (int i = 0; i < layer.TilesCount; i++)
+            {
+                PlanetTile floorTile = new PlanetTile(i, layer);
+                Tile floor = floorTile.Tile;
+                PlanetTile aboveTile = SurfaceTileOf(floorTile);
+                Tile above = aboveTile.Valid ? aboveTile.Tile : null;
+                if (floor == null || above == null)
+                {
+                    continue;
+                }
+
+                BiomeDef expected = SurfaceHasFloor(above) ? FloorBiomeFor(above) : RM_SeabedDefOf.RM_SeabedUnavailable;
+                if (floor.PrimaryBiome == expected || Find.WorldObjects.AnyWorldObjectAt(floorTile))
+                {
+                    continue;
+                }
+
+                PopulateTile(floorTile);
+                changed++;
+            }
+
+            if (changed > 0)
+            {
+                Log.Message("[RimMandrake.DivingInteraction] Seabed floor re-derived from the surface on " + changed +
+                    " tile(s) whose floor biome no longer matched the sea above.");
+            }
+
+            return changed;
         }
 
         /// <summary>

@@ -49,5 +49,18 @@ for label, rel, old, new in [
     finally:
         shutil.rmtree(tmp)
     check("mutant %-26s goes red" % label, bool(bad), "")
+desc = V.sea_description_checks()
+check("shipped: every sea's description names its floor and its catch", not desc, str(desc[:5]))
+for label, rel, old, new in [
+    ("scald floor sentence cut", "BiomeDefs/RM_TheScald.xml", " On its floor, where only a gravship", " Where only a"),
+    ("chill shore cut", "BiomeDefs/RM_TheChill.xml", "a line dropped from the crust's edge", "a line dropped"),
+    ("grey names no catch", "BiomeDefs/RM_GreySea.xml", "nissik, grusk and essarn graze the salt beds under the slow shadow of reefbacks; its shore yields essarn, nissik, thollim and grusk", "reefbacks pass; its shore yields salt"),
+]:
+    tmp, dst = mutated(rel, old, new)
+    try:
+        bad = V.sea_description_checks(dst)
+    finally:
+        shutil.rmtree(tmp)
+    check("mutant %-26s goes red" % label, bool(bad), "")
 print("\n%s" % ("ALL OK" if not FAILS else "FAILED: %s" % FAILS))
 sys.exit(1 if FAILS else 0)

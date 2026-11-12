@@ -8,8 +8,8 @@
   copies the sea's flora, cast and catch (fishTypes + maxFishPopulation, SCALD_MECHANICS_1 S3) onto its floor (animals x animalDensityFactor, 30 like the hatch mutator), and each floor holds its
   sea's hatch temperature as constantOutdoorTemperature (Scald 55, Grey 12, Twilight 8, Chill -110). Fauna does not wait:
   RM_SeaFloorFauna reads the cast off the sea above (SEABED_FLOOR_GENERATORS_1); each floor names its
-  generator (RM_SeabedGenerators.xml) through RM_SeabedFloorExtension. Propane Lake is
-  a RUT_ Utinni biome and is not wired here (blocked, see item).
+  generator (RM_SeabedGenerators.xml) through RM_SeabedFloorExtension. The Propane Lake's floor is
+  RM_SeabedFloor_TheChill, under its RM_ twin RM_TheChill.
 -->
 <Defs>
 

@@ -20,7 +20,9 @@ and the committed DLL stamp and requires, for "fuel cost per depth both ways":
      tool_schemas.json lists 'layer' on jawa/gravship_launch and jawa/gravship_launch_check, the C# tools take
      `string layer`, jawa/gravship_status reports currentMapLayer/currentMapParent/currentMapTile, and the proof
      script passes layer= to both and reads currentMapLayer (gen 6: another item's schema edit sent the build back
-     stale; this check is what says the edit left the descent's tools whole).
+     stale; this check is what says the edit left the descent's tools whole);
+  8. a save that already carries the floor layer re-derives every stale floor tile from the surface on load
+     (RM_SeabedLayerUtility.ResyncStaleFloors), skipping tiles that match or carry a world object.
 
 Then it runs the same checker on mutated copies (one per gap) and requires each to fail, so a green run proves the
 checker can see each gap.
@@ -191,6 +193,23 @@ def check(root):
             fails.append("7: prove_seabed_descent.py never calls %s with layer=" % name)
     if 'get("currentMapLayer")' not in prove:
         fails.append("7: prove_seabed_descent.py never reads currentMapLayer")
+
+    # 8. SEA_FLOOR_AND_CATCH_PASS_1: a save that already carries the layer re-derives stale floor tiles on load, so a
+    #    save mirrored before the per-sea wiring, or a surface repainted on an existing save, still lands on that
+    #    sea's own floor; a tile carrying a world object is never re-derived under it.
+    lay = re.sub(r"\s+", " ", _strip_comments(_txt(root, LAYER)))
+    if not re.search(r"else if \(generate && layer\.Tiles\.Count == layer\.TilesCount\) \{ ResyncStaleFloors\(layer\);", lay):
+        fails.append("8: EnsureLayer never re-syncs the floor of a save that already carries the layer")
+    m = re.search(r"public static int ResyncStaleFloors\(PlanetLayer layer\)(.*?)return changed;", lay)
+    body = m.group(1) if m else ""
+    if not m:
+        fails.append("8: RM_SeabedLayer.cs has no ResyncStaleFloors")
+    if "SurfaceHasFloor(above) ? FloorBiomeFor(above) : RM_SeabedDefOf.RM_SeabedUnavailable" not in body:
+        fails.append("8: ResyncStaleFloors does not derive the expected floor the way PopulateTile does")
+    if not re.search(r"floor\.PrimaryBiome == expected \|\| Find\.WorldObjects\.AnyWorldObjectAt\(floorTile\)\) \{ continue;", body):
+        fails.append("8: ResyncStaleFloors re-derives a tile that already matches or carries a world object")
+    if "PopulateTile(floorTile);" not in body:
+        fails.append("8: ResyncStaleFloors never re-derives a stale tile")
     return fails
 
 
@@ -215,6 +234,9 @@ MUTANTS = [
     ("status stops reporting the map layer", GRAV_TOOLS, "currentMapLayer = ", "currentMapLayerGone = "),
     ("status stops reporting the map parent", GRAV_TOOLS, "currentMapParent = ", "currentMapParentGone = "),
     ("proof launches without a layer", PROVE, 'call("jawa/gravship_launch", targetTile=target, layer=layer,', 'call("jawa/gravship_launch", targetTile=target,'),
+    ("loaded save never re-syncs its floor", LAYER, "ResyncStaleFloors(layer);", ";"),
+    ("re-sync overwrites a tile with a map on it", LAYER, " || Find.WorldObjects.AnyWorldObjectAt(floorTile)", ""),
+    ("re-sync touches nothing", LAYER, "                PopulateTile(floorTile);\n                changed++;", "                changed++;"),
     ("fuzz tests a copy, not the kernel", FUZZ_CSPROJ, '<Compile Include="..\\RM_SeabedDescentKernel.cs" />', ""),
 ]
 
