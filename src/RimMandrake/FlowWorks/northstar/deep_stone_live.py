@@ -275,8 +275,11 @@ def main():
             return 2
         last = r1.split("| last ")[1] if "| last " in r1 else ""
         got_chunk = [v for v in new.values() if v[0] == chunk]
+        # the statement's bound: the chunk lands within 6 squares of the cut (the list above reaches further, so check it)
+        det["chunkDistance"] = [round(((v[1] - c[0]) ** 2 + (v[2] - c[1]) ** 2) ** 0.5, 2) for v in got_chunk]
+        near = [d_ for d_ in det["chunkDistance"] if d_ <= 6]
         deep_letter = [x for x in new_letters if x.startswith("Deep stone")]
-        good = (d0, d1) == (3, 4) and last.startswith(chunk + " x1") and "D=4 (deep stone)" in last and bool(got_chunk) and bool(deep_letter)
+        good = (d0, d1) == (3, 4) and last.startswith(chunk + " x1") and "D=4 (deep stone)" in last and bool(near) and bool(deep_letter)
         if rid != "DS_superdeep_cut_turns_up_deep_stone":
             # broaden rows: the chunk and the letter, the chunk on undug ground (the lip), whatever else the cut turned up
             det["chunkDepth"] = [depth((v[1], v[2])) for v in got_chunk]
