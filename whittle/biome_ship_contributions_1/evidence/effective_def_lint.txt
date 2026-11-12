@@ -13,9 +13,7 @@ RM_LongShadeMast, the Helix trader line, the retuned RM_SekkulaathTank, the 15 r
 ## lint output
 [  15s] mods 10 (not installed 0) | files 2963
 [  22s] content key d9ab93ed6ab5a9f0 (8s)
-[  39s] defs combined: 17660
-[  41s] patch ops 369 | unsupported 4
-meta: {"modlist": "/tmp/mc_min.xml", "active": 10, "defs": 17642, "patch_ops": 369, "unsupported_ops": 4, "key": "d9ab93ed6ab5a9f02b70719f14dd86431425dfac59940a9e6752e99160ea68a8", "when": "2026-11-12T08:14:16Z", "cache": "MISS"}
+meta: {"modlist": "/tmp/mc_min.xml", "active": 10, "defs": 17642, "patch_ops": 369, "unsupported_ops": 4, "key": "d9ab93ed6ab5a9f02b70719f14dd86431425dfac59940a9e6752e99160ea68a8", "when": "2026-11-12T08:14:16Z", "cache": "HIT /mnt/d/ClaudeWork/rimmandrake/scratch/effective_def_lint/result_d9ab93ed6ab5a9f02b70719f14dd8643.json"}
 PASS        biomeworker_rivers      0 findings (0 crash) -- repo C# source, text match on the class body
 PASS        alert_leaf              0 findings (0 crash) -- repo C# source; inheritance only within our files
 PASS        compile_include         4 findings (0 crash) -- every csproj with EnableDefaultCompileItems=false

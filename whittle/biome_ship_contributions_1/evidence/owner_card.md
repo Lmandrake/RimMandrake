@@ -1,6 +1,6 @@
 # Card for the owner: the ship-gift matrix (BIOME_SHIP_CONTRIBUTIONS_1)
 
-Written Thu Nov 12, 12:09 AM PST. Not blocking: the work stands as built until you answer. Delivered to the lane's owner-questions file
+Written Thu Nov 12, 12:26 AM PST. Not blocking: the work stands as built until you answer. Delivered to the lane's owner-questions file
 (`D:\ClaudeWork\rimmandrake\whittle_claude\CLAUDE_STEVEDESKTOP_OFFLINE2\OWNER_QUESTIONS.md`) and the daily digest.
 
 ## The matrix (read this first)
@@ -67,7 +67,7 @@ After you read that, are you ready for a question card?
 
 ## The card
 
-Thu Nov 12, 12:09 AM PST
+Thu Nov 12, 12:26 AM PST
 
 Do these 24 ship gifts stand, one per biome?
 

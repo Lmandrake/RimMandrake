@@ -1,4 +1,4 @@
-run 2026-11-12 00:10 -0800
+run 2026-11-12 00:26 -0800
 == lint_crackedlands_defs.py
 crackedlands lint: 28 defs + 3 patch files, 55 classes, 25 class/def refs, 14 field checks, 0 drivers, 45 settings, 0 ERROR, 0 WARN
 == lint_pyrelands_defs.py
@@ -30,6 +30,7 @@ weepingstones lint: 28 defs + 6 patch files, 45 classes, 39 class/def refs, 6 fi
 == lint_terminalbiomes_defs.py
 ERROR texpath-resolves: Defs/ThingDefs_Buildings/RM_FoundrySalvageCache.xml: texPath Things/Building/Production/RUT_FoundrySalvageCache has no png in Textures/Things/Building/Production
 terminalbiomes lint: 109 defs + 11 patch files, 89 classes, 112 class/def refs, 55 field checks, 5 drivers, 55 settings, 1 ERROR, 3 WARN
+(terminalbiomes' one ERROR, RM_FoundrySalvageCache's texture living in the Utinni tier, predates this item; filed as a lesson)
 == biomes_compose_sweeps.py (sweeps 0-2: paths, defNames, texPaths)
 == 0. relative-path shadowing across load roots (DirectXmlLoader TryAdd)
    probe: 4746 content paths collected (need >50) -> OK
