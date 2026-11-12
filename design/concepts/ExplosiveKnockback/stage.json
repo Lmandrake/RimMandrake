@@ -86,10 +86,17 @@
     "ref": "run bench-ek-st5-20261112",
     "stage": 5,
     "tokens": 200000
+   },
+   {
+    "at": "2026-11-12T08:36:20Z",
+    "kind": "unmeasured",
+    "ref": "run bench-ek-st3b-20261112",
+    "stage": 3,
+    "tokens": 2386989
    }
   ],
   "reserve": 60000,
-  "spent": 1553011
+  "spent": 3940000
  },
  "history": [
   {
@@ -169,6 +176,18 @@
    "stage": 3,
    "what": "close",
    "why": "run bench-ek-st5-20261112: stage 5 return"
+  },
+  {
+   "at": "2026-11-12T08:36:11Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run bench-ek-st3b-20261112, stage 3, budget 2386989"
+  },
+  {
+   "at": "2026-11-12T08:36:20Z",
+   "stage": 3,
+   "what": "retry",
+   "why": "run bench-ek-st3b-20261112 result rejected: no result.json (a closing message is not a result)"
   }
  ],
  "item": "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
@@ -305,6 +324,15 @@
    "stage": 5,
    "summary": "Stage 5: gate REFUSED (root hash not the walk's; no coverage signature). Coverage judge rm-coverage-judge-1794471169 verdict not_covered with 19 gaps, all stage 3 work; returned to stage 3. The stage 4 exam passed 18/18 with control missed, but is void once stage 3 changes the tree.",
    "to": 3
+  },
+  {
+   "at": "2026-11-12T08:36:20Z",
+   "outcome": "rejected",
+   "run": "bench-ek-st3b-20261112",
+   "stage": 3,
+   "why": [
+    "no result.json (a closing message is not a result)"
+   ]
   }
  ],
  "runner": "claude",
