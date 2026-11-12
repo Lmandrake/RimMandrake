@@ -61,8 +61,9 @@
       <RM_Heemin>0.7</RM_Heemin>
       <RM_Oovanam>0.3</RM_Oovanam>
       <!-- SEA_FISHABLES_ALIVE_IN_DEPTHS_1, 2026-09-26. The six remaining
-           catch-only rows in <fishTypes> below (RUT_Fessu, RUT_Krellik,
-           RUT_Oddu, RUT_Oovu, RUT_Iliss, RUT_Tarnn) now have living
+           catch-only rows in <fishTypes> below (RM_FessuCatch, RM_KrellikCatch,
+           RM_OdduCatch, RM_OovuCatch, RM_IlissCatch, RM_TarnnCatch; RUT_ until
+           CHILL_FREE_TIER_CATCH_1) now have living
            counterparts, authored from those items' own descriptions.
            RM_Zhiil is its floor body (CHILL_ZHIIL_FLOOR_BODY_1).
            Defs: RM_TheChillFloorLife.xml.

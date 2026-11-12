@@ -281,6 +281,29 @@ def sea_description_checks(defs_dir=None):
     return bad
 
 
+def chill_refinery_checks(defs_dir=None):
+    """Owner card 2026-09-24 ("Refinery bill"): the Propane Lake's catches are fuel as a MECHANIC. Every hydrocarbon
+    catch of the Chill (Flammability 1.0 in RM_TheChillCatch.xml) is an ingredient of a BiofuelRefinery recipe in
+    this mod whose product is Chemfuel, so the catch a player lands on its shore can be refined."""
+    defs_dir = defs_dir or os.path.join(HERE, "Defs")
+    fuel, takes = [], set()
+    for d in ET.parse(os.path.join(defs_dir, "ThingDefs_Items", "RM_TheChillCatch.xml")).getroot():
+        if d.tag == "ThingDef" and (d.findtext("statBases/Flammability") or "").strip() == "1.0":
+            fuel.append(d.findtext("defName"))
+    for dp, _, fns in os.walk(defs_dir):
+        for fn in fns:
+            if fn.endswith(".xml"):
+                for r in ET.parse(os.path.join(dp, fn)).getroot().findall("RecipeDef"):
+                    users = [li.text for li in r.findall("recipeUsers/li")]
+                    if "BiofuelRefinery" in users and r.find("products/Chemfuel") is not None:
+                        fixed = {li.text for li in r.findall("fixedIngredientFilter/thingDefs/li")}
+                        ing = {li.text for li in r.iter("li") if li.text and li.text in fixed}
+                        takes |= fixed & ing
+    bad = [] if len(fuel) >= 5 else ["sanity probe: only %d hydrocarbon Chill catches parsed" % len(fuel)]
+    bad += ["Chill catch %s is fuel but no refinery bill renders it into chemfuel" % c for c in fuel if c not in takes]
+    return bad
+
+
 def saal_name_checks():
     """SCALD_SAAL_ONE_NAME_1: creature and catch are both labelled saal; no label says noohm."""
     bad = []
@@ -943,7 +966,7 @@ else:
 if __name__ == "__main__":
     problems = (static_checks() + roster_checks() + catch_checks() + saal_name_checks() + ekkel_lore_checks()
                 + wax_checks() + settings_checks() + sea_catch_alive_checks() + scald_native_tag_checks()
-                + steam_catch_checks() + sea_description_checks())
+                + steam_catch_checks() + sea_description_checks() + chill_refinery_checks())
     print("STATIC: %s" % ("PASS (0 findings)" if not problems else "FAIL"))
     for p in problems:
         print("  - " + p)

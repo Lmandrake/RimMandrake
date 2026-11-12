@@ -62,5 +62,12 @@ for label, rel, old, new in [
     finally:
         shutil.rmtree(tmp)
     check("mutant %-26s goes red" % label, bool(bad), "")
+ref = V.chill_refinery_checks()
+check("shipped: every hydrocarbon Chill catch has a refinery bill", not ref, str(ref[:5]))
+tmp, dst = mutated("RecipeDefs/RM_TheChillFuelChain.xml", "        <li>RM_ZhiilCatch</li>\n      </thingDefs>\n    </fixedIngredientFilter>", "      </thingDefs>\n    </fixedIngredientFilter>")
+try:
+    check("mutant %-26s goes red" % "zhiil dropped from the bill", bool(V.chill_refinery_checks(dst)), "")
+finally:
+    shutil.rmtree(tmp)
 print("\n%s" % ("ALL OK" if not FAILS else "FAILED: %s" % FAILS))
 sys.exit(1 if FAILS else 0)

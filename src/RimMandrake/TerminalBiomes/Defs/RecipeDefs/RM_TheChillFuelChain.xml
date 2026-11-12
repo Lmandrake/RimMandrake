@@ -36,6 +36,60 @@
 -->
 <Defs>
 
+  <!-- SEA_FLOOR_AND_CATCH_PASS_1, 2026-11-11: the refinery bill for the catch a player actually lands.
+       Owner ruling 2026-09-24 (question card, "Refinery bill"): the Propane Lake's catches are fuel as a
+       MECHANIC, 10 catch -> 35 chemfuel at the vanilla BiofuelRefinery. That bill
+       (RUT_Make_ChemfuelFromPropaneCatch) takes only the frozen RUT_ twin items, which no fishTypes table
+       serves since CHILL_FREE_TIER_CATCH_1 moved the Chill's catch to RM_*Catch, so the shore's catch could
+       not be refined at all. Same numbers and shape, on the seven hydrocarbon catches (Flammability 1.0 in
+       RM_TheChillCatch.xml); heemin and oovanam carry no Flammability 1.0 and were absent from the
+       original bill, so they stay out (validation.chill_refinery_checks). -->
+  <RecipeDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_Make_ChemfuelFromChillCatch</defName>
+    <label>render Chill catch into chemfuel</label>
+    <description>Crack a batch of Chill catch into chemfuel. The creatures of that shore are grown from fuel snow and burn like it; rendering them is closer to decanting than to refining.</description>
+    <jobString>Rendering Chill catch into chemfuel.</jobString>
+    <effectWorking>Cremate</effectWorking>
+    <soundWorking>Recipe_Cremate</soundWorking>
+    <workAmount>1200</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <allowMixingIngredients>true</allowMixingIngredients>
+    <recipeUsers>
+      <li>BiofuelRefinery</li>
+    </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <customSummary>Chill catch</customSummary>
+          <thingDefs>
+            <li>RM_FessuCatch</li>
+            <li>RM_KrellikCatch</li>
+            <li>RM_OdduCatch</li>
+            <li>RM_OovuCatch</li>
+            <li>RM_IlissCatch</li>
+            <li>RM_TarnnCatch</li>
+            <li>RM_ZhiilCatch</li>
+          </thingDefs>
+        </filter>
+        <count>10</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_FessuCatch</li>
+        <li>RM_KrellikCatch</li>
+        <li>RM_OdduCatch</li>
+        <li>RM_OovuCatch</li>
+        <li>RM_IlissCatch</li>
+        <li>RM_TarnnCatch</li>
+        <li>RM_ZhiilCatch</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <Chemfuel>35</Chemfuel>
+    </products>
+  </RecipeDef>
+
   <!-- Tarspool's stalk, resolved into its two ruled fractions in one bench
        action ("scraping the crown... the heavy black tars at the base",
        doc's own two-part harvest description) — one RecipeDef, two
