@@ -1,0 +1,1 @@
+2026-11-11 22:49-0800: live step only. Every criterion is a live debug-tool read, and this offline lane may not run a game. Offline part published at 7366abac1f; item set needs=bridge and given to BENCH for a live lane (run the 'sinking' chain in src/RimUtinni/Rites/validation.py, after performing the rite once through the ritual dialog). No owner question.
