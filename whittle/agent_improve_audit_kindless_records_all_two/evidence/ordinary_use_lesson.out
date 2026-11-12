@@ -1,10 +1,20 @@
-# 2026-11-11 20:38 -0800 ordinary use: a lesson filed in this Whittle round, then read by the pass's own collector
-$ WC_ITEM=AGENT_IMPROVE_AUDIT_KINDLESS_RECORDS_ALL_TWO python3 src/RimMandrake/Utils/lessons.py add "..." --home skill:using-rimflow
-infrastructure/state/lessons/20261112T043802Z-CLAUDE_ARCHMAGI_OFFLINE1-lesson-item-footer-feeds-kinds.md
-commit it: git commit infrastructure/state/lessons/20261112T043802Z-CLAUDE_ARCHMAGI_OFFLINE1-lesson-item-footer-feeds-kinds.md -m 'lesson: …'
+# 2026-11-11 21:32 -0800 at HEAD f70be4f719 ordinary use: lessons in the real inbox and what the pass's own collector makes of them
+# this round's lesson, filed with WC_ITEM set by the Whittle loop; the commit that added it:
+  13c3626830 2026-11-11 20:42:33 -0800 AGENT_IMPROVE_AUDIT_KINDLESS_RECORDS_ALL_TWO: evidence, broaden, lessons README names --item
 
+# every inbox lesson that carries an item: footer (seat from the file name), filed by any seat:
+  20261112T043802Z-CLAUDE_ARCHMAGI_OFFLINE1-lesson-item-footer-feeds-kin item: AGENT_IMPROVE_AUDIT_KINDLESS_RECORDS_ALL_TWO
+  20261112T045615Z-BENCH-claude-p-default-context-cost.md                item: NONE
+  20261112T045615Z-BENCH-ledger-open-ghosts.md                           item: NONE
+  20261112T045615Z-BENCH-private-run-copy-never-adopts.md                item: NONE
+  20261112T045616Z-BENCH-empty-out-mtime-birth.md                        item: NONE
+  20261112T052005Z-CLAUDE_ARCHMAGI_OFFLINE3-whittle-stop-hook-staled-by- item: CATHEDRAL_MISSION_BOON_OFFERS_1
+  20261112T052032Z-CLAUDE_STEVEDESKTOP_OFFLINE2-whittle-loop-re-ran-worl item: WORLD_REMAKE_FINAL_STEP_1
+  20261112T052044Z-CLAUDE_ARCHMAGI_FWLIVE-jawa-mod-settings-field-writes item: GSS_WATER_STUB_FIX_PASSED_LAST_WEEK
+  20261112T052044Z-CLAUDE_ARCHMAGI_FWLIVE-vanilla-waterdeep-has-no-water item: GSS_WATER_STUB_FIX_PASSED_LAST_WEEK
+  20261112T052305Z-BENCH-steve-wsl-vhdx-moved-hdd.md                     item: NONE
+  20261112T052312Z-BENCH-ssh-remote-powershell-eats-stdin.md             item: NONE
 
-# re-read 2026-11-11 21:21 -0800 at HEAD 2452d42756
 $ tail -2 infrastructure/state/lessons/20261112T043802Z-CLAUDE_ARCHMAGI_OFFLINE1-lesson-item-footer-feeds-kinds.md
 item: AGENT_IMPROVE_AUDIT_KINDLESS_RECORDS_ALL_TWO
 home: design/RimMandrake/daily_agent_improvement_2026-11-02.md
@@ -32,11 +42,17 @@ home: design/RimMandrake/daily_agent_improvement_2026-11-02.md
   task_kind=None     target=wc.py                                  20261112T045615Z-BENCH-ledger-open-ghosts.md
   task_kind=None     target=loop.sh                                20261112T045615Z-BENCH-private-run-copy-never-adopts.md
   task_kind=None     target=wc.py                                  20261112T045616Z-BENCH-empty-out-mtime-birth.md
+  task_kind=None     target=common.md                              20261112T052005Z-CLAUDE_ARCHMAGI_OFFLINE3-whittle-stop-hook-staled-by-publish.md
+  task_kind=None     target=None                                   20261112T052032Z-CLAUDE_STEVEDESKTOP_OFFLINE2-whittle-loop-re-ran-world-remake.md
+  task_kind=FIX      target=None                                   20261112T052044Z-CLAUDE_ARCHMAGI_FWLIVE-jawa-mod-settings-field-writes-flowworks.md
+  task_kind=FIX      target=None                                   20261112T052044Z-CLAUDE_ARCHMAGI_FWLIVE-vanilla-waterdeep-has-no-waterproofconduitable-affordance.md
+  task_kind=None     target=steve_c_drive_fill_2026-11-03.md       20261112T052305Z-BENCH-steve-wsl-vhdx-moved-hdd.md
+  task_kind=None     target=wsl-windows-plumbing                   20261112T052312Z-BENCH-ssh-remote-powershell-eats-stdin.md
 
 $ python3 src/RimMandrake/Utils/agent_improve.py gather --day 2026-11-12 --dry-run --out <scratch, L0>
 # Agent improvement packet 2026-11-12
 
-22 pieces today; 2 signalled targets (>= 2 pieces in 7 days), cap 6.
+28 pieces today; 2 signalled targets (>= 2 pieces in 7 days), cap 6.
 
 ## loop.sh (2 in window, 2 today)
 kinds: lesson 2
@@ -63,5 +79,8 @@ kinds: lesson 2
 - [lesson] SteveDesktop WSL had no playwright (2026-11-11): a venv under D:\ClaudeWork\rimmandrake\whittle_claude\<SEAT>\venv plus 'sudo -n <venv>/bin/playwright install-deps chromium' (passwordless sudo works) 
 - [lesson] Whittle setup on SteveDesktop left DONE.md and JUDGE_PROMPT.md as 0-byte files (MINERAL_SHEET_REBUILD_FROM_PAINTED_MAP, 2026-11-11); loop.sh lays the templates only when the file is ABSENT ([ -e ]), s
 - [lesson] A baseChance-0 GiveQuest incident fired through jawa/storyteller_fire must override GiveQuestBase's targetTags (World) with <targetTags Inherit="False"><li>Map_PlayerHome</li></targetTags>: storytelle
+- [lesson] Whittle loop re-ran WORLD_REMAKE_FINAL_STEP_1 three times on 2026-11-11 although the ledger blocks it (on BIOME_PAINT_ONCE_AT_THE_END_1, owner BENCH, never offered): wc.py setup should skip items with
+- [lesson] jawa/mod_settings_field writes a FlowWorks swim switch WITHOUT running RM_SwimWater.Reapply, so the deep band on a live map does not change: follow it with jawa/static_call type=RimMandrake.FlowWorks.
+- [lesson] Vanilla WaterDeep has no WaterproofConduitable affordance (live jawa/build_check refuses WaterproofConduit there), so a matrix scene that spawns conduit on WaterDeep is a layout no player can build; F
 
-Not signalled today: CLAUDE.md, daily_agent_improvement_2026-11-02.md, install.sh, selftest_codex_seats.py
+Not signalled today: CLAUDE.md, common.md, daily_agent_improvement_2026-11-02.md, install.sh, selftest_codex_seats.py, steve_c_drive_fill_2026-11-03.md, wsl-windows-plumbing

@@ -148,10 +148,11 @@ the newest version of each target:
   Whittle loop's `WC_ITEM`), a Relentless reject or learned line's item, a Relentless alarm's `item` or its
   `clones/<item>` path, an owner note's item, an ops alarm's own name. That own item decides: `item: NONE`, or an id
   with no intent word, gives no kind and is never second-guessed from the text. Otherwise it is the first item named anywhere in the piece's whole text, not
-  only the 200 characters the packet shows: of the 2400 lessons ever filed, the first line names a kind for 159 (7%), the
-  whole text for 582 (24%). That fallback is a proxy, not provenance: the lesson's own seat wrote a ledger event on that
+  only the 200 characters the packet shows: of the 2406 lessons ever filed (measured 2026-11-11 21:31 PST), the first line names a kind for 159 (7%),
+  the whole text for 584 (24%). That fallback is a proxy, not provenance: the lesson's own seat wrote a ledger event on that
   item within 3 hours of filing for 27% of the first-line cases and 49% of the whole-text-only ones, so reading the whole
-  text is no less sound than the first line was, and only the footer is sound. Each cited piece in a change record
+  text is no less sound than the first line was, and only the footer is sound. The footer names the item the lesson
+  was filed inside, which is its source task by definition, even when the lesson is about tooling met along the way. Each cited piece in a change record
   carries its `task_kind`.
   **A change at L0 or L1 whose cited pieces still name no item is applied, and its record says `source_kinds: []`: it
   stays uncheckable by design** (shown `unmeasured` while due, as above; refused only by the L2 gate). Why: no other
@@ -162,7 +163,8 @@ the newest version of each target:
   for no extra evidence (4.1: gross bugs first), and a refused diff counts as proposed and not applied, which pulls down
   the acceptance rate the ramp reads. Measured 2026-11-11: 2 of 2 change records on file have `source_kinds: []`
   (rimworld-modding v1 and using-rimflow v1, both L0, one lesson each). Neither lesson names an item anywhere, so this
-  reading gives them none either. In the live inbox at 20:59 PST, 8 of 114 lessons name an item in their text (2 by their first line) and 5 carry an `item:` footer, so most
+  reading gives them none either. In the live inbox at 21:31 PST, 10 of 120 lessons name an item in their text (2 by their first line) and 11 carry an
+  `item:` footer, so most
   skill changes will stay unmeasured until lessons are filed inside an item and so carry its `item:` line. Measurement:
   `whittle/agent_improve_audit_kindless_records_all_two/evidence/measure_kindless.py` and `attribution_audit.py` beside it.
 - The L2 gate (`AGENT_IMPROVE_TUNE_L2_GATE_SAMPLE_POWER`, decided before the ramp first reached L2, with

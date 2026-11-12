@@ -1,7 +1,7 @@
-# at HEAD 2452d42756
-# 2026-11-11 21:19 -0800  WINDOW +-3 h; corroborated = the lesson's own seat wrote a ledger event on that item in the window
+# at HEAD f70be4f719
+# 2026-11-11 21:32 -0800  WINDOW +-3 h; corroborated = the lesson's own seat wrote a ledger event on that item in the window
 first line       lessons  159  corroborated   43 (27%)
-whole text only  lessons  420  corroborated  204 (49%)
+whole text only  lessons  422  corroborated  206 (49%)
 
 sample of 8, first line:
   no    20261105T210722Z-BENCH-artsheet-fix-reference-textures-pickable-nightl ARTSHEET_FIX_REFERENCE_TEXTURES_PICKABLE
@@ -14,11 +14,11 @@ sample of 8, first line:
   no    20261105T072707Z-BENCH-relentless-game-stage-loop-offline-rebuild.md   TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING
 
 sample of 8, whole text only:
-  no    20261031T021737Z-FOUNDRY-arena-vet-ordered-map-loses-work.md           RP_SELFTEST_FILTER_BUILD_SERIAL_DLL
-  no    20261106T195824Z-BENCH-windows-os-replace-onto-file-another.md         MINIDUMP_PROVE_SPIKE_BEFORE_THE_KILL
-  yes   20261102T221534Z-BENCH-run-selftests-py-only-src-rimmandrake.md        IMMERSION_DAMAGE_WIRE_NEVER_APPLIED
-  no    20261106T025123Z-BENCH-concurrent-subprocess-test-that-calls-p.md      SPAWN_HOOK_FIX_TYPING_BEATS_OWNER_CAP
-  no    20261106T222201Z-BENCH-rename-2-over-symlink-not-lookup.md             RELENTLESS_BUILD_DAILY_RELEASE_WITH_ROLLBACK
-  no    20261106T163550Z-BENCH-bench-r17-midrain-saved-321-mod.md              GAMEENV_FIX_HARNESS_47EE6093_ITEMS_WAIT
-  yes   20261104T040225Z-BENCH-relentless-contract-frozen-after-gen-1.md       OPS_MEMORY_VET_THEN_WIRE_AFTER_WATCH
-  yes   20261104T063128Z-BENCH-floatmenu-opened-by-rimworld-execute-debug.md   BRIDGE_FLOATMENU_FIX_DEBUG_PICKER_UNREADABLE
+  yes   20261031T170957Z-FOUNDRY-direct-raid-no-shovels.md                     CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP
+  no    20261106T204659Z-BENCH-owner-s-delegated-digest-blind-allowlist.md     AGENT_IMPROVE_WIRE_GENCHECK_HAND_RUN_ONLY
+  yes   20261103T042329Z-BENCH-round-series-regen-counts-apply-rounds.md       SERIES_STOP_FIX_RENAMED_DEF_ESCAPES
+  no    20261106T033212Z-BENCH-owner-look-acceptance-clause-live-proof.md      WATER_DEPTH_RESKIN_HE_LOOKS_FIRST
+  no    20261106T230741Z-BENCH-relentless-proof-that-reads-ledger-sees.md      RELENTLESS_REMEASURE_TICK_P95_DETACH_NEXT
+  no    20261106T165644Z-BENCH-list-things-read-with-limit-n.md                GAMEENV_FIX_PROOFSITE_28883863_ITEMS_WAIT
+  yes   20261104T044038Z-BENCH-relentless-blind-checker-box-relentless-wall.md FOUNDRY_CLONE_UNITS_MIGRATE_TO_BENCH
+  yes   20261104T065753Z-BENCH-selftest-that-fakes-rimbridge-request-default.m AGENT_WRAPUP_ENFORCE_ASKING_NEVER_WORKED
