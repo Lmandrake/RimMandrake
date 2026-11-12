@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -74,8 +75,10 @@ namespace RimMandrake.WreckedMachines
 
         // ── The alloy forge aboard, SHIP_ALLOY_FORGE_1 (Patches/
         // WreckedMachines_AlloyForgeGates.xml). Shipped default: ON. The forge
-        // needs Alloy Forge Restoration (early) and its plasteel recipe needs
-        // Plasteel Alloying (late). Off: VFE Factory's stock gates.
+        // needs Alloy Forge Restoration (early), costs industrial components in
+        // place of VFE's 4 advanced ones (those need plasteel and AdvancedFabrication,
+        // so the stock cost made the early forge a late one), and its plasteel recipe
+        // needs Plasteel Alloying (late). Off: VFE Factory's stock gates and cost.
         public static bool alloyForgeProgressiveGate = true;
 
         // Shipped default: ON. The forge's plasteel recipe exists. Off: the
@@ -241,9 +244,10 @@ namespace RimMandrake.WreckedMachines
                     "Alloy forge unlocks step by step",
                     ref alloyForgeProgressiveGate,
                     "On (shipped default): the alloy forge needs Alloy Forge Restoration, "
-                    + "an early project right after the smelter, and its plasteel recipe "
-                    + "needs Plasteel Alloying, a late one. Off: the forge and its "
-                    + "plasteel recipe use VFE Factory's own research gates.");
+                    + "an early project right after the smelter, costs industrial components "
+                    + "only (no advanced ones), and its plasteel recipe needs Plasteel "
+                    + "Alloying, a late one. Off: the forge and its plasteel recipe use "
+                    + "VFE Factory's own research gates and cost.");
                 list.CheckboxLabeled(
                     "Alloy forge can make plasteel",
                     ref plasteelAlloyEnabled,
@@ -406,6 +410,21 @@ namespace RimMandrake.WreckedMachines
         private static readonly List<ResearchProjectDef> PlasteelProcessPrereq =
             AlloyForgeReflection.ResearchPrereqs(PlasteelProcess);
 
+        // Where the plasteel process sits on the forge as loaded (after the Armoury's durasteel
+        // process, which is prepended so it is the forge's first recipe). Re-enabling the
+        // plasteel toggle puts it back HERE, never at 0, so it cannot jump ahead of durasteel.
+        private static readonly int PlasteelProcessIndex =
+            AlloyForgeReflection.IndexOf(AlloyForge, PlasteelProcess);
+
+        // The forge's cost as loaded (VFE Factory's: 460 steel, 14 industrial + 4 SPACER components). Spacer
+        // components are made from plasteel behind AdvancedFabrication, the very gate the late plasteel recipe
+        // sits behind, so with the stock cost the "early" durasteel forge could not be built until late game.
+        // Gated, each spacer component is swapped for an industrial one; off, the stock list comes back.
+        private static readonly List<ThingDefCountClass> StockForgeCost =
+            AlloyForge != null && AlloyForge.costList != null
+                ? AlloyForge.costList.Select(e => new ThingDefCountClass(e.thingDef, e.count)).ToList()
+                : null;
+
         private static readonly Dictionary<ThingDef, List<ThingDefCountClass>> BaseCosts =
             new Dictionary<ThingDef, List<ThingDefCountClass>>();
 
@@ -473,6 +492,10 @@ namespace RimMandrake.WreckedMachines
                     : new List<ResearchProjectDef> { StockForgeResearch };
             }
 
+            if (AlloyForge != null && StockForgeCost != null)
+                AlloyForge.costList = gated ? EarlyForgeCost(StockForgeCost)
+                    : StockForgeCost.Select(e => new ThingDefCountClass(e.thingDef, e.count)).ToList();
+
             if (PlasteelProcess != null && PlasteelProcessPrereq != null)
             {
                 var prereqs = new List<ResearchProjectDef>(PlasteelProcessPrereq);
@@ -481,7 +504,22 @@ namespace RimMandrake.WreckedMachines
             }
 
             AlloyForgeReflection.SetProcessPresent(AlloyForge, PlasteelProcess,
-                WreckedMachinesSettings.plasteelAlloyEnabled, 0);
+                WreckedMachinesSettings.plasteelAlloyEnabled, PlasteelProcessIndex);
+        }
+
+        /// <summary>The stock forge cost with every spacer component counted as an industrial one (merged into the
+        /// existing industrial entry), so the forge is buildable before AdvancedFabrication.</summary>
+        public static List<ThingDefCountClass> EarlyForgeCost(List<ThingDefCountClass> stock)
+        {
+            var spacer = ThingDefOf.ComponentSpacer;
+            var industrial = ThingDefOf.ComponentIndustrial;
+            int moved = stock.Where(e => e.thingDef == spacer).Sum(e => e.count);
+            var cost = stock.Where(e => e.thingDef != spacer).Select(e => new ThingDefCountClass(e.thingDef, e.count)).ToList();
+            if (moved == 0) return cost;
+            var ind = cost.FirstOrDefault(e => e.thingDef == industrial);
+            if (ind != null) ind.count += moved;
+            else cost.Add(new ThingDefCountClass(industrial, moved));
+            return cost;
         }
 
         private static void RescaleCost(ThingDef def)
@@ -540,6 +578,15 @@ namespace RimMandrake.WreckedMachines
                 if (f != null) return f.GetValue(props) as System.Collections.IList;
             }
             return null;
+        }
+
+        /// <summary>The process's position on the building's processor as loaded; the list's end if absent.</summary>
+        public static int IndexOf(ThingDef building, Def process)
+        {
+            var list = Processes(building);
+            if (list == null) return 0;
+            int i = process == null ? -1 : list.IndexOf(process);
+            return i >= 0 ? i : list.Count;
         }
 
         /// <summary>Adds (at index, clamped) or removes one process on the building's processor.</summary>

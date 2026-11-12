@@ -138,6 +138,16 @@ def _alloy_forge_checks(bad):
         bad.append("the gate patch does not replace the alloy forge's research with RM_WM_AlloyForgeRestoration")
     if not any('VFEFactory_AlloyPlasteel"]' in x for x in xp) or "RM_WM_PlasteelAlloying" not in vals:
         bad.append("the gate patch does not gate VFEFactory_AlloyPlasteel with RM_WM_PlasteelAlloying")
+    cs = open(os.path.join(HERE, "Source", "WreckedMachinesMod.cs"), encoding="utf-8").read()
+    if "AlloyForge.costList = gated ? EarlyForgeCost(StockForgeCost)" not in cs:
+        bad.append("the progressive gate does not swap the forge's advanced components for industrial ones")
+    if "plasteelAlloyEnabled, PlasteelProcessIndex)" not in cs:
+        bad.append("re-enabling plasteel does not put it back at its loaded index (it would jump ahead of durasteel)")
+    tab = open(os.path.join(HERE, "..", "..", "RimUtinni", "ResearchRetag", "Patches", "RUT_ResearchTabAssign.xml"),
+               encoding="utf-8").read()
+    for n in ("RM_WM_AutomatedSmelterRestoration", "RM_WM_AlloyForgeRestoration", "RM_WM_PlasteelAlloying"):
+        if 'ResearchProjectDef[defName="%s"]/tab' % n not in tab:
+            bad.append("%s is not retabbed beside the smelter (RUT_ResearchTabAssign.xml)" % n)
 
 
 def static_checks():
@@ -521,8 +531,9 @@ for _f in RUNTIME_SETTINGS + SALVAGE_SETTINGS:
 
 @suite.chain("alloy_forge_gated")
 def alloy_forge_gated(t):
-    """SHIP_ALLOY_FORGE_1 on a load: the forge needs RM_WM_AlloyForgeRestoration, the plasteel process needs
-    RM_WM_PlasteelAlloying, and neither def logged an error."""
+    """SHIP_ALLOY_FORGE_1 on a load: the forge needs RM_WM_AlloyForgeRestoration and costs no advanced components,
+    the plasteel process needs RM_WM_PlasteelAlloying, durasteel is the forge's first recipe, the forge's research
+    sits on the smelter's tab, and no def logged an error."""
     with t.component("forge_needs_alloy_forge_restoration"):
         if t.session is None:
             raise RowDone
@@ -541,6 +552,44 @@ def alloy_forge_gated(t):
             raise RowDone
         if "RM_WM_PlasteelAlloying" not in str(v):
             raise ExpectationFailed("VFEFactory_AlloyPlasteel researchPrerequisites %r lack RM_WM_PlasteelAlloying" % v)
+    with t.component("forge_costs_no_advanced_components"):
+        # The stock cost (4 ComponentSpacer) needs plasteel + AdvancedFabrication: the early forge would be a late one.
+        if t.session is None:
+            raise RowDone
+        v, raw = _def_field(t, "ThingDef/VFEFactory_AutomatedAlloyForge", "costList")
+        if v is None:
+            _unmeasured(t, "could not read the forge's costList: %s" % str(raw)[:160])
+            raise RowDone
+        if "ComponentSpacer" in str(v) or "ComponentIndustrial" not in str(v):
+            raise ExpectationFailed("forge costList %r still needs advanced components (or no industrial ones)" % v)
+    with t.component("durasteel_is_the_forges_first_recipe"):
+        if t.session is None:
+            raise RowDone
+        v, raw = _def_field(t, "ThingDef/VFEFactory_AutomatedAlloyForge", "comps")
+        txt = str(v)
+        if v is None or "VFEFactory_AlloyPlasteel" not in txt:
+            _unmeasured(t, "could not read the forge's processes through comps: %s" % str(raw)[:160])
+            raise RowDone
+        if "RSW_AlloyDurasteel" not in txt:
+            _unmeasured(t, "RSW_AlloyDurasteel is not on the forge: mandrake.rsw.armoury not in this list?")
+            raise RowDone
+        if txt.index("RSW_AlloyDurasteel") > txt.index("VFEFactory_AlloyPlasteel"):
+            raise ExpectationFailed("plasteel comes before durasteel on the forge: %s" % txt[:300])
+    with t.component("forge_research_on_the_workshop_tab"):
+        # ResearchRetag (mandrake.rut.researchretag) puts the smelter restoration on RUT_Tree_Workshop; the two forge
+        # projects that follow it must sit beside it, not alone on Main.
+        if t.session is None:
+            raise RowDone
+        tabs = {}
+        for n in ("RM_WM_AutomatedSmelterRestoration", "RM_WM_AlloyForgeRestoration", "RM_WM_PlasteelAlloying"):
+            v, raw = _def_field(t, "ResearchProjectDef/" + n, "tab")
+            tabs[n] = str(v)
+        if "RUT_Tree_Workshop" not in tabs["RM_WM_AutomatedSmelterRestoration"]:
+            _unmeasured(t, "the smelter restoration is not on RUT_Tree_Workshop (ResearchRetag absent?): %r" % tabs)
+            raise RowDone
+        off = [n for n, v in tabs.items() if "RUT_Tree_Workshop" not in v]
+        if off:
+            raise ExpectationFailed("forge research not on the smelter's tab: %r" % tabs)
     with t.component("alloy_forge_loads_clean"):
         if t.session is None:
             return

@@ -1950,6 +1950,40 @@
     </match>
   </Operation>
 
+  <!-- RM_WM_AlloyForgeRestoration and RM_WM_PlasteelAlloying -> The Workshop (RUT_Tree_Workshop), beside the smelter
+       restoration they follow (SHIP_ALLOY_FORGE_1). Without these two rows the forge's projects sat alone on the Main
+       tab (DefDump capture 2026-11-06T19-19-59Z) while their prerequisites were here, so finishing the smelter showed
+       nothing after it. Their researchViewX/Y (27,12 and 28,12, WreckedMachines) are free cells on this tab. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ResearchProjectDef[defName="RM_WM_AlloyForgeRestoration"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ResearchProjectDef[defName="RM_WM_AlloyForgeRestoration"]/tab</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>Defs/ResearchProjectDef[defName="RM_WM_AlloyForgeRestoration"]/tab</xpath>
+        <value><tab>RUT_Tree_Workshop</tab></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ResearchProjectDef[defName="RM_WM_AlloyForgeRestoration"]</xpath>
+        <value><tab>RUT_Tree_Workshop</tab></value>
+      </nomatch>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ResearchProjectDef[defName="RM_WM_PlasteelAlloying"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ResearchProjectDef[defName="RM_WM_PlasteelAlloying"]/tab</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>Defs/ResearchProjectDef[defName="RM_WM_PlasteelAlloying"]/tab</xpath>
+        <value><tab>RUT_Tree_Workshop</tab></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ResearchProjectDef[defName="RM_WM_PlasteelAlloying"]</xpath>
+        <value><tab>RUT_Tree_Workshop</tab></value>
+      </nomatch>
+    </match>
+  </Operation>
+
   <!-- RR_ElectricityBasics -> The Workshop (RUT_Tree_Workshop) -->
   <Operation Class="PatchOperationConditional">
     <xpath>Defs/ResearchProjectDef[defName="RR_ElectricityBasics"]</xpath>
