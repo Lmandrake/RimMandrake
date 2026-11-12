@@ -5,3 +5,4 @@
 {"seat":"CLAUDE_STEVEDESKTOP_FWLIVE","event":"note","id":"CANAL_OBJECTS_SHEET_BUILD_POSES_AND_STYLES","text":"Claude Whittle CLAUDE_STEVEDESKTOP_FWLIVE released this claim: no live item file (ledger ghost)","why":"picker took a ledger-open id with no items/<ID>.md","ts":"2026-11-12T04:18:22Z","tsn":1794457102677588783}
 {"seat":"CLAUDE_STEVEDESKTOP_FWLIVE","event":"bridge","state":"released","host":"stevedesktop","ts":"2026-11-12T04:18:40Z","tsn":1794457120616394011}
 {"seat":"CLAUDE_STEVEDESKTOP_FWLIVE","event":"bridge","state":"released","host":"stevedesktop","ts":"2026-11-12T04:18:54Z","tsn":1794457134676575833}
+{"seat":"CLAUDE_STEVEDESKTOP_FWLIVE","event":"claim","id":"PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS","session":"bec714d7-b5c6-4e43-ae35-96da31b5fb76","ts":"2026-11-12T04:21:23Z","tsn":1794457283277421598}
