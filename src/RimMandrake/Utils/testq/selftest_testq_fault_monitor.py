@@ -201,6 +201,42 @@ def rec(started, finished, item=None, host="stevedesktop", ingested=None, jid=No
 
 
 def gate_checks():
+    saved_home = FM.T.QHOME
+    FM.T.QHOME = tempfile.mkdtemp(prefix="rf_gate_")     # never the live fault_advisory.json
+    try:
+        _gate_checks()
+        _advisory_checks()
+    finally:
+        shutil.rmtree(FM.T.QHOME, ignore_errors=True)
+        FM.T.QHOME = saved_home
+
+
+def _advisory_checks():
+    a = FM.analyse([start(), cyc(170), cyc(175, [0])])
+    w, now, st = a["windows"], BOOT_S + 3600 * 8, {"clean_through_s": None}
+    r = rec(at(172), at(180))
+    check(not FM.advisory() and FM.gate(r, w, st, now)[0] == "quarantine", "default (no switch file): still quarantines")
+    path = FM.T.q(FM.ADVISORY_FILE)
+    S_ = FM.S
+    S_.dump({"advisory": False}, path)
+    check(FM.gate(r, w, st, now)[0] == "quarantine", "switch file with advisory false: still quarantines")
+    S_.dump({"advisory": True}, path)
+    v, why = FM.gate(r, w, st, now)
+    check(v == "count" and why == "advisory: " + w[0]["id"], "advisory ON: an in-window result is counted and names its window (got %s %s)" % (v, why))
+    check(FM.gate(rec(at(172), at(180), host="archmagi"), w, st, now) == ("count", None), "advisory ON: Archmagi unaffected")
+    for d in ("quarantined", "done"):
+        os.makedirs(FM.T.q(d), exist_ok=True)
+    for jid in ("J20261112T000000Z-aaaaaa", "J20261111T000000Z-bbbbbb"):
+        FM.S.dump(dict(rec(at(172), at(180), jid=jid), quarantined={"window": "FX"}), FM.T.q("quarantined", jid + ".json"))
+    FM.release(type("A", (), {"prefix": "J20261112"})())
+    got = FM.T.read_json(FM.T.q("done", "J20261112T000000Z-aaaaaa.json")) or {}
+    check(got.get("fault_window", {}).get("id") == "FX" and "quarantined" not in got and got.get("was_quarantined"), "release: record back in done/ carrying its window id")
+    check(os.path.exists(FM.T.q("quarantined", "J20261111T000000Z-bbbbbb.json")), "release: other prefixes stay quarantined")
+    os.remove(path)
+    check(FM.release(type("A", (), {"prefix": "J"})()) == 1, "release refuses with the switch off")
+
+
+def _gate_checks():
     a = FM.analyse([start(), cyc(170), cyc(175, [0]), start("2026-11-04 03:00:00")])
     w, now = a["windows"], BOOT_S + 3600 * 8
     st = {"clean_through_s": BOOT_S + 170 * 60}

@@ -235,8 +235,20 @@ def window_of(span, windows):
     return None
 
 
+ADVISORY_FILE = "fault_advisory.json"   # {"advisory": true, ...} in the testq home: an open window is recorded, not enforced
+
+
+def advisory():
+    """True when the owner's ruling is on (2026-11-12: run the validation anyway, reboot periodically): a result inside a
+    fault window is COUNTED and carries the window id (rec["fault_window"]); it is not quarantined or re-queued.
+    Default (no file / advisory false) = today's behaviour."""
+    d = T.read_json(T.q(ADVISORY_FILE))
+    return isinstance(d, dict) and d.get("advisory") is True
+
+
 def gate(rec, windows, state, now=None):
-    """-> ("quarantine", window) | ("hold", why) | ("count", why or None). Only SteveDesktop's results are its business."""
+    """-> ("quarantine", window) | ("hold", why) | ("count", why or None). Only SteveDesktop's results are its business.
+    With advisory() on, an in-window result is ("count", "advisory: <window id>") instead of ("quarantine", window)."""
     if state is None or (rec.get("result") or {}).get("host", T.STEVE) != T.STEVE:
         return "count", None
     span = job_span(rec)
@@ -244,6 +256,8 @@ def gate(rec, windows, state, now=None):
         return "hold", "the record states no time"
     w = window_of(span, windows)
     if w:
+        if advisory():
+            return "count", "advisory: " + w["id"]
         return "quarantine", w
     if (state.get("clean_through_s") or 0) >= span[1]:
         return "count", None
@@ -625,7 +639,7 @@ def check(_a=None, now=None):
     if lh.get("unmeasured"):        # a cycle with no heat field at all predates the sampler: not a failure
         bad.append("heat blind: the newest cycle says heat=UNMEASURED(%s)" % lh["unmeasured"])
     nleft = 0
-    for rec in T.records("done"):
+    for rec in ([] if advisory() else T.records("done")):
         span = job_span(rec)
         if (rec.get("result") or {}).get("host", T.STEVE) == T.STEVE and span and window_of(span, windows) \
                 and now - span[1] > 600:
@@ -709,11 +723,31 @@ def deploy_heat(_a=None):
     return 0 if rc == 0 and sample and HEAT_RE.search(sample[-1]) else 1
 
 
+def release(a=None):
+    """Advisory mode's back-fill: every quarantined/ record goes back to done/ with fault_window={id, mode: released}, the
+    quarantine block kept as was_quarantined (nothing deleted); ingest then counts it. Needs the switch on."""
+    if not advisory():
+        print("REFUSED: %s is not on; release only follows the owner's advisory ruling" % T.q(ADVISORY_FILE))
+        return 1
+    n, prefix = 0, getattr(a, "prefix", None) or "J"
+    for rec in list(T.records("quarantined")) if os.path.isdir(T.q("quarantined")) else []:
+        if not rec["job"]["id"].startswith(prefix):
+            continue
+        q = rec.pop("quarantined", None) or {}
+        rec["fault_window"] = {"id": q.get("window"), "mode": "released", "at": S.utcnow()}
+        rec["was_quarantined"] = q
+        T.move(rec["job"]["id"], "quarantined", "done", rec)
+        n += 1
+    print("released %d records to done/" % n)
+    return 0
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("cmd", choices=("tick", "report", "check", "deploy-watch", "heat", "deploy-heat"))
+    ap.add_argument("cmd", choices=("tick", "report", "check", "deploy-watch", "heat", "deploy-heat", "release"))
+    ap.add_argument("prefix", nargs="?", help="release: only job ids starting with this (default: all)")
     a = ap.parse_args()
-    return {"tick": tick, "report": report, "check": check, "deploy-watch": deploy_watch, "heat": heat,
+    return {"release": lambda: release(a), "tick": tick, "report": report, "check": check, "deploy-watch": deploy_watch, "heat": heat,
             "deploy-heat": deploy_heat}[a.cmd]() or 0
 
 

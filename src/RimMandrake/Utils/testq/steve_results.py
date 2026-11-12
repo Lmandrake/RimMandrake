@@ -32,7 +32,7 @@ def main():
     ap.add_argument("--out", default=OUT)
     a = ap.parse_args()
     lines = ["# SteveDesktop testq results (refreshed from testq files, no model)", "",
-             "| job | item | selector | state | verdict | evidence |", "|---|---|---|---|---|---|"]
+             "| job | item | selector | state | verdict | fault window | evidence |", "|---|---|---|---|---|---|---|"]
     n = 0
     for state in ("running", "pending", "done", "quarantined", "cancelled"):
         for f in sorted(glob.glob(os.path.join(ROOT, state, "*.json"))):
@@ -53,8 +53,10 @@ def main():
                     ev += " | " + "; ".join("%s/%s: %s" % (r.get("chain"), r.get("row"), str(r.get("detail"))[:90]) for r in bad[:3])
             sel = job.get("selector") or {}
             s = ",".join("%s=%s" % (k, v if not isinstance(v, list) else "+".join(map(str, v))) for k, v in sel.items())
-            lines.append("| %s | %s | %s | %s | %s | %s |" % (job.get("id"), job.get("item") or job.get("mod"), s[:60], state,
-                                                              verdict(res) if state == "done" else "-", ev))
+            fw = d.get("fault_window") or {}
+            fwc = ("%s (%s)" % (fw.get("id"), fw.get("mode"))) if fw else ("%s (quarantined)" % (d.get("quarantined") or {}).get("window") if d.get("quarantined") else "-")
+            lines.append("| %s | %s | %s | %s | %s | %s | %s |" % (job.get("id"), job.get("item") or job.get("mod"), s[:60], state,
+                                                              verdict(res) if state in ("done", "quarantined") else "-", fwc, ev))
             n += 1
     os.makedirs(os.path.dirname(a.out), exist_ok=True)
     open(a.out, "w").write("\n".join(lines) + "\n")

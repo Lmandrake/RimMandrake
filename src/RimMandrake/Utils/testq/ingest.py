@@ -939,6 +939,10 @@ def _ingest_locked():
             except Exception as ex:     # noqa: BLE001 - as below; an unjudged record waits, it is never counted
                 T.log("ingest %s: fault gate failed, held: %s: %s" % (rec.get("job", {}).get("id"), type(ex).__name__, ex))
                 continue
+            if verdict_of_gate == "count" and str(why or "").startswith("advisory: ") \
+                    and (rec.get("fault_window") or {}).get("id") != why[10:]:
+                rec["fault_window"] = {"id": why[10:], "mode": "advisory", "at": T.S.utcnow()}
+                T.S.dump(rec, T.q("done", path))
             if "ingested" in rec or verdict_of_gate == "hold":
                 continue
             pend = rec.get("ingest_pending") or {}
