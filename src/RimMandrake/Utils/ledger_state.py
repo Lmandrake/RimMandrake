@@ -38,7 +38,21 @@ WIDTH = 120         # 160 wrapped past one screen on a 120-column terminal (fres
 REGEN = "python3 src/RimMandrake/Utils/ledger_state.py"
 # "NEXT:" and its spoken forms, "NEXT then:", "NEXT (after the load):" — an owner note said "NEXT then:" and the first
 # reader missed it (fresh-reader test, 2026-11-11). Never across a line: an empty NEXT: borrows nothing.
-NEXT_RE = re.compile(r"\bNEXT\b[^:\n]{0,24}:[ \t]*([^\n]*)")
+NEXT_RE = re.compile(r"\bNEXT\b([^:\n]{0,24}):[ \t]*([^\n]*)")
+SENTENCE_END = re.compile(r"(?:[.;!?]\s|\n)")
+
+
+def next_phrase(text, m):
+    """The NEXT as the reader must see it. A bare `NEXT: X` is itself. A spoken form leans on what came before it:
+    "NOT BEFORE Wed ~3 PM. NEXT then: X" shown as "NEXT then: X" lost its date gate (blind judge, 2026-11-11), so the
+    sentence before it comes along."""
+    act = m.group(2).strip()
+    if not m.group(1).strip():
+        return "NEXT: " + act
+    before = text[:m.start()].rstrip()
+    cuts = [x.end() for x in SENTENCE_END.finditer(before[:-1] if before else "")]
+    prev = before[cuts[-1]:] if cuts else before
+    return ("%s NEXT%s: %s" % (clip(prev, 70), m.group(1).rstrip(), act)).strip()
 PACIFIC = ZoneInfo("America/Los_Angeles")     # the owner's clock (2026-11-06), whatever TZ the host runs
 
 
@@ -184,8 +198,8 @@ def next_lines(world, evs, seat, now):
         if e.get("event") == "note":
             for m in NEXT_RE.finditer(str(e.get("text") or "")):
                 pass
-        if m and m.group(1).strip():
-            last[iid] = (e.get("ts") or "", m.group(1).splitlines()[0].strip(), e.get("seat") or "?")
+        if m and m.group(2).strip():
+            last[iid] = (e.get("ts") or "", next_phrase(str(e.get("text")), m), e.get("seat") or "?")
             later[iid] = 0
         elif iid in last and e.get("event") not in QUIET:
             later[iid] += 1
@@ -203,9 +217,9 @@ def next_lines(world, evs, seat, now):
         if len(head) + len(tail) > WIDTH or "BLOCKED: …" in head:
             head = "- `%s` — %s" % (iid, standing(it, now, short=True))
         if len(head) + len(tail) <= WIDTH:
-            rows.append((head + tail, "    NEXT: " + clip(nxt, WIDTH - 10)))
+            rows.append((head + tail, "    " + clip(nxt, WIDTH - 4)))
         else:                                       # a long id: the stamp moves to the action's line, never cut
-            lead = "    " + tail.strip() + " NEXT: "
+            lead = "    " + tail.strip() + " "
             rows.append((head, lead + clip(nxt, WIDTH - len(lead))))
     return section("## NEXT — newest NEXT note on %d of this seat's open items, as written then (Pacific time)" % len(rows),
                    rows, "rimflow show <ID>; a ⚠ or a cut (…) row: rimflow show <ID> before acting", cap=NEXT_CAP)

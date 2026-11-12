@@ -499,7 +499,8 @@ def _wake_view(text, path):
     """What --wake prints (HANDOFF_SHRINK_HALF_THE_BYTES_WERE_GIT): the title, the one thing to carry, what the owner
     should see, the pointer lines and the game/bridge state; then the file's full path for everything else (traps,
     closed/filed lists, commits, uncommitted). The handoff file itself stays whole."""
-    parts = re.split(r"(?m)^(?=## )", text)
+    # the template's <!-- guidance --> comments are for the writer, not the reader of a wake
+    parts = re.split(r"(?m)^(?=## )", re.sub(r"[ \t]*<!--.*?-->[ \t]*\n?", "", text, flags=re.S))
     out = [parts[0].rstrip()]
     for sec in parts[1:]:
         if sec.startswith(tuple("## " + k for k in WAKE_KEEP)):

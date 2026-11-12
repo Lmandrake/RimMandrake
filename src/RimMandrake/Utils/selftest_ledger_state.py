@@ -78,7 +78,7 @@ rf(B, "note", ids[11], "--text", "NEXT: a dropped item's action")
 rf(B, "drop", ids[11], "--reason", "selftest: dropped items leave every section")
 rf(O, "note", "STATENOW_TEST_OTHER_SEAT", "--text", "NEXT: the other seat's action")
 rf(B, "note", ids[6], "--text", "closed the loop. NEXT:\nno further step, this line is not an action")
-rf(B, "note", ids[8], "--text", "NOT BEFORE Wed. NEXT then: deploy it with him")       # the spoken form an owner note used
+rf(B, "note", ids[8], "--text", "Looked at it. NOT BEFORE Wed 3 PM. NEXT then: deploy it with him")       # the spoken form an owner note used
 # GPT broaden, 2026-11-11: a NEXT the ledger has since overtaken (blocked for him, then called off in a plain note)
 rf(B, "note", ids[7], "--text", "NEXT: deploy the DLL")
 rf(B, "block", ids[7], "--reason", "deploy waits on his approval", "--kind", "owner")
@@ -137,7 +137,8 @@ check(i4 > 0 and "(NEXT 11-" in sec["NEXT"][i4] and "by BENCH)" in sec["NEXT"][i
       "NEXT: two lines, the stamp and writer on the first, one line of the note on the second")
 check("dropped item's action" not in body("NEXT") and "other seat's action" not in body("NEXT"),
       "NEXT: nothing from a dropped item or another seat")
-check("NEXT: deploy it with him" in body("NEXT"), "NEXT: the spoken form \"NEXT then:\" is a NEXT too")
+check("    NOT BEFORE Wed 3 PM. NEXT then: deploy it with him" in sec["NEXT"] and "Looked at it" not in body("NEXT"),
+      "NEXT: the spoken form \"NEXT then:\" is a NEXT too, and keeps the sentence it leans on (its date gate)")
 check("other seat's action" not in body("NEXT") and ("`%s`" % ids[6]) not in body("NEXT"),
       "NEXT: an empty NEXT: borrows nothing from the next line")
 row7 = next((ln for ln in sec["NEXT"] if ("`%s`" % ids[7]) in ln), "")
@@ -168,6 +169,7 @@ hdir = os.path.join(TMP, "handoffs")
 os.makedirs(hdir)
 with open(os.path.join(hdir, "BENCH_REBOOT_HANDOFF_209901010000.md"), "w") as fh:
     fh.write("# BENCH_REBOOT_HANDOFF_209901010000 — READ FIRST on wake\n\n## What is half-done, and where it stops\n\n"
+             "<!-- TEMPLATE GUIDANCE for the writer -->\n"
              "- `%s` — probing; NEXT: something the ledger has since overtaken\n" % ids[0])
 handoff.HANDOFFS = hdir
 handoff.previous_handoff = lambda: ("BENCH_REBOOT_HANDOFF_209901010000.md", "2000-01-01T00:00:00Z")
@@ -184,6 +186,7 @@ tail = w[w.index("POINTER STATUS"):] if "POINTER STATUS" in w else ""
 check(("LEDGER STATE NOW" in tail) and (path in tail), "the pointer block names the file:\n        "
       + "\n        ".join(tail.splitlines()[-3:]))
 check(os.path.isfile(path), "the wake wrote it")
+check("TEMPLATE GUIDANCE" not in w and "<!--" not in w, "the template's <!-- --> guidance is not printed")
 check("written 1999-12-31 16:00 PST" in w, "the pointer block says when the handoff was written, in Pacific time")
 check("open (started)" in tail and 'newest note' in tail and "write the fix into the proof script" in tail
       and "the stale action" not in tail, "an open pointer shows what the ledger recorded after the handoff, newest note")
