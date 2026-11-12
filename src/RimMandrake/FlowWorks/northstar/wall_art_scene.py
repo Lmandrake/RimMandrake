@@ -30,6 +30,7 @@ sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "FlowWorks", "norths
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 import validation_core as V  # noqa: E402
 from water_scenes_walk import fit_root_size  # noqa: E402
+import tight_shot as TS  # noqa: E402
 
 B = V.Bridge()
 LOG = []
@@ -64,9 +65,10 @@ def look(x, z):
 
 def shot(name, rect, root=None):
     x, z, w, h = rect
+    want = root or fit_root_size(rect)
     call("jawa/clear_ui", all=True)
     call("rimworld/jump_camera_to_cell", x=int(x + w // 2), z=int(z + h // 2))
-    call("rimworld/set_camera_zoom", rootSize=root or fit_root_size(rect))
+    got, clamped = TS.apply_zoom(call, want)    # the engine clamps to its floor and still says success: log what it applied
     time.sleep(1.5)
     r = call("jawa/take_screenshot", fileName="ewa_%s_%d" % (name, int(time.time())))
     src = r.get("filePath")
@@ -76,7 +78,11 @@ def shot(name, rect, root=None):
         time.sleep(0.5)
     dst = os.path.join(OUT, name + ".png")
     shutil.copyfile(src, dst)
-    log("shot", {"name": name, "rect": rect, "rootSize": root or fit_root_size(rect), "file": dst})
+    box = None
+    if root:    # a close look: cut the full frame to the rect + 1 cell, so the picture is the subject, not the field
+        box = TS.crop_to_rect(src, os.path.join(OUT, name + ".tight.png"), got, rect)
+    log("shot", {"name": name, "rect": rect, "rootSize_asked": want, "rootSize": got, "clamped_to_floor": clamped,
+                 "file": dst, "tight_crop": box})
 
 
 def stage():
