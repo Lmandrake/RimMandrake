@@ -1,51 +1,47 @@
-# Judge: AGENT_IMPROVE_AUDIT_KINDLESS_RECORDS_ALL_TWO
+# Judge verdict: AGENT_IMPROVE_AUDIT_KINDLESS_RECORDS_ALL_TWO
 
-Judged 2026-11-11 by a blind judge (CLAUDE_ARCHMAGI_OFFLINE1 clone, offline) at HEAD d43b5a55b1. I read STATEMENT.md,
-NOTES.md, the evidence files, §4.3 of the design doc, the code (agent_improve.py piece/lesson_pieces/relentless_pieces/
-ops_pieces/owner_pieces/task_kind/source_kinds/general_gate/_prepare_record, lessons.py item_of/add) and `rimflow show`.
-I did not read DONE.md, BROADEN.md or the earlier JUDGE.md. I re-ran the five selftests and measure_kindless.py myself.
+Judge: fresh blind judge, CLAUDE_ARCHMAGI_OFFLINE1 clone, 2026-11-11. I did not read DONE.md, BROADEN.md or the earlier JUDGE.md.
+What I read: STATEMENT.md, NOTES.md, the evidence files, the diff 66ab8395fd..HEAD of agent_improve.py, lessons.py and
+design §4.3, and `rimflow show`. What I ran myself: the five selftests (GREEN 5/5), `measure_kindless.py` with no
+argument, `attribution_audit.py`, and `rimflow show`.
 
-## Line 1: a change applied below L2 records source kinds, or the decision to leave it uncheckable is in 4.3 with its reason. TRUE (route b, with part of a as well)
-
-- §4.3 (design/RimMandrake/daily_agent_improvement_2026-11-02.md, lines ~145-170) has a dated paragraph
-  "(2026-11-11, AGENT_IMPROVE_AUDIT_KINDLESS_RECORDS_ALL_TWO)" that says in bold that an L0 or L1 change whose cited
-  pieces name no item is applied, gets `source_kinds: []`, and stays uncheckable by design. It gives reasons: a guessed
-  kind would make a held-out sample that is not really held out; the two other candidate sources failed when measured
-  (the seat touched 8 or 41 items within the hour, and the adding commits name no item); refusing at L0 or L1 would be a
-  new gate and would pull down the acceptance rate.
-- Doc and code agree. `piece()` takes the kind from the piece's own item when its source records one (lesson `item:`
-  footer via `lessons.item_of`, Relentless attempts/learned item dir, alarm `item` or `clones/<item>[.qN]`, ops alarm
-  name, owner note id). NONE or an id with no intent word gives None, and the text is not consulted. Otherwise the kind
-  comes from the whole text. `_prepare_record` writes `source_kinds` plus a `task_kind` on every cited piece.
-  `general_gate` refuses empty kinds only at L2. `lessons.py add` writes `item:` from --item, else RIMFLOW_ITEM, else
-  WC_ITEM.
-- selftest_agent_improve_steps.py l.359 and l.363 check that a kindless change is applied and recorded `[]` at L0 and
-  at L1. The tests that read kinds past the first line and from the `item:` footer fail on the old code
-  (evidence/selftests_old_code.out: 3 + 4 FAILs and a lessons crash) and pass on the new. My re-run: GREEN, 5/5 PASS.
+## Line 1: a change below L2 either records source kinds, or design 4.3 says with a reason that it stays uncheckable. TRUE (option b)
+- §4.3 now has a paragraph dated 2026-11-11 that names the item. In bold it says: "A change at L0 or L1 whose cited
+  pieces still name no item is applied, and its record says `source_kinds: []`: it stays uncheckable by design". It
+  gives the reasons: a guessed kind would give a held-out sample that is not held out; the two other sources were
+  measured and both failed (the seat touched 8 or 41 items within the hour, and the adding commits name no item);
+  refusing such a change at L0/L1 would add a new gate, which the freeze forbids, and would lower the acceptance rate.
+- The code agrees with the doc:
+  - `need_general` is True only at L2 (LEVELS), so `general_gate`'s refusal of empty kinds runs only there.
+  - `_prepare_record` writes `source_kinds(row, entry)`, which can be `[]`.
+  - `piece()` takes the kind from the piece's own item when the source records one (lesson `item:` footer, Relentless
+    reject/learned item, alarm `item` or `clones/<item>`, ops alarm name, owner note id). `NONE`, or an id with no
+    intent word, gives None with no fallback to the text. Otherwise the kind comes from the whole text.
+  - The cites in each record carry `task_kind`, as the doc says.
+  - `lessons.py add --item` and the RIMFLOW_ITEM/WC_ITEM environment variables write the footer, as the doc says.
+- Selftests: GREEN 5/5 when I ran them. `selftests_old_code.out` shows the new footer and alarm-item tests fail on
+  the old code. Option (b) does not strictly need this, but it is there.
 
 ## Line 2: the share of kindless change records is measured, has a sanity probe, and is stated on the item and in 4.3. TRUE
+- I re-ran `measure_kindless.py`. It printed "KINDLESS 2 of 2 records" (rimworld-modding_v1, using-rimflow_v1),
+  which matches the saved `evidence/measure_kindless.out` and the 2 files in `changes/`.
+- The sanity probe is real. It runs the production `apply_change` at L0 in a temp repo on a real inbox lesson that
+  has an `item:` footer, and writes `probe_v1.json` with `source_kinds ['AUDIT']`. The same `count()` reader then
+  counts 0 of 1. So the reader can see a non-empty list, and the probe would fail if it could not.
+- The item's note (2026-11-12T04:41:56Z) states the 2 of 2 figure. §4.3 states it too, along with the inbox counts
+  (8 of 114 name an item, 5 have footers). My re-run reproduced those counts.
 
-- `infrastructure/state/agent_improve/changes/` holds exactly two records, rimworld-modding_v1 and using-rimflow_v1. I
-  read both: `source_kinds []`, 1 piece each. My re-run of measure_kindless.py printed "KINDLESS 2 of 2 records", the
-  same as evidence/measure_kindless.out.
-- Sanity probe: the production `apply_change` (L0, temp repo, fake publish) runs on a real inbox lesson that has an
-  `item:` footer and writes a record with `['AUDIT']`. The same `count()` reads it back as 0 of 1. So the reader can see
-  a non-empty list, and the probe could have failed.
-- I checked by hand that neither source lesson names an item. Their bodies at the adding commits 51ca29c716 and
-  aa1853fc18 contain no ITEM_TOKEN match. So the doc is right that the new reading gives them no kinds either.
-- Stated in §4.3 ("Measured 2026-11-11: 2 of 2 ...") and in the item's ledger note of 2026-11-12T04:41:56Z. The other
-  figures in 4.3 match my re-run: 2400 lessons, 159 (7%) and 582 (24%); inbox 8 of 114, 2 by first line, 5 footers.
-
-## Where the evidence is flattering or thin
-
-- The sanity probe uses a lesson the builder filed this round with a footer. That is a best case, but it is only meant
-  to show the reader can see a non-empty list, and it does show that.
-- The ledger note describes an earlier probe ("a copy with ['REPAIR']"), not the apply_change probe now in the
-  evidence. The 2-of-2 figure in the note is still right. This is stale wording, not a wrong claim.
-- 2 of 2 is a tiny sample, and the doc says so. Section 4 of the measurement is honest against the builder's interest:
-  on real sources, L1 gather is the same under old and new code. §4.3 also admits that most skill changes will stay
-  unmeasured until lessons are filed inside an item.
-- I did not re-run attribution_audit.py (not on my list of allowed commands). I took its 27% / 49% from the saved
-  output. It only supports the "whole text is no less sound than first line" remark, not either criterion.
+## Staged or flattering
+- The probe lesson is the builder's own, filed in this round with WC_ITEM set. It is a real inbox file read by
+  production code, so the probe is honest, but it is a best case.
+- The item note describes an older probe ("a copy with ['REPAIR']"), while the current evidence shows the
+  apply_change probe with ['AUDIT']. This is drift in the note only. The share the criterion asks for is stated
+  correctly.
+- The evidence is candid about what the change does not achieve:
+  - §4 (ordinary use) shows the same signalled targets on old and new code.
+  - The attribution audit shows the whole-text fallback is only a proxy: 49% corroborated against 27% for the first
+    line. §4.3 says so.
+  - The doc admits most skill changes will stay unmeasured until lessons carry an `item:` line.
+- Nothing here needs motion or a live game. Everything is offline and reproducible.
 
 would show: yes
