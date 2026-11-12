@@ -227,11 +227,6 @@
    ],
    "verdict": "PASS",
    "problems": [],
-   "warnings": [
-    "a patch names `RM_SekkulaathTank`; read it: src/RimUtinni/UtinniPatches/Patches/RUT_BroodRansom_Campaign.xml",
-    "a patch names `RM_SekkulaathTank`; read it: src/RimStarWars/SWBestiary/Patches/RSW_SekkulaathTank_DianogaSwap.xml",
-    "a patch names `RM_SekkulaathTank`; read it: src/RimStarWars/SWBestiary/Patches/RSW_Sekkulaath_DianogaGiant.xml"
-   ],
    "also": [
     "RM_LureStake"
    ]
@@ -420,9 +415,7 @@
    ],
    "verdict": "PASS",
    "problems": [],
-   "also": [
-    "RM_WreckedCart"
-   ]
+   "also": []
   },
   {
    "biome": "Miasma",
@@ -747,7 +740,6 @@
      "deck": true,
      "why": "affordance Substructure on a deck; placeWorkers deck-safe",
      "sources": [
-      "src/RimMandrake/TheRot/Patches/RM_SwallowedCore_Gravship.xml",
       "src/RimMandrake/TheRot/Source/RM_Hwelgrue.cs",
       "src/RimMandrake/TheRot/Source/RM_SwallowedCore.cs"
      ]
@@ -849,9 +841,6 @@
    ],
    "verdict": "PASS",
    "problems": [],
-   "warnings": [
-    "a patch names `RM_GaslightLamp`; read it: src/RimUtinni/UtinniPatches/Patches/RUT_TarGas_SumpgasLabel.xml"
-   ],
    "also": [
     "RM_CapstanTurret",
     "RM_CapstanTurret_PitRigged",

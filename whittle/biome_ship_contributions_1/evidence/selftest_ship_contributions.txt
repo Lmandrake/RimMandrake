@@ -1,2 +1,2 @@
-PASS: real list passes; 11 false claims each fail with their reason
+PASS: real list passes; 12 false claims each fail with their reason
 exit=0

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# selftest-timeout: 600
 """selftest_ship_contributions.py -- ship_contributions.py passes the real list and FAILS each kind of false claim.
 
 A checker that only ever says PASS proves nothing (grader-validation). Each mutation below rewrites ONE row of the
@@ -44,9 +45,19 @@ def unit_checks():
     if sc.material_sources("RM_ToxinSealant"):  # costLists + About.xml prose only; it is CRAFTED (recipeMaker)
         errs.append("RM_ToxinSealant: costList/About mentions counted as sources: %s"
                     % sc.material_sources("RM_ToxinSealant"))
+    import xml.etree.ElementTree as ET   # third review: MultiDef trader lines and thingToSpawn are sources; Buy is not
+    x = ET.fromstring('<Defs><TraderKindDef><stockGenerators><li Class="StockGenerator_MultiDef"><thingDefs>'
+                      '<li>RM_X</li></thingDefs></li><li Class="StockGenerator_BuyMultiDef"><thingDefs><li>RM_Y</li>'
+                      '</thingDefs></li></stockGenerators></TraderKindDef><ThingDef><comps>'
+                      '<li Class="CompProperties_Spawner"><thingToSpawn>RM_Z</thingToSpawn></li></comps></ThingDef></Defs>')
+    for item, want in (("RM_X", 1), ("RM_Y", 0), ("RM_Z", 1)):
+        if len(list(sc._xml_source_hits(x, item))) != want:
+            errs.append("synthetic source context %s: wanted %d hit(s)" % (item, want))
     ix = sc.build_index(sc.find_data(None))
     if sc.obtainable(ix, "RM_ToxinSealant"):
         errs.append("RM_ToxinSealant: its machining-table recipe was not accepted: %s" % sc.obtainable(ix, "RM_ToxinSealant"))
+    if sc.obtainable(ix, "RM_LivePatternMetal"):  # deepCommonality: the vanilla deep drill
+        errs.append("RM_LivePatternMetal: deep-drill resource read as unobtainable")
     if not sc.obtainable(ix, "RM_NoSuchMaterial"):
         errs.append("a nonexistent material read as obtainable")
     if not any("RM_PyrelandsFauna" in h for h in sc.material_sources("RM_FurnaceHide")):
@@ -57,6 +68,17 @@ def unit_checks():
                           ("RM_Vexxith", "RM_FilterWorks"), ("RM_FossilSkeleton", "RM_Fossils.xml")):
         if any(notfrom in h for h in sc.material_sources(item)):
             errs.append("%s: %s counted as a source" % (item, notfrom))
+    # second review: a C# lookup table that spawns nothing is not a source; a name-table spawner is
+    if any("MetalNonFlammable" in h for h in sc.material_sources("RM_Vexxith")):
+        errs.append("RM_Vexxith: the flammability table counted as a source")
+    if not any("RM_ReactionPools" in h for h in sc.material_sources("RM_DielectricGel")):
+        errs.append("RM_DielectricGel: the reaction tap (name-table spawn) was not seen")
+    if any("RM_HullBolt" in h for h in sc.material_sources("RM_LivePatternMetal")):
+        errs.append("RM_LivePatternMetal: the cathedral's witness list counted as a source")
+    if any("affordances" in h or "RM_LanternstoneTerrain" in h for h in sc.material_sources("RM_Lanternstone")):
+        errs.append("RM_Lanternstone: an affordance/tag of the same name counted as a source")
+    if not any("RM_TwilightSea" in h for h in sc.material_sources("RM_PalluCatch")):
+        errs.append("RM_PalluCatch: the Twilight Sea's fishTypes table was not seen")
     if not any("RM_HelixCurators" in h for h in sc.material_sources("RM_CloudRepulsorShip")):
         errs.append("RM_CloudRepulsorShip: the Helix trader stock line was not seen")
     return errs
@@ -83,6 +105,9 @@ def main():
             "| Webwork | **the traction lance**", "| Webwork | EXEMPT for now", 1), "cites no owner ruling"),
         ("exempt with a bare quote mark", set_defs(real, "Webwork", []).replace(
             "| Webwork | **the traction lance**", '| Webwork | EXEMPT: no "ship" part yet', 1), "cites no owner ruling"),
+        ("exempt borrowing the gift's owner date", real.replace(
+            "| Blue Desert | **the cold hold**", "| Blue Desert | EXEMPT for now, no ship part yet", 1),
+            "cites no owner ruling"),
         ("joined rows", real.replace("|\n| The Forge", "|| The Forge", 1), "malformed table line"),
     ]
     bad = []

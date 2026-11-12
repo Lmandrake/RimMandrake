@@ -29,7 +29,7 @@ column 3, `defs`, names every def the row claims in backticks; a row whose contr
 "EXEMPT" must cite an owner ruling (`--owner-said`/`--by-card` text or a dated quote). Checks:
   coverage   every shipped biome has exactly one row
   real       every def a row names exists in src/ and is ship-buildable (a named def that is not is a FALSE claim)
-  obtainable every research prerequisite of a named def is a real ResearchProjectDef, and every RM_/RUT_/RSW_
+  obtainable (and fuel: every RM_ fuel of a Refuelable comp likewise) every research prerequisite of a named def is a real ResearchProjectDef, and every RM_/RUT_/RSW_
              material in its costList is named by something that hands it out (a mention outside every costList)
   own        each row names at least one def that is the biome's own: defined in that biome's mod folder, or
              costing a material defined there (otherwise the gift is not that biome's)
@@ -284,11 +284,16 @@ def judge(ix, tag, dn, deck_aff):
     return out
 
 
-# A mention hands an item OUT unless it sits inside one of these (the item is used up, filtered or renamed there).
-CONSUME_TAGS = {"costList", "costListForDifficulty", "ingredients", "fixedIngredientFilter", "defaultIngredientFilter",
-                "fuelFilter", "filter", "thingDefs", "disallowedThingDefs", "from", "to", "xpath", "defName",
-                "texPath", "uiIconPath", "label", "description", "thingCategories", "stuffCategories",
-                "researchPrerequisites", "requiredAnalyzed", "allowedThingDefs"}
+# A mention hands an item OUT only in these contexts (a WHITELIST: code review 2026-11-11 showed a blacklist leaks
+# through hyperlinks, defaultStuff, affordance tags, disallow patches and C# lookup tables).
+SOURCE_FIELDS = {"mineableThing", "leatherDef", "harvestedThingDef", "woolDef", "milkDef", "gatherDef", "thingToSpawn",
+                 "eggFertilizedDef", "eggUnfertilizedDef", "boneDef", "greatBoneDef"}   # text == item
+SOURCE_DICTS = {"butcherProducts", "products", "killedLeavings", "leavings", "smeltProducts",
+                "leaveResourcesWhenKilled"}                                           # <item>n</item> under these
+THING_FIELDS = {"thingDef", "thing"}            # text == item, only under a SOURCE_OWNERS ancestor
+SOURCE_OWNERS = ("StockGenerator", "QuestNode", "ThingSetMaker", "GenStep", "Reward", "leavings")
+SPAWN_CS = re.compile(r"MakeThing|GenSpawn|GenPlace|TryPlaceThing|MakeMinified|TryDropThing|ThingSetMaker|"
+                      r"butcherProducts|SpawnThing|DropPod", re.S)
 _XML = None
 _CS = None
 
@@ -303,48 +308,90 @@ def _load_scope():
             if p.name == "About.xml":
                 continue
             try:
-                _XML.append((p, ET.parse(p).getroot()))
-            except (ET.ParseError, OSError):
+                raw = p.read_text(encoding="utf-8", errors="replace")
+                _XML.append((p, raw, ET.fromstring(raw.encode("utf-8"))))
+            except (ET.ParseError, OSError, ValueError):
                 pass
         for p, rel in mod_files(mod, ".cs"):
             try:
-                _CS.append((p, p.read_text(encoding="utf-8", errors="replace")))
+                code = re.sub(r"//[^\n]*|/\*.*?\*/", "", p.read_text(encoding="utf-8", errors="replace"), flags=re.S)
             except OSError:
-                pass
+                continue
+            if SPAWN_CS.search(code):                 # only files that spawn something can be a source
+                _CS.append((p, code))
+
+
+def _context_names(el, parent, xpath_tail=""):
+    """Tags and Class attributes from el up to the root, plus the patch's xpath tail when inside a <value>."""
+    out, a = [], el
+    while a is not None:
+        out.append(a.tag)
+        if a.get("Class"):
+            out.append(a.get("Class"))
+        if a.tag == "value" and xpath_tail:
+            out.extend(xpath_tail)
+        a = parent.get(a)
+    return out
 
 
 def _xml_source_hits(root, item):
-    """Elements naming `item` outside every consuming context (ancestors walked by an explicit parent map)."""
     parent = {c: pnode for pnode in root.iter() for c in pnode}
     for el in root.iter():
         if not isinstance(el.tag, str):
             continue
-        if el.tag != item and (el.text or "").strip() != item:
+        is_dict = el.tag == item
+        if not is_dict and (el.text or "").strip() != item:
             continue
-        a, ok = el, True
-        while a is not None:
-            if a.tag in CONSUME_TAGS or "Buy" in (a.get("Class") or ""):
-                ok = False
-                break
+        tail = []
+        a = el
+        while a is not None and a.tag != "value":
             a = parent.get(a)
-        if ok:
+        if a is not None:                                   # inside a patch <value>: read the xpath it targets
+            op = parent.get(a)
+            xp = (op.findtext("xpath") or "") if op is not None else ""
+            if "Remove" in (op.get("Class") or "") if op is not None else False:
+                continue
+            tail = re.findall(r"[A-Za-z_]+", xp.split("]")[-1])
+        names = _context_names(el, parent, tail)
+        if any("Buy" in n for n in names) or "disallowedThingDefs" in names or "costList" in names:
+            continue
+        up = names[1] if len(names) > 1 else ""
+        if a is not None and up == "value" and tail:
+            up = tail[-1]
+        if is_dict and (up in SOURCE_DICTS or "fishTypes" in names[1:3]):
+            yield el                                        # fishTypes: Odyssey fishing, BiomeDef.fishTypes.<band>
+        elif not is_dict and el.tag in SOURCE_FIELDS:
+            yield el
+        elif not is_dict and el.tag in THING_FIELDS | {"li"} and any(
+                any(o in n for o in SOURCE_OWNERS) for n in names[1:]):
+            if el.tag == "li" and not (len(names) > 3 and names[1] == "thingDefs"
+                                       and any("StockGenerator" in n for n in names[2:4])):
+                continue
             yield el
 
 
+_SOURCES = {}
+
+
 def material_sources(item):
-    """Files in shipped mods that hand the player `item`: an XML element naming it (as text, or as the tag of a
-    dict entry such as butcherProducts/products) outside every CONSUME_TAGS context and outside Buy stock
-    generators; or a C# file naming it (a spawn or a drop; C# is read as a source, a known blind spot: a C# lookup
-    that only consumes counts too). About.xml, Languages, Textures, SelfTest and Program.cs are never sources."""
+    if item not in _SOURCES:
+        _SOURCES[item] = _material_sources(item)
+    return _SOURCES[item]
+
+
+def _material_sources(item):
+    """Files in shipped mods that hand the player `item`: an XML element naming it in a hand-out context
+    (SOURCE_FIELDS, SOURCE_DICTS, or a thing field under a trader/quest/thing-set/genstep/leavings owner; a patch
+    counts when the xpath it adds into is such a context), or a C# file that names it AND spawns things
+    (SPAWN_CS; file-level, because spawns go through name tables, e.g. RM_ReactionPools.Reagents). About.xml, Languages, Textures, SelfTest and Program.cs are never sources."""
     _load_scope()
     hits = []
-    for p, root in _XML:
-        if any(True for _ in _xml_source_hits(root, item)):
+    for p, raw, root in _XML:
+        if item in raw and any(True for _ in _xml_source_hits(root, item)):
             hits.append(str(p.relative_to(ROOT)))
     pat = re.compile(r"(?<![A-Za-z0-9_])%s(?![A-Za-z0-9_])" % re.escape(item))
-    for p, t in _CS:
-        code = re.sub(r"//[^\n]*|/\*.*?\*/", "", t, flags=re.S)
-        if pat.search(code):
+    for p, code in _CS:
+        if item in code and pat.search(code):
             hits.append(str(p.relative_to(ROOT)))
     return hits
 
@@ -356,7 +403,12 @@ def obtainable(ix, item, depth=0):
         return "%s is not a ThingDef in scope" % item
     r = ix.resolve(ix.defs[("ThingDef", item)][0])
     if (r.findtext("tradeTags/li") or "") or (r.findtext("thingSetMakerTags/li") or ""):
-        return ""
+        return ""                               # vanilla traders / reward generators pick it by tag
+    try:
+        if float((r.findtext("deepCommonality") or "0").strip()) > 0:
+            return ""                           # vanilla deep scanner + deep drill (CompDeepScanner.ChooseLumpThingDef)
+    except ValueError:
+        pass
     if material_sources(item):
         return ""
     rm = r.find("recipeMaker")
@@ -374,12 +426,71 @@ def obtainable(ix, item, depth=0):
     return "nothing in a shipped mod hands out %s (no mineable/butcher/recipe/trader/C# source)" % item
 
 
-def patches_touching(dn):
+PLACEMENT_FIELDS = ("bringAlongOnGravship", "placeWorkers", "terrainAffordanceNeeded", "designationCategory",
+                    "minifiedDef", "plant", "useStuffTerrainAffordance")
+
+
+_PATCHES = None
+
+
+def parent_names(ix, node):
+    out, seen = [], set()
+    while node is not None and node.get("ParentName") and node.get("ParentName") not in seen:
+        pn = node.get("ParentName")
+        seen.add(pn)
+        out.append(pn)
+        node = ix.named.get((node.tag, pn))
+    return out
+
+
+def patches_touching(dn, parents=()):
+    """[(patch file, placement_relevant)] for every shipped patch operation whose xpath names `dn` (either quote
+    style). Placement-relevant = that operation removes the def or touches a PLACEMENT_FIELDS field (in its xpath
+    tail or its own value), or rewrites its ParentName: the static verdict cannot see it. Judged per operation
+    element. KNOWN LIMIT: xpath is matched by pattern (defName=, @Name/@ParentName of an ancestor, contains/
+    starts-with/ends-with on defName), not evaluated; a selector on another field (e.g. [designationCategory=..])
+    is not seen. The patched tree itself is effective_def_lint.py's job (whole mod list, Windows python)."""
     out = []
-    for tier, mod in shipped_mod_dirs():
-        for p, rel in mod_files(mod, ".xml"):
-            if "Patches" in rel and ('"%s"' % dn) in p.read_text(encoding="utf-8", errors="replace"):
-                out.append(str(p.relative_to(ROOT)))
+    alts = [r"defName\s*=\s*[\"']%s[\"']" % re.escape(dn)]
+    alts += [r"@(Parent)?Name\s*=\s*[\"']%s[\"']" % re.escape(n) for n in parents]  # ancestor / its children
+    alts += [r"(?<!not\()(contains|starts-with|ends-with)\(\s*defName\s*,\s*[\"'][^\"']*[\"']"]  # judged below
+    pat = re.compile("|".join(alts))
+    global _PATCHES
+    if _PATCHES is None:
+        _PATCHES = [(p, p.read_text(encoding="utf-8", errors="replace")) for tier, mod in shipped_mod_dirs()
+                    for p, rel in mod_files(mod, ".xml") if "Patches" in rel]
+    keys = [dn] + list(parents) + ["defName,", "defName ,", "defName,"]
+    for p, t in _PATCHES:
+        if not any(k in t for k in keys[:1 + len(parents)]) and "(defName" not in t.replace(" ", ""):
+            continue
+            for m in re.finditer(r"(contains|starts-with|ends-with)\(\s*defName\s*,\s*[\"']([^\"']*)[\"']", t):
+                fn, sub = m.group(1), m.group(2)
+                hit = (sub in dn if fn == "contains" else dn.startswith(sub) if fn == "starts-with"
+                       else dn.endswith(sub))
+                if not hit:
+                    t = t.replace(m.group(0), "")                                  # a selector not matching dn
+            if not pat.search(t):
+                continue
+            try:
+                root = ET.fromstring(t.encode("utf-8"))
+            except ET.ParseError:
+                out.append((str(p.relative_to(ROOT)), True))   # unreadable patch on a claimed def: fail safe
+                continue
+            hot = False
+            for op in root.iter():
+                xp = op.findtext("xpath") if isinstance(op.tag, str) else None
+                if not xp or not pat.search(xp):
+                    continue
+                tail = xp[pat.search(xp).end():]
+                value = op.find("value")
+                vtags = {e.tag for e in value.iter()} if value is not None else set()
+                cls = op.get("Class") or ""
+                if any(re.search(r"\b%s\b" % f, tail) for f in PLACEMENT_FIELDS) or any(
+                        f in vtags for f in PLACEMENT_FIELDS) or (
+                        ("Remove" in cls and tail.strip(" ]/") == "") or (
+                        "Attribute" in cls and (op.findtext("attribute") or "").strip() == "ParentName")):
+                    hot = True
+            out.append((str(p.relative_to(ROOT)), hot))
     return out
 
 
@@ -481,8 +592,10 @@ def main(argv=None):
         if r is None:
             entry["problems"].append("coverage: no row in the running list")
         elif r["contribution"].upper().startswith("EXEMPT"):
+            # the ruling must sit in the EXEMPT text itself: a row's source column may carry an owner date for a
+            # former gift, which is no exemption (fourth review, 2026-11-11)
             if not re.search(r"owner(-said|,? by card|,?) ?20\d\d-\d\d-\d\d|per-ruling [A-Z_0-9]+",
-                             r["contribution"] + " " + r["source"]):
+                             r["contribution"][len("EXEMPT"):]):
                 entry["problems"].append("exempt row cites no owner ruling")
             entry["verdict"] = "EXEMPT"
         else:
@@ -511,8 +624,22 @@ def main(argv=None):
                     why = obtainable(ix, c)
                     if why:
                         entry["problems"].append("obtainable: `%s` costs %s: %s" % (dn, c, why))
-                for pf in patches_touching(dn):
-                    entry.setdefault("warnings", []).append("a patch names `%s`; read it: %s" % (dn, pf))
+                for li in node.findall("comps/li"):
+                    if "Refuelable" not in (li.get("Class") or ""):
+                        continue
+                    fuels = texts(li, "fuelFilter/thingDefs/li")
+                    whys = [obtainable(ix, f) if re.match(r"(RM|RUT|RSW)_", f) else "" for f in fuels]
+                    if fuels and all(whys):           # a fuel filter is an OR: one obtainable fuel runs it
+                        entry["problems"].append("obtainable: `%s` burns only %s, none obtainable: %s"
+                                                 % (dn, ", ".join(fuels), whys[0]))
+                for pf, hot in patches_touching(dn, parent_names(ix, ix.defs[(tag, dn)][0])):
+                    if hot:
+                        entry["problems"].append("a patch edits `%s`'s placement (remove/placeWorkers/affordance/"
+                                                 "bringAlongOnGravship...): %s; the static verdict cannot see it"
+                                                 % (dn, pf))
+                    else:
+                        entry.setdefault("warnings", []).append("a patch names `%s` (no placement field): %s"
+                                                                % (dn, pf))
                 if (tag, dn) in ix.dups:
                     entry["problems"].append("`%s` is defined twice in scope; which one loads is unmeasured" % dn)
             if r["defs"] and not own_hit:

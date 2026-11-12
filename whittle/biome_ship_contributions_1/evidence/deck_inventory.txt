@@ -22,7 +22,7 @@ shipped biome mods (Biomes.compose.json): 24
 ## The Contagion (Contagion)
   site  RM_AlienTree                       install      a plant: it roots by fertility and a deck's is 0 | cost -
   site  RM_AlienTree_Polluted              install      a plant: it roots by fertility and a deck's is 0 | cost -
-  DECK  RM_CloudRepulsor                   install      affordance Medium on a deck; placeWorkers deck-safe | cost - | from src/RimMandrake/Contagion/Defs/QuestScriptDefs/RM_HelixDraftprintContract.xml, src/RimMandrake/Contagion/Defs/TraderKindDefs/RM_HelixCurators.xml
+  DECK  RM_CloudRepulsor                   install      affordance Medium on a deck; placeWorkers deck-safe | cost - | from src/RimMandrake/Contagion/Defs/TraderKindDefs/RM_HelixCurators.xml
   DECK  RM_CloudRepulsorShip               install      affordance Substructure on a deck; placeWorkers deck-safe | cost - | from src/RimMandrake/Contagion/Defs/TraderKindDefs/RM_HelixCurators.xml
   site  RM_Eyebark                         install      a plant: it roots by fertility and a deck's is 0 | cost -
   site  RM_HalfAlienTree                   install      a plant: it roots by fertility and a deck's is 0 | cost -
@@ -78,7 +78,7 @@ shipped biome mods (Biomes.compose.json): 24
 
 ## Long Shade (LongShade)
   DECK  RM_LureAwning                      Temperature  affordance Light on a deck; placeWorkers deck-safe | cost WoodLog,stuff:Leathery
-  DECK  RM_WreckedCart                     install      affordance Light on a deck; placeWorkers deck-safe | cost WoodLog,Steel | from src/RimMandrake/LongShade/Defs/MapGeneration/RM_LongShade_GenSteps.xml, src/RimMandrake/LongShade/Defs/RM_WreckListDefs/RM_CrawlerRoadWreckList.xml
+  site  RM_WreckedCart                     install      install-only and nothing in src/ hands it to the player (no source names it) | cost WoodLog,Steel
 
 ## The Miasma (Miasma)
   DECK  RM_AttarStill                      Production   affordance Medium on a deck; placeWorkers deck-safe | cost Steel,ComponentIndustrial
@@ -154,7 +154,7 @@ shipped biome mods (Biomes.compose.json): 24
   site  RM_NogtylMarsh                     install      a plant: it roots by fertility and a deck's is 0 | cost -
   site  RM_Shinecap                        install      a plant: it roots by fertility and a deck's is 0 | cost -
   site  RM_Skulltop                        install      a plant: it roots by fertility and a deck's is 0 | cost -
-  DECK  RM_SwallowedDriveCore              install      affordance Substructure on a deck; placeWorkers deck-safe | cost - | from src/RimMandrake/TheRot/Patches/RM_SwallowedCore_Gravship.xml, src/RimMandrake/TheRot/Source/RM_Hwelgrue.cs, src/RimMandrake/TheRot/Source/RM_SwallowedCore.cs
+  DECK  RM_SwallowedDriveCore              install      affordance Substructure on a deck; placeWorkers deck-safe | cost - | from src/RimMandrake/TheRot/Source/RM_Hwelgrue.cs, src/RimMandrake/TheRot/Source/RM_SwallowedCore.cs
 
 ## The Sump (TheSump)
   DECK  RM_CapstanTurret                   Security     affordance Medium on a deck; placeWorkers deck-safe | cost Steel,ComponentIndustrial,Cloth
@@ -176,7 +176,7 @@ shipped biome mods (Biomes.compose.json): 24
   DECK  RM_KneelingChassis_Intact          install      affordance Light on a deck; placeWorkers deck-safe | cost - | from src/RimMandrake/Scarlands/Source/RM_Hospice.cs, src/RimMandrake/Scarlands/Source/RM_HospiceProof.cs
   DECK  RM_OldLineTurret                   Security     affordance Light on a deck; placeWorkers deck-safe | cost Steel,ComponentSpacer,RM_Etchant
   site  RM_ReactionTap                     Misc         PlaceWorker_NearReactionPool: needs a reaction-pool rim | cost Steel,ComponentIndustrial
-  DECK  RM_WarscarProjector_Salvaged       install      affordance Light on a deck; placeWorkers deck-safe | cost - | from src/RimMandrake/Scarlands/Defs/ChoirDefs/RM_GeigerChoirDef.xml, src/RimMandrake/Scarlands/Source/RM_WarscarRings.cs
+  DECK  RM_WarscarProjector_Salvaged       install      affordance Light on a deck; placeWorkers deck-safe | cost - | from src/RimMandrake/Scarlands/Source/RM_WarscarRings.cs
 
 ## The Wastes (Wastes)
   DECK  RM_WasteCaskBay                    Misc         affordance Medium on a deck; placeWorkers deck-safe | cost Steel,Plasteel,ComponentIndustrial
