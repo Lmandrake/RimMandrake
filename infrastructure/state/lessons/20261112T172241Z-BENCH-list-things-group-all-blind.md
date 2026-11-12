@@ -1,0 +1,2 @@
+jawa/list_things has no ThingRequestGroup 'All' (valid: Everything, HaulableEver, ...); it returns success=False and an empty list, so a census written as group='All' reads 0 and passes. The EK station4 final_st4.py carriers_mid/carriers_after rows (both 0) were blind for this reason; carrier counts must come from RM_KnockbackProof.Flights or group='Everything', and a script must fail a row on success=False.
+home: skill:live-debugging-proof-harness
