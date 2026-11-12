@@ -1,0 +1,1 @@
+- A6 (L4) needs the owner: does -3 per exposed prisoner (five at most, -15) read as cruel at the right strength? Question parked in D:\ClaudeWork\rimmandrake\whittle_claude\CLAUDE_ARCHMAGI_FWLIVE\OWNER_QUESTIONS.md; A1-A5 are done and recorded.
