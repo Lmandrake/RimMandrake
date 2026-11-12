@@ -159,10 +159,9 @@ def wire(mod, root, lane_file, steve_up=False):
     def transcripts(recs, sources):
         for r in recs:
             r["transcript_t"] = TRANSCRIPT_AGE[0] and time.time() - TRANSCRIPT_AGE[0]
-    return {"ledger": fake_ledger, "transcripts": transcripts, "history": lambda sources: {"system": (30.0, None)}, "machines": lambda state, sources: {},
+    return {"ledger": fake_ledger, "transcripts": transcripts, "machines": lambda state, sources: {},
             "accounts": lambda sources: [{"name": "system", "used": 42.0, "resets": time.time() + 86400, "t": time.time(),
                                           "why": None, "slope": None}],
-            "codex": lambda sources: {"used": 30.0, "t": time.time(), "exact": True, "reset": None},
             "notice": lambda sources: {"account": "steven", "pct_left": 80.0, "line": 30}}
 
 
@@ -227,7 +226,7 @@ def checks(mod, tmp):
         ("headline counts since the fleet started", "since the fleet started (" in page and "last 24 h: $15.75" in page and "Closed today" not in page),
         ("midnight between rounds keeps the totals", midnight_keeps(mod, stubs, page)),
         ("raw token sum gone", "Tokens today" not in page),
-        ("accounts line is first under the title", page.splitlines()[2].startswith("**Accounts left") and page.index("<svg") > page.index("Accounts left")),
+        ("no account line under the title (the fleet dashboard owns accounts)", "Accounts left" not in page and page.splitlines()[2].startswith("<svg") or "Accounts left" not in page),
         ("drifted start line read", "| 2 |" in page.split("## closer", 1)[1]),
         ("other log line kept", "drained the easy ones" in page),
         ("odd line counted", "1 line with no time stamp" in page),
@@ -273,18 +272,7 @@ def checks(mod, tmp):
         ("steve down not crash", "steveon" not in needs and "**unreachable**" in page),
     ]
     out.append(("empty root", "No Whittle workers yet" in page2 and "none yet" in phone2))
-    line = [l for l in page.splitlines() if l.startswith("**Accounts left")]
-    out.append(("accounts line: remaining, drop since start, ? for missing source, live marked",
-                len(line) == 1 and re.search(r"system 58% \(\u221212 since (Nov 11 )?19:48", line[0]) and "steven ?" in line[0] and "lukas ?" in line[0]
-                and "Codex 70%" in line[0] and "live: steven" in line[0] and "OLD" not in line[0] and phone.splitlines()[1].startswith("Accounts left")))
-    sa = dict(stubs)
-    sa["accounts"] = lambda sources: [{"name": "system", "used": 42.0, "resets": None, "t": time.time() - 1200, "why": None, "slope": None}]
-    old_line = [l for l in mod.build(sa)[0].splitlines() if l.startswith("**Accounts left")][0]
-    out.append(("old reading flagged in the line", "20 min OLD" in old_line))
-    stubs2 = dict(stubs)
-    stubs2["codex"] = lambda sources: (_ for _ in ()).throw(mod.Unmeasured("planted codex failure"))
-    pageC, _, _ = mod.build(stubs2)
-    out.append(("codex missing -> ?", "Codex ?" in pageC))
+    out.append(("no account line on the phone page either", "Accounts left" not in phone))
     stubs["ledger"] = lambda sources: (_ for _ in ()).throw(mod.Unmeasured("planted ledger failure"))
     page3, _, _ = mod.build(stubs)
     out.append(("ledger failure said", "The ledger could not be read" in page3 and "UNMEASURED" in page3))

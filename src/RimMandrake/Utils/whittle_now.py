@@ -55,8 +55,6 @@ STALE_PAGE_S = 180
 STUCK_ROUNDS = 2            # more rounds than this on one item is stuck (the brief: "stuck >2 rounds")
 STUCK_RUNS = 3              # more non-pass ledger runs in a row than this is stuck (">3 non-pass runs")
 QUIET_S = 30 * 60           # unit up, no file of the worker AND no claude transcript written for this long: it may be hung
-FLEET_START = "2026-11-11T19:48:00-08:00"   # the Whittle fleet started; account drops are counted from here
-FRESH_READING_S = 10 * 60   # an account reading older than this is flagged OLD in the first line
 CLAIM_GRACE_S = 15 * 60     # a "closed" the ledger has not caught up with after this long is a mismatch
 WINDOW_S = 12 * 3600        # the picture shows at most this much of the clock
 ROUNDS_SHOWN = 12
@@ -921,118 +919,6 @@ def worker_section(r):
     return L
 
 
-# ---- the one-line account glance --------------------------------------------------------------------
-
-CODEX_CACHE_S = 600
-CLAUDE_ACCOUNTS = ("system", "steven", "lukas")
-STALE_READING_S = 2 * 3600
-
-
-def read_codex(sources):
-    """-> {"used": pct, "reset": epoch|None, "t": reading epoch|None, "exact": bool}. ops_watch.c_codex reads ~800 rollout
-    files (6 s), so the answer is kept 10 minutes in a small file beside the page; no model is called."""
-    path = os.path.join(OUT_DIR, "codex_week_cache.json")
-    try:
-        with open(path, encoding="utf-8") as f:
-            c = json.load(f)
-        if now_s() - float(c["at"]) < CODEX_CACHE_S:
-            sources.add("Codex weekly meter (cached)", now_s() - float(c["at"]), None)
-            return c["val"]
-    except (OSError, ValueError, KeyError, TypeError):
-        pass
-    try:
-        import ops_watch
-        pts = ops_watch.c_codex(now_s(), ops_watch.load_rules(), {})
-    except BaseException as e:
-        sources.add("Codex weekly meter", None, short("%s: %s" % (type(e).__name__, e), 100))
-        raise Unmeasured("codex: %s" % short(e, 100))
-    u, h = pts.get("codex.week_used_pct", {}), pts.get("codex.hours_to_reset", {})
-    if type(u.get("v")) not in (int, float):
-        sources.add("Codex weekly meter", None, "no reading")
-        raise Unmeasured("codex: no weekly reading")
-    t = parse_when((u.get("x") or {}).get("reading_at"))
-    val = {"used": float(u["v"]), "t": t, "exact": u.get("m") == "MEASURED",
-           "reset": now_s() + h["v"] * 3600 if type(h.get("v")) in (int, float) else None}
-    sources.add("Codex weekly meter", 0, None)
-    try:
-        write_atomic(path, json.dumps({"at": now_s(), "val": val}))
-    except OSError:
-        pass
-    return val
-
-
-def account_history(sources, start=None):
-    """-> {account: (used_at_start, week_resets_at)}: each Claude account's first MEASURED week reading at or after the fleet start,
-    from the same series.jsonl read_accounts uses. {} when there is no history."""
-    start = start if start is not None else parse_when(FLEET_START)
-    first = {}
-    try:
-        for line in read_tail(os.path.join(A.ACCOUNTS, "series.jsonl"), 800_000).splitlines():
-            try:
-                d = json.loads(line)
-            except ValueError:
-                continue
-            t = A.parse_iso(d.get("measured_at"))
-            u = d.get("week_pct_used")
-            n = str(d.get("account") or "").lower().split("@")[0]
-            if t and start and t >= start and isinstance(u, (int, float)) and n not in first:
-                first[n] = (float(u), d.get("week_resets_at"))
-    except OSError as e:
-        sources.add("account history (series.jsonl)", None, short(e, 60))
-        return {}
-    sources.add("account history (series.jsonl)", 0, None)
-    return first
-
-
-def accounts_line(accounts, notice, codex, history=None):
-    """FIRST line of the page, bold: % of the week REMAINING on the three Claude accounts (and points dropped since the fleet started)
-    and Codex. Unreadable -> "?"."""
-    live = str(notice.get("account") or "").lower() if isinstance(notice, dict) else ""
-    rows = {}
-    if isinstance(accounts, list):
-        for a in accounts:
-            rows[a["name"].lower().split("@")[0]] = a
-    parts, oldest = [], None
-    since = clock(parse_when(FLEET_START)) if parse_when(FLEET_START) else "start"
-
-    def age_tag(t):
-        return " (%s old)" % ago(now_s() - t) if t and now_s() - t > STALE_READING_S else ""
-    first = True
-    for n in ("steven", "system", "lukas"):
-        a = rows.get(n)
-        if not a or not isinstance(a.get("used"), (int, float)):
-            parts.append("%s ?" % n)
-            continue
-        h = (history or {}).get(n)
-        d = round(a["used"] - h[0]) if h is not None else None
-        if d is None or d < 0:   # no history, or the week reset since the start
-            drop = " (since start: ?)" if first else " (?)"
-        elif first:
-            drop = " (\u2212%d since %s)" % (d, since) if d else " (\u00b10 since %s)" % since
-        else:
-            drop = " (\u2212%d)" % d if d else ""
-        first = False
-        parts.append("%s %d%%%s%s" % (n, round(100 - a["used"]), drop, age_tag(a.get("t"))))
-        if a.get("t"):
-            oldest = a["t"] if oldest is None else min(oldest, a["t"])
-    if isinstance(codex, dict) and isinstance(codex.get("used"), (int, float)):
-        c = "Codex %s%d%%%s" % ("" if codex.get("exact", True) else "~", round(100 - codex["used"]), age_tag(codex.get("t")))
-        if codex.get("reset") and codex["reset"] > now_s():
-            c += " (resets %s)" % dt.datetime.fromtimestamp(codex["reset"]).astimezone().strftime("%a")
-        parts.append(c)
-    else:
-        parts.append("Codex ?")
-    s = "Accounts left \u2014 " + " \u00b7 ".join(parts)
-    if live:
-        s += " \u00b7 live: %s" % live
-    if oldest:
-        old = now_s() - oldest
-        s += " \u00b7 read %s%s" % (clock(oldest), " \u2014 %s OLD, not current" % ago(old) if old > FRESH_READING_S else "")
-    else:
-        s += " \u00b7 read time unknown"
-    return "**%s**" % s
-
-
 HOME = os.path.expanduser("~")
 CLONE_OF = (  # worker name -> (clone dir, where it runs), as the unit's loop.run.sh table says
     (re.compile(r"CLAUDE_ARCHMAGI_FWLIVE$"), "/home/mandrake/rm/scratch/BENCH/claude-archmagi-fwlive", "local"),
@@ -1158,10 +1044,6 @@ def build(stubs=None):
     except (Unmeasured, OSError, ValueError) as e:
         accounts = str(e)
     notice = (stubs.get("notice") or read_notice)(sources)
-    try:
-        codex = (stubs.get("codex") or read_codex)(sources)
-    except (Unmeasured, OSError, ValueError):
-        codex = None
     bridges = bridge_lines(ledger)
     th.join(max(0.1, A.MACHINE_DEADLINE_S + 1))
 
@@ -1173,8 +1055,7 @@ def build(stubs=None):
     needs = [t for _, t in sorted(needs, key=lambda x: x[0])]
 
     head = headline(recs, lane, needs, ledger is not None)
-    acct_line = accounts_line(accounts, notice, codex, (stubs.get("history") or account_history)(sources))
-    P = ["# Whittle now", "", acct_line, "", picture(recs), "", head, "",
+    P = ["# Whittle now", "", picture(recs), "", head, "",
          "Generated %s by `whittle_now.py`, no model called. Written every minute: over 3 minutes old means the timer is dead." % (
              dt.datetime.fromtimestamp(now_s()).astimezone().strftime("%b %-d, %H:%M:%S %Z")), ""]
     P += ["## Needs you", ""]
@@ -1264,12 +1145,12 @@ def build(stubs=None):
         P.append("| %s | %s | %s |" % (cell(n), cell(ago(age) if age is not None else "-"), cell(why or "")))
     P += ["", "Written to `%s\\WHITTLE_NOW.md` by rm-whittle-now.timer from the dispatch clone." % NATIVE_OUT, ""]
     page = "\n".join(P)
-    phone = phone_page(head, recs, needs, lane, machines, acct_line)
+    phone = phone_page(head, recs, needs, lane, machines)
     return page, phone, state
 
 
-def phone_page(head, recs, needs, lane, machines, acct_line=""):
-    L = ["Whittle %s" % dt.datetime.fromtimestamp(now_s()).astimezone().strftime("%H:%M %Z"), acct_line.strip("*"), head.strip("*"), ""]
+def phone_page(head, recs, needs, lane, machines):
+    L = ["Whittle %s" % dt.datetime.fromtimestamp(now_s()).astimezone().strftime("%H:%M %Z"), head.strip("*"), ""]
     if needs:
         L.append("NEEDS YOU %d" % len(needs))
         L += ["- " + short(re.sub(r"\*\*|`", "", n), 150) for n in needs[:8]]
