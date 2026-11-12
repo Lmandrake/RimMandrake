@@ -1,10 +1,10 @@
-# 2026-11-11 20:59 -0800  repo HEAD f49981bfda; old code = 66ab8395fd (before this item's changes)
+# 2026-11-11 21:05 -0800  repo HEAD 28e3907a0d (measure_kindless.py as saved beside this file); old code = 66ab8395fd (before this item's changes)
 # command: python3 whittle/agent_improve_audit_kindless_records_all_two/evidence/measure_kindless.py /tmp/aik/old/src/RimMandrake/Utils
 ## 1. change records on file: source_kinds == [] out of all
-  rimworld-modding_v1.json     level-day 2026-11-01  pieces 1  source_kinds []
-  using-rimflow_v1.json        level-day 2026-11-02  pieces 1  source_kinds []
+  rimworld-modding_v1.json     day 2026-11-01  pieces 1  source_kinds []
+  using-rimflow_v1.json        day 2026-11-02  pieces 1  source_kinds []
   KINDLESS 2 of 2 records
-  sanity probe: the same reader on a copy of rimworld-modding_v1.json with source_kinds ['REPAIR'] reads kinded=True
+  sanity probe: apply_change (L0, temp repo) on the real lesson 20261112T043802Z-CLAUDE_ARCHMAGI_OFFLINE1-lesson-item-footer-feeds-kinds.md (item: AGENT_IMPROVE_AUDIT_KINDLESS_RECORDS_ALL_TWO) wrote probe_v1.json with source_kinds ['AUDIT']; the same reader counts KINDLESS 0 of 1 there (apply ok=True)
 
 ## 2. could the two records regain kinds from a sound source?
   rimworld-modding_v1.json (20261101T133144Z-FOUNDRY-decompiled-path-missing-use-ilspycmd.md): whole lesson body names an item -> kind None; adding commit '51ca29c716 wave 74: 8 mark-clean records, 4 lessons, FOUNDRY ledger note' -> kind None; seat FOUNDRY touched 8 distinct items within 1 h of it (?, AUDIT, BUILD, CODE, CORRECT, FIX)

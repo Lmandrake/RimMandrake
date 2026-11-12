@@ -19,8 +19,8 @@ remains, since seat-at-time and the adding commit were measured and both fail; r
 would drag down the ramp's acceptance rate. The code agrees: the selftest "L0 applies a change from a lesson naming no
 item, recorded kindless" and "L1 applies it too, recorded kindless" pass. The cadence still shows such a record `unmeasured` (selftest_agent_improve_cadence,
 unchanged and green), and only the L2 gate refuses one.
-Bullet 2: 2 of 2 records have `source_kinds == []`. The sanity probe shows the same reader reads a non-empty list as
-kinded. The share is stated on the item (`rimflow note`, ledger shard CLAUDE_ARCHMAGI_OFFLINE1) and in §4.3.
+Bullet 2: 2 of 2 records have `source_kinds == []`. The sanity probe: the production apply_change, run in a temp repo on a real footered lesson, writes
+`['AUDIT']` and the same reader counts it kinded (0 of 1), so the reader can see a non-empty list. The share is stated on the item (`rimflow note`, ledger shard CLAUDE_ARCHMAGI_OFFLINE1) and in §4.3.
 
 ## What I'm least sure about
 - The whole-text fallback is a proxy. Its first-named item is corroborated by the seat's own ledger for only 49% (27%

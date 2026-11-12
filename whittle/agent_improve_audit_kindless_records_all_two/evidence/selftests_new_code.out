@@ -1,20 +1,20 @@
-# 2026-11-11 20:59 -0800 at HEAD f49981bfda
+# 2026-11-11 21:08 -0800 at HEAD 28e3907a0d
 contained in rm-harness.slice (max 24G), 6 workers
-[1/5] PASS          0.2s  src/RimMandrake/Utils/selftest_agent_improve.py
+[1/5] PASS          0.3s  src/RimMandrake/Utils/selftest_agent_improve.py
 [2/5] PASS          0.6s  src/RimMandrake/Utils/selftest_lessons.py
 [3/5] PASS          0.7s  src/RimMandrake/Utils/selftest_agent_improve_steps.py
-[4/5] PASS          1.5s  src/RimMandrake/Utils/selftest_agent_improve_general.py
-[5/5] PASS          3.3s  src/RimMandrake/Utils/selftest_agent_improve_cadence.py
+[4/5] PASS          1.7s  src/RimMandrake/Utils/selftest_agent_improve_general.py
+[5/5] PASS          4.4s  src/RimMandrake/Utils/selftest_agent_improve_cadence.py
 evidence: 0 eligible, 0 SKIPPED as unchanged, 0 PASS recorded, 0 PASS not recordable — runner 65716eff3278c68e
 cache: 0 CACHED PASS, 0 declared test(s) ran
 known results: 0/5 answered from the ledger (selftests.cache_hit_share 0.000), 0s not spent; 5 ran, 0 recorded, 0 checked against a stored PASS, 0 known red
   ran (5): no record
   not recordable (5): clock: src/RimMandrake/Utils/selftest_agent_improve.py, src/RimMandrake/Utils/selftest_agent_improve_cadence.py, src/RimMandrake/Utils/selftest_agent_improve_general.py, src/RimMandrake/Utils/selftest_agent_improve_steps.py ...
-PASS          0.2s  src/RimMandrake/Utils/selftest_agent_improve.py
-PASS          3.3s  src/RimMandrake/Utils/selftest_agent_improve_cadence.py
-PASS          1.5s  src/RimMandrake/Utils/selftest_agent_improve_general.py
+PASS          0.3s  src/RimMandrake/Utils/selftest_agent_improve.py
+PASS          4.4s  src/RimMandrake/Utils/selftest_agent_improve_cadence.py
+PASS          1.7s  src/RimMandrake/Utils/selftest_agent_improve_general.py
 PASS          0.7s  src/RimMandrake/Utils/selftest_agent_improve_steps.py
 PASS          0.6s  src/RimMandrake/Utils/selftest_lessons.py
 
-PASS 5/5  FAIL 0/5  UNMEASURED 0/5  CRASH 0/5  SKIPPED 0/5  (wall 3.5s) — contained in rm-harness.slice (max 24G), 6 workers
+PASS 5/5  FAIL 0/5  UNMEASURED 0/5  CRASH 0/5  SKIPPED 0/5  (wall 4.6s) — contained in rm-harness.slice (max 24G), 6 workers
 RESULT: GREEN (green = FAIL 0 and CRASH 0)

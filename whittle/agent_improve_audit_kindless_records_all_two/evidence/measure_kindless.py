@@ -14,16 +14,60 @@ def ep(s):
     except ValueError:
         return None
 
+def count(changes_dir):
+    """-> (kindless, total, rows): the one reader, used on the real records and on the probe alike."""
+    recs = sorted(glob.glob(os.path.join(changes_dir, "*.json")))
+    rows = [(os.path.basename(p), json.load(open(p))) for p in recs]
+    return sum(1 for _n, d in rows if not d.get("source_kinds")), len(rows), rows
+
+
 print("## 1. change records on file: source_kinds == [] out of all")
-recs = sorted(glob.glob(os.path.join(REPO, "infrastructure/state/agent_improve/changes/*.json")))
-empty = [p for p in recs if not json.load(open(p)).get("source_kinds")]
-for p in recs:
-    d = json.load(open(p))
-    print("  %-28s level-day %s  pieces %d  source_kinds %r" % (os.path.basename(p), d["day"], len(d["pieces"]), d.get("source_kinds")))
-print("  KINDLESS %d of %d records" % (len(empty), len(recs)))
-probe = dict(json.load(open(recs[0])), source_kinds=["REPAIR"])
-print("  sanity probe: the same reader on a copy of %s with source_kinds ['REPAIR'] reads kinded=%s"
-      % (os.path.basename(recs[0]), bool(probe.get("source_kinds"))))
+CH = os.path.join(REPO, "infrastructure/state/agent_improve/changes")
+recs = sorted(glob.glob(os.path.join(CH, "*.json")))
+k, n, rows = count(CH)
+for name, d in rows:
+    print("  %-28s day %s  pieces %d  source_kinds %r" % (name, d["day"], len(d["pieces"]), d.get("source_kinds")))
+print("  KINDLESS %d of %d records" % (k, n))
+
+# Sanity probe: a record written to disk by the production apply_change (temp git repo, fake publish), from a real
+# lesson in the inbox that carries an item: footer, read back by the same count(). It can fail: if apply_change
+# wrote [] or the reader could not see the list, it reads 1 of 1 kindless.
+import shutil, tempfile
+real = [p for p in sorted(glob.glob(os.path.join(REPO, "infrastructure/state/lessons/*.md"))) if A.lessons.item_of(p)
+        and A.lessons.item_of(p) != "NONE"]
+with tempfile.TemporaryDirectory() as tmp:
+    repo, les = os.path.join(tmp, "repo"), os.path.join(tmp, "lessons")
+    os.makedirs(os.path.join(repo, "skills", "probe"))
+    os.makedirs(les)
+    open(os.path.join(repo, "skills", "probe", "SKILL.md"), "w").write("# Probe\n\n- one line.\n")
+    open(os.path.join(repo, "skills", "validate_skills.py"), "w").write("import sys\nsys.exit(0)\n")
+    g = lambda *a: subprocess.run(["git", "-c", "user.email=p@p", "-c", "user.name=p", *a], cwd=repo, check=True,
+                                  capture_output=True, text=True).stdout
+    g("init", "-q"); g("add", "-A"); g("commit", "-qm", "base")
+    shutil.copy(real[0], les)
+    body = open(real[0], encoding="utf-8").read()
+    open(os.path.join(les, os.path.basename(real[0])), "w", encoding="utf-8").write(
+        "\n".join(l for l in body.splitlines() if not l.startswith("home:")) + "\nhome: probe\n")
+    A.REPO, A.SKILLS = repo, os.path.join(repo, "skills")
+    ent = A.target_entry("probe", 1, A.lesson_pieces(les, 0, 2 ** 31))
+    res = A.resolve_target("probe")
+    _nf, diff, _p = A.build_change(ent, res, open(os.path.join(repo, "skills/probe/SKILL.md")).read(),
+                                   {"cites": [0], "fix_layer": "prompt", "recheck": "x",
+                                    "edits": [{"old": "- one line.\n", "new": "- one line, probed.\n"}]})
+    pub = lambda msg, paths, r: (g("add", "--", *paths) or True, g("commit", "-qm", "probe", "--", *paths) or
+                                 g("rev-parse", "HEAD").strip())
+    pch = os.path.join(repo, "infrastructure/state/agent_improve/changes")
+    ok, why = A.apply_change({"target": "probe", "day": "2026-11-11", "path": res["path"], "verdict": "KEEP",
+                              "judge": {"reasons": "probe", "violated": None}, "cites": [0], "recheck": "x", "diff": diff},
+                             ent, os.path.join(tmp, "out"), repo=repo, publish=lambda m, p, r: (True, pub(m, p, r)[1]),
+                             changes_dir=pch, delegated_dir=os.path.join(repo, "infrastructure/state/delegated"),
+                             pk_level=0)
+    pk, pn, prow = count(pch)
+    print("  sanity probe: apply_change (L0, temp repo) on the real lesson %s (item: %s) wrote %s with source_kinds %r;"
+          " the same reader counts KINDLESS %d of %d there (apply ok=%s)"
+          % (os.path.basename(real[0]), A.lessons.item_of(real[0]), prow[0][0] if prow else "-",
+             prow[0][1].get("source_kinds") if prow else None, pk, pn, ok))
+    A.REPO = REPO
 
 print("\n## 2. could the two records regain kinds from a sound source?")
 for p in recs:
