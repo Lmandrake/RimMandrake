@@ -570,7 +570,7 @@ def wake():
 
 
 # A pointer's last state event, in words: "file" read as an order to file something (fresh-reader test, 2026-11-11).
-OPEN_WORDS = {"file": "open (filed, never started)", "spawn": "open (spawned, never started)", "start": "open (started)",
+OPEN_WORDS = {"file": "open (no start on the ledger)", "spawn": "open (spawned; no start on the ledger)", "start": "open (started)",
               "block": "open, BLOCKED"}
 QUIET = ("lease", "renew", "claim", "start")    # keep a claim alive; they say nothing new about the work
 

@@ -32,8 +32,9 @@ sys.path.insert(0, os.path.dirname(HERE))
 from rimflow import model, priority  # noqa: E402
 
 MAX_LINES = 50
-CAP = 8
-WIDTH = 160
+CAP = 7             # rows in each one-line section
+NEXT_CAP = 6        # NEXT rows are two lines each: header 3 + 3 x (2 + 7 + 1) + (2 + 12 + 1) = 48 <= MAX_LINES
+WIDTH = 120         # 160 wrapped past one screen on a 120-column terminal (fresh-reader test, 2026-11-11)
 REGEN = "python3 src/RimMandrake/Utils/ledger_state.py"
 # "NEXT:" and its spoken forms, "NEXT then:", "NEXT (after the load):" — an owner note said "NEXT then:" and the first
 # reader missed it (fresh-reader test, 2026-11-11). Never across a line: an empty NEXT: borrows nothing.
@@ -64,7 +65,9 @@ def local(ts):
 
 
 def clip(s, n=WIDTH):
-    s = " ".join(str(s or "").split())
+    """One line of at most n characters, whitespace collapsed; a leading indent is kept (a NEXT row's second line)."""
+    raw = str(s or "")
+    s = raw[:len(raw) - len(raw.lstrip(" "))] + " ".join(raw.split())
     n = max(n, 2)
     return s if len(s) <= n else s[:n - 1].rstrip() + "…"
 
@@ -73,22 +76,26 @@ def short_title(it, n=70):
     return clip(it.title or "(no title)", n)
 
 
-def section(title, rows, more_cmd, total=None):
-    """A heading, at most CAP rows, and one 'and N more' line naming where the rest are."""
+def section(title, rows, more_cmd, total=None, cap=CAP):
+    """A heading, at most `cap` rows, and one 'and N more' line naming where the rest are. A row may be a tuple of
+    lines (a NEXT row is two); each line is clipped to WIDTH."""
     total = len(rows) if total is None else total
     out = ["", clip(title)]
-    out += [clip(r) for r in rows[:CAP]] or ["- none"]
-    if total > min(len(rows), CAP):
-        out.append("- … and %d more: %s" % (total - min(len(rows), CAP), more_cmd))
+    for r in rows[:cap]:
+        out += [clip(x) for x in (r if isinstance(r, tuple) else (r,))]
+    if not rows:
+        out.append("- none")
+    if total > min(len(rows), cap):
+        out.append("- … and %d more: %s" % (total - min(len(rows), cap), more_cmd))
     return out
 
 
-def standing(i, now, short=False):
+def standing(i, now, short=False, reason=50):
     """The item's state as it stands now, with what would stop a reader acting on it: blocked (and why), needs, and
     whose live lease it is. A row without these read a blocked, owner-gated item as plain `doing` (GPT broaden, 2026-11-11)."""
     out = [i.state]
     if i.blocked:
-        out.append("BLOCKED" if short else "BLOCKED: %s" % clip(i.blocked_reason or "unexplained", 50))
+        out.append("BLOCKED" if short else "BLOCKED: %s" % clip(i.blocked_reason or "unexplained", reason))
     if i.needs and i.needs != "offline":
         out.append("needs %s" % i.needs)
     if model.lease_status(i, now) == "live":
@@ -121,7 +128,7 @@ def open_items(world, seat, now):
     for i in sorted((i for i in mine if i.id not in seen and i.state in rest),
                     key=lambda i: (rest.index(i.state), -(model.epoch(i.created_at) or 0))):
         rows.append("- `%s` — %s: %s" % (i.id, standing(i, now), short_title(i)))
-    return section("## Open items — %d (%s)" % (len(mine), tally), rows,
+    return section("## Open items — this seat's %d (%s)" % (len(mine), tally), rows,
                    "rimflow queue %s" % seat, total=len(mine))
 
 
@@ -155,8 +162,8 @@ def live_helpers(world, now):
     rows = ["- %s holds `%s` (%s), lease to %s" % (i.lease.get("seat") or i.owner, i.id, i.state,
                                                   local(i.lease.get("expires"))[11:])
             for i in held]
-    return section("## Live helpers — %d unexpired lease%s, every seat (a lease is a claim on the ledger, not proof its worker "
-                   "still runs)" % (len(held), "" if len(held) == 1 else "s"),
+    return section("## Live helpers — %d unexpired lease%s, every seat (a lease is a claim, not a running process)"
+                   % (len(held), "" if len(held) == 1 else "s"),
                    rows, "rimflow queue <SEAT> (IN PROGRESS)")
 
 
@@ -184,15 +191,24 @@ def next_lines(world, evs, seat, now):
             later[iid] += 1
     rows = []
     for iid, (ts, nxt, who) in sorted(last.items(), key=lambda kv: kv[1][0], reverse=True):
-        tail = " (%s, %s%s)" % (local(ts)[5:16], who, "; ⚠ %d later event%s" % (later[iid], "" if later[iid] == 1 else "s")
-                                                      if later[iid] else "")
-        head = "- `%s` — %s; NEXT: " % (iid, standing(mine[iid], now))
-        if len(head) + len(tail) > WIDTH - 30:      # a long id: the flags go short before the stamp could be cut
-            head = "- `%s` — %s; NEXT: " % (iid, standing(mine[iid], now, short=True))
-        # the action is cut to fit, never the stamp or the warning: those are what make an old NEXT safe to read
-        rows.append(head + clip(nxt.rstrip(".… "), max(30, WIDTH - len(head) - len(tail))) + tail)
-    return section("## NEXT — newest `NEXT:` note on %d of this seat's open items, as written then (Pacific time, writer); a ⚠ or a cut "
-                   "(…) row: rimflow show <ID> first" % len(rows), rows, "rimflow show <ID>")
+        # line 1: the item, how it stands now, when and by whom the NEXT was written, and whether the ledger moved on;
+        # line 2: the action, which alone is cut to fit. The stamp and the warning are what make an old NEXT safe to read.
+        tail = " (NEXT %s by %s%s)" % (local(ts)[5:16], who, "; ⚠ %d later event%s" % (later[iid], "" if later[iid] == 1 else "s")
+                                                          if later[iid] else "")
+        it, nxt = mine[iid], nxt.rstrip(".… ")
+        head = "- `%s` — %s" % (iid, standing(it, now))
+        over = len(head) + len(tail) - WIDTH
+        if over > 0 and it.blocked:                 # too long: the block's reason gives way first, then the flags
+            head = "- `%s` — %s" % (iid, standing(it, now, reason=len(clip(it.blocked_reason or "unexplained", 50)) - over))
+        if len(head) + len(tail) > WIDTH or "BLOCKED: …" in head:
+            head = "- `%s` — %s" % (iid, standing(it, now, short=True))
+        if len(head) + len(tail) <= WIDTH:
+            rows.append((head + tail, "    NEXT: " + clip(nxt, WIDTH - 10)))
+        else:                                       # a long id: the stamp moves to the action's line, never cut
+            lead = "    " + tail.strip() + " NEXT: "
+            rows.append((head, lead + clip(nxt, WIDTH - len(lead))))
+    return section("## NEXT — newest NEXT note on %d of this seat's open items, as written then (Pacific time)" % len(rows),
+                   rows, "rimflow show <ID>; a ⚠ or a cut (…) row: rimflow show <ID> before acting", cap=NEXT_CAP)
 
 
 def build(seat, evs=None, world=None, now=None):

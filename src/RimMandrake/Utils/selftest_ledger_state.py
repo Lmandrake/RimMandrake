@@ -110,13 +110,13 @@ body = lambda name: "\n".join(sec.get(name, []))   # noqa: E731
 
 print("ledger_state: the four sections, from a CLI-written ledger")
 check(list(sec) == ["Open items", "Owner-pending", "Live helpers", "NEXT"], "four sections, in order: %s" % list(sec))
-check("## Open items — 12 (doing 1 · proposed 9 · blocked 2)" in body("Open items"),
+check("## Open items — this seat's 12 (doing 1 · proposed 9 · blocked 2)" in body("Open items"),
       "open items: 12 of BENCH's, the dropped one gone, counts by state: %r" % sec["Open items"][0])
 check("`%s` — doing, leased by BENCH:" % ids[0] in sec["Open items"][1], "open items: the leased one first: %r"
       % sec["Open items"][1])
 check("BLOCKED: the pump eats its own hose" in body("Open items"), "open items: the blocked one with its reason")
-check(len([x for x in sec["Open items"] if x]) == 10 and "… and 4 more: rimflow queue BENCH" in body("Open items"),
-      "open items: 8 shown, the rest counted and named:\n        " + "\n        ".join(sec["Open items"]))
+check(len([x for x in sec["Open items"] if x]) == 9 and "… and 5 more: rimflow queue BENCH" in body("Open items"),
+      "open items: 7 shown, the rest counted and named:\n        " + "\n        ".join(sec["Open items"]))
 check("STATENOW_TEST_OTHER" not in body("Open items") and ids[11] not in body("Open items"),
       "open items: no other seat's item, no dropped item")
 check(sec["Owner-pending"][0].startswith("## Owner-pending — 3 items in 1 topic")
@@ -131,19 +131,23 @@ check("2 unexpired leases" in sec["Live helpers"][0] and "BENCH holds `%s`" % id
 check("STATENOW_TEST_OTHER_RELEASED" not in body("Live helpers"), "live helpers: a released lease is not one")
 check("NEXT: write the fix into the proof script" in body("NEXT") and "the stale action" not in body("NEXT"),
       "NEXT: the newest NEXT on an item, not an older one")
-check("NEXT: read the first exception in Player.log (" in body("NEXT") and "second line" not in body("NEXT"),
-      "NEXT: one line of the note, with its date and writer")
+i4 = next((k for k, ln in enumerate(sec["NEXT"]) if ("`%s`" % ids[4]) in ln), -1)
+check(i4 > 0 and "(NEXT 11-" in sec["NEXT"][i4] and "by BENCH)" in sec["NEXT"][i4]
+      and sec["NEXT"][i4 + 1] == "    NEXT: read the first exception in Player.log" and "second line" not in body("NEXT"),
+      "NEXT: two lines, the stamp and writer on the first, one line of the note on the second")
 check("dropped item's action" not in body("NEXT") and "other seat's action" not in body("NEXT"),
       "NEXT: nothing from a dropped item or another seat")
 check("NEXT: deploy it with him" in body("NEXT"), "NEXT: the spoken form \"NEXT then:\" is a NEXT too")
 check("other seat's action" not in body("NEXT") and ("`%s`" % ids[6]) not in body("NEXT"),
       "NEXT: an empty NEXT: borrows nothing from the next line")
 row7 = next((ln for ln in sec["NEXT"] if ("`%s`" % ids[7]) in ln), "")
-check("BLOCKED: deploy waits on his approval" in row7 and "⚠ 2 later events" in row7,
+check("BLOCKED: deploy waits on his app" in row7 and "⚠ 2 later events" in row7 and len(row7) <= ledger_state.WIDTH,
       "NEXT: an overtaken NEXT carries the block and a later-events warning:\n        " + row7)
-rowl = next((ln for ln in sec["NEXT"] if LONG in ln), "")
-check(rowl.endswith(", %s)" % O) and len(rowl) <= ledger_state.WIDTH,
-      "NEXT: a 64-char id keeps its stamp and writer, the action is what gets cut:\n        " + rowl)
+il = next((k for k, ln in enumerate(sec["NEXT"]) if LONG in ln), -1)
+rowl = "\n        ".join(sec["NEXT"][il:il + 2]) if il > 0 else ""
+check(il > 0 and sec["NEXT"][il + 1].startswith("    (NEXT 11-") and (" by %s) NEXT: zzz" % O) in sec["NEXT"][il + 1]
+      and sec["NEXT"][il + 1].endswith("…") and max(len(x) for x in sec["NEXT"][il:il + 2]) <= ledger_state.WIDTH,
+      "NEXT: a 63-char id keeps its stamp and writer, the action is what gets cut:\n        " + rowl)
 check(ledger_state.build("CONDUCTOR").splitlines()[3:] == lines[3:] and
       ledger_state.out_path("BENCH") == ledger_state.out_path(ledger_state.model.canonical("CONDUCTOR")),
       "the CONDUCTOR alias reads BENCH's items, not an empty seat")
