@@ -28,8 +28,8 @@ namespace RimMandrake.DivingInteraction
     // inspect line say High there too, so the two lines agree with the
     // watts the pump really takes.
     //
-    // Switching a pump off, a breakdown or a power cut takes effect at once
-    // (ReceiveCompSignal refreshes every pump in the room), and a loaded save
+    // Switching a pump off, a breakdown, a power cut or taking a pump away
+    // takes effect at once (every pump left in the room re-counts), and a loaded save
     // re-fills its pumped rooms as soon as loading finishes, rather than
     // leaving them airless until the first rare tick.
     //
@@ -201,6 +201,19 @@ namespace RimMandrake.DivingInteraction
         {
             map?.GetComponent<RM_MapComponent_ChillOxygenation>()?.ClearProvider(parent);
             base.PostDeSpawn(map, mode);
+            // Deconstructed, uninstalled or destroyed: the pumps left in the room may now be too few for it.
+            Room room = map != null && parent.Position.InBounds(map) ? parent.Position.GetRoom(map) : null;
+            if (room != null)
+            {
+                foreach (Thing t in room.ContainedAndAdjacentThings)
+                {
+                    RM_CompChillAirSupply other = t.TryGetComp<RM_CompChillAirSupply>();
+                    if (other != null && other != this && t.Spawned && t.GetRoom() == room)
+                    {
+                        other.Refresh();
+                    }
+                }
+            }
         }
 
         public override string CompInspectStringExtra()

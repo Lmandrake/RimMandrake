@@ -1,0 +1,15 @@
+staging src/RimMandrake/DivingInteraction/Source/RM_DivingInteraction.csproj -> D:\ClaudeWork\rimmandrake\build\DivingInteraction
+  src/RimMandrake/_Shared/SettingsKit/
+  src/RimMandrake/DivingInteraction/Source/
+  src/RimMandrake/_Shared/HarmonyResilience/
++ dotnet.exe build D:\ClaudeWork\rimmandrake\build\DivingInteraction\src\RimMandrake\DivingInteraction\Source\RM_DivingInteraction.csproj -c Release
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  RM_DivingInteraction -> D:\ClaudeWork\rimmandrake\build\DivingInteraction\src\RimMandrake\DivingInteraction\Assemblies\RimMandrake.DivingInteraction.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:05.20
+BUILT src/RimMandrake/DivingInteraction/Assemblies/RimMandrake.DivingInteraction.dll (source 89138de914d3+dirty)
