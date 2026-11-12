@@ -94,9 +94,9 @@ def norm_target(home):
 
 def piece(target, kind, ts, path, text, item=None):
     """`text` is the first line, for the packet. The task kind (design 4.3) is the kind of `item`, the piece's own item
-    when its source records one (a lesson's `item:` footer; NONE or an id with no intent word gives no kind, never a
-    guess from the text), else of the first item named in the whole text, so a lesson that names its item past its
-    first 200 characters still names its source kind."""
+    when its source records one (a lesson's `item:` footer, a Relentless row's item, an ops alarm's name, an owner
+    note's id; NONE or an id with no intent word gives no kind, never a guess from the text), else of the first item
+    named in the whole text, so a lesson that names its item past its first 200 characters still names its kind."""
     return {"target": target, "kind": kind, "ts": ts, "path": path, "text": first_line(text),
             "task_kind": kind_of_text(item) if item else kind_of_text(text)}
 
@@ -128,14 +128,14 @@ def relentless_pieces(store, lo, hi):
             if t is None or not lo <= t < hi or not r.get("end") or r.get("end") in OK_ENDS:
                 continue
             out.append(piece("relentless", "reject:%s" % r.get("end"), t, p,
-                             "%s: %s" % (item, r.get("detail") or r.get("why") or r.get("end"))))
+                             "%s: %s" % (item, r.get("detail") or r.get("why") or r.get("end")), item=item))
     for p in glob.glob(os.path.join(store, "items", "*", "learned.md")):
         item = os.path.basename(os.path.dirname(p))
         for ln in open(p, encoding="utf-8", errors="replace"):
             m = LEARNED.match(ln.rstrip("\n"))
             t = epoch(m.group(1)) if m else None
             if t is not None and lo <= t < hi:
-                out.append(piece("relentless", "learned", t, p, "%s: %s" % (item, m.group(2))))
+                out.append(piece("relentless", "learned", t, p, "%s: %s" % (item, m.group(2)), item=item))
     j = os.path.join(store, "journal.jsonl")
     if os.path.exists(j):
         for ln in open(j, encoding="utf-8", errors="replace"):
@@ -149,7 +149,8 @@ def relentless_pieces(store, lo, hi):
             if r.get("do") == "alarm" and t is not None and lo <= t < hi:
                 item = r.get("item") or re.sub(r"\.q\d+$", "", os.path.basename(r.get("clone") or ""))   # clones/<item>[.qN]
                 why = r.get("why") or r.get("kind")
-                out.append(piece("relentless", "alarm:%s" % r.get("kind"), t, j, "%s: %s" % (item, why) if item else why))
+                out.append(piece("relentless", "alarm:%s" % r.get("kind"), t, j, "%s: %s" % (item, why) if item else why,
+                                 item=item or None))
     return out
 
 
@@ -165,7 +166,8 @@ def ops_pieces(alarms_path, lo, hi):
             continue
         t = epoch(r.get("since") or r.get("filed"))
         if t is not None and lo <= t < hi:
-            out.append(piece("operations", "alarm", t, alarms_path, "%s: %s" % (r.get("name"), r.get("title"))))
+            out.append(piece("operations", "alarm", t, alarms_path, "%s: %s" % (r.get("name"), r.get("title")),
+                             item=r.get("name")))
     return out
 
 
@@ -182,7 +184,8 @@ def owner_pieces(owner_shard, lo, hi):
             continue
         t = epoch(r.get("ts"))
         if t is not None and lo <= t < hi and r.get("ownerSaid"):
-            out.append(piece(None, "owner_said", t, owner_shard, "%s: %s" % (r.get("id") or "-", r["ownerSaid"])))
+            out.append(piece(None, "owner_said", t, owner_shard, "%s: %s" % (r.get("id") or "-", r["ownerSaid"]),
+                             item=r.get("id")))
     return out
 
 

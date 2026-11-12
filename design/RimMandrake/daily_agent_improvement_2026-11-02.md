@@ -145,9 +145,9 @@ the newest version of each target:
 - Where a piece's kind comes from, and why a change below L2 may still name none (2026-11-11,
   `AGENT_IMPROVE_AUDIT_KINDLESS_RECORDS_ALL_TWO`). A piece's kind is the kind of its own item when its source records
   one: a lesson's `item:` footer (`lessons.py add` writes it from `--item`, else the session's `RIMFLOW_ITEM` or the
-  Whittle loop's `WC_ITEM`; `item: NONE`, or an id with no intent word, gives no kind and is never second-guessed from
-  the text), a Relentless reject or learned line's item, a Relentless alarm's `item` or its `clones/<item>` path, an
-  owner note's item, an ops alarm's own id. Otherwise it is the first item named anywhere in the piece's whole text, not
+  Whittle loop's `WC_ITEM`), a Relentless reject or learned line's item, a Relentless alarm's `item` or its
+  `clones/<item>` path, an owner note's item, an ops alarm's own name. That own item decides: `item: NONE`, or an id
+  with no intent word, gives no kind and is never second-guessed from the text. Otherwise it is the first item named anywhere in the piece's whole text, not
   only the 200 characters the packet shows: of the 2396 lessons ever filed, the first line names a kind for 159 (7%), the
   whole text for 582 (24%). That fallback is a proxy, not provenance: the lesson's own seat wrote a ledger event on that
   item within 3 hours of filing for 27% of the first-line cases and 49% of the whole-text-only ones, so reading the whole

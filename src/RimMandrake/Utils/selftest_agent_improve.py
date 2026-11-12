@@ -96,6 +96,16 @@ with tempfile.TemporaryDirectory() as root:
     got = {os.path.basename(p["path"])[23:-3]: A.task_kind(p) for p in A.lesson_pieces(lk, 0, 2 ** 31)}
     check("lesson kinds: footer item, NONE, kindless own item, a quoted item: line, none recorded",
           got == {"own": "BUILD", "none": None, "legacy": None, "quoted": "REPAIR", "bare": "REPAIR"}, got)
+    # a piece's own item is final: an id with no intent word gives no kind, never the next id its text names
+    om = os.path.join(root, "own_items")
+    write(os.path.join(om, "OWNER.jsonl"), json.dumps({"seat": "OWNER", "event": "note", "id": "SEA_DIVE_HATCH_REMOVE_1",
+                                                       "ownerSaid": "see WIDGET_REPAIR_SHAPE", "ts": "2026-11-01T11:00:00Z"}) + "\n")
+    write(os.path.join(om, "alarms.json"), json.dumps({"Z": {"name": "disk.pool_breach", "title": "WIDGET_REPAIR_SHAPE",
+                                                             "since": "2026-11-01T10:00:00Z"}}))
+    lo1, hi1 = A.day_bounds("2026-11-01")
+    own = A.owner_pieces(os.path.join(om, "OWNER.jsonl"), lo1, hi1) + A.ops_pieces(os.path.join(om, "alarms.json"), lo1, hi1)
+    check("owner note and ops alarm: their own id decides, not a later id in the text",
+          [A.task_kind(p) for p in own] == [None, None], own)
     check("skill-a recurs on the day", "skill-a" in names, names)
     check("skill-b recurs over the window", "skill-b" in names and by["skill-b"]["window_count"] == 2, names)
     check("skill-c lonely, not signalled", "skill-c" not in names and "skill-c" in pk["unsignalled"], pk["unsignalled"])
