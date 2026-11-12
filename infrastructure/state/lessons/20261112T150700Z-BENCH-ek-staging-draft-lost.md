@@ -1,0 +1,2 @@
+Staging drafted pawns with jawa/set_draft right after jawa/spawn_pawn on a fresh quicktest map (then pawn_gear wear, time_set_ticks, save) left them UNDRAFTED in the saved file (EK Station 1, twice); set_draft on a loaded game then save does persist (verified by reload, wasDrafted True x5). Also jawa/list_pawns has NO drafted field: a 'drafted' read from it is None, a blind instrument. Verify draft by set_draft's wasDrafted after a reload. Undrafted pawns flee a lit wick, which is why the first EK sitting threw nobody.
+home: skills/rimworld-live-review

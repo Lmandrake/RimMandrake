@@ -1,0 +1,2 @@
+A 25-shell HE stack (Bomb 50, no falloff) killed 2 of 5 unarmoured colonists within r6 in one run and 0 in another: vanilla blast damage, before any throw. For a survivable knockback demo give colonists flak vest+pants+helmet (jawa/pawn_gear action=wear); then 0 deaths in 5 armoured runs. Dropped old clothes land on nearby cells (here pit cells): a proof must count 'in pit' only for stacks that moved.
+home: design/concepts/ExplosiveKnockback/plan.md
