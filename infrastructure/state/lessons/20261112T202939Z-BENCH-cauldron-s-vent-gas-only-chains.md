@@ -1,0 +1,1 @@
+The Cauldron's vent gas only chains if it is thick when the 30-tick fire scan comes: a seeded cloud of 60 diffused under IgniteMin 24 and burned one cell; seed ~250. The scan lights at most 40 cells map-wide, so in a matrix of many clouds a fuel-less starter fire can burn out before its turn: put fuel (wood) under it.

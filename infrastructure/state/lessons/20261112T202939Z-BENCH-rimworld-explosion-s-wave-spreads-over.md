@@ -1,0 +1,1 @@
+A RimWorld explosion's wave spreads over several ticks, so knockback requests for one blast arrive in several per-tick batches (a 5.9 Bomb: 80 item throws over ticks, at most 24 in one). Anything counted per explosion must be counted across ticks (the ledger), not per MapComponentTick batch.

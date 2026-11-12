@@ -1,0 +1,1 @@
+The EK perf script's 'contaminated' flag (frames > secs x 62 x 1.3) misfires: the 16-mod game runs ~320 fps at Normal, ~1,900 frames in 6 s. Judge a blast's frame cost against a no-fire control window instead (the control showed the same single 100-250 ms frame).
