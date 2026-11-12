@@ -1,0 +1,32 @@
+$ python3 src/RimMandrake/rimflow/relentless_names.py replay --enforce --fixture src/RimMandrake/rimflow/fixtures/live_mods_replay.json --report whittle/live_needs_enforce_absence_now_explicit/evidence/replay_enforce_report.json
+ENFORCE R1/R2 items right 17/20 (bar 17)  wrong additions 0  PASS proofs 50 (live list recorded for 23): gate additions 50 -> the run already held 24, the run did WITHOUT 0, unrecorded 26; refused by live-without 0  -> OK
+  missed ART_OVERRIDE_FAMILY_SCRIPT_1: the planned load still lacks sarg.alphamemes, vanillaexpanded.vgeneticse
+  missed TITANIC_BODYSIZE_TEST_RACE_1: the planned load still lacks neku.largepawns
+  missed WORLD_NULLTEX_FLOOD_HUNT_STACKLESS_SO_FAR: the planned load still lacks MenuShell
+  unrecorded live list: 2026-11-05T18:14:03Z PIT_ESCAPE_PROVE_LADDER_LEFT_DOWN: FlowWorks@script_home
+  unrecorded live list: 2026-11-05T16:54:43Z HORRORS_RAIDING_FACTION_1: AshkarrWeatherSuite@script_path
+  unrecorded live list: 2026-11-05T16:54:43Z HORRORS_RAIDING_FACTION_1: mandrake.rm.flowworks@closure
+  unrecorded live list: 2026-11-05T16:54:43Z HORRORS_RAIDING_FACTION_1: mandrake.rm.luminouspigment@closure
+  unrecorded live list: 2026-11-05T06:32:53Z HEAVY_TEXTURES_MEASURE_REAL_VRAM: rwnodetree.rwplanetatmosphere@proof_cue
+  unrecorded live list: 2026-11-05T06:32:53Z HEAVY_TEXTURES_MEASURE_REAL_VRAM: vesper.egihologramsandprojectors@proof_cli
+  unrecorded live list: 2026-11-05T06:32:53Z HEAVY_TEXTURES_MEASURE_REAL_VRAM: zacharyfoster.mineralsframework@proof_cli
+  unrecorded live list: 2026-11-05T06:32:53Z HEAVY_TEXTURES_MEASURE_REAL_VRAM: zacharyfoster.mineralsrock@proof_cli
+  unrecorded live list: 2026-11-05T06:32:53Z HEAVY_TEXTURES_MEASURE_REAL_VRAM: fourtoo.glowingbush@proof_cli
+  unrecorded live list: 2026-11-04T16:14:24Z MIASMA_WARDEN_MOTHER_ART_1: RimMandrake.Biomes@folded
+  unrecorded live list: 2026-11-04T15:46:13Z STILLSAND_GLASS_CHAIN_REMAINDER_1: RimMandrake.Biomes@folded
+  unrecorded live list: 2026-11-04T14:11:07Z BRONZIUM_DROP_1: neronix17.toolbox@closure
+  unrecorded live list: 2026-11-04T14:10:28Z CREEP_WEB_HARVEST_LIVE_1: RimMandrake.Biomes@script_home
+  unrecorded live list: 2026-11-04T13:26:07Z RSW_FACES_VERIFY_IN_GAME_BEFORE_SHIM: nals.facialanimation@proof_cue
+  unrecorded live list: 2026-11-04T13:26:07Z RSW_FACES_VERIFY_IN_GAME_BEFORE_SHIM: neronix17.toolbox@closure
+  unrecorded live list: 2026-11-04T13:26:07Z RSW_FACES_VERIFY_IN_GAME_BEFORE_SHIM: mandrake.rm.flowworks@closure
+  unrecorded live list: 2026-11-04T13:26:07Z RSW_FACES_VERIFY_IN_GAME_BEFORE_SHIM: mandrake.rm.luminouspigment@closure
+  unrecorded live list: 2026-11-04T12:21:24Z CRACKEDLANDS_THREE_HEIGHT_FLORA_1: RimMandrake.Biomes@folded
+  unrecorded live list: 2026-11-04T01:56:22Z VANILLA_BEAST_EXCISION_1: mandrake.rm.flowworks@closure
+  unrecorded live list: 2026-11-04T01:56:22Z VANILLA_BEAST_EXCISION_1: mandrake.rm.luminouspigment@closure
+  unrecorded live list: 2026-11-04T01:56:07Z SPECIES_TRAITS_OVER_APTITUDES_1: neronix17.toolbox@closure
+  unrecorded live list: 2026-11-03T23:32:54Z HORRORS_RAIDING_FACTION_1: AshkarrWeatherSuite@script_path
+  unrecorded live list: 2026-11-03T23:32:54Z HORRORS_RAIDING_FACTION_1: mandrake.rm.flowworks@closure
+  unrecorded live list: 2026-11-03T23:32:54Z HORRORS_RAIDING_FACTION_1: mandrake.rm.luminouspigment@closure
+  unrecorded live list: 2026-11-03T22:04:12Z HORIZON_CARAVAN_VANILLA_REFUSES_1: RimMandrake.Biomes@folded
+  unrecorded live list: 2026-11-03T17:42:03Z GELATINOUSSLIME_KIT_ART_1: RimMandrake.Biomes@folded
+exit=0

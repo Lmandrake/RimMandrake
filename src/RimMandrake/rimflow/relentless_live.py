@@ -1707,6 +1707,7 @@ class Fx(object):
         running = live_def_check.call_running_mods(60)
         if running is None:
             return "the running load's mod list could not be read (jawa/running_mods)"
+        self.last_running = (frozenset(running), dict(want))     # run() records it on the row (env["running"])
         lost = ["%s (%s)" % (m, p) for m, p in sorted(want.items()) if p not in running]
         return ("not in the running load: %s" % ", ".join(lost[:5])) if lost else None
 
@@ -2090,6 +2091,28 @@ def wrapup_restore(fx):
     return {"exit": code, "line": line}
 
 
+def running_ref(root, running, want, inferred=()):
+    """The running load a row was admitted on -> {"n", "sha", "inferred_held"}: the sorted packageId list is written
+    once per distinct load to <root>/live/loads/<sha>.json (a full list is ~300 ids; a row carries only its hash), and
+    inferred_held says, for each mod the gate inferred, whether the running load held it at the pre-slot read
+    (LIVE_NEEDS_ENFORCE_ABSENCE_NOW_EXPLICIT: the effective mod list, so a verdict says what environment produced it)."""
+    ids = sorted(running)
+    h = hashlib.sha1("\n".join(ids).encode("utf-8")).hexdigest()[:12]
+    d = os.path.join(root, "live", "loads")
+    p = os.path.join(d, h + ".json")
+    if not os.path.isfile(p):
+        try:
+            os.makedirs(d, exist_ok=True)
+            with open(p + ".tmp", "w", encoding="utf-8") as f:
+                json.dump(ids, f)
+            os.replace(p + ".tmp", p)
+        except OSError:
+            pass        # the row still carries n and sha; a lost list file is never a verdict
+    held = {a.get("mod"): (want.get(a.get("mod")) in running) if want.get(a.get("mod")) else
+            (str(a.get("mod")).lower() in running) for a in inferred if a.get("mod")}
+    return {"n": len(ids), "sha": h, "inferred_held": held}
+
+
 def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site=None, trees=(), env=None,
         companion=False, menu=False):
     """-> the run's row (also appended to <root>/live/runs.jsonl). row["outcome"] is PASS, FAIL, UNMEASURED or REFUSED.
@@ -2200,10 +2223,14 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
     # serve takes no slot (LIVE_SLOTS_MEASURE_NOT_REFUSE_IN_SLOT: 18:00-18:16Z 2026-11-03 GRAFFITI F1/F2 took the bridge
     # four times to read "48 mods, 40 of FULL.LATEST's 316"). row["slot"] False: no bridge, no proof, no game time.
     need = sorted({m for m, _ in files} | set(needs))
+    if hasattr(fx, "last_running"):
+        fx.last_running = None      # this row's read only, never another item's
     try:
         gap = (fx.running_load_gap(need) if need else None) or (fx.full_list_gap() if level == FINAL else None)
     except Exception as e:                          # noqa: BLE001  an unread list is the harness's, never a verdict
         gap = "the running load's mod list could not be read: %s: %s" % (type(e).__name__, str(e)[:200])
+    if env is not None and getattr(fx, "last_running", None):
+        row["env"] = dict(env, running=running_ref(root, *fx.last_running, inferred=env.get("inferred") or ()))
     log, code, crashed = None, None, gap
     if gap:     # NOT_ADMITTED: no repeat count, no reload, no ledger note; the key holds it until the load moves
         return admit(gap, **({"game": iso(started)} if started else {}))

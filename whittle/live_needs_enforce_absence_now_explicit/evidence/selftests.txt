@@ -1,0 +1,124 @@
+# 2026-11-12T06:17:14Z books a4402e85f0 + working tree
+             PASS census command: no file is UNMEASURED with exit 2, and no numbers
+             FAIL: 1 failed
+             FAIL proofs: every real live_proofs file is .txt/.criteria (or a proof's .py/.json) and every line parses: ['ACC_BIOMES_FIXES_LIVE_RERUN_1.criteria', 'ACC_BIOMES_FIXES_LIVE_RERUN_1.txt', 'ARMOURY_PROJECTILE_DAMAGE_TOOL_1.txt'] ['GSS_WATER_STUB_FIX_PASSED_LAST_WEEK.criteria: - O1 L0: GSS SelfTest WaterStubChecks green (772/772): old r', 'GSS_WATER_STUB_FIX_PASSED_LAST_WEEK.criteria: - A1 GREEN-MIN: on the fw_gss list (FlowWorks deep swim on),']
+PASS          0.7s  src/RimMandrake/rimflow/selftest_relentless_needs.py
+
+PASS 3/4  FAIL 1/4  UNMEASURED 0/4  CRASH 0/4  SKIPPED 0/4  (wall 9.6s) — contained in rm-harness.slice (max 12G), 1 workers
+FAIL (1/4): src/RimMandrake/rimflow/selftest_relentless_live_round.py
+RESULT: RED (green = FAIL 0 and CRASH 0)
+
+# selftest_relentless_needs.py in full
+ok   a repo folder resolves as itself
+ok   a folder in the game's Mods folder resolves
+ok   the dotted composed folder is a folder, never a packageId
+ok   a folded source normalises to its composed mod
+ok   our own packageId resolves, loaded by packageId as before (never planned as a tree)
+ok   an installed workshop packageId resolves, lower-cased
+ok   RimMandrake.FlowWorks is refused as a packageId nobody carries, nearest FlowWorks
+ok   a modlist file is refused as a path
+ok   a case slip is refused with the right name
+ok   a DLC packageId is always loadable
+ok   no packageId index: a dotted name is passed on, never refused
+ok   no game Mods listing: a bare name is passed on
+ok   the repo half still resolves
+ok   no repo at all: nothing is refused
+ok   a workshop scan that raises is blindness, not a refusal
+ok   canonical, no repeats, the bad one left out
+ok   the refusal says what it looked like and the nearest name
+ok   nothing refused: no line
+ok   an inline # comment on a live-mods line is not read as mod names (review caution :108)
+ok   a name only in an absence assertion adds nothing
+ok   the mod a proof script lives in is advised
+ok   a packageId the proof line needs is advised
+ok   a quoted folder name in the script is advised
+ok   every advice carries file:line evidence
+ok   repeated run: the same advice, nothing written
+ok   a transitive dependency modlist_swap would not add is found
+ok   an immediate dependency is no gap (the enable adds it)
+ok   a dependency of a named dependency is the only gap left
+ok   leader + valid rider ride; the invalid rider's own mods are left out
+ok   the bad rider is named with an actionable reason
+ok   one plan over the union, no bad rider in it
+ok   a leader's bad name is reported, its valid mods and its riders still ride
+ok   mod_gap: a folded source loads as its composed mod, an unknown name is reported and left out
+ok   a fake with no names_index checks nothing (old behaviour)
+ok   an unknown name is a preflight refusal (the item goes back with the reason)
+ok   advice is journaled, never written into a proof
+ok   the same build is advised once
+ok   a fake without game_names_check checks nothing
+ok   a live-without conflict is a preflight refusal
+ok   the gate's additions are journaled with their evidence
+ok   relentless_live.is_package asks the one resolver
+ok   modlist_swap.split_names asks the one resolver
+ok   an index survives the fixture's json
+ok   a C# type the proof calls is advised until live-mods NAMES its mod
+ok   a named type mod is no advice
+ok   an untyped name the build already carries needs no naming
+ok   gather_scripts: the script and the data its sibling module names; the module itself is not scanned
+ok   a mod named only in the read data file is advised
+ok   a data file over MAX_DATA is not read
+ok   a bare mod folder counts only on a line with a need cue
+ok   an absence line with a need word still gives nothing
+ok   a folded build source is noted with its composed mod
+ok   no note once live-mods names the composed mod
+ok   an R1 item with no warning FAILS the replay (no unreachable escape)
+ok   an item is caught only when EVERY failed run of it is warned
+ok   advice naming only OTHER mods does not catch a case that owes one
+ok   a mod named by packageId is not advised again by folder
+ok   a mod named by packageId is not owed by its folder name
+ok   advice by packageId hits an owed folder
+ok   a warned R1 run passes
+ok   a fixture save's <modIds> are needs (the base game and Harmony are never advice)
+ok   a save named only on an absence line is no fixture
+ok   the proof script's own mod
+ok   a folded source's script needs the composed mod
+ok   the build's folded source adds the composed mod the load holds
+ok   every --needs argument of a proof line is a need
+ok   a staging --enable run names every mod
+ok   a staging-cue line
+ok   a C# type in one root namespace names its mod
+ok   a defName exactly one mod defines names that mod
+ok   the hard dependencies the enable would miss (below an immediate one) are added
+ok   a defName two mods define, and a quoted name in a script, only warn
+ok   an absence assertion gives no need: live-proof A1: python3 src/RimMandrake/Utils/p.py --absent RUT_PaleMos
+ok   an absence assertion gives no need: live-proof A1: python3 src/RimMandrake/Utils/p.py
+{'src/RimMandrake/Ut
+ok   an absence assertion gives no need: live-proof A1: python3 src/RimMandrake/Utils/p.py
+{'src/RimMandrake/Ut
+ok   an absence assertion gives no need: live-proof A1: python3 src/RimMandrake/Utils/live_def_check.py --witho
+ok   live-without parses like live-mods, # tail a comment
+ok   a live-without line is never read as mods to load
+ok   inference never adds a live-without mod (by folder or packageId)
+ok   the blocked need is still shown, as a warning
+ok   a planned load holding a live-without mod is refused
+ok   an unknown live-without name is refused
+ok   the build's own mod in live-without conflicts
+ok   mod_gap adds sure needs to the planned load
+ok   each addition carries its source and file:line
+ok   an inferred folder is planned for deploy; a packageId only loaded
+ok   mod_gap reports a live-without conflict before the slot
+ok   a stale index degrades the need to a warning, never a refusal
+ok   a deployed DLL stamped with another build reads as a different .srchash (stale index)
+ok   a mod with no stamped DLL has no staleness to report
+ok   a rider live-without what the leader needs rides another load; the rest still ride
+ok   the reverse: a rider needing what the leader is live-without splits off
+ok   an INFERRED need splits a live-without rider too
+ok   the batch records each rider's additions
+ok   needs is a pure function
+ok   a proof naming every addition gets none (the derived list is a fixed point)
+ok   the run row records the effective mod list and each inferred addition with its evidence
+ok   a PASS run that already held every gate addition counts none as an addition
+ok   an addition a PASS run did WITHOUT fails the replay (the proof did not need it)
+ok   a run at an unrecorded time claims nothing either way and is listed
+ok   a folded source is looked up as its composed mod; a folder by its packageId
+ok   a passing modcheck run held what it composes
+ok   a snapshot is the live list from its mtime to its local stamp (PST -> UTC); tier files are not snapshots
+ok   active ids read lower-case, in order
+ok   a PASS case gets the list its time falls in, else None (never the nearest)
+ok   the census splits a mod-list row that spent a game from one the gate held before the slot
+ok   the row carries the running load's hash and count, the list is written once, each inferred mod's presence
+ok   the same load gives the same reference
+ok   run() records the running load it was admitted on into the row's env
+ok   an earlier read (another item's) is never recorded as this row's
+{"ok": 110, "fails": 0}

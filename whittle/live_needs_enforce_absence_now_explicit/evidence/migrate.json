@@ -1,0 +1,2745 @@
+[
+ {
+  "add": [
+   {
+    "at": "infrastructure/state/live_proofs: modcheck run LeaningScrub",
+    "line": "modcheck run LeaningScrub composes mandrake.rsw.swbestiary and refuses the run (stale_load) unless the running load holds it",
+    "mod": "mandrake.rsw.swbestiary",
+    "src": "proof_modcheck"
+   },
+   {
+    "at": "infrastructure/state/live_proofs: modcheck run LeaningScrub",
+    "line": "modcheck run LeaningScrub composes mandrake.rm.weathersuite and refuses the run (stale_load) unless the running load holds it",
+    "mod": "mandrake.rm.weathersuite",
+    "src": "proof_modcheck"
+   }
+  ],
+  "conflict": null,
+  "item": "ACC_BIOMES_FIXES_LIVE_RERUN_1",
+  "named": [
+   "RimMandrake.Biomes",
+   "GimmeSomeSlack",
+   "UtinniPatches"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "infrastructure/state/live_proofs: modcheck run Armoury",
+    "line": "modcheck run Armoury composes mandrake.rm.gimmesomeslack and refuses the run (stale_load) unless the running load holds it",
+    "mod": "mandrake.rm.gimmesomeslack",
+    "src": "proof_modcheck"
+   }
+  ],
+  "conflict": null,
+  "item": "ARMOURY_PROJECTILE_DAMAGE_TOOL_1",
+  "named": [
+   "Armoury"
+  ],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "ART_OVERRIDE_FAMILY_SCRIPT_1",
+  "named": [
+   "SWBestiary",
+   "Shokk",
+   "RimMandrake.Biomes",
+   "UtinniPatches"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/Utils/art_maxzoom_probe.py:37",
+    "line": "\"src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Thrumbo/Thrumbo_south.png\",",
+    "mod": "UtinniPatches",
+    "src": "script_path"
+   }
+  ],
+  "conflict": null,
+  "item": "ART_RESOLUTION_MEASURE_AT_MAX_ZOOM",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "ASHKARR_WEATHER_INSTALL_THE_SLEEPING_STORMS",
+  "named": [
+   "WeatherSuite",
+   "AshkarrWeatherSuite"
+  ],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/AtmosphericBase/proof_atmosphere.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "AtmosphericBase",
+    "src": "script_home"
+   },
+   {
+    "at": "src/RimMandrake/AtmosphericBase/proof_atmosphere.py:1078",
+    "line": "ut = os.path.join(REPO, \"src\", \"RimUtinni\", \"UtinniPatches\")",
+    "mod": "UtinniPatches",
+    "src": "script_path"
+   }
+  ],
+  "conflict": null,
+  "item": "ATMOSBASE_PROOF_FIX_UNLIT_LEAVES_DARK_LAMP",
+  "named": [],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "BATCHREADS_BUILD_ROUND_TRIP_CUT",
+  "named": [],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "BEER_DIAGNOSE_NON_DRUG_3200_LOG_ERRORS",
+  "named": [
+   "MandrakePatches"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimUtinni/BeskarArmorer/prove_beskar_armorer.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "BeskarArmorer",
+    "src": "script_home"
+   },
+   {
+    "at": "About.xml of BeskarArmorer",
+    "line": "BeskarArmorer needs adaptive.storage.framework through mandrake.rsw.armoury; modlist_swap --enable adds only immediate dependencies of a folder",
+    "mod": "adaptive.storage.framework",
+    "src": "closure"
+   },
+   {
+    "at": "About.xml of BeskarArmorer",
+    "line": "BeskarArmorer needs ebsg.framework through mandrake.rsw.armoury; modlist_swap --enable adds only immediate dependencies of a folder",
+    "mod": "ebsg.framework",
+    "src": "closure"
+   },
+   {
+    "at": "About.xml of BeskarArmorer",
+    "line": "BeskarArmorer needs neronix17.outerrim.core through mandrake.rsw.armoury; modlist_swap --enable adds only immediate dependencies of a folder",
+    "mod": "neronix17.outerrim.core",
+    "src": "closure"
+   },
+   {
+    "at": "About.xml of BeskarArmorer",
+    "line": "BeskarArmorer needs mandrake.rm.weathersuite through mandrake.rut.patches; modlist_swap --enable adds only immediate dependencies of a folder",
+    "mod": "mandrake.rm.weathersuite",
+    "src": "closure"
+   },
+   {
+    "at": "About.xml of BeskarArmorer",
+    "line": "BeskarArmorer needs mandrake.rm.biomes through mandrake.rut.patches; modlist_swap --enable adds only immediate dependencies of a folder",
+    "mod": "mandrake.rm.biomes",
+    "src": "closure"
+   }
+  ],
+  "conflict": null,
+  "item": "BESKARPROBE_FIX_EIGHTEEN_POKES_NO_NET",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "BIG_REPAINT_FINISH_ONCE_AND_FOR_ALL",
+  "named": [],
+  "warn": 2,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "BIOME_TIER_CLEANUP_1",
+  "named": [],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN",
+  "named": [],
+  "warn": 2,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "BIOME_WORLD_SWITCH_WAVE_1",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/BlueDesert/prove_flora_retile.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "BLUEDESERT_FLORA_PLANT_REFUSAL_1",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/BlueDesert/northstar_plan.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "BLUEDESERT_GPT_ENRICHMENT_1",
+  "named": [],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/Bones/prove_bones.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "BONES_LEAN_PORT_BUILD_TREELESS_WORLD",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "BRIDGE_FLOATMENU_FIX_DEBUG_PICKER_UNREADABLE",
+  "named": [
+   "FlowWorks"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "BRIDGE_RECONCILE_WIRE_CLOSED_NOT_CURED",
+  "named": [],
+  "warn": 2,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "BRIDGE_STALL_DIAGNOSTIC_1",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "BRONZIUM_DROP_1",
+  "named": [],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "BUILDBATCH_FIX_REPLACE_LEAVES_OLD_THING",
+  "named": [
+   "FlowWorks"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/FlowWorks/northstar/river_site.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "FlowWorks",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "CANAL_OBJECTS_SHEET_BUILD_POSES_AND_STYLES",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "infrastructure/state/live_proofs:1",
+    "line": "live-proof A10: python3 src/RimMandrake/Utils/live_def_check.py --needs mandrake.rsw.armoury --needs neronix17.outerrim.core --has ThingDef/RSW_Durasteel --has ",
+    "mod": "mandrake.rsw.armoury",
+    "src": "proof_cli"
+   }
+  ],
+  "conflict": null,
+  "item": "CANON_MATERIALS_BUILD_1",
+  "named": [],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "CANOPY_LAYER_BUILD_ROOF_OF_THE_WORLD",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "CHUNKS_FIX_SAVE_ERRORS_NOT_DEAD_NAMES",
+  "named": [
+   "FlowWorks",
+   "GimmeSomeSlack",
+   "Armoury"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "COALESCENCE_STAGE_DIAGNOSE_STUCK_AT_ONE",
+  "named": [
+   "RimMandrake.Biomes"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "COLDSTART_PROVE_NTDLL_CRASH_NO_FOLDER",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/ColdStorage/coldstorage_live_proof.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "ColdStorage",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "COLD_STORAGE_PROOF_VERIFY_ROT_RATES_LIVE",
+  "named": [],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "CONDPROBES_WIRE_ENGINE_READS",
+  "named": [],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "CONFIGERRORS_FIX_FIVE_MORE_ON_LATEST_LOAD",
+  "named": [
+   "ColdStorage",
+   "StructureInjectionsSW",
+   "Armoury",
+   "FlowWorks",
+   "ResearchRetag"
+  ],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "CONFIGERRORS_FIX_THREE_LEFTOVER_CLASSES",
+  "named": [
+   "ColdStorage",
+   "Armoury",
+   "RimMandrake.Biomes"
+  ],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "CONTAGION_BURN_DIAGNOSE_NATIVE_FEELS_NOTHING",
+  "named": [
+   "RimMandrake.Biomes"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/Contagion/prep_site.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "CONTAGION_SITE_BUILD_SKY_STAYS_CALM",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "CRACKEDLANDS_FULL_RENAME_1",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/CrackedLands/northstar_plan.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "CRACKEDLANDS_THREE_HEIGHT_FLORA_1",
+  "named": [],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/Webwork/webwork_harvest_live_proof.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "CREEP_WEB_HARVEST_LIVE_1",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/LuminousPigment/live_probes/lp_family_settings_roundtrip.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "LuminousPigment",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "DEEPFIRE_FAMILY_SETTINGS_SAVE_LOAD_1",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/LanternDeeps/prove_deep_harness.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "DEEP_LAYER_BELT_HARNESS_1",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "DONOR_OFF_LOAD_PROVE_AFTER_BENCH",
+  "named": [
+   "SWBestiary",
+   "Shokk",
+   "UtinniPatches",
+   "RimMandrake.Biomes"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/FlowWorks/northstar/drawbridge_proof.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "FlowWorks",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "DRAWBRIDGE_WINCH_DIAGNOSE_UNLINKED_REBUILT",
+  "named": [],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "infrastructure/state/live_proofs: modcheck run Stillsand",
+    "line": "modcheck run Stillsand composes mandrake.rm.flowworks and refuses the run (stale_load) unless the running load holds it",
+    "mod": "mandrake.rm.flowworks",
+    "src": "proof_modcheck"
+   }
+  ],
+  "conflict": null,
+  "item": "DUST_SETTLED_LETTER_1",
+  "named": [
+   "RimMandrake.Biomes"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "EGROSTER_DEAD_ROWS_PRUNE_SILENT_SKIPS",
+  "named": [],
+  "warn": 2,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/ExplosiveGrowth/live_proof.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "EGROWTH_SAVELOAD_PROVE_DICT_SCRIBE_SHARE",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/ExplosiveGrowth/live_proof.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "EGROWTH_TINDER_HAY_PROVE_COMES_UP_EMPTY",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/Pyrelands/firefoam_aim_live_proof.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "FIREFOAM_DIAGNOSE_CANNOT_AIM_AT_FIRE",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "FIXTURES_FIX_REST_STILL_COMPRESSED",
+  "named": [
+   "RimMandrake.Biomes",
+   "FlowWorks",
+   "GimmeSomeSlack",
+   "HugeThings",
+   "LuminousPigment",
+   "MandrakePatches",
+   "Warcasket",
+   "WeatherSuite",
+   "SWBestiary",
+   "Antiquities",
+   "AshkarrLandmarkArt",
+   "UtinniPatches",
+   "PyrelandsMechanics",
+   "Rites",
+   "WasteRun",
+   "Armoury"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "FLAME_STATUES_MOD_BUILD_1",
+  "named": [],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "FLOWWORKS_NORTHSTAR_SHIP_1",
+  "named": [
+   "FlowWorks"
+  ],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY",
+  "named": [
+   "RimMandrake.Biomes",
+   "SWBestiary"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "FOOTPRINT_TRACK_GRID_1",
+  "named": [
+   "RimMandrake.Biomes"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/TheForge/live_proof.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "FORGE_SKY_PASTURES_1",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "FULL_LIST_MEMORY_AUDIT_THIRTY_GB_PRIVATE",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "FW_PROOF_TOOLS_HARDEN_READ_GAPS",
+  "named": [
+   "FlowWorks"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "GAMECOMP_STALL_HUNT_SEVEN_SECONDS",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/GelatinousSlime/live_kit_art.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "GELATINOUSSLIME_KIT_ART_1",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "GELATINOUSSLIME_PIT_SOLVENT_1",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimStarWars/GizkaStowaway/northstar_plan.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "GizkaStowaway",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "GIZKA_STOWAWAY_UNMEASURED_ROWS_1",
+  "named": [],
+  "warn": 5,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "GLOWTANK_CROP_FIX_FROZEN_FRESH_MAP",
+  "named": [
+   "FlowWorks",
+   "LuminousPigment"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "GOLDEN_PONDS_RECONCILE_TWO_FIFTHS",
+  "named": [
+   "FlowWorks",
+   "GimmeSomeSlack",
+   "RimMandrake.Biomes"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "infrastructure/state/live_proofs:1",
+    "line": "live-proof A2: MODCHECK_SKIP_DEPLOY=1 MODCHECK_KEEP_MODLIST=1 WSLENV=MODCHECK_SKIP_DEPLOY:MODCHECK_KEEP_MODLIST python.exe src/RimMandrake/Utils/modcheck/cli.py",
+    "mod": "FlowWorks",
+    "src": "proof_cli"
+   },
+   {
+    "at": "infrastructure/state/live_proofs: modcheck run FlowWorks",
+    "line": "modcheck run FlowWorks composes mandrake.rm.flowworks and refuses the run (stale_load) unless the running load holds it",
+    "mod": "mandrake.rm.flowworks",
+    "src": "proof_modcheck"
+   }
+  ],
+  "conflict": null,
+  "item": "GOLD_PANNING_PROVE_THE_COLONIST_STAYS",
+  "named": [],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "GRAFFITI_NORTHSTAR_GREEN_FULL_1",
+  "named": [
+   "Graffiti"
+  ],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "GRAFFITI_V1_LIVE_PROOF_1",
+  "named": [
+   "Graffiti",
+   "SacredGraffiti"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "GRAVSHIP_PEACEFUL_SETTLEMENT_LANDING_1",
+  "named": [
+   "KeelHoist",
+   "UtinniPatches"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "GREENTIDE_ANTS_MIGRATE_NO_ANT_LEFT_BEHIND",
+  "named": [
+   "RimMandrake.Biomes"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "GSS_BUILD_FIX_SLICE_GROWS_WITH_CORDS",
+  "named": [
+   "GimmeSomeSlack"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "GSS_CORD_SWAY_TAME_PER_FRAME_ALLOC",
+  "named": [
+   "GimmeSomeSlack",
+   "KineticArms"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "GSS_FALLEN_WIRE_FIX_SHOCK_OUTLIVES_WIRE",
+  "named": [
+   "GimmeSomeSlack"
+  ],
+  "warn": 2,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "GSS_FALLEN_WIRE_FIX_SHOCK_STILL_BITES",
+  "named": [
+   "GimmeSomeSlack"
+  ],
+  "warn": 2,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "GSS_PLAN_FIX_SECOND_PER_FULL_BUILD",
+  "named": [
+   "GimmeSomeSlack"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "GSS_POWER_THEFT_FIX_WRONG_VICTIM",
+  "named": [
+   "GimmeSomeSlack"
+  ],
+  "warn": 2,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "GSS_RESTRING_FIX_STYLES_UNRECONCILED",
+  "named": [
+   "GimmeSomeSlack"
+  ],
+  "warn": 2,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "GSS_SLICE_FIX_EDGE_OVERSHOOTS_BUDGET",
+  "named": [
+   "GimmeSomeSlack"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "GSS_SLICE_FIX_LONE_REBUILD_HITS_140MS",
+  "named": [
+   "GimmeSomeSlack"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "GSS_SWITCHES_PROVE_LAST_FOUR_STANDING",
+  "named": [
+   "GimmeSomeSlack"
+  ],
+  "warn": 3,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "GSS_WATER_STUB_FIX_PASSED_LAST_WEEK",
+  "named": [
+   "GimmeSomeSlack",
+   "FlowWorks"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "HEADS_VERIFY_SHRUNK_TO_FIT_THE_HATS",
+  "named": [
+   "StarWarsRaces",
+   "StarWarsPatches"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "HEALTH_CHECK_MONITOR_MEMORY_TPS_OVER_TIME",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "HEAP_BISECT_RELOAD_RETAINERS_59_MB_SLOPE",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "HEAVY_TEXTURES_MEASURE_REAL_VRAM",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/Stillsand/trader_probe_check.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "HORIZON_CARAVAN_VANILLA_REFUSES_1",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimUtinni/UtinniPatches/prove_night_horrors_live.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "UtinniPatches",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "HORRORS_RAIDING_FACTION_1",
+  "named": [
+   "AshkarrWeatherSuite"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "HOSE_END_FIX_CELL_SHORT_OF_PORT",
+  "named": [
+   "FlowWorks"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/FlowWorks/northstar/proof_hose.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "FlowWorks",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "HOSE_SAVELOAD_DIAGNOSE_COMES_BACK_CHANGED",
+  "named": [],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "HOSE_SITE_FIX_TERRAIN_WONT_READ_BACK",
+  "named": [
+   "FlowWorks"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/FlowWorks/northstar/proof_hose.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "FlowWorks",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "HOSE_SL4_FIX_CARRY_NEVER_STAGED",
+  "named": [],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "HOSTILE_FLORA_FIRST_SCRIPT_1",
+  "named": [
+   "HostileFlora"
+  ],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "HUGETHINGS_TRUNK_ZERO_BLOCKERS_1",
+  "named": [
+   "HugeThings",
+   "RimMandrake.Biomes"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "JAWABENCH_DESTROY_PAWNS_1",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "JAWABENCH_TPSSTARTUP_HARDEN_REMAINING_BG_JIT",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "JAWA_DROWNING_PROVE_RAT_SIZED_IN_SHALLOWS",
+  "named": [
+   "FlowWorks",
+   "StarWarsRaces",
+   "UtinniPatches"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/LeaningScrub/repro_crown_mob.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "LEANINGSCRUB_CROWN_MOB_LIVE_1",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/LeaningScrub/sweetline_shed_probe.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "LEANINGSCRUB_SWEETLINE_SHED_LIVE_1",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/LeaningScrub/live_proof.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "LEANING_SCRUB_SITE_BUILD_LEANS_ONE_WAY",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "LEVELLING_TICK_DIAGNOSE_DRY_GC_SPIKE",
+  "named": [],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "LEVEL_ALLOC_SHRINK_EIGHTFOLD_OVER_BAR",
+  "named": [
+   "FlowWorks"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "LIVE_SESSION_FIX_OUTRUNS_FOREGROUND_WINDOW",
+  "named": [
+   "FlowWorks"
+  ],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "LIVE_STAGING_BUILD_STAGEHAND_WITHOUT_TOKENS",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/LongShade/prove_jawatow.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_home"
+   },
+   {
+    "at": "src/RimMandrake/LongShade/prove_jawatow.py:102",
+    "line": "xml = _read(\"src/RimUtinni/UtinniPatches/Defs/IncidentDefs/RUT_JawaReturnTow.xml\")",
+    "mod": "UtinniPatches",
+    "src": "script_path"
+   }
+  ],
+  "conflict": null,
+  "item": "LONGSHADE_JAWATOW_RECHECK_1",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/LongShade/prove_shade_extras.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "LONGSHADE_SCENE_LIVECHECK_1",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/LongShade/prove_stampede.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "LONGSHADE_STAMPEDE_LIVECHECK_1",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "LORE_STAGES_FIRST_SCRIPT_1",
+  "named": [
+   "LoreStages"
+  ],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "LOVIN_LOGSPAM_DIAGNOSE_IN_PLAY_EVICTIONS",
+  "named": [
+   "MandrakePatches"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "MAPPRETICK_DIAGNOSE_FULL_LIST_STALL",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "MAP_AWARENESS_PROVE_ON_A_QUIET_MAP",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "MASS_VALIDATION_LADDER_1",
+  "named": [
+   "RimMandrake.Biomes",
+   "SWBestiary"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/Miasma/tests/warden_mother_live_proof.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "MIASMA_WARDEN_MOTHER_ART_1",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "MIDCHANNEL_ISLAND_FILL_REACH_UNMEASURED",
+  "named": [
+   "FlowWorks"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "MINERAL_POLICY_CODE_STARTUP_ZEROING",
+  "named": [
+   "Minerals"
+  ],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "MINERAL_QUARRY_WIRE_LOCAL_POOL",
+  "named": [
+   "Minerals"
+  ],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/MineShaft/live_a1_check.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "MineShaft",
+    "src": "script_home"
+   },
+   {
+    "at": "infrastructure/state/live_proofs:1",
+    "line": "live-proof A1: python3 src/RimMandrake/Utils/live_def_check.py --needs mandrake.rm.mineshaft --needs mandrake.rsw.armoury --without cain.mineshaft --without leu",
+    "mod": "mandrake.rm.mineshaft",
+    "src": "proof_cli"
+   },
+   {
+    "at": "infrastructure/state/live_proofs:1",
+    "line": "live-proof A1: python3 src/RimMandrake/Utils/live_def_check.py --needs mandrake.rm.mineshaft --needs mandrake.rsw.armoury --without cain.mineshaft --without leu",
+    "mod": "mandrake.rsw.armoury",
+    "src": "proof_cli"
+   }
+  ],
+  "conflict": null,
+  "item": "MINES_SWAP_RETIRE_SHAFT_ALREADY_DUG",
+  "named": [],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "MINIDUMP_PROVE_SPIKE_BEFORE_THE_KILL",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "MINIMALLIST_FIX_OUTERRIMCORE_CTOR_NRE",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "MIRRELBOLE_FIX_TICK_NRE_THIRTY_FIVE_TIMES",
+  "named": [
+   "RimMandrake.Biomes"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "MODCHECK_DONOR_ENVIRONMENTS_1",
+  "named": [
+   "Armoury",
+   "WreckedMachines"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "MODCHECK_ULTRAFAST_CLOCK_STALL_1",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "MODERN_FITTINGS_PROBE_FAUCET_NEVER_SEEN",
+  "named": [
+   "FlowWorks",
+   "GimmeSomeSlack",
+   "ModernFittingsCandidates"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "MONO_ALLOC_MEASURE_PER_TICK_ON_GAME",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "NORTHSTAR_SITUATIONAL_ROLLOUT_1",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "OLLOPOM_BEAUTY_VERIFY_DEPLOYED_NOT_SEEN",
+  "named": [
+   "RimMandrake.Biomes",
+   "SWBestiary"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "OWN_PRESET_WIDEN_PYRELANDS_JOINS_IN",
+  "named": [
+   "GimmeSomeSlack",
+   "RimMandrake.Biomes"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "PACK_ANIMALS_RESTORE_EMPTY_SADDLES",
+  "named": [
+   "RimMandrake.Biomes",
+   "SWBestiary",
+   "UtinniPatches"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "PERF_SCENE_REMEASURE_BASINS_OFF_EDGE",
+  "named": [
+   "FlowWorks"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/FlowWorks/northstar/extension_proof.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "FlowWorks",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "PITCAPTURE_DIAGNOSE_PRISONER_FLAG_BACKSLIDES",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/FlowWorks/northstar/pit_superdeep_walk.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "FlowWorks",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "PIT_CAPTURE_FIX_WARDEN_HURT_AT_LIP",
+  "named": [],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/FlowWorks/northstar/climb_proof.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "FlowWorks",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/FlowWorks/northstar/pit_rescue_live.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "FlowWorks",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "PIT_ESCAPE_PROVE_LADDER_LEFT_DOWN",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/FlowWorks/northstar/proof_pit_lip_cover.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "FlowWorks",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "PIT_LIP_OCCLUDER_FIX_GHOSTED_HALVES",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "PLANET_ATMOSPHERE_CLOUD_COST_1",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "infrastructure/state/live_proofs:1",
+    "line": "live-proof A2: python3 src/RimMandrake/Utils/live_def_check.py --needs mandrake.rm.minerals --has RimMandrake.Minerals.RM_MineralRegistryDef/RM_Mineral_Plasteel",
+    "mod": "mandrake.rm.minerals",
+    "src": "proof_cli"
+   },
+   {
+    "at": "infrastructure/state/live_proofs:1",
+    "line": "live-proof A2: python3 src/RimMandrake/Utils/live_def_check.py --needs mandrake.rm.minerals --has RimMandrake.Minerals.RM_MineralRegistryDef/RM_Mineral_Plasteel",
+    "mod": "Minerals",
+    "src": "proof_cue"
+   }
+  ],
+  "conflict": null,
+  "item": "PLASTEEL_AUDIT_EXPLICIT_MINEABLE_LISTS",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "PLAYER_HOVER_PROBE_TOOLTIP_DRAWN",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimUtinni/StructureInjectionsRUT/Source/ZeddosYard/zeddos_yard_live_proof.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "StructureInjectionsRUT",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "PLAYER_START_SITE_1",
+  "named": [],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/FlowWorks/northstar/extension_proof.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "FlowWorks",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "PLOT_D_BODY_PRUNE_STALE_SEA",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "PROOFDROWN_FIX_NATURAL_WATER_READS_ZERO",
+  "named": [
+   "FlowWorks",
+   "StarWarsRaces",
+   "UtinniPatches"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "PROOF_COST_MEASURE_BEFORE_THE_ESTIMATES",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "PROOF_HARNESS_BUILD_SAVELOAD_TRIPLET",
+  "named": [
+   "GimmeSomeSlack"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "PROVEGRAVSHIP_FIX_PIPES_FOR_ABSENT_VGE",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "infrastructure/state/live_proofs:1",
+    "line": "live-proof A1: MODCHECK_SKIP_DEPLOY=1 MODCHECK_KEEP_MODLIST=1 WSLENV=MODCHECK_SKIP_DEPLOY:MODCHECK_KEEP_MODLIST python.exe src/RimMandrake/Utils/modcheck/cli.py",
+    "mod": "FlowWorks",
+    "src": "proof_cli"
+   },
+   {
+    "at": "infrastructure/state/live_proofs: modcheck run FlowWorks",
+    "line": "modcheck run FlowWorks composes mandrake.rm.flowworks and refuses the run (stale_load) unless the running load holds it",
+    "mod": "mandrake.rm.flowworks",
+    "src": "proof_modcheck"
+   }
+  ],
+  "conflict": null,
+  "item": "PUMP_DRAW_FIX_LOSES_A_LEVEL",
+  "named": [],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/FlowWorks/prove_pump_tank_coupler.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "FlowWorks",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "PUMP_ON_TANK_FIX_NO_COUPLER",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/Pyrelands/gate_live_proof.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "PYRELANDS_SHIP_READINESS_1",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "infrastructure/state/live_proofs:1",
+    "line": "live-proof A2: python3 src/RimMandrake/Utils/live_def_check.py --needs ogliss.thewhitecrayon.quarry --needs mandrake.rm.minerals --has RimMandrake.Minerals.RM_M",
+    "mod": "mandrake.rm.minerals",
+    "src": "proof_cli"
+   },
+   {
+    "at": "infrastructure/state/live_proofs:1",
+    "line": "live-proof A2: python3 src/RimMandrake/Utils/live_def_check.py --needs ogliss.thewhitecrayon.quarry --needs mandrake.rm.minerals --has RimMandrake.Minerals.RM_M",
+    "mod": "Minerals",
+    "src": "proof_cue"
+   }
+  ],
+  "conflict": null,
+  "item": "QUARRYSHARE_FIX_ZEROED_GOVERNED_WEIGHTS",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "infrastructure/state/live_proofs:1",
+    "line": "live-proof A1: MODCHECK_SKIP_DEPLOY=1 MODCHECK_KEEP_MODLIST=1 WSLENV=MODCHECK_SKIP_DEPLOY:MODCHECK_KEEP_MODLIST python.exe src/RimMandrake/Utils/modcheck/cli.py",
+    "mod": "FlowWorks",
+    "src": "proof_cli"
+   },
+   {
+    "at": "infrastructure/state/live_proofs: modcheck run FlowWorks",
+    "line": "modcheck run FlowWorks composes mandrake.rm.flowworks and refuses the run (stale_load) unless the running load holds it",
+    "mod": "mandrake.rm.flowworks",
+    "src": "proof_modcheck"
+   }
+  ],
+  "conflict": null,
+  "item": "QUARRY_DIG_FIX_VALIDATED_BUT_NEVER_FINISHES",
+  "named": [],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/MandrakePatches/prove_null_thingclass_live.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "MandrakePatches",
+    "src": "script_home"
+   },
+   {
+    "at": "infrastructure/state/live_proofs:1",
+    "line": "# STAGING: this proof needs a FRESH launch on the owner's FULL list (modlist_swap to infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml, 316 mods incl. ma",
+    "mod": "mandrake.rm.patches",
+    "src": "proof_cue"
+   }
+  ],
+  "conflict": null,
+  "item": "QUICKTEST_POLICY_NRE_FULLLIST_1",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "RAIL_WALK_PROVE_NOBODY_WALKS_OFF_ANYWAY",
+  "named": [
+   "FlowWorks"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "About.xml of EggReckoning",
+    "line": "EggReckoning needs mandrake.rm.weathersuite through mandrake.rut.patches; modlist_swap --enable adds only immediate dependencies of a folder",
+    "mod": "mandrake.rm.weathersuite",
+    "src": "closure"
+   }
+  ],
+  "conflict": null,
+  "item": "RECKONING_HISTORYEVENT_REWIRE_OFF_QUESTEND",
+  "named": [],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "infrastructure/state/live_proofs: modcheck run Cauldron",
+    "line": "modcheck run Cauldron composes mandrake.rm.flowworks and refuses the run (stale_load) unless the running load holds it",
+    "mod": "mandrake.rm.flowworks",
+    "src": "proof_modcheck"
+   }
+  ],
+  "conflict": null,
+  "item": "RHOSSAK_MIGRATE_ROOTS_TAKE_HOLD",
+  "named": [
+   "RimMandrake.Biomes"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/TerminalBiomes/prove_rindcoat_scald_live.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "RINDCOAT_TUNE_NEAR_IMMUNE_AFTER_ALL",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "RIVERS_ROADS_REDESIGN_WORTH_LOOKING_AT",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "RIVER_SITE_REBUILD_FOR_FOURTEEN_MODS",
+  "named": [
+   "FlowWorks",
+   "GimmeSomeSlack",
+   "RimMandrake.Biomes"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "infrastructure/state/live_proofs:1",
+    "line": "live-proof A2: python3 src/RimMandrake/Utils/live_def_check.py --needs mandrake.rut.patches --has ThingDef/RM_Chittik --has ThingDef/RM_Agaripawn --has ThingDef",
+    "mod": "mandrake.rut.patches",
+    "src": "proof_cli"
+   }
+  ],
+  "conflict": null,
+  "item": "ROT_FAUNA_KIN_WIRING_1",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "ROT_MOSS_VERIFY_UNDER_THE_MUSHROOMS",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "ROT_WARM_MAT_BUILD_WORKS_FOR_FOOD",
+  "named": [
+   "RimMandrake.Biomes"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "RSW_FACES_VERIFY_IN_GAME_BEFORE_SHIM",
+  "named": [
+   "StarWarsRaces",
+   "StarWarsPatches",
+   "UtinniPatches"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "RUSTCATHEDRAL_GOODWILL_FLOOR_1",
+  "named": [
+   "RimMandrake.Biomes"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "SADDLES_FREE_TIER_VERIFY_HOLD_THE_HUTTS",
+  "named": [
+   "RimMandrake.Biomes"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "infrastructure/state/live_proofs: modcheck run SithLine",
+    "line": "modcheck run SithLine composes mandrake.rsw.armoury and refuses the run (stale_load) unless the running load holds it",
+    "mod": "mandrake.rsw.armoury",
+    "src": "proof_modcheck"
+   },
+   {
+    "at": "About.xml of SithLine",
+    "line": "SithLine needs oskarpotocki.vanillafactionsexpanded.core through mandrake.rsw.armoury; modlist_swap --enable adds only immediate dependencies of a folder",
+    "mod": "oskarpotocki.vanillafactionsexpanded.core",
+    "src": "closure"
+   },
+   {
+    "at": "About.xml of SithLine",
+    "line": "SithLine needs adaptive.storage.framework through mandrake.rsw.armoury; modlist_swap --enable adds only immediate dependencies of a folder",
+    "mod": "adaptive.storage.framework",
+    "src": "closure"
+   },
+   {
+    "at": "About.xml of SithLine",
+    "line": "SithLine needs ebsg.framework through mandrake.rsw.armoury; modlist_swap --enable adds only immediate dependencies of a folder",
+    "mod": "ebsg.framework",
+    "src": "closure"
+   },
+   {
+    "at": "About.xml of SithLine",
+    "line": "SithLine needs neronix17.outerrim.core through mandrake.rsw.armoury; modlist_swap --enable adds only immediate dependencies of a folder",
+    "mod": "neronix17.outerrim.core",
+    "src": "closure"
+   }
+  ],
+  "conflict": null,
+  "item": "SANGUOPHAGE_KEPT_UNREACHABLE_1",
+  "named": [
+   "SithLine"
+  ],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/Scarlands/chatrak_live_proof.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "SCARLANDS_CHATRAK_LIVE_RERUN_1",
+  "named": [],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "SCENERUN_MIGRATE_OFF_UNPAUSED_PLAY",
+  "named": [
+   "mandrake.rm.luminouspigment"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/LeaningScrub/northstar/wildlife_mapgen_live.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "SCRUB_WILDLIFE_PROVE_NOBODY_CAME",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "SEABED_DESCENT_ASCENT_1",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "SETTLEMENT_VERBS_WAVE_1",
+  "named": [
+   "RimProperty"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/EnvironmentalHazards/prove_shade_lessons.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "SHADE_LESSONS_BUILD_WATCH_THE_HERD_CROSS",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "SHEETRAIN_DOPULSE_TAME_DELUGE_SPIKE",
+  "named": [],
+  "warn": 2,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "infrastructure/state/live_proofs: modcheck run UtinniPatches",
+    "line": "modcheck run UtinniPatches composes mandrake.rm.weathersuite and refuses the run (stale_load) unless the running load holds it",
+    "mod": "mandrake.rm.weathersuite",
+    "src": "proof_modcheck"
+   }
+  ],
+  "conflict": null,
+  "item": "SHOKKWEAVE_RETIRE_EGGS_MOVE_TO_HUTTS",
+  "named": [
+   "UtinniPatches"
+  ],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "SHOTSETTLE_BUILD_PAUSED_BARRIER",
+  "named": [
+   "FlowWorks"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "SINK_CAP_WIDEN_PAWNS_SINK_TO_FOUR",
+  "named": [
+   "FlowWorks"
+  ],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "SITTING_GAPS_FIX_READS_BLANK_GRAPHIC_PATHS",
+  "named": [
+   "FlowWorks"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "SLUICE_BOX_PROVE_THE_DAILY_WASH",
+  "named": [
+   "FlowWorks"
+  ],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/Stillsand/prove_soorrak_not_stuck.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "SOORRAK_INSTANT_JOB_LOOP_1",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "SPECIES_TRAITS_OVER_APTITUDES_1",
+  "named": [
+   "StarWarsRaces"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimStarWars/StarWarsPatches/prove_junk_reskin_live.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "StarWarsPatches",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "STARWARS_JUNK_RESKIN_1",
+  "named": [],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "STASIS_LOCKER_BUILD_ANCIENT_COMPLEX_LOOT",
+  "named": [],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/Stillsand/prove_stillsand_content.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "STILLSAND_CONTENT_LIVE_PROOF_1",
+  "named": [],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "STILLSAND_DUNE_GALE_LIVE_1",
+  "named": [
+   "RimMandrake.Biomes"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/Stillsand/prove_glass_chain.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "STILLSAND_GLASS_CHAIN_REMAINDER_1",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "infrastructure/state/live_proofs: modcheck run Stillsand",
+    "line": "modcheck run Stillsand composes mandrake.rm.flowworks and refuses the run (stale_load) unless the running load holds it",
+    "mod": "mandrake.rm.flowworks",
+    "src": "proof_modcheck"
+   }
+  ],
+  "conflict": null,
+  "item": "STILLSAND_LOOMMA_SUNSTRUCK_SHADE_1",
+  "named": [
+   "RimMandrake.Biomes"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/Stillsand/prove_muurrok_emergence.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "STILLSAND_MUURROK_EMERGENCE_1",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/Stillsand/prove_stillsand_return.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "STILLSAND_RETURN_REMAINDER_1",
+  "named": [],
+  "warn": 2,
+  "without": [
+   "mandrake.rut.patches"
+  ]
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/Stillsand/prove_roof_cover.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "STILLSAND_ROOF_COVER_EXPOSURE_1",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "infrastructure/state/live_proofs: modcheck run Stillsand",
+    "line": "modcheck run Stillsand composes mandrake.rm.flowworks and refuses the run (stale_load) unless the running load holds it",
+    "mod": "mandrake.rm.flowworks",
+    "src": "proof_modcheck"
+   }
+  ],
+  "conflict": null,
+  "item": "STILLSAND_SANDSWIM_GRAVEL_SUBMERGE_1",
+  "named": [
+   "RimMandrake.Biomes"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "STILLSAND_SAND_SWIM_REMAINDER_1",
+  "named": [
+   "RimMandrake.Biomes"
+  ],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "STYLE_READBACK_PROBE_ANY_BUILT_THING",
+  "named": [
+   "FlowWorks",
+   "GimmeSomeSlack"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "SUMP_GLASSWALK_SPEED_RATIO_1",
+  "named": [
+   "RimMandrake.Biomes"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/FlowWorks/northstar/proof_tar_fire_gate.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "FlowWorks",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "SUMP_TAR_FIRE_NETWORK_1",
+  "named": [],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "TAOZIN_SPLIT_BUILD_ONE_WORM_BECOMES_TWO",
+  "named": [
+   "SWBestiary",
+   "Cuisine",
+   "RimMandrake.Biomes",
+   "UtinniPatches"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "THRIXWEAVE_RESELL_BUILD_DEARLY_SOLD",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "TICKBURST_PROVE_MANY_TICKS_ONE_FRAME",
+  "named": [
+   "FlowWorks",
+   "GimmeSomeSlack",
+   "LuminousPigment"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING",
+  "named": [
+   "RimMandrake.Biomes"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "TITANIC_BODYSIZE_TEST_RACE_1",
+  "named": [
+   "HugeThings",
+   "HugeThingsTestRaces"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "TRIAL_SITE_REBUILD_FOR_FOURTEEN_MODS",
+  "named": [
+   "FlowWorks",
+   "GimmeSomeSlack",
+   "RimMandrake.Biomes"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/FlowWorks/northstar/underpass_reach_live.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "FlowWorks",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "UNDERPASS_REACH_VERIFY_WALK_UNDER_FOR_REAL",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "infrastructure/state/live_proofs:5",
+    "line": "live-proof A3: python3 src/RimMandrake/Utils/northstar_bar_proof.py --mod Cauldron --chains flora,water --bar flora.assay_toggle_off --bar water.water_letter_to",
+    "mod": "RimMandrake.Biomes",
+    "src": "proof_cli"
+   }
+  ],
+  "conflict": null,
+  "item": "UNPROVEN_LIVE_LEGS_TRIAGE_1",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "infrastructure/state/live_proofs: modcheck run TerminalBiomes",
+    "line": "modcheck run TerminalBiomes composes mandrake.rm.luminouspigment and refuses the run (stale_load) unless the running load holds it",
+    "mod": "mandrake.rm.luminouspigment",
+    "src": "proof_modcheck"
+   },
+   {
+    "at": "infrastructure/state/live_proofs: modcheck run TerminalBiomes",
+    "line": "modcheck run TerminalBiomes composes mandrake.rm.flowworks and refuses the run (stale_load) unless the running load holds it",
+    "mod": "mandrake.rm.flowworks",
+    "src": "proof_modcheck"
+   }
+  ],
+  "conflict": null,
+  "item": "VALIDATION_SETTINGS_SNAPSHOT_1",
+  "named": [
+   "RimMandrake.Biomes"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "VANILLA_BEAST_EXCISION_1",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "infrastructure/state/live_proofs:1",
+    "line": "live-proof A2: python3 src/RimMandrake/Utils/live_def_check.py --needs mandrake.rsw.cuisine --needs vanillaexpanded.vcooke --without vanillaexpanded.vcef --has ",
+    "mod": "mandrake.rsw.cuisine",
+    "src": "proof_cli"
+   }
+  ],
+  "conflict": null,
+  "item": "VCE_CANFISH_FIX_RESKIN_SKIPS_BILL",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "VEE_SOLAR_REWIRE_GEOMETRY_PAINTS_IT",
+  "named": [],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "VEE_WORLD_RENAME_ONE_STAMP_AT_END",
+  "named": [],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "VITALS_OVERHEAD_MEASURE_FULL_LIST_TOLL",
+  "named": [
+   "mandrake.rut.patches",
+   "mandrake.rsw.swbestiary",
+   "mandrake.rut.pyrelandsmechanics",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.patches"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "infrastructure/state/live_proofs:1",
+    "line": "live-proof A1: python3 src/RimMandrake/Utils/live_def_check.py --needs mandrake.rm.warcasket --has PawnKindDef/RUT_Jawa_Junkers_CaskedScavenger --has PawnKindDe",
+    "mod": "mandrake.rm.warcasket",
+    "src": "proof_cli"
+   }
+  ],
+  "conflict": null,
+  "item": "WARCASKET_JUNKER_KINDS_BUILD_1",
+  "named": [],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/Scarlands/hospice_live_proof.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "WARSCAR_HOSPICE_DESERTERS_1",
+  "named": [],
+  "warn": 2,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "WASTELAND_CONTAGION_PROBE_FIVE_LOOSE_ENDS",
+  "named": [
+   "RimMandrake.Biomes"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "WASTELAND_LIVE_SUITE_FAILS_ACC_BIOMES_1",
+  "named": [
+   "RimMandrake.Biomes"
+  ],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "WATER_DEPTH_RESKIN_HE_LOOKS_FIRST",
+  "named": [
+   "FlowWorks"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "infrastructure/state/live_proofs:2",
+    "line": "#   python3 src/RimMandrake/Utils/deploy_custom_mods.py --compose biomes --with Armoury --with StarWarsPatches --with ResearchRetag --with UtinniPatches --with ",
+    "mod": "Armoury",
+    "src": "proof_cli"
+   },
+   {
+    "at": "infrastructure/state/live_proofs:2",
+    "line": "#   python3 src/RimMandrake/Utils/deploy_custom_mods.py --compose biomes --with Armoury --with StarWarsPatches --with ResearchRetag --with UtinniPatches --with ",
+    "mod": "StarWarsPatches",
+    "src": "proof_cli"
+   },
+   {
+    "at": "infrastructure/state/live_proofs:2",
+    "line": "#   python3 src/RimMandrake/Utils/deploy_custom_mods.py --compose biomes --with Armoury --with StarWarsPatches --with ResearchRetag --with UtinniPatches --with ",
+    "mod": "ResearchRetag",
+    "src": "proof_cli"
+   },
+   {
+    "at": "infrastructure/state/live_proofs:2",
+    "line": "#   python3 src/RimMandrake/Utils/deploy_custom_mods.py --compose biomes --with Armoury --with StarWarsPatches --with ResearchRetag --with UtinniPatches --with ",
+    "mod": "UtinniPatches",
+    "src": "proof_cli"
+   },
+   {
+    "at": "infrastructure/state/live_proofs:2",
+    "line": "#   python3 src/RimMandrake/Utils/deploy_custom_mods.py --compose biomes --with Armoury --with StarWarsPatches --with ResearchRetag --with UtinniPatches --with ",
+    "mod": "Doctrine",
+    "src": "proof_cli"
+   },
+   {
+    "at": "infrastructure/state/live_proofs:2",
+    "line": "#   python3 src/RimMandrake/Utils/deploy_custom_mods.py --compose biomes --with Armoury --with StarWarsPatches --with ResearchRetag --with UtinniPatches --with ",
+    "mod": "LuminousPigment",
+    "src": "proof_cli"
+   },
+   {
+    "at": "src/RimMandrake/Utils/deploy_custom_mods.py:273",
+    "line": "prefix = top.stdout.strip()          # e.g. src/RimMandrake/Pyrelands/",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_path"
+   }
+  ],
+  "conflict": null,
+  "item": "WAVE1_FIXES_DEPLOY_BEFORE_THE_CUT",
+  "named": [],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "WEEPINGSTONES_HANDLER_VANISHES_1",
+  "named": [
+   "RimMandrake.Biomes"
+  ],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/WeepingStones/northstar_plan.py:0",
+    "line": "the proof script lives in this mod",
+    "mod": "RimMandrake.Biomes",
+    "src": "script_home"
+   }
+  ],
+  "conflict": null,
+  "item": "WEEPINGSTONES_NET_FLEEING_FLIER_1",
+  "named": [],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "infrastructure/state/live_proofs: modcheck run WeepingStones",
+    "line": "modcheck run WeepingStones composes mandrake.rm.weathersuite and refuses the run (stale_load) unless the running load holds it",
+    "mod": "mandrake.rm.weathersuite",
+    "src": "proof_modcheck"
+   },
+   {
+    "at": "infrastructure/state/live_proofs: modcheck run WeepingStones",
+    "line": "modcheck run WeepingStones composes mandrake.rut.patches and refuses the run (stale_load) unless the running load holds it",
+    "mod": "mandrake.rut.patches",
+    "src": "proof_modcheck"
+   },
+   {
+    "at": "infrastructure/state/live_proofs: modcheck run WeepingStones",
+    "line": "modcheck run WeepingStones composes mandrake.rsw.swbestiary and refuses the run (stale_load) unless the running load holds it",
+    "mod": "mandrake.rsw.swbestiary",
+    "src": "proof_modcheck"
+   }
+  ],
+  "conflict": null,
+  "item": "WEEPINGSTONES_STOCK_JOB_LOOP_1",
+  "named": [
+   "RimMandrake.Biomes"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "WEIR_CATCH_FIX_NO_FREE_FISH",
+  "named": [
+   "FlowWorks"
+  ],
+  "warn": 1,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "WORLD_BEAUTY_VERIFY_OFFLINE_BEAT_THE_GAME",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "infrastructure/state/live_proofs:1",
+    "line": "# Game: RimMandrake.Biomes deployed at the proof sha (BiomesShell DLL + BlueDesert member with Textures/World/Decals/RM_BlueDesert.png), the minimal list with a",
+    "mod": "RimMandrake.Biomes",
+    "src": "proof_cue"
+   }
+  ],
+  "conflict": null,
+  "item": "WORLD_DECALS_BUILD_ATLAS_PIPELINE_ONCE",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "WORLD_NULLTEX_FLOOD_HUNT_NEEDS_A_STACK",
+  "named": [
+   "MenuShell",
+   "NullTexTrace"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "WORLD_NULLTEX_FLOOD_HUNT_STACKLESS_SO_FAR",
+  "named": [
+   "MenuShell",
+   "NullTexTrace"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "WRAPUP_SETTINGS_DEBT_RESTORE_TIDY_ELF",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [],
+  "conflict": null,
+  "item": "WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES",
+  "named": [
+   "FlowWorks",
+   "GimmeSomeSlack"
+  ],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "src/RimMandrake/Utils/art/xeno_heads_installed_check.py:27",
+    "line": "MOD_REL = os.path.join(\"src\", \"RimStarWars\", \"StarWarsRaces\")",
+    "mod": "StarWarsRaces",
+    "src": "script_path"
+   }
+  ],
+  "conflict": null,
+  "item": "XENO_HEADS_SCENE_PROVE_ALIENS_WEAR_THEM",
+  "named": [],
+  "warn": 0,
+  "without": []
+ },
+ {
+  "add": [
+   {
+    "at": "infrastructure/state/live_proofs: modcheck run UtinniPatches",
+    "line": "modcheck run UtinniPatches composes mandrake.rm.weathersuite and refuses the run (stale_load) unless the running load holds it",
+    "mod": "mandrake.rm.weathersuite",
+    "src": "proof_modcheck"
+   }
+  ],
+  "conflict": null,
+  "item": "ZERSIUM_FORGE_BIOME_1",
+  "named": [
+   "UtinniPatches"
+  ],
+  "warn": 1,
+  "without": []
+ }
+]

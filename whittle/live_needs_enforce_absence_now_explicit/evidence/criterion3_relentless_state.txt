@@ -1,0 +1,15 @@
+# Archmagi, 2026-11-12T06:14:55Z: Relentless units (the only writer of ~/rm/relentless/live/runs.jsonl)
+rm-relentless-wake.path                          disabled  enabled
+rm-relentless-job@.service                       static    -
+rm-relentless-release.service                    static    -
+rm-relentless-wake.service                       static    -
+rm-relentless.service                            static    -
+rm-relentless-release.timer                      disabled  enabled
+rm-relentless.timer                              disabled  enabled
+# active:
+
+0 loaded units listed.
+To show all installed unit files use 'systemctl list-unit-files'.
+# runs.jsonl:
+-rw-rw-r-- 1 mandrake mandrake 1103068 2026-11-06 18:26:43.855010454 -0800 /home/mandrake/rm/relentless/live/runs.jsonl
+1363

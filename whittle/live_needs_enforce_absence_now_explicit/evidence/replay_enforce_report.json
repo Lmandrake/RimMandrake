@@ -1,0 +1,226 @@
+{
+ "bar": 17,
+ "items": {
+  "ART_OVERRIDE_FAMILY_SCRIPT_1": {
+   "miss": [
+    "sarg.alphamemes",
+    "vanillaexpanded.vgeneticse"
+   ],
+   "right": false,
+   "runs": 4
+  },
+  "CANON_MATERIALS_BUILD_1": {
+   "miss": [],
+   "right": true,
+   "runs": 1
+  },
+  "GRAFFITI_NORTHSTAR_GREEN_FULL_1": {
+   "miss": [],
+   "right": true,
+   "runs": 1
+  },
+  "GRAVSHIP_PEACEFUL_SETTLEMENT_LANDING_1": {
+   "miss": [],
+   "right": true,
+   "runs": 1
+  },
+  "HEAVY_TEXTURES_MEASURE_REAL_VRAM": {
+   "miss": [],
+   "right": true,
+   "runs": 3
+  },
+  "HORRORS_RAIDING_FACTION_1": {
+   "miss": [],
+   "right": true,
+   "runs": 3
+  },
+  "MODCHECK_DONOR_ENVIRONMENTS_1": {
+   "miss": [],
+   "right": true,
+   "runs": 4
+  },
+  "PROOF_HARNESS_BUILD_SAVELOAD_TRIPLET": {
+   "miss": [],
+   "right": true,
+   "runs": 2
+  },
+  "RAIL_WALK_PROVE_NOBODY_WALKS_OFF_ANYWAY": {
+   "miss": [],
+   "right": true,
+   "runs": 3
+  },
+  "SETTLEMENT_VERBS_WAVE_1": {
+   "miss": [],
+   "right": true,
+   "runs": 1
+  },
+  "STILLSAND_DUNE_GALE_LIVE_1": {
+   "miss": [],
+   "right": true,
+   "runs": 4
+  },
+  "STILLSAND_SAND_SWIM_REMAINDER_1": {
+   "miss": [],
+   "right": true,
+   "runs": 2
+  },
+  "SUMP_GLASSWALK_SPEED_RATIO_1": {
+   "miss": [],
+   "right": true,
+   "runs": 5
+  },
+  "TAOZIN_SPLIT_BUILD_ONE_WORM_BECOMES_TWO": {
+   "miss": [],
+   "right": true,
+   "runs": 3
+  },
+  "TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING": {
+   "miss": [],
+   "right": true,
+   "runs": 1
+  },
+  "TITANIC_BODYSIZE_TEST_RACE_1": {
+   "miss": [
+    "neku.largepawns"
+   ],
+   "right": false,
+   "runs": 3
+  },
+  "WARSCAR_HOSPICE_DESERTERS_1": {
+   "miss": [],
+   "right": true,
+   "runs": 2
+  },
+  "WASTELAND_LIVE_SUITE_FAILS_ACC_BIOMES_1": {
+   "miss": [],
+   "right": true,
+   "runs": 3
+  },
+  "WEEPINGSTONES_HANDLER_VANISHES_1": {
+   "miss": [],
+   "right": true,
+   "runs": 3
+  },
+  "WORLD_NULLTEX_FLOOD_HUNT_STACKLESS_SO_FAR": {
+   "miss": [
+    "MenuShell"
+   ],
+   "right": false,
+   "runs": 3
+  }
+ },
+ "pass_additions": [
+  "WARSCAR_HOSPICE_DESERTERS_1: RimMandrake.Biomes@folded",
+  "PUMP_DRAW_FIX_LOSES_A_LEVEL: FlowWorks@proof_cli",
+  "PUMP_DRAW_FIX_LOSES_A_LEVEL: mandrake.rm.flowworks@proof_modcheck",
+  "PIT_ESCAPE_PROVE_LADDER_LEFT_DOWN: FlowWorks@script_home",
+  "HORRORS_RAIDING_FACTION_1: AshkarrWeatherSuite@script_path",
+  "HORRORS_RAIDING_FACTION_1: mandrake.rm.flowworks@closure",
+  "HORRORS_RAIDING_FACTION_1: mandrake.rm.luminouspigment@closure",
+  "PUMP_ON_TANK_FIX_NO_COUPLER: FlowWorks@script_home",
+  "WEEPINGSTONES_HANDLER_VANISHES_1: RimMandrake.Biomes@script_home",
+  "CANON_MATERIALS_BUILD_1: neronix17.outerrim.core@proof_cli",
+  "CANON_MATERIALS_BUILD_1: neronix17.toolbox@closure",
+  "HEAVY_TEXTURES_MEASURE_REAL_VRAM: rwnodetree.rwplanetatmosphere@proof_cue",
+  "HEAVY_TEXTURES_MEASURE_REAL_VRAM: vesper.egihologramsandprojectors@proof_cli",
+  "HEAVY_TEXTURES_MEASURE_REAL_VRAM: zacharyfoster.mineralsframework@proof_cli",
+  "HEAVY_TEXTURES_MEASURE_REAL_VRAM: zacharyfoster.mineralsrock@proof_cli",
+  "HEAVY_TEXTURES_MEASURE_REAL_VRAM: fourtoo.glowingbush@proof_cli",
+  "WEEPINGSTONES_HANDLER_VANISHES_1: RimMandrake.Biomes@script_home",
+  "STILLSAND_SAND_SWIM_REMAINDER_1: RimMandrake.Biomes@folded",
+  "MIASMA_WARDEN_MOTHER_ART_1: RimMandrake.Biomes@folded",
+  "STILLSAND_GLASS_CHAIN_REMAINDER_1: RimMandrake.Biomes@folded",
+  "BRONZIUM_DROP_1: neronix17.toolbox@closure",
+  "CREEP_WEB_HARVEST_LIVE_1: RimMandrake.Biomes@script_home",
+  "RSW_FACES_VERIFY_IN_GAME_BEFORE_SHIM: nals.facialanimation@proof_cue",
+  "RSW_FACES_VERIFY_IN_GAME_BEFORE_SHIM: neronix17.toolbox@closure",
+  "RSW_FACES_VERIFY_IN_GAME_BEFORE_SHIM: mandrake.rm.flowworks@closure",
+  "RSW_FACES_VERIFY_IN_GAME_BEFORE_SHIM: mandrake.rm.luminouspigment@closure",
+  "CRACKEDLANDS_THREE_HEIGHT_FLORA_1: RimMandrake.Biomes@folded",
+  "MODCHECK_DONOR_ENVIRONMENTS_1: ebsg.framework@proof_cli",
+  "MODCHECK_DONOR_ENVIRONMENTS_1: adaptive.storage.framework@proof_cli",
+  "MODCHECK_DONOR_ENVIRONMENTS_1: vanillaexpanded.vfefactory@proof_cli",
+  "MODCHECK_DONOR_ENVIRONMENTS_1: oskarpotocki.vanillafactionsexpanded.core@proof_cli",
+  "MODCHECK_DONOR_ENVIRONMENTS_1: neronix17.toolbox@closure",
+  "STILLSAND_RETURN_REMAINDER_1: RimMandrake.Biomes@folded",
+  "ROT_MOSS_VERIFY_UNDER_THE_MUSHROOMS: RimMandrake.Biomes@folded",
+  "VANILLA_BEAST_EXCISION_1: mandrake.rm.flowworks@closure",
+  "VANILLA_BEAST_EXCISION_1: mandrake.rm.luminouspigment@closure",
+  "SPECIES_TRAITS_OVER_APTITUDES_1: neronix17.toolbox@closure",
+  "HORRORS_RAIDING_FACTION_1: AshkarrWeatherSuite@script_path",
+  "HORRORS_RAIDING_FACTION_1: mandrake.rm.flowworks@closure",
+  "HORRORS_RAIDING_FACTION_1: mandrake.rm.luminouspigment@closure",
+  "ACC_BIOMES_FIXES_LIVE_RERUN_1: brrainz.rimbridgeserver@proof_modcheck",
+  "ACC_BIOMES_FIXES_LIVE_RERUN_1: mandrake.rsw.swbestiary@proof_modcheck",
+  "ACC_BIOMES_FIXES_LIVE_RERUN_1: mandrake.rm.weathersuite@proof_modcheck",
+  "HORIZON_CARAVAN_VANILLA_REFUSES_1: RimMandrake.Biomes@folded",
+  "GRAVSHIP_PEACEFUL_SETTLEMENT_LANDING_1: mandrake.rm.flowworks@closure",
+  "GRAVSHIP_PEACEFUL_SETTLEMENT_LANDING_1: mandrake.rm.luminouspigment@closure",
+  "GELATINOUSSLIME_KIT_ART_1: RimMandrake.Biomes@folded",
+  "LEANINGSCRUB_SWEETLINE_SHED_LIVE_1: RimMandrake.Biomes@script_home",
+  "BLUEDESERT_GPT_ENRICHMENT_1: RimMandrake.Biomes@folded",
+  "DRAWBRIDGE_WINCH_DIAGNOSE_UNLINKED_REBUILT: FlowWorks@script_home"
+ ],
+ "pass_load": {
+  "absent": [],
+  "held": [
+   "2026-11-05T19:26:43Z WARSCAR_HOSPICE_DESERTERS_1: RimMandrake.Biomes@folded (in ModsConfig.PRESWAP.20261105_112901.xml)",
+   "2026-11-05T19:18:20Z PUMP_DRAW_FIX_LOSES_A_LEVEL: FlowWorks@proof_cli (in ModsConfig.PRESWAP.20261105_112901.xml)",
+   "2026-11-05T19:18:20Z PUMP_DRAW_FIX_LOSES_A_LEVEL: mandrake.rm.flowworks@proof_modcheck (in ModsConfig.PRESWAP.20261105_112901.xml)",
+   "2026-11-05T12:58:48Z PUMP_ON_TANK_FIX_NO_COUPLER: FlowWorks@script_home (in ModsConfig.PRESWAP.20261105_051014.xml)",
+   "2026-11-05T12:38:20Z WEEPINGSTONES_HANDLER_VANISHES_1: RimMandrake.Biomes@script_home (in ModsConfig.PRESWAP.20261105_044654.xml)",
+   "2026-11-05T08:12:15Z CANON_MATERIALS_BUILD_1: neronix17.outerrim.core@proof_cli (in ModsConfig.PRESWAP.20261105_002129.xml)",
+   "2026-11-05T08:12:15Z CANON_MATERIALS_BUILD_1: neronix17.toolbox@closure (in ModsConfig.PRESWAP.20261105_002129.xml)",
+   "2026-11-05T01:30:41Z WEEPINGSTONES_HANDLER_VANISHES_1: RimMandrake.Biomes@script_home (in ModsConfig.PRESWAP.20261104_201907.xml)",
+   "2026-11-04T21:56:15Z STILLSAND_SAND_SWIM_REMAINDER_1: RimMandrake.Biomes@folded (in ModsConfig.PRESWAP.20261104_201907.xml)",
+   "2026-11-04T09:09:41Z MODCHECK_DONOR_ENVIRONMENTS_1: ebsg.framework@proof_cli (in ModsConfig.PRESWAP.20261104_013035.xml)",
+   "2026-11-04T09:09:41Z MODCHECK_DONOR_ENVIRONMENTS_1: adaptive.storage.framework@proof_cli (in ModsConfig.PRESWAP.20261104_013035.xml)",
+   "2026-11-04T09:09:41Z MODCHECK_DONOR_ENVIRONMENTS_1: vanillaexpanded.vfefactory@proof_cli (in ModsConfig.PRESWAP.20261104_013035.xml)",
+   "2026-11-04T09:09:41Z MODCHECK_DONOR_ENVIRONMENTS_1: oskarpotocki.vanillafactionsexpanded.core@proof_cli (in ModsConfig.PRESWAP.20261104_013035.xml)",
+   "2026-11-04T09:09:41Z MODCHECK_DONOR_ENVIRONMENTS_1: neronix17.toolbox@closure (in ModsConfig.PRESWAP.20261104_013035.xml)",
+   "2026-11-04T05:05:06Z STILLSAND_RETURN_REMAINDER_1: RimMandrake.Biomes@folded (in ModsConfig.PRESWAP.20261103_210540.xml)",
+   "2026-11-04T03:05:07Z ROT_MOSS_VERIFY_UNDER_THE_MUSHROOMS: RimMandrake.Biomes@folded (in ModsConfig.PRESWAP.20261103_190550.xml)",
+   "2026-11-03T23:09:12Z ACC_BIOMES_FIXES_LIVE_RERUN_1: brrainz.rimbridgeserver@proof_modcheck (the passing modcheck run refuses a load without it)",
+   "2026-11-03T23:09:12Z ACC_BIOMES_FIXES_LIVE_RERUN_1: mandrake.rsw.swbestiary@proof_modcheck (the passing modcheck run refuses a load without it)",
+   "2026-11-03T23:09:12Z ACC_BIOMES_FIXES_LIVE_RERUN_1: mandrake.rm.weathersuite@proof_modcheck (the passing modcheck run refuses a load without it)",
+   "2026-11-03T19:25:24Z GRAVSHIP_PEACEFUL_SETTLEMENT_LANDING_1: mandrake.rm.flowworks@closure (in ModsConfig.PRESWAP.20261103_122615.xml)",
+   "2026-11-03T19:25:24Z GRAVSHIP_PEACEFUL_SETTLEMENT_LANDING_1: mandrake.rm.luminouspigment@closure (in ModsConfig.PRESWAP.20261103_122615.xml)",
+   "2026-11-03T17:23:55Z LEANINGSCRUB_SWEETLINE_SHED_LIVE_1: RimMandrake.Biomes@script_home (in ModsConfig.PRESWAP.20261103_092841.xml)",
+   "2026-11-03T13:23:06Z BLUEDESERT_GPT_ENRICHMENT_1: RimMandrake.Biomes@folded (in ModsConfig.PRESWAP.20261103_060743.xml)",
+   "2026-11-03T13:14:07Z DRAWBRIDGE_WINCH_DIAGNOSE_UNLINKED_REBUILT: FlowWorks@script_home (in ModsConfig.PRESWAP.20261103_060743.xml)"
+  ],
+  "unrecorded": [
+   "2026-11-05T18:14:03Z PIT_ESCAPE_PROVE_LADDER_LEFT_DOWN: FlowWorks@script_home",
+   "2026-11-05T16:54:43Z HORRORS_RAIDING_FACTION_1: AshkarrWeatherSuite@script_path",
+   "2026-11-05T16:54:43Z HORRORS_RAIDING_FACTION_1: mandrake.rm.flowworks@closure",
+   "2026-11-05T16:54:43Z HORRORS_RAIDING_FACTION_1: mandrake.rm.luminouspigment@closure",
+   "2026-11-05T06:32:53Z HEAVY_TEXTURES_MEASURE_REAL_VRAM: rwnodetree.rwplanetatmosphere@proof_cue",
+   "2026-11-05T06:32:53Z HEAVY_TEXTURES_MEASURE_REAL_VRAM: vesper.egihologramsandprojectors@proof_cli",
+   "2026-11-05T06:32:53Z HEAVY_TEXTURES_MEASURE_REAL_VRAM: zacharyfoster.mineralsframework@proof_cli",
+   "2026-11-05T06:32:53Z HEAVY_TEXTURES_MEASURE_REAL_VRAM: zacharyfoster.mineralsrock@proof_cli",
+   "2026-11-05T06:32:53Z HEAVY_TEXTURES_MEASURE_REAL_VRAM: fourtoo.glowingbush@proof_cli",
+   "2026-11-04T16:14:24Z MIASMA_WARDEN_MOTHER_ART_1: RimMandrake.Biomes@folded",
+   "2026-11-04T15:46:13Z STILLSAND_GLASS_CHAIN_REMAINDER_1: RimMandrake.Biomes@folded",
+   "2026-11-04T14:11:07Z BRONZIUM_DROP_1: neronix17.toolbox@closure",
+   "2026-11-04T14:10:28Z CREEP_WEB_HARVEST_LIVE_1: RimMandrake.Biomes@script_home",
+   "2026-11-04T13:26:07Z RSW_FACES_VERIFY_IN_GAME_BEFORE_SHIM: nals.facialanimation@proof_cue",
+   "2026-11-04T13:26:07Z RSW_FACES_VERIFY_IN_GAME_BEFORE_SHIM: neronix17.toolbox@closure",
+   "2026-11-04T13:26:07Z RSW_FACES_VERIFY_IN_GAME_BEFORE_SHIM: mandrake.rm.flowworks@closure",
+   "2026-11-04T13:26:07Z RSW_FACES_VERIFY_IN_GAME_BEFORE_SHIM: mandrake.rm.luminouspigment@closure",
+   "2026-11-04T12:21:24Z CRACKEDLANDS_THREE_HEIGHT_FLORA_1: RimMandrake.Biomes@folded",
+   "2026-11-04T01:56:22Z VANILLA_BEAST_EXCISION_1: mandrake.rm.flowworks@closure",
+   "2026-11-04T01:56:22Z VANILLA_BEAST_EXCISION_1: mandrake.rm.luminouspigment@closure",
+   "2026-11-04T01:56:07Z SPECIES_TRAITS_OVER_APTITUDES_1: neronix17.toolbox@closure",
+   "2026-11-03T23:32:54Z HORRORS_RAIDING_FACTION_1: AshkarrWeatherSuite@script_path",
+   "2026-11-03T23:32:54Z HORRORS_RAIDING_FACTION_1: mandrake.rm.flowworks@closure",
+   "2026-11-03T23:32:54Z HORRORS_RAIDING_FACTION_1: mandrake.rm.luminouspigment@closure",
+   "2026-11-03T22:04:12Z HORIZON_CARAVAN_VANILLA_REFUSES_1: RimMandrake.Biomes@folded",
+   "2026-11-03T17:42:03Z GELATINOUSSLIME_KIT_ART_1: RimMandrake.Biomes@folded"
+  ]
+ },
+ "pass_loads_recorded": 23,
+ "pass_n": 50,
+ "pass_refused": [],
+ "right": "17/20",
+ "wrong": []
+}

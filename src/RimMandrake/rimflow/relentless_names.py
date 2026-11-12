@@ -893,16 +893,97 @@ def enforce_case(case, index, also=()):
     return {"miss": [m for m in case.get("added") or [] if one(m) not in eff],
             "wrong": ["%s@%s" % (a["mod"], a["at"]) for a in nd["add"]
                       if one(a["mod"]) not in truth and a["src"] not in SELF_EVIDENT],
-            "add": ["%s@%s" % (a["mod"], a["src"]) for a in nd["add"]], "conflict": nd["conflict"]}
+            "add": ["%s@%s" % (a["mod"], a["src"]) for a in nd["add"]], "conflict": nd["conflict"],
+            "adds": [a for a in nd["add"]]}
+
+
+def pid_of(mod, index):
+    """A planned name (a repo folder, a folded source, the composed mod, a packageId) -> the packageId a ModsConfig
+    lists it by, lower-case. A folded source loads as its composed mod."""
+    m = index.folded.get(mod, (mod,))[0]
+    back = {v: k for k, v in index.repo_pids.items()}
+    return (back.get(index.repo_pids.get(str(m).lower(), m)) or str(m)).lower()
+
+
+# A PASS run of a proof whose evidence is one of these shows the need was in its running load by the proof's own rule
+# (modcheck run refuses the run, stale_load, unless the running load holds every packageId it composes)
+HELD_BY_PROOF = ("proof_modcheck",)
+
+
+def pass_load_check(case, adds, index):
+    """One PASS run's gate additions against the live list it ran on (case["loaded"], frozen by attach_loads) ->
+    {"held": [...], "absent": [...], "unrecorded": [...]} of "mod@src (why)". "absent" is the negative control's failure:
+    a mod the gate would add that this run passed WITHOUT, so the proof did not need it. "unrecorded": the run's time
+    falls in no recorded interval, so nothing is claimed either way."""
+    out = {"held": [], "absent": [], "unrecorded": []}
+    loaded = case.get("loaded")
+    for a in adds:
+        tag = "%s@%s" % (a["mod"], a["src"])
+        if loaded is not None and pid_of(a["mod"], index) in loaded:
+            out["held"].append("%s (in %s)" % (tag, case.get("loaded_src")))
+        elif a["src"] in HELD_BY_PROOF:
+            out["held"].append("%s (the passing modcheck run refuses a load without it)" % tag)
+        elif loaded is None:
+            out["unrecorded"].append(tag)
+        else:
+            out["absent"].append("%s (not in %s)" % (tag, case.get("loaded_src")))
+    return out
+
+
+SNAPSHOT = re.compile(r"^ModsConfig\.PRESWAP\.(\d{8}_\d{6})(?:_\d+)?\.xml$")
+
+
+def load_intervals(snapshots, tz="America/Los_Angeles", mtimes=None):
+    """modlist_swap's PRESWAP snapshots -> [{"from", "to", "src", "active"}], UTC ISO, active packageIds lower-case,
+    oldest first. ModsConfig.PRESWAP.<stamp>.xml is the live list just before a swap replaced it at <stamp> (the
+    writer's local time, `tz`); its mtime, which the archive copy keeps, is when that list was written. So it was the
+    live list over [mtime, stamp]. A list identical to one the store already holds is never snapshotted
+    (modlist_swap.snapshot), so a time between intervals is UNRECORDED, never guessed. mtimes: {file name: UTC ISO} for a
+    copy that lost its mtimes. ModsConfig names the NEXT load; a staging restarts the game on it at once."""
+    import datetime
+    import xml.etree.ElementTree as ET
+    from zoneinfo import ZoneInfo
+    out = []
+    for fn in sorted(os.listdir(snapshots)):
+        m = SNAPSHOT.match(fn)
+        if not m:
+            continue
+        p = os.path.join(snapshots, fn)
+        to = datetime.datetime.strptime(m.group(1), "%Y%m%d_%H%M%S").replace(tzinfo=ZoneInfo(tz))
+        frm = (mtimes or {}).get(fn) or datetime.datetime.fromtimestamp(os.path.getmtime(p), datetime.timezone.utc) \
+            .strftime("%Y-%m-%dT%H:%M:%SZ")
+        try:
+            act = ET.parse(p).getroot().find("activeMods")
+        except ET.ParseError:
+            continue
+        out.append({"from": frm, "to": to.astimezone(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "src": fn,
+                    "active": [(e.text or "").strip().lower() for e in (act if act is not None else []) if e.text]})
+    return sorted(out, key=lambda x: x["from"])
+
+
+def attach_loads(fx, intervals):
+    """Each PASS case of a replay fixture -> "loaded" (the live list of the interval its run time falls in; None when
+    none does) and "loaded_src". In place; -> how many PASS cases got a recorded list."""
+    n = 0
+    for case in fx.get("passes") or []:
+        at = case.get("at") or ""
+        hit = [iv for iv in intervals if at and iv["from"] <= at <= iv["to"]]
+        case["loaded"] = hit[0]["active"] if hit else None
+        case["loaded_src"] = hit[0]["src"] if hit else None
+        n += bool(hit)
+    return n
 
 
 def enforce_replay(fx, bar=17):
     """The enforcement replay (LIVE_NEEDS_ENFORCE_ABSENCE_NOW_EXPLICIT criteria 1-2) -> (exit, report). An R1/R2 item is
     right when EVERY one of its failed runs, as frozen, would have had each mod its next repair added put in the planned
-    load. Exit 0 only when at least `bar` R1/R2 items are right, no case or PASS proof gets a wrong addition, and no PASS
-    proof is refused by its own live-without."""
+    load. A PASS proof's addition is checked against the live list that run passed on (pass_load_check): one it passed
+    WITHOUT is an addition the proof did not need. Exit 0 only when at least `bar` R1/R2 items are right, no case or PASS
+    proof gets a wrong addition, no PASS run did without a mod the gate would add, and no PASS proof is refused by its
+    own live-without."""
     index = Index.from_json(fx["index"])
     items, wrong, pass_add, pass_refused = {}, [], [], []
+    pass_load = {"held": [], "absent": [], "unrecorded": []}
     for case in fx["cases"]:
         if case["root"] not in ("R1", "R2"):
             continue
@@ -919,12 +1000,16 @@ def enforce_replay(fx, bar=17):
         got = enforce_case(case, index, repaired.get(case["item"], ()))
         wrong += ["PASS %s: %s" % (case["item"], w) for w in got["wrong"]]
         pass_add += ["%s: %s" % (case["item"], a) for a in got["add"]]
+        for k, v in pass_load_check(case, got["adds"], index).items():
+            pass_load[k] += ["%s %s: %s" % (case.get("at") or "-", case["item"], x) for x in v]
         if got["conflict"]:
             pass_refused.append(case["item"])
     right = sum(1 for v in items.values() if v["right"])
     rep = {"items": items, "right": "%d/%d" % (right, len(items)), "wrong": wrong, "pass_n": len(fx["passes"]),
-           "pass_additions": pass_add, "pass_refused": pass_refused, "bar": bar}
-    return (0 if right >= bar and not wrong and not pass_refused else 1), rep
+           "pass_additions": pass_add, "pass_refused": pass_refused, "bar": bar, "pass_load": pass_load,
+           "pass_loads_recorded": sum(1 for c in fx["passes"] if c.get("loaded") is not None)}
+    good = right >= bar and not wrong and not pass_refused and not pass_load["absent"]
+    return (0 if good else 1), rep
 
 
 def _git(args):
@@ -1071,7 +1156,10 @@ MODLIST_CAUSE = re.compile(r"not in the running load|not enabled in ModsConfig|T
 def modlist_census(rows, since="", until="~"):
     """runs.jsonl rows -> {rows, nonpass, modlist_rows, modlist_items, modlist_games, by_cause}: the non-PASS rows in
     [since, until) whose reason is the mod list. The criterion's before/after measure (LIVE_MODS_ENFORCE_..._BOARDING)."""
-    out = {"since": since, "until": until, "rows": 0, "nonpass": 0, "modlist_rows": 0}
+    # modlist_ran: rows whose proof RAN on a game and still failed for the mod list (a game slot spent);
+    # modlist_held: rows the gate held before the slot for it (no game spent: the gate doing its job)
+    out = {"since": since, "until": until, "rows": 0, "nonpass": 0, "modlist_rows": 0, "proof_ran": 0,
+           "modlist_ran": 0, "modlist_held": 0, "first": None, "last": None}
     items, games, causes = set(), set(), {}
     for r in rows:
         at = r.get("at") or ""
@@ -1081,6 +1169,10 @@ def modlist_census(rows, since="", until="~"):
         if not (since <= at < until):
             continue
         out["rows"] += 1
+        out["first"] = min(out["first"] or at, at)
+        out["last"] = max(out["last"] or at, at)
+        ran = "proof_exit" in r or r.get("outcome") in ("PASS", "FAIL")
+        out["proof_ran"] += ran
         if r.get("outcome") in (None, "PASS"):
             continue
         out["nonpass"] += 1
@@ -1088,6 +1180,7 @@ def modlist_census(rows, since="", until="~"):
         if not m:
             continue
         out["modlist_rows"] += 1
+        out["modlist_ran" if ran else "modlist_held"] += 1
         items.add(r.get("item"))
         games.add(r.get("game"))
         causes[m.group(0).lower()] = causes.get(m.group(0).lower(), 0) + 1
@@ -1110,6 +1203,14 @@ def main(argv=None):
     p.add_argument("--census", required=True, help="json: [{item, root[, sha][, text, rider_of]}]")
     p.add_argument("--runs", default="/home/mandrake/rm/relentless/live/runs.jsonl")
     p.add_argument("--out", required=True)
+    p = sub.add_parser("attach-loads", help="freeze each PASS case's live list (from ModsConfig PRESWAP snapshots) "
+                                            "into a replay fixture, so the negative control can check its additions")
+    p.add_argument("--fixture", required=True)
+    p.add_argument("--snapshots", required=True, help="a folder of ModsConfig.PRESWAP.<stamp>.xml (mtimes kept)")
+    p.add_argument("--tz", default="America/Los_Angeles", help="the time zone the snapshot stamps were written in")
+    p.add_argument("--mtimes", help="lines '<file name> <UTC ISO>': each snapshot's mtime on the machine that wrote it "
+                                    "(git keeps no mtimes; default: the files' own)")
+    p.add_argument("--out", help="default: rewrite --fixture")
     p = sub.add_parser("migrate", help="every live_proofs file: what the gate would add, warn and refuse (read only)")
     p.add_argument("--out", help="write the list (json) here")
     p = sub.add_parser("baseline", help="runs.jsonl: the non-PASS rows whose reason is the mod list, in a window")
@@ -1118,6 +1219,21 @@ def main(argv=None):
     p.add_argument("--until", default="~")
     a = ap.parse_args(argv)
     sys.path.insert(0, HERE)
+    if a.cmd == "attach-loads":
+        with open(a.fixture, encoding="utf-8") as f:
+            fx = json.load(f)
+        mt = None
+        if a.mtimes:
+            with open(a.mtimes, encoding="utf-8") as f:
+                mt = dict(l.split()[:2] for l in f if len(l.split()) >= 2)
+        ivs = load_intervals(a.snapshots, a.tz, mt)
+        n = attach_loads(fx, ivs)
+        with open(a.out or a.fixture, "w", encoding="utf-8") as f:
+            json.dump(fx, f, indent=0, sort_keys=True)
+        print("%d snapshot intervals (%s .. %s); %d of %d PASS cases fall in one, %d unrecorded" % (
+            len(ivs), ivs[0]["from"] if ivs else "-", ivs[-1]["to"] if ivs else "-", n, len(fx.get("passes") or []),
+            len(fx.get("passes") or []) - n))
+        return 0
     if a.cmd == "baseline":
         if not os.path.isfile(a.runs):
             print("UNMEASURED: no %s" % a.runs)
@@ -1188,15 +1304,22 @@ def main(argv=None):
             if a.report:
                 with open(a.report, "w", encoding="utf-8") as f:
                     json.dump(rep, f, indent=1, sort_keys=True)
-            print("ENFORCE R1/R2 items right %s (bar %d)  wrong additions %d  PASS proofs %d: additions %d (none "
-                  "wrong unless listed), refused by live-without %d  -> %s" % (
-                rep["right"], rep["bar"], len(rep["wrong"]), rep["pass_n"], len(rep["pass_additions"]),
+            pl = rep["pass_load"]
+            print("ENFORCE R1/R2 items right %s (bar %d)  wrong additions %d  PASS proofs %d (live list recorded for "
+                  "%d): gate additions %d -> the run already held %d, the run did WITHOUT %d, unrecorded %d; refused by "
+                  "live-without %d  -> %s" % (
+                rep["right"], rep["bar"], len(rep["wrong"]), rep["pass_n"], rep["pass_loads_recorded"],
+                len(rep["pass_additions"]), len(pl["held"]), len(pl["absent"]), len(pl["unrecorded"]),
                 len(rep["pass_refused"]), "OK" if code == 0 else "FAIL"))
             for item, it in sorted(rep["items"].items()):
                 if not it["right"]:
                     print("  missed %s: the planned load still lacks %s" % (item, ", ".join(it["miss"])))
             for w in rep["wrong"]:
                 print("  WRONG addition %s" % w)
+            for w in pl["absent"]:
+                print("  PASS run did without %s" % w)
+            for w in pl["unrecorded"]:
+                print("  unrecorded live list: %s" % w)
             return code
         code, rep = replay(fx)
         if a.report:

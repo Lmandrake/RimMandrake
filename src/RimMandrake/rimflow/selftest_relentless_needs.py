@@ -487,10 +487,106 @@ def t_idempotent_and_run_row():
        "the run row records the effective mod list and each inferred addition with its evidence", seen)
 
 
+def t_pass_negative_control():
+    """Criterion 2: a PASS proof's addition is checked against the live list that run passed on."""
+    ix = index()
+    text = "live-proof A1: python3 src/RimMandrake/KeelHoist/p.py --needs 7f.alienworlds\n"
+    base = {"item": "P", "root": "PASS", "text": text, "scripts": {}, "build_mods": [], "at": "2026-11-04T10:00:00Z"}
+    held = dict(base, loaded=["ludeon.rimworld", "7f.alienworlds", "keelhoist"], loaded_src="S1")
+    fx = {"index": ix.as_json(), "cases": [], "passes": [held]}
+    code, rep = N.enforce_replay(fx, bar=0)
+    pl = rep["pass_load"]
+    ok(code == 0 and len(pl["held"]) == 2 and not pl["absent"] and not pl["unrecorded"],
+       "a PASS run that already held every gate addition counts none as an addition", pl)
+    without = dict(base, loaded=["ludeon.rimworld", "keelhoist"], loaded_src="S2")
+    code, rep = N.enforce_replay(dict(fx, passes=[without]), bar=0)
+    ok(code == 1 and rep["pass_load"]["absent"] == ["2026-11-04T10:00:00Z P: 7f.alienworlds@proof_cli (not in S2)"],
+       "an addition a PASS run did WITHOUT fails the replay (the proof did not need it)", rep["pass_load"])
+    code, rep = N.enforce_replay(dict(fx, passes=[dict(base, loaded=None)]), bar=0)
+    ok(code == 0 and len(rep["pass_load"]["unrecorded"]) == 2 and rep["pass_loads_recorded"] == 0,
+       "a run at an unrecorded time claims nothing either way and is listed", rep["pass_load"])
+    ok(N.pid_of("Stillsand", ix) == "rimmandrake.biomes" and N.pid_of("FlowWorks", ix) == "mandrake.rm.flowworks",
+       "a folded source is looked up as its composed mod; a folder by its packageId",
+       (N.pid_of("Stillsand", ix), N.pid_of("FlowWorks", ix)))
+    mc = N.pass_load_check(dict(base, loaded=None), [{"mod": "ebsg.framework", "src": "proof_modcheck"}], ix)
+    ok(len(mc["held"]) == 1 and not mc["unrecorded"], "a passing modcheck run held what it composes", mc)
+
+
+def t_load_intervals():
+    import tempfile
+    d = tempfile.mkdtemp(prefix="rn_loads_")
+    xml = ("<?xml version='1.0' encoding='utf-8'?><ModsConfigData><activeMods><li>brrainz.harmony</li>"
+           "<li>Ludeon.RimWorld</li><li>Mandrake.RM.FlowWorks</li></activeMods></ModsConfigData>")
+    for fn in ("ModsConfig.PRESWAP.20261104_010000.xml", "ModsConfig.PRESWAP.20261104_010000_2.xml",
+               "ModsConfig.FULL.LATEST.xml"):
+        with open(os.path.join(d, fn), "w") as f:
+            f.write(xml)
+    mt = {"ModsConfig.PRESWAP.20261104_010000.xml": "2026-11-04T08:00:00Z",
+          "ModsConfig.PRESWAP.20261104_010000_2.xml": "2026-11-04T08:59:00Z"}
+    ivs = N.load_intervals(d, "America/Los_Angeles", mt)
+    ok(len(ivs) == 2 and ivs[0]["to"] == "2026-11-04T09:00:00Z" and ivs[0]["from"] == "2026-11-04T08:00:00Z",
+       "a snapshot is the live list from its mtime to its local stamp (PST -> UTC); tier files are not snapshots", ivs)
+    ok(ivs[0]["active"] == ["brrainz.harmony", "ludeon.rimworld", "mandrake.rm.flowworks"],
+       "active ids read lower-case, in order", ivs[0]["active"])
+    fx = {"passes": [{"at": "2026-11-04T08:30:00Z"}, {"at": "2026-11-04T12:00:00Z"}, {}]}
+    ok(N.attach_loads(fx, ivs) == 1 and fx["passes"][0]["loaded_src"] == ivs[0]["src"] and
+       fx["passes"][1]["loaded"] is None and fx["passes"][2]["loaded"] is None,
+       "a PASS case gets the list its time falls in, else None (never the nearest)", fx)
+
+
+def t_census_split():
+    rows = [{"at": "2026-11-06T05:00:00Z", "outcome": "NOT_ADMITTED", "why": "not in the running load: X (x)"},
+            {"at": "2026-11-06T05:01:00Z", "outcome": "UNMEASURED", "proof_exit": 2,
+             "why": "the proof exited 2: Type not found: Foo.Bar"},
+            {"at": "2026-11-06T05:02:00Z", "outcome": "PASS", "proof_exit": 0, "why": "proof exit 0"},
+            {"at": "2026-11-07T05:00:00Z", "outcome": "FAIL", "proof_exit": 1, "why": "not enabled in ModsConfig"}]
+    c = N.modlist_census(rows, "2026-11-06T00:00:00Z", "2026-11-07T00:00:00Z")
+    ok(c["rows"] == 3 and c["proof_ran"] == 2 and c["modlist_rows"] == 2 and c["modlist_ran"] == 1 and
+       c["modlist_held"] == 1 and c["first"] == "2026-11-06T05:00:00Z" and c["last"] == "2026-11-06T05:02:00Z",
+       "the census splits a mod-list row that spent a game from one the gate held before the slot", c)
+
+
+def t_running_ref_on_the_row():
+    import json as _j
+    import tempfile
+    import relentless_live as L
+    root = tempfile.mkdtemp(prefix="rn_run_")
+    run = frozenset({"ludeon.rimworld", "mandrake.rm.flowworks", "7f.alienworlds"})
+    ref = L.running_ref(root, run, {"FlowWorks": "mandrake.rm.flowworks"},
+                        inferred=[{"mod": "FlowWorks"}, {"mod": "7F.AlienWorlds"}, {"mod": "KeelHoist"}])
+    p = os.path.join(root, "live", "loads", ref["sha"] + ".json")
+    ok(ref["n"] == 3 and os.path.isfile(p) and _j.load(open(p)) == sorted(run) and
+       ref["inferred_held"] == {"FlowWorks": True, "7F.AlienWorlds": True, "KeelHoist": False},
+       "the row carries the running load's hash and count, the list is written once, each inferred mod's presence", ref)
+    ok(L.running_ref(root, run, {})["sha"] == ref["sha"], "the same load gives the same reference")
+    import selftest_relentless_live as SL
+    fx = SL.FakeFx()
+    orig = fx.running_load_gap
+
+    def gap(mods):
+        fx.last_running = (frozenset({"mandrake.rm.flowworks", "ludeon.rimworld"}), {"FlowWorks": "mandrake.rm.flowworks"})
+        return orig(mods)
+    fx.running_load_gap = gap
+    fx.last_running = ("stale", {})
+    env = {"mods": ["FlowWorks"], "inferred": [{"mod": "FlowWorks", "src": "script_home", "at": "x"}], "without": []}
+    row = L.run(fx, root, "ROT_X", "A2", "python3 probe.py", "--compose biomes", {}, now=1_800_000_000,
+                needs=["FlowWorks"], env=env)
+    r_env = row.get("env") or {}
+    ok((r_env.get("running") or {}).get("n") == 2 and r_env["running"]["inferred_held"] == {"FlowWorks": True} and
+       r_env["mods"] == ["FlowWorks"], "run() records the running load it was admitted on into the row's env", row)
+    fx2 = SL.FakeFx()
+    fx2.last_running = (frozenset({"x"}), {})
+    row2 = L.run(fx2, root, "ROT_X", "A2", "python3 probe.py", "--compose biomes", {}, now=1_800_000_001,
+                 needs=["FlowWorks"], env=dict(env))
+    ok("running" not in (row2.get("env") or {}), "an earlier read (another item's) is never recorded as this row's",
+       row2.get("env"))
+
+
 def main():
     for t in (t_resolve, t_blind_index, t_check_and_refusal, t_comment, t_advise, t_batch, t_preflight_names,
               t_one_resolver, t_fixture_roundtrip, t_typed_and_data, t_replay_strict, t_each_source,
-              t_absence_gives_nothing, t_live_without, t_gate_enforces, t_srchash_stale, t_batch_split, t_idempotent_and_run_row):
+              t_absence_gives_nothing, t_live_without, t_gate_enforces, t_srchash_stale, t_batch_split, t_idempotent_and_run_row,
+              t_pass_negative_control, t_load_intervals, t_census_split, t_running_ref_on_the_row):
         t()
     print('{"ok": %d, "fails": %d}' % (n_ok, len(fails)))
     return 1 if fails else 0

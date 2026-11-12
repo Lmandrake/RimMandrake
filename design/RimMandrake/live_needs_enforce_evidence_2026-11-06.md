@@ -15,10 +15,11 @@ changed by the item (enforce, derive at the gate, `live-without:`).
   names counts as right only when its evidence states the need (`SELF_EVIDENT` in relentless_names.py: a hard About.xml
   dependency, the composed mod of the build's folded source, the proof's own `--needs`/`--enable`/staging line, the mod
   the proof script lives in, a fixture save's modIds).
-- PASS proofs: **46 additions on 50**, none wrong. Criterion 2 as written ("zero additions on the last 50 PASS proofs")
-  cannot hold and is the wrong bar: those proofs passed on loads that happened to hold mods their own text names
-  (`--needs ebsg.framework`, "Stager: the list ALSO needs ..."), or that a mod they load hard-depends on. Adding a mod a
-  PASS proof already had loaded changes nothing; the measurable defect is a WRONG addition, and there are none.
+- PASS proofs (criterion 2): the gate infers 50 mods over the 50 proofs. Whether each was an addition depends on
+  whether that run already held the mod, and this replay could not tell. The 2026-11-12 Whittle round measures it
+  against the live list each run passed on: `replay --enforce` counts additions a PASS run did WITHOUT (a failure) and
+  lists those at unrecorded times. Evidence: `whittle/live_needs_enforce_absence_now_explicit/evidence/` (replay_enforce.txt,
+  negative_control_unrecorded.md).
 - Misses (3): ART_OVERRIDE_FAMILY_SCRIPT_1 (sarg.alphamemes, VE genetics named only as quoted packageIds in a JSON
   manifest beside four retired donors the repair did not add), TITANIC_BODYSIZE_TEST_RACE_1 (its first run names Large
   Pawns only in a script docstring), WORLD_NULLTEX_FLOOD_HUNT_STACKLESS_SO_FAR (MenuShell only on a prose line of a

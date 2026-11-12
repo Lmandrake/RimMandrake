@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ModsConfigData>
+  <version>1.6.4871 rev590</version>
+  <activeMods>
+    <li>brrainz.harmony</li><li>ludeon.rimworld</li><li>ludeon.rimworld.royalty</li><li>ludeon.rimworld.ideology</li><li>ludeon.rimworld.biotech</li><li>ludeon.rimworld.anomaly</li><li>ludeon.rimworld.odyssey</li><li>adaptive.storage.framework</li><li>redmattis.betterprerequisites</li><li>oskarpotocki.vanillafactionsexpanded.core</li><li>ebsg.framework</li><li>sarg.alphamemes</li><li>brrainz.cameraplus</li><li>mandrake.rm.injections</li><li>mandrake.rut.injections</li><li>mandrake.rm.graffiti</li><li>mandrake.rm.sacredgraffiti</li><li>turnovus.biotech.integratedgenes</li><li>brrainz.rimbridgeserver</li><li>rwnodetree.rwplanetatmosphere</li><li>lazyfridaystudio.genesexpandedeyes</li><li>neku.largepawns</li><li>mandrake.rsw.cuisine</li><li>mandrake.rm.weathersuite</li><li>mandrake.rut.weathersuite</li><li>neronix17.toolbox</li><li>vanillaexpanded.vgeneticse</li><li>redmattis.bigsmall.core</li><li>neronix17.outerrim.core</li><li>neronix17.outland.genetics</li><li>mandrake.rsw.starwarsraces</li><li>mandrake.rsw.armoury</li><li>mandrake.rsw.gizkastowaway</li><li>mandrake.rsw.shokk</li><li>mandrake.rm.luminouspigment</li><li>mandrake.rut.researchretag</li><li>mandrake.rsw.patches</li><li>mandrake.rut.patches</li><li>ray1203.simplecamerasetting</li><li>mandrake.rm.gimmesomeslack</li><li>mandrake.rm.flowworks</li><li>arandomkiwi.rimthemes</li><li>mandrake.rut.menushell</li><li>mandrake.rm.hugethings</li><li>mandrake.rm.biomes</li><li>mandrake.rsw.swbestiary</li><li>mandrake.showing.silttrapredraws</li><li>fourtoo.glowingbush</li><li>vesper.egihologramsandprojectors</li><li>zacharyfoster.mineralsframework</li><li>zacharyfoster.mineralsrock</li><li>mandrake.rm.hugethingstestraces</li><li>mandrake.rm.modernfittingscandidates</li><li>mandrake.rm.nulltextrace</li></activeMods>
+  <knownExpansions>
+    <li>ludeon.rimworld.royalty</li>
+    <li>ludeon.rimworld.ideology</li>
+    <li>ludeon.rimworld.biotech</li>
+    <li>ludeon.rimworld.anomaly</li>
+    <li>ludeon.rimworld.odyssey</li>
+  </knownExpansions>
+</ModsConfigData>

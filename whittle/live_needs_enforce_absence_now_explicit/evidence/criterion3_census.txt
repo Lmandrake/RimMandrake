@@ -1,0 +1,8 @@
+# runs.jsonl copied from Archmagi ~/rm/relentless/live/runs.jsonl on 2026-11-12 (1363 rows, last row 2026-11-07T02:26:33Z)
+# landing = d7f3a0699d (2026-11-06T03:25:56Z, the enforcing gate); the first row carrying env (the gate live) is 2026-11-06T04:28:03Z
+# BASELINE, recounted first: the 7 days before landing
+$ python3 src/RimMandrake/rimflow/relentless_names.py baseline --runs whittle/live_needs_enforce_absence_now_explicit/evidence/archmagi_runs_2026-11-11.jsonl --since 2026-10-30T03:25:56Z --until 2026-11-06T03:25:56Z
+{"by_cause": [[49, "not enabled in modsconfig"], [49, "not in the running load"], [18, "does not cover"], [15, "type not found"], [4, "missing_mod"], [4, "not loaded on this tier"], [2, "wrong_tier"]], "first": "2026-11-02T04:14:52Z", "last": "2026-11-06T03:01:19Z", "modlist_games": 26, "modlist_held": 126, "modlist_items": 33, "modlist_ran": 15, "modlist_rows": 141, "nonpass": 737, "proof_ran": 365, "rows": 912, "since": "2026-10-30T03:25:56Z", "until": "2026-11-06T03:25:56Z"}
+# THE WEEK AFTER LANDING
+$ python3 src/RimMandrake/rimflow/relentless_names.py baseline --runs whittle/live_needs_enforce_absence_now_explicit/evidence/archmagi_runs_2026-11-11.jsonl --since 2026-11-06T03:25:56Z --until 2026-11-13T03:25:56Z
+{"by_cause": [[41, "not enabled in modsconfig"], [32, "not in the running load"], [3, "missing_mod"], [2, "does not cover"]], "first": "2026-11-06T04:28:03Z", "last": "2026-11-07T02:26:33Z", "modlist_games": 12, "modlist_held": 78, "modlist_items": 28, "modlist_ran": 0, "modlist_rows": 78, "nonpass": 333, "proof_ran": 209, "rows": 451, "since": "2026-11-06T03:25:56Z", "until": "2026-11-13T03:25:56Z"}
