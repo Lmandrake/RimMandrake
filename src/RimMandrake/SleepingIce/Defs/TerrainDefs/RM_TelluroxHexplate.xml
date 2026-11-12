@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  BIOME_SHIP_CONTRIBUTIONS_1 — the Sleeping Ice's gift to the ship. Delegated design (the agent's call, logged on
+  the item). The tellurox's permanent shell plate (RM_TelluroxShell, a butcher bonus of this biome's beast only:
+  "dense, weather-scarred, harder than any farmed") is a hexagon; laid edge to edge they make a deck floor no other
+  world can give, banded and scarred, quick to sweep and proof against fire.
+  A floor: FloorBase (Heavy affordance, which a gravship deck provides), so it lays on substructure like any floor.
+  Stats PROVISIONAL, set by the design judge (evidence/design_judge.json): 1 shell a tile (a tellurox yields 6, so one
+  beast lays 6 tiles), Beauty 5 (above silver tile 4: a rare floor), CleaningTimeFactor 0.6 as metal tile,
+  Flammability 0. Checked by src/RimMandrake/Utils/ship_contributions.py.
+-->
+<Defs>
+  <TerrainDef ParentName="FloorBase">
+    <defName>RM_TelluroxHexplate</defName>
+    <label>tellurox hexplate</label>
+    <description>Hexagonal plates from the permanent shells of old tellurox, laid edge to edge. Each one was worn for a whole working life on the Sleeping Ice and carries its scars: banded, pitted, harder than any tile a forge can cast. It sweeps clean in a moment and will not burn.</description>
+    <texturePath>Terrain/Surfaces/RM_TelluroxHexplate</texturePath>
+    <edgeType>Hard</edgeType>
+    <renderPrecedence>246</renderPrecedence>
+    <constructEffect>ConstructMetal</constructEffect>
+    <uiOrder>2095</uiOrder>
+    <statBases>
+      <WorkToBuild>900</WorkToBuild>
+      <Beauty>5</Beauty>
+      <Cleanliness>0.1</Cleanliness>
+      <CleaningTimeFactor>0.6</CleaningTimeFactor>
+      <Flammability>0</Flammability>
+    </statBases>
+    <costList>
+      <RM_TelluroxShell>1</RM_TelluroxShell>
+    </costList>
+    <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+  </TerrainDef>
+</Defs>

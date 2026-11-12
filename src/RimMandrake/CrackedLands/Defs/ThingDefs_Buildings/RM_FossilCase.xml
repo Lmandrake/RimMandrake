@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  BIOME_SHIP_CONTRIBUTIONS_1 — the Cracked Lands' gift to the ship. Delegated design (the agent's call, logged on
+  the item), from the biome's own cast doc (cracked_lands_bedazzle_cast_2026-09-28.md: a gravship galley with a
+  fossil mounted on the bulkhead) and the item's criteria ("the gravship becomes a scrapbook of everywhere it has
+  been"). A whole fossil skeleton (RM_FossilSkeleton, mined only from this biome's skeleton seams) set in a steel
+  and glass case: decoration, nothing more, and the most beautiful single thing a small ship can carry.
+  Beauty 14 is PROVISIONAL (a fine sculpture is ~ 25 at normal quality; this has no quality roll).
+  Ship-buildable: Light affordance, no placeWorker, minifiable. Checked by ship_contributions.py.
+-->
+<Defs>
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_FossilCase</defName>
+    <label>fossil case</label>
+    <description>A whole small animal from the Cracked Lands, curled in death in its slab of canyon stone, set behind glass in a steel case. Every joint is still in place after however many thousand floods. Bolted to a bulkhead it is the first thing a visitor asks about, and the crew never tire of telling it.</description>
+    <graphicData>
+      <texPath>Things/Building/Art/RM_FossilCase</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+      <damageData>
+        <rect>(0.1,0.1,0.8,0.8)</rect>
+      </damageData>
+    </graphicData>
+    <size>(1,1)</size>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>42</pathCost>
+    <fillPercent>0.35</fillPercent>
+    <rotatable>false</rotatable>
+    <designationCategory>Furniture</designationCategory>
+    <uiOrder>2490</uiOrder>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsFurniture</li>
+    </thingCategories>
+    <statBases>
+      <MaxHitPoints>90</MaxHitPoints>
+      <WorkToBuild>1800</WorkToBuild>
+      <Flammability>0</Flammability>
+      <Mass>18</Mass>
+      <Beauty>14</Beauty>
+    </statBases>
+    <costList>
+      <RM_FossilSkeleton>1</RM_FossilSkeleton>
+      <Steel>25</Steel>
+    </costList>
+    <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+  </ThingDef>
+</Defs>

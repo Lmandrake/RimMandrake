@@ -1,0 +1,33 @@
+run 2026-11-11 22:06 -0800, HEAD 42f29e9ad6 + working tree
+deck affordances (read from Odyssey Substructure): Heavy, Light, Medium, Substructure, Walkable
+shipped biome mods (Biomes.compose.json): 24
+PASS   The Abyss            RM_SummGreatBone, RM_FoldLamp
+PASS   Blue Desert          RM_ColdSinkRack
+PASS   The Cauldron         RM_HullLinerRig   (also deck-placeable: 3)
+PASS   The Contagion        RM_CloudRepulsorShip   (also deck-placeable: 1)
+PASS   The Cracked Lands    RM_FossilCase
+PASS   Fever Wood           RM_SekkulaathTank   (also deck-placeable: 1)
+         ~ a patch names `RM_SekkulaathTank`; read it: src/RimUtinni/UtinniPatches/Patches/RUT_BroodRansom_Campaign.xml
+         ~ a patch names `RM_SekkulaathTank`; read it: src/RimStarWars/SWBestiary/Patches/RSW_SekkulaathTank_DianogaSwap.xml
+         ~ a patch names `RM_SekkulaathTank`; read it: src/RimStarWars/SWBestiary/Patches/RSW_Sekkulaath_DianogaGiant.xml
+PASS   Gelatinous Slime     RM_ArchiveVat   (also deck-placeable: 2)
+PASS   Greentide            RM_DryAirBlower   (also deck-placeable: 3)
+PASS   Lantern Deeps        RM_LanternstoneFloorConstructed, RM_BuiltLanternstoneWall
+PASS   Leaning Scrub        RM_WindVaporator
+PASS   Long Shade           RM_LureAwning   (also deck-placeable: 1)
+PASS   The Miasma           RM_DecayCell   (also deck-placeable: 1)
+PASS   Pyrelands            RM_FurnaceHideBank
+PASS   The Rust Cathedral   RM_PatternHull
+PASS   The Sleeping Ice     RM_TelluroxHexplate
+PASS   Stillsand            RM_SolarStill, RM_SunLance   (also deck-placeable: 7)
+PASS   Terminal Biomes      RM_SunSphere, RM_ChillCryoponicsVat   (also deck-placeable: 5)
+PASS   The Forge            RM_SpunstoneHull, RM_FloatstoneDoor
+PASS   The Rot              RM_SwallowedDriveCore, RM_LivingMatRoot   (also deck-placeable: 10)
+PASS   The Sump             RM_Glasswalk, RM_GaslightLamp, RM_TarVault   (also deck-placeable: 8)
+         ~ a patch names `RM_GaslightLamp`; read it: src/RimUtinni/UtinniPatches/Patches/RUT_TarGas_SumpgasLabel.xml
+PASS   Warscar              RM_AerosolScreen, RM_GlowerShieldPanel   (also deck-placeable: 4)
+PASS   The Wastes           RM_WasteCaskBay   (also deck-placeable: 1)
+PASS   Webwork              RM_TractionLance
+PASS   Weeping Stones       RM_AncientCondenserPlant
+24/24 biomes PASS or EXEMPT; 0 problem(s)
+exit=0

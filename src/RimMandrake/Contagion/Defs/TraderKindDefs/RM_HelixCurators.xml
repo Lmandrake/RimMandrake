@@ -10,7 +10,7 @@
   guarded on this def existing. The quest half of Q5 is the Helix draftprint contract's device reward
   (QuestNode_RM_HelixDraftprintContract) plus RM_CloudRepulsor joining the standard reward pool.
 
-  Stock: the two devices, the Helix's own trade goods; it BUYS draftprints and Contagion mulch (they study both).
+  Stock: the two devices (the Repulsor in both its ground and gravship-hardpoint forms), the Helix's own trade goods; it BUYS draftprints and Contagion mulch (they study both).
   The minifiable Repulsor arrives crated: ThingSetMaker.Generate minifies stock after the generators run.
   Counts and commonality are this build's INVENTED tuning.
 -->
@@ -31,6 +31,13 @@
       </li>
       <li Class="StockGenerator_SingleDef">
         <thingDef>RM_CloudRepulsor</thingDef>
+        <countRange>0~1</countRange>
+      </li>
+      <!-- BIOME_SHIP_CONTRIBUTIONS_1, 2026-11-11: the gravship hardpoint variant (the Contagion's ship row) was
+           defined but nothing ever handed it out (ship_contributions.py, obtainable check). Same odds as the ground
+           device; it arrives crated like it. -->
+      <li Class="StockGenerator_SingleDef">
+        <thingDef>RM_CloudRepulsorShip</thingDef>
         <countRange>0~1</countRange>
       </li>
       <li Class="StockGenerator_SingleDef">

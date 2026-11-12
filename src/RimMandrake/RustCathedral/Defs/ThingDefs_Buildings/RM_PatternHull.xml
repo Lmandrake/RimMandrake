@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  BIOME_SHIP_CONTRIBUTIONS_1 — the Rust Cathedral's gift to the ship. Delegated design (the agent's call, logged on
+  the item). The plateau's smartsteel was "self-assembling, self-repairing" (RM_DeadSmartsteel.xml); the dead stuff
+  is only very good metal, but live pattern metal (RM_LivePatternMetal, the gated Tier-4 find under the deck plate)
+  "is still doing it". Hull laid from dead smartsteel and seeded with one live ingot per section keeps mending
+  itself: the cathedral's own trick, carried away on the ship.
+  Body copied from Odyssey's GravshipHull (it has no Name=, so it cannot be a ParentName), as RM_SpunstoneHull
+  does: Wall parent, Odyssey tab, airtight, Substructure affordance (deck only), linked CornerFiller atlas.
+  Self-repair is vanilla CompSelfhealHitpoints (CompTickRare adds 250 ticks; ticksPerHeal 500 = 1 HP per 500
+  ticks = 120 HP a day), so the def needs tickerType Rare. Non-stuffed: costList only (the LanternDeeps wall's
+  IsNull pattern). PROVISIONAL numbers.
+  Checked by src/RimMandrake/Utils/ship_contributions.py.
+-->
+<Defs>
+  <ThingDef ParentName="Wall">
+    <defName>RM_PatternHull</defName>
+    <label>pattern hull</label>
+    <description>Gravship hull plate cut from the Rust Cathedral's dead smartsteel, each section seeded with one ingot of the live pattern metal from under the deck plate. The live metal remembers what the rest forgot: dents creep shut, cracks close, and a holed section is whole again in a few days. Like any hull it binds into the substructure, so it can only be built on a gravship.</description>
+    <designationCategory>Odyssey</designationCategory>
+    <uiOrder>1802</uiOrder>
+    <uiIconPath>Things/Building/Linked/RM_PatternHull/RM_PatternHull_MenuIcon</uiIconPath>
+    <graphicData>
+      <texPath>Things/Building/Linked/RM_PatternHull/RM_PatternHull_Atlas</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <uiIconPathsStuff IsNull="true" Inherit="False"/>
+    <stuffCategories IsNull="true" Inherit="False"/>
+    <costStuffCount>0</costStuffCount>
+    <costList>
+      <RM_DeadSmartsteel>8</RM_DeadSmartsteel>
+      <RM_LivePatternMetal>1</RM_LivePatternMetal>
+    </costList>
+    <statBases>
+      <MaxHitPoints>480</MaxHitPoints>
+      <WorkToBuild>500</WorkToBuild>
+      <Flammability>0</Flammability>
+    </statBases>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+    <tickerType>Rare</tickerType>
+    <building>
+      <isAirtight>true</isAirtight>
+    </building>
+    <terrainAffordanceNeeded>Substructure</terrainAffordanceNeeded>
+    <useStuffTerrainAffordance>false</useStuffTerrainAffordance>
+    <comps Inherit="False">
+      <li Class="CompProperties_SelfhealHitpoints">
+        <ticksPerHeal>500</ticksPerHeal>
+      </li>
+    </comps>
+  </ThingDef>
+</Defs>

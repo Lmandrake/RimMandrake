@@ -1,0 +1,192 @@
+deck affordances (read from Odyssey Substructure): Heavy, Light, Medium, Substructure, Walkable
+shipped biome mods (Biomes.compose.json): 24
+
+## The Abyss (Abyss)
+  DECK  RM_FoldLamp                        Temperature  affordance Light on a deck; placeWorkers deck-safe | cost Steel
+  site  RM_GiantFibreStalk                 install      a plant: it roots by fertility and a deck's is 0 | cost -
+  site  RM_SicklyGlowMushroom              install      a plant: it roots by fertility and a deck's is 0 | cost -
+  DECK  RM_SummGreatBone                   install      affordance Light on a deck; placeWorkers deck-safe | cost RM_SummBone | from src/RimMandrake/Abyss/Defs/BroodLair/RM_BroodLair.xml
+  site  RM_Wickwood                        install      a plant: it roots by fertility and a deck's is 0 | cost -
+
+## Blue Desert (BlueDesert)
+  DECK  RM_ColdSinkRack                    Temperature  affordance Medium on a deck; placeWorkers deck-safe | cost Steel
+
+## The Cauldron (Cauldron)
+  DECK  RM_FilterWorks                     Production   affordance Light on a deck; placeWorkers deck-safe | cost Steel,ComponentIndustrial
+  DECK  RM_HullLinerRig                    Odyssey      affordance Light on a deck; placeWorkers deck-safe | cost RM_Vexxith,Steel,ComponentIndustrial
+  site  RM_VentGasTap                      Production   RM_PlaceWorker_OnCauldronVent: needs a Cauldron vent | cost Steel,ComponentIndustrial
+  site  RM_VentGasTapLined                 Production   RM_PlaceWorker_OnCauldronVent: needs a Cauldron vent | cost Steel,RM_Vexxith,ComponentIndustrial
+  DECK  RM_VexxithDoor                     Structure    affordance Light on a deck; placeWorkers deck-safe | cost stuff:RM_VexxithPlate
+  DECK  RM_VexxithFilterWorks              Production   affordance Light on a deck; placeWorkers deck-safe | cost Steel,RM_Vexxith,ComponentIndustrial
+
+## The Contagion (Contagion)
+  site  RM_AlienTree                       install      a plant: it roots by fertility and a deck's is 0 | cost -
+  site  RM_AlienTree_Polluted              install      a plant: it roots by fertility and a deck's is 0 | cost -
+  DECK  RM_CloudRepulsor                   install      affordance Medium on a deck; placeWorkers deck-safe | cost - | from src/RimMandrake/Contagion/Defs/QuestScriptDefs/RM_HelixDraftprintContract.xml, src/RimMandrake/Contagion/Defs/TraderKindDefs/RM_HelixCurators.xml
+  DECK  RM_CloudRepulsorShip               install      affordance Substructure on a deck; placeWorkers deck-safe | cost - | from src/RimMandrake/Contagion/Defs/TraderKindDefs/RM_HelixCurators.xml
+  site  RM_Eyebark                         install      a plant: it roots by fertility and a deck's is 0 | cost -
+  site  RM_HalfAlienTree                   install      a plant: it roots by fertility and a deck's is 0 | cost -
+  site  RM_HalfmadeTree                    install      a plant: it roots by fertility and a deck's is 0 | cost -
+  site  RM_HalfmadeTreeBlighted            install      a plant: it roots by fertility and a deck's is 0 | cost -
+  site  RM_MulchedSoil                     Floors       needs affordance GrowSoil; a deck gives ['Heavy', 'Light', 'Medium', 'Substructure', 'Walkable'] | cost RM_ContagionMulch
+
+## The Cracked Lands (CrackedLands)
+  DECK  RM_FossilCase                      Furniture    affordance Light on a deck; placeWorkers deck-safe | cost RM_FossilSkeleton,Steel
+
+## Fever Wood (FeverWood)
+  site  RM_CorriskTree                     install      a plant: it roots by fertility and a deck's is 0 | cost -
+  site  RM_LumbrelTree                     install      a plant: it roots by fertility and a deck's is 0 | cost -
+  DECK  RM_LureStake                       Production   affordance Light on a deck; placeWorkers deck-safe | cost WoodLog,Steel
+  DECK  RM_SekkulaathTank                  Production   affordance Light on a deck; placeWorkers deck-safe | cost Steel,WoodLog,ComponentIndustrial
+  site  RM_StiltPlatform                   Structure    needs affordance Bridgeable; a deck gives ['Heavy', 'Light', 'Medium', 'Substructure', 'Walkable'] | cost WoodLog
+
+## Gelatinous Slime (GelatinousSlime)
+  DECK  RM_ArchiveVat                      Misc         affordance Light on a deck; placeWorkers deck-safe | cost Steel,ComponentSpacer
+  DECK  RM_SlimeCompressor                 Production   affordance Medium on a deck; placeWorkers deck-safe | cost Steel,WoodLog
+  DECK  RM_SlimePit                        Production   affordance Medium on a deck; placeWorkers deck-safe | cost Steel,WoodLog
+
+## Greentide (Greentide)
+  site  RM_Brunnock                        install      a plant: it roots by fertility and a deck's is 0 | cost -
+  DECK  RM_ChurnmudSealed                  Floors       affordance Light on a deck; placeWorkers deck-safe | cost RM_ToxinSealant
+  site  RM_Cundral                         install      a plant: it roots by fertility and a deck's is 0 | cost -
+  DECK  RM_DryAirBlower                    Production   affordance Light on a deck; placeWorkers deck-safe | cost Steel,ComponentIndustrial
+  site  RM_Ghemmel                         install      a plant: it roots by fertility and a deck's is 0 | cost -
+  site  RM_Gorbeleth                       install      a plant: it roots by fertility and a deck's is 0 | cost -
+  site  RM_Greatbole                       install      a plant: it roots by fertility and a deck's is 0 | cost -
+  DECK  RM_GreentideAntCarapaceWall        Structure    affordance Light on a deck; placeWorkers deck-safe | cost RM_GreentideAntCarapace
+  site  RM_Kaddrath                        install      a plant: it roots by fertility and a deck's is 0 | cost -
+  site  RM_Mirrelbole                      install      a plant: it roots by fertility and a deck's is 0 | cost -
+  site  RM_Mourvel                         install      a plant: it roots by fertility and a deck's is 0 | cost -
+  site  RM_Nemmer                          install      a plant: it roots by fertility and a deck's is 0 | cost -
+  site  RM_Quathis                         install      a plant: it roots by fertility and a deck's is 0 | cost -
+  site  RM_Sarnstilt                       install      a plant: it roots by fertility and a deck's is 0 | cost -
+  site  RM_Thalquith                       install      a plant: it roots by fertility and a deck's is 0 | cost -
+  DECK  RM_ToxinSealedFloor                Floors       affordance Light on a deck; placeWorkers deck-safe | cost RM_ToxinSealant
+  site  RM_Veluthar                        install      a plant: it roots by fertility and a deck's is 0 | cost -
+  site  RM_Vurmeloth                       install      a plant: it roots by fertility and a deck's is 0 | cost -
+  site  RM_Zhorrel                         install      a plant: it roots by fertility and a deck's is 0 | cost -
+
+## Lantern Deeps (LanternDeeps)
+  DECK  RM_BuiltLanternstoneWall           Structure    affordance Heavy on a deck; placeWorkers deck-safe | cost RM_Lanternstone
+  DECK  RM_LanternstoneFloorConstructed    Floors       affordance Heavy on a deck; placeWorkers deck-safe | cost RM_Lanternstone
+  site  RM_ThrakkCap                       install      a plant: it roots by fertility and a deck's is 0 | cost -
+  site  RM_VellokReed                      install      a plant: it roots by fertility and a deck's is 0 | cost -
+
+## Leaning Scrub (LeaningScrub)
+  site  RM_SweetlineTree                   install      a plant: it roots by fertility and a deck's is 0 | cost -
+  DECK  RM_WindVaporator                   Misc         affordance Light on a deck; placeWorkers deck-safe | cost Steel,ComponentIndustrial
+
+## Long Shade (LongShade)
+  DECK  RM_LureAwning                      Temperature  affordance Light on a deck; placeWorkers deck-safe | cost WoodLog,stuff:Leathery
+  DECK  RM_WreckedCart                     install      affordance Light on a deck; placeWorkers deck-safe | cost WoodLog,Steel | from src/RimMandrake/LongShade/Defs/MapGeneration/RM_LongShade_GenSteps.xml, src/RimMandrake/LongShade/Defs/RM_WreckListDefs/RM_CrawlerRoadWreckList.xml
+
+## The Miasma (Miasma)
+  DECK  RM_AttarStill                      Production   affordance Medium on a deck; placeWorkers deck-safe | cost Steel,ComponentIndustrial
+  site  RM_Brelloch                        install      a plant: it roots by fertility and a deck's is 0 | cost -
+  DECK  RM_DecayCell                       Power        affordance Light on a deck; placeWorkers deck-safe | cost RM_DeltaLoam,RM_DeltaSilt,RM_RawSalt,Steel
+  site  RM_MangrovePalm                    install      a plant: it roots by fertility and a deck's is 0 | cost -
+  site  RM_MangroveTree                    install      a plant: it roots by fertility and a deck's is 0 | cost -
+  site  RM_Ollamane                        install      a plant: it roots by fertility and a deck's is 0 | cost -
+  site  RM_Quennath                        install      a plant: it roots by fertility and a deck's is 0 | cost -
+  site  RM_Thessamor                       install      a plant: it roots by fertility and a deck's is 0 | cost -
+
+## Pyrelands (Pyrelands)
+  DECK  RM_FurnaceHideBank                 Temperature  affordance Light on a deck; placeWorkers deck-safe | cost RM_FurnaceHide,Steel
+  site  RM_MagmaThermalGenerator           Power        PlaceWorker_OnSteamGeyser: needs a steam geyser (never on a deck) | cost Steel,ComponentIndustrial
+
+## The Rust Cathedral (RustCathedral)
+  DECK  RM_PatternHull                     Odyssey      affordance Substructure on a deck; placeWorkers deck-safe | cost RM_DeadSmartsteel,RM_LivePatternMetal
+
+## The Sleeping Ice (SleepingIce)
+  DECK  RM_TelluroxHexplate                Floors       affordance Heavy on a deck; placeWorkers deck-safe | cost RM_TelluroxShell
+
+## Stillsand (Stillsand)
+  site  RM_BrineDippingSpot                Production   RM_PlaceWorker_BesideTerrain: needs a named terrain beside it | cost -
+  DECK  RM_Geophone                        Production   affordance Light on a deck; placeWorkers deck-safe | cost RM_SunGlass,Steel
+  site  RM_KneelOllim                      install      a plant: it roots by fertility and a deck's is 0 | cost -
+  DECK  RM_LensBench                       Production   affordance Medium on a deck; placeWorkers deck-safe | cost Steel,WoodLog
+  site  RM_Ollim                           install      a plant: it roots by fertility and a deck's is 0 | cost -
+  DECK  RM_SolarOven                       Production   affordance Medium on a deck; placeWorkers deck-safe | cost RM_SunGlass,Steel
+  DECK  RM_SolarOvenCrest                  Production   affordance Medium on a deck; placeWorkers deck-safe | cost RM_SunGlass,RM_CrestPlate,Steel
+  DECK  RM_SolarStill                      Production   affordance Medium on a deck; placeWorkers deck-safe | cost RM_SunGlass,RM_PrecisionLens,Steel
+  DECK  RM_SunFurnace                      Production   affordance Medium on a deck; placeWorkers deck-safe | cost Steel,RM_Biosilica
+  DECK  RM_SunLance                        Security     affordance Medium on a deck; placeWorkers deck-safe | cost RM_SunGlass,RM_PrecisionLens,Steel
+  DECK  RM_Thumper                         Production   affordance Light on a deck; placeWorkers deck-safe | cost Steel,RM_SunGlass
+  DECK  RM_WringingStill                   Production   affordance Medium on a deck; placeWorkers deck-safe | cost RM_SunGlass,RM_PrecisionLens,Steel
+
+## Terminal Biomes (TerminalBiomes)
+  DECK  RM_ChillCryoponicsVat              Production   affordance Medium on a deck; placeWorkers deck-safe | cost Steel,ComponentIndustrial
+  site  RM_ChillFloorBed                   Production   RM_PlaceWorker_ChillFloorOnly: Chill seabed only | cost Steel
+  DECK  RM_ChillStonewaterExtractor        Production   affordance Light on a deck; placeWorkers deck-safe | cost Steel,ComponentIndustrial
+  DECK  RM_ConstellationCageCube           Production   affordance Light on a deck; placeWorkers deck-safe | cost Steel,RM_TetherChain
+  DECK  RM_ConstellationCageSphere         Production   affordance Light on a deck; placeWorkers deck-safe | cost Steel,RM_TetherChain
+  DECK  RM_HoolimbreLampClipped            Production   affordance Light on a deck; placeWorkers deck-safe | cost RM_TetherChain,RM_LampBladder
+  DECK  RM_NoothelmLampClipped             Production   affordance Light on a deck; placeWorkers deck-safe | cost RM_TetherChain,RM_NoothelmBulb
+  site  RM_SteamCatch                      Production   RM_PlaceWorker_OnRequiredVentComp: needs a resource vent under it | cost Steel,ComponentIndustrial
+  DECK  RM_SunSphere                       Production   affordance Light on a deck; placeWorkers deck-safe | cost Steel,Plasteel,ComponentIndustrial
+
+## The Forge (TheForge)
+  site  RM_FirevineTree                    install      a plant: it roots by fertility and a deck's is 0 | cost -
+  DECK  RM_FloatstoneDoor                  Structure    affordance Light on a deck; placeWorkers deck-safe | cost stuff:RM_SpunstoneWeave
+  site  RM_HeatsinkFungus                  install      a plant: it roots by fertility and a deck's is 0 | cost -
+  DECK  RM_SpunstoneHull                   Odyssey      affordance Substructure on a deck; placeWorkers deck-safe | cost stuff:RM_SpunstoneWeave
+
+## The Rot (TheRot)
+  site  RM_Arpeau                          install      a plant: it roots by fertility and a deck's is 0 | cost -
+  site  RM_BlastpodShroom                  install      a plant: it roots by fertility and a deck's is 0 | cost -
+  DECK  RM_BrewingVessel                   Production   affordance Medium on a deck; placeWorkers deck-safe | cost RM_MushroomLeather,WoodLog
+  site  RM_FlakespireFungus                install      a plant: it roots by fertility and a deck's is 0 | cost -
+  DECK  RM_FungalGlowGooTorch              Furniture    affordance Light on a deck; placeWorkers deck-safe | cost RawFungus,RM_GlowGoo
+  DECK  RM_FungiponicsBasin                Production   affordance Medium on a deck; placeWorkers deck-safe | cost Steel,ComponentIndustrial
+  DECK  RM_GlowGooTorch                    Furniture    affordance Light on a deck; placeWorkers deck-safe | cost WoodLog,RM_GlowGoo
+  site  RM_GreenArpeau                     install      a plant: it roots by fertility and a deck's is 0 | cost -
+  DECK  RM_GrownFurnace                    Temperature  affordance Light on a deck; placeWorkers deck-safe | cost RM_LivingFurnaceCap
+  DECK  RM_GutMotherVat                    Production   affordance Light on a deck; placeWorkers deck-safe | cost RawFungus,stuff:RM_GutMotherCulture
+  site  RM_HeavyMushroomBridge             Structure    needs affordance Bridgeable; a deck gives ['Heavy', 'Light', 'Medium', 'Substructure', 'Walkable'] | cost RM_MushroomLog,Steel
+  DECK  RM_LivingMatRoot                   install      affordance Light on a deck; placeWorkers deck-safe | cost - | from src/RimMandrake/TheRot/Defs/Misc/RM_NavigatorLog.xml, src/RimMandrake/TheRot/Source/RM_LivingMatRoot.cs, src/RimMandrake/TheRot/Source/RM_NavigatorLog.cs
+  DECK  RM_MoonlessCarpet                  Floors       affordance Heavy on a deck; placeWorkers deck-safe | cost RM_MoonlessSilk
+  site  RM_MushroomBridge                  Structure    needs affordance Bridgeable; a deck gives ['Heavy', 'Light', 'Medium', 'Substructure', 'Walkable'] | cost RM_MushroomLog
+  DECK  RM_MushroomFloor                   Floors       affordance Heavy on a deck; placeWorkers deck-safe | cost RM_MushroomLog
+  DECK  RM_MycelialMatting                 Floors       affordance Heavy on a deck; placeWorkers deck-safe | cost RM_MushroomLog
+  DECK  RM_MycelialSoil                    Floors       affordance Heavy on a deck; placeWorkers deck-safe | cost RM_MushroomLog
+  site  RM_MycoticCollector                Production   RM_PlaceWorker_RequiresTileMutator: needs a tile mutator on THIS tile | cost Steel,ComponentIndustrial
+  site  RM_Nogtyl                          install      a plant: it roots by fertility and a deck's is 0 | cost -
+  site  RM_NogtylMarsh                     install      a plant: it roots by fertility and a deck's is 0 | cost -
+  site  RM_Shinecap                        install      a plant: it roots by fertility and a deck's is 0 | cost -
+  site  RM_Skulltop                        install      a plant: it roots by fertility and a deck's is 0 | cost -
+  DECK  RM_SwallowedDriveCore              install      affordance Substructure on a deck; placeWorkers deck-safe | cost - | from src/RimMandrake/TheRot/Patches/RM_SwallowedCore_Gravship.xml, src/RimMandrake/TheRot/Source/RM_Hwelgrue.cs, src/RimMandrake/TheRot/Source/RM_SwallowedCore.cs
+
+## The Sump (TheSump)
+  DECK  RM_CapstanTurret                   Security     affordance Medium on a deck; placeWorkers deck-safe | cost Steel,ComponentIndustrial,Cloth
+  DECK  RM_CapstanTurret_PitRigged         Security     affordance Medium on a deck; placeWorkers deck-safe | cost RM_Bitumen,RM_Seepwax,Steel,ComponentIndustrial
+  DECK  RM_DigShaft                        Production   affordance Light on a deck; placeWorkers deck-safe | cost Steel,ComponentIndustrial
+  DECK  RM_Duckboards                      Floors       affordance Light on a deck; placeWorkers deck-safe | cost WoodLog
+  DECK  RM_GaslightLamp                    Furniture    affordance Light on a deck; placeWorkers deck-safe | cost Steel,RM_Bitumen
+  DECK  RM_Glasswalk                       Floors       affordance Light on a deck; placeWorkers deck-safe | cost RM_Bitumen
+  DECK  RM_MoatFusePost                    Production   affordance Light on a deck; placeWorkers deck-safe | cost Steel,ComponentIndustrial
+  DECK  RM_SalvageWinch                    Misc         affordance Medium on a deck; placeWorkers deck-safe | cost Steel,ComponentIndustrial
+  DECK  RM_TarMoat                         Floors       affordance Light on a deck; placeWorkers deck-safe | cost Chemfuel
+  DECK  RM_TarSealingVat                   Production   affordance Medium on a deck; placeWorkers deck-safe | cost WoodLog,Steel,RM_Bitumen
+  DECK  RM_TarVault                        Furniture    affordance Light on a deck; placeWorkers deck-safe | cost RM_Bitumen,stuff:Metallic,stuff:Woody,stuff:Stony
+
+## Warscar (Scarlands)
+  DECK  RM_AerosolScreen                   Misc         affordance Light on a deck; placeWorkers deck-safe | cost Plasteel,ComponentSpacer,RM_ProjectorCore
+  DECK  RM_GlowerShieldPanel               Misc         affordance Light on a deck; placeWorkers deck-safe | cost RM_GlowerCrust,Steel
+  DECK  RM_HospiceCradle                   Misc         affordance Light on a deck; placeWorkers deck-safe | cost Steel,ComponentIndustrial
+  DECK  RM_KneelingChassis_Intact          install      affordance Light on a deck; placeWorkers deck-safe | cost - | from src/RimMandrake/Scarlands/Source/RM_Hospice.cs, src/RimMandrake/Scarlands/Source/RM_HospiceProof.cs
+  DECK  RM_OldLineTurret                   Security     affordance Light on a deck; placeWorkers deck-safe | cost Steel,ComponentSpacer,RM_Etchant
+  site  RM_ReactionTap                     Misc         PlaceWorker_NearReactionPool: needs a reaction-pool rim | cost Steel,ComponentIndustrial
+  DECK  RM_WarscarProjector_Salvaged       install      affordance Light on a deck; placeWorkers deck-safe | cost - | from src/RimMandrake/Scarlands/Defs/ChoirDefs/RM_GeigerChoirDef.xml, src/RimMandrake/Scarlands/Source/RM_WarscarRings.cs
+
+## The Wastes (Wastes)
+  DECK  RM_WasteCaskBay                    Misc         affordance Medium on a deck; placeWorkers deck-safe | cost Steel,Plasteel,ComponentIndustrial
+  DECK  RM_WasteTippingPad                 Misc         affordance Light on a deck; placeWorkers deck-safe | cost Steel
+
+## Webwork (Webwork)
+  site  RM_JungleTree                      install      a plant: it roots by fertility and a deck's is 0 | cost -
+  DECK  RM_TractionLance                   Security     affordance Light on a deck; placeWorkers deck-safe | cost Steel,ComponentIndustrial,stuff:Fabric
+
+## Weeping Stones (WeepingStones)
+  DECK  RM_AncientCondenserPlant           install      affordance Light on a deck; placeWorkers deck-safe | cost - | from src/RimMandrake/WeepingStones/Source/RM_WalkingCondenser.cs
+  site  RM_Rockfinger                      install      a plant: it roots by fertility and a deck's is 0 | cost -
+  site  RM_Talvessar                       install      a plant: it roots by fertility and a deck's is 0 | cost -

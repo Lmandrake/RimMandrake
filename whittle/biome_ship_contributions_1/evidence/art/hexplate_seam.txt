@@ -1,0 +1,1 @@
+seam x wrap 0.3 interior 2.3 | y wrap 0.0 interior 3.3

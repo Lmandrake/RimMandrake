@@ -7,7 +7,7 @@
   (CompCloudRepulsor). Not player-constructible — acquired by trade or quest
   and installed (minifiable). Owner Q5 (2026-10-15, by card: "Quests plus a
   visiting Helix trader"): the Helix curators caravan stocks it
-  (Defs/TraderKindDefs/RM_HelixCurators.xml), the Helix draftprint contract can
+  (Defs/TraderKindDefs/RM_HelixCurators.xml; it stocks RM_CloudRepulsorShip too), the Helix draftprint contract can
   pay with it, and RM_CloudRepulsor sits in the standard quest reward pool
   (RewardStandardLowFreq). Still no tradeTags, so no vanilla trader stocks it.
 

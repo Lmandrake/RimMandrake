@@ -1,0 +1,1025 @@
+{
+ "deck_affordances": [
+  "Heavy",
+  "Light",
+  "Medium",
+  "Substructure",
+  "Walkable"
+ ],
+ "biomes": [
+  {
+   "biome": "Abyss",
+   "label": "The Abyss",
+   "folder": "Abyss",
+   "row": {
+    "biome": "The Abyss",
+    "contribution": "**the summ great bone**: set aboard, a summ egg hatched on the ship imprints on the crew; plus the fold lamp's warm air lane",
+    "defs": [
+     "RM_SummGreatBone",
+     "RM_FoldLamp"
+    ],
+    "source": "Abyss mod; *delegated*"
+   },
+   "defs": [
+    {
+     "def": "RM_SummGreatBone",
+     "type": "ThingDef",
+     "mod": "RimMandrake/Abyss",
+     "category": "",
+     "label": "great summ bone",
+     "costs": [
+      "RM_SummBone"
+     ],
+     "how": "installed (minified; never constructed)",
+     "buildable": true,
+     "deck": true,
+     "why": "affordance Light on a deck; placeWorkers deck-safe",
+     "sources": [
+      "src/RimMandrake/Abyss/Defs/BroodLair/RM_BroodLair.xml"
+     ]
+    },
+    {
+     "def": "RM_FoldLamp",
+     "type": "ThingDef",
+     "mod": "RimMandrake/Abyss",
+     "category": "Temperature",
+     "label": "fold-lamp",
+     "costs": [
+      "Steel"
+     ],
+     "how": "built (Temperature tab)",
+     "buildable": true,
+     "deck": true,
+     "why": "affordance Light on a deck; placeWorkers deck-safe"
+    }
+   ],
+   "verdict": "PASS",
+   "problems": [],
+   "also": []
+  },
+  {
+   "biome": "BlueDesert",
+   "label": "Blue Desert",
+   "folder": "BlueDesert",
+   "row": {
+    "biome": "Blue Desert",
+    "contribution": "**the cold hold**: a blue-ice cold-sink rack keeps a hold cold through a blackout with no power",
+    "defs": [
+     "RM_ColdSinkRack"
+    ],
+    "source": "owner by card 2026-09-24 (`the_blue_desert.md` \u00a77)"
+   },
+   "defs": [
+    {
+     "def": "RM_ColdSinkRack",
+     "type": "ThingDef",
+     "mod": "RimMandrake/BlueDesert",
+     "category": "Temperature",
+     "label": "blue-ice cold rack",
+     "costs": [
+      "Steel"
+     ],
+     "how": "built (Temperature tab)",
+     "buildable": true,
+     "deck": true,
+     "why": "affordance Medium on a deck; placeWorkers deck-safe"
+    }
+   ],
+   "verdict": "PASS",
+   "problems": [],
+   "also": []
+  },
+  {
+   "biome": "Cauldron",
+   "label": "The Cauldron",
+   "folder": "Cauldron",
+   "row": {
+    "biome": "The Cauldron",
+    "contribution": "**the hull liner rig**: one rig glazes the whole ship's skin against acid, from ground vexxith plate",
+    "defs": [
+     "RM_HullLinerRig"
+    ],
+    "source": "Cauldron mod; *delegated*"
+   },
+   "defs": [
+    {
+     "def": "RM_HullLinerRig",
+     "type": "ThingDef",
+     "mod": "RimMandrake/Cauldron",
+     "category": "Odyssey",
+     "label": "hull liner rig",
+     "costs": [
+      "RM_Vexxith",
+      "Steel",
+      "ComponentIndustrial"
+     ],
+     "how": "built (Odyssey tab)",
+     "buildable": true,
+     "deck": true,
+     "why": "affordance Light on a deck; placeWorkers deck-safe"
+    }
+   ],
+   "verdict": "PASS",
+   "problems": [],
+   "also": [
+    "RM_FilterWorks",
+    "RM_VexxithDoor",
+    "RM_VexxithFilterWorks"
+   ]
+  },
+  {
+   "biome": "Contagion",
+   "label": "The Contagion",
+   "folder": "Contagion",
+   "row": {
+    "biome": "The Contagion",
+    "contribution": "**the ship-mounted cloud repulsor**: the Helix field device as a gravship hardpoint, bought or won, installed on substructure",
+    "defs": [
+     "RM_CloudRepulsorShip"
+    ],
+    "source": "`the_contagion.md` (devices ruled); Helix trader/quest owner by card 2026-10-15"
+   },
+   "defs": [
+    {
+     "def": "RM_CloudRepulsorShip",
+     "type": "ThingDef",
+     "mod": "RimMandrake/Contagion",
+     "category": "",
+     "label": "cloud repulsor hardpoint",
+     "costs": [],
+     "how": "installed (minified; never constructed)",
+     "buildable": true,
+     "deck": true,
+     "why": "affordance Substructure on a deck; placeWorkers deck-safe",
+     "sources": [
+      "src/RimMandrake/Contagion/Defs/TraderKindDefs/RM_HelixCurators.xml"
+     ]
+    }
+   ],
+   "verdict": "PASS",
+   "problems": [],
+   "also": [
+    "RM_CloudRepulsor"
+   ]
+  },
+  {
+   "biome": "CrackedLands",
+   "label": "The Cracked Lands",
+   "folder": "CrackedLands",
+   "row": {
+    "biome": "The Cracked Lands",
+    "contribution": "**the fossil case**: a whole fossil skeleton from the skeleton seams, cased for the bulkhead (beauty 14)",
+    "defs": [
+     "RM_FossilCase"
+    ],
+    "source": "*new*, *delegated*, from the cast doc's bulkhead fossil"
+   },
+   "defs": [
+    {
+     "def": "RM_FossilCase",
+     "type": "ThingDef",
+     "mod": "RimMandrake/CrackedLands",
+     "category": "Furniture",
+     "label": "fossil case",
+     "costs": [
+      "RM_FossilSkeleton",
+      "Steel"
+     ],
+     "how": "built (Furniture tab)",
+     "buildable": true,
+     "deck": true,
+     "why": "affordance Light on a deck; placeWorkers deck-safe"
+    }
+   ],
+   "verdict": "PASS",
+   "problems": [],
+   "also": []
+  },
+  {
+   "biome": "FeverWood",
+   "label": "Fever Wood",
+   "folder": "FeverWood",
+   "row": {
+    "biome": "Fever Wood",
+    "contribution": "**the sekkulaath tank**: the swamp's captive producer carried as ship stock",
+    "defs": [
+     "RM_SekkulaathTank"
+    ],
+    "source": "FeverWood mod; *delegated*"
+   },
+   "defs": [
+    {
+     "def": "RM_SekkulaathTank",
+     "type": "ThingDef",
+     "mod": "RimMandrake/FeverWood",
+     "category": "Production",
+     "label": "sekkulaath prison tank",
+     "costs": [
+      "Steel",
+      "WoodLog",
+      "ComponentIndustrial"
+     ],
+     "how": "built (Production tab)",
+     "buildable": true,
+     "deck": true,
+     "why": "affordance Light on a deck; placeWorkers deck-safe"
+    }
+   ],
+   "verdict": "PASS",
+   "problems": [],
+   "warnings": [
+    "a patch names `RM_SekkulaathTank`; read it: src/RimUtinni/UtinniPatches/Patches/RUT_BroodRansom_Campaign.xml",
+    "a patch names `RM_SekkulaathTank`; read it: src/RimStarWars/SWBestiary/Patches/RSW_SekkulaathTank_DianogaSwap.xml",
+    "a patch names `RM_SekkulaathTank`; read it: src/RimStarWars/SWBestiary/Patches/RSW_Sekkulaath_DianogaGiant.xml"
+   ],
+   "also": [
+    "RM_LureStake"
+   ]
+  },
+  {
+   "biome": "GelatinousSlime",
+   "label": "Gelatinous Slime",
+   "folder": "GelatinousSlime",
+   "row": {
+    "biome": "Gelatinous Slime",
+    "contribution": "**the archive vat**: grows a dead colonist back from the slime's last reading of them, anywhere the ship goes",
+    "defs": [
+     "RM_ArchiveVat"
+    ],
+    "source": "`GELATINOUSSLIME_ARCHIVE_RESURRECTION_1`; *delegated*"
+   },
+   "defs": [
+    {
+     "def": "RM_ArchiveVat",
+     "type": "ThingDef",
+     "mod": "RimMandrake/GelatinousSlime",
+     "category": "Misc",
+     "label": "archive vat",
+     "costs": [
+      "Steel",
+      "ComponentSpacer"
+     ],
+     "how": "built (Misc tab)",
+     "buildable": true,
+     "deck": true,
+     "why": "affordance Light on a deck; placeWorkers deck-safe"
+    }
+   ],
+   "verdict": "PASS",
+   "problems": [],
+   "also": [
+    "RM_SlimeCompressor",
+    "RM_SlimePit"
+   ]
+  },
+  {
+   "biome": "Greentide",
+   "label": "Greentide",
+   "folder": "Greentide",
+   "row": {
+    "biome": "Greentide",
+    "contribution": "**the dry-air blower**: cools a cabin without dumping heat into any room, and holds back the wet at its threshold",
+    "defs": [
+     "RM_DryAirBlower"
+    ],
+    "source": "Greentide mod; *delegated*"
+   },
+   "defs": [
+    {
+     "def": "RM_DryAirBlower",
+     "type": "ThingDef",
+     "mod": "RimMandrake/Greentide",
+     "category": "Production",
+     "label": "dry-air blower",
+     "costs": [
+      "Steel",
+      "ComponentIndustrial"
+     ],
+     "how": "built (Production tab)",
+     "buildable": true,
+     "deck": true,
+     "why": "affordance Light on a deck; placeWorkers deck-safe"
+    }
+   ],
+   "verdict": "PASS",
+   "problems": [],
+   "also": [
+    "RM_ChurnmudSealed",
+    "RM_GreentideAntCarapaceWall",
+    "RM_ToxinSealedFloor"
+   ]
+  },
+  {
+   "biome": "LanternDeeps",
+   "label": "Lantern Deeps",
+   "folder": "LanternDeeps",
+   "row": {
+    "biome": "Lantern Deeps",
+    "contribution": "**lanternstone aboard**: floor and wall that glow forever and need no lamp",
+    "defs": [
+     "RM_LanternstoneFloorConstructed",
+     "RM_BuiltLanternstoneWall"
+    ],
+    "source": "LanternDeeps mod; *delegated*"
+   },
+   "defs": [
+    {
+     "def": "RM_LanternstoneFloorConstructed",
+     "type": "TerrainDef",
+     "mod": "RimMandrake/LanternDeeps",
+     "category": "Floors",
+     "label": "lanternstone floor",
+     "costs": [
+      "RM_Lanternstone"
+     ],
+     "how": "built (Floors tab)",
+     "buildable": true,
+     "deck": true,
+     "why": "affordance Heavy on a deck; placeWorkers deck-safe"
+    },
+    {
+     "def": "RM_BuiltLanternstoneWall",
+     "type": "ThingDef",
+     "mod": "RimMandrake/LanternDeeps",
+     "category": "Structure",
+     "label": "constructed lanternstone",
+     "costs": [
+      "RM_Lanternstone"
+     ],
+     "how": "built (Structure tab)",
+     "buildable": true,
+     "deck": true,
+     "why": "affordance Heavy on a deck; placeWorkers deck-safe"
+    }
+   ],
+   "verdict": "PASS",
+   "problems": [],
+   "also": []
+  },
+  {
+   "biome": "LeaningScrub",
+   "label": "Leaning Scrub",
+   "folder": "LeaningScrub",
+   "row": {
+    "biome": "Leaning Scrub",
+    "contribution": "**the wind vaporator**: combs a thin, reliable margin of water out of the passing wind",
+    "defs": [
+     "RM_WindVaporator"
+    ],
+    "source": "LeaningScrub mod; *delegated*"
+   },
+   "defs": [
+    {
+     "def": "RM_WindVaporator",
+     "type": "ThingDef",
+     "mod": "RimMandrake/LeaningScrub",
+     "category": "Misc",
+     "label": "wind vaporator",
+     "costs": [
+      "Steel",
+      "ComponentIndustrial"
+     ],
+     "how": "built (Misc tab)",
+     "buildable": true,
+     "deck": true,
+     "why": "affordance Light on a deck; placeWorkers deck-safe"
+    }
+   ],
+   "verdict": "PASS",
+   "problems": [],
+   "also": []
+  },
+  {
+   "biome": "LongShade",
+   "label": "Long Shade",
+   "folder": "LongShade",
+   "row": {
+    "biome": "Long Shade",
+    "contribution": "**the shade awning**: real shade on an open deck under the Direct Sun",
+    "defs": [
+     "RM_LureAwning"
+    ],
+    "source": "`long_shade_bedazzle_2026-09-27.md` \u00a76 (shade awning); *delegated*"
+   },
+   "defs": [
+    {
+     "def": "RM_LureAwning",
+     "type": "ThingDef",
+     "mod": "RimMandrake/LongShade",
+     "category": "Temperature",
+     "label": "lure awning",
+     "costs": [
+      "WoodLog",
+      "stuff:Leathery"
+     ],
+     "how": "built (Temperature tab)",
+     "buildable": true,
+     "deck": true,
+     "why": "affordance Light on a deck; placeWorkers deck-safe"
+    }
+   ],
+   "verdict": "PASS",
+   "problems": [],
+   "also": [
+    "RM_WreckedCart"
+   ]
+  },
+  {
+   "biome": "Miasma",
+   "label": "The Miasma",
+   "folder": "Miasma",
+   "row": {
+    "biome": "The Miasma",
+    "contribution": "**the decay cell**: power from rot, in a bed of delta loam, silt and salt",
+    "defs": [
+     "RM_DecayCell"
+    ],
+    "source": "Miasma mod; *delegated*"
+   },
+   "defs": [
+    {
+     "def": "RM_DecayCell",
+     "type": "ThingDef",
+     "mod": "RimMandrake/Miasma",
+     "category": "Power",
+     "label": "decay cell",
+     "costs": [
+      "RM_DeltaLoam",
+      "RM_DeltaSilt",
+      "RM_RawSalt",
+      "Steel"
+     ],
+     "how": "built (Power tab)",
+     "buildable": true,
+     "deck": true,
+     "why": "affordance Light on a deck; placeWorkers deck-safe"
+    }
+   ],
+   "verdict": "PASS",
+   "problems": [],
+   "also": [
+    "RM_AttarStill"
+   ]
+  },
+  {
+   "biome": "Pyrelands",
+   "label": "Pyrelands",
+   "folder": "Pyrelands",
+   "row": {
+    "biome": "Pyrelands",
+    "contribution": "**the furnace-hide heat bank**: furnace-beast hide gives back banked sun, a heater with no fuel and no power",
+    "defs": [
+     "RM_FurnaceHideBank"
+    ],
+    "source": "*new*, *delegated*"
+   },
+   "defs": [
+    {
+     "def": "RM_FurnaceHideBank",
+     "type": "ThingDef",
+     "mod": "RimMandrake/Pyrelands",
+     "category": "Temperature",
+     "label": "furnace-hide heat bank",
+     "costs": [
+      "RM_FurnaceHide",
+      "Steel"
+     ],
+     "how": "built (Temperature tab)",
+     "buildable": true,
+     "deck": true,
+     "why": "affordance Light on a deck; placeWorkers deck-safe"
+    }
+   ],
+   "verdict": "PASS",
+   "problems": [],
+   "also": []
+  },
+  {
+   "biome": "RustCathedral",
+   "label": "The Rust Cathedral",
+   "folder": "RustCathedral",
+   "row": {
+    "biome": "The Rust Cathedral",
+    "contribution": "**pattern hull**: hull seeded with live pattern metal that mends itself (120 HP a day)",
+    "defs": [
+     "RM_PatternHull"
+    ],
+    "source": "*new*, *delegated*"
+   },
+   "defs": [
+    {
+     "def": "RM_PatternHull",
+     "type": "ThingDef",
+     "mod": "RimMandrake/RustCathedral",
+     "category": "Odyssey",
+     "label": "pattern hull",
+     "costs": [
+      "RM_DeadSmartsteel",
+      "RM_LivePatternMetal"
+     ],
+     "how": "built (Odyssey tab)",
+     "buildable": true,
+     "deck": true,
+     "why": "affordance Substructure on a deck; placeWorkers deck-safe"
+    }
+   ],
+   "verdict": "PASS",
+   "problems": [],
+   "also": []
+  },
+  {
+   "biome": "SleepingIce",
+   "label": "The Sleeping Ice",
+   "folder": "SleepingIce",
+   "row": {
+    "biome": "The Sleeping Ice",
+    "contribution": "**tellurox hexplate**: a deck floor of the tellurox's permanent shell plates",
+    "defs": [
+     "RM_TelluroxHexplate"
+    ],
+    "source": "*new*, *delegated*"
+   },
+   "defs": [
+    {
+     "def": "RM_TelluroxHexplate",
+     "type": "TerrainDef",
+     "mod": "RimMandrake/SleepingIce",
+     "category": "Floors",
+     "label": "tellurox hexplate",
+     "costs": [
+      "RM_TelluroxShell"
+     ],
+     "how": "built (Floors tab)",
+     "buildable": true,
+     "deck": true,
+     "why": "affordance Heavy on a deck; placeWorkers deck-safe"
+    }
+   ],
+   "verdict": "PASS",
+   "problems": [],
+   "also": []
+  },
+  {
+   "biome": "Stillsand",
+   "label": "Stillsand",
+   "folder": "Stillsand",
+   "row": {
+    "biome": "Stillsand",
+    "contribution": "**the precision-lens kit**: the lens-glass solar still and sun lance, fuel-free on an open deck (the earlier \"ship lens array\" row named a part that was never built; this is what ships)",
+    "defs": [
+     "RM_SolarStill",
+     "RM_SunLance"
+    ],
+    "source": "`STILLSAND_GLASS_LENS_CHAIN_1` \u00a711 (owner-typed lens chain)"
+   },
+   "defs": [
+    {
+     "def": "RM_SolarStill",
+     "type": "ThingDef",
+     "mod": "RimMandrake/Stillsand",
+     "category": "Production",
+     "label": "solar still",
+     "costs": [
+      "RM_SunGlass",
+      "RM_PrecisionLens",
+      "Steel"
+     ],
+     "how": "built (Production tab)",
+     "buildable": true,
+     "deck": true,
+     "why": "affordance Medium on a deck; placeWorkers deck-safe"
+    },
+    {
+     "def": "RM_SunLance",
+     "type": "ThingDef",
+     "mod": "RimMandrake/Stillsand",
+     "category": "Security",
+     "label": "sun lance",
+     "costs": [
+      "RM_SunGlass",
+      "RM_PrecisionLens",
+      "Steel"
+     ],
+     "how": "built (Security tab)",
+     "buildable": true,
+     "deck": true,
+     "why": "affordance Medium on a deck; placeWorkers deck-safe"
+    }
+   ],
+   "verdict": "PASS",
+   "problems": [],
+   "also": [
+    "RM_Geophone",
+    "RM_LensBench",
+    "RM_SolarOven",
+    "RM_SolarOvenCrest",
+    "RM_SunFurnace",
+    "RM_Thumper",
+    "RM_WringingStill"
+   ]
+  },
+  {
+   "biome": "TerminalBiomes",
+   "label": "Terminal Biomes",
+   "folder": "TerminalBiomes",
+   "row": {
+    "biome": "Terminal Biomes",
+    "contribution": "**the sun-sphere**: a cultured ollumin that grows into its own small sun, lighting and growing crops with no power or lamp; and the **cryoponics vat**, the Chill's deep-bed plants raised anywhere",
+    "defs": [
+     "RM_SunSphere",
+     "RM_ChillCryoponicsVat"
+    ],
+    "source": "TerminalBiomes mod; *delegated*"
+   },
+   "defs": [
+    {
+     "def": "RM_SunSphere",
+     "type": "ThingDef",
+     "mod": "RimMandrake/TerminalBiomes",
+     "category": "Production",
+     "label": "sun-sphere",
+     "costs": [
+      "Steel",
+      "Plasteel",
+      "ComponentIndustrial"
+     ],
+     "how": "built (Production tab)",
+     "buildable": true,
+     "deck": true,
+     "why": "affordance Light on a deck; placeWorkers deck-safe"
+    },
+    {
+     "def": "RM_ChillCryoponicsVat",
+     "type": "ThingDef",
+     "mod": "RimMandrake/TerminalBiomes",
+     "category": "Production",
+     "label": "cryoponics vat",
+     "costs": [
+      "Steel",
+      "ComponentIndustrial"
+     ],
+     "how": "built (Production tab)",
+     "buildable": true,
+     "deck": true,
+     "why": "affordance Medium on a deck; placeWorkers deck-safe"
+    }
+   ],
+   "verdict": "PASS",
+   "problems": [],
+   "also": [
+    "RM_ChillStonewaterExtractor",
+    "RM_ConstellationCageCube",
+    "RM_ConstellationCageSphere",
+    "RM_HoolimbreLampClipped",
+    "RM_NoothelmLampClipped"
+   ]
+  },
+  {
+   "biome": "TheForge",
+   "label": "The Forge",
+   "folder": "TheForge",
+   "row": {
+    "biome": "The Forge",
+    "contribution": "**spunstone hull and floatstone door**: airtight floatstone ship parts",
+    "defs": [
+     "RM_SpunstoneHull",
+     "RM_FloatstoneDoor"
+    ],
+    "source": "owner by card 2026-10-03 (`FORGE_SPUNSTONE_SOURCES_1`)"
+   },
+   "defs": [
+    {
+     "def": "RM_SpunstoneHull",
+     "type": "ThingDef",
+     "mod": "RimMandrake/TheForge",
+     "category": "Odyssey",
+     "label": "spunstone hull",
+     "costs": [
+      "stuff:RM_SpunstoneWeave"
+     ],
+     "how": "built (Odyssey tab)",
+     "buildable": true,
+     "deck": true,
+     "why": "affordance Substructure on a deck; placeWorkers deck-safe"
+    },
+    {
+     "def": "RM_FloatstoneDoor",
+     "type": "ThingDef",
+     "mod": "RimMandrake/TheForge",
+     "category": "Structure",
+     "label": "floatstone door",
+     "costs": [
+      "stuff:RM_SpunstoneWeave"
+     ],
+     "how": "built (Structure tab)",
+     "buildable": true,
+     "deck": true,
+     "why": "affordance Light on a deck; placeWorkers deck-safe"
+    }
+   ],
+   "verdict": "PASS",
+   "problems": [],
+   "also": []
+  },
+  {
+   "biome": "TheRot",
+   "label": "The Rot",
+   "folder": "TheRot",
+   "row": {
+    "biome": "The Rot",
+    "contribution": "**the swallowed drive core** (multiplies the ship's range) and **the living mat root** (a warm creeping deck mat)",
+    "defs": [
+     "RM_SwallowedDriveCore",
+     "RM_LivingMatRoot"
+    ],
+    "source": "TheRot mod; *delegated*"
+   },
+   "defs": [
+    {
+     "def": "RM_SwallowedDriveCore",
+     "type": "ThingDef",
+     "mod": "RimMandrake/TheRot",
+     "category": "",
+     "label": "swallowed drive core",
+     "costs": [],
+     "how": "installed (minified; never constructed)",
+     "buildable": true,
+     "deck": true,
+     "why": "affordance Substructure on a deck; placeWorkers deck-safe",
+     "sources": [
+      "src/RimMandrake/TheRot/Patches/RM_SwallowedCore_Gravship.xml",
+      "src/RimMandrake/TheRot/Source/RM_Hwelgrue.cs",
+      "src/RimMandrake/TheRot/Source/RM_SwallowedCore.cs"
+     ]
+    },
+    {
+     "def": "RM_LivingMatRoot",
+     "type": "ThingDef",
+     "mod": "RimMandrake/TheRot",
+     "category": "",
+     "label": "living mat root",
+     "costs": [],
+     "how": "installed (minified; never constructed)",
+     "buildable": true,
+     "deck": true,
+     "why": "affordance Light on a deck; placeWorkers deck-safe",
+     "sources": [
+      "src/RimMandrake/TheRot/Defs/Misc/RM_NavigatorLog.xml",
+      "src/RimMandrake/TheRot/Source/RM_LivingMatRoot.cs",
+      "src/RimMandrake/TheRot/Source/RM_NavigatorLog.cs"
+     ]
+    }
+   ],
+   "verdict": "PASS",
+   "problems": [],
+   "also": [
+    "RM_BrewingVessel",
+    "RM_FungalGlowGooTorch",
+    "RM_FungiponicsBasin",
+    "RM_GlowGooTorch",
+    "RM_GrownFurnace",
+    "RM_GutMotherVat",
+    "RM_MoonlessCarpet",
+    "RM_MushroomFloor",
+    "RM_MycelialMatting",
+    "RM_MycelialSoil"
+   ]
+  },
+  {
+   "biome": "TheSump",
+   "label": "The Sump",
+   "folder": "TheSump",
+   "row": {
+    "biome": "The Sump",
+    "contribution": "**glasswalk** flooring, **gaslight lamps** and the **tar vault** larder",
+    "defs": [
+     "RM_Glasswalk",
+     "RM_GaslightLamp",
+     "RM_TarVault"
+    ],
+    "source": "owner 2026-09-24 (his own examples); `SUMP_WALKWAYS_1`, `SUMP_GASLIGHT_1`, `SUMP_TAR_VAULT_1`"
+   },
+   "defs": [
+    {
+     "def": "RM_Glasswalk",
+     "type": "TerrainDef",
+     "mod": "RimMandrake/TheSump",
+     "category": "Floors",
+     "label": "glasswalk",
+     "costs": [
+      "RM_Bitumen"
+     ],
+     "how": "built (Floors tab)",
+     "buildable": true,
+     "deck": true,
+     "why": "affordance Light on a deck; placeWorkers deck-safe"
+    },
+    {
+     "def": "RM_GaslightLamp",
+     "type": "ThingDef",
+     "mod": "RimMandrake/TheSump",
+     "category": "Furniture",
+     "label": "gaslight lamp",
+     "costs": [
+      "Steel",
+      "RM_Bitumen"
+     ],
+     "how": "built (Furniture tab)",
+     "buildable": true,
+     "deck": true,
+     "why": "affordance Light on a deck; placeWorkers deck-safe"
+    },
+    {
+     "def": "RM_TarVault",
+     "type": "ThingDef",
+     "mod": "RimMandrake/TheSump",
+     "category": "Furniture",
+     "label": "tar vault",
+     "costs": [
+      "RM_Bitumen",
+      "stuff:Metallic",
+      "stuff:Woody",
+      "stuff:Stony"
+     ],
+     "how": "built (Furniture tab)",
+     "buildable": true,
+     "deck": true,
+     "why": "affordance Light on a deck; placeWorkers deck-safe"
+    }
+   ],
+   "verdict": "PASS",
+   "problems": [],
+   "warnings": [
+    "a patch names `RM_GaslightLamp`; read it: src/RimUtinni/UtinniPatches/Patches/RUT_TarGas_SumpgasLabel.xml"
+   ],
+   "also": [
+    "RM_CapstanTurret",
+    "RM_CapstanTurret_PitRigged",
+    "RM_DigShaft",
+    "RM_Duckboards",
+    "RM_MoatFusePost",
+    "RM_SalvageWinch",
+    "RM_TarMoat",
+    "RM_TarSealingVat"
+   ]
+  },
+  {
+   "biome": "Warscar",
+   "label": "Warscar",
+   "folder": "Scarlands",
+   "row": {
+    "biome": "Warscar",
+    "contribution": "**the aerosol screen** (a clean-air dome over the ship in any polluted biome) and the **glower shield panel**",
+    "defs": [
+     "RM_AerosolScreen",
+     "RM_GlowerShieldPanel"
+    ],
+    "source": "`WARSCAR_AEROSOL_SCREEN_1` (owner turn 4, 2026-09-30)"
+   },
+   "defs": [
+    {
+     "def": "RM_AerosolScreen",
+     "type": "ThingDef",
+     "mod": "RimMandrake/Scarlands",
+     "category": "Misc",
+     "label": "aerosol screen",
+     "costs": [
+      "Plasteel",
+      "ComponentSpacer",
+      "RM_ProjectorCore"
+     ],
+     "how": "built (Misc tab)",
+     "buildable": true,
+     "deck": true,
+     "why": "affordance Light on a deck; placeWorkers deck-safe"
+    },
+    {
+     "def": "RM_GlowerShieldPanel",
+     "type": "ThingDef",
+     "mod": "RimMandrake/Scarlands",
+     "category": "Misc",
+     "label": "glower shield panel",
+     "costs": [
+      "RM_GlowerCrust",
+      "Steel"
+     ],
+     "how": "built (Misc tab)",
+     "buildable": true,
+     "deck": true,
+     "why": "affordance Light on a deck; placeWorkers deck-safe"
+    }
+   ],
+   "verdict": "PASS",
+   "problems": [],
+   "also": [
+    "RM_HospiceCradle",
+    "RM_KneelingChassis_Intact",
+    "RM_OldLineTurret",
+    "RM_WarscarProjector_Salvaged"
+   ]
+  },
+  {
+   "biome": "Wastes",
+   "label": "The Wastes",
+   "folder": "Wastes",
+   "row": {
+    "biome": "The Wastes",
+    "contribution": "**the waste cask bay**: a shielded, powered rack that lets a ship carry waste casks safely",
+    "defs": [
+     "RM_WasteCaskBay"
+    ],
+    "source": "`wastes.md` (the waste run by gravship); *delegated*"
+   },
+   "defs": [
+    {
+     "def": "RM_WasteCaskBay",
+     "type": "ThingDef",
+     "mod": "RimMandrake/Wastes",
+     "category": "Misc",
+     "label": "sealed cask bay",
+     "costs": [
+      "Steel",
+      "Plasteel",
+      "ComponentIndustrial"
+     ],
+     "how": "built (Misc tab)",
+     "buildable": true,
+     "deck": true,
+     "why": "affordance Medium on a deck; placeWorkers deck-safe"
+    }
+   ],
+   "verdict": "PASS",
+   "problems": [],
+   "also": [
+    "RM_WasteTippingPad"
+   ]
+  },
+  {
+   "biome": "Webwork",
+   "label": "Webwork",
+   "folder": "Webwork",
+   "row": {
+    "biome": "Webwork",
+    "contribution": "**the traction lance**: a crewed tether emplacement that reels a target or a downed colonist in",
+    "defs": [
+     "RM_TractionLance"
+    ],
+    "source": "Webwork mod; *delegated*"
+   },
+   "defs": [
+    {
+     "def": "RM_TractionLance",
+     "type": "ThingDef",
+     "mod": "RimMandrake/Webwork",
+     "category": "Security",
+     "label": "traction lance",
+     "costs": [
+      "Steel",
+      "ComponentIndustrial",
+      "stuff:Fabric"
+     ],
+     "how": "built (Security tab)",
+     "buildable": true,
+     "deck": true,
+     "why": "affordance Light on a deck; placeWorkers deck-safe"
+    }
+   ],
+   "verdict": "PASS",
+   "problems": [],
+   "also": []
+  },
+  {
+   "biome": "WeepingStones",
+   "label": "Weeping Stones",
+   "folder": "WeepingStones",
+   "row": {
+    "biome": "Weeping Stones",
+    "contribution": "**the ancient condenser plant**: the oldest gorrask's air-water machine, installed on the ship",
+    "defs": [
+     "RM_AncientCondenserPlant"
+    ],
+    "source": "WeepingStones mod (its own text: \"install it on a ship\")"
+   },
+   "defs": [
+    {
+     "def": "RM_AncientCondenserPlant",
+     "type": "ThingDef",
+     "mod": "RimMandrake/WeepingStones",
+     "category": "",
+     "label": "ancient condenser plant",
+     "costs": [],
+     "how": "installed (minified; never constructed)",
+     "buildable": true,
+     "deck": true,
+     "why": "affordance Light on a deck; placeWorkers deck-safe",
+     "sources": [
+      "src/RimMandrake/WeepingStones/Source/RM_WalkingCondenser.cs"
+     ]
+    }
+   ],
+   "verdict": "PASS",
+   "problems": [],
+   "also": []
+  }
+ ]
+}

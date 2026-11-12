@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  BIOME_SHIP_CONTRIBUTIONS_1 — the Pyrelands' gift to the ship (owner 2026-09-24: "how can this biome uniquely
+  add something to the ship?"). Delegated design (delegation_policy.md §2; the agent's call, logged on the item):
+  furnace-beast hide stores a week of deep-dayside sun and "has not entirely stopped" (RM_FurnaceHide.xml), so a
+  rack of it hung in a cabin is a heater that needs no fuel and no power: the warm room a gravship can carry onto
+  the night side and the ice.
+  Mechanics are vanilla only: CompHeatPusher with no power, flick or fuel comp is on whenever it stands
+  (CompHeatPusher.ShouldPushHeatNow reads only those comps). heatPerSecond 6 is a third of a powered heater's 21,
+  capped at 21 C, so it takes the edge off a small cabin rather than replacing a heater. PROVISIONAL numbers.
+  Ship-buildable: Light affordance, no placeWorker; minifiable, so one bought or built ashore can be carried aboard.
+  Checked by src/RimMandrake/Utils/ship_contributions.py.
+-->
+<Defs>
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_FurnaceHideBank</defName>
+    <label>furnace-hide heat bank</label>
+    <description>Furnace-beast hides stretched over a steel frame, seam to seam, mineral bands outward. The beast used that hide to bank a week of deep-dayside sun, and cut and dried it still gives the warmth back, slowly, for no fuel and no power. A crew that has wintered on the night side hangs one in every cabin of the ship.</description>
+    <graphicData>
+      <texPath>Things/Building/Temperature/RM_FurnaceHideBank</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+      <damageData>
+        <rect>(0.15,0.1,0.7,0.8)</rect>
+      </damageData>
+    </graphicData>
+    <size>(1,1)</size>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>42</pathCost>
+    <fillPercent>0.4</fillPercent>
+    <rotatable>false</rotatable>
+    <designationCategory>Temperature</designationCategory>
+    <uiOrder>2105</uiOrder>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsTemperature</li>
+    </thingCategories>
+    <tickerType>Rare</tickerType>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <WorkToBuild>1400</WorkToBuild>
+      <Flammability>0.6</Flammability>
+      <Mass>12</Mass>
+      <Beauty>-2</Beauty>
+    </statBases>
+    <costList>
+      <RM_FurnaceHide>60</RM_FurnaceHide>
+      <Steel>20</Steel>
+    </costList>
+    <constructionSkillPrerequisite>3</constructionSkillPrerequisite>
+    <comps>
+      <li Class="CompProperties_HeatPusher">
+        <heatPerSecond>6</heatPerSecond>
+        <heatPushMaxTemperature>21</heatPushMaxTemperature>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>PlaceWorker_Heater</li>
+    </placeWorkers>
+    <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
+  </ThingDef>
+</Defs>
