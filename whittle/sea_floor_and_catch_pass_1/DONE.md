@@ -17,12 +17,18 @@ Per sea, measured at the published HEAD (`evidence/per_sea_verdict.txt`):
 | RM_TwilightSea | vanilla ocean, resolved to this sea through PrimarySeaFor | RM_SeabedFloor_TwilightSea, 0.1×30 = 3.0 | 22 / 14 / 0 | rare RM_LampBlack is not a species; Corpse_RSW_ColoClawFish's body RSW_ColoClawFish is now cast live (0.03) |
 | RM_TheChill (the Propane Lake) | RM_PropaneDeep/Shallow (Saltwater, providesCatch on): fishable | RM_SeabedFloor_TheChill, 0.08×30 = 2.4 | 10 / 9 / 0 | rare Chemfuel is not a species |
 
-What this round changed (published `6039084c72`):
+What this round changed (published `6039084c72`, then `94759b90a5`):
 1. **The four sea descriptions now describe both halves.** Before this round, none of the four player-facing descriptions named one floor animal, one catch, the gravship or the shore. Each now has one sentence, written from the measured cast and catch. `validation.sea_description_checks()` guards it inside `selftest_sea_catch_alive.py`, and its 3 mutants go red.
 2. **Stale floors are re-derived on load.** A save mirrored its floor only once, so a pre-wiring save, or a surface repainted on an existing save, kept an empty or impassable floor under our seas. Players receive a save, so that would have been their normal case. `RM_SeabedLayerUtility.ResyncStaleFloors` now re-derives every mismatched floor tile on load and skips any tile carrying a world object. The DLL was rebuilt with 0 errors and 0 warnings. The wiring selftest gained check 8 and 3 mutants, and its check 6 confirms the DLL stamp matches the source.
 3. The stale "Propane Lake not wired" comment in RM_SeabedFloorBiomes.xml is corrected.
+4. **The Chill's catch can be refined into fuel again** (after the second judge). The owner's card of 2026-09-24 ("Refinery bill") makes the Propane Lake's catch fuel as a mechanic: 10 catch → 35 chemfuel at the BiofuelRefinery. Its only recipe, `RUT_Make_ChemfuelFromPropaneCatch`, took the RUT_ twin items, which no fishTypes table serves since CHILL_FREE_TIER_CATCH_1. A player could land the Chill's catch and never render it.
+   - `RM_Make_ChemfuelFromChillCatch` (RM_TheChillFuelChain.xml) is the same bill, on the seven hydrocarbon RM_ catches.
+   - `validation.chill_refinery_checks()` guards it, and its mutant goes red.
+   - The comments that still named the RUT_ items as the live catch are corrected.
+   - ⛔ The RUT_ twin (items, rare table, old recipe) is **not** deleted. It is the frozen campaign twin, kept for Phase B by a recorded decision (`RM_ChillRareCatch.xml:19-23`), so removing it is the repaint's call.
 
-After the first judge (would show: no):
+After the judges (both would show: no):
+- `evidence/offline_checks.txt` lists every file this pass touched (`git show` of both commits) and runs validate_patch on every touched XML: 7/7 clean.
 - Every sea selftest was rerun fresh, with `--no-cache`, 8/8 PASS (`evidence/selftests_fresh_all.txt`). That includes the compiled `selftest_seashores`, which now builds on this seat once the D:\SteamLibrary assembly paths are passed in. `swim_shore_reach` passes 3/3 when run directly (`evidence/swim_shore_reach_direct.txt`). The three fuzz selftests still crash on the missing `/mnt/d/Luke/dev` path on this seat and gave no verdict.
 - The Chill as a fishable shore is the owner's call, not an assumption:
   - his brief to make at least seven catches in every sea, the Propane Lake included (`design/Jawa/worldbuilding/sea_catch_rosters_2026-09-24.md:8`);

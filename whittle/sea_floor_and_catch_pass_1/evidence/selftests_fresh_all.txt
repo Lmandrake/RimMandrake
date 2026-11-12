@@ -1,27 +1,27 @@
 contained in rm-harness.slice (max 12G), 1 workers
-[1/8] PASS          0.3s  src/RimMandrake/SeaShores/selftest_seashores_proofs.py
-[2/8] PASS         99.5s  src/RimMandrake/Utils/selftest_seashores.py
-[3/8] PASS         43.3s  src/RimMandrake/Utils/selftest_seashores_lint.py
-[4/8] PASS          0.7s  src/RimMandrake/Utils/selftest_divinginteraction_lint.py
-[5/8] PASS          0.4s  src/RimMandrake/TerminalBiomes/selftest_sea_catch_alive.py
-[6/8] PASS          0.3s  src/RimMandrake/Utils/selftest_seabed_descent_wiring.py
+[1/8] PASS        143.2s  src/RimMandrake/Utils/selftest_seashores.py
+[2/8] PASS         62.8s  src/RimMandrake/Utils/selftest_seashores_lint.py
+[3/8] PASS          1.0s  src/RimMandrake/Utils/selftest_divinginteraction_lint.py
+[4/8] PASS          0.6s  src/RimMandrake/TerminalBiomes/selftest_sea_catch_alive.py
+[5/8] PASS          0.4s  src/RimMandrake/SeaShores/selftest_seashores_proofs.py
+[6/8] PASS          0.4s  src/RimMandrake/Utils/selftest_seabed_descent_wiring.py
 [7/8] PASS          0.2s  src/RimMandrake/TerminalBiomes/Tools/selftest_sea_text_no_surface_place.py
-[8/8] PASS          0.1s  src/RimMandrake/TerminalBiomes/selftest_sea_floor_no_rain.py
+[8/8] PASS          0.2s  src/RimMandrake/TerminalBiomes/selftest_sea_floor_no_rain.py
 evidence: 1 eligible, 0 SKIPPED as unchanged, 1 PASS recorded, 0 PASS not recordable — runner 65716eff3278c68e
 cache: 0 CACHED PASS, 0 declared test(s) ran
-known results: 0/8 answered from the ledger (selftests.cache_hit_share 0.000), 0s not spent; 8 ran, 6 recorded, 4 checked against a stored PASS, 0 known red
-  ran (2): an input changed: src/RimMandrake/Utils/selftest_divinginteraction_lint.py <- src/RimUtinni/ResearchRetag/Patches/RUT_ResearchTabAssign.xml; src/RimMandrake/Utils/selftest_seashores_lint.py <- src/RimMandrake/WreckedMachines/Source/WreckedMachinesMod.cs
+known results: 0/8 answered from the ledger (selftests.cache_hit_share 0.000), 0s not spent; 8 ran, 6 recorded, 1 checked against a stored PASS, 0 known red
+  ran (5): an input changed: src/RimMandrake/TerminalBiomes/Tools/selftest_sea_text_no_surface_place.py <- src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TheChill.xml; src/RimMandrake/TerminalBiomes/selftest_sea_catch_alive.py <- src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TheChill.xml; src/RimMandrake/TerminalBiomes/selftest_sea_floor_no_rain.py <- src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TheChill.xml
   ran (2): no record
-  not recordable (1): clock: src/RimMandrake/SeaShores/selftest_seashores_proofs.py
   not recordable (1): changed during the run: src/RimMandrake/Utils/selftest_seashores.py
-PASS          0.3s  src/RimMandrake/SeaShores/selftest_seashores_proofs.py
+  not recordable (1): clock: src/RimMandrake/SeaShores/selftest_seashores_proofs.py
+PASS          0.4s  src/RimMandrake/SeaShores/selftest_seashores_proofs.py
 PASS          0.2s  src/RimMandrake/TerminalBiomes/Tools/selftest_sea_text_no_surface_place.py
-PASS          0.4s  src/RimMandrake/TerminalBiomes/selftest_sea_catch_alive.py
-PASS          0.1s  src/RimMandrake/TerminalBiomes/selftest_sea_floor_no_rain.py
-PASS          0.7s  src/RimMandrake/Utils/selftest_divinginteraction_lint.py
-PASS          0.3s  src/RimMandrake/Utils/selftest_seabed_descent_wiring.py
-PASS         99.5s  src/RimMandrake/Utils/selftest_seashores.py
-PASS         43.3s  src/RimMandrake/Utils/selftest_seashores_lint.py
+PASS          0.6s  src/RimMandrake/TerminalBiomes/selftest_sea_catch_alive.py
+PASS          0.2s  src/RimMandrake/TerminalBiomes/selftest_sea_floor_no_rain.py
+PASS          1.0s  src/RimMandrake/Utils/selftest_divinginteraction_lint.py
+PASS          0.4s  src/RimMandrake/Utils/selftest_seabed_descent_wiring.py
+PASS        143.2s  src/RimMandrake/Utils/selftest_seashores.py
+PASS         62.8s  src/RimMandrake/Utils/selftest_seashores_lint.py
 
-PASS 8/8  FAIL 0/8  UNMEASURED 0/8  CRASH 0/8  SKIPPED 0/8  (wall 146.0s) — contained in rm-harness.slice (max 12G), 1 workers
+PASS 8/8  FAIL 0/8  UNMEASURED 0/8  CRASH 0/8  SKIPPED 0/8  (wall 210.7s) — contained in rm-harness.slice (max 12G), 1 workers
 RESULT: GREEN (green = FAIL 0 and CRASH 0)

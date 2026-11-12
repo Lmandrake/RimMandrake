@@ -1,4 +1,4 @@
-# Per-sea verdict at 6039084c72 (parsed from src/, 10080 defs indexed)
+# Per-sea verdict at 94759b90a5 (parsed from src/, 10092 defs indexed)
 
 ## RM_TheScald (src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TheScald.xml)
 - shore: RimMandrake.SeaShores.RM_SeaShoreExtension on the BiomeDef -> land tiles beside it get the RM_SeaCoast mutator; terrains {'deepTerrain': 'RM_ScaldWaterOceanDeep', 'shallowTerrain': 'RM_ScaldWaterOceanShallow'}; terrain defs missing from src: none

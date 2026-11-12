@@ -1,5 +1,20 @@
-# at 6039084c72 2026-11-11 21:45 -0800
-$ python3 src/RimMandrake/TerminalBiomes/selftest_sea_catch_alive.py
+# at 94759b90a5 2026-11-11 21:59 -0800
+## files this pass touched (git show 42f7c52ebb + 94759b90a5)
+src/RimMandrake/DivingInteraction/Assemblies/RimMandrake.DivingInteraction.dll
+src/RimMandrake/DivingInteraction/Assemblies/RimMandrake.DivingInteraction.dll.srchash
+src/RimMandrake/DivingInteraction/Defs/PlanetLayerDefs/RM_SeabedFloorBiomes.xml
+src/RimMandrake/DivingInteraction/Source/RM_SeabedLayer.cs
+src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_GreySea.xml
+src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TheChill.xml
+src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TheScald.xml
+src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TwilightSea.xml
+src/RimMandrake/TerminalBiomes/Defs/RecipeDefs/RM_TheChillFuelChain.xml
+src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_TheChillFloorLife.xml
+src/RimMandrake/TerminalBiomes/selftest_sea_catch_alive.py
+src/RimMandrake/TerminalBiomes/validation.py
+src/RimMandrake/Utils/selftest_seabed_descent_wiring.py
+
+$ selftest_sea_catch_alive.py
 ok    shipped: every catch in the four seas has a living floor body 
 ok    mutant twilight niim body unwired goes red 
 ok    mutant grey body unwired          goes red 
@@ -9,26 +24,25 @@ ok    shipped: every sea's description names its floor and its catch
 ok    mutant scald floor sentence cut   goes red 
 ok    mutant chill shore cut            goes red 
 ok    mutant grey names no catch        goes red 
+ok    shipped: every hydrocarbon Chill catch has a refinery bill 
+ok    mutant zhiil dropped from the bill goes red 
 
 ALL OK
 
-$ python3 src/RimMandrake/TerminalBiomes/validation.py   (static half)
+$ validation.py (static)
 STATIC: PASS (0 findings)
 
-$ python3 src/RimMandrake/Utils/selftest_seabed_descent_wiring.py
+$ selftest_seabed_descent_wiring.py
 ok   mutant 'loaded save never re-syncs its floor' -> 8: EnsureLayer never re-syncs the floor of a save that already carries the layer
 ok   mutant 're-sync overwrites a tile with a map on it' -> 8: ResyncStaleFloors re-derives a tile that already matches or carries a world object
 ok   mutant 're-sync touches nothing' -> 8: ResyncStaleFloors never re-derives a stale tile
 selftest_seabed_descent_wiring: PASS (0 real-tree failures, 25 mutants)
 
-$ validate_patch.py on every touched XML
+$ validate_patch.py on EVERY touched XML
 src/RimMandrake/DivingInteraction/Defs/PlanetLayerDefs/RM_SeabedFloorBiomes.xml: OK - 0 errors, 0 warning(s)
-src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TheScald.xml: OK - 0 errors, 0 warning(s)
 src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_GreySea.xml: OK - 0 errors, 0 warning(s)
-src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TwilightSea.xml: OK - 0 errors, 0 warning(s)
 src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TheChill.xml: OK - 0 errors, 0 warning(s)
-
-$ build (winbuild.py DivingInteraction, game assemblies from D:\SteamLibrary via env)
-    0 Warning(s)
-    0 Error(s)
-BUILT src/RimMandrake/DivingInteraction/Assemblies/RimMandrake.DivingInteraction.dll (source 27ee2eb8fa19+dirty)
+src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TheScald.xml: OK - 0 errors, 0 warning(s)
+src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TwilightSea.xml: OK - 0 errors, 0 warning(s)
+src/RimMandrake/TerminalBiomes/Defs/RecipeDefs/RM_TheChillFuelChain.xml: OK - 0 errors, 0 warning(s)
+src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_TheChillFloorLife.xml: OK - 0 errors, 0 warning(s)

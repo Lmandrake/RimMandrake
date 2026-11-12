@@ -1,4 +1,4 @@
-$ python3 src/RimMandrake/FlowWorks/selftest_swim_shore_reach.py   (direct, 2026-11-11 21:52 -0800, HEAD 5c11209c9a)
+$ python3 src/RimMandrake/FlowWorks/selftest_swim_shore_reach.py   (direct, 2026-11-11 22:03 -0800, HEAD 94759b90a5)
 PASS source pins: production climb inputs (ClimbLimitOf(p), StepDepthAt c->n, joins, StepAllowed); 12/12 mutants red
 PASS Swim_shore_search_skips_unclimbable_ledge
 PASS Swim_shore_search_sweep_answer_is_climbable_and_nearest
