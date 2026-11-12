@@ -42,15 +42,10 @@ def evidence_adoption_path():
     root = os.environ.get("TICKBURST_OUT")
     if not root:
         try:
-            import subprocess
-            pr = subprocess.run([sys.executable, os.path.expanduser("~/dev/Lodestar/bin/lib/agent_storage.py")],
-                                capture_output=True, text=True, timeout=30, stdin=subprocess.DEVNULL)
-            base = pr.stdout.strip() if pr.returncode == 0 else None
-        except Exception:                                    # noqa: BLE001  (no helper, unset root: no record)
-            base = None
-        if not base:
+            import rmpaths  # noqa: E402  (RM_DATA_ROOT under python.exe; TICKBENCH_FIX_WSL_PATHS_DIE_UNDER_PYTHONEXE)
+            root = os.path.join(str(rmpaths.rm_data_root()), "tickburst")
+        except Exception:                                    # noqa: BLE001  (unset root: no record)
             return None
-        root = os.path.join(str(base), "rimmandrake", "tickburst")
     return os.path.join(root, "equiv", "adoption.json")
 
 

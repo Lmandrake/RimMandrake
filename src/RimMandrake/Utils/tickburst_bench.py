@@ -38,8 +38,7 @@ if HERE not in sys.path:
 import tickburst_step as TS  # noqa: E402
 
 BOUNDS = os.path.join(REPO, "design", "RimMandrake", "tickburst_2026-11-06", "bounds.json")
-GAME = "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld"
-from game_paths import MODS_CONFIG as MODSCONFIG, SAVES  # noqa: E402  the one path seam
+from game_paths import MODS_CONFIG as MODSCONFIG, SAVES, GAME_DIR as GAME  # noqa: E402  the one path seam
 DLLS = ("BridgeTools/JawaBench/JawaBench.BridgeTools.dll", "Mods/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll")
 WARMUP, MEASURE, REPEATS = 600, 20000, 3
 SWEEP_CAPS = (1, 30, 60, 61, 0)          # 0 = max (no cap, 200 ms budget)
@@ -843,18 +842,21 @@ def _exit(rows, prefer=None):
     return code
 
 
-def out_root(arg):
+def out_root(arg, data_root=None):
+    """--out-dir, else TICKBURST_OUT, else <rm data root>/tickburst through rmpaths (RM_DATA_ROOT, translated under
+    Windows python; Lodestar's helper only on POSIX). TICKBENCH_FIX_WSL_PATHS_DIE_UNDER_PYTHONEXE: this used to run
+    ~/dev/Lodestar/bin/lib/agent_storage.py itself, which does not exist under python.exe on SteveDesktop."""
     if arg:
         return arg
     env = os.environ.get("TICKBURST_OUT")
     if env:
         return env
-    helper = os.path.expanduser("~/dev/Lodestar/bin/lib/agent_storage.py")
-    p = subprocess.run([sys.executable, helper], capture_output=True, text=True, timeout=30)
-    root = p.stdout.strip()
-    if p.returncode or not root:
-        raise SystemExit("agent storage root unset (agent_storage.py exit %s): pass --out-dir or TICKBURST_OUT" % p.returncode)
-    return os.path.join(root, "rimmandrake", "tickburst")
+    import rmpaths  # noqa: E402
+    try:
+        root = data_root() if data_root else rmpaths.rm_data_root()
+    except rmpaths.RmDataRootUnset as e:
+        raise SystemExit("data root unset (%s): pass --out-dir or TICKBURST_OUT" % e)
+    return os.path.join(str(root), "tickburst")
 
 
 def _site_reloader(call):
@@ -876,6 +878,28 @@ def selftest():
         if not ok:
             fails.append(name)
 
+    # TICKBENCH_FIX_WSL_PATHS_DIE_UNDER_PYTHONEXE: the out root comes from RM_DATA_ROOT (as testcentre_env.sh sets it for
+    # python.exe on SteveDesktop) with no Lodestar helper in reach, never from ~/dev/Lodestar
+    import tempfile as _tf
+    _env = {k: os.environ.get(k) for k in ("HOME", "RM_DATA_ROOT", "TICKBURST_OUT", "USERPROFILE")}
+    _fake = _tf.mkdtemp(prefix="tb_home_")
+    try:
+        os.environ.pop("TICKBURST_OUT", None)
+        os.environ.update(HOME=_fake, USERPROFILE=_fake, RM_DATA_ROOT=os.path.join(_fake, "data"))
+        try:
+            got, why = out_root(None), ""
+        except SystemExit as e:
+            got, why = None, str(e)
+        check(got == os.path.join(_fake, "data", "tickburst"), "out_root_reads_rm_data_root_without_lodestar", why or str(got))
+        ap_ = TS.evidence_adoption_path()
+        check(ap_ == os.path.join(_fake, "data", "tickburst", "equiv", "adoption.json"), "adoption_path_reads_rm_data_root",
+              str(ap_))
+    finally:
+        for k, v in _env.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
     # pure: rate, order, compare
     check(rate(0, 600, 2.0) == 300 and rate(5, 5, 1.0) is None and rate(None, 5, 1) is None, "rate_refuses_still_clock")
     o = balanced_order(THROUGHPUT_ARMS, 3, 7)
