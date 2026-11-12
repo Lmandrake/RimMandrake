@@ -6437,3 +6437,4 @@
 {"seat":"RUNNER","event":"raise","id":"STEWARD_FIX_ENDS_ON_GREEN_NOT_RUNNING","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-12T23:18:38Z","tsn":1794525518318561719}
 {"seat":"RUNNER","event":"live","id":"STEWARD_FIX_ENDS_ON_GREEN_NOT_RUNNING","result":"kept","detail":"sweep: running again","ts":"2026-11-12T23:33:23Z","tsn":1794526403273408264}
 {"seat":"RUNNER","event":"note","id":"STEVE_LANE_UNSTICK_BRAKED_UNOWNED_51AC","text":"steward-watch: the steward is writing again (stale 24 min)","ts":"2026-11-12T23:48:04Z","tsn":1794527284130326277}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_DISPATCHER","result":"kept","detail":"sweep: running again","ts":"2026-11-12T23:48:08Z","tsn":1794527288772421943}
