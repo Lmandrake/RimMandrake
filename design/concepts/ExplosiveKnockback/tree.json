@@ -237,7 +237,7 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "preserve",
-   "experience": "A pawn whose shield belt absorbs the blast stays where they stood, and the player sees the belt lose extra charge.",
+   "experience": "A pawn whose shield belt absorbs the blast stays where they stood, and the player sees the belt lose extra charge (a burning gas clump's one-cell shove still moves a belted pawn).",
    "scenario": "A colonist wearing a charged shield belt beside a grenade blast; read position and belt energy before and after.",
    "false_pass": [
     "the belt absorbs the damage but the wearer is still thrown",
@@ -522,7 +522,7 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "preserve",
-   "experience": "A damaging or fire blast over a covered pit breaks its cover and the pawn standing on it falls in, while the player sees a gas burst or an EMP, smoke or stun burst leave a cover whole.",
+   "experience": "A damaging or fire blast over a covered pit breaks its cover and the pawn standing on it falls in, while the player sees a gas burst or an EMP, smoke or stun burst leave a cover whole, and a pawn a gas burst shoves onto a cover stands on it, the cover unbroken.",
    "scenario": "A raider on a covered pit; a grenade lands on the cover; a second raider on a second covered pit under an incendiary shell; separately a gas cloud bursts over a third covered pit and an EMP grenade, a smoke grenade and a stun burst over three more, each with a raider on it.",
    "false_pass": [
     "the cover breaks but the raider stands in the air",
