@@ -1,0 +1,18 @@
+load set: 316 active, 316 located; missing: []
+
+== A. texture files at either path, across the located load set (all subfolders)
+   load#301 mandrake.rm.biomes                       /mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/TheRot/Textures/RotSpecies/AgariluxPrime.png  md5=b7ce28d8b421
+   load#301 mandrake.rm.biomes                       /mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/TheRot/Textures/Things/Plants/AB_AgariluxPrime.png  md5=da4718ee8b64
+   2 file(s)
+
+== B. patch xpaths selecting RM_AgariluxPrime / its graphicData / texPath
+   3137 patch files, 69187 xpaths evaluated (0 files unparsable; 39542 relative xpaths anchored at /)
+   selects def          mandrake.rm.biomes             RotGiants_HugeFootprint.xml  /Defs/ThingDef[defName="RM_AgariluxPrime"]
+   selects def          mandrake.rm.biomes             RotGiants_HugeFootprint.xml  /Defs/ThingDef[defName="RM_AgariluxPrime"]
+   selects def          mandrake.rm.biomes             RotSpecies_NamesAndSizes.xml  /Defs/ThingDef[defName="RM_AgariluxPrime"]
+   xpaths reaching graphicData/texPath/graphicClass: 0
+
+== C. image identity of the survivor
+   survivor sha256 85779af91a06483f2aaee457219fb5524d2ce4d18eda57334e9e598afffaf550
+   git blob now 28b1e08b42b83f1f665416d4cecfabd1fa9bf2b2; at the v3 landing commit 9d83052dca ('Land the 4 v3 regens', 2026-09-20) 28b1e08b42b83f1f665416d4cecfabd1fa9bf2b2: IDENTICAL
+   deployed copy sha256 85779af91a06483f2aaee457219fb5524d2ce4d18eda57334e9e598afffaf550: IDENTICAL

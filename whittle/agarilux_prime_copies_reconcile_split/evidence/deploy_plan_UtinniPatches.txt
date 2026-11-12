@@ -32,6 +32,6 @@ UtinniPatches    mandrake.rut.patches       not enabled in ModsConfig · 10 file
     H  Patches/RUT_VentKiln_RecipeWiring.xml   (repo-only; not deployed)
            held: BENCH: held with RUT_VentKiln.xml, 2026-09-19 (FOUNDRY, retroactive)
     ~  Patches/BiomeCastEvictions_WildBiomes.xml
-    -  Textures/Things/Plants/AB_AgariluxPrime.png   (in game, not in repo; deleted in repo working tree, UNCOMMITTED -- kept; commit the delete, or --prune)
+    -  Textures/Things/Plants/AB_AgariluxPrime.png   (in game, not in repo; deleted in repo -- --apply prunes it)
 
 Drift found. Re-run with --apply to deploy.

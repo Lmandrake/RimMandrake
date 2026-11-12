@@ -1,0 +1,58 @@
+patterns: ['Things/Plants/AB_AgariluxPrime', 'TheRot/Textures/Things/Plants/AB_AgariluxPrime', 'UtinniPatches/Textures/Things/Plants/AB_AgariluxPrime', 'AgariluxPrime__UtinniPatches', 'AgariluxPrime__TheRot']
+scope: ['src', 'infrastructure', 'design', 'skills'] (git grep over tracked files at HEAD worktree)
+
+== LIVE-READER: 0 hit(s) in 0 file(s)
+== THIS-CHANGE: 5 hit(s) in 3 file(s)
+   infrastructure/state/items/AGARILUX_PRIME_COPIES_RECONCILE_SPLIT.md  (1)
+      19: ACCEPT was `TheRot/Textures/Things/Plants/AB_AgariluxPrime.png` (a 256 px donor-regen render, installed 2026-10-19), and the
+   src/RimMandrake/TheRot/Defs/ThingDefs_Plants/RM_TheRot_DonorPorts.xml  (1)
+      541: texPath is our own v3 render (owner-approved 2026-09-20), not the donor slot Things/Plants/AB_AgariluxPrime: two shadowed
+   src/RimMandrake/Utils/art/agarilux_prime_retire_copies.py  (3)
+      6: Things/Plants/AB_AgariluxPrime and a TheRot patch repointed it, so two of our mods shipped a picture at that slot that
+      25: "src/RimMandrake/TheRot/Textures/Things/Plants/AB_AgariluxPrime.png",
+      26: "src/RimUtinni/UtinniPatches/Textures/Things/Plants/AB_AgariluxPrime.png",
+== OTHER-DEF: 6 hit(s) in 5 file(s)
+   design/Jawa/mods/plant_pool.csv  (1)  -- row of the DONOR def AB_AgariluxPrime (Alpha Biomes), its own workshop texPath
+      41: AB_AgariluxPrime,Agarilux Prime,Alpha Biomes,False,None,Food,6000,RawFungus,0,58,6,42,0.949999988079071,False,False,CleanOnly,1,-1,,Things/Plants/AB_AgariluxPri
+   design/Jawa/mods/plant_sprites/manifest.json  (2)  -- texture-resolver fixture: AB_AgariluxPrime's donor PNG in workshop 1841354677
+      37: "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_AgariluxPrime.png",
+      43: "texPath": "Things/Plants/AB_AgariluxPrime",
+   design/Jawa/worldbuilding/review/plant_register_rows.json  (1)  -- plant register row defName AB_AgariluxPrime (donor def)
+      48834: "texPath": "Things/Plants/AB_AgariluxPrime",
+   design/RimMandrake/texregen_unproven_roster_snapshot.json  (1)  -- derived census snapshot (git_head e87f41b812); --check re-resolves each row NOW and passes after the retire (evidence/unproven_adjudicate_check.txt)
+      7566: "Things/Plants/AB_AgariluxPrime"
+   src/RimMandrake/Utils/art_eval/shadow.py  (1)  -- docstring example of the <def>__<tag> card-key format, not a path
+      69: (RM_Ruskara__a, RM_AgariluxPrime__TheRot) but art_sheet --subjects takes defNames — handing it the card key
+== DATED-RECORD: 21 hit(s) in 9 file(s)
+   design/RimMandrake/alpha_biomes_retirement_2026-10-16.md  (1)
+   design/RimMandrake/donor_regen_jobs_2026-10-18.json  (2)
+   infrastructure/state/art/sheets/art_eval_shadow_gptredo_03_sheet_2026-10-24.snapshot.json  (4)
+   infrastructure/state/art/sheets/flora_legibility_sheet_2026-11-05.snapshot.json  (3)
+   infrastructure/state/art/sheets/gpt_review_therot_sheet_2026-10-24.snapshot.json  (4)
+   infrastructure/state/art/sheets/therot_sheet_2026-11-03.snapshot.json  (4)
+   infrastructure/state/art_rulings/2026-09-18_rot_flora_fauna_review_2026-09-18.html  (1)
+   infrastructure/state/art_rulings/2026-09-19_bulk_art_misroute_2026-09-19.decisions.json  (1)
+   infrastructure/state/art_rulings/2026-09-19_bulk_art_misroute_2026-09-19.html  (1)
+== APPEND-ONLY: 31 hit(s) in 15 file(s)
+   infrastructure/state/art/events/BENCH.jsonl  (1)
+   infrastructure/state/art/events/CLAUDE_ARCHMAGI_OFFLINE2.jsonl  (2)
+   infrastructure/state/art/events/FOUNDRY.jsonl  (8)
+   infrastructure/state/art/events/archive/BENCH.0001.20261004_20261009.jsonl  (4)
+   infrastructure/state/art/snapshots/2026-10-04_textures.tsv  (1)
+   infrastructure/state/art_eval/regen_rounds.json  (1)
+   infrastructure/state/art_eval/runs/gptredo_03/decisions.jsonl  (2)
+   infrastructure/state/art_eval/runs/gptredo_03/regen_jobs.json  (2)
+   infrastructure/state/art_eval/runs/gptredo_03/run.json  (2)
+   infrastructure/state/art_eval/runs/gptredo_03/shadow_build.log  (1)
+   infrastructure/state/art_eval/runs/gptredo_03/shadow_references.json  (2)
+   infrastructure/state/art_eval/runs/gptredo_03/summary.md  (2)
+   infrastructure/state/delegated/2026-10-24/RM_AgariluxPrime__TheRot__TheRot.json  (1)
+   infrastructure/state/delegated/2026-10-24/RM_AgariluxPrime__UtinniPatches__UtinniPatches.json  (1)
+   infrastructure/state/ledger/events/CLAUDE_ARCHMAGI_OFFLINE2.jsonl  (1)
+
+sanity probe: git grep 'RotSpecies/AgariluxPrime' in src/ -> src/RimMandrake/TheRot/Defs/ThingDefs_Plants/RM_TheRot_DonorPorts.xml:1
+src/RimMandrake/TheRot/Patches/RotSpecies_NamesAndSizes.xml:1
+src/RimMandrake/Utils/art/agarilux_prime_retire_copies.py:2
+PNG files named *AgariluxPrime* under src/*/*/Textures: ['src/RimMandrake/TheRot/Textures/RotSpecies/AgariluxPrime.png']
+
+VERDICT: no live reader names a retired copy

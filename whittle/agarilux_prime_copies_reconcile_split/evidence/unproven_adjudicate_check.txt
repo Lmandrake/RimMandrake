@@ -1,0 +1,2 @@
+def view: no-record (def, file) pairs now 413; (file, sha) on record 411; missing a verdict 0; malformed or outside OWNER_PICKED/HAND_MADE/STAND_IN 0
+roster: census rows 916; rows with an UNPROVEN face now 67; without a row verdict 0; verdict outside the three 0; face files measured now with no verdict 0

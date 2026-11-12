@@ -1,0 +1,23 @@
+== def chain BEFORE the change (commit 45408f140e575f84b4d9536dd8eb4f9e122dad70^), read from git
+-- base def, src/RimMandrake/TheRot/Defs/ThingDefs_Plants/RM_TheRot_DonorPorts.xml:
+542:    <defName>RM_AgariluxPrime</defName>
+553-      <texPath>Things/Plants/AB_AgariluxPrime</texPath>
+554-      <graphicClass>Graphic_Single</graphicClass>
+-- TheRot repoint, src/RimMandrake/TheRot/Patches/RotSpecies_NamesAndSizes.xml:
+369-  <Operation Class="PatchOperationConditional">
+370:    <xpath>/Defs/ThingDef[defName="RM_AgariluxPrime"]/graphicData/texPath</xpath>
+371-    <match Class="PatchOperationReplace">
+372:      <xpath>/Defs/ThingDef[defName="RM_AgariluxPrime"]/graphicData/texPath</xpath>
+373-      <value><texPath>RotSpecies/AgariluxPrime</texPath></value>
+374-    </match>
+375-  </Operation>
+376-  <Operation Class="PatchOperationConditional">
+-- PNGs at each path before (git ls-tree 45408f140e575f84b4d9536dd8eb4f9e122dad70^):
+27414112 src/RimMandrake/TheRot/Textures/RotSpecies/AgariluxPrime.png
+124588 src/RimMandrake/TheRot/Textures/Things/Plants/AB_AgariluxPrime.png
+253476 src/RimUtinni/UtinniPatches/Textures/Things/Plants/AB_AgariluxPrime.png
+
+== resolution BEFORE: base Things/Plants/AB_AgariluxPrime -> repoint (PatchOperationReplace inside a Conditional, TheRot) -> RotSpecies/AgariluxPrime
+   the live game agreed: def dump of the full 317-mod load captured 2026-11-02T17:59:18Z reads RM_AgariluxPrime texPath RotSpecies/AgariluxPrime, packageId mandrake.rm.biomes (see resolved_texpath_after.txt section 4)
+   so the two Things/Plants/AB_AgariluxPrime.png copies (TheRot, UtinniPatches) were shipped and loaded but never drawn by RM_AgariluxPrime; AB_AgariluxPrime (Alpha Biomes donor) is not in the game, so nothing drew them.
+== owner of def and texture: TheRot (mandrake.rm.biomes) -- the only mod defining RM_AgariluxPrime and the only one shipping the drawn PNG.

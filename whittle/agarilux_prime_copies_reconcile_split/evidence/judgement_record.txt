@@ -1,0 +1,33 @@
+== gptredo_03 decision rows (infrastructure/state/art_eval/runs/gptredo_03/decisions.jsonl), both subjects
+- subject RM_AgariluxPrime__TheRot  at 2026-10-24T01:59:30-07:00
+    judged file: /home/mandrake/rm/foundry/src/RimMandrake/TheRot/Textures/Things/Plants/AB_AgariluxPrime.png
+    judged sha256: b0a767dc1f50d518df5181b0558ef2c8aef6bd98f36c56a10d406d83ab99347d
+    decision: "ACCEPT"
+- subject RM_AgariluxPrime__UtinniPatches  at 2026-10-24T02:00:35-07:00
+    judged file: /home/mandrake/rm/foundry/src/RimUtinni/UtinniPatches/Textures/Things/Plants/AB_AgariluxPrime.png
+    judged sha256: c93606ba387d96e7853b4195cd525ca057bf378b315a65cb547d7b209bbbcaff
+    decision: "REGEN"
+
+   (summary.md rows:)
+   | RM_AgariluxPrime__TheRot | TheRot | plant/tree | WEAK | strong_accept | **ACCEPT** | 65.3 | opus band WEAK (model said good); blocking ['DESC_MISS']; polish ['RES_LOW']; gpt strong_accept: unsettled [], own blocking [] |
+   | RM_AgariluxPrime__UtinniPatches | UtinniPatches | plant/tree | WEAK | regen | **REGEN** | 69.2 | opus band WEAK (model said good); blocking ['STYLE_OFF', 'DESC_MISS', 'DESC_MISS']; polish []; gpt regen: unsettled ['K2'], own blocking ['DESC_MISS'] |
+
+== the survivor: src/RimMandrake/TheRot/Textures/RotSpecies/AgariluxPrime.png
+   sha256 85779af91a06483f2aaee457219fb5524d2ce4d18eda57334e9e598afffaf550
+   judged in gptredo_03? NO -- neither gptredo_03 row judged these bytes
+
+== its standing judgement: infrastructure/state/art_rulings/2026-09-20_rot_art_landed_20260920__rot_art_landed_20260920.decisions.json
+   approvedBy: owner
+   approvedAt: 2026-09-20T08:53:15-07:00
+   approvedSaid: The rot art is approved.
+   approvalRoute: Blanket approval in conversation, 2026-09-20, NOT row-by-row in the sheet. touchedBySheet was false and savedBy was 'prefill-script' at the moment of approval: every one of these 61 'keep' rows is the agent's own pre-fill, ratified wholesale by the owner's sentence. No row carries an individual owner judgement.
+   row AB_AgariluxPrime: {'decision': 'keep'}  (sheet row effect: rot_agariluxprime_v3 landed clean; thumb thumbs/rot_agariluxprime_v3.png)
+   bytes identity: git blob today 28b1e08b42b83f1f665416d4cecfabd1fa9bf2b2 vs at 9d83052dca 'Land the 4 v3 regens' (2026-09-20, the landing that sheet approved) 28b1e08b42b83f1f665416d4cecfabd1fa9bf2b2: IDENTICAL
+   order: v3 landed in 9d83052dca at 2026-09-20 07:47:48 -0700; the approval is stamped 08:53:15 the same morning, so it covered the v3 bytes the sheet row shows.
+   art ledger live sha for RotSpecies/AgariluxPrime (art.py status): 85779af91a06 -> MATCH
+
+== conclusion
+   The survivor is NOT the gptredo_03 REGEN copy (that was the UtinniPatches donor-slot file, sha c93606ba..., retired).
+   It is not the gptredo_03 ACCEPT copy either (the 256 px TheRot donor-slot file, sha b0a767dc..., retired). It is the v3 render
+   the owner approved on 2026-09-20 and the game has drawn since. Under the item's rule (re-judge only if the survivor is the REGEN copy),
+   no re-judge is owed; the 2026-09-20 approval stands. No regen job is queued for it (artpipe pending/active hold none).
