@@ -74,7 +74,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "each spared pawn on its own cell after, with journal skip reasons too_big, in_pit, carrying_pawn, in_bed and flying, and too_big, in_pit, in_pit for the thrumbo corpse and the pit-floor stack and corpse; the carried pawn is not reached; control: the plain colonist at the same distance is thrown",
+   "oracle_proposed": "each spared pawn on its own cell after, with journal skip reasons too_big, in_pit, carrying_pawn, in_bed and flying, and too_big, in_pit, in_pit for the thrumbo corpse and the pit-floor stack and corpse; with the mass limit raised above its mass a thrumbo corpse is still spared too_big while a corpse under 2.5 at the same setting is thrown; a corpse under 2.5 and over 75 kg is spared too_heavy at default; the carried pawn is not reached; control: the plain colonist at the same distance is thrown",
    "tier_reason": "the throw, the landing and the scatter are runtime (PawnFlyer, map things, the explosion wave); the kernel selftest proves only the path maths",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -86,10 +86,11 @@
    "leaf_kind": "experience",
    "clause_kind": "preserve",
    "experience": "A blast never throws a pawn of body size 2.5 or more (the Mod Settings default; a weapon that sets its own body-size limit throws pawns under that limit instead), a pawn already in a pit, a pawn carrying another pawn, a pawn already airborne, or a pawn in bed, nor goods or a corpse heavier than 75 kg (the Mod Settings mass limit), a corpse of body size 2.5 or more, goods and corpses already on a pit floor, or a thing at the rim whose throw is under one cell, and the player sees them stay where they were.",
-   "scenario": "Beside one grenade, same distance each: a thrumbo, a colonist on a pit floor, a colonist carrying a downed pawn, a colonist in a bed, a thrumbo corpse, a stack and a corpse on the pit floor, and a colonist whose airborne state is forced true by a test hook (a state read only); a plain colonist beside them.",
+   "scenario": "Beside one grenade, same distance each: a thrumbo, a colonist on a pit floor, a colonist carrying a downed pawn, a colonist in a bed, a thrumbo corpse, a stack and a corpse on the pit floor, and a colonist whose airborne state is forced true by a test hook (a state read only); a plain colonist beside them. Then a thrumbo corpse and a corpse under body size 2.5 beside a grenade with the mass limit raised above the thrumbo corpse's mass, and a corpse under 2.5 but over 75 kg at default.",
    "false_pass": [
     "the blast reached none of them, so nothing was spared",
-    "a spared pawn is thrown"
+    "a spared pawn is thrown",
+    "the big corpse is spared only by the mass limit, the body-size rule absent"
    ],
    "red": "a build where a thrumbo, a carrier or a sleeper is thrown",
    "tier_proposed": "live_minimal",
@@ -329,7 +330,7 @@
    "bundle": "storage",
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "every container's contents count unchanged; only the free-backed 1x1 crate under the mass limit moved, one cell away from the blast; the walled, pawn-backed, pit-backed and over-mass 1x1 crates and the larger fridge stayed on their cells and jolted (journal container line, action slide or jolt, and a drawn offset in the trace)",
+   "oracle_proposed": "every container's contents count unchanged; only the free-backed 1x1 crate under the mass limit moved, one cell away from the blast; the walled, pawn-backed, pit-backed and over-mass 1x1 crates and the larger fridge stayed on their cells and jolted (journal container line, action slide or jolt, and a drawn offset in the trace); offline: every storage def on the owner's list classed by the does-not-draw-contents rule or the tag (a modded open shelf open, a modded locker closed); the live list is the minimal list plus the census's provider mods",
    "tier_reason": "the throw, the landing and the scatter are runtime (PawnFlyer, map things, the explosion wave); the kernel selftest proves only the path maths",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -346,7 +347,8 @@
     "closed containers spill their goods",
     "the container never moves at all",
     "a container slides into a pit, a wall or onto a pawn",
-    "a container larger than 1x1 slides"
+    "a container larger than 1x1 slides",
+    "a storage def on his list misclassed because only hand-picked examples were checked"
    ],
    "red": "a build where a fridge's contents scatter, or a crate is shoved into a pit",
    "tier_proposed": "live_minimal",
@@ -381,7 +383,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "fire to bomb throw length ratio near 0.5; the modded explosion's journal strength percent is exactly 100 (unpatchedHarmfulPercent default); EMP, smoke, stun, extinguish and toxic gas each 0 throws and no request line",
+   "oracle_proposed": "fire to bomb throw length ratio near 0.5; the modded explosion's journal strength percent is exactly 100 (unpatchedHarmfulPercent default); EMP, smoke, stun, extinguish and toxic gas each 0 throws and no request line; the Bomb-child burst reads tuning source Bomb by inheritance at exactly 100 percent",
    "tier_reason": "the throw, the landing and the scatter are runtime (PawnFlyer, map things, the explosion wave); the kernel selftest proves only the path maths",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -393,12 +395,13 @@
    "leaf_kind": "experience",
    "clause_kind": "change",
    "experience": "Grenades, mortars and other bombs throw at full strength, fire and incendiary blasts at about half, and another mod's damaging explosion throws too, while the player sees EMP, smoke and other harmless bursts throw nothing.",
-   "scenario": "One colonist each beside a frag grenade, an incendiary shell, a modded damaging explosion, an EMP grenade, a smoke burst, a stun burst, an extinguish burst and a toxic gas burst, same distance; compare throw lengths and read each throw's strength from the journal.",
+   "scenario": "One colonist each beside a frag grenade, a burst of a damage type inheriting from Bomb (BombSuper), an incendiary shell, a modded damaging explosion, an EMP grenade, a smoke burst, a stun burst, an extinguish burst and a toxic gas burst, same distance; compare throw lengths and read each throw's strength from the journal.",
    "false_pass": [
     "fire blasts still throw nothing (the built force 0)",
     "other mods' blasts default to 0 percent",
     "a modded blast throws at some percent other than 100",
-    "EMP, smoke, stun, extinguish or toxic gas throws"
+    "EMP, smoke, stun, extinguish or toxic gas throws",
+    "a damage type inheriting from Bomb throws nothing"
    ],
    "red": "the built Flame force 0 and the 0 percent default for other mods",
    "tier_proposed": "live_minimal",
@@ -486,7 +489,7 @@
    "bundle": "gas",
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "each tagged gas yields clump bursts; the census list matches the gases carrying the tag; control: an untagged gas lit the same way burns with no bursts",
+   "oracle_proposed": "each tagged gas yields clump bursts; the census list matches the gases carrying the tag; control: an untagged gas lit the same way burns with no bursts; offline: every gas def our mods define appears in the census table, tagged or with its reason",
    "tier_reason": "the throw, the landing and the scatter are runtime (PawnFlyer, map things, the explosion wave); the kernel selftest proves only the path maths",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -501,7 +504,8 @@
    "scenario": "Release the Cauldron's gas and each tagged gas from the census in turn over loose goods and light it.",
    "false_pass": [
     "only one test gas is wired",
-    "the Cauldron's gas burns as plain fire with no bursts"
+    "the Cauldron's gas burns as plain fire with no bursts",
+    "a gas of ours never entered in the census"
    ],
    "red": "a build where the Cauldron's gas carries no flammable tag",
    "tier_proposed": "live_minimal",
@@ -511,7 +515,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "proof scenes cover_breaks and cover_breaks_fire: cover destroyed, one descent recorded each; gas, EMP, smoke and stun lanes: cover hit points unchanged, no descent",
+   "oracle_proposed": "proof scenes cover_breaks and cover_breaks_fire: cover destroyed, one descent recorded each; the grenade beside the ninth cover: cover destroyed, one descent; the raider gas-shoved onto the eighth cover stands on it, its hit points unchanged, no descent; gas, EMP, smoke and stun lanes: cover hit points unchanged, no descent",
    "tier_reason": "the throw, the landing and the scatter are runtime (PawnFlyer, map things, the explosion wave); the kernel selftest proves only the path maths",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -522,13 +526,14 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "preserve",
-   "experience": "A damaging or fire blast over a covered pit breaks its cover and the pawn standing on it falls in, while the player sees a gas burst or an EMP, smoke or stun burst leave a cover whole, and a pawn a gas burst shoves onto a cover stands on it, the cover unbroken.",
-   "scenario": "A raider on a covered pit; a grenade lands on the cover; a second raider on a second covered pit under an incendiary shell; separately a gas cloud bursts over a third covered pit and an EMP grenade, a smoke grenade and a stun burst over three more, each with a raider on it.",
+   "experience": "A damaging or fire blast that reaches a covered pit, landing on it or beside it within its radius, breaks its cover and the pawn standing on it falls in, while the player sees a gas burst or an EMP, smoke or stun burst leave a cover whole, and a pawn a gas burst shoves onto a cover stands on it, the cover unbroken.",
+   "scenario": "A raider on a covered pit; a grenade lands on the cover; a second raider on a second covered pit under an incendiary shell; separately a gas cloud bursts over a third covered pit and an EMP grenade, a smoke grenade and a stun burst over three more, each with a raider on it; a raider one cell off an eighth cover shoved onto it by a gas burst; a grenade landing two cells from a ninth covered pit, its cover inside the radius.",
    "false_pass": [
     "the cover breaks but the raider stands in the air",
     "a gas burst also breaks covers",
     "a fire blast leaves the cover whole",
-    "an EMP, smoke or stun burst breaks a cover"
+    "an EMP, smoke or stun burst breaks a cover",
+    "only a blast centred on the cover breaks it"
    ],
    "red": "a build where covers survive a grenade, or crack under a gas burst",
    "tier_proposed": "live_minimal",
@@ -638,7 +643,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "proof scene settings_sweep: each changed setting changes only its own outcome, every line on the page in turn (strength, maximum, the cap scale on an own maximum, the other-mod percent, each toggle, the mass limit with a 65 kg good, the heavy threshold, sandbags, impact on and per cell, landing stun, recovery window, door damage, throw into pits, shield debit, debug vectors, each new part's switch); the page and the saved settings hold no per-explosion or per-tick cap line; control: the default run before and after the sweep gives the same results",
+   "oracle_proposed": "proof scene settings_sweep: each changed setting changes only its own outcome, every line on the page in turn (strength, maximum, the cap scale on an own maximum, the other-mod percent, each toggle, the mass limit with a 65 kg good, the heavy threshold, sandbags, impact on and per cell, landing stun, recovery window, door damage, throw into pits, shield debit, debug vectors, each new part's switch); the page and the saved settings hold no per-explosion or per-tick cap line; control: the default run before and after the sweep gives the same results; the swept list equals the settings class's saved fields by reflection; goods in the air off: loose goods unthrown with a skip line and no hop; closed guard off: container goods thrown like loose goods",
    "tier_reason": "the throw, the landing and the scatter are runtime (PawnFlyer, map things, the explosion wave); the kernel selftest proves only the path maths",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -659,7 +664,9 @@
    "false_pass": [
     "a setting saves but changes nothing",
     "switching one part off breaks another",
-    "the sweep leaves a setting changed"
+    "the sweep leaves a setting changed",
+    "a page line the sweep never changes",
+    "a part switched off falls back to the rejected hop"
    ],
    "red": "a build where a setting is ignored or a new part cannot be switched off",
    "tier_proposed": "live_minimal",
