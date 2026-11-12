@@ -1,0 +1,1 @@
+A2 L2 needs the live game, which the offline lane may not drive: run `showcase_titan_live.py` then `showcase_plants_live.py` (Windows python, restored disposable sites) in a bridge lane; A1 is done and published (b231dc0b0b32), item is needs=bridge.

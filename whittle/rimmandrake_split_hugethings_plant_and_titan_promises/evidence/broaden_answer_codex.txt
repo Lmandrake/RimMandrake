@@ -1,0 +1,13 @@
+codex
+1. **Walk through the trunk after a route is already planned.** A colonist is heading through a doorway when the plant grows across it; a fresh demo may hide stale pathing. **Exposing observation:** the colonist passes through the solid trunk instead of stopping or rerouting.
+
+2. **Try every part of the giant plant.** Click the cap’s edge, walk beneath its overhang, and approach the roots from several directions. Visual scale, selection, and collision can disagree. **Exposing observation:** a visible cap pixel cannot select the plant, open ground beneath it blocks movement, or a solid root permits passage.
+
+3. **Make the titan take an unscripted route.** Bait or reroute it through player-built walls and furniture away from the showcase lane. The driver could manufacture destruction at predetermined locations. **Exposing observation:** its broad body visibly intersects an obstacle without a physical consequence.
+
+4. **Cut down the doorway plant, then rebuild and replant there.** A demonstration can show sealing while missing cleanup after removal. **Exposing observation:** the cleared doorway remains impassable after the plant is gone.
+
+5. **Interrupt the titan sequence between crossing and death.** Keep it alive, move it elsewhere, or remove its corpse before the expected crowd arrives. Phase order alone does not prove the crowd comes for remains. **Exposing observation:** the same crowd arrives at the showcase marker on schedule despite no remains being there.
+
+6. **Repeat in a loaded, cluttered save without the driver.** Save and reload midway through growth or titan movement, with ordinary jobs and other mods active. Restoring a pristine site can conceal missing initialization or lost state. **Exposing observation:** after reload, the same-sized plant or titan has different collision or selection behavior.
+tokens used
