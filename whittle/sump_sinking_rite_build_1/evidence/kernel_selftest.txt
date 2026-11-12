@@ -1,0 +1,64 @@
+staging src/RimUtinni/Rites/Source/SelfTest/RimMandrake.Utinni.Rites.SelfTest.csproj -> D:\ClaudeWork\rimmandrake\build\SinkingKernelSelfTest
+  src/RimUtinni/Rites/Source/
++ dotnet.exe build D:\ClaudeWork\rimmandrake\build\SinkingKernelSelfTest\src\RimUtinni\Rites\Source\SelfTest\RimMandrake.Utinni.Rites.SelfTest.csproj -c Release
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  RimMandrake.Utinni.Rites.SelfTest -> D:\ClaudeWork\rimmandrake\build\SinkingKernelSelfTest\src\RimUtinni\Rites\Source\SelfTest\bin\Release\net8.0\RimMandrake.Utinni.Rites.SelfTest.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:00.82
+PASS  kernel_guards (Source/Kernel engine-free, compiled into the mod and the selftest)
+PASS  sinking/pitch_bitumen_is_pitch
+PASS  sinking/pitch_korveth_is_pitch
+PASS  sinking/dig_find_is_dig_find
+PASS  sinking/placeholder_chunk_is_other
+PASS  sinking/goods_is_other
+PASS  sinking/refused_pawn_with_reason
+PASS  sinking/refused_corpse_with_reason
+PASS  sinking/refused_below_floor_with_reason
+PASS  sinking/refusal_applies_no_effect
+PASS  sinking/pitch_rider_beast_lull_15_days
+PASS  sinking/beast_lull_refuses_construction
+PASS  sinking/beast_lull_refuses_dig
+PASS  sinking/beast_lull_refuses_pump
+PASS  sinking/beast_lull_explosion_wakes
+PASS  sinking/no_lull_every_cause_wakes
+PASS  sinking/dig_find_trap_counter_reads_3
+PASS  sinking/three_trap_rolls_fizzle_counter_0
+PASS  sinking/fourth_trap_roll_arms_normally
+PASS  sinking/trap_count_setting_honoured
+PASS  sinking/pitch_does_not_set_trap_counter
+PASS  sinking/hold_off_is_5x_the_normal_interval
+PASS  sinking/hold_off_follows_the_interval_setting
+PASS  sinking/hold_off_follows_the_multiplier_setting
+PASS  sinking/next_imperial_incident_moved_out_5x
+PASS  sinking/past_incident_tick_left_alone
+PASS  sinking/warning_never_after_its_raid
+PASS  sinking/move_out_saturates_not_overflows
+PASS  sinking/raid_lull_days_and_chance
+PASS  sinking/seeded_raid_roll_reads_lowered_chance
+PASS  sinking/raid_lull_strength_setting_honoured
+PASS  sinking/ishko_delta_small_at_floor_value
+PASS  sinking/ishko_delta_large_at_3000
+PASS  sinking/ishko_delta_lerps_between
+PASS  sinking/ishko_delta_is_positive_on_every_offering
+PASS  sinking/ishko_tag_is_the_sinking
+PASS  sinking/ownership_item_is_erased
+PASS  sinking/ownership_colonist_untouched_by_default
+PASS  sinking/ownership_foreign_owned_or_other_map_untouched
+PASS  sinking/ownership_exclusion_list_parsed
+PASS  sinking/ownership_erase_on_every_offering
+PASS  sinking/toggle_holdOffEnabled
+PASS  sinking/toggle_raidLullEnabled
+PASS  sinking/toggle_ownershipEraseEnabled
+PASS  sinking/toggle_beastLullEnabled
+PASS  sinking/toggle_trapFizzleEnabled
+PASS  sinking/toggle_riteEnabled
+PASS  sinking/toggle_trapFizzleEnabled_off_mid_count_arms
+PASS  sinking/toggle_beastLullEnabled_off_mid_lull_wakes
+PASS  sinking/toggle_raidLullEnabled_off_mid_lull_full_chance
+sinking kernel: 49 passed, 0 failed
+PASS selftest_sinking_kernel

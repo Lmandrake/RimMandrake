@@ -144,7 +144,10 @@ from modcheck import Suite, ExpectationFailed, shipped_defs
 suite = Suite("Rites")
 # Ninefold's settings (RM_NinefoldSettings, Source/RM_NinefoldMod.cs): the four its suite covers, unchanged by the fold.
 suite.toggles = ["engineEnabled", "firstContactLettersEnabled",
-                 "eventMagnitudeMultiplier", "moodWalkMultiplier"]
+                 "eventMagnitudeMultiplier", "moodWalkMultiplier",
+                 # SUMP_SINKING_RITE_BUILD_1: the Sinking's six (chain "sinking" below)
+                 "sinkingEnabled", "sinkingHoldOffEnabled", "sinkingRaidLullEnabled",
+                 "sinkingOwnershipEraseEnabled", "sinkingBeastLullEnabled", "sinkingTrapFizzleEnabled"]
 
 
 @suite.chain("conduit_choir_gated_by_hidden_prerequisite")
@@ -784,3 +787,189 @@ def mood_walk_tick(t):
     _devmode_on(t)
     with t.component("mood_walk_advances", toggle="moodWalkMultiplier"):
         raise ExpectationFailed("UNMEASURED: no read of the walking pawn's mood exists, so the row cannot say it advances")
+
+
+# ------------------------------------------------------------------ the Sinking (SUMP_SINKING_RITE_BUILD_1)
+# Live reads of Source/Sinking/SinkingProbe.cs through jawa/static_call. Written offline, never run by the builder: the
+# first live run owes the corrections (tick tolerances, whether EnvironmentalHazards / EmpirePursuit / RimProperty /
+# BeskarArmorer are in the load order; each read that needs an absent mod reads UNMEASURED, never PASS).
+SK_TYPE = "RimMandrake.Utinni.Rites.SinkingProbe"
+SK_SETTINGS = "RimMandrake.Utinni.Rites.RM_NinefoldSettings"
+# RM_Bitumen is 1.8 silver each, so 50 clears the 50-silver floor; RM_PreservedDrawJoint is a real row of TheSump's
+# RM_DigStratumTable (the chunk rows are placeholders and may sit under the floor).
+SK_PITCH, SK_FIND, SK_PLAIN, SK_CLAIMED = "RM_Bitumen", "RM_PreservedDrawJoint", "Gold", "Steel"
+SK_PITCH_N, SK_FIND_N = 50, 1
+SK_TOGGLES = ("sinkingEnabled", "sinkingHoldOffEnabled", "sinkingRaidLullEnabled",
+              "sinkingOwnershipEraseEnabled", "sinkingBeastLullEnabled", "sinkingTrapFizzleEnabled")
+
+
+def _sk(t, method, *args):
+    r = t.bridge_call("jawa/static_call", type=SK_TYPE, method=method, args="|".join(str(a) for a in args))
+    return str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+
+
+def _sk_fields(line):
+    """'INFO a=1 b=x' -> {'a': '1', 'b': 'x'}."""
+    return dict(p.split("=", 1) for p in line.split() if "=" in p)
+
+
+def _sk_days(line, name):
+    v = _sk_fields(line).get(name, "none")
+    return None if v == "none" else float(v.rstrip("d"))
+
+
+def _sk_need(t, line, what):
+    if not line or line.startswith("FAIL"):
+        _unmeasured(t, "%s gave no reading: %r" % (what, line[:160]))
+    return line
+
+
+def _sk_spawn(t, def_name, count):
+    line = _sk_need(t, _sk(t, "SpawnOffering", "current", def_name, count), "SpawnOffering " + def_name)
+    return _sk_fields(line)["id"]
+
+
+def _sk_sink(t, def_name, count):
+    """A fresh Sinking of `count` x `def_name` on clean conditions; returns the Sink line."""
+    _sk(t, "Reset", "current")
+    return _sk(t, "Sink", "current", _sk_spawn(t, def_name, count))
+
+
+def _sk_expect(cond, msg):
+    if not cond:
+        _fail(msg)
+
+
+@suite.chain("sinking")
+def sinking(t):
+    """Ishko's Sinking: a pitch offering lulls the bulges, a dig-find spoils the next three traps, any Sinking holds the
+    Empire off 5x (Heat untouched), lulls ordinary raids, books one Ishko delta tagged "The Sinking" and wipes foreign
+    claims; people and bodies are refused, participants get nothing, and each toggle off removes exactly its effect."""
+    with t.component("live_game_present", beyond_toggle=True):
+        if not _live(t):
+            _unmeasured(t, "sinking needs a live game with mandrake.rut.rites (Ideology on), a map with free colonists and "
+                           "jawa/static_call; the pitch/dig/claim/ladder reads also need EnvironmentalHazards, RimProperty "
+                           "and EmpirePursuit loaded")
+        _devmode_on(t)
+        _sk_expect(_sk(t, "GrantRite").startswith("PASS"), "the Sinking precept could not be granted")
+
+    with _independent(t, "pitch_offering_beast_lull_15_days"):
+        if _live(t):
+            line = _sk_sink(t, SK_PITCH, SK_PITCH_N)
+            _sk_expect(line.startswith("PASS") and "rider=BeastLull" in line, "pitch Sinking: %s" % line)
+            days = _sk_days(_sk(t, "Conditions", "current"), "RM_TarLull_Beast")
+            _sk_expect(days is not None and 14.5 <= days <= 15.01, "RM_TarLull_Beast holds %r days, not ~15" % days)
+    with _independent(t, "beast_lull_refuses_construction_wake"):
+        if _live(t):
+            _sk_expect("allowed=False" in _sk(t, "ProbeWake", "current", "Construction"), "a construction wake was allowed under the lull")
+    with _independent(t, "beast_lull_lets_an_explosion_wake_the_bulge"):
+        if _live(t):
+            t.spawn("RM_BeastBulge")
+            line = _sk_need(t, _sk(t, "ExplodeAtBulge", "current"), "ExplodeAtBulge")
+            _sk_expect(line.startswith("PASS"), "a GenExplosion did not wake the bulge: %s" % line)
+
+    with _independent(t, "dig_find_offering_trap_counter_3"):
+        if _live(t):
+            line = _sk_sink(t, SK_FIND, SK_FIND_N)
+            _sk_expect(line.startswith("PASS") and "rider=TrapFizzle" in line, "dig-find Sinking: %s" % line)
+            _sk_expect(_sk_fields(_sk(t, "TrapCounter", "current")).get("traps") == "3", "the trap counter does not read 3")
+    with _independent(t, "three_trap_rolls_fizzle_fourth_arms"):
+        if _live(t):
+            for i in range(3):
+                f = _sk_fields(_sk_need(t, _sk(t, "ForceTrapRoll", "current"), "ForceTrapRoll"))
+                _sk_expect(f.get("armed") == "0", "trap roll %d armed a shaft: %r" % (i + 1, f))
+            _sk_expect(_sk_fields(_sk(t, "TrapCounter", "current")).get("traps") == "0", "the counter is not 0 after three fizzles")
+            f = _sk_fields(_sk(t, "ForceTrapRoll", "current"))
+            _sk_expect(f.get("armed", "0") != "0", "the fourth trap roll did not arm: %r" % f)
+            _sk(t, "ClearTraps", "current")
+
+    # any Sinking: a plain valuable, with a foreign Stolen claim on a colony item and one on a colonist
+    timers_before, heat_before, hediffs_before, claimed, colonist, colonist_claims_before, sink_line = {}, "", None, "", "", "", ""
+    with _independent(t, "any_sinking_imperial_hold_off_5x"):
+        if _live(t):
+            _sk(t, "Reset", "current")
+            timers_before = _sk_fields(_sk(t, "ImperialTimers", "current"))
+            heat_before = _sk(t, "HeatSum")
+            hediffs_before = _sk_fields(_sk(t, "HediffTotal", "current")).get("hediffs")
+            claimed = _sk_spawn(t, SK_CLAIMED, 50)
+            _sk_need(t, _sk(t, "SeedForeignClaim", claimed), "SeedForeignClaim (RimProperty)")
+            colonist = _sk_fields(_sk_need(t, _sk(t, "FirstColonist", "current"), "FirstColonist"))["id"]
+            _sk(t, "SeedForeignClaim", colonist)
+            colonist_claims_before = _sk(t, "ClaimsOf", colonist)
+            sink_line = _sk(t, "Sink", "current", _sk_spawn(t, SK_PLAIN, 100))
+            _sk_expect(sink_line.startswith("PASS"), "the plain Sinking failed: %s" % sink_line)
+            days = _sk_days(_sk(t, "Conditions", "current"), "RUT_ImperialHoldOff")
+            _sk_expect(days is not None and 4.9 <= days <= 5.01, "RUT_ImperialHoldOff holds %r days, not 5x the 1-day interval" % days)
+    with _independent(t, "next_imperial_incident_moved_out_5x"):
+        if _live(t):
+            after = _sk_fields(_sk(t, "ImperialTimers", "current"))
+            if "raid" not in timers_before or "raid" not in after:
+                _unmeasured(t, "no EmpirePursuit ladder timer on this map")
+            now0, raid0 = int(timers_before["now"]), int(timers_before["raid"])
+            raid1 = int(after["raid"])
+            want = now0 + 5 * (raid0 - now0)
+            _sk_expect(raid0 > now0 and abs(raid1 - want) <= 2 * max(1, raid0 - now0) // 100 + 5,
+                       "imperial raid %d -> %d, wanted ~%d" % (raid0, raid1, want))
+    with _independent(t, "heat_events_unchanged"):
+        if _live(t):
+            if "heatEvents" not in heat_before:
+                _unmeasured(t, "BeskarArmorer's Heat ledger is not loaded")
+            _sk_expect(_sk(t, "HeatSum") == heat_before, "Heat changed across the Sinking: %s -> %s" % (heat_before, _sk(t, "HeatSum")))
+    with _independent(t, "raid_lull_holds_and_lowers_a_seeded_roll"):
+        if _live(t):
+            days = _sk_days(_sk(t, "Conditions", "current"), "RUT_TarLull_Raids")
+            _sk_expect(days is not None and 9.9 <= days <= 10.01, "RUT_TarLull_Raids holds %r days, not 10" % days)
+            f = _sk_fields(_sk(t, "RaidRoll", "current", 1234))
+            _sk_expect(f.get("mult") == "0.5", "a seeded non-Empire raid roll reads chance x%s, not x0.5" % f.get("mult"))
+    with _independent(t, "one_ishko_delta_tagged_the_sinking"):
+        if _live(t):
+            line = _sk(t, "IshkoDeltas")
+            _sk_expect("count=1" in line and "Ishko>The Sinking>" in line, "Ninefold deltas: %s" % line)
+    with _independent(t, "foreign_claim_wiped_colonist_untouched_letter_names_it"):
+        if _live(t):
+            claims = _sk(t, "ClaimsOf", claimed)
+            _sk_expect(claims.startswith("claims=1 ") and "Stolen" not in claims, "the claimed item still carries %s" % claims)
+            _sk_expect(_sk(t, "ClaimsOf", colonist) == colonist_claims_before, "a colonist's records changed")
+            _sk_expect("Steel" in _sk(t, "LastLetter"), "the letter does not name the cleansed steel")
+
+    with _independent(t, "offering_destroyed_refusals_and_no_participant_effect"):
+        if _live(t):
+            _sk_expect("destroyed=True" in sink_line, "the offering was not destroyed: %s" % sink_line)
+            for kind in ("pawn", "corpse"):
+                r = _sk(t, "RefuseKind", "current", kind)
+                _sk_expect(r.startswith("PASS refused") and ":" in r, "a %s was not refused with a reason: %s" % (kind, r))
+            _sk_expect(_sk_fields(_sk(t, "HediffTotal", "current")).get("hediffs") == hediffs_before, "a colonist gained a hediff")
+
+    # each toggle off removes exactly its effect; the rest stay
+    effects = {"sinkingHoldOffEnabled": ("RUT_ImperialHoldOff", SK_PLAIN),
+               "sinkingRaidLullEnabled": ("RUT_TarLull_Raids", SK_PLAIN),
+               "sinkingBeastLullEnabled": ("RM_TarLull_Beast", SK_PITCH)}
+    for field in SK_TOGGLES:
+        with t.component("toggle_off_" + field, toggle=field):
+            if not _live(t):
+                continue
+            t.set_setting(SK_SETTINGS, {field: False})
+            try:
+                if field == "sinkingEnabled":
+                    _sk_expect(_sk_sink(t, SK_PLAIN, 100).startswith("INFO refused"), "the rite ran with sinkingEnabled off")
+                elif field in effects:
+                    cond, offering = effects[field]
+                    line = _sk_sink(t, offering, 100 if offering == SK_PLAIN else SK_PITCH_N)
+                    conds = _sk(t, "Conditions", "current")
+                    _sk_expect(line.startswith("PASS") and _sk_days(conds, cond) is None, "%s off still started %s: %s" % (field, cond, conds))
+                    others = [c for c in ("RUT_ImperialHoldOff", "RUT_TarLull_Raids") if c != cond]
+                    _sk_expect(all(_sk_days(conds, c) is not None for c in others), "%s off removed more than its effect: %s" % (field, conds))
+                elif field == "sinkingOwnershipEraseEnabled":
+                    item = _sk_spawn(t, SK_CLAIMED, 50)
+                    _sk_need(t, _sk(t, "SeedForeignClaim", item), "SeedForeignClaim (RimProperty)")
+                    _sk_sink(t, SK_PLAIN, 100)
+                    _sk_expect("Stolen" in _sk(t, "ClaimsOf", item), "the foreign claim went with the erase toggle off")
+                    _sk_expect(_sk_days(_sk(t, "Conditions", "current"), "RUT_ImperialHoldOff") is not None, "the erase toggle removed the hold-off too")
+                elif field == "sinkingTrapFizzleEnabled":
+                    _sk_sink(t, SK_FIND, SK_FIND_N)
+                    f = _sk_fields(_sk_need(t, _sk(t, "ForceTrapRoll", "current"), "ForceTrapRoll"))
+                    _sk_expect(f.get("armed", "0") != "0", "a trap fizzled with the fizzle toggle off: %r" % f)
+                    _sk(t, "ClearTraps", "current")
+            finally:
+                t.set_setting(SK_SETTINGS, {field: True})
+

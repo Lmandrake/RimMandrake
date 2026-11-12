@@ -17,6 +17,9 @@ namespace RimMandrake.Utinni.Rites.SelfTest
                     Console.WriteLine(args[k] + "\t" + (NinefoldLegacyTypesKernel.MapTypeName(args[k]) ?? "-"));
                 return 0;
             }
+            // SUMP_SINKING_RITE_BUILD_1: the Sinking kernel cases (one PASS/FAIL line each)
+            if (Array.IndexOf(args, "--sinking") >= 0)
+                return SinkingKernelTests.Run() ? 0 : 1;
             double scale = 1;
             int i = Array.IndexOf(args, "--fuzz-scale");
             if (i >= 0) scale = double.Parse(args[i + 1], System.Globalization.CultureInfo.InvariantCulture);

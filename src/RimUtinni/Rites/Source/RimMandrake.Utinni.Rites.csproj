@@ -47,6 +47,9 @@
   <ItemGroup>
     <!-- the offline fuzz project lives under Source/SelfTest; it must never compile into the mod -->
     <Compile Remove="SelfTest\**" />
+    <!-- Source/Kernel is listed by name so lint_kernel_guards sees each kernel file compiled into the mod -->
+    <Compile Remove="Kernel\**" />
+    <Compile Include="Kernel\SinkingKernel.cs" />
     <Compile Include="..\..\..\RimMandrake\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="..\..\..\RimMandrake\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
     <Compile Include="..\..\..\RimMandrake\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />

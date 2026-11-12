@@ -1,0 +1,12 @@
+  src/RimMandrake/_Shared/HarmonyResilience/
++ dotnet.exe build D:\ClaudeWork\rimmandrake\build\Rites\src\RimUtinni\Rites\Source\RimMandrake.Utinni.Rites.csproj -c Release
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  RimMandrake.Utinni.Rites -> D:\ClaudeWork\rimmandrake\build\Rites\src\RimUtinni\Rites\Assemblies\RimMandrake.Utinni.Rites.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:02.73
+BUILT src/RimUtinni/Rites/Assemblies/RimMandrake.Utinni.Rites.dll (source b5357451c8aa+dirty)

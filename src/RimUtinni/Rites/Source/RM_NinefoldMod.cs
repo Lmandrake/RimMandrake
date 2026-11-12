@@ -74,6 +74,24 @@ namespace RimMandrake.Utinni.Rites
         // finds no eligible machine, departure moves no favour.
         public static bool offeringsEnabled = true;
 
+        // SUMP_SINKING_RITE_BUILD_1: the Sinking (Ishko's rite at the tar). Read through SinkingGlue.Config() into
+        // Kernel/SinkingKernel.cs, which decides every effect. The rite never lowers Imperial Heat.
+        public static bool sinkingEnabled = true;
+        public static bool sinkingHoldOffEnabled = true;
+        public static bool sinkingRaidLullEnabled = true;
+        public static bool sinkingOwnershipEraseEnabled = true;
+        public static bool sinkingBeastLullEnabled = true;
+        public static bool sinkingTrapFizzleEnabled = true;
+        public static float sinkingValueFloor = 50f;
+        public static float sinkingHoldOffMultiplier = 5f;
+        public static float sinkingNormalHoldOffDays = 1f;
+        public static float sinkingRaidLullDays = 10f;
+        public static float sinkingRaidLullStrength = 0.5f;
+        public static float sinkingBeastLullDays = 15f;
+        public static int sinkingTrapCount = 3;
+        public const string SinkingOwnershipExclusionsDefault = "Humanlike";
+        public static string sinkingOwnershipExclusions = SinkingOwnershipExclusionsDefault;
+
         public override void ExposeData()
         {
             RimMandrake.Shared.PatchApplier.BeforeExpose();
@@ -85,6 +103,20 @@ namespace RimMandrake.Utinni.Rites
             Scribe_Values.Look(ref favourOddsEnabled, "favourOddsEnabled", true);
             Scribe_Values.Look(ref favourStrength, "favourStrength", 1f);
             Scribe_Values.Look(ref offeringsEnabled, "offeringsEnabled", true);
+            Scribe_Values.Look(ref sinkingEnabled, "sinkingEnabled", true);
+            Scribe_Values.Look(ref sinkingHoldOffEnabled, "sinkingHoldOffEnabled", true);
+            Scribe_Values.Look(ref sinkingRaidLullEnabled, "sinkingRaidLullEnabled", true);
+            Scribe_Values.Look(ref sinkingOwnershipEraseEnabled, "sinkingOwnershipEraseEnabled", true);
+            Scribe_Values.Look(ref sinkingBeastLullEnabled, "sinkingBeastLullEnabled", true);
+            Scribe_Values.Look(ref sinkingTrapFizzleEnabled, "sinkingTrapFizzleEnabled", true);
+            Scribe_Values.Look(ref sinkingValueFloor, "sinkingValueFloor", 50f);
+            Scribe_Values.Look(ref sinkingHoldOffMultiplier, "sinkingHoldOffMultiplier", 5f);
+            Scribe_Values.Look(ref sinkingNormalHoldOffDays, "sinkingNormalHoldOffDays", 1f);
+            Scribe_Values.Look(ref sinkingRaidLullDays, "sinkingRaidLullDays", 10f);
+            Scribe_Values.Look(ref sinkingRaidLullStrength, "sinkingRaidLullStrength", 0.5f);
+            Scribe_Values.Look(ref sinkingBeastLullDays, "sinkingBeastLullDays", 15f);
+            Scribe_Values.Look(ref sinkingTrapCount, "sinkingTrapCount", 3);
+            Scribe_Values.Look(ref sinkingOwnershipExclusions, "sinkingOwnershipExclusions", SinkingOwnershipExclusionsDefault);
             RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
@@ -101,8 +133,15 @@ namespace RimMandrake.Utinni.Rites
             return d;
         }
 
+        public static string[] SinkingSettingNames => new[] {
+            "sinkingEnabled", "sinkingHoldOffEnabled", "sinkingRaidLullEnabled", "sinkingOwnershipEraseEnabled",
+            "sinkingBeastLullEnabled", "sinkingTrapFizzleEnabled", "sinkingValueFloor", "sinkingHoldOffMultiplier",
+            "sinkingNormalHoldOffDays", "sinkingRaidLullDays", "sinkingRaidLullStrength", "sinkingBeastLullDays",
+            "sinkingTrapCount", "sinkingOwnershipExclusions" };
+
         public static void ResetFields(string[] names)
         {
+            if (System.Array.IndexOf(names, "sinkingOwnershipExclusions") >= 0) sinkingOwnershipExclusions = SinkingOwnershipExclusionsDefault;
             foreach (string n in names)
             {
                 FieldInfo f = typeof(RM_NinefoldSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
@@ -208,6 +247,39 @@ namespace RimMandrake.Utinni.Rites
                     "Machines the clan has just found are marked as fresh finds the Nine Faults "
                   + "rite may burn out, and a working building can be marked to leave behind at "
                   + "gravship departure. Off: no marks, no toggle, no favour moved by either.");
+                list.GapLine();
+            }
+
+            if (Group(list, "The Sinking (Ishko, at the tar)", RimMandrake.Shared.SettingScope.Now, SinkingSettingNames))
+            {
+                list.CheckboxLabeled("The Sinking", ref sinkingEnabled,
+                    "Ishko's rite: worshippers give an item to the tar. Off: the rite offers no target and does nothing.");
+                list.CheckboxLabeled("Imperial hold-off", ref sinkingHoldOffEnabled,
+                    "After a Sinking the Empire's next probe or raid on this map comes several times later than it would. "
+                  + "It never lowers Imperial Heat.");
+                list.Label("Hold-off multiplier: " + sinkingHoldOffMultiplier.ToString("0.0") + "x");
+                sinkingHoldOffMultiplier = list.Slider(sinkingHoldOffMultiplier, 1f, 10f);
+                list.Label("Normal Empire hold-off: " + sinkingNormalHoldOffDays.ToString("0.0") + " days");
+                sinkingNormalHoldOffDays = list.Slider(sinkingNormalHoldOffDays, 0.5f, 10f);
+                list.CheckboxLabeled("Raid lull (other factions)", ref sinkingRaidLullEnabled,
+                    "For a while, raids by factions other than the Empire are less likely on this map.");
+                list.Label("Raid lull: " + sinkingRaidLullDays.ToString("0") + " days, chance x" + (1f - sinkingRaidLullStrength).ToString("0.00"));
+                sinkingRaidLullDays = list.Slider(sinkingRaidLullDays, 1f, 30f);
+                sinkingRaidLullStrength = list.Slider(sinkingRaidLullStrength, 0f, 1f);
+                list.CheckboxLabeled("Ownership erased", ref sinkingOwnershipEraseEnabled,
+                    "Foreign claims on the colony's things on this map (stolen, disputed) are wiped. Faction suspicion is not.");
+                list.Label("Never erase claims on (Humanlike, Animal, Mech, Building, Item):");
+                sinkingOwnershipExclusions = list.TextEntry(sinkingOwnershipExclusions ?? "");
+                list.CheckboxLabeled("Pitch offering: the tar beasts sleep", ref sinkingBeastLullEnabled,
+                    "Sinking pitch lulls the tar bulges: building, digging and pumping do not wake them. An explosion still does.");
+                list.Label("Beast lull: " + sinkingBeastLullDays.ToString("0") + " days");
+                sinkingBeastLullDays = list.Slider(sinkingBeastLullDays, 1f, 30f);
+                list.CheckboxLabeled("Dig-find offering: the next traps fizzle", ref sinkingTrapFizzleEnabled,
+                    "Sinking a find from the dig makes the next dig traps fizzle harmlessly.");
+                list.Label("Traps that fizzle: " + sinkingTrapCount);
+                sinkingTrapCount = (int)list.Slider(sinkingTrapCount, 0f, 10f);
+                list.Label("Value floor: " + sinkingValueFloor.ToString("0") + " silver");
+                sinkingValueFloor = list.Slider(sinkingValueFloor, 0f, 1000f);
                 list.GapLine();
             }
 

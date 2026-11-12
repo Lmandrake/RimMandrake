@@ -26,6 +26,8 @@
     <Compile Include="..\SatiationBand.cs" />
     <Compile Include="..\NinefoldLegacyTypesKernel.cs" />
     <Compile Include="NinefoldFuzz.cs" />
+    <Compile Include="..\Kernel\SinkingKernel.cs" />
+    <Compile Include="SinkingKernelTests.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
 

@@ -152,7 +152,9 @@ DOTNET_LANE = {"selftest_atmosphericbase_kernel.py", "selftest_flowworks_kernel_
                # (coldstorage and spire build C#; vexxith runs flowworks_stock and the Cauldron fuzz).
                "selftest_coldstorage.py", "selftest_vexxith_uses.py", "selftest_spire_one_building.py",
                # RELENTLESS_FIX_CHECKBOX_TEST_SERIAL_LANE: its E4 row builds ColdStorage with winbuild.py (dotnet.exe)
-               "selftest_relentless_checkbox.py"}
+               "selftest_relentless_checkbox.py",
+               # SUMP_SINKING_RITE_BUILD_1: builds the Rites selftest with dotnet.exe
+               "selftest_sinking_kernel.py"}
 
 
 def _lane_of(path: Path):
