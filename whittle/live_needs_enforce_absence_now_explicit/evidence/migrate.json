@@ -1773,18 +1773,11 @@
   "without": []
  },
  {
-  "add": [
-   {
-    "at": "About.xml of EggReckoning",
-    "line": "EggReckoning needs mandrake.rm.weathersuite through mandrake.rut.patches; modlist_swap --enable adds only immediate dependencies of a folder",
-    "mod": "mandrake.rm.weathersuite",
-    "src": "closure"
-   }
-  ],
+  "add": [],
   "conflict": null,
   "item": "RECKONING_HISTORYEVENT_REWIRE_OFF_QUESTEND",
   "named": [],
-  "warn": 1,
+  "warn": 2,
   "without": []
  },
  {

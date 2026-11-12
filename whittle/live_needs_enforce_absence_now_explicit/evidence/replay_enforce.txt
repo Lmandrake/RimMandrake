@@ -1,4 +1,4 @@
-$ python3 src/RimMandrake/rimflow/relentless_names.py replay --enforce --fixture src/RimMandrake/rimflow/fixtures/live_mods_replay.json --report whittle/live_needs_enforce_absence_now_explicit/evidence/replay_enforce_report.json
+$ python3 src/RimMandrake/rimflow/relentless_names.py replay --enforce --fixture src/RimMandrake/rimflow/fixtures/live_mods_replay.json --report whittle/live_needs_enforce_absence_now_explicit/evidence/replay_enforce_report.json   (2026-11-12T06:23:40Z)
 ENFORCE R1/R2 items right 17/20 (bar 17)  wrong additions 0  PASS proofs 50 (live list recorded for 23): gate additions 50 -> the run already held 24, the run did WITHOUT 0, unrecorded 26; refused by live-without 0  -> OK
   missed ART_OVERRIDE_FAMILY_SCRIPT_1: the planned load still lacks sarg.alphamemes, vanillaexpanded.vgeneticse
   missed TITANIC_BODYSIZE_TEST_RACE_1: the planned load still lacks neku.largepawns

@@ -42,7 +42,7 @@ WORLD_DECALS_BUILD_ATLAS_PIPELINE_ONCE +RimMandrake.Biomes (proof_cue) | src/Rim
 WORLD_DECALS_BUILD_ATLAS_PIPELINE_ONCE +RimMandrake.Biomes (proof_cue) | src/RimMandrake/BiomesShell/prove_world_decals_live.py:118 | B0 = "decals: 0 glyphs on 0 flat tiles of 0 biomes with an atlas (14 land biomes without one), 3 ms"
 flagged lines: 41 live-without lines in proofs now: 1 [('STILLSAND_RETURN_REMAINDER_1', ['mandrake.rut.patches'])]
 
-# Verdict (read line by line, 2026-11-12): none of the 41 flagged lines makes an addition contradict its proof's intent.
+# Verdict (read line by line, 2026-11-12): none of the flagged lines makes an addition contradict its proof's intent.
 # - the absence word names a DIFFERENT mod: MINES_SWAP (--without cain.mineshaft / leutiankane.mines2patchouterrim beside
 #   --needs mandrake.rm.mineshaft), VCE_CANFISH (--without vanillaexpanded.vcef beside --needs mandrake.rsw.cuisine),
 #   PLASTEEL/QUARRYSHARE/ROT_FAUNA/CANON_MATERIALS/WARCASKET (--absent <log string> after --needs <the added mod>);
@@ -52,4 +52,4 @@ flagged lines: 41 live-without lines in proofs now: 1 [('STILLSAND_RETURN_REMAIN
 # - QUICKTEST_POLICY_NRE_FULLLIST_1's "patches not loaded" is the FAIL its script reports when the added mod is ABSENT:
 #   the proof needs it.
 # So the migration's only live-without line stays STILLSAND_RETURN_REMAINDER_1's (mandrake.rut.patches), and migrate
-# reports 0 conflicts over 215 proofs.
+# reports 0 conflicts over 215 proofs (110 additions).

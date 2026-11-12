@@ -748,13 +748,47 @@ def needs(text, scripts, named, build, index, saves=None):
             warn.append(dict(a, why="index stale: %s" % index.stale_for(a["mod"])))
         else:
             add.append(a)
+    # a closure need is only as sure as the mod that hangs on it: one walked from a need that was degraded to a warning
+    # (a stale index, say) would make a warning-level inference load a mandatory dependency
+    sure_id = base_id | {one(a["mod"]) for a in add if a["src"] != "closure"}
+    for a in [a for a in add if a["src"] == "closure"]:
+        parent = a["at"][len("About.xml of "):] if a["at"].startswith("About.xml of ") else None
+        if parent and one(parent) not in sure_id:
+            add.remove(a)
+            warn.append(dict(a, why="the mod that needs it, %s, is itself only a warning" % parent))
     planned = list(base)
     for a in add:
         if a["mod"] not in planned and one(a["mod"]) not in {one(m) for m in planned}:
             planned.append(a["mod"])
+    deps = dep_closure(planned, index)
     conflict = [m for m in planned if one(m) in without_id]
+    # staging enables a mod with its About.xml dependencies, so a planned mod that hard-depends (at any depth) on a
+    # live-without mod puts that mod in the load too, or leaves a broken one: refused before the slot either way
+    conflict += ["%s (a hard dependency of %s)" % (d, via) for d, via in deps
+                 if one(d) in without_id or d in {pid_of(w, index) for w in without}]
     return {"planned": planned, "add": add, "warn": warn, "without": sorted(without),
-            "without_refused": wchk["refused"], "conflict": conflict}
+            "without_refused": wchk["refused"], "conflict": conflict, "deps": [d for d, _v in deps]}
+
+
+def dep_closure(mods, index):
+    """Planned mods -> [(dependency, the planned mod it hangs from)]: every About.xml hard dependency at any depth, as a
+    canonical name (a repo packageId as its folder), BASE ids left out, each once, planned mods themselves left out."""
+    one = _one(index)
+    have = {one(m) for m in mods} | {pid_of(m, index) for m in mods}
+    out, seen = [], set(have)
+    for m in mods:
+        queue = [m]
+        while queue:
+            cur = queue.pop(0)
+            for d in index.deps.get(one(cur), []) or index.deps.get(pid_of(cur, index), []) or \
+                    index.deps.get(cur, []):
+                d = one(d.lower())
+                if d in seen or str(d).lower().startswith(BASE):
+                    continue
+                seen.add(d)
+                out.append((d, m))
+                queue.append(d)
+    return out
 
 
 def read_head(path, n=262144):
@@ -784,8 +818,9 @@ def without_conflict(nd):
         parts.append("live-without names no mod this machine has: " + "; ".join(
             "%r %s" % (r["name"], r["why"]) for r in nd["without_refused"]))
     if nd["conflict"]:
-        parts.append("live-without %s, but the planned load holds it (the build's mods or live-mods); staging only "
-                     "enables, so this load cannot serve the proof" % ", ".join(nd["conflict"]))
+        parts.append("live-without %s, but the planned load holds it (the build's mods, live-mods, an inferred need, "
+                     "or a hard dependency staging enables with them); staging only enables, so this load cannot serve "
+                     "the proof" % ", ".join(nd["conflict"]))
     return "; ".join(parts) or None
 
 

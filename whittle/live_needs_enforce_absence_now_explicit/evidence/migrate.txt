@@ -1,4 +1,4 @@
-$ python3 src/RimMandrake/rimflow/relentless_names.py migrate --out whittle/live_needs_enforce_absence_now_explicit/evidence/migrate.json   (2026-11-12T06:13:57Z, books a4402e85f0)
+$ python3 src/RimMandrake/rimflow/relentless_names.py migrate --out whittle/live_needs_enforce_absence_now_explicit/evidence/migrate.json   (2026-11-12T06:23:44Z, books e306ca56e9 + this change)
 ADD ACC_BIOMES_FIXES_LIVE_RERUN_1 mandrake.rsw.swbestiary (proof_modcheck infrastructure/state/live_proofs: modcheck run LeaningScrub)
 ADD ACC_BIOMES_FIXES_LIVE_RERUN_1 mandrake.rm.weathersuite (proof_modcheck infrastructure/state/live_proofs: modcheck run LeaningScrub)
 ADD ARMOURY_PROJECTILE_DAMAGE_TOOL_1 mandrake.rm.gimmesomeslack (proof_modcheck infrastructure/state/live_proofs: modcheck run Armoury)
@@ -66,7 +66,6 @@ ADD QUARRY_DIG_FIX_VALIDATED_BUT_NEVER_FINISHES FlowWorks (proof_cli infrastruct
 ADD QUARRY_DIG_FIX_VALIDATED_BUT_NEVER_FINISHES mandrake.rm.flowworks (proof_modcheck infrastructure/state/live_proofs: modcheck run FlowWorks)
 ADD QUICKTEST_POLICY_NRE_FULLLIST_1 MandrakePatches (script_home src/RimMandrake/MandrakePatches/prove_null_thingclass_live.py:0)
 ADD QUICKTEST_POLICY_NRE_FULLLIST_1 mandrake.rm.patches (proof_cue infrastructure/state/live_proofs:1)
-ADD RECKONING_HISTORYEVENT_REWIRE_OFF_QUESTEND mandrake.rm.weathersuite (closure About.xml of EggReckoning)
 ADD RHOSSAK_MIGRATE_ROOTS_TAKE_HOLD mandrake.rm.flowworks (proof_modcheck infrastructure/state/live_proofs: modcheck run Cauldron)
 ADD RINDCOAT_TUNE_NEAR_IMMUNE_AFTER_ALL RimMandrake.Biomes (script_home src/RimMandrake/TerminalBiomes/prove_rindcoat_scald_live.py:0)
 ADD ROT_FAUNA_KIN_WIRING_1 mandrake.rut.patches (proof_cli infrastructure/state/live_proofs:1)
@@ -110,5 +109,5 @@ ADD WEEPINGSTONES_STOCK_JOB_LOOP_1 mandrake.rsw.swbestiary (proof_modcheck infra
 ADD WORLD_DECALS_BUILD_ATLAS_PIPELINE_ONCE RimMandrake.Biomes (proof_cue infrastructure/state/live_proofs:1)
 ADD XENO_HEADS_SCENE_PROVE_ALIENS_WEAR_THEM StarWarsRaces (script_path src/RimMandrake/Utils/art/xeno_heads_installed_check.py:27)
 ADD ZERSIUM_FORGE_BIOME_1 mandrake.rm.weathersuite (proof_modcheck infrastructure/state/live_proofs: modcheck run UtinniPatches)
-215 proofs, 82 with additions, 111 additions, 0 conflicts
+215 proofs, 81 with additions, 110 additions, 0 conflicts
 exit=0

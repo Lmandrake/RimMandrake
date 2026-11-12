@@ -447,6 +447,41 @@ def t_batch_split():
        g["inferred"])
 
 
+def t_dependency_conflict():
+    """live-without X against a planned mod that hard-depends on X (staging enables it with its About.xml dependencies):
+    refused before the slot, whether the mod is named, the build's, or inferred; a need degraded to a warning loads no
+    mandatory dependency. (BROADEN 2026-11-12: all three loads went through unrefused before.)"""
+    ix = index(defs=DEFS)
+    named = N.needs("live-without: Armoury\nlive-mods: UtinniPatches\n", {}, ["UtinniPatches"], [], ix)
+    ok(any("Armoury (a hard dependency of UtinniPatches)" == c for c in named["conflict"]) and
+       N.without_conflict(named), "a named mod whose immediate dependency is live-without is refused", named["conflict"])
+    build = N.needs("live-without: neronix17.toolbox\n", {}, [], ["UtinniPatches"], ix)
+    ok(any(c.startswith("neronix17.toolbox (a hard dependency of UtinniPatches)") for c in build["conflict"]),
+       "a build mod two hops above a live-without mod is refused", build["conflict"])
+    inf = N.needs("live-without: Armoury\nlive-proof A1: python3 src/RimMandrake/Utils/live_def_check.py --has "
+                  "ThingDef/RUT_PaleMoss\n", {}, [], [], ix)
+    ok("UtinniPatches" in added(inf) and N.without_conflict(inf) and "UtinniPatches" in N.without_conflict(inf),
+       "an INFERRED need that hangs on a live-without mod is refused, naming both", N.without_conflict(inf))
+    clean = N.needs("live-without: FlowWorks\nlive-mods: UtinniPatches\n", {}, ["UtinniPatches"], [], ix)
+    ok(clean["conflict"] == [] and N.without_conflict(clean) is None and clean["deps"] == ["Armoury"],
+       "a live-without mod outside the closure refuses nothing; the closure is reported", clean)
+    stale = N.needs("live-proof A1: python3 src/RimMandrake/Utils/live_def_check.py --has ThingDef/RUT_PaleMoss\n", {},
+                    [], [], index(defs=DEFS, stale={"UtinniPatches": "srchash differs"}))
+    ok(stale["add"] == [] and {a["mod"] for a in stale["warn"]} >= {"UtinniPatches", "ebsg.framework"} and
+       any("itself only a warning" in (a.get("why") or "") for a in stale["warn"]),
+       "a stale (warning-level) need adds none of its dependencies either", stale)
+    fresh = N.needs("live-proof A1: python3 src/RimMandrake/Utils/live_def_check.py --has ThingDef/RUT_PaleMoss\n", {},
+                    [], [], ix)
+    ok({"UtinniPatches", "ebsg.framework"} <= set(added(fresh)), "the same need, fresh, adds it and its closure", fresh)
+    fx = GapFx({"lead": ["KeelHoist"], "rider": ["FlowWorks"]})
+    fx.names_index = lambda: index(defs=DEFS)
+    g = R.batch_gap(fx, [("lead", "live-mods: UtinniPatches\n", "L"), ("rider", "live-without: neronix17.toolbox\n", "W")])
+    ok([x["item"] for x in g["split"]] == ["W"] and "neronix17.toolbox" in g["split"][0]["why"],
+       "a rider live-without what the leader's mod hangs on rides another load", g)
+    g = R.batch_gap(fx, [("rider", "live-without: neronix17.toolbox\n", "W"), ("lead", "live-mods: UtinniPatches\n", "L")])
+    ok([x["item"] for x in g["split"]] == ["L"], "the reverse order splits the needing rider off", g)
+
+
 def t_idempotent_and_run_row():
     ix = index(defs=DEFS)
     text = "live-proof A1: python3 src/RimMandrake/KeelHoist/p.py --needs 7f.alienworlds\n"
@@ -586,7 +621,8 @@ def main():
     for t in (t_resolve, t_blind_index, t_check_and_refusal, t_comment, t_advise, t_batch, t_preflight_names,
               t_one_resolver, t_fixture_roundtrip, t_typed_and_data, t_replay_strict, t_each_source,
               t_absence_gives_nothing, t_live_without, t_gate_enforces, t_srchash_stale, t_batch_split, t_idempotent_and_run_row,
-              t_pass_negative_control, t_load_intervals, t_census_split, t_running_ref_on_the_row):
+              t_pass_negative_control, t_load_intervals, t_census_split, t_running_ref_on_the_row,
+              t_dependency_conflict):
         t()
     print('{"ok": %d, "fails": %d}' % (n_ok, len(fails)))
     return 1 if fails else 0

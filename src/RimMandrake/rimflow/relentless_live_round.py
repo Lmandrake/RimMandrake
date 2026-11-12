@@ -666,7 +666,8 @@ def batch_gap(fx, builds):
     mods cannot be read rides without them and says so in `error`; the others still plan."""
     out = {"mods": [], "off": {}, "dll": [], "running": None, "error": None, "refused": [], "split": [], "inferred": {},
            "without": []}
-    mods, without = set(), {}      # without: {mod: the item that is live-without it}
+    mods, without, deps = set(), {}, set()      # without: {mod: the item that is live-without it}; deps: what
+    #                                                the union's mods hard-depend on (staging enables them too)
     for pos, b in enumerate(builds):
         sha, text, item = (tuple(b) + (None,))[:3]
         # LIVE_MODS_ENFORCE_ROLL_CALL_BEFORE_BOARDING: each build's names are resolved BEFORE the union. A rider naming
@@ -684,15 +685,18 @@ def batch_gap(fx, builds):
             continue
         nd = infer(fx, text, chk["mods"], build)
         own = set(build) | set(chk["mods"]) | {a["mod"] for a in (nd or {}).get("add") or []}
+        hangs = set((nd or {}).get("deps") or [])     # what staging enables with them (About.xml, any depth)
         mine = set((nd or {}).get("without") or [])
-        # LIVE_NEEDS_ENFORCE_ABSENCE_NOW_EXPLICIT: a rider needing X never rides with one that is live-without X; staging
-        # only enables, so it waits for a load of its own (the leader rides first; its own conflict is its preflight's)
-        clash = sorted((own & set(without)) | (mine & mods)) if pos else []
+        # LIVE_NEEDS_ENFORCE_ABSENCE_NOW_EXPLICIT: a rider needing X (or a mod that hard-depends on X) never rides with
+        # one that is live-without X; staging only enables, so it waits for a load of its own (the leader rides first; its
+        # own conflict is its preflight's)
+        clash = sorted(((own | hangs) & set(without)) | (mine & (mods | deps))) if pos else []
         if clash:
             out["split"].append({"item": item, "pos": pos, "why": "live-without conflict on %s with %s" % (
                 ", ".join(clash), ", ".join(sorted({without.get(m) or "the load's other riders" for m in clash})))})
             continue
         mods |= own
+        deps |= hangs
         for m in mine:
             without.setdefault(m, item)
         if nd is not None and nd["add"]:

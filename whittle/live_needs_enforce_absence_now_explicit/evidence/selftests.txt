@@ -1,12 +1,23 @@
-# 2026-11-12T06:17:14Z books a4402e85f0 + working tree
+# 2026-11-12T06:24:24Z books e306ca56e9 + working tree (this round's change)
              PASS census command: no file is UNMEASURED with exit 2, and no numbers
              FAIL: 1 failed
              FAIL proofs: every real live_proofs file is .txt/.criteria (or a proof's .py/.json) and every line parses: ['ACC_BIOMES_FIXES_LIVE_RERUN_1.criteria', 'ACC_BIOMES_FIXES_LIVE_RERUN_1.txt', 'ARMOURY_PROJECTILE_DAMAGE_TOOL_1.txt'] ['GSS_WATER_STUB_FIX_PASSED_LAST_WEEK.criteria: - O1 L0: GSS SelfTest WaterStubChecks green (772/772): old r', 'GSS_WATER_STUB_FIX_PASSED_LAST_WEEK.criteria: - A1 GREEN-MIN: on the fw_gss list (FlowWorks deep swim on),']
 PASS          0.7s  src/RimMandrake/rimflow/selftest_relentless_needs.py
 
-PASS 3/4  FAIL 1/4  UNMEASURED 0/4  CRASH 0/4  SKIPPED 0/4  (wall 9.6s) — contained in rm-harness.slice (max 12G), 1 workers
+PASS 3/4  FAIL 1/4  UNMEASURED 0/4  CRASH 0/4  SKIPPED 0/4  (wall 9.4s) — contained in rm-harness.slice (max 12G), 1 workers
 FAIL (1/4): src/RimMandrake/rimflow/selftest_relentless_live_round.py
 RESULT: RED (green = FAIL 0 and CRASH 0)
+
+# the one RED: selftest_relentless_live_round's live_proofs parse check, on another lane's GSS_WATER_STUB_FIX_PASSED_LAST_WEEK.criteria (487769d00c); filed as RIMMANDRAKE_FIX_CRITERIA_BULLETS_BREAK_PROOF_PARSE
+FAIL proofs: every real live_proofs file is .txt/.criteria (or a proof's .py/.json) and every line parses: ['ACC_BIOMES_FIXES_LIVE_RERUN_1.criteria', 'ACC_BIOMES_FIXES_LIVE_RERUN_1.txt', 'ARMOURY_PROJECTILE_DAMAGE_TOOL_1.txt'] ['GSS_WATER_STUB_FIX_PASSED_LAST_WEEK.criteria: - O1 L0: GSS SelfTest Wat
+PASS history: FAIL on abc123 1000000s ago -> waits
+PASS history: FAIL on def456 0s ago -> runs
+PASS round: batches up to --max in one sitting, a FAIL does not stop it
+PASS log: an error line naming the token is a FAIL
+PASS log: an exception whose stack trace names the token on a later line is a FAIL
+PASS log: NullReferenceException naming the token is a FAIL
+PASS history: a FAIL on this build stands after a later build's PASS and a later UNMEASURED
+FAIL: 1 failed
 
 # selftest_relentless_needs.py in full
 ok   a repo folder resolves as itself
@@ -83,9 +94,7 @@ ok   the hard dependencies the enable would miss (below an immediate one) are ad
 ok   a defName two mods define, and a quoted name in a script, only warn
 ok   an absence assertion gives no need: live-proof A1: python3 src/RimMandrake/Utils/p.py --absent RUT_PaleMos
 ok   an absence assertion gives no need: live-proof A1: python3 src/RimMandrake/Utils/p.py
-{'src/RimMandrake/Ut
 ok   an absence assertion gives no need: live-proof A1: python3 src/RimMandrake/Utils/p.py
-{'src/RimMandrake/Ut
 ok   an absence assertion gives no need: live-proof A1: python3 src/RimMandrake/Utils/live_def_check.py --witho
 ok   live-without parses like live-mods, # tail a comment
 ok   a live-without line is never read as mods to load
@@ -121,4 +130,12 @@ ok   the row carries the running load's hash and count, the list is written once
 ok   the same load gives the same reference
 ok   run() records the running load it was admitted on into the row's env
 ok   an earlier read (another item's) is never recorded as this row's
-{"ok": 110, "fails": 0}
+ok   a named mod whose immediate dependency is live-without is refused
+ok   a build mod two hops above a live-without mod is refused
+ok   an INFERRED need that hangs on a live-without mod is refused, naming both
+ok   a live-without mod outside the closure refuses nothing; the closure is reported
+ok   a stale (warning-level) need adds none of its dependencies either
+ok   the same need, fresh, adds it and its closure
+ok   a rider live-without what the leader's mod hangs on rides another load
+ok   the reverse order splits the needing rider off
+{"ok": 118, "fails": 0}
