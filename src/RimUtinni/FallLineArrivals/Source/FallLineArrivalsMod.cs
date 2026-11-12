@@ -140,7 +140,7 @@ namespace RimMandrake.Utinni.FallLineArrivals
                     "Whether this wreck kind can be picked.");
                 list.CheckboxLabeled("Cargo sections (mostly scavrats and womp rats)", ref wreckCargo,
                     "Whether this wreck kind can be picked.");
-                list.CheckboxLabeled("Fuel tanks (mostly zhakkas)", ref wreckTank,
+                list.CheckboxLabeled("Fuel cylinders (mostly zhakkas)", ref wreckTank,
                     "Whether this wreck kind can be picked.");
                 list.GapLine();
             }
@@ -177,7 +177,7 @@ namespace RimMandrake.Utinni.FallLineArrivals
             {
                 list.CheckboxLabeled("No old junk under the Fall Line", ref noOldJunk,
                     "On: maps made on Fall Line tiles get none of the game's old junk and relics (old hulks, crates, fences, road debris, "
-                    + "simple ruins, ancient turrets, landing pads, pipelines, dormant ancient mechs); the wreckage there is what falls fresh from orbit. Off: those maps get the usual ancient junk. "
+                    + "simple ruins, ancient turrets, landing pads, pipelines, shrines, exostrider remains, dormant ancient mechs); the wreckage there is what falls fresh from orbit. Off: those maps get the usual ancient junk. "
                     + "Only maps generated afterwards change; this is map generation on one tile kind, not worldgen.");
                 list.GapLine();
             }
@@ -242,6 +242,10 @@ namespace RimMandrake.Utinni.FallLineArrivals
             {
                 return;
             }
+            if (m.extraGenSteps == null)
+            {
+                m.extraGenSteps = new List<GenStepDef>();
+            }
             if (FallLineArrivalsSettings.noOldJunk)
             {
                 if (!m.extraGenSteps.Contains(prevent))
@@ -261,7 +265,7 @@ namespace RimMandrake.Utinni.FallLineArrivals
             TileMutatorDef m = DefDatabase<TileMutatorDef>.GetNamedSilentFail("RUT_FallLine");
             GenStepDef prevent = DefDatabase<GenStepDef>.GetNamedSilentFail("RUT_FallLine_NoOldJunk");
             return m == null ? "MISSING RUT_FallLine" : "RUT_FallLine junkDensityFactor=" + m.junkDensityFactor
-                + " preventStepListed=" + (prevent != null && m.extraGenSteps.Contains(prevent))
+                + " preventStepListed=" + (prevent != null && m.extraGenSteps != null && m.extraGenSteps.Contains(prevent))
                 + " noOldJunk=" + FallLineArrivalsSettings.noOldJunk;
         }
     }

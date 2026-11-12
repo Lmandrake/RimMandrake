@@ -30,8 +30,8 @@
 
   <ThingDef ParentName="RM_WreckFamily_Tank">
     <defName>RM_StillsandWreckTank</defName>
-    <label>sand-sealed tank</label>
-    <description>A sealed tank dug out by the wind, its fittings bright under the sand. Deconstruct it for valuable resources.</description>
+    <label>sand-sealed cylinder</label>
+    <description>A sealed cylinder dug out by the wind, its fittings bright under the sand. Deconstruct it for valuable resources.</description>
     <graphicData>
       <texPath>Things/Building/Wrecks/RM_StillsandWreckTank</texPath>
       <!-- MEASURED 1 variant(s): mean alpha bbox 93.2% x 87.1% -> 0.70*0.932*2, 0.63*0.871*2 (Scald ratio) -->

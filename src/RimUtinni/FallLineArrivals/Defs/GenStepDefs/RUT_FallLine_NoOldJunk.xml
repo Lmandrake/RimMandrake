@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   FASCINATING_WORLD_JUNK_1: "Nothing here is old" (design/Jawa/worldbuilding/biomes/fall_line.md, FROZEN).
-  A step that places nothing and PREVENTS every vanilla step that lays old junk, ruins or relics. MapGenerator drops a
+  A step that places nothing and PREVENTS every vanilla step that lays old junk, ruins or relics
+  (the common map generator's junk steps, Odyssey's Scarlands junk, and the player map's shrines and exostrider remains). MapGenerator drops a
   step when any step in the same map's list names it in preventsGenSteps, after the tile mutators' extraGenSteps are
   joined in, so this works only where it is listed: FallLineOldJunk (Source/FallLineArrivalsMod.cs) adds it to
   RUT_FallLine's extraGenSteps while the setting "No old junk under the Fall Line" is on (default) and takes it out
@@ -28,6 +29,8 @@
       <li>AncientPollutionJunk</li>
       <li>ScarlandsJunkClusters</li>
       <li>ScarlandsJunkPrefabs</li>
+      <li>ScatterShrines</li>
+      <li>AncientExostriderRemains</li>
     </preventsGenSteps>
   </GenStepDef>
 </Defs>

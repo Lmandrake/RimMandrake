@@ -85,6 +85,9 @@ def load_defs(root):
     return things, steps
 
 
+OUR_LABELS = {}
+
+
 def our_thingdefs():
     names = set()
     for dp, _, fs in os.walk(os.path.join(REPO, "src")):
@@ -97,6 +100,8 @@ def our_thingdefs():
                         n = e.findtext("defName")
                         if n:
                             names.add(n)
+                            if e.findtext("label"):
+                                OUR_LABELS.setdefault(n, e.findtext("label"))
                 except ET.ParseError:
                     pass
     return names
@@ -177,7 +182,9 @@ def label_of(reskin_root, things, d):
         if li.findtext("xpath") == '/Defs/ThingDef[defName="%s"]/label' % d:
             return li.findtext("value/label")
     e = things.get(d)
-    return e.findtext("label") if e is not None else None
+    if e is not None and e.findtext("label"):
+        return e.findtext("label")
+    return OUR_LABELS.get(d)
 
 
 def srchash_stale(dll, src):
@@ -239,9 +246,14 @@ def main():
     check("every cut xpath matches in its GenStep", not misses, misses)
     probe = copy.deepcopy(steps["AncientJunkClusters"])
     check("probe: a typo'd cut matches nothing", remove_from_step(probe, "groups/li/things/AncientShopingCart") == 0)
-    empties = [n for n, e in patched.items() for li in e.findall("genStep/groups/li")
+    # emptied groups are measured BEFORE the sweep (the sweep would hide them); the roster rules none should empty
+    precut = {n: copy.deepcopy(e) for n, e in steps.items()}
+    for step, path, cond in cut_ops(proot):
+        if step in precut and not cond:
+            remove_from_step(precut[step], path)
+    empties = [n for n, e in precut.items() for li in e.findall("genStep/groups/li")
                if li.find("things") is not None and len(li.find("things")) == 0]
-    check("no scatter group left empty", not empties, empties)
+    check("no scatter group is emptied by the cut (measured before the sweep)", not empties, empties)
     still = []
     for c in roster["cut"]:
         for step in c["from"]:
@@ -263,6 +275,29 @@ def main():
             loud.append("%s description: %s" % (li.findtext("xpath"), EARTH.findall(desc)))
     check("no car/truck/tank on a kept def's label or a reskin description", not loud, loud)
     check("probe: the noun check sees 'ancient car'", bool(EARTH.search("ancient car")))
+
+    # re-text: every kept def that keeps its vanilla picture carries a scavenger label + description, or a stated exemption
+    text = roster.get("text", {})
+    exempt = {e["def"]: e["why"] for e in roster.get("text_exempt", [])}
+    tpath = os.path.join(HERE, "Patches", "AncientJunk_RosterText.xml")
+    check("AncientJunk_RosterText.xml == gen_junk_roster_cut.py output",
+          os.path.isfile(tpath) and open(tpath, encoding="utf-8").read() == gen.build_text(roster))
+    troot = ET.parse(tpath).getroot() if os.path.isfile(tpath) else None
+    check("the text patch sits in the junkReskin gate",
+          troot is not None and len(troot) == 1 and troot[0].findtext("setting") == "junkReskin")
+    vanilla_look = [d for k in roster["kinds"] if k.get("skin") == "vanilla" for d in k["defs"]]
+    bare = [d for d in vanilla_look if d not in text and d not in exempt]
+    check("every vanilla-look kept def (%d) is re-texted (%d) or exempt with a reason (%d)" % (
+        len(vanilla_look), len([d for d in vanilla_look if d in text]), len([d for d in vanilla_look if d in exempt])),
+        not bare, bare)
+    stray = [d for d in text if d not in things]
+    check("every re-texted def is a base-game def", not stray, stray)
+    words = [(d, f) for d, t in text.items() for f in ("label", "description")
+             if not t.get(f) or EARTH.search(t[f]) or re.search(r"\b(road|highway|motorway|supermarket|shopping)\b", t[f], re.I)]
+    check("no re-text is empty or says car/truck/tank/road", not words, words)
+    labels = [t["label"] for t in text.values()]
+    check("re-text labels are distinct", len(labels) == len(set(labels)),
+          sorted({l for l in labels if labels.count(l) > 1}))
 
     # census: what the scatter and the yard can place, against the roster
     if os.path.isfile(CENSUS):
@@ -294,6 +329,27 @@ def main():
         listed = sorted(li.text for li in prevent.iter("li"))
         check("RUT_FallLine_NoOldJunk prevents every vanilla junk source the census reads (%d)" % len(vsrc),
               vsrc and set(vsrc) <= set(listed), sorted(set(vsrc) - set(listed)))
+        # independent of the census's own list: every step the base game's surface map generators run whose name or class
+        # says junk, ruins, debris, remains, shrines or ancient things
+        derived = set()
+        for dp, _, fs in os.walk(root):
+            for f in fs:
+                if not (f.endswith(".xml") and "MapGeneration" in dp):
+                    continue
+                try:
+                    r2 = ET.parse(os.path.join(dp, f)).getroot()
+                except ET.ParseError:
+                    continue
+                for mg in r2.iter("MapGeneratorDef"):
+                    if (mg.findtext("defName") or mg.get("Name")) not in ("MapCommonBase", "Base_Player"):
+                        continue
+                    for li in mg.findall("genSteps/li"):
+                        st = steps.get(li.text)
+                        cls = st.find("genStep").get("Class", "") if st is not None and st.find("genStep") is not None else ""
+                        if re.search(r"Ancient|Junk|Ruin|Debris|Remains|Shrine", (li.text or "") + " " + cls):
+                            derived.add(li.text)
+        check("the base game's own surface map generators' old-junk steps (%d, derived from MapCommonBase + Base_Player) "
+              "are all prevented" % len(derived), len(derived) >= 10 and derived <= set(listed), sorted(derived - set(listed)))
         unknown = [n for n in listed if n not in steps]
         check("every prevented step exists in the base game", not unknown, unknown)
     else:

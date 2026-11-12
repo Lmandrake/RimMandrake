@@ -38,8 +38,8 @@
 
   <ThingDef ParentName="RM_WreckFamily_Tank">
     <defName>RM_NightsideWreckTank</defName>
-    <label>frost-locked tank</label>
-    <description>A fuel or pressure tank frozen where it landed, its seams still whole. The cold kept what was inside it. Deconstruct it for valuable resources.</description>
+    <label>frost-locked cylinder</label>
+    <description>A fuel or pressure cylinder frozen where it landed, its seams still whole. The cold kept what was inside it. Deconstruct it for valuable resources.</description>
     <graphicData>
       <texPath>Things/Building/Wrecks/RM_NightsideWreckTank</texPath>
       <!-- MEASURED 2 variant(s): mean alpha bbox 92.3% x 84.7% -> 0.70*0.923*2, 0.63*0.847*2 (Scald ratio) -->

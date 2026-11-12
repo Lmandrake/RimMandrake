@@ -95,8 +95,8 @@
 
   <ThingDef ParentName="RM_WreckFamily_Tank">
     <defName>RM_ScaldWreckTank</defName>
-    <label>scalded tank wreck</label>
-    <description>A ruptured pressure tank, half sunk and scoured smooth by the boil. Whatever it once held is long gone; the shell is still worth the walk. Deconstruct it for valuable resources — the water charges per trip standing in it.</description>
+    <label>scalded cylinder wreck</label>
+    <description>A ruptured pressure cylinder, half sunk and scoured smooth by the boil. Whatever it once held is long gone; the shell is still worth the walk. Deconstruct it for valuable resources — the water charges per trip standing in it.</description>
     <graphicData>
       <texPath>Things/Building/Ruins/RUT_ScaldWreckTank</texPath>
       <!-- Same fix as RM_ScaldWreckHull, own measurement (mean of _A/_B/_C,

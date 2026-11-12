@@ -113,8 +113,8 @@
 
   <ThingDef ParentName="ShipChunkBase">
     <defName>RUT_FallWreck_Tank</defName>
-    <label>wrecked fuel tank</label>
-    <description>A ruptured fuel tank from a ship that did not make it. It still sweats chemfuel, and the zhakkas that drink it nest in the seams.\n\nDeconstruct it for salvage. Until then, ship-vermin keep coming out of it.</description>
+    <label>wrecked fuel cylinder</label>
+    <description>A ruptured fuel cylinder from a ship that did not make it. It still sweats chemfuel, and the zhakkas that drink it nest in the seams.\n\nDeconstruct it for salvage. Until then, ship-vermin keep coming out of it.</description>
     <graphicData>
       <texPath>Things/Building/MechanoidShipChunk</texPath>
       <graphicClass>Graphic_Random</graphicClass>
@@ -151,7 +151,7 @@
 
   <ThingDef ParentName="SkyfallerBase">
     <defName>RUT_FallWreckIncoming_Tank</defName>
-    <label>wrecked fuel tank (incoming)</label>
+    <label>wrecked fuel cylinder (incoming)</label>
     <size>(2, 2)</size>
     <skyfaller>
       <shadowSize>(2.5, 2.5)</shadowSize>

@@ -1,0 +1,1054 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  AncientJunk_RosterText.xml        FASCINATING_WORLD_JUNK_1        GENERATED, do not edit by hand.
+  Source: the `text` rows of design/Jawa/worldbuilding/junk/junk_roster.json via gen_junk_roster_cut.py.
+
+  Re-texts the kept junk that keeps its vanilla picture in the scavenger register (what it was, what it yields, what
+  it risks), each yield and risk read from the def's own mechanics. Text only: no graphic, size or stat changes.
+  Each field is replaced where the def writes it and added where it inherits it. Inside the Mod Settings gate
+  "Star Wars junk" (junkReskin, default on), the same switch as the art reskin.
+-->
+<Patch>
+  <Operation Class="RimMandrake.StarWars.Patches.RSW_PatchOperationStarWarsPatchesSetting">
+    <setting>junkReskin</setting>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- AncientAmmoStack -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientAmmoStack"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientAmmoStack"]/label</xpath>
+            <value><label>munitions box</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientAmmoStack"]</xpath>
+            <value><label>munitions box</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientAmmoStack"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientAmmoStack"]/description</xpath>
+            <value><description>An old munitions box for power packs and blaster gas canisters. It is empty, and the few cells left in the bottom are corroded dead. Breaking it down yields nothing worth taking.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientAmmoStack"]</xpath>
+            <value><description>An old munitions box for power packs and blaster gas canisters. It is empty, and the few cells left in the bottom are corroded dead. Breaking it down yields nothing worth taking.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientBandNode -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientBandNode"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientBandNode"]/label</xpath>
+            <value><label>dead droid relay node</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientBandNode"]</xpath>
+            <value><label>dead droid relay node</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientBandNode"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientBandNode"]/description</xpath>
+            <value><description>An old relay node that once let a commander control a larger force of droids. Its valuable parts are gone and the rest has decayed to junk. Smashing it leaves a lump of steel slag and nothing else.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientBandNode"]</xpath>
+            <value><description>An old relay node that once let a commander control a larger force of droids. Its valuable parts are gone and the rest has decayed to junk. Smashing it leaves a lump of steel slag and nothing else.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientBarrel -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientBarrel"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientBarrel"]/label</xpath>
+            <value><label>waste barrel</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientBarrel"]</xpath>
+            <value><label>waste barrel</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientBarrel"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientBarrel"]/description</xpath>
+            <value><description>A broken barrel that once held some kind of industrial waste. All that is left is a crust of dried sludge on the bottom. Breaking it down yields nothing worth taking. The residue will catch fire easily.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientBarrel"]</xpath>
+            <value><description>A broken barrel that once held some kind of industrial waste. All that is left is a crust of dried sludge on the bottom. Breaking it down yields nothing worth taking. The residue will catch fire easily.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientBarrierLong -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientBarrierLong"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientBarrierLong"]/label</xpath>
+            <value><label>long duracrete barrier</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientBarrierLong"]</xpath>
+            <value><label>long duracrete barrier</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientBarrierLong"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientBarrierLong"]/description</xpath>
+            <value><description>A long duracrete barrier laid down to stop speeders and swoops. It cannot be taken apart, only smashed, and smashing it leaves nothing worth taking.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientBarrierLong"]</xpath>
+            <value><description>A long duracrete barrier laid down to stop speeders and swoops. It cannot be taken apart, only smashed, and smashing it leaves nothing worth taking.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientBed -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientBed"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientBed"]/label</xpath>
+            <value><label>old bunk</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientBed"]</xpath>
+            <value><label>old bunk</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientBed"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientBed"]/description</xpath>
+            <value><description>A rusted bunk frame with a rotten mattress, left behind by some old crew. Someone can still sleep on it, though it rests and heals worse than a real bed, and it is too far gone to repair. Breaking it down yields nothing worth taking.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientBed"]</xpath>
+            <value><description>A rusted bunk frame with a rotten mattress, left behind by some old crew. Someone can still sleep on it, though it rests and heals worse than a real bed, and it is too far gone to repair. Breaking it down yields nothing worth taking.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientBox_ComponentIndustrial -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientBox_ComponentIndustrial"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientBox_ComponentIndustrial"]/label</xpath>
+            <value><label>salvaged parts box</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientBox_ComponentIndustrial"]</xpath>
+            <value><label>salvaged parts box</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientBox_ComponentIndustrial"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientBox_ComponentIndustrial"]/description</xpath>
+            <value><description>A battered box of salvaged machine parts. Some of them still work: opening it gives a handful of components.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientBox_ComponentIndustrial"]</xpath>
+            <value><description>A battered box of salvaged machine parts. Some of them still work: opening it gives a handful of components.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientChembarrel -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientChembarrel"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientChembarrel"]/label</xpath>
+            <value><label>old fuel drum</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientChembarrel"]</xpath>
+            <value><label>old fuel drum</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientChembarrel"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientChembarrel"]/description</xpath>
+            <value><description>A rusted drum that once held fuel. It is empty and corroded, with not a drop left. Breaking it down yields nothing worth taking. The old residue will still burn.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientChembarrel"]</xpath>
+            <value><description>A rusted drum that once held fuel. It is empty and corroded, with not a drop left. Breaking it down yields nothing worth taking. The old residue will still burn.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientChembarrelPallet -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientChembarrelPallet"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientChembarrelPallet"]/label</xpath>
+            <value><label>fuel drum pallet</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientChembarrelPallet"]</xpath>
+            <value><label>fuel drum pallet</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientChembarrelPallet"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientChembarrelPallet"]/description</xpath>
+            <value><description>A stack of rusted fuel drums on a rotting pallet. Whatever fuel they held leaked into the sand long ago. Breaking it down yields nothing worth taking. The residue will still burn.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientChembarrelPallet"]</xpath>
+            <value><description>A stack of rusted fuel drums on a rotting pallet. Whatever fuel they held leaked into the sand long ago. Breaking it down yields nothing worth taking. The residue will still burn.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientConcreteBarrier -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientConcreteBarrier"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientConcreteBarrier"]/label</xpath>
+            <value><label>duracrete traffic block</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientConcreteBarrier"]</xpath>
+            <value><label>duracrete traffic block</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientConcreteBarrier"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientConcreteBarrier"]/description</xpath>
+            <value><description>A duracrete block from some long-gone spaceport's traffic lanes, cracked and weathered. There is still a little steel rebar inside that can be recovered when it is broken down or smashed.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientConcreteBarrier"]</xpath>
+            <value><description>A duracrete block from some long-gone spaceport's traffic lanes, cracked and weathered. There is still a little steel rebar inside that can be recovered when it is broken down or smashed.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientCraneArm -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientCraneArm"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientCraneArm"]/label</xpath>
+            <value><label>loading crane arm</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientCraneArm"]</xpath>
+            <value><label>loading crane arm</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientCraneArm"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientCraneArm"]/description</xpath>
+            <value><description>The broken, twisted arm of a loading crane that fell long ago. Breaking it down yields nothing worth taking.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientCraneArm"]</xpath>
+            <value><description>The broken, twisted arm of a loading crane that fell long ago. Breaking it down yields nothing worth taking.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientCraneBase -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientCraneBase"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientCraneBase"]/label</xpath>
+            <value><label>loading crane base</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientCraneBase"]</xpath>
+            <value><label>loading crane base</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientCraneBase"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientCraneBase"]/description</xpath>
+            <value><description>The footing of a heavy loading crane from some old landing field or freight yard. It cannot be taken apart, only smashed, and smashing it leaves nothing worth taking.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientCraneBase"]</xpath>
+            <value><description>The footing of a heavy loading crane from some old landing field or freight yard. It cannot be taken apart, only smashed, and smashing it leaves nothing worth taking.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientCraneColumn -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientCraneColumn"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientCraneColumn"]/label</xpath>
+            <value><label>loading crane column</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientCraneColumn"]</xpath>
+            <value><label>loading crane column</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientCraneColumn"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientCraneColumn"]/description</xpath>
+            <value><description>An upright support column from a ruined loading crane, rusted through. It cannot be taken apart, only smashed, and smashing it leaves nothing worth taking.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientCraneColumn"]</xpath>
+            <value><description>An upright support column from a ruined loading crane, rusted through. It cannot be taken apart, only smashed, and smashing it leaves nothing worth taking.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientCrate -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientCrate"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientCrate"]/label</xpath>
+            <value><label>old supply crate</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientCrate"]</xpath>
+            <value><label>old supply crate</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientCrate"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientCrate"]/description</xpath>
+            <value><description>An old supply crate, broken open and left behind. Whatever was inside has decayed to dust and mould. Breaking it down yields nothing worth taking.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientCrate"]</xpath>
+            <value><description>An old supply crate, broken open and left behind. Whatever was inside has decayed to dust and mould. Breaking it down yields nothing worth taking.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientCratePallet -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientCratePallet"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientCratePallet"]/label</xpath>
+            <value><label>crate pallet</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientCratePallet"]</xpath>
+            <value><label>crate pallet</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientCratePallet"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientCratePallet"]/description</xpath>
+            <value><description>A freight pallet with a few crates still lashed to it. Scavengers went through them long ago and left only empty boxes. Breaking it down yields nothing worth taking.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientCratePallet"]</xpath>
+            <value><description>A freight pallet with a few crates still lashed to it. Scavengers went through them long ago and left only empty boxes. Breaking it down yields nothing worth taking.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientCryptosleepCasket -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientCryptosleepCasket"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientCryptosleepCasket"]/label</xpath>
+            <value><label>old cryosleep pod</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientCryptosleepCasket"]</xpath>
+            <value><label>old cryosleep pod</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientCryptosleepCasket"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientCryptosleepCasket"]/description</xpath>
+            <value><description>A cryosleep pod from some long-lost starship, still sealed. It may hold a sleeper, and whoever wakes could be friendly or come out shooting. Taken apart it gives steel and a little uranium; if it is destroyed it bursts into flame and leaves scrap steel and uranium behind.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientCryptosleepCasket"]</xpath>
+            <value><description>A cryosleep pod from some long-lost starship, still sealed. It may hold a sleeper, and whoever wakes could be friendly or come out shooting. Taken apart it gives steel and a little uranium; if it is destroyed it bursts into flame and leaves scrap steel and uranium behind.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientFence -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientFence"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientFence"]/label</xpath>
+            <value><label>duracrete fence</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientFence"]</xpath>
+            <value><label>duracrete fence</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientFence"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientFence"]/description</xpath>
+            <value><description>An old fence of duracrete posts joined by duracrete panels. Animals still cannot get through it, while people pick their way through slowly. When it breaks it leaves nothing, and breaking it down yields nothing worth taking.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientFence"]</xpath>
+            <value><description>An old fence of duracrete posts joined by duracrete panels. Animals still cannot get through it, while people pick their way through slowly. When it breaks it leaves nothing, and breaking it down yields nothing worth taking.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientFortifiedWall -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientFortifiedWall"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientFortifiedWall"]/label</xpath>
+            <value><label>fortified blast wall</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientFortifiedWall"]</xpath>
+            <value><label>fortified blast wall</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientFortifiedWall"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientFortifiedWall"]/description</xpath>
+            <value><description>A wall of heavy armour-grade composite from some old fortress, built to shrug off blaster fire. It cannot be taken apart and takes an enormous beating to knock down, and nothing is left to salvage when it falls. It is airtight.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientFortifiedWall"]</xpath>
+            <value><description>A wall of heavy armour-grade composite from some old fortress, built to shrug off blaster fire. It cannot be taken apart and takes an enormous beating to knock down, and nothing is left to salvage when it falls. It is airtight.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientGenerator -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientGenerator"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientGenerator"]/label</xpath>
+            <value><label>dead power generator</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientGenerator"]</xpath>
+            <value><label>dead power generator</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientGenerator"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientGenerator"]/description</xpath>
+            <value><description>An old power generator that once ran some outpost's lights and moisture vaporators. Its working parts were smashed or looted long ago and the rest has rusted solid. Breaking it down yields nothing worth taking. What is left of its insides burns readily.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientGenerator"]</xpath>
+            <value><description>An old power generator that once ran some outpost's lights and moisture vaporators. Its working parts were smashed or looted long ago and the rest has rusted solid. Breaking it down yields nothing worth taking. What is left of its insides burns readily.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientHydrant -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientHydrant"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientHydrant"]/label</xpath>
+            <value><label>dry standpipe</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientHydrant"]</xpath>
+            <value><label>dry standpipe</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientHydrant"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientHydrant"]/description</xpath>
+            <value><description>A red-capped standpipe from some old water line. It has been dry for generations, and no one can say why it is out here. Breaking it down yields nothing worth taking.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientHydrant"]</xpath>
+            <value><description>A red-capped standpipe from some old water line. It has been dry for generations, and no one can say why it is out here. Breaking it down yields nothing worth taking.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientIndustrialShelf -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientIndustrialShelf"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientIndustrialShelf"]/label</xpath>
+            <value><label>rusted storage rack</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientIndustrialShelf"]</xpath>
+            <value><label>rusted storage rack</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientIndustrialShelf"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientIndustrialShelf"]/description</xpath>
+            <value><description>A heavy storage rack from an old warehouse or droid shop, covered in rust. The shelves are bare. Breaking it down yields nothing worth taking.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientIndustrialShelf"]</xpath>
+            <value><description>A heavy storage rack from an old warehouse or droid shop, covered in rust. The shelves are bare. Breaking it down yields nothing worth taking.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientLamp -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientLamp"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientLamp"]/label</xpath>
+            <value><label>glow lamp</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientLamp"]</xpath>
+            <value><label>glow lamp</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientLamp"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientLamp"]/description</xpath>
+            <value><description>An old self-powered glow lamp. Its power cell is nearly spent, but it still gives off a weak orange light. When it breaks it leaves nothing, and breaking it down yields nothing worth taking.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientLamp"]</xpath>
+            <value><description>An old self-powered glow lamp. Its power cell is nearly spent, but it still gives off a weak orange light. When it breaks it leaves nothing, and breaking it down yields nothing worth taking.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientLargeContainer -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientLargeContainer"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientLargeContainer"]/label</xpath>
+            <value><label>large shipping container</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientLargeContainer"]</xpath>
+            <value><label>large shipping container</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientLargeContainer"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientLargeContainer"]/description</xpath>
+            <value><description>A full-size shipping container off some old freighter, rusted solid. It cannot be taken apart; the only way to clear it is to smash it, which leaves three lumps of steel slag a smelter can turn back into steel.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientLargeContainer"]</xpath>
+            <value><description>A full-size shipping container off some old freighter, rusted solid. It cannot be taken apart; the only way to clear it is to smash it, which leaves three lumps of steel slag a smelter can turn back into steel.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientLargeCrate -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientLargeCrate"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientLargeCrate"]/label</xpath>
+            <value><label>large freight crate</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientLargeCrate"]</xpath>
+            <value><label>large freight crate</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientLargeCrate"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientLargeCrate"]/description</xpath>
+            <value><description>A big freight crate from some old trade run, its contents sold, stolen or rotted away generations back. It is rusted through and will not hold anything again. Breaking it down yields nothing worth taking.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientLargeCrate"]</xpath>
+            <value><description>A big freight crate from some old trade run, its contents sold, stolen or rotted away generations back. It is rusted through and will not hold anything again. Breaking it down yields nothing worth taking.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientLockerBank -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientLockerBank"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientLockerBank"]/label</xpath>
+            <value><label>locker bank</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientLockerBank"]</xpath>
+            <value><label>locker bank</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientLockerBank"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientLockerBank"]/description</xpath>
+            <value><description>A rusted row of crew lockers. Every one was forced open long ago and nothing of value was left behind. Breaking it down yields nothing worth taking.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientLockerBank"]</xpath>
+            <value><description>A rusted row of crew lockers. Every one was forced open long ago and nothing of value was left behind. Breaking it down yields nothing worth taking.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientLongCrate -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientLongCrate"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientLongCrate"]/label</xpath>
+            <value><label>long freight crate</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientLongCrate"]</xpath>
+            <value><label>long freight crate</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientLongCrate"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientLongCrate"]/description</xpath>
+            <value><description>A long crate of the sort used to ship rifles, pipe or droid limbs, empty for ages. Rust has eaten the seams open. Breaking it down yields nothing worth taking.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientLongCrate"]</xpath>
+            <value><description>A long crate of the sort used to ship rifles, pipe or droid limbs, empty for ages. Rust has eaten the seams open. Breaking it down yields nothing worth taking.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientMechDropBeacon -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientMechDropBeacon"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientMechDropBeacon"]/label</xpath>
+            <value><label>droid drop beacon</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientMechDropBeacon"]</xpath>
+            <value><label>droid drop beacon</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientMechDropBeacon"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientMechDropBeacon"]/description</xpath>
+            <value><description>The broken shell of a beacon that once called battle droids down from orbit. Its working parts are gone and the shell has rotted after many years. Breaking it down yields nothing worth taking.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientMechDropBeacon"]</xpath>
+            <value><description>The broken shell of a beacon that once called battle droids down from orbit. Its working parts are gone and the shell has rotted after many years. Breaking it down yields nothing worth taking.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientMediumContainer -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientMediumContainer"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientMediumContainer"]/label</xpath>
+            <value><label>shipping container</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientMediumContainer"]</xpath>
+            <value><label>shipping container</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientMediumContainer"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientMediumContainer"]/description</xpath>
+            <value><description>A standard shipping container from some old freight yard, rusted and empty. It cannot be taken apart; smashing it leaves two lumps of steel slag a smelter can turn back into steel.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientMediumContainer"]</xpath>
+            <value><description>A standard shipping container from some old freight yard, rusted and empty. It cannot be taken apart; smashing it leaves two lumps of steel slag a smelter can turn back into steel.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientMetalCrate -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientMetalCrate"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientMetalCrate"]/label</xpath>
+            <value><label>rusted metal crate</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientMetalCrate"]</xpath>
+            <value><label>rusted metal crate</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientMetalCrate"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientMetalCrate"]/description</xpath>
+            <value><description>A small metal crate, rusted shut long ago. Pried open, it turns out to be empty. Breaking it down yields nothing worth taking.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientMetalCrate"]</xpath>
+            <value><description>A small metal crate, rusted shut long ago. Pried open, it turns out to be empty. Breaking it down yields nothing worth taking.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientMilitaryBarrier -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientMilitaryBarrier"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientMilitaryBarrier"]/label</xpath>
+            <value><label>checkpoint barrier</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientMilitaryBarrier"]</xpath>
+            <value><label>checkpoint barrier</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientMilitaryBarrier"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientMilitaryBarrier"]/description</xpath>
+            <value><description>A heavy duracrete block from an old military checkpoint. It cannot be taken apart, only smashed, and smashing it takes a long time and leaves nothing worth taking.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientMilitaryBarrier"]</xpath>
+            <value><description>A heavy duracrete block from an old military checkpoint. It cannot be taken apart, only smashed, and smashing it takes a long time and leaves nothing worth taking.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientMilitaryCrate -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientMilitaryCrate"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientMilitaryCrate"]/label</xpath>
+            <value><label>military supply crate</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientMilitaryCrate"]</xpath>
+            <value><label>military supply crate</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientMilitaryCrate"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientMilitaryCrate"]/description</xpath>
+            <value><description>An armoured supply crate in faded garrison markings. Someone cracked it open long ago and took whatever blasters or ration packs it held. Breaking it down yields nothing worth taking. Its inner lining will still burn.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientMilitaryCrate"]</xpath>
+            <value><description>An armoured supply crate in faded garrison markings. Someone cracked it open long ago and took whatever blasters or ration packs it held. Breaking it down yields nothing worth taking. Its inner lining will still burn.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientMilitaryGeneratorSmall -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientMilitaryGeneratorSmall"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientMilitaryGeneratorSmall"]/label</xpath>
+            <value><label>field power generator</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientMilitaryGeneratorSmall"]</xpath>
+            <value><label>field power generator</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientMilitaryGeneratorSmall"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientMilitaryGeneratorSmall"]/description</xpath>
+            <value><description>A small portable generator of the kind an army field camp runs its lights off. Its fuel cell is dry and its motor is beyond repair. Breaking it down yields nothing worth taking.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientMilitaryGeneratorSmall"]</xpath>
+            <value><description>A small portable generator of the kind an army field camp runs its lights off. Its fuel cell is dry and its motor is beyond repair. Breaking it down yields nothing worth taking.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientOpenContainer -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientOpenContainer"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientOpenContainer"]/label</xpath>
+            <value><label>open shipping container</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientOpenContainer"]</xpath>
+            <value><label>open shipping container</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientOpenContainer"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientOpenContainer"]/description</xpath>
+            <value><description>A shipping container with its doors rusted open, holding nothing but sand and junk. It cannot be taken apart; smashing it leaves two lumps of steel slag a smelter can turn back into steel.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientOpenContainer"]</xpath>
+            <value><description>A shipping container with its doors rusted open, holding nothing but sand and junk. It cannot be taken apart; smashing it leaves two lumps of steel slag a smelter can turn back into steel.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientPallet_SteelSlag -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientPallet_SteelSlag"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientPallet_SteelSlag"]/label</xpath>
+            <value><label>scrap metal pallet</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientPallet_SteelSlag"]</xpath>
+            <value><label>scrap metal pallet</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientPallet_SteelSlag"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientPallet_SteelSlag"]/description</xpath>
+            <value><description>A pallet heaped with old durasteel scrap. Opening it up gives a good haul of steel.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientPallet_SteelSlag"]</xpath>
+            <value><description>A pallet heaped with old durasteel scrap. Opening it up gives a good haul of steel.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientPipe -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientPipe"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientPipe"]/label</xpath>
+            <value><label>corroded pipe run</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientPipe"]</xpath>
+            <value><label>corroded pipe run</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientPipe"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientPipe"]/description</xpath>
+            <value><description>A run of old corroded piping lying flat along the ground; you can walk right over it. When it breaks it leaves nothing, and breaking it down yields nothing worth taking.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientPipe"]</xpath>
+            <value><description>A run of old corroded piping lying flat along the ground; you can walk right over it. When it breaks it leaves nothing, and breaking it down yields nothing worth taking.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientPipelineSection -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientPipelineSection"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientPipelineSection"]/label</xpath>
+            <value><label>pipeline section</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientPipelineSection"]</xpath>
+            <value><label>pipeline section</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientPipelineSection"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientPipelineSection"]/description</xpath>
+            <value><description>A section of an old long-distance pipeline that once moved fuel or water across the wastes. It was stripped long ago. Taking it apart yields nothing, but smashing it leaves six lumps of steel slag a smelter can turn back into steel.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientPipelineSection"]</xpath>
+            <value><description>A section of an old long-distance pipeline that once moved fuel or water across the wastes. It was stripped long ago. Taking it apart yields nothing, but smashing it leaves six lumps of steel slag a smelter can turn back into steel.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientPipes -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientPipes"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientPipes"]/label</xpath>
+            <value><label>pipe bundle</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientPipes"]</xpath>
+            <value><label>pipe bundle</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientPipes"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientPipes"]/description</xpath>
+            <value><description>A tangle of rusted old pipes from some water line or refinery, and no one can say how it ended up here. Breaking it down yields nothing worth taking.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientPipes"]</xpath>
+            <value><description>A tangle of rusted old pipes from some water line or refinery, and no one can say how it ended up here. Breaking it down yields nothing worth taking.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientRazorWire -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientRazorWire"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientRazorWire"]/label</xpath>
+            <value><label>rusted razor wire</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientRazorWire"]</xpath>
+            <value><label>rusted razor wire</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientRazorWire"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientRazorWire"]/description</xpath>
+            <value><description>A stretch of old razor wire, rusted for so many years that it no longer cuts anyone. It only slows anyone pushing through it. Breaking it down yields nothing worth taking.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientRazorWire"]</xpath>
+            <value><description>A stretch of old razor wire, rusted for so many years that it no longer cuts anyone. It only slows anyone pushing through it. Breaking it down yields nothing worth taking.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientSecurityTurret -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientSecurityTurret"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientSecurityTurret"]/label</xpath>
+            <value><label>dead sentry turret</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientSecurityTurret"]</xpath>
+            <value><label>dead sentry turret</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientSecurityTurret"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientSecurityTurret"]/description</xpath>
+            <value><description>An automated blaster sentry from some old security post. Its power core and targeting unit were looted or smashed long ago, and it cannot fire. Breaking it down yields nothing worth taking.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientSecurityTurret"]</xpath>
+            <value><description>An automated blaster sentry from some old security post. Its power core and targeting unit were looted or smashed long ago, and it cannot fire. Breaking it down yields nothing worth taking.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientShipBeacon -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientShipBeacon"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientShipBeacon"]/label</xpath>
+            <value><label>dead nav beacon</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientShipBeacon"]</xpath>
+            <value><label>dead nav beacon</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientShipBeacon"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientShipBeacon"]/description</xpath>
+            <value><description>A broken starship navigation beacon that once guided ships down to a landing field. Every useful part was looted long ago. Breaking it down yields nothing worth taking.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientShipBeacon"]</xpath>
+            <value><description>A broken starship navigation beacon that once guided ships down to a landing field. Every useful part was looted long ago. Breaking it down yields nothing worth taking.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientSmallContainer -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientSmallContainer"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientSmallContainer"]/label</xpath>
+            <value><label>small shipping container</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientSmallContainer"]</xpath>
+            <value><label>small shipping container</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientSmallContainer"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientSmallContainer"]/description</xpath>
+            <value><description>A small shipping container, rusted and completely empty. It cannot be taken apart; smashing it leaves a single lump of steel slag a smelter can turn back into steel.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientSmallContainer"]</xpath>
+            <value><description>A small shipping container, rusted and completely empty. It cannot be taken apart; smashing it leaves a single lump of steel slag a smelter can turn back into steel.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientSmallCrate -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientSmallCrate"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientSmallCrate"]/label</xpath>
+            <value><label>small freight crate</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientSmallCrate"]</xpath>
+            <value><label>small freight crate</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientSmallCrate"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientSmallCrate"]/description</xpath>
+            <value><description>A small freight crate of the kind every spaceport stacks by the thousand, emptied long ago. The metal has rusted too far to hold anything now. Breaking it down yields nothing worth taking.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientSmallCrate"]</xpath>
+            <value><description>A small freight crate of the kind every spaceport stacks by the thousand, emptied long ago. The metal has rusted too far to hold anything now. Breaking it down yields nothing worth taking.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientSpacerCrate -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientSpacerCrate"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientSpacerCrate"]/label</xpath>
+            <value><label>starship hold crate</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientSpacerCrate"]</xpath>
+            <value><label>starship hold crate</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientSpacerCrate"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientSpacerCrate"]/description</xpath>
+            <value><description>A sealed crate from a starship's hold, its lock forced long ago. Whatever it held went off with the looters. Breaking it down yields nothing worth taking.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientSpacerCrate"]</xpath>
+            <value><description>A sealed crate from a starship's hold, its lock forced long ago. Whatever it held went off with the looters. Breaking it down yields nothing worth taking.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientStorageCylinder -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientStorageCylinder"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientStorageCylinder"]/label</xpath>
+            <value><label>fluid storage cylinder</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientStorageCylinder"]</xpath>
+            <value><label>fluid storage cylinder</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientStorageCylinder"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientStorageCylinder"]/description</xpath>
+            <value><description>A big cylinder that once stored coolant or fuel for some long-gone outpost. The valves and pumps were stripped out long ago and the shell is too far gone to reuse. Breaking it down is slow, heavy work that yields nothing worth taking.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientStorageCylinder"]</xpath>
+            <value><description>A big cylinder that once stored coolant or fuel for some long-gone outpost. The valves and pumps were stripped out long ago and the shell is too far gone to reuse. Breaking it down is slow, heavy work that yields nothing worth taking.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientToxifierGenerator -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientToxifierGenerator"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientToxifierGenerator"]/label</xpath>
+            <value><label>dead toxifier</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientToxifierGenerator"]</xpath>
+            <value><label>dead toxifier</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientToxifierGenerator"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientToxifierGenerator"]/description</xpath>
+            <value><description>A machine that once pumped poison into the air and soil, the kind an occupying army leaves running to make a world unlivable. Its valuable parts are gone and it no longer works or pollutes. Smashing it leaves a lump of steel slag and nothing else.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientToxifierGenerator"]</xpath>
+            <value><description>A machine that once pumped poison into the air and soil, the kind an occupying army leaves running to make a world unlivable. Its valuable parts are gone and it no longer works or pollutes. Smashing it leaves a lump of steel slag and nothing else.</description></value>
+          </nomatch>
+        </li>
+        <!-- AncientWoodenCrate -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientWoodenCrate"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientWoodenCrate"]/label</xpath>
+            <value><label>old wooden crate</label></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientWoodenCrate"]</xpath>
+            <value><label>old wooden crate</label></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AncientWoodenCrate"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AncientWoodenCrate"]/description</xpath>
+            <value><description>A weathered wooden crate, a rare thing on a world this dry, but the wood has gone brittle and grey. It is empty. Breaking it down yields nothing worth taking. It burns like kindling.</description></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AncientWoodenCrate"]</xpath>
+            <value><description>A weathered wooden crate, a rare thing on a world this dry, but the wood has gone brittle and grey. It is empty. Breaking it down yields nothing worth taking. It burns like kindling.</description></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+</Patch>
