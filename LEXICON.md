@@ -10,6 +10,7 @@ talking to Mandrake.
 |---|---|
 | **Conductor** | The one window he talks to: it decides, routes the work and starts helpers. Also provides collaborative live-game development and testing for smaller items or generates excellent tickets for large work orders. |
 | **Relentless Pipeline** | Supervisor pipeline: no AI, tickets on disk, staffs builder/fixers until blind judge passes each one. Different builder/fixers may be chosen. |
+| **Relentless worker** | Builder/Judge pair filling one Relentless Pipeline place. Builder works one ticket over fresh passes, state on disk. Blind Judge, who never saw the work, sets the exam before and marks it after. |
 | **Artisan** | One loop on one whole piece of work (e.g. mod). Fresh passes are held to a frozen experience description. Blind judge screens each done-claim. |
 | **Whittle** | Minimalist artisan that takes one small well defined ticket with acceptance criteria per round and proves it before taking the next. |
 | **Designer** | Experimental agent: Interactive analysis to produce better fleshed out mod ideas before any code or when inconsistencies are discovered that need refinement. |
