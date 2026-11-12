@@ -21,6 +21,7 @@ offline proof is selftest_showcases.py.
 import argparse
 import json
 import os
+import re
 import subprocess
 import sys
 import time
@@ -65,6 +66,15 @@ def picture_cells(p):
     return [(x, z) for z in zs for x in xs]
 
 
+def door_error_class(err):
+    """trunk_doors_live stores repr(exc): AssertionError('SITE: ...') for a tagged require, KeyError(...) for a crash.
+    A SITE/HARNESS tag anywhere, or any exception that is not an AssertionError, is no verdict on the mod."""
+    m = re.search(r"['\"](SITE|HARNESS|MOD)\b", err)
+    if m:
+        return None if m.group(1) == "MOD" else m.group(1)
+    return "HARNESS" if err and not err.startswith("AssertionError") else None
+
+
 def door_subprocess(out):
     """Run trunk_doors_live.py --out <out> and return its record (it loads/restores its own site)."""
     p = subprocess.run([sys.executable, os.path.join(HERE, "trunk_doors_live.py"), "--out", out],
@@ -85,6 +95,10 @@ class PlantShowcase(object):
         self.pic, self.pic_txt = None, ""
 
     def grown(self, sc):
+        okp, why = SC.preflight(sc, ("mandrake.rm.hugethings",))
+        if not okp:
+            return sc.row("PLANT_grown", "the loaded build is this clone's", "UNMEASURED", "HARNESS", why)
+        sc.rec["preflight"] = why
         bad = TL.settings_ok(dict((f, sc.call("jawa/mod_settings_field", typeName=SC.SETTINGS, action="get", field=f)
                                    .get("value")) for f in FIELDS))
         if bad:
@@ -157,8 +171,9 @@ class PlantShowcase(object):
             return sc.row("PLANT_selection", crit, "UNMEASURED", "HARNESS", "probe gave no reading: %s" % self.pic_txt[:400])
         if p.get("selectionOn") != "True":
             return sc.row("PLANT_selection", crit, "UNMEASURED", "SITE", "plant selection is off in Mod Settings: %s" % self.pic_txt)
-        cells, hits = int(p["pictureCells"]), int(p["hits"])
-        st = "UNMEASURED" if cells == 0 else ("PASS" if hits == cells else "FAIL")
+        cells, hits, ring_hits = int(p["pictureCells"]), int(p["hits"]), int(p.get("ringHits", -1))
+        # ring = cells wholly outside the drawn quad: a click there selecting the plant is a selection box bigger than the art
+        st = "UNMEASURED" if cells == 0 or ring_hits < 0 else ("PASS" if hits == cells and ring_hits == 0 else "FAIL")
         return sc.row("PLANT_selection", crit, st, "MOD" if cells else "HARNESS",
                       "%d/%d picture cells select it (%s first); ring overreach %s/%s; %s"
                       % (hits, cells, p.get("first"), p.get("ringHits"), p.get("ringCells"), self.pic_txt[:600]))
@@ -170,7 +185,7 @@ class PlantShowcase(object):
         d = "ok=%s error=%s restoration=%s exit=%s" % (rec.get("ok"), err[:200], str(rec.get("restoration"))[:200], rec.get("_exit"))
         if rec.get("ok") is True and restored:
             return sc.row("PLANT_door_seal", "growth seals a door until the plant is cut (trunk_doors_live.py)", "PASS", "MOD", d)
-        cls = next((c for c in ("SITE", "HARNESS") if err.startswith(c)), None)
+        cls = door_error_class(err)
         if rec.get("ok") is None or cls or not restored:
             return sc.row("PLANT_door_seal", "growth seals a door until the plant is cut", "UNMEASURED", cls or "HARNESS",
                           "trunk_doors_live gave no MOD verdict: %s tail %s" % (d, rec.get("_tail", "")[-300:]))
@@ -193,7 +208,9 @@ def run(args, bridge, site, ticker=None, door_runner=None):
         sc.stopped_by = None if sc.stopped_by in (None, "SELECTION") else sc.stopped_by  # DOOR needs no state of ours
         if sc.rec["site_restore_errors"] and sc.stopped_by is None:
             sc.stopped_by = "SITE_RESTORE"   # never stage a second scene on an unrestored site
+        sc.scene += 1                    # trunk_doors_live loads its own registered site: a new scene, a new clock
         sc.run_phases([("DOOR", show.door, ROWS["DOOR"])])
+        sc.phases[-1]["foreignClock"] = "trunk_doors_live.py loads and restores its own registered site"
     except Exception as ex:  # noqa: BLE001
         sc.rec["error"] = repr(ex)
     finally:

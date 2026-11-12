@@ -18,7 +18,7 @@ namespace RimMandrake.HugeThings
     /// measure_huge_plant_masks.py), mirrored when flipped. Each cell whose centre lies on it is clicked with the
     /// Selector's own parameters (GenUI.ThingsUnderMouse at the cell centre, mustBeSelectable, radius 1): a hit is the
     /// plant in the list, "first" is the plant at the head of it (what one click selects when nothing else is there).
-    /// A one-cell ring outside the whole quad is clicked too: hits there are overreach. Changes nothing.</summary>
+    /// A one-cell ring of cells lying wholly outside the drawn quad is clicked too: any hit there is overreach. Changes nothing.</summary>
     public static class HugePlantSelectionProbe
     {
         public static string ClickPicture(Map map, IntVec3 root)
@@ -80,7 +80,7 @@ namespace RimMandrake.HugeThings
                     if (!cell.InBounds(map)) continue;
                     float cx = x + 0.5f, cz = z + 0.5f;
                     bool onPicture = cx >= px0 && cx <= px1 && cz >= pz0 && cz <= pz1;
-                    bool outsideQuad = cx < qx0 || cx > qx0 + side || cz < qz0 || cz > qz0 + side;
+                    bool outsideQuad = x + 1 <= qx0 || x >= qx0 + side || z + 1 <= qz0 || z >= qz0 + side;   // wholly outside
                     if (!onPicture && !outsideQuad) continue;
                     List<Thing> under = GenUI.ThingsUnderMouse(cell.ToVector3Shifted(), 1f, click);
                     int at = under.IndexOf(plant);

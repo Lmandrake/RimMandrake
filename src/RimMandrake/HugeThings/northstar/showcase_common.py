@@ -55,6 +55,7 @@ class Showcase(object):
         self.rows, self.phases, self.log = [], [], []
         self.rec = dict(script=script, item=item, started=utc())
         self.stopped_by = None
+        self.scene = 1                # a restore-and-reload starts a new scene: its clock restarts, order is per scene
 
     # ---------------------------------------------------------------- bridge
     def call(self, tool, **kw):
@@ -126,7 +127,7 @@ class Showcase(object):
     def run_phases(self, phases):
         """phases: [(name, fn, row_ids)] in the ONLY order they may run. fn(self) -> 'PASS'|'FAIL'|'UNMEASURED'."""
         for order, (name, fn, row_ids) in enumerate(phases, 1):
-            ph = dict(order=order, phase=name, status=None, startTick=None, endTick=None, startUtc=None, endUtc=None,
+            ph = dict(order=order, phase=name, scene=self.scene, status=None, startTick=None, endTick=None, startUtc=None, endUtc=None,
                       rows=list(row_ids))
             self.phases.append(ph)
             if self.stopped_by is not None:
@@ -162,10 +163,12 @@ class Showcase(object):
 
     def ordered(self):
         """True when the phases that ran carry stamps proving their order: each start >= the previous end, end >= start."""
-        last = None
+        last, scene = None, None
         for p in self.phases:
-            if p["startTick"] is None:
-                continue
+            if p["startTick"] is None or p.get("foreignClock"):
+                continue              # a phase run inside another save's scene: its ticks are that save's, UTC orders it
+            if p.get("scene") != scene:
+                last, scene = None, p.get("scene")
             if p["endTick"] is None or p["endTick"] < p["startTick"] or (last is not None and p["startTick"] < last):
                 return False
             last = p["endTick"]

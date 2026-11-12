@@ -35,15 +35,25 @@ LANE = (20, 155, 101, 21)            # x, z, w, h -- away from the workshop rect
 START, GOAL = (26, 165), (114, 165)
 WALL_X, TREE_X, GIANT = 50, 70, (92, 165)
 STAGED_Z = range(159, 172)
-CHUNK, BUDGET, MAX_STEP, STALL = 120, 12000, 12, 600
+# The goal is SEALED by a wall ring: titan clearing (Patch_StartPath_TitanClearing) acts only when the destination is
+# unreachable, so an open lane would let the titan walk round the line wall and test nothing but the wake.
+RING_R = 3
+RING = [(GOAL[0] + dx, GOAL[1] + dz) for dx in range(-RING_R, RING_R + 1) for dz in range(-RING_R, RING_R + 1)
+        if max(abs(dx), abs(dz)) == RING_R]
+ARRIVE = 2                            # inside the ring: within 2 cells of the goal
+CHUNK, BUDGET, MAX_STEP, STALL = 120, 12000, 12, 1800   # a re-order mid-clearing would interrupt the clearing job
 NEAR = 12
 FIELDS = ("giantAnimalsEnabled", "wakeEnabled", "titanClearingEnabled", "titanEventsEnabled",
-          "corpseSiteScavengersEnabled", "corpseSiteScavengerDailyChance", "corpseSiteCampsEnabled",
+          "corpseSiteEnabled", "corpseSiteScavengersEnabled", "corpseSiteScavengerDailyChance", "corpseSiteCampsEnabled",
           "corpseSiteCampDailyChance", "giantPlantsEnabled")
 PACKAGES = ("mandrake.rm.hugethings", "mandrake.rm.hugethingstestraces")
 ROWS = dict(PRE=["PRE_ready"], CROSSING=["CROSSING_walked", "CROSSING_destroys"],
             DEATH=["DEATH_titan_dies", "DEATH_corpse_site"], CROWD=["CROWD_arrives", "CROWD_targets_site"])
 REQUIRED = [r for k in ("PRE", "CROSSING", "DEATH", "CROWD") for r in ROWS[k]]
+
+
+def arrived(cell):
+    return None not in cell and max(abs(cell[0] - GOAL[0]), abs(cell[1] - GOAL[1])) <= ARRIVE
 
 
 def rect(x, z, w, h):
@@ -81,11 +91,12 @@ class TitanShowcase(object):
         rows = self.sc.things(rect(x, z, w, h))
         if rows is None:
             return None
-        c = dict(wall=0, tree=0, giant=0, rubble=0, blocker=0)
+        c = dict(wall=0, ring=0, tree=0, giant=0, rubble=0, blocker=0)
+        ring = set(RING)
         for t in rows:
             d = t.get("def")
             if d == "Wall":
-                c["wall"] += 1
+                c["ring" if (t.get("x"), t.get("z")) in ring else "wall"] += 1
             elif d == "Plant_TreeOak":
                 c["tree"] += 1
             elif d == "RM_Nogtyl":
@@ -102,7 +113,8 @@ class TitanShowcase(object):
         call("jawa/set_roof_batch", ops="None:%d,%d,%d,%d" % (x, z, w, h))
         call("jawa/destroy_batch", categories="All", rects=rect(x, z, w, h))
         call("jawa/set_terrain_batch", ops="Soil:%d,%d,%d,%d" % (x, z, w, h))
-        call("jawa/build_batch", ops=";".join("Wall:%d,%d" % (WALL_X, zz) for zz in STAGED_Z), stuff="WoodLog",
+        walls = [(WALL_X, zz) for zz in STAGED_Z] + RING
+        call("jawa/build_batch", ops=";".join("Wall:%d,%d" % c for c in walls), stuff="WoodLog",
              faction="player", wipeExisting=True, readBack=0)
         ops = ["id=t%d|kind=plant|x=%d|z=%d|def=Plant_TreeOak|growth=1" % (zz, TREE_X, zz) for zz in STAGED_Z[::3]]
         ops.append("id=g|kind=plant|x=%d|z=%d|def=RM_Nogtyl|growth=1" % GIANT)
@@ -115,7 +127,8 @@ class TitanShowcase(object):
         if not okp:
             return sc.row("PRE_ready", "the loaded build is this clone's, with test races", "UNMEASURED", "HARNESS", why)
         bad = [f for f, v in (("giantAnimalsEnabled", True), ("wakeEnabled", True), ("titanClearingEnabled", True),
-                              ("titanEventsEnabled", True), ("giantPlantsEnabled", True)) if not self.st.put(f, v)]
+                              ("titanEventsEnabled", True), ("giantPlantsEnabled", True),
+                              ("corpseSiteEnabled", True)) if not self.st.put(f, v)]
         x, z, w, h = LANE
         there = [p.get("id") for p in sc.call("jawa/list_pawns", rect=rect(x, z, w, h), limit=200).get("pawns") or []]
         if bad or there:
@@ -156,14 +169,14 @@ class TitanShowcase(object):
                 worst = max(worst, step)
                 stall_at = stall_at + CHUNK if step < 1 else 0
             path.append(cell)
-            if cell[0] is not None and cell[0] >= GOAL[0] - 6:
+            if arrived(cell):
                 break
             if stall_at >= STALL:
                 sc.call("jawa/ordered_job", pawnId=self.pid, jobDef="Goto", targetAX=GOAL[0], targetAZ=GOAL[1], waitTicks=1)
                 reorders, stall_at = reorders + 1, 0
         c1 = self.census() or {}
         alive = bool(p and not p.get("dead") and p.get("spawned"))
-        reached = bool(path and path[-1][0] is not None and path[-1][0] >= GOAL[0] - 6)
+        reached = bool(path and arrived(path[-1]))
         detail = "path %d samples %s..%s, max step %.1f cells/%d ticks, %d ticks, re-orders %d" % (
             len(path), path[:1], path[-1:], worst, CHUNK, spent, reorders)
         if not alive:
@@ -175,7 +188,7 @@ class TitanShowcase(object):
             sc.row("CROSSING_walked", "titan WALKS (no jump)", "FAIL", "MOD", "teleport-like or unsampled: " + detail)
         else:
             sc.row("CROSSING_walked", "titan walks the staged lane end to end", "PASS", "MOD", detail)
-        lost = dict((k, c0.get(k, 0) - c1.get(k, 0)) for k in ("wall", "tree", "giant"))
+        lost = dict((k, c0.get(k, 0) - c1.get(k, 0)) for k in ("wall", "ring", "tree", "giant"))
         dd = "before %s after %s destroyed %s rubble +%d" % (c0, c1, lost, c1.get("rubble", 0) - c0.get("rubble", 0))
         if not c1:
             return sc.row("CROSSING_destroys", "the crossing destroys what it passes", "UNMEASURED", "HARNESS",
@@ -183,8 +196,11 @@ class TitanShowcase(object):
         if not reached:
             return sc.row("CROSSING_destroys", "the crossing destroys what it passes", "UNMEASURED", "HARNESS",
                           "no full crossing to judge; " + dd)
-        ok = sum(v for v in lost.values() if v > 0) > 0
-        return sc.row("CROSSING_destroys", "the crossing destroys staged walls/plants and leaves rubble",
+        if c0.get("ring", 0) != len(RING):
+            return sc.row("CROSSING_destroys", "the crossing breaks through the wall ring sealing its goal", "UNMEASURED",
+                          "SITE", "the ring was not built whole (%d/%d walls); %s" % (c0.get("ring", 0), len(RING), dd))
+        ok = lost["ring"] > 0
+        return sc.row("CROSSING_destroys", "the crossing breaks through the wall ring sealing its goal (and what else it passes)",
                       "PASS" if ok else "FAIL", "MOD", dd)
 
     def death(self, sc):

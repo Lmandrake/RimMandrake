@@ -32,10 +32,11 @@ class FakeSite(object):
 class Fake(object):
     """A tiny world: a clock, settings, things in the lane, one walking titan, a SiteReport."""
 
-    def __init__(self, stuck=False, misses=0, selection_on=True):
+    def __init__(self, stuck=False, misses=0, selection_on=True, ring_hits=0):
         self.tick, self.stuck, self.settings, self.calls = 1000, stuck, {}, []
-        self.misses, self.selection_on = misses, selection_on
+        self.misses, self.selection_on, self.ring_hits = misses, selection_on, ring_hits
         self.things = [dict(def_="Wall", x=TT.WALL_X, z=z) for z in TT.STAGED_Z] + \
+                      [dict(def_="Wall", x=x, z=z) for x, z in TT.RING] + \
                       [dict(def_="Plant_TreeOak", x=TT.TREE_X, z=z) for z in TT.STAGED_Z[::3]] + \
                       [dict(def_="RM_Nogtyl", x=TT.GIANT[0], z=TT.GIANT[1])]
         self.titan, self.sites, self.blockers = None, [], [(40 + dx, 200 + dz) for dx in (-2, -1, 0, 1, 2) for dz in (0, 1)]
@@ -112,8 +113,8 @@ class Fake(object):
                 return dict(success=True, result=(
                     "plant=Plant_RM_Nogtyl1 growth=1 selectionOn=%s variant=Nogtyl_A flip=False quad=34.5,200 side=12 "
                     "picture=37.4,200.2..44.6,211.8 selectRect=(37,200)-(44,211) pictureCells=96 hits=%d first=90 "
-                    "missed=%s ringCells=60 ringHits=0 aheadOfPlant=none"
-                    % (self.selection_on, 96 - self.misses, "none" if not self.misses else "44,211")))
+                    "missed=%s ringCells=60 ringHits=%d aheadOfPlant=none"
+                    % (self.selection_on, 96 - self.misses, "none" if not self.misses else "44,211", self.ring_hits)))
             return dict(success=True, result="FAIL unknown %s" % m)
         if tool == "jawa/artboard_stage":
             return dict(success=True, ops=[dict(ok=True, drawRect=dict(x=36.0, z=199.0, w=9.0, h=9.0))])
@@ -208,7 +209,30 @@ class T(unittest.TestCase):
         self.assertEqual(st["PLANT_selection"], ("FAIL", "MOD"))
         self.assertEqual(st["PLANT_door_seal"][0], "PASS")             # a selection failure does not gate the door scene
         self.assertEqual(self.plants(selection_on=False)["PLANT_selection"], ("UNMEASURED", "SITE"))
+        self.assertEqual(self.plants(ring_hits=3)["PLANT_selection"], ("FAIL", "MOD"))   # a box bigger than the art
         self.assertEqual(PP.picture_cells(PP.parse_probe("picture=37.4,200.2..44.6,211.8")).__len__(), 96)
+
+    def test_door_errors_are_classed_not_blamed_on_the_mod(self):
+        self.assertEqual(PP.door_error_class("AssertionError('SITE: no registered site')"), "SITE")
+        self.assertEqual(PP.door_error_class("AssertionError('HARNESS: bridge')"), "HARNESS")
+        self.assertEqual(PP.door_error_class("KeyError('pawns')"), "HARNESS")
+        self.assertIsNone(PP.door_error_class("AssertionError('MOD: door still open')"))
+        self.assertIsNone(PP.door_error_class("AssertionError('cut_recovered')"))
+
+    def test_door_scene_has_its_own_clock(self):
+        f = Fake()
+        out = os.path.join(self.tmp, "plants_clock.json")
+        site = FakeSite(PP.SNAP_PREFIX)
+
+        def door_runner():
+            f.tick = 10                                      # the door scene reloads its own save: the clock goes back
+            return dict(ok=True, restoration=dict(ok=True))
+        PP.run(Args(out, "40,200"), f, site, ticker=f.advance, door_runner=door_runner)
+        with open(out) as fh:
+            rec = json.load(fh)
+        self.assertTrue(rec["summary"]["phases_in_order"], rec["phases"])
+        self.assertEqual([p["scene"] for p in rec["phases"]], [1, 1, 1, 2])
+        self.assertIn("foreignClock", rec["phases"][-1])
 
     def test_separate_entrypoints_and_sites(self):
         self.assertNotEqual(TT.SNAP_PREFIX, PP.SNAP_PREFIX)
