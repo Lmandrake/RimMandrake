@@ -1,6 +1,6 @@
 {
  "script": "deep_stone_live.py",
- "started": "2026-11-11T23:25:38",
+ "started": "2026-11-12T00:10:30",
  "rows": [
   {
    "id": "DS_map_has_deep_stone",
@@ -8,8 +8,8 @@
    "class": "MOD",
    "item": "PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS",
    "detail": {
-    "report": "DEEPSTONE Limestone chunk=ChunkLimestone | source fallback | enabled True",
-    "surface": "SURFACE walls Granite:247,Sandstone:20,Slate:522 | chunks ChunkGranite:579,ChunkMechanoidSlag:6,ChunkSandstone:571,ChunkSlate:623",
+    "report": "DEEPSTONE Marble chunk=ChunkMarble | source fallback | enabled True",
+    "surface": "SURFACE walls Limestone:19191,Sandstone:15610 | chunks ChunkLimestone:211,ChunkMechanoidSlag:5,ChunkSandstone:251",
     "deepRockWallsOnMap": 0
    }
   },
@@ -19,96 +19,54 @@
    "class": "MOD",
    "item": "PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS",
    "detail": {
-    "deepstone": "DEEPSTONE Limestone chunk=ChunkLimestone | source fallback | enabled True",
+    "deepstone": "DEEPSTONE Marble chunk=ChunkMarble | source fallback | enabled True",
     "before": "DIGFINDS finds 0 | gravel 0 | ice 0 | budget unset | first-found 0 | last ",
-    "after": "DIGFINDS finds 1 | gravel 0 | ice 0 | budget 224 | first-found 1 | last ChunkLimestone x1 @47,47 D=4 (deep stone)",
+    "after": "DIGFINDS finds 1 | gravel 0 | ice 0 | budget 2332 | first-found 1 | last ChunkMarble x1 @47,47 D=4 (deep stone)",
     "depth": [
      3,
      4
     ],
-    "cutAt": 26500,
+    "cutAt": 24500,
     "newThings": {
-     "Plant_YellowGrass51812": [
-      "Plant_YellowGrass",
+     "Plant_Grass43488": [
+      "Plant_Grass",
       49,
-      50
-     ],
-     "Plant_YellowTallGrass51813": [
-      "Plant_YellowTallGrass",
-      54,
-      44
-     ],
-     "Plant_YellowGrass51814": [
-      "Plant_YellowGrass",
-      54,
-      40
-     ],
-     "Plant_YellowTallGrass51817": [
-      "Plant_YellowTallGrass",
-      40,
-      46
-     ],
-     "Plant_YellowGrass51818": [
-      "Plant_YellowGrass",
-      51,
-      45
-     ],
-     "Filth_Dirt51916": [
-      "Filth_Dirt",
-      55,
-      54
-     ],
-     "Plant_YellowGrass51918": [
-      "Plant_YellowGrass",
-      44,
-      50
-     ],
-     "Plant_YellowGrass51948": [
-      "Plant_YellowGrass",
-      44,
-      41
-     ],
-     "Plant_YellowTallGrass51975": [
-      "Plant_YellowTallGrass",
-      53,
-      49
-     ],
-     "Plant_YellowGrass52011": [
-      "Plant_YellowGrass",
-      40,
       47
      ],
-     "Plant_YellowGrass52012": [
-      "Plant_YellowGrass",
-      51,
-      40
+     "Plant_Grass43489": [
+      "Plant_Grass",
+      53,
+      44
      ],
-     "ChunkLimestone52114": [
-      "ChunkLimestone",
+     "ChunkMarble43494": [
+      "ChunkMarble",
       48,
       47
      ]
     },
     "newLetters": [
-     "Deep stone: Limestone"
+     "Deep stone: Marble"
     ],
     "designate": "{'success': True, 'action': 'add', 'designation': 'RM_DigCanal', 'added': 1, 'removed': 0, 'alreadyPresent': 0, 'alreadyAbsent': 0, 'skippedWrongType': 0, 'targetType': 'Cell', 'targetedThings': False",
     "timeline": [
      [
-      26500,
+      24500,
       4,
-      "ChunkLimestone x1 @47,47 D=4 (deep stone)"
+      "ChunkMarble x1 @47,47 D=4 (deep stone)"
      ]
+    ],
+    "chunkDistance": [
+     1.0
     ],
     "shots": {
      "letter": {
-      "id": "Letter_2",
+      "id": "Letter_3",
       "type": "Verse.StandardLetter",
       "letterDef": "PositiveEvent",
-      "label": "Deep stone: Limestone",
-      "text": "Ghost dug 2 m down and broke through into a layer of limestone. The surface rock here does not show it. A limestone chunk lies at the pit's edge; every cut this deep may turn up more.",
-      "arrivalTick": 26246,
-      "ageTicks": 297,
+      "label": "Deep stone: Marble",
+      "text": "Lehmann dug 2 m down and broke through into a layer of marble. The surface rock here does not show it. A marble chunk lies at the pit's edge; every cut this deep may turn up more.",
+      "arrivalTick": 24400,
+      "ageTicks": 143,
       "canDismissWithRightClick": true,
       "shouldAutomaticallyOpenLetter": false,
       "lookTargets": {
@@ -118,10 +76,10 @@
        "targetsTruncated": false,
        "primaryTarget": {
         "kind": "thing",
-        "id": "Thing_ChunkLimestone52114",
-        "label": "limestone chunk",
+        "id": "Thing_ChunkMarble43494",
+        "label": "marble chunk",
         "thingType": "Verse.Thing",
-        "defName": "ChunkLimestone",
+        "defName": "ChunkMarble",
         "mapId": "Map_0",
         "mapIndex": 0,
         "position": {
@@ -132,10 +90,10 @@
        "targets": [
         {
          "kind": "thing",
-         "id": "Thing_ChunkLimestone52114",
-         "label": "limestone chunk",
+         "id": "Thing_ChunkMarble43494",
+         "label": "marble chunk",
          "thingType": "Verse.Thing",
-         "defName": "ChunkLimestone",
+         "defName": "ChunkMarble",
          "mapId": "Map_0",
          "mapIndex": 0,
          "position": {
@@ -165,22 +123,22 @@
        }
       ]
      },
-     "pit": "C:\\Users\\sjlewis\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\deep_stone_final_pit__cell_rect.png",
-     "open": "{'success': True, 'requestedLetterId': 'Letter_2', 'letter': {'id': 'Letter_2', 'type': 'Verse.StandardLetter', 'letterDef': 'PositiveEvent', 'label': 'Deep stone: Limestone', 'text': \"Ghost dug 2 m d",
-     "letterShot": "C:/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Screenshots\\deep_stone_final_letter.png"
+     "pit": "C:\\Users\\sjlewis\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\deep_stone_final2_pit__cell_rect.png",
+     "open": "{'success': True, 'requestedLetterId': 'Letter_3', 'letter': {'id': 'Letter_3', 'type': 'Verse.StandardLetter', 'letterDef': 'PositiveEvent', 'label': 'Deep stone: Marble', 'text': \"Lehmann dug 2 m do",
+     "letterShot": "C:/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Screenshots\\deep_stone_final2_letter.png"
     }
    }
   }
  ],
  "args": {
-  "out": "D:/ClaudeWork/rimmandrake/scratch/ds_final.json",
+  "out": "D:/ClaudeWork/rimmandrake/scratch/ds_final2.json",
   "origin": "40,40",
   "fresh_map": true,
   "from_surface": false,
   "wide_pit": 0,
   "finds_on": false,
   "order": false,
-  "shots": "final"
+  "shots": "final2"
  },
  "site_calm": {
   "ok": true,
@@ -195,30 +153,38 @@
   "wildSpawner": "blocked (read back)",
   "removed": {
    "removed": [
-    "Boomalope51727",
-    "Boomalope51728",
-    "Boomalope51729",
-    "Boomalope51730",
-    "Muffalo51715",
-    "Muffalo51716",
-    "Muffalo51717",
-    "Muffalo51718",
-    "Muffalo51719",
-    "Muffalo51720",
-    "Muffalo51721",
-    "Muffalo51722",
-    "Muffalo51723",
-    "Muffalo51731",
-    "Muffalo51732",
-    "Muffalo51733",
-    "Muffalo51734",
-    "Muffalo51735",
-    "Muffalo51736",
-    "Muffalo51737",
-    "Muffalo51738",
-    "Raccoon51726",
-    "Vulture51724",
-    "Vulture51725"
+    "Boomrat43388",
+    "Cougar43387",
+    "Cougar43389",
+    "Cougar43400",
+    "Emu43382",
+    "Emu43383",
+    "Emu43393",
+    "Emu43403",
+    "Fox_Fennec43396",
+    "Hare43384",
+    "Hare43386",
+    "Hare43392",
+    "Hare43395",
+    "Iguana43390",
+    "Iguana43397",
+    "Iguana43398",
+    "Iguana43402",
+    "Iguana43410",
+    "MonitorLizard43407",
+    "MonitorLizard43409",
+    "MonitorLizard43413",
+    "Ostrich43399",
+    "Quail43404",
+    "Quail43405",
+    "Quail43406",
+    "Quail43411",
+    "Quail43412",
+    "Rat43391",
+    "Rat43401",
+    "Vulture43385",
+    "Vulture43394",
+    "Vulture43408"
    ],
    "left": []
   },
@@ -226,24 +192,32 @@
    "removed": [
     [
      "Hive",
-     "Hive1593"
+     "Hive38050"
     ],
     [
      "GlowPod",
-     "GlowPod1605"
+     "GlowPod38064"
+    ],
+    [
+     "GlowPod",
+     "GlowPod38065"
+    ],
+    [
+     "Hive",
+     "Hive38066"
     ],
     [
      "EggSac",
-     "EggSac1606"
+     "EggSac38079"
     ]
    ],
    "threatsAfter": 0,
    "error": null
   },
   "fed": [
-   "Human163",
-   "Human167",
-   "Human170"
+   "Human286",
+   "Human290",
+   "Human294"
   ]
  },
  "settings_before": {
@@ -254,7 +228,7 @@
   "digRockChunkMultiplier": "1",
   "digLabourMultiplier": "4"
  },
- "digger": "Human51797",
+ "digger": "Human43471",
  "job_probe": {
   "success": true,
   "kind": "dig",
@@ -279,7 +253,7 @@
    "designationRestored": false
   },
   "pawn": {
-   "id": "Human51797",
+   "id": "Human43471",
    "workType": "Mining",
    "workTypeDisabled": false,
    "workActive": true,
@@ -289,10 +263,10 @@
   },
   "ticksGame": 33,
   "operation": {
-   "OperationId": "op_50a619b2d5d34bb9a9a1cdbe3c320cf7",
+   "OperationId": "op_67e0a742d8ba4035b06147683249a9f2",
    "Status": "Completed",
    "Success": true,
-   "DurationMs": 47
+   "DurationMs": 73
   },
   "state": {
    "programState": "Playing",
@@ -308,10 +282,10 @@
  },
  "timeline": [
   [
-   26500,
+   24500,
    4,
-   "ChunkLimestone x1 @47,47 D=4 (deep stone)"
+   "ChunkMarble x1 @47,47 D=4 (deep stone)"
   ]
  ],
- "finished": "2026-11-11T23:33:48"
+ "finished": "2026-11-12T00:17:59"
 }
