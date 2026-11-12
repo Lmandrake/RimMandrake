@@ -1,0 +1,15 @@
+# mutation: restore the old UPSTREAM regex, run selftest_testq_retest
+FAIL  a chain ended by its own GAP is not held under another chain's cause: {'thirst': 'driver_undelivered: ExpectationFailed: UNMEASURED: live check owed (THIRST_X) -- no sprinkler_live.p', 'pit': 'driver_undelivered: ExpectationFailed: UNMEASURED: live check owed (THIRST_X) -- no sprinkler_live.p'}
+1 FAILED
+rc=0
+# mutation: drop the feed call from site_calm
+FAIL site_calm feeds the starving colonist only, Food only: [] fed=[] err=KeyError('fields')
+FAIL a calm piece that breaks still feeds the starving colonist (ok=False names it): []
+selftest_validation_core_site: 24/26
+ .../events/CLAUDE_STEVEDESKTOP_OFFLINE6.jsonl      |  1 +
+ .../Utils/selftest_validation_core_site.py         | 42 ++++++++++++++++++++++
+ src/RimMandrake/Utils/testq/retest.py              |  6 +++-
+ .../Utils/testq/selftest_testq_retest.py           | 17 +++++++++
+ src/RimMandrake/Utils/validation_core.py           | 12 +++++++
+ whittle/harness_repair_cause_8135787b/PROMPT.md    | 18 ++++++++++
+ 6 files changed, 95 insertions(+), 1 deletion(-)

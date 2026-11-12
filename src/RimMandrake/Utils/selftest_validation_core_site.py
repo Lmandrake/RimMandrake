@@ -280,5 +280,47 @@ except V.WatchdogAbort as ex:
     ok("budget" in str(ex) and w2._B.calls == 1, "watchdog: a spent budget aborts the next call before it is sent")
 ok(V.Watchdog(_Probe([]), 5).calls == 0, "watchdog: other attributes pass through")
 
+# ---- HARNESS_REPAIR_CAUSE_8135787B: site_calm tops up a starving colonist's Food before the driver's first advance
+class Hungry(Fake):
+    """Colonist 1 at Food 0 (the sweep sighting: 'starving: food category Starving'), colonist 5 fed, a hostile 77 that
+    is no colonist. Thirst is low on both and must be left alone."""
+    def __init__(self):
+        Fake.__init__(self, [])
+        self.needs = {1: {"Food": 0.0, "RM_Thirst": 0.1}, 5: {"Food": 0.8, "RM_Thirst": 0.1}, 77: {"Food": 0.0}}
+        self.need_sets = []
+
+    def _raw(self, tool, kw):
+        if tool == "jawa/pawn_need":
+            if kw.get("action") == "list":
+                return {"success": True, "needs": [{"need": k, "level": v} for k, v in self.needs[kw["pawn"]].items()]}
+            self.need_sets.append((kw["pawn"], kw["need"], kw["level"]))
+            self.needs[kw["pawn"]][kw["need"]] = kw["level"]
+            return {"success": True}
+        return Fake._raw(self, tool, kw)
+
+
+V._CALM.clear()
+hb = Hungry()
+cr = V.site_calm(hb)
+V._CALM.clear()
+ok(hb.need_sets == [(1, "Food", 1.0)] and cr.get("fed") == [1] and "fedError" not in cr,
+   "site_calm feeds the starving colonist only, Food only: %s fed=%s err=%s" % (hb.need_sets, cr.get("fed"),
+                                                                              cr.get("fedError") or cr.get("error")))
+
+
+class HungryBroken(Hungry):
+    """The calm's own pieces break (list_pawns answers, quiet_site does not): the feed still runs."""
+    def _raw(self, tool, kw):
+        if tool == "jawa/quiet_site":
+            raise RuntimeError("quiet_site unavailable")
+        return Hungry._raw(self, tool, kw)
+
+
+hb2 = HungryBroken()
+cr2 = V.site_calm(hb2)
+V._CALM.clear()
+ok(cr2.get("ok") is False and hb2.need_sets == [(1, "Food", 1.0)],
+   "a calm piece that breaks still feeds the starving colonist (ok=False names it): %s" % hb2.need_sets)
+
 print("selftest_validation_core_site: %d/%d" % (sum(RES), len(RES)))
 sys.exit(0 if all(RES) else 1)

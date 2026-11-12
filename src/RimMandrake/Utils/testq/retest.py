@@ -27,7 +27,11 @@ CAUSES = (("canary", r"canary red"),
           # (proof_hose's offline gate red) and 13 sprinkler/thirst rows (bridge DeadlineError) were held as GAPs at
           # their code version and never re-run once the driver was repaired.
           ("driver_undelivered", r"\bno [\w .*-]+ result at the current mod hash"))
-UPSTREAM = re.compile(r"upstream failed|an UNMEASURED component ended this chain")
+# A chain another chain's failure stopped (suite.py upstream_reason, cross-chain). NOT "an UNMEASURED component ended this
+# chain earlier": that is the chain's OWN earlier row (suite.py, intra-chain), already judged by row_cause on that row.
+# HARNESS_REPAIR_CAUSE_8135787B: matching it held flow_map_controls_six, pit_access_gear_ladders and
+# suspension_bridges_and_covers -- each ended by its own real `live check owed`/`look owed` GAP -- under thirst's cause.
+UPSTREAM = re.compile(r"upstream failed")
 ORPHAN = "<no chain>"           # split_rows key: rows the sheet never reached carry no chain
 NOT_A_FAULT = ("BLOCKED_SELECTION",)        # the selection was refused: no run happened
 LANE_CAUSES = ("CANARY",)                   # testq.PAUSE_ON with an INVALID outcome: lane_finding has these

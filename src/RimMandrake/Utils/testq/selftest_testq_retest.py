@@ -185,6 +185,23 @@ def main():
               "an undelivered driver row holds its chain: %s" % det[:50])
     kept, held, sigs = R.split_rows([row("h", "r1", "UNMEASURED", "UNMEASURED: live check owed -- a look by eye")])
     check(len(kept) == 1 and not held, "a live check owed with no driver named stays a GAP")
+    # HARNESS_REPAIR_CAUSE_8135787B: "an UNMEASURED component ended this chain earlier" is the chain's OWN earlier row
+    # (suite.py, intra-chain). A chain ended by its own GAP is a verdict even when another chain carries a cause; one
+    # ended by its own undelivered-driver row is held by that row's cause, never another chain's.
+    und = ("ExpectationFailed: UNMEASURED: live check owed (THIRST_X) -- no sprinkler_live.py result at the current "
+           "mod hash carries this row: run it")
+    own = "ExpectationFailed: UNMEASURED: live check owed -- a ladder leans against its wall"
+    kept, held, sigs = R.split_rows([row("thirst", "T21", "UNMEASURED", und),
+                                     row("pit", "p1", "PASS"), row("pit", "p2", "UNMEASURED", own),
+                                     row("pit", "p3", "UNMEASURED", "an UNMEASURED component ended this chain earlier: " + own)])
+    check(list(sigs) == ["thirst"] and [r["row"] for r in kept] == ["p1", "p2", "p3"],
+          "a chain ended by its own GAP is not held under another chain's cause: %s" % sigs)
+    kept, held, sigs = R.split_rows([row("s", "s1", "UNMEASURED", "surprise: safe_advance stopped"),
+                                     row("thirst", "T21", "UNMEASURED", und),
+                                     row("thirst", "T22", "UNMEASURED", "an UNMEASURED component ended this chain earlier: "
+                                         + und)])
+    check(set(sigs) == {"s", "thirst"} and sigs["thirst"].startswith("driver_undelivered") and not kept,
+          "a chain ended by its own undelivered row is held by that row's cause: %s" % sigs)
     # causes
     a = R.job_cause({"outcome": "INVALID", "cause": "HARNESS", "note": "modcheck exit 5 and no sheet JSON: tail 12:30"})
     b = R.job_cause({"outcome": "INVALID", "cause": "HARNESS", "note": "modcheck exit 5 and no sheet JSON: other"})

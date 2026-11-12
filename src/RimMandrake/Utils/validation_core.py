@@ -662,6 +662,18 @@ def site_calm(B):
             out["ok"] = False
     except Exception as ex:  # noqa: BLE001
         out["ok"], out["error"] = False, repr(ex)
+    # pass 3 (HARNESS_REPAIR_CAUSE_8135787B): a sweep runs sprinkler_live on the run's own map after thirst_live has
+    # spent ~15 min of game time there; a colonist reached Food 0 and the governor stopped the driver's first advance
+    # ("starving: food category Starving"), so no result and thirst T21/T22 went driver_undelivered. Top up FOOD of a
+    # colonist that is LOW (the suite's own rule, bland_world.feed_colonists, floor 0.25); thirst is left alone, since
+    # the thirst and sprinkler drivers measure it. Its own try: a calm piece that broke above must not leave a
+    # starving colonist to stop the driver's first advance as well.
+    try:
+        _helpers()
+        import bland_world  # noqa: E402 - beside helpers, on sys.path after _helpers()
+        out["fed"] = bland_world.feed_colonists(B, thirst_floor=None)
+    except Exception as ex:  # noqa: BLE001
+        out["ok"], out["fedError"] = False, repr(ex)
     return out
 
 
