@@ -6,7 +6,7 @@ load set: 316 active, 316 located; missing: []
    2 file(s)
 
 == B. patch xpaths selecting RM_AgariluxPrime / its graphicData / texPath
-   3137 patch files, 69187 xpaths evaluated (0 files unparsable; 39542 relative xpaths anchored at /)
+   3137 patch files, 69195 xpaths evaluated (0 files unparsable; 39550 relative xpaths anchored at /)
    selects def          mandrake.rm.biomes             RotGiants_HugeFootprint.xml  /Defs/ThingDef[defName="RM_AgariluxPrime"]
    selects def          mandrake.rm.biomes             RotGiants_HugeFootprint.xml  /Defs/ThingDef[defName="RM_AgariluxPrime"]
    selects def          mandrake.rm.biomes             RotSpecies_NamesAndSizes.xml  /Defs/ThingDef[defName="RM_AgariluxPrime"]

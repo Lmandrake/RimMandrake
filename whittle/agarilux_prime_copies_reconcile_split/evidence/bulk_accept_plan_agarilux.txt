@@ -1,4 +1,4 @@
-bulk_accept_renders.py plan (the hourly donor-render installer's planner), run after the retire; plan generated 2026-11-11T21:25:02-0800
+bulk_accept_renders.py plan (the hourly donor-render installer's planner), run after the retire; plan generated 2026-11-11T21:48:18-0800
   artpipe jobs named *agarilux* in done/ (20,378 files; a full-content grep timed out) whose JSON names the old slot: one,
   dregen_RM_AgariluxPrime_ABAgariluxPrime_v1; pending/ and active/ hold no *agariluxprime* job. Its install_to is
   src/RimMandrake/TheRot/Textures/Things/Plants/AB_AgariluxPrime.png (retired).
