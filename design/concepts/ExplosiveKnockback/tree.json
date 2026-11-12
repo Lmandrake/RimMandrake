@@ -1,0 +1,504 @@
+{
+ "schema_version": 1,
+ "subject": "ExplosiveKnockback",
+ "kind": "mod",
+ "authored_by": "concept",
+ "root_ref": "design/validation_walks/RimMandrake/ExplosiveKnockback.md#north-star",
+ "root_state": "DRAFT",
+ "root_hash": null,
+ "coverage": null,
+ "floor": {
+  "ref": "concept_floor.json",
+  "hash": "0e3d21c2c6f327e0cf7c0430fba9084dd442b1a23cd2dedd73377def76843cd4",
+  "off": []
+ },
+ "exam_waived": null,
+ "waived": [],
+ "advisory": [
+  "The wild tuning numbers (throw x1.6, about 70 percent kept per rebound) are playtest tuning inside his card; the scene checks the shape, not the exact numbers"
+ ],
+ "leaves": [
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "proof scene calibration plus over_sandbags: landing cell 3 cells out along the blast ray, alive, stunned, journal reason thrown",
+   "tier_reason": "the throw, the landing and the scatter are runtime (PawnFlyer, map things, the explosion wave); the kernel selftest proves only the path maths",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "people_thrown_three_cells",
+   "by": "concept",
+   "root": [
+    "ek_blast_throws_people"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "A colonist standing one cell from a mortar shell's landing is thrown about three cells straight away from it, clean over a sandbag line, and the player sees them land alive and briefly stunned.",
+   "scenario": "Quicktest map, minimal list: a colonist one cell east of a mortar impact point, a sandbag line two cells further east; the shell lands; read the colonist's cell and health after landing.",
+   "false_pass": [
+    "the colonist is moved by a teleport with no arc on screen",
+    "the colonist is thrown but dies of the impact",
+    "the throw stops at the sandbags"
+   ],
+   "red": "a build where the colonist stays in place or stops in front of the sandbags",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "proof scene wall_stop: landing on the cell before the wall, impact damage above 0, no further move",
+   "tier_reason": "the throw, the landing and the scatter are runtime (PawnFlyer, map things, the explosion wave); the kernel selftest proves only the path maths",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "wall_stops_dead",
+   "by": "concept",
+   "root": [
+    "ek_wall_stops_hard"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "A colonist thrown toward a wall stops dead on the cell before it, takes an impact hit, and the player never sees them rebound.",
+   "scenario": "A colonist two cells from a wall with the blast on the far side; read the landing cell, the impact damage and any second movement.",
+   "false_pass": [
+    "the colonist passes through the wall",
+    "the colonist rebounds off the wall like a good"
+   ],
+   "red": "a build where thrown people bounce off walls or stop with no impact damage",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "proof scene shield_counter: same cell after, energy drop larger than the plain absorb",
+   "tier_reason": "the throw, the landing and the scatter are runtime (PawnFlyer, map things, the explosion wave); the kernel selftest proves only the path maths",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "shield_belt_holds",
+   "by": "concept",
+   "root": [
+    "ek_shield_belt_holds"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "A pawn whose shield belt absorbs the blast stays where they stood, and the player sees the belt lose extra charge.",
+   "scenario": "A colonist wearing a charged shield belt beside a grenade blast; read position and belt energy before and after.",
+   "false_pass": [
+    "the belt absorbs the damage but the wearer is still thrown",
+    "the wearer stays put but the belt loses only the ordinary charge"
+   ],
+   "red": "a build where a shielded colonist is thrown, or the belt pays nothing extra",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": "goods_fly",
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "a per-tick trace of each thrown thing: height above zero mid-path, rotation changing, at least one rebound off the wall with speed near 0.7 of before",
+   "tier_reason": "the throw, the landing and the scatter are runtime (PawnFlyer, map things, the explosion wave); the kernel selftest proves only the path maths",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "goods_arc_spin_rebound",
+   "by": "concept",
+   "root": [
+    "ek_goods_fly_wild"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "Loose goods and corpses near a blast fly through the air in a high arc, spinning fast, and the player watches them rebound off walls, each time keeping about seventy percent of their speed, before they come to rest.",
+   "scenario": "A 5x5 stockpile of mixed goods and a corpse beside a wall; a mortar lands in it; record each thrown thing's drawn position per tick until all are at rest.",
+   "false_pass": [
+    "goods vanish and reappear at the landing cell under dust",
+    "goods slide in a straight line with no arc or spin",
+    "goods stop at the first wall"
+   ],
+   "red": "the built despawn and re-place hop under a dust puff",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": "goods_fly",
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "moved stacks equal stacks reached by the wave; the journal holds no overflow-dropped line",
+   "tier_reason": "the throw, the landing and the scatter are runtime (PawnFlyer, map things, the explosion wave); the kernel selftest proves only the path maths",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "every_good_moves",
+   "by": "concept",
+   "root": [
+    "ek_every_good_flies"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "Every loose good the blast reaches moves, and the player never sees one stack sit still in the blast while its neighbours fly.",
+   "scenario": "A mortar into a full 10x10 stockpile, one stack per cell; count stacks in the blast radius before and stacks that moved after.",
+   "false_pass": [
+    "the per-tick cap silently drops the overflow and those stacks stay",
+    "far stacks hop instantly while near ones fly"
+   ],
+   "red": "the built per-tick item cap that drops the overflow",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": "storage",
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "every good on the open furniture moved; journal holds no in_storage line for them",
+   "tier_reason": "the throw, the landing and the scatter are runtime (PawnFlyer, map things, the explosion wave); the kernel selftest proves only the path maths",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "open_shelf_scatters",
+   "by": "concept",
+   "root": [
+    "ek_open_storage_no_cover"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "Goods on an open shelf, rack or table scatter like goods on the floor, and the player sees the shelf emptied by the blast.",
+   "scenario": "A shelf, a weapon rack and a table each holding goods beside a grenade blast; read where the goods are after.",
+   "false_pass": [
+    "goods on any storage building are skipped (the built in_storage rule)",
+    "only floor goods move"
+   ],
+   "red": "the built in_storage skip at RM_MapComponent_Knockback.cs line 399",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": "storage",
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "contents counts unchanged; the free-backed container moved one cell away from the blast; the walled one stayed and jolted",
+   "tier_reason": "the throw, the landing and the scatter are runtime (PawnFlyer, map things, the explosion wave); the kernel selftest proves only the path maths",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "closed_container_holds",
+   "by": "concept",
+   "root": [
+    "ek_closed_container_holds"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "Goods inside a closed container (a crate, locker, fridge or deep storage) stay inside it, and the player sees the container itself shift a cell or jolt.",
+   "scenario": "A crate and a fridge holding goods beside a grenade blast, one with a free cell behind it and one against a wall; read contents and container cells after.",
+   "false_pass": [
+    "closed containers spill their goods",
+    "the container never moves at all",
+    "a container slides into a pit, a wall or onto a pawn"
+   ],
+   "red": "a build where a fridge's contents scatter, or a crate is shoved into a pit",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": "goods_fly",
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "steel: blunt damage 2 to 5 and a stagger, stack stops at the colonist; cloth: no damage, passes",
+   "tier_reason": "the throw, the landing and the scatter are runtime (PawnFlyer, map things, the explosion wave); the kernel selftest proves only the path maths",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "heavy_stack_knocks",
+   "by": "concept",
+   "root": [
+    "ek_heavy_goods_knock"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "A heavy thrown stack that strikes a pawn gives a small blunt hit and a short stagger and stops there, while the player sees light goods fly past the pawn untouched.",
+   "scenario": "A colonist two cells beyond a stack of steel and a stack of cloth along the blast ray; read the colonist's damage and stagger and where each stack ended.",
+   "false_pass": [
+    "every good that passes a pawn hurts it",
+    "heavy stacks pass through the pawn"
+   ],
+   "red": "a build where flying goods never touch people, or where light cloth deals damage",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "throw length ratio fire to bomb near 0.5; modded explosion above 0; EMP 0 and no journal entry",
+   "tier_reason": "the throw, the landing and the scatter are runtime (PawnFlyer, map things, the explosion wave); the kernel selftest proves only the path maths",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "every_harmful_blast_throws",
+   "by": "concept",
+   "root": [
+    "ek_every_harmful_blast_throws"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "Grenades, mortars and other bombs throw at full strength, fire and incendiary blasts at about half, and another mod's damaging explosion throws too, while the player sees EMP, smoke and other harmless bursts throw nothing.",
+   "scenario": "One colonist each beside a frag grenade, an incendiary shell, a modded damaging explosion and an EMP grenade, same distance; compare throw lengths.",
+   "false_pass": [
+    "fire blasts still throw nothing (the built force 0)",
+    "other mods' blasts default to 0 percent",
+    "EMP throws"
+   ],
+   "red": "the built Flame force 0 and the 0 percent default for other mods",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": "gas",
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "bursts ordered along the fire front, one per clump cell; goods within about 1.9 cells of a burst moved at most 2 cells; colonist moved 1 cell, no new injuries, at most once per 2 seconds",
+   "tier_reason": "the throw, the landing and the scatter are runtime (PawnFlyer, map things, the explosion wave); the kernel selftest proves only the path maths",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "gas_goes_clump_by_clump",
+   "by": "concept",
+   "root": [
+    "ek_gas_clump_by_clump"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "When a flammable gas cloud catches, the player sees it go off clump by clump as the fire runs through it, each small burst scattering the goods near it and shoving a pawn one cell without hurting them.",
+   "scenario": "A 40-cell flammable gas cloud over loose goods with a colonist inside; light one edge; record each burst's cell and tick, goods moved, and the colonist's moves and damage.",
+   "false_pass": [
+    "the whole cloud goes off as one blast at its centre",
+    "the gas only lights fires",
+    "the colonist takes blast damage"
+   ],
+   "red": "a build with one centroid explosion, or none",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": "gas",
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "each tagged gas yields clump bursts; the census list matches the gases carrying the tag",
+   "tier_reason": "the throw, the landing and the scatter are runtime (PawnFlyer, map things, the explosion wave); the kernel selftest proves only the path maths",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "our_gases_burn",
+   "by": "concept",
+   "root": [
+    "ek_our_gases_burn"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player sees the Cauldron's gas, and every other gas of ours tagged as flammable, catch and go off clump by clump.",
+   "scenario": "Release the Cauldron's gas and each tagged gas from the census in turn over loose goods and light it.",
+   "false_pass": [
+    "only one test gas is wired",
+    "the Cauldron's gas burns as plain fire with no bursts"
+   ],
+   "red": "a build where the Cauldron's gas carries no flammable tag",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "proof scene cover_breaks: cover destroyed, one descent recorded; gas scene: cover hit points unchanged",
+   "tier_reason": "the throw, the landing and the scatter are runtime (PawnFlyer, map things, the explosion wave); the kernel selftest proves only the path maths",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "blast_breaks_pit_cover",
+   "by": "concept",
+   "root": [
+    "ek_blast_breaks_pit_cover"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "A damaging or fire blast over a covered pit breaks its cover and the pawn standing on it falls in, while the player sees a gas burst leave a cover whole.",
+   "scenario": "A raider on a covered pit; a grenade lands on the cover; separately a gas cloud bursts over a second covered pit.",
+   "false_pass": [
+    "the cover breaks but the raider stands in the air",
+    "a gas burst also breaks covers"
+   ],
+   "red": "a build where covers survive a grenade, or crack under a gas burst",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "proof scenes pit_colonist and no_cross: landing in the first pit cell, one descent recorded",
+   "tier_reason": "the throw, the landing and the scatter are runtime (PawnFlyer, map things, the explosion wave); the kernel selftest proves only the path maths",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "thrown_into_pit_falls",
+   "by": "concept",
+   "root": [
+    "ek_thrown_into_pit_falls"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "A pawn or a good thrown toward an open pit falls to its floor, and the player never sees anything thrown across it.",
+   "scenario": "A colonist and a stack beside a 1-wide open pit with the blast on the far side; read where each lands.",
+   "false_pass": [
+    "the colonist is thrown over the pit to the far side",
+    "the stack lands on the pit rim"
+   ],
+   "red": "a build where a throw crosses a pit",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "the stack reaches a stockpile outside the pit; the hauler used the ladder",
+   "tier_reason": "the throw, the landing and the scatter are runtime (PawnFlyer, map things, the explosion wave); the kernel selftest proves only the path maths",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "pit_goods_fetched",
+   "by": "concept",
+   "root": [
+    "ek_thrown_into_pit_falls"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "A colonist told to haul fetches goods a blast threw onto a pit floor, and the player sees them come back up.",
+   "scenario": "Throw a stack into a pit with a lowered ladder; queue hauling; wait up to a day.",
+   "false_pass": [
+    "goods on the pit floor are forbidden or unreachable forever",
+    "the colonist walks in by ordinary pathing with no ladder"
+   ],
+   "red": "a build where pit-floor goods can never be hauled",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "zero despawn-respawn pairs in the trace",
+   "tier_reason": "the throw, the landing and the scatter are runtime (PawnFlyer, map things, the explosion wave); the kernel selftest proves only the path maths",
+   "cannot_show": "a vanished-and-reappeared good is shown absent by the trace, never shown happening",
+   "wall_expect_h": null,
+   "id": "no_teleport",
+   "by": "concept",
+   "root": [
+    "ek_goods_teleport"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player never sees goods vanish from one cell and reappear on another under a puff of dust.",
+   "scenario": "The goods trace from goods_arc_spin_rebound, read for any thing despawned at one cell and spawned at another in the same tick.",
+   "false_pass": [
+    "the hop survives as the overflow path"
+   ],
+   "red": "the built despawn and re-place hop",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "the path goes round the pit; no descent recorded",
+   "tier_reason": "the throw, the landing and the scatter are runtime (PawnFlyer, map things, the explosion wave); the kernel selftest proves only the path maths",
+   "cannot_show": "a careless fall is shown absent by the path, never staged",
+   "wall_expect_h": null,
+   "id": "no_careless_fall",
+   "by": "concept",
+   "root": [
+    "ek_careless_fall"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player never sees a colonist walk into a pit by ordinary pathing; only a blast or another force puts anyone in.",
+   "scenario": "A colonist ordered to walk to a cell across an open pit.",
+   "false_pass": [
+    "the colonist paths straight through the pit cell"
+   ],
+   "red": "a build where pit pathing lets colonists walk in",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "frame_time_probe",
+   "oracle_proposed": "the frame probe's worst frame across both events",
+   "tier_reason": "frame time is meaningful only on the real list and machine",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "barrage_frame_budget",
+   "by": "concept",
+   "root": [
+    "ek_barrage_stays_smooth"
+   ],
+   "leaf_kind": "constraint",
+   "clause_kind": "change",
+   "experience": "at most 50 ms per frame on Archmagi, the full mod list, through a 6-shell mortar barrage into a full 10x10 stockpile and a 40-cell gas chain",
+   "scenario": "The barrage and the chain at normal speed with the frame probe running; read the worst frame.",
+   "false_pass": [
+    "the average frame is fine but one frame stalls",
+    "the probe measured a paused game"
+   ],
+   "red": "a build where all-fly stutters a barrage",
+   "tier_proposed": "live_full",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "rows per second near the frame rate; a deliberate 100 ms sleep shows as a 100 ms row",
+   "tier_reason": "frames exist only in a running game",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "frame_time_probe",
+   "by": "concept",
+   "root": [
+    "ek_barrage_stays_smooth"
+   ],
+   "leaf_kind": "instrument",
+   "clause_kind": "change",
+   "experience": "The log records every frame's time while a blast's goods are in the air, so a tester can read the worst frame.",
+   "scenario": "Start the probe, fire one grenade into goods, stop it; the log holds one row per frame with the count of things in the air.",
+   "false_pass": [
+    "the probe samples once a second and misses the stall",
+    "it records ticks, not frames"
+   ],
+   "red": "a probe that reports a smooth average over a stalled frame",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "journals of both orders agree on throws per blast; no duplicated or lost thing after the reload; frame budget held",
+   "tier_reason": "the walk is the full list, played",
+   "cannot_show": null,
+   "wall_expect_h": 3,
+   "id": "walk_storeroom_raid",
+   "by": "concept",
+   "root": [
+    "ek_blast_throws_people",
+    "ek_goods_fly_wild",
+    "ek_gas_clump_by_clump",
+    "ek_barrage_stays_smooth"
+   ],
+   "leaf_kind": "walk",
+   "clause_kind": "change",
+   "experience": "The player plays a raid on a stocked colony on the full list: mortars into the storeroom, a grenade on a pit trap, a gas cloud lit, and every throw and scatter reads as a blast.",
+   "scenario": "Full list colony with a stocked storeroom of open shelves and crates, a covered pit trap and a gas source; a mortar raid; save mid-way and reload; repeat the raid in a second order (gas first, then mortars); compare journals.",
+   "false_pass": [
+    "the scenes pass alone but the raid stutters",
+    "a reload loses a thing in the air",
+    "the second order gives a different outcome"
+   ],
+   "red": "a build whose thrown things duplicate or vanish across a reload",
+   "tier_proposed": "live_full",
+   "owner_part": "no"
+  }
+ ]
+}

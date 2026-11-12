@@ -1,7 +1,7 @@
 {
  "mod": "ExplosiveKnockback",
  "packageId": "mandrake.rm.explosiveknockback",
- "stage": 0,
+ "stage": 2,
  "scope": [
   {
    "id": "s_walk_draft",
@@ -10,6 +10,14 @@
     "design/validation_walks/RimMandrake/ExplosiveKnockback.md"
    ],
    "text": "Walk exists with 30 must-be-true rows; north star DRAFT, no owner bars yet."
+  },
+  {
+   "id": "s_design_item",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1794468800831473605"
+   ],
+   "text": "The Designer pass is filed as RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH, from his 2026-11-11 request to finish the pass together."
   }
  ],
  "decisions": [
@@ -204,9 +212,247 @@
    "date": "2026-11-10",
    "words": "3:Each gas unit that ignites should create its own weak explosion that then whooshes along, detonating each gas cloud along the entire pattern. The backwash should scatter items not just in the cloud but within the radius of any of the individual explosions. Like 3:3 but I want to make sure each of the individual gas clumps gets it, not just \"the centroid of the large gas cloud\"",
    "what": "Igniting gas chains clump by clump; each clump makes its own weak explosion that scatters goods in its own radius, inside or outside the gas. Never one centroid blast."
+  },
+  {
+   "id": "d_c_root",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1794468835221748501"
+   ],
+   "date": "2026-11-11 ~23:0x PST (live sitting, question card)",
+   "by_card": "Is this the mod? -> Approve as written",
+   "what": "The root text is approved word for word."
+  },
+  {
+   "id": "d_c_which_blasts",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1794468840281537479"
+   ],
+   "date": "2026-11-11 ~23:0x PST (live sitting, question card)",
+   "by_card": "Which explosions throw things? -> All harmful explosions",
+   "what": "Bombs, grenades and mortars throw at full strength, fire and incendiary blasts at half, and every damaging explosion from any other mod throws too."
+  },
+  {
+   "id": "d_c_closed_containers",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1794468845275647261"
+   ],
+   "date": "2026-11-11 ~23:0x PST (live sitting, question card)",
+   "by_card": "Ordinary shelves don't protect. Does anything? -> (1) with a write-in",
+   "what": "Closed containers protect what is inside them; open shelves, racks and tables do not; the container itself may be shoved a little.",
+   "words": "(1) but the closed containers may themselves get shoved a bit"
+  },
+  {
+   "id": "d_c_shield",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1794468850306726165"
+   ],
+   "date": "2026-11-11 ~23:0x PST (live sitting, question card)",
+   "by_card": "Should a shield belt stop its wearer being thrown? -> Yes, costs extra charge",
+   "what": "A shield belt that absorbs the blast absorbs the throw and drains extra charge (as built)."
+  },
+  {
+   "id": "d_c_wild",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1794468855146168085"
+   ],
+   "date": "2026-11-11 ~23:0x PST (live sitting, question card)",
+   "by_card": "How lively is the scatter? -> C, wild",
+   "what": "Goods throw about 1.6 times as far, spin fast and rebound off walls until spent, keeping about 70% of their speed each rebound. People still stop dead at a wall and take the hit."
+  },
+  {
+   "id": "d_c_gas_shove",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1794468860062036002"
+   ],
+   "date": "2026-11-11 ~23:0x PST (live sitting, question card)",
+   "by_card": "What does a gas clump's small blast do besides scatter goods? -> B, shove 1 cell",
+   "what": "A gas clump burst shoves a person one cell, with no damage, at most once every 2 seconds per person; gas bursts never break pit covers."
+  },
+  {
+   "id": "d_c_all_fly",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1794468864684141079"
+   ],
+   "date": "2026-11-11 ~23:0x PST (live sitting, question card)",
+   "by_card": "A blast hits more goods than can fly smoothly. What happens to the extra? -> All of them fly",
+   "what": "Every good a blast reaches flies; there is no overflow that stays or hops. The cost is engineered and proven on a mortar barrage and a long gas chain."
+  },
+  {
+   "id": "d_c_heavy_knock",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1794468869384727517"
+   ],
+   "date": "2026-11-11 ~23:0x PST (live sitting, question card)",
+   "by_card": "Do flying goods hurt people they hit? -> Light knock, heavy only",
+   "what": "A heavy flying stack that hits a person gives a small blunt hit and a stagger; light goods pass by."
+  },
+  {
+   "id": "d_c_gas_source",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1794468874358971350"
+   ],
+   "date": "2026-11-11 ~23:3x PST (live sitting, card write-in)",
+   "by_card": "Which gas goes off clump by clump? -> 2, with a write-in",
+   "what": "Our existing gases are tagged flammable where they fit, the Cauldron's gas among them; this mod adds no gas source of its own.",
+   "words": "2 and remember the gas in the Cauldron"
+  },
+  {
+   "id": "dl_closed_means_hidden",
+   "kind": "delegated",
+   "speaker": "agent",
+   "source": [
+    "ITEM:RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
+    "OWNER:1794468845275647261"
+   ],
+   "date": "2026-11-11",
+   "delegated": "implementation detail of a ruled behaviour",
+   "what": "A container counts as closed when it hides what it stores: crates, lockers, refrigerators, deep storage and hoppers (any storage building that does not draw its contents, plus an opt-in tag). Shelves, racks, tables, pallets and stockpile floors are open. Census of every storage def on the owner's list is part of RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED."
+  },
+  {
+   "id": "dl_container_shove",
+   "kind": "delegated",
+   "speaker": "agent",
+   "source": [
+    "ITEM:RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
+    "OWNER:1794468845275647261"
+   ],
+   "date": "2026-11-11",
+   "delegated": "tuning of a ruled behaviour",
+   "what": "'Shoved a bit': a closed 1x1 container whose mass is under the mass limit slides one cell straight away from the blast if that cell is free and standable, contents inside; anything larger, or with no free cell, only jolts in place (a short visual shake). A container is never shoved into a pit, through a wall or onto a pawn."
+  },
+  {
+   "id": "dl_modded_strength",
+   "kind": "delegated",
+   "speaker": "agent",
+   "source": [
+    "ITEM:RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
+    "OWNER:1794468840281537479"
+   ],
+   "date": "2026-11-11",
+   "delegated": "default value of a ruled behaviour",
+   "what": "Other mods' damaging explosions default to 100% (the setting stays; its default moves from 0%); fire-type damage 50%; EMP, smoke, stun, extinguish and tox gas stay 0, because they are not harmful blasts (tox gas harms by its gas, not its blast). Any weapon can still be tamed per weapon."
+  },
+  {
+   "id": "dl_heavy_threshold",
+   "kind": "delegated",
+   "speaker": "agent",
+   "source": [
+    "ITEM:RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
+    "OWNER:1794468869384727517"
+   ],
+   "date": "2026-11-11",
+   "delegated": "tuning of a ruled behaviour",
+   "what": "'Heavy' means a flying stack of 10 kg or more; it deals 2 to 5 blunt damage scaled by mass and speed, staggers the pawn for about half a second and stops dead; under 10 kg it flies past. Value in Mod Settings."
+  },
+  {
+   "id": "dl_gas_census",
+   "kind": "delegated",
+   "speaker": "agent",
+   "source": [
+    "ITEM:RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
+    "OWNER:1794468874358971350"
+   ],
+   "date": "2026-11-11",
+   "delegated": "census under a ruled scope",
+   "what": "Agent census of every gas our mods spawn (TheForge, Scarlands' bileworm gas, EnvironmentalHazards, the Cauldron's gas); each one that should burn gets an opt-in flammable tag (a DefModExtension), the census table cites why. A mod not loaded simply contributes no tagged gas."
+  },
+  {
+   "id": "dl_clump_strength",
+   "kind": "delegated",
+   "speaker": "agent",
+   "source": [
+    "ITEM:RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
+    "OWNER:1794468860062036002",
+    "OWNER:1794373318813726012"
+   ],
+   "date": "2026-11-11",
+   "delegated": "tuning of a ruled behaviour",
+   "what": "A gas clump burst has radius 1.9, throws goods up to 2 cells (wild tuning applies), shoves people per his ruling, and is capped at one burst per clump cell; the chain advances with the fire front, not all at once."
+  },
+  {
+   "id": "dl_gas_ignores_belts",
+   "kind": "delegated",
+   "speaker": "agent",
+   "source": [
+    "ITEM:RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
+    "OWNER:1794468850306726165",
+    "OWNER:1794468860062036002"
+   ],
+   "date": "2026-11-11",
+   "delegated": "consequence of two rulings",
+   "what": "A gas shove deals no damage, so a shield belt never triggers on it and loses no charge."
+  },
+  {
+   "id": "dl_perf_budget",
+   "kind": "delegated",
+   "speaker": "agent",
+   "source": [
+    "ITEM:RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
+    "OWNER:1794468864684141079"
+   ],
+   "date": "2026-11-11",
+   "delegated": "test numbers for a ruled proof",
+   "what": "All goods fly by pooled carriers drawn in one batch; the proof is a 6-shell mortar barrage into a 10x10 full stockpile and a 40-cell gas chain, each keeping the game at normal speed without a frame over 50 ms on the owner's machine (advisory until calibrated)."
   }
  ],
- "asks": [],
+ "asks": [
+  {
+   "id": "a_flagship",
+   "status": "drafted",
+   "author": "BENCH builder (agent)",
+   "source": [
+    "ITEM:RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH"
+   ],
+   "decision": "which showcase is the mod's flagship (showcase 1 must be his pick)",
+   "about": [
+    "inv_goods_fly",
+    "inv_closed_guard",
+    "inv_which_blasts"
+   ],
+   "owner_cites": [
+    "OWNER:1794468835221748501",
+    "OWNER:1794468855146168085",
+    "OWNER:1794468845275647261"
+   ],
+   "text": "Which scene is Explosive Knockback's face, the one every build is shown on first? A. Mortar into a stocked storeroom beside colonists: people thrown, open-shelf goods flying wild off the walls, closed crates holding and shifting (rec). B. A gas cloud catching and going off clump by clump. C. A raid blasted over a covered pit trap, cover breaking, raiders falling in."
+  },
+  {
+   "id": "a_northstar_bars",
+   "status": "drafted",
+   "author": "BENCH builder (agent)",
+   "source": [
+    "ITEM:RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH"
+   ],
+   "decision": "validate the drafted north-star bars (14 must-show, 2 cannot-show) every build is judged by",
+   "about": [
+    "inv_goods_fly",
+    "inv_gas_chain",
+    "inv_perf_all_fly"
+   ],
+   "owner_cites": [
+    "OWNER:1794468835221748501"
+   ],
+   "text": "These 16 lines, written only from your answers tonight, become the bars every Explosive Knockback build is judged by (design/validation_walks/RimMandrake/ExplosiveKnockback.md, north star). Approve as written / change a line."
+  }
+ ],
  "inventory": [
   {
    "id": "inv_kernel",
@@ -275,11 +521,12 @@
    "proof_evidence": [
     "src/RimMandrake/ExplosiveKnockback/validation.py"
    ],
-   "scope": "open_question",
+   "scope": "approved",
    "source": [
     "src/RimMandrake/ExplosiveKnockback/",
     "design/validation_walks/RimMandrake/ExplosiveKnockback.md"
-   ]
+   ],
+   "scope_note": "d_c_which_blasts: change owed (fire half, modded on by default) in RIMMANDRAKE_THROW_ALL_HARMFUL_BLASTS"
   },
   {
    "id": "inv_items_teleport",
@@ -292,12 +539,13 @@
    "proof_evidence": [
     "src/RimMandrake/ExplosiveKnockback/validation.py"
    ],
-   "scope": "open_question",
+   "scope": "out",
    "source": [
     "src/RimMandrake/ExplosiveKnockback/",
     "design/validation_walks/RimMandrake/ExplosiveKnockback.md"
    ],
-   "proof_note": "contradicts d_goods_fly"
+   "proof_note": "contradicts d_goods_fly",
+   "scope_note": "replaced by inv_goods_fly (d_goods_fly, d_c_wild, d_c_all_fly); removal in RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD"
   },
   {
    "id": "inv_shelf_skip",
@@ -315,7 +563,8 @@
     "src/RimMandrake/ExplosiveKnockback/",
     "design/validation_walks/RimMandrake/ExplosiveKnockback.md"
    ],
-   "proof_note": "contradicts d_no_shelf_exemption; walk row light_things.item_on_a_shelf_stays asserts the old rule"
+   "proof_note": "contradicts d_no_shelf_exemption; walk row light_things.item_on_a_shelf_stays asserts the old rule",
+   "scope_note": "replaced by inv_closed_guard (d_c_closed_containers); removal in RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED"
   },
   {
    "id": "inv_who_is_spared",
@@ -346,11 +595,12 @@
    "proof_evidence": [
     "src/RimMandrake/ExplosiveKnockback/validation.py"
    ],
-   "scope": "open_question",
+   "scope": "approved",
    "source": [
     "src/RimMandrake/ExplosiveKnockback/",
     "design/validation_walks/RimMandrake/ExplosiveKnockback.md"
-   ]
+   ],
+   "scope_note": "d_c_shield"
   },
   {
    "id": "inv_recovery",
@@ -372,7 +622,7 @@
   },
   {
    "id": "inv_caps",
-   "what": "Caps: 40 throws per explosion (pawns first), 60 item throws per map tick; the overflow is dropped and does not move",
+   "what": "Caps: 40 throws per explosion (pawns first) stays; the item overflow that is dropped and does not move is replaced by all-fly (d_c_all_fly, RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD, RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF)",
    "impl": "present",
    "impl_evidence": [
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs"
@@ -381,7 +631,7 @@
    "proof_evidence": [
     "src/RimMandrake/ExplosiveKnockback/validation.py"
    ],
-   "scope": "open_question",
+   "scope": "approved",
    "source": [
     "src/RimMandrake/ExplosiveKnockback/",
     "design/validation_walks/RimMandrake/ExplosiveKnockback.md"
@@ -491,56 +741,147 @@
     "design/validation_walks/RimMandrake/ExplosiveKnockback.md"
    ],
    "search_scope": "src/RimMandrake/**/*.cs for gas + ignite/DoExplosion (2026-11-11): none; TheForge gas wash lights fires by FireUtility.TryStartFireIn, no explosion",
-   "scope_source": "OWNER:1794373318813726012"
+   "scope_source": "OWNER:1794373318813726012 OWNER:1794468860062036002 OWNER:1794468874358971350"
+  },
+  {
+   "id": "inv_goods_fly",
+   "what": "Goods and corpses fly as visible things: arc, fast spin, rebounds off walls keeping about 70% each, until spent; every good reached flies",
+   "impl": "absent",
+   "search_scope": "src/RimMandrake/ExplosiveKnockback/Source/*.cs (2026-11-11): items move only by despawn and re-place",
+   "proof": "missing",
+   "proof_evidence": [],
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1794373318813726012 OWNER:1794468855146168085 OWNER:1794468864684141079",
+   "source": [
+    "src/RimMandrake/ExplosiveKnockback/",
+    "OWNER:1794373318813726012",
+    "OWNER:1794468855146168085",
+    "OWNER:1794468864684141079"
+   ]
+  },
+  {
+   "id": "inv_closed_guard",
+   "what": "Closed containers protect their contents; open shelves, racks and tables do not",
+   "impl": "absent",
+   "search_scope": "src/RimMandrake/ExplosiveKnockback/Source/*.cs (2026-11-11): items move only by despawn and re-place; the only guard is the in_storage skip for every storage building",
+   "proof": "missing",
+   "proof_evidence": [],
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1794468845275647261",
+   "source": [
+    "src/RimMandrake/ExplosiveKnockback/",
+    "OWNER:1794468845275647261"
+   ]
+  },
+  {
+   "id": "inv_container_shove",
+   "what": "A closed container itself is shoved a little by a blast",
+   "impl": "absent",
+   "search_scope": "src/RimMandrake/ExplosiveKnockback/Source/*.cs (2026-11-11): items move only by despawn and re-place; no building is ever moved",
+   "proof": "missing",
+   "proof_evidence": [],
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1794468845275647261",
+   "source": [
+    "src/RimMandrake/ExplosiveKnockback/",
+    "OWNER:1794468845275647261"
+   ]
+  },
+  {
+   "id": "inv_heavy_knock",
+   "what": "A heavy flying stack gives a person a light blunt hit and a stagger",
+   "impl": "absent",
+   "search_scope": "src/RimMandrake/ExplosiveKnockback/Source/*.cs (2026-11-11): items move only by despawn and re-place; goods never touch pawns",
+   "proof": "missing",
+   "proof_evidence": [],
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1794468869384727517",
+   "source": [
+    "src/RimMandrake/ExplosiveKnockback/",
+    "OWNER:1794468869384727517"
+   ]
+  },
+  {
+   "id": "inv_gas_tags",
+   "what": "Our existing gases carry an opt-in flammable tag, the Cauldron's among them",
+   "impl": "absent",
+   "search_scope": "src/RimMandrake/**/*.xml and *.cs for a flammable-gas extension (2026-11-11): none",
+   "proof": "missing",
+   "proof_evidence": [],
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1794468874358971350",
+   "source": [
+    "src/RimMandrake/ExplosiveKnockback/",
+    "OWNER:1794468874358971350"
+   ]
+  },
+  {
+   "id": "inv_perf_all_fly",
+   "what": "All-fly stays smooth on a mortar barrage and a long gas chain",
+   "impl": "absent",
+   "search_scope": "src/RimMandrake/ExplosiveKnockback/Source/*.cs (2026-11-11): items move only by despawn and re-place; no perf measurement of knockback exists",
+   "proof": "missing",
+   "proof_evidence": [],
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1794468864684141079",
+   "source": [
+    "src/RimMandrake/ExplosiveKnockback/",
+    "OWNER:1794468864684141079"
+   ]
   }
  ],
  "built_reviewed": [],
  "contradictions": [
   {
    "id": "c_goods_teleport",
-   "status": "open",
+   "status": "resolved",
    "source": [
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs:474",
     "OWNER:1794373318813726012"
    ],
-   "text": "Built: goods vanish and reappear with a dust puff. Ruled 2026-11-10: they visibly fly, rotate, bounce off walls losing energy. Build owed (a thrown-thing carrier), not a question."
+   "text": "Built: goods vanish and reappear with a dust puff. Ruled 2026-11-10: they visibly fly, rotate, bounce off walls losing energy. Build owed (a thrown-thing carrier), not a question.",
+   "resolved": "ruled by d_goods_fly, d_c_wild, d_c_all_fly; build owed in RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD"
   },
   {
    "id": "c_shelf_skip",
-   "status": "open",
+   "status": "resolved",
    "source": [
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs:399",
     "design/validation_walks/RimMandrake/ExplosiveKnockback.md",
     "OWNER:1794373318813726012"
    ],
-   "text": "Built and walked: items on any storage building stay. Ruled 2026-11-10: ordinary shelves give no exemption. Defect: remove the skip for open shelves, flip walk row item_on_a_shelf_stays."
+   "text": "Built and walked: items on any storage building stay. Ruled 2026-11-10: ordinary shelves give no exemption. Defect: remove the skip for open shelves, flip walk row item_on_a_shelf_stays.",
+   "resolved": "ruled by d_c_closed_containers; build owed in RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED"
   },
   {
    "id": "c_gas_absent",
-   "status": "open",
+   "status": "resolved",
    "source": [
     "OWNER:1794373318813726012",
     "src/RimMandrake/TheForge/Source/RM_GameCondition_ForgeCycle.cs"
    ],
-   "text": "Ruled 2026-11-10: each igniting gas clump makes its own weak explosion. Nothing built anywhere does this; no gas in our mods currently explodes when lit."
+   "text": "Ruled 2026-11-10: each igniting gas clump makes its own weak explosion. Nothing built anywhere does this; no gas in our mods currently explodes when lit.",
+   "resolved": "ruled by d_gas_per_clump, d_c_gas_shove, d_c_gas_source; build owed in RIMMANDRAKE_CHAIN_FLAMMABLE_GAS_CLUMPS"
   },
   {
    "id": "c_fire_and_foreign_blasts",
-   "status": "open",
+   "status": "resolved",
    "source": [
     "src/RimMandrake/ExplosiveKnockback/Patches/RM_Knockback_DamageDefs.xml",
     "design/RimMandrake/explosive_knockback_design_2026-10-06.md:455"
    ],
-   "text": "Ruled Q1 'everywhere: every blast throws'. Built: fire blasts throw nothing and other mods' explosions throw at 0% by default. Decision for him (open question 2)."
+   "text": "Ruled Q1 'everywhere: every blast throws'. Built: fire blasts throw nothing and other mods' explosions throw at 0% by default. Decision for him (open question 2).",
+   "resolved": "ruled by d_c_which_blasts; build owed in RIMMANDRAKE_THROW_ALL_HARMFUL_BLASTS"
   },
   {
    "id": "c_retrievable_unproven",
-   "status": "open",
+   "status": "resolved",
    "source": [
     "design/validation_walks/RimMandrake/ExplosiveKnockback.md",
     "design/RimMandrake/explosive_knockback_design_2026-10-06.md:465"
    ],
-   "text": "Ruled Q10: goods in a pit stay retrievable. Only a lowered ladder reaches them; no scene proves a colonist fetches one. Proof owed, not a question."
+   "text": "Ruled Q10: goods in a pit stay retrievable. Only a lowered ladder reaches them; no scene proves a colonist fetches one. Proof owed, not a question.",
+   "resolved": "ruled by d_q10_retrievable; build owed in RIMMANDRAKE_PROVE_PIT_GOODS_RETRIEVABLE"
   }
  ],
  "script_audit": [],
@@ -549,13 +890,13 @@
   "It looks green but isn't: the live scenes were last green 2026-10-06 on a staged site with the old rules (shelf exemption, instant items); since then his 2026-11-10 rulings and the gas chain exist only on paper, so in a real raid the mod may not match what he ruled and nothing he walks would show which.",
   "The spectacle costs the game: a mortar into a stockpile, or a gas cloud going off clump by clump, spawns dozens of flying stacks at once; either the game stutters or the caps silently leave most goods unmoved, and both read to him as broken."
  ],
- "root_draft": {
-  "status": "draft_for_owner_approval",
-  "speaker": "agent",
+ "root": {
+  "text": "Every blast in RimWorld now throws what it hits. A mortar shell beside a colonist hurls them three cells straight away from it, clean over sandbags, until a wall stops them hard; anything light goes too, so loose goods and corpses fly through the air, spinning and rebounding off walls, and no open shelf keeps them safe. When gas catches, it goes off clump by clump, each small burst scattering whatever lies near it, as the fire whooshes through the whole cloud. And where a blast meets a pit, its cover breaks and whoever it throws in falls.",
   "source": [
-   "design/RimMandrake/explosive_knockback_design_2026-10-06.md:455",
-   "OWNER:1794373318813726012"
+   "OWNER:1794468835221748501"
   ],
-  "text": "Every blast in RimWorld now throws what it hits. A mortar shell beside a colonist hurls them three cells straight away from it, clean over sandbags, until a wall stops them hard; anything light goes too, so loose goods and corpses fly through the air, spinning and rebounding off walls, and no open shelf keeps them safe. When gas catches, it goes off clump by clump, each small burst scattering whatever lies near it, as the fire whooshes through the whole cloud. And where a blast meets a pit, its cover breaks and whoever it throws in falls."
+  "speaker": "owner",
+  "date": "2026-11-11 ~23:0x PST (live sitting, question card)",
+  "by_card": "Is this the mod? -> Approve as written"
  }
 }

@@ -2,24 +2,148 @@
  "aliases": [],
  "budget": {
   "cap": 4000000,
-  "charges": [],
+  "charges": [
+   {
+    "at": "2026-11-12T07:39:37Z",
+    "kind": "unmeasured",
+    "ref": "run bench-ek-st0-20261112",
+    "stage": 0,
+    "tokens": 300000
+   },
+   {
+    "at": "2026-11-12T07:39:45Z",
+    "kind": "unmeasured",
+    "ref": "run bench-ek-st1-20261112",
+    "stage": 1,
+    "tokens": 100000
+   },
+   {
+    "at": "2026-11-12T07:48:16Z",
+    "kind": "unmeasured",
+    "ref": "run bench-ek-st2-20261112",
+    "stage": 2,
+    "tokens": 150000
+   }
+  ],
   "reserve": 60000,
-  "spent": 0
+  "spent": 550000
  },
  "history": [
   {
-   "at": "2026-11-12T07:00:06Z",
+   "at": "2026-11-12T07:39:19Z",
    "stage": 0,
    "what": "init",
    "why": "stage 0, budget 4000000 (reserve 60000)"
+  },
+  {
+   "at": "2026-11-12T07:39:19Z",
+   "stage": 0,
+   "what": "open",
+   "why": "run bench-ek-st0-20261112, stage 0, budget 300000"
+  },
+  {
+   "at": "2026-11-12T07:39:38Z",
+   "stage": 1,
+   "what": "close",
+   "why": "run bench-ek-st0-20261112: stage 0 done"
+  },
+  {
+   "at": "2026-11-12T07:39:38Z",
+   "stage": 1,
+   "what": "open",
+   "why": "run bench-ek-st1-20261112, stage 1, budget 100000"
+  },
+  {
+   "at": "2026-11-12T07:39:45Z",
+   "stage": 2,
+   "what": "close",
+   "why": "run bench-ek-st1-20261112: stage 1 done"
+  },
+  {
+   "at": "2026-11-12T07:46:49Z",
+   "stage": 2,
+   "what": "open",
+   "why": "run bench-ek-st2-20261112, stage 2, budget 150000"
+  },
+  {
+   "at": "2026-11-12T07:48:16Z",
+   "stage": 3,
+   "what": "close",
+   "why": "run bench-ek-st2-20261112: stage 2 done"
   }
  ],
- "item": null,
+ "item": "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
  "mod": "ExplosiveKnockback",
  "recovery": [],
- "results": [],
+ "results": [
+  {
+   "at": "2026-11-12T07:39:38Z",
+   "inputs": {
+    "exam": null,
+    "floor": null,
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
+    "scenes": null,
+    "sheet": null,
+    "tree": null
+   },
+   "manifest": {
+    "designer.md": "b79052133c514f160b33c30b53d69a947adbfdbc81304681463b1038e82fce9f",
+    "designer_grounding.md": "93ae18170f31b2bf96b7033e46ab50221db5c669d0c1a324a902c933a8fc6cb6",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "bench-ek-st0-20261112",
+   "stage": 0,
+   "summary": "Inventory 22 lines (16 built or absent-ruled at 2026-11-11 stage 0 plus 6 absent capabilities he opened on the 2026-11-11 sitting), 5 contradictions all resolved by his card answers with build owed, 3 failure modes. Work done in the stage-0 sitting (commit 0fbe9061a9) and the 2026-11-11 card answers; closed through the launcher now that the design item exists."
+  },
+  {
+   "at": "2026-11-12T07:39:45Z",
+   "inputs": {
+    "exam": null,
+    "floor": null,
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
+    "scenes": null,
+    "sheet": null,
+    "tree": null
+   },
+   "manifest": {
+    "designer.md": "b79052133c514f160b33c30b53d69a947adbfdbc81304681463b1038e82fce9f",
+    "designer_dialogue.md": "e88d5a0508489eaae8b9cf6ab0cfea0f7b313852c0efb6c5a3acf2e54247f3fa"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "bench-ek-st1-20261112",
+   "stage": 1,
+   "summary": "Root approved by question card word for word (OWNER:1794468835221748501, 'Approve as written'); record.json root cites it."
+  },
+  {
+   "at": "2026-11-12T07:48:16Z",
+   "inputs": {
+    "exam": null,
+    "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
+    "scenes": "b539805141b4ce7de67ea63f9fd516527fbad243cdcb38ab33fe861d09c90936",
+    "sheet": "a5638216a5395f359d008c4fa234972c5c520f51d2924bb2233d72f5c6f4fe35",
+    "tree": "0980d1464ff3ee3a7e696307c4e5e91298f57436170584df911791e82788ae44"
+   },
+   "manifest": {
+    "designer.md": "b79052133c514f160b33c30b53d69a947adbfdbc81304681463b1038e82fce9f",
+    "designer_dialogue.md": "e88d5a0508489eaae8b9cf6ab0cfea0f7b313852c0efb6c5a3acf2e54247f3fa"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "bench-ek-st2-20261112",
+   "stage": 2,
+   "summary": "All 5 core contradictions resolved by his 2026-11-11 card answers (d_c_root..d_c_gas_source). Delegable choices decided by the agent and recorded as dl_* (closed=hidden contents, container shove, modded strength, heavy threshold, gas census, clump strength, gas ignores belts, perf budget). Two non-core asks kept ready, not sent: a_flagship (which showcase leads) and a_northstar_bars (validate the 16 drafted walk bars); neither changes core scope."
+  }
+ ],
+ "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 0,
+ "stage": 3,
  "status": "ready"
 }

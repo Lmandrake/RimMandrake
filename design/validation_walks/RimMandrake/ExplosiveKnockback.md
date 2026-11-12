@@ -61,7 +61,59 @@ Printed by `python3 src/RimMandrake/ExplosiveKnockback/validation.py --criteria`
 state: DRAFT
 validated-hash:
 
-No owner north-star bars are drafted for this mod yet.
+Drafted 2026-11-11 by the Designer from the root he approved by card ("Approve as written",
+OWNER:1794468835221748501) and his card answers that night (record.json `d_c_*`). Each line is
+one thing a player can watch in ordinary play. DRAFT until he validates these lines.
+
+### must show
+
+**People**
+- [ ] `ek_blast_throws_people` — a mortar shell landing beside a colonist throws them about three
+      cells straight away from it, clean over sandbags, and they land alive and briefly stunned.
+- [ ] `ek_wall_stops_hard` — a person thrown into a wall stops dead at it and takes an impact
+      hit; people never rebound.
+- [ ] `ek_shield_belt_holds` — a shield belt that absorbs the blast keeps its wearer in place
+      and loses extra charge for it.
+
+**Goods**
+- [ ] `ek_goods_fly_wild` — loose goods and corpses near a blast visibly fly: they arc through
+      the air, spin fast and rebound off walls, losing speed each time, before they come to rest.
+- [ ] `ek_every_good_flies` — every loose good the blast reaches moves; no stack sits still in
+      the blast while its neighbours fly.
+- [ ] `ek_open_storage_no_cover` — goods on open shelves, racks and tables scatter like goods on
+      the floor.
+- [ ] `ek_closed_container_holds` — goods inside a closed container (a crate, locker, fridge or
+      deep storage) stay inside it; the container itself may shift a little.
+- [ ] `ek_heavy_goods_knock` — a heavy flying stack that strikes a person gives a light knock and
+      a stagger; light goods fly past.
+
+**Which blasts**
+- [ ] `ek_every_harmful_blast_throws` — grenades, mortars and other bombs throw at full strength,
+      fire and incendiary blasts at about half, and other mods' damaging explosions throw too;
+      EMP, smoke and other harmless bursts throw nothing.
+
+**Gas**
+- [ ] `ek_gas_clump_by_clump` — when a flammable gas cloud catches, it goes off clump by clump as
+      the fire runs through it; each small burst scatters the goods near it and shoves people
+      one cell without hurting them.
+- [ ] `ek_our_gases_burn` — the Cauldron's gas, and our other gases that ought to burn, catch and
+      go off clump by clump.
+
+**Pits**
+- [ ] `ek_blast_breaks_pit_cover` — a damaging or fire blast over a covered pit breaks its cover
+      and whoever stands on it falls in; a gas burst never breaks a cover.
+- [ ] `ek_thrown_into_pit_falls` — a person or a good thrown into a pit falls to its floor, and a
+      colonist can fetch goods back out of it.
+
+**Cost**
+- [ ] `ek_barrage_stays_smooth` — a mortar barrage into a full stockpile, and a long gas chain,
+      stay smooth to watch at normal speed.
+
+### cannot show
+- [ ] `ek_goods_teleport` — goods vanishing from one cell and reappearing on another under a puff
+      of dust.
+- [ ] `ek_careless_fall` — a colonist walking into a pit by ordinary pathing; only a blast or
+      another force puts anyone in.
 
 ## anti-guessing notes
 RULED OUT: "a shield that is still active after the blast absorbed it" — vanilla CompShield.PostPreApplyDamage sets absorbed=true even when the hit breaks the shield, so absorption is captured AT DAMAGE TIME (postfix on PostPreApplyDamage while our ExplosionDamageThing prefix watches that pawn), never read afterwards.
