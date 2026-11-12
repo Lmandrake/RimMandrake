@@ -463,6 +463,7 @@ MODS = {
         "Wrecks fall (ship-vermin nests)": "NextPulse",
         "Fall survivors (feral droids)": "NextPulse",
         "The specimen (a lab rat in an escape pod)": "NextPulse",
+        "No old junk under the Fall Line (WORLDGEN-AFFECTING)": "NewMapsOnly",
     }, ()),
     "PyrelandsMechanics": ("PyrelandsMechanicsMod.cs", "RimMandrake.Utinni.PyrelandsMechanics.csproj", {
         "The Tribes answer the burn": "NextPulse",

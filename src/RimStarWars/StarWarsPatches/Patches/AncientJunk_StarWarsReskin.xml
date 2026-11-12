@@ -99,11 +99,11 @@
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AncientRustedTruck"]/label</xpath>
-          <value><label>speeder truck hulk</label></value>
+          <value><label>cargo speeder hulk</label></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AncientRustedTruck"]/description</xpath>
-          <value><description>A cargo speeder truck, abandoned and stripped. Its cargo bed is empty, its repulsors are dead and its cab has been gutted to the frame.</description></value>
+          <value><description>A cargo speeder, abandoned and stripped. Its cargo bed is empty, its repulsors are dead and its cab has been gutted to the frame.</description></value>
         </li>
 
         <!-- AncientRustedJeep: was "ancient troop carrier", Graphic_Multi Things/Building/Ruins/RustedMilitaryJeep -->
@@ -181,7 +181,7 @@
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AncientGiantWheel"]/description</xpath>
-          <value><description>A huge drive wheel or tread section torn off a war droid, a sandcrawler or a heavy tank. Its bearings seized long ago and its teeth are worn smooth by the wind.</description></value>
+          <value><description>A huge drive wheel or tread section torn off a war droid, a sandcrawler or a heavy assault walker. Its bearings seized long ago and its teeth are worn smooth by the wind.</description></value>
         </li>
 
         <!-- AncientTankTrap: was "ancient tank trap", Graphic_Random Things/Building/Ruins/AncientTankTrap -->
@@ -227,11 +227,11 @@
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AncientTank"]/label</xpath>
-          <value><label>assault tank hulk</label></value>
+          <value><label>assault repulsorcraft hulk</label></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AncientTank"]/description</xpath>
-          <value><description>A wrecked repulsor tank or war droid, its main gun dead and its armour scored by old blaster fire. Salvagers emptied it of weapons and power cells long ago; the hull was too heavy to take.</description></value>
+          <value><description>A wrecked armoured repulsorcraft or war droid, its main gun dead and its armour scored by old blaster fire. Salvagers emptied it of weapons and power cells long ago; the hull was too heavy to take.</description></value>
         </li>
 
         <!-- AncientWarwalkerClaw: was "ancient warwalker claw", Graphic_Multi Things/Building/Ruins/AncientWarwalkerClaw -->

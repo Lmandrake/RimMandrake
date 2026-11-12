@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  AncientJunk_RosterCut.xml        FASCINATING_WORLD_JUNK_1        GENERATED, do not edit by hand.
+  Source: design/Jawa/worldbuilding/junk/junk_roster.json via gen_junk_roster_cut.py
+  (selftest_junk_roster.py checks this file equals the generator's output).
+
+  Takes the junk the roster CUTS out of vanilla's junk scatter GenSteps. Nothing is deleted: the defs still
+  exist for quests, layouts and dungeon rooms that name them; only the scatter stops laying them on maps.
+  A group the cut leaves empty is removed with it, so the scatterer never draws from an empty table.
+  Inside the Mod Settings gate "Leave earth junk out of the scatter" (junkRosterCut, default on).
+-->
+<Patch>
+  <Operation Class="RimMandrake.StarWars.Patches.RSW_PatchOperationStarWarsPatchesSetting">
+    <setting>junkRosterCut</setting>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- AncientShoppingCart: a supermarket trolley has no Star Wars reading -->
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/GenStepDef[defName="AncientJunkClusters"]/genStep/groups/li/things/AncientShoppingCart</xpath>
+        </li>
+        <!-- AncientATM: an earth cash machine -->
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/GenStepDef[defName="AncientJunkClusters"]/genStep/groups/li/things/AncientATM</xpath>
+        </li>
+        <!-- AncientVendingMachine: an earth vending machine -->
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/GenStepDef[defName="AncientJunkClusters"]/genStep/groups/li/things/AncientVendingMachine</xpath>
+        </li>
+        <!-- AncientRefrigerator: a kitchen appliance -->
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/GenStepDef[defName="AncientJunkClusters"]/genStep/groups/li/things/AncientRefrigerator</xpath>
+        </li>
+        <!-- AncientStove: a kitchen appliance -->
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/GenStepDef[defName="AncientJunkClusters"]/genStep/groups/li/things/AncientStove</xpath>
+        </li>
+        <!-- AncientOven: a kitchen appliance -->
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/GenStepDef[defName="AncientJunkClusters"]/genStep/groups/li/things/AncientOven</xpath>
+        </li>
+        <!-- AncientKitchenSink: a kitchen fitting -->
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/GenStepDef[defName="AncientJunkClusters"]/genStep/groups/li/things/AncientKitchenSink</xpath>
+        </li>
+        <!-- AncientWashingMachine: a household appliance -->
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/GenStepDef[defName="AncientJunkClusters"]/genStep/groups/li/things/AncientWashingMachine</xpath>
+        </li>
+        <!-- AncientAirConditioner: a household air conditioner -->
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/GenStepDef[defName="AncientJunkClusters"]/genStep/groups/li/things/AncientAirConditioner</xpath>
+        </li>
+        <!-- AncientPostbox: an earth postbox -->
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/GenStepDef[defName="AncientJunkClusters"]/genStep/groups/li/things/AncientPostbox</xpath>
+        </li>
+        <!-- AncientMicrowave: a kitchen appliance -->
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/GenStepDef[defName="AncientJunkClusters"]/genStep/groups/li/things/AncientMicrowave</xpath>
+        </li>
+        <!-- AncientToilet: a bathroom fitting -->
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/GenStepDef[defName="AncientJunkClusters"]/genStep/groups/li/things/AncientToilet</xpath>
+        </li>
+        <!-- AncientOperatingTable: an earth hospital table in a kitchen ruin -->
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/GenStepDef[defName="AncientJunkClusters"]/genStep/groups/li/things/AncientOperatingTable</xpath>
+        </li>
+        <!-- AncientIndustrialTruck: a truck: the owner's trucks go -->
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/GenStepDef[defName="ScarlandsJunkClusters"]/genStep/groups/li/things/AncientIndustrialTruck</xpath>
+        </li>
+        <!-- AncientChemtruck: a chemfuel truck: the owner's trucks go -->
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/GenStepDef[defName="ScarlandsJunkClusters"]/genStep/groups/li/things/AncientChemtruck</xpath>
+        </li>
+        <!-- AncientWindTurbineBody: an earth wind turbine -->
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/GenStepDef[defName="ScarlandsJunkClusters"]/genStep/groups/li/things/AncientWindTurbineBody</xpath>
+        </li>
+        <!-- AncientTableTailorHand: a tailor's bench in the open desert -->
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/GenStepDef[defName="ScarlandsJunkClusters"]/genStep/groups/li/things/AncientTableTailorHand</xpath>
+        </li>
+        <!-- AncientTableTailorElectric: a tailor's bench in the open desert -->
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/GenStepDef[defName="ScarlandsJunkClusters"]/genStep/groups/li/things/AncientTableTailorElectric</xpath>
+        </li>
+        <!-- AncientTableStoveElectric: a kitchen stove -->
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/GenStepDef[defName="ScarlandsJunkClusters"]/genStep/groups/li/things/AncientTableStoveElectric</xpath>
+        </li>
+        <!-- AncientPlantPot: an earth plant pot -->
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/GenStepDef[defName="ScarlandsJunkClusters"]/genStep/groups/li/things/AncientPlantPot</xpath>
+        </li>
+        <!-- Exterior_AncientRoad_Short: a paved road with concrete barriers and a parked car: the crashed motorway itself -->
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/GenStepDef[defName="ScarlandsJunkPrefabs"]/genStep/groups/Exterior_AncientRoad_Short</xpath>
+        </li>
+        <!-- Exterior_AncientRoad_Long: a paved road with lampposts and a truck: the crashed motorway itself -->
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/GenStepDef[defName="ScarlandsJunkPrefabs"]/genStep/groups/Exterior_AncientRoad_Long</xpath>
+        </li>
+        <!-- Exterior_AncientContainerForklift: a forklift yard with cardboard boxes -->
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/GenStepDef[defName="ScarlandsJunkPrefabs"]/genStep/groups/Exterior_AncientContainerForklift</xpath>
+        </li>
+        <!-- Exterior_CrashedCrane: a crane yard parked with an industrial truck: the owner's trucks go -->
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/GenStepDef[defName="ScarlandsJunkPrefabs"]/genStep/groups/Exterior_CrashedCrane</xpath>
+        </li>
+        <!-- Exterior_ContainerSite: a container lot with a chem truck and an industrial truck: the owner's trucks go -->
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/GenStepDef[defName="ScarlandsJunkPrefabs"]/genStep/groups/Exterior_ContainerSite</xpath>
+        </li>
+        <!-- AncientJunkClusters: drop any group the cut emptied -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/GenStepDef[defName="AncientJunkClusters"]/genStep/groups/li[not(things/*)]</xpath>
+          <match Class="PatchOperationRemove">
+            <xpath>/Defs/GenStepDef[defName="AncientJunkClusters"]/genStep/groups/li[not(things/*)]</xpath>
+          </match>
+        </li>
+        <!-- ScarlandsJunkClusters: drop any group the cut emptied -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/GenStepDef[defName="ScarlandsJunkClusters"]/genStep/groups/li[not(things/*)]</xpath>
+          <match Class="PatchOperationRemove">
+            <xpath>/Defs/GenStepDef[defName="ScarlandsJunkClusters"]/genStep/groups/li[not(things/*)]</xpath>
+          </match>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+</Patch>

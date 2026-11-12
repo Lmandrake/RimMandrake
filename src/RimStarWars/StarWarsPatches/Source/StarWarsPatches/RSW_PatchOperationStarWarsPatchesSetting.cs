@@ -22,6 +22,9 @@ namespace RimMandrake.StarWars.Patches
                 case "junkReskin":
                     on = RSW_StarWarsPatchesSettings.junkReskin;
                     break;
+                case "junkRosterCut":
+                    on = RSW_StarWarsPatchesSettings.junkRosterCut;
+                    break;
                 default:
                     // Named switch, not reflection: a typo in the XML must be loud, never a silent "on".
                     Log.Error("[RimStarWars Patches] RSW_PatchOperationStarWarsPatchesSetting: unknown setting '" + setting + "'.");

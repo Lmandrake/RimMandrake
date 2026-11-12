@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  FASCINATING_WORLD_JUNK_1: "Nothing here is old" (design/Jawa/worldbuilding/biomes/fall_line.md, FROZEN).
+  A step that places nothing and PREVENTS every vanilla step that lays old junk, ruins or relics. MapGenerator drops a
+  step when any step in the same map's list names it in preventsGenSteps, after the tile mutators' extraGenSteps are
+  joined in, so this works only where it is listed: FallLineOldJunk (Source/FallLineArrivalsMod.cs) adds it to
+  RUT_FallLine's extraGenSteps while the setting "No old junk under the Fall Line" is on (default) and takes it out
+  when it is off. The same switch also sets RUT_FallLine's junkDensityFactor to 0, which catches any other mod's
+  isJunk scatterer. Our own steps (the Zeddo's Yard template, the wreck falls) are not named and still run.
+-->
+<Defs>
+  <GenStepDef>
+    <defName>RUT_FallLine_NoOldJunk</defName>
+    <order>10</order>
+    <genStep Class="RimMandrake.Utinni.FallLineArrivals.GenStep_FallLineNoOldJunk" />
+    <preventsGenSteps>
+      <li>ScatterRuinsSimple</li>
+      <li>ScatterRoadDebris</li>
+      <li>ScatterCaveDebris</li>
+      <li>AncientUtilityBuilding</li>
+      <li>MechanoidRemains</li>
+      <li>AncientTurret</li>
+      <li>AncientMechs</li>
+      <li>AncientLandingPad</li>
+      <li>AncientFences</li>
+      <li>AncientPipelineSection</li>
+      <li>AncientJunkClusters</li>
+      <li>AncientPollutionJunk</li>
+      <li>ScarlandsJunkClusters</li>
+      <li>ScarlandsJunkPrefabs</li>
+    </preventsGenSteps>
+  </GenStepDef>
+</Defs>

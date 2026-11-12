@@ -34,7 +34,8 @@ DLL = os.path.join(HERE, "Assemblies", "RimMandrakeStarWarsPatches.dll")
 GATE = "RimMandrake.StarWars.Patches.RSW_PatchOperationStarWarsPatchesSetting"
 CORE_FILE = "Core/Defs/ThingDefs_Buildings/Buildings_Ancient_Outdoors.xml"
 CORE_ROOTS = [os.environ.get("RIMWORLD_DATA") or "",
-              "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data"]
+              "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data",
+              "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Data"]   # SteveDesktop's Steam library
 POD00_SHA = "99af270dae43cd631d5fc3b1af4b74ada3704a2466e3460b30b7bd26a824a7ae"   # WreckedLandspeeder.png, 2026-08-24
 
 # spec section 2: defName -> drawSize (cells). AncientWheel has none (inherits 1x1).

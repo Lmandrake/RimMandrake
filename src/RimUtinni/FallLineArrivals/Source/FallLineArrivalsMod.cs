@@ -34,6 +34,10 @@ namespace RimMandrake.Utinni.FallLineArrivals
         public static bool labRatEnabled = true;
         public static float labRatFrequency = 1f;
 
+        // FASCINATING_WORLD_JUNK_1: the Fall Line's wreckage is fresh ("Nothing here is old", fall_line.md), so the
+        // vanilla ancient-junk scatter (cars, crates, fences, road debris, ancient mechs) is not laid on its tiles.
+        public static bool noOldJunk = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -52,6 +56,7 @@ namespace RimMandrake.Utinni.FallLineArrivals
             Scribe_Values.Look(ref feralRacesEnabled, "feralRacesEnabled", true);
             Scribe_Values.Look(ref labRatEnabled, "labRatEnabled", true);
             Scribe_Values.Look(ref labRatFrequency, "labRatFrequency", 1f);
+            Scribe_Values.Look(ref noOldJunk, "noOldJunk", true);
         }
 
         // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
@@ -168,6 +173,15 @@ namespace RimMandrake.Utinni.FallLineArrivals
                 list.GapLine();
             }
 
+            if (Group(list, "No old junk under the Fall Line (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "noOldJunk" }))
+            {
+                list.CheckboxLabeled("No old junk under the Fall Line", ref noOldJunk,
+                    "On: maps made on Fall Line tiles get none of the game's old junk and relics (old hulks, crates, fences, road debris, "
+                    + "simple ruins, ancient turrets, landing pads, pipelines, dormant ancient mechs); the wreckage there is what falls fresh from orbit. Off: those maps get the usual ancient junk. "
+                    + "Only maps generated afterwards change; this is map generation on one tile kind, not worldgen.");
+                list.GapLine();
+            }
+
             viewHeight = list.CurHeight + 20f;
             list.End();
             Widgets.EndScrollView();
@@ -191,6 +205,74 @@ namespace RimMandrake.Utinni.FallLineArrivals
         public override void DoSettingsWindowContents(Rect inRect)
         {
             settings.DoWindowContents(inRect);
+        }
+
+        public override void WriteSettings()
+        {
+            base.WriteSettings();
+            FallLineOldJunk.Apply();
+        }
+    }
+
+    /// <summary>
+    /// FASCINATING_WORLD_JUNK_1: "No old junk under the Fall Line". Two levers on RUT_FallLine, both from one setting:
+    /// (1) RUT_FallLine_NoOldJunk joins its extraGenSteps; its preventsGenSteps drops the 14 vanilla steps that lay old
+    /// junk, ruins and relics (several of them, e.g. ScatterRuinsSimple and AncientTurret, ignore the junk factor);
+    /// (2) junkDensityFactor 0, which every isJunk scatterer (including other mods') multiplies its count by.
+    /// Applied at startup and whenever the settings window saves; read by map generation, so it changes new maps only.
+    /// </summary>
+    [StaticConstructorOnStartup]
+    public static class FallLineOldJunk
+    {
+        static FallLineOldJunk()
+        {
+            Apply();
+        }
+
+        public static void Apply()
+        {
+            TileMutatorDef m = DefDatabase<TileMutatorDef>.GetNamedSilentFail("RUT_FallLine");
+            if (m == null)
+            {
+                return; // the def is ours and always loads with this mod; null only if its Defs file was removed
+            }
+            m.junkDensityFactor = FallLineArrivalsSettings.noOldJunk ? 0f : 1f;
+            GenStepDef prevent = DefDatabase<GenStepDef>.GetNamedSilentFail("RUT_FallLine_NoOldJunk");
+            if (prevent == null)
+            {
+                return;
+            }
+            if (FallLineArrivalsSettings.noOldJunk)
+            {
+                if (!m.extraGenSteps.Contains(prevent))
+                {
+                    m.extraGenSteps.Add(prevent);
+                }
+            }
+            else
+            {
+                m.extraGenSteps.Remove(prevent);
+            }
+        }
+
+        /// <summary>Bridge proof (jawa/static_call): the factor map generation will read, and the setting behind it.</summary>
+        public static string Report(string args)
+        {
+            TileMutatorDef m = DefDatabase<TileMutatorDef>.GetNamedSilentFail("RUT_FallLine");
+            GenStepDef prevent = DefDatabase<GenStepDef>.GetNamedSilentFail("RUT_FallLine_NoOldJunk");
+            return m == null ? "MISSING RUT_FallLine" : "RUT_FallLine junkDensityFactor=" + m.junkDensityFactor
+                + " preventStepListed=" + (prevent != null && m.extraGenSteps.Contains(prevent))
+                + " noOldJunk=" + FallLineArrivalsSettings.noOldJunk;
+        }
+    }
+
+    /// <summary>RUT_FallLine_NoOldJunk's step: places nothing. Its def's preventsGenSteps does the work.</summary>
+    public class GenStep_FallLineNoOldJunk : GenStep
+    {
+        public override int SeedPart => 518_406_211;
+
+        public override void Generate(Map map, GenStepParams parms)
+        {
         }
     }
 
