@@ -1,7 +1,7 @@
 {
  "author": "BENCH builder run a0034a1c20bdb097d (exam8)",
  "examiner": "a72e84062fb3c66b6",
- "challenger": "exam7 prior (exam6 examiner and challenger)",
+ "challenger": "a536a9b74278bf061",
  "inputs": {
   "tree": "052301404e081d7c1d5e00afeae1b8d11d0e6aaa3ac4f414e8fe9f79dcd07eb2",
   "sheet": "decd62e555e47fb236d2bb0e16dedff3b2f3c8bd42434f1495887a0ed3c36137"
