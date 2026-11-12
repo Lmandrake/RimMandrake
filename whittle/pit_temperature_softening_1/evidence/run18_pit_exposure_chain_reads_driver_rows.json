@@ -1,0 +1,28 @@
+{
+ "mod_hash": "ccef5b846bc43fdfca4577c7858acb34e0494f6fbe4910188a026055efae6836",
+ "dll_sha256": "8286201b86e87e1b90d31111c85b7d80b801675ff9417e8ecc31e87b6f2bcf74",
+ "rows": {
+  "PEX_A2_open_pit_tracks_noon": {
+   "status": "PASS",
+   "file": "pit_exposure_result_20261112T032231.json"
+  },
+  "PEX_A3_pit_wears_resistance": {
+   "status": "PASS",
+   "file": "pit_exposure_result_20261112T032231.json"
+  },
+  "PEX_A4_compassion_not_psycho": {
+   "status": "PASS",
+   "file": "pit_exposure_result_20261112T032231.json"
+  },
+  "PEX_A1_defs_resolve": {
+   "status": "PASS",
+   "file": "pit_exposure_result_20261112T032231.json"
+  }
+ },
+ "emits": [
+  "PEX_A2_open_pit_tracks_noon",
+  "PEX_A3_pit_wears_resistance",
+  "PEX_A4_compassion_not_psycho",
+  "PEX_A1_defs_resolve"
+ ]
+}

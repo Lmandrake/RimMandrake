@@ -1,0 +1,12 @@
+{
+ "found": "2026-11-12, CLAUDE_ARCHMAGI_FWLIVE, pit_exposure_live.py run 18 (flowworks tier, FlowWorks DLL 8286201b), review save RM_PitExposure_Review_20261112T032231",
+ "site": "pit B: 5x5 dug 8 notches (4 m), roofed; cells x 117-121, z 120-124; prisoner Hornet held in it",
+ "noon_picture": "whittle/pit_temperature_softening_1/evidence/run18_site_20261112T032231.jpg (Thib, a colonist, standing in pit B beside the prisoner)",
+ "probe_after_load": [
+  "ProofClimb pawn:Human234 -> CLIMB k=2 held=False trapped=False cell=118,120 | POCKET k=2 comp=2 pocket=True size=25 depth=8",
+  "10 x 1250 ticks: Thib stays inside x 117-121 z 120-124, 'Wandering.' then 'Sleeping.'; inspect line 'Climbs out of steps up to 1 m deep.'",
+  "jawa/order_pawn Human234 -> (119,129) drafted: 0/1 arrived, 0 moved at all (168 ticks); position stays (119,123); ProofClimb still trapped=False pocket=True"
+ ],
+ "reading": "a colonist is in a 25-cell sealed pocket he cannot leave (an ordered move goes nowhere), but the pocket grid reads trapped=False, so no stranded-colonist rescue is queued. How he got in is not recorded (the run logs prisoners only); every colonist was idle ('Wandering') at noon.",
+ "scope": "not PIT_TEMPERATURE_SOFTENING_1: filed as RIMMANDRAKE_FIX_STRANDED_COLONIST_READS_UNTRAPPED_NO_RESCUE"
+}
