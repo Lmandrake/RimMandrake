@@ -1,14 +1,17 @@
-# Mutation check: each line breaks one property of ledger_state.py / handoff.py on purpose, runs selftest_ledger_state.py, restores. 2026-11-11 22:00 PST at eb4690e8ff
+# Mutation check: each line breaks one property of ledger_state.py / handoff.py on purpose, runs selftest_ledger_state.py, restores. 2026-11-11 22:12 PST at d7ff8762de
 # A mutation the selftest does not fail on (failed_checks=0) would be a check that cannot see.
 exit=1 failed_checks=2  cap 7 -> 60 rows per section  [first: open items: 7 shown, the rest counted and named:]
-exit=1 failed_checks=2  a released lease counts as a live helper  [first: live helpers: both live leases, every seat: '## Live helpers — 3 unexpired leases]
+exit=1 failed_checks=2  a released lease counts as a live helper  [first: live helpers: both live leases, every seat: '## Live helpers — 3 unexpired leases, ]
 exit=1 failed_checks=1  the oldest NEXT on an item wins  [first: NEXT: the newest NEXT on an item, not an older one]
 exit=1 failed_checks=1  later events never mark a NEXT overtaken  [first: NEXT: an overtaken NEXT carries the block and a later-events warning:]
-exit=1 failed_checks=1  NEXT regex may cross a newline  [first: NEXT: an empty NEXT: borrows nothing from the next line]
-exit=1 failed_checks=1  only the bare "NEXT:" form is read  [first: NEXT: the spoken form "NEXT then:" is a NEXT too]
+exit=1 failed_checks=2  NEXT may cross a newline  [first: NEXT: two lines, the stamp and writer on the first, one line of the note on the sec]
+exit=1 failed_checks=1  only the bare "NEXT:" form is read  [first: NEXT: the spoken form "NEXT then:" is a NEXT too, and keeps the sentence it leans o]
+exit=1 failed_checks=1  a quoted NEXT swallows the real one after it  [first: NEXT: a quoted NEXT earlier on the line does not swallow the real one after it]
+exit=1 failed_checks=1  a spoken NEXT loses the sentence it leans on  [first: NEXT: the spoken form "NEXT then:" is a NEXT too, and keeps the sentence it leans o]
 exit=1 failed_checks=2  host TZ instead of Pacific  [first: times are Pacific on a UTC host, PDT in summer]
 exit=1 failed_checks=1  seat alias CONDUCTOR not folded to BENCH  [first: the CONDUCTOR alias reads BENCH's items, not an empty seat]
 exit=1 failed_checks=1  a long id's stamp is cut instead of moved  [first: NEXT: a 63-char id keeps its stamp and writer, the action is what gets cut:]
 exit=1 failed_checks=4  wake no longer prints the state-file line  [first: the pointer block names the file:]
 exit=1 failed_checks=3  wake prints the line without regenerating  [first: the wake wrote it]
 exit=1 failed_checks=1  pointers no longer say what the ledger recorded since  [first: an open pointer shows what the ledger recorded after the handoff, newest note]
+exit=1 failed_checks=1  wake prints the template's <!-- --> comments  [first: the template's <!-- --> guidance is not printed]

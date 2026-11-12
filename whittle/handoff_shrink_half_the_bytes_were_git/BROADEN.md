@@ -77,5 +77,17 @@ The first test checks whether the summary respects changed circumstances; the se
    the next line; a non-string note text crashed the build; a long id cut the stamp; Designer turns were missing from
    owner-pending (the status board includes them); header fields were unclipped.
 
+6. **The blind judge's first pass** (would show: yes) named two more, both fixed at dac52e2f15: an owner note
+   "NOT BEFORE Wed 2026-11-11 ~3 PM PST. NEXT then: …" showed only the action, losing its date gate (a spoken-form NEXT
+   now keeps the sentence it leans on), and the wake printed the handoff template's `<!-- -->` guidance (dropped).
+7. **My own progress note** then broke the reader: "fixed (NEXT then: keeps its date gate …); NEXT: re-judge" showed
+   the quoted spoken form and hid the real `NEXT: re-judge`, because an action ran to the end of the line. Fixed at
+   d7ff8762de: an action ends at the next NEXT on its line. Selftest case added.
+
+8. **A third fresh reader on the final code** (`evidence/fresh_reader_round3.md`) chose the right move on every pointer
+   (comparison written, so it waits on the owner's read), honoured the date gate on the POCOCK row, and found its three
+   spot checks right as of the file's own time. Its remaining complaints concern the old window's words or what the
+   ledger does not hold (loops without leases, "waiting on you" files that are not needs=owner items). Out by design.
+
 What remains: the live BENCH file is 45 lines at up to 120 columns: one screen on a 120x50 terminal. On an 80-column
 terminal the long rows still wrap. A cut NEXT action needs `rimflow show <ID>`, which the file says.

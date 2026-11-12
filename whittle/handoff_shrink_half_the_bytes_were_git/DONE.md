@@ -1,11 +1,11 @@
 # Done claim
 
-- true: Wake prints only next actions, open items and the last reply; then a one-screen state file generated from the ledger is done as `infrastructure/state/items/HANDOFF_SHRINK_HALF_THE_BYTES_WERE_GIT.md` says, shown by fresh evidence. | evidence: `whittle/handoff_shrink_half_the_bytes_were_git/evidence/wake_BENCH_live.txt` `whittle/handoff_shrink_half_the_bytes_were_git/evidence/BENCH_STATE_NOW_live.md` `whittle/handoff_shrink_half_the_bytes_were_git/evidence/wake_CLAUDE_ARCHMAGI_OFFLINE3_live.txt` `whittle/handoff_shrink_half_the_bytes_were_git/evidence/CLAUDE_ARCHMAGI_OFFLINE3_STATE_NOW_live.md` `whittle/handoff_shrink_half_the_bytes_were_git/evidence/half1_bytes.txt` `whittle/handoff_shrink_half_the_bytes_were_git/evidence/regeneration.txt` `whittle/handoff_shrink_half_the_bytes_were_git/evidence/selftest_ledger_state.txt` `whittle/handoff_shrink_half_the_bytes_were_git/evidence/mutations.txt` `whittle/handoff_shrink_half_the_bytes_were_git/evidence/staged_overtaken_next_STATE_NOW.md` `whittle/handoff_shrink_half_the_bytes_were_git/evidence/fresh_reader_round1.md` `whittle/handoff_shrink_half_the_bytes_were_git/evidence/fresh_reader_round2.md`
+- true: Wake prints only next actions, open items and the last reply; then a one-screen state file generated from the ledger is done as `infrastructure/state/items/HANDOFF_SHRINK_HALF_THE_BYTES_WERE_GIT.md` says, shown by fresh evidence. | evidence: `whittle/handoff_shrink_half_the_bytes_were_git/evidence/wake_BENCH_live.txt` `whittle/handoff_shrink_half_the_bytes_were_git/evidence/BENCH_STATE_NOW_live.md` `whittle/handoff_shrink_half_the_bytes_were_git/evidence/wake_CLAUDE_ARCHMAGI_OFFLINE3_live.txt` `whittle/handoff_shrink_half_the_bytes_were_git/evidence/CLAUDE_ARCHMAGI_OFFLINE3_STATE_NOW_live.md` `whittle/handoff_shrink_half_the_bytes_were_git/evidence/half1_bytes.txt` `whittle/handoff_shrink_half_the_bytes_were_git/evidence/regeneration.txt` `whittle/handoff_shrink_half_the_bytes_were_git/evidence/selftest_ledger_state.txt` `whittle/handoff_shrink_half_the_bytes_were_git/evidence/mutations.txt` `whittle/handoff_shrink_half_the_bytes_were_git/evidence/staged_overtaken_next_STATE_NOW.md` `whittle/handoff_shrink_half_the_bytes_were_git/evidence/fresh_reader_round3.md`
 
-How each part of the item reads in the evidence (all at eb4690e8ff, the last code change):
+How each part of the item reads in the evidence (all regenerated at d7ff8762de, the last code change):
 - Half 1: `half1_bytes.txt`. The wake's view of the live BENCH handoff keeps the one thing to carry, what the owner should
-  see, what is half-done and game/bridge, and drops traps, closed, filed and commits (the file stays whole: 8531 bytes
-  against 4335 viewed). The item's own measuring file re-measures at 12351 against 7403 bytes. The last reply is the top
+  see, what is half-done and game/bridge, and drops traps, closed, filed, commits, the uncommitted list and the template's
+  `<!-- -->` guidance. The file stays whole. The item's own measuring file re-measures at 12351 bytes whole against 6694 viewed. The last reply is the top
   of `wake_BENCH_live.txt`; the pointer lines carry live ledger state; the handoff's full path is printed.
 - Half 2, generator: `src/RimMandrake/Utils/ledger_state.py` writes `<state>/derived/state_now/<SEAT>_STATE_NOW.md`
   (gitignored) beside the ledger in use.
@@ -13,9 +13,9 @@ How each part of the item reads in the evidence (all at eb4690e8ff, the last cod
   (unexpired leases, every seat), NEXT lines (the newest `NEXT:` in a ledger note per open item, with its standing, date,
   writer and a ⚠ when the ledger has moved since). See `BENCH_STATE_NOW_live.md`.
 - Selftest on a `RIMFLOW_LEDGER` test ledger written by the real CLI checks each section for what must and must not be
-  there and the one-screen bound: `selftest_ledger_state.txt`, 31 checks, 0 failures, plus `run_selftests.py --only` GREEN. Twelve
+  there and the one-screen bound: `selftest_ledger_state.txt`, 33 checks, 0 failures, plus `run_selftests.py --only` GREEN. Fifteen
   deliberate breaks each fail it: `mutations.txt`.
-- Criteria: under 50 lines on the live ledger (BENCH, the busiest seat with 1819 open items: 45 lines, at most 120 columns;
+- Criteria: under 50 lines on the live ledger (BENCH, the busiest seat, about 1816 open items: 45 lines, at most 120 columns;
   a worker seat: 27). It regenerates without a human: every `handoff.py --wake` writes it (`regeneration.txt`, two
   ordinary wakes around a real ledger write, so the second shows the new NEXT). `--wake` points at it: the
   `LEDGER STATE NOW …: <path>` line under the pointer block, with a `now:` line giving game and bridge as the ledger has
@@ -24,7 +24,8 @@ How each part of the item reads in the evidence (all at eb4690e8ff, the last cod
 ## What I'm least sure about
 - "One screen" assumes a 120x50 terminal. On 80 columns the long rows wrap and the file runs past a screen.
 - A NEXT is the action as its writer put it. The file marks a cut action (…) and a NEXT the ledger has moved past (⚠),
-  but it cannot tell whether the action still holds. Both fresh readers handled that correctly, by opening the item.
+  but it cannot tell whether the action still holds. All three fresh readers handled that correctly, by opening the item
+  (round 3, on the final code, is `fresh_reader_round3.md`; rounds 1 and 2, on earlier code, are kept beside it as history).
 - "Live helpers" is unexpired leases. A worker that died with its lease still shows until the lease lapses (45 min).
   The heading says so.
 - The header's `bridge` is the Archmagi bridge (the ledger's default host); a SteveDesktop game's bridge is not in it.
