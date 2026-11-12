@@ -51,9 +51,9 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>F. Always clamped to 0 &lt;= F &lt;= D.</summary>
 		private byte[] fillGrid;
-		/// <summary>RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL: cell index -> the fill a ladder/ramp on it was last printed at
+		/// <summary>RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL: cell index -> the redraw key (RM_SubmergeMath.DrawnKey) a ladder/ramp on it was last printed at
 		/// (RM_SubmergeDraw). Drawing state, not saved: a load re-prints every section.</summary>
-		internal readonly Dictionary<int, byte> submergeDrawn = new Dictionary<int, byte>();
+		internal readonly Dictionary<int, int> submergeDrawn = new Dictionary<int, int>();
 
 		/// <summary>WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES (owner 2026-10-17, ruled exactly level by card): the decilitres below
 		/// one whole notch, per cell (0..U-1). A dug cell's water is W = F·U + part; F stays the whole-notch view every older

@@ -61,6 +61,42 @@ namespace RimMandrake.FlowWorks.SelfTest
 					"can-fail: quarter-notch notes: 0 only dry, a trace is 1, a few decilitres never re-mesh");
 				Assert(RM_SubmergeMath.NoteLevel(RM_SubmergeMath.LevelNote(3.0)) == 3f, "can-fail: a whole notch draws as itself");
 			});
+			Case("Submerge_hung_ladder_meets_its_drawn_wall_face", () =>
+			{
+				// owner's look 2026-11-12 (EWA_SUBMERGE_REVIEW_20261112): "2m water depth put the northern ladder behind the pit
+				// wall art". MEASURED there: depth 4, fill 3 (what the wall faces draw), true level 4.00 notches.
+				float face = 1f - RM_WallFaceMath.NorthFaceHeight(RM_WallFaceMath.ExposedDrop(4, 0, 3));
+				float cut = RM_SubmergeMath.LadderWaterline(0, 4, RM_SubmergeMath.HungLadderLevel(3));
+				Assert(Near(cut, face) && cut < 1f, "can-fail: the north ladder is cut at the face's waterline (" + cut + " vs " + face + ")");
+				Assert(RM_SubmergeMath.LadderWaterline(0, 4, 4.0f) >= 1f, "can-fail: the true level (the old cut) swallows it whole");
+				float share = RM_SubmergeMath.LadderInPitShare(0, 4, RM_SubmergeMath.HungLadderLevel(3));
+				Assert(share > 0.7f && share < 0.8f, "can-fail: a notch of wall above the water keeps the ladder's top (got " + share + ")");
+				for (int d = 1; d <= 12; d++)
+				{
+					for (int f = 0; f <= d; f++)
+					{
+						for (int rot = 0; rot < 4; rot++)
+						{
+							int ex = RM_WallFaceMath.ExposedDrop(d, 0, f);
+							float wall = f <= 0 || rot == 2 ? RM_SubmergeMath.NoCut : rot == 0 ? 1f - RM_WallFaceMath.NorthFaceHeight(ex)
+								: rot == 1 ? 1f - RM_WallFaceMath.SideFaceWidth(ex) : RM_WallFaceMath.SideFaceWidth(ex);
+							float c = RM_SubmergeMath.LadderWaterline(rot, d, RM_SubmergeMath.HungLadderLevel(f));
+							Assert(Near(c, wall), "can-fail: depth " + d + " fill " + f + " rot " + rot + ": ladder " + c + " vs wall " + wall);
+						}
+					}
+				}
+				// the redraw key: a ladder re-meshes when its face fill moves, even with the true level still; the ramp when the
+				// true level moves a quarter notch
+				int k3 = RM_SubmergeMath.DrawnKey(true, 3, 4.0), k4 = RM_SubmergeMath.DrawnKey(true, 4, 4.0);
+				Assert(k3 != k4 && RM_SubmergeMath.KeyLevel(k3) == 3f && RM_SubmergeMath.KeyLevel(k4) == 4f, "can-fail: face key follows the fill");
+				Assert(RM_SubmergeMath.DrawnKey(false, 3, 4.0) == RM_SubmergeMath.DrawnKey(false, 4, 4.0)
+					&& RM_SubmergeMath.KeyLevel(RM_SubmergeMath.DrawnKey(false, 3, 3.5)) == 3.5f, "can-fail: level key follows the true level");
+				Assert(RM_SubmergeMath.DrawnKey(true, 3, 3.0) != RM_SubmergeMath.DrawnKey(false, 3, 3.0) && RM_SubmergeMath.DrawnKey(true, 0, 0) != 0,
+					"can-fail: the two kinds never collide");
+				string draw = RiverSwitchFlipChecks.Src("Superdeep/RM_SubmergeDraw.cs");
+				Assert(draw.Contains("RM_SubmergeMath.HungLadderLevel(eng.FillAt(t.Position))") && draw.Contains("float cut = LadderCut(t, eng, d);")
+					&& draw.Contains("Wet(t, true, out"), "can-fail: PrintLadder cuts at its face's fill");
+			});
 			Case("Submerge_span_share_of_a_sprite", () =>
 			{
 				// the north ladder sprite spans cell-local z 0.50..1.105: a waterline at 0.65 covers a quarter of it

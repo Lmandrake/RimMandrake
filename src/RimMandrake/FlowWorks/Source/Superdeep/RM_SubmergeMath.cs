@@ -18,8 +18,10 @@ namespace RimMandrake.FlowWorks
 	///  - a portable ladder lying flat on the floor: under the liquid from the first level.
 	/// The ramp is covered from its downhill end by fill / rise. A stake is covered from its foot by the liquid's metres over
 	/// RM_SpikeDrawMath.SubmergeMetres (still gone at 1 m). Dry: nothing is cut.
-	/// Levels are the TRUE level in notches (one notch = 0.5 m; whole notch + the cell's part-notch), not the integer fill,
-	/// kept to quarter notches (LevelNote) so the map mesh and the realtime spikes re-draw only on a real move.
+	/// The ramp and the stakes take the TRUE level in notches (one notch = 0.5 m; whole notch + the cell's part-notch), kept
+	/// to quarter notches (LevelNote) so the map mesh and the realtime spikes re-draw only on a real move. A hung ladder takes
+	/// the whole-notch fill its wall face is drawn with (HungLadderLevel): the two can differ by a notch, and the ladder must
+	/// meet its wall.
 	/// Verse-free: SelfTest SubmergeDrawChecks runs this.
 	/// </summary>
 	public static class RM_SubmergeMath
@@ -84,6 +86,27 @@ namespace RimMandrake.FlowWorks
 			float w = FaceAt(RM_WallFaceMath.SideByDrop, exposed);
 			return rot == 1 ? 1f - w : w;
 		}
+
+		/// <summary>The level a HUNG ladder is cut at: the whole-notch fill its wall face is drawn with
+		/// (SectionLayer_RMExcavationWalls reads RM_MapComponent_Excavation.FillAt), never the true level. Owner's look
+		/// 2026-11-12 (EWA_SUBMERGE_REVIEW_20261112): "2m water depth put the northern ladder behind the pit wall art for some
+		/// reason, silly looking." That pit read fill 3 with a true level of 4.0 notches: the face still showed a notch of dry
+		/// wall while the ladder, cut at the true level, was gone below the rim. Ramp and stakes hang on no face and keep
+		/// the true level.</summary>
+		public static float HungLadderLevel(int faceFill) => faceFill <= 0 ? 0f : faceFill;
+
+		/// <summary>The redraw key a map-mesh fitting is noted with (RM_MapComponent_Excavation.submergeDrawn): a hung
+		/// ladder's carries <see cref="FaceKind"/> and its face fill; the ramp's the quarter-notch note of the true level.
+		/// A key that moved re-meshes the cell.</summary>
+		public const int FaceKind = 1 << 16;
+
+		public static int DrawnKey(bool face, int faceFill, double trueLevel)
+		{
+			return face ? FaceKind | (faceFill < 0 ? 0 : faceFill) : LevelNote(trueLevel);
+		}
+
+		/// <summary>The level (notches) a key draws.</summary>
+		public static float KeyLevel(int key) => (key & FaceKind) != 0 ? key & 0xFFFF : NoteLevel(key);
 
 		/// <summary>The side a hung ladder's cut starts from (N: its foot is south; E: west; W: east).</summary>
 		public static int LadderFrom(int rot) => rot == 1 ? FromWest : (rot == 3 ? FromEast : FromSouth);
