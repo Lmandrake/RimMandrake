@@ -1,4 +1,4 @@
 subject.World().tex_by_def['RM_AgariluxPrime'] (the src texPath art_sheet prefers over the dump): ['RotSpecies/AgariluxPrime']
 subject.World().def_by_tex['Things/Plants/AB_AgariluxPrime']: none
 live dump texPath (2026-11-02 full-list load): RotSpecies/AgariluxPrime
-=> art_sheet.subject_row no longer prints 'dump texPath ... is STALE; using src [Things/Plants/AB_AgariluxPrime]' for this def; its IN GAME column is the drawn v3 (sha 85779af9...)
+=> art_sheet.subject_row's src override now agrees with the dump; its IN GAME column is the drawn v3 (sha 85779af9...)
