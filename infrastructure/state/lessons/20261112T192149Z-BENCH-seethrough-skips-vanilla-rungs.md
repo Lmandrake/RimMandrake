@@ -1,0 +1,3 @@
+FlowWorks pit see-through water (RM_ExcavationWalls.SeeThrough, built 2026-10-06) draws only on our own water terrains: RM_LiquidSurface.AddOwned refuses official terrains, and the fresh-water ladder (RM_WaterLadder.cs:71) puts vanilla WaterShallow at 1 m and WaterDeep at 2 m+. So pits at 0.5 m and 1.5 m show the floor faintly and pits at 1 m and 2 m are opaque; the owner saw this live on 2026-11-12. Fix: gate on dug squares (depth > 0), not on terrain ownership, so natural lakes stay vanilla (R10). Study: D:\ClaudeWork\rimmandrake\conductor\clear_water_feasibility_20261112\STUDY.md
+item: FLOWWORKS_REVIEW_LOOKS_ROUND_1
+home: src/RimMandrake/FlowWorks/Source/Superdeep/RM_ExcavationWalls.cs
