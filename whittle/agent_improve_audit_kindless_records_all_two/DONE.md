@@ -11,7 +11,7 @@
 Bullet 1 is true both ways: (a) and (b), and they agree.
 (a) `apply_change` at L0 and L1 now records the kind a lesson names past its 200-character first line, and a
 lesson's `item:` footer kind over an item its text names. The footer is written by `lessons.py add` from `--item`,
-else `RIMFLOW_ITEM`/`WC_ITEM`. A Relentless alarm carries its own item. The steps selftests "L0/L1 records the kind
+else `RIMFLOW_ITEM`/`WC_ITEM`. A Relentless row, ops alarm and owner note's own item decides its kind (never a later id in the text). The steps selftests "L0/L1 records the kind
 a lesson names past its first line" and "a lesson's item: line is its kind" pass on the new code and fail on 66ab8395fd.
 (b) The 2026-11-11 paragraph in §4.3 of `design/RimMandrake/daily_agent_improvement_2026-11-02.md` says a change at L0
 or L1 whose cited pieces still name no item applies and stays uncheckable by design, and why: no sound source
@@ -26,8 +26,8 @@ kinded. The share is stated on the item (`rimflow note`, ledger shard CLAUDE_ARC
 - The whole-text fallback is a proxy. Its first-named item is corroborated by the seat's own ledger for only 49% (27%
   for the old first-line rule), so a non-empty kind from prose can be wrong, and a wrong kind would let a source-kind
   item into the "held-out" sample. Only the `item:` footer is sound. The doc says so with the numbers.
-- 2 records is the whole population, so the share is 100% of a tiny sample. In the live inbox (20:48 PST) only 8 of 110
-  lessons name an item at all, 1 by a footer. Most skill changes stay unmeasured until lessons carry footers. Most of today's lessons
+- 2 records is the whole population, so the share is 100% of a tiny sample. In the live inbox (20:59 PST) only 8 of 114
+  lessons name an item in their text; 5 already carry an `item:` footer from Whittle rounds that pulled this code. Most skill changes stay unmeasured until lessons carry footers. Most of today's lessons
   come from Whittle loops, which now stamp one.
 
 ## What I did not test

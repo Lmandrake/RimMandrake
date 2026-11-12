@@ -3,7 +3,7 @@ $ WC_ITEM=AGENT_IMPROVE_AUDIT_KINDLESS_RECORDS_ALL_TWO python3 src/RimMandrake/U
 infrastructure/state/lessons/20261112T043802Z-CLAUDE_ARCHMAGI_OFFLINE1-lesson-item-footer-feeds-kinds.md
 commit it: git commit infrastructure/state/lessons/20261112T043802Z-CLAUDE_ARCHMAGI_OFFLINE1-lesson-item-footer-feeds-kinds.md -m 'lesson: …'
 
-# re-read 2026-11-11 20:55 -0800 at HEAD ffe5a85347
+# re-read 2026-11-11 21:01 -0800 at HEAD f49981bfda
 $ tail -2 infrastructure/state/lessons/20261112T043802Z-CLAUDE_ARCHMAGI_OFFLINE1-lesson-item-footer-feeds-kinds.md
 item: AGENT_IMPROVE_AUDIT_KINDLESS_RECORDS_ALL_TWO
 home: design/RimMandrake/daily_agent_improvement_2026-11-02.md
@@ -27,11 +27,21 @@ home: design/RimMandrake/daily_agent_improvement_2026-11-02.md
   task_kind=None     target=None                                 20261112T044100Z-CLAUDE_STEVEDESKTOP_OFFLINE2-stevedesktop-wsl-had-no-playwright-2026.md
   task_kind=REBUILD  target=None                                 20261112T044100Z-CLAUDE_STEVEDESKTOP_OFFLINE2-whittle-setup-stevedesktop-left-done-md.md
   task_kind=FIX      target=None                                 20261112T044201Z-CLAUDE_ARCHMAGI_OFFLINE3-givequest-incident-world-target.md
+  task_kind=None     target=loop.sh                              20261112T045615Z-BENCH-claude-p-default-context-cost.md
+  task_kind=None     target=wc.py                                20261112T045615Z-BENCH-ledger-open-ghosts.md
+  task_kind=None     target=loop.sh                              20261112T045615Z-BENCH-private-run-copy-never-adopts.md
+  task_kind=None     target=wc.py                                20261112T045616Z-BENCH-empty-out-mtime-birth.md
 
 $ python3 src/RimMandrake/Utils/agent_improve.py gather --day 2026-11-12 --dry-run --out <scratch, L0>
 # Agent improvement packet 2026-11-12
 
-18 pieces today; 0 signalled targets (>= 2 pieces in 7 days), cap 6.
+22 pieces today; 2 signalled targets (>= 2 pieces in 7 days), cap 6.
+
+## loop.sh (2 in window, 2 today)
+kinds: lesson 2
+
+## wc.py (2 in window, 2 today)
+kinds: lesson 2
 
 ## unrouted (the Curator routes these or leaves them)
 
