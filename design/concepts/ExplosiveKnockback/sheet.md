@@ -26,7 +26,7 @@
 - [leaf:pawn_hits_pawn_stops] A thrown person stops at another pawn in the way and takes an impact hit, as at a wall
 - [leaf:doors_and_deep_water_stop] A closed door stops a throw and takes damage (none under an impact factor of 0); deep water stops a throw on the last cell a pawn can stand on
 - [leaf:shield_belt_holds] A shield belt that absorbs the blast keeps its wearer in place and pays extra charge (a burning gas clump's one-cell shove is the exception: a belt does not stop it)
-- [leaf:goods_arc_spin_rebound] Loose goods and corpses, a pawn the blast kills among them, fly wild: about 1.6 times as far as a person, high arc, fast spin, rebounds off walls keeping about 70 percent each, until spent. OWNER:1794468855146168085, owed
+- [leaf:goods_arc_spin_rebound] Loose goods and corpses, a pawn the blast kills among them, fly wild: about 1.6 times as far as a person, high arc, fast spin, rebounds off walls and closed doors keeping about 70 percent each, until spent; over sandbags, and never into deep water. OWNER:1794468855146168085, owed
 - [leaf:every_good_moves] Every light loose good the blast reaches with a throw of a cell or more moves (bar those spared above); the 40-throw cap and the per-tick drop are removed, nothing is skipped over a cap. OWNER:1794468864684141079, owed
 - [leaf:open_shelf_scatters] Open shelves, racks and tables protect nothing. OWNER:1794468845275647261, owed
 - [leaf:closed_container_holds] Closed containers keep their goods and may themselves be shoved a little (one cell or a jolt, never into a pit, a wall or onto a pawn). OWNER:1794468845275647261, owed
@@ -34,8 +34,8 @@
 - [leaf:every_harmful_blast_throws] Every harmful explosion throws: bombs full, fire at half strength (about half the throw), other mods too (the other-mods percent only for a damage type our patch does not tune, never stacked); harmless bursts nothing. OWNER:1794468840281537479, owed
 - [leaf:only_explosions_throw] Only explosions throw; melee and bullets move nobody, by his 2026-10-06 answer
 - [leaf:per_weapon_tuning] A weapon's own tuning sets its throw, projectile first, then weapon, then damage type; zero turns it off; its own maximum caps the throw (0 = the global maximum) and the per-weapon cap scale shortens that own maximum; an impact factor of 0 makes its throws hit walls, pawns and doors harmlessly, the door undamaged; its own body-size limit lets it throw bigger pawns
-- [leaf:gas_goes_clump_by_clump] A lit flammable gas cloud goes off clump by clump, scattering goods and shoving people one cell unhurt, a person at most once every 2 seconds. OWNER:1794468860062036002, owed
-- [leaf:our_gases_burn] The Cauldron's gas and our other fitting gases carry the flammable tag. OWNER:1794468874358971350, owed
+- [leaf:gas_goes_clump_by_clump] A flammable gas cloud that a fire touches goes off clump by clump, scattering goods and shoving people one cell unhurt, a person at most once every 2 seconds. OWNER:1794468860062036002, owed
+- [leaf:our_gases_burn] The Cauldron's gas goes off clump by clump, and so does any other gas source of ours the census finds fitting. OWNER:1794468874358971350, owed
 - [leaf:blast_breaks_pit_cover] A damaging or fire blast that reaches a pit cover, landing on it or beside it within its radius, breaks it and whoever is on it falls; a gas burst or an EMP, smoke or stun burst never does (a pawn a gas burst shoves onto a cover stands on it, the cover whole). OWNER:1794468860062036002
 - [leaf:thrown_into_pit_falls] Anything thrown toward an open pit falls to its floor, and onto a covered cell falls through and breaks the cover (a gas clump's one-cell shove is not a throw and leaves a cover whole); nothing is thrown across
 - [leaf:pit_goods_fetched] A colonist can fetch thrown goods and corpses back off a pit floor, owed a proof
@@ -61,7 +61,8 @@
 - A 1x1 closed container under the mass limit slides one cell if the cell behind it is free, else it jolts in place; never into a pit, a wall or onto a pawn
 - Other mods' damaging explosions throw at 100 percent by default; EMP, smoke, stun, extinguish and toxic gas at 0, fire at half; the other-mods percent and the fire-half switch are on Mod Settings, the per-type strengths sit in the def patch and any weapon can be tamed per weapon
 - Heavy means a stack of 10 kg or more; the knock is 2 to 5 blunt and about half a second of stagger, then the stack stops; a setting
-- The gas census: TheForge's gas, the Scarlands bileworm's, EnvironmentalHazards' and the Cauldron's, through an opt-in extension; this mod adds no gas of its own
+- The gas census covers every gas source of ours (gas defs, our gas grids, every place our code adds gas); today the one that burns is the Cauldron's vent gas, which opts in by registering its grid; the others add vanilla smoke, tox gas or rot stink, which do not burn; this mod adds no gas of its own
+- A gas cloud catches the way it already does in play, from a fire touching it; a fire not touching it lights nothing
 - One gas clump bursts at radius 1.9, throws goods at most 2 cells, one burst per clump cell, advancing with the fire front; a shield belt does not stop the shove
 - The frame budget is no frame over 50 ms through a 6-shell barrage and a 40-cell chain; advisory until a first measurement calibrates it
 - The gas chain and the pit-trap raid stay ordinary scenes (coverage_rest), not showcases, by the greedy showcase rule (his one flagship scene takes the showcase)

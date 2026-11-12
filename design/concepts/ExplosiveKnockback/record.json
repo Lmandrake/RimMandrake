@@ -372,7 +372,7 @@
    ],
    "date": "2026-11-11",
    "delegated": "census under a ruled scope",
-   "what": "Agent census of every gas our mods spawn (TheForge, Scarlands' bileworm gas, EnvironmentalHazards, the Cauldron's gas); each one that should burn gets an opt-in flammable tag (a DefModExtension), the census table cites why. A mod not loaded simply contributes no tagged gas."
+   "what": "Agent census of every gas source our mods have: Gas ThingDefs in our Defs (none concrete today: EnvironmentalHazards ships abstract parents only), our own gas grids (the Cauldron's vent gas, a byte grid on RM_MapComponent_VentGas with no def), and every C# call site that adds gas (TheForge's plume, Wastes, FlowWorks, TileFeatures, GelatinousSlime: all add vanilla BlindSmoke, ToxGas or RotStink, which are vanilla gases, not ours, and not flammable; the Scarlands bileworm's 'gas' is an aura that emits none). Each source of ours that should burn opts in to the flammable tag: a def gas by a DefModExtension, the Cauldron's grid by registering with the gas chain; the census table cites why for every source. In practice today the one tagged gas is the Cauldron's vent gas. A mod not loaded simply contributes no tagged gas."
   },
   {
    "id": "dl_clump_strength",
@@ -435,6 +435,32 @@
    "date": "2026-11-12 ~00:0x PST (question card)",
    "by_card": "Approve the 16 Explosive Knockback north-star bars? -> Approve as written",
    "what": "The 16 drafted north-star bars (14 must-show, 2 cannot-show) are validated as written: design/validation_walks/RimMandrake/ExplosiveKnockback.md VALIDATED at 5d06c98d8b13."
+  },
+  {
+   "id": "dl_gas_igniter",
+   "kind": "delegated",
+   "speaker": "agent",
+   "source": [
+    "ITEM:RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
+    "OWNER:1794468874358971350",
+    "PER_RULING:CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM"
+   ],
+   "date": "2026-11-12",
+   "delegated": "consequence of the gas-source ruling and the Cauldron's existing burn rule",
+   "what": "A tagged gas catches the way it already catches in play: the Cauldron's burn scan, a Fire on or beside a cell thick enough, so any fire, an incendiary or a blast that starts fires lights it; the chain rides that burn, one clump burst per cell as it burns. A fire not touching the cloud lights nothing."
+  },
+  {
+   "id": "dl_goods_obstacles",
+   "kind": "delegated",
+   "speaker": "agent",
+   "source": [
+    "ITEM:RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
+    "OWNER:1794468855146168085",
+    "PER_RULING:CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM"
+   ],
+   "date": "2026-11-12",
+   "delegated": "consequence of 'goods rebound off walls' and the path rules",
+   "what": "A flying good treats a closed door as a wall (rebounds keeping about 70 percent), passes over sandbags and barricades as a person does, and never enters deep water: it stops on the last cell before it, so no good is lost or hidden."
   }
  ],
  "asks": [

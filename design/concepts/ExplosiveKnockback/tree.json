@@ -263,12 +263,13 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "change",
-   "experience": "Loose goods and corpses near a blast, the corpse of a pawn the blast itself kills among them, fly through the air in a high arc, spinning fast, and the player watches them rebound off walls, each time keeping about seventy percent of their speed, before they come to rest.",
+   "experience": "Loose goods and corpses near a blast, the corpse of a pawn the blast itself kills among them, fly through the air in a high arc, spinning fast, and the player watches them rebound off walls and closed doors, each time keeping about seventy percent of their speed, before they come to rest; they pass over sandbags and stop short of deep water, never lost in it.",
    "scenario": "A 5x5 stockpile of mixed goods and a corpse beside a wall; a mortar lands in it; record each thrown thing's drawn position per tick until all are at rest.",
    "false_pass": [
     "goods vanish and reappear at the landing cell under dust",
     "goods slide in a straight line with no arc or spin",
-    "goods stop at the first wall"
+    "goods stop at the first wall",
+    "a good flies into deep water and is lost or hidden"
    ],
    "red": "the built despawn and re-place hop under a dust puff",
    "tier_proposed": "live_minimal",
@@ -461,7 +462,7 @@
    "bundle": "gas",
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "the cloud's gas def carries the flammable tag; bursts on many ticks, one per clump cell, ordered by distance from the lit edge; goods within about 1.9 cells of a burst moved at most 2 cells, including those outside the cloud; goods beyond moved none; the colonist moved 1 cell despite the belt, no new injuries, at most once per 2 seconds",
+   "oracle_proposed": "the cloud is the Cauldron's registered vent gas, lit by a Fire on its edge; a fire not touching the cloud lights nothing; bursts on many ticks, one per clump cell, ordered by distance from the lit edge; goods within about 1.9 cells of a burst moved at most 2 cells, including those outside the cloud; goods beyond moved none; the colonist moved 1 cell despite the belt, no new injuries, at most once per 2 seconds",
    "tier_reason": "the throw, the landing and the scatter are runtime (PawnFlyer, map things, the explosion wave); the kernel selftest proves only the path maths",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -472,15 +473,16 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "change",
-   "experience": "When a flammable gas cloud catches, the player sees it go off clump by clump as the fire runs through it, each small burst scattering the goods near it and shoving a pawn one cell without hurting them, the same pawn at most once every 2 seconds.",
-   "scenario": "A 40-cell cloud of one named tagged gas over loose goods, with goods outside the cloud within 1.9 cells of its edge cells and goods beyond that, a colonist inside wearing a charged shield belt; light one edge; record each burst's cell and tick, goods moved, and the colonist's moves and damage.",
+   "experience": "When a flammable gas cloud catches from a fire touching it, the player sees it go off clump by clump as the fire runs through it, each small burst scattering the goods near it and shoving a pawn one cell without hurting them, the same pawn at most once every 2 seconds.",
+   "scenario": "A 40-cell cloud of the Cauldron's vent gas over loose goods, with goods outside the cloud within 1.9 cells of its edge cells and goods beyond that, a colonist inside wearing a charged shield belt; set a fire on one edge cell; record each burst's cell and tick, goods moved, and the colonist's moves and damage.",
    "false_pass": [
     "the whole cloud goes off as one blast at its centre",
     "the gas only lights fires",
     "the colonist takes blast damage",
     "only goods under the cloud move",
     "the shield belt stops the shove",
-    "one pawn shoved again and again inside 2 seconds"
+    "one pawn shoved again and again inside 2 seconds",
+    "the chain starts only when the proof calls it, never from a fire"
    ],
    "red": "a build with one centroid explosion, or none",
    "tier_proposed": "live_minimal",
@@ -490,7 +492,7 @@
    "bundle": "gas",
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "each tagged gas yields clump bursts; the census list matches the gases carrying the tag; control: an untagged gas lit the same way burns with no bursts; offline: every gas def our mods define appears in the census table, tagged or with its reason",
+   "oracle_proposed": "each tagged source yields clump bursts; the census list matches the sources carrying the tag; control: the Cauldron's grid with its registration removed burns by its own scan with no bursts; offline: every gas source of ours (Gas ThingDefs, our gas grids, every C# call site that adds gas) appears in the census table, tagged or with its reason",
    "tier_reason": "the throw, the landing and the scatter are runtime (PawnFlyer, map things, the explosion wave); the kernel selftest proves only the path maths",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -501,12 +503,12 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "change",
-   "experience": "The player sees the Cauldron's gas, and every other gas of ours tagged as flammable, catch and go off clump by clump.",
-   "scenario": "Release the Cauldron's gas and each tagged gas from the census in turn over loose goods and light it.",
+   "experience": "The player sees the Cauldron's gas, and any other gas source of ours the census tags as flammable, catch and go off clump by clump.",
+   "scenario": "Release the Cauldron's vent gas, and any other tagged source from the census in turn, over loose goods and set a fire on its edge.",
    "false_pass": [
-    "only one test gas is wired",
+    "only a test gas is wired",
     "the Cauldron's gas burns as plain fire with no bursts",
-    "a gas of ours never entered in the census"
+    "a gas source of ours never entered in the census"
    ],
    "red": "a build where the Cauldron's gas carries no flammable tag",
    "tier_proposed": "live_minimal",

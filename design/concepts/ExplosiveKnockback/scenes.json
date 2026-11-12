@@ -214,13 +214,14 @@
    "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::settings_sweep",
    "start": [
     "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists settings_sweep; INVALID otherwise)",
-    "one staged lane at fixed cells (asserted): a colonist, an animal, a second animal of body size 2.0 to under 2.5 (asserted: body size read), a mech, a downed pawn, loose goods of 50, 65 and 100 kg, a corpse, a 1x1 crate, a heavy stack aimed at a pawn, a tagged gas puff with a fuse cell, a sandbag line on one colonist's ray, a wall behind one colonist, a closed door behind another, an open pit cell on a good's ray and a colonist with a charged shield belt",
+    "the gas staged is the Cauldron's vent gas, Cauldron on the list (asserted: RM_MapComponent_VentGas present and its grid registered with the gas chain; INVALID otherwise), added to the stated cells through the grid's own add call, and lit by a Fire set on the stated cell, the way it catches in play",
+    "one staged lane at fixed cells (asserted): a colonist, an animal, a second animal of body size 2.0 to under 2.5 (asserted: body size read), a mech, a downed pawn, loose goods of 50, 65 and 100 kg, a corpse, a 1x1 crate, a heavy stack aimed at a pawn, a puff of the Cauldron's vent gas with a fire cell, a sandbag line on one colonist's ray, a wall behind one colonist, a closed door behind another, an open pit cell on a good's ray and a colonist with a charged shield belt",
     "the bursts: a plain frag grenade, the same grenade carrying an own maxThrowCells 4, an incendiary shell, and a harmful explosion of a test damage type that carries no knockback extension anywhere, standing in for another mod's (asserted: journal tuning source unpatched), each on the lane",
     "every setting at default (asserted: Settings reset then read)",
     "the sweep's setting list, plus enabled (swept in sc_settings_off) and shieldsAbsorbThrow (swept in sc_shield), equals the saved fields of the settings class, read by reflection (asserted equal; a saved field in none of the three fails the scene)",
     "a mass lane: a colonist whose mass is read (asserted above 20) one cell from a grenade, run once at lightMassLimit 20"
    ],
-   "action": "the bursts over the lane once per changed setting, lighting the puff each run: strength 0.5, maxThrowCells 2, ownCapScale 0.5, unpatchedHarmfulPercent 50, immuneBodySize 2.0, throwAnimals, throwMechanoids, throwDowned, throwItems and throwCorpses off, lightMassLimit 60, the heavy threshold raised over the stack, sandbagsStopThrow on, impactDamageEnabled off, impactDamagePerCell 8, landingStunMin and landingStunMax 30 and 40, recoveryWindowTicks 0 (a second grenade 10 ticks after landing), doorsTakeDamage off, throwIntoPits off, shieldDebitPerForce 20, debugDrawVectors on, and each new part's switch off (goods in the air, the closed guard, the container shove, the heavy knock, the gas chain, fire at half)",
+   "action": "the bursts over the lane once per changed setting, setting the fire cell each run: strength 0.5, maxThrowCells 2, ownCapScale 0.5, unpatchedHarmfulPercent 50, immuneBodySize 2.0, throwAnimals, throwMechanoids, throwDowned, throwItems and throwCorpses off, lightMassLimit 60, the heavy threshold raised over the stack, sandbagsStopThrow on, impactDamageEnabled off, impactDamagePerCell 8, landingStunMin and landingStunMax 30 and 40, recoveryWindowTicks 0 (a second grenade 10 ticks after landing), doorsTakeDamage off, throwIntoPits off, shieldDebitPerForce 20, debugDrawVectors on, and each new part's switch off (goods in the air, the closed guard, the container shove, the heavy knock, the gas chain, fire at half)",
    "expect": "each change alters only its own outcome: cells halved at strength 0.5; at most 2 cells; the own-cap grenade throws 2 cells under ownCapScale 0.5 while the plain grenade is unchanged; the unpatched explosion throws at full strength by default and at half (journal force 0.5 of the default run) at 50; the second animal thrown at default and skipped with reason too_big at immuneBodySize 2.0; each toggled kind skipped with its reason; the 100 kg good skipped with reason too_heavy at default; the 65 kg good thrown at default and skipped with reason too_heavy at 60; the stack no longer knocks; the sandbagged colonist stops at the sandbags; the wall impact is 0 with impact off and doubled at 8 per cell; the landing stun lasts 30 to 40 ticks; the second grenade throws the just-landed colonist at window 0 and not at default; the door's hit points unchanged with door damage off; the good on the pit ray lands on the rim with throwIntoPits off; the belt's energy drop doubles at 20; the vector overlay draws (the proof's draw counter is above zero) only with debugDrawVectors on; each switched-off part inert, the puff burning with no burst and no throw with the gas chain off (no single centroid blast) and the incendiary at full strength with fire at half off, while everything else still throws; the Mod Settings page and the saved settings hold no maxThrowsPerExplosion and no maxItemThrowsPerMapTick line; with goods in the air off loose goods are not thrown at all (journal skip, each on its own cell, zero despawn-spawn pairs: no hop comes back) while pawns still fly; with the closed guard off the crate's goods are thrown like loose goods out of it; the fire half and the harmless zeros are per damage type in the def patch, not Mod Settings lines, and are proven in sc_blast_kinds; in the mass lane at lightMassLimit 20 the colonist, though heavier than the limit, is thrown (journal: a throw line, no too_heavy skip), because the mass limit weighs goods and corpses only",
    "control": {
     "case": "the default run before and after the sweep",
@@ -241,10 +242,11 @@
    "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::wall_stop",
    "start": [
     "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists wall_stop; INVALID otherwise)",
-    "a colonist two cells from a wall, the impact on the far side (asserted: the wall cell is impassable)"
+    "a colonist two cells from a wall, the impact on the far side (asserted: the wall cell is impassable)",
+    "a per-tick trace of the colonist's drawn position from launch until 120 ticks after landing (asserted: one test row before the blast)"
    ],
    "action": "a grenade lands; step 300 ticks",
-   "expect": "the colonist lands on the cell before the wall, journal stop Wall, impact damage above 0, no second move",
+   "expect": "the colonist lands on the cell before the wall, journal stop Wall, impact damage above 0, no second move; in the trace the drawn position never moves back toward the blast after it reaches the wall-side cell, not even part of a cell",
    "control": {
     "case": "the same throw with the wall removed",
     "expect": "the colonist lands 3 cells out",
@@ -532,13 +534,15 @@
    "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::gas_chain",
    "start": [
     "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists gas_chain; INVALID otherwise)",
-    "a 40-cell cloud of one named gas whose def carries the flammable tag (asserted: tag read)",
+    "the gas staged is the Cauldron's vent gas, Cauldron on the list (asserted: RM_MapComponent_VentGas present and its grid registered with the gas chain; INVALID otherwise), added to the stated cells through the grid's own add call, and lit by a Fire set on the stated cell, the way it catches in play",
+    "a 40-cell cloud of the Cauldron's vent gas",
     "goods under the cloud, goods outside it within 1.9 cells of an edge cell, and goods beyond that",
     "colonist A inside with no shield belt, standing where two adjacent clumps burst within 120 ticks of each other (asserted from the fire front's spacing before lighting); colonist B inside wearing a charged shield belt (asserted: energy read)",
-    "the thing trace (thing id, spawned state, drawn position, height, rotation, spawn and despawn events) is running (asserted: one test row before the blast)"
+    "the thing trace (thing id, spawned state, drawn position, height, rotation, spawn and despawn events) is running (asserted: one test row before the blast)",
+    "an igniter lane: a second Cauldron vent-gas cloud with a Fire three cells from its nearest cell, not touching it, and a third cloud reached by an incendiary shell's blast"
    ],
-   "action": "light one edge; step until the cloud is spent",
-   "expect": "bursts on many ticks, one per clump cell, ordered by distance from the lit edge; goods within about 1.9 cells of a burst moved at most 2 cells, including those outside the cloud; goods beyond did not move; colonist A reached by at least two bursts within 120 ticks yet shoved exactly once in that window, 1 cell, with the same injuries as before; colonist B shoved 1 cell with belt energy unchanged and no belt absorb event; no despawn-spawn pair",
+   "action": "set a Fire on one edge cell; step until the cloud is spent",
+   "expect": "bursts on many ticks, one per clump cell, ordered by distance from the lit edge; goods within about 1.9 cells of a burst moved at most 2 cells, including those outside the cloud; goods beyond did not move; colonist A reached by at least two bursts within 120 ticks yet shoved exactly once in that window, 1 cell, with the same injuries as before; colonist B shoved 1 cell with belt energy unchanged and no belt absorb event; no despawn-spawn pair; in the igniter lane the cloud with the untouching fire yields no burst over 600 ticks, and the cloud the incendiary reaches catches from the fires it starts and goes off clump by clump",
    "control": {
     "case": "a single scene-driven explosion of the same total strength at the cloud's centre",
     "expect": "one burst tick, and the far goods move on that same tick",
@@ -558,15 +562,15 @@
    "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::gas_census",
    "start": [
     "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists gas_census; INVALID otherwise)",
-    "each tagged gas source in the census, the Cauldron's vent gas first, released over loose goods in turn (asserted: each source's mod active; a def gas by its def loaded, the Cauldron's vent gas, which is a byte grid on RM_MapComponent_VentGas with no def, by its grid registered with the gas chain through the same opt-in extension, read back)",
+    "each tagged gas source in the census (today the Cauldron's vent gas alone), released over loose goods in turn (asserted: each source's mod active; a def gas by its def loaded, the Cauldron's vent gas, which is a byte grid on RM_MapComponent_VentGas with no def, by its grid registered with the gas chain through the same opt-in extension, read back)",
     "offline first: the census is taken over gas sources, not Defs alone: every Gas ThingDef in our mods' Defs, every gas map grid of our own (the Cauldron's RM_MapComponent_VentGas), and every call site in our mods' C# that adds gas (AddGas and GasUtility calls, e.g. TheForge's plume, Wastes, FlowWorks, TileFeatures, GelatinousSlime, Cauldron) each appear in the census table, tagged, or untagged with its reason (a call site that adds a vanilla gas type such as BlindSmoke, ToxGas or RotStink is the vanilla gas, not one of ours, listed untagged as not flammable); asserted: the census selftest passed and its source scan finds a planted test call site and a planted test grid (INVALID otherwise)"
    ],
-   "action": "light each cloud",
+   "action": "set a Fire on one edge cell of each cloud",
    "expect": "each tagged source yields clump bursts, the Cauldron's vent gas among them; the census list of tagged sources equals the sources carrying the tag, and no gas source of ours (def, grid or call site) is missing from the census",
    "control": {
-    "case": "an untagged gas lit the same way",
-    "expect": "burns with no bursts",
-    "rules_out": "fire alone scattering the goods"
+    "case": "the Cauldron's vent gas with its grid's registration with the gas chain removed, lit the same way",
+    "expect": "it burns by the Cauldron's own scan into tox gas with no clump bursts and no goods moved",
+    "rules_out": "fire alone scattering the goods, or bursts that do not come from the opt-in"
    },
    "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
    "hold": "immediate",
@@ -582,10 +586,11 @@
    "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::cover_breaks",
    "start": [
     "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists cover_breaks; INVALID otherwise)",
+    "the gas staged is the Cauldron's vent gas, Cauldron on the list (asserted: RM_MapComponent_VentGas present and its grid registered with the gas chain; INVALID otherwise), added to the stated cells through the grid's own add call, and lit by a Fire set on the stated cell, the way it catches in play",
     "FlowWorks loaded (asserted: Names reports flowworks=true; INVALID otherwise)",
     "seven covered pits (asserted: cover hit points read), a raider on the first, second, third, fifth, sixth and seventh",
-    "over the third cover a tagged flammable gas cloud, lit at its far edge (asserted: cloud cells read)",
-    "an eighth covered pit with a raider standing one cell off it and a tagged flammable gas puff on his far side, placed so its clump burst shoves him onto the cover (asserted: the shove's planned cell is the cover)",
+    "over the third cover a Cauldron vent-gas cloud, lit at its far edge (asserted: cloud cells read)",
+    "an eighth covered pit with a raider standing one cell off it and a Cauldron vent-gas puff on his far side, placed so its clump burst shoves him onto the cover (asserted: the shove's planned cell is the cover)",
     "a ninth covered pit with a raider on it, two cells from a grenade's impact and inside its radius (asserted: the cover cell is in the explosion's cells)",
     "a tenth covered pit with no pawn on it or within two cells, two cells from a grenade's impact and inside its radius (asserted: the cover cell is in the explosion's cells), and an eleventh, pawn-free, just outside another grenade's radius (asserted: not in its cells)"
    ],
@@ -686,7 +691,8 @@
    "start": [
     "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists pit_goods_fetch; INVALID otherwise)",
     "FlowWorks loaded (asserted: Names reports flowworks=true; INVALID otherwise)",
-    "a stack and a corpse thrown onto a pit floor with a lowered ladder (asserted: both on the pit floor)"
+    "a stack and a corpse thrown onto a pit floor with a lowered ladder (asserted: both on the pit floor)",
+    "a stockpile that accepts the stack and a grave or corpse stockpile that accepts the corpse, both reachable, and a colonist able to haul and not busy (asserted: each accepts its thing, reachability read, hauling enabled; INVALID otherwise)"
    ],
    "action": "queue hauling; step up to one day",
    "expect": "the stack reaches a stockpile and the corpse a grave or stockpile outside the pit; the hauler used the ladder",
@@ -732,7 +738,8 @@
    "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::barrage_perf",
    "start": [
     "a test map on the owner's full list on Archmagi (asserted: ModsConfig parsed, mod count and machine read); Explosive Knockback active (asserted: RM_KnockbackProof.Names lists barrage_perf; INVALID otherwise)",
-    "a full 10x10 stockpile, a 40-cell tagged gas cloud",
+    "the gas staged is the Cauldron's vent gas, Cauldron on the list (asserted: RM_MapComponent_VentGas present and its grid registered with the gas chain; INVALID otherwise), added to the stated cells through the grid's own add call, and lit by a Fire set on the stated cell, the way it catches in play",
+    "a full 10x10 stockpile, a 40-cell Cauldron vent-gas cloud",
     "the frame probe running and its self-check passed"
    ],
    "action": "a 6-shell mortar barrage into the stockpile, then light the chain, at normal speed",
@@ -756,7 +763,8 @@
    "entry_point": "src/RimMandrake/ExplosiveKnockback/validation.py::walk_storeroom_raid",
    "start": [
     "full list colony (asserted: ModsConfig parsed, Explosive Knockback and FlowWorks active)",
-    "a stocked storeroom of open shelves and crates, a covered pit trap, a gas source (asserted)",
+    "the gas staged is the Cauldron's vent gas, Cauldron on the list (asserted: RM_MapComponent_VentGas present and its grid registered with the gas chain; INVALID otherwise), added to the stated cells through the grid's own add call, and lit by a Fire set on the stated cell, the way it catches in play",
+    "a stocked storeroom of open shelves and crates, a covered pit trap, a Cauldron vent with its gas out (asserted)",
     "the frame probe and tick-cost probe running"
    ],
    "action": "a mortar raid; one grenade thrown onto the pit trap's cover by a scripted grenadier (asserted: that explosion's cell is the cover cell; INVALID otherwise); save while at least one thrown thing is in the air (asserted) and reload; repeat the raid in a second order, gas first, then mortars",
@@ -781,8 +789,9 @@
    "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::gas_into_pit",
    "start": [
     "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists gas_into_pit; INVALID otherwise)",
+    "the gas staged is the Cauldron's vent gas, Cauldron on the list (asserted: RM_MapComponent_VentGas present and its grid registered with the gas chain; INVALID otherwise), added to the stated cells through the grid's own add call, and lit by a Fire set on the stated cell, the way it catches in play",
     "FlowWorks loaded (asserted: Names reports flowworks=true; INVALID otherwise)",
-    "a colonist on the edge cell of an open pit inside a tagged gas cloud (asserted)"
+    "a colonist on the edge cell of an open pit inside a Cauldron vent-gas cloud (asserted)"
    ],
    "action": "light the cloud",
    "expect": "the one-cell shove puts the colonist into the pit, one descent, no blast injuries",
@@ -819,6 +828,30 @@
    "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
    "hold": "immediate",
    "entry_point_item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS"
+  },
+  {
+   "id": "sc_goods_obstacles",
+   "kind": "acceptance",
+   "requirement": [
+    "goods_arc_spin_rebound"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::goods_obstacles",
+   "start": [
+    "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists goods_obstacles; INVALID otherwise)",
+    "three lanes, each a light stack one cell from a grenade's impact: lane D with a closed door two cells on along the ray, lane S with a sandbag line two cells on and open floor beyond, lane W with deep water two cells on (asserted from the kernel plan: each stack's throw reaches the obstacle)",
+    "the thing trace (thing id, spawned state, drawn position, height) running (asserted: one test row before the blasts)"
+   ],
+   "action": "the three grenades; step until every stack is at rest (at most 600 ticks)",
+   "expect": "lane D's stack rebounds off the door keeping about 0.7 of its speed and the door is closed after; lane S's stack passes over the sandbags and lands beyond them; lane W's stack comes to rest on the last cell before the deep water, spawned and visible, never in it; zero despawn-spawn pairs in any lane",
+   "control": {
+    "case": "the same three lanes with the obstacles removed (plain floor)",
+    "expect": "each stack lands on its kernel-planned open-floor cell beyond where the obstacle stood",
+    "rules_out": "the stacks stopping or turning for a reason other than the obstacle"
+   },
+   "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD"
   }
  ],
  "showcases": [
