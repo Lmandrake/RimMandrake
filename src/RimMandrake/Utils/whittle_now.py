@@ -59,7 +59,7 @@ CLAIM_GRACE_S = 15 * 60     # a "closed" the ledger has not caught up with after
 WINDOW_S = 12 * 3600        # the picture shows at most this much of the clock
 ROUNDS_SHOWN = 12
 IGNORED_DIRS = {"tools", "logs", "archive", "old"}
-OUTCOMES = ("closed", "parked", "dropped", "failed", "blocked", "timeout", "skipped", "error")
+OUTCOMES = ("closed", "parked", "dropped", "failed", "blocked", "timeout", "skipped", "error", "released")
 
 
 # ---- small readers -----------------------------------------------------------------------------------
@@ -158,7 +158,7 @@ def parse_loop_log(text):
                 r["item"] = item.strip("`*")
         else:
             r["end"] = t
-            words = re.findall(r"[A-Za-z]+", rest.lower())
+            words = re.findall(r"[A-Za-z]+", re.sub(r"\b(sha|tokens|open)\s*[=:]\s*\S+", "", ITEM_ID.sub(" ", rest), flags=re.I).lower())
             r["outcome"] = (kv.get("outcome") or kv.get("result") or next((w for w in words if w in OUTCOMES), None) or
                             (words[0] if words else "ended"))
             r["outcome"] = r["outcome"].lower()
@@ -303,7 +303,7 @@ def read_units(recs, sources):
         sources.add("systemd on Archmagi", None, local_why)
     remote_want = [r["unit"] for r in recs if r.get("unit") and (
         str(r["info"].get("unit_host", "")).lower().startswith("steve") or
-        (local.get(r["unit"], {}).get("LoadState") == "not-found" and str(r["info"].get("machine", "")).lower().startswith("steve")))]
+        str(r["info"].get("machine", "")).lower().startswith("steve"))]
     remote, remote_why = {}, None
     if remote_want:
         try:
@@ -469,6 +469,22 @@ def bridge_lines(ledger):
 
 # ---- reading one worker ------------------------------------------------------------------------------
 
+ALARM_RE = re.compile(r"not a question|\balarm\b|\bincident\b|machine, not the item", re.I)
+
+
+def stop_reason(folder):
+    """The text of a STOP file in the worker's folder, or None when there is none."""
+    for n in ("STOP", "STOP.txt", "STOP.md"):
+        p = os.path.join(folder, n)
+        if os.path.exists(p):
+            try:
+                t = " ".join(read_text(p, 4000).split())
+            except OSError:
+                t = ""
+            return t or "a STOP file is in its folder"
+    return None
+
+
 def assess(r, ledger):
     """Derive what the page says about a worker, in r itself."""
     info = r["info"]
@@ -515,13 +531,17 @@ def assess(r, ledger):
     elif us.get("word") in ("failed",):
         r["state_word"] = "UNIT FAILED"
     elif us.get("word") == "inactive":
-        r["state_word"] = "stopped" if st not in ("done", "finished", "drained", "out of work") else st
+        r["state_word"] = "stopped on purpose" if r.get("stop") is not None else "stopped" if st not in ("done", "finished", "drained", "out of work") else st
     elif us.get("word") == "unreachable":
         r["state_word"] = "%s (machine unreachable)" % (st or "UNMEASURED")
     else:
         r["state_word"] = st or "UNMEASURED"
-    r["questions_list"] = A.parse_questions(r["questions"]) if r.get("questions") and not re.fullmatch(
+    allq = A.parse_questions(r["questions"]) if r.get("questions") and not re.fullmatch(
         r"\s*(#[^\n]*\n)?\s*(none|no questions?( yet)?|nothing( yet)?|-)?\.?\s*", r["questions"], re.I) else []
+    # a machine alarm or incident note is not a question for the owner
+    r["alarms_list"] = [q for q in allq if ALARM_RE.search(q["text"])]
+    r["questions_list"] = [q for q in allq if not ALARM_RE.search(q["text"])]
+    r["stop"] = stop_reason(r["dir"])
     return r
 
 
@@ -545,6 +565,8 @@ def needs_for(r):
     st = plain_state(r["info"].get("state"))
     if us.get("word") == "failed":
         out.append((2, "**%s's unit `%s` has failed** on %s%s." % (n, r["unit"], us.get("host"), " (%s)" % us["result"] if us.get("result") not in (None, "success") else "")))
+    elif us.get("word") == "inactive" and r.get("stop") is not None:
+        pass  # stopped on purpose: shown in its section and the glance, not a contradiction
     elif us.get("word") == "inactive" and st in ("working", "running", "round", "busy", "active"):
         out.append((2, "**%s's file says it is working, but its unit `%s` is stopped** on %s. Its last write was %s ago." % (
             n, r["unit"], us.get("host"), ago(now_s() - r["last_write"]) if r["last_write"] else "never")))
@@ -577,9 +599,9 @@ def item_title(iid, t):
 
 # ---- the picture -------------------------------------------------------------------------------------
 
-OUT_COLOUR = {"closed": "#2aa98a", "parked": "#b28a00", "dropped": "#6b7380", "failed": "#ff5a4d",
+OUT_COLOUR = {"closed": "#2aa98a", "parked": "#b28a00", "dropped": "#6b7380", "failed": "#ff5a4d", "released": "#3fb8e0",
               "running": "#4f97d6", "other": "#b277d6", "noend": "url(#arcHatch)"}
-OUT_WORD = {"closed": "closed", "parked": "parked", "dropped": "dropped", "failed": "failed", "running": "running now",
+OUT_WORD = {"closed": "closed", "parked": "parked", "dropped": "dropped", "failed": "failed", "released": "handed back", "running": "running now",
             "other": "other end", "noend": "no end line, unit not running"}
 
 
@@ -597,10 +619,12 @@ def picture(recs):
         return left + (max(t, t_from) - t_from) / span * (right - left)
 
     x0 = 12
-    for k in ("closed", "parked", "dropped", "failed", "running", "other", "noend"):
+    unknown = sorted({x["outcome"] for r in recs for x in r["rounds_sorted"] if x["end"] and x["outcome"] not in OUT_COLOUR})
+    for k, word in [(k, OUT_WORD[k]) for k in ("closed", "parked", "released", "dropped", "failed", "running", "noend")] + \
+            [("other", w) for w in unknown]:
         P.rect(x0, 12, 11, 11, OUT_COLOUR[k], rx=2)
-        P.text(x0 + 15, 22, OUT_WORD[k])
-        x0 += 15 + A.text_w(OUT_WORD[k], 11) + 16
+        P.text(x0 + 15, 22, word)
+        x0 += 15 + A.text_w(word, 11) + 16
     P.text(W - 12, 22, "as of %s" % clock(now), weight="600", anchor="end")
     P.text(12, 39, "Each block is one round of a worker, its width the round's real time, coloured by how it ended. Round number inside.", colour=A.DIM)
     row_h, top = 46, 62
@@ -659,6 +683,8 @@ def unit_text(r):
         return "`%s` on %s: **unreachable** (%s), not known to be stopped" % (r["unit"], host, short(us.get("detail"), 70))
     if w == "UNMEASURED":
         return "`%s` on %s: UNMEASURED (%s)" % (r["unit"], host, us.get("detail"))
+    if w == "inactive" and r.get("stop") is not None:
+        return "`%s` on %s: **stopped on purpose** (STOP file: %s)" % (r["unit"], host, short(r["stop"], 200))
     return "`%s` on %s: **%s**" % (r["unit"], host, w)
 
 
@@ -742,9 +768,12 @@ def worker_section(r):
     if r["odd"]:
         L.append("- loop.log has %d line%s with no time stamp, not read." % (r["odd"], "" if r["odd"] == 1 else "s"))
     L.append("")
+    if r["alarms_list"]:
+        L += ["### Alarms (not questions)", "", "From OWNER_QUESTIONS.md, written %s ago:" % ago(now_s() - r["files"]["OWNER_QUESTIONS.md"]), ""]
+        L += [demote(q["text"].strip()) for q in r["alarms_list"]] + [""]
     if r["questions_list"]:
         L += ["### Questions for you", "", "From OWNER_QUESTIONS.md, written %s ago, in full:" % ago(now_s() - r["files"]["OWNER_QUESTIONS.md"]), ""]
-        L += [demote(r["questions"].strip()), ""]
+        L += [demote(q["text"].strip()) for q in r["questions_list"]] + [""]
     if r["rounds_sorted"]:
         L += ["### Recent rounds", ""] + round_rows(r) + [""]
         if len(r["rounds_sorted"]) > ROUNDS_SHOWN:
@@ -842,6 +871,10 @@ def build(stubs=None):
     P += ["## Needs you", ""]
     P += ["%d. %s" % (i + 1, t) for i, t in enumerate(needs)] if needs else ["Nothing needs you now."]
     P += [""]
+    alarms = [(r["name"], q) for r in recs for q in r["alarms_list"]]
+    if alarms:
+        P += ["## Alarms", "", "Machine alarms and incident notes from workers' OWNER_QUESTIONS.md. Nothing is asked of you."]
+        P += ["- **%s**: %s" % (n, q["title"]) for n, q in alarms] + [""]
     P += ["## Workers at a glance", ""]
     if recs:
         P += glance(recs)

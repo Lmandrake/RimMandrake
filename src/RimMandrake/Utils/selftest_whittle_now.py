@@ -100,18 +100,38 @@ def plant(root):
             "[%s:07] round #2 started open=4 item=RM_CLAIM_ITEM_ONE" % stamp(38),
             "%s round 2 end: RM_CLAIM_ITEM_ONE closed sha=def5678 tokens=300k" % stamp(25),
             "%s note: drained the easy ones" % stamp(24),
+            "%s round 3 start, open=4 item=RM_DONE_ITEM_ONE" % stamp(23),
+            "%s round 3 end: RM_DONE_ITEM_ONE released sha=- tokens=5k" % stamp(22),
+            "%s round 4 start, open=4 item=RM_DONE_ITEM_ONE" % stamp(21),
+            "%s round 4 end: RM_DONE_ITEM_ONE wobbled sha=- tokens=5k" % stamp(20),
             "garbage line without a stamp"])
     worker("edgy", None, ["%s round 1 start, open=3 item=RM_EDGE_ITEM_TWO" % stamp(20),
                           "%s round 1 end: RM_EDGE_ITEM_TWO parked tokens=10" % stamp(15),
                           "%s round 2 start, open=3 item=RM_EDGE_ITEM_TWO" % stamp(14)],
            raw_wj="{ this is not json")
+    worker("alarmer", {"worker": "alarmer", "unit": "rm-whittle-alarmer", "machine": "Archmagi", "lane": "offline", "state": "working"},
+           ["%s round 1 start, open=3 item=RM_EDGE_ITEM_TWO" % stamp(5)],
+           questions="# Questions\n\n## 2026-11-11 SteveDesktop WSL root is read-only (not a question; an alarm)\n- mount says emergency_ro.\n\n"
+                     "## Which colour should the plant be?\nGreen or red.\n")
     with open(os.path.join(root, "workers.json"), "w") as f:
-        json.dump({"workers": [{"worker": "stuckone"}, {"worker": "closer"}, {"worker": "edgy", "unit": "rm-whittle-edgy",
+        json.dump({"workers": [{"worker": "stuckone"}, {"worker": "closer"}, {"worker": "alarmer"}, {"worker": "edgy", "unit": "rm-whittle-edgy",
                                                                                "machine": "Archmagi", "lane": "offline"}]}, f)
     os.makedirs(os.path.join(root, "tools"))
 
 
-def wire(mod, root, lane_file):
+def plant_steve(root):
+    for name, stop in (("steveon", None), ("stevestop", "Owner parked this lane until the disk move is done."), ("stevedead", None)):
+        d = os.path.join(root, name)
+        os.makedirs(d)
+        json.dump({"worker": name, "unit": "rm-whittle-" + name, "machine": "SteveDesktop", "lane": "offline", "state": "working"},
+                  open(os.path.join(d, "worker.json"), "w"))
+        open(os.path.join(d, "loop.log"), "w").write("%s round 1 start, open=3 item=RM_EDGE_ITEM_TWO\n" % stamp(5))
+        if stop:
+            open(os.path.join(d, "STOP"), "w").write(stop)
+    os.makedirs(os.path.join(root, "tools"))
+
+
+def wire(mod, root, lane_file, steve_up=False):
     mod.ROOT = root
     mod.OUT_DIR = root
     mod.LANE_FILE = lane_file
@@ -126,7 +146,9 @@ def wire(mod, root, lane_file):
                     else {"Id": u, "LoadState": "not-found", "ActiveState": "inactive"}) for u in units}
 
     def remote(units):
-        raise mod.Unmeasured("ssh: connect timed out")
+        if not steve_up:
+            raise mod.Unmeasured("ssh: connect timed out")
+        return {u: {"Id": u, "LoadState": "loaded", "ActiveState": "active" if "steveon" in u else "inactive"} for u in units}
 
     mod.units_local, mod.units_remote = local, remote
     return {"ledger": fake_ledger, "machines": lambda state, sources: {},
@@ -143,7 +165,7 @@ def checks(mod, tmp):
     plant(root)
     stubs = wire(mod, root, lane)
     page, phone, _ = mod.build(stubs)
-    needs = page.split("## Needs you", 1)[1].split("## Workers at a glance", 1)[0]
+    needs = page.split("## Needs you", 1)[1].split("## Workers at a glance", 1)[0].split("\n## Alarms", 1)[0]
     edge_part = page.split("## edgy", 1)[1] if "## edgy" in page else ""
     near_midnight = time.localtime().tm_hour == 0 and time.localtime().tm_min < 55
     out = [
@@ -160,7 +182,7 @@ def checks(mod, tmp):
         ("claim not accepted", near_midnight or "closer said it closed `RM_CLAIM_ITEM_ONE`" in needs),
         ("ledger close accepted", "closed in the ledger" in page and "commit abc1234" in page),
         ("closed today split", near_midnight or "2 said, 1 in ledger" in page),
-        ("tokens summed", near_midnight or "~1.50M" in page),
+        ("tokens summed", near_midnight or "~1.51M" in page),
         ("drifted start line read", "| 2 |" in page.split("## closer", 1)[1]),
         ("other log line kept", "drained the easy ones" in page),
         ("odd line counted", "1 line with no time stamp" in page),
@@ -176,6 +198,23 @@ def checks(mod, tmp):
     os.makedirs(empty)
     stubs = wire(mod, empty, lane)
     page2, phone2, _ = mod.build(stubs)
+    sroot = os.path.join(tmp, "s")
+    os.makedirs(sroot)
+    plant_steve(sroot)
+    json.dump({"workers": [{"worker": n, "machine": "SteveDesktop"} for n in ("steveon", "stevestop", "stevedead")]},
+              open(os.path.join(sroot, "workers.json"), "w"))
+    stubs = wire(mod, sroot, lane, steve_up=True)
+    pageS, _, _ = mod.build(stubs)
+    needsS = pageS.split("## Needs you", 1)[1].split("## Workers at a glance", 1)[0]
+    out += [
+        ("released is handed back", "handed back" in page and "wobbled" in page.split("</svg>", 1)[0] and "other end" not in page),
+        ("alarm not a question", "alarmer asks you 1 question" in needs and "Which colour" in needs and "read-only" not in needs),
+        ("alarm in its own section", "## Alarms" in page and "alarmer" in page.split("## Alarms", 1)[1].split("## Workers at a glance", 1)[0]),
+        ("steve unit asked on steve", "`rm-whittle-steveon.service` on SteveDesktop: running" in pageS),
+        ("stop file is on purpose", "stevestop" not in needsS and "stopped on purpose" in pageS and "Owner parked this lane" in pageS),
+        ("real contradiction stays", "stevedead's file says it is working, but its unit `rm-whittle-stevedead.service` is stopped** on SteveDesktop" in needsS),
+        ("steve down not crash", "steveon" not in needs and "**unreachable**" in page),
+    ]
     out.append(("empty root", "No Whittle workers yet" in page2 and "none yet" in phone2))
     stubs["ledger"] = lambda sources: (_ for _ in ()).throw(mod.Unmeasured("planted ledger failure"))
     page3, _, _ = mod.build(stubs)
@@ -192,7 +231,11 @@ def run_checks(source):
 
 
 MUTANTS = [
+    ("steve unit asked on steve", 'str(r["info"].get("machine", "")).lower().startswith("steve"))]', 'False)]'),
+    ("stop file is on purpose", 'r.get("stop") is not None:\n        pass', 'r.get("stop") is None:\n        pass'),
+    ("alarm not a question", 'if not ALARM_RE.search(q["text"])]', 'if True]'),
     ("edge not stuck by rounds", 'r["rounds_on_item"] > STUCK_ROUNDS', 'r["rounds_on_item"] >= STUCK_ROUNDS'),
+    ("released is handed back", '"released": "handed back"', '"released": "other end"'),
     ("unreachable not stopped", '{"word": "unreachable", "host": host', '{"word": "inactive", "host": host'),
 ]
 
