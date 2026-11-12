@@ -69,7 +69,7 @@ def transcript(records, catalogue):
                     day(r), r["cathedral_offers"].get("dark_hold_until_tick")))
         for b in r["cathedral_offers"]["boons"]:
             was = prev_boon_state.get(b["incident_def"])
-            if was is not None and was != b["state"] and "withheld_heat" in (was, b["state"]):
+            if was is not None and was != b["state"] and ({"withheld_heat", "withheld_recent_sale"} & {was, b["state"]}):
                 out.append("%s  [%s: %s -> %s at Heat %.1f]" % (day(r), b["incident_def"], was, b["state"],
                                                                r["heat_after"]))
             prev_boon_state[b["incident_def"]] = b["state"]

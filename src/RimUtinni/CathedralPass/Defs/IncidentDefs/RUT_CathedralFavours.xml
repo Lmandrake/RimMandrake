@@ -17,8 +17,9 @@
   looking, it does not act"): gravtech set down by the ship with no sender, no tracks and no explanation
   (IncidentWorker_CathedralBoon). The bigger the gift, the lower the ceiling and the longer before it comes again
   (reofferDays): the panels can come while a patrol or two still passes (Heat 15, under the blackboard's high band
-  of 40), every couple of weeks at most; a gravcore only at Heat 5, days after the last kyber sale (Heat decays
-  0.4 a poll), so its letter's "empty of Imperial traffic for days" is true, and not twice in a season. Items are Odyssey's
+  of 40), every couple of weeks at most; a gravcore only at Heat 5 AND at least quietDays (3) game days after
+  the last kyber sale, so its letter's "empty of Imperial traffic for days" is true at any poll rate (Heat decays
+  per poll, so Heat alone would clear in hours at the live 2000-tick cadence), and not twice in a season. Items are Odyssey's
   (GravlitePanel, Gravcore; ludeon.rimworld.odyssey, read from the 2026-11-06 def dump), which every player has.
   The letter text never says who left them.
 -->
@@ -106,7 +107,7 @@
     <workerClass>RimMandrake.Utinni.CathedralPass.IncidentWorker_CathedralBoon</workerClass>
     <baseChance>0</baseChance>
     <letterLabel>Panels on the ramp</letterLabel>
-    <letterText>At first light the deck crew found a stack of gravlite panels on the cargo ramp, squared off neatly and still cold from the night. No tracks led to them and none led away.\n\nNobody aboard claims them, and nobody wants to ask too loudly. There was no patrol overhead last night.</letterText>
+    <letterText>At first light the deck crew found a stack of gravlite panels on the cargo ramp, squared off neatly and still cold from the night. No tracks led to them and none led away.\n\nNobody aboard claims them, and nobody wants to ask too loudly. The night crew swears nothing crossed the perimeter.</letterText>
     <letterDef>PositiveEvent</letterDef>
     <modExtensions>
       <li Class="RimMandrake.Utinni.CathedralPass.RUT_CathedralBoonExtension">
@@ -138,6 +139,7 @@
         </gifts>
         <heatCeiling>5</heatCeiling>
         <reofferDays>45</reofferDays>
+        <quietDays>3</quietDays>
       </li>
     </modExtensions>
   </IncidentDef>

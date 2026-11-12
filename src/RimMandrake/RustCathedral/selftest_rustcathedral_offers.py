@@ -182,7 +182,7 @@ def criterion_2_text():
     for label, path, old, new, rule in (
         ("quest description names the place", G.CATHEDRAL_FAVOUR_DEFS[0], "The runner would not say who asked the enclaves.",
          "The Cathedral asked the enclaves.", "names-the-place"),
-        ("boon letter gives the gift agency", G.CATHEDRAL_FAVOUR_DEFS[1], "There was no patrol overhead last night.",
+        ("boon letter gives the gift agency", G.CATHEDRAL_FAVOUR_DEFS[1], "The night crew swears nothing crossed the perimeter.",
          "It knows when the patrols are gone.", "agency before the reveal"),
         ("quest name leaks the Assailant", G.CATHEDRAL_FAVOUR_DEFS[0], "questName->The shrine-road",
          "questName->Against the Assailant", "§GM truth"),
@@ -243,6 +243,26 @@ def criterion_3_heat():
     check("3 hot run: gravcore offered again once Heat cools to its ceiling (poll %s, Heat %s)"
           % (reopen and reopen["poll"], reopen and reopen["heat_after"]),
           reopen is not None and reopen["heat_after"] <= gc and reopen["conduct_posture_label"] == "VOUCHED")
+
+    # the live poll rate (2000 ticks): Heat clears the gravcore's ceiling within hours, the gift still waits 3 days
+    live = _fast_vouched(polls=200, tick_step=2000,
+                         changes={"60": {"kyber": {"Force_KyberCrystal": 5}, "trader_present": True},
+                                  "61": {"trader_present": False}})
+    live["player"]["mission_responses"] = ["ignore"]
+    _, LV, _ = run(live, story_flags=VOUCHED_FAST)
+    sale = LV[59]
+    cool = next(r for r in LV[60:] if r["heat_after"] <= gc)
+    gift = next((r for r in LV[60:] if any(e.get("incident_def", "").endswith("Gravcore") for e in r["would_fire"])), None)
+    for r in (sale, cool, gift):
+        if r:
+            row(r)
+    quiet = next(b["quiet_ticks"] for b in CAT["boons"] if b["incident_def"].endswith("Gravcore"))
+    check("3 live cadence (2000-tick polls): Heat is under the gravcore ceiling %.2f days after one sale, but the "
+          "gravcore waits %.0f days (withheld_recent_sale) and comes at day %.2f after the sale" % (
+              (cool["ticksGame"] - sale["ticksGame"]) / 60000, quiet / 60000,
+              gift and (gift["ticksGame"] - sale["ticksGame"]) / 60000),
+          boon_state(cool, "Gravcore") == "withheld_recent_sale" and gift is not None
+          and gift["ticksGame"] - sale["ticksGame"] >= quiet)
 
     # Heat in the HIGH band (>= 40): a kyber sale that size would also cost far more Regard than VOUCHED holds, so
     # this row sets Heat directly on the board (SYNTHETIC, labelled) to show what the gate does there.

@@ -459,6 +459,7 @@ def load_cathedral_offer_catalogue(paths=CATHEDRAL_FAVOUR_DEFS):
                     "gifts": {g.tag: int(g.text) for g in ext.find("gifts")},
                     "heat_ceiling": float(ext.findtext("heatCeiling")),
                     "reoffer_ticks": int(float(ext.findtext("reofferDays")) * 60_000),
+                    "quiet_ticks": int(float(ext.findtext("quietDays") or 0) * 60_000),
                 })
     missions = []
     for qdef in quests:   # file order: the order requests are offered in (the channels alternate)
@@ -472,7 +473,7 @@ def load_cathedral_offer_catalogue(paths=CATHEDRAL_FAVOUR_DEFS):
     return {"missions": missions, "boons": boons}
 
 
-def compute_cathedral_offer_gate(conduct_posture, heat, boons):
+def compute_cathedral_offer_gate(conduct_posture, heat, boons, ticks_since_sale=None):
     """The pure gate (arc §1/§3): which favours MAY be offered this poll. Missions at TOLERATED+, boons at VOUCHED+
     and each only at Heat <= its own ceiling ("when the Empire is looking, it does not act"). A go-dark flip needs
     no clause here: it forces the conduct posture to WARY on the same poll, which closes both."""
@@ -483,6 +484,10 @@ def compute_cathedral_offer_gate(conduct_posture, heat, boons):
             state = "closed_stage"
         elif heat > b["heat_ceiling"]:
             state = "withheld_heat"
+        elif ticks_since_sale is not None and ticks_since_sale < b.get("quiet_ticks", 0):
+            # Heat decays per POLL, so at a fast poll rate it clears within hours; a quiet-days gift also waits
+            # this many game days after the last kyber sale, whatever the poll rate
+            state = "withheld_recent_sale"
         else:
             state = "open"
         boon_rows.append({"incident_def": b["incident_def"], "heat_ceiling": b["heat_ceiling"], "state": state})
@@ -644,6 +649,7 @@ class ShadowBlackboard:
         self.boons_given = 0
         self.last_go_dark_tick = None
         self.last_completion_tick = None
+        self.last_sale_tick = None   # the last poll a kyber-family drop raised Heat
         self.record_extra = {}  # merged into every record before it is logged (fixture mode marks its records)
 
     def advance_fall_chain(self, record, would_fire, hutt_goodwill):
@@ -782,7 +788,8 @@ class ShadowBlackboard:
         if go_dark_fired:
             self.last_go_dark_tick = ticks
         dark_hold = self.last_go_dark_tick is not None and ticks - self.last_go_dark_tick < CATHEDRAL_FAVOURS_DARK_HOLD_TICKS
-        missions_open, boon_rows = compute_cathedral_offer_gate(self.conduct_posture, self.heat, cat["boons"])
+        since_sale = None if self.last_sale_tick is None else ticks - self.last_sale_tick
+        missions_open, boon_rows = compute_cathedral_offer_gate(self.conduct_posture, self.heat, cat["boons"], since_sale)
         if go_dark_fired:
             closed_reason = "go_dark"
         elif dark_hold:
@@ -974,6 +981,8 @@ class ShadowBlackboard:
         sale_heat = _sale_heat(delta_lost)
         self.heat = max(0.0, self.heat - HEAT_DECAY_PER_POLL + sale_heat)
         record["kyber_delta_lost"] = delta_lost
+        if delta_lost > 0:
+            self.last_sale_tick = game_info.get("ticksGame") or 0
         record["heat_bump_this_poll"] = sale_heat
         record["heat_after"] = round(self.heat, 3)
 

@@ -35,6 +35,7 @@ namespace RimMandrake.Utinni.CathedralPass
         public List<ThingDefCountClass> gifts = new List<ThingDefCountClass>();
         public float heatCeiling = 10f;
         public float reofferDays = 15f;   // blackboard-only too: the least time before the same gift comes again
+        public float quietDays = 0f;      // blackboard-only too: game days since the last kyber sale before it may come
     }
 
     /// <summary>A gravtech boon: the extension's gifts are set down at the ship's trade drop spot, unannounced, with the
