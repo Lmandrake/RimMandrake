@@ -300,25 +300,26 @@ def previous_handoff():
     return best
 
 
-def open_this_window(since_ts):
-    """Items this seat started in the window and has not closed since.
+def _replay():
+    """The ledger's own state machine over the ledger in use (model.replay): the only reader of an item's state."""
+    import ledger_state
+    ledger_state.ledger_head()
+    return ledger_state.model.replay(ledger_state.model.read())
 
-    ⚠️ "has not closed" means since the item's OWN most recent start, not
-    ever. An id blocked back in August and unblocked-and-restarted this
-    window is open now — a close/block/drop/supersede from a PRIOR spell
-    must not suppress it. Determined from the id's latest lifecycle event
-    (start/close/block/drop/supersede) in chronological order, not from
-    "does a terminal event exist anywhere in this id's history."
+
+def open_this_window(since_ts, world=None):
+    """Items this seat started in the window that are still `doing`, unblocked, now.
+
+    ⚠️ "Still doing" is model.replay's answer, never the id's last lifecycle verb. An id blocked back in August and
+    unblocked-and-restarted this window is open now; an id finished by `implemented` + `verify --result pass` has no
+    `close` and is done; one unblocked with no fresh `start` is doing again. The last-verb reader listed 63 done items
+    of 146 in a BENCH window since 2026-11-01 as still open (review, 2026-11-11).
     """
     s = seat()
-    last_lifecycle: dict[str, tuple[str, str, str]] = {}
-    for e in sorted(events(), key=lambda x: x.get("ts") or ""):
-        kind = e.get("event")
-        if kind in ("start", "close", "block", "drop", "supersede"):
-            last_lifecycle[e.get("id")] = (kind, e.get("ts") or "", e.get("seat"))
-    return sorted(id_ for id_, (kind, ts, start_seat) in last_lifecycle.items()
-                  if kind == "start" and start_seat == s
-                  and (since_ts is None or ts > since_ts))
+    started = {e.get("id") for e in events()
+               if e.get("event") == "start" and e.get("seat") == s and (since_ts is None or (e.get("ts") or "") > since_ts)}
+    items = (world if world is not None else _replay()).items
+    return sorted(i for i in started if i in items and items[i].state == "doing" and not items[i].blocked)
 
 
 def gates(since_ts=None, handoff_path=None, doing_is_fatal=True):
@@ -406,7 +407,7 @@ def window_is_empty(since_sha, since_ts):
     ev = events()
     moved = [e for e in ev
              if (e.get("ts") or "") > since_ts
-             and e.get("event") in ("close", "file", "block", "drop", "supersede")]
+             and e.get("event") in ("close", "file", "block", "drop", "supersede", "implemented", "verify")]
     commits = sh("git", "log", "--oneline", "%s..HEAD" % since_sha) if since_sha else ""
     return not moved and not commits
 
@@ -820,12 +821,19 @@ def build(since_sha, since_ts, prev_name):
     def after(e):
         return since_ts is None or (e.get("ts") or "") > since_ts
 
+    items = _replay().items     # what is open or done is the state machine's answer (an implemented + verify pass
+                                # ends an item with no close; a fail after a close reopens it)
     closes = [e for e in ev if e.get("event") == "close" and e.get("seat") == s and after(e)]
+    closed = {e.get("id") for e in closes}
+    for e in ev:                # finished by verify in this window, by this seat: closed too
+        i = e.get("id")
+        if (e.get("event") in ("implemented", "verify") and e.get("seat") == s and after(e) and i not in closed
+                and i in items and items[i].state == "done"):
+            closed.add(i)
+            closes.append({"id": i, "sha": "done by %s, no close" % e.get("event")})
     files_ = [e for e in ev if e.get("event") == "file" and after(e)
               and (e.get("for") == s or e.get("seat") == s)]
-    still_open = {e.get("id") for e in ev if e.get("event") == "file"} - \
-                 {e.get("id") for e in ev
-                  if e.get("event") in ("close", "drop", "supersede")}
+    still_open = {i for i, it in items.items() if it.open}
 
     rng = ("%s..HEAD" % since_sha) if since_sha else "-30"
     commits = sh("git", "log", "--oneline", "--format=%h %s", rng)

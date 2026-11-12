@@ -208,15 +208,17 @@ _fake_events = [
     {"id": "REOPENED_ITEM_1", "event": "unblock", "seat": "FOUNDRY", "ts": "2026-01-02T00:00:00Z"},
     {"id": "REOPENED_ITEM_1", "event": "start", "seat": "FOUNDRY", "ts": "2026-01-02T00:00:01Z"},
 ]
+import types  # noqa: E402
+_world = types.SimpleNamespace(items={"REOPENED_ITEM_1": types.SimpleNamespace(state="doing", blocked=False)})
 _orig_events, _orig_seat = handoff.events, handoff.seat
 handoff.events = lambda: _fake_events
 handoff.seat = lambda: "FOUNDRY"
 try:
-    check("REOPENED_ITEM_1" in handoff.open_this_window(None),
+    check("REOPENED_ITEM_1" in handoff.open_this_window(None, _world),
           "a restarted-after-block id is open, not suppressed by its old block")
-    check("REOPENED_ITEM_1" in handoff.open_this_window("2026-01-01T12:00:00Z"),
+    check("REOPENED_ITEM_1" in handoff.open_this_window("2026-01-01T12:00:00Z", _world),
           "and it counts as started IN a window that only covers the restart")
-    check("REOPENED_ITEM_1" not in handoff.open_this_window("2026-01-03T00:00:00Z"),
+    check("REOPENED_ITEM_1" not in handoff.open_this_window("2026-01-03T00:00:00Z", _world),
           "but not in a window that starts after the restart itself")
 finally:
     handoff.events, handoff.seat = _orig_events, _orig_seat

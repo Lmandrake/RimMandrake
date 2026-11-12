@@ -105,6 +105,16 @@ rf(O, "unblock", UNBLOCKED)
 SUPERSEDED = "STATENOW_TEST_PTR_SUPERSEDED"
 rf(O, "file", SUPERSEDED, "--for", O, "--title", "replaced by another item")
 rf(O, "supersede", SUPERSEDED, "--by", ids[5])
+# the write side's "started this window, still doing" gate: done by implemented + verify (no close), and unblocked
+# with no fresh start (review, 2026-11-11: a last-verb reader got both wrong)
+DONE_BY_VERIFY, UNBLOCKED_DOING = "STATENOW_TEST_GATE_DONE_BY_VERIFY", "STATENOW_TEST_GATE_UNBLOCKED_DOING"
+for _i in (DONE_BY_VERIFY, UNBLOCKED_DOING):
+    rf(O, "file", _i, "--for", O, "--title", "a window gate case")
+    rf(O, "release", _i, "--token", token(rf(O, "claim", _i)))     # started; the lease given back (not a live helper)
+rf(O, "implemented", DONE_BY_VERIFY, "--sha", SHA, "--none-owed", "--live", "once: selftest")
+rf(O, "verify", DONE_BY_VERIFY, "--result", "pass", "--config", "selftest", "--level", "L0", "--sha", SHA)
+rf(O, "block", UNBLOCKED_DOING, "--reason", "a block lifted with no restart", "--kind", "external")
+rf(O, "unblock", UNBLOCKED_DOING)
 CHAINED = "STATENOW_TEST_PTR_CHAINED"                   # CHAINED -> SUPERSEDED -> ids[5], which is open
 rf(O, "file", CHAINED, "--for", O, "--title", "replaced by an item that was itself replaced")
 rf(O, "supersede", CHAINED, "--by", SUPERSEDED)
@@ -267,6 +277,13 @@ w = out.getvalue()
 unm = next((ln for ln in w.splitlines() if ln.startswith("POINTER STATUS: UNMEASURED")), "")
 check(rc == 0 and ids[0] in unm and REOPENED in unm and "LEDGER STATE NOW: UNMEASURED" in w,
       "a ledger_state that cannot load: the wake still prints the handoff and names every pointer UNMEASURED (rc %r)" % rc)
+
+print("handoff: the write side's still-doing gate reads the ledger's state, not the last verb")
+os.environ["RIMFLOW_SEAT"] = O
+gate = handoff.open_this_window(None)
+os.environ["RIMFLOW_SEAT"] = B
+check(DONE_BY_VERIFY not in gate and UNBLOCKED_DOING in gate and "STATENOW_TEST_OTHER_SEAT" in gate,
+      "done by implemented + verify is not still doing; unblocked with no restart is; a plain claim is: %s" % gate)
 
 print("ledger_state: a stress ledger of 400 more items stays one screen")
 raw = [json.loads(ln) for ln in open(os.path.join(TMP, "events", "BENCH.jsonl")) if ln.strip()]
