@@ -163,8 +163,8 @@ the newest version of each target:
   for no extra evidence (4.1: gross bugs first), and a refused diff counts as proposed and not applied, which pulls down
   the acceptance rate the ramp reads. Measured 2026-11-11: 2 of 2 change records on file have `source_kinds: []`
   (rimworld-modding v1 and using-rimflow v1, both L0, one lesson each). Neither lesson names an item anywhere, so this
-  reading gives them none either. In the live inbox at 21:49 PST, 10 of 126 lessons name an item in their text (2 by their first line) and 17 carry an
-  `item:` footer: 6 say `NONE`, 8 name legacy `_1` ids with no intent word, and 3 give a kind (FIX twice, AUDIT once).
+  reading gives them none either. In the live inbox at 21:49 PST, 10 of 126 lessons give a kind when the whole file is read as text: 8 from the
+  lesson's own words (2 of them in the first line) and 2 only from their `item:` footer line. 17 carry an `item:` footer: 6 say `NONE`, 8 name legacy `_1` ids with no intent word, and 3 give a kind (FIX twice, AUDIT once).
   So a footer alone is not enough: most skill changes will stay unmeasured until lessons are filed inside items whose
   names carry an intent word, as new names do and legacy ids never will. Measurement:
   `whittle/agent_improve_audit_kindless_records_all_two/evidence/measure_kindless.py` and `attribution_audit.py` beside it;
