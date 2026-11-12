@@ -140,6 +140,9 @@ def main():
     for f in OUTPUTS:
         if os.path.exists(HERE + f):
             os.remove(HERE + f)
+    if os.path.isdir(HERE + "prereview"):  # the browser harness's screenshots and results describe the old sheet
+        import shutil
+        shutil.rmtree(HERE + "prereview")
     labels = src_labels(a.repo)
 
     rows = list(csv.DictReader(open(R2 + "draft_matrix_v2.csv")))
