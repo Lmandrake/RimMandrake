@@ -286,7 +286,9 @@ class Hungry(Fake):
     is no colonist. Thirst is low on both and must be left alone."""
     def __init__(self):
         Fake.__init__(self, [])
-        self.needs = {1: {"Food": 0.0, "RM_Thirst": 0.1}, 5: {"Food": 0.8, "RM_Thirst": 0.1}, 77: {"Food": 0.0}}
+        self.needs = {1: {"Food": 0.0, "RM_Thirst": 0.1}, 5: {"Food": 0.95, "RM_Thirst": 0.1}, 6: {"Food": 0.3},
+                      77: {"Food": 0.0}}
+        self.pawns[6] = F.pawn_row(6)      # 0.3: above the suite's 0.25 yet starving within ~11,000 ticks of a driver
         self.need_sets = []
 
     def _raw(self, tool, kw):
@@ -303,8 +305,8 @@ V._CALM.clear()
 hb = Hungry()
 cr = V.site_calm(hb)
 V._CALM.clear()
-ok(hb.need_sets == [(1, "Food", 1.0)] and cr.get("fed") == [1] and "fedError" not in cr,
-   "site_calm feeds the starving colonist only, Food only: %s fed=%s err=%s" % (hb.need_sets, cr.get("fed"),
+ok(sorted(hb.need_sets) == [(1, "Food", 1.0), (6, "Food", 1.0)] and sorted(cr.get("fed")) == [1, 6] and "fedError" not in cr,
+   "site_calm feeds the starving and the soon-hungry colonist, not the fed one or the hostile, Food only: %s fed=%s err=%s" % (hb.need_sets, cr.get("fed"),
                                                                               cr.get("fedError") or cr.get("error")))
 
 
@@ -319,7 +321,7 @@ class HungryBroken(Hungry):
 hb2 = HungryBroken()
 cr2 = V.site_calm(hb2)
 V._CALM.clear()
-ok(cr2.get("ok") is False and hb2.need_sets == [(1, "Food", 1.0)],
+ok(cr2.get("ok") is False and sorted(hb2.need_sets) == [(1, "Food", 1.0), (6, "Food", 1.0)],
    "a calm piece that breaks still feeds the starving colonist (ok=False names it): %s" % hb2.need_sets)
 
 print("selftest_validation_core_site: %d/%d" % (sum(RES), len(RES)))

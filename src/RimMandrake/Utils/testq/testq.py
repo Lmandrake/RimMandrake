@@ -1987,6 +1987,52 @@ def cmd_install_timer(a):
     return 0
 
 
+def forward_submit(a, argv):
+    """-> None to submit here, or the exit code of the submit forwarded to the dispatcher's queue.
+    HARNESS_REPAIR_CAUSE_8135787B: the queue is the dispatcher's (Archmagi; retest.QUEUE_HOST). `submit` on SteveDesktop
+    wrote a job into the local queue dir, which no dispatcher reads, and printed "pending" as if it would run. Off the
+    dispatcher, with no TESTQ_QUEUE of its own (a selftest's temp queue stays local), the submit runs in the dispatcher's
+    clone over SSH (TESTQ_QUEUE_SSH, default mandrake@archmagi-wsl; empty = stay local; TESTQ_DISPATCH_CLONE, default
+    ~/rm/dispatch). The sha is checked HERE against this clone's origin/main, so the remote clone is never fetched."""
+    import socket
+    me = (os.environ.get("RM_HOST") or socket.gethostname()).strip().lower()
+    target = os.environ.get("TESTQ_QUEUE_SSH", "mandrake@archmagi-wsl")
+    if me == ARCHMAGI or not target or "TESTQ_QUEUE" in os.environ:
+        return None
+    if not a.no_sha_check and not published(a.sha):
+        print("REFUSED: %s is not on origin/main: ./publish it first (or --no-sha-check)" % a.sha)
+        return 2
+    # the commit approved HERE is the one queued: HEAD, a branch or an abbreviation resolves to its full sha first,
+    # never re-resolved in the dispatcher's clone
+    full = subprocess.run(["git", "-C", REPO, "rev-parse", "--verify", "--quiet", a.sha + "^{commit}"],
+                          capture_output=True, text=True).stdout.strip()
+    if not full and not a.no_sha_check:
+        print("REFUSED: %s names no commit here" % a.sha)
+        return 2
+    args, i = list(argv), None
+    for k, x in enumerate(args):
+        if x == "--sha":
+            i = k + 1
+        elif x.startswith("--sha="):
+            args[k] = "--sha=" + (full or a.sha)
+    if i is not None and i < len(args) and full:
+        args[i] = full
+    args += [] if a.no_sha_check else ["--no-sha-check"]
+    clone = os.environ.get("TESTQ_DISPATCH_CLONE", "~/rm/dispatch")
+    where = "~/" + shlex.quote(clone[2:]) if clone.startswith("~/") else shlex.quote(clone)
+    cmd = "cd %s && TESTQ_QUEUE_SSH= python3 src/RimMandrake/Utils/testq/testq.py %s" % (
+        where, " ".join(shlex.quote(x) for x in args))
+    print("testq: this queue (%s) is not the dispatcher's; submitting on %s (%s)" % (QHOME, target, clone), flush=True)
+    try:
+        r = subprocess.run(SSH + [target, cmd], timeout=300)
+    except (OSError, subprocess.TimeoutExpired) as e:
+        print("UNMEASURED: the submit could not reach %s (%s); nothing was queued here" % (target, e))
+        return 2
+    if r.returncode == 255:
+        print("UNMEASURED: ssh to %s failed (exit 255); nothing was queued here" % target)
+    return r.returncode
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(prog="testq.py", description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -2059,6 +2105,10 @@ def main(argv=None):
     if getattr(a, "job", None) and not S.JOB_ID_RE.match(a.job):
         print("REFUSED: %r is not a job id" % a.job)
         return 2
+    if a.cmd == "submit":
+        fwd = forward_submit(a, sys.argv[1:] if argv is None else list(argv))
+        if fwd is not None:
+            return fwd
     return {"submit": cmd_submit, "list": cmd_list, "show": cmd_show, "cancel": cmd_cancel, "resume": cmd_resume,
             "sweep": cmd_sweep, "fill": cmd_fill,
             "tick": cmd_tick, "pause": cmd_pause, "maintenance": cmd_maintenance, "steward": cmd_steward, "steward-watch": cmd_steward_watch,

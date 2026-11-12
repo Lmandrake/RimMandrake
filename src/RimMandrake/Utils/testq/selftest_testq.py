@@ -448,8 +448,61 @@ def t_running_heartbeat():
         shutil.rmtree(tmp, ignore_errors=True)
 
 
+def t_forward_submit():
+    """HARNESS_REPAIR_CAUSE_8135787B: `submit` off the dispatcher (no TESTQ_QUEUE of its own) wrote SteveDesktop's local
+    queue, which nothing reads, and printed "pending". It must run in the dispatcher's clone over SSH instead, with the
+    sha checked here; an unpublished sha is refused before any SSH; a dead SSH says nothing was queued."""
+    tmp = tempfile.mkdtemp(prefix="rf_testq_fwd_")
+    try:
+        log = os.path.join(tmp, "ssh_argv.json")
+        fake = os.path.join(tmp, "ssh.py")
+        open(fake, "w").write("import json, sys\njson.dump(sys.argv[1:], open(%r, 'w'))\n"
+                              "print(json.dumps({'job': 'J20991231T000000Z-abcdef', 'state': 'pending'}))\n"
+                              "sys.exit(int(__import__('os').environ.get('FAKE_SSH_RC', '0')))\n" % log)
+        head = subprocess.run(["git", "-C", os.path.dirname(os.path.dirname(os.path.dirname(HERE))), "rev-parse",
+                               "origin/main"], capture_output=True, text=True).stdout.strip()
+        env = {k: v for k, v in os.environ.items() if k not in ("TESTQ_QUEUE", "TESTQ_QUEUE_SSH")}
+        env.update(RM_HOST="stevedesktop", TESTQ_SSH="%s %s" % (sys.executable, fake), TESTQ_DISPATCH_CLONE="~/rm/dispatch")
+        argv = [sys.executable, TESTQ, "submit", "FlowWorks", "--full", "--purpose", "sweep", "--by", "BENCH", "--sha", head,
+                "--retest-why", "a b's"]
+        r = subprocess.run(argv, env=env, capture_output=True, text=True, timeout=120)
+        sent = json.load(open(log)) if os.path.exists(log) else []
+        cmd = sent[-1] if sent else ""
+        check(r.returncode == 0 and sent[:1] == ["mandrake@archmagi-wsl"] and cmd.startswith("cd ~/rm/dispatch && ")
+              and "TESTQ_QUEUE_SSH= " in cmd and "--no-sha-check" in cmd and "'a b'\"'\"'s'" in cmd
+              and "J20991231T000000Z-abcdef" in r.stdout,
+              "submit off the dispatcher runs in its clone over SSH, args quoted, sha checked here: rc=%s %s | %s"
+              % (r.returncode, sent, (r.stdout + r.stderr)[-300:]))
+        check(head in cmd, "the forwarded --sha is the full commit: %s" % cmd[-200:])
+        os.remove(log)
+        r = subprocess.run(argv[:-4] + ["--sha", "origin/main", "--retest-why", "x"],
+                           env=dict(env, TESTQ_DISPATCH_CLONE="~/rm/dispatch dir"), capture_output=True, text=True,
+                           timeout=120)
+        cmd = (json.load(open(log)) if os.path.exists(log) else [""])[-1]
+        check(r.returncode == 0 and "--sha %s " % head in cmd and "origin/main" not in cmd
+              and cmd.startswith("cd ~/'rm/dispatch dir' && "),
+              "a symbolic --sha is resolved HERE and a clone path with a space is quoted: %s" % cmd[:200])
+        os.remove(log)
+        r = subprocess.run(argv[:-4] + ["--sha", "0" * 40], env=env, capture_output=True, text=True, timeout=120)
+        check(r.returncode == 2 and "not on origin/main" in r.stdout and not os.path.exists(log),
+              "an unpublished sha is refused here, before any SSH: rc=%s %s" % (r.returncode, r.stdout[-200:]))
+        r = subprocess.run(argv, env=dict(env, FAKE_SSH_RC="255"), capture_output=True, text=True, timeout=120)
+        check(r.returncode == 255 and "nothing was queued here" in r.stdout,
+              "a dead SSH says nothing was queued: rc=%s %s" % (r.returncode, r.stdout[-200:]))
+        if os.path.exists(log):
+            os.remove(log)
+        q2 = os.path.join(tmp, "q")
+        r = subprocess.run(argv + ["--no-sha-check"], env=dict(env, TESTQ_QUEUE=q2, RM_HOST="archmagi"),
+                           capture_output=True, text=True, timeout=120)
+        check(glob.glob(os.path.join(q2, "pending", "*.json")) and not os.path.exists(log),
+              "on the dispatcher (or with a TESTQ_QUEUE) submit stays local: %s" % (r.stdout + r.stderr)[-200:])
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
 def main():
     try:
+        t_forward_submit()
         t_running_heartbeat()
         t_bad_selection()
         t_driver_sizing()

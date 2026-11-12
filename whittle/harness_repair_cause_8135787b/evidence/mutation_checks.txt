@@ -13,3 +13,7 @@ selftest_validation_core_site: 24/26
  src/RimMandrake/Utils/validation_core.py           | 12 +++++++
  whittle/harness_repair_cause_8135787b/PROMPT.md    | 18 ++++++++++
  6 files changed, 95 insertions(+), 1 deletion(-)
+
+# mutation: forward_submit disabled (always submit locally), run selftest_testq t_forward_submit
+FAIL  submit off the dispatcher runs in its clone over SSH, args quoted, sha checked here: rc=0 [] | hose_live", "sheet_overflow_proof", "droid_dig_live"], "dri
+FAIL  the forwarded --sha is the full commit: 

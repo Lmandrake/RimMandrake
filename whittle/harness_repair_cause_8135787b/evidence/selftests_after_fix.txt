@@ -1,0 +1,12 @@
+PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_preflight_calm.py
+PASS          0.4s  src/RimMandrake/Utils/selftest_validation_core_site.py
+PASS         14.0s  src/RimMandrake/Utils/testq/selftest_ingest.py
+PASS         83.9s  src/RimMandrake/Utils/testq/selftest_testq.py
+PASS         27.7s  src/RimMandrake/Utils/testq/selftest_testq_archmagi.py
+PASS         18.6s  src/RimMandrake/Utils/testq/selftest_testq_archmagi_switch.py
+PASS          2.7s  src/RimMandrake/Utils/testq/selftest_testq_fault_monitor.py
+PASS          0.3s  src/RimMandrake/Utils/testq/selftest_testq_retest.py
+PASS          1.0s  src/RimMandrake/Utils/testq/selftest_testq_tier.py
+PASS          2.0s  src/RimMandrake/Utils/testq/selftest_testq_unmeasured.py
+PASS 10/10  FAIL 0/10  UNMEASURED 0/10  CRASH 0/10  SKIPPED 0/10  (wall 84.3s) — contained in rm-harness.slice (max 12G), 6 workers
+RESULT: GREEN (green = FAIL 0 and CRASH 0)
