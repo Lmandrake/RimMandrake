@@ -12,6 +12,7 @@ import contextlib
 import io
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -87,6 +88,20 @@ rf(B, "note", ids[7], "--text", "Deployment cancelled; wait for the owner.")
 LONG = "RIMMANDRAKE_LENGTHEN_STATENOWTESTITEMNAME_UNTIL_THEY_HIT_CAPSXX"
 rf(B, "file", LONG, "--for", B, "--title", "long id")
 rf(O, "note", LONG, "--text", "NEXT: " + "z" * 200)
+# full-file review, 2026-11-11: a dated wait written after the NEXT (a trailing empty NEXT and a wide-character action
+# come later, on a rebuild: the NEXT section shows six rows, and two more would push the rows above out of it)
+WAIT_UNTIL = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() + 3 * 86400))
+rf(B, "wait", ids[0], "--until", WAIT_UNTIL, "--reason", "not before he is back")
+# pointer states a last-verb reader got wrong: reopened by a failed verify after its close, and blocked then unblocked
+SHA = subprocess.check_output(["git", "-C", REPO, "rev-parse", "HEAD"], text=True).strip()
+REOPENED, UNBLOCKED = "STATENOW_TEST_PTR_REOPENED", "STATENOW_TEST_PTR_UNBLOCKED"
+rf(O, "file", REOPENED, "--for", O, "--title", "closed, then a fail reopened it")
+rf(O, "verify", REOPENED, "--result", "pass", "--config", "selftest", "--level", "L0", "--sha", SHA)
+rf(O, "close", REOPENED, "--sha", SHA, "--live", "once: selftest")
+rf(O, "verify", REOPENED, "--result", "fail", "--config", "selftest", "--level", "L0", "--sha", SHA)
+rf(O, "file", UNBLOCKED, "--for", O, "--title", "blocked, then unblocked")
+rf(O, "block", UNBLOCKED, "--reason", "a block that is lifted", "--kind", "external")
+rf(O, "unblock", UNBLOCKED)
 with open(os.path.join(TMP, "events", "BENCH.jsonl")) as fh:            # a hand-mangled line: text that is not a string
     bad = dict(json.loads([ln for ln in fh if '"note"' in ln][0]), text=["NEXT:", 3])
 with open(os.path.join(TMP, "events", "BENCH.jsonl"), "a") as fh:
@@ -97,6 +112,7 @@ sys.path.insert(0, HERE)
 import ledger_state  # noqa: E402
 import handoff  # noqa: E402
 
+MON = ledger_state.local(time.time())[5:8]        # "11-": the notes are stamped today, so no month is wired in
 text = ledger_state.build(B)
 lines = text.splitlines()
 sec = {}
@@ -113,8 +129,9 @@ print("ledger_state: the four sections, from a CLI-written ledger")
 check(list(sec) == ["Open items", "Owner-pending", "Live helpers", "NEXT"], "four sections, in order: %s" % list(sec))
 check("## Open items — this seat's 12 (doing 1 · proposed 9 · blocked 2)" in body("Open items"),
       "open items: 12 of BENCH's, the dropped one gone, counts by state: %r" % sec["Open items"][0])
-check("`%s` — doing, leased by BENCH:" % ids[0] in sec["Open items"][1], "open items: the leased one first: %r"
-      % sec["Open items"][1])
+check(sec["Open items"][1].startswith("- `%s` — doing, WAITS until " % ids[0])
+      and ": not before he is back, leased by BENCH:" in sec["Open items"][1],
+      "open items: the leased one first, with the owner's dated wait on it: %r" % sec["Open items"][1])
 check("BLOCKED: the pump eats its own hose" in body("Open items"), "open items: the blocked one with its reason")
 check(len([x for x in sec["Open items"] if x]) == 9 and "… and 5 more: rimflow queue BENCH" in body("Open items"),
       "open items: 7 shown, the rest counted and named:\n        " + "\n        ".join(sec["Open items"]))
@@ -130,10 +147,12 @@ check("2 unexpired leases" in sec["Live helpers"][0] and "BENCH holds `%s`" % id
       and "%s holds `STATENOW_TEST_OTHER_SEAT`" % O in body("Live helpers"),
       "live helpers: both live leases, every seat: %r" % sec["Live helpers"][0])
 check("STATENOW_TEST_OTHER_RELEASED" not in body("Live helpers"), "live helpers: a released lease is not one")
+check(all(re.search(r"lease to \d{2}-\d{2} \d{2}:\d{2} P[SD]T$", ln) for ln in sec["Live helpers"][1:3]),
+      "live helpers: a lease's end carries its date, so tomorrow never reads as today: %r" % sec["Live helpers"][1:3])
 check("NEXT: write the fix into the proof script" in body("NEXT") and "the stale action" not in body("NEXT"),
       "NEXT: the newest NEXT on an item, not an older one")
 i4 = next((k for k, ln in enumerate(sec["NEXT"]) if ("`%s`" % ids[4]) in ln), -1)
-check(i4 > 0 and "(NEXT 11-" in sec["NEXT"][i4] and "by BENCH)" in sec["NEXT"][i4]
+check(i4 > 0 and "(NEXT " + MON in sec["NEXT"][i4] and "by BENCH)" in sec["NEXT"][i4]
       and sec["NEXT"][i4 + 1] == "    NEXT: read the first exception in Player.log" and "second line" not in body("NEXT"),
       "NEXT: two lines, the stamp and writer on the first, one line of the note on the second")
 check("dropped item's action" not in body("NEXT") and "other seat's action" not in body("NEXT"),
@@ -145,23 +164,37 @@ check("    NOT BEFORE Wed 3 PM. NEXT then: deploy it with him" in sec["NEXT"] an
 check("other seat's action" not in body("NEXT") and ("`%s`" % ids[6]) not in body("NEXT"),
       "NEXT: an empty NEXT: borrows nothing from the next line")
 row7 = next((ln for ln in sec["NEXT"] if ("`%s`" % ids[7]) in ln), "")
-check("BLOCKED: deploy waits on his app" in row7 and "⚠ 2 later events" in row7 and len(row7) <= ledger_state.WIDTH,
+check("BLOCKED: deploy waits on his app" in row7 and "⚠ 2 later events" in row7 and ledger_state.cols(row7) <= ledger_state.WIDTH,
       "NEXT: an overtaken NEXT carries the block and a later-events warning:\n        " + row7)
 il = next((k for k, ln in enumerate(sec["NEXT"]) if LONG in ln), -1)
 rowl = "\n        ".join(sec["NEXT"][il:il + 2]) if il > 0 else ""
-check(il > 0 and sec["NEXT"][il + 1].startswith("    (NEXT 11-") and (" by %s) NEXT: zzz" % O) in sec["NEXT"][il + 1]
-      and sec["NEXT"][il + 1].endswith("…") and max(len(x) for x in sec["NEXT"][il:il + 2]) <= ledger_state.WIDTH,
+check(il > 0 and sec["NEXT"][il + 1].startswith("    (NEXT " + MON) and (" by %s) NEXT: zzz" % O) in sec["NEXT"][il + 1]
+      and sec["NEXT"][il + 1].endswith("…") and max(ledger_state.cols(x) for x in sec["NEXT"][il:il + 2]) <= ledger_state.WIDTH,
       "NEXT: a 63-char id keeps its stamp and writer, the action is what gets cut:\n        " + rowl)
-check(ledger_state.build("CONDUCTOR").splitlines()[3:] == lines[3:] and
+r0 = next((ln for ln in sec["NEXT"] if ("`%s`" % ids[0]) in ln), "")
+check("WAITS" in r0 and "⚠ 1 later event" in r0, "NEXT: a dated wait written after the NEXT shows on its row:\n        " + r0)
+rf(B, "note", ids[10], "--text", "NEXT: the real action. Then a NEXT time: ")
+rf(B, "note", ids[2], "--text", "NEXT: " + "日本語の手順" * 40)
+check(ledger_state.cols(ledger_state.clip("日" * 100)) <= ledger_state.WIDTH and ledger_state.clip("日" * 59) == "日" * 59,
+      "clip: 100 wide characters (fewer characters than the width, twice the columns) are cut; 59 are not")
+nx2 = ledger_state.build(B).split("## NEXT")[1].splitlines()
+check(any(ln.startswith("    NEXT: the real action") for ln in nx2),
+      "NEXT: a trailing empty NEXT does not throw away the real one before it")
+i2 = next((k for k, ln in enumerate(nx2) if ("`%s`" % ids[2]) in ln), -1)
+check(i2 > 0 and "日本語" in nx2[i2 + 1] and nx2[i2 + 1].endswith("…")
+      and ledger_state.cols(nx2[i2 + 1]) <= ledger_state.WIDTH < 2 * len(nx2[i2 + 1]),
+      "NEXT: a wide-character action is cut by terminal columns, not characters (%d columns)"
+      % (ledger_state.cols(nx2[i2 + 1]) if i2 > 0 else -1))
+check(ledger_state.build("CONDUCTOR").splitlines()[3:] == ledger_state.build(B).splitlines()[3:] and
       ledger_state.out_path("BENCH") == ledger_state.out_path(ledger_state.model.canonical("CONDUCTOR")),
       "the CONDUCTOR alias reads BENCH's items, not an empty seat")
 os.environ["TZ"] = "UTC"
 time.tzset()
 check(ledger_state.local("2026-11-12T05:33:39Z") == "2026-11-11 21:33 PST"
       and ledger_state.local("2026-07-01T19:00:00Z") == "2026-07-01 12:00 PDT", "times are Pacific on a UTC host, PDT in summer")
-check(len(lines) <= ledger_state.MAX_LINES and max(map(len, lines)) <= ledger_state.WIDTH,
+check(len(lines) <= ledger_state.MAX_LINES and max(map(ledger_state.cols, lines)) <= ledger_state.WIDTH,
       "one screen: %d lines (<= %d), widest %d (<= %d)" % (len(lines), ledger_state.MAX_LINES,
-                                                         max(map(len, lines)), ledger_state.WIDTH))
+                                                         max(map(ledger_state.cols, lines)), ledger_state.WIDTH))
 
 print("ledger_state: the file lands beside the ledger in use, never in the real repo")
 path = ledger_state.out_path(B)
@@ -173,7 +206,8 @@ os.makedirs(hdir)
 with open(os.path.join(hdir, "BENCH_REBOOT_HANDOFF_209901010000.md"), "w") as fh:
     fh.write("# BENCH_REBOOT_HANDOFF_209901010000 — READ FIRST on wake\n\n## What is half-done, and where it stops\n\n"
              "<!-- TEMPLATE GUIDANCE for the writer -->\n"
-             "- `%s` — probing; NEXT: something the ledger has since overtaken\n" % ids[0])
+             "- `%s` — probing; NEXT: something the ledger has since overtaken\n" % ids[0]
+             + "".join("- `%s` — x; NEXT: y\n" % i for i in (ids[11], REOPENED, UNBLOCKED, ids[3])))
 handoff.HANDOFFS = hdir
 handoff.previous_handoff = lambda: ("BENCH_REBOOT_HANDOFF_209901010000.md", "2000-01-01T00:00:00Z")
 handoff.show_last_reply = lambda: None
@@ -191,8 +225,15 @@ check(("LEDGER STATE NOW" in tail) and (path in tail), "the pointer block names 
 check(os.path.isfile(path), "the wake wrote it")
 check("TEMPLATE GUIDANCE" not in w and "<!--" not in w, "the template's <!-- --> guidance is not printed")
 check("written 1999-12-31 16:00 PST" in w, "the pointer block says when the handoff was written, in Pacific time")
-check("open (started)" in tail and 'newest note' in tail and "write the fix into the proof script" in tail
+check("open (doing)" in tail and 'newest note' in tail and "write the fix into the proof script" in tail
       and "the stale action" not in tail, "an open pointer shows what the ledger recorded after the handoff, newest note")
+prow = lambda iid: next((ln for ln in tail.splitlines() if ln.strip().startswith(iid + " ")), "")    # noqa: E731
+check("DROPPED" in prow(ids[11]) and "do NOT act" in prow(ids[11]), "a dropped pointer is CLOSED: %r" % prow(ids[11]))
+check(prow(REOPENED).endswith("open (ready)") and prow(UNBLOCKED).endswith("open (proposed)")
+      and prow(ids[3]).endswith("open (proposed, BLOCKED)"),
+      "pointer states are the ledger's own: reopened after a close is open, an unblocked one is not BLOCKED:\n        "
+      + "\n        ".join(prow(i) for i in (REOPENED, UNBLOCKED, ids[3])))
+check("open pointers: 4 " in tail, "the dropped pointer is not counted open")
 check("  now: ledger as of " in tail, "the line under it says the game and bridge as the ledger has them now")
 got = open(path).read() if os.path.isfile(path) else ""
 check("NEXT: an action written after the last build" in got, "regenerated from the ledger as it is at the wake")
@@ -201,6 +242,18 @@ out = io.StringIO()
 with contextlib.redirect_stdout(out):
     handoff.wake()
 check(path in out.getvalue(), "a seat with no handoff is still pointed at it")
+handoff.previous_handoff = lambda: ("BENCH_REBOOT_HANDOFF_209901010000.md", "2000-01-01T00:00:00Z")
+sys.modules["ledger_state"] = None          # the generator cannot load: the wake must still print, and say so
+out = io.StringIO()
+try:
+    with contextlib.redirect_stdout(out):
+        rc = handoff.wake()
+except Exception as e:      # noqa: BLE001
+    rc = "raised %r" % e
+sys.modules["ledger_state"] = ledger_state
+w = out.getvalue()
+check(rc == 0 and "POINTER STATUS: UNMEASURED" in w and ids[0] in w and "LEDGER STATE NOW: UNMEASURED" in w,
+      "a ledger_state that cannot load: the wake still prints the handoff and names every pointer UNMEASURED (rc %r)" % rc)
 
 print("ledger_state: a stress ledger of 400 more items stays one screen")
 raw = [json.loads(ln) for ln in open(os.path.join(TMP, "events", "BENCH.jsonl")) if ln.strip()]
@@ -215,8 +268,8 @@ with open(os.path.join(TMP, "events", "BENCH.jsonl"), "a") as fh:
             fh.write(json.dumps(ev) + "\n")
 text = ledger_state.build(B)
 lines = text.splitlines()
-check(len(lines) <= ledger_state.MAX_LINES and max(map(len, lines)) <= ledger_state.WIDTH,
-      "stress: %d lines, widest %d" % (len(lines), max(map(len, lines))))
+check(len(lines) <= ledger_state.MAX_LINES and max(map(ledger_state.cols, lines)) <= ledger_state.WIDTH,
+      "stress: %d lines, widest %d" % (len(lines), max(map(ledger_state.cols, lines))))
 check(sum(1 for ln in lines if ln.startswith("- … and ")) >= 3, "stress: each long section says how many it left out")
 
 print("ledger_state: the live ledger, read only")

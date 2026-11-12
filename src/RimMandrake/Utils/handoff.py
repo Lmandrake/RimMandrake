@@ -491,32 +491,55 @@ def show_last_reply():
         print(r.stdout.rstrip() + "\n")
 
 
-WAKE_KEEP = ("The one thing to carry forward", "What the owner should see",
-             "What is half-done", "Game / bridge")
+# A section is kept by what its heading says, not by its exact words: "## Half-done" and "## Game and bridge state" are
+# real headings in the corpus that an exact-prefix match dropped (review, 2026-11-11). "Tree state" alone is git's.
+WAKE_KEEP = re.compile(r"carry forward|owner should see|half-done|\bgame\b|\bbridge\b", re.I)
+GAME = re.compile(r"\bgame\b|\bbridge\b", re.I)
+
+
+def _sections(text):
+    """[[heading, lines]] split on `## ` lines outside a ``` fence (a `## ` inside one is text); the first heading is None."""
+    out, fence = [[None, []]], False
+    for ln in text.splitlines():
+        if ln.lstrip().startswith("```"):
+            fence = not fence
+        if not fence and ln.startswith("## "):
+            out.append([ln, []])
+        else:
+            out[-1][1].append(ln)
+    return out
 
 
 def _wake_view(text, path):
     """What --wake prints (HANDOFF_SHRINK_HALF_THE_BYTES_WERE_GIT): the title, the one thing to carry, what the owner
-    should see, the pointer lines and the game/bridge state; then the file's full path for everything else (traps,
-    closed/filed lists, commits, uncommitted). The handoff file itself stays whole."""
+    should see, the pointer lines and the game/bridge state; then the file's full path and the headings left out of the
+    view (traps, closed/filed lists, commits, the uncommitted list, anything else). The handoff file itself stays whole."""
     # the template's <!-- guidance --> comments are for the writer, not the reader of a wake
-    parts = re.split(r"(?m)^(?=## )", re.sub(r"[ \t]*<!--.*?-->[ \t]*\n?", "", text, flags=re.S))
-    out = [parts[0].rstrip()]
-    for sec in parts[1:]:
-        if sec.startswith(tuple("## " + k for k in WAKE_KEEP)):
-            # the game section ends in the uncommitted list: git's job, not the wake's
-            out.append(re.split(r"(?m)^Uncommitted\b", sec)[0].rstrip())
-    out.append("(Traps, closed/filed lists, commits and the uncommitted list are in the full handoff: %s)" % path)
-    return "\n\n".join(out) + "\n"
+    text = re.sub(r"[ \t]*<!--.*?-->[ \t]*\n?", "", text, flags=re.S)
+    out, left = [], []
+    for head, body in _sections(text):
+        if head is None:
+            out.append("\n".join(body).strip())
+            continue
+        if not WAKE_KEEP.search(head):
+            left.append(head[3:].strip())
+            continue
+        if GAME.search(head):       # the game section ends in the uncommitted list: git's job, not the wake's
+            cut = next((k for k, ln in enumerate(body) if re.match(r"Uncommitted\b", ln)), None)
+            if cut is not None:
+                body = body[:cut]
+                left.append("the uncommitted list")
+        out.append((head + "\n" + "\n".join(body)).rstrip())
+    out.append("(Left out of this view, in the full handoff %s: %s)" % (path, "; ".join(left) or "nothing"))
+    return "\n\n".join(x for x in out if x) + "\n"
 
 
-def pointer_states(evs):
-    """{item id: its latest state-changing event}. A `spawn` carries its id in `name`."""
-    last = {}
-    for e in sorted(evs, key=lambda x: x.get("ts") or ""):
-        if e.get("event") in ("file", "spawn", "start", "close", "block", "drop", "supersede"):
-            last[e.get("id") or e.get("name")] = e.get("event")
-    return last
+def pointer_states(world):
+    """{item id: (state, blocked)} as the ledger's own state machine has it (model.replay), never a last-verb guess: a
+    `live --result broken` or failed `verify` after a close reopens an item, `implemented` plus a `verify` pass ends one
+    with no close, and `unblock` lifts a block. A last-verb reader called 132 open items CLOSED and 744 done ones open on
+    the live ledger (review, 2026-11-11)."""
+    return {i: (it.state, bool(it.blocked)) for i, it in world.items.items()}
 
 
 def pointer_ids(text):
@@ -546,23 +569,30 @@ def wake():
     print(_wake_view(text, os.path.join(HANDOFFS, prev_name)))
     ids = pointer_ids(text)
     if ids:
-        evs = events()
-        last = pointer_states(evs)
         print("=" * 66)
+        try:
+            import ledger_state
+            ledger_state.ledger_head()
+            last = pointer_states(ledger_state.model.replay(ledger_state.model.read()))
+            evs = events()
+        except Exception as e:      # noqa: BLE001  a wake must still print; an unread ledger says so
+            print("POINTER STATUS: UNMEASURED (%s). Read each with rimflow show <ID>: %s" % (e, ", ".join(ids)))
+            print(ledger_state_line())
+            return 0
         print("POINTER STATUS (ledger, re-derived now — the handoff above is a")
         print("snapshot and may be stale; %s):" % handoff_age(prev_ts))
         open_ids = []
         for i in dict.fromkeys(ids):
-            st = last.get(i, "not in ledger")
-            if st in ("close", "drop", "supersede"):
+            st, blocked = last.get(i, ("not in ledger", False))
+            if st in TERMINAL:
                 print("  %-48s %s  *** CLOSED -- do NOT act on this pointer ***" % (i, st.upper()))
-            else:
-                print("  %-48s %s" % (i, OPEN_WORDS.get(st, st)))
-                moved = since_handoff(evs, i, prev_ts)
-                if moved:
-                    print("      " + moved)
-            if st in ("file", "spawn", "start", "block", "not in ledger"):
-                open_ids.append(i)
+                continue
+            print("  %-48s %s" % (i, "not in ledger" if st == "not in ledger" else
+                                  "open (%s%s)" % (st, ", BLOCKED" if blocked else "")))
+            moved = since_handoff(evs, i, prev_ts)
+            if moved:
+                print("      " + moved)
+            open_ids.append(i)
         print("open pointers: %d — pick each up, close it, or say in your first"
               % len(open_ids))
         print("reply why not. Silence is how 60% of pointers died.")
@@ -570,9 +600,7 @@ def wake():
     return 0
 
 
-# A pointer's last state event, in words: "file" read as an order to file something (fresh-reader test, 2026-11-11).
-OPEN_WORDS = {"file": "open (no start on the ledger)", "spawn": "open (spawned; no start on the ledger)", "start": "open (started)",
-              "block": "open, BLOCKED"}
+TERMINAL = ("done", "dropped", "superseded")     # model.TERMINAL; a pointer at one of these is not work
 QUIET = ("lease", "renew", "claim", "start")    # keep a claim alive; they say nothing new about the work
 
 
@@ -597,10 +625,13 @@ def since_handoff(evs, iid, ts):
     notes = [e for e in later if e.get("event") == "note"]
     out = "since the handoff: %d ledger event%s" % (len(later), "" if len(later) == 1 else "s")
     if notes:
-        import ledger_state
         n = notes[-1]
-        out += '; newest note %s (%s): "%s"' % (ledger_state.local(n.get("ts"))[5:16], n.get("seat") or "?",
-                                               ledger_state.clip(n.get("text"), 90))
+        try:
+            import ledger_state
+            when, said = ledger_state.local(n.get("ts"))[5:16], ledger_state.clip(n.get("text"), 90)
+        except Exception:       # noqa: BLE001  the note still shows, in the ledger's own UTC stamp
+            when, said = str(n.get("ts") or "?") + " UTC", " ".join(str(n.get("text") or "").split())[:90]
+        out += '; newest note %s (%s): "%s"' % (when, n.get("seat") or "?", said)
     return out + " (rimflow show for the rest)"
 
 

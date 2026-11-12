@@ -1,0 +1,2 @@
+An item's state is model.replay's answer, never its last state verb: live --result broken or a failed verify after a close reopens it, implemented + verify pass ends it with no close, unblock lifts a block. handoff.py --wake read the last of file/start/close/block and called 132 open items CLOSED ('do NOT act') and 744 done ones open on the live ledger (full-file review, 2026-11-11, HANDOFF_SHRINK_HALF_THE_BYTES_WERE_GIT).
+item: HANDOFF_SHRINK_HALF_THE_BYTES_WERE_GIT

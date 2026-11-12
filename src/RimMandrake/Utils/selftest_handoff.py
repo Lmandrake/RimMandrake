@@ -252,15 +252,19 @@ _v = handoff._wake_view(_h, "/p/H.md")
 check(all(k in _v for k in ("CARRY", "SEE", "A_B_C_D", "running: UP", "/p/H.md")), "keeps the five parts and the full path")
 check(not any(k in _v for k in ("TRAPX", "CLOSEDX", "FILEDX", "COMMITX", "dirtyfile")), "drops traps, closed, filed, commits, uncommitted")
 
-print("handoff: POINTER STATUS sees a spawned item")
-_s = handoff.pointer_states([
-    {"ts": "1", "event": "spawn", "name": "A_SPAWNED_LIVE_ITEM"},
-    {"ts": "1", "event": "spawn", "name": "A_SPAWNED_THEN_CLOSED"},
-    {"ts": "2", "event": "close", "id": "A_SPAWNED_THEN_CLOSED"},
-    {"ts": "3", "event": "note", "id": "A_SPAWNED_THEN_CLOSED"},
-])
-check(_s.get("A_SPAWNED_LIVE_ITEM") == "spawn", "a live spawn's id is read from its name field, not 'not in ledger'")
-check(_s.get("A_SPAWNED_THEN_CLOSED") == "close", "a later close wins, and a note does not change the state")
+print("handoff: --wake keeps a section by what its heading says, and says what it left out")
+_h2 = ("# T2\n\n## Half-done\n- `H_D_ONE` -- x\nUncommitted edits to foo.py are mine; NEXT: commit them\n- `H_D_TWO` -- y\n"
+       "```\n## not a heading, inside a fence\n```\nTEXT_AFTER_FENCE\n\n## Game and bridge state\n- running: DOWN\n"
+       "Uncommitted:\nM dirty2\n\n## Tree state at wrap\nTREEX\n\n## Session context (a Mac window)\nCTXX\n")
+_v2 = handoff._wake_view(_h2, "/p/H2.md")
+check(all(k in _v2 for k in ("H_D_ONE", "commit them", "H_D_TWO", "TEXT_AFTER_FENCE", "running: DOWN")),
+      "heading variants kept; an Uncommitted line outside the game section and a fenced ## are text")
+check(not any(k in _v2 for k in ("dirty2", "TREEX", "CTXX")), "the game section's uncommitted list, git's tree and others left out")
+check("(Left out of this view, in the full handoff /p/H2.md: the uncommitted list; Tree state at wrap; "
+      "Session context (a Mac window))" in _v2,
+      "the closing line names every heading it left out")
+check("Traps learned; Closed since the last handoff (1); Filed and still open (1); Commits; the uncommitted list" in _v,
+      "the template's dropped sections are named in the closing line")
 
 print("\n%s: %d failure(s)" % (os.path.basename(__file__), len(fails)))
 print("handoff: pointer_ids reads the template's `- ID -- state; NEXT:` form")

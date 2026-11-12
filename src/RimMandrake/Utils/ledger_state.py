@@ -23,6 +23,7 @@ import os
 import re
 import sys
 import time
+import unicodedata
 from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
 
@@ -80,12 +81,21 @@ def local(ts):
     return datetime.fromtimestamp(e, timezone.utc).astimezone(PACIFIC).strftime("%Y-%m-%d %H:%M %Z") if e is not None else "?"
 
 
+def cols(s):
+    """Terminal columns: a wide (CJK) or fullwidth character takes two, so a 120-character line of them is 240 wide."""
+    return sum(2 if unicodedata.east_asian_width(c) in "WF" else 1 for c in s)
+
+
 def clip(s, n=WIDTH):
-    """One line of at most n characters, whitespace collapsed; a leading indent is kept (a NEXT row's second line)."""
+    """One line of at most n terminal columns, whitespace collapsed; a leading indent is kept (a NEXT row's second line)."""
     raw = str(s or "")
     s = raw[:len(raw) - len(raw.lstrip(" "))] + " ".join(raw.split())
     n = max(n, 2)
-    return s if len(s) <= n else s[:n - 1].rstrip() + "…"
+    if cols(s) <= n:
+        return s
+    while cols(s) > n - 1:
+        s = s[:-1]
+    return s.rstrip() + "…"
 
 
 def short_title(it, n=70):
@@ -110,6 +120,9 @@ def standing(i, now, short=False, reason=50):
     """The item's state as it stands now, with what would stop a reader acting on it: blocked (and why), needs, and
     whose live lease it is. A row without these read a blocked, owner-gated item as plain `doing` (GPT broaden, 2026-11-11)."""
     out = [i.state]
+    if priority.wait_running(i, now):       # a dated hold (`rimflow wait`): a NEXT written before it must not read as live
+        out.append("WAITS to %s" % local(i.wait_until)[5:16] if short else
+                   "WAITS until %s: %s" % (local(i.wait_until)[5:], clip(i.wait_reason or "unexplained", reason)))
     if i.blocked:
         out.append("BLOCKED" if short else "BLOCKED: %s" % clip(i.blocked_reason or "unexplained", reason))
     if i.needs and i.needs != "offline":
@@ -176,7 +189,7 @@ def live_helpers(world, now):
     held = sorted((i for i in world.items.values() if i.open and model.lease_status(i, now) == "live"),
                   key=lambda i: i.lease.get("expires") or "")
     rows = ["- %s holds `%s` (%s), lease to %s" % (i.lease.get("seat") or i.owner, i.id, i.state,
-                                                  local(i.lease.get("expires"))[11:])
+                                                  local(i.lease.get("expires"))[5:])
             for i in held]
     return section("## Live helpers — %d unexpired lease%s, every seat (a lease is a claim, not a running process)"
                    % (len(held), "" if len(held) == 1 else "s"),
@@ -197,10 +210,10 @@ def next_lines(world, evs, seat, now):
         if iid not in mine:
             continue
         m = None
-        if e.get("event") == "note":
-            for m in NEXT_RE.finditer(str(e.get("text") or "")):
-                pass
-        if m and m.group(2).strip():
+        if e.get("event") == "note":        # the last NEXT with an action: "NEXT: x. Then a NEXT time: " is x
+            for x in NEXT_RE.finditer(str(e.get("text") or "")):
+                m = x if x.group(2).strip() else m
+        if m:
             last[iid] = (e.get("ts") or "", next_phrase(str(e.get("text")), m), e.get("seat") or "?")
             later[iid] = 0
         elif iid in last and e.get("event") not in QUIET:
@@ -213,16 +226,16 @@ def next_lines(world, evs, seat, now):
                                                           if later[iid] else "")
         it, nxt = mine[iid], nxt.rstrip(".… ")
         head = "- `%s` — %s" % (iid, standing(it, now))
-        over = len(head) + len(tail) - WIDTH
+        over = cols(head) + cols(tail) - WIDTH
         if over > 0 and it.blocked:                 # too long: the block's reason gives way first, then the flags
-            head = "- `%s` — %s" % (iid, standing(it, now, reason=len(clip(it.blocked_reason or "unexplained", 50)) - over))
-        if len(head) + len(tail) > WIDTH or "BLOCKED: …" in head:
+            head = "- `%s` — %s" % (iid, standing(it, now, reason=cols(clip(it.blocked_reason or "unexplained", 50)) - over))
+        if cols(head) + cols(tail) > WIDTH or "BLOCKED: …" in head:
             head = "- `%s` — %s" % (iid, standing(it, now, short=True))
-        if len(head) + len(tail) <= WIDTH:
+        if cols(head) + cols(tail) <= WIDTH:
             rows.append((head + tail, "    " + clip(nxt, WIDTH - 4)))
         else:                                       # a long id: the stamp moves to the action's line, never cut
             lead = "    " + tail.strip() + " "
-            rows.append((head, lead + clip(nxt, WIDTH - len(lead))))
+            rows.append((head, lead + clip(nxt, WIDTH - cols(lead))))
     return section("## NEXT — newest NEXT note on %d of this seat's open items, as written then (Pacific time)" % len(rows),
                    rows, "rimflow show <ID>; a ⚠ or a cut (…) row: rimflow show <ID> before acting", cap=NEXT_CAP)
 
@@ -235,7 +248,7 @@ def build(seat, evs=None, world=None, now=None):
     world = world if world is not None else model.replay(evs)
     now = now if now is not None else model.epoch_now()
     as_of = next((e["ts"] for e in reversed(evs) if e.get("ts")), None)
-    seat = model.canonical(seat) or seat      # CONDUCTOR and RELENTLESS are BENCH on the ledger
+    seat = model.canonical(seat) or seat      # CONDUCTOR is BENCH on the ledger
     L = ["# %s — ledger state now (generated; never edit, never commit)" % seat,
          "ledger as of %s · generated %s · game %s · bridge %s" % (local(as_of), local(now), world.game or "?",
                                                                   world.bridge_holder or "free"),
