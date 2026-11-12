@@ -7,7 +7,7 @@ validate_patch.py - 3 XML file(s): 3 <Patch>, 0 <Defs>
               a PatchOperation creates at load time. This is not a def linter.
 
   info    xpath engine: lxml 6.0.2.0 - full XPath 1.0, the same class of engine RimWorld itself uses, so text(), contains(), starts-with(), not() and boolean predicates are CHECKED.
-  info    load set: 316 active mods, 316 found on disk, target version 1.6 -> 7,022 def files
+  info    load set: 316 active mods, 316 found on disk, target version 1.6 -> 7,028 def files
 
 === src/RimMandrake/TheRot/Patches/RotSpecies_NamesAndSizes.xml ===
   info    Operation[1] (PatchOperationConditional): 1 match(es)  in RimMandrake: Baroque Biomes: RM_TheRot_DonorPorts.xml(1)

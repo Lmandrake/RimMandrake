@@ -18,6 +18,6 @@
 
 == resolution BEFORE: base Things/Plants/AB_AgariluxPrime -> TheRot repoint (Replace inside a Conditional) -> RotSpecies/AgariluxPrime
    the live game agreed: the full 317-mod def dump captured 2026-11-02T17:59:18Z reads RM_AgariluxPrime texPath RotSpecies/AgariluxPrime from mandrake.rm.biomes (resolved_texpath_after.txt section 4)
-   so both Things/Plants/AB_AgariluxPrime.png copies (TheRot, UtinniPatches) shipped and loaded, but RM_AgariluxPrime never drew them;
+   so both Things/Plants/AB_AgariluxPrime.png copies sat at that slot (TheRot deployed in mandrake.rm.biomes; UtinniPatches is not in the active mod list), but RM_AgariluxPrime never drew either;
    AB_AgariluxPrime (the Alpha Biomes donor) is not in the game, so nothing else drew them either.
 == owner of def and texture: TheRot (mandrake.rm.biomes) -- the only mod defining RM_AgariluxPrime and the only one shipping the drawn PNG.

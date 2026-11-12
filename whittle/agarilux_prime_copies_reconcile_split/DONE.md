@@ -1,6 +1,6 @@
 # Done claim
 
-- true: **One owner is decided and recorded.** Which mod owns RM_AgariluxPrime's def and texture is stated on the item with | evidence: `whittle/agarilux_prime_copies_reconcile_split/evidence/resolved_texpath_before.txt` `whittle/agarilux_prime_copies_reconcile_split/evidence/resolved_texpath_after.txt` `whittle/agarilux_prime_copies_reconcile_split/evidence/broaden_checks.txt`
+- true: **One owner is decided and recorded.** Which mod owns RM_AgariluxPrime's def and texture is stated on the item with | evidence: `whittle/agarilux_prime_copies_reconcile_split/evidence/resolved_texpath_before.txt` `whittle/agarilux_prime_copies_reconcile_split/evidence/resolved_texpath_after.txt` `whittle/agarilux_prime_copies_reconcile_split/evidence/broaden_checks.txt` `whittle/agarilux_prime_copies_reconcile_split/evidence/regen.sh`
 - true: **Exactly one copy of the texture ships.** The losing copy is deleted from `src/`; nothing in `src/`, the art ledger | evidence: `whittle/agarilux_prime_copies_reconcile_split/evidence/search_after.txt` `whittle/agarilux_prime_copies_reconcile_split/evidence/resolved_texpath_after.txt` `whittle/agarilux_prime_copies_reconcile_split/evidence/art_ledger_status_after.txt` `whittle/agarilux_prime_copies_reconcile_split/evidence/broaden_checks.txt`
 - true: **Every inbound reference is fixed.** Defs, patches, art ledger/artpipe rows, deploy manifests and any doc naming the | evidence: `whittle/agarilux_prime_copies_reconcile_split/evidence/search_after.txt` `whittle/agarilux_prime_copies_reconcile_split/evidence/validate_patch.txt` `whittle/agarilux_prime_copies_reconcile_split/evidence/validate_def.txt` `whittle/agarilux_prime_copies_reconcile_split/evidence/selftests.txt` `whittle/agarilux_prime_copies_reconcile_split/evidence/selftest_alpha_plants_renders.txt` `whittle/agarilux_prime_copies_reconcile_split/evidence/deploy_plan_biomes.txt` `whittle/agarilux_prime_copies_reconcile_split/evidence/deploy_plan_UtinniPatches.txt` `whittle/agarilux_prime_copies_reconcile_split/evidence/bulk_accept_plan_agarilux.txt` `whittle/agarilux_prime_copies_reconcile_split/evidence/unproven_adjudicate_check.txt` `whittle/agarilux_prime_copies_reconcile_split/evidence/sheet_resolution_after.txt`
 - true: **The surviving copy's judgement stands, or it is re-judged.** If the survivor is the TheRot (ACCEPT) copy, no re-judge | evidence: `whittle/agarilux_prime_copies_reconcile_split/evidence/judgement_record.txt` `whittle/agarilux_prime_copies_reconcile_split/evidence/three_copies_before.png`
@@ -18,6 +18,17 @@ Filed, not fixed (outside this split's scope):
 - `RIMMANDRAKE_RETIRE_ROT_DONOR_SLOT_COPIES_ELEVEN_SHADOWED`: 11 sibling Rot ports have the same never-drawn donor-slot copies.
 - `RIMMANDRAKE_FIX_SLOT_SCAN_BLIND_TO_TEXPATH_PATCHES`: the root cause. `artledger.scan_def_slots` ignores texPath patches, so
   art_sheet labelled the 256 px copy "IN GAME" on four sheets (2026-10-24 to 2026-11-05) and art-eval judged two pictures nobody sees.
+
+## This run (2026-11-11 22:05 to 22:40 PST)
+The previous run's work held, but run.py's post-session validator still exited 1: Lodestar's SessionEnd hook writes
+`conversations/<session>.md` into the clone after the session, so the newest "project change" is always the transcript record
+and every evidence file reads stale. Nearly every Whittle run on every lane failed this way on 2026-11-11.
+`infrastructure/whittle_claude/loop.sh` now keeps `/conversations/` out of that read (the clone's `.git/info/exclude`; the
+record is still written), landed as febdb501b6. Then every evidence file was regenerated on the synced tree with
+`evidence/regen.sh`. The results match the last run. The two changes are the false "shipped and loaded" sentence for the
+UtinniPatches copy, which is now corrected (that mod is not in the active list), and 7 pending peer updates in the biomes
+deploy plan, which are unrelated to this split. The record lands from a side clone, so this tree does not move before the
+validator reads it.
 
 ## What I'm least sure about
 - The deployed Steam Mods folder still holds both retired PNGs until the next deploy of `mandrake.rm.biomes` and UtinniPatches. I may

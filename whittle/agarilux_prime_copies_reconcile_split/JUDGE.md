@@ -1,76 +1,73 @@
 # JUDGE: AGARILUX_PRIME_COPIES_RECONCILE_SPLIT
 
-Judge: CLAUDE_ARCHMAGI_OFFLINE2 judge helper, 2026-11-11. Blind to DONE.md and BROADEN.md. I read STATEMENT.md, NOTES.md,
-every file in evidence/, the item file (where line 1 says the decision must be recorded), the commit 45408f140e diff, and
-the image three_copies_before.png. I re-ran both scripts against the current tree (/tmp/judge_resolve.txt,
-/tmp/judge_search.txt). Both match the committed evidence. I also ran my own checks, listed below.
+Judge: CLAUDE_ARCHMAGI_OFFLINE2 judge seat, 2026-11-11, blind (read STATEMENT.md, NOTES.md and evidence/ only, plus
+my own checks against the repo and the live def dump; did not read DONE.md, BROADEN.md or the earlier JUDGE.md).
 
-## Line by line
+What I checked myself, beyond reading the evidence:
+- Re-ran `resolve_agarilux_prime.py` and `search_losing_path.py` into /tmp: output identical to
+  `resolved_texpath_after.txt` and `search_after.txt` (apart from the timestamp line).
+- Queried the live def dump (`defs.sqlite`, captured 2026-11-02T17:59:18Z) myself: RM_AgariluxPrime is a ThingDef from
+  mandrake.rm.biomes with texPath `RotSpecies/AgariluxPrime`; AB_AgariluxPrime has no row; 0 dumped defs name
+  `Things/Plants/AB_AgariluxPrime`.
+- `git ls-files src | grep -i agarilux`: the only AgariluxPrime PNG left is `src/RimMandrake/TheRot/Textures/RotSpecies/AgariluxPrime.png`.
+- Ran a wider git grep for `AB_AgariluxPrime` (bare name, all of the repo except whittle/) than the builder's search. The
+  extra hits are comments naming the donor def (RM_RotSporeKit_GuardianGroves.xml, RM_TheRot_DonorPorts.xml),
+  `AB_AgariluxPrime_Mutator` (a different def), and three Transient/ files (one-time human-read sheets). None of them reads the deleted texture.
+- Survivor blob: `9d83052dca` ('Land the 4 v3 regens', 2026-09-20) blob 28b1e08b... equals HEAD's TheRot blob; the deployed
+  copy's sha256 is 85779af9..., which matches the art ledger.
+- The gptredo_03 decisions.jsonl rows: TheRot ACCEPT judged sha b0a767dc..., UtinniPatches REGEN judged sha c93606ba...;
+  neither is the survivor's 85779af9....
+- Read the item file's Decision section (the statement requires it to be there) and the landing diff 45408f140e.
 
-1. **One owner is decided and recorded: TRUE.**
-   - The item file has a dated "Decision, 2026-11-11" section: TheRot (mandrake.rm.biomes) owns the def and the texture. It
-     gives the reason from what the game loads.
-   - resolved_texpath_before.txt reads the def chain from git at the parent commit. The base texPath was
-     `Things/Plants/AB_AgariluxPrime`, and the TheRot Conditional/Replace changed it to `RotSpecies/AgariluxPrime`.
-   - resolved_texpath_after.txt section 4: the live def dump (2026-11-02, 317 mods, fingerprint 228dc89a) reads texPath
-     `RotSpecies/AgariluxPrime` from mandrake.rm.biomes. AB_AgariluxPrime has no row, and a sanity probe shows the
-     instrument can see.
-   - broaden_checks.txt covers load order: 3137 patch files and 69195 xpaths across the 316-mod load set. None of them
-     reach graphicData/texPath.
+## Statement lines
 
-2. **Exactly one copy of the texture ships: TRUE (in src/, which is how the line defines it).**
-   - `git ls-files` lists one AgariluxPrime PNG under src: `TheRot/Textures/RotSpecies/AgariluxPrime.png` (sha 85779af9).
-   - I searched the whole repo for the stem `AB_AgariluxPrime` myself (125 files). Every hit in src/ is a donor defName in
-     a comment, the retire script, or the new def comment. Nothing reads the deleted path.
-   - `art.py status Things/Plants/AB_AgariluxPrime` shows no LIVE row and "slots: (none in our defs)".
-   - Not yet done: the copies already deployed in Steam Mods (RimMandrake.Biomes/.../Things/Plants/AB_AgariluxPrime.png and
-     UtinniPatches/...) stay on disk until the next deploy. The deploy plans in evidence/ show `-` prune lines for both.
-     Neither file is drawn, so the game looks the same with or without them. A deploy is owed, not a fix.
+1. **One owner is decided and recorded: TRUE.** The item file has a "Decision, 2026-11-11" section naming TheRot
+   (mandrake.rm.biomes) as owner. The reason given is what the game loads: the only definer is TheRot, and the final texPath is
+   `RotSpecies/AgariluxPrime` after the TheRot repoint, which the 2026-11-02 full-list dump confirms. `resolved_texpath_before.txt` reads the base def
+   and the repoint from git at the parent commit, and `resolved_texpath_after.txt` section 2 lists every patch op on the def (19 ops, 0 on texPath).
+   broaden_checks B evaluated 69,195 xpaths across the 316-mod load set and found none reaching graphicData/texPath.
+   I checked the dump myself and it agrees.
 
-3. **Every inbound reference is fixed: TRUE.**
-   - Commit 45408f140e moves `RotSpecies/AgariluxPrime` into the base def and deletes the repoint, so src readers and the
-     game now agree. It also deletes both PNGs and writes two art-ledger retire events (prev shas b0a767dc and c93606ba).
-   - My search found no deploy manifest, def, patch or art-eval brief still naming the deleted path.
-   - One artpipe job still names the retired install_to: `dregen_RM_AgariluxPrime_ABAgariluxPrime_v1` in
-     D:\ClaudeWork artpipe done/. I checked bulk_accept_renders.load_jobs. It skips any job whose `_artsrc/<id>/<id>.png`
-     is missing, and that directory does not exist, so the hourly installer cannot put the file back. That matches
-     bulk_accept_plan_agarilux.txt.
-   - The remaining hits are dated sheet snapshots and append-only event logs.
-   - Checks: validate_patch.txt passes 3 patch files with 0 errors (396 advisory nomatch warnings, none on texPath).
-     validate_def.txt shows 0 errors on the def file. selftests.txt is GREEN 3/3: alpha_plants_renders, hugethings_lint and
-     hugethings_footprint. The footprint test covers the `<texture>AgariluxPrime</texture>` variant key, which belongs to
-     the survivor's stem.
+2. **Exactly one copy of the texture ships: TRUE.** Both donor-slot PNGs are gone from src (landing diff: 124588 B and
+   253476 B deleted), and the only AgariluxPrime PNG left in src is the survivor. `search_after.txt` reports 0
+   live-reader hits. Each OTHER-DEF hit is labelled with the donor def AB_AgariluxPrime it serves, or as a docstring
+   example. The art ledger has retire events for both copies (`art/events/CLAUDE_ARCHMAGI_OFFLINE2.jsonl`, sha null, prev =
+   the two judged shas). The art-eval hits are append-only run records (gptredo_03). I checked that the unfiled UtinniPatches row in
+   `gptredo_03/regen_jobs.json` has no `regen_filing.json`, so `auto_judge.unfiled_rows` will not pick it up.
 
-4. **The surviving copy's judgement stands: TRUE.**
-   - The statement assumed the survivor would be one of the two gptredo_03 copies. It is neither, and the evidence says so
-     plainly. judgement_record.txt lists both gptredo_03 rows: the TheRot ACCEPT row judged the 256 px
-     Things/Plants/AB_ copy (sha b0a767dc), and the UtinniPatches REGEN row judged sha c93606ba. Both are retired.
-   - The survivor is the 4096 px v3 (sha 85779af9). Its git blob is identical to the one in the 2026-09-20 v3 landing
-     commit. The owner approved it in the 2026-09-20 Rot landing ("The rot art is approved."), after that commit. The
-     evidence notes that this was a blanket ratification of prefill rows, not a row-by-row look.
-   - The item's rule is to re-judge only if the REGEN copy survives. It did not, so no re-judge is owed.
-   - I checked the four later sheets that showed RM_AgariluxPrime (gptredo_03 shadow, gpt_review_therot 10-24,
-     therot 11-03, flora_legibility 11-05). All are reviewStatus "prefill" with no human pick, so deleting the 256 px
-     ACCEPT copy goes against no owner ruling.
-   - The image shows three different designs. The survivor is the purple, spreading spore-cap with hyphae roots, which
-     matches the art-eval brief's departures (pale, a spore pall, a root mat). The deleted ACCEPT copy is a
-     different-looking bulb-tree.
+3. **Every inbound reference is fixed: TRUE.** The same commit changed the base def's texPath, deleted the repoint
+   patch, and wrote the art-ledger retire rows. Both deploy plans show the deployed copies as
+   `- ... deleted in repo -- --apply prunes it`. validate_patch.py is OK on the three touched patch files and the def file (0 errors; the 396 warnings
+   are add-if-missing conditional shapes in PlantTolerances_Ashkarr.xml for every plant, so they were there before this change). The 3 selftests are GREEN. The
+   unproven_adjudicate --check and the art_sheet resolution check agree with the change.
 
-## Where the evidence is thin or flattering
+4. **The surviving copy's judgement stands: TRUE.** The evidence shows the statement's premise was wrong: there were three
+   copies, and the survivor (the drawn `RotSpecies/AgariluxPrime` v3) is neither gptredo_03 subject. Both gptredo_03 rows
+   are quoted (ACCEPT b0a767dc on the 256 px TheRot donor-slot file, REGEN c93606ba on the UtinniPatches file), and both of
+   those files were retired. The survivor's standing judgement is the owner's 2026-09-20 approval ("The rot art is approved."). It
+   came after the v3 landing commit and covers byte-identical content (I confirmed the blob). The item's rule says to re-judge
+   only if the REGEN copy survives, and it did not, so no re-judge is owed. The root cause (art_sheet's slot scan ignores
+   patches, so gptredo judged pictures the game never drew) and 11 sibling Rot ports with the same split are filed as items
+   (ledger lines 10-11).
 
-- All live-game evidence comes from a 2026-11-02 dump taken before this change. The after state is shown only offline.
-  The risk is low, because the base def now holds exactly what the patch used to produce. This is an offline seat.
-- resolved_texpath_before.txt says both donor-slot copies "shipped and loaded". UtinniPatches is not enabled in
-  ModsConfig (deploy_plan_UtinniPatches.txt), and broaden_checks A finds no UtinniPatches copy in the active load set.
-  The item's own premise, "one shadows the other at load", was also wrong. These are small factual slips that do not
-  change the result.
-- art_ledger_status_after.txt prints the RotSpecies/AgariluxPrime block twice. This is cosmetic.
-- The survivor is a 4096x4096 PNG of 27 MB. That is out of scope here, but it is very large for one plant texture.
-- The root cause (artledger.scan_def_slots ignores texPath patches, which mislabelled the IN GAME column) is filed as
-  RIMMANDRAKE_FIX_SLOT_SCAN_BLIND_TO_TEXPATH_PATCHES. Other v3 repoints in RotSpecies_NamesAndSizes.xml (for example
-  RM_RecurvedStropharia) may be mislabelled the same way until that item is fixed.
-
-## Owed after this item (not blocking)
-- Deploy mandrake.rm.biomes (and UtinniPatches if it is ever enabled) with --apply so the stale undrawn copies are pruned.
+## Where the evidence is weak, staged or flattering
+- The survivor's only judgement is a blanket owner sentence that ratified an agent prefill row. `judgement_record.txt`
+  says so plainly, and no row-level owner look or art-eval pass has ever judged the drawn picture. That is enough under
+  the item's rule, but it is the thinnest point.
+- In `resolved_before.sh`, the closing "resolution BEFORE", "live game agreed" and "owner" lines are hardcoded echo
+  text written to look like output. Its claim "UtinniPatches is not in the active mod list" is at best imprecise:
+  mandrake.rut.patches is active in `ModsConfig.FULL.LATEST.xml`, and the 2026-11-02 dump loaded it at order 296. The deploy
+  plan's "not enabled" refers to the game's current ModsConfig. This does not change the outcome, because nothing drew
+  that slot either way.
+- broaden_checks A puts src first, so for UtinniPatches it reads the post-change repo, and for biomes it reads the stale
+  deployed copy. That makes it a mixed before/after view, not a clean census.
+- In `bulk_accept_plan_agarilux.txt`, the artpipe done/ scan is filename-only because a full-content grep timed out. The job
+  `dregen_RM_AgariluxPrime_ABAgariluxPrime_v1` still has `install_to` set to the retired path. The current plan does not see it,
+  but the evidence never says why.
+- `three_copies_before.png` is a flat side-by-side still, which is all this item needs. It is not an in-game look.
+- Observation for the parent to file (I was told to write only this file): the survivor is a 4096x4096, 27 MB PNG for
+  one plant. That is outside this item's scope, but it may be a texture-memory or load-time cost.
+- The deployed game still holds both retired copies until the next biomes/UtinniPatches deploy. That is expected for an
+  offline item.
 
 would show: yes

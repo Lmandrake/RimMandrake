@@ -69,6 +69,9 @@ RimMandrake.Biomes mandrake.rm.biomes         5 file(s) HELD
     ~  Assemblies/RimMandrake.Biomes.dll
     ~  Assemblies/RimMandrake.Biomes.dll.srchash
     ~  Biomes/CrackedLands/Textures/Things/Pawn/Animal/Monkey/RM_Tarruq/RM_Tarruq_north.png
+    ~  Biomes/DivingInteraction/Assemblies/RimMandrake.DivingInteraction.dll
+    ~  Biomes/DivingInteraction/Assemblies/RimMandrake.DivingInteraction.dll.srchash
+    ~  Biomes/DivingInteraction/Defs/PlanetLayerDefs/RM_SeabedFloorBiomes.xml
     ~  Biomes/FeverWood/Defs/RM_FeverWood_DonorPorts.xml
     ~  Biomes/Greentide/Defs/RM_Greentide_DonorPorts.xml
     ~  Biomes/Pyrelands/Assemblies/FireEcologyHook.dll
@@ -79,6 +82,10 @@ RimMandrake.Biomes mandrake.rm.biomes         5 file(s) HELD
     ~  Biomes/Stillsand/Textures/Things/Pawn/Animal/RM_Qorrax/RM_Qorrax_east.png
     ~  Biomes/Stillsand/Textures/Things/Pawn/Animal/RM_Qorrax/RM_Qorrax_north.png
     ~  Biomes/Stillsand/Textures/Things/Pawn/Animal/RM_Qorrax/RM_Qorrax_south.png
+    ~  Biomes/TerminalBiomes/Defs/BiomeDefs/RM_GreySea.xml
+    ~  Biomes/TerminalBiomes/Defs/BiomeDefs/RM_TheChill.xml
+    ~  Biomes/TerminalBiomes/Defs/BiomeDefs/RM_TheScald.xml
+    ~  Biomes/TerminalBiomes/Defs/BiomeDefs/RM_TwilightSea.xml
     ~  Biomes/TerminalBiomes/Defs/RM_TerminalBiomes_DonorPorts.xml
     ~  Biomes/TerminalBiomes/Defs/ThingDefs_Races/RM_SeaBeasts_Invented.xml
     ~  Biomes/TerminalBiomes/Textures/Things/Pawn/Animal/RM_Bladderboil/RM_Bladderboil_east.png
