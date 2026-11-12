@@ -1,4 +1,4 @@
-SHIP_ALLOY_FORGE_1 L4: the forge's Mod Settings toggles, read from source at e08969370e, 2026-11-11 21:43 -0800
+SHIP_ALLOY_FORGE_1 L4: the forge's Mod Settings toggles, read from source at fdc9636c76, 2026-11-11 21:46 -0800
 Each: field default | Scribe (saved-settings) default | the settings-window label and tooltip | its group | who applies it
 
 == alloyForgeProgressiveGate (src/RimMandrake/WreckedMachines/Source/WreckedMachinesMod.cs)
