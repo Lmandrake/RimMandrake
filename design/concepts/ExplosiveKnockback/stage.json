@@ -527,10 +527,52 @@
     "ref": "run bench-ek-st4j-20261112",
     "stage": 4,
     "tokens": 3940000
+   },
+   {
+    "at": "2026-11-12T10:52:26Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794480428",
+    "stage": 5,
+    "tokens": 706708
+   },
+   {
+    "at": "2026-11-12T10:59:35Z",
+    "kind": "helper",
+    "ref": "a72e84062fb3c66b6",
+    "stage": 5,
+    "tokens": 34341
+   },
+   {
+    "at": "2026-11-12T11:01:34Z",
+    "kind": "helper",
+    "ref": "ac616aa8cb545a0b0",
+    "stage": 5,
+    "tokens": 41912
+   },
+   {
+    "at": "2026-11-12T11:03:09Z",
+    "kind": "helper",
+    "ref": "a4d2ed50f2592fc96",
+    "stage": 5,
+    "tokens": 43274
+   },
+   {
+    "at": "2026-11-12T11:04:41Z",
+    "kind": "helper",
+    "ref": "aaf66ffa98c940cc4",
+    "stage": 5,
+    "tokens": 42035
+   },
+   {
+    "at": "2026-11-12T11:05:18Z",
+    "kind": "unmeasured",
+    "ref": "run bench-ek-st3k-20261112",
+    "stage": 3,
+    "tokens": 3940000
    }
   ],
   "reserve": 60000,
-  "spent": 80560009
+  "spent": 85368279
  },
  "history": [
   {
@@ -1000,6 +1042,30 @@
    "stage": 5,
    "what": "close",
    "why": "run bench-ek-st4j-20261112: stage 4 done"
+  },
+  {
+   "at": "2026-11-12T11:04:59Z",
+   "stage": 3,
+   "what": "invalidated",
+   "why": "inputs changed since stage 3 was accepted: sheet, tree, scenes; back to stage 3"
+  },
+  {
+   "at": "2026-11-12T11:04:59Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "81428279 of 4000000 spent; run bench-ek-st3k-20261112 goes on with 3940000 (advisory)"
+  },
+  {
+   "at": "2026-11-12T11:04:59Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run bench-ek-st3k-20261112, stage 3, budget 3940000"
+  },
+  {
+   "at": "2026-11-12T11:05:19Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run bench-ek-st3k-20261112: stage 3 done"
   }
  ],
  "item": "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
@@ -1167,15 +1233,21 @@
    "why": "inputs changed since stage 3 was accepted: sheet, tree, scenes; back to stage 3"
   },
   {
-   "at": "2026-11-12T10:40:56Z",
+   "at": "2026-11-12T11:04:59Z",
+   "outcome": "invalidated",
+   "stage": 3,
+   "why": "inputs changed since stage 3 was accepted: sheet, tree, scenes; back to stage 3"
+  },
+  {
+   "at": "2026-11-12T11:05:19Z",
    "inputs": {
-    "exam": "c0580f5af91eb271f3665883c00e8e6e5a64a077db0dfaf9e1dbef1db7b7badd",
+    "exam": "8835f38d723bf5ddf958a1ec87ab01350f750f9381341b42b61491fab56f0a84",
     "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
     "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
-    "scenes": "45ec8b3ef00fc543e5f3132f1f32f176a6d9c1246ae980fe0105b8243981f034",
-    "sheet": "82218136360778a66d122430e78faf175d304cc8ecc134aaac96294b6883a2dc",
-    "tree": "ee5b8a8a974b230b028fc5078f49e4da622dc14e4b573c28017d5f57bd5fdf33"
+    "scenes": "39f5f8460353baec6a454af4ad49351ea6a15cea4bcd259a8418ee59b52ca070",
+    "sheet": "decd62e555e47fb236d2bb0e16dedff3b2f3c8bd42434f1495887a0ed3c36137",
+    "tree": "052301404e081d7c1d5e00afeae1b8d11d0e6aaa3ac4f414e8fe9f79dcd07eb2"
    },
    "manifest": {
     "designer.md": "b79052133c514f160b33c30b53d69a947adbfdbc81304681463b1038e82fce9f",
@@ -1184,35 +1256,14 @@
    },
    "outcome": "done",
    "owner_uncited": [],
-   "run": "bench-ek-st3j-20261112",
+   "run": "bench-ek-st3k-20261112",
    "stage": 3,
-   "summary": "judge7 gaps (6, all stage 3) settled from record: gas scenes stage the Cauldron's vent gas (the census finds it the one tagged source; record dl_gas_census corrected, tree our_gases_burn and sheet census line over sources); dl_gas_igniter (a touching fire, the Cauldron's burn scan) with an untouching-fire control and incendiary lane; sc_wall_stop drawn-position trace; dl_goods_obstacles (door rebounds, sandbags passed, short of deep water) with new sc_goods_obstacles; sc_pit_fetch destinations and hauler asserted."
-  },
-  {
-   "at": "2026-11-12T10:46:42Z",
-   "inputs": {
-    "exam": "ed1ef60d2350737ebd1e7a73f8663992f6f364974b8f1e1bd1b53680fa86e5a8",
-    "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
-    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
-    "scenes": "45ec8b3ef00fc543e5f3132f1f32f176a6d9c1246ae980fe0105b8243981f034",
-    "sheet": "82218136360778a66d122430e78faf175d304cc8ecc134aaac96294b6883a2dc",
-    "tree": "ee5b8a8a974b230b028fc5078f49e4da622dc14e4b573c28017d5f57bd5fdf33"
-   },
-   "manifest": {
-    "designer.md": "b79052133c514f160b33c30b53d69a947adbfdbc81304681463b1038e82fce9f",
-    "designer_exam.md": "9892f91253ca15581c15f6f64d211a2275f345d0e13e0200dcda9c9f8004e07a"
-   },
-   "outcome": "done",
-   "owner_uncited": [],
-   "run": "bench-ek-st4j-20261112",
-   "stage": 4,
-   "summary": "exam7 on the judge7-reworked sheet and tree: 44 scenarios (exam6's 34 plus 10 by a fresh examiner on the changed gas, goods-obstacle and wall leaves; 28 rejects), two fresh counted readers 44/44 each, control reader (closed_container_holds stripped) missed e20 and e21."
+   "summary": "judge8 gaps (4, all stage 3) settled from record: closed 1x1 containers staged as a vanilla small shelf (ShelfSmall) given the guard's opt-in closed tag (no storage crate exists on the list), the weapon rack replaced by Shelf/ShelfSmall/Table2x2c; the airborne lane sets the vanilla Pawn_FlightTracker state the shipped skip reads, the mod's check untouched; new delegated dl_fire_half_off (a part switched off gives back what ships: fire throws nothing) in the settings leaf, sheet and sweep; hose_drop oracle and coverage_rest why name the Settings enabled false control; the gas-shove control names the Cauldron grid's registration removed."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 5,
+ "stage": 4,
  "status": "ready"
 }
