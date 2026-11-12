@@ -67,11 +67,18 @@ namespace RimMandrake.Utinni.KyberTradePlot
             return b?.ToString() ?? "";
         }
 
+        /// <summary>The Homestead faction that can send visitors: a live OutlanderCivil one, a friendly one first (a
+        /// save may hold more than one), or null when none is left.</summary>
         public static Faction Homestead()
         {
-            Faction f = Find.FactionManager.FirstFactionOfDef(FactionDefOf.OutlanderCivil);
-            return f == null || f.defeated ? null : f;
+            return Find.FactionManager.AllFactionsListForReading
+                .Where(f => f.def == FactionDefOf.OutlanderCivil && !f.defeated && !f.Hidden)
+                .OrderBy(f => f.HostileTo(Faction.OfPlayer) ? 1 : 0).FirstOrDefault();
         }
+
+        /// <summary>One visitor still standing on a home map, not hostile: the letter and the tick both ask this.</summary>
+        public static bool VisitorStillHere(Pawn p) => p != null && p.Spawned && !p.Dead && p.Faction != null
+            && !p.Faction.HostileTo(Faction.OfPlayer) && p.Map != null && p.Map.IsPlayerHome;
 
         public static KyberTuning Tuning() => new KyberTuning
         {
@@ -182,11 +189,10 @@ namespace RimMandrake.Utinni.KyberTradePlot
         {
             if (Find.TickManager.TicksGame % 250 != 0) return;
             int now = Find.TickManager.TicksGame;
-            bool here = visitors.Any(p => p != null && p.Spawned && !p.Dead && p.Faction != null && !p.Faction.HostileTo(Faction.OfPlayer)
-                && p.MapHeld != null && p.MapHeld.IsPlayerHome);
+            bool here = visitors.Any(KyberTrade.VisitorStillHere);
             Faction homestead = KyberTrade.Homestead();
             bool canSend = homestead != null && !homestead.HostileTo(Faction.OfPlayer);
-            switch (state.NextAction(now, KyberTradePlotSettings.kyberTradePlotEnabled, here, canSend))
+            switch (state.NextAction(now, KyberTradePlotSettings.kyberTradePlotEnabled, here, canSend, KyberTrade.Tuning()))
             {
                 case KyberTickAction.VisitorsLeftUnanswered:
                     state.VisitLeftUnanswered();
@@ -197,6 +203,9 @@ namespace RimMandrake.Utinni.KyberTradePlot
                 case KyberTickAction.VisitNeverComes:
                     state.VisitImpossible();
                     Log.Message("[KyberTrade] no friendly Homestead faction to send anyone: the visit will never come");
+                    TryOpenFixerDoor(now);
+                    break;
+                case KyberTickAction.OpenFixerDoor:
                     TryOpenFixerDoor(now);
                     break;
                 case KyberTickAction.FireVisit:
@@ -251,6 +260,7 @@ namespace RimMandrake.Utinni.KyberTradePlot
             Scribe_Values.Look(ref state.lastSaleTick, "lastSaleTick", -1);
             Scribe_Values.Look(ref state.visit, "visit", KyberVisitState.NotDue);
             Scribe_Values.Look(ref state.visitDueTick, "visitDueTick", -1);
+            Scribe_Values.Look(ref state.visitGiveUpTick, "visitGiveUpTick", -1);
             Scribe_Values.Look(ref state.donation, "donation", KyberDonationState.NotDue);
             Scribe_Values.Look(ref state.door, "door", KyberDonationDoor.None);
             Scribe_Values.Look(ref state.donationDueTick, "donationDueTick", -1);

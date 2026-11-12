@@ -51,6 +51,8 @@ namespace RimMandrake.Utinni.KyberTradePlot.SelfTest
                 StoryPlotOff();
                 StoryDevFire();
                 StoryOneHugeSale();
+                StoryPlotOffWhileVisitorsLeave();
+                StoryVisitCanNeverArrive();
             }
             catch (Exception e)
             {
@@ -223,7 +225,7 @@ namespace RimMandrake.Utinni.KyberTradePlot.SelfTest
                     + after.ToString("F1") + " (" + vis.Band + "), Hutt interest " + s.huttInterest.ToString("F0")
                     + (e.cartelGoodwill > 0 ? ", Cartel goodwill +" + e.cartelGoodwill : "") + (e.firstSale ? ", first-sale letter" : "")
                     + (e.visitBecameDue ? ", the Homestead visit is now due at " + D(s.visitDueTick).Trim() : ""));
-                if (s.TryOpenFixerDoor(now, t)) { fixerDoors++; Say(D(now) + "  the Cartel fixer passes the ask along (Hutt interest " + s.huttInterest.ToString("F0") + ")"); }
+                if (Fixer()) { fixerDoors++; Say(D(now) + "  the Cartel fixer passes the ask along (Hutt interest " + s.huttInterest.ToString("F0") + ")"); }
                 return e;
             }
 
@@ -233,7 +235,7 @@ namespace RimMandrake.Utinni.KyberTradePlot.SelfTest
                 for (; now < tick; now += 250)
                 {
                     if (visitorsStay != null && s.visit == KyberVisitState.Arrived) visitorsHere = visitorsStay();
-                    switch (s.NextAction(now, plotOn, visitorsHere, homesteadCanSend))
+                    switch (s.NextAction(now, plotOn, visitorsHere, homesteadCanSend, t))
                     {
                         case KyberTickAction.FireVisit:
                             visitsFired++;
@@ -244,12 +246,15 @@ namespace RimMandrake.Utinni.KyberTradePlot.SelfTest
                         case KyberTickAction.VisitorsLeftUnanswered:
                             s.VisitLeftUnanswered();
                             Say(D(now) + "  the visitors left unanswered: evasive, no punishment");
-                            if (s.TryOpenFixerDoor(now, t)) { fixerDoors++; Say(D(now) + "  the Cartel fixer passes the ask along"); }
+                            if (Fixer()) { fixerDoors++; Say(D(now) + "  the Cartel fixer passes the ask along"); }
                             break;
                         case KyberTickAction.VisitNeverComes:
                             s.VisitImpossible();
                             Say(D(now) + "  no friendly Homestead faction can send anyone: the visit never comes");
-                            if (s.TryOpenFixerDoor(now, t)) { fixerDoors++; Say(D(now) + "  the Cartel fixer passes the ask along"); }
+                            if (Fixer()) { fixerDoors++; Say(D(now) + "  the Cartel fixer passes the ask along"); }
+                            break;
+                        case KyberTickAction.OpenFixerDoor:
+                            if (Fixer()) { fixerDoors++; Say(D(now) + "  the Cartel fixer passes the ask along (on the tick)"); }
                             break;
                         case KyberTickAction.FireDonation:
                             donationsFired++;
@@ -260,6 +265,9 @@ namespace RimMandrake.Utinni.KyberTradePlot.SelfTest
                     }
                 }
             }
+
+            /// <summary>GameComponent_KyberTrade.TryOpenFixerDoor: refused while the plot is off, else the kernel's call.</summary>
+            public bool Fixer() => plotOn && s.TryOpenFixerDoor(now, t);
 
             public void Answer(string line, bool forthright)
             {
@@ -379,6 +387,43 @@ namespace RimMandrake.Utinni.KyberTradePlot.SelfTest
                 Math.Abs(KyberTradeKernel.HeatForSale(4, r.t) - 2f * KyberTradeKernel.HeatForSale(1, r.t)) < 0.01f);
             Check("one sale, however large, is still one sale: no visit yet", r.s.visit == KyberVisitState.NotDue && r.s.sales == 1);
             Check("zero crystals moves nothing", KyberTradeKernel.HeatForSale(0, r.t) == 0f && r.s.RecordSale(0, true, 0, r.t).heat == 0f && r.s.sales == 1);
+        }
+    
+        private static void StoryPlotOffWhileVisitorsLeave()
+        {
+            Console.WriteLine("== the plot is switched off while unanswered visitors leave, then back on (no further sale) ==");
+            var r = new Run();
+            r.Sell(3, "the Hutt Cartel", true);
+            r.Sell(3, "the Hutt Cartel", true);
+            r.Until(Day + 250);
+            r.plotOn = false;
+            r.visitorsHere = false;
+            r.Until(5 * Day);
+            Check("the departure is still noticed while the plot is off (evasive), and no door opens while off",
+                r.s.visit == KyberVisitState.Evasive && r.fixerDoors == 0);
+            r.plotOn = true;
+            r.Until(10 * Day);
+            Check("switched back on with Hutt interest 18, the fixer door opens on its own and the donation is asked",
+                r.fixerDoors == 1 && r.donationsFired == 1 && r.s.door == KyberDonationDoor.HuttFixer);
+        }
+
+        private static void StoryVisitCanNeverArrive()
+        {
+            Console.WriteLine("== a friendly Homestead exists but the visitors can never arrive (every attempt fails) ==");
+            var r = new Run();
+            r.Sell(3, "the Hutt Cartel", true);
+            r.Sell(3, "the Hutt Cartel", true);
+            int attempts = 0;
+            for (; r.now < 30 * Day; r.now += 250)
+            {
+                KyberTickAction a = r.s.NextAction(r.now, true, false, true, r.t);
+                if (a == KyberTickAction.FireVisit) { attempts++; r.s.VisitPostponed(r.now, Day); }
+                else if (a == KyberTickAction.OpenFixerDoor && r.s.TryOpenFixerDoor(r.now, r.t)) r.fixerDoors++;
+                else if (a == KyberTickAction.FireDonation) { r.donationsFired++; r.s.DonationOffered(); }
+            }
+            Say("visit attempts that failed: " + attempts + "; visit " + r.s.visit + "; door " + r.s.door);
+            Check("after 15 days of failed arrivals the visit counts as never coming", r.s.visit == KyberVisitState.Impossible && attempts >= 15);
+            Check("so the fixer door opens and the donation is still asked, once", r.fixerDoors == 1 && r.donationsFired == 1);
         }
     }
 }

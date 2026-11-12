@@ -16,7 +16,7 @@ namespace RimMandrake.Utinni.KyberTradePlot
     public enum KyberVisitState { NotDue, Due, Arrived, Forthright, Evasive, Impossible }
     public enum KyberDonationState { NotDue, Due, Offered }
     public enum KyberDonationDoor { None, Homestead, HuttFixer }
-    public enum KyberTickAction { None, VisitorsLeftUnanswered, FireVisit, VisitNeverComes, FireDonation }
+    public enum KyberTickAction { None, VisitorsLeftUnanswered, FireVisit, VisitNeverComes, OpenFixerDoor, FireDonation }
 
     /// <summary>The numbers, copied from the Mod Settings each call (defaults = shipped behaviour).</summary>
     public sealed class KyberTuning
@@ -29,6 +29,7 @@ namespace RimMandrake.Utinni.KyberTradePlot
         public int visitDelayTicks = 60000;      // a day after the sale that makes the pattern
         public int donationDelayTicks = 150000;  // two and a half days after the door opens
         public float fixerInterest = 15f;        // §4c: the Cartel fixer passes the ask along
+        public int visitGiveUpTicks = 900000;    // a visit that still cannot arrive 15 days after it fell due went nowhere
     }
 
     /// <summary>What one sale changed; the game turns each field into its effect and its message.</summary>
@@ -62,6 +63,7 @@ namespace RimMandrake.Utinni.KyberTradePlot
         public int lastSaleTick = -1;
         public KyberVisitState visit = KyberVisitState.NotDue;
         public int visitDueTick = -1;
+        public int visitGiveUpTick = -1;
         public KyberDonationState donation = KyberDonationState.NotDue;
         public KyberDonationDoor door = KyberDonationDoor.None;
         public int donationDueTick = -1;
@@ -82,6 +84,7 @@ namespace RimMandrake.Utinni.KyberTradePlot
             {
                 visit = KyberVisitState.Due;
                 visitDueTick = now + t.visitDelayTicks;
+                visitGiveUpTick = visitDueTick + t.visitGiveUpTicks;
                 e.visitBecameDue = true;
             }
             return e;
@@ -90,19 +93,26 @@ namespace RimMandrake.Utinni.KyberTradePlot
         /// <summary>What the game should do on this tick, in order: notice visitors who left unanswered, then (with the
         /// plot on) bring the visit when it is due, or learn that it never can, then ask for the donation when due.
         /// GameComponent_KyberTrade.GameComponentTick acts on this and nothing else.</summary>
-        public KyberTickAction NextAction(int now, bool plotEnabled, bool visitorsStillHere, bool homesteadCanSend)
+        public KyberTickAction NextAction(int now, bool plotEnabled, bool visitorsStillHere, bool homesteadCanSend, KyberTuning t)
         {
             if (visit == KyberVisitState.Arrived && !visitorsStillHere) return KyberTickAction.VisitorsLeftUnanswered;
             if (!plotEnabled) return KyberTickAction.None;
             if (VisitShouldFire(now)) return homesteadCanSend ? KyberTickAction.FireVisit : KyberTickAction.VisitNeverComes;
+            if (FixerDoorReady(t)) return KyberTickAction.OpenFixerDoor; // also catches a door missed while the plot was off
             if (DonationShouldFire(now)) return KyberTickAction.FireDonation;
             return KyberTickAction.None;
         }
 
         public bool VisitShouldFire(int now) => visit == KyberVisitState.Due && now >= visitDueTick;
 
-        /// <summary>The visit could not happen right now (no home map, a hostile lord on it): try again later.</summary>
-        public void VisitPostponed(int now, int byTicks) { if (visit == KyberVisitState.Due) visitDueTick = now + byTicks; }
+        /// <summary>The visit could not happen right now (no home map, a hostile lord on it): try again later. Still
+        /// impossible past the give-up tick, it never comes, so the fixer's door is not shut forever.</summary>
+        public void VisitPostponed(int now, int byTicks)
+        {
+            if (visit != KyberVisitState.Due) return;
+            if (visitGiveUpTick >= 0 && now >= visitGiveUpTick) visit = KyberVisitState.Impossible;
+            else visitDueTick = now + byTicks;
+        }
 
         /// <summary>The visitors are on the map. A dev-mode fire before the second sale counts as the one visit.</summary>
         public void VisitArrived() { if (visit == KyberVisitState.NotDue || visit == KyberVisitState.Due) visit = KyberVisitState.Arrived; }
@@ -126,12 +136,13 @@ namespace RimMandrake.Utinni.KyberTradePlot
         /// True on the one call that opens it.</summary>
         public bool TryOpenFixerDoor(int now, KyberTuning t)
         {
-            if (door != KyberDonationDoor.None) return false;
-            if (visit != KyberVisitState.Evasive && visit != KyberVisitState.Impossible) return false;
-            if (huttInterest < t.fixerInterest) return false;
+            if (!FixerDoorReady(t)) return false;
             OpenDoor(KyberDonationDoor.HuttFixer, now, t);
             return true;
         }
+
+        public bool FixerDoorReady(KyberTuning t) => door == KyberDonationDoor.None
+            && (visit == KyberVisitState.Evasive || visit == KyberVisitState.Impossible) && huttInterest >= t.fixerInterest;
 
         private void OpenDoor(KyberDonationDoor which, int now, KyberTuning t)
         {

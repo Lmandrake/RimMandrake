@@ -114,7 +114,7 @@ namespace RimMandrake.Utinni.KyberTradePlot
             {
                 GameComponent_KyberTrade comp = KyberTrade.Component;
                 return comp != null && comp.state.visit == KyberVisitState.Arrived
-                    && pawns.Any(p => p != null && p.Spawned && !p.Dead && p.Faction != null && !p.Faction.HostileTo(Faction.OfPlayer));
+                    && pawns.Any(KyberTrade.VisitorStillHere);
             }
         }
 
