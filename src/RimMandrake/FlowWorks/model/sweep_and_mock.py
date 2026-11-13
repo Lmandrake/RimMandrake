@@ -3,7 +3,7 @@
 
     python3 src/RimMandrake/FlowWorks/model/sweep_and_mock.py <out_dir>
 
-Writes <out_dir>/sweep.json (depth 0.5..4 m x level x clarity x thing height, each case ruled, and the space-wide
+(The tint look itself is mocked over real captures by tint_mock.py.) Writes <out_dir>/sweep.json (depth 0.5..4 m x level x clarity x thing height, each case ruled, and the space-wide
 invariants with their verdicts) and <out_dir>/mock_bigpit_old_vs_new.png (rows: the 2026-11-12 law with the light wet
 floor; the retune; tar). A mock is a model picture, not the game: the live look decides (LIVE_LOOK_CHECKLIST.md).
 """
@@ -73,8 +73,7 @@ THINGS = [
 
 def render(depth, level, clarity, new):
     seen = U.seen if new else (lambda c, m: U.seen_old(c, m))
-    dark = U.DARKEN if new else 0.0
-    liq = TAR_COL if clarity == 0 else tuple(int(v * 255) for v in U.WATER_BODY)
+    liq = TAR_COL if clarity == 0 else tuple(int(v * 255) for v in U.body(U.WATER_COLOUR))
     floor = FLOOR_DARK if (new or level <= 0) else FLOOR_LIGHT
     W = N * CELL
     img = Image.new("RGB", (W + 2 * CELL, W + 2 * CELL), GROUND)
@@ -84,7 +83,7 @@ def render(depth, level, clarity, new):
     def under(col, y_m):
         if y_m >= level:
             return col
-        return tuple(int(v) for v in U.mix(liq, col, seen(clarity, level - y_m), dark))
+        return tuple(int(v) for v in U.sheet(liq, col, seen(clarity, level - y_m)))
 
     occ = {}
     for t in THINGS:
@@ -139,7 +138,8 @@ def main():
     out = sys.argv[1] if len(sys.argv) > 1 else "."
     cases, bad = sweep()
     with open(os.path.join(out, "sweep.json"), "w") as f:
-        json.dump(dict(law="seen = 1 - %.2f*(1 - clarity^(m+%.2f)); darken %.2f" % (U.DEEP_OPACITY, U.SURFACE_METRES, U.DARKEN),
+        json.dump(dict(law="seen = 1 - %.2f*rise(m/full(clarity)), full %.1f m, power %.1f; body darken %.2f"
+                       % (U.DEEP_OPACITY, U.FULL_METRES, U.CURVE_POWER, U.DARKEN),
                        cases=len(cases), invariant_breaks=bad, sample=cases[::97]), f, indent=1)
     levels = [0.0, 0.5, 1.0, 2.0, 3.0, 4.0]
     rows = [[render(4.0, lv, WATER, False) for lv in levels], [render(4.0, lv, WATER, True) for lv in levels],

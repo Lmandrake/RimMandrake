@@ -467,30 +467,32 @@ namespace RimMandrake.FlowWorks
 		/// here. RIMMANDRAKE_TUNE_WATER_CLARITY_DARKER_AND_HALF_AS_OPAQUE (owner 2026-11-12, 6:12 PM: "pits are quite dark
 		/// when dry, then suddenly become light for some reason with just a little water ... Keep them darker"): the floor is
 		/// drawn in the DRY pit's own ground (RM_ExcavationDepth.DryTerrainFor, the dark channel floor), never the light
-		/// ground the pit was dug from; and the liquid under it is darkened by RM_UnderLiquid.Darken (a black wash over the
-		/// cell, under the floor and everything in the pit: "Its color should also be darkened").</summary>
+		/// ground the pit was dug from. RIMMANDRAKE_TINT_PIT_WATER_READS_AS_WATER_NOT_MUD (owner 2026-11-12, 8:55 PM: "looks
+		/// more like faint blue mist patches"): the floor and the drowned walls are drawn OPAQUE (at Seen alpha the liquid's
+		/// vanilla water terrain showed through, and its ripple texture read as patches), and the liquid is ONE even sheet of
+		/// its body colour over them (RM_FaceMaterial.SheetMat, alpha 1 - Seen at each point's depth), under everything that
+		/// stands in the pit.</summary>
 		private void SeeThrough(Map map, RM_MapComponent_Excavation eng, IntVec3 c, int d, float lv, int north, int west, int east, float y)
 		{
-			float clarity = RM_SubmergeDraw.ClarityAt(map, eng, c);
+			RM_LiquidSurfaceLook look = RM_SubmergeDraw.LookAt(map, eng, c);
+			float clarity = look != null ? look.seeThrough : 0f;
 			if (!(clarity > 0f))
 			{
 				return;
 			}
+			Color body = RM_SubmergeDraw.BodyColour(look);
 			float levelM = lv * RM_UnderLiquid.Notch;
 			TerrainDef floor = RM_ExcavationDepth.DryTerrainFor((byte)Mathf.Clamp(d, RM_ExcavationDepth.Shallow, 255)) ?? TerrainDefOf.Soil;
-			byte dark = Alpha(RM_UnderLiquid.Darken);
-			if (dark > 0)
-			{
-				QuadVMat(WashMat, c.x, c.z, 1f, 1f, y - 0.0001f, new Color32(0, 0, 0, dark), new Color32(0, 0, 0, dark));
-			}
 			float hFull = RM_UnderLiquid.NorthFace(RM_UnderLiquid.Exposed(d, north, 0f));
 			float hDry = RM_UnderLiquid.NorthFace(RM_UnderLiquid.Exposed(d, north, lv));
 			float floorTop = 1f - hFull;
-			byte fa = Alpha(RM_UnderLiquid.Seen(clarity, levelM));
-			// the floor between the side walls' full feet (the strips below draw over their own width, not twice)
+			// the floor between the side walls' full feet (the strips below draw over their own width, not twice), and the sheet
+			// over it at the one depth the whole floor lies at: even over every cell at that level
 			float wW = RM_UnderLiquid.SideFace(RM_UnderLiquid.Exposed(d, west, 0f));
 			float wE = RM_UnderLiquid.SideFace(RM_UnderLiquid.Exposed(d, east, 0f));
-			Quad(RM_FaceMaterial.FaceMat(floor), c.x + wW, c.z, 1f - wW - wE, floorTop, y, SeenTint(fa), SeenTint(fa), UvWorld);
+			Quad(RM_FaceMaterial.FaceMat(floor), c.x + wW, c.z, 1f - wW - wE, floorTop, y, Opaque, Opaque, UvWorld);
+			Color32 fs = SheetTint(body, RM_UnderLiquid.Seen(clarity, levelM));
+			QuadVMat(RM_FaceMaterial.SheetMat, c.x + wW, c.z, 1f - wW - wE, floorTop, y + 0.0005f, fs, fs);
 			// the drowned band of the far wall, foot (levelM under) to its waterline (0 under), or to its rim if it is drowned
 			// whole; banded so the fade follows the law, not a straight ramp
 			float drowned = hFull - hDry;
@@ -503,21 +505,25 @@ namespace RimMandrake.FlowWorks
 				for (int b = 0; b < RM_UnderLiquid.Bands; b++)
 				{
 					float z0 = floorTop + drowned * b / RM_UnderLiquid.Bands, z1 = floorTop + drowned * (b + 1) / RM_UnderLiquid.Bands;
-					byte a0 = Alpha(RM_UnderLiquid.Seen(clarity, RM_UnderLiquid.MetresAt(z0, floorTop + drowned, floorTop, lineM, levelM)));
-					byte a1 = Alpha(RM_UnderLiquid.Seen(clarity, RM_UnderLiquid.MetresAt(z1, floorTop + drowned, floorTop, lineM, levelM)));
-					Quad(RM_FaceMaterial.FaceMat(faceGround), c.x, c.z + z0, 1f, z1 - z0, y + 0.0002f, SeenTint(a0), SeenTint(a1), UvFace);
+					float s0 = RM_UnderLiquid.Seen(clarity, RM_UnderLiquid.MetresAt(z0, floorTop + drowned, floorTop, lineM, levelM));
+					float s1 = RM_UnderLiquid.Seen(clarity, RM_UnderLiquid.MetresAt(z1, floorTop + drowned, floorTop, lineM, levelM));
+					Quad(RM_FaceMaterial.FaceMat(faceGround), c.x, c.z + z0, 1f, z1 - z0, y + 0.0002f, Opaque, Opaque, UvFace);
 					QuadVMat(RM_FaceMaterial.ShadeMat, c.x, c.z + z0, 1f, z1 - z0, y + 0.0003f,
-						new Color32(255, 248, 232, (byte)(lit * a0)), new Color32(255, 248, 232, (byte)(lit * a1)));
+						new Color32(255, 248, 232, (byte)(lit * 255f)), new Color32(255, 248, 232, (byte)(lit * 255f)));
+					// the sheet between the side walls' feet; each strip carries its own (never twice over a corner)
+					QuadVMat(RM_FaceMaterial.SheetMat, c.x + wW, c.z + z0, 1f - wW - wE, z1 - z0, y + 0.0005f, SheetTint(body, s0),
+						SheetTint(body, s1));
 				}
 			}
-			SideUnder(map, eng, c, d, west, false, lv, levelM, clarity, y + 0.0004f);
-			SideUnder(map, eng, c, d, east, true, lv, levelM, clarity, y + 0.0004f);
+			SideUnder(map, eng, c, d, west, false, lv, levelM, clarity, body, 1f - hDry, y + 0.0004f);
+			SideUnder(map, eng, c, d, east, true, lv, levelM, clarity, body, 1f - hDry, y + 0.0004f);
 		}
 
 		/// <summary>The drowned strip of one side wall, between its waterline (the dry face's foot) and its full foot: the
-		/// wall's own ground lit as the dry SideFace, banded across by the same law as the far wall.</summary>
+		/// wall's own ground lit as the dry SideFace, opaque, under the sheet banded across by the same law as the far wall, up to
+		/// <paramref name="wetTop"/> (the far wall's waterline: above it the corner is dry face).</summary>
 		private void SideUnder(Map map, RM_MapComponent_Excavation eng, IntVec3 c, int d, int nb, bool east, float lv, float levelM,
-			float clarity, float y)
+			float clarity, Color body, float wetTop, float y)
 		{
 			float wFull = RM_UnderLiquid.SideFace(RM_UnderLiquid.Exposed(d, nb, 0f));
 			float wDry = RM_UnderLiquid.SideFace(RM_UnderLiquid.Exposed(d, nb, lv));
@@ -536,24 +542,22 @@ namespace RimMandrake.FlowWorks
 				// distance from the bank edge: wDry (the line) .. wFull (the foot)
 				float e0 = wDry + span * b / RM_UnderLiquid.Bands, e1 = wDry + span * (b + 1) / RM_UnderLiquid.Bands;
 				float mid = (e0 + e1) * 0.5f;
-				byte q = Alpha(RM_UnderLiquid.Seen(clarity, RM_UnderLiquid.MetresAt(mid, wDry, wFull, lineM, levelM)));
+				Color32 st = SheetTint(body, RM_UnderLiquid.Seen(clarity, RM_UnderLiquid.MetresAt(mid, wDry, wFull, lineM, levelM)));
 				float x0 = east ? c.x + 1f - e1 : c.x + e0;
-				Quad(face, x0, c.z, e1 - e0, 1f, y, SeenTint(q), SeenTint(q), UvWorld);
-				QuadVMat(RM_FaceMaterial.ShadeMat, x0, c.z, e1 - e0, 1f, y + 0.0001f, new Color32(255, 248, 232, (byte)(lit * q)),
-					new Color32(255, 248, 232, (byte)(lit * q)));
+				Quad(face, x0, c.z, e1 - e0, 1f, y, Opaque, Opaque, UvWorld);
+				QuadVMat(RM_FaceMaterial.ShadeMat, x0, c.z, e1 - e0, 1f, y + 0.0001f, new Color32(255, 248, 232, (byte)(lit * 255f)),
+					new Color32(255, 248, 232, (byte)(lit * 255f)));
+				QuadVMat(RM_FaceMaterial.SheetMat, x0, c.z, e1 - e0, wetTop, y + 0.0001f, st, st);
 			}
 		}
 
-		private static Material washMat;
-
-		/// <summary>The darkening wash: plain vertex colour, queued just before the faces' queue so it lies under the floor
-		/// and walls drawn through the liquid, not over them.</summary>
-		private static Material WashMat => washMat ?? (washMat = new Material(MaterialPool.MatFrom(new MaterialRequest(BaseContent.WhiteTex,
-			ShaderDatabase.VertexColor))) { renderQueue = RM_FaceMaterial.FaceQueue - 1 });
+		private static readonly Color32 Opaque = new Color32(255, 255, 255, 255);
 
 		private static byte Alpha(float a) => (byte)(255f * RM_UnderLiquid.Clamp01(a) + 0.5f);
 
-		private static Color32 SeenTint(byte a) => new Color32(255, 255, 255, a);
+		/// <summary>The liquid's sheet over a point seen <paramref name="seen"/>: its body colour at alpha 1 - seen.</summary>
+		private static Color32 SheetTint(Color body, float seen) =>
+			new Color32((byte)(255f * body.r + 0.5f), (byte)(255f * body.g + 0.5f), (byte)(255f * body.b + 0.5f), Alpha(1f - seen));
 
 		/// <summary>An (nx x nz)-cell vertex grid over (x0,z0,w,h) with a colour per vertex; nz defaults to nx.</summary>
 		private void Grid(Material mat, float x0, float z0, float w, float h, int nx, Color32[,] col, float y, int nz = -1, float uvScale = 0f)

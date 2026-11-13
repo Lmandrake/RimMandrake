@@ -340,8 +340,10 @@ namespace RimMandrake.FlowWorks
 			Material m = shadowMats[q];
 			if (m == null)
 			{
-				m = MaterialPool.MatFrom(new MaterialRequest(BaseContent.WhiteTex, ShaderDatabase.Transparent,
-					new Color(0f, 0f, 0f, (float)q / RM_UnderLiquid.Steps)));
+				// under the liquid's sheet, so the sheet hides it by the law like the floor it lies on (a pooled Transparent
+				// material drew it over the water: an untinted dark square under every drowned thing)
+				m = new Material(MaterialPool.MatFrom(new MaterialRequest(BaseContent.WhiteTex, ShaderDatabase.Transparent,
+					new Color(0f, 0f, 0f, (float)q / RM_UnderLiquid.Steps)))) { renderQueue = RM_FaceMaterial.UnderSheetQueue };
 				shadowMats[q] = m;
 			}
 			return m;
@@ -381,17 +383,54 @@ namespace RimMandrake.FlowWorks
 		private static readonly MaterialPropertyBlock coverBlock = new MaterialPropertyBlock();
 		private static readonly Dictionary<Graphic, Graphic> silhouettes = new Dictionary<Graphic, Graphic>();
 
-		/// <summary>The liquid's colour where it covers a pawn: a clear liquid's darkened body colour (RM_UnderLiquid.WaterBody
-		/// x seeThroughTint x (1 - Darken)), an opaque liquid's own tint.</summary>
+		/// <summary>The liquid's colour where it covers a pawn: a clear liquid's body colour (the sheet's,
+		/// <see cref="BodyColour"/>), an opaque liquid's own tint.</summary>
 		private static Color CoverColour(RM_LiquidSurfaceLook look, float clarity)
 		{
 			if (!(clarity > 0f))
 			{
 				return look != null ? look.tint : Color.black;
 			}
-			Color t = look != null ? look.seeThroughTint : Color.white;
-			float k = 1f - RM_UnderLiquid.Darken;
-			return new Color(RM_UnderLiquid.WaterBody.r * t.r * k, RM_UnderLiquid.WaterBody.g * t.g * k, RM_UnderLiquid.WaterBody.b * t.b * k);
+			return BodyColour(look);
+		}
+
+		private static readonly Dictionary<RM_LiquidSurfaceLook, RM_UnderLiquid.Float3> liquidColours =
+			new Dictionary<RM_LiquidSurfaceLook, RM_UnderLiquid.Float3>();
+
+		/// <summary>A clear liquid's body colour (RM_UnderLiquid.Body): the colour of the LiquidDef whose look this is (its
+		/// own, or its canal fluid's), so each clear liquid keeps its own colour; fresh water's x seeThroughTint when no
+		/// LiquidDef owns the look.</summary>
+		public static Color BodyColour(RM_LiquidSurfaceLook look)
+		{
+			RM_UnderLiquid.Float3 b = RM_UnderLiquid.Body(LiquidColour(look));
+			return new Color(b.r, b.g, b.b);
+		}
+
+		private static RM_UnderLiquid.Float3 LiquidColour(RM_LiquidSurfaceLook look)
+		{
+			if (look == null)
+			{
+				return RM_UnderLiquid.WaterColour;
+			}
+			if (liquidColours.TryGetValue(look, out RM_UnderLiquid.Float3 known))
+			{
+				return known;
+			}
+			Color? own = null;
+			foreach (LiquidTypes.LiquidDef l in DefDatabase<LiquidTypes.LiquidDef>.AllDefsListForReading)
+			{
+				if (l.surfaceLook == look || (l.canalFluid != null && l.canalFluid.surfaceLook == look))
+				{
+					own = l.color;
+					break;
+				}
+			}
+			Color t = look.seeThroughTint;
+			RM_UnderLiquid.Float3 w = RM_UnderLiquid.WaterColour;
+			RM_UnderLiquid.Float3 c = own.HasValue ? new RM_UnderLiquid.Float3(own.Value.r, own.Value.g, own.Value.b)
+				: new RM_UnderLiquid.Float3(w.r * t.r, w.g * t.g, w.b * t.b);
+			liquidColours[look] = c;
+			return c;
 		}
 
 		/// <summary>The drawn height (m) of a pawn under the law: standing, its climb-size height (RM_Drowning.HeightOf);

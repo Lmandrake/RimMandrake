@@ -38,6 +38,19 @@ namespace RimMandrake.FlowWorks
 		public const int SootQueue = 2445;
 		public const int TintQueue = 2446;
 
+		/// <summary>Under a clear liquid (RIMMANDRAKE_TINT_PIT_WATER_READS_AS_WATER_NOT_MUD): a thing's floor shadow, then the
+		/// liquid's one even sheet over the floor, the walls and that shadow; both before cutout things (2450), so what stands
+		/// in the pit draws over the sheet by its own cut (RM_SubmergeDraw). A shadow after the sheet was an untinted dark
+		/// square under every drowned thing.</summary>
+		public const int UnderSheetQueue = 2448;
+		public const int SheetQueue = 2449;
+
+		private static Material sheetMat;
+
+		/// <summary>The liquid's sheet: plain vertex colour (the body colour, alpha = 1 - Seen at the point's depth).</summary>
+		public static Material SheetMat => sheetMat ?? (sheetMat = new Material(MaterialPool.MatFrom(new MaterialRequest(BaseContent.WhiteTex,
+			ShaderDatabase.VertexColor))) { renderQueue = SheetQueue });
+
 		/// <summary>The occluder must draw AFTER pawns so it can cover the part of one hanging below the lip.</summary>
 		public const int OccluderQueue = 3050;
 

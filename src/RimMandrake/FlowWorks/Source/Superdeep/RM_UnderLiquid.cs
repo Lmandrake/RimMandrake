@@ -13,17 +13,24 @@ namespace RimMandrake.FlowWorks
 	///    drawn height, from its foot (owner: things "stand on their bottom"). A thing hung on the N/E/W wall spans floor to
 	///    rim and is cut where that wall's own face meets the liquid (<see cref="Waterline"/>, the walls' projection).
 	///    Hung south (only its top shows above the near rim) or standing on the bank: never under.
-	///  - How much of the drowned part is seen? <see cref="Seen"/> = clarity ^ (metres of liquid over it + the surface's
-	///    own <see cref="SurfaceMetres"/>): clear water shows it tinted by depth ("a cut between clear water and unobscured
-	///    view"), an opaque liquid (clarity 0: tar, oil, blood) hides it. Clarity is the liquid's surfaceLook.seeThrough,
-	///    read as the share of the view left after 1 m.
-	/// Drawn: the part above the line as it is; the drowned part over the liquid's terrain at alpha = Seen (so it reads as
-	/// lerp(liquid, thing, Seen)), in up to <see cref="Bands"/> bands by depth. The pit's own shade is the walls' (from the
+	///  - How much of the drowned part is seen? <see cref="Seen"/>, by the metres of liquid over it: clear water shows it
+	///    tinted by depth ("a cut between clear water and unobscured view"), an opaque liquid (clarity 0: tar, oil, blood)
+	///    hides it. Clarity is the liquid's surfaceLook.seeThrough; it sets how soon the liquid reaches its full body
+	///    (<see cref="FullMetresFor"/>).
+	/// Drawn: the part above the line as it is; the drowned part at alpha = Seen over the liquid's sheet (the pit floor under
+	/// the body colour at 1 - Seen, RM_ExcavationWalls.SeeThrough), in up to <see cref="Bands"/> bands by depth. So a drowned
+	/// thing still lets some sheeted floor through and shows less body colour than the floor around it at middle depths
+	/// (RIMMANDRAKE_COVER_DROWNED_SPRITES_IN_BODY_COLOUR_NOT_FLOOR). The pit's own shade is the walls' (from the
 	/// full wall depth, inside the outline only) and is seen through the liquid by the same law (owner 2026-11-12: "it should
 	/// simply be transparent to them as usual. It's much more that they're only inside the pit").
 	/// Retuned for RIMMANDRAKE_TUNE_WATER_CLARITY_DARKER_AND_HALF_AS_OPAQUE (owner 2026-11-12, 6:12 PM: "it becomes about
 	/// twice too opaque as it should by the end. Its color should also be darkened"): a clear liquid's opacity is capped at
-	/// <see cref="DeepOpacity"/> and the liquid under what it covers is darkened by <see cref="Darken"/>. Extended for
+	/// <see cref="DeepOpacity"/>, and it is dark (<see cref="Darken"/>, now the body colour's darkness).
+	/// Retuned for RIMMANDRAKE_TINT_PIT_WATER_READS_AS_WATER_NOT_MUD (owner by card 2026-11-12, "Blue that grows with
+	/// depth"; 8:55 PM: "The water still does not read as water well even at 4m, looks more like faint blue mist patches. I
+	/// think I asked you for too little opacity."): a gentle-start curve to <see cref="DeepOpacity"/> 0.90 at
+	/// <see cref="FullMetres"/>, and the liquid drawn as ONE even sheet of its <see cref="Body"/> colour over an opaque
+	/// floor (RM_ExcavationWalls.SeeThrough). Extended for
 	/// RIMMANDRAKE_FIX_BIG_PIT_SCENE_BUILDINGS_STAY_DRY: installed buildings by their cover (<see cref="BuildingMetres"/>),
 	/// pawns and corpses, one floor shadow (<see cref="ThingShadow"/>) and labels (<see cref="LabelAlpha"/>).
 	/// The offline twin is model/underliquid.py; selftest_flowworks_underliquid_parity.py keeps the two equal.
@@ -32,9 +39,6 @@ namespace RimMandrake.FlowWorks
 	public static class RM_UnderLiquid
 	{
 		public const float Notch = RM_Volume.MetresPerLevel;
-
-		/// <summary>The liquid's surface itself takes this much from the view, so the line where liquid starts always reads.</summary>
-		public const float SurfaceMetres = 0.35f;
 
 		// drawn heights (m): how far up a thing the liquid line must climb before it is all under
 		public const float StakeMetres = 1.0f;
@@ -57,15 +61,29 @@ namespace RimMandrake.FlowWorks
 
 		// the experience numbers; Mod Settings write them (RimMandrakeFlowWorksSettings.PushUnderLiquid), these are the
 		// shipped defaults
-		public const float DefaultDeepOpacity = 0.5f;
-		public const float DefaultDarken = 0.25f;
+		public const float DefaultDeepOpacity = 0.90f;
+		public const float DefaultFullMetres = 4.0f;
+		public const float DefaultDarken = 0.6f;
 		public const float DefaultThingShadowAlpha = 0.30f;
 
-		/// <summary>The most a clear liquid ever hides, however deep (setting underLiquidDeepOpacity).</summary>
+		/// <summary>The most a clear liquid ever hides: its body at full depth (setting underLiquidDeepOpacity).</summary>
 		public static float DeepOpacity = DefaultDeepOpacity;
 
-		/// <summary>How much darker the liquid shows under what it covers (setting underLiquidDarken).</summary>
+		/// <summary>The depth (m) at which fresh water reaches <see cref="DeepOpacity"/> (setting underLiquidFullMetres).</summary>
+		public static float FullMetres = DefaultFullMetres;
+
+		/// <summary>How dark a clear liquid's body colour is (setting underLiquidDarken): <see cref="Body"/>.</summary>
 		public static float Darken = DefaultDarken;
+
+		/// <summary>Fresh water's seeThrough: the liquid <see cref="FullMetres"/> is stated for.</summary>
+		public const float ReferenceClarity = 0.45f;
+
+		/// <summary>rise(x) = 1 - (1 - x)^CurvePower: gentle at first ("very transparent at first"), steps a viewer can tell
+		/// apart all the way to the full depth.</summary>
+		public const float CurvePower = 1.4f;
+
+		/// <summary>A body colour is the liquid's own colour to this power (darker and more saturated), x (1 - Darken).</summary>
+		public const float BodyGamma = 3.0f;
 
 		/// <summary>The floor shadow of a thing standing in a pit, dry (setting pitThingShadowAlpha).</summary>
 		public static float ThingShadowAlpha = DefaultThingShadowAlpha;
@@ -73,9 +91,18 @@ namespace RimMandrake.FlowWorks
 		/// <summary>A label (quality, stack count, owner) is hidden once its thing is seen less than this.</summary>
 		public const float LabelHidden = 0.05f;
 
-		/// <summary>A clear liquid's colour where it covers a pawn or corpse (before <see cref="Darken"/> and the liquid's
-		/// seeThroughTint); an opaque liquid covers with its own tint.</summary>
-		public static readonly Float3 WaterBody = new Float3(0.20f, 0.32f, 0.43f);
+		/// <summary>Fresh water's LiquidDef colour: the body of a clear liquid whose own colour is not known.</summary>
+		public static readonly Float3 WaterColour = new Float3(0.62f, 0.80f, 0.98f);
+
+		/// <summary>A clear liquid's body colour, the one sheet drawn over everything it covers (floor, walls, pawns): its
+		/// own colour darker and more saturated, never a pale wash (owner: "a dark colour, not pale").</summary>
+		public static Float3 Body(Float3 colour)
+		{
+			float k = 1f - Darken;
+			return new Float3(Deepen(colour.r) * k, Deepen(colour.g) * k, Deepen(colour.b) * k);
+		}
+
+		private static float Deepen(float v) => (float)System.Math.Pow(Clamp01(v), BodyGamma);
 
 		public struct Float3
 		{
@@ -90,8 +117,10 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>The one floor shadow of a thing standing in a pit (owner 2026-11-12: shadows only inside the pit, "it
-		/// should simply be transparent to them as usual"): it lies on the floor, <paramref name="levelMetres"/> under.</summary>
-		public static float ThingShadow(float clarity, float levelMetres) => ThingShadowAlpha * Seen(clarity, levelMetres);
+		/// should simply be transparent to them as usual"): its own alpha. It is drawn UNDER the liquid's sheet
+		/// (RM_FaceMaterial.UnderSheetQueue), which hides it by the law like the floor it lies on; drawn over the liquid it was
+		/// an untinted dark square under every thing. None under an opaque liquid.</summary>
+		public static float ThingShadow(float clarity, float levelMetres) => levelMetres > 0f && !(clarity > 0f) ? 0f : ThingShadowAlpha;
 
 		/// <summary>A thing's label fades with its top (<paramref name="heightMetres"/> up from the floor); 0 = hidden.</summary>
 		public static float LabelAlpha(float clarity, float levelMetres, float heightMetres)
@@ -109,7 +138,7 @@ namespace RimMandrake.FlowWorks
 		public static float Clamp01(float v) => v <= 0f ? 0f : (v >= 1f ? 1f : v);
 
 		/// <summary>The one see-through law: 1 above the line; 0 for an opaque liquid; else
-		/// 1 - DeepOpacity x (1 - clarity ^ (metres over + SurfaceMetres)).</summary>
+		/// 1 - DeepOpacity x rise(metres over / FullMetresFor(clarity)).</summary>
 		public static float Seen(float clarity, float metresOver)
 		{
 			if (metresOver <= 0f)
@@ -124,7 +153,22 @@ namespace RimMandrake.FlowWorks
 			{
 				return 1f;
 			}
-			return 1f - DeepOpacity * (1f - (float)System.Math.Pow(clarity, metresOver + SurfaceMetres));
+			return 1f - DeepOpacity * Rise(metresOver / FullMetresFor(clarity));
+		}
+
+		/// <summary>The depth (m) at which a liquid of this clarity (0..1, exclusive) reaches <see cref="DeepOpacity"/>: fresh
+		/// water at <see cref="FullMetres"/>, a murkier liquid sooner, a clearer one later.</summary>
+		public static float FullMetresFor(float clarity) =>
+			FullMetres * (float)(System.Math.Log(ReferenceClarity) / System.Math.Log(clarity));
+
+		/// <summary>0 at the surface, 1 at the full depth and below: 1 - (1 - x)^CurvePower.</summary>
+		public static float Rise(float x)
+		{
+			if (x <= 0f)
+			{
+				return 0f;
+			}
+			return x >= 1f ? 1f : 1f - (float)System.Math.Pow(1f - x, CurvePower);
 		}
 
 		/// <summary>The one cut: the share of a thing standing <paramref name="baseMetres"/> above the floor and
