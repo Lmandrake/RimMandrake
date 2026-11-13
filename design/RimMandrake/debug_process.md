@@ -372,3 +372,15 @@ runs it) and, where the symptom is live-observable, an in-game proof row. Taste 
 entry. Before showing him anything, run these checks so the same class of defect never reaches him twice. Worked set:
 `infrastructure/state/evidence/owner_review_FW_20261024.md` (pits/water, pipe joins, sprinklers, gates that never open,
 recoloured bridges, unnumbered stations).
+
+**It closes only with a NAMED check or a written reason** (owner, 2026-11-12 ~9:20 PM PST: *"So are we recording each of
+these defects for future testing to keep them fixed? I believe these sessions were supposed to generate test cases in the
+future, especially if they can be made offline or very fast ingame validations, yes?"*). The close of an owner-reported
+defect names the check that keeps it fixed (file and row or case name, watched failing on the build he saw where
+cheap), or says in one line why no machine can check it: LOOK ONLY (taste: a colour, "reads as water") or BLOCKED ON
+HOOK (the mod exposes no state to read; the hook is filed as its own item with its acceptance test). Prefer an offline
+selftest, then a fast in-game state read on the minimal list (under ~2 min). A program can hold this line at
+`rimflow close` for an item carrying an `--owner-said` event (refuse a close with neither `--regression <path::row>`
+nor `--no-regression "<reason>"`): `RIMMANDRAKE_REFUSE_OWNER_DEFECT_CLOSE_WITHOUT_REGRESSION`. Worked set for the
+2026-11-12 pit looks: `infrastructure/state/evidence/owner_review_FW_20261112.md`,
+in-game half `src/RimMandrake/FlowWorks/northstar/owner_look_regressions.py`.
