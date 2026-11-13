@@ -1247,7 +1247,7 @@ def bsched(**seat_kw):
             "backstop_ctx_tokens": 120_000, "backstop_idle_s": 3600, "backstop_human_idle_s": 14_400}
     seat.update(seat_kw)
     s = {"seats": {"BENCH": {"enabled": True, "wake": False, "recover_dead": False, "session_name": "CONDUCTOR",
-                             "session_aliases": ["AGENT BENCH"], "clone": BCLONE, "model": "opus"}},
+                             "session_aliases": ["AGENT BENCH"], "clone": BCLONE, "model": "fable"}},
          "seat_restart": {"enabled": True, "seats": {"BENCH": seat}},
          "ledger_notes": False, "publish": False}
     p = os.path.join(TMP, "bsched.json")
@@ -1272,10 +1272,10 @@ def test_g1_bench_relaunch_argv_is_the_conductor_wake():
     cfg = SR.config(bsched())["BENCH"]
     argv = SR.relaunch_argv("BENCH", cfg, "goodbye")
     check(argv[argv.index("--name") + 1] == "CONDUCTOR" and argv[argv.index("--remote-control") + 1] == "CONDUCTOR"
-          and argv[argv.index("--model") + 1] == "opus",
-          "G1 BENCH relaunch: --name/--remote-control CONDUCTOR, --model opus (%s)" % argv[:-1])
+          and argv[argv.index("--model") + 1] == "fable",
+          "G1 BENCH relaunch: --name/--remote-control CONDUCTOR, --model fable (%s)" % argv[:-1])
     import install_wt_seat_profiles as W
-    launch = W.LAUNCH.format(script=W.BOUNDED.format(home=BCLONE), label="CONDUCTOR", model="opus")
+    launch = W.LAUNCH.format(script=W.BOUNDED.format(home=BCLONE), label="CONDUCTOR", model="fable")
     launch = [x.strip("'") for x in launch.split()]
     check(argv[:-1] == launch, "G1 BENCH relaunch argv is the WT profile's own LAUNCH line (%s vs %s)" % (argv[:-1], launch))
     p = argv[-1]
@@ -1376,7 +1376,7 @@ def test_g5_live_schedule_has_the_conductor_entry():
     on = json.loads(json.dumps(live))
     on["seat_restart"]["seats"]["BENCH"]["enabled"] = True
     c = SR.config(on).get("BENCH") or {}
-    check(c.get("kind") == "conductor" and c.get("session_name") == "CONDUCTOR" and c.get("model") == "opus"
+    check(c.get("kind") == "conductor" and c.get("session_name") == "CONDUCTOR" and c.get("model") == "fable"
           and c.get("clone") == "/home/mandrake/rm/bench", "G5 the live schedule restarts BENCH as the Conductor (%s)"
           % {k: c.get(k) for k in ("kind", "session_name", "model", "clone")})
     check(c.get("goodbye_quiet_s") == 0, "G5 BENCH goodbye fires instantly (%s; grace_s never times a goodbye)" % c.get("goodbye_quiet_s"))

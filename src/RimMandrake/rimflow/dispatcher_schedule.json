@@ -47,7 +47,7 @@
   "BENCH": {"enabled": true, "wake": false, "recover_dead": false, "session_name": "CONDUCTOR",
             "session_aliases": ["AGENT BENCH"],
             "_names_why": "CONDUCTOR_RCNAME_RENAME_DISPATCHER_ALIAS (owner 2026-10-29: 'So it's called bench again instead of conductor.'): the window is launched and SHOWN as CONDUCTOR (session --name, --remote-control, title hook); a window launched before the rename keeps 'AGENT BENCH' until its next relaunch, so every matcher takes both (session_match.names_of). Never 'AGENT CONDUCTOR': that is the Conductor role's window_name hold, and the hold must not fire on this tile (selftest_conductor_identity). Ledger key stays BENCH.",
-            "clone": "/home/mandrake/rm/bench", "model": "opus",
+            "clone": "/home/mandrake/rm/bench", "model": "fable",
             "_why": "BENCH is the owner's workshop window (the Conductor's session mode): watched, never woken or resumed by a program"}
  },
  "golive": {"roles": ["Conductor", "Operations", "Producer", "Auditor", "Innovator"], "recover_dead": [],
