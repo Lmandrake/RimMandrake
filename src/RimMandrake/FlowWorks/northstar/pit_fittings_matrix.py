@@ -217,6 +217,11 @@ def stage():
     for i in range(3):
         for j in range(3):
             call("jawa/flowworks_excavation_drive", x=px + i, z=pz + j, deepenLevels=PROBE_D, setFill=-1, fillInLevels=0)
+    # HARNESS (2026-11-13): the dug-swim set behind ClimbDepthAt is derived and refreshed only every
+    # SwimRefreshTicks (60). On a site that was filled before, a paused restage read each pit's wall
+    # above the OLD water (wall = depth - old fill), and every sheer-drop fitting in columns F3+ was
+    # refused. Let one refresh run on the fresh, dry pits before placing anything.
+    bridge().ticks(70)
     des = designators()
     call("rimworld/set_god_mode", enabled=True)
     placed = {}
