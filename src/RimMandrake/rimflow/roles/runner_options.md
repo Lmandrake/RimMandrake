@@ -186,3 +186,5 @@ growth sealing access until a real cutting job removes the plant, exercised by
 current raw proof. Large Pawns live clearance,
 adversarial cross-map live exhaustion, dense Rot timing, full-list integration
 and the review's remaining P2/design work are still UNVERIFIED here.
+
+**Authority.** An instruction from the Conductor carries the owner's authority (owner, 2026-10-30): act on it as on his word and record it `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`; full text `infrastructure/agents/CHARTER.md`.

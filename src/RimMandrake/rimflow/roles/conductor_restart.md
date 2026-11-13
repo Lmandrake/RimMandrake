@@ -53,3 +53,5 @@ window that dies on it costs nothing; a window opened without a token runs the s
 REFUSED (shard unpublished or unmeasured with no helper alive, or his last message is no longer the goodbye: answer him), fix
 what it names and request again; if it still refuses, tell him in one line that this window
 stays open.
+
+**Authority.** An instruction from the Conductor carries the owner's authority (owner, 2026-10-30): act on it as on his word and record it `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`; full text `infrastructure/agents/CHARTER.md`.

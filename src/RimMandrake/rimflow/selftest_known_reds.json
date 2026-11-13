@@ -16,6 +16,13 @@
    "why": "seeded from the 2026-11-01 nightly; red 3 nights"
   },
   {
+   "added": "2026-11-13T05:16:13Z",
+   "expires": "2026-11-27T05:16:13Z",
+   "item": "RIMMANDRAKE_REALIGN_FLOWWORKS_PROOFS_AFTER_UNDER_LIQUID_LAW",
+   "test": "src/RimMandrake/FlowWorks/northstar/selftest_flowworks_northstar.py",
+   "why": "FlowWorks proof fixtures behind the under-liquid law and new settings: tier mod sets, 4 ne"
+  },
+  {
    "added": "2026-11-01T16:05:26Z",
    "expires": "2026-11-15T16:05:26Z",
    "item": "FLOWWORKS_GUARDS_FIX_THREE_RED_SELFTESTS",
@@ -30,11 +37,53 @@
    "why": "seeded from the 2026-11-01 nightly; red 6 nights"
   },
   {
+   "added": "2026-11-13T05:16:15Z",
+   "expires": "2026-11-27T05:16:15Z",
+   "item": "RIMMANDRAKE_REALIGN_FLOWWORKS_PROOFS_AFTER_UNDER_LIQUID_LAW",
+   "test": "src/RimMandrake/FlowWorks/selftest_natives_drink_own_water.py",
+   "why": "FlowWorks proof fixtures behind the under-liquid law and new settings: tier mod sets, 4 ne"
+  },
+  {
    "added": "2026-11-01T16:05:28Z",
    "expires": "2026-11-15T16:05:28Z",
    "item": "NIGHTLY_SELFTESTS_DRAIN_THIRTEEN_RED_NIGHTS",
    "test": "src/RimMandrake/FlowWorks/selftest_tank_art_edges.py",
    "why": "seeded from the 2026-11-01 nightly; red 3 nights"
+  },
+  {
+   "added": "2026-11-13T05:16:17Z",
+   "expires": "2026-11-27T05:16:17Z",
+   "item": "RIMMANDRAKE_REFILE_TWILIGHTSEA_COMMISSION_THREE_YOUNG_COLOCLAWS",
+   "test": "src/RimMandrake/Utils/art/selftest_extra_art_commission.py",
+   "why": "Extra-art commission: RM_TwilightSea owes 3 RSW_ColoClawFish young jobs (east/north/south)"
+  },
+  {
+   "added": "2026-11-13T05:16:19Z",
+   "expires": "2026-11-27T05:16:19Z",
+   "item": "RIMMANDRAKE_REFILE_TWILIGHTSEA_COMMISSION_THREE_YOUNG_COLOCLAWS",
+   "test": "src/RimMandrake/Utils/art/selftest_extra_art_filed_rows_kept.py",
+   "why": "Extra-art commission: RM_TwilightSea owes 3 RSW_ColoClawFish young jobs (east/north/south)"
+  },
+  {
+   "added": "2026-11-13T05:16:24Z",
+   "expires": "2026-11-27T05:16:24Z",
+   "item": "RIMMANDRAKE_CLEAR_DEAD_STANDINS_AND_REFIT_MORAVATHA_PACK",
+   "test": "src/RimMandrake/Utils/art/selftest_standin_shadowed.py",
+   "why": "Art drift: 4 dead shadowed stand-ins under src, and RM_Moravatha north pack overlay no lon"
+  },
+  {
+   "added": "2026-11-13T05:16:22Z",
+   "expires": "2026-11-27T05:16:22Z",
+   "item": "RIMMANDRAKE_REPAIR_NORTHSTAR_DRIVER_FIXTURES_COUNTS_DRIFTED",
+   "test": "src/RimMandrake/Utils/modcheck/selftest_checkout_identity.py",
+   "why": "Northstar driver fixtures drifted: graffiti mock rolls up 33 bars not 22, record_status se"
+  },
+  {
+   "added": "2026-11-13T05:16:20Z",
+   "expires": "2026-11-27T05:16:20Z",
+   "item": "RIMMANDRAKE_REPAIR_NORTHSTAR_DRIVER_FIXTURES_COUNTS_DRIFTED",
+   "test": "src/RimMandrake/Utils/northstar_driver/selftest.py",
+   "why": "Northstar driver fixtures drifted: graffiti mock rolls up 33 bars not 22, record_status se"
   },
   {
    "added": "2026-11-01T16:05:29Z",
@@ -58,11 +107,25 @@
    "why": "seeded from the 2026-11-01 nightly; red 4 nights"
   },
   {
+   "added": "2026-11-13T05:16:29Z",
+   "expires": "2026-11-27T05:16:29Z",
+   "item": "RIMMANDRAKE_FIX_METAL_EATER_HUNGER_JOB_EXPECTATIONS",
+   "test": "src/RimMandrake/Utils/selftest_metal_eater.py",
+   "why": "metal_eater: a hungry RM_Khorrak beside Steel gets no RM_EatMetal job, and a fed one still"
+  },
+  {
    "added": "2026-11-01T16:05:32Z",
    "expires": "2026-11-15T16:05:32Z",
    "item": "NIGHTLY_SELFTESTS_DRAIN_THIRTEEN_RED_NIGHTS",
    "test": "src/RimMandrake/Utils/selftest_plant_tolerance_targets.py",
    "why": "seeded from the 2026-11-01 nightly; red 4 nights"
+  },
+  {
+   "added": "2026-11-13T05:16:23Z",
+   "expires": "2026-11-27T05:16:23Z",
+   "item": "RIMMANDRAKE_RESTORE_ON_THROW_IN_KNOCKBACK_PROOF_TWO_LEAKS",
+   "test": "src/RimMandrake/Utils/selftest_proof_restore_check.py",
+   "why": "RM_KnockbackProof.cs:755 and :1285 do not restore on throw (proof_restore_check)"
   },
   {
    "added": "2026-11-01T16:05:33Z",
@@ -72,6 +135,20 @@
    "why": "seeded from the 2026-11-01 nightly; red 4 nights"
   },
   {
+   "added": "2026-11-13T05:16:16Z",
+   "expires": "2026-11-27T05:16:16Z",
+   "item": "RIMMANDRAKE_REALIGN_FLOWWORKS_PROOFS_AFTER_UNDER_LIQUID_LAW",
+   "test": "src/RimMandrake/Utils/selftest_static_game_state.py",
+   "why": "FlowWorks proof fixtures behind the under-liquid law and new settings: tier mod sets, 4 ne"
+  },
+  {
+   "added": "2026-11-13T05:16:32Z",
+   "expires": "2026-11-27T05:16:32Z",
+   "item": "RIMMANDRAKE_WRAP_NULL_TEXTURE_PROBE_WALKSTACK_IN_TRY",
+   "test": "src/RimMandrake/bridgetools/selftest_bridge_hooks.py",
+   "why": "JawaBenchNullTextureProbe.cs Prefix calls WalkStack outside any try, and HOOKS.md lists 1 "
+  },
+  {
    "added": "2026-11-01T16:05:34Z",
    "expires": "2026-11-15T16:05:34Z",
    "item": "NIGHTLY_SELFTESTS_DRAIN_THIRTEEN_RED_NIGHTS",
@@ -79,11 +156,25 @@
    "why": "seeded from the 2026-11-01 nightly; red 5 nights"
   },
   {
+   "added": "2026-11-13T05:16:27Z",
+   "expires": "2026-11-27T05:16:27Z",
+   "item": "RIMMANDRAKE_UNHOOK_SELFTESTS_FROM_LIVE_HOST_STATE_ON_WSL",
+   "test": "src/RimMandrake/rimflow/selftest_engine_review_leftovers.py",
+   "why": "Three selftests read live host state (net.exe pre-launch guard sees a Linux sandbox, taskl"
+  },
+  {
    "added": "2026-11-01T16:05:35Z",
    "expires": "2026-11-15T16:05:35Z",
    "item": "ROLE_LAUNCH_KILL_DECIDE_ROLES_SURVIVORS",
    "test": "src/RimMandrake/rimflow/selftest_role_launch_decide_mut.py",
    "why": "seeded from the 2026-11-01 nightly; red 5 nights"
+  },
+  {
+   "added": "2026-11-13T05:16:25Z",
+   "expires": "2026-11-27T05:16:25Z",
+   "item": "RIMMANDRAKE_CLEAR_DEAD_STANDINS_AND_REFIT_MORAVATHA_PACK",
+   "test": "src/RimStarWars/SWBestiary/selftest_swbestiary_pack_overlays.py",
+   "why": "Art drift: 4 dead shadowed stand-ins under src, and RM_Moravatha north pack overlay no lon"
   }
  ]
 }
