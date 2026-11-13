@@ -338,11 +338,11 @@
    "why": "born after the 03:00 nightly; parked under its item [night rule skipped, owner-ruled: Mandrake card 2026-11-12 23:29 PST \"Ops-watch -> List them, switch on\"]"
   },
   {
-   "added": "2026-11-01T16:05:34Z",
-   "expires": "2026-11-15T16:05:34Z",
-   "item": "NIGHTLY_SELFTESTS_DRAIN_THIRTEEN_RED_NIGHTS",
+   "added": "2026-11-13T09:23:37Z",
+   "expires": "2026-11-27T09:23:37Z",
+   "item": "RIMMANDRAKE_CLEAN_NIGHTLY_SWEEP_ONCE_THEN_RED_RINGS",
    "test": "src/RimMandrake/rimflow/selftest_dispatcher_r2.py",
-   "why": "seeded from the 2026-11-01 nightly; red 5 nights"
+   "why": "re-pointed: parking item NIGHTLY_SELFTESTS_DRAIN_THIRTEEN_RED_NIGHTS was superseded by RIMMANDRAKE_CLEAN_NIGHTLY_SWEEP_ONCE_THEN_RED_RINGS (2026-11-13), so the entry covered nothing and the metronome's build cop began re-filing it (SELFTEST_FIX_DISPATCHER_R2_BUYQ)"
   },
   {
    "added": "2026-11-13T05:16:27Z",
