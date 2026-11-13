@@ -583,6 +583,13 @@
     "ref": "rm-coverage-judge-1794481849",
     "stage": 5,
     "tokens": 739503
+   },
+   {
+    "at": "2026-11-13T08:24:21Z",
+    "kind": "stage",
+    "ref": "run bench-ek2-st3-20261113",
+    "stage": 3,
+    "tokens": 0
    }
   ],
   "reserve": 60000,
@@ -1116,18 +1123,41 @@
    "stage": 5,
    "what": "park",
    "why": "ceiling: his card (EK sign-off -> One judge run) lifted the ceiling park for one coverage-judge run, but the judge could not start: exam.json was run on the tree and sheet before the gap fixes (scenarios_hash, tree and sheet all stale), and rerunning the exam is a Designer run his card did not grant. Re-parked; no judge or Designer run spent. (park_summary.md)"
+  },
+  {
+   "at": "2026-11-13T08:23:59Z",
+   "stage": 3,
+   "what": "invalidated",
+   "why": "inputs changed since stage 3 was accepted: sheet, tree, scenes; back to stage 3"
+  },
+  {
+   "at": "2026-11-13T08:23:59Z",
+   "stage": 3,
+   "what": "park_lifted",
+   "why": "his word on RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH lifts the ceiling park"
+  },
+  {
+   "at": "2026-11-13T08:23:59Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "90047782 of 4000000 spent; run bench-ek2-st3-20261113 goes on with 3940000 (advisory)"
+  },
+  {
+   "at": "2026-11-13T08:23:59Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run bench-ek2-st3-20261113, stage 3, budget 3940000"
+  },
+  {
+   "at": "2026-11-13T08:24:21Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run bench-ek2-st3-20261113: stage 3 done"
   }
  ],
  "item": "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
- "loop_since": "2026-11-13T07:53:23Z",
+ "loop_since": "2026-11-13T08:23:59Z",
  "mod": "ExplosiveKnockback",
- "park": {
-  "at": "2026-11-13T07:53:23Z",
-  "kind": "ceiling",
-  "quick_look": true,
-  "summary": "park_summary.md",
-  "why": "his card (EK sign-off -> One judge run) lifted the ceiling park for one coverage-judge run, but the judge could not start: exam.json was run on the tree and sheet before the gap fixes (scenarios_hash, tree and sheet all stale), and rerunning the exam is a Designer run his card did not grant. Re-parked; no judge or Designer run spent."
- },
  "parks": [
   {
    "at": "2026-11-13T07:52:37Z",
@@ -1136,6 +1166,14 @@
    "quick_look": true,
    "summary": "park_summary.md",
    "why": "the judge-and-rework loop has spent 88694771 tokens since 2026-11-12T08:18:58Z, past its ceiling of 8000000 (2x the cap)"
+  },
+  {
+   "at": "2026-11-13T07:53:23Z",
+   "kind": "ceiling",
+   "lifted_at": "2026-11-13T08:23:59Z",
+   "quick_look": true,
+   "summary": "park_summary.md",
+   "why": "his card (EK sign-off -> One judge run) lifted the ceiling park for one coverage-judge run, but the judge could not start: exam.json was run on the tree and sheet before the gap fixes (scenarios_hash, tree and sheet all stale), and rerunning the exam is a Designer run his card did not grant. Re-parked; no judge or Designer run spent."
   }
  ],
  "pending_decision": "Coverage judge not_covered (19 gaps, all return_to 3, none needs the owner: each is settled by a record decision). Rewrite scenes/tree/sheet per coverage_verdict.json gaps: limit the 40-throw cap to pawns or remove it (d_c_all_fly) and stage more goods than the cap; showcase 1 is his one flagship scene only, with one named weapon, an in-line heavy stack and an expectation on the covered pit cell; narrow no_careless_fall to d_pit_only_forced (enemies may fall into a concealed pit by walking); add leaves and sheet lines for the shipped behaviours the sheet omits (who is spared, recovery immunity, per-weapon caps, hose drop, doors and deep water stopping a throw, explosions only); give wall_stop, shield, gas-chain, containers, teleport trace, frame probe, hose drop, settings and the walk real controls or scenes; fill record.json script_audit. Also set tree.json root_state VALIDATED and root_hash to the walk's (gate refusal). Then re-run the stage 4 exam on refrozen scenarios and the judge.",
@@ -1307,53 +1345,38 @@
    "why": "inputs changed since stage 3 was accepted: sheet, tree, scenes; back to stage 3"
   },
   {
-   "at": "2026-11-12T11:05:19Z",
-   "inputs": {
-    "exam": "8835f38d723bf5ddf958a1ec87ab01350f750f9381341b42b61491fab56f0a84",
-    "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
-    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
-    "scenes": "39f5f8460353baec6a454af4ad49351ea6a15cea4bcd259a8418ee59b52ca070",
-    "sheet": "decd62e555e47fb236d2bb0e16dedff3b2f3c8bd42434f1495887a0ed3c36137",
-    "tree": "052301404e081d7c1d5e00afeae1b8d11d0e6aaa3ac4f414e8fe9f79dcd07eb2"
-   },
-   "manifest": {
-    "designer.md": "b79052133c514f160b33c30b53d69a947adbfdbc81304681463b1038e82fce9f",
-    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
-    "designer_write.md": "2d93c81308fff5f7a37cf5c40cbfae398599cd0aa6a238d1a325a1fabff2e441"
-   },
-   "outcome": "done",
-   "owner_uncited": [],
-   "run": "bench-ek-st3k-20261112",
+   "at": "2026-11-13T08:23:59Z",
+   "outcome": "invalidated",
    "stage": 3,
-   "summary": "judge8 gaps (4, all stage 3) settled from record: closed 1x1 containers staged as a vanilla small shelf (ShelfSmall) given the guard's opt-in closed tag (no storage crate exists on the list), the weapon rack replaced by Shelf/ShelfSmall/Table2x2c; the airborne lane sets the vanilla Pawn_FlightTracker state the shipped skip reads, the mod's check untouched; new delegated dl_fire_half_off (a part switched off gives back what ships: fire throws nothing) in the settings leaf, sheet and sweep; hose_drop oracle and coverage_rest why name the Settings enabled false control; the gas-shove control names the Cauldron grid's registration removed."
+   "why": "inputs changed since stage 3 was accepted: sheet, tree, scenes; back to stage 3"
   },
   {
-   "at": "2026-11-12T11:10:35Z",
+   "at": "2026-11-13T08:24:21Z",
    "inputs": {
-    "exam": "ce18bdaeb162f1d17d2d99b24b2656738532e22c10da0f5978ea904fcc7bf917",
+    "exam": "90879d18a23ca8f625f04e0d6056305321c6165af9c9d26e04966c38356c4732",
     "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
     "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
-    "scenes": "39f5f8460353baec6a454af4ad49351ea6a15cea4bcd259a8418ee59b52ca070",
-    "sheet": "decd62e555e47fb236d2bb0e16dedff3b2f3c8bd42434f1495887a0ed3c36137",
-    "tree": "052301404e081d7c1d5e00afeae1b8d11d0e6aaa3ac4f414e8fe9f79dcd07eb2"
+    "scenes": "92b61f65bc12911ac1d90ac8d8e6778e5572cac577f18442c004154c3927a373",
+    "sheet": "bf4db944bc5835843e638d9f31755b490b4ba5c5c1659e02ade9f156fb8b1f4e",
+    "tree": "473b067275efa7e9f4550fa9244f9de083d1ca30fef08f59dc79d3f88a085061"
    },
    "manifest": {
-    "designer.md": "b79052133c514f160b33c30b53d69a947adbfdbc81304681463b1038e82fce9f",
-    "designer_exam.md": "9892f91253ca15581c15f6f64d211a2275f345d0e13e0200dcda9c9f8004e07a"
+    "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
+    "designer_write.md": "96e624c1abcd0fe2c5b6a839b820d82e91c09f920dbe20fd0878edd03dfef450"
    },
    "outcome": "done",
    "owner_uncited": [],
-   "run": "bench-ek-st4k-20261112",
-   "stage": 4,
-   "summary": "exam8 on the judge8-reworked sheet and tree: 52 scenarios (exam7s 44 plus 8 by a fresh examiner on the changed storage, airborne and settings leaves; 32 rejects), two fresh counted readers 52/52 each, control reader (closed_container_holds stripped) missed e20, e21, c10 and y6."
+   "run": "bench-ek2-st3-20261113",
+   "stage": 3,
+   "summary": "Re-acceptance only, no new writing: the tree, sheet and scenes as edited by the Conductor in 0c1592e2d7 (draws-its-contents open for hoppers and shelves, 'rack' dropped, storeroom pit restaged on the LWM weapons locker, blast_kinds lanes named). His three new events on the item are cited in record.json scope (s_owner_absorb_other_explosion_mods left open for him, the two exam/judge cards). Run under his card 'EK exam -> Rerun exam, then judge' so the stage-4 exam can rerun on the current tree and sheet."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 5,
- "status": "waiting_owner",
+ "stage": 4,
+ "status": "ready",
  "waiting_owner_feed": "86c84c506204ffd0e76dfe061854a595cd239a4a8282a5a33a9fe9e0a7c64997"
 }

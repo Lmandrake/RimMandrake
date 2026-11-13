@@ -1,0 +1,6 @@
+{
+ "run": "bench-ek2-st3-20261113",
+ "stage": 3,
+ "outcome": "done",
+ "summary": "Re-acceptance only, no new writing: the tree, sheet and scenes as edited by the Conductor in 0c1592e2d7 (draws-its-contents open for hoppers and shelves, 'rack' dropped, storeroom pit restaged on the LWM weapons locker, blast_kinds lanes named). His three new events on the item are cited in record.json scope (s_owner_absorb_other_explosion_mods left open for him, the two exam/judge cards). Run under his card 'EK exam -> Rerun exam, then judge' so the stage-4 exam can rerun on the current tree and sheet."
+}
