@@ -354,10 +354,17 @@
     "ref": "run rm-role-designer-1794594791",
     "stage": 5,
     "tokens": 500000
+   },
+   {
+    "at": "2026-11-13T19:03:33Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794596464",
+    "stage": 3,
+    "tokens": 288608
    }
   ],
   "reserve": 60000,
-  "spent": 11660405
+  "spent": 11949013
  },
  "coverage_rounds": [
   {
@@ -778,6 +785,30 @@
    "stage": 5,
    "what": "retry",
    "why": "run rm-role-designer-1794594791 result rejected: no result.json (a closing message is not a result)"
+  },
+  {
+   "at": "2026-11-13T19:01:13Z",
+   "stage": 3,
+   "what": "invalidated",
+   "why": "inputs changed since stage 3 was accepted: sheet, tree, scenes; back to stage 3"
+  },
+  {
+   "at": "2026-11-13T19:01:13Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "11660405 of 4000000 spent; run rm-role-designer-1794596464 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-13T19:01:14Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1794596464, stage 3, budget 500000"
+  },
+  {
+   "at": "2026-11-13T19:03:33Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run rm-role-designer-1794596464: stage 3 done"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -1007,30 +1038,6 @@
    "summary": "The returned root-firebreak decision is already settled: his card OWNER:1793950669508519029 ('Use the proposed ending', turn_05.md) approved the current root text (no firebreak floor; a paved strip >=2 cells stops ground fire; a fire-hawk ember can carry 6 cells past it; the firefoam sprayer reaches the fruit; scorch-fruit right behind the front). No ask is sent and no core contradiction is open, so nothing new goes to him. Stage 3 owes the new root text in sheet/tree plus the 8 coverage gaps in coverage_verdict.json. Budget: 5.37M of the 4.0M cap spent (advisory over_budget); raising the cap is the Conductor's call."
   },
   {
-   "at": "2026-11-06T08:22:06Z",
-   "inputs": {
-    "exam": "781c20ccfee15020138fa10bbaf550d91d696225760749d8aa010662d17d8d38",
-    "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
-    "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
-    "root": "219a7768830abbabe1dde7fb16b488c4fef190cf760a0de62ae1d69ac397b66b",
-    "scenes": "227054470a7b899ac1ae4374bd0129f6446d0ded2f040c825cbaa49a94b24f41",
-    "sheet": "6c720a5b278642ef393423b293e918c447b12e360e1821767f4cac7065b11979",
-    "tree": "881db40073f1ed0448c4b25a010461045c6544610062f5f011ce2670d561a9c9"
-   },
-   "manifest": {
-    "designer.md": "41dfd764d103828df69df029eea914873897039a1d7855ad7083c647f3d43cc0",
-    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
-    "designer_write.md": "2d93c81308fff5f7a37cf5c40cbfae398599cd0aa6a238d1a325a1fabff2e441"
-   },
-   "outcome": "done",
-   "owner_uncited": [
-    "1793766816609436834"
-   ],
-   "run": "rm-role-designer-1793952905",
-   "stage": 3,
-   "summary": "Root ending (OWNER:1793950669508519029) carried into sheet/tree: paved_strip_holds_the_line now reads front and near-side smoulder stopped, ember on paving lights nothing, hawk can carry 6 cells past; new leaf firefoam_sprayer_reaches_the_fruit. Coverage gaps: new leaf+scene furnacebeast_banks_heat_and_smoulders_bed/sc_furnace_bed (control furnace thermal off, ullai in same fire); sprayer, sand shovel, rite hook promoted to acceptance with leaves and controls; sc_paved_strip asserts clear weather and fire burning at the strip, drives a near-side relight; sc_three_skies reads cinderfall lightning, black-rain ash wash, clear-sky and vanilla-rain fire pads; sc_ash_watered control is the watered strip with the lift switch off; per-scene restore (sc_no_rain disposable map, sc_walk pre-walk save); offline leaf biome_text_says_engineered. The herd-migration gap was stale: the world leg was cut by his card 2026-10-23 (84cc81013d), so the inventory is corrected and no scene added; About.xml/race text still promising it is owed. Items filed: PYRELANDS_SCENES_BUILD_EIGHT_JUDGE_GAPS, PYRELANDS_TEXT_FIX_ENGINEERED_NEVER_SAID."
-  },
-  {
    "at": "2026-11-06T08:31:42Z",
    "outcome": "rejected",
    "run": "rm-role-designer-1793953617",
@@ -1038,29 +1045,6 @@
    "why": [
     "no result.json (a closing message is not a result)"
    ]
-  },
-  {
-   "at": "2026-11-06T16:03:43Z",
-   "inputs": {
-    "exam": "28c949c14eb5077abcd8d0662e9bb29bbb03b1147d7de95a8c6a29045828d1af",
-    "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
-    "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
-    "root": "219a7768830abbabe1dde7fb16b488c4fef190cf760a0de62ae1d69ac397b66b",
-    "scenes": "227054470a7b899ac1ae4374bd0129f6446d0ded2f040c825cbaa49a94b24f41",
-    "sheet": "6c720a5b278642ef393423b293e918c447b12e360e1821767f4cac7065b11979",
-    "tree": "881db40073f1ed0448c4b25a010461045c6544610062f5f011ce2670d561a9c9"
-   },
-   "manifest": {
-    "designer.md": "41dfd764d103828df69df029eea914873897039a1d7855ad7083c647f3d43cc0",
-    "designer_exam.md": "3e3f16a15ed2c45e2851911d42c9369cdc7560758fe1f386dc38012b93534217"
-   },
-   "outcome": "done",
-   "owner_uncited": [
-    "1793766816609436834"
-   ],
-   "run": "rm-role-designer-1793978694",
-   "stage": 4,
-   "summary": "Cold Reader exam re-run against the current tree and sheet (stage-3 output of rm-role-designer-1793952905, which the rejected run 1793953617 had left uncommitted and untouched). 20 frozen scenarios (Examiner 14, Challenger 6, newer leaves covered: firefoam sprayer, furnace-beast bank/bed, sand shovel, rite hook, engineered text, paved strip, black-rain compound, scorch-fruit timing). Both Readers 20/20, accept_where_reject_core 0, no Challenger misses. Control with furnacebeast_banks_heat_and_smoulders_bed removed accepted e4 and c2, which the real tree rejects. exam.json replaces the stale 2026-11-05 exam."
   },
   {
    "at": "2026-11-06T16:18:07Z",
@@ -1112,53 +1096,6 @@
    "summary": "Worldgen switch settled without asking him: draft a_worldgen_switch struck by fresh review because his 2026-08-15 ruling already decides it. Recorded d_worldgen_outside_promise (the built new-world placement switch stays, outside the promise, unchecked; sheet floor:worldgen to read 'no worldgen of our own'). Default-on question filed as PYRE_WORLDSWITCH_DECIDE_ON_BY_DEFAULT, non-blocking. No ask sent; no core contradiction open. Stage 3 owes the worldgen rewording plus the five coverage gaps in coverage_verdict.json (2026-11-06T16:05:05Z)."
   },
   {
-   "at": "2026-11-06T16:36:11Z",
-   "inputs": {
-    "exam": "28c949c14eb5077abcd8d0662e9bb29bbb03b1147d7de95a8c6a29045828d1af",
-    "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
-    "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
-    "root": "219a7768830abbabe1dde7fb16b488c4fef190cf760a0de62ae1d69ac397b66b",
-    "scenes": "d40c63d076cecf9baf3fd3dc186b96bdab2c0e242a6f422150ccfc2d830e2273",
-    "sheet": "8c52c66fd037c78d8fd7612b048aa4143f6f0a8a42c291984d189766f8887ad4",
-    "tree": "6aadb4907945b6208129e83aa261b4476509e9f8ce9a78a3799ba10f5ca8bcaa"
-   },
-   "manifest": {
-    "designer.md": "41dfd764d103828df69df029eea914873897039a1d7855ad7083c647f3d43cc0",
-    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
-    "designer_write.md": "2d93c81308fff5f7a37cf5c40cbfae398599cd0aa6a238d1a325a1fabff2e441"
-   },
-   "outcome": "done",
-   "owner_uncited": [
-    "1793766816609436834"
-   ],
-   "run": "rm-role-designer-1793982561",
-   "stage": 3,
-   "summary": "Worldgen carried per d_worldgen_outside_promise: sheet floor:worldgen now reads 'No worldgen of our own; the vanilla new-world placement switch is outside the promise and unchecked', floor.json worldgen stays applicable, a delegated line names the switch and PYRE_WORLDSWITCH_DECIDE_ON_BY_DEFAULT (coverage_rest cannot carry it: the program refuses a capability a showcase already exercises). Five judge gaps (rm-coverage-judge-1793981105) closed: new leaf flamefang_bite_carries_venom + sc_flamefang_venom (control non-venomous bite); ash_ground_and_blowing_ash gains fire-left loose ash + sc_fire_dusts_ash (control ashDustingEnabled off vs unburned twin); furnacebeast_warms gains the giant (live bs 6) + sc_furnace_giant (control classic restore 3.2); sc_heat_dome split out with the dome switch off as its own control; sheet lines for ashwallow and three_skies say what the tree tests. Showcases corrected: burn_line adds inv_animal_roster, fire_cast drops it and gains sc_heat_dome and sc_furnace_giant; showcase set accepted. Filed PYRELANDS_SCENES_BUILD_VENOM_GIANT_DUST_DOME (Relentless, game-up)."
-  },
-  {
-   "at": "2026-11-06T16:57:50Z",
-   "inputs": {
-    "exam": "911ff719d1919b3309ba328af029ab1434c11aaf183249280fb7b4b08d61839c",
-    "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
-    "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
-    "root": "219a7768830abbabe1dde7fb16b488c4fef190cf760a0de62ae1d69ac397b66b",
-    "scenes": "d40c63d076cecf9baf3fd3dc186b96bdab2c0e242a6f422150ccfc2d830e2273",
-    "sheet": "8c52c66fd037c78d8fd7612b048aa4143f6f0a8a42c291984d189766f8887ad4",
-    "tree": "6aadb4907945b6208129e83aa261b4476509e9f8ce9a78a3799ba10f5ca8bcaa"
-   },
-   "manifest": {
-    "designer.md": "41dfd764d103828df69df029eea914873897039a1d7855ad7083c647f3d43cc0",
-    "designer_exam.md": "3e3f16a15ed2c45e2851911d42c9369cdc7560758fe1f386dc38012b93534217"
-   },
-   "outcome": "done",
-   "owner_uncited": [
-    "1793766816609436834"
-   ],
-   "run": "rm-role-designer-1793982967",
-   "stage": 4,
-   "summary": "Cold Reader exam re-run against the stage-3 tree and sheet of rm-role-designer-1793982561 (worldgen floor reworded, five coverage gaps closed). 22 frozen scenarios (Examiner 16, Challenger 6), covering the new leaves flamefang venom, fire-left loose ash, furnace-beast giant size and ashwallow dome stance. Both Readers 22/22, accept_where_reject_core 0, no Challenger misses. Control with flamefang_bite_carries_venom removed accepted e1 and c1, which the real tree rejects. The worldgen floor line has no leaf, so no scenario can cite it (it is outside the promise per d_worldgen_outside_promise)."
-  },
-  {
    "at": "2026-11-13T18:50:36Z",
    "outcome": "rejected",
    "run": "rm-role-designer-1794594791",
@@ -1166,12 +1103,42 @@
    "why": [
     "no result.json (a closing message is not a result)"
    ]
+  },
+  {
+   "at": "2026-11-13T19:01:13Z",
+   "outcome": "invalidated",
+   "stage": 3,
+   "why": "inputs changed since stage 3 was accepted: sheet, tree, scenes; back to stage 3"
+  },
+  {
+   "at": "2026-11-13T19:03:33Z",
+   "inputs": {
+    "exam": "911ff719d1919b3309ba328af029ab1434c11aaf183249280fb7b4b08d61839c",
+    "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
+    "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
+    "root": "219a7768830abbabe1dde7fb16b488c4fef190cf760a0de62ae1d69ac397b66b",
+    "scenes": "38e56fd27b868e32ebc4ac7323e26da3300ef9030918bfe0115cfd205f7134c4",
+    "sheet": "4f77fad249a2160d032c6514071758be5c5e17be45e7155a06dbbe8aaebe7d49",
+    "tree": "6dd32c14a94d4b84499ed155eb5c6da32302dcb8967583a414cc5c5773892c55"
+   },
+   "manifest": {
+    "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
+    "designer_write.md": "96e624c1abcd0fe2c5b6a839b820d82e91c09f920dbe20fd0878edd03dfef450"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1793766816609436834"
+   ],
+   "run": "rm-role-designer-1794596464",
+   "stage": 3,
+   "summary": "Stage 3 rewritten after the stage-5 run's edits reopened it. Gate A lint passes; scenes.json showcases accepted (burn_line 7, fire_cast 3, sky_and_shelter 3, every unit covered). Worldgen: sheet floor:worldgen reads no worldgen of our own, the vanilla new-world switch outside the promise and shipped off and labelled unsupported per his card 2026-11-13 (OWNER:1794594166295378777, built e36d2374af), now cited on the sheet and recorded as d_worldswitch_off_by_card; floor.json worldgen stays applicable. The 2026-11-13 coverage verdict is advisory (uncalibrated brief) and does not send this run back."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 5,
+ "stage": 4,
  "status": "ready",
  "waiting_owner_feed": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0"
 }
