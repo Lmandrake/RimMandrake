@@ -2,6 +2,7 @@
  "aliases": [
   "PYRELANDS"
  ],
+ "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: OWNER HOLD, not a refusal: the Designer loop (stage runs and the coverage judge) is held while the Design Version 0.1.0 entry lands; it locks on his word after he reads the entry summary (owner 2026-11-13: \"Yes, we're going to do what you recommend.\"); was ready at stage 4; lift: python3 src/RimMandrake/rimflow/coverage_judge.py release design/concepts/Pyrelands --why \"<why>\"; judging stopped on Pyrelands (coverage_judge.py release <dir> --why ... grants one more look)",
  "budget": {
   "cap": 4000000,
   "charges": [
@@ -413,6 +414,10 @@
    "verdict": "not_covered"
   }
  ],
+ "coverage_stop": {
+  "at": "2026-11-13T23:05:35Z",
+  "why": "OWNER HOLD, not a refusal: the Designer loop (stage runs and the coverage judge) is held while the Design Version 0.1.0 entry lands; it locks on his word after he reads the entry summary (owner 2026-11-13: \"Yes, we're going to do what you recommend.\"); was ready at stage 4; lift: python3 src/RimMandrake/rimflow/coverage_judge.py release design/concepts/Pyrelands --why \"<why>\""
+ },
  "history": [
   {
    "at": "2026-11-05T07:14:34Z",
@@ -809,6 +814,12 @@
    "stage": 4,
    "what": "close",
    "why": "run rm-role-designer-1794596464: stage 3 done"
+  },
+  {
+   "at": "2026-11-13T23:05:35Z",
+   "stage": 4,
+   "what": "coverage_stop",
+   "why": "REFUSAL_NOTHING_COULD_EVER_PASS: OWNER HOLD, not a refusal: the Designer loop (stage runs and the coverage judge) is held while the Design Version 0.1.0 entry lands; it locks on his word after he reads the entry summary (owner 2026-11-13: \"Yes, we're going to do what you recommend.\"); was ready at stage 4; lift: python3 src/RimMandrake/rimflow/coverage_judge.py release design/concepts/Pyrelands --why \"<why>\"; judging stopped on Pyrelands (coverage_judge.py release <dir> --why ... grants one more look)"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -1139,6 +1150,6 @@
  "running": null,
  "schema": 1,
  "stage": 4,
- "status": "ready",
+ "status": "blocked",
  "waiting_owner_feed": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0"
 }
