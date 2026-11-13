@@ -6529,3 +6529,5 @@
 {"seat":"RUNNER","event":"live","id":"OPS_ALARMS_FIX_FIXED_ITEM_ID","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:03:55Z","tsn":1794560635285657208}
 {"seat":"RUNNER","event":"live","id":"OPS_FINDINGS_DIAGNOSE_XZLM","result":"broken","detail":"Ops alarm UNTRIAGED: flow.untriaged_findings = 8 findings with no outcome yet (MEASURED), line > 0","ts":"2026-11-13T09:04:31Z","tsn":1794560671686203968}
 {"seat":"RUNNER","event":"raise","id":"OPS_FINDINGS_DIAGNOSE_XZLM","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-13T09:04:36Z","tsn":1794560676961021870}
+{"seat":"RUNNER","event":"live","id":"OPS_FINDINGS_DIAGNOSE_XZLM","result":"broken","detail":"Ops alarm UNTRIAGED: flow.untriaged_findings = 8 findings with no outcome yet (MEASURED), line > 0","ts":"2026-11-13T09:05:47Z","tsn":1794560747812198659}
+{"seat":"RUNNER","event":"raise","id":"OPS_FINDINGS_DIAGNOSE_XZLM","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-13T09:05:53Z","tsn":1794560753218070628}
