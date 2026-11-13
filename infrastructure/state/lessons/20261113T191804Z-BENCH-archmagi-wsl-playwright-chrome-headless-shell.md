@@ -1,0 +1,1 @@
+On Archmagi WSL the playwright chrome-headless-shell fails with 'libasound.so.2: cannot open shared object file'; run it with LD_LIBRARY_PATH=$HOME/.hestia-browser/lib/usr/lib/x86_64-linux-gnu (a copy lives there). Never search / for a library: find / crawls /mnt and runs past the 60 s tool timeout.
