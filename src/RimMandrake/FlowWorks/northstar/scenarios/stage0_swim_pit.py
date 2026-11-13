@@ -86,7 +86,7 @@ def run(B, origin, rows=None):
     verdict = None
     for rid, level in (("S0SWIM_2m_out", 4), ("S0SWIM_brim_out", 8)):
         for c in pit:
-            B.call("jawa/static_call", type=FLUID, method="ProofFillWithFluid", args="%d,%d,%d,%s" % (g(c) + (level, W)))
+            B.call("jawa/static_call", type=FLUID, method="ProofFillWithFluid", args="%d,%d,%g,%s" % (g(c) + (level * 0.5, W)))   # the stager takes metres
         B.call("rimworld/step_game_ticks", ticks=120, pauseFirst=True)
         here = pos(pid)
         sw = B.call("jawa/static_call", type=SWIM, method="ProofSwim", args="%d,%d" % here).get("result") \

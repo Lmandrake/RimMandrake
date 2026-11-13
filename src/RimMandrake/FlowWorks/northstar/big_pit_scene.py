@@ -20,6 +20,7 @@ import os
 import re
 import sys
 import time
+from water_reads import levels  # noqa: E402  (whole levels from the one water number)
 
 SUB = "RimMandrake.FlowWorks.RM_SubmergeDraw"
 SCRATCH_FROM_EDGE = 12           # footprint probe spot, cells in from the NE corner (far from the scene at 40,89)
@@ -609,7 +610,7 @@ def verify(plan):
         if len(cells) != PW * PW:
             row(key + "_depth_fill", "UNMEASURED", "excavation_rect returned %d cells" % len(cells))
         else:
-            off = [(i, j, c.get("d"), c.get("f")) for (i, j), c in cells.items() if c.get("d") != DEPTH or c.get("f") != f]
+            off = [(i, j, c.get("d"), levels(c, None)) for (i, j), c in cells.items() if c.get("d") != DEPTH or levels(c, None) != f]
             row(key + "_depth_fill", "PASS" if not off else "FAIL", off[:10] or "256 cells d=%d f=%d" % (DEPTH, f))
         sig[key] = collections.Counter((t["def"], t["x"] - x0, t["z"] - z0, t.get("stackCount")) for t in th)
         at = collections.defaultdict(list)
@@ -625,7 +626,7 @@ def verify(plan):
                 row(name, "FAIL", {"missing at": [i, j], "have": [t["def"] for t in at[(i, j)]]})
                 continue
             t = found[0]
-            fl_n = (cells.get((i, j)) or {}).get("f", 0) or 0
+            fl_n = levels(cells.get((i, j)), 0) or 0
             v, det = judge_thing(t, x0, z0, fl_n, (want_def, i, j), sizes)
             if dn in plan["stuff"] and kind in ("furn", "item"):
                 det["stuff"] = t.get("stuff")
@@ -652,7 +653,7 @@ def verify(plan):
         fluid_label = "tar" if fl else "water"
         lab = {}
         for (i, j), c in cells.items():
-            lab["%d,%d" % (i, j)] = expected_label(int(c.get("d") or 0), int(c.get("f") or 0), fluid_label)
+            lab["%d,%d" % (i, j)] = expected_label(int(c.get("d") or 0), levels(c, 0), fluid_label)
         row(key + "_label_expected", "PASS", {"distinct": sorted(set(lab.values())), "cells": len(lab)})
     if "BP0_dry" in sig:
         ref = sig["BP0_dry"]

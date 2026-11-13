@@ -53,6 +53,7 @@ import scenarios as SC  # noqa: E402
 from scenarios import common as C  # noqa: E402
 from scenarios import stage0_swim_pit as S0SWIM  # noqa: E402
 from scenarios.mock_bridge import MockBridge  # noqa: E402
+from water_reads import levels  # noqa: E402  (whole levels from the one water number)
 
 OUT = os.path.join(HERE, "review", "scenarios")
 # SCENARIO_MOCK_HARDEN_INKS_THE_REAL_KEYSHEET (2026-10-22): an offline run (--plan / --dry-run / --mock, map C or --river)
@@ -698,7 +699,7 @@ def review_class():
             ex = self.B.call("jawa/flowworks_excavation_rect", x=x, z=z, w=w, h=h, onlyNonZero=True, includeTerrain=False)
             # (d, f, dl, fluid): f is the floored whole notch, so exact water (dl) and the liquid's identity are read too
             # (FW_PROOF_TOOLS_HARDEN_READ_GAPS, GPT 4.5); a bridge too old to send them reads None, which never matches.
-            dug = {(c["x"], c["z"]): (c.get("d"), c.get("f"), c.get("dl"), c.get("fluid"))
+            dug = {(c["x"], c["z"]): (c.get("d"), levels(c, None), c.get("dl"), c.get("fluid"))
                    for c in ex.get("rows") or [] if c.get("isExcavated")}
             th = self.B.call("jawa/list_things", rect="%d,%d,%d,%d" % p["rect"], limit=2000).get("things") or []
             u = p["sc"]["setup"]

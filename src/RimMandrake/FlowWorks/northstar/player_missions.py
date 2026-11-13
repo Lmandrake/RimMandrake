@@ -232,7 +232,7 @@ def _mission_fake_class():
                         src = (i, j) in self.pond
                         if p.get("onlyNonZero") and not (d or f or src):
                             continue
-                        rows.append({"x": i, "z": j, "d": d, "f": f, "dEff": 4 if src else d, "fEff": 4 if src else f,
+                        rows.append({"x": i, "z": j, "d": d, "dEff": 4 if src else d, "dl": f * 10000,
                                      "isExcavated": d > 0, "isSource": src, "isSink": False})
                 return {"success": True, "rows": rows, "cellCount": len(rows), "ticksGame": self.ticks}
             if tool == "rimworld/get_designator_state":
@@ -556,7 +556,7 @@ def observe_state(B, run):
         rows = ex.get("rows") or []
         out["INTERNAL_excavation"] = {
             "dug": sum(1 for r in rows if r.get("isExcavated")),
-            "dugAndFilled": sum(1 for r in rows if r.get("isExcavated") and (r.get("fEff") or 0) >= 1),
+            "dugAndFilled": sum(1 for r in rows if r.get("isExcavated") and (r.get("dl") or 0) >= 10000),
             "maxDepth": max([r.get("d") or 0 for r in rows] or [0])}
     except Exception as e:                     # noqa: BLE001
         out["INTERNAL_excavation"] = "UNMEASURED (%s)" % e
@@ -766,7 +766,7 @@ def goal_check(B, run):
                                                            "onlyNonZero": True, "includeTerrain": False})
             if not ex.get("success", True) or "rows" not in ex:
                 return "UNMEASURED", {"why": "excavation_rect answered without rows", "reply": str(ex)[:300]}
-            good = [r for r in ex["rows"] if r.get("isExcavated") and (r.get("fEff") or 0) >= g["min_fill"]]
+            good = [r for r in ex["rows"] if r.get("isExcavated") and (r.get("dl") or 0) >= g["min_fill"] * 10000]
             ev = {"band": rect_str(b), "filledCanalCells": len(good), "needed": g["min_cells"]}
             return ("PASS" if len(good) >= g["min_cells"] else "FAIL"), ev
         if g["kind"] == "prisoner":
