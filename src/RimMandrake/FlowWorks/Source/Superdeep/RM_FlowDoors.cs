@@ -239,27 +239,44 @@ namespace RimMandrake.FlowWorks
 			RM_PitTrapMath.GateLiftOffset(LiftCells, OpenPct, out float dx, out float dz);
 			float alt = AltitudeLayer.DoorMoveable.AltitudeFor();
 			Vector3 scale = new Vector3(def.size.x, 1f, def.size.z);
-			// RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL: liquid standing in the gate's dug square covers it from its foot
-			// (RM_SubmergeMath.GateShare); the lifted panel is cut at the same waterline, so it rises out of the water
-			float under = RM_SubmergeDraw.GateUnder(this);
+			// RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL: the gate stands on its dug square's floor and spans
+			// RM_UnderLiquid.GateMetres (its head clears the bank); the liquid's line climbs it from its foot and the drowned
+			// part is seen through by the one law (RM_SubmergeDraw.DrawUnder). The lifted panel's foot is higher by its lift.
 			float h = frameGraphic.drawSize.y * scale.z;
+			bool wet = RM_SubmergeDraw.Wet(this, out int depth, out float levelM, out float clarity, false);
+			float gateM = RM_UnderLiquid.GateMetres(depth);
 			Vector3 panelPos = drawLoc;
 			panelPos.y = alt;
 			panelPos.x += dx;
 			panelPos.z += dz;
-			float panelUnder = h > 0f ? RM_SubmergeMath.Clamp01(under - dz / h) : 0f;
-			Mesh panelMesh = RM_SubmergeDraw.CutMesh(panelGraphic.MeshAt(Rotation), panelGraphic.drawSize, panelUnder);
-			if (panelMesh != null)
+			Matrix4x4 panelAt = Matrix4x4.TRS(panelPos, Quaternion.identity, scale);
+			Material panelMat = panelGraphic.MatAt(Rotation, this);
+			if (wet)
 			{
-				UnityEngine.Graphics.DrawMesh(panelMesh, Matrix4x4.TRS(panelPos, Quaternion.identity, scale), panelGraphic.MatAt(Rotation, this), 0);
+				float panelFoot = levelM - (h > 0f ? dz / h : 0f) * gateM;
+				RM_SubmergeDraw.DrawUnder(panelGraphic.MeshAt(Rotation), panelGraphic.drawSize, panelAt, panelMat, panelFoot, gateM, clarity);
+			}
+			else
+			{
+				UnityEngine.Graphics.DrawMesh(panelGraphic.MeshAt(Rotation), panelAt, panelMat, 0);
 			}
 			Vector3 framePos = drawLoc;
 			framePos.y = alt + Altitudes.AltInc * 0.5f;
-			Mesh frameMesh = RM_SubmergeDraw.CutMesh(frameGraphic.MeshAt(Rotation), frameGraphic.drawSize, under);
-			if (frameMesh != null)
+			Matrix4x4 frameAt = Matrix4x4.TRS(framePos, Quaternion.identity, scale);
+			Material frameMat = frameGraphic.MatAt(Rotation, this);
+			if (wet)
 			{
-				UnityEngine.Graphics.DrawMesh(frameMesh, Matrix4x4.TRS(framePos, Quaternion.identity, scale), frameGraphic.MatAt(Rotation, this), 0);
-				Graphic.ShadowGraphic?.DrawWorker(framePos, Rotation, def, this, 0f);
+				RM_SubmergeDraw.DrawUnder(frameGraphic.MeshAt(Rotation), frameGraphic.drawSize, frameAt, frameMat, levelM, gateM, clarity);
+			}
+			else
+			{
+				UnityEngine.Graphics.DrawMesh(frameGraphic.MeshAt(Rotation), frameAt, frameMat, 0);
+				int pit = RM_SuperdeepTrap.EngineOf(Map)?.HollowDepthAt(Position) ?? 0;
+				if (pit <= 0)
+				{
+					// on level ground only: a gate standing in a pit casts no shadow onto the bank (owner 2026-11-12)
+					Graphic.ShadowGraphic?.DrawWorker(framePos, Rotation, def, this, 0f);
+				}
 			}
 			Comps_PostDraw();
 		}

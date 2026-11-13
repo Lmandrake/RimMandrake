@@ -60,29 +60,5 @@ namespace RimMandrake.FlowWorks
 			}
 			return n > MaxBubblesPerSample ? MaxBubblesPerSample : n;
 		}
-
-		/// <summary>Alpha the cut's own floor is redrawn with over the liquid: the look's see-through, less for every
-		/// level of liquid above the floor (deeper water hides more), never below 0.</summary>
-		public static float FloorSeeThroughAlpha(float seeThrough, int fill)
-		{
-			if (!(seeThrough > 0f) || fill <= 0)
-			{
-				return 0f;
-			}
-			float a = seeThrough * (1f - 0.18f * (fill - 1));
-			if (a < 0f) a = 0f;
-			return a > 1f ? 1f : a;
-		}
-
-		/// <summary>Alpha of a drowned wall face at height fraction <paramref name="v"/> of the drowned part
-		/// (0 = floor, 1 = water line): clearer near the surface.</summary>
-		public static float DrownedFaceAlpha(float seeThrough, int fill, float v)
-		{
-			float floor = FloorSeeThroughAlpha(seeThrough, fill);
-			if (v < 0f) v = 0f;
-			if (v > 1f) v = 1f;
-			float a = floor + (seeThrough - floor) * v;
-			return a > 1f ? 1f : a;
-		}
 	}
 }

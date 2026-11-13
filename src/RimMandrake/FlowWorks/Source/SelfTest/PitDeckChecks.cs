@@ -166,6 +166,25 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(cover.Contains("c => c.thingIDNumber < id);"), "DeckIfLead stops at a lower id");
                 Assert(cover.Contains("return RM_PitDeckMath.Flood(start.Position, c => CoverAt(map, c), (c, d) => c + GenAdj.CardinalDirections[d], 4);"), "Deck is the same flood with no stop");
             });
+            Case("PitCover_rests_on_two_banks", () =>
+            {
+                // owner 2026-11-12: no "covered pit bridges". A 5x5 pit (cells 1..5 dug in a 7x7 grid): a cover rests on >= 2
+                // sides of solid ground. Directions 0..3 = N, E, S, W.
+                Func<int, int, bool> dug = (x, z) => x >= 1 && x <= 5 && z >= 1 && z <= 5;
+                int[] dx = { 0, 1, 0, -1 }, dz = { 1, 0, -1, 0 };
+                Func<int, int, bool> rests = (x, z) => RM_PitDeckMath.RestsOnBanks(d => !dug(x + dx[d], z + dz[d]));
+                Assert(rests(1, 1) && rests(5, 5), "can-fail: a corner rests on two banks");
+                Assert(!rests(3, 3), "can-fail: the middle of a pit is refused (no bank at all)");
+                Assert(!rests(3, 1), "can-fail: an edge cell rests on one bank only: refused");
+                Func<int, int, bool> trench = (x, z) => x == 3;   // a one-wide trench running north-south
+                Assert(RM_PitDeckMath.RestsOnBanks(d => !trench(3 + dx[d], 7 + dz[d])), "can-fail: a one-wide trench is covered from both banks");
+                Assert(RM_PitDeckMath.BankSides(d => true) == 4 && RM_PitDeckMath.BankSides(d => false) == 0, "can-fail: counts every side");
+                string cover = RiverSwitchFlipChecks.Src(Path.Combine("Pits", "Building_PitCover.cs"));
+                int pw = cover.IndexOf("class PlaceWorker_PitCoverOnSuperdeep", StringComparison.Ordinal);
+                int call = cover.IndexOf("RM_PitDeckMath.RestsOnBanks(d => SolidGround(map, engine, loc + GenAdj.CardinalDirections[d]))", StringComparison.Ordinal);
+                Assert(pw > 0 && call > pw && cover.IndexOf("at least two of its sides", call, StringComparison.Ordinal) > call,
+                    "can-fail: the place worker refuses with a message");
+            });
         }
     }
 }

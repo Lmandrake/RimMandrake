@@ -51,7 +51,7 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>F. Always clamped to 0 &lt;= F &lt;= D.</summary>
 		private byte[] fillGrid;
-		/// <summary>RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL: cell index -> the redraw key (RM_SubmergeMath.DrawnKey) a ladder/ramp on it was last printed at
+		/// <summary>RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL: cell index -> the level note (RM_UnderLiquid.LevelNote of the true level) the things on it were last printed at
 		/// (RM_SubmergeDraw). Drawing state, not saved: a load re-prints every section.</summary>
 		internal readonly Dictionary<int, int> submergeDrawn = new Dictionary<int, int>();
 

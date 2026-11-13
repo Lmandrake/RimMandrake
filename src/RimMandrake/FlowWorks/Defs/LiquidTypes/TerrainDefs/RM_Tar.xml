@@ -27,7 +27,7 @@
     <renderPrecedence>394</renderPrecedence>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
     <canFreeze>false</canFreeze>
-    <color>(86,82,88)</color>
+    <color>(18,17,16)</color>
     <extinguishesFire>false</extinguishesFire>
     <waterBodyType>None</waterBodyType>
     <pathCost>300</pathCost>
@@ -57,7 +57,7 @@
     <renderPrecedence>395</renderPrecedence>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <canFreeze>false</canFreeze>
-    <color>(86,82,88)</color>
+    <color>(18,17,16)</color>
     <extinguishesFire>false</extinguishesFire>
     <waterBodyType>None</waterBodyType>
     <affordances>

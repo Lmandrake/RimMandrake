@@ -15,7 +15,8 @@ namespace RimMandrake.FlowWorks
 	///     like vanilla's camera-facing faces, ambient-occluded at the foot, a dark rim line along the top edge, a
 	///     contact shadow at the foot, and earth strata or stone block joints over it.
 	///   • EAST / WEST faces: narrow strips of the same ground, west in shadow, east lit.
-	///   • Liquid standing in the cut covers the foot of the faces (RM_WallFaceMath.ExposedDrop).
+	///   • Liquid standing in the cut covers the foot of the faces at its TRUE level (RM_UnderLiquid.Exposed); the drowned
+	///     part is seen through by the one law (SeeThrough).
 	///   • SCORCH (<see cref="RM_PitScorch"/>): a cut that burned dry gets an ash/char floor, soot climbing its
 	///     faces and a scorch ring on the ground round its rim, fading by the scorch rule.
 	///
@@ -31,7 +32,9 @@ namespace RimMandrake.FlowWorks
 
 		public SectionLayer_RMExcavationWalls(Section section) : base(section)
 		{
-			relevantChangeTypes = MapMeshFlagDefOf.Terrain;
+			// RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL: the faces follow the TRUE level, which moves between terrain rungs;
+			// RM_SubmergeDraw.FillPictured dirties LookFlag on a cell whose drawn level note went stale.
+			relevantChangeTypes = (ulong)MapMeshFlagDefOf.Terrain | RM_WaterLookDraw.LookFlag;
 		}
 
 		public override bool Visible => DebugViewSettings.drawTerrain && RimMandrakeFlowWorksSettings.excavationWallFacesEnabled;
@@ -71,7 +74,10 @@ namespace RimMandrake.FlowWorks
 					}
 					continue;
 				}
-				int f = eng.FillAt(c);
+				// the TRUE level (quarter-notch note, RM_UnderLiquid.LevelNote), noted so a stale one re-meshes the cell
+				int note = RM_SubmergeDraw.NoteAt(eng, c);
+				eng.submergeDrawn[map.cellIndices.CellToIndex(c)] = note;
+				float lv = RM_UnderLiquid.NoteLevel(note);
 				int north = NeighbourLevel(map, eng, c + IntVec3.North, d);
 				int west = NeighbourLevel(map, eng, c + IntVec3.West, d);
 				int east = NeighbourLevel(map, eng, c + IntVec3.East, d);
@@ -80,49 +86,49 @@ namespace RimMandrake.FlowWorks
 				{
 					Outline(c, d, north, south, west, east, y + 0.0009f);
 				}
-				int nd = RM_WallFaceMath.ExposedDrop(d, north, f);
-				int wd = RM_WallFaceMath.ExposedDrop(d, west, f);
-				int ed = RM_WallFaceMath.ExposedDrop(d, east, f);
-				float h = RM_WallFaceMath.NorthFaceHeight(nd);
-				if (sc > 0f && f == 0)
+				float nd = RM_UnderLiquid.Exposed(d, north, lv);
+				float wd = RM_UnderLiquid.Exposed(d, west, lv);
+				float ed = RM_UnderLiquid.Exposed(d, east, lv);
+				float h = RM_UnderLiquid.NorthFace(nd);
+				if (sc > 0f && note == 0)
 				{
 					// principle 5: the SAME empty pit, burned — grey ash over the floor, char at the walls and in patches
 					bool dirt = !RM_FaceMaterial.IsStone(eng.OriginalTerrainAt(c));
 					ScorchFloor(c, d, north, south, west, east, 1f - h, sc, y - 0.0005f, dirt);
 				}
-				if (f > 0 && material && RimMandrakeFlowWorksSettings.liquidSeeThroughEnabled)
+				if (note > 0 && material && RimMandrakeFlowWorksSettings.liquidSeeThroughEnabled)
 				{
-					SeeThrough(map, eng, c, d, f, north, y - 0.0008f);
+					SeeThrough(map, eng, c, d, lv, north, west, east, y - 0.0008f);
 				}
 				if (!material)
 				{
-					if (nd > 0)
+					if (nd > 0f)
 					{
 						QuadV(c.x, c.z + 1f - h, 1f, h, y, Dark(d), Rim);
 					}
-					if (wd > 0)
+					if (wd > 0f)
 					{
 						Color32 shade = Dark(d + 1);
-						QuadV(c.x, c.z, RM_WallFaceMath.SideFaceWidth(wd), 1f, y + 0.001f, shade, shade);
+						QuadV(c.x, c.z, RM_UnderLiquid.SideFace(wd), 1f, y + 0.001f, shade, shade);
 					}
-					if (ed > 0)
+					if (ed > 0f)
 					{
-						float w = RM_WallFaceMath.SideFaceWidth(ed);
+						float w = RM_UnderLiquid.SideFace(ed);
 						QuadV(c.x + 1f - w, c.z, w, 1f, y + 0.001f, Earth, Earth);
 					}
 					continue;
 				}
-				float ww = RM_WallFaceMath.SideFaceWidth(wd);
-				float ew = RM_WallFaceMath.SideFaceWidth(ed);
-				if (nd > 0)
+				float ww = RM_UnderLiquid.SideFace(wd);
+				float ew = RM_UnderLiquid.SideFace(ed);
+				if (nd > 0f)
 				{
 					NorthFace(map, eng, c, d, h, ww, ew, y, sc);
 				}
-				if (wd > 0)
+				if (wd > 0f)
 				{
 					SideFace(map, eng, c, c + IntVec3.West, d, ww, h, false, y + 0.001f, sc);
 				}
-				if (ed > 0)
+				if (ed > 0f)
 				{
 					SideFace(map, eng, c, c + IntVec3.East, d, ew, h, true, y + 0.001f, sc);
 				}
@@ -452,75 +458,90 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>FLOWWORKS_REVIEW_LOOKS_ROUND_1 item 10 (owner, 2026-10-06: <i>"Is it possible to still show the pit
-		/// walls/floor beneath the translucent water?"</i>). The liquid's terrain has replaced the cut's floor; for a
-		/// liquid whose look is see-through, the cut's GEOMETRY is redrawn faintly over it — the floor (the ground it was
-		/// dug through), the drowned band of the far wall and the drowned side walls, each lit like the dry pit's — then
-		/// a thin wash of the liquid's colour over all of it, so they read as lying under the liquid and the water's own
-		/// shimmer still shows through. Opaque liquids (seeThrough 0: tar, oil, slime, blood) draw nothing here.
-		/// Live 2026-10-06, first cut: a flat floor quad plus a black depth quad at 0.55 alpha turned every water pit into
-		/// a dark grey slab with no walls — so no darkening quad any more, lower alphas, walls drawn, a colour wash.</summary>
-		private void SeeThrough(Map map, RM_MapComponent_Excavation eng, IntVec3 c, int d, int f, int north, float y)
+		/// walls/floor beneath the translucent water?"</i>), redone for RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL (owner look
+		/// 2026-11-12). The liquid's terrain has replaced the cut's floor; the cut's dry geometry below the TRUE level is
+		/// redrawn over it by the one law things in the pit use (RM_UnderLiquid.Seen: clarity ^ metres over): the floor, the
+		/// drowned band of the far wall and the drowned strips of the side walls, each lit as the dry pit's, so the pit's own
+		/// shade (its dark foot and west strip) stays inside the outline and is seen through clear liquid as usual (owner:
+		/// "it should simply be transparent to them as usual"). Opaque liquids (clarity 0: tar, oil, blood) draw nothing
+		/// here. No colour wash: the liquid terrain under the alpha is the tint, the same for walls and things.</summary>
+		private void SeeThrough(Map map, RM_MapComponent_Excavation eng, IntVec3 c, int d, float lv, int north, int west, int east, float y)
 		{
-			RM_LiquidSurfaceLook look = RM_LiquidSurface.LookFor(map.terrainGrid.TerrainAt(c));
-			if (look == null || look.seeThrough <= 0f)
+			float clarity = RM_SubmergeDraw.ClarityAt(map, eng, c);
+			if (!(clarity > 0f))
 			{
 				return;
 			}
-			float a = RM_LiquidLookMath.FloorSeeThroughAlpha(look.seeThrough, f);
-			if (a <= 0f)
-			{
-				return;
-			}
+			float levelM = lv * RM_UnderLiquid.Notch;
 			TerrainDef ground = eng.OriginalTerrainAt(c);
 			if (ground == null || ground.IsWater)
 			{
 				ground = TerrainDefOf.Soil;
 			}
-			int fullDrop = RM_WallFaceMath.ExposedDrop(d, north, 0);
-			int dryDrop = RM_WallFaceMath.ExposedDrop(d, north, f);
-			float hFull = RM_WallFaceMath.NorthFaceHeight(fullDrop);
-			float hDry = RM_WallFaceMath.NorthFaceHeight(dryDrop);
+			float hFull = RM_UnderLiquid.NorthFace(RM_UnderLiquid.Exposed(d, north, 0f));
+			float hDry = RM_UnderLiquid.NorthFace(RM_UnderLiquid.Exposed(d, north, lv));
 			float floorTop = 1f - hFull;
-			byte fa = (byte)(255f * a);
-			Quad(RM_FaceMaterial.FaceMat(ground), c.x, c.z, 1f, floorTop, y, new Color32(255, 255, 255, fa), new Color32(255, 255, 255, fa), UvWorld);
+			byte fa = Alpha(RM_UnderLiquid.Seen(clarity, levelM));
+			// the floor between the side walls' full feet (the strips below draw over their own width, not twice)
+			float wW = RM_UnderLiquid.SideFace(RM_UnderLiquid.Exposed(d, west, 0f));
+			float wE = RM_UnderLiquid.SideFace(RM_UnderLiquid.Exposed(d, east, 0f));
+			Quad(RM_FaceMaterial.FaceMat(ground), c.x + wW, c.z, 1f - wW - wE, floorTop, y, SeenTint(fa), SeenTint(fa), UvWorld);
+			// the drowned band of the far wall, foot (levelM under) to its waterline (0 under), or to its rim if it is drowned
+			// whole; banded so the fade follows the law, not a straight ramp
 			float drowned = hFull - hDry;
-			if (drowned > 0.01f)
+			if (drowned > 0.001f)
 			{
-				// the drowned band of the far wall: the wall's own ground, lit toward the water line like the dry face
 				TerrainDef faceGround = RM_FaceMaterial.GroundBeside(map, eng, c, c + IntVec3.North, out bool _);
-				byte b0 = (byte)(255f * RM_LiquidLookMath.DrownedFaceAlpha(look.seeThrough, f, 0f));
-				byte b1 = (byte)(255f * RM_LiquidLookMath.DrownedFaceAlpha(look.seeThrough, f, 1f));
-				Quad(RM_FaceMaterial.FaceMat(faceGround), c.x, c.z + floorTop, 1f, drowned, y + 0.0002f,
-					new Color32(255, 255, 255, b0), new Color32(255, 255, 255, b1), UvFace);
-				byte lit = (byte)(255f * LightAlpha(RM_WallFaceMath.WallFaceLight) * b1 / 255f);
-				QuadVMat(RM_FaceMaterial.ShadeMat, c.x, c.z + floorTop, 1f, drowned, y + 0.0003f,
-					new Color32(255, 248, 232, 0), new Color32(255, 248, 232, lit));
-				// the foot of the wall: a soft dark line where it meets the floor, so the corner reads
-				byte foot = (byte)(120f * a);
-				QuadVMat(RM_FaceMaterial.ShadeMat, c.x, c.z + floorTop - 0.04f, 1f, 0.08f, y + 0.0003f,
-					new Color32(0, 0, 0, 0), new Color32(0, 0, 0, foot));
+				float rimM = Mathf.Max(0f, levelM - (d - north) * RM_UnderLiquid.Notch);
+				float lineM = hDry > 0f ? 0f : rimM;
+				float lit = LightAlpha(RM_WallFaceMath.WallFaceLight);
+				for (int b = 0; b < RM_UnderLiquid.Bands; b++)
+				{
+					float z0 = floorTop + drowned * b / RM_UnderLiquid.Bands, z1 = floorTop + drowned * (b + 1) / RM_UnderLiquid.Bands;
+					byte a0 = Alpha(RM_UnderLiquid.Seen(clarity, RM_UnderLiquid.MetresAt(z0, floorTop + drowned, floorTop, lineM, levelM)));
+					byte a1 = Alpha(RM_UnderLiquid.Seen(clarity, RM_UnderLiquid.MetresAt(z1, floorTop + drowned, floorTop, lineM, levelM)));
+					Quad(RM_FaceMaterial.FaceMat(faceGround), c.x, c.z + z0, 1f, z1 - z0, y + 0.0002f, SeenTint(a0), SeenTint(a1), UvFace);
+					QuadVMat(RM_FaceMaterial.ShadeMat, c.x, c.z + z0, 1f, z1 - z0, y + 0.0003f,
+						new Color32(255, 248, 232, (byte)(lit * a0)), new Color32(255, 248, 232, (byte)(lit * a1)));
+				}
 			}
-			// drowned side walls: a strip each side where the neighbour is shallower
-			int west = NeighbourLevel(map, eng, c + IntVec3.West, d), east = NeighbourLevel(map, eng, c + IntVec3.East, d);
-			float ww = RM_WallFaceMath.SideFaceWidth(RM_WallFaceMath.ExposedDrop(d, west, 0));
-			float ew = RM_WallFaceMath.SideFaceWidth(RM_WallFaceMath.ExposedDrop(d, east, 0));
-			byte sa = (byte)(255f * a * 0.8f);
-			if (ww > 0f)
-			{
-				QuadVMat(RM_FaceMaterial.ShadeMat, c.x, c.z, ww, floorTop, y + 0.0003f, new Color32(0, 0, 0, sa), new Color32(0, 0, 0, sa));
-			}
-			if (ew > 0f)
-			{
-				QuadVMat(RM_FaceMaterial.ShadeMat, c.x + 1f - ew, c.z, ew, floorTop, y + 0.0003f,
-					new Color32(255, 248, 232, (byte)(sa / 2)), new Color32(255, 248, 232, (byte)(sa / 2)));
-			}
-			// the liquid's own colour washed thinly over everything drawn above, deeper = stronger
-			Color wash = look.seeThroughTint.r >= 0.999f && look.seeThroughTint.g >= 0.999f && look.seeThroughTint.b >= 0.999f
-				? new Color(0.30f, 0.46f, 0.58f) : look.seeThroughTint;
-			byte wa = (byte)(255f * Mathf.Clamp01(0.16f + 0.07f * f));
-			Color32 w = new Color32((byte)(255f * wash.r), (byte)(255f * wash.g), (byte)(255f * wash.b), wa);
-			QuadVMat(RM_FaceMaterial.ShadeMat, c.x, c.z, 1f, 1f - hDry, y + 0.0005f, w, w);
+			SideUnder(map, eng, c, d, west, false, lv, levelM, clarity, y + 0.0004f);
+			SideUnder(map, eng, c, d, east, true, lv, levelM, clarity, y + 0.0004f);
 		}
+
+		/// <summary>The drowned strip of one side wall, between its waterline (the dry face's foot) and its full foot: the
+		/// wall's own ground lit as the dry SideFace, banded across by the same law as the far wall.</summary>
+		private void SideUnder(Map map, RM_MapComponent_Excavation eng, IntVec3 c, int d, int nb, bool east, float lv, float levelM,
+			float clarity, float y)
+		{
+			float wFull = RM_UnderLiquid.SideFace(RM_UnderLiquid.Exposed(d, nb, 0f));
+			float wDry = RM_UnderLiquid.SideFace(RM_UnderLiquid.Exposed(d, nb, lv));
+			float span = wFull - wDry;
+			if (span <= 0.001f)
+			{
+				return;
+			}
+			TerrainDef ground = RM_FaceMaterial.GroundBeside(map, eng, c, c + (east ? IntVec3.East : IntVec3.West), out bool _);
+			Material face = RM_FaceMaterial.FaceMat(ground);
+			float rimM = Mathf.Max(0f, levelM - (d - nb) * RM_UnderLiquid.Notch);
+			float lineM = wDry > 0f ? 0f : rimM;
+			float lit = LightAlpha(RM_WallFaceMath.WallSideLight);
+			for (int b = 0; b < RM_UnderLiquid.Bands; b++)
+			{
+				// distance from the bank edge: wDry (the line) .. wFull (the foot)
+				float e0 = wDry + span * b / RM_UnderLiquid.Bands, e1 = wDry + span * (b + 1) / RM_UnderLiquid.Bands;
+				float mid = (e0 + e1) * 0.5f;
+				byte q = Alpha(RM_UnderLiquid.Seen(clarity, RM_UnderLiquid.MetresAt(mid, wDry, wFull, lineM, levelM)));
+				float x0 = east ? c.x + 1f - e1 : c.x + e0;
+				Quad(face, x0, c.z, e1 - e0, 1f, y, SeenTint(q), SeenTint(q), UvWorld);
+				QuadVMat(RM_FaceMaterial.ShadeMat, x0, c.z, e1 - e0, 1f, y + 0.0001f, new Color32(255, 248, 232, (byte)(lit * q)),
+					new Color32(255, 248, 232, (byte)(lit * q)));
+			}
+		}
+
+		private static byte Alpha(float a) => (byte)(255f * RM_UnderLiquid.Clamp01(a) + 0.5f);
+
+		private static Color32 SeenTint(byte a) => new Color32(255, 255, 255, a);
 
 		/// <summary>An (nx x nz)-cell vertex grid over (x0,z0,w,h) with a colour per vertex; nz defaults to nx.</summary>
 		private void Grid(Material mat, float x0, float z0, float w, float h, int nx, Color32[,] col, float y, int nz = -1, float uvScale = 0f)

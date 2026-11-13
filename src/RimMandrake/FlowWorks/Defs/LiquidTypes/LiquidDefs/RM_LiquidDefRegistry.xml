@@ -54,7 +54,7 @@
     <surfaceLook>
       <overlay>false</overlay>
       <wake>1.0</wake>
-      <seeThrough>0.35</seeThrough>
+      <seeThrough>0.45</seeThrough>  <!-- share of the view left after 1 m (RM_UnderLiquid.Seen); owner look 2026-11-12 -->
     </surfaceLook>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
@@ -368,7 +368,7 @@
     <surfaceLook>
       <shader>Solid</shader>
       <texture>White</texture>
-      <tint>(0.24,0.24,0.24)</tint>
+      <tint>(0.07,0.065,0.06)</tint>  <!-- owner 2026-11-12: "It reads grey. It should be dark indeed." -->
       <depthDarken>0.1</depthDarken>
       <rippleDensity>1.0</rippleDensity>
       <rippleIntensity>1.0</rippleIntensity>

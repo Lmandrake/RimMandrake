@@ -301,7 +301,8 @@ namespace RimMandrake.FlowWorks
 					{
 						IntVec3 n = c + IntVec3.North;
 						int nd = n.InBounds(map) && !eng.IsSourceCell(n) ? eng.ExcavatedDepthAt(n) : d;
-						top -= RM_WallFaceMath.NorthFaceHeight(RM_WallFaceMath.ExposedDrop(d, nd, eng.FillAt(c)));
+						// the far wall's dry face at the TRUE level, as the wall layer draws it (RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL)
+						top -= RM_UnderLiquid.NorthFace(RM_UnderLiquid.Exposed(d, nd, RM_UnderLiquid.NoteLevel(RM_SubmergeDraw.NoteAt(eng, c))));
 					}
 				}
 				if (!vbuf.TryGetValue(look, out List<Vector3> v))

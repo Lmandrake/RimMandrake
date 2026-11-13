@@ -1,9 +1,9 @@
-// RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL (owner 2026-11-12: "a ladder hanging into water is shown entirely over the
-// water regardless of depth. The water really should go up to some level on the ladder as though it is part submerged.
-// Same for spikes and other pit installations."). Offline checks on RM_SubmergeMath: the share of a fitting the liquid
-// covers follows the true level (notches, part-notch included) against depth, and the sprite cut keeps the right part of the texture. Each case has a can-fail.
-// NOT proven here: the cut sprites on screen (RM_SubmergeDraw.PrintCut, Building_RM_Spikes.DrawAt); live proof owed
-// (northstar/wall_art_scene.py submerge).
+// RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL, owner look 2026-11-12 (SUBMERGE_PIT_FITTINGS_MATRIX_20261112): "It's as
+// though each case is independently set in these variables, badly (major fix)". Everything in a dug pit under liquid is
+// now decided by ONE function, RM_UnderLiquid: one level (the quarter-note of the true level), one cut (the share from
+// the thing's foot), one see-through law (clarity ^ metres over). These checks pin that law and that every drawer uses
+// it. Each case has a can-fail.
+// NOT proven here: the pictures on screen. Live proof owed (northstar/pit_fittings_matrix.py).
 using System;
 using RimMandrake.FlowWorks;
 
@@ -18,168 +18,116 @@ namespace RimMandrake.FlowWorks.SelfTest
 
 		private static bool Near(float a, float b, float eps = 1e-4f) => Math.Abs(a - b) < eps;
 
+		private const float Water = 0.45f;
+
 		public static void Run(Action<string, Action> Case)
 		{
-			Case("Submerge_ladder_share_follows_fill_against_depth", () =>
+			Case("Submerge_one_law_seen_through_liquid", () =>
 			{
-				// D4 pit, ladder hung on the north wall (drop 4)
-				Assert(RM_SubmergeMath.LadderInPitShare(0, 4, 0) == 0f, "can-fail: dry: nothing covered");
-				float f1 = RM_SubmergeMath.LadderInPitShare(0, 4, 1);
-				Assert(f1 > 0.2f && f1 < 0.4f, "can-fail: depth 4 at fill 1: about the bottom quarter covered (got " + f1 + ")");
-				float f2 = RM_SubmergeMath.LadderInPitShare(0, 4, 2), f3 = RM_SubmergeMath.LadderInPitShare(0, 4, 3);
-				Assert(f1 < f2 && f2 < f3 && f3 < 1f, "can-fail: rises with every level");
-				Assert(RM_SubmergeMath.LadderInPitShare(0, 4, 4) == 1f && RM_SubmergeMath.LadderInPitShare(0, 4, 9) == 1f,
-					"can-fail: brim-full: only what stands above the surface shows");
-				// the waterline is the wall face's own (the ladder's waterline meets the wall's)
-				Assert(Near(RM_SubmergeMath.LadderWaterline(0, 4, 1), 1f - RM_WallFaceMath.NorthFaceHeight(3)),
-					"can-fail: north waterline = top of the face left showing");
-				Assert(Near(RM_SubmergeMath.LadderWaterline(1, 4, 1), 1f - RM_WallFaceMath.SideFaceWidth(3)), "can-fail: east waterline");
-				Assert(Near(RM_SubmergeMath.LadderWaterline(3, 4, 1), RM_WallFaceMath.SideFaceWidth(3)), "can-fail: west waterline");
-				float e1 = RM_SubmergeMath.LadderInPitShare(1, 4, 1), w1 = RM_SubmergeMath.LadderInPitShare(3, 4, 1);
-				Assert(e1 > 0f && e1 < 1f && Near(e1, w1), "can-fail: east and west mirror");
-				Assert(RM_SubmergeMath.LadderWaterline(2, 4, 3) == RM_SubmergeMath.NoCut, "can-fail: hung south: only the rim top shows, never cut");
-				Assert(RM_SubmergeMath.LadderWaterline(0, 4, 0) == RM_SubmergeMath.NoCut, "can-fail: dry: no cut at all (costs nothing)");
-				Assert(RM_SubmergeMath.LadderFrom(0) == RM_SubmergeMath.FromSouth && RM_SubmergeMath.LadderFrom(1) == RM_SubmergeMath.FromWest
-					&& RM_SubmergeMath.LadderFrom(3) == RM_SubmergeMath.FromEast, "can-fail: cut from the pit side");
-			});
-			Case("Submerge_true_level_not_the_integer_fill", () =>
-			{
-				// coordinator 2026-11-12: one notch = 0.5 m; depth and fill in notches; each cell carries a part-notch below the
-				// whole-notch fill: the waterline follows the true level
-				float f1 = RM_SubmergeMath.LadderInPitShare(0, 4, 1f), f2 = RM_SubmergeMath.LadderInPitShare(0, 4, 2f);
-				float f15 = RM_SubmergeMath.LadderInPitShare(0, 4, 1.5f);
-				Assert(f1 < f15 && f15 < f2, "can-fail: a part-notch raises the waterline between the whole notches (got " + f15 + ")");
-				Assert(RM_SubmergeMath.LadderInPitShare(0, 4, 0.25f) > 0f, "can-fail: a quarter notch already wets the ladder foot");
-				Assert(Near(RM_SubmergeMath.FaceAt(RM_WallFaceMath.NorthByDrop, 3f), RM_WallFaceMath.NorthFaceHeight(3))
-					&& Near(RM_SubmergeMath.FaceAt(RM_WallFaceMath.SideByDrop, 2f), RM_WallFaceMath.SideFaceWidth(2))
-					&& Near(RM_SubmergeMath.FaceAt(RM_WallFaceMath.NorthByDrop, 9f), RM_WallFaceMath.NorthFaceHeight(9)),
-					"can-fail: at whole notches the face read is the wall's own");
-				Assert(Near(RM_SubmergeMath.StakeShare(0.5f), 0.25f) && Near(RM_SubmergeMath.RampShare(1.5f, 3), 0.5f),
-					"can-fail: stakes and ramp follow the part-notch");
-				Assert(RM_SubmergeMath.LevelNote(0) == 0 && RM_SubmergeMath.LevelNote(0.01) == 1 && RM_SubmergeMath.LevelNote(2.0) == 8
-					&& RM_SubmergeMath.LevelNote(2.1) == 8 && RM_SubmergeMath.LevelNote(2.2) == 9 && RM_SubmergeMath.LevelNote(999) == 255,
-					"can-fail: quarter-notch notes: 0 only dry, a trace is 1, a few decilitres never re-mesh");
-				Assert(RM_SubmergeMath.NoteLevel(RM_SubmergeMath.LevelNote(3.0)) == 3f, "can-fail: a whole notch draws as itself");
-			});
-			Case("Submerge_hung_ladder_meets_its_drawn_wall_face", () =>
-			{
-				// owner's look 2026-11-12 (EWA_SUBMERGE_REVIEW_20261112): "2m water depth put the northern ladder behind the pit
-				// wall art". MEASURED there: depth 4, fill 3 (what the wall faces draw), true level 4.00 notches.
-				float face = 1f - RM_WallFaceMath.NorthFaceHeight(RM_WallFaceMath.ExposedDrop(4, 0, 3));
-				float cut = RM_SubmergeMath.LadderWaterline(0, 4, RM_SubmergeMath.HungLadderLevel(3));
-				Assert(Near(cut, face) && cut < 1f, "can-fail: the north ladder is cut at the face's waterline (" + cut + " vs " + face + ")");
-				Assert(RM_SubmergeMath.LadderWaterline(0, 4, 4.0f) >= 1f, "can-fail: the true level (the old cut) swallows it whole");
-				float share = RM_SubmergeMath.LadderInPitShare(0, 4, RM_SubmergeMath.HungLadderLevel(3));
-				Assert(share > 0.7f && share < 0.8f, "can-fail: a notch of wall above the water keeps the ladder's top (got " + share + ")");
-				for (int d = 1; d <= 12; d++)
+				Assert(RM_UnderLiquid.Seen(Water, 0f) == 1f && RM_UnderLiquid.Seen(Water, -1f) == 1f, "can-fail: above the line: whole");
+				Assert(RM_UnderLiquid.Seen(0f, 0.01f) == 0f && RM_UnderLiquid.Seen(0f, 4f) == 0f, "can-fail: opaque (tar): hidden at any depth");
+				float prev = 1f;
+				for (int n = 1; n <= 8; n++)
 				{
-					for (int f = 0; f <= d; f++)
-					{
-						for (int rot = 0; rot < 4; rot++)
-						{
-							int ex = RM_WallFaceMath.ExposedDrop(d, 0, f);
-							float wall = f <= 0 || rot == 2 ? RM_SubmergeMath.NoCut : rot == 0 ? 1f - RM_WallFaceMath.NorthFaceHeight(ex)
-								: rot == 1 ? 1f - RM_WallFaceMath.SideFaceWidth(ex) : RM_WallFaceMath.SideFaceWidth(ex);
-							float c = RM_SubmergeMath.LadderWaterline(rot, d, RM_SubmergeMath.HungLadderLevel(f));
-							Assert(Near(c, wall), "can-fail: depth " + d + " fill " + f + " rot " + rot + ": ladder " + c + " vs wall " + wall);
-						}
-					}
+					float s = RM_UnderLiquid.Seen(Water, n * RM_UnderLiquid.Notch);
+					Assert(s > 0f && s < prev, "can-fail: clear water: deeper hides more, never all (n=" + n + ", " + s + ")");
+					prev = s;
 				}
-				// the redraw key: a ladder re-meshes when its face fill moves, even with the true level still; the ramp when the
-				// true level moves a quarter notch
-				int k3 = RM_SubmergeMath.DrawnKey(true, 3, 4.0), k4 = RM_SubmergeMath.DrawnKey(true, 4, 4.0);
-				Assert(k3 != k4 && RM_SubmergeMath.KeyLevel(k3) == 3f && RM_SubmergeMath.KeyLevel(k4) == 4f, "can-fail: face key follows the fill");
-				Assert(RM_SubmergeMath.DrawnKey(false, 3, 4.0) == RM_SubmergeMath.DrawnKey(false, 4, 4.0)
-					&& RM_SubmergeMath.KeyLevel(RM_SubmergeMath.DrawnKey(false, 3, 3.5)) == 3.5f, "can-fail: level key follows the true level");
-				Assert(RM_SubmergeMath.DrawnKey(true, 3, 3.0) != RM_SubmergeMath.DrawnKey(false, 3, 3.0) && RM_SubmergeMath.DrawnKey(true, 0, 0) != 0,
-					"can-fail: the two kinds never collide");
-				string draw = RiverSwitchFlipChecks.Src("Superdeep/RM_SubmergeDraw.cs");
-				Assert(draw.Contains("RM_SubmergeMath.HungLadderLevel(eng.FillAt(t.Position))") && draw.Contains("float cut = LadderCut(t, eng, d);")
-					&& draw.Contains("Wet(t, true, out"), "can-fail: PrintLadder cuts at its face's fill");
+				// D8 brim-full: the floor of a 4 m pit is still seen (the pit's own inside shadow shows through, owner 2026-11-12)
+				Assert(RM_UnderLiquid.BandAlphaStep(Water, 4f) >= 1, "can-fail: a brim-full 4 m pit still shows its floor");
+				Assert(RM_UnderLiquid.BandAlphaStep(0f, 0.1f) == 0, "can-fail: opaque bands are not drawn");
+				Assert(RM_UnderLiquid.BandsFor(0f, 0f, 2f) == 0 && RM_UnderLiquid.BandsFor(Water, 0f, 2f) == RM_UnderLiquid.Bands,
+					"can-fail: opaque draws no band, a clear deep part all of them");
 			});
-			Case("Submerge_gates_go_under_from_their_foot", () =>
+			Case("Submerge_one_cut_from_the_foot", () =>
 			{
-				// matrix review 2026-11-12: the sluice and the grate drew whole at every fill
-				Assert(RM_SubmergeMath.GateShare(0f, 4) == 0f && RM_SubmergeMath.GateShare(2f, 0) == 0f, "can-fail: dry or undug: whole");
-				Assert(Near(RM_SubmergeMath.GateShare(2f, 4), 0.4f), "can-fail: 1 m in a 2 m pit covers 2 of 5 notches");
-				Assert(Near(RM_SubmergeMath.GateShare(4f, 4), 0.8f) && RM_SubmergeMath.GateShare(4f, 4) < 1f,
-					"can-fail: brim-full still shows the gate's head");
-				Assert(RM_SubmergeMath.GateShare(1f, 1) > RM_SubmergeMath.GateShare(1f, 4), "can-fail: a full shallow canal covers more of its gate");
-				string doors = RiverSwitchFlipChecks.Src("Superdeep/RM_FlowDoors.cs");
-				string draw = RiverSwitchFlipChecks.Src("Superdeep/RM_SubmergeDraw.cs");
-				Assert(doors.Contains("RM_SubmergeDraw.GateUnder(this)") && doors.Contains("RM_SubmergeDraw.CutMesh(frameGraphic.MeshAt(Rotation)")
-					&& doors.Contains("RM_SubmergeDraw.CutMesh(panelGraphic.MeshAt(Rotation)"), "can-fail: frame and panel draw through the cut");
-				Assert(draw.Contains("RM_SubmergeMath.GateShare(RM_SubmergeMath.NoteLevel(NoteAt(eng, t.Position)), d)") && draw.Contains("cutMeshes[key] = m;"),
-					"can-fail: gate cut at the true level, meshes cached");
+				Assert(RM_UnderLiquid.Share(0f, 0f, RM_UnderLiquid.StakeMetres) == 0f, "can-fail: dry: nothing under");
+				Assert(Near(RM_UnderLiquid.Share(0.5f, 0f, RM_UnderLiquid.StakeMetres), 0.5f), "can-fail: half a stake under half a metre");
+				Assert(RM_UnderLiquid.Share(2f, 0f, RM_UnderLiquid.StakeMetres) == 1f, "can-fail: never more than all");
+				// items, packed furniture and the swale are covered (owner: "Items ... never become covered (fix)")
+				Assert(Near(RM_UnderLiquid.Share(0.15f, 0f, RM_UnderLiquid.ItemMetres), 0.5f), "can-fail: a stack half under 15 cm");
+				Assert(RM_UnderLiquid.Share(0.5f, 0f, RM_UnderLiquid.MinifiedMetres) > 0.6f, "can-fail: packed furniture covered by 0.5 m");
+				Assert(RM_UnderLiquid.Share(0.1f, 0f, RM_UnderLiquid.SwaleMetres) == 1f, "can-fail: the swale is a floor liner: under at the first drop");
+				// a gate stands on the floor and its head clears the bank (owner: pass)
+				Assert(RM_UnderLiquid.Share(4f, 0f, RM_UnderLiquid.GateMetres(8)) < 1f, "can-fail: a brim-full gate's head still shows");
+				Assert(RM_UnderLiquid.Step(0f) == 0 && RM_UnderLiquid.Step(1e-4f) == 1 && RM_UnderLiquid.Step(0.9999f) == RM_UnderLiquid.Steps - 1
+					&& RM_UnderLiquid.Step(1f) == RM_UnderLiquid.Steps, "can-fail: steps: 0 only dry, full only all");
 			});
-			Case("Submerge_span_share_of_a_sprite", () =>
+			Case("Submerge_one_level_true_not_whole_notches", () =>
 			{
-				// the north ladder sprite spans cell-local z 0.50..1.105: a waterline at 0.65 covers a quarter of it
-				float s = RM_SubmergeMath.SpanShare(0.5f, 1.105f, 0.65f, true);
-				Assert(Near(s, 0.15f / 0.605f), "can-fail: covered from the foot");
-				Assert(RM_SubmergeMath.SpanShare(0.5f, 1.105f, 0.3f, true) == 0f, "can-fail: waterline below the sprite");
-				Assert(RM_SubmergeMath.SpanShare(0.5f, 1.105f, 1.2f, true) == 1f, "can-fail: waterline over the sprite");
-				Assert(Near(RM_SubmergeMath.SpanShare(0.75f, 1.06f, 0.83f, false), 0.23f / 0.31f), "can-fail: covered from the high end");
-				Assert(RM_SubmergeMath.SpanShare(0f, 1f, RM_SubmergeMath.NoCut, true) == 0f, "can-fail: no cut");
+				Assert(RM_UnderLiquid.LevelNote(0) == 0 && RM_UnderLiquid.LevelNote(0.01) == 1, "can-fail: 0 only when dry");
+				Assert(RM_UnderLiquid.LevelNote(1.5) == 6 && Near(RM_UnderLiquid.NoteLevel(6), 1.5f) && Near(RM_UnderLiquid.NoteMetres(6), 0.75f),
+					"can-fail: a part notch is kept (no fill steps)");
+				Assert(RM_UnderLiquid.LevelNote(1000) == 255, "can-fail: capped");
+				// the hung ladder's waterline is the wall's own dry foot at that level, and a part notch moves it
+				float w1 = RM_UnderLiquid.Waterline(0, 4, 1f), w15 = RM_UnderLiquid.Waterline(0, 4, 1.5f);
+				Assert(Near(w1, 1f - RM_WallFaceMath.NorthFaceHeight(3)), "can-fail: north line = the face left dry (whole notch)");
+				Assert(w15 > w1 && w15 < RM_UnderLiquid.Waterline(0, 4, 2f), "can-fail: a part notch moves the line");
+				Assert(Near(RM_UnderLiquid.Waterline(1, 4, 1f), 1f - RM_WallFaceMath.SideFaceWidth(3))
+					&& Near(RM_UnderLiquid.Waterline(3, 4, 1f), RM_WallFaceMath.SideFaceWidth(3)), "can-fail: east/west lines mirror the side faces");
+				Assert(RM_UnderLiquid.Waterline(2, 4, 3f) == RM_UnderLiquid.NoCut && RM_UnderLiquid.Waterline(0, 4, 0f) == RM_UnderLiquid.NoCut,
+					"can-fail: hung south or dry: never cut");
+				Assert(Near(RM_UnderLiquid.NorthFace(2.5f), (RM_WallFaceMath.NorthByDrop[2] + RM_WallFaceMath.NorthByDrop[3]) / 2f)
+					&& RM_UnderLiquid.NorthFace(99f) == RM_WallFaceMath.NorthByDrop[RM_WallFaceMath.NorthByDrop.Length - 1],
+					"can-fail: faces read the tables between notches, last entry past the end");
+				Assert(RM_UnderLiquid.Exposed(8, 0, 9f) == 0f && Near(RM_UnderLiquid.Exposed(8, 0, 2.25f), 5.75f), "can-fail: exposed drop at the true level");
 			});
-			Case("Submerge_ramp_and_stakes", () =>
-			{
-				Assert(RM_SubmergeMath.RampShare(0, 4) == 0f, "can-fail: dry ramp whole");
-				Assert(Near(RM_SubmergeMath.RampShare(1, 4), 0.25f), "can-fail: a quarter of a 4-level ramp under 1 level");
-				Assert(RM_SubmergeMath.RampShare(4, 4) == 1f && RM_SubmergeMath.RampShare(2, 0) == 1f, "can-fail: brim-full ramp gone");
-				Assert(RM_SubmergeMath.StakeShare(0) == 0f, "can-fail: dry stakes whole");
-				float half = RM_SubmergeMath.StakeShare(1);
-				Assert(Near(half, RM_Volume.MetresPerLevel / RM_SpikeDrawMath.SubmergeMetres) && half > 0f && half < 1f,
-					"can-fail: one level covers its metres of a 1 m stake");
-				Assert(RM_SubmergeMath.StakeShare(2) == 1f, "can-fail: gone at 1 m, as the old fade");
-			});
-			Case("Submerge_step_is_zero_and_full_only_at_the_ends", () =>
-			{
-				Assert(RM_SubmergeMath.Step(0f) == 0 && RM_SubmergeMath.Step(-1f) == 0, "can-fail: 0 only when dry");
-				Assert(RM_SubmergeMath.Step(0.001f) == 1, "can-fail: a sliver still cuts");
-				Assert(RM_SubmergeMath.Step(0.999f) == RM_SubmergeMath.Steps - 1, "can-fail: never full before 1");
-				Assert(RM_SubmergeMath.Step(1f) == RM_SubmergeMath.Steps, "can-fail: full at 1");
-			});
-			Case("Submerge_cut_keeps_the_dry_part_of_the_texture", () =>
+			Case("Submerge_cut_keeps_the_right_part_of_the_texture", () =>
 			{
 				// PrintPlane corners (-x-z, -x+z, +x+z, +x-z), default uvs (0,0),(0,1),(1,1),(1,0)
 				float[] uv = { 0f, 0f, 0f, 1f, 1f, 1f, 1f, 0f };
 				float x0 = 0f, z0 = 0f, x1 = 2f, z1 = 4f;
-				RM_SubmergeMath.Cut(RM_SubmergeMath.FromSouth, 0.25f, uv, ref x0, ref z0, ref x1, ref z1);
-				Assert(Near(z0, 1f) && z1 == 4f && x0 == 0f && x1 == 2f, "can-fail: the bottom quarter of the quad is dropped");
-				Assert(Near(uv[1], 0.25f) && Near(uv[7], 0.25f) && uv[3] == 1f && uv[5] == 1f, "can-fail: the bottom quarter of the texture too");
-				// a flipped atlas tile: u runs 0.6..0.5, v 0.2..0.3
-				float[] at = { 0.6f, 0.2f, 0.6f, 0.3f, 0.5f, 0.3f, 0.5f, 0.2f };
+				RM_UnderLiquid.Slice(RM_UnderLiquid.FromSouth, 0.25f, 1f, uv, ref x0, ref z0, ref x1, ref z1);
+				Assert(Near(z0, 1f) && Near(z1, 4f) && x0 == 0f && x1 == 2f, "can-fail: the dry slice of a south cut drops the bottom quarter");
+				Assert(Near(uv[1], 0.25f) && Near(uv[7], 0.25f) && Near(uv[3], 1f) && Near(uv[5], 1f), "can-fail: and the bottom quarter of the texture");
+				float[] at = { 0.6f, 0.2f, 0.6f, 0.3f, 0.5f, 0.3f, 0.5f, 0.2f };   // a flipped atlas tile
 				float a0 = 0f, b0 = 0f, a1 = 1f, b1 = 1f;
-				RM_SubmergeMath.Cut(RM_SubmergeMath.FromWest, 0.5f, at, ref a0, ref b0, ref a1, ref b1);
-				Assert(Near(a0, 0.5f) && Near(at[0], 0.55f) && Near(at[2], 0.55f) && at[4] == 0.5f && at[1] == 0.2f,
+				RM_UnderLiquid.Slice(RM_UnderLiquid.FromWest, 0.5f, 1f, at, ref a0, ref b0, ref a1, ref b1);
+				Assert(Near(a0, 0.5f) && Near(at[0], 0.55f) && Near(at[2], 0.55f) && Near(at[4], 0.5f) && at[1] == 0.2f,
 					"can-fail: a west cut lerps u inside the atlas tile, flip kept");
 				float[] e = { 0f, 0f, 0f, 1f, 1f, 1f, 1f, 0f };
 				float c0 = 0f, d0 = 0f, c1 = 1f, d1 = 1f;
-				RM_SubmergeMath.Cut(RM_SubmergeMath.FromEast, 0.4f, e, ref c0, ref d0, ref c1, ref d1);
-				Assert(Near(c1, 0.6f) && Near(e[4], 0.6f) && Near(e[6], 0.6f) && e[0] == 0f, "can-fail: an east cut drops the east side");
-				float[] n = { 0f, 0f, 0f, 1f, 1f, 1f, 1f, 0f };
-				RM_SubmergeMath.Cut(RM_SubmergeMath.FromNorth, 0f, n, ref c0, ref d0, ref c1, ref d1);
-				Assert(n[3] == 1f && Near(d1, 1f), "can-fail: share 0 cuts nothing");
+				RM_UnderLiquid.Slice(RM_UnderLiquid.FromEast, 0f, 0.4f, e, ref c0, ref d0, ref c1, ref d1);
+				Assert(Near(c0, 0.6f) && Near(c1, 1f) && Near(e[0], 0.6f), "can-fail: the drowned slice of an east cut is the east side");
 			});
-			Case("Submerge_wired_into_the_drawers_and_the_engine", () =>
+			Case("Submerge_every_drawer_uses_the_one_function", () =>
 			{
 				string draw = RiverSwitchFlipChecks.Src("Superdeep/RM_SubmergeDraw.cs");
 				string eng = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
 				string spikes = RiverSwitchFlipChecks.Src("Superdeep/RM_Spikes.cs");
-				Assert(draw.Contains("public partial class RM_Building_Ladder") && draw.Contains("public partial class RM_Building_PitRamp"),
-					"can-fail: ladders and the ramp print through the cut");
-				Assert(draw.Contains("TryGetTextureAtlasReplacementInfo") && draw.Contains("ShadowGraphic?.Print"),
-					"can-fail: the cut print mirrors vanilla Graphic.Print (atlas, shadow)");
-				Assert(!draw.Contains("new List<") || draw.IndexOf("new List<", StringComparison.Ordinal) > draw.IndexOf("ProofSubmerge", StringComparison.Ordinal),
-					"can-fail: no allocation on the print path");
+				string gates = RiverSwitchFlipChecks.Src("Superdeep/RM_FlowDoors.cs");
+				string walls = RiverSwitchFlipChecks.Src("Superdeep/RM_ExcavationWalls.cs");
+				string surface = RiverSwitchFlipChecks.Src("RM_LiquidSurface.cs");
+				Assert(draw.Contains("TakePrintFrom") && draw.Contains("PrintPlane") && draw.Contains("RM_UnderLiquid.Share(levelM, 0f, ctxHeight)"),
+					"can-fail: map-mesh things (ladders, ramp, items, packed furniture, swale) are split by the one cut");
+				Assert(draw.Contains("RM_UnderLiquid.ItemMetres") && draw.Contains("RM_UnderLiquid.MinifiedMetres") && draw.Contains("RM_UnderLiquid.SwaleMetres"),
+					"can-fail: items, packed furniture and the swale are covered");
+				Assert(draw.Contains("RM_UnderLiquid.Waterline(rot, drop, levelM / RM_UnderLiquid.Notch)"), "can-fail: a hung ladder meets the liquid where its wall does");
+				Assert(gates.Contains("RM_SubmergeDraw.DrawUnder(") && gates.Contains("RM_UnderLiquid.GateMetres"), "can-fail: gates draw through the one law");
+				Assert(gates.Contains("HollowDepthAt(Position)") && gates.Contains("if (pit <= 0)"), "can-fail: a gate in a pit casts no shadow onto the bank");
+				Assert(spikes.Contains("RM_UnderLiquid.Share(") && spikes.Contains("RM_UnderLiquid.BandAlphaStep(") && !spikes.Contains("SubmergedAlpha"),
+					"can-fail: the stakes are cut and seen through by the one law, the old fade is gone");
+				Assert(walls.Contains("RM_UnderLiquid.Seen(") && walls.Contains("RM_WaterLookDraw.LookFlag") && !walls.Contains("FillAt("),
+					"can-fail: walls: the one law, re-meshed on a level move, no whole-notch fill");
+				Assert(!walls.Contains("LookFor(") , "can-fail: see-through does not hang on a look the vanilla rungs lack");
+				Assert(surface.Contains("RM_UnderLiquid.NorthFace(RM_UnderLiquid.Exposed("), "can-fail: the surface overlay stops at the same face line");
 				int depthCheck = eng.IndexOf("a lake square is RM_LiquidStock.StagePond's", StringComparison.Ordinal);
 				int hook = eng.IndexOf("RM_SubmergeDraw.FillPictured(", StringComparison.Ordinal);
-				Assert(depthCheck > 0 && hook > depthCheck && hook - depthCheck < 400, "can-fail: the fill picture-writer re-meshes a noted fitting");
+				Assert(depthCheck > 0 && hook > depthCheck && hook - depthCheck < 400, "can-fail: the fill picture-writer re-meshes a noted cell");
 				Assert(eng.Contains("if (submergeDrawn.Count != 0)"), "can-fail: nothing noted, nothing done (dry costs nothing)");
-				Assert(spikes.Contains("RM_SubmergeMath.StakeShare(level)") && spikes.Contains("RM_SubmergeDraw.NoteAt(eng, c)") && spikes.Contains("step << 22"),
-					"can-fail: the spikes cut each stake and re-mesh when the level moves");
-				Assert(spikes.Contains("RM_SpikeDrawMath.SubmergedAlpha(fill)"), "can-fail: setting off keeps the old fade");
+			});
+			Case("Submerge_defs_tar_dark_gates_shadowless", () =>
+			{
+				string reg = RiverSwitchFlipChecks.Src("../Defs/LiquidTypes/LiquidDefs/RM_LiquidDefRegistry.xml");
+				string tar = RiverSwitchFlipChecks.Src("../Defs/LiquidTypes/TerrainDefs/RM_Tar.xml");
+				string doors = RiverSwitchFlipChecks.Src("../Defs/Canals/ThingDefs/FlowWorks_Doors.xml");
+				Assert(reg.Contains("<tint>(0.07,0.065,0.06)</tint>") && !reg.Contains("<tint>(0.24,0.24,0.24)</tint>"), "can-fail: tar's look is dark, not grey");
+				Assert(!tar.Contains("<color>(86,82,88)</color>") && tar.Contains("<color>(18,17,16)</color>"), "can-fail: tar terrain is dark");
+				int sluice = doors.IndexOf("<defName>RM_Sluice</defName>", StringComparison.Ordinal);
+				int grate = doors.IndexOf("<defName>RM_SecurityGrateDoor</defName>", StringComparison.Ordinal);
+				int s0 = doors.IndexOf("<staticSunShadowHeight>0</staticSunShadowHeight>", sluice, StringComparison.Ordinal);
+				int g0 = doors.IndexOf("<staticSunShadowHeight>0</staticSunShadowHeight>", grate, StringComparison.Ordinal);
+				Assert(sluice > 0 && grate > sluice && s0 > sluice && s0 < grate && g0 > grate, "can-fail: both gates override DoorBase's 1.0 sun shadow");
 			});
 		}
 	}

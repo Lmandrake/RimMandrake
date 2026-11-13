@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Globalization;
+using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -7,102 +8,105 @@ using Verse;
 namespace RimMandrake.FlowWorks
 {
 	/// <summary>
-	/// RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL: the liquid standing in a pit covers the fittings in it up to its level
-	/// (rules: RM_SubmergeMath). Ladders (RM_Ladder, RM_LadderSteel, RM_LadderPortable: lowered, raised and lying-flat art)
-	/// and the ramp (RM_PitRamp) are map-mesh things: their Print draws the uncovered part of the vanilla sprite (Graphic.Print
-	/// mirrored, decompiled 1.6, with the atlas uvs lerped so a static atlas tile cuts the same). The spikes (RM_Spikes,
-	/// realtime) cut each stake in Building_RM_Spikes.DrawAt. Setting pitSubmergeCutEnabled (on): off draws as before.
+	/// RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL: what stands in a dug square drawn under the liquid in it by ONE rule,
+	/// <see cref="RM_UnderLiquid"/> (owner's live look 2026-11-12: "It's as though each case is independently set in these
+	/// variables, badly (major fix)"). Map-mesh things (ladders hung or lying flat, the pit ramp, items, minified things,
+	/// the swale) are split where they are printed: SectionLayer_ThingsGeneral.TakePrintFrom opens a context for the thing
+	/// (<see cref="Begin"/>), and every Printer_Plane.PrintPlane it makes (Graphic.Print, MinifiedThing's crate and its
+	/// content, atlas tiles and flips included) is drawn as the part above the line, as it is, plus the drowned part in up to
+	/// RM_UnderLiquid.Bands bands at alpha RM_UnderLiquid.Seen over the liquid terrain (clear liquids: tinted by depth;
+	/// opaque: hidden). The realtime gates (RM_FlowDoors) and stakes (RM_Spikes) draw the same split from <see cref="Wet"/>
+	/// and <see cref="DrawUnder"/>; the pit's walls and floor (SectionLayer_RMExcavationWalls) use the same level, cut and
+	/// law. Setting pitSubmergeCutEnabled (on): off draws them whole over the liquid.
 	///
-	/// Cost: nothing while dry. A map-mesh fitting notes the key it was printed at (RM_MapComponent_Excavation.submergeDrawn,
-	/// cell index -> RM_SubmergeMath.DrawnKey: a hung ladder's face fill, the same whole-notch FillAt its wall face is drawn
-	/// with; the ramp's quarter notches of the TRUE level); the excavation engine's picture-writer (ApplyFillTerrain, which
-	/// every write of a dug square's liquid calls) re-meshes a noted cell whose key moved and drops its note, and the
-	/// re-print notes it again. Stale notes
-	/// (a fitting gone) cost one extra re-mesh on that square's next change. Prints run only on a section rebuild: the cut uses
-	/// static buffers, no allocation.
+	/// Cost: nothing while dry beyond one note per dug cell a thing was printed on. The note (RM_MapComponent_Excavation.
+	/// submergeDrawn, cell index -> RM_UnderLiquid.LevelNote of the true level) is what the cell was printed at; the engine's
+	/// picture-writer (ApplyFillTerrain, which every write of a dug square's liquid calls) re-meshes a noted cell whose note
+	/// moved (<see cref="FillPictured"/>), and the re-print notes it again. Prints run only on a section rebuild; the split
+	/// uses static buffers and cached faded materials.
 	/// </summary>
 	public static class RM_SubmergeDraw
 	{
-		private static readonly float[] Uv = new float[8];
-		private static readonly Vector2[] UvBuf = new Vector2[4];
-		private static readonly Color32[] ColBuf = new Color32[4];
-
 		public static bool On => RimMandrakeFlowWorksSettings.pitSubmergeCutEnabled;
-
-		/// <summary>ThingWithComps.Print's CompsPreventDrawing (private): a comp hiding the parent leaves it to vanilla.</summary>
-		public static bool CompsHide(ThingWithComps t)
-		{
-			List<ThingComp> comps = t.AllComps;
-			for (int i = 0; i < comps.Count; i++)
-			{
-				if (comps[i].DontDrawParent())
-				{
-					return true;
-				}
-			}
-			return false;
-		}
-
-		/// <summary>The rest of ThingWithComps.Print once the body is drawn (or hidden) here: every comp prints its own part.</summary>
-		public static void PrintComps(ThingWithComps t, SectionLayer layer)
-		{
-			List<ThingComp> comps = t.AllComps;
-			for (int i = 0; i < comps.Count; i++)
-			{
-				comps[i].PostPrintOnto(layer);
-			}
-		}
 
 		/// <summary>The quarter-notch note of the true level (whole notch + part-notch) standing on <paramref name="c"/>.</summary>
 		public static int NoteAt(RM_MapComponent_Excavation eng, IntVec3 c)
 		{
-			return RM_SubmergeMath.LevelNote(eng.WaterDlAt(c) / (double)RM_LevelSolve.U);
+			return RM_UnderLiquid.LevelNote(eng.WaterDlAt(c) / (double)RM_LevelSolve.U);
 		}
 
-		/// <summary>The redraw key a fitting on <paramref name="c"/> would print at now (RM_SubmergeMath.DrawnKey): a hung
-		/// ladder's face fill, else the true level's quarter-notch note.</summary>
-		public static int KeyAt(RM_MapComponent_Excavation eng, IntVec3 c, bool face)
-		{
-			return RM_SubmergeMath.DrawnKey(face, eng.FillAt(c), eng.WaterDlAt(c) / (double)RM_LevelSolve.U);
-		}
-
-		/// <summary>Called by RM_MapComponent_Excavation.ApplyFillTerrain for a dug square while any fitting is noted.</summary>
+		/// <summary>Called by RM_MapComponent_Excavation.ApplyFillTerrain for a dug square while any cell is noted: a cell
+		/// printed at another level re-meshes (its things, and the walls layer through RM_WaterLookDraw.LookFlag).</summary>
 		public static void FillPictured(RM_MapComponent_Excavation eng, Map map, IntVec3 c, int index)
 		{
-			if (eng.submergeDrawn.TryGetValue(index, out int drawn) && drawn != KeyAt(eng, c, (drawn & RM_SubmergeMath.FaceKind) != 0))
+			if (eng.submergeDrawn.TryGetValue(index, out int drawn) && drawn != NoteAt(eng, c))
 			{
 				eng.submergeDrawn.Remove(index);
-				map.mapDrawer.MapMeshDirty(c, (ulong)MapMeshFlagDefOf.Buildings | (ulong)MapMeshFlagDefOf.Things);
+				map.mapDrawer.MapMeshDirty(c, (ulong)MapMeshFlagDefOf.Buildings | (ulong)MapMeshFlagDefOf.Things | RM_WaterLookDraw.LookFlag);
 			}
 		}
 
-		/// <summary>The dug depth and the drawn level (notches) under a fitting: for a hung ladder (<paramref name="face"/>) the
-		/// whole-notch fill its wall face is drawn with, else the true level in quarter notches; false when it stands on no dug
-		/// square, the setting is off or it is dry. Notes the key printed at (a dry print too: the first liquid must re-mesh it).</summary>
-		private static bool Wet(Thing t, bool face, out RM_MapComponent_Excavation eng, out int d, out float f)
+		/// <summary>How clear the liquid on <paramref name="c"/> is (RM_LiquidSurfaceLook.seeThrough: the share of the view
+		/// left after 1 m; 0 = opaque): the cell's fluid's look, else its terrain's, else fresh water's.</summary>
+		public static float ClarityAt(Map map, RM_MapComponent_Excavation eng, IntVec3 c)
 		{
-			eng = null;
-			d = 0;
-			f = 0f;
-			if (!On || !t.Spawned)
+			RM_LiquidSurfaceLook look = LookAt(map, eng, c);
+			return look != null ? look.seeThrough : 0f;
+		}
+
+		public static RM_LiquidSurfaceLook LookAt(Map map, RM_MapComponent_Excavation eng, IntVec3 c)
+		{
+			FluidDef f = eng?.FluidAt(c);
+			RM_LiquidSurfaceLook look = f != null ? RM_LiquidLooks.LookOfFluid(f) : null;
+			if (look == null)
+			{
+				look = RM_LiquidSurface.LookFor(map.terrainGrid.TerrainAt(c));
+			}
+			if (look == null)
+			{
+				look = RM_LiquidSurface.LookFor(RM_WaterLadderDefs.Freshwater(RM_WaterLadder.Rung.VeryShallow));
+			}
+			return look;
+		}
+
+		/// <summary>The dug depth (notches), the true level (m, never above the floor's depth: no level above the bank) and
+		/// the clarity under a thing; false when it stands on no dug square, the setting is off or it is dry. Notes the
+		/// level printed at when <paramref name="noteIt"/> (a map-mesh print; a dry print too: the first liquid must re-mesh
+		/// it). The realtime drawers pass false.</summary>
+		public static bool Wet(Thing t, out int depth, out float levelMetres, out float clarity, bool noteIt = true)
+		{
+			depth = 0;
+			levelMetres = 0f;
+			clarity = 0f;
+			if (!On || t == null || !t.Spawned)
 			{
 				return false;
 			}
-			eng = t.Map.GetComponent<RM_MapComponent_Excavation>();
+			Map map = t.Map;
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
 			if (eng == null)
 			{
 				return false;
 			}
 			IntVec3 c = t.Position;
-			d = eng.HollowDepthAt(c);
-			if (d <= 0)
+			depth = eng.HollowDepthAt(c);
+			if (depth <= 0)
 			{
 				return false;
 			}
-			int key = KeyAt(eng, c, face);
-			eng.submergeDrawn[t.Map.cellIndices.CellToIndex(c)] = key;
-			f = RM_SubmergeMath.KeyLevel(key);
-			return f > 0f;
+			int note = NoteAt(eng, c);
+			if (noteIt)
+			{
+				eng.submergeDrawn[map.cellIndices.CellToIndex(c)] = note;
+			}
+			if (note <= 0)
+			{
+				return false;
+			}
+			float lv = RM_UnderLiquid.NoteLevel(note);
+			levelMetres = (lv > depth ? depth : lv) * RM_UnderLiquid.Notch;
+			clarity = ClarityAt(map, eng, c);
+			return true;
 		}
 
 		/// <summary>The levels a ladder's wall drops (its own depth when it hangs on none).</summary>
@@ -118,122 +122,9 @@ namespace RimMandrake.FlowWorks
 			return comp != null && g == comp.ShortGraphic;
 		}
 
-		/// <summary>RM_Building_Ladder.Print: true when this drew (or hid) the ladder; false = vanilla prints it whole.</summary>
-		public static bool PrintLadder(Thing t, SectionLayer layer)
-		{
-			if (!Wet(t, true, out RM_MapComponent_Excavation eng, out int d, out float f))
-			{
-				return false;
-			}
-			Graphic g = t.Graphic;
-			if (LiesFlat(t, g))
-			{
-				return true;   // lying on the floor: under the liquid from its first level
-			}
-			int rot = t.Rotation.AsInt;
-			float cut = LadderCut(t, eng, d);
-			if (cut < 0f)
-			{
-				return false;
-			}
-			return PrintCut(t, layer, g, RM_SubmergeMath.LadderFrom(rot), cut, -1f);
-		}
-
-		/// <summary>A hung ladder's cell-local waterline: its wall face's own (RM_SubmergeMath.HungLadderLevel of FillAt).
-		/// PrintLadder and ProofSubmerge both read this.</summary>
-		public static float LadderCut(Thing t, RM_MapComponent_Excavation eng, int d)
-		{
-			return RM_SubmergeMath.LadderWaterline(t.Rotation.AsInt, LadderDrop(t, eng, d),
-				RM_SubmergeMath.HungLadderLevel(eng.FillAt(t.Position)));
-		}
-
-		/// <summary>The waterline the wall layer draws on the face a ladder hangs on, computed the way
-		/// SectionLayer_RMExcavationWalls does (ExposedDrop with FillAt; N: 1 - NorthFaceHeight, E: 1 - SideFaceWidth,
-		/// W: SideFaceWidth): the proof's independent reference for <see cref="LadderCut"/>. -1 when no face shows liquid.</summary>
-		public static float FaceWaterline(Thing t, RM_MapComponent_Excavation eng, int d)
-		{
-			int rot = t.Rotation.AsInt, f = eng.FillAt(t.Position);
-			if (rot == 2 || f <= 0)
-			{
-				return RM_SubmergeMath.NoCut;
-			}
-			int nb = SectionLayer_RMExcavationWalls.NeighbourLevel(t.Map, eng, t.Position + t.Rotation.FacingCell, d);
-			if (RM_WallFaceMath.ExposedDrop(d, nb, 0) <= 0)
-			{
-				return RM_SubmergeMath.NoCut;   // hangs on no wall: no face to meet
-			}
-			int exposed = RM_WallFaceMath.ExposedDrop(d, nb, f);
-			if (rot == 0)
-			{
-				return 1f - RM_WallFaceMath.NorthFaceHeight(exposed);
-			}
-			float w = RM_WallFaceMath.SideFaceWidth(exposed);
-			return rot == 1 ? 1f - w : w;
-		}
-
-		/// <summary>The share of a gate (Building_RM_FlowDoor) under the liquid in its dug square, from its foot, in cut steps
-		/// (RM_SubmergeMath.GateShare at the true level, quarter notches): 0 dry, off the dug squares or with the setting off.</summary>
-		public static float GateUnder(Thing t)
-		{
-			if (!On || !t.Spawned)
-			{
-				return 0f;
-			}
-			RM_MapComponent_Excavation eng = t.Map.GetComponent<RM_MapComponent_Excavation>();
-			int d = eng != null ? eng.HollowDepthAt(t.Position) : 0;
-			if (d <= 0)
-			{
-				return 0f;
-			}
-			int step = RM_SubmergeMath.Step(RM_SubmergeMath.GateShare(RM_SubmergeMath.NoteLevel(NoteAt(eng, t.Position)), d));
-			return (float)step / RM_SubmergeMath.Steps;
-		}
-
-		private static readonly Dictionary<long, Mesh> cutMeshes = new Dictionary<long, Mesh>();
-
-		/// <summary>A realtime plane of <paramref name="size"/> with the <paramref name="under"/> share nearest its foot cut
-		/// away (uvs lerped, unflipped art: the gates have no flipped facing): <paramref name="whole"/> itself at 0, null when
-		/// all of it is under. Cached per size and cut step, so a frame allocates nothing.</summary>
-		public static Mesh CutMesh(Mesh whole, Vector2 size, float under)
-		{
-			int step = RM_SubmergeMath.Step(under);
-			if (step <= 0)
-			{
-				return whole;
-			}
-			if (step >= RM_SubmergeMath.Steps)
-			{
-				return null;
-			}
-			long key = ((long)Mathf.RoundToInt(size.x * 1000f) << 40) | ((long)Mathf.RoundToInt(size.y * 1000f) << 8) | (long)step;
-			if (cutMeshes.TryGetValue(key, out Mesh m) && m != null)
-			{
-				return m;
-			}
-			float s = (float)step / RM_SubmergeMath.Steps, hw = size.x * 0.5f, hh = size.y * 0.5f, z0 = -hh + size.y * s;
-			m = new Mesh { name = "RM_SubmergeCut" };
-			m.vertices = new[] { new Vector3(-hw, 0f, z0), new Vector3(-hw, 0f, hh), new Vector3(hw, 0f, hh), new Vector3(hw, 0f, z0) };
-			m.uv = new[] { new Vector2(0f, s), new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(1f, s) };
-			m.triangles = new[] { 0, 1, 2, 0, 2, 3 };
-			m.RecalculateNormals();
-			m.RecalculateBounds();
-			cutMeshes[key] = m;
-			return m;
-		}
-
-		/// <summary>RM_Building_PitRamp.Print: covered from the downhill end by level / rise.</summary>
-		public static bool PrintRamp(Thing t, SectionLayer layer)
-		{
-			if (!Wet(t, false, out RM_MapComponent_Excavation eng, out int d, out float f))
-			{
-				return false;
-			}
-			return PrintCut(t, layer, t.Graphic, RampFrom(t.Rotation.AsInt), -1f, RM_SubmergeMath.RampShare(f, RampRise(t, eng, d)));
-		}
-
 		/// <summary>The ramp points uphill: its downhill end is the opposite side.</summary>
-		private static int RampFrom(int rot) => rot == 0 ? RM_SubmergeMath.FromSouth : rot == 1 ? RM_SubmergeMath.FromWest
-			: rot == 2 ? RM_SubmergeMath.FromNorth : RM_SubmergeMath.FromEast;
+		private static int RampFrom(int rot) => rot == 0 ? RM_UnderLiquid.FromSouth : rot == 1 ? RM_UnderLiquid.FromWest
+			: rot == 2 ? RM_UnderLiquid.FromNorth : RM_UnderLiquid.FromEast;
 
 		private static int RampRise(Thing t, RM_MapComponent_Excavation eng, int d)
 		{
@@ -241,67 +132,306 @@ namespace RimMandrake.FlowWorks
 			return up.InBounds(t.Map) ? d - eng.HollowDepthAt(up) : d;
 		}
 
-		/// <summary>Graphic.Print (1.6) with the sprite's covered part cut away: by a cell-local waterline
-		/// <paramref name="cut"/> (z for a South/North start, x for West/East), or by a direct <paramref name="share"/> of the
-		/// sprite when cut is negative. False when there is nothing to cut (vanilla prints it whole).</summary>
-		private static bool PrintCut(Thing t, SectionLayer layer, Graphic g, int from, float cut, float share)
+		private static ThingDef swaleDef;
+		private static bool swaleResolved;
+
+		private static bool IsSwale(ThingDef d)
 		{
-			if (g == null || g.ShouldDrawRotated)
+			if (!swaleResolved)
 			{
-				return false;
+				swaleDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_Swale");
+				swaleResolved = true;
 			}
-			Rot4 rot = t.Rotation;
-			bool flip = (rot == Rot4.West && g.WestFlipped) || (rot == Rot4.East && g.EastFlipped);
-			if (flip && g.data != null && g.data.flipExtraRotation != 0f)
+			return d == swaleDef && d != null;
+		}
+
+		/// <summary>The drawn height (m) of a thing standing on the floor, or 0 when it is not one this draws.</summary>
+		private static float StandingMetres(Thing t)
+		{
+			if (t is MinifiedThing)
 			{
-				return false;
+				return RM_UnderLiquid.MinifiedMetres;
 			}
-			Vector2 size = rot.IsHorizontal ? g.drawSize.Rotated() : g.drawSize;
-			Vector3 center = t.TrueCenter() + g.DrawOffset(rot);
-			float x0 = center.x - size.x * 0.5f, x1 = center.x + size.x * 0.5f;
-			float z0 = center.z - size.y * 0.5f, z1 = center.z + size.y * 0.5f;
-			if (cut >= 0f)
+			if (t.def.category == ThingCategory.Item)
 			{
-				bool alongZ = from == RM_SubmergeMath.FromSouth || from == RM_SubmergeMath.FromNorth;
-				bool fromLow = from == RM_SubmergeMath.FromSouth || from == RM_SubmergeMath.FromWest;
-				IntVec3 c = t.Position;
-				share = alongZ ? RM_SubmergeMath.SpanShare(z0 - c.z, z1 - c.z, cut, fromLow)
-					: RM_SubmergeMath.SpanShare(x0 - c.x, x1 - c.x, cut, fromLow);
+				return RM_UnderLiquid.ItemMetres;
 			}
-			if (share <= 0f)
+			return IsSwale(t.def) ? RM_UnderLiquid.SwaleMetres : 0f;
+		}
+
+		// ── the print context (main thread only: section rebuilds) ──────────────
+
+		private static bool ctxOn, inSplit, ctxWorld;
+		private static int ctxFrom;
+		private static float ctxShare, ctxLevel, ctxHeight, ctxClarity, ctxCut, ctxFoot;
+		private static IntVec3 ctxCell;
+
+		/// <summary>SectionLayer_ThingsGeneral.TakePrintFrom prefix: opens the split for a thing standing wet in a dug
+		/// square (nothing for anything else).</summary>
+		public static void Begin(Thing t)
+		{
+			ctxOn = false;
+			if (!On || t == null)
 			{
-				return false;
+				return;
 			}
-			if (share >= 1f)
+			bool ladder = t is RM_Building_Ladder, ramp = t is RM_Building_PitRamp;
+			float standing = ladder || ramp ? 0f : StandingMetres(t);
+			if (!ladder && !ramp && standing <= 0f)
 			{
-				return true;   // wholly under: nothing shows
+				return;
 			}
-			Material mat = g.MatAt(rot, t);
-			Graphic.TryGetTextureAtlasReplacementInfo(mat, t.def.category.ToAtlasGroup(), flip, true, out mat, out Vector2[] uvs, out Color32 vc);
-			if (uvs != null)
+			if (!Wet(t, out int d, out float levelM, out float clarity))
 			{
-				for (int j = 0; j < 4; j++)
+				return;
+			}
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(t.Map);
+			ctxWorld = false;
+			ctxFrom = RM_UnderLiquid.FromSouth;
+			ctxLevel = levelM;
+			ctxClarity = clarity;
+			ctxCell = t.Position;
+			int rot = t.Rotation.AsInt;
+			if (ladder && !LiesFlat(t, t.Graphic))
+			{
+				if (rot == 2)
 				{
-					Uv[j * 2] = uvs[j].x;
-					Uv[j * 2 + 1] = uvs[j].y;
+					return;   // hung on the near wall: only its top above the near rim shows, never under
 				}
+				int drop = LadderDrop(t, eng, d);
+				float cut = RM_UnderLiquid.Waterline(rot, drop, levelM / RM_UnderLiquid.Notch);
+				if (cut < 0f)
+				{
+					return;
+				}
+				ctxWorld = true;
+				ctxFrom = RM_UnderLiquid.HungFrom(rot);
+				ctxCut = cut;
+				ctxFoot = rot == 0 ? 1f - RM_UnderLiquid.NorthFace(drop)
+					: rot == 1 ? 1f - RM_UnderLiquid.SideFace(drop) : RM_UnderLiquid.SideFace(drop);
+			}
+			else if (ladder)
+			{
+				ctxHeight = RM_UnderLiquid.LyingLadderMetres;
+			}
+			else if (ramp)
+			{
+				ctxFrom = RampFrom(rot);
+				ctxHeight = RampRise(t, eng, d) * RM_UnderLiquid.Notch;
 			}
 			else
 			{
-				// Printer_Plane.DefaultUvs / DefaultUvsFlipped, corner order (-x-z, -x+z, +x+z, +x-z)
-				float ul = flip ? 1f : 0f, ur = flip ? 0f : 1f;
-				Uv[0] = ul; Uv[1] = 0f; Uv[2] = ul; Uv[3] = 1f; Uv[4] = ur; Uv[5] = 1f; Uv[6] = ur; Uv[7] = 0f;
+				ctxHeight = standing;
 			}
-			RM_SubmergeMath.Cut(from, share, Uv, ref x0, ref z0, ref x1, ref z1);
+			ctxShare = RM_UnderLiquid.Share(levelM, 0f, ctxHeight);
+			ctxOn = true;
+		}
+
+		public static void End()
+		{
+			ctxOn = false;
+		}
+
+		private static readonly float[] Uv0 = new float[8];
+		private static readonly float[] Uv = new float[8];
+		private static readonly Vector2[] UvBuf = new Vector2[4];
+
+		/// <summary>Printer_Plane.PrintPlane prefix while a context is open: true when this drew the plane (split, faded or
+		/// hidden), false = vanilla prints it as asked.</summary>
+		internal static bool Split(MapDrawLayer layer, Vector3 center, Vector2 size, Material mat, float rot, bool flipUv,
+			Vector2[] uvs, Color32[] colors, float bias, float payload)
+		{
+			if (!ctxOn || inSplit || mat == null)
+			{
+				return false;
+			}
+			float x0 = center.x - size.x * 0.5f, x1 = center.x + size.x * 0.5f;
+			float z0 = center.z - size.y * 0.5f, z1 = center.z + size.y * 0.5f;
+			bool alongZ = ctxFrom == RM_UnderLiquid.FromSouth || ctxFrom == RM_UnderLiquid.FromNorth;
+			bool fromLow = ctxFrom == RM_UnderLiquid.FromSouth || ctxFrom == RM_UnderLiquid.FromWest;
+			float lo = alongZ ? z0 - ctxCell.z : x0 - ctxCell.x, hi = alongZ ? z1 - ctxCell.z : x1 - ctxCell.x;
+			float s = ctxWorld ? RM_UnderLiquid.SpanShare(lo, hi, ctxCut, fromLow) : ctxShare;
+			if (s <= 0f)
+			{
+				return false;
+			}
+			inSplit = true;
+			try
+			{
+				if (rot != 0f)
+				{
+					// a turned sprite (an item's random lie): whole above the line until half of it is under, then whole at
+					// the law's alpha for its middle
+					if (s >= 0.5f)
+					{
+						int q = RM_UnderLiquid.BandAlphaStep(ctxClarity, MetresOf(0.5f, lo, hi, fromLow));
+						Material m = q > 0 ? Faded(mat, q) : null;
+						if (m != null)
+						{
+							Printer_Plane.PrintPlane(layer, center, size, m, rot, flipUv, uvs, colors, bias, payload);
+						}
+						return true;
+					}
+					return false;
+				}
+				if (uvs != null)
+				{
+					for (int j = 0; j < 4; j++)
+					{
+						Uv0[j * 2] = uvs[j].x;
+						Uv0[j * 2 + 1] = uvs[j].y;
+					}
+				}
+				else
+				{
+					// Printer_Plane.DefaultUvs / DefaultUvsFlipped, corner order (-x-z, -x+z, +x+z, +x-z)
+					float ul = flipUv ? 1f : 0f, ur = flipUv ? 0f : 1f;
+					Uv0[0] = ul; Uv0[1] = 0f; Uv0[2] = ul; Uv0[3] = 1f; Uv0[4] = ur; Uv0[5] = 1f; Uv0[6] = ur; Uv0[7] = 0f;
+				}
+				if (s < 1f)
+				{
+					Piece(layer, center.y, mat, colors, bias, payload, s, 1f, x0, z0, x1, z1);
+				}
+				int n = RM_UnderLiquid.BandsFor(ctxClarity, MetresOf(s, lo, hi, fromLow), MetresOf(0f, lo, hi, fromLow));
+				for (int b = 0; b < n; b++)
+				{
+					float a = s * b / n, e = s * (b + 1) / n;
+					int q = RM_UnderLiquid.BandAlphaStep(ctxClarity, MetresOf((a + e) * 0.5f, lo, hi, fromLow));
+					Material m = q > 0 ? Faded(mat, q) : null;
+					if (m != null)
+					{
+						Piece(layer, center.y, m, colors, bias, payload, a, e, x0, z0, x1, z1);
+					}
+				}
+				return true;
+			}
+			finally
+			{
+				inSplit = false;
+			}
+		}
+
+		/// <summary>Metres of liquid over the point a share <paramref name="share"/> in from the drowned side of a sprite
+		/// spanning [lo, hi] (cell-local): standing things by their drawn height, hung ones between the waterline and their
+		/// wall's foot.</summary>
+		private static float MetresOf(float share, float lo, float hi, bool fromLow)
+		{
+			if (!ctxWorld)
+			{
+				float m = ctxLevel - share * ctxHeight;
+				return m < 0f ? 0f : m;
+			}
+			float pos = fromLow ? lo + share * (hi - lo) : hi - share * (hi - lo);
+			return RM_UnderLiquid.MetresAt(pos, ctxCut, ctxFoot, 0f, ctxLevel);
+		}
+
+		private static void Piece(MapDrawLayer layer, float y, Material mat, Color32[] colors, float bias, float payload,
+			float a, float b, float x0, float z0, float x1, float z1)
+		{
+			System.Array.Copy(Uv0, Uv, 8);
+			RM_UnderLiquid.Slice(ctxFrom, a, b, Uv, ref x0, ref z0, ref x1, ref z1);
+			if (x1 - x0 <= 0f || z1 - z0 <= 0f)
+			{
+				return;
+			}
 			for (int j = 0; j < 4; j++)
 			{
 				UvBuf[j] = new Vector2(Uv[j * 2], Uv[j * 2 + 1]);
-				ColBuf[j] = vc;
 			}
-			Printer_Plane.PrintPlane(layer, new Vector3((x0 + x1) * 0.5f, center.y, (z0 + z1) * 0.5f), new Vector2(x1 - x0, z1 - z0),
-				mat, 0f, flip, UvBuf, ColBuf);
-			g.ShadowGraphic?.Print(layer, t, 0f);
-			return true;
+			Printer_Plane.PrintPlane(layer, new Vector3((x0 + x1) * 0.5f, y, (z0 + z1) * 0.5f), new Vector2(x1 - x0, z1 - z0),
+				mat, 0f, false, UvBuf, colors, bias, payload);
+		}
+
+		private static readonly Dictionary<long, Material> faded = new Dictionary<long, Material>();
+
+		/// <summary><paramref name="mat"/> at alpha <paramref name="q"/>/Steps on the transparent shader (its texture and
+		/// colour kept): how a drowned part is seen over the liquid. Null when the material has no texture.</summary>
+		public static Material Faded(Material mat, int q)
+		{
+			if (q >= RM_UnderLiquid.Steps)
+			{
+				return mat;
+			}
+			long key = ((long)mat.GetInstanceID() << 8) | (long)q;
+			if (faded.TryGetValue(key, out Material m) && m != null)
+			{
+				return m;
+			}
+			Texture2D tex = mat.mainTexture as Texture2D;
+			if (tex == null)
+			{
+				return null;
+			}
+			Color c = mat.color;
+			m = MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent,
+				new Color(c.r, c.g, c.b, c.a * q / RM_UnderLiquid.Steps)));
+			faded[key] = m;
+			return m;
+		}
+
+		// ── realtime drawers (gates, stakes) ───────────────────────────────
+
+		private static readonly Dictionary<long, Mesh> sliceMeshes = new Dictionary<long, Mesh>();
+
+		/// <summary>A realtime plane of <paramref name="size"/> keeping only the slice [a, b] measured from its foot (uvs
+		/// lerped; unflipped art). Cached per size and slice (1/128 steps), so a frame allocates nothing.</summary>
+		public static Mesh SliceMesh(Vector2 size, float a, float b)
+		{
+			int ia = Mathf.RoundToInt(RM_UnderLiquid.Clamp01(a) * 128f), ib = Mathf.RoundToInt(RM_UnderLiquid.Clamp01(b) * 128f);
+			if (ib <= ia)
+			{
+				return null;
+			}
+			long key = ((long)Mathf.RoundToInt(size.x * 1000f) << 40) | ((long)Mathf.RoundToInt(size.y * 1000f) << 16) | ((long)ia << 8) | (long)ib;
+			if (sliceMeshes.TryGetValue(key, out Mesh m) && m != null)
+			{
+				return m;
+			}
+			float sa = ia / 128f, sb = ib / 128f, hw = size.x * 0.5f, hh = size.y * 0.5f;
+			float za = -hh + size.y * sa, zb = -hh + size.y * sb;
+			m = new Mesh { name = "RM_SubmergeSlice" };
+			m.vertices = new[] { new Vector3(-hw, 0f, za), new Vector3(-hw, 0f, zb), new Vector3(hw, 0f, zb), new Vector3(hw, 0f, za) };
+			m.uv = new[] { new Vector2(0f, sa), new Vector2(0f, sb), new Vector2(1f, sb), new Vector2(1f, sa) };
+			m.triangles = new[] { 0, 1, 2, 0, 2, 3 };
+			m.RecalculateNormals();
+			m.RecalculateBounds();
+			sliceMeshes[key] = m;
+			return m;
+		}
+
+		/// <summary>A realtime upright sprite (<paramref name="whole"/>, <paramref name="size"/>) whose foot lies
+		/// <paramref name="footMetres"/> under the liquid and which spans <paramref name="heightMetres"/> up from there:
+		/// the part above the line as it is, the drowned part in bands at the law's alpha. Returns the share drawn under.</summary>
+		public static float DrawUnder(Mesh whole, Vector2 size, Matrix4x4 at, Material mat, float footMetres, float heightMetres, float clarity)
+		{
+			float s = RM_UnderLiquid.Share(footMetres, 0f, heightMetres);
+			if (s <= 0f)
+			{
+				UnityEngine.Graphics.DrawMesh(whole, at, mat, 0);
+				return 0f;
+			}
+			if (s < 1f)
+			{
+				Mesh kept = SliceMesh(size, s, 1f);
+				if (kept != null)
+				{
+					UnityEngine.Graphics.DrawMesh(kept, at, mat, 0);
+				}
+			}
+			float line = footMetres - s * heightMetres;
+			int n = RM_UnderLiquid.BandsFor(clarity, line < 0f ? 0f : line, footMetres);
+			for (int b = 0; b < n; b++)
+			{
+				float a = s * b / n, e = s * (b + 1) / n, mid = footMetres - (a + e) * 0.5f * heightMetres;
+				int q = RM_UnderLiquid.BandAlphaStep(clarity, mid);
+				Material m = q > 0 ? Faded(mat, q) : null;
+				Mesh band = m != null ? SliceMesh(size, a, e) : null;
+				if (band != null)
+				{
+					UnityEngine.Graphics.DrawMesh(band, at, m, 0);
+				}
+			}
+			return s;
 		}
 
 		/// <summary>Scene helper for pit_fittings_matrix.py: "x,z,w,h,fill[,FluidDefName]" writes that whole-notch fill on every
@@ -340,18 +470,43 @@ namespace RimMandrake.FlowWorks
 			return "FILL applied=" + applied + " refused=" + refused + " notOwned=" + notOwned + " fluid=" + (fluid?.defName ?? "default");
 		}
 
-		private static string Z(float z) => z < 0f ? "-" : z.ToString("F3", CultureInfo.InvariantCulture);
+		private static string F(float v, string fmt = "F3") => v < 0f ? "-" : v.ToString(fmt, CultureInfo.InvariantCulture);
+
+		/// <summary>The waterline the wall layer draws on the face a ladder hangs on, computed the way
+		/// SectionLayer_RMExcavationWalls does (Exposed at the true level; N: 1 - NorthFace, E: 1 - SideFace, W: SideFace):
+		/// the proof's independent reference for the ladder's cut. -1 when no face shows liquid.</summary>
+		private static float FaceWaterline(Thing t, RM_MapComponent_Excavation eng, int d, float lv)
+		{
+			int rot = t.Rotation.AsInt;
+			if (rot == 2 || lv <= 0f)
+			{
+				return RM_UnderLiquid.NoCut;
+			}
+			int nb = SectionLayer_RMExcavationWalls.NeighbourLevel(t.Map, eng, t.Position + t.Rotation.FacingCell, d);
+			if (d - nb <= 0)
+			{
+				return RM_UnderLiquid.NoCut;   // hangs on no wall: no face to meet
+			}
+			float e = RM_UnderLiquid.Exposed(d, nb, lv);
+			if (rot == 0)
+			{
+				return 1f - RM_UnderLiquid.NorthFace(e);
+			}
+			float w = RM_UnderLiquid.SideFace(e);
+			return rot == 1 ? 1f - w : w;
+		}
 
 		/// <summary>
-		/// Proof read for wall_art_scene.py's "submerge" and pit_fittings_matrix.py's rows: the fitting at "x,z" and the covered
-		/// share the drawers use.
-		/// "def=RM_Ladder class=RM_Building_Ladder rot=0 depth=4 fill=3 level=4.00 flat=no cutZ=0.880 faceZ=0.880 share=0.760
-		/// printedLevel=3.00 setting=on" (fill = whole notches, what the wall faces are drawn with; level = the true level,
-		/// quarter notches; a hung ladder is cut at its face's fill, the ramp and spikes at the level; cutZ = the cell-local
-		/// waterline the ladder is cut at, faceZ = the waterline the wall layer draws on its face, "-" for none: they must
-		/// agree; ladder share = of its in-pit span, wall foot to rim; spikes = of each stake; ramp = of the ramp from its
-		/// downhill end; printedLevel = the level the map mesh last printed it at, "-" for the realtime spikes or when not
-		/// printed since the last change).
+		/// Proof read for wall_art_scene.py's "submerge" and pit_fittings_matrix.py's rows: the first thing at "x,z" this
+		/// draws, and what the one rule decides for it.
+		/// "def=RM_Ladder class=RM_Building_Ladder kind=hung rot=0 depth=4 fill=3 level=3.25 flat=no cutZ=0.880 faceZ=0.880
+		/// share=0.760 clarity=0.450 seenLine=0.756 seenFoot=0.120 printedLevel=3.25 setting=on liquid=WaterDeep tint=0.24,0.24,0.24"
+		/// (fill = whole notches; level = the true level, quarter notches, what everything is drawn at; cutZ = the cell-local
+		/// waterline the ladder is cut at, faceZ = the one the wall layer draws on its face, "-" for none: they must agree;
+		/// share = of the sprite under the line, from its foot (a hung ladder: of its in-pit span, wall foot to rim); clarity
+		/// = the liquid's; seenLine / seenFoot = how much of the drowned part is seen just under the line and at its foot (0
+		/// opaque); printedLevel = the level the cell was last printed at, "-" for the realtime gates and stakes or when not
+		/// printed since the last change; tint = the liquid look's tint).
 		/// Else "REFUSED: ...".
 		/// </summary>
 		public static string ProofSubmerge(string arg)
@@ -369,72 +524,124 @@ namespace RimMandrake.FlowWorks
 				return "REFUSED: cell off the map or no excavation engine";
 			}
 			int d = eng.HollowDepthAt(c), f = eng.FillAt(c);
-			float lv = RM_SubmergeMath.NoteLevel(NoteAt(eng, c));
+			float lv = RM_UnderLiquid.NoteLevel(NoteAt(eng, c));
+			if (lv > d)
+			{
+				lv = d;
+			}
+			float levelM = lv * RM_UnderLiquid.Notch;
+			RM_LiquidSurfaceLook look = lv > 0f ? LookAt(map, eng, c) : null;
+			float clarity = look != null ? look.seeThrough : 0f;
 			List<Thing> list = c.GetThingList(map);
 			for (int i = 0; i < list.Count; i++)
 			{
 				Thing t = list[i];
-				float share;
-				string kind = t.GetType().Name, faces = "";
-				if (t is RM_Building_Ladder)
+				float share, lineM, footM, heightM;
+				string kind, faces = "";
+				if (t is RM_Building_Ladder && !LiesFlat(t, t.Graphic))
 				{
-					float lf = RM_SubmergeMath.HungLadderLevel(f);
-					bool flat = LiesFlat(t, t.Graphic);
-					share = d <= 0 || lf <= 0f ? 0f : flat ? 1f
-						: RM_SubmergeMath.LadderInPitShare(t.Rotation.AsInt, LadderDrop(t, eng, d), lf);
-					faces = " flat=" + (flat ? "yes" : "no") + " cutZ=" + Z(d <= 0 || flat ? RM_SubmergeMath.NoCut : LadderCut(t, eng, d))
-						+ " faceZ=" + Z(d <= 0 ? RM_SubmergeMath.NoCut : FaceWaterline(t, eng, d));
+					kind = "hung";
+					int drop = d > 0 ? LadderDrop(t, eng, d) : 0;
+					float cut = d <= 0 ? RM_UnderLiquid.NoCut : RM_UnderLiquid.Waterline(t.Rotation.AsInt, drop, lv);
+					int r = t.Rotation.AsInt;
+					// of its in-pit span, wall foot to rim, along its face (N: z up to 1; E: x up to 1; W: x down to 0)
+					float side = RM_UnderLiquid.SideFace(drop);
+					share = cut < 0f ? 0f : r == 0 ? RM_UnderLiquid.SpanShare(1f - RM_UnderLiquid.NorthFace(drop), 1f, cut, true)
+						: r == 1 ? RM_UnderLiquid.SpanShare(1f - side, 1f, cut, true) : RM_UnderLiquid.SpanShare(0f, side, cut, false);
+					lineM = 0f;
+					footM = share > 0f ? levelM : 0f;
+					heightM = drop * RM_UnderLiquid.Notch;
+					faces = " flat=no cutZ=" + F(cut) + " faceZ=" + F(d <= 0 ? RM_UnderLiquid.NoCut : FaceWaterline(t, eng, d, lv));
+				}
+				else if (t is RM_Building_Ladder)
+				{
+					kind = "flat";
+					heightM = RM_UnderLiquid.LyingLadderMetres;
+					faces = " flat=yes cutZ=- faceZ=-";
+					share = d <= 0 ? 0f : RM_UnderLiquid.Share(levelM, 0f, heightM);
+					lineM = levelM - share * heightM; footM = levelM;
 				}
 				else if (t is RM_Building_PitRamp)
 				{
-					share = d <= 0 ? 0f : RM_SubmergeMath.RampShare(lv, RampRise(t, eng, d));
+					kind = "ramp";
+					heightM = d <= 0 ? 0f : RampRise(t, eng, d) * RM_UnderLiquid.Notch;
+					share = d <= 0 ? 0f : RM_UnderLiquid.Share(levelM, 0f, heightM);
+					lineM = levelM - share * heightM; footM = levelM;
 				}
 				else if (t is Building_RM_Spikes)
 				{
-					share = d <= 0 ? 0f : RM_SubmergeMath.StakeShare(lv);
+					kind = "stakes";
+					heightM = RM_UnderLiquid.StakeMetres;
+					share = d <= 0 ? 0f : RM_UnderLiquid.Share(levelM, 0f, heightM);
+					lineM = levelM - share * heightM; footM = levelM;
 				}
 				else if (t is Building_RM_FlowDoor)
 				{
-					share = GateUnder(t);
+					kind = "gate";
+					heightM = RM_UnderLiquid.GateMetres(d);
+					share = d <= 0 ? 0f : RM_UnderLiquid.Share(levelM, 0f, heightM);
+					lineM = levelM - share * heightM; footM = levelM;
+				}
+				else if ((heightM = StandingMetres(t)) > 0f)
+				{
+					kind = t is MinifiedThing ? "minified" : t.def.category == ThingCategory.Item ? "item" : "swale";
+					share = d <= 0 ? 0f : RM_UnderLiquid.Share(levelM, 0f, heightM);
+					lineM = levelM - share * heightM; footM = levelM;
 				}
 				else
 				{
 					continue;
 				}
-				string printed = t is Building_RM_Spikes || t is Building_RM_FlowDoor || !eng.submergeDrawn.TryGetValue(map.cellIndices.CellToIndex(c), out int pf)
-					? "-" : RM_SubmergeMath.KeyLevel(pf).ToString("F2", CultureInfo.InvariantCulture);
-				return "def=" + t.def.defName + " class=" + kind + " rot=" + t.Rotation.AsInt + " depth=" + d + " fill=" + f
-					+ " level=" + lv.ToString("F2", CultureInfo.InvariantCulture) + faces + " share=" + share.ToString("F3", CultureInfo.InvariantCulture) + " printedLevel=" + printed + " setting=" + (On ? "on" : "off");
+				if (lineM < 0f)
+				{
+					lineM = 0f;
+				}
+				bool wet = share > 0f;
+				float seenLine = wet ? RM_UnderLiquid.Seen(clarity, lineM <= 0f ? 0.0001f : lineM) : 1f;
+				float seenFoot = wet ? RM_UnderLiquid.Seen(clarity, footM) : 1f;
+				bool realtime = t is Building_RM_Spikes || t is Building_RM_FlowDoor;
+				string printed = realtime || !eng.submergeDrawn.TryGetValue(map.cellIndices.CellToIndex(c), out int pn)
+					? "-" : RM_UnderLiquid.NoteLevel(pn).ToString("F2", CultureInfo.InvariantCulture);
+				Color tint = look != null ? look.tint : Color.white;
+				return "def=" + t.def.defName + " class=" + t.GetType().Name + " kind=" + kind + " rot=" + t.Rotation.AsInt
+					+ " depth=" + d + " fill=" + f + " level=" + lv.ToString("F2", CultureInfo.InvariantCulture) + faces
+					+ " share=" + F(share) + " clarity=" + F(clarity) + " seenLine=" + F(seenLine) + " seenFoot=" + F(seenFoot)
+					+ " printedLevel=" + printed + " setting=" + (On ? "on" : "off")
+					+ " liquid=" + (map.terrainGrid.TerrainAt(c)?.defName ?? "-")
+					+ " tint=" + F(tint.r, "F2") + "," + F(tint.g, "F2") + "," + F(tint.b, "F2");
 			}
-			return "REFUSED: no ladder, ramp, spikes or gate at " + x + "," + z + " (depth=" + d + " fill=" + f + ")";
+			return "REFUSED: nothing drawn under liquid at " + x + "," + z + " (depth=" + d + " fill=" + f + ")";
 		}
 	}
 
-	public partial class RM_Building_Ladder
+	/// <summary>Opens the under-liquid split for each thing the general things layer prints (RM_SubmergeDraw.Begin).</summary>
+	[HarmonyPatch(typeof(SectionLayer_ThingsGeneral), "TakePrintFrom")]
+	[RimMandrake.Shared.PatchFeature("Pit contents under liquid", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "pitSubmergeCutEnabled")]
+	internal static class Patch_RM_SubmergeTakePrint
 	{
-		public override void Print(SectionLayer layer)
+		[HarmonyPrefix]
+		private static void Prefix(Thing t)
 		{
-			// Thing.Print / ThingWithComps.Print with the body cut by the liquid; anything else is vanilla's
-			if (def.dontPrint || RM_SubmergeDraw.CompsHide(this) || !RM_SubmergeDraw.PrintLadder(this, layer))
-			{
-				base.Print(layer);
-				return;
-			}
-			RM_SubmergeDraw.PrintComps(this, layer);
+			RM_SubmergeDraw.Begin(t);
+		}
+
+		[HarmonyFinalizer]
+		private static void Finalizer()
+		{
+			RM_SubmergeDraw.End();
 		}
 	}
 
-	public partial class RM_Building_PitRamp
+	/// <summary>Draws each plane of a thing in an open split as its part above the line plus its drowned bands.</summary>
+	[HarmonyPatch(typeof(Printer_Plane), nameof(Printer_Plane.PrintPlane))]
+	[RimMandrake.Shared.PatchFeature("Pit contents under liquid (planes)", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "pitSubmergeCutEnabled")]
+	internal static class Patch_RM_SubmergePrintPlane
 	{
-		public override void Print(SectionLayer layer)
+		[HarmonyPrefix]
+		private static bool Prefix(MapDrawLayer layer, Vector3 center, Vector2 size, Material mat, float rot, bool flipUv,
+			Vector2[] uvs, Color32[] colors, float topVerticesAltitudeBias, float uvzPayload)
 		{
-			// Thing.Print / ThingWithComps.Print with the body cut by the liquid; anything else is vanilla's
-			if (def.dontPrint || RM_SubmergeDraw.CompsHide(this) || !RM_SubmergeDraw.PrintRamp(this, layer))
-			{
-				base.Print(layer);
-				return;
-			}
-			RM_SubmergeDraw.PrintComps(this, layer);
+			return !RM_SubmergeDraw.Split(layer, center, size, mat, rot, flipUv, uvs, colors, topVerticesAltitudeBias, uvzPayload);
 		}
 	}
 }

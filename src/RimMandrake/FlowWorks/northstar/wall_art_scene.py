@@ -131,7 +131,7 @@ SUBMERGE = [  # name, dx, fitting, fill
     ("LADDER_F0", 0, "ladder", 0), ("LADDER_F2", 5, "ladder", 2), ("LADDER_F4", 10, "ladder", 4),
     ("SPIKES_F0", 15, "spikes", 0), ("SPIKES_F2", 20, "spikes", 2), ("SPIKES_F4", 25, "spikes", 4),
 ]
-# expected covered share (RM_SubmergeMath; ladder: of its in-pit span, wall foot to rim; spikes: of each 1 m stake)
+# expected covered share (RM_UnderLiquid.Share; ladder: of its in-pit span, wall foot to rim; spikes: of each 1 m stake)
 SUB_EXPECT = {("ladder", 0): (0.0, 0.0), ("ladder", 2): (0.30, 0.75), ("ladder", 4): (0.99, 1.0),
               ("spikes", 0): (0.0, 0.0), ("spikes", 2): (0.99, 1.0), ("spikes", 4): (0.99, 1.0)}
 ROWS = []

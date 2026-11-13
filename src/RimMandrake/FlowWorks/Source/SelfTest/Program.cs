@@ -1728,11 +1728,12 @@ namespace RimMandrake.FlowWorks.SelfTest
             // owner 2026-10-06: "show the pit walls/floor beneath the translucent water"
             Case("Liquid_see_through", () =>
             {
-                AssertClose(RM_LiquidLookMath.FloorSeeThroughAlpha(0f, 2), 0f, "opaque liquid hides the floor");
-                AssertClose(RM_LiquidLookMath.FloorSeeThroughAlpha(0.55f, 0), 0f, "dry: nothing to see through");
-                Assert(RM_LiquidLookMath.FloorSeeThroughAlpha(0.55f, 1) > RM_LiquidLookMath.FloorSeeThroughAlpha(0.55f, 3), "deeper hides more");
-                Assert(RM_LiquidLookMath.FloorSeeThroughAlpha(0.55f, 4) >= 0f, "never negative");
-                Assert(RM_LiquidLookMath.DrownedFaceAlpha(0.55f, 3, 1f) >= RM_LiquidLookMath.DrownedFaceAlpha(0.55f, 3, 0f), "face clearer toward the water line");
+                // RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL: one law for the floor, the walls and every thing (RM_UnderLiquid.Seen)
+                AssertClose(RM_UnderLiquid.Seen(0f, 1f), 0f, "opaque liquid hides the floor");
+                AssertClose(RM_UnderLiquid.Seen(0.45f, 0f), 1f, "dry: seen whole");
+                Assert(RM_UnderLiquid.Seen(0.45f, 0.5f) > RM_UnderLiquid.Seen(0.45f, 1.5f), "deeper hides more");
+                Assert(RM_UnderLiquid.Seen(0.45f, 40f) >= 0f, "never negative");
+                Assert(RM_UnderLiquid.Seen(0.45f, 4f) > 0f, "clear water never hides the floor outright");
             });
 
             // owner 2026-10-06: "Only when they are climbing in or out do they move slowly. Falling into a pit is FAST.

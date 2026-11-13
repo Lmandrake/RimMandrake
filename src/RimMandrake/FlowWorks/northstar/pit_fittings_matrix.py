@@ -18,9 +18,11 @@ The prepared pit (local i east, j north; j=4 the north wall row):
     j=2  portable W    steel stack   sluice gate     minified table  swale (4,2)
     j=1  wood W (0,1)  .             grate door      .               wood E (4,1)
     j=0  spikes(0,0)   wood S (1,0)  spikes (2,0)    steel S (3,0)   spikes(4,0)
-plus a guardrail on the ground south of the pit. The STEP square is dug to depth - 3 (undug in D1-D3) so the ramp, which
+plus a guardrail on the ground south of the pit. The steel stack and the table are spawned (the table then minified). The STEP square is dug to depth - 3 (undug in D1-D3) so the ramp, which
 climbs at most 3 notches (pitRampMaxSpan), stands in every pit; it is filled to the same water SURFACE as the pit. The
-cover sits on an edge square (it needs a sheer drop of 2 m beside it: PlaceWorker_PitCoverOnSuperdeep).
+cover sits on a corner square: it needs a sheer drop of 2 m beside it, and (owner 2026-11-12, no "covered pit bridges")
+solid ground on at least two of its sides (PlaceWorker_PitCoverOnSuperdeep, RM_PitDeckMath.RestsOnBanks). A 3x3 D4 probe
+pit beside the TAR row proves that rule: a corner cover is placed, an edge-middle cover is refused.
 Placement refusals by design (MEASURED 2026-11-12, run1): spikes below D4 (they need a 2 m drop), the portable ladder at
 D8 (too deep for it), the guardrail at D1-D2, the cover below D4. Each fitting goes through rimworld/apply_architect_designator (god mode,
 so the placeworkers decide exactly as for a player); a refusal is recorded per pit (D1 pits refuse spikes, for one).
@@ -32,6 +34,17 @@ Rows (PASS/FAIL each, per fitting square that a state read can decide, RM_Submer
   - hung ladder (N/E/W): cutZ == faceZ, the ladder's waterline is the waterline drawn on its wall (the owner's
     2026-11-12 north-ladder defect: "2m water depth put the northern ladder behind the pit wall art");
   - share in [0,1] and 0 when dry; printedLevel == the level it is cut at (the fill change re-meshed it).
+The owner's look of 2026-11-12 (OWNER_WORDS.md), one row family per finding; every drawer uses RM_UnderLiquid:
+  1 tar dark:        a tar pit's look is opaque (clarity 0) and its tint dark (every channel <= 0.10); water is clear.
+  2 ramp, 3 portable ladder, 6 wall ladders: seen through clear liquid (seenFoot > 0, seenLine >= seenFoot), hidden in
+                     tar (seenLine == 0).
+  4 items:           the steel stack and the minified table are covered (share > 0) whenever the pit holds liquid.
+  5 swale:           drawn as a floor tile: covered whole (share 1) by any liquid.
+  7 D8 variety:      per depth row and fitting, share never falls and seenFoot never rises as the fill rises.
+  8 shadows:         the gates cast no sun shadow (live def staticSunShadowHeight 0); and (sheets step, from the shots)
+                     the brim-full water pit of every depth darkens no square of the ring just outside its outline
+                     against the dry pit of that depth: its shade is only inside.
+  9 cover rule:      the probe pit rows above.
 Captures: one closest-zoom PNG per pit (mx_D<d>_F<f>[_TAR].png) and a contact sheet per row (sheet_<row>.png).
 Grid key labels sit on the map (jawa/review_label) and travel with a keeper save as its sign sidecar.
 """
@@ -65,9 +78,14 @@ FITTINGS = [
     ("spikes_SW", "RM_Spikes", 0, 0, None, "spikes"), ("spikes_S", "RM_Spikes", 2, 0, None, "spikes"),
     ("spikes_SE", "RM_Spikes", 4, 0, None, "spikes"), ("spikes_NW", "RM_Spikes", 0, 4, None, "spikes"),
     ("sluice", "RM_Sluice", 2, 2, 0, "gate"), ("grate", "RM_SecurityGrateDoor", 2, 1, 0, "gate"),
-    ("swale", "RM_Swale", 4, 2, None, "other"), ("cover", "RM_PitCover_PlankLattice", 4, 4, None, "other"),
+    ("swale", "RM_Swale", 4, 2, None, "swale"), ("cover", "RM_PitCover_PlankLattice", 4, 4, None, "other"),
     ("guardrail", "RM_PitGuardrail", 2, -1, 0, "other"),
 ]
+# goods spawned on the floor (read like the fittings): name, the def ProofSubmerge reports, i, j, kind
+GOODS = [("stack", "Steel", 1, 2, "item"), ("minified", "MinifiedThing", 3, 2, "minified")]
+GATES = ("RM_Sluice", "RM_SecurityGrateDoor")
+COVER = "RM_PitCover_PlankLattice"
+PROBE_D = 4                     # the cover-rule probe pit: 3x3 at D4, in the TAR row's free column
 
 
 STEP_SQ = (2, 4)
@@ -174,6 +192,10 @@ def stage():
                 n = step_depth(d) if (i, j) == STEP_SQ else d
                 if n:
                     call("jawa/flowworks_excavation_drive", x=x0 + i, z=z0 + j, deepenLevels=n, setFill=-1, fillInLevels=0)
+    px, pz = probe()
+    for i in range(3):
+        for j in range(3):
+            call("jawa/flowworks_excavation_drive", x=px + i, z=pz + j, deepenLevels=PROBE_D, setFill=-1, fillInLevels=0)
     des = designators()
     call("rimworld/set_god_mode", enabled=True)
     placed = {}
@@ -204,9 +226,31 @@ def stage():
         tid = t.get("thingId")
         if tid:
             call("jawa/thing_minify", thing=str(tid).replace("Thing_", ""))
+    cover_probe(des)
     call("rimworld/set_god_mode", enabled=False)
     log("placed", placed)
     labels()
+
+
+def probe():
+    """South-west corner of the cover-rule probe pit (the TAR row's free column)."""
+    return OX + len(TAR) * S, OZ - len(DEPTHS) * S
+
+
+def cover_probe(des):
+    """Owner 2026-11-12: a cover only where >= 2 of its sides are solid ground (no "covered pit bridges")."""
+    if COVER not in des:
+        row("cover_probe_designator", False, "no designator for " + COVER)
+        return
+    px, pz = probe()
+    for name, i, j, want_ok in (("edge_one_bank", 1, 0, False), ("corner_two_banks", 0, 0, True)):
+        r = call("rimworld/apply_architect_designator", designatorId=des[COVER], x=px + i, z=pz + j)
+        ok = r.get("success") is True and not r.get("rejectedCells")
+        msg = str(r.get("message") or r.get("rejectedCells") or r.get("error") or "")[:240]
+        if want_ok:
+            row("cover_probe_%s_placed" % name, ok, "placed" if ok else msg)
+        else:
+            row("cover_probe_%s_refused" % name, not ok and "rest on solid ground" in msg, "placed" if ok else msg)
 
 
 def static_reset(x, z, w, h):
@@ -223,6 +267,9 @@ def label_ops():
     for r, d in enumerate(DEPTHS):
         ops.append(label_line(OX - 5, OZ - r * S + 2, "D%d" % d, "%.1f m deep" % (d * 0.5), "#ffd27f", "medium", "pfm"))
     ops.append(label_line(OX - 5, OZ - len(DEPTHS) * S + 2, "TAR", "same pit, tar", "#ffd27f", "medium", "pfm"))
+    px, pz = probe()
+    ops.append(label_line(px, pz + 4, "COVER RULE", "corner cover placed, edge-middle refused (2 solid sides)",
+                          "#bfe4ff", "small", "pfm"))
     for key, d, f, fluid, x0, z0 in cells():
         ops.append(label_line(x0 + 2, z0 + P + 1, key.replace("_", " "),
                               "%.1f m %s in %.1f m" % (f * 0.5, "tar" if fluid else "water", d * 0.5), "#bfe4ff", "small", "pfm"))
@@ -250,9 +297,18 @@ def kv_of(text):
     return dict(p.split("=", 1) for p in text.split() if "=" in p)
 
 
+def fnum(kv, k, dflt=-1.0):
+    try:
+        return float(kv.get(k))
+    except (TypeError, ValueError):
+        return dflt
+
+
 def read():
+    res = {}                        # (depth, fluid, name) -> [(fill, share, seenFoot)] for the one-law row
     for key, d, f, fluid, x0, z0 in cells():
-        for name, dn, i, j, rot, kind in FITTINGS:
+        pit_look = None
+        for name, dn, i, j, rot, kind in FITTINGS + [(g[0], g[1], g[2], g[3], None, g[4]) for g in GOODS]:
             if kind == "other":
                 continue
             rid = "%s_%s" % (key, name)
@@ -264,12 +320,20 @@ def read():
                 row(rid + "_present", False, text)   # a placement refusal shows here too; judged against `placed`
                 continue
             kv = kv_of(text)
-            row(rid + "_found_at_depth_fill", kv.get("depth") == str(d) and kv.get("fill") == str(f) and kv.get("def") == dn, text)
-            try:
-                share = float(kv.get("share"))
-            except (TypeError, ValueError):
-                share = -1.0
+            row(rid + "_found_at_depth_fill", kv.get("depth") == str(d) and kv.get("fill") == str(f) and kv.get("def") == dn
+                and (kind not in ("item", "minified", "swale") or kv.get("kind") == kind), text)
+            share, line, foot = fnum(kv, "share"), fnum(kv, "seenLine"), fnum(kv, "seenFoot")
             row(rid + "_share_in_range", 0.0 <= share <= 1.0 and (f > 0 or share == 0.0), kv.get("share"))
+            if f > 0 and pit_look is None:
+                pit_look = kv
+            if share > 0:           # findings 2, 3, 6: the drowned part is seen through clear liquid, hidden in tar
+                ok = (line == 0.0) if fluid else (foot > 0.0 and line >= foot - 1e-6)
+                row(rid + "_seen_through_clear_hidden_in_tar", ok, "seenLine=%s seenFoot=%s clarity=%s" % (kv.get("seenLine"), kv.get("seenFoot"), kv.get("clarity")))
+            if kind in ("item", "minified"):    # finding 4: goods are covered
+                row(rid + "_covered", (share > 0) == (f > 0), "share=%s fill=%d" % (kv.get("share"), f))
+            if kind == "swale":                 # finding 5: a floor tile, covered whole by any liquid
+                row(rid + "_floor_tile_covered", (share == 1.0) == (f > 0), "share=%s fill=%d" % (kv.get("share"), f))
+            res.setdefault((d, fluid, name), []).append((f, share, foot if share > 0 else 1.0))
             if kind == "hung" and kv.get("flat") == "no":
                 if rot == 2:
                     row(rid + "_south_never_cut", kv.get("cutZ") == "-", kv.get("cutZ"))
@@ -277,13 +341,32 @@ def read():
                     cz, fz = kv.get("cutZ"), kv.get("faceZ")
                     same = cz == fz or (cz not in (None, "-") and fz not in (None, "-") and abs(float(cz) - float(fz)) < 0.005)
                     row(rid + "_ladder_meets_its_wall", same, "cutZ=%s faceZ=%s level=%s fill=%s" % (cz, fz, kv.get("level"), f))
-            if kind == "gate":
-                lv = float(kv.get("level") or 0)
+            if kind == "gate":      # RM_UnderLiquid.GateMetres(d) = (d + 1) notches; level is in notches
+                lv = fnum(kv, "level", 0.0)
                 want = min(1.0, lv / (d + 1)) if lv > 0 else 0.0
                 row(rid + "_gate_under_by_level", abs(share - want) <= 1.0 / 32 + 1e-6, "share %s want %.3f (level %s, depth %d)" % (kv.get("share"), want, kv.get("level"), d))
-            if kind in ("hung", "ramp"):
-                want = ("%.2f" % f) if kind == "hung" else kv.get("level")
-                row(rid + "_printed_at_its_level", kv.get("printedLevel") == want, "%s vs %s" % (kv.get("printedLevel"), want))
+            if kind in ("hung", "ramp", "item", "minified", "swale") and f > 0:
+                # map-mesh things: printed at the true level the cell now holds (the fill change re-meshed them)
+                row(rid + "_printed_at_its_level", kv.get("printedLevel") == kv.get("level"), "%s vs %s" % (kv.get("printedLevel"), kv.get("level")))
+        if pit_look is not None:            # finding 1: tar dark and opaque; water clear
+            tint = [fnum({"t": v}, "t", 9.0) for v in (pit_look.get("tint") or "").split(",")]
+            if fluid:
+                ok = fnum(pit_look, "clarity") == 0.0 and len(tint) == 3 and max(tint) <= 0.10
+            else:
+                ok = fnum(pit_look, "clarity") > 0.0
+            row(key + "_liquid_" + ("tar_dark_opaque" if fluid else "water_clear"), ok,
+                "clarity=%s tint=%s liquid=%s" % (pit_look.get("clarity"), pit_look.get("tint"), pit_look.get("liquid")))
+    for (d, fluid, name), seq in sorted(res.items(), key=lambda kv: (kv[0][0], kv[0][1] or "", kv[0][2])):
+        seq.sort()                          # finding 7: one law, so the look moves one way as the fill rises
+        bad = [(a, b) for a, b in zip(seq, seq[1:]) if b[1] < a[1] - 1e-6 or b[2] > a[2] + 1e-6]
+        row("D%d%s_%s_one_law_over_fill" % (d, "_TAR" if fluid else "", name), not bad,
+            "fill,share,seenFoot " + " ".join("%d,%.3f,%.3f" % t for t in seq))
+    gd = call("jawa/get_defs", defs=";".join("ThingDef/" + g for g in GATES), fields="staticSunShadowHeight") or {}
+    got = {(x.get("defName") or (x.get("fields") or {}).get("defName")): (x.get("fields") or {}).get("staticSunShadowHeight")
+           for x in gd.get("defs") or []}
+    for g in GATES:                          # finding 8: nothing in a pit throws a sun shadow onto the bank
+        v = got.get(g)
+        row("gate_%s_casts_no_sun_shadow" % g, v is not None and fnum({"v": v}, "v") == 0.0, "staticSunShadowHeight=%s (%s)" % (v, str(gd)[:160] if v is None else "live def"))
     fails = [r for r in ROWS if r["verdict"] != "PASS"]
     log("rows", {"rows": len(ROWS), "fail": len(fails), "first_fails": [r["row"] for r in fails[:20]]})
 
@@ -353,6 +436,43 @@ def sheets():
             sheet.paste(t, ((k % n) * 600, (k // n) * 600))
         sheet.save(os.path.join(OUT, "sheet_%s.png" % rname))
         log("sheet", {"row": rname, "tiles": len(tiles)})
+    brim_ring()
+
+
+RING_DARKER = 0.08              # a ring square more than 8% darker at the brim than dry is a shade outside the pit
+
+
+def ring_means(path):
+    """Mean luminance of each of the 24 squares in the ring just outside the 5x5 pit (camera on the pit's centre)."""
+    from PIL import Image
+    im = Image.open(path).convert("L")
+    w, h = im.size
+    ppc = h / (2.0 * ROOT)
+    out = {}
+    for a in range(-3, 4):
+        for b in range(-3, 4):
+            if max(abs(a), abs(b)) != 3:
+                continue
+            x0, y0 = w / 2.0 + (a - 0.5) * ppc, h / 2.0 + (-b - 0.5) * ppc
+            box = (int(x0 + 0.15 * ppc), int(y0 + 0.15 * ppc), int(x0 + 0.85 * ppc), int(y0 + 0.85 * ppc))
+            px = list(im.crop(box).getdata())
+            out[(a, b)] = sum(px) / float(len(px) or 1)
+    return out
+
+
+def brim_ring():
+    """Finding 8 (owner 2026-11-12: shadows "only inside the pit"): the brim-full water pit of each depth darkens no
+    square just outside its outline against the dry pit of that depth (same fittings, same light)."""
+    for d in DEPTHS:
+        dry, brim = (os.path.join(OUT, "mx_D%d_F%d.png" % (d, f)) for f in (0, d))
+        if not (os.path.exists(dry) and os.path.exists(brim)):
+            row("D%d_F%d_brim_no_shade_outside" % (d, d), False, "UNMEASURED: shot missing (%s)" % (dry if not os.path.exists(dry) else brim))
+            continue
+        m0, m1 = ring_means(dry), ring_means(brim)
+        dark = sorted(((m1[k] / m0[k]) if m0[k] else 1.0, k) for k in m0)
+        worst = dark[0]
+        row("D%d_F%d_brim_no_shade_outside" % (d, d), worst[0] >= 1.0 - RING_DARKER,
+            "worst ring square %s at %.3f of dry (%d squares)" % (worst[1], worst[0], len(dark)))
 
 
 def shots():

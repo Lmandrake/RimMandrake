@@ -207,13 +207,12 @@ namespace RimMandrake.FlowWorks
 
 	/// <summary>PIT_SPIKES_FIX_OVER_WALL_AND_SUBMERGE: the spikes drawn as the variant's own stakes laid on the floor the pit's
 	/// walls leave visible (RM_SpikeDrawMath.FloorRect / Layout), never over the far-wall face, the side bevels or the
-	/// outline, and fading out under water (SubmergedAlpha: gone at 1 m). drawerType RealtimeOnly (the fill changes without
+	/// outline, and drawn under liquid by the one rule (RM_UnderLiquid, RM_SubmergeDraw.Wet). drawerType RealtimeOnly (the fill changes without
 	/// a map-mesh rebuild). The variant is the one Graphic_Random already picks for this thing, so saves keep their look; its
 	/// stakes are drawn from RM_SpikeStakes.AtlasPath. An unknown texture or a missing atlas falls back to the plain sprite.</summary>
 	public class Building_RM_Spikes : Building
 	{
-		private const int AlphaSteps = 32;
-		private Mesh mesh;
+		private readonly Mesh[] meshes = new Mesh[RM_UnderLiquid.Bands + 1];
 		private int meshKey = -1;
 		private int variant = -2;
 		private Texture2D tex;
@@ -240,29 +239,14 @@ namespace RimMandrake.FlowWorks
 				base.DrawAt(drawLoc, flip);
 				return;
 			}
-			// RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL: each stake is cut from its foot at the liquid's TRUE level (whole notch +
-			// part-notch, quarter steps: RM_SubmergeDraw.NoteAt; RM_SubmergeMath.StakeShare, still gone at 1 m), so the liquid's
-			// own terrain shows over the drowned part; off: the old fade by whole notches.
-			bool cutMode = RM_SubmergeDraw.On;
-			int fill = eng.FillAt(c);
-			int a = AlphaSteps, step = 0;
-			if (cutMode)
-			{
-				float level = RM_SubmergeMath.NoteLevel(RM_SubmergeDraw.NoteAt(eng, c));
-				step = RM_SubmergeMath.Step(RM_SubmergeMath.StakeShare(level));
-				if (step >= RM_SubmergeMath.Steps)
-				{
-					return;
-				}
-			}
-			else
-			{
-				a = Mathf.RoundToInt(RM_SpikeDrawMath.SubmergedAlpha(fill) * AlphaSteps);
-				if (a <= 0)
-				{
-					return;
-				}
-			}
+			// RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL: each stake stands on the floor RM_UnderLiquid.StakeMetres tall; the
+			// liquid's TRUE level climbs it from its foot and the drowned part is seen through by the one law (clear liquids
+			// tinted by depth, opaque ones hide it). Off: drawn whole.
+			bool wet = RM_SubmergeDraw.Wet(this, out int _, out float levelM, out float clarity, false);
+			float share = wet ? RM_UnderLiquid.Share(levelM, 0f, RM_UnderLiquid.StakeMetres) : 0f;
+			int step = RM_UnderLiquid.Step(share);
+			float s = (float)step / RM_UnderLiquid.Steps;
+			int bands = step > 0 ? RM_UnderLiquid.BandsFor(clarity, levelM - s * RM_UnderLiquid.StakeMetres, levelM) : 0;
 			Map map = Map;
 			int north = SectionLayer_RMExcavationWalls.NeighbourLevel(map, eng, c + IntVec3.North, d);
 			int south = SectionLayer_RMExcavationWalls.NeighbourLevel(map, eng, c + IntVec3.South, d);
@@ -270,37 +254,54 @@ namespace RimMandrake.FlowWorks
 			int east = SectionLayer_RMExcavationWalls.NeighbourLevel(map, eng, c + IntVec3.East, d);
 			bool faces = RimMandrakeFlowWorksSettings.excavationWallFacesEnabled, outline = RimMandrakeFlowWorksSettings.pitOutlineEnabled;
 			int key = Key(d) | Key(d - north) << 4 | Key(d - south) << 8 | Key(d - west) << 12 | Key(d - east) << 16
-				| (faces ? 1 << 20 : 0) | (outline ? 1 << 21 : 0) | step << 22;
-			if (mesh == null || key != meshKey)
+				| (faces ? 1 << 20 : 0) | (outline ? 1 << 21 : 0) | step << 22 | bands << 28;
+			if (meshKey == -1 || key != meshKey)
 			{
-				Rebuild(d, north, south, west, east, faces, outline, (float)step / RM_SubmergeMath.Steps);
+				Rebuild(d, north, south, west, east, faces, outline, s, bands);
 				meshKey = key;
 			}
-			if (mesh == null)
+			Vector3 at = new Vector3(c.x, drawLoc.y, c.z);
+			if (meshes[0] != null)
 			{
-				return;
+				Graphics.DrawMesh(meshes[0], at, Quaternion.identity, MaterialPool.MatFrom(tex, ShaderDatabase.Transparent, Color.white), 0);
 			}
-			Material mat = MaterialPool.MatFrom(tex, ShaderDatabase.Transparent, new Color(1f, 1f, 1f, (float)a / AlphaSteps));
-			Graphics.DrawMesh(mesh, new Vector3(c.x, drawLoc.y, c.z), Quaternion.identity, mat, 0);
+			for (int b = 0; b < bands; b++)
+			{
+				float mid = s * (b + 0.5f) / bands;
+				int q = RM_UnderLiquid.BandAlphaStep(clarity, levelM - mid * RM_UnderLiquid.StakeMetres);
+				if (q > 0 && meshes[b + 1] != null)
+				{
+					Material m = MaterialPool.MatFrom(tex, ShaderDatabase.Transparent, new Color(1f, 1f, 1f, (float)q / RM_UnderLiquid.Steps));
+					Graphics.DrawMesh(meshes[b + 1], at, Quaternion.identity, m, 0);
+				}
+			}
 		}
 
 		/// <summary>A drop as a 4-bit key field (negative = a neighbour deeper than us: no wall, same as 0).</summary>
 		private static int Key(int v) => v <= 0 ? 0 : (v > 15 ? 15 : v);
 
-		/// <param name="under">the share of every stake, from its foot, under the liquid (cut away; 0 dry or fade mode)</param>
-		private void Rebuild(int d, int north, int south, int west, int east, bool faces, bool outline, float under)
+		/// <param name="under">the share of every stake, from its foot, under the liquid (0 dry)</param>
+		/// <param name="bands">the drowned part's bands (0 = hidden or none)</param>
+		private void Rebuild(int d, int north, int south, int west, int east, bool faces, bool outline, float under, int bands)
 		{
 			RM_SpikeDrawMath.FloorRect(d, north, south, west, east, faces, outline, out float x0, out float z0, out float x1, out float z1);
 			int n = RM_SpikeDrawMath.Layout(variant, thingIDNumber, x0, z0, x1, z1, Quads);
-			if (mesh != null)
-			{
-				UnityEngine.Object.Destroy(mesh);
-				mesh = null;
-			}
+			DestroyMeshes();
 			if (n == 0)
 			{
 				return;
 			}
+			// meshes[0]: every stake above the line; meshes[1..bands]: its drowned bands, from the foot
+			meshes[0] = under < 1f ? StakeMesh(n, under, 1f) : null;
+			for (int b = 0; b < bands; b++)
+			{
+				meshes[b + 1] = StakeMesh(n, under * b / bands, under * (b + 1) / bands);
+			}
+		}
+
+		/// <summary>The slice [a, b] (shares from the foot) of every stake Layout placed, in one mesh.</summary>
+		private static Mesh StakeMesh(int n, float a, float b)
+		{
 			var verts = new List<Vector3>(n * 4);
 			var uv = new List<Vector2>(n * 4);
 			var tris = new int[n * 6];
@@ -309,40 +310,45 @@ namespace RimMandrake.FlowWorks
 				int o = i * RM_SpikeDrawMath.Out;
 				float x = Quads[o], z = Quads[o + 1], w = Quads[o + 2], h = Quads[o + 3];
 				float u0 = Quads[o + 4], v0 = Quads[o + 5], u1 = Quads[o + 6], v1 = Quads[o + 7];
-				if (under > 0f)
-				{
-					z += h * under;
-					h *= 1f - under;
-					v0 += (v1 - v0) * under;
-				}
+				float za = z + h * a, zb = z + h * b, va = v0 + (v1 - v0) * a, vb = v0 + (v1 - v0) * b;
 				int q = i * 4;
 				// one mesh draws its triangles in order, so Layout's far-first sort puts nearer stakes on top
-				verts.Add(new Vector3(x, 0f, z));
-				verts.Add(new Vector3(x, 0f, z + h));
-				verts.Add(new Vector3(x + w, 0f, z + h));
-				verts.Add(new Vector3(x + w, 0f, z));
-				uv.Add(new Vector2(u0, v0));
-				uv.Add(new Vector2(u0, v1));
-				uv.Add(new Vector2(u1, v1));
-				uv.Add(new Vector2(u1, v0));
+				verts.Add(new Vector3(x, 0f, za));
+				verts.Add(new Vector3(x, 0f, zb));
+				verts.Add(new Vector3(x + w, 0f, zb));
+				verts.Add(new Vector3(x + w, 0f, za));
+				uv.Add(new Vector2(u0, va));
+				uv.Add(new Vector2(u0, vb));
+				uv.Add(new Vector2(u1, vb));
+				uv.Add(new Vector2(u1, va));
 				int t = i * 6;
 				tris[t] = q; tris[t + 1] = q + 1; tris[t + 2] = q + 2;
 				tris[t + 3] = q; tris[t + 4] = q + 2; tris[t + 5] = q + 3;
 			}
-			mesh = new Mesh { name = "RM_Spikes_stakes" };
+			var mesh = new Mesh { name = "RM_Spikes_stakes" };
 			mesh.SetVertices(verts);
 			mesh.SetUVs(0, uv);
 			mesh.triangles = tris;
 			mesh.RecalculateBounds();
+			return mesh;
+		}
+
+		private void DestroyMeshes()
+		{
+			for (int i = 0; i < meshes.Length; i++)
+			{
+				if (meshes[i] != null)
+				{
+					UnityEngine.Object.Destroy(meshes[i]);
+					meshes[i] = null;
+				}
+			}
 		}
 
 		public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
 		{
-			if (mesh != null)
-			{
-				UnityEngine.Object.Destroy(mesh);
-				mesh = null;
-			}
+			DestroyMeshes();
+			meshKey = -1;
 			base.DeSpawn(mode);
 		}
 	}

@@ -349,7 +349,8 @@ namespace RimMandrake.FlowWorks.Pits
 
     /// <summary>A cover belongs over a pit; anywhere else it would hide nothing. PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: a pit is
     /// a dug square with a sheer drop of 2 m or more to a neighbour (the fall the cover hides), at any depth. It was "dug to
-    /// D 4", which also took the bottom of a gentle 0.5 m staircase 2 m down, where nobody falls.</summary>
+    /// D 4", which also took the bottom of a gentle 0.5 m staircase 2 m down, where nobody falls. It must also rest on solid
+    /// ground on two of its sides (owner 2026-11-12, no "covered pit bridges"); covers already built stay where they are.</summary>
     public class PlaceWorker_PitCoverOnSuperdeep : PlaceWorker
     {
         public override AcceptanceReport AllowsPlacing(BuildableDef checkingDef, IntVec3 loc, Rot4 rot,
@@ -360,7 +361,17 @@ namespace RimMandrake.FlowWorks.Pits
             {
                 return "A concealed pit must be laid over a pit: a dug square with a sheer drop of 2 m or more to a neighbour.";
             }
+            if (!RM_PitDeckMath.RestsOnBanks(d => SolidGround(map, engine, loc + GenAdj.CardinalDirections[d])))
+            {
+                return "A concealed pit must rest on solid ground on at least two of its sides: it cannot be laid out over the middle of a pit.";
+            }
             return true;
+        }
+
+        /// <summary>Undug, dry ground a cover's edge can rest on: not a dug square (another cover's cell included), not water.</summary>
+        private static bool SolidGround(Map map, RM_MapComponent_Excavation engine, IntVec3 c)
+        {
+            return c.InBounds(map) && !engine.IsExcavated(c) && !c.GetTerrain(map).IsWater;
         }
     }
 

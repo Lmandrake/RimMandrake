@@ -219,7 +219,9 @@
        never while dry (Source/Swale/RM_Swale.cs). RM_ tier, a normal buildable; the Utinni
        campaign lock is CRACKEDLANDS_SWALE_CAMPAIGN_LOCK_1 (blocked on the survey loop).
        PROVISIONAL numbers (owner ruling 2026-10-03: first guesses, tuned live): radius 2.9,
-       one rung per fed day. Art: fwart_RM_Swale (a perforated liner in a dug channel). -->
+       one rung per fed day. Art: fwart_RM_Swale (a perforated liner in a dug channel).
+       Owner 2026-11-12: "Then the swale should be drawn as a floor tile, not a channel slide as it is now":
+       a flat liner on the floor, under the liquid and under things (RM_UnderLiquid.SwaleMetres); no sun shadow. -->
   <ThingDef ParentName="BuildingBase">
     <defName>RM_Swale</defName>
     <label>swale</label>

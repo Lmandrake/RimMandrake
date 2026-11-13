@@ -24,6 +24,8 @@
        The bare RM_Sluice / RM_SecurityGrateDoor PNGs stay as the menu icons (uiIconPath) and the source the layers are cut from. -->
   <ThingDef ParentName="DoorBase">
     <defName>RM_Sluice</defName>
+    <!-- DoorBase casts a 1.0 sun shadow; a gate stands in a pit, and a pit's shadow stays inside it (owner 2026-11-12) -->
+    <staticSunShadowHeight>0</staticSunShadowHeight>
     <label>sluice gate</label>
     <description>A sealed gate for a canal. Lowered, it holds the liquid back; lift it and the level runs on through. Nobody walks through it: a colonist lifts or lowers it from the bank or the canal beside it. Lowered, it stops everyone; lifted, everyone passes. What it is made of decides how tough it is and whether it burns.</description>
     <thingClass>RimMandrake.FlowWorks.Building_RM_FlowDoor</thingClass>
@@ -55,6 +57,8 @@
 
   <ThingDef ParentName="DoorBase">
     <defName>RM_SecurityGrateDoor</defName>
+    <!-- DoorBase casts a 1.0 sun shadow; a gate stands in a pit, and a pit's shadow stays inside it (owner 2026-11-12) -->
+    <staticSunShadowHeight>0</staticSunShadowHeight>
     <label>security grate</label>
     <description>A barred prisoner door for the end of a canal. Liquid flows through the bars while it is shut, and it holds a prisoner as well as any door. Nobody trapped down in a pit can open it from below. What it is made of decides how tough it is and whether it burns.</description>
     <thingClass>RimMandrake.FlowWorks.Building_RM_FlowDoor</thingClass>
