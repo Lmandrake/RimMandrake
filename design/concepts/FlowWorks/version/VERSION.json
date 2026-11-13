@@ -1,0 +1,20 @@
+{
+ "mod": "FlowWorks",
+ "version": "0.1.0",
+ "state": "locked-pending-owner-read",
+ "bars_total": 59,
+ "bars_met": 59,
+ "judge_rounds": 1,
+ "tokens_spent": 3729543,
+ "locked_from_commit": "237b79116781821545f7ac58c23ed40bfc0250c4",
+ "measured_from": {
+  "bars_total": "coverage_judge.required_ids(): record.json inventory (28) + tree.json leaves (31), the coverage checklist rows the judge passes or refuses on",
+  "bars_met": "tree.json coverage: signed covered by the Arbiter 2026-11-05T09:03:46Z at tree_hash 572198fed9 (= the tree at the lock) and sheet_hash 68f9946f8e (= the sheet at the lock)",
+  "judge_rounds": "one coverage signature (the Arbiter's, tree.json coverage); coverage_judge.rounds() reads 0 because that signing predates round recording and carried no charge",
+  "tokens_spent": "stage.json budget.spent (cap 500000); every Designer stage run, helper, review and judge charge on this concept",
+  "locked_from_commit": "origin/main when this version was entered, 2026-11-13; per-file blob hashes in bars.md"
+ },
+ "caveats": [
+  "stage.json reads status 'blocked' on CONCEPT_LOCK_UNBLOCK_SIGNER_NEVER_CALLED, which the ledger closed 2026-11-05T16:18Z: a stale block, not a gap"
+ ]
+}

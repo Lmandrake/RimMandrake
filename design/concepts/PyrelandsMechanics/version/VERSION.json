@@ -1,0 +1,21 @@
+{
+ "mod": "PyrelandsMechanics",
+ "version": "0.1.0",
+ "state": "locked-pending-owner-read",
+ "bars_total": 22,
+ "bars_met": "UNMEASURED",
+ "judge_rounds": 0,
+ "tokens_spent": 4193729,
+ "locked_from_commit": "237b79116781821545f7ac58c23ed40bfc0250c4",
+ "measured_from": {
+  "bars_total": "coverage_judge.required_ids(): record.json inventory (11) + tree.json leaves (11), the coverage checklist rows the judge passes or refuses on",
+  "bars_met": "no coverage judge has run on this concept (no coverage_verdict.json, no coverage_rounds, no judge charge); the concept stopped at stage 4 because the exam's four control Readers never missed",
+  "judge_rounds": "coverage_judge.rounds() reads 0; the four exam control runs are exam readers, not coverage rounds",
+  "tokens_spent": "stage.json budget.spent (cap 4000000); every Designer stage run, helper, review and judge charge on this concept",
+  "locked_from_commit": "origin/main when this version was entered, 2026-11-13; per-file blob hashes in bars.md"
+ },
+ "caveats": [
+  "stage.json reads status 'blocked' on EXAM_CONTROL_ENFORCE_FOUR_NEVER_MISSED, which the ledger closed 2026-11-06T19:55Z: a stale block; the exam itself still fails its control",
+  "tree.json root_state reads DRAFT although sheet.md records his card 'Yes, validate' (2026-11-05)"
+ ]
+}

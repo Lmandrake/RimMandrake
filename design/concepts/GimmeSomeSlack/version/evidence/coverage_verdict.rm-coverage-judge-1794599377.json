@@ -1,0 +1,1648 @@
+{
+ "advisory": "the coverage brief is UNTESTED: this refusal is stored and shown, the Designer is not sent back",
+ "at": "2026-11-13T19:49:37Z",
+ "checklist": [
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "tree.json",
+    "sheet.md:19"
+   ],
+   "id": "invisible_conduit",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_conduit_invisible",
+     "what": "PowerConduit draws no pipe"
+    },
+    {
+     "ok": true,
+     "scene": "sc_conduit_invisible",
+     "what": "WaterproofConduit draws no pipe"
+    },
+    {
+     "ok": true,
+     "scene": "sc_conduit_invisible",
+     "what": "vanilla HiddenConduit never grows a cord"
+    },
+    {
+     "ok": true,
+     "scene": "sc_conduit_invisible",
+     "what": "power overlay keeps its connector lines"
+    },
+    {
+     "ok": true,
+     "scene": "sc_conduit_invisible",
+     "what": "exercised by showcase workshop_floor"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "tree.json"
+   ],
+   "id": "cord_slack_lay",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_cords_slack",
+     "what": "long slack loops, never taut"
+    },
+    {
+     "ok": true,
+     "scene": "sc_walls",
+     "what": "pile against walls and end at a wall-face stub"
+    },
+    {
+     "ok": true,
+     "scene": "sc_walls",
+     "what": "no vertex on an unwalkable cell"
+    },
+    {
+     "ok": true,
+     "scene": "sc_walls",
+     "what": "dive under a barrier with a plate each side"
+    },
+    {
+     "ok": true,
+     "scene": "sc_no_sharp_turn",
+     "what": "resist tight turns (gentle curves)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "junction_strips",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_junction_strips",
+     "what": "a joining piece at every 3/4-way junction, every cord plugged in"
+    },
+    {
+     "ok": true,
+     "scene": "sc_junction_strips",
+     "what": "Modern draws the PowerStrip art, Industrial the Junction_T/X box (d_modern_junction_strip)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_junction_strips",
+     "what": "Scrapper/Futuristic draw their connectors (tape/tin)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_junction_strips",
+     "what": "blob junctions inside a dense block included"
+    },
+    {
+     "ok": true,
+     "scene": "sc_dense_tangle",
+     "what": "dense blocks read as a tangle pile"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "connectivity_truth",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_true_to_grid",
+     "what": "no cord joins two PowerNets"
+    },
+    {
+     "ok": true,
+     "scene": "sc_true_to_grid",
+     "what": "no phantom second cable at the adjacent-fed pump"
+    },
+    {
+     "ok": true,
+     "scene": "sc_true_to_grid",
+     "what": "no plug into a pipe slot; diagonal slide-under"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "break_ends_live_dead",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_cut_ends",
+     "what": "two terminal ends, no cord across the gap"
+    },
+    {
+     "ok": true,
+     "scene": "sc_cut_ends",
+     "what": "end live exactly when its net has a source (far-side battery case)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_cut_ends",
+     "what": "source switched off reads dead within one 250-tick poll"
+    },
+    {
+     "ok": true,
+     "scene": "sc_cut_ends",
+     "what": "never-powered control"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "floor.json"
+   ],
+   "id": "rebuild_cost",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_rewire_cost",
+     "what": "place/cut/dig/mast-fall, lone and burst, under 20 ms on a 2000-cell base"
+    },
+    {
+     "ok": true,
+     "scene": "sc_rewire_cost",
+     "what": "touched edge's drawing current after (not a skipped rebuild)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_rewire_cost",
+     "what": "budgeted, touched-edge-only re-plan: a mechanism, judged through the frame-time bar it serves (floor tick_cost)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "overhead_spans",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_spans",
+     "what": "masts, lamp masts and wall brackets carry spans into one net, lamp lit"
+    },
+    {
+     "ok": true,
+     "scene": "sc_spans",
+     "what": "spans draw above pawns and buildings, sag above zero"
+    },
+    {
+     "ok": true,
+     "scene": "sc_spans",
+     "what": "out-of-range, hostile and non-anchor links refused"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "downed_spans",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_fallen_span",
+     "what": "killed mast leaves its wire on the ground below pawns"
+    },
+    {
+     "ok": true,
+     "scene": "sc_fallen_span",
+     "what": "explosion-cut span leaves its wire on the ground"
+    },
+    {
+     "ok": true,
+     "scene": "sc_fallen_span",
+     "what": "live end and dead end distinct (unpowered span both dead)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fallen_wire_shock",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_shock",
+     "what": "live fallen wire shocks hauler and visitor"
+    },
+    {
+     "ok": true,
+     "scene": "sc_shock",
+     "what": "re-stringer of THIS wire exempt"
+    },
+    {
+     "ok": true,
+     "scene": "sc_shock_restring",
+     "what": "re-stringer of another span shocked (exemption keyed on the target wire)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_shock",
+     "what": "dead wire shocks no one"
+    },
+    {
+     "ok": true,
+     "scene": "sc_fuel_ignition",
+     "what": "ignites fuel puddles"
+    },
+    {
+     "ok": true,
+     "scene": "sc_shock_restring",
+     "what": "shock does not outlive the re-strung wire"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "wire_down_alert",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_restring",
+     "what": "lists every anchor with a cut wire"
+    },
+    {
+     "ok": true,
+     "scene": "sc_restring",
+     "what": "lists a grounded wire (killed mast)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_restring",
+     "what": "jumps to the listed anchor"
+    },
+    {
+     "ok": true,
+     "scene": "sc_restring",
+     "what": "clears that anchor on re-string"
+    },
+    {
+     "ok": true,
+     "scene": "sc_restring",
+     "what": "its own toggle hides it"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "restring_job",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_restring",
+     "what": "a colonist job RM_RestringSpan re-strings a cut span, power flows again"
+    },
+    {
+     "ok": true,
+     "scene": "sc_restring",
+     "what": "not restored by a direct link call (drafted control)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "power_theft",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_tap_theft",
+     "what": "tap draws the neighbour's power one way"
+    },
+    {
+     "ok": true,
+     "scene": "sc_tap_theft",
+     "what": "witnessed tap drains goodwill steadily; no witness, no drain"
+    },
+    {
+     "ok": true,
+     "scene": "sc_tap_theft",
+     "what": "removing the clamp stops the drain; no other faction hit"
+    },
+    {
+     "ok": true,
+     "scene": "sc_settings",
+     "what": "taps have their own toggle (per-switch flip read)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "sheet.md:47"
+   ],
+   "id": "four_styles",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_four_looks",
+     "what": "four looks told apart by eye, not tint"
+    },
+    {
+     "ok": true,
+     "scene": "sc_four_looks",
+     "what": "one connected run draws one look, a merged run one look"
+    },
+    {
+     "ok": true,
+     "scene": "sc_four_looks",
+     "what": "lamps follow their run"
+    },
+    {
+     "ok": true,
+     "scene": "sc_four_looks",
+     "what": "advisory, not reject-level, in his words OWNER:1793590546413059482"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "floor.json"
+   ],
+   "id": "mod_settings",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_settings",
+     "what": "master off restores vanilla conduit art without a restart"
+    },
+    {
+     "ok": true,
+     "scene": "sc_settings",
+     "what": "master off restores vanilla lamp art without a restart"
+    },
+    {
+     "ok": true,
+     "scene": "sc_settings",
+     "what": "every Harmony patch maps to exactly one switch"
+    },
+    {
+     "ok": true,
+     "scene": "sc_settings",
+     "what": "each toggle really switches its patch (drip loops, slideUnder; gravship and owner-change in their own scenes)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "pipe_pole_switch",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_settings",
+     "what": "pipe poles follow their own FlowWorks switch, with the GSS master on and off"
+    },
+    {
+     "ok": true,
+     "scene": "sc_settings",
+     "what": "the switch leaves the power masts' spans, sag and link count unchanged"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "gravship_connectivity",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_gravship",
+     "what": "after landing, the true-to-grid read passes"
+    },
+    {
+     "ok": true,
+     "scene": "sc_gravship",
+     "what": "keepWiresOnGravship off behaves as stated"
+    },
+    {
+     "ok": true,
+     "scene": "sc_gravship",
+     "what": "the pre-launch drawing cannot pass (control)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:627",
+    "scenes.json:519",
+    "tree.json:594"
+   ],
+   "id": "owner_change_cut",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_owner_change",
+     "what": "wires between the claimed pole and poles of a different owner taken down and coiled"
+    },
+    {
+     "ok": true,
+     "scene": "sc_owner_change",
+     "what": "a message shown"
+    },
+    {
+     "ok": true,
+     "scene": "sc_owner_change",
+     "what": "its own switch, cutWiresOnOwnerChange"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "wires between poles of ONE owner stay up: every span in the scene touches the handed-over mast"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:643",
+    "scenes.json:566"
+   ],
+   "id": "game_statics_reset",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_statics_new_game",
+     "what": "tap registry cleared, new game and loaded game"
+    },
+    {
+     "ok": true,
+     "scene": "sc_statics_new_game",
+     "what": "style picks cleared, new game and loaded game"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "printed statics (section keys and strand names) cleared: never read"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "sheet.md:50"
+   ],
+   "id": "uninstall_clean",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_removal_consequence",
+     "what": "save loads after removal: waived w1 in his words 'I don't much care about savegame continuity'; the consequence is documented by an exploration through coverage_rest"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "tree.json"
+   ],
+   "id": "no_hose",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "",
+     "what": "no hose, reel or pipe drawn by GSS: an offline scan leaf (no_hose_in_gss), exempt from the scene rule"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:692",
+    "record.json:143",
+    "scenes.json:317",
+    "sheet.md:64"
+   ],
+   "id": "floor_end_shock",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_floor_end_shock",
+     "what": "live floor end shocks a hauler, a visitor and a constructor on other conduit"
+    },
+    {
+     "ok": true,
+     "scene": "sc_floor_end_shock",
+     "what": "constructor building THIS conduit safe"
+    },
+    {
+     "ok": true,
+     "scene": "sc_floor_end_shock",
+     "what": "dead end harmless"
+    },
+    {
+     "ok": true,
+     "scene": "sc_floor_end_shock",
+     "what": "aerial master off leaves floor ends biting"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "rest of the live cord harmless: no crossing of a live non-end cell is staged"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "a live end of a run the player stopped laying also bites (agent ruling 1, sheet's delegated line)"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "delivering to the joining blueprint is safe (agent ruling 3, 'delivering to or building')"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "floor ends do not ignite fuel (ruling 5; sheet 'fuel-ignition switch is not widened')"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "shock follows live state, not the maxSparkingEnds budget (ruling 6)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:143",
+    "scenes.json",
+    "tree.json"
+   ],
+   "id": "shock_reach_setting",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_shock_reach",
+     "what": "three values, default All on a fresh settings file"
+    },
+    {
+     "ok": true,
+     "scene": "sc_shock_reach",
+     "what": "All: both bite; Only downed lines: only the fallen wire; None: neither; no restart"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "'Only downed lines' includes FlowWorks' collapsed-deck cords, and None silences them (agent ruling 4)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "sheet.md:19"
+   ],
+   "id": "conduit_invisible",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_conduit_invisible",
+     "what": "no pipe in any of the four looks; cords show where power goes"
+    },
+    {
+     "ok": true,
+     "scene": "sc_conduit_invisible",
+     "what": "the overlay still draws"
+    },
+    {
+     "ok": true,
+     "scene": "sc_conduit_invisible",
+     "what": "WaterproofConduit on shallow water"
+    },
+    {
+     "ok": true,
+     "scene": "sc_conduit_invisible",
+     "what": "HiddenConduit grows no cord"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "sheet.md:20"
+   ],
+   "id": "cords_lie_slack",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_cords_slack",
+     "what": "length/chord at least 1.4 per edge"
+    },
+    {
+     "ok": true,
+     "scene": "sc_cords_slack",
+     "what": "minimum bend radius"
+    },
+    {
+     "ok": true,
+     "scene": "sc_cords_slack",
+     "what": "excursion off the conduit line on edges over four cells"
+    },
+    {
+     "ok": true,
+     "scene": "sc_cords_slack",
+     "what": "control: a planted straight reference line fails"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:97",
+    "scenes.json:65",
+    "sheet.md:21"
+   ],
+   "id": "no_unforced_sharp_turn",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_no_sharp_turn",
+     "what": "unforced turns == 0 in each of the four looks"
+    },
+    {
+     "ok": true,
+     "scene": "sc_no_sharp_turn",
+     "what": "at plug and junction ends too (planted hairpins)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_no_sharp_turn",
+     "what": "a forced bend names its neighbouring wall, building, door or socket"
+    },
+    {
+     "ok": true,
+     "scene": "sc_no_sharp_turn",
+     "what": "dense block and mast foot"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "taut straight cords cannot meet the bar (leaf false_pass 3): the scene reads only 'strands read greater than zero'"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "sheet.md:22"
+   ],
+   "id": "cords_meet_walls_at_face",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_walls",
+     "what": "no sampled point on an impassable cell"
+    },
+    {
+     "ok": true,
+     "scene": "sc_walls",
+     "what": "a stub on both faces of each crossing"
+    },
+    {
+     "ok": true,
+     "scene": "sc_walls",
+     "what": "an unroutable pocket dives with two plates"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "strip_at_every_junction",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_junction_strips",
+     "what": "one piece per 3/4-way junction, every arm in its socket"
+    },
+    {
+     "ok": true,
+     "scene": "sc_junction_strips",
+     "what": "Modern PowerStrip, Industrial box, the other two their connectors"
+    },
+    {
+     "ok": true,
+     "scene": "sc_junction_strips",
+     "what": "control: a 2-way bend has no piece"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "dense_block_tangle",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_dense_tangle",
+     "what": "tangle-pile pieces over a 6x6 block"
+    },
+    {
+     "ok": true,
+     "scene": "sc_dense_tangle",
+     "what": "crossings above the sparse room's; a judge reads a tangle against the parallel-lines reject picture"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "cord_shape_variation_probe",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_no_repeat",
+     "what": "pairwise shape distance computed on the drawn curves (offline instrument with a live read)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_no_repeat",
+     "what": "a planted identical vertex list reads zero (not seeds)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "sheet.md:25"
+   ],
+   "id": "cords_never_repeat",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_no_repeat",
+     "what": "every same-length pair above the minimum distance"
+    },
+    {
+     "ok": true,
+     "scene": "sc_no_repeat",
+     "what": "a judge agent predicts his eye"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "drawing_true_to_grid",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_true_to_grid",
+     "what": "no cord across two nets"
+    },
+    {
+     "ok": true,
+     "scene": "sc_true_to_grid",
+     "what": "every device has its cord; no phantom at the adjacent-fed pump"
+    },
+    {
+     "ok": true,
+     "scene": "sc_true_to_grid",
+     "what": "no plug in a pipe slot; diagonal slide-under at a dual-port device"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "cut_live_and_dead_ends",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_cut_ends",
+     "what": "no cord across the gap"
+    },
+    {
+     "ok": true,
+     "scene": "sc_cut_ends",
+     "what": "fed end live, far end dead; both live with a far battery"
+    },
+    {
+     "ok": true,
+     "scene": "sc_cut_ends",
+     "what": "after switch-off, the end goes dead within one poll"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:298",
+    "scenes.json:317",
+    "exam.json",
+    "sheet.md:28"
+   ],
+   "id": "floor_end_shocks_crossers",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_floor_end_shock",
+     "what": "hauler and visitor at the live end shocked"
+    },
+    {
+     "ok": true,
+     "scene": "sc_floor_end_shock",
+     "what": "constructor rebuilding THAT cell safe; constructor on other conduit shocked"
+    },
+    {
+     "ok": true,
+     "scene": "sc_floor_end_shock",
+     "what": "dead end harmless"
+    },
+    {
+     "ok": true,
+     "scene": "sc_floor_end_shock",
+     "what": "aerial master off leaves floor ends biting"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "'anywhere along the cord but the end, is not' shocked: no live mid-cord crossing is staged"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "floor.json"
+   ],
+   "id": "no_stall_on_rewire",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_rewire_cost",
+     "what": "each action alone and in a burst under 20 ms on Archmagi, 2000 cells"
+    },
+    {
+     "ok": true,
+     "scene": "sc_rewire_cost",
+     "what": "control: a skipped rebuild fails on currency"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "sheet.md:30"
+   ],
+   "id": "spans_above_everything",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_spans",
+     "what": "span altitude above the pawn and building layers, sag > 0"
+    },
+    {
+     "ok": true,
+     "scene": "sc_spans",
+     "what": "lamp mast on one net, its lamp lit"
+    },
+    {
+     "ok": true,
+     "scene": "sc_spans",
+     "what": "the three bad links refused"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "fallen_span_on_ground",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_fallen_span",
+     "what": "a killed mast and an explosion each leave a ground-layer wire"
+    },
+    {
+     "ok": true,
+     "scene": "sc_fallen_span",
+     "what": "live and dead ends distinct"
+    },
+    {
+     "ok": true,
+     "scene": "sc_fallen_span",
+     "what": "control: a suppressed fallen draw fails"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "fallen_wire_shocks_crossers",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_shock",
+     "what": "hauler, visitor and the other span's re-stringer shocked, paths asserted"
+    },
+    {
+     "ok": true,
+     "scene": "sc_shock",
+     "what": "this wire's re-stringer safe"
+    },
+    {
+     "ok": true,
+     "scene": "sc_shock",
+     "what": "a dead wire bites no one"
+    },
+    {
+     "ok": true,
+     "scene": "sc_shock_restring",
+     "what": "a job-type exemption ruled out"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "restring_cut_span",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_restring",
+     "what": "the alert lists cut and grounded anchors"
+    },
+    {
+     "ok": true,
+     "scene": "sc_restring",
+     "what": "the jump centres the camera on each"
+    },
+    {
+     "ok": true,
+     "scene": "sc_restring",
+     "what": "a colonist re-strings by job; the net is restored; the alert drops it"
+    },
+    {
+     "ok": true,
+     "scene": "sc_restring",
+     "what": "the toggle hides the alert"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "live_wire_lights_fuel",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_fuel_ignition",
+     "what": "a live wire lights a chemfuel puddle"
+    },
+    {
+     "ok": true,
+     "scene": "sc_fuel_ignition",
+     "what": "switch off: no fire; wire dead: no fire"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "tap_steals_and_costs_goodwill",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_tap_theft",
+     "what": "one-way power flow"
+    },
+    {
+     "ok": true,
+     "scene": "sc_tap_theft",
+     "what": "a steady daily drain after sighting, stopping on removal"
+    },
+    {
+     "ok": true,
+     "scene": "sc_tap_theft",
+     "what": "no witness, no drain; no other faction hit"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "four_looks_one_run",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_four_looks",
+     "what": "a judge tells the four looks apart in grayscale"
+    },
+    {
+     "ok": true,
+     "scene": "sc_four_looks",
+     "what": "one run, one look, lamps included; a merged run, one look"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "settings_switch_cleanly",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_settings",
+     "what": "each switch flips and returns, no restart"
+    },
+    {
+     "ok": true,
+     "scene": "sc_settings",
+     "what": "master off: vanilla conduit and lamp art"
+    },
+    {
+     "ok": true,
+     "scene": "sc_settings",
+     "what": "patch-to-switch map, none unmapped"
+    },
+    {
+     "ok": true,
+     "scene": "sc_settings",
+     "what": "the pipe-pole switch leaves power poles alone"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "gravship_keeps_connections",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_gravship",
+     "what": "true-to-grid read on the landed ship"
+    },
+    {
+     "ok": true,
+     "scene": "sc_gravship",
+     "what": "switch-off behaviour"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:594",
+    "scenes.json:519",
+    "sheet.md:40"
+   ],
+   "id": "owner_change_coils_wires",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_owner_change",
+     "what": "cross-owner wires taken down, with a message"
+    },
+    {
+     "ok": true,
+     "scene": "sc_owner_change",
+     "what": "switch off keeps the links"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "'wires between poles of one owner stay up': never staged"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:615",
+    "scenes.json:566",
+    "exam.json",
+    "record.json:643"
+   ],
+   "id": "statics_clear_between_games",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_statics_new_game",
+     "what": "no tap carried into a new or loaded game"
+    },
+    {
+     "ok": true,
+     "scene": "sc_statics_new_game",
+     "what": "no style pick carried over"
+    },
+    {
+     "ok": true,
+     "scene": "sc_statics_new_game",
+     "what": "filled-state control on both paths"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "'Nothing of one game' includes the printed-section statics and the live-wire path costs keyed by map id: unread"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "sheet.md:42"
+   ],
+   "id": "no_hose_in_gss",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "",
+     "what": "offline scan of defs, C# and textures: offline tier, exempt from the scene rule"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "floor.json"
+   ],
+   "id": "walk_scavenger_base",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_walk",
+     "what": "a week on his full list: workshop, mast, raid cut, re-string"
+    },
+    {
+     "ok": true,
+     "scene": "sc_walk",
+     "what": "a mid-way save with a wire down, a reload, and matching reads"
+    },
+    {
+     "ok": true,
+     "scene": "sc_walk",
+     "what": "a repeat and a second order"
+    },
+    {
+     "ok": true,
+     "scene": "sc_walk",
+     "what": "master off/on mid-game"
+    },
+    {
+     "ok": true,
+     "scene": "sc_walk",
+     "what": "heap/texture MB and save size recorded (floor memory, save_size)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_walk",
+     "what": "the 20 ms bar on each rewire; log clean"
+    }
+   ]
+  }
+ ],
+ "contract": {
+  "advisory": true,
+  "alarms": [],
+  "cached": [],
+  "calibration": "UNTESTED",
+  "counted": true,
+  "may_judge": true,
+  "ok": true,
+  "repair_due": []
+ },
+ "contract_reasked": [
+  "refusal 0 (floor_end_shock): evidence 'exam.json e4' is not one of the inputs the judge was given",
+  "refusal 0 (floor_end_shock): evidence 'record.json:692 inventory floor_end_shock' is not one of the inputs the judge was given",
+  "refusal 0 (floor_end_shock): evidence 'record.json:143 d_shock_reach_agent_detail' is not one of the inputs the judge was given",
+  "refusal 0 (floor_end_shock): evidence 'scenes.json:304-330 sc_floor_end_shock' is not one of the inputs the judge was given",
+  "refusal 1 (floor_end_shocks_crossers): evidence 'exam.json e4' is not one of the inputs the judge was given",
+  "refusal 1 (floor_end_shocks_crossers): evidence 'tree.json:288-300 floor_end_shocks_crossers (false_pass line 298)' is not one of the inputs the judge was given",
+  "refusal 1 (floor_end_shocks_crossers): evidence 'scenes.json:304-330 sc_floor_end_shock (action line 317)' is not one of the inputs the judge was given",
+  "refusal 1 (floor_end_shocks_crossers): evidence 'exam.json e1-e4, c1, c2' is not one of the inputs the judge was given",
+  "refusal 1 (floor_end_shocks_crossers): evidence 'sheet.md:28, 64' is not one of the inputs the judge was given",
+  "refusal 2 (shock_reach_setting): evidence 'record.json inventory shock_reach_setting, d_shock_reach_setting, d_shock_reach_agent_detail' is not one of the inputs the judge was given",
+  "refusal 2 (shock_reach_setting): evidence 'scenes.json sc_shock_reach' is not one of the inputs the judge was given",
+  "refusal 2 (shock_reach_setting): evidence 'tree.json shock_reach_setting' is not one of the inputs the judge was given",
+  "refusal 3 (no_unforced_sharp_turn): evidence 'tree.json:87-103 no_unforced_sharp_turn (false_pass line 97)' is not one of the inputs the judge was given",
+  "refusal 3 (no_unforced_sharp_turn): evidence 'scenes.json:51-75 sc_no_sharp_turn (expect line 65)' is not one of the inputs the judge was given",
+  "refusal 4 (owner_change_cut): evidence 'record.json:627 inventory owner_change_cut' is not one of the inputs the judge was given",
+  "refusal 4 (owner_change_cut): evidence 'scenes.json:519 sc_owner_change start' is not one of the inputs the judge was given",
+  "refusal 5 (owner_change_coils_wires): evidence 'tree.json:590-600 owner_change_coils_wires (experience line 594)' is not one of the inputs the judge was given",
+  "refusal 5 (owner_change_coils_wires): evidence 'scenes.json:510-530 sc_owner_change' is not one of the inputs the judge was given",
+  "refusal 6 (game_statics_reset): evidence 'record.json:643 inventory game_statics_reset' is not one of the inputs the judge was given",
+  "refusal 6 (game_statics_reset): evidence 'scenes.json:566 sc_statics_new_game' is not one of the inputs the judge was given",
+  "refusal 7 (statics_clear_between_games): evidence 'tree.json:615 statics_clear_between_games' is not one of the inputs the judge was given",
+  "refusal 7 (statics_clear_between_games): evidence 'scenes.json:554-575 sc_statics_new_game' is not one of the inputs the judge was given",
+  "refusal 7 (statics_clear_between_games): evidence 'exam.json e7-e9, c9' is not one of the inputs the judge was given",
+  "passed invisible_conduit: evidence 'record.json inventory invisible_conduit' is not one of the given inputs",
+  "passed invisible_conduit: evidence 'scenes.json sc_conduit_invisible' is not one of the given inputs",
+  "passed invisible_conduit: evidence 'tree.json conduit_invisible' is not one of the given inputs",
+  "passed cord_slack_lay: evidence 'record.json inventory cord_slack_lay' is not one of the given inputs",
+  "passed cord_slack_lay: evidence 'scenes.json sc_cords_slack, sc_walls, sc_no_sharp_turn' is not one of the given inputs",
+  "passed cord_slack_lay: evidence 'tree.json cords_lie_slack, cords_meet_walls_at_face' is not one of the given inputs",
+  "passed junction_strips: evidence 'record.json inventory junction_strips, decision d_modern_junction_strip' is not one of the given inputs",
+  "passed junction_strips: evidence 'scenes.json sc_junction_strips, sc_dense_tangle' is not one of the given inputs",
+  "passed connectivity_truth: evidence 'record.json inventory connectivity_truth, contradiction phantom_unverified' is not one of the given inputs",
+  "passed connectivity_truth: evidence 'scenes.json sc_true_to_grid' is not one of the given inputs",
+  "passed break_ends_live_dead: evidence 'record.json inventory break_ends_live_dead' is not one of the given inputs",
+  "passed break_ends_live_dead: evidence 'scenes.json sc_cut_ends' is not one of the given inputs",
+  "passed rebuild_cost: evidence 'record.json inventory rebuild_cost' is not one of the given inputs",
+  "passed rebuild_cost: evidence 'scenes.json sc_rewire_cost' is not one of the given inputs",
+  "passed rebuild_cost: evidence 'floor.json tick_cost' is not one of the given inputs",
+  "passed overhead_spans: evidence 'record.json inventory overhead_spans' is not one of the given inputs",
+  "passed overhead_spans: evidence 'scenes.json sc_spans (changed since verdict: lamp mast added)' is not one of the given inputs",
+  "passed downed_spans: evidence 'record.json inventory downed_spans' is not one of the given inputs",
+  "passed downed_spans: evidence 'scenes.json sc_fallen_span' is not one of the given inputs",
+  "passed fallen_wire_shock: evidence 'record.json inventory fallen_wire_shock' is not one of the given inputs",
+  "passed fallen_wire_shock: evidence 'scenes.json sc_shock, sc_shock_restring, sc_fuel_ignition' is not one of the given inputs",
+  "passed wire_down_alert: evidence 'record.json inventory wire_down_alert' is not one of the given inputs",
+  "passed wire_down_alert: evidence 'scenes.json sc_restring (changed since verdict)' is not one of the given inputs",
+  "passed restring_job: evidence 'record.json inventory restring_job' is not one of the given inputs",
+  "passed restring_job: evidence 'scenes.json sc_restring, sc_shock_restring' is not one of the given inputs",
+  "passed power_theft: evidence 'record.json inventory power_theft' is not one of the given inputs",
+  "passed power_theft: evidence 'scenes.json sc_tap_theft, sc_settings, coverage_rest' is not one of the given inputs",
+  "passed four_styles: evidence 'record.json inventory four_styles' is not one of the given inputs",
+  "passed four_styles: evidence 'scenes.json sc_four_looks' is not one of the given inputs",
+  "passed mod_settings: evidence 'record.json inventory mod_settings' is not one of the given inputs",
+  "passed mod_settings: evidence 'scenes.json sc_settings (changed since verdict)' is not one of the given inputs",
+  "passed mod_settings: evidence 'floor.json mod_settings' is not one of the given inputs",
+  "passed pipe_pole_switch: evidence 'record.json inventory pipe_pole_switch' is not one of the given inputs",
+  "passed pipe_pole_switch: evidence 'scenes.json sc_settings' is not one of the given inputs",
+  "passed gravship_connectivity: evidence 'record.json inventory gravship_connectivity' is not one of the given inputs",
+  "passed gravship_connectivity: evidence 'scenes.json sc_gravship' is not one of the given inputs",
+  "passed uninstall_clean: evidence 'record.json inventory uninstall_clean, decision w1' is not one of the given inputs",
+  "passed uninstall_clean: evidence 'scenes.json coverage_rest, sc_removal_consequence' is not one of the given inputs",
+  "passed no_hose: evidence 'record.json inventory no_hose' is not one of the given inputs",
+  "passed no_hose: evidence 'tree.json no_hose_in_gss' is not one of the given inputs",
+  "passed conduit_invisible: evidence 'tree.json conduit_invisible' is not one of the given inputs",
+  "passed conduit_invisible: evidence 'scenes.json sc_conduit_invisible' is not one of the given inputs",
+  "passed cords_lie_slack: evidence 'tree.json cords_lie_slack' is not one of the given inputs",
+  "passed cords_lie_slack: evidence 'scenes.json sc_cords_slack' is not one of the given inputs",
+  "passed cords_meet_walls_at_face: evidence 'tree.json cords_meet_walls_at_face' is not one of the given inputs",
+  "passed cords_meet_walls_at_face: evidence 'scenes.json sc_walls' is not one of the given inputs",
+  "passed strip_at_every_junction: evidence 'tree.json strip_at_every_junction' is not one of the given inputs",
+  "passed strip_at_every_junction: evidence 'scenes.json sc_junction_strips' is not one of the given inputs",
+  "passed strip_at_every_junction: evidence 'exam.json e14' is not one of the given inputs",
+  "passed dense_block_tangle: evidence 'tree.json dense_block_tangle' is not one of the given inputs",
+  "passed dense_block_tangle: evidence 'scenes.json sc_dense_tangle' is not one of the given inputs",
+  "passed cord_shape_variation_probe: evidence 'tree.json cord_shape_variation_probe' is not one of the given inputs",
+  "passed cord_shape_variation_probe: evidence 'scenes.json sc_no_repeat' is not one of the given inputs",
+  "passed cords_never_repeat: evidence 'tree.json cords_never_repeat' is not one of the given inputs",
+  "passed cords_never_repeat: evidence 'scenes.json sc_no_repeat' is not one of the given inputs",
+  "passed drawing_true_to_grid: evidence 'tree.json drawing_true_to_grid' is not one of the given inputs",
+  "passed drawing_true_to_grid: evidence 'scenes.json sc_true_to_grid' is not one of the given inputs",
+  "passed drawing_true_to_grid: evidence 'exam.json e15' is not one of the given inputs",
+  "passed cut_live_and_dead_ends: evidence 'tree.json cut_live_and_dead_ends' is not one of the given inputs",
+  "passed cut_live_and_dead_ends: evidence 'scenes.json sc_cut_ends' is not one of the given inputs",
+  "passed cut_live_and_dead_ends: evidence 'exam.json e13, c3, c4' is not one of the given inputs",
+  "passed no_stall_on_rewire: evidence 'tree.json no_stall_on_rewire' is not one of the given inputs",
+  "passed no_stall_on_rewire: evidence 'scenes.json sc_rewire_cost' is not one of the given inputs",
+  "passed no_stall_on_rewire: evidence 'floor.json tick_cost' is not one of the given inputs",
+  "passed spans_above_everything: evidence 'tree.json spans_above_everything' is not one of the given inputs",
+  "passed spans_above_everything: evidence 'scenes.json sc_spans' is not one of the given inputs",
+  "passed fallen_span_on_ground: evidence 'tree.json fallen_span_on_ground' is not one of the given inputs",
+  "passed fallen_span_on_ground: evidence 'scenes.json sc_fallen_span' is not one of the given inputs",
+  "passed fallen_wire_shocks_crossers: evidence 'tree.json fallen_wire_shocks_crossers' is not one of the given inputs",
+  "passed fallen_wire_shocks_crossers: evidence 'scenes.json sc_shock, sc_shock_restring' is not one of the given inputs",
+  "passed fallen_wire_shocks_crossers: evidence 'exam.json e6, c6, c7' is not one of the given inputs",
+  "passed restring_cut_span: evidence 'tree.json restring_cut_span' is not one of the given inputs",
+  "passed restring_cut_span: evidence 'scenes.json sc_restring' is not one of the given inputs",
+  "passed restring_cut_span: evidence 'exam.json e12' is not one of the given inputs",
+  "passed live_wire_lights_fuel: evidence 'tree.json live_wire_lights_fuel' is not one of the given inputs",
+  "passed live_wire_lights_fuel: evidence 'scenes.json sc_fuel_ignition' is not one of the given inputs",
+  "passed tap_steals_and_costs_goodwill: evidence 'tree.json tap_steals_and_costs_goodwill' is not one of the given inputs",
+  "passed tap_steals_and_costs_goodwill: evidence 'scenes.json sc_tap_theft' is not one of the given inputs",
+  "passed tap_steals_and_costs_goodwill: evidence 'exam.json e16, c8, control' is not one of the given inputs",
+  "passed four_looks_one_run: evidence 'tree.json four_looks_one_run' is not one of the given inputs",
+  "passed four_looks_one_run: evidence 'scenes.json sc_four_looks' is not one of the given inputs",
+  "passed settings_switch_cleanly: evidence 'tree.json settings_switch_cleanly' is not one of the given inputs",
+  "passed settings_switch_cleanly: evidence 'scenes.json sc_settings' is not one of the given inputs",
+  "passed settings_switch_cleanly: evidence 'exam.json e10, e11, c10' is not one of the given inputs",
+  "passed gravship_keeps_connections: evidence 'tree.json gravship_keeps_connections' is not one of the given inputs",
+  "passed gravship_keeps_connections: evidence 'scenes.json sc_gravship' is not one of the given inputs",
+  "passed no_hose_in_gss: evidence 'tree.json no_hose_in_gss' is not one of the given inputs",
+  "passed walk_scavenger_base: evidence 'tree.json walk_scavenger_base' is not one of the given inputs",
+  "passed walk_scavenger_base: evidence 'scenes.json sc_walk' is not one of the given inputs",
+  "passed walk_scavenger_base: evidence 'floor.json memory, save_size' is not one of the given inputs",
+  "coverage: given inputs in no passed or refused evidence: exam.json, floor.json"
+ ],
+ "gaps": [
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "The leaf itself names the whole-cord false pass, and a positive case that cannot catch it does not test the leaf.",
+   "evidence": [
+    "scenes.json:317",
+    "tree.json:298",
+    "exam.json"
+   ],
+   "gid": "g1",
+   "ids": [
+    "floor_end_shock",
+    "floor_end_shocks_crossers"
+   ],
+   "new_since": "changed",
+   "observed": "The action stages only 'one hauler crosses the live end cell, one the dead end cell' plus the visitor and constructors at the live end. The expect still claims 'a crossing of any other cell of the cord shocks no one', and the leaf's false_pass names 'shock applied along the whole cord'. A whole-cord build shocks the live-end crossers (pass) and leaves the dead side harmless (pass), so nothing in the scene catches it. Exam e4 walks along the cord only on the dead side.",
+   "return_to": 3,
+   "since": "scenes.json: sc_floor_end_shock is new since rm-coverage-judge-1793955968 (written by stage 3 rm-role-designer-1794593995)",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Edit scenes.json sc_floor_end_shock: one more asserted crossing of a live mid-cord cell in the action, and its 'not shocked' expectation."
+   },
+   "what": "sc_floor_end_shock never orders a pawn across a live cord cell other than the end, so a shock applied along the whole live cord passes every case in it.",
+   "where": "scenes.json sc_floor_end_shock action; tree.json floor_end_shocks_crossers",
+   "would_pass": "sc_floor_end_shock's action adds a hauler whose path is asserted to cross a cell of the LIVE segment at least two cells from its end, and the expect says that hauler is not shocked. A script can check this by finding that crossing in the action and the not-shocked clause in the expect."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "The sheet promises these behaviours to the player, so the tree has to test them or the sheet has to stop saying them.",
+   "evidence": [
+    "record.json:143",
+    "sheet.md:64",
+    "scenes.json:317"
+   ],
+   "gid": "g2",
+   "ids": [
+    "floor_end_shock",
+    "floor_end_shocks_crossers",
+    "shock_reach_setting"
+   ],
+   "new_since": "changed",
+   "observed": "Ruling (1) says 'any live Terminal end that sparks, also a run the player simply stopped laying', and the sheet tells him 'any live loose end counts, also a run you stopped laying'. Every scene makes its end by destroying a cell. Ruling (3) makes 'delivering to or building' safe, but constructor A is only said to 'build'. Ruling (5), 'the fuel-ignition switch is not widened', and the sheet's matching line have no floor-end fuel case: sc_fuel_ignition stages only a fallen wire. Ruling (6), 'never the maxSparkingEnds spark budget', has no case with more live ends than the budget. Ruling (4), 'FlowWorks' collapsed-deck cords included', has no FlowWorks contact in sc_shock_reach.",
+   "return_to": 3,
+   "since": "record.json gained d_shock_reach_agent_detail (rm-role-designer-1793997316) and sheet.md:64 its delegated line after the verdict",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json: add the five cases to sc_floor_end_shock, sc_fuel_ignition and sc_shock_reach, with matching oracle lines in tree.json floor_end_shocks_crossers and shock_reach_setting. Alternatively, cut the untestable rulings from sheet.md:64 and record.json d_shock_reach_agent_detail. Ruling (6) also needs one meaning: 'never the spark budget' and 'only if it is drawn live' read differently."
+   },
+   "what": "The agent rulings under his shock answer, which the sheet's delegated line tells the player, are not tested: a live end left by a run the player stopped laying, delivering material to the joining blueprint counted as safe, floor ends not lighting fuel, shock not following the maxSparkingEnds budget, and FlowWorks collapsed-deck cords sitting inside 'Only downed lines' (and silenced by None).",
+   "where": "record.json d_shock_reach_agent_detail; sheet.md delegated; scenes.json sc_floor_end_shock, sc_shock_reach, sc_fuel_ignition",
+   "would_pass": "Scenes (new, or added to sc_floor_end_shock, sc_fuel_ignition and sc_shock_reach) that check each of these: (a) the live end of an unfinished run shocks a crossing hauler; (b) a pawn delivering steel to the joining blueprint, its path asserted across the live end, is not shocked; (c) a chemfuel puddle on a live floor end does not ignite; (d) with more live ends than maxSparkingEnds, every live end shocks; (e) a FlowWorks collapsed-deck cord shocks under All and Only downed lines but not under None. A judge can tick each off in scenes.json. Any ruling the Designer would rather drop is struck from the record and the sheet instead."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "A scene should not pass a build its own leaf names as a false pass; sc_cords_slack's different layout and single look does not cover this one's four looks and end cases.",
+   "evidence": [
+    "scenes.json:65",
+    "tree.json:97",
+    "sheet.md:21"
+   ],
+   "gid": "g3",
+   "ids": [
+    "no_unforced_sharp_turn"
+   ],
+   "new_since": "changed",
+   "observed": "The expect reads 'strands read greater than zero in every look (the instrument sees cords); unforced == 0'. The leaf lists the false pass 'cords drawn straight between their ends, so nothing bends at all and the bar is met by a taut cord', and its experience rejects 'slack bought with tight wiggles'. A taut build gives strands > 0 and unforced == 0, so it passes. The planted-hairpin control proves only that the tally can see hairpins.",
+   "return_to": 3,
+   "since": "scenes.json: sc_no_sharp_turn added by rm-role-designer-1794595998 after the verdict, when the leaf was put back by his card",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Edit scenes.json sc_no_sharp_turn expect (and tree.json no_unforced_sharp_turn oracle_proposed) to add the slack ratio on the same strands."
+   },
+   "what": "sc_no_sharp_turn can be passed by taut straight cords, the leaf's own third false pass, because its only guard on the positive side is that strands exist.",
+   "where": "scenes.json sc_no_sharp_turn expect; tree.json no_unforced_sharp_turn false_pass",
+   "would_pass": "sc_no_sharp_turn's expect also requires, on the same strands in each look, the sc_cords_slack read: drawn length/chord at least 1.4 and the off-line excursion. A script can see the slack clause in the scene's expect."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "'Wires between poles of one owner stay up' is half of the leaf's experience; a scene with no such wire cannot test it.",
+   "evidence": [
+    "scenes.json:519",
+    "tree.json:594",
+    "record.json:627",
+    "sheet.md:40"
+   ],
+   "gid": "g4",
+   "ids": [
+    "owner_change_cut",
+    "owner_change_coils_wires"
+   ],
+   "late_why": "sc_owner_change and the leaf are unchanged since rm-coverage-judge-1793955968, which passed them: every span in 'three masts of ours in a line' touches the middle mast, so the earlier pass missed this.",
+   "new_since": "late",
+   "observed": "The start is 'three masts of ours in a line, both spans powered', and the middle mast is handed over. Both spans touch it. The leaf says 'wires between poles of one owner stay up', but no span in the scene connects two same-owner poles away from the claimed one, so the switch-on case cannot tell a correct owner sweep from a cut-everything sweep.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Edit scenes.json sc_owner_change start and expect (and tree.json owner_change_coils_wires scenario) to add the same-owner span and its 'stays up' read."
+   },
+   "what": "sc_owner_change never stages a span between two poles of one owner that does not touch the handed-over mast, so a sweep that drops every span on any owner change, or every span on that net, passes.",
+   "where": "scenes.json sc_owner_change start/expect; tree.json owner_change_coils_wires experience",
+   "would_pass": "The scene adds a fourth mast of ours spanned to the first (or two masts of the receiving faction spanned together). The expect says that span stays linked and powered after the handover with cutWiresOnOwnerChange on, while the two spans to the claimed mast are cut."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "A built capability's named parts have to be exercised, and these two are the ones whose leak a player would see as missing cords or odd pathing.",
+   "evidence": [
+    "record.json:643",
+    "scenes.json:566",
+    "tree.json:615",
+    "exam.json"
+   ],
+   "gid": "g5",
+   "ids": [
+    "game_statics_reset",
+    "statics_clear_between_games"
+   ],
+   "late_why": "The inventory listed 'printed statics' when rm-coverage-judge-1793955968 judged, and that scene did not read them either; it raised only the load path, so this was missed then.",
+   "new_since": "late",
+   "observed": "The inventory says the reset covers '(tap registry, style picks, printed statics)', and the leaf promises 'Nothing of one game ... carries into the next'. The scene's action reads only 'the tap registry and style picks', and so do the exam cases e7-e9 and c9. Map ids repeat across games, so a stale printed-section key or priced live-wire cell from game 1 could leave game 2's cords unprinted or make its pawns avoid cells that are not live. No scene reads that state.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Edit scenes.json sc_statics_new_game action and expect, and tree.json statics_clear_between_games oracle_proposed, to read the two other cleared statics. Alternatively, narrow record.json game_statics_reset 'what' to what is promised."
+   },
+   "what": "The statics scene reads only the tap registry and the style picks. The built reset also clears the printed-section statics (section keys and strand names) and the live-wire path costs keyed by map id, and nothing checks either across games.",
+   "where": "scenes.json sc_statics_new_game; record.json inventory game_statics_reset; tree.json statics_clear_between_games",
+   "would_pass": "sc_statics_new_game's action and expect also read the printed-section static set and the live-wire path-cost table: both are filled in game 1 and empty at the start of the new game and of the loaded tap-free game, and the game-1 reload control shows them refilled. The game-2 floor run's cords print. A script can find those reads in the scene."
+  }
+ ],
+ "hashes": {
+  "dec:d_flagship": "f9b09d75e8fe9325",
+  "dec:d_modern_junction_strip": "ab43984b9db182de",
+  "dec:d_owner_walk_verified": "8881e3e28266c78b",
+  "dec:d_restring_job": "bba05bb5334a8ebb",
+  "dec:d_root": "f2c2580914425416",
+  "dec:d_shock_reach_agent_detail": "bc7facab09ad7364",
+  "dec:d_shock_reach_setting": "272dadf62b8ff14f",
+  "dec:d_styles_advisory": "94a162a5b618a06c",
+  "dec:w1": "1d1752d689a0417f",
+  "floor": "9efa2c9823a61d7d",
+  "inv:break_ends_live_dead": "1ac7d5c22602acc7",
+  "inv:connectivity_truth": "677152188587a712",
+  "inv:cord_slack_lay": "69edb02d4e55ebb2",
+  "inv:downed_spans": "c40da759127baddf",
+  "inv:fallen_wire_shock": "d22712c689ee0f84",
+  "inv:floor_end_shock": "6c47d0e1f0375d50",
+  "inv:four_styles": "2d125cdbedefe004",
+  "inv:game_statics_reset": "2b0c9731e2f996f3",
+  "inv:gravship_connectivity": "173887ac04be893a",
+  "inv:invisible_conduit": "349a15a1758a320c",
+  "inv:junction_strips": "cf4a307dbcc15ab9",
+  "inv:mod_settings": "5e5291daa540bd70",
+  "inv:no_hose": "bfad1580f353855a",
+  "inv:overhead_spans": "64daaeb2221342be",
+  "inv:owner_change_cut": "14d7ff3b76a6814c",
+  "inv:pipe_pole_switch": "ca7c3487ef58be10",
+  "inv:power_theft": "26a6d65b86eefe8a",
+  "inv:rebuild_cost": "ffafe6e460930a8f",
+  "inv:restring_job": "5704c45433c99949",
+  "inv:shock_reach_setting": "749c3fc56db839ef",
+  "inv:uninstall_clean": "8694eaf9447288d6",
+  "inv:wire_down_alert": "842909d540dff984",
+  "leaf:conduit_invisible": "78893a7807848b20",
+  "leaf:cord_shape_variation_probe": "acd15f851c01533b",
+  "leaf:cords_lie_slack": "e5544161598579ec",
+  "leaf:cords_meet_walls_at_face": "2ecd165034530cca",
+  "leaf:cords_never_repeat": "21e760afdf8c18dd",
+  "leaf:cut_live_and_dead_ends": "548a343c781ef71e",
+  "leaf:dense_block_tangle": "88af741135dac963",
+  "leaf:drawing_true_to_grid": "989e5a0ba03ea410",
+  "leaf:fallen_span_on_ground": "4139a666b87bcf20",
+  "leaf:fallen_wire_shocks_crossers": "d68ac615607e69db",
+  "leaf:floor_end_shocks_crossers": "10d0d8d5dcf1cbf1",
+  "leaf:four_looks_one_run": "f9f2dd10f07caa7a",
+  "leaf:gravship_keeps_connections": "5b31b1b3588fefc7",
+  "leaf:live_wire_lights_fuel": "5c3e374aa4b5a1c3",
+  "leaf:no_hose_in_gss": "aa579f72d0469bb1",
+  "leaf:no_stall_on_rewire": "c5e06ba17d001c5e",
+  "leaf:no_unforced_sharp_turn": "455ad1384ea66644",
+  "leaf:owner_change_coils_wires": "e23dbc6a7734f402",
+  "leaf:restring_cut_span": "295fb863f2bb779c",
+  "leaf:settings_switch_cleanly": "6928596bf310e503",
+  "leaf:shock_reach_setting": "3dad533a2f282427",
+  "leaf:spans_above_everything": "a19b98fae9b39f03",
+  "leaf:statics_clear_between_games": "6c7831911268dbcc",
+  "leaf:strip_at_every_junction": "fc38d57ed5968935",
+  "leaf:tap_steals_and_costs_goodwill": "61904fc13ef40fa0",
+  "leaf:walk_scavenger_base": "7075e346b782275b",
+  "record:scope": "850f6a14cd56aa5d",
+  "rest:four_styles": "336018a33670d6aa",
+  "rest:game_statics_reset": "51ac0853ea1c886d",
+  "rest:gravship_connectivity": "286e828cd2f968bd",
+  "rest:mod_settings": "96d737b6d1f3f41c",
+  "rest:no_hose": "0f74c364d9aa27d3",
+  "rest:owner_change_cut": "5ed6e03f343c387f",
+  "rest:pipe_pole_switch": "b751249f6893f81e",
+  "rest:power_theft": "30020b6e519545d3",
+  "rest:shock_reach_setting": "efebb0cdc1a1f167",
+  "rest:uninstall_clean": "d31bc7012e3933f2",
+  "scene:sc_conduit_invisible": "e7d8859246a8e844",
+  "scene:sc_cords_slack": "58395a30f80ae6c6",
+  "scene:sc_cut_ends": "2238dd0e0c16f4dc",
+  "scene:sc_dense_tangle": "a804da848a173933",
+  "scene:sc_fallen_span": "b5a1430501de2906",
+  "scene:sc_floor_end_shock": "edf45a445939c42c",
+  "scene:sc_four_looks": "c3752b6840c70994",
+  "scene:sc_fuel_ignition": "95f8cf10bcb51236",
+  "scene:sc_gravship": "6b4a8ad4688ddf7f",
+  "scene:sc_junction_strips": "ba1374747c9573d1",
+  "scene:sc_no_repeat": "1c367cc67c99ca74",
+  "scene:sc_no_sharp_turn": "cfc62b10407c711c",
+  "scene:sc_owner_change": "241a67c4cfbd00da",
+  "scene:sc_removal_consequence": "adff798a3fc8c7a9",
+  "scene:sc_restring": "802eb12b1309c8ea",
+  "scene:sc_rewire_cost": "f7e68a63f8a04972",
+  "scene:sc_settings": "da8f5a28ce545082",
+  "scene:sc_shock": "2f7e139b1bf18644",
+  "scene:sc_shock_reach": "72f178288935e54d",
+  "scene:sc_shock_restring": "13597ddfa4932af7",
+  "scene:sc_spans": "1a3dd368f0a885c3",
+  "scene:sc_statics_new_game": "c1224e324b099334",
+  "scene:sc_tap_theft": "e6e2551bc5f8ccf7",
+  "scene:sc_true_to_grid": "3681153181cbc4bd",
+  "scene:sc_walk": "9d6cd945e20cb4c8",
+  "scene:sc_walls": "7961721ea279df0b",
+  "sheet:": "8b340292de9afd2c",
+  "sheet:delegated": "0b079b73ba46e401",
+  "sheet:does": "b63ab4dbe2fbc0d7",
+  "sheet:does not": "1a58f216fbc182ad",
+  "sheet:his words": "566436fa65529ab0",
+  "sheet:open": "62bfb4e082f84596",
+  "sheet:pruning": "19ea14bd40ac5de8",
+  "sheet:waived": "6a5d6b0d03781ea1",
+  "showcase:workshop_floor": "0728e7c6d5aaef60",
+  "showcase:yard_of_masts": "598a2d1ebb30cebb",
+  "tree:rest": "d28014d331391577"
+ },
+ "judge": "rm-coverage-judge-1794599377",
+ "late": [
+  "owner_change_cut",
+  "owner_change_coils_wires",
+  "game_statics_reset",
+  "statics_clear_between_games"
+ ],
+ "mode": "full",
+ "prompt_chars": 4977,
+ "reasons": "I checked all five gaps on file from rm-coverage-judge-1793955968 and all five are fixed. g1: sc_shock and sc_shock_restring now key the fixer exemption on the target wire. g2: he answered (OWNER:1793996551266756043), and the new leaves floor_end_shocks_crossers and shock_reach_setting have scenes sc_floor_end_shock and sc_shock_reach. g3: sc_statics_new_game now takes a load path with a filled-state control. g4: sc_settings now names lamp art, the patch-to-switch map and the power poles left alone. g5: sc_restring stages a grounded wire and reads the jump, and sc_spans has a lamp mast. All 22 record.json inventory units are exercised by the two showcases or by coverage_rest. uninstall_clean is waived in his words (w1). Every tree.json leaf has a script-staged acceptance scene in scenes.json with an asserted start, a control and a restore step, except no_hose_in_gss, which is offline and exempt. No leaf rests on an exploration scene, sheet.md's does-list matches the 26 leaves, exam.json was taken on the current tree hash, and floor.json's tick_cost, memory and save_size lines are carried by sc_rewire_cost and sc_walk.\n\nFive gaps remain, all fixable by the Designer at stage 3 with edits. Three are in artifacts changed since that verdict. The new floor-end scene never crosses a live mid-cord cell, so a whole-cord shock passes it. The agent rulings under his shock answer, which the sheet tells the player, have no test: a stopped-laying end, delivering counted as safe, no fuel ignition at floor ends, shock not limited by the spark budget, and FlowWorks deck cords. sc_no_sharp_turn can be passed by taut cords. Two were missed earlier: sc_owner_change has no span between same-owner poles that should stay up, and the statics scene does not read the printed-section and live-wire path-cost statics the reset clears. Unchanged scenes the earlier judge passed stay passed; apart from these two, I found no defect I could quote in them.",
+ "sheet": "3a7d223aa9c261d04fe4c11c955ee287623b532dae07d7502853d6c286cd20f1",
+ "signed": false,
+ "tokens": 782024,
+ "tree": "eb1981b88959b758a00f6984241c719cf574c0fa185a26884940b817b905c1e3",
+ "verdict": "not_covered"
+}

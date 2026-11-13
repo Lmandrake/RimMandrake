@@ -1,0 +1,22 @@
+{
+ "mod": "Pyrelands",
+ "version": "0.1.0",
+ "state": "locked-pending-owner-read",
+ "bars_total": 41,
+ "bars_met": "UNMEASURED",
+ "judge_rounds": 3,
+ "tokens_spent": 11949013,
+ "locked_from_commit": "237b79116781821545f7ac58c23ed40bfc0250c4",
+ "measured_from": {
+  "bars_total": "coverage_judge.required_ids(): record.json inventory (20) + tree.json leaves (21), the coverage checklist rows the judge passes or refuses on",
+  "bars_met": "the latest verdict rm-coverage-judge-1794594804 (2026-11-13T18:33:24Z) met 20 of its 41 rows, but it judged an earlier tree (its tree hash is not the lock's); the stage-3 run after it (rm-role-designer-1794596464) changed only the worldgen wording and called the verdict advisory, so no judge has read the locked tree",
+  "judge_rounds": "coverage_judge.rounds(): 2 legacy rounds named by budget charges + 1 recorded in stage.json coverage_rounds",
+  "tokens_spent": "stage.json budget.spent (cap 4000000); every Designer stage run, helper, review and judge charge on this concept",
+  "locked_from_commit": "origin/main when this version was entered, 2026-11-13; per-file blob hashes in bars.md"
+ },
+ "caveats": [
+  "the latest verdict file is uncommitted (untracked) in /home/mandrake/rm/bench; copied to version/evidence/",
+  "exam.json's input hashes do not match the locked tree and sheet: the exam must be rerun (stage 4, where the concept stands)",
+  "1 budget charge is kind 'unmeasured' and counts 0 tokens in budget.spent"
+ ]
+}
