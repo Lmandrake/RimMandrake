@@ -1,0 +1,1 @@
+Conductor opened a helper's 10 MB HTML viewer on the owner's screen without looking at it first; it opened on a non-water test scene in false colour and he rightly asked what it was. Render the page headless (msedge --headless --screenshot) and LOOK at the opening view before any Start-Process to his screen; a helper's 'I looked at the frames' is not the Conductor's look.
