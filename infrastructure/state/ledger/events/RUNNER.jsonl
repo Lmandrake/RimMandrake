@@ -6539,3 +6539,13 @@
 {"seat":"RUNNER","event":"raise","id":"SELFTEST_FIX_ONE_PATH_SEAM_IXBQ","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-13T09:09:53Z","tsn":1794560993102140584}
 {"seat":"RUNNER","event":"spawn","name":"SELFTEST_FIX_BLOCK_ORPHAN_ITEM_PROSE_WYZG","kind":"task","needs":"offline","title":"Ops alarm NIGHTLY_RED: 1 red since 2026-11-12, due 2026-11-15T11:00: error: failed to push some refs to 'bare.git' (selftest_block_orphan_item_prose.py) -- test","for":"RELENTLESS","from":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","why":"ops_watch alarm (deterministic, no AI): NIGHTLY_RED:testing.red_bmeywf","ts":"2026-11-13T09:16:01Z","tsn":1794561361052871263}
 {"seat":"RUNNER","event":"raise","id":"SELFTEST_FIX_BLOCK_ORPHAN_ITEM_PROSE_WYZG","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-13T09:16:06Z","tsn":1794561366006303648}
+{"seat":"RUNNER","event":"live","id":"OPS_CHURN_DIAGNOSE_BRIDGE_GRXX_AYXK","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:18:06Z","tsn":1794561486535698307}
+{"seat":"RUNNER","event":"live","id":"OPS_CHURN_DIAGNOSE_ENGINE_QCHQ_AUUY","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:18:12Z","tsn":1794561492042960785}
+{"seat":"RUNNER","event":"live","id":"OPS_CHURN_DIAGNOSE_HEAVY_ZWWY_NYJN","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:18:17Z","tsn":1794561497280622482}
+{"seat":"RUNNER","event":"live","id":"OPS_CHURN_DIAGNOSE_NIGHTLY_SCRM_GZGX","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:18:22Z","tsn":1794561502359792195}
+{"seat":"RUNNER","event":"live","id":"OPS_CHURN_DIAGNOSE_NIGHTLY_WHTT_GXBQ","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:18:27Z","tsn":1794561507622511225}
+{"seat":"RUNNER","event":"live","id":"OPS_CHURN_DIAGNOSE_NIGHTLY_ZNGK_SBPI","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:18:32Z","tsn":1794561512750793370}
+{"seat":"RUNNER","event":"live","id":"OPS_CHURN_DIAGNOSE_PROOFLINT_JMAL_SKJL","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:18:38Z","tsn":1794561518059055727}
+{"seat":"RUNNER","event":"live","id":"OPS_CHURN_DIAGNOSE_REACH_DJVU_YHJL","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:18:43Z","tsn":1794561523217482834}
+{"seat":"RUNNER","event":"live","id":"OPS_CHURN_DIAGNOSE_STILLSAND_WDMI_CRMC","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:18:48Z","tsn":1794561528380639304}
+{"seat":"RUNNER","event":"live","id":"OPS_CHURN_DIAGNOSE_WARSCAR_WWRK_FJER","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:18:53Z","tsn":1794561533551565001}
