@@ -318,30 +318,6 @@
    "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL"
   },
   {
-   "id": "sc_paved_strip",
-   "kind": "acceptance",
-   "requirement": [
-    "paved_strip_holds_the_line"
-   ],
-   "staged_by": "script",
-   "entry_point": "src/RimMandrake/Pyrelands/validation.py::paved_strip",
-   "start": [
-    "clear weather asserted and held for the whole scene (no rain, black rain or cinderfall)",
-    "a grass bed both sides of a two-cell flagstone strip (asserted by terrain read)",
-    "RM_FE_FirebreakLine absent from the defs"
-   ],
-   "action": "drive the front at the strip and keep it burning at the near edge for an hour; let the near side die and relight a smoulder on the near side next to the strip (TryReseedStandingBurn); drop a hawk ember on the paving; then let a hawk carry one six cells past",
-   "expect": "while fire burns at the near edge, no fire on the far side; the near-side relight does not cross; the ember on paving lights nothing; the six-cell carry lights the far side (the sprayer's job, not the strip's)",
-   "control": {
-    "case": "the same bed in the same clear weather with no strip",
-    "expect": "the front burns through to the far side",
-    "rules_out": "weather, burn-out or the test putting the fire out before it reached the strip: the start asserts clear weather and fire still burning at the strip edge"
-   },
-   "restore": "put back the pad terrain, plants, filth and things from the snapshot taken at scene-begin, extinguish every fire the scene lit (the bed and the strip), despawn the hawk, restore the weather",
-   "hold": "immediate",
-   "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL"
-  },
-  {
    "id": "sc_walk",
    "kind": "acceptance",
    "requirement": [
@@ -437,24 +413,23 @@
    "id": "sc_furnace_bed",
    "kind": "acceptance",
    "requirement": [
-    "furnacebeast_banks_heat_and_smoulders_bed"
+    "furnacebeast_warms"
    ],
    "staged_by": "script",
-   "entry_point": "src/RimMandrake/Pyrelands/validation.py::furnace_thermal_bed",
-   "entry_point_item": "PYRELANDS_SCENES_BUILD_EIGHT_JUDGE_GAPS",
+   "entry_point": "src/RimMandrake/Pyrelands/validation.py::furnace_sleep",
    "start": [
-    "a wild furnace-beast at low charge (asserted by its CompFurnaceThermalCharge read) beside a grass pad with a live fire",
-    "an ullai in the same fire, health recorded",
-    "a separate unburned grass pad for its rest, no fire on it (asserted)"
+    "two wild furnace-beasts laid down on a concrete pad: A on a 5x5 of ember grass, B (the control) on a 5x5 of bare RM_FE_Ground_Soil, 6 cells apart (asserted by terrain and plant reads)",
+    "weather locked Clear (asserted)",
+    "furnace thermal (furnaceThermalEnabled) on"
    ],
-   "action": "read the beast's job, charge and health each hour while it works the burn; move the charged beast to cold ground and read the charge; let it rest on the grass pad and read its bed cells when it wakes",
-   "expect": "it walks into the fire and takes no injury while the ullai is burned; charge rises in the burn and falls on cold ground; once full it leaves the burn; its bed cells are alight when it wakes",
+   "action": "keep both asleep; every poll read each with CompFurnaceBedIgnition.ProbeSleep and count Fire within 2 cells of each",
+   "expect": "A's grass is alight after about two hours of sleep on average, never at once",
    "control": {
-    "case": "the same beast and pads with furnace thermal (furnaceThermalEnabled) switched off",
-    "expect": "the charge stays flat, it does not seek the fire, and its bed never lights",
-    "rules_out": "the burn line lighting the bed or ambient heat moving the charge, rather than the beast's own cycle"
+    "case": "B asleep on bare soil, which burns (Flammability 0.6), in the same weather",
+    "expect": "no sleep-roll fire on B's bed",
+    "rules_out": "a roll that ignores the plant, or the wake-up smoulder (any ground, put out before B lies down again) passing for the sleep roll"
    },
-   "restore": "put back the pad terrain, plants, filth and things from the snapshot taken at scene-begin, extinguish every fire the scene lit, despawn the beast and the ullai, restore the furnace thermal switch",
+   "restore": "put back the pad terrain, plants, filth and things from the snapshot taken at scene-begin, extinguish every fire the scene lit, despawn both beasts, unlock the weather",
    "hold": "immediate"
   },
   {
@@ -606,14 +581,6 @@
   }
  ],
  "coverage_rest": [
-  {
-   "capability": "inv_firebreak_firefoam",
-   "by": [
-    "paved_strip_holds_the_line",
-    "sc_paved_strip"
-   ],
-   "why": "scoped out and to be excised; its check is that RM_FE_FirebreakLine is gone and vanilla paving does its job"
-  },
   {
    "capability": "inv_firefoam_sprayer",
    "by": [

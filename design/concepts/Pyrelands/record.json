@@ -759,10 +759,8 @@
   {
    "id": "inv_firebreak_firefoam",
    "what": "Firebreak line: a buildable floor (2 chemfuel a cell, Firefoam research) that fire will not cross; to be excised",
-   "impl": "present",
-   "impl_evidence": [
-    "src/RimMandrake/Pyrelands/Defs/TerrainDefs/Firebreak.xml"
-   ],
+   "impl": "absent",
+   "impl_evidence": [],
    "proof": "missing",
    "proof_evidence": [],
    "scope": "out",
@@ -770,7 +768,7 @@
     "src/RimMandrake/Pyrelands/About/About.xml"
    ],
    "scope_source": "OWNER:1793898832335289326",
-   "note": "Cut by d_firebreak_cut (delegated evaluation he asked for); vanilla non-flammable floors serve. Coverage: its absence check only, once excised."
+   "note": "Cut by d_firebreak_cut (delegated evaluation he asked for); vanilla non-flammable floors serve. Excised: Defs/TerrainDefs/Firebreak.xml deleted in 8fb9f7f2b6 (2026-11-08); the offline row paved_strip_excised (selftest_pyrelands_site.py) checks it stays gone. Leaf paved_strip_holds_the_line deleted by his card 2026-11-13."
   },
   {
    "id": "inv_firefoam_sprayer",

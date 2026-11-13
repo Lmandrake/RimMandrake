@@ -74,7 +74,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "per-cell fertility reads about 140% beside water and about 40% dry; daily growth of the watered strip is clearly ahead",
+   "oracle_proposed": "per-cell fertility reads about 140% beside water and about 70% dry (his card 2026-11-07, \"Keep 70%, sowable\"); daily growth of the watered strip is clearly ahead",
    "tier_reason": "a running Pyrelands map with the biome's clocks, which a dev quicktest colony on the minimal list plus mandrake.rm.biomes gives in ~90 s",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -85,7 +85,7 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "change",
-   "experience": "The player farming a strip of deep ash beside a watered channel sees the crop there grow clearly faster than the same crop on dry ash a few cells away. It must not read as ash being barren everywhere, or as ash being rich everywhere.",
+   "experience": "The player farming an ordinary crop on deep ash finds it very fertile ground that still benefits from water as before: a strip beside a watered channel grows clearly faster than the same crop on dry ash a few cells away. It must not read as ash being barren, or as water making no difference to a crop on ash.",
    "scenario": "Two strips of the same crop sown on the same tick on deep ash, one beside water and one dry; read growth each day for five days.",
    "false_pass": [
     "the watered strip is sown on soil rather than ash",
@@ -124,7 +124,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "cover census shows dense grass on open cells; green share at least 25% on day 3 and at least 60% on day 7 (his card thresholds); captures show the greening",
+   "oracle_proposed": "cover census shows dense grass on open cells; green share at least 25% on day 3 and at least 60% on day 7 (his card thresholds); captures show the greening; ember grass on old dry ash grows at least at its own vanilla rate, faster on watered ash, with gentle bursts only on watered cells",
    "tier_reason": "a running Pyrelands map with the biome's clocks, which a dev quicktest colony on the minimal list plus mandrake.rm.biomes gives in ~90 s",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -136,13 +136,14 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "change",
-   "experience": "The player sees open ground carpeted thick in ember grass with no bare-dirt expanses, and a burned patch of it visibly re-greening within a few days and largely green again within about a week at the biome's own heat. It must not read as a scar that stays black for a season, or as grass that is green the moment the fire passes.",
-   "scenario": "Fresh map: grass cover census on open cells; burn a patch of ember grass on deep ash; capture and count green cells on days 1, 3 and 7.",
+   "experience": "The player sees the biome's own grasses grow swiftly even on seemingly dry ash, because of their very deep roots and underground storage, and faster still where the ash is watered, where they also do the gentle burst; open ground is carpeted thick in ember grass with no bare-dirt expanses, and a burned patch of it visibly re-greens within a few days and is largely green again within about a week at the biome's own heat. It must not read as grass that crawls on dry ash, as a scar that stays black for a season, or as grass that is green the moment the fire passes.",
+   "scenario": "Fresh map: grass cover census on open cells; burn a patch of ember grass on deep ash; capture and count green cells on days 1, 3 and 7. Sow ember grass on dry ash last burned more than a week ago and on watered ash; read growth daily and count bursts.",
    "false_pass": [
     "the regrowth is read on a patch the test replanted",
-    "the cover census counts grass on cells the density enforcer just filled for the test"
+    "the cover census counts grass on cells the density enforcer just filled for the test",
+    "the dry-ash cell burned within the last few days, so fresh ash is doing the work"
    ],
-   "red": "a burned patch stays mostly black after a week, or open ground shows wide bare dirt",
+   "red": "a burned patch stays mostly black after a week, open ground shows wide bare dirt, or the grass on old dry ash grows at a crawl (a tenth of its speed)",
    "tier_proposed": "quicktest",
    "owner_part": "no"
   },
@@ -253,7 +254,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "live RM_FurnaceBeast body size 6, against the classic 3.2 when the giant switch's restore runs; status present beside the beast and absent away from it; the beast's room clearly hotter than the twin room after a few hours",
+   "oracle_proposed": "live RM_FurnaceBeast body size 6, against the classic 3.2 when the giant switch's restore runs; status present beside the beast and absent away from it; the beast's room clearly hotter than the twin room after a few hours; fire on the grass bed after sleep (about two hours on average) and none on the bare-soil control (CompFurnaceBedIgnition.ProbeSleep)",
    "tier_reason": "a running Pyrelands map with the biome's clocks, which a dev quicktest colony on the minimal list plus mandrake.rm.biomes gives in ~90 s",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -265,14 +266,15 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "change",
-   "experience": "The player sees the furnace-beast as a giant, standing far larger than any other animal on the map; a colonist standing in the open near it shows a readable warmth status that goes away when it walks off, and a closed room holding a furnace-beast grows clearly hotter than the same room without one. It must not read as a heater building, as ordinary body heat, or as a beast the size of a muffalo.",
-   "scenario": "Read the live furnace-beast's body size and drawn size against the other animals; colonist beside a furnace-beast, then walked ten cells away; two identical closed rooms, one holding a furnace-beast; read status and room temperature each hour.",
+   "experience": "The player sees the furnace-beast as a giant, standing far larger than any other animal on the map; a colonist standing in the open near it shows a readable warmth status that goes away when it walks off, a closed room holding a furnace-beast grows clearly hotter than the same room without one, and a furnace-beast that falls asleep on grass sets that grass alight after a while, never at once and never on a cell with no plant. It must not read as a heater building, as ordinary body heat, as a beast the size of a muffalo, or as a bed fire the test lit.",
+   "scenario": "Read the live furnace-beast's body size and drawn size against the other animals; colonist beside a furnace-beast, then walked ten cells away; two identical closed rooms, one holding a furnace-beast; read status and room temperature each hour. Two wild furnace-beasts laid down to sleep, one on ember grass and one on bare soil (the control), in clear weather on a concrete pad; read fire near each as they sleep.",
    "false_pass": [
     "the warmth status is applied by the test",
     "the hot room is hot because of the burn outside",
-    "the size is read from the XML file, not the running game's def"
+    "the size is read from the XML file, not the running game's def",
+    "the bed fire was lit by the burn line or the wake-up smoulder rather than the sleep roll"
    ],
-   "red": "the beast is ordinary-sized, no warmth status appears near it, or its room stays at the other room's temperature",
+   "red": "the beast is ordinary-sized, no warmth status appears near it, its room stays at the other room's temperature, or a beast asleep on grass never lights it (or lights bare soil)",
    "tier_proposed": "quicktest",
    "owner_part": "no"
   },
@@ -382,32 +384,6 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "no fire cell on the far side while the near side burns at the strip edge, in clear weather throughout; a near-side smoulder relight does not cross; an ember on paving lights nothing; in the no-strip control the far side burns; RM_FE_FirebreakLine absent from the def database",
-   "tier_reason": "a running Pyrelands map with the biome's clocks, which a dev quicktest colony on the minimal list plus mandrake.rm.biomes gives in ~90 s",
-   "cannot_show": null,
-   "wall_expect_h": null,
-   "id": "paved_strip_holds_the_line",
-   "by": "concept",
-   "root": [
-    "pyre_burn_line_present"
-   ],
-   "leaf_kind": "experience",
-   "clause_kind": "change",
-   "experience": "The player who paves a strip at least two cells wide of any non-flammable, plant-free vanilla floor round a field, in clear weather, sees the walking front stop at it and a smoulder relight lit on the near side stop at it too; an ember dropped on the paving lights nothing, though a fire-hawk can carry one up to six cells past the strip and start a fire there, which is the sprayer's job. The colony's defence is vanilla, with no mod firebreak floor and no chemfuel. It must not read as the ground fire jumping a two-cell paved strip, or as a special floor the mod requires.",
-   "scenario": "Clear weather asserted and held; a grass bed on both sides of a two-cell flagstone strip; drive the front at it and keep it burning at the strip edge; let the near side die down and relight a smoulder on the near side next to the strip; drop a hawk ember on the paving; controls: the same bed with no strip burns through, and a hawk ember carried six cells past the strip lights the far side.",
-   "false_pass": [
-    "the fire was put out by weather before it reached the strip",
-    "the strip is the old RM_FE_FirebreakLine floor",
-    "the relight is lit far from the strip so it never tests it"
-   ],
-   "red": "the front or a near-side smoulder relight crosses a two-cell paved strip, or the firebreak floor is still buildable",
-   "tier_proposed": "quicktest",
-   "owner_part": "no"
-  },
-  {
-   "bundle": null,
-   "scenario_informed_by": [],
-   "needs_instrument": null,
    "oracle_proposed": "the probe reads a burned wet cell and a dry old cell differently, part by part; refuses when the ash field switch is off",
    "tier_reason": null,
    "cannot_show": null,
@@ -454,32 +430,6 @@
    "red": "after the reload the front is gone, scars read old, or the burn bonus resets",
    "tier_proposed": "live_full",
    "owner_part": "no"
-  },
-  {
-   "bundle": null,
-   "scenario_informed_by": [],
-   "needs_instrument": null,
-   "oracle_proposed": "thermal charge rises while the beast stands by live fire and falls once it is moved to cold ground; the beast takes no injury standing in fire or struck by flame; after a rest on grass, its bed cells burn; with furnace thermal switched off the charge stays flat and the bed never lights; an ullai in the same fire takes burns",
-   "tier_reason": "a running Pyrelands map with the biome's clocks, which a dev quicktest colony on the minimal list plus mandrake.rm.biomes gives in ~90 s",
-   "cannot_show": null,
-   "wall_expect_h": null,
-   "leaf_kind": "experience",
-   "clause_kind": "change",
-   "tier_proposed": "quicktest",
-   "owner_part": "no",
-   "id": "furnacebeast_banks_heat_and_smoulders_bed",
-   "root": [
-    "pyre_furnacebeast_warmth"
-   ],
-   "experience": "The player watching a furnace-beast in the burn sees it walk into the fire, stand there untouched while the grass burns round it and glow brighter as it banks the heat, then leave the burn once it is full; after it has lain down to rest on grass, the ground it lay on is smouldering when it gets up. It must not read as a beast the fire happened to miss, or as a heater that never runs down, or as a bed fire the test lit.",
-   "scenario": "A furnace-beast with low charge beside a grass pad with a live fire, and an ullai in the same fire; read charge, health and job each hour; move the charged beast to cold ground and read the charge falling; let it rest on a grass pad and read fire on its bed cells when it wakes; control: the same with furnace thermal switched off.",
-   "false_pass": [
-    "the charge is set by the test rather than earned by the fire",
-    "the bed cells were lit by the burn line rather than by the beast",
-    "the beast stood beside the fire, never in it"
-   ],
-   "red": "the beast's charge never rises in the burn, it takes burns in fire, or its bed never smoulders",
-   "by": "concept"
   },
   {
    "bundle": null,
