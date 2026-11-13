@@ -290,6 +290,120 @@ namespace RimMandrake.FlowWorks
 		}
 	}
 
+	/// <summary>RIMMANDRAKE_FIX_DRAFTED_MOVE_IN_BIG_PIT_WALKS_SOUTH (owner 2026-11-13: "when you click on a drafted pawn to go
+	/// to a place in a large pit like this: it shows you where you can go correctly, but then they go to a different place
+	/// usually more south than intended"). 1.6 sends a drafted right-click through MultiPawnGotoController, not the float
+	/// menu RM_Patch_PitClickDrawnRow remaps: its ghost was drawn unsunk on the destination square, and the pawn, arriving
+	/// there, was drawn its pit sink (up to 2.4 squares) further south. Now each destination in a pit is the square whose
+	/// RESTING drawn centre is nearest the square pointed at (the same RM_PitDrawMath.PickRowForDrawnClick), kept only if
+	/// the pawn can stand on and reach it and no other pawn has it, else the nearest such row back toward the pointed one;
+	/// and the ghost and its circle are drawn sunk on that square (<see cref="RM_Patch_PitGotoGhostSunk"/>), so the pawn
+	/// arrives on the previewed square, drawn where the preview stood.</summary>
+	[HarmonyPatch(typeof(RimWorld.MultiPawnGotoController), nameof(RimWorld.MultiPawnGotoController.RecomputeDestinations))]
+	[RimMandrake.Shared.PatchFeature("Pawns sink into dug channels (drafted move)", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "pitDepthDrawOffsetEnabled")]
+	public static class RM_Patch_PitGotoDrawnRow
+	{
+		internal static readonly AccessTools.FieldRef<RimWorld.MultiPawnGotoController, System.Collections.Generic.List<Pawn>> PawnsRef =
+			AccessTools.FieldRefAccess<RimWorld.MultiPawnGotoController, System.Collections.Generic.List<Pawn>>("pawns");
+		internal static readonly AccessTools.FieldRef<RimWorld.MultiPawnGotoController, System.Collections.Generic.List<IntVec3>> DestsRef =
+			AccessTools.FieldRefAccess<RimWorld.MultiPawnGotoController, System.Collections.Generic.List<IntVec3>>("dests");
+
+		[HarmonyPostfix]
+		public static void Postfix(RimWorld.MultiPawnGotoController __instance)
+		{
+			if (!RimMandrakeFlowWorksSettings.pitDepthDrawOffsetEnabled)
+			{
+				return;
+			}
+			System.Collections.Generic.List<Pawn> pawns = PawnsRef(__instance);
+			System.Collections.Generic.List<IntVec3> dests = DestsRef(__instance);
+			for (int i = 0; i < pawns.Count && i < dests.Count; i++)
+			{
+				Pawn p = pawns[i];
+				if (p != null && p.Spawned && dests[i].IsValid)
+				{
+					dests[i] = DrawnRowCell(p, dests[i], dests);
+				}
+			}
+		}
+
+		/// <summary>The square <paramref name="p"/> is sent to so it is DRAWN at the centre of <paramref name="c"/>.</summary>
+		internal static IntVec3 DrawnRowCell(Pawn p, IntVec3 c, System.Collections.Generic.List<IntVec3> taken)
+		{
+			Map map = p.Map;
+			int z = RM_PitDrawMath.PickRowForDrawnClick(c.z, c.z + 0.5f, row =>
+			{
+				IntVec3 q = new IntVec3(c.x, 0, row);
+				return q.InBounds(map) ? RM_Patch_PitDepthDrawOffset.RestingSinkAt(p, q) : float.NaN;
+			}, RM_PitDrawMath.SinkCapLevels / 2);
+			for (IntVec3 n = new IntVec3(c.x, 0, z); n.z > c.z; n.z--)
+			{
+				if (n.Standable(map) && !taken.Contains(n) && p.CanReach(n, PathEndMode.OnCell, Danger.Deadly))
+				{
+					return n;
+				}
+			}
+			return c;
+		}
+	}
+
+	/// <summary>The drafted-move ghost and its circle, drawn sunk on a pit square as the pawn will be drawn standing there
+	/// (RM_Patch_PitDepthDrawOffset.RestingSinkAt); vanilla's own draw when no destination is sunk.</summary>
+	[HarmonyPatch(typeof(RimWorld.MultiPawnGotoController), nameof(RimWorld.MultiPawnGotoController.Draw))]
+	[RimMandrake.Shared.PatchFeature("Pawns sink into dug channels (drafted move)", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "pitDepthDrawOffsetEnabled")]
+	public static class RM_Patch_PitGotoGhostSunk
+	{
+		private static readonly AccessTools.FieldRef<RimWorld.MultiPawnGotoController, IntVec3> StartRef =
+			AccessTools.FieldRefAccess<RimWorld.MultiPawnGotoController, IntVec3>("start");
+		private static readonly AccessTools.FieldRef<RimWorld.MultiPawnGotoController, IntVec3> EndRef =
+			AccessTools.FieldRefAccess<RimWorld.MultiPawnGotoController, IntVec3>("end");
+		// vanilla's own look (MultiPawnGotoController's private constants)
+		private static readonly Color Feedback = GenColor.FromBytes(153, 207, 135);
+		private static Material circle, line;
+
+		[HarmonyPrefix]
+		public static bool Prefix(RimWorld.MultiPawnGotoController __instance)
+		{
+			if (!RimMandrakeFlowWorksSettings.pitDepthDrawOffsetEnabled || !__instance.Active)
+			{
+				return true;
+			}
+			System.Collections.Generic.List<Pawn> pawns = RM_Patch_PitGotoDrawnRow.PawnsRef(__instance);
+			System.Collections.Generic.List<IntVec3> dests = RM_Patch_PitGotoDrawnRow.DestsRef(__instance);
+			bool sunk = false;
+			for (int i = 0; i < pawns.Count && i < dests.Count && !sunk; i++)
+			{
+				sunk = pawns[i] != null && pawns[i].Spawned && dests[i].IsValid && RM_Patch_PitDepthDrawOffset.RestingSinkAt(pawns[i], dests[i]) > 0f;
+			}
+			if (!sunk)
+			{
+				return true;
+			}
+			circle = circle ?? MaterialPool.MatFrom("UI/Overlays/Circle75Solid", ShaderDatabase.Transparent, Feedback * new Color(1f, 1f, 1f, 0.4f));
+			line = line ?? MaterialPool.MatFrom("UI/Overlays/ThickLine", ShaderDatabase.Transparent, Feedback * new Color(1f, 1f, 1f, 0.18f));
+			Vector3 s = new Vector3(1.7f, 1f, 1.7f);
+			float alt = AltitudeLayer.MetaOverlays.AltitudeFor();
+			for (int i = 0; i < pawns.Count && i < dests.Count; i++)
+			{
+				Pawn pawn = pawns[i];
+				IntVec3 c = dests[i];
+				if (c.IsValid && pawn.Spawned && !c.Fogged(pawn.Map))
+				{
+					float sink = RM_Patch_PitDepthDrawOffset.RestingSinkAt(pawn, c);
+					Vector3 at = c.ToVector3ShiftedWithAltitude(alt);
+					at.z -= sink;
+					pawn.Drawer.renderer.RenderPawnAt(at, Rot4.South);
+					Vector3 pos = c.ToVector3ShiftedWithAltitude(alt + 0.03658537f);
+					pos.z -= sink;
+					Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(pos, Quaternion.identity, s), circle, 0);
+				}
+			}
+			GenDraw.DrawLineBetween(StartRef(__instance).ToVector3ShiftedWithAltitude(alt - 0.03658537f),
+				EndRef(__instance).ToVector3ShiftedWithAltitude(alt - 0.03658537f), line, 0.9f);
+			return false;
+		}
+	}
+
 	/// <summary>
 	/// FLOWWORKS_VISUAL_PRINCIPLES_1 — owner, 2026-10-05, looking at a sunk colonist in game: <i>"Is there a way to
 	/// stop the shadow of a person showing through like this?"</i>
