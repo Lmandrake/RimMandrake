@@ -649,6 +649,33 @@ def kind_plan(kind: str) -> tuple[str, str]:
     return BP.plan_of_kind(kind)
 
 
+def feet_offsets(m: dict) -> dict:
+    """{facing: feet-row offset from east's (canvas fraction)} for each ground-camera S/N standing more than FEET_TOL off."""
+    return {f: round(m[f]["bottom"] - m["east"]["bottom"], 4) for f in ("south", "north")
+            if f in m and "east" in m and abs(m[f]["bottom"] - m["east"]["bottom"]) > FEET_TOL}
+
+
+def truth(files: dict, view: str, plan: str | None) -> dict:
+    """The player truth `gate` holds a picture set to (same size from every side, no hop when it turns), on any files:
+    {facing: png} -> {verdict FLAG|ok|UNMEASURED, flags, fixes, severity, feet_off}. lint() judges installed sets with
+    the same judge() and feet_offsets(); fixers judge their candidates with this before they install."""
+    m = {f: measure_file(p) for f, p in files.items() if f in FACES}
+    m = {f: v for f, v in m.items() if v}
+    if "east" not in m or not ({"south", "north"} & set(m)):
+        return {"verdict": "UNMEASURED", "why": "no east facing" if "east" not in m else "no south/north facing",
+                "flags": [], "fixes": {}, "severity": 0.0, "feet_off": {}}
+    j = judge(m, load_cal(), view, None if plan in (None, "UNCLASSIFIED") else plan)
+    off = feet_offsets(m) if view == "elevation" else {}
+    flags = [{k: x[k] for k in ("facing", "key", "value", "band")} for x in j["flags"]]
+    flags += [{"facing": f, "key": "feet", "value": v, "band": [-FEET_TOL, FEET_TOL]} for f, v in off.items()]
+    fixes = dict(j["fixes"])
+    for f, v in off.items():
+        fixes.setdefault(f, {"action": "reseat", "why": f"feet row {v:+.3f} of canvas height from east's"})
+    sev = max([j["severity"]] + [abs(v) for v in off.values()])
+    return {"verdict": "FLAG" if flags else "ok", "flags": flags, "fixes": fixes, "severity": round(sev, 3),
+            "feet_off": off, "ratios": {k: round(v, 3) for k, v in j["ratios"].items()}}
+
+
 def lint(defs=None, use_repo=False) -> list[dict]:
     cal = load_cal()
     rows, done = [], {}
@@ -683,8 +710,7 @@ def lint(defs=None, use_repo=False) -> list[dict]:
                 else:
                     row["beyond_vanilla"] = bool(j["flags"])
                 if view == "elevation":      # ground-camera S/N must stand where east stands (the creature must not drop when it turns)
-                    off = {f: round(m[f]["bottom"] - m["east"]["bottom"], 4) for f in ("south", "north")
-                           if f in m and abs(m[f]["bottom"] - m["east"]["bottom"]) > FEET_TOL}
+                    off = feet_offsets(m)
                     row["feet_off"] = off
                     for f in off:
                         row["fixes"].setdefault(f, {"action": "reseat", "scale": 1.0, "target": None, "width_after": None,

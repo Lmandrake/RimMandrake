@@ -317,6 +317,95 @@ BANNED_FIX = ("Draw a clearly different design: the owner deleted and banned a p
               "— change the silhouette, pose and palette, not just the details.")
 
 
+FACING_WAIVERS = HERE.parent / "art" / "facing_scale_waivers.json"
+FACING_TRUTH_FIX = {"reseat": "stands with its feet on the same row as the east view's feet",
+                    "rescale": "is drawn at the same body height as the east view",
+                    "regenerate": "is redrawn as a ground-camera view at the east view's height"}
+
+
+def subject_def(subject: str) -> str:
+    """The defName a card judges: RM_Foo__variant -> RM_Foo; the facing batch's per-view subjects RM_Foo_n / RM_Foo_ns ->
+    RM_Foo (a view suffix is stripped only when the bare name is no def and the stripped one is)."""
+    d = subject.split("__")[0]
+    m = re.fullmatch(r"(.+?)_(?:n|s|ns|e|w)", d)
+    if m:
+        try:
+            known = _creature_texpaths()
+        except Exception:  # noqa: BLE001
+            return d
+        if d not in known and m.group(1) in known:
+            return m.group(1)
+    return d
+
+
+def facing_context(spec: dict) -> tuple:
+    """(view, body plan, why) for a creature card's facing truth, as facing_scale_lint's gate resolves them: view from
+    the live texture's mod (elevation = ours), plan from the def. (None, None, why) when it cannot be resolved."""
+    sys.path.insert(0, str(HERE.parent / "art"))
+    try:
+        import facing_scale_lint as FSL
+        _faces, where, view = FSL.faces_of(spec["target_texpath"], True)
+        plan, _ev = FSL.kind_plan(subject_def(spec["subject"]))
+    except Exception as e:  # noqa: BLE001  (a new def, a missing dump: UNMEASURED, never a crash)
+        return None, None, f"{type(e).__name__}: {e}"
+    return (None if where == "UNRESOLVED" else view), plan, where
+
+
+@functools.lru_cache(maxsize=1)
+def _creature_texpaths() -> dict:
+    """defName -> the distinct Graphic_Multi texPaths it draws with (facing_scale_lint.roster: ~20 s, once a process)."""
+    sys.path.insert(0, str(HERE.parent / "art"))
+    import facing_scale_lint as FSL
+    return {dn: sorted({g["texPath"] for g in k["graphics"]
+                        if not g["graphicClass"] or g["graphicClass"].endswith("Graphic_Multi")})
+            for dn, k in FSL.roster().items()}
+
+
+def facing_texpath(spec: dict) -> tuple:
+    """(texPath, how) of the picture a creature card would replace: the spec's target_texpath; else an image already
+    under a Textures/ folder (a view-only redraw judged beside the installed facings); else the def's one Multi
+    texPath. (None, why) when none of those is unambiguous (2026-11-13 census of committed runs: 458 of 1241
+    creature records carry no target_texpath, 182 of them beside an installed east)."""
+    if spec.get("target_texpath"):
+        return spec["target_texpath"], "target_texpath"
+    for f in ("east", "south", "north", "west"):
+        m = re.search(r"/Textures/(.+)_(?:east|south|north|west)\.png$", str((spec.get("images") or {}).get(f) or ""))
+        if m:
+            return m.group(1), f"installed {f}"
+    try:
+        tps = _creature_texpaths().get(subject_def(spec.get("subject", "")), [])
+    except Exception as e:  # noqa: BLE001
+        return None, f"roster unreadable ({type(e).__name__}: {e})"
+    return (tps[0], "the def's one texPath") if len(tps) == 1 else (None, f"no target_texpath; the def draws {len(tps)} texPaths")
+
+
+def facing_truth(spec: dict) -> dict | None:
+    """Player truth (facing_scale_lint gate): a creature is the same size from every side and does not hop when it
+    turns. The 2026-11-05 redraw batch installed model-ACCEPTed sets the gate then flagged, so the candidate set is
+    held to the gate's own check before any model call. None = not a facing set of ours, or waived."""
+    imgs = spec.get("images") or {}
+    files = {f: imgs[f] for f in ("east", "south", "north", "west") if imgs.get(f)}
+    if spec.get("template") != "creature" or "east" not in files or not ({"south", "north"} & set(files)):
+        return None
+    tex, how = facing_texpath(spec)
+    if not tex:
+        return {"verdict": "UNMEASURED", "why": how}
+    try:
+        waived = json.loads(FACING_WAIVERS.read_text())
+    except (OSError, ValueError):
+        waived = {}
+    if tex in waived:
+        return None
+    view, plan, why = facing_context(dict(spec, target_texpath=tex))
+    if view is None:
+        return {"verdict": "UNMEASURED", "why": why}
+    if view != "elevation":
+        return None
+    sys.path.insert(0, str(HERE.parent / "art"))
+    import facing_scale_lint as FSL
+    return dict(FSL.truth(files, view, plan), plan=plan, view=view, texpath=tex, texpath_from=how)
+
+
 def evaluate(spec: dict, card_dir: Path, rev: Reviewers, policy: dict, settings: dict, living: dict,
              rounds: dict) -> dict:
     tpl = P.load_template(spec["template"])
@@ -363,6 +452,25 @@ def evaluate(spec: dict, card_dir: Path, rev: Reviewers, policy: dict, settings:
             fs = [{"code": "BANNED_REDRAW", "fix": BANNED_FIX}]
             rec["regen"] = {"findings": ["BANNED_REDRAW"], "request": P.deterministic_regen_prompt(card, fs)}
         return rec
+
+    # 0b. the facing truth: the gate's own deterministic check, before any model spends a call on the set
+    ft = facing_truth(spec)
+    if ft:
+        rec["facing_truth"] = ft
+        if ft["verdict"] == "UNMEASURED":
+            rec["reasons"].append(f"facing truth UNMEASURED ({ft.get('why')}) — judged by the models alone")
+        elif ft["verdict"] == "FLAG":
+            decision, rnd = P.cap_regen("REGEN", rounds.get(card["subject"], 0), settings["max_regen_rounds"])
+            rec["decision"], rec["round"] = decision, rnd
+            said = "; ".join(f"{x['facing']} {x['key']} {x['value']} (band {x['band'][0]:.2f}..{x['band'][1]:.2f})"
+                             for x in ft["flags"])
+            rec["reasons"].append(f"facing truth FLAG (facing_scale_lint gate, plan {ft.get('plan')}): {said}")
+            if decision == "REGEN":
+                fix = " ".join(f"The {f} view {FACING_TRUTH_FIX.get(x.get('action'), 'matches the east view')} "
+                               f"(measured: {x.get('why') or x.get('action')})." for f, x in sorted(ft["fixes"].items()))
+                fs = [{"code": "F_FACING_TRUTH", "fix": fix or "Every view matches the east view's height and feet row."}]
+                rec["regen"] = {"findings": ["F_FACING_TRUTH"], "request": P.deterministic_regen_prompt(card, fs)}
+            return rec
 
     # 1. Opus first pass
     base = opus_prompt(card, tpl, items, policy, card_dir)
