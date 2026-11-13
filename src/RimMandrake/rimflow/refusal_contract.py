@@ -34,6 +34,10 @@ answers a repeat (same item, clause, criterion hash, evidence content and sha) f
                                     (a judge's file whose verdict is its `contract` block is read as that block)
     python3 src/RimMandrake/rimflow/refusal_contract.py counters [<item>]                            the counts
     python3 src/RimMandrake/rimflow/refusal_contract.py alarms          the open alarm rows, one line each
+    python3 src/RimMandrake/rimflow/refusal_contract.py diffguard <old.json> <new.json> [--bars a,b] [--card R]
+                                    [--second-read R]   classify a criteria change {clause: text}; exit 1 if refused
+    python3 src/RimMandrake/rimflow/refusal_contract.py repair <case.json>   the neutral fixer (roles/criteria_fixer.md,
+                                    one fresh Opus run), guarded by diffguard, recorded whole; exit 1 if refused
 
 The rows live in RM_REFUSAL_DIR, default /mnt/d/ClaudeWork/rimmandrake/refusal_contract (a program reads them: scratch,
 not the repo). The told row goes through incident.signal when dispatcher_schedule.json has the incident ledger on.
@@ -514,6 +518,142 @@ def submit(verdict, given=None, now=None):
     return res
 
 
+# ---- the neutral criteria fixer and its guard (T5, spec section 2) ------------------------------------------------
+
+FIXER_BRIEF = os.path.join(HERE, "roles", "criteria_fixer.md")
+REPAIR_CLASSES = ("tighten", "clarify", "replace", "fixture", "loosen")
+LOWER = ("at least", "no fewer than", "minimum", ">=")
+UPPER = ("at most", "no more than", "maximum", "within", "<=")
+BOUND_RE = re.compile(r"(at least|no fewer than|minimum|at most|no more than|maximum|within|>=|<=)\s*(\d+(?:\.\d+)?)",
+                      re.I)
+CONTROL_WORDS = ("control", "assert", "must", "never", "each", "every", "only")
+FIXER_TIMEOUT_S = 1200
+
+
+def _bounds(text):
+    return [("lower" if m.group(1).lower() in LOWER else "upper", float(m.group(2)))
+            for m in BOUND_RE.finditer(str(text or ""))]
+
+
+def _controls(text):
+    w = _words(text)
+    return {c: w.count(c) for c in CONTROL_WORDS}
+
+
+def classify(old, new):
+    """-> (class, why) for one clause's text change, read from the text alone (the fixer's own word is not trusted)."""
+    if new is None:
+        return "loosen", "the clause was removed"
+    if old is None:
+        return "tighten", "a clause was added"
+    if " ".join(str(old).split()) == " ".join(str(new).split()):
+        return None, "unchanged"
+    ob, nb = _bounds(old), _bounds(new)
+    for k in ("lower", "upper"):
+        o, n = [v for kk, v in ob if kk == k], [v for kk, v in nb if kk == k]
+        if len(n) < len(o):
+            return "loosen", "a %s bound was removed" % k
+        for a, b in zip(o, n):
+            if (k == "lower" and b < a) or (k == "upper" and b > a):
+                return "loosen", "a %s bound moved from %g to %g" % (k, a, b)
+    oc, nc = _controls(old), _controls(new)
+    dropped = [c for c in CONTROL_WORDS if nc[c] < oc[c]]
+    if dropped:
+        return "loosen", "a control was dropped (%s)" % ", ".join(dropped)
+    if len(nb) > len(ob) or any((k == "lower" and b > a) or (k == "upper" and b < a)
+                                for (k, a), (k2, b) in zip(ob, nb) if k == k2):
+        return "tighten", "a bound was added or moved toward stricter"
+    if set(_content(old)) <= set(_content(new)):
+        return "clarify", "wording was added; the numbers and controls are unchanged"
+    return "replace", "the clause was rewritten; its numbers and controls are kept"
+
+
+def diffguard(old, new, owner_bars=(), card=None, second_read=None, bad_passes=None, good_passes=None):
+    """Guard a criteria repair. `old`/`new` are {clause_id: text}. -> {ok, changes: [{clause, class, why}], errors}.
+    Refused: an owner bar touched (it goes to him as a card, whatever reference is given); a loosen with no card or
+    second-read reference; a repair after which the known-bad case passes or the known-good case fails."""
+    changes, errs = [], []
+    for c in sorted(set(old) | set(new)):
+        cls, why = classify(old.get(c), new.get(c))
+        if cls is None:
+            continue
+        changes.append({"clause": c, "class": cls, "why": why})
+        if c in set(owner_bars):
+            errs.append("%s is an owner bar: a change to it is his word only (a card), never a repair" % c)
+        elif cls == "loosen" and not (str(card or "").strip() or str(second_read or "").strip()):
+            errs.append("%s: loosen (%s) with no card or second-read reference" % (c, why))
+    if bad_passes:
+        errs.append("the known-bad calibration case passes the repaired criteria")
+    if good_passes is False:
+        errs.append("the known-good calibration case fails the repaired criteria")
+    return {"ok": not errs, "changes": changes, "errors": errs}
+
+
+def fixer_prompt(case):
+    """The fixer's packet: its brief, the clause, its source line, the refusals, the evidence and the calibration cases.
+    Nothing else in `case` reaches it (no builder's arguments, no stakes, no priority)."""
+    with open(FIXER_BRIEF, encoding="utf-8") as f:
+        brief = f.read()
+    c = case["clause"]
+    text = case["criteria"][c]
+    return "\n".join([brief, "", "## The clause", "%s (criterion_hash %s): %s" % (c, criterion_hash(text), text), "",
+                      "## The line it serves", str(case.get("source") or "(none given: say so in why)"), "",
+                      "## The refusals against it", json.dumps(case.get("refusals") or [], ensure_ascii=False, indent=1),
+                      "", "## The evidence they cite"] + ["- %s" % e for e in case.get("evidence") or []] +
+                     ["", "## Calibration cases", json.dumps(case.get("calibration") or {}, ensure_ascii=False,
+                                                             indent=1)])
+
+
+FIXER_SCHEMA = {"type": "object", "additionalProperties": False, "required": ["new_text", "class", "why"],
+                "properties": {"new_text": {"type": "string"}, "class": {"enum": list(REPAIR_CLASSES)},
+                               "why": {"type": "string"}, "second_read": {"type": "string"}}}
+
+
+def default_fixer(prompt, timeout):
+    """One fresh Opus run with the fixer's schema. -> its structured answer, or None."""
+    import shutil
+    import subprocess
+    claude = shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")
+    p = subprocess.run([claude, "-p", prompt, "--model", "opus", "--output-format", "json",
+                        "--json-schema", json.dumps(FIXER_SCHEMA, separators=(",", ":")),
+                        "--name", "CRITERIA FIXER"], capture_output=True, text=True, timeout=timeout)
+    try:
+        return json.loads(p.stdout or "null").get("structured_output")
+    except (ValueError, AttributeError):
+        return None
+
+
+def repair(case, runner=default_fixer, calibrate=None, now=None, timeout=FIXER_TIMEOUT_S):
+    """Repair one clause by the neutral fixer. `case`: item, clause, criteria {id: text}, owner_bars, source, refusals,
+    evidence, calibration, and optionally card / second_read (references the CALLER holds; the fixer's own claim of a
+    second read counts for nothing). `calibrate(new_text)` -> (good_passes, bad_passes) when the caller can run it.
+    -> {ok, class, errors, new_text, pointer, note, rejudge} or {ok: False, card} for an owner bar (no fixer launched)."""
+    now = time.time() if now is None else now
+    c, crit, bars = case["clause"], case["criteria"], case.get("owner_bars") or ()
+    if c in set(bars):
+        return {"ok": False, "card": "%s is an owner bar: put the clause, its refusals and the evidence that nothing "
+                                     "could pass to him by card, with options" % c, "errors": ["owner bar"]}
+    ans = runner(fixer_prompt(case), timeout)
+    if not isinstance(ans, dict) or not str(ans.get("new_text") or "").strip():
+        return {"ok": False, "class": None, "errors": ["the fixer gave no repaired text"]}
+    new = dict(crit, **{c: ans["new_text"]})
+    good, bad = calibrate(ans["new_text"]) if calibrate else (None, None)
+    g = diffguard(crit, new, bars, card=case.get("card"), second_read=case.get("second_read"), bad_passes=bad,
+                  good_passes=good)
+    cls = next((x["class"] for x in g["changes"] if x["clause"] == c), None)
+    res = {"ok": g["ok"], "class": cls, "fixer_said": ans.get("class"), "errors": g["errors"], "new_text": ans["new_text"]}
+    with _locked():
+        res["pointer"] = _store({"at": iso(now), "kind": "repair", "item": case.get("item"), "clause": c,
+                                 "old": crit[c], "new": ans["new_text"], "class": cls, "fixer_said": ans.get("class"),
+                                 "why": ans.get("why"), "guard": g, "calibration": {"good": good, "bad": bad}})
+    res["note"] = "criteria repair %s: %s; refusal %s; calibration good=%s bad=%s%s" % (
+        c, cls, res["pointer"], {True: "PASS", False: "FAIL"}.get(good, "UNMEASURED"),
+        {True: "PASS", False: "FAIL"}.get(bad, "UNMEASURED"), "" if g["ok"] else "; REFUSED: " + "; ".join(g["errors"]))
+    if g["ok"]:
+        res["rejudge"] = "fresh instance, same brief"
+    return res
+
+
 def _load(path):
     with open(path, encoding="utf-8") as f:
         return json.load(f)
@@ -541,6 +681,16 @@ def main(argv=None):
             print("%s: %d error(s)" % ("refused" if errs else "well formed", len(errs)))
             return 1 if errs else 0
         res = submit(verdict, given)
+        print(json.dumps(res, indent=1, sort_keys=True))
+        return 0 if res["ok"] else 1
+    if cmd == ["diffguard"] and len(argv) >= 3:
+        bars = argv[argv.index("--bars") + 1].split(",") if "--bars" in argv else ()
+        ref = lambda k: argv[argv.index(k) + 1] if k in argv else None  # noqa: E731
+        g = diffguard(_load(argv[1]), _load(argv[2]), bars, card=ref("--card"), second_read=ref("--second-read"))
+        print(json.dumps(g, indent=1, sort_keys=True))
+        return 0 if g["ok"] else 1
+    if cmd == ["repair"] and len(argv) >= 2:
+        res = repair(_load(argv[1]))
         print(json.dumps(res, indent=1, sort_keys=True))
         return 0 if res["ok"] else 1
     if cmd == ["counters"]:
