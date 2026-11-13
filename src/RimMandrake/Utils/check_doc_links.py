@@ -184,7 +184,7 @@ def main():
 
     for src, lineno, target, why in bad:
         print("  %s:%d → %s" % (os.path.relpath(src, ROOT), lineno, target))
-        print("      that document is DEAD%s" % ((" — " + why[:100]) if why else ""))
+        print("      that document is DEAD%s" % ((" — " + why) if why else ""))
         print("      Either drop the link, or mark this citation as historical "
               "(`~~…~~`, or a line saying superseded/dead).")
 

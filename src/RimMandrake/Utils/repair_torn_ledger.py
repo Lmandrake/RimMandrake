@@ -205,7 +205,7 @@ def _repair_locked(fd, path, apply, owner_said, backup_dir, per_ruling, why):
 
     print(f"Found {len(bad)} line(s) that do not parse as JSON:")
     for lineno, text, err in bad:
-        shown = text if len(text) <= 120 else text[:117] + "..."
+        shown = text if len(text) <= 120 else text[:117] + "..."  # cut-ok: a one-line display that says it is cut (...); the torn line is backed up whole
         print(f"  line {lineno}: {shown!r}  ({err})")
 
     if len(bad) > MAX_BAD_LINES:
@@ -242,7 +242,7 @@ def _repair_locked(fd, path, apply, owner_said, backup_dir, per_ruling, why):
             "kind of guessing this tool exists to avoid -- stop here and look by hand."
         )
         for lineno, text, err in still_bad[:5]:
-            print(f"  still bad at kept-index {lineno}: {text[:120]!r}  ({err})")
+            print(f"  still bad at kept-index {lineno}: {text!r}  ({err})")
         return 1
 
     print(f"\nRemoving {len(bad) - len(salvaged)} line(s) and trimming {len(salvaged)} would leave "

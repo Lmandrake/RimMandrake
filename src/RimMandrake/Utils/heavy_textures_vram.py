@@ -89,7 +89,7 @@ def judge_textures(res, wanted, textureless=()):
     file at all: `textureless`, whose zero is the measurement). Pure; selftested."""
     why = []
     if not res or res.get("success") is not True:
-        return UNMEASURABLE, [], ["jawa/texture_memory gave no successful answer: %s" % str(res)[:200]]
+        return UNMEASURABLE, [], ["jawa/texture_memory gave no successful answer: %s" % str(res)]
     by = {(m.get("packageId") or "").lower(): m for m in res.get("mods") or []}
     missing = sorted(set(wanted) - set(by)) or sorted(res.get("missing") or [])
     if missing:

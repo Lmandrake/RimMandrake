@@ -303,7 +303,7 @@ def tex_hits(messages, news_by_row):
                     for n in news:
                         n = n.lower()
                         if p == n or (p.startswith(n + "_") and len(p) - len(n) <= 8):
-                            out.setdefault(c, []).append(m[:300])
+                            out.setdefault(c, []).append(m)
     return out
 
 
@@ -455,7 +455,7 @@ def run_live(rows, ticks=300, log=print):
         try:
             B.call("rimworld/start_debug_game_ready", timeoutMs=900000, readiness="mapData", pauseIfNeeded=True)
         except Exception as e:  # noqa: BLE001
-            log("quicktest call ended: %s" % str(e)[:200])
+            log("quicktest call ended: %s" % str(e))
             B = vc.Bridge()
     live_defs = {}
     for i in range(0, len(kinds), 40):
@@ -649,7 +649,7 @@ def main():
     try:
         res, batch = run_live(rows, ticks=a.ticks)
     except Exception as e:  # noqa: BLE001  no bridge / socket drop: nothing was measured
-        print("UNMEASURED: %s" % str(e)[:300])
+        print("UNMEASURED: %s" % str(e))
         return 2
     code = exit_code(res, batch)
     os.makedirs(OUT_DIR, exist_ok=True)
@@ -657,9 +657,9 @@ def main():
     json.dump({"item": "ART_OVERRIDE_FAMILY_SCRIPT_1", "exit": code, "rows": res, "batch": batch}, open(out, "w"),
               indent=1)
     for r in res:
-        print("  %-14s %-28s %s" % (r["status"], r["creature"], r["detail"][:160]))
+        print("  %-14s %-28s %s" % (r["status"], r["creature"], r["detail"]))
     for bb in batch:
-        print("  %-14s BATCH %-22s %s" % (bb["status"], bb["subject"], (bb.get("detail") or "")[:160]))
+        print("  %-14s BATCH %-22s %s" % (bb["status"], bb["subject"], (bb.get("detail") or "")))
     tally = {}
     for r in res:
         tally[r["status"]] = tally.get(r["status"], 0) + 1

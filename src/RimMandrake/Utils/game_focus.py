@@ -57,7 +57,7 @@ class FocusRefused(FocusLost):
     """A focus act was needed and not opted into. Subclass of FocusLost so runners record UNMEASURED(FOCUS_LOST)."""
 
     def __init__(self, msg):
-        FocusLost.__init__(self, msg, [("refused", msg[:160])])
+        FocusLost.__init__(self, msg, [("refused", msg)])
 
 
 def opt_in():
@@ -146,7 +146,7 @@ def focus_game(timeout_s=5, attempts=4, pause_s=3):
                 time.sleep(pause_s)
     if opt_in() != "minimise":
         raise FocusLost("could not bring RimWorld forward (%s); minimising other windows needs %s=minimise"
-                        % (last, OPT_IN_ENV), [("gentle_retries", str(last)[:160])])
+                        % (last, OPT_IN_ENV), [("gentle_retries", str(last))])
     import focus_heal                         # escalate (minimise the blocker...); raises FocusLost, exit 3
     focus_heal.heal(last)
     return None

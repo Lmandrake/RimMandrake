@@ -182,7 +182,7 @@ def judge_two(spec, close, first, second, first_is_a, judge):
     """One blind judgment of two answers -> (outcome for `first`: win/loss/tie, the judge's reply, a, b).
     A failure raises; a reply with no usable pick raises ValueError."""
     a, b = (first, second) if first_is_a else (second, first)
-    jv = A.parse_json_reply(judge(JUDGE_PROMPT % (spec, close[:1500], a, b)))
+    jv = A.parse_json_reply(judge(JUDGE_PROMPT % (spec, close, a, b)))
     better = str(jv.get("better") or "").strip().upper()
     if better not in ("A", "B", "TIE"):
         raise ValueError("better=%r" % jv.get("better"))
@@ -196,9 +196,9 @@ def null_pair(ans_old, rerun, spec, close, rerun_is_a, judge):
     try:
         outcome, better, jv, a, b = judge_two(spec, close, rerun(), ans_old, rerun_is_a, judge)
     except Exception as e:
-        rec.update(outcome="error", error=str(e)[:300])
+        rec.update(outcome="error", error=str(e))
         return rec
-    rec.update(outcome=outcome, better=better, why=str(jv.get("why") or "")[:500], a=a, b=b)
+    rec.update(outcome=outcome, better=better, why=str(jv.get("why") or ""), a=a, b=b)
     return rec
 
 
@@ -210,7 +210,7 @@ def run_pair(it, spec, old_text, new_text, what, new_is_a, runner, judge, rerun_
         ans_old = str(runner(RUN_PROMPT % (what, old_text, spec)))[:ANSWER_CHARS]
         ans_new = str(runner(RUN_PROMPT % (what, new_text, spec)))[:ANSWER_CHARS]
     except Exception as e:   # any failure is this pair's error, never the whole check's crash
-        rec.update(outcome="error", error="run: %s" % str(e)[:300])
+        rec.update(outcome="error", error="run: %s" % str(e))
         return rec
     close = it.get("close_text") or "(no close reason recorded)"
     if it.get("sha"):
@@ -219,9 +219,9 @@ def run_pair(it, spec, old_text, new_text, what, new_is_a, runner, judge, rerun_
         outcome, better, jv, a, b = judge_two(spec, close, ans_new, ans_old, new_is_a, judge)
     except Exception as e:
         a, b = (ans_new, ans_old) if new_is_a else (ans_old, ans_new)
-        rec.update(outcome="error", error="judge: %s" % str(e)[:300], new_is_a=new_is_a, a=a, b=b)
+        rec.update(outcome="error", error="judge: %s" % str(e), new_is_a=new_is_a, a=a, b=b)
         return rec
-    rec.update(outcome=outcome, better=better, new_is_a=new_is_a, why=str(jv.get("why") or "")[:500], a=a, b=b)
+    rec.update(outcome=outcome, better=better, new_is_a=new_is_a, why=str(jv.get("why") or ""), a=a, b=b)
     rerun = lambda: str(runner(RUN_PROMPT % (what, old_text, spec)))[:ANSWER_CHARS]   # noqa: E731
     rec["null"] = null_pair(ans_old, rerun, spec, close, rerun_is_a, judge)
     return rec

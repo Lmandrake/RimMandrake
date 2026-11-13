@@ -47,7 +47,7 @@ def main():
             ET.parse(p)
             check(f"{f} parses as XML", True)
         except Exception as e:
-            check(f"{f} parses as XML", False, str(e)[:120])
+            check(f"{f} parses as XML", False, str(e))
 
     # STOP SIGN 1 - Inherit="False" on pawnGroupMakers drops Trader/Peaceful/
     # Settlement. 🔑 CALIBRATED against the shipped answer, 2026-08-26: HEAD USES IT
@@ -105,7 +105,7 @@ def main():
         touched = [xp for xp, v in combat_blocks(texts[f])
                    if any(k in xp for k in ("Trader", "Peaceful", "Settlement"))]
         check(f"{f}: Trader/Peaceful/Settlement untouched", not touched,
-              "; ".join(touched)[:160])
+              "; ".join(touched))
 
     w = max(len(n) for _, n, _ in res)
     for st, n, d in res:

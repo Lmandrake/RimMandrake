@@ -397,7 +397,7 @@ def guarded(fn, *a):
     except Unmeasured as e:
         return None, str(e)
     except Exception as e:      # noqa: BLE001 - any failure is "could not read", with its reason
-        return None, "%s: %s" % (type(e).__name__, str(e)[:120])
+        return None, "%s: %s" % (type(e).__name__, str(e))
 
 
 # --------------------------------------------------------------------------- small formatting helpers
@@ -527,7 +527,7 @@ def proc_kind(r, by_pid):
     if is_agent_proc(r):
         par = by_pid.get(r["ppid"])
         return "tool" if par and is_agent_proc(par) else "claude"
-    if "codex" in c or "codex" in a.split(" ", 1)[0].lower() or "codex.exe" in a[:120].lower():
+    if "codex" in c or "codex" in a.split(" ", 1)[0].lower() or "codex.exe" in a.lower():
         return "codex"
     if c.startswith("python") or a.split(" ", 1)[0].rsplit("/", 1)[-1].startswith("python") or ".exe" in a[:80] and "python" in a[:80].lower():
         if re.search(r"selftest|run_selftests", a):
@@ -3100,7 +3100,7 @@ def run(env=None, write=True):
     try:
         page, sample, phone = build(env, state, hist, write)
     except Exception as e:      # noqa: BLE001 - leave the old page, remember why, fail loudly
-        state["last_error"] = "%s: %s" % (type(e).__name__, str(e)[:160])
+        state["last_error"] = "%s: %s" % (type(e).__name__, str(e))
         state["fail_since"] = state.get("fail_since") or env.now()
         if write:
             env.write_atomic(STATE, json.dumps(state))

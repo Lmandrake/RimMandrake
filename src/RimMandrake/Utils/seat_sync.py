@@ -68,7 +68,7 @@ class Git:
         r = subprocess.run(["git", "-C", self.repo, *a], capture_output=True, text=True, input=inp, env=_git_env(),
                            timeout=GIT_TIMEOUT_S)
         if check and r.returncode:
-            raise Refused(f"git {' '.join(a[:3])} failed: {(r.stderr or r.stdout).strip()[-600:]}")
+            raise Refused(f"git {' '.join(a[:3])} failed: {(r.stderr or r.stdout).strip()}")
         return r.stdout
 
     def ok(self, *a) -> bool:
@@ -136,7 +136,7 @@ def untracked_upstream(g: Git, head: str, up: str) -> list[str]:
         # "nothing to keep" would let reset --keep delete every file upstream merely stopped tracking.
         if r.returncode not in (0, 1):
             raise Refused(f"check-ignore against upstream's .gitignore failed (exit {r.returncode}): "
-                          f"{(r.stderr or '').strip()[-300:]}; cannot tell which files upstream stopped tracking")
+                          f"{(r.stderr or '').strip()}; cannot tell which files upstream stopped tracking")
         return sorted(x for x in r.stdout.split("\0") if x)
 
 

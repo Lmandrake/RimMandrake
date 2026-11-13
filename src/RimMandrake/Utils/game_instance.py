@@ -220,7 +220,7 @@ def games(exe=GAME_EXE):
         raise Blind("the process list did not answer: %s: %s" % (type(e).__name__, e))
     lines = (r.stdout or "").replace("\r", "").splitlines()
     if r.returncode != 0 or LIST_OK not in lines:
-        raise Blind("the process list did not answer (exit %s): %s" % (r.returncode, (r.stderr or r.stdout or "")[:200]))
+        raise Blind("the process list did not answer (exit %s): %s" % (r.returncode, (r.stderr or r.stdout or "")))
     rows = []
     for line in lines:
         m = re.match(r"(\d+)\|(\d*)\|(.*)$", line)
@@ -372,7 +372,7 @@ def launch(name=None, wait=False, wait_s=WAIT_S, sleep=time.sleep, clock=time.ti
                                     ",".join("'%s'" % a for a in args)))
     r = _ps(script)
     if r.returncode != 0:
-        return 1, "Start-Process failed (exit %d): %s" % (r.returncode, (r.stderr or "")[:300])
+        return 1, "Start-Process failed (exit %d): %s" % (r.returncode, (r.stderr or ""))
     t0 = clock()
     up = None
     while up is None and clock() - t0 < LAUNCH_SEEN_S:
@@ -391,7 +391,7 @@ def launch(name=None, wait=False, wait_s=WAIT_S, sleep=time.sleep, clock=time.ti
             return 1, "game %s pid %d: [RimBridge] Failed to start server (the port is taken, or the pair did not carry)" % (
                 name, up)
         if up not in pids(name):
-            return 1, "game %s exited during the load; last of %s:\n%s" % (name, log, text[-1500:])
+            return 1, "game %s exited during the load; last of %s:\n%s" % (name, log, text[-1500:])  # cut-ok: the tail of a game log the message names; the log is the full text
         sleep(5)
     return 1, "no port line in %s after %d s; game %s pid %d is left running" % (log, wait_s, name, up)
 

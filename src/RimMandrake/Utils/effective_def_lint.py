@@ -383,7 +383,7 @@ def build_and_check(mc_path, overrides, report, progress=print):
                                 el.set('_by_patch', os.path.basename(f))
                 if not ok and OURS.match(p) and (op.findtext('success') or '').strip() != 'Always':
                     failed_ops.append(F('error', p, os.path.basename(f), 'matched nothing: %s %s' % (
-                        (op.get('Class') or '').split('.')[-1], (op.findtext('xpath') or '')[:140])))
+                        (op.get('Class') or '').split('.')[-1], (op.findtext('xpath') or ''))))
     progress('patch ops %d | unsupported %d' % (nops, len(sim.unsupported)))
     json.dump(hasher.memo, open(memo_p, 'w'))
 
@@ -618,7 +618,7 @@ def run_tree_checks(report, defs_root, sim, removed, failed_ops, op_mayreq, acti
     # unsupported: honest scope
     ucost = [u for u in sim.unsupported if u[3]]
     report.add('unsupported_patch_ops', [F('warn', u[0].split(' ')[0], u[0], '%s: %s%s' % (
-        u[1], u[2], ' (mentions costList)' if u[3] else '')) for u in sim.unsupported[:200]],
+        u[1], u[2], ' (mentions costList)' if u[3] else '')) for u in sim.unsupported],
         '%d custom-class ops not simulated, %d mention costList' % (len(sim.unsupported), len(ucost)),
         status='UNSUPPORTED' if sim.unsupported else 'PASS')
     report.add('donor_types', [], 'XML naming types from donor assemblies cannot be resolved offline; our namespaces '
@@ -675,7 +675,7 @@ def print_report(report, limit=12, out=sys.stdout):
         print('%-11s %-20s %4d findings (%d crash) %s' % (c['status'], name, len(fs), crash,
                                                          ('-- ' + c['note']) if c['note'] else ''), file=out)
         for f in sorted(fs, key=lambda f: (f['sev'] != 'crash', f['sev'] != 'error'))[:limit]:
-            print('     %-5s %-34s %-36s %s' % (f['sev'], f['mod'][:34], f['def'][:36], f['detail'][:170]), file=out)
+            print('     %-5s %-34s %-36s %s' % (f['sev'], f['mod'][:34], f['def'][:36], f['detail']), file=out)
         if len(fs) > limit:
             print('     ... %d more (use --json)' % (len(fs) - limit), file=out)
 

@@ -221,7 +221,7 @@ def main():
                 for name, chk in (li.get("checks") or {}).items():
                     n = chk.get("count") if isinstance(chk, dict) else None
                     if n:
-                        out.append("  - **%s: %s** - %s" % (name, n, str(chk.get("note"))[:150]))
+                        out.append("  - **%s: %s** - %s" % (name, n, str(chk.get("note"))))
                 if li.get("totalFindings"):
                     headline.append("lint %s" % li.get("totalFindings"))
             except Exception as e:

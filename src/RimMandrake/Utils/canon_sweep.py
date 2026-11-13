@@ -129,7 +129,7 @@ def run_checker(repo, paths):
     except (OSError, subprocess.TimeoutExpired) as e:
         return "UNMEASURED: %s" % e, [], 0, 0
     if r.returncode not in (0, 1):
-        return "UNMEASURED: check_canon exit %d: %s" % (r.returncode, (r.stderr or r.stdout).strip()[-200:]), [], 0, 0
+        return "UNMEASURED: check_canon exit %d: %s" % (r.returncode, (r.stderr or r.stdout).strip()), [], 0, 0
     hits, files, adv, hard_n, section = [], 0, 0, None, None
     for line in r.stdout.splitlines():
         if line.startswith("CONTRADICTS CANON"):

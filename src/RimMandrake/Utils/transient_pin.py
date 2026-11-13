@@ -64,7 +64,7 @@ def git(*a, inp=None, env=None, check=True) -> str:
     r = subprocess.run(["git", "-C", root(), *a], capture_output=True, text=True, input=inp,
                        env=dict(os.environ, **(env or {})))
     if check and r.returncode:
-        sys.exit("REFUSED: git %s failed: %s" % (" ".join(a[:3]), (r.stderr or r.stdout).strip()[-400:]))
+        sys.exit("REFUSED: git %s failed: %s" % (" ".join(a[:3]), (r.stderr or r.stdout).strip()))
     return r.stdout
 
 
@@ -173,7 +173,7 @@ def land_untrack(paths: list[str], msg: str) -> int:
     c = git("commit-tree", tree, "-p", up, "-F", "-", inp=msg + "\n").strip()
     land = os.path.join(root(), "src", "RimMandrake", "Utils", "land.sh")
     r = subprocess.run([land, c, TDIR, ".gitignore"], cwd=root(), capture_output=True, text=True)
-    sys.stderr.write(r.stderr[-1500:])
+    sys.stderr.write(r.stderr)
     print(r.stdout.strip() or "land.sh exited %d" % r.returncode)
     return r.returncode
 

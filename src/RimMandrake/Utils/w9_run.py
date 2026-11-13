@@ -193,7 +193,7 @@ def read_live_mutators(rb, tiles_count, step=2000):
                                                 "onlyWithMutators": True, "limit": step + 1})
         if not r.get("success") or r.get("limitHit") or r.get("errors"):
             raise RuntimeError("world_mutators_get %d-%d: success=%s limitHit=%s errors=%s"
-                               % (lo, hi, r.get("success"), r.get("limitHit"), str(r.get("errors"))[:120]))
+                               % (lo, hi, r.get("success"), r.get("limitHit"), str(r.get("errors"))))
         for t in r.get("tiles") or []:
             for m in t.get("mutators") or []:
                 d = (m or {}).get("def")
@@ -588,7 +588,7 @@ def main(argv=None):
             w(out, "- **stage 2 links**: success=%s %s"
                  % (r.get("success"), json.dumps({k: v for k, v in r.items()
                                                   if k in ("rows", "rivers", "roads", "unknownDefs", "message")},
-                                                 ensure_ascii=False)[:220]))
+                                                 ensure_ascii=False)))
             if not r.get("success"):
                 w(out, "- 🔴 stage 2 links FAILED. Stopping.")
                 return 7
@@ -608,7 +608,7 @@ def main(argv=None):
                 rr = rb.call("jawa/world_mutators_set", {"action": "remove", "mutators": "Coast",
                                                         "tiles": ",".join(map(str, chunk)), "readBack": 2})
                 if not rr.get("success"):
-                    w(out, "- 🔴 stage 3 chunk failed: %s" % str(rr.get("message"))[:120])
+                    w(out, "- 🔴 stage 3 chunk failed: %s" % str(rr.get("message")))
                     break
                 done += len(chunk)
             after = rb.call("jawa/world_mutators_audit", {"limit": 1}).get("offenderCount")
@@ -656,7 +656,7 @@ def main(argv=None):
                 rr = rb.call("jawa/world_landmarks_set",
                              {"action": "add", "def": ldef, "tiles": ",".join(tl), "checkValid": True})
                 if not rr.get("success"):
-                    w(out, "- 🔴 stage 4 `%s` failed: %s" % (ldef, str(rr.get("message"))[:140]))
+                    w(out, "- 🔴 stage 4 `%s` failed: %s" % (ldef, str(rr.get("message"))))
                     continue
                 added += rr.get("added") or 0
                 for v in (rr.get("validity") or []):
@@ -703,7 +703,7 @@ def main(argv=None):
                                      {"action": "remove", "mutators": name,
                                       "tiles": ",".join(map(str, chunk)), "readBack": 2})
                         if not rr.get("success"):
-                            w(out, "- 🔴 stage 4a `%s` chunk failed: %s" % (name, str(rr.get("message"))[:140]))
+                            w(out, "- 🔴 stage 4a `%s` chunk failed: %s" % (name, str(rr.get("message"))))
                             return 14
                         gone += len(chunk)
                 left = rolled_mutators(read_live_mutators(rb, wi.get("tilesCount") or EXPECT_TILES),
@@ -737,7 +737,7 @@ def main(argv=None):
                                      {"action": "add", "mutators": name,
                                       "tiles": ",".join(chunk), "readBack": 2})
                         if not rr.get("success"):
-                            w(out, "- 🔴 stage 4b `%s` chunk failed: %s" % (name, str(rr.get("message"))[:140]))
+                            w(out, "- 🔴 stage 4b `%s` chunk failed: %s" % (name, str(rr.get("message"))))
                             break
                         done += len(chunk)
                     tot += done
@@ -747,7 +747,7 @@ def main(argv=None):
                 # tiles are ZBiome_DesertOasis. Reading the count back is what proves
                 # AddMutator ignores biomeWhitelist — do not take the success flag for it.
                 if "Oasis" in by_mut:
-                    sample = by_mut["Oasis"][:200]
+                    sample = by_mut["Oasis"]
                     chk = rb.call("jawa/world_mutators_get",
                                   {"tiles": ",".join(sample), "limit": len(sample)})
                     # ⚠️ `mutators` is a list of OBJECTS ({def,label,genOrder}), not names.
@@ -761,9 +761,9 @@ def main(argv=None):
         r = rb.call("jawa/world_settlements_import", {"path": SETTS, "apply": apply,
                                                      "expectTiles": EXPECT_TILES, "clearExisting": True})
         w(out, "- **stage 5 settlements**: success=%s %s"
-             % (r.get("success"), str(r.get("message") or r.get("note"))[:200]))
+             % (r.get("success"), str(r.get("message") or r.get("note"))))
         for ref in (r.get("refused") or [])[:5]:
-            w(out, "    - refused: %s" % json.dumps(ref, ensure_ascii=False)[:170])
+            w(out, "    - refused: %s" % json.dumps(ref, ensure_ascii=False))
         if not r.get("success"):
             w(out, "- 🔴 stage 5 settlements FAILED. Stopping before regions/commit.")
             return 9
@@ -789,7 +789,7 @@ def main(argv=None):
             if r.get("success") and "sizesApplied" not in r and "sizesByName" not in r:
                 w(out, "  - 🔴 the result has no size counts: the deployed companion predates "
                        "featuresPath, so label sizes/centres were COMPUTED, not canonical")
-        w(out, "- **stage 6 regions**: success=%s %s" % (r.get("success"), str(r.get("message") or r.get("note"))[:200]))
+        w(out, "- **stage 6 regions**: success=%s %s" % (r.get("success"), str(r.get("message") or r.get("note"))))
         if not r.get("success"):
             w(out, "- 🔴 stage 6 regions FAILED. Stopping before commit.")
             return 10

@@ -387,7 +387,7 @@ def main():
             rel = os.path.relpath(path, ROOT)
             print("  %s:%d  [%s] found %r, canon says %s" % (rel, i, r.key, found, r.canon))
             print("      %s" % r.why.replace("\n", " "))
-            print("      | %s" % (line[:150] + ("…" if len(line) > 150 else "")))
+            print("      | %s" % line)
 
     print("\n%d file(s) checked. %d contradiction(s), %d advisory."
           % (len(paths), len(hard), len(soft)))

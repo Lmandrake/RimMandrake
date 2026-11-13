@@ -224,7 +224,7 @@ def main(argv=None):
     _log_call(job.name, a.model, prompt, answer.read_text(encoding="utf-8", errors="replace") if answered else "", rc, clog, etok,
               round_name=a.round, secs=time.time() - started, files=[p for p, _ in inlined])
     if not answered:
-        tail = (job / "codex.log").read_text(errors="replace")[-2000:]
+        tail = (job / "codex.log").read_text(errors="replace")
         print("ERROR: no answer (exit %d after %.0fs). Job kept: %s\n%s" % (
             rc, time.time() - started, job, tail), file=sys.stderr)
         return 1

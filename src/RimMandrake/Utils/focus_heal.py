@@ -115,6 +115,6 @@ def heal(gentle_error, rounds=2):
         raise FocusLost("FOCUS_LOST: %s" % gentle_error, [("gentle", "FATAL %s" % gentle_error)])
     steps = [(n, (lambda b=b: run(b))) for n, b in LADDER]
     attempts = escalate(steps, game_focus.foreground_title, rounds=rounds,
-                        prior=[("gentle_retries", str(gentle_error)[:160])])
+                        prior=[("gentle_retries", str(gentle_error))])
     print("focus_heal: RimWorld forward after %s" % " -> ".join(a[0] for a in attempts), file=sys.stderr)
     return attempts

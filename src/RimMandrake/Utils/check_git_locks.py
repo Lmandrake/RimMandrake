@@ -113,7 +113,7 @@ def git_processes():
             continue
         if pid.isdigit() and int(pid) == me:
             continue
-        hits.append((pid, cmd[:100]))
+        hits.append((pid, cmd))
     return hits
 
 

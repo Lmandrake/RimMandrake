@@ -860,7 +860,7 @@ def cmd_port(a):
     for sp, why in blocked.items():
         print(f"ART_BLOCKED {sp}: missing={why['missing']}")
         for r in why["refused"]:
-            print("    refused", r.split(": ", 1)[-1][:160])
+            print("    refused", r.split(": ", 1)[-1])
     dropped = []
 
     def rewrite(d):
@@ -931,7 +931,7 @@ def cmd_port(a):
         print(f"art: {len(owned)} texPaths already ours, {len(plan)} PNGs to install, support refused/missing: "
               f"{len(refused)}/{missing}")
         for r in refused:
-            print("    support refused", r[:200])
+            print("    support refused", r)
         if a.apply:
             sys.path.insert(0, os.path.join(SRC, "RimMandrake", "Utils", "art"))
             from artwrite import TextureWriter

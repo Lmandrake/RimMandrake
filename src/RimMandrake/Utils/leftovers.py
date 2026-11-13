@@ -634,13 +634,13 @@ def check_clone(ctx, p, v):
         v.no("git activity %.1f h ago (< %.0f d)" % (age / 3600, ctx.clone_min_age / 86400))
     rc, st, err = _git(p, "status", "--porcelain", "--untracked-files=all")
     if rc != 0:
-        return v.blind("git status failed: %s" % err.strip()[:200])
+        return v.blind("git status failed: %s" % err.strip())
     if st.strip():
         v.no("%d dirty/untracked path(s)" % len(st.splitlines()))
     # ignored files: the bundle keeps refs only, so an ignored file (a local .env, data, notes) would be lost
     rc, ign, err = _git(p, "ls-files", "--others", "--ignored", "--exclude-standard", "--directory")
     if rc != 0:
-        return v.blind("git ls-files --ignored failed: %s" % err.strip()[:200])
+        return v.blind("git ls-files --ignored failed: %s" % err.strip())
     ign = [l for l in ign.splitlines() if l.strip() and "__pycache__" not in l and not l.endswith(".pyc")]
     if ign:
         v.no("%d ignored path(s) the bundle would not keep (e.g. %s)" % (len(ign), ign[0]))
@@ -670,7 +670,7 @@ def check_clone(ctx, p, v):
     pr = subprocess.run(["git", "-C", p, "rev-list", "--parents", "--stdin"], input=stdin.encode(), env=dict(
         env, GIT_OPTIONAL_LOCKS="0"), stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=300)
     if pr.returncode != 0:
-        return v.blind("rev-list failed: %s" % pr.stderr.decode("utf-8", "replace").strip()[:200])
+        return v.blind("rev-list failed: %s" % pr.stderr.decode("utf-8", "replace").strip())
     rows = [l.split() for l in pr.stdout.decode().splitlines() if l.strip()]
     unpushed = [r[0] for r in rows]
     if unpushed:
@@ -682,7 +682,7 @@ def check_clone(ctx, p, v):
         for tip in tips:
             rc, ch, err = _git(p, "cherry", om, tip, env=env, timeout=300)
             if rc != 0:
-                return v.blind("git cherry against origin/main failed: %s" % err.strip()[:200])
+                return v.blind("git cherry against origin/main failed: %s" % err.strip())
             plus = [x for x in (l[2:].strip() for l in ch.splitlines() if l.startswith("+ ")) if x in local]
             if plus:
                 # publish rebases through ledger conflicts, so a landed commit's patch-id can differ; the
@@ -1149,7 +1149,7 @@ def verify(ctx, path, manifest):
     if man["format"] == "git-bundle":
         rc, out, err = _run(["git", "bundle", "verify", arc], cwd=path)
         if rc != 0:
-            return False, "git bundle verify failed: %s" % err.strip()[:200]
+            return False, "git bundle verify failed: %s" % err.strip()
         rc, heads, _ = _run(["git", "bundle", "list-heads", arc])
         inbundle = {l.split()[0] for l in heads.splitlines() if l.strip()}
         now = [r for r in _refs(path) if " refs/heads/" in r or " refs/tags/" in r]
@@ -1245,7 +1245,7 @@ def delete(ctx, path, item="LEFTOVERS_BUILD_ARCHIVE_THEN_DELETE", ledger=True, k
                              "--why", "delegated: leftovers (archive-then-delete, owner card 2026-10-26 19:06)"],
                             cwd=ctx.repo)
         if rc != 0:
-            print("WARNING: deleted, but the rimflow note failed -- log it by hand: %s" % err.strip()[:300])
+            print("WARNING: deleted, but the rimflow note failed -- log it by hand: %s" % err.strip())
     if tracked:
         print("repo file removed: stage the deletion with `git add %s` and commit with a 'Delegated:' line"
               % os.path.relpath(path, ctx.repo))

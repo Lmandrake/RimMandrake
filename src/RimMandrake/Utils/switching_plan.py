@@ -568,7 +568,7 @@ def run(argv, full=False, timeout=600):
         return 124, f"{argv[1:2]} timed out after {timeout} s"
     except OSError as e:
         return 127, f"{argv[:1]} could not run: {e}"
-    return r.returncode, r.stdout if full else (r.stdout + r.stderr)[-2000:]
+    return r.returncode, r.stdout if full else (r.stdout + r.stderr)
 
 
 def switcher_status() -> dict:
@@ -595,7 +595,7 @@ def meter_now() -> dict:
 
 def meter_poll() -> None:
     rc, out = run([sys.executable, str(HERE / "account_usage.py"), "poll"], timeout=420)
-    log({"do": "meter_poll", "rc": rc, "out": out[-300:]})
+    log({"do": "meter_poll", "rc": rc, "out": out})
 
 
 def next_refill(meter: dict, plan: dict, now: float) -> dict:

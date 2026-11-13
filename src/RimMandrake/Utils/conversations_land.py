@@ -64,7 +64,7 @@ def land(paths, root=ROOT):
         msg = "conversations: catch-up %d record(s)\n\nLanded by src/RimMandrake/Utils/conversations_land.py --apply" % len(chunk)
         r = subprocess.run([LAND, "-m", msg, *chunk], cwd=root, capture_output=True, text=True)
         if r.returncode:
-            sys.stderr.write(r.stderr[-800:])
+            sys.stderr.write(r.stderr)
             return r.returncode, last
         last = r.stdout.strip()
     return 0, last

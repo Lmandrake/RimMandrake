@@ -117,16 +117,16 @@ def classify(raw):
     # the only "fabrication" in the sweep.
     if v and re.match(r"\s*(no\b|none\b|does not|doesn't|no such|not present|absent)",
                       v.group(1), re.I):
-        return "NEGATIVE", v.group(1).strip()[:120], ""
+        return "NEGATIVE", v.group(1).strip(), ""
     e = re.search(r"EVIDENCE:\s*(.+)", tail)
     if v:
-        return "HIT", v.group(1).strip()[:120], (e.group(1).strip()[:120] if e else "")
+        return "HIT", v.group(1).strip(), (e.group(1).strip() if e else "")
     # abstention counts only as the model's FINAL word, not a passing thought
     if ABSTAIN in lines[-1].upper():
         return "ABSTAIN", "", ""
     if ABSTAIN in tail.upper():
         return "ABSTAIN", "", ""
-    return "MALFORMED", lines[-1][:100], ""
+    return "MALFORMED", lines[-1], ""
 
 
 def main():

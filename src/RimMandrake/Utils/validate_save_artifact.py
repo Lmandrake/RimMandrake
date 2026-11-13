@@ -231,7 +231,7 @@ def _index_from_json():
         # and manifest.json carries a defTypes index. ⚠️ Any dump captured
         # BEFORE that fix reaches this machine still has the hole, and its
         # UNMEASURABLE lines are collisions rather than absences.
-        if not found and '"defs":[]' in text[:200]:
+        if not found and '"defs":[]' in text[:200]:  # cut-ok: a search window, nothing stored
             empty_types.append(path.stem)
         for name, dtype, pkg in found:
             index.setdefault(name, [])

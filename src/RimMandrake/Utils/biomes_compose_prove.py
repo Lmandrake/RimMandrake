@@ -115,7 +115,7 @@ def ask(rb, pairs, fields=""):
         res = rb.call("jawa/get_defs", {"defs": ";".join("%s/%s" % p for p in chunk),
                                          "fields": fields, "limit": len(chunk)})
         if not isinstance(res, dict) or not res.get("success"):
-            raise RuntimeError("jawa/get_defs failed: %s" % str(res)[:300])
+            raise RuntimeError("jawa/get_defs failed: %s" % str(res))
         if res.get("requested") != len(chunk):
             raise RuntimeError("asked %d, tool says requested=%s" % (len(chunk), res.get("requested")))
         for dd in res.get("defs", []):

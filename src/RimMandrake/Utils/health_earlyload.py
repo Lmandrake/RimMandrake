@@ -126,7 +126,7 @@ def read_last_line(path, offset, window=65536):
 
 def describe(sil, phase, line, fmt):
     tail = " and still silent at the last sample" if sil["open"] else ""
-    ln = ("'%s'" % line[:300]) if line is not None else "unavailable (Player.log not readable at that size, or rotated since)"
+    ln = ("'%s'" % line) if line is not None else "unavailable (Player.log not readable at that size, or rotated since)"
     return ("log silent from %s to %s (%s s%s) during %s; last line written before the silence: %s. "
             "The last line is where the log stopped, not proven to be where the load stalled."
             % (fmt(sil["fromT"]), fmt(sil["toT"]), sil["durS"], tail, phase, ln))

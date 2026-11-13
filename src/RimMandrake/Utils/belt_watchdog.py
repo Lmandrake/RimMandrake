@@ -124,7 +124,7 @@ _ERRISH = re.compile(r"exception|error", re.I)
 def normalise(line):
     s = re.sub(r"0x[0-9a-fA-F]+", "X", line.strip())
     s = re.sub(r"\d+", "N", s)
-    return s[:220]
+    return s
 
 
 def exception_loop(text, min_repeats=LOOP_MIN_REPEATS, tail_lines=4000, recent_lines=300):
@@ -164,9 +164,9 @@ def run_output_state(text):
         m = _VERDICT.match(l.strip())
         if m:
             return {"finished": True, "status": m.group(1), "job": m.group(2), "cause": m.group(3).strip(),
-                    "last_line": l.strip()[:300]}
+                    "last_line": l.strip()}
     return {"finished": False, "status": None, "job": None, "cause": None,
-            "last_line": (lines[-1].strip()[:300] if lines else "")}
+            "last_line": (lines[-1].strip() if lines else "")}
 
 
 def cause_remedy(cause):
@@ -316,7 +316,7 @@ def win_bridge_probe():
             out["state"] = {k: st.get(k) for k in ("programState", "longEventPending", "playable", "mapCount",
                                                    "paused", "automationReady")}
         except Exception as e:                                  # noqa: BLE001
-            out["status_error"] = str(e)[:200]
+            out["status_error"] = str(e)
         t1 = time.time()
         try:
             ui = call("rimworld/get_ui_state")
@@ -325,20 +325,20 @@ def win_bridge_probe():
                                "absorbInputAroundWindow": w.get("absorbInputAroundWindow")}
                               for w in ui.get("windows", [])]
         except Exception as e:                                  # noqa: BLE001
-            out["main_error"] = str(e)[:200]
+            out["main_error"] = str(e)
         try:   # BRIDGE_TPS_CAPTURE_FIXES_1: sampler health (it starts at game load; this call no longer starts it)
             tr = call("jawa/tps_report")
             out["tps"] = {k: tr.get(k) for k in ("installed", "installError", "startedBy", "samplerStartedUtc", "session",
                                                  "runtimeError", "writeError")} \
-                if isinstance(tr, dict) else {"error": str(tr)[:120]}
+                if isinstance(tr, dict) else {"error": str(tr)}
         except Exception as e:                                  # noqa: BLE001
-            out["tps"] = {"error": str(e)[:120]}
+            out["tps"] = {"error": str(e)}
         try:
             c.close()
         except Exception:                                       # noqa: BLE001
             pass
     except Exception as e:                                      # noqa: BLE001
-        out["error"] = "%s: %s" % (type(e).__name__, str(e)[:200])
+        out["error"] = "%s: %s" % (type(e).__name__, str(e))
     print(json.dumps(out))
 
 
@@ -349,7 +349,7 @@ def probe_bridge():
         r = subprocess.run(["python.exe", os.path.relpath(os.path.abspath(__file__), ROOT), "--win-probe"],
                            cwd=ROOT, capture_output=True, text=True, timeout=45)
         line = [l for l in r.stdout.replace("\r", "").splitlines() if l.startswith("{")]
-        return json.loads(line[-1]) if line else {"error": "no probe output: %s" % (r.stderr or "")[-200:]}
+        return json.loads(line[-1]) if line else {"error": "no probe output: %s" % (r.stderr or "")}
     except subprocess.TimeoutExpired:
         return {"error": "bridge probe timed out after 45 s"}
     except Exception as e:                                      # noqa: BLE001
@@ -371,7 +371,7 @@ def wsl_runners():
         m = re.match(r"^(?:/init\s+)?\S*python[\w.]*(?:\s+python[\w.]*)?\s+(.*)$", parts[1])
         if not m:                                                   # a zsh -c wrapper repeats its child: skip it
             continue
-        keep.append("%s %s" % (parts[0], m.group(1)[:110]))
+        keep.append("%s %s" % (parts[0], m.group(1)))
     return keep
 
 
@@ -385,7 +385,7 @@ def tail_text(path, nbytes=600000):
 
 def short_cmd(cmd):
     m = re.search(r"([\w/\\.]*?(?:live_queue|modcheck)[\w/\\.]*\.py.*)$", cmd or "")
-    return (m.group(1) if m else cmd or "")[-110:].replace("src/RimMandrake/Utils/", "")
+    return (m.group(1) if m else cmd or "").replace("src/RimMandrake/Utils/", "")
 
 
 def _start_key(game, now):
@@ -509,7 +509,7 @@ def gather(run_output=None, bridge=True, player_log=PLAYER_LOG, now=None, win=No
             # a loop that is still being written is a per-frame wedge; one in a frozen log is a hung main thread
             kind = "frozen log ending in a loop" if log_age > LOG_FROZEN_S else "repeating every frame"
             sigs.append(Sig("player_log", WEDGED, "%s; %s: %dx (%.0f%% of tail errors) %r" % (
-                detail, kind, loop["count"], loop["share"] * 100, loop["sig"][:110]), loop["remedy"]))
+                detail, kind, loop["count"], loop["share"] * 100, loop["sig"]), loop["remedy"]))
         elif game and log_age > LOG_FROZEN_S and run_active and "Reached max messages limit" in tail_text(player_log):
             # Verse.Log counts every Unity log message and at 10,000 (StopLoggingAtMessageCount, decompiled 1.6
             # Verse/Log.cs via RimSage 2026-10-10) sets Debug.unityLogger.logEnabled = false. Only Log.Clear (the
@@ -537,11 +537,11 @@ def gather(run_output=None, bridge=True, player_log=PLAYER_LOG, now=None, win=No
         age = (game or {}).get("age")
         if age is not None and age < LOAD_BUDGET_S:
             sigs.append(Sig("bridge", INFO, "not answering, game up %s: still cold-loading? (%s)" % (
-                _age(age), br.get("error", "")[:100]), "wait; load_policy %s warns at %s" % (
+                _age(age), br.get("error", "")), "wait; load_policy %s warns at %s" % (
                 _PROFILE["name"], _age(LOAD_BUDGET_S))))
         else:
             sigs.append(Sig("bridge", STALLED, "not answering (%s), game up %s, past load_policy %s warn %s" % (
-                br.get("error", "")[:140], _age(age), _PROFILE["name"], _age(LOAD_BUDGET_S)),
+                br.get("error", ""), _age(age), _PROFILE["name"], _age(LOAD_BUDGET_S)),
                 "investigate, do not kill on the clock: a stall needs evidence (player_log frozen or looping, CPU "
                 "near idle, Not Responding). Capture the log tail first; kill by PID only with that evidence"))
     else:
@@ -550,7 +550,7 @@ def gather(run_output=None, bridge=True, player_log=PLAYER_LOG, now=None, win=No
                                          ("? (%s)" % br.get("status_error", "")[:40]),
                                          " longEvent" if st.get("longEventPending") else "")
         if br.get("main_error"):
-            sigs.append(Sig("bridge", STALLED, bits + "; MAIN THREAD call failed: %s" % br["main_error"][:100],
+            sigs.append(Sig("bridge", STALLED, bits + "; MAIN THREAD call failed: %s" % br["main_error"],
                             "main thread starved: fix focus, look for a loop/long event; kill if it persists >5 min"))
         else:
             sigs.append(Sig("bridge", OK, bits + "; main thread %sms" % br.get("main_ms")))
@@ -590,7 +590,7 @@ def gather(run_output=None, bridge=True, player_log=PLAYER_LOG, now=None, win=No
                                 "(game_focus.py checks it); never focus-steal without RM_FOCUS_OPT_IN"))
 
     # runner + heartbeat
-    sigs.append(Sig("runner", INFO, ("%d running: %s" % (len(runners), "; ".join(runners)[:200]))
+    sigs.append(Sig("runner", INFO, ("%d running: %s" % (len(runners), "; ".join(runners)))
                     if runners else "no live_queue runner process"))
     if not hbs:
         sigs.append(Sig("heartbeat", INFO, "no heartbeat files (runners before 2026-10-03 do not write one)"))
@@ -600,7 +600,7 @@ def gather(run_output=None, bridge=True, player_log=PLAYER_LOG, now=None, win=No
         if h.get("finished"):
             lvl = DEAD if (h.get("status") == "UNMEASURED" and h["age_s"] < RUN_RECENT_S) else INFO
             sigs.append(Sig(name, lvl, "%s FINISHED %s %s ago: %s" % (desc, h.get("status"), _age(h["age_s"]),
-                                                                       (h.get("cause") or "")[:120]),
+                                                                       (h.get("cause") or "")),
                             cause_remedy(h.get("cause")) if lvl == DEAD else ""))
             continue
         if h["age_s"] > belt_heartbeat.STALE_S:
@@ -637,11 +637,11 @@ def gather(run_output=None, bridge=True, player_log=PLAYER_LOG, now=None, win=No
         if ro["finished"]:
             unm = ro["status"] == "UNMEASURED"
             lvl = DEAD if (unm and (age < RUN_RECENT_S or run_output)) else INFO
-            sigs.append(Sig("run_output", lvl, "%s FINISHED %s ago: %s" % (rel, _age(age), ro["last_line"][:160]),
+            sigs.append(Sig("run_output", lvl, "%s FINISHED %s ago: %s" % (rel, _age(age), ro["last_line"]),
                             cause_remedy(ro["cause"]) if unm else "run is over; record it and start the next"))
         elif not run_active:
             sigs.append(Sig("run_output", DEAD, "%s has no verdict line and NO runner process (killed?); last: %r"
-                            % (rel, ro["last_line"][:100]), "the run is dead: relaunch it -- stop polling"))
+                            % (rel, ro["last_line"]), "the run is dead: relaunch it -- stop polling"))
         else:
             sigs.append(Sig("run_output", OK, "%s in progress, written %s ago: %r" % (rel, _age(age),
                                                                                      ro["last_line"][:90])))
@@ -691,7 +691,7 @@ def gather(run_output=None, bridge=True, player_log=PLAYER_LOG, now=None, win=No
             writer = {"werr": 1, "lastError": str(tb["writeError"])[:80]}
         lvl, detail = tps_record.verdict(tps_record.summarise(rec["rows"], now=now, writer=writer))
         if tb.get("error") or tb.get("runtimeError") or tb.get("installError"):
-            detail += "; sampler: %s" % (tb.get("error") or tb.get("runtimeError") or tb.get("installError"))[:100]
+            detail += "; sampler: %s" % (tb.get("error") or tb.get("runtimeError") or tb.get("installError"))
         if rec["malformed"] or rec["invalid"] or rec["future"]:
             detail += "; record: %d malformed, %d invalid, %d future-dated rows" % (rec["malformed"], rec["invalid"], rec["future"])
         remedy = ("read the record: python3 src/RimMandrake/Utils/tps_record.py --at <time> --tz America/Los_Angeles; "
@@ -725,7 +725,7 @@ def gather(run_output=None, bridge=True, player_log=PLAYER_LOG, now=None, win=No
             if kept:
                 sigs.append(Sig("tps-log", INFO, "archived Player-prev.log -> %s" % os.path.basename(kept)))
         except Exception as e:                                  # noqa: BLE001
-            sigs.append(Sig("tps-log", INFO, "could not archive Player-prev.log: %s" % str(e)[:100]))
+            sigs.append(Sig("tps-log", INFO, "could not archive Player-prev.log: %s" % str(e)))
     return sigs
 
 

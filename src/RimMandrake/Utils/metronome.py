@@ -253,7 +253,7 @@ def fenced(d, phase):
 
 def set_fence(d, phase, gen):
     with Lock(d / "publish.lock"):
-        keep = sorted(fenced(d, phase) | {gen})[-200:]
+        keep = sorted(fenced(d, phase) | {gen})[-200:]  # cut-ok: the last 200 generations, a list
         (d / "fence").mkdir(parents=True, exist_ok=True)
         tmp = d / "fence" / (phase + ".tmp")
         tmp.write_text("\n".join(map(str, keep)) + "\n")
@@ -501,7 +501,7 @@ def run_phase(d, table, name, n, st, limit, slot, log):
         if isinstance(sj, dict):
             payload, observed = sj.get("payload"), float(sj.get("observed_at") or start)
         else:
-            tail = (out / ("%s.log" % name)).read_text(encoding="utf-8", errors="replace")[-2000:]
+            tail = (out / ("%s.log" % name)).read_text(encoding="utf-8", errors="replace")[-2000:]  # cut-ok: the tail of a log file named on disk; the log is the full text
             payload = {"log_tail": tail}
         okp, why = publish(d, name, n, payload, observed)
         line["published"] = okp if okp else why

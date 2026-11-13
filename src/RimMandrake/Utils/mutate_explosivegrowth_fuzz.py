@@ -36,7 +36,7 @@ def run_mutations(kernel_rel, wrapper, mutations, only=None):
             built = "Build succeeded" in out or "fuzz " in out
             if p.returncode != 0 and built and "FAIL" in out and "error CS" not in out:
                 first = [l for l in out.splitlines() if l.startswith("FAIL")][:1]
-                print("CAUGHT  %-34s %s" % (name, (first[0][:110] if first else "")))
+                print("CAUGHT  %-34s %s" % (name, (first[0] if first else "")))
                 caught += 1
             else:
                 print("MISSED  %-34s rc=%s built=%s" % (name, p.returncode, built))

@@ -120,10 +120,10 @@ def designer_turns(root=None):
         import designer_stage as DS
         turns, bad = DS.pending_turns(root)
     except Exception as e:      # noqa: BLE001
-        return {"DESIGNER_TURNS_UNMEASURED": "Designer turns UNMEASURED (%s): read designer_stage.py turns" % str(e)[:120]}
+        return {"DESIGNER_TURNS_UNMEASURED": "Designer turns UNMEASURED (%s): read designer_stage.py turns" % str(e)}
     out = {(t.get("item") or "DESIGNER_%s" % str(t["mod"]).upper()): DS.turn_line(t) for t in turns}
     if bad:
-        out["DESIGNER_TURNS_UNMEASURED"] = "Designer turns UNMEASURED for %s" % "; ".join(bad)[:300]
+        out["DESIGNER_TURNS_UNMEASURED"] = "Designer turns UNMEASURED for %s" % "; ".join(bad)
     return out
 
 
@@ -231,7 +231,7 @@ def main():
     rel = fleet_mods.relentless_states(strict=True)     # a state it cannot read must fail, not drop that item's hold
     if a.seat:
         for iid, kind, why in seat_queue(rel):
-            print("%s\t%s\t%s" % (iid, kind, why[:200]))
+            print("%s\t%s\t%s" % (iid, kind, why))
         return 0
     if a.misrouted:
         for iid, kind in misrouted(world.items, rel):

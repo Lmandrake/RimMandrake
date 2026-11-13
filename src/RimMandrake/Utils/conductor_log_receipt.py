@@ -58,7 +58,7 @@ def receipt_problems(rec):
         out.append("it lists no removed lines")
     if rec.get("removed_count") != len(lines):
         out.append("removed_count %r but %d lines listed" % (rec.get("removed_count"), len(lines)))
-    out += ["not fixture-shaped: %s" % s[:100] for s in lines if not FIXTURE.match(s.encode("utf-8"))]
+    out += ["not fixture-shaped: %s" % s for s in lines if not FIXTURE.match(s.encode("utf-8"))]
     if rec.get("removed_sha256") != sha("".join(lines).encode("utf-8")):
         out.append("removed_sha256 does not hash the listed lines")
     if rec.get("before_sha256") == rec.get("after_sha256"):
@@ -93,7 +93,7 @@ def check(log=LOG, receipt=RECEIPT, out=print):
         return DIRTY if problems else OK
     hits = [ln for ln in data.splitlines() if MARK in ln]
     for ln in hits[:3]:
-        out("FAIL fixture line in the log: %s" % ln[:120].decode("utf-8", "replace"))
+        out("FAIL fixture line in the log: %s" % ln.decode("utf-8", "replace"))
     if hits:
         return DIRTY
     out("VISIBLE: %s read, %d bytes, %d lines, 0 fixture lines" % (log, len(data), len(data.splitlines())))

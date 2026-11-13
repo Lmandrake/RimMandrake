@@ -312,7 +312,7 @@ def warm(name: str, email: str, now: float, remotes=()) -> str:
         ca.log_event(op="warm", results={name: result}, by="account_usage")
         return "warm " + result
     except Exception as e:  # noqa: BLE001 - a switcher that cannot be loaded, is busy or fails: no warm, poll goes on
-        return f"not warmed: {type(e).__name__}: {str(e)[:120]}"
+        return f"not warmed: {type(e).__name__}: {str(e)}"
 
 
 SEP = "=====ACCOUNT_USAGE_SEP====="

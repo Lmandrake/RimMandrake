@@ -1373,7 +1373,7 @@ def rasterise(svg_path, width=None):
     # the two very different failures were indistinguishable from stdout.
     print("worldview: %s ran (exit %d) but wrote no %s\n%s" % (
         exe, proc.returncode, png,
-        (proc.stderr or b"").decode("utf-8", "replace")[-2000:]), file=sys.stderr)
+        (proc.stderr or b"").decode("utf-8", "replace")), file=sys.stderr)
     return None
 
 

@@ -74,7 +74,7 @@ def parse_wer(text):
     """powershell output of WER_SCRIPT -> (log record count, events). Raises ValueError when blind."""
     lines = (text or "").replace("\r", "").strip().splitlines()
     if not lines or lines[0].strip() != SENTINEL:
-        raise ValueError("no %s sentinel: the Application log was not read (%r)" % (SENTINEL, (text or "")[:200]))
+        raise ValueError("no %s sentinel: the Application log was not read (%r)" % (SENTINEL, (text or "")))
     try:
         head = json.loads(lines[1])
         body = json.loads("\n".join(lines[2:]) or "[]")
@@ -108,7 +108,7 @@ def read_wer(since, timeout=90):
     out = subprocess.run(["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", WER_SCRIPT % (iso, SENTINEL)],
                          capture_output=True, text=True, timeout=timeout)
     if out.returncode != 0:
-        raise ValueError("powershell exit %d: %s" % (out.returncode, (out.stderr or out.stdout)[-300:]))
+        raise ValueError("powershell exit %d: %s" % (out.returncode, (out.stderr or out.stdout)))
     return parse_wer(out.stdout)
 
 

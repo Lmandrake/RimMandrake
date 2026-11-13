@@ -310,7 +310,7 @@ def git_process_share(lo, hi, rules, repo=REPO):
     r = subprocess.run(["git", "-C", repo, "log", "--since=@%d" % int(lo), "--until=@%d" % int(hi), "--no-renames",
                         "--name-only", "--format=@@%ct"], capture_output=True, text=True, timeout=120)
     if r.returncode != 0:
-        return U("git log failed: " + r.stderr.strip()[-160:])
+        return U("git log failed: " + r.stderr.strip())
     rx = re.compile(rules["process_regex"])
     commits, cur = [], None
     for line in r.stdout.splitlines():
@@ -477,7 +477,7 @@ def settled(lo, hi, rules, repo=REPO):
     r = subprocess.run(["git", "-C", repo, "log", "--format=%H %ct", "--until=@%d" % int(hi), "--"] + paths,
                        capture_output=True, text=True, timeout=60)
     if r.returncode != 0:
-        return False, False, "git log failed: " + r.stderr.strip()[-160:]
+        return False, False, "git log failed: " + r.stderr.strip()
     rows = [l.split() for l in r.stdout.splitlines() if l.strip()]
     if not rows:
         return False, False, "no commit to the v3 config before the week's end"
@@ -509,7 +509,7 @@ def counterfactual(day, week, v2, rules, timeout=480):
     except subprocess.TimeoutExpired:
         return {"status": "UNMEASURED", "why": "the simulator ran past %d s" % timeout}
     if r.returncode != 0 or not os.path.exists(dst):
-        return {"status": "UNMEASURED", "why": "simulator exit %d: %s" % (r.returncode, (r.stderr or r.stdout).strip()[-200:])}
+        return {"status": "UNMEASURED", "why": "simulator exit %d: %s" % (r.returncode, (r.stderr or r.stdout).strip())}
     return json.load(open(dst))
 
 

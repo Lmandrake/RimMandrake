@@ -64,7 +64,7 @@ def start_unit(name, runner=subprocess.run):
                    capture_output=True, text=True, timeout=START_TIMEOUT_S)
     except (OSError, subprocess.SubprocessError) as e:
         return False, str(e)
-    return r.returncode == 0, (r.stderr or "").strip()[:200] or "exit %d" % r.returncode
+    return r.returncode == 0, (r.stderr or "").strip() or "exit %d" % r.returncode
 
 
 def write_state(path, state):

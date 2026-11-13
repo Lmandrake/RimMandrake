@@ -77,7 +77,7 @@ def capture(saves=(), fixture=None):
         try:
             out[key] = fn()
         except Exception as e:                                  # noqa: BLE001
-            out[key] = {'unreadable': '%s: %s' % (type(e).__name__, str(e)[:160])}
+            out[key] = {'unreadable': '%s: %s' % (type(e).__name__, str(e))}
 
     def companion():
         return {'game_sha': _sha(pf.COMPANION_GAME), 'game_build': pf.informational_build(pf.COMPANION_GAME),
@@ -140,7 +140,7 @@ def observer_tasks():
     try:
         o = subprocess.run(['schtasks.exe', '/Query', '/FO', 'CSV', '/NH'], capture_output=True, text=True, timeout=60)
     except (OSError, subprocess.SubprocessError) as e:
-        return {'unreadable': str(e)[:100]}
+        return {'unreadable': str(e)}
     res = {}
     for ln in o.stdout.replace('\r', '').splitlines():
         cols = [c.strip('"') for c in ln.split('","')]
@@ -218,8 +218,8 @@ def cmd_verify(a, cap=capture):
     if moved:
         print('CHANGED during %s: %s -- the cell is void; re-run it from a restart' % (a.cell, moved))
         for k in moved:
-            print('  %s: %s -> %s' % (k, json.dumps(cell['inputs'].get(k), sort_keys=True)[:200],
-                                      json.dumps(cur.get(k), sort_keys=True)[:200]))
+            print('  %s: %s -> %s' % (k, json.dumps(cell['inputs'].get(k), sort_keys=True),
+                                      json.dumps(cur.get(k), sort_keys=True)))
         return 1
     print('VERIFIED %s/%s: every frozen input unchanged since %s' % (a.experiment, a.cell, cell['recorded']))
     return 0

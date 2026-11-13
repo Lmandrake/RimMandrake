@@ -30,7 +30,7 @@ def is_owner_doc(path: str) -> bool:
 
 
 def problems(text: str) -> list[str]:
-    return [f"line {n}: {line.strip()[:120]}" for n, line in enumerate(str(text).splitlines(), 1) if BAD.search(line)]
+    return [f"line {n}: {line.strip()}" for n, line in enumerate(str(text).splitlines(), 1) if BAD.search(line)]
 
 
 def bash_doc_text(cmd: str) -> str:

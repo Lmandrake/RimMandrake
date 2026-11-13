@@ -119,7 +119,7 @@ def lint_blob(path, data, base_data=None):
         if have_ct[l] < n:
             out.append(("NOT_APPEND", path, 0,
                         "line on the base is gone (edited or removed in place): %s"
-                        % l[:160]))
+                        % l))
     by_ident = collections.defaultdict(set)
     parsed = []
     for i, raw in enumerate(lines, 1):
@@ -130,7 +130,7 @@ def lint_blob(path, data, base_data=None):
             if not isinstance(ev, dict):
                 raise ValueError("not an object")
         except ValueError as e:
-            out.append(("MALFORMED", path, i, "%s: %s" % (e, raw[:120])))
+            out.append(("MALFORMED", path, i, "%s: %s" % (e, raw)))
             continue
         canon = json.dumps(ev, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
         by_ident[identity(ev)].add(canon)

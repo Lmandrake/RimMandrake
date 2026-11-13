@@ -55,9 +55,9 @@ def out_dir() -> tuple[Path, str]:
             d = Path(r.stdout.strip()) / "rimmandrake" / "clone_mem_probe"
             d.mkdir(parents=True, exist_ok=True)
             return d, "agent storage"
-        why = (r.stderr or r.stdout).strip()[-200:]
+        why = (r.stderr or r.stdout).strip()
     except (OSError, subprocess.SubprocessError) as e:
-        why = str(e)[:200]
+        why = str(e)
     return Path(tempfile.mkdtemp(prefix="clone_mem_probe-")), "TMPDIR (agent storage unreachable: %s)" % why
 
 
@@ -73,7 +73,7 @@ def run_git(*args, cwd=None, env=None, timeout=480) -> str:
     r = subprocess.run(["git", *args], cwd=cwd, env=env, capture_output=True, text=True, timeout=timeout,
                        stdin=subprocess.DEVNULL)
     if r.returncode:
-        raise RuntimeError("git %s: %s" % (" ".join(args[:3]), (r.stderr or r.stdout).strip()[-300:]))
+        raise RuntimeError("git %s: %s" % (" ".join(args[:3]), (r.stderr or r.stdout).strip()))
     return r.stdout.strip()
 
 
@@ -119,7 +119,7 @@ def seed_private(root: Path) -> tuple[Path, str]:
             alt = seed / "objects" / "info" / "alternates"
             if alt.exists():
                 alt.unlink()
-            how = "objects unusable (%s); " % str(e)[:120]
+            how = "objects unusable (%s); " % str(e)
     if not how.startswith("this"):
         idx = root / "seed.index"
         genv = dict(env, GIT_INDEX_FILE=str(idx))
@@ -235,7 +235,7 @@ def inner(args) -> int:
     stop.set()
     th.join()
     rec["rc"] = r.returncode
-    rec["stderr"] = r.stderr[-400:]
+    rec["stderr"] = r.stderr
     rec["mem_available_end"] = mem_available()
     rec["memory_peak"] = int((cg / "memory.peak").read_text())   # kernel's own high-water mark, sampler-independent
     rec["timeline"] = timeline
@@ -296,7 +296,7 @@ def main() -> int:
             try:
                 seed, how = seed_private(priv)
             except (RuntimeError, OSError, subprocess.SubprocessError) as e:
-                print("UNMEASURED: could not seed a private store from %s: %s" % (REPO, str(e)[:300]))
+                print("UNMEASURED: could not seed a private store from %s: %s" % (REPO, str(e)))
                 return 2
             env.update(RM_OBJSTORE=str(priv / "store.git"), RM_OBJSTORE_SEED=str(seed),
                        RM_OBJSTORE_STATE=str(priv / "state"), RM_OBJSTORE_SCAN=str(priv / "none"),

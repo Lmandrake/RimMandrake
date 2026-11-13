@@ -180,9 +180,9 @@ def attribute_logs(entries: Iterable[dict], defnames: Iterable[str]):
             continue
         hit = [n for n, rx in pats if rx.search(msg)]
         for n in hit:
-            by_def.setdefault(n, []).append(msg[:300])
+            by_def.setdefault(n, []).append(msg)
         if not hit and lvl in ("error", "exception"):
-            unattributed.append(msg[:300])
+            unattributed.append(msg)
     return by_def, unattributed
 
 
@@ -379,7 +379,7 @@ def run_l2_live(manifests, *, shot_name="l2_batch", log=print) -> list[Row]:
         try:
             B.call("rimworld/start_debug_game_ready", timeoutMs=900000, readiness="mapData", pauseIfNeeded=True)
         except Exception as e:  # noqa: BLE001  the socket may drop while the map generates
-            log("quicktest call ended: %s" % str(e)[:200])
+            log("quicktest call ended: %s" % str(e))
             B = vc.Bridge()
     kinds = {p.defName for p in plan_batch(manifests, (250, 250)) if p.kind == "pawn"}
     if kinds:
@@ -422,7 +422,7 @@ def run_l2_live(manifests, *, shot_name="l2_batch", log=print) -> list[Row]:
         log("screenshot %s" % path)
         magenta = magenta_in_png(path) if path and os.path.exists(path) else None
     except Exception as e:  # noqa: BLE001  an unreadable shot is ART-BLIND, never a pass
-        log("screenshot failed: %s" % str(e)[:200])
+        log("screenshot failed: %s" % str(e))
     ticks = batch_ticks(manifests)
     done = 0
     broken = None

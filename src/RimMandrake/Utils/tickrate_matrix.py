@@ -58,7 +58,7 @@ def list_check(call, want):
     r = call("jawa/running_mods") or {}
     ids = r.get("packageIds")
     if not isinstance(ids, list):
-        return None, "WRONG_LIST: jawa/running_mods gave no packageIds (%s)" % str(r)[:160]
+        return None, "WRONG_LIST: jawa/running_mods gave no packageIds (%s)" % str(r)
     n = len(ids)
     if want == "minimal" and n > MINIMAL_MAX:
         return n, "WRONG_LIST: %d running mods, a minimal cell needs <= %d" % (n, MINIMAL_MAX)
@@ -119,7 +119,7 @@ def run_cell(call, cell, reload, sleep=time.sleep, clock=time.time, repeats=REPE
         tr["reload"] = rl
         if not rl.get("verified"):
             res["trials"].append(tr)
-            res["unmeasured"] = "the %s site did not load: %s" % (SITE, str(rl.get("problems"))[:200])
+            res["unmeasured"] = "the %s site did not load: %s" % (SITE, str(rl.get("problems")))
             return 2, res
         before = pawns(call)
         if mp == "busy":
@@ -137,7 +137,7 @@ def run_cell(call, cell, reload, sleep=time.sleep, clock=time.time, repeats=REPE
             errs = [c["error"] for c in tr.get("spawn", {}).get("calls", []) if c.get("error")]
             res["uncontrolled"] = "the busy map gained %s pawns of %d%s" % (
                 None if before is None or after is None else after - before, BUSY_N,
-                (" (spawn_pawn: %s)" % "; ".join(str(e)[:160] for e in errs)) if errs else "")
+                (" (spawn_pawn: %s)" % "; ".join(str(e) for e in errs)) if errs else "")
             return 1, res
         tr.update(trial(call, sleep, clock))
         res["trials"].append(tr)
@@ -309,7 +309,7 @@ def selftest():
         os.remove(p)
     os.rmdir(d)
     if fails:
-        print(json.dumps(fails, default=str)[:3000])
+        print(json.dumps(fails, default=str))
     print("tickrate_matrix selftest:", "FAIL" if fails else "OK")
     return 1 if fails else 0
 
@@ -335,7 +335,7 @@ def main(argv=None):
         call = TB.real_call()
         reload = TB._site_reloader(call)
     except Exception as e:      # noqa: BLE001
-        print("UNMEASURED: bridge unreachable (%s: %s)" % (type(e).__name__, " ".join(str(e).split())[:300]))
+        print("UNMEASURED: bridge unreachable (%s: %s)" % (type(e).__name__, " ".join(str(e).split())))
         return 2
     rc, res = run_cell(call, a.cell, reload)
     p = write(res, d)

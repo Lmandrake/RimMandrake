@@ -47,7 +47,7 @@ def rf(seat, *args):
     p = subprocess.run([sys.executable, CLI] + list(args) + ["--why", "selftest_ledger_state"], env=env(seat),
                        cwd=REPO, capture_output=True, text=True, timeout=120)
     if p.returncode:
-        raise SystemExit("rimflow %s exited %d: %s" % (" ".join(args), p.returncode, (p.stderr or p.stdout)[-400:]))
+        raise SystemExit("rimflow %s exited %d: %s" % (" ".join(args), p.returncode, (p.stderr or p.stdout)))
     return p.stdout
 
 

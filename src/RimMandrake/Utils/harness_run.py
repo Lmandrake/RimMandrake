@@ -34,7 +34,7 @@ def run(cmd, timeout, cwd=None, cap=CAP):
     r = subprocess.run(argv, capture_output=True, text=True, timeout=timeout, cwd=cwd)
     err, rep = _rs._split_marker(r.stderr)
     if not rep:
-        raise FileNotFoundError("contained run gave no wrapper report (rc %d): %s" % (r.returncode, err.strip()[-300:]))
+        raise FileNotFoundError("contained run gave no wrapper report (rc %d): %s" % (r.returncode, err.strip()))
     if not rep.get("ok"):
         raise RuntimeError("refused: child landed outside rm-harness.slice: %s" % rep.get("placement"))
     if rep.get("oom_kill"):

@@ -88,7 +88,7 @@ def run(argv, full=False, timeout=600):
         return 124, "%s timed out after %d s" % (argv[1:2], timeout)
     except OSError as e:
         return 127, "%s could not run: %s" % (argv[:1], e)
-    return r.returncode, r.stdout if full else (r.stdout + r.stderr)[-2000:]
+    return r.returncode, r.stdout if full else (r.stdout + r.stderr)
 
 
 def blind_zero(a, last=None):
@@ -229,7 +229,7 @@ def stage3(acc, live, now, dry, st=None):
             return 0
         rc4, o4 = run([sys.executable, SLOT, "clear"])
         write_atomic(BACK, dict(bk, clear_rc=rc4))
-        log({"do": "stage3_retry_clear", "clear": [rc4, o4[-200:]]})
+        log({"do": "stage3_retry_clear", "clear": [rc4, o4]})
         return 0 if rc4 == 0 else 2
     if isinstance(bk, dict) and bk.get("phase") == "pending":
         # abandon only when TO is confirmed live: an unknown status may hide a `use` that switched (review r5 GPT r2)
@@ -269,7 +269,7 @@ def stage3(acc, live, now, dry, st=None):
     rc4, o4 = run([sys.executable, SLOT, "clear"])
     write_atomic(BACK, {"why": why, "at": time.time(), "phase": "done", "use_rc": rc2, "clear_rc": rc4})
     log({"do": "stage3_switch_back", "why": why, "arm": [rc1, o1], "use": [rc2, o2], "disarm": [rc3, o3],
-         "live_after": live_after, "marker": "kept: stage 3 retired", "clear": [rc4, o4[-200:]]})
+         "live_after": live_after, "marker": "kept: stage 3 retired", "clear": [rc4, o4]})
     return 0 if rc3 == 0 and rc4 == 0 else 2
 
 
@@ -360,7 +360,7 @@ def stage2(acc, dry):
             st.pop("off", None)
         os.makedirs(OUT, exist_ok=True)
         write_atomic(STAGE2, st)
-    log({"do": "stage2_" + act, "why": why, "rc": rc, "out": out[-300:]})
+    log({"do": "stage2_" + act, "why": why, "rc": rc, "out": out})
     return 0 if rc == 0 else 2
 
 

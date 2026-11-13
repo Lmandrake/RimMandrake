@@ -497,7 +497,7 @@ def _landforms_and_info(text):
                    text, re.S)
     info["liquid_worldTags"] = ("component absent" if not lt else
                                 "component present, EMPTY (self-closing element)" if lt.group(1) == "/>" else
-                                lt.group(2).strip()[:2000])
+                                lt.group(2).strip())
     return rows, info
 
 
@@ -821,7 +821,7 @@ def report_md(r, prov):
     for l, d in r["diffs"].items():
         L.append("### %s" % l)
         L.append("```")
-        L.append(json.dumps(d, ensure_ascii=False, default=str)[:3000])
+        L.append(json.dumps(d, ensure_ascii=False, default=str))
         L.append("```")
     if "roundtrip_raw" in r:
         L += ["", "## Round trip (written files re-read vs decode, identity multisets)", "",
@@ -845,7 +845,7 @@ def report_md(r, prov):
              % json.dumps([(p["id"], p["name"], p["tile"]) for p in n.get("player_settlements", [])]))
     for k in ("settlement_faction_unknown", "links_broken", "landmarks_off_surface", "settlements_off_surface", "warnings"):
         if n.get(k):
-            L.append("- %s: `%s`" % (k, json.dumps(n[k], default=str)[:1500]))
+            L.append("- %s: `%s`" % (k, json.dumps(n[k], default=str)))
     L += ["", "## Port step (applied to `ported/`)", "", "| layer | step | old | new | entries |", "|---|---|---|---|---|"]
     for row in r["applied"]:
         L.append("| %s | %s | `%s` | `%s` | %d |" % tuple(row))

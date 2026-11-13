@@ -107,7 +107,7 @@ def run_checks(checks, ctx, fail_fast=True, out=_flush_print):
             try:
                 res = c.fn(ctx)
             except Exception as e:                             # noqa: BLE001 -- a crashed check is ignorance
-                res = UNM('check raised %s: %s' % (type(e).__name__, str(e)[:200]))
+                res = UNM('check raised %s: %s' % (type(e).__name__, str(e)))
             dt = time.time() - t0
         rows.append({'id': c.cid, 'name': c.name, 'required': c.required, 'status': res.status, 'reason': res.reason,
                      'cost_est_s': c.cost_s, 'took_s': round(dt, 2), 'prevents': c.prevents, 'evidence': res.evidence})
@@ -470,8 +470,8 @@ def c_def_lint(ctx):
     try:
         rep = json.load(open(out_json))
     except (OSError, ValueError):
-        return UNM('effective_def_lint wrote no report (exit %s): %s' % (p.returncode, (p.stderr or p.stdout)[-300:]))
-    crash = [(n, f['mod'], f['def'], f['detail'][:120]) for n, c in rep['checks'].items() for f in c['findings']
+        return UNM('effective_def_lint wrote no report (exit %s): %s' % (p.returncode, (p.stderr or p.stdout)))
+    crash = [(n, f['mod'], f['def'], f['detail']) for n, c in rep['checks'].items() for f in c['findings']
              if f['sev'] == 'crash']
     failed = [n for n, c in rep['checks'].items() if c['status'] == 'FAIL']
     unsup = [n for n, c in rep['checks'].items() if c['status'] == 'UNSUPPORTED']
@@ -538,7 +538,7 @@ def c_live_first_exception(ctx):
     first = None
     for ln in log.splitlines():
         if re.search(r'Exception|Could not find type named|Config error in', ln):
-            first = ln.strip()[:220]
+            first = ln.strip()
             break
     ce = len(re.findall(r'^Config error in', log, re.M))
     ev = {'first_exception': first, 'config_errors': ce, 'missing_types': g['missing_types']}
@@ -556,7 +556,7 @@ def running_mods_snapshot():
         proc = subprocess.run(['python.exe', 'src/RimMandrake/Utils/preflight_bridge.py', '--emit-running-mods'],
                               cwd=REPO, capture_output=True, text=True, timeout=120)
         if proc.returncode:
-            raise RuntimeError('Windows live mod-list probe failed: %s' % (proc.stderr or proc.stdout)[-300:])
+            raise RuntimeError('Windows live mod-list probe failed: %s' % (proc.stderr or proc.stdout))
         return json.loads(proc.stdout)
     from rimbridge_client import RimBridge, resolve_endpoint
     before = win_processes()
@@ -628,8 +628,8 @@ def c_live_awareness(ctx):
         return UNM('no "[JawaBench] map awareness:" line (companion without awareness, or not initialised)')
     st = m.group(1).lower()
     if any(x in st for x in ('fail', 'error', 'partial')):
-        return FAIL(m.group(0)[:200])
-    return PASS(m.group(0)[:200])
+        return FAIL(m.group(0))
+    return PASS(m.group(0))
 
 
 # ---------------------------------------------------------------------------------------------------- registry
@@ -690,7 +690,7 @@ def deployed_trees(dirs, exclude):
     p = subprocess.run(['python.exe', 'src/RimMandrake/Utils/preflight_bridge.py', '--emit-trees', _win(req)],
                        cwd=REPO, capture_output=True, text=True, timeout=1200)
     if p.returncode != 0:
-        raise RuntimeError('python.exe tree walk failed: %s' % (p.stderr or p.stdout)[-300:])
+        raise RuntimeError('python.exe tree walk failed: %s' % (p.stderr or p.stdout))
     got = json.loads(p.stdout)
     return {d: got.get(_win(d)) for d in dirs}
 

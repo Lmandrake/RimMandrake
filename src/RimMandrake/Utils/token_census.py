@@ -32,7 +32,7 @@ def load(since):
             except ValueError: continue
             if brief is None and d.get("type") == "user":
                 c = d["message"]["content"]
-                brief = (c if isinstance(c, str) else " ".join(x.get("text", "") for x in c if isinstance(x, dict)))[:100].replace("\n", " ")
+                brief = (c if isinstance(c, str) else " ".join(x.get("text", "") for x in c if isinstance(x, dict))).replace("\n", " ")
             if d.get("type") != "assistant" or d.get("timestamp", "") < since: continue
             m = d.get("message", {}); key = (m.get("id"), d.get("requestId"))
             if key in seen: continue

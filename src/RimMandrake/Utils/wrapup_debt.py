@@ -221,7 +221,7 @@ def plan_of(debt):
 def step_ok(st, out):
     """Did this answered write put the value back? -> None when it did, else why not."""
     if not isinstance(out, dict) or out.get("success") is not True:
-        return "%s did not succeed: %s" % (st["tool"], str(out)[:160])
+        return "%s did not succeed: %s" % (st["tool"], str(out))
     prm = st.get("params") or {}
     if st.get("not"):                                   # a read: the forced value must be gone
         f, v = st["not"].get("field"), st["not"].get("value")

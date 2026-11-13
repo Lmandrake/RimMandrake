@@ -157,7 +157,7 @@ def render_trees(r, top=25):
             t["selfSum"], t.get("residualMs")))
         for x in top_self(t, top):
             out.append("   self %10.3f ms  total %10.3f ms  %s%s" % (
-                x["selfMs"], x["totalMs"], "%dx " % x["count"] if x["count"] > 1 else "", x["path"][-150:]))
+                x["selfMs"], x["totalMs"], "%dx " % x["count"] if x["count"] > 1 else "", x["path"]))
     out.append("(a node is a label group: the engine merges same-label siblings; a verbose load is a diagnostic "
                "load, comparable only with other verbose loads)")
     return "\n".join(out)

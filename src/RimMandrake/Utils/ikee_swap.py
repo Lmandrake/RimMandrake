@@ -88,12 +88,12 @@ class Swap(object):
         r = r.get("result", r) if isinstance(r, dict) and "result" in r and isinstance(r["result"], dict) else r
         self.log.append({"n": self.n, "tool": tool, "params": params, "reply": r})
         if not isinstance(r, dict) or r.get("success") is False:
-            raise Stop("step %d %s failed: %s" % (self.n, tool, json.dumps(r, default=str)[:400]))
+            raise Stop("step %d %s failed: %s" % (self.n, tool, json.dumps(r, default=str)))
         return r
 
     def need(self, cond, what, got=None):
         if self.live and not cond:
-            raise Stop("assertion failed: %s (got %s)" % (what, json.dumps(got, default=str)[:300]))
+            raise Stop("assertion failed: %s (got %s)" % (what, json.dumps(got, default=str)))
         if self.live:
             self.out("    ok: %s" % what)
 

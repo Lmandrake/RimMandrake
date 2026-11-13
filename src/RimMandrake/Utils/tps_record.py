@@ -1120,9 +1120,9 @@ def render_row(r, tz):
     if k == "silence":
         return "%s  SILENCE  main thread silent %ss, phase %s (watchdog thread)" % (t, r.get("silentS"), r.get("phase"))
     if k == "awareness":
-        return "%s  AWARE    %s: %s" % (t, r.get("what"), (r.get("statement") or "")[:160])
+        return "%s  AWARE    %s: %s" % (t, r.get("what"), (r.get("statement") or ""))
     return "%s  %-8s %s" % (t, (k or "?").upper(), json.dumps({kk: v for kk, v in r.items()
-                                                              if not kk.startswith("_") and kk not in ("utc", "kind")})[:160])
+                                                              if not kk.startswith("_") and kk not in ("utc", "kind")}))
 
 
 def render_timeline(tl, tz):

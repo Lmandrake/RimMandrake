@@ -1061,7 +1061,7 @@ def _emit_deploy(deployed, leftover):
     try:
         sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "telemetry"))
         from telemetry_emit import emit_change, git_head
-        emit_change("deploy", ",".join(m for m, _ in deployed)[:200], sha=git_head(os.path.dirname(os.path.abspath(__file__))),
+        emit_change("deploy", ",".join(m for m, _ in deployed), sha=git_head(os.path.dirname(os.path.abspath(__file__))),
                     detail={"mods": dict(deployed), "leftover": bool(leftover), "tool": "deploy_custom_mods.py"})
     except Exception:  # noqa: BLE001
         pass

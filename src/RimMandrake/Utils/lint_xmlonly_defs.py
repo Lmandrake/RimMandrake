@@ -378,12 +378,12 @@ def check_stranded(ctx, roots):
     r = subprocess.run([sys.executable, v, "--dir", qdir, "--quiet"], capture_output=True, text=True)
     out = r.stdout + r.stderr
     if "QuestScriptDef(s) checked" not in out:
-        print("LINT UNMEASURED: the quest validator printed no summary: " + out.strip()[:120])
+        print("LINT UNMEASURED: the quest validator printed no summary: " + out.strip())
         ctx.n["__unmeasured"] = 1
         return
     for l in out.splitlines():
         if l.startswith("ERROR") or " ERROR" in l[:12]:
-            ctx.E("sq-quest", l.strip()[:200])
+            ctx.E("sq-quest", l.strip())
     # the quest reads history events by defName: each must exist in this mod
     events = {d.findtext("defName") for root in roots.values() for d in root.findall("HistoryEventDef")}
     qtext = read(os.path.join(qdir, "Quest_Stranded.xml"))

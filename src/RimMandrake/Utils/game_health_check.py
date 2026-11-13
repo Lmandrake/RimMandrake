@@ -729,7 +729,7 @@ def main(argv=None):
                     row["open_breaches"], row["debugged"] = split_breaches(row)
                 except (OSError, ValueError) as e:   # an unreadable record debugs nothing: every breach still rings
                     row["open_breaches"], row["debugged"] = row.get("breaches") or [], {}
-                    row["debuggedError"] = "%s: %s" % (type(e).__name__, str(e)[:200])
+                    row["debuggedError"] = "%s: %s" % (type(e).__name__, str(e))
             print(json.dumps(row, sort_keys=True))
             return 0
         if not h:

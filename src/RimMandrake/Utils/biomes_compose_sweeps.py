@@ -242,13 +242,13 @@ def main():
                     if s.startswith("//"):
                         continue
                     if insc and rx_self.search(line):
-                        rows.append("%s:%d self-identity read: %s" % (os.path.relpath(p, SRC), i, s[:110]))
+                        rows.append("%s:%d self-identity read: %s" % (os.path.relpath(p, SRC), i, s))
                     for mm in rx_ids.finditer(line):
                         # a Harmony instance ID is only a label; it never tests identity
                         if re.search(r"new\s+Harmony\s*\(", line):
                             continue
                         if mm.group(1).lower() in folded_ids:
-                            rows.append("%s:%d names folded id %s: %s" % (os.path.relpath(p, SRC), i, mm.group(1), s[:100]))
+                            rows.append("%s:%d names folded id %s: %s" % (os.path.relpath(p, SRC), i, mm.group(1), s))
                 if insc:
                     for mm in re.finditer(r"class\s+(\w+)\s*:\s*(Mod|ModSettings)\b", txt):
                         mod_classes[mm.group(1)].append(k)

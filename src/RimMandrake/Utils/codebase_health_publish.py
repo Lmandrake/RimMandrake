@@ -196,7 +196,7 @@ def flatten(node, rows):
     elif "loc" in node:
         rows.append([node["path"], node["loc"],
                      CODE.get(node.get("status", "grey"), "u"),
-                     (node.get("why") or [""])[0][:110],
+                     (node.get("why") or [""])[0],
                      node.get("cycles", 0)])
     return rows
 

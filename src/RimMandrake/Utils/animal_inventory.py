@@ -352,7 +352,7 @@ def parse_tools(node):
         "attackCount": len(tools),
         "attackBestPower": best_p or "",
         "attackBestDPS": best_d or "",
-        "attackSummary": summary[:300],
+        "attackSummary": summary,
     }
 
 
@@ -384,7 +384,7 @@ def parse_comps(node):
         elif short == "CompProperties_Explosive":
             out["explosiveRadius"] = txt(c, "explosiveRadius")
     out["compCount"] = len(names)
-    out["comps"] = ";".join(names)[:250]
+    out["comps"] = ";".join(names)
     return out
 
 
@@ -433,14 +433,14 @@ def extract_thing(node, meta):
     """
     r = dict(meta)
     r["label"] = txt(node, "label")
-    r["description"] = re.sub(r"\s+", " ", txt(node, "description"))[:400]
+    r["description"] = re.sub(r"\s+", " ", txt(node, "description"))
     r["tickerType"] = txt(node, "tickerType")
     r["tradeability"] = txt(node, "tradeability")
     r["tradeTags"] = ";".join(
         x.text.strip() for x in node.findall("tradeTags/li") if x.text)
     r["modExtensions"] = ";".join(
         (x.get("Class", "") or "").split(".")[-1]
-        for x in node.findall("modExtensions/li"))[:150]
+        for x in node.findall("modExtensions/li"))
 
     for col, xp in RACE_SIMPLE:
         r[col] = txt(node, xp)
@@ -609,7 +609,7 @@ def project(ds):
             inherited = [k for k in sorted(r) if str(r[k]) != str(own.get(k, ""))]
         r["inheritDepth"] = rec.inheritDepth
         r["inheritChain"] = " > ".join(rec.inheritChain)
-        r["inheritedFields"] = ";".join(inherited)[:600]
+        r["inheritedFields"] = ";".join(inherited)
         r["unresolvedParent"] = rec.unresolvedParent
         rec.release()                            # do not hold 1,250 merged trees
 
@@ -650,7 +650,7 @@ def scan_patches(mods):
                     if any(k in xp for k in PATCH_KEYS):
                         rows.append({"mod": m["name"], "packageId": m["packageId"],
                                      "file": os.path.relpath(path, m["folder"]),
-                                     "xpath": xp[:400]})
+                                     "xpath": xp})
     return rows
 
 

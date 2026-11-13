@@ -282,7 +282,7 @@ def reading(key, samples, fam_rows, now, floors, targets):
     kind, kind_from = kind_of(key, vals, any_bool)
     out = {"kind": kind, "kind_from": kind_from}
     gaps = [b - a for a, b in zip(fam_rows, fam_rows[1:]) if b > a]
-    cadence = median(gaps[-200:]) if gaps else None
+    cadence = median(gaps[-200:]) if gaps else None  # cut-ok: the last 200 gaps, numbers
     stale_s = max(STALE_MIN_FLOOR * 60, 3 * cadence) if cadence else STALE_MIN_FLOOR * 60
     rows24 = [t for t in fam_rows if t >= now - 24 * HOUR]
     m24 = [t for t, _v in meas if t >= now - 24 * HOUR]
@@ -440,7 +440,7 @@ def wait_ingest(max_s, fams=None, pass_t=None, get=None, clock=time.time, sleep=
             got = {lab.get("fam") for lab, ts, _v in store.vm_export(["rm_ops_rows"], pass_t - 1, clock(), get=get)
                    if any(t >= pass_t - 1 for t in ts)}
         except Exception as e:  # noqa: BLE001 - VM down: build reports it too; waiting does not help
-            res["error"] = "VictoriaMetrics did not answer while waiting: %s: %s" % (type(e).__name__, str(e)[:200])
+            res["error"] = "VictoriaMetrics did not answer while waiting: %s: %s" % (type(e).__name__, str(e))
             return res
         res["missing"] = [f for f in want if f not in got]
         if not res["missing"]:
@@ -471,7 +471,7 @@ def build(now=None, fams=None, rules=None, get=None):
     try:
         rows_by, per_by = gather(fetch(since, now, fams, get))
     except Exception as e:      # noqa: BLE001 - every family is blind, and the page says why
-        mem["store_error"] = "%s: %s" % (type(e).__name__, str(e)[:300])
+        mem["store_error"] = "%s: %s" % (type(e).__name__, str(e))
         for fam in fams:
             mem["built_from"][fam] = {"rows": 0, "last_row_t": None}
             mem["families"][fam] = {}

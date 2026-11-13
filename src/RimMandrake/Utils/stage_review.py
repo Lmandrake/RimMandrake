@@ -122,24 +122,24 @@ def prep_worker(rb, x, z, name=None):
     sr = rb.call("jawa/spawn_pawn", {"kindDef": "Colonist", "x": int(x), "z": int(z),
                                      "count": 1, "faction": "player"})
     if not (isinstance(sr, dict) and sr.get("success")):
-        raise RuntimeError("prep_worker: spawn_pawn failed: %s" % str(sr)[:200])
+        raise RuntimeError("prep_worker: spawn_pawn failed: %s" % str(sr))
     row = (sr.get("pawns") or [{}])[0]
     pid = row.get("id")
     if not pid:
-        raise RuntimeError("prep_worker: spawn_pawn returned no pawn id: %s" % str(sr)[:200])
+        raise RuntimeError("prep_worker: spawn_pawn returned no pawn id: %s" % str(sr))
     # whole-body heal (healAll; 'restore' with no bodyPart is always refused). Check the reply.
     # The pawn tools key on `pawn`, not thingId.
     hr = rb.call("jawa/pawn_health", {"pawn": pid, "action": "healAll", "confirmDestructive": True})
     if not (isinstance(hr, dict) and hr.get("success")):
-        raise RuntimeError("pawn_health healAll failed: %s" % str(hr)[:200])
+        raise RuntimeError("pawn_health healAll failed: %s" % str(hr))
     # top up every need (food, rest, recreation, mood inputs)
     rr = rb.call("jawa/pawn_refresh_needs", {"pawn": pid})
     if not (isinstance(rr, dict) and rr.get("success")):
-        raise RuntimeError("pawn_refresh_needs failed: %s" % str(rr)[:200])
+        raise RuntimeError("pawn_refresh_needs failed: %s" % str(rr))
     for need in ("Food", "Rest", "Joy", "Comfort", "Beauty", "Outdoors"):
         nr = rb.call("jawa/pawn_need", {"pawn": pid, "action": "need", "need": need, "level": 1.0})
         if not (isinstance(nr, dict) and nr.get("success")):
-            print("  WARNING: pawn_need %s not set: %s" % (need, str(nr)[:120]), file=sys.stderr)
+            print("  WARNING: pawn_need %s not set: %s" % (need, str(nr)), file=sys.stderr)
     return pid
 
 
@@ -167,7 +167,7 @@ def cell_open(rb, x, z, want_terrain_prefix=None):
     gr = rb.call("rimworld/get_cell_info", {"x": int(x), "z": int(z)})
     if not isinstance(gr, dict) or not gr.get("cell"):
         # an unreadable cell is NOT an open cell (empty dict used to read as open grass)
-        raise RuntimeError("get_cell_info(%s,%s) unreadable: %s" % (x, z, str(gr)[:160]))
+        raise RuntimeError("get_cell_info(%s,%s) unreadable: %s" % (x, z, str(gr)))
     ci = gr["cell"]
     terr = ci.get("terrainDefName", "")
     things = ci.get("things") or []

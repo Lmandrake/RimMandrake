@@ -216,7 +216,7 @@ def sample_process():
                          timeout=120)
     line = [l for l in out.stdout.splitlines() if l.strip().startswith("{")]
     if not line:
-        return {"error": "powershell gave no JSON: " + (out.stderr.strip() or out.stdout.strip())[:200]}
+        return {"error": "powershell gave no JSON: " + (out.stderr.strip() or out.stdout.strip())}
     return json.loads(line[-1])
 
 

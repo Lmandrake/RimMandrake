@@ -138,7 +138,7 @@ def decisions_as_of(path, cutoff):
 def must(rx, text):
     m = rx.match(text)
     if not m:
-        raise FF.Unmeasured("a findings_fold note this vet cannot parse: %r" % text[:120])
+        raise FF.Unmeasured("a findings_fold note this vet cannot parse: %r" % text)
     return m
 
 
@@ -150,7 +150,7 @@ def old_notes(events):
                 WINDOW[0] <= str(e.get("ts")) <= WINDOW[1]:
             m = NOTE_RE.match(t)
             if not m:
-                raise FF.Unmeasured("a findings_fold note this vet cannot parse: %r" % t[:120])
+                raise FF.Unmeasured("a findings_fold note this vet cannot parse: %r" % t)
             out.append({"tsn": e.get("tsn"), "ts": e["ts"], "item": e["id"], "tag": m.group("tag"),
                         "kind": m.group("kind"), "text": t})
     return out
@@ -217,7 +217,7 @@ def derive(ddir):
     for n in sorted(notes, key=lambda n: (n["ts"], n["tsn"] or 0)):
         names = old_groups.get(n["tag"], [])
         v = {"note_ts": n["ts"], "note_tsn": n["tsn"], "item": n["item"], "tag": n["tag"], "kind": n["kind"],
-             "claim": n["text"][:400], "old_findings": sorted(names), "reasons": [], "inexact": []}
+             "claim": n["text"], "old_findings": sorted(names), "reasons": [], "inexact": []}
         sigs = sorted({sig_of[x] for x in names if x in sig_of})
         v["reviewed"] = [{"sig": s[:13], "count": t["signatures"][s]["count"],
                           "first_seen": t["signatures"][s]["first_seen"], "last_seen": t["signatures"][s]["last_seen"],
@@ -342,7 +342,7 @@ def main(argv=None):
     for v in d["notes"]:
         if v["verdict"] != "HOLDS":
             print("  %s %s %s on %s: %s" % (v["verdict"], v["tag"], v["kind"], v["item"],
-                                            " | ".join(v["reasons"] + v["inexact"])[:300]))
+                                            " | ".join(v["reasons"] + v["inexact"])))
     if a.write:
         with open(VERDICTS, "w", encoding="utf-8") as f:
             json.dump(d, f, indent=1, sort_keys=True)

@@ -76,7 +76,7 @@ def main():
         rows = r.get("tiles") or r.get("rows") or []
         if not rows:
             print("REFUSED: jawa/world_mutators_get returned no tile rows (%s) -- UNMEASURED, not '0 qualifying tiles'."
-                  % str(r)[:160])
+                  % str(r))
             return 1
         before = {x["tile"]: sorted(d["def"] for d in x["mutators"]) for x in rows}
 

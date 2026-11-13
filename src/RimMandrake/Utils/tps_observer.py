@@ -87,7 +87,7 @@ def one_pass():
         res["ok"] = True
     except Exception as e:                                      # noqa: BLE001
         res["ok"] = False
-        res["error"] = "%s: %s" % (type(e).__name__, str(e)[:200])
+        res["error"] = "%s: %s" % (type(e).__name__, str(e))
     try:
         tmp = os.path.join(d, "observer_last.json.tmp")
         with open(tmp, "w", encoding="utf-8") as fh:

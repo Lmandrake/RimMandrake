@@ -256,7 +256,7 @@ def plant_check():
             # the temp copy sits outside src/, so every ../../_Shared csproj include "does not exist": that artefact is not a catch
             hit = [l for l in (r.stdout + r.stderr).splitlines()
                    if (l.startswith("ERROR") and not (l.startswith("ERROR compile-listed: csproj lists") and "does not exist" in l)) or "Traceback" in l]
-            print(("CAUGHT  " if hit else "MISSED  ") + name + ("  " + hit[0][:100] if hit else ""))
+            print(("CAUGHT  " if hit else "MISSED  ") + name + ("  " + hit[0] if hit else ""))
             caught += bool(hit)
     print(f"{caught}/{len(PLANTS)} planted defects caught")
     return 0 if caught == len(PLANTS) else 1

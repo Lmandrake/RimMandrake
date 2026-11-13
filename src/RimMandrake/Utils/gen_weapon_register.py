@@ -697,7 +697,7 @@ def _role(row):
             bits.append("a body part, not a made object")
     if row.get("ap") is not None and row["ap"] >= 0.5:
         bits.append("cuts armour")
-    return "; ".join(bits)[:160]
+    return "; ".join(bits)
 
 
 def build_rows():

@@ -139,7 +139,7 @@ def classify(cmd, out):
         outcome = "no verdict"
     m = re.search(r"^(?:REFUSED: |fatal: |error: | ?! \[rejected\]).*", out, re.M)
     return {"rejections": rejections, "retried_errors": len(PUSHFAIL_RETRY.findall(out)), "outcome": outcome,
-            "gaveup": gaveup, "why": m.group(0)[:200] if m else ""}
+            "gaveup": gaveup, "why": m.group(0) if m else ""}
 
 
 def scan(files, since, until):
@@ -305,7 +305,7 @@ def report(rows, since, until, nfiles, base, nclean, jhits, jerr):
         L.append(jerr)
     else:
         L.append("%d refusal/failure lines in the window (unit start lines excluded):" % len(jhits))
-        L += ["- `%s`" % h[:200].replace("`", "'") for h in jhits[:20]]
+        L += ["- `%s`" % h.replace("`", "'") for h in jhits[:20]]
     L += ["", "## Blind spots", "",
           "- The Relentless supervisor's own books `./publish` and other timer pushes log no retry lines; only "
           "their failures reach the journal (above).",

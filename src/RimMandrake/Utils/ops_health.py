@@ -509,7 +509,7 @@ def read_verdict(now=None, path=None, max_age_min=None):
     except FileNotFoundError:
         return None, "no health verdict at %s" % p
     except (OSError, ValueError) as e:
-        return None, "health verdict unreadable: %s: %s" % (type(e).__name__, str(e)[:120])
+        return None, "health verdict unreadable: %s: %s" % (type(e).__name__, str(e))
     if not isinstance(v, dict) or v.get("schema") != SCHEMA or not is_num(v.get("t")) \
             or v.get("state") not in STATES or not isinstance(v.get("system_items"), (list, type(None))):
         return None, "health verdict malformed at %s" % p

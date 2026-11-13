@@ -456,7 +456,7 @@ for dn, (m, unres, chain) in thing.items():
     ROWS.append({
         "defName": dn,
         "label": txt(m.find("label")),
-        "description": re.sub(r"\s+", " ", txt(m.find("description")))[:400],
+        "description": re.sub(r"\s+", " ", txt(m.find("description"))),
         "mod": mod_of(own_path),
         "parent_chain": ">".join(chain),
         "reason": "+".join(reason),
@@ -475,10 +475,10 @@ for dn, (m, unres, chain) in thing.items():
         "stuff_statFactors": ";".join("%s=%s" % kv for kv in sorted(sf.items())),
         "ingestible": (food + ("/drug:" + drug if drug else "")) if ing is not None else "",
         "source_kind": ";".join(sorted({kd for kd, _, _ in srcs})),
-        "sources": ";".join(sorted({"%s(%s)" % (s, how) for _, s, how in srcs}))[:500],
+        "sources": ";".join(sorted({"%s(%s)" % (s, how) for _, s, how in srcs})),
         "biomes": ";".join(sorted(biomes)),
-        "uses_recipe": ";".join(sorted({c for kd, c in u if "recipe" in kd}))[:400],
-        "uses_cost": ";".join(sorted({c for kd, c in u if "cost" in kd.lower()}))[:400],
+        "uses_recipe": ";".join(sorted({c for kd, c in u if "recipe" in kd})),
+        "uses_cost": ";".join(sorted({c for kd, c in u if "cost" in kd.lower()})),
         "uses_fuel": ";".join(sorted({c for kd, c in u if kd == "fuel"})),
         "uses_category_recipes": len(cat_u),
         "uses_stuff_consumers": stuff_u,
@@ -632,7 +632,7 @@ by_text = collections.defaultdict(list)
 for r in ROWS:
     if r["cluster"] in ("food-only", O) or len(r["description"]) < 60:
         continue
-    by_text[(r["label"].lower(), r["description"][:120].lower())].append(r)
+    by_text[(r["label"].lower(), r["description"][:120].lower())].append(r)  # cut-ok: a dedup key, not stored text
 for rs in by_text.values():
     if len(rs) > 1:
         for r in rs:

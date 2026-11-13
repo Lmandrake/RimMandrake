@@ -49,7 +49,7 @@ def main(argv):
                 print(f"[{i}] {m['name']}: BUILD BROKEN (mutation invalid)"); bad += 1
             elif r.returncode != 0 and fails:
                 first = next((l for l in fails if l.startswith("FAIL")), fails[0])
-                print(f"[{i}] {m['name']}: CAUGHT  {first[:170]}")
+                print(f"[{i}] {m['name']}: CAUGHT  {first}")
             else:
                 print(f"[{i}] {m['name']}: NOT CAUGHT"); bad += 1
         finally:

@@ -299,7 +299,7 @@ def main():
                         t0 = time.time()
                         sim.apply(op, p + ' ' + os.path.basename(f))
                         if time.time() - t0 > 3:
-                            print('   slow op %.1fs %s %s' % (time.time() - t0, p, (op.findtext('xpath') or op.get('Class'))[:120]), flush=True)
+                            print('   slow op %.1fs %s %s' % (time.time() - t0, p, (op.findtext('xpath') or op.get('Class'))), flush=True)
     # MayRequire: whole defs, and children of any list (honoured by the list loader)
     for el in list(defs_root):
         if not sim.may(el):

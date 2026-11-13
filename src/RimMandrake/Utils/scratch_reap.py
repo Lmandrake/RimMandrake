@@ -781,7 +781,7 @@ class Live:
         unpinned = str(p.with_name(PIN.sub("", p.name)))  # a crash's pin must not hide who the path belongs to
         for name in sorted({t, os.path.realpath(t), unpinned}):     # /proc reports resolved paths; argv and env may not
             for i in under(self.keys, name):
-                out.append(f"pid {self.paths[i][1]} uses {self.keys[i][:120]}")
+                out.append(f"pid {self.paths[i][1]} uses {self.keys[i]}")
                 if len(out) >= 3:
                     break
             if name in self.cmdblob:
@@ -1033,12 +1033,12 @@ def unique_commits(c: Path, dead: list[str] | None = None) -> tuple[list[str], i
     fe = git(c, "for-each-ref", "--format=%(objectname) %(refname)")     # no %(objecttype): one dead ref would kill the list
     said = [x for x in fe.stderr.splitlines() if x.strip() and not GONE_LENDER.match(x)]    # judged elsewhere
     if fe.returncode or said:                           # git warns past a ref it cannot read, and succeeds
-        return [], 0, [], f"cannot list refs ({' '.join(said)[:120] or fe.stderr.strip()[:120]})"
+        return [], 0, [], f"cannot list refs ({' '.join(said) or fe.stderr.strip()})"
     tips, nots = set(), set(mirror_tips())
     refs = [ln.split(None, 1) for ln in fe.stdout.splitlines()]
     chk = git(c, "cat-file", "--batch-check", stdin="".join(sha + "\n" for sha, _ in refs))
     if chk.returncode:
-        return [], 0, [], f"cannot list refs ({chk.stderr.strip()[:120]})"
+        return [], 0, [], f"cannot list refs ({chk.stderr.strip()})"
     typ = {w[0]: w[1] for w in (ln.split() for ln in chk.stdout.splitlines()) if len(w) >= 2}
     for sha, ref in refs:
         if typ.get(sha) in ("commit", "tag"):
@@ -1060,13 +1060,13 @@ def unique_commits(c: Path, dead: list[str] | None = None) -> tuple[list[str], i
     if logged:                               # a reflog line may name a commit gc already took: only live ones count
         chk = git(c, "cat-file", "--batch-check", stdin="\n".join(sorted(logged)) + "\n")
         if chk.returncode:
-            return [], 0, [], f"cannot read reflog commits ({chk.stderr.strip()[:120]})"
+            return [], 0, [], f"cannot read reflog commits ({chk.stderr.strip()})"
         tips |= {w[0] for w in (ln.split() for ln in chk.stdout.splitlines()) if len(w) >= 2 and w[1] == "commit"}
     if not tips:
         return [], 0, [], None
     r = git(c, "rev-list", "--stdin", stdin="\n".join(sorted(tips) + ["^" + n for n in sorted(nots)]) + "\n")
     if r.returncode:
-        return [], 0, [], f"cannot list commits ({r.stderr.strip()[:120]})"
+        return [], 0, [], f"cannot list commits ({r.stderr.strip()})"
     unique = r.stdout.split()
     own_tags = {sha for sha, _ in refs if typ.get(sha) == "tag" and sha not in nots}    # its commit may be pushed; its text is not
     if not unique:
@@ -1081,7 +1081,7 @@ def unique_commits(c: Path, dead: list[str] | None = None) -> tuple[list[str], i
         return sorted(own_tags), len(own_tags), changed, None
     par = git(c, "rev-list", "--parents", "--no-walk=unsorted", "--stdin", stdin="\n".join(sorted(alone)) + "\n")
     if par.returncode:
-        return [], 0, [], f"cannot read parents ({par.stderr.strip()[:120]})"
+        return [], 0, [], f"cannot read parents ({par.stderr.strip()})"
     parents = {w for ln in par.stdout.splitlines() for w in ln.split()[1:]}
     return sorted((alone - parents) | own_tags), len(alone) + len(own_tags), changed, None
 
@@ -1097,7 +1097,7 @@ def dirty_files(c: Path) -> tuple[list[str], int, int, int, str | None]:
     """(paths that exist, tracked changed, untracked, bytes, error)."""
     st = git(c, "status", "--porcelain=v1", "-z", "--untracked-files=normal", "--ignored=matching")
     if st.returncode:
-        return [], 0, 0, 0, f"git status failed ({st.stderr.strip()[:120]})"
+        return [], 0, 0, 0, f"git status failed ({st.stderr.strip()})"
     recs = st.stdout.split("\0")
     paths, tracked, untracked, size = [], 0, 0, 0
     i = 0
@@ -1405,7 +1405,7 @@ def ledger_mentions(p: Path, kind: str, now: float | None = None) -> list[str]:
                     found = line
                     break
             if found is not None:
-                hits.append(f"{os.path.basename(f)} names '{nd}': …{found[:160].strip()}…")
+                hits.append(f"{os.path.basename(f)} names '{nd}': …{found.strip()}…")
                 break
     return hits
 
@@ -1588,13 +1588,13 @@ def judge_session(p: Path, ctx: Ctx) -> tuple[dict, list[dict]]:
     # rows and ran the day proof red (2026-11-05 12:02Z). They stay kept; the session row names them all.
     bad = [r for r in kept if r["verdict"] == "REFUSE" and r.get("corrupt")]
     if bad:
-        why.append(f"{len(bad)} inner repo(s) git cannot read, kept: {bad[0]['path']}: {(bad[0]['why'] or ['?'])[0][:160]}")
+        why.append(f"{len(bad)} inner repo(s) git cannot read, kept: {bad[0]['path']}: {(bad[0]['why'] or ['?'])[0]}")
         row["corrupt_inner"] = [r["path"] for r in bad]
         kept = [r for r in kept if not r.get("corrupt")]
     loose = [s for s in tree.saves if not any(s.startswith(r["path"] + "/") for r in rows)]    # a clone answers for its own
     why += [f"canonical save inside: {s}" for s in canonical_saves(loose)[:3]]
     if kept:
-        why.append(f"{len(kept)} inner clone(s) kept: {kept[0]['path']}: {(kept[0]['why'] or ['?'])[0][:160]}")
+        why.append(f"{len(kept)} inner clone(s) kept: {kept[0]['path']}: {(kept[0]['why'] or ['?'])[0]}")
     if row["bytes"] > RESIDUE_CAP:
         why.append(f"{human(row['bytes'])} of loose files, over the {human(RESIDUE_CAP)} preserve cap")
     if why:
@@ -1673,13 +1673,13 @@ BROKEN_OBJECTS = re.compile(r"Could not read|bad object|missing (blob|tree|commi
 def must_read(r: subprocess.CompletedProcess, what: str) -> subprocess.CompletedProcess:
     """must(), for a step that reads the clone: its broken objects are a refusal, any other error is ours."""
     if r.returncode and BROKEN_OBJECTS.search(r.stderr or ""):
-        raise Unreadable(f"{what}: {r.stderr.strip()[:160]}")
+        raise Unreadable(f"{what}: {r.stderr.strip()}")
     return must(r, what)
 
 
 def must(r: subprocess.CompletedProcess, what: str) -> subprocess.CompletedProcess:
     if r.returncode:
-        raise PreserveFailed(f"{what}: {(r.stderr or r.stdout).strip()[:160]}")
+        raise PreserveFailed(f"{what}: {(r.stderr or r.stdout).strip()}")
     return r
 
 
@@ -1835,7 +1835,7 @@ def make_tar(top: Path, paths: list[str] | None, out: Path):
     env = {k: v for k, v in os.environ.items() if k not in ("TAR_OPTIONS", "GZIP")}    # the options here are all of them
     r = subprocess.run(cmd, input=inp, capture_output=True, timeout=1800, env=env)
     if r.returncode:
-        raise PreserveFailed(f"tar: {r.stderr.decode('utf-8', 'replace').strip()[:160]}")
+        raise PreserveFailed(f"tar: {r.stderr.decode('utf-8', 'replace').strip()}")
     t = subprocess.run(["tar", "-tzf", str(out)], capture_output=True, timeout=600, env=env)
     if t.returncode or not t.stdout.strip():
         raise PreserveFailed("tar: the archive does not list back")
@@ -1950,7 +1950,7 @@ def preserve(row: dict) -> str:
                        "verify": "residual pack indexed, every object listed; the rest is reachable on the mirrors; "
                                  "tar listed; sha256 matched on the archive" if row.get("residual")
                                  else "bundle restored into an empty repo; tar listed; sha256 matched on the archive",
-                       "evidence": "; ".join(row["why"])[:300]})
+                       "evidence": "; ".join(row["why"])})
     return str(dest)
 
 
@@ -2364,7 +2364,7 @@ def sweep_run_tmp() -> dict:
         return {"root": r["root"], "removed": len(r["removed"]), "live": r["live"], "work": len(r["work"]),
                 "errors": r["errors"][:3]}
     except Exception as e:  # noqa: BLE001 - a backstop never kills the run it rides on
-        return {"errors": [f"{type(e).__name__}: {str(e)[:200]}"]}
+        return {"errors": [f"{type(e).__name__}: {str(e)}"]}
 
 
 # ---------------------------------------------------------------- sanity: speak up at both ends of a run
@@ -2506,7 +2506,7 @@ def sanity_start(sd: Path, now: float) -> dict:
         m = measure(now, None, last_record(sd))
         problems = judge_sanity("start", m)
     except Exception as e:  # noqa: BLE001
-        m, problems = {}, [f"sanity start blind: {type(e).__name__}: {str(e)[:160]}"]
+        m, problems = {}, [f"sanity start blind: {type(e).__name__}: {str(e)}"]
     sanity_write(sd, "start", m, problems)
     return m
 
@@ -2516,9 +2516,9 @@ def sanity_end(sd: Path, now: float, rows: list[dict], rec: dict):
         m = measure(now, rows, rec)
         problems = judge_sanity("end", m)
     except Exception as e:  # noqa: BLE001
-        m, problems = {}, [f"sanity end blind: {type(e).__name__}: {str(e)[:160]}"]
+        m, problems = {}, [f"sanity end blind: {type(e).__name__}: {str(e)}"]
     if rec.get("failures"):
-        problems.append(f"{len(rec['failures'])} failure(s): {rec['failures'][0][:160]}")
+        problems.append(f"{len(rec['failures'])} failure(s): {rec['failures'][0]}")
     if rec.get("deferred"):
         problems.append(f"{rec['deferred']} row(s) deferred past the time budget")
     # The refusals by reason are context for a problem, not problems: counted as problems, one real line read as five
@@ -2577,7 +2577,7 @@ def new_alarms(rows: list[dict], sd: Path, stamp: str, apply: bool):
     for r in rows:
         if r["verdict"] != "REFUSE":
             continue
-        key = r["path"] + "|" + re.sub(r"\d+", "#", (r["why"] or [""])[0])[:120]
+        key = r["path"] + "|" + re.sub(r"\d+", "#", (r["why"] or [""])[0])[:120]  # cut-ok: a dedup key, not stored text
         cur.add(key)
         if key not in seen:
             fresh.append(f"{stamp} REFUSE {r['path']} ({human(r['bytes'])}, {r['age_h']} h): {(r['why'] or ['?'])[0]}"
@@ -2618,7 +2618,7 @@ def pressure_check() -> int:
         try:    # a full disk is exactly when this write fails; the reaper start below matters more
             with open(sd / "growth.jsonl", "a") as f:
                 f.write(json.dumps({"ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "t": time.time(),
-                                    "free_gb": free, "error": f"{type(e).__name__}: {str(e)[:200]}"}) + "\n")
+                                    "free_gb": free, "error": f"{type(e).__name__}: {str(e)}"}) + "\n")
         except OSError:
             pass
     t = tmp_reading()
@@ -2637,7 +2637,7 @@ def pressure_check() -> int:
         return 0
     unit = os.environ.get("SCRATCH_REAP_UNIT", "rm-scratch-reap.service")
     r = subprocess.run(["systemctl", "--user", "start", "--no-block", unit], capture_output=True, text=True, timeout=30)
-    rec.update(started=r.returncode == 0, unit=unit, err=r.stderr.strip()[:200])
+    rec.update(started=r.returncode == 0, unit=unit, err=r.stderr.strip())
     with open(sd / "pressure.jsonl", "a") as f:
         f.write(json.dumps(rec) + "\n")
     print(json.dumps(rec))
@@ -2753,7 +2753,7 @@ def main(argv=None) -> int:
             return run(a, sd)
         except Exception as e:      # the record must say so; re-raised, so the unit fails and signal_watch sees it
             if a.apply:
-                sanity_write(sd, "end", {}, [f"the run died: {type(e).__name__}: {str(e)[:200]}"])
+                sanity_write(sd, "end", {}, [f"the run died: {type(e).__name__}: {str(e)}"])
                 record(sd, {"ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "end_epoch": time.time(),
                             "apply": True, "ok": False, "failures": [f"{type(e).__name__}: {e}"]})
             raise

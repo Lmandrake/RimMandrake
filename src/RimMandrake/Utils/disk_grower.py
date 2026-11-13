@@ -105,7 +105,7 @@ def describe(proc: Path, pid: str) -> dict:
         cwd = os.readlink(proc / pid / "cwd")
     except OSError:
         cwd = None
-    return {"pid": int(pid), "unit": unit_of(proc, pid), "cwd": cwd, "cmd": cmd[:300]}
+    return {"pid": int(pid), "unit": unit_of(proc, pid), "cwd": cwd, "cmd": cmd}
 
 
 def writers(prev: dict, cur: dict, dt_s: float) -> list[dict]:
@@ -169,7 +169,7 @@ def _history(sd: Path, now: float, window_s: float) -> list[dict]:
             lines = p.read_text().splitlines()
         except OSError:
             continue
-        for ln in lines[-200:]:
+        for ln in lines[-200:]:  # cut-ok: the last 200 lines read, a list
             try:
                 r = json.loads(ln)
             except ValueError:
@@ -248,7 +248,7 @@ def tick(sd: Path, free_gb: float, line_gb: float, root: str = "/", now: float |
             with open(sd / "alarms.log", "a") as f:
                 for w in named:
                     f.write(f"{row['ts']} GROWER pid {w['pid']} wrote {w['gb']} GB in {dt / 60:.0f} min "
-                            f"({w['unit']}; cwd {w['cwd']}): {w['cmd'][:160]}\n")
+                            f"({w['unit']}; cwd {w['cwd']}): {w['cmd']}\n")
         row["named"] = [{"pid": w["pid"], "gb": w["gb"], "unit": w["unit"]} for w in named]
     _append(sd / "growth.jsonl", row)
     return row

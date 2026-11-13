@@ -93,7 +93,7 @@ def q_haystack(pairs, text, size, rng):
 
 
 def q_questions(pairs, text, k, rng):
-    body = text[:20000]
+    body = text[:20000]  # cut-ok: a context-ceiling benchmark builds a prompt of a set size on purpose
     inside = [(d, p) for d, p in pairs if f"<defName>{d}</defName>" in body]
     if len(inside) < k:
         return None

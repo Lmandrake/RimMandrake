@@ -476,7 +476,7 @@ def _mark_indeterminate(start, error):
     try:
         _inflight_write(rec)
     except OSError as ex:
-        _UNRESOLVED[start["cid"]] = dict(rec, marker_write_failed=str(ex)[:200])
+        _UNRESOLVED[start["cid"]] = dict(rec, marker_write_failed=str(ex))
         print("[rimbridge_client] INDETERMINATE marker for %s NOT written (%s): refusing mutations in this process "
               "until reconciled" % (start["cid"], ex), file=sys.stderr)
 
@@ -679,10 +679,10 @@ def journal_read(client):
     d = _reply_dict(out)[0]
     rows = d.get("operations") if isinstance(d, dict) else None
     if not isinstance(rows, list):
-        raise ValueError("%s reply has no operations list: %s" % (JOURNAL_TOOL, str(out)[:200]))
+        raise ValueError("%s reply has no operations list: %s" % (JOURNAL_TOOL, str(out)))
     ops = [_journal_op(r) for r in rows]
     if None in ops:
-        raise ValueError("%s row not readable: %s" % (JOURNAL_TOOL, str(rows[ops.index(None)])[:200]))
+        raise ValueError("%s row not readable: %s" % (JOURNAL_TOOL, str(rows[ops.index(None)])))
     return ops
 
 
@@ -726,7 +726,7 @@ def reconcile_read(client):
     try:
         ops = journal_read(client)
     except Exception as ex:  # noqa: BLE001 - any failure of this read must end in the refusal it could have lifted, never a new crash
-        why = "the bridge journal could not be read (%s: %s)" % (type(ex).__name__, str(ex)[:160])
+        why = "the bridge journal could not be read (%s: %s)" % (type(ex).__name__, str(ex))
         print("[rimbridge_client] reconcile: %s" % why, file=sys.stderr)
         return [], [dict(r, left_why=why) for r in pend]
     settled, left = [], []
@@ -1081,7 +1081,7 @@ class RimBridge:
         self.sock.sendall(head + body)
 
     def _malformed(self, why):
-        snippet = self.buf[:120]
+        snippet = self.buf[:120]  # cut-ok: a snippet of a raw protocol buffer that may be megabytes; the buffer is the full text
         self.close()
         self.buf = b""
         raise RimBridgeError("malformed bridge frame (%s): %r; connection closed, any call in flight is INDETERMINATE"
@@ -1403,10 +1403,10 @@ class RimBridge:
             # outcome/transport/timeout folded in from the retired rimdrive.obs_events (design 08 P5)
             outcome = "error" if answered else ("timeout" if timed_out else "lost")
             _evidence(dict({"ev": "end", "cid": cid, "status": status, "ms": int((time.time() - t0) * 1000),
-                            "error": str(ex)[:300], "t": _ev_now(), "outcome": outcome, "timeout": timed_out,
+                            "error": str(ex), "t": _ev_now(), "outcome": outcome, "timeout": timed_out,
                             "transport": "ok" if answered else outcome}, **_stall_fields(t0)))
             if mutating and status == "INDETERMINATE":
-                _mark_indeterminate(start, str(ex)[:300])
+                _mark_indeterminate(start, str(ex))
             else:
                 _inflight_clear(cid)
             _ACTIVE.discard(cid)
@@ -1415,7 +1415,7 @@ class RimBridge:
             _ACTIVE.discard(cid)                      # KeyboardInterrupt etc: marker stays, read as orphaned
             # Name the exception: a bare "client interrupted" left testq J20261026T182927Z-c2508c's set_fog death
             # (an OSError/ValueError escaping the socket read <1 s after the send, game alive) undiagnosable.
-            why = "client interrupted: %s: %s" % (type(ex).__name__, str(ex)[:240])
+            why = "client interrupted: %s: %s" % (type(ex).__name__, str(ex))
             try:
                 _evidence(dict({"ev": "end", "cid": cid, "status": "INDETERMINATE" if mutating else "lost",
                                 "ms": int((time.time() - t0) * 1000), "error": why, "t": _ev_now(),
@@ -1469,7 +1469,7 @@ class RimBridge:
                 st = _program_state(gi)
                 err = None
             except RimBridgeError as ex:          # a main thread busy finishing the load may not answer: keep waiting
-                st, err = None, str(ex)[:200]
+                st, err = None, str(ex)
             if st == "Playing":
                 d["programStateAfter"] = "Playing"
                 d["settledSeconds"] = round(clock() - t0, 1)
@@ -1526,15 +1526,15 @@ def _journal_probe(args):
         rb = RimBridge(host, port, token, timeout=args.timeout)
         rb.connect()
     except (RimBridgeError, OSError) as ex:
-        print("UNMEASURED: bridge not reachable: %s" % str(ex).replace("\n", " ")[:200])
+        print("UNMEASURED: bridge not reachable: %s" % str(ex).replace("\n", " "))
         return 2
     try:
         ops = journal_read(rb)
     except ValueError as ex:
-        print("journal reply not readable: %s" % str(ex).replace("\n", " ")[:300])
+        print("journal reply not readable: %s" % str(ex).replace("\n", " "))
         return 1
     except (RimBridgeError, OSError) as ex:
-        print("UNMEASURED: journal read got no answer: %s" % str(ex).replace("\n", " ")[:200])
+        print("UNMEASURED: journal read got no answer: %s" % str(ex).replace("\n", " "))
         return 2
     finally:
         rb.close()

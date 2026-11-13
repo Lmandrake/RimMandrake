@@ -328,7 +328,7 @@ def scan_save(path, audits):
             for t, pkg in needles.items():
                 if t in text:
                     found.setdefault(pkg, set()).add(t)
-            tail = buf[-256:]
+            tail = buf[-256:]  # cut-ok: a 256-byte read window, nothing stored
     return mod_ids, {k: sorted(v) for k, v in found.items()}, (wname.group(1) if wname else None)
 
 

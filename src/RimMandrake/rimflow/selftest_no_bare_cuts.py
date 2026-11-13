@@ -8,11 +8,12 @@ Owner, 2026-11-12, when 687 of 813 stored judge refusals ended at character 600:
 D:\\ClaudeWork\\rimmandrake\\refusal_contract\\truncation_census.md
 
 This lint fails on a bare literal slice of 3+ digits (`x[:600]`, `x[-1500:]`) or a NOTE_MAX/SUMMARY_MAX slice in the
-scanned files. A slice that is not a text cut (a list, a dedup key, a filename, a search window) carries
+scanned files (rimflow and every Utils tool). A slice that is not a text cut (a list, a dedup key, a filename, a search window) carries
 `# cut-ok: <why>` on its line. Selftests are not scanned (they build long strings on purpose).
 
 OWED: designer_stage.py, coverage_judge.py, refusal_contract.py and evidence_gate.py were being rebuilt by another
-helper (refusal-contract T1-T3) and are not scanned yet; their sites are listed in the census.
+helper (refusal-contract T1-T3) and are not scanned yet; their sites are listed in the census. Two-digit slices
+(`[:80]`) are not caught: most are ids, slugs and hashes, and a pass over them is owed.
 """
 import os
 import re
@@ -23,8 +24,8 @@ UTILS = os.path.join(os.path.dirname(HERE), "Utils")
 
 CUT = re.compile(r"\[\s*:\s*(\d{3,}|NOTE_MAX|SUMMARY_MAX)\b[^\]]*\]|\[\s*-\s*(\d{3,})\s*:\s*\]")
 SKIP = {"fulltext.py", "designer_stage.py", "coverage_judge.py", "refusal_contract.py", "evidence_gate.py"}
-# Utils tools that store evidence, verdicts, refusals or notes and were fixed in the same pass.
-UTILS_FILES = ()
+# Utils: every tool, fixed in the same pass (its evidence, verdicts, refusals, notes and reports are stored whole too).
+SCAN_UTILS = True
 
 
 def scan_text(text, name):
@@ -46,8 +47,10 @@ def targets():
     for f in sorted(os.listdir(HERE)):
         if f.endswith(".py") and not f.startswith("selftest_") and f not in SKIP:
             yield os.path.join(HERE, f)
-    for f in UTILS_FILES:
-        yield os.path.join(UTILS, f)
+    if SCAN_UTILS:
+        for f in sorted(os.listdir(UTILS)):
+            if f.endswith(".py") and not f.startswith(("selftest_", "test_")):
+                yield os.path.join(UTILS, f)
 
 
 def main():
@@ -73,7 +76,7 @@ def main():
         n += 1
         with open(p, encoding="utf-8") as f:
             bad += scan_text(f.read(), os.path.relpath(p, os.path.dirname(HERE)))
-    check("scanned files are many (instrument sees the tree)", n >= 50, n)
+    check("scanned files are many (instrument sees the tree)", n >= 250, n)
     check("no bare cut of stored text (%d files)" % n, not bad, "\n  " + "\n  ".join(bad))
     print("%d fail(s)" % fails)
     return 1 if fails else 0

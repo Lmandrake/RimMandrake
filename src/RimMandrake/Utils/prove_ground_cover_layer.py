@@ -88,7 +88,7 @@ def live():
     got = {d.get("defName"): (d.get("fields") or {}).get("altitudeLayer")
            for d in (r.get("defs") or []) if d.get("found", True)}
     if not any(c in got for c in CAPS):
-        print("UNMEASURED: no Rot cap resolved (TheRot not loaded?): %s" % str(r)[:300])
+        print("UNMEASURED: no Rot cap resolved (TheRot not loaded?): %s" % str(r))
         return 2
     bad = ["%s live %s" % (n, got[n]) for n, _ in gc if n in got and got[n] != LOW]
     bad += ["%s (%s) not loaded" % (n, p) for n, p in gc if p.startswith("mandrake.") and n not in got]

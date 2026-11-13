@@ -120,7 +120,7 @@ def read_list(path=None):
             seen.add(e["test"])
             good.append(e)
         else:
-            bad.append(str(e)[:120])
+            bad.append(str(e))
     return good, bad
 
 
@@ -228,7 +228,7 @@ def normalise(line, test):
     s = re.sub(r"(?:/[\w.\-]+)+/([\w.\-]+)", r"\1", s)          # a path -> its last part
     s = re.sub(r"\b[0-9a-fA-F]{6,}\b", "#", s)
     s = re.sub(r"\d+(\.\d+)?", "#", s)
-    return re.sub(r"\s+", " ", s).strip()[:160]
+    return re.sub(r"\s+", " ", s).strip()
 
 
 def letters(text, n=6):

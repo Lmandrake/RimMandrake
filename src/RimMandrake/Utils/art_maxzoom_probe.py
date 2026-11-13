@@ -179,7 +179,7 @@ def cmd_live(a):
     cam0, why = _bridge("rimworld/get_camera_state", {})
     root0 = _res(cam0).get("rootSize") if cam0 else None
     if not root0:
-        return fail("get_camera_state gave no rootSize: %s" % (why or json.dumps(cam0)[:200]))
+        return fail("get_camera_state gave no rootSize: %s" % (why or json.dumps(cam0)))
     out["root_before"] = root0
     _bridge("rimworld/set_camera_zoom_extension", {"enabled": False})
     _bridge("rimworld/set_camera_zoom", {"rootSize": REQUEST_ROOT})
@@ -191,13 +191,13 @@ def cmd_live(a):
     shot, swhy = _bridge("jawa/take_screenshot", {"fileName": "art_maxzoom_probe"})
     _bridge("rimworld/set_camera_zoom", {"rootSize": root0})
     if not root:
-        return fail("no settled rootSize: %s" % (why or json.dumps(cam)[:200]))
+        return fail("no settled rootSize: %s" % (why or json.dumps(cam)))
     if abs(root - REQUEST_ROOT) < 1e-3:
         return fail("rootSize stayed at the requested %.2f: nothing clamped it, so this is not the player's floor"
                     % REQUEST_ROOT)
     path = _res(shot).get("filePath") if shot else None
     if not path:
-        return fail("no screenshot: %s" % (swhy or json.dumps(shot)[:200]))
+        return fail("no screenshot: %s" % (swhy or json.dumps(shot)))
     try:
         wpath = subprocess.run(["wslpath", "-u", path], capture_output=True, text=True, timeout=20).stdout.strip()
         w, h = png_size(wpath or path)

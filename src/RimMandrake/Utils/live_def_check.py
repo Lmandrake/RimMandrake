@@ -233,13 +233,13 @@ def _bridge(tool, params, timeout, read_only_static=False):
                            + (["--read-only-static"] if read_only_static else []),
                            capture_output=True, text=True, timeout=timeout + 30, stdin=subprocess.DEVNULL)
     except (OSError, ValueError, subprocess.TimeoutExpired) as e:      # ValueError: UnicodeDecodeError on the reply bytes
-        return None, "the bridge call did not finish: %s" % str(e)[:200]
+        return None, "the bridge call did not finish: %s" % str(e)
     if r.returncode:
-        return None, "bridge call exit %d: %s" % (r.returncode, (r.stderr or r.stdout)[-300:])
+        return None, "bridge call exit %d: %s" % (r.returncode, (r.stderr or r.stdout))
     try:
         return json.loads(r.stdout, object_pairs_hook=_no_duplicate_keys), None
     except (ValueError, RecursionError):
-        return None, "the bridge answered something that is not JSON: %s" % r.stdout[:200]
+        return None, "the bridge answered something that is not JSON: %s" % r.stdout
 
 
 def call_running_mods(timeout):
@@ -289,7 +289,7 @@ def main(argv=None):
         code, lines = judge(claims, reply, owners, running)
         lines = pre + lines
     except Exception as e:      # an uncaught crash would exit 1, which the runner records as a FAIL
-        print("UNMEASURED: the reply could not be judged: %s: %s" % (type(e).__name__, str(e)[:200]))
+        print("UNMEASURED: the reply could not be judged: %s: %s" % (type(e).__name__, str(e)))
         return UNMEASURED
     print("\n".join(lines))
     print({PASS: "VERDICT PASS", FAIL: "VERDICT FAIL", UNMEASURED: "VERDICT UNMEASURED"}[code])
@@ -303,7 +303,7 @@ def safe_main(argv=None):
     except SystemExit:
         raise
     except BaseException as e:
-        sys.stdout.write("UNMEASURED: " + ascii("%s: %s" % (type(e).__name__, str(e)[:200])) + "\n")
+        sys.stdout.write("UNMEASURED: " + ascii("%s: %s" % (type(e).__name__, str(e))) + "\n")
         return UNMEASURED
 
 

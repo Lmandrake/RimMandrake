@@ -251,7 +251,7 @@ class Store:
     def _child(self, ch, listed, read):
         exe = os.path.basename(ch["exe"] or (ch["argv"][0] if ch["argv"] else ""))
         if exe.startswith("python") and not exe.endswith(".exe"):
-            return (True, "") if ch["traced"] else (False, f"a python child ran without the tracer: {' '.join(ch['argv'])[:120]}")
+            return (True, "") if ch["traced"] else (False, f"a python child ran without the tracer: {' '.join(ch['argv'])}")
         if exe == "rsync":
             return self._rsync(ch, listed, read)
         if exe in TOOLCHAIN or exe.lower().endswith(".exe"):

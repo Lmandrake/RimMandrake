@@ -279,12 +279,12 @@ def load_rules(path=None) -> dict:
         if at:      # 1e309 parses as infinity: every comparison against that limit would silently stay false
             raise ValueError("%s is not a finite number" % at)
         if "ranges" in rules and ranges_problems(rules):      # a metric nobody answers for must not reach a pass
-            raise ValueError("ranges refused: " + "; ".join(ranges_problems(rules))[:300])
+            raise ValueError("ranges refused: " + "; ".join(ranges_problems(rules)))
     except (OSError, ValueError) as e:
         saved = read_json(last_good)
         if not isinstance(saved, dict):
             raise
-        saved["_load_error"] = "%s: %s" % (type(e).__name__, str(e)[:160])
+        saved["_load_error"] = "%s: %s" % (type(e).__name__, str(e))
         return saved
     try:
         atomic_json(last_good, rules)
@@ -460,7 +460,7 @@ def c_accounts(now, rules, ctx):
     except Exception as e:  # noqa: BLE001  no lent set: every account stays judged by its week, which alarms early
         lent_rules, lent = None, set()
         out["accounts._collector"] = U("slot_rules.json unreadable, no account is judged by its loan: %s: %s"
-                                       % (type(e).__name__, str(e)[:120]))
+                                       % (type(e).__name__, str(e)))
     def account(name, a):
         src = a.get("source") or "UNMEASURED"
         if a.get("stale"):
@@ -505,7 +505,7 @@ def c_accounts(now, rules, ctx):
         except (KeyError, TypeError, ValueError) as e:  # a bad rule costs the slope: the week average still reads
             r, n, span = None, 0, 0
             out["accounts._collector"] = U("accounts_fit unusable, runway uses the week average: %s: %s"
-                                           % (type(e).__name__, str(e)[:120]))
+                                           % (type(e).__name__, str(e)))
         if r is not None:
             rate, how = r, "meter slope, %d readings over %.1f h" % (n, span)
         # an ESTIMATE says only that nothing was read: on an account not in use the week's average would invent a draw
@@ -534,7 +534,7 @@ def c_accounts(now, rules, ctx):
         except Exception as e:  # noqa: BLE001  one malformed account costs only itself
             for f in ("week_left_pct", "hours_to_reset", "runway"):
                 out["accounts.%s.%s" % (name, f)] = U("account_usage: malformed account row: %s: %s" % (
-                    type(e).__name__, str(e)[:120]))
+                    type(e).__name__, str(e)))
     return out
 
 
@@ -705,9 +705,9 @@ def c_steve(now, rules, ctx):
         st = sj.get("state")
         if hb > 30:
             out["steve.state"] = E(st, "steward.json is %.0f min old: its last word, not now" % hb, "steward state",
-                                   reason=str(sj.get("reason") or "")[:160], since=sj.get("since"))
+                                   reason=str(sj.get("reason") or ""), since=sj.get("since"))
         else:
-            out["steve.state"] = M(st, "steward state", reason=str(sj.get("reason") or "")[:160], since=sj.get("since"))
+            out["steve.state"] = M(st, "steward state", reason=str(sj.get("reason") or ""), since=sj.get("since"))
         out["steve.heartbeat_age_min"] = M(round(hb, 1), "min since steward.json")
         out["steve.watch_age_min"] = M(round(wage, 1), "min since steward_watch.json") if wage is not None else \
             U("steward_watch.json has no epoch")
@@ -728,14 +728,14 @@ def c_steve(now, rules, ctx):
             nobody.append(("fault %s for %.0f min with no steward incident" % (st, fault_min), fault_min))
         elif fault_min and fault_min > 0 and ladder_blind(sj.get("incident")):
             nobody.append(("fault %s for %.0f min, the steward's ladder blind: %s" % (
-                st, fault_min, str(sj["incident"]["error"])[:120]), fault_min))
+                st, fault_min, str(sj["incident"]["error"])), fault_min))
         # both silent, nothing is left to re-raise: here an unfiled, unknown or closed item owns nothing
         if hb > 30 and (wage is None or wage > 30) and (not wj.get("incident") or incident_unowned(wj["incident"])):
             nobody.append(("steward silent %.0f min and its watcher silent %s" % (
                 hb, "(never ran)" if wage is None else "%.0f min" % wage), hb))
         elif hb > 30 and ladder_blind(wj.get("incident")):     # the watcher runs but cannot escalate
             nobody.append(("steward silent %.0f min and its watcher's ladder blind: %s" % (
-                hb, str(wj["incident"]["error"])[:120]), hb))
+                hb, str(wj["incident"]["error"])), hb))
         if fault_min is None and not nobody:
             out["steve.unowned_stall_min"] = U("steward state stale or a fault of unknown duration: whether a stall is "
                                                "owned is unknown")
@@ -1042,7 +1042,7 @@ def nightly_catchup_reading():
         r = json.loads(p.read_text(encoding="utf-8"))
         st = r["state"]
     except (OSError, ValueError, KeyError, TypeError) as e:
-        return {"testing.nightly_gave_up": U("%s: %s" % (type(e).__name__, str(e)[:160]))}
+        return {"testing.nightly_gave_up": U("%s: %s" % (type(e).__name__, str(e)))}
     return {"testing.nightly_gave_up": M(1 if st in ("gave_up", "start_failed") else 0, "nights the sweep stopped being retried",
                                          night=r.get("night"), said=r.get("why", ""))}
 
@@ -1054,7 +1054,7 @@ def nightly_news(now, ctx):
     try:
         v = known_reds.measure(ctx.get("open_ids"), now, with_cop=True)
     except Exception as e:  # noqa: BLE001  a list that cannot be read costs these readings, not the family's
-        v = {"why": "%s: %s" % (type(e).__name__, str(e)[:160])}
+        v = {"why": "%s: %s" % (type(e).__name__, str(e))}
     if v.get("why"):
         return {k: U(v["why"]) for k in keys}
     c = v["cop"]
@@ -1119,7 +1119,7 @@ def rerun_path() -> Path:
 def _git(root, *args, timeout=60):
     r = subprocess.run(["git", "-C", str(root), *args], capture_output=True, text=True, timeout=timeout)
     if r.returncode:
-        raise RuntimeError("git %s: rc %d %s" % (" ".join(args), r.returncode, (r.stderr or "").strip()[:120]))
+        raise RuntimeError("git %s: rc %d %s" % (" ".join(args), r.returncode, (r.stderr or "").strip()))
     return r.stdout.strip()
 
 
@@ -1139,7 +1139,7 @@ def rerun_tree_dirty(root):
                  + _git(root, "status", "--porcelain", "--untracked-files=all", "--", "src", ":(glob)**/*.py")
                  ).split("\n")
     except (OSError, RuntimeError, subprocess.TimeoutExpired) as e:
-        return "git status: %s" % str(e)[:160]
+        return "git status: %s" % str(e)
     dirty = sorted({ln.split(None, 1)[-1] for ln in dirty if ln.strip()})    # _git strips the first " M"
     return "working tree differs from origin/main: %s" % ", ".join(dirty[:3]) if dirty else None
 
@@ -1159,7 +1159,7 @@ def rerun_at_main(tests, timeout, root=None):
         _git(root, "pull", "-q", "--ff-only", "origin", "main", timeout=90)
         head, main = _git(root, "rev-parse", "HEAD"), _git(root, "rev-parse", "origin/main")
     except (OSError, RuntimeError, subprocess.TimeoutExpired) as e:
-        return "unmeasured", "git: %s" % str(e)[:160], None
+        return "unmeasured", "git: %s" % str(e), None
     if head != main:
         return "unmeasured", "checkout at %s, origin/main at %s" % (head[:10], main[:10]), None
     dirty = rerun_tree_dirty(root)
@@ -1171,7 +1171,7 @@ def rerun_at_main(tests, timeout, root=None):
         try:
             at = _git(root, "log", "-1", "--format=%h", "--diff-filter=D", head, "--", t)
         except (OSError, RuntimeError, subprocess.TimeoutExpired) as e:
-            return "unmeasured", "git log %s: %s" % (t, str(e)[:120]), head
+            return "unmeasured", "git log %s: %s" % (t, str(e)), head
         if not at:
             return "unmeasured", "not at origin/main and never deleted there: %s" % t, head
         deleted[t] = at
@@ -1195,17 +1195,17 @@ def rerun_at_main(tests, timeout, root=None):
     try:
         after = _git(root, "rev-parse", "HEAD")
     except (OSError, RuntimeError, subprocess.TimeoutExpired) as e:
-        return "unmeasured", "git after the rerun: %s" % str(e)[:140], head
+        return "unmeasured", "git after the rerun: %s" % str(e), head
     if after != head:
         return "unmeasured", "checkout moved during the rerun: %s -> %s" % (head[:10], after[:10]), head
     dirty = rerun_tree_dirty(root)
     if dirty:
         return "unmeasured", "after the rerun: " + dirty, head
     if r.returncode == 0 and res.startswith("RESULT: GREEN") and "UNMEASURED (" not in out and "DROPPED:" not in out:
-        return "green", res[:160], head
+        return "green", res, head
     if res.startswith("RESULT: GREEN"):
         return "unmeasured", "green with tests that did not run their check", head
-    return "red", res[:160], head
+    return "red", res, head
 
 
 class RerunGate:
@@ -1229,7 +1229,7 @@ class RerunGate:
         try:
             v, said, sha = self.run(list(g["tests"]), int(left))
         except Exception as e:  # noqa: BLE001  a broken rerun files the group as before
-            v, said, sha = "unmeasured", "%s: %s" % (type(e).__name__, str(e)[:160]), None
+            v, said, sha = "unmeasured", "%s: %s" % (type(e).__name__, str(e)), None
         self.st["groups"][g["key"]] = {"verdict": v, "said": said, "sha": sha, "tests": list(g["tests"]),
                                        "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
         self.dirty = True
@@ -1357,10 +1357,10 @@ def scratch_outside(san, now, rules):
             elif now - at > limit * 60:
                 why = "sanity record frozen: last stamped %s, %.0f min ago, limit %g" % (iso(at), (now - at) / 60.0, limit)
             elif not is_num(v) or not finite(v) or v < 0:
-                why = "sanity record holds no rm_scratch_clones at its %s: %s" % (phase, str(d[phase].get("problems"))[:160])
+                why = "sanity record holds no rm_scratch_clones at its %s: %s" % (phase, str(d[phase].get("problems")))
     if why:
         return {"disk.scratch_outside_cap": U(why, "clones"), "disk.scratch_outside_distressed": U(why),
-                "disk.scratch_outside_blind": M(1, "sources not seen", cause=why[:300])}
+                "disk.scratch_outside_blind": M(1, "sources not seen", cause=why)}
     pts = {"disk.scratch_outside_cap": M(v, "clones", phase=phase, at=iso(at), max_age_min=limit)}
     state = read_class(ms, "disk.scratch_outside_cap", pts)
     cause = "%s clones outside the pool cap at the %s of the reaper run of %s" % (fmt(v), phase, iso(at)) if state in ALARMED else "none"
@@ -1410,7 +1410,7 @@ def root_growth(sd, now, rules):
             why = "growth record %s: %s" % (gp, e)
     if why:
         return {"disk.root_fall_gb": U(why, "GB"), "disk.root_fall_distressed": U(why),
-                "disk.root_fall_blind": M(1, "sources not seen", cause=why[:300])}
+                "disk.root_fall_blind": M(1, "sources not seen", cause=why)}
     win = r.get("window_min")
     pts = {"disk.root_fall_gb": M(fall, "GB the root fell within %s min and still down a tick later" % win, at=iso(t),
                                   free_gb=r.get("free_gb"), raw_fall_gb=r.get("fall_gb"),
@@ -1429,7 +1429,7 @@ def root_growth(sd, now, rules):
         cause = "%s; root fell %s GB in %s min (held a tick) to %s GB free at %s" % (named, fmt(fall), win, r.get("free_gb"),
                                                                                 r.get("ts"))
     pts["disk.root_fall_distressed"] = M(int(state in ALARMED), "1 when the root falls fast", state=state,
-                                         cause=cause[:600], writers=writers)
+                                         cause=cause, writers=writers)
     pts["disk.root_fall_blind"] = M(0, "sources not seen", cause="none")
     return pts
 
@@ -1462,7 +1462,7 @@ def whea_lines():
         raise OSError("powershell: %s" % e)
     out = (r.stdout or "").replace("\r", "").splitlines()
     if r.returncode != 0:
-        raise OSError("powershell exit %d: %s" % (r.returncode, ((r.stdout or "") + (r.stderr or "")).strip()[:200]))
+        raise OSError("powershell exit %d: %s" % (r.returncode, ((r.stdout or "") + (r.stderr or "")).strip()))
     return out
 
 
@@ -1473,7 +1473,7 @@ def whea_parse(lines, now):
     for ln in lines:
         f = ln.strip().split("|")
         if f[0] == "ERR":
-            return [], "event log: " + "|".join(f[1:])[:200]
+            return [], "event log: " + "|".join(f[1:])
         if f[0] == "END":
             end = f[1] if len(f) > 1 else ""
         elif f[0] == "EV":
@@ -1483,9 +1483,9 @@ def whea_parse(lines, now):
                     raise ValueError(f[3])
                 evs.append((int(f[1]), int(f[2]), t))
             except (IndexError, ValueError):
-                return [], "unreadable event row %r" % ln[:120]
+                return [], "unreadable event row %r" % ln
         elif f[0]:
-            return [], "unexpected line %r" % ln[:120]
+            return [], "unexpected line %r" % ln
     if end is None:
         return [], "no END line: the query did not finish"
     if not end.isdigit() or int(end) != len(evs):
@@ -1499,7 +1499,7 @@ def whea_reading(now):
     try:
         evs, why = whea_parse(whea_lines(), now)
     except OSError as e:
-        evs, why = [], str(e)[:240]
+        evs, why = [], str(e)
     if why:
         return {"disk.whea_corrected_24h": U(why, "events"), "disk.whea_severe_24h": U(why, "events"),
                 "disk.whea_blind": M(1, "WHEA sources not seen", cause="WHEA count blind: " + why)}
@@ -1617,7 +1617,7 @@ def c_disk(now, rules, ctx):
         out["disk.pool_breach"] = M(pr["breach"] + len(ss["stranded"]), "pool breaches: over count, over bytes, stranded unpushed clones",
                                     stranded=pr["stranded"] + ss["stranded"], unpushed=pr["unpushed"])
     except Exception as e:
-        out["disk.pool_breach"] = M(9999, "pool breaches", why="pool unreadable: %s" % str(e)[:160])
+        out["disk.pool_breach"] = M(9999, "pool breaches", why="pool unreadable: %s" % str(e))
     return out
 
 
@@ -1625,7 +1625,7 @@ def systemctl_json(*args):
     r = subprocess.run(["systemctl", "--user"] + list(args) + ["-o", "json", "--no-pager"], capture_output=True,
                        text=True, timeout=30)
     if r.returncode != 0:
-        raise RuntimeError("systemctl %s: exit %d %s" % (" ".join(args), r.returncode, r.stderr.strip()[-200:]))
+        raise RuntimeError("systemctl %s: exit %d %s" % (" ".join(args), r.returncode, r.stderr.strip()))
     return json.loads(r.stdout or "[]")
 
 
@@ -1744,7 +1744,7 @@ def deploy_update_age(now, root=None):
     except FileNotFoundError:
         return 99999.0, "no good update pass on record (%s/.git/pulse_update_last_good absent)" % root
     except OSError as e:
-        return None, "stamp unreadable: %s" % str(e)[:120]
+        return None, "stamp unreadable: %s" % str(e)
 
 
 def c_timers(now, rules, ctx):
@@ -1762,11 +1762,11 @@ def c_timers(now, rules, ctx):
         out["timers.failed_units"] = M(len(real), "failed user units", units=real[:12], one_shots=shots,
                                        awaiting_retry=waiting)
     except Exception as e:  # noqa: BLE001
-        out["timers.failed_units"] = U("list-units: %s: %s" % (type(e).__name__, str(e)[:160]))
+        out["timers.failed_units"] = U("list-units: %s: %s" % (type(e).__name__, str(e)))
     try:
         timers = systemctl_json("list-timers", "--all")
     except Exception as e:  # noqa: BLE001
-        out["timers.overdue_timers"] = U("list-timers: %s: %s" % (type(e).__name__, str(e)[:160]))
+        out["timers.overdue_timers"] = U("list-timers: %s: %s" % (type(e).__name__, str(e)))
         return out
     over, nob = [], 0
     for t in timers:
@@ -1788,7 +1788,7 @@ def untriaged_reading(events):
         import findings_fold
         untr = findings_fold.no_outcome(events)
     except Exception as e:  # noqa: BLE001  findings_fold.Unmeasured, or a fold that will not import
-        return U("findings fold table: %s: %s" % (type(e).__name__, str(e)[:160]))
+        return U("findings fold table: %s: %s" % (type(e).__name__, str(e)))
     return M(len(untr), "findings with no outcome yet", first=sorted(untr)[:5])
 
 
@@ -1820,7 +1820,7 @@ def c_flow(now, rules, ctx):
     try:
         out["steve.incident_unclaimed_min"] = steve_incident_unclaimed(world, model, now, rules, lane_fault_since(now))
     except Exception as e:  # noqa: BLE001  a bad steve_incident rule costs this reading, not the family's
-        out["steve.incident_unclaimed_min"] = U("steve_incident: %s: %s" % (type(e).__name__, str(e)[:160]))
+        out["steve.incident_unclaimed_min"] = U("steve_incident: %s: %s" % (type(e).__name__, str(e)))
     return out
 
 
@@ -1901,12 +1901,12 @@ def steve_incident_early(point, rules, now, expediter=None):
             done[i] = now
         else:
             flags.append({"rule": "steve_expedite", "key": "steve.incident_unclaimed_min", "value": ages.get(i),
-                          "window": "now", "detail": "expedite of %s refused: %s" % (i, str((got or {}).get(i, "no answer"))[:200])})
+                          "window": "now", "detail": "expedite of %s refused: %s" % (i, str((got or {}).get(i, "no answer")))})
     try:
         atomic_json(path, done)
     except OSError as e:
         flags.append({"rule": "steve_expedite", "key": "steve.incident_unclaimed_min", "value": None, "window": "now",
-                      "detail": "%s not written: %s" % (STEVE_EXPEDITE_FILE, str(e)[:160])})
+                      "detail": "%s not written: %s" % (STEVE_EXPEDITE_FILE, str(e))})
     return flags
 
 
@@ -1915,7 +1915,7 @@ def c_process(now, rules, ctx):
     r = subprocess.run(["git", "-C", str(data_clone()), "log", "--since=@%d" % int(now - 7 * DAY), "--no-renames",
                         "--name-only", "--format=@@%ct"], capture_output=True, text=True, timeout=120)
     if r.returncode != 0:
-        raise RuntimeError("git log: " + r.stderr.strip()[-200:])
+        raise RuntimeError("git log: " + r.stderr.strip())
     commits, cur = [], None
     for line in r.stdout.splitlines():
         if line.startswith("@@"):
@@ -1940,7 +1940,7 @@ def c_process(now, rules, ctx):
             out["process." + key] = M(BH.held_hours(evs, now, span), "hours the bridge lock was held (each hold cut at 6 h)")
     except Exception as e:  # noqa: BLE001
         for key in ("bridge_h_24h", "bridge_h_7d"):
-            out["process." + key] = U("ledger: %s: %s" % (type(e).__name__, str(e)[:120]))
+            out["process." + key] = U("ledger: %s: %s" % (type(e).__name__, str(e)))
     return out
 
 
@@ -1953,15 +1953,15 @@ def game_health(now):
         r = subprocess.run([sys.executable, str(HERE / "game_health_check.py"), "record", "--json"],
                            capture_output=True, text=True, timeout=120)
         if r.returncode != 0:
-            raise RuntimeError("exit %d: %s" % (r.returncode, (r.stderr or r.stdout).strip()[-200:]))
+            raise RuntimeError("exit %d: %s" % (r.returncode, (r.stderr or r.stdout).strip()))
         json.loads(r.stdout)
         r = subprocess.run([sys.executable, str(HERE / "game_health_check.py"), "latest", "--json"],
                            capture_output=True, text=True, timeout=60)
         if r.returncode != 0:
-            raise RuntimeError("latest exit %d: %s" % (r.returncode, (r.stderr or r.stdout).strip()[-200:]))
+            raise RuntimeError("latest exit %d: %s" % (r.returncode, (r.stderr or r.stdout).strip()))
         row = json.loads(r.stdout)
     except Exception as e:  # noqa: BLE001  a broken health check costs these readings, not the tps family's
-        return {k: U("game_health_check.py failed: %s" % str(e)[:200]) for k in keys}
+        return {k: U("game_health_check.py failed: %s" % str(e)) for k in keys}
     if not isinstance(row, dict) or not isinstance(row.get("breaches"), list):
         return {k: U("no full-list game session recorded yet") for k in keys}
     end = epoch(row.get("end"))
@@ -1973,10 +1973,10 @@ def game_health(now):
     out = {"tps.health_breaches": M(len(br), "limits crossed by the newest full-list session", session=row.get("session"),
                                     keys=br, said="; ".join("%s=%s (limit %s %s)" % (b.get("key"), b.get("value"),
                                                                                      b.get("op"), b.get("limit"))
-                                                            for b in opn)[:400] or None,
+                                                            for b in opn) or None,
                                     debugged=row.get("debugged") or None,
                                     # what the session was doing when each limit fell (game_health_check.py attribute)
-                                    attribution={k: "; ".join(v)[:600] for k, v in (row.get("attribution") or {}).items()
+                                    attribution={k: "; ".join(v) for k, v in (row.get("attribution") or {}).items()
                                                  if isinstance(v, list) and k in br} or None),
            "tps.health_age_h": M(round((now - end) / 3600.0, 1), "h since the newest full-list session ended")
            if end is not None else U("newest row has no readable end time")}
@@ -1995,12 +1995,12 @@ def c_tps(now, rules, ctx):
     try:
         r = subprocess.run([sys.executable, str(HERE / "tps_record.py"), "--json"], capture_output=True, text=True, timeout=90)
         if r.returncode != 0:
-            raise RuntimeError("tps_record.py exit %d: %s" % (r.returncode, (r.stderr or r.stdout).strip()[-200:]))
+            raise RuntimeError("tps_record.py exit %d: %s" % (r.returncode, (r.stderr or r.stdout).strip()))
         s = (json.loads(r.stdout) or {}).get("summary") or {}
         if not isinstance(s, dict):
             raise ValueError("tps_record gave a summary that is not an object")
     except (OSError, subprocess.SubprocessError, RuntimeError, ValueError, AttributeError) as e:
-        why = "tps_record failed: %s: %s" % (type(e).__name__, str(e)[:200])
+        why = "tps_record failed: %s: %s" % (type(e).__name__, str(e))
         out.update({k: U(why) for k in ("tps.ratio_median", "tps.stalls", "tps.stall_max_s")})
         return out
     if s.get("coverage") != "FRESH":
@@ -2029,7 +2029,7 @@ def soft_point(p):
     """A streams measure that is not MEASURED, held to the three marks: an unknown mark is UNMEASURED with no value."""
     m = p.get("m") if p.get("m") in ("ESTIMATE", "UNMEASURED") else "UNMEASURED"
     return {"v": p.get("v") if m == "ESTIMATE" else None, "m": m,
-            "why": ("streams mark %r: " % p.get("m") if m != p.get("m") else "") + str(p.get("why") or "")[:200]}
+            "why": ("streams mark %r: " % p.get("m") if m != p.get("m") else "") + str(p.get("why") or "")}
 
 
 def c_production(now, rules, ctx):
@@ -2105,13 +2105,13 @@ def tt_texts(now, rules, ctx):
                 texts.setdefault(ev["seat"], []).append(body)
     except Exception as e:  # noqa: BLE001
         for sn in seats:
-            bad[sn] = "ledger unreadable: %s: %s" % (type(e).__name__, str(e)[:120])
+            bad[sn] = "ledger unreadable: %s: %s" % (type(e).__name__, str(e))
     try:
         rx = re.compile(rules["process_regex"])
         r = subprocess.run(["git", "-C", str(data_clone()), "log", "--since=@%d" % int(since), "--no-renames", "--name-only",
                             "--format=%x1e%ct%x1f%B%x1f"], capture_output=True, text=True, timeout=120)
         if r.returncode != 0:
-            raise RuntimeError("git log: " + r.stderr.strip()[-200:])
+            raise RuntimeError("git log: " + r.stderr.strip())
         for rec in r.stdout.split("\x1e")[1:]:
             parts = rec.split("\x1f")
             if len(parts) < 3:
@@ -2124,7 +2124,7 @@ def tt_texts(now, rules, ctx):
                 texts.setdefault("commits." + seat, []).append(msg)
     except Exception as e:  # noqa: BLE001
         for sn in seats:
-            bad["commits." + sn] = "git log unreadable: %s: %s" % (type(e).__name__, str(e)[:120])
+            bad["commits." + sn] = "git log unreadable: %s: %s" % (type(e).__name__, str(e))
     rd = tt_roles_dir()
     names = set(cfg.get("roles") or ["producer", "auditor", "innovator"])
     try:
@@ -2149,7 +2149,7 @@ def tt_texts(now, rules, ctx):
                 continue
             texts.setdefault("role." + m.group(1), []).append(res)
     except Exception as e:  # noqa: BLE001
-        bad["role._all"] = "role runs unreadable: %s: %s" % (type(e).__name__, str(e)[:120])
+        bad["role._all"] = "role runs unreadable: %s: %s" % (type(e).__name__, str(e))
     return texts, bad
 
 
@@ -2385,12 +2385,12 @@ def rl_books_behind(books, now):
                 age = None
             if age is None or age > BOOKS_FETCH_BLIND_S:
                 return None, "books clone fetch refused, origin/main %s: %s" % (
-                    "has no reflog" if age is None else "unmoved for %d min" % (age // 60), got.stderr[-120:])
+                    "has no reflog" if age is None else "unmoved for %d min" % (age // 60), got.stderr)
         r = git("log", "--format=%ct", "HEAD..origin/main")
     except (OSError, subprocess.SubprocessError) as e:
-        return None, "books clone unreadable: %s" % str(e)[:120]
+        return None, "books clone unreadable: %s" % str(e)
     if r.returncode:
-        return None, "books clone unreadable: %s" % r.stderr[-120:]
+        return None, "books clone unreadable: %s" % r.stderr
     ts = [int(x) for x in r.stdout.split() if x.isdigit()]
     return (0.0, 0) if not ts else (round(max(now - min(ts), 0) / 60.0, 1), len(ts))
 
@@ -2428,7 +2428,7 @@ def rl_game_hold_idle(items_dir, now):
     try:
         names = sorted(os.listdir(items_dir))
     except OSError as e:
-        return None, "items unreadable: %s" % str(e)[:120]
+        return None, "items unreadable: %s" % str(e)
     worst, who = 0.0, {"holder": None, "kind": None}
     for n in names:
         st = read_json(Path(items_dir) / n / "state.json")
@@ -2439,7 +2439,7 @@ def rl_game_hold_idle(items_dir, now):
             try:
                 since = rl_broker_turn_ended(items_dir, n, g, now)
             except Exception as e:  # noqa: BLE001 - a reader that cannot look at the job says so, never 0
-                return None, "broker turn of %s unreadable: %s: %s" % (n, type(e).__name__, str(e)[:100])
+                return None, "broker turn of %s unreadable: %s: %s" % (n, type(e).__name__, str(e))
             kind = "proving, broker turn over"
         elif st.get("status") == "game" and g.get("phase") == "proving":
             pid = g.get("prove_pid")
@@ -2463,7 +2463,7 @@ def rl_live_measured(live_dir, now, cfg):
     try:
         rows = tail_json_lines(Path(live_dir) / "runs.jsonl")
     except OSError as e:
-        return None, "live/runs.jsonl unreadable: %s" % str(e)[:120]
+        return None, "live/runs.jsonl unreadable: %s" % str(e)
     recent = [r for r in rows if isinstance(r, dict) and r.get("outcome") and
               now - win_h * 3600 <= (epoch(r.get("at")) or 0) <= now + 300][-n_max:]
     if len(recent) < n_min:
@@ -2730,7 +2730,7 @@ def churn_item_points(per, now, cfg, spend_known, held="read"):
             fresh += 1
         out[CHURN_ITEM_PREFIX + n] = M(len(why), CHURN_ITEM_UNIT, item=n, subject=churn_subject(n), status=st.get("status"),
                                        gen=st.get("gen"), returns=st.get("returns"), spent=-neg,
-                                       said="%s: %s" % (n, "; ".join(why))[:400], reasons=why)
+                                       said="%s: %s" % (n, "; ".join(why)), reasons=why)
     for n in sorted(held - {f[1] for f in flagged}):
         if n in torn:
             out[CHURN_ITEM_PREFIX + n] = U("state.json or attempts.jsonl of %s unreadable: whether it still churns is "
@@ -2768,7 +2768,7 @@ def rl_churn(store, now, cfg):
     try:
         names = sorted(os.listdir(store / "items"))
     except OSError as e:
-        why = "items unreadable: %s" % str(e)[:120]
+        why = "items unreadable: %s" % str(e)
         return churn_blind(why)
     import hashlib
     by_hash, gen_end, started, churn, classes, torn, per = {}, {}, {}, [], {}, 0, {}
@@ -2913,9 +2913,9 @@ def rl_jams(store, now):
         why = "jams unreadable: %s" % c["error"]
         return {"relentless.jam_unnamed": U(why, "jams"), "relentless.jam_repeat": U(why, "jams")}
     un, rep = c["unnamed"], c["repeats"]
-    return {"relentless.jam_unnamed": M(len(un), "jams", first=(un[0]["why"][:200] if un else "none"),
+    return {"relentless.jam_unnamed": M(len(un), "jams", first=(un[0]["why"] if un else "none"),
                                         window_days=c["window_days"]),
-            "relentless.jam_repeat": M(len(rep), "jams", first=("%s: %s" % (rep[0]["cls"], rep[0]["why"][:180]) if rep
+            "relentless.jam_repeat": M(len(rep), "jams", first=("%s: %s" % (rep[0]["cls"], rep[0]["why"]) if rep
                                                                  else "none"), classes=sorted({r["cls"] for r in rep}),
                                        window_days=c["window_days"])}
 
@@ -2972,7 +2972,7 @@ def rl_checks_lost(store, now, cfg, chunk=1 << 23):
         return U("journal tail read (%d MB) does not reach back %g h" % (chunk >> 20, window / 3600.0), "items")
     worst = sorted(lost, key=lambda i: (-lost[i], i))
     return M(len(lost), "items", lost=sum(lost.values()), started=started, verdicts=verdicts, window_h=window / 3600.0,
-             empty=empty, err=(err or "")[:200],
+             empty=empty, err=(err or ""),
              items=worst[:12], first=("%d checkers lost on %d items in %g h (%d wrote no output), %d verdicts, %d checks started (%s)"
                                       % (sum(lost.values()), len(lost), window / 3600.0, empty, verdicts, started,
                                          ", ".join(worst[:5])) if lost else "none"))
@@ -3037,7 +3037,7 @@ def rl_checker_deaths_run(store, now, cfg, chunk=1 << 23):
     if size > chunk and (oldest is None or oldest > start):
         return U("journal tail read (%d MB) does not reach back %g h" % (chunk >> 20, window / 3600.0), "items")
     items = list(dict.fromkeys(run))
-    return M(len(items), "items", deaths=len(run), empty=empty, unknown=unknown, since=since, err=(err or "")[:200],
+    return M(len(items), "items", deaths=len(run), empty=empty, unknown=unknown, since=since, err=(err or ""),
              broken_by=broke or "nothing in the window", window_h=window / 3600.0, items=items[:12],
              first=("%d checkers in a row on %d items died with no verdict since %s (%d wrote no output, %d unknown; "
                     "last break: %s): %s" % (len(run), len(items), since, empty, unknown, broke or "none in window",
@@ -3057,7 +3057,7 @@ def c_relentless(now, rules, ctx):
                 "relentless.blind": M(1, "sources not seen", cause="ops_watch_rules.json has no relentless block")}
     no_range = need_ranges(rules, RL_RANGES)
     if no_range:
-        return {**{k: U(no_range) for k in RL_KEYS}, "relentless.blind": M(1, "sources not seen", cause=no_range[:300])}
+        return {**{k: U(no_range) for k in RL_KEYS}, "relentless.blind": M(1, "sources not seen", cause=no_range)}
     ms = ranges_of(rules)
     store = rl_root(cfg) / "store"
     limit = ms["relentless.tick_age_s"]["max_age_min"]
@@ -3132,7 +3132,7 @@ def c_relentless(now, rules, ctx):
         else:
             breaker_min = rl_run_min(rows, now, lambda r: str(r.get("why") or "").startswith("breaker open")) if opened else 0
             pts["relentless.breaker_open_min"] = M(breaker_min, "min", until=iso(until) if opened else None,
-                                                   said=str(br.get("why") or "")[:200], max_age_min=limit)
+                                                   said=str(br.get("why") or ""), max_age_min=limit)
     try:
         last = rl_last_progress(store, cfg, now)
     except OSError as e:
@@ -3158,7 +3158,7 @@ def c_relentless(now, rules, ctx):
         pts["relentless.distressed"] = M(int(state in ALARMED), "1 when the belt is distressed or worse", state=state, cause=cause)
         pts["relentless.cause"] = M(cause)
     else:
-        pts["relentless.distressed"] = pts["relentless.cause"] = U(why or "; ".join(bad)[:300])
+        pts["relentless.distressed"] = pts["relentless.cause"] = U(why or "; ".join(bad))
     span = rl_stop_span(excuse, began, rows, t, now)
 
     def acting(age, **x):
@@ -3196,7 +3196,7 @@ def c_relentless(now, rules, ctx):
         pts[k] = p
         if p.get("m") == "UNMEASURED" and p["why"] not in bad:
             bad.append(p["why"])        # an unread journal or registry hides every jam class: blind, never quiet
-    pts["relentless.blind"] = M(len(bad), "sources not seen", cause="; ".join(bad)[:300] or "none")
+    pts["relentless.blind"] = M(len(bad), "sources not seen", cause="; ".join(bad) or "none")
     return pts
 
 
@@ -3204,7 +3204,7 @@ def st_suppressed(points, fam):
     """A pass that did not measure <fam>.blind (the collector raised, or was taken out of the pass) must not read as
     quiet: the point is written here so its target alarms, on this pass, whatever stopped the collection."""
     why = str((points.get(fam + "._collector") or {}).get("why") or "the %s collector did not run this pass" % fam)
-    return M(1, "sources not seen", cause=why[:300])
+    return M(1, "sources not seen", cause=why)
 
 
 # ---------------------------------------------------------------- plan: the priority list and its advance (DI3, MI1)
@@ -3244,7 +3244,7 @@ def c_plan(now, rules, ctx):
     cfg = rules.get("plan")
     if no_range or not isinstance(cfg, dict) or not isinstance(cfg.get("status_rank"), dict):
         why = no_range or "ops_watch_rules.json has no plan.status_rank"
-        return {**{k: U(why) for k in PL_KEYS}, "plan.list_age_h": U(why, "h"), "plan.blind": M(1, "sources not seen", cause=why[:300])}
+        return {**{k: U(why) for k in PL_KEYS}, "plan.list_age_h": U(why, "h"), "plan.blind": M(1, "sources not seen", cause=why)}
     PL, model = plan_modules()
     ms, root = ranges_of(rules), data_clone()
     got = PL.load(root)
@@ -3257,7 +3257,7 @@ def c_plan(now, rules, ctx):
             raise ValueError("the ledger holds no items")
     except Exception as e:  # noqa: BLE001  whatever stopped the ledger: not seen, never sane, never a closed entry
         world, evs = None, []
-        bad.append("ledger: %s: %s" % (type(e).__name__, str(e)[:160]))
+        bad.append("ledger: %s: %s" % (type(e).__name__, str(e)))
     pts = {"plan.entries": M(len(entries), "entries")}
     if got["state"] == "ok":
         t = PL.epoch(got["doc"]["set_at"])
@@ -3284,7 +3284,7 @@ def c_plan(now, rules, ctx):
     if world is not None and days:
         since = min(new[k]["rose_t"] for k in days)
         closes = sum(1 for ev in evs if ev.get("event") == "close" and (epoch(ev.get("ts")) or 0) >= since)
-    pts["plan.list_state"] = M(state, why=(got["why"] or ", ".join(closed))[:300])
+    pts["plan.list_state"] = M(state, why=(got["why"] or ", ".join(closed)))
     if days:
         pts["plan.days_since_advance"] = M(max(days.values()), "days", per_entry=days, closes=closes)
     else:
@@ -3292,7 +3292,7 @@ def c_plan(now, rules, ctx):
     cls, cause = pl_verdict(ms, pts, closes, days, state)
     pts["plan.distressed"] = M(int(cls in ALARMED), "1 when the plan list is distressed or worse", state=cls, cause=cause)
     pts["plan.cause"] = M(cause)
-    pts["plan.blind"] = M(len(bad), "sources not seen", cause="; ".join(bad)[:300] or "none")
+    pts["plan.blind"] = M(len(bad), "sources not seen", cause="; ".join(bad) or "none")
     return pts
 
 
@@ -3402,7 +3402,7 @@ def c_seats(now, rules, ctx):
     no_range = need_ranges(rules, ST_RANGES)
     if no_range:
         return {**{k: U(no_range) for k in ST_KEYS}, "seats.tick_age_s": U(no_range, "s"),
-                "seats.blind": M(1, "sources not seen", cause=no_range[:300])}
+                "seats.blind": M(1, "sources not seen", cause=no_range)}
     ms = ranges_of(rules)
     root = st_dir(cfg)
     limit = ms["seats.tick_age_s"]["max_age_min"]
@@ -3454,7 +3454,7 @@ def c_seats(now, rules, ctx):
     if why is not None:
         for k in ST_KEYS:
             pts[k] = U(why, "min" if k.endswith("_min") else None)
-        pts["seats.blind"] = M(1, "sources not seen", cause=why[:300])
+        pts["seats.blind"] = M(1, "sources not seen", cause=why)
         return pts
     pts["seats.paused"] = M(int(bool(st_paused(rows, now, limit))), "1 while a PAUSE file stands")
     pts["seats.idle_with_work_min"] = M(worst, "min", per_seat=per)
@@ -3691,7 +3691,7 @@ def c_queues(now, rules, ctx):
             out[k + "stalled_min"] = M(round(stalled, 1), "min pending > 0 with no claim, finish or heartbeat")
         except Exception as e:  # noqa: BLE001 - a reader that cannot see is blind, never a calm 0
             blind.append(n)
-            out[k + "stalled_min"] = U("%s: %s" % (type(e).__name__, str(e)[:150]), "min")
+            out[k + "stalled_min"] = U("%s: %s" % (type(e).__name__, str(e)), "min")
     wanted = {str(Path(x)) for q in qs if isinstance(q, dict) for x in (q.get("progress") or [])}
     for k_ in [k_ for k_ in pcache if k_ not in wanted]:      # a dir dropped from the rules leaves the cache
         pcache.pop(k_)
@@ -3728,8 +3728,8 @@ def c_wrapup(now, rules, ctx):
             pass
         out["wrapup.records_24h"] = M(n, "wrap-ups recorded in 24 h")
     except Exception as e:  # noqa: BLE001
-        out["wrapup.debris_standing"] = U("%s: %s" % (type(e).__name__, str(e)[:160]))
-        out["wrapup.records_24h"] = U("%s: %s" % (type(e).__name__, str(e)[:160]))
+        out["wrapup.debris_standing"] = U("%s: %s" % (type(e).__name__, str(e)))
+        out["wrapup.records_24h"] = U("%s: %s" % (type(e).__name__, str(e)))
     return out
 
 
@@ -3913,14 +3913,14 @@ def andon(points, hist, last_measured, rules, now):
                 if lm is not None and now - lm > lim * HOUR:
                     flags.append({"rule": "silent", "key": k, "value": None, "window": "silent %.1f h (limit %g h)" % (
                         (now - lm) / HOUR, lim), "detail": "last MEASURED %s; now %s: %s" % (
-                        iso(lm), p.get("m"), (p.get("why") or "")[:160])})
+                        iso(lm), p.get("m"), (p.get("why") or ""))})
         for name, check in (("band", band), ("run", run_rule), ("silent", silent)):
             try:
                 if name not in off:
                     check()
             except Exception as e:  # noqa: BLE001  a bad rule costs that rule on this reading, not the others
                 flags.append({"rule": "bad_rule", "key": k, "tag": name, "value": None, "window": "now",
-                              "detail": "%s rule failed: %s: %s" % (name, type(e).__name__, str(e)[:160])})
+                              "detail": "%s rule failed: %s: %s" % (name, type(e).__name__, str(e))})
     for k, p in sorted({**gone, **points}.items()):
         one(k, p)
     rows = rules.get("targets")
@@ -3932,7 +3932,7 @@ def andon(points, hist, last_measured, rules, now):
         why = target_problem(tg)
         if why:
             flags.append({"rule": "bad_target", "key": "rules.targets[%d]" % i, "value": None, "window": "now",
-                          "detail": "this rule is OFF until ops_watch_rules.json is fixed: " + why[:200]})
+                          "detail": "this rule is OFF until ops_watch_rules.json is fixed: " + why})
     for tg in good_targets(rules):
         marks = tg.get("marks") or ["MEASURED"]
         for k, p in sorted(points.items()):
@@ -4074,11 +4074,11 @@ def expedite_owner(ids, conf, why):
     for i in ids:
         try:
             r = subprocess.run([sys.executable, str(Path(conf["clone"]) / "src/RimMandrake/rimflow/relentless.py"),
-                                "expedite", "set", i, "--level", "expedited", "--by", "Operations", "--why", why[:300]],
+                                "expedite", "set", i, "--level", "expedited", "--by", "Operations", "--why", why],
                                capture_output=True, text=True, timeout=120, env=env)
-            out[i] = None if r.returncode == 0 else ("exit %d: %s" % (r.returncode, (r.stderr or r.stdout).strip()[-200:]))
+            out[i] = None if r.returncode == 0 else ("exit %d: %s" % (r.returncode, (r.stderr or r.stdout).strip()))
         except (OSError, subprocess.SubprocessError, KeyError) as e:
-            out[i] = "%s: %s" % (type(e).__name__, str(e)[:200])
+            out[i] = "%s: %s" % (type(e).__name__, str(e))
     return out
 
 
@@ -4156,9 +4156,9 @@ def real_filer(todo, conf):
                     rc, out = ing.rimflow("note", a["item"], "--text", a["text"])
                 elif a.get("block_only"):   # a duplicate waits on its cause's repair; the block lifts when it closes (WP-04)
                     rc, out = ing.rimflow("block", a["item"], "--kind", "item", "--on", a["on"], "--until", "done",
-                                          "--reason", a["reason"][:300])
+                                          "--reason", a["reason"])
                 elif a.get("reopen"):     # a repeat: the same item goes back to work and the outage is counted
-                    rc, out = ing.rimflow("live", a["name"], "--result", "broken", "--detail", a["title"][:300])
+                    rc, out = ing.rimflow("live", a["name"], "--result", "broken", "--detail", a["title"])
                     if rc != 0 and "retired item holds no promise" in (out or ""):
                         # the fixed item was dropped or superseded: a retired item cannot be reopened, so the alarm
                         # files a successor and keeps that name from here on (OPS_WATCH_FIX_RETIRED_ALARM_ITEM)
@@ -4172,7 +4172,7 @@ def real_filer(todo, conf):
                                 # an earlier pass spawned this twist and died before saving it (the arena fan-out,
                                 # 2026-11-06 05:01-05:06Z: 5 successors, one per killed beat). It is this alarm's
                                 # successor: adopt it, and take the next twist only when it is retired too
-                                rc, out = ing.rimflow("live", new, "--result", "broken", "--detail", a["title"][:300])
+                                rc, out = ing.rimflow("live", new, "--result", "broken", "--detail", a["title"])
                                 if rc != 0 and "retired item holds no promise" in (out or ""):
                                     rc, out = 1, "%s already filed" % new
                                     continue
@@ -4202,7 +4202,7 @@ def real_filer(todo, conf):
                 if rc == 0 and not a.get("note_only"):
                     rrc, rout = ing.rimflow("raise", a["name"], "--reason", RAISE_REASON)
                     if rrc != 0:    # filed but not first: the alarm stands (a retry would re-spawn), the miss is logged
-                        res.setdefault("_raise", {})[a["name"]] = rout[-300:]
+                        res.setdefault("_raise", {})[a["name"]] = rout
             except (ValueError, OSError) as e:
                 rc, out = 1, "%s: %s" % (type(e).__name__, e)
             res[a["name"]] = None if rc == 0 else refusal_text(out)
@@ -4247,7 +4247,7 @@ def tell_conductor(path, line, aid, now, log, cur=None):
             f.write("\n" + line)
         return True
     except OSError as e:
-        log.append({"ts": iso(now), "event": "conductor_log_failed", "aid": aid, "error": str(e)[:200]})
+        log.append({"ts": iso(now), "event": "conductor_log_failed", "aid": aid, "error": str(e)})
         if isinstance(cur, dict):
             owed = cur.get("conductor_owed")
             owed = owed if isinstance(owed, list) else []
@@ -4405,7 +4405,7 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=No
         book = cb.load(bp)
     except (ValueError, OSError) as e:
         book = None
-        log.append({"ts": iso(now), "event": "cause_book_unreadable", "error": str(e)[:200]})
+        log.append({"ts": iso(now), "event": "cause_book_unreadable", "error": str(e)})
     if book is not None:
         for r in cb.reconcile(book, known_ids, open_ids, state, now):
             log.append(dict(r, ts=iso(now)))
@@ -4532,7 +4532,7 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=No
                     used += add
                 left = fresh[len(shown):]
                 names = [n for n in names if n not in left]
-                lines = (["new at %s: %s%s" % (iso(now), "; ".join(map(str, shown))[:600],
+                lines = (["new at %s: %s%s" % (iso(now), "; ".join(map(str, shown)),
                                                " (+%d more next pass)" % len(left) if left else "")] if fresh else []) + (
                     ["WORSE at %s: %s" % (iso(now), worse[0])] if worse else [])
                 key = aid.split(":", 1)[1]
@@ -4590,7 +4590,7 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=No
                 if rec["state"] == "open":
                     todo.append({"note_only": True, "item": rec["item"], "name": "note:" + aid, "aid": aid,
                                  "text": "ops_watch: %s attached at %s (same cause %s): %s" % (
-                                     aid, iso(now), ck[:160], str(said)[:300])})
+                                     aid, iso(now), ck, str(said))})
                 return
         if not cur.get("name"):  # mint once; a retry keeps the saved name
             taken = set(known_ids) | {a["name"] for a in state.values() if isinstance(a, dict) and isinstance(a.get("name"), str)}
@@ -4599,7 +4599,7 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=No
                 # the name is already on the ledger: a repeat of an alarm that filed before. It reopens that item.
                 cur["reopen"] = cur["name"] in known_ids
             except Exception as e:  # noqa: BLE001  one unnameable alarm stays PENDING and counted (signal_watch tells); the pass goes on
-                cur.update(error=str(e)[:200], tries=_tries(cur) + 1)
+                cur.update(error=str(e), tries=_tries(cur) + 1)
                 log.append({"ts": iso(now), "event": "mint_failed", "aid": aid})
                 return
         if ck is not None:
@@ -4615,7 +4615,7 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=No
         owners = expedite_of(tg, pt)
         if owners:      # the owner is named in the title, so the alarm item is never one more unclaimed item
             title = "%s; owner: Relentless, %s expedited by Operations" % (title, ", ".join(owners))
-        cur["title"] = title[:160] if not owners else title[:300]
+        cur["title"] = title[:160] if not owners else title[:300]  # cut-ok: an item title (one line); a name the title cut is told in the first note (titled_names)
         cur["noted"] = titled_names(cur["title"], pt, tg)   # what the title shows is told; a name it cut, the first note says
         cur["expedite"] = owners
         cur["conductor_log"] = tg.get("conductor_log")     # a retry that files later still owes the Conductor its line
@@ -4625,7 +4625,7 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=No
         try:
             one(aid)
         except Exception as e:  # noqa: BLE001  stays PENDING and counted, with the reason, and the pass goes on
-            why = "alarm step raised %s: %s" % (type(e).__name__, str(e)[:200])
+            why = "alarm step raised %s: %s" % (type(e).__name__, str(e))
             cur = state.get(aid)
             cur = cur if isinstance(cur, dict) else state.setdefault(aid, {"state": "PENDING", "since": iso(now), "tries": 0})
             cur["error"] = why
@@ -4646,7 +4646,7 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=No
             except Fenced:      # a lost generation is not a failed try: run() stops the pass
                 raise
             except Exception as e:  # noqa: BLE001  a filing that raises stays PENDING; the pass still reports
-                res = {a["name"]: "filer raised %s: %s" % (type(e).__name__, str(e)[:200]) for a in todo}
+                res = {a["name"]: "filer raised %s: %s" % (type(e).__name__, str(e)) for a in todo}
         else:
             res = {a["name"]: "filing off (run without --file-alarms)" for a in todo}
         settle_filing(state, todo, res, filer, now, log, said_causes, book)
@@ -4671,7 +4671,7 @@ def settle_filing(state, todo, res, filer, now, log, said_causes, book=None):
                 cb.blocked(book, a["cause"], a["item"])
                 log.append({"ts": iso(now), "event": "cause_blocked", "item": a["item"], "repair": a["on"], "cause": a["cause"]})
             elif filer and err != FILING_DEFERRED:
-                log.append({"ts": iso(now), "event": "cause_block_failed", "item": a["item"], "error": str(err)[:200]})
+                log.append({"ts": iso(now), "event": "cause_block_failed", "item": a["item"], "error": str(err)})
             continue
         if a.get("note_only"):
             cur = state.get(a.get("aid"))
@@ -4718,7 +4718,7 @@ def settle_filing(state, todo, res, filer, now, log, said_causes, book=None):
                 if filer:
                     log.append({"ts": iso(now), "event": "file_failed", "aid": a["aid"], "error": err})
         except Exception as e:  # noqa: BLE001  a corrupt counter costs this alarm's bookkeeping; found_filed recovers it
-            log.append({"ts": iso(now), "event": "step_failed", "aid": a["aid"], "error": str(e)[:200]})
+            log.append({"ts": iso(now), "event": "step_failed", "aid": a["aid"], "error": str(e)})
 
 
 @_book_locked
@@ -4757,7 +4757,7 @@ def file_held(filer, rules, now):
     except Fenced:
         raise
     except Exception as e:  # noqa: BLE001  a filing that raises stays PENDING; the pass still reports
-        res = {a["name"]: "filer raised %s: %s" % (type(e).__name__, str(e)[:200]) for a in todo}
+        res = {a["name"]: "filer raised %s: %s" % (type(e).__name__, str(e)) for a in todo}
     settle_filing(state, todo, res, filer, now, log, set(), book)
     for r in log:
         r["held"] = True        # which beat filed it: the light one
@@ -4782,7 +4782,7 @@ def cause_mods():
 
 def cause_block_todo(key, dep, repair):
     return {"block_only": True, "name": "block:" + dep, "item": dep, "on": repair, "cause": key,
-            "reason": "ops_watch: one repair per cause (%s): %s is a duplicate of %s" % (key[:120], dep, repair)}
+            "reason": "ops_watch: one repair per cause (%s): %s is a duplicate of %s" % (key, dep, repair)}
 
 
 def conductor_guard():
@@ -4898,13 +4898,13 @@ def digest_md(dg):
         L.append("## Alarms")
         for k, a in sorted(al.items()):
             L.append("- %s %s since %s%s%s" % (a.get("state"), k, a.get("since"), " item %s" % a["item"] if a.get("item")
-                                               else "", " error: " + str(a["error"])[:120] if a.get("error") else ""))
+                                               else "", " error: " + str(a["error"]) if a.get("error") else ""))
         L.append("")
     if dg["flags"]:
         L.append("## Open flags")
         for f in dg["flags"]:
             L.append("- %s %s [%s] %s (open since %s)" % (f["rule"] + ("/" + f["tag"] if f.get("tag") else ""), f["key"],
-                                                          f["window"], f["detail"][:200], f.get("since", "now")))
+                                                          f["window"], f["detail"], f.get("since", "now")))
         L.append("")
     fam = None
     for k, r in dg["kpis"].items():
@@ -5011,7 +5011,7 @@ def blind_digest_md(dg, rules):
         body.append("## Open flags")
         for f in fl:
             body.append("- %s %s [%s] %s (open since %s)" % (f.get("rule", "?") + ("/" + f["tag"] if f.get("tag") else ""),
-                                                             f["key"], f.get("window"), str(f.get("detail"))[:200],
+                                                             f["key"], f.get("window"), str(f.get("detail")),
                                                              f.get("since", "now")))
         body.append("")
     fam = None
@@ -5124,15 +5124,15 @@ def publish_health(points, prev, ctx, rules, now):
         v = ops_health.publish(points, prev, world, rules, str(data_clone()), now,
                                stamp={"ledger": ops_health.ledger_mark(ctx.get("events"))})
     except Exception as e:  # noqa: BLE001  the pass outlives its verdict, and says so
-        why = "health verdict not written: %s: %s" % (type(e).__name__, str(e)[:160])
+        why = "health verdict not written: %s: %s" % (type(e).__name__, str(e))
         return {"health.state": U(why), "health.spent_slis": U(why), "health.drifted_slis": U(why),
                 "health.incident_slis": U(why), "health.unmeasured": U(why)}
-    x = {"spent": v["spent"], "system_items": len(v["system_items"] or []), "why": v["why"][:300]}
+    x = {"spent": v["spent"], "system_items": len(v["system_items"] or []), "why": v["why"]}
     guardless = v.get("recurring_unguarded")
     inc = v.get("incident") or {}
     if inc.get("bad") or (inc.get("slis") and len(inc.get("unmeasured") or ()) < len(inc["slis"])):
         # a held SLI (ok now, budget spent) counts: a dip over its line closed and relapsed churn-20261104075956 twice
-        inc_pt = M(len(inc["bad"]) + len(inc.get("held") or ()), "incident SLIs reading bad now", cause=inc["cause"][:300],
+        inc_pt = M(len(inc["bad"]) + len(inc.get("held") or ()), "incident SLIs reading bad now", cause=inc["cause"],
                    unmeasured=inc.get("unmeasured") or [], held=inc.get("held") or [])
     else:       # nothing to judge: no incident SLI, or none of them could see this pass
         inc_pt = U("no incident SLI measured this pass: %s" % (", ".join(inc.get("unmeasured") or ()) or "none configured"))
@@ -5142,7 +5142,7 @@ def publish_health(points, prev, ctx, rules, now):
             "health.state": M(v["state"], None, **x),
             # the health rules are unusable: no budget was read (OPS_HEALTH_FIX_BROKEN_RULES_READ_HEALTHY); alarm REPAIR_ALARM
             "health.unmeasured": M(int(v["state"] == "unmeasured"), "health verdicts with unusable rules",
-                                   said=v["why"][:300] if v["state"] == "unmeasured" else ""), "health.spent_slis": M(len(v["spent"]), "SLIs with a spent budget", **x),
+                                   said=v["why"] if v["state"] == "unmeasured" else ""), "health.spent_slis": M(len(v["spent"]), "SLIs with a spent budget", **x),
             "health.drifted_slis": M(len(v["drifted"]), "SLIs whose point changed unit under them", said=", ".join(v["drifted"]))}
 
 
@@ -5159,7 +5159,7 @@ def steve_release_start():
             proc = subprocess.Popen([sys.executable, str(HERE / "testq" / "brake_release.py")], stdout=fh,
                                     stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, start_new_session=True)
     except (OSError, subprocess.SubprocessError) as e:
-        return {"why": "%s: %s" % (type(e).__name__, str(e)[:200])}
+        return {"why": "%s: %s" % (type(e).__name__, str(e))}
     return {"proc": proc, "out": out}
 
 
@@ -5187,7 +5187,7 @@ def steve_release_finish(started):
             why = "TimeoutExpired: no end in %.0f s" % budget
         if rc:
             try:
-                tail = Path(started["out"]).read_text(encoding="utf-8", errors="replace").strip()[-200:]
+                tail = Path(started["out"]).read_text(encoding="utf-8", errors="replace").strip()
             except OSError as e:
                 tail = "its output is unreadable: %s" % e
             why = "exit %d: %s" % (rc, tail)
@@ -5236,7 +5236,7 @@ def compose_round_bound_s(phases=None, timer=None, n_families=None):
         if per < 1 or n < 1 or not (gap > 0 and budget > 0):
             raise ValueError("per_beat %s, families %s, gap %s, budget %s" % (per, n, gap, budget))
     except (OSError, ValueError, KeyError, TypeError) as e:
-        return None, "the round robin's bound does not read: %s: %s" % (type(e).__name__, str(e)[:160])
+        return None, "the round robin's bound does not read: %s: %s" % (type(e).__name__, str(e))
     beats = math.ceil(n / per) * (1 + per)
     return beats * (gap + budget), "%d beats (%d families, %d a beat, each turn overrun and retried) x %.0f s" % (
         beats, n, per, gap + budget)
@@ -5361,7 +5361,7 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
         try:
             pts = COLLECTORS[fam](now, rules, ctx)
         except Exception as e:  # noqa: BLE001  an instrument that errors is UNMEASURED, never 0
-            why = "collector error: %s: %s" % (type(e).__name__, str(e)[:200])
+            why = "collector error: %s: %s" % (type(e).__name__, str(e))
             last = old[-1]["points"] if old else {}
             pts = {k: U(why, p.get("unit") if isinstance(p, dict) else None) for k, p in last.items()
                    if not k.endswith("._collector")}
@@ -5377,7 +5377,7 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
                 append(fam, rec)
             except Exception as e:  # noqa: BLE001  the pass and the alarms outlive a series that cannot be written
                 sick.append({"rule": "series_write", "key": "%s._series" % fam, "value": None, "window": "now",
-                             "detail": "this pass's %s points were not kept: %s: %s" % (fam, type(e).__name__, str(e)[:160])})
+                             "detail": "this pass's %s points were not kept: %s: %s" % (fam, type(e).__name__, str(e))})
         points.update(pts)
     if compose:
         max_age, bound_flag = compose_max_age_s(rules)
@@ -5400,7 +5400,7 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
             raise
         except Exception as e:  # noqa: BLE001  the pass outlives its early hand, and says so
             sick.append({"rule": "steve_expedite", "key": "steve.incident_unclaimed_min", "value": None, "window": "now",
-                         "detail": "early expedite failed: %s: %s" % (type(e).__name__, str(e)[:160])})
+                         "detail": "early expedite failed: %s: %s" % (type(e).__name__, str(e))})
     for fam, key in (("relentless", "relentless.blind"), ("seats", "seats.blind"), ("plan", "plan.blind"),
                      ("disk", "disk.scratch_outside_blind")):
         if (whole or fam in families) and not counts_as_measured(points.get(key)):
@@ -5435,14 +5435,14 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
         flags = andon(points, hist, lastm, rules, now) + sick
     except Exception as e:  # noqa: BLE001  no flags this pass, said aloud; the alarms still run
         flags = sick + [{"rule": "bad_rule", "key": "rules", "value": None, "window": "now",
-                         "detail": "andon failed: %s: %s" % (type(e).__name__, str(e)[:160])}]
+                         "detail": "andon failed: %s: %s" % (type(e).__name__, str(e))}]
     if health_flag:
         flags.append(health_flag)
     if rules.get("_load_error"):
         flags.append({"rule": "bad_rule", "key": "rules.file", "value": None, "window": "now",
                       "detail": "the rules file cannot be read, last good copy in use: %s" % rules["_load_error"]})
     # a collector down longer than the series window has no old keys left to go silent: this flag is what still says so
-    flags += [{"rule": "collector", "key": k, "value": None, "window": "now", "detail": str(p.get("why"))[:200]}
+    flags += [{"rule": "collector", "key": k, "value": None, "window": "now", "detail": str(p.get("why"))}
               for k, p in sorted(points.items()) if k.endswith("._collector") and isinstance(p, dict)
               and p.get("m") == "UNMEASURED"]
     flags += [{"rule": "bad_rule", "key": "rules.range." + k, "value": points[k].get("v"), "window": "now",
@@ -5462,7 +5462,7 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
             atomic_json(lm_path, {"t": saved_lm})
     except OSError as e:    # a full disk is what the alarms below are for: never let it stop them
         flags.append({"rule": "bad_rule", "key": "last_measured", "value": None, "window": "now",
-                      "detail": "last_measured.json not written: %s" % str(e)[:160]})
+                      "detail": "last_measured.json not written: %s" % str(e)})
     try:
         if compose and COMPOSE_ALARM_FAMILY not in families:
             # this beat's pass is not the alarm pass: it composes nothing, but files what the alarm pass had to defer
@@ -5497,7 +5497,7 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
     except Exception as e:  # noqa: BLE001  the digest still goes out, and says the alarms did not run
         alarms = _obj(read_json(ops_dir() / "alarms.json"))
         flags.append({"rule": "bad_rule", "key": "alarms", "value": None, "window": "now",
-                      "detail": "NO ALARM RAN this pass: %s: %s" % (type(e).__name__, str(e)[:160])})
+                      "detail": "NO ALARM RAN this pass: %s: %s" % (type(e).__name__, str(e))})
     _conf = alarm_conf(rules)
     if not (_conf.get("clone") and _conf.get("parent")):
         flags.append({"rule": "bad_rule", "key": "rules.alarm", "value": None, "window": "now",
@@ -5533,7 +5533,7 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
     try:
         full = digest_md(dg)
     except Exception as e:  # noqa: BLE001  the headline survives a row that cannot be rendered
-        full = "# ops_watch digest failed to render\n\n%s: %s\n\n%s\n" % (type(e).__name__, str(e)[:200], dg.get("headline"))
+        full = "# ops_watch digest failed to render\n\n%s: %s\n\n%s\n" % (type(e).__name__, str(e), dg.get("headline"))
     write_text_atomic(ops_dir() / "digest.md", full)
     try:
         blind = blind_digest_md(dg, rules)

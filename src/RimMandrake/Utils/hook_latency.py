@@ -168,7 +168,7 @@ def phase_prototype(cmds, pay, repo=REPO):
         after = resource.getrusage(resource.RUSAGE_CHILDREN)
     cpu = (after.ru_utime + after.ru_stime) - (before.ru_utime + before.ru_stime)
     if p.returncode:
-        raise RuntimeError("prototype died rc=%s: %s" % (p.returncode, p.stderr[-400:]))
+        raise RuntimeError("prototype died rc=%s: %s" % (p.returncode, p.stderr))
     return wall, cpu, {k: tuple(v) for k, v in json.loads(p.stdout).items()}
 
 
@@ -246,7 +246,7 @@ def replay(corpus=CORPUS, settings=SETTINGS, repo=REPO):
         for c in cmds:
             if c in differs:
                 diffs.append({"entry": i, "tool": e["tool"], "hook": SCRIPT.search(c).group(1),
-                              "before": before.get(c), "after": after.get(c), "input": str(e["input"])[:160]})
+                              "before": before.get(c), "after": after.get(c), "input": str(e["input"])})
         deny = [SCRIPT.search(c).group(1) for c, v in before.items() if v[0] and SCRIPT.search(c)]
         if deny:
             refused += 1
@@ -387,7 +387,7 @@ def gate(rounds=15, settings=SETTINGS, corpus=CORPUS, facts_path=TRANSCRIPTS, de
         r["entries"], r["refused"], r["allowed"], len(r["refusing_hooks"]), len(r["diffs"])))
     print("refusing: " + " ".join(r["refusing_hooks"]))
     for d in r["diffs"][:10]:
-        print("DIFF", json.dumps(d)[:400])
+        print("DIFF", json.dumps(d))
     if r["diffs"]:
         fails.append("%d replay differences before/after" % len(r["diffs"]))
     if r["refused"] < 5 or r["allowed"] < 20 or len(r["refusing_hooks"]) < 3:
@@ -432,7 +432,7 @@ def main():
         return gate(a.rounds)
     if a.replay:
         r = replay()
-        print(json.dumps(r, indent=1)[:3000])
+        print(json.dumps(r, indent=1))
         return 1 if r["diffs"] else 0
     with open(TRANSCRIPTS) as f:
         facts = json.load(f)

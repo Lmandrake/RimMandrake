@@ -62,7 +62,7 @@ class YieldAtRowBoundary(BaseException):
 def row(rows, rid, status, cls, detail):
     status, cls, detail = PRE.judge(status, cls, detail)
     rows.append({"id": rid, "status": status, "class": cls, "detail": detail})
-    print("%-28s %-9s %s" % (rid, status, str(detail)[:150]), flush=True)
+    print("%-28s %-9s %s" % (rid, status, str(detail)), flush=True)
     yield_check(rows)
 
 
@@ -343,7 +343,7 @@ class Guarded(object):
         if _channel_dead(r):
             PRE.fault("probe %s" % str(cmd)[:60], str((r or {}).get("error") or "dead probe channel") if isinstance(r, dict) else r)
         elif not answer and r.get("success") is False:
-            PRE.fault("probe %s" % str(cmd)[:60], str(r.get("error") or r.get("message") or r)[:200])
+            PRE.fault("probe %s" % str(cmd)[:60], str(r.get("error") or r.get("message") or r))
         return r if isinstance(r, dict) else {"success": False, "raw": r}
 
     def hp(self, cmd, wait_s=20.0, answer=False):
@@ -532,7 +532,7 @@ def keep_pawns_on_map(B):
     except Exception as ex:  # noqa: BLE001
         KEEP_UNREAD[0] = True
         KEEP_TAKEN[0] = True
-        return {"error": repr(ex)[:200]}
+        return {"error": repr(ex)}
     KEEP_TAKEN[0] = True
     KEEP_PAWNS.update(ids)
     H.KEEP_PAWNS.update(ids)   # the modcheck helpers' bulk removers (quiet_site hostiles_removed) spare them too
@@ -672,7 +672,7 @@ def clear_threat_structures(B):
     qs = B.call("jawa/quiet_site", action="apply", clearThreats=True)
     qs = qs if isinstance(qs, dict) else {}
     return {"removed": [(x.get("def"), x.get("id")) for x in qs.get("removed") or []],
-            "threatsAfter": qs.get("threatsAfter"), "error": None if qs.get("success") else str(qs)[:200]}
+            "threatsAfter": qs.get("threatsAfter"), "error": None if qs.get("success") else str(qs)}
 
 
 def site_calm(B):
@@ -1195,7 +1195,7 @@ def saveload_triplet(B, read_state, ticks=60, tolerance=None, save_name=None, sa
     res["target"] = target
     sv = B.call("rimworld/save_game", saveName=name) or {}
     if sv.get("success") is False:
-        return unmeasured("rimworld/save_game refused: %s" % str(sv)[:300])
+        return unmeasured("rimworld/save_game refused: %s" % str(sv))
     if not wait_saved(name):
         return unmeasured("%s.rws was not written (or not stable) after rimworld/save_game" % name)
     after = saves_stat()
@@ -1212,7 +1212,7 @@ def saveload_triplet(B, read_state, ticks=60, tolerance=None, save_name=None, sa
         if arm != "A":
             ld = B.call("rimworld/load_game", saveName=name) or {}
             if ld.get("success") is not True:
-                return unmeasured("arm %s: rimworld/load_game did not answer success: %s" % (arm, str(ld)[:300]))
+                return unmeasured("arm %s: rimworld/load_game did not answer success: %s" % (arm, str(ld)))
             ok, waited = wait_playing(B)
             if not ok:
                 return unmeasured("arm %s: the load never reached Playing with a map (%r)" % (arm, waited))
@@ -1364,13 +1364,13 @@ def _prepare_site(B, rect, rows, rid):
         if isinstance(res, dict) and res.get("success") is False:
             # the message first and long enough to read: live 20261023T044826 cut "...337 cell(s) changed, 104 a" at 160
             # chars, before the clause that said WHY set_terrain_batch refused
-            why.append("%s refused: %s" % (tool, str(res.get("message") or res)[:400]))
+            why.append("%s refused: %s" % (tool, str(res.get("message") or res)))
     # a trigger READ BACK as still armed blocks the site; an unreadable listing is only recorded in reveal's result (the
     # proof drivers gate the map-wide read-back once, in preflight: proof_all P3)
     ft = reveal(B, rect).get("fogTriggers") or {}
     if ft.get("left"):
         why.append("fog triggers still armed after the disarm (an ancient-danger wave can land mid-row): %s"
-                   % str({k: ft.get(k) for k in ("error", "found", "left", "leftDefs")})[:200])
+                   % str({k: ft.get(k) for k in ("error", "found", "left", "leftDefs")}))
     B.ticks(2)
     # 2026-10-22 (BENCH belt, lines_proof 21x95-cell site, fw_gss_sitting): ONE Plant_Grass read back after the ~60 reveal
     # ticks -- vanilla's WildPlantSpawner seeds new plants on a large fertile rect while the colonist stands there. The first
@@ -1385,7 +1385,7 @@ def _prepare_site(B, rect, rows, rid):
     if roofs:
         why.append("roof still present over the site: %s" % roofs)
     elif roof.get("success") is False:
-        why.append("get_roof_batch unreadable: %s" % str(roof)[:160])
+        why.append("get_roof_batch unreadable: %s" % str(roof))
     lt = B.call("jawa/list_things", rect=r, limit=20) or {}
     left = [d for d in ((t.get("defName") or t.get("def") or t.get("label") or "") for t in (lt.get("things") or []))
             if re.search(r"Granite|Sandstone|Limestone|Marble|Slate|Rock|Chunk|Plant_|Tree|Bush|Grass|Ruin|TrunkBlocker", str(d))]

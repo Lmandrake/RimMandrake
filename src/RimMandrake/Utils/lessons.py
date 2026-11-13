@@ -180,7 +180,7 @@ def add(text, seat=None, slug=None, utc=None, home=None, item=None):
     if dups:
         print("possible duplicates:")
         for score, fp, first in dups:
-            print("  %.2f %s  %s" % (score, os.path.relpath(fp, ROOT), first[:100]))
+            print("  %.2f %s  %s" % (score, os.path.relpath(fp, ROOT), first))
     os.makedirs(DIR, exist_ok=True)
     utc = utc or time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
     base = "%s-%s-%s" % (utc, seat_of(seat), slugify(slug or text))

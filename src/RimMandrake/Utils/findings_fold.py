@@ -209,7 +209,7 @@ def read_ledger(rules):
                     timeline.setdefault(it.id, []).append((str(ev.get("ts") or ""), it.state))
         states = {i: it.state for i, it in model.replay(events, observe=seen).items.items()}
     except Exception as e:  # noqa: BLE001 - every ledger failure is UNMEASURED
-        raise Unmeasured("ledger unreadable: %s: %s" % (type(e).__name__, str(e)[:200]))
+        raise Unmeasured("ledger unreadable: %s: %s" % (type(e).__name__, str(e)))
     finds, retyped = {}, {}
     for e in events:
         if e.get("event") != "finding":
@@ -443,7 +443,7 @@ def render_md(t):
         for k, s in rows:
             out.append("- `%s` x%d %s..%s %s/%s/%s under %s; %s%s: %s" % (
                 k, s["count"], s["first_seen"][:10], s["last_seen"][:10], s["mod"], s["chain"], s["row"],
-                ",".join(s["items"]), ev(s), extra(s), json.dumps(s["text"][:200])))
+                ",".join(s["items"]), ev(s), extra(s), json.dumps(s["text"])))
         out.append("")
     sect("NEW: FOUNDRY judges (work / merge / memory / route / retire)", lambda s: s["status"] == "NEW")
     sect("DECIDED, and failed again since", lambda s: s["status"] == "DECIDED" and s["failed_since_decision"],

@@ -275,7 +275,7 @@ def real_call():
             try:
                 return json.loads(r["content"][0]["text"])
             except (ValueError, KeyError, IndexError, TypeError):
-                return {"success": False, "raw": str(r)[:300]}
+                return {"success": False, "raw": str(r)}
         return r
     call.counter = counter
     return call
@@ -382,7 +382,7 @@ class MockGame:
 def _rows_print(rows):
     for r in rows:
         print("%-22s %-11s %s" % (r.get("id"), r.get("verdict"), json.dumps({k: v for k, v in r.items() if k not in ("id", "verdict")},
-                                                                               default=str)[:400]))
+                                                                               default=str)))
 
 
 def _wall(call, mock):
@@ -559,7 +559,7 @@ def run_trial(call, config, arm, trial, out_dir, reload=None, mock_runner=None, 
             p = subprocess.run(argv, cwd=REPO, env=env, capture_output=True, text=True, timeout=3000, stdin=subprocess.DEVNULL)
             code = p.returncode
             with open(os.path.join(d, stem + ".log"), "w", encoding="utf-8") as f:
-                f.write(p.stdout[-200000:] + "\n--- stderr\n" + p.stderr[-50000:])
+                f.write(p.stdout + "\n--- stderr\n" + p.stderr)
         except subprocess.TimeoutExpired:
             code = None
         try:
@@ -705,7 +705,7 @@ def _run_selftest(proof, adoption_file):
     env = dict(os.environ, TICKBURST_ADOPTION=adoption_file, TICKBURST_STEP="")
     try:
         p = subprocess.run(argv, cwd=REPO, env=env, capture_output=True, text=True, timeout=450, stdin=subprocess.DEVNULL)
-        return p.returncode, (p.stdout[-400:] + p.stderr[-400:]).replace("\n", " | ")
+        return p.returncode, (p.stdout + p.stderr).replace("\n", " | ")
     except subprocess.TimeoutExpired:
         return None, "timeout"
 
@@ -1080,7 +1080,7 @@ def main(argv=None):
     try:
         call = real_call()
     except Exception as e:  # noqa: BLE001
-        print("UNMEASURED: bridge unreachable (%s: %s)" % (type(e).__name__, " ".join(str(e).split())[:300]))
+        print("UNMEASURED: bridge unreachable (%s: %s)" % (type(e).__name__, " ".join(str(e).split())))
         return 2
     perf = call("jawa/time_perf") or {}
     if "ultraSpeedBoost" not in perf:

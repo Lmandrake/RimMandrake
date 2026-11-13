@@ -105,7 +105,7 @@ def refs() -> list[dict]:
             for i, line in enumerate(p.read_text(errors="replace").splitlines(), 1):
                 for d in _donor_of(line):
                     out.append({"file": rel, "donor": d, "form": f"string{p.suffix}", "line": i,
-                                "text": line.strip()[:160], "skip": skip})
+                                "text": line.strip(), "skip": skip})
     return out
 
 

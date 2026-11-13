@@ -100,7 +100,7 @@ def main():
                     fail += 1
             except Exception as e:
                 fail += 1
-                print("   !! %s -> %s" % (k, str(e)[:110]))
+                print("   !! %s -> %s" % (k, str(e)))
         if a.apply:
             print("placed ok=%d fail=%d" % (ok, fail))
             print("first %s  last %s" % (first, last))

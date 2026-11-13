@@ -183,7 +183,7 @@ def mono_lane(write=False, timeout=520):
     out_dir = os.path.join(RUNS, "mono-" + time.strftime("%Y%m%d-%H%M%S"))
     rc_n, out_n, err_n, _ = run_replay(["run"], out_dir=os.path.join(out_dir, "dotnet"), timeout=timeout)
     if rc_n == 4:
-        return 4, "the .NET 8 replay did not build:\n" + out_n[-3000:], out_dir
+        return 4, "the .NET 8 replay did not build:\n" + out_n, out_dir
     root = os.path.join(HARNESS, "stage", "tree")
     rdir = os.path.join(root, REPLAY_REL)
     host = os.path.join(rdir, "Mono", "Host", "bin", "Release", "net8.0", "RimMandrakeFlowWorks.MonoHost.dll")
@@ -195,7 +195,7 @@ def mono_lane(write=False, timeout=520):
             b = subprocess.run([dotnet, "build", _to_windows_path(os.path.join(rdir, proj)), "-c", "Release", "-nologo", "-v:q"],
                                capture_output=True, text=True, timeout=max(30, timeout - (time.time() - started)))
             if b.returncode != 0:
-                return 4, "%s did not build:\n%s" % (proj, b.stdout[-3000:]), out_dir
+                return 4, "%s did not build:\n%s" % (proj, b.stdout), out_dir
         p = subprocess.run([dotnet, _to_windows_path(host), GAME, _to_windows_path(exe), "run", "--scenario", "all",
                             "--out", _to_windows_path(mono_out)],
                            capture_output=True, text=True, timeout=max(30, timeout - (time.time() - started)))
@@ -229,7 +229,7 @@ def mono_lane(write=False, timeout=520):
     if write:
         shutil.copyfile(os.path.join(out_dir, "mono_timing.txt"), MONO_REPORT)
     if p.returncode not in (0, 1):
-        text += "mono host stderr:\n" + p.stderr[-3000:]
+        text += "mono host stderr:\n" + p.stderr
     return mono_check_text(text)[0], text, out_dir
 
 

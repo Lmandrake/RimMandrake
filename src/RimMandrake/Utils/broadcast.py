@@ -358,7 +358,7 @@ def record_game(state, text):
     except Exception as e:                       # noqa: BLE001 - never gate the send
         return "state NOT recorded: %s" % e
     if p.returncode:
-        return "state NOT recorded: %s" % (p.stderr or p.stdout or "?").strip()[:160]
+        return "state NOT recorded: %s" % (p.stderr or p.stdout or "?").strip()
     return None
 
 

@@ -100,7 +100,7 @@ def read_dmesg():
     except (OSError, subprocess.TimeoutExpired) as e:
         return None, "dmesg: %s" % e.__class__.__name__
     if r.returncode != 0:
-        return None, "dmesg rc=%d %s" % (r.returncode, r.stderr.strip()[:120])
+        return None, "dmesg rc=%d %s" % (r.returncode, r.stderr.strip())
     return r.stdout, None
 
 
@@ -171,7 +171,7 @@ def cmd_run(no_apply):
     d = drift(want, have)
     if d and not no_apply:
         rc, text = as_root(apply_cmd(want))
-        applied = {"rc": rc, "drift": d, "out": text[:200]}
+        applied = {"rc": rc, "drift": d, "out": text}
         have = current(want)
     text, err = read_dmesg()
     reading = build_reading(want, have, order7_blocks(), uptime(), last_reading(), text, err, applied,

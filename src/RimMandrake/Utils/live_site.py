@@ -180,7 +180,7 @@ def biome_site(a):
     with connect(300) as rb:
         info = rb.call("jawa/map_info", {})
         if not isinstance(info, dict) or info.get("success") is False or info.get("tile") is None:
-            print("NOT READY: no current map to make a site on (%s)" % str(info)[:200])
+            print("NOT READY: no current map to make a site on (%s)" % str(info))
             return NOT_READY
         verdict, why = need_regen(info, a.biome, a.not_biome)
         if verdict != "regen":
@@ -197,16 +197,16 @@ def biome_site(a):
             args["temperature"] = a.temperature
         r = rb.call("jawa/world_tile_set", args)
         if not isinstance(r, dict) or r.get("success") is False:
-            print("NOT READY: world_tile_set refused: %s" % str(r)[:300])
+            print("NOT READY: world_tile_set refused: %s" % str(r))
             return NOT_READY
         r = rb.call("jawa/world_commit", {})
         if not isinstance(r, dict) or r.get("success") is False:
-            print("NOT READY: world_commit refused: %s" % str(r)[:300])
+            print("NOT READY: world_commit refused: %s" % str(r))
             return NOT_READY
         try:
             rb.call("rimworld/execute_debug_action", {"path": REGEN})
         except Exception as e:      # noqa: BLE001  the connection may drop while the map rebuilds
-            print("regen call ended: %s" % str(e)[:200])
+            print("regen call ended: %s" % str(e))
     with connect(60) as rb:
         if not wait_ready(rb, a.budget):
             print("NOT READY: no map %ds after %s" % (a.budget, REGEN))
@@ -220,7 +220,7 @@ def biome_site(a):
             rb.call("jawa/spawn_pawn", {"kindDef": "Colonist", "x": cx, "z": cz, "faction": "player", "count": 3})
             rb.call("rimworld/execute_debug_action", {"path": "Actions\\Destroy hostile pawns"})
         except Exception as e:      # noqa: BLE001
-            print("colonists not spawned: %s" % str(e)[:200])
+            print("colonists not spawned: %s" % str(e))
         print("READY: map %s on tile %s, %sx%s, 3 colonists at %d,%d" % (target, info.get("tile"), info.get("sizeX"),
                                                                         info.get("sizeZ"), cx, cz))
         return READY
@@ -242,7 +242,7 @@ def run_stager(path, save):
     """The mod's stager on the CURRENT map, saving as `save` -> its exit code (it refuses a colony itself)."""
     import subprocess
     r = subprocess.run([sys.executable, path, "--save", save], capture_output=True, text=True, timeout=900)
-    print(((r.stdout or "") + (r.stderr or "")).strip()[-800:])
+    print(((r.stdout or "") + (r.stderr or "")).strip())
     return r.returncode
 
 
@@ -255,8 +255,8 @@ def run_scene_stager(path, max_ticks, timeout_s):
                            capture_output=True, text=True, timeout=timeout_s + 60, stdin=subprocess.DEVNULL)
     except subprocess.TimeoutExpired:
         return NOT_READY, "ran past --max-seconds %d" % timeout_s
-    print(((r.stderr or "") + (r.stdout or "")).strip()[-800:])
-    return r.returncode, ((r.stdout or "").strip().splitlines() or [(r.stderr or "").strip()[-200:]])[-1][:200]
+    print(((r.stderr or "") + (r.stdout or "")).strip())
+    return r.returncode, ((r.stdout or "").strip().splitlines() or [(r.stderr or "").strip()])[-1]
 
 
 def load_save(a):
@@ -363,7 +363,7 @@ def load_death(save, offset):
     for n, ln in enumerate(lines):
         if ln.startswith(DIED):
             frame = next((x.strip() for x in lines[n + 1:n + 6] if x.strip().startswith("at ")), "")
-            return (ln.strip() + (" | " + frame if frame else ""))[:400]
+            return (ln.strip() + (" | " + frame if frame else ""))
     return None
 
 
@@ -389,7 +389,7 @@ def wait_loaded(rb, save, offset, budget_s, step_s=5):
             menu_from = None
         if waited >= budget_s:
             return False, "%s did not reach Playing with a map in %ds (last phase %s: %s)" % (
-                save, budget_s, phase, json.dumps(ui, default=str)[:200])
+                save, budget_s, phase, json.dumps(ui, default=str))
 
 
 def on_a_map(rb):
@@ -417,7 +417,7 @@ def save_site(a):
     if isinstance(r, dict) and r.get("success") is False and not a.restage_with:
         r = load_past_retired(a, r)
     if not isinstance(r, dict) or r.get("success") is False:
-        print("NOT READY: load_game %s refused: %s" % (a.save, str(r)[:300]))
+        print("NOT READY: load_game %s refused: %s" % (a.save, str(r)))
         return NOT_READY
     with connect(60) as rb:
         if was_up:
@@ -449,7 +449,7 @@ def menu_site(a):
         try:        # first jawa/ contact: the companion arms its probes here, whatever this call answers
             info = rb.call("jawa/map_info", {})
         except Exception as e:      # noqa: BLE001  at the menu already there is no map to describe
-            info = {"error": str(e)[:200]}
+            info = {"error": str(e)}
         ticks = int((rb.call("jawa/time_clock", {}) or {}).get("ticksGame") or 0) \
             if isinstance(info, dict) and info.get("tile") is not None else 0
         if ticks > a.max_ticks:
@@ -468,7 +468,7 @@ def menu_site(a):
         try:
             rb.call("rimworld/start_debug_game_ready", {"timeoutMs": 900000, "readiness": "mapData", "pauseIfNeeded": True})
         except Exception as e:      # noqa: BLE001  the connection may drop while the map generates
-            print("quicktest call ended: %s" % str(e)[:200])
+            print("quicktest call ended: %s" % str(e))
     with connect(60) as rb:
         if not wait_ready(rb, a.budget):
             print("NOT READY: the quicktest after the menu dwell did not reach Playing with a map in %ds" % a.budget)
@@ -490,14 +490,14 @@ def game_site(a):
             print("READY: a game with a map is up (left as it is)")
             return READY
         if phase not in ("menu", "missing_map"):
-            print("NOT READY: the game reads %s (%s); no quicktest started" % (phase, str(ui)[:200]))
+            print("NOT READY: the game reads %s (%s); no quicktest started" % (phase, str(ui)))
             return NOT_READY
         print("site: no map (%s); starting a quicktest" % phase)
     with connect(900) as rb:
         try:
             rb.call("rimworld/start_debug_game_ready", {"timeoutMs": 900000, "readiness": "mapData", "pauseIfNeeded": True})
         except Exception as e:      # noqa: BLE001  the connection may drop while the map generates
-            print("quicktest call ended: %s" % str(e)[:200])
+            print("quicktest call ended: %s" % str(e))
     with connect(60) as rb:
         if not wait_ready(rb, a.budget):
             print("NOT READY: the quicktest did not reach Playing with a map in %ds" % a.budget)
@@ -512,7 +512,7 @@ POWERED_DEF = "SolarGenerator"      # vanilla Core, 4x4, CompPowerPlantSolar: a 
 def powered_things(rb):
     r = rb.call("jawa/list_things", {"group": "PowerTrader", "limit": 50})
     if not isinstance(r, dict) or r.get("success") is False:
-        raise RuntimeError("list_things group=PowerTrader failed: %s" % str(r)[:200])
+        raise RuntimeError("list_things group=PowerTrader failed: %s" % str(r))
     return r.get("things") or []
 
 
@@ -525,7 +525,7 @@ def ensure_powered(rb):
     info = rb.call("jawa/map_info", {}) or {}
     sx, sz = int(info.get("sizeX") or 0), int(info.get("sizeZ") or 0)
     if sx < 20 or sz < 20:
-        print("NOT READY: --powered: map_info gave no usable size (%s)" % str(info)[:200])
+        print("NOT READY: --powered: map_info gave no usable size (%s)" % str(info))
         return NOT_READY
     tried = []
     for dx, dz in ((0, 0), (8, 0), (-8, 0), (0, 8), (0, -8), (8, 8), (-8, -8), (8, -8), (-8, 8)):
@@ -537,10 +537,10 @@ def ensure_powered(rb):
                 print("site: spawned %s at (%d,%d) for --powered" % (POWERED_DEF, x, z))
                 return READY
             print("NOT READY: --powered: %s at (%d,%d) answered %s but no PowerTrader reads back (one spawn, no more)"
-                  % (POWERED_DEF, x, z, str(r)[:200]))
+                  % (POWERED_DEF, x, z, str(r)))
             return NOT_READY
     print("NOT READY: --powered: no %s read back as PowerTrader after %d tries: %s"
-          % (POWERED_DEF, len(tried), "; ".join(tried)[:400]))
+          % (POWERED_DEF, len(tried), "; ".join(tried)))
     return NOT_READY
 
 
@@ -603,7 +603,7 @@ def main(argv=None):
                 return NOT_READY
         return rc
     except Exception as e:      # noqa: BLE001  any bridge failure is a site not made, never a verdict
-        print("NOT READY: %s: %s" % (type(e).__name__, str(e)[:300]))
+        print("NOT READY: %s: %s" % (type(e).__name__, str(e)))
         return NOT_READY
 
 

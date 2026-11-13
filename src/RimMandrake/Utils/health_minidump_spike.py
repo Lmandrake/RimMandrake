@@ -257,7 +257,7 @@ def verify(out):
     except OSError:
         pass                      # a read-only mount (the checker's box): the printed rows are the verdict
     for r in rows:
-        print("%-5s %s  %s" % ({True: "PASS", False: "FAIL", None: "INFO"}[r["pass"]], r["check"], json.dumps(r["detail"])[:220]))
+        print("%-5s %s  %s" % ({True: "PASS", False: "FAIL", None: "INFO"}[r["pass"]], r["check"], json.dumps(r["detail"])))
     print("VERIFY %s (%d checks)" % ("PASS" if ok else "FAIL", sum(1 for r in rows if r["pass"] is not None)))
     return 0 if ok else 1
 
@@ -283,7 +283,7 @@ def live(out=None):
         print("UNMEASURED: %s" % rec["reason"])
         return 2
     if rec.get("status") != "ok":
-        print("FAIL: %s" % json.dumps(rec)[:300])
+        print("FAIL: %s" % json.dumps(rec))
         return 1
     time.sleep(2)
     alive = subprocess.run(["tasklist.exe", "/FI", "PID eq %d" % rec["pid"], "/FO", "CSV", "/NH"],

@@ -92,7 +92,7 @@ def build_shim(state_dir: Path):
         r = subprocess.run(["gcc", "-O1", "-w", "-shared", "-fPIC", "-o", str(tmp), str(SHIM_SRC), "-ldl"],
                            capture_output=True, text=True, timeout=60)
         if r.returncode:
-            print(f"known results: shim did not compile: {r.stderr[-200:]}", file=sys.stderr)
+            print(f"known results: shim did not compile: {r.stderr}", file=sys.stderr)
             return None
         os.replace(tmp, out)
         return out

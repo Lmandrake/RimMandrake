@@ -344,7 +344,7 @@ def sweep(now, filer, items, baseline, arms, checker=real_check, sees=True, push
         it = items.get(r["item"])
         if r["why"] and it is None:
             todo.append({"item": r["item"], "result": "broken", "detail": r["why"], "spawn": True,
-                         "title": ("Live promise broken: %s" % r["why"])[:160]})
+                         "title": ("Live promise broken: %s" % r["why"])[:160]})  # cut-ok: an item title (one line); the whole why is the item's detail
         elif r["why"] and not it.live_broken:
             todo.append({"item": r["item"], "result": "broken", "detail": r["why"]})
         elif not r["why"] and it is not None and it.live_broken:
@@ -359,7 +359,7 @@ def sweep(now, filer, items, baseline, arms, checker=real_check, sees=True, push
             try:
                 errors = filer(todo, OW.alarm_conf(OW.load_rules()))
             except Exception as e:  # noqa: BLE001
-                errors = {t["item"]: "filer raised %s: %s" % (type(e).__name__, str(e)[:200]) for t in todo}
+                errors = {t["item"]: "filer raised %s: %s" % (type(e).__name__, str(e)) for t in todo}
                 errors["_publish"] = "filer raised after an unknown number of readings"
         else:
             errors = {t["item"]: "filing off (run without --file-alarms)" for t in todo}
@@ -409,7 +409,7 @@ def phone(rows, pusher):
             else:
                 pusher.close("deadman:" + r["item"])
         except Exception as e:  # noqa: BLE001  the phone failing must not stop the sweep or its report
-            out.append("push failed %s: %s: %s" % (r["item"], type(e).__name__, str(e)[:160]))
+            out.append("push failed %s: %s: %s" % (r["item"], type(e).__name__, str(e)))
     return out
 
 
@@ -473,8 +473,8 @@ def live_filer(todo, conf):
             if rc == 0 and t["result"] == "broken":    # a broken promise is first in relentless pool_order
                 rrc, rout = ing.rimflow("raise", t["item"], "--reason", OW.RAISE_REASON)
                 if rrc != 0:
-                    res.setdefault("_raise", {})[t["item"]] = rout[-300:]
-            res[t["item"]] = None if rc == 0 else out[-300:]
+                    res.setdefault("_raise", {})[t["item"]] = rout
+            res[t["item"]] = None if rc == 0 else out
             n += rc == 0
         res["_publish"] = ing.publish(n, message="ledger: live sweep %s" % ", ".join(
             "%s %s" % (t["item"], t["result"]) for t in todo if res.get(t["item"]) is None)) \

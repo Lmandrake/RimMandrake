@@ -115,7 +115,7 @@ def _publish_check(row, epath, cpath, before, repo, publish):
     try:
         ok, detail = (publish or A.publish_paths)(msg, rel, repo)
     except Exception as e:
-        ok, detail = False, "crashed: %s" % str(e)[:300]
+        ok, detail = False, "crashed: %s" % str(e)
     if not ok and A.git("rev-parse", "HEAD", cwd=repo).strip() == head:
         A.git("reset", "-q", "--", *rel, cwd=repo, check=False)
         os.remove(epath)
@@ -139,12 +139,12 @@ def enact_revert(row, rec, cpath, day, repo, changes_dir, publish):
         r = subprocess.run(["git", "apply", "-R", "--check", dpath], cwd=repo, capture_output=True, text=True,
                            timeout=60)
         if r.returncode != 0:
-            return False, "v%d does not reverse-apply on today's text: %s" % (n, r.stderr[-200:])
+            return False, "v%d does not reverse-apply on today's text: %s" % (n, r.stderr)
         A.git("apply", "-R", dpath, cwd=repo)
         try:
             probs = A.run_checks(res, repo)
         except Exception as e:   # a timeout or crash must not leave the revert applied
-            probs = ["checks crashed: %s" % str(e)[:300]]
+            probs = ["checks crashed: %s" % str(e)]
         if probs:
             A.git("apply", dpath, cwd=repo)
             return False, "; ".join(probs)
@@ -181,7 +181,7 @@ def _publish_revert(row, rec, cpath, res, dpath, day, repo, changes_dir, publish
             json.dump(dict(rec, reverted_by=m), f, indent=1)
     except Exception as e:   # nothing may stay applied or half-written before publish
         undo()
-        return False, "preparing the revert record failed: %s" % str(e)[:300]
+        return False, "preparing the revert record failed: %s" % str(e)
     msg = ("%s: revert %s v%d as v%d, generalization check reads %s\n\n"
            "Delegated: technical — agent improvement %s revert\nEvidence: %s\nChange record: %s\n"
            % (ITEM, t, n, m, row["verdict"], t, row["evidence"], _rel(new_path, repo)))
@@ -189,7 +189,7 @@ def _publish_revert(row, rec, cpath, res, dpath, day, repo, changes_dir, publish
     try:
         ok, sha = (publish or A.publish_paths)(msg, paths, repo)
     except Exception as e:
-        ok, sha = False, "crashed: %s" % str(e)[:300]
+        ok, sha = False, "crashed: %s" % str(e)
     if not ok:
         if A.git("rev-parse", "HEAD", cwd=repo).strip() != head:
             return False, "publish: %s (its commit is left on HEAD for a human)" % sha
@@ -221,7 +221,7 @@ def run_one(item, day, repo, changes_dir, general_dir, check_version, publish, n
         result, (epath, cpath) = check_version(t, "v%d" % n, repo=repo, changes_dir=changes_dir,
                                                general_dir=general_dir, now=now)
     except Exception as e:   # a crashed check is no verdict, and it stays due
-        return dict(row, verdict=None, detail="check crashed: %s" % str(e)[:300])
+        return dict(row, verdict=None, detail="check crashed: %s" % str(e))
     row.update(verdict=result["verdict"], keep=result["keep"], evidence=_rel(epath, repo))
     ok, detail = _publish_check(row, epath, cpath, before, repo, publish)
     row.update(published=bool(ok), detail=str(detail))
@@ -231,7 +231,7 @@ def run_one(item, day, repo, changes_dir, general_dir, check_version, publish, n
         rec = json.load(open(cpath, encoding="utf-8"))
         done, why = enact_revert(row, rec, cpath, day, repo, changes_dir, publish)
     except Exception as e:
-        done, why = False, "crashed: %s" % str(e)[:300]
+        done, why = False, "crashed: %s" % str(e)
     return dict(row, revert="published" if done else "refused", revert_detail=why)
 
 
@@ -247,7 +247,7 @@ def run_due(day, level, repo=None, changes_dir=None, check_version=None, publish
             rows.append(run_one(item, day, repo, changes_dir, general_dir, check_version or G.run_for_version, publish,
                                 now))
         except Exception as e:   # one target's fault (a git failure, a bad record) never costs the others or the pass
-            rows.append(dict(item, verdict=None, detail="crashed: %s" % str(e)[:300]))
+            rows.append(dict(item, verdict=None, detail="crashed: %s" % str(e)))
     return rows
 
 

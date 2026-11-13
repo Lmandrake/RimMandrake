@@ -281,7 +281,7 @@ def diff(live_data, offline_rows, offline_pairs):
                      "liveMod": lm, "offlineMod": om,
                      "liveShortHash": lh, "offlineShortHashCandidate": oh,
                      "hashMatch": hash_match, "modMatch": mod_match,
-                     "deltaCount": len(deltas), "deltas": " | ".join(deltas)[:600]})
+                     "deltaCount": len(deltas), "deltas": " | ".join(deltas)})
 
     # biome x animal, keyed on race defName so it lines up with the offline
     # pairs, which are (biome, animal-defName) not (biome, pawnkind).
@@ -341,7 +341,7 @@ def report(rows, bio_rows, stats, manifest, out_dir):
     if worst:
         print("\nmost-patched animals:")
         for r in worst:
-            print("   %-26s %2d  %s" % (r["defName"], r["deltaCount"], r["deltas"][:110]))
+            print("   %-26s %2d  %s" % (r["defName"], r["deltaCount"], r["deltas"]))
 
     print("\nwrote divergence.csv and biome_divergence.csv to %s" % os.path.abspath(out_dir))
 

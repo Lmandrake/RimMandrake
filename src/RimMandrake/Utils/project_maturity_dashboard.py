@@ -147,8 +147,6 @@ def mod_metadata():
                                r"(?:(?:R(?:M|SW|UT)|Mandrake|Star\s?Wars|Utinni)"
                                r"\s*[—–-]\s*)?", "", raw) or d
                 blurb = " ".join((root.findtext("description") or "").split())
-                if len(blurb) > 360:
-                    blurb = blurb[:357] + "…"
             except ET.ParseError:
                 pass
             meta[d] = {"tier": tier, "label": label, "blurb": blurb}
@@ -333,7 +331,7 @@ def parse_goal_sheet():
             ticked = m.group(2).lower() == "x"
             cur["ticked"] += 1 if ticked else 0
             cur["total"] += 1
-            cur["items"].append({"text": m.group(3)[:140], "ticked": ticked,
+            cur["items"].append({"text": m.group(3), "ticked": ticked,
                                  "depth": len(m.group(1)) // 2})
     ticked_total = sum(s["ticked"] for s in sections)
     box_total = sum(s["total"] for s in sections)

@@ -45,7 +45,7 @@ def find_action(rb, label):
         r = rb.call("rimworld/list_debug_action_children", {"path": root})
         if not r.get("success"):
             raise RuntimeError("debug tree will not enumerate (%s) - the game may be a zombie"
-                               % str(r.get("message"))[:100])
+                               % str(r.get("message")))
         for c in r.get("children") or []:
             if (c.get("label") or "") == CAT or CAT.lower() in (c.get("path") or "").lower():
                 sub = rb.call("rimworld/list_debug_action_children", {"path": c.get("path")})
@@ -97,7 +97,7 @@ def main():
                 steps.append({"step": label, "success": r.get("success"), "logs": logs})
                 print("- %-32s success=%s  %d log line(s)" % (label, r.get("success"), len(logs)))
                 for l in capture_report(logs)[:6]:
-                    print("    %s" % l[:160])
+                    print("    %s" % l)
             data = {"capturedUtc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                     "ticksGame": gi.get("ticksGame"), "steps": steps,
                     "report": capture_report(steps[-1]["logs"])}
@@ -127,7 +127,7 @@ def main():
                 b = was[i] if i < len(was) else "(absent)"
                 n = now[i] if i < len(now) else "(absent)"
                 if b != n:
-                    print("  line %d\n    was: %s\n    now: %s" % (i, b[:180], n[:180]))
+                    print("  line %d\n    was: %s\n    now: %s" % (i, b, n))
 
         # The three fields that a shallow re-serialisation drops while leaving a
         # plausible pawn behind. Checked by name, not by counting lines.

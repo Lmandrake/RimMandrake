@@ -147,7 +147,7 @@ def read_jsonl(name: str) -> list[dict]:
 def git(*args, cwd=None, check=True, timeout=None) -> str:
     r = subprocess.run(["git", *args], cwd=cwd, capture_output=True, text=True, timeout=timeout)
     if check and r.returncode != 0:
-        raise RuntimeError(f"git {' '.join(args)}: {(r.stderr or r.stdout).strip()[:400]}")
+        raise RuntimeError(f"git {' '.join(args)}: {(r.stderr or r.stdout).strip()}")
     return r.stdout.strip()
 
 
@@ -301,7 +301,7 @@ def clone(purpose: str, name: str | None, checkout: bool, sparse: list[str], fet
         try:
             rec.update(refresh())
         except Exception as e:  # a stale store still clones; the clone can --fetch the rest
-            rec["refresh_error"] = str(e)[:300]
+            rec["refresh_error"] = str(e)
         so = store_objects()
         t1 = time.time()
         made = True     # from here a failure leaves a dest only this call made: it is removed, never left half-made
@@ -339,7 +339,7 @@ def clone(purpose: str, name: str | None, checkout: bool, sparse: list[str], fet
         print(dest)
         return 0
     except Exception as e:
-        rec["error"] = str(e)[:500]
+        rec["error"] = str(e)
         # RELENTLESS_BUNDLES_FIX_FOURTEEN_GIG_PATCHES (2026-11-04): a fetch refused by GitHub left a pool clone with a .git,
         # no index and no tree; Relentless read its 44k tracked files as deletions and bundled the tree three times (14 GB).
         if made and dest.exists():
@@ -435,7 +435,7 @@ def dirty_beyond_origin(c: Path) -> bool:
     r = subprocess.run(["git", "--no-optional-locks", "status", "--porcelain", "-z", "--untracked-files=all"], cwd=c,
                        capture_output=True, text=True, timeout=300)
     if r.returncode != 0:
-        raise RuntimeError("git status: " + (r.stderr or r.stdout).strip()[:200])
+        raise RuntimeError("git status: " + (r.stderr or r.stdout).strip())
     ents = [e for e in r.stdout.split("\0") if e]
     i = 0
     while i < len(ents):
@@ -881,7 +881,7 @@ def borrower_ok(repo: str, deep: bool) -> tuple[bool, str]:
             git("-C", repo, "fsck", "--connectivity-only", "--no-progress", timeout=300)
         return True, ""
     except Exception as e:
-        return False, str(e)[:300]
+        return False, str(e)
 
 
 def sample() -> dict:
@@ -892,13 +892,13 @@ def sample() -> dict:
         try:
             rec.update(refresh())
         except Exception as e:
-            rec["refresh_error"] = str(e)[:300]
+            rec["refresh_error"] = str(e)
         own, linked = own_bytes(st)
         rec.update({"store_own_bytes": own, "store_hardlinked_bytes": linked})
         try:
             rec["store_objects"] = store_objects()["objects"]
         except Exception as e:
-            rec["store_objects_error"] = str(e)[:300]
+            rec["store_objects_error"] = str(e)
     bs = find_borrowers()
     on_store = [b for b in bs if b["kind"] == "store"]
     rec.update({"borrowers_store": len(on_store),

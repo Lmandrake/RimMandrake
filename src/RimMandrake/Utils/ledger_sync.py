@@ -136,9 +136,9 @@ def run(seat, seat_clone, clone, apply=False, lint=LINT, out=print, temp=False):
         % (seat, len(missing), (" (" + ", ".join("%s %d" % kv for kv in sorted(verbs.items()))
                                 + ")") if missing else ""))
     for l in conflicts:
-        out("CONFLICT (same identity, different content; not appended): %s" % l[:160])
+        out("CONFLICT (same identity, different content; not appended): %s" % l)
     for l in malformed:
-        out("MALFORMED (not appended): %s" % l[:160])
+        out("MALFORMED (not appended): %s" % l)
     if not missing or not apply:
         if missing:
             out("dry run — pass --apply to append, commit and push")

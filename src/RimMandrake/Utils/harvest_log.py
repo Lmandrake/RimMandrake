@@ -496,7 +496,7 @@ def provenance(path, lines, since=None, stale_ok=False):
     log_mtime = datetime.datetime.fromtimestamp(os.path.getmtime(path))
     mc_path = DEFAULT_MODSCONFIG
 
-    build = next((l.strip() for l in lines[:800]
+    build = next((l.strip() for l in lines[:800]  # cut-ok: the first 800 lines searched, a list
                   if l.startswith("RimWorld 1.")), "unknown build")
     exited = any(EXITED_MARKER in l for l in lines[-40:])
 
@@ -714,7 +714,7 @@ def main():
         rx = re.compile(pat)
         for i, l in enumerate(lines, 1):
             if rx.search(l) and not INVENTORY.match(l):
-                print(f"{i:>7}: {l.rstrip()[:200]}")
+                print(f"{i:>7}: {l.rstrip()}")
         return
 
     print(colour("STANDING CHECKS", "bold"))

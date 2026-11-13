@@ -190,12 +190,12 @@ def classify(path, donors=None, renames=None, our_tex=None, our_mods=None, porte
         e = s["exc"]
         e["events"] += 1
         e[who] += 1
-        sig = re.sub(r"\d+", "N", c["line"][:140])
+        sig = re.sub(r"\d+", "N", c["line"][:140])  # cut-ok: a dedup signature, not stored text
         e["sigs"][sig] += 1
         if e["first"] is None:
-            e["first"] = {"line": c["no"], "text": c["line"][:220], "who": who}
+            e["first"] = {"line": c["no"], "text": c["line"], "who": who}
         if len(s["ex"]["exc"]) < keep:
-            s["ex"]["exc"].append("%d [%s] %s" % (c["no"], who, c["line"][:200]))
+            s["ex"]["exc"].append("%d [%s] %s" % (c["no"], who, c["line"]))
 
     def who_name(name, line):
         base = re.sub(r"^(Blueprint_Install_|Blueprint_|Frame_|Corpse_|Meat_)", "", name)
@@ -235,7 +235,7 @@ def classify(path, donors=None, renames=None, our_tex=None, our_mods=None, porte
             if not line:
                 continue
             if s["firstErrorish"] is None and FIRST_ERRORISH.search(line):
-                s["firstErrorish"] = {"line": no, "text": line.strip()[:220]}
+                s["firstErrorish"] = {"line": no, "text": line.strip()}
             if not FRAME_RE.match(line) and EXC_RE.search(line):
                 cur = {"no": no, "line": line.strip(), "ctx": []}
             if inventory.match(line):
@@ -253,7 +253,7 @@ def classify(path, donors=None, renames=None, our_tex=None, our_mods=None, porte
                 if OURS_RE.search(line):
                     x["bar"] += 1
                     if len(s["ex"]["xref"]) < keep:
-                        s["ex"]["xref"].append("%d [%s] %s" % (no, w, line[:200]))
+                        s["ex"]["xref"].append("%d [%s] %s" % (no, w, line))
                 continue
             m = SCRIBE_RE.search(line)
             if m:
@@ -262,7 +262,7 @@ def classify(path, donors=None, renames=None, our_tex=None, our_mods=None, porte
                 c[who_name(m.group(1), line)] += 1
                 c["names"][m.group(1)] += 1
                 if len(s["ex"]["scribe"]) < keep:
-                    s["ex"]["scribe"].append("%d %s" % (no, line[:200]))
+                    s["ex"]["scribe"].append("%d %s" % (no, line))
                 continue
             m = CONFIG_RE.search(line)
             if m:
@@ -270,7 +270,7 @@ def classify(path, donors=None, renames=None, our_tex=None, our_mods=None, porte
                 c["lines"] += 1
                 c["ours" if OURS_RE.search(m.group(1)) else "other"] += 1
                 if OURS_RE.search(m.group(1)) and len(s["ex"]["config"]) < keep:
-                    s["ex"]["config"].append("%d %s" % (no, line[:200]))
+                    s["ex"]["config"].append("%d %s" % (no, line))
                 continue
             if PATCH_RE.search(line):
                 c = s["patch"]
@@ -280,7 +280,7 @@ def classify(path, donors=None, renames=None, our_tex=None, our_mods=None, porte
                 if donors and any(n in donors for n in re.findall(r'defName="([^"]+)"', line)):
                     c["retiredTarget"] += 1                     # a patch aimed at a retired donor's def: dead weight
                 if ours and len(s["ex"]["patch"]) < keep:
-                    s["ex"]["patch"].append("%d %s" % (no, line[:200]))
+                    s["ex"]["patch"].append("%d %s" % (no, line))
                 continue
             for rx in TEX_RES:
                 m = rx.search(line)
@@ -294,7 +294,7 @@ def classify(path, donors=None, renames=None, our_tex=None, our_mods=None, porte
                     t["ours" if ours else "other"] += 1
                     t["oursPaths" if ours else "otherPaths"][p] += 1
                     if ours and len(s["ex"]["tex"]) < keep:
-                        s["ex"]["tex"].append("%d %s" % (no, line[:200]))
+                        s["ex"]["tex"].append("%d %s" % (no, line))
                     break
         if cur is not None:
             close_exc(cur)
@@ -408,7 +408,7 @@ def report(s, mods, src, retired, expect, prev, out=print):
     out("      exception events       %5d%s   ours %d / retired-donor %d / other %d" % (
         e["events"], _d(e["events"], pb.get("exceptions")), e["ours"], e["retired"], e["other"]))
     if e["first"]:
-        out("        first: line %d [%s] %s" % (e["first"]["line"], e["first"]["who"], e["first"]["text"][:150]))
+        out("        first: line %d [%s] %s" % (e["first"]["line"], e["first"]["who"], e["first"]["text"]))
     out("      xref naming RM_/RSW_/RUT_ %4d%s   (all xref %d: retired-donor-or-rename %d / ours %d / other %d)" % (
         x["bar"], _d(x["bar"], pb.get("xrefOurs")), x["lines"], x["retired"], x["ours"], x["other"]))
     out("      texture misses, ours   %5d%s   (%d distinct; others %d lines, %d distinct; on ported subjects %d)" % (
@@ -431,12 +431,12 @@ def report(s, mods, src, retired, expect, prev, out=print):
         out("      vs previous run %s: %d new exception signature(s), %d new texture path(s) of ours" % (
             P.get("fingerprint"), len(new_sigs), len(new_tex)))
         for k in new_sigs[:3]:
-            out("        + %s" % k[:150])
+            out("        + %s" % k)
     else:
         out("      vs previous run: none recorded")
     for k in ("xref", "tex", "exc"):
         for ln in s["ex"].get(k, [])[:3]:
-            out("      e.g. %-4s %s" % (k, ln[:170]))
+            out("      e.g. %-4s %s" % (k, ln))
 
 
 def verdict(s, mods, retired):

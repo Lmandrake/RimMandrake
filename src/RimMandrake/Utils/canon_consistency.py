@@ -271,7 +271,7 @@ def find_thin_coverage(extracted, threshold=1):
             thin.append({
                 "entity": e, "mentions": len(cs), "certainty": c["certainty"],
                 "doc": c["provenance"]["doc"], "line": c["provenance"]["line_start"],
-                "text": c["text"][:160],
+                "text": c["text"],
             })
     thin.sort(key=lambda t: t["entity"])
     return thin
@@ -401,8 +401,8 @@ def main():
         print("\nCONTRADICTIONS — %d shown of %d total" % (len(shown), len(contradictions)))
         for f in shown:
             print("  [%s] %s / %s" % (f["severity"], f["entity"], f["attribute"]))
-            print("      %s:%s (%s) = %r" % (f["doc_a"], f["line_a"], f["certainty_a"], f["value_a"][:100]))
-            print("      %s:%s (%s) = %r" % (f["doc_b"], f["line_b"], f["certainty_b"], f["value_b"][:100]))
+            print("      %s:%s (%s) = %r" % (f["doc_a"], f["line_a"], f["certainty_a"], f["value_a"]))
+            print("      %s:%s (%s) = %r" % (f["doc_b"], f["line_b"], f["certainty_b"], f["value_b"]))
     else:
         print("\nno BEDROCK/RULED-vs-RULED contradictions found.")
     if not a.all_severities and len(contradictions) > len(alarm):

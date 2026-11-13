@@ -44,7 +44,7 @@ def _run(argv, timeout=480):
 def system_numpy(run=_run, py=SYSTEM_PY):
     code, out = run([py, "-c", "import numpy; print(numpy.__version__)"])
     if code or not out:
-        raise SystemExit("FAILED the system python3 (%s) has no numpy: %s" % (py, out[-200:]))
+        raise SystemExit("FAILED the system python3 (%s) has no numpy: %s" % (py, out))
     return out.splitlines()[-1].strip()
 
 
@@ -81,7 +81,7 @@ def make(venv, want_numpy, run=_run, which=shutil.which, py=SYSTEM_PY):
         for argv in steps:
             code, out = run(argv)
             if code:
-                raise SystemExit("FAILED %s exit=%d: %s" % (" ".join(argv[:3]), code, out[-400:]))
+                raise SystemExit("FAILED %s exit=%d: %s" % (" ".join(argv[:3]), code, out))
     finally:
         os.unlink(cons)
     return steps

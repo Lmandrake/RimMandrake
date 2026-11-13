@@ -305,7 +305,7 @@ def main():
                   and rx - 3 <= p["x"] < rx + rw + 3 and rz - 3 <= p["z"] < rz + rh + 3]
         if strays:
             st.say("REFUSING: %d pawn(s) survived the clear (%s)"
-                   % (len(strays), ", ".join(sorted({str(p.get("name")) for p in strays}))[:200]))
+                   % (len(strays), ", ".join(sorted({str(p.get("name")) for p in strays}))))
             return 3
 
         spawned = []

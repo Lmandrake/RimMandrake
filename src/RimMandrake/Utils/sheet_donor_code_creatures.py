@@ -241,7 +241,7 @@ def main() -> int:
         label, lsrc = patched.get(("ThingDef", dn, "label"), (first(el, "label"), "donor"))
         desc, dsrc = patched.get(("ThingDef", dn, "description"), (first(el, "description") or "", "donor"))
         desc = desc.replace("\\n", " ").strip()
-        what = desc if len(desc) <= 360 else desc[:357].rsplit(" ", 1)[0] + "..."
+        what = desc
         k = kinds.get(dn)
         tex = None
         if k is not None:

@@ -265,7 +265,7 @@ def check_cs(rel: str, text: str):
 
     def add(kind, m, why, target):
         hits.append({"path": rel, "line": f.line(m.start()), "kind": why, "target": target,
-                     "text": " ".join(f.raw[f.stmt_start(m.start()):f.stmt_end(m.end()) + 1].split())[:160]})
+                     "text": " ".join(f.raw[f.stmt_start(m.start()):f.stmt_end(m.end()) + 1].split())})
 
     for kind, m in cs_pokes(f):
         p = m.start()
@@ -530,7 +530,7 @@ def check_py(rel: str, text: str, harness_restores: bool, harness_tracks: bool =
         in_handler = any(isinstance(p, ast.ExceptHandler) for p, _ in chain)
         in_restore_fn = fn is not None and re.search(r"restore|teardown|cleanup", fn.name, re.I)
         line = c.lineno
-        src = " ".join(ast.get_source_segment(text, c).split())[:160] if ast.get_source_segment(text, c) else ""
+        src = " ".join(ast.get_source_segment(text, c).split()) if ast.get_source_segment(text, c) else ""
         if kind == "harness" and harness_restores:
             continue                       # modcheck/suite.py puts the prior value back in the chain's finally
         if harness_tracks and suite_file and _t_scoped(c, chain):

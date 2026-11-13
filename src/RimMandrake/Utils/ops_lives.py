@@ -145,7 +145,7 @@ class Register:
     def death(self, tid, at, ending, cause, source, evidence, **extra):
         assert ending in ENDINGS, ending
         self.deaths.append(dict({"thing": tid, "at": at, "ending": ending, "cause": cause or UNKNOWN,
-                                 "source": source, "evidence": evidence[:300]}, **extra))
+                                 "source": source, "evidence": evidence}, **extra))
 
     def plan(self, tid, at, how, source):
         self.planned.append({"thing": tid, "at": at, "how": how, "source": source})
@@ -285,7 +285,7 @@ def from_dispatcher(reg, recs, schedule, since, now):
                 reg.death(tid, iso(at), "time_limit", UNKNOWN, "dispatcher role_stop", why,
                           ran_s=int(m.group(1)), limit_s=int(m.group(2)))
             else:
-                reg.plan(tid, iso(at), "stopped: %s" % why[:120], "dispatcher role_stop")
+                reg.plan(tid, iso(at), "stopped: %s" % why, "dispatcher role_stop")
                 stopped.add(tid)
         elif do == "role_done" and r.get("unit"):
             if (at, i) != role_end[r["unit"]]:
@@ -458,7 +458,7 @@ def from_relentless(reg, root, since, now, blind):
             tid = "relentless:%s:%s:g%s" % (kind, short(item), r.get("gen"))
             reg.thing(tid, kind, "done", item=item, started=iso(starts[r.get("gen")]) if r.get("gen") in starts else None)
             if death:
-                cause = death[2] if death[2] is not None else (r.get("detail") or UNKNOWN)[:200]
+                cause = death[2] if death[2] is not None else (r.get("detail") or UNKNOWN)
                 reg.death(tid, iso(at), death[1], cause, "relentless attempts", "%s: %s" % (end, r.get("detail") or ""),
                           item=item)
             else:
@@ -502,7 +502,7 @@ def coalesce(reg):
             first["count"] = max([kills] + [int(d.get("count") or 1) for d in ds if not d["source"].startswith("memwatch")])
             #                  distinct kills add up; repeated receipts of the same victims do not
             first["source"] = " + ".join(dict.fromkeys(d["source"] for d in ds))
-            first["evidence"] = " | ".join(d["evidence"] for d in ds)[:300]
+            first["evidence"] = " | ".join(d["evidence"] for d in ds)
             first["folded"] = len(ds)
         keep.append(first)
     # a thing that dies again and again (a service, a slice): memwatch's kill and the Dispatcher's timer alarm naming
@@ -515,7 +515,7 @@ def coalesce(reg):
         if kill is None:
             continue
         kill["source"] += " + " + d["source"]
-        kill["evidence"] = (kill["evidence"] + " | " + d["evidence"])[:300]
+        kill["evidence"] = (kill["evidence"] + " | " + d["evidence"])
         kill["folded"] = kill.get("folded", 1) + 1
         kill["failed_at"] = min(d["at"], kill.get("failed_at") or d["at"])
         keep.remove(d)
@@ -529,7 +529,7 @@ def coalesce(reg):
                 and prev["source"].startswith("memwatch") and d["source"] == "dispatcher unit_repair"
                 and 0 <= parse_ts(d["at"]) - parse_ts(prev["at"]) <= REPAIR_AFTER_KILL_S):
             prev["source"] += " + " + d["source"]
-            prev["evidence"] = (prev["evidence"] + " | " + d["evidence"])[:300]
+            prev["evidence"] = (prev["evidence"] + " | " + d["evidence"])
             prev["folded"] = prev.get("folded", 1) + 1
             if d.get("failed_at"):
                 prev["failed_at"] = min(d["failed_at"], prev.get("failed_at") or d["failed_at"])
@@ -651,7 +651,7 @@ def render_md(reg):
     quiet = [t for t in reg["things"] if not t["deaths"]]
     out += ["", "%d more things with no death in the window." % len(quiet), "", "## The last 30 deaths", ""]
     for d in reg["deaths"][-30:]:
-        out.append("- %s `%s` ended **%s**; cause: %s (%s)" % (d["at"], d["thing"], d["ending"], d["cause"][:120],
+        out.append("- %s `%s` ended **%s**; cause: %s (%s)" % (d["at"], d["thing"], d["ending"], d["cause"],
                                                                d["source"]))
     return "\n".join(out) + "\n"
 

@@ -366,7 +366,7 @@ def rates(dll, out, config, cfg, ns, cap, scale):
         rc, so, se, dt = _run(dll, args)
         sys.stdout.write(so)
         if rc:
-            print("VV: probe rc=%d for %s/%s: %s" % (rc, config, fam, (se or so)[-800:]))
+            print("VV: probe rc=%d for %s/%s: %s" % (rc, config, fam, (se or so)))
 
 
 def bound(k, n):
@@ -396,7 +396,7 @@ def suite(dll, out, cfg, record, track):
     summary = re.findall(r"^(\d+)/(\d+) passed", so, re.M)
     rec = json.load(open(out)) if os.path.isfile(out) else {}
     return {"rc": rec.get("rc"), "fails": fails, "passed": summary[-1] if summary else None, "seconds": round(dt, 1),
-            "hook_calls": rec.get("hook_calls"), "tail": so[-1500:] if not summary else "", "rec": rec}
+            "hook_calls": rec.get("hook_calls"), "tail": so if not summary else "", "rec": rec}
 
 
 def dynamic_lint(rec, shipped):
@@ -461,7 +461,7 @@ def main(argv=None):
             if v["diff"]:
                 suites["OFF_" + v["setting"]] = suite(dll, os.path.join(run_dir, "suite_OFF_%s.json" % v["setting"]), v["kernel"], False, track)
         for k, s in suites.items():
-            print("  %-36s passed %s  fails %d  hook %s  %.0fs %s" % (k, s["passed"], len(s["fails"]), s["hook_calls"], s["seconds"], s["tail"][-300:]))
+            print("  %-36s passed %s  fails %d  hook %s  %.0fs %s" % (k, s["passed"], len(s["fails"]), s["hook_calls"], s["seconds"], s["tail"]))
         if suites["AUTHORED"]["fails"] or not suites["AUTHORED"]["passed"]:
             verdict.append("AUTHORED suite through the probe is not clean: %s" % suites["AUTHORED"]["fails"])
         rows, full, kcases = dynamic_lint(suites["AUTHORED"]["rec"], shipped)

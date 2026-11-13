@@ -232,7 +232,7 @@ def ensure_fixture(B, a):
     site = subprocess.run([sys.executable, os.path.join(HERE, "live_site.py"), "--game"], capture_output=True, text=True,
                           stdin=subprocess.DEVNULL, timeout=LOAD_BUDGET_S)
     if site.returncode:
-        raise Unmeasured("no test map to save: %s" % ((site.stdout or "") + (site.stderr or ""))[-200:].strip())
+        raise Unmeasured("no test map to save: %s" % ((site.stdout or "") + (site.stderr or "")).strip())
     name = "rm_heapbisect_%s" % a.tier
     B.call("rimworld/save_game", saveName=name)
     if not V._wait_saved(name):
@@ -328,7 +328,7 @@ def cmd_live(a):
         print("UNMEASURED: %s" % e)
         return 2
     except Exception as e:      # noqa: BLE001 - the bridge dropped or the tool is absent: nothing was read, so nothing is judged
-        print("UNMEASURED: the live series broke: %s: %s" % (type(e).__name__, str(e)[:200]))
+        print("UNMEASURED: the live series broke: %s: %s" % (type(e).__name__, str(e)))
         return 2
     row = reading_row(a, s)
     print("wrote %s" % write_json(row))

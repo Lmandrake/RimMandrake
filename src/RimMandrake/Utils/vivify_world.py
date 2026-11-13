@@ -279,7 +279,7 @@ def call(tool, params=None, timeout=900):
     i = out.find("{")
     if i < 0:
         sys.exit("bridge call %s produced no JSON.\n%s\n%s"
-                 % (tool, out.strip()[:400], (r.stderr or "").strip()[:400]))
+                 % (tool, out.strip(), (r.stderr or "").strip()))
     try:
         d = json.loads(out[i:])
     except ValueError as e:

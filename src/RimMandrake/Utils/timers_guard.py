@@ -134,17 +134,17 @@ def read_states(runner=subprocess.run):
     timer will start them (hand_armed). Raises RuntimeError when systemctl cannot be read (never 'all fine')."""
     r = _sc(["list-unit-files", "--type=timer", "--no-legend", "--no-pager"], runner)
     if r.returncode:
-        raise RuntimeError("list-unit-files failed: %s" % (r.stderr or "")[:200])
+        raise RuntimeError("list-unit-files failed: %s" % (r.stderr or ""))
     names = enabled_from_listing(r.stdout)
     states = {}
     for n in names:
         s = _sc(["is-active", n], runner)
         states[n] = (s.stdout or "").strip()
         if not states[n]:
-            raise RuntimeError("is-active %s gave no answer (exit %s): %s" % (n, s.returncode, (s.stderr or "")[:120]))
+            raise RuntimeError("is-active %s gave no answer (exit %s): %s" % (n, s.returncode, (s.stderr or "")))
     t = _sc(["list-timers", "--no-legend", "--no-pager"], runner)
     if t.returncode:
-        raise RuntimeError("list-timers failed: %s" % (t.stderr or "")[:200])
+        raise RuntimeError("list-timers failed: %s" % (t.stderr or ""))
     pending = {w for ln in (t.stdout or "").splitlines() if still_pending(ln.split()) for w in ln.split()
                if w.startswith(RESUME_PREFIX) and w.endswith(".timer")}
     rec = load_pauses()
@@ -208,13 +208,13 @@ def check(now, filer, ids=None, states=None, resume_armed=None):
     if not st.get("name"):
         st["name"] = OW.mint_name("timers", set(ids_), "OPS_TIMERS_REVIVE")
     st["timers"] = names
-    st["title"] = ("Timers stopped: %d enabled rm-/testq- timers inactive (%s)" % (len(names), ", ".join(names[:4])))[:160]
+    st["title"] = ("Timers stopped: %d enabled rm-/testq- timers inactive (%s)" % (len(names), ", ".join(names[:4])))
     OW.atomic_json(p, st)
     if filer:
         try:
             err = filer([{"aid": "timers", "name": st["name"], "title": st["title"]}], conf).get(st["name"])
         except Exception as e:  # noqa: BLE001
-            err = "filer raised %s: %s" % (type(e).__name__, str(e)[:200])
+            err = "filer raised %s: %s" % (type(e).__name__, str(e))
         st["tries"] = st.get("tries", 0) + 1
         if err is None:
             st.update(state="OPEN", item=st["name"], error=None, filed=iso(now))
@@ -242,14 +242,14 @@ def pause(names, hours, runner=subprocess.run):
                 "--collect", "systemctl", "--user", "start"] + names,
                capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
     if r.returncode:
-        raise RuntimeError("could not arm the restart, NOTHING stopped: %s" % (r.stderr or "")[:200])
+        raise RuntimeError("could not arm the restart, NOTHING stopped: %s" % (r.stderr or ""))
     from ops_watch import atomic_json
     rec = load_pauses()
     rec[unit + ".timer"] = names
     atomic_json(pauses_file(), rec)
     r = runner(["systemctl", "--user", "stop"] + names, capture_output=True, text=True, timeout=120, stdin=subprocess.DEVNULL)
     if r.returncode:
-        raise RuntimeError("stop failed (restart %s stays armed): %s" % (unit, (r.stderr or "")[:200]))
+        raise RuntimeError("stop failed (restart %s stays armed): %s" % (unit, (r.stderr or "")))
     return {"unit": unit + ".timer", "names": names, "resume_in_s": secs}
 
 
@@ -320,7 +320,7 @@ def main(argv=None):
         return 0
     import ops_watch as OW
     st = check(time.time(), OW.real_filer if a.file_alarms else None)
-    print("timers_guard: %s" % ("all watched timers active" if not st else json.dumps(st, sort_keys=True)[:400]))
+    print("timers_guard: %s" % ("all watched timers active" if not st else json.dumps(st, sort_keys=True)))
     if "_state" in st:
         return 1                          # an unreadable state file must fail the unit, not hide as success
     OW.atomic_json(reading_file(), {"at": iso(time.time()), "state": st.get("state") or "clear"})

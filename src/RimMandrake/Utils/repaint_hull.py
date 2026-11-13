@@ -63,7 +63,7 @@ def main():
     with RimBridge(host, port, token, timeout=900.0) as rb:
         if args.census:
             r = unwrap(rb.call("jawa/paint_building", {"rect": args.census}))
-            print(json.dumps(r, indent=2)[:4000])
+            print(json.dumps(r, indent=2))
             return 0
 
         if not args.plan:

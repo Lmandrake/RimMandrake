@@ -68,7 +68,7 @@ def main(argv):
             out = rc.stdout + rc.stderr
             failed = rc.returncode != 0 and "selftest build FAILED" not in out
             first = next((l for l in out.splitlines() if l.startswith("FAIL")), "")
-            print(f"{n:2d} {'CAUGHT' if failed else 'MISSED'} {label} | {first[:150]}")
+            print(f"{n:2d} {'CAUGHT' if failed else 'MISSED'} {label} | {first}")
             caught += failed
             missed += not failed
         finally:

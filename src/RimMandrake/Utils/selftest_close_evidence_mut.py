@@ -640,14 +640,14 @@ def g_ship_to_wsl(td):
               and pl["who"] == {"seat": "X"}, "_ship_to_wsl: nothing invented: %r" % pl)
         CE._ship_to_wsl({"tool": "t"})
         check(json.loads(calls[-1][1]["input"])["item"] is None, "_ship_to_wsl: an empty RIMFLOW_ITEM ships None")
-        for err, out, want in (("E" * 500, "", "E" * 400), ("", "O" * 500, "O" * 400)):
+        for err, out, want in (("E" * 500, "", "E" * 500), ("", "O" * 500, "O" * 500)):   # whole (RIMMANDRAKE_STORE_TEXT_WHOLE_NO_CUTS)
             fake_run.rc, fake_run.out, fake_run.err = 7, out, err
             try:
                 CE._ship_to_wsl({"tool": "t"})
                 r = "no raise"
             except RuntimeError as e:
                 r = str(e)
-            check(r == "wsl.exe close_evidence record exit 7: %s" % want, "_ship_to_wsl: a failure raises with exit code and the last 400 chars: %s" % r[:60])
+            check(r == "wsl.exe close_evidence record exit 7: %s" % want, "_ship_to_wsl: a failure raises with exit code and the whole output: %s" % r[:60])
         fake_run.rc, fake_run.out, fake_run.err = 7, "stdout text", "stderr text"
         try:
             CE._ship_to_wsl({"tool": "t"})
@@ -811,7 +811,7 @@ def g_make_isolated(td):
             r = str(e)
         finally:
             CE.subprocess.run = real_run
-        check(r == "git %s failed: %s" % (step, ("x" * 400 + " boom")[-300:]), "make_isolated: failing %s step -> %r" % (step, r[:50]))
+        check(r == "git %s failed: %s" % (step, "x" * 400 + " boom"), "make_isolated: failing %s step (whole stderr) -> %r" % (step, r[:50]))
         check(set(os.listdir(rootd)) == before, "make_isolated: the temp dir of a failed %s is removed" % step)
     # the key: created by make_isolated when it does not exist yet
     old = os.environ.get(CE.KEY_ENV)

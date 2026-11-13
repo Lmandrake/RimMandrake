@@ -75,7 +75,7 @@ def stamp_status(root):
             k, p = line.split(' ', 1); st[p.strip()] = [k]; cur = p.strip()
         elif cur and line.strip(): st[cur].append(line.strip())
     if not st:   # a crashed/empty stamp check would otherwise leave check (3) unable to fail (only "no committed DLL stamp" notes)
-        print('dll_source_stamp.py check returned no stamps (rc=%s): %s' % (r.returncode, (r.stderr or r.stdout)[-300:]), file=sys.stderr)
+        print('dll_source_stamp.py check returned no stamps (rc=%s): %s' % (r.returncode, (r.stderr or r.stdout)), file=sys.stderr)
         sys.exit(2)
     return st
 

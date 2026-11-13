@@ -72,7 +72,7 @@ def phase_of(call, settle=False, new_map_of=None):
     try:
         ui = _open(call("rimworld/get_ui_state"))
     except Exception as ex:  # noqa: BLE001  the bridge can drop while a map builds: poll, never trust
-        return "unreachable", {"error": str(ex)[:200]}
+        return "unreachable", {"error": str(ex)}
     ps = ui.get("programState")
     if ps == "Entry":
         return "menu", ui
@@ -81,7 +81,7 @@ def phase_of(call, settle=False, new_map_of=None):
     try:
         gi = _open(call("rimworld/get_game_info"))
     except Exception as ex:  # noqa: BLE001
-        return "loading", dict(ui, gameInfoError=str(ex)[:200])
+        return "loading", dict(ui, gameInfoError=str(ex))
     n = gi.get("mapCount")
     if not (isinstance(n, int) and n >= 1):
         return "missing_map", dict(ui, mapCount=n)
@@ -89,14 +89,14 @@ def phase_of(call, settle=False, new_map_of=None):
         try:
             st = _open(call("rimbridge/get_bridge_status")).get("state") or {}
         except Exception as ex:  # noqa: BLE001
-            return "settling", dict(ui, statusError=str(ex)[:200])
+            return "settling", dict(ui, statusError=str(ex))
         if not st.get("automationReady") or st.get("longEventPending"):
             return "settling", dict(ui, bridgeState=st)
     if new_map_of is not None:
         try:
             mid = _open(call("jawa/map_info")).get("mapId")
         except Exception as ex:  # noqa: BLE001
-            return "old_map", dict(ui, mapInfoError=str(ex)[:200])
+            return "old_map", dict(ui, mapInfoError=str(ex))
         if mid is None or mid == new_map_of:
             return "old_map", dict(ui, mapId=mid)
     return "map_ready", ui
@@ -132,7 +132,7 @@ def await_lifecycle(call, state="map_ready", deadline_s=120.0, start=False, poll
             try:
                 call("rimworld/start_debug_game_ready", **START_PARAMS)
             except Exception as ex:  # noqa: BLE001  a start that times out may still be loading: keep polling
-                ui = dict(ui, startError=str(ex)[:200])
+                ui = dict(ui, startError=str(ex))
             continue
         if waited >= deadline_s:
             why = {"menu": "the game is at the main menu" + ("" if start else " (start=False)"),

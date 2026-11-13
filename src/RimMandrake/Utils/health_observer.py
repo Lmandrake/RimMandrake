@@ -256,7 +256,7 @@ class Milestones(object):
                     hit = re.match(rb"^RimWorld \d+\.\d+\.\d+ rev\d+$", s) is not None
                 if hit:
                     self.seen.add(mid)
-                    out.append({"id": mid, "offset": pos, "line": s[:160].decode("utf-8", "replace"),
+                    out.append({"id": mid, "offset": pos, "line": s.decode("utf-8", "replace"),
                                 "meaning": meaning})
             pos += len(line) + 1
         return out
@@ -682,7 +682,7 @@ class Collector(object):
             except Exception as e:                              # noqa: BLE001
                 cost = (time.perf_counter() - t0) * 1e6
                 self.failed[sid] = self.failed.get(sid, 0) + 1
-                sources[sid] = {"status": "failed", "error": "%s: %s" % (type(e).__name__, str(e)[:200])}
+                sources[sid] = {"status": "failed", "error": "%s: %s" % (type(e).__name__, str(e))}
             sources[sid]["costUs"] = round(cost, 1)
             self.cost_ms[sid] = self.cost_ms.get(sid, 0.0) + cost / 1000.0
         self.samples += 1
@@ -917,7 +917,7 @@ def join_incidents(incidents, rows, window_s=30):
         for e in rows:
             if e.get("kind") == "event" and abs(e["_t"] - t) <= window_s:
                 out.append("    observer event %+.1fs: %s" % (e["_t"] - t, json.dumps(
-                    {k: v for k, v in e.items() if k not in ("v", "kind", "seq", "collector", "_t", "utc")})[:200]))
+                    {k: v for k, v in e.items() if k not in ("v", "kind", "seq", "collector", "_t", "utc")})))
         out.append("    (observations at the same time as the incident; no cause is established)")
     return out
 
@@ -937,7 +937,7 @@ def health_section(t0, t1, incidents, directory=None, window_s=30):
         if e.get("kind") in ("event", "start", "stop") and t0 <= e["_t"] <= t1:
             out.append("%s  observer %s %s" % (e["utc"], e.get("kind"), json.dumps(
                 {k: v for k, v in e.items() if k in ("event", "id", "pid", "startUtc", "exitCode", "reason", "line",
-                                                     "meaning", "skippedBytes", "tid", "timeUnknown")})[:220]))
+                                                     "meaning", "skippedBytes", "tid", "timeUnknown")})))
     if not samples:
         out.append("NO OBSERVER COVERAGE in this range: say nothing about process CPU, memory or log growth")
     out.extend(join_incidents(incidents, rows, window_s))

@@ -472,7 +472,7 @@ def todo_scan(path):
         loose = [b for b in _bullets(body) if "NEXT:" not in b]
         if loose:
             bad.append("half-done pointer(s) without a `NEXT:` action:\n      "
-                       + "\n      ".join(b[:120] for b in loose[:6]))
+                       + "\n      ".join(b for b in loose[:6]))
 
     # Traps: one line plus where it now lives, never a re-explanation.
     body = _section(text, "Traps learned")
@@ -482,7 +482,7 @@ def todo_scan(path):
         if loose:
             bad.append("trap(s) with no `(filed: ...)`/`(see: ...)` citation — "
                        "file each with lessons.py add (or cite where it already "
-                       "lives):\n      " + "\n      ".join(b[:120] for b in loose[:6]))
+                       "lives):\n      " + "\n      ".join(b for b in loose[:6]))
     return bad
 
 
@@ -498,7 +498,7 @@ def show_last_reply():
         return
     if r.returncode:
         print("\n== the old window's LAST REPLY: UNMEASURED (exit %d: %s). Say so to him in one line."
-              % (r.returncode, (r.stderr or "").strip()[-300:]))
+              % (r.returncode, (r.stderr or "").strip()))
     elif r.stdout.strip():
         print(r.stdout.rstrip() + "\n")
 
@@ -896,7 +896,7 @@ def build(since_sha, since_ts, prev_name):
     L.append("")
     if ready:
         for e in ready:
-            L.append("- `%s` — %s" % (e.get("id"), (e.get("title") or "")[:150]))
+            L.append("- `%s` — %s" % (e.get("id"), (e.get("title") or "")[:150]))  # cut-ok: an item title in a one-line list
     else:
         L.append("Nothing filed in this window.")
     L.append("")

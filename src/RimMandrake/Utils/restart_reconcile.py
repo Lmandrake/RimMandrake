@@ -239,7 +239,7 @@ def item_name(seat):
 def title_of(seat, rows):
     r = rows[0]
     how = "cancelled" if r.get("cancelled") else "no restart_verified"
-    return "Restart request of %s unmatched %d s (%s): %s" % (seat, r.get("age_s", 0), how, r.get("reason", "")[:120])
+    return "Restart request of %s unmatched %d s (%s): %s" % (seat, r.get("age_s", 0), how, r.get("reason", ""))
 
 
 def seat_log(sch, seat):
@@ -257,7 +257,7 @@ def tell_log(sch, seat, line):
             f.write("\n- restart_reconcile (%s): %s\n" % (OW.iso(time.time()), line))
         return None
     except OSError as e:
-        return str(e)[:200]
+        return str(e)
 
 
 def tell_seat(root, seat, line, now):
@@ -323,7 +323,7 @@ def run_pass(now, root, sch, state, filer, out_dir):
         try:
             res = filer(todo, conf)
         except Exception as e:  # noqa: BLE001 - a filing outage retries next pass; the log line is already out
-            res = {a["name"]: "%s: %s" % (type(e).__name__, str(e)[:200]) for a in todo}
+            res = {a["name"]: "%s: %s" % (type(e).__name__, str(e)) for a in todo}
         for a in todo:
             err = res.get(a["name"], "no answer from the filer")
             seat = a.get("seat")

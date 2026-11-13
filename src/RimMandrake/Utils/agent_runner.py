@@ -149,7 +149,7 @@ def run(cwd, prompt, result, events, spend, *, model=None, effort=None,
         stream, rc = proc.stdout or "", proc.returncode
         error = event_error(stream)
         if rc:
-            error = error or (proc.stderr or "Codex exited %s" % rc)[-2000:]
+            error = error or (proc.stderr or "Codex exited %s" % rc)
         if target.is_file():
             answer = target.read_text(encoding="utf-8", errors="replace")
             if target != result:

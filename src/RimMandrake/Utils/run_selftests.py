@@ -434,7 +434,7 @@ def probe_harness():
         return None, f"systemd-run unavailable ({type(exc).__name__}: {exc})"
     _, rep = _split_marker(p.stderr)
     if not rep:
-        return None, f"probe scope did not start (rc {p.returncode}: {p.stderr.strip()[-200:]})"
+        return None, f"probe scope did not start (rc {p.returncode}: {p.stderr.strip()})"
     if not rep.get("ok"):
         return None, f"probe landed OUTSIDE {HARNESS_SLICE}: {rep.get('placement')}"
     slice_cg = "/sys/fs/cgroup" + rep["placement"].rsplit("/", 1)[0]
@@ -689,7 +689,7 @@ def _run_one_in(path: Path, cap: int = 0, est: int = 0, env=None) -> tuple[Path,
         if _HARNESS:
             if not rep:
                 return path, "CRASH", elapsed, ("harness error: contained run gave no wrapper report (rc "
-                                                f"{proc.returncode}): {proc.stderr.strip()[-400:]}")
+                                                f"{proc.returncode}): {proc.stderr.strip()}")
             if not rep.get("ok"):
                 return path, "CRASH", elapsed, (f"harness refused to run it: landed in {rep.get('placement')}, "
                                                 f"not {HARNESS_SLICE}")
@@ -701,7 +701,7 @@ def _run_one_in(path: Path, cap: int = 0, est: int = 0, env=None) -> tuple[Path,
         shown = tail[-20 if state == "CRASH" else -40:]
         # A FAIL above the tail is the only record of what failed; after the tail, so known_reds' first error is unmoved.
         cut = out.strip().splitlines()[:-len(shown)]
-        lost = [ln.strip()[:600] for ln in cut if ln.lstrip().startswith("FAIL")][:10]
+        lost = [ln.strip() for ln in cut if ln.lstrip().startswith("FAIL")][:10]
         return path, state, elapsed, "\n".join([why] + shown + lost)
     except subprocess.TimeoutExpired:
         elapsed = time.monotonic() - start
@@ -1025,7 +1025,7 @@ def _known_false_hit(kn, rel, r) -> bool:
         except Exception:  # noqa: BLE001 - no reading: nothing to contradict
             stored = None
     if stored and K.false_hit(stored, state):
-        why = f"stored {stored}, ran {state}: {str(r[3]).splitlines()[0] if r[3] else ''}"[:300]
+        why = f"stored {stored}, ran {state}: {str(r[3]).splitlines()[0] if r[3] else ''}"
         kn["false_hits"].append((rel, why))
         led.forget(rel)
         led.quarantine(rel, why)
@@ -1133,7 +1133,7 @@ def _known_alarm(hits) -> None:
         sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "rimflow"))
         import incident as IN
         IN.signal({"incident": {"enabled": True}}, "selftest_false_hit",
-                  f"known-result ledger false hit: {', '.join(r for r, _ in hits)[:300]}", time.time())
+                  f"known-result ledger false hit: {', '.join(r for r, _ in hits)}", time.time())
     except Exception as exc:  # noqa: BLE001 - the red run still stands
         print(f"!!! could not raise the incident ({type(exc).__name__}: {exc})", file=sys.stderr)
 

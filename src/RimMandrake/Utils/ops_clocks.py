@@ -141,7 +141,7 @@ def deploy_dirty(dep):
     r = subprocess.run(["git", "-C", dep, "status", "--porcelain", "--", "src"], capture_output=True, text=True,
                        timeout=60)
     if r.returncode:
-        return ["git status in the deploy failed: %s" % (r.stderr.strip()[:200])]
+        return ["git status in the deploy failed: %s" % (r.stderr.strip())]
     return ["local edit in the deploy: %s" % ln for ln in r.stdout.splitlines()]
 
 
@@ -159,7 +159,7 @@ def take_snapshot(dep, out=None):
         raise SystemExit("deploy %s holds no src/RimMandrake" % dep)
     st = _git(dep, "status", "--porcelain", "--", "src")
     if st.returncode:
-        raise SystemExit("git status in the deploy failed: %s" % st.stderr.strip()[:200])
+        raise SystemExit("git status in the deploy failed: %s" % st.stderr.strip())
     snap = {"deploy": str(dep).rstrip("/"), "head": _git(dep, "rev-parse", "HEAD").stdout.strip(),
             "src_tree": _git(dep, "rev-parse", "HEAD:src").stdout.strip(),
             # provenance measured HERE, where the history is: no commit of the deploy's own that origin/main lacks
@@ -251,7 +251,7 @@ def check(conf, notes=None):
     for name, trigger in sorted(conf["clocks"].items()):
         r = _sc("cat", name + ".service")
         if r.returncode:
-            probs.append("%s: not installed (%s)" % (name, r.stderr.strip()[:120]))
+            probs.append("%s: not installed (%s)" % (name, r.stderr.strip()))
             continue
         probs += ["%s: %s" % (name, p) for p in judge(r.stdout, dep)]
         en = _sc("is-enabled", trigger).stdout.strip()   # enabled or not is timers_guard's business, not ours

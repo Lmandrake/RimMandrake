@@ -43,11 +43,11 @@ def run(mod, script, plants, keep=()):
         rc, out = lint(os.path.join(SRC, mod))
         real_ok = rc == 0
         print(("ok   " if real_ok else "FAIL ") + "the real mod dir (with Textures) is clean"
-              + ("" if real_ok else " | " + " / ".join(l for l in out.splitlines() if l.startswith("ERROR"))[:600]))
+              + ("" if real_ok else " | " + " / ".join(l for l in out.splitlines() if l.startswith("ERROR"))))
         bad += not real_ok
         rc, out = lint()
         clean = rc == 0
-        print(("ok   " if clean else "FAIL ") + "untouched copy is clean" + ("" if clean else " | " + (out.strip().splitlines() or [""])[0][:160]))
+        print(("ok   " if clean else "FAIL ") + "untouched copy is clean" + ("" if clean else " | " + (out.strip().splitlines() or [""])[0]))
         bad += not clean
         for label, rel, old, new, want in plants:
             path = os.path.join(copy, rel.replace("/", os.sep))
@@ -61,7 +61,7 @@ def run(mod, script, plants, keep=()):
                 open(path, "wb").write(text.replace(old, new, 1).encode("utf-8"))
                 rc, out = lint()
                 hit = rc == 1 and any(l.startswith("ERROR") and want in l for l in out.splitlines())
-                print(("ok   " if hit else "FAIL ") + label + ("" if hit else f" | rc={rc} wanted ERROR containing {want!r}; got {out.strip().splitlines()[-1][:140] if out.strip() else ''}"))
+                print(("ok   " if hit else "FAIL ") + label + ("" if hit else f" | rc={rc} wanted ERROR containing {want!r}; got {out.strip().splitlines()[-1] if out.strip() else ''}"))
                 bad += not hit
             finally:
                 open(path, "wb").write(orig)

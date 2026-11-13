@@ -149,7 +149,7 @@ def load_index(paths, verbose=False):
         except OSError:
             missing.append(p)
             continue
-        key = re.sub(r"[^A-Za-z0-9]+", "_", p)[-120:] + "_%d_%d.json" % (st.st_size, int(st.st_mtime))
+        key = re.sub(r"[^A-Za-z0-9]+", "_", p)[-120:] + "_%d_%d.json" % (st.st_size, int(st.st_mtime))  # cut-ok: a filename
         cp = os.path.join(CACHE, key)
         idx = None
         if os.path.exists(cp):

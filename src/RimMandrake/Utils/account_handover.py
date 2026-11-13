@@ -125,7 +125,7 @@ def main():
     host = sh("hostname").stdout.strip().lower()
     sh(CLAUDE_ACCOUNT, "arm", "--confirm", host)
     r = sh(CLAUDE_ACCOUNT, "use", a.to, "--confirm", host, timeout=600)
-    log(dict(act="switched", **link, rc=r.returncode, out=(r.stdout + r.stderr)[-400:]))
+    log(dict(act="switched", **link, rc=r.returncode, out=(r.stdout + r.stderr)))
     if r.returncode:
         return 1        # no marker: the next tick tries again
     open(marker, "w", encoding="utf-8").close()

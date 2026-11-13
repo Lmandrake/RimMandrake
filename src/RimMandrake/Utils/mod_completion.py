@@ -725,7 +725,7 @@ def report(mod: str, evs, items, all_mods, asof: dt.date) -> dict:
             continue
         if (it.get("needs") == "owner" or it.get("for") == "OWNER") and it.get("filed"):
             age = (now - dt.datetime.fromisoformat(it["filed"][:19])).days
-            waiting.append({"id": i, "age_days": age, "kind": it.get("kind"), "title": (it.get("title") or "")[:110]})
+            waiting.append({"id": i, "age_days": age, "kind": it.get("kind"), "title": (it.get("title") or "")[:110]})  # cut-ok: an item title in a one-line list
     waiting.sort(key=lambda x: -x["age_days"])
     open_bugs = sorted(i for i, it in mod_items.items() if it["state"] == "open" and is_bug(i, it))
     tr = trends(mod_items, items, runs, code_review_weeks(mod), asof)

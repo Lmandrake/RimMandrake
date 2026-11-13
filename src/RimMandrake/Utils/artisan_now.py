@@ -703,7 +703,7 @@ def parse_ratchet(text, ids=()):
             rest = m[2]
             word = RATCHET_WORD.search(line)
             found = [(bid, word[1].lower() if word else "open", short(rest.strip(" .,:;—-()|"), 90))]
-            for numbered, a in RATCHET_AND.findall(rest[:160]):
+            for numbered, a in RATCHET_AND.findall(rest):
                 a = a.lower()
                 if a != bid:
                     found.append((a, word[1].lower() if word else "open", ""))
@@ -1096,11 +1096,11 @@ def warn_about(rec):
         w.append("The latest pass wrote %d bytes to its error file." % rec["err_size"])
     tx = rec.get("tx")
     if tx:
-        norm = Counter(re.sub(r"\d+", "#", c)[:120] for c in tx["bash"] if c)
+        norm = Counter(re.sub(r"\d+", "#", c) for c in tx["bash"] if c)
         rep = [(c, n) for c, n in norm.most_common(2) if n >= 5]
         for c, n in rep:
             w.append("Same command %d times lately: `%s`." % (n, short(c, 90)))
-        errs = Counter(re.sub(r"\d+", "#", e)[:100] for e in tx["errors"] if e)
+        errs = Counter(re.sub(r"\d+", "#", e) for e in tx["errors"] if e)
         for e, n in errs.most_common(2):
             if n >= 3:
                 w.append("Same error %d times lately: %s" % (n, short(e, 110)))
@@ -1322,7 +1322,7 @@ def machine_lines(name, m):
             return lines
         lines.append("Figures below are from the last good read, %s ago, not now." % ago(now_s() - d.get("read_at", 0)))
     if d.get("game") is None:
-        lines.append("Game: UNMEASURED (tasklist did not answer: %s)." % "; ".join(d.get("errors", []))[:120])
+        lines.append("Game: UNMEASURED (tasklist did not answer: %s)." % "; ".join(d.get("errors", [])))
     elif not d["game"]:
         lines.append("Game: **not running**.")
     else:
@@ -1756,7 +1756,7 @@ def arc_step(c, d, gate):
     for b in blocks:
         if b.get("type") == "tool_result":
             c["open"].pop(b.get("tool_use_id"), None)
-            if b.get("is_error") and "owner sent you a note" in json.dumps(b.get("content"))[:4000]:
+            if b.get("is_error") and "owner sent you a note" in json.dumps(b.get("content")):
                 if not c["notes"] or t - c["notes"][-1] > GAME_MERGE_S:     # the gate repeats one note until it is read
                     c["notes"].append(t)
     if notified and c["bg"]:
@@ -1779,7 +1779,7 @@ def arc_feed(path, c, gate):
     if end < 0:
         return
     for line in raw[:end].split(b"\n"):
-        if b'"isSidechain":true' in line[:300] or not (b'"type":"assistant"' in line or b'"type":"user"' in line):
+        if b'"isSidechain":true' in line or not (b'"type":"assistant"' in line or b'"type":"user"' in line):
             continue
         try:
             d = json.loads(line)

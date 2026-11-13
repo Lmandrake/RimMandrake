@@ -378,7 +378,7 @@ def last_change(t, changes_dir=None):
 def git(*args, cwd=None, check=True):
     r = subprocess.run(["git"] + list(args), cwd=cwd or REPO, capture_output=True, text=True, timeout=300)
     if check and r.returncode != 0:
-        raise RuntimeError("git %s: %s" % (" ".join(args[:2]), (r.stderr or r.stdout)[-400:]))
+        raise RuntimeError("git %s: %s" % (" ".join(args[:2]), (r.stderr or r.stdout)))
     return r.stdout
 
 
@@ -565,7 +565,7 @@ def claude_fresh(prompt, timeout=420, model_name="opus"):
                             "--strict-mcp-config"], input=prompt, capture_output=True, text=True, cwd=d,
                            timeout=timeout)
     if r.returncode != 0 or not r.stdout.strip():
-        raise RuntimeError("claude -p exit %d: %s" % (r.returncode, (r.stderr or "")[-300:]))
+        raise RuntimeError("claude -p exit %d: %s" % (r.returncode, (r.stderr or "")))
     return r.stdout
 
 
@@ -602,7 +602,7 @@ def build_change(entry, res, full, reply):
             a2, b2 = region_of(new_full, res["region"])
             inside = new_full[:a2] == full[:a] and new_full[b2:] == full[b:]
         except (SyntaxError, ValueError) as e:
-            inside, probs = True, probs + ["the edited file does not parse: %s" % str(e)[:120]]
+            inside, probs = True, probs + ["the edited file does not parse: %s" % str(e)]
         if not inside:
             probs.append("the edit reaches outside %s" % res["region"])
     diff = "".join(difflib.unified_diff(full.splitlines(True), new_full.splitlines(True),
@@ -629,15 +629,15 @@ def curate_and_judge(entry, day, outdir, curator=None, judge=None, repo=None):
         raw = curator(curator_prompt(entry, res, text, commits_since(res and res["path"], day, repo)))
         reply = parse_json_reply(raw)
     except (RuntimeError, ValueError, subprocess.SubprocessError) as e:
-        row.update(decision="error", error="curator: %s" % str(e)[:300])
+        row.update(decision="error", error="curator: %s" % str(e))
         return row
     with open(os.path.join(outdir, "%s.curator.json" % t), "w", encoding="utf-8") as f:
-        json.dump({"reply": reply, "raw": raw[-4000:]}, f, indent=1)
+        json.dump({"reply": reply, "raw": raw}, f, indent=1)
     row["decision"] = reply.get("decision")
     row["prior_recheck"] = reply.get("prior_recheck") if entry.get("prior") else None
     row["prior_version"] = (entry.get("prior") or {}).get("version")   # the change the recheck is about
     if row["decision"] == "proposal":
-        row["proposal"] = str(reply.get("proposal") or "")[:1500]
+        row["proposal"] = str(reply.get("proposal") or "")
         row["fix_layer"] = reply.get("fix_layer")
         return row
     if row["decision"] != "change":
@@ -659,18 +659,18 @@ def curate_and_judge(entry, day, outdir, curator=None, judge=None, repo=None):
         return row
     with open(os.path.join(outdir, "%s.diff" % t), "w", encoding="utf-8") as f:
         f.write(diff)
-    row.update(diff=diff, cites=reply["cites"], recheck=str(reply["recheck"])[:400], why_text=reply.get("why_text"),
+    row.update(diff=diff, cites=reply["cites"], recheck=str(reply["recheck"]), why_text=reply.get("why_text"),
                new_text=new_full)
     try:
         jraw = judge(judge_prompt(entry, res, text, diff, reply["cites"], row["recheck"]))
         jv = parse_json_reply(jraw)
     except (RuntimeError, ValueError, subprocess.SubprocessError) as e:
-        jv, jraw = {"verdict": "UNSURE", "reasons": "judge failed: %s" % str(e)[:200]}, ""
+        jv, jraw = {"verdict": "UNSURE", "reasons": "judge failed: %s" % str(e)}, ""
     v = str(jv.get("verdict") or "").upper()
     row["verdict"] = v if v in VERDICTS else "UNSURE"
-    row["judge"] = {"reasons": str(jv.get("reasons") or "")[:800], "violated": str(jv.get("violated") or "")[:400]}
+    row["judge"] = {"reasons": str(jv.get("reasons") or ""), "violated": str(jv.get("violated") or "")}
     with open(os.path.join(outdir, "%s.judge.json" % t), "w", encoding="utf-8") as f:
-        json.dump({"reply": jv, "raw": jraw[-4000:]}, f, indent=1)
+        json.dump({"reply": jv, "raw": jraw}, f, indent=1)
     return row
 
 
@@ -719,7 +719,7 @@ def run_checks(res, repo):
     for c in cmds:
         r = subprocess.run(c, cwd=repo, capture_output=True, text=True, timeout=540)
         if r.returncode != 0:
-            probs.append("%s exit %d: %s" % (" ".join(c[1:3]), r.returncode, (r.stdout + r.stderr)[-300:]))
+            probs.append("%s exit %d: %s" % (" ".join(c[1:3]), r.returncode, (r.stdout + r.stderr)))
     return probs
 
 
@@ -744,12 +744,12 @@ def general_gate(row, entry, res, outdir, repo, general, changes_dir=None):
     try:
         g = general(row["target"], old, row["new_text"], kinds)
     except Exception as e:   # a crashed check is not a pass
-        return False, "generalization check crashed: %s" % str(e)[:300]
+        return False, "generalization check crashed: %s" % str(e)
     refs = {"old": "HEAD", "new": "proposed"}
     try:
         gpath, rel = G.write_evidence(g, "%s_proposed" % row["target"], outdir, repo, refs=refs)
     except Exception as e:
-        return False, "generalization check: evidence not written: %s" % str(e)[:300]
+        return False, "generalization check: evidence not written: %s" % str(e)
     row["general"] = G.summary(g, rel, refs)
     row["general_path"] = gpath
     ok, why = G.gate_passes(g)
@@ -785,12 +785,12 @@ def apply_change(row, entry, outdir, repo=None, publish=None, changes_dir=None, 
 def _apply_checked(row, entry, res, t, dpath, repo, publish, changes_dir, delegated_dir):
     r = subprocess.run(["git", "apply", "--check", dpath], cwd=repo, capture_output=True, text=True, timeout=60)
     if r.returncode != 0:
-        return False, "git apply --check: %s" % r.stderr[-300:]
+        return False, "git apply --check: %s" % r.stderr
     git("apply", dpath, cwd=repo)
     try:
         probs = run_checks(res, repo)
     except Exception as e:   # a timeout or crash must not leave the edit applied
-        probs = ["checks crashed: %s" % str(e)[:300]]
+        probs = ["checks crashed: %s" % str(e)]
     if probs:
         git("apply", "-R", dpath, cwd=repo)
         return False, "; ".join(probs)
@@ -801,7 +801,7 @@ def _apply_checked(row, entry, res, t, dpath, repo, publish, changes_dir, delega
         git("apply", "-R", dpath, cwd=repo, check=False)
         if row.get("repo_general_path") and os.path.isfile(row["repo_general_path"]):
             os.remove(row["repo_general_path"])
-        return False, "preparing the change record failed: %s" % str(e)[:300]
+        return False, "preparing the change record failed: %s" % str(e)
     return _publish_and_tag(row, res, dpath, repo, publish, vrec, vpath, cpath, msg, paths, tag, head)
 
 
@@ -845,7 +845,7 @@ def _publish_and_tag(row, res, dpath, repo, publish, vrec, vpath, cpath, msg, pa
     try:
         ok, sha = (publish or publish_paths)(msg, paths, repo)
     except Exception as e:
-        ok, sha = False, "crashed: %s" % str(e)[:300]
+        ok, sha = False, "crashed: %s" % str(e)
     if not ok:
         if git("rev-parse", "HEAD", cwd=repo).strip() != head:
             # ./publish refuses after committing and leaves the commit on HEAD: never rewrite it, say so.
@@ -899,7 +899,7 @@ def publish_paths(msg, paths, repo):
     finally:
         os.unlink(f.name)
     m = re.search(r"PUBLISHED ([0-9a-f]{7,40})", r.stdout + r.stderr)
-    return (True, m.group(1)) if r.returncode == 0 and m else (False, (r.stdout + r.stderr)[-400:])
+    return (True, m.group(1)) if r.returncode == 0 and m else (False, (r.stdout + r.stderr))
 
 
 def record_rechecks(rows, changes_dir=None, saved=None):
@@ -985,7 +985,7 @@ def run_pass(day, out, apply=False, only=None, curator=None, judge=None, repo=No
                     "AGENT_IMPROVE_BUILD_JUDGED_DAILY_DIFFS: %s verdicts and rechecks\n\n"
                     "Delegated: technical — agent improvement verdicts %s\n" % (day, day), rel, repo or REPO)
             except Exception as e:
-                ok, detail = False, "crashed: %s" % str(e)[:300]
+                ok, detail = False, "crashed: %s" % str(e)
             if not ok and git("rev-parse", "HEAD", cwd=repo or REPO).strip() == head:
                 # nothing committed: an unpublished recheck must not lift an L1 hold, so put the records back
                 git("reset", "-q", "--", *rel, cwd=repo or REPO, check=False)
@@ -1030,7 +1030,7 @@ def render_pass(s):
         if r.get("error"):
             line += " [%s]" % r["error"]
         if r.get("verdict"):
-            line += ", Judge %s (%s)" % (r["verdict"], r["judge"]["reasons"][:200])
+            line += ", Judge %s (%s)" % (r["verdict"], r["judge"]["reasons"])
         if "applied" in r:
             line += ", applied: %s" % r["apply_detail"] if r["applied"] else ", NOT applied: %s" % r["apply_detail"]
         if r.get("problems"):
@@ -1067,7 +1067,7 @@ def materialize(t, version, dest, repo=None):
     os.makedirs(dest, exist_ok=True)
     arch = subprocess.run(["git", "archive", tag, "--", path], cwd=repo, capture_output=True, timeout=120)
     if arch.returncode != 0:
-        raise RuntimeError(arch.stderr.decode(errors="replace")[-300:])
+        raise RuntimeError(arch.stderr.decode(errors="replace"))
     subprocess.run(["tar", "-x", "-C", dest], input=arch.stdout, check=True, timeout=120)
     return os.path.join(dest, path)
 

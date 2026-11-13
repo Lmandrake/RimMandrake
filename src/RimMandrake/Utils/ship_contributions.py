@@ -521,7 +521,7 @@ def parse_list(item=None):
         if not line.startswith("|") or set(line) <= set("|-: "):
             continue
         if line.count("|") != 5:
-            return None, "malformed table line (want 4 columns): %s" % line[:120]
+            return None, "malformed table line (want 4 columns): %s" % line
         cells = [c.strip() for c in line.strip("|").split("|")]
         if cells[0].lower() == "biome":
             continue

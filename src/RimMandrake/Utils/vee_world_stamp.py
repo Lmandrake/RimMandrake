@@ -381,7 +381,7 @@ def live_state(rb):
     mut = read_live_mutators(rb, wi.get("tilesCount") or EXPECT_TILES)
     lg = rb.call("jawa/world_landmarks_get", {"limit": 5000})
     if not lg.get("success") or (lg.get("count") or 0) > len(lg.get("landmarks") or []):
-        raise SystemExit("world_landmarks_get truncated or failed: %s" % str(lg)[:160])
+        raise SystemExit("world_landmarks_get truncated or failed: %s" % str(lg))
     lms = [(int(x["tile"]), x.get("def"), x.get("name")) for x in lg.get("landmarks") or []]
     return mut, lms
 
@@ -422,7 +422,7 @@ def cmd_stamp(a):
                 rr = rb.call("jawa/world_mutators_set", {"action": action, "mutators": name,
                                                           "tiles": ",".join(map(str, ch)), "readBack": 2})
                 if not rr.get("success"):
-                    raise SystemExit("world_mutators_set %s %s failed: %s" % (action, name, str(rr.get("message"))[:160]))
+                    raise SystemExit("world_mutators_set %s %s failed: %s" % (action, name, str(rr.get("message"))))
                 lost = {k: v for k, v in (rr.get("displacedByDef") or {}).items() if k not in may_displace}
                 if lost:
                     raise SystemExit("REFUSED: adding %s displaced %s (not a VEE def due for removal). Nothing "
@@ -454,7 +454,7 @@ def cmd_stamp(a):
             rr = rb.call("jawa/world_landmarks_set", {"action": "add", "def": new, "tiles": str(t),
                                                        "forced": True, "checkValid": False})
             if not rr.get("success"):
-                raise SystemExit("world_landmarks_set add %s on %d failed: %s" % (new, t, str(rr)[:160]))
+                raise SystemExit("world_landmarks_set add %s on %d failed: %s" % (new, t, str(rr)))
             g = rb.call("jawa/world_mutators_get", {"tiles": str(t), "limit": 2})
             cur = {(m or {}).get("def") for x in g.get("tiles") or [] for m in x.get("mutators") or []} - {None}
             for extra in sorted(cur - settled[t]):
@@ -467,10 +467,10 @@ def cmd_stamp(a):
                 raise SystemExit("REFUSED: landmark tile %d mutators %s, expected %s" % (t, sorted(cur), sorted(settled[t])))
             rn = rb.call("jawa/world_landmark_rename", {"tile": t, "name": nm})
             if not rn.get("success"):
-                raise SystemExit("world_landmark_rename %d failed: %s" % (t, str(rn)[:160]))
+                raise SystemExit("world_landmark_rename %d failed: %s" % (t, str(rn)))
         cm = rb.call("jawa/world_commit", {})
         if not (cm or {}).get("success"):
-            raise SystemExit("world_commit failed: %s - run verify-live before saving" % str(cm)[:160])
+            raise SystemExit("world_commit failed: %s - run verify-live before saving" % str(cm))
     print("stamped; now run: vee_world_stamp.py verify-live")
     return 0
 

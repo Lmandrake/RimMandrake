@@ -779,7 +779,7 @@ class WatchHandle(object):
         if r.get("refused"):
             raise CondRefused(r)
         if r.get("success") is False:
-            raise RuntimeError("cond_watch arm failed: %s" % json.dumps(r, default=str)[:300])
+            raise RuntimeError("cond_watch arm failed: %s" % json.dumps(r, default=str))
         self.armed = True
         self.arm_reply = r
         if r.get("nextSeq") is not None:

@@ -78,7 +78,7 @@ def main():
                     continue
                 for i, line in enumerate(txt.split("\n"), 1):
                     if GONE.search(line) and not TOMBSTONE.search(line):
-                        bad.append("%s:%d still names cut code: %s" % (os.path.relpath(p, ROOT), i, line.strip()[:100]))
+                        bad.append("%s:%d still names cut code: %s" % (os.path.relpath(p, ROOT), i, line.strip()))
     if scanned < 1000:  # sanity probe: the instrument must see the tree
         bad.append("scanned only %d source files; the walk is blind" % scanned)
 

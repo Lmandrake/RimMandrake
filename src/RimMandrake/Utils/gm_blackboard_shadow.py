@@ -607,7 +607,7 @@ def _count_matched(things, defname):
     a false 0 reads as the whole stock being sold on that poll and bumps Heat/Regard."""
     n = things.get("countMatched") if isinstance(things, dict) else None
     if not isinstance(n, int):
-        raise RuntimeError("jawa/list_things %s returned no countMatched (UNMEASURED): %r" % (defname, str(things)[:160]))
+        raise RuntimeError("jawa/list_things %s returned no countMatched (UNMEASURED): %r" % (defname, str(things)))
     return n
 
 
@@ -1287,7 +1287,7 @@ class ShadowBlackboard:
         quest_reply = safe_call(rb, "jawa/quest_lifecycle", {"action": "list"})
         quest_rows = quest_reply.get("quests") if isinstance(quest_reply, dict) else None
         if not isinstance(quest_rows, list):
-            raise RuntimeError("jawa/quest_lifecycle list returned no quests[] (UNMEASURED): %r" % str(quest_reply)[:160])
+            raise RuntimeError("jawa/quest_lifecycle list returned no quests[] (UNMEASURED): %r" % str(quest_reply))
 
         record = {
             "poll": self.poll_index,

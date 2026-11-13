@@ -63,7 +63,7 @@ def judge(text, tokens, warnings=False, anchor=ANCHOR, never=()):
         named = [t for t in never if any(t in x for x in lines)]
         if named:
             hits.append("FAIL line %d names %s, which may never appear: %s" % (n, ", ".join(named),
-                                                                              " | ".join(x.strip() for x in lines)[:240]))
+                                                                              " | ".join(x.strip() for x in lines)))
     mask = re.compile("|".join(re.escape(t) for t in sorted(tokens, key=len, reverse=True)))
 
     def bad(line):
@@ -73,7 +73,7 @@ def judge(text, tokens, warnings=False, anchor=ANCHOR, never=()):
     for n, lines in recs if tokens else ():
         named = [t for t in tokens if any(t in x for x in lines)]
         if named and any(bad(x) for x in lines):
-            hits.append("FAIL line %d names %s: %s" % (n, ", ".join(named), " | ".join(x.strip() for x in lines)[:240]))
+            hits.append("FAIL line %d names %s: %s" % (n, ", ".join(named), " | ".join(x.strip() for x in lines)))
     if hits:
         return FAIL, hits[:40] + (["... %d more" % (len(hits) - 40)] if len(hits) > 40 else [])
     return PASS, (["PASS no %s line names %s" % ("error or warning" if warnings else "error", ", ".join(tokens))] if tokens
@@ -173,7 +173,7 @@ def safe_main(argv=None):
     except SystemExit:
         raise
     except BaseException as e:
-        sys.stdout.write("UNMEASURED: " + ascii("%s: %s" % (type(e).__name__, str(e)[:200])) + "\n")
+        sys.stdout.write("UNMEASURED: " + ascii("%s: %s" % (type(e).__name__, str(e))) + "\n")
         return UNMEASURED
 
 

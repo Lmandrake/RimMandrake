@@ -457,7 +457,7 @@ def make_isolated(clone, sha="HEAD", root=None) -> tuple:
         if r.returncode != 0:
             import shutil
             shutil.rmtree(td, ignore_errors=True)
-            raise RuntimeError("git %s failed: %s" % (args[0] if args[0] != "-C" else args[2], r.stderr.strip()[-300:]))
+            raise RuntimeError("git %s failed: %s" % (args[0] if args[0] != "-C" else args[2], r.stderr.strip()))
     key = _key(create=True)
     (Path(co) / ".git" / ISOLATED_MARK).write_text(
         hmac.new(key, _iso_msg(co, full), hashlib.sha256).hexdigest(), encoding="utf-8")
@@ -820,7 +820,7 @@ def _ship_to_wsl(payload: dict) -> dict | None:
     r = subprocess.run(["wsl.exe", "-e", "python3", to_wsl(os.path.abspath(__file__)), "record"],
                        input=json.dumps(payload, default=str), capture_output=True, text=True, timeout=120)
     if r.returncode != 0:
-        raise RuntimeError("wsl.exe close_evidence record exit %d: %s" % (r.returncode, (r.stderr or r.stdout)[-400:]))
+        raise RuntimeError("wsl.exe close_evidence record exit %d: %s" % (r.returncode, (r.stderr or r.stdout)))
     return json.loads(r.stdout.strip().splitlines()[-1])
 
 

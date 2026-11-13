@@ -217,7 +217,7 @@ class Category:
                 if "cut" in ch:
                     cur["cut"] = bool(ch["cut"])
                 if "note" in ch:
-                    cur["note"] = str(ch["note"])[:2000]
+                    cur["note"] = str(ch["note"])
                 if not cur["cut"] and not cur["note"]:
                     self.state.pop(k, None)
             self._write()

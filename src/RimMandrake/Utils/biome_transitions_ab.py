@@ -101,7 +101,7 @@ def run(N, s, arm, out):
     else:
         with open(spec_path) as f:
             spec = json.load(f)
-        print("load:", str(s.call("rimworld/load_game", saveName=BASE_SAVE + "_off"))[:400], flush=True)
+        print("load:", str(s.call("rimworld/load_game", saveName=BASE_SAVE + "_off")), flush=True)
         N._wait_state(s, "Playing", 200)
         for _ in range(60):             # Playing right after load_game can be a stale state: wait for the world
             if N._call(s, "jawa/world_mutators_get", tiles=str(spec["sites"][2]["centre"])).get("tiles"):
@@ -183,7 +183,7 @@ def main():
         with s:
             run(N, s, a.arm, a.out)
     else:
-        print(json.dumps(analyze(a.out, a.saves), indent=1, default=str)[:6000])
+        print(json.dumps(analyze(a.out, a.saves), indent=1, default=str))
 
 
 if __name__ == "__main__":

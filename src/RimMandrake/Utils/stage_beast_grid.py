@@ -338,7 +338,7 @@ def live_stage(args, roster):
             print("REFUSING: %d player pawn(s) stand inside the grid rect %s; pass --at elsewhere." % (len(cols), rect))
             return 5
         dry = st.call("jawa/clear_area", {"rect": rect, "dryRun": True}, check=False)
-        st.say("clear_area dry run: %s" % json.dumps({k: v for k, v in dry.items() if k != "things"})[:300])
+        st.say("clear_area dry run: %s" % json.dumps({k: v for k, v in dry.items() if k != "things"}))
         if args.no_clear:
             st.say("--no-clear: skipping clear_area")
         else:
@@ -359,7 +359,7 @@ def live_stage(args, roster):
             r = st.call("jawa/build_batch", {"ops": ";".join(ops), "stuff": args.stuff, "faction": "player",
                                               "wipeExisting": False, "readBack": 8})
             if not ok(r):
-                st.say("WALL BATCH row %d: %s" % (ri, str(r.get("message"))[:160]))
+                st.say("WALL BATCH row %d: %s" % (ri, str(r.get("message"))))
         walls = st.call("jawa/list_things", {"defName": "Wall", "limit": 20000}, check=False)
         inwalls = [t for t in (walls.get("things") or []) if ox <= t.get("x", -1) < ox + w and oz <= t.get("z", -1) < oz + h]
         st.say("walls in rect: %d of %d planned" % (len(inwalls), planned_walls))
@@ -400,7 +400,7 @@ def live_stage(args, roster):
         # held south by the engine anyway.
         ids = ",".join(str(p["id"]) for p in mine)
         rot = st.call("jawa/set_pawn_rotation", {"pawnId": ids, "dir": "south", "lockRotation": False}, check=False)
-        st.say("faced south (unlocked): %s" % str(rot.get("message") or rot.get("success"))[:100])
+        st.say("faced south (unlocked): %s" % str(rot.get("message") or rot.get("success")))
 
         st.call("jawa/review_label", {"action": "clear", "tag": TAG})
         ops = []

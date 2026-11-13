@@ -244,7 +244,7 @@ def plant_check():
             open(f, "w", encoding="utf-8").write(t.replace(old, new, 1))
             r = subprocess.run([sys.executable, os.path.abspath(__file__), "--quiet", "--src-root", td], capture_output=True, text=True)
             hit = [l for l in (r.stdout + r.stderr).splitlines() if l.startswith("ERROR") or "Traceback" in l]
-            print(("CAUGHT  " if hit else "MISSED  ") + name + ("  " + hit[0][:110] if hit else ""))
+            print(("CAUGHT  " if hit else "MISSED  ") + name + ("  " + hit[0] if hit else ""))
             caught += bool(hit)
     print(f"{caught}/{len(PLANTS)} planted defects caught")
     return 0 if caught == len(PLANTS) else 1
