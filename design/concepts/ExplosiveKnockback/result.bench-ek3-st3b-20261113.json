@@ -1,0 +1,10 @@
+{
+ "run": "bench-ek3-st3b-20261113",
+ "stage": 3,
+ "outcome": "done",
+ "summary": "One sheet line fixed on the exam10 examiner's finding: per_weapon_tuning said 'its own body-size limit lets it throw bigger pawns'; now 'its own creature mass limit lets it throw heavier pawns', matching the tree and the_spared. No other change.",
+ "quick_look": {
+  "offer": false,
+  "why": "stage 3 asks him nothing; the new rules are not built yet"
+ }
+}
