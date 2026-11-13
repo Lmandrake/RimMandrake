@@ -458,8 +458,8 @@ class Session(object):
         after clear_zone's ProofResetRect) marks the zone holding c not ready, so its rows read UNMEASURED/SITE."""
         r = self.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setBodyWaterM=(fill) * 0.5)
         bad = dig_miss(r, n) if not self.mock else None
-        if not bad and fill >= 0 and not self.mock and r.get("fillSet") is False:     # dry where the row needs water
-            bad = "fill %s not set (fillSet false)" % fill
+        if not bad and fill >= 0 and not self.mock and r.get("waterSet") is False:     # dry where the row needs water
+            bad = "fill %s not set (waterSet false)" % fill
         if bad:
             z = zone_at(self.zones, c)
             if z:

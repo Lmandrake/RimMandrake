@@ -111,8 +111,9 @@ def dug_to(reply, d):
 
 
 def filled_to(reply, f):
-    """... -> the fill was set and reads at least f (fillSet=false answers success=true)."""
-    return reply.get("success") is True and reply.get("fillSet") is True and isinstance(reply.get("fill"), int) and reply["fill"] >= f
+    """... -> the water was set and reads at least f whole levels (waterSet=false answers success=true)."""
+    return reply.get("success") is True and reply.get("waterSet") is True and isinstance(reply.get("waterDl"), int) \
+        and reply["waterDl"] >= f * 10000
 
 
 def live_colonists(B):

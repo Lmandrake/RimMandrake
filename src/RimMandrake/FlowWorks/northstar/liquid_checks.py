@@ -327,7 +327,7 @@ def levelset_verdict(rows, rows_before=None):
         if r.get("isSource"):
             src.add(c)
         elif r.get("isExcavated") and not r.get("isSink"):
-            dug[c] = (int(r.get("d") or 0), min(int(r.get("f") or 0), int(r.get("d") or 0)))
+            dug[c] = (int(r.get("d") or 0), min(int(r.get("dl") or 0) // 10000, int(r.get("d") or 0)))
     surf = {c: f - d for c, (d, f) in dug.items()}
     wet = [c for c, (d, f) in dug.items() if f > 0]
     det = {"dug": len(dug), "wet": len(wet)}

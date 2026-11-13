@@ -157,7 +157,7 @@ def scene_hole_prison(B, snapshot, reload_snapshot, receipt, *, relative=True, a
         require(kv(receipt['start_rect'])['beds'] == '0', 'a hidden bed exists in the scene')
         receipt['depth'] = depth
         receipt['cells'] = [call('jawa/flowworks_excavation_report', x=x, z=z) for x, z in PIT]
-        require(all(c.get('depth') == depth and c.get('fill') == 0 and c.get('isExcavated') is True
+        require(all(c.get('depth') == depth and c.get('waterDl') == 0 and c.get('isExcavated') is True
                     for c in receipt['cells']), 'pit is not dug and drained at the asserted depth')
         original_pawns = [p['id'] for p in call('jawa/list_pawns', limit=1000)['pawns']]
         raiders = [spawn('Pirate', PIT[i], 'hostile') for i in (1, 4)]

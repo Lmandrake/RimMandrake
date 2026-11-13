@@ -73,7 +73,7 @@ class FakeB(object):
                 raise RuntimeError("bridge dropped mid-dig")
             if self.fail == "dig":
                 return {"success": True, "depth": 0}
-            return {"success": True, "depth": 2, "fillSet": True, "fill": 1}
+            return {"success": True, "depth": 2, "waterSet": True, "waterDl": 10000}
         if name == "jawa/static_call":
             return {"success": True, "result": "TRENCH trench=0.441 vanilla=0 combined=0.441 hit=0.35 hitNoTrench=0.626 size=1.0"}
         return {"success": True}
