@@ -32,7 +32,7 @@ land.sh -m "subject" <path>...                  # land working-tree bytes of the
   to 8 times when origin moved. It **never stashes**, so it works in a dirty clone: it refuses only on a real conflict or
   when you hold an uncommitted edit to a file origin changed, naming the path, with your commit intact on HEAD.
   Before it pushes it runs the fast whole-tree checks listed in `src/RimMandrake/Utils/publish_tree_checks.json`, in
-  parallel (about 10 s), and refuses on a red, naming the check, its FAIL line and the fix (owner by card 2026-11-12;
+  parallel (about 13 s measured 2026-11-12), and refuses on a red, naming the check, its FAIL line and the fix (owner by card 2026-11-12;
   `validation_map_and_rules.md` rule 10). A ledger- or lesson-only publish skips them; a check that times out warns.
   `RM_PUBLISH_SKIP_TREE_CHECKS="<why>"` bypasses them once, out loud.
 - `land.sh` (`src/RimMandrake/Utils/land.sh`; `/home/mandrake/.seat-tmp/land.sh` is a one-line wrapper) publishes ONE

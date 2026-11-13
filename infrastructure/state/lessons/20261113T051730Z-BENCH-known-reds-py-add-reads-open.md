@@ -1,0 +1,1 @@
+known_reds.py add reads open items only from /home/mandrake/rm/bench (pulse_core.CLONES), so an item filed and published from any other clone is refused as 'no open item' until the bench clone syncs; from a helper clone, set pulse_core.CLONES to your clone (the item is on origin/main) or wait for the bench sync.
