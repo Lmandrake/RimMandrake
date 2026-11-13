@@ -836,6 +836,51 @@ namespace RimMandrake.FlowWorks
 			return sum;
 		}
 
+		/// <summary>The amount <see cref="PurgeConnected"/> reads as "everything the sheet there holds".</summary>
+		public const long AllDl = -1;
+
+		/// <summary>RIMMANDRAKE_GIVE_GODMODE_LIQUID_POUR_DRAIN: the dev drain on undug ground. Takes up to <paramref name="maxDl"/>
+		/// (<see cref="AllDl"/> = all) from the sheet at <paramref name="start"/> and the wet squares of the same liquid joined to it,
+		/// nearest first, counted in <see cref="State.Purged"/> ("dried by hand", a disclosed exit, like <see cref="PurgeAll"/>). The
+		/// drained squares and their neighbours wake. <paramref name="touched"/> (optional) gets every square drained. Returns dL
+		/// taken; 0 for a dry or off-grid start or any other amount at or below 0.</summary>
+		public static long PurgeConnected(State s, int start, long maxDl, List<int> touched = null)
+		{
+			if (start < 0 || start >= s.Dl.Length || s.Dl[start] <= 0 || (maxDl <= 0 && maxDl != AllDl))
+			{
+				return 0;
+			}
+			byte key = s.Fluid[start];
+			long left = maxDl == AllDl ? long.MaxValue : maxDl;
+			long sum = 0;
+			var seen = new HashSet<int> { start };
+			var order = new List<int> { start };
+			for (int head = 0; head < order.Count && left > 0; head++)
+			{
+				int c = order[head];
+				int take = (int)Math.Min(s.Dl[c], left);
+				s.Dl[c] -= take; left -= take; sum += take;
+				touched?.Add(c);
+				s.Calm[c] = 0;
+				for (int d = 0; d < 4; d++)
+				{
+					int j = Neighbour(s.W, s.H, c, d);
+					if (j < 0)
+					{
+						continue;
+					}
+					s.Calm[j] = 0;
+					if (s.Dl[j] > 0 && s.Fluid[j] == key && seen.Add(j))
+					{
+						order.Add(j);
+					}
+				}
+			}
+			s.Purged += sum;
+			Compact(s, false);
+			return sum;
+		}
+
 		/// <summary>D5 (owner 2026-10-22: <i>"Build for all flowworks liquids."</i>): a burning cell of a burnable spill loses
 		/// up to <paramref name="dl"/>; the burned dL is GONE, counted in <see cref="State.Burned"/> (a disclosed exit). The
 		/// cell's neighbours wake (a lowered cell lets mobile liquid run in). Returns the dL burned. The caller must not be

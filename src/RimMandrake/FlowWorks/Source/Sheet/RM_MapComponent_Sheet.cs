@@ -1216,6 +1216,24 @@ namespace RimMandrake.FlowWorks.Sheet
 				+ " removed (counted as dried by hand).", MessageTypeDefOf.NeutralEvent, false);
 		}
 
+		/// <summary>RIMMANDRAKE_GIVE_GODMODE_LIQUID_POUR_DRAIN: the dev drain on undug ground. Up to <paramref name="maxDl"/>
+		/// (<see cref="RM_SheetMath.AllDl"/> = all) of the spilled sheet at <paramref name="c"/> and the same liquid joined to it,
+		/// nearest first, counted as dried by hand (the ledger line). Returns the dL removed; the caller says so.</summary>
+		public long PurgeConnectedAt(IntVec3 c, long maxDl)
+		{
+			if (state == null || !c.InBounds(map))
+			{
+				return 0;
+			}
+			var touched = new List<int>();
+			long dl = RM_SheetMath.PurgeConnected(state, map.cellIndices.CellToIndex(c), maxDl, touched);
+			foreach (int k in touched)
+			{
+				map.mapDrawer.MapMeshDirty(map.cellIndices.IndexToCell(k), MapMeshFlagDefOf.Terrain);
+			}
+			return dl;
+		}
+
 		// ── persistence (§6 item 4) ──
 
 		public override void ExposeData()

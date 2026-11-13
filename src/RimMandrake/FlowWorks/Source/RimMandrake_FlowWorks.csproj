@@ -208,6 +208,8 @@
     <Compile Include="JobDriver_FillInCanal.cs" />
     <Compile Include="Flood_FlowWorks.cs" />
     <Compile Include="Debug\FlowWorksDebugActions.cs" />
+    <Compile Include="Debug\RM_GodLiquid.cs" />
+    <Compile Include="RM_GodLiquidMath.cs" />
     <Compile Include="Debug\FlowWorksTankDebug.cs" />
     <Compile Include="MapControls\RM_MapControlMath.cs" />
     <Compile Include="MapControls\RM_MapControlSettings.cs" />
