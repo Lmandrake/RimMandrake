@@ -1,0 +1,3 @@
+gpt_consult.py with 12 inlined files (~100k chars), web search on and --effort high ran past 590 s; an outer shell 'timeout' shorter than the consult's own --timeout killed it before it could report, and without --keep the job dir and the half-written answer were lost (2026-11-13, measured). The same prompt with --lockdown --effort medium answered in 253 s. In a 600 s foreground Bash call: pass --lockdown (or --effort medium) and --keep, set the consult's --timeout below the Bash timeout, and never wrap it in a shorter outer 'timeout'.
+item: RIMMANDRAKE_HARDEN_FAST_WATER_SOLVERS_VIA_GPT_PIPES_RING
+home: skills/chatgpt-consult
