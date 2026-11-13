@@ -1,0 +1,3 @@
+{"run": "rm-role-designer-1794601435", "stage": 4, "outcome": "done",
+ "summary": "Cold Reader exam PASS against tree 5e3aa0d4 / sheet 33b1cddc: 26/26 frozen scenarios (Examiner 18, Challenger 8) matched by two fresh Opus Readers, accept_where_reject_core 0, no Challenger miss; the control with owner_change_coils_wires removed missed e9 and c6. Two earlier controls did not discriminate (floor_end_shocks_crossers is restated by shock_reach_setting and the root), so the set was extended and refrozen before the scoring Readers saw it.",
+ "quick_look": {"offer": false, "why": "a done exam asks him nothing"}}

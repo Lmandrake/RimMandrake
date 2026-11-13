@@ -347,10 +347,59 @@
     "ref": "run rm-role-designer-1794600246",
     "stage": 3,
     "tokens": 510620
+   },
+   {
+    "at": "2026-11-13T20:31:47Z",
+    "kind": "helper",
+    "ref": "rm-role-designer-1794601435 examiner",
+    "stage": 4,
+    "tokens": 75561
+   },
+   {
+    "at": "2026-11-13T20:31:47Z",
+    "kind": "helper",
+    "ref": "rm-role-designer-1794601435 challenger",
+    "stage": 4,
+    "tokens": 38119
+   },
+   {
+    "at": "2026-11-13T20:31:47Z",
+    "kind": "helper",
+    "ref": "rm-role-designer-1794601435 readers-round1",
+    "stage": 4,
+    "tokens": 83058
+   },
+   {
+    "at": "2026-11-13T20:31:47Z",
+    "kind": "helper",
+    "ref": "rm-role-designer-1794601435 controls-round1",
+    "stage": 4,
+    "tokens": 88818
+   },
+   {
+    "at": "2026-11-13T20:31:47Z",
+    "kind": "helper",
+    "ref": "rm-role-designer-1794601435 readers-round2",
+    "stage": 4,
+    "tokens": 98016
+   },
+   {
+    "at": "2026-11-13T20:31:47Z",
+    "kind": "helper",
+    "ref": "rm-role-designer-1794601435 control-round2",
+    "stage": 4,
+    "tokens": 49380
+   },
+   {
+    "at": "2026-11-13T20:34:27Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794601435",
+    "stage": 4,
+    "tokens": 156909
    }
   ],
   "reserve": 60000,
-  "spent": 11971515
+  "spent": 12561376
  },
  "coverage_rounds": [
   {
@@ -827,6 +876,24 @@
    "stage": 4,
    "what": "close",
    "why": "run rm-role-designer-1794600246: stage 3 done"
+  },
+  {
+   "at": "2026-11-13T20:24:09Z",
+   "stage": 4,
+   "what": "over_budget",
+   "why": "11971515 of 4000000 spent; run rm-role-designer-1794601435 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-13T20:24:09Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run rm-role-designer-1794601435, stage 4, budget 500000"
+  },
+  {
+   "at": "2026-11-13T20:34:27Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designer-1794601435: stage 4 done"
   }
  ],
  "item": "GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS",
@@ -1403,12 +1470,39 @@
    "run": "rm-role-designer-1794600246",
    "stage": 3,
    "summary": "All five gaps of rm-coverage-judge-1794599377 fixed, no ruling cut. g1: sc_floor_end_shock adds a hauler across the live cord two or more cells from its end, not shocked. g2: the same scene adds a run the player stopped laying (shocks), steel delivery to the joining blueprint (safe), maxSparkingEnds 1 with two live ends (both shock); sc_fuel_ignition adds a floor-end puddle (no fire); sc_shock_reach adds a FlowWorks collapsed-deck cord (All and Only downed lines shock, None silent); ruling (6) now means live state at the last poll, never the spark budget, in record and sheet. g3: sc_no_sharp_turn and its oracle add the slack read on the same strands. g4: sc_owner_change adds a same-owner span that stays up. g5: sc_statics_new_game reads printed-section statics and live-wire path costs; record game_statics_reset names them. Claims in coverage_fixes.json; entry points stay under GSS_SCENES_BUILD_EVERY_CORD_A_FOIL."
+  },
+  {
+   "at": "2026-11-13T20:34:27Z",
+   "inputs": {
+    "exam": "1312ebdcd88ba146372f3473267150a8f8c527dca25a121d56e64ee547b10806",
+    "floor": "34728591a021769d45f3e49a33497d4bdc2c27d2b6644948be328512d8335229",
+    "owner": "b1b64cc7460cefdd50f74b0d01c96046c251c03c713524261da932462d91b724",
+    "root": "5c921cf30165ed793e5b840aa662ce66ddc70d2c09639a665313c476d33b14ef",
+    "scenes": "9eea9f8009c1f0541f5b05ff93abaa9d87c2fb706ff15b096345e08e69c6c6bf",
+    "sheet": "33b1cddc183d184ca4e68fdf603440e64fc2422a4cf79c8dc6590c770b6de57a",
+    "tree": "5e3aa0d412bb46c241b983d847b4062e574714088d2c8942dc1a7584035e712d"
+   },
+   "manifest": {
+    "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
+    "designer_exam.md": "9892f91253ca15581c15f6f64d211a2275f345d0e13e0200dcda9c9f8004e07a"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1793766796952956687"
+   ],
+   "quick_look": {
+    "offer": false,
+    "why": "a done exam asks him nothing"
+   },
+   "run": "rm-role-designer-1794601435",
+   "stage": 4,
+   "summary": "Cold Reader exam PASS against tree 5e3aa0d4 / sheet 33b1cddc: 26/26 frozen scenarios (Examiner 18, Challenger 8) matched by two fresh Opus Readers, accept_where_reject_core 0, no Challenger miss; the control with owner_change_coils_wires removed missed e9 and c6. Two earlier controls did not discriminate (floor_end_shocks_crossers is restated by shock_reach_setting and the root), so the set was extended and refrozen before the scoring Readers saw it."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 5,
  "status": "ready",
  "waiting_owner_feed": "b1b64cc7460cefdd50f74b0d01c96046c251c03c713524261da932462d91b724"
 }
