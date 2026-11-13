@@ -6666,3 +6666,12 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_STEVE_SEATS_RESTORE_QTWK","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-13T10:29:51Z","tsn":1794565791560966438}
 {"seat":"RUNNER","event":"live","id":"OPS_STEVE_SEATS_RESTORE_QTWK","result":"broken","detail":"Ops alarm STEVE_SEATS: seat-server absent -- steve.seats_absent_min = 15.2 min a Steve seat has been absent (MEASURED), line > 10","ts":"2026-11-13T10:31:02Z","tsn":1794565862324732988}
 {"seat":"RUNNER","event":"raise","id":"OPS_STEVE_SEATS_RESTORE_QTWK","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-13T10:31:13Z","tsn":1794565873805852450}
+{"seat":"RUNNER","event":"live","id":"OPS_STEVE_SEATS_RESTORE_QTWK","result":"kept","detail":"sweep: running again","ts":"2026-11-13T10:33:04Z","tsn":1794565984630745033}
+{"seat":"RUNNER","event":"live","id":"REPEAT_ALARM_ENFORCE_GUARD_OR_STAY_OPEN","result":"kept","detail":"sweep: running again","ts":"2026-11-13T10:33:09Z","tsn":1794565989742941822}
+{"seat":"RUNNER","event":"live","id":"RESTART_JOIN_BUILD_EVERY_GOODBYE_ENDS","result":"kept","detail":"sweep: running again","ts":"2026-11-13T10:33:14Z","tsn":1794565994790811445}
+{"seat":"RUNNER","event":"live","id":"ROLE_USE_MEASURE_OUTPUT_READ_AND_ACTED","result":"kept","detail":"sweep: running again","ts":"2026-11-13T10:33:19Z","tsn":1794565999853023194}
+{"seat":"RUNNER","event":"live","id":"SCRATCH_STRANDED_FIX_SHARDS_CRY_WOLF","result":"kept","detail":"sweep: running again","ts":"2026-11-13T10:33:25Z","tsn":1794566005078761453}
+{"seat":"RUNNER","event":"live","id":"SELFTEST_NIGHTLY_SILENCE_KNOWN_REDS","result":"kept","detail":"sweep: running again","ts":"2026-11-13T10:33:30Z","tsn":1794566010296021349}
+{"seat":"RUNNER","event":"live","id":"WORKER_CLONES_MONITOR_POOL_NOT_RABBITS","result":"kept","detail":"sweep: running again","ts":"2026-11-13T10:33:35Z","tsn":1794566015560217555}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_DISPATCHER","result":"kept","detail":"sweep: running again","ts":"2026-11-13T10:33:40Z","tsn":1794566020696040795}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_OPS_WATCH","result":"kept","detail":"sweep: running again","ts":"2026-11-13T10:33:45Z","tsn":1794566025683699555}
