@@ -67,15 +67,47 @@ F1, F2 = (AX0 + 2, AZ0 - 45), (AX0 + 14, AZ0 - 45)
 FBLAST = (AX0 + 8, AZ0 - 45)
 
 
+def _ap_serial(reply, raw=None):
+    """AerialProbe.serial from a single-field reply shape {success, value}: a non-negative integer, else ValueError."""
+    value = reply.get("value")
+    if reply.get("success") is not True or not (type(value) is int or
+            isinstance(value, str) and re.fullmatch(r"[0-9]+", value)) or int(value) < 0:
+        raise ValueError("unreadable aerial probe serial: %r" % (raw if raw is not None else reply))
+    return int(value)
+
+
+def _ap_reply(cmd, res, serial):
+    """The parsed probe reply for `cmd`, stamped with its serial; a failure dict when it is not a dict for this command."""
+    try:
+        parsed = json.loads(res)
+        if not isinstance(parsed, dict):
+            raise ValueError("probe result is not an object")
+        matches = parsed.get("cmd") == cmd
+        # AerialProbe.Net's established reply carries the verb and independent requested coordinates.
+        if cmd.startswith("net:"):
+            matches = parsed.get("cmd") in ("net", cmd) and all(type(parsed.get(k)) is int for k in ("x", "z")) and \
+                cmd == "net:%d,%d" % (parsed["x"], parsed["z"])
+        if not matches:
+            raise ValueError("mismatched probe command or coordinates")
+        parsed["_probeSerial"] = serial
+        return parsed
+    except Exception:  # noqa: BLE001
+        return {"success": False, "raw": res}
+
+
 class A(V.Bridge):
-    def ap(self, cmd, wait_s=20.0):
+    def ap(self, cmd, wait_s=20.0, poll_s=0.05):
+        """Post `cmd` to AerialProbe and return the reply of the frame that serviced it. Two calls through
+        jawa/mod_settings_fields (serial read + request posted in one main-thread pass, then serial + result read
+        together); the old single-field calls when the companion lacks the tool (remembered, as probe_of does).
+        Raises ValueError on an unreadable serial, before anything is posted."""
+        if self.__dict__.get("_fields_batch_ok") is not False:
+            got = self._ap_batched(cmd, wait_s, poll_s)
+            if got is not None:
+                return got
+
         def serial():
-            reply = self.call("jawa/mod_settings_field", typeName=APROBE, action="get", field="serial")
-            value = reply.get("value")
-            if reply.get("success") is not True or not (type(value) is int or
-                    isinstance(value, str) and re.fullmatch(r"[0-9]+", value)) or int(value) < 0:
-                raise ValueError("unreadable aerial probe serial: %r" % reply)
-            return int(value)
+            return _ap_serial(self.call("jawa/mod_settings_field", typeName=APROBE, action="get", field="serial"))
 
         before = serial()
         s = self.call("jawa/mod_settings_field", typeName=APROBE, action="set", field="request", value=cmd)
@@ -88,21 +120,40 @@ class A(V.Bridge):
                 reply = self.call("jawa/mod_settings_field", typeName=APROBE, action="get", field="result")
                 res = reply.get("value")
                 try:
-                    parsed = json.loads(res)
-                    if reply.get("success") is not True or serial() != now or not isinstance(parsed, dict):
-                        raise ValueError("failed, changed or mismatched probe result")
-                    matches = parsed.get("cmd") == cmd
-                    # AerialProbe.Net's established reply carries the verb and independent requested coordinates.
-                    if cmd.startswith("net:"):
-                        matches = parsed.get("cmd") in ("net", cmd) and all(type(parsed.get(k)) is int for k in ("x", "z")) and \
-                            cmd == "net:%d,%d" % (parsed["x"], parsed["z"])
-                    if not matches:
-                        raise ValueError("mismatched probe command or coordinates")
-                    parsed["_probeSerial"] = now
-                    return parsed
-                except Exception:  # noqa: BLE001
+                    stable = reply.get("success") is True and serial() == now
+                except ValueError:
+                    stable = False
+                if not stable:
                     return {"success": False, "raw": res}
-            time.sleep(0.3)
+                return _ap_reply(cmd, res, now)
+            time.sleep(poll_s)
+        return {"success": False, "error": "aerial probe timed out (no frame serviced it)"}
+
+    def _ap_batched(self, cmd, wait_s, poll_s):
+        """ap over jawa/mod_settings_fields; None when the companion has no such tool (the caller falls back)."""
+        try:
+            s = self.call(V.VC.FIELDS_BATCH, typeName=APROBE, fields="serial", setField="request", setValue=cmd)
+        except Exception:  # noqa: BLE001 - a transport that raises on an unknown tool: the single-field probe still works
+            if self.__dict__.get("_fields_batch_ok"):
+                raise           # the tool exists here: this request may have been posted, so never post it twice
+            s = {}
+        if not isinstance(s.get("values"), dict):
+            self.__dict__["_fields_batch_ok"] = False
+            return None
+        self.__dict__["_fields_batch_ok"] = True
+        # an unreadable serial stops the set inside the tool, so nothing was posted
+        before = _ap_serial({"success": "serial" in s["values"], "value": s["values"].get("serial")}, s)
+        if not s.get("success") or not s.get("set"):
+            return {"success": False, "error": "aerial probe set failed", "raw": s}
+        t0 = time.time()
+        while time.time() - t0 < wait_s:
+            r = self.call(V.VC.FIELDS_BATCH, typeName=APROBE, fields="serial,result")
+            vals = r.get("values") if isinstance(r.get("values"), dict) else {}
+            now = _ap_serial({"success": r.get("success") is True and "serial" in vals, "value": vals.get("serial")}, r)
+            if now > before:
+                # serial and result come from one main-thread pass: the result is this frame's, never a later one's
+                return _ap_reply(cmd, vals.get("result"), now)
+            time.sleep(poll_s)
         return {"success": False, "error": "aerial probe timed out (no frame serviced it)"}
 
     def shot(self, name, rect):

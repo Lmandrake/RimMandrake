@@ -216,6 +216,7 @@ class Rows(unittest.TestCase):
 class Transport(unittest.TestCase):
     def read(self, replies, command="census"):
         bridge = object.__new__(A.A)
+        bridge._fields_batch_ok = False  # these replies are the single-field path's; the batch path: selftest_gss_aerial_probe_batch
         bridge.call = mock.Mock(side_effect=replies)
         return bridge.ap(command, wait_s=0.01)
 

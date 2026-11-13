@@ -105,6 +105,7 @@ class _BridgeBase(object):
     """call / probe / ticks over a raw transport (`_raw`): the standalone socket or the suite's Session. `probe` talks to
     the static request/result/serial fields of the type named by the subclass's `probe_type`."""
     probe_type = None
+    probe_poll_s = 0.3          # probe()'s serial poll interval; a mod whose probe answers on the next frame may lower it
     # safe_advance stopOn for ticks(): "default" is the vitals latch's full list. A caller whose scene hurts or kills on
     # purpose (scenes/scenelib.run, SCENERUN_MIGRATE_OFF_UNPAUSED_PLAY) narrows it so the latch neither stops nor "heals" it.
     stop_on = "default"
@@ -185,7 +186,7 @@ class _BridgeBase(object):
     def probe(self, cmd, wait_s=20.0):
         if not self.probe_type:
             return {"success": False, "error": "no probe_type on this bridge class"}
-        return self.probe_of(self.probe_type, cmd, wait_s)
+        return self.probe_of(self.probe_type, cmd, wait_s, self.probe_poll_s)
 
     # -- bridge conditions (CONDSDSL_WIRE_PYTHON_BUILDERS, build_spec §1.9); the engine is conds_dsl.py
     def _watches(self):

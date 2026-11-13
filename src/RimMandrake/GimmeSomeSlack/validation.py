@@ -712,18 +712,25 @@ def run_offline():
 
 
 # ============================================================================ live
+# GimmeSomeSlackProbe answers on the next frame (its map component's update): poll for it at 50 ms, not 300 ms
+# (RIMMANDRAKE_PROVE_GSS_SWITCHBOARD_DENSE: a missed poll slept 0.3 s across hundreds of probes a proof_all).
+PROBE_POLL_S = 0.05
+
 class _BridgeBase(VC._BridgeBase):
     probe_type = PROBE
+    probe_poll_s = PROBE_POLL_S
 
 
 class Bridge(VC.Bridge):
     """Standalone: its own socket to the bridge."""
     probe_type = PROBE
+    probe_poll_s = PROBE_POLL_S
 
 
 class SuiteBridge(VC.SuiteBridge):
     """Suite: calls ride the runner's Session; game time goes through t.wait_ticks (clock-verified)."""
     probe_type = PROBE
+    probe_poll_s = PROBE_POLL_S
 
 
 # The scene, cells relative to an origin (X0, Z0). Standalone: absolute 150,150 on a fresh quicktest map (centre
