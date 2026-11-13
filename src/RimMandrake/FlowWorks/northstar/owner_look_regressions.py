@@ -1,12 +1,16 @@
-"""RIMMANDRAKE_PIN_OWNER_LOOK_DEFECTS_AS_NAMED_TESTS: the owner's 2026-11-12 pit looks, kept fixed by STATE READ.
+"""HELD MATERIAL, built early, awaiting ingest (owner, 2026-11-12 ~9:35 PM PST: "store these items until our validation ladder is
+fully defined and regenerated. Then we will ingest them properly"). Wired into NO ladder stage, gate, nightly list or close
+check; do not add it to one. Index: design/RimMandrake/validation_holding/README.md. Its selftest is found by the nightly
+sweep's selftest*.py discovery, only so it does not rot.
+
+RIMMANDRAKE_PIN_OWNER_LOOK_DEFECTS_AS_NAMED_TESTS: the owner's 2026-11-12 pit looks, kept fixed by STATE READ.
 
     python.exe owner_look_regressions.py <OUT dir> [--plan <scene_plan.json>] [--acts [x,z]]
     exit 0 PASS, 1 FAIL, 2 UNMEASURED or BLOCKED.
 
 Owner, 2026-11-12 ~9:20 PM PST: "So are we recording each of these defects for future testing to keep them fixed? I believe
 these sessions were supposed to generate test cases in the future, especially if they can be made offline or very fast
-ingame validations, yes?"  The table of every defect and its test: D:\\ClaudeWork\\rimmandrake\\conductor\\
-underliquid_20261112_evening\\regressions\\DEFECT_TESTS.md.
+ingame validations, yes?"  The table of every defect: design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md.
 
 Runs on the keeper scene UNDER_LIQUID_LAW_BIGPIT_20261112b (big_pit_scene.py's series: BP0 dry .. BP5 brim water, BP6 tar),
 read from its scene_plan.json (`--plan`; default <OUT>\\scene_plan.json). Read only, unless --acts (then it pours on the

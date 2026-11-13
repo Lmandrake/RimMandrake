@@ -363,24 +363,10 @@ A scene the owner will watch is staged by the mod's own proof script (its site p
 - **No long runs (owner, 2026-10-13, typed: *"Go back to building and testing things you can directly measure. No more long runs, ok?"*).** Long multi-suite live passes and long game-time waits are not started; work is built and tested in pieces that can be measured directly.
 - **Never chase one hard property for hours.** A mod whose other rows check out is not held hostage by one very-hard-to-demonstrate property. Most mods will have some of these items by necessity. Rows of this kind say so in their contract instead of reading UNMEASURED forever.
 
-## Every owner-found defect becomes a permanent test — owner, 2026-10-24
+## Every owner-found defect is stored for the ladder — owner, 2026-11-12
 
-*"Please find ways to test for those defects in your own offline and in-game testing from now on, so we don't repeat
-mistakes."* A defect the owner finds in a review is not closed by its fix alone: it also gets a machine check that FAILS
-on the old behaviour and PASSES on the fix — an offline selftest (wired into `run_selftests.py`, so the nightly sweep
-runs it) and, where the symptom is live-observable, an in-game proof row. Taste calls add an art-judge criteria-ledger
-entry. Before showing him anything, run these checks so the same class of defect never reaches him twice. Worked set:
-`infrastructure/state/evidence/owner_review_FW_20261024.md` (pits/water, pipe joins, sprinklers, gates that never open,
-recoloured bridges, unnumbered stations).
-
-**It closes only with a NAMED check or a written reason** (owner, 2026-11-12 ~9:20 PM PST: *"So are we recording each of
-these defects for future testing to keep them fixed? I believe these sessions were supposed to generate test cases in the
-future, especially if they can be made offline or very fast ingame validations, yes?"*). The close of an owner-reported
-defect names the check that keeps it fixed (file and row or case name, watched failing on the build he saw where
-cheap), or says in one line why no machine can check it: LOOK ONLY (taste: a colour, "reads as water") or BLOCKED ON
-HOOK (the mod exposes no state to read; the hook is filed as its own item with its acceptance test). Prefer an offline
-selftest, then a fast in-game state read on the minimal list (under ~2 min). A program can hold this line at
-`rimflow close` for an item carrying an `--owner-said` event (refuse a close with neither `--regression <path::row>`
-nor `--no-regression "<reason>"`): `RIMMANDRAKE_REFUSE_OWNER_DEFECT_CLOSE_WITHOUT_REGRESSION`. Worked set for the
-2026-11-12 pit looks: `infrastructure/state/evidence/owner_review_FW_20261112.md`,
-in-game half `src/RimMandrake/FlowWorks/northstar/owner_look_regressions.py`.
+*"Make it a rule to store these items until our validation ladder is fully defined and regenerated. Then we will ingest
+them properly where and how they belong."* (2026-11-12 ~9:35 PM PST; replaces the 2026-10-24 rule that a defect gets its
+own wired selftest and the 2026-11-12 ~9:20 PM "closes only with a named check" text.) A defect he reports in a look is
+appended to `design/RimMandrake/validation_holding/` and nothing from there is wired into a ladder stage, gate, nightly
+list or close check until the ladder is regenerated. Rule: `design/RimMandrake/validation_map_and_rules.md` Rule 12.

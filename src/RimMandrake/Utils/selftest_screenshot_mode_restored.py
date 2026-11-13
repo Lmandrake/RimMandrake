@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""Every harness that turns screenshot mode ON turns it OFF in a `finally:` block.
+"""HELD MATERIAL, built early, awaiting ingest (design/RimMandrake/validation_holding/README.md); wired into no ladder stage or gate.
+
+Every harness that turns screenshot mode ON turns it OFF in a `finally:` block.
 
 Owner, 2026-11-12 ~6:15 PM PST: "The game is no longer allowing me to select objects at all..." Measured cause
 (selection_dead/FINDINGS.md): jawa/screenshot_mode was left ON, and ScreenshotModeHandler.FiltersCurrentEvent eats every

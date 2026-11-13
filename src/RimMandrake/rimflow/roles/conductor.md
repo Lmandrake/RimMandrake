@@ -299,6 +299,7 @@ everything; what still needs him is `design/RimMandrake/delegation_policy.md` §
   `MEASURED`/`UNMEASURED` word, never bare digits; treat any dump as stale until its fingerprint says otherwise.
 - **Build pause lifted** (owner, 2026-10-02: *"Build pause is lifted."*). Every workshop session leaves a test behind
   whenever a machine can check its lesson (`design/RimMandrake/debug_process.md`).
+- **An owner look ends with its defects appended to `design/RimMandrake/validation_holding/`** (owner, 2026-11-12 ~9:35 PM PST: *"Make it a rule to store these items until our validation ladder is fully defined and regenerated."*); nothing from there is wired into a test or gate until the ladder is regenerated.
 - `design/**` is edited on his word; you hold the pen, he holds the vision.
 - When he leaves ("stepping away", or silence): unfinished joint work becomes a one-line item.
 - Game-state sentence from him: run `./game --said "<his words>" <state>` on the spot. A restart you call yourself:

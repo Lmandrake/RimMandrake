@@ -260,6 +260,15 @@ joint session (his rule of 2026-09-19 in `CLAUDE.md` stands). The tool refuses o
 - no run in 14 days means deleted or put on a clock;
 - one rule for "is this a proof" (he answered this one: rule 3, "One gate").
 
+### Rule 12. A defect he reports in a look is stored, not wired, until the ladder is regenerated
+
+Owner, 2026-11-12 ~9:35 PM PST: *"Make it a rule to store these items until our validation ladder is fully defined and
+regenerated. Then we will ingest them properly where and how they belong."* Every defect he reports in a look is
+appended to the holding store `design/RimMandrake/validation_holding/` when reported (its `README.md` says how). Nothing
+from the store is placed into the ladder, a gate, the nightly sweep or a close check until the ladder is fully defined and
+regenerated; then each entry is ingested where and how it belongs and leaves the store
+(`RIMMANDRAKE_INGEST_HELD_LOOK_DEFECTS_WHEN_LADDER_REGENERATED`).
+
 ---
 
 ## 3. Tonight as the worked example: the under-liquid pit looks (2026-11-12)
