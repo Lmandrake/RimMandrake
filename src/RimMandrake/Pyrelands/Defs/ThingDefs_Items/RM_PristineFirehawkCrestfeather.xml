@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_PristineFirehawkCrestfeather.xml · 2026-11-13
+  Owner, 2026-11-13: "Pristine ... Crestfeather is a valuable object of beauty to further reward the hunt." Name corrected the
+  same day: "No, I meant Firehawk". Dropped by a butchered RM_FireHawk at a flat 35 % (RM_ButcherTrophyExtension on the race,
+  Defs/ThingDefs_Races/RM_PyrelandsFauna.xml; rolled by ButcherTrophyPatch, Source/FireHawkRewards.cs).
+
+  Built like Core's one small item of beauty, Anomaly's GoldenCube (Items_Various.xml, read through RimSage): a plain Item,
+  ItemsMisc, Beauty in statBases. Items count toward a room's beauty wherever they lie, unless stored where the storage
+  ignores stored beauty (BeautyUtility.CellBeauty); a stack counts once (Thing.GetBeauty does not scale with stackCount).
+
+  Numbers (delegated: design, 2026-11-13):
+    Beauty        40   a little under a normal-quality small sculpture (SculptureSmall, Beauty 50 x quality): an art-grade
+                       find that needs no artist; far below the cube's 400, which is a psychic artefact.
+    MarketValue  350   about twice the hawk itself (180), under a thrumbo horn (800): at 35 % a hunted hawk is worth ~120
+                       more on average, which is the reason to hunt it.
+    stackLimit     5   small, as Anomaly's Shard; one feather already gives a room its whole beauty.
+    Flammability   0   grown on a bird that carries live embers; on a map that is always burning anything less is ash.
+    HitPoints, DeteriorationRate as the thrumbo horn (Core's animal trophy): left outdoors it slowly loses its "pristine".
+
+  PLACEHOLDER ART: no crestfeather art exists (artpipe searched 2026-11-13: no job, no sheet). The texPath below borrows
+  vanilla's thrumbo horn tinted ember-orange until the queued sprite lands
+  (infrastructure/artpipe/art_lists/pyrelands_firehawk_crestfeather_2026-11-13.csv, filed against this vanilla slot, the
+  route the art gate allows for a def drawing a vanilla stand-in); on acceptance the render installs at the def's own path
+  (regen_eligibility.own_path: Things/Item/Special/RM_PristineFirehawkCrestfeather/RM_PristineFirehawkCrestfeather), texPath
+  moves there and the colour line goes.
+-->
+<Defs>
+
+  <ThingDef>
+    <defName>RM_PristineFirehawkCrestfeather</defName>
+    <label>pristine firehawk crestfeather</label>
+    <description>The crest feather of a fire-hawk, taken whole. Its vanes shade from ash-grey at the quill to a living ember-orange at the tip, and in any light it seems to glow from inside. It will not burn. A rare find even among the people who hunt fire-hawks, and an object of real beauty in any room.</description>
+    <thingClass>ThingWithComps</thingClass>
+    <category>Item</category>
+    <drawerType>MapMeshOnly</drawerType>
+    <altitudeLayer>Item</altitudeLayer>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <alwaysHaulable>true</alwaysHaulable>
+    <drawGUIOverlay>true</drawGUIOverlay>
+    <useHitPoints>true</useHitPoints>
+    <pathCost>14</pathCost>
+    <stackLimit>5</stackLimit>
+    <graphicData>
+      <!-- PLACEHOLDER ART: vanilla thrumbo horn, tinted. See the header. -->
+      <texPath>Things/Item/Special/ThrumboHorn</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(230,120,40)</color>
+    </graphicData>
+    <statBases>
+      <Beauty>40</Beauty>
+      <MarketValue>350</MarketValue>
+      <Mass>0.05</Mass>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0.5</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <comps>
+      <li Class="CompProperties_Forbiddable" />
+    </comps>
+  </ThingDef>
+
+</Defs>

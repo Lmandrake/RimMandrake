@@ -158,6 +158,12 @@
       <li Class="RimMandrake.CreatureBehaviors.RM_SunDashExtension" MayRequire="mandrake.rm.biomes">
         <exempt>true</exempt>
       </li>
+      <!-- The hunt's trophy: a butchered hawk gives one pristine firehawk crestfeather 35 % of the time, flat (owner accepted
+           35 %, 2026-11-13; Defs/ThingDefs_Items/RM_PristineFirehawkCrestfeather.xml, Source/FireHawkRewards.cs). -->
+      <li Class="RimMandrake.Pyrelands.RM_ButcherTrophyExtension">
+        <thingDef>RM_PristineFirehawkCrestfeather</thingDef>
+        <chance>0.35</chance>
+      </li>
     </modExtensions>
   </ThingDef>
 
