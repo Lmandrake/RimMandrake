@@ -1,0 +1,6 @@
+{
+ "run": "bench-ek-owner-lock-st5-20261113",
+ "stage": 5,
+ "outcome": "done",
+ "summary": "Locked on the owner's word: coverage passed on his word (OWNER:1794608649743135329, 2026-11-13, 'Yes, fix it like that, and then please record this as an actual Pass.') past rm-coverage-judge-1794599960 not_covered (6 gaps, all claimed fixed); concept_tree gate, scenes and showcases pass."
+}
