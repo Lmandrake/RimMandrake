@@ -6597,3 +6597,13 @@
 {"seat":"RUNNER","event":"live","id":"SELFTEST_FIX_INCIDENT_ZXZH","result":"broken","detail":"Ops alarm NIGHTLY_RED: 1 red since 2026-11-06, due 2026-11-09T11:00: <test>: FAIL (# fails) (selftest_incident.py) -- testing.red_uugvof = 1 nightly reds with o","ts":"2026-11-13T09:44:00Z","tsn":1794563040491091270}
 {"seat":"RUNNER","event":"live","id":"SELFTEST_FIX_INCIDENT_ZXZH","result":"broken","detail":"Ops alarm NIGHTLY_RED: 1 red since 2026-11-06, due 2026-11-09T11:00: <test>: FAIL (# fails) (selftest_incident.py) -- testing.red_uugvof = 1 nightly reds with o","ts":"2026-11-13T09:46:36Z","tsn":1794563196205543197}
 {"seat":"RUNNER","event":"raise","id":"SELFTEST_FIX_INCIDENT_ZXZH","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-13T09:46:42Z","tsn":1794563202302422621}
+{"seat":"RUNNER","event":"live","id":"OPS_JUDGE_NOTES_MEASURE_VS_NO_CHANGE","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:48:06Z","tsn":1794563286380304465}
+{"seat":"RUNNER","event":"live","id":"OPS_MEMORY_VET_THEN_WIRE_AFTER_WATCH","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:48:11Z","tsn":1794563291893131514}
+{"seat":"RUNNER","event":"live","id":"OPS_PLAN_LIST_FIX_VMIV","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:48:17Z","tsn":1794563297172016367}
+{"seat":"RUNNER","event":"live","id":"OPS_QUEUES_READING_RESTORE_HQXV","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:48:22Z","tsn":1794563302512304335}
+{"seat":"RUNNER","event":"live","id":"OPS_RAISE_REWIRE_WITH_DEATH_LADDER","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:48:26Z","tsn":1794563306764582595}
+{"seat":"RUNNER","event":"live","id":"OPS_RED_OVERDUE_CHASE_AEUZ_PHBA","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:48:32Z","tsn":1794563312015773041}
+{"seat":"RUNNER","event":"live","id":"OPS_RED_OVERDUE_CHASE_AEUZ_TUEF","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:48:37Z","tsn":1794563317123452318}
+{"seat":"RUNNER","event":"live","id":"OPS_REFUSAL_REWIRE_TO_CONDUCTOR","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:48:41Z","tsn":1794563321422125535}
+{"seat":"RUNNER","event":"live","id":"OPS_RELENTLESS_BOOKS_UNSTICK_WGYL","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:48:46Z","tsn":1794563326765227890}
+{"seat":"RUNNER","event":"live","id":"OPS_RELENTLESS_GAME_HOLD_UNSTICK_DRDP","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:48:51Z","tsn":1794563331990533854}
