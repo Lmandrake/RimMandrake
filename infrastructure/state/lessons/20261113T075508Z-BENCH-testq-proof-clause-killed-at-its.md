@@ -1,0 +1,1 @@
+A testq proof clause killed at its --max-seconds leaves the game mid-scene, and the job's next clauses then hang 600 s on their first bridge call (job J20261113T065205Z-e47652: A1 killed at 900 s in GSS scenes, A2/A3 both RimBridgeError deadline). When a fix lets a block run that used to crash, raise the clause budget first.

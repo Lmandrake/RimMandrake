@@ -1,0 +1,1 @@
+A live proof line 'python.exe proof_all.py --live' without --skip-offline can never go live: the offline gate runs under Windows Python and O3's C# SelfTest dies on fcntl. Write live lines with --skip-offline and prove the gate under WSL python3 (RIMMANDRAKE_REFUSE_GSS_GATE_UNDER_PYTHON_EXE_ALWAYS_RED, 2026-11-12).
