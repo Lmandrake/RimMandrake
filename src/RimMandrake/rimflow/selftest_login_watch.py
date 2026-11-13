@@ -150,7 +150,7 @@ def test_stranded():
         check("past the daily cap: alarm", a[0]["do"] == "alarm" and a[0]["kind"] == "login:stranded:S")
         c = dict(w, conductor=True, seat="C")
         h, a = run(sch, {}, obs(GOOD, windows=[c]), NOW)
-        check("a Conductor window is never restarted", a[0]["do"] == "alarm")
+        check("a Conductor window is never restarted: it is poked", [x["do"] for x in a] == ["login_poke"])
         h, a = run(sch, {}, obs(GOOD, windows=[dict(w, start=None)]), NOW)
         check("no birth record: an alarm, no request the kill would refuse", [x["do"] for x in a] == ["alarm"])
         h, a = run(sch, {}, obs(GOOD, windows=[w], paused="x"), NOW)
@@ -331,7 +331,8 @@ def test_probe():
     with tempfile.TemporaryDirectory() as d:
         exe = os.path.join(d, "fake")
         for body, want in (('echo \'{"loggedIn": true}\'', True), ('echo \'{"loggedIn": false}\'; exit 1', False),
-                           ("echo Please run /login >&2; exit 1", False), ("echo segfault >&2; exit 139", None),
+                           ("echo Please run /login >&2; exit 1", False),
+                           ("echo 'Please run /login · API Error: 403 Attention Required! | Cloudflare' >&2; exit 1", None), ("echo segfault >&2; exit 139", None),
                            ("echo junk", None), ("sleep 5", None), ('echo \'{"error": "server"}\'', None),
                            ('echo \'{"loggedIn": "yes"}\'', None), ("echo '[1]'", None),
                            ('echo \'{"error": "x"}\'; echo Please run /login >&2; exit 1', False)):
@@ -410,9 +411,133 @@ def test_release():
         check("PAUSE at release: the rescue goes back", st["login"]["rescues"]["S"] == {"day": 1, "n": 0})
 
 
+CF_TEXT = "Please run /login · API Error: 403 Attention Required! | Cloudflare"
+PAUSE_TEXT = "owner 2026-11-06 18:22 PST: Stop the pipeline immediately. No further runs except for test runs allowed."
+
+
+def _overnight_transcript(path, at):
+    """The CONDUCTOR window's tail at 2026-11-13T09:48:59Z, shape for shape (14f81ed2...jsonl): a tool result, the
+    api-request record, the synthetic 403 record that ended the turn, then the system turn-duration record."""
+    sid = "14f81ed2-1357-4f6c-ae1f-5ffb7a88ad6b"
+    recs = [{"type": "user", "isSidechain": False, "timestamp": SR._iso(at - 0.09), "sessionId": sid,
+             "message": {"role": "user", "content": [{"type": "tool_result", "tool_use_id": "t", "content": "- 01:32 stage 2"}]}},
+            {"type": "api-request", "timestamp": SR._iso(at - 0.04), "sessionId": sid},
+            {"type": "assistant", "error": "authentication_failed", "isApiErrorMessage": True, "isSidechain": False,
+             "apiErrorStatus": 403, "timestamp": SR._iso(at), "sessionId": sid,
+             "message": {"model": "<synthetic>", "role": "assistant", "stop_reason": "stop_sequence", "stop_sequence": "",
+                         "type": "message", "content": [{"type": "text", "text": CF_TEXT}]}},
+            {"type": "system", "subtype": "turn_duration", "isSidechain": False, "timestamp": SR._iso(at + 0.01), "sessionId": sid}]
+    with open(path, "w") as f:
+        for r in recs:
+            f.write(json.dumps(r) + "\n")
+    return sid
+
+
+def test_overnight_conductor_cloudflare():
+    """RIMMANDRAKE_RESCUE_STRANDED_CONDUCTOR_CLOUDFLARE_SAID_LOGIN: the Conductor window sat on a Cloudflare 403 from
+    01:48 PST under PAUSE with the login healthy, and nothing was raised (PAUSE skipped the stranded check) and nothing
+    could have recovered it (a Conductor was only alarmed). Now it is poked, PAUSE or not, and his phone is told."""
+    with tempfile.TemporaryDirectory() as d:
+        path = os.path.join(d, "t.jsonl")
+        at = NOW - 400
+        sid = _overnight_transcript(path, at)
+        sess = {"name": "CONDUCTOR", "status": "idle", "pid": 3152005, "sessionId": sid, "cwd": "/home/mandrake/rm/bench"}
+        keep = SR.config, SR.transcript_for, SR.session_file
+        try:
+            SR.config = lambda sch: {"BENCH": {"kind": "conductor", "session_name": "CONDUCTOR", "session_aliases": ["AGENT BENCH"]}}
+            SR.transcript_for = lambda s, c: path
+            SR.session_file = lambda pid: {"procStart": "16824875"}
+            sch, st = box(d), {}
+            cfg = LW.config(sch)
+            got = LW.stranded(sch, cfg, [sess], NOW)
+            check("the 403 record reads stranded, the real lookup finds CONDUCTOR", [(w["seat"], w["conductor"]) for w in got] == [("BENCH", True)])
+            check("a Cloudflare challenge is marked transient", bool(got) and got[0].get("cloudflare") is True)
+
+            def o(now):
+                x = obs(GOOD, paused=PAUSE_TEXT)
+                x["agents"]["sessions"] = [sess]
+                x["login"]["stranded"] = lambda s: LW.stranded(sch, cfg, s, now)
+                return x
+            h, a = run(sch, st, o(NOW), NOW)
+            pokes = [x for x in a if x["do"] == "login_poke"]
+            check("under PAUSE the stranded Conductor is poked", len(pokes) == 1 and pokes[0]["seat"] == "BENCH"
+                  and pokes[0]["pid"] == 3152005 and pokes[0]["session_id"] == sid)
+            check("the poke tells his phone", bool(pokes) and (pokes[0].get("phone") or {}).get("key"))
+            check("the poke is a program's text, never his", bool(pokes) and pokes[0]["text"].startswith("[RimFlow login rescue]"))
+            check("one poke per error", not run(sch, st, o(NOW + 120), NOW + 120)[1])
+            late = NOW + cfg["poke_wait_s"] + 60
+            h, a = run(sch, st, o(late), late)
+            check("a poke that did not clear it alarms, to the phone too", [x["do"] for x in a] == ["alarm"]
+                  and a[0]["kind"] == "login:stranded:BENCH" and (a[0].get("phone") or {}).get("key"))
+            sch2, st2 = box(d), {}
+            for i in range(cfg["rescues_per_day"] + 1):
+                t = NOW + i * 600
+                _overnight_transcript(path, t - 400)
+                h, a = run(sch2, st2, o(t), t)
+            check("past rescues_per_day: alarm, no poke", [x["do"] for x in a] == ["alarm"])
+        finally:
+            SR.config, SR.transcript_for, SR.session_file = keep
+
+
+def test_poke_release():
+    with tempfile.TemporaryDirectory() as d:
+        sch = box(d)
+        pk = {"do": "login_poke", "seat": "BENCH", "pid": 7, "session_id": "s", "text": "[RimFlow login rescue] x",
+              "why": "w", "note": True, "conductor_log": True, "kind": "login:poke:BENCH",
+              "phone": {"key": "k1", "title": "t", "detail": "d"}}
+        pokes, phones = [], []
+        fx = {"paused": lambda: PAUSE_TEXT, "conductor_log": lambda *a: "logged", "lock": lambda: None,
+              "login_poke": lambda a: pokes.append(a) or "poked", "phone": lambda row: phones.append(row) or True}
+        st = {"alarms": {}, "login": {}}
+        D.execute([dict(pk)], sch, st, d, True, NOW, fx, deadline=NOW + 1e9)
+        check("a poke is released under PAUSE: the Conductor is not the pipeline", len(pokes) == 1)
+        check("the poke's phone push goes", [r["key"] for r in phones] == ["k1"])
+        al = {"do": "alarm", "kind": "login:stranded:BENCH", "seat": "BENCH", "why": "w", "note": True,
+              "phone": {"key": "k2", "title": "t", "detail": "d"}}
+        D.execute([dict(al)], sch, st, d, True, NOW, fx, deadline=NOW + 1e9)
+        D.execute([dict(al)], sch, st, d, True, NOW + 60, fx, deadline=NOW + 1e9)
+        check("a phoned alarm pushes once, not on its rate-limited repeat", [r["key"] for r in phones] == ["k1", "k2"])
+
+
+def test_poke_wire():
+    """LW.poke finds the window by pid and session, and refuses a pid that now runs another session."""
+    sent = []
+    recs = [{"pid": 7, "sessionId": "s", "messagingSocketPath": "/x", "peerToken": "t"}]
+    bc = type("BC", (), {"sessions": staticmethod(lambda: recs),
+                         "send": staticmethod(lambda rec, text, sender="OWNER": sent.append((rec["pid"], sender)) or None)})
+    check("poke delivers to the window's own socket", LW.poke({"pid": 7, "session_id": "s", "text": "x"}, bc) == "poked"
+          and sent == [(7, LW.POKE_SENDER)])
+    check("a reused pid is refused", LW.poke({"pid": 7, "session_id": "other", "text": "x"}, bc).startswith("FAILED"))
+    check("no live record is refused", LW.poke({"pid": 8, "session_id": "s", "text": "x"}, bc).startswith("FAILED"))
+    rec = {"type": "user", "origin": {"kind": "peer", "name": LW.POKE_SENDER}, "timestamp": SR._iso(NOW),
+           "message": {"role": "user", "content": '<cross-session-message from-name="%s" from-mode="bypass">\n[RimFlow login rescue] x\n</cross-session-message>' % LW.POKE_SENDER}}
+    check("the poke is not his input (no chat clock, no cancel)", SR._is_human_input(rec, ["CONDUCTOR"]) is False)
+    rec2 = dict(rec, origin={"kind": "peer", "name": "OWNER"})
+    check("an OWNER peer message is still his input", SR._is_human_input(rec2, ["CONDUCTOR"]) is True)
+
+
+def test_cloudflare_role_runs():
+    run_ = {"consumed": {"unit": "u"}, "at": NOW - 60, "unit": "u"}
+    res = {"is_error": True, "terminal_reason": "api_error", "result": CF_TEXT, "session_id": "sx"}
+    check("a Cloudflare death is the account's transient, not a dead login", RL.account_death(res) == "cloudflare")
+    rec, why = RL.resume_record(dict(run_, tokens=5000), res, "cloudflare", NOW, {})
+    check("a Cloudflare death after work resumes after a short wait", rec is not None and 0 < rec["due"] - NOW <= 300)
+    rec2, why2 = RL.resume_record(dict(run_, tokens=5000, resume_of="u0", resume_n=1, resume_error="cloudflare"), res,
+                                  "cloudflare", NOW, {})
+    check("only once: a second Cloudflare death is not resumed", rec2 is None and "once" in why2)
+    rs = {"runs": [run_]}
+    keep = RL.unlaunch
+    try:
+        RL.unlaunch = lambda rs, unit: True
+        check("a no-work Cloudflare death gives its slot back", RL.auth_failed_back(rs, run_, "API Error: 403 Attention Required! | Cloudflare", NOW))
+    finally:
+        RL.unlaunch = keep
+
+
 def main():
     for t in (test_dead_held, test_blip, test_switch, test_stranded, test_stranded_reader, test_limit_reset, test_quiet_and_gate, test_slot_back, test_alarm_run_retried_after_login_heals,
-              test_probe, test_bad_usage_file, test_pick_and_way, test_give_back, test_release):
+              test_probe, test_bad_usage_file, test_pick_and_way, test_give_back, test_release,
+              test_overnight_conductor_cloudflare, test_poke_release, test_poke_wire, test_cloudflare_role_runs):
         t()
     print("selftest_login_watch: %s" % ("FAILED %d" % len(FAILS) if FAILS else "OK"))
     return 1 if FAILS else 0

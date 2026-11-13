@@ -133,6 +133,11 @@ ACCOUNT_ERRORS = ("usage_limit_reached", "rate_limit", "rate_limit_error", "over
 LIMIT_RX = re.compile(r"hit your (?:\w+ )?limit|usage limit|rate limit", re.I)
 RESUME_WAIT_S = 3600        # no reset named: try again after an hour (a still-dead account just waits again)
 RESUME_MAX = 3              # resumes in one chain; past it the run is given up, said
+# A Cloudflare challenge page ("Please run /login · API Error: 403 Attention Required! | Cloudflare", 2026-11-13) is
+# transient, not a dead login: a run that did work and died on one is resumed ONCE after CLOUDFLARE_RETRY_S; one that did
+# none gets its slot back (auth_failed_back). RIMMANDRAKE_RESCUE_STRANDED_CONDUCTOR_CLOUDFLARE_SAID_LOGIN.
+CLOUDFLARE_RETRY_S = 120
+CLOUDFLARE_RX = re.compile(r"attention required!?\s*\|\s*cloudflare", re.I)    # = login_watch.CLOUDFLARE_RX
 RESUME_TTL_S = 2 * 86400    # a resume not launchable for this long is dropped, said
 
 try:
@@ -980,6 +985,8 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
                     "wrong" % (name, len(over), finished_in_window(rs, now)),
                     raise_first="%s keeps overrunning: re-set its budget or narrow its scope." % name)
         acct = account_death(res) if run["state"] == "failed" and not is_codex else None
+        if acct == "cloudflare" and not run.get("tokens") and not run.get("resume_of"):
+            acct = None                                  # no work to resume: its slot comes back (auth_failed_back)
         if acct:
             # the account ended it, not the role: no role:<name>:failed (ROLE_RUNS_BUILD_RESUME_AFTER_ACCOUNT_LOSS)
             rec, why = resume_record(run, res, acct, now, cfg, resume_account(obs))
@@ -1024,6 +1031,8 @@ def account_death(res):
     (AUTH_RX) is login_watch's and auth_failed_back's, not this."""
     if not isinstance(res, dict) or not res.get("is_error"):
         return None
+    if len(str(res.get("result") or "")) <= AUTH_TEXT_MAX and CLOUDFLARE_RX.search(str(res.get("result") or "")):
+        return "cloudflare"                              # before AUTH_RX: its text says "Please run /login" too
     err = str(res.get("api_error") or "")
     if err in ACCOUNT_ERRORS:
         return err
@@ -1060,13 +1069,16 @@ def resume_record(run, res, err, now, cfg, account=None):
         return None, "a stage-machine run is reopened by its stage, never resumed"
     if n >= RESUME_MAX:
         return None, "it was resumed %d times already (RESUME_MAX)" % n
+    if err == "cloudflare" and run.get("resume_error") == "cloudflare":
+        return None, "it died on a Cloudflare challenge once already and was retried once"
     text = str(res.get("result") or "")
-    reset = limit_reset_at(text, now)
+    reset = None if err == "cloudflare" else limit_reset_at(text, now)
+    wait = cfg.get("cloudflare_retry_s", CLOUDFLARE_RETRY_S) if err == "cloudflare" else cfg.get("resume_wait_s", RESUME_WAIT_S)
     return {"of": run.get("resume_of") or run["unit"], "unit": run["unit"], "session": res.get("session_id") or
             run.get("session"), "account": account, "mode": run.get("mode"), "budget": run.get("budget"), "slot": run.get("slot"),
             "item": run.get("item") or cfg.get("ledger_item"), "band": run.get("band"), "error": err,
             "tokens": run.get("tokens"), "n": n + 1, "at": now,
-            "due": reset if reset is not None else now + cfg.get("resume_wait_s", RESUME_WAIT_S)}, None
+            "due": reset if reset is not None else now + wait}, None
 
 
 def resume_account(obs):
@@ -1123,7 +1135,7 @@ def resume_due(name, rs, cfg, now, act, busy, gate, account=None, tick_launch=No
     kw = dict(do="role_launch", role=name, unit=unit, ticket=rec.get("item"), note=True, mode=rec.get("mode"),
               budget=rec.get("budget") or 0, slot="resume of %s" % rec["unit"], band=rec.get("band"), seat=cfg["seat"],
               run_max_s=max_s_of({}, cfg), account=pk.get("account"), resume=rec["session"],
-              resume_of=rec.get("of") or rec["unit"], resume_n=rec.get("n") or 1,
+              resume_of=rec.get("of") or rec["unit"], resume_n=rec.get("n") or 1, resume_error=rec.get("error"),
               why="%s resume %s of %s (cut off by the account: %s, after %s weighted tokens%s), budget %s, unit %s, "
               "session %s" % (name, rec.get("n"), rec["unit"], rec.get("error"), rec.get("tokens"),
                               "; now on another account" if switched and now < due else "", rec.get("budget"), unit,
@@ -1147,7 +1159,8 @@ def auth_failed_back(rs, run, text, now):
     that fails only for role runs cannot loop. -> True when given back."""
     used = rs.get("auth_backs") if (rs.get("auth_backs") or {}).get("day") == day_of(now) else {"day": day_of(now), "n": 0}
     p = run.get("consumed")
-    if not (p and len(str(text)) <= AUTH_TEXT_MAX and AUTH_RX.search(str(text))) or run.get("tokens") \
+    if not (p and len(str(text)) <= AUTH_TEXT_MAX and (AUTH_RX.search(str(text)) or CLOUDFLARE_RX.search(str(text)))) \
+            or run.get("tokens") \
             or used["n"] >= AUTH_BACKS_PER_DAY or rs.get("pending_launch"):
         return False
     if any(r.get("at", 0) > run["at"] for r in rs.get("runs") or []):    # a later run already moved the marks

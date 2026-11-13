@@ -340,6 +340,7 @@ HUMAN_TURNS = ("human",)
 HUMAN_SOURCES = ("typed", "queued")
 MACHINE_MARKERS = ("[RimFlow ", "<task-notification>", "[Cross-session idle notice]")
 RING_MARK = "a program, not a person"
+MACHINE_PEER = "RIMFLOW DISPATCHER"      # = login_watch.POKE_SENDER (login_watch imports this module, not the reverse)
 _FROM_NAME = re.compile(r'<cross-session-message\b[^>]*\bfrom-name="([^"]*)"')
 
 
@@ -376,7 +377,8 @@ def _is_human_input(rec, peers):
     if o.get("kind") == "peer" or rec.get("turnOrigin") == "peer":
         m = _FROM_NAME.search(text)
         name = o.get("name") or (m.group(1) if m else None)
-        return not (name and SM.name_matches(name, list(peers or [])))
+        # login_watch's poke of a stranded window (login_watch.POKE_SENDER) is the Dispatcher, not a person
+        return not (name and SM.name_matches(name, list(peers or []) + [MACHINE_PEER]))
     if o.get("kind") in MACHINE_ORIGINS or rec.get("promptSource") in MACHINE_SOURCES \
             or rec.get("turnOrigin") in MACHINE_TURNS:
         return False

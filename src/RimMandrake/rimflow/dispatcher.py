@@ -119,7 +119,7 @@ BEAT_ACT_RESERVE_S = 6.0
 BEAT_END_RESERVE_S = 2.0
 # Only acts whose give-back is exact are deferred (unreleased/RL.unlaunch); every other kind (alarms whose carry decide()
 # already popped, incidents, seat restarts) still runs, as before, with its notes bounded by the deadline (review gen29 #1)
-BEAT_DEFERRABLE = ("ring", "recover", "withdraw", "login_switch", "login_rescue", "role_launch")
+BEAT_DEFERRABLE = ("ring", "recover", "withdraw", "login_switch", "login_rescue", "login_poke", "role_launch")
 BEAT_STARVED_AFTER = 5        # beats in a row that deferred: an alarm, and the dead-man's last_ok_tick stops (review #2)
 
 
@@ -1551,6 +1551,8 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                     rs["alarm_pending"] = "seat restart %s of %s raised: %s" % (a["do"], a.get("seat"), res)
             elif apply:
                 try:     # one failing side effect must not skip the rest, nor the state save that holds the caps
+                    if a["do"] == "alarm" and a.get("phone") and res is None:     # not on a rate-limited repeat
+                        a["phoned"] = phone_safe(fx.get("phone", LW.phone), a["phone"])
                     if a["do"] == "alarm" and a.get("conductor_log") and res is None:
                         res = do_conductor(sch, a, now)       # not when rate-limited (res already says so)
                     if a["do"] == "login_switch":
@@ -1579,6 +1581,20 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                             SW.give_back(st, a)
                         else:
                             res = SW.repair(a, fx.get("unit_repair"))
+                    elif a["do"] == "login_poke":
+                        # never held by PAUSE: PAUSE stops the pipeline, and the Conductor window is the owner's, not
+                        # the pipeline's (RIMMANDRAKE_RESCUE_STRANDED_CONDUCTOR_CLOUDFLARE_SAID_LOGIN)
+                        a["released"] = True
+                        try:
+                            res = fx.get("login_poke", LW.poke)(a)
+                        except Exception as e:  # noqa: BLE001 - said in the journal; the alarm follows poke_wait_s
+                            res = "FAILED: %s: %s" % (type(e).__name__, e)
+                        if a.get("phone"):
+                            row = dict(a["phone"], title=a["phone"]["title"].replace(
+                                "has been poked", "could not be poked (%s)" % res[:80])) if res.startswith("FAILED") else a["phone"]
+                            a["phoned"] = phone_safe(fx.get("phone", LW.phone), row)
+                        if a.get("conductor_log"):
+                            res = "%s; %s" % (res, do_conductor(sch, a, now))
                     elif a["do"] == "login_rescue":
                         paused = do_paused()
                         if paused:
@@ -1677,7 +1693,8 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                        run_max_s=a.get("run_max_s"), state="running", tokens=None,
                                        **({"concept": a["concept"]} if a.get("concept") else {}),
                                        # a resume (role_launch.resume_due): its chain, so a resumed death counts on
-                                       **({"resume_of": a["resume_of"], "resume_n": a.get("resume_n")}
+                                       **({"resume_of": a["resume_of"], "resume_n": a.get("resume_n"),
+                                           "resume_error": a.get("resume_error")}
                                           if a.get("resume_of") else {}))
                             runs.append(run)
                             started.append(run)
@@ -1915,6 +1932,14 @@ def unrecover(st, a, now):
         RLD.unraise(st["lives"][a["seat"]], now)
 
 
+def phone_safe(send, row):
+    """A phone push never stops a release: -> what it did, for the journal."""
+    try:
+        return "sent" if send(row) else "not sent (off, or this key already went)"
+    except Exception as e:  # noqa: BLE001
+        return "FAILED: %s: %s" % (type(e).__name__, e)
+
+
 def unreleased(st, acts, now):
     """A tick that raised: give back every ring and recover decided but never released, and put back as pending every
     ring whose decided withdraw never ran (it may still be in the inbox: the next tick withdraws it). -> what."""
@@ -1929,7 +1954,7 @@ def unreleased(st, acts, now):
         if a.get("do") in ("ring", "recover") and not a.get("released") and "result" not in a:
             (unring if a["do"] == "ring" else unrecover)(st, a, now)
             back.append("%s %s" % (a["do"], a["seat"]))
-        elif a.get("do") in ("login_switch", "login_rescue") and not a.get("released") and "result" not in a:
+        elif a.get("do") in ("login_switch", "login_rescue", "login_poke") and not a.get("released") and "result" not in a:
             LW.give_back(st, a)
             back.append(a["do"])
     return back

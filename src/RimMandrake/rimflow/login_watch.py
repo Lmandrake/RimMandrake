@@ -24,9 +24,18 @@ Each tick (schedule key `login_watch`; off when absent or enabled false):
   stranded   the login works but a seat window still sits on an API error (its turn ended on it, so its Stop hook never
              ran and no ring can reach it): a seat_restart request for it, at most rescues_per_day, then an alarm. A
              request cancelled or a restart that left the same error standing alarms after rescue_wait_s. A
-             Conductor window (kind conductor) is only alarmed: the owner talks to it. An auth or server error waits
-             stranded_after_s, a rate limit waits for the reset its message names, or limit_wait_s when it names none
-             (RATE_LIMIT_FIX_STRANDED_WINDOWS; 200 such records in transcripts, 10-2026).
+             Conductor window (kind conductor) is never restarted, the owner talks to it: it is POKED, a message into
+             its own session socket (broadcast.py's inbox protocol) that starts a new turn with its context whole,
+             at most rescues_per_day, and his phone is told (pulse/phone_push); still standing after poke_wait_s, it
+             alarms, to the phone too. PAUSE stops the pipeline, not the Conductor: the poke runs under PAUSE, a seat
+             restart does not. An auth or server error waits stranded_after_s, a rate limit waits for the reset its
+             message names, or limit_wait_s when it names none (RATE_LIMIT_FIX_STRANDED_WINDOWS; 200 such records in
+             transcripts, 10-2026).
+             RIMMANDRAKE_RESCUE_STRANDED_CONDUCTOR_CLOUDFLARE_SAID_LOGIN: on 2026-11-13 the Conductor sat 7.8 h on
+             "Please run /login · API Error: 403 Attention Required! | Cloudflare" (a challenge page, the login fine)
+             and nothing was raised, because this check was skipped under PAUSE (on since 2026-11-06).
+  cloudflare a Cloudflare challenge page is transient, never a dead login: the probe reads it as no reading, a stranded
+             window on one is marked cloudflare, and role_launch resumes a run that died on one once, shortly.
 
 Role runs that die on an auth error: role_launch.supervise_roles gives their slot back (role_launch.AUTH_RX), and the
 gate above holds it until the login works; each outage that ends starts the per-day count of those again.
@@ -37,6 +46,7 @@ import os
 import re
 import shutil
 import subprocess
+import sys
 import tempfile
 import zoneinfo
 
@@ -45,7 +55,7 @@ import seat_restart as SR
 import session_match as SM
 
 DEFAULTS = {
-    "enabled": False, "confirm_n": 2, "blind_alarm_n": 5, "stranded_after_s": 300, "limit_wait_s": 5 * 3600, "rescue_wait_s": 2 * 3600, "rescues_per_day": 2, "probe_timeout_s": 30,
+    "enabled": False, "confirm_n": 2, "blind_alarm_n": 5, "stranded_after_s": 300, "limit_wait_s": 5 * 3600, "rescue_wait_s": 2 * 3600, "poke_wait_s": 600, "rescues_per_day": 2, "probe_timeout_s": 30,
     "auto_switch": False, "switch_verify_s": 900, "usage_stale_s": 3600, "account_cmd": "claude-account",
     "hold_file": None, "usage_latest": None, "armed_file": None, "machine_file": None}
 SCRUB_ENV = ("ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN", "ANTHROPIC_BASE_URL", "CLAUDE_CODE_OAUTH_TOKEN",
@@ -54,6 +64,12 @@ SCRUB_ENV = ("ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN", "ANTHROPIC_BASE_URL", 
 
 RESET_RX = re.compile(r"resets (?:(?P<mon>[A-Z][a-z]{2}) (?P<day>\d{1,2}),? (?:at )?)?(?P<h>\d{1,2})(?::(?P<m>\d{2}))?\s*(?P<ap>am|pm) \((?P<tz>[\w/+-]+)\)", re.I)
 GONE_RX = re.compile(r"not logged in|log ?in expired|session expired|please (run|log)", re.I)
+# the challenge page's title; the CLI prefixes it "Please run /login · API Error: 403" although the login is fine
+CLOUDFLARE_RX = re.compile(r"attention required!?\s*\|\s*cloudflare", re.I)    # = role_launch.CLOUDFLARE_RX
+POKE_SENDER = SR.MACHINE_PEER            # seat_restart._is_human_input reads a peer of this name as a program
+POKE = ("[RimFlow login rescue] A program, not a person, sent this. Your last turn ended on an API error ({error}) at "
+        "{at}{cf}, and the login probe says the login works, so it was transient. Carry on with what you were doing "
+        "when it stopped. If that needs the owner, say so in one line in your log.")
 
 
 def config(sch):
@@ -78,6 +94,8 @@ def probe(claude, timeout=30):
     if isinstance(state, bool):                       # an error object has no loggedIn: that is no reading
         return (True, "") if state else (False, "auth status says not logged in")
     said = "%s %s" % (r.stdout, r.stderr)
+    if CLOUDFLARE_RX.search(said):                    # a challenge page says nothing about the login
+        return None, "auth status met a Cloudflare challenge (exit %d): no reading" % r.returncode
     if r.returncode != 0 and GONE_RX.search(said):
         return False, "auth status exited %d: %s" % (r.returncode, said.strip())
     return None, "auth status unreadable (exit %d): %s" % (r.returncode, said.strip())
@@ -192,7 +210,7 @@ def stranded(sch, cfg, sessions, now):
             due = max(due, limit_reset(_record_text(last), at) or at + cfg["limit_wait_s"])
         if now >= due:
             out.append({"seat": seat, "sess": named[0], "start": start, "path": path, "size": size, "at": at, "error": err,
-                        "conductor": c.get("kind") == "conductor"})
+                        "conductor": c.get("kind") == "conductor", "cloudflare": bool(CLOUDFLARE_RX.search(_record_text(last)))})
     return out
 
 
@@ -204,25 +222,50 @@ def rescue_request(w, now):
             "ctx_tokens": None, "input_ts": None, "tx_offset": w["size"], "tx_path": w["path"]}
 
 
-def _stranded_step(cfg, sch, L, windows, now, act, iso):
+def poke_text(w, iso):
+    return POKE.format(error=w.get("error", "an API error"), at=iso(w["at"]),
+                       cf=" (a Cloudflare challenge page, not a lost login)" if w.get("cloudflare") else "")
+
+
+def _phone(seat, w, iso, what):
+    return {"key": "login-stranded:%s:%d" % (seat, int(w["at"])), "title": "RimMandrake: %s window %s" % (seat, what),
+            "detail": "It stopped on an API error (%s%s) at %s; the login works." % (
+                w.get("error", "?"), ", Cloudflare" if w.get("cloudflare") else "", iso(w["at"]))}
+
+
+def _stranded_step(cfg, sch, L, windows, now, act, iso, paused=None):
     day = int(now // 86400)
     res = L.setdefault("rescues", {})
     for w in windows:
         seat = w["seat"]
+        if paused and not w["conductor"]:             # PAUSE stops the pipeline: no seat restart, as before
+            continue
         r = res.get(seat) or {}
         if r.get("day") != day:                       # a new day resets the count, never the answered error
             r = dict(r, day=day, n=0)
         answered = r.get("for") == w["at"]
-        if answered and now - r.get("at", now) < cfg["rescue_wait_s"]:     # the restart path has its time to end this
-            continue
-        if answered or w["conductor"] or w["start"] is None or r["n"] >= cfg["rescues_per_day"]:
+        if answered and now - r.get("at", now) < cfg["poke_wait_s" if w["conductor"] else "rescue_wait_s"]:
+            continue                                  # the poke or the restart has its time to end this
+        if answered or (w["start"] is None and not w["conductor"]) or r["n"] >= cfg["rescues_per_day"]:
+            what = "poke" if w["conductor"] else "restart"
             act(do="alarm", kind="login:stranded:" + seat, seat=seat, note=True, conductor_log=True,
+                phone=_phone(seat, w, iso, "is still stranded") if w["conductor"] else None,
                 why="%s's window has sat on %s since %s although the way is clear%s" % (
-                    seat, w.get("error", "an API error"), iso(w["at"]), "" if w["conductor"] else
-                    "; the restart requested for this error did not clear it" if answered else
+                    seat, w.get("error", "an API error"), iso(w["at"]),
+                    "; the %s sent for this error did not clear it" % what if answered else
                     "; its session file gives no birth record to restart it by" if w["start"] is None else
-                    "; %d automatic restarts today did not clear it" % r["n"]),
+                    "; %d automatic %ss today did not clear it" % (r["n"], what)),
                 raise_first="%s window needs a look: type anything in it or restart it." % seat)
+            continue
+        if w["conductor"]:
+            r["n"] += 1
+            r["for"], r["at"] = w["at"], now
+            res[seat] = r
+            act(do="login_poke", kind="login:poke:" + seat, seat=seat, note=True, conductor_log=True,
+                pid=w["sess"].get("pid"), session_id=w["sess"].get("sessionId"), text=poke_text(w, iso),
+                phone=_phone(seat, w, iso, "was stranded and has been poked"),
+                why="%s's window has sat on %s%s since %s and the way is clear: poked into a new turn" % (
+                    seat, w.get("error", "an API error"), " (Cloudflare)" if w.get("cloudflare") else "", iso(w["at"])))
             continue
         r["n"] += 1
         r["for"], r["at"] = w["at"], now
@@ -291,8 +334,9 @@ def step(sch, st, obs, now, act, iso):
         for k in ("dead_since", "fails", "hold", "switch_at", "switched_to", "first_fail"):
             L.pop(k, None)
         agents = obs.get("agents") or {}
-        if agents.get("state") == "MEASURED" and lo.get("stranded") and not obs.get("paused"):
-            _stranded_step(cfg, sch, L, lo["stranded"](agents.get("sessions")), now, act, iso)
+        # under PAUSE too: a Conductor stranded overnight under PAUSE went unraised for 7.8 h (2026-11-13)
+        if agents.get("state") == "MEASURED" and lo.get("stranded"):
+            _stranded_step(cfg, sch, L, lo["stranded"](agents.get("sessions")), now, act, iso, obs.get("paused"))
         return None
     L["fails"] = L.get("fails", 0) + 1
     L.setdefault("first_fail", now)
@@ -335,6 +379,38 @@ def run_switch(a, fx=None):
     except (OSError, subprocess.TimeoutExpired) as e:
         return "FAILED: %s" % type(e).__name__
     return ("started: " if r.returncode == 0 else "FAILED: ") + (r.stderr or r.stdout).strip()
+
+
+def _broadcast():
+    utils = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "Utils")
+    if utils not in sys.path:
+        sys.path.insert(0, utils)
+    import broadcast
+    return broadcast
+
+
+def poke(a, bc=None):
+    """Deliver a login_poke: the window's own session socket, found by pid and refused unless that pid still runs the
+    stranded session (a pid is reused). -> the journal's result text."""
+    bc = bc or _broadcast()
+    recs = [r for r in bc.sessions() if r.get("pid") == a.get("pid")]
+    if not recs:
+        return "FAILED: no live session socket for pid %s" % a.get("pid")
+    if a.get("session_id") and recs[0].get("sessionId") != a["session_id"]:
+        return "FAILED: pid %s now runs session %s, not %s" % (a.get("pid"), recs[0].get("sessionId"), a["session_id"])
+    err = bc.send(recs[0], a["text"], sender=POKE_SENDER)
+    return "FAILED: %s" % err if err else "poked"
+
+
+def phone(row):
+    """pulse/phone_push (a Todoist due-now task on his phone), once per key; RM_LOGIN_PHONE=0 turns it off."""
+    if os.environ.get("RM_LOGIN_PHONE") == "0":
+        return False
+    pulse = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "Utils", "pulse")
+    if pulse not in sys.path:
+        sys.path.insert(0, pulse)
+    import phone_push
+    return phone_push.send(dict(row, kind="red"))
 
 
 def write_rescue(a):
