@@ -333,10 +333,17 @@
     "ref": "run rm-role-designer-1794599361",
     "stage": 5,
     "tokens": 500000
+   },
+   {
+    "at": "2026-11-13T20:01:40Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794600004",
+    "stage": 5,
+    "tokens": 270509
    }
   ],
   "reserve": 60000,
-  "spent": 11190386
+  "spent": 11460895
  },
  "coverage_rounds": [
   {
@@ -777,11 +784,29 @@
    "stage": 5,
    "what": "retry",
    "why": "run rm-role-designer-1794599361 result rejected: no result.json (a closing message is not a result)"
+  },
+  {
+   "at": "2026-11-13T20:00:14Z",
+   "stage": 5,
+   "what": "over_budget",
+   "why": "11190386 of 4000000 spent; run rm-role-designer-1794600004 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-13T20:00:14Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designer-1794600004, stage 5, budget 500000"
+  },
+  {
+   "at": "2026-11-13T20:01:41Z",
+   "stage": 3,
+   "what": "close",
+   "why": "run rm-role-designer-1794600004: stage 5 return"
   }
  ],
  "item": "GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS",
  "mod": "RimMandrake/GimmeSomeSlack",
- "pending_decision": "Whether his shock rule (s_shock_fix_safe: a fixer approaching a sparking line is safe, an incidental crosser is shocked) also covers the sparking live end a floor-conduit cut leaves (cut_live_and_dead_ends, the flagship), or only fallen overhead spans. Then stage 3 must fix the coverage gaps from coverage_verdict.json: (1, return_to 3) The fixer exemption is never tested against the obvious wrong way to build it: exempting anyone doing a re-string job. His words are 'if they approach intending to fix it', meaning that particular wire, and exam c3 says a colonist re-stringing a different span who crosses this live end must be shocked. sc_shock and sc_shock_restring only use a re-stringer assigned to this wire, and the shock_restring control just reassigns them to hauling. An exemption keyed on the job type (the leaf's oracle reads 'none on the re-stringer while on RM_RestringSpan') would pass every scene. Add a control case: a colonist on RM_RestringSpan for another span crosses this sparking end and is shocked. [scenes.json sc_shock / sc_shock_restring control; tree.json fallen_wire_shocks_crossers oracle_proposed]; (2, return_to 2) His root line says 'how a Pawn ever fixes a sparking line ... if they incidentally go over the sparking end with a different job, they (or anyone else) gets shocked'. A floor-conduit cut also leaves a sparking live end: cut_live_and_dead_ends, which is the flagship workshop-floor moment. The tree applies shock (and the fixer-is-safe rule) only to fallen overhead spans. No leaf says whether a sparking floor-cord end shocks a pawn crossing it, or whether a constructor rebuilding the cut conduit is safe. Whether his shock rule covers floor cut ends is a scope question about his own words, so it needs his answer, then a leaf and scene either way. [record.json root / scope s_shock_fix_safe; tree.json cut_live_and_dead_ends and fallen_wire_shocks_crossers; sheet.md does-list]; (3, return_to 3) statics_clear_between_games is defined as 'starts or loads another' game in the same session, but sc_statics_new_game only starts a second quicktest. Loading a save goes through a different init path, and that is the path where an old game's tap or style pick could leak. Add a load-a-save case, or a second game reached by loading. [scenes.json sc_statics_new_game; tree.json statics_clear_between_games experience]; (4, return_to 3) sc_settings does not assert the parts of settings_switch_cleanly that are specific to this leaf. Nothing checks that the master switch brings back vanilla LAMP art without a restart; sc_conduit_invisible and the walk check conduit art only. Nothing reads 'every Harmony patch maps to one switch'. Nothing checks that the pipe-pole switch 'leaves power poles alone': the expect says only that 'pipe poles follow only their own switch'. Name these three observations in the scene. [scenes.json sc_settings expect; tree.json settings_switch_cleanly oracle/experience]; (5, return_to 3) wire_down_alert, as built and in the restring_cut_span leaf, lists anchors with a cut OR grounded wire, jumps to the anchor, and clears on re-string. sc_restring only stages a cut span. It never checks the jump-to, and never checks the grounded case (a killed mast, as in sc_fallen_span). overhead_spans also names lamp masts, and sc_spans stages no lamp mast. These built parts are exercised by no scene. [scenes.json sc_restring, sc_spans; record.json inventory wire_down_alert, overhead_spans]",
+ "pending_decision": "Stage 3 must fix the five gaps of coverage judge rm-coverage-judge-1794599377 (coverage_verdict.json, 2026-11-13T19:49Z; all return_to 3, criterion sound, cost edit) and write a NEW coverage_fixes.json against that judge, one claim per gid. g1: sc_floor_end_shock adds a hauler whose path crosses a LIVE cord cell at least two cells from its end, expected NOT shocked (rules out whole-cord shock) [scenes.json sc_floor_end_shock; tree.json floor_end_shocks_crossers]. g2: test each agent ruling in d_shock_reach_agent_detail that sheet.md's delegated line tells the player, or cut the untested ones from sheet.md and record.json: (a) the live end of a run the player stopped laying shocks a crosser; (b) a pawn delivering steel to the joining blueprint, path across the live end, is safe; (c) a floor end does not light a chemfuel puddle (sc_fuel_ignition); (d) shock is not limited by maxSparkingEnds; (e) FlowWorks collapsed-deck cords shock under 'Only downed lines' and are silent under None (sc_shock_reach). Give ruling (6) one meaning: 'never the spark budget' vs 'only if it is drawn live'. g3: sc_no_sharp_turn expect (and no_unforced_sharp_turn oracle_proposed) also requires the sc_cords_slack read on the same strands in each look: drawn length/chord >= 1.4 and the off-line excursion, so taut cords fail. g4 (late): sc_owner_change adds a same-owner span not touching the handed-over mast, which stays linked and powered with cutWiresOnOwnerChange on while the two spans to the claimed mast are cut [tree.json owner_change_coils_wires]. g5 (late): sc_statics_new_game also reads the printed-section statics (section keys, strand names) and the live-wire path-cost table by map id: filled in game 1, empty at the start of the new game and of the loaded tap-free game, refilled by the game-1 reload control; or narrow record.json game_statics_reset to what is tested.",
  "recovery": [],
  "results": [
   {
@@ -1304,12 +1329,37 @@
    "why": [
     "no result.json (a closing message is not a result)"
    ]
+  },
+  {
+   "at": "2026-11-13T20:01:41Z",
+   "decision": "Stage 3 must fix the five gaps of coverage judge rm-coverage-judge-1794599377 (coverage_verdict.json, 2026-11-13T19:49Z; all return_to 3, criterion sound, cost edit) and write a NEW coverage_fixes.json against that judge, one claim per gid. g1: sc_floor_end_shock adds a hauler whose path crosses a LIVE cord cell at least two cells from its end, expected NOT shocked (rules out whole-cord shock) [scenes.json sc_floor_end_shock; tree.json floor_end_shocks_crossers]. g2: test each agent ruling in d_shock_reach_agent_detail that sheet.md's delegated line tells the player, or cut the untested ones from sheet.md and record.json: (a) the live end of a run the player stopped laying shocks a crosser; (b) a pawn delivering steel to the joining blueprint, path across the live end, is safe; (c) a floor end does not light a chemfuel puddle (sc_fuel_ignition); (d) shock is not limited by maxSparkingEnds; (e) FlowWorks collapsed-deck cords shock under 'Only downed lines' and are silent under None (sc_shock_reach). Give ruling (6) one meaning: 'never the spark budget' vs 'only if it is drawn live'. g3: sc_no_sharp_turn expect (and no_unforced_sharp_turn oracle_proposed) also requires the sc_cords_slack read on the same strands in each look: drawn length/chord >= 1.4 and the off-line excursion, so taut cords fail. g4 (late): sc_owner_change adds a same-owner span not touching the handed-over mast, which stays linked and powered with cutWiresOnOwnerChange on while the two spans to the claimed mast are cut [tree.json owner_change_coils_wires]. g5 (late): sc_statics_new_game also reads the printed-section statics (section keys, strand names) and the live-wire path-cost table by map id: filled in game 1, empty at the start of the new game and of the loaded tap-free game, refilled by the game-1 reload control; or narrow record.json game_statics_reset to what is tested.",
+   "inputs": {
+    "exam": "ee149897230d3a8b1636260bb2edd430a4d49796ad34f8e4e863fc9729a773d0",
+    "floor": "34728591a021769d45f3e49a33497d4bdc2c27d2b6644948be328512d8335229",
+    "owner": "b1b64cc7460cefdd50f74b0d01c96046c251c03c713524261da932462d91b724",
+    "root": "5c921cf30165ed793e5b840aa662ce66ddc70d2c09639a665313c476d33b14ef",
+    "scenes": "7d0a625b00ce5d9805592d848cf81ded61da5e9fddff5ec92730286a71bf7b58",
+    "sheet": "3a7d223aa9c261d04fe4c11c955ee287623b532dae07d7502853d6c286cd20f1",
+    "tree": "eb1981b88959b758a00f6984241c719cf574c0fa185a26884940b817b905c1e3"
+   },
+   "manifest": {
+    "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
+    "designer_lock.md": "ec39152891c77415f4b1d9fafc07f5e22908d068baa54665ec442eed16fb913e"
+   },
+   "outcome": "return",
+   "owner_uncited": [
+    "1793766796952956687"
+   ],
+   "run": "rm-role-designer-1794600004",
+   "stage": 5,
+   "summary": "No lock: concept_tree gate refuses (no coverage signature). The pre-launch coverage judge rm-coverage-judge-1794599377 found every earlier gap fixed but returned not_covered with 5 new sound, edit-cost gaps (3 in changed scenes, 2 late). Its brief is uncalibrated, so the refusal is advisory and does not force a return, but there is no route to a signature without it, and stage 5 cannot edit the frozen artifacts. Returning to stage 3 to fix all five in one run. No owner question. Caution: the next not_covered may hit the judge's round limit (REFUSAL_NOTHING_COULD_EVER_PASS), so stage 3 should fix the list whole.",
+   "to": 3
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 5,
+ "stage": 3,
  "status": "ready",
  "waiting_owner_feed": "b1b64cc7460cefdd50f74b0d01c96046c251c03c713524261da932462d91b724"
 }
