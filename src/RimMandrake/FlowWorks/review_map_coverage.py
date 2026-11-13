@@ -62,7 +62,7 @@ FEATURES = [
     ("tex", r"^StandIn/Things/Item/Chunk/ChunkStone/RockLow[A-D]\.png$", "Map-control stone art (stand-in copy of vanilla ChunkStone)",
      M + "dev-placed map controls, no station yet"),
     ("set", r"^(depthEngineEnabled|pulseIntervalTicks|flowPerPulse)$", "The flow engine and its pulse", "flow_spreads"),
-    ("set", r"^(viscosityEnabled|thickCreepEnabled|waterFrontCreepEnabled|levelBySurfaceEnabled|levelSetEnabled|levelExactEnabled)$", "Viscosity: tar crawls", "flow_identity"),
+    ("set", r"^(viscosityEnabled|thickCreepEnabled|waterFrontCreepEnabled|levelBySurfaceEnabled|levelSetEnabled)$", "Viscosity: tar crawls", "flow_identity"),
     ("set", r"^(sourceBudgetEnabled|stickyLimitlessEnabled|wetnessCutoffEnabled|minLimitlessBodyCells)$",
      "Ponds pay out; map-edge lakes never run dry", "flow_ponds"),
     ("set", r"^(recessionEnabled|recedeKeepsLastCell|recedeSparesOutflow)$", "A pond visibly recedes", "flow_shrinks"),

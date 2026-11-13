@@ -195,7 +195,7 @@ def live(out):
         expected = hashlib.sha256((ROOT / 'src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll').read_bytes()).hexdigest()
         require(result['identity'].get('mvidMatchesFile') is True and result['identity'].get('assemblyFileSha256') == expected, 'loaded DLL identity mismatch')
         debug = flags()
-        for typ, field in [(FW, 'depthEngineEnabled'), (FW, 'depthEngineLiveForTests'), (FW, 'levelExactEnabled'), (FW, 'liquidPumpEnabled'),
+        for typ, field in [(FW, 'depthEngineEnabled'), (FW, 'depthEngineLiveForTests'), (FW, 'liquidPumpEnabled'),
                            (HS, 'enabled'), (HS, 'freeEndRolesEnabled'), (HS, 'hoseHoldsLiquid'), (HS, 'gravityLevellingEnabled'),
                            ('RimMandrake.FlowWorks.Machinery.RM_MachinerySettings', 'lineCrossingRulesEnabled')]:
             settings.append((typ, field, setting(typ, field)))
@@ -213,7 +213,7 @@ def live(out):
         baseline = rect()
         result['baseline_rect'] = baseline
         call('rimworld/pause_game', pause=True)
-        for typ, field, value in [(FW, 'depthEngineEnabled', True), (FW, 'depthEngineLiveForTests', True), (FW, 'levelExactEnabled', True),
+        for typ, field, value in [(FW, 'depthEngineEnabled', True), (FW, 'depthEngineLiveForTests', True),
                                   (FW, 'liquidPumpEnabled', True), (HS, 'enabled', True), (HS, 'freeEndRolesEnabled', True),
                                   (HS, 'hoseHoldsLiquid', False), (HS, 'gravityLevellingEnabled', False)]:
             setting(typ, field, value)
@@ -251,8 +251,7 @@ def live(out):
         first, second = [row[0] for row in ordered]
         result['actual_order'] = ordered
         result['arms'] = []
-        for mode in ('repro', 'full', 'exact', 'off'):
-            setting(FW, 'levelExactEnabled', True)
+        for mode in ('full', 'exact', 'off'):
             setting(FW, 'liquidPumpEnabled', True)
             fill(first, 2)
             fill(second, 2)
@@ -260,7 +259,6 @@ def live(out):
             if mode != 'full':
                 taken = sc('RimMandrake.FlowWorks.RM_WaterLookProofs', 'ProofWaterLook', 'take:%d;%d;1;1;19100' % first)
                 require('took=19100' in taken and water(first) == 900, '900 dL stage failed')
-            setting(FW, 'levelExactEnabled', mode == 'exact')
             if mode == 'off':
                 setting(FW, 'liquidPumpEnabled', False)
             before_tick = call('jawa/map_info')['ticksGame']
@@ -273,7 +271,7 @@ def live(out):
             arm = {'before_tick': before_tick, 'after_tick': after_tick, 'mode': mode, 'before': before, 'candidates': candidates, 'step': step, 'after': after}
             result['arms'].append(arm)
             persist()
-            expected_after = {'repro': [900, 10000, 10000], 'full': [10000, 20000, 10000], 'exact': [0, 20000, 900], 'off': [900, 20000, 0]}[mode]
+            expected_after = {'full': [10000, 20000, 10000], 'exact': [0, 20000, 900], 'off': [900, 20000, 0]}[mode]
             require(after == expected_after and sum(before) == sum(after), 'quantity/conservation failure: ' + str(arm))
         result['status'] = 'PASS'
     except BaseException as exc:

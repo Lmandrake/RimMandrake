@@ -1304,7 +1304,7 @@ class FakeBridge(object):
                 return {"success": True}
             if key == (S_RIVER, "riverColorsEnabled"):
                 return {"success": True, "value": "river_off" not in self.f}
-            if key[1] in ("levelExactEnabled", "pipeFaucetsEnabled", "refillEnabled"):
+            if key[1] in ("pipeFaucetsEnabled", "refillEnabled"):
                 return {"success": True, "value": True}
             return {"success": True, "value": None}
         if tool == "jawa/world_commit":
