@@ -1,0 +1,10 @@
+{
+ "run": "bench-ek3-st3-20261113",
+ "stage": 3,
+ "outcome": "done",
+ "summary": "Stage 3 rework on his cards 2026-11-13 09:50 (OWNER:1794592220102307459, 'EK next -> Fix, then one judge') and 09:55 (OWNER:1794592407312114138). All six gaps of rm-coverage-judge-1794558854 claimed in coverage_fixes.json: g1 the opt-in tag staged on the Armoury's secret floor panel with an untagged control; g2 one container mass limit, closedContainerMassLimit 250 kg, named everywhere, a 76-249 kg locker row and a sweep row; g3 vanillaCratesClosed declared, swept, crate rows claim only the shove; g4 per-part off states replace the blanket rule; g5 Cauldron and its dependencies on the five gas scenes' lists; g6 gas shove onto an open pit falls (forced in, d_pit_only_forced), melee contest dropped to FlowWorks. New: creature mass limit 150 kg replaces body size 2.5 (corpses by the 75 kg goods limit), force x damage/type defaultDamage (blastPowerFromDamage), leaf heavier_flies_less, scene sc_mass_and_power as showcase 2 (rat/colonist/muffalo/thrumbo, damage 50 and 100: 5/3/2/0 and 6/5/4/0). Build filed RIMMANDRAKE_BUILD_KNOCKBACK_CREATURE_MASS_AND_BLAST_POWER.",
+ "quick_look": {
+  "offer": false,
+  "why": "stage 3 asks him nothing; the new rules are not built yet, so there is nothing to look at"
+ }
+}
