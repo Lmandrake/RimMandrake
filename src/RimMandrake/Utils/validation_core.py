@@ -106,6 +106,7 @@ class _BridgeBase(object):
     the static request/result/serial fields of the type named by the subclass's `probe_type`."""
     probe_type = None
     probe_poll_s = 0.3          # probe()'s serial poll interval; a mod whose probe answers on the next frame may lower it
+    hold_off = False            # True while a scene stages a colonist on purpose: a proof's draft hold leaves pawns alone
     # safe_advance stopOn for ticks(): "default" is the vitals latch's full list. A caller whose scene hurts or kills on
     # purpose (scenes/scenelib.run, SCENERUN_MIGRATE_OFF_UNPAUSED_PLAY) narrows it so the latch neither stops nor "heals" it.
     stop_on = "default"

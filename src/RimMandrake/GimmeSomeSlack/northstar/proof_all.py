@@ -124,6 +124,11 @@ def _err_text(e):
     return str(e.get("Message", "")) + "\n" + str(e.get("StackTrace", ""))
 
 
+def _gss_frames(e, n=3):
+    """The first n stack lines of an error naming GimmeSomeSlack: the message cut (240 chars) drops them from a deep stack."""
+    return [ln.strip()[:240] for ln in _err_text(e).splitlines() if "GimmeSomeSlack" in ln and ln.strip().startswith("at ")][:n]
+
+
 def _norm_err(e):
     """An error's identity across sessions: its message with every digit run collapsed (thing ids, ticks, counts)."""
     return re.sub(r"\d+", "#", str(e.get("Message", "")).split("\n[Ref ")[0].strip())[:400]
@@ -978,7 +983,8 @@ class Proof(object):
             return
         self.row("session", "Z_log_budget", "PASS" if not errs else "FAIL", "MOD",
                  {"errors": [str(e.get("Message", ""))[:240] for e in errs[:10]],
-                  "throwers": [_thrower(e) for e in errs[:10]], "newWarnings": len(new),
+                  "throwers": [_thrower(e) for e in errs[:10]], "gssFrames": [f for e in errs[:10] for f in _gss_frames(e)][:10],
+                  "newWarnings": len(new),
                   "siteClearErrorsExcluded": len(site), "donorMapInitErrorsExcluded": len(donor),
                   "controlNoiseExcluded": len(noise), "controlNoiseThrowers": sorted({_thrower(e) for e in noise})[:10],
                   "foreignSourceExcluded": len(foreign), "foreignSources": sorted({_foreign_source(e) for e in foreign})[:10],

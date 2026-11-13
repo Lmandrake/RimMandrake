@@ -484,6 +484,30 @@ class ReviewLeftovers(unittest.TestCase):
             self.assertEqual(b.hold_off, previous)
             self.assertEqual(b.commands[-2:], ['pawn:7=tp:42,43', 'pawn:7=draft'])
 
+    def test_st1_allowed_fallbacks_are_slots_no_family_draws(self):
+        # ST1 failed StarWars/ExtensionCord/Cybertek on CableTie (speed_20261112 runs): the slot came with the approved
+        # look on 2026-11-09 with Jawa art only. A slot may fall back only while no family folder draws it.
+        import validation as VV
+        styles = Path(VV.__file__).resolve().parent / "Textures/RimMandrake/GimmeSomeSlack/Styles"
+        self.assertIn("CableTie", VV.ALLOWED_FALLBACKS)
+        for fam in ("Cybertek", "ExtCord", "StarWars"):
+            drawn = {p.stem for p in (styles / fam).glob("*.png")}
+            self.assertFalse(drawn & VV.ALLOWED_FALLBACKS, (fam, drawn & VV.ALLOWED_FALLBACKS))
+
+    def test_inwall_cord_counts_every_face_decal(self):
+        # M1e failed with cordEdges 1 and decals {Plug: 1, WallOutlet: 1} (speed_20261112): the Modern look seats its cord in
+        # a wall outlet, a face decal like StubWall (CordMaterials.IsFace)
+        import validation as VV
+        for decals, edges, want in (({"StubWall": 1}, 1, True), ({"Plug": 1, "WallOutlet": 1}, 1, True),
+                                    ({"Plug": 1}, 1, False), ({"StubWall": 1}, 0, False), ({}, 0, False)):
+            self.assertIs(VV._inwall_cord_seen({"cordEdges": edges, "decals": decals}), want, (decals, edges))
+
+    def test_production_bridge_carries_hold_off(self):
+        # proof_all's SCENES_block raised AttributeError 'A' object has no attribute 'hold_off' (speed_20261112 runs):
+        # restring reads B.hold_off from the real aerial bridge, which the fakes above always set
+        import validation_aerial as VA
+        self.assertIs(object.__new__(VA.A).hold_off, False)
+
     def test_drafted_control_requires_observed_pawns(self):
         roster = {'success': True, 'pawns': [{'id': 7}]}
         replies = {7: {'success': True, 'pawn': {'id': 7, 'drafted': True}}}

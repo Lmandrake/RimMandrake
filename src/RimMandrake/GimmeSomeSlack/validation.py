@@ -268,7 +268,15 @@ SHARED_FILES = ["StrandShadow", "SparkGlow", "EndFrayed_Live", "PowerStrip", "Ae
 SHARED_FILES += ["PowerSwitch", "PowerSwitch_Off"]
 STYLE_FILES["ExtensionCord"] += ["Styles/ExtCord/%s/%s" % (c, n) for c in ("Green", "Brown", "Yellow", "Blue")
                                  for n in ("Plug", "Junction_T", "Junction_X", "StubWall", "StubRock", "EndFrayed_Dead")]
-ALLOWED_FALLBACKS = {"EndFrayed_Live", "PowerStrip", "PowerStripDark"}
+# ST1: the Jawa root slots no other family draws (selftest_gss_review_leftovers keeps it so). CableTie came with the approved
+# look (2026-11-09) in Jawa art only. EndFrayed_Live was taken off on 2026-11-12: every family draws its own.
+def _with_gss_frames(head, text, n=2):
+    """`head` plus the first n stack lines of `text` naming GimmeSomeSlack (L2's evidence of where the error came from)."""
+    frames = [ln.strip()[:200] for ln in text.splitlines() if "GimmeSomeSlack" in ln and ln.strip().startswith("at ")][:n]
+    return head + "".join("  @ " + f for f in frames if f not in head)
+
+
+ALLOWED_FALLBACKS = {"CableTie", "PowerStrip", "PowerStripDark"}
 
 
 def _canvas_for(rel):
@@ -791,6 +799,13 @@ def _reraise_harness_stop(ex):
         raise ex
 
 
+def _inwall_cord_seen(c):
+    """A cord out of the wall's face in a rect probe: an edge and a face decal. The Modern look seats its cord in a WallOutlet
+    where the others draw a StubWall (approved look 2026-11-09; CordMaterials.IsFace counts both)."""
+    d = c.get("decals") or {}
+    return (c.get("cordEdges") or 0) >= 1 and d.get("StubWall", 0) + d.get("WallOutlet", 0) >= 1
+
+
 def inwall_hookup_rows(B, rows):
     """A run wholly inside a wall is how many colonies are wired. Two rooms: a lamp across the floor from the walled run draws one
     cord out of the wall's face (M1e); the same room on HiddenConduit draws nothing (M3 is why: hidden conduit stays hidden)."""
@@ -811,7 +826,7 @@ def inwall_hookup_rows(B, rows):
         built = walls.get("survived") == len(ring) and run.get("survived") == len(ring) and lamp.get("survived") == 1
         c = B.probe("rect:%s" % frect)
         pos = [n["t"] for n in c.get("nodes") or []]
-        got = (c.get("cordEdges") or 0) >= 1 and (c.get("decals") or {}).get("StubWall", 0) >= 1
+        got = _inwall_cord_seen(c)
         row(rows, did, "UNMEASURED" if not built else ("PASS" if got == want and c.get("verticesInUnwalkable") == 0 else "FAIL"),
             "SITE" if not built else "MOD",
             {"built": built, "cordEdges": c.get("cordEdges"), "decals": c.get("decals"), "nodeTypes": sorted(set(pos)), "unwalkable": c.get("verticesInUnwalkable"), "wantCord": want})
@@ -862,8 +877,9 @@ def live_battery(B, fresh_map=False, rows=None):
     logs0 = lg0.get("logs") or []
     log_base = max([x.get("Sequence", 0) for x in logs0] or [0])
     bridge_line = any("[RimBridge]" in (x.get("Message") or "") for x in logs0)
-    pre = [x.get("Message", "")[:200] for x in logs0 if "GimmeSomeSlack" in (x.get("Message", "") + x.get("StackTrace", ""))
-           and (x.get("Level") or "").lower() in ("error", "exception")]
+    # the message is cut at 200 chars; the first frames naming the mod ride along, or a deep stack loses its attribution
+    pre = [_with_gss_frames(x.get("Message", "")[:200], x.get("Message", "") + "\n" + x.get("StackTrace", "")) for x in logs0
+           if "GimmeSomeSlack" in (x.get("Message", "") + x.get("StackTrace", "")) and (x.get("Level") or "").lower() in ("error", "exception")]
     if not bridge_line:
         # 2026-10-10 (550-mod list): chatty mods push the startup out of the bridge's last 500 entries; Player.log has it
         # (same fallback as proof_all P2)

@@ -280,6 +280,12 @@ ld = "Could not get load ID. pathRelToParent=/sourcePrecept, parent=guy762_JawaH
 check("7 log cap: a dead journal (sentinel never seen) makes Z UNMEASURED, never PASS",
       z([], [], log_dead=True)["status"] == "UNMEASURED")
 check("7 control: a live journal with no errors passes Z", z([], [])["status"] == "PASS")
+# speed_20261112: an "Illegal characters in path" error was cut at 240 chars, before the frame naming the mod
+deep = {"Message": "System.ArgumentException: Illegal characters in path.\n" + "  at System.IO.Path.Combine (a, b)\n" * 8 +
+        "  at RimMandrake.GimmeSomeSlack.CordMaterials.Tex (System.String path)\n  at Verse.Root.Update ()"}
+zr = z([], [deep])
+check("7b frame: a FAIL keeps the first frames naming GimmeSomeSlack past the message cut",
+      zr["status"] == "FAIL" and any("CordMaterials.Tex" in f for f in (zr["detail"].get("gssFrames") or [])), str(zr["detail"])[:200])
 
 
 def tap_lost(ring, steps):
