@@ -111,10 +111,10 @@ def main():
     expect("capture rect fits one frame at the recipe ppc", w * r["ppc"] <= 8192 and h * r["ppc"] <= 8192, (w, h))
     parsed = [recipes.parse_op(o) for o in pl["ops"]]
     expect("op lines round-trip with id/kind/x/z", all({"id", "kind", "x", "z"} <= set(p) for p in parsed))
-    pit_d4 = [p for p in parsed if p["kind"] == "pit" and p["depth"] == "4" and p["fill"] == "4"]
+    pit_d4 = [p for p in parsed if p["kind"] == "pit" and p["depth"] == "4" and p["waterM"] == "2"]
     expect("D4F4 ops carry the fluid", len(pit_d4) == 2 and {p.get("fluid") for p in pit_d4} ==
            {"RM_Fluid_Water", "RM_Fluid_Tar"}, pit_d4)
-    expect("dry pits carry no fluid", all("fluid" not in p for p in parsed if p.get("fill") == "0"))
+    expect("dry pits carry no fluid", all("fluid" not in p for p in parsed if p.get("waterM") == "0"))
     xs = [int(p["x"]) for p in parsed]
     zs = [int(p["z"]) for p in parsed]
     expect("every op inside the clear rect", min(xs) >= x and min(zs) >= z and max(xs) < x + w and max(zs) < z + h)

@@ -1347,7 +1347,7 @@ def visual_verdict(p, want_f, scorched, rows, strength, n_player_pawns, want_flu
     every cell must also hold `want_fluid` (excavation_rect's per-row fluid defName): water in the tar plot is not
     built (FW_PROOF_TOOLS_HARDEN_READ_GAPS, GPT 7.12)."""
     ds = sorted({c.get("d") for c in rows})
-    fs = sorted({c.get("f") for c in rows})
+    fs = sorted({(None if c.get("dl") is None else c["dl"] // 10000) for c in rows})   # whole levels from the one water number
     fluid_ok = not want_f or {c.get("fluid") for c in rows} == {want_fluid}
     built = (len(rows) == p["w"] * p["h"] and ds == [p["depth"]] and fs == [want_f] and fluid_ok
              and n_player_pawns >= 1)
@@ -1518,7 +1518,7 @@ class Review(object):
             ex = B.call("jawa/flowworks_excavation_rect", x=px, z=pz, w=p["w"], h=p["h"])
             rows = ex.get("rows") or []
             ds = sorted({c.get("d") for c in rows})
-            fs = sorted({c.get("f") for c in rows})
+            fs = sorted({(None if c.get("dl") is None else c["dl"] // 10000) for c in rows})   # whole levels from the one water number
             sc = str(B.call("jawa/static_call", type="RimMandrake.FlowWorks.RM_PitScorchProof", method="ProofScorchAt",
                             args="%d,%d" % (px + 1, pz + 1)).get("result", ""))
             m_str = re.search(r"strength=(-?\d+(?:\.\d+)?)", sc)

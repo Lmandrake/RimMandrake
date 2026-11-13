@@ -17,5 +17,5 @@ for D, (X, Z) in ((1, (30, 60)), (2, (30, 66)), (3, (30, 72)), (4, (30, 78))):
     call("jawa/flowworks_pulse", count=60, x=0, z=0, w=0, h=0, includeBodies=False)
     r = call("jawa/flowworks_excavation_rect", x=X - 8, z=Z, w=8, h=1, onlyNonZero=False)
     b = call("jawa/flowworks_body_report", x=X + 2, z=Z + 1, classify=False).get("body") or {}
-    out[D] = ([(q["d"], q["f"]) for q in r.get("rows") or []], round(b.get("stock") or 0, 2), b.get("activeCellCount"))
+    out[D] = ([(q["d"], q["dl"] // 10000) for q in r.get("rows") or []], round(b.get("stock") or 0, 2), b.get("activeCellCount"))
     print(D, out[D])
