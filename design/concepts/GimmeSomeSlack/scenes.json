@@ -48,6 +48,30 @@
    "hold": "immediate"
   },
   {
+   "id": "sc_no_sharp_turn",
+   "kind": "acceptance",
+   "requirement": [
+    "no_unforced_sharp_turn"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/GimmeSomeSlack/validation.py::scene_no_sharp_turn",
+   "entry_point_item": "GSS_SCENES_BUILD_EVERY_CORD_A_FOIL",
+   "start": [
+    "quicktest colony, cleared 12x12 workshop (asserted walkable)",
+    "the core workshop layout laid once per look (Scrapper, Industrial, Modern, Futuristic): a battery, a generator, a 3-way and a 4-way junction, consumers and a wall stub, all on one PowerNet (asserted)",
+    "a dense 4x4 conduit block and a mast foot with short leads beside it (asserted present)"
+   ],
+   "action": "run the bridge bends probe (CordShapeAudit.Bends) over every strand, ends included, in each look; tally bends tighter than 90 degrees within one cell and classify each as forced (a wall, building, door or socket on a neighbouring cell leaves no other way) or unforced; capture each look",
+   "expect": "strands read greater than zero in every look (the instrument sees cords); unforced == 0 in every look, at plug and junction ends as well as mid-cord; every forced bend names the wall, building, door or socket beside it",
+   "control": {
+    "case": "the probe's own planted strand: a hairpin drawn on an open floor cell beside the junction lead, and a second planted hairpin at a plug end, run through the same tally",
+    "expect": "both read unforced and the scene fails; removing them brings unforced back to 0",
+    "rules_out": "a tally that reads only mid-cord, or calls a bend forced because some building is on the map rather than beside the bend"
+   },
+   "restore": "restore terrain, walls, conduit, masts and things on the scene rect from the snapshot recorded at scene-begin; put the style pick and every poked setting back to its prior value",
+   "hold": "immediate"
+  },
+  {
    "id": "sc_walls",
    "kind": "acceptance",
    "requirement": [
