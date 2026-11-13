@@ -180,6 +180,12 @@
    "speaker": "agent",
    "text": "Per his 2026-08-15 ruling (no worldgen feature in any version; players never generate anything, they receive the one frozen world): the Pyrelands promise covers only the shipped world. The built biomeGenerationEnabled switch (vanilla placement on newly generated worlds) stays as built and is outside the promise: no leaf, no scene, no check. The mod builds no worldgen of its own. Stage 3 owes: sheet floor:worldgen reworded to 'No worldgen of our own; the vanilla new-world placement switch is outside the promise and unchecked', floor.json worldgen line kept applicable with that reading, and coverage_rest naming the switch as out of promise (per-ruling, not a cut). Whether its default should be on is filed for him as PYRE_WORLDSWITCH_DECIDE_ON_BY_DEFAULT (2026-08-18 'no knobs that could roll a second world'); it does not block this concept. He can undo this.",
    "source": "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs:60"
+  },
+  {
+   "id": "d_worldswitch_off_by_card",
+   "speaker": "owner",
+   "source": "OWNER:1794594166295378777",
+   "text": "By his card 2026-11-13 (World switch -> Ship OFF, unsupported): biomeGenerationEnabled ships off by default, labelled unsupported (built, commit e36d2374af). The switch stays outside the promise (d_worldgen_outside_promise); only its shipped default is checked."
   }
  ],
  "asks": [
@@ -223,7 +229,6 @@
    "id": "a_fire_control_scene",
    "status": "answered",
    "source": [
-    "src/RimMandrake/Pyrelands/Defs/TerrainDefs/Firebreak.xml",
     "src/RimMandrake/Pyrelands/Source/PyrelandsFireFront.cs",
     "src/RimMandrake/Pyrelands/Defs/ThingDefs_Sprayer/FirefoamSprayer.xml"
    ],
@@ -768,7 +773,8 @@
     "src/RimMandrake/Pyrelands/About/About.xml"
    ],
    "scope_source": "OWNER:1793898832335289326",
-   "note": "Cut by d_firebreak_cut (delegated evaluation he asked for); vanilla non-flammable floors serve. Excised: Defs/TerrainDefs/Firebreak.xml deleted in 8fb9f7f2b6 (2026-11-08); the offline row paved_strip_excised (selftest_pyrelands_site.py) checks it stays gone. Leaf paved_strip_holds_the_line deleted by his card 2026-11-13."
+   "note": "Cut by d_firebreak_cut (delegated evaluation he asked for); vanilla non-flammable floors serve. Excised: Defs/TerrainDefs/Firebreak.xml deleted in 8fb9f7f2b6 (2026-11-08); the offline row paved_strip_excised (selftest_pyrelands_site.py) checks it stays gone. Leaf paved_strip_holds_the_line deleted by his card 2026-11-13.",
+   "search_scope": "src/RimMandrake/Pyrelands (grep FirebreakLine: no hits, 2026-11-13); Defs/TerrainDefs/Firebreak.xml removed in commit 186b8cd2ed"
   },
   {
    "id": "inv_firefoam_sprayer",

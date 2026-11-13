@@ -38,7 +38,7 @@
 
 ## does not
 - [leaf:no_ordinary_rain] Ordinary rain never falls on a Pyrelands map; its only wet weather is black rain
-- [floor:worldgen] No worldgen of our own; the vanilla new-world placement switch is outside the promise, ships off and is labelled unsupported (his card 2026-11-13), and only that default is checked
+- [floor:worldgen] No worldgen of our own; the vanilla new-world placement switch is outside the promise, ships off and is labelled unsupported (his card 2026-11-13), and only that default is checked OWNER:1794594166295378777
 - [floor:multiplayer] No multiplayer support
 
 ## waived

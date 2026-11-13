@@ -1,0 +1,6 @@
+{
+ "run": "rm-role-designer-1794596464",
+ "stage": 3,
+ "outcome": "done",
+ "summary": "Stage 3 rewritten after the stage-5 run's edits reopened it. Gate A lint passes; scenes.json showcases accepted (burn_line 7, fire_cast 3, sky_and_shelter 3, every unit covered). Worldgen: sheet floor:worldgen reads no worldgen of our own, the vanilla new-world switch outside the promise and shipped off and labelled unsupported per his card 2026-11-13 (OWNER:1794594166295378777, built e36d2374af), now cited on the sheet and recorded as d_worldswitch_off_by_card; floor.json worldgen stays applicable. The 2026-11-13 coverage verdict is advisory (uncalibrated brief) and does not send this run back."
+}
