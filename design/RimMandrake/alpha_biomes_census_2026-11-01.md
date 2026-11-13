@@ -203,18 +203,18 @@ The `BiomeDef` table below is the old-to-new biome list `BIOME_PAINT_ONCE_AT_THE
 
 | name | decision | successor | why |
 |---|---|---|---|
-| `AB_FeraliskInfestedJungle` | PORTED | `RM_Webwork`, `RUT_Webwork` | the Webwork; RUT_Webwork header: replaces this donor |
+| `AB_FeraliskInfestedJungle` | PORTED | `RM_Webwork` | the Webwork; RUT_Webwork header: replaces this donor |
 | `AB_GallatrossGraveyard` | DROPPED | - | no twin in any freeze sheet and off the paint list; only colour and paint-table rows in retired world tools |
-| `AB_GelatinousSuperorganism` | PORTED | `RM_GelatinousSlime`, `RUT_Slime` | the Slime; RUT_Slime header: replaces this donor |
+| `AB_GelatinousSuperorganism` | PORTED | `RM_GelatinousSlime` | the Slime; RUT_Slime header: replaces this donor |
 | `AB_IdyllicMeadows` | DROPPED | - | no twin in any freeze sheet and off the paint list; only colour and paint-table rows in retired world tools |
-| `AB_MechanoidIntrusion` | PORTED | `RM_RustCathedral`, `RUT_RustCathedral` | the Rust Cathedral; twin header: replaces this donor |
-| `AB_MiasmicMangrove` | PORTED | `RM_Miasma`, `RUT_Miasma` | the Miasma; twin header: replaces this donor |
-| `AB_MycoticJungle` | PORTED | `RM_TheRot`, `RUT_TheRot` | the Rot; twin header: replaces this donor |
-| `AB_OcularForest` | PORTED | `RM_Contagion`, `RUT_Contagion` | the Contagion; twin header: replaces this donor |
-| `AB_PropaneLakes` | PORTED | `RM_TheChill`, `RUT_PropaneLake` | the Chill; RUT_PropaneLake took its tiles, RM_TheChill is the mod body |
-| `AB_PyroclasticConflagration` | PORTED | `RM_TheForge`, `RM_Pyrelands`, `RUT_TheForge` | split: base of the Forge twin, mutators to Pyrelands |
-| `AB_RockyCrags` | PORTED | `RM_Abyss`, `RUT_Abyss` | the Abyss, once the Forsaken Crags; twin header: replaces this donor |
-| `AB_TarPits` | PORTED | `RM_TheSump`, `RUT_Sump` | the Sump; twin header: replaces this donor |
+| `AB_MechanoidIntrusion` | PORTED | `RM_RustCathedral` | the Rust Cathedral; twin header: replaces this donor |
+| `AB_MiasmicMangrove` | PORTED | `RM_Miasma` | the Miasma; twin header: replaces this donor |
+| `AB_MycoticJungle` | PORTED | `RM_TheRot` | the Rot; twin header: replaces this donor |
+| `AB_OcularForest` | PORTED | `RM_Contagion` | the Contagion; twin header: replaces this donor |
+| `AB_PropaneLakes` | PORTED | `RM_TheChill` | the Chill; RUT_PropaneLake took its tiles, RM_TheChill is the mod body |
+| `AB_PyroclasticConflagration` | PORTED | `RM_TheForge`, `RM_Pyrelands` | split: base of the Forge twin, mutators to Pyrelands |
+| `AB_RockyCrags` | PORTED | `RM_Abyss` | the Abyss, once the Forsaken Crags; twin header: replaces this donor |
+| `AB_TarPits` | PORTED | `RM_TheSump` | the Sump; twin header: replaces this donor |
 
 ### TileMutatorDef (91)
 

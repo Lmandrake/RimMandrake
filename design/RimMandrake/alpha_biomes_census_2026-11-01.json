@@ -722,8 +722,7 @@
    "AB_FeraliskInfestedJungle": {
     "decision": "PORTED",
     "to": [
-     "RM_Webwork",
-     "RUT_Webwork"
+     "RM_Webwork"
     ],
     "why": "the Webwork; RUT_Webwork header: replaces this donor"
    },
@@ -734,8 +733,7 @@
    "AB_GelatinousSuperorganism": {
     "decision": "PORTED",
     "to": [
-     "RM_GelatinousSlime",
-     "RUT_Slime"
+     "RM_GelatinousSlime"
     ],
     "why": "the Slime; RUT_Slime header: replaces this donor"
    },
@@ -746,40 +744,35 @@
    "AB_MechanoidIntrusion": {
     "decision": "PORTED",
     "to": [
-     "RM_RustCathedral",
-     "RUT_RustCathedral"
+     "RM_RustCathedral"
     ],
     "why": "the Rust Cathedral; twin header: replaces this donor"
    },
    "AB_MiasmicMangrove": {
     "decision": "PORTED",
     "to": [
-     "RM_Miasma",
-     "RUT_Miasma"
+     "RM_Miasma"
     ],
     "why": "the Miasma; twin header: replaces this donor"
    },
    "AB_MycoticJungle": {
     "decision": "PORTED",
     "to": [
-     "RM_TheRot",
-     "RUT_TheRot"
+     "RM_TheRot"
     ],
     "why": "the Rot; twin header: replaces this donor"
    },
    "AB_OcularForest": {
     "decision": "PORTED",
     "to": [
-     "RM_Contagion",
-     "RUT_Contagion"
+     "RM_Contagion"
     ],
     "why": "the Contagion; twin header: replaces this donor"
    },
    "AB_PropaneLakes": {
     "decision": "PORTED",
     "to": [
-     "RM_TheChill",
-     "RUT_PropaneLake"
+     "RM_TheChill"
     ],
     "why": "the Chill; RUT_PropaneLake took its tiles, RM_TheChill is the mod body"
    },
@@ -787,24 +780,21 @@
     "decision": "PORTED",
     "to": [
      "RM_TheForge",
-     "RM_Pyrelands",
-     "RUT_TheForge"
+     "RM_Pyrelands"
     ],
     "why": "split: base of the Forge twin, mutators to Pyrelands"
    },
    "AB_RockyCrags": {
     "decision": "PORTED",
     "to": [
-     "RM_Abyss",
-     "RUT_Abyss"
+     "RM_Abyss"
     ],
     "why": "the Abyss, once the Forsaken Crags; twin header: replaces this donor"
    },
    "AB_TarPits": {
     "decision": "PORTED",
     "to": [
-     "RM_TheSump",
-     "RUT_Sump"
+     "RM_TheSump"
     ],
     "why": "the Sump; twin header: replaces this donor"
    }
@@ -1358,10 +1348,8 @@
   "AB_Disease_": "fragment",
   "AB_Disease_BacterialGangrene": "donor_def",
   "AB_Disease_RavagingIntestinalParasites": "donor_def",
-  "AB_Disease_SporesAllergy": "donor_def",
   "AB_Disease_ViralAbasia": "donor_def",
   "AB_DribblingCap": "donor_def",
-  "AB_EyeGrass": "donor_def",
   "AB_FertileMud_Polluted": "texture_or_record",
   "AB_FineForsakenSands": "texture_or_record",
   "AB_FineForsakenSands_Polluted": "texture_or_record",
@@ -1377,7 +1365,6 @@
   "AB_GiantGamma": "donor_def",
   "AB_GiantSeptimum": "donor_def",
   "AB_GiantStikehr": "donor_def",
-  "AB_GiantToxicFlower": "donor_def",
   "AB_GlobularPlant": "donor_def",
   "AB_GlowingAgarilux": "donor_def",
   "AB_GlowingGrass": "donor_def",

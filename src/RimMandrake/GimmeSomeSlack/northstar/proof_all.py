@@ -80,6 +80,8 @@ PARK = (125, 165)                     # colonists moved here, out of the matrix 
 # of 2026-10-05 08:24-08:52 (144 rows each). The matrix block is NOT listed: its ids are the reduced spec's scenes,
 # computed below. A row the run emits that is not declared shows in the report as "observed, not in manifest"; a
 # declared row the run no longer emits shows as not reached -- so this list can drift visibly, never silently.
+if os.path.dirname(os.path.abspath(__file__)) not in sys.path:   # a caller that loads this file by path (modcheck)
+    sys.path.insert(1, os.path.dirname(os.path.abspath(__file__)))
 SCENE_ROWS = __import__("scene_rows").ROWS
 DECLARED_ROWS = {
     "scenes": SCENE_ROWS,

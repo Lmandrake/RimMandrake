@@ -104,7 +104,6 @@
     <li>mandrake.rm.graffiti</li>
     <li>mandrake.rm.sacredgraffiti</li>
     <li>mandrake.rm.inhabited</li>
-    <li>mandrake.rut.injections</li>
     <li>mandrake.rut.inhabited</li>
     <li>haecriver.injuredcarry</li>
     <li>ferny.easycaravanformation</li>
@@ -304,6 +303,7 @@
     <li>kutte.stairs</li>
     <li>mandrake.rm.hugethings</li>
     <li>mandrake.rm.biomes</li>
+    <li>mandrake.rut.injections</li>
     <li>mandrake.rsw.cuisine</li>
     <li>mandrake.rsw.armoury</li>
     <li>mandrake.rsw.shokk</li>
