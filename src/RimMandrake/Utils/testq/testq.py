@@ -2005,7 +2005,7 @@ def forward_submit(a, argv):
     # the commit approved HERE is the one queued: HEAD, a branch or an abbreviation resolves to its full sha first,
     # never re-resolved in the dispatcher's clone
     full = subprocess.run(["git", "-C", REPO, "rev-parse", "--verify", "--quiet", a.sha + "^{commit}"],
-                          capture_output=True, text=True).stdout.strip()
+                          capture_output=True, text=True, timeout=30).stdout.strip()
     if not full and not a.no_sha_check:
         print("REFUSED: %s names no commit here" % a.sha)
         return 2

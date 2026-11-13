@@ -163,7 +163,7 @@ def phase_prototype(cmds, pay, repo=REPO):
         before = resource.getrusage(resource.RUSAGE_CHILDREN)
         t0 = time.perf_counter()
         p = subprocess.run([sys.executable, os.path.abspath(__file__), "--prototype-run", f.name], cwd=repo, env=env,
-                           text=True, input=data, capture_output=True)
+                           text=True, input=data, capture_output=True, timeout=120)
         wall = time.perf_counter() - t0
         after = resource.getrusage(resource.RUSAGE_CHILDREN)
     cpu = (after.ru_utime + after.ru_stime) - (before.ru_utime + before.ru_stime)

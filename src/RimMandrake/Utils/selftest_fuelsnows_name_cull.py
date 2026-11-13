@@ -25,6 +25,7 @@ HISTORIC_TREES = (
     "Transient/", "conversations/", "infrastructure/state/handoffs/", "infrastructure/state/items/closed/",
     "infrastructure/state/ledger/", "infrastructure/state/code_review/", "infrastructure/state/art/",
     "infrastructure/state/art_rulings/", "infrastructure/dashboards/",
+    "infrastructure/state/facts/history/",  # culled pointers kept as records of their day
     "infrastructure/state/queue/",  # projections of the ledger: they quote item titles of their day
 )
 # Files that name RUT_FuelSnows only as the retired name, or are dated snapshots of their day.
@@ -37,6 +38,7 @@ HISTORIC = {
     "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_PropaneLakeFauna.xml": "'briefly named' note",
     "design/Jawa/fauna/biome_name_migration.py": "'was RUT_FuelSnows' note",
     "design/Jawa/mods/biome_flora.py": "'RUT_FuelSnows 2026-09-21..2026-10-20' note",
+    "design/RimMandrake/mineral_matrix/round_two_2026-10-28/design.md": "dated 10-28 snapshot: 'absent from the 10-28 dump'",
     "design/RimMandrake/flowworks_liquid_matrix.md": "'named RUT_FuelSnows 2026-09-21..2026-10-20' note",
     "design/RimMandrake/explosive_growth_ruled_spec_2026-10-16.md": "'briefly RUT_FuelSnows' correction",
     "design/RimMandrake/explosive_growth_bench_design_pass_2026-10-16.md": "dated PROPOSAL, measured 10-16",

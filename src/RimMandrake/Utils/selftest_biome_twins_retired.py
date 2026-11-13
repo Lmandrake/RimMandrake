@@ -48,6 +48,9 @@ TOOLS = {
     "RimMandrake/Utils/sim/selftest_csuite_tps.py": "fixture pinned to an old recorded scene",
     "RimMandrake/Utils/world_layers_export.py": "rename map of the record CSV",
     "RimMandrake/bridgetools/repair_lost_biomes_2026-10-18.py": "dated one-off on the 10-18 saves",
+    "RimMandrake/Utils/mineral_matrix/gen_matrix.py": "reads round-two rows and drops the three twin rows by name",
+    "RimMandrake/Utils/mineral_matrix/prereview_harness.py": "asserts the sheet shows no twin row",
+    "RimMandrake/Utils/mineral_matrix/selftest_mineral_matrix.py": "plants a twin row as a mutant that must go red",
 }
 fails = []
 

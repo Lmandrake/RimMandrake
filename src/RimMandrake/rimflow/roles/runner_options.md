@@ -70,7 +70,7 @@ their results explicitly. In this session the operator supplied:
 `rimflow/driver_lock.py` now recognizes the nearest Codex **or** Claude ancestor.
 Short-lived tool-shell PIDs no longer strand or invalidate a Codex lease.
 `RM_DRIVER_PID` remains the explicit override; ordinarily let ancestor detection
-work. Take only BENCH's bridge lease, never an OWNER hold. One process drives the
+work. Take only your own seat's bridge lease, never an OWNER hold. One process drives the
 bridge at a time; read-only judges do not attach while the proof runs.
 
 ### Operating sequence used here

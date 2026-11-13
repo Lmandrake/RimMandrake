@@ -89,6 +89,12 @@ EPSILON = 0.1                    # the spawn gate is STRICT (MapTemperature.Seas
 STAT_DEFAULT = {"ComfyTemperatureMin": 0.0, "ComfyTemperatureMax": 40.0}   # Core StatDef defaults
 MEAT_BASE, LEATHER_BASE = 140.0, 40.0
 ROSTER_PREFIXES = ("RM_", "RUT_")
+# The 25 RUT_ twin BiomeDefs deleted 2026-11-06: their names stay out of every src/ XML file, comments too
+# (selftest_biome_twins_retired.py holds the same list). The tile record still spells them; the comments do not.
+RETIRED_TWINS = frozenset("RUT_" + n for n in (
+    "Greentide BlueDesert TheScald TheRot FeverWood Cauldron PropaneLake Scarlands ExtremeDesert GreySea SleepingIce "
+    "CrackedLands Miasma Sump TwilightSea WeepingStones Slime Abyss Webwork TheForge Wastes Contagion Desert "
+    "RustCathedral AridShrubland").split())
 SNAP_FIELDS = ["defName", "rostered", "mod", "sourceFile", "bodySize", "biomes",
                "comfyMin", "comfyMax", "comfyMin_own", "comfyMax_own",
                "meat", "meat_own", "leather", "leather_own", "leatherDef",
@@ -379,7 +385,9 @@ def build_all():
                 continue
             lo = e[0] if lo is None else min(lo, e[0])
             hi = e[1] if hi is None else max(hi, e[1])
-            srcs.append("%s<-%s" % (b, e[2]) if e[2] != b else b)
+            if b in RETIRED_TWINS:
+                continue                       # its envelope counts; its name stays out of src XML
+            srcs.append("%s<-%s" % (b, e[2]) if e[2] != b and e[2] not in RETIRED_TWINS else b)
         cur = {"ComfyTemperatureMin": fnum(r["comfyMin"]), "ComfyTemperatureMax": fnum(r["comfyMax"])}
         for k in cur:
             if cur[k] is None:

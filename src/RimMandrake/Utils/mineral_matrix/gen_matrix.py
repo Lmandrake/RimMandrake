@@ -374,14 +374,14 @@ def finish(repo, out):
     import shutil, subprocess
     py = sys.executable
     for step in (["page/build_data.py", out], ["page/build_page.py", out]):
-        subprocess.run([py, os.path.join(TOOL, step[0]), step[1]], check=True)
+        subprocess.run([py, os.path.join(TOOL, step[0]), step[1]], check=True, timeout=1800)
     rec = os.path.join(repo, RECORD_REL)
     if os.path.exists(rec):
         shutil.copyfile(rec, os.path.join(out, "page", "index.prereview.json"))
     rc = 0
     for cmd in ([py, os.path.join(TOOL, "check_matrix.py"), out, "--repo", repo],
                 [py, os.path.join(repo, "src/RimMandrake/Utils/art/prereview.py"), "check", os.path.join(out, "page", "index.html")]):
-        r = subprocess.run(cmd)
+        r = subprocess.run(cmd, timeout=1800)
         rc = rc or r.returncode
     print("ALL CHECKS PASS" if rc == 0 else "CHECKS FAILED (see above)", "-", out)
     return rc

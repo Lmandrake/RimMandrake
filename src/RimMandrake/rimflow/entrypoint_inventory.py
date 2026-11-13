@@ -289,7 +289,7 @@ def check_revert(bundle, root=ROOT, retired=None):
             return 1, ["the bundle must hold one head on one prerequisite, not %d on %d" % (len(heads), len(prereq))]
         rev, deletion = heads[0][0], prereq[0]
         head = _git(root, "rev-parse", "HEAD")
-        if subprocess.run(["git", "-C", root, "merge-base", "--is-ancestor", deletion, head]).returncode:
+        if subprocess.run(["git", "-C", root, "merge-base", "--is-ancestor", deletion, head], timeout=60).returncode:
             return 1, ["deletion commit %s is not in the history of %s" % (deletion[:10], head[:10])]
         objects = os.path.abspath(os.path.join(root, _git(root, "rev-parse", "--git-path", "objects")))
         _git(tmp, "init", "--quiet", "--bare", ".")

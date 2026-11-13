@@ -268,10 +268,11 @@ def live(out=None):
     then the game must still be alive and the dump readable offline. 0 holds, 1 does not, 2 UNMEASURED."""
     out = out or "/mnt/d/ClaudeWork/rimmandrake/minidump_spike/live"
     os.makedirs(out, exist_ok=True)
-    win = subprocess.run(["wslpath", "-w", out], capture_output=True, text=True).stdout.strip()
+    win = subprocess.run(["wslpath", "-w", out], capture_output=True, text=True, timeout=30).stdout.strip()
     inc = "spike-live-" + time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
     try:
-        tool = subprocess.run(["wslpath", "-w", os.path.join(HERE, "health_minidump.py")], capture_output=True, text=True).stdout.strip()
+        tool = subprocess.run(["wslpath", "-w", os.path.join(HERE, "health_minidump.py")], capture_output=True, text=True,
+                              timeout=30).stdout.strip()
         p = subprocess.run(["python.exe", tool, "--before-kill", "--incident", inc, "--dir", win],
                            capture_output=True, text=True, timeout=180)
     except (OSError, subprocess.TimeoutExpired) as e:
@@ -287,7 +288,7 @@ def live(out=None):
         return 1
     time.sleep(2)
     alive = subprocess.run(["tasklist.exe", "/FI", "PID eq %d" % rec["pid"], "/FO", "CSV", "/NH"],
-                           capture_output=True, text=True).stdout
+                           capture_output=True, text=True, timeout=30).stdout
     d = R.read(os.path.join(out, rec["path"].replace("\\", "/").split("/")[-1]))   # live() dumps straight into out
     res = {"durationMs": rec.get("durationMs"), "suspendedMs": rec.get("suspendedMs"), "sizeBytes": rec.get("sizeBytes"),
            "workingSetBytes": rec.get("workingSetBytes"), "threads": len(d["threads"]), "modules": len(d["modules"]),

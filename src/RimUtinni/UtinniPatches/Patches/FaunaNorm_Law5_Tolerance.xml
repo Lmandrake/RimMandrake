@@ -858,7 +858,7 @@
     </nomatch>
   </Operation>
 
-  <!-- RM_Excretor: env -13.1..28.1 C (RM_Wastes<-RUT_Wasteland,the deleted Wastes twin<-RUT_Wasteland), band -10..60 -> -28.2..60 -->
+  <!-- RM_Excretor: env -13.1..28.1 C (RM_Wastes<-RUT_Wasteland), band -10..60 -> -28.2..60 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RM_Excretor"]/statBases/ComfyTemperatureMin</xpath>
     <match Class="PatchOperationConditional">
@@ -1450,7 +1450,7 @@
     </nomatch>
   </Operation>
 
-  <!-- RM_Gripper: env -13.1..28.1 C (RM_Wastes<-RUT_Wasteland,the deleted Wastes twin<-RUT_Wasteland), band -15..45 -> -28.2..45 -->
+  <!-- RM_Gripper: env -13.1..28.1 C (RM_Wastes<-RUT_Wasteland), band -15..45 -> -28.2..45 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RM_Gripper"]/statBases/ComfyTemperatureMin</xpath>
     <match Class="PatchOperationConditional">
@@ -1502,7 +1502,7 @@
     </nomatch>
   </Operation>
 
-  <!-- RM_Gristleswarm: env -13.1..28.1 C (RM_Wastes<-RUT_Wasteland,the deleted Wastes twin<-RUT_Wasteland), band -20..45 -> -28.2..45 -->
+  <!-- RM_Gristleswarm: env -13.1..28.1 C (RM_Wastes<-RUT_Wasteland), band -20..45 -> -28.2..45 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RM_Gristleswarm"]/statBases/ComfyTemperatureMin</xpath>
     <match Class="PatchOperationConditional">
@@ -4222,7 +4222,7 @@
     </nomatch>
   </Operation>
 
-  <!-- RM_Sytheclaw: env 24.9..63.8 C (RM_Pyrelands<-ZBiome_Grasslands,the deleted Contagion twin,the deleted Greentide twin), band -50..74.3 -> -50..78.9 -->
+  <!-- RM_Sytheclaw: env 24.9..63.8 C (RM_Pyrelands<-ZBiome_Grasslands), band -50..74.3 -> -50..78.9 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RM_Sytheclaw"]/statBases/ComfyTemperatureMax</xpath>
     <match Class="PatchOperationConditional">
@@ -5070,7 +5070,7 @@
     </nomatch>
   </Operation>
 
-  <!-- RSW_Anooba: env -7.4..63.8 C (RM_LeaningScrub,RM_Miasma,RM_Pyrelands<-ZBiome_Grasslands,the deleted AridShrubland twin,the deleted Miasma twin), band -18.9..74.4 -> -22.5..78.9 -->
+  <!-- RSW_Anooba: env -7.4..63.8 C (RM_LeaningScrub,RM_Miasma,RM_Pyrelands<-ZBiome_Grasslands), band -18.9..74.4 -> -22.5..78.9 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RSW_Anooba"]/statBases/ComfyTemperatureMax</xpath>
     <match Class="PatchOperationConditional">
@@ -5146,7 +5146,7 @@
     </nomatch>
   </Operation>
 
-  <!-- RSW_CaveLemming: env -47.4..-20.6 C (RM_SleepingIce<-RUT_NightsideIce,the deleted SleepingIce twin<-RUT_NightsideIce), band -30..40 -> -62.5..40 -->
+  <!-- RSW_CaveLemming: env -47.4..-20.6 C (RM_SleepingIce<-RUT_NightsideIce), band -30..40 -> -62.5..40 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RSW_CaveLemming"]/statBases/ComfyTemperatureMin</xpath>
     <match Class="PatchOperationConditional">
@@ -5402,7 +5402,7 @@
     </nomatch>
   </Operation>
 
-  <!-- RSW_Iriaz: env -7.4..63.8 C (RM_LeaningScrub,RM_LongShade,RM_Pyrelands<-ZBiome_Grasslands,the deleted AridShrubland twin,the deleted Desert twin), band -10..65.7 -> -22.5..78.9 -->
+  <!-- RSW_Iriaz: env -7.4..63.8 C (RM_LeaningScrub,RM_LongShade,RM_Pyrelands<-ZBiome_Grasslands), band -10..65.7 -> -22.5..78.9 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RSW_Iriaz"]/statBases/ComfyTemperatureMax</xpath>
     <match Class="PatchOperationConditional">
@@ -5478,7 +5478,7 @@
     </nomatch>
   </Operation>
 
-  <!-- RSW_Lanternwhale: env -9.5..31 C (the deleted TwilightSea twin), band -35..45 -> -35..46.1 -->
+  <!-- RSW_Lanternwhale: env -9.5..31 C (), band -35..45 -> -35..46.1 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RSW_Lanternwhale"]/statBases/ComfyTemperatureMax</xpath>
     <match Class="PatchOperationConditional">
@@ -5580,7 +5580,7 @@
     </nomatch>
   </Operation>
 
-  <!-- RSW_Nuna: env -7.4..63.8 C (RM_FeverWood,RM_Greentide,RM_LeaningScrub,RM_LongShade,RM_Pyrelands<-ZBiome_Grasslands,the deleted AridShrubland twin,the deleted Desert twin,the deleted FeverWood twin,the deleted Greentide twin), band -8..79.7 -> -22.5..79.7 -->
+  <!-- RSW_Nuna: env -7.4..63.8 C (RM_FeverWood,RM_Greentide,RM_LeaningScrub,RM_LongShade,RM_Pyrelands<-ZBiome_Grasslands), band -8..79.7 -> -22.5..79.7 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RSW_Nuna"]/statBases/ComfyTemperatureMin</xpath>
     <match Class="PatchOperationConditional">
@@ -5940,7 +5940,7 @@
     </nomatch>
   </Operation>
 
-  <!-- RSW_TunnelSnake: env -7.4..46.8 C (the deleted AridShrubland twin), band 0..60 -> -22.5..61.9 -->
+  <!-- RSW_TunnelSnake: env -7.4..46.8 C (), band 0..60 -> -22.5..61.9 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RSW_TunnelSnake"]/statBases/ComfyTemperatureMax</xpath>
     <match Class="PatchOperationConditional">
@@ -6042,7 +6042,7 @@
     </nomatch>
   </Operation>
 
-  <!-- RSW_VentStalker: env -7.1..22.5 C (RM_Cauldron<-RUT_PoisonForest,the deleted Cauldron twin<-RUT_PoisonForest), band -15..45 -> -22.3..45 -->
+  <!-- RSW_VentStalker: env -7.1..22.5 C (RM_Cauldron<-RUT_PoisonForest), band -15..45 -> -22.3..45 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RSW_VentStalker"]/statBases/ComfyTemperatureMin</xpath>
     <match Class="PatchOperationConditional">
@@ -6170,7 +6170,7 @@
     </nomatch>
   </Operation>
 
-  <!-- RUT_BrineBattery: env -13.1..28.1 C (RM_Wastes<-RUT_Wasteland,the deleted Wastes twin<-RUT_Wasteland), band -10..60 -> -28.2..60 -->
+  <!-- RUT_BrineBattery: env -13.1..28.1 C (RM_Wastes<-RUT_Wasteland), band -10..60 -> -28.2..60 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RUT_BrineBattery"]/statBases/ComfyTemperatureMin</xpath>
     <match Class="PatchOperationConditional">
@@ -6246,7 +6246,7 @@
     </nomatch>
   </Operation>
 
-  <!-- RUT_FleetFlier: env 41.9..55.8 C (the deleted TheForge twin), band -20..38 -> -20..70.9 -->
+  <!-- RUT_FleetFlier: env 41.9..55.8 C (), band -20..38 -> -20..70.9 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RUT_FleetFlier"]/statBases/ComfyTemperatureMax</xpath>
     <match Class="PatchOperationConditional">

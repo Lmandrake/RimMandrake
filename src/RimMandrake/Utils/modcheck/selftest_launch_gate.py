@@ -52,7 +52,7 @@ _files = subprocess.run(["git", "-C", _root, "ls-files", "-z", "--", "src/*.cs"]
                         timeout=60).stdout.split("\0")
 _decl = set()
 for f in _files:
-    if not f or "/obj/" in f or "/tests/" in f or "selftest" in f.lower():  # engine stubs/shims declare Verse etc. (selftest_*_stubs.cs, StallProbeSelfTest/)
+    if not f or "/obj/" in f or "/tests/" in f or "/Scenario/" in f or "selftest" in f.lower():  # engine stubs/shims declare Verse etc. (selftest_*_stubs.cs, StallProbeSelfTest/, MandrakePatches/Scenario/ offline fakes)
         continue
     try:
         txt = open(os.path.join(_root, f), encoding="utf-8", errors="replace").read()

@@ -26,6 +26,7 @@ WORD = re.compile(r"\b(BENCH|Bench)\b")
 ALLOWED = re.compile(
     r"alias"                                  # explains the read alias
     r"|/rm/bench|events/BENCH\.jsonl|seats\.BENCH|AGENT BENCH"   # held step 3: clone path, shard file, config key, tile
+    r"|--seat BENCH|Z-BENCH-[a-z0-9-]+\.md"  # held step 3: the seat key as a flag, a lesson record's file name
     r'|"'                                     # quotes history (an owner quote)
 )
 HISTORY = ("infrastructure/state/ledger/", "conversations/", "infrastructure/state/handoffs/",

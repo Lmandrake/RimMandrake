@@ -44,7 +44,8 @@ def main():
         env = dict(os.environ, GIT_AUTHOR_NAME="t", GIT_AUTHOR_EMAIL="t@t", GIT_COMMITTER_NAME="t", GIT_COMMITTER_EMAIL="t@t")
 
         def git(*a):
-            r = subprocess.run(["git", *a], cwd=tmp, env=env, capture_output=True, text=True, stdin=subprocess.DEVNULL)
+            r = subprocess.run(["git", *a], cwd=tmp, env=env, capture_output=True, text=True, stdin=subprocess.DEVNULL,
+                               timeout=60)
             if r.returncode:
                 print("setup: git %s: %s" % (" ".join(a), r.stderr))
                 sys.exit(2)

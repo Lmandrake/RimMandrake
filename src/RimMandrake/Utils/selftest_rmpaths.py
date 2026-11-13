@@ -59,7 +59,9 @@ out = subprocess.run(["git", "-C", ROOT, "grep", "-nIE", pat, "--", "src", "skil
                       ":!*.md", ":!*.json", ":!*.jsonl", ":!*.log", ":!**/selftest_rmpaths.py"],
                      capture_output=True, text=True).stdout.strip()
 check("no code names D:\\Luke\\dev\\_<dir>", not out, out[:800])
-out = subprocess.run(["git", "-C", ROOT, "grep", "-nIE", pat, "--", "CLAUDE.md", "skills"],
+# a skill's references/history.md is a dated design record of its day (35334f9a85), not guidance
+out = subprocess.run(["git", "-C", ROOT, "grep", "-nIE", pat, "--", "CLAUDE.md", "skills",
+                      ":!skills/*/references/history.md"],
                      capture_output=True, text=True).stdout.strip()
 check("CLAUDE.md and skills name no old dir", not out, out[:800])
 

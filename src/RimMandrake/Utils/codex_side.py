@@ -43,7 +43,8 @@ def main(argv=None):
             images = arg in ("-i", "--image")
             path_next = arg in path_flags
     return subprocess.run([str(cx.find_codex_cli()), *args],
-                          env=cx.child_env(cx.base_codex_home())).returncode
+                          env=cx.child_env(cx.base_codex_home()),
+                          timeout=8 * 3600).returncode  # an interactive session, bounded to a working day
 
 
 if __name__ == "__main__":
