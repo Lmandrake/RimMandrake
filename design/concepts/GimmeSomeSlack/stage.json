@@ -312,11 +312,63 @@
     "ref": "run rm-role-designer-1794596920",
     "stage": 4,
     "tokens": 28791
+   },
+   {
+    "at": "2026-11-13T19:55:27Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794599377",
+    "stage": 5,
+    "tokens": 656685
+   },
+   {
+    "at": "2026-11-13T19:57:03Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794599377",
+    "stage": 5,
+    "tokens": 125339
+   },
+   {
+    "at": "2026-11-13T19:59:04Z",
+    "kind": "unmeasured",
+    "ref": "run rm-role-designer-1794599361",
+    "stage": 5,
+    "tokens": 500000
    }
   ],
   "reserve": 60000,
-  "spent": 9908362
+  "spent": 11190386
  },
+ "coverage_rounds": [
+  {
+   "at": "2026-11-13T19:49:37Z",
+   "error": null,
+   "gaps": 5,
+   "ids": [
+    "floor_end_shock",
+    "floor_end_shocks_crossers",
+    "game_statics_reset",
+    "no_unforced_sharp_turn",
+    "owner_change_coils_wires",
+    "owner_change_cut",
+    "shock_reach_setting",
+    "statics_clear_between_games"
+   ],
+   "judge": "rm-coverage-judge-1794599377",
+   "late": [
+    "owner_change_cut",
+    "owner_change_coils_wires",
+    "game_statics_reset",
+    "statics_clear_between_games"
+   ],
+   "tags": {
+    "changed": 3,
+    "late": 2
+   },
+   "tokens": 782024,
+   "tree": "eb1981b88959b758a00f6984241c719cf574c0fa185a26884940b817b905c1e3",
+   "verdict": "not_covered"
+  }
+ ],
  "history": [
   {
    "at": "2026-11-05T07:14:04Z",
@@ -707,6 +759,24 @@
    "stage": 5,
    "what": "close",
    "why": "run rm-role-designer-1794596920: stage 4 done"
+  },
+  {
+   "at": "2026-11-13T19:49:37Z",
+   "stage": 5,
+   "what": "over_budget",
+   "why": "9908362 of 4000000 spent; run rm-role-designer-1794599361 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-13T19:49:37Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designer-1794599361, stage 5, budget 500000"
+  },
+  {
+   "at": "2026-11-13T19:59:04Z",
+   "stage": 5,
+   "what": "retry",
+   "why": "run rm-role-designer-1794599361 result rejected: no result.json (a closing message is not a result)"
   }
  ],
  "item": "GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS",
@@ -1225,6 +1295,15 @@
    "run": "rm-role-designer-1794596920",
    "stage": 4,
    "summary": "Cold Reader exam PASS against the current tree and sheet: 26 frozen scenarios (16 Examiner, 10 Challenger), both Readers right on 25; the one miss (c1) is a scenario with no stated outcome, both Readers applying floor_end_shocks_crossers correctly. accept_where_reject_core 0. Control on tap_steals_and_costs_goodwill missed e16 and c8; a first control on statics_clear_between_games did not miss and is kept on record."
+  },
+  {
+   "at": "2026-11-13T19:59:04Z",
+   "outcome": "rejected",
+   "run": "rm-role-designer-1794599361",
+   "stage": 5,
+   "why": [
+    "no result.json (a closing message is not a result)"
+   ]
   }
  ],
  "runner": "claude",
