@@ -6624,3 +6624,13 @@
 {"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_DIRT_MEASURE_AT_END_YOGQ","result":"broken","detail":"Ops alarm SCRATCH_DIRTY_END: disk.scratch_dirty_end = 2 sanity problems at the end of the last run (MEASURED), line > 0","ts":"2026-11-13T10:00:30Z","tsn":1794564030099045275}
 {"seat":"RUNNER","event":"raise","id":"OPS_SCRATCH_DIRT_MEASURE_AT_END_YOGQ","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-13T10:00:36Z","tsn":1794564036049228699}
 {"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_OUTSIDE_CAP_DRAIN_CLCI","result":"broken","detail":"Ops alarm SCRATCH_OUTSIDE_CAP: 23 clones outside the pool cap at the end of the reaper run of 2026-11-13T09:04:14Z -- disk.scratch_outside_distressed = 1 1 when","ts":"2026-11-13T10:01:47Z","tsn":1794564107454437569}
+{"seat":"RUNNER","event":"live","id":"OPS_RESTART_UNSTICK_BENCH_YCVY","result":"kept","detail":"sweep: running again","ts":"2026-11-13T10:03:05Z","tsn":1794564185576471209}
+{"seat":"RUNNER","event":"live","id":"OPS_RESTART_UNSTICK_FOUNDRY_HDDT","result":"kept","detail":"sweep: running again","ts":"2026-11-13T10:03:11Z","tsn":1794564191162945918}
+{"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_DIRT_MEASURE_AT_END_YOGQ","result":"kept","detail":"sweep: running again","ts":"2026-11-13T10:03:16Z","tsn":1794564196952067096}
+{"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_DIRT_MEASURE_AT_START_SANF","result":"kept","detail":"sweep: running again","ts":"2026-11-13T10:03:22Z","tsn":1794564202434981603}
+{"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_OUTSIDE_CAP_DRAIN_CLCI","result":"kept","detail":"sweep: running again","ts":"2026-11-13T10:03:27Z","tsn":1794564207958358409}
+{"seat":"RUNNER","event":"live","id":"OPS_SEATS_READING_RESTORE_IMJA","result":"kept","detail":"sweep: running again","ts":"2026-11-13T10:03:33Z","tsn":1794564213501294387}
+{"seat":"RUNNER","event":"live","id":"OPS_STEVE_DIAGNOSE_INVALID_577B","result":"kept","detail":"sweep: running again","ts":"2026-11-13T10:03:38Z","tsn":1794564218995627694}
+{"seat":"RUNNER","event":"live","id":"OPS_STEVE_SEATS_RESTORE_QTWK","result":"kept","detail":"sweep: running again","ts":"2026-11-13T10:03:45Z","tsn":1794564225206405824}
+{"seat":"RUNNER","event":"live","id":"OPS_STEVE_UNSTICK_UNCLAIMED_ETBS","result":"kept","detail":"sweep: running again","ts":"2026-11-13T10:03:51Z","tsn":1794564231257097873}
+{"seat":"RUNNER","event":"live","id":"OPS_STEVE_UNSTICK_VHRP","result":"kept","detail":"sweep: running again","ts":"2026-11-13T10:03:56Z","tsn":1794564236830652683}
