@@ -1,7 +1,8 @@
 # Ticket preflight: check everything Python can, before any token is spent (spec, nothing built)
 
 Date 2026-11-12. Item `RIMMANDRAKE_PREFLIGHT_TICKETS_BEFORE_ANY_TOKEN_IS_SPENT`.
-Nothing here is built. The build tickets in section 7 are proposed, not filed.
+Nothing here is built. The owner answered the six design questions by card on 2026-11-13 (section 9); this text states
+the decided design. The first three build tickets of section 7 are filed; the rest are proposed.
 Evidence (scripts, raw counts, the three GPT rounds): `D:\ClaudeWork\rimmandrake\conductor\ticket_preflight_20261112\`.
 Every number is tagged `[measured]` (a script in that folder produced it on 2026-11-12) or `[guess ~N%]` (my confidence).
 
@@ -20,21 +21,23 @@ should be recorded every run is the precise time this took to run."*
 The short answer:
 
 1. **One module, many doors.** One file, `src/RimMandrake/rimflow/ticket_preflight.py`, holds a list of small checks.
-   Every door a ticket passes through (filing, claim/start, helper launch, live-queue submit, Relentless pickup) calls the
-   same function. No model is ever called. The gates that exist today keep their own code and their own authority;
+   Every door a ticket passes through (filing, claim/start, helper launch, live-queue submit) calls the same function.
+   Relentless is not one of them: the preflight stays out of it entirely until the 2026-11-06 freeze ends. No model is ever called. The gates that exist today keep their own code and their own authority;
    the module times and counts them, and adds what is missing.
 2. **Two moments.** CREATE (the ticket was just written) and PICKUP (someone is about to work it). CREATE checks the
    ticket against the repo and the def dump. PICKUP repeats that, because the world moved, and adds the environment.
 3. **Three kinds of verdict.** REFUSE (the door stays shut and prints the smallest fix), WARN (the door opens, the worker
    sees the line first), ANNOTATE (a fact attached to the ticket, such as "needs a 22-second minimal load").
    Only a *declared* fact may refuse. A name found by pattern in prose may only warn. Section 4 has the measured reason:
-   a naive pattern calls 48% of our own names unknown.
+   a naive pattern calls 48% of our own names unknown. Filing never refuses: it warns and prints the repair. Pickup
+   refuses. A build, fix or live ticket that declares nothing at all is itself refused at pickup (E12), and only the
+   Conductor may bypass a refusal.
 4. **It is fast because it never builds anything in the hot path.** Measured today: the checks themselves cost a median
    of 0.11 ms per ticket and 42 ms at worst; loading the ready-made indexes costs about 0.3 to 1.5 s. Budget: 1 second
    added at CREATE, 3 seconds at PICKUP, hard stop at 5 seconds (targets from a prototype; ticket 1 measures the real thing). Every run writes its total time and each check's time.
 5. **It starts small and earns its teeth.** The first ticket is one hand-run command that checks declared paths and
    "is this def on this mod list", times itself, and refuses nothing. It then runs in shadow at the real doors. Only checks that
-   prove themselves on real tickets are allowed to refuse. The 95 checks are the map, not the first delivery.
+   prove themselves on real tickets are allowed to refuse. The 96 checks are the map, not the first delivery.
 6. **It is honest about what it cannot see.** A check that cannot measure says UNMEASURED and lets the ticket through
    with a note. It never turns "I could not look" into "it is not there".
 
@@ -99,25 +102,29 @@ were dear. So the build is ordered to measure before it enforces (section 7).
 
 - **2026-08-21/22, owner: "a missing field is not a rejection".** A completeness gate at claim made thin tickets
   *invisible*; three starved, and 18 of 21 complete tickets became unreachable. So here: a refused ticket is **never
-  hidden**. It stays in the queue with its fix line. And a *missing* section only warns (question 1).
+  hidden**. It stays in the queue with its fix line. A missing `## spec`, `## verify` or `## criteria` section only
+  warns. The one required thing is the declared block of a build, fix or live ticket (E12): the owner chose it with this
+  history in front of him (section 9), so its refusal obeys every rule of 3.1: visible, with the block to paste printed.
 - **Refusal contract (spec of the same day).** The concept-floor gate refused 2,599 times on 31 items with one sentence.
   So here: every refusal names the smallest fix, and the same refusal on an unchanged ticket is never repeated silently.
 - **Relentless freeze (owner card 2026-11-06).** No new rule, layer, judging machinery or `relentless_rules.json` key.
-  So here: Relentless gets no new gate. Its existing checks are *called through* the shared module, and anything new
-  runs there in report-only mode until the owner says otherwise (question 2).
+  So here: the preflight stays **out of Relentless entirely** until the freeze ends: no call, no wrapper, no
+  report-only run inside `relentless.eligible` or `admission`. Relentless keeps its own checks exactly as they are.
+  The other doors may call the pure functions of those checks (reach, roll call), which run outside Relentless.
 
 ## 2. The catalogue of checks
 
 How to read the tables.
 
-- **When**: C = CREATE (just filed or just edited), P = PICKUP (claim, start, helper launch, queue submit, Relentless).
+- **When**: C = CREATE (just filed or just edited), P = PICKUP (claim, start, helper launch, queue submit; not Relentless,
+  section 6.2).
 - **Cost class** (per ticket, indexes already loaded): `a` under 1 ms; `b` 1 to 20 ms; `c` 20 to 200 ms;
   `d` 0.2 to 2 s (allowed at PICKUP only, and only when the ticket needs it).
 - **Verdict**: every check returns one plain observation: PASS, FAIL or UNMEASURED, with its evidence and, if it has
   one, a proposed repair. What a FAIL *does* is decided afterwards by the door's policy. The column gives the default
   policy: R = refuse, W = warn, A = annotate. "R/W" means: refuse when the fact is *declared* (a machine field or
   the `## refs` block of section 4), warn when it was only found by pattern in prose.
-- **Today**: `have` = exists and is called through; `late` = exists but only inside Relentless; `new`.
+- **Today**: `have` = exists and is observed (3.1 rule 6); `late` = exists but only inside Relentless; `new`.
 - Any check may answer UNMEASURED (its data source is missing or stale). UNMEASURED never refuses.
 
 ### A. Identity and duplicates (8)
@@ -185,8 +192,10 @@ The default is the smallest list that holds the ticket's declared defs. A ticket
 - `explicit:` the ticket *is* a Full Mod test by name, called out by the owner or the Conductor. The line must name the
   ledger event or ruling id that says so, and that id must exist (B10). A copied quote with no event behind it does not count.
 
-No line, or a line that names none of these: REFUSE, and the refusal prints a candidate minimal list, so obeying costs
-one paste. The preflight reports "reason recorded", never "justified": it checks shape and real names only, and the
+No line, or a line that names none of these: REFUSE at pickup (owner, by card 2026-11-13; at filing it warns, like
+every check), and the refusal prints a candidate minimal list, so obeying costs one paste. A ticket asks for Full when
+its `## refs` says `tier: full` or one of its criteria is at level GREEN-FULL (`relentless_live_round.py`). The card
+answered stop-or-warn; the five reasons above were not ruled on separately and stand as drafted. The preflight reports "reason recorded", never "justified": it checks shape and real names only, and the
 five words could become a password that agents paste. So the weekly report lists every Full reason given, by reason
 and by ticket, for a person to read. The candidate list is never called equal to the Full list; a ticket with few
 declared defs gets a poor candidate, and the output says how many defs it was computed from.
@@ -209,7 +218,7 @@ declared defs gets a poor candidate, and the output says how many defs it was co
 | D12 | A known environment cause is active right now (the class list of `relentless_envcause`) | last probe + envcause table | a | P, live | A + route | late |
 | D13 | A mod-list swap is in flight or was never restored (the game's next load is not what anyone thinks) | `Utils/modlist_swap.py` state file; `ModsConfig.xml` parsed against its backup | b | P, live | A + route | new |
 
-### E. Specification completeness (11)
+### E. Specification completeness (12)
 
 | id | Check | Data source | Cost | When | Verdict | Today |
 |---|---|---|---|---|---|---|
@@ -224,6 +233,13 @@ declared defs gets a poor candidate, and the output says how many defs it was co
 | E9 | Scope: the declared refs span more than N mods or M files | `## refs` | a | C | A: "consider splitting" | new |
 | E10 | A design parent is named for a build ticket, and the parent spec file exists | `## refs` + B1 | a | C | W | new |
 | E11 | The declared block and the proof file parse strictly: no unknown key (a typo that silently switches a check off), no two different tiers, no malformed value | the `## refs` grammar; live-proof line kinds | a | C, P | R, names the line and the nearest valid key | new |
+| E12 | **Declared block present.** A build, fix or live ticket has at least one `## refs` line without the `(auto)` mark, or one `none: <why>` line | `## refs`; the item's `kind` and `needs`; its live-proof file | a | C, P | R at P, printing the proposed block; W at C | new |
+
+E12 is the owner's (by card 2026-11-13). "Build, fix or live" is read from machine fields only: `kind` is one of build,
+fix, bug, defect, code or feature; or `needs` is deploy, game-up, bridge or harvest; or the item has a live-proof file.
+`kind` is free text and 4,575 of the 7,199 items ever filed say `task` `[measured 2026-11-13, ledger file events by id]`, so a build ticket filed as
+`task` with `needs: offline` escapes E12; ticket 2's sweep prints how many open `task` tickets carry a `## verify`
+command, so the Conductor can see the size of that gap and widen the rule.
 
 ### F. Acceptance-test sanity (13)
 
@@ -278,8 +294,8 @@ declared defs gets a poor candidate, and the output says how many defs it was co
 | I6 | The item exists on origin, so a helper in another clone can see it | `detached_helper.launch` | b | P | R | have |
 | I7 | One ticket all the way down: the proof file's ids, the helper brief and the queue job all name **this** item | proof file, brief text, job JSON | a | P | R | new |
 
-**Total: 95 checks.** 8 + 18 + 12 + 13 + 11 + 13 + 7 + 6 + 7. Of these, 13 exist and are called through, 10 exist only
-inside Relentless and are moved earlier, 72 are new. None needs a model. How much code each takes is not known until built; the isolation, the overlay and the repair
+**Total: 96 checks.** 8 + 18 + 12 + 13 + 12 + 13 + 7 + 6 + 7. Of these, 13 exist and are observed, 10 exist only
+inside Relentless and are moved earlier (to the other doors), 73 are new. None needs a model. How much code each takes is not known until built; the isolation, the overlay and the repair
 proposals are the larger parts.
 
 What Python deliberately does **not** try: whether the idea is good, whether the criteria are the right ones, whether a
@@ -310,7 +326,7 @@ The catalogue is everything Python could reasonably check. It is not all built a
 
 | Shelf | Checks | Rule |
 |---|---|---|
-| CORE (tickets 1 and 2) | Ticket 1: B1, B4, B5, C1, C2, C10. Ticket 2: B6, B10, B11, C4, E11. Ticket 3 adds the wrappers that observe and time every `have` and `late` row | Existing indexes only. The owner's named asks |
+| CORE (tickets 1 and 2) | Ticket 1: B1, B4, B5, C1, C2, C10. Ticket 2: B6, B10, B11, C4, E11, E12. Ticket 3 adds the wrappers that observe and time every `have` row at the doors outside Relentless | Existing indexes only. The owner's named asks |
 | NEXT (tickets 5 to 9) | The rest of B and C, D, E1, E3, E5, E6, F1 to F3, F5 to F8, F10, F13, G1 to G5, G7, H1 to H5, I1 to I7, A3, A4 | Built in the order of section 7 |
 | CANDIDATE | A8, B16, E2, E4, E8, E9, E10, F4, F9, F11, F12, G6, H6 | Heuristics with no measured waste behind them yet. Each is built only if the shadow run (ticket 3) shows the class costs tokens, and ships as WARN or ANNOTATE |
 
@@ -337,7 +353,7 @@ REFUSE C2  def not on the ticket's mod list
 WARN  B1   Transient/shield_notes.md is not in the tree. Nearest: design/RimMandrake/shields/shield_notes.md
 WARN  E4   "TBD" in ## criteria line 4
 
-To go ahead anyway:  rimflow claim <ID> --preflight-override "C2: <why>"
+To go ahead anyway (the Conductor only, 3.2):  rimflow claim <ID> --preflight-override "C2: <why>"
 ```
 
 Rules that make this safe:
@@ -358,7 +374,9 @@ Rules that make this safe:
 4. **A refused ticket stays visible, and stays repairable.** `rimflow queue` and `next` show it with its fix line.
    Nothing is filtered out. (This is the 2026-08-21 lesson.) Editing a ticket is never a pickup and is never refused.
    Who repairs: whoever tried to pick it up, if the repair is one line (they paste it and claim again); otherwise the
-   third-refusal note of rule 3 puts it in front of the Conductor, who repairs it, drops it, or overrides.
+   third-refusal note of rule 3 puts it in front of the Conductor, who repairs it, drops it, or overrides. A worker who
+   thinks a refusal is wrong does not wait for the third: it files one note to the Conductor at once, since only the
+   Conductor may bypass (3.2).
    A refusal whose cause the ticket itself is meant to remove (2.1b) is not a refusal.
 5. **UNMEASURED is not a refusal.** A missing index, a stale dump, a slow mount: the check says UNMEASURED with the
    reason and the command that would make it measurable.
@@ -376,15 +394,24 @@ Rules that make this safe:
 
 ### 3.2 Override
 
-- **Who:** any worker, with a recorded reason (recommended; question 5). The owner's own history says a gate that only
-  the Conductor can open starves tickets.
+- **Who: the Conductor only** (owner, by card 2026-11-13). No worker, helper or Relentless process may bypass a
+  refusal. A worker who disagrees files a note to the Conductor (3.1 rule 4). A helper acting on the Conductor's explicit
+  instruction to bypass records it as the Conductor's act, with `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`
+  and the instruction quoted in `--why`.
+- **How the Conductor is told apart (ticket 4 builds it).** The seat cannot do it: CONDUCTOR and RELENTLESS both write
+  as BENCH (`model.WRITE_NAMES`), and this spec's own detached helper ran with `RIMFLOW_SEAT=BENCH` and was handed the
+  Conductor's identity file at session start `[measured 2026-11-13]`. So the flag is refused outright from a Relentless
+  process (`RIMFLOW_BRIDGE_SEAT=RELENTLESS`) and from a detached helper (`RM_DETACHED_UNIT` set) that does not carry the
+  `--per-ruling` line above. Like every provenance field in rimflow it checks shape, not truth; the weekly report lists
+  every override with the kind of process that made it.
 - **How:** `--preflight-override "<check id>: <why>"` on the same verb. The override names the check; there is no
   blanket override. It is written into the ledger event the door already writes, with the provenance `--why`.
-- **Only new checks.** The override opens checks this design adds. Every gate that exists today (focus cap, helper
-  slots and budget, seat rules, reach, roll call, proof lint) keeps the override rule it has now, which for most is
-  none. The flag is refused for their ids.
-- **What cannot be overridden by a worker:** I4 (writing the mirror or the game folder by hand) and F10/E6 (a standing
-  ruling). Those need the owner's word, recorded with `--owner-said`.
+- **Only new checks** (E12 and C4 included). Every gate that exists today (focus cap, helper slots and budget, seat
+  rules, reach, roll call, proof lint) keeps the override rule it has now, which for most is none. The flag is refused
+  for their ids.
+- **What the Conductor cannot override:** I4 (writing the mirror or the game folder by hand) and F10/E6 (a standing
+  ruling). Changing his rulings is his (`design/RimMandrake/delegation_policy.md` section 2); those need his word,
+  recorded with `--owner-said`.
 - **What happens to overrides:** they are counted per check in the weekly timing report. A check that is overridden in
   more than about a third of its refusals is flagged for review in the report; a person reads the cases and decides.
 
@@ -440,8 +467,8 @@ must exist at close, which gives the closing gate a free check later).
 
 **Nobody types this block.** At filing, the preflight runs the level-3 patterns, resolves what it can, and prints the
 block ready to paste, with the unresolved names listed apart ("found nowhere: is it new, or a typo? nearest: ..."). With
-`rimflow file --refs-auto` it writes the resolved lines itself. Declaring costs nothing; that is what killed the L1
-manifest and it must not kill this.
+`rimflow file --refs-auto` it writes the resolved lines itself. Declaring costs one edit; a costly declaration is what
+killed the L1 manifest and it must not kill this.
 
 **A guess written down is still a guess.** A line the tool wrote carries the mark `(auto)` at its end. An `(auto)` line
 is treated as level 3: it may warn, never refuse. It becomes a declared fact when a person or the working agent removes
@@ -452,10 +479,12 @@ Otherwise a name the prose only mentioned in passing ("unlike X") would become a
 **Why this will not rot like the L1 manifest, and how we will know if it does.** The manifest was checked against a
 frozen fixture and only when someone remembered. These lines are checked against the live indexes at every door, so a
 rename shows up the same day with the new name proposed. Two ways it can still fail, and the counter for each:
-agents confirm everything to quiet the warnings, or declare nothing so nothing can refuse. So every verdict states its
+agents confirm everything to quiet the warnings, or declare nothing so nothing can refuse (E12 closes the second for
+build, fix and live tickets). So every verdict states its
 **coverage** ("declared 6, auto 9, prose-only 14; 61 of 70 checks ran"), and the weekly report gives the share of
-picked-up tickets with no declared line and the share of refusals later overridden. A ticket with nothing declared is
-no worse off than today: it still gets its warnings.
+picked-up tickets with no declared line and the share of refusals later overridden. A ticket with nothing declared gets
+its warnings, as today; a build, fix or live ticket is also stopped at pickup until it declares (E12), and the
+refusal prints the proposed block, so obeying costs one edit.
 
 ### 4.3 Keeping false alarms down
 
@@ -548,7 +577,7 @@ the door says so on screen and goes on, and the gap shows as a missing run id ag
   A refused claim writes no claim event, so without this the dearest cases would vanish from the numbers.
   One line: `run_id, at, item, trigger, door, seat, total_ms, index_load_ms, cache (hit/miss per index), verdict,
   checks: [{id, ms, verdict}], cut_off, override`. Timing by `time.perf_counter_ns`.
-- **Where (durable):** the ledger event the door already writes (`file`, `claim`, `start`) gains two fields:
+- **Where (durable):** the ledger event the door already writes (`file`, `claim`, `start`) gains three fields:
   `preflight_ms`, `preflight_run` (the same `run_id`) and `preflight` (the verdict and the refusing check ids). The run
   id is what lets a later count say "this refusal came before any token" or "this spend followed an override". No new event kind for a pass.
 - **Refusals in the ledger:** the first refusal of a ticket at a given content writes one `note` event with the check
@@ -565,7 +594,7 @@ the door says so on screen and goes on, and the gap shows as a missing run id ag
 
 ## 6. Where it lives, and which doors call it
 
-### 6.1 One shared module (recommended), not one per door
+### 6.1 One shared module, not one per door
 
 Separate checks per door is what we have now, and section 1.1 shows the result: good checks that most tickets never meet.
 The price of one module is that one bug reaches every door. Three things bound that: the existing gates stay in their
@@ -584,22 +613,23 @@ adapter on purpose and requires the other doors to keep working.
 
 | Door | Code | Trigger | Behaviour |
 |---|---|---|---|
-| Filing | `cli.cmd_file` | CREATE | Runs groups A, B, C, E, F, G2, H1, I3 to I5. Prints the proposed `## refs` block. Refuses only on level 1 and 2 facts (question 1 decides whether CREATE refuses at all) |
+| Filing | `cli.cmd_file` | CREATE | Runs groups A, B, C, E, F, G2, H1, I3 to I5. Prints the proposed `## refs` block. **Never refuses** (owner, by card 2026-11-13): every FAIL prints as a warning with its proposed repair, so an idea can always be written down |
 | Ticket edited | `.claude/hooks/queue_lint.py` (exists, on Write/Edit of `items/*.md`) | CREATE | The same run, warnings only, so a repaired ticket gets its answer at once |
-| Claim / start | `cli.cmd_claim`; `start` (the `_simple("start")` handler, whose help says "never refused for missing prose": that stays true, a missing section only warns) | PICKUP | Everything. This is the main door: the last moment before tokens |
+| Claim / start | `cli.cmd_claim`; `start` (the `_simple("start")` handler, whose help says "never refused for missing prose": that stays true, a missing section only warns) | PICKUP | Everything; refuses on declared facts per 3.1. This is the main door: the last moment before tokens |
 | Queue / next | `cli` `queue`, `next` | none | Reads the verdict cache and shows the fix line beside a refused ticket. Runs nothing; hides nothing |
-| Helper launch | `detached_helper.launch` | PICKUP | Everything, run **in the helper's clone at launch**, against the ticket and proof file that clone holds (I6, I7), so a pass in the launcher's clone cannot stand in for a stale copy. Its own five checks stay in its code and are observed |
+| Helper launch | `detached_helper.launch` | PICKUP | Everything, run **in the helper's clone at launch**, against the ticket and proof file that clone holds (I6, I7), so a pass in the launcher's clone cannot stand in for a stale copy. Its own five checks stay in its code and are observed. Relentless does not launch through it (its callers are the seat tools: `wrapup`, `helper_checkpoint`, `running_now`, `artisan_now`), so this door is outside Relentless |
 | Live-queue submit | `Utils/testq/schema.py` `validate_job` and its caller | PICKUP (live) | Groups C, D, F for the job's ticket. The three existing pre-load preflights stay where they are (they check the *load*, not the ticket) and share the result type |
-| Relentless pickup | `relentless.eligible` / `admission` | PICKUP | Under the freeze: **report-only**. The checks Relentless already has (reach, roll call, proof lint, binding, first touch, repeat guard) keep refusing exactly as today, in their own code. A thin wrapper records each one's answer and time. New checks only write to the metric; turning any of them into a refusal there needs the owner's separate word (question 2) |
+| Relentless pickup | `relentless.eligible` / `admission` | none | **Not a door until the 2026-11-06 freeze ends** (owner, by card 2026-11-13). Nothing is added to Relentless: no call, no wrapper, no report-only run. Its own checks (reach, roll call, proof lint, binding, first touch, repeat guard) keep working exactly as today. What the preflight would add there is estimated offline by the backtest (section 8, corpus 3). After the freeze ends, bringing it in is put to the owner again with the shadow numbers from the other doors |
 | Agent spawn | `.claude/hooks` PreToolUse Agent | none | **Not a recompute, and not enforced.** If the brief names an item id, the hook reads the verdict cache and warns when the last verdict is a refusal or is missing. Under 10 ms. Later ticket. Said plainly: an in-session helper is covered by its parent's claim, not by this hook |
 | By hand | `rimflow preflight <ID> [--trigger create|pickup] [--json] [--fix] [--all]`, `rimflow preflight --sweep`, `--timing` | either | For workers, the Conductor and the backtest |
 
 ### 6.3 What is absorbed and what is beefed up
 
-- **Observed first, unchanged in behaviour and in authority:** `_mint_or_die`, `model._missing`,
-  `relentless_live.lint_lines`, `relentless_reach.needs`, `relentless_names.resolve`, `relentless_binding`,
-  `first_touch_hold`, `repeat_guard`, `probe.measure`, the focus cap, the five `detached_helper` checks. Their pure
-  functions are also *called* by the new doors (reach and roll call at claim), where they start as warnings.
+- **Observed first, unchanged in behaviour and in authority, at the doors outside Relentless:** `_mint_or_die`,
+  `model._missing`, `_prooflint_say` at filing, `probe.measure`, the focus cap, the five `detached_helper` checks.
+  Where the Relentless-only gates (`relentless_live.lint_lines`, `relentless_reach.needs`, `relentless_names.resolve`,
+  `relentless_binding`, `first_touch_hold`, `repeat_guard`) run inside Relentless they are not wrapped (section 6.2).
+  Their pure functions are *called* by the new doors (reach and roll call at claim), where they start as warnings.
 - **Beefed up:** the thin-ticket line (from "sections missing" to the whole of group E, with a fix line each);
   the proof lint (from "the line parses" to F4 to F8: can fail, can pass on this tier, measurable where it says);
   the roll call (from "the names resolve" to C2, C4, C5: the defs are on the list, Full must be justified, here is the
@@ -609,31 +639,34 @@ adapter on purpose and requires the other doors to keep working.
 - **Left alone:** the three pre-cold-load preflights, `validate_patch.py`, the hooks. They answer other questions.
 - **Not brought back:** hand-written manifests against fixtures.
 
-## 7. Build tickets (proposed, not filed)
+## 7. Build tickets (1 to 3 filed 2026-11-13; 4 to 12 proposed)
 
 Ordered to **measure before enforcing**, then by tokens saved soonest. Each is small. **Every ticket's proof has the same
 core: for each check it adds, one planted bad ticket the check must catch and one good ticket it must pass, in
 `selftest_ticket_preflight.py`; for a refusing check, the proposed repair applied to the bad ticket makes it pass; and
-the timing line of the run is in `runs.jsonl`.** The names of tickets 1 to 5 passed `rimflow namecheck` today.
+the timing line of the run is in `runs.jsonl`.** Tickets 1 to 3 also carry an acceptance test written at filing and
+watched failing on the base commit `e88865a499` (`src/RimMandrake/rimflow/acceptance/`; the builder does not edit it).
+None of the twelve touches Relentless before the freeze ends.
 
 | # | Name | What | Proof beyond the core | Saves |
 |---|---|---|---|---|
-| 1 | `RIMMANDRAKE_BUILD_PREFLIGHT_SPINE_TIMED_FROM_BIRTH` | One hand-run, report-only command: `rimflow preflight <ID>`. Reads only declared `file:`, `new:`, `def:` and `tier:` lines and the proof file's `live-mods:` / `live-tier:` lines. Checks B1, B4, B5, C1, C2, C10 with the two indexes that exist today (`git ls-files`, `defindex`). Returns PASS / FAIL / UNMEASURED observations, runs in the supervised child with the deadline, writes one timing line. **No door is touched.** | Six planted cases: a real path, a missing path, a planned (`new:`) path, a def on the list, a def off the list, a malformed line; plus a failed git call and a deadline expiry, both reading UNMEASURED. Whole-command time, cold and warm, printed and recorded | Nothing yet, by design. It answers the owner's main question by hand from day one, and gives the time metric from the first run |
-| 2 | `RIMMANDRAKE_EXTEND_PREFLIGHT_CORE_KINDS_IDS_SHAS_FULL_REASON` | The rest of CORE on the same command: the reference record of 4.2 with its strict parse (E11), def kinds and races (B6), item ids (B10), shas (B11), the Full Mod reason (C4). `--sweep` over all open tickets | A sweep of the 782 open tickets finishes inside 5.2 and writes 782 lines; planted bad and good for each check; two contradicting lines are reported with both line numbers | Still nothing enforced. The Full Mod rule becomes visible on every ticket |
-| 3 | `RIMMANDRAKE_BACKTEST_PREFLIGHT_OVER_REAL_PAST_TICKETS` | Section 8. The look back over past tickets, **and the shadow run**: filing prints the lines as a prompt (as the proof lint does today); claim, helper launch and Relentless pickup run it and record; thin wrappers record the answer and time of each existing gate. It stops nothing. The question is the increment: what would this catch that today's gates do not | The per-check table with audited counts; the joint false-block rate; breaking the preflight on purpose leaves every door working; the list of checks proposed for enforcement | Stops us building 95 checks on a guess, and stops a gate that starves tickets (the 2026-08 failure) |
-| 4 | `RIMMANDRAKE_ENFORCE_PREFLIGHT_AT_CLAIM_DECLARED_FACTS_ONLY` | `cmd_claim`, `start` and `detached_helper.launch` refuse on the checks ticket 3 cleared; the refusal text of section 3; the override flag (new checks only); `queue` and `next` show the fix line; the first-refusal note; the verdict cache for those read-only views | A planted ticket with a def off its list is refused at claim with the proposed line, and accepted once it is pasted; an override is recorded; the flag is refused for an existing gate's id; a refused ticket is still listed and still editable | The first real saving: every hand-claimed and helper-launched ticket |
-| 5 | `RIMMANDRAKE_BUILD_REFERENCE_INDEX_ONE_ANSWER_WHAT_EXISTS` | `ref_index.py` and the prose side of `ticket_refs.py`: the prepared index with its bounded overlay and its build command, C# symbols, texture and file stems, the rename map, prose patterns, the `(auto)` refs block printed at filing, B2, B3, B7 to B9, B12 to B15, B17, B18 | The prototype's counts are reproduced by the real code within 2% (2,352 paths, 231 missing; 198 names found nowhere); the overlay after a one-file commit is timed; an uncommitted rename is seen | Warnings on everything a ticket names, and tickets that declare themselves at no effort |
+| 1 | `RIMMANDRAKE_BUILD_PREFLIGHT_SPINE_TIMED_FROM_BIRTH` (filed) | One hand-run, report-only command: `rimflow preflight <ID>`, over a library call `ticket_preflight.run_text`. Reads only declared `file:`, `new:`, `def:` and `tier:` lines and the proof file's `live-mods:` / `live-tier:` lines. Checks B1, B4, B5, C1, C2, C10 with the two indexes that exist today (`git ls-files`, `defindex`). Returns PASS / FAIL / UNMEASURED observations, runs in the supervised child with the deadline, writes one timing line. **No door is touched.** | `acceptance/preflight_spine_accept.py`, 30 clauses: real, missing and planned paths; defs on, off, ours-not-loaded and nowhere; an unknown tier; a dump of another list; a malformed line; prose not read; a failed git call and a deadline expiry, both UNMEASURED; one timing line per run; the CLI exits 0 | Nothing yet, by design. It answers the owner's main question by hand from day one, and gives the time metric from the first run |
+| 2 | `RIMMANDRAKE_EXTEND_PREFLIGHT_CORE_KINDS_IDS_SHAS_FULL_REASON` (filed) | The rest of CORE on the same command: the reference record of 4.2 with its strict parse (E11) and `(auto)` origin, def kinds and races (B6), item ids (B10), shas (B11), the Full Mod reason (C4), the declared block of build, fix and live tickets (E12). `--sweep` over all open tickets | `acceptance/preflight_core_accept.py`, 37 clauses, including a sweep of every open ticket inside the 30 s hard stop with one line each, and the `task_with_verify` count (the gap E12 cannot see) | Still nothing enforced. The Full Mod rule and the declared-block rule become visible on every ticket |
+| 3 | `RIMMANDRAKE_BACKTEST_PREFLIGHT_OVER_REAL_PAST_TICKETS` (filed) | Section 8. The look back over past tickets, **and the shadow run** at filing, claim, start and helper launch: they print the lines and record; thin wrappers record the answer and time of each existing gate at those doors. It stops nothing. Not in Relentless. The question is the increment: what would this catch that today's gates do not | `acceptance/preflight_shadow_accept.py`, 21 clauses: shadow at the three ledger doors in a sandbox ledger, the run id on the claim and start events, a broken runner and an unwritable timing file stop nothing, no `relentless*.py` calls it, the backtest table with its four corpora and 10 planted tickets. The per-check audit by a person is read at close | Stops us building 96 checks on a guess, and stops a gate that starves tickets (the 2026-08 failure) |
+| 4 | `RIMMANDRAKE_ENFORCE_PREFLIGHT_AT_CLAIM_DECLARED_FACTS_ONLY` | `cmd_claim`, `start` and `detached_helper.launch` refuse on the checks ticket 3 cleared, and on E12 and C4, which the owner ruled refusing at pickup: their fact ("no declared line", "no `full-why:` line") is read straight off the ticket and cannot be false, so they need no audit, and ticket 3's shadow numbers say how many tickets they will stop before they land. Filing keeps warning only. The refusal text of section 3; the override flag, **Conductor only** (3.2), new checks only; `queue` and `next` show the fix line; the first-refusal note; the verdict cache for those read-only views | A planted ticket with a def off its list is refused at claim with the proposed line, and accepted once it is pasted; a build ticket with no declared line is refused and accepted once one printed line is confirmed; an override from a detached helper or a Relentless process without the Conductor's `--per-ruling` line is refused; the flag is refused for an existing gate's id; a refused ticket is still listed and still editable | The first real saving: every hand-claimed and helper-launched ticket |
+| 5 | `RIMMANDRAKE_BUILD_REFERENCE_INDEX_ONE_ANSWER_WHAT_EXISTS` | `ref_index.py` and the prose side of `ticket_refs.py`: the prepared index with its bounded overlay and its build command, C# symbols, texture and file stems, the rename map, prose patterns, the `(auto)` refs block printed at filing, B2, B3, B7 to B9, B12 to B15, B17, B18 | The prototype's counts are reproduced by the real code within 2% (2,352 paths, 231 missing; 198 names found nowhere); the overlay after a one-file commit is timed; an uncommitted rename is seen | Warnings on everything a ticket names, and the proposed block E12 asks for |
 | 6 | Full Mod: candidate minimal list and list sanity | C5, C7, C11, C12; the weekly list of Full reasons | The candidate list for 10 real tickets closes offline, and for 2 of them loads in a real 22-second load | Minutes of load per live run; Full-list failures that were never about the ticket |
 | 7 | Acceptance-test sanity | F1, F2, F5, F6, F8, F10, F13, E3, E5 (F3 and F7 exist and are only observed) | Planted bad and good for each; a build ticket that creates its own test script is **not** refused | The "unmeasured" class, the largest in the measured week |
 | 8 | Duplicates and dependencies | A3, A4, G1 to G4, G7 | Of the 25 known duplicates, how many are flagged against their twin (reported, with the false flags on 100 non-duplicates) | Duplicate and already-done work (59 items measured, 17 worked first) |
 | 9 | Environment, budget, the live-queue door | Groups D and H not yet in | Planted: low disk, missing tool, unset variable, spend over cap, a swap never restored | Environment loops |
 | 10 | Timing report, drift alarm, the Agent-spawn cache read | `--timing`, the alarm, the hook | A planted slow check trips the alarm once, and only once | Keeps it fast for good |
-| 11 | Relentless: chosen new checks from shadow to refusing | Only on the owner's separate word (question 2) | Per check, its audited row | The automated line |
+| 11 | Relentless | Not before the 2026-11-06 freeze ends. Then the owner is asked again, with the shadow numbers from the other doors, what the preflight may do there | n/a until then | The automated line |
 | 12 | The CANDIDATE shelf | Only the checks whose class showed up as real waste in ticket 3 | As the core | Whatever the data says |
 
 Tickets 1 to 3 change no behaviour at any door, so they are safe to build at once. Ticket 4 is the first that can
-refuse, and it refuses only what ticket 3 has cleared. The read-only sweep of the open queue is part of ticket 2; the
-worst-first list it prints is for a person to read, and no ticket is changed by it.
+refuse, and it refuses only what ticket 3 has cleared plus the two refusals the owner ruled (E12, C4). The read-only
+sweep of the open queue is part of ticket 2; the worst-first list it prints is for a person to read, and no ticket is
+changed by it.
 
 **The smallest version that answers the heart of the order** is tickets 1 to 4: declared paths and defs checked for
 "real" and "on this list", a recorded reason for Full, the precise time of every run, shown at filing and enforced at
@@ -654,7 +687,8 @@ not*, and what would it have wrongly stopped?
 4. *The labelled lists from the ledger*: 25 duplicates, 34 already-done, 9 false premise, the 20 items with "not on the
    list" notes, the 39 with "no such" notes.
 
-**Looking forward (shadow).** The same checks run at the real doors and only record. This is the part that cannot be
+**Looking forward (shadow).** The same checks run at the real doors outside Relentless (filing, claim, start, helper
+launch) and only record. This is the part that cannot be
 fooled by hindsight. Seven days is the least time it runs, not proof by itself: a check is judged when enough of its
 would-be refusals have been read (below), however long that takes.
 
@@ -695,56 +729,14 @@ group) and confirm each is caught. A zero from a backtest that cannot see is the
 days at the doors it would have stopped X before any token that nothing else stopped, worth at most Y tokens, and
 wrongly stopped Z."
 
-## 9. Questions for the owner (six)
+## 9. The owner's answers (by card 2026-11-13, 00:02 and 00:09 PST)
 
-**Q1. When a declared fact is wrong, what happens at filing and at pickup?**
-Context: on 2026-08-21 you removed the completeness gate ("a missing field is not a rejection") after thin tickets
-starved. Your new order names both moments. "Declared" means a machine field or a line someone confirmed; never a guess.
-- (a) Filing warns and prints the proposed repair; pickup stops. **Recommended.**
-- (b) Both stop.
-- (c) Both only warn.
-The trade: (a) never stops an idea being written down, and still stops tokens. (b) catches it a step earlier but makes
-filing a fight when the dump is stale. (c) is close to what we have, and warnings get skipped.
-
-**Q2. Relentless, during the freeze: collect reports now, or wait?**
-Context: the 2026-11-06 card says no new rule or judging machinery in Relentless until the 3-day check. Your order names
-pickup.
-- (a) Collect now: it runs there, records and times, and refuses nothing new. Any new refusal in Relentless needs your
-  separate word after you have seen the numbers. **Recommended.**
-- (b) Allow new refusals there now, counted as fixes for measured failures.
-- (c) Keep it out of Relentless entirely until the freeze ends.
-The trade: (a) keeps the freeze honest and still gets the evidence. (b) saves tokens sooner but is a new gate by any name.
-
-**Q3. Declared references: optional, required, or machine fields only?**
-The tool proposes the lines at filing; a proposed line only warns until someone confirms that line.
-- (a) Optional. **Recommended.**
-- (b) Required for build, fix and live tickets (a ticket with none is stopped at pickup).
-- (c) No declared block at all; only the machine fields we have today can stop a ticket.
-The trade: only declared facts can stop a ticket. (a) costs nothing and tells us, by the coverage number, how many
-tickets declare; (b) gets them all, at the price of one more required thing, which is the kind of gate you removed in
-August; (c) means a wrong def or path in the prose can never stop anything.
-
-**Q4. A Full Mod test with no reason on record: stop it, or warn?**
-- (a) Stopped at pickup, with a candidate minimal list printed to paste. **Recommended.**
-- (b) Warned, and it runs on Full.
-The trade: (a) costs one line and makes Full a choice somebody made. (b) keeps the 25-minute load as the easy path.
-Also: are the five reasons in 2.1 (interaction, load-order, performance, owner-save, explicit) the right list?
-Python can record a reason; it cannot tell a good one from a pasted one. You would see the reasons weekly.
-
-**Q5. Who may bypass a new refusal?**
-- (a) Any worker, naming the check and a reason, recorded. **Recommended.**
-- (b) Only the Conductor.
-- (c) Nobody but you.
-The trade: (a) cannot starve a ticket, and the count of bypasses shows which checks to look at. (b) and (c) are stricter
-and will queue tickets behind a person. In every case the gates that exist today keep their own rules, and the standing
-rulings (no worldgen, no flyer flight test, no writing the mirror) need your word.
-
-**Q6. When the preflight cannot look (an index is missing or stale, or it ran out of time): go ahead, or prepare first?**
-- (a) Go ahead with a visible "not checked" line and the command that would make it checkable. **Recommended.**
-- (b) For live tickets only, stop and prepare first (a fresh dump, a built index), because a live run is the dear one.
-- (c) Always prepare first.
-The trade: (a) means our own instrument can never block work, at the price of some tickets going in unchecked; the
-coverage number says how many. (c) is the safest per ticket and is how a check becomes an hour's wait.
+- **Q1, a wrong declared fact:** filing warns and prints the proposed repair; pickup stops (owner, by card 2026-11-13).
+- **Q2, Relentless during the freeze:** keep the preflight out of Relentless entirely until the 2026-11-06 freeze ends (owner, by card 2026-11-13).
+- **Q3, declared references:** required for build, fix and live tickets; a ticket with none is stopped at pickup (owner, by card 2026-11-13). Check E12.
+- **Q4, a Full Mod test with no reason on record:** stopped at pickup, with a candidate minimal list printed (owner, by card 2026-11-13).
+- **Q5, who may bypass a new refusal:** only the Conductor (owner, by card 2026-11-13).
+- **Q6, when the preflight cannot look:** go ahead, with a visible "not checked" line and the command that would make it checkable (owner, by card 2026-11-13).
 
 ## 10. What the GPT rounds changed, and what I rejected
 
@@ -764,7 +756,7 @@ and frozen ground).
 - Existing gates keep their own code and authority; the preflight observes them. (I had them "called through".)
 - A bypass opens only new checks.
 - The 228M is an upper bound on a class, not a saving; the increment over today's gates is unmeasured. So the build now
-  measures first: shadow and backtest before any refusal, and a three-shelf catalogue in place of 95 checks at once.
+  measures first: shadow and backtest before any refusal, and a three-shelf catalogue in place of the whole catalogue at once.
 - A def "on the list" means its owning mod is on the list, no more; a computed list is a candidate.
 - Refusals that would stop the work that fixes them: the `new:` rule (2.1b); E5, F6 and F10 demoted to warnings.
 - Cache keys with an overlay for uncommitted files; the time file on the Linux side; every attempt recorded, since a
