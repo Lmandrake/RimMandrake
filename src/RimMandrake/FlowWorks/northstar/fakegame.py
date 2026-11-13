@@ -257,7 +257,7 @@ class FakeFlowWorksGame(MockGame):
         if tool == "jawa/flowworks_excavation_report":
             c = (int(p["x"]), int(p["z"]))
             return {"success": True, "cell": {"x": c[0], "z": c[1]}, "depth": self.D.get(c, 0),
-                    "fill": self.F.get(c, 0), "isExcavated": self.D.get(c, 0) > 0,
+                    "waterDl": self.F.get(c, 0) * 10000, "isExcavated": self.D.get(c, 0) > 0,
                     "isSourceCell": c in self.body_of, "isSinkCell": False,
                     "sinkTransferredTotal": 0.0, "overflowDestroyedTotal": 0.0,
                     "excavatedCellCount": sum(1 for v in self.D.values() if v > 0), "ticksGame": self.ticks}

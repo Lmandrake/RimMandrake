@@ -482,7 +482,7 @@ def _proofs_1112_probes(EXT):
             if tl == "jawa/static_call" and m == "ProofResetRect":
                 return {"result": "RESET x left=0"}
             if tl in ("jawa/flowworks_excavation_drive", "jawa/flowworks_excavation_report"):
-                return {"success": True, "depth": 4, "fill": 0}
+                return {"success": True, "depth": 4, "waterDl": 0}
             if tl == "jawa/spawn_pawn":
                 st["n"] += 1
                 serial[0] += 1
@@ -613,7 +613,7 @@ def _vacuous_check_probs(EXT):
         if tool == "jawa/static_call" and p.get("method") == "ProofPitWater":          # exact dug water: dry by default
             return {"result": "PITWATER dl=0 wet=0 cells=1"}
         if tool == "jawa/flowworks_excavation_drive" or tool == "jawa/flowworks_excavation_report":
-            return {"success": True, "depth": 4, "fill": 0}
+            return {"success": True, "depth": 4, "waterDl": 0}
         if tool == "jawa/spawn_pawn":
             return {"pawns": [{"id": "P1"}]}
         return {"success": True}
@@ -922,7 +922,7 @@ def _repair_probes(EXT, base):
             if g is not None:
                 return g
             if tl == "jawa/flowworks_excavation_report":    # the dug D=1 until the order, then `depth_after`
-                return {"success": True, "depth": depth_after if st_in.get("ordered") else 1, "fill": 0}
+                return {"success": True, "depth": depth_after if st_in.get("ordered") else 1, "waterDl": 0}
             return base(tl, p)
         return _ext_run(EXT, "toggle_fill_in", h).get("fill_in_on")
     ok = FILLIN_OK["jawa/flowworks_job_probe"]
@@ -948,7 +948,7 @@ def _repair_probes(EXT, base):
             if tl == "jawa/flowworks_excavation_report":    # the ON cell is filled in once ordered; OFF's stays D=1
                 # by CELL, not call order: _wait_filled_in polls the ON cell before _expect_state reads it
                 return {"success": True, "depth": 0 if p.get("x") == st_off.get("a") and st_off.get("ordered") else 1,
-                        "fill": 0}
+                        "waterDl": 0}
             return base(tl, p)
         st_off = {}
         return h
@@ -973,7 +973,7 @@ def _repair_probes(EXT, base):
             if tl == "jawa/spawn_pawn":
                 log.append(("spawn", None))
             if tl == "jawa/flowworks_excavation_report":     # the dug D=1 (_expect_dug_one reads it before the spawn)
-                return {"success": True, "depth": 1, "fill": 1}
+                return {"success": True, "depth": 1, "waterDl": 10000}
             g = _gravel_mock(tl, p)
             if g is not None:
                 return g
@@ -1007,7 +1007,7 @@ def _repair_probes(EXT, base):
                 after = st["n"] is not None and st["n"] >= 12
                 if st["n"] is not None:
                     st["n"] += 1
-                return {"success": True, "depth": 3, "fill": 2 if (gain and after) else 1, "isSourceCell": False}
+                return {"success": True, "depth": 3, "waterDl": (2 if (gain and after) else 1) * 10000, "isSourceCell": False}
             if tl == "jawa/static_call" and p.get("method") == "ProofPitWater":   # the bar reads exact water (dl)
                 after = st["n"] is not None and st["n"] >= 12
                 if st["n"] is not None:
@@ -1029,7 +1029,7 @@ def _repair_probes(EXT, base):
                 return {"success": True, "formedByThisCall": True,
                         "body": {"id": 1, "limitless": False, "stock": 0.2 * st["reads"] if rise else 0.2}}
             if tl == "jawa/flowworks_excavation_report":
-                return {"success": True, "depth": 3, "fill": 1, "isSourceCell": False}
+                return {"success": True, "depth": 3, "waterDl": 10000, "isSourceCell": False}
             if tl == "jawa/static_call" and p.get("method") == "ProofPitWater":
                 return {"result": "PITWATER dl=10000 wet=1 cells=1"}
             return base(tl, p)
@@ -1051,7 +1051,7 @@ def _repair_probes(EXT, base):
                 st["e"] = st.get("e", 1000) + 750
                 return {"success": True, "depthEngineEnabled": True, "nextPulseTick": st["e"], "pulseIntervalTicks": 250}
             if tl == "jawa/flowworks_excavation_report":
-                return {"success": True, "depth": 1, "fill": 0, "isSourceCell": False}
+                return {"success": True, "depth": 1, "waterDl": 0, "isSourceCell": False}
             if tl == "jawa/static_call" and p.get("method") == "ProofPitWater":
                 if not pit_ok:
                     return {"result": "REFUSED: no excavation engine"}
@@ -1101,7 +1101,7 @@ def _repair_probes(EXT, base):
         if tl == "jawa/static_call" and p.get("method") == "ProofFillWithFluid":
             return {"result": "FILLED fluid=" + EXT.SLIME}
         if tl == "jawa/flowworks_excavation_report":
-            return {"success": True, "depth": 3, "fill": 3}
+            return {"success": True, "depth": 3, "waterDl": 30000}
         return base(tl, p)
     _ext_run(EXT, "plot_F_slime", fh)
     if not spawns or not runs or any(sp not in runs for sp in spawns):
@@ -1121,7 +1121,7 @@ def _repair_probes(EXT, base):
                     g["letters"] += 1
                 return {"success": True, "accepted": True}
             if tl == "jawa/flowworks_excavation_report":
-                return {"success": True, "depth": g["depth"], "fill": 0}
+                return {"success": True, "depth": g["depth"], "waterDl": 0}
             if tl == "jawa/static_call" and p.get("method") == "ProofReport":
                 return {"result": "DIGFINDS finds %d | budget 5 | first-found %d | last Steel" % (g["finds"], g["first"])}
             if tl == "jawa/letter_list":
@@ -1302,9 +1302,9 @@ def _new_probes(EXT, RIV, base):
                 r = {"success": True, "depth": depth_after if st["designated"] else 1, "isSourceCell": False,
                      "overflowDestroyedTotal": ov if st["designated"] else 0.0}
                 if not st["designated"]:
-                    r["fill"] = 1               # the D=1 run brims before the fill-in
+                    r["waterDl"] = 10000         # the D=1 run brims before the fill-in
                 elif fill is not None:
-                    r["fill"] = fill
+                    r["waterDl"] = fill * 10000
                 return r
             return base(tl, p)
         return run(EXT, "toggle_fill_in_displacement", h).get("fill_in_displacement_on")
@@ -1363,7 +1363,7 @@ def _new_probes(EXT, RIV, base):
             if tl == "jawa/flowworks_excavation_report":
                 cell = (int(p["x"]), int(p["z"]))
                 src = core if cell in deep else (rim_off if rim_off is not None and n_body[0] > 1 else rim)
-                return {"success": True, "depth": 0, "fill": 0, "isSourceCell": src}
+                return {"success": True, "depth": 0, "waterDl": 0, "isSourceCell": src}
             return base(tl, p)
         return h
     got = run(EXT, "toggle_recession", recession_game(9.0, False))
@@ -1435,7 +1435,7 @@ def _new_probes(EXT, RIV, base):
             if tl == "jawa/static_call" and p.get("method") == "ProofPitWater":
                 return {"result": "PITWATER dl=%d wet=1 cells=1" % (drawn_dl if st["on"] else 20000)}
             if tl == "jawa/flowworks_excavation_report":
-                return {"success": True, "depth": 2, "fill": (drawn_dl // 10000) if st["on"] else 2}
+                return {"success": True, "depth": 2, "waterDl": drawn_dl if st["on"] else 20000}
             return base(tl, p)
         got = run(EXT, "liquid_pump", h)
         return got.get("pump_unpowered_idle"), got.get("pump_draws_into_tank")
@@ -1471,7 +1471,7 @@ def _new_probes(EXT, RIV, base):
         def bridge_call(self, tool, **p):
             if tool == "jawa/pawn_stats":
                 return {"stats": [{"stat": "MiningSpeed", "value": self.speed}]} if self.speed is not None else {}
-            return {"success": True, "depth": 1, "fill": 1}
+            return {"success": True, "depth": 1, "waterDl": 10000}
 
         def wait_ticks(self, n, _chunk=2000):
             self.ticks += n
@@ -1535,7 +1535,7 @@ def _new_probes(EXT, RIV, base):
         def bridge_call(self, tool, **p):
             if tool == "jawa/static_call":       # the bar reads exact water (ProofPitWater dl), not the integer F
                 return {"result": "PITWATER dl=%d wet=1 cells=1" % self.fills.pop(0)}
-            return {"success": True, "depth": 1, "fill": 0}
+            return {"success": True, "depth": 1, "waterDl": 0}
     cells = [(i, 0) for i in range(4)]
     # a sub-notch tar film (dl 3000 = 0.3 level, F reads 0) is wet: the integer-F bar called it "no liquid at all"
     for fills, want in (([0, 0, 0, 0], True), ([10000] * 4, True), ([10000, 10000, 0, 0], False), ([3000, 0, 0, 0], False)):
