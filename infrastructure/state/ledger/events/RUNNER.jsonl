@@ -6572,3 +6572,15 @@
 {"seat":"RUNNER","event":"live","id":"OPS_PLAN_LIST_FIX_VMIV","result":"broken","detail":"Ops alarm PLAN_DISTRESS: priority list closed_entry -- plan.distressed = 1 1 when the plan list is distressed or worse (MEASURED), line > 0","ts":"2026-11-13T09:29:48Z","tsn":1794562188805825423}
 {"seat":"RUNNER","event":"raise","id":"OPS_PLAN_LIST_FIX_VMIV","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-13T09:29:54Z","tsn":1794562194236064246}
 {"seat":"RUNNER","event":"live","id":"OPS_PLAN_LIST_FIX_VMIV","result":"broken","detail":"Ops alarm PLAN_DISTRESS: priority list closed_entry -- plan.distressed = 1 1 when the plan list is distressed or worse (MEASURED), line > 0","ts":"2026-11-13T09:31:08Z","tsn":1794562268996969186}
+{"seat":"RUNNER","event":"live","id":"OPS_PLAN_LIST_FIX_VMIV","result":"broken","detail":"Ops alarm PLAN_DISTRESS: priority list closed_entry -- plan.distressed = 1 1 when the plan list is distressed or worse (MEASURED), line > 0","ts":"2026-11-13T09:32:28Z","tsn":1794562348734314280}
+{"seat":"RUNNER","event":"raise","id":"OPS_PLAN_LIST_FIX_VMIV","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-13T09:32:34Z","tsn":1794562354793912171}
+{"seat":"RUNNER","event":"live","id":"OPS_CHURN_DIAGNOSE_WEEPINGSTONE_BENK_YIMV","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:33:05Z","tsn":1794562385770297607}
+{"seat":"RUNNER","event":"live","id":"OPS_CHURN_MEASURE_RETURNS_ARE_NOT_PROGRESS","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:33:11Z","tsn":1794562391029158870}
+{"seat":"RUNNER","event":"live","id":"OPS_CLOCKS_DEPLOY_ONE_PINNED_COPY","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:33:16Z","tsn":1794562396420241230}
+{"seat":"RUNNER","event":"live","id":"OPS_DEADMAN_REVIVE_17EC","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:33:21Z","tsn":1794562401850069632}
+{"seat":"RUNNER","event":"live","id":"OPS_DISK_DRAIN_XPPR","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:33:27Z","tsn":1794562407148095623}
+{"seat":"RUNNER","event":"live","id":"OPS_FINDINGS_DIAGNOSE_17B4","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:33:32Z","tsn":1794562412510644451}
+{"seat":"RUNNER","event":"live","id":"OPS_FINDINGS_DIAGNOSE_XZLM","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:33:37Z","tsn":1794562417984159965}
+{"seat":"RUNNER","event":"live","id":"OPS_HEALTH_FIX_BROKEN_RULES_READ_HEALTHY","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:33:43Z","tsn":1794562423077338592}
+{"seat":"RUNNER","event":"live","id":"OPS_HEALTH_RANK_FIX_GLOB_OUTVOTES_EXACT","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:33:48Z","tsn":1794562428219093617}
+{"seat":"RUNNER","event":"live","id":"OPS_HEALTH_WIRE_INSTRUMENT_INCIDENTS","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:33:53Z","tsn":1794562433458401276}
