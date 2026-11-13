@@ -235,6 +235,11 @@ def accepted(st):
 def reopen_if_stale(d, st, repo=REPO):
     if st.get("status") == "locked":
         return None          # a locked tree changes on his word only: open_run refuses it, status reports the drift
+    if st.get("status") == "blocked":
+        # a block holds the concept as it is: the reopen used to set it ready before open_run read the block, so a
+        # blocked concept with a changed input opened anyway (ExplosiveKnockback 2026-11-13). `unblock`, then the
+        # next open reopens it.
+        return None
     s, changed = stale_stage(d, st, repo)
     if s is None:
         return None

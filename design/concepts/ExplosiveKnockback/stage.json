@@ -1,6 +1,6 @@
 {
  "aliases": [],
- "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: released for one more look at round 12; that look was not_covered; judging stopped on ExplosiveKnockback (coverage_judge.py release <dir> --why ... grants one more look)",
+ "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: owner passed ExplosiveKnockback on his word 2026-11-13 (OWNER:1794608649743135329); no Designer or judge run until the owner-certified lock lands; judging stopped on ExplosiveKnockback (coverage_judge.py release <dir> --why ... grants one more look)",
  "budget": {
   "cap": 4000000,
   "charges": [
@@ -855,8 +855,8 @@
   }
  ],
  "coverage_stop": {
-  "at": "2026-11-13T20:02:39Z",
-  "why": "released for one more look at round 12; that look was not_covered"
+  "at": "2026-11-13T22:34:53Z",
+  "why": "owner passed ExplosiveKnockback on his word 2026-11-13 (OWNER:1794608649743135329); no Designer or judge run until the owner-certified lock lands"
  },
  "history": [
   {
@@ -1608,6 +1608,12 @@
    "stage": 5,
    "what": "park",
    "why": "ceiling: his card 2026-11-13 ~11:55 PST (OWNER:1794599570900465333) allowed one more judge: rm-coverage-judge-1794599960 not_covered, 6 gaps (1 new: sweep animal/mech masses unpinned under creatureMassLimit 90; 5 carried as unfixed only because no coverage_fixes.json claim was written, its reasons say they look fixed); no second judge (park_summary.md)"
+  },
+  {
+   "at": "2026-11-13T22:34:53Z",
+   "stage": 5,
+   "what": "coverage_stop",
+   "why": "REFUSAL_NOTHING_COULD_EVER_PASS: owner passed ExplosiveKnockback on his word 2026-11-13 (OWNER:1794608649743135329); no Designer or judge run until the owner-certified lock lands; judging stopped on ExplosiveKnockback (coverage_judge.py release <dir> --why ... grants one more look)"
   }
  ],
  "item": "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
@@ -1898,6 +1904,6 @@
  "running": null,
  "schema": 1,
  "stage": 5,
- "status": "waiting_owner",
+ "status": "blocked",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }

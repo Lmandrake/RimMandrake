@@ -1022,6 +1022,16 @@ def refusals_launcher(tmp, repo):
           and refused(DS.open_run, dB, "b3", repo=repo.root) is None, DS.load_state(dB)["status"])
     r = refused(DS.unblock, dB, "again")
     check("unblock on a concept that is not blocked is refused", r and "not blocked" in r, r)
+    # a block outlasts a changed input: the stale reopen must not set it ready underneath the block (EK 2026-11-13)
+    stale = {"stage": 5, "status": "ready", "item": "BLK_ITEM",
+             "results": [{"stage": 3, "outcome": "done", "inputs": {"scenes": "old"}}]}
+    check("blocked: control, the same stale state reopens when it is not blocked",
+          DS.reopen_if_stale(dB, stale, repo.root) is not None and stale["stage"] == 3, stale.get("stage"))
+    stale = {"stage": 5, "status": "blocked", "blocked_on": "X", "item": "BLK_ITEM",
+             "results": [{"stage": 3, "outcome": "done", "inputs": {"scenes": "old"}}]}
+    check("blocked: a stale input does not reopen (or unblock) a blocked concept",
+          DS.reopen_if_stale(dB, stale, repo.root) is None and (stale["stage"], stale["status"]) == (5, "blocked"),
+          (stale["stage"], stale["status"]))
     # abort: only the open run, nothing charged
     spent = DS.load_state(dB)["budget"]["spent"]
     check("abort: another run's id drops nothing", DS.abort_run(dB, "b9") is False
