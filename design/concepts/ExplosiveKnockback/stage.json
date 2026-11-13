@@ -1,6 +1,6 @@
 {
  "aliases": [],
- "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: released for one more look at round 10; that look was not_covered; judging stopped on ExplosiveKnockback (coverage_judge.py release <dir> --why ... grants one more look)",
+ "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: released for one more look at round 11; that look was not_covered; judging stopped on ExplosiveKnockback (coverage_judge.py release <dir> --why ... grants one more look)",
  "budget": {
   "cap": 4000000,
   "charges": [
@@ -703,16 +703,35 @@
     "ref": "run bench-ek3-st4-20261113",
     "stage": 4,
     "tokens": 10000
+   },
+   {
+    "at": "2026-11-13T18:23:16Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794593824",
+    "stage": 5,
+    "tokens": 521423
+   },
+   {
+    "at": "2026-11-13T18:24:47Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794593824",
+    "stage": 5,
+    "tokens": 138340
    }
   ],
   "reserve": 60000,
-  "spent": 95960875
+  "spent": 96620638
  },
  "coverage_releases": [
   {
    "at": "2026-11-13T08:34:09Z",
    "rounds_at": 9,
    "why": "his card 2026-11-13 'EK exam -> Rerun exam, then judge' (OWNER:1794558073416640888): exam9 passed 79/79 on the current tree; one judge run"
+  },
+  {
+   "at": "2026-11-13T18:16:58Z",
+   "rounds_at": 10,
+   "why": "his card 2026-11-13 09:50 PST (OWNER:1794592220102307459 on RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH): 'EK next -> Fix, then one judge (one exam + one Claude judge run, then parked)'; the six gaps are reworked at stage 3 and exam10 passed 119/119"
   }
  ],
  "coverage_rounds": [
@@ -754,11 +773,37 @@
    "tokens": 1392378,
    "tree": "473b067275efa7e9f4550fa9244f9de083d1ca30fef08f59dc79d3f88a085061",
    "verdict": "not_covered"
+  },
+  {
+   "at": "2026-11-13T18:17:04Z",
+   "error": null,
+   "gaps": 5,
+   "ids": [
+    "gas_goes_clump_by_clump",
+    "heavier_flies_less",
+    "inv_blast_power_damage",
+    "inv_gas_chain",
+    "inv_gas_tags",
+    "inv_settings",
+    "inv_who_is_spared",
+    "our_gases_burn",
+    "settings_scale_and_switch",
+    "the_spared"
+   ],
+   "judge": "rm-coverage-judge-1794593824",
+   "late": [],
+   "tags": {
+    "changed": 4,
+    "unfixed": 1
+   },
+   "tokens": 659763,
+   "tree": "02900038234b11c46790c7a09b75a68a0b877cd3270c7e57c94564ef758b15b2",
+   "verdict": "not_covered"
   }
  ],
  "coverage_stop": {
-  "at": "2026-11-13T08:45:49Z",
-  "why": "released for one more look at round 10; that look was not_covered"
+  "at": "2026-11-13T18:24:48Z",
+  "why": "released for one more look at round 11; that look was not_covered"
  },
  "history": [
   {
@@ -1426,11 +1471,36 @@
    "stage": 5,
    "what": "close",
    "why": "run bench-ek3-st4-20261113: stage 4 done"
+  },
+  {
+   "at": "2026-11-13T18:16:58Z",
+   "stage": 5,
+   "what": "coverage_release",
+   "why": "his card 2026-11-13 09:50 PST (OWNER:1794592220102307459 on RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH): 'EK next -> Fix, then one judge (one exam + one Claude judge run, then parked)'; the six gaps are reworked at stage 3 and exam10 passed 119/119"
+  },
+  {
+   "at": "2026-11-13T18:24:48Z",
+   "stage": 5,
+   "what": "coverage_stop",
+   "why": "REFUSAL_NOTHING_COULD_EVER_PASS: released for one more look at round 11; that look was not_covered; judging stopped on ExplosiveKnockback (coverage_judge.py release <dir> --why ... grants one more look)"
+  },
+  {
+   "at": "2026-11-13T18:25:25Z",
+   "stage": 5,
+   "what": "park",
+   "why": "ceiling: his card \"EK next -> Fix, then one judge\" (OWNER:1794592220102307459) allowed one exam and one judge run, then parked: exam10 passed 119/119; judge rm-coverage-judge-1794593824 not_covered, 5 gaps, all stage-3 edits, none needing your answer (park_summary.md)"
   }
  ],
  "item": "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
  "loop_since": "2026-11-13T18:06:20Z",
  "mod": "ExplosiveKnockback",
+ "park": {
+  "at": "2026-11-13T18:25:25Z",
+  "kind": "ceiling",
+  "quick_look": true,
+  "summary": "park_summary.md",
+  "why": "his card \"EK next -> Fix, then one judge\" (OWNER:1794592220102307459) allowed one exam and one judge run, then parked: exam10 passed 119/119; judge rm-coverage-judge-1794593824 not_covered, 5 gaps, all stage-3 edits, none needing your answer"
+ },
  "parks": [
   {
    "at": "2026-11-13T07:52:37Z",
@@ -1695,6 +1765,6 @@
  "running": null,
  "schema": 1,
  "stage": 5,
- "status": "ready",
+ "status": "waiting_owner",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }
