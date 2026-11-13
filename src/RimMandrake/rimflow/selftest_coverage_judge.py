@@ -150,11 +150,13 @@ def one_pass(root, calls, runner_of, signed):
 
 
 def bare(gaps):
-    """The gaps without the program's round tags (new_since, judge_said): selftest_coverage_judge_loop tests those."""
-    return [{k: v for k, v in g.items() if k not in ("new_since", "judge_said", "since")} for g in gaps]
+    """The gaps without the program's round tags (new_since, judge_said) and numbering (gid): selftest_coverage_judge_loop
+    and selftest_coverage_delta test those."""
+    return [{k: v for k, v in g.items() if k not in ("new_since", "judge_said", "since", "gid")} for g in gaps]
 
 
 def main():
+    CJ.delta_plan = lambda d, prior, read=None: None   # the full judge's loop; the delta re-judge is selftest_coverage_delta
     DS.owner_away = lambda: (False, "selftest: attended")   # the real presence must not move this test
     saved = (CT.coverage_problem, CT.sign, DS.exam_errors)
     signed, seen = [], {}

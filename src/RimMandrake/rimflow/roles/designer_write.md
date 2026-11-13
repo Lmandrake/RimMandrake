@@ -79,6 +79,9 @@ Structure, reuse, order (instrument leaves first), risks, three designs if there
 are not disposable: every scene lives in `scenes.json` (checked), and every missing script entry point, control or
 restoration step is a filed build item named in that scene's `entry_point_item`. You write no code.
 
+A run returned here by the coverage judge's gaps ends by writing `coverage_fixes.json`, one claim with evidence per gap
+it fixed (`designer_lock.md` item 3); an unclaimed gap is judged still open.
+
 ## The showcase set
 
 `scenes.json` also carries the ordered `showcases` and the `coverage_rest` list (`designer_scene_contract.md`, "The

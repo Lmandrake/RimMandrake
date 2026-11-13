@@ -166,6 +166,7 @@ def units():
 
 
 def main():
+    CJ.delta_plan = lambda d, prior, read=None: None   # the full judge's loop; the delta re-judge is selftest_coverage_delta
     DS.owner_away = lambda: (False, "selftest: attended")   # the real presence must not move this test
     saved = (CT.coverage_problem, CT.sign, DS.exam_errors)
     CT.coverage_problem = lambda d, repo, tree: "no coverage signature"

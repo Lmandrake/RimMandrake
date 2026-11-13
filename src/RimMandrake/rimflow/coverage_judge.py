@@ -144,6 +144,199 @@ def prior_verdict(d):
     return rec if isinstance(rec, dict) and rec.get("verdict") in ("covered", "not_covered") else None
 
 
+# Re-judge only what changed (RIMMANDRAKE_REJUDGE_ONLY_CHANGED_GAPS, owner fix D, OWNER.jsonl:1794527688430451936).
+# Every verdict keeps a hash per judged entry and numbers its gaps g1..gN. After round 1 the Designer names the gaps it
+# fixed in coverage_fixes.json ({"against": <that verdict's judge>, "claims": [{"gap": "g3", "evidence": "..."}]}); the
+# next judge is shown only those gaps with their evidence and the entries whose hash changed, whole. A gap not claimed
+# stays open, carried. A new gap on material that did not change counts only tagged late with `late_why`. Nothing
+# claimed and nothing changed: no judge runs at all. A prior verdict with no hashes (or one that errored, left rows
+# unchecked or covered) gets a full judge, which leaves hashes for the next.
+FIXES_FILE = "coverage_fixes.json"
+SCHEMA["properties"]["gaps"]["items"]["properties"]["late_why"] = {"type": "string"}
+ROW_KINDS = ("inv", "leaf", "rest")   # entry kinds whose id is a checklist row
+
+
+def _read_text(d, name):
+    try:
+        with open(os.path.join(d, name), encoding="utf-8") as f:
+            return f.read()
+    except OSError:
+        return None
+
+
+def entries(d, read=None):
+    """-> {key: entry} for everything the judge judges: record.json's inventory (inv:), decisions (dec:) and scope,
+    tree.json's leaves (leaf:) and the rest of the tree (tree:rest, without its signature stamp), scenes.json's scenes
+    (scene:), showcases (showcase:) and coverage_rest (rest:), floor.json, and sheet.md by `## ` section (sheet:).
+    `read(name)` -> text or None (default: the concept folder; the measurement reads a commit)."""
+    read = read or (lambda name: _read_text(d, name))
+    out = {}
+
+    def js(name):
+        try:
+            return json.loads(read(name) or "null")
+        except ValueError:
+            return None
+
+    def add(prefix, rows, key="id"):
+        for x in rows or []:
+            if isinstance(x, dict) and isinstance(x.get(key), str):
+                out["%s:%s" % (prefix, x[key])] = x
+
+    rec = js("record.json")
+    if isinstance(rec, dict):
+        add("inv", rec.get("inventory"))
+        add("dec", rec.get("decisions"))
+        out["record:scope"] = rec.get("scope")
+    tree = js("tree.json")
+    if isinstance(tree, dict):
+        add("leaf", tree.get("leaves"))
+        out["tree:rest"] = {k: v for k, v in tree.items() if k not in ("leaves", "coverage")}
+    sc = js("scenes.json")
+    if isinstance(sc, dict):
+        add("scene", sc.get("scenes"))
+        add("showcase", sc.get("showcases"))
+        add("rest", sc.get("coverage_rest"), "capability")
+    out["floor"] = js("floor.json")
+    text = read("sheet.md")
+    if text is not None:
+        head, body = "", []
+        for line in text.splitlines():
+            if line.startswith("## "):
+                out["sheet:%s" % head] = "\n".join(body)
+                head, body = line[3:].strip(), []
+            body.append(line)
+        out["sheet:%s" % head] = "\n".join(body)
+    return out
+
+
+def entry_hashes(d, read=None):
+    import hashlib
+    return {k: hashlib.sha256(json.dumps(v, sort_keys=True).encode()).hexdigest()[:16]
+            for k, v in entries(d, read).items()}
+
+
+def number_gaps(gaps):
+    for k, g in enumerate(gaps, 1):
+        g["gid"] = "g%d" % k
+    return gaps
+
+
+def fix_claims(d, prior):
+    """-> (claims, refused): the claims in coverage_fixes.json made against this prior verdict, each naming one of its
+    gaps with evidence; the rest are refused with a reason (a stale file names another judge)."""
+    try:
+        f = DS.read_json(os.path.join(d, FIXES_FILE))
+    except DS.Refused as e:
+        return [], ["%s unreadable: %s" % (FIXES_FILE, e)]
+    if not isinstance(f, dict):
+        return [], []
+    if f.get("against") != prior.get("judge"):
+        return [], ["%s is against %s, not the last verdict's %s" % (FIXES_FILE, f.get("against"), prior.get("judge"))]
+    gids = {g.get("gid") for g in prior.get("gaps") or [] if isinstance(g, dict)}
+    ok, refused, seen = [], [], set()
+    for c in f.get("claims") or []:
+        gap = c.get("gap") if isinstance(c, dict) else None
+        if gap not in gids:
+            refused.append("claim %r names no gap of %s" % (gap, prior.get("judge")))
+        elif not CT.txt(c.get("evidence")):
+            refused.append("claim on %s has no evidence" % gap)
+        elif gap not in seen:
+            seen.add(gap)
+            ok.append({"gap": gap, "evidence": str(c["evidence"])})
+    return ok, refused
+
+
+def delta_plan(d, prior, read=None):
+    """-> None for a full judge, else what a delta judge is shown: the claimed gaps, the changed entry keys and their
+    current entries, the checklist rows to redo, and the gaps carried open."""
+    if not (isinstance(prior, dict) and prior.get("verdict") == "not_covered" and isinstance(prior.get("hashes"), dict)
+            and not prior.get("error") and not prior.get("unchecked")
+            and all(isinstance(g, dict) and g.get("gid") for g in prior.get("gaps") or [])):
+        return None
+    now_ents = entries(d, read)
+    now_h = entry_hashes(d, read)
+    old_h = prior["hashes"]
+    changed = sorted(k for k in set(old_h) | set(now_h) if old_h.get(k) != now_h.get(k))
+    claims, refused = fix_claims(d, prior)
+    claimed = {c["gap"] for c in claims}
+    gaps = [g for g in prior.get("gaps") or [] if isinstance(g, dict)]
+    rows = []
+    for c in claims:
+        rows += next((g.get("ids") or [] for g in gaps if g.get("gid") == c["gap"]), [])
+    for k in changed:
+        kind, _, ident = k.partition(":")
+        if kind in ROW_KINDS:
+            rows.append(ident)
+        elif kind == "scene":
+            rows += [r.get("id") for r in prior.get("checklist") or [] if isinstance(r, dict) and any(
+                isinstance(p, dict) and p.get("scene") == ident for p in r.get("parts") or [])]
+        elif kind == "showcase" and isinstance(now_ents.get(k), dict):
+            rows += [x for x in now_ents[k].get("exercises") or [] if isinstance(x, str)]
+    return {"claims": claims, "refused": refused, "changed": changed, "against": prior.get("judge"),
+            "prior_checklist": [r for r in prior.get("checklist") or [] if isinstance(r, dict)],
+            "entries": {k: now_ents.get(k) for k in changed},
+            "ids": [i for i in dict.fromkeys(rows) if isinstance(i, str)],
+            "claimed_gaps": [g for g in gaps if g.get("gid") in claimed],
+            "carried": [g for g in gaps if g.get("gid") not in claimed],
+            "loose": any(not (g.get("ids") or []) for g in gaps if g.get("gid") in claimed)
+            or any(k.partition(":")[0] not in ROW_KINDS for k in changed)}
+
+
+def delta_prompt(d, repo, dp, round_no):
+    rel = CT.concept_rel(d, repo)
+    claims = {c["gap"]: c["evidence"] for c in dp["claims"]}
+    body = ["You are the coverage judge for the RimMandrake concept at %s, on a re-judge: round %d. A previous judge "
+            "listed every gap; the Designer says it fixed some of them. You judge ONLY what is below. Read "
+            "src/RimMandrake/rimflow/roles/designer_scene_contract.md (the proof-scene contract) first. Do not reread the "
+            "concept's files whole: everything to judge is quoted here, and you open a file only at the place a claim's "
+            "evidence names, to check it. Do not read result.*.json, log.md, stage.json or any transcript, and edit "
+            "nothing. The third not_covered verdict stops judging, so be whole on what you are shown." % (rel, round_no),
+            "", "## Gaps the Designer claims fixed (check each: still open -> a gap tagged `unfixed`)"]
+    for g in dp["claimed_gaps"]:
+        body.append("- %s (ids %s; was: %s; at %s)\n  evidence: %s" % (
+            g.get("gid"), ", ".join(g.get("ids") or []) or "none", g.get("what"), g.get("where"), claims[g["gid"]]))
+    if not dp["claimed_gaps"]:
+        body.append("(none)")
+    body += ["", "## Entries changed since that verdict, whole (a gap a change opens is tagged `changed`, `since` "
+             "naming the entry; one that breaks what passed is `regression`)"]
+    for k in dp["changed"]:
+        v = dp["entries"].get(k)
+        body.append("- %s: %s" % (k, "REMOVED" if v is None else json.dumps(v, ensure_ascii=False)))
+    if not dp["changed"]:
+        body.append("(none)")
+    body += ["", "## Gaps still open, carried on file (do not repeat them)"]
+    body += ["- %s: %s" % (g.get("gid"), " ".join(str(g.get("what") or "").split())) for g in dp["carried"]] or ["(none)"]
+    body += ["", "Write `checklist` with one row for each of these ids, none skipped: %s. A gap on anything not shown "
+             "above counts only tagged `late` with `late_why` saying why the earlier pass could not have seen it; "
+             "otherwise it is dropped. Answer `covered` only when every claimed gap is fixed and no change opened one."
+             % (", ".join(dp["ids"]) or "(none)")]
+    return "\n".join(body)
+
+
+def delta_merge(rec, dp):
+    """Fold a delta judge's answer into a whole verdict: the gaps it found within what it was shown (plus late gaps
+    with a why), every carried gap, and the prior rows it did not redo. Carried gaps keep a covered word from standing."""
+    scope = set(dp["ids"])
+    kept, dropped = [], []
+    for g in rec.get("gaps") or []:
+        ids = set(g.get("ids") or [])
+        if (ids & scope) or (not ids and dp["loose"]) or (g.get("new_since") == "late" and CT.txt(g.get("late_why"))):
+            kept.append(g)
+        else:
+            dropped.append(dict(g, dropped="a new gap on material that did not change, not tagged late with a why"))
+    carried = [dict(g, carried=True, new_since="unfixed") for g in dp["carried"]]
+    redone = {r.get("id") for r in rec.get("checklist") or [] if isinstance(r, dict)}
+    rec["checklist"] = list(rec.get("checklist") or []) + [
+        r for r in dp.get("prior_checklist") or [] if isinstance(r, dict) and r.get("id") not in redone]
+    rec["gaps"] = kept + carried
+    if dropped:
+        rec["dropped"] = dropped
+    if carried and rec.get("verdict") == "covered":
+        rec["verdict"] = "not_covered"
+    return rec
+
+
 def rounds(st, d=None):
     """-> every judge round on this concept, oldest first: stage.json's coverage_rounds, plus each earlier judge the
     budget charges name with no round on file (before the loop limit existed). An old round's verdict is known only when
@@ -357,6 +550,10 @@ def plan(d, repo=None):
     stop = stop_reason(st, d)
     if stop:
         return "stopped", stop
+    dp = delta_plan(d, prior_verdict(d))
+    if dp is not None and not dp["claims"] and not dp["changed"]:
+        return "skip", "nothing claimed fixed in %s and nothing changed since %s: no judge%s" % (
+            FIXES_FILE, dp["against"], "" if not dp["refused"] else " (%s)" % "; ".join(dp["refused"]))
     return "judge", why
 
 
@@ -382,16 +579,26 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
         return None, "%s: %s" % (what, why)
     tree = CT.load(d)
     before = (CT.tree_hash(tree), CT.sheet_hash(d))
-    ids = required_ids(d, tree)
     st0 = DS.load_state(d)
     earlier = earlier_gaps(st0, d)
+    prior = prior_verdict(d)
+    dp = delta_plan(d, prior)
+    ids = dp["ids"] if dp is not None else required_ids(d, tree)
+    hashes = entry_hashes(d)
     unit = UNIT_PREFIX + "%d" % int(now or time.time())
     env = dict(os.environ, RM_ROLE_UNIT=unit)
     tail = ["--model", MODEL, "--name", "COVERAGE JUDGE %s" % unit, "--output-format", "json",
             "--json-schema", json.dumps(SCHEMA, separators=(",", ":")), "--dangerously-skip-permissions"]
-    argv = [CLAUDE, "-p", prompt(d, repo, ids, prior_verdict(d) is not None, len(rounds(st0, d)) + 1)] + tail
+    round_no = len(rounds(st0, d)) + 1
+    text = delta_prompt(d, repo, dp, round_no) if dp is not None else prompt(d, repo, ids, prior is not None, round_no)
+    argv = [CLAUDE, "-p", text] + tail
     rec = {"judge": unit, "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now or time.time())),
-           "tree": before[0], "sheet": before[1], "verdict": None, "signed": False}
+           "tree": before[0], "sheet": before[1], "verdict": None, "signed": False, "hashes": hashes,
+           "mode": "full" if dp is None else "delta", "prompt_chars": len(text)}
+    if dp is not None:
+        rec.update(against=dp["against"], claims=dp["claims"], changed=dp["changed"])
+        if dp["refused"]:
+            rec["claims_refused"] = dp["refused"]
 
     def ask(call, wall):
         """-> (exit code, the well-formed verdict or None, session id). Charges what the call spent."""
@@ -443,6 +650,8 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
             rec["verdict"] = "not_covered"  # its own rows failed: the rows outrank the word
         if missing:
             rec["unchecked"] = missing
+        if dp is not None:
+            delta_merge(rec, dp)
         late = tag_gaps(rec["gaps"], earlier)
         if late:
             rec["late"] = late
@@ -468,6 +677,7 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
                 rec["error"] = "sign refused: %s" % "; ".join(errs)
             else:
                 rec["signed"] = True
+    number_gaps(rec.get("gaps") or [])
     DS.write_json(os.path.join(d, VERDICT_FILE), rec)
     st = record_round(d, rec)
     msg = "signed" if rec["signed"] else "not signed: %s" % (rec.get("error") or "%d gap(s)" % len(rec.get("gaps") or []))

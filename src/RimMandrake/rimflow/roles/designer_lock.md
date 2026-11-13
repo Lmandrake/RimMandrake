@@ -23,6 +23,13 @@ Injected with `designer.md` at stage 5. One versioned order, no avoidable rework
    `coverage_judge.py release <dir> --why ...` grants one more look. So the first `not_covered` is the list to fix whole:
    each gap carries `new_since` (`unfixed`, `changed`, `regression`, `late`), and a `late` gap is the earlier judge's miss. A signature the retired Arbiter already
    recorded still counts.
+   **A re-judge sees only what you claim and what changed** (RIMMANDRAKE_REJUDGE_ONLY_CHANGED_GAPS). Every gap has a
+   `gid` (`g1`...). The stage-3 run that reworks them writes `<dir>/coverage_fixes.json`:
+   `{"against": "<the verdict's judge>", "claims": [{"gap": "g3", "evidence": "<file and place that fixes it>"}]}`. The
+   next judge is shown those claims, the entries changed since the verdict (by hash) and the open gaps carried on file;
+   it redoes only the checklist rows they touch and keeps the rest. A gap you do not claim stays open; a new gap on
+   anything it was not shown counts only tagged `late` with a reason. No claim and no change: no judge runs. A file
+   against another judge is ignored, so the next round needs a new one.
 4. **The gate**: `concept_tree.py gate <dir>` passes, and `designer_stage.py showcases <dir>` accepts the showcase set:
    the lock is refused while a record.json inventory capability is exercised by no showcase and no scene, and the
    scenes the set names are rechecked against the scene contract (a scene added since stage 3 is not trusted by id).
