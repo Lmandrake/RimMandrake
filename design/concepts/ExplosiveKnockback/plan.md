@@ -46,7 +46,7 @@ Each step is one rimflow item, built by Relentless from the tree; none needs wor
    override) when `blastPowerFromDamage` is on. `RM_KnockbackExtension.immuneBodySizeOverride` becomes
    `creatureMassLimitOverride` (the grav-ram's 3.6 becomes 216 kg in KineticArms). Settings page, Scribe keys, reset,
    fuzz selftest and About.xml follow. Skip reason `too_heavy_creature`. Proof entry point `mass_and_power` (scene
-   `sc_mass_and_power`, showcase 2). Leaves `heavier_flies_less`, `the_spared`, `per_weapon_tuning`. Every default
+   `sc_mass_and_power`, an ordinary scene). Leaves `heavier_flies_less`, `the_spared`, `per_weapon_tuning`. Every default
    and the measured masses and damages: `D:\ClaudeWork\rimmandrake\conductor\ek_mass_20261113\DEFAULTS.md` and
    record.json dl_mass_power_defaults.
 

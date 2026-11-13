@@ -142,15 +142,16 @@
    "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::mass_and_power",
    "start": [
     "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists mass_and_power; INVALID otherwise)",
-    "four creatures each orthogonally one cell from one impact cell (north, east, south, west), on open standable ground with no wall, pawn, pit or deep water within 7 cells of any ray (asserted): a rat (12 kg), a colonist in ordinary clothes and a sidearm (about 70 kg), a muffalo (144 kg) and a thrumbo (240 kg); each mass read as the kernel reads it, the Mass stat less carried inventory (asserted: rat under 30, colonist 60 to 90, muffalo 100 to 150, thrumbo over 150; else INVALID)",
+    "four creatures each orthogonally one cell from one impact cell (north, east, south, west), on open standable ground with no wall, pawn, pit or deep water within 7 cells of any ray (asserted): a rat (12 kg), a colonist in ordinary clothes and a sidearm (64 to 76 kg), a muffalo (144 kg) and a thrumbo (240 kg); each mass read as the kernel reads it, the Mass stat less carried inventory (asserted: rat under 30, colonist 64 to 76, muffalo 100 to 150, thrumbo over 150; else INVALID)",
     "every setting at default (asserted: Settings reset then read; creatureMassLimit 150, blastPowerFromDamage on, maximum throw 6)",
-    "the blast is a Bomb explosion staged through the game's own explosion call at radius 2.9 (the mortar shell's) and damage 50 (Bomb's default, the mortar's), then on a fresh copy of the same staging the same at damage 100 (asserted: radius and damage read back from the journal's blast line each run)"
+    "the blast is a Bomb explosion staged through the game's own explosion call at radius 2.9 (the mortar shell's) and damage 50 (Bomb's default, the mortar's), then on a fresh copy of the same staging the same at damage 100 (asserted: radius and damage read back from the journal's blast line each run)",
+    "a test hook absorbs the staged explosion's injury on the four creatures (asserted: no new hediff on any of them after either run; INVALID otherwise), while the journal's damage ratio is still read from the explosion's damage"
    ],
    "action": "each blast in turn on its own fresh staging; step until every creature is at rest",
    "expect": "each creature thrown straight away from the impact along its own ray by the cells the kernel gives for its read mass (baseCells 4 x force 1 x damage ratio x falloff 0.655 x MassScale sqrt(70/mass) clamped 0.25 to 2, rounded, capped at 6); for the stated masses: at damage 50 the rat 5, the colonist 3, the muffalo 2, the thrumbo 0 with journal skip too_heavy_creature; at damage 100 the rat 6 (the cap), the colonist 5, the muffalo 4, the thrumbo 0 with skip too_heavy_creature; the journal's damage ratio reads 1.0 then 2.0; within each run rat > colonist > muffalo > thrumbo; each thrown creature alive and stunned",
    "control": {
-    "case": "two lanes: the same two runs with blastPowerFromDamage off; and the damage-50 run with creatureMassLimit 250",
-    "expect": "off: both runs give the damage-50 cells (5, 3, 2, 0), ratio 1.0; at 250 kg the thrumbo is thrown 1 cell (the others as at default)",
+    "case": "two lanes: the same two runs with blastPowerFromDamage off; and both runs (damage 50 and damage 100) with creatureMassLimit 250",
+    "expect": "off: both runs give the damage-50 cells (5, 3, 2, 0), ratio 1.0; at 250 kg the thrumbo is thrown 1 cell at damage 50 and 3 cells at damage 100 (the others as at default)",
     "rules_out": "distance falloff or staging, not damage, making the second run throw farther; and the thrumbo staying for some reason other than the mass limit (a leftover body-size rule, a blast that misses it)"
    },
    "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
@@ -239,7 +240,7 @@
    "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::settings_sweep",
    "start": [
     "quicktest map, the minimal list plus LWM's Deep Storage (lwm.deepstorage, asserted active) and the Cauldron with its dependencies (next line); Explosive Knockback active (asserted: RM_KnockbackProof.Names lists settings_sweep; INVALID otherwise)",
-    "the mod list is the minimal list plus the Cauldron (mandrake.rm.cauldron) and its dependencies (mandrake.rm.environmentalhazards, mandrake.rm.creaturebehaviors), each asserted active; INVALID otherwise",
+    "the mod list is the minimal list plus the Cauldron (mandrake.rm.cauldron) and its dependencies (mandrake.rm.flowworks, mandrake.rm.environmentalhazards, mandrake.rm.creaturebehaviors), each asserted active; INVALID otherwise",
     "the gas staged is the Cauldron's vent gas, Cauldron on the list (asserted: RM_MapComponent_VentGas present and its grid registered with the gas chain; INVALID otherwise), added to the stated cells through the grid's own add call, and lit by a Fire set on the stated cell, the way it catches in play",
     "one staged lane at fixed cells (asserted): a colonist, an animal, a second animal of 100 to 150 kg (asserted: mass read), a mech, a downed pawn, loose goods of 50, 65 and 100 kg, a corpse, a closed 1x1 container: LWM's Deep Storage weapons locker (LWM_WeaponsLocker, 1x1, 8 kg, size and mass read; closed because its def hides its contents, showContents false, with no tag added; asserted: the guard classes it closed) holding weapons, a 1x1 sealed crate (SealedCrate) with a free cell behind it, a heavy stack aimed at a pawn, a puff of the Cauldron's vent gas with a fire cell, a sandbag line on one colonist's ray, a wall behind one colonist, a closed door behind another, an open pit cell on a good's ray and a colonist with a charged shield belt",
     "the bursts: a plain frag grenade, the same grenade carrying an own maxThrowCells 4, an incendiary shell, a staged Bomb explosion at the frag grenade's radius and 100 damage (twice Bomb's 50; asserted: radius and damage read back), and a harmful explosion of a test damage type that carries no knockback extension anywhere, standing in for another mod's (asserted: journal tuning source unpatched), each on the lane",
@@ -248,7 +249,7 @@
     "a mass lane: a colonist whose mass is read (asserted above 20) one cell from a grenade, run once at lightMassLimit 20"
    ],
    "action": "the bursts over the lane once per changed setting, setting the fire cell each run: strength 0.5, maxThrowCells 2, ownCapScale 0.5, unpatchedHarmfulPercent 50, creatureMassLimit 90, closedContainerMassLimit 5 (under the locker's own 8 kg), vanillaCratesClosed off, blastPowerFromDamage off, throwAnimals, throwMechanoids, throwDowned, throwItems and throwCorpses off, lightMassLimit 60, the heavy threshold raised over the stack, sandbagsStopThrow on, impactDamageEnabled off, impactDamagePerCell 8, landingStunMin and landingStunMax 30 and 40, recoveryWindowTicks 0 (a second grenade 10 ticks after landing), doorsTakeDamage off, throwIntoPits off, shieldDebitPerForce 20, debugDrawVectors on, and each new part's switch off (goods in the air, the closed guard, the container shove, the heavy knock, the gas chain, fire at half; sealed crates counted closed and blast power from damage are listed above)",
-   "expect": "each change alters only its own outcome: cells halved at strength 0.5; at most 2 cells; the own-cap grenade throws 2 cells under ownCapScale 0.5 while the plain grenade is unchanged; the unpatched explosion throws at full strength by default and at half (journal force 0.5 of the default run) at 50; the second animal thrown at default and skipped with reason too_heavy_creature at creatureMassLimit 90; the weapons locker slides one cell at default and jolts in place at closedContainerMassLimit 5; the sealed crate slides at default and neither slides nor jolts with vanillaCratesClosed off (no container line for it); the double-damage blast throws each pawn farther than the frag grenade at default (journal damage ratio 2.0) and exactly as far at blastPowerFromDamage off (ratio 1.0, as shipped); each toggled kind skipped with its reason; the 100 kg good skipped with reason too_heavy at default; the 65 kg good thrown at default and skipped with reason too_heavy at 60; the stack no longer knocks; the sandbagged colonist stops at the sandbags; the wall impact is 0 with impact off and doubled at 8 per cell; the landing stun lasts 30 to 40 ticks; the second grenade throws the just-landed colonist at window 0 and not at default; the door's hit points unchanged with door damage off; the good on the pit ray lands on the rim with throwIntoPits off; the belt's energy drop doubles at 20; the vector overlay draws (the proof's draw counter is above zero) only with debugDrawVectors on; each switched-off part as the leaf lists it: with the container shove off the locker stays put, goods kept; the puff burning with no burst and no throw with the gas chain off (no single centroid blast) and with fire at half off the incendiary throws nothing (no launch line for it in the journal: the shipped fire force 0 returns) while the plain grenade still throws, while everything else still throws; the Mod Settings page and the saved settings hold no maxThrowsPerExplosion, no maxItemThrowsPerMapTick and no immuneBodySize line; with goods in the air off loose goods are not thrown at all (journal skip, each on its own cell, zero despawn-spawn pairs: no hop comes back) while pawns still fly; with the closed guard off the weapons locker's goods are thrown like loose goods out of it; the fire half and the harmless zeros are per damage type in the def patch, not Mod Settings lines, and are proven in sc_blast_kinds; in the mass lane at lightMassLimit 20 the colonist, though heavier than the limit, is thrown (journal: a throw line, no too_heavy skip), because the goods mass limit weighs goods and corpses only (the creature mass limit weighs living pawns)",
+   "expect": "each change alters only its own outcome: cells halved at strength 0.5; at most 2 cells; the own-cap grenade throws 2 cells under ownCapScale 0.5 while the plain grenade is unchanged; the unpatched explosion throws at full strength by default and at half (journal force 0.5 of the default run) at 50; the second animal thrown at default and skipped with reason too_heavy_creature at creatureMassLimit 90; the weapons locker slides one cell at default and jolts in place at closedContainerMassLimit 5; the sealed crate slides at default and neither slides nor jolts with vanillaCratesClosed off (no container line for it); under the double-damage blast the free-flying colonist, the animal, the second animal and the downed pawn each land farther than under the frag grenade (or at the cap) at default (journal damage ratio 2.0), and exactly as far at blastPowerFromDamage off (ratio 1.0, as shipped); each toggled kind skipped with its reason; the 100 kg good skipped with reason too_heavy at default; the 65 kg good thrown at default and skipped with reason too_heavy at 60; the stack no longer knocks; the sandbagged colonist stops at the sandbags; the wall impact is 0 with impact off and doubled at 8 per cell; the landing stun lasts 30 to 40 ticks; the second grenade throws the just-landed colonist at window 0 and not at default; the door's hit points unchanged with door damage off; the good on the pit ray lands on the rim with throwIntoPits off; the belt's energy drop doubles at 20; the vector overlay draws (the proof's draw counter is above zero) only with debugDrawVectors on; each switched-off part as the leaf lists it: with the container shove off the locker stays put, goods kept; the puff burning with no burst and no throw with the gas chain off (no single centroid blast) and with fire at half off the incendiary throws nothing (no launch line for it in the journal: the shipped fire force 0 returns) while the plain grenade still throws, while everything else still throws; the Mod Settings page and the saved settings hold no maxThrowsPerExplosion, no maxItemThrowsPerMapTick and no immuneBodySize line; with goods in the air off loose goods are not thrown at all (journal skip, each on its own cell, zero despawn-spawn pairs: no hop comes back) while pawns still fly; with the closed guard off the weapons locker's goods are thrown like loose goods out of it; the fire half and the harmless zeros are per damage type in the def patch, not Mod Settings lines, and are proven in sc_blast_kinds; in the mass lane at lightMassLimit 20 the colonist, though heavier than the limit, is thrown (journal: a throw line, no too_heavy skip), because the goods mass limit weighs goods and corpses only (the creature mass limit weighs living pawns)",
    "control": {
     "case": "the default run before and after the sweep",
     "expect": "identical results in both, and every setting reads its default after",
@@ -560,7 +561,7 @@
    "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::gas_chain",
    "start": [
     "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists gas_chain; INVALID otherwise)",
-    "the mod list is the minimal list plus the Cauldron (mandrake.rm.cauldron) and its dependencies (mandrake.rm.environmentalhazards, mandrake.rm.creaturebehaviors), each asserted active; INVALID otherwise",
+    "the mod list is the minimal list plus the Cauldron (mandrake.rm.cauldron) and its dependencies (mandrake.rm.flowworks, mandrake.rm.environmentalhazards, mandrake.rm.creaturebehaviors), each asserted active; INVALID otherwise",
     "the gas staged is the Cauldron's vent gas, Cauldron on the list (asserted: RM_MapComponent_VentGas present and its grid registered with the gas chain; INVALID otherwise), added to the stated cells through the grid's own add call, and lit by a Fire set on the stated cell, the way it catches in play",
     "a 40-cell cloud of the Cauldron's vent gas",
     "goods under the cloud, goods outside it within 1.9 cells of an edge cell, and goods beyond that",
@@ -589,7 +590,7 @@
    "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::gas_census",
    "start": [
     "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists gas_census; INVALID otherwise)",
-    "the mod list is the minimal list plus the Cauldron (mandrake.rm.cauldron) and its dependencies (mandrake.rm.environmentalhazards, mandrake.rm.creaturebehaviors), each asserted active; INVALID otherwise",
+    "the mod list is the minimal list plus the Cauldron (mandrake.rm.cauldron) and its dependencies (mandrake.rm.flowworks, mandrake.rm.environmentalhazards, mandrake.rm.creaturebehaviors), each asserted active; INVALID otherwise",
     "each tagged gas source in the census (today the Cauldron's vent gas alone), released over loose goods in turn (asserted: each source's mod active; a def gas by its def loaded, the Cauldron's vent gas, which is a byte grid on RM_MapComponent_VentGas with no def, by its grid registered with the gas chain through the same opt-in extension, read back)",
     "offline first: the census is taken over gas sources, not Defs alone: every Gas ThingDef in our mods' Defs, every gas map grid of our own (the Cauldron's RM_MapComponent_VentGas), and every call site in our mods' C# that adds gas (AddGas and GasUtility calls, e.g. TheForge's plume, Wastes, FlowWorks, TileFeatures, GelatinousSlime, Cauldron) each appear in the census table, tagged, or untagged with its reason (a call site that adds a vanilla gas type such as BlindSmoke, ToxGas or RotStink is the vanilla gas, not one of ours, listed untagged as not flammable); asserted: the census selftest passed and its source scan finds a planted test call site and a planted test grid (INVALID otherwise)"
    ],
@@ -614,7 +615,7 @@
    "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::cover_breaks",
    "start": [
     "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists cover_breaks; INVALID otherwise)",
-    "the mod list is the minimal list plus the Cauldron (mandrake.rm.cauldron) and its dependencies (mandrake.rm.environmentalhazards, mandrake.rm.creaturebehaviors), each asserted active; INVALID otherwise",
+    "the mod list is the minimal list plus the Cauldron (mandrake.rm.cauldron) and its dependencies (mandrake.rm.flowworks, mandrake.rm.environmentalhazards, mandrake.rm.creaturebehaviors), each asserted active; INVALID otherwise",
     "the gas staged is the Cauldron's vent gas, Cauldron on the list (asserted: RM_MapComponent_VentGas present and its grid registered with the gas chain; INVALID otherwise), added to the stated cells through the grid's own add call, and lit by a Fire set on the stated cell, the way it catches in play",
     "FlowWorks loaded (asserted: Names reports flowworks=true; INVALID otherwise)",
     "seven covered pits (asserted: cover hit points read), a raider on the first, second, third, fifth, sixth and seventh",
@@ -818,7 +819,7 @@
    "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::gas_into_pit",
    "start": [
     "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists gas_into_pit; INVALID otherwise)",
-    "the mod list is the minimal list plus the Cauldron (mandrake.rm.cauldron) and its dependencies (mandrake.rm.environmentalhazards, mandrake.rm.creaturebehaviors), each asserted active; INVALID otherwise",
+    "the mod list is the minimal list plus the Cauldron (mandrake.rm.cauldron) and its dependencies (mandrake.rm.flowworks, mandrake.rm.environmentalhazards, mandrake.rm.creaturebehaviors), each asserted active; INVALID otherwise",
     "the gas staged is the Cauldron's vent gas, Cauldron on the list (asserted: RM_MapComponent_VentGas present and its grid registered with the gas chain; INVALID otherwise), added to the stated cells through the grid's own add call, and lit by a Fire set on the stated cell, the way it catches in play",
     "FlowWorks loaded (asserted: Names reports flowworks=true; INVALID otherwise)",
     "a colonist on the edge cell of an open pit inside a Cauldron vent-gas cloud (asserted)"
@@ -906,28 +907,6 @@
    ],
    "decision": "d_c_flagship",
    "said": "Just put a bomb into a storeroom with people in it beside a pit. Shows some items falling into the pit and some people as well."
-  },
-  {
-   "id": "mass_and_power",
-   "scenes": [
-    "sc_mass_and_power"
-   ],
-   "exercises": [
-    "inv_kernel",
-    "inv_pawn_flyer",
-    "inv_creature_mass_limit",
-    "inv_blast_power_damage",
-    "inv_who_is_spared"
-   ],
-   "source": [
-    "OWNER:1794592220102307459"
-   ],
-   "decision": "d_mass_power_scene",
-   "said": "I'd also like you to test a very small/light creature, a person, and a big/heavy creature ... with a single scene we can check ALL these things together",
-   "overlap_why": {
-    "inv_kernel": "the scene's whole point is the kernel's mass and damage terms, read as landing cells",
-    "inv_pawn_flyer": "a creature's flight to its kernel cell is what the observer compares across the four"
-   }
   }
  ],
  "coverage_rest": [
@@ -1085,6 +1064,30 @@
     "sc_all_fly_no_cap"
    ],
    "why": "every stack inside the radius has a request or a too_weak skip, and too_weak only on the outermost ring"
+  },
+  {
+   "capability": "inv_who_is_spared",
+   "by": [
+    "the_spared",
+    "sc_spared"
+   ],
+   "why": "its in_pit, carrying_pawn, flying and in_bed lanes are staged in sc_spared (a colonist on a pit floor, one carrying a downed pawn, one in a bed, and a flight-capable animal set flying), each left in place with its skip reason; its body-size clause is replaced by the creature mass limit (d_mass_limit)"
+  },
+  {
+   "capability": "inv_creature_mass_limit",
+   "by": [
+    "heavier_flies_less",
+    "sc_mass_and_power"
+   ],
+   "why": "the thrumbo over 150 kg skipped with reason too_heavy_creature at default and thrown at creatureMassLimit 250, in sc_mass_and_power"
+  },
+  {
+   "capability": "inv_blast_power_damage",
+   "by": [
+    "heavier_flies_less",
+    "sc_mass_and_power"
+   ],
+   "why": "the same four creatures thrown farther at damage 100 than at 50 (journal damage ratio 2.0 then 1.0) and alike with blastPowerFromDamage off, in sc_mass_and_power"
   }
  ]
 }

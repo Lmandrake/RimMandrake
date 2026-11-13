@@ -58,6 +58,15 @@
     "OWNER:1794592407312114138"
    ],
    "text": "His card 2026-11-13 09:55 PST: Cutoff -> a creature mass limit (a Mod Setting) replaces the body-size 2.5 creature cutoff; Blast power -> type x damage; melee shove 'belongs in FlowWorks, not here', filed as RIMMANDRAKE_DESIGN_MELEE_SHOVE_INTO_PIT_CONTEST_FLOWWORKS."
+  },
+  {
+   "id": "s_owner_card_fix5_one_judge",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1794599570900465333",
+    "OWNER:1794599713730633294"
+   ],
+   "text": "His card 2026-11-13 ~11:55 PST: fix the coverage judge's 5 stage-3 gaps, then one more judge ('1 yes, 2 yes', recorded by the Conductor and again by this run's helper); a gas shove onto an open pit drops the pawn in (dl_gas_shove_open_pit stands)."
   }
  ],
  "decisions": [
@@ -556,7 +565,7 @@
    ],
    "date": "2026-11-13",
    "said": "I'd also like you to test a very small/light creature, a person, and a big/heavy creature. ... with a single scene we can check ALL these things together, ok?",
-   "what": "Showcase 2 is sc_mass_and_power: rat, colonist, muffalo and thrumbo at one distance from one blast, at two damages."
+   "what": "His single scene is sc_mass_and_power, an ordinary scene (not a showcase: it newly exercises two capabilities, under the three a showcase needs): rat, colonist, muffalo and thrumbo at one distance from one blast, at two damages."
   },
   {
    "id": "d_melee_shove_not_ek",
@@ -771,7 +780,8 @@
    "source": [
     "src/RimMandrake/ExplosiveKnockback/",
     "design/validation_walks/RimMandrake/ExplosiveKnockback.md"
-   ]
+   ],
+   "scope_note": "d_mass_limit replaces its body-size 2.5 clause: a living creature is spared by the creature mass limit (150 kg, creatureMassLimit), not by body size; its other states stand"
   },
   {
    "id": "inv_shield",
