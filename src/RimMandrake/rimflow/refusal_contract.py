@@ -96,7 +96,7 @@ def _told(why, now):
         incident.signal(sch, ALARM_ID, why, now)
         return None
     except Exception as e:  # noqa: BLE001 - the row on disk stands; the failure to tell is written into it
-        return "%s: %s" % (type(e).__name__, str(e)[:200])
+        return "%s: %s" % (type(e).__name__, str(e))
 
 
 def alarm(subject, why, now=None, family=None, detail=None):

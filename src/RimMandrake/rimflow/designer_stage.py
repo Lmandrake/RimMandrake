@@ -1481,7 +1481,7 @@ def close_run(d, run, tokens=None, repo=REPO, runner="claude", usage=None, trans
     res = read_json(os.path.join(d, "result.json"))
     errs = result_errors(res, d, st, repo)
     if transport_error:
-        errs.append("Codex transport failed: %s" % str(transport_error)[:300])
+        errs.append("Codex transport failed: %s" % str(transport_error))
     # an input changed while the run worked (a late owner reply, an edited artifact it did not make): the result is
     # judged against what the run was given, so a done result whose dependencies moved underneath is refused
     if not errs and res.get("outcome") == "done":
@@ -1591,7 +1591,7 @@ def land_state(d, run, timeout=120):
         return p.stdout.strip().splitlines()[-1] if p.stdout.strip() else "PUBLISHED ?"
     if "nothing to land" in p.stderr:
         return "nothing to land"
-    raise RuntimeError("land.sh exited %d: %s" % (p.returncode, p.stderr.strip()[-300:]))
+    raise RuntimeError("land.sh exited %d: %s" % (p.returncode, p.stderr.strip()))
 
 
 def safe(run):
@@ -1802,7 +1802,7 @@ def pending_turns(root=None, repo=REPO):
                 lines = CT.owner_lines(repo, clone_of(d))
             t = pending_turn(d, repo, lines)
         except Exception as e:      # noqa: BLE001 - one bad folder is said, never drops the rest
-            bad.append("%s: %s" % (d, str(e)[:160]))
+            bad.append("%s: %s" % (d, str(e)))
             continue
         if t:
             out.append(t)
@@ -1828,7 +1828,7 @@ def turn_line(t):
         "QUICK LOOK OFFERED: " if t.get("quick_look") else "", t["mod"], t["stage"],
         (t.get("at") or "?").replace("T", " "), n, "ask" if n == 1 else "asks",
         " (%s)" % ", ".join(str(a["id"]) for a in t["asks"]) if n else "", owner_path(t.get("turn") or t["dir"]),
-        "".join(" | %s: %s" % (a["id"], a["text"][:160]) for a in t["asks"]))
+        "".join(" | %s: %s" % (a["id"], a["text"]) for a in t["asks"]))
 
 
 def status(d, repo=REPO):

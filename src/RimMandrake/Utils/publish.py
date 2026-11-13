@@ -625,7 +625,7 @@ def tree_checks(top, changed):
         for c, o in red:
             fails = [ln.strip() for ln in o.splitlines() if re.match(r"\s*(FAIL|RED|BROKEN|STALE)", ln)][:3]
             lines.append("  %s\n    %s\n    fix: %s\n    rerun: python3 %s"
-                         % (c["test"], "\n    ".join(fails) or (o.strip().splitlines() or ["(no output)"])[-1][:200],
+                         % (c["test"], "\n    ".join(fails) or (o.strip().splitlines() or ["(no output)"])[-1],
                             c.get("fix", "see the test's FAIL line"), c["test"]))
         raise Refuse("%d whole-tree check(s) red after your commit (it stays on HEAD; fix, then publish again):\n%s"
                      % (len(red), "\n".join(lines)))

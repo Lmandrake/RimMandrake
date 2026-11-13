@@ -23,7 +23,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 UTILS = os.path.join(os.path.dirname(HERE), "Utils")
 
 CUT = re.compile(r"\[\s*:\s*(\d{3,}|NOTE_MAX|SUMMARY_MAX)\b[^\]]*\]|\[\s*-\s*(\d{3,})\s*:\s*\]")
-SKIP = {"fulltext.py", "designer_stage.py", "coverage_judge.py", "refusal_contract.py", "evidence_gate.py"}
+SKIP = {"fulltext.py"}
 # Utils: every tool, fixed in the same pass (its evidence, verdicts, refusals, notes and reports are stored whole too).
 SCAN_UTILS = True
 

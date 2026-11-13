@@ -656,7 +656,7 @@ def plan(d, repo=None):
         return "skip", "no real tree"
     ex = DS.exam_errors(DS.read_json(os.path.join(d, "exam.json")), d, st, repo)
     if ex:
-        return "skip", "the exam does not pass: %s" % "; ".join(ex)[:300]
+        return "skip", "the exam does not pass: %s" % "; ".join(ex)
     why = CT.coverage_problem(d, repo, tree)
     if not why:
         return "skip", "already signed at tree %s" % CT.tree_hash(tree)[:10]
@@ -735,7 +735,7 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
             try:
                 DS.charge(d, tok or 0, "review" if tok is not None else "unmeasured", unit)
             except Exception as e:  # noqa: BLE001
-                rec["charge_error"] = str(e)[:200]
+                rec["charge_error"] = str(e)
         so = res.get("structured_output")
         ok = (isinstance(so, dict) and so.get("verdict") in ("covered", "not_covered")
               and isinstance(so.get("gaps"), list) and isinstance(so.get("checklist"), list))

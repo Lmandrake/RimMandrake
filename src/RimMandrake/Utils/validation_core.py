@@ -1361,7 +1361,7 @@ def _mineable_things(B, r):
     things = lt.get("things") or []
     why = None
     if lt.get("success") is False:
-        why = "list_things unreadable: %s" % str(lt)[:200]
+        why = "list_things unreadable: %s" % str(lt)
     elif isinstance(lt.get("countMatched"), int) and lt["countMatched"] > len(things):
         why = "list_things capped: %d of %d things returned" % (len(things), lt["countMatched"])
     names = sorted({str(t.get("def") or t.get("defName") or "") for t in things} - {""})
@@ -1388,7 +1388,7 @@ def assert_open_sky(B, rect, margin=SKY_MARGIN, size=None):
     rf = B.call("jawa/get_roof_batch", rects=r) or {}
     roofs = _roof_cells(rf.get("ops"))
     if rf.get("success") is False:
-        why.append("get_roof_batch unreadable: %s" % str(rf)[:200])
+        why.append("get_roof_batch unreadable: %s" % str(rf))
     elif not roofs and [x for x in (rf.get("roofs") or []) if x not in (None, "None")]:
         why.append("roof present over the site: %s" % rf.get("roofs"))  # a reply with names but no ops
     if roofs:

@@ -116,7 +116,7 @@ def green(entries, exam, no_code=False, live=None, tampered=()):
     line) or None. tampered: evidence.verify's problems. -> (accepted, [reason]); every failing rule gives a reason."""
     why = []
     if tampered:
-        why.append("tampered: the record does not verify (%s)" % "; ".join(tampered)[:200])
+        why.append("tampered: the record does not verify (%s)" % "; ".join(tampered))
     runs = [e for e in entries if e.get("kind") == "run"]
     marks = [e for e in entries if e.get("kind") == "marker"]
     if not entries:
@@ -498,7 +498,7 @@ def resolve_window(spec, cwd=None):
     if rc or not out:
         raise ValueError("no commit %s in this clone" % sha)
     ct, _, subject = out.partition(" ")
-    return {"since": _iso(ct), "named": "%s%s: %s" % (spec + " = " if spec != sha else "", sha, subject[:100])}
+    return {"since": _iso(ct), "named": "%s%s: %s" % (spec + " = " if spec != sha else "", sha, subject)}
 
 
 def _by_class(rs):
@@ -672,7 +672,7 @@ def rescore(snapshot, cwd=None, closes=None):
                                           nonce=chk.get("nonce") or evidence._harvest_nonce(chk)):
                     markers += 1
             except Exception as ex:      # noqa: BLE001 - one item's odd state is a named failure, never the whole reading
-                failed.append("%s: %s" % (iid, str(ex)[:160]))
+                failed.append("%s: %s" % (iid, str(ex)))
         before, after, unexplained, cohorts, named = {}, {}, [], {}, {}
         # Once, from the frozen source: the copy's index now opens with the markers just stamped, so a store with no
         # index would read every old candidate as pre_record. An index that holds nothing, like an unreadable one, is None
@@ -689,7 +689,7 @@ def rescore(snapshot, cwd=None, closes=None):
                 j = judge(sd, r["item"], r.get("sha"), r.get("no_code"), live, cwd or HERE, first_at)
             except Exception as ex:      # noqa: BLE001 - git timed out, a state too odd to read: this row, by name
                 unexplained.append("%s@%s: could not be judged (%s: %s)" % (r["item"], str(r.get("sha"))[:10],
-                                                                           type(ex).__name__, str(ex)[:160]))
+                                                                           type(ex).__name__, str(ex)))
                 continue
             if j is None:
                 unexplained.append("%s@%s: the snapshot does not hold the item" % (r["item"], str(r.get("sha"))[:10]))
@@ -722,7 +722,7 @@ def rescore(snapshot, cwd=None, closes=None):
                 named.setdefault(cohort, []).append("%s@%s" % (r["item"], str(r.get("sha"))[:10]))
             else:
                 unexplained.append("%s@%s gate %s, predicate %s: %s" % (r["item"], str(r.get("sha"))[:10], r.get("gate"),
-                                   "accept" if j["accepted"] else "reject", "; ".join(j["reasons"])[:240]))
+                                   "accept" if j["accepted"] else "reject", "; ".join(j["reasons"])))
         rep = {"rows": len(shadow_rows), "unreadable_rows": unreadable, "index_readable": src_index is not None,
                "rows_are": "every attempt (report counts the last per item+sha)", "markers_appended": markers, "marker_failures": failed, "wedge_from": wedge,
                "reasons_before": before, "reasons_after": after, "outcome": cohorts, "cohort_rows": named, "unexplained": len(unexplained),
