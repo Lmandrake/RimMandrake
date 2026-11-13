@@ -340,10 +340,17 @@
     "ref": "run rm-role-designer-1794600004",
     "stage": 5,
     "tokens": 270509
+   },
+   {
+    "at": "2026-11-13T20:21:24Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794600246",
+    "stage": 3,
+    "tokens": 510620
    }
   ],
   "reserve": 60000,
-  "spent": 11460895
+  "spent": 11971515
  },
  "coverage_rounds": [
   {
@@ -802,6 +809,24 @@
    "stage": 3,
    "what": "close",
    "why": "run rm-role-designer-1794600004: stage 5 return"
+  },
+  {
+   "at": "2026-11-13T20:04:19Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "11460895 of 4000000 spent; run rm-role-designer-1794600246 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-13T20:04:19Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1794600246, stage 3, budget 500000"
+  },
+  {
+   "at": "2026-11-13T20:21:24Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run rm-role-designer-1794600246: stage 3 done"
   }
  ],
  "item": "GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS",
@@ -1354,12 +1379,36 @@
    "stage": 5,
    "summary": "No lock: concept_tree gate refuses (no coverage signature). The pre-launch coverage judge rm-coverage-judge-1794599377 found every earlier gap fixed but returned not_covered with 5 new sound, edit-cost gaps (3 in changed scenes, 2 late). Its brief is uncalibrated, so the refusal is advisory and does not force a return, but there is no route to a signature without it, and stage 5 cannot edit the frozen artifacts. Returning to stage 3 to fix all five in one run. No owner question. Caution: the next not_covered may hit the judge's round limit (REFUSAL_NOTHING_COULD_EVER_PASS), so stage 3 should fix the list whole.",
    "to": 3
+  },
+  {
+   "at": "2026-11-13T20:21:24Z",
+   "inputs": {
+    "exam": "ee149897230d3a8b1636260bb2edd430a4d49796ad34f8e4e863fc9729a773d0",
+    "floor": "34728591a021769d45f3e49a33497d4bdc2c27d2b6644948be328512d8335229",
+    "owner": "b1b64cc7460cefdd50f74b0d01c96046c251c03c713524261da932462d91b724",
+    "root": "5c921cf30165ed793e5b840aa662ce66ddc70d2c09639a665313c476d33b14ef",
+    "scenes": "9eea9f8009c1f0541f5b05ff93abaa9d87c2fb706ff15b096345e08e69c6c6bf",
+    "sheet": "33b1cddc183d184ca4e68fdf603440e64fc2422a4cf79c8dc6590c770b6de57a",
+    "tree": "5e3aa0d412bb46c241b983d847b4062e574714088d2c8942dc1a7584035e712d"
+   },
+   "manifest": {
+    "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
+    "designer_write.md": "96e624c1abcd0fe2c5b6a839b820d82e91c09f920dbe20fd0878edd03dfef450"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1793766796952956687"
+   ],
+   "run": "rm-role-designer-1794600246",
+   "stage": 3,
+   "summary": "All five gaps of rm-coverage-judge-1794599377 fixed, no ruling cut. g1: sc_floor_end_shock adds a hauler across the live cord two or more cells from its end, not shocked. g2: the same scene adds a run the player stopped laying (shocks), steel delivery to the joining blueprint (safe), maxSparkingEnds 1 with two live ends (both shock); sc_fuel_ignition adds a floor-end puddle (no fire); sc_shock_reach adds a FlowWorks collapsed-deck cord (All and Only downed lines shock, None silent); ruling (6) now means live state at the last poll, never the spark budget, in record and sheet. g3: sc_no_sharp_turn and its oracle add the slack read on the same strands. g4: sc_owner_change adds a same-owner span that stays up. g5: sc_statics_new_game reads printed-section statics and live-wire path costs; record game_statics_reset names them. Claims in coverage_fixes.json; entry points stay under GSS_SCENES_BUILD_EVERY_CORD_A_FOIL."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 3,
+ "stage": 4,
  "status": "ready",
  "waiting_owner_feed": "b1b64cc7460cefdd50f74b0d01c96046c251c03c713524261da932462d91b724"
 }

@@ -1,0 +1,6 @@
+{
+ "run": "rm-role-designer-1794600246",
+ "stage": 3,
+ "outcome": "done",
+ "summary": "All five gaps of rm-coverage-judge-1794599377 fixed, no ruling cut. g1: sc_floor_end_shock adds a hauler across the live cord two or more cells from its end, not shocked. g2: the same scene adds a run the player stopped laying (shocks), steel delivery to the joining blueprint (safe), maxSparkingEnds 1 with two live ends (both shock); sc_fuel_ignition adds a floor-end puddle (no fire); sc_shock_reach adds a FlowWorks collapsed-deck cord (All and Only downed lines shock, None silent); ruling (6) now means live state at the last poll, never the spark budget, in record and sheet. g3: sc_no_sharp_turn and its oracle add the slack read on the same strands. g4: sc_owner_change adds a same-owner span that stays up. g5: sc_statics_new_game reads printed-section statics and live-wire path costs; record game_statics_reset names them. Claims in coverage_fixes.json; entry points stay under GSS_SCENES_BUILD_EVERY_CORD_A_FOIL."
+}
