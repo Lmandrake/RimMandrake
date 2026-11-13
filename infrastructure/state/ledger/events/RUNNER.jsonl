@@ -6478,3 +6478,4 @@
 {"seat":"RUNNER","event":"live","id":"BOOKS_STALE_FIX_OPS_CANNOT_SEE_IT","result":"kept","detail":"sweep: running again","ts":"2026-11-13T08:33:46Z","tsn":1794558826017140773}
 {"seat":"RUNNER","event":"live","id":"BUSY_SEAT_FIX_WAITING_COUNTS_AS_WORK","result":"kept","detail":"sweep: running again","ts":"2026-11-13T08:33:52Z","tsn":1794558832962753725}
 {"seat":"RUNNER","event":"live","id":"CHURN_WATCH_BUILD_NAMES_EVERY_BOUNCER","result":"kept","detail":"sweep: running again","ts":"2026-11-13T08:33:59Z","tsn":1794558839642050109}
+{"seat":"RUNNER","event":"note","id":"EXPLOSIVE_PLANT_GROWTH_1","text":"testq J20261113T082428Z-54c293.a1 on SteveDesktop: INVALID/LOAD, no verdict recorded (ted)\nstopped (graceful)\n2026-11-13T08:32:03Z $ infrastructure/stevedesktop/rw_game.sh init && infrastructure/stevedesktop/rw_game.sh up --wait\nhost_guard: RUNNE)","ts":"2026-11-13T08:35:46Z","tsn":1794558946151566283}
