@@ -32,8 +32,11 @@ old plumbing route that published from it (temp index, --catchup, --sync, --comm
 is deleted, not kept for emergencies. With no owned clone, make one on ext4.
 """
 import argparse
+import concurrent.futures
 import contextlib
 import fcntl
+import fnmatch
+import json
 import os
 import re
 import subprocess
@@ -581,6 +584,63 @@ def warn_owner_shard(top, named):
         print("WARNING: %s has unpublished events and you did not name it. His rulings stay on this clone until it lands: name it." % OWNER_SHARD)
 
 
+TREE_CHECKS = os.path.join("src", "RimMandrake", "Utils", "publish_tree_checks.json")
+
+
+def tree_checks(top, changed):
+    """Owner by card 2026-11-12 ~8:25 PM PST: publish runs the fast whole-tree checks and refuses on red, naming it
+    (validation_map_and_rules.md rule 10). The list is TREE_CHECKS; a repo without it (a test fixture) runs nothing.
+    `changed`: the paths the local commits touch; only skip_when_only paths -> nothing runs. A check that times out
+    warns: it measured nothing, so it refuses nothing. -> None, or raises Refuse naming each red check and its fix."""
+    cfg_path = os.path.join(top, TREE_CHECKS)
+    if not os.path.isfile(cfg_path):
+        return None
+    skip = os.environ.get("RM_PUBLISH_SKIP_TREE_CHECKS", "").strip()
+    if skip:
+        print("tree checks SKIPPED by RM_PUBLISH_SKIP_TREE_CHECKS: %s" % skip)
+        return None
+    cfg = json.load(open(cfg_path, encoding="utf-8"))
+    if changed and all(any(fnmatch.fnmatch(p, g) for g in cfg.get("skip_when_only", ())) for p in changed):
+        return None
+    limit = cfg.get("timeout_s", 60)
+
+    def one(c):
+        t0 = time.monotonic()
+        try:
+            r = subprocess.run([sys.executable, os.path.join(top, c["test"])], cwd=top, capture_output=True, text=True,
+                               timeout=limit, stdin=subprocess.DEVNULL)
+            return c, r.returncode, (r.stdout or "") + (r.stderr or ""), time.monotonic() - t0
+        except subprocess.TimeoutExpired:
+            return c, None, "", time.monotonic() - t0
+    t0 = time.monotonic()
+    with concurrent.futures.ThreadPoolExecutor(max_workers=6) as ex:
+        res = list(ex.map(one, cfg["checks"]))
+    wall = time.monotonic() - t0
+    slow = [c["test"] for c, rc, _o, _t in res if rc is None]
+    red = [(c, o) for c, rc, o, _t in res if rc not in (0, None)]
+    for t in slow:
+        print("WARNING: tree check %s ran past %d s: UNMEASURED, not refused" % (t, limit))
+    if red:
+        lines = []
+        for c, o in red:
+            fails = [ln.strip() for ln in o.splitlines() if re.match(r"\s*(FAIL|RED|BROKEN|STALE)", ln)][:3]
+            lines.append("  %s\n    %s\n    fix: %s\n    rerun: python3 %s"
+                         % (c["test"], "\n    ".join(fails) or (o.strip().splitlines() or ["(no output)"])[-1][:200],
+                            c.get("fix", "see the test's FAIL line"), c["test"]))
+        raise Refuse("%d whole-tree check(s) red after your commit (it stays on HEAD; fix, then publish again):\n%s"
+                     % (len(red), "\n".join(lines)))
+    print("tree checks: %d green in %.1f s" % (len(res) - len(slow), wall))
+    return wall
+
+
+def _changed_since_origin(top):
+    _, track, _label = target_ref(top)
+    if not ref_exists(top, track):
+        return []
+    r = run(top, "diff", "--name-only", "%s...HEAD" % track, check=False)
+    return [p for p in (r.stdout or "").splitlines() if p]
+
+
 def _publish(top, paths, msg, cwd=None):
     if paths:
         if not msg or not msg.strip():
@@ -590,6 +650,7 @@ def _publish(top, paths, msg, cwd=None):
         if not made:
             print("no change in the named paths; pushing any local commits")
         warn_owner_shard(top, named)
+    tree_checks(top, _changed_since_origin(top))
     run(top, "fetch", "-q", REMOTE)
     _, track, label = target_ref(top)
     head = out(top, "rev-parse", "HEAD")

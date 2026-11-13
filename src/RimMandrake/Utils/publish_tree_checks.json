@@ -1,0 +1,30 @@
+{
+  "_doc": "Whole-tree checks ./publish runs before it pushes, and refuses on a red, naming the check and its fix. Owner by card 2026-11-12 ~8:25 PM PST (ledger 2026-11-13T04:34:04Z): Whole-tree checks -> 'Publish runs the fast ones and refuses on red'; validation_map_and_rules.md rule 10. They run in parallel; the list's total stays under budget_s of added wall time. seconds = one run alone on archmagi 2026-11-12 (measured). A check too slow for this list stays in the nightly sweep and is named under nightly_only. A publish whose local commits touch only skip_when_only paths runs nothing. A one-off bypass: RM_PUBLISH_SKIP_TREE_CHECKS='<why>' (printed, never silent). Code: publish.py tree_checks().",
+  "budget_s": 30,
+  "timeout_s": 60,
+  "skip_when_only": ["infrastructure/state/ledger/events/*.jsonl", "infrastructure/state/lessons/*.md"],
+  "checks": [
+    {"test": "src/RimMandrake/rimflow/selftest_bench_word_prose.py", "seconds": 1.2, "fix": "say Conductor or Relentless, or keep BENCH only on a held path or key (the test's ALLOWED)"},
+    {"test": "src/RimMandrake/Utils/selftest_biome_twins_retired.py", "seconds": 1.3, "fix": "drop the twin name from src/, or list the tool in TOOLS with why it reads the record"},
+    {"test": "src/RimMandrake/Utils/selftest_one_path_seam.py", "seconds": 0.9, "fix": "import the path from game_paths (LOCALLOW, PLAYER_LOG, MODS_CONFIG, DEF_DUMP)"},
+    {"test": "src/RimMandrake/rimflow/selftest_liveproofs_wrappers_ruling.py", "seconds": 0.9, "fix": "write live_proofs lines as '<ID> <LEVEL>: ...' (no '- ' bullets); run the test to see the line"},
+    {"test": "src/RimMandrake/Utils/selftest_rmpaths.py", "seconds": 0.3, "fix": "name the data root through rmpaths, never D:\\Luke\\dev\\_<dir>"},
+    {"test": "src/RimMandrake/Utils/modcheck/selftest_launch_gate.py", "seconds": 0.2, "fix": "a new root namespace of ours goes in launch_gate.OWN_NAMESPACES; an engine fake lives under tests/, Scenario/ or a selftest folder"},
+    {"test": "src/RimMandrake/Utils/selftest_fauna_normalization.py", "seconds": 0.3, "fix": "never hand-edit FaunaNorm_* patches: change fauna_normalization.py and regenerate its outputs"},
+    {"test": "src/RimMandrake/Utils/selftest_modlist_order_lint.py", "seconds": 0.1, "fix": "reorder infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml so every About loadAfter/loadBefore edge holds"},
+    {"test": "src/RimMandrake/Utils/selftest_fuelsnows_name_cull.py", "seconds": 2.1, "fix": "write RUT_Umbra, or list a record file in HISTORIC with its reason"},
+    {"test": "src/RimMandrake/Utils/art/selftest_drawn_art_ruled.py", "seconds": 4.6, "fix": "a baseline row that now passes leaves drawn_art_ruled_baseline.json; a new unruled drawing gets its ruling"},
+    {"test": "src/RimMandrake/rimflow/selftest_entrypoint_inventory.py", "seconds": 7.3, "fix": "a retired module leaves with its last reference; a moved doc is repointed in entrypoint_inventory.PROBES/KEPT"},
+    {"test": "src/RimMandrake/Utils/selftest_call_deadline_lint.py", "seconds": 8.3, "fix": "pass timeout= to the subprocess call the lint names"},
+    {"test": "src/RimMandrake/Utils/selftest_alpha_biomes_census.py", "seconds": 4.3, "fix": "update design/RimMandrake/alpha_biomes_census_2026-11-01.json (port targets, tokens), then alpha_biomes_census.py md"}
+  ],
+  "nightly_only": [
+    {"test": ".claude/hooks/selftest_block_orphan_item_prose.py", "seconds": 6.3, "why": "the guard itself already runs in pre-push; its selftest builds git fixtures"},
+    {"test": "src/RimMandrake/rimflow/selftest_conductor_authority.py", "seconds": 101.6, "why": "too slow for a publish"},
+    {"test": "src/RimMandrake/bridgetools/selftest_bridge_hooks.py", "seconds": 124.2, "why": "too slow for a publish"},
+    {"test": "src/RimMandrake/Utils/selftest_static_game_state.py", "seconds": 0.2, "why": "red, parked on RIMMANDRAKE_REALIGN_FLOWWORKS_PROOFS_AFTER_UNDER_LIQUID_LAW; joins checks when green"},
+    {"test": "src/RimMandrake/Utils/selftest_settings_screens.py", "seconds": 2.0, "why": "red, parked on RIMMANDRAKE_REGROUP_SETTINGS_SCREENS_FOUR_MODS_OUTGREW_AUDIT; joins checks when green"},
+    {"test": "src/RimMandrake/Utils/art/selftest_standin_shadowed.py", "seconds": 1.2, "why": "red, parked on RIMMANDRAKE_CLEAR_DEAD_STANDINS_AND_REFIT_MORAVATHA_PACK; joins checks when green"},
+    {"test": "src/RimMandrake/Utils/selftest_proof_restore_check.py", "seconds": 7.0, "why": "red, parked on RIMMANDRAKE_RESTORE_ON_THROW_IN_KNOCKBACK_PROOF_TWO_LEAKS; joins checks when green"}
+  ]
+}
