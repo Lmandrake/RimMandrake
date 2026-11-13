@@ -1,0 +1,1 @@
+A [proof] reply's token ORDER is an API: northstar/extensions._prep_plot reads ProofResetRect with endswith('left=0'), so appending a new token (swim=) after left= broke it; the C# PLOT_D_BODY_PRUNE source check caught it. Add new tokens before the last one, and grep python callers for endswith/split on the reply before changing it.
