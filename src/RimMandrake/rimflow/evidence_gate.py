@@ -12,8 +12,10 @@ record can carry it (section 2.1; breaks, hunks and holdouts have no entry kind 
       declared and vetted at contract time; `unrunnable` is a proof nobody could run and nobody declared, so the box
       measured nothing and the record holds only the Marker's word. The route for it is `relentless.py rebind`. When the
       gate accepts such a close the gate is the one that is wrong, and the row stays a real disagreement
-    - its newest Marker verdict is PASS: WEAK, FAIL and UNMEASURED do not close ("a WEAK verdict cannot close"), and
-      a WEAK the live narrow rule reads as PASS (relentless_wall.acted_weak) is still WEAK here
+    - a Marker verdict on record, the newest, is PASS: WEAK, FAIL and UNMEASURED do not close ("a WEAK verdict cannot
+      close"), and a WEAK the live narrow rule reads as PASS (relentless_wall.acted_weak) is still WEAK here. No verdict
+      at all refuses only a `skipped` run: the owner's D4 card (2026-11-12, "One gate, and it refuses") made this gate
+      the proof check, and the Marker is stopped, so a green box run on the frozen exam closes on its own
     - an empty-diff close (--no-code) closes only on a `no_code` exam (G15: empty-diff Judge closes are false closes)
     - an exam that declares a live clause closes done only with a live attestation (today: the line cli._live_gate has
       checked and accepted, never the raw --live text); without one the item is `built`, not done
@@ -131,7 +133,11 @@ def green(entries, exam, no_code=False, live=None, tampered=()):
             why.append("exam drift: the run's exam %s is not the frozen exam %s"
                        % (str(r.get("exam_hash"))[:12], str(exam.get("hash"))[:12]))
     if not marks:
-        why.append("no marker: no Marker verdict on record")
+        # criteria repair, owner D4 card 2026-11-12 ("One gate, and it refuses"; OWNER.jsonl:7571): the Marker is
+        # stopped, so "no Marker verdict" could never pass a new close. A green box run on the frozen exam is the proof;
+        # a missing verdict refuses only where the box measured nothing by design (a skipped run had only the Marker)
+        if runs and runs[-1].get("verdict") == SKIPPED:
+            why.append("no marker: the box run is skipped by design and no Marker verdict judged it")
     elif marks[-1].get("verdict") != "PASS":
         why.append("marker %s: a %s verdict cannot close" % (marks[-1].get("verdict"), marks[-1].get("verdict")))
     if no_code and not (exam or {}).get("no_code"):
@@ -701,7 +707,8 @@ def rescore(snapshot, cwd=None, closes=None):
             if not cohort and norun and ((wedge and str(r.get("at") or "") >= wedge)
                                          or _receipt_wedged(src, r["item"], r.get("sha"), r.get("at"))):
                 cohort = WEDGE
-            elif not cohort and any(str(x).startswith("no marker") for x in j["reasons"]) and not (st.get("check") or {}):
+            elif not cohort and any(str(x).startswith("no marker") for x in list(r.get("reasons") or []) + j["reasons"]) \
+                    and not (st.get("check") or {}):    # the logged row's reasons too: D4 narrowed today's clause
                 cohort = VERDICT_GONE
             elif not cohort and norun and src_index is not None \
                     and (_iso(_candidate(st).get("at")) or "") > str(r.get("at") or "") \

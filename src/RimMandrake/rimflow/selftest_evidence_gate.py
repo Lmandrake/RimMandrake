@@ -178,7 +178,7 @@ def rules():
              ("no record", [], {}),
              ("run not green", [dict(run, verdict="red", exit=1), mark], {}),
              ("exam drift", [dict(run, exam_hash="f" * 64), mark], {}),
-             ("no marker", [run], {}),
+             ("no marker", [dict(run, verdict=G.SKIPPED, exit=None)], {}),
              ("marker WEAK", [run, dict(mark, verdict="WEAK")], {}),
              ("marker UNMEASURED", [run, dict(mark, verdict="UNMEASURED")], {}),
              ("empty diff", [run, mark], {"no_code": True}),
@@ -190,6 +190,10 @@ def rules():
     check(G.green([run, mark], dict(EXAM, live=True), live="unit=rm-x.timer max_age=6h")[0],
           "green: a declared live clause with an attestation closes")
     check(G.green([run, mark], dict(EXAM, no_code=True), no_code=True)[0], "green: a no_code exam closes with no code")
+    ok, why = G.green([run], EXAM)
+    check(ok and not why, "green: D4 repair, a green run on the frozen exam closes with no Marker verdict (%s)" % why)
+    check(not G.green([], EXAM)[0] and not G.green([run, dict(mark, verdict="WEAK")], EXAM)[0],
+          "green: D4 repair keeps no-record and a recorded WEAK refusing")
     check(G.green([run, dict(mark, verdict="FAIL"), dict(mark, verdict="PASS")], EXAM)[0],
           "green: the newest Marker verdict stands (a PASS after a FAIL)")
 
