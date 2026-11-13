@@ -1,0 +1,1 @@
+GSS ST1_styles_textures_load keeps a hand list of the Jawa slots a family may fall back to (validation.ALLOWED_FALLBACKS). A new decal slot drawn only in Jawa art (CableTie, 2026-11-09) fails ST1 for every other style until it joins the list; selftest_gss_review_leftovers now refuses a listed slot that a family folder draws (it does not find unlisted Jawa-only slots).

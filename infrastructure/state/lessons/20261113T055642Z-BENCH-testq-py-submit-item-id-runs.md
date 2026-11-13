@@ -1,0 +1,1 @@
+testq.py submit --item ID runs a MODCHECK item (profile targeted), not the item's live_proofs/<ID>.txt clauses. A live proof is --proofs A1,A2 --for-item ID --profile tier:<tier>; a --item job on GSS ended INTERRUPTED/HARNESS and 'names no item' at ingest (2026-11-12, RIMMANDRAKE_PROVE_GSS_SWITCHBOARD_DENSE).
