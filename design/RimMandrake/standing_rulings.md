@@ -626,3 +626,13 @@ still validated by the existing checks, and the quota gate and the rule against 
 
 *"Yes, from now on, we build the test at the same time as the item, both offline and online versions. then they get consolidated into the formal tests."*
 The run that builds an item also writes its offline test (red-first selftest) and its live test (a bridge script that stages the case and reads state). A live test that could not be run is recorded on the item as UNRUN with its exact command. Both are later consolidated into the mod's formal tests (its functional script and north-star bars). Item: `RIMMANDRAKE_BUILD_TESTS_WITH_ITEM_OFFLINE_AND_LIVE`.
+
+## Mod Design Versions use Semantic Versioning — owner, 2026-11-13
+
+*"Each mod now needs an official Version we are building towards. This is not a "game version" but just of that mod. It is not the "current snapshot in git hash" but rather the version of the mod's design we are aiming at."* · *"Semantic Versioning it is."*
+Every mod's Design Version is numbered `MAJOR.MINOR.PATCH` (semver.org), with this project's meaning:
+- **MAJOR**: the mod's vision changed (a redesign).
+- **MINOR**: Divergent additions: work that extends or shifts the vision, filed for the next version.
+- **PATCH**: Convergent polish and corrections after a version has passed.
+- A version before release is `0.x`; `1.0.0` is the version shipped to players. A judge round is a release candidate, `-rc.N`.
+Convergent and Divergent are his terms (`LEXICON.md`); which one a change is, is his call. The rest of the policy (lock, next-version file, deferral, pass record) is still a DRAFT: `design/specs/2026-11-13-mod-design-versions.md`.

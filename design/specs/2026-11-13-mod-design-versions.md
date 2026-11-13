@@ -76,10 +76,10 @@ Per passed version: cost, judge rounds, days, bars deferred. Across mods: passes
 | **Sequential revisions** | v1, v2, v3 | only order | simplest; cannot tell polish from redesign |
 | **Zero-based SemVer** | 0.3.0 then 1.0.0 | 0.x means not yet promised to users | fits a game not yet released |
 
-Recommendation: Semantic Versioning with the zero-based convention and `-rc.N` for judge rounds.
+**DECIDED by the owner, 2026-11-13: "Semantic Versioning it is."** With the zero-based convention and `-rc.N` for judge rounds. Recorded in `design/RimMandrake/standing_rulings.md` and `LEXICON.md`.
 
 ## 5. Open questions for him
-1. The numbering scheme.
+1. ~~The numbering scheme.~~ Decided: Semantic Versioning.
 2. The asymmetric default (file to next version without asking; only promotion into a locked version asks).
 3. Convergent changes: split into blocking and polish, or keep all convergent changes in the current version as he wrote.
 4. Who approves a Judge's bar deferral.
