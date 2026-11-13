@@ -252,7 +252,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 				string sp = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Machinery", "RM_LiquidSpill.cs"));
 				string pump = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("LiquidTypes", "Building_LiquidPump.cs"));
 				RiverSwitchFlipChecks.Has(ex, @"return RM_LevelPour\.Spread\(start, want, true, NeighbourIndex, Joins, null, Room, RM_LevelPour\.PourWalkCap, credits, null\);", "the pour walks the canal");
-				RiverSwitchFlipChecks.Has(ex, @"if \(LevelExact\) \{ return TryPourDl\(c, fluid, RM_LevelSolve\.U\); \}", "a whole-level pour spreads under exact-level water");
+				RiverSwitchFlipChecks.Has(ex, @"return TryPourDl\(c, fluid, RM_LevelSolve\.U\); \}", "a whole-level pour spreads as decilitres (water is always exact)");
 				RiverSwitchFlipChecks.Has(pump, @"int amt = \(int\)System\.Math\.Min\(units, System\.Math\.Min\(avail, room\)\);", "the pump moves what the source holds and the canal takes");
 				Assert(!sp.Contains("the liquid left the network anyway"), "no spill leaves the ledger unannounced any more");
 				RiverSwitchFlipChecks.Has(sp, @"RM_SuperdeepTrap\.EngineOf\(map\)\?\.ReportLiquidLost\(cell, rest, ""Spilled """, "the only loss is announced with its amount");

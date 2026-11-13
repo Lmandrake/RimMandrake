@@ -221,7 +221,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(ex, @"map\.terrainGrid\.TopTerrainAt\(c\) == mud && !pondMudSince\.ContainsKey\(map\.cellIndices\.CellToIndex\(c\)\)\) // POND_DEPTH: fresh mud keeps its time \{ map\.terrainGrid\.SetTerrain\(c, LakebedTerrainFor\(c\)\); \}", "an old save's bare mud bed is relaid as lakebed on load (POND_DEPTH: not fresh, timed mud)");
                 RiverSwitchFlipChecks.Has(ex, @"sinkTransferredTotal \+= flowKernel\.sinkDrained; \} RunIntoBeds\(\);", "the canal-into-bed leg runs every pulse after the kernel");
                 RiverSwitchFlipChecks.Has(ex, @"RM_Volume\.RunsIntoBed\(depthGrid\[i\], f, NaturalBedDepthAt\(n\)\)", "the leg uses the production rule");
-                RiverSwitchFlipChecks.Has(ex, @"if \(!CanReturnLevels\(beds\[p\], fluid, 1\) \|\| !TakeLevelCore\(pours\[p\], out _\)\) \{ continue; \}", "checked before the take: nothing is lost (§7 #8: the stock is credited, never a dug cell)");
+                RiverSwitchFlipChecks.Has(ex, @"long room = ReturnRoomDl\(beds\[p\], fluid, want\); if \(room <= 0\) \{ continue; \}", "room checked before the take: nothing is lost (§7 #8: the stock is credited, never a dug cell)");
                 RiverSwitchFlipChecks.Has(ex, @"if \(superdeepCellCount > 0 \|\| \(RM_PocketGrid\.Relative && ClimbCellCount > 0\)\)", "the fall detector runs over a drained pond");
                 string trap = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_SuperdeepTrap.cs"));
                 Assert(!trap.Contains("ExcavatedCellCount"), "no trap early-out ignores the beds");
