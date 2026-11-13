@@ -1064,6 +1064,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `plant_draw_layers_2026-10-14.md` | Plant draw layers: ground cover under everything (2026-10-14) | — |
 | `plant_economy_rule_2026-11-01.md` | The plant economy bar (2026-11-01) | — |
 | `player_truth_testing_pilot_2026-10-26.md` | Player-truth testing pilot (FlowWorks: pits, ladders, pipes, hoses, levelling) | — |
+| `player_truth_sweep_trials_2026-11-13.md` | Player-truth sweep second trial: six truth families, 16 facing violations, the facing truth wired into art_eval | — |
 | `pond_depth_design_2026-10-16.md` | Ponds shallow out before they turn to mud: design (2026-10-16) | — |
 | `post_event_recovery_mode_2026-11-05.md` | Post-event recovery mode: a design, replayed on 2026-11-04 (OPS_RECOVERY_DESIGN_POST_EVENT_MODE) | — |
 | `power_poles_and_flexible_pipe_assessment_2026-10-02.md` | Power Poles Extended, suspended wires and flexible piping — assessment (2026-10-02) | — |

@@ -1,0 +1,3 @@
+A model judge's ACCEPT is not the gate's truth. The facing-scale gate was green 2026-11-01; by 2026-11-13 it was red on 16 creatures, 15 installed since by art-eval rounds whose Opus/GPT reviewers said ACCEPT while an advisory height-spread line sat in front of them. The fixer that came before (facing_regen_batch) held its candidates to the lint and kept the gate green. When a deterministic gate exists for a class, the fixer that writes that class must run the gate's own check on its output before installing; a model verdict alone lets the gate drift red. Wired for art_eval in 03564e16cf.
+item: RIMMANDRAKE_EXTEND_PLAYER_TRUTH_SWEEP_LADDER_WAS_ONE
+home: src/RimMandrake/Utils/art_eval/runner.py
