@@ -1,0 +1,1 @@
+A visual comparison harness that clips dt to frame times silently speeds up any fixed-pass solver that ignores dt: MandrakeModels compare.py ran ca_game ~1.5x fast (0.33 s frames, a full 0.5 s pass each) while the bakeoff's 0.5 s steps were right. Before trusting a still or video of a fixed-pass scheme, check its step honours dt (fixed ec367a1, 2026-11-13).
