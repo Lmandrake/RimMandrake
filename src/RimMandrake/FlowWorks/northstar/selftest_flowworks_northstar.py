@@ -49,7 +49,9 @@ def test_tier():
     check("tier `flowworks` exists", "flowworks" in M.TIERS)
     check("tier `pits` is gone (renamed)", "pits" not in M.TIERS)
     t = M.TIERS["flowworks"]
-    check("tier wants bridge + flowworks + gimmesomeslack (GSS rides along: JawaBench playtest runners share one partial class, 169e004f6)", t["want"] == [M.BRIDGE, "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack"], t["want"])
+    check("tier wants bridge + flowworks + gimmesomeslack (GSS rides along: JawaBench playtest runners share one partial class,"
+          " 169e004f6) + patches (285a403024: metal, stone and gem walls do not burn)",
+          t["want"] == [M.BRIDGE, "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack", "mandrake.rm.patches"], t["want"])
     check("tier dlc True", t["dlc"] is True)
     clean = ["brrainz.harmony", "ludeon.rimworld"] + list(M.DLC_IDS) + [M.BRIDGE, "mandrake.rm.flowworks"]
     check("guard: clean closure passes", M.tier_guard(t, clean) == [], M.tier_guard(t, clean))
@@ -77,9 +79,11 @@ def test_gss_sitting_tier():
     check("tier `fw_gss_sitting` exists", "fw_gss_sitting" in M.TIERS)
     t = M.TIERS["fw_gss_sitting"]
     # CrackedLands ships COMPOSED in mandrake.rm.biomes; its standalone packageId never exists at runtime
-    check("fw_gss_sitting = flowworks want + biomes (carries CrackedLands AND ExplosiveGrowth; River Colors is in FlowWorks)"
-          " + VEF core (58b13ec551: Biomes loses VEF comps and map gen NREs without it)",
-          t["want"] == M.TIERS["flowworks"]["want"] + ["mandrake.rm.biomes", VEF_CORE], t["want"])
+    # 285a403024 put mandrake.rm.patches on the flowworks tier only; the sitting tier was not given it
+    check("fw_gss_sitting = bridge + flowworks + gimmesomeslack + biomes (carries CrackedLands AND ExplosiveGrowth; River Colors"
+          " is in FlowWorks) + VEF core (58b13ec551: Biomes loses VEF comps and map gen NREs without it)",
+          t["want"] == [M.BRIDGE, "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack", "mandrake.rm.biomes", VEF_CORE],
+          t["want"])
     check("fw_gss_sitting never wants the composed members' own ids",
           "mandrake.rm.crackedlands" not in t["want"] and "mandrake.rm.explosivegrowth" not in t["want"])
     check("fw_gss_sitting forbids the folded ExplosiveGrowth standalone id (it would load twice)",
