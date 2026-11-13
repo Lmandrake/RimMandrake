@@ -40,6 +40,10 @@ import time
 try:                                    # whole text, never a silent cut (RIMMANDRAKE_STORE_TEXT_WHOLE_NO_CUTS)
     from . import fulltext
 except ImportError:
+    # loaded by file path (testq steward._incident_mod): its folder is not on sys.path, and without this the steward's
+    # receiver check failed on every pass and it filed nothing (STEVE lane BRAKED unowned, 2026-11-12)
+    import sys
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     import fulltext  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
