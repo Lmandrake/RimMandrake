@@ -260,7 +260,9 @@ def acts(spare):
     r0 = static(GL, "SetLevel", c + "|RM_Fluid_Water|%.1f" % (d * 0.5))
     if not r0.startswith("OK"):
         return [("OL_pour_never_no_room", "UNMEASURED", "could not brim the spare pit: " + r0[:160])]
-    out.append(("OL_pour_never_no_room",) + judge_pour(static(GL, "Pour", c + "|RM_Fluid_Water|1000")))
+    # PourOverflow is what the dev menu's "Pour liquid..." runs; Pour keeps to the overflow switches and refuses a brim pit
+    # by design (live 2026-11-12 night: "REFUSED ... had no room (the dev action overflows it)")
+    out.append(("OL_pour_never_no_room",) + judge_pour(static(GL, "PourOverflow", c + "|RM_Fluid_Water|1000")))
     static(GL, "DrainAll", c)
     for dx, dz in ((-1, 0), (w, 0), (0, -1), (0, w)):          # the overflow, if it reached the ground
         static(GL, "DrainAll", "%d,%d" % (x0 + dx, z0 + dz))
