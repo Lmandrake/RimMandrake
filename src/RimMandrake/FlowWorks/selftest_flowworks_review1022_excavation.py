@@ -59,9 +59,11 @@ def bed_problems(src):
         probs.append("f still taken from whole notches")
     if "RM_Volume.RunsIntoBed(depthGrid[i], f, NaturalBedDepthAt(n))" not in b:
         probs.append("production rule RunsIntoBed no longer used")
-    m = re.search(r"if \(LevelExact\) \{(.*?)continue; \} if \(!CanReturnLevels\(beds\[p\], fluid, 1\)", b)
+    m = re.search(r"for \(int p = 0; p < pours\.Count; p\+\+\) \{(.*)$", b)
+    if "CanReturnLevels(" in b:
+        probs.append("a whole-level move is back (the whole-notch mode is deleted)")
     if not m:
-        probs.append("no exact-level decilitre move before the whole-level move")
+        probs.append("no decilitre move over the pours")
     else:
         e = m.group(1)
         order = [e.find("ReturnRoomDl(beds[p], fluid, want)"), e.find("TakeDlCore(pours[p], room, out _)"),
@@ -79,10 +81,8 @@ check("thin_sheet_runs_into_bed: fixed shape", not bed_problems(src), "; ".join(
 pre = src.replace("int f = (int)((w + RM_LevelSolve.U - 1) / RM_LevelSolve.U);",
                   "int f = fillGrid[i] > depthGrid[i] ? depthGrid[i] : fillGrid[i];")
 check("thin_sheet_runs_into_bed: planted pre-fix f fails", bool(bed_problems(pre)))
-_rb = src.index("private void RunIntoBeds()")
-_a = src.index("if (LevelExact)", _rb)
-_b = src.index("if (!CanReturnLevels(beds[p], fluid, 1)", _a)
-pre2 = src[:_a] + src[_b:]
+pre2 = src.replace("long room = ReturnRoomDl(beds[p], fluid, want);",
+                   "if (!CanReturnLevels(beds[p], fluid, 1)) { continue; } long room = RM_LevelSolve.U;")
 check("thin_sheet_runs_into_bed: planted pre-fix whole-level-only move fails", pre2 != src and bool(bed_problems(pre2)))
 
 # The rule itself: d - ceil(W/U) < bed (RM_Volume.RunsIntoBed with f = ceil) == "surface above the bed floor" in dL.

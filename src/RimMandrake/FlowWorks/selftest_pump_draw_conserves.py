@@ -15,8 +15,8 @@ Every pin reads comment-stripped source, so a comment cannot satisfy it.
   P1  the channel draw's world leg takes exactly k (`ex.TryTakeDl(cell, k, out _) == k`, guarded by WaterDlAt >= k), and
       the same `take` goes to RM_LiquidTransfer.Move, must come back whole, and is what Stamp counts
   P2  Move runs the reversible leg first, refuses two irreversible legs, and puts back what the second leg did not take
-  P3  TakeDlCore takes min(maxDl, w); TryTakeDl floors maxDl to whole notches only with LevelExact off
-  S1  sweep of the Python model of P1-P3 (cell dL x tank room x LevelExact): channel loss == tank gain on every cycle
+  P3  TakeDlCore takes min(maxDl, w); TryTakeDl is TakeDlCore (no whole-notch floor: that mode is deleted)
+  S1  sweep of the Python model of P1-P3 (cell dL x tank room): channel loss == tank gain on every cycle
   R1  the run4 reading: 30,000 conserved dL over three cells can read 2 by floored fill, and reads 3.00 by exact water
 
   python3 selftest_pump_draw_conserves.py [--root <dir>] [--no-mutants]
@@ -110,8 +110,8 @@ def pins(root):
     core = body(exc, "private long TakeDlCore(IntVec3 c, long maxDl, out FluidDef fluid)", "public long TryTakeDl")
     tt = body(exc, "public long TryTakeDl(IntVec3 c, long maxDl, out FluidDef fluid)", "internal long BurnOffDl")
     pin("P3", "long take = maxDl < w ? maxDl : w;" in core and "long left = w - take;" in core
-        and "if (!LevelExact) { maxDl -= maxDl % RM_LevelSolve.U; }" in tt and "return TakeDlCore(c, maxDl, out fluid);" in tt,
-        "TakeDlCore takes min(maxDl, w); TryTakeDl floors to whole notches only with LevelExact off")
+        and "LevelExact" not in tt and "maxDl -=" not in tt and "return TakeDlCore(c, maxDl, out fluid);" in tt,
+        "TakeDlCore takes min(maxDl, w); TryTakeDl is TakeDlCore, never floored to whole notches")
     return fails
 
 
@@ -146,7 +146,7 @@ def draw(cell, stored, cap, exact):
 def sweep():
     bad = []
     n = full = part = 0
-    for exact in (True, False):
+    for exact in (True,):
         for cell in list(range(0, 3 * U + 1, 250)) + [1, U - 1, U + 1, 2 * U - 1]:
             for cap in (U, 2 * U, 3 * U, 50000):
                 for stored in sorted({0, 250, U // 2, U - 1, U, cap - 1, cap - U // 3, cap}):

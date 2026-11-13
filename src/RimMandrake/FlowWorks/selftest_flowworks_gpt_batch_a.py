@@ -120,7 +120,7 @@ CASES = [
          r"private static bool TryFindLiquidCellUncached\(",
          [r"if \( ex != null && ex\.IsExcavated \( c \) && RM_ContainerMaterialMath\.DugCellDebitDl \("
           r" container != null \? RM_ContainerMaterials\.UnitsIn \( container , candidate , size \) : candidate\.UnitsFor \( size \) ,"
-          r" ex\.WaterDlAt \( c \) , RM_MapComponent_Excavation\.LevelExact , RM_LevelSolve\.U \) < 0 \) \{ continue ; \}"],
+          r" ex\.WaterDlAt \( c \) , true , RM_LevelSolve\.U \) < 0 \) \{ continue ; \}"],
          ("if (ex != null && ex.IsExcavated(c) && RM_ContainerMaterialMath", "if (false && ex.IsExcavated(c) && RM_ContainerMaterialMath"),
          order=(r"ex\.Stock\.CanSupply", r"ex\.IsExcavated \( c \) && RM_ContainerMaterialMath\.DugCellDebitDl")),
     # ── TAR_GLASS_FLOOD_FIX_UNREACHABLE_PATH (FA_core_sim_1.8, option A) ──
