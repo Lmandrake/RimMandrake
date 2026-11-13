@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Storage that hides its contents in a way RM_KnockbackCompat cannot see is tagged closed here (owner 2026-11-12:
+     "Anything that draws its contents is open"; what does not draw them is closed). The Armoury's hidden smuggling
+     compartment panels hide theirs through an AdaptiveStorage.GraphicsDef (showContainedItems false): "anyone
+     crossing it sees nothing but deck". Found by selftest_explosiveknockback_storage_census.py (C1). FindMod, never
+     MayRequire on an Operation (inert there). -->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Jawa Armoury Rebalance</li>
+    </mods>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>Defs/ThingDef[defName="guy762_SecretFloorPanel_darkwhiteoutlines" or defName="guy762_SecretFloorPanel_DoomgiverTile" or defName="guy762_SecretFloorPanel_DreadnaughtCabinTile_blue" or defName="guy762_SecretFloorPanel_DreadnaughtCabinTile_black"]</xpath>
+      <value>
+        <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackClosedStorage" />
+      </value>
+    </match>
+  </Operation>
+</Patch>
