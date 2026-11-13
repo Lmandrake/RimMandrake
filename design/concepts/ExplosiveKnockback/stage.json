@@ -738,6 +738,13 @@
     "ref": "rm-coverage-judge-1794599960",
     "stage": 5,
     "tokens": 406269
+   },
+   {
+    "at": "2026-11-13T22:48:47Z",
+    "kind": "stage",
+    "ref": "run bench-ek-owner-lock-st3-20261113",
+    "stage": 3,
+    "tokens": 0
    }
   ],
   "reserve": 60000,
@@ -1614,18 +1621,47 @@
    "stage": 5,
    "what": "coverage_stop",
    "why": "REFUSAL_NOTHING_COULD_EVER_PASS: owner passed ExplosiveKnockback on his word 2026-11-13 (OWNER:1794608649743135329); no Designer or judge run until the owner-certified lock lands; judging stopped on ExplosiveKnockback (coverage_judge.py release <dir> --why ... grants one more look)"
+  },
+  {
+   "at": "2026-11-13T22:48:47Z",
+   "stage": 5,
+   "what": "unblock",
+   "why": "owner passed coverage on his word (OWNER:1794608649743135329, 2026-11-13: 'Yes, fix it like that, and then please record this as an actual Pass.'); the owner-certified stamp is in tree.json (cbc52e605e); step-0 hold lifted to write the lock (Conductor brief, per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM)"
+  },
+  {
+   "at": "2026-11-13T22:48:47Z",
+   "stage": 3,
+   "what": "invalidated",
+   "why": "inputs changed since stage 3 was accepted: scenes; back to stage 3"
+  },
+  {
+   "at": "2026-11-13T22:48:47Z",
+   "stage": 3,
+   "what": "park_lifted",
+   "why": "his word on RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH lifts the ceiling park"
+  },
+  {
+   "at": "2026-11-13T22:48:47Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "97196907 of 4000000 spent; run bench-ek-owner-lock-st3-20261113 goes on with 3940000 (advisory)"
+  },
+  {
+   "at": "2026-11-13T22:48:47Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run bench-ek-owner-lock-st3-20261113, stage 3, budget 3940000"
+  },
+  {
+   "at": "2026-11-13T22:48:48Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run bench-ek-owner-lock-st3-20261113: stage 3 done"
   }
  ],
  "item": "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
- "loop_since": "2026-11-13T19:57:02Z",
+ "loop_since": "2026-11-13T22:48:47Z",
  "mod": "ExplosiveKnockback",
- "park": {
-  "at": "2026-11-13T20:03:27Z",
-  "kind": "ceiling",
-  "quick_look": true,
-  "summary": "park_summary.md",
-  "why": "his card 2026-11-13 ~11:55 PST (OWNER:1794599570900465333) allowed one more judge: rm-coverage-judge-1794599960 not_covered, 6 gaps (1 new: sweep animal/mech masses unpinned under creatureMassLimit 90; 5 carried as unfixed only because no coverage_fixes.json claim was written, its reasons say they look fixed); no second judge"
- },
  "parks": [
   {
    "at": "2026-11-13T07:52:37Z",
@@ -1658,6 +1694,14 @@
    "quick_look": true,
    "summary": "park_summary.md",
    "why": "his card \"EK next -> Fix, then one judge\" (OWNER:1794592220102307459) allowed one exam and one judge run, then parked: exam10 passed 119/119; judge rm-coverage-judge-1794593824 not_covered, 5 gaps, all stage-3 edits, none needing your answer"
+  },
+  {
+   "at": "2026-11-13T20:03:27Z",
+   "kind": "ceiling",
+   "lifted_at": "2026-11-13T22:48:47Z",
+   "quick_look": true,
+   "summary": "park_summary.md",
+   "why": "his card 2026-11-13 ~11:55 PST (OWNER:1794599570900465333) allowed one more judge: rm-coverage-judge-1794599960 not_covered, 6 gaps (1 new: sweep animal/mech masses unpinned under creatureMassLimit 90; 5 carried as unfixed only because no coverage_fixes.json claim was written, its reasons say they look fixed); no second judge"
   }
  ],
  "pending_decision": "Coverage judge not_covered (19 gaps, all return_to 3, none needs the owner: each is settled by a record decision). Rewrite scenes/tree/sheet per coverage_verdict.json gaps: limit the 40-throw cap to pawns or remove it (d_c_all_fly) and stage more goods than the cap; showcase 1 is his one flagship scene only, with one named weapon, an in-line heavy stack and an expectation on the covered pit cell; narrow no_careless_fall to d_pit_only_forced (enemies may fall into a concealed pit by walking); add leaves and sheet lines for the shipped behaviours the sheet omits (who is spared, recovery immunity, per-weapon caps, hose drop, doors and deep water stopping a throw, explosions only); give wall_stop, shield, gas-chain, containers, teleport trace, frame probe, hose drop, settings and the walk real controls or scenes; fill record.json script_audit. Also set tree.json root_state VALIDATED and root_hash to the walk's (gate refusal). Then re-run the stage 4 exam on refrozen scenarios and the judge.",
@@ -1853,13 +1897,19 @@
    "why": "inputs changed since stage 3 was accepted: scenes; back to stage 3"
   },
   {
-   "at": "2026-11-13T19:57:23Z",
+   "at": "2026-11-13T22:48:47Z",
+   "outcome": "invalidated",
+   "stage": 3,
+   "why": "inputs changed since stage 3 was accepted: scenes; back to stage 3"
+  },
+  {
+   "at": "2026-11-13T22:48:47Z",
    "inputs": {
     "exam": "62595e96a93d811b3fc9e020c6897faae2c2d0feb64f98fc2ad3a996d0925a92",
     "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
     "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
-    "scenes": "4da6fb327b508a4b20d5f5803029e374f9a1e423c55757c60cee8bf984fd3f4d",
+    "scenes": "d16a2aec414a6dd250a9036c95005753f87ae1bf29dcd1e00986d4ed8753baba",
     "sheet": "234fd3c20e850bdde174efc6b3d4b20f1025dc5ddbf2c15caef766a925f0c722",
     "tree": "02900038234b11c46790c7a09b75a68a0b877cd3270c7e57c94564ef758b15b2"
    },
@@ -1870,40 +1920,15 @@
    },
    "outcome": "done",
    "owner_uncited": [],
-   "quick_look": {
-    "offer": false,
-    "why": "stage 3 asks him nothing; the mass and blast-power rules these scenes test are not built yet"
-   },
-   "run": "bench-ek4-st3-20261113",
+   "run": "bench-ek-owner-lock-st3-20261113",
    "stage": 3,
-   "summary": "Stage 3 edits on his card 2026-11-13 ~11:55 PST (OWNER:1794599713730633294, fix the 5 gaps then one judge; gas shove onto an open pit drops the pawn in, stands), exactly the smallest_fix lines of rm-coverage-judge-1794593824: g1 mandrake.rm.flowworks added to the Cauldron dependency clause in sc_gas_chain, sc_cauldron_gas, sc_cover_breaks, sc_gas_shove_into_pit and sc_settings_sweep; g2 sc_mass_and_power gains a test hook absorbing the staged injury (asserted: no new hediff), the damage ratio still read from the explosion; g3 the 250 kg control runs both damages (thrumbo 1 then 3 cells) and the colonist band is 64 to 76 kg (the would_pass condition, 3 cells at 50 and 5 at 100 by ThrowCells: 60-63 kg gives 6 at 100, tying the capped rat); g4 the sweep names the free-flying colonist, the animal, the second animal and the downed pawn; g5 inv_who_is_spared back in coverage_rest by the_spared/sc_spared, mass_and_power demoted to an ordinary scene (2 new < 3), inv_creature_mass_limit and inv_blast_power_damage in coverage_rest by sc_mass_and_power, record inv_who_is_spared scope_note for d_mass_limit. Tree and sheet untouched."
-  },
-  {
-   "at": "2026-11-13T19:58:49Z",
-   "inputs": {
-    "exam": "62595e96a93d811b3fc9e020c6897faae2c2d0feb64f98fc2ad3a996d0925a92",
-    "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
-    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
-    "scenes": "4da6fb327b508a4b20d5f5803029e374f9a1e423c55757c60cee8bf984fd3f4d",
-    "sheet": "234fd3c20e850bdde174efc6b3d4b20f1025dc5ddbf2c15caef766a925f0c722",
-    "tree": "02900038234b11c46790c7a09b75a68a0b877cd3270c7e57c94564ef758b15b2"
-   },
-   "manifest": {
-    "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
-    "designer_exam.md": "9892f91253ca15581c15f6f64d211a2275f345d0e13e0200dcda9c9f8004e07a"
-   },
-   "outcome": "done",
-   "owner_uncited": [],
-   "run": "bench-ek4-st4-20261113",
-   "stage": 4,
-   "summary": "Exam re-checked after the 5 scene-only edits (bench-ek4-st3-20261113): exam10 (119 frozen scenarios, readers a473319ec15ae5385 and a8fa6ad09cfa05533, control a83ccac75557b40bd) was frozen on tree 02900038234b and sheet 234fd3c20e85, which the edits did not touch; designer_stage.py check accepts it against the current hashes, so it stays all-pass 119/119. No new helpers ran (no subagents in this run's brief); nothing charged."
+   "summary": "No model run: the stage-3 artifacts (tree, sheet, scenes, floor) as fixed and claimed for rm-coverage-judge-1794599960 gaps g1-g6 (sc_settings_sweep animal and mech pinned under 90 kg) are accepted as they stand; lint, scene contract, showcases and floor pass."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 5,
- "status": "blocked",
+ "stage": 4,
+ "status": "ready",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }

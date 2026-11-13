@@ -1,0 +1,6 @@
+{
+ "run": "bench-ek-owner-lock-st3-20261113",
+ "stage": 3,
+ "outcome": "done",
+ "summary": "No model run: the stage-3 artifacts (tree, sheet, scenes, floor) as fixed and claimed for rm-coverage-judge-1794599960 gaps g1-g6 (sc_settings_sweep animal and mech pinned under 90 kg) are accepted as they stand; lint, scene contract, showcases and floor pass."
+}
