@@ -13,7 +13,7 @@ Tags: [measured] = run by a harness and readable on disk; [guess ~N%] = my estim
 1. **Engine: local-inertial shallow water** (Bates 2010, de Almeida 2012; MandrakeModels `local_inertial`), on design 7's
    bookkeeping: whole decilitres per square, one shared transfer per edge, current read off the water that crossed each edge.
 2. **Referee and runner-up: first-order full shallow water** (`swe_hll`): the only arm that carries real bores and
-   dam-break fronts, about 2.5 times the cost of local-inertial [measured, numpy, section 4].
+   dam-break fronts, about 3 to 4 times the cost per tick of local-inertial [measured, numpy, section 4].
 3. **Two clocks.** Flow runs at eye speed (one water-second per 60 ticks at game speed 1, so water moves at a natural pace
    on screen). The slow terms (evaporation, groundwater, edge refill, rain, season, drought) run on the calendar, once per
    pulse per body, as booked volume changes. Water that has settled sleeps.
@@ -83,15 +83,15 @@ C# is MandrakeModels' projection: numpy time divided by the measured numpy/numba
 
 | solver | Python ms/tick 250 | 325 | C# ms/tick 250 | 325 | dam-break water vs referee | volume |
 |---|---|---|---|---|---|---|
-| local_inertial | 0.40 | 0.82 | 0.11 to 0.30 | 0.23 to 0.61 | 1.48 x (early) | exact [measured] |
-| swe_hll | 1.16 | 2.89 | 0.20 to 0.52 | 0.49 to 1.30 | 1.00 (reference; ANUGA agrees to 0.2%) | exact |
-| pipes | 0.54 | 1.21 | 0.02 to 0.06 | 0.05 to 0.12 | 1.59 x | exact |
+| local_inertial | 0.40 | 0.73 | 0.11 to 0.30 | 0.21 to 0.55 | 1.48 x (early) | exact [measured] |
+| swe_hll | 1.25 | 2.79 | 0.21 to 0.56 | 0.47 to 1.25 | 1.00 (reference; ANUGA agrees to 0.2%) | exact |
+| pipes | 0.54 | 1.00 | 0.02 to 0.05 | 0.04 to 0.10 | 1.59 x | exact |
 | diffusion_wave_implicit_adi | 1.38 | 3.02 | 0.23 to 0.62 | 0.51 to 1.35 | 1.55 x | exact |
-| wca2d (cut) | 0.44 | 0.86 | 0.07 to 0.20 | 0.15 to 0.39 | 0.09 x (late) | exact |
-| ca_game (cut) | 0.06 | 0.13 | 0.01 to 0.03 | 0.02 to 0.06 | 0.03 x (late) | exact |
+| wca2d (cut) | 0.44 | 0.86 | 0.07 to 0.20 | 0.14 to 0.39 | 0.09 x (late) | exact |
+| ca_game (cut) | 0.06 | 0.12 | 0.01 to 0.03 | 0.02 to 0.06 | 0.03 x (late) | exact |
 
 Sources: `~/dev/MandrakeModels/results/results.csv` (medians computed from it), `results.md` "Flood timing" and
-`crosscheck.md`. Pipes looks cheapest in C# because its numpy/numba ratio was 39 against 5.3 for local-inertial
+`crosscheck.md`; refreshed after the pit-dig and moat rows were re-run (MandrakeModels c9c5ed1). Pipes looks cheapest in C# because its numpy/numba ratio was 39 against 5.3 for local-inertial
 [measured, `results.md` probe table]: the numba local-inertial kernel is the less optimised one [guess ~60%], so the
 true gap is probably smaller.
 
@@ -106,6 +106,8 @@ What each looks like (stills at 128, `D:\ClaudeWork\mandrakemodels\compare\still
 `LOOKED.md` of the output folder):
 - **local_inertial**: reads as water everywhere; faint striping in deep water just behind the dam-break gap.
 - **swe_hll**: the cleanest picture; sharp dam-break front and its reflected arc.
+- **swell scene**: reference, local-inertial, pipes and ANUGA all show swell bands bending through the breakwater gap; the
+  cellular automata and implicit ADI show a flat sea (no waves at all).
 - **pipes**: a checkerboard ripple over the whole lake in the draining-lake scene and along the river; it never quite
   settles to a mirror.
 - **diffusion_wave_implicit_adi**: smooth and slightly blurred; no fronts.
@@ -116,7 +118,7 @@ What each cannot do:
 | | rivers | edge sources, sinks, level-setters | pits and canals | FlowWorks pit/canal system already shipped |
 |---|---|---|---|---|
 | local_inertial | yes; no momentum advection, so fast jets through a gap are softened (valid below Froude ~0.5) | yes (shared forcing) | yes; pit fills with true travel time | replaces fill-and-spill for any body joined to natural water; fill-and-spill stays for the starting state at map load and for sealed still bodies |
-| swe_hll | yes, including bores and hydraulic jumps | yes | yes | as local_inertial, at about 2.5 times the cost |
+| swe_hll | yes, including bores and hydraulic jumps | yes | yes | as local_inertial, at about 3 to 4 times the cost |
 | pipes | yes, but a 1 cm sheet accelerates like a 3 m channel: spills on the flat plain run too fast | yes | yes, with slosh that rings | as above |
 | implicit ADI | yes, big steps; but in the design-7 implicit twin (its cousin) fill time depended on step length (625 s vs 3,753 s) | yes | yes | the only arm that could run flow on the calendar clock, at the highest per-step cost |
 
@@ -146,8 +148,9 @@ screen therefore runs **86 times slower than the calendar**.
 
 ## 6. Other open choices (in QUESTIONS.md, recommendation first)
 
-- **Waves:** drawn only (local-inertial plus the `linear_wave` visual layer), or simulated (full shallow water, about 2.5
-  times the cost). Recommend drawn.
+- **Waves:** local-inertial already carries swell and its diffraction through a breakwater gap, much like the reference
+  (swell still at 27 s, looked at 2026-11-12); full shallow water adds breaking bores and hydraulic jumps at about 3 to 4
+  times the cost. Recommend local-inertial swell plus a drawn chop layer (MandrakeModels `linear_wave` or a shader).
 - **Map size the cost bar must pass:** 250, 325 or 400. Recommend 325 with 400 measured but not binding.
 - **Groundwater both ways:** the table refills a body below it; should a body above it also seep away (a dry-biome pond
   leaks into the ground as well as evaporating)? Recommend yes, slowly. The MandrakeModels model seeps up only today.
@@ -158,4 +161,5 @@ screen therefore runs **86 times slower than the calendar**.
 - Fixed-point stability of local-inertial: UNMEASURED.
 - The 400 row: full-grid medians are in `results.md` (local-inertial 1.49 Python ms/tick, C# 0.42 to 1.12 guess); a
   wet-only figure at 400 is not computed.
+- All nine water scenes were rendered at 128 and looked at after the fixes; the other-physics pages were not re-rendered.
 - Python timings were taken on a loaded machine; an idle re-time is owed in MandrakeModels.
