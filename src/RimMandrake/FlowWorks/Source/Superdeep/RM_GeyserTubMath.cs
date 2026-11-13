@@ -165,20 +165,5 @@ namespace RimMandrake.FlowWorks
 			}
 			return (int)(perSecond / 60f + roll);
 		}
-
-		// ── the drawn seat ──────────────────────────────────────────────
-
-		/// <summary>How far south (cells) the print is lowered: the pawns' sink for the seat (<paramref name="perLevel"/> a
-		/// notch), never more than the <paramref name="roomCells"/> rows of pit at least as deep south of the footprint, so the
-		/// print stays inside the pit's outline.</summary>
-		public static float SeatSink(int seatNotches, float perLevel, int roomCells)
-		{
-			if (seatNotches <= 0 || !(perLevel > 0f) || roomCells <= 0)
-			{
-				return 0f;
-			}
-			float s = seatNotches * perLevel;
-			return s < roomCells ? s : roomCells;
-		}
 	}
 }

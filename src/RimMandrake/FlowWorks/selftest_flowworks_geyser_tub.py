@@ -7,7 +7,7 @@ Reads the shipped defs and the comment-blanked C# and checks:
   1-4  the hediffs, job and joy giver carry Standalone Hot Spring's numbers as our own;
   5    every setting is declared, scribed with its declared default, drawn, and the screen is registered;
   6    no dependency on Standalone Hot Spring (no defName, class or packageId of it under FlowWorks; About.xml unchanged);
-  7    the spawn, sprayer and puff patches exist, gated by geyserSinksEnabled; the print shift reaches PrintPlane;
+  7    the spawn, sprayer and puff patches exist, gated by geyserSinksEnabled;
   8    the heat push is never skipped (no PushHeat patch, the sprayer prefix cannot skip the tick);
   9    FluidDef.bathGroup defaults to None; exactly water, tar, oil, blood and the four slimes bathe; the pool gate calls
        RM_GeyserTubMath.PoolSafe with Bathable(fluid);
@@ -20,7 +20,10 @@ Reads the shipped defs and the comment-blanked C# and checks:
   15   the generator waiver holds only on a dry sunk geyser and only on the geyser's own squares;
   16   RIMMANDRAKE_RESTRICT_HEAT_TO_GEYSER_BENEATH_PIT_WATER_ONLY: the soak cells and the no-freeze squares are the
        heated water only (HeatedCells: the vent covered, the vent's own liquid, joined to the vent by
-       RM_GeyserTubMath.PoolRegion), never a radius alone.
+       RM_GeyserTubMath.PoolRegion), never a radius alone;
+  17   RIMMANDRAKE_ALIGN_HOT_TUB_VENT_BUBBLES_AND_WATER_SQUARE: the vent print, its puffs, its plume and its heated water
+       share one anchor, the vent's own centre (VentCentre = TrueCenter): no print shift, no plume or puff offset, and
+       the PrintPlane prefix cannot move a plane (it re-enters through the split: a shift there doubled).
 Named MUTANTS of the real text must each turn a check red (can-fail).
 NOT proven here: anything in game (spec 4.2 L1-L8: drawing, puffs, plume, the job, hediffs, generator, save/load).
 """
@@ -153,10 +156,8 @@ def checks(t, flowworks_texts, defnames):
           and "[HarmonyPatch(typeof(IntermittentSteamSprayer), nameof(IntermittentSteamSprayer.SteamSprayerTick))]" in pit
           and "[HarmonyPatch(typeof(FleckMaker), nameof(FleckMaker.ThrowAirPuffUp))]" in pit
           and "RM_GeyserPit.On ? RM_GeyserPit.ParentOf(__instance)" in pit
-          and "if (!On || g == null" in body_of(pit, "public static float PrintShiftZ(")
-          and "ctxShiftZ = t is Building_SteamGeyser geyser ? RM_GeyserPit.PrintShiftZ(geyser)" in sub
-          and "RM_SubmergeDraw.Shift(ref center);" in body_of(sub, "private static bool Prefix(MapDrawLayer layer, ref Vector3 center"),
-          "spawn/sprayer/puff patches gated by geyserSinksEnabled; the print shift reaches PrintPlane")
+          ,
+          "spawn/sprayer/puff patches gated by geyserSinksEnabled")
     pre = body_of(pit, "private static void Prefix(IntermittentSteamSprayer __instance)")
     check(8, "PushHeat" not in pit and pre != "" and "return false" not in pre,
           "the heat push stays: no PushHeat patch, the sprayer prefix cannot skip the tick")
@@ -209,6 +210,16 @@ def checks(t, flowworks_texts, defnames):
           and "InReach" not in soakc and "RM_GeyserPit.HeatedCells(g, RM_GeyserPit.Read(g))" in warm and "set.Contains(c)" in warm
           and "InReach" not in warm,
           "heat only through the water over the vent: soak cells and no-freeze read HeatedCells, never a radius alone")
+    plume = body_of(pit, "private void Plume(Building_SteamGeyser g)")
+    puff = body_of(pit, "internal static bool Puff(ref Vector3 loc)")
+    plane = body_of(sub, "private static bool Prefix(MapDrawLayer layer,")
+    anchor = re.search(r"public static Vector3 VentCentre\(Building_SteamGeyser g\) => g\.TrueCenter\(\);", pit)
+    gone = [w for w in ("PrintShiftZ", "ctxShiftZ", "SeatSink", "Shift(ref") if any(w in t[k] for k in ("pit", "submerge", "math"))]
+    check(17, anchor is not None and not gone and "Vector3 ctr = RM_GeyserPit.VentCentre(g);" in plume
+          and not re.search(r"\bctr\.[xz]\s*[-+*/]?=", plume) and not re.search(r"\bloc\.[xz]\s*[-+*/]?=", puff)
+          and "Vector3 centre = VentCentre(g);" in heat and "RM_GeyserPit.VentCentre(g)" in warm
+          and plane != "" and "ref Vector3 center" not in plane and not re.search(r"\bcenter\.[xz]\s*[-+*/]?=", plane),
+          "vent, puffs, plume and heated water share the vent's centre; nothing shifts a plane (left: %s)" % gone)
     return fails
 
 
@@ -220,7 +231,14 @@ MUTANTS = [
     ("a setting not scribed", "settings", 'Scribe_Values.Look(ref geyserBathSlipEnabled, "geyserBathSlipEnabled", true);', ""),
     ("the screen not registered", "mod", 'Block(list, "Geysers in pits", RM_GeyserPitSettings.DoSettingsSection);', ""),
     ("sprayer patch ungated", "pit", "RM_GeyserPit.On ? RM_GeyserPit.ParentOf(__instance)", "true ? RM_GeyserPit.ParentOf(__instance)"),
-    ("print shift dropped", "submerge", "RM_SubmergeDraw.Shift(ref center);", ""),
+    ("plume drawn south of the vent", "pit", "ctr.y = AltitudeLayer.MoteLow.AltitudeFor();", "ctr.y = AltitudeLayer.MoteLow.AltitudeFor(); ctr.z += -2f;"),
+    ("no-freeze centred off the vent", "pit", "Vector3 ctr = RM_GeyserPit.VentCentre(g);\n", "Vector3 ctr = g.Position.ToVector3();\n"),
+    ("puff drawn south of the vent", "pit", "			dryPuffs++;", "			loc.z -= 2f;\n			dryPuffs++;"),
+    ("a plane moved in the PrintPlane prefix", "submerge", "			return !RM_SubmergeDraw.Split(layer, center,",
+     "			center.z -= 2f;\n			return !RM_SubmergeDraw.Split(layer, center,"),
+    ("heated water centred off the vent", "pit", "Vector3 centre = VentCentre(g);", "Vector3 centre = VentCentre(g) + new Vector3(0f, 0f, 2f);"),
+    ("the anchor is not the vent", "pit", "VentCentre(Building_SteamGeyser g) => g.TrueCenter();",
+     "VentCentre(Building_SteamGeyser g) => g.TrueCenter() + new Vector3(0f, 0f, -2f);"),
     ("sprayer prefix skips the tick", "pit", "RM_GeyserPit.spraying = RM_GeyserPit.On", "return false; RM_GeyserPit.spraying = RM_GeyserPit.On"),
     ("bathGroup defaults to Water", "fluiddef", "bathGroup = RM_GeyserTubMath.BathGroup.None;", "bathGroup = RM_GeyserTubMath.BathGroup.Water;"),
     ("acid made bathable", "pitfluids_xml", "<defName>RM_Fluid_AcidWater</defName>", "<defName>RM_Fluid_AcidWater</defName><bathGroup>Tar</bathGroup>"),
@@ -278,7 +296,7 @@ def main():
             fails.append("CAN-IT-FAIL: mutant '%s' passed every check" % name)
     for f in fails:
         print("FAIL", f)
-    print("PASS selftest_flowworks_geyser_tub (16 checks, %d mutants red)" % len(MUTANTS) if not fails else "FAILED %d" % len(fails))
+    print("PASS selftest_flowworks_geyser_tub (17 checks, %d mutants red)" % len(MUTANTS) if not fails else "FAILED %d" % len(fails))
     return 1 if fails else 0
 
 

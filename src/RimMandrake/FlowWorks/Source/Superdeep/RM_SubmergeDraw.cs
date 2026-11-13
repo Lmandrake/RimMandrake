@@ -202,16 +202,6 @@ namespace RimMandrake.FlowWorks
 		private static float ctxShare, ctxLevel, ctxHeight, ctxClarity, ctxCut, ctxFoot;
 		private static IntVec3 ctxCell;
 
-		/// <summary>RIMMANDRAKE_SINK_GEYSER_INTO_PIT_BUBBLING_HOT_TUB: how far south a sunk geyser's planes are printed (cells,
-		/// &lt;= 0; RM_GeyserPit.PrintShiftZ), set for the thing being printed and applied to each of its planes.</summary>
-		private static float ctxShiftZ;
-
-		/// <summary>The print shift of the thing being printed (0 for everything but a sunk geyser).</summary>
-		internal static void Shift(ref Vector3 center)
-		{
-			center.z += ctxShiftZ;
-		}
-
 		/// <summary>SectionLayer_ThingsGeneral.TakePrintFrom prefix: opens the split for a thing standing wet in a dug
 		/// square (nothing for anything else).</summary>
 		public static void Begin(Thing t)
@@ -219,7 +209,6 @@ namespace RimMandrake.FlowWorks
 			ctxOn = false;
 			ctxPit = false;
 			ctxThing = null;
-			ctxShiftZ = t is Building_SteamGeyser geyser ? RM_GeyserPit.PrintShiftZ(geyser) : 0f;
 			if (!On || t == null)
 			{
 				return;
@@ -287,7 +276,6 @@ namespace RimMandrake.FlowWorks
 
 		public static void End()
 		{
-			ctxShiftZ = 0f;
 			ctxOn = false;
 			ctxPit = false;
 			ctxThing = null;
@@ -1267,10 +1255,9 @@ namespace RimMandrake.FlowWorks
 	internal static class Patch_RM_SubmergePrintPlane
 	{
 		[HarmonyPrefix]
-		private static bool Prefix(MapDrawLayer layer, ref Vector3 center, Vector2 size, Material mat, float rot, bool flipUv,
+		private static bool Prefix(MapDrawLayer layer, Vector3 center, Vector2 size, Material mat, float rot, bool flipUv,
 			Vector2[] uvs, Color32[] colors, float topVerticesAltitudeBias, float uvzPayload)
 		{
-			RM_SubmergeDraw.Shift(ref center);
 			return !RM_SubmergeDraw.Split(layer, center, size, mat, rot, flipUv, uvs, colors, topVerticesAltitudeBias, uvzPayload);
 		}
 	}

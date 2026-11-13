@@ -108,13 +108,6 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(n == 60, "can-fail: 6 a second over 10 s is 60 (got " + n + ")");
                 Assert(RM_GeyserTubMath.BubblesThisTick(0f, 0.99f) == 0, "can-fail: rate 0 is none");
             });
-            Case("GeyserTub_sink_stays_inside_the_pit", () =>
-            {
-                Assert(Math.Abs(RM_GeyserTubMath.SeatSink(4, 0.3f, 5) - 1.2f) < 1e-4f, "room to spare: the pawn sink");
-                Assert(RM_GeyserTubMath.SeatSink(4, 0.3f, 0) == 0f, "can-fail: a pit no wider than the vent holds it at its cells");
-                Assert(Math.Abs(RM_GeyserTubMath.SeatSink(4, 0.3f, 1) - 1f) < 1e-4f, "can-fail: one row of room caps it at one cell");
-                Assert(RM_GeyserTubMath.SeatSink(0, 0.3f, 5) == 0f, "surface: no sink");
-            });
             Case("GeyserTub_bath_groups_follow_their_settings", () =>
             {
                 Assert(RM_GeyserTubMath.GroupAllowed(RM_GeyserTubMath.BathGroup.Water, false, false, false, false), "water always bathes");

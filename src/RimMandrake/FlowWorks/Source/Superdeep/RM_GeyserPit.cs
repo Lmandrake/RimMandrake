@@ -22,9 +22,9 @@ namespace RimMandrake.FlowWorks
 	/// RIMMANDRAKE_SINK_GEYSER_INTO_PIT_BUBBLING_HOT_TUB: a steam geyser in a dug pit (spec
 	/// design/specs/geyser_in_pit_hot_tub_2026-11-12.md). The geyser is never moved or replaced: its SEAT is read from the
 	/// excavation grid every time (the shallowest of its four squares, RM_GeyserTubMath.SeatNotches), so no field is saved and
-	/// filling the pit back in raises it. Drawn at the seat by the one under-liquid law (RM_SubmergeDraw: a thing standing on
-	/// the floor, RM_GeyserTubMath.GeyserMetres tall) and lowered by the pawns' sink while that keeps it inside the pit. Its
-	/// puffs rise from the seat; once liquid covers the vent they stop and the plume (<see cref="RM_MapComponent_GeyserPits"/>)
+	/// filling the pit back in raises it. Drawn on its own squares by the one under-liquid law (RM_SubmergeDraw: a thing
+	/// standing on the floor, RM_GeyserTubMath.GeyserMetres tall). Its puffs rise from the vent; once liquid covers the vent
+	/// they stop and the plume (<see cref="RM_MapComponent_GeyserPits"/>)
 	/// bubbles instead. Vanilla heat is untouched. A covered, uncapped geyser under a bathable liquid is a pool
 	/// (JobDriver_RM_SoakInGeyserPool).
 	/// </summary>
@@ -44,8 +44,6 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>The geyser whose sprayer is ticking now (set around IntermittentSteamSprayer.SteamSprayerTick).</summary>
 		internal static Building_SteamGeyser spraying;
-
-		private const int MaxRoomRows = 5;
 
 		public struct State
 		{
@@ -127,41 +125,16 @@ namespace RimMandrake.FlowWorks
 			return sp != null && SprayTicksLeft(sp) > 0;
 		}
 
-		/// <summary>How far south the print and its steam are drawn (cells, &lt;= 0): the pawns' sink for the seat, held inside
-		/// the pit (RM_GeyserTubMath.SeatSink over the rows of pit at least as deep south of the footprint).</summary>
-		public static float PrintShiftZ(Building_SteamGeyser g)
-		{
-			if (!On || g == null || !g.Spawned || !RimMandrakeFlowWorksSettings.pitDepthDrawOffsetEnabled)
-			{
-				return 0f;
-			}
-			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(g.Map);
-			State s = Read(g);
-			if (eng == null || s.seat <= 0)
-			{
-				return 0f;
-			}
-			CellRect r = g.OccupiedRect();
-			int room = 0;
-			for (int k = 1; k <= MaxRoomRows; k++)
-			{
-				bool deep = true;
-				for (int x = r.minX; x <= r.maxX && deep; x++)
-				{
-					IntVec3 c = new IntVec3(x, 0, r.minZ - k);
-					deep = c.InBounds(g.Map) && eng.HollowDepthAt(c) >= s.seat;
-				}
-				if (!deep)
-				{
-					break;
-				}
-				room++;
-			}
-			return -RM_GeyserTubMath.SeatSink(s.seat, RimMandrakeFlowWorksSettings.pitSinkPerLevel, room);
-		}
+		/// <summary>RIMMANDRAKE_ALIGN_HOT_TUB_VENT_BUBBLES_AND_WATER_SQUARE (owner 2026-11-13: "the geyser itself is outside the
+		/// hot tub dark blue region ... you can see the dark geyser beneath, the bubbles north of that, and the hot tub dark
+		/// blue square north of that too"): the one anchor of the vent print, its puffs, its plume and its heated water: the
+		/// centre of its own squares. Nothing is drawn shifted (a print shift lowered by the pawns' sink was applied twice,
+		/// once more by each re-entered PrintPlane, and put the vent four squares south of its water).</summary>
+		public static Vector3 VentCentre(Building_SteamGeyser g) => g.TrueCenter();
 
 		/// <summary>FleckMaker.ThrowAirPuffUp while <see cref="spraying"/> is ticking: false = no puff (the vent is covered: the
-		/// plume replaces it); otherwise the puff rises from the drawn seat. The heat push beside it is never touched.</summary>
+		/// plume replaces it); otherwise the puff rises where vanilla puts it, on the vent. The heat push beside it is never
+		/// touched.</summary>
 		internal static bool Puff(ref Vector3 loc)
 		{
 			State s = Read(spraying);
@@ -174,7 +147,6 @@ namespace RimMandrake.FlowWorks
 				coveredPuffsStopped++;
 				return false;
 			}
-			loc.z += PrintShiftZ(spraying);
 			dryPuffs++;
 			return true;
 		}
@@ -189,7 +161,7 @@ namespace RimMandrake.FlowWorks
 		public static List<IntVec3> HeatedCells(Building_SteamGeyser g, State s)
 		{
 			List<IntVec3> heated = new List<IntVec3>();
-			if (g == null || !g.Spawned || s.seat <= 0 || !s.covered || s.capped || s.fluid == null)
+			if (!On || g == null || !g.Spawned || s.seat <= 0 || !s.covered || s.capped || s.fluid == null)
 			{
 				return heated;
 			}
@@ -222,7 +194,7 @@ namespace RimMandrake.FlowWorks
 				}
 			}
 			bool[] reached = RM_GeyserTubMath.PoolRegion(w, h, water, vent.ToArray());
-			Vector3 centre = g.TrueCenter();
+			Vector3 centre = VentCentre(g);
 			foreach (IntVec3 c in win)
 			{
 				if (reached[(c.z - win.minZ) * w + (c.x - win.minX)] && RM_GeyserTubMath.InReach(c.x + 0.5f - centre.x, c.z + 0.5f - centre.z, reach))
@@ -366,7 +338,7 @@ namespace RimMandrake.FlowWorks
 				{
 					continue;
 				}
-				Vector3 ctr = g.TrueCenter();
+				Vector3 ctr = RM_GeyserPit.VentCentre(g);
 				float dx = c.x + 0.5f - ctr.x, dz = c.z + 0.5f - ctr.z;
 				if (dx * dx + dz * dz > 25f)
 				{
@@ -464,8 +436,7 @@ namespace RimMandrake.FlowWorks
 				RM_LiquidSurfaceLook look = RM_SubmergeDraw.LookAt(map, RM_SuperdeepTrap.EngineOf(map), s.seatCell);
 				Color tint = look != null ? look.bubbleColor : new Color(0.9f, 0.95f, 1f);
 				bool thick = RM_GeyserTubMath.Thick(tpt);
-				Vector3 ctr = g.TrueCenter();
-				ctr.z += RM_GeyserPit.PrintShiftZ(g);
+				Vector3 ctr = RM_GeyserPit.VentCentre(g);   // on the vent's own squares, as is its heated water
 				ctr.y = AltitudeLayer.MoteLow.AltitudeFor();
 				for (int k = 0; k < n; k++)
 				{
@@ -661,8 +632,10 @@ namespace RimMandrake.FlowWorks
 				}
 			}
 			CultureInfo ci = CultureInfo.InvariantCulture;
+			Vector3 vc = RM_GeyserPit.VentCentre(g);
 			return "spawned=" + g.Spawned + " thingId=" + g.ThingID + " seatNotches=" + s.seat
-				+ " drawDz=" + RM_GeyserPit.PrintShiftZ(g).ToString("F3", ci) + " levelMetres=" + s.levelMetres.ToString("F3", ci)
+				+ " vent=" + vc.x.ToString("F1", ci) + "," + vc.z.ToString("F1", ci)
+				+ " heated=" + RM_GeyserPit.HeatedCells(g, s).Count + " levelMetres=" + s.levelMetres.ToString("F3", ci)
 				+ " covered=" + s.covered + " fluid=" + (s.fluid?.defName ?? "none") + " bathable=" + RM_GeyserPit.Bathable(s.fluid)
 				+ " pool=" + pool + " spraying=" + RM_GeyserPit.Spraying(g) + " plumeBubbles=" + RM_GeyserPit.plumeBubbles
 				+ " dryPuffs=" + RM_GeyserPit.dryPuffs + " coveredPuffsStopped=" + RM_GeyserPit.coveredPuffsStopped

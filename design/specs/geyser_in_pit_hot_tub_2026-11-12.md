@@ -94,17 +94,17 @@ as our own defaults. If a player also runs that mod, both work: its building is 
   ground that is there, so it never floats: one undug corner keeps it at the surface, four cells dug to 2 m seat it at
   2 m. Derived from the excavation grid every time it is asked; **no new saved field**, so old saves load as they are,
   and filling a pit back in raises the geyser with it.
-- **Drawn** at the seat: the print is lowered by the same sink pawns use (`pitSinkPerLevel` × seat notches), but never
-  further than the rows of pit at least as deep that lie south of the footprint (`RM_GeyserTubMath.SeatSink`), so it
-  stays inside the pit's outline: a pit dug only on the geyser's own 2x2 holds it at its cells (`drawDz` 0), a pit
-  that runs on south lets it sink. Built as one shift applied to each of its planes inside the existing print context
-  (`RM_SubmergeDraw.Begin` sets it, the `Printer_Plane.PrintPlane` prefix applies it before the under-liquid split);
-  every 250 ticks a geyser whose seat moved re-meshes its squares. The geyser casts no pit floor shadow (it is a vent).
+- **Drawn** on its own squares, at the seat: the print, the puffs, the plume and the heated water share one anchor,
+  `RM_GeyserPit.VentCentre` (owner 2026-11-13: *"the geyser itself is outside the hot tub dark blue region ... you can
+  see the dark geyser beneath, the bubbles north of that, and the hot tub dark blue square north of that too"*;
+  RIMMANDRAKE_ALIGN_HOT_TUB_VENT_BUBBLES_AND_WATER_SQUARE). The first build lowered the print by the pawns' sink; the
+  `PrintPlane` prefix applied that shift again on every plane the under-liquid split re-printed, so the vent drew about
+  four squares south of its water and the plume two: removed. Every 250 ticks a geyser whose seat moved re-meshes its
+  squares. The geyser casts no pit floor shadow (it is a vent).
 - **Under liquid** by `RM_UnderLiquid`: a thing standing on the floor, `GeyserMetres = 0.4` (a low vent mound), its
   depth the seat. `Share(level, 0, 0.4)` of it is under; the drowned part draws at `Seen(clarity, metresOver)`: tinted in
   clear water, hidden in an opaque liquid (tar, oil, blood). The row is `RM_SubmergeDraw.BuildingMetres`.
-- **Its puffs** rise from the drawn seat while it is dry (the puff origin shifted with the print), so steam visibly
-  comes out of the bottom of the pit.
+- **Its puffs** rise from the vent while it is dry, where vanilla puts them.
 - The geyser **never vanishes** (no despawn, no destroy, same ThingID throughout dig, fill, drain and refill).
 
 ### 3.2 Filling: the plume of bubbles
@@ -239,9 +239,10 @@ build [measured].
 ### 4.1 Offline (no game)
 
 **O1, C#: `SelfTest/GeyserTubChecks.cs`**, registered in `SelfTest/Program.cs`, compiling the Verse-free
-`Superdeep/RM_GeyserTubMath.cs` through `RimMandrakeFlowWorks.SelfTest.csproj`: 9 cases, 39 assertions (seat = the
+`Superdeep/RM_GeyserTubMath.cs` through `RimMandrakeFlowWorks.SelfTest.csproj`: 9 cases, 44 assertions (seat = the
 shallowest cell, 7; covered past 0.4 m, 4; the pool gate, 5; reach, 2; afterglow 1.25 days, 1; plume rates and sizes,
-8; bubbles per tick average the rate, 2; the sink held inside the pit, 4; bath groups follow their settings, 6).
+8; bubbles per tick average the rate, 2; bath groups follow their settings, 6; heat only through the water over the
+vent, 9).
 Run: `python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only 'GeyserTub_*'` (9/9).
 
 **O2, Python: `src/RimMandrake/FlowWorks/selftest_flowworks_geyser_tub.py`**: 15 checks over the shipped defs and the
@@ -256,21 +257,21 @@ must turn a check red. Run: `python3 src/RimMandrake/Utils/run_selftests.py --on
 by `jawa/static_call`, `"reset"` zeroes the counters) — NOT RUN; the staging and what right looks like:
 `D:\ClaudeWork\rimmandrake\conductor\underliquid_20261112_evening\geyser_build\LIVE_LOOK_CHECKLIST.md`
 
-The proof returns: `spawned`, `thingId`, `seatNotches`, `drawDz` (the print shift, cells), `levelMetres`, `covered`,
+The proof returns: `spawned`, `thingId`, `seatNotches`, `vent` (the anchor of print, puffs, plume and heated water: x,z), `heated` (squares of heated water), `levelMetres`, `covered`,
 `fluid`, `bathable`, `pool`, `spraying`, `plumeBubbles`, `dryPuffs` and `coveredPuffsStopped` (counters since reset),
 `soakers`, `capped`.
 
 | # | stage | pass reads | today |
 |---|---|---|---|
-| L1 | spawn a SteamGeyser on open soil; dig its four cells and two rows south of it to 2 m | same `thingId`, `spawned` true, `seatNotches` 4, `drawDz` < 0 (−1.2 with the shipped sink), `dryPuffs` rising | proof absent; geyser drawn at the surface |
-| L2 | dig only three cells | `seatNotches` 0, `drawDz` 0 | — |
+| L1 | spawn a SteamGeyser on open soil; dig its four cells and two rows south of it to 2 m | same `thingId`, `spawned` true, `seatNotches` 4, `vent` the footprint's centre, `dryPuffs` rising | proof absent; geyser drawn at the surface |
+| L2 | dig only three cells | `seatNotches` 0, `heated` 0 | — |
 | L3 | fill the 2 m pit with fresh water to 1 m | `covered` true, `fluid` Water; over 5000 ticks `plumeBubbles` > 0 and `dryPuffs` 0 | water throws no bubbles; puffs rise through it |
 | L4 | a colonist with joy 0.2 ordered "Soak in the hot pool" | within 3000 ticks has `RM_HotPoolSoak`, ComfyTemperatureMax raised by 50; after the soak: `RM_HotPoolAfterglow` at 0.5, joy higher than at start, the `HotSpring` thought present [Q3] | no such job |
 | L5 | drain; refill with acid water | `plumeBubbles` > 0 in acid's colour; `bathable` false; no soak job given, no float-menu option | — |
 | L5b | one pit each of tar, oil, blood and a slime | `bathable` true, `pool` true; a soak ends with that liquid's cost (spec 3.4 table) | — |
 | L6 | drain dry; place a geothermal generator [Q2] | allowed dry; `capped` true; then fill: `plumeBubbles` 0, no soak job | generator refused on a dug cell [guess ~70%] |
-| L7 | save, reload | same `seatNotches`, `drawDz`; no new errors in `Player.log` | — |
-| L8 | `geyserSinksEnabled` off | `drawDz` 0, `plumeBubbles` 0, no soak job (today's game) | — |
+| L7 | save, reload | same `seatNotches`, `vent`, `heated`; no new errors in `Player.log` | — |
+| L8 | `geyserSinksEnabled` off | `heated` 0, `plumeBubbles` 0, no soak job (today's game) | — |
 
 L1–L8 run as one `stage_proof_site.py`-style sitting on the minimal list (all five DLC). No flyer is involved. The
 bubbles' look (tint, size, the wisp) is judged once by an Opus art judge from a zoomed capture, not by the maker.
