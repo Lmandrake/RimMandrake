@@ -1,0 +1,2 @@
+{"run": "bench-ek4-st4-20261113", "stage": 4, "outcome": "done",
+ "summary": "Exam re-checked after the 5 scene-only edits (bench-ek4-st3-20261113): exam10 (119 frozen scenarios, readers a473319ec15ae5385 and a8fa6ad09cfa05533, control a83ccac75557b40bd) was frozen on tree 02900038234b and sheet 234fd3c20e85, which the edits did not touch; designer_stage.py check accepts it against the current hashes, so it stays all-pass 119/119. No new helpers ran (no subagents in this run's brief); nothing charged."}

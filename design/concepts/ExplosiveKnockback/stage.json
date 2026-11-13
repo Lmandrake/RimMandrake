@@ -724,10 +724,17 @@
     "ref": "run bench-ek4-st3-20261113",
     "stage": 3,
     "tokens": 150000
+   },
+   {
+    "at": "2026-11-13T19:58:49Z",
+    "kind": "stage",
+    "ref": "run bench-ek4-st4-20261113",
+    "stage": 4,
+    "tokens": 20000
    }
   ],
   "reserve": 60000,
-  "spent": 96770638
+  "spent": 96790638
  },
  "coverage_releases": [
   {
@@ -1526,6 +1533,24 @@
    "stage": 4,
    "what": "close",
    "why": "run bench-ek4-st3-20261113: stage 3 done"
+  },
+  {
+   "at": "2026-11-13T19:58:37Z",
+   "stage": 4,
+   "what": "over_budget",
+   "why": "96770638 of 4000000 spent; run bench-ek4-st4-20261113 goes on with 3940000 (advisory)"
+  },
+  {
+   "at": "2026-11-13T19:58:37Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run bench-ek4-st4-20261113, stage 4, budget 3940000"
+  },
+  {
+   "at": "2026-11-13T19:58:49Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run bench-ek4-st4-20261113: stage 4 done"
   }
  ],
  "item": "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
@@ -1782,12 +1807,33 @@
    "run": "bench-ek4-st3-20261113",
    "stage": 3,
    "summary": "Stage 3 edits on his card 2026-11-13 ~11:55 PST (OWNER:1794599713730633294, fix the 5 gaps then one judge; gas shove onto an open pit drops the pawn in, stands), exactly the smallest_fix lines of rm-coverage-judge-1794593824: g1 mandrake.rm.flowworks added to the Cauldron dependency clause in sc_gas_chain, sc_cauldron_gas, sc_cover_breaks, sc_gas_shove_into_pit and sc_settings_sweep; g2 sc_mass_and_power gains a test hook absorbing the staged injury (asserted: no new hediff), the damage ratio still read from the explosion; g3 the 250 kg control runs both damages (thrumbo 1 then 3 cells) and the colonist band is 64 to 76 kg (the would_pass condition, 3 cells at 50 and 5 at 100 by ThrowCells: 60-63 kg gives 6 at 100, tying the capped rat); g4 the sweep names the free-flying colonist, the animal, the second animal and the downed pawn; g5 inv_who_is_spared back in coverage_rest by the_spared/sc_spared, mass_and_power demoted to an ordinary scene (2 new < 3), inv_creature_mass_limit and inv_blast_power_damage in coverage_rest by sc_mass_and_power, record inv_who_is_spared scope_note for d_mass_limit. Tree and sheet untouched."
+  },
+  {
+   "at": "2026-11-13T19:58:49Z",
+   "inputs": {
+    "exam": "62595e96a93d811b3fc9e020c6897faae2c2d0feb64f98fc2ad3a996d0925a92",
+    "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
+    "scenes": "4da6fb327b508a4b20d5f5803029e374f9a1e423c55757c60cee8bf984fd3f4d",
+    "sheet": "234fd3c20e850bdde174efc6b3d4b20f1025dc5ddbf2c15caef766a925f0c722",
+    "tree": "02900038234b11c46790c7a09b75a68a0b877cd3270c7e57c94564ef758b15b2"
+   },
+   "manifest": {
+    "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
+    "designer_exam.md": "9892f91253ca15581c15f6f64d211a2275f345d0e13e0200dcda9c9f8004e07a"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "bench-ek4-st4-20261113",
+   "stage": 4,
+   "summary": "Exam re-checked after the 5 scene-only edits (bench-ek4-st3-20261113): exam10 (119 frozen scenarios, readers a473319ec15ae5385 and a8fa6ad09cfa05533, control a83ccac75557b40bd) was frozen on tree 02900038234b and sheet 234fd3c20e85, which the edits did not touch; designer_stage.py check accepts it against the current hashes, so it stays all-pass 119/119. No new helpers ran (no subagents in this run's brief); nothing charged."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 5,
  "status": "ready",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }
