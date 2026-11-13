@@ -7,7 +7,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_AcidWater_Trace</defName>
-    <label>knee-deep acid water (under 0.75 m)</label>
+    <label>knee-deep acid water</label>
     <description>Acid water standing ankle-to-knee deep. Wading it is easy. It burns skin and eats cloth, more the deeper you stand.</description>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
     <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
@@ -47,7 +47,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_AcidWater_Half</defName>
-    <label>shallow acid water (about 1 m)</label>
+    <label>shallow acid water</label>
     <description>Acid water standing knee-to-waist deep. Wading it is slow work. It burns skin and eats cloth, more the deeper you stand.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
@@ -90,7 +90,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_AcidWater_Brim</defName>
-    <label>chest-deep acid water (about 1.5 m)</label>
+    <label>chest-deep acid water</label>
     <description>Acid water standing chest-deep. Crossing it is punishing, but anyone can stand in it. It burns skin and eats cloth, more the deeper you stand.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
@@ -133,7 +133,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_AcidWater_Superdeep</defName>
-    <label>deep acid water (2 m or more)</label>
+    <label>deep acid water</label>
     <description>Acid water filling a very deep pit. Whatever falls in is held there, and the acid water goes to work on it. It burns skin and eats cloth, more the deeper you stand.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
@@ -174,7 +174,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_ReactionLiquor_Trace</defName>
-    <label>knee-deep reaction liquor (under 0.75 m)</label>
+    <label>knee-deep reaction liquor</label>
     <description>Reaction liquor standing ankle-to-knee deep. Wading it is easy. It burns skin and eats cloth, more the deeper you stand.</description>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
     <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
@@ -214,7 +214,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_ReactionLiquor_Half</defName>
-    <label>shallow reaction liquor (about 1 m)</label>
+    <label>shallow reaction liquor</label>
     <description>Reaction liquor standing knee-to-waist deep. Wading it is slow work. It burns skin and eats cloth, more the deeper you stand.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
@@ -257,7 +257,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_ReactionLiquor_Brim</defName>
-    <label>chest-deep reaction liquor (about 1.5 m)</label>
+    <label>chest-deep reaction liquor</label>
     <description>Reaction liquor standing chest-deep. Crossing it is punishing, but anyone can stand in it. It burns skin and eats cloth, more the deeper you stand.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
@@ -300,7 +300,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_ReactionLiquor_Superdeep</defName>
-    <label>deep reaction liquor (2 m or more)</label>
+    <label>deep reaction liquor</label>
     <description>Reaction liquor filling a very deep pit. Whatever falls in is held there, and the reaction liquor goes to work on it. It burns skin and eats cloth, more the deeper you stand.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>

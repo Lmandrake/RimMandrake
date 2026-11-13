@@ -62,7 +62,9 @@ def main():
         if m:
             fills += 1
             assert label.startswith(TIER[m.group(2)]), "%s label %r is not named by depth" % (dn, label)
-            assert label.endswith(METRES[m.group(2)]), "%s label %r does not say its metres of water" % (dn, label)
+            # RIMMANDRAKE_LABEL_PIT_DEPTH_EXACT_ONE_WORD (owner 2026-11-12: "It's supposed to show the precise depth no matter
+            # what"): the band in brackets is gone from every label; the cell readout names the exact depth instead
+            assert METRES[m.group(2)] not in label and "or more" not in label, "%s label %r still carries a depth band" % (dn, label)
     assert fills >= 40, "sanity probe: fill tiers found %d" % fills
 
     fluids = {}

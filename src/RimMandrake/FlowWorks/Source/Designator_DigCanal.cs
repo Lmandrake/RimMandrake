@@ -14,13 +14,13 @@ namespace RimMandrake.FlowWorks
 	{
 		public Designator_DigCanal()
 		{
-			defaultLabel = "Dig canal";
+			defaultLabel = "Dig pit";
 			defaultDesc = "Carve a channel half a metre deeper. Designating a channel that is "
 				+ "already dug deepens it another half-metre, down to the deepest dig set in this mod's settings "
 				+ "(as shipped, colonists 2 m; mechanoids and droids 20 m); from 2 m a cut is a pit. \"Dig to depth\" orders the whole depth at once. "
 				+ "Liquid fills the deepest squares first and overflows into shallower ones. "
 				+ "A channel dug into the strip along the map edge is a SINK: liquid reaching "
-				+ "it leaves the map, which is how you empty a canal on purpose. Bare rock ground "
+				+ "it leaves the map, which is how you empty a pit on purpose. Bare rock ground "
 				+ "can be dug too, but is much slower work, and may turn up chunks of that rock. "
 				+ "Colonists assigned to Mining do the digging.";
 			icon = ContentFinder<Texture2D>.Get("UI/Designators/FlowWorks/RM_DigCanal", true);
@@ -63,7 +63,7 @@ namespace RimMandrake.FlowWorks
 			}
 			if (target == 0 && Map.designationManager.DesignationAt(c, RimMandrakeFlowWorks_DefOf.RM_DigCanal) != null)
 			{
-				return "Already being dug as a canal.";
+				return "Already being dug.";
 			}
 			Building edifice = c.GetEdifice(Map);
 			if (edifice != null)
@@ -176,8 +176,8 @@ namespace RimMandrake.FlowWorks
 	/// <summary>
 	/// PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT: "dig to N m". One order digs a square down to a chosen depth, half a metre a cut
 	/// (one designation per notch was 14 clicks a square for 7 m). Pick the depth from the menu that opens when the tool is
-	/// selected; drag over squares as with "Dig canal". A square already ordered is re-targeted. Each cut is the same job, cost
-	/// and rules as "Dig canal" (RM_DigCanal designation; JobDriver_DigCanal puts it back after each cut until the target).
+	/// selected; drag over squares as with "Dig pit". A square already ordered is re-targeted. Each cut is the same job, cost
+	/// and rules as "Dig pit" (RM_DigCanal designation; JobDriver_DigCanal puts it back after each cut until the target).
 	/// The 4/7/7/4 square is 12 squares at 4 m and 4 at 7 m: two drags.
 	/// </summary>
 	public class Designator_DigCanalTo : Designator_DigCanal
@@ -190,7 +190,7 @@ namespace RimMandrake.FlowWorks
 			defaultLabel = "Dig to depth";
 			defaultDesc = "Order squares dug down to a chosen depth in one go, half a metre a cut, as deep as this mod's settings "
 				+ "allow (as shipped, colonists 2 m; mechanoids and droids 20 m: a deeper order waits for one). Pick the depth when you select this tool. Squares already ordered take the new depth. "
-				+ "Each cut costs what \"Dig canal\" costs at that depth: deeper is slower. Get in and out with a ladder or ramps.";
+				+ "Each cut costs what \"Dig pit\" costs at that depth: deeper is slower. Get in and out with a ladder or ramps.";
 			hotKey = null;
 		}
 

@@ -1626,6 +1626,26 @@ namespace RimMandrake.FlowWorks
 			return RM_Volume.Readout(hole, LedgeAt(c, hole), water);
 		}
 
+		/// <summary>RIMMANDRAKE_LABEL_PIT_DEPTH_EXACT_ONE_WORD: the label of a dug square ("Pit, 2.5 m deep", "Pit, 1.5 m water
+		/// in 4.0 m", RM_Volume.PitLabel) from the true depth grid, the cell's decilitres and its recorded liquid. Null for an
+		/// undug square. A dug square is named here, never by a per-depth TerrainDef label.</summary>
+		public string PitLabelAt(IntVec3 c)
+		{
+			if (!c.InBounds(map))
+			{
+				return null;
+			}
+			int i = map.cellIndices.CellToIndex(c);
+			int hole = depthGrid[i];
+			if (hole <= 0)
+			{
+				return null;
+			}
+			double water = WaterDl(i);
+			string kind = water > 0.0 ? (FluidAt(c) ?? ActiveFluid)?.label : null;
+			return RM_Volume.PitLabel(hole, water, kind);
+		}
+
 		/// <summary>The ledge for the readout: the shallowest floor among the four squares around <paramref name="c"/> that is
 		/// still below ground and above this hole's floor (the step a climber reaches first); 0 when the square opens straight
 		/// onto the ground or has no shallower neighbour.</summary>

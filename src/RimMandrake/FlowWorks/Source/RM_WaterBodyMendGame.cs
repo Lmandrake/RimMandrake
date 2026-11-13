@@ -91,7 +91,7 @@ namespace RimMandrake.FlowWorks
 			GUI.enabled = true;
 			list.CheckboxLabeled("Dug and refilled water freezes in the cold", ref freezeCountMendEnabled,
 				"The base game counts a pond's freezable squares only when a map is made or loaded, so water that appears "
-				+ "later (a dug canal, a pond a pump fills) counts none and can never freeze until the game is reloaded. On: "
+				+ "later (a dug pit, a pond a pump fills) counts none and can never freeze until the game is reloaded. On: "
 				+ "the count is kept up to date and such water freezes and thaws exactly like the game's own. Off: the base game.");
 			list.CheckboxLabeled("Reeds, lilies and lotus live through water that rises and falls", ref waterPlantGraceEnabled,
 				"In the base game a water plant dies the moment its square turns to deep water or dries out, so a pond a pump "

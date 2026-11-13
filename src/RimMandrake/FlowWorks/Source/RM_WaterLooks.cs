@@ -36,11 +36,11 @@ namespace RimMandrake.FlowWorks
 			list.GapLine();
 			list.Label("How water looks");
 			list.CheckboxLabeled("Very deep water is darker", ref deepWaterTintEnabled,
-				"On (shipped): water 5 m deep or more, in a lake, pond, canal or pit, is drawn a darker navy, and 10 m or more darker "
+				"On (shipped): water 5 m deep or more, in a lake, pond or pit, is drawn a darker navy, and 10 m or more darker "
 				+ "still, so you can see where the deep parts are. Only the picture changes. Rivers keep their own look. Off: all "
 				+ "water 2 m deep or more looks the same, as in the base game. Takes effect at once.");
 			list.CheckboxLabeled("Shadow on the walls above dug water", ref wetWallBandEnabled,
-				"On (shipped): when water in a dug canal or pit stands below the edge of the hole, a soft shadow on its north and west "
+				"On (shipped): when water in a dug pit stands below the edge of the hole, a soft shadow on its north and west "
 				+ "sides shows the bare wall between the water and the edge, wider the further down the water is. Off: the water "
 				+ "is drawn right up to the edge. Takes effect at once.");
 			RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, ResetToShipped);

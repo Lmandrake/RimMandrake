@@ -20,7 +20,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_PowerCord</defName>
     <label>power cord</label>
-    <description>A flexible, insulated power cord. It carries power like a conduit, and unlike a rigid conduit it bends, so it may lie across any bridge deck, a rope bridge included, and over a drawbridge leaf. A raised leaf pulls the cord apart until the leaf comes down again. It cannot lie in a dug pit, trench or canal or on a pit cover, and digging under it breaks it.</description>
+    <description>A flexible, insulated power cord. It carries power like a conduit, and unlike a rigid conduit it bends, so it may lie across any bridge deck, a rope bridge included, and over a drawbridge leaf. A raised leaf pulls the cord apart until the leaf comes down again. It cannot lie in a dug pit or trench or on a pit cover, and digging under it breaks it.</description>
     <thingClass>RimMandrake.FlowWorks.Machinery.Building_RM_PowerCord</thingClass>
     <category>Building</category>
     <noRightClickDraftAttack>true</noRightClickDraftAttack>

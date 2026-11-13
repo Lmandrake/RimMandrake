@@ -56,8 +56,8 @@ namespace RimMandrake.FlowWorks.Machinery
 				return null;
 			}
 			return broken == 1
-				? "Digging broke the line on this square. Cross a pit, trench or canal on poles."
-				: "Digging broke " + broken + " lines on this square. Cross a pit, trench or canal on poles.";
+				? "Digging broke the line on this square. Cross a pit or trench on poles."
+				: "Digging broke " + broken + " lines on this square. Cross a pit or trench on poles.";
 		}
 	}
 }

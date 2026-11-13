@@ -698,7 +698,7 @@ namespace RimMandrake.FlowWorks
 			if (arg == "force")
 			{
 				RM_DigDiscoveryState.ForceNextRoll = true;
-				return "ARMED: the next canal cut rolls with certainty | " + ex.DigDiscovery.Report(map);
+				return "ARMED: the next pit dug rolls with certainty | " + ex.DigDiscovery.Report(map);
 			}
 			if (arg == "deepstone")
 			{

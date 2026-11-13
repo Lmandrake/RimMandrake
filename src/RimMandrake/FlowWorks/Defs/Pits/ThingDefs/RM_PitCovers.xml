@@ -10,7 +10,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_PitCover_WovenScrap</defName>
     <label>concealed pit (woven scrap)</label>
-    <description>A pit (a sheer drop of 2 m or more) concealed under a mat of scrap and woven fiber, dusted to match the ground around it so it looks like plain ground once the whole pit is covered; while any of the pit beside it is still open there is nothing to hide, and it shows plainly what it is. Anything heavier than about 40 kg standing on it goes through.\n\nNeighbouring concealed pits act as one: everyone standing anywhere on them counts together. Your own people are spared unless the "your own pit takes your own people" setting is on.</description>
+    <description>A pit (a sheer drop of at least 2 m) concealed under a mat of scrap and woven fiber, dusted to match the ground around it so it looks like plain ground once the whole pit is covered; while any of the pit beside it is still open there is nothing to hide, and it shows plainly what it is. Anything heavier than about 40 kg standing on it goes through.\n\nNeighbouring concealed pits act as one: everyone standing anywhere on them counts together. Your own people are spared unless the "your own pit takes your own people" setting is on.</description>
     <thingClass>RimMandrake.FlowWorks.Pits.Building_PitCover</thingClass>
     <graphicData>
       <texPath>Things/Building/FlowWorks/Canals/RM_PitCover_WovenScrap</texPath>
@@ -58,7 +58,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_PitCover_PlankLattice</defName>
     <label>concealed pit (planks)</label>
-    <description>A pit (a sheer drop of 2 m or more) concealed under a lattice of planks, dusted to match the ground around it so it looks like plain ground once the whole pit is covered; while any of the pit beside it is still open there is nothing to hide, and it shows plainly what it is. It holds a person; it does not hold anything heavier than about 120 kg in total.\n\nNeighbouring concealed pits act as one: everyone standing anywhere on them counts together. Your own people are spared unless the "your own pit takes your own people" setting is on.</description>
+    <description>A pit (a sheer drop of at least 2 m) concealed under a lattice of planks, dusted to match the ground around it so it looks like plain ground once the whole pit is covered; while any of the pit beside it is still open there is nothing to hide, and it shows plainly what it is. It holds a person; it does not hold anything heavier than about 120 kg in total.\n\nNeighbouring concealed pits act as one: everyone standing anywhere on them counts together. Your own people are spared unless the "your own pit takes your own people" setting is on.</description>
     <thingClass>RimMandrake.FlowWorks.Pits.Building_PitCover</thingClass>
     <graphicData>
       <texPath>Things/Building/FlowWorks/Canals/RM_PitCover_PlankLattice</texPath>
@@ -105,7 +105,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_PitCover_ReinforcedFrame</defName>
     <label>concealed pit (reinforced)</label>
-    <description>A pit (a sheer drop of 2 m or more) concealed under a braced steel frame, surfaced to match the ground around it so it looks like plain ground once the whole pit is covered; while any of the pit beside it is still open there is nothing to hide, and it shows plainly what it is. Only a load over about 220 kg in total, a great beast or several heavy bodies at once, breaks it.\n\nNeighbouring concealed pits act as one: everyone standing anywhere on them counts together. Your own people are spared unless the "your own pit takes your own people" setting is on.</description>
+    <description>A pit (a sheer drop of at least 2 m) concealed under a braced steel frame, surfaced to match the ground around it so it looks like plain ground once the whole pit is covered; while any of the pit beside it is still open there is nothing to hide, and it shows plainly what it is. Only a load over about 220 kg in total, a great beast or several heavy bodies at once, breaks it.\n\nNeighbouring concealed pits act as one: everyone standing anywhere on them counts together. Your own people are spared unless the "your own pit takes your own people" setting is on.</description>
     <thingClass>RimMandrake.FlowWorks.Pits.Building_PitCover</thingClass>
     <graphicData>
       <texPath>Things/Building/FlowWorks/Canals/RM_PitCover_ReinforcedFrame</texPath>

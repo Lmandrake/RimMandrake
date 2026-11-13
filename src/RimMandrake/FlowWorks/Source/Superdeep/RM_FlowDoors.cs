@@ -487,7 +487,7 @@ namespace RimMandrake.FlowWorks
 	/// standing on a dug cell is re-scored so its leaf spans between the canal banks (RM_FlowDoorFacingMath). Every other
 	/// door pays one edifice-grid read. A frame keeps its placed rotation, as vanilla's does.</summary>
 	[HarmonyPatch(typeof(DoorUtility), nameof(DoorUtility.DoorRotationAt))]
-	[RimMandrake.Shared.PatchFeature("Sluices and grates turn across their canal like doors between walls")]
+	[RimMandrake.Shared.PatchFeature("Sluices and grates turn across their pit like doors between walls")]
 	public static class RM_Patch_FlowDoorFacing
 	{
 		private delegate int AlignQualityFn(IntVec3 c, IntVec3 offset, Map map, bool preferFences);

@@ -45,7 +45,7 @@ namespace RimMandrake.FlowWorks
             Sheet.RM_MapComponent_Sheet.Of(Find.CurrentMap)?.DryAll();
         }
 
-        [DebugAction(CAT, "Instant-dig canal at cell",
+        [DebugAction(CAT, "Instant-dig pit at cell",
             allowedGameStates = AllowedGameStates.PlayingOnMap,
             actionType = DebugActionType.ToolMap)]
         private static void InstantDig()

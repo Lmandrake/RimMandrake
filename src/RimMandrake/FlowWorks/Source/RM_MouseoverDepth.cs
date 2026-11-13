@@ -43,9 +43,14 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			IntVec3 c = UI.MouseCell();
-			string suffix = RimMandrakeFlowWorksSettings.mouseoverDepthEnabled && c.InBounds(map) && !c.Fogged(map)
+			bool seen = c.InBounds(map) && !c.Fogged(map);
+			// RIMMANDRAKE_LABEL_PIT_DEPTH_EXACT_ONE_WORD (owner 2026-11-12: "It's supposed to show the precise depth no matter
+			// what"): a dug square is named "Pit, 2.5 m deep" / "Pit, 1.5 m water in 4.0 m" from the true depth grid, setting or
+			// not; the per-depth TerrainDef label ("canal (1 m)", "pit (2 m or more)") never names it.
+			string pit = seen ? map.GetComponent<RM_MapComponent_Excavation>()?.PitLabelAt(c) : null;
+			string suffix = RimMandrakeFlowWorksSettings.mouseoverDepthEnabled && seen
 				? DepthSuffix(map, c) : null;
-			if (suffix == null)
+			if (suffix == null && pit == null)
 			{
 				if (ours)
 				{
@@ -58,10 +63,10 @@ namespace RimMandrake.FlowWorks
 			bool polluted = c.IsPolluted(map);
 			float fertility = c.GetFertility(map);
 			string fert = fertility > 0.0001f ? " " + "FertShort".TranslateSimple() + " " + fertility.ToStringPercent() : "";
-			string label = polluted ? "PollutedTerrain".Translate(terrain.label).CapitalizeFirst().ToString() : terrain.LabelCap.ToString();
+			string label = pit ?? (polluted ? "PollutedTerrain".Translate(terrain.label).CapitalizeFirst().ToString() : terrain.LabelCap.ToString());
 			string walk = terrain.passability != Traversability.Impassable
 				? string.Format(" ({0})", "WalkSpeed".Translate(GenPath.SpeedPercentString(terrain.pathCost)) + fert) : null;
-			cachedTerrainString(__instance) = label + walk + " — " + suffix;
+			cachedTerrainString(__instance) = label + walk + (suffix != null ? " — " + suffix : "");
 			cachedTerrain(__instance) = terrain;
 			cachedPolluted(__instance) = polluted;
 			ours = true;

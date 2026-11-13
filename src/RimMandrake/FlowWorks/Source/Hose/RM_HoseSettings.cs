@@ -230,7 +230,7 @@ namespace RimMandrake.FlowWorks.Hose
             list.Label("Dump tank drain with no pump: " + RM_Volume.FormatLitres(dumpLitresPerCycle) + " per pump cycle (a pump set to Pour is faster)");
             dumpLitresPerCycle = Mathf.RoundToInt(list.Slider(dumpLitresPerCycle, 100f, 5000f) / 100f) * 100;
             list.CheckboxLabeled("Water finds its level through hoses (no pump)", ref gravityLevellingEnabled,
-                "On: when a network's open hose ends (Intake or Outflow) lie in two bodies of the same liquid - ponds, pits, canals, " +
+                "On: when a network's open hose ends (Intake or Outflow) lie in two bodies of the same liquid - ponds, pits, " +
                 "the sea - the higher one slowly runs down into the lower until their surfaces match, over a hill too (a siphon). " +
                 "Different liquids never mix; a dry pit takes the liquid that reaches it. A network with a running pump is left to " +
                 "the pump. Off: only pumps move liquid between bodies.");

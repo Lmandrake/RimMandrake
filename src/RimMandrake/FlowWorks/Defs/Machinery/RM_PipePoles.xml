@@ -21,7 +21,7 @@
   <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rm.gimmesomeslack">
     <defName>RM_PipePole</defName>
     <label>pipe pole</label>
-    <description>A stout steel post with a saddle clamp at the top. Two pipe poles hang a stiff overhead pipe between them, so a pipe line can cross a pit, trench, canal or moat without touching it. Poles must stand on solid ground under open sky, never on a bridge deck, a pit cover or a dug square; the pipe overhead is not walkable. Digging out a pole's square knocks it down. Pick its look on the build button.</description>
+    <description>A stout steel post with a saddle clamp at the top. Two pipe poles hang a stiff overhead pipe between them, so a pipe line can cross a pit, trench or moat without touching it. Poles must stand on solid ground under open sky, never on a bridge deck, a pit cover or a dug square; the pipe overhead is not walkable. Digging out a pole's square knocks it down. Pick its look on the build button.</description>
     <thingClass>Building</thingClass>
     <category>Building</category>
     <altitudeLayer>Building</altitudeLayer>

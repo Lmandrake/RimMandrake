@@ -32,7 +32,7 @@ namespace RimMandrake.FlowWorks
 	{
 		public Designator_FillInCanal()
 		{
-			defaultLabel = "Fill in canal";
+			defaultLabel = "Fill in pit";
 			defaultDesc = "Fill a dug square back in by half a metre. Liquid that no longer "
 				+ "fits is pushed into the rest of the channel and back into the body it came "
 				+ "from; only what finds no room anywhere is lost. Filling a square all the way "

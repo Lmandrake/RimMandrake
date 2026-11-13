@@ -22,7 +22,7 @@
 
   <TerrainDef ParentName="WaterShallowBase">
     <defName>RM_CoolantShallow</defName>
-    <label>coolant canal</label>
+    <label>coolant</label>
     <description>Industrial runoff, engineered rather than natural — kept flowing, kept from freezing, kept out of the fish census.</description>
     <renderPrecedence>394</renderPrecedence>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
@@ -55,7 +55,7 @@
 
   <TerrainDef ParentName="WaterDeepBase">
     <defName>RM_CoolantDeep</defName>
-    <label>coolant canal, deep</label>
+    <label>deep coolant</label>
     <description>Industrial runoff, engineered rather than natural — kept flowing, kept from freezing, kept out of the fish census.</description>
     <renderPrecedence>395</renderPrecedence>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>

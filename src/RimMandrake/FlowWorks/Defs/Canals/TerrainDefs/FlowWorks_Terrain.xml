@@ -30,7 +30,7 @@
        D=1 rather than losing them. -->
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_Channel_Empty</defName>
-    <label>canal (0.5 m)</label>
+    <label>pit</label>
     <description>Ground dug half a metre below the surface. Climbing in or out takes a moment; walking along it is easy. Dig again to deepen it.</description>
     <texturePath>Terrain/Surfaces/Gravel</texturePath>
     <renderPrecedence>325</renderPrecedence>
@@ -57,7 +57,7 @@
   <!-- D = 2, MID. -->
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_Channel_Mid</defName>
-    <label>canal (1 m)</label>
+    <label>pit</label>
     <description>Ground dug a metre below the surface. Climbing in or out is slow work; walking along the bottom is not.</description>
     <texturePath>Terrain/Surfaces/Gravel</texturePath>
     <color>(0.78,0.75,0.70)</color>
@@ -83,7 +83,7 @@
   <!-- D = 3, DEEP. -->
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_Channel_Deep</defName>
-    <label>canal (1.5 m)</label>
+    <label>pit</label>
     <description>Ground dug a metre and a half below the surface. Climbing in or out costs dearly; walking along the bottom is easy.</description>
     <texturePath>Terrain/Surfaces/Gravel</texturePath>
     <color>(0.58,0.55,0.51)</color>
@@ -118,8 +118,8 @@
        pathCost 300 keeps it a place nobody crosses by choice. -->
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_Channel_Superdeep</defName>
-    <label>pit (2 m or more)</label>
-    <description>Ground dug two metres or more below the surface. Anything that walks into it falls in and is held there; without a ladder or a ramp standing in the hole, it is not climbing out.</description>
+    <label>pit</label>
+    <description>Ground dug at least two metres below the surface (the cell readout gives the exact depth). Anything that walks into it falls in and is held there; without a ladder or a ramp standing in the hole, it is not climbing out.</description>
     <texturePath>Terrain/Surfaces/Gravel</texturePath>
     <color>(0.38,0.36,0.33)</color>
     <renderPrecedence>328</renderPrecedence>
@@ -184,7 +184,7 @@
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_Lakebed_Deep</defName>
     <label>deep dry lakebed</label>
-    <description>The cracked floor of a drained deep pond, two metres or more below the surrounding ground. Where the bed shelves gently it can be walked out of; where it drops sheer, it holds whatever falls in. Water pumped back fills it again.</description>
+    <description>The cracked floor of a drained deep pond, at least two metres below the surrounding ground. Where the bed shelves gently it can be walked out of; where it drops sheer, it holds whatever falls in. Water pumped back fills it again.</description>
     <texturePath>Terrain/FlowWorks/RM_Lakebed_Deep</texturePath>
     <renderPrecedence>330</renderPrecedence>
     <fertility>0</fertility>
@@ -210,7 +210,7 @@
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_Lakebed_Abyss</defName>
     <label>deep lake floor</label>
-    <description>The cracked floor at the middle of a big drained lake, four metres or more below the surrounding ground. The bed shelves up gently to the shore, so it can be walked out of. Water pumped back fills it again.</description>
+    <description>The cracked floor at the middle of a big drained lake, at least four metres below the surrounding ground. The bed shelves up gently to the shore, so it can be walked out of. Water pumped back fills it again.</description>
     <texturePath>Terrain/FlowWorks/RM_Lakebed_Deep</texturePath>
     <color>(0.62, 0.58, 0.56)</color>
     <renderPrecedence>331</renderPrecedence>
@@ -276,7 +276,7 @@
        free and it reads identically in play. -->
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Water_Trace</defName>
-    <label>knee-deep water (under 0.75 m)</label>
+    <label>knee-deep water</label>
     <description>Water standing ankle-to-knee deep. Wading it is easy.</description>
     <!-- DEPTH_FILL_COST_MATRIX_1: a trace only occurs at D=3 (FillTier), so it must beat dry Deep 80. PROVISIONAL. -->
     <pathCost>90</pathCost>
@@ -295,7 +295,7 @@
   <!-- Tier 2 of 3 — half full, read as knee-to-waist shallow (about 1 m). -->
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Water_Half</defName>
-    <label>shallow water (about 1 m)</label>
+    <label>shallow water</label>
     <description>Water standing knee-to-waist deep. Wading it is slow work.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
@@ -319,7 +319,7 @@
   <!-- Tier 3 of 3 — brimming, read as deep. Standable per ruling 26. -->
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Water_Brim</defName>
-    <label>chest-deep water (about 1.5 m)</label>
+    <label>chest-deep water</label>
     <description>Water standing chest-deep. Crossing it is punishing, but anyone can stand in it.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
@@ -347,7 +347,7 @@
        fill would silently become the barrier the ruling says it is not. -->
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Water_Superdeep</defName>
-    <label>deep water (2 m or more)</label>
+    <label>deep water</label>
     <description>Water filling a very deep pit. Whatever falls in is held there, and the water goes to work on it.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
@@ -385,7 +385,7 @@
     <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
          in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
     <extinguishesFire>false</extinguishesFire>
-    <label>knee-deep tar (under 0.75 m)</label>
+    <label>knee-deep tar</label>
     <description>Tar standing ankle-to-knee deep. Wading it is easy. Black and patient, it sucks at every step.</description>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
     <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
@@ -416,7 +416,7 @@
     <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
          in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
     <extinguishesFire>false</extinguishesFire>
-    <label>shallow tar (about 1 m)</label>
+    <label>shallow tar</label>
     <description>Tar standing knee-to-waist deep. Wading it is slow work. Black and patient, it sucks at every step.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
@@ -450,7 +450,7 @@
     <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
          in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
     <extinguishesFire>false</extinguishesFire>
-    <label>chest-deep tar (about 1.5 m)</label>
+    <label>chest-deep tar</label>
     <description>Tar standing chest-deep. Crossing it is punishing, but anyone can stand in it. Black and patient, it sucks at every step.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
@@ -489,7 +489,7 @@
     <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
          in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
     <extinguishesFire>false</extinguishesFire>
-    <label>deep tar (2 m or more)</label>
+    <label>deep tar</label>
     <description>Tar filling a very deep pit. Whatever falls in is held there, and the tar goes to work on it. Black and patient, it sucks at every step.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>

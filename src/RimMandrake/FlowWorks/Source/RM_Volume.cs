@@ -151,6 +151,39 @@ namespace RimMandrake.FlowWorks
 			return hole + " \u00b7 Water " + FormatWaterMetres(waterDl) + " (" + FormatReadoutLitres(waterDl) + ")";
 		}
 
+		// ── RIMMANDRAKE_LABEL_PIT_DEPTH_EXACT_ONE_WORD (owner 2026-11-12: "It's supposed to show the precise depth no matter
+		// what, and Pit and Canal are totally interchangeable.") ─────────────────────────────────────────────────────────────
+
+		/// <summary>The one word a player reads for a dug square, at every depth.</summary>
+		public const string PitWord = "Pit";
+
+		/// <summary>Metres to one decimal ("2.5 m", "4.0 m"); under 0.1 m but above nothing it keeps two decimals ("0.03 m"),
+		/// so a thin film never reads as 0.0 m.</summary>
+		public static string FormatExactMetres(double metres)
+		{
+			double m = Math.Max(0.0, metres);
+			string f = m > 0.0 && m < 0.05 ? "0.00" : "0.0";
+			return m.ToString(f, System.Globalization.CultureInfo.InvariantCulture) + " m";
+		}
+
+		/// <summary>The label of a dug square, from the engine's true numbers (notches dug, decilitres standing, the liquid's
+		/// label): "Pit, 2.5 m deep" dry, "Pit, 1.5 m water in 4.0 m" wet. The same word and an exact depth at every depth;
+		/// never a band or an "or more". Null for an undug square (<paramref name="holeNotches"/> 0).</summary>
+		public static string PitLabel(int holeNotches, double liquidDl, string liquidLabel)
+		{
+			if (holeNotches <= 0)
+			{
+				return null;
+			}
+			string hole = FormatExactMetres(holeNotches * (double)MetresPerNotch);
+			if (liquidDl <= 0.0)
+			{
+				return PitWord + ", " + hole + " deep";
+			}
+			string kind = string.IsNullOrEmpty(liquidLabel) ? "liquid" : liquidLabel;
+			return PitWord + ", " + FormatExactMetres(liquidDl * MetresPerNotch / UnitsPerLevel) + " " + kind + " in " + hole;
+		}
+
 		/// <summary>A limitless square's readout (sea, edge river): the mark and its depth as a picture, never a litre count
 		/// (unified depth spec §5.3): "Endless (about 2 m deep)".</summary>
 		public static string LimitlessReadout(int floorNotches)

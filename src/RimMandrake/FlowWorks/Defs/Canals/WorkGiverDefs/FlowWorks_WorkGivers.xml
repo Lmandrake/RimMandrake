@@ -3,11 +3,11 @@
 
   <WorkGiverDef>
     <defName>RM_DigCanalWorkGiver</defName>
-    <label>dig canals</label>
+    <label>dig pits</label>
     <giverClass>RimMandrake.FlowWorks.WorkGiver_DigCanal</giverClass>
     <workType>Mining</workType>
     <verb>dig</verb>
-    <gerund>digging a canal</gerund>
+    <gerund>digging a pit</gerund>
     <priorityInType>20</priorityInType>
     <scanCells>true</scanCells>
     <scanThings>false</scanThings>
@@ -23,11 +23,11 @@
        finished is labour spent on nothing. -->
   <WorkGiverDef>
     <defName>RM_FillInCanalWorkGiver</defName>
-    <label>fill in canals</label>
+    <label>fill in pits</label>
     <giverClass>RimMandrake.FlowWorks.WorkGiver_FillInCanal</giverClass>
     <workType>Mining</workType>
     <verb>fill in</verb>
-    <gerund>filling in a canal</gerund>
+    <gerund>filling in a pit</gerund>
     <priorityInType>19</priorityInType>
     <scanCells>true</scanCells>
     <scanThings>false</scanThings>

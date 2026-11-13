@@ -359,7 +359,7 @@ namespace RimMandrake.FlowWorks.Pits
             RM_MapComponent_Excavation engine = map?.GetComponent<RM_MapComponent_Excavation>();
             if (engine == null || !engine.IsExcavated(loc) || RM_SpikeUtility.TallestWallOver(engine, loc) < RM_PitTrapMath.Superdeep)
             {
-                return "A concealed pit must be laid over a pit: a dug square with a sheer drop of 2 m or more to a neighbour.";
+                return "A concealed pit must be laid over a pit: a dug square with a sheer drop of at least 2 m to a neighbour.";
             }
             if (!RM_PitDeckMath.RestsOnBanks(d => SolidGround(map, engine, loc + GenAdj.CardinalDirections[d])))
             {

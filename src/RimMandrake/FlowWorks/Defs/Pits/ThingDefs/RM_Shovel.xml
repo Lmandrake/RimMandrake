@@ -16,7 +16,7 @@
   <ThingDef ParentName="ResourceBase">
     <defName>RM_Shovel</defName>
     <label>shovel</label>
-    <description>A long-handled digging shovel. Nobody digs a pit or a canal, or fills one back in, with bare hands: a digger without a shovel in their pack fetches a free one first and keeps it. Machines dig without. Raiders who mean to shovel their way across a trench bring their own, or pick up yours.</description>
+    <description>A long-handled digging shovel. Nobody digs a pit, or fills one back in, with bare hands: a digger without a shovel in their pack fetches a free one first and keeps it. Machines dig without. Raiders who mean to shovel their way across a trench bring their own, or pick up yours.</description>
     <graphicData>
       <!-- PLACEHOLDER art -->
       <texPath>Things/Item/Equipment/WeaponMelee/Spear</texPath>

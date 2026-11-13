@@ -4,14 +4,14 @@
   <JobDef>
     <defName>RM_DigCanalJob</defName>
     <driverClass>RimMandrake.FlowWorks.JobDriver_DigCanal</driverClass>
-    <reportString>digging a canal.</reportString>
+    <reportString>digging a pit.</reportString>
     <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
   </JobDef>
 
   <JobDef>
     <defName>RM_FillInCanalJob</defName>
     <driverClass>RimMandrake.FlowWorks.JobDriver_FillInCanal</driverClass>
-    <reportString>filling in a canal.</reportString>
+    <reportString>filling in a pit.</reportString>
     <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
   </JobDef>
 

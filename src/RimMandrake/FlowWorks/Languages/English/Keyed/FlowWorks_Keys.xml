@@ -44,7 +44,7 @@
   <!-- SLUICE_GATE_REBUILD_LIFTS_UP_NOT_SIDEWAYS -->
   <RMFlow_GateLifted>Gate lifted</RMFlow_GateLifted>
   <RMFlow_GateLowered>Gate down</RMFlow_GateLowered>
-  <RMFlow_GateToggleDesc>Lift or lower this sluice gate. Lifted, liquid runs through and anyone can walk through. Down, it holds liquid back and nobody gets through, your own people included. A colonist works it from a square beside it, on the bank above or in the canal below; nobody has to walk through it.</RMFlow_GateToggleDesc>
+  <RMFlow_GateToggleDesc>Lift or lower this sluice gate. Lifted, liquid runs through and anyone can walk through. Down, it holds liquid back and nobody gets through, your own people included. A colonist works it from a square beside it, on the bank above or in the pit below; nobody has to walk through it.</RMFlow_GateToggleDesc>
   <RMFlow_GateForceOpen>Force open</RMFlow_GateForceOpen>
   <RMFlow_GateForceClose>Force close</RMFlow_GateForceClose>
   <RMFlow_GateForceDesc>God mode: open or close this gate now, without a colonist.</RMFlow_GateForceDesc>
@@ -57,7 +57,7 @@
   <RMFlow_ClimbOverWallNoWay>no open side to climb from, or too thick</RMFlow_ClimbOverWallNoWay>
   <RMFlow_SwaleNeedsExcavation>A swale is laid in a dug channel.</RMFlow_SwaleNeedsExcavation>
   <!-- CANAL_BOTTOM_SPIKES_1 + PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE (owner R7, V4): spikes at the foot of a sheer drop of spikeMinDropMetres, any depth. -->
-  <RMFlow_SpikesNeedDrop>Spikes go only at the foot of a sheer drop of {1} or more. The tallest wall over this square is {0}.</RMFlow_SpikesNeedDrop>
+  <RMFlow_SpikesNeedDrop>Spikes go only at the foot of a sheer drop of at least {1}. The tallest wall over this square is {0}.</RMFlow_SpikesNeedDrop>
   <RMFlow_GuardrailNeedsDrop>A guardrail goes only on the lip of a sheer drop: some neighbouring square must be at least 1.5 m lower.</RMFlow_GuardrailNeedsDrop>
 
   <!-- SUPERDEEP_PRISON_ROOM_1: capture down from the lip. -->
@@ -72,8 +72,8 @@
 
   <!-- FLOWWORKS_QUARRY_DIGGING_1: canal-dig finds. -->
   <RMFlow_DigFindLetterLabel>Found while digging: {0}</RMFlow_DigFindLetterLabel>
-  <RMFlow_DigFindLetterText>{1} turned up {0} while cutting a canal. The land here holds it — dig deeper, or mine the rock it came from.</RMFlow_DigFindLetterText>
-  <RMFlow_DigFindMessage>{0} dug up {1} {2} while cutting the canal.</RMFlow_DigFindMessage>
+  <RMFlow_DigFindLetterText>{1} turned up {0} while digging a pit. The land here holds it — dig deeper, or mine the rock it came from.</RMFlow_DigFindLetterText>
+  <RMFlow_DigFindMessage>{0} dug up {1} {2} while digging the pit.</RMFlow_DigFindMessage>
   <!-- PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS: the first deep-stone chunk a map turns up. -->
   <RMFlow_DeepStoneLetterLabel>Deep stone: {0}</RMFlow_DeepStoneLetterLabel>
   <RMFlow_DeepStoneLetterText>{1} dug {3} down and broke through into a layer of {0}. The surface rock here does not show it. A {2} lies at the pit's edge; every cut this deep may turn up more.</RMFlow_DeepStoneLetterText>
@@ -90,7 +90,7 @@
   <RMFlow_PumpNoRoom>no dug channel beside it has room</RMFlow_PumpNoRoom>
   <RMFlow_PumpToOutflow>pumped {0} out of an outflow hose end</RMFlow_PumpToOutflow>
   <RMFlow_PumpPouredOutflow>poured {0} out of an outflow hose end</RMFlow_PumpPouredOutflow>
-  <RMFlow_PumpPouredOverflow>the canal is full: {0} spilled over its edge</RMFlow_PumpPouredOverflow>
+  <RMFlow_PumpPouredOverflow>the pit is full: {0} spilled over its edge</RMFlow_PumpPouredOverflow>
   <RMFlow_PumpNoDumpTank>no tank is set to Dump (pouring only drains Dump tanks)</RMFlow_PumpNoDumpTank>
   <RMFlow_PumpOutflowBlocked>outflow blocked: filling tanks instead</RMFlow_PumpOutflowBlocked>
   <RMFlow_PumpOtherPouring>another pump on this network is pouring</RMFlow_PumpOtherPouring>
@@ -115,7 +115,7 @@
   <RM_DrillWhy_NoSubsurface>Not running: this map has no subsurface liquid to bleed.</RM_DrillWhy_NoSubsurface>
   <RM_DrillWhy_Unsurveyed>Not running: this map has not been surveyed yet.</RM_DrillWhy_Unsurveyed>
   <RM_DrillWhy_ReserveSpent>Not running: the subsurface reserve is used up and never refills.</RM_DrillWhy_ReserveSpent>
-  <RM_DrillWhy_NoCanalForm>Not running: the liquid below has no canal form and cannot be poured into a channel.</RM_DrillWhy_NoCanalForm>
+  <RM_DrillWhy_NoCanalForm>Not running: the liquid below has no pit form and cannot be poured into a pit.</RM_DrillWhy_NoCanalForm>
   <RM_DrillWhy_LiquidDisabledInSettings>Not running: {0} is switched off in the Flow Works mod settings.</RM_DrillWhy_LiquidDisabledInSettings>
   <RM_DrillWhy_OutletNotDug>Not running: the outlet cell {0} is not dug. Dig a channel there.</RM_DrillWhy_OutletNotDug>
   <RM_DrillWhy_OutletOtherLiquid>Not running: the outlet {0} already holds {1}, and liquids do not mix.</RM_DrillWhy_OutletOtherLiquid>

@@ -281,7 +281,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_Spikes</defName>
     <label>pit spikes</label>
-    <description>Sharpened stakes driven into a pit floor. Whoever falls, is pushed or jumps into this cell lands on them: several deep stab wounds, worse for bigger creatures, armour still counts. Walking up to the edge, or moving along the pit floor, is safe. Can only be built at the foot of a sheer drop of 2 m or more (a mod setting), at any depth.</description>
+    <description>Sharpened stakes driven into a pit floor. Whoever falls, is pushed or jumps into this cell lands on them: several deep stab wounds, worse for bigger creatures, armour still counts. Walking up to the edge, or moving along the pit floor, is safe. Can only be built at the foot of a sheer drop of at least 2 m (a mod setting), at any depth.</description>
     <!-- PIT_SPIKES_FIX_OVER_WALL_AND_SUBMERGE (owner 2026-10-24: "They should not be showing drawn over the paler walls ...
          They should be shown as submerged rapidly"): Building_RM_Spikes lays this sprite's own stakes on the floor the
          walls leave visible and fades them under water (gone at 1 m); RealtimeOnly because the fill changes without a

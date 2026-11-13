@@ -96,7 +96,7 @@ namespace RimMandrake.FlowWorks.Machinery
 		public static bool lineCrossingRulesEnabled = true;
 
 		/// <summary>PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 4 (P3): pipe poles (RM_PipePole, with Gimme Some Slack) carry a pipe
-		/// overhead across pits, trenches and canals. Off: the pole leaves the architect menu; poles already built stay strung.</summary>
+		/// overhead across pits and trenches. Off: the pole leaves the architect menu; poles already built stay strung.</summary>
 		public static bool pipePolesEnabled = true;
 		/// <summary>Longest pipe span, cells (owner's proposal 12; RM_PipePoleMath bounds 4-20). Read live by GSS.</summary>
 		public static float pipePoleMaxSpan = 12f;
@@ -259,7 +259,7 @@ namespace RimMandrake.FlowWorks.Machinery
 				Find.WindowStack.Add(new FloatMenu(opts));
 			}
 			list.CheckboxLabeled("Rigid pipe and conduit need solid ground; cords lie on any bridge deck", ref lineCrossingRulesEnabled,
-				"On: pipe and power conduit cannot be built on a dug square (pit, trench, canal, moat), a concealed pit or any bridge deck: "
+				"On: pipe and power conduit cannot be built on a dug square (pit, trench, moat), a concealed pit or any bridge deck: "
 			  + "they are rigid. A flexible power cord may lie on any bridge deck, rope included. A concealed pit carries no lines. "
 			  + "A hose goes into a dug square only down a ramp or a ladder (a raised ladder still holds it), never over a sheer wall, "
 			  + "and its end couples only to a pump, tank or water on its own level; a hose already laid across a newly dug square "
@@ -269,7 +269,7 @@ namespace RimMandrake.FlowWorks.Machinery
 			  + "fallen-wire setting, when that mod is loaded). Off: lines (and hoses) follow the game's ground rules alone, digging leaves them "
 			  + "standing, and a collapsing deck only destroys what stands on it.");
 			bool polesWere = pipePolesEnabled;
-			list.CheckboxLabeled("Pipe poles carry pipe overhead across pits, trenches and canals (needs Gimme Some Slack loaded)", ref pipePolesEnabled,
+			list.CheckboxLabeled("Pipe poles carry pipe overhead across pits and trenches (needs Gimme Some Slack loaded)", ref pipePolesEnabled,
 				"On: a pipe pole (Pipe networks menu) hangs a stiff overhead pipe to another pipe pole, using Gimme Some Slack's overhead "
 			  + "lines. Poles stand on solid ground only, never on a bridge deck, a concealed pit or a dug square; a span is not walkable. "
 			  + "Digging out a pole's square knocks it down and its spans fall. This is the pipe poles' own switch: Gimme Some Slack's "

@@ -104,13 +104,13 @@ namespace RimMandrake.FlowWorks.Swimming
 			list.Label("Swimming in deep water");
 			RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, ResetAll);
 			list.CheckboxLabeled("People and animals can swim in water 2 m and deeper", ref deepSwimEnabled,
-				"Deep lake water, and deep water in dug canals and pits, can be swum. Swimmers are slower than waders, tire, are "
+				"Deep lake water, and deep water in dug pits, can be swum. Swimmers are slower than waders, tire, are "
 				+ "warned when tiring, and drown if they cannot reach footing before they are exhausted. Mechanoids and anyone too "
 				+ "heavily loaded sink and are never routed into deep water. Oil, slime, tar, propane, boiling water and brine are "
 				+ "never swum. Off: deep water blocks walking, as in the base game. Changing this re-reads every map's paths.");
 			GUI.enabled = deepSwimEnabled;
 			list.CheckboxLabeled("  Also the ocean and deep river water (not supported)", ref swimOpenWaterEnabled,
-				"The ruling covers lakes, canals and pits. On: deep ocean and deep river squares are swimmable too, which opens "
+				"The ruling covers lakes and pits. On: deep ocean and deep river squares are swimmable too, which opens "
 				+ "map edges to swimmers. Off (shipped): those stay impassable.");
 			list.CheckboxLabeled("  People can swim", ref humanlikesSwim,
 				"On: every person swims (and tires). Off: people sink like mechanoids and never enter deep water; creatures that "

@@ -144,7 +144,7 @@ namespace RimMandrake.FlowWorks.Machinery
 				case LineSurface.Excavated:
 					return v == CrossingVerdict.RampOrLadderOnly
 						? "A hose goes down into a dug square only by a ramp or a ladder."
-						: who + " cannot be built on dug ground. Cross a pit, trench or canal on poles.";
+						: who + " cannot be built on dug ground. Cross a pit or trench on poles.";
 				default:
 					return who + " cannot be built on a bridge deck: it is rigid. Cross on poles, or use a flexible line.";
 			}

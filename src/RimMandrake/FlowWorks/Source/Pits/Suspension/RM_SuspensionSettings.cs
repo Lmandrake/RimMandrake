@@ -94,7 +94,7 @@ namespace RimMandrake.FlowWorks.Pits
 				+ "lost end, dropping whoever is on it. Off: a bridge with no anchor stays up.");
 			list.CheckboxLabeled("Game bridges refused over dug ground", ref vanillaBridgeRefusedOverDug,
 				"On: the game's own bridge and heavy bridge cannot be placed on a dug square (\"Use a suspension bridge over dug "
-				+ "ground\"). Off: allowed, with the risk that a canal that drains leaves the bridge on a dry floor.");
+				+ "ground\"). Off: allowed, with the risk that a pit that drains leaves the bridge on a dry floor.");
 			list.CheckboxLabeled("Your own people fall when a bridge gives way", ref suspensionOwnPeopleFall,
 				"On: everyone on a span that gives way falls, your own colonists included. Off: your own people are set down on the "
 				+ "nearest anchor instead (others still fall).");
