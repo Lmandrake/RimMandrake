@@ -13,6 +13,25 @@
   <RM_EmberDroppedMote>Ember dropped!</RM_EmberDroppedMote>
   <RM_FireHawkCarrying>Carrying a burning twig</RM_FireHawkCarrying>
   <RM_FireHawkLastDrop>Last ember dropped {0} ago</RM_FireHawkLastDrop>
+
+  <!-- The first-sighting letter (FireHawkRewards.cs), once per game. {HAWK} the hawk's label or name; {EMBER} one of the two
+       EmberFrom strings ({0} the plant burning where the ember was taken); {TARGET} one of the two Target strings ({0} the plant
+       at the drop cell); _DIST in cells from the hawk; _DIR one of the compass words. -->
+  <RM_FireHawkSightedLabel>Fire-hawk carrying an ember</RM_FireHawkSightedLabel>
+  <RM_FireHawkSightedText>{HAWK} is over your colony right now with a live ember in its beak: {EMBER}, snatched from the fire {SOURCE_DIST} cells to the {SOURCE_DIR}.\n\nIt is carrying it to {TARGET}, {TARGET_DIST} cells to the {TARGET_DIR}. A fire-hawk drops its ember on the biggest stand of unburnt fuel it can find on the map, and the next fire starts where the ember lands.\n\nThe only cure is to bring the hawk down before it gets there. Fire-hawks are common in the Pyrelands, and any one of them can do this.</RM_FireHawkSightedText>
+  <RM_FireHawkEmberFromPlant>a burning sprig of {0}</RM_FireHawkEmberFromPlant>
+  <RM_FireHawkEmberFromBurn>a burning twig</RM_FireHawkEmberFromBurn>
+  <RM_FireHawkTargetPlant>the {0}</RM_FireHawkTargetPlant>
+  <RM_FireHawkTargetGround>unburnt fuel</RM_FireHawkTargetGround>
+  <RM_Compass_N>north</RM_Compass_N>
+  <RM_Compass_NE>north-east</RM_Compass_NE>
+  <RM_Compass_E>east</RM_Compass_E>
+  <RM_Compass_SE>south-east</RM_Compass_SE>
+  <RM_Compass_S>south</RM_Compass_S>
+  <RM_Compass_SW>south-west</RM_Compass_SW>
+  <RM_Compass_W>west</RM_Compass_W>
+  <RM_Compass_NW>north-west</RM_Compass_NW>
+  <RM_Compass_Here>same spot</RM_Compass_Here>
   <RM_FireFrontLetterLabel>The grass has gone up</RM_FireFrontLetterLabel>
   <RM_FireFrontLetterText>A line of ember-grass has caught somewhere out in the open, and it is walking.\n\nThis is the biome, not an attack. It happens every few days here and it is why the old camps here pave a strip instead of raising a fence. Decide now whether it comes anywhere near you — a burn-line is far cheaper to steer than to stop.</RM_FireFrontLetterText>
   <!-- Yesterday's fire (PyrelandsFireFront.TickOpeningFront): a fresh map's opening front lights the leading arc of the scar

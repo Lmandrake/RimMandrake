@@ -27,9 +27,11 @@
     <Compile Include="..\..\Kernel\RM_FurnaceKernel.cs" />
     <Compile Include="..\..\Kernel\RM_FireEcoKernel.cs" />
     <Compile Include="..\..\Kernel\RM_FireHawkKernel.cs" />
+    <Compile Include="..\..\Kernel\RM_FireHawkRewardsKernel.cs" />
     <Compile Include="..\..\FurnaceWarmthMath.cs" />
     <Compile Include="..\..\..\..\_Shared\FlowWorksIrrigation\FlowWorksIrrigationKernel.cs" Link="Shared\FlowWorksIrrigationKernel.cs" />
     <Compile Include="PyrelandsFuzz.cs" />
+    <Compile Include="FireHawkRewardsFuzz.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
 

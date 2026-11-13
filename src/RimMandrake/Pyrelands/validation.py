@@ -2833,3 +2833,17 @@ def sand_shovel(t):
         for want in ("accepts True", "offRefuses True", "yield RM_GlassSand x5", "terrain RM_FE_Ground_Gravel", "orderGone True"):
             if want not in text:
                 _fail("shovel proof missing %r: %s" % (want, text))
+
+
+# Fire-hawk hunt rewards and the map-wide ember carry: live chains built WITH their items (owner 2026-11-13), kept in their own
+# file so this one is not a merge point; register() adds them to this suite with this module's helpers.
+def _register_firehawk_rewards():
+    import types
+    spec = importlib.util.spec_from_file_location(
+        "pyrelands_firehawk_rewards_live", os.path.join(os.path.dirname(os.path.abspath(__file__)), "firehawk_rewards_live.py"))
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    mod.register(suite, types.SimpleNamespace(**globals()))
+
+
+_register_firehawk_rewards()

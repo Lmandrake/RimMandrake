@@ -79,7 +79,8 @@ namespace RimMandrake.Pyrelands
             }
         }
 
-        private bool CarryingEmber
+        // internal: GameComponent_RM_FireHawkSighting (FireHawkRewards.cs) reads it for the first-sighting letter.
+        internal bool CarryingEmber
         {
             get
             {

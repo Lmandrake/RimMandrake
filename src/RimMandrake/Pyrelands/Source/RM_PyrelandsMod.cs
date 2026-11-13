@@ -85,6 +85,8 @@ namespace RimMandrake.Pyrelands
         // changes no player-visible behavior for an existing save.
         public static bool burnLineEnabled = true;
         public static bool fireHawkSpreadEnabled = true;
+        // RIMMANDRAKE_ANNOUNCE_FIREHAWK_EMBER_LETTER_ON_FIRST_SIGHTING: one letter, the first time a game shows a hawk carrying an ember.
+        public static bool fireHawkSightingLetterEnabled = true;
         public static bool furnaceThermalEnabled = true;
         public static float furnaceWarmthStrength = 1f;
         public static bool fireClockEnabled = true;
@@ -158,6 +160,7 @@ namespace RimMandrake.Pyrelands
             Scribe_Values.Look(ref scorchedRuinsEnabled, "scorchedRuinsEnabled", true);
             Scribe_Values.Look(ref burnLineEnabled, "burnLineEnabled", true);
             Scribe_Values.Look(ref fireHawkSpreadEnabled, "fireHawkSpreadEnabled", true);
+            Scribe_Values.Look(ref fireHawkSightingLetterEnabled, "fireHawkSightingLetterEnabled", true);
             Scribe_Values.Look(ref furnaceThermalEnabled, "furnaceThermalEnabled", true);
             Scribe_Values.Look(ref furnaceWarmthStrength, "furnaceWarmthStrength", 1f);
             Scribe_Values.Look(ref fireClockEnabled, "fireClockEnabled", true);
@@ -220,6 +223,7 @@ namespace RimMandrake.Pyrelands
             .Declare("ashWaterFertilityEnabled", "ashWateredFertility", "ashNaturalWaterRadius", "blackRainWaterHours")
             .Declare("freshBurnBonusEnabled", "freshBurnBonus", "freshBurnDays")
             .Declare("ambientAshEnabled", "ambientAshShare", "ambientAshHeavy")
+            .Declare("fireHawkSpreadEnabled", "fireHawkSightingLetterEnabled")
             .Declare("furnaceThermalEnabled", "furnaceWarmthStrength")
             .Declare("burrowOnFireEnabled", "burrowDomeOnHeatHit")
             .Declare("ullaiEnabled", "ullaiHerdSizeMultiplier")
@@ -475,7 +479,7 @@ namespace RimMandrake.Pyrelands
                 list.GapLine();
             }
 
-            if (Group(list, "Absorbed mechanics (mandrake.rut.pyrelandsmechanics)", RimMandrake.Shared.SettingScope.Now, new[] { "burnLineEnabled", "fireHawkSpreadEnabled", "furnaceThermalEnabled", "furnaceWarmthStrength", "fireClockEnabled" }))
+            if (Group(list, "Absorbed mechanics (mandrake.rut.pyrelandsmechanics)", RimMandrake.Shared.SettingScope.Now, new[] { "burnLineEnabled", "fireHawkSpreadEnabled", "fireHawkSightingLetterEnabled", "furnaceThermalEnabled", "furnaceWarmthStrength", "fireClockEnabled" }))
             {
             using (Dependent(list, "burnLineEnabled", "fireHawkSpreadEnabled", "furnaceThermalEnabled", "furnaceWarmthStrength", "fireClockEnabled"))
             {
@@ -485,6 +489,13 @@ namespace RimMandrake.Pyrelands
                 list.CheckboxLabeled("Fire-hawk ember carrying", ref fireHawkSpreadEnabled,
                     "A fire-hawk can carry a live ember and drop it to start a new burn elsewhere. "
                   + "Off: fire-hawks never do this job.");
+                using (Dependent(list, "fireHawkSightingLetterEnabled"))
+                {
+                list.CheckboxLabeled("  Letter the first time a fire-hawk is seen carrying an ember", ref fireHawkSightingLetterEnabled,
+                    "Shipped default: ON. Once per game, the first time a fire-hawk with a live ember in its beak is in view on one "
+                  + "of your home maps, a letter names it, says what it is carrying and where it is flying, and points at it. "
+                  + "Off: no letter (the hawks still carry embers).");
+                }
                 list.CheckboxLabeled("Furnace-beast thermal circuit", ref furnaceThermalEnabled,
                     "The furnace-beast's local warmth (a felt-temperature offset around it), bed ignition and thermal charge "
                   + "cycle. Off: it behaves as an ordinary heat-immune grazer.");
