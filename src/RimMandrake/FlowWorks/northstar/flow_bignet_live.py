@@ -118,7 +118,7 @@ def main():
             dt = (r.get("operation") or {}).get("DurationMs") or (time.time() - t0) * 1000
             pulses = r.get("pulsesRun") or 0
             last = (r.get("pulses") or [{}])[-1]
-            fill = (last.get("fill") or [0])[0]
+            fill = (last.get("dl") or [0])[0] / 10000.0     # levels (the pulse sends per-cell dL only)
             batches.append({"pulses": pulses, "ms": dt, "msPerPulse": (dt / pulses) if pulses else None, "farFill": fill})
             save()
             print("batch %d: %d pulses, %.1f ms/pulse, far fill %s" % (len(batches), pulses, (dt / pulses) if pulses else -1, fill), flush=True)

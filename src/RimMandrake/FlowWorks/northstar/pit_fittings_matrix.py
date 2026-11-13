@@ -93,6 +93,14 @@ STEP_SQ = (2, 4)
 RAMP_SPAN = 3
 
 
+
+def _metres(v):
+    """ProofSubmerge's waterM (F4 metres) rounded to the 0.5 m level grid the matrix stages; None when unread."""
+    try:
+        return round(float(v) * 2) / 2.0 if abs(float(v) * 2 - round(float(v) * 2)) < 1e-3 else float(v)
+    except (TypeError, ValueError):
+        return None
+
 def step_depth(d):
     """The ramp's step square: dug to depth - 3, so the ramp climbs its full span; 0 (undug) in D1-D3."""
     return max(0, d - RAMP_SPAN)
@@ -347,7 +355,7 @@ def read():
                 row(rid + "_present", False, text)   # a placement refusal shows here too; judged against `placed`
                 continue
             kv = kv_of(text)
-            row(rid + "_found_at_depth_fill", kv.get("depth") == str(d) and kv.get("fill") == str(f) and kv.get("def") == dn
+            row(rid + "_found_at_depth_fill", kv.get("depth") == str(d) and _metres(kv.get("waterM")) == f * 0.5 and kv.get("def") == dn
                 and (kind not in ("item", "minified", "swale") or kv.get("kind") == kind), text)
             share, line, foot = fnum(kv, "share"), fnum(kv, "seenLine"), fnum(kv, "seenFoot")
             row(rid + "_share_in_range", 0.0 <= share <= 1.0 and (f > 0 or share == 0.0), kv.get("share"))

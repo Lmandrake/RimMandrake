@@ -575,8 +575,8 @@ def p_s1(s, P, sc):
                                                for x, z in pts])):
             if not isinstance(r, dict) or r.get("success") is False:
                 raise RuntimeError("excavation_report %d,%d unreadable: %s" % (x, z, str(r)[:100]))
-            if r.get("depth") or r.get("fill"):
-                bad.append("plot %s: %d,%d D=%s F=%s" % (plot["id"], x, z, r.get("depth"), r.get("fill")))
+            if r.get("depth") or r.get("waterDl"):
+                bad.append("plot %s: %d,%d D=%s waterDl=%s" % (plot["id"], x, z, r.get("depth"), r.get("waterDl")))
     return row("P-S1", FAIL if bad else PASS, "; ".join(bad[:6]) or "%d plots match the manifest cell by cell"
                % len(sc["plots"]))
 

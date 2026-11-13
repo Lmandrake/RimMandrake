@@ -84,10 +84,10 @@ case(LC.FILL_UNITS >= 4 * L, True, "staging is level-scale, not the pre-litres 1
 
 
 def _rows(fills, depth=2, z=0, x0=0, sink_upto=-1, source_at=None):
-    out = [{"x": x0 + i, "z": z, "d": depth, "f": f, "isExcavated": True, "isSink": x0 + i <= sink_upto, "isSource": False}
+    out = [{"x": x0 + i, "z": z, "d": depth, "dl": f * 10000, "isExcavated": True, "isSink": x0 + i <= sink_upto, "isSource": False}
            for i, f in enumerate(fills)]
     if source_at is not None:
-        out.append({"x": source_at, "z": z, "d": 0, "f": 0, "isExcavated": False, "isSink": False, "isSource": True})
+        out.append({"x": source_at, "z": z, "d": 0, "dl": 0, "isExcavated": False, "isSink": False, "isSource": True})
     return out
 
 

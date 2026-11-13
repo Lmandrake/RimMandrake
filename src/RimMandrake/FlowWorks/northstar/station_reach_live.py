@@ -113,13 +113,13 @@ def main():
         if lt[0].get("id") is not None:
             B.call("jawa/battery_set", thing=lt[0]["id"], mode="setPct", value=1.0)
         s["draw"] = str((B.call("jawa/static_call", type=NSP, method="ProofPump", args="%d,%d;draw" % s["st"], _answer=True) or {}).get("result"))
-        s["water0"] = [(B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=0, setBodyWaterM=-1) or {}).get("fill") for c in s["chan"]]
+        s["water0"] = [(B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=0, setBodyWaterM=-1) or {}).get("waterDl") for c in s["chan"]]
     B.ticks(1000)
     for name, s in scenes.items():
         r = B.call("jawa/static_call", type=NSP, method="ProofPump", args="%d,%d" % s["st"], _answer=True) or {}
         t = str(r.get("result") or r.get("message"))
         s["after"] = t
-        s["water1"] = [(B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=0, setBodyWaterM=-1) or {}).get("fill") for c in s["chan"]]
+        s["water1"] = [(B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=0, setBodyWaterM=-1) or {}).get("waterDl") for c in s["chan"]]
         s["kv"] = kv(t)
     res["scenes"] = scenes
     a_, b_ = scenes["A"], scenes["B"]

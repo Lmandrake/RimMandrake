@@ -129,7 +129,7 @@ def main(argv=None):
 
     def fill_at(x, z):
         r = B.call("jawa/flowworks_excavation_report", x=x, z=z) or {}
-        return r.get("fill") or 0
+        return (r.get("waterDl") or 0) // 10000     # whole levels from the one water number
 
     def unmeasured(why):
         res["rows"]["site"] = {"status": "UNMEASURED", "why": why}

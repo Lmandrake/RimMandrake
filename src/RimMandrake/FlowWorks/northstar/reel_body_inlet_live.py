@@ -61,7 +61,7 @@ def run(B, T, saves, receipt, expected_sha):
     def dig(x,z):
         call('jawa/flowworks_excavation_drive',x=x,z=z,deepenLevels=4,setBodyWaterM=0.0)
         r=call('jawa/flowworks_excavation_report',x=x,z=z)
-        require(r.get('depth')==4 and r.get('fill')==0 and r.get('isExcavated') is True,'not dry D4: '+str(r))
+        require(r.get('depth')==4 and r.get('waterDl')==0 and r.get('isExcavated') is True,'not dry D4: '+str(r))
         return r
     receipt['identity']=sc(PRISON,'Identity','probe')
     require('sha256='+expected_sha in receipt['identity'],'wrong loaded DLL '+receipt['identity'])

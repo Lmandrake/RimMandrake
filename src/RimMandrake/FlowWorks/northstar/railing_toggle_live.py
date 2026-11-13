@@ -139,7 +139,7 @@ def run(B, T, saves, res, expected_sha):
                 "jawa/flowworks_excavation_drive", x=x, z=36, deepenLevels=4, setBodyWaterM=0.0
             )
             d = call("jawa/flowworks_excavation_report", x=x, z=36)
-            require(d.get("depth") == 4 and d.get("fill") == 0, "not dry D4")
+            require(d.get("depth") == 4 and d.get("waterDl") == 0, "not dry D4")
         res["build"] = sc(SUSP, "ProofBuild", "36,36;41,36;timber;god")
         require(
             "ok=True" in res["build"] and "decks=4" in res["build"],
