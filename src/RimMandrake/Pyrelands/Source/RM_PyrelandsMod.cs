@@ -60,7 +60,9 @@ namespace RimMandrake.Pyrelands
         public static bool ashfallAccumulationEnabled = true;
         public static float ashfallRateMultiplier = 1f;
 
-        public static bool biomeGenerationEnabled = true;
+        // Ships OFF, labelled unsupported (owner card 2026-11-13: "ship biomeGenerationEnabled OFF, labelled
+        // unsupported"): players receive the frozen world and never generate one, so this switch is untested.
+        public static bool biomeGenerationEnabled = false;
 
         // PYRELANDS_FLORA_LEAK_1 — a Harmony postfix on WildPlantSpawner strips
         // any wild-plant candidate off the RM_FE_ grass allowlist on a
@@ -150,7 +152,7 @@ namespace RimMandrake.Pyrelands
             Scribe_Values.Look(ref scorchFruitMapCap, "scorchFruitMapCap", 40);
             Scribe_Values.Look(ref ashfallAccumulationEnabled, "ashfallAccumulationEnabled", true);
             Scribe_Values.Look(ref ashfallRateMultiplier, "ashfallRateMultiplier", 1f);
-            Scribe_Values.Look(ref biomeGenerationEnabled, "biomeGenerationEnabled", true);
+            Scribe_Values.Look(ref biomeGenerationEnabled, "biomeGenerationEnabled", false);
             Scribe_Values.Look(ref wildPlantAllowlistEnabled, "wildPlantAllowlistEnabled", true);
             Scribe_Values.Look(ref plantGrowthStagesEnabled, "plantGrowthStagesEnabled", true);
             Scribe_Values.Look(ref scorchedRuinsEnabled, "scorchedRuinsEnabled", true);
@@ -465,8 +467,9 @@ namespace RimMandrake.Pyrelands
 
             if (Group(list, "Biome placement (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "biomeGenerationEnabled" }))
             {
-    list.CheckboxLabeled("Pyrelands can generate on new worlds", ref biomeGenerationEnabled,
-                    "Off: the Pyrelands biome never wins tile placement when generating a NEW world. "
+    list.CheckboxLabeled("Pyrelands can generate on new worlds (unsupported)", ref biomeGenerationEnabled,
+                    "Unsupported: the game ships one fixed world and this is not tested. Off by default. "
+                  + "Off: the Pyrelands biome never wins tile placement when generating a NEW world. "
                   + "A world already generated, and any Pyrelands tiles already on it, are unaffected — "
                   + "this never retroactively changes an existing planet.");
                 list.GapLine();

@@ -66,14 +66,14 @@ DLCS = ("ludeon.rimworld.royalty", "ludeon.rimworld.ideology", "ludeon.rimworld.
         "ludeon.rimworld.anomaly", "ludeon.rimworld.odyssey")
 
 # Shipped defaults, read off RM_PyrelandsSettings (RM_PyrelandsMod.cs) and
-# Plan §3.3: all features ON, crossBiome* false,
+# Plan §3.3: all features ON except biomeGenerationEnabled (off, owner card 2026-11-13), crossBiome* false,
 # ashfallRateMultiplier 1, scorchFruitMapCap 40.
 DEFAULTS = {
     "pyrelandsEnabled": True,
     "ashDustingEnabled": True, "ashDustingChance": 0.004,
     "scorchFruitEnabled": True, "scorchFruitChance": 0.05, "scorchFruitMapCap": 40,
     "ashfallAccumulationEnabled": True, "ashfallRateMultiplier": 1.0,
-    "biomeGenerationEnabled": True, "wildPlantAllowlistEnabled": True,
+    "biomeGenerationEnabled": False, "wildPlantAllowlistEnabled": True,
     "plantGrowthStagesEnabled": True, "scorchedRuinsEnabled": True,
     "burnLineEnabled": True, "fireHawkSpreadEnabled": True, "furnaceThermalEnabled": True, "furnaceWarmthStrength": 1.0,
     "fireClockEnabled": True,

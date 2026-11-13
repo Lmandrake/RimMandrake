@@ -621,6 +621,15 @@ def test_defaults_match_source():
     diff = {k: (found[k], P.DEFAULTS[k]) for k in found if k in P.DEFAULTS
             and P._norm_val(found[k]) != P._norm_val(P.DEFAULTS[k])}
     check("DEFAULTS values == C# initialisers", not diff, diff)
+    # Owner card 2026-11-13: biomeGenerationEnabled ships OFF, labelled unsupported.
+    check("biomeGenerationEnabled ships off", found.get("biomeGenerationEnabled") is False,
+          found.get("biomeGenerationEnabled"))
+    check("biomeGenerationEnabled scribe default is off",
+          'Look(ref biomeGenerationEnabled, "biomeGenerationEnabled", false)' in src)
+    lab = re.search(r'CheckboxLabeled\("([^"]*)", ref biomeGenerationEnabled,\s*"([^"]*)"', src)
+    check("biomeGenerationEnabled label says unsupported",
+          bool(lab) and "unsupported" in lab.group(1).lower() and "unsupported" in lab.group(2).lower(),
+          lab and lab.groups())
 
 
 def test_gate_a():
