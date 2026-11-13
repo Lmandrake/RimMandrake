@@ -438,6 +438,9 @@ namespace RimMandrake.GimmeSomeSlack
 
         public static bool IsLod(Material m) => m != null && lods.Contains(m);
 
+        /// <summary>A copy of a LOD strand material (CordUnderLiquid's faded one) is a LOD strand too, shown only far out.</summary>
+        internal static void AlsoLod(Material copy) { if (copy != null) lods.Add(copy); }
+
         public static Material Decal(DecalKind k) => decals.TryGetValue(k, out Material m) ? m : null;
 
         private static readonly Dictionary<Material, Material> overFace = new Dictionary<Material, Material>();

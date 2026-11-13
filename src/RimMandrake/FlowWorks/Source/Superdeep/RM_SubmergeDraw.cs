@@ -470,12 +470,22 @@ namespace RimMandrake.FlowWorks
 				sil = g.GetColoredVersion(ShaderDatabase.Silhouette, Color.white, Color.white);
 				silhouettes[g] = sil;
 			}
-			Rot4 rot = rotOverride ?? (dead ? corpse.InnerPawn.Rotation : pawn.Rotation);
+			// the facing vanilla draws the body at (PawnRenderer.ParallelGetPreRenderResults): a lying or dead pawn faces its
+			// LayingFacing, not its Rotation (RIMMANDRAKE_ALIGN_CORPSE_LIQUID_COVER_SKEWED_TWIN: the cover was the wrong facing's
+			// silhouette, drawn beside the body)
+			bool upright = pawn.GetPosture() == PawnPosture.Standing || pawn.Crawling;
+			Rot4 rot = rotOverride ?? (upright ? pawn.Rotation : r.LayingFacing());
 			Material mat = sil.MatAt(rot);
 			bool flip = rot == Rot4.West ? g.WestFlipped : rot == Rot4.East && g.EastFlipped;
 			Vector2 size = g.drawSize;
-			float angle = dead || RM_Drowning.Lying(pawn) ? r.BodyAngle(PawnRenderFlags.None) : 0f;
-			Matrix4x4 at4 = Matrix4x4.TRS(new Vector3(drawLoc.x, drawLoc.y + CoverLift, drawLoc.z), Quaternion.AngleAxis(angle, Vector3.up), Vector3.one);
+			float angle = upright ? 0f : r.BodyAngle(PawnRenderFlags.None);
+			// where vanilla drew the body (results.bodyPos, kept as SilhouettePos by RenderPawnAt before this postfix)
+			Vector3 body = r.SilhouettePos;
+			if ((body - drawLoc).MagnitudeHorizontalSquared() > 4f)
+			{
+				body = drawLoc;   // not set by this draw (vanilla returned before it): the body is where it was asked
+			}
+			Matrix4x4 at4 = Matrix4x4.TRS(new Vector3(body.x, Mathf.Max(drawLoc.y, body.y) + CoverLift, body.z), Quaternion.AngleAxis(angle, Vector3.up), Vector3.one);
 			RM_LiquidSurfaceLook look = LookAt(at.Map, RM_SuperdeepTrap.EngineOf(at.Map), at.Position);
 			Color col = CoverColour(look, clarity);
 			float line = levelM - s * h;
@@ -492,6 +502,132 @@ namespace RimMandrake.FlowWorks
 				}
 			}
 		}
+
+		// ── the realtime layer (RIMMANDRAKE_SINK_HOSES_AND_OVERLAYS_TORCHES_BURN_IN_TAR) ─────────────────
+		// Everything the map draws per frame passes Thing.DynamicDrawPhase (DynamicDrawManager): a Book (RealtimeOnly by the
+		// ThingDef default, never printed), a torch's flame (a comp's PostDraw inside its thing's DrawAt), a turret top, a
+		// corpse, a pawn. The law is applied there, by layer, not per kind: a thing standing wet in a pit whose top is hidden
+		// (RM_UnderLiquid.LabelAlpha 0: an opaque liquid over it) is not drawn at all; one partly seen draws every Graphic it
+		// draws through Graphic.DrawMeshInt split and faded like a print (DrawUnder), and a flame under the line is out.
+		// Overlays (OverlayDrawer: power off, needs power, broken down, out of fuel, forbidden) follow their thing's top.
+
+		[System.ThreadStatic] private static bool rtOn;
+		private static float rtLevel, rtHeight, rtClarity, rtShare;
+
+		/// <summary>The drawn height (m) the law gives a realtime thing: a pawn's (PawnMetres), a corpse's, else a standing
+		/// thing's (StandingMetres); 0 = not one the law draws (motes, fire, projectiles, filth).</summary>
+		private static float RealtimeMetres(Thing t)
+		{
+			if (t is Pawn p)
+			{
+				return p.Swimming || p.Flying ? 0f : PawnMetres(p, false);
+			}
+			if (t is Corpse c)
+			{
+				return c.InnerPawn != null ? PawnMetres(c.InnerPawn, true) : RM_UnderLiquid.CorpseMetres;
+			}
+			return t.def.category == ThingCategory.Item || t is Building ? StandingMetres(t) : 0f;
+		}
+
+		/// <summary>Thing.DynamicDrawPhase prefix (the Draw phase only: the parallel pre-draw runs off the main thread): false =
+		/// hidden under the liquid, not drawn; else opens the realtime split for a thing partly seen.</summary>
+		internal static bool BeginRealtime(Thing t, DrawPhase phase)
+		{
+			rtOn = false;
+			if (!On || phase != DrawPhase.Draw || t == null || !t.Spawned)
+			{
+				return true;
+			}
+			float h = RealtimeMetres(t);
+			if (h <= 0f || !Wet(t, out int _, out float levelM, out float clarity, false))
+			{
+				return true;
+			}
+			if (RM_UnderLiquid.LabelAlpha(clarity, levelM, h) <= 0f)
+			{
+				return false;   // its top is under an opaque liquid: nothing of it shows
+			}
+			if (t is Pawn || t is Corpse)
+			{
+				return true;   // a wading or lying body is covered by its silhouette (CoverPawn)
+			}
+			rtShare = RM_UnderLiquid.Share(levelM, 0f, h);
+			if (rtShare <= 0f)
+			{
+				return true;
+			}
+			rtLevel = levelM;
+			rtHeight = h;
+			rtClarity = clarity;
+			rtOn = true;
+			return true;
+		}
+
+		internal static void EndRealtime()
+		{
+			rtOn = false;
+		}
+
+		/// <summary>Graphic.DrawMeshInt prefix: inside the realtime split, the mesh is drawn as its part above the line plus its
+		/// drowned bands at the law's alpha (DrawUnder); false = drawn here.</summary>
+		internal static bool DrawRealtime(Mesh mesh, Vector3 loc, Quaternion quat, Material mat)
+		{
+			if (!rtOn || mesh == null || mat == null)
+			{
+				return true;
+			}
+			Vector3 b = mesh.bounds.size;
+			Vector2 size = new Vector2(b.x, b.z);
+			bool flip = mesh == MeshPool.GridPlaneFlip(size);
+			rtOn = false;   // DrawUnder draws through Graphics directly; nothing re-enters, but never split twice
+			try
+			{
+				DrawUnder(mesh, size, Matrix4x4.TRS(loc, quat, Vector3.one), mat, rtLevel, rtHeight, rtClarity, flip);
+			}
+			finally
+			{
+				rtOn = true;
+			}
+			return false;
+		}
+
+		/// <summary>How much of a cord or rope lying on the floor at (<paramref name="x"/>, <paramref name="z"/>) shows through
+		/// the liquid over it (RM_UnderLiquid.Seen at the level; 1 off a pit, dry, on a deck or with the setting off). Gimme Some
+		/// Slack calls it by name (SectionLayer_RM_MessyCords, a section rebuild, main thread) and the cell is noted like any
+		/// print, so a level change re-meshes it (FillPictured dirties Buildings, which the cord layer listens to).</summary>
+		public static float FloorSeen(Map map, int x, int z)
+		{
+			if (!On || map == null)
+			{
+				return 1f;
+			}
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+			IntVec3 c = new IntVec3(x, 0, z);
+			if (eng == null || !c.InBounds(map))
+			{
+				return 1f;
+			}
+			int depth = eng.HollowDepthAt(c);
+			if (depth <= 0 || Pits.RM_PitCoverUtility.IsCovered(map, c))
+			{
+				return 1f;
+			}
+			int note = NoteAt(eng, c);
+			eng.submergeDrawn[map.cellIndices.CellToIndex(c)] = note;
+			if (note <= 0)
+			{
+				return 1f;
+			}
+			float lv = RM_UnderLiquid.NoteLevel(note);
+			return RM_UnderLiquid.Seen(ClarityAt(map, eng, c), (lv > depth ? depth : lv) * RM_UnderLiquid.Notch);
+		}
+
+		/// <summary>Graphic_Flicker.DrawWorker prefix: a flame whose thing's top is under the line is out (false).</summary>
+		internal static bool FlameShows => !rtOn || rtShare < 1f;
+
+		/// <summary>How much of an overlay on <paramref name="t"/> shows: it follows the thing's top (LabelAlpha); 1 for anything
+		/// not standing wet in a pit.</summary>
+		public static float OverlayAlpha(Thing t) => t != null && t.Spawned ? LabelAlpha(t) : 1f;
 
 		/// <summary>Above every layer a pawn's own render tree draws (body, apparel, head; the slice keeps the head out while
 		/// it is above the line).</summary>
@@ -609,8 +745,28 @@ namespace RimMandrake.FlowWorks
 
 		private static readonly Dictionary<long, Material> faded = new Dictionary<long, Material>();
 
+		private static int drownedQueue;
+
+		/// <summary>The render queue of a drowned part (RimMandrake.Shared.Slack.DrawOrder.DrownedQueue): above every
+		/// ground-level cord, hose and clamp, so what lies under a drowned thing stays under it as under the dry thing (whose
+		/// Cutout writes depth; a Transparent part does not), and below the overhead spans.</summary>
+		private static int DrownedQueue
+		{
+			get
+			{
+				if (drownedQueue == 0)
+				{
+					Shader tr = ShaderDatabase.Transparent;
+					drownedQueue = RimMandrake.Shared.Slack.DrawOrder.DrownedQueue(
+						RimMandrake.Shared.Slack.DrawOrder.BaseStrandQueue(tr != null ? tr.renderQueue : 0));
+				}
+				return drownedQueue;
+			}
+		}
+
 		/// <summary><paramref name="mat"/> at alpha <paramref name="q"/>/Steps on the transparent shader (its texture and
-		/// colour kept): how a drowned part is seen over the liquid. Null when the material has no texture.</summary>
+		/// colour kept), in the drowned queue: how a drowned part is seen over the liquid. Null when the material has no
+		/// texture. A whole (q = Steps) part keeps its own material: it hides what lies under it by depth.</summary>
 		public static Material Faded(Material mat, int q)
 		{
 			if (q >= RM_UnderLiquid.Steps)
@@ -629,7 +785,7 @@ namespace RimMandrake.FlowWorks
 			}
 			Color c = mat.color;
 			m = MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent,
-				new Color(c.r, c.g, c.b, c.a * q / RM_UnderLiquid.Steps)));
+				new Color(c.r, c.g, c.b, c.a * q / RM_UnderLiquid.Steps)) { renderQueue = DrownedQueue });
 			faded[key] = m;
 			return m;
 		}
@@ -668,8 +824,10 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>A realtime upright sprite (<paramref name="whole"/>, <paramref name="size"/>) whose foot lies
 		/// <paramref name="footMetres"/> under the liquid and which spans <paramref name="heightMetres"/> up from there:
-		/// the part above the line as it is, the drowned part in bands at the law's alpha. Returns the share drawn under.</summary>
-		public static float DrawUnder(Mesh whole, Vector2 size, Matrix4x4 at, Material mat, float footMetres, float heightMetres, float clarity)
+		/// the part above the line as it is, the drowned part in bands at the law's alpha (<paramref name="flip"/>: the art is
+		/// mirrored, as on a flipped plane). Returns the share drawn under.</summary>
+		public static float DrawUnder(Mesh whole, Vector2 size, Matrix4x4 at, Material mat, float footMetres, float heightMetres, float clarity,
+			bool flip = false)
 		{
 			float s = RM_UnderLiquid.Share(footMetres, 0f, heightMetres);
 			if (s <= 0f)
@@ -679,7 +837,7 @@ namespace RimMandrake.FlowWorks
 			}
 			if (s < 1f)
 			{
-				Mesh kept = SliceMesh(size, s, 1f);
+				Mesh kept = SliceMesh(size, s, 1f, flip);
 				if (kept != null)
 				{
 					UnityEngine.Graphics.DrawMesh(kept, at, mat, 0);
@@ -692,7 +850,7 @@ namespace RimMandrake.FlowWorks
 				float a = s * b / n, e = s * (b + 1) / n, mid = footMetres - (a + e) * 0.5f * heightMetres;
 				int q = RM_UnderLiquid.BandAlphaStep(clarity, mid);
 				Material m = q > 0 ? Faded(mat, q) : null;
-				Mesh band = m != null ? SliceMesh(size, a, e) : null;
+				Mesh band = m != null ? SliceMesh(size, a, e, flip) : null;
 				if (band != null)
 				{
 					UnityEngine.Graphics.DrawMesh(band, at, m, 0);
@@ -1006,6 +1164,79 @@ namespace RimMandrake.FlowWorks
 		{
 			RM_SubmergeDraw.Shift(ref center);
 			return !RM_SubmergeDraw.Split(layer, center, size, mat, rot, flipUv, uvs, colors, topVerticesAltitudeBias, uvzPayload);
+		}
+	}
+
+	/// <summary>The realtime layer: every per-frame thing draw passes here (RM_SubmergeDraw.BeginRealtime).</summary>
+	[HarmonyPatch(typeof(Thing), nameof(Thing.DynamicDrawPhase))]
+	[RimMandrake.Shared.PatchFeature("Pit contents under liquid (realtime things)", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "pitSubmergeCutEnabled")]
+	internal static class Patch_RM_SubmergeRealtime
+	{
+		[HarmonyPrefix]
+		private static bool Prefix(Thing __instance, DrawPhase phase)
+		{
+			return RM_SubmergeDraw.BeginRealtime(__instance, phase);
+		}
+
+		[HarmonyFinalizer]
+		private static void Finalizer()
+		{
+			RM_SubmergeDraw.EndRealtime();
+		}
+	}
+
+	/// <summary>Inside the realtime split, a Graphic's mesh is drawn cut and faded (RM_SubmergeDraw.DrawRealtime). The base
+	/// method is the one every Graphic whose DrawWorker is vanilla's draws through (Single, Multi, StackCount, Random, ...).</summary>
+	[HarmonyPatch(typeof(Graphic), "DrawMeshInt")]
+	[RimMandrake.Shared.PatchFeature("Pit contents under liquid (realtime things)", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "pitSubmergeCutEnabled")]
+	internal static class Patch_RM_SubmergeRealtimeMesh
+	{
+		[HarmonyPrefix]
+		private static bool Prefix(Mesh mesh, Vector3 loc, Quaternion quat, Material mat)
+		{
+			return RM_SubmergeDraw.DrawRealtime(mesh, loc, quat, mat);
+		}
+	}
+
+	/// <summary>A flame (torch, campfire, brazier, darklight: every Graphic_Flicker) on a thing whose top is under the line is
+	/// out.</summary>
+	[HarmonyPatch(typeof(Graphic_Flicker), nameof(Graphic_Flicker.DrawWorker))]
+	[RimMandrake.Shared.PatchFeature("Pit contents under liquid (flames)", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "pitSubmergeCutEnabled")]
+	internal static class Patch_RM_SubmergeFlame
+	{
+		[HarmonyPrefix]
+		private static bool Prefix()
+		{
+			return RM_SubmergeDraw.FlameShows;
+		}
+	}
+
+	/// <summary>Every overlay OverlayDrawer draws on a thing (power off, needs power, broken down, out of fuel, forbidden,
+	/// question mark, ...) is not drawn once its thing's top is hidden under the liquid.</summary>
+	[HarmonyPatch(typeof(OverlayDrawer), nameof(OverlayDrawer.DrawOverlay))]
+	[RimMandrake.Shared.PatchFeature("Pit contents under liquid (overlays)", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "pitSubmergeCutEnabled")]
+	internal static class Patch_RM_SubmergeOverlay
+	{
+		[HarmonyPrefix]
+		private static bool Prefix(Thing t)
+		{
+			return RM_SubmergeDraw.OverlayAlpha(t) > 0f;
+		}
+	}
+
+	/// <summary>The pulsing status overlays (power off, needs power, broken down, out of fuel) fade with their thing's top.</summary>
+	[HarmonyPatch(typeof(OverlayDrawer), "RenderPulsingOverlayInternal")]
+	[RimMandrake.Shared.PatchFeature("Pit contents under liquid (overlays)", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "pitSubmergeCutEnabled")]
+	internal static class Patch_RM_SubmergeOverlayFade
+	{
+		[HarmonyPrefix]
+		private static void Prefix(Thing thing, ref Material mat)
+		{
+			float a = RM_SubmergeDraw.OverlayAlpha(thing);
+			if (a < 1f && mat != null)
+			{
+				mat = FadedMaterialPool.FadedVersionOf(mat, a);
+			}
 		}
 	}
 }

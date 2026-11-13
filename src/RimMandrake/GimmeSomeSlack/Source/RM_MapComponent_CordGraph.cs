@@ -723,7 +723,8 @@ namespace RimMandrake.GimmeSomeSlack
             if (!GimmeSomeSlackSettings.floorRipple || GimmeSomeSlackSettings.swayAmplitude <= 0.01f || !Prefs.PlantWindSway) return false;
             if (s.Lifted || s.OverFace || s.WhipA > 0 || s.WhipB > 0 || s.Pts == null || s.Pts.Count < 3) return false;
             IntVec3 c = CordWorldAdapter.I(s.Pts[s.Pts.Count / 2].Floor);
-            return c.InBounds(map) && !map.roofGrid.Roofed(c);
+            // a cord under a pit's liquid does not ripple in the wind: it is printed, and the print fades it (CordUnderLiquid)
+            return c.InBounds(map) && !map.roofGrid.Roofed(c) && CordUnderLiquid.SeenAt(map, c.x, c.z) >= 1f;
         }
 
         private static Mesh Fresh(ref Mesh m)

@@ -52,8 +52,15 @@ namespace RimMandrake.Shared.Slack
         // ---- render queues, all relative to the cord strand queue (BaseStrandQueue, normally 3000)
         public static int HoseQueue(int strandQueue) => strandQueue + 3;
         public static int TapClampQueue(int strandQueue) => Math.Max(3004, strandQueue + 4);
-        /// <summary>Span cable and pole / lamp-mast head overlays: above every ground-level material of this mod.</summary>
-        public static int OverheadQueue(int strandQueue) => Math.Max(HoseQueue(strandQueue), TapClampQueue(strandQueue)) + 1;
+        /// <summary>RIMMANDRAKE_SINK_HOSES_AND_OVERLAYS_TORCHES_BURN_IN_TAR (owner 2026-11-12: "a GSS connector unfortunately
+        /// showing up through the battery it should be beneath in a pit"): the part of a thing drawn under a pit's liquid
+        /// (FlowWorks RM_SubmergeDraw.Faded) is Transparent, so it writes no depth and no longer hides the cords and hoses
+        /// beneath it the way the dry thing's Cutout does. Its queue sits above every ground-level cord, hose and clamp
+        /// queue, so whatever lies under a drowned thing stays under it; overhead spans stay above it.</summary>
+        public static int DrownedQueue(int strandQueue) => Math.Max(HoseQueue(strandQueue), TapClampQueue(strandQueue)) + 1;
+        /// <summary>Span cable and pole / lamp-mast head overlays: above every ground-level material of this mod, and above
+        /// the drowned parts of things in a pit (<see cref="DrownedQueue"/>).</summary>
+        public static int OverheadQueue(int strandQueue) => DrownedQueue(strandQueue) + 1;
     }
 
     /// <summary>CORD_GRAPH_TOPOLOGY_REVISION_1 (the half the 2026-10-09 FOUNDRY note kept): per-frame motion drew one mesh per

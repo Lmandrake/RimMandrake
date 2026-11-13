@@ -1,0 +1,1 @@
+Fading a Cutout sprite by swapping to a Transparent material removes its depth write, so anything at a LOWER altitude in an equal-or-later render queue (Gimme Some Slack cords 3000-3003, hoses 3003, clamps 3004) paints over it. The GSS connector showed through a drowned Battery only in wet pits for this reason. Give the faded copy a queue above those (DrawOrder.DrownedQueue).

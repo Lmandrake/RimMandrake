@@ -544,10 +544,11 @@ namespace RimMandrake.FlowWorks.Sheet
 		}
 
 		/// <summary>The master switch, the per-inflow switch (stage 3), the depth engine, and the fluid: water, or any other
-		/// FlowWorks liquid while "other liquids spill" is on (owner 2026-10-22: <i>"Build for all flowworks liquids."</i>).</summary>
-		private bool Accepts(FluidDef fluid, Source from) =>
-			RM_SheetSettings.SpillsFrom(from) && RimMandrakeFlowWorksSettings.DepthEngineActive && fluid != null
-			&& (fluid == Water || RM_SheetSettings.otherLiquidsSpillEnabled);
+		/// FlowWorks liquid while "other liquids spill" is on (owner 2026-10-22: <i>"Build for all flowworks liquids."</i>).
+		/// <paramref name="force"/>: the dev pour's overflow (RM_GodLiquid.PourOverflow) goes in whatever the switches say.</summary>
+		private bool Accepts(FluidDef fluid, Source from, bool force = false) =>
+			RM_SheetMath.AcceptsSpill(RM_SheetSettings.SpillsFrom(from), RimMandrakeFlowWorksSettings.DepthEngineActive, fluid != null,
+				fluid == Water, RM_SheetSettings.otherLiquidsSpillEnabled, force);
 
 		private SpillOffer MakeOffer(IntVec3 origin, long dl, FluidDef fluid, Source from)
 		{
@@ -575,9 +576,13 @@ namespace RimMandrake.FlowWorks.Sheet
 
 		/// <summary>Spill up to <paramref name="dl"/> over the lips nearest <paramref name="origin"/>. Returns the dL accepted;
 		/// the caller debits exactly that and keeps (refuses back) the rest.</summary>
-		public long Offer(IntVec3 origin, long dl, FluidDef fluid, Source from)
+		public long Offer(IntVec3 origin, long dl, FluidDef fluid, Source from) => Offer(origin, dl, fluid, from, false);
+
+		/// <summary><see cref="Offer(IntVec3, long, FluidDef, Source)"/>; <paramref name="force"/> = past the overflow switches
+		/// (the dev pour's overflow).</summary>
+		public long Offer(IntVec3 origin, long dl, FluidDef fluid, Source from, bool force)
 		{
-			if (dl <= 0 || !Accepts(fluid, from))
+			if (dl <= 0 || !Accepts(fluid, from, force))
 			{
 				return 0;
 			}

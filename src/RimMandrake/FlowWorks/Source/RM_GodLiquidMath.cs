@@ -3,9 +3,8 @@ using System.Collections.Generic;
 
 namespace RimMandrake.FlowWorks
 {
-	/// <summary>RIMMANDRAKE_GIVE_GODMODE_LIQUID_POUR_DRAIN (owner 2026-11-12: <i>"we need some God Mode capabilities to allow the
-	/// debug player the ability to drop large units of various liquids on the terrain or in a pit as well as remove it."</i>): the
-	/// arithmetic of the dev pour, drain and set-level tools (RM_GodLiquid), Verse-free so Source/SelfTest compiles it. Amounts are
+	/// <summary>RIMMANDRAKE_GIVE_GODMODE_LIQUID_POUR_DRAIN (the dev tools that drop large amounts of any liquid on the terrain or in a
+	/// pit and take it away again): the arithmetic of the dev pour, drain and set-level tools (RM_GodLiquid), Verse-free so Source/SelfTest compiles it. Amounts are
 	/// decilitres (RM_Volume.UnitsPerLitre); a plan is a list of (square index, signed dL), positive = poured, never over a
 	/// square's brim or below empty; the caller moves the liquid through the engine and counts what it really moved.</summary>
 	public static class RM_GodLiquidMath
@@ -199,6 +198,21 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>A pour/drain step as the menu shows it ("2,048,000 L (16x16 pit, 4 m)").</summary>
+		/// <summary>The first square of <paramref name="order"/> (the click, then outward) that <paramref name="wet"/> holds, or -1:
+		/// where a drain on undug ground starts when the clicked square itself is dry (RIMMANDRAKE_LET_GROUND_DRAIN_ALL_FIND_SPILL_EMPTY_CLICK:
+		/// a part drain empties the clicked square first, and the rest of the spill lies around it).</summary>
+		public static int NearestWet(IList<int> order, Func<int, bool> wet)
+		{
+			for (int k = 0; k < order.Count; k++)
+			{
+				if (wet(order[k]))
+				{
+					return order[k];
+				}
+			}
+			return -1;
+		}
+
 		public static string StepLabel(long litres)
 		{
 			string s = RM_Volume.FormatLitres(litres);

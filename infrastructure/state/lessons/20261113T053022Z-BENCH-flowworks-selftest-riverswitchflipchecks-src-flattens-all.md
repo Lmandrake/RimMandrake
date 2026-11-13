@@ -1,0 +1,1 @@
+FlowWorks SelfTest RiverSwitchFlipChecks.Src() flattens all whitespace to single spaces; a line-based source check (count lines, look N lines back) must read the raw file via File.ReadAllText(SrcPath(rel)), or it silently sees one long line.

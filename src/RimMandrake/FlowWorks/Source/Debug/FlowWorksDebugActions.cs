@@ -130,9 +130,10 @@ namespace RimMandrake.FlowWorks
         }
 
         // RIMMANDRAKE_GIVE_GODMODE_LIQUID_POUR_DRAIN (owner 2026-11-12): pour, drain and set-level at the clicked square (RM_GodLiquid).
-        // Each is a click tool: it stays armed for repeated clicks until right-click.
-        [DebugAction(CAT, "God mode: pour liquid...", allowedGameStates = AllowedGameStates.PlayingOnMap)]
-        private static void GodPour()
+        // Each is a click tool: it stays armed for repeated clicks until right-click. The pour never refuses for room: what a pit
+        // cannot hold overflows onto the ground around it, whatever the overflow switch says (RM_GodLiquid.PourOverflow).
+        [DebugAction(CAT, "Pour liquid...", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void PourLiquid()
         {
             List<DebugMenuOption> list = new List<DebugMenuOption>();
             foreach (FluidDef fluid in Building_RM_MapControl.CanalFluids())
@@ -144,7 +145,7 @@ namespace RimMandrake.FlowWorks
                     foreach (long litres in RM_GodLiquidMath.PourLitreSteps)
                     {
                         long l = litres;
-                        amounts.Add(new DebugMenuOption("pour " + RM_GodLiquidMath.StepLabel(l), DebugMenuOptionMode.Tool, delegate { GodSay(RM_GodLiquid.Pour(UI.MouseCell(), f.defName, l)); }));
+                        amounts.Add(new DebugMenuOption("pour " + RM_GodLiquidMath.StepLabel(l), DebugMenuOptionMode.Tool, delegate { GodSay(RM_GodLiquid.PourOverflow(UI.MouseCell(), f.defName, l)); }));
                     }
                     Find.WindowStack.Add(new Dialog_DebugOptionListLister(amounts));
                 }));
@@ -152,8 +153,8 @@ namespace RimMandrake.FlowWorks
             Find.WindowStack.Add(new Dialog_DebugOptionListLister(list));
         }
 
-        [DebugAction(CAT, "God mode: drain liquid...", allowedGameStates = AllowedGameStates.PlayingOnMap)]
-        private static void GodDrain()
+        [DebugAction(CAT, "Drain liquid...", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void DrainLiquid()
         {
             List<DebugMenuOption> list = new List<DebugMenuOption>();
             list.Add(new DebugMenuOption("drain ALL", DebugMenuOptionMode.Tool, delegate { GodSay(RM_GodLiquid.DrainAll(UI.MouseCell())); }));
@@ -165,8 +166,8 @@ namespace RimMandrake.FlowWorks
             Find.WindowStack.Add(new Dialog_DebugOptionListLister(list));
         }
 
-        [DebugAction(CAT, "God mode: set pit liquid level...", allowedGameStates = AllowedGameStates.PlayingOnMap)]
-        private static void GodSetLevel()
+        [DebugAction(CAT, "Set pit liquid level...", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void SetPitLiquidLevel()
         {
             List<DebugMenuOption> list = new List<DebugMenuOption>();
             foreach (float metres in RM_GodLiquidMath.LevelMetreSteps)

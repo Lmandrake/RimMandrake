@@ -162,13 +162,13 @@ namespace RimMandrake.GimmeSomeSlack
                         {
                             bool trimA = pts != s.Pts && s.WhipA > 0, trimB = pts != s.Pts && s.WhipB > 0;
                             float[] grow = ShadowGrow(pts, p, trimA, trimB);
-                            verts += Ribbon(CordMaterials.Shadow, pts, ShadowWidth, y - 0.0003f, s.S0, ShadowOffset, grow: grow);
+                            verts += WetRibbon(CordMaterials.Shadow, pts, ShadowWidth, y - 0.0003f, s.S0, ShadowOffset, grow: grow);
                         }
                         // round 5: a random-mix piece is ONE colour node to node (its material index), like any other piece
                         if (!ripples)
                         {
-                            int rn = Ribbon(s.OverFace && strandFace != null ? strandFace : strand,
-                                            pts, StrandWidth, y, s.S0, Vector2.zero);
+                            int rn = WetRibbon(s.OverFace && strandFace != null ? strandFace : strand,
+                                               pts, StrandWidth, y, s.S0, Vector2.zero);
                             verts += rn;
                             if (rn > 0) printed.Add(p.Key + "#" + si);
                         }
@@ -179,7 +179,7 @@ namespace RimMandrake.GimmeSomeSlack
                             for (int i = 0; i < s.Pts.Count; i += 3) dec.Add(s.Pts[i]);
                             if ((s.Pts.Count - 1) % 3 != 0) dec.Add(s.Pts[s.Pts.Count - 1]);
                             // a mix piece's far-zoom strand is its own single colour too (round 5), so far and near agree
-                            verts += Ribbon(strandLod, dec, StrandWidth * 0.9f, baseY, s.S0, Vector2.zero);
+                            verts += WetRibbon(strandLod, dec, StrandWidth * 0.9f, baseY, s.S0, Vector2.zero);
                             lodDone = true;
                         }
                         k++;
@@ -196,6 +196,9 @@ namespace RimMandrake.GimmeSomeSlack
                         float y = face ? faceY + 0.002f : d.Kind == DecalKind.PlugTop ? baseY + 0.011f : d.Kind == DecalKind.Plug ? baseY + 0.010f : baseY + 0.009f;
                         // a plug seated on an east/west wall outlet lies over the outlet's receptacle (owner 2026-11-09)
                         if (d.OverFace) { m = CordMaterials.OverFaceOf(m); y = faceY + 0.004f; }
+                        // a plug, tape or fray on a pit floor is seen through the liquid over it (CordUnderLiquid)
+                        m = CordUnderLiquid.Faded(m, CordUnderLiquid.StepAt(Map, d.Pos.X, d.Pos.Z));
+                        if (m == null) continue;
                         float aspect = DecalAspect.Of(d.Kind);
                         verts += d.Cropped
                             ? Quad(m, d.Pos, (float)d.Angle, (float)d.ScaleX, (float)d.Scale * aspect, y, (float)d.U0, (float)d.U1, (float)d.V0, (float)d.V1)
@@ -287,6 +290,46 @@ namespace RimMandrake.GimmeSomeSlack
                 if (d.Kind != DecalKind.CableTie && d.Kind != DecalKind.FrayDead && d.Kind != DecalKind.FrayLive
                     && V2.Dist(d.Pos, tip) <= ShadowFittingReach) return true;
             return false;
+        }
+
+        /// <summary><see cref="Ribbon"/> seen through a FlowWorks pit's liquid where it lies (CordUnderLiquid): the strand is
+        /// printed in runs of equal alpha step (a segment takes the lower step of its two ends), each run with its own texture
+        /// offset so the pattern runs on; a hidden run is not printed. Dry everywhere: exactly one Ribbon.</summary>
+        private int WetRibbon(Material mat, List<V2> pts, float width, float y, double s0, Vector2 offset,
+                              byte[] alpha = null, float uvz = 0f, float[] grow = null)
+        {
+            int n = pts.Count;
+            if (n < 2 || mat == null) return Ribbon(mat, pts, width, y, s0, offset, alpha, uvz, grow);
+            var q = new int[n];
+            bool wet = false;
+            for (int i = 0; i < n; i++)
+            {
+                q[i] = CordUnderLiquid.StepAt(Map, pts[i].X, pts[i].Z);
+                wet |= q[i] < CordUnderLiquid.Steps;
+            }
+            if (!wet) return Ribbon(mat, pts, width, y, s0, offset, alpha, uvz, grow);
+            double tile = width * CordMaterials.Aspect(mat);
+            double[] cum = Geo.CumLen(pts);
+            int verts = 0;
+            for (int a = 0; a < n - 1;)
+            {
+                int sq = Math.Min(q[a], q[a + 1]), b = a + 1;
+                while (b < n - 1 && Math.Min(q[b], q[b + 1]) == sq) b++;
+                Material m = CordUnderLiquid.Faded(mat, sq);
+                if (m != null)
+                    verts += Ribbon(m, pts.GetRange(a, b - a + 1), width, y, s0 + cum[a] / (4.0 * tile), offset,
+                                    Part(alpha, a, b), uvz, Part(grow, a, b));
+                a = b;
+            }
+            return verts;
+        }
+
+        private static T[] Part<T>(T[] all, int a, int b)
+        {
+            if (all == null) return null;
+            var res = new T[b - a + 1];
+            for (int i = a; i <= b && i < all.Length; i++) res[i - a] = all[i];
+            return res;
         }
 
         private int Ribbon(Material mat, List<V2> pts, float width, float y, double s0, Vector2 offset,

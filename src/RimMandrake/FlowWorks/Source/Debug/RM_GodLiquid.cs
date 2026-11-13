@@ -6,23 +6,41 @@ using Verse;
 
 namespace RimMandrake.FlowWorks
 {
-	/// <summary>RIMMANDRAKE_GIVE_GODMODE_LIQUID_POUR_DRAIN (owner 2026-11-12: <i>"we need some God Mode capabilities to allow the
-	/// debug player the ability to drop large units of various liquids on the terrain or in a pit as well as remove it."</i>):
-	/// pour, drain and set-level on the current map. The dev tools (FlowWorksDebugActions "God mode: ...") and the bridge
-	/// (jawa/static_call, type RimMandrake.FlowWorks.RM_GodLiquid) both call these; each returns "OK ..." or "REFUSED: why".
+	/// <summary>RIMMANDRAKE_GIVE_GODMODE_LIQUID_POUR_DRAIN: the dev tools that drop large amounts of any liquid on the terrain or in a
+	/// pit and take it away again: pour, drain and set-level on the current map. The dev actions (FlowWorksDebugActions "Pour
+	/// liquid...", "Drain liquid...", "Set pit liquid level...") and the bridge (jawa/static_call, type
+	/// RimMandrake.FlowWorks.RM_GodLiquid) both call these; each returns "OK ..." or "REFUSED: why".
 	/// <list type="bullet">
 	/// <item>A dug square: the liquid moves through the engine (TryPourDl / TryTakeDl), square by square over the body it joins
 	/// (RM_GodLiquidMath plans it, nearest first); the pulse levels it afterwards. What moved is disclosed on the map's flow
 	/// ledger (NoteMapControlFlowDl: "inputs: flowSources" / "exits: flowSinks" in the L0 water ledger report).</item>
-	/// <item>Undug ground: a pour is a spill onto the sheet (canal overflow, RM_MapComponent_Sheet.Offer, as a flood), so it
-	/// needs the overflow switch on; a drain purges the sheet there ("dried by hand" on the sheet's own ledger). A natural pond
-	/// or lake is neither poured into nor drained here.</item>
+	/// <item>What a pit has no room for, and a pour on undug ground, spills onto the sheet (canal overflow,
+	/// RM_MapComponent_Sheet.Offer, as a flood): first over the pit's own lips, then ring by ring outward from the click. The dev
+	/// action pours with the overflow flag (<see cref="PourOverflow"/>, owner 2026-11-12: <i>"It shouldn't do that. It should go
+	/// ahead and overflow. I wanted to watch the water bulge and move."</i>), which goes past the overflow switches; the bridge's
+	/// <see cref="Pour"/> keeps to them. A drain on undug ground purges the sheet ("dried by hand" on the sheet's own ledger),
+	/// from the nearest spilled square when the clicked one is dry. A natural pond or lake is neither poured into nor drained
+	/// here.</item>
 	/// </list></summary>
 	public static class RM_GodLiquid
 	{
 		/// <summary>Pour <paramref name="litres"/> of the liquid named <paramref name="fluid"/> (a FluidDef defName) at
-		/// <paramref name="cell"/>: into the pit it is in, or onto undug ground as spilled sheet liquid.</summary>
+		/// <paramref name="cell"/>, keeping to the overflow switches: into the pit it is in, or onto undug ground as spilled sheet
+		/// liquid while canal overflow is on.</summary>
 		public static string Pour(IntVec3 cell, string fluid, float litres)
+		{
+			return PourCore(cell, fluid, litres, false);
+		}
+
+		/// <summary>The dev action's pour: all of <paramref name="litres"/>, never refused for room. The pit takes what it has
+		/// room for and the rest overflows onto the ground around it, whatever the overflow switches say. Refused only for a cell
+		/// off the map, an amount that is not a positive number of litres, or a liquid with no FluidDef.</summary>
+		public static string PourOverflow(IntVec3 cell, string fluid, float litres)
+		{
+			return PourCore(cell, fluid, litres, true);
+		}
+
+		private static string PourCore(IntVec3 cell, string fluid, float litres, bool overflow)
 		{
 			string why = Prepare(cell, out Map map, out RM_MapComponent_Excavation ex);
 			if (why != null || (why = RM_GodLiquidMath.CheckLitres(litres, out long dl)) != null)
@@ -35,25 +53,41 @@ namespace RimMandrake.FlowWorks
 				return why;
 			}
 			FluidDef f = fluids[k];
-			if (!RM_MapComponent_Excavation.InputAllowed(f))
+			if (!overflow && !RM_MapComponent_Excavation.InputAllowed(f))
 			{
 				return "REFUSED: " + f.defName + " is switched off in FlowWorks Mod Settings";
 			}
-			if (!ex.IsExcavated(cell))
-			{
-				return PourOnGround(map, ex, cell, f, dl);
-			}
-			if (ex.WaterDlAt(cell) > 0 && ex.FluidAt(cell) != f)
+			bool dug = ex.IsExcavated(cell);
+			if (!overflow && dug && ex.WaterDlAt(cell) > 0 && ex.FluidAt(cell) != f)
 			{
 				return "REFUSED: " + At(cell) + " holds " + Name(ex.FluidAt(cell)) + "; liquids never mix (drain it first)";
 			}
-			List<int> body = Body(map, ex, cell, f);
-			var plan = new List<KeyValuePair<int, long>>();
-			RM_GodLiquidMath.PlanPour(body, i => Room(map, ex, i), dl, !RM_MapComponent_Excavation.LevelExact, plan);
-			long poured = Move(map, ex, f, plan, out _);
-			ex.NoteMapControlFlowDl(poured, 0);
-			return (poured > 0 ? "OK" : "REFUSED: nothing poured;") + " poured " + L(poured) + " of " + L(dl) + " " + f.defName + " at " + At(cell)
-				+ " into a pit of " + body.Count + " squares" + (dl > poured ? "; " + L(dl - poured) + " had no room" : "");
+			long poured = 0;
+			string pit = "";
+			if (dug && (ex.WaterDlAt(cell) == 0 || ex.FluidAt(cell) == f))
+			{
+				List<int> body = Body(map, ex, cell, f);
+				var plan = new List<KeyValuePair<int, long>>();
+				RM_GodLiquidMath.PlanPour(body, i => Room(map, ex, i), dl, !RM_MapComponent_Excavation.LevelExact, plan);
+				poured = Move(map, ex, f, plan, out _);
+				ex.NoteMapControlFlowDl(poured, 0);
+				pit = " into a pit of " + body.Count + " squares";
+			}
+			else if (dug)
+			{
+				pit = " (the pit holds " + Name(ex.FluidAt(cell)) + "; liquids never mix, so it all goes over the side)";
+			}
+			string done = "poured " + L(poured) + " of " + L(dl) + " " + f.defName + " at " + At(cell) + pit;
+			if (poured >= dl)
+			{
+				return "OK " + done;
+			}
+			if (!overflow && dug)
+			{
+				done += "; " + L(dl - poured) + " had no room (the dev action overflows it)";
+				return poured > 0 ? "OK " + done : "REFUSED: nothing " + done;
+			}
+			return Spill(map, ex, cell, f, dl - poured, overflow, out string spilled) ?? "OK " + done + "; " + spilled;
 		}
 
 		/// <summary>Drain <paramref name="litres"/> from the pit at <paramref name="cell"/> (or the spilled sheet there).</summary>
@@ -146,11 +180,24 @@ namespace RimMandrake.FlowWorks
 			if (!ex.IsExcavated(cell))
 			{
 				RM_MapComponent_Sheet sheet = RM_MapComponent_Sheet.Of(map);
-				FluidDef sf = sheet?.FluidAt(cell);
-				long got = sheet?.PurgeConnectedAt(cell, dl) ?? 0;
+				// a part drain empties the clicked square first: the rest of the spill is drained from the nearest wet square
+				var order = new List<int>();
+				int rings = GenRadial.NumCellsInRadius(NearestSpillRadius);
+				for (int r = 0; r < rings; r++)
+				{
+					IntVec3 c = cell + GenRadial.RadialPattern[r];
+					if (c.InBounds(map))
+					{
+						order.Add(map.cellIndices.CellToIndex(c));
+					}
+				}
+				int from = sheet == null ? -1 : RM_GodLiquidMath.NearestWet(order, i => sheet.FluidAt(map.cellIndices.IndexToCell(i)) != null);
+				IntVec3 start = from < 0 ? cell : map.cellIndices.IndexToCell(from);
+				FluidDef sf = sheet?.FluidAt(start);
+				long got = sheet?.PurgeConnectedAt(start, dl) ?? 0;
 				return got > 0
-					? "OK drained " + L(got) + " of " + want + " spilled " + Name(sf) + " at " + At(cell) + " (the sheet ledger counts it dried by hand)"
-					: "REFUSED: no spilled liquid on undug " + At(cell) + " (a natural pond or lake is not drained by this tool)";
+					? "OK drained " + L(got) + " of " + want + " spilled " + Name(sf) + " from " + At(start) + " (the sheet ledger counts it dried by hand)"
+					: "REFUSED: no spilled liquid within " + NearestSpillRadius + " squares of undug " + At(cell) + " (a natural pond or lake is not drained by this tool)";
 			}
 			if (ex.WaterDlAt(cell) <= 0)
 			{
@@ -214,49 +261,59 @@ namespace RimMandrake.FlowWorks
 			return poured;
 		}
 
-		private static string PourOnGround(Map map, RM_MapComponent_Excavation ex, IntVec3 cell, FluidDef f, long dl)
+		/// <summary>Spill <paramref name="rest"/> dL onto the sheet: over the lips of the pit at <paramref name="cell"/> (or the
+		/// undug square itself), then ring by ring outward from it until it is all placed or GiveUpAfter offers in a row place
+		/// nothing (the map's wet-square cap, walls, other liquids). Null and <paramref name="said"/> = what happened; else the
+		/// refusal (only without <paramref name="overflow"/>: the switches).</summary>
+		private static string Spill(Map map, RM_MapComponent_Excavation ex, IntVec3 cell, FluidDef f, long rest, bool overflow, out string said)
 		{
-			if (!RimMandrakeFlowWorksSettings.DepthEngineActive)
-			{
-				return "REFUSED: the FlowWorks depth engine is off in this game";
-			}
-			if (!RM_SheetSettings.SpillsFrom(RM_SheetMath.Source.Flood))
+			said = null;
+			if (!overflow && !RM_SheetSettings.SpillsFrom(RM_SheetMath.Source.Flood))
 			{
 				return "REFUSED: undug ground holds liquid only as spilled sheet liquid, and canal overflow (or its spills from floods) is OFF;"
-					+ " switch it on with the dev action 'Canal overflow: switch on/off (test)' or in Mod Settings";
+					+ " switch it on with the dev action 'Canal overflow: switch on/off (test)' or in Mod Settings, or pour with the dev action";
 			}
-			if (f != RimMandrakeFlowWorks_DefOf.RM_Fluid_Water && !RM_SheetSettings.otherLiquidsSpillEnabled)
+			if (!overflow && f != RimMandrakeFlowWorks_DefOf.RM_Fluid_Water && !RM_SheetSettings.otherLiquidsSpillEnabled)
 			{
 				return "REFUSED: only water spills on the ground while 'other liquids spill' is off in Mod Settings";
 			}
 			RM_MapComponent_Sheet sheet = RM_MapComponent_Sheet.Of(map);
-			if (sheet == null)
+			long got = 0;
+			if (sheet != null && RimMandrakeFlowWorksSettings.DepthEngineActive)
 			{
-				return "REFUSED: this map has no sheet (canal overflow) component";
-			}
-			// one offer fills only the few squares nearest it (up to the sheet's depth cap), so a big pour is offered ring by ring
-			// outward from the click until it is all placed or GiveUpAfter offers in a row place nothing (the map's wet-square cap,
-			// walls, other liquids)
-			long got = sheet.Offer(cell, dl, f, RM_SheetMath.Source.Flood);
-			int dry = 0;
-			int rings = GenRadial.NumCellsInRadius(GenRadial.MaxRadialPatternRadius);
-			for (int r = 1; r < rings && got < dl && dry < GiveUpAfter; r++)
-			{
-				IntVec3 c = cell + GenRadial.RadialPattern[r];
-				if (!c.InBounds(map) || ex.IsExcavated(c))
+				// one offer fills only the few lips nearest it (up to the sheet's depth cap), so a big pour is offered again ring
+				// by ring outward from the click
+				got = sheet.Offer(cell, rest, f, RM_SheetMath.Source.Flood, overflow);
+				int dry = 0;
+				int rings = GenRadial.NumCellsInRadius(GenRadial.MaxRadialPatternRadius);
+				for (int r = 1; r < rings && got < rest && dry < GiveUpAfter; r++)
 				{
-					continue;
+					IntVec3 c = cell + GenRadial.RadialPattern[r];
+					if (!c.InBounds(map) || ex.IsExcavated(c))
+					{
+						continue;
+					}
+					long more = sheet.Offer(c, rest - got, f, RM_SheetMath.Source.Flood, overflow);
+					got += more;
+					dry = more > 0 ? 0 : dry + 1;
 				}
-				long more = sheet.Offer(c, dl - got, f, RM_SheetMath.Source.Flood);
-				got += more;
-				dry = more > 0 ? 0 : dry + 1;
 			}
-			return (got > 0 ? "OK" : "REFUSED: nothing spilled;") + " spilled " + L(got) + " of " + L(dl) + " " + f.defName + " on undug ground at " + At(cell)
-				+ (dl > got ? "; " + L(dl - got) + " had nowhere to go" : "") + " (the sheet ledger counts it as flood input)";
+			string whyNot = sheet == null ? " (this map has no sheet component)" : !RimMandrakeFlowWorksSettings.DepthEngineActive
+				? " (the FlowWorks depth engine is off in this game)" : " (walls, other liquids or the map's cap on wet squares)";
+			said = "spilled " + L(got) + " of " + L(rest) + " on the ground around it" + (rest > got ? "; " + L(rest - got) + " had nowhere to go" + whyNot : "")
+				+ " (the sheet ledger counts it as flood input)";
+			if (!overflow && got <= 0)
+			{
+				return "REFUSED: nothing spilled; " + said;
+			}
+			return null;
 		}
 
 		/// <summary>A ground pour stops after this many offers in a row that placed nothing.</summary>
 		private const int GiveUpAfter = 64;
+
+		/// <summary>How far from a dry click on undug ground a drain looks for the spill (squares).</summary>
+		private const float NearestSpillRadius = 12.9f;
 
 		private static string L(long dl) => RM_Volume.FormatLitres(dl / (double)RM_Volume.UnitsPerLitre);
 

@@ -837,6 +837,12 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>The amount <see cref="PurgeConnected"/> reads as "everything the sheet there holds".</summary>
+		/// <summary>Does a spill enter the sheet: the depth engine runs and the liquid is known, and either the inflow's switches
+		/// let it (<paramref name="spillsFrom"/>: the overflow master switch and that inflow's own; water, or any liquid while
+		/// "other liquids spill" is on) or it is <paramref name="force"/>d (the dev pour's overflow: RM_GodLiquid.PourOverflow).</summary>
+		public static bool AcceptsSpill(bool spillsFrom, bool depthEngine, bool hasFluid, bool isWater, bool otherLiquids, bool force) =>
+			depthEngine && hasFluid && (force || spillsFrom && (isWater || otherLiquids));
+
 		public const long AllDl = -1;
 
 		/// <summary>RIMMANDRAKE_GIVE_GODMODE_LIQUID_POUR_DRAIN: the dev drain on undug ground. Takes up to <paramref name="maxDl"/>

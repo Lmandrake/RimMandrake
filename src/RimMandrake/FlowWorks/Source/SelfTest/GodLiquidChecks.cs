@@ -305,8 +305,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Has(god, @"RM_GodLiquidMath\.ResolveLiquid\(", "a pour resolves the liquid by name");
                 Has(god, @"ex\.TryPourDl\(", "the pit pour goes through the engine");
                 Has(god, @"ex\.TryTakeDl\(", "the pit drain goes through the engine");
-                Has(god, @"\.Offer\(cell, dl, f, RM_SheetMath\.Source\.Flood\)", "a pour on undug ground goes to the sheet");
-                Has(god, @"\.PurgeConnectedAt\(cell, ", "a drain on undug ground purges the sheet");
+                Has(god, @"\.Offer\(cell, rest, f, RM_SheetMath\.Source\.Flood, overflow\)", "a pour on undug ground goes to the sheet");
+                Has(god, @"\.PurgeConnectedAt\(start, ", "a drain on undug ground purges the sheet");
                 Has(god, @"ex\.NoteMapControlFlowDl\(poured, 0\)", "a pit pour is disclosed on the flow ledger");
                 Has(god, @"ex\.NoteMapControlFlowDl\(0, taken\)", "a pit drain is disclosed on the flow ledger");
                 Has(god, @"ex\.NoteMapControlFlowDl\(poured, taken\)", "a set-level is disclosed on the flow ledger");
@@ -314,14 +314,102 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Has(sheet, @"public long PurgeConnectedAt\(IntVec3 c, long maxDl\)", "the sheet's drain-here entry");
                 Has(sheet, @"RM_SheetMath\.PurgeConnected\(state, ", "it purges through the production sheet math");
                 string dbg = RiverSwitchFlipChecks.Src("Debug/FlowWorksDebugActions.cs");
-                foreach (string label in new[] { "God mode: pour liquid...", "God mode: drain liquid...", "God mode: set pit liquid level..." })
+                foreach (string label in new[] { "Pour liquid...", "Drain liquid...", "Set pit liquid level..." })
                 {
                     Assert(dbg.Contains("\"" + label + "\""), "debug action missing: " + label);
                 }
-                Has(dbg, @"DebugMenuOptionMode\.Tool, delegate \{ GodSay\(RM_GodLiquid\.Pour\(UI\.MouseCell\(\), ", "pour is a click tool that stays armed");
+                Has(dbg, @"DebugMenuOptionMode\.Tool, delegate \{ GodSay\(RM_GodLiquid\.PourOverflow\(UI\.MouseCell\(\), ", "pour is a click tool that stays armed");
                 Has(dbg, @"DebugMenuOptionMode\.Tool, delegate \{ GodSay\(RM_GodLiquid\.Drain(All)?\(UI\.MouseCell\(\)", "drain is a click tool");
                 Has(dbg, @"DebugMenuOptionMode\.Tool, delegate \{ GodSay\(RM_GodLiquid\.SetLevel\(UI\.MouseCell\(\), """", ", "set level is a click tool");
                 Has(dbg, @"Building_RM_MapControl\.CanalFluids\(\)", "the pour lists every registered liquid");
+            });
+            // round 2 (owner 2026-11-12 ~20:30: "But it always responded "No Room." It shouldn't do that. It should go ahead and
+            // overflow. I wanted to watch the water bulge and move."): his clicks were on a brim-full pit and on open ground with
+            // canal overflow off (Player.log GOD_LIQUID lines). A dev pour now never refuses for room.
+            Case("GodLiquid_overflow_rule_force_bypasses_the_switches_only", () =>
+            {
+                // (switch, engine, fluid, water, otherLiquids, force) -> accepted
+                Assert(!RM_SheetMath.AcceptsSpill(false, true, true, true, true, false), "a spill went in with overflow off");
+                Assert(RM_SheetMath.AcceptsSpill(true, true, true, true, false, false), "water was refused with overflow on");
+                Assert(!RM_SheetMath.AcceptsSpill(true, true, true, false, false, false), "tar spilled while other liquids are off");
+                Assert(RM_SheetMath.AcceptsSpill(false, true, true, true, false, true), "a forced pour was refused by the overflow switch");
+                Assert(RM_SheetMath.AcceptsSpill(false, true, true, false, false, true), "a forced tar pour was refused by 'other liquids'");
+                Assert(!RM_SheetMath.AcceptsSpill(true, false, true, true, true, true), "a forced pour went in with the depth engine off");
+                Assert(!RM_SheetMath.AcceptsSpill(true, true, false, true, true, true), "a forced pour went in with no liquid");
+            });
+
+            Case("GodLiquid_drain_starts_at_the_nearest_spill_when_the_click_is_dry", () =>
+            {
+                // RIMMANDRAKE_LET_GROUND_DRAIN_ALL_FIND_SPILL_EMPTY_CLICK: a part drain emptied the clicked square, 8 kL lay around it
+                var order = new List<int> { 10, 11, 9, 20, 0, 21, 30 };   // the click, then outward
+                var wet = new HashSet<int> { 21, 30 };
+                Assert(RM_GodLiquidMath.NearestWet(order, i => wet.Contains(i)) == 21, "not the nearest wet square");
+                wet.Add(10);
+                Assert(RM_GodLiquidMath.NearestWet(order, i => wet.Contains(i)) == 10, "a wet click was not its own start");
+                Assert(RM_GodLiquidMath.NearestWet(order, i => false) == -1, "a dry neighbourhood found a spill");
+                Assert(RM_GodLiquidMath.NearestWet(new List<int>(), i => true) == -1, "an empty search found a spill");
+                // the whole joined sheet goes from there, books closed
+                var s = new RM_SheetMath.State(8, 8, 1);
+                foreach (int i in new[] { 2 * 8 + 3, 2 * 8 + 4, 2 * 8 + 5 })
+                {
+                    s.Dl[i] = 500; s.Fluid[i] = 1; s.Occ.Add(i);
+                }
+                s.In[(int)RM_SheetMath.Source.Flood] = 1500;
+                var ring = new List<int> { 2 * 8 + 2, 2 * 8 + 1, 2 * 8 + 3 };
+                int from = RM_GodLiquidMath.NearestWet(ring, i => s.Dl[i] > 0);
+                Assert(from == 2 * 8 + 3, "the drain did not start at the spill beside the dry click: " + from);
+                Assert(RM_SheetMath.PurgeConnected(s, from, RM_GodLiquidMath.All) == 1500 && s.WetCount == 0 && s.LedgerCloses,
+                    "drain all from the nearest spill left liquid behind");
+            });
+
+            Case("GodLiquid_pour_overflows_and_never_says_no_room", () =>
+            {
+                string god = RiverSwitchFlipChecks.Src("Debug/RM_GodLiquid.cs");
+                void Has(string src, string pattern, string what) => RiverSwitchFlipChecks.Has(src, pattern, what);
+                Has(god, @"public static string PourOverflow\(IntVec3 cell, string fluid, float litres\)", "bridge: PourOverflow(cell, fluid, litres)");
+                Has(god, @"return PourCore\(cell, fluid, litres, true\)", "PourOverflow always sets the overflow flag");
+                Has(god, @"return PourCore\(cell, fluid, litres, false\)", "Pour keeps the switch-respecting behaviour");
+                Has(god, @"Spill\(map, ex, cell, f, dl - poured, overflow, out string spilled\)", "what a pit has no room for overflows onto the ground");
+                Has(god, @"\.Offer\(cell, rest, f, RM_SheetMath\.Source\.Flood, overflow\)", "the overflow starts at the pit's own lips");
+                Has(god, @"\.Offer\(c, rest - got, f, RM_SheetMath\.Source\.Flood, overflow\)", "then ring by ring outward");
+                Has(god, @"RM_GodLiquidMath\.NearestWet\(", "a drain on dry ground starts at the nearest spill");
+                // with the flag set, the only refusals are the cell, the amount and the liquid (Prepare, CheckLitres, ResolveLiquid):
+                // every other "REFUSED" in the pour and the spill sits under a "!overflow" test on its line or the 3 before it
+                foreach (KeyValuePair<string, string> span in new Dictionary<string, string> {
+                    { "private static string PourCore(", "public static string Drain(" }, { "private static string Spill(", "private const int GiveUpAfter" } })
+                {
+                    string raw = System.IO.File.ReadAllText(RiverSwitchFlipChecks.SrcPath("Debug/RM_GodLiquid.cs"));   // lines kept (Src flattens)
+                    int a = raw.IndexOf(span.Key, StringComparison.Ordinal), b = raw.IndexOf(span.Value, StringComparison.Ordinal);
+                    Assert(a > 0 && b > a, span.Key + " not found before " + span.Value);
+                    string[] lines = raw.Substring(a, b - a).Split('\n');
+                    int refusals = 0;
+                    for (int i = 0; i < lines.Length; i++)
+                    {
+                        if (lines[i].Contains("\"REFUSED"))
+                        {
+                            refusals++;
+                            bool guarded = false;
+                            for (int j = Math.Max(0, i - 3); j <= i; j++)
+                            {
+                                guarded |= lines[j].Contains("!overflow");
+                            }
+                            Assert(guarded, span.Key + " can refuse with the overflow flag set: " + lines[i].Trim());
+                        }
+                    }
+                    Assert(refusals >= 2, span.Key + ": the refusal census saw " + refusals + " refusals (the instrument may be blind)");
+                }
+                string sheet = RiverSwitchFlipChecks.Src("Sheet/RM_MapComponent_Sheet.cs");
+                Has(sheet, @"public long Offer\(IntVec3 origin, long dl, FluidDef fluid, Source from, bool force\)", "the sheet takes a forced offer");
+                Has(sheet, @"RM_SheetMath\.AcceptsSpill\(", "the sheet's accept rule is the tested one");
+                string dbg = RiverSwitchFlipChecks.Src("Debug/FlowWorksDebugActions.cs");
+                string gm = "God" + " mode";
+                foreach (KeyValuePair<string, string> f in new Dictionary<string, string> { { "Debug/FlowWorksDebugActions.cs", dbg },
+                    { "Debug/RM_GodLiquid.cs", god }, { "RM_GodLiquidMath.cs", RiverSwitchFlipChecks.Src("RM_GodLiquidMath.cs") } })
+                {
+                    string text = f.Value.Replace("RIMMANDRAKE_GIVE_GODMODE_LIQUID_POUR_DRAIN", "");   // the ledger id is never renamed
+                    Assert(text.IndexOf(gm, StringComparison.OrdinalIgnoreCase) < 0 && text.IndexOf("godmode", StringComparison.OrdinalIgnoreCase) < 0,
+                        f.Key + " still says '" + gm + "' (owner: \"God Mode is a game mode when you click on the little head icon\")");
+                }
             });
         }
     }

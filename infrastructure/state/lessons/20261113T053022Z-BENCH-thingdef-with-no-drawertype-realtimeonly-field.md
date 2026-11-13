@@ -1,0 +1,1 @@
+A ThingDef with no <drawerType> is RealtimeOnly (the field's default): it is never printed into the map mesh, so any rule applied in SectionLayer_ThingsGeneral/Printer_Plane misses it. Books (BookBase) are the measured case: the Novel drew crisp under tar while every printed item was hidden. Apply draw rules at Thing.DynamicDrawPhase too.
