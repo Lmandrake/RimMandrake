@@ -1,0 +1,2 @@
+Before a coverage-judge run after stage-3 fixes, write design/concepts/<Mod>/coverage_fixes.json ({against: <prior judge id>, claims: [{gap, evidence}]}) for every gap you fixed: without a claim the judge carries each prior gap as 'unfixed' and the verdict stays not_covered even when its reasons say the gaps look fixed (EK rm-coverage-judge-1794599960, 2026-11-13: 5 of 6 gaps were unclaimed fixes, spending the owner's one allowed judge run).
+home: src/RimMandrake/rimflow/roles/designer.md
