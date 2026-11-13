@@ -21,8 +21,8 @@
     "rm-order7": "rm-order7.timer"
   },
   "outside": {
-    "rm-relentless": "the Relentless tick: its own belt (strategy §2 'Stay outside')",
-    "rm-relentless-*": "Relentless worker, check and stage runs: transient, launched by the Relentless tick",
+    "rm-relentless": "the Relentless tick: retired by the owner 2026-11-13, unit masked (design/RimMandrake/retired_loops_2026-11-13.md)",
+    "rm-relentless-*": "Relentless worker, check and stage runs: retired with the tick 2026-11-13",
     "rm-account-handover-*": "one-shot account change-over armed by hand with systemd-run; stops itself (arm new ones from the deploy, see account_handover.py)",
     "rm-steve-fault": "Steve's retest (strategy §2 'Stay outside')",
     "testq-*": "the RUNNER test queue lane, not an Operations clock",
@@ -38,7 +38,9 @@
     "rm-telemetry-health": "telemetry",
     "rm-agent-improve": "a role's job, not an Operations clock",
     "rm-findings-judge": "a role's job, not an Operations clock",
-    "rm-store-ledger-diff": "Relentless's nightly store/ledger reading: runs from its books clone on purpose, the ledger its supervisor reads, not the deploy",
+    "rm-store-ledger-diff": "Relentless's nightly store/ledger reading: retired with Relentless 2026-11-13, unit masked",
+    "rm-artisan-now": "Artisan loops page: retired with the Artisan loops 2026-11-13, unit masked",
+    "rm-whittle-now": "Whittle loops page: retired with the Whittle loops 2026-11-13, unit masked",
     "rm-codebase-health": "codebase health publish, not an Operations clock",
     "rm-mirror": "the D: mirror export, not an Operations clock",
     "rm-harness": "slice",
