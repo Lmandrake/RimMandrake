@@ -15,7 +15,13 @@
  "verdict": "infrastructure/state/delegated/2026-11-01/agent_improve_rimworld-modding.json",
  "recheck": "No new lesson reports the missing rimworld-decompiled path, and later lessons that cite vanilla C# show it was read via rimsage or ilspycmd.",
  "recheck_result": null,
- "rechecks": [],
+ "rechecks": [
+  {
+   "day": "2026-11-12",
+   "result": "unknown",
+   "by": "curator"
+  }
+ ],
  "generalization": [
   {
    "at": "2026-11-06T08:58:27Z",
