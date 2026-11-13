@@ -2,6 +2,10 @@
  "against": "rm-coverage-judge-1794599960",
  "claims": [
   {
+   "gap": "g1",
+   "evidence": "scenes.json sc_settings_sweep start lane line: 'an animal under 90 kg (asserted: mass read)' and 'a mech under 90 kg (asserted: mass read)', beside the second animal of 100 to 150 kg, so at creatureMassLimit 90 only the second animal is skipped (too_heavy_creature), as the expect says; the scene names no species, so the bound is stated. Owner 2026-11-13 ~2:15 PM PST (OWNER:1794608649743135329): 'Yes, fix it like that'."
+  },
+  {
    "gap": "g2",
    "evidence": "scenes.json: the Cauldron dependency clause in sc_gas_chain, sc_cauldron_gas, sc_cover_breaks, sc_gas_shove_into_pit and sc_settings_sweep reads (mandrake.rm.flowworks, mandrake.rm.environmentalhazards, mandrake.rm.creaturebehaviors), each asserted active; INVALID otherwise. Matches src/RimMandrake/Cauldron/About/About.xml modDependencies, Harmony excepted. Fixed in dea7804728 (run bench-ek4-st3-20261113)."
   },
