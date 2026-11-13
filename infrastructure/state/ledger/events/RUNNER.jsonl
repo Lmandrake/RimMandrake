@@ -6447,3 +6447,5 @@
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_DISPATCHER","result":"kept","detail":"sweep: running again","ts":"2026-11-13T02:33:07Z","tsn":1794537187529501017}
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_DISPATCHER","result":"broken","detail":"dispatcher last ran 23 min ago (limit 15 min)","ts":"2026-11-13T02:48:07Z","tsn":1794538087523229870}
 {"seat":"RUNNER","event":"raise","id":"LIVE_RESTORE_DISPATCHER","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-13T02:48:13Z","tsn":1794538093025634033}
+{"seat":"RUNNER","event":"spawn","name":"STEVE_LANE_UNSTICK_BRAKED_UNOWNED_08DB","kind":"task","needs":"offline","title":"SteveDesktop lane BRAKED, unowned 699 min: lane RUNNING again (running J20261113T054358Z-d106fe) but no DONE+canary job since 2026-11-12T18:03:42Z","for":"RELENTLESS","from":"STEVE_STEWARD_BUILD_NO_LLM_OWNER","ts":"2026-11-13T06:00:11Z","tsn":1794549611077468607}
+{"seat":"RUNNER","event":"raise","id":"STEVE_LANE_UNSTICK_BRAKED_UNOWNED_08DB","reason":"steward: lane unowned 699 min (BRAKED)","ts":"2026-11-13T06:00:17Z","tsn":1794549617784607824}
