@@ -342,10 +342,12 @@ def ledger_open():
     return {i for i, it in world.items.items() if it.open}
 
 
-def add_refusal(test, item, ns, open_ids, after):
-    """Why this entry may not exist, or None."""
+def add_refusal(test, item, ns, open_ids, after, owner_ruled=False):
+    """Why this entry may not exist, or None. owner_ruled skips the night streak only (the open item still binds)."""
     if item not in open_ids:
         return "%s is no open item: an entry with no open item is refused" % item
+    if owner_ruled:
+        return None
     n = streak(ns, test)
     if n < after:
         return "%s was red %d consecutive night(s); the list takes %d" % (test, n, after)
@@ -371,6 +373,8 @@ def main(argv=None):
     a.add_argument("test")
     a.add_argument("--item", required=True)
     a.add_argument("--why", required=True)
+    a.add_argument("--owner-ruled", metavar="PROVENANCE",
+                   help="skip the consecutive-nights rule because the owner ruled it; the provenance is written into the entry's why")
     d = sub.add_parser("drop")
     d.add_argument("test")
     d.add_argument("--why", required=True)
@@ -417,12 +421,12 @@ def main(argv=None):
         return 0
     after, age = policy()
     ns = nights(log_path().read_text(encoding="utf-8", errors="replace"))
-    why = add_refusal(ns_args.test, ns_args.item, ns, ledger_open(), after)
+    why = add_refusal(ns_args.test, ns_args.item, ns, ledger_open(), after, bool(ns_args.owner_ruled))
     if why:
         print("refused: " + why)
         return 2
     save(rest + [{"test": ns_args.test, "item": ns_args.item, "added": stamp(now), "expires": stamp(now + age * DAY),
-                  "why": ns_args.why}])
+                  "why": ns_args.why + (" [night rule skipped, owner-ruled: %s]" % ns_args.owner_ruled if ns_args.owner_ruled else "")}])
     print("listed %s under %s for %g days" % (ns_args.test, ns_args.item, age))
     return 0
 

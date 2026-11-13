@@ -102,6 +102,8 @@ check("the instrument sees the real clone: this test is not deleted, a removed a
 
 check("TE1: add is refused with no open item", "open item" in (K.add_refusal(A, "CLOSED_ITEM", ns, OPEN, 3) or ""))
 check("add is refused under the threshold", "1 consecutive" in (K.add_refusal(B, "OPEN_ITEM", ns, OPEN, 3) or ""))
+check("owner-ruled add skips the night rule", K.add_refusal(B, "OPEN_ITEM", ns, OPEN, 3, True) is None)
+check("owner-ruled add still needs an open item", "open item" in (K.add_refusal(B, "CLOSED_ITEM", ns, OPEN, 3, True) or ""))
 check("add passes at the threshold", K.add_refusal(A, "OPEN_ITEM", ns, OPEN, 3) is None)
 pol = K.policy()
 check("the threshold and age limit come from testing_policy.json, threshold 3", pol[0] == 3 and pol[1] > 0, pol)
