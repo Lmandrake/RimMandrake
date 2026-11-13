@@ -10,6 +10,9 @@ Format: design/RimMandrake/relentless_tree_schema_2026-11-01.md. Meaning: concep
   sign     <dir> --by CoverageJudge [--item ID] the coverage signature: a `rimflow note` on the concept's item (stage.json
                                                `item`, or --item) from inside a coverage judge run (coverage_judge.py), then
                                                the stamp in tree.json. Refuses a dry walk, a lint failure, and any other writer
+  certify  <dir> --owner-event OWNER:<tsn>     the owner's certificate (signed_by owner): his ownerSaid/byCard event on
+                                               this item, newer than the judge verdict on file, past that verdict. See
+                                               "the owner's certificate" below; it never reads as a judge pass
   askcheck <dir> "question"                    does this question re-raise a waiver? Exit 1 when it may; with no
                                                tree.json yet it prints HISTORY_NOT_CHECKED (exit 0), never "clear"
   hash     <dir>                               tree_hash
@@ -656,13 +659,177 @@ def ledger_signature_problem(d, repo, tree, signer=SIGNER):
 def coverage_problem(d, repo, tree):
     """Why this tree carries no valid coverage signature (stamp and ledger event), or None."""
     cov = tree.get("coverage") if isinstance(tree.get("coverage"), dict) else {}
-    if cov.get("signed_by") not in SIGNER_UNITS:
+    if cov.get("signed_by") not in SIGNER_UNITS and cov.get("signed_by") != OWNER_SIGNER:
         return "no coverage signature"
     if cov.get("tree_hash") != tree_hash(tree):
         return "the signature is on another tree hash"
     if tree.get("kind") == "mod" and cov.get("sheet_hash") != sheet_hash(d):
         return "the signature is on another sheet"
+    if cov["signed_by"] == OWNER_SIGNER:
+        return owner_certificate_problem(d, repo, cov)
     return ledger_signature_problem(d, repo, tree, cov["signed_by"])
+
+
+# ---------------------------------------------------------------- the owner's certificate
+# The owner may pass a concept's coverage on his own word, past a judge verdict (ExplosiveKnockback 2026-11-13,
+# OWNER:1794608649743135329: "Yes, fix it like that, and then please record this as an actual Pass."). Certifying is
+# his (delegation_policy.md §2). The stamp is `signed_by: owner`, never a judge's name, and it carries the judge's last
+# verdict beside his words, so nobody reads it as a judge pass. The gate takes it only while: the OWNER.jsonl event it
+# names exists, holds his words (ownerSaid) or a card (byCard) -- an agent's --why or --per-ruling event certifies
+# nothing --, names this concept's item, and is newer than the judge verdict on file; that verdict is still the one he
+# passed past; and the gap claims (coverage_fixes.json) are the ones he saw. Lint and every other gate check still run.
+OWNER_SIGNER = "owner"
+OWNER_MARK = "owner-certified"
+VERDICT_FILE = "coverage_verdict.json"      # coverage_judge.VERDICT_FILE (not imported: the judge imports this module)
+FIXES_FILE = "coverage_fixes.json"
+
+
+def _read_json(path):
+    try:
+        with open(path, encoding="utf-8") as f:
+            v = json.load(f)
+        return v if isinstance(v, dict) else None
+    except (OSError, ValueError, RecursionError):
+        return None
+
+
+def fixes_hash(d):
+    """sha256 of coverage_fixes.json (line ends do not count), or None when there is none."""
+    try:
+        with open(os.path.join(d, FIXES_FILE), "rb") as f:
+            return hashlib.sha256(f.read().replace(b"\r\n", b"\n")).hexdigest()
+    except OSError:
+        return None
+
+
+def ev_epoch(ev):
+    """An event's time in seconds: its ts, else its tsn (ns). None when it has neither."""
+    import calendar
+    import time
+    try:
+        return float(calendar.timegm(time.strptime(str(ev.get("ts")), "%Y-%m-%dT%H:%M:%SZ")))
+    except (ValueError, OverflowError):
+        pass
+    try:
+        return int(ev.get("tsn")) / 1e9
+    except (TypeError, ValueError):
+        return None
+
+
+def his_word(e):
+    """The event's own words: ownerSaid, else byCard, else None. Nothing else on an event is his."""
+    for k in ("ownerSaid", "byCard"):
+        if isinstance(e.get(k), str) and e[k].strip():
+            return e[k]
+    return None
+
+
+def judge_verdict(d):
+    """The judge verdict on file: {run, verdict, gaps, at, gids}, or None."""
+    v = _read_json(os.path.join(d, VERDICT_FILE))
+    if not v or not v.get("judge") or not v.get("verdict"):
+        return None
+    gaps = [g for g in v.get("gaps") or [] if isinstance(g, dict)]
+    return {"run": v["judge"], "verdict": v["verdict"], "gaps": len(gaps), "at": v.get("at"),
+            "gids": [g.get("gid") for g in gaps]}
+
+
+def owner_event_problem(d, repo, ref, verdict, events=None):
+    """Why the OWNER event `ref` cannot certify this concept past `verdict`, or None. -> (problem, event)."""
+    m = re.fullmatch(r"(?:OWNER:)?([0-9]+)", str(ref or ""))
+    e = (owner_events(repo) if events is None else events).get(m.group(1)) if m else None
+    if e is None:
+        return "%s finds no event in OWNER.jsonl" % ref, None
+    if not his_word(e):
+        return "%s holds no ownerSaid or byCard: an agent's --why or --per-ruling event certifies nothing" % ref, e
+    item = stage_item(d)
+    if not item or e.get("id") != item:
+        return "%s is on %s, not this concept's item (%s)" % (ref, e.get("id"), item), e
+    if verdict is None:
+        return "no judge verdict on file (%s): there is nothing to certify past" % VERDICT_FILE, e
+    t, tv = ev_epoch(e), ev_epoch({"ts": verdict.get("at")})
+    if t is None or tv is None or t <= tv:
+        return "%s (%s) is not newer than the last judge verdict (%s, %s)" % (ref, e.get("ts"), verdict["run"],
+                                                                           verdict.get("at")), e
+    return None, e
+
+
+def owner_certificate_problem(d, repo, cov):
+    """Why an owner certificate does not pass the gate, or None. The stamp's hashes were checked by the caller."""
+    v = judge_verdict(d)
+    why, e = owner_event_problem(d, repo, cov.get("owner_event"), v)
+    if why:
+        return "owner certificate: " + why
+    if cov.get("owner_words") != his_word(e):
+        return "owner certificate: its words are not the words on %s" % cov.get("owner_event")
+    if (cov.get("judge_run"), cov.get("judge_verdict"), cov.get("judge_gaps")) != (v["run"], v["verdict"], v["gaps"]):
+        return "owner certificate: a judge verdict newer than the one he passed past is on file (%s %s)" % (
+            v["run"], v["verdict"])
+    if cov.get("fixes_hash") != fixes_hash(d):
+        return "owner certificate: the gap claims (%s) changed since he certified" % FIXES_FILE
+    return None
+
+
+def claimed_gids(d):
+    f = _read_json(os.path.join(d, FIXES_FILE)) or {}
+    return {c.get("gap") for c in f.get("claims") or [] if isinstance(c, dict)}
+
+
+def coverage_summary(d, repo=REPO):
+    """One line on how this tree's coverage stands, for status and the pages he reads. An owner certificate never
+    reads as a judge pass: it says his word and the judge's last verdict side by side."""
+    try:
+        tree = load(d)
+    except (OSError, ValueError):
+        return "no readable tree.json"
+    if not isinstance(tree, dict):
+        return "no readable tree.json"
+    cov = tree.get("coverage") if isinstance(tree.get("coverage"), dict) else {}
+    why = coverage_problem(d, repo, tree)
+    if cov.get("signed_by") == OWNER_SIGNER:
+        gids = set(x for x in (judge_verdict(d) or {}).get("gids") or [] if x)
+        n, got = cov.get("judge_gaps"), len(gids & claimed_gids(d))
+        claim = "all claimed fixed" if n and got == n else "%d of %s claimed fixed" % (got, n)
+        line = "passed on the owner's word (%s, %s: \"%s\"); last judge verdict %s (%s gaps, %s; %s)" % (
+            cov.get("owner_event"), cov.get("owner_at"), cov.get("owner_words"), cov.get("judge_verdict"), n, claim,
+            cov.get("judge_run"))
+        return line if not why else "owner certificate NOT valid: %s (was: %s)" % (why, line)
+    if not why:
+        return "signed by the coverage judge (%s)" % cov.get("signed_by")
+    return "not signed: %s" % why
+
+
+def certify(d, owner_event, repo=REPO, emit=None):
+    """The owner's certificate: built from his OWNER event and the judge verdict on file, checked exactly as the gate
+    checks it, then a ledger note (the BENCH shard, never OWNER.jsonl), then the stamp. Nothing here can make an event
+    his: with no ownerSaid or byCard event of his on this item, newer than the verdict, it refuses."""
+    errs, _fl = lint(d, repo)
+    if errs:
+        return errs
+    tree = load(d)
+    if tree.get("dry_walk") is True:
+        return ["a dry walk is never certified"]
+    v = judge_verdict(d)
+    why, e = owner_event_problem(d, repo, owner_event, v)
+    if why:
+        return [why]
+    ref = "OWNER:%s" % e["tsn"]
+    cov = {"signed_by": OWNER_SIGNER, "owner_event": ref, "owner_words": his_word(e), "owner_at": e.get("ts"),
+           "judge_run": v["run"], "judge_verdict": v["verdict"], "judge_gaps": v["gaps"], "judge_at": v.get("at"),
+           "fixes_hash": fixes_hash(d), "tree_hash": tree_hash(tree), "sheet_hash": sheet_hash(d),
+           "ledger_item": stage_item(d)}
+    why = owner_certificate_problem(d, repo, cov)
+    if why:
+        return [why]
+    tree["coverage"] = cov
+    note = "%s concept=%s tree=%s sheet=%s owner=%s judge=%s verdict=%s gaps=%s fixes=%s" % (
+        OWNER_MARK, concept_rel(d, repo), cov["tree_hash"], cov["sheet_hash"] or "none", ref, v["run"], v["verdict"],
+        v["gaps"], cov["fixes_hash"] or "none")
+    why = (emit or rimflow_note)(repo, cov["ledger_item"], note)
+    if why:
+        return [why]
+    put(d, tree)
+    return []
 
 
 def gate(d, repo=REPO, floor_file=None):
@@ -875,7 +1042,7 @@ def report(errs, fl, name):
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
-    for name in ("write", "lint", "gate", "sign", "askcheck", "hash"):
+    for name in ("write", "lint", "gate", "sign", "certify", "askcheck", "hash"):
         p = sub.add_parser(name)
         p.add_argument("dir")
         if name == "write":
@@ -884,6 +1051,8 @@ def main(argv=None):
         if name == "sign":
             p.add_argument("--by", required=True)
             p.add_argument("--item")
+        if name == "certify":
+            p.add_argument("--owner-event", required=True, help="OWNER:<tsn> of his ownerSaid or byCard event")
         if name == "askcheck":
             p.add_argument("question")
     a = ap.parse_args(argv)
@@ -903,6 +1072,11 @@ def main(argv=None):
         return report(*gate(a.dir), "gate")
     if a.cmd == "sign":
         return report(sign(a.dir, a.by, item=a.item), [], "sign")
+    if a.cmd == "certify":
+        rc = report(certify(a.dir, a.owner_event), [], "certify")
+        if rc == 0:
+            print(coverage_summary(a.dir))
+        return rc
     try:
         tree = load(a.dir)
     except FileNotFoundError:

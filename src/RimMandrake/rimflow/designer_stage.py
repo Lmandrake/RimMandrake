@@ -1407,6 +1407,10 @@ def park_summary(d, st, kind, why):
     mod = st.get("mod") or os.path.basename(os.path.abspath(d))
     done = sorted({r.get("stage") for r in st.get("results") or [] if isinstance(r, dict) and r.get("outcome") == "done"})
     gaps = [g for g in verdict.get("gaps") or [] if isinstance(g, dict)] if verdict.get("verdict") == "not_covered" else []
+    cov_line = CT.coverage_summary(d, clone_of(d) or REPO)
+    owner_passed = cov_line.startswith("passed on the owner's word")
+    if owner_passed:
+        gaps = []       # his certificate stands past them: they are not refusals, and the line below says so
     sent = [a for a in rec.get("asks") or [] if isinstance(a, dict) and a.get("status") == "sent"]
     rejected = [r for r in st.get("results") or [] if isinstance(r, dict) and r.get("outcome") == "rejected"]
     code = code_present(rec)
@@ -1424,7 +1428,9 @@ def park_summary(d, st, kind, why):
               len(rec.get("decisions") or []), len((read_json(os.path.join(d, "tree.json")) or {}).get("leaves") or []),
               len(rec.get("inventory") or [])), ""]
     L += ["## Refused, and why", ""]
-    if gaps:
+    if owner_passed:
+        L += ["Coverage: %s." % cov_line]
+    elif gaps:
         L += ["The coverage judge (%s) says not covered: %s" % (verdict.get("judge"), " ".join(
             str(verdict.get("reasons") or "").split()))] + _gap_lines(gaps)
     elif rejected:
@@ -1446,6 +1452,18 @@ def park_summary(d, st, kind, why):
     L += ["- Then one note on %s (your words, or a card): rework it, certify it as it stands, waive a gap, or stop." %
           st.get("item"), ""]
     return "\n".join(L)
+
+
+def lock_summary(d, st, run):
+    """The page that replaces a park page when the concept locks: locked, by which run, and how coverage passed."""
+    mod = st.get("mod") or os.path.basename(os.path.abspath(d))
+    done = sorted({r.get("stage") for r in st.get("results") or [] if isinstance(r, dict) and r.get("outcome") == "done"})
+    return "\n".join([
+        "# %s: locked (stage 5)" % mod, "",
+        "Locked %s by run %s. Item %s. Stages accepted: %s." % (
+            now_iso(), run, st.get("item"), ", ".join("%s %s" % (s, STAGE_NAMES.get(s, "?")) for s in done)), "",
+        "Coverage: %s." % CT.coverage_summary(d, clone_of(d) or REPO), "",
+        "Earlier parks on this concept: %d (stage.json `parks`)." % len(st.get("parks") or []), ""])
 
 
 def park(d, kind, why, repo=REPO, st=None):
@@ -1522,6 +1540,10 @@ def close_run(d, run, tokens=None, repo=REPO, runner="claude", usage=None, trans
     if out == "done":
         if stage == 5:
             st["status"] = "locked"
+            if os.path.exists(os.path.join(d, PARK_FILE)):
+                # the page he reads must not still say "parked for you" over a locked concept
+                with open(os.path.join(d, PARK_FILE), "w", encoding="utf-8") as f:
+                    f.write(lock_summary(d, st, run))
         else:
             st["stage"], st["status"] = stage + 1, "ready"
     elif out == "waiting_owner":
@@ -1548,10 +1570,12 @@ LAND = os.path.join(os.path.dirname(HERE), "Utils", "land.sh")
 
 
 def state_paths(d, repo):
-    """The harvest's own files in a concept folder, relative to its clone: stage.json, every result*.json there, and
+    """The harvest's own files in a concept folder, relative to its clone: stage.json, park_summary.md (park and lock
+    write it), every result*.json there, and
     result.json when origin/main still has it after close renamed it away (a deletion lands too)."""
     rel = os.path.relpath(os.path.abspath(d), repo)
     out = [os.path.join(rel, "stage.json")] if os.path.isfile(os.path.join(d, "stage.json")) else []
+    out += [os.path.join(rel, PARK_FILE)] if os.path.isfile(os.path.join(d, PARK_FILE)) else []
     out += sorted(os.path.join(rel, n) for n in os.listdir(d) if re.match(r"result(\..+)?\.json$", n))
     gone = os.path.join(rel, "result.json")
     if gone not in out:
@@ -1588,7 +1612,7 @@ def land_state(d, run, timeout=120):
     last = (st.get("results") or [{}])[-1]
     mod = st.get("mod") or os.path.basename(os.path.abspath(d))
     msg = ("Designer: %s stage %s %s (run %s), harvest lands its own state\n\n"
-           "Landed by designer_stage.land_state (DESIGNER_STAGE_FIX_COMMIT_ITS_OWN_STATE): stage.json and result files only."
+           "Landed by designer_stage.land_state (DESIGNER_STAGE_FIX_COMMIT_ITS_OWN_STATE): stage.json, park_summary.md and result files only."
            % (mod, last.get("stage", st.get("stage")), last.get("outcome", st.get("status")), run))
     p = subprocess.run([LAND, "-m", msg] + paths, cwd=repo, capture_output=True, text=True, timeout=timeout,
                        env=dict(os.environ, LAND_REPO=repo))
@@ -1841,7 +1865,7 @@ def status(d, repo=REPO):
     s, changed = stale_stage(d, st, repo)
     return {"mod": st.get("mod"), "stage": st["stage"], "status": st["status"], "spent": st["budget"]["spent"],
             "cap": st["budget"]["cap"], "reserve": st["budget"]["reserve"], "running": st.get("running"),
-            "stale_from": s, "stale_inputs": changed,
+            "stale_from": s, "stale_inputs": changed, "coverage": CT.coverage_summary(d, repo),
             "recovery_open": [r["scene"] for r in st.get("recovery") or [] if r["state"] == "open"],
             "recovery_held": [r["scene"] for r in st.get("recovery") or [] if r["state"] == "held"]}
 

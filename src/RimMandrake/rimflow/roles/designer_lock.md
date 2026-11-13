@@ -30,6 +30,13 @@ Injected with `designer.md` at stage 5. One versioned order, no avoidable rework
    it redoes only the checklist rows they touch and keeps the rest. A gap you do not claim stays open; a new gap on
    anything it was not shown counts only tagged `late` with a reason. No claim and no change: no judge runs. A file
    against another judge is ignored, so the next round needs a new one.
+   **The owner may pass coverage on his own word**, past a `not_covered` verdict. He did so first on ExplosiveKnockback on 2026-11-13
+   (OWNER:1794608649743135329: "Yes, fix it like that, and then please record this as an actual Pass."). That stamp is
+   `concept_tree.py certify <dir> --owner-event OWNER:<tsn>` (`signed_by: owner`), and it is his alone. The gate takes it only on an
+   OWNER.jsonl event that holds his `ownerSaid` or `byCard`, names this concept's item, and is newer than the verdict on file. It must
+   also match that verdict and the current `coverage_fixes.json`. An agent's `--why` or `--per-ruling` event certifies nothing, and
+   lint and the other gate checks still run. Status and the lock page read "passed on the owner's word" beside the judge's
+   verdict, never as a judge pass. You never certify.
 4. **The gate**: `concept_tree.py gate <dir>` passes, and `designer_stage.py showcases <dir>` accepts the showcase set:
    the lock is refused while a record.json inventory capability is exercised by no showcase and no scene, and the
    scenes the set names are rechecked against the scene contract (a scene added since stage 3 is not trusted by id).
