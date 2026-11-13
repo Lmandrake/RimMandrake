@@ -379,6 +379,14 @@ python3 src/RimMandrake/Utils/run_selftests.py --only $(for f in $(cat $L); do [
 python3 src/RimMandrake/Utils/known_reds.py report | grep -c OVERDUE   # expect 0
 ```
 
+**The clean-up pass, 2026-11-12 evening** `[measured]`: of the 44, 6 had gone green by themselves (one of them,
+`selftest_codex_seats`, red again in the full sweep: host state), 18 were fixed by cause (5 landings, 957880444d to
+a5bc261057), 13 are parked on the known-red list under their own filed items, and 7 have filed items but are too new
+for the list (it takes 3 red nights). The full sweep that followed (3,437 s, this clone at
+2c9de31125): PASS 1,553, FAIL 37, CRASH 6, UNMEASURED 6 of 1,605. 22 of those reds are new since the 03:00 nightly
+(358 commits landed in between); they are listed in `design/RimMandrake/validation_map_new_reds_2026-11-12_evening.txt`
+under `RIMMANDRAKE_TRIAGE_TWENTY_TWO_REDS_BORN_AFTER_THE_NIGHTLY`. So the waker is not switched on yet.
+
 The item closes with `--live` on the waker unit (the operational-item rule). Expected pass: both greps as noted, on the
 first nightly after the pass.
 

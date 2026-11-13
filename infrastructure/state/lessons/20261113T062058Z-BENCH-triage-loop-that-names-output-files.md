@@ -1,0 +1,1 @@
+A triage loop that names output files by `tr / _` turns .claude/hooks/x.py into a dot-file (.claude_hooks_x.out) that a later *.out glob silently skips: one of 37 reds vanished from the triage. Name outputs without a leading dot, and count outputs against inputs before reading them.
