@@ -1,0 +1,1 @@
+Conductor 2026-11-13: a card asked the owner whether a dry crop on Pyrelands ash grows; he had already ruled it ('This was ruled on before'). Before carding a design question, run owner_rulings.py --grep on its key words and the concept's record.json; a question whose answer is on disk is not his to answer again.
