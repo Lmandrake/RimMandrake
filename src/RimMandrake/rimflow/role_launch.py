@@ -333,6 +333,10 @@ def validate_role(role):
     for k in ("run_token_cap", "quick_token_cap", "economy_token_cap", "daily_token_cap", "incident_token_cap"):
         if role.get(k) is not None and not (_num(role[k]) and role[k] >= 0):
             raise ValueError("%s %r is not a number >= 0" % (k, role[k]))
+    # run_budget_usd: the HARD per-run spend stop, claude's --max-budget-usd (owner 2026-11-12: "Don't let any burn go
+    # to 90M this time ok?"); the token caps above stay advisory
+    if role.get("run_budget_usd") is not None and not (_num(role["run_budget_usd"]) and role["run_budget_usd"] > 0):
+        raise ValueError("run_budget_usd %r is not a number > 0" % (role["run_budget_usd"],))
     la = role.get("launch_args", [])
     if not (isinstance(la, list) and all(isinstance(x, str) and x in LAUNCH_ARGS_OK for x in la)):
         raise ValueError("launch_args %r: each must be one of %s" % (la, ", ".join(sorted(LAUNCH_ARGS_OK))))
@@ -2743,6 +2747,7 @@ def launch_argv(role, unit, msg, out, err, claude, session=None, tmpdir=None):
     path = os.path.dirname(claude) + ":" + os.environ.get("PATH", "/usr/bin:/bin")
     cmd = [bounded, "-p", msg, "--model", role["model"], "--name", "ROLE %s %s" % (role["name"], unit)] \
         + list(role.get("launch_args") or []) + ["--output-format", "json", "--dangerously-skip-permissions"] \
+        + (["--max-budget-usd", "%g" % role["run_budget_usd"]] if role.get("run_budget_usd") is not None else []) \
         + (["--resume", role["resume_session"]] if role.get("resume_session")      # continues that session (resume_due)
            else ["--session-id", session] if session else [])     # its transcript, found when no result is
     selected = role.get("runner", "claude")

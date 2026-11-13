@@ -50,6 +50,7 @@ OUT = "/mnt/d/ClaudeWork/rimmandrake/agent_improve"
 WINDOW_DAYS = 7
 RECUR = 2
 MAX_TARGETS = 6
+CALL_BUDGET_USD = 2      # hard spend stop per Curator/Judge call (owner 2026-11-12: "Don't let any burn go to 90M this time ok?")
 AGENTS = {"relentless", "operations", "designer"}    # the agents rank before skills and docs under the cap
 MAX_PIECES = 25                                       # per target in the packet; the kinds line counts them all
 OK_ENDS = {"finish", "done"}                          # an attempt end that is not a reject
@@ -562,7 +563,7 @@ def claude_fresh(prompt, timeout=420, model_name="opus"):
     """One fresh, tool-less `claude -p` session in an empty temp dir: no repo context, no memory, no MCP."""
     with tempfile.TemporaryDirectory(prefix="agent_improve_") as d:
         r = subprocess.run([shutil.which("claude") or os.path.expanduser("~/.local/bin/claude"), "-p", "--model", model_name, "--tools", "", "--no-session-persistence",
-                            "--strict-mcp-config"], input=prompt, capture_output=True, text=True, cwd=d,
+                            "--strict-mcp-config", "--max-budget-usd", "%g" % CALL_BUDGET_USD], input=prompt, capture_output=True, text=True, cwd=d,
                            timeout=timeout)
     if r.returncode != 0 or not r.stdout.strip():
         raise RuntimeError("claude -p exit %d: %s" % (r.returncode, (r.stderr or "")))

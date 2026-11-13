@@ -247,6 +247,21 @@ def test_band():
           "no runway band -> ValueError")
 
 
+def test_run_budget_usd_hard_stop():
+    # RIMMANDRAKE_RESTORE_PAUSED_WORK_KEEP_EVERY_SPEND_CAP: run_budget_usd becomes claude's --max-budget-usd
+    role = {"name": "r", "seat": "SEAT", "clone": "/c", "model": "opus", "run_max_s": 1000}
+    a = RL.launch_argv(role, "U", "MSG", "/o", "/e", "/bin/claude")
+    check("--max-budget-usd" not in a, "no budget flag when unset")
+    a = RL.launch_argv(dict(role, run_budget_usd=6), "U", "MSG", "/o", "/e", "/bin/claude")
+    check("--max-budget-usd" in a and a[a.index("--max-budget-usd") + 1] == "6", "budget flag carries the cap %r" % a[-6:])
+    a = RL.launch_argv(dict(role, run_budget_usd=2.5), "U", "MSG", "/o", "/e", "/bin/claude")
+    check(a[a.index("--max-budget-usd") + 1] == "2.5", "a fractional cap is kept")
+    RL.validate_role(dict(good(), run_budget_usd=6))
+    for bad in (0, -1, "6", True):
+        check(raises(lambda: RL.validate_role(dict(good(), run_budget_usd=bad)), "run_budget_usd"),
+              "run_budget_usd %r refused" % (bad,))
+
+
 # ---------------------------------------------------------------- validate_role
 def good():
     return {"run_max_s": 60, "slot_late_s": 60}
@@ -346,7 +361,7 @@ def test_ops_reading_points_not_mapping():
 
 
 TESTS = (test_incident_run_cap_and_page, test_after_ready_covered_slot, test_ops_reading_points_not_mapping, test_stop_call_failed_is_not_ok, test_stop_reports_each_failure, test_failed_stop_reissued_each_tick,
-         test_unit_state_and_scope_of, test_launch_result, test_launch_argv_shape, test_model_id, test_ops_reading,
+         test_unit_state_and_scope_of, test_launch_result, test_launch_argv_shape, test_run_budget_usd_hard_stop, test_model_id, test_ops_reading,
          test_band, test_validate_role)
 
 
