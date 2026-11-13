@@ -61,7 +61,7 @@
 - No-repeat is judged by a shape-distance number with a judge agent predicting your eye, since only your eye had judged it
 - Showcase 2 is the yard of masts, the most new ground after the workshop floor; theft, the four looks, Mod Settings, the gravship, owner-change wire cutting and new-game cleanup are each checked by their own acceptance scene with a control
 - The lone-rebuild bar is 20 ms a frame, the floor's own tick ceiling
-- Under your 2026-11-06 answer: any live loose end counts, also a run you stopped laying; only the end cell bites; safe means building the conduit that joins this end; the fuel-ignition switch is not widened; an end bites only while it is drawn live, and turning overhead lines off does not silence floor ends
+- Under your 2026-11-06 answer: any live loose end counts, also a run you stopped laying; only the end cell bites; safe means carrying material to or building the conduit that joins this end; the fuel-ignition switch is not widened; an end bites while it is live, even when the most-sparking-ends limit leaves it unsparked, and turning overhead lines off does not silence floor ends; Only downed lines keeps FlowWorks' dropped bridge-deck cords biting
 
 ## pruning
 - conduit_invisible: his words, little drawn wires over otherwise-invisible conduits, north star conduit_reads_invisible

@@ -80,7 +80,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "the bridge `bends` probe (CordShapeAudit.Bends) over every strand on the map, ends included: tally unforced == 0, where a turn tighter than 90 degrees within one cell is forced only when a wall, building, door or socket next to it leaves no other way (row M2c_no_sharp_bends)",
+   "oracle_proposed": "the bridge `bends` probe (CordShapeAudit.Bends) over every strand on the map, ends included: tally unforced == 0, where a turn tighter than 90 degrees within one cell is forced only when a wall, building, door or socket next to it leaves no other way (row M2c_no_sharp_bends); and on the same strands in each look the sc_cords_slack read (leaf cords_lie_slack): drawn length at least 1.4 times the chord and an excursion of a cell or more off the conduit line on edges over four cells, so a taut straight cord fails",
    "tier_reason": "cord geometry is built in game from the live grid; a quicktest colony gives it in 90 s",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -281,7 +281,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "shock hediff or damage on the live-end hauler, the visitor and the unrelated constructor, and on the hauler again with the aerial master off; none on the constructor whose job targets the blueprint or frame joining this end; none on the dead-end hauler or a crossing of any other cord cell; every path asserted to cross the cell it is meant to",
+   "oracle_proposed": "shock hediff or damage on the live-end hauler, the visitor, the unrelated constructor and the hauler crossing the live end of the unfinished run, and on the live-end hauler again with the aerial master off; with maxSparkingEnds set to 1 and two live ends, shock on the hauler crossing each; none on the constructor whose job (delivering steel to or building) targets the blueprint or frame joining this end; none on the dead-end hauler or on the hauler crossing a live cord cell at least two cells from the end; every path asserted to cross the cell it is meant to",
    "tier_reason": "pawn jobs, PowerNet state and shock damage are live behaviour",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -291,12 +291,15 @@
    ],
    "leaf_kind": "experience",
    "tier_proposed": "quicktest",
-   "experience": "The player, at normal zoom over a workshop floor where a conduit cell was destroyed, sees a colonist hauling over the sparking live end shocked, and a visitor crossing it shocked too; the constructor walking up to rebuild THAT conduit cell is not; a constructor building some other conduit who crosses the sparking end is shocked; a hauler crossing the limp dead end, or anywhere along the cord but the end, is not. Turning off the overhead-lines master leaves floor ends biting. It must not read as the whole cord biting, a dead end that bites, a fixer shocked at the job, or every constructor safe.",
-   "scenario": "A powered floor run fed from one side through a workshop, and a second unrelated conduit blueprint; destroy a middle cell; order a hauler across the live end cell and another across the dead end cell; a visitor walks across the live end; one constructor builds the blueprint for the destroyed cell; another builds the unrelated blueprint and is routed across the live end; repeat the hauler crossing with the aerial master off.",
+   "experience": "The player, at normal zoom over a workshop floor where a conduit cell was destroyed, sees a colonist hauling over the sparking live end shocked, and a visitor crossing it shocked too; the constructor carrying steel to and then rebuilding THAT conduit cell is not; a constructor building some other conduit who crosses the sparking end is shocked; a hauler crossing the limp dead end, or the live cord a few cells back from its end, is not. The loose end of a run the player simply stopped laying bites the same way, and every live end bites however many ends are sparking on the map. Turning off the overhead-lines master leaves floor ends biting. It must not read as the whole cord biting, a dead end that bites, a fixer shocked at the job, or every constructor safe.",
+   "scenario": "A powered floor run fed from one side through a workshop, a second unrelated conduit blueprint, and a second powered run the player stopped laying short of its device; destroy a middle cell of the first; order a hauler across the live end cell, another across a live cord cell two or more cells back from that end, another across the dead end cell, and another across the unfinished run's loose end; a visitor walks across the live end; one constructor delivers steel to and builds the blueprint for the destroyed cell; another builds the unrelated blueprint and is routed across the live end; repeat the live-end crossing with the aerial master off, and with maxSparkingEnds at 1 across both live ends.",
    "false_pass": [
     "the exemption keyed on any construction job instead of the conduit that joins this end",
     "shock applied along the whole cord, so the end cell passes but harmless cells bite",
-    "floor-end shock gated on the aerial master, so it works only while overhead lines are on"
+    "floor-end shock gated on the aerial master, so it works only while overhead lines are on",
+    "only ends left by a destroyed cell bite, so a run the player stopped laying lies live and harmless",
+    "the exemption covers only the building step, so the constructor carrying steel to the joining blueprint is shocked",
+    "shock keyed on the spark budget's drawn set, so a live end past maxSparkingEnds stops biting"
    ],
    "red": "a pawn crossing a live floor-cord end on another job is not shocked, the constructor rebuilding that cell is, or a dead end bites",
    "owner_part": "yes: one cut on the workshop floor, a hauler shocked at the live end, the rebuilder safe",
@@ -407,7 +410,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "default reads All; per value, shock on the floor-end crossing exactly under All and on the downed-wire crossing under All and Only downed lines; no shock under None; no restart between values",
+   "oracle_proposed": "default reads All; per value, shock on the floor-end crossing exactly under All, and on the downed-wire crossing and the FlowWorks collapsed-deck cord crossing under All and Only downed lines; no shock under None; no restart between values",
    "tier_reason": "the setting's effect is shock damage on live pawns",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -417,10 +420,11 @@
    ],
    "leaf_kind": "experience",
    "tier_proposed": "quicktest",
-   "experience": "The player opens Mod Settings and finds one shock choice with three values, None, Only downed lines and All, set to All on a fresh install. Under All a hauler crossing a live floor end and one crossing a live fallen wire are both shocked; under Only downed lines only the fallen wire bites; under None neither does; the change takes effect without a restart. It must not read as an on/off box, a default other than All, or a choice that needs a restart.",
-   "scenario": "A live floor-cord end and a live fallen wire on one map; for each of the three values, a hauler crosses each; read the default on a fresh settings file.",
+   "experience": "The player opens Mod Settings and finds one shock choice with three values, None, Only downed lines and All, set to All on a fresh install. Under All a hauler crossing a live floor end, one crossing a live fallen wire and one crossing the live power cord a collapsed FlowWorks bridge deck dropped are all shocked; under Only downed lines the fallen wire and the dropped deck cord bite and the floor end does not; under None nothing does; the change takes effect without a restart. It must not read as an on/off box, a default other than All, or a choice that needs a restart.",
+   "scenario": "A live floor-cord end, a live fallen wire and a FlowWorks bridge deck collapsed with a powered cord on it, on one map; for each of the three values, a hauler crosses each; read the default on a fresh settings file.",
    "false_pass": [
-    "the old on/off fallenWireShock kept and the third value wired to it, so Only downed lines and All behave alike"
+    "the old on/off fallenWireShock kept and the third value wired to it, so Only downed lines and All behave alike",
+    "Only downed lines reads only GSS's own aerial strands, so FlowWorks' dropped deck cords fall silent or None leaves them biting"
    ],
    "red": "Only downed lines still shocks at a floor end, None still shocks, or the default is not All",
    "by": "concept",
@@ -455,7 +459,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "a fire on the puddle cell within the poll window with fallenWireIgnites on and the wire live; none with the switch off; none with the wire dead",
+   "oracle_proposed": "a fire on the puddle cell within the poll window with fallenWireIgnites on and the wire live; none with the switch off; none with the wire dead; none on a chemfuel puddle under a live floor-cord end with shock reach All and the switch on",
    "tier_reason": "fire and filth are live state",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -468,10 +472,11 @@
    "root": [
     "downed_span_lies_on_ground"
    ],
-   "experience": "The player sees spilled fuel lying under the sparking end of a live fallen wire catch fire; under a dead wire it does not. It must not read as fuel that a live wire never lights, or a fire that starts with no wire there.",
-   "scenario": "A live fallen wire with a chemfuel puddle on its sparking-end cell; wait; then the same with fallenWireIgnites off, and with the wire's source switched off.",
+   "experience": "The player sees spilled fuel lying under the sparking end of a live fallen wire catch fire; under a dead wire it does not, and fuel under the sparking end of a cut floor cord does not either. It must not read as fuel that a live fallen wire never lights, or a fire that starts with no fallen wire there.",
+   "scenario": "A live fallen wire with a chemfuel puddle on its sparking-end cell; wait; then the same with fallenWireIgnites off, and with the wire's source switched off. Then a chemfuel puddle on the live end cell of a cut floor cord, switch on, shock reach All.",
    "false_pass": [
-    "the fire comes from something else on the cell (heat, a lamp, a burning pawn), so a wire that never ignites passes"
+    "the fire comes from something else on the cell (heat, a lamp, a burning pawn), so a wire that never ignites passes",
+    "the ignition sweep widened to floor ends along with shock, so a cut floor cord lights fuel"
    ],
    "red": "a fuel puddle under a live sparking end never catches fire, or a dead wire lights it"
   },
@@ -578,7 +583,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "after the claim: no link between the claimed mast and either mast of ours, the OwnerMismatchSweep cut count equals the cut links, the message shown; with the switch off the links stay",
+   "oracle_proposed": "after the claim: no link between the claimed mast and either mast of ours, the OwnerMismatchSweep cut count equals the cut links, the message shown; the span between two masts of ours that does not touch the claimed mast stays linked and powered; with the switch off the links stay",
    "tier_reason": "factions and anchor links are live state",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -592,10 +597,11 @@
     "overhead_span_above_everything"
    ],
    "experience": "The player whose pole is claimed or captured by another faction sees every wire between that pole and a pole of a different owner taken down and coiled, with a message saying so; wires between poles of one owner stay up. It must not read as our power still feeding a pole someone else now owns, or wires that vanish with no sign.",
-   "scenario": "Two powered masts of ours joined by a span, plus a third mast of ours joined to the second; hand the second mast to another faction; read its links and power; repeat with cutWiresOnOwnerChange off.",
+   "scenario": "Three powered masts of ours in a line, the middle one spanned to both, and a fourth mast of ours spanned to the first; hand the middle mast to another faction; read every link and the power; repeat with cutWiresOnOwnerChange off.",
    "false_pass": [
     "the link drops because the faction change itself destroys the anchor, not because the owner sweep cut it",
-    "only the setting value is read, never a claimed pole"
+    "only the setting value is read, never a claimed pole",
+    "the sweep cuts every span on the net or on any owner change, so the same-owner span drops too"
    ],
    "red": "after a pole changes owner its wire to our pole stays strung and our net still powers it, or wires drop with no message"
   },
@@ -603,7 +609,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "in game 1 the tap registry lists the tap and the style picks list both runs; in a new game and in a game reached by loading a tap-free save, at start, both are empty; loading game 1's own save brings its tap and picks back",
+   "oracle_proposed": "in game 1 the tap registry lists the tap, the style picks list both runs, the printed-section static set (SectionLayer_RM_MessyCords.PrintedStatic: section keys, strand names) is non-empty and the live-wire path-cost table (RM_LiveWirePathCost) holds this map id; in a new game and in a game reached by loading a tap-free save, at start, all four are empty, and the new game's floor run prints its cords; loading game 1's own save brings its tap, picks, printed sections and priced cells back",
    "tier_reason": "static state across two games exists only in a running session",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -616,11 +622,12 @@
    "root": [
     "overhead_span_above_everything"
    ],
-   "experience": "The player who quits one game and starts or loads another in the same session sees nothing of the first carried over: no tap from the old game is still registered and draining goodwill, and runs take fresh looks rather than the old game's picks. It must not read as an old game's theft or styles haunting a new one.",
-   "scenario": "A quicktest colony with a clamped tap and two styled runs, saved; read the tap registry and style picks; start a second quicktest in the same session and read them again; then, from the filled first game, load a save that holds no tap and no styled run and read them again.",
+   "experience": "The player who quits one game and starts or loads another in the same session sees nothing of the first carried over: no tap from the old game is still registered and draining goodwill, runs take fresh looks rather than the old game's picks, the new game's cords all draw, and pawns walk freely over cells that were live wire only in the old game. It must not read as an old game's theft or styles haunting a new one, cords missing in the new game, or pawns avoiding ground with no wire on it.",
+   "scenario": "A quicktest colony with a clamped tap, two styled runs and a live fallen wire, saved; read the tap registry, style picks, printed-section statics and live-wire path costs; start a second quicktest in the same session, lay a floor run, and read them again; then, from the filled first game, load a save that holds no tap, no styled run and no fallen wire and read them again.",
    "false_pass": [
     "the read in the second game looks at a fresh instance the mod never fills, so it is empty whether or not the old state was cleared",
-    "only a new game tested, so the load path, which initialises differently, keeps the old game's tap"
+    "only a new game tested, so the load path, which initialises differently, keeps the old game's tap",
+    "only the tap registry and style picks read, so a stale printed-section key leaves the new game's cords unprinted or game 1's priced cells make new pawns avoid bare ground"
    ],
    "red": "a tap from the first game is still in the registry in the second game, or the second game's runs reuse the first game's style picks"
   },

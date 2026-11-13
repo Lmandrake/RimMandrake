@@ -1,25 +1,10 @@
 {
- "against": "rm-coverage-judge-1793955968",
+ "against": "rm-coverage-judge-1794599377",
  "claims": [
-  {
-   "gap": "g1",
-   "evidence": "scenes.json sc_shock (start, action, expect: the other span's re-stringer crosses this end and is shocked) and sc_shock_restring control (safe colonist's RM_RestringSpan targets a different span: both shocked, rules_out job-type exemption); tree.json fallen_wire_shocks_crossers oracle_proposed, false_pass and red now key the exemption on the wire the job targets"
-  },
-  {
-   "gap": "g2",
-   "evidence": "his answer OWNER:1793996551266756043 (record.json s_shock_reach, d_shock_reach_setting); tree.json new leaves floor_end_shocks_crossers and shock_reach_setting; scenes.json sc_floor_end_shock (in showcase workshop_floor, exercising floor_end_shock) and sc_shock_reach (coverage_rest for shock_reach_setting); sheet.md does-list and his words"
-  },
-  {
-   "gap": "g3",
-   "evidence": "scenes.json sc_statics_new_game: a second game reached by loading a tap-free save, with a control that reloading game 1 refills the registry; tree.json statics_clear_between_games scenario, oracle_proposed and false_pass name the load path"
-  },
-  {
-   "gap": "g4",
-   "evidence": "scenes.json sc_settings action and expect name the three reads: vanilla lamp graphic under master off without a restart, every applied Harmony patch mapped to exactly one switch, pipe-pole switch leaving power masts' spans, sag and link count unchanged; tree.json settings_switch_cleanly oracle_proposed and scenario"
-  },
-  {
-   "gap": "g5",
-   "evidence": "scenes.json sc_restring stages a grounded wire (killed mast) beside the cut, reads every listed anchor's jump and the alert dropping only the re-strung anchor; sc_spans stages a lamp mast on the same net with its lamp lit; tree.json restring_cut_span and spans_above_everything scenario and oracle_proposed"
-  }
+  {"gap": "g1", "evidence": "scenes.json sc_floor_end_shock action: hauler 2 crosses a cell of the LIVE segment at least two cells from its end (asserted on the drawn cord, not the end cell); expect: hauler 2 not shocked; control rules_out names whole-cord shock. tree.json floor_end_shocks_crossers oracle_proposed: none on the hauler crossing a live cord cell at least two cells from the end"},
+  {"gap": "g2", "evidence": "All five rulings tested, none cut. (a) sc_floor_end_shock start adds a run the player stopped laying (live Terminal end, no destroy event), hauler 4 crosses it, expect shocked, control silent under Only downed lines. (b) constructor A delivers steel then builds, path asserted across the live end on both legs, expect not shocked on either. (c) sc_fuel_ignition adds a chemfuel puddle on a cut floor cord's live end, expect no fire; tree.json live_wire_lights_fuel oracle, experience and false_pass. (d) sc_floor_end_shock sets maxSparkingEnds 1 with two live ends asserted, one outside the spark set, expect both haulers shocked. (e) sc_shock_reach start adds a FlowWorks collapsed-deck power cord registered through the external live-wire source; expect shocked under All and Only downed lines, not under None. Ruling (6) now has one meaning in record.json d_shock_reach_agent_detail and sheet.md delegated: shock follows the live state at the last poll, never the spark budget (which caps only drawn sparks, RM_MapComponent_CordGraph.cs SparkEnds); 'only if drawn live' removed. Oracle lines in tree.json floor_end_shocks_crossers and shock_reach_setting."},
+  {"gap": "g3", "evidence": "scenes.json sc_no_sharp_turn action runs the sc_cords_slack read on the same strands in each look; expect requires drawn length at least 1.4 times chord on every edge and an off-line excursion of a cell or more on edges over four cells, so taut cords fail. tree.json no_unforced_sharp_turn oracle_proposed adds the same read"},
+  {"gap": "g4", "evidence": "scenes.json sc_owner_change start adds a fourth mast of ours spanned to the first and not to the middle mast; expect with the switch on: that span stays linked and the fourth mast powered while the two spans to the claimed mast are cut (cut count two). tree.json owner_change_coils_wires scenario, oracle_proposed and a new false_pass (cut-everything sweep)"},
+  {"gap": "g5", "evidence": "scenes.json sc_statics_new_game reads SectionLayer_RM_MessyCords.PrintedStatic (section keys, strand names) and RM_LiveWirePathCost by map id beside the tap registry and style picks (both cleared in GssSessionReset.cs); game 1 has a live fallen wire so the path-cost table is filled; expect all four empty at the start of the new game and the loaded tap-free game, the new game's floor run prints; control shows them refilled on the game-1 reload. tree.json statics_clear_between_games oracle_proposed, experience, scenario, false_pass; record.json game_statics_reset 'what' names both statics"}
  ]
 }

@@ -144,7 +144,7 @@
    "speaker": "agent",
    "source": "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
    "author": "rm-role-designer-1793997316",
-   "text": "Agent rulings under his answer, his to undo. (1) 'Every sparking end' is taken literally: any live Terminal end that sparks, also a run the player simply stopped laying, not only a destroyed cell (CordBuilder draws both alike). (2) A floor end's contact is its own cell, 'the sparking end'; the rest of the cord stays harmless. Downed wires keep their present ground contact. (3) Safe = the pawn's construction job (delivering to or building) targets the conduit blueprint or frame that joins THIS end; a constructor on any other job is shocked, like the re-string case in coverage gap 1. (4) 'Only downed lines' = today's contact set, FlowWorks' collapsed-deck cords included; None = no shock from any wire. (5) The fuel-ignition switch is separate and not widened to floor ends; he spoke of shock only. (6) Shock follows the end's live state and never the maxSparkingEnds spark budget; an end shocks only if it is drawn live. Turning the aerial master off must not silence floor ends under All (RebuildContacts returns early on AerialSettings.enabled today)."
+   "text": "Agent rulings under his answer, his to undo. (1) 'Every sparking end' is taken literally: any live Terminal end that sparks, also a run the player simply stopped laying, not only a destroyed cell (CordBuilder draws both alike). (2) A floor end's contact is its own cell, 'the sparking end'; the rest of the cord stays harmless. Downed wires keep their present ground contact. (3) Safe = the pawn's construction job (delivering material to or building) targets the conduit blueprint or frame that joins THIS end; a constructor on any other job is shocked, like the re-string case in coverage gap 1. (4) 'Only downed lines' = today's contact set, FlowWorks' collapsed-deck cords included; None = no shock from any wire. (5) The fuel-ignition switch is separate and not widened to floor ends; he spoke of shock only. (6) Shock follows the end's live state at the last 250-tick poll and never the maxSparkingEnds spark budget, which caps only the sparks drawn in view: a live end left out of the spark set still shocks, a dead end never does. Turning the aerial master off must not silence floor ends under All (RebuildContacts returns early on AerialSettings.enabled today)."
   }
  ],
  "asks": [
@@ -640,7 +640,7 @@
   },
   {
    "id": "game_statics_reset",
-   "what": "Per-game static state (tap registry, style picks, printed statics) is cleared between games, so nothing carries into a new game",
+   "what": "Per-game static state (tap registry, style picks, printed-section keys and strand names, live-wire path costs by map id) is cleared between games, so nothing carries into a new game",
    "impl": "present",
    "impl_evidence": [
     "src/RimMandrake/GimmeSomeSlack/Source/GssSessionReset.cs",

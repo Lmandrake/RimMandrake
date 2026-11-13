@@ -61,8 +61,8 @@
     "the core workshop layout laid once per look (Scrapper, Industrial, Modern, Futuristic): a battery, a generator, a 3-way and a 4-way junction, consumers and a wall stub, all on one PowerNet (asserted)",
     "a dense 4x4 conduit block and a mast foot with short leads beside it (asserted present)"
    ],
-   "action": "run the bridge bends probe (CordShapeAudit.Bends) over every strand, ends included, in each look; tally bends tighter than 90 degrees within one cell and classify each as forced (a wall, building, door or socket on a neighbouring cell leaves no other way) or unforced; capture each look",
-   "expect": "strands read greater than zero in every look (the instrument sees cords); unforced == 0 in every look, at plug and junction ends as well as mid-cord; every forced bend names the wall, building, door or socket beside it",
+   "action": "run the bridge bends probe (CordShapeAudit.Bends) over every strand, ends included, in each look; tally bends tighter than 90 degrees within one cell and classify each as forced (a wall, building, door or socket on a neighbouring cell leaves no other way) or unforced; on the same strands in each look, run the sc_cords_slack read (drawn curve length against chord, off-line excursion); capture each look",
+   "expect": "strands read greater than zero in every look (the instrument sees cords); unforced == 0 in every look, at plug and junction ends as well as mid-cord; every forced bend names the wall, building, door or socket beside it; on the same strands every edge's drawn length is at least 1.4 times its chord and every edge over four cells has an excursion of a cell or more off the conduit line, so taut straight cords fail",
    "control": {
     "case": "the probe's own planted strand: a hairpin drawn on an open floor cell beside the junction lead, and a second planted hairpin at a plug end, run through the same tally",
     "expect": "both read unforced and the scene fails; removing them brings unforced back to 0",
@@ -312,14 +312,16 @@
    "start": [
     "quicktest colony, a workshop floor run fed from one side, powered and lit (asserted), shock reach at its default All (asserted)",
     "a second, unrelated conduit blueprint placed elsewhere (asserted)",
-    "two haulers, a visitor and two constructors"
+    "a second powered run the player stopped laying short of its device: its last conduit cell is a live Terminal end that sparks and no cell was destroyed (asserted live, asserted no destroy event on it)",
+    "steel stacked out of the way so delivery must happen (asserted the blueprint holds no steel yet)",
+    "four haulers, a visitor and two constructors"
    ],
-   "action": "destroy a middle cell of the run; read both ends live and dead; one hauler crosses the live end cell, one the dead end cell; the visitor crosses the live end; constructor A builds the blueprint for the destroyed cell, its path asserted to cross the live end; constructor B builds the unrelated blueprint, routed so its path is asserted to cross the live end; turn the aerial master off and repeat the live-end haul",
-   "expect": "live-end hauler, visitor and constructor B shocked; the live-end hauler shocked again with the aerial master off; constructor A not shocked and the cell rebuilt; the dead-end hauler not shocked; a crossing of any other cell of the cord shocks no one",
+   "action": "destroy a middle cell of the first run; read both ends live and dead; hauler 1 crosses the live end cell; hauler 2 crosses a cell of the LIVE segment at least two cells from its end (asserted on the drawn cord, asserted not the end cell); hauler 3 crosses the dead end cell; hauler 4 crosses the unfinished run's live loose end; the visitor crosses the live end; constructor A delivers steel to the blueprint for the destroyed cell and then builds it, its path asserted to cross the live end on both the delivery and the build leg; constructor B builds the unrelated blueprint, routed so its path is asserted to cross the live end; turn the aerial master off and repeat hauler 1's crossing; with the master back on, set maxSparkingEnds to 1, assert two live ends on the map (the cut's live end and the unfinished run's) with only one in the drawn spark set, and order a hauler across each",
+   "expect": "hauler 1, hauler 4, the visitor and constructor B shocked; hauler 1 shocked again with the aerial master off; with maxSparkingEnds 1 both live-end haulers shocked, the one at the end left out of the spark set included; constructor A not shocked on the delivery leg or the build leg and the cell rebuilt; hauler 2, crossing the live cord two or more cells from its end, not shocked; hauler 3 at the dead end not shocked",
    "control": {
     "case": "the same crossings with shock reach set to Only downed lines",
-    "expect": "no one is shocked at the floor end",
-    "rules_out": "shock damage from another source (fire, a fuel puddle, a fallen wire nearby) passing for the floor end; with constructor B shocked under All, it also rules out an exemption keyed on any construction job"
+    "expect": "no one is shocked at a floor end, the unfinished run's included",
+    "rules_out": "shock damage from another source (fire, a fuel puddle, a fallen wire nearby) passing for the floor end; with constructor B shocked under All, it also rules out an exemption keyed on any construction job; with hauler 2 unshocked under All, a shock applied along the whole live cord"
    },
    "restore": "restore terrain, walls, conduit, masts and things on the scene rect from the snapshot recorded at scene-begin; put power, factions, goodwill and every poked setting back to its prior value",
    "hold": "immediate"
@@ -334,13 +336,13 @@
    "entry_point": "src/RimMandrake/GimmeSomeSlack/validation.py::scene_shock_reach",
    "entry_point_item": "GSS_SCENES_BUILD_EVERY_CORD_A_FOIL",
    "start": [
-    "quicktest colony with a live floor-cord end and a live fallen wire on one map (asserted live)",
+    "quicktest colony with FlowWorks loaded: a live floor-cord end, a live fallen wire, and a FlowWorks bridge deck collapsed with a powered power cord dropped into the hole, its contact registered by FlowWorks' external live-wire source (asserted live, asserted the source returns its cells)",
     "a fresh GSS settings file (asserted default)"
    ],
-   "action": "read the shock reach default; for None, Only downed lines and All in turn, without a restart: a hauler crosses the floor end and another crosses the fallen wire",
-   "expect": "the default reads All; All: both haulers shocked; Only downed lines: only the fallen-wire hauler shocked; None: neither",
+   "action": "read the shock reach default; for None, Only downed lines and All in turn, without a restart: one hauler crosses the floor end, another the fallen wire, another the dropped deck cord",
+   "expect": "the default reads All; All: all three haulers shocked; Only downed lines: the fallen-wire and deck-cord haulers shocked, the floor-end hauler not; None: none shocked",
    "control": {
-    "case": "the same three passes with both sources switched off",
+    "case": "the same three passes with all three sources switched off",
     "expect": "no one is shocked under any value",
     "rules_out": "the setting appearing to work because shock comes from something other than the live ends"
    },
@@ -516,10 +518,10 @@
    "entry_point": "src/RimMandrake/GimmeSomeSlack/validation.py::scene_owner_change",
    "entry_point_item": "GSS_SCENES_BUILD_EVERY_CORD_A_FOIL",
    "start": [
-    "quicktest colony, three masts of ours in a line, both spans powered (asserted one PowerNet, cutWiresOnOwnerChange on)"
+    "quicktest colony, three masts of ours in a line, both spans powered, and a fourth mast of ours spanned to the first and not to the middle mast (asserted one PowerNet, cutWiresOnOwnerChange on)"
    ],
    "action": "hand the middle mast to another faction; read every link and the net; then put it back, re-string, switch cutWiresOnOwnerChange off and hand it over again",
-   "expect": "switch on: no link from the middle mast to either mast of ours, the sweep's cut count equals the links cut, the message shown, the middle mast unpowered by our net; switch off: both spans stay linked",
+   "expect": "switch on: no link from the middle mast to either mast of ours, the sweep's cut count equals the two links cut, the message shown, the middle mast unpowered by our net, and the span from the first mast to the fourth still linked and the fourth mast powered; switch off: both spans to the middle mast stay linked",
    "control": {
     "case": "the switch-off handover",
     "expect": "the links stay and no message",
@@ -538,10 +540,11 @@
    "entry_point": "src/RimMandrake/GimmeSomeSlack/validation.py::scene_fuel_ignition",
    "entry_point_item": "GSS_SCENES_BUILD_EVERY_CORD_A_FOIL",
    "start": [
-    "quicktest colony, a live fallen wire whose sparking-end cell holds a chemfuel puddle, nothing else burning or hot within 5 cells (asserted)"
+    "quicktest colony, a live fallen wire whose sparking-end cell holds a chemfuel puddle, nothing else burning or hot within 5 cells (asserted)",
+    "elsewhere on the map, a cut floor cord whose live end cell holds a chemfuel puddle, shock reach All (asserted live, nothing hot within 5 cells)"
    ],
-   "action": "wait two live/dead polls; read fire on the puddle cell; repeat with fallenWireIgnites off and with the wire's source switched off",
-   "expect": "live and switch on: fire on the puddle cell; switch off: no fire; wire dead: no fire",
+   "action": "wait two live/dead polls; read fire on both puddle cells; repeat the fallen wire with fallenWireIgnites off and with the wire's source switched off",
+   "expect": "live and switch on: fire on the fallen wire's puddle cell and none on the floor end's puddle cell; switch off: no fire; wire dead: no fire",
    "control": {
     "case": "the switch-off run on the same cell",
     "expect": "no fire",
@@ -560,14 +563,14 @@
    "entry_point": "src/RimMandrake/GimmeSomeSlack/validation.py::scene_statics_new_game",
    "entry_point_item": "GSS_SCENES_BUILD_EVERY_CORD_A_FOIL",
    "start": [
-    "a quicktest colony with a clamped tap and two styled runs (asserted)",
-    "a save made by the script beforehand from a colony with no tap and no styled run (asserted present)"
+    "a quicktest colony with a clamped tap, two styled runs and a live fallen wire (asserted)",
+    "a save made by the script beforehand from a colony with no tap, no styled run and no fallen wire (asserted present)"
    ],
-   "action": "read the tap registry and style picks; save as game 1; start a second quicktest in the same session; read them again; reload game 1 and read; from game 1, load the tap-free save and read them again",
-   "expect": "game 1 lists the tap and both picks; the new quicktest starts with both empty; the game reached by loading the tap-free save starts with both empty",
+   "action": "read the tap registry, the style picks, the printed-section static set (SectionLayer_RM_MessyCords.PrintedStatic: section keys, strand names) and the live-wire path-cost table (RM_LiveWirePathCost) by map id; save as game 1; start a second quicktest in the same session, read all four at start, then lay a floor run and read its printed cords; reload game 1 and read; from game 1, load the tap-free save and read all four again",
+   "expect": "game 1 lists the tap and both picks, holds printed-section keys and strand names, and prices the fallen wire's cells under its map id; the new quicktest starts with all four empty, and its floor run's cords print; the game reached by loading the tap-free save starts with all four empty",
    "control": {
     "case": "the same reads in game 1 before the second game starts, and after reloading game 1's own save",
-    "expect": "both list the tap and both picks, so the instrument sees filled state and the load path does fill it",
+    "expect": "both list the tap and both picks, hold printed sections and price the fallen wire's cells, so the instrument sees filled state and the load path does fill it",
     "rules_out": "a read that is empty because it looks at state the mod never fills, on the new-game path or the load path"
    },
    "restore": "nothing to restore: every game is a throwaway quicktest or a throwaway save written by the script, abandoned and deleted at scene-end",
