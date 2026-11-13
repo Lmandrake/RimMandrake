@@ -1,0 +1,22 @@
+{
+ "mod": "ExplosiveKnockback",
+ "version": "0.1.0",
+ "state": "locked-pending-owner-read",
+ "bars_total": 59,
+ "bars_met": 56,
+ "judge_rounds": 12,
+ "tokens_spent": 97196907,
+ "locked_from_commit": "237b79116781821545f7ac58c23ed40bfc0250c4",
+ "measured_from": {
+  "bars_total": "coverage_judge.required_ids(): record.json inventory (30) + tree.json leaves (29), the coverage checklist rows the judge passes or refuses on",
+  "bars_met": "checklist rows with every part ok in the latest verdict rm-coverage-judge-1794599960 (2026-11-13T19:59:20Z), judged at tree_hash 0290003823 and sheet_hash 234fd3c20e = the files at the lock",
+  "judge_rounds": "coverage_judge.rounds(): 9 legacy rounds named by budget charges (2026-11-12) + 3 recorded in stage.json coverage_rounds (2026-11-13); judging is stopped (REFUSAL_NOTHING_COULD_EVER_PASS) after the released round 12",
+  "tokens_spent": "stage.json budget.spent (cap 4000000); every Designer stage run, helper, review and judge charge on this concept",
+  "locked_from_commit": "origin/main when this version was entered, 2026-11-13; per-file blob hashes in bars.md"
+ },
+ "caveats": [
+  "29 of the budget charges are kind 'unmeasured' (estimates, 86476989 tokens of the 97196907 total); the measured part is 10719918",
+  "stage.json reads waiting_owner and the concept is parked (park_summary.md): nothing runs on it until his word",
+  "the judge said gaps g2-g6 'look fixed' but counted them open because no claim was written; claims for g2-g6 were written after (coverage_fixes.json), g1 has none"
+ ]
+}

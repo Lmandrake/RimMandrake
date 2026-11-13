@@ -16,6 +16,6 @@
  },
  "caveats": [
   "The Designer's stage-3 fix of all five gaps and the stage-4 exam pass (tree 5e3aa0d4, sheet 33b1cddc) exist only as uncommitted edits in /home/mandrake/rm/bench (7 files); the harvest landed stage.json and result files only. The lock here is the committed tree; re-take it once those edits land.",
-  "1 budget charge is kind 'unmeasured' and counts 0 tokens in budget.spent"
+  "1 budget charge is kind 'unmeasured': an estimate of 500000 tokens, included in budget.spent"
  ]
 }

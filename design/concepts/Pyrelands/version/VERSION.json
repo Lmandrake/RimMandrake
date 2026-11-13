@@ -17,6 +17,6 @@
  "caveats": [
   "the latest verdict file is uncommitted (untracked) in /home/mandrake/rm/bench; copied to version/evidence/",
   "exam.json's input hashes do not match the locked tree and sheet: the exam must be rerun (stage 4, where the concept stands)",
-  "1 budget charge is kind 'unmeasured' and counts 0 tokens in budget.spent"
+  "1 budget charge is kind 'unmeasured': an estimate of 500000 tokens, included in budget.spent"
  ]
 }
