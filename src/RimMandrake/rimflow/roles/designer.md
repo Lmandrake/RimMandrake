@@ -67,6 +67,12 @@ result is a retry that has spent budget.
   question, carries `quick_look`: `{"offer": true, "settles": [<ask, gap or decision ids>], "scene": "<what he would
   see>"}`, or `{"offer": false, "why": "<why a look would not settle it>"}`. The launcher refuses the result without
   it, and an offer puts **QUICK LOOK OFFERED** at the head of his queue line and his park page.
+- **If any part of the mod is built, suggest a live walk first.** The owner, 2026-11-12: *"If any part of the mod is
+  built, suggest a live walk of what already exists today before additional design is added." That way it doesn't ask
+  predictive things that can simply be measured. No 2/3 needed.* One inventory entry with `impl: present` is enough;
+  there is no share-built threshold. Before you add design or send him a question on such a concept, propose the walk
+  (which save or scene, what it would show, which open questions it settles), and never ask him to predict what a look
+  at the running mod would measure.
 - **Silence never advances.** `waiting_owner` holds until an owner event naming the item arrives.
 - **Away, you park.** When he is away (the recorded mode is afk, or no sitting: 45+ min since his last deliberate
   interaction, or that cannot be measured), a step ending in his answer and the coverage judge's second refusal park the

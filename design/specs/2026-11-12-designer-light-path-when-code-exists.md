@@ -44,11 +44,12 @@ inputs it used:
 - **light** when both of these hold:
   1. `built_evidence(repo, mod)` finds the mod's `src/` tree, and that tree holds an `About/About.xml` plus at least one
      `Defs/**/*.xml` or `Source/**/*.cs`. In other words, there is a mod to load.
-  2. Of the `record.json` inventory entries in scope (`scope` approved or opened_by_owner), at least two thirds have
-     `impl: present`. An `unknown` counts as not present. EK: 17 of 25 = 68%, so light.
+  2. At least one `record.json` inventory entry in scope (`scope` approved or opened_by_owner) has `impl: present`.
+     There is no share-built threshold (owner, 2026-11-12: *"If any part of the mod is built, suggest a live walk of
+     what already exists today before additional design is added." ... "No 2/3 needed."*). The path opens by proposing
+     that walk, so nothing is asked of him that a look at the running mod would measure.
 - **full** otherwise: the six stages as today.
 
-The threshold is a constant in `designer_stage.py`. It is not a key in `relentless_rules.json`, so the freeze holds.
 The path changes only on his word on the item (`rimflow note --owner-said`), or when a stage-0 rerun recomputes it. The
 packet states the path and the counts behind it.
 
@@ -119,12 +120,8 @@ run plus one rework.
 
 ## 7. Open questions (each with a recommendation)
 
-1. **The threshold for "code exists".**
-   - (a) Any `impl: present` entry. This is E's rule, and it is simple, but one built helper would flip a mostly
-     unwritten mod onto the light path.
-   - (b) Two thirds of the in-scope entries present, plus a loadable mod tree.
-   - (c) A loadable mod tree only.
-   - **Recommend (b).** It is measurable from stage 0's own record, and it puts EK (68%) on the light path.
+1. **The threshold for "code exists": settled by the owner, 2026-11-12.** Any built part is enough, and the first act
+   is to suggest a live walk of what exists before design is added. No share-built threshold.
 2. **Does the exam drop entirely?**
    - (a) Drop it. The pre-looked save and his sitting replace it.
    - (b) Keep one unhelped exam run, capped at 0.5M.
