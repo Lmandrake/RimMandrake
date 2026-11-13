@@ -121,7 +121,9 @@ def main():
             check("a well-formed not_covered stands, one call, the contract accepted it",
                   rec["verdict"] == "not_covered" and len(argvs) == 1 and rec["contract"]["ok"]
                   and not rec.get("malformed"), rec.get("contract"))
-            check("a well-formed not_covered does not stop the Designer's run", CJ.stop_exit(rec) is False)
+            check("a well-formed not_covered from an uncalibrated brief is advisory (selftest_judge_calibration tests both)",
+                  bool(rec.get("advisory")) == RC.advisory(CJ.CONTRACT_FAMILY) and CJ.stop_exit(rec) is bool(
+                      rec.get("advisory")), (rec.get("advisory"), RC.status(CJ.CONTRACT_FAMILY)))
             rows = [json.loads(x) for x in open(os.path.join(root, "refusals", "refusals.jsonl"))]
             check("the refusal is stored whole in the contract store, clause leaf_wall",
                   any(r.get("kind") == "refusal" and r["record"]["clause"] == "leaf_wall"

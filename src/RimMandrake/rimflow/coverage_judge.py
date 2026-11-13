@@ -556,8 +556,10 @@ def contract_errors(d, rec, item):
 
 def stop_exit(rec):
     """True when the pre-launch step must stop the Designer's run: judging stopped, parked, or the verdict refused
-    itself (a malformed refusal never sends the Designer back to rework)."""
-    return isinstance(rec, dict) and bool(rec.get("stopped") or rec.get("parked") or rec.get("malformed"))
+    itself (a malformed refusal never sends the Designer back to rework), or the refusal is advisory (an
+    uncalibrated brief, T6)."""
+    return isinstance(rec, dict) and bool(rec.get("stopped") or rec.get("parked") or rec.get("malformed")
+                                          or rec.get("advisory"))
 
 
 def record_round(d, rec):
@@ -795,6 +797,9 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
             rec["contract"] = {k: v for k, v in RC.submit(cv, given).items() if k != "errors"}
             if errs:
                 rec.update(verdict="malformed", malformed=errs)
+            elif rec["contract"].get("advisory"):   # T6: only a CALIBRATED brief's refusal sends the Designer back
+                rec["advisory"] = ("the coverage brief is %s: this refusal is stored and shown, the Designer is not "
+                                   "sent back" % rec["contract"].get("calibration"))
             suspect = [r["clause"] for r in cv["refusals"] if r.get("criterion_verdict") in ("flawed", "unattainable")]
             if suspect and not errs:
                 rec["criteria_suspect"] = suspect

@@ -1,0 +1,109 @@
+{
+ "about": "Judge calibration registry (RIMMANDRAKE_SEED_JUDGE_CALIBRATION_FROM_CORPORA; spec design/specs/2026-11-12-refusal-contract-for-judges-and-gates.md section 5). Keyed by family; `hash` is refusal_contract.brief_hash of `brief`. Only a CALIBRATED brief's refusal has a consequence; any edit to a brief file resets it to UNTESTED (refusal_contract.py calibrate). A model-judged brief is CALIBRATED only by a recorded run on its current hash that passes every good case and refuses every bad one.",
+ "families": {
+  "art_eval_first_pass": {
+   "brief": [
+    "skills/rimworld-art-evaluation/references/prompts/preamble.md",
+    "skills/rimworld-art-evaluation/references/prompts/opus_first_pass.md"
+   ],
+   "cases": {
+    "bad": [
+     "infrastructure/state/art_eval/regression.jsonl rows expect NOT_ACCEPT (6)"
+    ],
+    "good": [
+     "infrastructure/state/art_eval/regression.jsonl rows expect ACCEPT (5)"
+    ]
+   },
+   "hash": "d378b17b0e1cc958",
+   "note": "regression_runs/regress_departures_v3c_20261105.json was run on an earlier prompt hash; it does not calibrate this one",
+   "reset_at": "2026-11-13T06:08:15Z",
+   "status": "UNTESTED",
+   "was": "UNTESTED"
+  },
+  "art_judge_brief": {
+   "brief": [
+    "design/RimMandrake/art_judge_brief.md"
+   ],
+   "cases": {
+    "bad": [
+     "infrastructure/state/art_eval/regression.jsonl rows expect NOT_ACCEPT (6)",
+     "infrastructure/state/art_eval/criteria_ledger.jsonl owner overrides (55 rows)"
+    ],
+    "good": [
+     "infrastructure/state/art_eval/regression.jsonl rows expect ACCEPT (5)"
+    ]
+   },
+   "hash": "54be104df60c5457",
+   "reset_at": "2026-11-13T06:08:15Z",
+   "status": "UNTESTED",
+   "was": "UNTESTED"
+  },
+  "coverage_judge": {
+   "brief": [
+    "src/RimMandrake/rimflow/coverage_judge.py",
+    "src/RimMandrake/rimflow/roles/designer_scene_contract.md",
+    "src/RimMandrake/rimflow/roles/designer_lock.md"
+   ],
+   "cases": {
+    "bad": [
+     "planted: a tree leaf with no scene must be refused (mutate-your-checker); no owner-caught coverage miss on file yet"
+    ],
+    "good": [
+     "design/concepts/FlowWorks: signed by the coverage judge at tree 572198fed9",
+     "design/concepts/ExplosiveKnockback judge9 gaps 3 (racks) and 4 (flagship shelf): owner 2026-11-12 ruled them no blockers (conductor log 2026-11-13T00:05:11Z), so a sound brief does not refuse on them"
+    ]
+   },
+   "hash": "c2940c3ffd7f1054",
+   "reset_at": "2026-11-13T06:08:15Z",
+   "status": "UNTESTED",
+   "was": "UNTESTED"
+  },
+  "evidence_gate": {
+   "brief": [
+    "src/RimMandrake/rimflow/evidence_gate.py",
+    "src/RimMandrake/rimflow/evidence_gate_corpus.json"
+   ],
+   "cases": {
+    "bad": [
+     "src/RimMandrake/rimflow/evidence_gate_corpus.json class false (55 real closes)"
+    ],
+    "good": [
+     "src/RimMandrake/rimflow/evidence_gate_corpus.json class valid (767 real closes)"
+    ]
+   },
+   "free_check": [
+    "python3",
+    "src/RimMandrake/rimflow/evidence_gate.py",
+    "corpus",
+    "check"
+   ],
+   "hash": "bc47485e4fb528c5",
+   "last_run": {
+    "at": "2026-11-13T06:08:15Z",
+    "exit": 0,
+    "out": "evidence corpus: 55 false closes, 55 rejected; 767 valid closes, 767 accepted - OK"
+   },
+   "reset_at": "2026-11-13T06:08:15Z",
+   "status": "CALIBRATED",
+   "was": "UNTESTED"
+  },
+  "scene_look_judge_brief": {
+   "brief": [
+    "design/RimMandrake/scene_look_judge_brief.md"
+   ],
+   "cases": {
+    "bad": [
+     "scene_look_judge_brief.md 'Missed by the judge' row 2026-11-12: FlowWorks pit submerge scene, 2 m water (RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL)"
+    ],
+    "good": [
+     "EK knockback grid, owner 'It looks AWESOME'",
+     "incendiary Station 6, owner 'Full pass'"
+    ]
+   },
+   "hash": "b732a2d35cac9b42",
+   "reset_at": "2026-11-13T06:08:15Z",
+   "status": "UNTESTED",
+   "was": "UNTESTED"
+  }
+ }
+}

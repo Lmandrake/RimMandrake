@@ -36,6 +36,9 @@ answers a repeat (same item, clause, criterion hash, evidence content and sha) f
     python3 src/RimMandrake/rimflow/refusal_contract.py alarms          the open alarm rows, one line each
     python3 src/RimMandrake/rimflow/refusal_contract.py diffguard <old.json> <new.json> [--bars a,b] [--card R]
                                     [--second-read R]   classify a criteria change {clause: text}; exit 1 if refused
+    python3 src/RimMandrake/rimflow/refusal_contract.py calibrate [--no-run]   the judge calibration registry
+                                    (infrastructure/state/judge_calibration.json): an edited brief resets to UNTESTED,
+                                    free deterministic checks run; only a CALIBRATED brief's refusal has a consequence
     python3 src/RimMandrake/rimflow/refusal_contract.py repair <case.json>   the neutral fixer (roles/criteria_fixer.md,
                                     one fresh Opus run), guarded by diffguard, recorded whole; exit 1 if refused
 
@@ -515,7 +518,85 @@ def submit(verdict, given=None, now=None):
                 res["alarms"].append(alarm("family:%s" % fam, trip, now, family=fam))
         _write(counters_path(), c)
     res["may_judge"] = may_judge(item)
+    res["calibration"] = status(fam)
+    res["advisory"] = res["calibration"] != "CALIBRATED"
     return res
+
+
+# ---- judge calibration (T6, spec section 5) -----------------------------------------------------------------------
+
+REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
+CALIBRATION_REL = "infrastructure/state/judge_calibration.json"
+CAL_STATUS = ("UNTESTED", "CALIBRATED", "FAILED")
+
+
+def calibration_path():
+    return os.environ.get("RM_JUDGE_CALIBRATION") or os.path.join(REPO, CALIBRATION_REL)
+
+
+def calibration_root():
+    return os.environ.get("RM_CALIBRATION_ROOT") or REPO
+
+
+def load_calibration(path=None):
+    try:
+        with open(path or calibration_path(), encoding="utf-8") as f:
+            reg = json.load(f)
+    except (OSError, ValueError):
+        return {"families": {}}
+    return reg if isinstance(reg, dict) and isinstance(reg.get("families"), dict) else {"families": {}}
+
+
+def brief_hash(files, root=None):
+    """sha256 over a brief's files (repo-relative), in order; a missing file hashes as its name: the hash still moves."""
+    h = hashlib.sha256()
+    for rel in files:
+        h.update(rel.encode())
+        try:
+            with open(os.path.join(root or calibration_root(), rel), "rb") as f:
+                h.update(f.read())
+        except OSError:
+            h.update(b"MISSING")
+    return h.hexdigest()[:16]
+
+
+def status(family):
+    """-> the family's calibration status now: its recorded status if its brief is unchanged since, else UNTESTED."""
+    row = load_calibration()["families"].get(family)
+    if not isinstance(row, dict) or row.get("status") not in CAL_STATUS:
+        return "UNTESTED"
+    if row.get("hash") != brief_hash(row.get("brief") or [], calibration_root()):
+        return "UNTESTED"
+    return row["status"]
+
+
+def advisory(family):
+    """Only a CALIBRATED brief's refusal has a consequence; an UNTESTED or FAILED one is stored and shown only."""
+    return status(family) != "CALIBRATED"
+
+
+def calibrate(path=None, root=None, run_free=True, now=None):
+    """Re-read every row: an edited brief resets to UNTESTED; a row with a `free_check` command (deterministic, no
+    model) is run, and sets CALIBRATED (exit 0) or FAILED at the current hash. A model-judged brief is calibrated only
+    by a recorded run on its current hash (one judge run per case; never started here). Writes the registry back."""
+    import subprocess
+    path, root = path or calibration_path(), root or calibration_root()
+    reg = load_calibration(path)
+    at = iso(time.time() if now is None else now)
+    for fam, row in reg["families"].items():
+        h = brief_hash(row.get("brief") or [], root)
+        if row.get("hash") != h:
+            row.update(status="UNTESTED", was=row.get("status"), hash=h, reset_at=at)
+        if run_free and row.get("free_check"):
+            try:
+                p = subprocess.run(row["free_check"], cwd=root, capture_output=True, text=True, timeout=600)
+                code, out = p.returncode, (p.stdout + p.stderr).strip()
+            except (OSError, subprocess.SubprocessError) as e:
+                code, out = None, str(e)
+            row["status"] = "CALIBRATED" if code == 0 else "FAILED"
+            row["last_run"] = {"at": at, "exit": code, "out": out.splitlines()[-1] if out else ""}
+    _write(path, reg)
+    return reg
 
 
 # ---- the neutral criteria fixer and its guard (T5, spec section 2) ------------------------------------------------
@@ -693,6 +774,11 @@ def main(argv=None):
         res = repair(_load(argv[1]))
         print(json.dumps(res, indent=1, sort_keys=True))
         return 0 if res["ok"] else 1
+    if cmd == ["calibrate"]:
+        reg = calibrate(run_free="--no-run" not in argv)
+        for fam, row in sorted(reg["families"].items()):
+            print("%-24s %-10s %s" % (fam, row["status"], (row.get("last_run") or {}).get("out", "")))
+        return 0
     if cmd == ["counters"]:
         c = counters()
         items = {k: v for k, v in c["items"].items() if len(argv) < 2 or k == argv[1]}
