@@ -158,7 +158,7 @@ namespace JawaBench.BridgeTools
                         return Ok(false);
                     });
                 case "fw.depth":
-                case "fw.fill":
+                case "fw.water_m":
                 case "fw.source":
                     return BindFlowWorks(p.Name, mid);
                 case "map.sky_glow":
@@ -434,7 +434,7 @@ namespace JawaBench.BridgeTools
                 "Evaluate a bridge condition tree NOW, with no tick (build_spec bridge_conditions_2026-11-06 §1.5): a dry " +
                 "run of what advance_until/watch would see. tree is the JSON of one node ({\"cmp\": [{\"p\": \"cell.glow\", " +
                 "\"cell\": [x,z]}, \">=\", 0.3]}, all/any/not, changed/edge/stays). Probes: cell.terrain, cell.is_water, " +
-                "cell.glow, cell.roofed, cell.temp, cell.fire, fw.depth, fw.fill, fw.source, map.sky_glow, map.count, " +
+                "cell.glow, cell.roofed, cell.temp, cell.fire, fw.depth, fw.water_m, fw.source, map.sky_glow, map.count, " +
                 "game.tick, game.hour, pawn.pos/map/job/state, thing.exists/spawned/pos/field. Every read returns " +
                 "{v, status}: ok | gone | oob | unbound (FlowWorks absent) | error; non-ok is UNKNOWN, never 0/false. " +
                 "A bad defName, pawn, thing or field path, and an out-of-bounds cell, are REFUSED by name before any read. " +

@@ -118,7 +118,7 @@ class World(object):
             d = 2 if (x, z) == (10, 10) and not self.blank_fw else 0
             f = 1 if d else 0
         src = (x, z) == (20, 20) and not self.blank_fw
-        return {"x": x, "z": z, "d": d, "f": f, "dEff": d, "fEff": f, "isSource": src}
+        return {"x": x, "z": z, "d": d, "dEff": d, "dl": f * 10000, "isSource": src}
 
     def probe(self, p):
         n, c = p["p"], p.get("cell")
@@ -129,7 +129,7 @@ class World(object):
             row = self.fwrow(x, z)
             v = {"cell.glow": self.glow(x, z), "cell.roofed": self.roofed(x, z), "cell.terrain": self.terrain(x, z),
                  "cell.is_water": self.terrain(x, z).startswith("Water"), "fw.depth": float(row["dEff"]),
-                 "fw.fill": float(row["fEff"]), "fw.source": row["isSource"], "cell.temp": 21.5, "cell.fire": False}[n]
+                 "fw.water_m": row["dl"] * 0.5 / 10000.0, "fw.source": row["isSource"], "cell.temp": 21.5, "cell.fire": False}[n]
             return v, "ok", ""
         if n == "map.sky_glow":
             return 0.8, "ok", ""

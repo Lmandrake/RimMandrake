@@ -5,7 +5,7 @@ Spec: design/RimMandrake/bridge_conditions_2026-11-06/build_spec.md. conds.py is
 with JawaBenchCondCore.cs); this file is Python only and has no C# twin. conds.py re-exports its public names, so
 callers write `from conds import cell, fw, pawn, game, ring, all_, any_, not_, edge, stays, changed`.
 
-    r = B.until(fw(106, 103).fill >= 1, max_ticks=6000)        # -> CondResult
+    r = B.until(fw(106, 103).water_m >= 0.5, max_ticks=6000)        # -> CondResult
     with B.watch("dry", edge(cell(110, 90).is_water == False), owner=RUN) as w:
         B.ticks(2500)
         for ev in w.events(): ...                                # ev.tick, ev.values, ev.seq
@@ -246,7 +246,7 @@ class _CellProbes(_Spatial):
 
 
 class _FwProbes(_Spatial):
-    _PROBES = {"depth": ("fw.depth", "num"), "fill": ("fw.fill", "num"), "source": ("fw.source", "bool")}
+    _PROBES = {"depth": ("fw.depth", "num"), "water_m": ("fw.water_m", "num"), "source": ("fw.source", "bool")}
 
 
 def _loc(x, z, w=None, h=None):
@@ -261,7 +261,7 @@ def cell(x, z, w=None, h=None, map_id=None):
 
 
 def fw(x, z, w=None, h=None, map_id=None):
-    """FlowWorks excavation: fw(x, z).fill / .depth / .source (status `unbound` without FlowWorks)."""
+    """FlowWorks excavation: fw(x, z).water_m (metres) / .depth / .source (status `unbound` without FlowWorks)."""
     return _FwProbes(_loc(x, z, w, h), map_id)
 
 
@@ -389,7 +389,7 @@ def stays(c, ticks):
 
 def changed(e):
     if not isinstance(e, Expr):
-        raise TypeError("changed() takes a probe, e.g. changed(fw(1, 2).fill)")
+        raise TypeError("changed() takes a probe, e.g. changed(fw(1, 2).water_m)")
     return Cond({"changed": dict(e.probe)})
 
 

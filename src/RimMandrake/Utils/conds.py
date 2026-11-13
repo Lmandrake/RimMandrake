@@ -52,12 +52,12 @@ REFUSALS = ("json", "type", "unknown_key", "missing_key", "bad_value", "unknown_
             "cmp_op", "cmp_type", "empty_children", "alarm_not_root", "field_method", "duplicate_id",
             "duplicate_watch", "cap_nodes", "cap_cells", "cap_watchers", "bind")
 
-SPATIAL = ("cell.terrain", "cell.is_water", "fw.depth", "fw.fill", "fw.source", "cell.glow", "cell.roofed",
+SPATIAL = ("cell.terrain", "cell.is_water", "fw.depth", "fw.water_m", "fw.source", "cell.glow", "cell.roofed",
            "cell.temp", "cell.fire")
 # name -> (value type, required args, optional args); spatial probes also take cell|rect, reduce, where.
 PROBES = {
     "cell.terrain": ("str", (), ()), "cell.is_water": ("bool", (), ()),
-    "fw.depth": ("num", (), ()), "fw.fill": ("num", (), ()), "fw.source": ("bool", (), ()),
+    "fw.depth": ("num", (), ()), "fw.water_m": ("num", (), ()), "fw.source": ("bool", (), ()),
     "cell.glow": ("num", (), ()), "cell.roofed": ("bool", (), ()), "cell.temp": ("num", (), ()),
     "cell.fire": ("bool", (), ()),
     "map.sky_glow": ("num", (), ()), "map.count": ("num", ("def",), ("rect",)),
