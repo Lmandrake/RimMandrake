@@ -120,7 +120,7 @@ finally:
 
 # verify_visuals: a blind scorch read (None) is UNMEASURED, never "not scorched"
 P = {"w": 4, "h": 3, "depth": 2}
-rows_ok = [{"d": 2, "f": 1}] * 12
+rows_ok = [{"d": 2, "dl": 10000}] * 12
 check(R.visual_verdict(P, 1, False, rows_ok, None, 1) is None, "blind scorch read passed a non-scorched station")
 check(R.visual_verdict(P, 1, False, rows_ok, 0.0, 1) is True, "a read 0.0 on a non-scorched station must pass")
 check(R.visual_verdict(P, 1, True, rows_ok, 0.0, 1) is False, "an unscorched read on a scorched station must fail")
