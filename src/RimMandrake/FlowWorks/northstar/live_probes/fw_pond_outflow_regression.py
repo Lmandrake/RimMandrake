@@ -28,7 +28,7 @@ for D, (X, Z) in ((1, (BX, BZ)), (2, (BX, BZ + 6)), (3, (BX, BZ + 12)), (4, (BX,
     b = call("jawa/flowworks_body_report", x=X + 2, z=Z + 1, classify=False).get("body") or {}
     inlet = call("jawa/flowworks_excavation_report", x=X, z=Z)
     stock = b.get("stock")
-    fills = [(q.get("d"), q.get("f")) for q in r.get("rows") or []]
+    fills = [(q.get("d"), (None if q.get("dl") is None else q["dl"] // 10000)) for q in r.get("rows") or []]
     inlet_src = inlet.get("isSourceCell")
     drained = None if stock is None else round(CAP - stock, 2)
     rows[D] = dict(fills=fills, stock=stock, active=b.get("activeCellCount"), inletSource=inlet_src, drained=drained)

@@ -251,7 +251,8 @@ def plan(recipe, origin):
                     kv += [("x2", ox + sx + op["dx2"]), ("z2", oz + sz + op["dz2"])]
                 kv += [(k2, op[k2]) for k2 in GSS_OP_KEYS if k2 in op]
             else:
-                kv += [(k2, op[k2]) for k2 in STAGE_KEYS if k2 in op]
+                # the pit op's water is metres on the wire (jawa/artboard reads waterM; one level = 0.5 m)
+                kv += [("waterM", "%g" % (op[k2] * 0.5)) if k2 == "fill" else (k2, op[k2]) for k2 in STAGE_KEYS if k2 in op]
             for _, v in kv:
                 if "|" in str(v) or "\n" in str(v):
                     raise ValueError("op value may not contain | or newline: %r" % (v,))

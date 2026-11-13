@@ -66,7 +66,7 @@ cx, cz = (info.get("sizeX") or info.get("size", {}).get("x") or 250) // 2, (info
 rect = call("jawa/flowworks_excavation_rect", x=cx - 15, z=cz - 15, w=30, h=30)
 check("rect read on the search area", rect.get("success") and rect.get("cellsScanned") == 900, rect)
 ok_cells = {(r["x"], r["z"]) for r in rect.get("rows", [])
-            if r["d"] == 0 and r["f"] == 0 and not r["isSource"] and "Water" not in (r.get("terrain") or "")}
+            if r["d"] == 0 and r["dl"] == 0 and not r["isSource"] and "Water" not in (r.get("terrain") or "")}
 strip = None
 # The WHOLE 9x3 block around source+strip+deep must be undug and dry: on 2026-10-02 a previous
 # run's D=4 cell sat west of the new source, joined the source to ITS component first, and the
@@ -103,13 +103,14 @@ for _ in range(4):
 p = call("jawa/flowworks_pulse", count=3, x=strip[0][0], z=strip[0][1], w=4, h=1)
 check("P2 pulse call", p.get("success"), p)
 pulses = p.get("pulses") or []
+LV = lambda row: [d // 10000 for d in row["dl"]]   # noqa: E731  whole levels from the one water number (no notch vector since it)
 for row in pulses:
-    print("   pulse %d  F=%s  D=%s  sumF=%s changed=%s" % (row["pulse"], row["fill"], row["depth"], row["sumFill"], row["cellsFillChanged"]))
+    print("   pulse %d  levels=%s  dL=%s  D=%s  sumDl=%s changed=%s" % (row["pulse"], LV(row), row["dl"], row["depth"], row["sumDl"], row["cellsDlChanged"]))
 check("P2 pulsesRun==3 and 4 records", p.get("pulsesRun") == 3 and len(pulses) == 4, p.get("pulsesRun"))
 check("P2 zero ticks spent", p.get("ticksBefore") == p.get("ticksGame"), (p.get("ticksBefore"), p.get("ticksGame")))
 check("P2 scheduler untouched", p.get("nextPulseTickUntouched") is True, p)
-check("P2 pulse-0 vector == [0,0,0,0]", pulses and pulses[0]["fill"] == [0, 0, 0, 0], pulses[:1])
-check("P2 something moved in 3 pulses", any(r["cellsFillChanged"] for r in pulses[1:]), pulses)
+check("P2 pulse-0 vector == [0,0,0,0]", pulses and pulses[0]["dl"] == [0, 0, 0, 0], pulses[:1])
+check("P2 something moved in 3 pulses", any(r["cellsDlChanged"] for r in pulses[1:]), pulses)
 # The oracle (validation_v2's PulseOracle, fixed algo) for a cap-5 1-cell source at shipped
 # recession: pulse 1 draws one level (stock 5 -> 4); pulse 2's recession pass dries the cell
 # (floor(4/5) = 0 supported cells), so the strip keeps exactly ONE level, at its far end.
@@ -123,8 +124,8 @@ o = V2.PulseOracle(info.get("sizeX") or 250, info.get("sizeZ") or 250, {source: 
 for c in strip:
     o.dig(c, 1)
 pred = o.run(strip, 3)
-check("P2 every pulse vector == oracle %s" % pred, pulses and [r["fill"] for r in pulses[1:]] == pred,
-      [r["fill"] for r in pulses[1:]])
+check("P2 every pulse vector == oracle %s" % pred, pulses and [LV(r) for r in pulses[1:]] == pred,
+      [LV(r) for r in pulses[1:]])
 # A receded cell is no longer liquid terrain, so body_report AT it answers body=null; read the
 # body by id from the pulse tool's own per-pulse bodies[] instead.
 bid = (b.get("body") or {}).get("id")
@@ -134,7 +135,7 @@ check("P2 source spent and receded (stock ~4, recededCount 1)",
 
 # P3 independent read
 r = call("jawa/flowworks_excavation_rect", x=strip[0][0], z=strip[0][1], w=4, h=1)
-check("P3 rect == last pulse vector", r.get("success") and pulses and [c["f"] for c in r["rows"]] == pulses[-1]["fill"],
+check("P3 rect == last pulse vector", r.get("success") and pulses and [c["dl"] for c in r["rows"]] == pulses[-1]["dl"],
       (r.get("rows"), pulses[-1:] if pulses else None))
 
 # P4 engine OFF refuses

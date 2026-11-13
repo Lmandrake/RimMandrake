@@ -41,7 +41,7 @@ def call(t, **k):
 def fills():
     r = call("jawa/flowworks_excavation_rect", x=TRENCH[0][0], z=120, w=8, h=1, onlyNonZero=False)
     rows = r.get("rows") or []
-    return [q.get("f") for q in rows], [q.get("d") for q in rows]
+    return [(None if q.get("dl") is None else q["dl"] // 10000) for q in rows], [q.get("d") for q in rows]
 
 
 def adv(n):

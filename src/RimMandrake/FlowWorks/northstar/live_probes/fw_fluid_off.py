@@ -20,7 +20,7 @@ call("jawa/flowworks_body_report", x=X, z=Z, classify=True)
 for c in CH: call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=3, setBodyWaterM=-1)
 def chan():
     r = call("jawa/flowworks_excavation_rect", x=X - 6, z=Z, w=6, h=1, onlyNonZero=False)
-    return [q["f"] for q in r.get("rows") or []]
+    return [q["dl"] // 10000 for q in r.get("rows") or []]
 def stock(): return (call("jawa/flowworks_body_report", x=X, z=Z, classify=False).get("body") or {}).get("stock")
 orig = {f: sget(f) for f in ("rainFillsExcavationsEnabled", "rainFillPerPulse")}
 def setwater(on):
