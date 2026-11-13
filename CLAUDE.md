@@ -262,6 +262,10 @@ reused first); `scratch_clone.py` reports count, GB, oldest (RimPulse is retired
 (pool, `rm/scratch`, session dir; PROTECTED is no excuse) is that alarm after an idle hour (except a clone a live Relentless item names and has not put down (a held, blocked or game-waiting item's clone goes back at once with every commit and stash it holds, so one still standing is the alarm), a trailing lesson/ledger commit: the belt carries those, and a commit whose content origin/main already holds under another hash), and a pool one with unpushed work is never reused. Revert if a clone strands work or the pool passes 70 GB. A committed mod DLL
 travels with its `.srchash`. More: `standing_rulings.md` §Git.
 
+## 🔴 The test is built with the item, offline and live — owner, 2026-11-13
+
+*"from now on, we build the test at the same time as the item, both offline and online versions. then they get consolidated into the formal tests."* The building run writes the offline selftest and the live bridge test; an unrun live test is recorded UNRUN with its command. Full text: `standing_rulings.md` §The test is built with the item.
+
 ## 🔴 A refusal carries its path to pass — owner, 2026-11-12
 
 *"ANY refusals must be as detailed as the evidence they are rejecting and include the fixes and paths towards passing that

@@ -621,3 +621,8 @@ Artisan can work on the ext4 clones only with `danger-full-access`. Every agent 
 `CODEX_SANDBOX=danger-full-access` (`~/.config/environment.d/50-codex-sandbox.conf`, `~/.zshenv`, `~/.profile`; the
 runner is `src/RimMandrake/Utils/agent_runner.py`). It changes nothing else: Claude stays the default runner, results are
 still validated by the existing checks, and the quota gate and the rule against falling back to Claude still hold.
+
+## The test is built with the item, offline and live — owner, 2026-11-13
+
+*"Yes, from now on, we build the test at the same time as the item, both offline and online versions. then they get consolidated into the formal tests."*
+The run that builds an item also writes its offline test (red-first selftest) and its live test (a bridge script that stages the case and reads state). A live test that could not be run is recorded on the item as UNRUN with its exact command. Both are later consolidated into the mod's formal tests (its functional script and north-star bars). Item: `RIMMANDRAKE_BUILD_TESTS_WITH_ITEM_OFFLINE_AND_LIVE`.
