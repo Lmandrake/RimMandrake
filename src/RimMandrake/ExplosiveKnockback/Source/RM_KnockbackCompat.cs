@@ -154,22 +154,25 @@ namespace RimMandrake.ExplosiveKnockback
 
         public static bool IsClosedContainer(Thing b)
         {
-            if (b?.def == null || b.def.category != ThingCategory.Building)
+            return b?.def != null && IsClosedDef(b.def);
+        }
+
+        /// <summary>The same rule read from a def alone (a thing's class is its def's thingClass), so the proof build's
+        /// IsClosed reads the shipped rule itself, never a copy of it.</summary>
+        public static bool IsClosedDef(ThingDef d)
+        {
+            if (d == null || d.category != ThingCategory.Building)
             {
                 return false;
             }
-            if (!closedByDef.TryGetValue(b.def, out bool closed))
+            if (!closedByDef.TryGetValue(d, out bool closed))
             {
-                closed = b.def.HasModExtension<RM_KnockbackClosedStorage>() || AnyHides(b.def.comps) || AnyHides(b.def.modExtensions);
-                closedByDef[b.def] = closed;
+                closed = d.HasModExtension<RM_KnockbackClosedStorage>() || AnyHides(d.comps) || AnyHides(d.modExtensions);
+                closedByDef[d] = closed;
             }
-            return closed || (b is Building_Crate && RimMandrakeExplosiveKnockbackSettings.vanillaCratesClosed);
+            return closed || (d.thingClass != null && typeof(Building_Crate).IsAssignableFrom(d.thingClass)
+                && RimMandrakeExplosiveKnockbackSettings.vanillaCratesClosed);
         }
-
-#if RM_PROOFS
-        /// <summary>Forget the cached answers (a proof hook tagging a def at runtime).</summary>
-        public static void ForgetClosed() => closedByDef.Clear();
-#endif
 
         private static bool AnyHides(IList list)
         {

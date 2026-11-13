@@ -91,7 +91,7 @@ namespace RimMandrake.ExplosiveKnockback
         }
 
         /// <summary>"DefName": reads, never changes, whether a building def is a closed container by the shipped rule
-        /// (RM_KnockbackCompat.IsClosedContainer). Owner 2026-11-12: "Anything that draws its contents is open", so a
+        /// (RM_KnockbackCompat.IsClosedDef, what IsClosedContainer applies). Owner 2026-11-12: "Anything that draws its contents is open", so a
         /// proof stages a container that hides its contents (LWM's Deep Storage locker, a sealed crate); it never tags a
         /// drawing def (a shelf, a hopper) closed. Returns "CLOSED def", "OPEN def" or "REFUSED: ...".</summary>
         public static string IsClosed(string arg)
@@ -101,29 +101,7 @@ namespace RimMandrake.ExplosiveKnockback
             {
                 return "REFUSED: no building def " + arg;
             }
-            bool hides = d.HasModExtension<RM_KnockbackClosedStorage>() || HidesByDef(d)
-                || (typeof(Building_Crate).IsAssignableFrom(d.thingClass) && RimMandrakeExplosiveKnockbackSettings.vanillaCratesClosed);
-            return (hides ? "CLOSED " : "OPEN ") + d.defName;
-        }
-
-        private static bool HidesByDef(ThingDef d)
-        {
-            foreach (System.Collections.IList list in new System.Collections.IList[] { d.comps, d.modExtensions })
-            {
-                if (list == null)
-                {
-                    continue;
-                }
-                foreach (object o in list)
-                {
-                    var f = o?.GetType().GetField("showContents", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                    if (f != null && f.FieldType == typeof(bool) && !(bool)f.GetValue(o))
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
+            return (RM_KnockbackCompat.IsClosedDef(d) ? "CLOSED " : "OPEN ") + d.defName;
         }
 
         /// <summary>Planted breaks for the mutation checks, "name=on|off" (or "flameforce=x"): throwcap (re-impose the old

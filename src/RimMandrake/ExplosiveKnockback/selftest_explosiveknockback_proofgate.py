@@ -27,7 +27,7 @@ sys.path.insert(0, UTILS)
 from proof_build_gate import is_release_answer  # noqa: E402
 
 RELEASE = os.path.join(HERE, "Assemblies", "RimMandrakeExplosiveKnockback.dll")
-PROOF_NAMES = ["RM_KnockbackProof", "RM_PatchApplierProbe", "ProofSchedule", "FillToSurface", "ForgetClosed"]
+PROOF_NAMES = ["RM_KnockbackProof", "RM_PatchApplierProbe", "ProofSchedule", "FillToSurface"]
 SANITY = ["RM_MapComponent_Knockback", "RM_ThingFlyer_Knockback"]
 
 
@@ -105,7 +105,7 @@ def main():
     for f in fails:
         print("FAIL", f)
     for u in unmeasured:
-        print("UNMEASURED", u)
+        print("UNMEASURED, not a pass or a fail:", u)  # run_selftests' UNMEASURED_PHRASE
     if fails:
         return 1
     if unmeasured:

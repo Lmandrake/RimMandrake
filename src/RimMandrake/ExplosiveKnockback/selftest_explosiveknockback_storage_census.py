@@ -42,7 +42,7 @@ import game_paths  # noqa: E402
 UNMEASURED = "UNMEASURED, not a pass or a fail"
 TAG = "RM_KnockbackClosedStorage"
 COMPAT = os.path.join(HERE, "Source", "RM_KnockbackCompat.cs")
-RULE_FINGERPRINT = "615d57383811"  # IsClosedContainer + AnyHides as reviewed 2026-11-13; see C5
+RULE_FINGERPRINT = "d94c5ac06238"  # IsClosedContainer, IsClosedDef + AnyHides as reviewed 2026-11-13; see C5
 DRAWING_CLASSES = {"RimWorld.Building_Storage", "RimFridge.RimFridge_Building",
                    "RimFridge.RimFridge_MultiSidedWallBuilding", "AdaptiveStorage.ThingClass"}
 CRATE = "RimWorld.Building_Crate"

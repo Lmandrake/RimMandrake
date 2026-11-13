@@ -80,8 +80,8 @@ namespace RimMandrake.ExplosiveKnockback
         public static float goodsSpinDegPerTick = 18f;     // 18 = three turns a second
         public static bool goodsRebound = true;
         public static float goodsReboundKeepPercent = 70f; // of the cells left at the hit; rounded down, so a chain ends
-        /// <summary>Owner ruling 2026-11-10/11 (RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED): open storage (shelves, racks)
-        /// gives goods no cover; only a closed container keeps them. On = the old rule, every storage building keeps its goods.</summary>
+        /// <summary>Owner ruling 2026-11-10/11 (RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED): open storage (shelves, hoppers,
+        /// tables: anything that draws its contents) gives goods no cover; only a closed container keeps them. On = the old rule, every storage building keeps its goods.</summary>
         public static bool openStorageProtectsGoods = false;
         /// <summary>Owner, 2026-11-12 (RIMMANDRAKE_THROW_CLOSED_CRATES_WHOLE_CONTENTS_RIDE_SAFE): "the whole crate/chest would go
         /// flying a bit, but their contents would remain inside and protected". A blast-hit 1x1 closed container at or under
@@ -245,7 +245,7 @@ namespace RimMandrake.ExplosiveKnockback
                 list.CheckboxLabeled("Open shelves and tables protect their goods", ref openStorageProtectsGoods,
                     "Off (the default): goods on open storage fly like goods on the floor; only closed containers (storage that hides its contents, e.g. Deep Storage lockers) keep them. On: every storage building keeps its goods.");
                 list.CheckboxLabeled("Blasts throw closed containers whole", ref shoveClosedContainers,
-                    "On (the default): a small closed container (a locker, a sealed crate, Deep Storage) hit by a blast flies a little as one unit, shorter than loose goods because it is heavier, with its contents inside. Off: it stays put. Its contents never take blast damage either way.");
+                    "On (the default): a small closed container (a sealed crate, a Deep Storage locker: storage that hides its contents) hit by a blast flies a little as one unit, shorter than loose goods because it is heavier, with its contents inside. Off: it stays put. Its contents never take blast damage either way.");
                 list.Label("Closed containers heavier than " + closedContainerMassLimit.ToString("0") + " kg (with their contents) stay put");
                 closedContainerMassLimit = Mathf.Round(list.Slider(closedContainerMassLimit, 20f, 1000f));
                 list.CheckboxLabeled("Sealed crates count as closed containers", ref vanillaCratesClosed,
@@ -320,7 +320,6 @@ namespace RimMandrake.ExplosiveKnockback
                 list.GapLine();
             }
 
-            // RIMMANDRAKE_LIFT_KNOCKBACK_THROW_CAPS_PLAN_SAYS_GONE (owner 2026-11-12, "No caps please."): no throw caps
             if (Prefs.DevMode && Group(list, "Debug", RimMandrake.Shared.SettingScope.Now, new[] { "debugDrawVectors" }))
             {
                 list.CheckboxLabeled("Debug: draw throw vectors", ref debugDrawVectors);
