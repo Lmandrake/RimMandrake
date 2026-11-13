@@ -1376,7 +1376,7 @@ def test_g5_live_schedule_has_the_conductor_entry():
     on = json.loads(json.dumps(live))
     on["seat_restart"]["seats"]["BENCH"]["enabled"] = True
     c = SR.config(on).get("BENCH") or {}
-    check(c.get("kind") == "conductor" and c.get("session_name") == "CONDUCTOR" and c.get("model") == "fable"
+    check(c.get("kind") == "conductor" and c.get("session_name") == "CONDUCTOR" and c.get("model") == "claude-fable-5-2"
           and c.get("clone") == "/home/mandrake/rm/bench", "G5 the live schedule restarts BENCH as the Conductor (%s)"
           % {k: c.get(k) for k in ("kind", "session_name", "model", "clone")})
     check(c.get("goodbye_quiet_s") == 0, "G5 BENCH goodbye fires instantly (%s; grace_s never times a goodbye)" % c.get("goodbye_quiet_s"))

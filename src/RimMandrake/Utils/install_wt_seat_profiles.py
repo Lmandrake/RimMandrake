@@ -192,7 +192,7 @@ SERVER_CMD = ("MEM_MAX=16G " + SHARED_BOUNDED + " "
 # REP's amber — the owner's choice, so the colours he knows survive the rename.
 #
 # The model is per-seat and rides the commandline (owner, 2026-08-28: "Do it").
-# Per Agent_Policy.md's ladder (owner, 2026-11-12/13): BENCH, the Conductor's window, runs Fable 5.2 (alias `fable`;
+# Per Agent_Policy.md's ladder (owner, 2026-11-12/13): BENCH, the Conductor's window, runs Fable 5.2 (full id `claude-fable-5-2`: the alias `fable` launched 5.1 on CLI 2.1.311, measured 2026-11-13;
 # it orchestrates and backgrounds work to Opus/Sonnet subagents); the other Claude tiles keep their own rung. The `--model` FLAG outranks every settings
 # file including a /model saved default, which is the point: opening the tab is
 # the whole startup, and a seat never inherits whatever model the last session
@@ -210,7 +210,7 @@ SERVER_CMD = ("MEM_MAX=16G " + SHARED_BOUNDED + " "
 # that is NOT a Claude seat: bare capitalised name, no AGENT_SEAT export, no
 # LAUNCH. `{label}` is interpolated. The model field is ignored for those.
 SEATS = {
-    "BENCH":   ("#7BC96F", "fable", "green — with the owner, permanent bench", None, None),
+    "BENCH":   ("#7BC96F", "claude-fable-5-2", "green — with the owner, permanent bench", None, None),
     # ⭐ ARTIST IS NOT A CLAUDE SEAT. The override routes build() to the daemon
     # commandline: the tile is the artpipe daemon's live console
     # (ART_PIPELINE_DAEMON_1: "dumb local Python daemon, no LLM"), so it gets no
