@@ -635,4 +635,9 @@ Every mod's Design Version is numbered `MAJOR.MINOR.PATCH` (semver.org), with th
 - **MINOR**: Divergent additions: work that extends or shifts the vision, filed for the next version.
 - **PATCH**: Convergent polish and corrections after a version has passed.
 - A version before release is `0.x`; `1.0.0` is the version shipped to players. A judge round is a release candidate, `-rc.N`.
-Convergent and Divergent are his terms (`LEXICON.md`); which one a change is, is his call. The rest of the policy (lock, next-version file, deferral, pass record) is still a DRAFT: `design/specs/2026-11-13-mod-design-versions.md`.
+The rule is user-level since the same day (*"Semantic Versioning should be a Lodestar-level, User-level addition to all current and future projects, along with the Convergent changes and Divergent changes that are part of the same design."*): `~/.claude/CLAUDE.md`, terms in `~/dev/Lodestar/LEXICON.md`. Here the unit is the mod. His card answers, 2026-11-13:
+- **Problem or Polish:** a refinement that fixes a Problem (a defect, or an experience a player would reject as strange or disappointing) stays in the current version; Polish goes to the mod's Polish list, is not part of passing, and each move is confirmed with him. The Judge makes the call as best it can; the threshold is tuned with him.
+- **Asked at filing:** the current-or-next question is put to him when the ticket is filed as active, not when it is picked up. Once filed as current it moves to the next version only by Judge deferral.
+- **Judge deferral** of a bar is approved by the Conductor; he sees each one after.
+- **The five mods in the Designer enter as 0.1.0** at today's bars, their open gaps sorted into Problem, Polish and next version.
+His words in full and the build plan (lock, next-version file, pass record), still a draft: `design/specs/2026-11-13-mod-design-versions.md`.

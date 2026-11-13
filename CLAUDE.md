@@ -262,9 +262,9 @@ reused first); `scratch_clone.py` reports count, GB, oldest (RimPulse is retired
 (pool, `rm/scratch`, session dir; PROTECTED is no excuse) is that alarm after an idle hour (except a clone a live Relentless item names and has not put down (a held, blocked or game-waiting item's clone goes back at once with every commit and stash it holds, so one still standing is the alarm), a trailing lesson/ledger commit: the belt carries those, and a commit whose content origin/main already holds under another hash), and a pool one with unpushed work is never reused. Revert if a clone strands work or the pool passes 70 GB. A committed mod DLL
 travels with its `.srchash`. More: `standing_rulings.md` §Git.
 
-## Each mod has a Design Version, numbered by Semantic Versioning — owner, 2026-11-13
+## Each mod has its own Design Version
 
-*"Each mod now needs an official Version we are building towards."* · *"Semantic Versioning it is."* `MAJOR.MINOR.PATCH`: vision changed · Divergent additions · Convergent polish after a pass; `0.x` before release. A Divergent change is filed for the next version and never moves the current bars. Full text: `standing_rulings.md` §Mod Design Versions; terms: `LEXICON.md`.
+User-level rule (Design Versions, Semantic Versioning, Convergent, Divergent). Here the unit is the MOD: each mod carries its own current version and status. Project detail and his card answers: `standing_rulings.md` §Mod Design Versions; draft build plan: `design/specs/2026-11-13-mod-design-versions.md`.
 
 ## 🔴 The test is built with the item, offline and live — owner, 2026-11-13
 

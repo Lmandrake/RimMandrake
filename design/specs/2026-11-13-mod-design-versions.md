@@ -84,3 +84,21 @@ Per passed version: cost, judge rounds, days, bars deferred. Across mods: passes
 3. Convergent changes: split into blocking and polish, or keep all convergent changes in the current version as he wrote.
 4. Who approves a Judge's bar deferral.
 5. How the five existing concepts enter: lock each as 0.1.0 at today's bars and sort today's open gaps by 3.2, or redraw their visions first.
+
+## 6. His answers by card, 2026-11-13 1:5x PM PST (these replace the matching draft text above)
+
+**Numbering:** *"Semantic Versioning it is."*
+
+**Which refinements re-open a locked version (replaces 3.2's blocking/polish wording):**
+> A condition: are the refinements to Improve (polish) play, or are they fixing a Problem (unwanted experience or actual defect). If they are polishing improvements, that should be filed to a Polish list to consider later and not be part of Passing. If they are fixing a Problem / unwanted defect that would cause a player to reject it as strange or disappointing, it stays. This is subjective, so we're asking the Judge to do their best. Anything sent to the Polish list should get a question sent to the user to confirm the decision and be marked in the decision. Tuning this is part of what we'll be doing together.
+
+So: the test is **Problem or Polish**, judged by the Judge. A Problem (a defect, or an experience a player would reject as strange or disappointing) stays in the current version. Polish goes to the mod's **Polish list**, is not part of passing, and each move to the Polish list is confirmed with him and marked in the decision. The threshold is tuned with him over time.
+
+**When the now-or-next question is asked (replaces 3.4's asymmetric default):**
+> The questions need to come at the time of filing the ticket as active and to be worked, not when they pick it up to work it. So the user question should come when the item is Filed, and asking me is easy then. Once it's filed, it should not be deferred to next version unless the Judge sees it cannot be satisfied by the currently written acceptance tests or is failing to achieve its goals as we discussed before.
+
+So: the current-version-or-next question is put to him **at filing**. An item filed as active in the current version stays there; it moves to the next version only by Judge deferral (it cannot be satisfied by its written acceptance tests, or it keeps failing its goal on weak evidence).
+
+**Who approves a Judge's bar deferral:** the Conductor; he sees each one after (by card: "Conductor, you see it after").
+
+**How the five existing mods enter:** by card, "Lock today's bars as 0.1.0": a short vision written from each existing design, today's bars locked as 0.1.0, open gaps sorted into Problem (stays), Polish list (confirmed with him) and next version.

@@ -36,15 +36,6 @@ talking to Mandrake.
 | **Blocked** | Cannot move until a named other thing is finished or fixed. |
 | **Ruling** | A decision of his that stands until he reverses it. |
 
-## Design versions
-
-| Term | Means |
-|---|---|
-| **Design Version** | The version of ONE mod's design we are building towards: its vision, bars and tests, held still so a judge can pass it. Not a game version, not a git snapshot. |
-| **Convergent** | A change that brings a mod closer to its current Design Version's vision. It may enter the current version. |
-| **Divergent** | A change that shifts or extends the vision itself. Valuable, kept and protected, but filed for the next version; it never moves today's bars. |
-| **Semantic Versioning** | A Design Version's number, MAJOR.MINOR.PATCH: MAJOR the vision changed, MINOR Divergent additions, PATCH Convergent polish after a pass. 0.x is before release; 1.0.0 is what ships to players. |
-
 ## Mods, layers and machines
 
 | Name | Is |
