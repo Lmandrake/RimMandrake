@@ -162,7 +162,7 @@ def main(argv=None):
             if not r.get("success"):
                 return unmeasured("dig (%d,%d) refused: %r" % (x, z, str(r)[:160]))
         for x, z in canal:
-            if not (sc(FILL, "ProofFillWithFluid", "%d,%d,1,%s" % (x, z, TAR)) or "").startswith("FILLED"):
+            if not (sc(FILL, "ProofFillWithFluid", "%d,%d,0.5,%s" % (x, z, TAR)) or "").startswith("FILLED"):
                 return unmeasured("tar fill (%d,%d) refused" % (x, z))
         gx, gz = canal[GATE]
         r = B.call("jawa/spawn_batch", ops="RM_Sluice:%d,%d" % (gx, gz), stuff="WoodLog") or {}

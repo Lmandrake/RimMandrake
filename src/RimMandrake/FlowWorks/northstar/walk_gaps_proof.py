@@ -746,7 +746,7 @@ def _pond_rig(ctx, base_dz, fluid2, fill2):
         for i in range(3):
             for j in range(3):
                 ctx["dig"](o(px + i, pz + j), 4)
-                static(FLUIDP, "ProofFillWithFluid", "%d,%d,%d,%s" % (o(px + i, pz + j) + (f, fl)))
+                static(FLUIDP, "ProofFillWithFluid", "%d,%d,%g,%s" % (o(px + i, pz + j) + (f * 0.5, fl)))   # metres
     r1, r2 = (o(*r) for r in lay["reels"])
     ctx["build"](*(["RM_UniversalPipe:%d,%d" % o(*c) for c in lay["pipes"]] + ["RM_LiquidTank:%d,%d" % o(*t) for t in lay["tanks"]]
                    + [V.reel_toward(r, o(*e)) for r, e in zip((r1, r2), lay["ends"])]))
@@ -1081,7 +1081,7 @@ class FakeBridge(object):
             return "SURFACE s=%s" % ("Cover" if cell(arg) in self.covers else "SolidGround")
         if m == "ProofFillWithFluid":
             x, z, f, fl = arg.split(",")
-            self.cells[(int(x), int(z))] = (int(f) * 5000, fl)
+            self.cells[(int(x), int(z))] = (int(round(float(f) * 10000)), fl)   # the stager takes metres (was levels x 5000)
             return "FILLED"
         if m == "ProofPitWater":
             x, z, w, h = (int(v) for v in arg.split(","))

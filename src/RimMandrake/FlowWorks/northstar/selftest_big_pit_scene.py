@@ -52,7 +52,7 @@ class FakeBridge:
             x0, z0, w, h = [int(v) for v in kw["rect"].split(",")]
             return {"things": [t for t in self.built if x0 <= t["x"] < x0 + w and z0 <= t["z"] < z0 + h]}
         if tool == "jawa/flowworks_excavation_rect":
-            return {"rows": [{"x": kw["x"] + i, "z": kw["z"] + j, "d": S.DEPTH, "f": self.fill_of(kw["x"], kw["z"])}
+            return {"rows": [{"x": kw["x"] + i, "z": kw["z"] + j, "d": S.DEPTH, "dl": self.fill_of(kw["x"], kw["z"]) * 10000}
                              for i in range(kw["w"]) for j in range(kw["h"])]}
         if tool == "jawa/list_pawns":
             return {"pawns": [{"id": "Thing_W", "kind": k, "x": 1, "z": 1} for k in self.wild]}
