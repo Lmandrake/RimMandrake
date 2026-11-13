@@ -1,0 +1,1 @@
+Dispatcher role runs had no hard spend stop before 2026-11-13 (f04f03a6): only run_max_s wall time and ADVISORY token caps. run_budget_usd in dispatcher_schedule.json is now claude --max-budget-usd per run; a new role row must carry one.

@@ -198,6 +198,7 @@ def main():
                   rec["signed"] and signed == [("CoverageJudge", "rm-coverage-judge-1793900000")], (rec, signed))
             check("the judge ran opus with a json schema and its own unit",
                   calls and "--json-schema" in calls[-1][0] and "opus" in calls[-1][0]
+                  and "--max-budget-usd" in calls[-1][0]
                   and calls[-1][1] == "rm-coverage-judge-1793900000", calls[-1:])
             prompt = calls[-1][0][2]
             check("the prompt names the contract and the lock packet, and keeps the maker's account out",

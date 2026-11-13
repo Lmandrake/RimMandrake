@@ -63,6 +63,7 @@ CLAUDE = shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")  # 
 VERDICT_FILE = "coverage_verdict.json"
 TIMEOUT_S = 1500        # the judge's own wall bound; the Designer schedule's pre_launch_max_s holds it plus slack
 MODEL = "opus"
+BUDGET_USD = 8          # hard spend stop per judge run (claude --max-budget-usd; owner 2026-11-12: "Don't let any burn go to 90M this time ok?")
 REASK_MIN_S = 120       # less judge time than this left: no re-ask, the missing rows go on file as unchecked
 # The loop limit (RIMMANDRAKE_STOP_COVERAGE_LOOP_AT_THIRD_REFUSAL, spec 2026-11-12 refusal contract §3). EK's judge said
 # not_covered 9 times in 3 h. The third not_covered on one concept, a 4th judge run, or judge spend past 4x the measured
@@ -703,7 +704,8 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
     unit = UNIT_PREFIX + "%d" % int(now or time.time())
     env = dict(os.environ, RM_ROLE_UNIT=unit)
     tail = ["--model", MODEL, "--name", "COVERAGE JUDGE %s" % unit, "--output-format", "json",
-            "--json-schema", json.dumps(SCHEMA, separators=(",", ":")), "--dangerously-skip-permissions"]
+            "--json-schema", json.dumps(SCHEMA, separators=(",", ":")), "--dangerously-skip-permissions",
+            "--max-budget-usd", "%g" % BUDGET_USD]
     round_no = len(rounds(st0, d)) + 1
     text = delta_prompt(d, repo, dp, round_no) if dp is not None else prompt(d, repo, ids, prior is not None, round_no)
     argv = [CLAUDE, "-p", text] + tail
