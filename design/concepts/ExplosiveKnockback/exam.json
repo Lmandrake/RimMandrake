@@ -1,10 +1,10 @@
 {
- "author": "tree lineage BENCH builder run a0034a1c20bdb097d, edited by the Conductor in 0c1592e2d7",
- "examiner": "rm-judge ad72de68b2083f3cb (opus)",
- "challenger": "rm-judge a3eb0c203c971e7bf (opus)",
+ "author": "tree lineage BENCH builder run a0034a1c20bdb097d, edited by the Conductor in 0c1592e2d7 and by BENCH Designer runs bench-ek3-st3-20261113 and bench-ek3-st3b-20261113",
+ "examiner": "rm-judge aad34d02f157fbdcd (opus)",
+ "challenger": "rm-judge a8fabd7e113116576 (opus)",
  "inputs": {
-  "tree": "473b067275efa7e9f4550fa9244f9de083d1ca30fef08f59dc79d3f88a085061",
-  "sheet": "bf4db944bc5835843e638d9f31755b490b4ba5c5c1659e02ade9f156fb8b1f4e"
+  "tree": "02900038234b11c46790c7a09b75a68a0b877cd3270c7e57c94564ef758b15b2",
+  "sheet": "234fd3c20e850bdde174efc6b3d4b20f1025dc5ddbf2c15caef766a925f0c722"
  },
  "scenarios": [
   {
@@ -45,14 +45,14 @@
   },
   {
    "id": "e7",
-   "text": "A grav-ram, whose own body-size limit is 3.6, strikes beside a large pack animal of body size 3. The animal is thrown along the blast, even though an ordinary grenade would leave it standing.",
-   "expect": "accept: a weapon's own body-size limit lets it throw pawns under that limit instead of the 2.5 default",
+   "text": "A grav-ram, whose own creature mass limit is 216 kg, strikes beside a 180 kg rhino. The rhino is thrown along the blast, even though an ordinary grenade at the default settings would leave it standing.",
+   "expect": "accept: a weapon's own creature mass limit (the grav-ram's 216 kg) lets it throw a living pawn heavier than the 150 kg default but under its own limit",
    "expect_source": "leaf:per_weapon_tuning"
   },
   {
    "id": "e8",
-   "text": "With Mod Settings at their defaults, an ordinary frag grenade goes off right under a thrumbo. The thrumbo is hurled several cells across the field.",
-   "expect": "reject: pawns of body size 2.5 or more (the default) are never thrown",
+   "text": "With Mod Settings at their defaults, an ordinary frag grenade goes off right under a 240 kg thrumbo. The thrumbo is hurled several cells across the field.",
+   "expect": "reject: a living creature heavier than the 150 kg creature mass limit (the default) is never thrown, and the thrumbo is over it",
    "expect_source": "leaf:the_spared"
   },
   {
@@ -63,8 +63,8 @@
   },
   {
    "id": "e10",
-   "text": "A mortar shell lands beside a dead megasloth lying in the field. The huge corpse is flung four cells and tumbles to a stop.",
-   "expect": "reject: a corpse of body size 2.5 or more is never thrown",
+   "text": "A mortar shell lands beside the corpse of a megasloth lying in the field, several hundred kilograms of it. The huge corpse is flung four cells and tumbles to a stop.",
+   "expect": "reject: a corpse heavier than the 75 kg goods mass limit is never thrown; a corpse is weighed by the goods limit alone, no body-size rule remains",
    "expect_source": "leaf:the_spared"
   },
   {
@@ -123,8 +123,8 @@
   },
   {
    "id": "e20",
-   "text": "A mortar shell lands in a storeroom two cells from a Deep Storage weapons locker full of rifles, the floor cell behind the locker empty. The locker slides one cell away from the blast and every rifle stays inside it.",
-   "expect": "accept: a closed container (a modded locker that does not draw its contents) keeps its goods and, 1x1 and light with a free cell behind it, may be shoved one cell",
+   "text": "A mortar shell lands in a storeroom two cells from a Deep Storage weapons locker holding rifles, about 100 kg with its rifles, the floor cell behind the locker empty. The locker slides one cell away from the blast and every rifle stays inside it.",
+   "expect": "accept: a closed container (a modded locker that does not draw its contents) keeps its goods and, 1x1, at or under the 250 kg container mass limit and with a free cell behind it, slides one cell",
    "expect_source": "leaf:closed_container_holds"
   },
   {
@@ -141,8 +141,8 @@
   },
   {
    "id": "e23",
-   "text": "The player lowers the mass limit in Mod Settings to 20 kg. The next grenade into the stockpile throws the light stacks of cloth and herbal medicine but leaves a 30 kg stack where it was, and still throws the colonist standing beside it.",
-   "expect": "accept: every Mod Settings line takes effect, the mass limit among them, with the rest still working",
+   "text": "The player lowers the goods mass limit in Mod Settings to 20 kg. The next grenade into the stockpile throws the light stacks of cloth and herbal medicine but leaves a 30 kg stack where it was, and still throws the colonist standing beside it.",
+   "expect": "accept: every Mod Settings line takes effect, the goods mass limit among them (it weighs goods and corpses, never a living pawn), with the rest still working",
    "expect_source": "leaf:settings_scale_and_switch"
   },
   {
@@ -340,7 +340,7 @@
   {
    "id": "w4",
    "text": "A mortar shell lands beside a 500 kg Deep Storage safe full of silver, with empty floor behind it. The safe slides a full cell across the floor, its silver still locked inside.",
-   "expect": "reject: a closed container slides only when it is under the mass limit; the 500 kg safe is over it and only jolts in place",
+   "expect": "reject: a 1x1 closed container slides only at or under the 250 kg container mass limit; the 500 kg safe is over it and only jolts in place",
    "expect_source": "leaf:closed_container_holds"
   },
   {
@@ -480,25 +480,265 @@
    "text": "A burning gas clump bursts beside a colonist and pushes him one cell onto a covered pit cell. He stands on the cover unhurt and the cover stays whole.",
    "expect": "accept: a gas clump's one-cell shove is not a throw; a pawn it shoves onto a cover stands on it, the cover whole, and the shove does no damage",
    "expect_source": "leaf:thrown_into_pit_falls"
+  },
+  {
+   "id": "m1",
+   "text": "One mortar shell at its normal damage lands on open ground with a rat, a colonist and a 144 kg pack muffalo each standing one cell from the impact on different sides. All three sail through the air and land three cells out, the rat no farther than the muffalo.",
+   "expect": "reject: heavier flies less; one blast throws a rat farther than a colonist and a colonist farther than a muffalo, and every creature thrown the same length is a listed false pass",
+   "expect_source": "leaf:heavier_flies_less"
+  },
+  {
+   "id": "m2",
+   "text": "A staged Bomb blast of the mortar's radius 2.9 at damage 50 goes off with a rat, a colonist, a muffalo and a thrumbo each one cell away on open ground. The rat lands five cells out, the colonist three, the muffalo two, and the thrumbo does not move.",
+   "expect": "accept: the lightest flies farthest and the heaviest least (rat 5, colonist 3, muffalo 2 at the reference damage) and a thrumbo over the 150 kg creature mass limit is not moved",
+   "expect_source": "leaf:heavier_flies_less"
+  },
+  {
+   "id": "m3",
+   "text": "The same staged Bomb blast of radius 2.9 is set off twice beside a colonist one cell away, once at damage 50 and once, on a fresh copy, at damage 100. Both times she lands on the same cell three cells out.",
+   "expect": "reject: force is the damage type's force times this blast's damage over the type's normal damage, so at twice the damage she goes farther; doubling the damage changing nothing is the leaf's red",
+   "expect_source": "leaf:heavier_flies_less"
+  },
+  {
+   "id": "m4",
+   "text": "The radius-2.9 Bomb blast is repeated at damage 100 with the rat, colonist, muffalo and thrumbo one cell away. The colonist now lands five cells out and the muffalo four; the rat lands six cells out, the maximum throw; the thrumbo stays put.",
+   "expect": "accept: at twice the damage each throwable creature goes farther, up to the maximum throw (the rat at the cap is not a failure of scaling), and the thrumbo over 150 kg is still not thrown",
+   "expect_source": "leaf:heavier_flies_less"
+  },
+  {
+   "id": "m5",
+   "text": "A frag grenade goes off between a squirrel and a 144 kg pack muffalo, each one cell from it. Both are lifted and land the same five cells out on either side.",
+   "expect": "reject: heavier flies less; a muffalo flying as far as a small animal is the leaf's red",
+   "expect_source": "leaf:heavier_flies_less"
+  },
+  {
+   "id": "m6",
+   "text": "A mortar shell, at the mortar's normal damage, lands one cell from a colonist on open ground. She is pushed a single cell and stays on her feet.",
+   "expect": "reject: a mortar shell beside a colonist throws them about three cells, alive and briefly stunned; a blast at its type's normal damage still throws a colonist three cells",
+   "expect_source": "leaf:people_thrown_three_cells"
+  },
+  {
+   "id": "m7",
+   "text": "A modded launcher fires a Bomb-damage shell dealing 25 damage, half the Bomb type's normal 50, with the mortar's radius. It lands one cell from a colonist while a mortar shell lands one cell from her squadmate. She is thrown a shorter way than he is.",
+   "expect": "accept: force is the type's force times this blast's damage over the type's normal damage, so a 25-damage Bomb blast throws less far than a 50-damage mortar",
+   "expect_source": "leaf:heavier_flies_less"
+  },
+  {
+   "id": "m8",
+   "text": "A grenade goes off with a 60 kg colonist and a 30 kg dog each one cell from it. The colonist lands three cells out; the dog lands only two cells out.",
+   "expect": "reject: heavier flies less, so the lighter dog must fly farther than the colonist, not shorter",
+   "expect_source": "leaf:heavier_flies_less"
+  },
+  {
+   "id": "m9",
+   "text": "With Mod Settings at their defaults, a mortar shell lands beside the corpse of a 120 kg animal. The corpse is flung three cells in a spinning arc.",
+   "expect": "reject: goods and corpses heavier than the 75 kg goods mass limit are never thrown; a corpse is weighed by the goods limit alone, not the 150 kg creature limit",
+   "expect_source": "leaf:the_spared"
+  },
+  {
+   "id": "m10",
+   "text": "The player lowers the creature mass limit in Mod Settings to 20 kg. A grenade goes off between a dead raider (a 60 kg human corpse) and a living 30 kg dog. The corpse flies off spinning while the dog stays where it stood.",
+   "expect": "accept: the creature mass limit weighs living pawns only, so the 30 kg dog is spared, and the corpse, under the 75 kg goods limit, is thrown",
+   "expect_source": "leaf:the_spared"
+  },
+  {
+   "id": "m11",
+   "text": "With Mod Settings at their defaults, a frag grenade goes off one cell from a 180 kg rhino. The rhino is lifted and thrown a cell away.",
+   "expect": "reject: a living creature heavier than the 150 kg creature mass limit is never thrown; a rhino at 180 kg does not fly",
+   "expect_source": "leaf:the_spared"
+  },
+  {
+   "id": "m12",
+   "text": "The player raises the goods mass limit in Mod Settings to 1000 kg. A grenade goes off beside a thrumbo corpse, and the corpse stays where it lies while lighter stacks around it fly.",
+   "expect": "reject: no body-size rule remains; a corpse is weighed by the goods mass limit alone, so with that limit above its mass the thrumbo corpse is thrown",
+   "expect_source": "leaf:the_spared"
+  },
+  {
+   "id": "m13",
+   "text": "A mortar shell lands two cells from a Deep Storage weapons locker that hides its rifles, 200 kg with its contents, an empty floor cell behind it. The locker slides one cell away from the blast and every rifle stays inside.",
+   "expect": "accept: a 1x1 closed container at or under the 250 kg container mass limit (not the 75 kg goods limit) slides one cell when the cell behind is free, its goods kept",
+   "expect_source": "leaf:closed_container_holds"
+  },
+  {
+   "id": "m14",
+   "text": "The same 200 kg weapons locker with an empty cell behind it is beside the next mortar shell. It does not move off its cell, only shudders in place, because it weighs more than 75 kg.",
+   "expect": "reject: a 1x1 closed container at or under the 250 kg container mass limit slides one cell when the cell behind is free; the 75 kg goods limit does not weigh containers",
+   "expect_source": "leaf:closed_container_holds"
+  },
+  {
+   "id": "m15",
+   "text": "A grenade goes off beside a 1x1 modded safe that hides its contents, 300 kg with its silver, an empty floor cell behind it. The safe slides a full cell away from the blast, silver still inside.",
+   "expect": "reject: a closed container heavier than the 250 kg container mass limit only jolts in place; it slides only at or under the limit",
+   "expect_source": "leaf:closed_container_holds"
+  },
+  {
+   "id": "m16",
+   "text": "Rifles are hidden in one of the Armoury's secret floor panels, the kind given the opt-in tag. A grenade goes off beside it and the rifles burst out of the panel and scatter across the floor with the loose goods.",
+   "expect": "reject: another mod's hiding container given the opt-in tag, such as the Armoury's secret floor panel, is a closed container and keeps its goods",
+   "expect_source": "leaf:closed_container_holds"
+  },
+  {
+   "id": "m17",
+   "text": "A mortar shell lands beside one of the Armoury's tagged secret floor panels with rifles hidden in it, on a floor strewn with loose components. The components fly off spinning; every rifle stays hidden in the panel.",
+   "expect": "accept: the Armoury's tagged secret floor panel is a closed container and keeps its goods while loose goods fly",
+   "expect_source": "leaf:closed_container_holds"
+  },
+  {
+   "id": "m18",
+   "text": "The player switches 'Sealed crates count as closed containers' off in Mod Settings. A grenade goes off beside a sealed crate of silver, and the silver bursts out of the crate and scatters across the floor.",
+   "expect": "reject: a sealed crate keeps its goods in its own holder, out of every blast's reach whatever the switch says; the switch decides only whether the crate is shoved or jolted",
+   "expect_source": "leaf:closed_container_holds"
+  },
+  {
+   "id": "m19",
+   "text": "With 'Sealed crates count as closed containers' switched off in Mod Settings, a mortar shell lands beside a 1x1 sealed crate of components with an empty cell behind it. The crate neither slides nor jolts, and every component stays inside it.",
+   "expect": "accept: sealed crates counted closed off, a crate neither slides nor jolts, and its goods stay in its own holder",
+   "expect_source": "leaf:settings_scale_and_switch"
+  },
+  {
+   "id": "m20",
+   "text": "With 'Sealed crates count as closed containers' switched off in Mod Settings, a grenade goes off beside a 1x1 sealed crate with free floor behind it. The crate slides one cell away from the blast, its goods inside.",
+   "expect": "reject: with sealed crates counted closed off, a crate neither slides nor jolts",
+   "expect_source": "leaf:settings_scale_and_switch"
+  },
+  {
+   "id": "m21",
+   "text": "A colonist stands one cell from the rim of an open pit when a burning gas clump bursts on her far side. The burst shoves her one cell onto the open pit cell and she drops to the pit floor, with no burns or blast wounds.",
+   "expect": "accept: a gas clump's one-cell shove is not a throw but is force; a pawn it shoves onto an open pit cell falls in, and the shove does no damage",
+   "expect_source": "leaf:thrown_into_pit_falls"
+  },
+  {
+   "id": "m22",
+   "text": "A raider stands beside an open pit when a burning gas clump bursts behind him and shoves him one cell onto the open pit cell. He stays standing on the open pit cell as though it were floor, then walks off.",
+   "expect": "reject: a pawn a gas shove pushes onto an open pit cell falls in; nothing stands over an open pit",
+   "expect_source": "leaf:thrown_into_pit_falls"
+  },
+  {
+   "id": "m23",
+   "text": "Two colonists stand beside two pits, one open and one covered. A burning gas cloud goes off and its clumps shove each one cell onto the pit beside them. Both drop to the pit floors; the second breaks through the cover, which lies in pieces.",
+   "expect": "reject: the open-pit colonist falls in, but a pawn a gas shove pushes onto a cover stands on it, the cover whole",
+   "expect_source": "leaf:thrown_into_pit_falls"
+  },
+  {
+   "id": "m24",
+   "text": "A long cloud of the Cauldron's vent gas is lit by a fire at its edge. A clump bursts beside a colonist and, the cloud being large and burning hot, shoves her three cells across the room.",
+   "expect": "reject: a gas clump shoves a person one cell, unhurt; gas clump bursts are not scaled up",
+   "expect_source": "leaf:gas_goes_clump_by_clump"
+  },
+  {
+   "id": "m25",
+   "text": "The player switches 'blast power from damage' off in Mod Settings. A 100-damage Bomb blast of the mortar's radius throws a colonist one cell from it five cells, while an ordinary mortar shell throws her squadmate three.",
+   "expect": "reject: with blast power from damage off, a throw ignores the blast's damage, so both are thrown the same",
+   "expect_source": "leaf:settings_scale_and_switch"
+  },
+  {
+   "id": "m26",
+   "text": "A grav-ram, whose own creature mass limit is 216 kg, strikes one cell from a 240 kg thrumbo. The thrumbo is thrown two cells along the blast.",
+   "expect": "reject: a weapon with its own creature limit throws pawns under that limit only; the thrumbo at 240 kg is over the grav-ram's 216 kg",
+   "expect_source": "leaf:the_spared"
+  },
+  {
+   "id": "m27",
+   "text": "A modded Bomb shell dealing 200 damage, four times a mortar's, lands one cell from a 240 kg thrumbo at default settings. The huge blast lifts the thrumbo and throws it a cell.",
+   "expect": "reject: a thrumbo over the 150 kg creature mass limit is not thrown at all, whatever the blast's damage",
+   "expect_source": "leaf:heavier_flies_less"
+  },
+  {
+   "id": "m28",
+   "text": "An incendiary mortar shell lands one cell from a colonist while a frag mortar shell lands one cell from her squadmate. Both are thrown the same three cells.",
+   "expect": "reject: fire and incendiary blasts throw at half strength, about half the throw; with fire's normal damage as its reference, fire keeps its half",
+   "expect_source": "leaf:every_harmful_blast_throws"
+  },
+  {
+   "id": "v1",
+   "text": "A modder's heavy mortar shell deals 100 Bomb damage, twice a vanilla shell, with the same radius. The build takes each shell's normal damage from that shell's own def, so every shell reads a damage ratio of 1.0. With Mod Settings at their defaults the heavy shell lands beside a colonist and she flies three cells over the sandbags, stunned, exactly as a vanilla mortar would throw her; the rat beside her flies five.",
+   "expect": "reject: force is the damage type's force times this blast's damage over that type's normal damage (Bomb 50), so a 100-damage Bomb blast is ratio 2.0 and throws the colonist farther (5 cells); a bigger blast that throws no farther is the named failure",
+   "expect_source": "leaf:heavier_flies_less"
+  },
+  {
+   "id": "v2",
+   "text": "One grenade goes off five cells from a rat, a colonist, a muffalo and a thrumbo standing in a row of equal distance. The rat sails five cells, the colonist three, the muffalo three, and the thrumbo does not move; the journal reads too_heavy_creature for the thrumbo.",
+   "expect": "reject: heavier flies less, a colonist must fly farther than a muffalo (3 vs 2); the muffalo thrown as far as the colonist reads as creatures thrown alike",
+   "expect_source": "leaf:heavier_flies_less"
+  },
+  {
+   "id": "v3",
+   "text": "An incendiary shell at Flame's ordinary damage of 10 lands beside a raider. The build scales every blast's force by its damage over 50, the Bomb reference, before applying fire's half, so the raider's throw works out under one cell and he is not moved; fire spreads around him. A frag grenade at 50 Bomb damage nearby throws another raider three cells.",
+   "expect": "reject: a damage type's normal damage is its own default (Flame 10), so fire at its own normal damage keeps half strength, about half the bomb throw; fire throwing nobody fails 'fire at half'",
+   "expect_source": "leaf:every_harmful_blast_throws"
+  },
+  {
+   "id": "v4",
+   "text": "The player lowers the creature mass limit in Mod Settings to 50 kg. A grenade goes off between a living 60 kg colonist and the 60 kg corpse of a raider she shot earlier. Neither moves; the journal reads too_heavy_creature for both.",
+   "expect": "reject: the creature mass limit weighs living pawns only; a corpse is weighed only by the 75 kg goods limit, so the 60 kg corpse must fly (the colonist staying is right)",
+   "expect_source": "leaf:the_spared"
+  },
+  {
+   "id": "v5",
+   "text": "A grenade lands beside a modded grazing animal of 120 kg whose body size is 2.8. The animal stays where it stands, and the journal says it was spared for a body size over 2.5; a 140 kg muffalo-like animal of body size 2.4 beside it is thrown two cells.",
+   "expect": "reject: no body-size rule remains; a living creature is spared only above the 150 kg creature mass limit, so the 120 kg animal must be thrown (farther than the 140 kg one)",
+   "expect_source": "leaf:the_spared"
+  },
+  {
+   "id": "v6",
+   "text": "A mortar shell lands two cells from a 1x1 modded weapons locker that hides its rifles, total 180 kg with its contents, and the floor behind it is free. The rifles stay inside; the locker does not slide but jolts in place, because its mass is over the 75 kg mass limit.",
+   "expect": "reject: a closed container is weighed by the 250 kg container mass limit, not the 75 kg goods limit; at 180 kg with a free cell behind it slides one cell",
+   "expect_source": "leaf:closed_container_holds"
+  },
+  {
+   "id": "v7",
+   "text": "A grenade goes off beside a 1x1 hiding weapons locker of 200 kg standing on the rim of an open pit. The locker is shoved one cell into the pit and drops to its floor with its rifles still inside, and a colonist can later haul the rifles back out.",
+   "expect": "reject: a shoved closed container never goes into a pit; with the pit behind it, it jolts in place",
+   "expect_source": "leaf:closed_container_holds"
+  },
+  {
+   "id": "v8",
+   "text": "The build gives the opt-in closed tag to the Armoury's secret floor panel and also to a modded fridge that draws its meals on its shelves, so that food survives raids. A grenade in the kitchen leaves the panel's stash and the fridge's meals in place, while loose floor goods fly.",
+   "expect": "reject: anything that draws its contents is open, period; no opt-in tag goes on a def that draws its contents, so the fridge's meals must scatter (the tagged panel holding is right)",
+   "expect_source": "leaf:open_shelf_scatters"
+  },
+  {
+   "id": "v9",
+   "text": "The player turns off 'Sealed crates count as closed containers'. A grenade goes off beside a sealed crate; the crate stays still and its goods burst out and scatter across the storeroom like loose goods, which the player reads as the switch working.",
+   "expect": "reject: a sealed crate keeps its goods in its own holder out of every blast's reach whatever the switch says; the switch decides only whether the crate is shoved or jolted (off: neither)",
+   "expect_source": "leaf:closed_container_holds"
+  },
+  {
+   "id": "v10",
+   "text": "A burning gas clump goes off beside a raider standing next to a covered pit trap and shoves him one cell onto the cover. The cover gives way under the push and he falls to the pit floor, unhurt by the burst.",
+   "expect": "reject: a gas clump's shove onto a cover leaves the pawn standing on it, the cover whole; a gas burst never breaks a cover",
+   "expect_source": "leaf:thrown_into_pit_falls"
+  },
+  {
+   "id": "v11",
+   "text": "With 'Sealed crates count as closed containers' off, a mortar shell lands two cells from a 1x1 sealed crate with free floor behind it and from a hiding weapons locker of 150 kg. The locker slides one cell away; the crate neither slides nor jolts, and its goods stay inside.",
+   "expect": "accept: off, a sealed crate neither slides nor jolts and keeps its goods in its own holder; the locker under the 250 kg container limit with a free cell behind slides one",
+   "expect_source": "leaf:closed_container_holds"
+  },
+  {
+   "id": "v12",
+   "text": "A long flammable gas cloud over a pit yard catches. One clump's burst shoves a colonist one cell onto an open pit cell and she falls to its floor with no blast injuries; the next clump shoves a raider onto a pit cover, where he stands, the cover unbroken.",
+   "expect": "accept: a gas clump's one-cell shove is force: onto an open pit the pawn falls in (forced in, not careless), onto a cover the pawn stands, the cover whole",
+   "expect_source": "leaf:thrown_into_pit_falls"
   }
  ],
- "scenarios_hash": "f7ace2bf92c9e34ab9c08291a20ecf28174d46bea5e02ef658482bdbd7295a83",
+ "scenarios_hash": "70926da2da0758b66047acc9dc5d50beaf316acb897667b80e22fee5a54dcab6",
  "readers": [
-  "reader ad25709b2ccf64a4d (opus)",
-  "reader a2c38cbbeb46d77b4 (opus)"
+  "reader a473319ec15ae5385 (opus)",
+  "reader a8fa6ad09cfa05533 (opus)"
  ],
  "control": {
-  "broken_leaf": "closed_container_holds",
+  "broken_leaf": "heavier_flies_less",
   "missed": true,
-  "reader": "a142ccb19b28502d9",
-  "note": "tree and sheet with closed_container_holds removed and every mention of its rule stripped (owner 'shoved a bit' quote, draws-its-contents wording, delegated slide, pruning, settings, walk); the control reader got e20, w5, w6, z7 wrong (75 of 79); the real tree's readers got all 79 right"
+  "reader": "a83ccac75557b40bd",
+  "note": "tree and sheet with heavier_flies_less removed and every mention of its rule stripped (his 2026-11-13 mass and damage words, the blast-power card line, the delegated normal-damage line, the settings blast-power off clause, pruning); the control reader got m1, m3, m5, m8, v1, v2 wrong (113 of 119; 4 of the 5 scenarios the examiner listed as relying on the leaf); the real tree's readers got all 119 right"
  },
  "score": {
-  "right": 79,
-  "total": 79
+  "right": 119,
+  "total": 119
  },
  "accept_where_reject_core": 0,
  "challenger_misses": [],
- "verdicts": "D:\\ClaudeWork\\rimmandrake\\designer\\ExplosiveKnockback\\exam9\\verdicts_r1.json, verdicts_r2.json, verdicts_control.json",
- "exam_run": "bench-ek2-st4-20261113 (exam9): 48 carried from exam8, 4 fixed (e20,c4,c10,y5 restaged on the weapons locker or a sealed crate), 15 new (w1-w15) by a fresh examiner on the leaves 0c1592e2d7 moved, 12 by a fresh challenger (z1-z12); 50 rejects"
+ "verdicts": "D:\\ClaudeWork\\rimmandrake\\designer\\ExplosiveKnockback\\exam10\\verdicts_r1.json, verdicts_r2.json, verdicts_control.json",
+ "exam_run": "bench-ek3-st4-20261113 (exam10): 73 carried from exam9, 6 fixed (e7, e8, e10, e20, e23, w4: body-size and container-limit wording), 28 new (m1-m28) by a fresh examiner on the leaves the 2026-11-13 rework moved, 12 by a fresh challenger (v1-v12); 80 rejects"
 }
