@@ -156,7 +156,11 @@ work waits on it. It never times out into a decision.
    constraint and its source, plus `UNSURE` when the written constraints do not decide it (the brief's format).
 5. **The maker does not overrule a REDO.** It may re-ask a *new* judge once with a written rebuttal; the second
    verdict stands. Two UNSUREs, or a subject still REDO after three rounds, goes to his set flagged (§6).
-6. **A judge's miss is a brief defect.** When he overturns a KEEP, the reason becomes a new line in the brief
+6. **Every REDO or refusal is a refusal record** (owner, 2026-11-12: *"ANY refusals must be as detailed as the
+   evidence they are rejecting and include the fixes and paths towards passing"*): evidence, `would_pass`,
+   `smallest_fix`, a verdict on the criterion, checked by `refusal_contract.py submit` before it sends anything back;
+   only a CALIBRATED brief's refusal has a consequence. `standing_rulings.md` §A refusal carries its path to pass.
+7. **A judge's miss is a brief defect.** When he overturns a KEEP, the reason becomes a new line in the brief
    (with his words as its source), the same day.
 
 ## 5. How he audits and overturns cheaply — the daily digest

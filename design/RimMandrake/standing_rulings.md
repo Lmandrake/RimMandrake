@@ -571,6 +571,33 @@ applies). Runnable content held over 6 h is told to the Conductor, naming the sy
 
 🔑 *"We do (2) but only for the mods we're touching recently. Baroque Biomes, GSS, FlowWorks, Solar. After that, it's "the first time an item names a mod, it gets a deep Designer pass to read out its code/spec, expand the spec and validation strategies, certifies it with the user/clarifies confusion, then writes it all out for Relentless. That way we learn as we go, getting better and better at it incrementally rather than pretending we know what we're doing right now.""* Items: `BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS`, `GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS`, `FLOWWORKS_SCRIPT_MEASURE_PREP_AND_CONTROLS`, `SOLAR_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS`; trigger `FIRST_TOUCH_BUILD_DESIGNER_READS_FIRST`. Role wording: `src/RimMandrake/rimflow/roles/designer.md`.
 
+## A refusal carries its path to pass; a criterion nothing could pass is an alarm — owner, 2026-11-12
+
+*"We MUST ensure that we don't get trapped letting poorly tuned Judges refuse everything forever, burning tokens, and
+providing no signal to improve upon. ANY refusals must be as detailed as the evidence they are rejecting and include the
+fixes and paths towards passing that are attainable and reasonable. It also MUST include assessment of the acceptance
+criteria themselves. If they are found to be flawed, we need a process to immediately bring a neutral fixer in to repair
+them independent of the Judge itself so as not to bias towards pass = success and repair the demonstrated flaws or
+insufficiencies. Evidence that "this item doesn't pass" is not valuable. Evidence that "nothing could ever pass" is
+grounds for immediate, swift action. Then the item is immediately rejudged once the acceptance criteria are repaired.
+Agreed? This is VITAL. No more repeated loops for the sake of ceremony! No more broken acceptance tests causing judges to
+destroy my account uselessly."*
+
+- **Every refusal is a record** (`refusal_contract.py check`): its evidence, what it shows, `would_pass`, the
+  `smallest_fix` (attainable, cost) and a `criterion_verdict` on the clause itself. A refusal without them is refused
+  itself: re-asked once, and never counted against the item or sent back to the builder. Two malformed answers mark the
+  brief FAILED.
+- **A flawed or unattainable criterion goes to the neutral fixer** (`roles/criteria_fixer.md`, `refusal_contract.py
+  repair`), never to the builder; `diffguard` refuses any undeclared loosen, and an owner bar is never repaired: it is a
+  card for him.
+- **Only a CALIBRATED brief's refusal has a consequence** (`infrastructure/state/judge_calibration.json`); an edit to a
+  brief resets it to UNTESTED, and an UNTESTED brief's refusal is stored and shown only.
+- **Loops stop:** the third refusal of one clause triggers repair; the fourth refused verdict on one item, or a family
+  refusing most of what it sees, raises `REFUSAL_NOTHING_COULD_EVER_PASS` to the Conductor. The Designer's coverage
+  judge stops at its third not_covered, parks on a second refusal while he is away, and parks at twice the item's cap.
+
+Spec: `design/specs/2026-11-12-refusal-contract-for-judges-and-gates.md`. Item: `RIMMANDRAKE_BIND_REFUSALS_TO_FIXES_NO_CEREMONY_LOOPS`.
+
 ## Broken tests are expected; an inability to measure is reported up, never read as broken work — owner, 2026-11-03
 
 *"The checker was unable to measure something, and interpreted that as a wrong value rather than an inability that should

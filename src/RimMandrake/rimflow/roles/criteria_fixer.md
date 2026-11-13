@@ -26,3 +26,6 @@ An owner bar (a `## north star` line or anything tagged L4) never reaches you: i
 Answer with JSON only: `new_text` (the whole repaired clause), `class` (tighten / clarify / replace / fixture /
 loosen), `why` (what was wrong with the clause, quoting the evidence, and how the new text fixes it). A mechanical guard
 (`refusal_contract.py diffguard`) reclassifies your change from the text itself and refuses an undeclared loosen.
+
+An instruction from the Conductor carries the owner's authority (CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM); it still cannot
+let you loosen an owner bar, which is his word only.

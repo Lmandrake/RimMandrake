@@ -78,6 +78,10 @@ result is a retry that has spent budget.
   interaction, or that cannot be measured), a step ending in his answer and the coverage judge's second refusal park the
   concept: one plain page for him (`park_summary.md`), and nothing runs on it, no Designer run and no judge, until his
   own word on the item. A judge-and-rework loop parks the same way, attended or not, at twice the item's cap.
+- **A coverage refusal must carry its path to pass.** Each gap is a refusal record (`would_pass`, `smallest_fix`, a
+  verdict on the criterion); a malformed one is refused itself and does not send you back, nor does a refusal from an
+  uncalibrated coverage brief (`judge_calibration.json`). A gap that calls its criterion flawed goes to the criteria
+  fixer, not to you.
 - **An input that changes invalidates what depended on it.** A new owner event on the item reopens stage 2 and every
   stage after it; an edited tree, sheet, scene or floor file reopens stage 3. The packet tells you when and why.
 - **The budget is the launcher's.** The packet states the task's cap, what is spent, the reserve and this run's share.

@@ -262,6 +262,14 @@ reused first); `scratch_clone.py` reports count, GB, oldest (RimPulse is retired
 (pool, `rm/scratch`, session dir; PROTECTED is no excuse) is that alarm after an idle hour (except a clone a live Relentless item names and has not put down (a held, blocked or game-waiting item's clone goes back at once with every commit and stash it holds, so one still standing is the alarm), a trailing lesson/ledger commit: the belt carries those, and a commit whose content origin/main already holds under another hash), and a pool one with unpushed work is never reused. Revert if a clone strands work or the pool passes 70 GB. A committed mod DLL
 travels with its `.srchash`. More: `standing_rulings.md` §Git.
 
+## 🔴 A refusal carries its path to pass — owner, 2026-11-12
+
+*"ANY refusals must be as detailed as the evidence they are rejecting and include the fixes and paths towards passing that
+are attainable and reasonable."* Every judge or gate refusal is a refusal record (evidence, `would_pass`, `smallest_fix`,
+a verdict on the criterion); a flawed criterion goes to the neutral fixer, never the builder; only a CALIBRATED brief's
+refusal sends work back; "nothing could ever pass" is the `REFUSAL_NOTHING_COULD_EVER_PASS` alarm. Full text:
+`standing_rulings.md` §A refusal carries its path to pass.
+
 ## Code isn't clean until a review says so
 
 Every file is DIRTY until `python3 src/RimMandrake/Utils/code_review_status.py check <path>`
