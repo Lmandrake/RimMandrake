@@ -2,8 +2,8 @@
 
 Item `RIMMANDRAKE_INVENTORY_VALIDATION_SCHEMES_BEFORE_ANY_LADDER`. Drafted 2026-11-12 (evening, PST) for the owner, from
 the scheme inventory (`design/RimMandrake/validation_inventory_2026-11-12.md`, 55 schemes) and his card answers of the
-same day. **Status: a draft. Nothing here is built by this document, and no rule here is in force until he reads it.**
-Open choices: `D:\ClaudeWork\rimmandrake\conductor\validation_inventory_20261112\QUESTIONS.md`.
+same day, and his card of 2026-11-12 ~8:25 PM PST on its five open choices (rules 2e, 2f, 9, 10, 11). Rules quoting
+his words or card are his; the list at the end of rule 9 is not his yet.
 
 Tags: `[measured]` means a command or a file read on 2026-11-12 produced the number (the source is named);
 `[guess ~N%]` is my confidence. Times are Pacific (PST); ledger and log stamps are UTC (PST = UTC - 8 h).
@@ -126,19 +126,24 @@ other stored PASS stands, because its key is unchanged. A whole-suite rerun is r
 - the criterion set changed as a whole;
 - a line declares no inputs. Such a line always reruns, and gets a ticket to declare them.
 
-**2e. His passes are pinned.** Whatever he passed in a look ("cover-line is good (pass)", "the shallow end is right")
-becomes a pinned line: a stored PASS plus, where it is a number, an offline row that holds it. A fix whose diff moves
-a pinned line stops at stage 3. The builder first looks for a fix that keeps the pin. If none exists, the next look
-shows the pinned cell labelled **"changed something you passed"**, beside the old one. Tonight this would have caught
-the water retune halving the shallow end (section 3).
+**2e. His passes are pinned, and a fix may move a pin if the look notes say so.** His card (ledger OWNER note 2026-11-13T04:34:04Z on this item, card of 2026-11-12 ~8:25 PM PST):
+*A fix that changes something he passed → "Allow it, list what moved"*. Whatever he passed in a look ("cover-line is
+good (pass)", "the shallow end is right") becomes a pinned line: a stored PASS plus, where it is a number, an offline
+row that holds it. A fix whose diff moves a pinned line is not refused. The notes of his next look list **every**
+pinned line whose value moved, old value beside new, and that cell is in the save he opens. Tonight this would have put
+the water retune's halved shallow end (0.49 to 0.25) in front of him by name (section 3). Tooling owed:
+`RIMMANDRAKE_LIST_MOVED_PINS_IN_LOOK_NOTES`.
 
 **2f. Small objections stay small.**
 - A SITE or HARNESS line never revalidates a MOD row. It voids only the rows that ran on the bad site, and those rerun
   on the fixed site.
 - An objection to one matrix cell re-stages that cell, plus the cells that share the touched fitting or art. The
   pre-look judge re-judges only those crops.
-- The re-look is of the changed cells only. The next first-look save carries a **"changed since your last look"**
-  label on each of them, so he does not re-inspect what he passed.
+- **Every objection of his closes on his look, and only there.** His card (ledger OWNER note 2026-11-13T04:34:04Z on this item, card of 2026-11-12 ~8:25 PM PST): *Who closes his objections →
+  "His look, as a labelled cell in the next save"*. No agent judge closes one of his objections. The fixed cell is a
+  **"changed since your last look"** labelled cell in the next save he opens anyway; it is never a sitting of its own.
+  The re-look is of the changed cells only, so he does not re-inspect what he passed. Tooling owed:
+  `RIMMANDRAKE_LABEL_CHANGED_SINCE_LAST_LOOK_IN_REVIEW_SAVES`.
 - A QUESTION costs no revalidation at all.
 
 **2g. A new standard is not an objection.** When a look sets a new bar ("Acceptance tests really should have pits like
@@ -228,7 +233,25 @@ to start, so a metric that should be recorded every run is the precise time this
 ### Rule 9. A gate that is always red is not a gate
 
 His card, 2026-11-12 about 2:2x PM PST (ledger 22:47:51Z): *Always-red nightly sweep → "One clean-up, then red wakes
-me"* (the option label is our text; he picked it). Section 4 measures the sweep and names the one clean-up.
+me"* (the option label is our text; he picked it). Section 4 measures the sweep and names the one clean-up. The waker is
+`rm-ops-watch.timer`, switched back on after that clean-up: his card (ledger OWNER note 2026-11-13T04:34:04Z on this item, card of 2026-11-12 ~8:25 PM PST), *Nightly red waker → "Switch
+ops-watch back on (after the clean-up)"*.
+
+### Rule 10. Publish runs the fast whole-tree checks and refuses on a red
+
+His card (ledger OWNER note 2026-11-13T04:34:04Z on this item, card of 2026-11-12 ~8:25 PM PST): *Whole-tree checks → "Publish runs the fast ones and refuses on red"*. `./publish` runs the
+whole-tree checks listed in `src/RimMandrake/Utils/publish_tree_checks.json` (each timed; the list's total stays under
+about 30 s) and refuses on a red, naming the check and its fix. A check too slow for that list stays in the nightly
+sweep, and the list file says which.
+
+### Rule 11. A flyer's flight state may be read with the game paused, without him
+
+His card (ledger OWNER note 2026-11-13T04:34:04Z on this item, card of 2026-11-12 ~8:25 PM PST): *Flyer flight state read with the game paused, without him → "Yes, paused reads allowed (no
+ticks, no pictures; anything moving still waits for him)"*. An agent may read `Pawn_FlightTracker` state with the game
+paused, no tick passing and no picture taken. Any flight that moves, and any capture of flight, still waits for a
+joint session (his rule of 2026-09-19 in `CLAUDE.md` stands). The tool refuses otherwise:
+`src/RimMandrake/Utils/art/flyer_tier_three_state_read.py` checks the game is paused before and after and that
+`ticksGame` did not move, and voids the read if it did (selftest `selftest_flyer_state_read_guard.py`).
 
 **Carried from the card draft, not his yet** (no owner words; listed so they are not lost):
 - cheapest stage first: maths is proven at stage 3 and pinned by one live row;
@@ -254,7 +277,7 @@ Items: `RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL`, `RIMMANDRAKE_FIX_BIG_PIT_SC
 | ~4:2x PM | 6 | Look 2 on the matrix save: 8 fixes, 3 passes, 1 question. Two were "major fix": the D8 row's case-by-case variety, and shadows outside the pit. | Rule 2a: 12 line items, 3 of them pinned. | Root cause: seven paths, replaced by one law, `RM_UnderLiquid` (441c321a20dc). **A shared core change: the full rerun was right (2d).** The passes ("cover-line is good", "peaks out correctly") were not pinned (2e). |
 | 5:43 PM | 4 | The matrix collapsed under a mountain roof while he watched. | Rule 6: SITE class; void the site's rows only. | **The rule was born here.** The guard landed and was proven 7 of 7 both ways; rows from that site were voided. No MOD row was reopened. Correct under 2f. |
 | 5:53-5:57 PM | 6 | Items destroyed by the collapse (HARNESS); a label read "Canal 1m" (MOD); he asked for god-mode pour and drain. | 2a classes; the god-mode ask is new work, not an objection. | Followed: one item each. |
-| 6:12 PM | 6 | Water look: 2x too opaque at depth, colour too light, a dark-to-light jump on a wet floor. One pass: "it's very transparent at first". | Three MOD line items at stage 3. "Transparent at first" is a pinned line. | **The rule would have saved a regression.** The retune (4f158b6cb442) halved the whole curve: shallow 0.5 m went from 0.49 to 0.25, by the builder's own note ("Judgement call"). Nothing held the pass; 2e would have stopped it at stage 3 or labelled it for him. |
+| 6:12 PM | 6 | Water look: 2x too opaque at depth, colour too light, a dark-to-light jump on a wet floor. One pass: "it's very transparent at first". | Three MOD line items at stage 3. "Transparent at first" is a pinned line. | **The rule would have saved a regression.** The retune (4f158b6cb442) halved the whole curve: shallow 0.5 m went from 0.49 to 0.25, by the builder's own note ("Judgement call"). Nothing held the pass; under 2e the look notes would have listed it as moved. |
 | 6:16 PM | 6 | Big-pit screenshots: nine observations. MOD: buildings dry, shadows, corpses/pawns dry, labels bright. SITE/HARNESS: ring straddles the walls, wild animals, `stuff=null`. SAVE: spike references not deep-saved. QUESTION: the Segnosaurus. | 2a: nine line items in four classes. | **Silent at filing.** All nine went into ONE item. The briefs split them across two helpers (draw = MOD, scene = HARNESS); the ledger did not. His deepest-pit screenshot was never found: a look taken outside a prepared save leaves no cell ids. |
 | 7:15 PM | 2-3 | Draw + retune landed: dotnet SelfTest 1,310 of 1,310, parity selftest GREEN, model sweep 1,680 cases 0 breaks; L0 recorded; "every picture UNTESTED". Scene builder: 674 checks, planted fault red. God mode: 11 of 11. | Stage 3 done for those lines; stage 4 owed. | Followed. Two files left DIRTY (not yet reviewed). |
 | 8:01 PM | 4 | Live helper: big-pit verify 253 PASS, 6 FAIL (item HP, a HARNESS baseline), 1 UNMEASURED (label text: no reader). God mode: DrainAll refuses on an emptied square (MOD). | 2f: the HARNESS fails do not hold the MOD rows. | In progress at this writing. Stage 5 self-look and the keeper save `UNDER_LIQUID_LAW_BIGPIT_20261112b` are next. |
@@ -269,12 +292,11 @@ Spend on this thread tonight, from the ledger end notes `[measured]`:
 His minutes: three looks, UNMEASURED.
 
 **What the rules would have saved:**
-- one regression reaching his next look (the pinned shallow end);
+- one regression reaching his next look unannounced (the pinned shallow end, listed under 2e);
 - most of look 2's "major fix" `[guess ~70%]`, by one stage-3 law row asking every thing kind the same question;
 - a mixed-class item whose state can only say "partly done".
 
-**Where the rules are silent (open, see QUESTIONS.md):**
-- who decides that an objection is small enough to close on a stage-5 crop without his re-look;
+**Where the rules are silent:**
 - what wakes when a stage-4 helper finds a MOD fault after he has left (tonight's DrainAll);
 - a look taken from screenshots outside a prepared save. Rule 5 prevents it for first looks only.
 
@@ -336,7 +358,7 @@ One pass over the 44:
 - the two timeouts get a measured budget or a split;
 - the five host-dependent tests stop reading live host state, or are tagged into the deployed tier.
 
-Then the waker is switched on, so that the next red wakes someone (which waker is a real choice: QUESTIONS.md Q1).
+Then `rm-ops-watch.timer` is switched on (rule 9), so that the next red wakes someone.
 
 **Acceptance test** (watched failing on base 3bf1e44fbf: 31 of the 34 light ones red, and 25 OVERDUE):
 
@@ -366,5 +388,4 @@ nobody had filed. Each item carries a grep acceptance test, watched failing on 3
 | `RIMMANDRAKE_REWORD_STOPPED_A_FREEZE_IS_NOT_A_PAUSE` | "STOPPED with Relentless on 2026-11-06" mixes the 2026-11-06 freeze with the later owner pause; the Relentless store still runs detached helpers |
 | `RIMMANDRAKE_STRIP_FOUNDRY_ACCEPTANCE_PROSE_RETIRED_TWICE` | CLAUDE.md still calls Relentless' live round "the acceptance sweep for every mod" (stopped, and picked for deletion). `testing_policy_2026-10-28.md` §2.10 says FOUNDRY owns FlowWorks, and `infrastructure/VALIDATION_LADDER.md` L3 says "beyond FOUNDRY's grade", after FOUNDRY's retirement |
 
-The card draft's seventh point (flyer paused state reads) touches his flyer rule, so it is a question (QUESTIONS.md
-Q5), not an item.
+The card draft's seventh point (flyer paused state reads) he answered by card: rule 11.
