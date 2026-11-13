@@ -95,6 +95,11 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;
 			}
+			if (Pits.RM_PitCoverUtility.IsCovered(map, c) && !(t is Pawn p && Pits.RM_SuspensionUnderpass.InFloorBand(p)))
+			{
+				depth = 0;
+				return false;   // stands on a deck over the pit, at bank height: dry, and no pit shadow
+			}
 			int note = NoteAt(eng, c);
 			if (noteIt)
 			{
