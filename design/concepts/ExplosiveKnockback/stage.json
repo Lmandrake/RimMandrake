@@ -590,10 +590,52 @@
     "ref": "run bench-ek2-st3-20261113",
     "stage": 3,
     "tokens": 0
+   },
+   {
+    "at": "2026-11-13T08:30:09Z",
+    "kind": "helper",
+    "ref": "a3eb0c203c971e7bf",
+    "stage": 4,
+    "tokens": 41390
+   },
+   {
+    "at": "2026-11-13T08:31:28Z",
+    "kind": "helper",
+    "ref": "ad72de68b2083f3cb",
+    "stage": 4,
+    "tokens": 86365
+   },
+   {
+    "at": "2026-11-13T08:32:52Z",
+    "kind": "helper",
+    "ref": "a2c38cbbeb46d77b4",
+    "stage": 4,
+    "tokens": 55659
+   },
+   {
+    "at": "2026-11-13T08:33:06Z",
+    "kind": "helper",
+    "ref": "a142ccb19b28502d9",
+    "stage": 4,
+    "tokens": 54270
+   },
+   {
+    "at": "2026-11-13T08:33:20Z",
+    "kind": "helper",
+    "ref": "ad25709b2ccf64a4d",
+    "stage": 4,
+    "tokens": 53750
+   },
+   {
+    "at": "2026-11-13T08:33:46Z",
+    "kind": "stage",
+    "ref": "run bench-ek2-st4-20261113",
+    "stage": 4,
+    "tokens": 0
    }
   ],
   "reserve": 60000,
-  "spent": 90047782
+  "spent": 90339216
  },
  "history": [
   {
@@ -1153,6 +1195,24 @@
    "stage": 4,
    "what": "close",
    "why": "run bench-ek2-st3-20261113: stage 3 done"
+  },
+  {
+   "at": "2026-11-13T08:24:31Z",
+   "stage": 4,
+   "what": "over_budget",
+   "why": "90047782 of 4000000 spent; run bench-ek2-st4-20261113 goes on with 3940000 (advisory)"
+  },
+  {
+   "at": "2026-11-13T08:24:31Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run bench-ek2-st4-20261113, stage 4, budget 3940000"
+  },
+  {
+   "at": "2026-11-13T08:33:46Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run bench-ek2-st4-20261113: stage 4 done"
   }
  ],
  "item": "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
@@ -1371,12 +1431,33 @@
    "run": "bench-ek2-st3-20261113",
    "stage": 3,
    "summary": "Re-acceptance only, no new writing: the tree, sheet and scenes as edited by the Conductor in 0c1592e2d7 (draws-its-contents open for hoppers and shelves, 'rack' dropped, storeroom pit restaged on the LWM weapons locker, blast_kinds lanes named). His three new events on the item are cited in record.json scope (s_owner_absorb_other_explosion_mods left open for him, the two exam/judge cards). Run under his card 'EK exam -> Rerun exam, then judge' so the stage-4 exam can rerun on the current tree and sheet."
+  },
+  {
+   "at": "2026-11-13T08:33:46Z",
+   "inputs": {
+    "exam": "be32e6a220eaf30666fcdff29caad9f6d6e21baea1ecbcd4dfd47897c5e85a9b",
+    "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
+    "scenes": "92b61f65bc12911ac1d90ac8d8e6778e5572cac577f18442c004154c3927a373",
+    "sheet": "bf4db944bc5835843e638d9f31755b490b4ba5c5c1659e02ade9f156fb8b1f4e",
+    "tree": "473b067275efa7e9f4550fa9244f9de083d1ca30fef08f59dc79d3f88a085061"
+   },
+   "manifest": {
+    "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
+    "designer_exam.md": "9892f91253ca15581c15f6f64d211a2275f345d0e13e0200dcda9c9f8004e07a"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "bench-ek2-st4-20261113",
+   "stage": 4,
+   "summary": "exam9 on the current tree and sheet (after 0c1592e2d7): 79 frozen scenarios (48 carried, 4 fixed, 15 new by fresh examiner ad72de68b2083f3cb, 12 by fresh challenger a3eb0c203c971e7bf; 50 rejects); two fresh readers 79/79 each; control reader on the tree with closed_container_holds stripped missed e20, w5, w6, z7. Helpers charged: 291,434 tokens [measured]."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 5,
  "status": "ready",
  "waiting_owner_feed": "86c84c506204ffd0e76dfe061854a595cd239a4a8282a5a33a9fe9e0a7c64997"
 }
