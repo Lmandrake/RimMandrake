@@ -6571,3 +6571,4 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_PLAN_LIST_FIX_VMIV","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-13T09:28:32Z","tsn":1794562112041988595}
 {"seat":"RUNNER","event":"live","id":"OPS_PLAN_LIST_FIX_VMIV","result":"broken","detail":"Ops alarm PLAN_DISTRESS: priority list closed_entry -- plan.distressed = 1 1 when the plan list is distressed or worse (MEASURED), line > 0","ts":"2026-11-13T09:29:48Z","tsn":1794562188805825423}
 {"seat":"RUNNER","event":"raise","id":"OPS_PLAN_LIST_FIX_VMIV","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-13T09:29:54Z","tsn":1794562194236064246}
+{"seat":"RUNNER","event":"live","id":"OPS_PLAN_LIST_FIX_VMIV","result":"broken","detail":"Ops alarm PLAN_DISTRESS: priority list closed_entry -- plan.distressed = 1 1 when the plan list is distressed or worse (MEASURED), line > 0","ts":"2026-11-13T09:31:08Z","tsn":1794562268996969186}
