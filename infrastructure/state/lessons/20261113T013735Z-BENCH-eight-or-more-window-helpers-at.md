@@ -1,0 +1,1 @@
+Eight or more in-window helpers at once put Archmagi at load 30 on 14 cores (2026-11-12): selftest batches timed out (8 of 76 ran) and bakeoff timings were noisy. Keep heavy test or timing runs to a quiet machine; a timed-out batch is UNRUN, not passed.

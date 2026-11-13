@@ -1,0 +1,1 @@
+rimflow close on a study or ruling with no code: use --no-code '<what>' WITHOUT --sha (the two are exclusive), plus --owner-said; a ledger-only sha is refused as 'touches nothing but the ledger'. It took four tries to record an owner ruling on 2026-11-12.

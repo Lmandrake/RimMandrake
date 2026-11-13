@@ -1,0 +1,1 @@
+Agent tool in the Conductor window: subagent_type fork and general-purpose are refused by a PreToolUse hook (unbounded context); use rm-builder (opus), rm-fixer (sonnet), rm-bridge, rm-judge. rm-builder with model 'fable' ran as claude-fable-5-2 in-window on 2026-11-12 (read from the transcript's model field), where detached CLI runs could not get 5.2.

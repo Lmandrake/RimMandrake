@@ -1,0 +1,1 @@
+The Conductor helper budget hook allows N=2 in-window helpers once the owner has been 'silent' 20 min, and a question-card answer does not count as him typing: a third Agent launch is refused. Queue the work or ask him for N in his words (slot_allocator.py set --owner-said); never cancel a running helper to make room.

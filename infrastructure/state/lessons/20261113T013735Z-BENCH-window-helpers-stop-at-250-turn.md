@@ -1,0 +1,1 @@
+In-window helpers stop at a 250-turn limit mid-task with a one-line partial result; SendMessage to the same id resumes them from their transcript. Brief long jobs to land units as they go, and expect to send one 'finish, land, report' message.
