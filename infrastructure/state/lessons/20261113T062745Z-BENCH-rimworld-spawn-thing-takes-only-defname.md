@@ -1,0 +1,1 @@
+rimworld/spawn_thing takes only defName, x, z, stackCount: a stuffed def (Table1x2c) spawned through it logs 'MakeThing error ... stuff=null. Assigning default.' into Player.log, which a log-budget row will count. Use jawa/spawn_batch with stuff (big_pit_scene pick_stuff) for stuffed defs; pit_fittings_matrix.py still uses spawn_thing for its minified table.

@@ -1,0 +1,1 @@
+RM_GodLiquid.Pour keeps the overflow switches and refuses a brim-full pit ('had no room (the dev action overflows it)') by design; the dev menu's 'Pour liquid...' runs PourOverflow. A check of the owner's 'never No Room' must call PourOverflow (owner_look_regressions fixed 648af67803).
