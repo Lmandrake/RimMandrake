@@ -1,6 +1,6 @@
 {
  "aliases": [],
- "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: released for one more look at round 11; that look was not_covered; judging stopped on ExplosiveKnockback (coverage_judge.py release <dir> --why ... grants one more look)",
+ "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: released for one more look at round 12; that look was not_covered; judging stopped on ExplosiveKnockback (coverage_judge.py release <dir> --why ... grants one more look)",
  "budget": {
   "cap": 4000000,
   "charges": [
@@ -731,10 +731,17 @@
     "ref": "run bench-ek4-st4-20261113",
     "stage": 4,
     "tokens": 20000
+   },
+   {
+    "at": "2026-11-13T20:02:39Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794599960",
+    "stage": 5,
+    "tokens": 406269
    }
   ],
   "reserve": 60000,
-  "spent": 96790638
+  "spent": 97196907
  },
  "coverage_releases": [
   {
@@ -746,6 +753,11 @@
    "at": "2026-11-13T18:16:58Z",
    "rounds_at": 10,
    "why": "his card 2026-11-13 09:50 PST (OWNER:1794592220102307459 on RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH): 'EK next -> Fix, then one judge (one exam + one Claude judge run, then parked)'; the six gaps are reworked at stage 3 and exam10 passed 119/119"
+  },
+  {
+   "at": "2026-11-13T19:59:19Z",
+   "rounds_at": 11,
+   "why": "owner card 2026-11-13 ~11:55 PST (OWNER:1794599570900465333): fix the 5 gaps then ONE more judge"
   }
  ],
  "coverage_rounds": [
@@ -813,11 +825,38 @@
    "tokens": 659763,
    "tree": "02900038234b11c46790c7a09b75a68a0b877cd3270c7e57c94564ef758b15b2",
    "verdict": "not_covered"
+  },
+  {
+   "at": "2026-11-13T19:59:20Z",
+   "error": null,
+   "gaps": 6,
+   "ids": [
+    "gas_goes_clump_by_clump",
+    "heavier_flies_less",
+    "inv_blast_power_damage",
+    "inv_creature_mass_limit",
+    "inv_gas_chain",
+    "inv_gas_tags",
+    "inv_settings",
+    "inv_who_is_spared",
+    "our_gases_burn",
+    "settings_scale_and_switch",
+    "the_spared"
+   ],
+   "judge": "rm-coverage-judge-1794599960",
+   "late": [],
+   "tags": {
+    "changed": 1,
+    "unfixed": 5
+   },
+   "tokens": 406269,
+   "tree": "02900038234b11c46790c7a09b75a68a0b877cd3270c7e57c94564ef758b15b2",
+   "verdict": "not_covered"
   }
  ],
  "coverage_stop": {
-  "at": "2026-11-13T18:24:48Z",
-  "why": "released for one more look at round 11; that look was not_covered"
+  "at": "2026-11-13T20:02:39Z",
+  "why": "released for one more look at round 12; that look was not_covered"
  },
  "history": [
   {
@@ -1551,11 +1590,36 @@
    "stage": 5,
    "what": "close",
    "why": "run bench-ek4-st4-20261113: stage 4 done"
+  },
+  {
+   "at": "2026-11-13T19:59:19Z",
+   "stage": 5,
+   "what": "coverage_release",
+   "why": "owner card 2026-11-13 ~11:55 PST (OWNER:1794599570900465333): fix the 5 gaps then ONE more judge"
+  },
+  {
+   "at": "2026-11-13T20:02:39Z",
+   "stage": 5,
+   "what": "coverage_stop",
+   "why": "REFUSAL_NOTHING_COULD_EVER_PASS: released for one more look at round 12; that look was not_covered; judging stopped on ExplosiveKnockback (coverage_judge.py release <dir> --why ... grants one more look)"
+  },
+  {
+   "at": "2026-11-13T20:03:27Z",
+   "stage": 5,
+   "what": "park",
+   "why": "ceiling: his card 2026-11-13 ~11:55 PST (OWNER:1794599570900465333) allowed one more judge: rm-coverage-judge-1794599960 not_covered, 6 gaps (1 new: sweep animal/mech masses unpinned under creatureMassLimit 90; 5 carried as unfixed only because no coverage_fixes.json claim was written, its reasons say they look fixed); no second judge (park_summary.md)"
   }
  ],
  "item": "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
  "loop_since": "2026-11-13T19:57:02Z",
  "mod": "ExplosiveKnockback",
+ "park": {
+  "at": "2026-11-13T20:03:27Z",
+  "kind": "ceiling",
+  "quick_look": true,
+  "summary": "park_summary.md",
+  "why": "his card 2026-11-13 ~11:55 PST (OWNER:1794599570900465333) allowed one more judge: rm-coverage-judge-1794599960 not_covered, 6 gaps (1 new: sweep animal/mech masses unpinned under creatureMassLimit 90; 5 carried as unfixed only because no coverage_fixes.json claim was written, its reasons say they look fixed); no second judge"
+ },
  "parks": [
   {
    "at": "2026-11-13T07:52:37Z",
@@ -1834,6 +1898,6 @@
  "running": null,
  "schema": 1,
  "stage": 5,
- "status": "ready",
+ "status": "waiting_owner",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }

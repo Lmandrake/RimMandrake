@@ -1,66 +1,351 @@
 {
  "advisory": "the coverage brief is UNTESTED: this refusal is stored and shown, the Designer is not sent back",
- "against": "rm-coverage-judge-1794558854",
- "at": "2026-11-13T18:17:04Z",
+ "against": "rm-coverage-judge-1794593824",
+ "at": "2026-11-13T19:59:20Z",
  "changed": [
-  "dec:d_mass_limit",
   "dec:d_mass_power_scene",
-  "dec:d_melee_shove_not_ek",
-  "dec:d_type_x_damage",
-  "dec:dl_closed_means_hidden",
-  "dec:dl_container_shove",
-  "dec:dl_fire_half_off",
-  "dec:dl_gas_shove_open_pit",
-  "dec:dl_mass_power_defaults",
-  "inv:inv_big_corpse_spared",
-  "inv:inv_blast_power_damage",
-  "inv:inv_creature_mass_limit",
-  "inv:inv_weapon_ext_fields",
-  "leaf:closed_container_holds",
-  "leaf:every_good_moves",
-  "leaf:heavier_flies_less",
-  "leaf:per_weapon_tuning",
-  "leaf:settings_scale_and_switch",
-  "leaf:the_spared",
-  "leaf:thrown_into_pit_falls",
+  "inv:inv_who_is_spared",
   "record:scope",
-  "rest:inv_big_corpse_spared",
-  "rest:inv_weapon_ext_fields",
+  "rest:inv_blast_power_damage",
+  "rest:inv_creature_mass_limit",
   "rest:inv_who_is_spared",
   "scene:sc_cauldron_gas",
-  "scene:sc_closed_containers",
   "scene:sc_cover_breaks",
   "scene:sc_gas_chain",
   "scene:sc_gas_shove_into_pit",
-  "scene:sc_lookup",
   "scene:sc_mass_and_power",
   "scene:sc_settings_sweep",
-  "scene:sc_spared",
-  "sheet:delegated",
-  "sheet:does",
-  "sheet:his words",
-  "sheet:pruning",
   "showcase:mass_and_power"
  ],
  "checklist": [
   {
    "evidence": [
-    "scenes.json:442",
-    "tree.json:365",
-    "record.json:358",
-    "record.json:955"
+    "record.json:769",
+    "scenes.json:109",
+    "scenes.json:912",
+    "sheet.md:25"
+   ],
+   "id": "inv_who_is_spared",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_spared",
+     "what": "coverage_rest entry restored: by the_spared and sc_spared, body-size clause replaced by d_mass_limit"
+    },
+    {
+     "ok": true,
+     "scene": "sc_spared",
+     "what": "sc_spared stages in_pit, carrying_pawn, in_bed and flying, each expected on its own cell with its skip reason, the carried pawn with no request line, and a plain-colonist control that is thrown"
+    },
+    {
+     "ok": true,
+     "scene": "storeroom_bomb_pit",
+     "what": "the showcase mass_and_power is removed; designer_stage.py showcases reads 'showcase set accepted' (one showcase, storeroom_bomb_pit, 9 new, overlap 0.00)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1151",
+    "scenes.json:136",
+    "scenes.json:912"
+   ],
+   "id": "inv_blast_power_damage",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_mass_and_power",
+     "what": "damage 50 then 100 on fresh stagings, journal ratio 1.0 then 2.0, radius and damage read back; I recomputed the kernel cells (rat 5/6 cap, colonist 3/5 across 64 to 76 kg, muffalo 2/4 across 100 to 150 kg) and they match"
+    },
+    {
+     "ok": true,
+     "scene": "sc_mass_and_power",
+     "what": "control with blastPowerFromDamage off gives the damage-50 cells on both runs, which rules out falloff or staging"
+    },
+    {
+     "ok": true,
+     "scene": "sc_settings_sweep",
+     "what": "double-damage blast in the sweep: each named free pawn lands farther, or at the cap, at ratio 2.0, and exactly as far when switched off"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1137",
+    "scenes.json:136",
+    "scenes.json:245",
+    "scenes.json:252"
+   ],
+   "id": "inv_creature_mass_limit",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_mass_and_power",
+     "what": "thrumbo over 150 kg skipped as too_heavy_creature at default; at limit 250 it is thrown 1 cell, then 3. Vanilla adult thrumbo = Mass 60 x baseBodySize 4 (StatPart_BodySize) = 240 kg [measured, RimSage defs]; kernel 2.62x0.540=1.41->1, 5.24x0.540=2.83->3"
+    },
+    {
+     "ok": false,
+     "scene": "sc_settings_sweep",
+     "what": "creatureMassLimit 90 run in the sweep: only the second animal is pinned (100 to 150 kg); the lane's 'an animal' and 'a mech' have no mass assertion"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:584",
+    "scenes.json:912"
+   ],
+   "id": "inv_gas_tags",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_cauldron_gas",
+     "what": "the Cauldron's dependency list now names flowworks, environmentalhazards and creaturebehaviors, matching src/RimMandrake/Cauldron/About/About.xml:16-26 (plus Harmony); census of defs, grids and call sites with planted probes; the de-registered grid is the control"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "sheet.md:42",
+    "scenes.json:584"
+   ],
+   "id": "our_gases_burn",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_cauldron_gas",
+     "what": "each tagged source yields clump bursts; the census equals the tagged sources; no source of ours is missing; control: no registration means tox gas, no bursts"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "sheet.md:43",
+    "scenes.json:609"
+   ],
+   "id": "blast_breaks_pit_cover",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_cover_breaks",
+     "what": "grenade and incendiary break the cover (one descent each), as do the in-radius-only ninth and pawn-free tenth covers; the eleventh, outside the radius, stays whole"
+    },
+    {
+     "ok": true,
+     "scene": "sc_cover_breaks",
+     "what": "gas burst, EMP, smoke and stun leave cover hit points unchanged with no descent; a gas-shoved raider stands on the eighth cover, which stays whole; FlowWorks and the Cauldron list asserted"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:554",
+    "scenes.json:812",
+    "scenes.json:912"
+   ],
+   "id": "inv_gas_chain",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_gas_chain",
+     "what": "rest by gas_goes_clump_by_clump, sc_gas_chain and sc_gas_shove_into_pit; Cauldron list and grid registration asserted in both"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "sheet.md:41",
+    "scenes.json:554"
+   ],
+   "id": "gas_goes_clump_by_clump",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_gas_chain",
+     "what": "bursts on many ticks ordered by distance; goods within 1.9 cells move at most 2; colonist A shoved exactly once within 120 ticks, unhurt; no despawn-spawn pair; the igniter lane; control: a centroid blast gives one burst tick"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "sheet.md:32",
+    "scenes.json:554",
+    "scenes.json:252"
+   ],
+   "id": "shield_belt_holds",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_gas_chain",
+     "what": "the leaf's gas-shove exception: belted colonist B is shoved 1 cell with energy unchanged and no absorb event"
+    },
+    {
+     "ok": true,
+     "scene": "sc_settings_sweep",
+     "what": "the belt's energy drop doubles at shieldDebitPerForce 20"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "sheet.md:44",
+    "scenes.json:812",
+    "scenes.json:609"
+   ],
+   "id": "thrown_into_pit_falls",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_gas_shove_into_pit",
+     "what": "a gas shove onto an open pit drops the colonist in (one descent, no blast injury); control: the de-registered grid gives no shove and no descent"
+    },
+    {
+     "ok": true,
+     "scene": "sc_cover_breaks",
+     "what": "a gas shove onto a cover: the pawn stands on it and the cover stays whole"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "sheet.md:26",
+    "tree.json:107",
+    "scenes.json:136"
+   ],
+   "id": "heavier_flies_less",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_mass_and_power",
+     "what": "rat > colonist > muffalo > thrumbo within each run, holding across every asserted band; the colonist band is now 64 to 76 kg, so the cells are invariant"
+    },
+    {
+     "ok": true,
+     "scene": "sc_mass_and_power",
+     "what": "the test hook absorbs injury (INVALID if any new hediff), so 'alive and stunned' is attainable; clear rays asserted over 7 cells"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:136",
+    "scenes.json:252"
+   ],
+   "id": "inv_pawn_flyer",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_settings_sweep",
+     "what": "thrown creatures land stunned; the sweep checks landing stun 30 to 40, impact off and doubled, and the recovery window"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:136"
+   ],
+   "id": "inv_kernel",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_mass_and_power",
+     "what": "the stated formula matches RM_KnockbackMath.cs:186-205: Falloff 1-1/2.9=0.655; MassScale sqrt(70/m) clamped 0.25 to 2; AwayFromZero rounding; cap 6"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:245",
+    "scenes.json:252"
    ],
    "id": "inv_closed_guard",
    "parts": [
     {
      "ok": true,
-     "scene": "sc_closed_containers",
-     "what": "the opt-in tag is staged live on the Armoury's secret floor panel, with a control that strips the tag; the patch file RM_Knockback_HiddenStorage.xml exists and tags that panel, and the Armoury dependencies the scene states match its About.xml"
-    },
+     "scene": "sc_settings_sweep",
+     "what": "LWM weapons locker classed closed (showContents false) and asserted; with the guard off its goods are thrown loose"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:252"
+   ],
+   "id": "inv_container_shove",
+   "parts": [
     {
      "ok": true,
      "scene": "sc_settings_sweep",
-     "what": "closed guard off: the locker's goods are thrown loose"
+     "what": "the locker slides at default and jolts at closedContainerMassLimit 5; with the shove off it stays, goods kept; the sealed crate's lane"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:912",
+    "scenes.json:245",
+    "scenes.json:252"
+   ],
+   "id": "inv_settings",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_settings_sweep",
+     "what": "saved fields equal the swept list plus enabled and shieldsAbsorbThrow, by reflection; the before/after default control"
+    },
+    {
+     "ok": false,
+     "scene": "sc_settings_sweep",
+     "what": "the creatureMassLimit 90 line holds only if no other lane pawn weighs over 90 kg, which is not asserted (see gap)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "sheet.md:49",
+    "tree.json:683",
+    "scenes.json:251",
+    "scenes.json:252"
+   ],
+   "id": "settings_scale_and_switch",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_settings_sweep",
+     "what": "every line takes effect and every new part switches off cleanly, as the leaf lists; removed cap lines absent"
+    },
+    {
+     "ok": false,
+     "scene": "sc_settings_sweep",
+     "what": "'each change alters only its own outcome' at creatureMassLimit 90, while 'an animal' and 'a mech' have no asserted mass under 90"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:252",
+    "scenes.json:609"
+   ],
+   "id": "inv_which_blasts",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_settings_sweep",
+     "what": "the unpatched harmful type throws at full strength by default and at half under 50%; fire at half off means the incendiary throws nothing; EMP, smoke and stun never break covers"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:252",
+    "scenes.json:109"
+   ],
+   "id": "inv_mass_limit_skip",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_settings_sweep",
+     "what": "100 kg good too_heavy; 65 kg good thrown, then too_heavy at 60; a colonist at lightMassLimit 20 is still thrown (the goods limit never weighs a pawn); lane C corpse over 75 kg is too_heavy"
     }
    ]
   },
@@ -96,206 +381,6 @@
   },
   {
    "evidence": [
-    "record.json:371",
-    "record.json:969",
-    "scenes.json:442",
-    "scenes.json:251"
-   ],
-   "id": "inv_container_shove",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_closed_containers",
-     "what": "slide at or under 250 kg, jolt over it or when blocked"
-    },
-    {
-     "ok": true,
-     "scene": "sc_settings_sweep",
-     "what": "closedContainerMassLimit 5 makes the locker jolt; container shove off leaves it in place"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json:233",
-    "scenes.json:242",
-    "scenes.json:251",
-    "tree.json:683",
-    "record.json:505",
-    "record.json:833"
-   ],
-   "id": "inv_settings",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_settings_sweep",
-     "what": "the per-part off list matches the record and the sweep"
-    },
-    {
-     "ok": true,
-     "scene": "sc_settings_sweep",
-     "what": "vanillaCratesClosed and closedContainerMassLimit are swept"
-    },
-    {
-     "ok": false,
-     "scene": "sc_settings_sweep",
-     "what": "the double-damage blast's expect holds for every pawn on the lane"
-    },
-    {
-     "ok": false,
-     "scene": "sc_settings_sweep",
-     "what": "the Cauldron start line names its full dependency list"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json:683",
-    "sheet.md:49",
-    "scenes.json:251",
-    "record.json:505"
-   ],
-   "id": "settings_scale_and_switch",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_settings_sweep",
-     "what": "the blanket 'gives back what ships today' rule is gone; the eight off states are listed one by one"
-    },
-    {
-     "ok": false,
-     "scene": "sc_settings_sweep",
-     "what": "the 'each pawn farther' claim holds for the wall-backed, door-backed and belted pawns"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json:553",
-    "scenes.json:563",
-    "record.json:924"
-   ],
-   "id": "inv_gas_chain",
-   "parts": [
-    {
-     "ok": false,
-     "scene": "sc_gas_chain",
-     "what": "the Cauldron and all its dependencies are on the list and asserted"
-    },
-    {
-     "ok": true,
-     "scene": "sc_gas_chain",
-     "what": "bursts go off clump by clump, with a centroid-blast control"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json:583",
-    "scenes.json:592",
-    "record.json:997"
-   ],
-   "id": "inv_gas_tags",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_cauldron_gas",
-     "what": "census and control (registration removed)"
-    },
-    {
-     "ok": false,
-     "scene": "sc_cauldron_gas",
-     "what": "the Cauldron's dependencies stated in full"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json:553",
-    "scenes.json:563",
-    "scenes.json:811",
-    "sheet.md:41"
-   ],
-   "id": "gas_goes_clump_by_clump",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_gas_chain",
-     "what": "chain behaviour and its control"
-    },
-    {
-     "ok": false,
-     "scene": "sc_gas_chain",
-     "what": "the stated mod list loads the Cauldron with all its dependencies"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json:583",
-    "scenes.json:592",
-    "sheet.md:42",
-    "sheet.md:71"
-   ],
-   "id": "our_gases_burn",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_cauldron_gas",
-     "what": "the census covers defs, grids and call sites, with a planted test call site and grid"
-    },
-    {
-     "ok": false,
-     "scene": "sc_cauldron_gas",
-     "what": "the Cauldron's stated dependencies are complete"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json:608",
-    "scenes.json:617",
-    "sheet.md:43"
-   ],
-   "id": "blast_breaks_pit_cover",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_cover_breaks",
-     "what": "blasts within reach break covers; gas, EMP, smoke and stun leave them whole; a gas shove onto a cover leaves the pawn standing"
-    },
-    {
-     "ok": true,
-     "scene": "sc_cover_breaks",
-     "what": "FlowWorks is asserted separately here, so this scene loads the Cauldron's full dependencies"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json:583",
-    "sheet.md:44",
-    "sheet.md:68",
-    "record.json:585",
-    "record.json:562",
-    "scenes.json:827"
-   ],
-   "id": "thrown_into_pit_falls",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_gas_shove_into_pit",
-     "what": "the leaf and sheet now say a gas shove onto an open pit drops the pawn in; the gas scene cites the leaf"
-    },
-    {
-     "ok": true,
-     "scene": "sc_gas_shove_into_pit",
-     "what": "the melee contest is dropped and filed (RIMMANDRAKE_DESIGN_MELEE_SHOVE_INTO_PIT_CONTEST_FLOWWORKS is on the ledger)"
-    }
-   ]
-  },
-  {
-   "evidence": [
     "record.json:1080",
     "scenes.json:1066",
     "scenes.json:109",
@@ -307,60 +392,6 @@
      "ok": true,
      "scene": "sc_spared",
      "what": "a corpse over 75 kg is spared too_heavy at default; the thrumbo corpse is thrown once the goods limit is raised"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json:1141",
-    "record.json:573",
-    "scenes.json:147",
-    "scenes.json:150",
-    "scenes.json:251"
-   ],
-   "id": "inv_blast_power_damage",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_mass_and_power",
-     "what": "damage ratio 1.0 then 2.0, with blastPowerFromDamage off as the control"
-    },
-    {
-     "ok": false,
-     "scene": "sc_mass_and_power",
-     "what": "real damage 50/100 is staged with nothing to keep the creatures alive, while the expect demands they are 'alive and stunned'"
-    },
-    {
-     "ok": false,
-     "scene": "sc_settings_sweep",
-     "what": "the sweep's double-damage blast expects 'each pawn farther'"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json:1127",
-    "record.json:573",
-    "scenes.json:136",
-    "scenes.json:109",
-    "scenes.json:250"
-   ],
-   "id": "inv_creature_mass_limit",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_mass_and_power",
-     "what": "the thrumbo is skipped too_heavy_creature, and thrown at a 250 kg limit"
-    },
-    {
-     "ok": true,
-     "scene": "sc_spared",
-     "what": "the creature limit never weighs a corpse (a human corpse is thrown at 20 kg)"
-    },
-    {
-     "ok": true,
-     "scene": "sc_settings_sweep",
-     "what": "creatureMassLimit 90 skips the 100-to-150 kg animal"
     }
    ]
   },
@@ -401,40 +432,6 @@
   },
   {
    "evidence": [
-    "tree.json:103",
-    "tree.json:107",
-    "scenes.json:136",
-    "scenes.json:145",
-    "scenes.json:150",
-    "scenes.json:152",
-    "record.json:573"
-   ],
-   "id": "heavier_flies_less",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_mass_and_power",
-     "what": "the kernel arithmetic for the stated masses (5/3/2/0, then 6/5/4/0) checks out against ThrowCells in RM_KnockbackMath.cs"
-    },
-    {
-     "ok": false,
-     "scene": "sc_mass_and_power",
-     "what": "the leaf oracle's thrumbo at '1 then 3 cells' under a 250 kg limit is staged"
-    },
-    {
-     "ok": false,
-     "scene": "sc_mass_and_power",
-     "what": "the colonist mass assertion band keeps the strict order"
-    },
-    {
-     "ok": false,
-     "scene": "sc_mass_and_power",
-     "what": "creatures survive the staged real-damage blast"
-    }
-   ]
-  },
-  {
-   "evidence": [
     "tree.json:473",
     "scenes.json:529",
     "sheet.md:40"
@@ -460,23 +457,6 @@
      "ok": true,
      "scene": "sc_spared",
      "what": "each spared state with its skip reason; lanes B and C cover the move from body size to mass; a plain-colonist control"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json:760",
-    "scenes.json:911",
-    "scenes.json:920",
-    "scenes.json:933",
-    "tree.json:118"
-   ],
-   "id": "inv_who_is_spared",
-   "parts": [
-    {
-     "ok": false,
-     "scene": "sc_mass_and_power",
-     "what": "covered by a showcase that really exercises its states, or by a coverage_rest entry"
     }
    ]
   },
@@ -511,36 +491,6 @@
   },
   {
    "evidence": [
-    "sheet.md:32",
-    "scenes.json:553"
-   ],
-   "id": "shield_belt_holds",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_gas_chain",
-     "what": "the belt does not stop the gas shove; the blast case is unchanged"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "sheet.md:69",
-    "scenes.json:233",
-    "record.json:703",
-    "record.json:573"
-   ],
-   "id": "inv_which_blasts",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_settings_sweep",
-     "what": "the unpatched-blast percent is swept; fire at half survives the per-type reference damage (Flame 10)"
-    }
-   ]
-  },
-  {
-   "evidence": [
     "sheet.md:31",
     "scenes.json:529"
    ],
@@ -550,20 +500,6 @@
      "ok": true,
      "scene": "sc_lookup",
      "what": "impact 0 at a door leaves its hit points unchanged; the control's door takes damage"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json:911",
-    "record.json:685"
-   ],
-   "id": "inv_pawn_flyer",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_mass_and_power",
-     "what": "shared with showcase 1, with a staging reason in overlap_why"
     }
    ]
   },
@@ -584,21 +520,6 @@
   },
   {
    "evidence": [
-    "record.json:1095",
-    "scenes.json:1074",
-    "scenes.json:251"
-   ],
-   "id": "inv_mass_limit_skip",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_settings_sweep",
-     "what": "the 100 kg good is too_heavy at default and the 65 kg good is too_heavy at 60; the mass lane shows the goods limit never weighs a living pawn"
-    }
-   ]
-  },
-  {
-   "evidence": [
     "record.json:1063",
     "tree.json:81",
     "scenes.json:109"
@@ -609,20 +530,6 @@
      "ok": true,
      "scene": "sc_spared",
      "what": "the pit-floor stack and corpse are unmoved, with skip reason in_pit"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json:911",
-    "record.json:648"
-   ],
-   "id": "inv_kernel",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_mass_and_power",
-     "what": "the mass and damage terms are read as landing cells; the formula matches RM_KnockbackMath.cs ThrowCells"
     }
    ]
   },
@@ -1168,123 +1075,91 @@
    ]
   }
  ],
- "claims": [
-  {
-   "evidence": "scenes.json sc_closed_containers: a row stages the Armoury's secret floor panel (guy762_SecretFloorPanel_darkwhiteoutlines), closed only by the opt-in RM_KnockbackClosedStorage tag the Armoury patch adds (asserted not showContents false, not a Building_Crate), with mandrake.rsw.armoury and its dependencies on the stated list; control lane: the same panel with the tag removed by Stage scatters its goods. tree.json closed_container_holds and sheet.md name the panel; record.json dl_closed_means_hidden names it and the patch file.",
-   "gap": "g1"
-  },
-  {
-   "evidence": "One container mass limit, closedContainerMassLimit 250 kg (own mass plus contents, a Mod Setting, separate from the 75 kg goods limit), named in tree.json closed_container_holds, sheet.md does and delegated lines, and record.json dl_container_shove; sc_closed_containers adds a weapons locker whose total is asserted between 76 and 249 kg and expects it to slide; sc_settings_sweep sets closedContainerMassLimit 5 and expects the locker to jolt.",
-   "gap": "g2"
-  },
-  {
-   "evidence": "vanillaCratesClosed declared in tree.json closed_container_holds, sheet.md delegated, record.json dl_closed_means_hidden, with its off behaviour (a sealed crate neither slides nor jolts); swept in sc_settings_sweep with a 1x1 SealedCrate on the lane; the crate rows in sc_closed_containers now claim only the slide or jolt (the 1x1 crate free-backed slides), and the crates' contents are stated held by construction, claimed by no check.",
-   "gap": "g3"
-  },
-  {
-   "evidence": "The blanket 'gives back what ships today' rule is gone from tree.json settings_scale_and_switch, sheet.md settings line and record.json dl_fire_half_off, replaced by a per-part off list (goods in the air, closed guard, container shove, sealed crates counted closed, heavy knock, gas chain, fire at half, blast power from damage) that matches sc_settings_sweep's expect line for line.",
-   "gap": "g4"
-  },
-  {
-   "evidence": "scenes.json sc_gas_chain, sc_cauldron_gas, sc_cover_breaks, sc_gas_shove_into_pit and sc_settings_sweep each gain a start line: the minimal list plus mandrake.rm.cauldron and its dependencies mandrake.rm.environmentalhazards and mandrake.rm.creaturebehaviors, each asserted active, INVALID otherwise.",
-   "gap": "g5"
-  },
-  {
-   "evidence": "tree.json thrown_into_pit_falls and sheet.md pit line now state that a gas clump's shove is not a throw but is force: onto an open pit cell the pawn falls in, onto a cover it stands, cover whole, per his d_pit_only_forced (OWNER:1791304039837927694), recorded as record.json dl_gas_shove_open_pit; sc_gas_shove_into_pit's expect cites that leaf. The melee shove contest is dropped from EK (record.json d_melee_shove_not_ek, filed as RIMMANDRAKE_DESIGN_MELEE_SHOVE_INTO_PIT_CONTEST_FLOWWORKS).",
-   "gap": "g6"
-  }
+ "claims": [],
+ "claims_refused": [
+  "coverage_fixes.json is against rm-coverage-judge-1794558854, not the last verdict's rm-coverage-judge-1794593824"
  ],
  "contract": {
   "advisory": true,
-  "alarms": [],
+  "alarms": [
+   {
+    "detail": {
+     "clauses": {
+      "blast_breaks_pit_cover": 1,
+      "closed_container_holds": 1,
+      "gas_goes_clump_by_clump": 2,
+      "heavier_flies_less": 1,
+      "inv_blast_power_damage": 1,
+      "inv_closed_guard": 1,
+      "inv_container_shove": 1,
+      "inv_creature_mass_limit": 1,
+      "inv_gas_chain": 2,
+      "inv_gas_tags": 2,
+      "inv_settings": 3,
+      "inv_who_is_spared": 1,
+      "our_gases_burn": 2,
+      "settings_scale_and_switch": 3,
+      "the_spared": 1,
+      "thrown_into_pit_falls": 1
+     },
+     "repair_due": [
+      "settings_scale_and_switch",
+      "inv_settings"
+     ]
+    },
+    "family": "coverage_judge",
+    "first_at": "2026-11-13T20:02:39Z",
+    "id": "REFUSAL_NOTHING_COULD_EVER_PASS",
+    "last_at": "2026-11-13T20:02:39Z",
+    "open": true,
+    "subject": "item:RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
+    "told_at": "2026-11-13T20:02:39Z",
+    "trips": 1,
+    "why": "clause settings_scale_and_switch, inv_settings refused 3 times: criteria repair due"
+   }
+  ],
   "cached": [],
   "calibration": "UNTESTED",
   "counted": true,
-  "may_judge": true,
+  "may_judge": false,
   "ok": true,
-  "repair_due": []
+  "repair_due": [
+   "settings_scale_and_switch",
+   "inv_settings"
+  ]
  },
- "contract_reasked": [
-  "evidence 'record.json dl_closed_means_hidden' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'record.json dl_container_shove' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'record.json dl_container_shove, dl_closed_means_hidden' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'record.json dl_fire_half_off' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'record.json dl_gas_shove_open_pit, d_melee_shove_not_ek' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'record.json dl_mass_power_defaults' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'record.json inv_big_corpse_spared (scope_note)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'record.json inv_blast_power_damage, dl_mass_power_defaults' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'record.json inv_caps' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'record.json inv_creature_mass_limit, dl_mass_power_defaults' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'record.json inv_mass_limit_skip' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'record.json inv_weapon_ext_fields' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'record.json inv_who_is_spared' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence \"record.json inv_who_is_spared what ('body size 2.5 or more, pawns already in a pit, pawns carrying a pawn, flying pawns, pawns in bed or carried')\" is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json coverage_rest inv_caps' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json coverage_rest inv_mass_limit_skip, sc_settings_sweep' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_cauldron_gas' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_cauldron_gas start[1]' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_closed_containers' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_closed_containers, sc_settings_sweep' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_cover_breaks' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_gas_chain' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_gas_chain (colonist B)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_gas_chain start[1]' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_gas_chain, sc_gas_shove_into_pit' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_gas_shove_into_pit' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_lookup' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_lookup (h)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_lookup (h), (i)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_mass_and_power' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence \"scenes.json sc_mass_and_power control ('the damage-50 run with creatureMassLimit 250 ... thrumbo is thrown 1 cell')\" is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence \"scenes.json sc_mass_and_power expect ('each thrown creature alive and stunned')\" is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_mass_and_power start/expect (only a rat, a colonist, a muffalo and a thrumbo on open ground)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence \"scenes.json sc_mass_and_power start[1] ('colonist 60 to 90')\" is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence \"scenes.json sc_mass_and_power start[4] ('damage 50 ... the same at damage 100')\" is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_mass_and_power, sc_settings_sweep' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_mass_and_power, sc_spared, sc_settings_sweep' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_settings_sweep' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_settings_sweep (unpatched explosion)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence \"scenes.json sc_settings_sweep expect ('the double-damage blast throws each pawn farther than the frag grenade at default')\" is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_settings_sweep start[1]' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence \"scenes.json sc_settings_sweep start[3] ('a wall behind one colonist, a closed door behind another ... a colonist with a charged shield belt')\" is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_spared' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_spared lanes B, C' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json showcases (overlap_why inv_kernel)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json showcases (overlap_why inv_pawn_flyer)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence \"scenes.json showcases mass_and_power exercises ('inv_who_is_spared')\" is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json showcases mass_and_power, coverage_rest (inv_who_is_spared REMOVED)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json showcases storeroom_bomb_pit' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'sheet.md delegated (gas census line)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'sheet.md delegated (other mods line)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'sheet.md does' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'sheet.md does (cover line)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'sheet.md does (open shelf line)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'sheet.md does (pit line)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'sheet.md does (settings line)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'sheet.md does (shield line)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence \"sheet.md does goods_arc_spin_rebound ('a pawn the blast kills among them, fly wild ... about 1.6 times as far')\" is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'sheet.md does wall_stops_dead, shield_belt_holds' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'sheet.md does/delegated' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'src/RimMandrake/Cauldron/About/About.xml' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'src/RimMandrake/Cauldron/About/About.xml modDependencies' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'src/RimMandrake/ExplosiveKnockback/Patches/RM_Knockback_HiddenStorage.xml' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs:588-590 (Blast helper, dmg = 1)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'src/RimMandrake/rimflow/roles/designer_scene_contract.md (exercises names what the showcase really uses in play)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'tree.json closed_container_holds' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'tree.json every_good_moves' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'tree.json heavier_flies_less' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'tree.json heavier_flies_less false_pass' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence \"tree.json heavier_flies_less false_pass ('the thrumbo spared by a leftover body-size rule, not by mass')\" is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence \"tree.json heavier_flies_less oracle_proposed ('the creature mass limit at 250 kg throws the thrumbo (1 then 3 cells)')\" is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'tree.json per_weapon_tuning' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'tree.json settings_scale_and_switch' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'tree.json the_spared' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'tree.json thrown_into_pit_falls' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)"
- ],
  "gaps": [
   {
+   "criterion_verdict": "sound",
+   "criterion_why": "A scene whose expectation is 'only its own outcome changes' must pin every staged mass that the changed setting reads, or a correct build can fail it; the fix is one assertion.",
+   "evidence": [
+    "scenes.json:245",
+    "scenes.json:251",
+    "scenes.json:252",
+    "record.json:1137",
+    "sheet.md:49"
+   ],
+   "gid": "g1",
+   "ids": [
+    "settings_scale_and_switch",
+    "inv_creature_mass_limit",
+    "inv_settings"
+   ],
+   "new_since": "changed",
+   "observed": "The start stages 'a colonist, an animal, a second animal of 100 to 150 kg (asserted: mass read), a mech, a downed pawn'. Only the second animal's mass is pinned. The expect says 'each change alters only its own outcome ... the second animal thrown at default and skipped with reason too_heavy_creature at creatureMassLimit 90'. inv_creature_mass_limit weighs every living pawn, mechs included. So any animal or mech over 90 kg is also skipped at 90, and a correct build reads as a failure. Vanilla masses vary widely, from a 60 kg lancer [measured] to a 144 kg muffalo [stated in sc_mass_and_power].",
+   "return_to": 3,
+   "since": "scene:sc_settings_sweep",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json sc_settings_sweep: add a mass assertion under 90 kg to 'an animal' and 'a mech' on the start lane line (or name the extra skips in the expect)"
+   },
+   "what": "sc_settings_sweep's creatureMassLimit 90 run expects only the second animal to be skipped, but the lane's 'an animal' and 'a mech' have no mass assertion, so a correct build that also skips either one (any of them over 90 kg) fails 'each change alters only its own outcome'",
+   "where": "scenes.json sc_settings_sweep: start lane line (245), action (251), expect (252)",
+   "would_pass": "Every living pawn in the lane other than the second animal carries an asserted mass band entirely under 90 kg (e.g. 'an animal of 10 to 80 kg (asserted: mass read)', 'a mech under 90 kg, e.g. a lancer at 60 kg (asserted: mass read)'; INVALID otherwise). Or the creatureMassLimit 90 expectation names every lane pawn over 90 kg as skipped too. A script can check that each lane pawn's asserted band lies wholly on one side of 90 kg and under 150 kg."
+  },
+  {
+   "carried": true,
    "criterion_verdict": "sound",
    "criterion_why": "A scene's stated mod list must be the list it needs, and the fix itself claims to state the Cauldron's dependencies but states them wrongly.",
    "evidence": [
@@ -1294,7 +1169,7 @@
     "scenes.json:617",
     "scenes.json:821"
    ],
-   "gid": "g1",
+   "gid": "g2",
    "ids": [
     "inv_gas_chain",
     "inv_gas_tags",
@@ -1317,6 +1192,7 @@
    "would_pass": "In all five scenes the Cauldron start line names mandrake.rm.flowworks among its dependencies, asserted active, INVALID otherwise. A script comparing each scene's stated Cauldron dependencies with the Cauldron About.xml modDependencies (Harmony excepted) finds no difference."
   },
   {
+   "carried": true,
    "criterion_verdict": "sound",
    "criterion_why": "An expect that a correct build fails because the staging kills the subject is a staging defect, not a property of the mod.",
    "evidence": [
@@ -1325,12 +1201,12 @@
     "sheet.md:33",
     "tree.json:107"
    ],
-   "gid": "g2",
+   "gid": "g3",
    "ids": [
     "heavier_flies_less",
     "inv_blast_power_damage"
    ],
-   "new_since": "changed",
+   "new_since": "unfixed",
    "observed": "The scene stages 'a Bomb explosion ... at radius 2.9 ... and damage 50', then 100, one cell from a 12 kg rat and a colonist. No start line shields them from the blast's injuries. A 50-damage bomb very likely kills a rat, and a 100-damage blast can kill or down a colonist [guess ~75%]. A killed pawn is thrown by the goods rule (sheet.md:33: 'a pawn the blast kills among them, fly wild: about 1.6 times as far'), which breaks the stated cells and 'alive and stunned'. The existing proof's Blast helper (RM_KnockbackProof.cs:588-590) stages damage 1 [measured]: that convention keeps pawns unhurt, but under blastPowerFromDamage (default on) it throws at 1/50 of the force. No scene states the damage it stages.",
    "return_to": 3,
    "since": "scene:sc_mass_and_power",
@@ -1344,6 +1220,7 @@
    "would_pass": "sc_mass_and_power gains a start line: a test hook absorbs the staged explosion's injury on the four creatures (asserted: no new hediff after either run), while the journal's damage ratio is still read from the explosion's damage. The expect keeps 'alive and stunned'. The entry_point_item's prose states that scenes staging a 'grenade' or 'shell' use that projectile's real damage (ratio 1.0), with the same hook wherever survival is expected."
   },
   {
+   "carried": true,
    "criterion_verdict": "sound",
    "criterion_why": "A leaf's oracle must be what its scene checks, and an asserted start band must not admit states the expect then fails.",
    "evidence": [
@@ -1352,11 +1229,11 @@
     "scenes.json:150",
     "scenes.json:152"
    ],
-   "gid": "g3",
+   "gid": "g4",
    "ids": [
     "heavier_flies_less"
    ],
-   "new_since": "changed",
+   "new_since": "unfixed",
    "observed": "The leaf oracle reads 'the creature mass limit at 250 kg throws the thrumbo (1 then 3 cells)', but the control runs only 'the damage-50 run with creatureMassLimit 250', so the 3-cell result at double damage is never staged. From RM_KnockbackMath.cs ThrowCells (4 x 0.655 x sqrt(70/m), rounded away from zero) [measured from code], a colonist over 76.9 kg throws 2 cells at damage 50, the same as the muffalo. Masses of 77 to 90 kg pass the scene's asserted 'colonist 60 to 90', then fail 'within each run rat > colonist > muffalo > thrumbo'.",
    "return_to": 3,
    "since": "leaf:heavier_flies_less",
@@ -1370,6 +1247,7 @@
    "would_pass": "Either the control adds the damage-100 run at creatureMassLimit 250, expecting the thrumbo at 3 cells, or the leaf oracle drops 'then 3'. The colonist band reads 60 to 76 kg, so every admitted mass gives 3 cells at damage 50 and 5 at damage 100 by ThrowCells."
   },
   {
+   "carried": true,
    "criterion_verdict": "sound",
    "criterion_why": "The sweep's rule that each change alters only its own outcome is right; this clause overstates that outcome.",
    "evidence": [
@@ -1378,13 +1256,13 @@
     "sheet.md:29",
     "sheet.md:32"
    ],
-   "gid": "g4",
+   "gid": "g5",
    "ids": [
     "settings_scale_and_switch",
     "inv_settings",
     "inv_blast_power_damage"
    ],
-   "new_since": "changed",
+   "new_since": "unfixed",
    "observed": "The expect reads 'the double-damage blast throws each pawn farther than the frag grenade at default'. The lane holds 'a wall behind one colonist, a closed door behind another' and 'a colonist with a charged shield belt'. A wall or door stops a throw dead at the same cell at either damage (sheet.md:29), and an absorbing belt keeps its wearer in place at both (sheet.md:32). 'Each pawn farther' therefore fails on a correct build.",
    "return_to": 3,
    "since": "scene:sc_settings_sweep",
@@ -1398,6 +1276,7 @@
    "would_pass": "The clause names the pawns it means: the free-flying colonist, the animal, the second animal and the downed pawn each land farther (or at the cap) at default, with journal damage ratio 2.0, and exactly as far with blastPowerFromDamage off. A script reading the landing cell of each named pawn passes on a correct build."
   },
   {
+   "carried": true,
    "criterion_verdict": "sound",
    "criterion_why": "The contract's unit rule is clear: every built or in-scope capability is really exercised by a showcase or listed in coverage_rest. The owner asked for 'a single scene', not a showcase that breaks the greedy rule.",
    "evidence": [
@@ -1408,13 +1287,13 @@
     "tree.json:118",
     "record.json:760"
    ],
-   "gid": "g5",
+   "gid": "g6",
    "ids": [
     "inv_who_is_spared",
     "the_spared",
     "heavier_flies_less"
    ],
-   "new_since": "changed",
+   "new_since": "unfixed",
    "observed": "The mass_and_power showcase lists 'inv_who_is_spared' in exercises. record.json:760 defines it as 'body size 2.5 or more, pawns already in a pit, pawns carrying a pawn, flying pawns, pawns in bed or carried'. sc_mass_and_power stages only a rat, a colonist, a muffalo and a thrumbo on open ground, so none of those states. Its one spare, the thrumbo's, is inv_creature_mass_limit's. The leaf's own false_pass (tree.json:118) rejects 'the thrumbo spared by a leftover body-size rule, not by mass'. The contract counts only capabilities a showcase really uses in play, and this one is the third new capability that lifts the showcase to min_new_after_first. The inventory entry still says 'body size 2.5 or more' with no scope_note.",
    "return_to": 3,
    "since": "rest:inv_who_is_spared",
@@ -1446,7 +1325,7 @@
   "dec:d_gas_per_clump": "402bbc5764c96b84",
   "dec:d_goods_fly": "448a241c4657a67e",
   "dec:d_mass_limit": "ad1c990425f133ac",
-  "dec:d_mass_power_scene": "e97c045fe57ae164",
+  "dec:d_mass_power_scene": "4b0cb04bdde6a6f0",
   "dec:d_melee_shove_not_ek": "09c0b9367df77398",
   "dec:d_no_shelf_exemption": "77b77ce9a4c54e34",
   "dec:d_pit_only_forced": "fe813bad2a9eb4ec",
@@ -1505,7 +1384,7 @@
   "inv:inv_too_weak_skip": "c1df839f8d90f13a",
   "inv:inv_weapon_ext_fields": "a06cba857b3f3d8b",
   "inv:inv_which_blasts": "1f9ed5028c230ad3",
-  "inv:inv_who_is_spared": "39d11e846dda905f",
+  "inv:inv_who_is_spared": "60ffdecc61050e33",
   "leaf:barrage_frame_budget": "6bdc6f2532669b02",
   "leaf:blast_breaks_pit_cover": "197adad14692194d",
   "leaf:closed_container_holds": "46f1f7506c4859dc",
@@ -1535,9 +1414,11 @@
   "leaf:thrown_into_pit_falls": "27ef8a0023115acb",
   "leaf:walk_storeroom_raid": "794cd02b185227da",
   "leaf:wall_stops_dead": "c30a5f887e48c118",
-  "record:scope": "e2ed7568734329b0",
+  "record:scope": "9060a5aef607d64b",
   "rest:inv_big_corpse_spared": "d55836d9aaa27ea5",
+  "rest:inv_blast_power_damage": "eb0a7edde334e2f3",
   "rest:inv_caps": "13f558d37c127f07",
+  "rest:inv_creature_mass_limit": "103cd8d08626c7b6",
   "rest:inv_gas_chain": "73ae96de3ddb3d35",
   "rest:inv_gas_tags": "14d94587a707691b",
   "rest:inv_hose_drop": "0465a27f027ead84",
@@ -1554,22 +1435,23 @@
   "rest:inv_shield": "2bd3cf2aa515688a",
   "rest:inv_too_weak_skip": "24b1dbdf2595b9f5",
   "rest:inv_weapon_ext_fields": "5395812dc933ab5f",
+  "rest:inv_who_is_spared": "df7130bcf0b8298d",
   "scene:sc_all_fly_no_cap": "19635ff95657ca44",
   "scene:sc_barrage_perf": "eff5d70d3023fb85",
   "scene:sc_blast_kinds": "524ad8505c2eb49d",
-  "scene:sc_cauldron_gas": "128f5eec7c8bab21",
+  "scene:sc_cauldron_gas": "4882d492d34f552f",
   "scene:sc_closed_containers": "2bde8b141cb9d310",
-  "scene:sc_cover_breaks": "bf2bb3b345047394",
+  "scene:sc_cover_breaks": "f209322e1f1a6766",
   "scene:sc_door_water": "6a34c77553edcd5c",
   "scene:sc_frame_probe_check": "62826992eddc259e",
-  "scene:sc_gas_chain": "333155f305ab5cb0",
-  "scene:sc_gas_shove_into_pit": "1af56ee90587bc0f",
+  "scene:sc_gas_chain": "16f75ac33ba84fb1",
+  "scene:sc_gas_shove_into_pit": "c322256d08aed097",
   "scene:sc_goods_obstacles": "e811deda9f0cd307",
   "scene:sc_heavy_knock": "57357a89e04cbd2b",
   "scene:sc_hose_drop": "3fc2055be0bc2674",
   "scene:sc_killed_thrown": "0f97805479e66f81",
   "scene:sc_lookup": "dca36b0e2c8aef66",
-  "scene:sc_mass_and_power": "9ae1effe983622d1",
+  "scene:sc_mass_and_power": "00f69e3a70a88098",
   "scene:sc_mortar_throw": "2db7cd6ec9caa9ff",
   "scene:sc_no_careless_fall": "ecc6af71124d05e2",
   "scene:sc_only_explosions": "ab22c6add15c6c82",
@@ -1582,7 +1464,7 @@
   "scene:sc_pit_fetch": "e0ebb1047ef12cf4",
   "scene:sc_recovery": "3cfacd92a6d9c2a3",
   "scene:sc_settings_off": "f152206dd2b0f2e1",
-  "scene:sc_settings_sweep": "b0a5e3b7308c6f54",
+  "scene:sc_settings_sweep": "8c0406cc8cc4dad4",
   "scene:sc_shield": "fabfd755dbf99a72",
   "scene:sc_spared": "e9389ade99ef81d6",
   "scene:sc_storeroom_bomb_pit": "fd9846fb54b910f5",
@@ -1598,18 +1480,17 @@
   "sheet:open": "225766d67a587313",
   "sheet:pruning": "f5c123e6c916c766",
   "sheet:waived": "e7c919eee065e618",
-  "showcase:mass_and_power": "3df1fd77b1d892e8",
   "showcase:storeroom_bomb_pit": "e5e2b4e8dc12158a",
   "tree:rest": "dd28052dbc110c04"
  },
- "judge": "rm-coverage-judge-1794593824",
+ "judge": "rm-coverage-judge-1794599960",
  "mode": "delta",
- "prompt_chars": 83071,
- "reasons": "Not covered: five gaps, each an edit at stage 3, none needing the owner.\n\nClaimed fixes:\n- g1 fixed: the panel's patch exists, and the Armoury dependencies the scene states match its About.xml.\n- g2 fixed: one 250 kg container limit, stated the same way throughout.\n- g3 fixed: vanillaCratesClosed is declared and swept.\n- g4 fixed: the per-part off list matches across the leaf, sheet, record and sweep.\n- g5 unfixed: the stated Cauldron dependencies omit mandrake.rm.flowworks.\n- g6 fixed: the leaf and sheet now say a gas shove into an open pit drops the pawn, and the melee contest is filed.\n\nThe mass and blast-power change opened four gaps:\n- sc_mass_and_power stages real damage with nothing to keep the creatures alive.\n- Its leaf oracle and its colonist mass band disagree with the scene.\n- The sweep claims 'each pawn farther', which is false for its walled, door-backed and belted pawns.\n- inv_who_is_spared's coverage row was removed, and showcase mass_and_power claims it without staging any of its states.\n\nNot checked: whether LWM's weapons locker can reach 76 kg. That row is asserted INVALID otherwise, so it cannot pass falsely.",
+ "prompt_chars": 29207,
+ "reasons": "The five carried gaps (g1 to g5) look fixed in the entries shown, though none was claimed, and I do not repeat them. The flowworks dependency now matches Cauldron About.xml. sc_mass_and_power has an injury-absorbing hook, the thrumbo at the 250 kg limit is staged at 1 then 3 cells, and the colonist band is 64 to 76 kg. The kernel arithmetic, re-run from RM_KnockbackMath.cs, gives every stated cell count. The thrumbo's 240 kg checks out from its defs (Mass 60 x body size 4) [measured]. The sweep now names only the free-flying pawns as going farther. inv_who_is_spared has its coverage_rest entry back by sc_spared, and the showcase check prints 'showcase set accepted'. One change opens a new gap: the sweep's new creatureMassLimit 90 run pins only the second animal's mass. An unweighed 'animal' or 'mech' over 90 kg would also be skipped and break 'each change alters only its own outcome'. It is a one-line edit to scenes.json, so the verdict is not_covered.",
  "sheet": "234fd3c20e850bdde174efc6b3d4b20f1025dc5ddbf2c15caef766a925f0c722",
  "signed": false,
- "stopped": "released for one more look at round 11; that look was not_covered",
- "tokens": 659763,
+ "stopped": "released for one more look at round 12; that look was not_covered",
+ "tokens": 406269,
  "tree": "02900038234b11c46790c7a09b75a68a0b877cd3270c7e57c94564ef758b15b2",
  "verdict": "not_covered"
 }
