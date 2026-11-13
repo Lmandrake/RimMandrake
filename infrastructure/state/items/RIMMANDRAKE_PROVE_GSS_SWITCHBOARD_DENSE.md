@@ -21,3 +21,16 @@ That row is SHARED by design: proof_all's one save cannot hold a pending member,
 measures it. The run was then killed at its 900 s budget inside the scenes block (now 1800 s), and A2/A3 hung on the wedged game.
 Speed, same five blocks: before 580.1 s, after 466.6 s (matrix 224.1 -> 194.9, core 154.1 -> 136.1, aerial 108.8 -> 70.3,
 style 60.4 -> 36.2).
+
+## 2026-11-13 owner cards (by card 10:16 PST, OWNER:1794594173709591776)
+- **First-look save: WAIT.** *"Wait for all green (one first-look save once every MOD row passes)."* Condition: the GSS
+  first-look save is built only when a full `proof_all --live` on SteveDesktop reads 0 FAIL rows of class MOD (and every
+  UNMEASURED row named in an item); then ONE save holds everything (looks, tangle, ground including the pit). Nothing is
+  built for it before that. Standing between it and green today: M2c_no_sharp_bends (RIMMANDRAKE_UNBEND_GSS_LEAD_AT_JUNCTION_BATTERY_TWICE)
+  and round 2's pit draw fix (RIMMANDRAKE_SINK_HOSES_AND_OVERLAYS_TORCHES_BURN_IN_TAR). The standard itself is RIMMANDRAKE_PREPARE_FIRST_LOOK_MATRIX_SAVEGAME.
+- **Proof rows cite tree leaves.** `src/RimMandrake/GimmeSomeSlack/northstar/proof_leaves.py` maps every proof row to the
+  leaves of `design/concepts/GimmeSomeSlack/tree.json`; `selftest_gss_proof_leaves.py` refuses a row citing none, a leaf with no
+  row, or a north-star id outside the cited leaves' roots; proof_all's summary names any live row citing none. His
+  2026-11-07 bar is back in the tree as leaf `no_unforced_sharp_turn` (OWNER:1794107260790205247), cited by M2c_no_sharp_bends.
+- **Short cords exempt.** SC_no_two_cords_alike judges length classes of 3 cells and up (`scene_rows.SC_ALIKE_MIN_CELLS`);
+  the 2-cell class is reported as `exempt` in the row detail. `selftest_gss_no_two_alike_short.py`.

@@ -80,6 +80,32 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
+   "oracle_proposed": "the bridge `bends` probe (CordShapeAudit.Bends) over every strand on the map, ends included: tally unforced == 0, where a turn tighter than 90 degrees within one cell is forced only when a wall, building, door or socket next to it leaves no other way (row M2c_no_sharp_bends)",
+   "tier_reason": "cord geometry is built in game from the live grid; a quicktest colony gives it in 90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "no_unforced_sharp_turn",
+   "root": [
+    "never_taut_straight_cord"
+   ],
+   "leaf_kind": "experience",
+   "experience": "The player, at play zoom over a workshop floor in each of the four looks, sees every cord curve slowly, the way a real cord avoids a sharp bend: no cord turns tighter than 90 degrees within one cell unless a wall, a building, a door or a socket beside it forces the turn, and that holds at the plug and junction ends too. It must not read as a cord kinked into a hairpin or a V on open floor, or as slack bought with tight wiggles.",
+   "scenario": "Lay the core workshop scene (a battery, a generator, junctions, consumers and a wall stub) in each look, then read every cord's bends; repeat on the dense block and the mast foot, where leads are short and turns are most tempting.",
+   "false_pass": [
+    "bends read only mid-cord, so a hairpin where the cord leaves a plug or a junction passes",
+    "a bend called forced because some building is on the map, not because one sits beside the bend",
+    "cords drawn straight between their ends, so nothing bends at all and the bar is met by a taut cord"
+   ],
+   "red": "an unforced turn sharper than 90 degrees in one cell on open floor, such as the 235 degree hook on the junction-battery lead (RIMMANDRAKE_UNBEND_GSS_LEAD_AT_JUNCTION_BATTERY_TWICE)",
+   "tier_proposed": "quicktest",
+   "owner_part": "yes: cords on open floor that curve gently and kink only where a wall, building or socket makes them",
+   "by": "filer",
+   "clause_kind": "change"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
    "oracle_proposed": "every sampled point of every cord curve lies on a walkable cell or on a wall-face stub; each wall crossing has a stub on both faces; each dive has two plates; captures",
    "tier_reason": "walkability and the drawn curves exist only in game; a quicktest colony gives both",
    "cannot_show": null,

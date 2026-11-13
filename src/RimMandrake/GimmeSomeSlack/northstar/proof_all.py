@@ -1067,6 +1067,13 @@ def summary(res):
         print("  NOT PASS  %-34s %-10s %s" % (r["id"], r["status"], json.dumps(r["detail"], default=str)[:120]))
     if res.get("aborted"):
         print("  ABORTED: %s" % res["aborted"])
+    try:                                    # every row cites a tree leaf (owner, by card 2026-11-13); proof_leaves.py
+        import proof_leaves
+        nl = proof_leaves.uncited([r["id"] for r in res["rows"]])
+        if nl:
+            print("  CITES NO TREE LEAF (add it to northstar/proof_leaves.py): %s" % nl)
+    except Exception as ex:  # noqa: BLE001 -- a summary line never sinks the run
+        print("  leaf citations unread: %s" % ex)
     print("  -> %s" % res.get("out"))
 
 

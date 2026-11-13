@@ -12,11 +12,13 @@
 - 2026-11-02: "they should explain the connectivity if power between the actual conduits and devices and the visual appearance of the wires. But the wires are allowed to get there through a much more circuitous route as overly long extension cables do."
 - 2026-11-05, on the root: "Restate Honest: Faithfully represents connectivity but not precise conduit path. For the shock, needs one more line on how a Pawn ever fixes a sparking line: if they approach intending to fix it, they are safe. If they incidentally go over the sparking end with a different job, they (or anyone else) gets shocked."
 - 2026-11-05, on Modern junctions: "The right power strip is better for modern look. Junctions work better for industrial."
+- 2026-11-07 (19:07 PST): "I do agree that cords take slowly curving paths rather than straight lines often: what they avoid are sharp curves unless they must."
 - 2026-11-06, on floor-cord ends: "Every sparking end shocks, but settable in settings to those three options: None, only downed lines, or all."
 
 ## does
 - [leaf:conduit_invisible] Conduit, plain or waterproof, draws no pipe; only the loose cords show where power goes, and the power overlay still works. OWNER:1793590546413059482
 - [leaf:cords_lie_slack] Every cord lies in broad slack loops and coils, much longer than its straight line, never taut. OWNER:1793596860187785113
+- [leaf:no_unforced_sharp_turn] Cords curve slowly and avoid sharp turns unless a wall, building or socket forces one, plug and junction ends included. OWNER:1794107260790205247
 - [leaf:cords_meet_walls_at_face] Cords pile against walls and end at the wall face, never drawn across a wall or rock. OWNER:1793596860187785113
 - [leaf:strip_at_every_junction] Every 3- or 4-way junction has a joining piece with every cord plugged in: Modern draws the long power strip, Industrial the junction box, the other two their connectors. OWNER:1793909100631838579, owed
 - [leaf:dense_block_tangle] A dense block of conduit reads as one tangled heap of wires and strips
@@ -64,6 +66,7 @@
 ## pruning
 - conduit_invisible: his words, little drawn wires over otherwise-invisible conduits, north star conduit_reads_invisible
 - cords_lie_slack: his words OWNER:1793596860187785113, realistically sprawling over-length extension cables
+- no_unforced_sharp_turn: his words OWNER:1794107260790205247, what they avoid are sharp curves unless they must; put back in the tree by his card 2026-11-13
 - cords_meet_walls_at_face: his words OWNER:1793596860187785113, cables should pile against the wall
 - strip_at_every_junction: his words OWNER:1793596860187785113 and his pick OWNER:1793909100631838579
 - dense_block_tangle: north star dense_grid_reads_as_tangle, validated by him

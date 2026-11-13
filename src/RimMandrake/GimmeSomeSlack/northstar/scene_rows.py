@@ -9,6 +9,7 @@ import time
 
 SC0 = (14, 165)                    # its own plot: the matrix REGION ends at z=112, style at x=98, aerial starts at x=88
 SITE = (SC0[0] - 2, SC0[1] - 2, 66, 40)
+SC_ALIKE_MIN_CELLS = 3             # SC_no_two_cords_alike judges length classes of 3 cells and up (owner, by card 2026-11-13)
 ROWS = ["SC_doorway_run_is_one_cord", "SC_cut_never_powered_both_dead", "SC_cut_battery_each_side_both_live", "SC_bend_draws_no_joint_tee_draws_one", "SC_sparse_room_no_tangle",
         "SC_cords_all_slack", "SC_no_two_cords_alike", "SC_restring_drafted_no_job", "SC_restring_work_scheduler_takes_it",
         "SC_splicer_spared_bystander_shocked", "SC_dead_wire_shocks_nobody", "SC_dead_wire_lights_no_fuel"]
@@ -143,9 +144,14 @@ def slack_and_shapes(B, V, rows):
     if not cl:
         V.row(rows, "SC_no_two_cords_alike", "UNMEASURED", "HARNESS", t)
     else:
-        alike = sum(c.get("tooAlike") or 0 for c in cl)
-        pairs = sum(c.get("pairs") or 0 for c in cl)
-        V.row(rows, "SC_no_two_cords_alike", "UNMEASURED" if not pairs else ("PASS" if alike == 0 else "FAIL"), "MOD", {"tooAlike": alike, "pairs": pairs, "classes": cl})
+        # owner, by card 2026-11-13: cords shorter than 3 cells are exempt (little room for two short cords to differ);
+        # `length` is the C# length class (CordShape.Table), so a class below 3 is skipped. selftest_gss_no_two_alike_short.py
+        judged = [c for c in cl if (c.get("length") or 0) >= SC_ALIKE_MIN_CELLS]
+        alike = sum(c.get("tooAlike") or 0 for c in judged)
+        pairs = sum(c.get("pairs") or 0 for c in judged)
+        V.row(rows, "SC_no_two_cords_alike", "UNMEASURED" if not pairs else ("PASS" if alike == 0 else "FAIL"), "MOD",
+              {"tooAlike": alike, "pairs": pairs, "classes": judged, "exemptShorterThan": SC_ALIKE_MIN_CELLS,
+               "exempt": [c for c in cl if c not in judged]})
 
 
 def _span(B, V, a, b, batt):
