@@ -216,7 +216,10 @@ def real_ledger_fixture(tmp):
     fx.commit("infrastructure/state/ledger")
     # from the ledger just committed: guard's cached `model` module is rooted in whichever fixture imported it first
     model, glob_live = guard.rimflow_modules(fx.work)
-    state = model.replay(model.canonical_order(guard.ledger_at(fx.work, "HEAD")))
+    events = guard.ledger_at(fx.work, "HEAD")
+    if hasattr(model, "from_disk"):      # the guard's own fold (orphans()): an item filed for RELENTLESS replays as BENCH's
+        events = [model.from_disk(e) for e in events]
+    state = model.replay(model.canonical_order(events))
     closed_since = [s for s in INCIDENT_ITEMS if s in state.items and state.items[s].state in glob_live.TERMINAL]
     r = fx.push()
     if closed_since:
