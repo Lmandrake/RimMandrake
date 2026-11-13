@@ -85,6 +85,19 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "null or mismatched grids heat nothing");
                 Assert(RM_GeyserTubMath.PoolRegion(W, H, Pits(true, true), null).Length == W * H, "no vent: nothing, no throw");
             });
+            Case("GeyserTub_vent_seen_under_a_metre_of_water", () =>
+            {
+                // RIMMANDRAKE_SHOW_VENT_UNDER_ONE_METRE_BUBBLES_ON_IT (owner 2026-11-13, G2, 1 m of water: "I can no longer see
+                // the geyser"). Fresh water's seeThrough is 0.45 (Defs/LiquidTypes/LiquidDefs/RM_LiquidDefRegistry.xml). The
+                // 0.4 m vent mound under 1 m: its top 0.6 m under, its foot 1 m under; both must still be clearly seen.
+                const float water = 0.45f, level = 1.0f, mound = RM_GeyserTubMath.GeyserMetres;
+                Assert(RM_UnderLiquid.Share(level, 0f, mound) == 1f, "under 1 m the whole mound is under the line");
+                float top = RM_UnderLiquid.Seen(water, level - mound), foot = RM_UnderLiquid.Seen(water, level);
+                Assert(top >= 0.6f && foot >= 0.6f, "can-fail: the vent is seen under 1 m of fresh water (top " + top + ", foot " + foot + ")");
+                Assert(RM_UnderLiquid.BandsFor(water, level - mound, level) > 0, "its drowned part is drawn (bands > 0)");
+                Assert(RM_UnderLiquid.Seen(water, 0.5f - mound) > RM_UnderLiquid.Seen(water, level - mound), "shallower is seen better");
+                Assert(RM_UnderLiquid.Seen(0f, level - mound) == 0f, "can-fail: an opaque liquid (tar) hides it: the law can say no");
+            });
             Case("GeyserTub_afterglow_lasts_a_day_and_a_quarter", () =>
             {
                 Assert(Math.Abs(RM_GeyserTubMath.AfterglowDays(0.5f, 0.4f) - 1.25f) < 1e-4f, "can-fail: 0.5 falling 0.4 a day is 1.25 days");

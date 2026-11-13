@@ -239,11 +239,11 @@ build [measured].
 ### 4.1 Offline (no game)
 
 **O1, C#: `SelfTest/GeyserTubChecks.cs`**, registered in `SelfTest/Program.cs`, compiling the Verse-free
-`Superdeep/RM_GeyserTubMath.cs` through `RimMandrakeFlowWorks.SelfTest.csproj`: 9 cases, 44 assertions (seat = the
+`Superdeep/RM_GeyserTubMath.cs` through `RimMandrakeFlowWorks.SelfTest.csproj`: 10 cases, 49 assertions (seat = the
 shallowest cell, 7; covered past 0.4 m, 4; the pool gate, 5; reach, 2; afterglow 1.25 days, 1; plume rates and sizes,
 8; bubbles per tick average the rate, 2; bath groups follow their settings, 6; heat only through the water over the
-vent, 9).
-Run: `python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only 'GeyserTub_*'` (9/9).
+vent, 9; the vent seen under 1 m of water, 5).
+Run: `python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only 'GeyserTub_*'` (10/10).
 
 **O2, Python: `src/RimMandrake/FlowWorks/selftest_flowworks_geyser_tub.py`**: 15 checks over the shipped defs and the
 comment-blanked C# (its docstring lists them: the hediffs, job and joy giver numbers; the 18 settings declared, scribed,
