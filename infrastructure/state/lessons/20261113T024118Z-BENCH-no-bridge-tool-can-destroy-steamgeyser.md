@@ -1,0 +1,1 @@
+No bridge tool can destroy a SteamGeyser (destroyable=false: destroy_batch and clear_area skip it, reporting success). A test site must be CHOSEN geyser-free (list_things defName=SteamGeyser), not cleared: big_pit_scene.choose_origin. Also: jawa/spawn_batch passes null stuff to MakeThing for a stuffable def unless stuff is given; take the stuff from the def's own stuffCategories.
