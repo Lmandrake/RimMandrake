@@ -22,3 +22,12 @@ control and rows that each name the one defect that fails them alone. Plan and i
   bar, furnacebeast "banks heat", dry crop on ash).
 - validation.py and selftest_pyrelands_site.py read DIRTY under code_review_status: they owe a full review.
 - Untraced: why the loaded game's map 1 was RM_TheRot.
+
+## 2026-11-13 read (detached run, BENCH)
+- The four 2026-11-12 scene jobs listed above never ran: INVALID DEPLOY, stale companion DLL (HARNESS).
+- Requeued at 8c2b474bf7: S1 J20261113T054459Z-0f057a, S2 J20261113T054358Z-d106fe, S3 J20261113T054419Z-102549,
+  S4 J20261113T054436Z-323e75. Every site row is UNMEASURED SITE (S3's two shovel-yield rows PASS): no testq job loads
+  the Pyrelands site. Filed RIMMANDRAKE_LOAD_PYRELANDS_SITE_IN_TESTQ_CHAINS_RAN_BOREAL; this item waits on it.
+- a94330aa35: `_on_site` now reads `details.loadedMaps` (it read [] before). Probe J20261113T063457Z-633eac sees one
+  loaded map, BorealForest, id 0.
+- The scene verdicts are still owed: no scene has a mod verdict yet.
