@@ -51,7 +51,7 @@ RETIRED = {name: why for batch in RETIRED_BATCHES for name, why in batch.items()
 KEPT = {
     "close_audit": "redesign_final.md G20: an independent audit is kept while the gate it audits is replaced",
     "audit_prescreen": "role_launch imports it at module top (AP.STAMP); the Auditor's pre_launch runs it; only switched off",
-    "relentless_head_age": "a lesson tells agents to run it before calling the pool order a defect; written 2026-11-05",
+    "relentless_head_age": "a trap tells agents to run it before calling the pool order a defect (lesson of 2026-11-05, folded into skills/relentless/references/traps.md 2026-11-07)",
     "audit_hardflag_file": "the Auditor's pre_launch runs it after audit_prescreen; goes with that role, not alone: only switched off",
     "fixture_guard_gate": "by-hand release fixture for cli._guard_refusals, named by evidence_gate_enforce_before_deletes_2026-11-06.md",
     "replay_unreached_closes": "open CHECKER_WEAK_FIX_UNREACHED_READ_AS_PASS's contract proof runs its --selftest; judge again when that closes",
@@ -62,7 +62,7 @@ PROBES = (
     ("audit_prescreen", "import", "role_launch.py"),
     ("audit_prescreen", "run", "dispatcher_schedule.json"),
     ("relentless", "run", ".service"),
-    ("relentless_head_age", "doc", "infrastructure/state/lessons/"),
+    ("relentless_head_age", "doc", "skills/relentless/references/traps.md"),
     ("regrade", "doc", "findings_judge_prompt.md"),
 )
 

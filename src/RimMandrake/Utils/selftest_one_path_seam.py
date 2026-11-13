@@ -86,7 +86,8 @@ LITERAL = re.compile(r"""(?xi)
 def _files():
     for dirpath, dirnames, filenames in os.walk(ROOT):
         rel_dir = os.path.relpath(dirpath, ROOT).replace("\\", "/")
-        if any(rel_dir == d or rel_dir.startswith(d + "/") for d in SKIP_DIRS):
+        if any(rel_dir == d or rel_dir.startswith(d + "/") for d in SKIP_DIRS) or (
+                rel_dir.startswith("whittle/") and "/evidence" in rel_dir):   # a finished run's record, never imported
             dirnames[:] = []
             continue
         dirnames[:] = [d for d in dirnames if d not in (".git", "__pycache__")]

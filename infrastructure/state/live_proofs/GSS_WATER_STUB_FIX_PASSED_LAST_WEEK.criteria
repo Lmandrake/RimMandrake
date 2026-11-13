@@ -1,2 +1,2 @@
-- O1 L0: GSS SelfTest WaterStubChecks green (772/772): old rule with swim reads 0 water stubs (can-fail), SnapshotBlock.Of reads 2
-- A1 GREEN-MIN: on the fw_gss list (FlowWorks deep swim on), `proof_all.py --live --only matrix` scene MX_F60_T15_S0 PASSes: stubs 2, cord_edges 2, node_types {battery 1, consumer 1, stub_water 2}, strands [2,2]
+O1 L0: GSS SelfTest WaterStubChecks green (772/772): old rule with swim reads 0 water stubs (can-fail), SnapshotBlock.Of reads 2
+A1 GREEN-MIN: on the fw_gss list (FlowWorks deep swim on), `proof_all.py --live --only matrix` scene MX_F60_T15_S0 PASSes: stubs 2, cord_edges 2, node_types {battery 1, consumer 1, stub_water 2}, strands [2,2]

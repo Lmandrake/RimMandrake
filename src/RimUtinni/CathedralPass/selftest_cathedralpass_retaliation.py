@@ -40,7 +40,9 @@ CHECKS = [
     ("player-faction striker", r'holder\.Faction != Faction\.OfPlayer'),
     ("faction-13 victim only", r'__instance\.Faction != mechs'),
     ("extinguish and mental state excluded", r'dinfo\.Def == DamageDefOf\.Extinguish \|\| holder\.InMentalState'),
-    ("Cathedral map, same map", r'holder\.MapHeld != map \|\| !CathedralPass\.IsCathedralMap\(map\)'),
+    ("same map", r'map == null \|\| holder\.MapHeld != map'),
+    # CATHEDRAL_DESCENT_REVEAL_SITE_1 (988c797b12) split the gate: a strike on the descent map breaks the escort first
+    ("Cathedral map", r'!CathedralPassSettings\.cathedralPassEnabled \|\| !CathedralPass\.IsCathedralMap\(map\)'),
     ("holder must hold the pass, strike deliberate", r'!CathedralPass\.Holds\(holder\) \|\| !IsDeliberateStrike\(holder, __instance, dinfo\)'),
     ("intended target decides when set", r'if \(intended != null\)\s*\{\s*return intended == victim;'),
     ("else the current job target", r'holder\.CurJob\.targetA\.Thing == victim'),

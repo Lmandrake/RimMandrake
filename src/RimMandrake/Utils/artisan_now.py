@@ -1160,7 +1160,9 @@ def newest(d, pat):
                 if best is None or m > best[0]:
                     best = (m, e.path)
     return best
-roots = glob.glob(os.environ.get("ARTISAN_TPS_ROOT") or "/mnt/c/Users/*/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/JawaBench/tps")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import game_paths  # noqa: E402  the one LocalLow seam
+roots = glob.glob(os.environ.get("ARTISAN_TPS_ROOT") or os.path.join(game_paths.LOCALLOW, "JawaBench", "tps"))
 out["tps_roots"] = len(roots)
 sessions = []
 for r in roots:
