@@ -147,8 +147,9 @@ namespace RimMandrake.ExplosiveKnockback
         // crates (Building_Crate: ancient, hermetic, security) hold theirs in a ThingOwner, unspawned, where an explosion
         // never reaches them. A closed container is: storage whose def hides its contents (a comp or extension with a
         // bool field `showContents` set false: LWM's Deep Storage), our opt-in tag RM_KnockbackClosedStorage on any
-        // building def (Patches/RM_Knockback_ClosedContainers.xml tags Cold Storage's lockers and crock), or, with
-        // vanillaCratesClosed on, a Building_Crate. Decided per def (cached) plus the crate setting.
+        // building def that hides its contents in a way this test cannot see (we put it on none of ours: owner 2026-11-12,
+        // "Anything that draws its contents is open", so shelves, hoppers and Cold Storage's lockers and crock are open),
+        // or, with vanillaCratesClosed on, a Building_Crate. Decided per def (cached) plus the crate setting.
         private static readonly Dictionary<ThingDef, bool> closedByDef = new Dictionary<ThingDef, bool>();
 
         public static bool IsClosedContainer(Thing b)

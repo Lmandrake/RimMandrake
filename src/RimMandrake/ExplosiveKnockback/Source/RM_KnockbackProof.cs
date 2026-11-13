@@ -90,28 +90,40 @@ namespace RimMandrake.ExplosiveKnockback
             return "SET " + kv[0] + "=" + f.GetValue(null);
         }
 
-        /// <summary>"DefName=on|off": adds or removes the RM_KnockbackClosedStorage tag on a building def at runtime, so a
-        /// proof on a list with no hidden-storage mod can stand a vanilla def (e.g. Hopper) in for a closed container.
-        /// Not saved; a reload of the game restores the defs.</summary>
-        public static string CloseStorage(string arg)
+        /// <summary>"DefName": reads, never changes, whether a building def is a closed container by the shipped rule
+        /// (RM_KnockbackCompat.IsClosedContainer). Owner 2026-11-12: "Anything that draws its contents is open", so a
+        /// proof stages a container that hides its contents (LWM's Deep Storage locker, a sealed crate); it never tags a
+        /// drawing def (a shelf, a hopper) closed. Returns "CLOSED def", "OPEN def" or "REFUSED: ...".</summary>
+        public static string IsClosed(string arg)
         {
-            string[] kv = (arg ?? "").Split('=');
-            ThingDef d = kv.Length == 2 ? DefDatabase<ThingDef>.GetNamedSilentFail(kv[0]) : null;
+            ThingDef d = DefDatabase<ThingDef>.GetNamedSilentFail(arg ?? "");
             if (d == null || d.category != ThingCategory.Building)
             {
-                return "REFUSED: no building def " + kv[0];
+                return "REFUSED: no building def " + arg;
             }
-            if (d.modExtensions == null)
+            bool hides = d.HasModExtension<RM_KnockbackClosedStorage>() || HidesByDef(d)
+                || (typeof(Building_Crate).IsAssignableFrom(d.thingClass) && RimMandrakeExplosiveKnockbackSettings.vanillaCratesClosed);
+            return (hides ? "CLOSED " : "OPEN ") + d.defName;
+        }
+
+        private static bool HidesByDef(ThingDef d)
+        {
+            foreach (System.Collections.IList list in new System.Collections.IList[] { d.comps, d.modExtensions })
             {
-                d.modExtensions = new List<DefModExtension>();
+                if (list == null)
+                {
+                    continue;
+                }
+                foreach (object o in list)
+                {
+                    var f = o?.GetType().GetField("showContents", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                    if (f != null && f.FieldType == typeof(bool) && !(bool)f.GetValue(o))
+                    {
+                        return true;
+                    }
+                }
             }
-            d.modExtensions.RemoveAll(e => e is RM_KnockbackClosedStorage);
-            if (kv[1] == "on")
-            {
-                d.modExtensions.Add(new RM_KnockbackClosedStorage());
-            }
-            RM_KnockbackCompat.ForgetClosed();
-            return "CLOSED " + d.defName + "=" + (kv[1] == "on");
+            return false;
         }
 
         /// <summary>Planted breaks for the mutation checks, "name=on|off" (or "flameforce=x"): throwcap (re-impose the old
@@ -250,13 +262,11 @@ namespace RimMandrake.ExplosiveKnockback
                             // rows: container kind; cols: shells 1|3 x distance 1|2|3. Each cell: HE shells at its centre, the
                             // container d cells east holding 20 steel and 5 medicine, the same goods loose d cells west.
                             var kinds = new List<KeyValuePair<string, string>>();
-                            if (DefDatabase<ThingDef>.GetNamedSilentFail("RM_AncientStasisLocker_Refurbished") != null)
+                            // a modded container that hides what it holds (owner 2026-11-12: "Anything that draws its contents
+                            // is open", so Cold Storage's drawing lockers and crock are open and not rows here)
+                            if (DefDatabase<ThingDef>.GetNamedSilentFail("LWM_WeaponsLocker") != null)
                             {
-                                kinds.Add(new KeyValuePair<string, string>("RM_AncientStasisLocker_Refurbished", null));
-                            }
-                            if (DefDatabase<ThingDef>.GetNamedSilentFail("RM_EvaporativeCrock") != null)
-                            {
-                                kinds.Add(new KeyValuePair<string, string>("RM_EvaporativeCrock", "BlocksGranite"));
+                                kinds.Add(new KeyValuePair<string, string>("LWM_WeaponsLocker", null));
                             }
                             // the game's own 1x1 sealed crates, contents in their ThingOwner: Anomaly's unbreakable gray box, and
                             // Odyssey's ancient safe (100 HP: any HE shell in reach destroys it, measured 2026-11-12)
@@ -280,10 +290,11 @@ namespace RimMandrake.ExplosiveKnockback
                                     Prepare(o, 9);
                                     Spawn("Shell_HighExplosive", n, o);
                                     Thing box = Build(kinds[r].Key, o + new IntVec3(d, 0, 0), kinds[r].Value);
-                                    var steel = ThingMaker.MakeThing(ThingDefOf.Steel);
-                                    steel.stackCount = 20;
-                                    var med = ThingMaker.MakeThing(ThingDefOf.MedicineIndustrial);
-                                    med.stackCount = 5;
+                                    bool locker = kinds[r].Key == "LWM_WeaponsLocker"; // it accepts weapons only: two guns
+                                    var steel = ThingMaker.MakeThing(locker ? DefDatabase<ThingDef>.GetNamed("Gun_Autopistol") : ThingDefOf.Steel);
+                                    steel.stackCount = locker ? 1 : 20;
+                                    var med = ThingMaker.MakeThing(locker ? DefDatabase<ThingDef>.GetNamed("Gun_Revolver") : ThingDefOf.MedicineIndustrial);
+                                    med.stackCount = locker ? 1 : 5;
                                     if (box is IThingHolder h && !(box is Building_Storage) && h.GetDirectlyHeldThings() is ThingOwner inside)
                                     {
                                         inside.TryAdd(steel);
@@ -296,7 +307,7 @@ namespace RimMandrake.ExplosiveKnockback
                                     }
                                     Spawn("Steel", 20, o + new IntVec3(-d, 0, 0));
                                     Spawn("MedicineIndustrial", 5, o + new IntVec3(-d, 0, 1));
-                                    string label = kinds[r].Key.Replace("RM_AncientStasisLocker_Refurbished", "stasis locker (steel)").Replace("RM_EvaporativeCrock", "crock (clay)")
+                                    string label = kinds[r].Key.Replace("LWM_WeaponsLocker", "Deep Storage weapons locker (hides, two guns)")
                                         .Replace("ShelfSmall", "OPEN small shelf (control)").Replace("AncientSafe", "ancient safe (100 HP)").Replace("GrayBox", "gray box (unbreakable)") + " | " + n + " HE | d" + d + " | closed=" + RM_KnockbackCompat.IsClosedContainer(box);
                                     cells.Add(r + "|" + ci + "|" + label + "|" + (o.x - 9) + "," + (o.z - 9) + "|19,19");
                                 }
@@ -1459,39 +1470,37 @@ namespace RimMandrake.ExplosiveKnockback
 
                 case "container_thrown":
                     {
-                        // RIMMANDRAKE_THROW_CLOSED_CRATES_WHOLE_CONTENTS_RIDE_SAFE: a closed container (Cold Storage's stasis
-                        // locker, a steel box; with Cold Storage absent a small shelf tagged closed for the scene) holding
-                        // steel and medicine, a Bomb of 30 at distance 1. Control: the same medicine loose on open ground at
-                        // the mirrored distance 1, and the same steel loose too.
-                        string def = DefDatabase<ThingDef>.GetNamedSilentFail("RM_AncientStasisLocker_Refurbished") != null
-                            ? "RM_AncientStasisLocker_Refurbished" : "ShelfSmall";
-                        if (def == "ShelfSmall")
+                        // RIMMANDRAKE_THROW_CLOSED_CRATES_WHOLE_CONTENTS_RIDE_SAFE: a closed container, LWM's Deep Storage weapons
+                        // locker (1x1, 8 kg, showContents false: it hides what it holds, so closed with no tag; owner 2026-11-12,
+                        // "Anything that draws its contents is open"), holding two guns its filter accepts, a Bomb of 30 at
+                        // distance 1. Control: the same two guns loose on open ground. No hiding container loaded: refused,
+                        // never a drawing def tagged closed.
+                        const string def = "LWM_WeaponsLocker";
+                        if (DefDatabase<ThingDef>.GetNamedSilentFail(def) == null)
                         {
-                            s.restore = () => CloseStorage("ShelfSmall=off"); // before the poke: a throw still undoes it
-                            CloseStorage("ShelfSmall=on");
+                            return def + " not loaded: add LWM's Deep Storage (lwm.deepstorage) to the list";
                         }
-                        Thing box = Build(def, O(s, 1, 0), def == "ShelfSmall" ? "Plasteel" : null);
+                        Thing box = Build(def, O(s, 1, 0));
                         Track(s, "box", box);
-                        Item(s, "steel", "Steel", 20, box.Position);
-                        Item(s, "med", "MedicineIndustrial", 5, box.Position);
-                        Item(s, "looseMed", "MedicineIndustrial", 5, O(s, -1, 0));
-                        Item(s, "looseSteel", "Steel", 20, O(s, 0, -1));
-                        s.numbers["medHp"] = Hp(s.things["med"]);
-                        s.numbers["looseMedHp"] = Hp(s.things["looseMed"]);
+                        Item(s, "pistol", "Gun_Autopistol", 1, box.Position);
+                        Item(s, "revolver", "Gun_Revolver", 1, box.Position);
+                        Item(s, "looseRevolver", "Gun_Revolver", 1, O(s, -1, 0));
+                        Item(s, "loosePistol", "Gun_Autopistol", 1, O(s, 0, -1));
+                        s.numbers["revolverHp"] = Hp(s.things["revolver"]);
+                        s.numbers["looseRevolverHp"] = Hp(s.things["looseRevolver"]);
                         if (!RM_KnockbackCompat.IsClosedContainer(box))
                         {
                             return def + " is not a closed container";
                         }
-                        s.numbers["coldStorage"] = def == "ShelfSmall" ? 0 : 1;
                     }
                     Blast(s.o, 2.9f, DamageDefOf.Bomb, 30);
                     s.verdict = sc =>
                     {
-                        Thing box = sc.things["box"], st = sc.things["steel"], med = sc.things["med"], lm = sc.things["looseMed"];
-                        string ms = Moved(sc, "looseSteel", out Thing _, out int looseCells);
-                        if (looseCells < 1 || lm.Destroyed || Hp(lm) >= sc.numbers["looseMedHp"])
+                        Thing box = sc.things["box"], st = sc.things["pistol"], med = sc.things["revolver"], lm = sc.things["looseRevolver"];
+                        string ms = Moved(sc, "loosePistol", out Thing _, out int looseCells);
+                        if (looseCells < 1 || lm.Destroyed || Hp(lm) >= sc.numbers["looseRevolverHp"])
                         {
-                            return "INVALID " + sc.name + " control: loose goods did not move or were not hurt: " + ms + " looseMedHp=" + (lm.Destroyed ? -1 : Hp(lm));
+                            return "INVALID " + sc.name + " control: loose goods did not move or were not hurt: " + ms + " looseRevolverHp=" + (lm.Destroyed ? -1 : Hp(lm));
                         }
                         var c = ForThing(sc, "container", box);
                         int boxCells = box.Spawned ? Cheb(box.Position, sc.starts["box"]) : -1;
@@ -1503,10 +1512,10 @@ namespace RimMandrake.ExplosiveKnockback
                         // row shorter: fails alone when the container flies as far as the same goods loose (mass ignored)
                         bool shorter = boxCells >= 1 && boxCells < looseCells;
                         // row shielded: fails alone when blast damage reaches goods inside (planted: Plant nocontentsshield=on)
-                        bool shielded = !med.Destroyed && Hp(med) == sc.numbers["medHp"];
+                        bool shielded = !med.Destroyed && Hp(med) == sc.numbers["revolverHp"];
                         return Result(sc, thrown && together && shorter && shielded, "thrown=" + thrown + " together=" + together + " shorter=" + shorter
                             + " shielded=" + shielded + " box=" + box.def.defName + " boxCells=" + boxCells + " looseCells=" + looseCells
-                            + " medHp=" + (med.Destroyed ? -1 : Hp(med)) + "/" + sc.numbers["medHp"] + " looseMedHp=" + Hp(lm) + "/" + sc.numbers["looseMedHp"]
+                            + " revolverHp=" + (med.Destroyed ? -1 : Hp(med)) + "/" + sc.numbers["revolverHp"] + " looseRevolverHp=" + Hp(lm) + "/" + sc.numbers["looseRevolverHp"]
                             + (c.Count > 0 ? " [" + Rec(c[0]) + "]" : " no container line"));
                     };
                     return null;

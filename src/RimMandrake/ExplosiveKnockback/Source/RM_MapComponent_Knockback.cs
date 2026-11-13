@@ -374,7 +374,7 @@ namespace RimMandrake.ExplosiveKnockback
         }
 
         /// <summary>Owner ruling 2026-11-10/11 (RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED): goods on open storage (shelves,
-        /// racks) fly like floor goods; only a CLOSED container (RM_KnockbackCompat.IsClosedContainer) keeps them. Goods
+        /// hoppers, tables: anything that draws its contents, owner 2026-11-12) fly like floor goods; only a CLOSED container (RM_KnockbackCompat.IsClosedContainer) keeps them. Goods
         /// on a shelf are ordinary spawned things on the shelf's cell, so this is decided by the edifice under them. The
         /// old every-storage rule returns only with openStorageProtectsGoods. Returns the journal reason, or null.</summary>
         private static string HeldReason(Thing t, Map map)

@@ -9,7 +9,8 @@ namespace RimMandrake.ExplosiveKnockback
 {
     /// <summary>Opt-in tag (plan step 2, dl_closed_means_hidden): put on a building def to make it a CLOSED container — goods
     /// on its cells are never thrown or blast-damaged, and the container itself is thrown whole. Storage whose def hides its
-    /// contents (a `showContents` false field, LWM's Deep Storage) needs no tag.</summary>
+    /// contents (a `showContents` false field, LWM's Deep Storage) needs no tag. Never on a def that draws its contents
+    /// (owner 2026-11-12: "Anything that draws its contents is open"): a shelf, a hopper, a drawing locker is open.</summary>
     public class RM_KnockbackClosedStorage : DefModExtension
     {
     }
@@ -241,7 +242,7 @@ namespace RimMandrake.ExplosiveKnockback
                 thrownGoodsBlastDamagePercent = Mathf.Round(list.Slider(thrownGoodsBlastDamagePercent, 0f, 100f));
                 list.Label("Thrown goods hitting a wall or door: " + goodsWallImpactPerCell.ToString("0") + " damage per cell of throw left  (0 = off)");
                 goodsWallImpactPerCell = Mathf.Round(list.Slider(goodsWallImpactPerCell, 0f, 50f));
-                list.CheckboxLabeled("Open shelves and racks protect their goods", ref openStorageProtectsGoods,
+                list.CheckboxLabeled("Open shelves and tables protect their goods", ref openStorageProtectsGoods,
                     "Off (the default): goods on open storage fly like goods on the floor; only closed containers (storage that hides its contents, e.g. Deep Storage lockers) keep them. On: every storage building keeps its goods.");
                 list.CheckboxLabeled("Blasts throw closed containers whole", ref shoveClosedContainers,
                     "On (the default): a small closed container (a locker, a sealed crate, Deep Storage) hit by a blast flies a little as one unit, shorter than loose goods because it is heavier, with its contents inside. Off: it stays put. Its contents never take blast damage either way.");

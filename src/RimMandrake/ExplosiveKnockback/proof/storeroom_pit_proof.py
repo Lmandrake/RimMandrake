@@ -12,10 +12,13 @@ Three arms, each reloading the save:
   C  enabled=False (knockback off)                                         -> no goods stack and no colonist thrown
 
 --storage (RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED, owner ruling 2026-11-11 "(1) but the closed containers may
-themselves get shoved a bit"): the scene staged by stage_station1_v2.py --variant storage (two open shelves, one Hopper
-the proof tags as closed with RM_KnockbackProof.CloseStorage, since the next-load list has no hidden-storage mod).
+themselves get shoved a bit"; 2026-11-12 "Anything that draws its contents is open"): a scene of two open shelves and
+one container that hides its contents (default LWM's Deep Storage weapons locker, lwm.deepstorage on the list, holding
+weapons its filter accepts). The proof never tags a def closed; RM_KnockbackProof.IsClosed must read CLOSED for it by the
+shipped rule, else the arm fails. The 2026-11-12 save EK_SITTING_STATION1_STORAGE_20261112 holds a Hopper, which is OPEN:
+it must be restaged with a hiding container before this arm can pass.
 Two arms, each reloading the save; every row can fail alone:
-  SA  defaults, Hopper closed  -> SA_OPEN_SHELF_THROWN    every good on a shelf moved
+  SA  defaults                 -> SA_OPEN_SHELF_THROWN    every good on a shelf moved
                                   SA_CLOSED_GOODS_STAY    no good in the container thrown (at its start or carried)
                                   SA_CONTAINER_RULE       one "container" line; thrown = off its cell, not pit/pawn,
                                                           the goods with it; jolt = unmoved
@@ -38,7 +41,7 @@ ap.add_argument("--save", default=None, help="default EK_SITTING_STATION1_STORER
 ap.add_argument("--storage", action="store_true", help="run the open-shelf / closed-container arms instead")
 ap.add_argument("--shelves", default="120,122;120,126", help="shelf anchor cells (stage_station1_v2 storage layout)")
 ap.add_argument("--container", default="122,126", help="the container's cell")
-ap.add_argument("--container-def", default="Hopper", help="building def the proof tags closed")
+ap.add_argument("--container-def", default="LWM_WeaponsLocker", help="a building def that hides its contents (closed by the shipped rule, never tagged)")
 ap.add_argument("--site", default="114,117,22,15", help="census rect x,z,w,h around the room and pit")
 ap.add_argument("--pit", default="128,122,4,5", help="pit cells x,z,w,h")
 ap.add_argument("--k", type=int, default=3, help="min goods stacks that must end in pit cells (arm A)")
@@ -139,13 +142,13 @@ def buildings(rect):
 
 
 def storage_arm(name, settings):
-    """One reload: tag the container def closed, apply settings, fire the bomb, and return before/after of the shelf
+    """One reload: check the container def is closed by the shipped rule, apply settings, fire the bomb, and return before/after of the shelf
     goods, the container goods and the container itself, plus the journal lines."""
     load()
     c("jawa/static_call", type=KP, method="Settings", args="reset")
-    cs = str(c("jawa/static_call", type=KP, method="CloseStorage", args=a.container_def + "=on").get("result"))
+    cs = str(c("jawa/static_call", type=KP, method="IsClosed", args=a.container_def).get("result"))
     if not cs.startswith("CLOSED"):
-        row(name + "_CLOSE_TAG", False, cs[:120])
+        row(name + "_CONTAINER_CLOSED", False, cs[:120])
         return None
     for kv in settings:
         r = str(c("jawa/static_call", type=KP, method="Settings", args=kv).get("result"))
@@ -206,7 +209,7 @@ if a.storage:
             "%d/%d container goods at start or carried; closed_container skips %d" % (
                 len(stay), len(S["held"]), S["skips"].get("closed_container", 0)))
         # fails alone when the blast destroys the container (a staging defect, not the rule): the 25-shell storeroom
-        # destroys every Hopper (RIMMANDRAKE_STAGE_KNOCKBACK_CONTAINER_SURVIVES_BLAST); Station 5 uses 3 shells
+        # destroyed every Hopper (RIMMANDRAKE_STAGE_KNOCKBACK_CONTAINER_SURVIVES_BLAST); Station 5 uses 3 shells
         row("SA_CONTAINER_SURVIVES", S["container_after"] is not None, "container %s -> %s" % (S["container"], S["container_after"]))
         cl = S["container_lines"]
         ok, det = False, "lines %s" % cl
@@ -253,8 +256,6 @@ if C:
     row("C_OFF_JOURNAL_EMPTY", sum(C["journal"].values()) == 0, str(C["journal"]))
 load()  # leave the scene as saved, defaults restored
 c("jawa/static_call", type=KP, method="Settings", args="reset")
-if a.storage:
-    c("jawa/static_call", type=KP, method="CloseStorage", args=a.container_def + "=off")
 out = a.out or os.path.join(os.environ.get("RM_SCRATCH", r"D:\ClaudeWork\rimmandrake"), "ek_proof",
                             "storeroom_pit_%s.json" % time.strftime("%Y%m%dT%H%M%S"))
 os.makedirs(os.path.dirname(out), exist_ok=True)
