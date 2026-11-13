@@ -638,7 +638,7 @@ def main(argv=None):
         return r.get("things") or []
 
     def dig(c, n, fill=-1):
-        return B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setFill=fill) or {}
+        return B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setBodyWaterM=(fill) * 0.5) or {}
 
     def shot(name, rect):
         if a.no_shots or a.mock:
@@ -1316,7 +1316,7 @@ class FakeBridge(object):
         if tool == "jawa/flowworks_excavation_drive":
             c = (kw["x"], kw["z"])
             d = self.dug.get(c, (0, 0))[0] + int(kw.get("deepenLevels") or 0)
-            fill = int(kw.get("setFill", -1))
+            fill = (lambda m: -1 if m < 0 else int(round(m * 2)))(float(kw.get("setBodyWaterM", -1)))
             self.dug[c] = (d, fill if fill >= 0 else self.dug.get(c, (0, 0))[1])
             return {"success": True, "depth": d, "fillSet": fill >= 0}
         if tool == "jawa/build_batch":

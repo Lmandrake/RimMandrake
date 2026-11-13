@@ -2038,7 +2038,7 @@ class Live(object):
         return [m[c] for c in cells]
 
     def dig(self, c, n, oracle=True):
-        r = self.B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setFill=-1)
+        r = self.B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setBodyWaterM=-1)
         if not r.get("success"):
             raise Abort("dig %s failed: %r" % (c, r))
         if oracle and self.o is not None:
@@ -2046,7 +2046,7 @@ class Live(object):
         return r
 
     def fill(self, c, f, oracle=True):
-        r = self.B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=0, setFill=f)
+        r = self.B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=0, setBodyWaterM=(f) * 0.5)
         if oracle and self.o is not None and r.get("fillSet"):
             self.o.set_fill(c, f)
         return r
@@ -3174,7 +3174,7 @@ def phase_P(L, args):
                   "spawned; held -> 0 lip cells reachable + no map edge: %s" % "; ".join(got))
         # P2: filling in one cell of the 2x2 breaks the large pawn's square -> it is released, live
         big = ids["P_2x2_large"]
-        f = B.call("jawa/flowworks_excavation_drive", x=161, z=101, deepenLevels=0, setFill=-1, fillInLevels=1)
+        f = B.call("jawa/flowworks_excavation_drive", x=161, z=101, deepenLevels=0, setBodyWaterM=-1, fillInLevels=1)
         if L.o is not None and f.get("success"):
             L.o.set_cell((161, 101), int(f.get("depth") or 0), 0)
         rp = B.call("jawa/flowworks_pit_report", x=160, z=100)
@@ -3405,7 +3405,7 @@ def _proof(B, method, arg, typ=PROOF_TYPE):
 
 
 def _fill_fluid(L, c, f, fluid):
-    ok, _, txt = _proof(L.B, "ProofFillWithFluid", "%d,%d,%d,%s" % (c[0], c[1], f, fluid), typ=FLUIDID_TYPE)
+    ok, _, txt = _proof(L.B, "ProofFillWithFluid", "%d,%d,%g,%s" % (c[0], c[1], f * 0.5, fluid), typ=FLUIDID_TYPE)
     ok = ok and txt.startswith("FILLED")
     if ok and L.o is not None:
         L.o.set_fill(c, f)
@@ -4461,8 +4461,9 @@ class MockBridge(object):
                                  terrain=self.terrain_of(c)))
         return dict(success=True, rows=rows)
 
-    def t_jawa_flowworks_excavation_drive(self, x, z, deepenLevels=0, setFill=-1, fillInLevels=0):
+    def t_jawa_flowworks_excavation_drive(self, x, z, deepenLevels=0, setBodyWaterM=-1, fillInLevels=0):
         c = (x, z)
+        setFill = -1 if setBodyWaterM < 0 else int(round(setBodyWaterM * 2))   # this oracle models notches
         for _ in range(fillInLevels):
             self.fill_in(c)
         if fillInLevels:
@@ -4475,7 +4476,7 @@ class MockBridge(object):
                 self.o.D[c] = deepenLevels            # the oracle models 2 m at most; the game digs these to the bar's 4 m / 8 m
         fill_set = False
         if "prefill_refused" in self.faults and c in set(SCENES["E7a_fillin"]["cells"] + SCENES["E7b_overflow"]["cells"]):
-            setFill = -1                            # the write never takes (fillSet false), as a refusing engine would
+            setFill = -1                                # the write never takes (fillSet false), as a refusing engine would
         if setFill >= 0 and self.o.exc(c):
             self.put(c, setFill if "clamp_broken" in self.faults else min(setFill, self.o.D[c]))
             fill_set = True

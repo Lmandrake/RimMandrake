@@ -4,7 +4,7 @@
 // controller, timing, journal and verdict). No scenario language: each scene below is one iterator.
 // Design: design/RimMandrake/flowworks_playtest_runner_A.md, section "Coverage scenes".
 //
-// Same rules as the pilot: terrain writes, Deepen(), TrySetDriverFill(), direct spawns and the vanilla dev
+// Same rules as the pilot: terrain writes, Deepen(), TrySetDriverWaterDl(), direct spawns and the vanilla dev
 // "toggle power on" build FIXTURES only; the evidence route is always the production path (the flow pulse, the
 // pump's own Tick, a vanilla Fire's SpawnSetup hook, the river component's own MapComponentTick, the pather).
 // FlowWorks is reached strictly by reflection.
@@ -81,9 +81,11 @@ namespace JawaBench.BridgeTools
 
         private static Def QFluid(string defName) => GenDefDatabase.GetDefSilentFail(QT(QNs + "FluidDef"), defName, false);
 
-        private static int QFill(PCtx c, IntVec3 x) => Convert.ToInt32(QCall(c.exc, "FillAt", x));
+        // RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES: water is metres (WaterDlAt), never whole notches.
+        private static double QWaterM(PCtx c, IntVec3 x) => Convert.ToInt64(QCall(c.exc, "WaterDlAt", x)) * 0.5 / 10000.0;
+        private static bool QNear(double a, double b) => Math.Abs(a - b) < 0.01;
         private static string QFluidAt(PCtx c, IntVec3 x) => (QCall(c.exc, "FluidAt", x) as Def)?.defName;
-        private static bool QSetFill(PCtx c, IntVec3 x, int f, Def fluid) => (bool)QCall(c.exc, "TrySetDriverFill", x, f, fluid);
+        private static bool QSetWaterM(PCtx c, IntVec3 x, double m, Def fluid) => (bool)QCall(c.exc, "TrySetDriverWaterDl", x, (long)Math.Round(m * 20000.0), fluid);
 
         private static void QDig(PCtx c, IntVec3 x, int depth)
         {
@@ -132,7 +134,7 @@ namespace JawaBench.BridgeTools
 
         private static IEnumerable<PWait> ScnDepthFill(PCtx c)
         {
-            c.ev["route"] = "Deepen + TrySetDriverFill (fixture) read back through DepthAt/FillAt/FluidAt; vanilla PathGrid.Cost; a Goto along each strip through the real pather";
+            c.ev["route"] = "Deepen + TrySetDriverWaterDl (fixture) read back through DepthAt/WaterDlAt/FluidAt; vanilla PathGrid.Cost; a Goto along each strip through the real pather";
             Map m = c.map;
             Def water = QFluid("RM_Fluid_Water");
             Faction friend = QFriendFaction();
@@ -161,11 +163,11 @@ namespace JawaBench.BridgeTools
                     near = r.CenterCell + new IntVec3(0, 0, 8);
                     PClearPlants(m, r.Cells);
                     foreach (IntVec3 x in r.Cells) QDig(c, x, D);
-                    if (F > 0) foreach (IntVec3 x in r.Cells) QSetFill(c, x, F, water);
+                    if (F > 0) foreach (IntVec3 x in r.Cells) QSetWaterM(c, x, F * 0.5, water);
                     int bad = 0;
                     foreach (IntVec3 x in r.Cells)
                     {
-                        bool ok = c.Depth(x) == D && QFill(c, x) == F && (F == 0 ? QFluidAt(c, x) == null : QFluidAt(c, x) == water.defName);
+                        bool ok = c.Depth(x) == D && QNear(QWaterM(c, x), F * 0.5) && (F == 0 ? QFluidAt(c, x) == null : QFluidAt(c, x) == water.defName);
                         if (!ok) bad++;
                     }
                     if (bad > 0) readFails.Add(key + ":" + bad + "/" + r.Area + " cells");
@@ -213,7 +215,7 @@ namespace JawaBench.BridgeTools
                     row["crossTimedOut"] = w.timedOut;
                     row["crossReissues"] = reissues;
                     row["crossCells"] = r.Width - 1;
-                    row["fillAfterCross"] = QFill(c, mid);
+                    row["waterMAfterCross"] = QWaterM(c, mid);
                     row["fenceWalls"] = fence.Count;
                     foreach (Thing wall in fence) if (wall.Spawned) wall.Destroy(DestroyMode.Vanish);
                     QVanish(walker); walker = null;
@@ -225,9 +227,9 @@ namespace JawaBench.BridgeTools
                 IntVec3 cc = cr.CenterCell;
                 PClearPlants(m, new[] { cc });
                 QDig(c, cc, 1);
-                bool accepted = QSetFill(c, cc, 2, water);
-                int clamped = QFill(c, cc);
-                c.ev["clamp"] = PD("cell", PCell(cc), "D", c.Depth(cc), "asked", 2, "accepted", accepted, "fillAfter", clamped);
+                bool accepted = QSetWaterM(c, cc, 2 * 0.5, water);
+                double clamped = QWaterM(c, cc);
+                c.ev["clamp"] = PD("cell", PCell(cc), "D", c.Depth(cc), "askedM", 1.0, "accepted", accepted, "waterMAfter", clamped);
 
                 // movement assertions. Route PLANNING still sees ruling 17's rising dry cost (pg.Cost), but the walk
                 // itself follows the owner's 2026-10-06 ruling (FLOWWORKS_REVIEW_LOOKS_ROUND_1 item 9): "people stuck
@@ -237,7 +239,7 @@ namespace JawaBench.BridgeTools
                 object Cross(string k) => rows.First(rw => (string)rw["state"] == k).TryGetValue("crossTicks", out object v) ? v : null;
                 var fails = new List<string>();
                 if (readFails.Count > 0) fails.Add("D/F/fluid did not read back: " + string.Join(", ", readFails));
-                if (clamped != 1) fails.Add("F=2 written to a D=1 cell read back as " + clamped + " (expected clamp to 1)");
+                if (!QNear(clamped, 0.5)) fails.Add("1.0 m written to a D=1 (0.5 m) cell read back as " + clamped + " m (expected clamp to 0.5 m)");
                 int c0 = (int)Cost("D0F0"), c1 = (int)Cost("D1F0"), c2 = (int)Cost("D2F0"), c3 = (int)Cost("D3F0");
                 if (!(c1 > c0)) fails.Add("dry D1 path cost " + c1 + " not above surface " + c0);
                 if (!(c2 >= c1 && c3 >= c2)) fails.Add("dry path cost not non-decreasing D1..D3: " + c1 + "," + c2 + "," + c3);
@@ -293,8 +295,8 @@ namespace JawaBench.BridgeTools
                 PClearPlants(m, r.ExpandedBy(3).ClipInsideMap(m).Cells);
                 IntVec3 fireCell = new IntVec3(r.minX, 0, r.minZ);
                 var strip = r.Cells.Where(x => x != fireCell).OrderBy(x => x.x).ToList();
-                foreach (IntVec3 x in strip) { QDig(c, x, 1); QSetFill(c, x, 1, fl); }
-                int wet = strip.Count(x => QFill(c, x) == 1 && QFluidAt(c, x) == fl.defName);
+                foreach (IntVec3 x in strip) { QDig(c, x, 1); QSetWaterM(c, x, 1 * 0.5, fl); }
+                int wet = strip.Count(x => QNear(QWaterM(c, x), 1 * 0.5) && QFluidAt(c, x) == fl.defName);
                 if (wet != strip.Count) { c.Invalid(fl.defName + " strip: only " + wet + "/" + strip.Count + " cells hold the fixture fluid"); yield break; }
                 var lit = new Dictionary<IntVec3, int>();
                 bool Burning(IntVec3 x) => (bool)QCall(fire, "IsBurning", m, x);
@@ -313,18 +315,18 @@ namespace JawaBench.BridgeTools
                 if (kind == "control") yield return PTicks(900, Watch);
                 else yield return PUntil(() => lit.Count >= strip.Count, kind == "fuse" ? 4000 : 600, Watch);
                 // ruling 13: a detonation is consumed at once, debited on the next flow pulse (<= PulseIntervalTicks)
-                if (kind == "detonation") yield return PUntil(() => strip.All(x => QFill(c, x) == 0), 1200, Watch);
+                if (kind == "detonation") yield return PUntil(() => strip.All(x => QNear(QWaterM(c, x), 0 * 0.5)), 1200, Watch);
 
                 c.Phase("observe");
                 var order = strip.Select(x => lit.TryGetValue(x, out int t) ? t - t0 : -1).ToList();
                 int litCount = order.Count(t => t >= 0);
                 bool monotone = true;
                 for (int i = 1; i < order.Count; i++) if (order[i] >= 0 && (order[i - 1] < 0 || order[i] < order[i - 1])) monotone = false;
-                var fillsAfter = strip.Select(x => QFill(c, x)).ToList();
+                var fillsAfter = strip.Select(x => QWaterM(c, x)).ToList();
                 cases.Add(PD("fluid", fl.defName, "kind", kind, "rect", PD("x", r.minX, "z", r.minZ), "fireCell", PCell(fireCell),
                     "fireVia", viaUtility ? "FireUtility.TryStartFireIn" : "GenSpawn Fire (TryStartFireIn refused: bare cell)",
                     "cells", strip.Count, "cellsLit", litCount, "igniteTicksByDistance", order, "frontMonotone", monotone,
-                    "fillsAfter", fillsAfter, "burnedLevelsTotal", QGet(fire, "BurnedLevelsTotal")));
+                    "waterMAfter", fillsAfter, "burnedLevelsTotal", QGet(fire, "BurnedLevelsTotal")));
                 if (kind == "control" && litCount > 0) fails.Add("water strip caught fire (" + litCount + " cells)");
                 if (kind == "fuse")
                 {
@@ -384,7 +386,7 @@ namespace JawaBench.BridgeTools
             try
             {
                 QDig(c, ch, 3);
-                QSetFill(c, ch, 3, water);
+                QSetWaterM(c, ch, 3 * 0.5, water);
                 pump = QMake(pumpDef); pump.SetFaction(Faction.OfPlayer); GenSpawn.Spawn(pump, pumpCell, m, Rot4.North);
                 tank = QMake(tankDef); tank.SetFaction(Faction.OfPlayer); GenSpawn.Spawn(tank, tankPos, m, Rot4.North);
                 CompPowerTrader power = ((ThingWithComps)pump).GetComp<CompPowerTrader>();
@@ -402,7 +404,7 @@ namespace JawaBench.BridgeTools
                 c.ev["steps"] = steps;
                 c.ev["layout"] = PD("channel", PCell(ch), "pump", PCell(pumpCell), "tank", PCell(tankPos), "tankCapacity", cap, "hasPowerComp", power != null);
                 Dictionary<string, object> Snap(string label) =>
-                    PD("step", label, "channelD", c.Depth(ch), "channelF", QFill(c, ch), "channelFluid", QFluidAt(c, ch),
+                    PD("step", label, "channelD", c.Depth(ch), "channelWaterM", QWaterM(c, ch), "channelFluid", QFluidAt(c, ch),
                        "tankUnits", Units(), "tankLiquid", Liquid(), "pumpMoved", Moved(), "pumpStatus", Status(),
                        "powerOn", power?.PowerOn, "ticks", TicksGameSafe());
                 var fails = new List<string>();
@@ -412,7 +414,7 @@ namespace JawaBench.BridgeTools
                 yield return PTicks(600);
                 c.Phase("observe");
                 var a = Snap("unpowered_600"); steps.Add(a);
-                if (power != null && (Moved() != 0 || QFill(c, ch) != 3 || Units() != 0)) fails.Add("unpowered pump moved liquid");
+                if (power != null && (Moved() != 0 || !QNear(QWaterM(c, ch), 3 * 0.5) || Units() != 0)) fails.Add("unpowered pump moved liquid");
 
                 // B. powered draw: one level channel -> tank, L units
                 c.Phase("setup");
@@ -421,8 +423,8 @@ namespace JawaBench.BridgeTools
                 yield return PUntil(() => Units() > 0, 700);
                 c.Phase("observe");
                 var b = Snap("powered_draw"); steps.Add(b);
-                if (Units() != L || Liquid() != lWater.defName || QFill(c, ch) != 2)
-                    fails.Add("powered draw: expected tank " + L + " units of " + lWater.defName + " and channel F 2, got " + Units() + " " + Liquid() + " F " + QFill(c, ch));
+                if (Units() != L || Liquid() != lWater.defName || !QNear(QWaterM(c, ch), 2 * 0.5))
+                    fails.Add("powered draw: expected tank " + L + " units of " + lWater.defName + " and channel 1.0 m, got " + Units() + " " + Liquid() + " F " + QWaterM(c, ch));
 
                 // C. capacity clamp: tank one level short of full takes exactly one more level and then refuses
                 c.Phase("setup");
@@ -433,8 +435,8 @@ namespace JawaBench.BridgeTools
                 yield return PTicks(600);
                 c.Phase("observe");
                 var cc = Snap("capacity_clamp"); steps.Add(cc);
-                if (Units() != cap || QFill(c, ch) != 1 || Moved() - movedC != 1)
-                    fails.Add("capacity clamp: expected tank " + cap + ", channel F 1, one move; got " + Units() + ", F " + QFill(c, ch) + ", moves " + (Moved() - movedC));
+                if (Units() != cap || !QNear(QWaterM(c, ch), 1 * 0.5) || Moved() - movedC != 1)
+                    fails.Add("capacity clamp: expected tank " + cap + ", channel 0.5 m, one move; got " + Units() + ", water m " + QWaterM(c, ch) + ", moves " + (Moved() - movedC));
 
                 // D. wrong fluid: tank of tar may not pour into a channel holding water
                 c.Phase("setup");
@@ -446,18 +448,18 @@ namespace JawaBench.BridgeTools
                 yield return PTicks(600);
                 c.Phase("observe");
                 var dd = Snap("wrong_fluid_refused"); steps.Add(dd);
-                if (QFill(c, ch) != 1 || QFluidAt(c, ch) != water.defName || Units() != 10 * L || Moved() != movedD)
-                    fails.Add("wrong-fluid pour was not refused: channel F " + QFill(c, ch) + " " + QFluidAt(c, ch) + ", tank " + Units());
+                if (!QNear(QWaterM(c, ch), 1 * 0.5) || QFluidAt(c, ch) != water.defName || Units() != 10 * L || Moved() != movedD)
+                    fails.Add("wrong-fluid pour was not refused: channel water m " + QWaterM(c, ch) + " " + QFluidAt(c, ch) + ", tank " + Units());
 
                 // E. pour into an empty channel: tar goes in, tank pays L units a level
                 c.Phase("setup");
-                QSetFill(c, ch, 0, null);
+                QSetWaterM(c, ch, 0 * 0.5, null);
                 c.Phase("exec");
-                yield return PUntil(() => QFill(c, ch) >= 1, 700);
+                yield return PUntil(() => QWaterM(c, ch) >= 0.5 - 1e-6, 700);
                 c.Phase("observe");
                 var e = Snap("pour_into_empty"); steps.Add(e);
-                if (QFill(c, ch) < 1 || QFluidAt(c, ch) != tar.defName || Units() != 10 * L - L * QFill(c, ch))
-                    fails.Add("pour: expected tar in the channel and the tank down " + L + " a level; got F " + QFill(c, ch) + " " + QFluidAt(c, ch) + ", tank " + Units());
+                if (QWaterM(c, ch) < 0.5 - 1e-6 || QFluidAt(c, ch) != tar.defName || Math.Abs(Units() - (10 * L - L * QWaterM(c, ch) / 0.5)) > 0.5)
+                    fails.Add("pour: expected tar in the channel and the tank down " + L + " a level; got water m " + QWaterM(c, ch) + " " + QFluidAt(c, ch) + ", tank " + Units());
 
                 if (power == null) c.ev["note"] = "pump def has no CompPowerTrader; the unpowered step proves nothing";
                 if (fails.Count == 0) c.Pass("unpowered idle; powered draw 1 level = " + L + " units; tank clamps at " + cap + "; tar refused into water; tar poured into an empty channel");
@@ -633,7 +635,7 @@ namespace JawaBench.BridgeTools
                     PClearPlants(m, r.Cells);
                     var cells = r.Cells.OrderBy(x => x.x).ToList();
                     foreach (IntVec3 x in cells) QDig(c, x, 2);
-                    QSetFill(c, cells[0], 2, water); QSetFill(c, cells[1], 2, water);
+                    QSetWaterM(c, cells[0], 2 * 0.5, water); QSetWaterM(c, cells[1], 2 * 0.5, water);
                     // A natural pond on the WEST end. Without a supplying source (or a sink) every cell's flow-order
                     // hops are equal, and at equal depth MayFlowBetween only lets gravity move a level
                     // (FLOWWORKS_CHANNEL_OSCILLATION_1) - so a sourceless flat channel never spreads, door or no door.
@@ -654,10 +656,11 @@ namespace JawaBench.BridgeTools
                         QCall(door, "DoorOpen", 2000000);
                     }
                     bool openAtStart = door is Building_Door bd0 && bd0.Open;
-                    int firstWetBeyond = -1, maxBeyond = 0, t0 = TicksGameSafe();
+                    int firstWetBeyond = -1, t0 = TicksGameSafe();
+                    double maxBeyond = 0;
                     void Watch()
                     {
-                        int beyond = QFill(c, cells[3]) + QFill(c, cells[4]);
+                        double beyond = QWaterM(c, cells[3]) + QWaterM(c, cells[4]);
                         if (beyond > maxBeyond) maxBeyond = beyond;
                         if (beyond > 0 && firstWetBeyond < 0) firstWetBeyond = TicksGameSafe() - t0;
                     }
@@ -667,7 +670,7 @@ namespace JawaBench.BridgeTools
                     bool openAtEnd = door is Building_Door bd1 && bd1.Open;
                     bool passed = maxBeyond > 0;
                     cases.Add(PD("case", run.label, "door", run.def.defName, "openAtStart", openAtStart, "openAtEnd", openAtEnd,
-                        "fillsAfter", cells.Select(x => QFill(c, x)).ToList(), "gateCell", PCell(gate),
+                        "waterMAfter", cells.Select(x => QWaterM(c, x)).ToList(), "gateCell", PCell(gate),
                         "liquidReachedFarSide", passed, "ticksToFarSide", firstWetBeyond, "maxFarSideLevels", maxBeyond,
                         "expected", run.expectPass ? "passes" : "holds"));
                     if (passed != run.expectPass)
@@ -703,7 +706,7 @@ namespace JawaBench.BridgeTools
         {
             var lines = new List<string>();
             foreach (IntVec3 x in channel)
-                lines.Add("cell " + x.x + " " + x.z + " " + c.Depth(x) + " " + QFill(c, x) + " " + (QFluidAt(c, x) ?? "-"));
+                lines.Add("cell " + x.x + " " + x.z + " " + c.Depth(x) + " " + QWaterM(c, x) + " " + (QFluidAt(c, x) ?? "-"));
             object stock = QGet(c.exc, "Stock");
             object body = QCall(stock, "BodyAt", c.map, pondCell, c.exc);
             lines.Add(body == null ? "body none" :

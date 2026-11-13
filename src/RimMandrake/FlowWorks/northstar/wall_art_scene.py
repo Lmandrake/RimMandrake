@@ -97,11 +97,11 @@ def stage():
     for name, (dx, n, fill) in PITS.items():
         for i in range(3):
             for j in range(3):
-                call("jawa/flowworks_excavation_drive", x=OX + dx + i, z=OZ + j, deepenLevels=n, setFill=-1, fillInLevels=0)
+                call("jawa/flowworks_excavation_drive", x=OX + dx + i, z=OZ + j, deepenLevels=n, setBodyWaterM=-1, fillInLevels=0)
         if fill:
             for i in range(3):
                 for j in range(3):
-                    call("jawa/flowworks_excavation_drive", x=OX + dx + i, z=OZ + j, deepenLevels=0, setFill=fill, fillInLevels=0)
+                    call("jawa/flowworks_excavation_drive", x=OX + dx + i, z=OZ + j, deepenLevels=0, setBodyWaterM=(fill) * 0.5, fillInLevels=0)
         log("pit", {"name": name, "look_centre": look(OX + dx + 1, OZ + 1)})
     # the player's own dig order on a fresh 3x3
     for c in (call("rimworld/list_colonists").get("colonists") or []):
@@ -158,7 +158,7 @@ def submerge():
     for name, dx, kind, fill in SUBMERGE:
         for i in range(3):
             for j in range(3):
-                call("jawa/flowworks_excavation_drive", x=OX + dx + i, z=SUB_OZ + j, deepenLevels=4, setFill=-1, fillInLevels=0)
+                call("jawa/flowworks_excavation_drive", x=OX + dx + i, z=SUB_OZ + j, deepenLevels=4, setBodyWaterM=-1, fillInLevels=0)
     call("rimworld/set_god_mode", enabled=True)
     for name, dx, kind, fill in SUBMERGE:
         if kind == "ladder":
@@ -172,7 +172,7 @@ def submerge():
         if fill:
             for i in range(3):
                 for j in range(3):
-                    call("jawa/flowworks_excavation_drive", x=OX + dx + i, z=SUB_OZ + j, deepenLevels=0, setFill=fill, fillInLevels=0)
+                    call("jawa/flowworks_excavation_drive", x=OX + dx + i, z=SUB_OZ + j, deepenLevels=0, setBodyWaterM=(fill) * 0.5, fillInLevels=0)
     time.sleep(2)   # the re-mesh the fill change asked for
     for name, dx, kind, fill in SUBMERGE:
         # the north-middle square: the ladder hangs there; spikes stand there (the centre square refuses them)
@@ -182,7 +182,7 @@ def submerge():
             share = float(kv.get("share", "nan"))
         except ValueError:
             share = float("nan")
-        found = not text.startswith("REFUSED") and kv.get("depth") == "4" and kv.get("fill") == str(fill)
+        found = not text.startswith("REFUSED") and kv.get("depth") == "4" and abs(float(kv.get("waterM", "nan")) - fill * 0.5) < 0.01
         row("%s_found_at_depth4_fill%d" % (name, fill), found, text)
         row("%s_share_%.2f_to_%.2f" % (name, lo, hi), found and lo <= share <= hi, kv.get("share"))
         if kind == "ladder":

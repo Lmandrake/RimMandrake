@@ -111,7 +111,7 @@ elif not V.prepare_site(B, rect, rows, "PUMP_site_ready"):
     row("PUMP_canal_fills", "UNMEASURED", {"why": "site not ready"})
 else:
     for c in canal:
-        call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=1, setFill=-1)
+        call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=1, setBodyWaterM=-1)
     ops = ["RM_LiquidPump:%d,%d" % pump, "Battery:%d,%d" % battery] + ["RM_UniversalPipe:%d,%d" % p for p in pipes] + \
           ["RM_LiquidTank:%d,%d" % tank]
     bb = call("jawa/build_batch", ops=";".join(ops), faction="player", wipeExisting=False)
@@ -178,7 +178,7 @@ call("jawa/clear_area", rect="%d,%d,%d,%d" % srect, dryRun=False)
 call("jawa/set_roof_batch", ops="None:%d,%d,%d,%d" % srect)
 call("jawa/set_terrain_batch", ops="Soil:30,2,18,16")
 for c in canal2:
-    call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=1, setFill=-1)
+    call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=1, setBodyWaterM=-1)
 cls = call("jawa/flowworks_body_report", x=29, z=14, classify=True)
 res["sluice_body"] = cls.get("body")
 sb = call("jawa/build_batch", ops="RM_Sluice:%d,%d" % GATE, faction="player", stuff="WoodLog", wipeExisting=False)

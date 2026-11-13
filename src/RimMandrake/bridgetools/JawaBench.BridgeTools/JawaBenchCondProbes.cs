@@ -6,7 +6,7 @@
 //
 // Rules this file keeps (and selftest_cond_probes.py checks it still does):
 // - READ-ONLY. Engine getters, fields and properties only: no RNG, no method call on a mod object except the three
-//   FlowWorks read getters (DepthAt/FillAt/IsSourceCell), no write, no Find.CurrentMap retarget after bind.
+//   FlowWorks read getters (DepthAt/WaterDlAt/IsSourceCell), no write, no Find.CurrentMap retarget after bind.
 // - Every probe is pinned to p.MapId (a Map.uniqueID) at bind. A UI map switch never moves it; a map that is gone
 //   reads `gone`.
 // - A non-ok reading is UNKNOWN, never 0 or false: `gone` (pawn/thing despawned, destroyed or dead; detail says which),
@@ -200,7 +200,7 @@ namespace JawaBench.BridgeTools
                 var fw = FwFor(m, out err);
                 if (fw == null) return St("unbound", err);
                 if (name == "fw.depth") return Ok((double)fw.Depth(c));
-                if (name == "fw.fill") return Ok((double)fw.Fill(c));
+                if (name == "fw.water_m") return Ok(fw.WaterDl(c) * 0.5 / 10000.0);   // exact metres of water (no whole notches)
                 return Ok(fw.Source(c));
             };
         }
@@ -208,7 +208,8 @@ namespace JawaBench.BridgeTools
         sealed class FwReads
         {
             public MapComponent Comp;
-            public Func<IntVec3, byte> Depth, Fill;
+            public Func<IntVec3, byte> Depth;
+            public Func<IntVec3, long> WaterDl;
             public Func<IntVec3, bool> Source;
         }
 
@@ -225,15 +226,15 @@ namespace JawaBench.BridgeTools
             if (comp == null) { err = "FlowWorks loaded but map " + m.uniqueID + " has no RM_MapComponent_Excavation"; return null; }
             if (FwCache.TryGetValue(m.uniqueID, out r) && ReferenceEquals(r.Comp, comp)) return r;
             var arg = new[] { typeof(IntVec3) };
-            MethodInfo md = type.GetMethod("DepthAt", arg), mf = type.GetMethod("FillAt", arg), ms = type.GetMethod("IsSourceCell", arg);
-            if (md == null || mf == null || ms == null || md.ReturnType != typeof(byte) || mf.ReturnType != typeof(byte)
+            MethodInfo md = type.GetMethod("DepthAt", arg), mw = type.GetMethod("WaterDlAt", arg), ms = type.GetMethod("IsSourceCell", arg);
+            if (md == null || mw == null || ms == null || md.ReturnType != typeof(byte) || mw.ReturnType != typeof(long)
                 || ms.ReturnType != typeof(bool))
-            { err = "RM_MapComponent_Excavation lacks DepthAt/FillAt(IntVec3)->byte or IsSourceCell(IntVec3)->bool"; return null; }
+            { err = "RM_MapComponent_Excavation lacks DepthAt(IntVec3)->byte, WaterDlAt(IntVec3)->long or IsSourceCell(IntVec3)->bool"; return null; }
             r = new FwReads
             {
                 Comp = comp,
                 Depth = (Func<IntVec3, byte>)Delegate.CreateDelegate(typeof(Func<IntVec3, byte>), comp, md),
-                Fill = (Func<IntVec3, byte>)Delegate.CreateDelegate(typeof(Func<IntVec3, byte>), comp, mf),
+                WaterDl = (Func<IntVec3, long>)Delegate.CreateDelegate(typeof(Func<IntVec3, long>), comp, mw),
                 Source = (Func<IntVec3, bool>)Delegate.CreateDelegate(typeof(Func<IntVec3, bool>), comp, ms),
             };
             FwCache[m.uniqueID] = r;

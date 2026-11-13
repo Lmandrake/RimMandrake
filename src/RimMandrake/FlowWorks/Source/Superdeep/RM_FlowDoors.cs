@@ -428,9 +428,10 @@ namespace RimMandrake.FlowWorks
 				{
 					continue;   // a footprint cell vanilla's own affordance already carries (a part on the bank, part in the cut)
 				}
-				int dug = eng.ExcavatedDepthAt(cell), fill = eng.FillAt(cell);
-				if (door ? !RM_PitTrapMath.FlowDoorStandsOn(false, true, dug, fill)
-					: !RM_PitTrapMath.StandsInDugWater(false, true, true, dug, fill))
+				int dug = eng.ExcavatedDepthAt(cell);
+				bool wet = eng.WetAt(cell);
+				if (door ? !RM_PitTrapMath.FlowDoorStandsOn(false, true, dug, wet)
+					: !RM_PitTrapMath.StandsInDugWater(false, true, true, dug, wet))
 				{
 					return;
 				}
@@ -677,9 +678,9 @@ namespace RimMandrake.FlowWorks
 			}
 			RM_MapComponent_Excavation eng = map.GetComponent<RM_MapComponent_Excavation>();
 			int depth = eng == null ? 0 : eng.DepthAt(cell);
-			int fill = eng == null ? 0 : eng.FillAt(cell);
+			long water = eng == null ? 0 : eng.WaterDlAt(cell);
 			return "DOOR " + door.def.defName + " open=" + door.Open + " seals=" + SealsLiquid(door) +
-				" | depth " + depth + " fill " + fill;
+				" | depth " + depth + " water " + water + "dL";
 		}
 	}
 }

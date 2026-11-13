@@ -53,10 +53,10 @@ check("break: a Replace carrying a sibling field -> red",
 
 
 # FLOOD_DRIVER_OWNERSHIP_CONTRACT_1 A2: the flood driver writes FlowWorks fill only through the outcome contract,
-# never the bool TrySetDriverFill (whose false conflates NotOwned with Refused).
+# never the bool TrySetDriverWaterDl (whose false conflates NotOwned with Refused).
 import re  # noqa: E402
 
-OLD_BOOL = re.compile(r"\bTrySetDriverFill\s*\(")
+OLD_BOOL = re.compile(r"\bTrySetDriverWaterDl\s*\(")
 
 
 def bool_driver_calls(text):
@@ -70,11 +70,11 @@ for dp, _, files in os.walk(src_dir):
         if f.endswith(".cs") and "/obj/" not in dp.replace("\\", "/") + "/":
             t = open(os.path.join(dp, f), encoding="utf-8").read()
             calls += ["%s: %s" % (f, c) for c in bool_driver_calls(t)]
-            outcome_calls += len(re.findall(r"\bTrySetDriverFillOutcome\s*\(", t))
-check("contract: no bool TrySetDriverFill call in CrackedLands source", calls == [], "; ".join(calls))
-check("sanity: the recede restores through TrySetDriverFillOutcome", outcome_calls >= 1, outcome_calls)
+            outcome_calls += len(re.findall(r"\bTrySetDriverWaterDlOutcome\s*\(", t))
+check("contract: no bool TrySetDriverWaterDl call in CrackedLands source", calls == [], "; ".join(calls))
+check("sanity: the recede restores through TrySetDriverWaterDlOutcome", outcome_calls >= 1, outcome_calls)
 check("break: the old bool call -> red",
-      bool_driver_calls("(k, prior) => excavation?.TrySetDriverFill(Cell(k), prior));") != [])
+      bool_driver_calls("(k, prior) => excavation?.TrySetDriverWaterDl(Cell(k), prior));") != [])
 
 # FLOOD_SOAK_MARKERS_BUILD_AIMED_AT_CANALS: the map-control wiring reader is green on the tree and goes red on each break.
 check("map controls: wiring green", V._map_control_findings() == [], "; ".join(V._map_control_findings()))

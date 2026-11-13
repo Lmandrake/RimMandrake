@@ -402,13 +402,13 @@ class Walk(object):
         return r
 
     def dig(self, c, n, fill=-1):
-        return self._drive("dig", c, deepenLevels=n, setFill=fill)
+        return self._drive("dig", c, deepenLevels=n, setBodyWaterM=(fill) * 0.5)
 
     def set_fill(self, c, f):
-        return self._drive("set_fill", c, deepenLevels=0, setFill=f)
+        return self._drive("set_fill", c, deepenLevels=0, setBodyWaterM=(f) * 0.5)
 
     def fill_in(self, c, n=1):
-        return self._drive("fill_in", c, deepenLevels=0, setFill=-1, fillInLevels=n)
+        return self._drive("fill_in", c, deepenLevels=0, setBodyWaterM=-1, fillInLevels=n)
 
     def build(self, ops, stuff=None):
         kw = dict(ops=ops, faction="player", wipeExisting=False)

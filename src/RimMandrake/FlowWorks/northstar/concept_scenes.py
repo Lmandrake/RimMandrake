@@ -149,7 +149,7 @@ def scene_hole_prison(B, snapshot, reload_snapshot, receipt, *, relative=True, a
         call('jawa/set_terrain_batch', ops='Soil:'+RECT)
         depth = 6 if relative else 4
         for x, z in PIT:
-            call('jawa/flowworks_excavation_drive', x=x, z=z, deepenLevels=depth, setFill=0)
+            call('jawa/flowworks_excavation_drive', x=x, z=z, deepenLevels=depth, setBodyWaterM=0.0)
         sc('RebuildAllMaps', typ=ROOMS)
         call('jawa/map_commit')
         # Read each cell's real D/F; no bed anywhere in the scene until the remote-bed phase.

@@ -256,7 +256,7 @@ namespace RimMandrake.FlowWorks.Machinery
 		{
 			// exact-level water only (shipped on): with it off a dug square gives and takes whole notches, and a part-notch take
 			// would strip the notches and report nothing moved
-			if (map == null || !RM_HoseSettings.gravityLevellingEnabled || !RM_HoseSettings.enabled || !RM_MapComponent_Excavation.LevelExact)
+			if (map == null || !RM_HoseSettings.gravityLevellingEnabled || !RM_HoseSettings.enabled)
 			{
 				// switched off: the readout must not keep showing the last cycle's "flowing"
 				if (map != null && states.TryGetValue(map, out MapState off))

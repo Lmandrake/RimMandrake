@@ -644,7 +644,7 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			int notchTicks = RM_FireMath.TicksPerCanalLevel(RimMandrakeFlowWorksSettings.burnDaysPerNotch);
-			bool exact = RM_MapComponent_Excavation.LevelExact;
+			bool exact = true;
 			int U = RM_LevelSolve.U;
 			scratch.Clear();
 			scratch.AddRange(burning.Keys);
@@ -693,7 +693,7 @@ namespace RimMandrake.FlowWorks
 						{
 							burnedLevelsTotal += 1f;
 						}
-						if (ex.FillAt(c) == 0)
+						if (!ex.WetAt(c))
 						{
 							Extinguish(map, c, i, true);
 							break;
@@ -1284,7 +1284,7 @@ namespace RimMandrake.FlowWorks
 				return "REFUSED: arg must be x,z";
 			IntVec3 c = new IntVec3(x, 0, z);
 			if (!ex.LiquidFire.IgniteNow(map, ex, c))
-				return "REFUSED: fire off or nothing burnable at " + c + " (fluid " + (ex.FluidAt(c)?.defName ?? "none") + ", F=" + ex.FillAt(c) + ")";
+				return "REFUSED: fire off or nothing burnable at " + c + " (fluid " + (ex.FluidAt(c)?.defName ?? "none") + ", water=" + ex.WaterDlAt(c) + "dL)";
 			return "LIT " + c + " | " + ex.LiquidFire.Report();
 		}
 

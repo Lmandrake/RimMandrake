@@ -51,10 +51,10 @@ namespace RimMandrake.FlowWorks.Machinery
 				{
 					// PUMP_CANAL_FEED_FIX_ONE_NOTCH_ONLY: exact-level water: any room in the canal the square joins (a sheet's canal
 					// has no whole notch in any one square); whole-notch water: a whole notch in the square
-					if (c.InBounds(map) && (RM_MapComponent_Excavation.LevelExact ? ex.PourRoomDl(c, fluid, 1) > 0 : ex.CanPourLevel(c, fluid)))
+					if (c.InBounds(map) && ex.PourRoomDl(c, fluid, 1) > 0)
 					{
 						cells.Add(c);
-						cd.Add((ex.DepthAt(c) - ex.FillAt(c), ex.FillAt(c) > 0, ex.FluidAt(c)));
+						cd.Add(((int)ex.RoomDlAt(c), ex.WaterDlAt(c) > 0, ex.FluidAt(c)));   // room in dL; wet = any liquid (fluids never mix)
 					}
 				}
 				var tk = new List<(bool canProvide, FluidDef fluid)> { (true, fluid) };
@@ -69,7 +69,7 @@ namespace RimMandrake.FlowWorks.Machinery
 				// whole level still takes what fits, as the Body leg does); whole-notch water: a whole level of room
 				foreach (IntVec3 c in new[] { end }.Concat(GenAdj.CellsAdjacent8Way(new TargetInfo(end, map))))
 				{
-					if (c.InBounds(map) && (RM_MapComponent_Excavation.LevelExact ? BodyRoomDl(ex, c, fluid, 1) > 0 : ex.CanReturnLevels(c, fluid, 1)))
+					if (c.InBounds(map) && BodyRoomDl(ex, c, fluid, 1) > 0)
 					{
 						cell = c;
 						return RM_OutletKind.Body;
@@ -120,25 +120,15 @@ namespace RimMandrake.FlowWorks.Machinery
 			}
 		}
 
-		/// <summary>A pond's room in dL (exact-level), or one whole level or nothing (whole-notch water).</summary>
+		/// <summary>A pond's room in dL.</summary>
 		private static long BodyRoomDl(RM_MapComponent_Excavation ex, IntVec3 cell, FluidDef fluid, long want)
 		{
-			if (RM_MapComponent_Excavation.LevelExact)
-			{
-				return ex.ReturnRoomDl(cell, fluid, want);
-			}
-			int level = RM_PumpMath.TankUnitsPerLevel;
-			return want >= level && ex.CanReturnLevels(cell, fluid, (int)(want / level)) ? want - want % level : 0;
+			return ex.ReturnRoomDl(cell, fluid, want);
 		}
 
 		private static bool BodyTake(RM_MapComponent_Excavation ex, IntVec3 cell, FluidDef fluid, long dl)
 		{
-			if (RM_MapComponent_Excavation.LevelExact)
-			{
-				return ex.TryReturnDl(cell, fluid, dl);
-			}
-			int level = RM_PumpMath.TankUnitsPerLevel;
-			return dl % level == 0 && ex.TryReturnLevels(cell, fluid, (int)(dl / level));
+			return ex.TryReturnDl(cell, fluid, dl);
 		}
 
 		/// <summary>True when the outlet takes whole levels only (a channel or a pond), false for a spill.</summary>

@@ -109,7 +109,7 @@ def main():
         return 2
     moat = {P(x, z) for x in range(0, 26) for z in (3, 4)}
     for c in sorted(moat):
-        B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=MOAT_NOTCHES, setFill=-1)
+        B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=MOAT_NOTCHES, setBodyWaterM=-1)
     ex = B.call("jawa/flowworks_excavation_rect", x=P(0, 3)[0], z=P(0, 3)[1], w=26, h=2, includeTerrain=False) or {}
     shallow = moat_depth_problems(ex.get("rows"), moat)
     if not ex.get("success") or shallow:

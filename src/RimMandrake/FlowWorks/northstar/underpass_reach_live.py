@@ -117,7 +117,7 @@ def run(clause, B, origin, live=True):
             return "UNMEASURED", dict(det, why="site not prepared", site=bad[:2])
     for c, n in s["digs"]:
         x, z = P(c)
-        B.call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=n, setFill=-1)
+        B.call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=n, setBodyWaterM=-1)
     a, b = s["bridge"]
     det["build"] = static("ProofBuild", "%s;%s;steel;god" % (xz(a), xz(b)))
     if "ok=True" not in det["build"]:

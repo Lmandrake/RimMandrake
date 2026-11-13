@@ -54,7 +54,7 @@ ANTI-GUESSING NOTES
 - A freshly built consumer reads unpowered for ~100-170 ticks on vanilla's net (proof_hose measured): lamp rows POLL.
 - UNVERIFIED LAYOUT GUESSES (first live run decides): a 2x2 tank / reel occupies Position..Position+1 on both axes; a pit
   cover stands only on a superdeep (4 m) square; the collapse wreck may block spawning on a fallen square (then the row is
-  UNMEASURED/SITE, never FAIL); setFill=4 on an 8-notch pit leaves water the intake can reach.
+  UNMEASURED/SITE, never FAIL); setBodyWaterM=2.0 on an 8-notch pit leaves water the intake can reach.
 """
 import argparse
 import contextlib
@@ -217,7 +217,7 @@ def main(argv=None):
         return None if c0.get(f) is None or c1.get(f) is None else c1[f] - c0[f]
 
     def dig(c, n=DEEP, fill=-1):
-        return B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setFill=fill) or {}
+        return B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setBodyWaterM=(fill) * 0.5) or {}
 
     def build(*ops):
         ops = [o for o in ops if o]
@@ -923,8 +923,8 @@ class FakeBridge(object):
         if tool == "jawa/flowworks_excavation_drive":
             c = (kw.get("x"), kw.get("z"))
             n = int(kw.get("deepenLevels") or 0)
-            if kw.get("setFill", -1) not in (-1, None):
-                self.water[c] = int(kw["setFill"]) * 500
+            if (lambda m: -1 if m < 0 else int(round(m * 2)))(float(kw.get("setBodyWaterM", -1))) not in (-1, None):
+                self.water[c] = int(round(float(kw["setBodyWaterM"]) * 2)) * 500
             if n > 0:
                 self.dug[c] = self.dug.get(c, 0) + n
                 if self._has(c, "RM_UniversalPipe") and "dig_no_break" not in self.f:

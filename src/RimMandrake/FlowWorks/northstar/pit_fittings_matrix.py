@@ -213,11 +213,11 @@ def stage():
             for j in range(P):
                 n = step_depth(d) if (i, j) == STEP_SQ else d
                 if n:
-                    call("jawa/flowworks_excavation_drive", x=x0 + i, z=z0 + j, deepenLevels=n, setFill=-1, fillInLevels=0)
+                    call("jawa/flowworks_excavation_drive", x=x0 + i, z=z0 + j, deepenLevels=n, setBodyWaterM=-1, fillInLevels=0)
     px, pz = probe()
     for i in range(3):
         for j in range(3):
-            call("jawa/flowworks_excavation_drive", x=px + i, z=pz + j, deepenLevels=PROBE_D, setFill=-1, fillInLevels=0)
+            call("jawa/flowworks_excavation_drive", x=px + i, z=pz + j, deepenLevels=PROBE_D, setBodyWaterM=-1, fillInLevels=0)
     # HARNESS (2026-11-13): the dug-swim set behind ClimbDepthAt is derived and refreshed only every
     # SwimRefreshTicks (60). On a site that was filled before, a paused restage read each pit's wall
     # above the OLD water (wall = depth - old fill), and every sheer-drop fitting in columns F3+ was
@@ -313,10 +313,10 @@ def fill():
     for key, d, f, fluid, x0, z0 in cells():
         if f:
             fl = "," + fluid if fluid else ""
-            log("fill_" + key, static("ProofFillRect", "%d,%d,%d,%d,%d%s" % (x0, z0, P, P, f, fl)))
+            log("fill_" + key, static("ProofFillRect", "%d,%d,%d,%d,%g%s" % (x0, z0, P, P, f * 0.5, fl)))
             sd = step_depth(d)
             if sd:   # the step holds the same water surface: its own floor is d - sd notches higher
-                log("fill_step_" + key, static("ProofFillRect", "%d,%d,1,1,%d%s" % (x0 + STEP_SQ[0], z0 + STEP_SQ[1], max(0, f - (d - sd)), fl)))
+                log("fill_step_" + key, static("ProofFillRect", "%d,%d,1,1,%g%s" % (x0 + STEP_SQ[0], z0 + STEP_SQ[1], max(0, f - (d - sd)) * 0.5, fl)))
     time.sleep(3)   # the re-mesh the fill change asked for
 
 

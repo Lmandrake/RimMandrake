@@ -89,10 +89,8 @@ namespace RimMandrake.FlowWorks
             RM_MapComponent_Excavation ex = map.GetComponent<RM_MapComponent_Excavation>();
             if (ex == null) { Log.Error("[RMFlowWorksDebug] no RM_MapComponent_Excavation on this map."); return; }
             byte d = ex.DepthAt(c);
-            byte f = ex.FillAt(c);
             Log.Message("[RMFlowWorksDebug] DEPTH_GRID pos=" + c
                 + " D=" + d + " (" + RM_ExcavationDepth.LabelOf(d) + ")"
-                + " F=" + f
                 + " water=" + ex.WaterDlAt(c) + "dL band=" + RM_ExcavationDepth.FillTier(ex.WaterDlAt(c))
                 + " excavated=" + ex.IsExcavated(c)
                 + " source=" + ex.IsSourceCell(c)
@@ -121,9 +119,9 @@ namespace RimMandrake.FlowWorks
                     IntVec3 c = UI.MouseCell();
                     RM_MapComponent_Excavation ex = map?.GetComponent<RM_MapComponent_Excavation>();
                     if (ex == null || !c.InBounds(map)) return;
-                    bool ok = ex.TrySetDriverFill(c, ex.DepthAt(c), f);
+                    bool ok = ex.TrySetDriverWaterDl(c, ex.DepthAt(c) * (long)RM_LevelSolve.U, f);
                     Log.Message("[RMFlowWorksDebug] FILL_FLUID " + c + " " + f.defName + " -> " + (ok ? "ok" : "REFUSED")
-                        + " F=" + ex.FillAt(c) + " fluid=" + (ex.FluidAt(c)?.defName ?? "none"));
+                        + " water=" + ex.WaterDlAt(c) + "dL fluid=" + (ex.FluidAt(c)?.defName ?? "none"));
                 }));
             }
             Find.WindowStack.Add(new Dialog_DebugOptionListLister(list));

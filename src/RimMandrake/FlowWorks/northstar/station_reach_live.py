@@ -102,7 +102,7 @@ def main():
         st, tank, bat = P(4, 4), P(6, 4), P(0, 4)      # a 3x2 at Position (4,4) covers x 3..5, z 4..5
         chan = [P(4 + i, 5 + off) for i in range(3)]
         for c in chan:
-            B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=2, setFill=2)
+            B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=2, setBodyWaterM=1.0)
         ops = ["RM_PumpingStation_Repaired:%d,%d" % st, "RM_LiquidTank:%d,%d" % tank, "Battery:%d,%d" % bat,
                "PowerConduit:%d,%d" % P(1, 4), "PowerConduit:%d,%d" % P(2, 4)]
         bb = B.call("jawa/build_batch", ops=";".join(ops), faction="player", wipeExisting=False) or {}
@@ -113,13 +113,13 @@ def main():
         if lt[0].get("id") is not None:
             B.call("jawa/battery_set", thing=lt[0]["id"], mode="setPct", value=1.0)
         s["draw"] = str((B.call("jawa/static_call", type=NSP, method="ProofPump", args="%d,%d;draw" % s["st"], _answer=True) or {}).get("result"))
-        s["water0"] = [(B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=0, setFill=-1) or {}).get("fill") for c in s["chan"]]
+        s["water0"] = [(B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=0, setBodyWaterM=-1) or {}).get("fill") for c in s["chan"]]
     B.ticks(1000)
     for name, s in scenes.items():
         r = B.call("jawa/static_call", type=NSP, method="ProofPump", args="%d,%d" % s["st"], _answer=True) or {}
         t = str(r.get("result") or r.get("message"))
         s["after"] = t
-        s["water1"] = [(B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=0, setFill=-1) or {}).get("fill") for c in s["chan"]]
+        s["water1"] = [(B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=0, setBodyWaterM=-1) or {}).get("fill") for c in s["chan"]]
         s["kv"] = kv(t)
     res["scenes"] = scenes
     a_, b_ = scenes["A"], scenes["B"]

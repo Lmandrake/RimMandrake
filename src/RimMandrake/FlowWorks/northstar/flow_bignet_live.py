@@ -89,7 +89,7 @@ def main():
         src = (102, oz + n // 2) if a.inland else (1, oz + n // 2)
         st["sourceBody"] = (B.call("jawa/flowworks_body_report", x=src[0], z=src[1], classify=True) or {}).get("body")
         for x in range(106 if a.inland else 3, ox):
-            B.call("jawa/flowworks_excavation_drive", x=x, z=oz + n // 2, deepenLevels=2, setFill=-1)
+            B.call("jawa/flowworks_excavation_drive", x=x, z=oz + n // 2, deepenLevels=2, setBodyWaterM=-1)
         st.update(origin=[ox, oz], size=n, dugRows=0, phaseSite=time.strftime("%H:%M:%S"))
         save()
         print("site ready", st.get("site_calm", {}).get("ok") if isinstance(st.get("site_calm"), dict) else "", flush=True)
@@ -98,7 +98,7 @@ def main():
         row0 = st.get("dugRows", 0)
         for j in range(row0, n):
             for i in range(n):
-                B.call("jawa/flowworks_excavation_drive", x=ox + i, z=oz + j, deepenLevels=2, setFill=-1)
+                B.call("jawa/flowworks_excavation_drive", x=ox + i, z=oz + j, deepenLevels=2, setBodyWaterM=-1)
             st["dugRows"] = j + 1
             if (j + 1) % 5 == 0:
                 save()

@@ -56,9 +56,17 @@ namespace RimMandrake.FlowWorks.SelfTest
 			Case("Submerge_one_level_true_not_whole_notches", () =>
 			{
 				Assert(RM_UnderLiquid.LevelNote(0) == 0 && RM_UnderLiquid.LevelNote(0.01) == 1, "can-fail: 0 only when dry");
-				Assert(RM_UnderLiquid.LevelNote(1.5) == 6 && Near(RM_UnderLiquid.NoteLevel(6), 1.5f) && Near(RM_UnderLiquid.NoteMetres(6), 0.75f),
+				int n15 = RM_UnderLiquid.LevelNote(1.5);
+				Assert(Near(RM_UnderLiquid.NoteLevel(n15), 1.5f) && Near(RM_UnderLiquid.NoteMetres(n15), 0.75f),
 					"can-fail: a part notch is kept (no fill steps)");
-				Assert(RM_UnderLiquid.LevelNote(1000) == 255, "can-fail: capped");
+				// RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES (owner card 2026-11-13 "Waterline -> follow it smoothly"):
+				// 0.70 m of water is drawn within 2.5 cm of 0.70 m (quarter-notch notes drew it at 0.75 m)
+				Assert(System.Math.Abs(RM_UnderLiquid.NoteMetres(RM_UnderLiquid.LevelNote(1.4)) - 0.70f) <= 0.0125f,
+					"can-fail: the drawn waterline follows the true level within 2.5 cm");
+				Assert(System.Math.Abs(RM_UnderLiquid.NoteMetres(RM_UnderLiquid.LevelNote(0.9988 / 0.5)) - 0.9988f) <= 0.0125f,
+					"can-fail: 0.9988 m (the 'fill 1' square of 2026-11-12) is drawn at ~1 m, not 0.5 m");
+				Assert(Near(RM_UnderLiquid.NoteLevel(RM_UnderLiquid.LevelNote(40)), 40f) && RM_UnderLiquid.LevelNote(1000) == RM_UnderLiquid.LevelNote(40),
+					"can-fail: the deepest dig (20 m) is drawn exactly, deeper is capped there");
 				// the hung ladder's waterline is the wall's own dry foot at that level, and a part notch moves it
 				float w1 = RM_UnderLiquid.Waterline(0, 4, 1f), w15 = RM_UnderLiquid.Waterline(0, 4, 1.5f);
 				Assert(Near(w1, 1f - RM_WallFaceMath.NorthFaceHeight(3)), "can-fail: north line = the face left dry (whole notch)");

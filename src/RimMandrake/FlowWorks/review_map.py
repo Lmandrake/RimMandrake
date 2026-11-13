@@ -1476,7 +1476,7 @@ class Review(object):
             ex = B.call("jawa/flowworks_excavation_rect", x=rx, z=rz, w=rw, h=rh, onlyNonZero=True, includeTerrain=False)
             for c in ex.get("rows") or []:
                 if c.get("isExcavated"):
-                    B.call("jawa/flowworks_excavation_drive", x=c["x"], z=c["z"], deepenLevels=0, setFill=0,
+                    B.call("jawa/flowworks_excavation_drive", x=c["x"], z=c["z"], deepenLevels=0, setBodyWaterM=0.0,
                            fillInLevels=int(c.get("d") or 0))
             B.call("jawa/destroy_batch", rects=rr, categories="All")
             B.call("jawa/set_terrain_batch", ops="Soil:" + rr)
@@ -1558,12 +1558,12 @@ class Review(object):
                 for i in range(w):
                     for j in range(h):
                         self.call("jawa/flowworks_excavation_drive", x=ox + x + i, z=oz + z + j, deepenLevels=d,
-                                  setFill=-1)
+                                  setBodyWaterM=-1)
             for x, z, w, h, f, fluid in u.get("fluid", []):
                 for i in range(w):
                     for j in range(h):
                         r = self.call("jawa/static_call", type="RimMandrake.FlowWorks.RM_FluidIdentityProof",
-                                      method="ProofFillWithFluid", args="%d,%d,%d,%s" % (ox + x + i, oz + z + j, f, fluid))
+                                      method="ProofFillWithFluid", args="%d,%d,%g,%s" % (ox + x + i, oz + z + j, f * 0.5, fluid))
                         if str(r.get("result", "")).startswith("REFUSED"):
                             self.notes.append("station %d fill: %s" % (s["n"], str(r.get("result"))[:100]))
             for x, z, w, h in u.get("scorch", []):

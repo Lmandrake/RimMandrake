@@ -70,8 +70,8 @@ def main():
         z = oz + 2 + 4 * k
         tc, oc = (ox + 4, z), (ox + 24, z)
         for x in range(ox + 1, ox + 8):          # a 7-square east-west trench, 1 m
-            B.call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=2, setFill=-1)
-        d = (B.call("jawa/flowworks_excavation_drive", x=tc[0], z=tc[1], deepenLevels=0, setFill=-1) or {}).get("depth")
+            B.call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=2, setBodyWaterM=-1)
+        d = (B.call("jawa/flowworks_excavation_drive", x=tc[0], z=tc[1], deepenLevels=0, setBodyWaterM=-1) or {}).get("depth")
         if d != 2:
             row("TRENCH_no_blast_cover", "UNMEASURED", "SITE", {"why": "trench square not at 1 m", "depth": d, "cell": tc})
             return 2

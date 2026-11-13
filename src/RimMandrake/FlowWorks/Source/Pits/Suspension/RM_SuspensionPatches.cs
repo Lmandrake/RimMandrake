@@ -76,7 +76,7 @@ namespace RimMandrake.FlowWorks.Pits
 			// checks it is at the deck's height)
 			if (RM_SuspensionDefOf.IsAnchorDef(entDef) && ex.ExcavatedDepthAt(c) > 0)
 			{
-				__result = RM_SuspensionSettings.sunkenBridges && ex.FillAt(c) == 0;
+				__result = RM_SuspensionSettings.sunkenBridges && !ex.WetAt(c);
 				return;
 			}
 			if (entDef == RM_SuspensionDefOf.RM_SuspensionRailing)
@@ -713,7 +713,7 @@ namespace RimMandrake.FlowWorks.Pits
 			{
 				return;
 			}
-			if (eng.FillAt(c) > 0)
+			if (eng.WetAt(c))
 			{
 				baseCostOverride = map.terrainGrid.TerrainAt(c)?.pathCost ?? 0;   // wading under the deck: the water's cost
 				return;

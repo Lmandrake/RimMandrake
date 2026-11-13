@@ -48,7 +48,8 @@ namespace RimMandrake.FlowWorks
 					continue;
 				}
 				bool onGrate = share < 1f;
-				int fill = ex.IsExcavated(c) ? ex.FillAt(c) : 0;
+				// wet above 5 cm (owner card 2026-11-13); the slip chance takes the water as notches, at least one when wet
+				int fill = ex.IsExcavated(c) && ex.WetAt(c) ? System.Math.Max(1, (int)System.Math.Round(ex.WaterDlAt(c) / (double)RM_LevelSolve.U)) : 0;
 				if (fill <= 0)
 				{
 					if (onGrate)
@@ -124,12 +125,12 @@ namespace RimMandrake.FlowWorks
 			{
 				IntVec3 c = p.Position;
 				int id = p.thingIDNumber;
-				bool inLiquid = ex.IsExcavated(c) && ex.FillAt(c) > 0;
+				bool inLiquid = ex.IsExcavated(c) && ex.WetAt(c);
 				RM_SlipperyTerrain ground = inLiquid ? null : NaturalSlime(map, c);
 				if (!inLiquid && ground == null && !slips.ContainsKey(id)) continue;
 				FluidDef f = inLiquid ? (ex.FluidAt(c) ?? ex.ActiveFluid) : null;
 				float slip = f?.slipperiness ?? ground?.slipperiness ?? 0f;
-				rows.Add(p.ThingID + "@" + c.x + "," + c.z + " D=" + ex.DepthAt(c) + " F=" + ex.FillAt(c)
+				rows.Add(p.ThingID + "@" + c.x + "," + c.z + " D=" + ex.DepthAt(c) + " W=" + ex.WaterDlAt(c) + "dL"
 					+ " fluid=" + (f?.defName ?? "none") + " ground=" + (ground != null ? map.terrainGrid.TerrainAt(c).defName : "none")
 					+ " slip=" + slip.ToString("F2")
 					+ " slips=" + (slips.TryGetValue(id, out int n) ? n : 0)

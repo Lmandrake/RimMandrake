@@ -471,7 +471,7 @@ def main(argv=None):
         return B.call("jawa/build_batch", ops=";".join(o for o in ops if o), faction=faction, wipeExisting=False)
 
     def dig(c, depth):
-        return B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=depth, setFill=-1)
+        return B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=depth, setBodyWaterM=-1)
 
     def proof(typ, method, arg):
         r = B.call("jawa/static_call", type=typ, method=method, args=arg) or {}

@@ -271,7 +271,7 @@ def key_markdown(plan, provisional=False):
     L += ["", "World cell of a local cell: copy SW corner + local. Corpses are a Muffalo (factionless) and a Villager, stripped of "
           "inventory and apparel before the kill. Minified: the three `mini` rows (spawned, then minified).",
           "", "## Changing a level by hand (dev mode)", "",
-          "Route today: the engine driver write `RM_SubmergeDraw.ProofFillRect` (`jawa/static_call`, args `x,z,w,h,notches[,fluid]`), "
+          "Route today: the engine driver write `RM_SubmergeDraw.ProofFillRect` (`jawa/static_call`, args `x,z,w,h,waterM[,fluid]`), "
           "the route `fill` uses. The god-mode pour/drain tools of RIMMANDRAKE_GIVE_GODMODE_LIQUID_POUR_DRAIN had not landed when this "
           "was written; use them once they exist. The dev menu's `Fill excavated cell with fluid...` / `Place level holder (50%)` "
           "(RM_MapControls.cs near line 709) are the in-game equivalents; neither was exercised here."]
@@ -522,7 +522,7 @@ def stage(plan):
     for key, x0, z0, f, fl in plan["copies"]:
         for i in range(PW):
             for j in range(PW):
-                r = call("jawa/flowworks_excavation_drive", x=x0 + i, z=z0 + j, deepenLevels=DEPTH, setFill=-1, fillInLevels=0)
+                r = call("jawa/flowworks_excavation_drive", x=x0 + i, z=z0 + j, deepenLevels=DEPTH, setBodyWaterM=-1, fillInLevels=0)
                 bad += r.get("success") is False
     log("dig_failed_calls", bad)
     bridge().ticks(70)            # one swim refresh on the fresh dry pits (see pit_fittings_matrix stage)
@@ -562,7 +562,7 @@ def stage(plan):
 def fill(plan):
     for key, x0, z0, f, fl in plan["copies"]:
         if f:
-            log("fill_" + key, static("ProofFillRect", "%d,%d,%d,%d,%d%s" % (x0, z0, PW, PW, f, ("," + fl) if fl else "")))
+            log("fill_" + key, static("ProofFillRect", "%d,%d,%d,%d,%g%s" % (x0, z0, PW, PW, f * 0.5, ("," + fl) if fl else "")))
     time.sleep(3)
 
 

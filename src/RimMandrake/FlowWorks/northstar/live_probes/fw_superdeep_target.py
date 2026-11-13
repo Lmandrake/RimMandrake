@@ -19,7 +19,7 @@ call("jawa/clear_area", rect="%d,%d,%d,%d" % site, dryRun=False)
 call("jawa/set_terrain_batch", ops="Soil:%d,%d,%d,%d" % site)
 call("jawa/set_roof_batch", ops="None:%d,%d,%d,%d" % site)
 call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % site)
-dig = call("jawa/flowworks_excavation_drive", x=PIT[0], z=PIT[1], deepenLevels=4, setFill=-1)
+dig = call("jawa/flowworks_excavation_drive", x=PIT[0], z=PIT[1], deepenLevels=4, setBodyWaterM=-1)
 def spawn(kind, c, fac):
     before = {q.get("id") for q in call("jawa/list_pawns", rect="%d,%d,%d,%d" % site).get("pawns") or []}
     call("jawa/spawn_pawn", kindDef=kind, x=c[0], z=c[1], faction=fac, count=1)

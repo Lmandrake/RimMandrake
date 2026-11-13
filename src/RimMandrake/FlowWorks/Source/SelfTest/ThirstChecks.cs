@@ -122,7 +122,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "if (ex?.Stock == null || units <= 0)",
                     "return true;",
                     "if (ex.IsExcavated(c))",
-                    "return RM_ContainerMaterialMath.DugCellDebitDl(units, ex.WaterDlAt(c), RM_MapComponent_Excavation.LevelExact, RM_LevelSolve.U) >= 0;",
+                    "return RM_ContainerMaterialMath.DugCellDebitDl(units, ex.WaterDlAt(c), true, RM_LevelSolve.U) >= 0;",
                     "if (!RimMandrakeFlowWorksSettings.sourceBudgetEnabled)",
                     "return true;",
                     "RM_LiquidBody body = ex.Stock.BodyAt(map, c, ex);",

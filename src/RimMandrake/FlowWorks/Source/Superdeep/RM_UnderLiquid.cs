@@ -250,17 +250,20 @@ namespace RimMandrake.FlowWorks
 
 		// ── the level ──────────────────────────────────────────────────
 
-		/// <summary>Quarter notches the drawn level is kept to: the map mesh re-prints only when the level moves a quarter
-		/// notch (12.5 cm, RM_LevelSolve.LookStickyMargin), so a level swinging by a few decilitres never re-meshes.</summary>
-		public const int LevelSteps = 4;
+		/// <summary>Steps per notch the drawn level is kept to (RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES, owner card
+		/// 2026-11-13 "Waterline -> follow it smoothly"): 2.5 cm, under a pixel of a wall face, so the wall face, a hung ladder
+		/// and the spikes are cut at the true waterline. The map mesh re-prints only when the level moves a step, so a level
+		/// swinging by a few decilitres (under 500 dL a square) still never re-meshes. Was 4 (12.5 cm).</summary>
+		public const int LevelSteps = 20;
 
-		/// <summary>A true level in notches as the quarter-notch note everything is drawn at: 0 only when dry, at least 1 when
-		/// any liquid stands, at most 255.</summary>
+		/// <summary>A true level in notches as the note everything is drawn at: 0 only when dry, at least 1 when any liquid
+		/// stands; the deepest dig (RM_DigDepthMath.MaxDigCeiling) is drawn exactly (the old 255 cap drowned deep pits).</summary>
 		public static int LevelNote(double levelNotches)
 		{
 			if (levelNotches <= 0.0) return 0;
-			int n = (int)(levelNotches * LevelSteps + 0.5);
-			return n < 1 ? 1 : (n > 255 ? 255 : n);
+			int cap = RM_DigDepthMath.MaxDigCeiling * LevelSteps;
+			int n = levelNotches >= cap ? cap : (int)(levelNotches * LevelSteps + 0.5);
+			return n < 1 ? 1 : (n > cap ? cap : n);
 		}
 
 		/// <summary>The level (notches) a note draws.</summary>

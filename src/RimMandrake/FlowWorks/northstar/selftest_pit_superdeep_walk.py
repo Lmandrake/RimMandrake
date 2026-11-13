@@ -176,7 +176,7 @@ with tempfile.TemporaryDirectory() as tmp:
         W.S10_NOTCHES = old_n
     fp = W.FakePit()
     for x, n in ((1, 4), (5, 8)):
-        fp.call("jawa/flowworks_excavation_drive", x=x, z=1, deepenLevels=n, setFill=-1)
+        fp.call("jawa/flowworks_excavation_drive", x=x, z=1, deepenLevels=n, setBodyWaterM=-1)
     sh = fp.call("jawa/spawn_pawn", kindDef="Colonist", x=1, z=1, faction="player")["pawns"][0]["id"]
     dp = fp.call("jawa/spawn_pawn", kindDef="Colonist", x=5, z=1, faction="player")["pawns"][0]["id"]
     fp.ticks(300)

@@ -49,22 +49,18 @@ namespace RimMandrake.FlowWorks
 		/// is a pit, up to RM_ExcavationDepth.MaxDigCeiling.</summary>
 		private byte[] depthGrid;
 
-		/// <summary>F. Always clamped to 0 &lt;= F &lt;= D.</summary>
+		/// <summary>RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES: the KERNEL'S working split of a dug cell's water,
+		/// W = fillGrid·U + partGrid (decilitres). Not a number anyone reads: every reader asks WaterDl/WaterDlAt (exact dL or
+		/// metres), every writer SetWaterDl, and the save holds the one dL grid (RM_excavationWaterGrid). Kept only because
+		/// RM_FlowKernel still works on these two arrays.</summary>
 		private byte[] fillGrid;
 		/// <summary>RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL: cell index -> the level note (RM_UnderLiquid.LevelNote of the true level) the things on it were last printed at
 		/// (RM_SubmergeDraw). Drawing state, not saved: a load re-prints every section.</summary>
 		internal readonly Dictionary<int, int> submergeDrawn = new Dictionary<int, int>();
 
-		/// <summary>WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES (owner 2026-10-17, ruled exactly level by card): the decilitres below
-		/// one whole notch, per cell (0..U-1). A dug cell's water is W = F·U + part; F stays the whole-notch view every older
-		/// reader uses. Written by the exact kernel (RM_FlowKernel.levelExactEnabled); 0 everywhere on a save from before it,
-		/// so an old save loads with every litre unchanged. SCRIBED (2 bytes a cell, deflated).</summary>
+		/// <summary>The part of the kernel's working split below one whole notch (0..U-1); see <see cref="fillGrid"/>.</summary>
 		private ushort[] partGrid;
 
-		/// <summary>WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: 0 = a save from before exact-level water (its ponds' stock was a float
-		/// of levels), 1 = exact (ponds hold whole decilitres). The one-time migration in FinalizeInit logs every body's litres
-		/// before and after.</summary>
-		private int levelModel;
 
 		/// <summary>Which liquid this map's excavations carry. One per map this
 		/// pass: per-cell liquid identity is the registry's (LiquidDef) and
@@ -1026,15 +1022,15 @@ namespace RimMandrake.FlowWorks
 			// base64 form is shorter, and handles the Scribe.mode branch
 			// internally, so callers do not guard on it.
 			DataExposeUtility.LookByteArray(ref depthGrid, "RM_excavationDepthGrid");
-			DataExposeUtility.LookByteArray(ref fillGrid, "RM_excavationFillGrid");
-			// WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: the part-notch grid, 2 bytes a cell (absent in an older save: all 0).
-			byte[] partBytes = Scribe.mode == LoadSaveMode.Saving ? PackPart(partGrid) : null;
-			DataExposeUtility.LookByteArray(ref partBytes, "RM_excavationPartGrid");
+			// RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES: ONE water grid, decilitres per cell (4 bytes, deflated). The
+			// old RM_excavationFillGrid / RM_excavationPartGrid / RM_levelModel fields are gone with no migration (owner
+			// 2026-11-08: delete old fields outright): a save from before loads its dug squares dry.
+			byte[] waterBytes = Scribe.mode == LoadSaveMode.Saving ? PackWater() : null;
+			DataExposeUtility.LookByteArray(ref waterBytes, "RM_excavationWaterGrid");
 			if (Scribe.mode == LoadSaveMode.LoadingVars)
 			{
-				partGrid = UnpackPart(partBytes);
+				UnpackWater(waterBytes);
 			}
-			Scribe_Values.Look(ref levelModel, "RM_levelModel", 0);
 			DataExposeUtility.LookByteArray(ref fluidGrid, "RM_excavationFluidGrid");
 			DataExposeUtility.LookByteArray(ref bedRecord, "RM_bedDepthRecord");
 			Scribe_Values.Look(ref lakeFloorsFormed, "RM_lakeFloorsFormed", false);
@@ -1172,73 +1168,39 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
-		private static byte[] PackPart(ushort[] grid)
+		/// <summary>The water grid as saved: decilitres per cell, little-endian int32 (null before the grids exist).</summary>
+		private byte[] PackWater()
 		{
-			if (grid == null)
+			if (depthGrid == null || fillGrid == null || partGrid == null)
 			{
 				return null;
 			}
-			byte[] b = new byte[grid.Length * 2];
-			for (int i = 0; i < grid.Length; i++)
+			byte[] b = new byte[depthGrid.Length * 4];
+			for (int i = 0; i < depthGrid.Length; i++)
 			{
-				b[2 * i] = (byte)(grid[i] & 0xff);
-				b[2 * i + 1] = (byte)(grid[i] >> 8);
+				long w = WaterDl(i);
+				int v = w > int.MaxValue ? int.MaxValue : (int)w;
+				b[4 * i] = (byte)v;
+				b[4 * i + 1] = (byte)(v >> 8);
+				b[4 * i + 2] = (byte)(v >> 16);
+				b[4 * i + 3] = (byte)(v >> 24);
 			}
 			return b;
 		}
 
-		private static ushort[] UnpackPart(byte[] b)
+		/// <summary>Loads the saved water grid into the kernel's working arrays (EnsureGrids sizes them; a wrong-sized or absent
+		/// grid loads dry).</summary>
+		private void UnpackWater(byte[] b)
 		{
-			if (b == null)
+			int n = b == null ? 0 : b.Length / 4;
+			fillGrid = new byte[n];
+			partGrid = new ushort[n];
+			for (int i = 0; i < n; i++)
 			{
-				return null;
+				long w = b[4 * i] | (b[4 * i + 1] << 8) | (b[4 * i + 2] << 16) | ((long)b[4 * i + 3] << 24);
+				fillGrid[i] = (byte)(w / RM_LevelSolve.U);
+				partGrid[i] = (ushort)(w % RM_LevelSolve.U);
 			}
-			ushort[] g = new ushort[b.Length / 2];
-			for (int i = 0; i < g.Length; i++)
-			{
-				g[i] = (ushort)(b[2 * i] | (b[2 * i + 1] << 8));
-			}
-			return g;
-		}
-
-		/// <summary>WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: the one-time migration of a save from before exact-level water. Every
-		/// canal square keeps its whole notches (W = F·U, part 0) and every pond its stock (RM_LiquidBody read its float stock
-		/// into whole decilitres on load); one log line per body says its litres before and after, so "nothing lost" is
-		/// read off the log, not assumed.</summary>
-		private void MigrateLevelModel()
-		{
-			if (levelModel >= 1)
-			{
-				return;
-			}
-			long canalDl = 0;
-			int wet = 0;
-			foreach (IntVec3 c in excavatedCells)
-			{
-				int i = map.cellIndices.CellToIndex(c);
-				if (WetDug(i))
-				{
-					wet++;
-					canalDl += WaterDl(i);
-				}
-			}
-			var sb = new System.Text.StringBuilder();
-			sb.Append("[RimMandrake.FlowWorks] level model 0 -> 1 (exact decilitres, one surface per body): canals ")
-				.Append(wet).Append(" wet square(s), ").Append(RM_Volume.FormatLitres(canalDl / 10f)).Append(" before and after");
-			int ponds = 0;
-			foreach (RM_LiquidBody b in stock.Bodies)
-			{
-				if (b.limitless)
-				{
-					continue;
-				}
-				ponds++;
-				sb.Append("; pond #").Append(b.id).Append(" ").Append(RM_Volume.FormatLitres(b.legacyStock * RM_Volume.LitresPerLevel))
-					.Append(" -> ").Append(RM_Volume.FormatLitres(b.stockDl / 10f));
-			}
-			sb.Append(" (").Append(ponds).Append(" limited pond(s)).");
-			Log.Message(sb.ToString());
-			levelModel = 1;
 		}
 
 		public override void FinalizeInit()
@@ -1274,7 +1236,6 @@ namespace RimMandrake.FlowWorks
 			ReportLostPaletteFluids();
 			RepairLoadedGrids();
 			SyncFluidIdentity();
-			MigrateLevelModel();
 			if (pondBudgetModel < 1)
 			{
 				int rescaled = stock.MigrateBudgetMultiplier(this);
@@ -1460,20 +1421,40 @@ namespace RimMandrake.FlowWorks
 			return RM_Volume.BedLevels(t.passability == Traversability.Impassable, t.pathCost);
 		}
 
-		/// <summary>F, with a natural source reading through as full.</summary>
-		public byte FillAt(IntVec3 c)
+		/// <summary>RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES (owner card 2026-11-13, "Wet from -> above 5 cm"): the
+		/// decilitres a dug square must hold MORE than to count as standing in liquid for every yes/no reader (step cost, sunken
+		/// bridge, fire, slime, scorch, swale, flow doors). 5 cm = a tenth of a 0.5 m notch. A thinner sheet is still water to the
+		/// books and the readout; it is only too thin to wade in, float a bridge or douse a fire.</summary>
+		public const long WetDl = RM_LevelSolve.U / 10;
+
+		/// <summary>Does liquid stand here deeper than 5 cm (<see cref="WetDl"/>)? A dug square by its own water; an undug square
+		/// when it is natural liquid (a river or pond reads wet, as the old whole-notch read did).</summary>
+		public bool WetAt(IntVec3 c)
+		{
+			if (!c.InBounds(map))
+			{
+				return false;
+			}
+			int i = map.cellIndices.CellToIndex(c);
+			return depthGrid[i] == 0 ? IsNaturalLiquid(c) : WaterDl(i) > WetDl;
+		}
+
+		/// <summary>Decilitres of room left below a dug square's brim (0 when brimming, undug or off the map).</summary>
+		public long RoomDlAt(IntVec3 c)
 		{
 			if (!c.InBounds(map))
 			{
 				return 0;
 			}
 			int i = map.cellIndices.CellToIndex(c);
-			byte d = depthGrid[i];
-			if (d == 0)
-			{
-				return IsNaturalLiquid(c) ? RM_ExcavationDepth.Superdeep : (byte)0;
-			}
-			return fillGrid[i] > d ? d : fillGrid[i];
+			long room = depthGrid[i] * (long)RM_LevelSolve.U - WaterDl(i);
+			return depthGrid[i] == 0 || room < 0 ? 0 : room;
+		}
+
+		/// <summary>A dug square's water surface relative to its brim, in decilitres (0 = brimming, -D·U = dry); 0 when undug.</summary>
+		public long SurfaceDlAt(IntVec3 c)
+		{
+			return -RoomDlAt(c);
 		}
 
 		// ── WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: water in decilitres ──────────────────────────────
@@ -1482,6 +1463,13 @@ namespace RimMandrake.FlowWorks
 		private long WaterDl(int i)
 		{
 			return depthGrid[i] == 0 ? 0 : fillGrid[i] * (long)RM_LevelSolve.U + partGrid[i];
+		}
+
+		/// <summary>Writes a dug cell's water, decilitres (the one write every setter goes through).</summary>
+		private void SetWaterDl(int i, long dl)
+		{
+			fillGrid[i] = (byte)(dl / RM_LevelSolve.U);
+			partGrid[i] = (ushort)(dl % RM_LevelSolve.U);
 		}
 
 		/// <summary>True when a dug cell holds any liquid at all (a part-notch counts: 4.5 cm of water is water).</summary>
@@ -1671,9 +1659,6 @@ namespace RimMandrake.FlowWorks
 			}
 			return best;
 		}
-
-		/// <summary>Is the exact-level kernel running on this map now (the setting)? Readers that pick a look use it.</summary>
-		public static bool LevelExact => RimMandrakeFlowWorksSettings.levelExactEnabled;
 
 		// ── digging ───────────────────────────────────────────────────────
 
@@ -1978,14 +1963,7 @@ namespace RimMandrake.FlowWorks
 				{
 					continue;
 				}
-				if (LevelExact)
-				{
-					remaining -= stock.CreditDl(map, sc, remaining, this);
-				}
-				else
-				{
-					remaining -= stock.CreditLevels(map, sc, (int)(remaining / RM_LevelSolve.U), unitPerLevel, this) * (long)RM_LevelSolve.U;
-				}
+				remaining -= stock.CreditDl(map, sc, remaining, this);
 			}
 
 			foreach (KeyValuePair<int, long> cr in credits)
@@ -2617,10 +2595,6 @@ namespace RimMandrake.FlowWorks
 		/// taken (the part grid stays empty).</summary>
 		public long TryTakeDl(IntVec3 c, long maxDl, out FluidDef fluid)
 		{
-			if (!LevelExact)
-			{
-				maxDl -= maxDl % RM_LevelSolve.U;
-			}
 			return TakeDlCore(c, maxDl, out fluid);
 		}
 
@@ -2645,12 +2619,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;
 			}
-			if (LevelExact)
-			{
-				return PourRoomDl(c, fluid, RM_LevelSolve.U) >= RM_LevelSolve.U;   // PUMP_CANAL_FEED_FIX: the canal's room, not one square's
-			}
-			int i = map.cellIndices.CellToIndex(c);
-			return RoomNotches(i) > 0 && InputAllowed(fluid) && RM_StockMath.FluidsCompatible(WetDug(i), FluidAt(c), fluid);
+			return PourRoomDl(c, fluid, RM_LevelSolve.U) >= RM_LevelSolve.U;   // PUMP_CANAL_FEED_FIX: the canal's room, not one square's
 		}
 
 		/// <summary>Phase 8: a pump pours one level into an excavated cell with room (fluids never mix). Exact-level water:
@@ -2662,16 +2631,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;
 			}
-			if (LevelExact)
-			{
-				return TryPourDl(c, fluid, RM_LevelSolve.U);
-			}
-			int f = FillAt(c);
-			if (RoomNotches(map.cellIndices.CellToIndex(c)) <= 0)
-			{
-				return false;
-			}
-			return TrySetDriverFill(c, f + 1, fluid);
+			return TryPourDl(c, fluid, RM_LevelSolve.U);
 		}
 
 		// ── PUMP_CANAL_FEED_FIX_ONE_NOTCH_ONLY / HOSE_LEFTOVER_FIX_NO_VANISHING_LITRES: pours in decilitres ──
@@ -2716,21 +2676,7 @@ namespace RimMandrake.FlowWorks
 		/// (the square, then the canal it joins). Exact-level off: one whole level if the square has a whole notch of room.</summary>
 		public long PourRoomDl(IntVec3 c, FluidDef fluid, long want)
 		{
-			if (!LevelExact)
-			{
-				return want >= RM_LevelSolve.U && CanPourLevelWhole(c, fluid) ? RM_LevelSolve.U : 0;
-			}
 			return PlanPour(c, fluid, want, null, out _);
-		}
-
-		private bool CanPourLevelWhole(IntVec3 c, FluidDef fluid)
-		{
-			if (fluid == null || !c.InBounds(map) || !IsExcavated(c))
-			{
-				return false;
-			}
-			int i = map.cellIndices.CellToIndex(c);
-			return RoomNotches(i) > 0 && InputAllowed(fluid) && RM_StockMath.FluidsCompatible(WetDug(i), FluidAt(c), fluid);
 		}
 
 		/// <summary>Pour exactly <paramref name="dl"/> decilitres of <paramref name="fluid"/> at <paramref name="c"/>, all or
@@ -2741,21 +2687,6 @@ namespace RimMandrake.FlowWorks
 			if (dl <= 0 || fluid == null)
 			{
 				return false;
-			}
-			if (!LevelExact)
-			{
-				if (dl % RM_LevelSolve.U != 0)
-				{
-					return false;
-				}
-				// review day 3: room for EVERY level is checked before the one write (a per-level loop poured the first levels
-				// and then returned false, so a caller keeping its liquid on false created water)
-				long levels = dl / RM_LevelSolve.U;
-				if (!CanPourLevelWhole(c, fluid) || RoomNotches(map.cellIndices.CellToIndex(c)) < levels)
-				{
-					return false;
-				}
-				return TrySetDriverFill(c, FillAt(c) + (int)levels, fluid);
 			}
 			var credits = new List<KeyValuePair<int, long>>();
 			if (PlanPour(c, fluid, dl, credits, out byte key) != dl)
@@ -3028,7 +2959,7 @@ namespace RimMandrake.FlowWorks
 			flowKernel.fill = fillGrid;
 			// WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES (owner 2026-10-17, ruled exactly level): decilitres, one surface per body.
 			flowKernel.part = partGrid;
-			flowKernel.levelExactEnabled = RimMandrakeFlowWorksSettings.levelExactEnabled;
+			flowKernel.levelExactEnabled = true;
 			flowKernel.flowPerPulse = RimMandrakeFlowWorksSettings.FlowPerPulse;
 			flowKernel.edgeSinksEnabled = RimMandrakeFlowWorksSettings.edgeSinksEnabled || MapControls.RM_MapControls.AnyDrainEdge(map);
 			flowKernel.viscosityEnabled = RimMandrakeFlowWorksSettings.viscosityEnabled;
@@ -3054,13 +2985,11 @@ namespace RimMandrake.FlowWorks
 			// surface runs back into it (after the flow, mouth-paced).
 			// Exact-level water solves ponds and canals as one surface (RM_FlowKernel.ResolveExact): the whole-notch head rule and
 			// its return half are the old engine's and stand down.
-			bool headRule = RimMandrakeFlowWorksSettings.pondHeadRuleEnabled && RimMandrakeFlowWorksSettings.pondDepthEnabled
-				&& stock != null && !RimMandrakeFlowWorksSettings.levelExactEnabled;
-			flowKernel.sourceDrawdown = headRule ? (System.Func<int, int>)(idx => stock.DrawdownAt(map, map.cellIndices.IndexToCell(idx), this)) : null;
-			flowKernel.returnLevel = headRule ? (System.Func<int, int, bool>)ReturnLevelToPond : null;
+			// The whole-notch head rule (sourceDrawdown/returnLevel) was the whole-notch engine's; exact water levels by body.
+			flowKernel.sourceDrawdown = null;
+			flowKernel.returnLevel = null;
 			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: the flow runs in slices of about PulseSliceCells cells a tick (this tick
 			// first); the steps after it wait for the last slice (FinishPulseSlices).
-			pulseHeadRule = headRule;
 			// Pocket rain (ApplyRain decided it for this pulse): the kernel lands it pocket by pocket as it walks.
 			flowKernel.rainNotches = pocketRainNotches;
 			flowKernel.rainFluid = pocketRainFluid;
@@ -3078,8 +3007,6 @@ namespace RimMandrake.FlowWorks
 		/// partition of a network over the cap, or that network's walk).</summary>
 		public const int PulseSliceCells = RM_FlowKernel.DefaultSliceCells;
 
-		/// <summary>DoPulse's head rule for the pulse in flight (its return half runs after the last slice).</summary>
-		private bool pulseHeadRule;
 
 		/// <summary>True while a pulse's flow is still running in slices (not scribed: a save first finishes it, see
 		/// RM_Patch_SaveGame_FinishPulse).</summary>
@@ -3133,18 +3060,6 @@ namespace RimMandrake.FlowWorks
 
 		private void FinishPulseSlices()
 		{
-			if (pulseHeadRule)
-			{
-				pondReturned.Clear();
-				if (flowKernel.ReturnToPonds(pulseSeeds) > 0)
-				{
-					for (int i = 0; i < pondReturned.Count; i++)
-					{
-						IntVec3 c = map.cellIndices.IndexToCell(pondReturned[i]);
-						ApplyFillTerrain(c, FluidAt(c) ?? ActiveFluid);
-					}
-				}
-			}
 			if (flowKernel.edgeSinksEnabled)
 			{
 				sinkTransferredTotal += flowKernel.sinkDrained;
@@ -3215,48 +3130,20 @@ namespace RimMandrake.FlowWorks
 			for (int p = 0; p < pours.Count; p++)
 			{
 				FluidDef fluid = FluidAt(pours[p]) ?? ActiveFluid;
-				if (LevelExact)
-				{
-					// Exact-level water: up to one level's decilitres (a thin sheet gives what it has), all or nothing per pour.
-					long want = System.Math.Min(WaterDlAt(pours[p]), (long)RM_LevelSolve.U);
-					long room = ReturnRoomDl(beds[p], fluid, want);
-					if (room <= 0)
-					{
-						continue;
-					}
-					long took = TakeDlCore(pours[p], room, out _);
-					if (took > 0 && !TryReturnDl(beds[p], fluid, took) && !TryPourDl(pours[p], fluid, took))
-					{
-						ReportLiquidLost(pours[p], took, "Water running into a dry pond bed");   // defensive: checked above, so never expected
-					}
-					continue;
-				}
-				if (!CanReturnLevels(beds[p], fluid, 1) || !TakeLevelCore(pours[p], out _))
+				// Exact-level water: up to one level's decilitres (a thin sheet gives what it has), all or nothing per pour.
+				long want = System.Math.Min(WaterDlAt(pours[p]), (long)RM_LevelSolve.U);
+				long room = ReturnRoomDl(beds[p], fluid, want);
+				if (room <= 0)
 				{
 					continue;
 				}
-				if (!TryReturnLevels(beds[p], fluid, 1))
+				long took = TakeDlCore(pours[p], room, out _);
+				if (took > 0 && !TryReturnDl(beds[p], fluid, took) && !TryPourDl(pours[p], fluid, took))
 				{
-					TrySetDriverFill(pours[p], FillAt(pours[p]) + 1, fluid);   // defensive: checked above, so never expected
+					ReportLiquidLost(pours[p], took, "Water running into a dry pond bed");   // defensive: checked above, so never expected
 				}
 			}
 		}
-
-		/// <summary>D2's return half: one level of dug square <paramref name="dugIdx"/>'s water goes home to the pond behind
-		/// source <paramref name="srcIdx"/> through the return leg (all or nothing; the stock rises by exactly that level).</summary>
-		private bool ReturnLevelToPond(int srcIdx, int dugIdx)
-		{
-			IntVec3 dug = map.cellIndices.IndexToCell(dugIdx);
-			FluidDef fluid = FluidAt(dug) ?? ActiveFluid;
-			if (!TryReturnLevels(map.cellIndices.IndexToCell(srcIdx), fluid, 1))
-			{
-				return false;
-			}
-			pondReturned.Add(dugIdx);   // re-laid after the kernel lowers it (fill terrain)
-			return true;
-		}
-
-		private readonly List<int> pondReturned = new List<int>();
 
 		/// <summary>The fluid a donor cell would give: its body's for a source, the cell's own record otherwise.</summary>
 		private FluidDef DonorFluid(IntVec3 n, bool source)
@@ -3967,7 +3854,7 @@ namespace RimMandrake.FlowWorks
 		// changed to add it.
 		//
 		// The read half already existed and needs nothing new: IsExcavated,
-		// DepthAt, FillAt and CanLiquidEnter are all public. Only the WRITE
+		// DepthAt, WaterDlAt and CanLiquidEnter are all public. Only the WRITE
 		// half is new, and it has to be, because the defect is precisely that
 		// a driver was writing terrain on a cell this engine owns. A driver
 		// that could only ASK would still have to act with SetTerrain, which
@@ -3976,23 +3863,23 @@ namespace RimMandrake.FlowWorks
 		// decides what an excavated cell looks like.
 		// ════════════════════════════════════════════════════════════════
 
-		/// <summary>Set an excavated cell's F on behalf of a flood driver, and
-		/// redraw it. Clamped to 0 &lt;= F &lt;= D, so a driver can never invent
+		/// <summary>Set an excavated cell's water (decilitres) on behalf of a flood driver, and
+		/// redraw it. Clamped to 0 &lt;= W &lt;= D·U, so a driver can never invent
 		/// depth — LAW 1 is unreachable from here.
 		///
 		/// Returns FALSE for a cell this engine does not own (not excavated), AND for
 		/// an owned cell that refused the write (liquid switched off, or a different
 		/// liquid already standing). Only the first is the signal to keep the
-		/// driver's own behaviour; use <see cref="TrySetDriverFillOutcome"/> to tell
+		/// driver's own behaviour; use <see cref="TrySetDriverWaterDlOutcome"/> to tell
 		/// them apart (FLOOD_DRIVER_OWNERSHIP_CONTRACT_1) — a driver that writes
 		/// terrain after a Refused is writing on a cell this engine owns.
-		/// A caller must record the previous <see cref="FillAt"/> itself if it
+		/// A caller must record the previous <see cref="WaterDlAt"/> itself if it
 		/// intends to restore it: this engine deliberately keeps no per-driver
 		/// undo stack, because the next pulse may legitimately move that liquid
 		/// somewhere else and a stale undo would resurrect it.</summary>
-		public bool TrySetDriverFill(IntVec3 c, int fill, FluidDef driverFluid = null)
+		public bool TrySetDriverWaterDl(IntVec3 c, long dl, FluidDef driverFluid = null)
 		{
-			return TrySetDriverFillOutcome(c, fill, driverFluid) == DriverFillOutcome.Applied;
+			return TrySetDriverWaterDlOutcome(c, dl, driverFluid) == DriverFillOutcome.Applied;
 		}
 
 		/// <summary>FLOOD_DRIVER_OWNERSHIP_CONTRACT_1: what a driver write did. NotOwned = not excavated, the
@@ -4019,13 +3906,13 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			int i = map.cellIndices.CellToIndex(c);
-			if (depthGrid[i] > 0 && fillGrid[i] >= depthGrid[i])
+			if (depthGrid[i] > 0 && WaterDl(i) >= depthGrid[i] * (long)RM_LevelSolve.U)
 			{
 				driverInputs.NoteBackedUp(i, Find.TickManager.TicksGame);
 			}
 		}
 
-		public DriverFillOutcome TrySetDriverFillOutcome(IntVec3 c, int fill, FluidDef driverFluid = null)
+		public DriverFillOutcome TrySetDriverWaterDlOutcome(IntVec3 c, long dl, FluidDef driverFluid = null)
 		{
 			if (!c.InBounds(map))
 			{
@@ -4037,14 +3924,9 @@ namespace RimMandrake.FlowWorks
 			{
 				return DriverFillOutcome.NotOwned;
 			}
-			if (fill < 0)
-			{
-				fill = 0;
-			}
-			if (fill > d)
-			{
-				fill = d;
-			}
+			long brim = d * (long)RM_LevelSolve.U;
+			dl = dl < 0 ? 0 : (dl > brim ? brim : dl);
+			long before = WaterDl(i);
 			// Step 2b: a driver claiming a dry cell stamps its fluid (default: the map's); it cannot pour into a cell
 			// already holding a different fluid (fluids never mix): Refused, and the caller must leave the cell alone.
 			FluidDef fluid = driverFluid ?? FluidAt(c) ?? ActiveFluid;
@@ -4052,32 +3934,26 @@ namespace RimMandrake.FlowWorks
 			// must strip the held fluid's terrain (OwnsFillTerrain is per fluid), not leave it on a dry cell.
 			FluidDef render = FluidAt(c) ?? fluid;
 			// FLOWWORKS_REVIEW_LOOKS_ROUND_1: a liquid switched off in Mod Settings never pours into a cut.
-			if (fill > fillGrid[i] && !InputAllowed(fluid))
+			if (dl > before && !InputAllowed(fluid))
 			{
 				return DriverFillOutcome.Refused;
 			}
-			if (fill > 0 && !RM_StockMath.FluidsCompatible(WetDug(i), FluidAt(c), fluid))
+			if (dl > 0 && !RM_StockMath.FluidsCompatible(WetDug(i), FluidAt(c), fluid))
 			{
 				return DriverFillOutcome.Refused;
 			}
-			if (fill > 0 && !WetDug(i))
+			if (dl > 0 && !WetDug(i))
 			{
 				byte driverKey;
 				if (!TryPaletteKey(fluid, out driverKey))
 				{
-					return DriverFillOutcome.Refused;   // P7: refused before any fill changes
+					return DriverFillOutcome.Refused;   // P7: refused before any water changes
 				}
 				fluidGrid[i] = driverKey;
 			}
-			driverInputs.NoteWrite(i, fillGrid[i], fill, Find.TickManager.TicksGame);
-			fillGrid[i] = (byte)fill;
-			// WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: a driver sets whole notches; the part-notch below them stays, except at
-			// the two ends a driver means literally: drained to 0 (it took everything) or filled to the brim (nothing above it).
-			if (fill == 0 || fill >= d)
-			{
-				partGrid[i] = 0;
-			}
-			if (fill == 0)
+			driverInputs.NoteWrite(i, before > int.MaxValue ? int.MaxValue : (int)before, dl > int.MaxValue ? int.MaxValue : (int)dl, Find.TickManager.TicksGame);
+			SetWaterDl(i, dl);
+			if (dl == 0)
 			{
 				fluidGrid[i] = 0;
 			}
@@ -4088,12 +3964,68 @@ namespace RimMandrake.FlowWorks
 			return DriverFillOutcome.Applied;
 		}
 
+		/// <summary>RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES (owner card 2026-11-13, "Test water -> per body"): sets the
+		/// whole connected body of dug squares around <paramref name="seed"/> (cardinal neighbours, not across a liquid-sealing
+		/// door, not into a square holding another liquid) to one level surface standing <paramref name="metres"/> above the
+		/// body's DEEPEST floor: a flat pit gets <paramref name="metres"/> in every square, a shallower square gets what reaches
+		/// it, each clamped to its brim. That is the only test state the solver leaves where it is (a one-square set re-levels
+		/// with its neighbours on the next pulse). Writes through <see cref="TrySetDriverWaterDlOutcome"/>; returns the squares
+		/// written (0 when <paramref name="seed"/> is not dug), and the body's squares and decilitres after.</summary>
+		public int TrySetBodyWaterM(IntVec3 seed, double metres, FluidDef fluid, out int bodyCells, out long bodyDl)
+		{
+			bodyCells = 0;
+			bodyDl = 0;
+			if (!seed.InBounds(map) || depthGrid[map.cellIndices.CellToIndex(seed)] == 0)
+			{
+				return 0;
+			}
+			FluidDef want = fluid ?? FluidAt(seed) ?? ActiveFluid;
+			var body = new List<IntVec3> { seed };
+			var seen = new HashSet<int> { map.cellIndices.CellToIndex(seed) };
+			int deepest = 0;
+			for (int k = 0; k < body.Count; k++)
+			{
+				IntVec3 c = body[k];
+				deepest = System.Math.Max(deepest, depthGrid[map.cellIndices.CellToIndex(c)]);
+				for (int dir = 0; dir < 4; dir++)
+				{
+					IntVec3 n = c + GenAdj.CardinalDirections[dir];
+					if (!n.InBounds(map))
+					{
+						continue;
+					}
+					int ni = map.cellIndices.CellToIndex(n);
+					if (depthGrid[ni] == 0 || seen.Contains(ni) || RM_FlowDoorRules.SealsLiquid(map.edificeGrid[n])
+						|| (WetDug(ni) && FluidAt(n) != null && want != null && FluidAt(n) != want))
+					{
+						continue;
+					}
+					seen.Add(ni);
+					body.Add(n);
+				}
+			}
+			long surface = (long)System.Math.Round(System.Math.Max(0.0, metres) / RM_LevelSolve.MetresPerUnit);
+			int written = 0;
+			foreach (IntVec3 c in body)
+			{
+				int i = map.cellIndices.CellToIndex(c);
+				long dl = surface - (deepest - depthGrid[i]) * (long)RM_LevelSolve.U;
+				if (TrySetDriverWaterDlOutcome(c, dl, want) == DriverFillOutcome.Applied)
+				{
+					written++;
+				}
+				bodyDl += WaterDl(i);
+			}
+			bodyCells = body.Count;
+			return written;
+		}
+
 		/// <summary>Fill an excavated cell to its brim on behalf of a driver —
 		/// what "a flood arrives at this cell" means once depth is the
-		/// primitive. Same contract as <see cref="TrySetDriverFill"/>.</summary>
+		/// primitive. Same contract as <see cref="TrySetDriverWaterDl"/>.</summary>
 		public bool TryFloodDriverCell(IntVec3 c)
 		{
-			return TrySetDriverFill(c, DepthAt(c));
+			return TrySetDriverWaterDl(c, DepthAt(c) * (long)RM_LevelSolve.U);
 		}
 	}
 

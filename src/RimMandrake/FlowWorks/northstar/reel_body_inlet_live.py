@@ -59,7 +59,7 @@ def run(B, T, saves, receipt, expected_sha):
         call('jawa/map_commit')
         return r
     def dig(x,z):
-        call('jawa/flowworks_excavation_drive',x=x,z=z,deepenLevels=4,setFill=0)
+        call('jawa/flowworks_excavation_drive',x=x,z=z,deepenLevels=4,setBodyWaterM=0.0)
         r=call('jawa/flowworks_excavation_report',x=x,z=z)
         require(r.get('depth')==4 and r.get('fill')==0 and r.get('isExcavated') is True,'not dry D4: '+str(r))
         return r

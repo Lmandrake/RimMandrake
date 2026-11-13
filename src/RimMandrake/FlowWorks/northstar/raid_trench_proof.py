@@ -594,7 +594,7 @@ def _run(argv, hold):
     ring = [(x, z) for x in range(c[0] - 6, c[0] + 7) for z in range(c[1] - 6, c[1] + 7) if cheb((x, z), c) >= 5]
     dug = {}   # the depth each ring square actually reached: a dig stopped short (bedrock) is not the raid's fill
     for cell in ring:
-        dr0 = B.call("jawa/flowworks_excavation_drive", x=cell[0], z=cell[1], deepenLevels=a.depth, setFill=-1) or {}
+        dr0 = B.call("jawa/flowworks_excavation_drive", x=cell[0], z=cell[1], deepenLevels=a.depth, setBodyWaterM=-1) or {}
         dug[cell] = dr0.get("depth") if isinstance(dr0.get("depth"), int) else None
     res["ringShort"] = sorted((c_[0], c_[1], d_) for c_, d_ in dug.items() if d_ is None or d_ < a.depth)
     # HARNESS (test pilot 2026-10-31, shallow1): with the churn 9 EAST, on the --direct raid's straight approach, the
@@ -712,9 +712,9 @@ def _run(argv, hold):
             break
         k += 1
         if k % 2 == 0:
-            B.call("jawa/flowworks_excavation_drive", x=churn[0], z=churn[1], deepenLevels=4, setFill=-1)
+            B.call("jawa/flowworks_excavation_drive", x=churn[0], z=churn[1], deepenLevels=4, setBodyWaterM=-1)
         else:
-            B.call("jawa/flowworks_excavation_drive", x=churn[0], z=churn[1], deepenLevels=0, setFill=-1, fillInLevels=4)
+            B.call("jawa/flowworks_excavation_drive", x=churn[0], z=churn[1], deepenLevels=0, setBodyWaterM=-1, fillInLevels=4)
         if k % 20 == 0:
             feed()
         ar = adv(CHUNK)
@@ -816,7 +816,7 @@ def _run(argv, hold):
         for x in range(c[0] - 6, c[0] + 7):
             for z in range(c[1] - 6, c[1] + 7):
                 if cheb((x, z), c) in (5, 6):
-                    dr = B.call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=0, setFill=-1) or {}
+                    dr = B.call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=0, setBodyWaterM=-1) or {}
                     if isinstance(dr.get("depth"), int) and dug.get((x, z)) is not None and dr["depth"] < dug[(x, z)]:
                         filled.append((x, z, dr["depth"]))
     except Exception as ex:  # noqa: BLE001 - the client refuses a mutating tool after an unknown-outcome call (see jobTrace)

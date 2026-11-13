@@ -625,8 +625,8 @@ class FakePit(object):
         if tool == "jawa/flowworks_excavation_drive":
             c = (int(kw["x"]), int(kw["z"]))
             self.depth[c] = self.depth.get(c, 0) + int(kw.get("deepenLevels") or 0)
-            if int(kw.get("setFill", -1)) >= 0:
-                self.fill[c] = int(kw["setFill"])
+            if (lambda m: -1 if m < 0 else int(round(m * 2)))(float(kw.get("setBodyWaterM", -1))) >= 0:
+                self.fill[c] = int(round(float(kw["setBodyWaterM"]) * 2))
             return {"success": True, "depth": self.depth[c]}
         if tool == "jawa/spawn_pawn":
             self.n += 1
@@ -895,7 +895,7 @@ def main(argv=None):
     digs = []
 
     def dig(c, n, fill=-1):
-        r = B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setFill=fill) or {}
+        r = B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setBodyWaterM=(fill) * 0.5) or {}
         digs.append((tuple(c), n, r))
         return r
 

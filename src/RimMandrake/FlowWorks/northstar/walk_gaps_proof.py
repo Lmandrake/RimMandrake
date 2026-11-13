@@ -453,7 +453,7 @@ def main(argv=None):
         return v, waited
 
     def dig(c, n, fill=-1):
-        return B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setFill=fill) or {}
+        return B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setBodyWaterM=(fill) * 0.5) or {}
 
     def pit(x0, z0, w, h, n):
         for x in range(x0, x0 + w):

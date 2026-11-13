@@ -136,7 +136,7 @@ def run(B, V, a, out, stamp=None):
         return B.call("jawa/mod_settings_field", typeName=S_FW, action="set", field=f, value=str(v)) or {"success": False}
 
     def depth(c):
-        return (B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=0, setFill=-1) or {}).get("depth")
+        return (B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=0, setBodyWaterM=-1) or {}).get("depth")
 
     def probe(c, pid):
         return B.call("jawa/flowworks_job_probe", x=c[0], z=c[1], kind="dig", pawnId=pid) or {}
@@ -231,7 +231,7 @@ def run(B, V, a, out, stamp=None):
         B.call("jawa/set_terrain", terrainDef="Soil", x=cell[0], z=cell[1])
         d_now = depth(cell)
         drive = B.call("jawa/flowworks_excavation_drive", x=cell[0], z=cell[1], deepenLevels=max(0, CAP - (d_now or 0)),
-                       setFill=-1) or {}
+                       setBodyWaterM=-1) or {}
         d0 = depth(cell)
         res["site"] = {"cell": cell, "depthBefore": d_now, "drive": str(drive)[:200], "depth0": d0}
         if d0 != CAP:

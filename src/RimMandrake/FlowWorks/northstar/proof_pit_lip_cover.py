@@ -202,7 +202,7 @@ def main(argv=None):
         for i in range(PIT[2]):
             for j in range(PIT[3]):
                 B.call("jawa/flowworks_excavation_drive", x=ox + PIT[0] + i - 1, z=oz + PIT[1] + j - 1,
-                       deepenLevels=DEPTH, setFill=0)
+                       deepenLevels=DEPTH, setBodyWaterM=0.0)
         ids = {}
         for name, kind, faction, (dx, dz) in (("muffIn", "Muffalo", "none", MUFF_IN), ("colonist", "Colonist", "player", COLONIST),
                                               ("muffOut", "Muffalo", "none", MUFF_OUT)):

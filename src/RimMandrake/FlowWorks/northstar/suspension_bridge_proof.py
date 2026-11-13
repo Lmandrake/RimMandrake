@@ -178,7 +178,7 @@ def main(argv=None):
         return kv, txt
 
     def dig(c, n=DEEP):
-        return B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setFill=-1) or {}
+        return B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setBodyWaterM=-1) or {}
 
     def spawn(c, kind="Colonist", faction="player"):
         r = B.call("jawa/spawn_pawn", kindDef=kind, x=c[0], z=c[1], faction=faction, count=1) or {}
@@ -373,7 +373,7 @@ def posts(ctx):
     # square makes it bridgeable terrain to vanilla.
     with V.scope("T5"):
         dig(P(10, 0))
-        B.call("jawa/flowworks_excavation_drive", x=P(10, 0)[0], z=P(10, 0)[1], deepenLevels=0, setFill=2)
+        B.call("jawa/flowworks_excavation_drive", x=P(10, 0)[0], z=P(10, 0)[1], deepenLevels=0, setBodyWaterM=1.0)
         kv, txt = proof("ProofVanillaBridge", xz(P(10, 0)))
         good = kv.get("accepted") == "False" and "Use a suspension bridge over dug ground" in txt
         V.require(good or not (kv.get("accepted") == "False" and "Bridgeable" in txt),
@@ -411,7 +411,7 @@ def grate(ctx):
             fills[tier] = []
             for i in range(1, 5):
                 fr = B.call("jawa/static_call", type=FLUIDID_TYPE, method="ProofFillWithFluid",
-                            args="%d,%d,%d,RM_Fluid_Chemfuel" % (P(i, dz)[0], P(i, dz)[1], 2)) or {}
+                            args="%d,%d,%g,RM_Fluid_Chemfuel" % (P(i, dz)[0], P(i, dz)[1], 1.0)) or {}
                 fills[tier].append(str(fr.get("result") or fr.get("message") or fr.get("error") or ""))
             builds[tier] = stage("ProofBuild", "%s;%s;%s;god" % (xz(P(0, dz)), xz(P(5, dz)), tier))
             # drafted, as T1's riders: an undrafted colonist walks away from a lit pit and reads as "not burned" (review 2026-10-20)
@@ -438,7 +438,7 @@ def grate(ctx):
     with V.scope("GRATE_pour_item"):
         pit(28)
         for i in range(1, 5):                                         # 1 m of water in the 2 m canal: room for the pour
-            B.call("jawa/flowworks_excavation_drive", x=P(i, 28)[0], z=P(i, 28)[1], deepenLevels=0, setFill=2)
+            B.call("jawa/flowworks_excavation_drive", x=P(i, 28)[0], z=P(i, 28)[1], deepenLevels=0, setBodyWaterM=1.0)
         _, txtb = stage("ProofBuild", "%s;%s;steelgrated;god" % (xz(P(0, 28)), xz(P(5, 28))))
         with V.scope("GRATE_pour"):       # the pour's own read must not withhold the item row below
             kv, txt = proof("ProofPour", "%s;50;RM_Liquid_FreshWater" % xz(P(2, 28)))
@@ -613,7 +613,7 @@ def waters(ctx):
         for tier, z in (("timber", 64), ("steel", 68)):
             for i in range(1, 5):
                 dig(P(i, z), 4)
-                B.call("jawa/flowworks_excavation_drive", x=P(i, z)[0], z=P(i, z)[1], deepenLevels=0, setFill=3)
+                B.call("jawa/flowworks_excavation_drive", x=P(i, z)[0], z=P(i, z)[1], deepenLevels=0, setBodyWaterM=1.5)
             stage("ProofBuild", "%s;%s;%s;god" % (xz(P(0, z)), xz(P(5, z)), tier))   # a deck that never stood: hp 0 == 0
             hp[tier] = [proof("ProofDeckHp", xz(P(2, z)))[0]]
             B.call("jawa/flowworks_spawn_flood", x=P(2, z - 1)[0], z=P(2, z - 1)[1], fluidDefName="RM_Fluid_Water", volume=30)
@@ -808,7 +808,7 @@ def reach(ctx):
     mid, bank, pile = P(3, 87), P(3, 84), P(5, 84)
 
     def depth(c):
-        return (B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=0, setFill=-1) or {}).get("depth")
+        return (B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=0, setBodyWaterM=-1) or {}).get("depth")
 
     with V.scope("SB_islands_restore_reach"):
         for x in range(0, 7):
@@ -886,7 +886,7 @@ class FakeBridge(object):
             return {"success": True, "result": self.static(kw.get("method"), kw.get("args") or "")}
         if method == "jawa/flowworks_excavation_drive":
             cell = (kw.get("x"), kw.get("z"))
-            if kw.get("deepenLevels") == 0 and kw.get("setFill") == -1:     # a depth read
+            if kw.get("deepenLevels") == 0 and kw.get("setBodyWaterM") == -1:     # a depth read
                 return {"success": True, "depth": self.depth.get(cell, 0)}
             self.dug[cell] = kw.get("deepenLevels")
             self.depth[cell] = self.depth.get(cell, 0) + (kw.get("deepenLevels") or 0)

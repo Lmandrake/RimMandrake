@@ -80,7 +80,7 @@ def main():
         return 2
     ring = [(x, z) for x in range(cx - 6, cx + 7) for z in range(cz - 6, cz + 7) if cheb((x, z)) >= 5]
     for c in ring:
-        B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=4, setFill=-1)
+        B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=4, setBodyWaterM=-1)
     for p in (B.call("jawa/list_pawns", limit=400) or {}).get("pawns") or []:
         if not p.get("dead"):
             B.call("jawa/pawn_force_incapacitate", pawn=p.get("id"), action="vanish")

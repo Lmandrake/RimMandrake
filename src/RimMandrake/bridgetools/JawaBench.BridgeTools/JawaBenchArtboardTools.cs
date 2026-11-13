@@ -98,12 +98,12 @@ namespace JawaBench.BridgeTools
                 "every non-player Thing and plant in it, removes roof/snow/fog, fills excavations back to the surface) and " +
                 "lay 'ground' terrain - then capture the clean plate. phase=subjects: run the ops. phase=all: both. " +
                 "ops (or opsPath, a file - bulk takes a file) = one op per line, key=value pairs joined by '|': " +
-                "id=..|kind=pit|x=|z=|w=|h=|depth=1-4|fill=0..depth|fluid=RM_Fluid_Water ; kind=terrain|x|z|w|h|def= ; " +
+                "id=..|kind=pit|x=|z=|w=|h=|depth=1-4|waterM=0..depth*0.5 (metres of water)|fluid=RM_Fluid_Water ; kind=terrain|x|z|w|h|def= ; " +
                 "kind=thing|x|z|def|stuff|rot ; kind=plant|x|z|def|growth=0..1 ; kind=pawn|x|z|def=<PawnKindDef>|rot|" +
                 "faction=none,player. REFUSES rather than relocates: an op whose cell is out of bounds, blocked, " +
                 "not standable (pawns), or already dug deeper than asked (pits - D only goes down) reports ok:false with " +
                 "the reason and nothing is placed for it. Pits are dug for all ops first, then filled, then read back " +
-                "through DepthAt/FillAt/FluidAt. Pauses the game (pause=true) so nothing moves before the capture; staged " +
+                "through DepthAt/WaterDlAt/FluidAt. Pauses the game (pause=true) so nothing moves before the capture; staged " +
                 "pawns are given a long Wait job and their rotation is set after it. killHostiles destroys every pawn " +
                 "hostile to the player on the map.",
             ResultDescription =
@@ -172,7 +172,7 @@ namespace JawaBench.BridgeTools
                             {
                                 if (Convert.ToInt32(QCall(exc, "DepthAt", c)) > 0)
                                 {
-                                    QCall(exc, "TrySetDriverFill", c, 0, null);
+                                    QCall(exc, "TrySetDriverWaterDl", c, 0L, null);
                                     for (int i = 0; i < 6 && Convert.ToInt32(QCall(exc, "DepthAt", c)) > 0; i++) QCall(exc, "FillIn", c);
                                     if (Convert.ToInt32(QCall(exc, "DepthAt", c)) > 0) refusedCells.Add(c.x + "," + c.z + " still excavated");
                                 }
@@ -231,11 +231,11 @@ namespace JawaBench.BridgeTools
                         {
                             foreach (IntVec3 c in p.r.Cells)
                             {
-                                if (p.F > 0) QCall(exc, "TrySetDriverFill", c, p.F, p.fluid);
-                                int d = Convert.ToInt32(QCall(exc, "DepthAt", c)), f = Convert.ToInt32(QCall(exc, "FillAt", c));
+                                if (p.F > 0) QCall(exc, "TrySetDriverWaterDl", c, (long)p.F, p.fluid);
+                                int d = Convert.ToInt32(QCall(exc, "DepthAt", c)), f = Convert.ToInt32(QCall(exc, "WaterDlAt", c));
                                 string fl = (QCall(exc, "FluidAt", c) as Def)?.defName;
                                 bool ok = d == p.D && f == p.F && (p.F == 0 || fl == p.fluid?.defName);
-                                if (!ok) { bad++; if (first == null) first = c.x + "," + c.z + " D" + d + "F" + f + " " + fl; }
+                                if (!ok) { bad++; if (first == null) first = c.x + "," + c.z + " D" + d + " W" + f + "dL " + fl; }
                             }
                         }
                         catch (Exception e) { p.row["ok"] = false; p.row["error"] = "fill/read-back threw " + Inner(e); continue; }
@@ -353,9 +353,11 @@ namespace JawaBench.BridgeTools
             if (kind == "pit")
             {
                 if (exc == null) { row["error"] = excErr; return; }
-                int D = GetInt(kv, "depth", -1), F = GetInt(kv, "fill", 0);
+                int D = GetInt(kv, "depth", -1);
+                double waterM = double.TryParse(Get(kv, "waterM") ?? "0", System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out double wm) ? wm : -1;
+                int F = (int)Math.Round(waterM * 20000.0);   // decilitres (0.5 m = 10000 dL)
                 if (D < 1 || D > 4) { row["error"] = "depth must be 1..4"; return; }
-                if (F < 0 || F > D) { row["error"] = "fill must be 0..depth (" + D + ")"; return; }
+                if (waterM < 0 || F > D * 10000) { row["error"] = "waterM must be 0.." + (D * 0.5).ToString(System.Globalization.CultureInfo.InvariantCulture) + " m"; return; }
                 Def fluid = null;
                 if (F > 0)
                 {

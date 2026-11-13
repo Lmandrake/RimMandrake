@@ -67,7 +67,7 @@ namespace RimMandrake.FlowWorks
 			foreach (int i in scratch)
 			{
 				IntVec3 c = map.cellIndices.IndexToCell(i);
-				if (eng == null || eng.ExcavatedDepthAt(c) == 0 || eng.FillAt(c) > 0)
+				if (eng == null || eng.ExcavatedDepthAt(c) == 0 || eng.WetAt(c))
 				{
 					age.Remove(i);      // refilled or filled in: the scorch is gone
 					Dirty(c);
@@ -168,7 +168,7 @@ namespace RimMandrake.FlowWorks
 			IntVec3 c = r.Min;
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
 			return "SCORCH strength=" + s.StrengthAt(c).ToString("0.00") + " depth=" + (eng?.ExcavatedDepthAt(c) ?? 0)
-				+ " fill=" + (eng?.FillAt(c) ?? 0);
+				+ " water=" + (eng?.WaterDlAt(c) ?? 0) + "dL";
 		}
 
 		private static bool Rect(string arg, out CellRect r)

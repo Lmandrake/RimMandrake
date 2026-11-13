@@ -157,7 +157,7 @@ namespace RimMandrake.FlowWorks
 				Hediff d = RimMandrakeFlowWorks_DefOf.RM_PitDrowning != null
 					? p.health?.hediffSet.GetFirstHediffOfDef(RimMandrakeFlowWorks_DefOf.RM_PitDrowning) : null;
 				Hediff t = p.health?.hediffSet.GetFirstHediffOfDef(HediffDefOf.ToxicBuildup);
-				rows.Add(p.ThingID + "@" + c.x + "," + c.z + " D=" + ex.DepthAt(c) + " F=" + ex.FillAt(c)
+				rows.Add(p.ThingID + "@" + c.x + "," + c.z + " D=" + ex.DepthAt(c) + " W=" + ex.WaterDlAt(c) + "dL"
 					+ " fluid=" + (ex.FluidAt(c)?.defName ?? "none") + " swimmer=" + IsSwimmer(p)
 					+ " drown=" + (d?.Severity ?? 0f).ToString("F3") + " tox=" + (t?.Severity ?? 0f).ToString("F3")
 					+ " burning=" + ex.LiquidFire.IsBurning(map, c));

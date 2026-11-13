@@ -370,11 +370,11 @@ namespace JawaBench.BridgeTools
 
         // ════════════════════════════════════════════════════════════════
         // LIQUID_SINK_DRAINAGE_1 — the live-proof gap the design item flagged:
-        // SinkTransferredTotal/fillGrid are private MapComponent state with no
+        // SinkTransferredTotal and the water grid are private MapComponent state with no
         // existing bridge exposure. RM_MapComponent_Excavation's read surface
-        // (DepthAt/FillAt/IsExcavated/IsSourceCell/IsSinkCell/SinkTransferredTotal/
+        // (DepthAt/WaterDlAt/IsExcavated/IsSourceCell/IsSinkCell/SinkTransferredTotal/
         // OverflowDestroyedTotal) and its driver-API write surface (Deepen,
-        // TrySetDriverFill) are ALL public already — built for CrackedLands's
+        // TrySetDriverWaterDl) are ALL public already — built for CrackedLands's
         // flood driver (CANYON_FLOOD_ERASES_CANALS_1) — so this reads and drives
         // them the same reflection way CanalCellReport does, no new engine code.
         // ════════════════════════════════════════════════════════════════
@@ -405,12 +405,12 @@ namespace JawaBench.BridgeTools
                 "CURRENT map, plus the map-wide sink and overflow counters " +
                 "(LIQUID_SINK_DRAINAGE_1's live-proof gap: those counters are private " +
                 "MapComponent fields with no prior bridge exposure). Every value comes off " +
-                "the component's own public getters (DepthAt/FillAt/IsExcavated/" +
+                "the component's own public getters (DepthAt/WaterDlAt/IsExcavated/" +
                 "IsSourceCell/IsSinkCell/SinkTransferredTotal/OverflowDestroyedTotal), " +
                 "reflection-coupled the same way jawa/canal_cell_report is, so this works " +
                 "with or without FlowWorks loaded (fails loudly naming why, not silently).",
             ResultDescription =
-                "success, cell, depth (0-4, D), fill (0-D, F), isExcavated, isSourceCell, " +
+                "success, cell, depth (0-4, D), waterDl and waterM (exact water), isExcavated, isSourceCell, " +
                 "isSinkCell, sinkTransferredTotal, overflowDestroyedTotal, " +
                 "excavatedCellCount, ticksGame. Failure names exactly which resolve step " +
                 "missed.")]
@@ -434,7 +434,7 @@ namespace JawaBench.BridgeTools
 
                 object[] cellArg = { c };
                 byte depth = (byte)type.GetMethod("DepthAt").Invoke(comp, cellArg);
-                byte fill = (byte)type.GetMethod("FillAt").Invoke(comp, cellArg);
+                long waterDl = (long)type.GetMethod("WaterDlAt", new[] { typeof(IntVec3) }).Invoke(comp, cellArg);
                 bool isExcavated = (bool)type.GetMethod("IsExcavated").Invoke(comp, cellArg);
                 bool isSourceCell = (bool)type.GetMethod("IsSourceCell").Invoke(comp, cellArg);
                 bool isSinkCell = (bool)type.GetMethod("IsSinkCell").Invoke(comp, cellArg);
@@ -447,7 +447,8 @@ namespace JawaBench.BridgeTools
                     success = true,
                     cell = new { x, z },
                     depth,
-                    fill,
+                    waterDl,
+                    waterM = waterDl * 0.5 / 10000.0,
                     isExcavated,
                     isSourceCell,
                     isSinkCell,
@@ -465,15 +466,17 @@ namespace JawaBench.BridgeTools
                 "Test/admin shortcut for RM_MapComponent_Excavation, bypassing colonist " +
                 "dig labor - built for LIQUID_SINK_DRAINAGE_1's live-proof gap (no cheap " +
                 "way to get a filled channel touching the map edge otherwise). Calls the " +
-                "SAME public Deepen()/TrySetDriverFill() the CrackedLands flood driver " +
+                "SAME public Deepen() and the engine's own driver write (TrySetBodyWaterM -> TrySetDriverWaterDlOutcome) the CrackedLands flood driver " +
                 "uses (CANYON_FLOOD_ERASES_CANALS_1), so it obeys the engine's own clamps " +
-                "(LAW 1: depth only ever goes down; fill clamped 0<=F<=D) rather than " +
-                "poking the grid directly. deepenLevels=0 skips digging (drive fill on an " +
-                "already-excavated cell); setFill=-1 skips the fill write (dig only); fillInLevels " +
+                "(LAW 1: depth only ever goes down; water clamped 0..D per square) rather than " +
+                "poking the grid directly. deepenLevels=0 skips digging (set water on an " +
+                "already-excavated cell); setBodyWaterM (owner card 2026-11-13: test water is per BODY) sets the whole " +
+                "connected dug body around the cell to one level surface that many METRES above its deepest floor " +
+                "(a flat pit: every square holds it; -1 = leave the water alone, dig only); fillInLevels " +
                 "calls the engine's FillIn() (raise D) that many times.",
             ResultDescription =
-                "success, cell, depth (D after any deepen calls), fillSet (whether " +
-                "TrySetDriverFill was called and returned true), fill (F after), " +
+                "success, cell, depth (D after any deepen/fill-in calls, notches of 0.5 m), waterSet (squares written > 0), " +
+                "waterM and waterDl (this square's water after, metres and decilitres), bodyCells, bodyDl (the body after), " +
                 "ticksGame.")]
         public static async Task<object> FlowWorksExcavationDrive(
             IRimBridgeContext ctx,
@@ -482,8 +485,8 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "Map cell Z.")] int z,
             [ToolParameter(Description = "How many times to call Deepen() on this cell (0 = leave depth alone).")]
             int deepenLevels,
-            [ToolParameter(Description = "Fill level to set via TrySetDriverFill (clamped 0<=F<=D by the engine). -1 = do not touch fill.")]
-            int setFill,
+            [ToolParameter(Description = "Metres of water to stand in this cell's whole connected body, above its deepest floor (TrySetBodyWaterM; clamped to each square's brim). -1 = do not touch water.", DefaultValue = -1.0)]
+            double setBodyWaterM,
             [ToolParameter(Description = "How many times to call the engine's FillIn() on this cell AFTER any deepen/fill (raises D by one each; the fill-in designator's own path). 0 = none.", DefaultValue = 0)]
             int fillInLevels = 0)
         {
@@ -505,23 +508,35 @@ namespace JawaBench.BridgeTools
                 for (int i = 0; i < deepenLevels; i++)
                     depth = (byte)deepenMethod.Invoke(comp, cellArg);
 
-                bool fillSet = false;
-                if (setFill >= 0)
-                    fillSet = (bool)type.GetMethod("TrySetDriverFill").Invoke(comp, new object[] { c, setFill, null });
+                bool waterSet = false;
+                int bodyCells = 0;
+                long bodyDl = 0;
+                if (setBodyWaterM >= 0)
+                {
+                    MethodInfo setBody = type.GetMethod("TrySetBodyWaterM");
+                    if (setBody == null) return Fail("RM_MapComponent_Excavation.TrySetBodyWaterM not found");
+                    object[] args = { c, setBodyWaterM, null, 0, 0L };
+                    waterSet = (int)setBody.Invoke(comp, args) > 0;
+                    bodyCells = (int)args[3];
+                    bodyDl = (long)args[4];
+                }
                 MethodInfo fillInMethod = type.GetMethod("FillIn", new[] { typeof(IntVec3) });
                 if (fillInLevels > 0 && fillInMethod == null) return Fail("RM_MapComponent_Excavation.FillIn(IntVec3) not found");
                 for (int i = 0; i < fillInLevels; i++)
                     depth = (byte)fillInMethod.Invoke(comp, cellArg);
 
-                byte fillNow = (byte)type.GetMethod("FillAt").Invoke(comp, cellArg);
+                long waterDlNow = (long)type.GetMethod("WaterDlAt", new[] { typeof(IntVec3) }).Invoke(comp, cellArg);
 
                 return (object)new
                 {
                     success = true,
                     cell = new { x, z },
                     depth,
-                    fillSet,
-                    fill = fillNow,
+                    waterSet,
+                    waterM = waterDlNow * 0.5 / 10000.0,
+                    waterDl = waterDlNow,
+                    bodyCells,
+                    bodyDl,
                     ticksGame = TicksGameSafe()
                 };
             });

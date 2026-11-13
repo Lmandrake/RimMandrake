@@ -361,7 +361,7 @@ def main():
         pit_cells = {"A": [P(x, z) for x in range(1, 6) for z in range(1, 6)],
                      "B": [P(x, z) for x in range(9, 14) for z in range(1, 6)]}
         for c in pit_cells["A"] + pit_cells["B"]:
-            d = (B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=NOTCHES, setFill=-1) or {}).get("depth")
+            d = (B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=NOTCHES, setBodyWaterM=-1) or {}).get("depth")
             dug[d] = dug.get(d, 0) + 1
         B.call("jawa/set_roof_batch", ops="RoofConstructed:%d,%d,5,5" % P(9, 1))
         room = B.call("jawa/make_empty_room", rect="%d,%d,7,7" % P(17, 0), stuffDef="BlocksSandstone",

@@ -101,7 +101,7 @@ def main():
         return 2
     pit = {P(x, z) for x in range(5, 9) for z in range(2, 11)}
     for c in sorted(pit):
-        B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=4, setFill=-1)
+        B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=4, setBodyWaterM=-1)
     probe = B.call("jawa/spawn_pawn", kindDef="Mercenary_Gunner", x=0, z=0, faction="?", count=1, _answer=True) or {}
     avail = [f.get("def") for f in (probe.get("details") or {}).get("available") or [] if f.get("hostile")]
     owner = next((f for f in avail if str(f).startswith("Pirate")), None)

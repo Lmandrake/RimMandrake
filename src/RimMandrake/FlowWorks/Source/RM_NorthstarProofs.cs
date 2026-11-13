@@ -818,7 +818,7 @@ namespace RimMandrake.FlowWorks
 					continue;
 				}
 				cells++;
-				eng.TrySetDriverFill(c, 0);
+				eng.TrySetDriverWaterDl(c, 0);
 				for (int i = 0; i < RM_ExcavationDepth.MaxDigCeiling && eng.ExcavatedDepthAt(c) > 0; i++)
 				{
 					eng.FillIn(c);
@@ -879,7 +879,7 @@ namespace RimMandrake.FlowWorks
 			// networks, and the three switches RM_Levelling.Tick needs
 			int intakes = Machinery.RM_LiquidNet.PortsOf(reel.parent, Machinery.RM_FreeEndRole.Intake).Count;
 			int outflows = Machinery.RM_LiquidNet.PortsOf(reel.parent, Machinery.RM_FreeEndRole.Outflow).Count;
-			bool on = Hose.RM_HoseSettings.gravityLevellingEnabled && Hose.RM_HoseSettings.enabled && RM_MapComponent_Excavation.LevelExact;
+			bool on = Hose.RM_HoseSettings.gravityLevellingEnabled && Hose.RM_HoseSettings.enabled;
 			return "LEVELLINK reel=" + reel.parent.thingIDNumber + " state=" + (s.HasValue ? s.Value.ToString() : "None")
 				+ " role=" + reel.freeEndRole + " laid=" + reel.laid + " intakes=" + intakes + " outflows=" + outflows + " on=" + on
 				+ " cycles=" + Machinery.RM_Levelling.Cycles + " links=" + Machinery.RM_Levelling.LastLinks
@@ -1060,9 +1060,9 @@ namespace RimMandrake.FlowWorks
 			return sb.Append(" coupled=").Append(coupled).Append(" corner=").Append(corner).Append(" cornerCoupled=").Append(cornerCoupled).ToString();
 		}
 
-		/// <summary>WRITES. PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL A3 (perf) stager: arg "x;z;w;h;levels;fill;FluidDef" digs
+		/// <summary>WRITES. PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL A3 (perf) stager: arg "x;z;w;h;levels;waterM;FluidDef" digs
 		/// every cell of the rect to <c>levels</c> notches through the engine's own Deepen (the bridge dig's call) and sets
-		/// fill F through TrySetDriverFill (fill 0 = dry). Two 40,000-square basins are staged in strips (one call per strip
+		/// waterM metres of water in every square through TrySetDriverWaterDl (0 = dry). Two 40,000-square basins are staged in strips (one call per strip
 		/// keeps the main-thread call short). "BASIN cells=n dug=n filled=n refused=n maxDepth=n", or "REFUSED: ...".</summary>
 		public static string ProofStageBasin(string arg)
 		{
@@ -1070,16 +1070,17 @@ namespace RimMandrake.FlowWorks
 			string[] a = (arg ?? "").Split(';');
 			if (map == null || a.Length != 7 || !int.TryParse(a[0], out int x) || !int.TryParse(a[1], out int z)
 				|| !int.TryParse(a[2], out int w) || !int.TryParse(a[3], out int h) || !int.TryParse(a[4], out int levels)
-				|| !int.TryParse(a[5], out int fill) || w <= 0 || h <= 0 || levels <= 0 || fill < 0 || fill > levels)
+				|| !double.TryParse(a[5], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out double waterM)
+				|| w <= 0 || h <= 0 || levels <= 0 || waterM < 0 || waterM > levels * RM_Volume.MetresPerLevel + 1e-9)
 			{
-				return "REFUSED: arg must be x;z;w;h;levels;fill;FluidDef with 0<=fill<=levels on the current map";
+				return "REFUSED: arg must be x;z;w;h;levels;waterM;FluidDef with 0<=waterM<=levels*0.5 on the current map";
 			}
 			if ((long)w * h > 20000)
 			{
 				return "REFUSED: at most 20000 cells per call (stage in strips)";
 			}
-			FluidDef fluid = fill > 0 ? DefDatabase<FluidDef>.GetNamedSilentFail(a[6]) : null;
-			if (fill > 0 && fluid == null)
+			FluidDef fluid = waterM > 0 ? DefDatabase<FluidDef>.GetNamedSilentFail(a[6]) : null;
+			if (waterM > 0 && fluid == null)
 			{
 				return "REFUSED: no FluidDef " + a[6];
 			}
@@ -1112,9 +1113,10 @@ namespace RimMandrake.FlowWorks
 					dug++;
 				}
 				maxDepth = System.Math.Max(maxDepth, d);
-				if (fill > 0 || eng.FillAt(c) > 0)
+				long fillDl = (long)System.Math.Round(waterM / RM_LevelSolve.MetresPerUnit);
+				if (fillDl > 0 || eng.WaterDlAt(c) > 0)
 				{
-					if (eng.TrySetDriverFill(c, fill, fluid))
+					if (eng.TrySetDriverWaterDl(c, fillDl, fluid))
 					{
 						filled++;
 					}

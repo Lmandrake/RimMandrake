@@ -147,8 +147,8 @@ def clause_a1(b):
     fw = _fw_cells(b, sx, sz, 8)
     if not any(_dug_filled(b, c) for c in fw):
         sx0, sz0 = sx // 2 + 9, sz // 2 + 9
-        d = b.call("jawa/flowworks_excavation_drive", x=sx0, z=sz0, deepenLevels=2, setFill=1)
-        print("MUTATION: flowworks_excavation_drive %d,%d deepenLevels=2 setFill=1 -> %s" % (sx0, sz0, str(d)[:200]))
+        d = b.call("jawa/flowworks_excavation_drive", x=sx0, z=sz0, deepenLevels=2, setBodyWaterM=0.5)
+        print("MUTATION: flowworks_excavation_drive %d,%d deepenLevels=2 setBodyWaterM=0.5 -> %s" % (sx0, sz0, str(d)[:200]))
         if not d.get("success"):
             raise Unmeasured("no dug, filled FlowWorks cell on the map and staging one failed: %s" % str(d)[:300])
         fw = [(sx0, sz0)] + fw[:7]
