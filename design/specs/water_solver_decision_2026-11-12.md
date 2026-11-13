@@ -10,10 +10,18 @@ Owner questions: `D:\ClaudeWork\rimmandrake\conductor\water_models_20261112\QUES
 
 Tags: [measured] = run by a harness and readable on disk; [guess ~N%] = my estimate with rough confidence.
 
+**Updated 2026-11-13 by the stage-2 review (`RIMMANDRAKE_HARDEN_FAST_WATER_SOLVERS_VIA_GPT_PIPES_RING`; MandrakeModels
+`results/stage2.md`, 252407e): the winner is refined, not changed.** The engine is local-inertial **with every face
+discharge capped at the critical-flow (weir) value, face Froude 0.544** (`local_inertial_frcap`): plain local-inertial floods
+early, and the cap puts it on the referee's schedule at the same cost. Virtual pipes is no longer a fallback.
+
 ## 1. Recommendation in six lines
 
-1. **Engine: local-inertial shallow water** (Bates 2010, de Almeida 2012; MandrakeModels `local_inertial`), on design 7's
-   bookkeeping: whole decilitres per square, one shared transfer per edge, current read off the water that crossed each edge.
+1. **Engine: local-inertial shallow water with a Froude 0.544 face cap** (Bates 2010, de Almeida 2012; MandrakeModels
+   `local_inertial_frcap`), on design 7's bookkeeping: whole decilitres per square, one shared transfer per edge, current read
+   off the water that crossed each edge. Without the cap floods arrive early (dam-break water 1.48 x the referee; pit 0.72 m
+   vs 0.42 at 128); with it 1.09 x and 0.44 m (0.26 vs 0.26 at 250), at the same cost, for 12% less river water delivered
+   to the outfall [measured, `results/stage2.md`]. No cap value keeps both within 15% and 5% (0.6 to 0.7 swept).
 2. **Referee and runner-up: first-order full shallow water** (`swe_hll`): the only arm that carries real bores and
    dam-break fronts, about 3 to 4 times the cost per tick of local-inertial [measured, numpy, section 4].
 3. **Two clocks.** Flow runs at eye speed (one water-second per 60 ticks at game speed 1, so water moves at a natural pace
@@ -24,13 +32,16 @@ Tags: [measured] = run by a harness and readable on disk; [guess ~N%] = my estim
    the MandrakeModels base class and act identically under every solver [measured: `src/mandrakemodels/base.py`
    `apply_forcing`]; the solver only decides how fast their effect spreads.
 5. **Cut:** game cellular automaton, WCA2D (flood fronts 10 to 30 times late, worse on bigger maps), kinematic wave (no
-   backwater), both diffusion-wave CG and explicit forms (cost), lattice-Boltzmann shallow water (cost). Virtual pipes was
-   kept only as the cheap fallback if the C# timing of local-inertial missed the bar; it did not miss it (section 4a).
+   backwater), both diffusion-wave CG and explicit forms (cost), lattice-Boltzmann shallow water (cost), and virtual pipes:
+   its pipe size ignores depth (a 1 cm film runs 8.8 times its Manning speed; the river holds 54% of the referee's water),
+   and its claimed compiled-cost edge rested on a probe kernel without friction [measured, stage-2 review]. Theta smoothing
+   (`pipes_theta`) removes its ringing on screen but not its early floods.
 6. **Stage C measured it:** on RimWorld's own Mono, local-inertial on integer decilitres costs **0.163 ms per tick on a
    realistic 325 river map** (bar 0.5: pass), 1.45 ms on the 50%-wet stress (bar 2: pass), books exactly 0 dL [measured,
    section 4a]. Two things the game build must carry: each 12-tick recompute splits into equal substeps (a ragged split makes
    the scheme slosh), and the recompute's work is spread over its 12 ticks (it is a spike otherwise). Settled water does not
-   sleep yet, so the settled bar fails.
+   sleep yet, so the settled bar fails. These are figures for the uncapped scheme; the cap adds one multiply and one
+   square root per wet face (numpy cost unchanged within noise [measured]; C# UNMEASURED).
 
 ## 2. The owner's rulings this has to obey
 
@@ -70,6 +81,7 @@ What follows from them for the solver:
   | solver | 64 cells | 128 | 250 |
   |---|---|---|---|
   | local_inertial | 1.55 m | 0.72 | 0.49 |
+  | local_inertial_frcap (stage 2) | 1.30 | 0.44 | 0.26 |
   | pipes | 1.42 | 0.77 | 0.58 |
   | swe_hll (referee) | 1.12 | 0.42 | 0.26 |
   | diffusion_wave_implicit_adi | 1.48 | 0.37 | not run |
@@ -87,15 +99,17 @@ local-inertial has been ported to C#; its measured C# cost is section 4a. No oth
 
 | solver | Python ms/tick 250 | 325 | dam-break water vs referee | volume |
 |---|---|---|---|---|
-| local_inertial | 0.40 | 0.73 | 1.48 x (early) | exact [measured] |
-| swe_hll | 1.25 | 2.79 | 1.00 (reference; ANUGA agrees to 0.2%) | exact |
-| pipes | 0.54 | 1.00 | 1.59 x | exact |
+| local_inertial_frcap | 0.37 | 0.75 | 1.09 x | exact [measured] |
+| local_inertial | 0.40 | 0.74 | 1.48 x (early) | exact |
+| swe_hll | 1.19 | 2.53 | 1.00 (reference; ANUGA agrees to 0.2%) | exact |
+| pipes (cut) | 0.49 | 1.04 | 1.59 x | exact |
+| pipes_theta (visual only) | 0.57 | 1.14 | 1.56 x | exact |
 | diffusion_wave_implicit_adi | 1.38 | 3.02 | 1.55 x | exact |
-| wca2d (cut) | 0.44 | 0.86 | 0.09 x (late) | exact |
+| wca2d (cut) | 0.51 | 1.62 | 0.09 x (late) | exact |
 | ca_game (cut) | 0.06 | 0.12 | 0.03 x (late) | exact |
 
 Sources: `~/dev/MandrakeModels/results/results.csv` (medians computed from it), `results.md` "Flood timing" and
-`crosscheck.md`; refreshed after the pit-dig and moat rows were re-run (MandrakeModels c9c5ed1).
+`crosscheck.md`; refreshed at MandrakeModels 252407e, after stable_dt was timed with the step (wca2d's cost roughly doubled).
 
 Deep water shortens the step: a 6 m lake needs 0.11 s steps, a 50 m lake 0.04 s (about 3 times the work of the 6 m lake)
 [measured arithmetic, CFL 0.6]; capping depth at 2 m in the wave-speed term gave the same answer in the rivers twin
@@ -138,12 +152,15 @@ Mean ms per tick, wet-only, Unity Mono (the recompute's cost over its 12 ticks; 
 
 What each looks like (stills at 128, `D:\ClaudeWork\mandrakemodels\compare\stills\`, looked at 2026-11-12, notes in
 `LOOKED.md` of the output folder):
-- **local_inertial**: reads as water everywhere; faint striping in deep water just behind the dam-break gap.
+- **local_inertial**: reads as water everywhere; stripes in the dam-break reservoir upstream of the gap (wall reflections it
+  never damps; the first-order referee damps them).
+- **local_inertial_frcap** (looked at 2026-11-13, `LOOKED2.md` beside the stage-2 review): looks like local_inertial; its pit
+  fills on the referee's schedule; the reservoir stripes stay (the cap never binds in slow water).
 - **swe_hll**: the cleanest picture; sharp dam-break front and its reflected arc.
 - **swell scene**: reference, local-inertial, pipes and ANUGA all show swell bands bending through the breakwater gap; the
   cellular automata and implicit ADI show a flat sea (no waves at all).
 - **pipes**: a checkerboard ripple over the whole lake in the draining-lake scene and along the river; it never quite
-  settles to a mirror.
+  settles to a mirror. `pipes_theta` removes it in every scene (looked at 2026-11-13).
 - **diffusion_wave_implicit_adi**: smooth and slightly blurred; no fronts.
 - **wca2d, ca_game**: water mounds and sprays at the river inlet; floods creep.
 
@@ -151,7 +168,7 @@ What each cannot do:
 
 | | rivers | edge sources, sinks, level-setters | pits and canals | FlowWorks pit/canal system already shipped |
 |---|---|---|---|---|
-| local_inertial | yes; no momentum advection, so fast jets through a gap are softened (valid below Froude ~0.5) | yes (shared forcing) | yes; pit fills with true travel time | replaces fill-and-spill for any body joined to natural water; fill-and-spill stays for the starting state at map load and for sealed still bodies |
+| local_inertial (capped) | yes; no momentum advection, so it is capped at critical flow on each face: floods on time, but a fast steep reach delivers ~12% less than the referee | yes (shared forcing) | yes; pit fills with true travel time | replaces fill-and-spill for any body joined to natural water; fill-and-spill stays for the starting state at map load and for sealed still bodies |
 | swe_hll | yes, including bores and hydraulic jumps | yes | yes | as local_inertial, at about 3 to 4 times the cost |
 | pipes | yes, but a 1 cm sheet accelerates like a 3 m channel: spills on the flat plain run too fast | yes | yes, with slosh that rings | as above |
 | implicit ADI | yes, big steps; but in the design-7 implicit twin (its cousin) fill time depended on step length (625 s vs 3,753 s) | yes | yes | the only arm that could run flow on the calendar clock, at the highest per-step cost |
@@ -201,5 +218,7 @@ is measured but not binding; groundwater both ways.
 - In-game cost: section 4a ran RimWorld's Mono outside Unity; the in-game figure is UNMEASURED.
 - Settled water sleeping and spreading a recompute over its 12 ticks are not built; the settled bar fails until the first is.
 - No solver other than local-inertial has been ported to C#.
-- All nine water scenes were rendered at 128 and looked at after the fixes; the other-physics pages were not re-rendered.
+- All nine water scenes were re-rendered at 128 with the stage-2 competitors and looked at (2026-11-13); the other-physics
+  pages were not re-rendered.
+- The Froude cap is not in the C# port yet; stage C's figures are for the uncapped scheme.
 - Python timings were taken on a loaded machine; an idle re-time is owed in MandrakeModels.
