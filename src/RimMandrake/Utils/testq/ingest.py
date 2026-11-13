@@ -143,6 +143,28 @@ def finding_name(mod, row, job_id, salt=False, chain=None):
     return "%s_FAILS_%s" % (base, job_id[-6:].upper())
 
 
+def finding_names(mod, job_id, fails):
+    """-> one finding name per FAIL row in FAILS, distinct across them. FAILS is the whole job's FAIL rows (every item
+    group's, in ingest_done's fixed order), so one row id FAILing in two items' chains never mints one name for both
+    (job J20261112T144249Z-2ac601 gave three items one name and findings_fold refused the ledger,
+    RIMMANDRAKE_UNJAM_FINDINGS_FOLD_THREE_ITEMS_ONE_NAME). Deterministic from the rows, so a resumed ingest finds the
+    names it filed (filed())."""
+    plain = [finding_name(mod, row["row"], job_id) for row in fails]
+    taken, out = set(), []
+    for row, name in zip(fails, plain):
+        if plain.count(name) > 1:              # rows only case apart (foo / FOO): each gets its own hash
+            twin = sum(1 for r in fails if r["row"] == row["row"]) > 1    # one row id in two chains: chain joins it
+            chain = str(row.get("chain")) if twin else None
+            name = finding_name(mod, row["row"], job_id, salt=True, chain=chain)
+        k = 0
+        while name in taken:                   # a salted name can hit another row's name: re-salt until distinct
+            k += 1
+            name = finding_name(mod, row["row"], job_id, salt=True, chain="%s#%d" % (row.get("chain"), k))
+        taken.add(name)
+        out.append(name)
+    return out
+
+
 LANE_ITEM = os.environ.get("TESTQ_LANE_ITEM", "STEVE_LANE_MONITOR_PAUSE_FINDINGS")
 FILL_ITEM = os.environ.get("TESTQ_FILL_ITEM", "STEVE_FILLER_MONITOR_FAIL_FINDINGS")
 LANE_TWIST = {("INVALID", "CANARY"): "CANARY_RED", ("REFUSED", "SYNC"): "SYNC_REFUSED"}
@@ -426,6 +448,10 @@ def ingest_done(job, res, item, host=None):
         groups[item] = []                      # unchanged: a job for an item with no rows still gets its verdict
     if not groups and not held_on:
         return {"skipped": "no row maps to an item"}
+    order = [(it, row) for it, rows in sorted(groups.items()) for row in rows if row["verdict"] == "FAIL"]
+    named = {}
+    for (it, _), n in zip(order, finding_names(job["mod"], job["id"], [row for _, row in order])):
+        named.setdefault(it, []).append(n)
     out, errs = {}, []
     for it in held_on:                          # nothing measured for this item: never a partial
         needle = "testq %s on SteveDesktop:" % att
@@ -435,7 +461,7 @@ def ingest_done(job, res, item, host=None):
         else:
             errs.append("%s: note refused" % it)
     for it, rows in sorted(groups.items()):     # every group is tried: one item not on origin yet blocks no other
-        r = ingest_group(job, res, it, dict(res, rows=rows, counts=T.S.count_verdicts(rows)), att)
+        r = ingest_group(job, res, it, dict(res, rows=rows, counts=T.S.count_verdicts(rows)), att, named.get(it, []))
         if "error" in r:
             errs.append("%s: %s" % (it, r["error"]) if len(groups) > 1 else r["error"])
         else:
@@ -449,7 +475,7 @@ def ingest_done(job, res, item, host=None):
     return {"groups": out, "result": ",".join("%s=%s" % (i, o["result"]) for i, o in out.items())}
 
 
-def ingest_group(job, res, item, gres, att):
+def ingest_group(job, res, item, gres, att, names=None):
     host = res.get("host") or "stevedesktop"         # the archmagi backfill runs the same worker (host "archmagi")
     config = "%s-%s" % ("steve" if host == "stevedesktop" else host,
                         "filler" if item == FILL_ITEM else job.get("profile", "targeted"))   # testpilot_route.NOT_A_TEST
@@ -464,19 +490,9 @@ def ingest_group(job, res, item, gres, att):
         run = m.group(1)
     found = []
     fails = [row for row in gres.get("rows") or [] if row["verdict"] == "FAIL"]
-    plain = [finding_name(job["mod"], row["row"], job["id"]) for row in fails]
-    taken = set()
-    for row, name in zip(fails, plain):
-        if plain.count(name) > 1:              # rows only case apart (foo / FOO): each gets its own hash
-            twin = sum(1 for r in fails if r["row"] == row["row"]) > 1    # one row id in two chains: chain joins it
-            chain = str(row.get("chain")) if twin else None
-            name = finding_name(job["mod"], row["row"], job["id"], salt=True, chain=chain)
-        k = 0
-        while name in taken:                   # a salted name can hit another row's name: re-salt until distinct
-            k += 1
-            name = finding_name(job["mod"], row["row"], job["id"], salt=True,
-                                chain="%s#%d" % (row.get("chain"), k))
-        taken.add(name)
+    if names is None:                          # NAMES: this group's slice of the whole job's (ingest_done)
+        names = finding_names(job["mod"], job["id"], fails)
+    for row, name in zip(fails, names):
         if filed(name, run):                   # filed by an ingest that died before marking the record
             found.append(name)
             continue

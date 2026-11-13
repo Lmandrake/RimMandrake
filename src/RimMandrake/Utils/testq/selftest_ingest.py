@@ -810,9 +810,45 @@ def publish_prose_checks():
         shutil.rmtree(root, ignore_errors=True)
 
 
+def shared_row_name_checks():
+    """RIMMANDRAKE_UNJAM_FINDINGS_FOLD_THREE_ITEMS_ONE_NAME: job J20261112T144249Z-2ac601 FAILed one row id
+    ("<chain setup, outside any component>") in three chains whose rows belong to three items, and each item's group
+    named its finding alone, so all three got one name and findings_fold refused the ledger. Names are minted over the
+    whole job: one row id in several groups gets the chain-salted name, and a single-group job keeps its old names."""
+    import ingest as I
+    saved = (I.rimflow, I.recorded_run, I.shard_path)
+    names = {}
+
+    def fake_rimflow(*a):
+        if a[0] == "verify":
+            return 0, "%s/run-1@x recorded" % a[1]
+        if a[0] == "finding":
+            names.setdefault(a[2].split("/run-")[0], []).append(a[a.index("--name") + 1])
+        return 0, "ok"
+    try:
+        I.rimflow, I.recorded_run = fake_rimflow, lambda item, att: None
+        I.shard_path = lambda: os.path.join(tempfile.gettempdir(), "rf_ingest_no_such_shard.jsonl")
+        rec = done_rec(None, rows=(("x", "FAIL"),), row_items={"c1": "IT_A", "c2": "IT_B", "c3": "IT_C"})
+        rows = [{"chain": c, "row": "<chain setup, outside any component>", "verdict": "FAIL", "detail": "d"}
+                for c in ("c1", "c2", "c3")]
+        res = dict(rec["result"], rows=rows, counts=S.count_verdicts(rows))
+        r = I.ingest_done(rec["job"], res, None)
+        got = [n for it in sorted(names) for n in names[it]]
+        check("error" not in r and sorted(names) == ["IT_A", "IT_B", "IT_C"] and len(set(got)) == 3,
+              "one row id FAILing in three items' chains gets three finding names: %s %s" % (names, r))
+        names.clear()
+        one = done_rec(ITEM)
+        I.ingest_done(one["job"], one["result"], ITEM)
+        want = [I.finding_name("Mock", r_, one["job"]["id"]) for r_ in ("r2", "r3")]
+        check(names.get(ITEM) == want, "a single-item job keeps its names: %s vs %s" % (names.get(ITEM), want))
+    finally:
+        I.rimflow, I.recorded_run, I.shard_path = saved
+
+
 def main():
     crash_checks()
     review_r1_checks()
+    shared_row_name_checks()
     tmp = tempfile.mkdtemp(prefix="rf_ingest_")
     try:
         queue, items = os.path.join(tmp, "queue"), os.path.join(tmp, "items")

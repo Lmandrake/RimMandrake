@@ -583,5 +583,35 @@ _f, _sp, _st = _rl(_led(("I_1", ts(28, 1), {})) + [{"event": "file", "id": "I_1"
 _t = FF.fold(_f, _sp, _st, [], [], RULES, ts(29, 20))
 check(_t["raw"]["I_1"]["outcome"] is True and list(_t["signatures"].values())[0]["decision"]["as"] == "item",
       "R7 an item of the finding's name is an outcome, even an older one")
+# RIMMANDRAKE_UNJAM_FINDINGS_FOLD_THREE_ITEMS_ONE_NAME: one multi-item job once gave three items' findings one name
+# (RUNNER.jsonl, 2026-11-12T15:44Z). The ledger is append-only, so the fold reads them as three findings
+_j3 = [dict(e, id=i, why="%s/r1 FAIL on h: boom" % c, ts=ts(28, k), **{"from": "%s/run-1@x" % i})
+       for k, (i, c) in enumerate((("IT_A", "c1"), ("IT_B", "c2"), ("IT_C", "c3")), 1)
+       for e in _led(("J_2AC601", ts(28, 1), {}))]
+try:
+    _f, _sp, _st = _rl(_j3)
+    _t = FF.fold(_f, _sp, _st, [], [], RULES, ts(29, 20))
+    check(sorted(_f) == ["J_2AC601", "J_2AC601@IT_B", "J_2AC601@IT_C"] and _t["counts"]["findings"] == 3
+          and sorted(i for s in _t["signatures"].values() for i in s["items"]) == ["IT_A", "IT_B", "IT_C"],
+          "U1 one name on three items' findings folds as three findings (got %s)" % sorted(_f))
+except FF.Unmeasured as e:
+    check(False, "U1 one name on three items' findings folds as three findings (UNMEASURED: %s)" % e)
+try:
+    _rl(_led(("J_2AC601", ts(28, 1), {}), ("J_2AC601", ts(28, 2), {})))
+    check(False, "U2 one name reused with other content on the SAME item stays UNMEASURED")
+except FF.Unmeasured:
+    check(True, "U2 one name reused with other content on the SAME item stays UNMEASURED")
+_d = tempfile.mkdtemp()
+try:
+    _f, _sp, _st = _rl(_j3)
+    _t = FF.fold(_f, _sp, _st, [], [], RULES, ts(29, 20))
+    with open(os.path.join(_d, FF.REPORT), "w", encoding="utf-8") as _o:
+        _o.write(FF.render_report(_t))
+    check(FF.no_outcome(_j3, _d) == {"J_2AC601", "J_2AC601@IT_B", "J_2AC601@IT_C"},
+          "U3 no_outcome keys the shared name the fold's way: all three are open (got %s)" % FF.no_outcome(_j3, _d))
+except FF.Unmeasured as e:
+    check(False, "U3 no_outcome keys the shared name the fold's way (UNMEASURED: %s)" % e)
+finally:
+    shutil.rmtree(_d)
 print("\n%d failure(s)" % len(FAILS))
 sys.exit(1 if FAILS else 0)

@@ -191,6 +191,15 @@ def read_done(qdir):
     return recs
 
 
+def finding_key(e, first):
+    """-> the fold's key for folded finding E: its name, or NAME@ITEM when an earlier finding of that name was another
+    item's (FIRST: name -> that item, filled as it goes). One multi-item testq job once gave three items' findings one
+    name (RUNNER.jsonl 2026-11-12T15:44Z, RIMMANDRAKE_UNJAM_FINDINGS_FOLD_THREE_ITEMS_ONE_NAME); the ledger is
+    append-only, so they are read as three findings. The same name on the SAME item with other content still refuses."""
+    n = e.get("name")
+    return n if first.setdefault(n, e.get("id")) == e.get("id") else "%s@%s" % (n, e.get("id"))
+
+
 def read_ledger(rules):
     """-> (findings by name, spawn events, item states, item state timelines {id: [(ts, state), ...]}). A folded finding missing a field, or a name reused with
     different content, is UNMEASURED (an exact duplicate line, as a git union merge can leave, is one finding)."""
@@ -210,7 +219,7 @@ def read_ledger(rules):
         states = {i: it.state for i, it in model.replay(events, observe=seen).items.items()}
     except Exception as e:  # noqa: BLE001 - every ledger failure is UNMEASURED
         raise Unmeasured("ledger unreadable: %s: %s" % (type(e).__name__, str(e)))
-    finds, retyped = {}, {}
+    finds, retyped, first = {}, {}, {}
     for e in events:
         if e.get("event") != "finding":
             continue
@@ -222,9 +231,10 @@ def read_ledger(rules):
                 or not ISO_RE.match(str(e.get("ts"))):
             raise Unmeasured("ledger finding %r lacks a name, item, text or time" % e.get("name"))
         core = {k: e.get(k) for k in ("id", "why", "ts", "from")}
-        if e["name"] in finds and finds[e["name"]] != core:
+        key = finding_key(e, first)
+        if key in finds and finds[key] != core:
             raise Unmeasured("finding name %s is used by two different findings" % e["name"])
-        finds[e["name"]] = core
+        finds[key] = core
     spawns = [e for e in events if e.get("event") == "spawn" and isinstance(e.get("from"), str)]
     spawns += [{"as": "retype", "from": n, "name": e.get("type"), "seat": e.get("seat"), "ts": e.get("ts"),
                 "why": e.get("why") or "retyped %s" % e.get("type")} for n, e in sorted(retyped.items())]
@@ -349,11 +359,12 @@ def fold(finds, spawns, states, recs, decision_lines, rules, now, timeline=None)
     idx, runs = index_records(recs), row_runs(recs)
     raw = {}
     for name, ev in sorted(finds.items()):
-        mod, chain, row, text, at, ok = locate(name, ev, idx.get(name))
+        rec = idx.get(name.split("@")[0])         # a NAME@ITEM key (finding_key) is in its record under NAME
+        mod, chain, row, text, at, ok = locate(name, ev, rec)
         key = row_key(mod, chain, row, text, rules, None if ok else name)
         raw[name] = {"key": key, "sig": signature(key), "item": ev["id"], "mod": mod, "chain": chain, "row": row,
                      "text": text, "at": at, "from": ev.get("from"), "resolved": ok,
-                     "job": idx[name]["job"]["id"] if ok else None}
+                     "job": rec["job"]["id"] if ok else None}
     groups = {}
     for name, f in sorted(raw.items(), key=lambda kv: (kv[1]["at"], kv[0])):
         s = groups.setdefault(f.pop("key"), {k: f[k] for k in ("sig", "mod", "chain", "row", "text")} |
@@ -551,7 +562,8 @@ def no_outcome(events, out=None):
     answer. A finding the table does not hold yet has none. No report yet: all of them. Unreadable, or a table written
     without `outcome` (an older fold): Unmeasured, never a count."""
     rules = load_rules()
-    names = {e.get("name") for e in events if e.get("event") == "finding" and e.get("type") in rules["finding_types"]}
+    first = {}
+    names = {finding_key(e, first) for e in events if e.get("event") == "finding" and e.get("type") in rules["finding_types"]}
     t = read_prev(os.path.join(out_dir(out, rules), REPORT))[0] if names else None
     raw = t["raw"] if t else {}
     if not all(isinstance(f, dict) and "outcome" in f for f in raw.values()):
