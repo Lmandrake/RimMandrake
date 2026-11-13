@@ -299,6 +299,15 @@ def load_catalog(which="design"):
 
 
 # ============================================================================ bridges
+def _vc():
+    """Utils/validation_core (the shared mailbox probe), imported on first use."""
+    utils = os.path.join(REPO, "src", "RimMandrake", "Utils")
+    if utils not in sys.path:
+        sys.path.insert(0, utils)
+    import validation_core  # noqa: E402
+    return validation_core
+
+
 class LiveBridge(object):
     def __init__(self):
         sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
@@ -321,21 +330,15 @@ class LiveBridge(object):
         return r if isinstance(r, dict) else {"success": False, "raw": r}
 
     def _probe(self, typ, cmd, wait_s=30.0):
-        before = self.call("jawa/mod_settings_field", typeName=typ, action="get", field="serial").get("value")
-        s = self.call("jawa/mod_settings_field", typeName=typ, action="set", field="request", value=cmd)
-        if not s.get("success"):
-            return {"success": False, "error": "probe set failed", "raw": s}
-        t0 = time.time()
-        while time.time() - t0 < wait_s:
-            now = self.call("jawa/mod_settings_field", typeName=typ, action="get", field="serial").get("value")
-            if now != before:
-                res = self.call("jawa/mod_settings_field", typeName=typ, action="get", field="result").get("value")
-                try:
-                    return json.loads(res)
-                except Exception:  # noqa: BLE001
-                    return {"success": False, "raw": str(res)[:300]}
-            time.sleep(PROBE_POLL_S)
-        return {"success": False, "error": "probe timed out (no frame serviced it)", "cmd": cmd}
+        """validation_core's mailbox probe: two jawa/mod_settings_fields calls a probe, the old four single-field calls on
+        a companion without the tool, and nothing posted when the serial cannot be read."""
+        r = _vc()._BridgeBase.probe_of(self, typ, cmd, wait_s, PROBE_POLL_S)
+        if isinstance(r, dict) and r.get("success") is False and "timed out" in str(r.get("error")):
+            r["cmd"] = cmd
+        return r
+
+    def _probe_batched(self, typ, cmd, wait_s, poll_s):
+        return _vc()._BridgeBase._probe_batched(self, typ, cmd, wait_s, poll_s)
 
     def probe(self, cmd, wait_s=30.0):
         return self._probe(PROBE, cmd, wait_s)

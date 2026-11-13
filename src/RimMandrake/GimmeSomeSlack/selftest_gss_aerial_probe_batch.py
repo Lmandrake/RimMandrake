@@ -185,10 +185,34 @@ def gss_mailbox_probe_polls_fast():
           "gss_probe_poll_at_most_0.1s", str(getattr(V.Bridge, "probe_poll_s", None)))
 
 
+def matrix_live_bridge_batches():
+    # northstar_matrix/run_live.LiveBridge (gravship_scene, proof_all's matrix block) had its own four-call mailbox:
+    # 88 single reads on one gravship_scene run on SteveDesktop, 2026-11-12
+    sys.path.insert(0, os.path.join(HERE, "northstar_matrix"))
+    import run_live as RL
+    check(RL.APROBE == A.APROBE, "matrix_aprobe_is_the_aerial_probe", RL.APROBE)
+    for batch, want in ((True, [BATCH, BATCH]), (False, None)):
+        g = Game(batch=batch)
+        b = object.__new__(RL.LiveBridge)
+        b.n = 0
+        b.call = lambda tool, **kw: g(tool, kw)
+        r = b.ap("census", wait_s=2.0)
+        check(r.get("success") is True and r.get("cmd") == "census", "matrix_ap_answers_%s" % batch, str(r)[:120])
+        if want:
+            check(tools(g) == want, "matrix_ap_two_batch_calls", str(tools(g)))
+        else:
+            check(BATCH in tools(g)[:1] and tools(g).count(SINGLE) == 4, "matrix_ap_falls_back_to_four", str(tools(g)))
+    g = Game(serial=None)
+    b = object.__new__(RL.LiveBridge)
+    b.call = lambda tool, **kw: g(tool, kw)
+    r = b.ap("census", wait_s=0.3)
+    check(r.get("success") is False and g.f["request"] == "", "matrix_unreadable_serial_posts_nothing", str(r)[:120])
+
+
 if __name__ == "__main__":
     for fn in (batched_probe_is_two_calls, slow_frame_polls_without_long_sleeps, net_reply_checks_coordinates,
                mismatched_or_bad_result_refused, unreadable_serial_raises_and_posts_nothing, failed_set_refused,
-               old_companion_falls_back_once, timeout_reported, gss_mailbox_probe_polls_fast):
+               old_companion_falls_back_once, timeout_reported, gss_mailbox_probe_polls_fast, matrix_live_bridge_batches):
         run(fn.__name__, fn)
     print("%s: %d failed" % ("FAIL" if fails else "PASS", len(fails)))
     sys.exit(1 if fails else 0)
