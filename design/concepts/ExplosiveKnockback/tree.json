@@ -6,7 +6,20 @@
  "root_ref": "design/validation_walks/RimMandrake/ExplosiveKnockback.md#north-star",
  "root_state": "VALIDATED",
  "root_hash": "5d06c98d8b13c2ef219df6639d4164548ccf3cc25eadeb675a172c558a492585",
- "coverage": null,
+ "coverage": {
+  "signed_by": "owner",
+  "owner_event": "OWNER:1794608649743135329",
+  "owner_words": "Yes, fix it like that, and then please record this as an actual Pass.",
+  "owner_at": "2026-11-13T22:24:09Z",
+  "judge_run": "rm-coverage-judge-1794599960",
+  "judge_verdict": "not_covered",
+  "judge_gaps": 6,
+  "judge_at": "2026-11-13T19:59:20Z",
+  "fixes_hash": "1e3b2bbc63436de055dec1f47751466e5920763b97c8c6e200ecec2b52efa6e1",
+  "tree_hash": "02900038234b11c46790c7a09b75a68a0b877cd3270c7e57c94564ef758b15b2",
+  "sheet_hash": "234fd3c20e850bdde174efc6b3d4b20f1025dc5ddbf2c15caef766a925f0c722",
+  "ledger_item": "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH"
+ },
  "floor": {
   "ref": "concept_floor.json",
   "hash": "0e3d21c2c6f327e0cf7c0430fba9084dd442b1a23cd2dedd73377def76843cd4",

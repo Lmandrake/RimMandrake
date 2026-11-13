@@ -602,6 +602,29 @@
    "date": "2026-11-13",
    "delegated": "reading of a ruled behaviour (gap 6)",
    "what": "A gas clump's one-cell shove is not a throw (it never breaks a cover), but it is force: a pawn it shoves onto an open pit cell falls in, per his d_pit_only_forced ('Only if they get blown/forced in do they fall'); the record already said so, so the leaf now says it and sc_gas_shove_into_pit keeps its descent. No melee shove contest here (d_melee_shove_not_ek)."
+  },
+  {
+   "id": "d_owner_pass_on_his_word",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1794608649743135329",
+    "OWNER:1794608827666872544"
+   ],
+   "date": "2026-11-13",
+   "words": "Yes, fix it like that, and then please record this as an actual Pass.",
+   "what": "Coverage passes on his word past the coverage judge's last verdict (rm-coverage-judge-1794599960, not_covered, 6 gaps g1-g6, all fixed and claimed in coverage_fixes.json); no further judge run. Recorded as the owner-certified stamp (concept_tree.py certify, signed_by owner), never as a judge pass."
+  },
+  {
+   "id": "dl_hold_until_owner_lock",
+   "kind": "ruling",
+   "speaker": "agent",
+   "source": [
+    "OWNER:1794609354001308087",
+    "ITEM:RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH"
+   ],
+   "date": "2026-11-13",
+   "what": "Per the Conductor (CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM): the concept was held blocked off Designer and judge runs until the owner-certified lock was written; the hold is lifted only by designer_stage.py unblock when that lock is written."
   }
  ],
  "asks": [
