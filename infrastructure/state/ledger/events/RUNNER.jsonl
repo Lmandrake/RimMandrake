@@ -6586,3 +6586,5 @@
 {"seat":"RUNNER","event":"live","id":"OPS_HEALTH_WIRE_INSTRUMENT_INCIDENTS","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:33:53Z","tsn":1794562433458401276}
 {"seat":"RUNNER","event":"live","id":"OPS_RELENTLESS_BOOKS_UNSTICK_WGYL","result":"broken","detail":"Ops alarm RELENTLESS_BOOKS_STALE: relentless.books_behind_min = 9033.8 min (MEASURED), line > 30","ts":"2026-11-13T09:35:02Z","tsn":1794562502444318788}
 {"seat":"RUNNER","event":"raise","id":"OPS_RELENTLESS_BOOKS_UNSTICK_WGYL","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-13T09:35:07Z","tsn":1794562507946513404}
+{"seat":"RUNNER","event":"live","id":"SELFTEST_FIX_STUN_SCALING_NNVH","result":"broken","detail":"Ops alarm NIGHTLY_RED: 2 red since 2026-11-12, due 2026-11-15T11:00: timeout: exceeded #s (selftest_hole_prison.py, selftest_tilefeatures_landform_geometry.py) ","ts":"2026-11-13T09:37:38Z","tsn":1794562658752016533}
+{"seat":"RUNNER","event":"raise","id":"SELFTEST_FIX_STUN_SCALING_NNVH","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-13T09:37:43Z","tsn":1794562663939323290}
