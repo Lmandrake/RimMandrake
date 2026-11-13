@@ -1114,6 +1114,14 @@ def open_run(d, run, run_cap=None, repo=REPO, manifest=MANIFEST, commit=True):
             raise Refused("LOCKED: changing a locked tree is his word only (an amendment comes back as a new concept)")
         if st.get("status") == "blocked":
             raise Refused("BLOCKED on %s: nothing runs until it ends (clear it with `unblock`)" % st.get("blocked_on"))
+        if isinstance(st.get("park"), dict) and not lift_park(st, d, repo):
+            raise Refused("PARKED (%s): %s; nothing opens until his word on %s (he reads %s)" % (
+                st["park"].get("kind"), st["park"].get("why"), st.get("item"), os.path.join(d, PARK_FILE)))
+        ceil = loop_ceiling(st)
+        if ceil:    # the judge-and-rework loop's hard ceiling (card: "Twice the item's cap, then park")
+            if commit:
+                park(d, "ceiling", ceil, repo, st)
+            raise Refused("PARKED (ceiling): %s; nothing opens until his word on %s" % (ceil, st.get("item")))
         if st.get("status") == "waiting_owner" and not owner_moved(st, d, repo):
             raise Refused("WAITING_OWNER: no new owner event since the asks went out; silence never advances")
         opn = [r for r in st.get("recovery") or [] if r.get("state") == "open"]
@@ -1248,6 +1256,194 @@ def charge(d, tokens, kind, ref):
     return st
 
 
+# ---------------------------------------------------------------- parked for him: away, and the loop ceiling
+# RIMMANDRAKE_PARK_UNATTENDED_DESIGNER_LOOPS and RIMMANDRAKE_CEIL_JUDGE_LOOPS_AT_TWICE_CAP (owner note
+# OWNER.jsonl:1794527688430451936, card OWNER.jsonl:1794527885746395760, on
+# RIMMANDRAKE_BIND_REFUSALS_TO_FIXES_NO_CEREMONY_LOOPS). ExplosiveKnockback's night: nine coverage verdicts and their
+# rework runs in three and a half hours, while he slept, against a 4M cap. Now, when he is away, a Designer step that
+# ends in his certification and the SECOND refusal of a concept both PARK it: status waiting_owner, a one-page plain
+# summary for him (park_summary.md), and nothing opens again, no Designer run, no judge, until his own word (ownerSaid
+# or byCard) names the item. And a judge-and-rework loop parks the same way at twice the item's cap, attended or not
+# (the card: "Twice the item's cap, then park"); building work outside such a loop stays advisory (owner 2026-11-04).
+LOOP_CEILING_FACTOR = 2
+PARK_FILE = "park_summary.md"
+PARK_KINDS = ("second_refusal", "certification", "ceiling")
+JUDGE_REF = "rm-coverage-judge-"     # coverage_judge.UNIT_PREFIX (that module imports this one)
+
+
+def owner_away():
+    """-> (away?, why). Away when the recorded mode is afk ($RIMFLOW_MODE, else infrastructure/state/MODE), or his last
+    deliberate interaction (an OWNER ledger act, ./bridge, a chat prompt or card answer; owner_interaction.py) is 45+
+    min old (no sitting), or that cannot be measured: parking is the safe side. Never his keyboard or input clock."""
+    try:
+        import cli
+        mode = str(os.environ.get("RIMFLOW_MODE") or cli._mode_file() or "").strip().lower()
+        if mode == "afk":
+            return True, "the recorded mode is afk"
+        takeable, text = cli._owner_verdict([])
+    except Exception as e:  # noqa: BLE001 - an unreadable presence parks, it never runs on
+        return True, "his presence could not be read (%s): treated as away" % e
+    if takeable:
+        return True, "no sitting: %s" % text
+    if str(text).startswith("his last interaction is UNMEASURED"):
+        return True, "%s: treated as away" % text
+    return False, text
+
+
+def code_present(rec):
+    """Enough code exists to look at (E, owner note 1794527688430451936: the Designer often runs on a mod not written
+    yet): record.json's inventory has a capability with impl `present`. -> the ids, [] when none."""
+    return [e.get("id") for e in (rec or {}).get("inventory") or []
+            if isinstance(e, dict) and e.get("impl") == "present" and e.get("id")]
+
+
+def loop_start(st):
+    """-> epoch the current judge-and-rework loop began, or None when no judge has run (no loop: advisory budget). It
+    begins at the first judge round (or the first judge charge, before rounds were recorded) and restarts when his word
+    lifts a park."""
+    ats = [epoch(r.get("at")) for r in st.get("coverage_rounds") or [] if isinstance(r, dict)]
+    ats += [epoch(c.get("at")) for c in (st.get("budget") or {}).get("charges") or []
+            if isinstance(c, dict) and str(c.get("ref") or "").startswith(JUDGE_REF)]
+    ats = [a for a in ats if a is not None]
+    if not ats:
+        return None
+    return max([min(ats)] + [a for a in [epoch(st.get("loop_since"))] if a is not None])
+
+
+def loop_spend(st):
+    """-> tokens charged since the loop began: every stage, retry, helper, review and judge run (an unmeasured run at
+    its reservation), or None when there is no loop."""
+    start = loop_start(st)
+    if start is None:
+        return None
+    return sum(int(c.get("tokens") or 0) for c in (st.get("budget") or {}).get("charges") or []
+               if isinstance(c, dict) and (epoch(c.get("at")) or 0) >= start)
+
+
+def loop_ceiling(st):
+    """-> why the loop has reached LOOP_CEILING_FACTOR x the item's cap, or None."""
+    spent = loop_spend(st)
+    ceil = LOOP_CEILING_FACTOR * int((st.get("budget") or {}).get("cap") or DEFAULT_CAP)
+    if spent is None or spent < ceil:
+        return None
+    return "the judge-and-rework loop has spent %d tokens since %s, past its ceiling of %d (%dx the cap)" % (
+        spent, datetime.datetime.fromtimestamp(loop_start(st), datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        ceil, LOOP_CEILING_FACTOR)
+
+
+def refusals_since_loop(st):
+    """not_covered judge rounds since the loop began (or since his word last lifted a park)."""
+    since = epoch(st.get("loop_since")) or 0
+    return sum(1 for r in st.get("coverage_rounds") or [] if isinstance(r, dict)
+               and r.get("verdict") == "not_covered" and (epoch(r.get("at")) or 0) >= since)
+
+
+def standing_park(st, d, repo=REPO, lines=None):
+    """-> the park still waiting on him, or None: lifted only by his own word (ownerSaid or byCard on an OWNER event
+    naming the item) after it was written. A seat's note, a --per-ruling act or a rework helper never lifts it. An
+    unreadable OWNER shard keeps it standing."""
+    park = st.get("park")
+    if not isinstance(park, dict):
+        return None
+    if lines is None:
+        lines = CT.owner_lines(repo, clone_of(d))
+    if st.get("item") and lines is not None and his_answers(lines, st["item"], epoch(park.get("at")) or 0):
+        return None
+    return park
+
+
+def lift_park(st, d, repo=REPO):
+    """His word arrived: the park moves to `parks`, the loop restarts from now, the concept is ready. -> True when
+    lifted (st changed; the caller writes it)."""
+    if not isinstance(st.get("park"), dict) or standing_park(st, d, repo):
+        return False
+    park = dict(st.pop("park"), lifted_at=now_iso())
+    st.setdefault("parks", []).append(park)
+    st["loop_since"] = park["lifted_at"]
+    if st.get("status") == "waiting_owner":
+        st["status"] = "ready"
+    hist(st, "park_lifted", "his word on %s lifts the %s park" % (st.get("item"), park.get("kind")))
+    return True
+
+
+def _gap_lines(gaps):
+    out = []
+    for i, g in enumerate(gaps or []):
+        if isinstance(g, dict):
+            out.append("%d. %s (%s; ids %s; returns to stage %s)" % (
+                i + 1, " ".join(str(g.get("what") or "").split()), " ".join(str(g.get("where") or "").split()),
+                ", ".join(g.get("ids") or []) or "none", g.get("return_to")))
+    return out
+
+
+def park_summary(d, st, kind, why):
+    """The one page he reads: what is settled, what is refused and why, the smallest fixes, what he must decide, and,
+    when enough code exists, a loud offer of a quick look."""
+    rec = read_json(os.path.join(d, "record.json")) or {}
+    verdict = read_json(os.path.join(d, "coverage_verdict.json")) or {}
+    mod = st.get("mod") or os.path.basename(os.path.abspath(d))
+    done = sorted({r.get("stage") for r in st.get("results") or [] if isinstance(r, dict) and r.get("outcome") == "done"})
+    gaps = [g for g in verdict.get("gaps") or [] if isinstance(g, dict)] if verdict.get("verdict") == "not_covered" else []
+    sent = [a for a in rec.get("asks") or [] if isinstance(a, dict) and a.get("status") == "sent"]
+    rejected = [r for r in st.get("results") or [] if isinstance(r, dict) and r.get("outcome") == "rejected"]
+    code = code_present(rec)
+    L = ["# %s: parked for you (%s)" % (mod, kind), "",
+         "%s. Nothing runs on it, no Designer run and no judge, until your word on %s. Item %s, stage %s (%s)." % (
+             why, st.get("item"), st.get("item"), st.get("stage"), STAGE_NAMES.get(st.get("stage"), "?")), ""]
+    if code:
+        L += ["## QUICK LOOK OFFERED", "",
+              "Enough code exists (%d built capabilities: %s). A short look in game could settle %s at once." % (
+                  len(code), ", ".join(code), "these %d gaps" % len(gaps) if gaps else "the questions below"), ""]
+    L += ["## Settled", "",
+          "- Stages accepted: %s." % (", ".join("%s %s" % (s, STAGE_NAMES.get(s, "?")) for s in done) or "none"),
+          "- Root: %s" % (" ".join(str((rec.get("root") or {}).get("text") or "not yet approved").split())),
+          "- %d decisions on record, %d tree leaves, %d inventory capabilities." % (
+              len(rec.get("decisions") or []), len((read_json(os.path.join(d, "tree.json")) or {}).get("leaves") or []),
+              len(rec.get("inventory") or [])), ""]
+    L += ["## Refused, and why", ""]
+    if gaps:
+        L += ["The coverage judge (%s) says not covered: %s" % (verdict.get("judge"), " ".join(
+            str(verdict.get("reasons") or "").split()))] + _gap_lines(gaps)
+    elif rejected:
+        L += ["The last rejected result (%s): %s" % (rejected[-1].get("run"), "; ".join(
+            str(w) for w in rejected[-1].get("why") or []))]
+    else:
+        L += ["Nothing refused; this step ends in your certification."]
+    L += ["", "## Smallest fixes", ""]
+    fix = [g for g in gaps if g.get("return_to") == 3]
+    L += (["- The Designer can fix %d gap(s) at stage 3 without you: %s." % (len(fix), ", ".join(
+        str(i + 1) for i, g in enumerate(gaps) if g.get("return_to") == 3))] if fix else
+          ["- None the Designer can make without you."])
+    L += ["", "## What you must decide", ""]
+    for i, g in enumerate(gaps):
+        if g.get("return_to") == 2:
+            L.append("- Gap %d needs your answer: %s" % (i + 1, " ".join(str(g.get("what") or "").split())))
+    for a in sent:
+        L.append("- Ask %s: %s" % (a.get("id"), " ".join(str(a.get("text") or "").split())))
+    L += ["- Then one note on %s (your words, or a card): rework it, certify it as it stands, waive a gap, or stop." %
+          st.get("item"), ""]
+    return "\n".join(L)
+
+
+def park(d, kind, why, repo=REPO, st=None):
+    """Park the concept for him (see the block comment). -> the state (written when st was not given)."""
+    if kind not in PARK_KINDS:
+        raise Refused("park kind %r is not one of %s" % (kind, "/".join(PARK_KINDS)))
+    own = st is None
+    st = load_state(d) if own else st
+    path = os.path.join(d, PARK_FILE)
+    rec = read_json(os.path.join(d, "record.json")) or {}
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(park_summary(d, st, kind, why))
+    st["park"] = {"at": now_iso(), "kind": kind, "why": why, "summary": PARK_FILE,
+                  "quick_look": bool(code_present(rec))}
+    st["status"], st["waiting_owner_feed"] = "waiting_owner", owner_feed(repo, st.get("item"), d)
+    hist(st, "park", "%s: %s (%s)" % (kind, why, PARK_FILE))
+    if own:
+        write_json(state_path(d), st)
+    return st
+
+
 def close_run(d, run, tokens=None, repo=REPO, runner="claude", usage=None, transport_error=None):
     """The launcher, after the run ends: charge it (UNMEASURED = its whole reservation), then validate result.json
     and advance only on a valid result. -> (accepted?, reasons)."""
@@ -1296,7 +1492,7 @@ def close_run(d, run, tokens=None, repo=REPO, runner="claude", usage=None, trans
              "owner_uncited": owner_uncited(repo, st.get("item"), d), "manifest": r["manifest"]}
     if out == "done" and stage == 2:
         st.pop("must_cite", None)
-    for k in ("to", "decision", "on", "question", "summary"):
+    for k in ("to", "decision", "on", "question", "summary", "quick_look"):
         if k in res:
             entry[k] = res[k]
     st["results"].append(entry)
@@ -1313,6 +1509,13 @@ def close_run(d, run, tokens=None, repo=REPO, runner="claude", usage=None, trans
     elif out == "blocked":
         st["status"], st["blocked_on"] = "blocked", res["on"]
     hist(st, "close", "run %s: stage %d %s" % (run, stage, out))
+    if out == "waiting_owner" or (out == "return" and res.get("question")):
+        away, why_away = owner_away()   # a step that ends in his certification, while he is away, parks
+        if away:
+            park(d, "certification", "stage %d ends in your answer (%s) while you are away: %s" % (
+                stage, "%d ask(s) sent" % len([a for a in (read_json(os.path.join(d, "record.json")) or {}).get(
+                    "asks") or [] if isinstance(a, dict) and a.get("status") == "sent"]) if out == "waiting_owner"
+                else "question: %s" % res.get("question"), why_away), repo, st)
     os.replace(os.path.join(d, "result.json"), os.path.join(d, "result.%s.json" % safe(run)))
     write_json(state_path(d), st)
     return True, []
@@ -1544,7 +1747,8 @@ def pending_turn(d, repo=REPO, lines=None):
     item = st.get("item")
     waits = [r for r in st.get("results") or [] if r.get("outcome") == "waiting_owner"]
     last = waits[-1] if waits else {}
-    since = epoch(last.get("at")) or 0
+    pk = st.get("park") if isinstance(st.get("park"), dict) else None
+    since = epoch((pk or last).get("at")) or 0
     if lines is None:
         lines = CT.owner_lines(repo, clone_of(d))
     if item and lines is not None and his_answers(lines, item, since):
@@ -1552,9 +1756,13 @@ def pending_turn(d, repo=REPO, lines=None):
     rec = read_json(os.path.join(d, "record.json")) or {}
     asks = [{"id": a.get("id"), "text": " ".join(str(a.get("text") or "").split())}
             for a in rec.get("asks") or [] if isinstance(a, dict) and a.get("status") == "sent"]
+    if pk:      # a park's page is the turn, its reason the first ask
+        asks = [{"id": "park", "text": "parked (%s): %s" % (pk.get("kind"), pk.get("why"))}] + asks
     return {"mod": st.get("mod") or os.path.basename(d), "item": item, "stage": st.get("stage"),
-            "run": last.get("run"), "at": last.get("at"), "turn": turn_file(d, last), "asks": asks, "dir": d,
-            "owner_unread": lines is None}
+            "run": last.get("run"), "at": (pk or last).get("at"),
+            "turn": os.path.join(d, pk.get("summary") or PARK_FILE) if pk else turn_file(d, last), "asks": asks,
+            "dir": d, "owner_unread": lines is None, "quick_look": bool((pk or {}).get("quick_look")
+                                                                        or (last.get("quick_look") or {}).get("offer"))}
 
 
 def pending_turns(root=None, repo=REPO):
@@ -1598,8 +1806,9 @@ def turn_line(t):
     """One plain line for his queue, headline first (boards clip it): whose turn, how many asks, where to read them,
     then each ask."""
     n = len(t["asks"])
-    return "%s Designer turn (stage %s) waits on you since %s: %d %s%s in %s%s" % (
-        t["mod"], t["stage"], (t.get("at") or "?").replace("T", " "), n, "ask" if n == 1 else "asks",
+    return "%s%s Designer turn (stage %s) waits on you since %s: %d %s%s in %s%s" % (
+        "QUICK LOOK OFFERED: " if t.get("quick_look") else "", t["mod"], t["stage"],
+        (t.get("at") or "?").replace("T", " "), n, "ask" if n == 1 else "asks",
         " (%s)" % ", ".join(str(a["id"]) for a in t["asks"]) if n else "", owner_path(t.get("turn") or t["dir"]),
         "".join(" | %s: %s" % (a["id"], a["text"][:160]) for a in t["asks"]))
 

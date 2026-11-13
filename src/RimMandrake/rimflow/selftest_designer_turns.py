@@ -264,6 +264,7 @@ def stale_clone(tmp):
 
 
 def main():
+    DS.owner_away = lambda: (False, "selftest: attended")   # the real presence must not move this test
     tmp = tempfile.mkdtemp(prefix="designer_turns_")
     os.environ.setdefault("RM_DISPATCHER_STATE", os.path.join(tmp, "dstate"))
     try:

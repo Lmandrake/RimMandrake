@@ -32,6 +32,12 @@ judge spend past JUDGE_SPEND_MAX stops judging: the concept is blocked on REFUSA
 raised (refusal_contract.py) and `run` exits 3, so the Designer's run never starts. A later gap on ids no earlier verdict
 named, that the judge does not tie to a change, is tagged late: the earlier pass missed it.
 
+Parked for him (RIMMANDRAKE_PARK_UNATTENDED_DESIGNER_LOOPS, RIMMANDRAKE_CEIL_JUDGE_LOOPS_AT_TWICE_CAP; designer_stage
+park): when he is away (designer_stage.owner_away) the SECOND not_covered parks the concept instead of waiting for the
+third, and a loop whose charges since the first judge reach twice the cap parks it whoever is there. A park writes
+park_summary.md for him and sets waiting_owner; `run` exits 3 while it stands, `release` refuses it, and only his own
+word on the item lifts it.
+
 Exit: 0 for a no-op, a verdict or a refusal the Designer reads (the pre-launch step must not stop the Designer's run: its
 stage-5 gate refuses without the signature anyway); 3 when judging is stopped (the run must not start); 2 for an
 unreadable concept.
@@ -214,6 +220,9 @@ def release(d, why, now=None):
     if not CT.txt(why):
         raise DS.Refused("a release says why")
     st = DS.load_state(d)
+    if DS.standing_park(st, d):
+        raise DS.Refused("parked for him (%s): only his word on %s lifts a park, not a release" % (
+            st["park"].get("kind"), st.get("item")))
     st.setdefault("coverage_releases", []).append({"at": DS.now_iso(), "why": why, "rounds_at": len(rounds(st, d))})
     st.pop("coverage_stop", None)
     if st.get("status") == "blocked" and str(st.get("blocked_on") or "").startswith(RC.ALARM_ID):
@@ -314,7 +323,8 @@ def default_runner(argv, cwd, env, timeout):
 
 
 def plan(d, repo=None):
-    """-> (what, why): what `run` would do now. what is "judge", "skip" or "error"."""
+    """-> (what, why): what `run` would do now: "judge", "skip", "stopped" (the loop limit), "parked" (waiting on
+    his word), "ceiling" (the loop reached twice the cap: `run` parks it) or "error"."""
     repo = repo or DS.clone_of(d) or DS.REPO
     try:
         st = DS.load_state(d)
@@ -322,6 +332,14 @@ def plan(d, repo=None):
         return "error", "unreadable concept: %s" % e
     if st.get("status") == "locked":
         return "skip", "locked"
+    DS.lift_park(st, d, repo)   # in memory: `run` writes the lift, `status` only reads
+    pk = DS.standing_park(st, d, repo)
+    if pk:
+        return "parked", "parked for him (%s): %s; only his word on %s lifts it" % (
+            pk.get("kind"), pk.get("why"), st.get("item"))
+    ceil = DS.loop_ceiling(st)
+    if ceil:
+        return "ceiling", ceil
     if st.get("stage") != 5:
         return "skip", "at stage %s, not 5" % st.get("stage")
     try:
@@ -345,7 +363,18 @@ def plan(d, repo=None):
 def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge=True):
     """-> (verdict record or None, message). Signs only on a well-formed `covered` verdict over unchanged inputs."""
     repo = repo or DS.clone_of(d) or DS.REPO
+    try:
+        st_l = DS.load_state(d)
+        if DS.lift_park(st_l, d, repo):
+            DS.write_json(DS.state_path(d), st_l)
+    except (DS.Refused, OSError, ValueError):
+        pass    # plan says why the concept is unreadable
     what, why = plan(d, repo)
+    if what == "parked":
+        return {"parked": why}, why
+    if what == "ceiling":
+        DS.park(d, "ceiling", why, repo)
+        return {"parked": why}, "parked: %s" % why
     if what == "stopped":
         hold(d, why, now)
         return {"stopped": why}, "stopped: %s" % why
@@ -442,6 +471,19 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
     DS.write_json(os.path.join(d, VERDICT_FILE), rec)
     st = record_round(d, rec)
     msg = "signed" if rec["signed"] else "not signed: %s" % (rec.get("error") or "%d gap(s)" % len(rec.get("gaps") or []))
+    parked = None
+    if not rec["signed"]:
+        parked = DS.loop_ceiling(st) and ("ceiling", DS.loop_ceiling(st))
+        if not parked and rec.get("verdict") == "not_covered" and DS.refusals_since_loop(st) >= 2:
+            away, why_away = DS.owner_away()
+            if away:    # the second refusal while he is away parks (RIMMANDRAKE_PARK_UNATTENDED_DESIGNER_LOOPS)
+                parked = ("second_refusal", "the coverage judge refused %d times while you are away (%s)" % (
+                    DS.refusals_since_loop(st), why_away))
+    if parked:
+        rec["parked"] = parked[1]
+        DS.write_json(os.path.join(d, VERDICT_FILE), rec)
+        DS.park(d, parked[0], parked[1], repo)
+        return rec, msg + "; parked: %s" % parked[1]
     stop = None if rec["signed"] else stop_reason(st, d)
     if stop:
         rec["stopped"] = stop
@@ -482,7 +524,7 @@ def main(argv=None):
         return 2
     rec, msg = run(d, timeout=a.timeout)
     print("coverage_judge: %s" % msg)
-    return STOP_EXIT if isinstance(rec, dict) and rec.get("stopped") else 0
+    return STOP_EXIT if isinstance(rec, dict) and (rec.get("stopped") or rec.get("parked")) else 0
 
 
 if __name__ == "__main__":

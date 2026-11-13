@@ -155,6 +155,7 @@ def bare(gaps):
 
 
 def main():
+    DS.owner_away = lambda: (False, "selftest: attended")   # the real presence must not move this test
     saved = (CT.coverage_problem, CT.sign, DS.exam_errors)
     signed, seen = [], {}
     CT.coverage_problem = lambda d, repo, tree: seen.get("cov", "no coverage signature")

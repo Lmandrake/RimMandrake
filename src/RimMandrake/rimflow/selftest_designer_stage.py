@@ -93,6 +93,7 @@ def run_cycle(d, repo, run, outcome="done", tokens=1000, **kw):
 
 
 def main():
+    DS.owner_away = lambda: (False, "selftest: attended")   # the real presence must not move this test
     tmp = tempfile.mkdtemp(prefix="designer_stage_")
     real_lint, real_gate, real_done = CT.lint, CT.gate, DS.done_items
     # the test repo has no ledger to fold: the done items are this fixture (the real fold is probed at the end)

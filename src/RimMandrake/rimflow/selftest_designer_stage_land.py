@@ -90,6 +90,7 @@ def on_origin(clone, path):
 
 
 def main():
+    DS.owner_away = lambda: (False, "selftest: attended")   # the real presence must not move this test
     tmp = tempfile.mkdtemp(prefix="designer_stage_land_")
     os.environ.setdefault("RM_DISPATCHER_STATE", os.path.join(tmp, "dstate"))
     saved = (DS.result_errors, DS.owner_uncited)

@@ -1,0 +1,587 @@
+{
+ "source": "design/concepts/ExplosiveKnockback/stage.json budget.charges at commit 780b1d1e85 (the night of 2026-11-12)",
+ "cap": 4000000,
+ "charges": [
+  {
+   "at": "2026-11-12T07:39:37Z",
+   "tokens": 300000,
+   "kind": "unmeasured",
+   "ref": "run bench-ek-st0-20261112",
+   "stage": 0
+  },
+  {
+   "at": "2026-11-12T07:39:45Z",
+   "tokens": 100000,
+   "kind": "unmeasured",
+   "ref": "run bench-ek-st1-20261112",
+   "stage": 1
+  },
+  {
+   "at": "2026-11-12T07:48:16Z",
+   "tokens": 150000,
+   "kind": "unmeasured",
+   "ref": "run bench-ek-st2-20261112",
+   "stage": 2
+  },
+  {
+   "at": "2026-11-12T08:07:09Z",
+   "tokens": 200000,
+   "kind": "unmeasured",
+   "ref": "run bench-ek-st3-20261112",
+   "stage": 3
+  },
+  {
+   "at": "2026-11-12T08:12:34Z",
+   "tokens": 40907,
+   "kind": "helper",
+   "ref": "a5446ba105341fa10",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T08:12:34Z",
+   "tokens": 41101,
+   "kind": "helper",
+   "ref": "af5bb3a7cf3c012d8",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T08:12:34Z",
+   "tokens": 40234,
+   "kind": "helper",
+   "ref": "a3507febe0638c7ee",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T08:12:34Z",
+   "tokens": 40286,
+   "kind": "helper",
+   "ref": "ad9e32a146065e0bc",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T08:12:34Z",
+   "tokens": 40483,
+   "kind": "helper",
+   "ref": "a1d0f98ce9bf20458",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T08:12:44Z",
+   "tokens": 400000,
+   "kind": "unmeasured",
+   "ref": "run bench-ek-st4-20261112",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T08:18:58Z",
+   "tokens": 0,
+   "kind": "unmeasured",
+   "ref": "rm-coverage-judge-1794471169",
+   "stage": 5
+  },
+  {
+   "at": "2026-11-12T08:20:55Z",
+   "tokens": 200000,
+   "kind": "unmeasured",
+   "ref": "run bench-ek-st5-20261112",
+   "stage": 5
+  },
+  {
+   "at": "2026-11-12T08:36:20Z",
+   "tokens": 2386989,
+   "kind": "unmeasured",
+   "ref": "run bench-ek-st3b-20261112",
+   "stage": 3
+  },
+  {
+   "at": "2026-11-12T08:36:39Z",
+   "tokens": 3940000,
+   "kind": "unmeasured",
+   "ref": "run bench-ek-st3c-20261112",
+   "stage": 3
+  },
+  {
+   "at": "2026-11-12T08:41:04Z",
+   "tokens": 31500,
+   "kind": "helper",
+   "ref": "a4b37608cb0f302bf",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T08:41:32Z",
+   "tokens": 32631,
+   "kind": "helper",
+   "ref": "a2722279362829117",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T08:42:26Z",
+   "tokens": 41290,
+   "kind": "helper",
+   "ref": "a099b0d69941b1f6f",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T08:43:03Z",
+   "tokens": 34320,
+   "kind": "helper",
+   "ref": "a34ab4bc6f10bedb8",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T08:43:47Z",
+   "tokens": 36035,
+   "kind": "helper",
+   "ref": "a6296d566136679bf",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T08:43:53Z",
+   "tokens": 3940000,
+   "kind": "unmeasured",
+   "ref": "run bench-ek-st4b-20261112",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T08:52:09Z",
+   "tokens": 720977,
+   "kind": "review",
+   "ref": "rm-coverage-judge-1794473090",
+   "stage": 5
+  },
+  {
+   "at": "2026-11-12T08:57:31Z",
+   "tokens": 3940000,
+   "kind": "unmeasured",
+   "ref": "run bench-ek-st5b-20261112",
+   "stage": 3
+  },
+  {
+   "at": "2026-11-12T08:58:13Z",
+   "tokens": 3940000,
+   "kind": "unmeasured",
+   "ref": "run bench-ek-st3d-20261112",
+   "stage": 3
+  },
+  {
+   "at": "2026-11-12T09:06:20Z",
+   "tokens": 38650,
+   "kind": "helper",
+   "ref": "afe4fa3a5242576d3",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T09:06:20Z",
+   "tokens": 37111,
+   "kind": "helper",
+   "ref": "a1453c90605b18e9f",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T09:06:20Z",
+   "tokens": 38398,
+   "kind": "helper",
+   "ref": "a7225cd4f21ed8f04",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T09:06:20Z",
+   "tokens": 38629,
+   "kind": "helper",
+   "ref": "ada712a89e625a419",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T09:06:20Z",
+   "tokens": 38526,
+   "kind": "helper",
+   "ref": "a34cb5b111d5760cd",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T09:06:44Z",
+   "tokens": 3940000,
+   "kind": "unmeasured",
+   "ref": "run bench-ek-st4c-20261112",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T09:14:12Z",
+   "tokens": 751818,
+   "kind": "review",
+   "ref": "rm-coverage-judge-1794474443",
+   "stage": 5
+  },
+  {
+   "at": "2026-11-12T09:18:26Z",
+   "tokens": 3940000,
+   "kind": "unmeasured",
+   "ref": "run bench-ek-st3e-20261112",
+   "stage": 3
+  },
+  {
+   "at": "2026-11-12T09:20:55Z",
+   "tokens": 37128,
+   "kind": "helper",
+   "ref": "a579106955f631bc5",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T09:21:38Z",
+   "tokens": 35000,
+   "kind": "helper",
+   "ref": "a5a0fe6764c38b325",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T09:22:40Z",
+   "tokens": 39127,
+   "kind": "helper",
+   "ref": "a5a3601e3ecf72e93",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T09:23:58Z",
+   "tokens": 38833,
+   "kind": "helper",
+   "ref": "a541af223aad200a7",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T09:24:45Z",
+   "tokens": 37429,
+   "kind": "helper",
+   "ref": "aaf4661b93a364e37",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T09:25:30Z",
+   "tokens": 37634,
+   "kind": "helper",
+   "ref": "a5de876a578d8a288",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T09:25:45Z",
+   "tokens": 3940000,
+   "kind": "unmeasured",
+   "ref": "run bench-ek-st4d-20261112",
+   "stage": 3
+  },
+  {
+   "at": "2026-11-12T09:26:08Z",
+   "tokens": 3940000,
+   "kind": "unmeasured",
+   "ref": "run bench-ek-st4e-20261112",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T09:33:21Z",
+   "tokens": 729994,
+   "kind": "review",
+   "ref": "rm-coverage-judge-1794475615",
+   "stage": 5
+  },
+  {
+   "at": "2026-11-12T09:36:53Z",
+   "tokens": 3940000,
+   "kind": "unmeasured",
+   "ref": "run bench-ek-st3f-20261112",
+   "stage": 3
+  },
+  {
+   "at": "2026-11-12T09:39:33Z",
+   "tokens": 37546,
+   "kind": "helper",
+   "ref": "a6cf79a679b547b85",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T09:40:30Z",
+   "tokens": 35980,
+   "kind": "helper",
+   "ref": "a97a011e189a4baf3",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T09:41:18Z",
+   "tokens": 38353,
+   "kind": "helper",
+   "ref": "a36763a12fa641e80",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T09:42:40Z",
+   "tokens": 38567,
+   "kind": "helper",
+   "ref": "a222487fbc7ba6847",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T09:43:31Z",
+   "tokens": 37949,
+   "kind": "helper",
+   "ref": "a9d83d9bdf1474465",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T09:44:44Z",
+   "tokens": 37829,
+   "kind": "helper",
+   "ref": "a1b99f6a45d0ea158",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T09:45:34Z",
+   "tokens": 38665,
+   "kind": "helper",
+   "ref": "a1436b7159a9973c8",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T09:46:24Z",
+   "tokens": 37566,
+   "kind": "helper",
+   "ref": "a886b9d5addd507a5",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T09:46:42Z",
+   "tokens": 3940000,
+   "kind": "unmeasured",
+   "ref": "run bench-ek-st4f-20261112",
+   "stage": 3
+  },
+  {
+   "at": "2026-11-12T09:47:11Z",
+   "tokens": 3940000,
+   "kind": "unmeasured",
+   "ref": "run bench-ek-st4g-20261112",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T10:03:28Z",
+   "tokens": 629449,
+   "kind": "review",
+   "ref": "rm-coverage-judge-1794477408",
+   "stage": 5
+  },
+  {
+   "at": "2026-11-12T10:08:12Z",
+   "tokens": 3940000,
+   "kind": "unmeasured",
+   "ref": "run bench-ek-st3g-20261112",
+   "stage": 3
+  },
+  {
+   "at": "2026-11-12T10:10:47Z",
+   "tokens": 38456,
+   "kind": "helper",
+   "ref": "a5cd357ecfa0e2d50",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T10:11:51Z",
+   "tokens": 36636,
+   "kind": "helper",
+   "ref": "a536a9b74278bf061",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T10:12:48Z",
+   "tokens": 39958,
+   "kind": "helper",
+   "ref": "a972b4b17db852860",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T10:14:02Z",
+   "tokens": 38924,
+   "kind": "helper",
+   "ref": "a1f346649b9e19d6e",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T10:15:25Z",
+   "tokens": 39296,
+   "kind": "helper",
+   "ref": "a817bb85427e3ef7a",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T10:16:43Z",
+   "tokens": 38389,
+   "kind": "helper",
+   "ref": "a75f21812265b31e8",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T10:17:57Z",
+   "tokens": 35008,
+   "kind": "helper",
+   "ref": "a72a69b694b3c3a40",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T10:19:19Z",
+   "tokens": 38911,
+   "kind": "helper",
+   "ref": "a52e3d1c3bf2a60ff",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T10:20:28Z",
+   "tokens": 39014,
+   "kind": "helper",
+   "ref": "aeb5a0482c7b186e7",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T10:21:23Z",
+   "tokens": 38416,
+   "kind": "helper",
+   "ref": "a628d75e01e23bde4",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T10:21:43Z",
+   "tokens": 3940000,
+   "kind": "unmeasured",
+   "ref": "run bench-ek-st3h-20261112",
+   "stage": 3
+  },
+  {
+   "at": "2026-11-12T10:22:07Z",
+   "tokens": 3940000,
+   "kind": "unmeasured",
+   "ref": "run bench-ek-st4h-20261112",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T10:29:16Z",
+   "tokens": 644464,
+   "kind": "review",
+   "ref": "rm-coverage-judge-1794479008",
+   "stage": 5
+  },
+  {
+   "at": "2026-11-12T10:30:50Z",
+   "tokens": 3940000,
+   "kind": "unmeasured",
+   "ref": "run bench-ek-st3i-20261112",
+   "stage": 3
+  },
+  {
+   "at": "2026-11-12T10:31:15Z",
+   "tokens": 3940000,
+   "kind": "unmeasured",
+   "ref": "run bench-ek-st4i-20261112",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T10:38:43Z",
+   "tokens": 786885,
+   "kind": "review",
+   "ref": "rm-coverage-judge-1794479519",
+   "stage": 5
+  },
+  {
+   "at": "2026-11-12T10:40:56Z",
+   "tokens": 3940000,
+   "kind": "unmeasured",
+   "ref": "run bench-ek-st3j-20261112",
+   "stage": 3
+  },
+  {
+   "at": "2026-11-12T10:43:05Z",
+   "tokens": 35898,
+   "kind": "helper",
+   "ref": "a4bba087a119f036b",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T10:44:04Z",
+   "tokens": 41417,
+   "kind": "helper",
+   "ref": "ab26ee520ac362cf0",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T10:45:07Z",
+   "tokens": 40935,
+   "kind": "helper",
+   "ref": "a6cc6d75374649311",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T10:46:13Z",
+   "tokens": 40468,
+   "kind": "helper",
+   "ref": "ac0970978fbf267c2",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T10:46:41Z",
+   "tokens": 3940000,
+   "kind": "unmeasured",
+   "ref": "run bench-ek-st4j-20261112",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T10:52:26Z",
+   "tokens": 706708,
+   "kind": "review",
+   "ref": "rm-coverage-judge-1794480428",
+   "stage": 5
+  },
+  {
+   "at": "2026-11-12T10:59:35Z",
+   "tokens": 34341,
+   "kind": "helper",
+   "ref": "a72e84062fb3c66b6",
+   "stage": 5
+  },
+  {
+   "at": "2026-11-12T11:01:34Z",
+   "tokens": 41912,
+   "kind": "helper",
+   "ref": "ac616aa8cb545a0b0",
+   "stage": 5
+  },
+  {
+   "at": "2026-11-12T11:03:09Z",
+   "tokens": 43274,
+   "kind": "helper",
+   "ref": "a4d2ed50f2592fc96",
+   "stage": 5
+  },
+  {
+   "at": "2026-11-12T11:04:41Z",
+   "tokens": 42035,
+   "kind": "helper",
+   "ref": "aaf66ffa98c940cc4",
+   "stage": 5
+  },
+  {
+   "at": "2026-11-12T11:05:18Z",
+   "tokens": 3940000,
+   "kind": "unmeasured",
+   "ref": "run bench-ek-st3k-20261112",
+   "stage": 3
+  },
+  {
+   "at": "2026-11-12T11:10:35Z",
+   "tokens": 3940000,
+   "kind": "unmeasured",
+   "ref": "run bench-ek-st4k-20261112",
+   "stage": 4
+  },
+  {
+   "at": "2026-11-12T11:17:13Z",
+   "tokens": 739503,
+   "kind": "review",
+   "ref": "rm-coverage-judge-1794481849",
+   "stage": 5
+  }
+ ]
+}

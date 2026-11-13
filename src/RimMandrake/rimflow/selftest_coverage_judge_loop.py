@@ -166,6 +166,7 @@ def units():
 
 
 def main():
+    DS.owner_away = lambda: (False, "selftest: attended")   # the real presence must not move this test
     saved = (CT.coverage_problem, CT.sign, DS.exam_errors)
     CT.coverage_problem = lambda d, repo, tree: "no coverage signature"
     CT.sign = lambda d, by, repo=None, **kw: []
