@@ -65,8 +65,8 @@ namespace RimMandrake.FlowWorks.Machinery
 				}
 				// POND_RETURN_LEG_BUILD_WATER_GOES_HOME (G1): no dug cell takes it, but the pond (or its dried bed) it came
 				// from may: the end square first, then its neighbours in the fixed adjacency order.
-				// POND_OUTLET_FIX_REJECTS_FRACTIONAL_ROOM: exact-level water: any decilitre of room in the pond (a pond short of a
-				// whole level still takes what fits, as the Body leg does); whole-notch water: a whole level of room
+				// POND_OUTLET_FIX_REJECTS_FRACTIONAL_ROOM: any decilitre of room in the pond (a pond short of a whole level
+				// still takes what fits, as the Body leg does)
 				foreach (IntVec3 c in new[] { end }.Concat(GenAdj.CellsAdjacent8Way(new TargetInfo(end, map))))
 				{
 					if (c.InBounds(map) && BodyRoomDl(ex, c, fluid, 1) > 0)

@@ -3,11 +3,12 @@
 whole level of room (`ex.CanReturnLevels(c, fluid, 1)`), while its channel test beside it was already exact-aware
 (`PourRoomDl(c, fluid, 1) > 0`). A limited pond with 1..U-1 dL of room was refused, so the wet end read Blocked though the
 Body leg (BodyRoomDl/BodyTake, exact) could take what fits. Fixed: with exact-level water the pond test is
-`BodyRoomDl(ex, c, fluid, 1) > 0`; whole-notch water keeps the whole-level test. The Dump drain then offers a Body only what
+`BodyRoomDl(ex, c, fluid, 1) > 0` (water is always exact now: the whole-notch mode is deleted,
+RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES). The Dump drain then offers a Body only what
 fits (OutletRoomDl), not a whole level it cannot take.
 
 Each check reads the source and fails on the pre-fix code (a planted copy of it is run through the same checks), and a
-Python model of the decision is swept over every room 0..2U for both water modes.
+Python model of the decision is swept over every room 0..2U.
 """
 import os
 import re
@@ -27,11 +28,11 @@ def flat(s):
     return re.sub(r"\s+", " ", s)
 
 
-BODY_TEST = ("if (c.InBounds(map) && (RM_MapComponent_Excavation.LevelExact ? BodyRoomDl(ex, c, fluid, 1) > 0 "
-             ": ex.CanReturnLevels(c, fluid, 1))) { cell = c; return RM_OutletKind.Body; }")
+BODY_TEST = "if (c.InBounds(map) && BodyRoomDl(ex, c, fluid, 1) > 0) { cell = c; return RM_OutletKind.Body; }"
 OLD_BODY_TEST = "if (c.InBounds(map) && ex.CanReturnLevels(c, fluid, 1)) { cell = c; return RM_OutletKind.Body; }"
-BODY_ROOM = ("if (RM_MapComponent_Excavation.LevelExact) { return ex.ReturnRoomDl(cell, fluid, want); }")
-DUMP_N = ("RM_MapComponent_Excavation.LevelExact && kind == RM_OutletKind.Body ? (int)RM_LiquidSpill.OutletRoomDl(ex, kind, "
+BODY_ROOM = ("private static long BodyRoomDl(RM_MapComponent_Excavation ex, IntVec3 cell, FluidDef fluid, long want) "
+             "{ return ex.ReturnRoomDl(cell, fluid, want); }")
+DUMP_N = ("kind == RM_OutletKind.Body ? (int)RM_LiquidSpill.OutletRoomDl(ex, kind, "
           "cell, fluid, System.Math.Min(left, tank.storedUnits))")
 LEG = "case RM_OutletKind.Body: return RM_TransferLeg.World(k => BodyRoomDl(ex, cell, fluid, k) >= k, k => BodyTake(ex, cell, fluid, k));"
 
@@ -42,11 +43,11 @@ def checks(spill, net):
     i = sp.find("public static RM_OutletKind Outlet(")
     outlet = sp[i:sp.find("public static RM_TransferLeg OutletLeg(", i)] if i >= 0 else ""
     if BODY_TEST not in outlet:
-        fails.append("Outlet: pond test is exact-aware (BodyRoomDl > 0 with exact water, whole level otherwise)")
+        fails.append("Outlet: pond test takes any decilitre of room (BodyRoomDl > 0)")
     if "CanReturnLevels(c, fluid, 1)) { cell = c;" in outlet and BODY_TEST not in outlet:
         fails.append("Outlet: whole-level-only pond test is gone")
     if BODY_ROOM not in sp:
-        fails.append("BodyRoomDl: exact water reads the pond's decilitre room (ReturnRoomDl)")
+        fails.append("BodyRoomDl: reads the pond's decilitre room (ReturnRoomDl)")
     if LEG not in sp:
         fails.append("OutletLeg Body: takes k when BodyRoomDl >= k (the leg the outlet promises)")
     if DUMP_N not in nt:
@@ -74,7 +75,7 @@ def outlet_is_body(room, exact, fixed):
 def sweep():
     fails = []
     for room in range(0, 2 * U + 1):
-        for exact in (True, False):
+        for exact in (True,):
             got = outlet_is_body(room, exact, True)
             want = room > 0 if exact else room >= U
             if got != want:
@@ -109,7 +110,7 @@ def main():
     for f in mf[:10]:
         print("  FAIL", f)
     fails += mf
-    print("pond outlet fractional room: %s (%d source pins, sweep rooms 0..%d x 2 modes, planted fails %d)"
+    print("pond outlet fractional room: %s (%d source pins, sweep rooms 0..%d, planted fails %d)"
           % ("FAIL" if fails else "PASS", 5, 2 * U, len(pf)))
     return 1 if fails else 0
 
