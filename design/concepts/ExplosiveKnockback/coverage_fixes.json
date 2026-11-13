@@ -1,0 +1,29 @@
+{
+ "against": "rm-coverage-judge-1794558854",
+ "claims": [
+  {
+   "gap": "g1",
+   "evidence": "scenes.json sc_closed_containers: a row stages the Armoury's secret floor panel (guy762_SecretFloorPanel_darkwhiteoutlines), closed only by the opt-in RM_KnockbackClosedStorage tag the Armoury patch adds (asserted not showContents false, not a Building_Crate), with mandrake.rsw.armoury and its dependencies on the stated list; control lane: the same panel with the tag removed by Stage scatters its goods. tree.json closed_container_holds and sheet.md name the panel; record.json dl_closed_means_hidden names it and the patch file."
+  },
+  {
+   "gap": "g2",
+   "evidence": "One container mass limit, closedContainerMassLimit 250 kg (own mass plus contents, a Mod Setting, separate from the 75 kg goods limit), named in tree.json closed_container_holds, sheet.md does and delegated lines, and record.json dl_container_shove; sc_closed_containers adds a weapons locker whose total is asserted between 76 and 249 kg and expects it to slide; sc_settings_sweep sets closedContainerMassLimit 5 and expects the locker to jolt."
+  },
+  {
+   "gap": "g3",
+   "evidence": "vanillaCratesClosed declared in tree.json closed_container_holds, sheet.md delegated, record.json dl_closed_means_hidden, with its off behaviour (a sealed crate neither slides nor jolts); swept in sc_settings_sweep with a 1x1 SealedCrate on the lane; the crate rows in sc_closed_containers now claim only the slide or jolt (the 1x1 crate free-backed slides), and the crates' contents are stated held by construction, claimed by no check."
+  },
+  {
+   "gap": "g4",
+   "evidence": "The blanket 'gives back what ships today' rule is gone from tree.json settings_scale_and_switch, sheet.md settings line and record.json dl_fire_half_off, replaced by a per-part off list (goods in the air, closed guard, container shove, sealed crates counted closed, heavy knock, gas chain, fire at half, blast power from damage) that matches sc_settings_sweep's expect line for line."
+  },
+  {
+   "gap": "g5",
+   "evidence": "scenes.json sc_gas_chain, sc_cauldron_gas, sc_cover_breaks, sc_gas_shove_into_pit and sc_settings_sweep each gain a start line: the minimal list plus mandrake.rm.cauldron and its dependencies mandrake.rm.environmentalhazards and mandrake.rm.creaturebehaviors, each asserted active, INVALID otherwise."
+  },
+  {
+   "gap": "g6",
+   "evidence": "tree.json thrown_into_pit_falls and sheet.md pit line now state that a gas clump's shove is not a throw but is force: onto an open pit cell the pawn falls in, onto a cover it stands, cover whole, per his d_pit_only_forced (OWNER:1791304039837927694), recorded as record.json dl_gas_shove_open_pit; sc_gas_shove_into_pit's expect cites that leaf. The melee shove contest is dropped from EK (record.json d_melee_shove_not_ek, filed as RIMMANDRAKE_DESIGN_MELEE_SHOVE_INTO_PIT_CONTEST_FLOWWORKS)."
+  }
+ ]
+}

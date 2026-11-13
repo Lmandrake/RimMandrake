@@ -39,6 +39,17 @@ Each step is one rimflow item, built by Relentless from the tree; none needs wor
    the carrier: a stack of 10 kg or more reaching a pawn's cell deals 2 to 5 blunt and about 0.5 s stagger, then
    stops there; lighter goods pass. A setting. Leaf `heavy_stack_knocks`. Needs build 1.
 
+5a. **Creature mass limit and blast power from damage** (`RIMMANDRAKE_BUILD_KNOCKBACK_CREATURE_MASS_AND_BLAST_POWER`;
+   d_mass_limit, d_type_x_damage, d_mass_power_scene, dl_mass_power_defaults). `RM_KnockbackMath.cs`: drop
+   `immuneBodySize`, add `creatureMassLimit` (150 kg, weighs living pawns only; corpses by the 75 kg goods limit
+   alone); `ThrowCells` multiplies by this explosion's damage over its type's `defaultDamage` (per-type `refDamage`
+   override) when `blastPowerFromDamage` is on. `RM_KnockbackExtension.immuneBodySizeOverride` becomes
+   `creatureMassLimitOverride` (the grav-ram's 3.6 becomes 216 kg in KineticArms). Settings page, Scribe keys, reset,
+   fuzz selftest and About.xml follow. Skip reason `too_heavy_creature`. Proof entry point `mass_and_power` (scene
+   `sc_mass_and_power`, showcase 2). Leaves `heavier_flies_less`, `the_spared`, `per_weapon_tuning`. Every default
+   and the measured masses and damages: `D:\ClaudeWork\rimmandrake\conductor\ek_mass_20261113\DEFAULTS.md` and
+   record.json dl_mass_power_defaults.
+
 ## Owed proofs
 
 6. **All-fly performance** (`RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF`; d_c_all_fly, dl_perf_budget). Builds the

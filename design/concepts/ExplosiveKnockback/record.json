@@ -42,6 +42,22 @@
     "OWNER:1794558073416640888"
    ],
    "text": "His card 2026-11-13 (EK exam -> Rerun exam, then judge): lift the ceiling park for ONE Designer exam rerun (examiner, challenger, two readers) on the current tree and sheet, then one coverage-judge run; re-park after."
+  },
+  {
+   "id": "s_owner_card_six_gaps_and_mass",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1794592220102307459"
+   ],
+   "text": "His card 2026-11-13 09:50 PST: all six coverage gaps real; EK next -> Fix, then one judge (one exam + one Claude judge run, then parked); his words ask for a small, a person and a heavy creature in one scene, a creature mass cutoff, heavier flies less, and force from the explosive damage. His melee shove-into-pit contest is not EK's (next entry)."
+  },
+  {
+   "id": "s_owner_card_mass_power_flowworks",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1794592407312114138"
+   ],
+   "text": "His card 2026-11-13 09:55 PST: Cutoff -> a creature mass limit (a Mod Setting) replaces the body-size 2.5 creature cutoff; Blast power -> type x damage; melee shove 'belongs in FlowWorks, not here', filed as RIMMANDRAKE_DESIGN_MELEE_SHOVE_INTO_PIT_CONTEST_FLOWWORKS."
   }
  ],
  "decisions": [
@@ -349,7 +365,7 @@
    ],
    "date": "2026-11-11",
    "delegated": "implementation detail of a ruled behaviour",
-   "what": "A container counts as closed when it hides what it stores: sealed crates (vanilla Building_Crate, e.g. SealedCrate, AncientSecurityCrate) and storage that keeps its goods out of sight (a showContents false field: LWM's Deep Storage weapons locker LWM_WeaponsLocker and safe LWM_Safe), plus an opt-in tag for another mod's container that hides its contents. Anything that draws its contents is open, period (owner 2026-11-12): shelves (Shelf, ShelfSmall), hoppers (Hopper), tables, pallets, stockpile floors, and modded shelves, lockers and fridges that draw what they hold; the opt-in tag is never put on one of them. Census of every storage def on the owner's list is part of RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED."
+   "what": "A container counts as closed when it hides what it stores: sealed crates (vanilla Building_Crate, e.g. SealedCrate, AncientSecurityCrate) while the Mod Setting 'Sealed crates count as closed containers' (vanillaCratesClosed) is on, the default; storage that keeps its goods out of sight (a showContents false field: LWM's Deep Storage weapons locker LWM_WeaponsLocker and safe LWM_Safe); and another mod's container that hides its contents some other way, given the opt-in tag RM_KnockbackClosedStorage (today the Armoury's secret floor panels, guy762_SecretFloorPanel_*, by src/RimMandrake/ExplosiveKnockback/Patches/RM_Knockback_HiddenStorage.xml). A sealed crate's goods sit in its own unspawned holder, out of any blast's reach, so vanillaCratesClosed decides only whether the crate is shoved or jolted as a closed container; off, it neither slides nor jolts. Anything that draws its contents is open, period (owner 2026-11-12): shelves (Shelf, ShelfSmall), hoppers (Hopper), tables, pallets, stockpile floors, and modded shelves, lockers and fridges that draw what they hold; the opt-in tag is never put on one of them. Census of every storage def on the owner's list is part of RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED."
   },
   {
    "id": "dl_container_shove",
@@ -361,7 +377,7 @@
    ],
    "date": "2026-11-11",
    "delegated": "tuning of a ruled behaviour",
-   "what": "'Shoved a bit': a closed 1x1 container whose mass is under the mass limit slides one cell straight away from the blast if that cell is free and standable, contents inside; anything larger, or with no free cell, only jolts in place (a short visual shake). A container is never shoved into a pit, through a wall or onto a pawn."
+   "what": "'Shoved a bit': a closed 1x1 container whose own mass plus contents is at or under the container mass limit (closedContainerMassLimit, 250 kg, a Mod Setting; not the 75 kg goods limit, which weighs loose goods and corpses) slides one cell straight away from the blast if that cell is free and standable, contents inside; anything larger or heavier, or with no free cell, only jolts in place (a short visual shake). A container is never shoved into a pit, through a wall or onto a pawn. Switched off, containers stay put, goods kept."
   },
   {
    "id": "dl_modded_strength",
@@ -495,7 +511,7 @@
    ],
    "date": "2026-11-12",
    "delegated": "off-state of a Mod Settings switch whose default is his ruling",
-   "what": "Every new part's Mod Settings switch, turned off, gives back what ships today: with fire at half off, fire and incendiary blasts throw nothing (the shipped force 0); the default stays his ruling, fire at half."
+   "what": "Each new part's Mod Settings switch, turned off: goods in the air, loose goods are not thrown at all (never the old hop); the closed guard, a closed container's goods are thrown like loose goods; the container shove, containers stay put, goods kept; sealed crates counted closed, a sealed crate neither slides nor jolts; the heavy knock, heavy stacks pass people; the gas chain, a lit cloud burns with no burst and no throw; fire at half, fire and incendiary blasts throw nothing (the shipped force 0); blast power from damage, a throw ignores damage (as shipped). No blanket 'gives back what ships today' rule: two parts replace shipped behaviour the owner rejected (the hop, the in_storage skip). Defaults stay his rulings."
   },
   {
    "id": "d_c_draws_is_open",
@@ -508,6 +524,75 @@
    "by_card": "EK coverage, 4 gaps -> Show me the 4 gaps, then I certify",
    "what": "Anything that draws its contents is open, hoppers and every shelf (Shelf, ShelfSmall) included; a shelf is never staged as closed. The explosion mods on our lists are characterized (design/RimMandrake/explosion_mods_characterized_2026-11-12.md). 'rack' is dropped from the wording with no rack test. He certifies the concept with no blockers.",
    "words": "1: Anything that draws its contents is open. 2: Search our modlist for explosion. There is at least one that makes them bigger and more impressive, we should have characterized them first I now see. 3: I'm sure they'll work, no need for more testing here, change the word. 4: I am confused. Items should be blown off a shelf, and a shelf should be ruled as open, period. So the scene is staged misleadingly. No blockers."
+  },
+  {
+   "id": "d_mass_limit",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1794592407312114138"
+   ],
+   "date": "2026-11-13",
+   "by_card": "Cutoff -> A mass limit",
+   "what": "A creature mass limit, a Mod Setting, replaces the body-size 2.5 creature cutoff; heavier things fly less (today's sqrt(refMass/mass) stays)."
+  },
+  {
+   "id": "d_type_x_damage",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1794592407312114138"
+   ],
+   "date": "2026-11-13",
+   "by_card": "Blast power -> Type x damage",
+   "what": "force = the damage type's force x this explosion's damage / a reference damage, so a bigger blast throws farther."
+  },
+  {
+   "id": "d_mass_power_scene",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1794592220102307459"
+   ],
+   "date": "2026-11-13",
+   "said": "I'd also like you to test a very small/light creature, a person, and a big/heavy creature. ... with a single scene we can check ALL these things together, ok?",
+   "what": "Showcase 2 is sc_mass_and_power: rat, colonist, muffalo and thrumbo at one distance from one blast, at two damages."
+  },
+  {
+   "id": "d_melee_shove_not_ek",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1794592407312114138"
+   ],
+   "date": "2026-11-13",
+   "said": "Melee shove is a great idea, but it belongs in FlowWorks, not here. Drop this recommendation from Explosive Knockback.",
+   "what": "No melee shove contest in EK; it is RIMMANDRAKE_DESIGN_MELEE_SHOVE_INTO_PIT_CONTEST_FLOWWORKS."
+  },
+  {
+   "id": "dl_mass_power_defaults",
+   "kind": "delegated",
+   "speaker": "agent",
+   "source": [
+    "ITEM:RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
+    "OWNER:1794592407312114138"
+   ],
+   "date": "2026-11-13",
+   "delegated": "tuning of a ruled behaviour",
+   "what": "Measured from the game's def XML (pawn mass = 60 kg x body size + worn gear): rat 12, human 60 (about 70 clothed), muffalo 144, rhino 180, centurion 216, thrumbo 240 kg. creatureMassLimit default 150 kg (= 60 x 2.5, today's line: a muffalo flies, a rhino does not), slider 20 to 500, weighs living pawns only; the body-size test goes for pawns and corpses, a corpse weighed by the 75 kg goods limit alone (which already spares every corpse the 2.5 rule spared). Per weapon, creatureMassLimitOverride replaces immuneBodySizeOverride; the grav-ram's 3.6 becomes 216 kg. The reference damage is the damage type's own defaultDamage (Bomb 50, Flame 10, BombSuper 550), overridable per type as refDamage: one global 50 would cut fire (10) to a tenth and break his fire-at-half card; a blast at its type's normal damage throws what ships today (mortar beside a colonist: 3 cells). The vanilla frag grenade, mortar HE shell and HE IED all deal 50 (Bomb's default) and differ by radius, which the falloff already reads. Gas clump bursts are not damage-scaled. blastPowerFromDamage, a Mod Setting, default on; off = force ignores damage, as shipped."
+  },
+  {
+   "id": "dl_gas_shove_open_pit",
+   "kind": "delegated",
+   "speaker": "agent",
+   "source": [
+    "ITEM:RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
+    "OWNER:1791304039837927694",
+    "OWNER:1794592407312114138"
+   ],
+   "date": "2026-11-13",
+   "delegated": "reading of a ruled behaviour (gap 6)",
+   "what": "A gas clump's one-cell shove is not a throw (it never breaks a cover), but it is force: a pawn it shoves onto an open pit cell falls in, per his d_pit_only_forced ('Only if they get blown/forced in do they fall'); the record already said so, so the leaf now says it and sc_gas_shove_into_pit keeps its descent. No melee shove contest here (d_melee_shove_not_ek)."
   }
  ],
  "asks": [
@@ -954,7 +1039,7 @@
     "src/RimMandrake/ExplosiveKnockback/",
     "design/RimMandrake/kinetic_blast_weapons_design_2026-10-06.md"
    ],
-   "scope_note": "shipping behaviour kept as built; the_spared's body-size line and per_weapon_tuning now state it"
+   "scope_note": "shipping behaviour kept as built; the_spared's body-size line and per_weapon_tuning now state it; immuneBodySizeOverride becomes creatureMassLimitOverride (kg) by d_mass_limit"
   },
   {
    "id": "inv_killed_corpse",
@@ -1004,7 +1089,7 @@
    "source": [
     "src/RimMandrake/ExplosiveKnockback/"
    ],
-   "scope_note": "kept: the same limit that spares a thrumbo spares its corpse"
+   "scope_note": "kept in effect: with the body-size rule replaced by mass limits (d_mass_limit), a big corpse is spared by the 75 kg goods limit (every body size 2.5 corpse weighs 150 kg or more)"
   },
   {
    "id": "inv_mass_limit_skip",
@@ -1037,6 +1122,34 @@
     "src/RimMandrake/ExplosiveKnockback/"
    ],
    "scope_note": "kept: a throw of under one cell is no throw; 'reached' in the oracles means a throw of at least one cell"
+  },
+  {
+   "id": "inv_creature_mass_limit",
+   "what": "A living pawn heavier than creatureMassLimit (150 kg) is never thrown (skip too_heavy_creature), replacing the body-size cutoff",
+   "impl": "absent",
+   "search_scope": "src/RimMandrake/ExplosiveKnockback/Source/*.cs for creatureMass (2026-11-13): none; the only pawn cutoff is immuneBodySize 2.5 (RM_KnockbackMath.cs Eligible)",
+   "proof": "missing",
+   "proof_evidence": [],
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1794592407312114138",
+   "source": [
+    "OWNER:1794592407312114138"
+   ],
+   "impl_evidence": []
+  },
+  {
+   "id": "inv_blast_power_damage",
+   "what": "A throw's force is the type force x this explosion's damage / the type's reference damage (blastPowerFromDamage, on)",
+   "impl": "absent",
+   "search_scope": "src/RimMandrake/ExplosiveKnockback/Source/*.cs for damAmount, defaultDamage, refDamage (2026-11-13): none; ThrowCells takes no damage term (RM_KnockbackMath.cs)",
+   "proof": "missing",
+   "proof_evidence": [],
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1794592407312114138",
+   "source": [
+    "OWNER:1794592407312114138"
+   ],
+   "impl_evidence": []
   }
  ],
  "built_reviewed": [],

@@ -16,11 +16,14 @@
 - 2026-11-12, flagship: "Just put a bomb into a storeroom with people in it beside a pit. Shows some items falling into the pit and some people as well." OWNER:1794470697182934051
 - 2026-11-12, by card: the 16 north-star bars -> Approve as written. OWNER:1794470702467936205
 - 2026-11-12, the 4 coverage gaps: "1: Anything that draws its contents is open. 2: Search our modlist for explosion. There is at least one that makes them bigger and more impressive, we should have characterized them first I now see. 3: I'm sure they'll work, no need for more testing here, change the word. 4: I am confused. Items should be blown off a shelf, and a shelf should be ruled as open, period. So the scene is staged misleadingly. No blockers." OWNER:1794529787425697771
+- 2026-11-13, by card: "We really shouldn't blow back creatures beyond a certain mass, and the heavier something is, the less it should fly. That should also be a function of the explosive damage itself as well." "with a single scene we can check ALL these things together" OWNER:1794592220102307459
+- 2026-11-13, by card: Cutoff -> a mass limit; Blast power -> type x damage; "Melee shove is a great idea, but it belongs in FlowWorks, not here." OWNER:1794592407312114138
 
 ## does
 - [leaf:people_thrown_three_cells] A mortar shell beside a colonist throws them about three cells straight away, over sandbags and barricades, alive and briefly stunned
 - [leaf:pawn_flight_arc] A thrown pawn is carried through the air to the cell chosen at the blast, never re-targeted, and goes back to work when the stun ends
-- [leaf:the_spared] Never thrown: body size 2.5 or more (the Mod Settings default; a weapon with its own body-size limit, like the grav-ram's 3.6, throws pawns under that limit instead), a pawn already in a pit, a pawn carrying a pawn, a pawn already airborne, a pawn in bed, goods or corpses heavier than 75 kg (the Mod Settings mass limit, which weighs goods and corpses only, never a living pawn), a corpse of body size 2.5 or more, goods and corpses already on a pit floor, a thing at the rim whose throw is under one cell
+- [leaf:the_spared] Never thrown: a living creature heavier than 150 kg (the creature mass limit, a Mod Setting, which weighs living pawns only; a weapon with its own creature limit, like the grav-ram's 216 kg, throws pawns under that instead), a pawn already in a pit, a pawn carrying a pawn, a pawn already airborne, a pawn in bed, goods or corpses heavier than 75 kg (the goods mass limit, which weighs goods and corpses only, never a living pawn), goods and corpses already on a pit floor, a thing at the rim whose throw is under one cell; no body-size rule remains
+- [leaf:heavier_flies_less] Heavier flies less and a bigger blast throws farther: one blast throws a rat farther than a colonist, a colonist farther than a muffalo, and a thrumbo over 150 kg not at all; at twice the damage each goes farther, since force is the damage type's force times this blast's damage over that type's normal damage. OWNER:1794592220102307459 OWNER:1794592407312114138, owed
 - [leaf:recovery_immunity] A pawn just thrown is spared a second throw until its stun and a short recovery end, also across a save
 - [leaf:hose_drops_at_takeoff] A thrown colonist carrying a hose end drops it where they stood, owed a proof
 - [leaf:wall_stops_dead] A thrown person stops dead at a wall and takes an impact hit; people never rebound, not even half a step back
@@ -30,7 +33,7 @@
 - [leaf:goods_arc_spin_rebound] Loose goods and corpses, a pawn the blast kills among them, fly wild: about 1.6 times as far as a person, high arc, fast spin, rebounds off walls and closed doors keeping about 70 percent each, until spent; over sandbags, and never into deep water. OWNER:1794468855146168085, owed
 - [leaf:every_good_moves] Every light loose good the blast reaches with a throw of a cell or more moves (bar those spared above); the 40-throw cap and the per-tick drop are removed, nothing is skipped over a cap. OWNER:1794468864684141079, owed
 - [leaf:open_shelf_scatters] Open shelves, hoppers and tables protect nothing: anything that draws its contents is open, period. OWNER:1794468845275647261 OWNER:1794529787425697771, owed
-- [leaf:closed_container_holds] Closed containers (storage that hides what it holds: sealed crates, and modded lockers and safes that do not draw their contents, plus an opt-in tag for another mod's hiding container) keep their goods and may themselves be shoved a little (one cell or a jolt, never into a pit, a wall or onto a pawn). OWNER:1794468845275647261 OWNER:1794529787425697771, owed
+- [leaf:closed_container_holds] Closed containers (storage that hides what it holds: sealed crates, modded lockers and safes that do not draw their contents, and another mod's hiding container given the opt-in tag, such as the Armoury's secret floor panels) keep their goods and may themselves be shoved a little: one cell at or under the 250 kg container mass limit, else a jolt, never into a pit, a wall or onto a pawn. OWNER:1794468845275647261 OWNER:1794529787425697771, owed
 - [leaf:heavy_stack_knocks] A heavy thrown stack gives a pawn a light knock and a stagger; light goods pass. OWNER:1794468869384727517, owed
 - [leaf:every_harmful_blast_throws] Every harmful explosion throws: bombs full, fire at half strength (about half the throw), other mods too (the other-mods percent only for a damage type our patch does not tune, never stacked); harmless bursts nothing. OWNER:1794468840281537479, owed
 - [leaf:only_explosions_throw] Only explosions throw; melee and bullets move nobody, by his 2026-10-06 answer
@@ -38,12 +41,12 @@
 - [leaf:gas_goes_clump_by_clump] A flammable gas cloud that a fire touches goes off clump by clump, scattering goods and shoving people one cell unhurt, a person at most once every 2 seconds. OWNER:1794468860062036002, owed
 - [leaf:our_gases_burn] The Cauldron's gas goes off clump by clump, and so does any other gas source of ours the census finds fitting. OWNER:1794468874358971350, owed
 - [leaf:blast_breaks_pit_cover] A damaging or fire blast that reaches a pit cover, landing on it or beside it within its radius, breaks it and whoever is on it falls; a gas burst or an EMP, smoke or stun burst never does (a pawn a gas burst shoves onto a cover stands on it, the cover whole). OWNER:1794468860062036002
-- [leaf:thrown_into_pit_falls] Anything thrown toward an open pit falls to its floor, and onto a covered cell falls through and breaks the cover (a gas clump's one-cell shove is not a throw and leaves a cover whole); nothing is thrown across
+- [leaf:thrown_into_pit_falls] Anything thrown toward an open pit falls to its floor, and onto a covered cell falls through and breaks the cover; nothing is thrown across. A gas clump's one-cell shove is not a throw but is force: onto an open pit cell the pawn falls in, onto a cover it stands, the cover whole
 - [leaf:pit_goods_fetched] A colonist can fetch thrown goods and corpses back off a pit floor, owed a proof
 - [leaf:barrage_frame_budget] A mortar barrage into a full stockpile and a long gas chain stay smooth at normal speed, owed
 - [leaf:frame_time_probe] A per-frame time probe, so the frame budget can be measured
 - [leaf:walk_storeroom_raid] A raid on a stocked colony on the full list, with a mid-way reload, a repeat and a second order
-- [leaf:settings_scale_and_switch] Superb Mod Settings: every line takes effect (the removed cap settings are gone from the page), and every new part switches off cleanly with the rest still working; switched off, a part gives back what ships today (fire at half off: fire and incendiary blasts throw nothing)
+- [leaf:settings_scale_and_switch] Superb Mod Settings: every line takes effect (the removed cap settings are gone from the page), and every new part switches off cleanly with the rest still working, each to its own off state: goods in the air off, goods unthrown, never the old hop; closed guard off, container goods thrown loose; container shove off, containers stay; sealed crates counted closed off, a crate neither slides nor jolts; heavy knock off, stacks pass; gas chain off, a cloud burns without bursts; fire at half off, fire throws nothing; blast power from damage off, damage is ignored
 - [floor:mod_settings] Superb Mod Settings: master switch, strengths and every new part switch off cleanly
 - [floor:tick_cost] The thrown-thing carrier's own tick cost, measured on the walk
 
@@ -58,7 +61,11 @@
 ## open
 
 ## delegated
-- A 1x1 closed container under the mass limit slides one cell if the cell behind it is free, else it jolts in place; never into a pit, a wall or onto a pawn
+- A 1x1 closed container whose own mass plus contents is at or under the 250 kg container mass limit (a Mod Setting, not the 75 kg goods limit) slides one cell if the cell behind it is free, else it jolts in place; never into a pit, a wall or onto a pawn
+- Sealed crates count as closed containers is a Mod Setting, on by default; a crate's goods sit in its own holder, out of any blast's reach, so the switch only decides whether the crate is shoved or jolted (off: neither)
+- The creature mass limit is 150 kg (60 kg times the old body size 2.5, so a muffalo at 144 flies and a rhino at 180 does not), measured from the game's defs; a corpse is weighed only by the 75 kg goods limit; the grav-ram's own limit is 216 kg
+- A damage type's normal damage is its own default (Bomb 50, Flame 10), so fire keeps its half and a mortar still throws a colonist 3 cells; the vanilla grenade, mortar and IED all deal 50 and differ by radius; blast power from damage is a Mod Setting, on; gas clump bursts are not scaled by damage
+- A gas shove onto an open pit drops the pawn in, by his 2026-10-06 rule that a pawn forced in falls; the melee shove contest is FlowWorks' item, not this mod's
 - Other mods' damaging explosions throw at 100 percent by default; EMP, smoke, stun, extinguish and toxic gas at 0, fire at half; the other-mods percent and the fire-half switch are on Mod Settings (off: fire throws nothing, as shipped), the per-type strengths sit in the def patch and any weapon can be tamed per weapon
 - Heavy means a stack of 10 kg or more; the knock is 2 to 5 blunt and about half a second of stagger, then the stack stops; a setting
 - The gas census covers every gas source of ours (gas defs, our gas grids, every place our code adds gas); today the one that burns is the Cauldron's vent gas, which opts in by registering its grid; the others add vanilla smoke, tox gas or rot stink, which do not burn; this mod adds no gas of its own
@@ -71,6 +78,7 @@
 - people_thrown_three_cells: yes, it is the mod
 - pawn_flight_arc: yes, a hop instead of a throw is what he rejected for goods
 - the_spared: no alone, but a thrown thrumbo or sleeper reads broken
+- heavier_flies_less: yes, his 2026-11-13 card
 - recovery_immunity: no alone, it stops juggling
 - hose_drops_at_takeoff: no alone, his 2026-10-06 answer
 - pawn_hits_pawn_stops: no alone, the same rule as walls
