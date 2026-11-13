@@ -87,6 +87,7 @@ suite.toggles = FW_TOGGLES + PITS_TOGGLES + RIVER_TOGGLES + MACH_TOGGLES
 # hose port step 4 (G5.10): owning class and shipped default of every toggle come from the ONE typed registry
 # (settings_registry.py, built from site_spec.SETTINGS + the C# Scribe keys), not from a hand table here
 import settings_registry as REG  # noqa: E402
+from water_reads import levels, U_DL  # noqa: E402  (whole levels from the one water number)
 import shovel_stage  # noqa: E402
 import gravel_stage  # noqa: E402
 DEFAULTS = REG.defaults(suite.toggles)
@@ -237,7 +238,7 @@ CELLS_BATCH_MAX = 10000                     # FwMaxRectCells: the tool refuses a
 
 def _cells_batch(t, cells):
     """BATCHREADS_BUILD_ROUND_TRIP_CUT: ONE jawa/flowworks_excavation_rect call over the cells' bounding rect answers every
-    cell's D/F (dEff/fEff: the DepthAt/FillAt getters flowworks_excavation_report reads), sink flag and exact water (dl:
+    cell's D (dEff: the DepthAt getter flowworks_excavation_report reads), sink flag and exact water (dl:
     WaterDlAt, the number ProofPitWater sums over a 1x1 rect), where the per-cell path pays one round trip (~53 ms) per
     cell per read. Returns ({(x, z): row}, counters) or None, and None always means "read per cell" -- never a value: a
     companion without the tool (a reply with no row list: cached for this run, `t._cells_batch_absent`), a refused rect
@@ -265,7 +266,7 @@ def _cells_batch(t, cells):
     for c in cells:
         row = by.get(tuple(c))
         if row is None or not isinstance(row.get("dl"), int) or isinstance(row.get("dl"), bool) \
-                or row.get("dEff") is None or row.get("fEff") is None:
+                or row.get("dEff") is None:
             return None
     return by, {"sinkTransferredTotal": r.get("sinkTransferredTotal")}
 
@@ -371,14 +372,14 @@ def _def_field(r, field):
 
 
 def _state(t, cells):
-    """[(depth, fill)] for each cell, via the engine's own getters."""
+    """[(depth, whole levels of water)] for each cell, via the engine's own getters (levels = floor(dL / U))."""
     batch = _cells_batch(t, cells)
     if batch is not None:
-        return [(batch[0][(x, z)]["dEff"], batch[0][(x, z)]["fEff"]) for x, z in cells]
+        return [(batch[0][(x, z)]["dEff"], levels(batch[0][(x, z)])) for x, z in cells]
     out = []
     for x, z in cells:
         r = _rep(t, x, z)
-        out.append((r.get("depth"), r.get("fill")))
+        out.append((r.get("depth"), levels(r, None)))
     return out
 
 
@@ -1480,13 +1481,13 @@ def toggle_fill_in_displacement(t):
         _wait_filled_in(t, pid, cells[1])
         if t._guard():
             r1 = [_rep(t, x, z) for x, z in cells]
-            if any(r.get("fill") is None or r.get("overflowDestroyedTotal") is None for r in r0 + r1):
-                raise ExpectationFailed("UNMEASURED: excavation_report gave no fill/overflowDestroyedTotal: %r" % (r0 + r1,))
+            if any(r.get("waterDl") is None or r.get("overflowDestroyedTotal") is None for r in r0 + r1):
+                raise ExpectationFailed("UNMEASURED: excavation_report gave no waterDl/overflowDestroyedTotal: %r" % (r0 + r1,))
             if r1[1].get("depth") != 0:
                 raise ExpectationFailed("UNMEASURED: the fill-in never happened (D=%r at %s), so nothing was displaced"
                                         % (r1[1].get("depth"), cells[1]))
-            before = sum(r["fill"] for r in r0) + r0[0]["overflowDestroyedTotal"]
-            after = sum(r["fill"] for r in r1) + r1[0]["overflowDestroyedTotal"]
+            before = sum(r["waterDl"] for r in r0) / float(U_DL) + r0[0]["overflowDestroyedTotal"]
+            after = sum(r["waterDl"] for r in r1) / float(U_DL) + r1[0]["overflowDestroyedTotal"]
             _expect(after >= before, "liquid was deleted, not displaced (F+overflow %s -> %s)" % (before, after))
     with _owed(t, "fill_in_displacement_off", "fillInDisplacementEnabled OFF: nothing reads where the displaced liquid went"):
         pass
@@ -2051,13 +2052,13 @@ def flow_doors(t):
         far = _rep(t, *run[-1])
         if t._guard():
             txt = _door_proof(t, "ProofLiquid", gr[0], gr[1])
-            _expect("open=False" in txt and "seals=False" in txt and " fill 0" not in txt,
+            _expect("open=False" in txt and "seals=False" in txt and " water 0dL" not in txt,
                     "closed grate did not pass liquid: %s" % txt)
             txt = _door_proof(t, "ProofLiquid", sl[0], sl[1])
-            _expect("open=False" in txt and "seals=True" in txt and txt.endswith(" fill 0"),
+            _expect("open=False" in txt and "seals=True" in txt and txt.endswith(" water 0dL"),
                     "closed sluice not sealed: %s" % txt)
-            _expect((before.get("fill") or 0) >= 1, "liquid never reached the shut sluice: fill %r" % before.get("fill"))
-            _expect((far.get("fill") or 0) == 0, "liquid passed the shut sluice: far fill %r" % far.get("fill"))
+            _expect(levels(before, 0) >= 1, "liquid never reached the shut sluice: waterDl %r" % before.get("waterDl"))
+            _expect((far.get("waterDl") or 0) == 0, "liquid passed the shut sluice: far waterDl %r" % far.get("waterDl"))
     x0, z0 = _prep_plot(t, "G")
     pit = _pit_cells(x0, z0)
     _dig_run(t, pit, 4)
@@ -3406,7 +3407,7 @@ def _fill_terrains(t, cells):
     for x, z in cells:
         r = _rep(t, x, z)
         ci = t.bridge_call("rimworld/get_cell_info", x=x, z=z) or {}
-        out.append((r.get("fill"), (ci.get("cell") or {}).get("terrainDefName")))
+        out.append((levels(r, None), (ci.get("cell") or {}).get("terrainDefName")))
     return out
 
 

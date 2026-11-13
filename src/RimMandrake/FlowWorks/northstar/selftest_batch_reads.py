@@ -341,11 +341,11 @@ class _FakeLive(object):
                 rows.append(w)
             return dict(ok, rows=rows, netCount=1)
         if tool == "jawa/flowworks_excavation_report":
-            return dict(ok, depth=0, fill=0, isSinkCell=False)
+            return dict(ok, depth=0, waterDl=0, isSinkCell=False)
         if tool == "jawa/static_call" and p.get("method") == "ProofPitWater":
             return dict(ok, result="PITWATER dl=0 wet=0 cells=1")
         if tool == "jawa/flowworks_excavation_rect":
-            rows = [{"x": p["x"] + dx, "z": p["z"] + dz, "dEff": 1 if self.lie == "fluid" else 0, "fEff": 0, "dl": 0,
+            rows = [{"x": p["x"] + dx, "z": p["z"] + dz, "dEff": 1 if self.lie == "fluid" else 0, "dl": 0,
                      "isSink": False} for dz in range(p["h"]) for dx in range(p["w"])]
             return dict(ok, rows=rows, sinkTransferredTotal=0.0)
         return {"success": False, "message": "fake: unknown tool %s" % tool}
