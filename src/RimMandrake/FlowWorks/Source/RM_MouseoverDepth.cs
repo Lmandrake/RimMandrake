@@ -43,6 +43,29 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			IntVec3 c = UI.MouseCell();
+			string line = LineAt(map, c, out TerrainDef terrain, out bool polluted);
+			if (line == null)
+			{
+				if (ours)
+				{
+					cachedTerrain(__instance) = null;   // vanilla rebuilds its own line
+					ours = false;
+				}
+				return;
+			}
+			cachedTerrainString(__instance) = line;
+			cachedTerrain(__instance) = terrain;
+			cachedPolluted(__instance) = polluted;
+			ours = true;
+		}
+
+		/// <summary>The terrain line this patch writes for <paramref name="c"/>, exactly as the readout shows it, or null where
+		/// vanilla keeps its own line (a dry undug square, fog, off the map). <paramref name="terrain"/> and
+		/// <paramref name="polluted"/> are vanilla's cache keys for that line.</summary>
+		public static string LineAt(Map map, IntVec3 c, out TerrainDef terrain, out bool polluted)
+		{
+			terrain = null;
+			polluted = false;
 			bool seen = c.InBounds(map) && !c.Fogged(map);
 			// RIMMANDRAKE_LABEL_PIT_DEPTH_EXACT_ONE_WORD (owner 2026-11-12: "It's supposed to show the precise depth no matter
 			// what"): a dug square is named "Pit, 2.5 m deep" / "Pit, 1.5 m water in 4.0 m" from the true depth grid, setting or
@@ -52,24 +75,40 @@ namespace RimMandrake.FlowWorks
 				? DepthSuffix(map, c) : null;
 			if (suffix == null && pit == null)
 			{
-				if (ours)
-				{
-					cachedTerrain(__instance) = null;   // vanilla rebuilds its own line
-					ours = false;
-				}
-				return;
+				return null;
 			}
-			TerrainDef terrain = c.GetTerrain(map);
-			bool polluted = c.IsPolluted(map);
+			terrain = c.GetTerrain(map);
+			polluted = c.IsPolluted(map);
 			float fertility = c.GetFertility(map);
 			string fert = fertility > 0.0001f ? " " + "FertShort".TranslateSimple() + " " + fertility.ToStringPercent() : "";
 			string label = pit ?? (polluted ? "PollutedTerrain".Translate(terrain.label).CapitalizeFirst().ToString() : terrain.LabelCap.ToString());
 			string walk = terrain.passability != Traversability.Impassable
 				? string.Format(" ({0})", "WalkSpeed".Translate(GenPath.SpeedPercentString(terrain.pathCost)) + fert) : null;
-			cachedTerrainString(__instance) = label + walk + (suffix != null ? " — " + suffix : "");
-			cachedTerrain(__instance) = terrain;
-			cachedPolluted(__instance) = polluted;
-			ours = true;
+			return label + walk + (suffix != null ? " — " + suffix : "");
+		}
+
+		/// <summary>RIMMANDRAKE_ADD_PIT_LABEL_STATE_READER_MOUSEOVER_HAS_NONE: [proof] "x,z" -> "line=&lt;the readout's terrain line
+		/// a player sees with the mouse on that square&gt;" (the same <see cref="LineAt"/> the readout prints), "line=vanilla" where
+		/// vanilla keeps its own line, "fogged" under fog, else "REFUSED: ...". Read only.</summary>
+		public static string ProofPitLabel(string arg)
+		{
+			Map map = Find.CurrentMap;
+			string[] p = (arg ?? "").Split(',');
+			if (map == null || p.Length < 2 || !int.TryParse(p[0].Trim(), out int x) || !int.TryParse(p[1].Trim(), out int z))
+			{
+				return "REFUSED: need a current map and \"x,z\"";
+			}
+			IntVec3 c = new IntVec3(x, 0, z);
+			if (!c.InBounds(map))
+			{
+				return "REFUSED: cell off the map";
+			}
+			if (c.Fogged(map))
+			{
+				return "fogged";
+			}
+			string line = LineAt(map, c, out _, out _);
+			return "line=" + (line ?? "vanilla");
 		}
 
 		/// <summary>DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE (owner R4; wording V8, veto-able): "Hole 7 m (ledge 4 m) · Water 2.37 m

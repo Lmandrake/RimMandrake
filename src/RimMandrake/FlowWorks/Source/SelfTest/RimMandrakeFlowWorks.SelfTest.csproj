@@ -84,6 +84,8 @@
     <Compile Include="WallClimbChecks.cs" />
     <Compile Include="..\Superdeep\RM_GeyserTubMath.cs" />
     <Compile Include="GeyserTubChecks.cs" />
+    <Compile Include="..\Superdeep\RM_PitFloorGroundMath.cs" />
+    <Compile Include="PitFloorGroundChecks.cs" />
     <Compile Include="TrenchStrideChecks.cs" />
     <Compile Include="PitDeckChecks.cs" />
     <Compile Include="..\Superdeep\RM_RaiderTrenchMath.cs" />

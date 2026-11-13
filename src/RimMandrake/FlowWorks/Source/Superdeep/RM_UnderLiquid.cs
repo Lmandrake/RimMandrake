@@ -59,6 +59,37 @@ namespace RimMandrake.FlowWorks
 			return h > MinThingMetres ? h : MinThingMetres;
 		}
 
+		/// <summary>RIMMANDRAKE_REMOVE_DARK_SQUARE_AROUND_SUNK_GEYSER_UNWELCOME_BOX (owner 2026-11-12: "a strange darker square
+		/// around the geyser image that isn't welcome"): a building under this fill, with no vanilla sun shadow and no
+		/// shadowData, is flat (a vent, a rug) and casts no floor shadow.</summary>
+		public const float FlatFillPercent = 0.2f;
+
+		public static bool CastsFloorShadow(float fillPercent, float sunShadowHeight, bool hasShadowData)
+		{
+			return fillPercent >= FlatFillPercent || sunShadowHeight > 0f || hasShadowData;
+		}
+
+		/// <summary>How far in from each edge of the floor shadow (a share of its side) it takes to rise from nothing to
+		/// whole: the shadow is a soft-edged pool, never a hard rectangle.</summary>
+		public const float ShadowFeatherWidth = 0.25f;
+
+		/// <summary>The floor shadow's alpha share at (u, v) across its quad, each 0..1: 0 at the edge, smoothstep to 1 at
+		/// <see cref="ShadowFeatherWidth"/> in.</summary>
+		public static float ShadowFeather(float u, float v)
+		{
+			float e = System.Math.Min(System.Math.Min(u, 1f - u), System.Math.Min(v, 1f - v));
+			if (e <= 0f)
+			{
+				return 0f;
+			}
+			if (e >= ShadowFeatherWidth)
+			{
+				return 1f;
+			}
+			float x = e / ShadowFeatherWidth;
+			return x * x * (3f - 2f * x);
+		}
+
 		// the experience numbers; Mod Settings write them (RimMandrakeFlowWorksSettings.PushUnderLiquid), these are the
 		// shipped defaults
 		public const float DefaultDeepOpacity = 0.90f;

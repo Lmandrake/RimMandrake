@@ -279,6 +279,7 @@ namespace RimMandrake.FlowWorks
         public static bool reachSeesWallsAndCliffs = true;   // REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE (RM_WallReach)
         public static bool pitRescueLadderEnabled = true;
         public static bool buildInDugWaterEnabled = true;   // DEEP_WATER_BUILD_REFUSED_BY_LIGHT_AFFORDANCE (RM_Patch_FlowDoorOnWetCanal)
+        public static bool pitFloorCarriesGroundEnabled = true;   // RIMMANDRAKE_ALLOW_MEDIUM_FURNITURE_ON_PIT_FLOOR (RM_PitFloorGround)
         // PIT_LEGACY_CODE_RETIRE_1: the four survivors of the retired PitsMod screen
         // (same field names and defaults, so nothing that reads them changes meaning).
         // The cover's mass trigger (PIT_COVER_FALL_REWIRE_1) and the fall on any descent
@@ -659,6 +660,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref reachSeesWallsAndCliffs, "reachSeesWallsAndCliffs", true);
             Scribe_Values.Look(ref pitRescueLadderEnabled, "pitRescueLadderEnabled", true);
             Scribe_Values.Look(ref buildInDugWaterEnabled, "buildInDugWaterEnabled", true);
+            Scribe_Values.Look(ref pitFloorCarriesGroundEnabled, "pitFloorCarriesGroundEnabled", true);
             Scribe_Values.Look(ref trapTriggerEnabled, "trapTriggerEnabled", true);
             Scribe_Values.Look(ref trapSensitivityMultiplier, "trapSensitivityMultiplier", 1f);
             Scribe_Values.Look(ref fallDamageEnabled, "fallDamageEnabled", true);
@@ -1538,7 +1540,7 @@ namespace RimMandrake.FlowWorks
 
             }
 
-            if (Section(list, "Pits and climbing", new[] { "superdeepCaptureEnabled", "superdeepCapturesOwnFaction", "pitStuckAlertEnabled", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "pitRelativeClimbEnabled", "pitClimbAbilityMultiplier", "pitSlowClimbFactor", "pitRampsEnabled", "pitRampMaxSpan", "pitLadderSlowness", "portableLadderEnabled", "portableLadderMaxLevels", "climbingGearEnabled", "climbingGearSlowness", "pitJumpLandsSafe", "pitTeleportLandsSafe", "pitFreeTravelEnabled", "reachSeesWallsAndCliffs", "pitRescueLadderEnabled", "buildInDugWaterEnabled", "pitWalkNormalEnabled" }))
+            if (Section(list, "Pits and climbing", new[] { "superdeepCaptureEnabled", "superdeepCapturesOwnFaction", "pitStuckAlertEnabled", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "pitRelativeClimbEnabled", "pitClimbAbilityMultiplier", "pitSlowClimbFactor", "pitRampsEnabled", "pitRampMaxSpan", "pitLadderSlowness", "portableLadderEnabled", "portableLadderMaxLevels", "climbingGearEnabled", "climbingGearSlowness", "pitJumpLandsSafe", "pitTeleportLandsSafe", "pitFreeTravelEnabled", "reachSeesWallsAndCliffs", "pitRescueLadderEnabled", "buildInDugWaterEnabled", "pitFloorCarriesGroundEnabled", "pitWalkNormalEnabled" }))
             {
             list.Label("A pit is any dug pocket nothing can climb out of, nothing more: there is no pit building. "
                      + "What holds a creature is the height of the step it must climb against its own size, never the "
@@ -1647,6 +1649,10 @@ namespace RimMandrake.FlowWorks
               + "squares are vanilla water, which carries nothing. Natural lakes, rivers and the sea are not dug, so they stay as "
               + "vanilla has them. Suspension bridge towers follow their own rule (Sunken bridges). Off: only sluices, grates, "
               + "ladders and ramps stand in a flooded cut.");
+            list.CheckboxLabeled("A dry pit floor carries what its ground carried", ref pitFloorCarriesGroundEnabled,
+                "On, a dry dug floor bears what the ground it was dug from bore: dug in soil, sand or packed dirt, it takes "
+              + "benches, batteries, coolers, shelves and heavy machines like the ground above; dug in soft sand or marsh, "
+              + "only light things, as before the dig. Off: a dug floor bears only light things (walls, beds, tables, lamps).");
 
             list.CheckboxLabeled("Walking along a pit floor is normal speed", ref pitWalkNormalEnabled,
                 "Only climbing into or out of a cut is slow (the deeper, the slower; a ladder too); walking around "

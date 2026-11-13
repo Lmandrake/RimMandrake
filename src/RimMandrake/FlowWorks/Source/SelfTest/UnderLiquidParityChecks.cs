@@ -96,6 +96,22 @@ namespace RimMandrake.FlowWorks.SelfTest
 				float l = RM_UnderLiquid.LabelAlpha(0.45f, 2f, 0.3f);
 				Assert(l > 0f && l < 1f, "can-fail: a label over a thing under clear water fades (" + l + ")");
 			});
+			Case("UnderLiquid_flat_things_cast_no_floor_shadow_and_edges_are_soft", () =>
+			{
+				// RIMMANDRAKE_REMOVE_DARK_SQUARE_AROUND_SUNK_GEYSER_UNWELCOME_BOX: a geyser or rug (fill 0, no vanilla shadow)
+				// casts none; a bed, bench, battery or lamp does
+				Assert(!RM_UnderLiquid.CastsFloorShadow(0f, 0f, false), "can-fail: a geyser or rug casts no floor shadow");
+				Assert(!RM_UnderLiquid.CastsFloorShadow(0.15f, 0f, false), "can-fail: a 0.15-fill flat thing casts none");
+				Assert(RM_UnderLiquid.CastsFloorShadow(0.4f, 0f, false), "can-fail: a 0.4-fill bed casts one");
+				Assert(RM_UnderLiquid.CastsFloorShadow(0.1f, 0.2f, false), "can-fail: a sun-shadow caster casts one");
+				Assert(RM_UnderLiquid.CastsFloorShadow(0f, 0f, true), "can-fail: a thing with vanilla shadowData casts one");
+				// the shadow's edge is feathered to nothing, never a hard rectangle
+				Assert(RM_UnderLiquid.ShadowFeather(0f, 0.5f) == 0f && RM_UnderLiquid.ShadowFeather(0.5f, 1f) == 0f,
+					"can-fail: the shadow is 0 at its edge");
+				Assert(RM_UnderLiquid.ShadowFeather(0.5f, 0.5f) == 1f, "can-fail: the shadow is whole at its middle");
+				float a = RM_UnderLiquid.ShadowFeather(0.05f, 0.5f), b = RM_UnderLiquid.ShadowFeather(0.15f, 0.5f);
+				Assert(a > 0f && a < b && b < 1f, "can-fail: the shadow rises smoothly from its edge (" + a + ", " + b + ")");
+			});
 		}
 	}
 }

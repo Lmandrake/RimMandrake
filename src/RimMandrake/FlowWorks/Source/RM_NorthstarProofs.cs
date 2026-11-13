@@ -833,8 +833,11 @@ namespace RimMandrake.FlowWorks
 			// PLOT_D_BODY_PRUNE_STALE_SEA: AFTER the fill-in (FillIn reattaches a dug bed square to its pond), release every
 			// body's claim on the rect, so the next chain's pond here forms its own body instead of joining a far one.
 			int released = eng.Stock?.ReleaseRect(map, r, eng, out dropped) ?? 0;
+			// RIMMANDRAKE_INVALIDATE_SWIMSET_ON_PROOF_RESET: the swim set is re-derived and published now, so a restaged pit
+			// never reads the old water's swum squares (and their walls) until the next swim refresh ticks
+			int swum = eng.RefreshDugSwim(true);
 			return "RESET cells=" + cells + " levels=" + levels + " rolled=" + rolled + " released=" + released
-				+ " bodies=" + dropped + " left=" + left;
+				+ " bodies=" + dropped + " swim=" + swum + " left=" + left;   // left= stays LAST (extensions._prep_plot reads endswith left=0)
 		}
 
 		/// <summary>The hose reel whose footprint holds <paramref name="c"/>, or null.</summary>

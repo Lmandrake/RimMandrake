@@ -1048,7 +1048,9 @@ namespace RimMandrake.FlowWorks.SelfTest
 				Assert(set.Contains("public static bool sheetOverflowEnabled = false;"), "the master switch still ships OFF");
 				Assert(set.Contains("public static bool otherLiquidsSpillEnabled = true;") && set.Contains("public static bool fuelSpillsBurnEnabled = true;"),
 					"all liquids and D5 fuel fire have their own settings");
-				Assert(sheet.Contains("(fluid == Water || RM_SheetSettings.otherLiquidsSpillEnabled)") && !sheet.Contains("fluid != null && fluid == Water;"),
+				// e0fc80595c moved the rule into RM_SheetMath.AcceptsSpill: the call passes both, and the rule takes any liquid
+				Assert(sheet.Contains("fluid == Water, RM_SheetSettings.otherLiquidsSpillEnabled") && !sheet.Contains("fluid != null && fluid == Water;")
+					&& RM_SheetMath.AcceptsSpill(true, true, true, false, true, false),
 					"every liquid is accepted, not only water");
 				Assert(sheet.Contains("RM_StockMath.FluidsCompatible(held != null, held, fluid)") && sheet.Contains("RM_StockMath.FluidsCompatible(held != null, held, f)"),
 					"the lip walk and the engine credit refuse another liquid (fluids never mix)");

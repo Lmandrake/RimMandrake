@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text;
 using System.Reflection.Emit;
 using HarmonyLib;
 using RimWorld;
@@ -309,7 +310,13 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
-			int q = (int)(RM_UnderLiquid.ThingShadow(ctxPitClarity, ctxPitLevel) * RM_UnderLiquid.Steps + 0.5f);
+			// a flat thing (a vent, a rug) has no height to cast from (RIMMANDRAKE_REMOVE_DARK_SQUARE_AROUND_SUNK_GEYSER_UNWELCOME_BOX)
+			ThingDef def = ctxThing.def;
+			if (!RM_UnderLiquid.CastsFloorShadow(def.fillPercent, def.staticSunShadowHeight, def.graphicData?.shadowData != null))
+			{
+				return;
+			}
+			int q =(int)(RM_UnderLiquid.ThingShadow(ctxPitClarity, ctxPitLevel) * RM_UnderLiquid.Steps + 0.5f);
 			if (q <= 0)
 			{
 				return;
@@ -335,14 +342,47 @@ namespace RimMandrake.FlowWorks
 
 		private static readonly Material[] shadowMats = new Material[RM_UnderLiquid.Steps + 1];
 
+		private static Texture2D featherTex;
+
+		/// <summary>White, its alpha <see cref="RM_UnderLiquid.ShadowFeather"/> across the quad (built once, main thread).</summary>
+		private static Texture2D FeatherTex
+		{
+			get
+			{
+				if (featherTex == null)
+				{
+					const int n = 32;
+					Texture2D t = new Texture2D(n, n, TextureFormat.RGBA32, false)
+					{
+						name = "RM_PitFloorShadowFeather",
+						wrapMode = TextureWrapMode.Clamp,
+						filterMode = FilterMode.Bilinear
+					};
+					Color[] px = new Color[n * n];
+					for (int z = 0; z < n; z++)
+					{
+						for (int x = 0; x < n; x++)
+						{
+							px[z * n + x] = new Color(1f, 1f, 1f, RM_UnderLiquid.ShadowFeather((x + 0.5f) / n, (z + 0.5f) / n));
+						}
+					}
+					t.SetPixels(px);
+					t.Apply(false, true);
+					featherTex = t;
+				}
+				return featherTex;
+			}
+		}
+
 		private static Material ShadowMat(int q)
 		{
 			Material m = shadowMats[q];
 			if (m == null)
 			{
 				// under the liquid's sheet, so the sheet hides it by the law like the floor it lies on (a pooled Transparent
-				// material drew it over the water: an untinted dark square under every drowned thing)
-				m = new Material(MaterialPool.MatFrom(new MaterialRequest(BaseContent.WhiteTex, ShaderDatabase.Transparent,
+				// material drew it over the water: an untinted dark square under every drowned thing); a soft-edged pool,
+				// never a hard rectangle
+				m = new Material(MaterialPool.MatFrom(new MaterialRequest(FeatherTex, ShaderDatabase.Transparent,
 					new Color(0f, 0f, 0f, (float)q / RM_UnderLiquid.Steps)))) { renderQueue = RM_FaceMaterial.UnderSheetQueue };
 				shadowMats[q] = m;
 			}
@@ -534,33 +574,57 @@ namespace RimMandrake.FlowWorks
 		internal static bool BeginRealtime(Thing t, DrawPhase phase)
 		{
 			rtOn = false;
-			if (!On || phase != DrawPhase.Draw || t == null || !t.Spawned)
+			if (phase != DrawPhase.Draw)
 			{
 				return true;
 			}
-			float h = RealtimeMetres(t);
-			if (h <= 0f || !Wet(t, out int _, out float levelM, out float clarity, false))
-			{
-				return true;
-			}
-			if (RM_UnderLiquid.LabelAlpha(clarity, levelM, h) <= 0f)
+			RealtimeVerdict v = RealtimeRead(t, out float share, out float levelM, out float clarity, out float h);
+			if (v == RealtimeVerdict.Hidden)
 			{
 				return false;   // its top is under an opaque liquid: nothing of it shows
 			}
-			if (t is Pawn || t is Corpse)
-			{
-				return true;   // a wading or lying body is covered by its silhouette (CoverPawn)
-			}
-			rtShare = RM_UnderLiquid.Share(levelM, 0f, h);
-			if (rtShare <= 0f)
+			if (v != RealtimeVerdict.Split)
 			{
 				return true;
 			}
+			rtShare = share;
 			rtLevel = levelM;
 			rtHeight = h;
 			rtClarity = clarity;
 			rtOn = true;
 			return true;
+		}
+
+		/// <summary>What the realtime gate does with a thing: drawn whole (dry, off a pit, nothing to cut), hidden, covered by
+		/// its silhouette (a wading or lying body, CoverPawn) or split at the line.</summary>
+		internal enum RealtimeVerdict { Whole, Hidden, BodyCover, Split }
+
+		/// <summary>The realtime gate's decision for <paramref name="t"/>, read only (BeginRealtime and ProofOverlays share it).</summary>
+		internal static RealtimeVerdict RealtimeRead(Thing t, out float share, out float levelM, out float clarity, out float h)
+		{
+			share = 0f;
+			levelM = 0f;
+			clarity = 0f;
+			h = 0f;
+			if (!On || t == null || !t.Spawned)
+			{
+				return RealtimeVerdict.Whole;
+			}
+			h = RealtimeMetres(t);
+			if (h <= 0f || !Wet(t, out int _, out levelM, out clarity, false))
+			{
+				return RealtimeVerdict.Whole;
+			}
+			if (RM_UnderLiquid.LabelAlpha(clarity, levelM, h) <= 0f)
+			{
+				return RealtimeVerdict.Hidden;
+			}
+			if (t is Pawn || t is Corpse)
+			{
+				return RealtimeVerdict.BodyCover;
+			}
+			share = RM_UnderLiquid.Share(levelM, 0f, h);
+			return share <= 0f ? RealtimeVerdict.Whole : RealtimeVerdict.Split;
 		}
 
 		internal static void EndRealtime()
@@ -595,7 +659,10 @@ namespace RimMandrake.FlowWorks
 		/// the liquid over it (RM_UnderLiquid.Seen at the level; 1 off a pit, dry, on a deck or with the setting off). Gimme Some
 		/// Slack calls it by name (SectionLayer_RM_MessyCords, a section rebuild, main thread) and the cell is noted like any
 		/// print, so a level change re-meshes it (FillPictured dirties Buildings, which the cord layer listens to).</summary>
-		public static float FloorSeen(Map map, int x, int z)
+		public static float FloorSeen(Map map, int x, int z) => FloorSeenAt(map, x, z, true);
+
+		/// <summary><see cref="FloorSeen"/>; <paramref name="noteIt"/> false reads without marking the cell printed (a proof).</summary>
+		private static float FloorSeenAt(Map map, int x, int z, bool noteIt)
 		{
 			if (!On || map == null)
 			{
@@ -613,7 +680,10 @@ namespace RimMandrake.FlowWorks
 				return 1f;
 			}
 			int note = NoteAt(eng, c);
-			eng.submergeDrawn[map.cellIndices.CellToIndex(c)] = note;
+			if (noteIt)
+			{
+				eng.submergeDrawn[map.cellIndices.CellToIndex(c)] = note;
+			}
 			if (note <= 0)
 			{
 				return 1f;
@@ -628,6 +698,43 @@ namespace RimMandrake.FlowWorks
 		/// <summary>How much of an overlay on <paramref name="t"/> shows: it follows the thing's top (LabelAlpha); 1 for anything
 		/// not standing wet in a pit.</summary>
 		public static float OverlayAlpha(Thing t) => t != null && t.Spawned ? LabelAlpha(t) : 1f;
+
+		/// <summary>RIMMANDRAKE_ADD_OVERLAY_PROOF_HOOK_LAW_CANNOT_SEE_ICONS: [proof] "x,z" -> what the liquid law decides for every
+		/// drawer of every thing at the cell, read only (nothing printed, noted or drawn): one line per thing,
+		/// "def=&lt;defName&gt; id=&lt;thingID&gt; realtime=whole|hidden|bodycover|split share=&lt;0..1&gt; flame=none|shows|out
+		/// overlay=&lt;alpha OverlayDrawer is handed; 0 = not drawn&gt;", then "cords=&lt;FloorSeen: how much of a Gimme Some Slack
+		/// cord or rope on the floor shows&gt;". flame is the Graphic_Flicker gate (out once the realtime split is whole under);
+		/// overlay covers DrawOverlay (hidden at 0) and the pulsing status icons (faded to it). Drawers that route nowhere (a
+		/// battery's charge bar, GenDraw lines) are not in it: a live look owns those. Else "REFUSED: ...".</summary>
+		public static string ProofOverlays(string arg)
+		{
+			Map map = Find.CurrentMap;
+			string[] p = (arg ?? "").Split(',');
+			if (map == null || p.Length < 2 || !int.TryParse(p[0].Trim(), out int x) || !int.TryParse(p[1].Trim(), out int z))
+			{
+				return "REFUSED: need a current map and \"x,z\"";
+			}
+			IntVec3 c = new IntVec3(x, 0, z);
+			if (!c.InBounds(map))
+			{
+				return "REFUSED: cell off the map";
+			}
+			StringBuilder sb = new StringBuilder();
+			List<Thing> list = c.GetThingList(map);
+			for (int i = 0; i < list.Count; i++)
+			{
+				Thing t = list[i];
+				RealtimeVerdict v = RealtimeRead(t, out float share, out _, out _, out _);
+				bool flicker = t.Graphic is Graphic_Flicker || t.def.graphicData?.graphicClass == typeof(Graphic_Flicker)
+					|| t.TryGetComp<CompFireOverlay>() != null;
+				string flame = !flicker ? "none" : v == RealtimeVerdict.Hidden || (v == RealtimeVerdict.Split && share >= 1f) ? "out" : "shows";
+				sb.Append("def=").Append(t.def.defName).Append(" id=").Append(t.thingIDNumber)
+					.Append(" realtime=").Append(v.ToString().ToLowerInvariant()).Append(" share=").Append(F(share))
+					.Append(" flame=").Append(flame).Append(" overlay=").Append(F(OverlayAlpha(t))).Append('\n');
+			}
+			sb.Append("cords=").Append(F(FloorSeenAt(map, x, z, false)));
+			return sb.ToString();
+		}
 
 		/// <summary>Above every layer a pawn's own render tree draws (body, apparel, head; the slice keeps the head out while
 		/// it is above the line).</summary>
