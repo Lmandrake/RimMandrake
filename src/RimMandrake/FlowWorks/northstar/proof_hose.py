@@ -235,8 +235,8 @@ class Scene(object):
 
     def water(self):
         for x, z in self.channel:
-            self.B.call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=2, setFill=-1)
-            self.B.call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=0, setFill=2)
+            self.B.call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=2, setBodyWaterM=-1)
+            self.B.call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=0, setBodyWaterM=1.0)
 
     def build(self, *ops):
         # a build_batch that built less than asked is a fault of the scene's scope (preconditions.NOOP_CHECKS)
@@ -485,8 +485,8 @@ def _rf_scene3(B, rows, row):
     tank_at_reel = (ox + 3, oz + 10)                       # north of the reel: the reel's port is the tank
     far_pump, far_ch, far_bat = (ox + 17, oz + 9), [(ox + 18 + k, oz + 9) for k in range(3)], (ox + 17, oz + 11)
     for x, z in far_ch:
-        B.call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=2, setFill=-1)
-        B.call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=0, setFill=2)
+        B.call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=2, setBodyWaterM=-1)
+        B.call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=0, setBodyWaterM=1.0)
     s3.build(V.reel_toward(s3.reel, (ox + 16, oz + 9)), "RM_LiquidTank:%d,%d" % tank_at_reel, "RM_LiquidPump:%d,%d" % far_pump,
              "Battery:%d,%d" % far_bat)
     B.ticks(2)

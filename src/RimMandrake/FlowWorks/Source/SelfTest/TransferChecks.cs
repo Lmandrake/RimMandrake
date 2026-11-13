@@ -253,7 +253,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             Assert(RM_PumpMath.SourceTakeUnits(U, 0, true) == 0 && RM_PumpMath.SourceTakeUnits(U, -5, true) == 0 && RM_PumpMath.SourceTakeUnits(0, 500, true) == 0,
                 "a dry pond, a negative reading or no budget: nothing to take");
             string pump = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "Building_LiquidPump.cs"));
-            RiverSwitchFlipChecks.Has(pump, @"return RM_PumpMath\.SourceTakeUnits\(units, ex\.Stock\.SupplyDl\(Map, c, units, ex\), RM_MapComponent_Excavation\.LevelExact\);",
+            RiverSwitchFlipChecks.Has(pump, @"return RM_PumpMath\.SourceTakeUnits\(units, ex\.Stock\.SupplyDl\(Map, c, units, ex\), true\);",
                 "the pump's take on a natural body is the selftested rule, on the body's decilitres");
             RiverSwitchFlipChecks.Has(pump, @"if \(ex\.IsSourceCell\(c\) && SourceTake\(ex, c\) > 0\)", "a natural body is drawable while that rule takes anything");
             RiverSwitchFlipChecks.Has(pump, @"int give = s\.channel \? RM_PumpMath\.ChannelTakeUnits\(units, ex\.WaterDlAt\(s\.cell\)\) : SourceTake\(ex, s\.cell\);",
@@ -277,7 +277,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             Assert(RM_PumpMath.TankTakeUnits(U, 900, true) == 900, "item scenario: a full source, a tank with 900 dL free: 900 dL go (exact-level on)");
             Assert(RM_PumpMath.TankTakeUnits(900, 900, true) == 900, "item scenario: a 900 dL source into exactly 900 dL of room");
             Assert(RM_PumpMath.TankTakeUnits(U, 900, false) == 0, "exact-level off, a natural body: whole notches only, as before");
-            RiverSwitchFlipChecks.Has(pump, @"return RM_PumpMath\.TankTakeUnits\(give, Machinery\.RM_LiquidNet\.Room\(this, l\), s\.channel \|\| RM_MapComponent_Excavation\.LevelExact\);",
+            RiverSwitchFlipChecks.Has(pump, @"return RM_PumpMath\.TankTakeUnits\(give, Machinery\.RM_LiquidNet\.Room\(this, l\), true\);",
                 "the pump's tank take is the selftested rule on the store's whole room (a channel moves part-levels always)");
             RiverSwitchFlipChecks.Has(pump, @"i => TankTake\(ex, sources\[i\], LiquidFor\(sources\[i\]\.fluid\)\) > 0, cycle,",
                 "PumpNext's tank predicate asks for the affordable take, not a whole cycle");
@@ -304,7 +304,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 return (b, w.Levels + "/" + t, credited, m);
             });
             string pump = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "Building_LiquidPump.cs"));
-            RiverSwitchFlipChecks.Has(pump, @"RM_TransferLeg world = RM_TransferLeg\.World\(k => ex\.IsExcavated\(cell\) && ex\.FillAt\(cell\) < ex\.DepthAt\(cell\), k => ex\.TryPourLevel\(cell, fluid\)\); if \(RM_LiquidTransfer\.Move\(units, RM_TransferLeg\.Store\(k => tank\.CanProvide\(k\), k => tank\.TryRemoveLiquid\(k\), k => tank\.TryAddLiquid\(poured, k\)\), world, out RM_MoveOutcome mv\) != units\) \{ return [^}]*\} Machinery\.RM_LiquidNet\.Credit\(this, tank, poured, units, RM_PumpMath\.CycleTicks\); // credit site: pump pour",
+            RiverSwitchFlipChecks.Has(pump, @"RM_TransferLeg world = RM_TransferLeg\.World\(k => ex\.IsExcavated\(cell\) && ex\.RoomDlAt\(cell\) > 0, k => ex\.TryPourLevel\(cell, fluid\)\); if \(RM_LiquidTransfer\.Move\(units, RM_TransferLeg\.Store\(k => tank\.CanProvide\(k\), k => tank\.TryRemoveLiquid\(k\), k => tank\.TryAddLiquid\(poured, k\)\), world, out RM_MoveOutcome mv\) != units\) \{ return [^}]*\} Machinery\.RM_LiquidNet\.Credit\(this, tank, poured, units, RM_PumpMath\.CycleTicks\); // credit site: pump pour",
                 "pump pour: the tank is removed first and put back if the cell refuses; credit only after the committed move");
             Assert(!Regex.IsMatch(pump, @"if \(!ex\.TryPourLevel\("), "the old pour-first order is gone");
         }

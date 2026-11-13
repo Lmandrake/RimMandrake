@@ -158,7 +158,7 @@ def main(argv=None):
             return unmeasured("site not ready: %s" % rows[:2])
         B.call("rimworld/pause_game", pause=True)
         for x, z in canal + arm:
-            r = B.call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=1, setFill=0) or {}
+            r = B.call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=1, setBodyWaterM=0.0) or {}
             if not r.get("success"):
                 return unmeasured("dig (%d,%d) refused: %r" % (x, z, str(r)[:160]))
         for x, z in canal:

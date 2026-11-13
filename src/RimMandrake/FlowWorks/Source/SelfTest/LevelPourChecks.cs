@@ -299,8 +299,10 @@ namespace RimMandrake.FlowWorks.SelfTest
 				// review day 3: TryPourDl with exact-level water off poured level by level and returned false after a partial
 				// pour; the room for every level is now checked before its one write.
 				string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
-				RiverSwitchFlipChecks.Has(ex, @"if \(!CanPourLevelWhole\(c, fluid\) \|\| RoomNotches\(map\.cellIndices\.CellToIndex\(c\)\) < levels\) \{ return false; \} return TrySetDriverFill\(c, FillAt\(c\) \+ \(int\)levels, fluid\);",
-					"room for every level checked before the single write");
+				// RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES: the whole-level branch is gone; every pour plans its dL first.
+				RiverSwitchFlipChecks.Has(ex, @"if \(PlanPour\(c, fluid, dl, credits, out byte key\) != dl\)",
+					"room for the whole pour is planned before any write");
+				Assert(!ex.Contains("TrySetDriverFill(c, FillAt(c)"), "can-fail: no whole-level write left");
 				Assert(!ex.Contains("checked per level before each write"), "the per-level partial pour is gone");
 			});
 		}

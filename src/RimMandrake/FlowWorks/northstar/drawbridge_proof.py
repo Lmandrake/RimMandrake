@@ -264,7 +264,7 @@ def main(argv=None):
                 B.call("jawa/mod_settings_field", typeName=DBS, action="set", field=field, value=str(r0["value"]), _answer=True)
 
     def dig(c, n=DEEP):
-        return B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setFill=-1) or {}
+        return B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setBodyWaterM=-1) or {}
 
     def spawn(c, kind="Colonist", faction="player", draft=False):
         r = B.call("jawa/spawn_pawn", kindDef=kind, x=c[0], z=c[1], faction=faction, count=1) or {}

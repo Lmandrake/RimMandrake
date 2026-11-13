@@ -62,7 +62,7 @@ def run(B, origin, rows=None):
     B.call("jawa/destroy_batch", rects="%d,%d,8,12" % (ox, oz), categories="All")
     B.call("jawa/set_terrain_batch", ops="Soil:%d,%d,8,12" % (ox, oz))
     for c in pit:
-        B.call("jawa/flowworks_excavation_drive", x=g(c)[0], z=g(c)[1], deepenLevels=PIT[4], setFill=0)
+        B.call("jawa/flowworks_excavation_drive", x=g(c)[0], z=g(c)[1], deepenLevels=PIT[4], setBodyWaterM=0.0)
     ex = B.call("jawa/flowworks_excavation_rect", x=g(pit[0])[0], z=g(pit[0])[1], w=PIT[2], h=PIT[3]) or {}
     depths = sorted({r.get("d") for r in ex.get("rows") or []})
     r = B.call("jawa/spawn_pawn", kindDef="Colonist", x=g(START)[0], z=g(START)[1], faction="player", count=1) or {}

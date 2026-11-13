@@ -90,8 +90,8 @@ class MockBridge(object):
         if t == "jawa/flowworks_excavation_drive":
             c = (kw["x"], kw["z"])
             self.depth[c] = max(0, self.depth.get(c, 0) + int(kw.get("deepenLevels", 0)) - int(kw.get("fillInLevels", 0)))
-            if int(kw.get("setFill", -1)) >= 0:
-                self.fill[c] = int(kw["setFill"])
+            if (lambda m: -1 if m < 0 else int(round(m * 2)))(float(kw.get("setBodyWaterM", -1))) >= 0:
+                self.fill[c] = int(round(float(kw["setBodyWaterM"]) * 2))
             return self._ok(d=self.depth[c])
         if t == "jawa/flowworks_excavation_rect":
             rows = []
@@ -271,7 +271,7 @@ class MockBridge(object):
             c = (int(x), int(z))
             if not self._known(fl):
                 return self._ok(result="REFUSED: unknown fluid %s" % fl)
-            self.fill[c], self.fluid[c] = int(f), fl
+            self.fill[c], self.fluid[c] = int(round(float(f) * 2)), fl   # the stager takes metres; this mock counts notches
             return self._ok(result="OK fill=%s fluid=%s (mock)" % (f, fl))
         if method in MARKER_DEF:
             x, z = (int(v) for v in a[0].split(","))

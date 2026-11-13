@@ -59,7 +59,7 @@ def reload_row(B, V, row, trench):
     rehydration re-read as an excavation on every load. Save, load, read again: the square is still D=0 and the map's
     excavated count is unchanged (RM_legacyRehydrationDone holds). Returns the exit-code contribution."""
     def depth():
-        return (B.call("jawa/flowworks_excavation_drive", x=trench[0], z=trench[1], deepenLevels=0, setFill=-1) or {}).get("depth")
+        return (B.call("jawa/flowworks_excavation_drive", x=trench[0], z=trench[1], deepenLevels=0, setBodyWaterM=-1) or {}).get("depth")
 
     def count():
         return (B.call("jawa/flowworks_engine_state") or {}).get("excavatedCellCount")

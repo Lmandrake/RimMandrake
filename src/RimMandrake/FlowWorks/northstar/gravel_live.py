@@ -294,7 +294,7 @@ def main():
         return stacks(things(cx - r, cz - r, 2 * r + 1, 2 * r + 1), (GRAVEL, ROCK_CHUNK, ICE))
 
     def depth(cx, cz):
-        return (B.call("jawa/flowworks_excavation_drive", x=cx, z=cz, deepenLevels=0, setFill=-1) or {}).get("depth")
+        return (B.call("jawa/flowworks_excavation_drive", x=cx, z=cz, deepenLevels=0, setBodyWaterM=-1) or {}).get("depth")
 
     def cut_once(cx, cz, terrain, limit=6000):
         """Order one cut at (cx, cz) on `terrain`; -> (ticks or None, depth after, detail)."""
@@ -442,7 +442,7 @@ def main():
 
         # 2. a fill costs one gravel
         if want("GS_fill_costs_one_gravel"):
-            B.call("jawa/flowworks_excavation_drive", x=fill[0], z=fill[1], deepenLevels=1, setFill=-1)
+            B.call("jawa/flowworks_excavation_drive", x=fill[0], z=fill[1], deepenLevels=1, setBodyWaterM=-1)
             d0 = depth(*fill)
             des = B.call("jawa/designate_batch", action="add", designation="RM_FillInCanal", rect="%d,%d,1,1" % fill) or {}
             dry = B.call("jawa/flowworks_job_probe", x=fill[0], z=fill[1], kind="fillin", pawnId=pid) or {}

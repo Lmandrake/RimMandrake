@@ -112,7 +112,7 @@ def main():
     for x in range(2, 7):
         for z in range(2, 7):
             c = P(x, z)
-            B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=14, setFill=-1)
+            B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=14, setBodyWaterM=-1)
     railed_lip, bare_lip = P(1, 3), P(1, 5)
     railed_drop, bare_drop = P(2, 3), P(2, 5)
     B.call("jawa/build_batch", ops="RM_PitGuardrail:%s" % xz(railed_lip), stuff="Steel", faction="player", wipeExisting=False)

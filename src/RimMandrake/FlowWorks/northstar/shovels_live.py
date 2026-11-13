@@ -156,7 +156,7 @@ def main():
         return kv(scall(SH, "ProofShovelCensus", "pawn:" + str(pid).replace("Thing_", "")))
 
     def depth(c):
-        return (B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=0, setFill=-1) or {}).get("depth")
+        return (B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=0, setBodyWaterM=-1) or {}).get("depth")
 
     def probe(c, kind, pid):
         return B.call("jawa/flowworks_job_probe", x=c[0], z=c[1], kind=kind, pawnId=pid) or {}
@@ -327,7 +327,7 @@ def main():
         if want("SH_fill_needs_shovel"):
             why = clear_shovels()
             B.call("jawa/set_terrain", terrainDef="Soil", x=fill_c[0], z=fill_c[1])
-            B.call("jawa/flowworks_excavation_drive", x=fill_c[0], z=fill_c[1], deepenLevels=1, setFill=-1)
+            B.call("jawa/flowworks_excavation_drive", x=fill_c[0], z=fill_c[1], deepenLevels=1, setBodyWaterM=-1)
             d0 = depth(fill_c)
             designate("RM_FillInCanal", fill_c)
             B.call("jawa/spawn_batch", ops="RM_Gravel:%d,%d,1" % fill_mat)
@@ -493,7 +493,7 @@ def main():
             ring = [(x, z) for x in range(cx - 6, cx + 7) for z in range(cz - 6, cz + 7) if max(abs(x - cx), abs(z - cz)) >= 5]
             short = 0
             for c in ring:
-                d = (B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=8, setFill=-1) or {}).get("depth")
+                d = (B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=8, setBodyWaterM=-1) or {}).get("depth")
                 short += 0 if isinstance(d, int) and d >= 8 else 1
             # the island colonist is spawned on the centre (no teleport tool); the plot colonist is vanished so the raid
             # has one target, behind the moat

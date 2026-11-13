@@ -481,7 +481,7 @@ namespace RimMandrake.FlowWorks
 					Reached(c);
 					return;
 				}
-				long want = RM_FloodReleaseMath.DugPourDl(ledger.Remaining, cellRoom, RM_MapComponent_Excavation.LevelExact);
+				long want = RM_FloodReleaseMath.DugPourDl(ledger.Remaining, cellRoom, true);
 				if (want > 0 && excavation.PourRoomDl(c, fluidDef, want) == want && excavation.TryPourDl(c, fluidDef, want))
 				{
 					Reached(c);

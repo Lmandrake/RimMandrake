@@ -75,10 +75,10 @@ def restore_scene(load, rect, setting, flags, set_flag, name, baseline, settings
 
 def set_fill(call, water, cell, levels):
     """A whole-notch driver write preserves interior parts; drain first for exact fixture quantities."""
-    call('jawa/flowworks_excavation_drive', x=cell[0], z=cell[1], setFill=0)
+    call('jawa/flowworks_excavation_drive', x=cell[0], z=cell[1], setBodyWaterM=0.0)
     require(water(cell) == 0, 'fixture drain readback')
     if levels:
-        call('jawa/flowworks_excavation_drive', x=cell[0], z=cell[1], setFill=levels)
+        call('jawa/flowworks_excavation_drive', x=cell[0], z=cell[1], setBodyWaterM=(levels) * 0.5)
     require(water(cell) == levels * 10000, 'fixture fill readback')
 
 
@@ -116,7 +116,7 @@ def selftest():
         state = {'dl': 900}
         writes = []
         def call(tool, **kw):
-            level = kw['setFill']
+            level = int(round(float(kw['setBodyWaterM']) * 2))
             writes.append(level)
             if level == 0:
                 if not refuse_drain:
@@ -224,7 +224,7 @@ def live(out):
         call('jawa/set_terrain_batch', ops='Soil:' + RECT)
         call('jawa/set_fog', action='unfog', rect=RECT)
         for cell in ((40, 41), (40, 39), (52, 40)):
-            call('jawa/flowworks_excavation_drive', x=cell[0], z=cell[1], deepenLevels=4, setFill=0)
+            call('jawa/flowworks_excavation_drive', x=cell[0], z=cell[1], deepenLevels=4, setBodyWaterM=0.0)
         built = call('jawa/build_batch', ops='RM_LiquidPump:40,40;RM_HoseReel:41,41,1', faction='player', wipeExisting=False)
         require(built.get('survived') == 2, 'fixture buildings did not survive')
         call('jawa/map_commit')

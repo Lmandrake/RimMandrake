@@ -66,7 +66,7 @@ ANTI-GUESSING NOTES
   restores the read-back value at the end; a set that did not read back is UNMEASURED/HARNESS for every row.
 - Rain adds whole levels to brim-full canal squares (RM_MapComponent_Sheet.RainOverflow, levels * U) only on UNROOFED squares.
 - UNVERIFIED LAYOUT GUESSES (first live run decides): the pump's reach covers the canal square beside it; a tank 2x2 at (0,-2)
-  touches the pump; setFill=1 after deepen 1 leaves the square brim full; a door built by build_batch stands closed.
+  touches the pump; setBodyWaterM=0.5 after deepen 1 leaves the square brim full; a door built by build_batch stands closed.
 """
 import argparse
 import json
@@ -279,7 +279,7 @@ def main(argv=None):
         return num(kv, "dl"), txt
 
     def dig(c, n=1, fill=-1):
-        return B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setFill=fill) or {}
+        return B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setBodyWaterM=(fill) * 0.5) or {}
 
     def build(*ops):
         ops = [o for o in ops if o]
@@ -1369,7 +1369,7 @@ class FakeBridge(object):
             c = (kw["x"], kw["z"])
             d = self.dug.setdefault(c, [0, 0])
             d[0] += int(kw.get("deepenLevels") or 0)
-            fill = int(kw.get("setFill", -1))
+            fill = (lambda m: -1 if m < 0 else int(round(m * 2)))(float(kw.get("setBodyWaterM", -1)))
             if fill >= 0:
                 d[1] = fill * U - (1 if "canal_not_full" in self.f and fill > 0 else 0)
             self.sheet.pop(c, None)

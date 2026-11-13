@@ -79,7 +79,7 @@ def main():
         return 2
     misses = []
     for x, z in ring:
-        r = B.call("jawa/flowworks_excavation_drive", x=P(x, z)[0], z=P(x, z)[1], deepenLevels=4, setFill=-1) or {}
+        r = B.call("jawa/flowworks_excavation_drive", x=P(x, z)[0], z=P(x, z)[1], deepenLevels=4, setBodyWaterM=-1) or {}
         if r.get("depth") != 4:
             misses.append((x, z, r.get("depth")))
     if misses:

@@ -525,7 +525,7 @@ def review_class():
                                 includeTerrain=False)
                     for c in ex.get("rows") or []:
                         if c.get("isExcavated"):
-                            B.call("jawa/flowworks_excavation_drive", x=c["x"], z=c["z"], deepenLevels=0, setFill=0,
+                            B.call("jawa/flowworks_excavation_drive", x=c["x"], z=c["z"], deepenLevels=0, setBodyWaterM=0.0,
                                    fillInLevels=int(c.get("d") or 0))
                     for q in B.call("jawa/list_pawns", rect=rr, limit=200).get("pawns") or []:
                         B.call("jawa/set_pawn_faction", pawn=str(q.get("id")), faction="none")
@@ -678,7 +678,7 @@ def review_class():
                         for i in range(w):
                             for j in range(h):
                                 self.static(p["sc"]["id"], C.FLUID, "ProofFillWithFluid",
-                                            "%d,%d,%d,%s" % (ox + x + i, oz + z + j, f, fl))
+                                            "%d,%d,%g,%s" % (ox + x + i, oz + z + j, f * 0.5, fl))
             for p in placed:
                 self.pawns(p)
             return ok_opt
@@ -774,7 +774,7 @@ def review_class():
                 bx, bz = ox + dx, oz + 6
                 for i in range(1, 4):
                     for j in range(-2, 3):
-                        self.call("jawa/flowworks_excavation_drive", x=bx + i, z=bz + j, deepenLevels=4, setFill=-1)
+                        self.call("jawa/flowworks_excavation_drive", x=bx + i, z=bz + j, deepenLevels=4, setBodyWaterM=-1)
                 self.static("DB", C.DPROOF, "ProofMakeDrawbridge", "%d,%d;%d,%d;%s;A%s" % (bx, bz, bx + 4, bz, tier, winch))
                 if winch:
                     self.static("DB", C.DPROOF, "ProofWinchPower", "%d,%d;on" % (bx + 2, bz))

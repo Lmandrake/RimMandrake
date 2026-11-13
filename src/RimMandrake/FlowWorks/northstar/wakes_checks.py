@@ -243,8 +243,8 @@ def main(argv=None):
             return 2
         for x in range(STRIP_X["water"], STRIP_X["water"] + STRIP_LEN):
             for dz in (-2, -1, 0, 1, 2):
-                B.call("jawa/flowworks_excavation_drive", x=x, z=Z + dz, deepenLevels=1, setFill=-1)
-                B.call("jawa/flowworks_excavation_drive", x=x, z=Z + dz, deepenLevels=0, setFill=1)
+                B.call("jawa/flowworks_excavation_drive", x=x, z=Z + dz, deepenLevels=1, setBodyWaterM=-1)
+                B.call("jawa/flowworks_excavation_drive", x=x, z=Z + dz, deepenLevels=0, setBodyWaterM=0.5)
         B.call("jawa/set_terrain_batch", ops="RM_SlimeGreenShallow:%d,%d,%d,5" % (STRIP_X["slime"], Z - 2, STRIP_LEN))
         B.call("jawa/set_terrain_batch", ops="RM_TarShallow:%d,%d,%d,5" % (STRIP_X["tar"], Z - 2, STRIP_LEN))
         B.ticks(2)

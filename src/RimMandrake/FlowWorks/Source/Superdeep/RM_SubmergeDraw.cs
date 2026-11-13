@@ -966,8 +966,8 @@ namespace RimMandrake.FlowWorks
 			return s;
 		}
 
-		/// <summary>Scene helper for pit_fittings_matrix.py: "x,z,w,h,fill[,FluidDefName]" writes that whole-notch fill on every
-		/// dug square of the rect through the engine's own driver write (TrySetDriverFillOutcome; default fluid = the map's).
+		/// <summary>Scene helper for pit_fittings_matrix.py: "x,z,w,h,waterM[,FluidDefName]" writes waterM metres of water on every
+		/// dug square of the rect through the engine's own driver write (TrySetDriverWaterDlOutcome; default fluid = the map's).
 		/// -> "FILL applied=N refused=N notOwned=N fluid=..." or "REFUSED: ...".</summary>
 		public static string ProofFillRect(string arg)
 		{
@@ -975,10 +975,10 @@ namespace RimMandrake.FlowWorks
 			string[] p = (arg ?? "").Split(',');
 			RM_MapComponent_Excavation eng = map?.GetComponent<RM_MapComponent_Excavation>();
 			if (eng == null || p.Length < 5 || !int.TryParse(p[0].Trim(), out int x) || !int.TryParse(p[1].Trim(), out int z)
-				|| !int.TryParse(p[2].Trim(), out int w) || !int.TryParse(p[3].Trim(), out int h) || !int.TryParse(p[4].Trim(), out int fill)
+				|| !int.TryParse(p[2].Trim(), out int w) || !int.TryParse(p[3].Trim(), out int h) || !double.TryParse(p[4].Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out double waterM)
 				|| w < 1 || h < 1 || w * h > 400)
 			{
-				return "REFUSED: need a current map with FlowWorks and \"x,z,w,h,fill[,FluidDefName]\" (w*h <= 400)";
+				return "REFUSED: need a current map with FlowWorks and \"x,z,w,h,waterM[,FluidDefName]\" (w*h <= 400)";
 			}
 			FluidDef fluid = null;
 			if (p.Length > 5 && p[5].Trim().Length > 0)
@@ -992,7 +992,7 @@ namespace RimMandrake.FlowWorks
 			int applied = 0, refused = 0, notOwned = 0;
 			foreach (IntVec3 c in new CellRect(x, z, w, h))
 			{
-				switch (eng.TrySetDriverFillOutcome(c, fill, fluid))
+				switch (eng.TrySetDriverWaterDlOutcome(c, (long)System.Math.Round(waterM / RM_LevelSolve.MetresPerUnit), fluid))
 				{
 					case RM_MapComponent_Excavation.DriverFillOutcome.Applied: applied++; break;
 					case RM_MapComponent_Excavation.DriverFillOutcome.Refused: refused++; break;
@@ -1055,7 +1055,8 @@ namespace RimMandrake.FlowWorks
 			{
 				return "REFUSED: cell off the map or no excavation engine";
 			}
-			int d = eng.HollowDepthAt(c), f = eng.FillAt(c);
+			int d = eng.HollowDepthAt(c);
+			string f = RM_LevelSolve.Metres(eng.WaterDlAt(c)).ToString("F4", CultureInfo.InvariantCulture);
 			float lv = RM_UnderLiquid.NoteLevel(NoteAt(eng, c));
 			if (lv > d)
 			{
@@ -1144,7 +1145,7 @@ namespace RimMandrake.FlowWorks
 					? "-" : RM_UnderLiquid.NoteLevel(pn).ToString("F2", CultureInfo.InvariantCulture);
 				Color tint = look != null ? look.tint : Color.white;
 				return "def=" + t.def.defName + " class=" + t.GetType().Name + " kind=" + kind + " rot=" + t.Rotation.AsInt
-					+ " depth=" + d + " fill=" + f + " level=" + lv.ToString("F2", CultureInfo.InvariantCulture) + faces
+					+ " depth=" + d + " waterM=" + f + " level=" + lv.ToString("F2", CultureInfo.InvariantCulture) + faces
 					+ " share=" + F(share) + " clarity=" + F(clarity) + " seenLine=" + F(seenLine) + " seenFoot=" + F(seenFoot)
 					+ " printedLevel=" + printed + " setting=" + (On ? "on" : "off")
 					+ " height=" + F(heightM, "F2") + " shadow=" + (kind == "building" && d > 0 ? F(RM_UnderLiquid.ThingShadow(clarity, levelM)) : "-")
@@ -1152,7 +1153,7 @@ namespace RimMandrake.FlowWorks
 					+ " liquid=" + (map.terrainGrid.TerrainAt(c)?.defName ?? "-")
 					+ " tint=" + F(tint.r, "F2") + "," + F(tint.g, "F2") + "," + F(tint.b, "F2");
 			}
-			return "REFUSED: nothing drawn under liquid at " + x + "," + z + " (depth=" + d + " fill=" + f + ")";
+			return "REFUSED: nothing drawn under liquid at " + x + "," + z + " (depth=" + d + " waterM=" + f + ")";
 		}
 	}
 

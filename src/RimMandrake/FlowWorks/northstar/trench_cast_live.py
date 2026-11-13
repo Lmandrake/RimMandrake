@@ -82,9 +82,9 @@ def main():
     canal = {P(x, z) for x in (14, 15) for z in range(2, 31)}
     sheer = {P(x, z) for x in (18, 19) for z in range(18, 27)}
     for c, n in [(c, 2) for c in sorted(canal)] + [(c, 3) for c in sorted(sheer)]:
-        B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setFill=-1)
+        B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setBodyWaterM=-1)
     bad = [c for c, n in ((P(14, 16), 2), (P(18, 22), 3))
-           if (B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=0, setFill=-1) or {}).get("depth") != n]
+           if (B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=0, setBodyWaterM=-1) or {}).get("depth") != n]
     if bad:
         both("UNMEASURED", "SITE", {"why": "canal depths did not read back", "cells": bad})
         return 2

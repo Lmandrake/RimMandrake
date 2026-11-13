@@ -988,7 +988,7 @@ namespace RimMandrake.FlowWorks.Machinery
 						}
 						// POND_OUTLET_FIX_REJECTS_FRACTIONAL_ROOM: with exact-level water a pond short of a whole level takes what fits
 						int n = kind == RM_OutletKind.Blocked ? 0
-							: RM_MapComponent_Excavation.LevelExact && kind == RM_OutletKind.Body ? (int)RM_LiquidSpill.OutletRoomDl(ex, kind, cell, fluid, System.Math.Min(left, tank.storedUnits))
+							: kind == RM_OutletKind.Body ? (int)RM_LiquidSpill.OutletRoomDl(ex, kind, cell, fluid, System.Math.Min(left, tank.storedUnits))
 							: RM_LiquidNetKernel.DumpTake(left, tank.storedUnits, level, RM_LiquidSpill.WholeLevels(kind));
 						if (n <= 0)
 						{

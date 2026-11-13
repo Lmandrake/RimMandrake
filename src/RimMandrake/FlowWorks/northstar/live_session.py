@@ -456,7 +456,7 @@ class Session(object):
     def dig(self, c, n, fill=-1):
         """One excavation_drive; the reply is READ: a refused drive or a depth other than n (every staged cell starts at 0
         after clear_zone's ProofResetRect) marks the zone holding c not ready, so its rows read UNMEASURED/SITE."""
-        r = self.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setFill=fill)
+        r = self.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setBodyWaterM=(fill) * 0.5)
         bad = dig_miss(r, n) if not self.mock else None
         if not bad and fill >= 0 and not self.mock and r.get("fillSet") is False:     # dry where the row needs water
             bad = "fill %s not set (fillSet false)" % fill

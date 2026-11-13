@@ -74,7 +74,7 @@ def main():
         return 2
     pit = {P(x, z) for x in range(1, 5) for z in range(1, 4)}
     for c in sorted(pit):
-        B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=8, setFill=-1)
+        B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=8, setBodyWaterM=-1)
     jt = sp("ProofJetty", "%s;%s;steel;god" % (xz(P(0, 2)), xz(P(1, 2))))
     rails = sp("ProofRails", "%s;off" % xz(P(1, 2)))
     r = B.call("jawa/spawn_pawn", kindDef="Colonist", x=P(1, 2)[0], z=P(1, 2)[1], faction="player", count=1) or {}

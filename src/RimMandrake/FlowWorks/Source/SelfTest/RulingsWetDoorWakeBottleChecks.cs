@@ -36,12 +36,12 @@ namespace RimMandrake.FlowWorks.SelfTest
         {
             Case("Ruling18_flow_door_stands_on_a_wet_dug_cell_only", () =>
             {
-                Assert(RM_PitTrapMath.FlowDoorStandsOn(false, true, 2, 1), "a flow door on a dug cell holding liquid stands");
-                Assert(RM_PitTrapMath.FlowDoorStandsOn(false, true, 4, 4), "also a brim-full superdeep cut");
-                Assert(!RM_PitTrapMath.FlowDoorStandsOn(false, true, 0, 0), "can-fail: a natural lake (never dug) stays refused");
-                Assert(!RM_PitTrapMath.FlowDoorStandsOn(false, true, 0, 3), "can-fail: undug cell refused even if fill were reported");
-                Assert(!RM_PitTrapMath.FlowDoorStandsOn(false, false, 2, 1), "can-fail: any other building keeps vanilla's refusal");
-                Assert(RM_PitTrapMath.FlowDoorStandsOn(true, false, 0, 0), "vanilla's yes is never turned into a no");
+                Assert(RM_PitTrapMath.FlowDoorStandsOn(false, true, 2, true), "a flow door on a dug cell holding liquid stands");
+                Assert(RM_PitTrapMath.FlowDoorStandsOn(false, true, 4, true), "also a brim-full superdeep cut");
+                Assert(!RM_PitTrapMath.FlowDoorStandsOn(false, true, 0, false), "can-fail: a natural lake (never dug) stays refused");
+                Assert(!RM_PitTrapMath.FlowDoorStandsOn(false, true, 0, true), "can-fail: undug cell refused even if fill were reported");
+                Assert(!RM_PitTrapMath.FlowDoorStandsOn(false, false, 2, true), "can-fail: any other building keeps vanilla's refusal");
+                Assert(RM_PitTrapMath.FlowDoorStandsOn(true, false, 0, false), "vanilla's yes is never turned into a no");
             });
 
             Case("Ruling18_patch_reads_the_dug_grid_and_the_frame_seals_nothing", () =>

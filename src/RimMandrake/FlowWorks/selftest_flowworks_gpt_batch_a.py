@@ -31,11 +31,11 @@ CASES = [
     # ── DRILL_FILL_FIX_LOSES_FRACTIONAL_BRIM (FA_core_sim_1.2) ──
     Case("DRILL_FILL_FIX_LOSES_FRACTIONAL_BRIM", "the drill spends what landed", "Drilling/Building_LiquidDrill.cs",
          r"public override void TickRare\(\)",
-         [r"long beforeDl = excavation\.WaterDlAt \( outlet \) ; if \( excavation\.TrySetDriverFill \( outlet , fill \+ levels , canalFluid \) \)"
+         [r"long beforeDl = excavation\.WaterDlAt \( outlet \) ; if \( excavation\.TrySetDriverWaterDl \( outlet , beforeDl \+ addDl , canalFluid \) \)"
           r" \{ pendingUnits -= RM_DrillSurveyMath\.SpentUnits \( beforeDl , excavation\.WaterDlAt \( outlet \)"],
          ("pendingUnits -= RM_DrillSurveyMath.SpentUnits(beforeDl, excavation.WaterDlAt(outlet), RM_LevelSolve.U, unitPerLevel);",
-          "pendingUnits -= levels * unitPerLevel;"),
-         absent=[r"pendingUnits -= levels \* unitPerLevel"]),
+          "pendingUnits -= addDl * unitPerLevel / RM_LevelSolve.U;"),
+         absent=[r"pendingUnits -= addDl \* unitPerLevel"]),
 
     # ── UNLIMITED_SINK_FIX_FRACTIONAL_WATER (FA_core_sim_1.4) ──
     Case("UNLIMITED_SINK_FIX_FRACTIONAL_WATER", "the sink drains part-notch water", "MapControls/RM_FlowTaps.cs",

@@ -486,9 +486,9 @@ def maskswap_row(B, P, row, spawn, climb):
     pos = {}
     for k in range(MS_STEPS):
         if k % 2 == 0:
-            B.call("jawa/flowworks_excavation_drive", x=churn[0], z=churn[1], deepenLevels=4, setFill=-1)
+            B.call("jawa/flowworks_excavation_drive", x=churn[0], z=churn[1], deepenLevels=4, setBodyWaterM=-1)
         else:
-            B.call("jawa/flowworks_excavation_drive", x=churn[0], z=churn[1], deepenLevels=0, setFill=-1, fillInLevels=4)
+            B.call("jawa/flowworks_excavation_drive", x=churn[0], z=churn[1], deepenLevels=0, setBodyWaterM=-1, fillInLevels=4)
         if k % MS_ORDER_EVERY == 0:
             for pid in (west, east):
                 tgt = goals[pid][leg[pid] % 2]
@@ -507,7 +507,7 @@ def maskswap_row(B, P, row, spawn, climb):
             samples.append((k, pid, xz))
             if xz:
                 pos[pid] = xz
-    B.call("jawa/flowworks_excavation_drive", x=churn[0], z=churn[1], deepenLevels=0, setFill=-1, fillInLevels=4)
+    B.call("jawa/flowworks_excavation_drive", x=churn[0], z=churn[1], deepenLevels=0, setBodyWaterM=-1, fillInLevels=4)
     k1, t1 = climb("mask:%d,%d;2" % P(15, 8))
     st, det = maskswap_verdict(samples, rect, {inner}, {west, east}, (d0, k1.get("derives")), orders, sealed)
     row("CLIMB_maskswap_no_wall_crossing", st, "MOD", dict(det, mask=[tm, t1], pawns=dict(floor=inner, west=west, east=east),
@@ -581,7 +581,7 @@ def main():
     digs = []
 
     def dig(c, n):
-        r = B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setFill=-1) or {}
+        r = B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setBodyWaterM=-1) or {}
         digs.append((tuple(c), n, r))
         return r
 
@@ -716,7 +716,7 @@ def main():
         cn, tn = climb("cost:%d,%d;%d,%d;%s" % (P(28, 3) + P(27, 3) + (col_a,)))
         row("CLIMB_step_cost_slow_at_K", cost_verdict(cs, cf, cn), "MOD", {"txt": [ts, tf, tn]})
         # the grid follows a fill: raise B's middle-east wall cell from D 3 to D 1 -> 3 -> 1 -> 0 is a stair for a person
-        f1 = B.call("jawa/flowworks_excavation_drive", x=P(12, 3)[0], z=P(12, 3)[1], deepenLevels=0, setFill=-1, fillInLevels=2) or {}
+        f1 = B.call("jawa/flowworks_excavation_drive", x=P(12, 3)[0], z=P(12, 3)[1], deepenLevels=0, setBodyWaterM=-1, fillInLevels=2) or {}
         B.ticks(SETTLE)
         kv, txt = climb("%d,%d;2" % P(11, 3))
         if f1.get("success") is not True:     # a refused fill leaves the pocket: that is the drive, not the grid

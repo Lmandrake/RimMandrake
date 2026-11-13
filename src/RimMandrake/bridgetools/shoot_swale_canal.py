@@ -32,7 +32,7 @@ res = {"dry": 0, "half": 0, "full": 0}
 for x, z, i in cells:
     seg = "dry" if i < 10 else ("half" if i < 20 else "full")
     fill = {"dry": 0, "half": 1, "full": 2}[seg]
-    r = call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=2, setFill=fill)
+    r = call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=2, setBodyWaterM=(fill) * 0.5)
     if r.get("success"): res[seg] += 1
 print("dug:", res, "sample report:", json.dumps(call("jawa/canal_cell_report", x=X0 + 25, z=Z0 + 2))[:300])
 call("rimworld/step_game_ticks", ticks=60, timeoutMs=60000)

@@ -49,7 +49,7 @@ namespace RimMandrake.FlowWorks.MapControls
 					if (Open(ex, c) && ex.CanPourLevel(c, fluid))
 					{
 						candCells.Add(c);
-						candSurface.Add(ex.FillAt(c) - ex.DepthAt(c));
+						candSurface.Add((int)ex.SurfaceDlAt(c));   // surface vs brim, dL
 					}
 				}
 				int pick = RM_MapControlMath.PickPourTarget(candSurface);

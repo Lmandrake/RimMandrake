@@ -400,7 +400,7 @@ def main(argv=None):
             cells = dug = filled = refused = 0
             step = max(1, 12500 // w)
             for zz in range(z, z + h, step):
-                kv, txt = static("ProofStageBasin", "%d;%d;%d;%d;%d;%d;%s" % (x, zz, w, min(step, z + h - zz), LEVELS, fill, WATER_FLUID))
+                kv, txt = static("ProofStageBasin", "%d;%d;%d;%d;%d;%g;%s" % (x, zz, w, min(step, z + h - zz), LEVELS, fill * 0.5, WATER_FLUID))
                 if not kv:
                     staged.append({"basin": (x, z, w, h), "refused": txt[:200]})
                     break

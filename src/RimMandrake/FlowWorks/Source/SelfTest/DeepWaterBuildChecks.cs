@@ -43,13 +43,13 @@ namespace RimMandrake.FlowWorks.SelfTest
 
             Case("DeepWaterBuild_only_on_a_dug_cell_holding_liquid_and_only_with_the_setting_on", () =>
             {
-                Assert(RM_PitTrapMath.StandsInDugWater(false, true, true, 4, 4), "a wall on a brim-full superdeep cut (run8's refusal) stands");
-                Assert(RM_PitTrapMath.StandsInDugWater(false, true, true, 2, 1), "any depth of water");
-                Assert(!RM_PitTrapMath.StandsInDugWater(false, true, true, 0, 4), "can-fail: a natural lake/river/sea (never dug) stays refused");
-                Assert(!RM_PitTrapMath.StandsInDugWater(false, true, true, 3, 0), "can-fail: a dry cut is vanilla's (its channel floor) call");
-                Assert(!RM_PitTrapMath.StandsInDugWater(false, true, false, 4, 4), "can-fail: a bed in a flooded cut stays refused");
-                Assert(!RM_PitTrapMath.StandsInDugWater(false, false, true, 4, 4), "can-fail: the setting off restores vanilla");
-                Assert(RM_PitTrapMath.StandsInDugWater(true, false, false, 0, 0), "vanilla's yes is never turned into a no");
+                Assert(RM_PitTrapMath.StandsInDugWater(false, true, true, 4, true), "a wall on a brim-full superdeep cut (run8's refusal) stands");
+                Assert(RM_PitTrapMath.StandsInDugWater(false, true, true, 2, true), "any depth of water");
+                Assert(!RM_PitTrapMath.StandsInDugWater(false, true, true, 0, true), "can-fail: a natural lake/river/sea (never dug) stays refused");
+                Assert(!RM_PitTrapMath.StandsInDugWater(false, true, true, 3, false), "can-fail: a dry cut is vanilla's (its channel floor) call");
+                Assert(!RM_PitTrapMath.StandsInDugWater(false, true, false, 4, true), "can-fail: a bed in a flooded cut stays refused");
+                Assert(!RM_PitTrapMath.StandsInDugWater(false, false, true, 4, true), "can-fail: the setting off restores vanilla");
+                Assert(RM_PitTrapMath.StandsInDugWater(true, false, false, 0, false), "vanilla's yes is never turned into a no");
             });
 
             Case("TowerSupply_run8_full_stack_sinks_the_capped_load_floats", () =>
@@ -113,8 +113,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string patch = Between(doors, "[HarmonyPatch(typeof(GenConstruct), nameof(GenConstruct.CanBuildOnTerrain))]", "public static class RM_FlowDoorRules");
                 Assert(patch.Contains("if (__result ||"), "early-out on every call vanilla already allows");
                 Assert(patch.Contains("RimMandrakeFlowWorksSettings.buildInDugWaterEnabled && StandsInWater(td)"), "the setting gates the new set");
-                Assert(patch.Contains("RM_PitTrapMath.StandsInDugWater(false, true, true, dug, fill)"), "the selftested verdict decides");
-                Assert(patch.Contains("int dug = eng.ExcavatedDepthAt(cell), fill = eng.FillAt(cell);") && !patch.Contains("eng.DepthAt("),
+                Assert(patch.Contains("RM_PitTrapMath.StandsInDugWater(false, true, true, dug, wet)"), "the selftested verdict decides");
+                Assert(patch.Contains("int dug = eng.ExcavatedDepthAt(cell);") && patch.Contains("bool wet = eng.WetAt(cell);") && !patch.Contains("eng.DepthAt("),
                     "can-fail: the DUG depth, never DepthAt (which reads a natural lake as superdeep)");
                 Assert(patch.Contains("HasTerrainOrder(cell, map, thingToIgnore)"), "a floor order under the cell keeps vanilla's refusal");
                 Assert(patch.Contains("Thing thingToIgnore, ThingDef stuffDef)") && patch.Contains("td.GetTerrainAffordanceNeed(stuffDef)")

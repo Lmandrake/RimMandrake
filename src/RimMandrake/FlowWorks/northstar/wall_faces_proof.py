@@ -6,7 +6,7 @@ only the game shows the DLL it actually loaded drawing the engine's own staged d
 arrays and FootDarkness saturate at D4 = 2 m) reads FAIL here while the SelfTest on the new source is green.
 
 What it reads (every number comes from the running game):
-  staging   RM_NorthstarProofs.ProofStageBasin "x;z;3;3;levels;fill;RM_Fluid_Water" (the engine's Deepen + TrySetDriverFill).
+  staging   RM_NorthstarProofs.ProofStageBasin "x;z;3;3;levels;waterM;RM_Fluid_Water" (the engine's Deepen + TrySetDriverWaterDl).
   depths    RM_WaterLookProofs.ProofWaterLook "x,z" -> hollow (notches) and waterM of a pit's north-west corner square and of
             its dry north neighbour (hollow 0: the full wall).
   faces     jawa/static_call RimMandrake.FlowWorks.RM_WallFaceMath ExposedDrop(hollow, northHollow, fillNotches) then
@@ -216,7 +216,7 @@ def main(argv=None):
         for plot, (dx, levels, fill, _e) in PITS.items():
             x, z = P(dx, 0)
             r = B.call("jawa/static_call", type=NPROOF, method="ProofStageBasin",
-                       args="%d;%d;3;3;%d;%d;%s" % (x, z, levels, fill, WATER_FLUID), _answer=True) or {}
+                       args="%d;%d;3;3;%d;%g;%s" % (x, z, levels, fill * 0.5, WATER_FLUID), _answer=True) or {}
             staged[plot] = parse(r.get("result") or "")
         r = B.call("rimworld/step_game_ticks", ticks=2, pauseFirst=True, timeoutMs=60000) or {}
     res["staged"] = staged
@@ -303,7 +303,8 @@ class FakeBridge(object):
 
     def stage(self, arg):
         x, z, w, h, levels, fill, _fl = arg.split(";")
-        x, z, w, h, levels, fill = (int(v) for v in (x, z, w, h, levels, fill))
+        x, z, w, h, levels = (int(v) for v in (x, z, w, h, levels))
+        fill = int(round(float(fill) * 2))   # the stager takes metres; this model counts notches
         depth = levels - 1 if "no_dig" in self.f and levels == 5 and fill == 0 else levels
         for i in range(w):
             for j in range(h):

@@ -182,7 +182,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 		private int SourceTake(RM_MapComponent_Excavation ex, IntVec3 c)
 		{
 			int units = RM_PumpMath.TankUnitsPerLevel;
-			return RM_PumpMath.SourceTakeUnits(units, ex.Stock.SupplyDl(Map, c, units, ex), RM_MapComponent_Excavation.LevelExact);
+			return RM_PumpMath.SourceTakeUnits(units, ex.Stock.SupplyDl(Map, c, units, ex), true);
 		}
 
 		/// <summary>PUMP_SOURCE_FIX_REJECTS_PARTIAL_DRAW: the decilitres a draw from <paramref name="s"/> moves into the net's tanks
@@ -197,7 +197,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 			}
 			int units = RM_PumpMath.TankUnitsPerLevel;
 			int give = s.channel ? RM_PumpMath.ChannelTakeUnits(units, ex.WaterDlAt(s.cell)) : SourceTake(ex, s.cell);
-			return RM_PumpMath.TankTakeUnits(give, Machinery.RM_LiquidNet.Room(this, l), s.channel || RM_MapComponent_Excavation.LevelExact);
+			return RM_PumpMath.TankTakeUnits(give, Machinery.RM_LiquidNet.Room(this, l), true);
 		}
 
 		/// <summary>Sources in order (rev 2 §3.3): the pump's own reach, then the source cell under or beside every Intake end on its
@@ -295,7 +295,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 		{
 			int units = RM_PumpMath.TankUnitsPerLevel;
 			long available = source.channel ? ex.WaterDlAt(source.cell) : ex.Stock.SupplyDl(Map, source.cell, units, ex);
-			return RM_PumpMath.SourceTakeUnits(units, available, RM_MapComponent_Excavation.LevelExact);
+			return RM_PumpMath.SourceTakeUnits(units, available, true);
 		}
 
 		private string TryDraw()
@@ -343,11 +343,11 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 					// PUMP_CANAL_FEED_FIX_ONE_NOTCH_ONLY: the move is in DECILITRES (tank units): up to one level, what the source
 					// holds and what the outlet takes. A canal holding a sheet has no whole notch in any one square, so the old
 					// whole-level move stopped after the first level (live S3/S5.G, 1,000 L); it now runs until the canal is
-					// brim-full or the source is dry. Whole-notch water (exact-level off) still moves whole levels only.
+					// brim-full or the source is dry.
 					long avail = OutflowGive(ex, s);
 					long room = fillHoses ? units : RM_LiquidSpill.OutletRoomDl(ex, kind, dest, f, units);
 					int amt = (int)System.Math.Min(units, System.Math.Min(avail, room));
-					if (amt <= 0 || (!RM_MapComponent_Excavation.LevelExact && amt < units))
+					if (amt <= 0)
 					{
 						usedOutflows.Add(oi);   // source is eligible; this end has too little room this cycle
 						continue;
@@ -528,7 +528,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 					continue;
 				}
 				cells.Add(c);
-				cd.Add((ex.DepthAt(c) - ex.FillAt(c), ex.FillAt(c) > 0, ex.FluidAt(c)));
+				cd.Add(((int)ex.RoomDlAt(c), ex.WaterDlAt(c) > 0, ex.FluidAt(c)));   // room in dL; wet = any liquid (fluids never mix)
 			}
 			if (!RM_PumpMath.PickPour(tk, cd, out int ti, out int ci))
 			{
@@ -582,7 +582,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 			LiquidDef poured = tank.storedLiquid;   // captured BEFORE the removal: an emptied tank clears storedLiquid
 			IntVec3 cell = cells[ci];
 			// L1 (§4): the tank leg is removed first and put back if the cell refuses (TryPourLevel, never undone, runs last)
-			RM_TransferLeg world = RM_TransferLeg.World(k => ex.IsExcavated(cell) && ex.FillAt(cell) < ex.DepthAt(cell), k => ex.TryPourLevel(cell, fluid));
+			RM_TransferLeg world = RM_TransferLeg.World(k => ex.IsExcavated(cell) && ex.RoomDlAt(cell) > 0, k => ex.TryPourLevel(cell, fluid));
 			if (RM_LiquidTransfer.Move(units, RM_TransferLeg.Store(k => tank.CanProvide(k), k => tank.TryRemoveLiquid(k), k => tank.TryAddLiquid(poured, k)), world, out RM_MoveOutcome mv) != units)
 			{
 				return mv.DestRefused ? "RMFlow_PumpForeign".Translate() : "RMFlow_PumpTankEmpty".Translate();

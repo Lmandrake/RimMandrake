@@ -16,7 +16,7 @@ a 4-wide x 3-tall pit at plot offset (1,1), and one colonist standing in the mid
 Ops vocabulary (all existing tools, plus RM_PitScorchProof added with this pass):
   jawa/set_terrain_batch  ops="Def:x,z,w,h"
   jawa/flowworks_excavation_drive  x,z,deepenLevels,setFill(-1 = leave),fillInLevels
-  jawa/static_call  type=RimMandrake.FlowWorks.RM_FluidIdentityProof method=ProofFillWithFluid args="x,z,fill,FluidDef"
+  jawa/static_call  type=RimMandrake.FlowWorks.RM_FluidIdentityProof method=ProofFillWithFluid args="x,z,waterM,FluidDef"
   jawa/static_call  type=RimMandrake.FlowWorks.RM_PitScorchProof     method=ProofScorch        args="x0,z0,x1,z1"
   jawa/spawn_pawn   kindDef, x, z, faction
 State reads for verification (no screenshot hunt): RM_PitScorchProof.ProofScorchAt "x,z",
@@ -125,13 +125,13 @@ def station_ops(station, base_x, base_z):
     for x in range(px, px + p["w"]):
         for z in range(pz, pz + p["h"]):
             ops.append(("jawa/flowworks_excavation_drive",
-                        {"x": x, "z": z, "deepenLevels": p["depth"], "setFill": -1, "fillInLevels": 0}))
+                        {"x": x, "z": z, "deepenLevels": p["depth"], "setBodyWaterM": -1, "fillInLevels": 0}))
     if s["fluid"]:
         for x in range(px, px + p["w"]):
             for z in range(pz, pz + p["h"]):
                 ops.append(("jawa/static_call", {"type": "RimMandrake.FlowWorks.RM_FluidIdentityProof",
                                                  "method": "ProofFillWithFluid",
-                                                 "args": "%d,%d,%d,%s" % (x, z, s["fill_level"], s["fluid"])}))
+                                                 "args": "%d,%d,%g,%s" % (x, z, s["fill_level"] * 0.5, s["fluid"])}))
     if s["scorched"]:
         ops.append(("jawa/static_call", {"type": "RimMandrake.FlowWorks.RM_PitScorchProof", "method": "ProofScorch",
                                          "args": "%d,%d,%d,%d" % (px, pz, px + p["w"] - 1, pz + p["h"] - 1)}))

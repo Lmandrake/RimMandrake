@@ -181,7 +181,7 @@ def main():
         if not a.from_surface:
             for dx in range(-half, half + 1):
                 for dz in range(-half, half + 1):
-                    drive = B.call("jawa/flowworks_excavation_drive", x=c[0] + dx, z=c[1] + dz, deepenLevels=3, setFill=-1) or {}
+                    drive = B.call("jawa/flowworks_excavation_drive", x=c[0] + dx, z=c[1] + dz, deepenLevels=3, setBodyWaterM=-1) or {}
         r_things = half + 8
         for p in (B.call("jawa/list_pawns", limit=400) or {}).get("pawns") or []:
             if not p.get("dead") and p.get("isPlayer"):
@@ -208,7 +208,7 @@ def main():
 
         def depth(at=None):
             at = at or c
-            return (B.call("jawa/flowworks_excavation_drive", x=at[0], z=at[1], deepenLevels=0, setFill=-1) or {}).get("depth")
+            return (B.call("jawa/flowworks_excavation_drive", x=at[0], z=at[1], deepenLevels=0, setBodyWaterM=-1) or {}).get("depth")
         r0 = report("report")
         t0, l0, d0 = things(), letters(), depth()
         if d0 != (0 if a.from_surface else 3):

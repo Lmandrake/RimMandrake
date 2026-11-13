@@ -17,7 +17,7 @@ call("jawa/set_terrain_batch", ops="Soil:%d,%d,%d,%d" % site)
 call("jawa/set_roof_batch", ops="None:%d,%d,%d,%d" % site)
 call("jawa/set_terrain_batch", ops="WaterShallow:%d,%d,2,2" % (X, Z))
 call("jawa/flowworks_body_report", x=X, z=Z, classify=True)
-for c in CH: call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=3, setFill=-1)
+for c in CH: call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=3, setBodyWaterM=-1)
 def chan():
     r = call("jawa/flowworks_excavation_rect", x=X - 6, z=Z, w=6, h=1, onlyNonZero=False)
     return [q["f"] for q in r.get("rows") or []]
@@ -32,7 +32,7 @@ def need(what, r):
     return r
 ok = False
 try:
-    need("standing fill F=2", call("jawa/flowworks_excavation_drive", x=CH[-1][0], z=CH[-1][1], deepenLevels=0, setFill=2))
+    need("standing fill F=2", call("jawa/flowworks_excavation_drive", x=CH[-1][0], z=CH[-1][1], deepenLevels=0, setBodyWaterM=1.0))
     need("rainFillsExcavationsEnabled", sset("rainFillsExcavationsEnabled", True))
     need("rainFillPerPulse", sset("rainFillPerPulse", 1.0))
     need("weather Rain", call("jawa/weather_set", weather="Rain", lockWeather=True))

@@ -70,7 +70,7 @@ namespace RimMandrake.FlowWorks
 			float sink = RM_Patch_PitDepthDrawOffset.SinkOf(pawn, draw);
 			float wall = RM_PitDrawMath.WallOverHeadRatio(depth, RimMandrakeFlowWorksSettings.pitSinkPerLevel,
 				RM_PitDrawMath.HumanlikeFeetToHeadTop);
-			return "SINK id=" + pawnId + " cell=" + c.x + "," + c.z + " depth=" + depth + " fill=" + ex.FillAt(c)
+			return "SINK id=" + pawnId + " cell=" + c.x + "," + c.z + " depth=" + depth + " waterDl=" + ex.WaterDlAt(c)
 				+ " fluid=" + (ex.FluidAt(c)?.defName ?? "none") + " sink=" + F(sink) + " drawDz=" + F(dz)
 				+ " moving=" + (pawn.pather != null && pawn.pather.Moving) + " wallOverHead=" + F(wall)
 				+ " enabled=" + RimMandrakeFlowWorksSettings.pitDepthDrawOffsetEnabled;
@@ -400,7 +400,7 @@ namespace RimMandrake.FlowWorks
 						continue;
 					}
 					sb.Append(c.x).Append(',').Append(c.z).Append(':').Append(ex.ExcavatedDepthAt(c)).Append('/')
-						.Append(ex.FillAt(c)).Append('/').Append(ex.FluidAt(c)?.defName ?? "none").Append('/')
+						.Append(ex.WaterDlAt(c)).Append('/').Append(ex.FluidAt(c)?.defName ?? "none").Append('/')
 						.Append(c.GetTerrain(map)?.defName ?? "null").Append(';');
 				}
 			}

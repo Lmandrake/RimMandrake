@@ -24,7 +24,7 @@ print("water", call("jawa/set_terrain_batch", ops=";".join("WaterShallow:%d,%d,1
 br = call("jawa/flowworks_body_report", x=X, z=Z, classify=True)
 print("body", json.dumps(br.get("body"))[:400])
 for c in CH:
-    call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=9, setFill=-1)
+    call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=9, setBodyWaterM=-1)
 def wet():
     r = call("jawa/flowworks_excavation_rect", x=X, z=Z, w=7, h=3, onlyNonZero=False)
     m = {(q["x"], q["z"]): q for q in r.get("rows") or []}

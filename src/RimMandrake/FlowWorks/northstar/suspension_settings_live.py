@@ -137,7 +137,7 @@ def main():
             row("SB_settings_off_never_breaks", "UNMEASURED", "SITE", {"why": "site not prepared", "site": site_rows[:2]})
             return 2
         for i in range(1, 7):
-            B.call("jawa/flowworks_excavation_drive", x=P(i, 0)[0], z=P(i, 0)[1], deepenLevels=8, setFill=-1)
+            B.call("jawa/flowworks_excavation_drive", x=P(i, 0)[0], z=P(i, 0)[1], deepenLevels=8, setBodyWaterM=-1)
         sset("suspensionWeightCollapse", False)
         kb, tb = proof("ProofBuild", "%s;%s;timber;god" % (xz(P(0, 0)), xz(P(7, 0))))
         if kb.get("ok") != "True":

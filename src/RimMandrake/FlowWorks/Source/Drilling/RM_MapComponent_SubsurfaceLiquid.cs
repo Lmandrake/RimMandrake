@@ -25,7 +25,7 @@ namespace RimMandrake.FlowWorks.Drilling
 	/// reserve this component owns is spent directly into an adjacent
 	/// excavated cell by <see cref="Building_LiquidDrill"/>, through the
 	/// same public driver API a flood client uses
-	/// (RM_MapComponent_Excavation.TrySetDriverFill), never through
+	/// (RM_MapComponent_Excavation.TrySetDriverWaterDl), never through
 	/// RM_LiquidStock.
 	///
 	/// MapComponent subclasses are auto-instantiated per map by

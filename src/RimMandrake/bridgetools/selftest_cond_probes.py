@@ -168,7 +168,7 @@ class FakeBridge(object):
                         rows.append(r)
             return {"success": True, "rows": rows, "ticksGame": w.tick}
         if tool == "jawa/flowworks_excavation_drive":
-            w.staged[(p["x"], p["z"])] = (p["deepenLevels"], min(p["setFill"], p["deepenLevels"]))
+            w.staged[(p["x"], p["z"])] = (p["deepenLevels"], min(int(round(float(p["setBodyWaterM"]) * 2)) if float(p["setBodyWaterM"]) >= 0 else -1, p["deepenLevels"]))
             return {"success": True, "ticksGame": w.tick}
         if tool == "jawa/glow_at":
             cells = [tuple(int(v) for v in c.split(",")) for c in p["cells"].split(";")]

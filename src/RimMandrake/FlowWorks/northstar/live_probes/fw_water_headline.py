@@ -100,7 +100,7 @@ res["terrain_before"] = call("jawa/get_terrain_batch", rects="%d,%d,%d,%d" % SCE
 # ---- dig the trench
 dig_bad = []
 for c in TRENCH:
-    dr = call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=1, setFill=-1)
+    dr = call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=1, setBodyWaterM=-1)
     if not (dr or {}).get("success"):
         dig_bad.append((c, dr))
 res["dig_refused"] = dig_bad

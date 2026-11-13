@@ -231,7 +231,7 @@ def main(argv=None):
         return (B.call("jawa/mod_settings_field", typeName=S_FW, action="get", field=f) or {}).get("value")
 
     def dig(c, n=DEEP):
-        return B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setFill=-1) or {}
+        return B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setBodyWaterM=-1) or {}
 
     def walls(cells):
         if cells:

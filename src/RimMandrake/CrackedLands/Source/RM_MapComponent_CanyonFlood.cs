@@ -543,7 +543,7 @@ namespace RimMandrake.CrackedLands
 
             ledger.Begin(cells.ConvertAll(KeyOf),
                 k => excavation != null && excavation.IsExcavated(Cell(k)),
-                k => excavation.FillAt(Cell(k)),
+                k => (int)excavation.WaterDlAt(Cell(k)),   // the prior water, decilitres
                 k => excavation.TryFloodDriverCell(Cell(k)));
             for (int i = 0; i < ledger.Active.Count; i++)
             {
@@ -630,7 +630,7 @@ namespace RimMandrake.CrackedLands
             ledger.Recede(k => Cell(k).InBounds(map),
                 k => map.terrainGrid.TerrainAt(Cell(k)) == floodTerrain,
                 k => map.terrainGrid.SetTerrain(Cell(k), soilTerrain),
-                (k, prior) => excavation?.TrySetDriverFillOutcome(Cell(k), prior));
+                (k, prior) => excavation?.TrySetDriverWaterDlOutcome(Cell(k), prior));
 
             roar?.End();
             roar = null;

@@ -176,7 +176,7 @@ def run_escape(a, B, V, res, row, all_rows, step, P):
     """The escape scene (module docstring, --scene escape); the plot is already reset and prepared."""
     pit = {P(x, z) for x in range(6, 9) for z in range(4, 7)}
     for c in sorted(pit):
-        B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=4, setFill=-1)
+        B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=4, setBodyWaterM=-1)
     foot, start = P(6, 5), P(8, 5)
     lad = B.call("jawa/spawn_batch", ops="RM_Ladder:%d,%d" % foot) or {}
     step(60)
@@ -303,7 +303,7 @@ def main(argv=None, bridge=None, validation=None):
         return rc
     pit = {P(x, z) for x in range(6, 9) for z in range(4, 7)}
     for c in sorted(pit):
-        B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=4, setFill=-1)
+        B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=4, setBodyWaterM=-1)
     for p in (B.call("jawa/list_pawns", limit=400) or {}).get("pawns") or []:
         if not p.get("dead") and p.get("isPlayer"):
             B.call("jawa/pawn_force_incapacitate", pawn=p.get("id"), action="vanish")

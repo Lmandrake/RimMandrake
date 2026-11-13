@@ -394,11 +394,8 @@ namespace RimMandrake.FlowWorks
         // field like this, not 0, deep, 0"). Needs levelBySurfaceEnabled. On: each wet region is solved to its flat level
         // (RM_FlowKernel.LevelSetWetRegions). Off: the one-unit-at-a-time levelling, which stripes wide fields 0,1,0,1.
         public static bool levelSetEnabled = true;
-        // WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES (owner 2026-10-17: "We need VERY smooth water. That's water's one primary
-        // characteristic: a level surface."; ruled exactly level by card). On: every dug square holds its water in decilitres
-        // and each connected body (canal, pit, pond, or joined) stands at ONE surface (RM_FlowKernel.ResolveExact,
-        // RM_LevelSolve); looks follow the true metres of water. Off: whole half-metre notches (the engines above).
-        public static bool levelExactEnabled = true;
+        // levelExactEnabled is gone (RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES, owner card 2026-11-13 "Delete it"):
+        // water is always exact decilitres, one surface per connected body (RM_FlowKernel.ResolveExact, RM_LevelSolve).
 
         // ══════════════════════════════════════════════════════════════════
         // LIQUID_BOTTLE_LOOP_1 — FILL / USE / DIRTY / WASH.
@@ -724,7 +721,6 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref waterFrontCreepEnabled, "waterFrontCreepEnabled", true);
             Scribe_Values.Look(ref levelBySurfaceEnabled, "levelBySurfaceEnabled", true);
             Scribe_Values.Look(ref levelSetEnabled, "levelSetEnabled", true);
-            Scribe_Values.Look(ref levelExactEnabled, "levelExactEnabled", true);
             // ── LIQUID_BOTTLE_LOOP_1 (see the block above; kept contiguous) ─
             Scribe_Values.Look(ref bottleLoopEnabled, "bottleLoopEnabled", true);
             Scribe_Values.Look(ref bottleDirtyStageEnabled, "bottleDirtyStageEnabled", true);
@@ -1155,7 +1151,7 @@ namespace RimMandrake.FlowWorks
 
             }
 
-            if (Section(list, "Water engine: flow and levelling", new[] { "depthEngineEnabled", "pulseIntervalTicks", "flowPerPulse", "maxNetworkCells", "networkSeamsMoveEnabled", "viscosityEnabled", "thickCreepEnabled", "waterFrontCreepEnabled", "levelBySurfaceEnabled", "levelExactEnabled", "levelSetEnabled", "disabledFluids" }))
+            if (Section(list, "Water engine: flow and levelling", new[] { "depthEngineEnabled", "pulseIntervalTicks", "flowPerPulse", "maxNetworkCells", "networkSeamsMoveEnabled", "viscosityEnabled", "thickCreepEnabled", "waterFrontCreepEnabled", "levelBySurfaceEnabled", "levelSetEnabled", "disabledFluids" }))
             {
             list.CheckboxLabeled("Depth engine", ref depthEngineEnabled,
                 "The depth/fill engine: liquid pours into the deepest excavated squares first "
@@ -1239,11 +1235,6 @@ namespace RimMandrake.FlowWorks
               + "each square was dug to, so a channel settles to within one level everywhere and a draining channel "
               + "empties instead of leaving deep puddles. Off: water only runs into a deeper square or out of a "
               + "brim-full one, so partly filled squares of equal depth never even out.");
-            list.CheckboxLabeled("Water stands exactly level", ref levelExactEnabled,
-                "On: water is kept to the litre, and every connected body of water - a pit, a pond, or all of them "
-              + "joined - stands at one flat surface, so a little water spreads as a thin sheet (24 cm in every square of a "
-              + "canal) instead of whole half-metre steps. Its look follows how deep the water really is. Off: water moves in "
-              + "half-metre steps (\"Water levels out by its surface\" above and the setting below).");
             if (levelBySurfaceEnabled)
             {
                 list.CheckboxLabeled("  Water settles to one flat level", ref levelSetEnabled,

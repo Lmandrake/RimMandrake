@@ -172,7 +172,7 @@ def run(out):
         call('jawa/set_terrain_batch', ops='Soil:' + RECT)
         call('jawa/set_fog', action='unfog', rect=RECT)
         for cell in ((38,36), (40,41), (52,40)):
-            call('jawa/flowworks_excavation_drive', x=cell[0], z=cell[1], deepenLevels=4, setFill=0)
+            call('jawa/flowworks_excavation_drive', x=cell[0], z=cell[1], deepenLevels=4, setBodyWaterM=0.0)
         build = call('jawa/build_batch', ops='RM_LiquidTank:38,38;RM_LiquidPump:38,37;RM_LiquidPump:37,38;RM_LiquidPump:40,40;RM_HoseReel:41,41,1', faction='player', wipeExisting=False)
         require(build.get('survived') == 5, 'fixture cardinality')
         call('jawa/map_commit')

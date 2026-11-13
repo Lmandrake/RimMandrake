@@ -97,7 +97,7 @@ def main():
         return [str(x.get("label") or x.get("title") or x)[:80] for x in lt.get("letters") or []]
 
     def depth():
-        return (B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=0, setFill=-1) or {}).get("depth")
+        return (B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=0, setBodyWaterM=-1) or {}).get("depth")
     r0 = (B.call("jawa/static_call", type=DPROOF, method="ProofReport", args="force", _answer=True) or {}).get("result")
     t0, l0, d0 = things(), letters(), depth()
     if d0 is None:      # `depth() not in (None, d0)` below would call any later read a cut

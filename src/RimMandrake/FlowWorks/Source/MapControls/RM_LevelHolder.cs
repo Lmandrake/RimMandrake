@@ -136,7 +136,7 @@ namespace RimMandrake.FlowWorks.MapControls
 					if (need > 0 && ex.CanPourLevel(c, fluid))
 					{
 						candCells.Add(c);
-						candVals.Add(ex.FillAt(c) - ex.DepthAt(c));
+						candVals.Add((int)ex.SurfaceDlAt(c));   // surface vs brim, dL
 					}
 					else if (need < 0 && ex.WaterDlAt(c) > 0 && Mine(ex, c))
 					{

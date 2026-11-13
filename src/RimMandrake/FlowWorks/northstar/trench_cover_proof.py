@@ -179,7 +179,7 @@ def run(B, V, a, out, stamp=None):
         return B.call("jawa/mod_settings_field", typeName=S_FW, action="set", field=f, value=str(v)) or {"success": False}
 
     def dig(c, n, fill=-1):
-        return B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setFill=fill) or {}
+        return B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setBodyWaterM=(fill) * 0.5) or {}
 
     def spawn(kind, c):
         r = B.call("jawa/spawn_pawn", kindDef=kind, x=c[0], z=c[1], faction="player", count=1) or {}

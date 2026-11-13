@@ -121,7 +121,7 @@ namespace RimMandrake.FlowWorks
 			}
 			RM_MapComponent_Excavation engine = map.GetComponent<RM_MapComponent_Excavation>();
 			FluidDef fluid = engine?.FluidAt(cell);
-			if (engine != null && engine.FillAt(cell) > 0 && fluid != null)
+			if (engine != null && engine.WetAt(cell) && fluid != null)
 			{
 				return fluid.defName == "RM_Fluid_Water";
 			}

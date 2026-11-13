@@ -333,7 +333,7 @@ namespace RimMandrake.FlowWorks.Pits
 			{
 				return 0;
 			}
-			return ex.FillAt(c) == 0 ? ex.ExcavatedDepthAt(c) : -1;
+			return !ex.WetAt(c) ? ex.ExcavatedDepthAt(c) : -1;
 		}
 
 		/// <summary>What one dragged square is for a surface bridge (the posts build's reading).</summary>
@@ -365,7 +365,7 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 			if (ex != null && ex.ExcavatedDepthAt(c) > 0)
 			{
-				bool dryClear = ex.FillAt(c) == 0 && c.Standable(map);
+				bool dryClear = !ex.WetAt(c) && c.Standable(map);
 				return RM_SuspensionMath.GroundFor(ex.ExcavatedDepthAt(c), deckNotches, dryClear);
 			}
 			if (deckNotches > 0)

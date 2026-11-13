@@ -1001,7 +1001,7 @@ namespace RimMandrake.FlowWorks.Hose
             string levelLine = Machinery.RM_Levelling.Readout(parent.Map, this);
             // just loaded or just re-plumbed: no levelling cycle has seen this network yet, so there is no state to report
             if (levelLine.Length == 0 && relay == null && freeEndRole != Machinery.RM_FreeEndRole.Capped && RM_HoseSettings.enabled
-                && RM_HoseSettings.gravityLevellingEnabled && RM_MapComponent_Excavation.LevelExact && !Machinery.RM_Levelling.SeenTopology(parent.Map))
+                && RM_HoseSettings.gravityLevellingEnabled && !Machinery.RM_Levelling.SeenTopology(parent.Map))
                 levelLine = "\nLevelling: checked on the next cycle.";
             endLine += levelLine;
             return conn + "\nHose laid" + to + len + " (" + sm.State.ToString().ToLower() + ")." + CrossingLines() + endLine + order;

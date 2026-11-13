@@ -198,7 +198,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             {
                 // DUG_WATER_FILL_FIX_NO_CANAL_DEBIT: a dug cell is on no natural body (BodyAt is null), so TryDebit paid for
                 // free; the liquid comes out of the canal cell itself.
-                long dl = RM_ContainerMaterialMath.DugCellDebitDl(units, ex.WaterDlAt(c), RM_MapComponent_Excavation.LevelExact, RM_LevelSolve.U);
+                long dl = RM_ContainerMaterialMath.DugCellDebitDl(units, ex.WaterDlAt(c), true, RM_LevelSolve.U);
                 return dl >= 0 && (dl == 0 || ex.TryTakeDl(c, dl, out _) == dl);
             }
             FluidDef fluid = ex.Stock.BodyAt(map, c, ex)?.fluid ?? ex.ActiveFluid;
@@ -218,7 +218,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             }
             if (ex.IsExcavated(c))
             {
-                return RM_ContainerMaterialMath.DugCellDebitDl(units, ex.WaterDlAt(c), RM_MapComponent_Excavation.LevelExact, RM_LevelSolve.U) >= 0;
+                return RM_ContainerMaterialMath.DugCellDebitDl(units, ex.WaterDlAt(c), true, RM_LevelSolve.U) >= 0;
             }
             if (!RimMandrakeFlowWorksSettings.sourceBudgetEnabled)
             {
@@ -358,7 +358,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 // than one container is no source; walking a pawn to it failed the fill and the next scan picked it again.
                 if (ex != null && ex.IsExcavated(c) && RM_ContainerMaterialMath.DugCellDebitDl(
                         container != null ? RM_ContainerMaterials.UnitsIn(container, candidate, size) : candidate.UnitsFor(size),
-                        ex.WaterDlAt(c), RM_MapComponent_Excavation.LevelExact, RM_LevelSolve.U) < 0)
+                        ex.WaterDlAt(c), true, RM_LevelSolve.U) < 0)
                 {
                     continue;
                 }

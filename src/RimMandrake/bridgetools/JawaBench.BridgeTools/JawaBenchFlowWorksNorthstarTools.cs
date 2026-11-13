@@ -12,7 +12,7 @@
 // register on a mod list WITHOUT FlowWorks, so every resolve failure is a loud Fail
 // naming what was missing. EVERY member read from src/RimMandrake/FlowWorks/Source:
 //   RM_MapComponent_Excavation: private activeFluid / nextPulseTick / rainAccumulator /
-//     fillGrid; public Stock, ActiveFluid (lazy getter defaults to water - so the RAW
+//     WaterDlAt; public Stock, ActiveFluid (lazy getter defaults to water - so the RAW
 //     field is read, never the getter), ExcavatedCellCount, SuperdeepCellCount,
 //     SinkTransferredTotal, OverflowDestroyedTotal.
 //   RM_LiquidStock: public Bodies, BodyAt(Map, IntVec3, RM_MapComponent_Excavation).
@@ -300,12 +300,13 @@ namespace JawaBench.BridgeTools
 
                 var missing = new List<string>();
                 IList bodies = FwBodies(comp, type, missing, out _);
-                byte[] fillGrid = FwField(type, comp, "fillGrid", missing) as byte[];
+                MethodInfo wdlAt = type.GetMethod("WaterDlAt", BindingFlags.Public | BindingFlags.Instance, null, new[] { typeof(IntVec3) }, null);
+                if (wdlAt == null) missing.Add("RM_MapComponent_Excavation.WaterDlAt(IntVec3)");
                 FwActiveFluid(type, comp, missing, out string rawBefore, out _);
-                if (missing.Count > 0 || fillGrid == null)
+                if (missing.Count > 0)
                     return Fail("FlowWorks members not found by reflection: " + string.Join(", ", missing));
                 int filled = 0;
-                for (int i = 0; i < fillGrid.Length; i++) if (fillGrid[i] > 0) filled++;
+                foreach (IntVec3 wc in map.AllCells) if ((long)wdlAt.Invoke(comp, new object[] { wc }) > 0) filled++;
                 int classifiedCount = bodies.Count;
 
                 if (!allowAfterClassification && (classifiedCount > 0 || filled > 0))

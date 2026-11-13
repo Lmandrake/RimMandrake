@@ -1118,7 +1118,7 @@ namespace RimMandrake.FlowWorks
 			// WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES (owner 2026-10-17, ruled exactly level): the pond's ONE exact surface from
 			// its decilitres; every square shows the look for its own true metres of water (a flat 3x3 pond holding 26,000 L is
 			// nine squares at 1.44 m, never 8 at 1.5 m and 1 at 1 m). Off: the whole-notch drawdown and its one part-level patch.
-			bool exact = RimMandrakeFlowWorksSettings.levelExactEnabled;
+			bool exact = true;
 			double surface = exact ? RM_LevelSolve.PondSurfaceHeight(h, LevelStockDl(body, owner)) : 0.0;
 			int s = 0, r = 0;
 			HashSet<int> patch = null;

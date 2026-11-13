@@ -85,7 +85,7 @@ namespace RimMandrake.FlowWorks
 					return;
 				}
 			}
-			if ((to == 0 && from == 0) || (to > 0 && eng.FillAt(c) > 0))
+			if ((to == 0 && from == 0) || (to > 0 && eng.WetAt(c)))
 			{
 				return;   // surface walking, or a liquid cell (wading costs stay)
 			}

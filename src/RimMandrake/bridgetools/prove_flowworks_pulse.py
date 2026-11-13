@@ -96,10 +96,10 @@ b = call("jawa/flowworks_body_report", x=source[0], z=source[1], classify=True)
 check("P2 source classified (limited, cap 5)", b.get("success") and (b.get("body") or {}).get("limitless") is False
       and (b.get("body") or {}).get("capacity") == 5, b)
 for i, (x, z) in enumerate(strip):
-    r = call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=1, setFill=-1)
+    r = call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=1, setBodyWaterM=-1)
     check("P2 drive %s" % ((x, z),), r.get("success") and r.get("depth") == 1, r)
 for _ in range(4):
-    call("jawa/flowworks_excavation_drive", x=deep[0], z=deep[1], deepenLevels=1, setFill=-1)
+    call("jawa/flowworks_excavation_drive", x=deep[0], z=deep[1], deepenLevels=1, setBodyWaterM=-1)
 p = call("jawa/flowworks_pulse", count=3, x=strip[0][0], z=strip[0][1], w=4, h=1)
 check("P2 pulse call", p.get("success"), p)
 pulses = p.get("pulses") or []

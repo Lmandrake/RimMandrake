@@ -12,7 +12,7 @@ namespace RimMandrake.FlowWorks.Drilling
 	/// ruling 3). Raises whatever RM_MapComponent_SubsurfaceLiquid says this
 	/// map's subsurface holds into an adjacent excavated cell, one of the
 	/// engine's own driver-API writes (RM_MapComponent_Excavation
-	/// .TrySetDriverFill) — the same public surface a flood-driver client
+	/// .TrySetDriverWaterDl) — the same public surface a flood-driver client
 	/// uses (CANYON_FLOOD_ERASES_CANALS_1's §8 boundary), never a new fluid
 	/// path of its own.
 	///
@@ -105,8 +105,8 @@ namespace RimMandrake.FlowWorks.Drilling
 				if (st.outletDug)
 				{
 					FluidDef outletFluid = excavation.FluidAt(outlet);
-					st.outletOtherLiquid = excavation.FillAt(outlet) > 0 && outletFluid != null && outletFluid != canalFluid;
-					st.outletBrimming = excavation.DepthAt(outlet) - excavation.FillAt(outlet) <= 0;
+					st.outletOtherLiquid = excavation.WaterDlAt(outlet) > 0 && outletFluid != null && outletFluid != canalFluid;
+					st.outletBrimming = excavation.RoomDlAt(outlet) <= 0;
 				}
 			}
 			return RM_DrillSurveyMath.WhyNot(st);
@@ -171,10 +171,8 @@ namespace RimMandrake.FlowWorks.Drilling
 			FluidDef canalFluid = survey.YieldedLiquid.canalFluid;
 			IntVec3 outlet = OutletCell;
 
-			byte depth = excavation.DepthAt(outlet);
-			byte fill = excavation.FillAt(outlet);
-			int room = depth - fill;
-			if (room <= 0)
+			long roomDl = excavation.RoomDlAt(outlet);
+			if (roomDl <= 0)
 			{
 				// Backed up: the outlet is already brimming. The reserve is
 				// not spent for liquid with nowhere to go, matching the
@@ -186,7 +184,7 @@ namespace RimMandrake.FlowWorks.Drilling
 			}
 
 			float unitPerLevel = canalFluid.volumePerTile > 0f ? canalFluid.volumePerTile : 1f;
-			float roomUnits = room * unitPerLevel;
+			float roomUnits = roomDl * unitPerLevel / RM_LevelSolve.U;
 			if (pendingUnits < roomUnits)
 			{
 				float wantUnits = Mathf.Max(0f,
@@ -198,15 +196,16 @@ namespace RimMandrake.FlowWorks.Drilling
 				}
 			}
 
-			int levels = Mathf.Min(room, Mathf.FloorToInt(pendingUnits / unitPerLevel));
-			if (levels <= 0)
+			// decilitres, not whole levels: the outlet takes what it has room for, a part-level included
+			long addDl = System.Math.Min(roomDl, (long)(pendingUnits / unitPerLevel * RM_LevelSolve.U));
+			if (addDl <= 0)
 			{
 				return;
 			}
 			// A refused fill (fluid disabled in settings, or a foreign liquid in the outlet) keeps
 			// the extracted units pending instead of discarding them (GPT FlowWorks review #5).
 			long beforeDl = excavation.WaterDlAt(outlet);
-			if (excavation.TrySetDriverFill(outlet, fill + levels, canalFluid))
+			if (excavation.TrySetDriverWaterDl(outlet, beforeDl + addDl, canalFluid))
 			{
 				// DRILL_FILL_FIX_LOSES_FRACTIONAL_BRIM: spend what landed, not the levels asked for (a part-notch outlet
 				// filled to its brim takes less than a whole level; the rest stays pending).

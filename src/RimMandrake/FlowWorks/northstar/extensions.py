@@ -278,14 +278,14 @@ def _rep(t, x, z):
 
 
 def _dig(t, x, z, levels):
-    r = t.bridge_call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=levels, setFill=-1)
+    r = t.bridge_call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=levels, setBodyWaterM=-1)
     if t._guard() and not (r or {}).get("success"):
         raise ExpectationFailed("excavation_drive dig (%d,%d) failed: %r" % (x, z, r))
     return r or {}
 
 
 def _fill(t, x, z, f):
-    r = t.bridge_call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=0, setFill=f)
+    r = t.bridge_call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=0, setBodyWaterM=(f) * 0.5)
     if t._guard() and not (r or {}).get("success"):
         raise ExpectationFailed("excavation_drive fill (%d,%d,F=%d) failed: %r" % (x, z, f, r))
     return r or {}
@@ -755,7 +755,7 @@ def _expect_fresh_pond(t, px, pz, size=5):
 def _fill_fluid(t, x, z, f, fluid):
     """Fill an excavated cell with a NAMED fluid (LIQUID_BODY_FLUID_IDENTITY_1 step 3); refuses another fluid's cell."""
     r = t.bridge_call("jawa/static_call", type="RimMandrake.FlowWorks.RM_FluidIdentityProof",
-                      method="ProofFillWithFluid", args="%d,%d,%d,%s" % (x, z, f, fluid))
+                      method="ProofFillWithFluid", args="%d,%d,%g,%s" % (x, z, f * 0.5, fluid))
     res = str((r or {}).get("result", ""))
     if t._guard() and not res.startswith("FILLED"):
         raise ExpectationFailed("fill %s (%d,%d,F=%d) failed: %s" % (fluid, x, z, f, res or r))

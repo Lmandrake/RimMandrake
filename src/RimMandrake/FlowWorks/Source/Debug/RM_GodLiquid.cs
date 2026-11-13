@@ -68,7 +68,7 @@ namespace RimMandrake.FlowWorks
 			{
 				List<int> body = Body(map, ex, cell, f);
 				var plan = new List<KeyValuePair<int, long>>();
-				RM_GodLiquidMath.PlanPour(body, i => Room(map, ex, i), dl, !RM_MapComponent_Excavation.LevelExact, plan);
+				RM_GodLiquidMath.PlanPour(body, i => Room(map, ex, i), dl, false, plan);
 				poured = Move(map, ex, f, plan, out _);
 				ex.NoteMapControlFlowDl(poured, 0);
 				pit = " into a pit of " + body.Count + " squares";
@@ -148,7 +148,7 @@ namespace RimMandrake.FlowWorks
 			List<int> body = Body(map, ex, cell, f);
 			var plan = new List<KeyValuePair<int, long>>();
 			RM_GodLiquidMath.PlanLevel(body, i => ex.DepthAt(map.cellIndices.IndexToCell(i)), i => ex.WaterDlAt(map.cellIndices.IndexToCell(i)),
-				ex.DepthAt(cell), target, !RM_MapComponent_Excavation.LevelExact, plan);
+				ex.DepthAt(cell), target, false, plan);
 			long poured = Move(map, ex, f, plan, out long taken);
 			ex.NoteMapControlFlowDl(poured, taken);
 			return "OK set " + At(cell) + " to " + metres.ToString("0.##") + " m of " + f.defName + " over " + body.Count + " squares: poured "
@@ -210,7 +210,7 @@ namespace RimMandrake.FlowWorks
 			}
 			List<int> body = Body(map, ex, cell, f);
 			var plan = new List<KeyValuePair<int, long>>();
-			RM_GodLiquidMath.PlanTake(body, i => ex.WaterDlAt(map.cellIndices.IndexToCell(i)), dl, !RM_MapComponent_Excavation.LevelExact, plan);
+			RM_GodLiquidMath.PlanTake(body, i => ex.WaterDlAt(map.cellIndices.IndexToCell(i)), dl, false, plan);
 			Move(map, ex, f, plan, out long taken);
 			ex.NoteMapControlFlowDl(0, taken);
 			return "OK drained " + L(taken) + " of " + want + " " + f.defName + " from the pit at " + At(cell) + " (" + body.Count + " squares)";

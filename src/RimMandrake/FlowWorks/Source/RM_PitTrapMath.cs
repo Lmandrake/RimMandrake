@@ -434,9 +434,9 @@ namespace RimMandrake.FlowWorks
 		/// cell somebody dug (<paramref name="dugDepth"/> &gt; 0) that now holds liquid (<paramref name="fill"/> &gt; 0):
 		/// a wet fill terrain inherits WaterShallow's affordances, which lack the door's Light. A natural lake or river is
 		/// never dug, so it stays refused. The same verdict keeps a frame standing when its dry cut floods.</summary>
-		public static bool FlowDoorStandsOn(bool vanillaAllows, bool isFlowDoor, int dugDepth, int fill)
+		public static bool FlowDoorStandsOn(bool vanillaAllows, bool isFlowDoor, int dugDepth, bool wet)
 		{
-			return vanillaAllows || (isFlowDoor && dugDepth > 0 && fill > 0);
+			return vanillaAllows || (isFlowDoor && dugDepth > 0 && wet);
 		}
 
 		/// <summary>DEEP_WATER_BUILD_REFUSED_BY_LIGHT_AFFORDANCE (owner 2026-10-25: "Gotta think about building where it's
@@ -456,9 +456,9 @@ namespace RimMandrake.FlowWorks
 		/// cell somebody dug (<paramref name="dugDepth"/> &gt; 0) and liquid in it now (<paramref name="fill"/> &gt; 0). A natural
 		/// lake, river or ocean is never dug, so it stays refused (owner scope: OUR flooded cuts). Any depth of water: chest-deep
 		/// and deep rungs alike.</summary>
-		public static bool StandsInDugWater(bool vanillaAllows, bool enabled, bool standsInWater, int dugDepth, int fill)
+		public static bool StandsInDugWater(bool vanillaAllows, bool enabled, bool standsInWater, int dugDepth, bool wet)
 		{
-			return vanillaAllows || (enabled && standsInWater && dugDepth > 0 && fill > 0);
+			return vanillaAllows || (enabled && standsInWater && dugDepth > 0 && wet);
 		}
 
 		// ── PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP (design/RimMandrake/relative_depth_climb_design_2026-10-12.md §8) ──

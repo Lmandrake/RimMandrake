@@ -70,8 +70,8 @@ class MockBridge(object):
             if kw.get("fillInLevels"):
                 self.depth[c] = max(0, self.depth[c] - int(kw["fillInLevels"]))
                 self.fill[c] = min(self.fill.get(c, 0), self.depth[c])
-            if int(kw.get("setFill", -1)) >= 0:
-                self.fill[c] = int(kw["setFill"])
+            if (lambda m: -1 if m < 0 else int(round(m * 2)))(float(kw.get("setBodyWaterM", -1))) >= 0:
+                self.fill[c] = int(round(float(kw["setBodyWaterM"]) * 2))
             return {"success": True}
         if tool == "jawa/set_terrain_batch":
             for op in str(kw.get("ops") or "").split(";"):

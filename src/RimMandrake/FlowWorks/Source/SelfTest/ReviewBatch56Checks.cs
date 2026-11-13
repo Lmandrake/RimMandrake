@@ -222,8 +222,8 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("LiquidDrill_unstamped_outlet_is_left_to_the_engine", () =>
             {
                 string s = Src("Drilling", "Building_LiquidDrill.cs");
-                Assert(s.Contains("excavation.FillAt(outlet) > 0 && outletFluid != null && outletFluid != canalFluid"),
-                    "can-fail: a filled outlet with no stamped fluid is not refused here (TrySetDriverFill decides)");
+                Assert(s.Contains("excavation.WaterDlAt(outlet) > 0 && outletFluid != null && outletFluid != canalFluid"),
+                    "can-fail: a filled outlet with no stamped fluid is not refused here (TrySetDriverWaterDl decides)");
                 Assert(!s.Contains("excavation.FillAt(outlet) > 0 && excavation.FluidAt(outlet) != canalFluid"), "the old refusal is gone");
             });
             Case("LiquidDef_unread_forms_do_not_count", () =>

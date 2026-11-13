@@ -97,7 +97,7 @@ def main():
         return r
 
     def dig(c, n, fill=-1):
-        r = B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setFill=fill) or {}
+        r = B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setBodyWaterM=(fill) * 0.5) or {}
         if r.get("success") is False:
             could_not.append("dig %s refused" % (c,))
         return r
