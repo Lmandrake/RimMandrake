@@ -6725,3 +6725,5 @@
 {"seat":"RUNNER","event":"note","id":"SELFTEST_FIX_LEDGER_STATE_WAZQ","text":"ops_watch: new at 2026-11-13T15:28:07Z: src/RimMandrake/Utils/selftest_ledger_state.py (due 2026-11-16T11:00:00Z)","ts":"2026-11-13T15:28:14Z","tsn":1794583694930426623}
 {"seat":"RUNNER","event":"live","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX","result":"broken","detail":"Ops alarm STEVE_INVALID: steve.invalid_streak = 3 INVALID results in a row (MEASURED), line >= 3","ts":"2026-11-13T15:44:13Z","tsn":1794584653990690480}
 {"seat":"RUNNER","event":"raise","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-13T15:44:19Z","tsn":1794584659183298985}
+{"seat":"RUNNER","event":"live","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX","result":"broken","detail":"Ops alarm STEVE_INVALID: steve.invalid_streak = 3 INVALID results in a row (MEASURED), line >= 3","ts":"2026-11-13T15:46:34Z","tsn":1794584794888725830}
+{"seat":"RUNNER","event":"raise","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-13T15:46:39Z","tsn":1794584799886837714}
