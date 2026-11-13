@@ -48,8 +48,11 @@ Each run works one recorded stage; a stage may take several runs. A run ends by 
 ```
 {"run": "<the run id in your packet>", "stage": N, "outcome": "done" | "waiting_owner" | "return" | "blocked",
  "summary": "...", "to": <earlier stage, for return>, "decision": "<the missing decision, for return>",
- "question": "<optional proposed ask, for return>", "on": "<item or dependency, for blocked>"}
+ "question": "<optional proposed ask, for return>", "on": "<item or dependency, for blocked>",
+ "quick_look": {"offer": true, "settles": ["<ids>"], "scene": "..."} | {"offer": false, "why": "..."}}
 ```
+
+(`quick_look`: required on a `waiting_owner` result, or a `return` with a `question`, once code exists; see below.)
 
 `python3 src/RimMandrake/rimflow/designer_stage.py check design/concepts/<Mod>` tells you now whether it would be
 accepted. The launcher validates it when the run ends; a closing message advances nothing, and a run without a valid
@@ -57,7 +60,18 @@ result is a retry that has spent budget.
 
 - **Only stages 1-2 send him questions** (`waiting_owner`). A later stage that needs his decision returns to stage 2
   (`return`, `to: 2`, the decision named, the proposed question) and never asks itself.
+- **Offer him a quick look, loudly, when there is code to look at.** The owner, 2026-11-12 (OWNER.jsonl:1794527688430451936):
+  *"If we can insert an owner quick-look to settle a difficult or several questions swiftly, offer that loudly."* It
+  applies when enough code exists (an inventory entry with `impl: present`); you often design a mod not yet written, and
+  then there is nothing to look at. On such a concept every `waiting_owner` result, and every `return` that proposes a
+  question, carries `quick_look`: `{"offer": true, "settles": [<ask, gap or decision ids>], "scene": "<what he would
+  see>"}`, or `{"offer": false, "why": "<why a look would not settle it>"}`. The launcher refuses the result without
+  it, and an offer puts **QUICK LOOK OFFERED** at the head of his queue line and his park page.
 - **Silence never advances.** `waiting_owner` holds until an owner event naming the item arrives.
+- **Away, you park.** When he is away (the recorded mode is afk, or no sitting: 45+ min since his last deliberate
+  interaction, or that cannot be measured), a step ending in his answer and the coverage judge's second refusal park the
+  concept: one plain page for him (`park_summary.md`), and nothing runs on it, no Designer run and no judge, until his
+  own word on the item. A judge-and-rework loop parks the same way, attended or not, at twice the item's cap.
 - **An input that changes invalidates what depended on it.** A new owner event on the item reopens stage 2 and every
   stage after it; an edited tree, sheet, scene or floor file reopens stage 3. The packet tells you when and why.
 - **The budget is the launcher's.** The packet states the task's cap, what is spent, the reserve and this run's share.

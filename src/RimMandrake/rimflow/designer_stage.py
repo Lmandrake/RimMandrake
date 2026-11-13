@@ -949,6 +949,23 @@ def exam_errors(ex, d, st, repo=REPO):
 
 # ---------------------------------------------------------------- results
 
+def quick_look_errors(res, rec):
+    """E (owner, OWNER.jsonl:1794527688430451936: "If we can insert an owner quick-look to settle a difficult or several
+    questions swiftly, offer that loudly."): once code exists, a result that asks him something says whether a look
+    would settle it, {"offer": true, "settles": [ids], "scene": ...} or {"offer": false, "why": ...}. -> errors."""
+    if not code_present(rec):
+        return []
+    ql = res.get("quick_look")
+    if not isinstance(ql, dict) or not isinstance(ql.get("offer"), bool):
+        return ["code exists (%s): a result that asks him carries quick_look, {offer: true, settles, scene} or "
+                "{offer: false, why}" % ", ".join(code_present(rec)[:5])]
+    if ql["offer"]:
+        settles = [x for x in lst(ql.get("settles")) if CT.txt(x)]
+        return ([] if settles else ["quick_look offer names nothing it settles (settles)"]) + (
+            [] if CT.txt(ql.get("scene")) else ["quick_look offer says nothing of what he would see (scene)"])
+    return [] if CT.txt(ql.get("why")) else ["quick_look declined without why"]
+
+
 def result_errors(res, d, st, repo=REPO):
     """Why this run's result.json cannot be accepted, or []."""
     if not isinstance(res, dict):
@@ -972,11 +989,12 @@ def result_errors(res, d, st, repo=REPO):
             return ["return names no missing decision"]
         if stage > 2 and to < 2 and res.get("question"):
             return ["an owner question returns to stage 2, not %d" % to]
-        return []
+        return quick_look_errors(res, rec) if CT.txt(res.get("question")) else []
     errs = record_errors(rec, repo, owner_ev)
     if out == "waiting_owner":
         if stage not in DIALOGUE:
             return ["only stages 1-2 send him questions; stage %d returns to stage 2 with the question" % stage]
+        errs += quick_look_errors(res, rec)
         sent = [a for a in (rec or {}).get("asks") or [] if isinstance(a, dict) and a.get("status") == "sent"]
         if not sent:
             errs.append("waiting_owner with no ask in status sent")

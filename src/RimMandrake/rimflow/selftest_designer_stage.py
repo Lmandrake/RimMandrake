@@ -253,7 +253,8 @@ def main():
         # ---- no owner reply
         rec["asks"] = [ask()]
         put(d, "record.json", rec)
-        ok, errs = run_cycle(d, repo, "run5", outcome="waiting_owner")
+        ok, errs = run_cycle(d, repo, "run5", outcome="waiting_owner",   # the ladder is built: E owes quick_look
+                            quick_look={"offer": False, "why": "the ask is about intent, not the built ladder"})
         check("stage 2 waiting_owner with a reviewed sent ask is accepted",
               ok and DS.load_state(d)["status"] == "waiting_owner", errs)
         r = refused(DS.open_run, d, "run6", repo=repo.root)
@@ -287,7 +288,8 @@ def main():
         ok, errs = DS.close_run(d, "run9", 1000, repo=repo.root)
         check("a return that names no missing decision is refused", not ok and "decision" in errs[0], errs)
         DS.open_run(d, "run10", repo=repo.root)
-        result(d, "return", to=2, decision="ladder material", question="Wood or steel ladder?")
+        result(d, "return", to=2, decision="ladder material", question="Wood or steel ladder?",
+               quick_look={"offer": True, "settles": ["ladder material"], "scene": "both ladders on one wall"})
         ok, errs = DS.close_run(d, "run10", 1000, repo=repo.root)
         st = DS.load_state(d)
         check("stage 3 returns to stage 2 with the named decision", ok and st["stage"] == 2
