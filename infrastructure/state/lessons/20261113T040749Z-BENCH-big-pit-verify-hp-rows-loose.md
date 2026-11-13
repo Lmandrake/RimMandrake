@@ -1,0 +1,1 @@
+Big-pit verify HP rows: loose items lose 1 HP from vanilla outdoor deterioration after a few hundred ticks, in the DRY copy too (Pemmican 59/60 in BP0). An HP-below-baseline row on an item is HARNESS unless the dry copy holds its HP; do not read it as liquid damage (2026-11-12).

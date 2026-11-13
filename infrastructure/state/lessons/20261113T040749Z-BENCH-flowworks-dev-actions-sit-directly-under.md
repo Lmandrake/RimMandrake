@@ -1,0 +1,1 @@
+FlowWorks dev actions sit directly under the debug tree's 'Actions' node by label (Actions\\God mode: pour liquid..., Actions\\Canal overflow: switch on/off (test)), not under an RMFlowWorks node: browse rimworld/list_debug_action_children path=Actions and match the label (2026-11-12).

@@ -33,6 +33,11 @@ class FakeBridge:
     def call(self, tool, **kw):
         if tool == "jawa/map_info":
             return {"sizeX": 250, "sizeZ": 250}
+        if tool == "jawa/list_things" and kw.get("defName") and kw.get("defName") != "SteamGeyser":
+            return {"things": [{"def": kw["defName"], "id": "Probe_" + kw["defName"], "x": 0, "z": 0}]}
+        if tool == "jawa/static_call" and kw.get("method") == "OccupiedRect":
+            w, h = SIZES.get(kw["args"][len("Probe_"):], (1, 1))
+            return {"result": str([(100 + i, 0, 100 + j) for j in range(h) for i in range(w)])}
         if tool == "jawa/list_things" and kw.get("defName") == "SteamGeyser":
             return {"things": [{"def": "SteamGeyser", "x": x, "z": z} for x, z in self.geysers]}
         if tool == "jawa/get_defs":

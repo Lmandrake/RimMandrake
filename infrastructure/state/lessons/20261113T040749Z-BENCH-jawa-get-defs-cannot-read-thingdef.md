@@ -1,0 +1,1 @@
+jawa/get_defs cannot read ThingDef.size (IntVec2): it answers '(no such field)'. Read a def's footprint LIVE by spawning one at rot 0 in a scratch corner and calling jawa/static_call type=Verse.GenAdj method=OccupiedRect args=<ThingID>; it returns the occupied cells as '[(x, 0, z), ...]'. big_pit_scene.measure_footprints does this (2026-11-12).

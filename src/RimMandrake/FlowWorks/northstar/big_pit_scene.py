@@ -22,6 +22,7 @@ import sys
 import time
 
 SUB = "RimMandrake.FlowWorks.RM_SubmergeDraw"
+SCRATCH_FROM_EDGE = 12           # footprint probe spot, cells in from the NE corner (far from the scene at 40,89)
 PW, DEPTH = 16, 8                # pit width in cells; dug notches (1 notch = 0.5 m)
 MARGIN = 1                       # clear cells between any footprint and the pit walls (the dug rect's own edge ring)
 DEFAULT_ORIGIN = (40, 89)        # SW corner of the site rect
@@ -335,6 +336,43 @@ def read_defs(names, fields):
     return parse_def_rows(r, fields)
 
 
+def parse_cells(txt):
+    """'[(200, 0, 200), (201, 0, 200)]' (GenAdj.OccupiedRect rendered by jawa/static_call) -> (width, height) or None."""
+    cells = [(int(a), int(c)) for a, _b, c in re.findall(r"\((-?\d+),\s*(-?\d+),\s*(-?\d+)\)", str(txt))]
+    if not cells:
+        return None
+    return (len({x for x, _ in cells}), len({z for _, z in cells}))
+
+
+def measure_footprints(names, stuff, map_size):
+    """{defName: (w, h)} read LIVE: jawa/get_defs cannot read ThingDef.size (an IntVec2: '(no such field)', 2026-11-12), so
+    each def is spawned once at rot 0 in a scratch corner and its footprint read through Verse.GenAdj.OccupiedRect(Thing).
+    A def that does not spawn or read back is absent (the caller refuses: sizes are never guessed)."""
+    sx = sz = map_size - SCRATCH_FROM_EDGE
+    rect = "%d,%d,10,10" % (sx - 4, sz - 4)
+    out = {}
+    call("rimworld/set_god_mode", enabled=True)
+    call("jawa/destroy_batch", rects=rect, categories="All")
+    call("jawa/set_roof_batch", ops="None:" + rect)
+    call("jawa/set_terrain_batch", ops="Soil:" + rect)
+    for dn in names:
+        call("jawa/destroy_batch", rects=rect, categories="All")
+        spawn_stuffed(dn, sx, sz, 1, {"stuff": stuff})
+        t = [x for x in call("jawa/list_things", defName=dn, rect=rect, limit=5).get("things") or [] if x.get("def") == dn]
+        if t:
+            got = parse_cells(static_on("Verse.GenAdj", "OccupiedRect", t[0]["id"]))
+            if got:
+                out[dn] = got
+    call("jawa/destroy_batch", rects=rect, categories="All")
+    call("rimworld/set_god_mode", enabled=False)
+    return out
+
+
+def static_on(type_, method, arg):
+    r = call("jawa/static_call", type=type_, method=method, args=arg)
+    return str(r.get("result") or r.get("error") or r)
+
+
 def geysers_on_map():
     r = call("jawa/list_things", defName="SteamGeyser", limit=500)
     if r.get("success") is False or r.get("things") is None:
@@ -355,22 +393,24 @@ def do_plan(origin_arg):
         row("plan_origin", "FAIL", "no geyser-free site of %dx%d on a %d map" % (SITE_W, SITE_H, size))
         return False
     names = {d for d, _s in FURN} | {d for d, _n, _s in ITEMS} | {d for d, _s in MINI}
-    defs = read_defs(names, ("size", "stuffCategories"))
+    defs = read_defs(names, ("stuffCategories",))
     sizes, stuff, bad = {}, {}, []
     for dn in names:
-        d = defs.get(dn) or {}
-        sz = parse_size(d.get("size")) if dn in {x for x, _ in FURN} else (1, 1)
-        if sz is None:
-            bad.append(dn)
-            continue
-        sizes[dn] = sz
         try:
-            st = pick_stuff(d.get("stuffCategories"))
+            st = pick_stuff((defs.get(dn) or {}).get("stuffCategories"))
         except LayoutError:
             bad.append(dn)
             continue
         if st:
             stuff[dn] = st
+    furn = {x for x, _ in FURN}
+    measured = measure_footprints(sorted(furn - set(bad)), stuff, size)
+    for dn in names - set(bad):
+        sz = measured.get(dn) if dn in furn else (1, 1)
+        if sz is None:
+            bad.append(dn)
+            continue
+        sizes[dn] = sz
     if bad:
         row("plan_defs", "UNMEASURED", "size/stuff unreadable for %s" % sorted(bad))
         return False
@@ -393,6 +433,7 @@ def do_plan(origin_arg):
 
 
 def sky_gate(plan, when, clear=False):
+    bridge()                      # puts Utils on sys.path: verify's first act is this gate (ModuleNotFoundError live, 2026-11-12)
     import validation_core as V
     rect = tuple(plan["site"])
     v = V.open_sky_site(bridge(), rect) if clear else V.assert_open_sky(bridge(), rect)

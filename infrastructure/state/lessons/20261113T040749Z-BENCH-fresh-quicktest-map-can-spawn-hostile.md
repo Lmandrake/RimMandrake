@@ -1,0 +1,1 @@
+A fresh quicktest map can spawn hostile Anomaly fleshbeasts (3 Bulbfreak + 1 Toughspike, 'hostile_arrival', tick 61) during the first safe_advance after staging: the governor stops the advance short (60 of 70 ticks). Read GOVERNOR_STOP in a stage log before trusting its tick count; list_pawns afterwards showed none on the map (2026-11-12 big-pit stage).
