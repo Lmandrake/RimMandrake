@@ -52,6 +52,33 @@ brim-full reference cells, or the judge files the references as WRONG (calibrati
 the part between rim and water"). COULD NOT SEE is an allowed answer: too small, too zoomed out or covered is a
 refusal, never a pass. Then one line: the single thing a player would notice first.
 
+### Refusal record: every ODD, WRONG or COULD NOT SEE is one (owner, 2026-11-12)
+
+*"ANY refusals must be as detailed as the evidence they are rejecting and include the fixes and paths towards passing
+that are attainable and reasonable. It also MUST include assessment of the acceptance criteria themselves."* Beside
+the lines above, return a `contract` block in the refusal contract's form
+(`design/specs/2026-11-12-refusal-contract-for-judges-and-gates.md` section 1): `clause` is the cell (pass 1) or
+`<cell>/<checklist number>` (pass 2), `evidence` the crop you looked at, and every EXPECTED cell goes in `passed`.
+
+```json
+{"contract": {"item": "<ledger item>", "family": "scene_look_judge_brief", "sha": "<save or capture sha>",
+  "passed": [{"clause": "B2", "evidence": ["crop_B2.png"]}],
+  "refusals": [{"clause": "B3", "criterion_hash": "<refusal_contract.criterion_hash of the cell's line>",
+    "evidence": ["crop_B3.png"], "observed": "the east reel's lower half is cut off above the water line",
+    "would_pass": "the whole reel, rim to water, is drawn above the water surface in a crop at zoom 1",
+    "smallest_fix": {"what": "re-shoot cell B3 at zoom 1 with the camera centred on the east reel",
+                     "attainable": "yes", "cost": "rerun"},
+    "criterion_verdict": "sound",
+    "criterion_why": "A player looking at this cell expects to see the whole reel, and the scene can show it.",
+    "new_since": "first"}]}}
+```
+
+COULD NOT SEE is a refusal whose `smallest_fix` is the re-shot crop (cost `rerun`). The presenter writes `given` (the
+crops and the cell lines it gave you) and runs `python3 src/RimMandrake/rimflow/refusal_contract.py submit <file>
+--given <given.json>` before any refusal sends a builder back. A malformed record is itself refused and re-asked once; a
+second marks this brief FAILED and raises `REFUSAL_NOTHING_COULD_EVER_PASS`. A cell line you judge `flawed` or
+`unattainable` goes to a neutral criteria fixer, never back to the builder.
+
 ## A builder's "by design" never overrules a judge's doubt
 Every ODD or WRONG from either pass stands until one of two things answers it: the owner rules on it, or a read of the
 game state settles it (the cell's true fill, the fitting's drawn cut line, the def), with the reading written beside

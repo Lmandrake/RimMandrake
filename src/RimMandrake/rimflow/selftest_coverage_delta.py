@@ -217,6 +217,7 @@ def units(root):
 
 
 def main():
+    CJ.CONTRACT = False   # bare gaps test another rule; the refusal record is selftest_coverage_refusal_record
     DS.owner_away = lambda: (False, "selftest: attended")   # the real presence must not move this test
     saved = (CT.coverage_problem, CT.sign, DS.exam_errors)
     CT.coverage_problem = lambda d, repo, tree: "no coverage signature"

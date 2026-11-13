@@ -31,6 +31,7 @@ answers a repeat (same item, clause, criterion hash, evidence content and sha) f
 
     python3 src/RimMandrake/rimflow/refusal_contract.py check <verdict.json> [--given <given.json>]   errors, exit 1
     python3 src/RimMandrake/rimflow/refusal_contract.py submit <verdict.json> [--given <given.json>]  the result JSON
+                                    (a judge's file whose verdict is its `contract` block is read as that block)
     python3 src/RimMandrake/rimflow/refusal_contract.py counters [<item>]                            the counts
     python3 src/RimMandrake/rimflow/refusal_contract.py alarms          the open alarm rows, one line each
 
@@ -518,11 +519,18 @@ def _load(path):
         return json.load(f)
 
 
+def unwrap(obj):
+    """A judge's own file (art_judge_brief.md, scene_look_judge_brief.md) carries the verdict as its `contract` block."""
+    if isinstance(obj, dict) and isinstance(obj.get("contract"), dict) and "refusals" not in obj:
+        return obj["contract"]
+    return obj
+
+
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
     cmd = argv[:1]
     if cmd in (["check"], ["submit"]) and len(argv) >= 2:
-        verdict = _load(argv[1])
+        verdict = unwrap(_load(argv[1]))
         given = _load(argv[argv.index("--given") + 1]) if "--given" in argv else None
         if cmd == ["check"]:
             item = str((verdict or {}).get("item") or "") if isinstance(verdict, dict) else ""

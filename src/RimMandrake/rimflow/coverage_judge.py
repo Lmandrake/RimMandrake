@@ -56,6 +56,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import concept_tree as CT  # noqa: E402
 import designer_stage as DS  # noqa: E402
+import refusal_contract as RC  # noqa: E402
 
 CLAUDE = shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")  # systemd's PATH lacks ~/.local/bin (OPS_TIMER_REPAIR_PRXC)
 
@@ -77,11 +78,41 @@ UNIT_PREFIX = "rm-coverage-judge-"
 # late (it was there before and the earlier judge missed it). The program tags `late` itself when the ids are new and
 # the judge claims no change: a judge miss, counted in the round.
 TAGS = ("first", "unfixed", "changed", "regression", "late")
-SCHEMA ={"type": "object", "additionalProperties": False, "required": ["verdict", "checklist", "gaps", "reasons"],
+# The refusal record (RIMMANDRAKE_EMIT_REFUSAL_RECORDS_FROM_JUDGE_BRIEFS, refusal contract section 1): every gap is a
+# refusal naming its evidence, what that evidence shows, what would pass, the smallest attainable fix and a verdict on the
+# criterion itself. `run` checks it with refusal_contract.check before the round counts.
+RECORD_FIELDS = ("evidence", "observed", "would_pass", "smallest_fix", "criterion_verdict", "criterion_why")
+RECORD_PROPS = {"evidence": {"type": "array", "items": {"type": "string"}},
+                "observed": {"type": "string"}, "would_pass": {"type": "string"},
+                "smallest_fix": {"type": "object", "additionalProperties": False,
+                                 "required": ["what", "attainable", "cost"],
+                                 "properties": {"what": {"type": "string"}, "attainable": {"enum": ["yes", "no"]},
+                                                "cost": {"enum": list(RC.COSTS)}}},
+                "criterion_verdict": {"enum": list(RC.VERDICTS)}, "criterion_why": {"type": "string"}}
+CONTRACT_FAMILY = "coverage_judge"
+INPUT_FILES = ("sheet.md", "tree.json", "scenes.json", "floor.json", "exam.json", "record.json")
+REST_CLAUSE = "rest"     # a gap about no single row: a showcase's claims, the sheet
+REST_TEXT = "the sheet a player reads says what the tree tests, and every showcase's claims are exercised by a scene"
+CONTRACT = True          # off only in a selftest of another rule; selftest_coverage_refusal_record tests it
+MALFORMED_LIMIT = RC.MALFORMED_ALARM_AT   # malformed verdicts on one concept that stop judging: the brief FAILED
+RECORD_TEXT = (
+    "\n\nEvery gap is a refusal record, as detailed as the evidence it refuses, with a path to pass: `evidence` lists "
+    "the concept files it rests on (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json; `file:line` "
+    "where a line decides it); `observed` says what that evidence shows, quoting at least one of its words; `would_pass` "
+    "is the concrete result that would pass, checkable by a script or a fresh judge (not the clause restated, never "
+    "'insufficient' or 'needs more work'); `smallest_fix` is the smallest change that reaches it (`what` names the "
+    "files, scenes or leaves; `attainable` yes/no; `cost` edit, rerun, new instrument or owner); `criterion_verdict` "
+    "judges the criterion itself: `sound`, `flawed` (wrong or ambiguous) or `unattainable` (nothing could ever pass "
+    "it), with `criterion_why`, a sentence, whatever the verdict. A flawed or unattainable criterion goes to a neutral "
+    "fixer, not back to the Designer. Each checklist row's `evidence` names the files its parts rest on, so every file "
+    "you were given is cited by some row or gap. A refusal without these is itself refused and re-asked once.")
+SCHEMA = {"type": "object", "additionalProperties": False, "required": ["verdict", "checklist", "gaps", "reasons"],
           "properties": {"verdict": {"enum": ["covered", "not_covered"]},
                          "checklist": {"type": "array", "items": {
-                             "type": "object", "additionalProperties": False, "required": ["id", "parts"],
+                             "type": "object", "additionalProperties": False,
+                             "required": ["id", "evidence", "parts"],
                              "properties": {"id": {"type": "string"},
+                                            "evidence": {"type": "array", "items": {"type": "string"}},
                                             "parts": {"type": "array", "items": {
                                                 "type": "object", "additionalProperties": False,
                                                 "required": ["what", "scene", "ok"],
@@ -90,14 +121,15 @@ SCHEMA ={"type": "object", "additionalProperties": False, "required": ["verdict"
                                                                "ok": {"type": "boolean"}}}}}}},
                          "gaps": {"type": "array", "items": {"type": "object", "additionalProperties": False,
                                                              "required": ["what", "where", "return_to", "ids",
-                                                                          "new_since"],
-                                                             "properties": {"what": {"type": "string"},
-                                                                            "where": {"type": "string"},
-                                                                            "return_to": {"enum": [2, 3]},
-                                                                            "ids": {"type": "array",
-                                                                                    "items": {"type": "string"}},
-                                                                            "new_since": {"enum": list(TAGS)},
-                                                                            "since": {"type": "string"}}}},
+                                                                          "new_since"] + list(RECORD_FIELDS),
+                                                             "properties": dict(RECORD_PROPS, **{
+                                                                 "what": {"type": "string"},
+                                                                 "where": {"type": "string"},
+                                                                 "return_to": {"enum": [2, 3]},
+                                                                 "ids": {"type": "array", "items": {"type": "string"}},
+                                                                 "new_since": {"enum": list(TAGS)},
+                                                                 "since": {"type": "string"},
+                                                                 "late_why": {"type": "string"}})}},
                          "reasons": {"type": "string"}}}
 
 
@@ -311,7 +343,7 @@ def delta_prompt(d, repo, dp, round_no):
              "above counts only tagged `late` with `late_why` saying why the earlier pass could not have seen it; "
              "otherwise it is dropped. Answer `covered` only when every claimed gap is fixed and no change opened one."
              % (", ".join(dp["ids"]) or "(none)")]
-    return "\n".join(body)
+    return "\n".join(body) + RECORD_TEXT
 
 
 def delta_merge(rec, dp):
@@ -375,6 +407,9 @@ def stop_reason(st, d=None):
                 len(rs) - len(after) + 1, after[-1].get("verdict") or "no verdict")
         return None
     nc = sum(1 for r in rs if r.get("verdict") == "not_covered")
+    bad = sum(1 for r in rs if r.get("verdict") == "malformed")
+    if bad >= MALFORMED_LIMIT:
+        return "%d malformed verdicts (limit %d): the coverage brief FAILED its refusal contract" % (bad, MALFORMED_LIMIT)
     if nc >= NOT_COVERED_LIMIT:
         return "%d not_covered verdicts (limit %d)" % (nc, NOT_COVERED_LIMIT)
     if len(rs) >= JUDGE_RUNS_MAX:
@@ -448,6 +483,83 @@ def tag_gaps(gaps, earlier):
     return late
 
 
+def contract_verdict(d, rec, item):
+    """-> (verdict, given): a coverage verdict in the refusal contract's form (refusal_contract.py). One clause per
+    checklist id (its text is the inventory row or tree leaf it names) plus `rest` for a gap on no single row; every row
+    no gap names is passed with its evidence; each gap the judge wrote this round is a refusal of each id it names (two
+    gaps on one id are one record, and a refused row's evidence joins it). Carried gaps were checked when written and are left out, with their ids. A full
+    judge is given the concept files; a delta judge is shown quoted entries, so its given inputs are the files it cites
+    and `contract_errors` adds that each is a concept file."""
+    ent = entries(d)
+    gaps = [g for g in rec.get("gaps") or [] if isinstance(g, dict)]
+    mine = [g for g in gaps if not g.get("carried")]
+    carried = {i for g in gaps if g.get("carried") for i in g.get("ids") or []}
+    refused = {}
+    for g in mine:
+        for c in list(g.get("ids") or []) or [REST_CLAUSE]:
+            r = refused.get(c)
+            ns = str(g.get("new_since") or "")
+            ns = "%s:%s" % (ns, g.get("since") or c) if ns in RC.NEW_SINCE else ns
+            if r is None:
+                refused[c] = {"clause": c, "evidence": list(g.get("evidence") or []), "observed": g.get("observed"),
+                              "would_pass": g.get("would_pass"), "smallest_fix": g.get("smallest_fix"),
+                              "criterion_verdict": g.get("criterion_verdict"), "criterion_why": g.get("criterion_why"),
+                              "new_since": ns, "gap": g.get("gid")}
+                continue
+            r["evidence"] += [e for e in g.get("evidence") or [] if e not in r["evidence"]]
+            for k in ("observed", "would_pass", "criterion_why"):
+                if g.get(k) and g[k] != r.get(k):
+                    r[k] = "%s; %s" % (r[k], g[k]) if r.get(k) else g[k]
+            if g.get("criterion_verdict") in ("flawed", "unattainable"):
+                r["criterion_verdict"] = g["criterion_verdict"]
+    crit = {}
+    for c in refused:
+        e = ent.get("inv:%s" % c) or ent.get("leaf:%s" % c)
+        crit[c] = REST_TEXT if c == REST_CLAUSE else (json.dumps(e, sort_keys=True) if e is not None else None)
+    passed = []
+    for r in rec.get("checklist") or []:
+        c = r.get("id") if isinstance(r, dict) else None
+        if isinstance(c, str) and c in refused:   # a refused row's evidence is the refusal's too
+            refused[c]["evidence"] += [str(e) for e in r.get("evidence") or [] if str(e) not in refused[c]["evidence"]]
+        if not isinstance(c, str) or c in refused or c in carried:
+            continue
+        e = ent.get("inv:%s" % c) or ent.get("leaf:%s" % c)
+        crit[c] = json.dumps(e, sort_keys=True) if e is not None else None
+        passed.append({"clause": c, "evidence": [str(x) for x in r.get("evidence") or []]})
+    if REST_CLAUSE not in refused:
+        crit[REST_CLAUSE] = REST_TEXT
+        passed.append({"clause": REST_CLAUSE, "evidence": []})
+    crit = {c: t for c, t in crit.items() if t is not None}   # an id that is no row or leaf: check says so
+    for r in refused.values():
+        if r["clause"] in crit:
+            r["criterion_hash"] = RC.criterion_hash(crit[r["clause"]])
+    if rec.get("mode") == "delta":
+        inputs = sorted({RC._split(e)[0] for r in list(refused.values()) + passed for e in r["evidence"]})
+    else:
+        inputs = [f for f in INPUT_FILES if os.path.exists(os.path.join(d, f))]
+    given = {"inputs": inputs, "criteria": crit, "root": d}
+    verdict = {"item": str(item or os.path.basename(d)), "family": CONTRACT_FAMILY,
+               "sha": str(rec.get("tree") or CT.tree_hash(CT.load(d))), "given": given,
+               "passed": passed, "refusals": list(refused.values())}
+    return verdict, given
+
+
+def contract_errors(d, rec, item):
+    """-> (verdict, given, errors): the contract form and why it is malformed ([] = well formed)."""
+    v, given = contract_verdict(d, rec, item)
+    errs = RC.check(v, given)
+    if rec.get("mode") == "delta":
+        errs += ["evidence %r is not a concept file (%s)" % (i, ", ".join(INPUT_FILES))
+                 for i in given["inputs"] if i not in INPUT_FILES]
+    return v, given, errs
+
+
+def stop_exit(rec):
+    """True when the pre-launch step must stop the Designer's run: judging stopped, parked, or the verdict refused
+    itself (a malformed refusal never sends the Designer back to rework)."""
+    return isinstance(rec, dict) and bool(rec.get("stopped") or rec.get("parked") or rec.get("malformed"))
+
+
 def record_round(d, rec):
     """stage.json coverage_rounds gets this round: verdict, gap count and ids, tags, late ids, tokens, tree."""
     st = DS.load_state(d)
@@ -506,7 +618,8 @@ def prompt(d, repo, ids=(), prior=False, round_no=1):
         "`ok`. A part waived or out in his words, or an offline leaf the contract exempts, is ok with the reason in "
         "`what`. Every part not ok must be in a gap, and the gap's `ids` names its rows; a gap about no single row "
         "(a showcase's claims, the sheet) has empty `ids`. %(again)s" % {"rel": rel, "again": again,
-                                                                         "ids": ", ".join(ids) or "(none)"})
+                                                                         "ids": ", ".join(ids) or "(none)"}
+        + RECORD_TEXT)
 
 
 def default_runner(argv, cwd, env, timeout):
@@ -642,10 +755,13 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
         if so2:  # an answer that came back broken leaves the first one standing
             so, missing = so2, missing_rows(ids, so2["checklist"])
         rec.pop("error", None)
-    if so:
+    def take(so, missing):
+        """Fold one well-formed answer into rec (a later answer in the same session replaces an earlier one)."""
         extra = failed_part_gaps(so["checklist"], so["gaps"])
         rec.update(verdict=so["verdict"], checklist=so["checklist"], gaps=so["gaps"] + extra,
                    reasons=str(so.get("reasons") or ""))
+        for k in ("unchecked", "late", "dropped"):
+            rec.pop(k, None)
         if extra and rec["verdict"] == "covered" and not so["gaps"]:
             rec["verdict"] = "not_covered"  # its own rows failed: the rows outrank the word
         if missing:
@@ -655,6 +771,33 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
         late = tag_gaps(rec["gaps"], earlier)
         if late:
             rec["late"] = late
+
+    if so:
+        take(so, missing)
+    if CONTRACT and rec.get("verdict") == "not_covered":
+        # The refusal contract (RIMMANDRAKE_EMIT_REFUSAL_RECORDS_FROM_JUDGE_BRIEFS): a refusal that names no attainable
+        # path to pass is refused itself, re-asked once in the same session, and if still malformed recorded as
+        # `malformed`: it never counts as a not_covered round and never sends the Designer back.
+        cv, given, errs = contract_errors(d, rec, st0.get("item"))
+        left = timeout - (time.monotonic() - started)
+        if errs and session and left >= REASK_MIN_S:
+            rec["contract_reasked"] = errs
+            _c, so3, _s = ask([CLAUDE, "-p", "Your verdict's refusal records do not meet the refusal contract:\n%s\n"
+                               "Answer again with the whole verdict, every row and every gap, each gap a complete record."
+                               % "\n".join("- %s" % e for e in errs), "--resume", session] + tail, left)
+            if so3:  # an answer that came back broken leaves the first one standing
+                missing = missing_rows(ids, so3["checklist"])
+                take(so3, missing)
+                errs = contract_errors(d, rec, st0.get("item"))[2] if rec["verdict"] == "not_covered" else []
+                cv, given = contract_verdict(d, rec, st0.get("item"))
+            rec.pop("error", None)
+        if rec.get("verdict") == "not_covered":
+            rec["contract"] = {k: v for k, v in RC.submit(cv, given).items() if k != "errors"}
+            if errs:
+                rec.update(verdict="malformed", malformed=errs)
+            suspect = [r["clause"] for r in cv["refusals"] if r.get("criterion_verdict") in ("flawed", "unattainable")]
+            if suspect and not errs:
+                rec["criteria_suspect"] = suspect
     tree2 = CT.load(d)
     if rec["verdict"] == "covered":
         if missing:
@@ -734,7 +877,7 @@ def main(argv=None):
         return 2
     rec, msg = run(d, timeout=a.timeout)
     print("coverage_judge: %s" % msg)
-    return STOP_EXIT if isinstance(rec, dict) and (rec.get("stopped") or rec.get("parked")) else 0
+    return STOP_EXIT if stop_exit(rec) else 0
 
 
 if __name__ == "__main__":

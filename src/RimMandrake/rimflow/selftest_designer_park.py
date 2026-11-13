@@ -320,6 +320,7 @@ def real_marks():
 
 
 def main():
+    CJ.CONTRACT = False   # bare gaps test another rule; the refusal record is selftest_coverage_refusal_record
     CJ.delta_plan = lambda d, prior, read=None: None   # the full judge's loop; the delta re-judge is selftest_coverage_delta
     saved = (CT.coverage_problem, CT.sign, DS.exam_errors)
     CT.coverage_problem = lambda d, repo, tree: "no coverage signature"

@@ -117,6 +117,34 @@ yes/no; limits excluded (A). 4. Style and sibling match (B). 5. Every facing (C)
 
 Every REDO quotes the violated line and says what you SAW. A REDO without a quote is invalid.
 
+### Refusal record: every REDO is one (owner, 2026-11-12)
+
+*"ANY refusals must be as detailed as the evidence they are rejecting and include the fixes and paths towards passing
+that are attainable and reasonable. It also MUST include assessment of the acceptance criteria themselves."* So the file
+also carries a `contract` block in the refusal contract's form
+(`design/specs/2026-11-12-refusal-contract-for-judges-and-gates.md` section 1): one record per refused constraint, every
+other constraint you applied in `passed`, and a verdict on the constraint itself. `clause` is the constraint id, and
+`evidence` names the picture you looked at.
+
+```json
+{"contract": {"item": "<ledger item>", "family": "art_judge_brief", "sha": "<picture sha>",
+  "passed": [{"clause": "D1", "evidence": ["north.png"]}],
+  "refusals": [{"clause": "C1", "criterion_hash": "<refusal_contract.criterion_hash of C1's line>",
+    "evidence": ["north.png"], "observed": "two eyes and a snout drawn on the north facing",
+    "would_pass": "the north facing shows the back of the head and tail with no eyes, snout or mouth visible",
+    "smallest_fix": {"what": "regenerate north.png from the south facing turned 180 degrees, face removed",
+                     "attainable": "yes", "cost": "rerun"},
+    "criterion_verdict": "sound",
+    "criterion_why": "North is the rear by the game's convention, and a back view is drawable for this body.",
+    "new_since": "first"}]}}
+```
+
+The window that launched you writes `given` (the pictures and the constraint lines it gave you) and runs
+`python3 src/RimMandrake/rimflow/refusal_contract.py submit <file> --given <given.json>` before acting on any REDO. A
+malformed record is itself refused: you are re-asked once with its errors; a second malformed answer marks this brief
+FAILED and raises `REFUSAL_NOTHING_COULD_EVER_PASS`. A constraint you judge `flawed` or `unattainable` goes to a neutral
+criteria fixer, never back to the artist.
+
 ## What reaches the owner
 
 Only judge-KEEP pictures, with these verdict lines beside them, plus rows flagged *split*, *stuck* or
