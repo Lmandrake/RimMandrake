@@ -1,6 +1,6 @@
 # Owner-look defects of 2026-11-12, each with the check that keeps it fixed
 
-Item: RIMMANDRAKE_PIN_OWNER_LOOK_DEFECTS_AS_NAMED_TESTS. Written 2026-11-12 ~21:15-21:40 PST by a detached BENCH helper.
+Item: RIMMANDRAKE_PIN_OWNER_LOOK_DEFECTS_AS_NAMED_TESTS. Written 2026-11-12 21:01-21:16 PST by a detached BENCH helper.
 Base: origin/main fc26ae8b12 (plus nightly clean-ups to 2425f0ead9). The repo copy is `infrastructure/state/evidence/owner_review_FW_20261112.md`.
 
 Sources, his words only, quoted from: `D:\ClaudeWork\rimmandrake\conductor\log.md` (2026-11-13T00:16Z to 05:01Z),
