@@ -1,0 +1,6 @@
+{
+ "run": "bench-ek3-st4-20261113",
+ "stage": 4,
+ "outcome": "done",
+ "summary": "exam10 on the reworked tree and sheet: 119 frozen scenarios (73 carried, 6 fixed, 28 new by fresh examiner aad34d02f157fbdcd, 12 by fresh challenger a8fabd7e113116576; 80 rejects); two fresh readers 119/119 each; control reader on the tree with heavier_flies_less stripped missed m1, m3, m5, m8, v1, v2. Helpers charged: 274281 tokens [measured]."
+}
