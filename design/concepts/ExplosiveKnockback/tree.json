@@ -317,8 +317,8 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "change",
-   "experience": "Goods on an open shelf, rack or table scatter like goods on the floor, and the player sees the shelf emptied by the blast.",
-   "scenario": "A shelf (Shelf), a small shelf (ShelfSmall) and a table (Table2x2c) each holding goods beside a grenade blast; read where the goods are after.",
+   "experience": "Goods on an open shelf, hopper or table (anything that draws its contents) scatter like goods on the floor, and the player sees the shelf emptied by the blast.",
+   "scenario": "A shelf (Shelf), a small shelf (ShelfSmall), a hopper (Hopper) and a table (Table2x2c) each holding goods beside a grenade blast; read where the goods are after.",
    "false_pass": [
     "goods on any storage building are skipped (the built in_storage rule)",
     "only floor goods move"
@@ -331,7 +331,7 @@
    "bundle": "storage",
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "every container's contents count unchanged; only the free-backed closed 1x1 container (a small shelf given the opt-in closed tag) under the mass limit moved, one cell away from the blast; the walled, pawn-backed, pit-backed and over-mass tagged 1x1 containers and the larger fridge stayed on their cells and jolted (journal container line, action slide or jolt, and a drawn offset in the trace); offline: every storage def on the owner's list classed by the does-not-draw-contents rule or the tag (a modded open shelf open, a modded locker closed); the live list is the minimal list plus the census's provider mods",
+   "oracle_proposed": "every container's contents count unchanged; only the free-backed weapons locker (under the mass limit) moved, one cell away from the blast; the walled, pawn-backed and pit-backed lockers, the over-mass safe, the pawn-backed sealed crate and the 2x2 security crate stayed on their cells and jolted (journal container line, action slide or jolt, and a drawn offset in the trace); offline: every storage def on the owner's list classed closed exactly when it hides its contents (showContents false, a sealed crate, or the opt-in tag): Shelf, ShelfSmall and Hopper open, a modded shelf, locker or fridge that draws its contents open, a modded locker that hides them closed, and no opt-in tag on any def that draws its contents; the live list is the minimal list plus LWM's Deep Storage (lwm.deepstorage)",
    "tier_reason": "the throw, the landing and the scatter are runtime (PawnFlyer, map things, the explosion wave); the kernel selftest proves only the path maths",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -342,16 +342,17 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "change",
-   "experience": "Goods inside a closed container (a crate, locker, fridge, deep storage, hopper or any container carrying the opt-in tag) stay inside it, and the player sees the container itself shift a cell or jolt.",
-   "scenario": "Beside a grenade blast, four closed 1x1 containers (small shelves, ShelfSmall, given the opt-in closed tag): one with a free cell behind it, one against a wall, one with a colonist behind it, one with an open pit behind it; the same tagged small shelf over the mass limit (the limit set below its mass); a fridge (larger than 1x1) with a free cell behind it, a locker, a deep storage unit, a hopper and a tagged modded container, each holding goods; read contents and container cells after.",
+   "experience": "Goods inside a closed container (storage that hides what it holds: a sealed crate, a modded locker or safe that does not draw its contents, or another mod's hiding container carrying the opt-in tag) stay inside it, and the player sees the container itself shift a cell or jolt. Anything that draws its contents (a shelf, a hopper, a drawing locker or fridge) is open.",
+   "scenario": "Beside a grenade blast, four closed 1x1 containers, LWM's Deep Storage weapons lockers (LWM_WeaponsLocker, which hide their contents) holding weapons: one with a free cell behind it, one against a wall, one with a colonist behind it, one with an open pit behind it; a Deep Storage safe (LWM_Safe, 500 kg, over the mass limit), a sealed crate (SealedCrate, 1x1) with a colonist behind it, and an ancient security crate (AncientSecurityCrate, 2x2, larger than 1x1) with a free cell behind it, each holding goods; read contents and container cells after.",
    "false_pass": [
     "closed containers spill their goods",
     "the container never moves at all",
     "a container slides into a pit, a wall or onto a pawn",
     "a container larger than 1x1 slides",
-    "a storage def on his list misclassed because only hand-picked examples were checked"
+    "a storage def on his list misclassed because only hand-picked examples were checked",
+    "a drawing def (a shelf, a hopper) tagged closed to stage the scene"
    ],
-   "red": "a build where a fridge's contents scatter, or a closed container is shoved into a pit",
+   "red": "a build where a weapons locker's contents scatter, or a closed container is shoved into a pit",
    "tier_proposed": "live_minimal",
    "owner_part": "no"
   },
@@ -396,7 +397,7 @@
    "leaf_kind": "experience",
    "clause_kind": "change",
    "experience": "Grenades, mortars and other bombs throw at full strength, fire and incendiary blasts at about half, and another mod's damaging explosion throws too (a modded damage type our patch already tunes, such as one of the fire type, keeps that tuning; the other-mods percent applies only to an untuned one, never stacked on it), while the player sees EMP, smoke and other harmless bursts throw nothing.",
-   "scenario": "One colonist each beside a frag grenade, a burst of a damage type inheriting from Bomb (BombSuper), an incendiary shell, a modded damaging explosion, an EMP grenade, a smoke burst, a stun burst, an extinguish burst and a toxic gas burst, same distance; compare throw lengths and read each throw's strength from the journal.",
+   "scenario": "One colonist each beside a frag grenade, a burst of a damage type inheriting from Bomb (BombSuper), an incendiary shell, a modded damaging explosion (Outer Rim's sonic grenade, OuterRim_SonicGrenadeProj), an EMP grenade, a smoke burst, a stun burst, an extinguish burst and a toxic gas burst, same distance; compare throw lengths and read each throw's strength from the journal.",
    "false_pass": [
     "fire blasts still throw nothing (the built force 0)",
     "other mods' blasts default to 0 percent",
@@ -663,7 +664,7 @@
    "leaf_kind": "experience",
    "clause_kind": "change",
    "experience": "The player sees every Mod Settings line do what it says: strength and max distance scale the throw, the per-weapon cap scale and other-mod percent apply, each toggle and the mass limit and heavy threshold take effect, and each new part (goods in the air, the closed guard, the container shove, the heavy knock, the gas chain, fire at half) switches off cleanly with the rest still working; a part switched off gives back what ships today, so with fire at half off fire and incendiary blasts throw nothing, as now.",
-   "scenario": "The same bursts (a plain grenade, the grenade with an own maximum of 4, an incendiary shell) over one staged lane of a colonist, an animal, a mech, a downed pawn, loose goods of 50, 65 and 100 kg, a corpse, a closed 1x1 container (a small shelf given the opt-in closed tag), a heavy stack, a tagged gas puff lit each run, sandbags, a wall, a closed door, an open pit cell and a belted colonist, run once per setting changed from default, every line on the page among them.",
+   "scenario": "The same bursts (a plain grenade, the grenade with an own maximum of 4, an incendiary shell) over one staged lane of a colonist, an animal, a mech, a downed pawn, loose goods of 50, 65 and 100 kg, a corpse, a closed 1x1 container (LWM's Deep Storage weapons locker, LWM_WeaponsLocker, holding weapons; lwm.deepstorage on the list), a heavy stack, a tagged gas puff lit each run, sandbags, a wall, a closed door, an open pit cell and a belted colonist, run once per setting changed from default, every line on the page among them.",
    "false_pass": [
     "a setting saves but changes nothing",
     "switching one part off breaks another",

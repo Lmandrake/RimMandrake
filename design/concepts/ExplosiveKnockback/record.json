@@ -244,7 +244,7 @@
    ],
    "date": "2026-11-11 ~23:0x PST (live sitting, question card)",
    "by_card": "Ordinary shelves don't protect. Does anything? -> (1) with a write-in",
-   "what": "Closed containers protect what is inside them; open shelves, racks and tables do not; the container itself may be shoved a little.",
+   "what": "Closed containers protect what is inside them; open shelves and tables do not; the container itself may be shoved a little.",
    "words": "(1) but the closed containers may themselves get shoved a bit"
   },
   {
@@ -320,11 +320,12 @@
    "speaker": "agent",
    "source": [
     "ITEM:RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
-    "OWNER:1794468845275647261"
+    "OWNER:1794468845275647261",
+    "OWNER:1794529787425697771"
    ],
    "date": "2026-11-11",
    "delegated": "implementation detail of a ruled behaviour",
-   "what": "A container counts as closed when it hides what it stores: crates, lockers, refrigerators, deep storage and hoppers (any storage building that does not draw its contents, plus an opt-in tag). Shelves, racks, tables, pallets and stockpile floors are open. Census of every storage def on the owner's list is part of RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED."
+   "what": "A container counts as closed when it hides what it stores: sealed crates (vanilla Building_Crate, e.g. SealedCrate, AncientSecurityCrate) and storage that keeps its goods out of sight (a showContents false field: LWM's Deep Storage weapons locker LWM_WeaponsLocker and safe LWM_Safe), plus an opt-in tag for another mod's container that hides its contents. Anything that draws its contents is open, period (owner 2026-11-12): shelves (Shelf, ShelfSmall), hoppers (Hopper), tables, pallets, stockpile floors, and modded shelves, lockers and fridges that draw what they hold; the opt-in tag is never put on one of them. Census of every storage def on the owner's list is part of RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED."
   },
   {
    "id": "dl_container_shove",
@@ -471,6 +472,18 @@
    "date": "2026-11-12",
    "delegated": "off-state of a Mod Settings switch whose default is his ruling",
    "what": "Every new part's Mod Settings switch, turned off, gives back what ships today: with fire at half off, fire and incendiary blasts throw nothing (the shipped force 0); the default stays his ruling, fire at half."
+  },
+  {
+   "id": "d_c_draws_is_open",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1794529787425697771"
+   ],
+   "date": "2026-11-12 ~16:10 PST (card: Show me the 4 gaps, then I certify)",
+   "by_card": "EK coverage, 4 gaps -> Show me the 4 gaps, then I certify",
+   "what": "Anything that draws its contents is open, hoppers and every shelf (Shelf, ShelfSmall) included; a shelf is never staged as closed. The explosion mods on our lists are characterized (design/RimMandrake/explosion_mods_characterized_2026-11-12.md). 'rack' is dropped from the wording with no rack test. He certifies the concept with no blockers.",
+   "words": "1: Anything that draws its contents is open. 2: Search our modlist for explosion. There is at least one that makes them bigger and more impressive, we should have characterized them first I now see. 3: I'm sure they'll work, no need for more testing here, change the word. 4: I am confused. Items should be blown off a shelf, and a shelf should be ruled as open, period. So the scene is staged misleadingly. No blockers."
   }
  ],
  "asks": [
@@ -831,7 +844,7 @@
   },
   {
    "id": "inv_closed_guard",
-   "what": "Closed containers protect their contents; open shelves, racks and tables do not",
+   "what": "Closed containers protect their contents; open shelves and tables do not",
    "impl": "absent",
    "search_scope": "src/RimMandrake/ExplosiveKnockback/Source/*.cs (2026-11-11): items move only by despawn and re-place; the only guard is the in_storage skip for every storage building",
    "proof": "missing",

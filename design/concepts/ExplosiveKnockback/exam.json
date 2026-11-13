@@ -129,7 +129,7 @@
   },
   {
    "id": "e21",
-   "text": "A grenade goes off beside a fridge packed with meals. The fridge's meals burst out and scatter across the room.",
+   "text": "A grenade goes off beside a Deep Storage weapons locker packed with rifles. The locker's rifles burst out and scatter across the room.",
    "expect": "reject: closed containers keep their goods",
    "expect_source": "leaf:closed_container_holds"
   },
@@ -303,7 +303,7 @@
   },
   {
    "id": "y6",
-   "text": "A mortar shell lands beside a hopper full of rice, with a colonist standing on the cell right behind it. The hopper does not move off its cell but shudders in place, and every bit of rice stays inside.",
+   "text": "A mortar shell lands beside a Deep Storage weapons locker full of rifles, with a colonist standing on the cell right behind it. The locker does not move off its cell but shudders in place, and every rifle stays inside.",
    "expect": "accept: with the cell behind taken by a pawn a 1x1 closed container jolts in place, contents kept",
    "expect_source": "leaf:closed_container_holds"
   },

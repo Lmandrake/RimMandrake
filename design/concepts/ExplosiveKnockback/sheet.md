@@ -15,6 +15,7 @@
 - 2026-11-11, gas source: "2 and remember the gas in the Cauldron" OWNER:1794468874358971350
 - 2026-11-12, flagship: "Just put a bomb into a storeroom with people in it beside a pit. Shows some items falling into the pit and some people as well." OWNER:1794470697182934051
 - 2026-11-12, by card: the 16 north-star bars -> Approve as written. OWNER:1794470702467936205
+- 2026-11-12, the 4 coverage gaps: "1: Anything that draws its contents is open. 2: Search our modlist for explosion. There is at least one that makes them bigger and more impressive, we should have characterized them first I now see. 3: I'm sure they'll work, no need for more testing here, change the word. 4: I am confused. Items should be blown off a shelf, and a shelf should be ruled as open, period. So the scene is staged misleadingly. No blockers." OWNER:1794529787425697771
 
 ## does
 - [leaf:people_thrown_three_cells] A mortar shell beside a colonist throws them about three cells straight away, over sandbags and barricades, alive and briefly stunned
@@ -28,8 +29,8 @@
 - [leaf:shield_belt_holds] A shield belt that absorbs the blast keeps its wearer in place and pays extra charge (a burning gas clump's one-cell shove is the exception: a belt does not stop it)
 - [leaf:goods_arc_spin_rebound] Loose goods and corpses, a pawn the blast kills among them, fly wild: about 1.6 times as far as a person, high arc, fast spin, rebounds off walls and closed doors keeping about 70 percent each, until spent; over sandbags, and never into deep water. OWNER:1794468855146168085, owed
 - [leaf:every_good_moves] Every light loose good the blast reaches with a throw of a cell or more moves (bar those spared above); the 40-throw cap and the per-tick drop are removed, nothing is skipped over a cap. OWNER:1794468864684141079, owed
-- [leaf:open_shelf_scatters] Open shelves, racks and tables protect nothing. OWNER:1794468845275647261, owed
-- [leaf:closed_container_holds] Closed containers keep their goods and may themselves be shoved a little (one cell or a jolt, never into a pit, a wall or onto a pawn). OWNER:1794468845275647261, owed
+- [leaf:open_shelf_scatters] Open shelves, hoppers and tables protect nothing: anything that draws its contents is open, period. OWNER:1794468845275647261 OWNER:1794529787425697771, owed
+- [leaf:closed_container_holds] Closed containers (storage that hides what it holds: sealed crates, and modded lockers and safes that do not draw their contents, plus an opt-in tag for another mod's hiding container) keep their goods and may themselves be shoved a little (one cell or a jolt, never into a pit, a wall or onto a pawn). OWNER:1794468845275647261 OWNER:1794529787425697771, owed
 - [leaf:heavy_stack_knocks] A heavy thrown stack gives a pawn a light knock and a stagger; light goods pass. OWNER:1794468869384727517, owed
 - [leaf:every_harmful_blast_throws] Every harmful explosion throws: bombs full, fire at half strength (about half the throw), other mods too (the other-mods percent only for a damage type our patch does not tune, never stacked); harmless bursts nothing. OWNER:1794468840281537479, owed
 - [leaf:only_explosions_throw] Only explosions throw; melee and bullets move nobody, by his 2026-10-06 answer
@@ -57,7 +58,6 @@
 ## open
 
 ## delegated
-- Closed means storage that does not draw its contents: crates, lockers, fridges, deep storage, hoppers, plus an opt-in tag for other mods
 - A 1x1 closed container under the mass limit slides one cell if the cell behind it is free, else it jolts in place; never into a pit, a wall or onto a pawn
 - Other mods' damaging explosions throw at 100 percent by default; EMP, smoke, stun, extinguish and toxic gas at 0, fire at half; the other-mods percent and the fire-half switch are on Mod Settings (off: fire throws nothing, as shipped), the per-type strengths sit in the def patch and any weapon can be tamed per weapon
 - Heavy means a stack of 10 kg or more; the knock is 2 to 5 blunt and about half a second of stagger, then the stack stops; a setting
