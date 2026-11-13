@@ -96,7 +96,6 @@ namespace RimMandrake.FlowWorks.SelfTest.PumpHarness
     }
     internal class RM_MapComponent_Excavation
     {
-        public static bool LevelExact;
         public Dictionary<int, long> water = new();
         public HashSet<int> refuseTake = new();
         public int takeCalls;
@@ -110,7 +109,6 @@ namespace RimMandrake.FlowWorks.SelfTest.PumpHarness
         {
             fluid = ActiveFluid;
             takeCalls++;
-            if (!LevelExact) amount -= amount % RM_PumpMath.TankUnitsPerLevel;
             if (amount <= 0) return 0;
             if (refuseTake.Contains(cell.x) || WaterDlAt(cell) < amount) return 0;
             water[cell.x] -= amount;
@@ -255,9 +253,8 @@ namespace RimMandrake.FlowWorks.SelfTest.PumpHarness
         {
             if (!ok) throw new Exception(message);
         }
-        static Building_LiquidPump Site(long first = 900, long second = 20000, bool exact = false, params long[] rooms)
+        static Building_LiquidPump Site(long first = 900, long second = 20000, params long[] rooms)
         {
-            RM_MapComponent_Excavation.LevelExact = exact;
             RM_LiquidSpill.throwOnRoom = false;
             RM_LiquidSpill.ports.Clear();
             RM_LiquidSpill.attempts.Clear();
@@ -321,7 +318,7 @@ namespace RimMandrake.FlowWorks.SelfTest.PumpHarness
                 Assert(Building_LiquidPump.ProofDrawCycle("0,0;step").Contains("units=0") && p.Moved == 0, "off control");
                 p.on = true;
                 string step = Building_LiquidPump.ProofDrawCycle("0,0;step");
-                Assert(step.Contains("units=10000") && p.Moved == 1 && p.Retired == retired && p.CycleForTest == 17, "step actual draw and restore state");
+                Assert(step.Contains("units=900") && p.Moved == 1 && p.Retired == retired && p.CycleForTest == 17, "step actual draw and restore state");
                 RM_LiquidSpill.throwOnRoom = true;
                 try
                 {
@@ -348,18 +345,17 @@ namespace RimMandrake.FlowWorks.SelfTest.PumpHarness
                 p = Site(9999, 20000);
                 p.Map.engine.water.Remove(0);
                 p.Map.engine.Stock.body[0] = 9999;
-                Assert(p.Candidates() == "1:20000", "exact-off natural short source is not drawable");
-                CheckMove(p, 10000, 0, 10000);
+                CheckMove(p, 9999, 0, 20000);
+                Assert(p.Map.engine.Stock.body[0] == 0, "a natural body short of a level is drawn as it is");
                 p = Site();
                 p.reach.RemoveAt(1);
                 p.intakes.Add(new RM_NetPort { Cell = new IntVec3(1) });
-                CheckMove(p, 10000, 900, 10000);
+                CheckMove(p, 900, 0, 20000);
                 p = Site(900, 900);
-                CheckMove(p, 0, 900, 900);
-                Assert(p.Retired == "sources=;outflows=", "all short sources leave outlets unused without retry exhaustion");
-                p = Site(900, 20000, false, 900, 20000);
-                CheckMove(p, 10000, 900, 10000);
-                Assert(p.outflows[0].received == 0 && p.outflows[1].received == 10000, "both short then subsequent outlet");
+                CheckMove(p, 900, 0, 900);
+                p = Site(900, 20000, 900, 20000);
+                CheckMove(p, 900, 0, 20000);
+                Assert(p.outflows[0].received == 900 && p.outflows[1].received == 0, "a short source fills a short outlet exactly");
             });
             Case("PumpOutflow_live_driver_restoration_offline", () =>
             {
@@ -379,51 +375,47 @@ namespace RimMandrake.FlowWorks.SelfTest.PumpHarness
                 Assert(process.WaitForExit(30000), "Python proof selftest timeout");
                 Assert(process.ExitCode == 0 && output.Contains("PASS pump outflow"), output + error);
             });
-            Case("PumpOutflow_short_first_real_TryDraw", () => CheckMove(Site(), 10000, 900, 10000));
+            Case("PumpOutflow_short_first_real_TryDraw", () => CheckMove(Site(), 900, 0, 20000));
             Case("PumpOutflow_room_short_and_rotation", () =>
             {
-                var p = Site(20000, 20000, false, 900, 20000);
-                CheckMove(p, 10000, 10000, 20000);
-                Assert(p.outflows[0].received == 0 && p.outflows[1].received == 10000, "subsequent outlet");
-                p = Site(20000, 20000, false, 20000, 20000);
+                var p = Site(20000, 20000, 900, 20000);
+                CheckMove(p, 900, 19100, 20000);
+                Assert(p.outflows[0].received == 900 && p.outflows[1].received == 0, "a short outlet room takes what fits");
+                p = Site(20000, 20000, 20000, 20000);
                 CheckMove(p, 10000, 10000, 20000, 1);
                 Assert(p.outflows[1].received == 10000 && p.outflows[0].received == 0, "actual PumpNext cycle rotation");
             });
             Case("PumpOutflow_both_short_zero_and_exact", () =>
             {
-                CheckMove(Site(900, 20000, false, 900), 0, 900, 20000);
+                CheckMove(Site(900, 20000, 900), 900, 0, 20000);
                 CheckMove(Site(0, 20000), 10000, 0, 10000);
-                CheckMove(Site(900, 20000, true), 900, 0, 20000);
-                CheckMove(Site(20000, 20000, true, 900), 900, 19100, 20000);
-                CheckMove(Site(900, 20000, true, 500), 500, 400, 20000);
-                CheckMove(Site(900, 20000, false, 0), 0, 900, 20000);
+                CheckMove(Site(900, 20000), 900, 0, 20000);
+                CheckMove(Site(20000, 20000, 900), 900, 19100, 20000);
+                CheckMove(Site(900, 20000, 500), 500, 400, 20000);
+                CheckMove(Site(900, 20000, 0), 0, 900, 20000);
                 var p = Site();
                 p.reach.Add(new(0));
-                CheckMove(p, 10000, 900, 10000);
+                CheckMove(p, 900, 0, 20000);
             });
             Case("PumpOutflow_tank_fallback_and_hose_fill", () =>
             {
-                var p = Site();
-                p.tank.room = 900;
-                CheckMove(p, 10000, 900, 10000);
-                Assert(p.tank.stored == 0 && p.Map.engine.takeCalls == 2, "partial tank plan attempted and rolled back under actual exact-off rounding, then full source uses outflow");
-                p = Site(900, 20000, true);
+                var p = Site(900, 20000);
                 p.outflows.Clear();
                 p.tank.room = 500;
                 CheckMove(p, 500, 400, 20000);
                 Assert(p.tank.stored == 500, "exact partial tank fallback");
-                p = Site(20000, 20000, false, 900);
+                p = Site(20000, 20000, 0);
                 p.tank.room = 10000;
                 CheckMove(p, 10000, 10000, 20000);
-                Assert(p.tank.stored == 10000, "outlet room short falls back to tanks");
-                p = Site(900, 20000, false, 0);
+                Assert(p.tank.stored == 10000, "outlet with no room falls back to tanks");
+                p = Site(900, 20000, 0);
                 p.hoseNeed = 10000;
-                CheckMove(p, 10000, 900, 10000);
-                Assert(p.hoseStored == 10000 && p.outflows[0].received == 0, "hose fill bypasses outlet room but not source supply");
+                CheckMove(p, 900, 0, 20000);
+                Assert(p.hoseStored == 900 && p.outflows[0].received == 0, "hose fill bypasses outlet room but not source supply");
             });
             Case("PumpOutflow_failure_rollback_and_cycle_reset", () =>
             {
-                var p = Site(20000, 20000, false, 20000, 20000);
+                var p = Site(20000, 20000, 20000, 20000);
                 p.outflows[0].refuse = true;
                 CheckMove(p, 10000, 10000, 20000);
                 Assert(p.outflows[0].received == 0 && p.outflows[1].received == 10000, "refused world destination rolled back then next outlet");
@@ -435,8 +427,8 @@ namespace RimMandrake.FlowWorks.SelfTest.PumpHarness
                 Assert(p.Moved == 1, "first cycle");
                 p.Map.engine.water[0] = 10000;
                 p.Pulse(1);
-                Assert(p.Moved == 2 && p.Map.engine.water[0] == 0 && p.outflows[0].received == 20000, "source/outflow retirement resets next cycle");
-                p = Site();
+                Assert(p.Moved == 2 && p.Map.engine.water[0] == 0 && p.outflows[0].received == 10900, "source/outflow retirement resets next cycle");
+                p = Site(20000, 20000);
                 p.Pulse(0, 3);
                 Assert(p.Moved == 1 && p.outflows[0].received == 10000, "one outflow turn per multi-level cycle");
                 p = Site();
