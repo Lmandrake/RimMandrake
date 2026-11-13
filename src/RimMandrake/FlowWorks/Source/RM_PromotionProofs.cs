@@ -377,7 +377,7 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>LIQUID_BODY_FLUID_IDENTITY_1 / viscosity. arg = "x,z,w,h". One token per cell, row-major:
-		/// "ROW x,z:D/F/fluid/terrain;..." (terrain is TerrainAt, the temp fill layer included), plus the map's
+		/// "ROW x,z:D/waterDl/fluid/terrain;..." (terrain is TerrainAt, the temp fill layer included), plus the map's
 		/// pulse count so a reader can tell where a viscous fluid's cadence stands.</summary>
 		public static string ProofFluidRow(string arg)
 		{

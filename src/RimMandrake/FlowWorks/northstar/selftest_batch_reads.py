@@ -109,7 +109,7 @@ def check_source(probs):
         probs.append("rimbridge_client import failed: %r" % (e,))
     with open(SCHEMAS, encoding="utf-8") as f:
         tools = json.load(f)["tools"]
-    if 'Read-only: FlowWorks D/F state for EVERY cell of a rect' not in blob:
+    if 'Read-only: FlowWorks depth/water state for EVERY cell of a rect' not in blob:
         probs.append("%s: its read-only Description changed; re-read it before trusting it as the fluid batch" % FLUID_BATCH)
     for tool in list(TOOLS) + [FLUID_BATCH]:
         if tool not in tools:
@@ -130,7 +130,7 @@ def _canal_game(dl_front=7414):
             st["e"] = st.get("e", 1000) + 750
             return {"success": True, "depthEngineEnabled": True, "nextPulseTick": st["e"], "pulseIntervalTicks": 250}
         if tl == "jawa/flowworks_excavation_report":
-            return {"success": True, "depth": 1, "fill": 0, "isSourceCell": False, "isSinkCell": False,
+            return {"success": True, "depth": 1, "waterDl": 0, "waterM": 0.0, "isSourceCell": False, "isSinkCell": False,
                     "sinkTransferredTotal": 0.0}
         if tl == "jawa/static_call" and p.get("method") == "ProofPitWater":
             x = int(str(p.get("args")).split(",")[0])
@@ -141,7 +141,7 @@ def _canal_game(dl_front=7414):
         if tl == "jawa/static_call" and p.get("method") == "ProofFillWithFluid":
             return {"result": "FILLED"}
         if tl == "jawa/flowworks_excavation_drive":
-            return {"success": True, "depth": 4, "fill": 0}
+            return {"success": True, "depth": 4, "waterM": 0.0, "waterDl": 0}
         if tl == "jawa/spawn_pawn":
             return {"pawns": [{"id": "P1"}]}
         return {"success": True}
@@ -162,8 +162,7 @@ def _batched(per_cell, plant=None):
                 rep = per_cell("jawa/flowworks_excavation_report", {"x": x, "z": z})
                 pw = per_cell("jawa/static_call", {"type": "x", "method": "ProofPitWater", "args": "%d,%d,1,1" % (x, z)})
                 dl = int(re.match(r"PITWATER dl=(-?\d+)", pw["result"]).group(1))
-                rows.append({"x": x, "z": z, "d": rep["depth"], "f": rep["fill"], "dEff": rep["depth"],
-                             "fEff": rep["fill"], "dl": dl, "fluid": None, "isExcavated": rep["depth"] > 0,
+                rows.append({"x": x, "z": z, "d": rep["depth"], "dEff": rep["depth"], "dl": dl, "fluid": None, "isExcavated": rep["depth"] > 0,
                              "isSource": rep["isSourceCell"], "isSink": rep["isSinkCell"], "terrain": None})
         r = {"success": True, "mapId": 0, "rect": {k: p[k] for k in "xzwh"}, "cellCount": len(rows),
              "cellsScanned": len(rows), "rows": rows, "sinkTransferredTotal": 0.0, "overflowDestroyedTotal": 0.0}

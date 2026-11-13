@@ -87,6 +87,7 @@ import sys
 import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from water_reads import levels, levels_of  # noqa: E402  (whole levels from the one water number)
 import level_water  # noqa: E402  (the exact-level reference, WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES)
 import gravel_stage  # noqa: E402  (V2_FILLIN_SCENE_STAGE_FILL_MATERIAL: fill costs spoil, so the fill-in scenes need gravel on the ground)
 import shovel_stage  # noqa: E402  (SHOVELS_BUILD_NO_DIGGING_BARE_HANDED: the E7/E8 job pawns carry one)
@@ -2047,7 +2048,7 @@ class Live(object):
 
     def fill(self, c, f, oracle=True):
         r = self.B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=0, setBodyWaterM=(f) * 0.5)
-        if oracle and self.o is not None and r.get("fillSet"):
+        if oracle and self.o is not None and r.get("waterSet"):
             self.o.set_fill(c, f)
         return r
 
@@ -2099,14 +2100,14 @@ class Live(object):
             probs.append("excavated set differs: oracle-only %s live-only %s" % (
                 sorted(set(mine) - live_set)[:4], sorted(live_set - set(mine) - self.jobcells)[:4]))
         cmp = [c for c in cells if c in self.o.D and c not in self.jobcells]
-        if pul and [pul[0]["fill"][cells.index(c)] for c in cmp] != [self.o.F[c] for c in cmp]:
+        if pul and [levels_of(pul[0]["dl"])[cells.index(c)] for c in cmp] != [self.o.F[c] for c in cmp]:
             probs.append("pulse-0 vector != oracle state (out of sync before pulsing)")
         per_scene = {}
         mism = {}
         exact = getattr(self.o, "level_exact", False)
         for p in range(1, len(pul)):
             self.o.pulse()
-            row = pul[p]["fill"]
+            row = levels_of(pul[p]["dl"])
             # GPT 6.2 (FW_PROOF_TOOLS_HARDEN_READ_GAPS): F is the floored whole notch, so 1,000/9,000 dL reads like the
             # oracle's 5,000/5,000. The exact oracle's W is compared to the bridge's per-cell dL too; a bridge with no
             # dL is a contract problem, never a silent F-only pass.
@@ -2124,7 +2125,7 @@ class Live(object):
                         mism.setdefault(self.scene_of(c), []).append((p, c, "dL %s" % dl[i], "dL %s" % w))
         for name, s in SCENES.items():
             if all(c in cells for c in s["cells"]):
-                per_scene[name] = [[pul[p]["fill"][cells.index(c)] for c in s["cells"]] for p in range(1, len(pul))]
+                per_scene[name] = [[levels_of(pul[p]["dl"])[cells.index(c)] for c in s["cells"]] for p in range(1, len(pul))]
         if len(pul) != n + 1:
             probs.append("pulsesRun %s != %d" % (r.get("pulsesRun"), n))
         self._log("    pulse[%s] x%d: %d cells, %d mismatching scenes %s" % (tag, n, len(cells), len(mism), sorted(mism)))
@@ -2427,7 +2428,7 @@ def phase_site(L, args):
             m, _ = L.rect(*_bbox(s["cells"], 0))
             for c in s["cells"]:
                 q = m[c]
-                if q["d"] or q["f"] or q["isSource"] or q.get("terrain") != "Soil":
+                if q["d"] or levels(q) or q["isSource"] or q.get("terrain") != "Soil":
                     bad.append("%s %s not fresh Soil: %s" % (name, c, {k: q.get(k) for k in ("d", "f", "isSource", "terrain")}))
         _fold(L, "L4_site_ready", [pawn_part, (
             "painted_readback", ok and not bad, "SITE", bad[:5] or "%d rects cleared+Soil, %d bodies painted, "
@@ -2516,8 +2517,8 @@ def _phase_S_body(L, args):
         L.dig(a, 2)
         ra = L.fill(a, 9)
         rb = L.fill(b, 1)
-        L.row("S2_fill_clamp", ra.get("fill") == 2 and rb.get("fillSet") is False and rb.get("fill") == 0, "MOD",
-              "setFill 9 on D=2 -> F=%s; setFill 1 on undug -> fillSet=%s F=%s" % (ra.get("fill"), rb.get("fillSet"), rb.get("fill")))
+        L.row("S2_fill_clamp", levels(ra, None) == 2 and rb.get("waterSet") is False and levels(rb, None) == 0, "MOD",
+              "setBodyWaterM 4.5 on D=2 -> F=%s; setBodyWaterM 0.5 on undug -> waterSet=%s F=%s" % (levels(ra, None), rb.get("waterSet"), levels(rb, None)))
         got = {}
         for k in ("W1", "W8", "W2", "W2R", "W3", "W4", "W5"):
             got[k] = L.body(k)
@@ -2604,8 +2605,8 @@ def phase_A(L, args):
                   "E2s_shared_N8", "E2s_shared_E8", "E3b_recede", "E5_sink", "E5_inner"):
             L.dig_scene(k)
         pre = L.cells_read(SCENES["E5_sink"]["cells"])
-        probe = ("sanity_probe", [q["f"] for q in pre] == [1] * 10, "HARNESS",
-                 "rect read of the prefilled E5_sink run: %s (must see a known F=1)" % [q["f"] for q in pre])
+        probe = ("sanity_probe", [levels(q) for q in pre] == [1] * 10, "HARNESS",
+                 "rect read of the prefilled E5_sink run: %s (must see a known F=1)" % [levels(q) for q in pre])
         if not probe[1]:
             _fold(L, "A0_instrument", [probe])
             raise Abort("instrument blind")
@@ -2642,8 +2643,8 @@ def phase_A(L, args):
             for c, q in m.items():
                 if c in SCENES[k]["cells"] or q.get("isSource") or c in L.o.D:
                     continue
-                if q["d"] or q["f"] or q.get("terrain") != "Soil":
-                    ring_bad.append((k, c, q["d"], q["f"], q.get("terrain")))
+                if q["d"] or levels(q) or q.get("terrain") != "Soil":
+                    ring_bad.append((k, c, q["d"], levels(q), q.get("terrain")))
         L.row("E2_dry_ring", not ring_bad, "MOD", ring_bad[:4] or "every non-channel, non-body ring cell undug, F=0, Soil")
         bid = L.ids.get("W2R")
         brec = Live.body_in(rec, bid)
@@ -2777,7 +2778,7 @@ def _snapshot(L):
         if not s.get("oracle", True) or not any(c in L.o.D for c in s["cells"]):
             continue
         for c, q in zip(s["cells"], L.cells_read(s["cells"])):
-            out[c] = (q["d"], q["f"])
+            out[c] = (q["d"], levels(q))
     return out
 
 
@@ -2883,7 +2884,7 @@ def phase_J(L, args):
             orders.append((k, o.get("accepted"), o.get("note") or o.get("error") or o.get("message")))
         if not L.row("J_orders_accepted", all(x[1] for x in orders), "HARNESS", orders):
             raise Abort("ordered jobs refused")
-        sum7 = {k: sum(q["f"] for q in L.cells_read(SCENES[k]["cells"])) for k in ("E7a_fillin", "E7b_overflow")}
+        sum7 = {k: sum(levels(q) for q in L.cells_read(SCENES[k]["cells"])) for k in ("E7a_fillin", "E7b_overflow")}
         w = B.call("jawa/weather_set", weather="Rain", lockWeather=True)
         L.sset(S_FW, "rainFillsExcavationsEnabled", False)
         # pin rain to the UI maximum: at the shipped 0.1 a rising Rain rate adds < 1 level over the
@@ -3007,18 +3008,18 @@ def phase_J(L, args):
                       "precondition: prefilled sum F %s, scene asks %s (the fill write did not take)" % pre_bad.get(
                           k, (sum7[k], sum(SCENES[k]["fill"]))), status="UNMEASURED")
         elif done.get("E7a"):
-            s_after = sum(q["f"] for q in q7["E7a_fillin"])
+            s_after = sum(levels(q) for q in q7["E7a_fillin"])
             mid = q7["E7a_fillin"][1]
             L.row("E7a_fillin_displaces", s_after == sum7["E7a_fillin"] and mid.get("terrain") == "Soil" and not mid["isExcavated"],
                   "MOD", "sum F %s -> %s (conserved), middle D=%s terrain %s, vector %s" % (
-                      sum7["E7a_fillin"], s_after, mid["d"], mid.get("terrain"), [q["f"] for q in q7["E7a_fillin"]]))
+                      sum7["E7a_fillin"], s_after, mid["d"], mid.get("terrain"), [levels(q) for q in q7["E7a_fillin"]]))
         else:
             L.row("E7a_fillin_displaces", False, "UNRESOLVED", "job not done in %d ticks (cap %d): %s" % (spent, cap, jobs_info),
                   status="UNMEASURED")
         if pre_bad:
             pass                                # E7b's UNMEASURED row was written with E7a's above
         elif done.get("E7b"):
-            s_after = sum(q["f"] for q in q7["E7b_overflow"])
+            s_after = sum(levels(q) for q in q7["E7b_overflow"])
             L.row("E7b_overflow_sanctioned", s_after == sum7["E7b_overflow"] - 1 and abs(dov - 1) < 1e-3, "MOD",
                   "no room: sum F %s -> %s, overflowDestroyedTotal +%s (want +1)" % (sum7["E7b_overflow"], s_after, dov))
         else:
@@ -3033,7 +3034,7 @@ def phase_J(L, args):
         # mirror the job cells into the oracle so the rain phase predicts them too
         for k in ("E7a_fillin", "E7b_overflow", "E8_dig"):
             for c, q in zip(SCENES[k]["cells"], L.cells_read(SCENES[k]["cells"])):
-                L.o.set_cell(c, q["d"], q["f"])
+                L.o.set_cell(c, q["d"], levels(q))
         L.jobcells = set()
         st.planned = "<= %d (job cap)" % cap
 
@@ -3075,10 +3076,10 @@ def phase_rain(L, args):
         L.o.rain_on, L.o.rain_rate, L.o.rain_per, L.o.rain_acc, L.o.roofed = True, rate, 1.0, acc, roofed
         probs, mism, vec, rec = L.pulses(k, "rain")
         fo, fr = L.cells_read([o_open, o_roof])
-        L.row("E6_rain_fills_unroofed", not probs and fo["f"] >= 1 and fr["f"] == 0 and not mism, "MOD",
+        L.row("E6_rain_fills_unroofed", not probs and levels(fo) >= 1 and levels(fr) == 0 and not mism, "MOD",
               (probs, {n: x[:2] for n, x in mism.items()}) if (probs or mism) else
               "rate %.3f x %d pulses: unroofed F=%s, roofed twin F=%s, every excavated cell == oracle" % (
-                  rate, k, fo["f"], fr["f"]))
+                  rate, k, levels(fo), levels(fr)))
 
 
 # ---------------------------------------------------------------------------- tail (0 ticks)
@@ -3424,8 +3425,8 @@ def _fluid_row(L, cells):
         if ":" in tok:
             xz, rest = tok.split(":", 1)
             x, z = map(int, xz.split(","))
-            d, f, fl, ter = rest.split("/", 3)
-            out[(x, z)] = dict(d=int(d), f=int(f), fluid=fl, terrain=ter)
+            d, dl, fl, ter = rest.split("/", 3)       # D/waterDl/fluid/terrain (ProofFluidRow)
+            out[(x, z)] = dict(d=int(d), dl=int(dl), fluid=fl, terrain=ter)
     return ok, out, kv
 
 
@@ -3478,9 +3479,9 @@ def _xpulse(L, n):
 
 def _level_at(rows, cells):
     """(index of the one wet cell, total fill, fluids seen) over a staircase."""
-    wet = [i for i, c in enumerate(cells) if rows.get(c, {}).get("f", 0) > 0]
-    return (wet[0] if len(wet) == 1 else wet), sum(rows.get(c, {}).get("f", 0) for c in cells), \
-        sorted({rows[c]["fluid"] for c in cells if c in rows and rows[c]["f"] > 0})
+    wet = [i for i, c in enumerate(cells) if levels(rows.get(c), 0) > 0]
+    return (wet[0] if len(wet) == 1 else wet), sum(levels(rows.get(c), 0) for c in cells), \
+        sorted({rows[c]["fluid"] for c in cells if c in rows and levels(rows[c]) > 0})
 
 
 def phase_X(L, args):
@@ -3575,9 +3576,9 @@ def phase_X(L, args):
         if not (okf and ok5):
             L.row("X5_slime_occupant_below_surface", False, "HARNESS", "fill %s (%s); sink %s" % (okf, tf, t5), status="UNMEASURED")
         else:
-            L.row("X5_slime_occupant_below_surface", _sink_ok(k5, 4) and k5.get("fluid") == SLIME and k5.get("fill") == "2",
+            L.row("X5_slime_occupant_below_surface", _sink_ok(k5, 4) and k5.get("fluid") == SLIME and k5.get("waterDl", "").lstrip("-").isdigit() and int(k5["waterDl"]) // level_water.U == 2,
                   "MOD", "D=4 cell holding %s F=%s: occupant drawn %s down (dry D=4: %.2f), drawDz %s" % (
-                      k5.get("fluid"), k5.get("fill"), k5.get("sink"), 4 * SINK_PER_LEVEL, k5.get("drawDz")))
+                      k5.get("fluid"), k5.get("waterDl"), k5.get("sink"), 4 * SINK_PER_LEVEL, k5.get("drawDz")))
         _vc().sweep_non_colonists(B)
 
         # X6 fill_fluid_distinct + X7 tar_fill_front_lags_water (+ X7n the toggle): named fluids, gravity only.
@@ -3616,10 +3617,10 @@ def phase_X(L, args):
                 pulse0 = None
             xo = _x_two_oracle(getattr(L, "exact", LIVE_EXACT), tar_row, water_row, pulse0=pulse0 or 0)
             allc = tar_row + water_row + [X_JUNCTION]
-            fl_of = lambda c: (rows[c]["fluid"] if rows.get(c, {}).get("f") else None)          # noqa: E731
+            fl_of = lambda c: (rows[c]["fluid"] if levels(rows.get(c), None) else None)          # noqa: E731
             want_fl = lambda c: ((xo.fluid.get(c, WATER)) if xo.F.get(c, 0) else None)          # noqa: E731
-            cell_bad = [(c, rows.get(c, {}).get("f"), fl_of(c), xo.F.get(c, 0), want_fl(c)) for c in allc
-                        if (rows.get(c, {}).get("f"), fl_of(c)) != (xo.F.get(c, 0), want_fl(c))]
+            cell_bad = [(c, levels(rows.get(c), None), fl_of(c), xo.F.get(c, 0), want_fl(c)) for c in allc
+                        if (levels(rows.get(c), None), fl_of(c)) != (xo.F.get(c, 0), want_fl(c))]
             # no-mix: every wet cell of a row holds that row's fluid; the junction holds the one that reached it
             wrong = [c for c in tar_row if fl_of(c) not in (None, TAR)] + [c for c in water_row if fl_of(c) not in (None, WATER)]
             tt = {rows[c]["terrain"] for c in allc if fl_of(c) == TAR}
@@ -3631,7 +3632,7 @@ def phase_X(L, args):
                   and not (tt & wt) and not any(t.startswith("RM_Channel") for t in tt | wt), "MOD",
                   "tar drawn %s | water drawn %s | junction %s F=%s (oracle %s F=%s: first to reach it fills it; the other "
                   "refused, no-mix) | cells off the oracle %s | wrong-fluid cells %s | map pulse count before %s" % (
-                      sorted(tt), sorted(wt), j.get("fluid"), j.get("f"), want_fl(X_JUNCTION), want_j, cell_bad[:3],
+                      sorted(tt), sorted(wt), j.get("fluid"), levels(j, None), want_fl(X_JUNCTION), want_j, cell_bad[:3],
                       wrong[:3], pulse0))
         okf, tf = _fill_fluid(L, ro[0], 1, TAR)      # filled only now: ON it would still sit at step 0..1
         L.sset(S_FW, "viscosityEnabled", False)
@@ -3833,7 +3834,7 @@ def _x10_canal_fire(L):
             _direct_step(B, 1000, 120000, "X10_canal_fire")
             e = B.call("jawa/flowworks_engine_state")
             _, fr, _ = _fluid_row(L, run)
-            fv = [fr.get(c, {}).get("f") for c in run]
+            fv = [levels(fr.get(c), None) for c in run]
             lit = [_litres(L, c) for c in run]
             trace.append((e.get("ticksGame"), e.get("nextPulseTick"), e.get("pulseIntervalTicks"), "".join(str(f) for f in fv),
                           lit))
@@ -3855,7 +3856,7 @@ def _x10_canal_fire(L):
         L.row("X10_canal_fire", False, "HARNESS", "ProofFluidRow unreadable at the spent read", status="UNMEASURED")
         return
     off_run = sorted((burn1 | burn2) - set(run))
-    left = [c for c in run if rows.get(c, {}).get("f", 1) != 0]
+    left = [c for c in run if levels(rows.get(c), 1) != 0]
     if None in lit:
         L.row("X10_canal_fire", False, "HARNESS", "ProofReadout unreadable on the run (litres %s): 'spent' needs the "
               "decilitres, not F" % lit, status="UNMEASURED")
@@ -4457,7 +4458,7 @@ class MockBridge(object):
                 c = (x + i, z + j)
                 d, f = self.o.D.get(c, 0), self.o.F.get(c, 0)
                 src = self.water(c) and not d
-                rows.append(dict(x=c[0], z=c[1], d=d, f=f, isExcavated=d > 0, isSource=src, isSink=self.is_sink(c),
+                rows.append(dict(x=c[0], z=c[1], d=d, dEff=d, dl=self.mock_dl(c), isExcavated=d > 0, isSource=src, isSink=self.is_sink(c),
                                  terrain=self.terrain_of(c)))
         return dict(success=True, rows=rows)
 
@@ -4467,7 +4468,7 @@ class MockBridge(object):
         for _ in range(fillInLevels):
             self.fill_in(c)
         if fillInLevels:
-            return dict(success=True, depth=self.o.D.get(c, 0), fill=self.o.F.get(c, 0), fillSet=False)
+            return dict(success=True, depth=self.o.D.get(c, 0), waterDl=self.mock_dl(c), waterM=self.mock_dl(c) * 0.5 / level_water.U, waterSet=False)
         if deepenLevels:
             self.o.dig(c, deepenLevels)
             if "dig_capped_at_2m" in self.faults:
@@ -4481,7 +4482,11 @@ class MockBridge(object):
             self.put(c, setFill if "clamp_broken" in self.faults else min(setFill, self.o.D[c]))
             fill_set = True
             self.fill_written = True
-        return dict(success=True, depth=self.o.D.get(c, 0), fill=self.o.F.get(c, 0), fillSet=fill_set)
+        return dict(success=True, depth=self.o.D.get(c, 0), waterDl=self.mock_dl(c), waterM=self.mock_dl(c) * 0.5 / level_water.U, waterSet=fill_set)
+
+    def mock_dl(self, c):
+        """The cell's water in dL, as the real bridge reports it (the oracle's W, else its whole notches)."""
+        return self.o.W.get(c, self.o.F.get(c, 0) * level_water.U)
 
     def deep_cells(self):
         return set(SCENES["S1_deep"]["cells"] + SCENES["X_deep8"]["cells"] + SCENES["X_deep16"]["cells"])
@@ -4528,11 +4533,9 @@ class MockBridge(object):
             twins = set(SCENES["E2_east_A"]["cells"]) | set(SCENES["E2_east_B"]["cells"])
             cells = [c for c in cells if c not in twins]
         def snap(p):
-            d = dict(pulse=p, fill=[self.o.F.get(c, 0) for c in cells], depth=[self.o.D.get(c, 0) for c in cells],
-                     bodies=[self.body_rec(n) for n in self.o.bodies])
-            if getattr(self.o, "level_exact", False):    # the real bridge sends per-cell dL (FW_PROOF_TOOLS_HARDEN_READ_GAPS)
-                d["dl"] = [self.o.W.get(c, self.o.F.get(c, 0) * level_water.U) for c in cells]
-            return d
+            # the real bridge sends per-cell dL only (no notch vector since the one-water-number change)
+            return dict(pulse=p, dl=[self.mock_dl(c) for c in cells], depth=[self.o.D.get(c, 0) for c in cells],
+                        bodies=[self.body_rec(n) for n in self.o.bodies])
         pulses = [snap(0)]
         for p in range(1, count + 1):
             self.do_pulse()
@@ -4541,7 +4544,7 @@ class MockBridge(object):
             c = SCENES["E2_east_A"]["cells"][0]
             if c in cells:
                 i = cells.index(c)
-                pulses[3]["fill"][i] = pulses[3]["fill"][i] + 1                  # one read, one pulse, then back
+                pulses[3]["dl"][i] = pulses[3]["dl"][i] + level_water.U                  # one read, one pulse, then back
         return dict(success=True, cells=[dict(x=c[0], z=c[1]) for c in cells], pulses=pulses, pulsesRun=count,
                     ticksBefore=self.tick, ticksGame=self.tick, nextPulseTickUntouched=True, gamePaused=True)
 
@@ -4715,7 +4718,7 @@ class MockBridge(object):
         res = None
         if method == "ProofFillWithFluid":
             x, z, f, fl = args.split(",")
-            c, f = (int(x), int(z)), int(f)
+            c, f = (int(x), int(z)), int(round(float(f) * 2))     # the stager takes metres; this oracle models notches
             if not o.exc(c) or (o.F.get(c, 0) > 0 and o.fluid.get(c, "RM_Fluid_Water") != fl):
                 res = "REFUSED: %s not excavated or holds another fluid" % (c,)
             else:
@@ -4725,7 +4728,7 @@ class MockBridge(object):
                 else:
                     o.fluid[c] = fl
                 self.fill_written = True
-                res = "FILLED %s F=%d fluid=%s" % (c, o.F[c], fl)
+                res = "FILLED %s W=%ddL fluid=%s" % (c, o.W.get(c, o.F[c] * level_water.U), fl)
         elif method == "ProofPawnSink":
             p = self.mp.get(args)
             if p is None:
@@ -4737,8 +4740,8 @@ class MockBridge(object):
                 sink = 0.0 if "sink_flat" in self.faults else SINK_PER_LEVEL * min(d, cap)
                 if "slime_lifts" in self.faults:
                     sink = max(0.0, sink - SINK_PER_LEVEL * f)
-                res = "SINK id=%s cell=%d,%d depth=%d fill=%d fluid=%s sink=%.3f drawDz=%.3f moving=False wallOverHead=%.3f" % (
-                    args, c[0], c[1], d, f, (o.fluid.get(c, "RM_Fluid_Water") if f else "none"), sink, -sink,
+                res = "SINK id=%s cell=%d,%d depth=%d waterDl=%d fluid=%s sink=%.3f drawDz=%.3f moving=False wallOverHead=%.3f" % (
+                    args, c[0], c[1], d, o.W.get(c, f * level_water.U), (o.fluid.get(c, "RM_Fluid_Water") if f else "none"), sink, -sink,
                     SINK_PER_LEVEL * min(d, cap) / FEET_TO_HEAD)
         elif method == "ProofLadder":
             x, z, op = args.split(",")
@@ -4824,7 +4827,7 @@ class MockBridge(object):
                 for i in range(w):
                     c = (x + i, z + j)
                     f = o.F.get(c, 0)
-                    toks.append("%d,%d:%d/%d/%s/%s" % (c[0], c[1], o.D.get(c, 0), f,
+                    toks.append("%d,%d:%d/%d/%s/%s" % (c[0], c[1], o.D.get(c, 0), self.mock_dl(c),
                                                      (o.fluid.get(c, "RM_Fluid_Water") if f else "none"),
                                                      self._fill_terrain(c) if f else self.terrain_of(c)))
             res = "ROW pulse=%d viscosity=%s %s;" % (o.pulse_n, self.S("viscosityEnabled"), ";".join(toks))
