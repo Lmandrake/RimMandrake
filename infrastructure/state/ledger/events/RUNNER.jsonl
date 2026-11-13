@@ -6694,3 +6694,7 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-13T10:44:01Z","tsn":1794566641066242178}
 {"seat":"RUNNER","event":"live","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","result":"broken","detail":"Ops alarm WRAPUP_DEBRIS: wrapup.debris_standing = 49 filed wrap-up rows still standing (MEASURED), line > 0","ts":"2026-11-13T10:45:16Z","tsn":1794566716386305390}
 {"seat":"RUNNER","event":"raise","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-13T10:45:21Z","tsn":1794566721782859297}
+{"seat":"RUNNER","event":"live","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","result":"broken","detail":"Ops alarm WRAPUP_DEBRIS: wrapup.debris_standing = 49 filed wrap-up rows still standing (MEASURED), line > 0","ts":"2026-11-13T10:46:35Z","tsn":1794566795243611994}
+{"seat":"RUNNER","event":"raise","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-13T10:46:40Z","tsn":1794566800413037301}
+{"seat":"RUNNER","event":"live","id":"OPS_STEVE_SEATS_RESTORE_QTWK","result":"kept","detail":"sweep: running again","ts":"2026-11-13T10:48:06Z","tsn":1794566886226362613}
+{"seat":"RUNNER","event":"live","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","result":"kept","detail":"sweep: running again","ts":"2026-11-13T10:48:14Z","tsn":1794566894486078900}
