@@ -717,10 +717,17 @@
     "ref": "rm-coverage-judge-1794593824",
     "stage": 5,
     "tokens": 138340
+   },
+   {
+    "at": "2026-11-13T19:57:23Z",
+    "kind": "stage",
+    "ref": "run bench-ek4-st3-20261113",
+    "stage": 3,
+    "tokens": 150000
    }
   ],
   "reserve": 60000,
-  "spent": 96620638
+  "spent": 96770638
  },
  "coverage_releases": [
   {
@@ -1489,18 +1496,41 @@
    "stage": 5,
    "what": "park",
    "why": "ceiling: his card \"EK next -> Fix, then one judge\" (OWNER:1794592220102307459) allowed one exam and one judge run, then parked: exam10 passed 119/119; judge rm-coverage-judge-1794593824 not_covered, 5 gaps, all stage-3 edits, none needing your answer (park_summary.md)"
+  },
+  {
+   "at": "2026-11-13T19:57:02Z",
+   "stage": 3,
+   "what": "invalidated",
+   "why": "inputs changed since stage 3 was accepted: scenes; back to stage 3"
+  },
+  {
+   "at": "2026-11-13T19:57:02Z",
+   "stage": 3,
+   "what": "park_lifted",
+   "why": "his word on RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH lifts the ceiling park"
+  },
+  {
+   "at": "2026-11-13T19:57:02Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "96620638 of 4000000 spent; run bench-ek4-st3-20261113 goes on with 3940000 (advisory)"
+  },
+  {
+   "at": "2026-11-13T19:57:02Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run bench-ek4-st3-20261113, stage 3, budget 3940000"
+  },
+  {
+   "at": "2026-11-13T19:57:23Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run bench-ek4-st3-20261113: stage 3 done"
   }
  ],
  "item": "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
- "loop_since": "2026-11-13T18:06:20Z",
+ "loop_since": "2026-11-13T19:57:02Z",
  "mod": "ExplosiveKnockback",
- "park": {
-  "at": "2026-11-13T18:25:25Z",
-  "kind": "ceiling",
-  "quick_look": true,
-  "summary": "park_summary.md",
-  "why": "his card \"EK next -> Fix, then one judge\" (OWNER:1794592220102307459) allowed one exam and one judge run, then parked: exam10 passed 119/119; judge rm-coverage-judge-1794593824 not_covered, 5 gaps, all stage-3 edits, none needing your answer"
- },
  "parks": [
   {
    "at": "2026-11-13T07:52:37Z",
@@ -1525,6 +1555,14 @@
    "quick_look": true,
    "summary": "park_summary.md",
    "why": "his card (EK exam -> Rerun exam, then judge) lifted the ceiling park for one exam rerun and one judge run: exam9 passed 79/79 on the current tree and sheet; the one coverage-judge run (rm-coverage-judge-1794558854) returned not_covered with 6 gaps, all return_to 3, none needing his answer. Re-parked; nothing more spent without his word on RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH."
+  },
+  {
+   "at": "2026-11-13T18:25:25Z",
+   "kind": "ceiling",
+   "lifted_at": "2026-11-13T19:57:02Z",
+   "quick_look": true,
+   "summary": "park_summary.md",
+   "why": "his card \"EK next -> Fix, then one judge\" (OWNER:1794592220102307459) allowed one exam and one judge run, then parked: exam10 passed 119/119; judge rm-coverage-judge-1794593824 not_covered, 5 gaps, all stage-3 edits, none needing your answer"
   }
  ],
  "pending_decision": "Coverage judge not_covered (19 gaps, all return_to 3, none needs the owner: each is settled by a record decision). Rewrite scenes/tree/sheet per coverage_verdict.json gaps: limit the 40-throw cap to pawns or remove it (d_c_all_fly) and stage more goods than the cap; showcase 1 is his one flagship scene only, with one named weapon, an in-line heavy stack and an expectation on the covered pit cell; narrow no_careless_fall to d_pit_only_forced (enemies may fall into a concealed pit by walking); add leaves and sheet lines for the shipped behaviours the sheet omits (who is spared, recovery immunity, per-weapon caps, hose drop, doors and deep water stopping a throw, explosions only); give wall_stop, shield, gas-chain, containers, teleport trace, frame probe, hose drop, settings and the walk real controls or scenes; fill record.json script_audit. Also set tree.json root_state VALIDATED and root_hash to the walk's (gate refusal). Then re-run the stage 4 exam on refrozen scenarios and the judge.",
@@ -1714,13 +1752,19 @@
    "why": "inputs changed since stage 3 was accepted: sheet; back to stage 3"
   },
   {
-   "at": "2026-11-13T18:12:46Z",
+   "at": "2026-11-13T19:57:02Z",
+   "outcome": "invalidated",
+   "stage": 3,
+   "why": "inputs changed since stage 3 was accepted: scenes; back to stage 3"
+  },
+  {
+   "at": "2026-11-13T19:57:23Z",
    "inputs": {
-    "exam": "be32e6a220eaf30666fcdff29caad9f6d6e21baea1ecbcd4dfd47897c5e85a9b",
+    "exam": "62595e96a93d811b3fc9e020c6897faae2c2d0feb64f98fc2ad3a996d0925a92",
     "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
     "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
-    "scenes": "09ea780971a94bd60d2032f78d0830da758fb9524432d6c25e2dc22a63836dd3",
+    "scenes": "4da6fb327b508a4b20d5f5803029e374f9a1e423c55757c60cee8bf984fd3f4d",
     "sheet": "234fd3c20e850bdde174efc6b3d4b20f1025dc5ddbf2c15caef766a925f0c722",
     "tree": "02900038234b11c46790c7a09b75a68a0b877cd3270c7e57c94564ef758b15b2"
    },
@@ -1733,38 +1777,17 @@
    "owner_uncited": [],
    "quick_look": {
     "offer": false,
-    "why": "stage 3 asks him nothing; the new rules are not built yet"
+    "why": "stage 3 asks him nothing; the mass and blast-power rules these scenes test are not built yet"
    },
-   "run": "bench-ek3-st3b-20261113",
+   "run": "bench-ek4-st3-20261113",
    "stage": 3,
-   "summary": "One sheet line fixed on the exam10 examiner's finding: per_weapon_tuning said 'its own body-size limit lets it throw bigger pawns'; now 'its own creature mass limit lets it throw heavier pawns', matching the tree and the_spared. No other change."
-  },
-  {
-   "at": "2026-11-13T18:16:04Z",
-   "inputs": {
-    "exam": "62595e96a93d811b3fc9e020c6897faae2c2d0feb64f98fc2ad3a996d0925a92",
-    "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
-    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
-    "scenes": "09ea780971a94bd60d2032f78d0830da758fb9524432d6c25e2dc22a63836dd3",
-    "sheet": "234fd3c20e850bdde174efc6b3d4b20f1025dc5ddbf2c15caef766a925f0c722",
-    "tree": "02900038234b11c46790c7a09b75a68a0b877cd3270c7e57c94564ef758b15b2"
-   },
-   "manifest": {
-    "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
-    "designer_exam.md": "9892f91253ca15581c15f6f64d211a2275f345d0e13e0200dcda9c9f8004e07a"
-   },
-   "outcome": "done",
-   "owner_uncited": [],
-   "run": "bench-ek3-st4-20261113",
-   "stage": 4,
-   "summary": "exam10 on the reworked tree and sheet: 119 frozen scenarios (73 carried, 6 fixed, 28 new by fresh examiner aad34d02f157fbdcd, 12 by fresh challenger a8fabd7e113116576; 80 rejects); two fresh readers 119/119 each; control reader on the tree with heavier_flies_less stripped missed m1, m3, m5, m8, v1, v2. Helpers charged: 274281 tokens [measured]."
+   "summary": "Stage 3 edits on his card 2026-11-13 ~11:55 PST (OWNER:1794599713730633294, fix the 5 gaps then one judge; gas shove onto an open pit drops the pawn in, stands), exactly the smallest_fix lines of rm-coverage-judge-1794593824: g1 mandrake.rm.flowworks added to the Cauldron dependency clause in sc_gas_chain, sc_cauldron_gas, sc_cover_breaks, sc_gas_shove_into_pit and sc_settings_sweep; g2 sc_mass_and_power gains a test hook absorbing the staged injury (asserted: no new hediff), the damage ratio still read from the explosion; g3 the 250 kg control runs both damages (thrumbo 1 then 3 cells) and the colonist band is 64 to 76 kg (the would_pass condition, 3 cells at 50 and 5 at 100 by ThrowCells: 60-63 kg gives 6 at 100, tying the capped rat); g4 the sweep names the free-flying colonist, the animal, the second animal and the downed pawn; g5 inv_who_is_spared back in coverage_rest by the_spared/sc_spared, mass_and_power demoted to an ordinary scene (2 new < 3), inv_creature_mass_limit and inv_blast_power_damage in coverage_rest by sc_mass_and_power, record inv_who_is_spared scope_note for d_mass_limit. Tree and sheet untouched."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 5,
- "status": "waiting_owner",
+ "stage": 4,
+ "status": "ready",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }
