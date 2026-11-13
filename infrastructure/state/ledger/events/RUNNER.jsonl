@@ -6517,3 +6517,13 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_FINDINGS_DIAGNOSE_XZLM","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-13T09:00:41Z","tsn":1794560441498972206}
 {"seat":"RUNNER","event":"live","id":"OPS_FINDINGS_DIAGNOSE_XZLM","result":"broken","detail":"Ops alarm UNTRIAGED: flow.untriaged_findings = 8 findings with no outcome yet (MEASURED), line > 0","ts":"2026-11-13T09:01:57Z","tsn":1794560517530834306}
 {"seat":"RUNNER","event":"raise","id":"OPS_FINDINGS_DIAGNOSE_XZLM","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-13T09:02:02Z","tsn":1794560522953501497}
+{"seat":"RUNNER","event":"live","id":"IDLE_WATCH_BUILD_SEAT_MINUTES_IN_DIGEST","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:03:06Z","tsn":1794560586605022677}
+{"seat":"RUNNER","event":"live","id":"INCIDENT_LEDGER_BUILD_TOLD_ACKED_RECOVERED","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:03:11Z","tsn":1794560591828115733}
+{"seat":"RUNNER","event":"live","id":"ISSYSTEM_WORDS_FIX_PIPELINE_READ_AS_CONTENT","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:03:17Z","tsn":1794560597373984321}
+{"seat":"RUNNER","event":"live","id":"JAM_WATCH_BUILD_RELENTLESS_IN_OPS_DIGEST","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:03:22Z","tsn":1794560602845622267}
+{"seat":"RUNNER","event":"live","id":"LENT_ALARM_MEASURE_THE_LOAN_NOT_WEEK","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:03:28Z","tsn":1794560608172195376}
+{"seat":"RUNNER","event":"live","id":"NIGHTLY_COP_FIX_RED_AQJSGV_CFVH","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:03:33Z","tsn":1794560613593181717}
+{"seat":"RUNNER","event":"live","id":"NIGHTLY_COP_FIX_RED_BGARNK_COXO","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:03:39Z","tsn":1794560619070871968}
+{"seat":"RUNNER","event":"live","id":"NIGHTLY_REDS_FIX_RERUN_BEFORE_PAYING","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:03:44Z","tsn":1794560624669636460}
+{"seat":"RUNNER","event":"live","id":"OPERATIONS_RUN_FIX_HALF_A_MILLION_HABIT","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:03:50Z","tsn":1794560630004734520}
+{"seat":"RUNNER","event":"live","id":"OPS_ALARMS_FIX_FIXED_ITEM_ID","result":"kept","detail":"sweep: running again","ts":"2026-11-13T09:03:55Z","tsn":1794560635285657208}
