@@ -1,0 +1,6 @@
+{
+ "run": "rm-role-designer-1794593995",
+ "stage": 3,
+ "outcome": "done",
+ "summary": "Five coverage gaps fixed. New leaves floor_end_shocks_crossers and shock_reach_setting (his 2026-11-06 answer) with scenes sc_floor_end_shock (in the workshop_floor showcase) and sc_shock_reach; the re-string and rebuild exemptions are tested against a same-job pawn with a different target; statics reached by loading a save; sc_settings names lamp art, the patch map and power poles untouched; sc_restring adds the grounded wire and the jump; sc_spans adds a lamp mast. Claims in coverage_fixes.json. Entry points under GSS_SCENES_BUILD_EVERY_CORD_A_FOIL."
+}
