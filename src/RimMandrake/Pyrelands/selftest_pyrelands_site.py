@@ -1496,7 +1496,9 @@ def test_on_site_finds_the_site_2026_11_12():
                 return {"mapId": self.cur, "mapBiome": self.maps.get(self.cur)}
             if tool == "jawa/set_current_map":
                 if p["mapId"] not in self.maps:
-                    return {"success": False, "loadedMaps": [{"mapId": k, "biome": b} for k, b in self.maps.items()]}
+                    # the real refusal (JawaBenchMapInfoTools.cs Fail): the list rides under `details`, not at the top
+                    return {"success": False, "message": "No loaded map has uniqueID %s." % p["mapId"],
+                            "details": {"loadedMaps": [{"mapId": k, "biome": b} for k, b in self.maps.items()]}}
                 self.cur = p["mapId"]
             if tool == "jawa/name_colony":
                 return {"success": True, "settlements": [{"tile": 5}]}

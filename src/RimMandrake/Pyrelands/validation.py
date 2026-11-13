@@ -418,7 +418,9 @@ def _on_site(t):
     # recorded and map 1 is not it. Ask the game which loaded map IS Pyrelands (set_current_map refuses an unknown id
     # and lists loadedMaps) instead of assuming map 1; with none loaded the run could not ask -> UNMEASURED SITE.
     probe = t.session.call("jawa/set_current_map", mapId=-1) or {}
-    loaded = probe.get("loadedMaps") or []
+    # the refusal carries the list under `details` (JawaBenchMapInfoTools.cs Fail); the top-level read saw [] on every
+    # SteveDesktop job of 2026-11-13 while map 1 existed
+    loaded = probe.get("loadedMaps") or (probe.get("details") or {}).get("loadedMaps") or []
     pyre = [m.get("mapId") for m in loaded if m.get("biome") == "RM_Pyrelands"]
     if pyre:
         t.session.call("jawa/set_current_map", mapId=pyre[0])
