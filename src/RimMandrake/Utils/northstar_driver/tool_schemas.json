@@ -889,13 +889,13 @@
    "parameters": [
     "deepenLevels",
     "fillInLevels",
-    "setFill",
+    "setBodyWaterM",
     "x",
     "z"
    ],
    "required": [
     "deepenLevels",
-    "setFill",
+    "setBodyWaterM",
     "x",
     "z"
    ]

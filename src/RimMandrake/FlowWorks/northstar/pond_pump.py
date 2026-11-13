@@ -23,8 +23,7 @@ weather locked Clear: tick up to --refill-days in-game days; the bar is stock ri
 post-draw value (a receded cell re-wets). Settings are restored to their values before the run.
 
 Phase C (--drain, INSTEAD of phase B; POND_PUMP_FIX_LAST_DROP_COUNTS A2/A3): the scene's pond is a 3x1 WaterShallow row
-(2..4, 6) -- all three cells in the pump's reach, so the body is well under 1,000 L a cell -- and levelExactEnabled must
-read True. The pump keeps drawing (up to --drain-cycles, stopping after 6 cycles with no change) until the body's stock
+(2..4, 6) -- all three cells in the pump's reach, so the body is well under 1,000 L a cell. The pump keeps drawing (up to --drain-cycles, stopping after 6 cycles with no change) until the body's stock
 reads 0. The bar (drain_verdict): stock ends at 0 (the last part-notch was pumped, not stranded), the tank gained exactly
 the stock that fell (x 10,000 dL a notch, +-1 dL), and no pond square still reads a water terrain (each staged to mud/bed).
 A stall with stock left while the tank reads full is UNMEASURED (the tank, not the pump, stopped it).
@@ -189,8 +188,7 @@ def main():
     B.hp("defaults")
     B.call("jawa/weather_set", weather="Clear", lockWeather=True)
     B.call("jawa/incident_queue_clear")
-    FIELDS = ("refillEnabled", "refillRateMultiplier", "recessionEnabled", "liquidPumpEnabled", "depthEngineEnabled",
-              "levelExactEnabled")
+    FIELDS = ("refillEnabled", "refillRateMultiplier", "recessionEnabled", "liquidPumpEnabled", "depthEngineEnabled")
     before = {f: sget(f) for f in FIELDS}
     res["settings_before"] = before
 
@@ -261,10 +259,6 @@ def main():
         res["terrain_after_draw"] = terrain()
         if a.drain:
             # ---- phase C (POND_PUMP_FIX_LAST_DROP_COUNTS): pump the pond to its last decilitre
-            if str(before.get("levelExactEnabled")).lower() != "true":
-                row("POND_PUMP_drains_to_last_dl", "UNMEASURED", "SITE", {"why": "levelExactEnabled reads %r: the last-decilitre "
-                                                                                  "rule is the exact-level one" % (before.get("levelExactEnabled"),)})
-                return 2
             # from BEFORE phase A's first cycle (a small pond may already be dry); a body report with no body is a pumped-dry
             # pond here (stock 0, bodyGone), the same reading the drain loop below gives it
             tc = [dict(t_, stock=0.0, bodyGone=True) if t_.get("stock") is None and t_.get("units") is not None else dict(t_)

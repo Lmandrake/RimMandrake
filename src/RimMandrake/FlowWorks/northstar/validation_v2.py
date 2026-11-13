@@ -145,7 +145,7 @@ BOOL_DEFAULTS = {
                pitExposureEnabled=True, pitDepthDrawOffsetEnabled=True,
                canalFireEnabled=True,      # FLOWWORKS_BUILD_PROGRAM_1 Phase 6
                pitDrowningEnabled=True, poisonFillEnabled=True,      # PIT_FILL_EFFECTS_1
-               viscosityEnabled=True, thickCreepEnabled=True, waterFrontCreepEnabled=True, levelBySurfaceEnabled=True, levelSetEnabled=True, levelExactEnabled=True, recedeKeepsLastCell=True, recedeSparesOutflow=True),     # FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 viscosity (2026-10-05)    # rehoused from PitsSettings 2026-10-02
+               viscosityEnabled=True, thickCreepEnabled=True, waterFrontCreepEnabled=True, levelBySurfaceEnabled=True, levelSetEnabled=True, recedeKeepsLastCell=True, recedeSparesOutflow=True),     # FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 viscosity (2026-10-05)    # rehoused from PitsSettings 2026-10-02
     S_RIVER: dict(riverSteamEnabled=True),
 }
 FLOAT_DEFAULTS = {"pulseIntervalTicks": 250.0, "flowPerPulse": 1.0, "rainFillPerPulse": 0.1,
@@ -2438,8 +2438,8 @@ def phase_site(L, args):
         src = {c: n for n, b in BODIES.items() for c in b["cells"]}
         bodies = {n: dict(limitless=b["limitless"], stock=body_stock0(b), capacity=body_stock0(b) or None,
                           cells=list(b["cells"])) for n, b in BODIES.items()}
-        # the oracle is the engine the GAME runs: exact-level water when levelExactEnabled is on (shipped)
-        L.exact = _settings_equal(L.sget(S_FW, "levelExactEnabled"), True)
+        # the oracle is the engine the GAME runs: exact-level water, always (the whole-notch setting is deleted)
+        L.exact = True
         L.o = PulseOracle(MAP_W, MAP_H, src, bodies, sink_band=SINK_BAND, algo="fixed", recession=True,
                           level_exact=L.exact, beds=site_beds() if L.exact else None, **CREEP_LIVE)
 

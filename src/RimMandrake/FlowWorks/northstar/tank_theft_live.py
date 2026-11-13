@@ -138,7 +138,7 @@ def run(out):
         require(result['identity'].get('mvidMatchesFile') is True and result['identity'].get('assemblyFileSha256') == expected, 'loaded DLL identity mismatch')
         result['protected_before'] = protected_hashes
         debug = flags()
-        for typ, field in [(FW, 'depthEngineEnabled'), (FW, 'depthEngineLiveForTests'), (FW, 'levelExactEnabled'), (FW, 'liquidPumpEnabled'),
+        for typ, field in [(FW, 'depthEngineEnabled'), (FW, 'depthEngineLiveForTests'), (FW, 'liquidPumpEnabled'),
                            (HS, 'enabled'), (HS, 'freeEndRolesEnabled'), (HS, 'hoseHoldsLiquid'), (HS, 'gravityLevellingEnabled'),
                            (MS, 'liquidTheftEnabled'), (MS, 'liquidTheftGoodwillPerDay'), (MS, 'liquidTheftSightRange')]:
             settings.append((typ, field, setting(typ, field)))
@@ -160,7 +160,7 @@ def run(out):
         control_error_messages = {str(e.get('Message','')) for e in control_errors}
         require(control_error_messages.issubset({'Tried to get CurKindLifeStage from humanlike pawn Shiki'}), 'unexpected error in unchanged site control')
         call('rimworld/pause_game', pause=True)
-        for typ, field, value in [(FW, 'depthEngineEnabled', True), (FW, 'depthEngineLiveForTests', True), (FW, 'levelExactEnabled', True),
+        for typ, field, value in [(FW, 'depthEngineEnabled', True), (FW, 'depthEngineLiveForTests', True),
                                   (FW, 'liquidPumpEnabled', True), (HS, 'enabled', True), (HS, 'freeEndRolesEnabled', True),
                                   (HS, 'hoseHoldsLiquid', False), (HS, 'gravityLevellingEnabled', False),
                                   (MS, 'liquidTheftEnabled', True), (MS, 'liquidTheftGoodwillPerDay', 2), (MS, 'liquidTheftSightRange', 12)]:

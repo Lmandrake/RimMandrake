@@ -50,7 +50,7 @@ Inventory: 550 defs, 367 Mod Settings fields, 54 gizmo labels, 636 textures = 16
 | 18 | Map controls: meter, level holder, timer, map-edge setter, current painter, thermostat | gizmo | - | "Fast", "Flows " + CompassNames[direction & 7], "Hold at " + setpoint.ToStringPercent(), "Hold at " + targetC.ToStringTemperature(), "Invert", "Radius: " + get().ToString("0.#"), "Read now", "Schedule...", EdgeNames[edge] + ": " + RM_MapControlMath.EdgeModeLabel(modes[edge]) | Source/MapControls/Building_RM_MapControl.cs, Source/MapControls/RM_CurrentPainter.cs, Source/MapControls/RM_EdgeSetter. |
 | 19 | Map-control stone art (stand-in copy of vanilla ChunkStone) | tex | - | RockLowA.png, RockLowB.png, RockLowC.png, RockLowD.png | Textures |
 | 20 | The flow engine and its pulse | set | 2 | depthEngineEnabled, flowPerPulse, pulseIntervalTicks | Source/RimMandrakeFlowWorksMod.cs |
-| 21 | Viscosity: tar crawls | set | 3 | levelBySurfaceEnabled, levelExactEnabled, levelSetEnabled, thickCreepEnabled, viscosityEnabled, waterFrontCreepEnabled | Source/RimMandrakeFlowWorksMod.cs |
+| 21 | Viscosity: tar crawls | set | 3 | levelBySurfaceEnabled, levelSetEnabled, thickCreepEnabled, viscosityEnabled, waterFrontCreepEnabled | Source/RimMandrakeFlowWorksMod.cs |
 | 22 | Ponds pay out; map-edge lakes never run dry | set | 5 | minLimitlessBodyCells, sourceBudgetEnabled, stickyLimitlessEnabled, wetnessCutoffEnabled | Source/RimMandrakeFlowWorksMod.cs |
 | 23 | A pond visibly recedes | set | 6 | recedeKeepsLastCell, recedeSparesOutflow, recessionEnabled | Source/RimMandrakeFlowWorksMod.cs |
 | 24 | A drying pond shallows all over, then mud | set | 6 | pondDepthEnabled, pondMudDays, pondStageWritesPerPulse | Source/RimMandrakeFlowWorksMod.cs |
