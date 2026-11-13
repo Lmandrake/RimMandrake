@@ -1098,10 +1098,46 @@
    "stage": 5,
    "what": "close",
    "why": "run bench-ek-st4k-20261112: stage 4 done"
+  },
+  {
+   "at": "2026-11-13T07:52:38Z",
+   "stage": 5,
+   "what": "park",
+   "why": "ceiling: the judge-and-rework loop has spent 88694771 tokens since 2026-11-12T08:18:58Z, past its ceiling of 8000000 (2x the cap) (park_summary.md)"
+  },
+  {
+   "at": "2026-11-13T07:53:23Z",
+   "stage": 5,
+   "what": "park_lifted",
+   "why": "his word on RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH lifts the ceiling park"
+  },
+  {
+   "at": "2026-11-13T07:53:23Z",
+   "stage": 5,
+   "what": "park",
+   "why": "ceiling: his card (EK sign-off -> One judge run) lifted the ceiling park for one coverage-judge run, but the judge could not start: exam.json was run on the tree and sheet before the gap fixes (scenarios_hash, tree and sheet all stale), and rerunning the exam is a Designer run his card did not grant. Re-parked; no judge or Designer run spent. (park_summary.md)"
   }
  ],
  "item": "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
+ "loop_since": "2026-11-13T07:53:23Z",
  "mod": "ExplosiveKnockback",
+ "park": {
+  "at": "2026-11-13T07:53:23Z",
+  "kind": "ceiling",
+  "quick_look": true,
+  "summary": "park_summary.md",
+  "why": "his card (EK sign-off -> One judge run) lifted the ceiling park for one coverage-judge run, but the judge could not start: exam.json was run on the tree and sheet before the gap fixes (scenarios_hash, tree and sheet all stale), and rerunning the exam is a Designer run his card did not grant. Re-parked; no judge or Designer run spent."
+ },
+ "parks": [
+  {
+   "at": "2026-11-13T07:52:37Z",
+   "kind": "ceiling",
+   "lifted_at": "2026-11-13T07:53:23Z",
+   "quick_look": true,
+   "summary": "park_summary.md",
+   "why": "the judge-and-rework loop has spent 88694771 tokens since 2026-11-12T08:18:58Z, past its ceiling of 8000000 (2x the cap)"
+  }
+ ],
  "pending_decision": "Coverage judge not_covered (19 gaps, all return_to 3, none needs the owner: each is settled by a record decision). Rewrite scenes/tree/sheet per coverage_verdict.json gaps: limit the 40-throw cap to pawns or remove it (d_c_all_fly) and stage more goods than the cap; showcase 1 is his one flagship scene only, with one named weapon, an in-line heavy stack and an expectation on the covered pit cell; narrow no_careless_fall to d_pit_only_forced (enemies may fall into a concealed pit by walking); add leaves and sheet lines for the shipped behaviours the sheet omits (who is spared, recovery immunity, per-weapon caps, hose drop, doors and deep water stopping a throw, explosions only); give wall_stop, shield, gas-chain, containers, teleport trace, frame probe, hose drop, settings and the walk real controls or scenes; fill record.json script_audit. Also set tree.json root_state VALIDATED and root_hash to the walk's (gate refusal). Then re-run the stage 4 exam on refrozen scenarios and the judge.",
  "recovery": [],
  "results": [
@@ -1318,5 +1354,6 @@
  "running": null,
  "schema": 1,
  "stage": 5,
- "status": "ready"
+ "status": "waiting_owner",
+ "waiting_owner_feed": "86c84c506204ffd0e76dfe061854a595cd239a4a8282a5a33a9fe9e0a7c64997"
 }
