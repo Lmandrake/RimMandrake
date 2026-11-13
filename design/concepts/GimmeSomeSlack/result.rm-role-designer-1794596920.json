@@ -1,0 +1,6 @@
+{
+ "run": "rm-role-designer-1794596920",
+ "stage": 4,
+ "outcome": "done",
+ "summary": "Cold Reader exam PASS against the current tree and sheet: 26 frozen scenarios (16 Examiner, 10 Challenger), both Readers right on 25; the one miss (c1) is a scenario with no stated outcome, both Readers applying floor_end_shocks_crossers correctly. accept_where_reject_core 0. Control on tap_steals_and_costs_goodwill missed e16 and c8; a first control on statics_clear_between_games did not miss and is kept on record."
+}

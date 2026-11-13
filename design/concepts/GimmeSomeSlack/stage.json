@@ -256,10 +256,66 @@
     "ref": "run rm-role-designer-1794593995",
     "stage": 3,
     "tokens": 580592
+   },
+   {
+    "at": "2026-11-13T18:58:19Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794595998",
+    "stage": 3,
+    "tokens": 410324
+   },
+   {
+    "at": "2026-11-13T19:12:05Z",
+    "kind": "helper",
+    "ref": "examiner a026b5deb2b08439e",
+    "stage": 4,
+    "tokens": 41332
+   },
+   {
+    "at": "2026-11-13T19:12:05Z",
+    "kind": "helper",
+    "ref": "challenger a7d2f13dafebb2b74",
+    "stage": 4,
+    "tokens": 29901
+   },
+   {
+    "at": "2026-11-13T19:13:03Z",
+    "kind": "helper",
+    "ref": "reader1 ab9fbfe13bff42e24",
+    "stage": 4,
+    "tokens": 31913
+   },
+   {
+    "at": "2026-11-13T19:13:03Z",
+    "kind": "helper",
+    "ref": "reader2 a1d98d5e94e8422f6",
+    "stage": 4,
+    "tokens": 28357
+   },
+   {
+    "at": "2026-11-13T19:13:03Z",
+    "kind": "helper",
+    "ref": "control1 af59fa4a88e821daf",
+    "stage": 4,
+    "tokens": 28523
+   },
+   {
+    "at": "2026-11-13T19:13:48Z",
+    "kind": "helper",
+    "ref": "control2 ab77bf79eddb6cb59",
+    "stage": 4,
+    "tokens": 35662
+   },
+   {
+    "at": "2026-11-13T19:31:15Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794596920",
+    "stage": 4,
+    "tokens": 28791
    }
   ],
   "reserve": 60000,
-  "spent": 9273559
+  "spent": 9908362
  },
  "history": [
   {
@@ -615,6 +671,42 @@
    "stage": 3,
    "what": "retry",
    "why": "run rm-role-designer-1794593995 result rejected: contradictions[coverage_gaps_for_stage_3]: source path design/concepts/GimmeSomeSlack/coverage_fixes.json does not exist"
+  },
+  {
+   "at": "2026-11-13T18:53:27Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "9273559 of 4000000 spent; run rm-role-designer-1794595998 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-13T18:53:27Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1794595998, stage 3, budget 500000"
+  },
+  {
+   "at": "2026-11-13T18:58:20Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run rm-role-designer-1794595998: stage 3 done"
+  },
+  {
+   "at": "2026-11-13T19:08:56Z",
+   "stage": 4,
+   "what": "over_budget",
+   "why": "9683883 of 4000000 spent; run rm-role-designer-1794596920 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-13T19:08:56Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run rm-role-designer-1794596920, stage 4, budget 500000"
+  },
+  {
+   "at": "2026-11-13T19:31:15Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designer-1794596920: stage 4 done"
   }
  ],
  "item": "GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS",
@@ -1086,12 +1178,59 @@
    "why": [
     "contradictions[coverage_gaps_for_stage_3]: source path design/concepts/GimmeSomeSlack/coverage_fixes.json does not exist"
    ]
+  },
+  {
+   "at": "2026-11-13T18:58:19Z",
+   "inputs": {
+    "exam": "3f65dad9cfb1f9f0a029aebf9913f3e689e56c82cfa6822dbed8a96745439ba7",
+    "floor": "34728591a021769d45f3e49a33497d4bdc2c27d2b6644948be328512d8335229",
+    "owner": "b1b64cc7460cefdd50f74b0d01c96046c251c03c713524261da932462d91b724",
+    "root": "5c921cf30165ed793e5b840aa662ce66ddc70d2c09639a665313c476d33b14ef",
+    "scenes": "7d0a625b00ce5d9805592d848cf81ded61da5e9fddff5ec92730286a71bf7b58",
+    "sheet": "3a7d223aa9c261d04fe4c11c955ee287623b532dae07d7502853d6c286cd20f1",
+    "tree": "eb1981b88959b758a00f6984241c719cf574c0fa185a26884940b817b905c1e3"
+   },
+   "manifest": {
+    "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
+    "designer_write.md": "96e624c1abcd0fe2c5b6a839b820d82e91c09f920dbe20fd0878edd03dfef450"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1793766796952956687"
+   ],
+   "run": "rm-role-designer-1794595998",
+   "stage": 3,
+   "summary": "The five coverage gaps stay fixed as the previous run wrote them (its rejection cited coverage_fixes.json, which landed in 3469b85d8f). Added sc_no_sharp_turn, the acceptance scene the leaf no_unforced_sharp_turn needs since his 2026-11-13 card put it back (bends probe over every strand in all four looks, planted hairpins as control); entry point scene_no_sharp_turn under GSS_SCENES_BUILD_EVERY_CORD_A_FOIL. Gate A lint PASS, showcase set accepted."
+  },
+  {
+   "at": "2026-11-13T19:31:15Z",
+   "inputs": {
+    "exam": "ee149897230d3a8b1636260bb2edd430a4d49796ad34f8e4e863fc9729a773d0",
+    "floor": "34728591a021769d45f3e49a33497d4bdc2c27d2b6644948be328512d8335229",
+    "owner": "b1b64cc7460cefdd50f74b0d01c96046c251c03c713524261da932462d91b724",
+    "root": "5c921cf30165ed793e5b840aa662ce66ddc70d2c09639a665313c476d33b14ef",
+    "scenes": "7d0a625b00ce5d9805592d848cf81ded61da5e9fddff5ec92730286a71bf7b58",
+    "sheet": "3a7d223aa9c261d04fe4c11c955ee287623b532dae07d7502853d6c286cd20f1",
+    "tree": "eb1981b88959b758a00f6984241c719cf574c0fa185a26884940b817b905c1e3"
+   },
+   "manifest": {
+    "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
+    "designer_exam.md": "9892f91253ca15581c15f6f64d211a2275f345d0e13e0200dcda9c9f8004e07a"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1793766796952956687"
+   ],
+   "run": "rm-role-designer-1794596920",
+   "stage": 4,
+   "summary": "Cold Reader exam PASS against the current tree and sheet: 26 frozen scenarios (16 Examiner, 10 Challenger), both Readers right on 25; the one miss (c1) is a scenario with no stated outcome, both Readers applying floor_end_shocks_crossers correctly. accept_where_reject_core 0. Control on tap_steals_and_costs_goodwill missed e16 and c8; a first control on statics_clear_between_games did not miss and is kept on record."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 3,
+ "stage": 5,
  "status": "ready",
  "waiting_owner_feed": "b1b64cc7460cefdd50f74b0d01c96046c251c03c713524261da932462d91b724"
 }
