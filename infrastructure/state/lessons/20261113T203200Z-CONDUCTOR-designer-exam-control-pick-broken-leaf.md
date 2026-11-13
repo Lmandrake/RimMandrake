@@ -1,0 +1,2 @@
+Designer exam control: pick a broken_leaf whose rule no other leaf restates, and make sure some scenario's verdict hangs on that leaf alone. GSS 2026-11-13: removing floor_end_shocks_crossers never missed (shock_reach_setting and the root restate it), and an over-cutting owner-change scenario was caught by spans_above_everything. Ask the Examiner for single-leaf scenarios before freezing.
+home: src/RimMandrake/rimflow/roles/designer_exam.md
