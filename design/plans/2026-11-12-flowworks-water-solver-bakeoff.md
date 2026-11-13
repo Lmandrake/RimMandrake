@@ -174,7 +174,8 @@ Wet load per size, from the 70-save census on 250 maps (river map 13,271 wet, co
 - **Frames**: one depth-plus-current image per scene at fixed times, all arms side by side, judged blind by an rm-judge pass;
   only a contested scene goes to the owner.
 
-### 5.4 Pass bars (proposed; the cost lines are guesses until stage C)
+### 5.4 Pass bars (proposed; the cost lines are measured for local-inertial by stage C: decision doc section 4a and
+`~/dev/MandrakeModels/results/stagec.md`; owner card 2026-11-12: 325 binding, 400 measured)
 | Bar | Line |
 |---|---|
 | Books | 0 dL over 100,000 pulses and all 1,000 fuzz sequences; no square ever below empty |

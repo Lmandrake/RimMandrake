@@ -3,7 +3,9 @@
 Item: `RIMMANDRAKE_SWEEP_WATER_SOLVERS_ON_BIG_MAPS`. Inputs: the plan `design/plans/2026-11-12-flowworks-water-solver-bakeoff.md`
 (published 19e26c039250), the MandrakeModels bakeoff (`~/dev/MandrakeModels`, github Lmandrake/MandrakeModels, results at
 fad3ee1 and later: `results/results.md`, `results/crosscheck.md`), the rivers report
-`design/specs/2026-11-12-flowworks-rivers-design.md`, and the owner's rulings of 2026-11-12 quoted in section 2.
+`design/specs/2026-11-12-flowworks-rivers-design.md`, the owner's rulings of 2026-11-12 quoted in section 2, and the stage C
+C# measurement (`~/dev/MandrakeModels/results/stagec.md`, MandrakeModels f61afdb; item
+`RIMMANDRAKE_TIME_LOCAL_INERTIAL_IN_CSHARP_FIGURES_STILL_GUESSES`).
 Owner questions: `D:\ClaudeWork\rimmandrake\conductor\water_models_20261112\QUESTIONS.md`.
 
 Tags: [measured] = run by a harness and readable on disk; [guess ~N%] = my estimate with rough confidence.
@@ -22,10 +24,13 @@ Tags: [measured] = run by a harness and readable on disk; [guess ~N%] = my estim
    the MandrakeModels base class and act identically under every solver [measured: `src/mandrakemodels/base.py`
    `apply_forcing`]; the solver only decides how fast their effect spreads.
 5. **Cut:** game cellular automaton, WCA2D (flood fronts 10 to 30 times late, worse on bigger maps), kinematic wave (no
-   backwater), both diffusion-wave CG and explicit forms (cost), lattice-Boltzmann shallow water (cost). Virtual pipes is
-   kept only as the cheap fallback if the C# timing of local-inertial misses the bar.
-6. **Next:** a C# console timing of local-inertial on integer decilitres at 250 and 325 (stage C), then the owner's water
-   clock answer fixes the pass bar.
+   backwater), both diffusion-wave CG and explicit forms (cost), lattice-Boltzmann shallow water (cost). Virtual pipes was
+   kept only as the cheap fallback if the C# timing of local-inertial missed the bar; it did not miss it (section 4a).
+6. **Stage C measured it:** on RimWorld's own Mono, local-inertial on integer decilitres costs **0.163 ms per tick on a
+   realistic 325 river map** (bar 0.5: pass), 1.45 ms on the 50%-wet stress (bar 2: pass), books exactly 0 dL [measured,
+   section 4a]. Two things the game build must carry: each 12-tick recompute splits into equal substeps (a ragged split makes
+   the scheme slosh), and the recompute's work is spread over its 12 ticks (it is a spike otherwise). Settled water does not
+   sleep yet, so the settled bar fails.
 
 ## 2. The owner's rulings this has to obey
 
@@ -77,30 +82,59 @@ What follows from them for the solver:
 ## 4. The survivors, side by side
 
 Cost columns are the median over the 9 water scenes of the bakeoff, full grid (every square stepped, wet or dry, no sleeping),
-one water-second per 60 ticks. Python is [measured] numpy on this machine under shared load (load 7 to 34 on 14 cores).
-C# is MandrakeModels' projection: numpy time divided by the measured numpy/numba ratio, times a Mono factor of 1.5 to 4
-[guess ~50% that the true C# figure lands inside the range].
+one water-second per 60 ticks. Python is [measured] numpy on this machine under shared load (load 7 to 34 on 14 cores). Only
+local-inertial has been ported to C#; its measured C# cost is section 4a. No other solver has a C# figure.
 
-| solver | Python ms/tick 250 | 325 | C# ms/tick 250 | 325 | dam-break water vs referee | volume |
-|---|---|---|---|---|---|---|
-| local_inertial | 0.40 | 0.73 | 0.11 to 0.30 | 0.21 to 0.55 | 1.48 x (early) | exact [measured] |
-| swe_hll | 1.25 | 2.79 | 0.21 to 0.56 | 0.47 to 1.25 | 1.00 (reference; ANUGA agrees to 0.2%) | exact |
-| pipes | 0.54 | 1.00 | 0.02 to 0.05 | 0.04 to 0.10 | 1.59 x | exact |
-| diffusion_wave_implicit_adi | 1.38 | 3.02 | 0.23 to 0.62 | 0.51 to 1.35 | 1.55 x | exact |
-| wca2d (cut) | 0.44 | 0.86 | 0.07 to 0.20 | 0.14 to 0.39 | 0.09 x (late) | exact |
-| ca_game (cut) | 0.06 | 0.12 | 0.01 to 0.03 | 0.02 to 0.06 | 0.03 x (late) | exact |
+| solver | Python ms/tick 250 | 325 | dam-break water vs referee | volume |
+|---|---|---|---|---|
+| local_inertial | 0.40 | 0.73 | 1.48 x (early) | exact [measured] |
+| swe_hll | 1.25 | 2.79 | 1.00 (reference; ANUGA agrees to 0.2%) | exact |
+| pipes | 0.54 | 1.00 | 1.59 x | exact |
+| diffusion_wave_implicit_adi | 1.38 | 3.02 | 1.55 x | exact |
+| wca2d (cut) | 0.44 | 0.86 | 0.09 x (late) | exact |
+| ca_game (cut) | 0.06 | 0.12 | 0.03 x (late) | exact |
 
 Sources: `~/dev/MandrakeModels/results/results.csv` (medians computed from it), `results.md` "Flood timing" and
-`crosscheck.md`; refreshed after the pit-dig and moat rows were re-run (MandrakeModels c9c5ed1). Pipes looks cheapest in C# because its numpy/numba ratio was 39 against 5.3 for local-inertial
-[measured, `results.md` probe table]: the numba local-inertial kernel is the less optimised one [guess ~60%], so the
-true gap is probably smaller.
+`crosscheck.md`; refreshed after the pit-dig and moat rows were re-run (MandrakeModels c9c5ed1).
 
-**Realistic load, not full grid.** A river map at 250 has about 13,300 wet squares [measured: 70-save census in the
-plan], 21% of the grid. Stepping wet squares only, local-inertial in C# is about 13,300 × 18 ns (numba, measured) × 1.5 to 4
-(Mono) × 0.088 steps per tick ≈ **0.03 to 0.09 ms per tick at 250**, and about **0.04 to 0.11 at 325** with 17,300 wet
-squares [guess ~50%; the 325 wet count is itself a guess ~60%]. Deep water shortens the step: a 6 m lake needs 0.11 s
-steps, a 50 m lake 0.04 s (about 3 times the work of the 6 m lake) [measured arithmetic, CFL 0.6]; capping depth at 2 m in the
-wave-speed term gave the same answer in the rivers twin [measured, 01_designs], and settled lakes sleep.
+Deep water shortens the step: a 6 m lake needs 0.11 s steps, a 50 m lake 0.04 s (about 3 times the work of the 6 m lake)
+[measured arithmetic, CFL 0.6]; capping depth at 2 m in the wave-speed term gave the same answer in the rivers twin
+[measured, 01_designs].
+
+### 4a. Local-inertial in C#, measured (stage C, 2026-11-13)
+
+A standalone console port (`~/dev/MandrakeModels/csharp/`, not mod code): water an int per square in dL, one double discharge
+and a sub-dL rounding residue per face, integer donor limiter, every face moving whole dL once with opposite signs. Clock as
+the owner chose it: a recompute every 12 ticks (0.2 water-s), in CFL substeps. Wet-only stepping in 16x16 blocks gives
+bitwise the same water as the full grid. Runtime: **RimWorld's own Mono** (the game's `mono-2.0-bdwgc.dll` and
+`RimWorldWin64_Data\Managed`, "Mono 6.13.0"), hosted outside Unity, single thread [measured]; in-game cost is likely within
++30% of these figures because the game's main thread shares the cache [guess ~70%].
+
+Fidelity against the Python reference (tolerances fixed before the first run): 40 of 40 checkpoint rows pass on river,
+lake at rest, pit dig, dam break and swell at 128 and 250; worst relative depth difference 1e-4, books 0 dL [measured;
+planted faults in Manning and theta turn 16 and 32 rows red].
+
+Mean ms per tick, wet-only, Unity Mono (the recompute's cost over its 12 ticks; p95 within 15% of the mean) [measured]:
+
+| load | wet squares 250 / 325 / 400 | 250 | 325 (binding) | 400 | bar (plan 5.4) |
+|---|---|---|---|---|---|
+| realistic river map (sized to the 70-save census) | 13,178 / 17,121 / 21,094 | 0.123 | **0.163 pass** | 0.206 | 0.5 ms |
+| 50%-wet stress, up to 10 m deep, swelling edge | 32,462 / 53,853 / 79,656 | 0.855 | **1.452 pass** | 2.154 (over) | 2 ms |
+| settled lake (nothing moving; no sleeping built) | 24,873 / 38,553 / 63,314 | 0.573 | **0.859 fail** | 1.376 | 0.05 ms |
+| swell scene (79% wet, 8 m) | 48,564 / 83,686 / 126,113 | 1.340 | 2.316 | 3.585 | none |
+
+- **Equal substeps, or it sloshes.** Splitting a recompute as full CFL steps plus a short remainder (0.17 s, then 0.03 s)
+  made the lake at rest slosh 2.1 m within 20 water-s, in Python float64 as well as in C#; with equal substeps the C# lake moves
+  0.2 mm over 10,000 water-s [measured, `D:\ClaudeWork\mandrakemodels\stagec\drift\`].
+- **Fixed-point stability passes:** books 0 dL over 100,000 recomputes (river at 250, 20,000 water-s) and over 1,000 fuzz
+  sequences (50,037 random digs, earth dams, walls and demolitions); no square ever below empty; swell, dam break, pit dig
+  and the stress scene stay finite for 2,000 water-s [measured]. The fuzz found and fixed one bug (forcing wrote into a square
+  walled over a source, which a demolish then deleted).
+- **The recompute is a spike:** unspread, its whole cost lands in one tick: 1.9 ms on the 325 river map, 17 to 20 ms on the
+  325 stress load (a whole 16.7 ms frame) [measured]. The game build must spread each recompute's substeps or blocks over the
+  12 ticks.
+- **Mono is about 3 times .NET 8** on this kernel (2.1 to 4.9 by scene; .NET Framework 4.8 is 2% to 38% slower than .NET 8)
+  [measured]; tightening the face loop for Mono (no bounds checks or edge tests, cheaper cube root) gained about 5%.
 
 What each looks like (stills at 128, `D:\ClaudeWork\mandrakemodels\compare\stills\`, looked at 2026-11-12, notes in
 `LOOKED.md` of the output folder):
@@ -128,6 +162,9 @@ rival: the picture budget and the decilitre ledger stay; the printed current and
 
 ## 5. The water clock (first owner question)
 
+Answered by card 2026-11-12 22:52 PST (as relayed in the stage C brief): the natural on-screen clock, recomputed every 12 ticks,
+with the slow terms on the calendar.
+
 Two speeds anchor the question [measured arithmetic]: at game speed 1 the game runs 60 ticks per real second, and the
 calendar runs 60,000 ticks per 86,400 game seconds (1.44 game seconds per tick). Water that moves at a natural pace on
 screen therefore runs **86 times slower than the calendar**.
@@ -135,18 +172,22 @@ screen therefore runs **86 times slower than the calendar**.
 - **Eye-speed flow, calendar budget (recommended).** Flow runs at one water-second per 60 ticks, so water pours, spreads and
   drains at the pace the eye expects at speed 1 (and faster at speed 2 and 3, like everything else). In calendar terms a
   basin that would fill in 10 real minutes takes about 0.6 game days. Evaporation, groundwater, edge refill, rain, season and
-  drought follow the calendar, booked once per pulse per body. Cost: section 4, about 0.03 to 0.11 ms per tick at 250 to 325
-  for local-inertial on wet squares [guess ~50%]. Between solver steps (one every ~12 ticks) the player sees the last state;
+  drought follow the calendar, booked once per pulse per body. Cost: section 4a, 0.123 ms per tick at 250 and 0.163 at 325
+  for local-inertial on a realistic river map, wet squares only, on RimWorld's Mono [measured]. Between solver steps (one every
+  ~12 ticks) the player sees the last state;
   terrain looks change only when a square crosses a depth band, within today's 200-writes-per-tick budget.
 - **Calendar flow.** A game hour of flow per game hour: a dug canal fills its moat in game minutes, which at speed 1 looks
-  like fast-forward. Cost about 86 times the above: 3 to 7 ms per tick for a river map at 250 [guess ~50%], over the
-  0.5 ms line. Only an implicit solver with long steps could approach it, and those smear timing.
+  like fast-forward. Cost about 86 times the above: about 11 ms per tick for a river map at 250 and 14 at 325 [measured cost
+  times 86, arithmetic], far over the 0.5 ms line. Only an implicit solver with long steps could approach it, and those smear timing.
 - **Pulsed levels (today's shipped way).** Solve once per 250-tick pulse and jump to the result: cheapest, but water moves in
   visible steps every ~4 real seconds and has no current between pulses.
 - **Automatic slow-down (a safety valve, not a choice).** Whichever clock he picks, under heavy load the flow clock slows
   rather than the frame rate dropping (his own "only slowly updating" idea, plan option 6.1c). Recommended as built-in.
 
 ## 6. Other open choices (in QUESTIONS.md, recommendation first)
+
+Answered by the same card 2026-11-12 22:52 PST: swell plus drawn chop (no full shallow water in game); 325 must pass and 400
+is measured but not binding; groundwater both ways.
 
 - **Waves:** local-inertial already carries swell and its diffraction through a breakwater gap, much like the reference
   (swell still at 27 s, looked at 2026-11-12); full shallow water adds breaking bores and hydraulic jumps at about 3 to 4
@@ -157,9 +198,8 @@ screen therefore runs **86 times slower than the calendar**.
 
 ## 7. What is not yet known
 
-- C# cost: every C# figure here is a projection; the stage-C console timing on integer decilitres is the next measurement.
-- Fixed-point stability of local-inertial: UNMEASURED.
-- The 400 row: full-grid medians are in `results.md` (local-inertial 1.49 Python ms/tick, C# 0.42 to 1.12 guess); a
-  wet-only figure at 400 is not computed.
+- In-game cost: section 4a ran RimWorld's Mono outside Unity; the in-game figure is UNMEASURED.
+- Settled water sleeping and spreading a recompute over its 12 ticks are not built; the settled bar fails until the first is.
+- No solver other than local-inertial has been ported to C#.
 - All nine water scenes were rendered at 128 and looked at after the fixes; the other-physics pages were not re-rendered.
 - Python timings were taken on a loaded machine; an idle re-time is owed in MandrakeModels.
