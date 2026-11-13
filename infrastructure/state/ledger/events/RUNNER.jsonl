@@ -6721,3 +6721,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_STEVE_SEATS_RESTORE_QTWK","result":"kept","detail":"sweep: running again","ts":"2026-11-13T13:18:04Z","tsn":1794575884599898227}
 {"seat":"RUNNER","event":"note","id":"OPS_STEVE_SEATS_RESTORE_QTWK","text":"ops_watch: WORSE at 2026-11-13T13:25:03Z: 14.9 -> 29.9 min a Steve seat has been absent, the rule's step is {\"factor\": 2}","ts":"2026-11-13T13:25:13Z","tsn":1794576313582727680}
 {"seat":"RUNNER","event":"note","id":"OPS_STEVE_SEATS_RESTORE_QTWK","text":"ops_watch: WORSE at 2026-11-13T14:33:23Z: 29.9 -> 98.3 min a Steve seat has been absent, the rule's step is {\"factor\": 2}","ts":"2026-11-13T14:33:33Z","tsn":1794580413794529683}
+{"seat":"RUNNER","event":"note","id":"STEVE_LANE_UNSTICK_BRAKED_UNOWNED_0A05","text":"steward: started one capped headless BENCH session (budget $5, 2700 s cap); log /mnt/d/ClaudeWork/rimmandrake/testq/wake/20261113T151343Z.log","ts":"2026-11-13T15:16:03Z","tsn":1794582963028065188}
