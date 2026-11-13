@@ -6818,3 +6818,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_NIGHTLY_RED_DIAGNOSE_LNTM","result":"kept","detail":"sweep: running again","ts":"2026-11-13T18:33:16Z","tsn":1794594796124579223}
 {"seat":"RUNNER","event":"live","id":"OPS_ROLE_DIAGNOSE_STARVED_AT_FOUR_RUNS","result":"kept","detail":"sweep: running again","ts":"2026-11-13T18:33:21Z","tsn":1794594801920822111}
 {"seat":"RUNNER","event":"live","id":"OPS_ROLE_SHRINK_RUN_COST","result":"kept","detail":"sweep: running again","ts":"2026-11-13T18:33:29Z","tsn":1794594809193524119}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_CONDUCTOR","result":"kept","detail":"sweep: running again","ts":"2026-11-13T18:48:04Z","tsn":1794595684724957373}
