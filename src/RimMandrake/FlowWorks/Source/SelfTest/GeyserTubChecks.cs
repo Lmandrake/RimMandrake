@@ -48,6 +48,43 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_GeyserTubMath.InReach(0.5f, 0.5f, 2.5f), "a footprint cell is in reach");
                 Assert(!RM_GeyserTubMath.InReach(2.5f, 0.5f, 2.5f), "can-fail: past 2.5 is out (exclusive)");
             });
+            Case("GeyserTub_heat_only_through_the_water_over_the_vent", () =>
+            {
+                // RIMMANDRAKE_RESTRICT_HEAT_TO_GEYSER_BENEATH_PIT_WATER_ONLY: a 10 x 6 window; pit A is x 0..3 (all z), pit B is
+                // x 5..9 (all z); column x 4 is undug bank. The vent's 2x2 sits at x 1..2, z 2..3.
+                const int W = 10, H = 6;
+                bool[] Pits(bool a, bool b)
+                {
+                    var w = new bool[W * H];
+                    for (int z = 0; z < H; z++)
+                        for (int x = 0; x < W; x++)
+                            w[z * W + x] = (x <= 3 && a) || (x >= 5 && b);
+                    return w;
+                }
+                int[] vent = { 2 * W + 1, 2 * W + 2, 3 * W + 1, 3 * W + 2 };
+                int Count(bool[] r, int x0, int x1) { int n = 0; for (int z = 0; z < H; z++) for (int x = x0; x <= x1; x++) if (r[z * W + x]) n++; return n; }
+                bool[] both = RM_GeyserTubMath.PoolRegion(W, H, Pits(true, true), vent);
+                Assert(Count(both, 0, 3) == 24, "the vent's own pit is heated, every square of it (got " + Count(both, 0, 3) + ")");
+                Assert(Count(both, 5, 9) == 0, "can-fail: the next pit across one square of bank is never heated, however near (got " + Count(both, 5, 9) + ")");
+                Assert(!both[2 * W + 4], "the bank itself is not heated");
+                // the owner's picture (image 6): the vent stands dry beside a full pit
+                int[] ventOnBank = { 2 * W + 4, 3 * W + 4 };
+                bool[] dryVent = RM_GeyserTubMath.PoolRegion(W, H, Pits(true, true), ventOnBank);
+                Assert(Count(dryVent, 0, 9) == 0, "can-fail: a vent under no water heats nothing, though water is beside it");
+                bool[] emptyPit = RM_GeyserTubMath.PoolRegion(W, H, Pits(false, true), vent);
+                Assert(Count(emptyPit, 0, 9) == 0, "can-fail: the vent's pit dry, the wet pit next door stays cold");
+                // a channel joining A to B through the bank (x 4, z 5) joins them: one body of water over the vent
+                bool[] joined = Pits(true, true);
+                joined[5 * W + 4] = true;
+                Assert(Count(RM_GeyserTubMath.PoolRegion(W, H, joined, vent), 5, 9) == 30, "water joined to the vent's water is the same pool");
+                // corners do not join (edge to edge only)
+                bool[] diag = new bool[W * H];
+                diag[0] = true; diag[W + 1] = true;
+                Assert(Count(RM_GeyserTubMath.PoolRegion(W, H, diag, new[] { 0 }), 0, 9) == 1, "can-fail: a corner touch is not a join");
+                Assert(RM_GeyserTubMath.PoolRegion(W, H, null, vent).Length == W * H && Count(RM_GeyserTubMath.PoolRegion(W, H, new bool[3], vent), 0, 9) == 0,
+                    "null or mismatched grids heat nothing");
+                Assert(RM_GeyserTubMath.PoolRegion(W, H, Pits(true, true), null).Length == W * H, "no vent: nothing, no throw");
+            });
             Case("GeyserTub_afterglow_lasts_a_day_and_a_quarter", () =>
             {
                 Assert(Math.Abs(RM_GeyserTubMath.AfterglowDays(0.5f, 0.4f) - 1.25f) < 1e-4f, "can-fail: 0.5 falling 0.4 a day is 1.25 days");

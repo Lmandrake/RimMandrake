@@ -179,8 +179,62 @@ namespace RimMandrake.FlowWorks
 			return true;
 		}
 
-		/// <summary>The cells of an open pool <paramref name="p"/> could soak in: in reach of the vent's centre, dug, wet with
-		/// the pool's own liquid, standable, and not over its head unless it keeps its head up (FlowWorks drowning).</summary>
+		/// <summary>Squares past the reach the heated-water search still looks, so a pool that bends out and back is one pool.</summary>
+		private const int JoinMargin = 3;
+
+		/// <summary>RIMMANDRAKE_RESTRICT_HEAT_TO_GEYSER_BENEATH_PIT_WATER_ONLY: the squares an open vent heats: in reach of the
+		/// vent's centre, dug, wet with the vent's own liquid, and joined to the vent's own squares through that liquid
+		/// (RM_GeyserTubMath.PoolRegion). Empty unless the vent itself is under the liquid: water in another pit or a lake
+		/// beside the vent is never heated, however near.</summary>
+		public static List<IntVec3> HeatedCells(Building_SteamGeyser g, State s)
+		{
+			List<IntVec3> heated = new List<IntVec3>();
+			if (g == null || !g.Spawned || s.seat <= 0 || !s.covered || s.capped || s.fluid == null)
+			{
+				return heated;
+			}
+			Map map = g.Map;
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+			if (eng == null)
+			{
+				return heated;
+			}
+			float reach = RM_GeyserPitSettings.geyserPoolReach;
+			CellRect win = g.OccupiedRect().ExpandedBy(Mathf.CeilToInt(reach) + JoinMargin).ClipInsideMap(map);
+			int w = win.Width, h = win.Height;
+			bool[] water = new bool[w * h];
+			foreach (IntVec3 c in win)
+			{
+				int d = eng.HollowDepthAt(c);
+				if (d <= 0)
+				{
+					continue;
+				}
+				float lv = RM_UnderLiquid.NoteLevel(RM_SubmergeDraw.NoteAt(eng, c));
+				water[(c.z - win.minZ) * w + (c.x - win.minX)] = (lv > d ? d : lv) > 0f && FluidOn(map, eng, c) == s.fluid;
+			}
+			List<int> vent = new List<int>(4);
+			foreach (IntVec3 c in g.OccupiedRect())
+			{
+				if (win.Contains(c))
+				{
+					vent.Add((c.z - win.minZ) * w + (c.x - win.minX));
+				}
+			}
+			bool[] reached = RM_GeyserTubMath.PoolRegion(w, h, water, vent.ToArray());
+			Vector3 centre = g.TrueCenter();
+			foreach (IntVec3 c in win)
+			{
+				if (reached[(c.z - win.minZ) * w + (c.x - win.minX)] && RM_GeyserTubMath.InReach(c.x + 0.5f - centre.x, c.z + 0.5f - centre.z, reach))
+				{
+					heated.Add(c);
+				}
+			}
+			return heated;
+		}
+
+		/// <summary>The cells of an open pool <paramref name="p"/> could soak in: the heated water (<see cref="HeatedCells"/>),
+		/// standable, and not over its head unless it keeps its head up (FlowWorks drowning).</summary>
 		public static IEnumerable<IntVec3> SoakCells(Building_SteamGeyser g, State s, Pawn p)
 		{
 			Map map = g.Map;
@@ -189,26 +243,15 @@ namespace RimMandrake.FlowWorks
 			{
 				yield break;
 			}
-			float reach = RM_GeyserPitSettings.geyserPoolReach;
-			Vector3 centre = g.TrueCenter();
-			CellRect around = g.OccupiedRect().ExpandedBy(Mathf.CeilToInt(reach)).ClipInsideMap(map);
-			foreach (IntVec3 c in around)
+			foreach (IntVec3 c in HeatedCells(g, s))
 			{
-				if (!RM_GeyserTubMath.InReach(c.x + 0.5f - centre.x, c.z + 0.5f - centre.z, reach) || !c.Standable(map))
+				if (!c.Standable(map))
 				{
 					continue;
 				}
 				int d = eng.HollowDepthAt(c);
-				if (d <= 0)
-				{
-					continue;
-				}
 				float lv = RM_UnderLiquid.NoteLevel(RM_SubmergeDraw.NoteAt(eng, c));
 				float w = (lv > d ? d : lv) * RM_UnderLiquid.Notch;
-				if (!(w > 0f) || FluidOn(map, eng, c) != s.fluid)
-				{
-					continue;
-				}
 				if (p != null && RM_Drowning.HeadUnder(p, w) && !RM_Drowning.KeepsHeadUp(p, c, w))
 				{
 					continue;
@@ -300,9 +343,22 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
-		/// <summary>True when <paramref name="c"/> is in the reach of a sunk, uncapped geyser (FreezeManager: it never freezes).</summary>
+		/// <summary>The heated squares of each geyser (RM_GeyserPit.HeatedCells), kept for <see cref="HeatedFor"/> ticks.</summary>
+		private readonly Dictionary<int, HashSet<IntVec3>> heated = new Dictionary<int, HashSet<IntVec3>>();
+		private int heatedAt = -1;
+		private const int HeatedFor = 250;
+
+		/// <summary>True when <paramref name="c"/> is water an uncapped geyser beneath it heats (FreezeManager: it never
+		/// freezes). RIMMANDRAKE_RESTRICT_HEAT_TO_GEYSER_BENEATH_PIT_WATER_ONLY: the vent must be under that water, never
+		/// merely near it.</summary>
 		public bool Warmed(IntVec3 c)
 		{
+			int now = Find.TickManager.TicksGame;
+			if (heatedAt < 0 || now < heatedAt || now - heatedAt >= HeatedFor)
+			{
+				heated.Clear();
+				heatedAt = now;
+			}
 			for (int i = 0; i < geysers.Count; i++)
 			{
 				Building_SteamGeyser g = geysers[i];
@@ -312,11 +368,16 @@ namespace RimMandrake.FlowWorks
 				}
 				Vector3 ctr = g.TrueCenter();
 				float dx = c.x + 0.5f - ctr.x, dz = c.z + 0.5f - ctr.z;
-				if (dx * dx + dz * dz > 25f || !RM_GeyserTubMath.InReach(dx, dz, RM_GeyserPitSettings.geyserPoolReach))
+				if (dx * dx + dz * dz > 25f)
 				{
-					continue;
+					continue;   // past the widest reach (4.5)
 				}
-				if (RM_GeyserPit.Read(g).seat > 0)
+				if (!heated.TryGetValue(g.thingIDNumber, out HashSet<IntVec3> set))
+				{
+					set = new HashSet<IntVec3>(RM_GeyserPit.HeatedCells(g, RM_GeyserPit.Read(g)));
+					heated[g.thingIDNumber] = set;
+				}
+				if (set.Contains(c))
 				{
 					return true;
 				}

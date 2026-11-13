@@ -136,14 +136,19 @@ as our own defaults. If a player also runs that mod, both work: its building is 
 - **The liquid is not made hot.** No `RM_HotLiquid` patch, no scald, no change of FluidDef. Water over a geyser stays
   water. Boiling water poured in is still boiling water and still burns through its own terrain (SCALD rule: no
   burn immunity for free).
-- **It does not freeze:** the footprint and the tub reach never freeze while the geyser is uncovered by a generator,
-  like vanilla's `HotSpring` (`canFreeze false`): a postfix on vanilla `FreezeManager.CanFreeze` (the gate every freeze
-  roll and spread reads) answers false in the reach of a sunk, uncapped geyser; no new freezing rule.
+- **It does not freeze:** the heated water (3.4 Where) never freezes while the geyser is uncapped, like vanilla's
+  `HotSpring` (`canFreeze false`): a postfix on vanilla `FreezeManager.CanFreeze` (the gate every freeze roll and spread
+  reads) answers false on those squares; no new freezing rule.
 
 ### 3.4 The hot tub
 
-- **Where:** liquid cells within `hotTubReach` (default 2.5 cells) of the geyser's centre, i.e. the 2x2 footprint and
-  the ring around it, while the geyser is covered and uncapped. The bubbles are the sign; nothing else is built.
+- **Where:** the liquid the vent is BENEATH: cells within `geyserPoolReach` (default 2.5 cells) of the geyser's centre
+  that are dug, wet with the vent's own liquid and joined edge to edge through it to the vent's own squares
+  (`RM_GeyserTubMath.PoolRegion`), while the geyser is covered and uncapped. Water in another pit or a lake beside the
+  vent is never heated, however near (owner 2026-11-13: *"I had intended that the Geyser must itself be beneath the pit
+  water itself, not just adjacent as shown here. There's no way for the heat to get from the hole into the pit water in
+  this configuration."*; RIMMANDRAKE_RESTRICT_HEAT_TO_GEYSER_BENEATH_PIT_WATER_ONLY). The bubbles are the sign; nothing
+  else is built.
 - **Which liquids [Q1, owner by card: "Water plus harmless liquids"]:** a positive field on the liquid,
   `FluidDef.bathGroup` (`RM_GeyserTubMath.BathGroup`, default `None`): `Water` on `RM_Fluid_Water` (the freshwater ladder
   rain and rivers fill pits with), `Tar`, `Oil`, `Blood`, and `Slime` on the four slimes. Water always bathes; each other

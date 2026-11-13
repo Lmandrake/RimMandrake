@@ -17,7 +17,10 @@ Reads the shipped defs and the comment-blanked C# and checks:
   13   each non-water bath has its cost (tar: filth + memory; oil: filth; blood: filth + memory; slime: slip), and every
        def a cost names exists;
   14   the bather never lies down (FlowWorks drowning reads a lying pawn by its lying height);
-  15   the generator waiver holds only on a dry sunk geyser and only on the geyser's own squares.
+  15   the generator waiver holds only on a dry sunk geyser and only on the geyser's own squares;
+  16   RIMMANDRAKE_RESTRICT_HEAT_TO_GEYSER_BENEATH_PIT_WATER_ONLY: the soak cells and the no-freeze squares are the
+       heated water only (HeatedCells: the vent covered, the vent's own liquid, joined to the vent by
+       RM_GeyserTubMath.PoolRegion), never a radius alone.
 Named MUTANTS of the real text must each turn a check red (can-fail).
 NOT proven here: anything in game (spec 4.2 L1-L8: drawing, puffs, plume, the job, hediffs, generator, save/load).
 """
@@ -198,6 +201,14 @@ def checks(t, flowworks_texts, defnames):
     check(15, "typeof(PlaceWorker_OnSteamGeyser)" in gen and "s.seat <= 0 || s.levelMetres > 0f" in gen
           and "!vent.Contains(q) && (!q.InBounds(map) || (need != null && !q.GetAffordances(map).Contains(need)))" in gen,
           "the generator waiver: dry sunk geysers only, and the geyser's own squares only")
+    heat = body_of(pit, "public static List<IntVec3> HeatedCells(")
+    soakc = body_of(pit, "public static IEnumerable<IntVec3> SoakCells(")
+    warm = body_of(pit, "public bool Warmed(IntVec3 c)")
+    check(16, heat != "" and "!s.covered" in heat and "RM_GeyserTubMath.PoolRegion(w, h, water, vent.ToArray())" in heat
+          and "FluidOn(map, eng, c) == s.fluid" in heat and "foreach (IntVec3 c in HeatedCells(g, s))" in soakc
+          and "InReach" not in soakc and "RM_GeyserPit.HeatedCells(g, RM_GeyserPit.Read(g))" in warm and "set.Contains(c)" in warm
+          and "InReach" not in warm,
+          "heat only through the water over the vent: soak cells and no-freeze read HeatedCells, never a radius alone")
     return fails
 
 
@@ -223,6 +234,12 @@ MUTANTS = [
     ("bather lies down", "job", "pawn.pather.StopDead();", "pawn.pather.StopDead(); pawn.jobs.posture = PawnPosture.LayingOnGroundFaceUp;"),
     ("generator allowed wet", "pit", "s.seat <= 0 || s.levelMetres > 0f", "s.seat <= 0"),
     ("generator waiver on the whole footprint", "pit", "!vent.Contains(q) && (", "false && ("),
+    ("soak cells by radius alone", "pit", "foreach (IntVec3 c in HeatedCells(g, s))",
+     "foreach (IntVec3 c in g.OccupiedRect().ExpandedBy(3)) if (RM_GeyserTubMath.InReach(c.x, c.z, 2.5f))"),
+    ("no-freeze by radius alone", "pit", "if (set.Contains(c))", "if (RM_GeyserTubMath.InReach(dx, dz, 2.5f))"),
+    ("any water near the vent is the pool", "pit", "bool[] reached = RM_GeyserTubMath.PoolRegion(w, h, water, vent.ToArray());",
+     "bool[] reached = water;"),
+    ("a dry vent heats", "pit", "s.seat <= 0 || !s.covered || s.capped", "s.seat <= 0 || s.capped"),
     ("a mod name leaks", "job", "public bool soaking;", "public bool soaking; // StandaloneHotSpring\n string n = \"StandaloneHotSpring\";"),
 ]
 
@@ -261,7 +278,7 @@ def main():
             fails.append("CAN-IT-FAIL: mutant '%s' passed every check" % name)
     for f in fails:
         print("FAIL", f)
-    print("PASS selftest_flowworks_geyser_tub (15 checks, %d mutants red)" % len(MUTANTS) if not fails else "FAILED %d" % len(fails))
+    print("PASS selftest_flowworks_geyser_tub (16 checks, %d mutants red)" % len(MUTANTS) if not fails else "FAILED %d" % len(fails))
     return 1 if fails else 0
 
 

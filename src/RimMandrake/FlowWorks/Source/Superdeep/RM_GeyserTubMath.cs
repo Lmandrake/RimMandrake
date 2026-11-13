@@ -79,6 +79,53 @@ namespace RimMandrake.FlowWorks
 		/// pool's reach when strictly nearer than <paramref name="reach"/>.</summary>
 		public static bool InReach(float dx, float dz, float reach) => dx * dx + dz * dz < reach * reach;
 
+		/// <summary>RIMMANDRAKE_RESTRICT_HEAT_TO_GEYSER_BENEATH_PIT_WATER_ONLY (owner 2026-11-13: "I had intended that the Geyser
+		/// must itself be beneath the pit water itself, not just adjacent ... There's no way for the heat to get from the hole
+		/// into the pit water in this configuration."): the squares of a <paramref name="width"/> x <paramref name="height"/>
+		/// window (row-major, x fastest) the vent heats: the <paramref name="water"/> squares joined edge to edge, through water,
+		/// to a vent square (<paramref name="vent"/>, window indices) that is itself under water. A vent under no water heats
+		/// nothing; water in another pit or lake, however near, is never reached. Null or mismatched input: nothing.</summary>
+		public static bool[] PoolRegion(int width, int height, bool[] water, int[] vent)
+		{
+			int n = width > 0 && height > 0 ? width * height : 0;
+			bool[] reached = new bool[n];
+			if (n == 0 || water == null || water.Length != n || vent == null)
+			{
+				return reached;
+			}
+			int[] stack = new int[n];
+			int top = 0;
+			for (int i = 0; i < vent.Length; i++)
+			{
+				int v = vent[i];
+				if (v >= 0 && v < n && water[v] && !reached[v])
+				{
+					reached[v] = true;
+					stack[top++] = v;
+				}
+			}
+			while (top > 0)
+			{
+				int c = stack[--top];
+				int x = c % width, z = c / width;
+				for (int k = 0; k < 4; k++)
+				{
+					int nx = x + (k == 0 ? 1 : k == 1 ? -1 : 0), nz = z + (k == 2 ? 1 : k == 3 ? -1 : 0);
+					if (nx < 0 || nz < 0 || nx >= width || nz >= height)
+					{
+						continue;
+					}
+					int j = nz * width + nx;
+					if (water[j] && !reached[j])
+					{
+						reached[j] = true;
+						stack[top++] = j;
+					}
+				}
+			}
+			return reached;
+		}
+
 		/// <summary>Days a hediff of <paramref name="severity"/> falling <paramref name="perDay"/> lasts.</summary>
 		public static float AfterglowDays(float severity, float perDay) => perDay > 0f ? severity / perDay : 0f;
 
