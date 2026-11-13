@@ -6,7 +6,7 @@ Proof lines: `infrastructure/state/live_proofs/RIMMANDRAKE_PROVE_GSS_SWITCHBOARD
 
 ## criteria
 A1 L2: on SteveDesktop (tier gimmesomeslack), proof_all --live --no-shots --skip-offline gives rows with 0 FAIL, and every UNMEASURED row id is named in an item
-A2 L2: gravship_scene on exits 0 (GS1 keepWiresOnGravship on: the aboard span flies)
+A2 L2: gravship_scene on exits 0 (GS1 keepWiresOnGravship on: the aboard span is kept through the launch)
 A3 L2: gravship_scene off exits 0 (GS1 keepWiresOnGravship off: the aboard span is taken down)
 
 ## 2026-11-12 carryover (detached helper)
