@@ -1,0 +1,4 @@
+## spec
+Deploy Explosive Knockback after the owner's 2026-11-12 open-storage ruling (OWNER:1794529787425697771). The repo deleted Patches/RM_Knockback_ClosedContainers.xml (it tagged RM_AncientStasisLocker_Kludged/_Refurbished/_Original and RM_EvaporativeCrock closed although they draw their contents); the game copy still has it until `deploy_custom_mods.py --mod ExplosiveKnockback --apply` runs (plan first; expect a `-` line for that patch). Not done at filing: the owner was in a live sitting.
+
+Before deploying, a full-file review is owed: code_review_status.py reads DIRTY for RM_KnockbackCompat.cs, RM_KnockbackMod.cs, RM_MapComponent_Knockback.cs, RM_KnockbackProof.cs and proof/storeroom_pit_proof.py (edits were comments, a UI label, and the proof-only IsClosed/LWM_WeaponsLocker staging).
