@@ -99,7 +99,8 @@ staged for content that never reached play, and he excised it, 5d8609cc8b.)
   the title and sign book sit in that gap. Each station is visible as a whole at one zoom level.
 - **Hazard separation.** A station that stages a hazard (fire, gas, acid, explosion) sits at least
   `hazard_gap` cells from every pen and from the free area. `hazard_gap` is set per biome from the largest scan or spread
-  radius of that biome (Pyrelands: 30, because the fire-hawk scans 18 cells). The pad's ground cannot carry the hazard
+  radius of that biome (Pyrelands: 30, set when the fire-hawk scanned 18 cells; it scans 54 since 2026-11-13, so the
+  gallery's hawk stays in a closed pen). The pad's ground cannot carry the hazard
   anywhere the station does not intend (Pyrelands: bare deep ash, which does not burn).
 - **The whole gallery is floored with the biome's common ground**, so every station is judged on the right ground.
 - **Navigation.** `--goto <n|letter|N0|F|0>` frames a station, a board, the free area or the overview, and re-sweeps

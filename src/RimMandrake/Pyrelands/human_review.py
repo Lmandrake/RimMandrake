@@ -20,7 +20,8 @@ save_keeper).
 THE MAP IS A PYRELANDS MAP. A quicktest map is not the biome (no ash ground, no burn line, no natural cover, no
 ruins), so --build runs on a Pyrelands site fixture (northstar_site.py makes them; --load loads one from the main
 menu). Rows, north to south: A ground, B fire, C plants, D build and craft, E creatures, F the campaign cast.
-Fire row B sits 36+ cells from the creature rows (the fire-hawk scans 18 cells for fire). The whole region is laid
+Fire row B sits 36+ cells from the creature rows. The fire-hawk scans 54 cells for fire, more than that gap, so it is
+shown penned (below). The whole region is laid
 with bare deep ash, which does not burn, so a fire can only walk through grass a station planted.
 
 CALM WORLD: weather Clear and locked, clock pinned to noon, incident queue cleared, Peaceful, every non-colonist
@@ -65,8 +66,8 @@ WALL_STUFF = "BlocksGranite"
 FREE = dict(rect=(150, 104, 50, 28), shelter=(156, 108, 11, 9))
 NATURAL = dict(rect=(50, 168, 40, 32))  # left untouched: the fixture's own ground round its pond (x 67-72, z 180-189)
 TITLE_XZ = (100, 101)
-FIRE_HAWK_SCAN = 18                  # Patches/RM_PyrelandsIgniters_Comps.xml scanRadius
-CREATURE_FIRE_GAP = 30               # min distance from any burning station to any pen
+FIRE_HAWK_SCAN = 54                  # PyrelandsTuning.FireHawkScanRadius (the comp's default; the patch sets none)
+CREATURE_FIRE_GAP = 30               # min distance from any burning station to any pen (inside the hawk's scan: it is penned)
 BURN_TICKS = 8000                    # vanilla Fire.TryBurnFloor turns soil to its burnedDef (deep ash) only on a fire
                                      # alive >= 7500 ticks on that cell; 4000 left station 9 as soil (L2 2026-10-15)
 NOW_TICKS = 300                      # BURNING NOW: flames established, then paused

@@ -1,5 +1,4 @@
 using RimWorld;
-using UnityEngine;
 using Verse;
 using Verse.AI;
 
@@ -23,17 +22,18 @@ namespace RimMandrake.Pyrelands
     /// that "the fire a tamed hawk spreads is still nobody's friend", so a tamed
     /// hawk carries twigs in your base exactly as a wild one does.
     ///
-    /// Direction is ahead of the blaze, away from the burn's centre (north star: "ahead of the existing blaze"; the first
-    /// version was random). Wind was NOT wired: the
-    /// engine exposes wind as a weather-driven speed
-    /// (WeatherManager/Map.windManager.WindSpeed), not a bearing, so there is no
-    /// cheap "downwind" vector to read. Saying so here rather than inventing one.
+    /// Where the ember goes (owner, 2026-11-13: "Prefers to carry it farther rather than shorter if available fuel exists."):
+    /// the farthest fuelled cell inside spreadDistance of the stolen fire, a nearer one only when no farther one is lawful, and
+    /// no sortie at all when there is no fuel in range. Equally far cells are split by distance from the burn's centre, so the
+    /// ember still lands ahead of the blaze (north star: "ahead of the existing blaze"). The pick is
+    /// RM_FireHawkKernel.FarthestFuelledDrop, fuzzed offline (family hawk). Wind was NOT wired: the engine exposes wind as a
+    /// weather-driven speed (Map.windManager.WindSpeed), not a bearing, so there is no cheap "downwind" vector to read.
     /// </summary>
     public class JobGiver_RUT_FireHawkCarryEmber : ThinkNode_JobGiver
     {
-        /// <summary>How many random bearings are tried before the hawk gives up
-        /// on this fire and waits out its cooldown.</summary>
-        private const int BearingTries = 8;
+        /// <summary>A cap on reach checks per sortie: the pick asks CanReach only of fuelled cells, farthest first, and a hawk
+        /// walled off from this many of them waits out its cooldown instead of pathing to every cell in range.</summary>
+        private const int MaxReachTries = 48;
 
         /// <summary>Younger grass than this is a scar's sprouts, not fuel worth an ember.</summary>
         private const float MinFuelGrowth = 0.25f;
@@ -57,7 +57,7 @@ namespace RimMandrake.Pyrelands
 
             // ---- THE SPREAD-ONLY GATE. No fire in range, no behaviour. ----
             Fire source = FindFireToStealFrom(pawn, comp.Props.scanRadius);
-            if (source == null)
+            if (source == null || !RM_FireHawkKernel.FireInScan(source.Position.x - pawn.Position.x, source.Position.z - pawn.Position.z, comp.Props.scanRadius))
             {
                 return null;
             }
@@ -69,7 +69,7 @@ namespace RimMandrake.Pyrelands
             // Charging it only after TryFindCellBeyondTheFire also succeeds left a
             // hawk beside a fire with no reachable/flammable cell nearby (map edge,
             // rock, water) with NO cooldown at all — CanSortieNow stays true and it
-            // re-runs FindFireToStealFrom + the 8-bearing search every think tick,
+            // re-runs FindFireToStealFrom + the drop search every think tick,
             // exactly the "fire timer with no cooldown" the comment warns against.
             comp.Notify_SortieStarted();
 
@@ -98,71 +98,56 @@ namespace RimMandrake.Pyrelands
         }
 
         /// <summary>
-        /// One cell, spreadDistance out from the fire's own position, AHEAD of the blaze: of the lawful bearings tried, the
-        /// one with standing grass and no fire beside it that lies farthest from the burn's centre, so the ember lands in
-        /// fuel the front has not reached rather than back in its own scar. With no such cell, any lawful one, as before.
-        /// Validated against vanilla's own ChanceToStartFireIn so terrain flammability, fire bulwarks and existing fires are
-        /// all respected without re-deriving any of it.
+        /// The farthest fuelled cell inside distance of the fire's own position (RM_FireHawkKernel.FarthestFuelledDrop over
+        /// GenRadial's cells, nearest first). Fuel is vanilla's own ChanceToStartFireIn (terrain flammability, fire bulwarks and
+        /// fires in the cell, none of it re-derived) plus standing grass with no fire beside it. Cost per sortie, once per
+        /// FireHawkCooldownTicks: at most GenRadial.NumCellsInRadius(18) (about 1,000) cells, each a plant lookup first, the 9-cell
+        /// fire check and ChanceToStartFireIn only on grown grass, and CanReach on at most MaxReachTries fuelled cells; in open
+        /// grass the walk stops in the outermost ring.
         /// </summary>
         private static bool TryFindCellBeyondTheFire(Pawn pawn, Fire source, int distance, out IntVec3 result)
         {
             Map map = pawn.Map;
             MapComponent_BurnLine burn = map.GetComponent<MapComponent_BurnLine>();
             IntVec3 centre = burn != null && burn.AnyBurn ? burn.BurnCenter : source.Position;
-            result = IntVec3.Invalid;
-            bool haveFuel = false;
-            float best = -1f;
-            for (int i = 0; i < BearingTries; i++)
-            {
-                float angle = Rand.Range(0f, 360f);
-                Vector3 offset = Quaternion.AngleAxis(angle, Vector3.up) * Vector3.forward * distance;
-                IntVec3 candidate = source.Position + offset.ToIntVec3();
-
-                if (candidate == source.Position || !candidate.InBounds(map))
-                {
-                    continue;
-                }
-                if (FireUtility.ChanceToStartFireIn(candidate, map) <= 0f)
-                {
-                    continue;
-                }
-                if (!pawn.CanReach(candidate, PathEndMode.OnCell, Danger.Deadly))
-                {
-                    continue;
-                }
-
-                bool fuel = HasStandingFuel(candidate, map);
-                if (haveFuel && !fuel)
-                {
-                    continue;
-                }
-                float score = candidate.DistanceToSquared(centre);
-                if ((fuel && !haveFuel) || score > best)
-                {
-                    haveFuel = fuel;
-                    best = score;
-                    result = candidate;
-                }
-            }
+            IntVec3 origin = source.Position;
+            int n = GenRadial.NumCellsInRadius(distance);
+            int pick = RM_FireHawkKernel.FarthestFuelledDrop(n,
+                i => GenRadial.RadialPattern[i].LengthHorizontalSquared,
+                i => IsFuelledDrop(origin + GenRadial.RadialPattern[i], map),
+                i => (origin + GenRadial.RadialPattern[i]).DistanceToSquared(centre),
+                i => pawn.CanReach(origin + GenRadial.RadialPattern[i], PathEndMode.OnCell, Danger.Deadly),
+                MaxReachTries);
+            result = pick < 0 ? IntVec3.Invalid : origin + GenRadial.RadialPattern[pick];
             return result.IsValid;
         }
 
-        private static bool HasStandingFuel(IntVec3 cell, Map map)
+        private static bool IsFuelledDrop(IntVec3 cell, Map map)
         {
-            Plant plant = cell.GetPlant(map);
-            if (plant == null || plant.Growth < MinFuelGrowth)
+            if (!cell.InBounds(map))
             {
                 return false;
             }
+            Plant plant = cell.GetPlant(map);
+            float growth = plant == null ? -1f : plant.Growth;
+            if (growth < MinFuelGrowth)
+            {
+                return false;
+            }
+            return RM_FireHawkKernel.FuelledDrop(true, FireUtility.ChanceToStartFireIn(cell, map) > 0f, growth, MinFuelGrowth, FireOnOrBeside(cell, map));
+        }
+
+        private static bool FireOnOrBeside(IntVec3 cell, Map map)
+        {
             for (int i = 0; i < GenAdj.AdjacentCellsAndInside.Length; i++)
             {
                 IntVec3 c = cell + GenAdj.AdjacentCellsAndInside[i];
                 if (c.InBounds(map) && c.ContainsStaticFire(map))
                 {
-                    return false;
+                    return true;
                 }
             }
-            return true;
+            return false;
         }
     }
 }

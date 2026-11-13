@@ -97,8 +97,10 @@ namespace RimMandrake.Pyrelands
         // Fire-hawk (§7c). Spread-only: every one of these is downstream of an
         // existing fire being found first.
         // ---------------------------------------------------------------
-        public const float FireHawkScanRadius = 18f;
-        public const int FireHawkSpreadDistance = 6;
+        // Owner, 2026-11-13: "make a longer carry distance x3 both in vision and then a matching distance" (was 18 and 6). The
+        // ember goes to the farthest fuelled cell inside the carry range (RM_FireHawkKernel.FarthestFuelledDrop).
+        public const float FireHawkScanRadius = 54f;
+        public const int FireHawkSpreadDistance = 18;
         public const int FireHawkCooldownTicks = 15000;   // ~6 in-game hours
         public const int FireHawkTakeEmberTicks = 90;
 

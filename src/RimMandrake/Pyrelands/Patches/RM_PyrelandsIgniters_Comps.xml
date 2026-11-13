@@ -29,16 +29,17 @@
              cooldown clock: the behaviour is the think-tree job-giver.
              🔴 Spread-only, never ex nihilo — the hawk cannot start a fire,
              only move one. That law lives in the job-giver's first gate;
-             scanRadius here is how far it may look for a fire to steal from,
-             NOT a chance to light one.
+             scanRadius (how far it may look for a fire to steal from, NOT a
+             chance to light one) and spreadDistance (how far it may carry the
+             ember) are left to the comp's defaults, PyrelandsTuning's
+             FireHawkScanRadius / FireHawkSpreadDistance, so no number lives
+             in two places.
         ============================================================ -->
         <li Class="PatchOperationAdd">
           <xpath>Defs/ThingDef[defName="RM_FireHawk"]</xpath>
           <value>
             <comps>
               <li Class="RimMandrake.Pyrelands.CompProperties_FireHawkSpread">
-                <scanRadius>18</scanRadius>
-                <spreadDistance>6</spreadDistance>
                 <startFireSize>0.35</startFireSize>
               </li>
             </comps>

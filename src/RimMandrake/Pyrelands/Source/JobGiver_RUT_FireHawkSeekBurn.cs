@@ -7,7 +7,7 @@ namespace RimMandrake.Pyrelands
 {
     /// <summary>
     /// pyre_firehawk_carries_ember in ordinary play: a fire-hawk is drawn to a burn it can see. Real fire-hawk raptors gather at a
-    /// fire front from far off; this one met a fire only by chance, because its ember job looks no further than scanRadius (18).
+    /// fire front from far off; this one met a fire only by chance, because its ember job looks no further than scanRadius (54).
     /// On map r both hawks idled 100 to 130 cells from a 190-cell burn for a whole night.
     ///
     /// Out of reach of every open-ground fire and ready for a sortie, it flies (RM_FireHawkSeekBurn requests flight) to a cell on
