@@ -54,7 +54,7 @@ namespace JawaBench.BridgeTools
         internal const int HardMaxTicks = 1200000;   // JawaBenchVitalsCore.HardAdvanceCap
 
         internal static readonly string[] Statuses = { "ok", "gone", "oob", "unbound", "error" };
-        internal static readonly string[] Spatial = { "cell.terrain", "cell.is_water", "fw.depth", "fw.fill", "fw.source",
+        internal static readonly string[] Spatial = { "cell.terrain", "cell.is_water", "fw.depth", "fw.water_m", "fw.source",
                                                       "cell.glow", "cell.roofed", "cell.temp", "cell.fire" };
         internal static readonly string[] RingSources = { "damage_log", "incident_journal", "drain_log", "letters" };
         internal static readonly string[] Reducers = { "any", "all", "count_where", "max", "min" };
@@ -77,7 +77,7 @@ namespace JawaBench.BridgeTools
         internal static readonly Dictionary<string, ProbeInfo> Probes = new Dictionary<string, ProbeInfo>
         {
             { "cell.terrain", new ProbeInfo("str", None0, None0) }, { "cell.is_water", new ProbeInfo("bool", None0, None0) },
-            { "fw.depth", new ProbeInfo("num", None0, None0) }, { "fw.fill", new ProbeInfo("num", None0, None0) },
+            { "fw.depth", new ProbeInfo("num", None0, None0) }, { "fw.water_m", new ProbeInfo("num", None0, None0) },
             { "fw.source", new ProbeInfo("bool", None0, None0) },
             { "cell.glow", new ProbeInfo("num", None0, None0) }, { "cell.roofed", new ProbeInfo("bool", None0, None0) },
             { "cell.temp", new ProbeInfo("num", None0, None0) }, { "cell.fire", new ProbeInfo("bool", None0, None0) },

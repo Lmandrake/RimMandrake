@@ -174,19 +174,19 @@ QUIET = lambda s: None  # noqa: E731
 
 # ---------------------------------------------------------------------------------------------- A. shapes
 def test_shapes():
-    t = (fw(106, 103).fill >= 1).tree
-    check(t == {"cmp": [{"p": "fw.fill", "cell": [106, 103]}, ">=", 1]}, "A1 fw fill >= 1: %s" % t)
-    t = ((fw(106, 103).fill >= 1) & ~(pawn("Human123").downed == True)).tree  # noqa: E712
-    want = {"all": [{"cmp": [{"p": "fw.fill", "cell": [106, 103]}, ">=", 1]},
+    t = (fw(106, 103).water_m >= 0.5).tree
+    check(t == {"cmp": [{"p": "fw.water_m", "cell": [106, 103]}, ">=", 0.5]}, "A1 fw water_m >= 0.5: %s" % t)
+    t = ((fw(106, 103).water_m >= 0.5) & ~(pawn("Human123").downed == True)).tree  # noqa: E712
+    want = {"all": [{"cmp": [{"p": "fw.water_m", "cell": [106, 103]}, ">=", 0.5]},
                     {"not": {"cmp": [{"p": "pawn.state", "pawn": "Human123", "f": "downed"}, "==", True]}}]}
     check(t == want, "A2 the §1.2 example tree: %s" % t)
     t = edge(cell(110, 90).is_water == False).tree  # noqa: E712
     check(t == {"edge": {"cmp": [{"p": "cell.is_water", "cell": [110, 90]}, "==", False]}, "dir": "rise"},
           "A3 edge: %s" % t)
-    t = stays(not_(changed(fw(1, 2).fill)), 600).tree
-    check(t == {"stays": {"not": {"changed": {"p": "fw.fill", "cell": [1, 2]}}}, "ticks": 600}, "A4 settled: %s" % t)
-    t = (fw(105, 102, 3, 3).fill.max() >= 1).tree
-    check(t == {"cmp": [{"p": "fw.fill", "rect": [105, 102, 3, 3], "reduce": "max"}, ">=", 1]}, "A5 rect max: %s" % t)
+    t = stays(not_(changed(fw(1, 2).water_m)), 600).tree
+    check(t == {"stays": {"not": {"changed": {"p": "fw.water_m", "cell": [1, 2]}}}, "ticks": 600}, "A4 settled: %s" % t)
+    t = (fw(105, 102, 3, 3).water_m.max() >= 0.5).tree
+    check(t == {"cmp": [{"p": "fw.water_m", "rect": [105, 102, 3, 3], "reduce": "max"}, ">=", 0.5]}, "A5 rect max: %s" % t)
     t = ((game.tick >= 5) & (game.tick >= 6) & (game.tick >= 7)).tree
     check(len(t.get("all", [])) == 3, "A6 & flattens: %s" % t)
     t = D.to_tree(cell(3, 4).roofed)
@@ -201,7 +201,7 @@ def test_shapes():
         thing("Thing_42").field("comp.charge") > 0.5, game.tick.eq(10, tol=2), cell(5, 5).glow.in_(0.1, 0.4),
         cell(1, 1, 4, 4).is_water.count_where("==", True) >= 2, map_.count("Steel") >= 3,
         any_(pawn("P1").x >= 10, pawn("P1").job_def == "Goto"), (cell(2, 2).temp > 40).named("hot").optional(),
-        cell(9, 9, map_id=0).fire, edge(fw(4, 4).fill >= 1, dir="fall"),
+        cell(9, 9, map_id=0).fire, edge(fw(4, 4).water_m >= 0.5, dir="fall"),
     ]
     for i, c in enumerate(specs):
         try:
@@ -227,8 +227,8 @@ def test_shapes():
     check(kw["ticks"] == 50 and "max_ticks" not in kw and kw["runKey"] == "k-shape" and kw["timeoutMs"] == 480000
           and kw["stopOn"] == "default" and kw["until"] == (game.tick >= 1010).tree,
           "A14 safe_advance args: %s" % kw)
-    ev = B.cond_eval(fw(3, 3).fill >= 1)
-    check(ev.get("status") == "error" and B.calls[-1] == ("jawa/cond_eval", {"tree": (fw(3, 3).fill >= 1).tree}),
+    ev = B.cond_eval(fw(3, 3).water_m >= 0.5)
+    check(ev.get("status") == "error" and B.calls[-1] == ("jawa/cond_eval", {"tree": (fw(3, 3).water_m >= 0.5).tree}),
           "A15 cond_eval: %s" % ev)
 
 
@@ -242,7 +242,7 @@ def test_verdicts():
     r = B.until(game.tick >= 99999, 20, progress=QUIET)
     check(r.state == "done" and r.verdict()[0] == "FAIL" and r.verdict(on_done="UNMEASURED")[0] == "UNMEASURED"
           and r.verdict(expect_hit=False)[0] == "PASS", "B3 done mapping %r" % r)
-    r = B.until(fw(3, 3).fill >= 1, 20, progress=QUIET)
+    r = B.until(fw(3, 3).water_m >= 0.5, 20, progress=QUIET)
     v = r.verdict()
     check(r.state == "unknown" and v[0] == "UNMEASURED" and "error" in v[1], "B4 unknown -> UNMEASURED: %s" % (v,))
     r = B.until(game.tick >= 1000, 20, progress=QUIET)

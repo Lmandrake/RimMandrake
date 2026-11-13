@@ -9,8 +9,8 @@ same ticksGame, because a moving pawn or a turning sky would make two honest rea
 A1 (a list WITH FlowWorks): for 12 cells (up to 8 FlowWorks cells that are dug, filled or a source, found with
     flowworks_excavation_rect onlyNonZero, the rest spread over the map; when the map has none, ONE cell near the centre
     is dug 2 and filled 1 with jawa/flowworks_excavation_drive first, the only write, printed as MUTATION) jawa/cond_eval's cell.glow and cell.roofed equal
-    jawa/glow_at's groundGlow and roofed; cell.terrain equals jawa/get_terrain_layers top; fw.depth, fw.fill and fw.source
-    equal flowworks_excavation_rect dEff, fEff and isSource (the DepthAt/FillAt/IsSourceCell getters); map.sky_glow and
+    jawa/glow_at's groundGlow and roofed; cell.terrain equals jawa/get_terrain_layers top; fw.depth, fw.water_m and fw.source
+    equal flowworks_excavation_rect dEff, dl (in metres) and isSource (the DepthAt/WaterDlAt/IsSourceCell getters); map.sky_glow and
     game.hour equal glow_at's skyGlow and hour; game.tick equals ticksGame; pawn.pos x/z equals jawa/pawn_get position
     for up to 6 spawned pawns (at least one). Every probe reads status ok.
     Blind guards: at least one compared cell has FlowWorks depth > 0 and fill > 0 and at least one has groundGlow > 0
@@ -18,7 +18,7 @@ A1 (a list WITH FlowWorks): for 12 cells (up to 8 FlowWorks cells that are dug, 
 A2: map.count of a def that does not exist is refused `bind` naming the def; a cell one past the map edge is refused
     `cell_oob`; an unknown pawn is refused `bind` naming it; a thing.field path with a call is refused `field_method`;
     and the same map.count over a def that does exist evaluates ok (the refusal is not blanket).
-A3 (a list WITHOUT FlowWorks, tier `bridge`): fw.fill, fw.depth and fw.source at the map centre read status `unbound`
+A3 (a list WITHOUT FlowWorks, tier `bridge`): fw.water_m, fw.depth and fw.source at the map centre read status `unbound`
     with a detail naming FlowWorks, the tree's status is unbound (UNKNOWN, never false), and cell.glow in the same tree
     reads ok (the instrument can see).
 
@@ -115,7 +115,7 @@ def same(a, b):
 
 
 # ------------------------------------------------------------------------------------------------ A1
-CELL_PROBES = ("cell.glow", "cell.roofed", "cell.terrain", "cell.is_water", "fw.depth", "fw.fill", "fw.source",
+CELL_PROBES = ("cell.glow", "cell.roofed", "cell.terrain", "cell.is_water", "fw.depth", "fw.water_m", "fw.source",
                "cell.temp", "cell.fire")
 
 
@@ -138,7 +138,7 @@ def _fw_cells(b, sx, sz, want):
 def _dug_filled(b, c):
     r = b.call("jawa/flowworks_excavation_rect", x=c[0], z=c[1], w=1, h=1, onlyNonZero=False, includeTerrain=False)
     row = (r.get("rows") or [{}])[0]
-    return bool(row.get("dEff")) and bool(row.get("fEff"))
+    return bool(row.get("dEff")) and bool(row.get("dl"))
 
 
 def clause_a1(b):
@@ -208,12 +208,13 @@ def clause_a1(b):
         cmp("cell.terrain@%d,%d" % (x, z), k("cell.terrain"), terr.get((x, z)), "get_terrain_layers.top")
         row = fwr.get((x, z)) or {}
         cmp("fw.depth@%d,%d" % (x, z), k("fw.depth"), row.get("dEff"), "flowworks_excavation_rect.dEff")
-        cmp("fw.fill@%d,%d" % (x, z), k("fw.fill"), row.get("fEff"), "flowworks_excavation_rect.fEff")
+        cmp("fw.water_m@%d,%d" % (x, z), k("fw.water_m"), None if row.get("dl") is None else row["dl"] * 0.5 / 10000.0,
+            "flowworks_excavation_rect.dl in metres")
         cmp("fw.source@%d,%d" % (x, z), k("fw.source"), row.get("isSource"), "flowworks_excavation_rect.isSource")
     cmp("map.sky_glow", cv.get("map.sky_glow", {}).get("pv"), glow.get("skyGlow"), "glow_at.skyGlow")
     cmp("game.hour", cv.get("game.hour", {}).get("pv"), glow.get("hour"), "glow_at.hour")
     cmp("game.tick", cv.get("game.tick", {}).get("pv"), glow.get("ticksGame"), "glow_at.ticksGame")
-    filled = sum(1 for c in cells if (fwr.get(c) or {}).get("dEff") and (fwr.get(c) or {}).get("fEff"))
+    filled = sum(1 for c in cells if (fwr.get(c) or {}).get("dEff") and (fwr.get(c) or {}).get("dl"))
     lit = sum(1 for c in cells if ((gl.get(c) or {}).get("groundGlow") or 0) > 0)
     roofed = sum(1 for c in cells if (gl.get(c) or {}).get("roofed"))
     print("compared cells: %d with FlowWorks depth and fill, %d with groundGlow > 0, %d roofed" % (filled, lit, roofed))
@@ -284,19 +285,19 @@ def clause_a2(b):
 def clause_a3(b):
     sx, sz = _map(b)
     x, z = sx // 2, sz // 2
-    nodes = [node(p, {"p": p, "cell": [x, z]}) for p in ("fw.fill", "fw.depth", "fw.source", "cell.glow")]
+    nodes = [node(p, {"p": p, "cell": [x, z]}) for p in ("fw.water_m", "fw.depth", "fw.source", "cell.glow")]
     r = cond_eval(b, [{"all": nodes}])
     if r.get("refused"):
         return ["cond_eval refused a valid tree: %s" % str(r)[:300]]
     v = by_id(r)
     print("A3 at %d,%d: tree status=%s v=%s; %s" % (x, z, r.get("status"), r.get("v"),
                                                     {k: (w.get("status"), w.get("detail")) for k, w in v.items() if k}))
-    if any(v.get(p, {}).get("status") == "ok" for p in ("fw.fill", "fw.depth", "fw.source")):
+    if any(v.get(p, {}).get("status") == "ok" for p in ("fw.water_m", "fw.depth", "fw.source")):
         raise Unmeasured("fw.* read ok: FlowWorks IS on this list; A3 needs a list without it (tier bridge)")
     if v.get("cell.glow", {}).get("status") != "ok":
         raise Unmeasured("cell.glow did not read ok, so the instrument cannot see: %s" % v.get("cell.glow"))
     fails = []
-    for p in ("fw.fill", "fw.depth", "fw.source"):
+    for p in ("fw.water_m", "fw.depth", "fw.source"):
         w = v.get(p, {})
         if w.get("status") != "unbound" or "FlowWorks" not in str(w.get("detail")):
             fails.append("%s: want status unbound naming FlowWorks, got %s" % (p, w))
