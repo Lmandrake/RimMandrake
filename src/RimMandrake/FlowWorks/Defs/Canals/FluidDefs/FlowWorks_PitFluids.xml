@@ -8,6 +8,12 @@
        Patches/LiquidTypes/RM_FluidSurfaceLooks.xml). -->
   <RimMandrake.FlowWorks.FluidDef>
     <defName>RM_Fluid_Oil</defName>
+    <!-- RIMMANDRAKE_SINK_GEYSER_INTO_PIT_BUBBLING_HOT_TUB: bathes over a sunk geyser (owner by card 2026-11-12) -->
+    <bathGroup>Oil</bathGroup>
+    <bathCost>
+      <filth>RM_Filth_LiquidSpill</filth>
+      <filthCount>3</filthCount>
+    </bathCost>
     <label>oil</label>
     <!-- Ignitable: a creeping fuse like tar, a little quicker (thinner). PROVISIONAL 90 ticks/cell. -->
     <fireKind>CreepingFuse</fireKind>
@@ -52,6 +58,13 @@
        Settings ("Liquids that can fill a cut"). -->
   <RimMandrake.FlowWorks.FluidDef>
     <defName>RM_Fluid_Blood</defName>
+    <!-- RIMMANDRAKE_SINK_GEYSER_INTO_PIT_BUBBLING_HOT_TUB: bathes over a sunk geyser (owner by card 2026-11-12) -->
+    <bathGroup>Blood</bathGroup>
+    <bathCost>
+      <filth>Filth_Blood</filth>
+      <filthCount>3</filthCount>
+      <thought>RM_BathedInBlood</thought>
+    </bathCost>
     <label>blood</label>
     <floodTerrain>RM_Fill_Blood_Trace</floodTerrain>
     <fillTerrainHalf>RM_Fill_Blood_Half</fillTerrainHalf>

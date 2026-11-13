@@ -50,7 +50,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     new[] { "Machinery", "Kits", "RM_KitSettings.cs" }, new[] { "Quarry", "RM_QuarrySettings.cs" },
                     new[] { "Sprinklers", "RM_SprinklerSettings.cs" }, new[] { "Thirst", "RM_ThirstSettings.cs" },
                     new[] { "Pits", "Drawbridge", "RM_DrawbridgeSettings.cs" }, new[] { "Pits", "Suspension", "RM_SuspensionSettings.cs" },
-                    new[] { "Superdeep", "RM_WallClimbSettings.cs" }, new[] { "Superdeep", "RM_RaiderTrench.cs" },
+                    new[] { "Superdeep", "RM_WallClimbSettings.cs" }, new[] { "Superdeep", "RM_GeyserPitSettings.cs" }, new[] { "Superdeep", "RM_RaiderTrench.cs" },
                     new[] { "Swimming", "RM_Swim.cs" }, new[] { "MapControls", "RM_MapControlSettings.cs" },
                     new[] { "Rivers", "RM_RiversSettings.cs" }, new[] { "RM_WaterBodyMendGame.cs" },
                     new[] { "Sheet", "RM_SheetSettings.cs" } };

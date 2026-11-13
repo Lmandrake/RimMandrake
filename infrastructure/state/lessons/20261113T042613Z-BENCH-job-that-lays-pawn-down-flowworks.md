@@ -1,0 +1,1 @@
+A job that lays a pawn down in a FlowWorks pit (posture LayingOnGroundFaceUp, as Standalone Hot Spring's bath does) drowns it in water it could stand in: RM_Drowning.Lying reads any non-standing posture by its lying height. Soak/rest jobs in liquid keep the pawn standing (RIMMANDRAKE_SINK_GEYSER_INTO_PIT_BUBBLING_HOT_TUB).

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RIMMANDRAKE_SINK_GEYSER_INTO_PIT_BUBBLING_HOT_TUB: a geyser sunk in a pit under a bathable liquid is a hot pool
+  (spec design/specs/geyser_in_pit_hot_tub_2026-11-12.md section 3.4). The numbers are Standalone Hot Spring's, copied as
+  our own (no dependency on that mod). The healing factor is the setting geyserPoolHealing, written onto both stages before
+  each soak (RM_GeyserPit.ApplyHealing); 1.25 here is the shipped default. Bath costs (tar, blood): owner by card
+  2026-11-12, "Water plus harmless liquids ... each with a cost".
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RM_HotPoolSoak</defName>
+    <label>hot pool</label>
+    <description>Soaking in liquid warmed by a steam vent below. Comfortable in any weather, healing faster and filtering blood better while it lasts.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.62, 0.85, 1)</defaultLabelColor>
+    <isBad>false</isBad>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <comps>
+      <!-- a backstop only: the soak removes it when it ends (3000 ticks) -->
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>3600~3600</disappearsAfterTicks>
+        <showRemainingTime>false</showRemainingTime>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <naturalHealingFactor>1.25</naturalHealingFactor>
+        <statOffsets>
+          <ComfyTemperatureMin>-50</ComfyTemperatureMin>
+          <ComfyTemperatureMax>50</ComfyTemperatureMax>
+        </statOffsets>
+        <capMods>
+          <li>
+            <capacity>BloodFiltration</capacity>
+            <offset>0.08</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RM_HotPoolAfterglow</defName>
+    <label>after the hot pool</label>
+    <description>The warmth of a recent soak in a geyser pool lingers: healing a little faster and filtering blood better for about a day.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.62, 0.85, 1)</defaultLabelColor>
+    <isBad>false</isBad>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>0.5</initialSeverity>
+    <maxSeverity>0.5</maxSeverity>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-0.4</severityPerDay>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <naturalHealingFactor>1.25</naturalHealingFactor>
+        <capMods>
+          <li>
+            <capacity>BloodFiltration</capacity>
+            <offset>0.08</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <JobDef>
+    <defName>RM_SoakInGeyserPool</defName>
+    <driverClass>RimMandrake.FlowWorks.JobDriver_RM_SoakInGeyserPool</driverClass>
+    <reportString>going to the hot pool.</reportString>
+    <joyDuration>4000</joyDuration>
+    <joyMaxParticipants>6</joyMaxParticipants>
+    <joyKind>Meditative</joyKind>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
+
+  <JoyGiverDef>
+    <defName>RM_SoakInGeyserPool</defName>
+    <giverClass>RimMandrake.FlowWorks.JoyGiver_RM_SoakInGeyserPool</giverClass>
+    <baseChance>5</baseChance>
+    <jobDef>RM_SoakInGeyserPool</jobDef>
+    <joyKind>Meditative</joyKind>
+  </JoyGiverDef>
+
+  <ThoughtDef>
+    <defName>RM_BathedInTar</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <durationDays>0.5</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>tar bath</label>
+        <description>Warm, yes. But I'll be picking tar out of my hair for days.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>RM_BathedInBlood</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <nullifyingTraits>
+      <li>Psychopath</li>
+      <li>Bloodlust</li>
+    </nullifyingTraits>
+    <stages>
+      <li>
+        <label>bathed in blood</label>
+        <description>I soaked in a pool of warm blood. I can still smell it.</description>
+        <baseMoodEffect>-4</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

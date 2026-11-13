@@ -773,6 +773,7 @@ namespace RimMandrake.FlowWorks
             Sheet.RM_SheetSettings.ExposeData();            // CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED (stage 1; default off)
             Pits.RM_SuspensionSettings.ExposeData();        // SUSPENSION_BRIDGE_BUILD_POSTS_AT_BOTH_ENDS (bridges design §9)
             RM_WallClimbSettings.ExposeData();              // WALL_SCALING_BUILD_ROPE_OVER_RAMPARTS
+            RM_GeyserPitSettings.ExposeData();              // RIMMANDRAKE_SINK_GEYSER_INTO_PIT_BUBBLING_HOT_TUB
             RM_RaiderTrenchSettings.ExposeData();           // RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP
             RM_LadderParitySettings.ExposeData();           // LADDER_PARITY_BUILD_NO_KEYS_REQUIRED
             Pits.RM_DrawbridgeSettings.ExposeData();        // DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS (design R11)
@@ -2101,6 +2102,7 @@ namespace RimMandrake.FlowWorks
             Block(list, "Canal overflow", Sheet.RM_SheetSettings.DoSettingsSection);
             Block(list, "Suspension bridges", Pits.RM_SuspensionSettings.DoSettingsSection);
             Block(list, "Climbing over walls", RM_WallClimbSettings.DoSettingsSection);
+            Block(list, "Geysers in pits", RM_GeyserPitSettings.DoSettingsSection);
             Block(list, "Raiders against trenches", RM_RaiderTrenchSettings.DoSettingsSection);
             Block(list, "Ladders: no keys", RM_LadderParitySettings.DoSettingsSection);
             Block(list, "Drawbridges", Pits.RM_DrawbridgeSettings.DoSettingsSection);

@@ -110,6 +110,15 @@ namespace RimMandrake.FlowWorks
 		public bool hot;
 		public bool cold;
 
+		/// <summary>RIMMANDRAKE_SINK_GEYSER_INTO_PIT_BUBBLING_HOT_TUB: how this liquid bathes over a sunk geyser (owner by card
+		/// 2026-11-12: "Water plus harmless liquids"). None (the default) is never a pool; Water always is; Tar, Oil, Blood and
+		/// Slime follow their own setting (RM_GeyserPitSettings) and pay <see cref="bathCost"/>. Shipped: FlowWorks_Fluids.xml
+		/// and FlowWorks_PitFluids.xml.</summary>
+		public RM_GeyserTubMath.BathGroup bathGroup = RM_GeyserTubMath.BathGroup.None;
+
+		/// <summary>What a bath in this liquid costs (filth, a memory, a slip); null = nothing.</summary>
+		public RM_BathCost bathCost;
+
 		/// <summary>Ticks the fluid stands on a cell after the whole release has
 		/// finished spreading, before the map's temp-terrain manager drains it
 		/// and hands the cell back. Default is the midpoint of vanilla

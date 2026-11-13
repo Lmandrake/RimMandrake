@@ -2229,6 +2229,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             PlayerTruthSweeps.Run(Case);       // PLAYER-TRUTH PILOT: exhaustive sweeps of what a player expects (PlayerTruthSweeps.cs)
             PitAccessChecks.Run(Case);         // PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: portable ladder, climbing gear, safe jumps/skips, rescue ladder (PitAccessChecks.cs)
             WallClimbChecks.Run(Case);         // WALL_SCALING_BUILD_ROPE_OVER_RAMPARTS: gear climbs unroofed built walls, slowly (WallClimbChecks.cs)
+            GeyserTubChecks.Run(Case);         // RIMMANDRAKE_SINK_GEYSER_INTO_PIT_BUBBLING_HOT_TUB: seat, cover, pool, plume, bath groups (GeyserTubChecks.cs)
             PitDeckChecks.Run(Case);           // COVER_SCAN_TAME_QUADRATIC_ID_MINIMA: the cover scan stops at the first lower id (PitDeckChecks.cs)
             TrenchStrideChecks.Run(Case);      // TITAN_TRENCHES_WIRE_MIND_THE_GAP: titans step over trenches narrower than B/4 (TrenchStrideChecks.cs)
             RaiderTrenchChecks.Run(Case);      // RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP: go around, jump, ladders, fill; sieges unchanged (RaiderTrenchChecks.cs)

@@ -1,0 +1,1 @@
+The vanilla geothermal generator is 6x6, centred on a 2x2 steam geyser's Position: an affordance waiver 'on the geyser' must name the geyser's own squares, or GenConstruct.CanBuildOnTerrain waives Heavy ground for the whole 6x6 (caught in self-review, RIMMANDRAKE_SINK_GEYSER_INTO_PIT_BUBBLING_HOT_TUB).

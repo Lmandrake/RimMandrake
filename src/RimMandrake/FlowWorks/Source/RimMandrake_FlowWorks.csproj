@@ -233,6 +233,10 @@
     <Compile Include="Superdeep\RM_PitAccess.cs" />
     <Compile Include="Superdeep\RM_WallClimbMath.cs" />
     <Compile Include="Superdeep\RM_WallClimbSettings.cs" />
+    <Compile Include="Superdeep\RM_GeyserTubMath.cs" />
+    <Compile Include="Superdeep\RM_GeyserPit.cs" />
+    <Compile Include="Superdeep\RM_GeyserPitSettings.cs" />
+    <Compile Include="Superdeep\JobDriver_RM_SoakInGeyserPool.cs" />
     <Compile Include="Superdeep\RM_WallClimb.cs" />
     <Compile Include="Superdeep\RM_RaiderTrenchMath.cs" />
     <Compile Include="Superdeep\RM_RaiderTrench.cs" />

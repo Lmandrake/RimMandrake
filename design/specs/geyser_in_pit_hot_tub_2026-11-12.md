@@ -1,10 +1,15 @@
 # A geyser in a pit: it sinks, it bubbles, it is a hot tub
 
 Item: `RIMMANDRAKE_SINK_GEYSER_INTO_PIT_BUBBLING_HOT_TUB` · mod: FlowWorks (`mandrake.rimmandrake.flowworks`) · written
-2026-11-12 19:00 PST by a detached BENCH helper of the Conductor · status: DESIGN, nothing built.
-Open owner choices: `D:\ClaudeWork\rimmandrake\conductor\underliquid_20261112_evening\geyser\QUESTIONS.md`
-(three; this spec carries the recommended answer for each, marked **[Q1]**, **[Q2]**, **[Q3]**, so it can be built
-as written if he accepts the recommendations).
+2026-11-12 19:00 PST by a detached BENCH helper of the Conductor · status: BUILT offline (2026-11-12 evening), live
+proof owed (4.2). The three owner choices (`D:\ClaudeWork\rimmandrake\conductor\underliquid_20261112_evening\geyser\QUESTIONS.md`)
+were answered **by card, 2026-11-12 ~7:5x PM PST**:
+
+- **[Q1] Bathing: "Water plus harmless liquids (tar, oil, blood, slimes bathable, each with a cost)"** — not the
+  water-only recommendation. Section 3.4 carries it.
+- **[Q2] Generator: "Allowed in a dry pit, caps it (no bubbles, no tub after)"** — as recommended.
+- **[Q3] Mood: "Vanilla's small bonus (Odyssey hot-spring memory, +2 for about 2.4 h)"** — as recommended; the brief adds
+  that a setting may raise it (`geyserPoolMoodFactor`).
 
 ## The ruling
 
@@ -89,14 +94,17 @@ as our own defaults. If a player also runs that mod, both work: its building is 
   ground that is there, so it never floats: one undug corner keeps it at the surface, four cells dug to 2 m seat it at
   2 m. Derived from the excavation grid every time it is asked; **no new saved field**, so old saves load as they are,
   and filling a pit back in raises the geyser with it.
-- **Drawn** at the seat: the print is lowered by the same sink pawns use (`pitSinkPerLevel` × seat notches) and kept
-  inside the pit's outline (the lip occlusion pawns get). Harmony on `Building_SteamGeyser`'s print (it is a
-  `Graphic_Single` map-mesh thing), and the map mesh is dirtied for its 2x2 when any of its cells' depth changes.
-- **Under liquid** by `RM_UnderLiquid`: a thing standing on the floor, `GeyserMetres = 0.4` (a low vent mound).
-  `Share(level, 0, 0.4)` of it is under; the drowned part draws at `Seen(clarity, metresOver)`: tinted in clear water,
-  hidden in an opaque liquid (tar, oil, blood). Added to `SubmergeDrawChecks`' caller table.
-- **Its puffs** rise from the seat while it is dry (the puff origin lowered by the same sink), so steam visibly comes
-  out of the bottom of the pit.
+- **Drawn** at the seat: the print is lowered by the same sink pawns use (`pitSinkPerLevel` × seat notches), but never
+  further than the rows of pit at least as deep that lie south of the footprint (`RM_GeyserTubMath.SeatSink`), so it
+  stays inside the pit's outline: a pit dug only on the geyser's own 2x2 holds it at its cells (`drawDz` 0), a pit
+  that runs on south lets it sink. Built as one shift applied to each of its planes inside the existing print context
+  (`RM_SubmergeDraw.Begin` sets it, the `Printer_Plane.PrintPlane` prefix applies it before the under-liquid split);
+  every 250 ticks a geyser whose seat moved re-meshes its squares. The geyser casts no pit floor shadow (it is a vent).
+- **Under liquid** by `RM_UnderLiquid`: a thing standing on the floor, `GeyserMetres = 0.4` (a low vent mound), its
+  depth the seat. `Share(level, 0, 0.4)` of it is under; the drowned part draws at `Seen(clarity, metresOver)`: tinted in
+  clear water, hidden in an opaque liquid (tar, oil, blood). The row is `RM_SubmergeDraw.BuildingMetres`.
+- **Its puffs** rise from the drawn seat while it is dry (the puff origin shifted with the print), so steam visibly
+  comes out of the bottom of the pit.
 - The geyser **never vanishes** (no despawn, no destroy, same ThingID throughout dig, fill, drain and refill).
 
 ### 3.2 Filling: the plume of bubbles
@@ -111,9 +119,13 @@ as our own defaults. If a player also runs that mod, both work: its building is 
   liquid with no colour of its own uses white-blue. Thick liquids (tar, slimes, oil: slow `ticksPerTile`) throw fewer,
   bigger, slower bubbles ("blorps") and no ripple ring; thin ones a fast fizz. A water-like liquid also gives off a
   faint steam wisp at the surface during a spray (vanilla `AirPuff`, from the surface, not the vent).
-- **Cost:** the plume is emitted only while the geyser's cells are in view (the same in-view rule as
-  `RM_LiquidSurface.Bubbles`), from a per-map list of sunk geysers (rebuilt on spawn and on depth change, never a map
-  scan per tick). Cosmetic RNG isolated (`Rand.PushState`), as the existing emitter does.
+- **Cost:** the plume is emitted only while the geyser is in view (the same in-view rule as
+  `RM_LiquidSurface.Bubbles`), from a per-map list of the map's geysers (`RM_MapComponent_GeyserPits`, filled at map
+  init and by a `SpawnSetup` postfix; the seat is read from the grid per use, so no depth-change hook is needed; never a
+  map scan per tick). Cosmetic RNG isolated (`Rand.PushState`), as the existing emitter does.
+- **Art:** the plume uses the existing surface bubble (`RM_Fleck_LiquidBubble`, Biotech's vat bubble tinted per
+  liquid) as its placeholder; real plume art is its own art item, filed through the art ledger
+  (`RIMMANDRAKE_DRAW_GEYSER_PLUME_BUBBLE_ART_PLACEHOLDER_IN_USE`).
 
 ### 3.3 Heat
 
@@ -125,21 +137,35 @@ as our own defaults. If a player also runs that mod, both work: its building is 
   water. Boiling water poured in is still boiling water and still burns through its own terrain (SCALD rule: no
   burn immunity for free).
 - **It does not freeze:** the footprint and the tub reach never freeze while the geyser is uncovered by a generator,
-  like vanilla's `HotSpring` (`canFreeze false`). The builder finds FlowWorks' pit-water freeze path
-  (`RM_WaterBodyFreeze*`, the freeze selftests) and adds the exemption there; no new freezing rule.
+  like vanilla's `HotSpring` (`canFreeze false`): a postfix on vanilla `FreezeManager.CanFreeze` (the gate every freeze
+  roll and spread reads) answers false in the reach of a sunk, uncapped geyser; no new freezing rule.
 
 ### 3.4 The hot tub
 
 - **Where:** liquid cells within `hotTubReach` (default 2.5 cells) of the geyser's centre, i.e. the 2x2 footprint and
   the ring around it, while the geyser is covered and uncapped. The bubbles are the sign; nothing else is built.
-- **Which liquids [Q1, recommended]:** a positive flag on the liquid, `FluidDef.bathable` (default false), set only
-  on plain water (`RM_Fluid_Water`, the freshwater ladder rain and rivers fill pits with). Every other shipped FluidDef
-  (acid water, poison, reaction liquor, boiling water, icy water, tar, oil, chemfuel, propane, astrofuel, blood and
-  the four slimes) **bubbles but is not a tub**; a new liquid opts in by its own def. Not read from terrain harm: the
-  fill terrains of tar, oil, chemfuel, propane, astrofuel, blood and the slimes carry no `dangerous`,
-  `toxicBuildupFactor` or `burnDamage` (their harm is fire, slip or poison-per-day), so a terrain gate would make a
-  tar pit a spa [measured, 16 FluidDefs' brim terrains, 2026-11-12]. Icy water is excluded too: the geyser does not
-  heat the liquid (3.3), so it stays a cold plunge.
+- **Which liquids [Q1, owner by card: "Water plus harmless liquids"]:** a positive field on the liquid,
+  `FluidDef.bathGroup` (`RM_GeyserTubMath.BathGroup`, default `None`): `Water` on `RM_Fluid_Water` (the freshwater ladder
+  rain and rivers fill pits with), `Tar`, `Oil`, `Blood`, and `Slime` on the four slimes. Water always bathes; each other
+  group follows its own setting. `None` (acid water, poison, reaction liquor, boiling water, icy water, chemfuel, propane,
+  astrofuel) **bubbles but is never a tub**: liquids that harm by themselves and the fuels, as he ruled; reaction liquor
+  was not named on the card and stays out. A new liquid opts in by its own def. Not read from terrain harm: the fill
+  terrains of tar, oil, chemfuel, propane, astrofuel, blood and the slimes carry no `dangerous`, `toxicBuildupFactor` or
+  `burnDamage` (their harm is fire, slip or poison-per-day), so a terrain gate would let the fuels in [measured, 16
+  FluidDefs' brim terrains, 2026-11-12]. Icy water stays out: the geyser does not heat the liquid (3.3).
+- **What a strange bath costs** (`FluidDef.bathCost`, data on the liquid; each kind of cost behind its own setting;
+  paid by any soak that began, whether or not it was cut short):
+
+  | liquid | filth where the bather climbs out | memory | slip |
+  |---|---|---|---|
+  | water | none | none | none |
+  | tar | 3 `RM_Filth_Tar` | `RM_BathedInTar` "tar bath" −2 for 0.5 day | none |
+  | oil | 3 `RM_Filth_LiquidSpill` | none | none |
+  | blood | 3 `Filth_Blood` | `RM_BathedInBlood` "bathed in blood" −4 for 1 day (nullified by Psychopath, Bloodlust) | none |
+  | the four slimes | 2 `RM_Filth_LiquidSpill` | none | 2 s stun (120 ticks) climbing out |
+
+  Small and legible: a tar or blood bath is still a net gain for a pawn who needs joy and healing, never a trap. Slime
+  is already nearly impossible to wade (`RM_SlimeSlip`), so a slime pool is mostly a deliberate build.
 - **Who:** any pawn with a joy need (colonists, slaves, guests), as recreation; prisoners soak but gain no joy (as the
   mod); a player-faction humanlike can be ordered in ("Soak in the hot pool"), which is how a sick pawn is sent. Not
   downed pawns, not animals, not a pawn who cannot reach the cell. Up to 6 at once per geyser (the mod's
@@ -149,26 +175,30 @@ as our own defaults. If a player also runs that mod, both work: its building is 
   swimming, head up (`RM_Swim`), so a deep pool works; a pawn that cannot swim there is not given the job.
 - **The job** `RM_SoakInGeyserPool` (`JoyGiverDef` + `JobDef`, Meditative, joyDuration 4000, baseChance 5): go to a free
   cell in reach, soak 3000 ticks, every tick comfort from the cell, rest at 1.111, joy at the mod's rate with
-  JoyGainFactor 1.4; sleep Z and healing-cross motes every 100 ticks as the mod does.
+  JoyGainFactor 1.4; every 100 ticks a healing cross (healing injuries) or a sleep Z (tired) mote. **The bather sits
+  up** (standing posture), not face up as in the mod: FlowWorks drowning reads a lying pawn by its lying height
+  (`RM_Drowning.Lying`), so a lying soak would drown pawns in a pool they can stand in. A soak at least half done
+  earns the afterglow and the memory.
 - **While soaking:** hediff `RM_HotPoolSoak` ("hot pool"): ComfyTemperatureMin −50, ComfyTemperatureMax +50,
   BloodFiltration +0.08, naturalHealingFactor ×1.25 (the mod's "Healing waters", numbers unchanged).
 - **After:** hediff `RM_HotPoolAfterglow` ("after the hot pool"): BloodFiltration +0.08, naturalHealingFactor ×1.25,
   severity 0.5 falling 0.4/day (1.25 days); a new soak replaces it (the mod's "Residual rejuvenation").
-- **Mood [Q3, recommended]:** also vanilla Odyssey's own `HotSpring` thought (+2 for 0.1 day) when a soak ends, so it
-  reads in the mood list like a real hot spring. Every DLC is assumed, so the def is always there.
+- **Mood [Q3, owner by card]:** also vanilla Odyssey's own `HotSpring` thought (+2 for 0.1 day) when a soak ends, so it
+  reads in the mood list like a real hot spring, its strength scaled by `geyserPoolMoodFactor` (x1–x3, the memory's
+  `moodPowerFactor`). Every DLC is assumed, so the def is always there.
 - **Clothes:** set aside while soaking, look only (the mod's two render postfixes, our own), never in portraits; no
   nudity thought.
-- **Capped vent [Q2, recommended]:** a geothermal generator on the geyser stops the sprayer in vanilla (`harvester`
+- **Capped vent [Q2, owner by card]:** a geothermal generator on the geyser stops the sprayer in vanilla (`harvester`
   set), so it also stops the plume and the tub. A generator may be built on a **dry** sunk geyser (the `Heavy`
   affordance waived on the geyser's own footprint: the vent is bedrock); it is refused while liquid stands over the
   seat. Liquid later poured over a capped geyser just sits there: no plume, no tub. So it is power or a tub, never both.
 - **Ascetic and other ideoligion quirks:** none added; vanilla precepts that read joy kinds see Meditative.
 
-### 3.5 Mod Settings (FlowWorks, new section "Geysers in pits")
+### 3.5 Mod Settings (FlowWorks, screen "Geysers in pits", `RM_GeyserPitSettings`)
 
 | setting | default | off means |
 |---|---|---|
-| `geyserSinksEnabled`: "A geyser sinks with the pit dug on it" (master) | on | today's behaviour: the geyser stays at the surface, no plume, no tub |
+| `geyserSinksEnabled`: "A geyser sinks with the pit dug on it" (master) | on | today's behaviour: the geyser stays at the surface, puffs through liquid, no plume, no tub |
 | `geyserPlumeEnabled`: "A sunk geyser bubbles through liquid over it" | on | covered geysers neither puff nor bubble |
 | `geyserPlumeDensity` slider x0.2–x3 | x1 | |
 | `geyserPoolEnabled`: "Pawns soak in a bubbling geyser pool" | on | bubbles only, no job, no hediffs |
@@ -176,10 +206,16 @@ as our own defaults. If a player also runs that mod, both work: its building is 
 | `geyserPoolHealing` x1.0–x2.0 natural healing | x1.25 | x1.0 keeps the joy and comfort but no healing |
 | `geyserPoolAfterglowEnabled` | on | no after-soak hediff |
 | `geyserPoolMoodEnabled` (vanilla `HotSpring` thought) | on | no mood memory |
+| `geyserPoolMoodFactor` x1–x3 (the memory's strength) | x1 | |
 | `geyserPoolHidesClothes` | on | bathers stay drawn clothed |
+| `geyserBathTarEnabled` / `geyserBathOilEnabled` / `geyserBathBloodEnabled` / `geyserBathSlimeEnabled` | on | that liquid bubbles but is no pool (water always is) |
+| `geyserBathFilthEnabled` (filth cost) | on | strange baths leave no filth |
+| `geyserBathMoodCostEnabled` (tar and blood memories) | on | no bad memory |
+| `geyserBathSlipEnabled` (slime slip) | on | no slip climbing out of slime |
+| `geyserGeneratorOnSunkEnabled` | on | a sunk geyser takes no generator (vanilla's Heavy affordance refuses the dug floor) |
 
 Defaults are the shipped behaviour; all off is today's game. None affects worldgen. Each is scribed, reset by
-`RM_SettingsReset`, and indexed by `RM_SettingsSearchIndex` (the FlowWorks settings pattern).
+`RM_SettingsReset` (the screen's Reset button) and found by the settings search (`Block(list, "Geysers in pits", ...)`).
 
 ### 3.6 Rejected routes (recorded so nobody retries them)
 
@@ -191,63 +227,42 @@ Defaults are the shipped behaviour; all off is today's game. None affects worldg
 
 ## 4. Acceptance tests
 
-Each one fails on today's code (origin/main at c11e9e9d0e): the classes, defs, settings and proof do not exist, and
-the behaviour each reads is today's opposite (geyser drawn at the surface, puffs out of liquid, no bubbles over plain
-water, no soak job). Watched failing at filing: `test -f src/RimMandrake/FlowWorks/Source/Superdeep/RM_GeyserTubMath.cs`
-exits 1 and `grep -rl "RM_HotPoolSoak" src/RimMandrake/FlowWorks` finds nothing [measured 2026-11-12 19:05 PST].
+Both offline tests were watched failing on the base (origin/main e6c3749f36, 2026-11-12 evening): the C# SelfTest does
+not build without `RM_GeyserTubMath.cs`, and the Python check stops on the missing source files; both are green on the
+build [measured].
 
 ### 4.1 Offline (no game)
 
 **O1, C#: `SelfTest/GeyserTubChecks.cs`**, registered in `SelfTest/Program.cs`, compiling the Verse-free
-`Superdeep/RM_GeyserTubMath.cs` through the existing `RimMandrakeFlowWorks.SelfTest.csproj`. Expected 24 cases:
+`Superdeep/RM_GeyserTubMath.cs` through `RimMandrakeFlowWorks.SelfTest.csproj`: 9 cases, 39 assertions (seat = the
+shallowest cell, 7; covered past 0.4 m, 4; the pool gate, 5; reach, 2; afterglow 1.25 days, 1; plume rates and sizes,
+8; bubbles per tick average the rate, 2; the sink held inside the pit, 4; bath groups follow their settings, 6).
+Run: `python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only 'GeyserTub_*'` (9/9).
 
-- `SeatNotches(int[] depths)`: {4,4,4,4}→4 · {4,4,4,2}→2 · {0,4,4,4}→0 · {}→0 · null→0 · {−1,4,4,4}→0 · {16,16,16,16}→16
-  (7 cases; a mutant using the deepest cell must fail {4,4,4,2}).
-- `Covered(levelMetresOverSeat)`: 0→false · 0.39→false · 0.41→true · 2.0→true (4).
-- `PoolSafe(bathable, covered, capped)`: true only for (true, true, false); false for each of not bathable, not
-  covered, capped alone; false for a null fluid (5).
-- `InReach(dx, dz, reach)` from the 2x2 centre: (0.5,0.5,2.5)→true · (2.5,0.5,2.5)→false at 2.5 exclusive (2)
-- `AfterglowDays(0.5, 0.4)` = 1.25 ± 1e−4 (1).
-- `PlumeRate`: covered-spraying > covered-between > 0 for every viscosity; thick (`ticksPerTile` ≥ 120) gives fewer
-  but larger bubbles than thin; density x0 gives 0 (5).
+**O2, Python: `src/RimMandrake/FlowWorks/selftest_flowworks_geyser_tub.py`**: 15 checks over the shipped defs and the
+comment-blanked C# (its docstring lists them: the hediffs, job and joy giver numbers; the 18 settings declared, scribed,
+drawn and registered; no Standalone Hot Spring name or dependency; the spawn, sprayer and puff patches gated by the
+master; the heat push never skipped; `bathGroup` default None and exactly water, tar, oil, blood and the four slimes
+bathing, gated through `PoolSafe`; no `RM_HotLiquid`; the under-liquid geyser row at 0.4 m; no map scan in the tick;
+each strange bath's cost and its defs; the bather never lies down; the generator waiver dry-only and on the vent's own squares), and 21 named mutants of the real text, each of which
+must turn a check red. Run: `python3 src/RimMandrake/Utils/run_selftests.py --only selftest_flowworks_geyser_tub.py`.
 
-**O2, Python: `src/RimMandrake/FlowWorks/selftest_flowworks_geyser_tub.py`** (reads defs and comment-blanked source,
-with named mutants that must go red, in the shape of `selftest_flowworks_hot_wet_terrain.py`). Expected 12 checks:
+### 4.2 Live state reads (quicktest map, bridge; `RimMandrake.FlowWorks.RM_GeyserPoolProof.Read "<geyserThingID>"`
+by `jawa/static_call`, `"reset"` zeroes the counters) — NOT RUN; the staging and what right looks like:
+`D:\ClaudeWork\rimmandrake\conductor\underliquid_20261112_evening\geyser_build\LIVE_LOOK_CHECKLIST.md`
 
-1. `HediffDef RM_HotPoolSoak` exists with ComfyTemperatureMin −50, ComfyTemperatureMax 50, BloodFiltration +0.08,
-   naturalHealingFactor 1.25.
-2. `HediffDef RM_HotPoolAfterglow`: maxSeverity 0.5, `HediffCompProperties_SeverityPerDay` −0.4, same healing.
-3. `JobDef RM_SoakInGeyserPool`: joyKind Meditative, joyDuration 4000, joyMaxParticipants 6.
-4. `JoyGiverDef RM_SoakInGeyserPool`: baseChance 5, joyKind Meditative, giverClass in `RimMandrake.FlowWorks`.
-5. The nine settings of 3.5 are declared, scribed with the listed defaults, and named in a settings section.
-6. No file under `src\RimMandrake\FlowWorks` names `StandaloneHotSpring`, `balistafreak` or `BathStandaloneHotSpring`,
-   and `About.xml` has no new dependency.
-7. A Harmony patch targets `Building_SteamGeyser` (print) and `IntermittentSteamSprayer.SteamSprayerTick` (or
-   `Building_SteamGeyser.Tick`), each gated by `geyserSinksEnabled`.
-8. The puff suppression keeps `GenTemperature.PushHeat` (the heat call is not skipped when covered).
-9. `FluidDef` has `bathable` defaulting false; exactly `RM_Fluid_Water` sets it true; the pool gate calls
-   `RM_GeyserTubMath.PoolSafe` with the cell fluid's `bathable` (mutants: default true, or tar set true, go red).
-10. `RM_HotLiquid` is not called from the geyser code.
-11. `SubmergeDrawChecks` has a geyser row (`GeyserMetres` 0.4).
-12. The sunk-geyser list is rebuilt on depth change, not scanned per tick (no `AllThings`/`listerThings` call inside a
-    tick method of the new map component).
-
-Run: `python3 src/RimMandrake/Utils/run_selftests.py --only selftest_flowworks_geyser_tub.py` plus the FlowWorks C#
-selftest lane. Pass = 24 + 12.
-
-### 4.2 Live state reads (quicktest map, bridge; a proof `RM_GeyserPoolProof.Read <geyserThingID>` in
-`RM_NorthstarProofs`, read by `jawa/static_call`)
-
-The proof returns: `spawned`, `thingId`, `seatNotches`, `drawDz` (the patched print's z minus the cell centre),
-`covered`, `fluid`, `plumeBubbles` and `dryPuffs` (counters since reset), `soakers`, `capped`.
+The proof returns: `spawned`, `thingId`, `seatNotches`, `drawDz` (the print shift, cells), `levelMetres`, `covered`,
+`fluid`, `bathable`, `pool`, `spraying`, `plumeBubbles`, `dryPuffs` and `coveredPuffsStopped` (counters since reset),
+`soakers`, `capped`.
 
 | # | stage | pass reads | today |
 |---|---|---|---|
-| L1 | spawn a SteamGeyser on open soil; dig its four cells to 2 m | same `thingId`, `spawned` true, `seatNotches` 4, `drawDz` < 0, puff origin below the surface | proof absent; geyser drawn at the surface |
+| L1 | spawn a SteamGeyser on open soil; dig its four cells and two rows south of it to 2 m | same `thingId`, `spawned` true, `seatNotches` 4, `drawDz` < 0 (−1.2 with the shipped sink), `dryPuffs` rising | proof absent; geyser drawn at the surface |
 | L2 | dig only three cells | `seatNotches` 0, `drawDz` 0 | — |
 | L3 | fill the 2 m pit with fresh water to 1 m | `covered` true, `fluid` Water; over 5000 ticks `plumeBubbles` > 0 and `dryPuffs` 0 | water throws no bubbles; puffs rise through it |
 | L4 | a colonist with joy 0.2 ordered "Soak in the hot pool" | within 3000 ticks has `RM_HotPoolSoak`, ComfyTemperatureMax raised by 50; after the soak: `RM_HotPoolAfterglow` at 0.5, joy higher than at start, the `HotSpring` thought present [Q3] | no such job |
-| L5 | drain; refill with acid water | `plumeBubbles` > 0 in acid's colour; no soak job given, no float-menu option | — |
+| L5 | drain; refill with acid water | `plumeBubbles` > 0 in acid's colour; `bathable` false; no soak job given, no float-menu option | — |
+| L5b | one pit each of tar, oil, blood and a slime | `bathable` true, `pool` true; a soak ends with that liquid's cost (spec 3.4 table) | — |
 | L6 | drain dry; place a geothermal generator [Q2] | allowed dry; `capped` true; then fill: `plumeBubbles` 0, no soak job | generator refused on a dug cell [guess ~70%] |
 | L7 | save, reload | same `seatNotches`, `drawDz`; no new errors in `Player.log` | — |
 | L8 | `geyserSinksEnabled` off | `drawDz` 0, `plumeBubbles` 0, no soak job (today's game) | — |
@@ -257,9 +272,6 @@ bubbles' look (tint, size, the wisp) is judged once by an Opus art judge from a 
 
 ## 5. Build order (for Relentless)
 
-1. `RM_GeyserTubMath` + O1 (Verse-free; red first).
-2. Seat depth, sunk print and sunk puffs + the `SubmergeDrawChecks` row; settings master.
-3. Plume emitter + puff suppression (heat kept).
-4. Pool: defs, job driver, joy giver, float menu, hediffs, clothes postfixes, freeze exemption; O2.
-5. Generator rule [Q2].
-6. Live proof L1–L8, then the art judge on the plume.
+1–5 built offline on 2026-11-12 evening (math + O1, seat/print/puffs and the under-liquid row, plume and puff
+suppression with the heat kept, pool defs/job/joy giver/float menu/hediffs/clothes/freeze exemption + O2, the generator
+rule). Left: 6, the live proof L1–L8 + L5b, then the art judge on the plume, then the real plume art.

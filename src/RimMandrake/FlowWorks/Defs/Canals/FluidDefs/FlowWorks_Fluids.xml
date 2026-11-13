@@ -15,6 +15,8 @@
        recoverable, per the owner's 2026-09-02 ruling. -->
   <RimMandrake.FlowWorks.FluidDef>
     <defName>RM_Fluid_Water</defName>
+    <!-- RIMMANDRAKE_SINK_GEYSER_INTO_PIT_BUBBLING_HOT_TUB: bathes over a sunk geyser (owner by card 2026-11-12) -->
+    <bathGroup>Water</bathGroup>
     <label>water</label>
     <!-- Ruling 5's three-tier ladder, all three rungs ours and all three
          parented to vanilla WaterShallow. A tier IS a volume, so the stock
@@ -47,6 +49,13 @@
        OUR OWN defNames. -->
   <RimMandrake.FlowWorks.FluidDef>
     <defName>RM_Fluid_Tar</defName>
+    <!-- RIMMANDRAKE_SINK_GEYSER_INTO_PIT_BUBBLING_HOT_TUB: bathes over a sunk geyser (owner by card 2026-11-12) -->
+    <bathGroup>Tar</bathGroup>
+    <bathCost>
+      <filth>RM_Filth_Tar</filth>
+      <filthCount>3</filthCount>
+      <thought>RM_BathedInTar</thought>
+    </bathCost>
     <label>tar</label>
     <!-- Phase 6: tar is a creeping fuse (his ruling: tar and propane creep, chemfuel/astrofuel detonate).
          PROVISIONAL 120 ticks/cell — about two seconds a cell, well under a walking pawn, so it can be outrun. -->
@@ -95,6 +104,13 @@
        rather than inventing a second mechanic. -->
   <RimMandrake.FlowWorks.FluidDef>
     <defName>RM_Fluid_SlimeRed</defName>
+    <!-- RIMMANDRAKE_SINK_GEYSER_INTO_PIT_BUBBLING_HOT_TUB: bathes over a sunk geyser (owner by card 2026-11-12) -->
+    <bathGroup>Slime</bathGroup>
+    <bathCost>
+      <filth>RM_Filth_LiquidSpill</filth>
+      <filthCount>2</filthCount>
+      <slipStunTicks>120</slipStunTicks>
+    </bathCost>
     <label>red slime</label>
     <floodTerrain>RM_Fill_SlimeRed_Trace</floodTerrain>
     <fillTerrainHalf>RM_Fill_SlimeRed_Half</fillTerrainHalf>
@@ -111,6 +127,13 @@
 
   <RimMandrake.FlowWorks.FluidDef>
     <defName>RM_Fluid_SlimeGreen</defName>
+    <!-- RIMMANDRAKE_SINK_GEYSER_INTO_PIT_BUBBLING_HOT_TUB: bathes over a sunk geyser (owner by card 2026-11-12) -->
+    <bathGroup>Slime</bathGroup>
+    <bathCost>
+      <filth>RM_Filth_LiquidSpill</filth>
+      <filthCount>2</filthCount>
+      <slipStunTicks>120</slipStunTicks>
+    </bathCost>
     <label>green slime</label>
     <floodTerrain>RM_Fill_SlimeGreen_Trace</floodTerrain>
     <fillTerrainHalf>RM_Fill_SlimeGreen_Half</fillTerrainHalf>
@@ -127,6 +150,13 @@
 
   <RimMandrake.FlowWorks.FluidDef>
     <defName>RM_Fluid_SlimeWhite</defName>
+    <!-- RIMMANDRAKE_SINK_GEYSER_INTO_PIT_BUBBLING_HOT_TUB: bathes over a sunk geyser (owner by card 2026-11-12) -->
+    <bathGroup>Slime</bathGroup>
+    <bathCost>
+      <filth>RM_Filth_LiquidSpill</filth>
+      <filthCount>2</filthCount>
+      <slipStunTicks>120</slipStunTicks>
+    </bathCost>
     <label>white slime</label>
     <!-- WHITE_SLIME_CANAL_FIX_CANNOT_IGNITE: RM_Liquid_SlimeWhite is flammable (fat that "burns readily once something else
          provides the spark"), so its canal form burns too: a creeping fuse like tar. PROVISIONAL 120 ticks/cell (tar's). -->
@@ -151,6 +181,13 @@
        independent of hazard. -->
   <RimMandrake.FlowWorks.FluidDef>
     <defName>RM_Fluid_SlimeYellow</defName>
+    <!-- RIMMANDRAKE_SINK_GEYSER_INTO_PIT_BUBBLING_HOT_TUB: bathes over a sunk geyser (owner by card 2026-11-12) -->
+    <bathGroup>Slime</bathGroup>
+    <bathCost>
+      <filth>RM_Filth_LiquidSpill</filth>
+      <filthCount>2</filthCount>
+      <slipStunTicks>120</slipStunTicks>
+    </bathCost>
     <label>yellow slime</label>
     <floodTerrain>RM_Fill_SlimeYellow_Trace</floodTerrain>
     <fillTerrainHalf>RM_Fill_SlimeYellow_Half</fillTerrainHalf>
