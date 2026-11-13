@@ -38,6 +38,7 @@ Ingest item: `RIMMANDRAKE_INGEST_HELD_LOOK_DEFECTS_WHEN_LADDER_REGENERATED`.
 | file | what |
 |---|---|
 | `owner_look_defects_2026-11-12.md` | 48 statements (56 rows) from the 2026-11-12 under-liquid pit looks |
+| `owner_look_defects_2026-11-12_explosive_knockback.md` | 2 statements from his Explosive Knockback gap rulings, 2026-11-12 4:05 PM PST |
 | `src/RimMandrake/FlowWorks/northstar/owner_look_regressions.py` (+ `selftest_owner_look_regressions.py`) | built early, awaiting ingest: in-game state reads for the rows above; wired into nothing. Its selftest runs only because the nightly sweep discovers every `selftest*.py`, so it does not rot |
 | `src/RimMandrake/Utils/selftest_screenshot_mode_restored.py` | built early, awaiting ingest: harness guard for the "cannot select or screenshot" defect |
 | enforcement `RIMMANDRAKE_REFUSE_OWNER_DEFECT_CLOSE_WITHOUT_REGRESSION` | held, blocked on the ladder |
