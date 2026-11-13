@@ -8,8 +8,9 @@ namespace RimMandrake.FlowWorks
 	/// <summary>
 	/// PIT_TEMPERATURE_SOFTENING_1, redesigned 2026-10-11: "exposed to the elements" on vanilla's own temperature path
 	/// (design/RimMandrake/pit_exposure_to_the_elements_2026-10-11.md; owner ruling 17, and both cards at 17:25).
-	///   1. Exposure: every 250 ticks a spawned pawn on an unroofed, uncovered D=4 cell carries the flat RM_PitExposure
-	///      marker hediff; off such a cell it is removed. Its one stage's statOffsets narrow the comfortable range
+	///   1. Exposure: every 250 ticks a spawned pawn on an unroofed, uncovered D=4 cell with no way out (no ladder it may use
+	///      in its pocket; not soaking in a geyser pool: RM_PitExposureMath.Exposed) carries the flat RM_PitExposure
+	///      marker hediff; otherwise it is removed. Its one stage's statOffsets narrow the comfortable range
 	///      (ComfyTemperatureMin +n, ComfyTemperatureMax -n; n = Mod Setting pitExposureNarrowing, owner Q1 8 °C), so
 	///      vanilla's own Heatstroke and Hypothermia givers start n degrees sooner. There is no other harm and no second
 	///      kind of heat: mild weather does nothing, and heatstroke needs real heat (none at night).
@@ -33,7 +34,9 @@ namespace RimMandrake.FlowWorks
 			// PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: down a pit (a person-band pocket at least the pit-room depth), not "dug 2 m"
 			// SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD (Q9: a deck is not a roof): a pawn under a suspension deck is exposed as in
 			// the open hole
-			return (RM_PitRooms.IsPitFloor(map, eng, c) || Pits.RM_SuspensionUnderpass.InFloorBand(p)) && !map.roofGrid.Roofed(c);
+			bool open = (RM_PitRooms.IsPitFloor(map, eng, c) || Pits.RM_SuspensionUnderpass.InFloorBand(p)) && !map.roofGrid.Roofed(c);
+			// RIMMANDRAKE_FIX_PIT_EXPOSURE_THOUGHT_ON_LADDER_ENTRY: only a pawn that cannot get out, and never one soaking
+			return RM_PitExposureMath.Exposed(open, open && RM_SuperdeepTrap.IsTrapped(p), RM_GeyserPit.Soaking(p));
 		}
 
 		/// <summary>

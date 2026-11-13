@@ -981,6 +981,15 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(!RM_PitExposureMath.ElementsHurting(false, 20f, lo, hi), "can-fail: mild 20 hurts nobody (exposure alone costs no resistance, owner Q2)");
                 Assert(RM_PitExposureMath.ElementsHurting(true, 20f, lo, hi), "an active Heatstroke/Hypothermia still counts after the weather turns");
             });
+            Case("PitExposure_only_when_no_way_out_and_not_soaking", () =>
+            {
+                // RIMMANDRAKE_FIX_PIT_EXPOSURE_THOUGHT_ON_LADDER_ENTRY: a willing entry by a lowered ladder is not exposure
+                Assert(RM_PitExposureMath.Exposed(true, true, false), "an open pit floor with no way out: exposed (the prison pit)");
+                Assert(!RM_PitExposureMath.Exposed(true, false, false), "can-fail: a usable ladder in the pocket (a way out): not exposed");
+                Assert(!RM_PitExposureMath.Exposed(true, true, true), "can-fail: soaking in a geyser pool: not exposed");
+                Assert(!RM_PitExposureMath.Exposed(true, false, true), "ladder down and soaking (the owner's blood pool): not exposed");
+                Assert(!RM_PitExposureMath.Exposed(false, true, false), "can-fail: roofed or off the pit floor: not exposed");
+            });
             Case("PitExposure_resistance_falls_faster_with_rate_and_floors_at_zero", () =>
             {
                 Assert(RM_PitExposureMath.NextResistance(5f, 2f) < RM_PitExposureMath.NextResistance(5f, 1f), "rate scales");

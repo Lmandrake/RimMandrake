@@ -33,7 +33,10 @@ Bound by "One kind of heat, planet-wide" (`SOLAR_HEAT_EXPOSURE_1`) and `PIT_SUPE
 ## Recommendation: an "exposed" hediff that narrows the comfort range, and nothing else
 
 1. `RM_PitExposure` becomes a **flat marker hediff**. It is present while `RM_PitExposure.IsExposed`
-   holds (a D=4 cell, unroofed, uncovered) and removed the moment it does not.
+   holds (a D=4 cell, unroofed, uncovered, and, since 2026-11-13, no way out: no ladder the pawn may use in its pocket,
+   `RM_SuperdeepTrap.IsTrapped`, and not soaking in a geyser pool) and removed the moment it does not. Owner 2026-11-13:
+   *"the colonist now only said "pit exposure" even though they willingly entered, the ladder is down. I can soak in the
+   hot blood pool while also getting pit exposure, oddly."* (RIMMANDRAKE_FIX_PIT_EXPOSURE_THOUGHT_ON_LADDER_ENTRY).
 2. Its one stage carries `statOffsets`: `ComfyTemperatureMin +8`, `ComfyTemperatureMax −8`
    (PROVISIONAL, set as a Mod Setting). These stand for the shelter, shade and windbreak a free pawn
    would use and a pit takes away.

@@ -59,6 +59,17 @@ namespace RimMandrake.FlowWorks
 			return heatstrokeOrHypothermia || ambient > safeMax || ambient < safeMin;
 		}
 
+		/// <summary>RIMMANDRAKE_FIX_PIT_EXPOSURE_THOUGHT_ON_LADDER_ENTRY (owner 2026-11-13: "the colonist now only said "pit
+		/// exposure" even though they willingly entered, the ladder is down. I can soak in the hot blood pool while also
+		/// getting pit exposure, oddly."). The 2026-10-11 principle is the pawn "standing in the hot sun unable to escape":
+		/// exposed only on an open (unroofed, uncovered) pit floor with no way out (<paramref name="trapped"/>: no ladder it
+		/// may use in its pocket, RM_SuperdeepTrap.IsTrapped), and never while soaking in a geyser pool (the soak's own
+		/// comfort governs). A lowered ladder in reach is a way out; a raised one is the prison door.</summary>
+		public static bool Exposed(bool onOpenPitFloor, bool trapped, bool soaking)
+		{
+			return onOpenPitFloor && trapped && !soaking;
+		}
+
 		/// <summary>Resistance after one hurting interval, floored at 0; rate is the Mod Setting multiplier.</summary>
 		public static float NextResistance(float resistance, float rateMultiplier)
 		{
