@@ -198,6 +198,90 @@ except Exception as ex:      # a fake too thin for reveal() is a selftest defect
 ok(_okc is True and len(C.sweeps) >= 2 and C.sweeps[-1] == "All",
    "prepare_site: CollapsedRocks dropped after the first sweep are cleared by the re-sweep (sweeps=%s rows=%s)" % (C.sweeps, _rows))
 
+# ---- OPEN SKY (owner 2026-11-12: a pit matrix staged under a mountain roof collapsed in front of him; "I believe you can
+# remove overhead mountain yourself as part of a test map creation from now on"). Clear, then assert: roof off first, then
+# rock, then a state read that refuses naming the cells. A planted roofed cell left in place must be caught.
+class _Sky(object):
+    def __init__(self, roofs, rock, stuck=()):
+        self.roof = dict(roofs)                # (x, z) -> RoofDef
+        self.rock = dict(rock)                 # (x, z) -> ThingDef
+        self.stuck = set(stuck)                # roof cells the roof write cannot clear
+        self.log = []
+
+    def ticks(self, n):
+        self.log.append(("ticks", n))
+
+    def probe(self, cmd):
+        return {"pawns": []}
+
+    @staticmethod
+    def _cells(r):
+        x, z, w, h = (int(v) for v in r.split(","))
+        return {(a, b) for a in range(x, x + w) for b in range(z, z + h)}
+
+    def call(self, tool, **kw):
+        self.log.append((tool, kw.get("categories")))
+        if tool == "jawa/map_info":
+            return {"sizeX": 250, "sizeZ": 250}
+        if tool == "jawa/set_roof_batch":
+            for op in kw["ops"].split(";"):
+                k, r = op.split(":")
+                for c in self._cells(r):
+                    if k == "None" and c not in self.stuck:
+                        self.roof.pop(c, None)
+            return {"success": True}
+        if tool == "jawa/get_roof_batch":
+            cs = self._cells(kw["rects"])
+            hit = sorted((c, k) for c, k in self.roof.items() if c in cs)
+            return {"success": True, "ops": ";".join("%s:%d,%d,1,1" % (k, c[0], c[1]) for c, k in hit) or "None:" + kw["rects"],
+                    "roofs": sorted({k for _c, k in hit}) or ["None"]}
+        if tool == "jawa/list_things":
+            if "rect" not in kw:               # reveal's map-wide fog-trigger listing: none on this map
+                return {"things": [], "countMatched": 0, "isCompleteList": True}
+            cs = self._cells(kw["rect"])
+            th = [{"def": d, "x": c[0], "z": c[1]} for c, d in sorted(self.rock.items()) if c in cs]
+            return {"things": th, "countMatched": len(th)}
+        if tool == "jawa/get_defs":
+            return {"defs": [{"defName": n.split("/")[1], "found": True, "fields": {"mineable": True}}
+                             for n in kw["defs"].split(";")]}
+        if tool == "jawa/destroy_batch":
+            for r in kw["rects"].split(";"):
+                if kw.get("categories") in ("Building", "All"):
+                    for c in self._cells(r if r.count(",") == 3 else r + ",1,1"):
+                        self.rock.pop(c, None)
+            return {"success": True}
+        return {"success": True}
+
+
+_site = (40, 40, 10, 10)
+S1 = _Sky({(41, 41): "RoofRockThick", (35, 45): "RoofRockThin"}, {})
+_v = V.assert_open_sky(S1, _site)
+ok(_v["ok"] is False and (41, 41, "RoofRockThick") in _v["roofCells"] and (35, 45, "RoofRockThin") in _v["roofCells"],
+   "assert_open_sky: a planted thick roof in the site and a thin one in the 6-cell margin are refused by cell (%s)" % _v["why"])
+S2 = _Sky({}, {})
+ok(V.assert_open_sky(S2, _site)["ok"] is True, "assert_open_sky: an open-sky, rock-free site is accepted")
+S3 = _Sky({(c, d): "RoofRockThick" for c in range(25, 66) for d in range(25, 66)},
+          {(44, 44): "Granite", (37, 50): "CollapsedRocks"})
+_v3 = V.open_sky_site(S3, _site)
+_order = [t for t, _c in S3.log if t in ("jawa/set_roof_batch", "jawa/destroy_batch")]
+ok(_v3["ok"] is True and not S3.roof.get((41, 41)) and not S3.rock and _order[:1] == ["jawa/set_roof_batch"],
+   "open_sky_site: thick roof over site+margin+buffer cleared BEFORE the rock and rubble are destroyed (%s %s)" % (_order, _v3["why"]))
+ok(not [c for c in S3.roof if 27 <= c[0] < 63 and 27 <= c[1] < 63],
+   "open_sky_site: the roof buffer reaches 7 cells past the margin (no unsupported roof left beside the cleared rock)")
+S4 = _Sky({(42, 47): "RoofRockThick"}, {}, stuck={(42, 47)})
+_v4 = V.open_sky_site(S4, _site)
+ok(_v4["ok"] is False and (42, 47, "RoofRockThick") in _v4["roofCells"],
+   "open_sky_site: a roofed cell the write could not clear is still refused, naming it (%s)" % _v4["why"])
+_r5 = []
+S5 = _Sky({(42, 47): "RoofRockThick"}, {}, stuck={(42, 47)})
+ok(V._prepare_site(S5, _site, _r5, "sky_site") is False and "42, 47" in str(_r5),
+   "prepare_site: a planted roof left in place makes the site UNMEASURED/SITE with the cell named (%s)" % str(_r5)[:200])
+_r6 = []
+S6 = _Sky({(c, d): "RoofRockThick" for c in range(30, 60) for d in range(30, 60)}, {(45, 45): "Granite"})
+ok(V._prepare_site(S6, _site, _r6, "sky_site_clean") is True and not _r6,
+   "prepare_site: a mountain-roofed site is cleared and then accepted (%s)" % str(_r6)[:200])
+
+
 # ---- PROOF_SITE_HARDEN_HUGE_TRUNKS_SURVIVE_CLEAR (run6 2026-10-25): a giant standing OUTSIDE the rect re-plans its trunk
 # blocker INSIDE it after every destroy, so the site read "TrunkBlocker still standing" until clear_huge_plants ran first.
 # prepare_site must clear the giant itself, for every caller.

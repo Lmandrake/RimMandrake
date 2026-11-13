@@ -1309,6 +1309,119 @@ def clear_huge_plants(B, margin=6, tile=16):
     return {"blockers": len(cells), "tiles": len(tiles), "blockersLeft": len(left)}
 
 
+# OPEN SKY over every test site (owner 2026-11-12, watching a pit matrix staged under a mountain roof collapse onto itself:
+# "You failed to assert \"no mountain above\" on the test map, and it collapsed all over"; then: "I believe you can remove
+# overhead mountain yourself as part of a test map creation from now on."). So a site on a TEST or REVIEW map is first
+# CLEARED (every roof over the site + margin + a roof buffer, thick rock included, written straight to the roof grid; then
+# natural rock and collapsed rubble in site + margin, roof first so nothing can fall) and THEN ASSERTED by a state read:
+# any roof or mineable thing left in site + margin refuses the site, naming the cells. Never on a canonical world save.
+SKY_MARGIN = 6          # cells around the scene that must be open sky too
+SKY_ROOF_BUFFER = 7     # roof removed this much further out, so no roof is left unsupported next to the cleared rock
+_ROCK_NAME = re.compile(r"^(Granite|Sandstone|Limestone|Marble|Slate|Basalt|CollapsedRocks|Mineable\w*)$")
+
+
+def _grow(rect, by, size=None):
+    x, z, w, h = rect
+    x0, z0, x1, z1 = x - by, z - by, x + w + by, z + h + by
+    if size:
+        x0, z0, x1, z1 = max(0, x0), max(0, z0), min(size[0], x1), min(size[1], z1)
+    else:
+        x0, z0 = max(0, x0), max(0, z0)
+    return (x0, z0, max(0, x1 - x0), max(0, z1 - z0))
+
+
+def _map_size(B):
+    mi = B.call("jawa/map_info") or {}
+    return (mi["sizeX"], mi["sizeZ"]) if isinstance(mi.get("sizeX"), int) and isinstance(mi.get("sizeZ"), int) else None
+
+
+def _roof_cells(ops):
+    """'RoofDef:x,z,w,h;...' (jawa/get_roof_batch) -> [(x, z, roof)] for every roofed cell."""
+    out = []
+    for op in (ops or "").split(";"):
+        if ":" not in op:
+            continue
+        k, rest = op.split(":", 1)
+        if k.strip() in ("", "None", "Clear"):
+            continue
+        try:
+            x, z, w, h = (int(v) for v in rest.split(","))
+        except ValueError:
+            continue
+        out += [(cx, cz, k.strip()) for cx in range(x, x + w) for cz in range(z, z + h)]
+    return out
+
+
+def _mineable_things(B, r):
+    """Things in rect string r whose def is mineable (natural rock, ore, CollapsedRocks): [(x, z, def)], plus a reason the
+    listing could not be trusted (or None)."""
+    lt = B.call("jawa/list_things", rect=r, limit=5000) or {}
+    things = lt.get("things") or []
+    why = None
+    if lt.get("success") is False:
+        why = "list_things unreadable: %s" % str(lt)[:200]
+    elif isinstance(lt.get("countMatched"), int) and lt["countMatched"] > len(things):
+        why = "list_things capped: %d of %d things returned" % (len(things), lt["countMatched"])
+    names = sorted({str(t.get("def") or t.get("defName") or "") for t in things} - {""})
+    mine = {}
+    if names:
+        gd = B.call("jawa/get_defs", defs=";".join("ThingDef/" + n for n in names), fields="mineable") or {}
+        for d in gd.get("defs") or []:
+            if d.get("found"):
+                mine[d.get("defName")] = (d.get("fields") or {}).get("mineable") is True
+    out = []
+    for t in things:
+        n = str(t.get("def") or t.get("defName") or "")
+        if mine.get(n, bool(_ROCK_NAME.match(n))):
+            out.append((t.get("x"), t.get("z"), n))
+    return out, why
+
+
+def assert_open_sky(B, rect, margin=SKY_MARGIN, size=None):
+    """READ ONLY: is every cell of rect + margin open sky (no roof of any kind) with no mineable thing standing?
+    -> {"ok", "rect", "roofCells", "rockCells", "why"}; the cell lists are capped at 40 for the message."""
+    R = _grow(rect, margin, size)
+    r = "%d,%d,%d,%d" % R
+    why = []
+    rf = B.call("jawa/get_roof_batch", rects=r) or {}
+    roofs = _roof_cells(rf.get("ops"))
+    if rf.get("success") is False:
+        why.append("get_roof_batch unreadable: %s" % str(rf)[:200])
+    elif not roofs and [x for x in (rf.get("roofs") or []) if x not in (None, "None")]:
+        why.append("roof present over the site: %s" % rf.get("roofs"))  # a reply with names but no ops
+    if roofs:
+        why.append("%d roofed cell(s) over site+margin, e.g. %s" % (len(roofs), roofs[:12]))
+    rock, rwhy = _mineable_things(B, r)
+    if rwhy:
+        why.append(rwhy)
+    if rock:
+        why.append("%d rock/rubble cell(s) in site+margin, e.g. %s" % (len(rock), rock[:12]))
+    return {"ok": not why, "rect": list(R), "roofCells": roofs[:40], "rockCells": rock[:40], "why": why}
+
+
+def open_sky_site(B, rect, margin=SKY_MARGIN, buffer=SKY_ROOF_BUFFER):
+    """CLEAR, THEN ASSERT (test/review maps only): remove every roof over rect + margin + buffer, then every mineable thing
+    in rect + margin (roof first, so nothing collapses onto the site), settle 2 ticks, sweep any rubble that fell, and
+    return assert_open_sky's verdict. ok False names the cells still roofed or rocky."""
+    size = _map_size(B)
+    RB = _grow(rect, margin + buffer, size)
+    res = B.call("jawa/set_roof_batch", ops="None:%d,%d,%d,%d" % RB) or {}
+    cleared = {"roofOp": {k: res.get(k) for k in ("success", "cellsChanged", "cellsFailedVerify") if k in res}}
+    R = "%d,%d,%d,%d" % _grow(rect, margin, size)
+    for attempt in range(2):
+        rock, _ = _mineable_things(B, R)
+        cells = sorted({(x, z) for x, z, _n in rock if isinstance(x, int) and isinstance(z, int)})
+        if not cells:
+            break
+        for k in range(0, len(cells), 400):
+            B.call("jawa/destroy_batch", rects=";".join("%d,%d,1,1" % c for c in cells[k:k + 400]), categories="Building")
+        cleared["rockDestroyed%d" % attempt] = len(cells)
+        B.ticks(2)
+    v = assert_open_sky(B, rect, margin, size)
+    v["cleared"] = cleared
+    return v
+
+
 def prepare_site(B, rect, rows, rid):
     """The site prep proper (_prepare_site), run on a map first swept of intruders. Wild animals, entities and strangers near
     the plot are removed BEFORE the colonist walks in (reveal() teleports him across the plot and ticks the clock there), a
@@ -1353,6 +1466,9 @@ def _prepare_site(B, rect, rows, rid):
     import re
     r = "%d,%d,%d,%d" % tuple(rect)
     why = []
+    # 2026-11-12 (owner, a pit matrix collapsed under a mountain roof): roof off site+margin+buffer and rock out of
+    # site+margin FIRST, so the All sweep below never destroys a roof holder under a live roof; asserted at the end
+    open_sky_site(B, rect)
     for tool, kw in (("jawa/destroy_batch", {"rects": r, "categories": "All"}),
                      # clearOverlays: floodwater/thin ice (tempGrid) and Substructure (foundation) read before the top
                      # grid, so a bare Soil paint left them showing (HOSE_SITE_FIX_TERRAIN_WONT_READ_BACK, run4 2026-10-25:
@@ -1391,6 +1507,9 @@ def _prepare_site(B, rect, rows, rid):
             if re.search(r"Granite|Sandstone|Limestone|Marble|Slate|Rock|Chunk|Plant_|Tree|Bush|Grass|Ruin|TrunkBlocker", str(d))]
     if left:
         why.append("rock/plants/ruins still standing in the site: %s" % left[:8])
+    sky = assert_open_sky(B, rect)
+    if not sky.get("ok"):
+        why.append("not open sky (site+%d margin) after clearing: %s" % (SKY_MARGIN, sky.get("why")))
     if why:
         row(rows, rid, "UNMEASURED", "SITE", {"rect": list(rect), "blocked": why,
             "meaning": "the quicktest terrain still blocks the site after clearing; this is environmental, not a mod result"})

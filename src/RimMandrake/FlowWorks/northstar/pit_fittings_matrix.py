@@ -177,13 +177,34 @@ def designators():
     return found
 
 
+def dump():
+    stamp = time.strftime("%Y%m%dT%H%M%S")
+    with open(os.path.join(OUT, "pfm_%s_%s.json" % (STEP.replace(":", "_"), stamp)), "w") as fh:
+        json.dump({"log": LOG, "rows": ROWS}, fh, indent=1)
+
+
+def sky_gate(when, clear=False):
+    """OPEN SKY over site + 6 (owner 2026-11-12: this matrix was once staged under a mountain roof and collapsed in front of
+    him). clear=True first removes every roof over site+margin+buffer and the rock/rubble in site+margin (test maps only),
+    then a state read asserts it; a roofed or rocky cell refuses the run, UNMEASURED SITE, exit 2, naming the cells."""
+    import validation_core as V
+    v = V.open_sky_site(bridge(), site()) if clear else V.assert_open_sky(bridge(), site())
+    log("open_sky_" + when, {k: v.get(k) for k in ("ok", "rect", "roofCells", "rockCells", "why", "cleared")})
+    if not v.get("ok"):
+        ROWS.append({"row": "site_open_sky_" + when, "verdict": "UNMEASURED", "got": v.get("why")})
+        dump()
+        sys.exit(2)
+
+
 def stage():
     x, z, w, h = site()
     log("reset", static_reset(x, z, w, h))
+    sky_gate("before_stage", clear=True)
     log("cleared", {k: v for k, v in call("jawa/destroy_batch", rects="%d,%d,%d,%d" % (x, z, w, h),
                                             categories="All").items() if k in ("success", "destroyed", "counts")})
     call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % (x, z, w, h))
     call("jawa/set_terrain_batch", ops="Soil:%d,%d,%d,%d" % (x, z, w, h))
+    sky_gate("after_clear")
     call("jawa/kill_hostiles")
     call("jawa/weather_set", weather="Clear", lockWeather=True)
     for key, d, f, fluid, x0, z0 in cells():
@@ -496,6 +517,7 @@ if __name__ == "__main__":
     if STEP in ("all", "shots"):
         shots()             # before the read: a map section re-prints only when the camera reaches it
     if STEP in ("all", "read"):
+        sky_gate("before_read")
         read()
     if STEP == "sheets":
         sheets()
@@ -506,7 +528,5 @@ if __name__ == "__main__":
         call("rimworld/pause_game")
         log("save", save_keeper(B, STEP.split(":", 1)[1], signs=label_ops()))
     log("elapsed_s", round(time.time() - t0, 1))
-    stamp = time.strftime("%Y%m%dT%H%M%S")
-    with open(os.path.join(OUT, "pfm_%s_%s.json" % (STEP.replace(":", "_"), stamp)), "w") as fh:
-        json.dump({"log": LOG, "rows": ROWS}, fh, indent=1)
-    sys.exit(1 if any(r["verdict"] != "PASS" for r in ROWS) else 0)
+    dump()
+    sys.exit(2 if any(r["verdict"] == "UNMEASURED" for r in ROWS) else 1 if any(r["verdict"] != "PASS" for r in ROWS) else 0)
