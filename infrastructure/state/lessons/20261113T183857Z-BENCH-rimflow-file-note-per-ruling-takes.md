@@ -1,0 +1,1 @@
+rimflow file/note: --per-ruling takes an item id or the bare OWNER tsn (1793996551266756043), never the tree/sheet spelling OWNER:<tsn>; and --for must be a seat (BENCH/RELENTLESS), not a mod name (alarm_routes refusal). A --by-card note lands in OWNER.jsonl, so ./publish must name that shard too.
