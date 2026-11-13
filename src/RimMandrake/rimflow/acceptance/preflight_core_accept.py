@@ -70,7 +70,7 @@ def text_of(cs):
 
 
 def git(repo, *a):
-    return subprocess.run(["git", "-C", repo] + list(a), capture_output=True, text=True, check=True).stdout.strip()
+    return subprocess.run(["git", "-C", repo] + list(a), capture_output=True, text=True, check=True, timeout=60).stdout.strip()
 
 
 def main():
