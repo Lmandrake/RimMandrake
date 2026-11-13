@@ -6729,3 +6729,4 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-13T15:46:39Z","tsn":1794584799886837714}
 {"seat":"RUNNER","event":"live","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX","result":"kept","detail":"sweep: running again","ts":"2026-11-13T15:48:04Z","tsn":1794584884519928909}
 {"seat":"RUNNER","event":"note","id":"STEVE_LANE_UNSTICK_BRAKED_UNOWNED_0A05","text":"steward: SteveDesktop lane proven again: job J20261113T154135Z-58476c DONE with its canary on at 2026-11-13T15:48:30Z, after BRAKED since 2026-11-13T12:38:22Z (174 min unowned, 190 min impact)","ts":"2026-11-13T15:48:53Z","tsn":1794584933220359785}
+{"seat":"RUNNER","event":"note","id":"SELFTEST_FIX_LEDGER_STATE_WAZQ","text":"ops_watch: new at 2026-11-13T16:00:13Z: src/RimMandrake/Utils/selftest_ledger_state.py (due 2026-11-16T11:00:00Z)","ts":"2026-11-13T16:00:20Z","tsn":1794585620578467811}
