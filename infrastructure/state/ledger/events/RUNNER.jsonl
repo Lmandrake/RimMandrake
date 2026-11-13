@@ -6854,3 +6854,6 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-13T20:41:23Z","tsn":1794602483431483820}
 {"seat":"RUNNER","event":"live","id":"OPS_DESIGNER_UNSTICK_READY_AND_WAITING_GZKV","result":"kept","detail":"sweep: running again","ts":"2026-11-13T20:48:05Z","tsn":1794602885221308662}
 {"seat":"RUNNER","event":"live","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX","result":"kept","detail":"sweep: running again","ts":"2026-11-13T20:48:16Z","tsn":1794602896247975011}
+{"seat":"RUNNER","event":"live","id":"OPS_STEVE_UNSTICK_UNCLAIMED_ETBS","result":"broken","detail":"Ops alarm STEVE_INCIDENT_UNCLAIMED: steve.incident_unclaimed_min = 32.3 min the oldest unclaimed steward incident has waited (MEASURED), line > 30; owner: Relentless, STEVE_LANE_UNSTICK_BRAKED_UNOWNED_452C expedited by Operations","ts":"2026-11-13T21:02:05Z","tsn":1794603725887942357}
+{"seat":"RUNNER","event":"raise","id":"OPS_STEVE_UNSTICK_UNCLAIMED_ETBS","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-13T21:02:12Z","tsn":1794603732451260669}
+{"seat":"RUNNER","event":"live","id":"OPS_STEVE_UNSTICK_UNCLAIMED_ETBS","result":"kept","detail":"sweep: running again","ts":"2026-11-13T21:03:04Z","tsn":1794603784227826167}
