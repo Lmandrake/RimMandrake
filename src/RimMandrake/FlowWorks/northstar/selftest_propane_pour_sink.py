@@ -46,7 +46,7 @@ def propane_game(sink, fill, terrain, size=None):
         if size and tl in ("jawa/flowworks_excavation_report", "jawa/flowworks_excavation_drive"):
             x, z, e = int(p.get("x", 0)), int(p.get("z", 0)), EXT.EDGE_BAND
             s = x < e or z < e or x >= size[0] - e or z >= size[1] - e
-            return {"success": True, "depth": 2, "fill": 0 if s else fill, "isExcavated": True, "isSinkCell": s,
+            return {"success": True, "depth": 2, "waterDl": (0 if s else fill) * 10000, "isExcavated": True, "isSinkCell": s,
                     "sinkTransferredTotal": 2.25 if s else 0.0}
         if tl == "jawa/static_call":
             if m == "ProofResetRect":
@@ -61,7 +61,7 @@ def propane_game(sink, fill, terrain, size=None):
                 return {"success": True, "result": "PITWATER dl=0 wet=0 cells=1"}
             return {"success": True, "result": ""}
         if tl in ("jawa/flowworks_excavation_report", "jawa/flowworks_excavation_drive"):
-            return {"success": True, "depth": 2, "fill": fill, "isExcavated": True, "isSinkCell": sink,
+            return {"success": True, "depth": 2, "waterDl": (fill) * 10000, "isExcavated": True, "isSinkCell": sink,
                     "sinkTransferredTotal": 2.25 if sink else 0.0}
         if tl == "rimworld/get_cell_info":
             return {"success": True, "cell": {"terrainDefName": terrain}}

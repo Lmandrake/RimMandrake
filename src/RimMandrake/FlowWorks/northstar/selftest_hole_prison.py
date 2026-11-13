@@ -101,7 +101,7 @@ class Bridge:
         if tool == 'jawa/destroy_batch': self.baseline = False
         if tool == 'jawa/flowworks_excavation_drive': self.depth = kw['deepenLevels']
         if tool == 'jawa/flowworks_excavation_report':
-            return {'success':True,'depth':self.depth,'fill':1 if self.fault == 'wet' else 0,'isExcavated':True}
+            return {'success':True,'depth':self.depth,'waterDl':10000 if self.fault == 'wet' else 0,'isExcavated':True}
         if tool == 'jawa/spawn_pawn':
             pid = 'Pawn'+str(len(self.pawns))
             if kw['faction'] == 'hostile': self.hostile_ids.add(pid)

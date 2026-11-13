@@ -76,12 +76,12 @@ def g45():
 def g712():
     import review_map as R
     P = {"w": 2, "h": 1, "depth": 2}
-    water = [{"d": 2, "f": 1, "fluid": "RM_Fluid_Water"}] * 2
-    tar = [{"d": 2, "f": 1, "fluid": "RM_Fluid_Tar"}] * 2
+    water = [{"d": 2, "dl": 10000, "fluid": "RM_Fluid_Water"}] * 2
+    tar = [{"d": 2, "dl": 10000, "fluid": "RM_Fluid_Tar"}] * 2
     check(R.visual_verdict(P, 1, False, water, 0.0, 1, want_fluid="RM_Fluid_Tar") is False,
           "7.12 water in the tar station is not built")
     check(R.visual_verdict(P, 1, False, tar, 0.0, 1, want_fluid="RM_Fluid_Tar") is True, "7.12 sanity: tar in the tar station is built")
-    check(R.visual_verdict(P, 0, False, [{"d": 2, "f": 0, "fluid": None}] * 2, 0.0, 1, want_fluid=None) is True,
+    check(R.visual_verdict(P, 0, False, [{"d": 2, "dl": 0, "fluid": None}] * 2, 0.0, 1, want_fluid=None) is True,
           "7.12 sanity: a dry station needs no fluid")
     src = open(os.path.join(HERE, "review_map.py"), encoding="utf-8").read()
     check('want_fluid=s.get("fluid")' in src, "7.12 verify_visuals passes the station's setup fluid to the verdict")
@@ -112,18 +112,18 @@ def g62():
             def call(self, t, **kw):
                 return {"success": True, "cells": [{"x": 5, "z": 5}, {"x": 6, "z": 5}], "ticksBefore": 1, "ticksGame": 1,
                         "nextPulseTickUntouched": True, "gamePaused": True, "pulsesRun": 1,
-                        "pulses": [{"fill": [0, 0], "dl": [5000, 5000]}, pulse1]}
+                        "pulses": [{"dl": [5000, 5000]}, pulse1]}
         L = V2.Live.__new__(V2.Live)
         L.B, L.o, L.jobcells = B(), Oracle(), set()
         L._log = lambda s: None
         L.scene_of = lambda c: "S"
         return L.pulses(1, "t")
 
-    probs, mism, _, _ = run({"fill": [0, 0], "dl": [1000, 9000]})
+    probs, mism, _, _ = run({"dl": [1000, 9000]})
     check(mism.get("S") and len(mism["S"]) == 2, "6.2 1,000/9,000 dL against the oracle's 5,000/5,000 is a mismatch", mism)
-    probs, mism, _, _ = run({"fill": [0, 0], "dl": [5000, 5000]})
+    probs, mism, _, _ = run({"dl": [5000, 5000]})
     check(not mism and not probs, "6.2 sanity: the oracle's own distribution matches", (probs, mism))
-    probs, mism, _, _ = run({"fill": [0, 0]})
+    probs, mism, _, _ = run({"depth": [2, 2]})
     check(any("no per-cell dl" in p for p in probs), "6.2 a bridge that sends no dl is a contract problem, not a pass", probs)
 
 
@@ -210,7 +210,7 @@ def g83():
 def gcs():
     p = os.path.join(REPO, "src", "RimMandrake", "bridgetools", "JawaBench.BridgeTools", "JawaBenchFlowWorksPulseTools.cs")
     s = open(p, encoding="utf-8").read()
-    check("x = c.x, z = c.z, d, f, dEff, fEff, dl, fluid," in s, "C# excavation_rect rows carry dl and fluid")
+    check("x = c.x, z = c.z, d, dEff, dl, waterM = dl * 0.5 / 10000.0, fluid," in s, "C# excavation_rect rows carry dl and fluid")
     check('type.GetMethod("WaterDlAt"' in s and 'type.GetMethod("FluidAt"' in s, "C# reads WaterDlAt / FluidAt by reflection")
     check("dl = s.dl," in s and "sumDl = s.sumDl," in s, "C# flowworks_pulse records carry per-cell dl and sumDl")
     import prove_excavation_rect_fields as PF
@@ -219,9 +219,9 @@ def gcs():
     check(PF.judge({"success": True, "rows": [{"x": 1, "z": 1, "dl": 0, "fluid": None}]})[0] == 0, "A1 live proof passes new rows")
     check(PF.judge({"success": False})[0] == 2, "A1 live proof is NO VERDICT on a failed call")
     # The live round's rows (2026-11-06): the transport drops null members, so a dry cell has neither fluid nor terrain.
-    live = {"success": True, "rows": [{"x": 125, "z": 125, "d": 0, "f": 0, "dEff": 0, "fEff": 0, "dl": 0,
+    live = {"success": True, "rows": [{"x": 125, "z": 125, "d": 0, "dEff": 0, "dl": 0,
                                        "isExcavated": False, "isSource": False, "isSink": False}]}
-    ctl = {"success": True, "rows": [{"x": 125, "z": 125, "d": 0, "f": 0, "dl": 0, "terrain": "Sand"}]}
+    ctl = {"success": True, "rows": [{"x": 125, "z": 125, "d": 0, "dl": 0, "terrain": "Sand"}]}
     check(PF.judge(live, ctl)[0] == 0, "A1 passes a null-dropped fluid when terrain is dropped too and the control carries it")
     check(PF.judge(live)[0] == 2, "A1 is NO VERDICT on a null-dropped fluid with no control")
     no_dl = {"success": True, "rows": [{k: v for k, v in live["rows"][0].items() if k != "dl"}]}

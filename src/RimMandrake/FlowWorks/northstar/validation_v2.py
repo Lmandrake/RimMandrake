@@ -2100,20 +2100,23 @@ class Live(object):
             probs.append("excavated set differs: oracle-only %s live-only %s" % (
                 sorted(set(mine) - live_set)[:4], sorted(live_set - set(mine) - self.jobcells)[:4]))
         cmp = [c for c in cells if c in self.o.D and c not in self.jobcells]
-        if pul and [levels_of(pul[0]["dl"])[cells.index(c)] for c in cmp] != [self.o.F[c] for c in cmp]:
+        if pul and pul[0].get("dl") is not None and [levels_of(pul[0]["dl"])[cells.index(c)] for c in cmp] != [self.o.F[c] for c in cmp]:
             probs.append("pulse-0 vector != oracle state (out of sync before pulsing)")
         per_scene = {}
         mism = {}
         exact = getattr(self.o, "level_exact", False)
         for p in range(1, len(pul)):
             self.o.pulse()
-            row = levels_of(pul[p]["dl"])
+            dl = pul[p].get("dl")
+            if dl is None:
+                if p == 1:
+                    probs.append("flowworks_pulse sent no per-cell dl: the water comparison is blind (old bridge DLL?)")
+                continue
+            row = levels_of(dl)
             # GPT 6.2 (FW_PROOF_TOOLS_HARDEN_READ_GAPS): F is the floored whole notch, so 1,000/9,000 dL reads like the
             # oracle's 5,000/5,000. The exact oracle's W is compared to the bridge's per-cell dL too; a bridge with no
             # dL is a contract problem, never a silent F-only pass.
-            dl = pul[p].get("dl") if exact else None
-            if exact and dl is None and p == 1:
-                probs.append("flowworks_pulse sent no per-cell dl: the exact-water comparison is blind (old bridge DLL?)")
+            dl = dl if exact else None
             for i, c in enumerate(cells):
                 if c in self.jobcells or c not in self.o.D:
                     continue
@@ -2125,7 +2128,7 @@ class Live(object):
                         mism.setdefault(self.scene_of(c), []).append((p, c, "dL %s" % dl[i], "dL %s" % w))
         for name, s in SCENES.items():
             if all(c in cells for c in s["cells"]):
-                per_scene[name] = [[levels_of(pul[p]["dl"])[cells.index(c)] for c in s["cells"]] for p in range(1, len(pul))]
+                per_scene[name] = [[levels_of(pul[p].get("dl") or [0] * len(cells))[cells.index(c)] for c in s["cells"]] for p in range(1, len(pul))]
         if len(pul) != n + 1:
             probs.append("pulsesRun %s != %d" % (r.get("pulsesRun"), n))
         self._log("    pulse[%s] x%d: %d cells, %d mismatching scenes %s" % (tag, n, len(cells), len(mism), sorted(mism)))

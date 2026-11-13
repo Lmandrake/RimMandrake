@@ -42,10 +42,10 @@ def _run(chain, pre_depth, post_depth):
                 st["ordered"] = True
             return g
         if tl == "jawa/flowworks_excavation_report":
-            return {"success": True, "depth": post_depth if st["ordered"] else pre_depth, "fill": 1,
+            return {"success": True, "depth": post_depth if st["ordered"] else pre_depth, "waterDl": (1) * 10000,
                     "isSourceCell": False, "overflowDestroyedTotal": 0.0}
         if tl == "jawa/flowworks_excavation_drive":
-            return {"success": True, "depth": 1, "fill": 1}
+            return {"success": True, "depth": 1, "waterDl": 10000}
         return _base(tl, p)
 
     return S._ext_run(EXT, chain, h), orders
