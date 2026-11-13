@@ -1,5 +1,6 @@
 {
  "aliases": [],
+ "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: released for one more look at round 10; that look was not_covered; judging stopped on ExplosiveKnockback (coverage_judge.py release <dir> --why ... grants one more look)",
  "budget": {
   "cap": 4000000,
   "charges": [
@@ -632,10 +633,76 @@
     "ref": "run bench-ek2-st4-20261113",
     "stage": 4,
     "tokens": 0
+   },
+   {
+    "at": "2026-11-13T08:43:49Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794558854",
+    "stage": 5,
+    "tokens": 1217080
+   },
+   {
+    "at": "2026-11-13T08:45:48Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794558854",
+    "stage": 5,
+    "tokens": 175298
    }
   ],
   "reserve": 60000,
-  "spent": 90339216
+  "spent": 91731594
+ },
+ "coverage_releases": [
+  {
+   "at": "2026-11-13T08:34:09Z",
+   "rounds_at": 9,
+   "why": "his card 2026-11-13 'EK exam -> Rerun exam, then judge' (OWNER:1794558073416640888): exam9 passed 79/79 on the current tree; one judge run"
+  }
+ ],
+ "coverage_rounds": [
+  {
+   "at": "2026-11-13T08:34:14Z",
+   "error": null,
+   "gaps": 6,
+   "ids": [
+    "blast_breaks_pit_cover",
+    "closed_container_holds",
+    "gas_goes_clump_by_clump",
+    "inv_closed_guard",
+    "inv_container_shove",
+    "inv_gas_chain",
+    "inv_gas_tags",
+    "inv_settings",
+    "our_gases_burn",
+    "settings_scale_and_switch",
+    "thrown_into_pit_falls"
+   ],
+   "judge": "rm-coverage-judge-1794558854",
+   "late": [
+    "inv_settings",
+    "settings_scale_and_switch",
+    "inv_gas_chain",
+    "inv_gas_tags",
+    "gas_goes_clump_by_clump",
+    "our_gases_burn",
+    "blast_breaks_pit_cover",
+    "settings_scale_and_switch",
+    "inv_settings",
+    "thrown_into_pit_falls",
+    "gas_goes_clump_by_clump"
+   ],
+   "tags": {
+    "changed": 3,
+    "late": 3
+   },
+   "tokens": 1392378,
+   "tree": "473b067275efa7e9f4550fa9244f9de083d1ca30fef08f59dc79d3f88a085061",
+   "verdict": "not_covered"
+  }
+ ],
+ "coverage_stop": {
+  "at": "2026-11-13T08:45:49Z",
+  "why": "released for one more look at round 10; that look was not_covered"
  },
  "history": [
   {
@@ -1213,11 +1280,36 @@
    "stage": 5,
    "what": "close",
    "why": "run bench-ek2-st4-20261113: stage 4 done"
+  },
+  {
+   "at": "2026-11-13T08:34:09Z",
+   "stage": 5,
+   "what": "coverage_release",
+   "why": "his card 2026-11-13 'EK exam -> Rerun exam, then judge' (OWNER:1794558073416640888): exam9 passed 79/79 on the current tree; one judge run"
+  },
+  {
+   "at": "2026-11-13T08:45:49Z",
+   "stage": 5,
+   "what": "coverage_stop",
+   "why": "REFUSAL_NOTHING_COULD_EVER_PASS: released for one more look at round 10; that look was not_covered; judging stopped on ExplosiveKnockback (coverage_judge.py release <dir> --why ... grants one more look)"
+  },
+  {
+   "at": "2026-11-13T08:46:16Z",
+   "stage": 5,
+   "what": "park",
+   "why": "ceiling: his card (EK exam -> Rerun exam, then judge) lifted the ceiling park for one exam rerun and one judge run: exam9 passed 79/79 on the current tree and sheet; the one coverage-judge run (rm-coverage-judge-1794558854) returned not_covered with 6 gaps, all return_to 3, none needing his answer. Re-parked; nothing more spent without his word on RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH. (park_summary.md)"
   }
  ],
  "item": "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
  "loop_since": "2026-11-13T08:23:59Z",
  "mod": "ExplosiveKnockback",
+ "park": {
+  "at": "2026-11-13T08:46:15Z",
+  "kind": "ceiling",
+  "quick_look": true,
+  "summary": "park_summary.md",
+  "why": "his card (EK exam -> Rerun exam, then judge) lifted the ceiling park for one exam rerun and one judge run: exam9 passed 79/79 on the current tree and sheet; the one coverage-judge run (rm-coverage-judge-1794558854) returned not_covered with 6 gaps, all return_to 3, none needing his answer. Re-parked; nothing more spent without his word on RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH."
+ },
  "parks": [
   {
    "at": "2026-11-13T07:52:37Z",
@@ -1458,6 +1550,6 @@
  "running": null,
  "schema": 1,
  "stage": 5,
- "status": "ready",
- "waiting_owner_feed": "86c84c506204ffd0e76dfe061854a595cd239a4a8282a5a33a9fe9e0a7c64997"
+ "status": "waiting_owner",
+ "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }

@@ -1,10 +1,10 @@
 {
- "author": "BENCH builder run a0034a1c20bdb097d (exam8)",
- "examiner": "a72e84062fb3c66b6",
- "challenger": "a536a9b74278bf061",
+ "author": "tree lineage BENCH builder run a0034a1c20bdb097d, edited by the Conductor in 0c1592e2d7",
+ "examiner": "rm-judge ad72de68b2083f3cb (opus)",
+ "challenger": "rm-judge a3eb0c203c971e7bf (opus)",
  "inputs": {
-  "tree": "052301404e081d7c1d5e00afeae1b8d11d0e6aaa3ac4f414e8fe9f79dcd07eb2",
-  "sheet": "decd62e555e47fb236d2bb0e16dedff3b2f3c8bd42434f1495887a0ed3c36137"
+  "tree": "473b067275efa7e9f4550fa9244f9de083d1ca30fef08f59dc79d3f88a085061",
+  "sheet": "bf4db944bc5835843e638d9f31755b490b4ba5c5c1659e02ade9f156fb8b1f4e"
  },
  "scenarios": [
   {
@@ -123,8 +123,8 @@
   },
   {
    "id": "e20",
-   "text": "A mortar shell lands in a storeroom beside a wooden crate full of medicine. The crate slides one cell across the floor and its medicine stays inside.",
-   "expect": "accept: closed containers keep their goods and may be shoved one cell",
+   "text": "A mortar shell lands in a storeroom two cells from a Deep Storage weapons locker full of rifles, the floor cell behind the locker empty. The locker slides one cell away from the blast and every rifle stays inside it.",
+   "expect": "accept: a closed container (a modded locker that does not draw its contents) keeps its goods and, 1x1 and light with a free cell behind it, may be shoved one cell",
    "expect_source": "leaf:closed_container_holds"
   },
   {
@@ -171,7 +171,7 @@
   },
   {
    "id": "c4",
-   "text": "A mortar shell lands beside a wooden crate of medicine. The crate slides one cell across the floor, and as it settles a couple of packets of medicine spill from it onto the floor beside it, the rest staying inside.",
+   "text": "A mortar shell lands beside a Deep Storage weapons locker of rifles with empty floor behind it. The locker slides one cell, and as it settles two rifles spill from it onto the floor beside it, the rest staying inside.",
    "expect": "reject: a closed container keeps its goods; only the container itself may be shoved",
    "expect_source": "leaf:closed_container_holds"
   },
@@ -207,7 +207,7 @@
   },
   {
    "id": "c10",
-   "text": "A mortar shell lands beside a locker standing against a wall, the wall directly behind it. The locker does not slide but jolts in place, and everything inside stays inside.",
+   "text": "A mortar shell lands beside a Deep Storage weapons locker standing against a wall, the wall directly behind it. The locker does not slide but jolts in place, and every rifle inside stays inside.",
    "expect": "accept: a closed container may slide one cell or jolt; never into a wall, and its goods stay in",
    "expect_source": "leaf:closed_container_holds"
   },
@@ -297,8 +297,8 @@
   },
   {
    "id": "y5",
-   "text": "A grenade goes off beside a wooden crate of silver standing at the lip of an open pit. The crate slides one cell straight over the edge and drops to the pit floor with its silver.",
-   "expect": "reject: a closed container may shift a cell or jolt but is never shoved into a pit",
+   "text": "A grenade goes off beside a sealed crate of silver standing at the lip of an open pit, the pit on the far side of the crate from the blast. The crate slides one cell straight over the edge and drops to the pit floor with its silver.",
+   "expect": "reject: a closed container (a sealed crate) may shift a cell or jolt but is never shoved into a pit",
    "expect_source": "leaf:closed_container_holds"
   },
   {
@@ -318,24 +318,187 @@
    "text": "A colonist is dragging a hose end across the yard when a grenade throws him four cells. The hose end lies on the cell where he was standing, and he lands empty-handed.",
    "expect": "accept: a thrown carrier drops the hose end on the cell they were thrown from",
    "expect_source": "leaf:hose_drops_at_takeoff"
+  },
+  {
+   "id": "w1",
+   "text": "A grenade lands in the kitchen beside the hopper that feeds the nutrient paste dispenser, the hopper full of raw rice. The rice is blown out of the hopper and scatters across the kitchen floor, leaving the hopper empty.",
+   "expect": "accept: a hopper draws its contents, so it is open and protects nothing; its goods scatter like floor goods",
+   "expect_source": "leaf:open_shelf_scatters"
+  },
+  {
+   "id": "w2",
+   "text": "A mortar shell lands in a barn beside a hopper of corn. The loose hay on the floor flies in every direction, but the corn in the hopper stays exactly where it was.",
+   "expect": "reject: a hopper is open storage (it draws its contents) and protects nothing; its corn must scatter like the floor goods",
+   "expect_source": "leaf:open_shelf_scatters"
+  },
+  {
+   "id": "w3",
+   "text": "A grenade goes off beside an ancient security crate, the big two-by-two kind, holding gold, with open floor behind it. The whole crate slides a cell away from the blast, the gold still inside.",
+   "expect": "reject: only a 1x1 closed container may slide; one larger than 1x1 stays on its cells and jolts in place",
+   "expect_source": "leaf:closed_container_holds"
+  },
+  {
+   "id": "w4",
+   "text": "A mortar shell lands beside a 500 kg Deep Storage safe full of silver, with empty floor behind it. The safe slides a full cell across the floor, its silver still locked inside.",
+   "expect": "reject: a closed container slides only when it is under the mass limit; the 500 kg safe is over it and only jolts in place",
+   "expect_source": "leaf:closed_container_holds"
+  },
+  {
+   "id": "w5",
+   "text": "A grenade goes off in the freezer beside a modded fridge that shows its meals stacked on its shelves. The meals are blown out of the fridge and scatter across the floor.",
+   "expect": "accept: anything that draws its contents is open, a drawing fridge among them, so its goods scatter",
+   "expect_source": "leaf:open_shelf_scatters"
+  },
+  {
+   "id": "w6",
+   "text": "A mortar shell lands beside a modded gun locker that displays its rifles on its face. The floor goods around it fly, but the locker only shudders in place and every rifle stays in it.",
+   "expect": "reject: a locker that draws its contents is open, period; its rifles must scatter like floor goods, not be held",
+   "expect_source": "leaf:open_shelf_scatters"
+  },
+  {
+   "id": "w7",
+   "text": "A mortar shell lands beside a sealed crate of components with a colonist standing on the cell directly behind it. The crate shudders on its cell without moving off it, the colonist is not pushed by it, and every component stays inside the crate.",
+   "expect": "accept: a sealed crate is a closed container and keeps its goods; with a pawn behind it, it jolts in place, never shoved onto a pawn",
+   "expect_source": "leaf:closed_container_holds"
+  },
+  {
+   "id": "w8",
+   "text": "A raider's grenade lands in the middle of a big stockpile of light stacks, some seventy of them inside the blast and each due to be pushed at least a cell. About forty stacks fly off spinning; the other thirty stay on their cells.",
+   "expect": "reject: every light loose good reached with a throw of a cell or more moves; the 40-throw cap is removed and nothing is skipped over a cap",
+   "expect_source": "leaf:every_good_moves"
+  },
+  {
+   "id": "w9",
+   "text": "A mortar shell lands in a twelve-by-twelve stockpile packed with one light stack per cell, three haulers working among them. Every stack the blast reaches flies, more than sixty of them, none left sitting, and all three haulers are thrown.",
+   "expect": "accept: every light loose good the blast reaches with a throw of a cell or more moves, however many, and every colonist reached is thrown",
+   "expect_source": "leaf:every_good_moves"
+  },
+  {
+   "id": "w10",
+   "text": "A raider's sonic grenade from the Outer Rim mod goes off two cells from a colonist. She is thrown off her feet through the air away from it and lands stunned.",
+   "expect": "accept: another mod's damaging explosion throws too (an untuned type at the other-mods percent, 100 by default)",
+   "expect_source": "leaf:every_harmful_blast_throws"
+  },
+  {
+   "id": "w11",
+   "text": "An EMP grenade goes off among a group of mechanoids and the colonists fighting them. Every mech and colonist inside the burst is thrown a couple of cells away from it.",
+   "expect": "reject: harmless bursts such as EMP throw nothing",
+   "expect_source": "leaf:every_harmful_blast_throws"
+  },
+  {
+   "id": "w12",
+   "text": "The player has set the other-mods percent in Mod Settings to 50. An Outer Rim plasma grenade, whose damage type is ordinary Flame, goes off two cells from a raider, and he is thrown only about a quarter as far as a frag grenade at the same distance throws his comrade.",
+   "expect": "reject: a modded blast of a damage type our patch already tunes (fire, at half) keeps that tuning; the other-mods percent applies only to an untuned type and is never stacked on it, so the throw is about half, not a quarter",
+   "expect_source": "leaf:every_harmful_blast_throws"
+  },
+  {
+   "id": "w13",
+   "text": "An incendiary mortar shell lands one cell from a colonist while a frag shell lands one cell from her squadmate. Both are thrown, she about half as far as he is.",
+   "expect": "accept: bombs throw at full strength and fire and incendiary blasts at half strength, about half the throw",
+   "expect_source": "leaf:every_harmful_blast_throws"
+  },
+  {
+   "id": "w14",
+   "text": "During a mortar raid on a stocked colony, the player saves while a stack of medicine blown off a storeroom shelf is still in the air, then reloads. After the reload that stack is nowhere on the map.",
+   "expect": "reject: the raid must survive a mid-way reload with no thing in the air lost or duplicated",
+   "expect_source": "leaf:walk_storeroom_raid"
+  },
+  {
+   "id": "w15",
+   "text": "A bomb goes off in a storeroom where three colonists stand near an open pit. Stacks off the shelves arc away spinning and several drop into the pit to its floor; one colonist is thrown toward the pit and falls in, and the other two land on the storeroom floor, stunned.",
+   "expect": "accept: anything thrown toward an open pit falls to its floor, goods and people alike; nothing is thrown across",
+   "expect_source": "leaf:thrown_into_pit_falls"
+  },
+  {
+   "id": "z1",
+   "text": "A colonist crouches one cell west of where a mortar shell lands, with a waist-high barricade line directly behind her to the east. The shell goes off; she is lifted, hits the barricade and comes down on the cell just in front of it, stunned but alive.",
+   "expect": "reject: a throw goes clean over sandbags and barricades; stopping in front of the barricade line is the leaf's own red",
+   "expect_source": "leaf:people_thrown_three_cells"
+  },
+  {
+   "id": "z2",
+   "text": "A grenade throws a raider east into a granite wall. He takes an impact hit, then, carrying a little momentum, eases back half a cell west and settles one step off the wall face.",
+   "expect": "reject: a thrown person stops dead at a wall; people never rebound, not even half a step back",
+   "expect_source": "leaf:wall_stops_dead"
+  },
+  {
+   "id": "z3",
+   "text": "A mortar throws a colonist toward an empty cell three cells away. While she is still in the air a pack muffalo wanders onto that cell, so she sets down on the free cell beside it instead and gets up when her stun ends.",
+   "expect": "reject: a thrown pawn lands on the cell chosen at the blast and is never re-targeted; a flyer re-targeting when the landing cell is taken is a listed false pass",
+   "expect_source": "leaf:pawn_flight_arc"
+  },
+  {
+   "id": "z4",
+   "text": "A raider's tox-gas shell bursts in a colony courtyard. The green cloud spreads, and the two colonists nearest the impact are flung two cells away from it before they start coughing.",
+   "expect": "reject: toxic gas is one of the harmless bursts set to 0; toxic gas throwing is a listed false pass",
+   "expect_source": "leaf:every_harmful_blast_throws"
+  },
+  {
+   "id": "z5",
+   "text": "A scyther mech is crossing a covered pit trap when a colonist lobs an EMP grenade onto it. The mech is stunned, the pit cover splits and the mech drops to the pit floor.",
+   "expect": "reject: an EMP, smoke or stun burst never breaks a pit cover, even one that hurts mechs",
+   "expect_source": "leaf:blast_breaks_pit_cover"
+  },
+  {
+   "id": "z6",
+   "text": "A frag grenade goes off beside a raider standing at the edge of a one-cell-wide open pit. His three-cell throw carries him over the gap and he lands stunned on the far rim, outside the pit.",
+   "expect": "reject: anything thrown toward an open pit falls to its floor; nothing is thrown across a pit",
+   "expect_source": "leaf:thrown_into_pit_falls"
+  },
+  {
+   "id": "z7",
+   "text": "A modded weapons locker shows the rifles racked inside it on its sprite. A mortar lands next to it; the locker jolts a little in place and every rifle stays stored in it.",
+   "expect": "reject: anything that draws its contents is open, a drawing locker included, so its rifles scatter like floor goods; only storage that hides what it holds keeps its goods",
+   "expect_source": "leaf:closed_container_holds"
+  },
+  {
+   "id": "z8",
+   "text": "A colonist with a fully charged shield belt stands at the edge of a flammable gas cloud when a fire runs into it. The clump next to him bursts; his belt flickers and he stays exactly where he stood while goods around him scatter.",
+   "expect": "reject: a shield belt does not stop a gas clump's one-cell shove; 'the shield belt stops the shove' is a listed false pass",
+   "expect_source": "leaf:gas_goes_clump_by_clump"
+  },
+  {
+   "id": "z9",
+   "text": "A mortar shell throws a stack of steel toward a closed wooden door at the end of the storeroom. The stack strikes the door and drops dead on the cell in front of it.",
+   "expect": "reject: thrown goods rebound off walls and closed doors keeping about 70 percent each until spent; stopping at the first barrier is a listed false pass and the stop-dead rule is for people only",
+   "expect_source": "leaf:goods_arc_spin_rebound"
+  },
+  {
+   "id": "z10",
+   "text": "After a blast knocks a stack of medicine onto the floor of a pit, a colonist is told to haul it. He paths straight across the rim, steps down into the pit with no ladder, picks it up and climbs back out.",
+   "expect": "reject: no colonist walks into a pit by ordinary pathing; a colonist enters a pit only by force, and walking in with no ladder is a listed false pass for fetching",
+   "expect_source": "leaf:no_careless_fall"
+  },
+  {
+   "id": "z11",
+   "text": "A frag grenade lands on bare ground two cells beside a covered pit, not on it. The pit cover still cracks apart and the raider standing on it falls in.",
+   "expect": "accept: a damaging blast that reaches a cover within its radius, landing on it or beside it, breaks it and whoever is on it falls; 'only a blast centred on the cover breaks it' is a false pass",
+   "expect_source": "leaf:blast_breaks_pit_cover"
+  },
+  {
+   "id": "z12",
+   "text": "A burning gas clump bursts beside a colonist and pushes him one cell onto a covered pit cell. He stands on the cover unhurt and the cover stays whole.",
+   "expect": "accept: a gas clump's one-cell shove is not a throw; a pawn it shoves onto a cover stands on it, the cover whole, and the shove does no damage",
+   "expect_source": "leaf:thrown_into_pit_falls"
   }
  ],
- "scenarios_hash": "bcb622a3114cf0841386abc29470a602e8e6a290e8dd058dc45f29c811001c7b",
+ "scenarios_hash": "f7ace2bf92c9e34ab9c08291a20ecf28174d46bea5e02ef658482bdbd7295a83",
  "readers": [
-  "reader ac616aa8cb545a0b0",
-  "reader a4d2ed50f2592fc96"
+  "reader ad25709b2ccf64a4d (opus)",
+  "reader a2c38cbbeb46d77b4 (opus)"
  ],
  "control": {
   "broken_leaf": "closed_container_holds",
   "missed": true,
-  "reader": "aaf66ffa98c940cc4",
-  "note": "tree without closed_container_holds (its root id and mentions in settings_scale_and_switch and the walk) and sheet with every closed-container line stripped; the control reader got ['e20', 'e21', 'c10', 'y6'] wrong of the scenarios ['e20', 'e21', 'c4', 'c10', 'y5', 'y6'] sourced on that leaf (48 of 52 overall). Exam8 on the sheet and tree reworked against the eighth coverage judge (real defs for closed and open storage, the airborne lane on the vanilla state, fire at half off giving back the shipped no-throw, hose and gas controls aligned). Scenarios: the 44 frozen from exam7 plus 8 new (y1..y8) by a fresh examiner on the changed leaves"
+  "reader": "a142ccb19b28502d9",
+  "note": "tree and sheet with closed_container_holds removed and every mention of its rule stripped (owner 'shoved a bit' quote, draws-its-contents wording, delegated slide, pruning, settings, walk); the control reader got e20, w5, w6, z7 wrong (75 of 79); the real tree's readers got all 79 right"
  },
  "score": {
-  "right": 52,
-  "total": 52
+  "right": 79,
+  "total": 79
  },
  "accept_where_reject_core": 0,
  "challenger_misses": [],
- "verdicts": "D:\\ClaudeWork\\rimmandrake\\designer\\ExplosiveKnockback\\exam8\\verdicts_r1.json, verdicts_r2.json, verdicts_control.json (control)"
+ "verdicts": "D:\\ClaudeWork\\rimmandrake\\designer\\ExplosiveKnockback\\exam9\\verdicts_r1.json, verdicts_r2.json, verdicts_control.json",
+ "exam_run": "bench-ek2-st4-20261113 (exam9): 48 carried from exam8, 4 fixed (e20,c4,c10,y5 restaged on the weapons locker or a sealed crate), 15 new (w1-w15) by a fresh examiner on the leaves 0c1592e2d7 moved, 12 by a fresh challenger (z1-z12); 50 rejects"
 }

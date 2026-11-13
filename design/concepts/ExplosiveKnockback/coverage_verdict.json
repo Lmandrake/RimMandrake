@@ -1,23 +1,18 @@
 {
- "at": "2026-11-12T11:10:49Z",
+ "advisory": "the coverage brief is UNTESTED: this refusal is stored and shown, the Designer is not sent back",
+ "at": "2026-11-13T08:34:14Z",
  "checklist": [
   {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
    "id": "inv_kernel",
    "parts": [
     {
      "ok": true,
      "scene": "sc_mortar_throw",
-     "what": "throw distance from blast strength (about 3 cells for a mortar beside a human)"
-    },
-    {
-     "ok": true,
-     "scene": "sc_all_fly_no_cap",
-     "what": "falloff with distance (rim throw rounds to 0, too_weak only on the outer ring)"
-    },
-    {
-     "ok": true,
-     "scene": "sc_walk_raid",
-     "what": "mass in the kernel (requests match the kernel plan for distance, mass and tuning); offline selftest K-01..K-16"
+     "what": "distance from strength, falloff and mass (offline selftest K-01..K-16, proof current) plus a live 3-cell calibration"
     },
     {
      "ok": true,
@@ -27,7 +22,12 @@
     {
      "ok": true,
      "scene": "sc_door_water",
-     "what": "path stops at closed doors and deep water"
+     "what": "path stops at closed doors"
+    },
+    {
+     "ok": true,
+     "scene": "sc_door_water",
+     "what": "path stops before deep water"
     },
     {
      "ok": true,
@@ -42,27 +42,35 @@
    ]
   },
   {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
    "id": "inv_hook",
    "parts": [
     {
      "ok": true,
      "scene": "sc_all_fly_no_cap",
-     "what": "each thing the wave reaches is queued once per explosion"
+     "what": "each thing reached is queued once per explosion"
     },
     {
      "ok": true,
-     "scene": "sc_storeroom_bomb_pit",
-     "what": "thrown at the end of the explosion tick, the flagship's showcase use"
+     "scene": "sc_walk_raid",
+     "what": "thrown at the end of the explosion tick; requests match the kernel plan"
     }
    ]
   },
   {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
    "id": "inv_pawn_flyer",
    "parts": [
     {
      "ok": true,
      "scene": "sc_pawn_arc",
-     "what": "our own carrier def RM_PawnFlyer_Knockback holds the pawn mid-flight"
+     "what": "pawns carried by RM_PawnFlyer_Knockback, told from a teleport"
     },
     {
      "ok": true,
@@ -77,32 +85,32 @@
     {
      "ok": true,
      "scene": "sc_settings_sweep",
-     "what": "impact scales per cell not travelled (impactDamagePerCell 8 doubles)"
+     "what": "impact scales per cell not travelled"
+    },
+    {
+     "ok": true,
+     "scene": "sc_mortar_throw",
+     "what": "landing stun"
     },
     {
      "ok": true,
      "scene": "sc_pawn_arc",
-     "what": "landing stun ends and the pawn resumes its job"
-    },
-    {
-     "ok": true,
-     "scene": "sc_pawn_arc",
-     "what": "never re-targets when the landing cell is taken"
+     "what": "never re-targets"
     }
    ]
   },
   {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "tree.json"
+   ],
    "id": "inv_which_blasts",
    "parts": [
     {
      "ok": true,
      "scene": "sc_blast_kinds",
-     "what": "Bomb throws at full force"
-    },
-    {
-     "ok": true,
-     "scene": "sc_blast_kinds",
-     "what": "a Bomb child (BombSuper, parent Bomb confirmed in RimSage) throws through inheritance"
+     "what": "Bomb and its children at force 1.0 (BombSuper lane)"
     },
     {
      "ok": true,
@@ -112,12 +120,17 @@
     {
      "ok": true,
      "scene": "sc_blast_kinds",
-     "what": "EMP, smoke, stun, extinguish and tox gas at 0"
+     "what": "EMP, smoke, stun, extinguish, tox gas at 0"
     },
     {
-     "ok": false,
+     "ok": true,
      "scene": "sc_blast_kinds",
-     "what": "other mods' damaging explosions at 100% by default, never stacked on a tuned type: the modded damaging explosion, the modded Flame-typed explosion and the untuned modded explosion still name no def or mod (previous gap, unchanged)"
+     "what": "other mods' explosions at 100% by default, named: OuterRim_SonicGrenadeProj (damage OuterRim_Sonic, no Bomb parent, checked on disk); Outer Rim Core is on ModsConfig.MINIMAL (parsed)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_blast_kinds",
+     "what": "never stacked (OuterRim_PlasmaGrenadeProj, damage Flame, checked on disk)"
     },
     {
      "ok": true,
@@ -127,36 +140,38 @@
    ]
   },
   {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
    "id": "inv_items_teleport",
    "parts": [
     {
      "ok": true,
      "scene": "sc_storeroom_mortar",
-     "what": "scoped out: absence check, zero despawn-spawn pairs, with a hop control that proves the trace can see a hop"
-    },
-    {
-     "ok": true,
-     "scene": "sc_gas_chain",
-     "what": "absence of the hop in the gas scatter"
-    },
-    {
-     "ok": true,
-     "scene": "sc_settings_sweep",
-     "what": "goods in the air switched off brings back no hop"
+     "what": "scoped out; covered in coverage_rest by its absence check (zero despawn-spawn pairs) with a control showing the trace sees a hop"
     }
    ]
   },
   {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
    "id": "inv_shelf_skip",
    "parts": [
     {
      "ok": true,
      "scene": "sc_open_storage",
-     "what": "scoped out: open furniture is emptied and no in_storage line remains, floor-goods control"
+     "what": "scoped out; removal check: open furniture emptied, no in_storage line"
     }
    ]
   },
   {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
    "id": "inv_who_is_spared",
    "parts": [
     {
@@ -167,76 +182,91 @@
     {
      "ok": true,
      "scene": "sc_spared",
-     "what": "a pawn already in a pit"
+     "what": "pawn already in a pit"
     },
     {
      "ok": true,
      "scene": "sc_spared",
-     "what": "a pawn carrying a pawn, and the carried pawn"
+     "what": "pawn carrying a pawn, and the carried pawn"
     },
     {
      "ok": true,
      "scene": "sc_spared",
-     "what": "a flying pawn: the hook writes the vanilla Pawn_FlightTracker so Pawn.Flying reads true, and the shipped skip reads p.Flying (RM_MapComponent_Knockback.cs:522). Previous gap fixed"
+     "what": "airborne pawn (vanilla flight tracker set by a field write; no flight run)"
     },
     {
      "ok": true,
      "scene": "sc_spared",
-     "what": "a pawn in bed"
+     "what": "pawn in bed"
     }
    ]
   },
   {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
    "id": "inv_shield",
    "parts": [
     {
      "ok": true,
      "scene": "sc_shield",
-     "what": "an absorbing belt holds its wearer and pays extra charge; control with absorb off"
-    },
-    {
-     "ok": true,
-     "scene": "sc_gas_chain",
-     "what": "a gas shove is not stopped by a belt and costs no charge"
+     "what": "the belt holds its wearer and pays extra charge, with an absorb-off baseline"
     }
    ]
   },
   {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
    "id": "inv_recovery",
    "parts": [
     {
      "ok": true,
      "scene": "sc_recovery",
-     "what": "immune inside the window; control: a third blast after it throws"
+     "what": "immune inside the window"
     },
     {
      "ok": true,
      "scene": "sc_recovery",
-     "what": "the immunity holds across a save and reload"
+     "what": "the immunity survives a save and reload"
     },
     {
      "ok": true,
-     "scene": "sc_settings_sweep",
-     "what": "window 0 lets the second blast throw"
+     "scene": "sc_recovery",
+     "what": "thrown again after the window (control)"
     }
    ]
   },
   {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
    "id": "inv_caps",
    "parts": [
     {
      "ok": true,
      "scene": "sc_all_fly_no_cap",
-     "what": "scoped out: the 40 per-explosion cap and the per-tick drop removed; over 60 reached, all moved; cap-hook control"
+     "what": "scoped out; removal shown by over 60 things reached and all moved, no cap line, and a control hook that re-imposes the cap"
     },
     {
      "ok": true,
      "scene": "sc_settings_sweep",
-     "what": "no cap line on the page or in the saved settings"
+     "what": "no cap line left on the settings page"
     }
    ]
   },
   {
+   "evidence": [
+    "record.json",
+    "scenes.json:208",
+    "scenes.json:416",
+    "tree.json:666",
+    "floor.json",
+    "sheet.md:46"
+   ],
    "id": "inv_settings",
    "parts": [
     {
@@ -247,36 +277,35 @@
     {
      "ok": true,
      "scene": "sc_settings_sweep",
-     "what": "strength, max distance, per-weapon cap scale, other-mod percent"
+     "what": "strength, max distance, cap scale, other-mod %, toggles, mass limit, heavy threshold, sandbags, impact, stun, recovery, doors, pits, shield debit, debug vectors"
     },
     {
-     "ok": true,
+     "ok": false,
+     "scene": "",
+     "what": "closedContainerMassLimit (250 kg): named only in sc_closed_containers; neither swept nor stated"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "vanillaCratesClosed: named only in sc_closed_containers; neither swept nor stated"
+    },
+    {
+     "ok": false,
      "scene": "sc_settings_sweep",
-     "what": "downed, animals, mechs, items and corpses toggles; immune body size; mass limit"
+     "what": "each new part's off state matches the stated rule 'gives back what ships today' (the closed guard and goods-in-air off states do not)"
     },
     {
-     "ok": true,
+     "ok": false,
      "scene": "sc_settings_sweep",
-     "what": "sandbags, impact on and per cell, stun, recovery, doors, pits, shield debit, debug vectors"
-    },
-    {
-     "ok": true,
-     "scene": "sc_shield",
-     "what": "shieldsAbsorbThrow"
-    },
-    {
-     "ok": true,
-     "scene": "sc_settings_sweep",
-     "what": "swept list equals the saved fields, read by reflection"
-    },
-    {
-     "ok": true,
-     "scene": "sc_settings_sweep",
-     "what": "fire at half off: incendiary throws nothing. Now stated in the leaf, the sheet and dl_fire_half_off, and asserted by the sweep. Previous gap fixed"
+     "what": "the sweep's Cauldron gas puff is staged on a list that holds the Cauldron"
     }
    ]
   },
   {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
    "id": "inv_pits_receive",
    "parts": [
     {
@@ -287,92 +316,108 @@
     {
      "ok": true,
      "scene": "sc_pit_fall",
-     "what": "landing on a covered pit cell falls through"
+     "what": "a landing on a covered cell falls through and breaks the cover"
     },
     {
      "ok": true,
      "scene": "sc_cover_breaks",
-     "what": "a damaging or fire blast breaks the cover and drops whoever stands on it"
+     "what": "a damaging or fire blast breaks a cover and drops whoever is on it"
     }
    ]
   },
   {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
    "id": "inv_pit_floor_haul",
    "parts": [
     {
      "ok": true,
      "scene": "sc_pit_fetch",
-     "what": "pit-floor goods reached only down a lowered ladder; ladder-raised control"
+     "what": "pit-floor goods and corpses are reached only down a lowered ladder, with a ladder-raised control"
     }
    ]
   },
   {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
    "id": "inv_hose_drop",
    "parts": [
     {
      "ok": true,
      "scene": "sc_hose_drop",
-     "what": "the hose end drops on the takeoff cell; control with Settings enabled false (coverage_rest why now matches the scene). Previous gap fixed"
+     "what": "the hose end drops on the takeoff cell, with an enabled-false control"
     }
    ]
   },
   {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
    "id": "inv_proof_scenes",
    "parts": [
     {
      "ok": true,
      "scene": "sc_mortar_throw",
-     "what": "proof scenes and runner rewritten with real controls: mortar, wall, door, sandbags, too big, EMP, items, shelf, corpse, pits, cover, caps, master off"
-    },
-    {
-     "ok": true,
-     "scene": "sc_lookup",
-     "what": "each rewritten entry point is a filed build item (RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS and the rest)"
+     "what": "the proof scenes and runner are the instrument; each rewritten scene names its control and its entry_point_item"
     }
    ]
   },
   {
+   "evidence": [
+    "record.json",
+    "scenes.json:536"
+   ],
    "id": "inv_gas_chain",
    "parts": [
     {
      "ok": true,
      "scene": "sc_gas_chain",
-     "what": "per-clump bursts ordered from the lit edge; centroid-blast control"
+     "what": "bursts clump by clump in fire-front order, burst radius, goods thrown at most 2 cells, a 1-cell shove at most once per 2 s, belts ignored, a touching-fire igniter"
     },
     {
-     "ok": true,
+     "ok": false,
      "scene": "sc_gas_chain",
-     "what": "lit by a fire touching the cloud; an untouching fire lights nothing"
-    },
-    {
-     "ok": true,
-     "scene": "sc_gas_shove_into_pit",
-     "what": "a gas shove into a pit"
+     "what": "the Cauldron's vent gas staged on a stated list that holds mandrake.rm.cauldron and its dependencies (ModsConfig.MINIMAL holds none of cauldron, environmentalhazards, creaturebehaviors)"
     }
    ]
   },
   {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "tree.json"
+   ],
    "id": "inv_goods_fly",
    "parts": [
     {
      "ok": true,
      "scene": "sc_storeroom_mortar",
-     "what": "visible flight: height above zero, rotation changing"
+     "what": "high arc (height above zero)"
     },
     {
      "ok": true,
      "scene": "sc_storeroom_mortar",
-     "what": "wild: 1.3 to 2.0 times the kernel distance, farther than a person"
+     "what": "fast spin (rotation changes; the advisory checks shape only)"
     },
     {
      "ok": true,
      "scene": "sc_storeroom_mortar",
-     "what": "wall rebound near 0.7"
+     "what": "rebounds off walls keeping about 70%"
     },
     {
      "ok": true,
      "scene": "sc_goods_obstacles",
-     "what": "rebound off a door, over sandbags, short of deep water"
+     "what": "rebounds off closed doors, passes over sandbags, stops short of deep water"
+    },
+    {
+     "ok": true,
+     "scene": "sc_storeroom_mortar",
+     "what": "about 1.6 times as far as a person (ratio 1.3 to 2.0)"
     },
     {
      "ok": true,
@@ -382,102 +427,127 @@
    ]
   },
   {
+   "evidence": [
+    "record.json:342",
+    "scenes.json:416",
+    "scenes.json:418",
+    "tree.json:338",
+    "sheet.md:33"
+   ],
    "id": "inv_closed_guard",
    "parts": [
     {
      "ok": true,
      "scene": "sc_open_storage",
-     "what": "open Shelf, ShelfSmall and Table2x2c protect nothing"
+     "what": "open shelves, small shelves, hoppers and tables protect nothing"
+    },
+    {
+     "ok": true,
+     "scene": "sc_closed_containers",
+     "what": "a hiding modded locker (LWM_WeaponsLocker; checked on disk: 1x1, 8 kg, showContents false) keeps its goods"
+    },
+    {
+     "ok": true,
+     "scene": "sc_closed_containers",
+     "what": "a hiding modded safe (LWM_Safe; checked on disk: 1x1, 500 kg, showContents false) keeps its goods"
+    },
+    {
+     "ok": true,
+     "scene": "sc_closed_containers",
+     "what": "offline census: Shelf, ShelfSmall and Hopper open, drawing modded storage open, no drawing def tagged"
     },
     {
      "ok": false,
      "scene": "",
-     "what": "racks give no cover: the leaf, the sheet and this entry say racks, but no scene stages one (the weapon rack was removed). There is no vanilla rack (RimSage), only the Aelanna.WeaponRacks provider on disk"
-    },
-    {
-     "ok": true,
-     "scene": "sc_closed_containers",
-     "what": "closed containers keep their goods: tagged ShelfSmall rows plus fridge, locker and deep storage from census providers. Providers do exist on disk (rimfridge.kv.rw, LWM.DeepStorage, ASF.DeepStorage weapons locker)"
+     "what": "another mod's hiding container carrying the opt-in tag keeps its goods: no scene stages one"
     },
     {
      "ok": false,
      "scene": "sc_closed_containers",
-     "what": "the hopper is classed closed: the vanilla Hopper is a plain Building_Storage, drawn by MapMeshOnly with surfaceType Item and no hide flag (RimSage), so the stated rule 'closed exactly when it does not draw its contents or carries the tag' classes it open. Yet the scene expects its contents held, and the sheet, the leaf, dl_closed_means_hidden and exam y6 call it closed (previous gap, unchanged)"
-    },
-    {
-     "ok": true,
-     "scene": "sc_closed_containers",
-     "what": "offline storage census over the owner's list"
-    },
-    {
-     "ok": false,
-     "scene": "sc_storeroom_bomb_pit",
-     "what": "the flagship's closed container is a vanilla small shelf tagged closed. It visibly draws its goods, so his look sees an ordinary shelf keeping its goods (the exemption he ruled out). The tag lands on every ShelfSmall, while the flagship's 'row of open shelves' names no def"
+     "what": "sealed crates keep their goods: the crate rows cannot fail (Building_Crate goods are unspawned), and the vanillaCratesClosed switch that classes them is undefined"
     }
    ]
   },
   {
+   "evidence": [
+    "record.json:355",
+    "scenes.json:416",
+    "sheet.md:61"
+   ],
    "id": "inv_container_shove",
    "parts": [
     {
      "ok": true,
      "scene": "sc_closed_containers",
-     "what": "free-backed 1x1 under the mass limit slides one cell"
+     "what": "a 1x1 container under the limit with a free cell behind it slides one cell"
     },
     {
      "ok": true,
      "scene": "sc_closed_containers",
-     "what": "wall-, pawn-, pit-backed, over-mass and larger containers jolt, never into a pit, a wall or onto a pawn"
-    },
-    {
-     "ok": false,
-     "scene": "sc_storeroom_bomb_pit",
-     "what": "the shove in the flagship: staged on a tagged small shelf that reads as an open shelf to his eye (see inv_closed_guard)"
+     "what": "wall-, pawn- and pit-backed containers jolt; never shoved into a pit, a wall or onto a pawn"
     },
     {
      "ok": true,
-     "scene": "sc_settings_sweep",
-     "what": "switch off: inert"
+     "scene": "sc_closed_containers",
+     "what": "a container larger than 1x1 only jolts (AncientSecurityCrate, 2x2, checked)"
+    },
+    {
+     "ok": false,
+     "scene": "sc_closed_containers",
+     "what": "an over-mass container only jolts: which limit applies (the sheet's 75 kg, or the scene's undeclared 250 kg closedContainerMassLimit) is undecided, and no mass between them is staged"
     }
    ]
   },
   {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
    "id": "inv_heavy_knock",
    "parts": [
     {
      "ok": true,
      "scene": "sc_heavy_knock",
-     "what": "heavy steel gives 2 to 5 blunt, a stagger and stops; cloth passes; control with the colonist off the ray"
-    },
-    {
-     "ok": true,
-     "scene": "sc_settings_sweep",
-     "what": "heavy threshold setting and switch"
+     "what": "a heavy stack gives 2 to 5 blunt and a stagger, then stops; light goods pass; out-of-ray control"
     }
    ]
   },
   {
+   "evidence": [
+    "record.json",
+    "scenes.json:564"
+   ],
    "id": "inv_gas_tags",
    "parts": [
     {
      "ok": true,
      "scene": "sc_cauldron_gas",
-     "what": "the Cauldron vent grid opts in; control with the registration removed"
+     "what": "offline census over defs, our grids and call sites, with planted test sources"
     },
     {
      "ok": true,
      "scene": "sc_cauldron_gas",
-     "what": "census over defs, grids and call sites, with a planted call site and a planted grid"
+     "what": "the Cauldron's grid is registered and burns clump by clump, with a de-registration control"
+    },
+    {
+     "ok": false,
+     "scene": "sc_cauldron_gas",
+     "what": "the Cauldron and its dependencies are on the stated minimal list"
     }
    ]
   },
   {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "floor.json"
+   ],
    "id": "inv_perf_all_fly",
    "parts": [
     {
      "ok": true,
      "scene": "sc_barrage_perf",
-     "what": "6-shell barrage plus a 40-cell chain, no frame over 50 ms (advisory); mod-off baseline"
+     "what": "worst frame at most 50 ms through a 6-shell barrage and a 40-cell chain on the full list, with a mod-off baseline"
     },
     {
      "ok": true,
@@ -487,6 +557,10 @@
    ]
   },
   {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
    "id": "inv_weapon_ext_fields",
    "parts": [
     {
@@ -497,92 +571,121 @@
     {
      "ok": true,
      "scene": "sc_lookup",
-     "what": "immuneBodySizeOverride 3.6 throws a 2.5 to 3.5 animal"
+     "what": "immuneBodySizeOverride 3.6"
     }
    ]
   },
   {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
    "id": "inv_killed_corpse",
    "parts": [
     {
      "ok": true,
      "scene": "sc_killed_thrown",
-     "what": "a pawn the blast kills is thrown as a corpse in flight; debug-kill and throwCorpses-off controls"
+     "what": "a pawn the blast kills is thrown as a corpse, with a pre-killed control and a throwCorpses-off control"
     }
    ]
   },
   {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
    "id": "inv_pit_floor_goods_stay",
    "parts": [
     {
      "ok": true,
      "scene": "sc_spared",
-     "what": "a stack and a corpse on a pit floor skip with in_pit"
+     "what": "a stack and a corpse on a pit floor are spared in_pit, with the plain-colonist control"
     }
    ]
   },
   {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
    "id": "inv_big_corpse_spared",
    "parts": [
     {
      "ok": true,
      "scene": "sc_spared",
-     "what": "a thrumbo corpse spared too_big even with the mass limit raised; an under-2.5 corpse control is thrown"
+     "what": "a thrumbo corpse is spared too_big even with the mass limit raised; an under-2.5 corpse is thrown (lane B)"
     }
    ]
   },
   {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
    "id": "inv_mass_limit_skip",
    "parts": [
     {
      "ok": true,
-     "scene": "sc_spared",
-     "what": "a corpse over 75 kg is spared too_heavy at default"
+     "scene": "sc_settings_sweep",
+     "what": "a 100 kg good is skipped too_heavy at default and a 65 kg good at limit 60; a corpse over 75 kg is spared (lane C)"
     },
     {
      "ok": true,
      "scene": "sc_settings_sweep",
-     "what": "a 100 kg good at default and a 65 kg good at limit 60 are spared; a living pawn is never weighed"
+     "what": "the limit never weighs a living pawn (mass lane at limit 20)"
     }
    ]
   },
   {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
    "id": "inv_too_weak_skip",
    "parts": [
     {
      "ok": true,
      "scene": "sc_all_fly_no_cap",
-     "what": "the rim-lane stack logs too_weak and stays unmoved"
+     "what": "a rim stack whose throw rounds to 0 logs too_weak and stays"
     }
    ]
   },
   {
+   "evidence": [
+    "tree.json",
+    "sheet.md",
+    "scenes.json"
+   ],
    "id": "people_thrown_three_cells",
    "parts": [
     {
      "ok": true,
      "scene": "sc_mortar_throw",
-     "what": "about 3 cells straight away from the blast, alive and stunned"
+     "what": "thrown about three cells straight away from the shell"
     },
     {
      "ok": true,
      "scene": "sc_over_sandbags",
-     "what": "over sandbags and barricades; no-line control"
+     "what": "over sandbags and barricades, with a no-line control"
     },
     {
      "ok": true,
-     "scene": "sc_settings_off",
-     "what": "master switch off throws nothing"
+     "scene": "sc_mortar_throw",
+     "what": "alive and briefly stunned"
     }
    ]
   },
   {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
    "id": "pawn_flight_arc",
    "parts": [
     {
      "ok": true,
      "scene": "sc_pawn_arc",
-     "what": "carried in the air between start and landing; teleport control"
+     "what": "carried through the air (flyer holder, in-between drawn position), with a teleport control"
     },
     {
      "ok": true,
@@ -592,32 +695,32 @@
     {
      "ok": true,
      "scene": "sc_pawn_arc",
-     "what": "returns to its job after the stun"
+     "what": "the stun ends and the pawn goes back to work"
     }
    ]
   },
   {
+   "evidence": [
+    "tree.json",
+    "sheet.md:23",
+    "scenes.json"
+   ],
    "id": "the_spared",
    "parts": [
     {
      "ok": true,
      "scene": "sc_spared",
-     "what": "body size 2.5 or more; weapon body-size override"
+     "what": "body size 2.5 or more, in a pit, carrying a pawn, airborne, in bed"
     },
     {
      "ok": true,
-     "scene": "sc_spared",
-     "what": "in a pit, carrying a pawn, in bed"
-    },
-    {
-     "ok": true,
-     "scene": "sc_spared",
-     "what": "already airborne, via a vanilla flight-tracker write the shipped p.Flying reads. Previous gap fixed"
+     "scene": "sc_lookup",
+     "what": "a weapon's own body-size limit"
     },
     {
      "ok": true,
      "scene": "sc_settings_sweep",
-     "what": "goods and corpses over 75 kg; the mass limit never weighs a living pawn"
+     "what": "goods and corpses over 75 kg, never a living pawn"
     },
     {
      "ok": true,
@@ -627,227 +730,302 @@
     {
      "ok": true,
      "scene": "sc_all_fly_no_cap",
-     "what": "a rim thing whose throw is under one cell"
+     "what": "a rim thing with a throw under one cell"
     }
    ]
   },
   {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
    "id": "recovery_immunity",
    "parts": [
     {
      "ok": true,
      "scene": "sc_recovery",
-     "what": "no second throw inside the window, also across a save; after-window control"
+     "what": "spared a second throw inside the window, also across a save"
     }
    ]
   },
   {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
    "id": "hose_drops_at_takeoff",
    "parts": [
     {
      "ok": true,
      "scene": "sc_hose_drop",
-     "what": "the hose end drops at takeoff; the tree oracle now names the enabled-false control the scene runs. Previous gap fixed"
+     "what": "the hose end is dropped on the takeoff cell"
     }
    ]
   },
   {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
    "id": "wall_stops_dead",
    "parts": [
     {
      "ok": true,
      "scene": "sc_wall_stop",
-     "what": "stops on the cell before the wall with an impact hit; wall-removed control"
+     "what": "stops on the cell before the wall with an impact hit"
     },
     {
      "ok": true,
      "scene": "sc_wall_stop",
-     "what": "no rebound or ease-back (per-tick drawn position)"
+     "what": "no rebound, not even part of a cell (drawn-position trace)"
     }
    ]
   },
   {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
    "id": "pawn_hits_pawn_stops",
    "parts": [
     {
      "ok": true,
      "scene": "sc_pawn_hits_pawn",
-     "what": "stops before the standing pawn with an impact hit; no-pawn control"
+     "what": "stops before the standing pawn with an impact hit"
     }
    ]
   },
   {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
    "id": "doors_and_deep_water_stop",
    "parts": [
     {
      "ok": true,
      "scene": "sc_door_water",
-     "what": "a closed door stops the throw; impact and door damage; open-door control"
+     "what": "a closed door stops the throw and both take damage"
     },
     {
      "ok": true,
      "scene": "sc_lookup",
-     "what": "none under impact factor 0"
+     "what": "no damage under impact factor 0"
     },
     {
      "ok": true,
      "scene": "sc_door_water",
-     "what": "deep water stops on the last standable cell"
+     "what": "deep water: stops on the last standable cell"
     }
    ]
   },
   {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
    "id": "shield_belt_holds",
    "parts": [
     {
      "ok": true,
      "scene": "sc_shield",
-     "what": "an absorbing belt holds and pays extra charge"
+     "what": "the belt holds its wearer and pays extra charge"
     },
     {
      "ok": true,
      "scene": "sc_gas_chain",
-     "what": "the gas shove exception"
+     "what": "a gas shove still moves a belted pawn"
     }
    ]
   },
   {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
    "id": "goods_arc_spin_rebound",
    "parts": [
     {
      "ok": true,
      "scene": "sc_storeroom_mortar",
-     "what": "high arc, fast spin, wall rebound near 0.7, 1.6x wild"
+     "what": "arc, spin, wall rebounds at about 70%, 1.6 times a person's throw"
+    },
+    {
+     "ok": true,
+     "scene": "sc_goods_obstacles",
+     "what": "rebounds off closed doors, over sandbags, never into deep water"
     },
     {
      "ok": true,
      "scene": "sc_killed_thrown",
      "what": "a pawn the blast kills flies as a corpse"
-    },
-    {
-     "ok": true,
-     "scene": "sc_goods_obstacles",
-     "what": "door rebound, over sandbags, never into deep water"
     }
    ]
   },
   {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
    "id": "every_good_moves",
    "parts": [
     {
      "ok": true,
      "scene": "sc_all_fly_no_cap",
-     "what": "every light good reached moves; caps removed; one request per thing; cap-hook control"
+     "what": "every light good reached moves and the caps are gone, with a cap-hook control"
     }
    ]
   },
   {
+   "evidence": [
+    "tree.json",
+    "sheet.md",
+    "scenes.json",
+    "record.json"
+   ],
    "id": "open_shelf_scatters",
    "parts": [
     {
      "ok": true,
      "scene": "sc_open_storage",
-     "what": "open shelf (Shelf, ShelfSmall) emptied"
+     "what": "Shelf, ShelfSmall, Hopper and Table2x2c emptied, with a floor-goods control"
     },
     {
      "ok": true,
-     "scene": "sc_open_storage",
-     "what": "table emptied (Table2x2c)"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "rack emptied: in the leaf and the sheet line, no scene"
-    },
-    {
-     "ok": false,
-     "scene": "sc_storeroom_bomb_pit",
-     "what": "open shelves in the flagship: the def is unnamed while every ShelfSmall there carries the closed tag"
+     "scene": "sc_closed_containers",
+     "what": "anything that draws its contents is open (offline census, asserted at start)"
     }
    ]
   },
   {
+   "evidence": [
+    "tree.json:338",
+    "sheet.md:33",
+    "sheet.md:61",
+    "scenes.json:405",
+    "scenes.json:416",
+    "scenes.json:418",
+    "record.json:342",
+    "record.json:355",
+    "exam.json"
+   ],
    "id": "closed_container_holds",
    "parts": [
     {
      "ok": true,
      "scene": "sc_closed_containers",
-     "what": "tagged 1x1 containers hold; free-backed slides; wall-, pawn-, pit-backed and over-mass jolt (ShelfSmall mass 4 kg confirmed)"
+     "what": "the hiding modded locker and safe keep their goods"
     },
     {
-     "ok": true,
-     "scene": "sc_closed_containers",
-     "what": "fridge, locker and deep storage hold and jolt (providers exist on disk)"
+     "ok": false,
+     "scene": "",
+     "what": "the opt-in tag for another mod's hiding container: no live scene stages a tagged container"
     },
     {
      "ok": false,
      "scene": "sc_closed_containers",
-     "what": "the hopper holds: against the stated rule, since the vanilla Hopper draws its contents and carries no tag"
+     "what": "a sealed crate keeps its goods: the row cannot fail (the goods are unspawned), and vanillaCratesClosed is undefined"
     },
     {
      "ok": true,
      "scene": "sc_closed_containers",
-     "what": "offline census of every storage def"
+     "what": "shifts a cell or jolts; never into a pit, a wall or onto a pawn"
+    },
+    {
+     "ok": false,
+     "scene": "sc_closed_containers",
+     "what": "an over-mass container only jolts, but the limit tested (250 kg closedContainerMassLimit) is not the one the sheet states ('the mass limit', 75 kg)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_closed_containers",
+     "what": "drawing lockers and fridges are open (offline census)"
     }
    ]
   },
   {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
    "id": "heavy_stack_knocks",
    "parts": [
     {
      "ok": true,
      "scene": "sc_heavy_knock",
-     "what": "a heavy stack knocks and staggers, light goods pass"
+     "what": "a heavy stack knocks for 2 to 5 blunt and staggers; light goods pass"
     }
    ]
   },
   {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
    "id": "every_harmful_blast_throws",
    "parts": [
     {
      "ok": true,
      "scene": "sc_blast_kinds",
-     "what": "bombs full, Bomb child full"
+     "what": "bombs at full, a Bomb child at full"
     },
     {
      "ok": true,
      "scene": "sc_blast_kinds",
-     "what": "fire at about half"
+     "what": "fire at half (the Flame lane against the Bomb-swapped lane)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_blast_kinds",
+     "what": "other mods at 100%, named: the Outer Rim sonic grenade"
+    },
+    {
+     "ok": true,
+     "scene": "sc_blast_kinds",
+     "what": "never stacked (Outer Rim plasma grenade at 50, sonic at 50)"
     },
     {
      "ok": true,
      "scene": "sc_blast_kinds",
      "what": "harmless bursts throw nothing"
-    },
-    {
-     "ok": false,
-     "scene": "sc_blast_kinds",
-     "what": "other mods too, the other-mods percent only for untuned types, never stacked: the modded lanes name no def or mod"
     }
    ]
   },
   {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
    "id": "only_explosions_throw",
    "parts": [
     {
      "ok": true,
      "scene": "sc_only_explosions",
-     "what": "melee and a bullet move nobody; grenade control"
+     "what": "melee and bullets move nobody, with a grenade control"
     }
    ]
   },
   {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
    "id": "per_weapon_tuning",
    "parts": [
     {
      "ok": true,
      "scene": "sc_lookup",
-     "what": "projectile over weapon over damage type; zero turns it off"
+     "what": "projectile over weapon over damage type"
     },
     {
      "ok": true,
      "scene": "sc_lookup",
-     "what": "own max caps; 0 means global; cap scale shortens an own max"
+     "what": "zero turns the throw off"
+    },
+    {
+     "ok": true,
+     "scene": "sc_lookup",
+     "what": "own maximum (0 means global); the cap scale shortens the own maximum"
     },
     {
      "ok": true,
@@ -862,6 +1040,12 @@
    ]
   },
   {
+   "evidence": [
+    "tree.json",
+    "sheet.md:38",
+    "scenes.json:536",
+    "scenes.json:797"
+   ],
    "id": "gas_goes_clump_by_clump",
    "parts": [
     {
@@ -872,215 +1056,884 @@
     {
      "ok": true,
      "scene": "sc_gas_chain",
-     "what": "clump by clump, scattering goods within 1.9 cells including outside the cloud"
+     "what": "goes off clump by clump in fire-front order, with a centroid control"
     },
     {
      "ok": true,
      "scene": "sc_gas_chain",
-     "what": "shove 1 cell unhurt, once per 2 s, belt does not stop it"
+     "what": "scatters goods within about 1.9 cells, inside or outside the cloud"
+    },
+    {
+     "ok": true,
+     "scene": "sc_gas_chain",
+     "what": "shoves a person one cell unhurt, at most once per 2 s"
+    },
+    {
+     "ok": false,
+     "scene": "sc_gas_chain",
+     "what": "the Cauldron and its dependencies are on the stated list"
+    },
+    {
+     "ok": false,
+     "scene": "sc_gas_shove_into_pit",
+     "what": "a shove onto an open pit drops the pawn in: tested, but no leaf or sheet line states it"
     }
    ]
   },
   {
+   "evidence": [
+    "tree.json",
+    "scenes.json:564"
+   ],
    "id": "our_gases_burn",
    "parts": [
     {
      "ok": true,
      "scene": "sc_cauldron_gas",
-     "what": "the Cauldron's gas bursts; the census matches the tagged sources"
+     "what": "the Cauldron's gas goes off clump by clump, with a de-registration control"
+    },
+    {
+     "ok": true,
+     "scene": "sc_cauldron_gas",
+     "what": "census of every gas source of ours"
+    },
+    {
+     "ok": false,
+     "scene": "sc_cauldron_gas",
+     "what": "the Cauldron and its dependencies are on the stated list"
     }
    ]
   },
   {
+   "evidence": [
+    "tree.json",
+    "scenes.json:588"
+   ],
    "id": "blast_breaks_pit_cover",
    "parts": [
     {
      "ok": true,
      "scene": "sc_cover_breaks",
-     "what": "a damaging blast on the cover, and one beside it within the radius"
+     "what": "a grenade or incendiary on a cover breaks it; whoever is on it falls"
     },
     {
      "ok": true,
      "scene": "sc_cover_breaks",
-     "what": "a fire blast breaks it"
+     "what": "a blast reaching a cover from beside it breaks it"
     },
     {
      "ok": true,
      "scene": "sc_cover_breaks",
-     "what": "gas, EMP, smoke and stun never break it; a gas-shoved pawn stands on the cover"
+     "what": "EMP, smoke and stun leave a cover whole"
+    },
+    {
+     "ok": false,
+     "scene": "sc_cover_breaks",
+     "what": "a gas burst leaves a cover whole, and a pawn shoved onto it stands on it: the Cauldron gas lanes need a list that holds the Cauldron"
     }
    ]
   },
   {
+   "evidence": [
+    "tree.json:554",
+    "sheet.md:41",
+    "scenes.json:797"
+   ],
    "id": "thrown_into_pit_falls",
    "parts": [
     {
      "ok": true,
      "scene": "sc_pit_fall",
-     "what": "a colonist and a stack fall into an open pit, never thrown across"
+     "what": "a thing thrown toward an open pit falls to its floor; nothing is thrown across"
     },
     {
      "ok": true,
      "scene": "sc_pit_enemy",
-     "what": "a raider falls"
+     "what": "an enemy too, journaled as a throw"
     },
     {
      "ok": true,
      "scene": "sc_pit_fall",
-     "what": "landing on a cover breaks it"
+     "what": "onto a covered cell: falls through and the cover breaks"
     },
     {
-     "ok": true,
-     "scene": "sc_cover_breaks",
-     "what": "a gas shove is not a throw"
+     "ok": false,
+     "scene": "sc_gas_shove_into_pit",
+     "what": "what a gas shove does at an open pit: the interaction scene expects a fall that the leaf's own words ('a shove is not a throw') leave unstated"
     }
    ]
   },
   {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
    "id": "pit_goods_fetched",
    "parts": [
     {
      "ok": true,
      "scene": "sc_pit_fetch",
-     "what": "the stack and the corpse fetched up the ladder; ladder-raised control"
+     "what": "a stack and a corpse fetched by ladder, with a ladder-raised control"
     }
    ]
   },
   {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
    "id": "no_teleport",
    "parts": [
     {
      "ok": true,
      "scene": "sc_storeroom_mortar",
-     "what": "no despawn-spawn pairs in the mortar goods (cannot_show: shown by the trace's absence)"
-    },
-    {
-     "ok": true,
-     "scene": "sc_gas_chain",
-     "what": "no pairs in the gas scatter"
+     "what": "zero despawn-spawn pairs over the mortar and gas goods, with a hop control"
     }
    ]
   },
   {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
    "id": "no_careless_fall",
    "parts": [
     {
      "ok": true,
      "scene": "sc_no_careless_fall",
-     "what": "ordered colonists path round open and covered pits; concealed-pit raider control"
+     "what": "colonists path round open and covered pits"
+    },
+    {
+     "ok": true,
+     "scene": "sc_no_careless_fall",
+     "what": "an enemy may walk into a pit hidden from it (control)"
     }
    ]
   },
   {
+   "evidence": [
+    "tree.json:650",
+    "tree.json:666",
+    "sheet.md:46",
+    "scenes.json:208",
+    "scenes.json:216",
+    "scenes.json:225",
+    "scenes.json:416",
+    "scenes.json:418",
+    "record.json:489",
+    "floor.json"
+   ],
    "id": "settings_scale_and_switch",
    "parts": [
     {
      "ok": true,
      "scene": "sc_settings_sweep",
-     "what": "every page line takes effect; reflection equality"
+     "what": "every listed line takes effect; the swept list equals the saved fields by reflection"
     },
     {
      "ok": true,
      "scene": "sc_settings_sweep",
-     "what": "each new part switches off cleanly; fire at half off throws nothing"
+     "what": "the removed cap lines are gone"
     },
     {
      "ok": true,
      "scene": "sc_settings_sweep",
-     "what": "cap lines gone"
+     "what": "fire at half off: fire throws nothing"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "closedContainerMassLimit and vanillaCratesClosed (named in sc_closed_containers) are neither swept nor in the leaf"
+    },
+    {
+     "ok": false,
+     "scene": "sc_settings_sweep",
+     "what": "closed guard off and goods-in-air off: the sweep expects behaviour other than 'what ships today', which the leaf and sheet promise"
+    },
+    {
+     "ok": false,
+     "scene": "sc_settings_sweep",
+     "what": "the Cauldron gas puff on a list that holds the Cauldron (the start names only 'minimal plus LWM')"
     }
    ]
   },
   {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "record.json"
+   ],
    "id": "barrage_frame_budget",
    "parts": [
     {
      "ok": true,
      "scene": "sc_barrage_perf",
-     "what": "worst frame at most 50 ms on the full list (advisory)"
+     "what": "worst frame at most 50 ms on the full list on Archmagi, barrage plus chain, with a mod-off baseline (advisory)"
     }
    ]
   },
   {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
    "id": "frame_time_probe",
    "parts": [
     {
      "ok": true,
      "scene": "sc_frame_probe_check",
-     "what": "one row per frame; a 100 ms sleep is seen; paused control"
+     "what": "one row per frame; a 100 ms sleep shows; a paused control"
     }
    ]
   },
   {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "floor.json"
+   ],
    "id": "walk_storeroom_raid",
    "parts": [
     {
      "ok": true,
      "scene": "sc_walk_raid",
-     "what": "mortar raid into the storeroom on the full list; mod-off control"
+     "what": "a mortar raid into the storeroom on the full list"
     },
     {
      "ok": true,
      "scene": "sc_walk_raid",
-     "what": "a grenade on the pit trap breaks it"
+     "what": "a grenade breaks the pit-trap cover"
     },
     {
      "ok": true,
      "scene": "sc_walk_raid",
-     "what": "a lit gas cloud bursts clump by clump"
+     "what": "the gas cloud is lit and goes off clump by clump"
     },
     {
      "ok": true,
      "scene": "sc_walk_raid",
-     "what": "reload mid-flight, repeat, second order, kernel-plan match, tick cost recorded"
+     "what": "a mid-way reload with a thing in the air; no loss or duplicate"
+    },
+    {
+     "ok": true,
+     "scene": "sc_walk_raid",
+     "what": "a repeat in a second order, checked against the kernel plan"
+    },
+    {
+     "ok": true,
+     "scene": "sc_walk_raid",
+     "what": "frame budget and carrier tick cost recorded"
     }
    ]
   }
  ],
+ "contract": {
+  "advisory": true,
+  "alarms": [],
+  "cached": [],
+  "calibration": "UNTESTED",
+  "counted": true,
+  "may_judge": true,
+  "ok": true,
+  "repair_due": []
+ },
+ "contract_reasked": [
+  "refusal 0 (inv_closed_guard): evidence 'tree.json:338 closed_container_holds experience' is not one of the inputs the judge was given",
+  "refusal 0 (inv_closed_guard): evidence 'scenes.json:416 sc_closed_containers start' is not one of the inputs the judge was given",
+  "refusal 0 (inv_closed_guard): evidence 'record.json dl_closed_means_hidden' is not one of the inputs the judge was given",
+  "refusal 0 (inv_closed_guard): evidence 'scenes.json:418 sc_closed_containers census start' is not one of the inputs the judge was given",
+  "refusal 0 (inv_closed_guard): evidence \"scenes.json:416 ('SealedCrate, 1x1, a Building_Crate, goods in its own holder')\" is not one of the inputs the judge was given",
+  "refusal 0 (inv_closed_guard): evidence 'scenes.json:202-225 sc_settings_sweep action and expect' is not one of the inputs the judge was given",
+  "refusal 0 (inv_closed_guard): evidence 'RimSage SealedCrate and AncientSecurityCrate: thingClass Building_Crate' is not one of the inputs the judge was given",
+  "refusal 0 (inv_closed_guard): evidence 'record.json inv_closed_guard, dl_closed_means_hidden' is not one of the inputs the judge was given",
+  "refusal 0 (inv_closed_guard): evidence 'scenes.json sc_open_storage, sc_closed_containers (lines 413-418), sc_storeroom_bomb_pit' is not one of the inputs the judge was given",
+  "refusal 0 (inv_closed_guard): evidence 'tree.json closed_container_holds (line 338)' is not one of the inputs the judge was given",
+  "refusal 1 (closed_container_holds): evidence 'tree.json:338 closed_container_holds experience' is not one of the inputs the judge was given",
+  "refusal 1 (closed_container_holds): evidence 'scenes.json:416 sc_closed_containers start' is not one of the inputs the judge was given",
+  "refusal 1 (closed_container_holds): evidence 'record.json dl_closed_means_hidden' is not one of the inputs the judge was given",
+  "refusal 1 (closed_container_holds): evidence 'record.json dl_container_shove' is not one of the inputs the judge was given",
+  "refusal 1 (closed_container_holds): evidence 'scenes.json:208 sc_settings_sweep' is not one of the inputs the judge was given",
+  "refusal 1 (closed_container_holds): evidence 'scenes.json:418 sc_closed_containers census start' is not one of the inputs the judge was given",
+  "refusal 1 (closed_container_holds): evidence \"scenes.json:416 ('SealedCrate, 1x1, a Building_Crate, goods in its own holder')\" is not one of the inputs the judge was given",
+  "refusal 1 (closed_container_holds): evidence 'scenes.json:202-225 sc_settings_sweep action and expect' is not one of the inputs the judge was given",
+  "refusal 1 (closed_container_holds): evidence 'RimSage SealedCrate and AncientSecurityCrate: thingClass Building_Crate' is not one of the inputs the judge was given",
+  "refusal 1 (closed_container_holds): evidence 'tree.json closed_container_holds (line 338)' is not one of the inputs the judge was given",
+  "refusal 1 (closed_container_holds): evidence 'sheet.md:33, sheet.md:61' is not one of the inputs the judge was given",
+  "refusal 1 (closed_container_holds): evidence 'scenes.json sc_closed_containers (lines 405-421), sc_storeroom_bomb_pit' is not one of the inputs the judge was given",
+  "refusal 1 (closed_container_holds): evidence 'record.json dl_closed_means_hidden, dl_container_shove' is not one of the inputs the judge was given",
+  "refusal 1 (closed_container_holds): evidence 'exam.json (locker rows e20, c4, c10, y5)' is not one of the inputs the judge was given",
+  "refusal 2 (inv_container_shove): evidence 'scenes.json:416 sc_closed_containers start' is not one of the inputs the judge was given",
+  "refusal 2 (inv_container_shove): evidence 'record.json dl_container_shove' is not one of the inputs the judge was given",
+  "refusal 2 (inv_container_shove): evidence 'scenes.json:208 sc_settings_sweep' is not one of the inputs the judge was given",
+  "refusal 2 (inv_container_shove): evidence 'record.json inv_container_shove, dl_container_shove' is not one of the inputs the judge was given",
+  "refusal 2 (inv_container_shove): evidence 'scenes.json sc_closed_containers (line 416)' is not one of the inputs the judge was given",
+  "refusal 3 (inv_settings): evidence 'scenes.json:416 sc_closed_containers start' is not one of the inputs the judge was given",
+  "refusal 3 (inv_settings): evidence 'record.json dl_container_shove' is not one of the inputs the judge was given",
+  "refusal 3 (inv_settings): evidence 'scenes.json:208 sc_settings_sweep' is not one of the inputs the judge was given",
+  "refusal 3 (inv_settings): evidence 'scenes.json:418 sc_closed_containers census start' is not one of the inputs the judge was given",
+  "refusal 3 (inv_settings): evidence \"scenes.json:416 ('SealedCrate, 1x1, a Building_Crate, goods in its own holder')\" is not one of the inputs the judge was given",
+  "refusal 3 (inv_settings): evidence 'scenes.json:202-225 sc_settings_sweep action and expect' is not one of the inputs the judge was given",
+  "refusal 3 (inv_settings): evidence 'RimSage SealedCrate and AncientSecurityCrate: thingClass Building_Crate' is not one of the inputs the judge was given",
+  "refusal 3 (inv_settings): evidence \"tree.json:666 settings_scale_and_switch experience ('a part switched off gives back what ships today')\" is not one of the inputs the judge was given",
+  "refusal 3 (inv_settings): evidence \"tree.json:650 oracle ('closed guard off: container goods thrown like loose goods')\" is not one of the inputs the judge was given",
+  "refusal 3 (inv_settings): evidence \"record.json dl_fire_half_off ('Every new part's Mod Settings switch, turned off, gives back what ships today')\" is not one of the inputs the judge was given",
+  "refusal 3 (inv_settings): evidence 'scenes.json:225 sc_settings_sweep expect' is not one of the inputs the judge was given",
+  "refusal 3 (inv_settings): evidence 'record.json inv_shelf_skip, inv_items_teleport (what ships today)' is not one of the inputs the judge was given",
+  "refusal 3 (inv_settings): evidence \"scenes.json:536 sc_gas_chain start ('quicktest map, minimal list')\" is not one of the inputs the judge was given",
+  "refusal 3 (inv_settings): evidence 'scenes.json:564 sc_cauldron_gas' is not one of the inputs the judge was given",
+  "refusal 3 (inv_settings): evidence 'scenes.json:588 sc_cover_breaks' is not one of the inputs the judge was given",
+  "refusal 3 (inv_settings): evidence 'scenes.json:791 sc_gas_shove_into_pit' is not one of the inputs the judge was given",
+  "refusal 3 (inv_settings): evidence \"scenes.json:216 sc_settings_sweep ('the minimal list plus LWM's Deep Storage')\" is not one of the inputs the judge was given",
+  "refusal 3 (inv_settings): evidence 'infrastructure/state/modlists/ModsConfig.MINIMAL.xml (27 mods, parsed: no mandrake.rm.cauldron)' is not one of the inputs the judge was given",
+  "refusal 3 (inv_settings): evidence 'src/RimMandrake/Cauldron/About/About.xml modDependencies: flowworks, environmentalhazards, creaturebehaviors' is not one of the inputs the judge was given",
+  "refusal 3 (inv_settings): evidence 'record.json inv_settings' is not one of the inputs the judge was given",
+  "refusal 3 (inv_settings): evidence 'scenes.json sc_settings_sweep (line 208), sc_settings_off, sc_closed_containers (line 405)' is not one of the inputs the judge was given",
+  "refusal 3 (inv_settings): evidence 'tree.json settings_scale_and_switch' is not one of the inputs the judge was given",
+  "refusal 3 (inv_settings): evidence 'floor.json mod_settings' is not one of the inputs the judge was given",
+  "refusal 4 (settings_scale_and_switch): evidence 'scenes.json:416 sc_closed_containers start' is not one of the inputs the judge was given",
+  "refusal 4 (settings_scale_and_switch): evidence 'record.json dl_container_shove' is not one of the inputs the judge was given",
+  "refusal 4 (settings_scale_and_switch): evidence 'scenes.json:208 sc_settings_sweep' is not one of the inputs the judge was given",
+  "refusal 4 (settings_scale_and_switch): evidence 'scenes.json:418 sc_closed_containers census start' is not one of the inputs the judge was given",
+  "refusal 4 (settings_scale_and_switch): evidence \"scenes.json:416 ('SealedCrate, 1x1, a Building_Crate, goods in its own holder')\" is not one of the inputs the judge was given",
+  "refusal 4 (settings_scale_and_switch): evidence 'scenes.json:202-225 sc_settings_sweep action and expect' is not one of the inputs the judge was given",
+  "refusal 4 (settings_scale_and_switch): evidence 'RimSage SealedCrate and AncientSecurityCrate: thingClass Building_Crate' is not one of the inputs the judge was given",
+  "refusal 4 (settings_scale_and_switch): evidence \"tree.json:666 settings_scale_and_switch experience ('a part switched off gives back what ships today')\" is not one of the inputs the judge was given",
+  "refusal 4 (settings_scale_and_switch): evidence \"tree.json:650 oracle ('closed guard off: container goods thrown like loose goods')\" is not one of the inputs the judge was given",
+  "refusal 4 (settings_scale_and_switch): evidence \"record.json dl_fire_half_off ('Every new part's Mod Settings switch, turned off, gives back what ships today')\" is not one of the inputs the judge was given",
+  "refusal 4 (settings_scale_and_switch): evidence 'scenes.json:225 sc_settings_sweep expect' is not one of the inputs the judge was given",
+  "refusal 4 (settings_scale_and_switch): evidence 'record.json inv_shelf_skip, inv_items_teleport (what ships today)' is not one of the inputs the judge was given",
+  "refusal 4 (settings_scale_and_switch): evidence \"scenes.json:536 sc_gas_chain start ('quicktest map, minimal list')\" is not one of the inputs the judge was given",
+  "refusal 4 (settings_scale_and_switch): evidence 'scenes.json:564 sc_cauldron_gas' is not one of the inputs the judge was given",
+  "refusal 4 (settings_scale_and_switch): evidence 'scenes.json:588 sc_cover_breaks' is not one of the inputs the judge was given",
+  "refusal 4 (settings_scale_and_switch): evidence 'scenes.json:791 sc_gas_shove_into_pit' is not one of the inputs the judge was given",
+  "refusal 4 (settings_scale_and_switch): evidence \"scenes.json:216 sc_settings_sweep ('the minimal list plus LWM's Deep Storage')\" is not one of the inputs the judge was given",
+  "refusal 4 (settings_scale_and_switch): evidence 'infrastructure/state/modlists/ModsConfig.MINIMAL.xml (27 mods, parsed: no mandrake.rm.cauldron)' is not one of the inputs the judge was given",
+  "refusal 4 (settings_scale_and_switch): evidence 'src/RimMandrake/Cauldron/About/About.xml modDependencies: flowworks, environmentalhazards, creaturebehaviors' is not one of the inputs the judge was given",
+  "refusal 4 (settings_scale_and_switch): evidence 'tree.json settings_scale_and_switch (lines 650-666)' is not one of the inputs the judge was given",
+  "refusal 4 (settings_scale_and_switch): evidence 'scenes.json sc_settings_sweep (lines 208-225), sc_closed_containers (lines 416-418)' is not one of the inputs the judge was given",
+  "refusal 4 (settings_scale_and_switch): evidence 'record.json dl_fire_half_off' is not one of the inputs the judge was given",
+  "refusal 4 (settings_scale_and_switch): evidence 'floor.json mod_settings' is not one of the inputs the judge was given",
+  "refusal 5 (inv_gas_chain): evidence \"scenes.json:536 sc_gas_chain start ('quicktest map, minimal list')\" is not one of the inputs the judge was given",
+  "refusal 5 (inv_gas_chain): evidence 'scenes.json:564 sc_cauldron_gas' is not one of the inputs the judge was given",
+  "refusal 5 (inv_gas_chain): evidence 'scenes.json:588 sc_cover_breaks' is not one of the inputs the judge was given",
+  "refusal 5 (inv_gas_chain): evidence 'scenes.json:791 sc_gas_shove_into_pit' is not one of the inputs the judge was given",
+  "refusal 5 (inv_gas_chain): evidence \"scenes.json:216 sc_settings_sweep ('the minimal list plus LWM's Deep Storage')\" is not one of the inputs the judge was given",
+  "refusal 5 (inv_gas_chain): evidence 'infrastructure/state/modlists/ModsConfig.MINIMAL.xml (27 mods, parsed: no mandrake.rm.cauldron)' is not one of the inputs the judge was given",
+  "refusal 5 (inv_gas_chain): evidence 'src/RimMandrake/Cauldron/About/About.xml modDependencies: flowworks, environmentalhazards, creaturebehaviors' is not one of the inputs the judge was given",
+  "refusal 5 (inv_gas_chain): evidence 'record.json inv_gas_chain' is not one of the inputs the judge was given",
+  "refusal 5 (inv_gas_chain): evidence 'scenes.json sc_gas_chain (line 536 start), sc_gas_shove_into_pit' is not one of the inputs the judge was given",
+  "refusal 5 (inv_gas_chain): evidence 'src/RimMandrake/Cauldron/About/About.xml modDependencies' is not one of the inputs the judge was given",
+  "refusal 6 (inv_gas_tags): evidence \"scenes.json:536 sc_gas_chain start ('quicktest map, minimal list')\" is not one of the inputs the judge was given",
+  "refusal 6 (inv_gas_tags): evidence 'scenes.json:564 sc_cauldron_gas' is not one of the inputs the judge was given",
+  "refusal 6 (inv_gas_tags): evidence 'scenes.json:588 sc_cover_breaks' is not one of the inputs the judge was given",
+  "refusal 6 (inv_gas_tags): evidence 'scenes.json:791 sc_gas_shove_into_pit' is not one of the inputs the judge was given",
+  "refusal 6 (inv_gas_tags): evidence \"scenes.json:216 sc_settings_sweep ('the minimal list plus LWM's Deep Storage')\" is not one of the inputs the judge was given",
+  "refusal 6 (inv_gas_tags): evidence 'infrastructure/state/modlists/ModsConfig.MINIMAL.xml (27 mods, parsed: no mandrake.rm.cauldron)' is not one of the inputs the judge was given",
+  "refusal 6 (inv_gas_tags): evidence 'src/RimMandrake/Cauldron/About/About.xml modDependencies: flowworks, environmentalhazards, creaturebehaviors' is not one of the inputs the judge was given",
+  "refusal 6 (inv_gas_tags): evidence 'record.json inv_gas_tags, dl_gas_census' is not one of the inputs the judge was given",
+  "refusal 6 (inv_gas_tags): evidence 'scenes.json sc_cauldron_gas (line 564)' is not one of the inputs the judge was given",
+  "refusal 7 (gas_goes_clump_by_clump): evidence \"scenes.json:536 sc_gas_chain start ('quicktest map, minimal list')\" is not one of the inputs the judge was given",
+  "refusal 7 (gas_goes_clump_by_clump): evidence 'scenes.json:564 sc_cauldron_gas' is not one of the inputs the judge was given",
+  "refusal 7 (gas_goes_clump_by_clump): evidence 'scenes.json:588 sc_cover_breaks' is not one of the inputs the judge was given",
+  "refusal 7 (gas_goes_clump_by_clump): evidence 'scenes.json:791 sc_gas_shove_into_pit' is not one of the inputs the judge was given",
+  "refusal 7 (gas_goes_clump_by_clump): evidence \"scenes.json:216 sc_settings_sweep ('the minimal list plus LWM's Deep Storage')\" is not one of the inputs the judge was given",
+  "refusal 7 (gas_goes_clump_by_clump): evidence 'infrastructure/state/modlists/ModsConfig.MINIMAL.xml (27 mods, parsed: no mandrake.rm.cauldron)' is not one of the inputs the judge was given",
+  "refusal 7 (gas_goes_clump_by_clump): evidence 'src/RimMandrake/Cauldron/About/About.xml modDependencies: flowworks, environmentalhazards, creaturebehaviors' is not one of the inputs the judge was given",
+  "refusal 7 (gas_goes_clump_by_clump): evidence \"scenes.json:797 sc_gas_shove_into_pit expect ('the one-cell shove puts the colonist into the pit, one descent')\" is not one of the inputs the judge was given",
+  "refusal 7 (gas_goes_clump_by_clump): evidence \"tree.json:554 thrown_into_pit_falls experience ('Anything thrown toward an open pit falls … a burning gas clump's one-cell shove is not a throw')\" is not one of the inputs the judge was given",
+  "refusal 7 (gas_goes_clump_by_clump): evidence 'record.json d_pit_only_forced' is not one of the inputs the judge was given",
+  "refusal 7 (gas_goes_clump_by_clump): evidence 'tree.json gas_goes_clump_by_clump' is not one of the inputs the judge was given",
+  "refusal 7 (gas_goes_clump_by_clump): evidence 'scenes.json sc_gas_chain (line 536), sc_gas_shove_into_pit (line 782)' is not one of the inputs the judge was given",
+  "refusal 7 (gas_goes_clump_by_clump): evidence 'src/RimMandrake/Cauldron/About/About.xml' is not one of the inputs the judge was given",
+  "refusal 8 (our_gases_burn): evidence \"scenes.json:536 sc_gas_chain start ('quicktest map, minimal list')\" is not one of the inputs the judge was given",
+  "refusal 8 (our_gases_burn): evidence 'scenes.json:564 sc_cauldron_gas' is not one of the inputs the judge was given",
+  "refusal 8 (our_gases_burn): evidence 'scenes.json:588 sc_cover_breaks' is not one of the inputs the judge was given",
+  "refusal 8 (our_gases_burn): evidence 'scenes.json:791 sc_gas_shove_into_pit' is not one of the inputs the judge was given",
+  "refusal 8 (our_gases_burn): evidence \"scenes.json:216 sc_settings_sweep ('the minimal list plus LWM's Deep Storage')\" is not one of the inputs the judge was given",
+  "refusal 8 (our_gases_burn): evidence 'infrastructure/state/modlists/ModsConfig.MINIMAL.xml (27 mods, parsed: no mandrake.rm.cauldron)' is not one of the inputs the judge was given",
+  "refusal 8 (our_gases_burn): evidence 'src/RimMandrake/Cauldron/About/About.xml modDependencies: flowworks, environmentalhazards, creaturebehaviors' is not one of the inputs the judge was given",
+  "refusal 8 (our_gases_burn): evidence 'tree.json our_gases_burn' is not one of the inputs the judge was given",
+  "refusal 8 (our_gases_burn): evidence 'scenes.json sc_cauldron_gas (line 564)' is not one of the inputs the judge was given",
+  "refusal 9 (blast_breaks_pit_cover): evidence \"scenes.json:536 sc_gas_chain start ('quicktest map, minimal list')\" is not one of the inputs the judge was given",
+  "refusal 9 (blast_breaks_pit_cover): evidence 'scenes.json:564 sc_cauldron_gas' is not one of the inputs the judge was given",
+  "refusal 9 (blast_breaks_pit_cover): evidence 'scenes.json:588 sc_cover_breaks' is not one of the inputs the judge was given",
+  "refusal 9 (blast_breaks_pit_cover): evidence 'scenes.json:791 sc_gas_shove_into_pit' is not one of the inputs the judge was given",
+  "refusal 9 (blast_breaks_pit_cover): evidence \"scenes.json:216 sc_settings_sweep ('the minimal list plus LWM's Deep Storage')\" is not one of the inputs the judge was given",
+  "refusal 9 (blast_breaks_pit_cover): evidence 'infrastructure/state/modlists/ModsConfig.MINIMAL.xml (27 mods, parsed: no mandrake.rm.cauldron)' is not one of the inputs the judge was given",
+  "refusal 9 (blast_breaks_pit_cover): evidence 'src/RimMandrake/Cauldron/About/About.xml modDependencies: flowworks, environmentalhazards, creaturebehaviors' is not one of the inputs the judge was given",
+  "refusal 9 (blast_breaks_pit_cover): evidence 'tree.json blast_breaks_pit_cover' is not one of the inputs the judge was given",
+  "refusal 9 (blast_breaks_pit_cover): evidence 'scenes.json sc_cover_breaks (line 588)' is not one of the inputs the judge was given",
+  "refusal 10 (thrown_into_pit_falls): evidence \"scenes.json:797 sc_gas_shove_into_pit expect ('the one-cell shove puts the colonist into the pit, one descent')\" is not one of the inputs the judge was given",
+  "refusal 10 (thrown_into_pit_falls): evidence \"tree.json:554 thrown_into_pit_falls experience ('Anything thrown toward an open pit falls … a burning gas clump's one-cell shove is not a throw')\" is not one of the inputs the judge was given",
+  "refusal 10 (thrown_into_pit_falls): evidence 'record.json d_pit_only_forced' is not one of the inputs the judge was given",
+  "refusal 10 (thrown_into_pit_falls): evidence 'tree.json thrown_into_pit_falls (line 554)' is not one of the inputs the judge was given",
+  "refusal 10 (thrown_into_pit_falls): evidence 'scenes.json sc_pit_fall, sc_pit_enemy, sc_gas_shove_into_pit (line 797)' is not one of the inputs the judge was given",
+  "passed inv_kernel: evidence 'record.json inv_kernel' is not one of the given inputs",
+  "passed inv_kernel: evidence 'scenes.json sc_mortar_throw, sc_wall_stop, sc_door_water, sc_over_sandbags, sc_pit_fall' is not one of the given inputs",
+  "passed inv_hook: evidence 'record.json inv_hook' is not one of the given inputs",
+  "passed inv_hook: evidence 'scenes.json sc_all_fly_no_cap, sc_walk_raid' is not one of the given inputs",
+  "passed inv_pawn_flyer: evidence 'record.json inv_pawn_flyer' is not one of the given inputs",
+  "passed inv_pawn_flyer: evidence 'scenes.json sc_pawn_arc, sc_wall_stop, sc_pawn_hits_pawn, sc_settings_sweep' is not one of the given inputs",
+  "passed inv_which_blasts: evidence 'record.json inv_which_blasts, d_c_which_blasts' is not one of the given inputs",
+  "passed inv_which_blasts: evidence 'scenes.json sc_blast_kinds, sc_lookup' is not one of the given inputs",
+  "passed inv_which_blasts: evidence 'tree.json every_harmful_blast_throws' is not one of the given inputs",
+  "passed inv_items_teleport: evidence 'record.json inv_items_teleport (scope out)' is not one of the given inputs",
+  "passed inv_items_teleport: evidence 'scenes.json coverage_rest inv_items_teleport, sc_storeroom_mortar, sc_gas_chain' is not one of the given inputs",
+  "passed inv_shelf_skip: evidence 'record.json inv_shelf_skip (scope out)' is not one of the given inputs",
+  "passed inv_shelf_skip: evidence 'scenes.json coverage_rest inv_shelf_skip, sc_open_storage' is not one of the given inputs",
+  "passed inv_who_is_spared: evidence 'record.json inv_who_is_spared' is not one of the given inputs",
+  "passed inv_who_is_spared: evidence 'scenes.json sc_spared' is not one of the given inputs",
+  "passed inv_shield: evidence 'record.json inv_shield, d_c_shield' is not one of the given inputs",
+  "passed inv_shield: evidence 'scenes.json sc_shield' is not one of the given inputs",
+  "passed inv_recovery: evidence 'record.json inv_recovery' is not one of the given inputs",
+  "passed inv_recovery: evidence 'scenes.json sc_recovery' is not one of the given inputs",
+  "passed inv_caps: evidence 'record.json inv_caps (scope out)' is not one of the given inputs",
+  "passed inv_caps: evidence 'scenes.json coverage_rest inv_caps, sc_all_fly_no_cap, sc_settings_sweep' is not one of the given inputs",
+  "passed inv_pits_receive: evidence 'record.json inv_pits_receive' is not one of the given inputs",
+  "passed inv_pits_receive: evidence 'scenes.json sc_pit_fall, sc_pit_enemy, sc_cover_breaks' is not one of the given inputs",
+  "passed inv_pit_floor_haul: evidence 'record.json inv_pit_floor_haul' is not one of the given inputs",
+  "passed inv_pit_floor_haul: evidence 'scenes.json sc_pit_fetch' is not one of the given inputs",
+  "passed inv_hose_drop: evidence 'record.json inv_hose_drop' is not one of the given inputs",
+  "passed inv_hose_drop: evidence 'scenes.json sc_hose_drop' is not one of the given inputs",
+  "passed inv_proof_scenes: evidence 'record.json inv_proof_scenes, script_audit' is not one of the given inputs",
+  "passed inv_proof_scenes: evidence 'scenes.json coverage_rest inv_proof_scenes' is not one of the given inputs",
+  "passed inv_goods_fly: evidence 'record.json inv_goods_fly' is not one of the given inputs",
+  "passed inv_goods_fly: evidence 'scenes.json sc_storeroom_mortar, sc_all_fly_no_cap, sc_goods_obstacles' is not one of the given inputs",
+  "passed inv_goods_fly: evidence 'tree.json advisory' is not one of the given inputs",
+  "passed inv_heavy_knock: evidence 'record.json inv_heavy_knock, dl_heavy_threshold' is not one of the given inputs",
+  "passed inv_heavy_knock: evidence 'scenes.json sc_heavy_knock' is not one of the given inputs",
+  "passed inv_perf_all_fly: evidence 'record.json inv_perf_all_fly, dl_perf_budget' is not one of the given inputs",
+  "passed inv_perf_all_fly: evidence 'scenes.json sc_barrage_perf, sc_frame_probe_check' is not one of the given inputs",
+  "passed inv_perf_all_fly: evidence 'floor.json tick_cost' is not one of the given inputs",
+  "passed inv_weapon_ext_fields: evidence 'record.json inv_weapon_ext_fields' is not one of the given inputs",
+  "passed inv_weapon_ext_fields: evidence 'scenes.json sc_lookup' is not one of the given inputs",
+  "passed inv_killed_corpse: evidence 'record.json inv_killed_corpse' is not one of the given inputs",
+  "passed inv_killed_corpse: evidence 'scenes.json sc_killed_thrown' is not one of the given inputs",
+  "passed inv_pit_floor_goods_stay: evidence 'record.json inv_pit_floor_goods_stay' is not one of the given inputs",
+  "passed inv_pit_floor_goods_stay: evidence 'scenes.json sc_spared' is not one of the given inputs",
+  "passed inv_big_corpse_spared: evidence 'record.json inv_big_corpse_spared' is not one of the given inputs",
+  "passed inv_big_corpse_spared: evidence 'scenes.json sc_spared lane B' is not one of the given inputs",
+  "passed inv_mass_limit_skip: evidence 'record.json inv_mass_limit_skip' is not one of the given inputs",
+  "passed inv_mass_limit_skip: evidence 'scenes.json sc_settings_sweep, sc_spared lane C' is not one of the given inputs",
+  "passed inv_too_weak_skip: evidence 'record.json inv_too_weak_skip' is not one of the given inputs",
+  "passed inv_too_weak_skip: evidence 'scenes.json sc_all_fly_no_cap' is not one of the given inputs",
+  "passed people_thrown_three_cells: evidence 'tree.json people_thrown_three_cells' is not one of the given inputs",
+  "passed people_thrown_three_cells: evidence 'sheet.md does' is not one of the given inputs",
+  "passed people_thrown_three_cells: evidence 'scenes.json sc_mortar_throw, sc_over_sandbags' is not one of the given inputs",
+  "passed pawn_flight_arc: evidence 'tree.json pawn_flight_arc' is not one of the given inputs",
+  "passed pawn_flight_arc: evidence 'scenes.json sc_pawn_arc' is not one of the given inputs",
+  "passed the_spared: evidence 'tree.json the_spared' is not one of the given inputs",
+  "passed the_spared: evidence 'scenes.json sc_spared, sc_lookup, sc_all_fly_no_cap, sc_settings_sweep' is not one of the given inputs",
+  "passed recovery_immunity: evidence 'tree.json recovery_immunity' is not one of the given inputs",
+  "passed recovery_immunity: evidence 'scenes.json sc_recovery' is not one of the given inputs",
+  "passed hose_drops_at_takeoff: evidence 'tree.json hose_drops_at_takeoff' is not one of the given inputs",
+  "passed hose_drops_at_takeoff: evidence 'scenes.json sc_hose_drop' is not one of the given inputs",
+  "passed wall_stops_dead: evidence 'tree.json wall_stops_dead' is not one of the given inputs",
+  "passed wall_stops_dead: evidence 'scenes.json sc_wall_stop' is not one of the given inputs",
+  "passed pawn_hits_pawn_stops: evidence 'tree.json pawn_hits_pawn_stops' is not one of the given inputs",
+  "passed pawn_hits_pawn_stops: evidence 'scenes.json sc_pawn_hits_pawn' is not one of the given inputs",
+  "passed doors_and_deep_water_stop: evidence 'tree.json doors_and_deep_water_stop' is not one of the given inputs",
+  "passed doors_and_deep_water_stop: evidence 'scenes.json sc_door_water, sc_lookup' is not one of the given inputs",
+  "passed shield_belt_holds: evidence 'tree.json shield_belt_holds' is not one of the given inputs",
+  "passed shield_belt_holds: evidence 'scenes.json sc_shield, sc_gas_chain' is not one of the given inputs",
+  "passed goods_arc_spin_rebound: evidence 'tree.json goods_arc_spin_rebound' is not one of the given inputs",
+  "passed goods_arc_spin_rebound: evidence 'scenes.json sc_storeroom_mortar, sc_goods_obstacles, sc_killed_thrown' is not one of the given inputs",
+  "passed every_good_moves: evidence 'tree.json every_good_moves' is not one of the given inputs",
+  "passed every_good_moves: evidence 'scenes.json sc_all_fly_no_cap' is not one of the given inputs",
+  "passed open_shelf_scatters: evidence 'tree.json open_shelf_scatters' is not one of the given inputs",
+  "passed open_shelf_scatters: evidence 'sheet.md does' is not one of the given inputs",
+  "passed open_shelf_scatters: evidence 'scenes.json sc_open_storage, sc_closed_containers census' is not one of the given inputs",
+  "passed open_shelf_scatters: evidence 'record.json d_c_draws_is_open' is not one of the given inputs",
+  "passed heavy_stack_knocks: evidence 'tree.json heavy_stack_knocks' is not one of the given inputs",
+  "passed heavy_stack_knocks: evidence 'scenes.json sc_heavy_knock' is not one of the given inputs",
+  "passed every_harmful_blast_throws: evidence 'tree.json every_harmful_blast_throws' is not one of the given inputs",
+  "passed every_harmful_blast_throws: evidence 'scenes.json sc_blast_kinds' is not one of the given inputs",
+  "passed every_harmful_blast_throws: evidence 'design/RimMandrake/explosion_mods_characterized_2026-11-12.md (read for the named defs)' is not one of the given inputs",
+  "passed only_explosions_throw: evidence 'tree.json only_explosions_throw' is not one of the given inputs",
+  "passed only_explosions_throw: evidence 'scenes.json sc_only_explosions' is not one of the given inputs",
+  "passed per_weapon_tuning: evidence 'tree.json per_weapon_tuning' is not one of the given inputs",
+  "passed per_weapon_tuning: evidence 'scenes.json sc_lookup' is not one of the given inputs",
+  "passed pit_goods_fetched: evidence 'tree.json pit_goods_fetched' is not one of the given inputs",
+  "passed pit_goods_fetched: evidence 'scenes.json sc_pit_fetch' is not one of the given inputs",
+  "passed no_teleport: evidence 'tree.json no_teleport' is not one of the given inputs",
+  "passed no_teleport: evidence 'scenes.json sc_storeroom_mortar, sc_gas_chain' is not one of the given inputs",
+  "passed no_careless_fall: evidence 'tree.json no_careless_fall' is not one of the given inputs",
+  "passed no_careless_fall: evidence 'scenes.json sc_no_careless_fall' is not one of the given inputs",
+  "passed barrage_frame_budget: evidence 'tree.json barrage_frame_budget' is not one of the given inputs",
+  "passed barrage_frame_budget: evidence 'scenes.json sc_barrage_perf' is not one of the given inputs",
+  "passed barrage_frame_budget: evidence 'record.json dl_perf_budget' is not one of the given inputs",
+  "passed frame_time_probe: evidence 'tree.json frame_time_probe' is not one of the given inputs",
+  "passed frame_time_probe: evidence 'scenes.json sc_frame_probe_check' is not one of the given inputs",
+  "passed walk_storeroom_raid: evidence 'tree.json walk_storeroom_raid' is not one of the given inputs",
+  "passed walk_storeroom_raid: evidence 'scenes.json sc_walk_raid' is not one of the given inputs",
+  "passed walk_storeroom_raid: evidence 'floor.json tick_cost' is not one of the given inputs",
+  "coverage: given inputs in no passed or refused evidence: exam.json, floor.json, record.json, scenes.json, tree.json"
+ ],
  "gaps": [
   {
+   "criterion_verdict": "sound",
+   "criterion_why": "Each part a leaf ships needs a scene that can fail when that part is broken, and the tag is a code path separate from showContents.",
+   "evidence": [
+    "tree.json:338",
+    "sheet.md:33",
+    "scenes.json:416",
+    "scenes.json:418",
+    "record.json:342"
+   ],
+   "gid": "g1",
    "ids": [
     "inv_closed_guard",
     "closed_container_holds"
    ],
+   "new_since": "changed",
+   "observed": "The leaf promises that 'another mod's hiding container carrying the opt-in tag' stays closed, and the sheet says 'plus an opt-in tag for another mod's hiding container'. Every live container row now asserts 'with no tag added' (LWM_WeaponsLocker, LWM_Safe, SealedCrate, AncientSecurityCrate). The offline census only requires that no drawing def carries the tag, so if no def on the list carries it, the tag branch never runs.",
    "return_to": 3,
-   "what": "The hopper gap from the previous verdict is not fixed. RimSage shows the vanilla Hopper as a plain Building_Storage, drawn by MapMeshOnly with surfaceType Item and no hide flag, so it draws what it holds. The stated census rule ('classed closed exactly when it does not draw its contents or carries the opt-in tag') therefore classes it open. Yet sc_closed_containers expects the hopper's contents unchanged, and the tree leaf, sheet delegated line, dl_closed_means_hidden and exam y6 all call hoppers closed. Settle it one way everywhere: either our patch gives the Hopper the opt-in tag (say so in the delegated line, the census and the scene's row), or the hopper leaves the closed list in the leaf, sheet, record and exam.",
-   "where": "scenes.json sc_closed_containers; tree.json closed_container_holds; sheet.md delegated (closed means); record.json dl_closed_means_hidden; exam.json y6"
+   "since": "scenes.json since 780b1d1e85 (judge 9's verdict): the tagged ShelfSmall rows and the 'tagged modded container' row were removed from sc_closed_containers, the flagship and the sweep (rightly, per his 'a shelf should be ruled as open, period'), and nothing replaced them",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Add a row to scenes.json sc_closed_containers: a labelled test storage def that hides its contents by a means other than showContents, given the tag by Stage and untagged by Verdict; held with the tag, scattered without it. Or drop the tag from tree.json closed_container_holds, sheet.md:33 and record.json dl_closed_means_hidden."
+   },
+   "what": "The opt-in closed tag for another mod's hiding container lost its only live staging; no scene exercises it now",
+   "where": "scenes.json sc_closed_containers, sc_storeroom_bomb_pit, sc_settings_sweep; tree.json closed_container_holds; sheet.md:33",
+   "would_pass": "A scene row stages a container that the guard classes closed only because of the opt-in tag (showContents not false, not a Building_Crate) and expects its contents unchanged, with a control: the same container with the tag removed scatters its goods. Alternatively, the tag is removed from the leaf, the sheet and dl_closed_means_hidden."
   },
   {
-   "ids": [
-    "inv_which_blasts",
-    "every_harmful_blast_throws"
+   "criterion_verdict": "sound",
+   "criterion_why": "A scene may not test a threshold that the player's sheet states differently.",
+   "evidence": [
+    "scenes.json:416",
+    "sheet.md:61",
+    "sheet.md:23",
+    "record.json:355",
+    "scenes.json:208"
    ],
-   "return_to": 3,
-   "what": "The unnamed-provider gap in sc_blast_kinds from the previous verdict is not fixed. Three lanes name no def or mod: 'a modded damaging explosion (asserted: its mod active)', 'a modded explosion whose damage type is Flame', and 'a modded explosion of an untuned damaging type'. As written, nothing shows such a mod exists on the scene's minimal list, so the other-mods-at-100% row and the never-stacked row cannot be staged. Name each def and its mod and add the mod to the asserted list, or stage a labelled test damage type as sc_settings_sweep already does (one untuned, one Flame-typed).",
-   "where": "scenes.json sc_blast_kinds"
-  },
-  {
+   "gid": "g2",
    "ids": [
-    "open_shelf_scatters",
-    "inv_closed_guard"
+    "inv_container_shove",
+    "closed_container_holds",
+    "inv_settings",
+    "settings_scale_and_switch"
    ],
+   "new_since": "changed",
+   "observed": "The sheet says 'A 1x1 closed container under the mass limit slides', and its only stated mass limit is '75 kg (the Mod Settings mass limit, which weighs goods and corpses only)'. The scene introduces 'the 250 kg closedContainerMassLimit'. sc_settings_sweep never sets it, and its reflection assertion ('a saved field in none of the three fails the scene') would fail a correct build that saves it. A 100 kg container slides under one reading and jolts under the other; no row decides which.",
    "return_to": 3,
-   "what": "Racks are claimed but never tested. The leaf open_shelf_scatters ('an open shelf, rack or table'), the sheet line ('Open shelves, racks and tables protect nothing') and inventory inv_closed_guard all promise racks, but sc_open_storage now stages only Shelf, ShelfSmall and Table2x2c (the weapon rack was dropped when it was found not to exist). There is no vanilla rack (RimSage); the only one on disk comes from the provider mod Aelanna.WeaponRacks. Either stage a rack from a named provider, asserted active, or remove 'rack' from the leaf, the sheet and the inventory text.",
-   "where": "tree.json open_shelf_scatters; sheet.md does (open_shelf_scatters); record.json inv_closed_guard; scenes.json sc_open_storage"
+   "since": "scenes.json since 780b1d1e85: the over-mass row changed from 'a tagged small shelf … with lightMassLimit set to 3, below its 4 kg' to 'LWM_Safe, 1x1, 500 kg, over the 250 kg closedContainerMassLimit'",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Pick the limit (dl_container_shove is a delegated call) and state it in tree.json closed_container_holds, sheet.md:61 and record.json dl_container_shove; add it to scenes.json sc_settings_sweep if it is a setting; add one in-between mass row to sc_closed_containers."
+   },
+   "what": "The container mass limit the scene tests (a 250 kg closedContainerMassLimit) is declared nowhere else, contradicts the sheet's 'the mass limit' (75 kg), and no container between the two masses is staged",
+   "where": "scenes.json sc_closed_containers; sheet.md:61; record.json dl_container_shove; tree.json closed_container_holds, settings_scale_and_switch; scenes.json sc_settings_sweep",
+   "would_pass": "One container mass limit is named identically in tree.json closed_container_holds, sheet.md:61 and record.json dl_container_shove. If it is a setting, it is in sc_settings_sweep's action with an expected outcome. sc_closed_containers stages a 1x1 hiding container with a mass between 75 kg and the chosen limit (or just over the limit, if the limit is lightMassLimit) and shows it slide or jolt accordingly."
   },
   {
+   "criterion_verdict": "sound",
+   "criterion_why": "Every Mod Settings line must take effect and be swept, and a check that cannot fail tests nothing.",
+   "evidence": [
+    "scenes.json:418",
+    "scenes.json:416",
+    "scenes.json:225",
+    "record.json:342",
+    "tree.json:338"
+   ],
+   "gid": "g3",
    "ids": [
     "inv_closed_guard",
-    "inv_container_shove",
-    "open_shelf_scatters"
+    "closed_container_holds",
+    "inv_settings",
+    "settings_scale_and_switch"
    ],
+   "new_since": "changed",
+   "observed": "'vanillaCratesClosed' appears only in sc_closed_containers. No leaf, sheet line, delegated decision or sweep row names it or says what off does. The scene itself says the sealed crate keeps its goods 'in its own holder'; RimSage shows SealedCrate and AncientSecurityCrate are thingClass Building_Crate, whose goods are unspawned, so no blast reaches them. The crate rows' 'every container's contents unchanged' therefore passes whatever the guard does, and the loose-goods control does not rule that out.",
    "return_to": 3,
-   "what": "The flagship stages its closed container as a vanilla small shelf (ShelfSmall) with the opt-in closed tag. A small shelf draws its goods on top, so when he looks at the storeroom (hold: owner_review) he sees an ordinary shelf keep its goods while it slides. That is the shelf exemption he ruled out ('no exemption for ordinary shelves'). The tag is a def extension, so it also lands on every ShelfSmall in the scene, while the flagship's 'row of open shelves' names no def: open small shelves there would hold their goods too. Fix: name the open shelves' def (Shelf), and stage the closed container as a real container that hides its contents, from a census provider (e.g. a RimFridge fridge or the ASF/LWM deep-storage locker, small enough to slide, with the mod added to the asserted list), or as a labelled test container that does not draw its contents.",
-   "where": "scenes.json sc_storeroom_bomb_pit (showcase storeroom_bomb_pit)"
+   "since": "scenes.json since 780b1d1e85: the census line now reads 'a sealed crate with vanillaCratesClosed on', and the SealedCrate and AncientSecurityCrate rows were added",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Remove vanillaCratesClosed from scenes.json sc_closed_containers and say in tree.json closed_container_holds that crates hold by construction, checking only their jolt. Or declare the setting in tree.json, sheet.md and record.json and add a sweep row."
+   },
+   "what": "vanillaCratesClosed, a switch the census uses to class sealed crates closed, is undeclared and unswept, and the crate rows' 'contents unchanged' cannot fail",
+   "where": "scenes.json sc_closed_containers and sc_settings_sweep; tree.json closed_container_holds, settings_scale_and_switch; record.json dl_closed_means_hidden",
+   "would_pass": "Either vanillaCratesClosed is removed (crates are closed by construction, the leaf says so, and the crate rows claim only the shove or jolt), or it is stated in the leaf, the sheet and a delegated line together with its off behaviour, swept in sc_settings_sweep, and its off case has an observable expected outcome."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "A scene's expectation must follow from the leaf it accepts; here the leaf states a rule the scene contradicts for two parts.",
+   "evidence": [
+    "tree.json:666",
+    "tree.json:650",
+    "sheet.md:46",
+    "record.json:489",
+    "scenes.json:225",
+    "record.json"
+   ],
+   "gid": "g4",
+   "ids": [
+    "inv_settings",
+    "settings_scale_and_switch"
+   ],
+   "late_why": "The sweep's 'with the closed guard off … goods are thrown like loose goods' and 'with goods in the air off loose goods are not thrown at all' were present at judge 9's verdict; only the container def changed since. That judge passed the fire-half off state and missed these two.",
+   "new_since": "late",
+   "observed": "What ships today (record.json inv_shelf_skip, inv_items_teleport) is the in_storage skip, under which every storage building's goods stay, and the despawn-and-re-place hop. The sweep expects 'with the closed guard off the weapons locker's goods are thrown like loose goods out of it' and 'with goods in the air off loose goods are not thrown at all … no hop comes back'. Neither is 'what ships today', yet the leaf, the sheet and dl_fire_half_off promise exactly that rule, and only the fire exception is spelled out.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Rewrite the off-state clause in tree.json settings_scale_and_switch, sheet.md:46 and record.json dl_fire_half_off as a per-part list matching scenes.json sc_settings_sweep's expect."
+   },
+   "what": "Two new parts' off states in the sweep contradict the leaf's and sheet's rule that a part switched off 'gives back what ships today'",
+   "where": "tree.json settings_scale_and_switch; sheet.md:46; record.json dl_fire_half_off; scenes.json sc_settings_sweep",
+   "would_pass": "tree.json settings_scale_and_switch, sheet.md:46 and dl_fire_half_off state each new part's off state explicitly (goods in the air off: unthrown, never the hop; closed guard off: container goods thrown as loose; container shove, heavy knock and gas chain off: inert), or drop the blanket rule, and the sweep's expect matches those words line for line."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "An asserted start must be reachable on the list the scene says it runs on.",
+   "evidence": [
+    "scenes.json:536",
+    "scenes.json:564",
+    "scenes.json:588",
+    "scenes.json:791",
+    "scenes.json:216"
+   ],
+   "gid": "g5",
+   "ids": [
+    "inv_gas_chain",
+    "inv_gas_tags",
+    "gas_goes_clump_by_clump",
+    "our_gases_burn",
+    "blast_breaks_pit_cover",
+    "settings_scale_and_switch",
+    "inv_settings"
+   ],
+   "late_why": "These scenes have staged the Cauldron's gas on 'minimal list' since judge 7's fix (0eb66f7620). Judges 8 and 9 missed it, though judge 9 refused the same kind of defect (a provider mod not on the scene's list) in sc_blast_kinds. This round sc_settings_sweep made it explicit by naming its additions as 'the minimal list plus LWM's Deep Storage' only.",
+   "new_since": "late",
+   "observed": "Each scene asserts 'Cauldron on the list (asserted: RM_MapComponent_VentGas present …; INVALID otherwise)' but starts on 'quicktest map, minimal list'. I parsed infrastructure/state/modlists/ModsConfig.MINIMAL.xml (27 mods): it holds mandrake.rm.flowworks but not mandrake.rm.cauldron, and the Cauldron's About.xml makes mandrake.rm.environmentalhazards and mandrake.rm.creaturebehaviors dependencies, neither of which is on MINIMAL. As written, every gas lane is INVALID on its own stated list.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Edit the first start line of sc_gas_chain, sc_cauldron_gas, sc_cover_breaks, sc_gas_shove_into_pit and sc_settings_sweep in scenes.json to add the Cauldron and its dependencies to the stated list."
+   },
+   "what": "Five scenes stage the Cauldron's vent gas on a stated mod list that does not hold the Cauldron or its dependencies",
+   "where": "scenes.json sc_gas_chain, sc_cauldron_gas, sc_cover_breaks, sc_gas_shove_into_pit, sc_settings_sweep",
+   "would_pass": "The first start line of each of the five scenes names its list as the minimal list plus mandrake.rm.cauldron and its dependencies (mandrake.rm.environmentalhazards, mandrake.rm.creaturebehaviors), each asserted active, as the LWM scenes already do for lwm.deepstorage."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "The sheet a player reads must say what the tree tests, and an interaction scene's property must follow from the leaves it joins.",
+   "evidence": [
+    "scenes.json:797",
+    "tree.json:554",
+    "sheet.md:41",
+    "sheet.md:38",
+    "record.json"
+   ],
+   "gid": "g6",
+   "ids": [
+    "thrown_into_pit_falls",
+    "gas_goes_clump_by_clump"
+   ],
+   "late_why": "The scene and both leaves' wording were unchanged at judge 9's verdict, which passed it.",
+   "new_since": "late",
+   "observed": "The sheet says 'Anything thrown toward an open pit falls to its floor … (a gas clump's one-cell shove is not a throw and leaves a cover whole)'. Read as written, a shove is outside 'anything thrown', so a reader cannot tell whether a shove onto an open pit cell drops the pawn. The interaction scene expects 'the one-cell shove puts the colonist into the pit, one descent'. record.json d_pit_only_forced ('Only if they get blown/forced in do they fall') supports a fall, but no leaf or sheet line says so.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Add one clause to tree.json thrown_into_pit_falls and sheet.md:41: 'a gas shove onto an open pit cell drops the pawn in; onto a cover it stands'."
+   },
+   "what": "sc_gas_shove_into_pit expects a gas shove to drop a pawn into an open pit, which no leaf or sheet line states, and the leaf it cites says a shove 'is not a throw'",
+   "where": "scenes.json sc_gas_shove_into_pit; tree.json thrown_into_pit_falls, gas_goes_clump_by_clump; sheet.md:38, sheet.md:41",
+   "would_pass": "tree.json thrown_into_pit_falls (or gas_goes_clump_by_clump) and the matching sheet.md line state that a gas shove onto an open pit cell drops the pawn in, forced per d_pit_only_forced, while a shove onto a cover leaves it whole, so the scene's expectation follows from the leaves it cites."
   }
  ],
- "judge": "rm-coverage-judge-1794481849",
- "reasons": "Not covered. There are 4 gaps, and the Designer can fix all of them at stage 3; none needs his answer.\n\nPrevious verdict's 4 gaps:\n- **Airborne hook (fixed):** the hook now writes the vanilla Pawn_FlightTracker, and the shipped skip reads p.Flying (RM_MapComponent_Knockback.cs:522).\n- **Fire-half switch (fixed):** turning it off now means 'fire throws nothing', stated in the leaf, the sheet and dl_fire_half_off, and asserted by the sweep.\n- **Stale descriptions (fixed):** the hose oracle and its coverage_rest entry now match the scene's enabled-false control. The gas-shove control now says the registration is removed.\n- **Containers and furniture (partly fixed):** crates and the weapon rack are gone from the scenes. Fridge, locker and deep storage now come from census providers, and those mods do exist on disk (rimfridge.kv.rw, LWM.DeepStorage, ASF.DeepStorage). Two parts are not fixed: the hopper contradiction, and sc_blast_kinds' unnamed modded explosions.\n\nGaps:\n1. **Hopper:** it is classed closed, but the stated rule classes it open, since RimSage shows the vanilla Hopper draws its contents.\n2. **Modded explosions:** they are still unnamed in sc_blast_kinds.\n3. **Racks:** the leaf, the sheet and the inventory promise them, but no scene tests one.\n4. **Flagship container:** the flagship's closed container is a tagged vanilla small shelf. To his eye that reads as the shelf exemption he rejected, and the tag also lands on any small shelf in its unnamed open-shelf row.\n\nEverything else has an acceptance or interaction scene that meets the contract: an asserted start, a control that rules out the plausible alternative, and restoration. The scoped-out entries (the teleport hop, the shelf skip, the caps) are covered through coverage_rest by absence checks with controls. No leaf rests on an exploration or mock scene. Showcase 1 is bound to his pick, d_c_flagship.",
- "sheet": "decd62e555e47fb236d2bb0e16dedff3b2f3c8bd42434f1495887a0ed3c36137",
+ "hashes": {
+  "dec:d_c_all_fly": "bebb6b7053d3450a",
+  "dec:d_c_bars": "26d54ad31e18e5d9",
+  "dec:d_c_closed_containers": "886320f196008414",
+  "dec:d_c_draws_is_open": "5b93308104d39e5f",
+  "dec:d_c_flagship": "2dcca1def982ff82",
+  "dec:d_c_gas_shove": "a925886b9088a685",
+  "dec:d_c_gas_source": "747632312897f0d3",
+  "dec:d_c_heavy_knock": "a47cf6a32d8bfcd0",
+  "dec:d_c_root": "c1264a5865291116",
+  "dec:d_c_shield": "a8b5ae7eca41e7a3",
+  "dec:d_c_which_blasts": "167c02dbd338d4a4",
+  "dec:d_c_wild": "deca4151ba7ad0fb",
+  "dec:d_cap_per_weapon": "56ff3a6e0f247a2b",
+  "dec:d_fall_breaks_cover": "301758036b6692b3",
+  "dec:d_gas_per_clump": "402bbc5764c96b84",
+  "dec:d_goods_fly": "448a241c4657a67e",
+  "dec:d_no_shelf_exemption": "77b77ce9a4c54e34",
+  "dec:d_pit_only_forced": "fe813bad2a9eb4ec",
+  "dec:d_pushed_or_blasted": "eb6bf8237c748c3a",
+  "dec:d_q10_retrievable": "8d67bf29dee4b431",
+  "dec:d_q1_everywhere": "ced8a90f7ada8f2c",
+  "dec:d_q2_explosions_only": "58b4b2c8dc9862e9",
+  "dec:d_q3_over_sandbags": "9949fe8c7267961d",
+  "dec:d_q4_everything_light": "2487610005512075",
+  "dec:d_q5_cover_breaks": "b1afcaac0539dc2f",
+  "dec:d_q6_hose_drops": "157955d2d76cc107",
+  "dec:d_q7_three_cells": "6386797cd1b93d57",
+  "dec:d_q8_own_mod": "95cb8465d082431d",
+  "dec:d_q9_cover_blasts": "99e380e09f2160eb",
+  "dec:dl_closed_means_hidden": "7b686305583967e6",
+  "dec:dl_clump_strength": "1f825cd4c28ee6f0",
+  "dec:dl_container_shove": "c998d9d1aac5228c",
+  "dec:dl_fire_half_off": "f1a58269b69e532b",
+  "dec:dl_gas_census": "f095610a43e302fb",
+  "dec:dl_gas_igniter": "6485df9095e11f67",
+  "dec:dl_gas_ignores_belts": "3e3ce541a54c28eb",
+  "dec:dl_goods_obstacles": "760f6c6a0d4e325c",
+  "dec:dl_heavy_threshold": "fda4dfa4b92e68eb",
+  "dec:dl_modded_strength": "fc0ffc3d674137e5",
+  "dec:dl_perf_budget": "acad354fe85ce19a",
+  "floor": "24f26d3f7bee38b4",
+  "inv:inv_big_corpse_spared": "373a71698f53cb77",
+  "inv:inv_caps": "a108895c0481f91d",
+  "inv:inv_closed_guard": "39536c42a26514ed",
+  "inv:inv_container_shove": "1e126919eec70b51",
+  "inv:inv_gas_chain": "603507922d746096",
+  "inv:inv_gas_tags": "befe90a5756b8b08",
+  "inv:inv_goods_fly": "9820e1df845a4f60",
+  "inv:inv_heavy_knock": "80f0830f50eddedc",
+  "inv:inv_hook": "9c80f162e4e546bf",
+  "inv:inv_hose_drop": "6726a40a77aa2a15",
+  "inv:inv_items_teleport": "c57fce4d0f3ca599",
+  "inv:inv_kernel": "1630d384db23cd00",
+  "inv:inv_killed_corpse": "0c51c2c908ad80b5",
+  "inv:inv_mass_limit_skip": "8e1f92a6b129a708",
+  "inv:inv_pawn_flyer": "c650da99bd0da6db",
+  "inv:inv_perf_all_fly": "d0b23434a7fc56c5",
+  "inv:inv_pit_floor_goods_stay": "e9e16acf421a0f08",
+  "inv:inv_pit_floor_haul": "4d87a13cfefe4457",
+  "inv:inv_pits_receive": "415667dbb33dab4d",
+  "inv:inv_proof_scenes": "c14ad93a6db9d07e",
+  "inv:inv_recovery": "77eccf999e6d04c7",
+  "inv:inv_settings": "90622e97550d95b6",
+  "inv:inv_shelf_skip": "9d17e80f4066fa46",
+  "inv:inv_shield": "4cd61f7f520b61f9",
+  "inv:inv_too_weak_skip": "c1df839f8d90f13a",
+  "inv:inv_weapon_ext_fields": "a9d453903d22fc46",
+  "inv:inv_which_blasts": "1f9ed5028c230ad3",
+  "inv:inv_who_is_spared": "39d11e846dda905f",
+  "leaf:barrage_frame_budget": "6bdc6f2532669b02",
+  "leaf:blast_breaks_pit_cover": "197adad14692194d",
+  "leaf:closed_container_holds": "af0c5cdabe7d5464",
+  "leaf:doors_and_deep_water_stop": "a95f56719428c6c7",
+  "leaf:every_good_moves": "61e120dd01f75b9a",
+  "leaf:every_harmful_blast_throws": "1362dc441e53ca3d",
+  "leaf:frame_time_probe": "9fa2d24d7ef17c90",
+  "leaf:gas_goes_clump_by_clump": "83dd9352b8a3f938",
+  "leaf:goods_arc_spin_rebound": "29a2379569fbd9c2",
+  "leaf:heavy_stack_knocks": "cffc65eab51fc9be",
+  "leaf:hose_drops_at_takeoff": "ac0413b7b2b49b4c",
+  "leaf:no_careless_fall": "01343290bbf3feb0",
+  "leaf:no_teleport": "ee671b05ae3d56d0",
+  "leaf:only_explosions_throw": "f8090402c0d49d55",
+  "leaf:open_shelf_scatters": "a6734c15d09d0b62",
+  "leaf:our_gases_burn": "305699d9ad882bda",
+  "leaf:pawn_flight_arc": "355231853477b8a6",
+  "leaf:pawn_hits_pawn_stops": "95c2665a4050cb48",
+  "leaf:people_thrown_three_cells": "0c35c069e5b960ad",
+  "leaf:per_weapon_tuning": "962e2773e4ba9182",
+  "leaf:pit_goods_fetched": "b7d4a47f179c7a3b",
+  "leaf:recovery_immunity": "2d3e92cc65705c5e",
+  "leaf:settings_scale_and_switch": "73cb7e75e37ff97f",
+  "leaf:shield_belt_holds": "14d12694fd963a28",
+  "leaf:the_spared": "1e51d2055aa6e20c",
+  "leaf:thrown_into_pit_falls": "0be54f3c8cd11ee7",
+  "leaf:walk_storeroom_raid": "794cd02b185227da",
+  "leaf:wall_stops_dead": "c30a5f887e48c118",
+  "record:scope": "897edd59986586f0",
+  "rest:inv_big_corpse_spared": "795517b6ab0eb780",
+  "rest:inv_caps": "13f558d37c127f07",
+  "rest:inv_gas_chain": "73ae96de3ddb3d35",
+  "rest:inv_gas_tags": "14d94587a707691b",
+  "rest:inv_hose_drop": "0465a27f027ead84",
+  "rest:inv_items_teleport": "ece97d2c99fca238",
+  "rest:inv_killed_corpse": "e8c94af03af85d6a",
+  "rest:inv_mass_limit_skip": "23ec5d419ba7c048",
+  "rest:inv_perf_all_fly": "5601d2f258a3b254",
+  "rest:inv_pit_floor_goods_stay": "e0b4f1ce454874d7",
+  "rest:inv_pit_floor_haul": "9380bccf79994977",
+  "rest:inv_proof_scenes": "2e22478238b3cb5e",
+  "rest:inv_recovery": "f7d29fe8394fc5f2",
+  "rest:inv_settings": "005a13564f3d192c",
+  "rest:inv_shelf_skip": "d79817608481b418",
+  "rest:inv_shield": "2bd3cf2aa515688a",
+  "rest:inv_too_weak_skip": "24b1dbdf2595b9f5",
+  "rest:inv_weapon_ext_fields": "34fce776e8fefb8a",
+  "rest:inv_who_is_spared": "c27b0d4c25907599",
+  "scene:sc_all_fly_no_cap": "19635ff95657ca44",
+  "scene:sc_barrage_perf": "eff5d70d3023fb85",
+  "scene:sc_blast_kinds": "524ad8505c2eb49d",
+  "scene:sc_cauldron_gas": "a87e76672b0a0af9",
+  "scene:sc_closed_containers": "ce55246e9a567dd1",
+  "scene:sc_cover_breaks": "9992c52777f7ca1f",
+  "scene:sc_door_water": "6a34c77553edcd5c",
+  "scene:sc_frame_probe_check": "62826992eddc259e",
+  "scene:sc_gas_chain": "0d006fae7cbf2932",
+  "scene:sc_gas_shove_into_pit": "d50598a4775feabc",
+  "scene:sc_goods_obstacles": "e811deda9f0cd307",
+  "scene:sc_heavy_knock": "57357a89e04cbd2b",
+  "scene:sc_hose_drop": "3fc2055be0bc2674",
+  "scene:sc_killed_thrown": "0f97805479e66f81",
+  "scene:sc_lookup": "43637376b6d8812d",
+  "scene:sc_mortar_throw": "2db7cd6ec9caa9ff",
+  "scene:sc_no_careless_fall": "ecc6af71124d05e2",
+  "scene:sc_only_explosions": "ab22c6add15c6c82",
+  "scene:sc_open_storage": "f6f05ea00380dc26",
+  "scene:sc_over_sandbags": "c27676c8d75b7678",
+  "scene:sc_pawn_arc": "e824966f4cbcd952",
+  "scene:sc_pawn_hits_pawn": "32615331bc3754fd",
+  "scene:sc_pit_enemy": "df8ceb3ef8ff3e63",
+  "scene:sc_pit_fall": "53c2fefa587563c7",
+  "scene:sc_pit_fetch": "e0ebb1047ef12cf4",
+  "scene:sc_recovery": "3cfacd92a6d9c2a3",
+  "scene:sc_settings_off": "f152206dd2b0f2e1",
+  "scene:sc_settings_sweep": "ee556edeef3ba327",
+  "scene:sc_shield": "fabfd755dbf99a72",
+  "scene:sc_spared": "6e4944e7ea4bcd4f",
+  "scene:sc_storeroom_bomb_pit": "fd9846fb54b910f5",
+  "scene:sc_storeroom_mortar": "3aba1f91863f4f96",
+  "scene:sc_walk_raid": "26f4337c493c8530",
+  "scene:sc_wall_stop": "41a61229388c2c9f",
+  "sheet:": "1b1c387f37d8e4d9",
+  "sheet:delegated": "e6f6c87e2846a7ae",
+  "sheet:does": "a54ba852e9c1b08f",
+  "sheet:does not": "b5a9b021211508a8",
+  "sheet:his words": "d62e2a82f2c0843c",
+  "sheet:later": "8fb5d5d984df3e8c",
+  "sheet:open": "225766d67a587313",
+  "sheet:pruning": "e0c0c6d186c428d6",
+  "sheet:waived": "e7c919eee065e618",
+  "showcase:storeroom_bomb_pit": "e5e2b4e8dc12158a",
+  "tree:rest": "dd28052dbc110c04"
+ },
+ "judge": "rm-coverage-judge-1794558854",
+ "late": [
+  "inv_settings",
+  "settings_scale_and_switch",
+  "inv_gas_chain",
+  "inv_gas_tags",
+  "gas_goes_clump_by_clump",
+  "our_gases_burn",
+  "blast_breaks_pit_cover",
+  "settings_scale_and_switch",
+  "inv_settings",
+  "thrown_into_pit_falls",
+  "gas_goes_clump_by_clump"
+ ],
+ "mode": "full",
+ "prompt_chars": 5100,
+ "reasons": "Not covered: six gaps, and the Designer can fix all of them at stage 3; none needs his answer.\n\nThe previous verdict's 4 gaps are all fixed:\n- **Hopper:** it is now open everywhere, including sc_open_storage, which stages a Hopper.\n- **Modded explosions:** sc_blast_kinds now names them, and I checked them on disk. OuterRim_SonicGrenadeProj's damage type OuterRim_Sonic has no Bomb parent, OuterRim_PlasmaGrenadeProj uses Flame, and Outer Rim Core is on MINIMAL.\n- **Racks:** 'rack' is gone from the leaf, the sheet and the inventory.\n- **Flagship container:** the flagship's closed container is LWM_WeaponsLocker, which on disk is 1x1, 8 kg, showContents false. Its shelves are named Shelf and ShelfSmall and are classed open.\n\nThe six gaps:\n1. **Opt-in tag (changed):** no live scene stages a tagged hiding container any more.\n2. **Container mass limit (changed):** the scene tests an undeclared 250 kg closedContainerMassLimit, while the sheet's 'mass limit' is 75 kg. The sweep never sets the 250 kg limit.\n3. **vanillaCratesClosed (changed):** the switch is undeclared and unswept, and the crate rows cannot fail because crate goods are unspawned.\n4. **Off states (late):** with the closed guard off and with goods in the air off, the sweep expects behaviour that contradicts the rule 'gives back what ships today'.\n5. **Cauldron mod list (late):** five gas scenes run on 'minimal list', which holds neither mandrake.rm.cauldron nor its dependencies, so the gas lanes are INVALID as written.\n6. **Gas shove into a pit (late):** sc_gas_shove_into_pit tests a fall that no leaf or sheet line states.\n\nEverything else meets the contract: an asserted start, a control that rules out the plausible alternative, and restoration. The scoped-out entries (the hop, the shelf skip, the caps) are covered in coverage_rest by absence checks with controls. No leaf rests on an exploration or mock scene. Showcase 1 is bound to d_c_flagship, and the exam's tree and sheet hashes match the current artifacts.",
+ "sheet": "bf4db944bc5835843e638d9f31755b490b4ba5c5c1659e02ade9f156fb8b1f4e",
  "signed": false,
- "tokens": 739503,
- "tree": "052301404e081d7c1d5e00afeae1b8d11d0e6aaa3ac4f414e8fe9f79dcd07eb2",
+ "stopped": "released for one more look at round 10; that look was not_covered",
+ "tokens": 1392378,
+ "tree": "473b067275efa7e9f4550fa9244f9de083d1ca30fef08f59dc79d3f88a085061",
  "verdict": "not_covered"
 }
