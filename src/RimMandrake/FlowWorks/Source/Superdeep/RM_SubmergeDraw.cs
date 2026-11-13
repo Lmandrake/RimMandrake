@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Globalization;
+using System.Reflection.Emit;
 using HarmonyLib;
 using RimWorld;
 using UnityEngine;
@@ -148,6 +149,10 @@ namespace RimMandrake.FlowWorks
 		/// <summary>The drawn height (m) of a thing standing on the floor, or 0 when it is not one this draws.</summary>
 		private static float StandingMetres(Thing t)
 		{
+			if (t is Building)
+			{
+				return BuildingMetres(t);
+			}
 			if (t is MinifiedThing)
 			{
 				return RM_UnderLiquid.MinifiedMetres;
@@ -159,9 +164,29 @@ namespace RimMandrake.FlowWorks
 			return IsSwale(t.def) ? RM_UnderLiquid.SwaleMetres : 0f;
 		}
 
+		/// <summary>RIMMANDRAKE_FIX_BIG_PIT_SCENE_BUILDINGS_STAY_DRY (owner's big-pit look 2026-11-12: "It's easy to see which
+		/// items are not going under water"): an installed building stands by its cover (RM_UnderLiquid.BuildingMetres of
+		/// fillPercent). 0 for the swale (a floor liner), the realtime gates and stakes (their own drawers) and covers and
+		/// decks (they span the pit at bank height).</summary>
+		private static float BuildingMetres(Thing t)
+		{
+			if (IsSwale(t.def))
+			{
+				return RM_UnderLiquid.SwaleMetres;
+			}
+			if (t is RM_Building_Ladder || t is RM_Building_PitRamp || t is Building_RM_FlowDoor || t is Building_RM_Spikes
+				|| t is Pits.Building_SpanDeck)
+			{
+				return 0f;
+			}
+			return RM_UnderLiquid.BuildingMetres(t.def.fillPercent);
+		}
+
 		// ── the print context (main thread only: section rebuilds) ──────────────
 
-		private static bool ctxOn, inSplit, ctxWorld;
+		private static bool ctxOn, inSplit, ctxWorld, ctxPit;
+		private static Thing ctxThing;
+		private static float ctxPitLevel, ctxPitClarity;
 		private static int ctxFrom;
 		private static float ctxShare, ctxLevel, ctxHeight, ctxClarity, ctxCut, ctxFoot;
 		private static IntVec3 ctxCell;
@@ -171,6 +196,8 @@ namespace RimMandrake.FlowWorks
 		public static void Begin(Thing t)
 		{
 			ctxOn = false;
+			ctxPit = false;
+			ctxThing = null;
 			if (!On || t == null)
 			{
 				return;
@@ -181,7 +208,16 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
-			if (!Wet(t, out int d, out float levelM, out float clarity))
+			bool wet = Wet(t, out int d, out float levelM, out float clarity);
+			if (d > 0 && t is Building && standing > 0f && !IsSwale(t.def))
+			{
+				// a building standing in a pit, wet or dry: its vanilla shadows are off and it casts one floor shadow
+				ctxPit = true;
+				ctxThing = t;
+				ctxPitLevel = levelM;
+				ctxPitClarity = clarity;
+			}
+			if (!wet)
 			{
 				return;
 			}
@@ -230,7 +266,175 @@ namespace RimMandrake.FlowWorks
 		public static void End()
 		{
 			ctxOn = false;
+			ctxPit = false;
+			ctxThing = null;
 		}
+
+		/// <summary>Printer_Shadow prefix: no vanilla contact shadow from a building standing in a pit (it would lie on the
+		/// liquid's surface); <see cref="FloorShadow"/> draws its one shadow instead.</summary>
+		internal static bool InPit => ctxPit && !inSplit;
+
+		/// <summary>How far the floor shadow reaches past a building's footprint on the sun's (south-west) side, and how far
+		/// it stops short on the other.</summary>
+		private const float ShadowReach = 0.18f, ShadowInset = 0.1f;
+
+		/// <summary>TakePrintFrom finalizer: the one shadow of a building standing in a pit (owner 2026-11-12: "Shadows
+		/// should ALWAYS be inside the pit ... it should simply be transparent to them as usual"), on the floor under it,
+		/// reaching south-west only over dug cells, at RM_UnderLiquid.ThingShadow (seen through the liquid by the law).</summary>
+		internal static void FloorShadow(SectionLayer layer)
+		{
+			if (!ctxPit || ctxThing == null || layer == null || !ctxThing.Spawned)
+			{
+				return;
+			}
+			int q = (int)(RM_UnderLiquid.ThingShadow(ctxPitClarity, ctxPitLevel) * RM_UnderLiquid.Steps + 0.5f);
+			if (q <= 0)
+			{
+				return;
+			}
+			Map map = ctxThing.Map;
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+			CellRect r = ctxThing.OccupiedRect();
+			IntVec3 west = new IntVec3(r.minX - 1, 0, r.minZ), south = new IntVec3(r.minX, 0, r.minZ - 1);
+			float x0 = r.minX - (west.InBounds(map) && eng.HollowDepthAt(west) > 0 ? ShadowReach : 0f);
+			float z0 = r.minZ - (south.InBounds(map) && eng.HollowDepthAt(south) > 0 ? ShadowReach : 0f);
+			float x1 = r.maxX + 1f - ShadowInset, z1 = r.maxZ + 1f - ShadowInset;
+			inSplit = true;
+			try
+			{
+				Printer_Plane.PrintPlane(layer, new Vector3((x0 + x1) * 0.5f, AltitudeLayer.Shadows.AltitudeFor(), (z0 + z1) * 0.5f),
+					new Vector2(x1 - x0, z1 - z0), ShadowMat(q));
+			}
+			finally
+			{
+				inSplit = false;
+			}
+		}
+
+		private static readonly Material[] shadowMats = new Material[RM_UnderLiquid.Steps + 1];
+
+		private static Material ShadowMat(int q)
+		{
+			Material m = shadowMats[q];
+			if (m == null)
+			{
+				m = MaterialPool.MatFrom(new MaterialRequest(BaseContent.WhiteTex, ShaderDatabase.Transparent,
+					new Color(0f, 0f, 0f, (float)q / RM_UnderLiquid.Steps)));
+				shadowMats[q] = m;
+			}
+			return m;
+		}
+
+		/// <summary>SectionLayer_SunShadows reads the edifice grid through this: a building standing in a pit casts no
+		/// vanilla sun shadow (it fell onto the liquid's surface and the bank; owner 2026-11-12), and does not shade its
+		/// neighbours' sides.</summary>
+		public static Building ShadowCaster(Building b)
+		{
+			if (b == null || !On || !b.Spawned)
+			{
+				return b;
+			}
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(b.Map);
+			return eng != null && eng.HollowDepthAt(b.Position) > 0 ? null : b;
+		}
+
+		/// <summary>How much of a thing's label (quality, stack count, owner) shows: it fades with the thing's top
+		/// (RM_UnderLiquid.LabelAlpha); 1 for anything not standing wet in a pit.</summary>
+		public static float LabelAlpha(Thing t)
+		{
+			if (!On || t == null || !(t.def.category == ThingCategory.Item || t is Building))
+			{
+				return 1f;
+			}
+			float h = StandingMetres(t);
+			if (h <= 0f || !Wet(t, out int _, out float levelM, out float clarity, false))
+			{
+				return 1f;
+			}
+			return RM_UnderLiquid.LabelAlpha(clarity, levelM, h);
+		}
+
+		// ── pawns and corpses (realtime) ─────────────────────────────────────
+
+		private static readonly MaterialPropertyBlock coverBlock = new MaterialPropertyBlock();
+		private static readonly Dictionary<Graphic, Graphic> silhouettes = new Dictionary<Graphic, Graphic>();
+
+		/// <summary>The liquid's colour where it covers a pawn: a clear liquid's darkened body colour (RM_UnderLiquid.WaterBody
+		/// x seeThroughTint x (1 - Darken)), an opaque liquid's own tint.</summary>
+		private static Color CoverColour(RM_LiquidSurfaceLook look, float clarity)
+		{
+			if (!(clarity > 0f))
+			{
+				return look != null ? look.tint : Color.black;
+			}
+			Color t = look != null ? look.seeThroughTint : Color.white;
+			float k = 1f - RM_UnderLiquid.Darken;
+			return new Color(RM_UnderLiquid.WaterBody.r * t.r * k, RM_UnderLiquid.WaterBody.g * t.g * k, RM_UnderLiquid.WaterBody.b * t.b * k);
+		}
+
+		/// <summary>The drawn height (m) of a pawn under the law: standing, its climb-size height (RM_Drowning.HeightOf);
+		/// lying, downed or dead, RM_UnderLiquid.CorpseMetres.</summary>
+		public static float PawnMetres(Pawn p, bool dead) => dead || RM_Drowning.Lying(p) ? RM_UnderLiquid.CorpseMetres : RM_Drowning.HeightOf(p);
+
+		/// <summary>PawnRenderer.RenderPawnAt postfix: a pawn wading, lying or dead in a wet pit (never a swimmer: vanilla's
+		/// swim pose draws its head only) is covered by the law. Its body's silhouette (vanilla's Silhouette shader: one flat
+		/// colour through the sprite's own alpha) is drawn over the drowned part in the liquid's colour at 1 - Seen, banded
+		/// by depth, so the part reads as lerp(liquid, pawn, Seen); under an opaque liquid it is the liquid.</summary>
+		internal static void CoverPawn(Pawn pawn, PawnRenderer r, Vector3 drawLoc, Rot4? rotOverride)
+		{
+			if (!On || pawn == null || r == null || pawn.Flying || pawn.Swimming)
+			{
+				return;
+			}
+			Corpse corpse = pawn.Spawned ? null : pawn.ParentHolder as Corpse;
+			Thing at = pawn.Spawned ? pawn : corpse;
+			if (at == null || !at.Spawned || !Wet(at, out int _, out float levelM, out float clarity, false))
+			{
+				return;
+			}
+			if (pawn.Spawned && (drawLoc - pawn.DrawPos).MagnitudeHorizontalSquared() > 1f)
+			{
+				return;   // drawn somewhere else (a drafted-move preview ghost): not standing in this liquid
+			}
+			bool dead = corpse != null;
+			float h = PawnMetres(pawn, dead);
+			float s = RM_UnderLiquid.Share(levelM, 0f, h);
+			Graphic g = r.SilhouetteGraphic;
+			if (s <= 0f || g == null)
+			{
+				return;
+			}
+			if (!silhouettes.TryGetValue(g, out Graphic sil))
+			{
+				sil = g.GetColoredVersion(ShaderDatabase.Silhouette, Color.white, Color.white);
+				silhouettes[g] = sil;
+			}
+			Rot4 rot = rotOverride ?? (dead ? corpse.InnerPawn.Rotation : pawn.Rotation);
+			Material mat = sil.MatAt(rot);
+			bool flip = rot == Rot4.West ? g.WestFlipped : rot == Rot4.East && g.EastFlipped;
+			Vector2 size = g.drawSize;
+			float angle = dead || RM_Drowning.Lying(pawn) ? r.BodyAngle(PawnRenderFlags.None) : 0f;
+			Matrix4x4 at4 = Matrix4x4.TRS(new Vector3(drawLoc.x, drawLoc.y + CoverLift, drawLoc.z), Quaternion.AngleAxis(angle, Vector3.up), Vector3.one);
+			RM_LiquidSurfaceLook look = LookAt(at.Map, RM_SuperdeepTrap.EngineOf(at.Map), at.Position);
+			Color col = CoverColour(look, clarity);
+			float line = levelM - s * h;
+			int n = !(clarity > 0f) ? 1 : RM_UnderLiquid.BandsFor(clarity, line < 0f ? 0f : line, levelM);
+			for (int b = 0; b < n; b++)
+			{
+				float a = s * b / n, e = s * (b + 1) / n;
+				float cover = 1f - RM_UnderLiquid.Seen(clarity, levelM - (a + e) * 0.5f * h);
+				Mesh band = cover > 0.01f ? SliceMesh(size, a, e, flip) : null;
+				if (band != null)
+				{
+					coverBlock.SetColor(ShaderPropertyIDs.Color, new Color(col.r, col.g, col.b, cover));
+					UnityEngine.Graphics.DrawMesh(band, at4, mat, 0, null, 0, coverBlock);
+				}
+			}
+		}
+
+		/// <summary>Above every layer a pawn's own render tree draws (body, apparel, head; the slice keeps the head out while
+		/// it is above the line).</summary>
+		private const float CoverLift = 0.05f;
 
 		private static readonly float[] Uv0 = new float[8];
 		private static readonly float[] Uv = new float[8];
@@ -375,14 +579,15 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>A realtime plane of <paramref name="size"/> keeping only the slice [a, b] measured from its foot (uvs
 		/// lerped; unflipped art). Cached per size and slice (1/128 steps), so a frame allocates nothing.</summary>
-		public static Mesh SliceMesh(Vector2 size, float a, float b)
+		public static Mesh SliceMesh(Vector2 size, float a, float b, bool flip = false)
 		{
 			int ia = Mathf.RoundToInt(RM_UnderLiquid.Clamp01(a) * 128f), ib = Mathf.RoundToInt(RM_UnderLiquid.Clamp01(b) * 128f);
 			if (ib <= ia)
 			{
 				return null;
 			}
-			long key = ((long)Mathf.RoundToInt(size.x * 1000f) << 40) | ((long)Mathf.RoundToInt(size.y * 1000f) << 16) | ((long)ia << 8) | (long)ib;
+			long key = ((long)Mathf.RoundToInt(size.x * 1000f) << 40) | ((long)Mathf.RoundToInt(size.y * 1000f) << 17) | ((long)ia << 9)
+				| ((long)ib << 1) | (flip ? 1L : 0L);
 			if (sliceMeshes.TryGetValue(key, out Mesh m) && m != null)
 			{
 				return m;
@@ -391,7 +596,8 @@ namespace RimMandrake.FlowWorks
 			float za = -hh + size.y * sa, zb = -hh + size.y * sb;
 			m = new Mesh { name = "RM_SubmergeSlice" };
 			m.vertices = new[] { new Vector3(-hw, 0f, za), new Vector3(-hw, 0f, zb), new Vector3(hw, 0f, zb), new Vector3(hw, 0f, za) };
-			m.uv = new[] { new Vector2(0f, sa), new Vector2(0f, sb), new Vector2(1f, sb), new Vector2(1f, sa) };
+			float u0 = flip ? 1f : 0f, u1 = flip ? 0f : 1f;
+			m.uv = new[] { new Vector2(u0, sa), new Vector2(u0, sb), new Vector2(u1, sb), new Vector2(u1, sa) };
 			m.triangles = new[] { 0, 1, 2, 0, 2, 3 };
 			m.RecalculateNormals();
 			m.RecalculateBounds();
@@ -582,9 +788,17 @@ namespace RimMandrake.FlowWorks
 					share = d <= 0 ? 0f : RM_UnderLiquid.Share(levelM, 0f, heightM);
 					lineM = levelM - share * heightM; footM = levelM;
 				}
+				else if (t is Pawn || t is Corpse)
+				{
+					Pawn pw = t as Pawn ?? ((Corpse)t).InnerPawn;
+					kind = t is Corpse ? "corpse" : pw.Swimming ? "swimmer" : "pawn";
+					heightM = pw == null ? RM_UnderLiquid.CorpseMetres : PawnMetres(pw, t is Corpse);
+					share = d <= 0 || pw.Swimming ? 0f : RM_UnderLiquid.Share(levelM, 0f, heightM);
+					lineM = levelM - share * heightM; footM = levelM;
+				}
 				else if ((heightM = StandingMetres(t)) > 0f)
 				{
-					kind = t is MinifiedThing ? "minified" : t.def.category == ThingCategory.Item ? "item" : "swale";
+					kind = IsSwale(t.def) ? "swale" : t is Building ? "building" : t is MinifiedThing ? "minified" : "item";
 					share = d <= 0 ? 0f : RM_UnderLiquid.Share(levelM, 0f, heightM);
 					lineM = levelM - share * heightM; footM = levelM;
 				}
@@ -599,7 +813,7 @@ namespace RimMandrake.FlowWorks
 				bool wet = share > 0f;
 				float seenLine = wet ? RM_UnderLiquid.Seen(clarity, lineM <= 0f ? 0.0001f : lineM) : 1f;
 				float seenFoot = wet ? RM_UnderLiquid.Seen(clarity, footM) : 1f;
-				bool realtime = t is Building_RM_Spikes || t is Building_RM_FlowDoor;
+				bool realtime = t is Building_RM_Spikes || t is Building_RM_FlowDoor || t is Pawn || t is Corpse;
 				string printed = realtime || !eng.submergeDrawn.TryGetValue(map.cellIndices.CellToIndex(c), out int pn)
 					? "-" : RM_UnderLiquid.NoteLevel(pn).ToString("F2", CultureInfo.InvariantCulture);
 				Color tint = look != null ? look.tint : Color.white;
@@ -607,6 +821,8 @@ namespace RimMandrake.FlowWorks
 					+ " depth=" + d + " fill=" + f + " level=" + lv.ToString("F2", CultureInfo.InvariantCulture) + faces
 					+ " share=" + F(share) + " clarity=" + F(clarity) + " seenLine=" + F(seenLine) + " seenFoot=" + F(seenFoot)
 					+ " printedLevel=" + printed + " setting=" + (On ? "on" : "off")
+					+ " height=" + F(heightM, "F2") + " shadow=" + (kind == "building" && d > 0 ? F(RM_UnderLiquid.ThingShadow(clarity, levelM)) : "-")
+					+ " label=" + F(wet ? RM_UnderLiquid.LabelAlpha(clarity, levelM, heightM) : 1f)
 					+ " liquid=" + (map.terrainGrid.TerrainAt(c)?.defName ?? "-")
 					+ " tint=" + F(tint.r, "F2") + "," + F(tint.g, "F2") + "," + F(tint.b, "F2");
 			}
@@ -626,9 +842,95 @@ namespace RimMandrake.FlowWorks
 		}
 
 		[HarmonyFinalizer]
-		private static void Finalizer()
+		private static void Finalizer(SectionLayer_ThingsGeneral __instance)
 		{
-			RM_SubmergeDraw.End();
+			try
+			{
+				RM_SubmergeDraw.FloorShadow(__instance);
+			}
+			finally
+			{
+				RM_SubmergeDraw.End();
+			}
+		}
+	}
+
+	/// <summary>No vanilla contact shadow from a building standing in a pit (RM_SubmergeDraw.FloorShadow draws its one
+	/// shadow on the floor). The ShadowData overload calls this one.</summary>
+	[HarmonyPatch(typeof(Printer_Shadow), nameof(Printer_Shadow.PrintShadow), new[] { typeof(SectionLayer), typeof(Vector3), typeof(Vector3), typeof(Rot4) })]
+	[RimMandrake.Shared.PatchFeature("Pit contents under liquid (shadows)", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "pitSubmergeCutEnabled")]
+	internal static class Patch_RM_SubmergeContactShadow
+	{
+		[HarmonyPrefix]
+		private static bool Prefix()
+		{
+			return !RM_SubmergeDraw.InPit;
+		}
+	}
+
+	/// <summary>Every edifice read in SectionLayer_SunShadows.Regenerate goes through RM_SubmergeDraw.ShadowCaster: a building
+	/// standing in a pit casts no sun shadow onto the liquid's surface or the bank.</summary>
+	[HarmonyPatch]
+	[RimMandrake.Shared.PatchFeature("Pit contents under liquid (sun shadows)", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "pitSubmergeCutEnabled")]
+	internal static class Patch_RM_SubmergeSunShadows
+	{
+		// the layer is internal to Verse: reached by name
+		private static System.Reflection.MethodBase TargetMethod()
+		{
+			return AccessTools.Method(AccessTools.TypeByName("Verse.SectionLayer_SunShadows"), "Regenerate");
+		}
+
+		[HarmonyTranspiler]
+		private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> code)
+		{
+			System.Reflection.MethodInfo caster = AccessTools.Method(typeof(RM_SubmergeDraw), nameof(RM_SubmergeDraw.ShadowCaster));
+			int n = 0;
+			foreach (CodeInstruction ins in code)
+			{
+				yield return ins;
+				if (ins.opcode == OpCodes.Ldelem_Ref)
+				{
+					n++;
+					yield return new CodeInstruction(OpCodes.Call, caster);
+				}
+			}
+			if (n != 4)
+			{
+				Log.Warning("[FlowWorks] SectionLayer_SunShadows.Regenerate read the edifice grid " + n + " times, expected 4: pit things may cast sun shadows");
+			}
+		}
+	}
+
+	/// <summary>A label or stack count over a thing standing wet in a pit fades with the thing (RM_SubmergeDraw.LabelAlpha),
+	/// and is not drawn once the thing is hidden.</summary>
+	[HarmonyPatch(typeof(GenMapUI), nameof(GenMapUI.DrawThingLabel), new[] { typeof(Thing), typeof(string), typeof(Color) })]
+	[RimMandrake.Shared.PatchFeature("Pit contents under liquid (labels)", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "pitSubmergeCutEnabled")]
+	internal static class Patch_RM_SubmergeLabel
+	{
+		[HarmonyPrefix]
+		private static bool Prefix(Thing thing, ref Color textColor)
+		{
+			float a = RM_SubmergeDraw.LabelAlpha(thing);
+			if (a <= 0f)
+			{
+				return false;
+			}
+			textColor.a *= a;
+			return true;
+		}
+	}
+
+	/// <summary>Pawns and corpses standing, lying or dead in a wet pit are covered by the law (RM_SubmergeDraw.CoverPawn).</summary>
+	[HarmonyPatch(typeof(PawnRenderer), nameof(PawnRenderer.RenderPawnAt))]
+	[RimMandrake.Shared.PatchFeature("Pit contents under liquid (pawns)", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "pitSubmergeCutEnabled")]
+	internal static class Patch_RM_SubmergePawn
+	{
+		private static readonly AccessTools.FieldRef<PawnRenderer, Pawn> PawnOf = AccessTools.FieldRefAccess<PawnRenderer, Pawn>("pawn");
+
+		[HarmonyPostfix]
+		private static void Postfix(PawnRenderer __instance, Vector3 drawLoc, Rot4? rotOverride)
+		{
+			RM_SubmergeDraw.CoverPawn(PawnOf(__instance), __instance, drawLoc, rotOverride);
 		}
 	}
 

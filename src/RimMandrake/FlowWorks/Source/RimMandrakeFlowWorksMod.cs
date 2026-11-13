@@ -346,6 +346,11 @@ namespace RimMandrake.FlowWorks
         public static float liquidBubbleDensity = 1f;              // x every liquid's own bubble rate
         public static bool liquidSeeThroughEnabled = true;         // a cut's floor/walls show through clear liquid (item 10)
         public static bool pitSubmergeCutEnabled = true;           // liquid in a cut covers what stands in it (RM_UnderLiquid)
+        // RIMMANDRAKE_TUNE_WATER_CLARITY_DARKER_AND_HALF_AS_OPAQUE / RIMMANDRAKE_FIX_BIG_PIT_SCENE_BUILDINGS_STAY_DRY: the law's
+        // experience numbers (RM_UnderLiquid reads them through PushUnderLiquid)
+        public static float underLiquidDeepOpacity = RM_UnderLiquid.DefaultDeepOpacity;  // most a clear liquid ever hides
+        public static float underLiquidDarken = RM_UnderLiquid.DefaultDarken;            // liquid darkened under what it covers
+        public static float pitThingShadowAlpha = RM_UnderLiquid.DefaultThingShadowAlpha; // a thing's floor shadow in a pit
         public static bool pitWalkNormalEnabled = true;            // walking along a pit floor is normal; only climbing is slow (item 9)
         // Liquids that may fill a cut (item 4): a FluidDef named here is refused by every fill (pump, drill, debug,
         // review map). Default empty = every liquid on. Labels come from the FluidDefs, so a new liquid appears itself.
@@ -695,6 +700,10 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref liquidBubbleDensity, "liquidBubbleDensity", 1f);
             Scribe_Values.Look(ref liquidSeeThroughEnabled, "liquidSeeThroughEnabled", true);
             Scribe_Values.Look(ref pitSubmergeCutEnabled, "pitSubmergeCutEnabled", true);
+            Scribe_Values.Look(ref underLiquidDeepOpacity, "underLiquidDeepOpacity", RM_UnderLiquid.DefaultDeepOpacity);
+            Scribe_Values.Look(ref underLiquidDarken, "underLiquidDarken", RM_UnderLiquid.DefaultDarken);
+            Scribe_Values.Look(ref pitThingShadowAlpha, "pitThingShadowAlpha", RM_UnderLiquid.DefaultThingShadowAlpha);
+            PushUnderLiquid();
             Scribe_Values.Look(ref pitWalkNormalEnabled, "pitWalkNormalEnabled", true);
             Scribe_Collections.Look(ref disabledFluids, "disabledFluids", LookMode.Value);
             if (Scribe.mode == LoadSaveMode.PostLoadInit && disabledFluids == null)
@@ -806,6 +815,7 @@ namespace RimMandrake.FlowWorks
             .Declare("excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled")
             .Declare("pitScorchEnabled", "pitScorchFadeDays")
             .Declare("liquidBubblesEnabled", "liquidBubbleDensity")
+            .Declare("pitSubmergeCutEnabled", "underLiquidDeepOpacity", "underLiquidDarken", "pitThingShadowAlpha")
             .Declare("trapTriggerEnabled", "trapSensitivityMultiplier")
             .Declare("superdeepRoomsEnabled", "captureDownEnabled", "pitRoomMinDepthMetres")
             .Declare("superdeepShootingRuleEnabled", "shootingCliffMetres")
@@ -1848,7 +1858,7 @@ namespace RimMandrake.FlowWorks
 
             }
 
-            if (Section(list, "How cuts and liquids look", new[] { "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "pitSubmergeCutEnabled" }))
+            if (Section(list, "How cuts and liquids look", new[] { "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "pitSubmergeCutEnabled", "underLiquidDeepOpacity", "underLiquidDarken", "pitThingShadowAlpha" }))
             {
             list.CheckboxLabeled("Pawns sink into dug channels and rise out of them", ref pitDepthDrawOffsetEnabled,
                 "A pawn standing in a dug square is drawn lower the deeper the square, and rises smoothly as it "
@@ -1941,6 +1951,18 @@ namespace RimMandrake.FlowWorks
               + "liquid are drawn as they are above its surface and seen through it below, fainter the deeper "
               + "(clear liquids) or hidden (tar, oil, blood). A hung ladder meets the liquid where its wall does. "
               + "Drawing only. Off: they draw whole over the liquid.");
+            using (Dependent(list, "underLiquidDeepOpacity", "underLiquidDarken", "pitThingShadowAlpha"))
+            {
+                list.Label("Most a clear liquid hides, however deep: " + underLiquidDeepOpacity.ToStringPercent()
+                    + " (shipped " + RM_UnderLiquid.DefaultDeepOpacity.ToStringPercent() + ")");
+                underLiquidDeepOpacity = Mathf.Round(list.Slider(underLiquidDeepOpacity, 0.1f, 1f) * 20f) / 20f;
+                list.Label("Liquid darkened over what it covers: " + underLiquidDarken.ToStringPercent()
+                    + " (shipped " + RM_UnderLiquid.DefaultDarken.ToStringPercent() + ")");
+                underLiquidDarken = Mathf.Round(list.Slider(underLiquidDarken, 0f, 0.8f) * 20f) / 20f;
+                list.Label("Shadow of a thing standing in a pit, on its floor: " + pitThingShadowAlpha.ToStringPercent()
+                    + " (shipped " + RM_UnderLiquid.DefaultThingShadowAlpha.ToStringPercent() + ")");
+                pitThingShadowAlpha = Mathf.Round(list.Slider(pitThingShadowAlpha, 0f, 0.8f) * 20f) / 20f;
+            }
             }
 
             if (Section(list, "Bottles, buckets, barrels: fill, use, wash", new[] { "bottleLoopEnabled", "bottleDirtyStageEnabled", "bottleRevertEnabled" }))
@@ -2126,7 +2148,15 @@ namespace RimMandrake.FlowWorks
         private static float appliedRoomMin = -1f;
         private static bool appliedHollow, appliedClimb, appliedRamps, appliedRooms, appliedWalls, appliedMat, appliedOutline,
             appliedScorch, appliedLooks, appliedSee, appliedPortable, appliedSubmerge;
-        private static float appliedClimbMul;
+        private static float appliedClimbMul, appliedDeepOpacity, appliedDarken, appliedThingShadow;
+
+        /// <summary>RM_UnderLiquid is Verse-free (the SelfTest compiles it): the law's setting numbers are pushed into it.</summary>
+        public static void PushUnderLiquid()
+        {
+            RM_UnderLiquid.DeepOpacity = underLiquidDeepOpacity;
+            RM_UnderLiquid.Darken = underLiquidDarken;
+            RM_UnderLiquid.ThingShadowAlpha = pitThingShadowAlpha;
+        }
         private static int appliedRampSpan, appliedPortableReach;
 
         private static void ApplyChangedSettings()
@@ -2157,7 +2187,14 @@ namespace RimMandrake.FlowWorks
                 {
                     SectionLayer_RMExcavationWalls.RedrawAll();
                 }
-                if (appliedSubmerge != pitSubmergeCutEnabled && Current.Game != null)
+                PushUnderLiquid();
+                bool lawMoved = appliedDeepOpacity != underLiquidDeepOpacity || appliedDarken != underLiquidDarken
+                    || appliedThingShadow != pitThingShadowAlpha;
+                if (lawMoved)
+                {
+                    SectionLayer_RMExcavationWalls.RedrawAll();
+                }
+                if ((appliedSubmerge != pitSubmergeCutEnabled || lawMoved) && Current.Game != null)
                 {
                     foreach (Map m in Find.Maps)
                     {
@@ -2187,6 +2224,9 @@ namespace RimMandrake.FlowWorks
             appliedLooks = liquidLooksEnabled;
             appliedSee = liquidSeeThroughEnabled;
             appliedSubmerge = pitSubmergeCutEnabled;
+            appliedDeepOpacity = underLiquidDeepOpacity;
+            appliedDarken = underLiquidDarken;
+            appliedThingShadow = pitThingShadowAlpha;
         }
     }
 

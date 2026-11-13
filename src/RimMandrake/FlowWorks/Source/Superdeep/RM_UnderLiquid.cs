@@ -21,7 +21,13 @@ namespace RimMandrake.FlowWorks
 	/// lerp(liquid, thing, Seen)), in up to <see cref="Bands"/> bands by depth. The pit's own shade is the walls' (from the
 	/// full wall depth, inside the outline only) and is seen through the liquid by the same law (owner 2026-11-12: "it should
 	/// simply be transparent to them as usual. It's much more that they're only inside the pit").
-	/// Verse-free: SelfTest SubmergeDrawChecks runs this.
+	/// Retuned for RIMMANDRAKE_TUNE_WATER_CLARITY_DARKER_AND_HALF_AS_OPAQUE (owner 2026-11-12, 6:12 PM: "it becomes about
+	/// twice too opaque as it should by the end. Its color should also be darkened"): a clear liquid's opacity is capped at
+	/// <see cref="DeepOpacity"/> and the liquid under what it covers is darkened by <see cref="Darken"/>. Extended for
+	/// RIMMANDRAKE_FIX_BIG_PIT_SCENE_BUILDINGS_STAY_DRY: installed buildings by their cover (<see cref="BuildingMetres"/>),
+	/// pawns and corpses, one floor shadow (<see cref="ThingShadow"/>) and labels (<see cref="LabelAlpha"/>).
+	/// The offline twin is model/underliquid.py; selftest_flowworks_underliquid_parity.py keeps the two equal.
+	/// Verse-free: SelfTest SubmergeDrawChecks and UnderLiquidParityChecks run this.
 	/// </summary>
 	public static class RM_UnderLiquid
 	{
@@ -36,6 +42,63 @@ namespace RimMandrake.FlowWorks
 		public const float MinifiedMetres = 0.75f;
 		public const float SwaleMetres = 0.05f;
 		public const float LyingLadderMetres = 0.1f;
+		public const float CorpseMetres = 0.3f;
+
+		/// <summary>An installed building stands max(<see cref="MinThingMetres"/>, fillPercent x this) tall: a full-cover
+		/// building (fillPercent 1) is this tall, a 0.4-fill bed or table 0.8 m.</summary>
+		public const float FullCoverMetres = 2.0f;
+		public const float MinThingMetres = 0.3f;
+
+		public static float BuildingMetres(float fillPercent)
+		{
+			float h = fillPercent * FullCoverMetres;
+			return h > MinThingMetres ? h : MinThingMetres;
+		}
+
+		// the experience numbers; Mod Settings write them (RimMandrakeFlowWorksSettings.PushUnderLiquid), these are the
+		// shipped defaults
+		public const float DefaultDeepOpacity = 0.5f;
+		public const float DefaultDarken = 0.25f;
+		public const float DefaultThingShadowAlpha = 0.30f;
+
+		/// <summary>The most a clear liquid ever hides, however deep (setting underLiquidDeepOpacity).</summary>
+		public static float DeepOpacity = DefaultDeepOpacity;
+
+		/// <summary>How much darker the liquid shows under what it covers (setting underLiquidDarken).</summary>
+		public static float Darken = DefaultDarken;
+
+		/// <summary>The floor shadow of a thing standing in a pit, dry (setting pitThingShadowAlpha).</summary>
+		public static float ThingShadowAlpha = DefaultThingShadowAlpha;
+
+		/// <summary>A label (quality, stack count, owner) is hidden once its thing is seen less than this.</summary>
+		public const float LabelHidden = 0.05f;
+
+		/// <summary>A clear liquid's colour where it covers a pawn or corpse (before <see cref="Darken"/> and the liquid's
+		/// seeThroughTint); an opaque liquid covers with its own tint.</summary>
+		public static readonly Float3 WaterBody = new Float3(0.20f, 0.32f, 0.43f);
+
+		public struct Float3
+		{
+			public readonly float r, g, b;
+
+			public Float3(float r, float g, float b)
+			{
+				this.r = r;
+				this.g = g;
+				this.b = b;
+			}
+		}
+
+		/// <summary>The one floor shadow of a thing standing in a pit (owner 2026-11-12: shadows only inside the pit, "it
+		/// should simply be transparent to them as usual"): it lies on the floor, <paramref name="levelMetres"/> under.</summary>
+		public static float ThingShadow(float clarity, float levelMetres) => ThingShadowAlpha * Seen(clarity, levelMetres);
+
+		/// <summary>A thing's label fades with its top (<paramref name="heightMetres"/> up from the floor); 0 = hidden.</summary>
+		public static float LabelAlpha(float clarity, float levelMetres, float heightMetres)
+		{
+			float a = Seen(clarity, levelMetres - heightMetres);
+			return a < LabelHidden ? 0f : a;
+		}
 
 		/// <summary>A gate stands on the channel floor and its head clears the bank by one notch.</summary>
 		public static float GateMetres(int depthNotches) => (depthNotches + 1) * Notch;
@@ -45,8 +108,8 @@ namespace RimMandrake.FlowWorks
 
 		public static float Clamp01(float v) => v <= 0f ? 0f : (v >= 1f ? 1f : v);
 
-		/// <summary>The one see-through law: 1 above the line; else clarity ^ (metres over + SurfaceMetres); 0 for an opaque
-		/// liquid.</summary>
+		/// <summary>The one see-through law: 1 above the line; 0 for an opaque liquid; else
+		/// 1 - DeepOpacity x (1 - clarity ^ (metres over + SurfaceMetres)).</summary>
 		public static float Seen(float clarity, float metresOver)
 		{
 			if (metresOver <= 0f)
@@ -61,7 +124,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return 1f;
 			}
-			return (float)System.Math.Pow(clarity, metresOver + SurfaceMetres);
+			return 1f - DeepOpacity * (1f - (float)System.Math.Pow(clarity, metresOver + SurfaceMetres));
 		}
 
 		/// <summary>The one cut: the share of a thing standing <paramref name="baseMetres"/> above the floor and

@@ -464,7 +464,11 @@ namespace RimMandrake.FlowWorks
 		/// drowned band of the far wall and the drowned strips of the side walls, each lit as the dry pit's, so the pit's own
 		/// shade (its dark foot and west strip) stays inside the outline and is seen through clear liquid as usual (owner:
 		/// "it should simply be transparent to them as usual"). Opaque liquids (clarity 0: tar, oil, blood) draw nothing
-		/// here. No colour wash: the liquid terrain under the alpha is the tint, the same for walls and things.</summary>
+		/// here. RIMMANDRAKE_TUNE_WATER_CLARITY_DARKER_AND_HALF_AS_OPAQUE (owner 2026-11-12, 6:12 PM: "pits are quite dark
+		/// when dry, then suddenly become light for some reason with just a little water ... Keep them darker"): the floor is
+		/// drawn in the DRY pit's own ground (RM_ExcavationDepth.DryTerrainFor, the dark channel floor), never the light
+		/// ground the pit was dug from; and the liquid under it is darkened by RM_UnderLiquid.Darken (a black wash over the
+		/// cell, under the floor and everything in the pit: "Its color should also be darkened").</summary>
 		private void SeeThrough(Map map, RM_MapComponent_Excavation eng, IntVec3 c, int d, float lv, int north, int west, int east, float y)
 		{
 			float clarity = RM_SubmergeDraw.ClarityAt(map, eng, c);
@@ -473,10 +477,11 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			float levelM = lv * RM_UnderLiquid.Notch;
-			TerrainDef ground = eng.OriginalTerrainAt(c);
-			if (ground == null || ground.IsWater)
+			TerrainDef floor = RM_ExcavationDepth.DryTerrainFor((byte)Mathf.Clamp(d, RM_ExcavationDepth.Shallow, 255)) ?? TerrainDefOf.Soil;
+			byte dark = Alpha(RM_UnderLiquid.Darken);
+			if (dark > 0)
 			{
-				ground = TerrainDefOf.Soil;
+				QuadVMat(WashMat, c.x, c.z, 1f, 1f, y - 0.0001f, new Color32(0, 0, 0, dark), new Color32(0, 0, 0, dark));
 			}
 			float hFull = RM_UnderLiquid.NorthFace(RM_UnderLiquid.Exposed(d, north, 0f));
 			float hDry = RM_UnderLiquid.NorthFace(RM_UnderLiquid.Exposed(d, north, lv));
@@ -485,7 +490,7 @@ namespace RimMandrake.FlowWorks
 			// the floor between the side walls' full feet (the strips below draw over their own width, not twice)
 			float wW = RM_UnderLiquid.SideFace(RM_UnderLiquid.Exposed(d, west, 0f));
 			float wE = RM_UnderLiquid.SideFace(RM_UnderLiquid.Exposed(d, east, 0f));
-			Quad(RM_FaceMaterial.FaceMat(ground), c.x + wW, c.z, 1f - wW - wE, floorTop, y, SeenTint(fa), SeenTint(fa), UvWorld);
+			Quad(RM_FaceMaterial.FaceMat(floor), c.x + wW, c.z, 1f - wW - wE, floorTop, y, SeenTint(fa), SeenTint(fa), UvWorld);
 			// the drowned band of the far wall, foot (levelM under) to its waterline (0 under), or to its rim if it is drowned
 			// whole; banded so the fade follows the law, not a straight ramp
 			float drowned = hFull - hDry;
@@ -538,6 +543,13 @@ namespace RimMandrake.FlowWorks
 					new Color32(255, 248, 232, (byte)(lit * q)));
 			}
 		}
+
+		private static Material washMat;
+
+		/// <summary>The darkening wash: plain vertex colour, queued just before the faces' queue so it lies under the floor
+		/// and walls drawn through the liquid, not over them.</summary>
+		private static Material WashMat => washMat ?? (washMat = new Material(MaterialPool.MatFrom(new MaterialRequest(BaseContent.WhiteTex,
+			ShaderDatabase.VertexColor))) { renderQueue = RM_FaceMaterial.FaceQueue - 1 });
 
 		private static byte Alpha(float a) => (byte)(255f * RM_UnderLiquid.Clamp01(a) + 0.5f);
 
