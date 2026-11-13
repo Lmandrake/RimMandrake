@@ -12,6 +12,7 @@
 - 2026-11-02: "they should explain the connectivity if power between the actual conduits and devices and the visual appearance of the wires. But the wires are allowed to get there through a much more circuitous route as overly long extension cables do."
 - 2026-11-05, on the root: "Restate Honest: Faithfully represents connectivity but not precise conduit path. For the shock, needs one more line on how a Pawn ever fixes a sparking line: if they approach intending to fix it, they are safe. If they incidentally go over the sparking end with a different job, they (or anyone else) gets shocked."
 - 2026-11-05, on Modern junctions: "The right power strip is better for modern look. Junctions work better for industrial."
+- 2026-11-06, on floor-cord ends: "Every sparking end shocks, but settable in settings to those three options: None, only downed lines, or all."
 
 ## does
 - [leaf:conduit_invisible] Conduit, plain or waterproof, draws no pipe; only the loose cords show where power goes, and the power overlay still works. OWNER:1793590546413059482
@@ -22,18 +23,20 @@
 - [leaf:cords_never_repeat] Cords of the same length do not repeat one shape across a room. OWNER:1793596860187785113
 - [leaf:drawing_true_to_grid] The cords tell the truth about the grid: no cord joins two nets, no phantom second cable at an adjacent-fed pump, no plug in a pipe slot; a cord reaches a building with a pipe port on a diagonal, sliding under it. OWNER:1793895896496551063, OWNER:1792764476096951152
 - [leaf:cut_live_and_dead_ends] A cut leaves two ends and no cord across the gap; an end sparks only while it still reaches a power source, so both spark if each side has its own. An end cut off from all power that sparks is wrong, and so is a powered end drawn limp. OWNER:1793895896496551063
+- [leaf:floor_end_shocks_crossers] A sparking floor-cord end shocks anyone crossing that cell on another job; the constructor rebuilding that conduit is safe, and the dead end and the rest of the cord harm no one. OWNER:1793996551266756043
 - [leaf:no_stall_on_rewire] Placing, cutting or digging past a wire, or a mast falling, costs at most 20 ms a frame on a 2000-cell base. OWNER:1792999698321800383
-- [leaf:spans_above_everything] Sagging overhead lines between masts draw above pawns and buildings. OWNER:1793590546413059482
+- [leaf:spans_above_everything] Sagging overhead lines between masts, lamp masts and brackets draw above pawns and buildings. OWNER:1793590546413059482
 - [leaf:fallen_span_on_ground] A killed mast or a cut span leaves the wire lying on the ground, live end and dead end distinct
-- [leaf:fallen_wire_shocks_crossers] A live fallen wire shocks anyone crossing it on another job; the colonist coming to re-string it is safe. OWNER:1793895896496551063
+- [leaf:fallen_wire_shocks_crossers] A live fallen wire shocks anyone crossing it on another job, a colonist re-stringing a different span included; the colonist coming to re-string that wire is safe. OWNER:1793895896496551063
+- [leaf:shock_reach_setting] One shock setting, None, Only downed lines or All, default All, taking effect without a restart. OWNER:1793996551266756043
 - [leaf:live_wire_lights_fuel] Spilled fuel under a live sparking end catches fire; under a dead wire it does not
-- [leaf:restring_cut_span] A Wire down alert points at the cut, and a colonist re-strings it as a job. OWNER:1792080489684076824
+- [leaf:restring_cut_span] A Wire down alert lists every cut or grounded wire and jumps to it, and a colonist re-strings it as a job. OWNER:1792080489684076824
 - [leaf:tap_steals_and_costs_goodwill] A tap clamped on a neighbour's line steals their power; if they see it, goodwill drains steadily. OWNER:1791668362056240097
 - [leaf:four_looks_one_run] Four looks told apart by eye, one look per connected run. OWNER:1793590546413059482
-- [leaf:settings_switch_cleanly] Every switch really switches, master off restores vanilla art without a restart, and pipe poles have their own switch. OWNER:1792636779179768957
+- [leaf:settings_switch_cleanly] Every switch really switches and owns its patches, master off restores vanilla conduit and lamp art without a restart, and pipe poles have their own switch that leaves power poles alone. OWNER:1792636779179768957
 - [leaf:gravship_keeps_connections] After a gravship lands, its cords still explain its real connections. OWNER:1793597165476278817
 - [leaf:owner_change_coils_wires] A pole claimed by another faction has its wires to our poles taken down and coiled, with a message; it has its own switch
-- [leaf:statics_clear_between_games] Nothing of one game, no tap and no style pick, carries into the next game started in the same session
+- [leaf:statics_clear_between_games] Nothing of one game, no tap and no style pick, carries into the next game started or loaded in the same session
 - [leaf:no_hose_in_gss] No hose, reel or pipe is drawn by this mod. OWNER:1791668361069985398
 - [leaf:cord_shape_variation_probe] A shape-distance read between cords, so no-repeat can be measured
 - [leaf:walk_scavenger_base] A week of play on the full list with a cut, a re-string, a mid-way reload, a repeat and a second order
@@ -56,6 +59,7 @@
 - No-repeat is judged by a shape-distance number with a judge agent predicting your eye, since only your eye had judged it
 - Showcase 2 is the yard of masts, the most new ground after the workshop floor; theft, the four looks, Mod Settings, the gravship, owner-change wire cutting and new-game cleanup are each checked by their own acceptance scene with a control
 - The lone-rebuild bar is 20 ms a frame, the floor's own tick ceiling
+- Under your 2026-11-06 answer: any live loose end counts, also a run you stopped laying; only the end cell bites; safe means building the conduit that joins this end; the fuel-ignition switch is not widened; an end bites only while it is drawn live, and turning overhead lines off does not silence floor ends
 
 ## pruning
 - conduit_invisible: his words, little drawn wires over otherwise-invisible conduits, north star conduit_reads_invisible
@@ -77,6 +81,8 @@
 - gravship_keeps_connections: his words OWNER:1793597165476278817
 - live_wire_lights_fuel: built part of the shock he opened, OWNER:1793895896496551063; its chemfuel half passed once
 - owner_change_coils_wires: built and shipping with its own switch; standing ruling, superb Mod Settings
+- floor_end_shocks_crossers: his answer OWNER:1793996551266756043, every sparking end shocks
+- shock_reach_setting: his answer OWNER:1793996551266756043, None, only downed lines, or all
 - statics_clear_between_games: built fix GSS_STATICS_FIX_OUTLIVE_THE_SAVE; an old game's tap draining a new game's goodwill would be a lie
 - no_hose_in_gss: his words OWNER:1791668361069985398
 - walk_scavenger_base: the mod's one walk leaf, required of every mod

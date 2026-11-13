@@ -217,11 +217,11 @@
    "entry_point": "src/RimMandrake/GimmeSomeSlack/validation.py::scene_spans",
    "entry_point_item": "GSS_SCENES_BUILD_EVERY_CORD_A_FOIL",
    "start": [
-    "quicktest colony, two masts and a wall bracket across a shed and a walkway, powered (asserted one PowerNet)",
+    "quicktest colony, two masts, a lamp mast and a wall bracket across a shed and a walkway, powered (asserted one PowerNet)",
     "a colonist ordered to walk under the span"
    ],
    "action": "capture with the colonist under; attempt an out-of-range, a hostile and a non-anchor link",
-   "expect": "the span's draw altitude reads above both the Pawn and Building altitude layers, sag above zero; the three bad links refused with their reasons",
+   "expect": "the span's draw altitude reads above both the Pawn and Building altitude layers, sag above zero; the lamp mast's span joins the same PowerNet and its lamp reads lit; the three bad links refused with their reasons",
    "control": {
     "case": "a span the probe redraws at Pawn altitude under the same colonist (debug layer override)",
     "expect": "the altitude read fails it by name",
@@ -263,15 +263,62 @@
    "entry_point": "src/RimMandrake/GimmeSomeSlack/validation.py::scene_shock",
    "entry_point_item": "GSS_SCENES_BUILD_EVERY_CORD_A_FOIL",
    "start": [
-    "quicktest colony, a live fallen wire across a hauling path (asserted live)",
-    "a hauler, a visitor and a colonist assigned to re-string"
+    "quicktest colony, a live fallen wire across a hauling path (asserted live), and a second cut span elsewhere (asserted cut)",
+    "a hauler, a visitor, a colonist assigned to re-string this wire, and a colonist assigned to re-string the other span"
    ],
-   "action": "the hauler hauls across; the visitor walks across; the re-stringer takes the job and its path is asserted to cross the sparking end",
-   "expect": "hauler and visitor shocked; the re-stringer not",
+   "action": "the hauler hauls across; the visitor walks across; the re-stringer of this wire takes the job and its path is asserted to cross the sparking end; the re-stringer of the other span is routed so its path is asserted to cross this sparking end",
+   "expect": "hauler, visitor and the other span's re-stringer shocked; this wire's re-stringer not",
    "control": {
     "case": "the same crossings after the wire's source is switched off",
     "expect": "no one shocked",
     "rules_out": "shock damage from another source (fire, a fuel puddle) passing for the wire"
+   },
+   "restore": "restore terrain, walls, conduit, masts and things on the scene rect from the snapshot recorded at scene-begin; put power, factions, goodwill and every poked setting back to its prior value",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_floor_end_shock",
+   "kind": "acceptance",
+   "requirement": [
+    "floor_end_shocks_crossers"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/GimmeSomeSlack/validation.py::scene_floor_end_shock",
+   "entry_point_item": "GSS_SCENES_BUILD_EVERY_CORD_A_FOIL",
+   "start": [
+    "quicktest colony, a workshop floor run fed from one side, powered and lit (asserted), shock reach at its default All (asserted)",
+    "a second, unrelated conduit blueprint placed elsewhere (asserted)",
+    "two haulers, a visitor and two constructors"
+   ],
+   "action": "destroy a middle cell of the run; read both ends live and dead; one hauler crosses the live end cell, one the dead end cell; the visitor crosses the live end; constructor A builds the blueprint for the destroyed cell, its path asserted to cross the live end; constructor B builds the unrelated blueprint, routed so its path is asserted to cross the live end; turn the aerial master off and repeat the live-end haul",
+   "expect": "live-end hauler, visitor and constructor B shocked; the live-end hauler shocked again with the aerial master off; constructor A not shocked and the cell rebuilt; the dead-end hauler not shocked; a crossing of any other cell of the cord shocks no one",
+   "control": {
+    "case": "the same crossings with shock reach set to Only downed lines",
+    "expect": "no one is shocked at the floor end",
+    "rules_out": "shock damage from another source (fire, a fuel puddle, a fallen wire nearby) passing for the floor end; with constructor B shocked under All, it also rules out an exemption keyed on any construction job"
+   },
+   "restore": "restore terrain, walls, conduit, masts and things on the scene rect from the snapshot recorded at scene-begin; put power, factions, goodwill and every poked setting back to its prior value",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_shock_reach",
+   "kind": "acceptance",
+   "requirement": [
+    "shock_reach_setting"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/GimmeSomeSlack/validation.py::scene_shock_reach",
+   "entry_point_item": "GSS_SCENES_BUILD_EVERY_CORD_A_FOIL",
+   "start": [
+    "quicktest colony with a live floor-cord end and a live fallen wire on one map (asserted live)",
+    "a fresh GSS settings file (asserted default)"
+   ],
+   "action": "read the shock reach default; for None, Only downed lines and All in turn, without a restart: a hauler crosses the floor end and another crosses the fallen wire",
+   "expect": "the default reads All; All: both haulers shocked; Only downed lines: only the fallen-wire hauler shocked; None: neither",
+   "control": {
+    "case": "the same three passes with both sources switched off",
+    "expect": "no one is shocked under any value",
+    "rules_out": "the setting appearing to work because shock comes from something other than the live ends"
    },
    "restore": "restore terrain, walls, conduit, masts and things on the scene rect from the snapshot recorded at scene-begin; put power, factions, goodwill and every poked setting back to its prior value",
    "hold": "immediate"
@@ -286,10 +333,10 @@
    "entry_point": "src/RimMandrake/GimmeSomeSlack/validation.py::scene_restring",
    "entry_point_item": "GSS_SCENES_BUILD_EVERY_CORD_A_FOIL",
    "start": [
-    "quicktest colony, a powered span cut (asserted), a colonist free to work"
+    "quicktest colony, a powered span cut (asserted), a second span whose mast is killed so its wire lies grounded (asserted), a colonist free to work"
    ],
-   "action": "read the Wire down alert; let the colonist take RM_RestringSpan; read span, net and alert after; toggle the alert setting off",
-   "expect": "alert lists the anchor; the job runs at that anchor; after it the span exists on one net and the alert is gone; the toggle hides it",
+   "action": "read the Wire down alert; jump to each anchor it lists and read the camera position; let the colonist take RM_RestringSpan on the cut span; read span, net and alert after; toggle the alert setting off",
+   "expect": "alert lists both the cut anchor and the grounded one; each jump centres the camera on the listed anchor's cell; the job runs at the cut anchor; after it the span exists on one net and the alert drops that anchor while still listing the grounded one; the toggle hides it",
    "control": {
     "case": "the cut span with every colonist drafted",
     "expect": "no re-string happens and the alert stays",
@@ -352,11 +399,11 @@
    "entry_point": "src/RimMandrake/GimmeSomeSlack/validation.py::scene_settings",
    "entry_point_item": "GSS_SCENES_BUILD_EVERY_CORD_A_FOIL",
    "start": [
-    "quicktest colony with a powered run, a mast span, a FlowWorks pipe pole (asserted present)",
+    "quicktest colony with a powered run carrying a styled lamp, a mast span, a FlowWorks pipe pole (asserted present)",
     "every GSS setting at its default (asserted)"
    ],
-   "action": "for the master and each feature switch, including keepWiresOnGravship, cutWiresOnOwnerChange, dripLoops and slideUnder: read, flip, read, flip back; flip the pipe-pole switch with the GSS master on and off",
-   "expect": "each feature's observable state changes with its switch and returns on flip-back, no restart: drip loops drawn or not at a mast; slideUnder off makes the dual-port device's cord reach it straight along the axis, on puts it back on the diagonal under it; cutWiresOnOwnerChange and keepWiresOnGravship are observed in sc_owner_change and sc_gravship; pipe poles follow only their own switch",
+   "action": "for the master and each feature switch, including keepWiresOnGravship, cutWiresOnOwnerChange, dripLoops and slideUnder: read, flip, read, flip back; read the styled lamp's graphic under master off and on; list every Harmony patch the mod applies against the switch that owns it; flip the pipe-pole switch with the GSS master on and off, reading the power masts before and after each flip",
+   "expect": "each feature's observable state changes with its switch and returns on flip-back, no restart: drip loops drawn or not at a mast; slideUnder off makes the dual-port device's cord reach it straight along the axis, on puts it back on the diagonal under it; cutWiresOnOwnerChange and keepWiresOnGravship are observed in sc_owner_change and sc_gravship; master off: conduit draws vanilla and the lamp draws its vanilla lamp graphic, master on brings both styled art back, no restart; the patch list maps every applied Harmony patch to exactly one switch, none unmapped; the pipe-pole switch changes pipe poles only, the power masts' spans, sag and link count reading the same before and after",
    "control": {
     "case": "flipping a setting whose patch is unregistered by a debug flag",
     "expect": "the value changes but the feature does not, and the scene fails",
@@ -428,9 +475,9 @@
    "action": "let both work at once",
    "expect": "the hauler is shocked crossing the sparking end; the re-stringer is not; after the re-string power flows and no one is shocked",
    "control": {
-    "case": "the same pair with the re-stringer reassigned to hauling",
+    "case": "the same pair, but the safe colonist's RM_RestringSpan job targets a different cut span, and its path is asserted to cross this wire's sparking end",
     "expect": "both are shocked",
-    "rules_out": "the fixer exemption working only because the two never cross the same cell"
+    "rules_out": "an exemption keyed on the job type (anyone on RM_RestringSpan is safe) instead of on the wire the job targets; the paths asserted to cross also rule out the two never meeting the same cell"
    },
    "restore": "restore terrain, walls, conduit, masts and things on the scene rect from the snapshot recorded at scene-begin; put power, factions, goodwill and every poked setting back to its prior value",
    "hold": "immediate"
@@ -489,16 +536,17 @@
    "entry_point": "src/RimMandrake/GimmeSomeSlack/validation.py::scene_statics_new_game",
    "entry_point_item": "GSS_SCENES_BUILD_EVERY_CORD_A_FOIL",
    "start": [
-    "a quicktest colony with a clamped tap and two styled runs (asserted)"
+    "a quicktest colony with a clamped tap and two styled runs (asserted)",
+    "a save made by the script beforehand from a colony with no tap and no styled run (asserted present)"
    ],
-   "action": "read the tap registry and style picks; start a second quicktest in the same session; read them again",
-   "expect": "game 1 lists the tap and both picks; game 2 starts with both empty",
+   "action": "read the tap registry and style picks; save as game 1; start a second quicktest in the same session; read them again; reload game 1 and read; from game 1, load the tap-free save and read them again",
+   "expect": "game 1 lists the tap and both picks; the new quicktest starts with both empty; the game reached by loading the tap-free save starts with both empty",
    "control": {
-    "case": "the same read in game 1 before the second game starts",
-    "expect": "the registry lists the tap and both picks, so the instrument sees filled state",
-    "rules_out": "a read that is empty because it looks at state the mod never fills"
+    "case": "the same reads in game 1 before the second game starts, and after reloading game 1's own save",
+    "expect": "both list the tap and both picks, so the instrument sees filled state and the load path does fill it",
+    "rules_out": "a read that is empty because it looks at state the mod never fills, on the new-game path or the load path"
    },
-   "restore": "nothing to restore: both games are throwaway quicktests, abandoned at scene-end",
+   "restore": "nothing to restore: every game is a throwaway quicktest or a throwaway save written by the script, abandoned and deleted at scene-end",
    "hold": "immediate"
   },
   {
@@ -527,6 +575,7 @@
     "sc_junction_strips",
     "sc_true_to_grid",
     "sc_cut_ends",
+    "sc_floor_end_shock",
     "sc_rewire_cost"
    ],
    "exercises": [
@@ -535,7 +584,8 @@
     "junction_strips",
     "connectivity_truth",
     "break_ends_live_dead",
-    "rebuild_cost"
+    "rebuild_cost",
+    "floor_end_shock"
    ],
    "source": [
     "OWNER:1793950666234031543"
@@ -630,6 +680,14 @@
     "owner_change_coils_wires"
    ],
    "why": "one faction handover with a switch-off control; no play moment to build a face round"
+  },
+  {
+   "capability": "shock_reach_setting",
+   "by": [
+    "sc_shock_reach",
+    "shock_reach_setting"
+   ],
+   "why": "a three-way switch read across two crossings, not a play moment"
   }
  ]
 }

@@ -1,0 +1,25 @@
+{
+ "against": "rm-coverage-judge-1793955968",
+ "claims": [
+  {
+   "gap": "g1",
+   "evidence": "scenes.json sc_shock (start, action, expect: the other span's re-stringer crosses this end and is shocked) and sc_shock_restring control (safe colonist's RM_RestringSpan targets a different span: both shocked, rules_out job-type exemption); tree.json fallen_wire_shocks_crossers oracle_proposed, false_pass and red now key the exemption on the wire the job targets"
+  },
+  {
+   "gap": "g2",
+   "evidence": "his answer OWNER:1793996551266756043 (record.json s_shock_reach, d_shock_reach_setting); tree.json new leaves floor_end_shocks_crossers and shock_reach_setting; scenes.json sc_floor_end_shock (in showcase workshop_floor, exercising floor_end_shock) and sc_shock_reach (coverage_rest for shock_reach_setting); sheet.md does-list and his words"
+  },
+  {
+   "gap": "g3",
+   "evidence": "scenes.json sc_statics_new_game: a second game reached by loading a tap-free save, with a control that reloading game 1 refills the registry; tree.json statics_clear_between_games scenario, oracle_proposed and false_pass name the load path"
+  },
+  {
+   "gap": "g4",
+   "evidence": "scenes.json sc_settings action and expect name the three reads: vanilla lamp graphic under master off without a restart, every applied Harmony patch mapped to exactly one switch, pipe-pole switch leaving power masts' spans, sag and link count unchanged; tree.json settings_switch_cleanly oracle_proposed and scenario"
+  },
+  {
+   "gap": "g5",
+   "evidence": "scenes.json sc_restring stages a grounded wire (killed mast) beside the cut, reads every listed anchor's jump and the alert dropping only the re-strung anchor; sc_spans stages a lamp mast on the same net with its lamp lit; tree.json restring_cut_span and spans_above_everything scenario and oracle_proposed"
+  }
+ ]
+}

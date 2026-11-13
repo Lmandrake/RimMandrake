@@ -255,6 +255,32 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
+   "oracle_proposed": "shock hediff or damage on the live-end hauler, the visitor and the unrelated constructor, and on the hauler again with the aerial master off; none on the constructor whose job targets the blueprint or frame joining this end; none on the dead-end hauler or a crossing of any other cord cell; every path asserted to cross the cell it is meant to",
+   "tier_reason": "pawn jobs, PowerNet state and shock damage are live behaviour",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "floor_end_shocks_crossers",
+   "root": [
+    "break_live_and_dead_ends_differ"
+   ],
+   "leaf_kind": "experience",
+   "tier_proposed": "quicktest",
+   "experience": "The player, at normal zoom over a workshop floor where a conduit cell was destroyed, sees a colonist hauling over the sparking live end shocked, and a visitor crossing it shocked too; the constructor walking up to rebuild THAT conduit cell is not; a constructor building some other conduit who crosses the sparking end is shocked; a hauler crossing the limp dead end, or anywhere along the cord but the end, is not. Turning off the overhead-lines master leaves floor ends biting. It must not read as the whole cord biting, a dead end that bites, a fixer shocked at the job, or every constructor safe.",
+   "scenario": "A powered floor run fed from one side through a workshop, and a second unrelated conduit blueprint; destroy a middle cell; order a hauler across the live end cell and another across the dead end cell; a visitor walks across the live end; one constructor builds the blueprint for the destroyed cell; another builds the unrelated blueprint and is routed across the live end; repeat the hauler crossing with the aerial master off.",
+   "false_pass": [
+    "the exemption keyed on any construction job instead of the conduit that joins this end",
+    "shock applied along the whole cord, so the end cell passes but harmless cells bite",
+    "floor-end shock gated on the aerial master, so it works only while overhead lines are on"
+   ],
+   "red": "a pawn crossing a live floor-cord end on another job is not shocked, the constructor rebuilding that cell is, or a dead end bites",
+   "owner_part": "yes: one cut on the workshop floor, a hauler shocked at the live end, the rebuilder safe",
+   "by": "concept",
+   "clause_kind": "change"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
    "oracle_proposed": "SliceWindow max slice ms and frame time per action; the touched edge's drawing is current after the action",
    "tier_reason": "frame time is only real in a running game on his machine; the minimal list keeps other mods' cost out",
    "cannot_show": null,
@@ -280,7 +306,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "span altitude layer above pawns and buildings; sag depth above zero; the three bad links refused with their reasons; one PowerNet across the span; captures",
+   "oracle_proposed": "span altitude layer above pawns and buildings; sag depth above zero; the three bad links refused with their reasons; one PowerNet across every span, the lamp mast's included, and its lamp lit; captures",
    "tier_reason": "draw layers and link refusal live in the running game",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -290,7 +316,7 @@
    ],
    "leaf_kind": "experience",
    "experience": "The player, at play zoom over a yard where a sagging line crosses from a mast to a far mast over a wall, a building and a walking colonist, sees the span drawn above all of them, sagging between its anchors. It must not read as a line passing under a pawn or a roof, or a ruler-straight wire.",
-   "scenario": "Two masts and a wall bracket linked across a shed and a walkway; a colonist walks under; out-of-range, hostile and non-anchor links attempted; capture.",
+   "scenario": "Two masts, a lamp mast and a wall bracket linked across a shed and a walkway; a colonist walks under; out-of-range, hostile and non-anchor links attempted; capture.",
    "false_pass": [
     "the span drawn above only because nothing stands under it in the capture"
    ],
@@ -329,7 +355,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "shock hediff or damage on the hauler and the visitor; none on the re-stringer while on RM_RestringSpan; none on the dead-wire haul; the fixer's path is asserted to cross the sparking end",
+   "oracle_proposed": "shock hediff or damage on the hauler, the visitor and the colonist re-stringing the OTHER span; none on the colonist whose RM_RestringSpan job targets this wire; none on the dead-wire haul; every exempt and every shocked path is asserted to cross the sparking end",
    "tier_reason": "pawn jobs and shock damage are live behaviour",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -338,13 +364,14 @@
     "downed_span_lies_on_ground"
    ],
    "leaf_kind": "experience",
-   "experience": "The player sees a colonist hauling across a live fallen wire get shocked, and a visitor crossing it shocked too, while the colonist who walks up to re-string that wire is not; a dead fallen wire shocks no one. It must not read as shocks from thin air, a fixer shocked at the job, or a dead wire that still bites.",
-   "scenario": "A live fallen wire across a hauling path; one colonist hauls across it; a visitor walks across; a second colonist takes the re-string job; then cut power and repeat the haul.",
+   "experience": "The player sees a colonist hauling across a live fallen wire get shocked, and a visitor crossing it shocked too, while the colonist who walks up to re-string THAT wire is not; a colonist on a re-string job for a different span who crosses this sparking end is shocked like anyone else; a dead fallen wire shocks no one. It must not read as shocks from thin air, a fixer shocked at the job, anyone on any re-string job walking through live wire unharmed, or a dead wire that still bites.",
+   "scenario": "A live fallen wire across a hauling path, and a second cut span elsewhere; one colonist hauls across the live wire; a visitor walks across; a second colonist takes the re-string job for this wire; a third takes the re-string job for the other span and is routed across this wire's sparking end; then cut power and repeat the haul.",
    "false_pass": [
     "the fixer exempt because no pawn ever steps on the sparking cell during the test",
-    "every pawn exempt, so no one is shocked and the fixer passes"
+    "every pawn exempt, so no one is shocked and the fixer passes",
+    "the exemption keyed on the job type (anyone on RM_RestringSpan is safe) instead of on the wire the job targets"
    ],
-   "red": "the colonist re-stringing the wire is shocked, or no one crossing a live wire is",
+   "red": "the colonist re-stringing the wire is shocked, a colonist re-stringing a different span walks through this live wire unharmed, or no one crossing a live wire is",
    "tier_proposed": "quicktest",
    "owner_part": "no",
    "by": "concept",
@@ -354,7 +381,31 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "alert lists the anchor; a pawn's job is RM_RestringSpan at that anchor; after it, the span exists, one PowerNet spans it, the alert is gone",
+   "oracle_proposed": "default reads All; per value, shock on the floor-end crossing exactly under All and on the downed-wire crossing under All and Only downed lines; no shock under None; no restart between values",
+   "tier_reason": "the setting's effect is shock damage on live pawns",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "shock_reach_setting",
+   "root": [
+    "break_live_and_dead_ends_differ"
+   ],
+   "leaf_kind": "experience",
+   "tier_proposed": "quicktest",
+   "experience": "The player opens Mod Settings and finds one shock choice with three values, None, Only downed lines and All, set to All on a fresh install. Under All a hauler crossing a live floor end and one crossing a live fallen wire are both shocked; under Only downed lines only the fallen wire bites; under None neither does; the change takes effect without a restart. It must not read as an on/off box, a default other than All, or a choice that needs a restart.",
+   "scenario": "A live floor-cord end and a live fallen wire on one map; for each of the three values, a hauler crosses each; read the default on a fresh settings file.",
+   "false_pass": [
+    "the old on/off fallenWireShock kept and the third value wired to it, so Only downed lines and All behave alike"
+   ],
+   "red": "Only downed lines still shocks at a floor end, None still shocks, or the default is not All",
+   "by": "concept",
+   "clause_kind": "change",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "alert lists both the cut anchor and the grounded one; its jump puts the camera on the listed anchor; a pawn's job is RM_RestringSpan at that anchor; after it, the span exists, one PowerNet spans it, and the alert drops that anchor; the toggle hides it",
    "tier_reason": "the job and the alert are live",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -364,7 +415,7 @@
    ],
    "leaf_kind": "experience",
    "experience": "The player sees a Wire down alert listing the cut anchor, jumps to it, and a colonist goes there on a re-string job and strings the span back up; power flows again and the alert clears. It must not read as a span that heals itself with no colonist, or an alert that stays after the fix.",
-   "scenario": "Cut a powered span; read the alert; let a colonist take RM_RestringSpan; read the span, the net and the alert after; toggle the alert setting off and confirm it hides.",
+   "scenario": "Cut a powered span; kill a second span's mast so its wire is grounded; read the alert; jump to each listed anchor; let a colonist take RM_RestringSpan; read the span, the net and the alert after; toggle the alert setting off and confirm it hides.",
    "false_pass": [
     "the span restored by the test calling the link directly"
    ],
@@ -453,7 +504,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "per switch: the feature's observable state differs between off and on and returns on flip-back; every Harmony patch maps to one switch; captures for the master",
+   "oracle_proposed": "per switch: the feature's observable state differs between off and on and returns on flip-back; master off: conduit draws vanilla AND a lamp on a styled run draws its vanilla lamp graphic, both without a restart, and both return on master on; a read of every Harmony patch the mod applies maps each one to exactly one switch, none unmapped; pipe-pole switch off: pipe poles change while the power masts' spans, sag and link count read unchanged; captures for the master",
    "tier_reason": "patches and drawing are live",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -463,7 +514,7 @@
    ],
    "leaf_kind": "experience",
    "experience": "The player flips the master switch off and sees vanilla conduit and lamp art come back without a restart; flips each feature switch, including keep wires on gravship, cut wires on owner change, drip loops and slide under, and sees just that feature change; the FlowWorks pipe-pole switch moves pipe poles and leaves power poles alone. It must not read as a switch that does nothing, or one that needs a restart.",
-   "scenario": "For the master and each feature switch: read the feature's state, flip it, read again, flip back; pipe-pole switch flipped with GSS master both on and off.",
+   "scenario": "For the master and each feature switch: read the feature's state, flip it, read again, flip back; read lamp art on a styled run under master off and on; list every applied Harmony patch against its switch; pipe-pole switch flipped with GSS master both on and off, power masts read before and after each flip.",
    "false_pass": [
     "the setting value changes while the patch stays applied"
    ],
@@ -526,7 +577,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "in game 1 the tap registry lists the tap and the style picks list both runs; in game 2, at start, both are empty",
+   "oracle_proposed": "in game 1 the tap registry lists the tap and the style picks list both runs; in a new game and in a game reached by loading a tap-free save, at start, both are empty; loading game 1's own save brings its tap and picks back",
    "tier_reason": "static state across two games exists only in a running session",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -540,9 +591,10 @@
     "overhead_span_above_everything"
    ],
    "experience": "The player who quits one game and starts or loads another in the same session sees nothing of the first carried over: no tap from the old game is still registered and draining goodwill, and runs take fresh looks rather than the old game's picks. It must not read as an old game's theft or styles haunting a new one.",
-   "scenario": "A quicktest colony with a clamped tap and two styled runs; read the tap registry and style picks; start a second quicktest in the same session and read them again.",
+   "scenario": "A quicktest colony with a clamped tap and two styled runs, saved; read the tap registry and style picks; start a second quicktest in the same session and read them again; then, from the filled first game, load a save that holds no tap and no styled run and read them again.",
    "false_pass": [
-    "the read in the second game looks at a fresh instance the mod never fills, so it is empty whether or not the old state was cleared"
+    "the read in the second game looks at a fresh instance the mod never fills, so it is empty whether or not the old state was cleared",
+    "only a new game tested, so the load path, which initialises differently, keeps the old game's tap"
    ],
    "red": "a tap from the first game is still in the registry in the second game, or the second game's runs reuse the first game's style picks"
   },

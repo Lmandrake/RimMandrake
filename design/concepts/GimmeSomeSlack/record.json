@@ -778,13 +778,14 @@
    "id": "coverage_gaps_for_stage_3",
    "source": [
     "design/concepts/GimmeSomeSlack/coverage_verdict.json",
-    "OWNER:1793996551266756043"
+    "OWNER:1793996551266756043",
+    "design/concepts/GimmeSomeSlack/coverage_fixes.json"
    ],
    "text": "The stage-5 coverage judge left five gaps; gap 2 needed his word and has it. All five are now stage-3 writing.",
    "core": true,
    "resolved": true,
-   "resolved_by": "rm-role-designer-1793997316",
-   "resolution": "Stage 3 writes: gap 2, a leaf and scene for floor_end_shock on cut_live_and_dead_ends (crosser on another job shocked, the constructor joining that end safe, a constructor on another job shocked) and shock_reach_setting (all three values, each with a floor end and a downed wire). Gap 1, control: a colonist on RM_RestringSpan for ANOTHER span crosses this sparking end and is shocked. Gap 3, reach a second game by loading a save in sc_statics_new_game. Gap 4, sc_settings names three observations: master off restores vanilla lamp art without a restart, every Harmony patch maps to one switch, the pipe-pole switch leaves power poles alone. Gap 5, sc_restring checks the alert's jump-to and a grounded wire (killed mast); sc_spans stages a lamp mast."
+   "resolved_by": "rm-role-designer-1794593995",
+   "resolution": "Stage 3 run rm-role-designer-1794593995 wrote all five fixes; claims in coverage_fixes.json against rm-coverage-judge-1793955968."
   }
  ],
  "built_reviewed": [

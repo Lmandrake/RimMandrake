@@ -11,6 +11,13 @@ work, nothing new.
    the Modern family poses the PowerStrip art at every 3- and 4-way `NodeType.Junction`, each arm ending in a socket; a
    3-way takes two cords plus the strip's own lead. Industrial keeps Junction_T/X; Scrapper and Futuristic unchanged.
    `CordAudit.cs` arm alignment must cover blob junctions too. Leaf `strip_at_every_junction`.
+2. **Every sparking end shocks, floor-cord ends included, behind one three-way setting** (d_shock_reach_setting,
+   OWNER:1793996551266756043; agent detail d_shock_reach_agent_detail). Today `RM_FallenWireShock.cs` builds its contact set
+   from downed spans only, and `RebuildContacts` returns early when `AerialSettings.enabled` is off. Add the live
+   `Terminal` end cells CordBuilder draws as contacts (the end cell only), exempt the pawn whose construction job targets the
+   blueprint or frame joining that end, and replace the on/off `fallenWireShock` with None / Only downed lines / All, default
+   All, so floor ends bite with the aerial master off. The re-string exemption keys on the span the job targets, never on the
+   job type. Leaves `floor_end_shocks_crossers`, `shock_reach_setting`, `fallen_wire_shocks_crossers`.
 
 ## Order
 
@@ -47,12 +54,16 @@ work, nothing new.
 
 - The fixer exemption passes vacuously if the re-stringer's path never crosses the sparking cell: `sc_shock` asserts the
   crossing.
+- An exemption keyed on the job type (any re-stringer, any constructor) passes a scene that only uses the assigned fixer:
+  `sc_shock`, `sc_shock_restring` and `sc_floor_end_shock` each route a pawn on the same job type for a different target
+  across the live end and expect a shock.
+- The load path initialises statics differently from a new game: `sc_statics_new_game` reaches a game both ways.
 - A connectivity read on the conduit graph would pass a lying drawing: `sc_true_to_grid` reads the drawn cords.
 - Gravship flight on a quicktest is unreliable: `sc_gravship` is live_minimal.
 
 ## Showcases
 
-`workshop_floor` (6 new) and `yard_of_masts` (5 new), overlap 0; the rest by their own scenes (`coverage_rest`). Showcase 1
+`workshop_floor` (7 new, floor-end shock added) and `yard_of_masts` (5 new), overlap 0; the rest by their own scenes (`coverage_rest`). Showcase 1
 is the workshop floor, his pick by card 2026-11-05 (`d_flagship`, OWNER:1793950666234031543).
 
 ## Exam notes
@@ -63,3 +74,9 @@ is the workshop floor, his pick by card 2026-11-05 (`d_flagship`, OWNER:17939506
   `sc_cut_ends` adds a far-side battery run. The next exam's control removes a leaf nothing else backs up
   (`statics_clear_between_games` or `cut_live_and_dead_ends`), not `drawing_true_to_grid`, which his 2026-10-23 words and
   the walk's red also cover.
+
+## Entry points added 2026-11-13 (coverage gaps)
+
+`scene_floor_end_shock` and `scene_shock_reach` in `src/RimMandrake/GimmeSomeSlack/validation.py`, plus the widened
+`scene_shock`, `scene_shock_restring` control, `scene_statics_new_game` load path, `scene_settings` lamp/patch-map/power-pole
+reads, `scene_restring` grounded and jump-to reads and `scene_spans` lamp mast, all under `GSS_SCENES_BUILD_EVERY_CORD_A_FOIL`.
