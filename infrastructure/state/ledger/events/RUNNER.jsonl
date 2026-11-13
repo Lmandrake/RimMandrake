@@ -6443,3 +6443,4 @@
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_DISPATCHER","result":"broken","detail":"dispatcher last ran 25 min ago (limit 15 min)","ts":"2026-11-13T00:03:13Z","tsn":1794528193718905508}
 {"seat":"RUNNER","event":"raise","id":"LIVE_RESTORE_DISPATCHER","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-13T00:03:27Z","tsn":1794528207127097585}
 {"seat":"RUNNER","event":"note","id":"STEVE_LANE_UNSTICK_BRAKED_UNOWNED_2938","text":"steward-watch: SteveDesktop lane STALE_HEARTBEAT: steward.json not written for 655 s (the tick or the steward stopped); restarting testq-tick.timer did not bring it back again since 2026-11-12T23:58:27Z, 10 min unowned","ts":"2026-11-13T00:03:33Z","tsn":1794528213807016930}
+{"seat":"RUNNER","event":"note","id":"STEVE_LANE_UNSTICK_BRAKED_UNOWNED_2938","text":"steward-watch: the steward is writing again (stale 21 min)","ts":"2026-11-13T00:31:09Z","tsn":1794529869782844210}
