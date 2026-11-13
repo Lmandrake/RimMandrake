@@ -1,0 +1,1 @@
+Conductor 2026-11-13: stopping a detached helper's systemd scope by hand leaves its record 'running' in detached_helper.py status forever; run 'detached_helper.py finish --unit <unit>' after any manual stop so the run is marked, bundled and logged.
