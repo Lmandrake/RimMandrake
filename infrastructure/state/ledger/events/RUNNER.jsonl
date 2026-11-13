@@ -6719,3 +6719,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_STEVE_SEATS_RESTORE_QTWK","result":"broken","detail":"Ops alarm STEVE_SEATS: seat-server absent -- steve.seats_absent_min = 14.9 min a Steve seat has been absent (MEASURED), line > 10","ts":"2026-11-13T13:12:28Z","tsn":1794575548424655204}
 {"seat":"RUNNER","event":"raise","id":"OPS_STEVE_SEATS_RESTORE_QTWK","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-13T13:12:34Z","tsn":1794575554256495414}
 {"seat":"RUNNER","event":"live","id":"OPS_STEVE_SEATS_RESTORE_QTWK","result":"kept","detail":"sweep: running again","ts":"2026-11-13T13:18:04Z","tsn":1794575884599898227}
+{"seat":"RUNNER","event":"note","id":"OPS_STEVE_SEATS_RESTORE_QTWK","text":"ops_watch: WORSE at 2026-11-13T13:25:03Z: 14.9 -> 29.9 min a Steve seat has been absent, the rule's step is {\"factor\": 2}","ts":"2026-11-13T13:25:13Z","tsn":1794576313582727680}
