@@ -618,7 +618,9 @@ namespace RimMandrake.ExplosiveKnockback
         /// <summary>The mass scenes choose their animals BY MASS from whatever animal kinds are loaded, never by name: this
         /// mod names no creature (a franchise-free RM_ tier mod; owner 2026-11-13 at sc_mass_and_power: "We shouldn't have
         /// anything called a Thrumbo in the game anymore"). Candidates: flesh animal kinds with a life stage, not dryads, weighed
-        /// as the adult's body size x 60 kg (the Mass stat's pawn rule). Tie-break, deterministic: non-Ludeon content first (a
+        /// as the race's Mass stat read on its def (StatPart_BodySize applies race.baseBodySize there) x the adult life stage's
+        /// bodySizeFactor (the spawned pawn's BodySize; a race that sets its own
+        /// Mass, e.g. a 0.04 kg tikkit, is not 60 kg x body size: live6 2026-11-13 picked one at 2.4 kg that weighed 0.0). Tie-break, deterministic: non-Ludeon content first (a
         /// tier without Cherry Picker still loads the vanilla beasts the full list cuts, VANILLA_BEAST_EXCISION_1), then the
         /// band's preference (lightest, heaviest, or nearest the band's middle), then defName ordinal. An empty band throws,
         /// naming the band in kg. The scene re-weighs the spawned pawn and its row prints the label and the measured mass.</summary>
@@ -626,7 +628,7 @@ namespace RimMandrake.ExplosiveKnockback
         {
             RaceProperties r = k.RaceProps;
             float factor = r.lifeStageAges[r.lifeStageAges.Count - 1].def?.bodySizeFactor ?? 1f;
-            return r.baseBodySize * factor * 60f;
+            return k.race.GetStatValueAbstract(StatDefOf.Mass) * factor;   // the abstract read already applies race.baseBodySize
         }
 
         private static IEnumerable<PawnKindDef> AnimalKinds()
@@ -657,7 +659,8 @@ namespace RimMandrake.ExplosiveKnockback
         }
 
         /// <summary>The four bands sc_mass_and_power, heavy_skip and body_override stand up.</summary>
-        internal static PawnKindDef SmallAnimal() => ByMass("lightest", 0.1f, 30f, "light");
+        // from 1 kg: a 0.1 kg pick (dhuvvox, live6) weighed just under the scene's 0.1 kg check and turned every lane INVALID
+        internal static PawnKindDef SmallAnimal() => ByMass("lightest", 1f, 30f, "light");
         internal static PawnKindDef UnderLimitAnimal() => ByMass("heaviest under the 150 kg limit", 100f, 150f, "heavy");
         internal static PawnKindDef OverrideAnimal() => ByMass("160-200 kg", 160f, 200f, "middle");
         internal static PawnKindDef HeavyAnimal() => ByMass("220-260 kg", 220f, 260f, "middle");
