@@ -34,9 +34,9 @@ namespace RimMandrake.FlowWorks
 		void ComponentResolved(List<int> component);
 	}
 
-	/// <summary>WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: what the exact-level kernel (<see cref="RM_FlowKernel.levelExactEnabled"/>)
+	/// <summary>WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: what the exact-level kernel (<see cref="RM_FlowKernel"/>)
 	/// reads and writes about natural bodies, in decilitres. Implemented beside <see cref="RM_IFlowWorld"/> (the game on
-	/// RM_MapComponent_Excavation, the selftest on its array world); without it the kernel keeps the whole-notch engine.</summary>
+	/// RM_MapComponent_Excavation, the selftest on its array worlds). Every world implements it: the kernel has no other engine.</summary>
 	public interface RM_ILevelWorld
 	{
 		/// <summary>The LIMITED body behind source <paramref name="src"/> (an id), or -1 when it never runs down (limitless, or
@@ -132,11 +132,11 @@ namespace RimMandrake.FlowWorks
 	}
 
 	/// <summary>Approach B phase 2 (design/RimMandrake/flowworks_offline_kernel_B.md): the grid transition of one
-	/// flow pulse — component resolution, sink drain, flow order, recipient order, donor selection and the
-	/// per-component conservation ledger — on integer cell indices (z * width + x, Verse's CellIndices) and
-	/// byte depth/fill arrays. Extracted VERBATIM from RM_MapComponent_Excavation.DoPulse / ResolveComponent /
-	/// ComputeFlowOrder / HopsFrom / PickDonor / CompareDeepestFirst, which now call it; rain, burn, stock
-	/// refill/recession, terrain writes and Scribe stay in the adapter. Verse-free so the selftest runs it.
+	/// flow pulse — component resolution, sink drain, the exact-level solve (<see cref="ResolveExact"/>) and the
+	/// per-component conservation ledger — on integer cell indices (z * width + x, Verse's CellIndices). Rain, burn,
+	/// stock refill/recession, terrain writes and Scribe stay in the adapter. Verse-free so the selftest runs it.
+	/// (The whole-notch engine — static flow order, donor picks, level-set bands — was deleted with
+	/// RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES; the shipped game had run exact-only since 2026-10-17.)
 	///
 	/// Also holds <see cref="CollectBody"/>, the 8-way flood fill RM_LiquidStock.FormBody uses to find a body's
 	/// footprint.</summary>
@@ -152,43 +152,6 @@ namespace RimMandrake.FlowWorks
 		public int flowPerPulse = 1;
 		public bool edgeSinksEnabled;
 		public bool viscosityEnabled;
-		/// <summary>THICK_LIQUID_CREEP_1: a cell that RECEIVED liquid this pulse may not donate it on in the same pulse
-		/// when the fluid is viscous (ViscosityStride &gt; 1), so a thick fill front moves one cell per moving pulse
-		/// instead of racing down the whole channel. Water (stride 1) is untouched. Off by default; the adapter sets it.</summary>
-		public bool creepEnabled;
-		/// <summary>CANAL_FRONT_FIX_WRONG_END_WETS_FIRST (owner 2026-10-12, by card: the wet front must visibly advance outward
-		/// from the mouth like a flood front): a cell that received WATER (stride 1) this pulse may not pass it on in the same
-		/// pulse, so a level moves one cell per pulse from the source instead of being pulled the whole run at once (which wet
-		/// a dead-end channel far end first). Independent of <see cref="creepEnabled"/>, which stays thick-liquid only.
-		/// Off by default; the adapter sets it.</summary>
-		public bool creepWaterEnabled;
-		private long[] receivedStamp;
-		/// <summary>WATER_SURFACE_REPAIR_LEVEL_OR_BUST (owner 2026-10-17: "We need VERY smooth water. That's water's one primary
-		/// characteristic: a level surface."): the WATER creep hold is on the FRONT only, a square that was DRY when it took its
-		/// first unit this pulse. Holding every square that received (the old rule) held a mouth for as long as its source kept
-		/// paying it, so the mouth never joined its wet region and filled to the brim beside dry squares of the same floor
-		/// (live S2 read pond [4 0 4 0]). A square already wet passes water on as it receives it, so a pond rises as one
-		/// surface; the front still advances one square a pulse. Thick liquids keep the whole-square hold (THICK_LIQUID_CREEP_1).</summary>
-		private long[] frontStamp;
-		/// <summary>WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND (owner 2026-10-16, by card "Level by water surface": "Shouldn't
-		/// each square of the channel have 'units of water' in it, and they will try to spread out evenly"): a neighbour
-		/// gives a unit when its water SURFACE (fill - dug depth; a source reads 0) stands above the recipient's, whatever
-		/// either square's dug depth. A drop of two or more always moves; a drop of exactly one moves only down the
-		/// component's static flow order (<see cref="RM_StockMath.MayFlowBetween"/>), because one unit across a drop of one
-		/// just swaps the two surfaces. That order gains a third tier here, hops to the component's deepest bed
-		/// (<see cref="lowHops"/>), so a unit held one above a dry neighbour still walks toward a dug hole instead of
-		/// standing on a terrace beside it. Every move lowers sum(surface^2) or keeps it and steps down the acyclic order, so a
-		/// closed run settles (no period-2 shuttle) with neighbours at most one unit apart, and a sink drains a run to empty.
-		/// Off = the old GRAVITY / OVERFLOW rule, which stranded partly filled same-depth cells. Off by default here; the
-		/// adapter sets it (shipped ON).</summary>
-		public bool levelBySurfaceEnabled;
-		/// <summary>WATER_LEVELSET_SOLVE (owner 2026-10-16 at review station 1: "Please select an algorithm that will allow the
-		/// fluid to levelset down to a smooth 0 or 1 across a too-wide field like this, not 0, deep, 0"). Only with
-		/// <see cref="levelBySurfaceEnabled"/>: each wet region (plus its dry dug rim) is SOLVED to its flat water level instead
-		/// of levelled one unit at a time (<see cref="LevelSetWetRegions"/>), and a drop of exactly one between two dug cells
-		/// no longer moves in the neighbour pass (that swap walked puddles and striped wide basins 0,1,0,1). Off by default
-		/// here; the adapter sets it (shipped ON).</summary>
-		public bool levelSetEnabled;
 		public int maxComponentCells = 6000;
 		/// <summary>FLOW_ORDER_EXTERNAL_INPUT_1 part 2: a connected network bigger than <see cref="maxComponentCells"/> is
 		/// resolved as several capped partitions, and liquid never crosses a partition seam inside one pulse. With the
@@ -208,46 +171,15 @@ namespace RimMandrake.FlowWorks
 		/// leaves a sealed cell and no flow order is walked through it, so the level stops at the gate. Null = no
 		/// cell is sealed (the offline worlds, and every map without a shut sluice).</summary>
 		public Func<int, bool> sealedCell;
-		/// <summary>FLOW_ORDER_EXTERNAL_INPUT_1: true for an excavated cell a pump, drill or other driver has fed
-		/// recently. The flow order's "source hops" are walked from these as well as from supplying natural sources, so
-		/// a pump-fed equal-depth run spreads AWAY from the pump (a brimming cell overflows to a later key) instead of
-		/// sitting beside it with every key equal. Geometry from fixed input cells, so the order stays static and
-		/// acyclic (FLOWWORKS_CHANNEL_OSCILLATION_1). Null = no inputs (the offline worlds' default).</summary>
-		public Func<int, bool> externalInput;
-		/// <summary>POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD, D2 (owner's words, 2026-10-16: "It should slosh around until it levels,
-		/// pond or canal or otherwise."): a natural source's pond drawdown s (its surface is −s). A source gives a level only
-		/// while its surface stands above the recipient's water (<see cref="RM_PondDepthMath.SourceMayGive"/>), so a ditch
-		/// whose floor is above the pond's surface stops drawing. Null, or 0 for a cell, is today's brim-full source exactly
-		/// (the offline worlds' default; the adapter sets it while "pondHeadRuleEnabled" is on).</summary>
-		public Func<int, int> sourceDrawdown;
-		/// <summary>D2's return half: credit one level of the dug square's water to the pond behind source <c>(src, dug)</c>.
-		/// True = the pond took it (the kernel then lowers the dug square). Null = no return (offline default).</summary>
-		public Func<int, int, bool> returnLevel;
 		/// <summary>Superdeep: what a natural source reads as (RM_ExcavationDepth.Superdeep).</summary>
 		public const byte Superdeep = 4;
 		/// <summary>DISABLED_LIQUID_FIX_LIMITLESS_SOURCE: <see cref="RM_ILevelWorld.LevelBodyOf"/>'s answer for a source whose
 		/// liquid is switched off in Mod Settings (FLUID_DISABLE_ALL_INPUTS_1): not a node at all, never a limitless mouth.</summary>
 		public const int LevelBodyDisabled = -2;
 
-		/// <summary>PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT: the deepest a dug square can be (RM_DigDepthMath.MaxDigCeiling, 20 m).
-		/// The notch-level paths (exact level off) bucket surfaces over 0..this; they assumed 0..4 and indexed out of range on a
-		/// deeper square. The exact-level solver never needed it.</summary>
-		public const int DepthCeiling = 40;
 
-		/// <summary>Surface buckets: a dug square's surface (fill − depth) runs −DepthCeiling..0.</summary>
-		public const int SurfaceBuckets = DepthCeiling + 1;
 
-		/// <summary>Donor-score scale: bigger than any dug depth, so (surface, then depth) never collide; a source outranks all.</summary>
-		private const int ScoreScale = 64;
-		private const int SourceScore = 1000000;
 
-		/// <summary>WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES (owner 2026-10-17: "We need VERY smooth water. That's water's one
-		/// primary characteristic: a level surface."; ruled exactly level by card). On, and with <see cref="part"/> set and the
-		/// world an <see cref="RM_ILevelWorld"/>, every component resolves by <see cref="ResolveExact"/>: a dug square holds
-		/// W = fill·U + part decilitres, a limited pond a whole number of dL, and each connected body is solved to ONE surface
-		/// (RM_LevelSolve), the mouth paced at flowPerPulse notches a mouth square a pulse. Python twin:
-		/// northstar/level_water.py. Off by default here; the adapter sets it (shipped ON).</summary>
-		public bool levelExactEnabled;
 		/// <summary>The decilitres below one whole notch per cell (0..U-1); W = fill·U + part. The adapter's scribed grid.</summary>
 		public ushort[] part;
 		/// <summary>Exact mode, this pulse: dL limitless sources paid in, dL sinks took out (the adapter's ledger).</summary>
@@ -255,12 +187,11 @@ namespace RimMandrake.FlowWorks
 		public long exactDrainDl;
 		private readonly RM_LevelSolve exactSolve = new RM_LevelSolve();
 		private readonly RM_LevelSolve canalSolve = new RM_LevelSolve();
-		/// <summary>EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: the exact path's two work cuts, each the same result by
-		/// construction. (a) A rotated network walks no static flow order (ResolveExact reads its own hops, never
-		/// sourceHops/sinkHops/lowHops); only the order's world calls (CanSupply, which may form a body) are kept, in the same
-		/// order. (b) A domain with no pond and no limitless mouth solves once: the joint solve's target would only feed an
-		/// exchange that cannot happen, and the canal re-solve reads the same input. Off = the pre-fix work, kept so
-		/// ExcavationTick_exact_shortcuts_equal_reference can prove the cuts change nothing.</summary>
+		/// <summary>EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: a domain with no pond and no limitless mouth solves once: the
+		/// joint solve's target would only feed an exchange that cannot happen, and the canal re-solve reads the same input.
+		/// Off = the pre-fix work, kept so ExcavationTick_exact_shortcuts_equal_reference can prove the cut changes nothing.
+		/// (The other cut, a rotated network walking no static flow order, is the only path since the whole-notch kernel's
+		/// static flow order was deleted: RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES.)</summary>
 		public bool exactShortcutsEnabled = true;
 
 		// ── EXCAVATION_RAIN_TAME_ONE_TICK_DELUGE: pocket rain (owner 2026-10-27: "Sounds like we need a rain approximation of
@@ -325,9 +256,9 @@ namespace RimMandrake.FlowWorks
 				{
 					if (IsSealed(c))
 					{
-						// cs_review F3: exact-level water fills a sealed square's part-notch of room too (it cannot run on, so
-						// only what that room cannot hold goes over the lip). Whole-notch water never splits a notch.
-						long frac = ExactPath ? Math.Max(0, roomDl - add * (long)U) : 0;
+						// cs_review F3: water fills a sealed square's part-notch of room too (it cannot run on, so only what that
+						// room cannot hold goes over the lip).
+						long frac = Math.Max(0, roomDl - add * (long)U);
 						stuckDl += (n - add) * (long)U - frac;
 						sealedFrac = frac;
 					}
@@ -361,11 +292,9 @@ namespace RimMandrake.FlowWorks
 			// water can pass (cardinal, dug, of this pocket, not sealed, holding rain's own water or dry and able to take it),
 			// nearest first, roofed ones too (the water runs under the roof, as the level solve would carry it). A brimming
 			// square's water stands at the ground, above every dug bed, so no square reached this way is out of its reach. Never
-			// across a shut sluice or another liquid. Exact-level water takes decilitres (two half-notches of room take one
-			// notch); whole-notch water whole notches.
+			// across a shut sluice or another liquid. Water takes decilitres (two half-notches of room take one notch).
 			if (owedDl > 0)
 			{
-				bool exact = ExactPath;
 				rainDomain.Reset(width * height);
 				for (int i = 0; i < cells.Count; i++)
 				{
@@ -424,10 +353,10 @@ namespace RimMandrake.FlowWorks
 						int c = rainQueue[h];
 						long w = WaterOf(c);
 						long roomDl = depth[c] * (long)U - w;
-						long give = exact ? roomDl : roomDl / U * U;
+						long give = roomDl;
 						if (give > owed)
 						{
-							give = exact ? owed : owed / U * U;
+							give = owed;
 						}
 						if (give > 0)
 						{
@@ -473,18 +402,10 @@ namespace RimMandrake.FlowWorks
 		private readonly RM_StampSet visited = new RM_StampSet();
 		private readonly RM_StampSet componentSources = new RM_StampSet();
 		private readonly List<int> walkQueue = new List<int>();
-		private readonly List<int> seedScratch = new List<int>();
 		private readonly List<int> component = new List<int>();
-		private readonly List<int> recipients = new List<int>();
-		private readonly Dictionary<int, int> sourceHops = new Dictionary<int, int>();
-		private readonly Dictionary<int, int> sinkHops = new Dictionary<int, int>();
-		/// <summary>levelBySurfaceEnabled only: hops to the nearest cell dug to the component's deepest bed.</summary>
-		private readonly Dictionary<int, int> lowHops = new Dictionary<int, int>();
 		private readonly List<int> hopFrontier = new List<int>();
-		private readonly HashSet<int> componentSet = new HashSet<int>();
 		private readonly Predicate<int> isSourcePred;
 		private readonly Predicate<int> isExcavatedPred;
-		private readonly Comparison<int> deepestFirst;
 
 		// Verse's GenAdj.CardinalDirections order: N, E, S, W.
 		private static readonly int[] CardX = { 0, 1, 0, -1 };
@@ -499,7 +420,6 @@ namespace RimMandrake.FlowWorks
 			this.height = height;
 			isSourcePred = IsSource;
 			isExcavatedPred = IsExcavated;
-			deepestFirst = CompareDeepestFirst;
 		}
 
 		/// <summary>The cardinal neighbour of idx in direction d (0..3), or -1 out of bounds.</summary>
@@ -515,84 +435,16 @@ namespace RimMandrake.FlowWorks
 			return idx >= 0 && depth[idx] != 0;
 		}
 
-		/// <summary>A square liquid neither enters nor leaves this pulse: a shut sluice, or (RAIN_REVIEW_FIX_SLUICES_AND_OVERFILL,
-		/// HIGH) with exact-level water OFF a dug square still holding a part-notch. The whole-notch kernel reads fill only, so it
-		/// would see such a square as dry (and claim it for another liquid) or pour a whole notch on top of the part (over the
-		/// brim). Held, its water waits whole and in place until exact-level water is on again; nothing is rounded away.</summary>
+		/// <summary>A square liquid neither enters nor leaves this pulse: a shut sluice.</summary>
 		public bool IsSealed(int idx)
 		{
-			return idx >= 0 && ((holdParts && part[idx] != 0 && depth[idx] != 0) || (sealedCell != null && sealedCell(idx)));
+			return idx >= 0 && sealedCell != null && sealedCell(idx);
 		}
 
-		/// <summary>Set by <see cref="BeginPulse"/>: the whole-notch kernel runs over a part grid (see <see cref="IsSealed"/>).</summary>
-		private bool holdParts;
 
 		public bool IsSource(int idx)
 		{
 			return idx >= 0 && depth[idx] == 0 && world.IsNaturalLiquid(idx);
-		}
-
-		/// <summary>POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD, D2 (owner: "It should slosh around until it levels, pond or canal or
-		/// otherwise."), the return half, run by the adapter after <see cref="Pulse"/>: a dug square whose water stands two or
-		/// more above a cardinal pond's surface (<see cref="RM_PondDepthMath.DugMayReturn"/>) runs levels back into that pond,
-		/// at most <see cref="flowPerPulse"/> a square a pulse (the mouth's pace, D1), each one only once the pond has taken
-		/// it (<see cref="returnLevel"/>: the stock rises by exactly what the square loses, so nothing is made or lost). Same
-		/// fluid only. Squares in cell-index order. Returns the levels returned.</summary>
-		public int ReturnToPonds(IEnumerable<int> seeds)
-		{
-			if (sourceDrawdown == null || returnLevel == null)
-			{
-				return 0;
-			}
-			seedScratch.Clear();
-			seedScratch.AddRange(seeds);
-			seedScratch.Sort();
-			int total = 0;
-			for (int i = 0; i < seedScratch.Count; i++)
-			{
-				int c = seedScratch[i];
-				if (!IsExcavated(c) || IsSealed(c) || fill[c] == 0)
-				{
-					continue;
-				}
-				int moved = 0;
-				for (int d = 0; d < 4 && moved < flowPerPulse; d++)
-				{
-					int n = Cardinal(c, d);
-					if (n < 0 || IsSealed(n) || !IsSource(n))
-					{
-						continue;
-					}
-					if (!ReferenceEquals(world.CellFluid(c), world.DonorFluid(n, true)) && world.CellFluid(c) != null)
-					{
-						continue;
-					}
-					while (moved < flowPerPulse && fill[c] > 0)
-					{
-						int s = sourceDrawdown(n);
-						if (s <= 0 || !RM_PondDepthMath.DugMayReturn(s, depth[c], fill[c]) || !returnLevel(n, c))
-						{
-							break;
-						}
-						fill[c] -= 1;
-						moved++;
-						total++;
-					}
-				}
-			}
-			return total;
-		}
-
-		/// <summary>D2: may source <paramref name="src"/> give to dug square <paramref name="r"/> by the head rule?</summary>
-		private bool HeadAllows(int src, int r)
-		{
-			if (sourceDrawdown == null)
-			{
-				return true;
-			}
-			int s = sourceDrawdown(src);
-			// s = 0 is a brim-full source: today's rule exactly (a mouth beside it stays a live mouth even when brim-full).
-			return s <= 0 || RM_PondDepthMath.SourceMayGive(s, depth[r], fill[r]);
 		}
 
 		/// <summary>The in-bounds cardinal neighbours N, E, S, W (the selftest drives the generic walk with it).</summary>
@@ -647,7 +499,6 @@ namespace RimMandrake.FlowWorks
 		/// the map changed skips a seed filled in or dug since, as the atomic pulse never saw it either way.</summary>
 		public void BeginPulse(IEnumerable<int> seedOrder, long pulseCount)
 		{
-			holdParts = !ExactPath && part != null && part.Length == width * height;
 			sinkDrained = 0f;
 			exactCreditDl = 0;
 			exactDrainDl = 0;
@@ -849,17 +700,10 @@ namespace RimMandrake.FlowWorks
 			// and the order stays the same static, acyclic one whichever way the seams fall this pulse.
 			component.Clear();
 			component.AddRange(networkCells);
-			if (exactShortcutsEnabled && ExactPath)
-			{
-				TouchSuppliers();
-			}
-			else
-			{
-				ComputeFlowOrder();
-			}
+			TouchSuppliers();
 			// A pulse with pocket rain keeps the partition drain: rain lands pocket by pocket inside each partition, before
 			// its sinks take their share, and a drain ahead of every partition would run before the rain it should see.
-			networkSinkDrained = ExactPath && edgeSinksEnabled && networkSinkSpreadEnabled && !rainArmed;
+			networkSinkDrained = edgeSinksEnabled && networkSinkSpreadEnabled && !rainArmed;
 			if (networkSinkDrained)
 			{
 				NetworkSinkDrain(pulseCount);
@@ -1011,11 +855,7 @@ namespace RimMandrake.FlowWorks
 			sinkDrained += total / (float)RM_LevelSolve.U;
 		}
 
-		/// <summary>Every component resolves by <see cref="ResolveExact"/> (see <see cref="levelExactEnabled"/>).</summary>
-		private bool ExactPath => levelExactEnabled && world is RM_ILevelWorld;
-
-		/// <summary>ComputeFlowOrder's world calls without its walks: CanSupply on each source of the component, in the same
-		/// order (the adapter's may form a body, so the exact path keeps the call and drops only the hop walks).</summary>
+		/// <summary>CanSupply on each source of the component, in component order (the adapter's may form a body).</summary>
 		private void TouchSuppliers()
 		{
 			for (int i = 0; i < component.Count; i++)
@@ -1030,171 +870,11 @@ namespace RimMandrake.FlowWorks
 
 		private void ResolveComponent(long pulseCount, bool networkOrder = false)
 		{
-			if (levelExactEnabled && world is RM_ILevelWorld levelWorld)
+			if (part == null || part.Length != width * height)
 			{
-				if (part == null || part.Length != width * height)
-				{
-					part = new ushort[width * height];   // a world that keeps no part grid (the offline worlds)
-				}
-				ResolveExact(levelWorld, pulseCount, networkOrder);
-				return;
+				part = new ushort[width * height];   // a world that keeps no part grid (the offline worlds)
 			}
-			PocketRain(component);
-			float before = 0f;
-			for (int i = 0; i < component.Count; i++)
-			{
-				int c = component[i];
-				if (IsExcavated(c))
-				{
-					before += fill[c];
-				}
-			}
-
-			// Sinks drain before the flow, so the room a sink opens is room this same pulse can pour into.
-			float externalDrain = 0f;
-			if (edgeSinksEnabled)
-			{
-				int drainPerCell = flowPerPulse;
-				for (int i = 0; i < component.Count; i++)
-				{
-					int c = component[i];
-					// A shut sluice seals its cell: liquid neither enters nor leaves, the sink band included.
-					if (!IsExcavated(c) || !world.IsSink(c) || IsSealed(c))
-					{
-						continue;
-					}
-					int take = fill[c] < drainPerCell ? fill[c] : drainPerCell;
-					if (take <= 0)
-					{
-						continue;
-					}
-					fill[c] -= (byte)take;
-					externalDrain += take;
-				}
-				sinkDrained += externalDrain;
-			}
-
-			if (networkOrder)
-			{
-				// Part 2: the hops were walked over the whole network; only the partition's membership is per-partition.
-				componentSet.Clear();
-				for (int i = 0; i < component.Count; i++)
-				{
-					componentSet.Add(component[i]);
-				}
-			}
-			else
-			{
-				ComputeFlowOrder();
-			}
-
-			recipients.Clear();
-			for (int i = 0; i < component.Count; i++)
-			{
-				int c = component[i];
-				if (!IsExcavated(c))
-				{
-					continue;
-				}
-				if (fill[c] < depth[c] && !IsSealed(c))
-				{
-					recipients.Add(c);
-				}
-			}
-			if (recipients.Count == 0)
-			{
-				world.ComponentResolved(component);
-				return;
-			}
-			recipients.Sort(deepestFirst);
-
-			float externalCredit = 0f;
-			int perCell = flowPerPulse;
-			for (int i = 0; i < recipients.Count; i++)
-			{
-				int r = recipients[i];
-				int moved = 0;
-				while (moved < perCell && fill[r] < depth[r])
-				{
-					int donor = PickDonor(r, depth[r], pulseCount);
-					if (donor < 0)
-					{
-						break;
-					}
-					// P7: a dry recipient that cannot record the donor's fluid takes nothing, checked BEFORE the debit.
-					if (fill[r] == 0 && !world.CanClaim(world.DonorFluid(donor, IsSource(donor))))
-					{
-						break;
-					}
-					if (IsSource(donor))
-					{
-						// The pond's stock bites here and nowhere else. A failed debit must NOT move liquid.
-						if (!world.TryDebitLevel(donor))
-						{
-							break;
-						}
-						externalCredit += 1f;
-					}
-					else
-					{
-						fill[donor] -= 1;
-					}
-					if (fill[r] == 0)
-					{
-						world.Claim(r, world.DonorFluid(donor, IsSource(donor)));
-						if (creepWaterEnabled)
-						{
-							(frontStamp ??= new long[width * height])[r] = pulseCount + 1;
-						}
-					}
-					fill[r] += 1;
-					if (creepEnabled || creepWaterEnabled)
-					{
-						(receivedStamp ??= new long[width * height])[r] = pulseCount + 1;
-					}
-					moved++;
-				}
-				if (moved > 0)
-				{
-					receivedThisPass.Add(r);
-				}
-			}
-
-			if (levelBySurfaceEnabled)
-			{
-				if (levelSetEnabled)
-				{
-					LevelSetWetRegions(pulseCount);
-				}
-				else
-				{
-					LevelWetRegions(pulseCount);
-				}
-			}
-			if (creepWaterEnabled)
-			{
-				externalCredit += TopUpWaterMouths(pulseCount, perCell);
-			}
-			receivedThisPass.Clear();
-
-			float after = 0f;
-			for (int i = 0; i < component.Count; i++)
-			{
-				int c = component[i];
-				if (IsExcavated(c))
-				{
-					after += fill[c];
-				}
-			}
-			float imbalance = after - before - externalCredit + externalDrain;
-			if (Math.Abs(imbalance) > 0.001f)
-			{
-				worstImbalance = Math.Max(worstImbalance, Math.Abs(imbalance));
-				imbalanceReports.Add("before=" + before.ToString("F1") + " after=" + after.ToString("F1") +
-					" sourceCredit=" + externalCredit.ToString("F1") + " sinkDrain=" + externalDrain.ToString("F1") +
-					" imbalance=" + imbalance.ToString("F1"));
-			}
-			world.ComponentResolved(component);
+			ResolveExact((RM_ILevelWorld)world, pulseCount, networkOrder);
 		}
 
 		// ── WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: the exact-level pulse ─────────────────────────────────────
@@ -1842,572 +1522,6 @@ namespace RimMandrake.FlowWorks
 			return true;
 		}
 
-		private readonly List<int> regionSeeds = new List<int>();
-		private readonly HashSet<int> inRegion = new HashSet<int>();
-		private readonly List<int> regionCells = new List<int>();
-		private readonly List<int> regionRim = new List<int>();
-		private readonly HashSet<int> rimSet = new HashSet<int>();
-		private readonly Dictionary<int, int> gaveThisPulse = new Dictionary<int, int>();
-		private readonly Dictionary<int, int> gotThisPulse = new Dictionary<int, int>();
-		private readonly SortedSet<int>[] donorsBySurface = NewSets<int>(SurfaceBuckets);
-		/// <summary>Takers keyed by <see cref="TakerKey"/> (deepest bed, then lowest index first), so Min is the pick.</summary>
-		private readonly SortedSet<long>[] takersBySurface = NewSets<long>(SurfaceBuckets);
-
-		private static SortedSet<T>[] NewSets<T>(int n)
-		{
-			var a = new SortedSet<T>[n];
-			for (int i = 0; i < n; i++)
-			{
-				a[i] = new SortedSet<T>();
-			}
-			return a;
-		}
-
-		private readonly HashSet<int> receivedThisPass = new HashSet<int>();
-		private readonly List<int> topUpOrder = new List<int>();
-
-		/// <summary>CANAL_MOUTH_DIAGNOSE_BLINKS_DRY_HALF_TIME: the recipient list is fixed before anything moves, so a brim
-		/// mouth is not a recipient in the pulse it passes its unit on (the neighbour pass or the level solve moves it), and
-		/// with water creep on the source refilled it only NEXT pulse: the mouth read dry every other pulse behind a wet front,
-		/// and the front and the source's payments ran at half the one-cell-a-pulse the creep rule promises. After the pass
-		/// and the solve, a dug square beside a supplying WATER source that took nothing this pulse and has room takes up to
-		/// <paramref name="perCell"/> from that source (cell-index order, so a scarce body still pays by map position). The
-		/// unit it takes is held by creep like any other. Returns the levels the sources paid (the ledger's credit).</summary>
-		private float TopUpWaterMouths(long pulseCount, int perCell)
-		{
-			float credit = 0f;
-			topUpOrder.Clear();
-			for (int i = 0; i < component.Count; i++)
-			{
-				int c = component[i];
-				if (IsExcavated(c) && fill[c] < depth[c] && !IsSealed(c) && !receivedThisPass.Contains(c) && componentSet.Contains(c))
-				{
-					topUpOrder.Add(c);
-				}
-			}
-			topUpOrder.Sort();
-			for (int i = 0; i < topUpOrder.Count; i++)
-			{
-				int r = topUpOrder[i];
-				int moved = 0;
-				while (moved < perCell && fill[r] < depth[r])
-				{
-					int donor = -1;
-					for (int d = 0; d < 4 && donor < 0; d++)
-					{
-						int n = Cardinal(r, d);
-						if (n < 0 || IsSealed(n) || !IsSource(n) || !world.CanSupply(n) || !HeadAllows(n, r))
-						{
-							continue;
-						}
-						object fl = world.DonorFluid(n, true);
-						if (RM_StockMath.ViscosityStride(world.TicksPerTile(fl)) > 1
-							|| !RM_StockMath.FluidsCompatible(fill[r] > 0, world.CellFluid(r), fl)
-							|| (viscosityEnabled && !RM_StockMath.FluidMovesThisPulse(pulseCount, world.TicksPerTile(fl)))
-							|| (fill[r] == 0 && !world.CanClaim(fl)))
-						{
-							continue;
-						}
-						donor = n;
-					}
-					if (donor < 0 || !world.TryDebitLevel(donor))
-					{
-						break;
-					}
-					credit += 1f;
-					if (fill[r] == 0)
-					{
-						world.Claim(r, world.DonorFluid(donor, true));
-						(frontStamp ??= new long[width * height])[r] = pulseCount + 1;
-					}
-					fill[r] += 1;
-					(receivedStamp ??= new long[width * height])[r] = pulseCount + 1;
-					moved++;
-				}
-			}
-			return credit;
-		}
-
-		/// <summary>True when the creep rule holds this cell's level back this pulse (it received a level of a fluid
-		/// whose creep switch is on).</summary>
-		private bool HeldByCreep(int c, object fluid, long pulseCount)
-		{
-			return RM_StockMath.ViscosityStride(world.TicksPerTile(fluid)) > 1
-				? creepEnabled && receivedStamp != null && receivedStamp[c] == pulseCount + 1
-				: creepWaterEnabled && frontStamp != null && frontStamp[c] == pulseCount + 1;
-		}
-
-		/// <summary>WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND, communicating vessels: the neighbour-to-neighbour pass above
-		/// can leave a terrace (2,2,1,1,0 in a flat D=2 run) where every step is one unit, so no single neighbour may give.
-		/// Real water connected through wet squares levels anyway. So, per connected WET region of one fluid (cells wet
-		/// before this pulse's creep, in this partition, not sealed), a unit moves from the region's highest surface to the
-		/// lowest surface among the region and its dug rim (a rim cell must accept the fluid), while those differ by two or
-		/// more. Each cell gives at most, and takes at most, flowPerPulse in this pass, and a region cell never gives its
-		/// LAST unit here (so no connector goes dry mid-pass and the region stays connected through wet squares; the
-		/// neighbour rules above still empty it). Ties: donor = highest surface then
-		/// lowest cell index; taker = lowest surface, then deepest bed, then lowest index. Regions in order of their lowest
-		/// cell index. Every move lowers sum(surface^2) by at least 2, so this cannot oscillate; it moves liquid only inside
-		/// the component, so the ledger is untouched. A rim cell joins the region next pulse, so the wet front still
-		/// advances one cell a pulse.</summary>
-		private void LevelWetRegions(long pulseCount)
-		{
-			int per = flowPerPulse;
-			if (per <= 0)
-			{
-				return;
-			}
-			gaveThisPulse.Clear();
-			gotThisPulse.Clear();
-			inRegion.Clear();
-			regionSeeds.Clear();
-			for (int i = 0; i < component.Count; i++)
-			{
-				int c = component[i];
-				if (IsExcavated(c) && fill[c] > 0 && !IsSealed(c) && componentSet.Contains(c))
-				{
-					regionSeeds.Add(c);
-				}
-			}
-			regionSeeds.Sort();
-			for (int s = 0; s < regionSeeds.Count; s++)
-			{
-				int seed = regionSeeds[s];
-				if (inRegion.Contains(seed))
-				{
-					continue;
-				}
-				object fluid = world.CellFluid(seed);
-				if (HeldByCreep(seed, fluid, pulseCount))
-				{
-					continue;
-				}
-				// The region: 4-way, wet, same recorded fluid, not held by creep.
-				regionCells.Clear();
-				regionCells.Add(seed);
-				inRegion.Add(seed);
-				for (int head = 0; head < regionCells.Count; head++)
-				{
-					int c = regionCells[head];
-					for (int d = 0; d < 4; d++)
-					{
-						int n = Cardinal(c, d);
-						if (n < 0 || inRegion.Contains(n) || !componentSet.Contains(n) || !IsExcavated(n) || IsSealed(n)
-							|| fill[n] == 0 || !ReferenceEquals(world.CellFluid(n), fluid) || HeldByCreep(n, fluid, pulseCount))
-						{
-							continue;
-						}
-						inRegion.Add(n);
-						regionCells.Add(n);
-					}
-				}
-				if (viscosityEnabled && !RM_StockMath.FluidMovesThisPulse(pulseCount, world.TicksPerTile(fluid)))
-				{
-					continue;
-				}
-				regionRim.Clear();
-				rimSet.Clear();
-				for (int i = 0; i < regionCells.Count; i++)
-				{
-					int c = regionCells[i];
-					for (int d = 0; d < 4; d++)
-					{
-						int n = Cardinal(c, d);
-						if (n < 0 || inRegion.Contains(n) || rimSet.Contains(n) || !componentSet.Contains(n) || !IsExcavated(n)
-							|| IsSealed(n) || fill[n] >= depth[n] || !RM_StockMath.FluidsCompatible(fill[n] > 0, world.CellFluid(n), fluid))
-						{
-							continue;
-						}
-						rimSet.Add(n);
-						regionRim.Add(n);
-					}
-				}
-				for (int b = 0; b < SurfaceBuckets; b++)
-				{
-					donorsBySurface[b].Clear();
-					takersBySurface[b].Clear();
-				}
-				for (int i = 0; i < regionCells.Count; i++)
-				{
-					int c = regionCells[i];
-					if (fill[c] >= 2 && GotOrGave(gaveThisPulse, c) < per)
-					{
-						donorsBySurface[Bucket(c)].Add(c);
-					}
-					if (fill[c] < depth[c] && GotOrGave(gotThisPulse, c) < per)
-					{
-						takersBySurface[Bucket(c)].Add(TakerKey(c));
-					}
-				}
-				for (int i = 0; i < regionRim.Count; i++)
-				{
-					int c = regionRim[i];
-					if (GotOrGave(gotThisPulse, c) < per)
-					{
-						takersBySurface[Bucket(c)].Add(TakerKey(c));
-					}
-				}
-				while (true)
-				{
-					int db = SurfaceBuckets - 1;
-					while (db >= 0 && donorsBySurface[db].Count == 0)
-					{
-						db--;
-					}
-					int tb = 0;
-					while (tb < SurfaceBuckets && takersBySurface[tb].Count == 0)
-					{
-						tb++;
-					}
-					if (db < 0 || tb >= SurfaceBuckets || db - tb < 2)
-					{
-						break;
-					}
-					int donor = donorsBySurface[db].Min;
-					int taker = (int)(takersBySurface[tb].Min % (width * height));
-					if (fill[taker] == 0 && !world.CanClaim(fluid))
-					{
-						takersBySurface[tb].Remove(TakerKey(taker));   // P7: no identity key free for a dry rim cell
-						continue;
-					}
-					donorsBySurface[db].Remove(donor);
-					takersBySurface[db].Remove(TakerKey(donor));
-					takersBySurface[tb].Remove(TakerKey(taker));
-					donorsBySurface[tb].Remove(taker);
-					fill[donor] -= 1;
-					if (fill[taker] == 0)
-					{
-						world.Claim(taker, fluid);
-					}
-					fill[taker] += 1;
-					int gave = GotOrGave(gaveThisPulse, donor) + 1;
-					gaveThisPulse[donor] = gave;
-					int got = GotOrGave(gotThisPulse, taker) + 1;
-					gotThisPulse[taker] = got;
-					if (fill[donor] >= 2 && gave < per)
-					{
-						donorsBySurface[Bucket(donor)].Add(donor);
-					}
-					if (fill[donor] < depth[donor] && GotOrGave(gotThisPulse, donor) < per)
-					{
-						takersBySurface[Bucket(donor)].Add(TakerKey(donor));
-					}
-					if (fill[taker] < depth[taker] && got < per)
-					{
-						takersBySurface[Bucket(taker)].Add(TakerKey(taker));
-					}
-					if (inRegion.Contains(taker) && fill[taker] >= 2 && GotOrGave(gaveThisPulse, taker) < per)
-					{
-						donorsBySurface[Bucket(taker)].Add(taker);
-					}
-				}
-			}
-		}
-
-		// ── WATER_LEVELSET_SOLVE: per-region flat-level solve ─────────────────────────────────────────────
-
-		private sealed class LsComp
-		{
-			public int band;
-			public readonly List<int> cells = new List<int>();
-			public readonly List<int> children = new List<int>();
-			public int water;
-			public int cap;
-			public long key;
-		}
-
-		private readonly List<LsComp> lsComps = new List<LsComp>();
-		private int lsCompCount;
-		private int[] lsCompId;      // (band - 1) * N + cell -> comp index + 1 (valid only under lsStamp)
-		private int[] lsCompStamp;
-		private int[] lsDomainStamp;
-		private int[] lsNewFill;
-		private int lsStampValue;
-		private readonly List<int> lsDomain = new List<int>();
-		private readonly List<int> lsPick = new List<int>();
-		private readonly HashSet<int> lsPicked = new HashSet<int>();
-		/// <summary>LEVELLING_BANDS_FIX_STOPS_PAST_EIGHT: the bands the per-band arrays hold. Grown to the deepest square a
-		/// region reaches (a fixed 8 left water below band 8 uncounted, so the solve gave up on any canal dug deeper).</summary>
-		private int lsBands;
-		private const int LsInitialBands = 8;
-
-		/// <summary>WATER_LEVELSET_SOLVE. Per connected WET region of one fluid (as <see cref="LevelWetRegions"/> builds it:
-		/// wet, same fluid, in this partition, not sealed, not held by creep) plus its DRY dug rim (one ring, so the wet
-		/// front still advances one square a pulse), the region's whole volume V is re-laid at the flat level it would
-		/// settle to — communicating vessels — and the result is exact in whole units:
-		/// <list type="bullet">
-		/// <item>Water is counted in BANDS: band L is the layer between surface -L and -L+1; a square of dug depth d owns
-		/// bands 1..d and its fill f occupies its lowest f bands. At each band the domain splits into the connected pieces of
-		/// squares deep enough to own it (a merge tree, one level per band).</item>
-		/// <item>Bottom up, each piece counts the water already below its band (trapped: it cannot climb a sill to another
-		/// piece). Top down, the piece hands its FREE water to its deeper pieces until they are full, and only then lays
-		/// the rest on its own band. So a pit never drains through a dry sill, and a stepped floor ends flat.</item>
-		/// <item>The last part-filled band takes r squares, grown best-first as ONE contiguous patch inside the piece (see
-		/// <see cref="CellKey"/>: toward a sink, else toward the deepest bed, keeping to squares already wet, and away from a
-		/// live inflow so the mouth keeps room). So too little water for a sheet is a single patch at the minimum depth,
-		/// never 0, deep, 0 and never 0,1,0,1.</item>
-		/// </list>
-		/// Moves liquid only inside the component (the ledger is untouched); a state the solve produces solves to itself,
-		/// so it settles. O(domain x bands) per region per pulse.</summary>
-		private void LevelSetWetRegions(long pulseCount)
-		{
-			int n = width * height;
-			if (lsDomainStamp == null || lsDomainStamp.Length != n)
-			{
-				lsDomainStamp = new int[n];
-				lsBands = LsInitialBands;
-				lsCompStamp = new int[n * lsBands];
-				lsCompId = new int[n * lsBands];
-				lsNewFill = new int[n];
-				lsStampValue = 0;
-			}
-			inRegion.Clear();
-			regionSeeds.Clear();
-			for (int i = 0; i < component.Count; i++)
-			{
-				int c = component[i];
-				if (IsExcavated(c) && fill[c] > 0 && !IsSealed(c) && componentSet.Contains(c))
-				{
-					regionSeeds.Add(c);
-				}
-			}
-			regionSeeds.Sort();
-			for (int s = 0; s < regionSeeds.Count; s++)
-			{
-				int seed = regionSeeds[s];
-				if (inRegion.Contains(seed) || fill[seed] == 0)
-				{
-					continue;
-				}
-				object fluid = world.CellFluid(seed);
-				if (HeldByCreep(seed, fluid, pulseCount))
-				{
-					continue;
-				}
-				regionCells.Clear();
-				regionCells.Add(seed);
-				inRegion.Add(seed);
-				for (int head = 0; head < regionCells.Count; head++)
-				{
-					int c = regionCells[head];
-					for (int d = 0; d < 4; d++)
-					{
-						int nb = Cardinal(c, d);
-						if (nb < 0 || inRegion.Contains(nb) || !componentSet.Contains(nb) || !IsExcavated(nb) || IsSealed(nb))
-						{
-							continue;
-						}
-						if (fill[nb] == 0)
-						{
-							// L7 live 2026-10-16 (1,0,1,0 loaded from a save): a lone unit with dry squares on both sides was
-							// its own region, solved to itself, and never met its neighbour. A dry gap of ONE dug square joins
-							// the wet squares beyond it (the gap is the rim of both), so striped water gathers into one patch.
-							for (int d2 = 0; d2 < 4; d2++)
-							{
-								int far = Cardinal(nb, d2);
-								if (far < 0 || far == c || inRegion.Contains(far) || !componentSet.Contains(far) || !IsExcavated(far)
-									|| IsSealed(far) || fill[far] == 0 || !ReferenceEquals(world.CellFluid(far), fluid)
-									|| HeldByCreep(far, fluid, pulseCount))
-								{
-									continue;
-								}
-								inRegion.Add(far);
-								regionCells.Add(far);
-							}
-							continue;
-						}
-						if (!ReferenceEquals(world.CellFluid(nb), fluid) || HeldByCreep(nb, fluid, pulseCount))
-						{
-							continue;
-						}
-						inRegion.Add(nb);
-						regionCells.Add(nb);
-					}
-				}
-				if (viscosityEnabled && !RM_StockMath.FluidMovesThisPulse(pulseCount, world.TicksPerTile(fluid)))
-				{
-					continue;
-				}
-				SolveRegion(fluid);
-			}
-		}
-
-		private void SolveRegion(object fluid)
-		{
-			int n = width * height;
-			if (++lsStampValue == int.MaxValue)
-			{
-				Array.Clear(lsDomainStamp, 0, lsDomainStamp.Length);
-				Array.Clear(lsCompStamp, 0, lsCompStamp.Length);
-				lsStampValue = 1;
-			}
-			int stamp = lsStampValue;
-			lsDomain.Clear();
-			int volume = 0;
-			int maxBand = 0;
-			for (int i = 0; i < regionCells.Count; i++)
-			{
-				int c = regionCells[i];
-				lsDomainStamp[c] = stamp;
-				lsDomain.Add(c);
-				volume += fill[c];
-			}
-			// The dry rim: a dug, unsealed, dry square of this partition beside the region, that may record the fluid.
-			bool canClaim = world.CanClaim(fluid);
-			if (canClaim)
-			{
-				for (int i = 0; i < regionCells.Count; i++)
-				{
-					int c = regionCells[i];
-					for (int d = 0; d < 4; d++)
-					{
-						int nb = Cardinal(c, d);
-						if (nb < 0 || lsDomainStamp[nb] == stamp || !componentSet.Contains(nb) || !IsExcavated(nb) || IsSealed(nb)
-							|| fill[nb] != 0)
-						{
-							continue;
-						}
-						lsDomainStamp[nb] = stamp;
-						lsDomain.Add(nb);
-					}
-				}
-			}
-			for (int i = 0; i < lsDomain.Count; i++)
-			{
-				int dep = depth[lsDomain[i]];
-				if (dep > maxBand)
-				{
-					maxBand = dep;
-				}
-				lsNewFill[lsDomain[i]] = 0;
-			}
-			if (maxBand > lsBands)
-			{
-				lsBands = maxBand;
-				lsCompStamp = new int[n * lsBands];   // fresh zeros: no entry matches a live stamp
-				lsCompId = new int[n * lsBands];
-			}
-			// FLOWWORKS_SLUICE_FIX_BELOW_SOURCE_LUCK: this region drains only if a sink is reachable from it. Component-wide, a
-			// region cut off by a shut sluice keyed every square Far and fell back to cell index, so the mouth kept its unit
-			// (upstream stayed dry) in one direction and not the other.
-			bool drains = false;
-			for (int i = 0; i < lsDomain.Count && !drains; i++)
-			{
-				drains = sinkHops.ContainsKey(lsDomain[i]);
-			}
-			// Merge tree: the connected pieces of each band, shallow band first (a deeper piece's parent is created first).
-			lsCompCount = 0;
-			for (int band = 1; band <= maxBand; band++)
-			{
-				int off = (band - 1) * n;
-				for (int i = 0; i < lsDomain.Count; i++)
-				{
-					int c0 = lsDomain[i];
-					if (depth[c0] < band || lsCompStamp[off + c0] == stamp)
-					{
-						continue;
-					}
-					LsComp comp = NewComp(band);
-					int id = lsCompCount;   // 1-based id of the comp just made
-					if (band > 1)
-					{
-						lsComps[lsCompId[off - n + c0] - 1].children.Add(id - 1);
-					}
-					lsCompStamp[off + c0] = stamp;
-					lsCompId[off + c0] = id;
-					comp.cells.Add(c0);
-					for (int head = 0; head < comp.cells.Count; head++)
-					{
-						int c = comp.cells[head];
-						for (int d = 0; d < 4; d++)
-						{
-							int nb = Cardinal(c, d);
-							if (nb < 0 || lsDomainStamp[nb] != stamp || depth[nb] < band || lsCompStamp[off + nb] == stamp)
-							{
-								continue;
-							}
-							lsCompStamp[off + nb] = stamp;
-							lsCompId[off + nb] = id;
-							comp.cells.Add(nb);
-						}
-					}
-				}
-			}
-			// Bottom up: water already at or below each piece's band, capacity, and the piece's priority key.
-			for (int k = lsCompCount - 1; k >= 0; k--)
-			{
-				LsComp comp = lsComps[k];
-				int present = 0;
-				long key = long.MaxValue;
-				for (int i = 0; i < comp.cells.Count; i++)
-				{
-					int c = comp.cells[i];
-					if (fill[c] > depth[c] - comp.band)
-					{
-						present++;
-					}
-					long ck = CellKey(c, drains);
-					if (ck < key)
-					{
-						key = ck;
-					}
-				}
-				comp.water = present;
-				comp.cap = comp.cells.Count;
-				for (int j = 0; j < comp.children.Count; j++)
-				{
-					LsComp ch = lsComps[comp.children[j]];
-					comp.water += ch.water;
-					comp.cap += ch.cap;
-				}
-				comp.key = key;
-				comp.children.Sort((a, b) => lsComps[a].key.CompareTo(lsComps[b].key));
-			}
-			// Top down from each band-1 piece. Usually there is one, but the L7 dry-gap join can join wet squares across a dry
-			// gap the rim cannot claim (CanClaim false keeps the gap out of the domain), leaving several: each keeps its own water.
-			int laid = 0;
-			for (int k = 0; k < lsCompCount; k++)
-			{
-				if (lsComps[k].band == 1)
-				{
-					laid += Assign(k, lsComps[k].water, drains);
-				}
-			}
-			if (laid != volume)
-			{
-				return;   // cannot happen (every unit is counted once); never write a solve that would not conserve
-			}
-			for (int i = 0; i < lsDomain.Count; i++)
-			{
-				int c = lsDomain[i];
-				int f = lsNewFill[c];
-				if (f == fill[c])
-				{
-					continue;
-				}
-				if (fill[c] == 0 && f > 0)
-				{
-					world.Claim(c, fluid);
-				}
-				fill[c] = (byte)f;
-			}
-		}
-
-		private LsComp NewComp(int band)
-		{
-			if (lsCompCount == lsComps.Count)
-			{
-				lsComps.Add(new LsComp());
-			}
-			LsComp comp = lsComps[lsCompCount++];
-			comp.band = band;
-			comp.cells.Clear();
-			comp.children.Clear();
-			comp.water = 0;
-			comp.cap = 0;
-			comp.key = 0;
-			return comp;
-		}
-
 		/// <summary>The seam start for pulse <paramref name="pulseCount"/> over <paramref name="n"/> network cells: a large stride
 		/// coprime to n, so n successive pulses visit every start once. FLOWWORKS_STRIDE_FIX_WALKS_INTO_WALL: the bare 7919
 		/// stride shares a factor with any n that is a multiple of 7919 (every start was cell 0 at n = 7919).</summary>
@@ -2430,381 +1544,6 @@ namespace RimMandrake.FlowWorks
 				b = t;
 			}
 			return a;
-		}
-
-		/// <summary>Priority of a square for the part-filled band (lowest first; the cell index makes it unique), from this
-		/// pulse's static flow order. A draining component: nearest a sink, then already wet. Otherwise nearest the
-		/// component's deepest bed, then already wet, then (while a source or input still feeds the component) FARTHEST
-		/// from the inflow, so the mouth keeps room and the inflow keeps coming.</summary>
-		private long CellKey(int c, bool drains)
-		{
-			const long Far = 1 << 20;
-			long n = width * height;
-			long wet = fill[c] > 0 && !IsLiveMouth(c) ? 0 : 1;
-			if (drains)
-			{
-				return ((sinkHops.TryGetValue(c, out int k) ? k : Far) * 2 + wet) * n + c;
-			}
-			long low = lowHops.TryGetValue(c, out int lh) ? lh : Far;
-			long src = sourceHops.Count == 0 ? 0 : sourceHops.TryGetValue(c, out int h) ? Far - h : 2 * Far;
-			return ((low * 2 + wet) * (2 * Far + 1) + src) * n + c;
-		}
-
-		/// <summary>CANAL_INLET_DIAGNOSE_FIRST_CELL_ONLY: a dug square beside a supplying source. Its unit never stays for being
-		/// wet: the source refills a brim mouth only once the mouth passes its unit on, and the neighbour pass no longer moves a
-		/// drop of one, so a wet-first mouth held a fed D=1 run at 1,0,0,0 for ever.</summary>
-		private bool IsLiveMouth(int c)
-		{
-			// FLOWWORKS_PUMP_FIX_D1_CANAL_STALLS: a pump or drill inlet is a mouth too. It is hop 0 of the flow order like a
-			// source's cell (ComputeFlowOrder), and its driver pours only when the inlet has room, so a wet-first inlet held a
-			// D=1 canal fed by a driver alone at 1,0,0,0 for ever.
-			if (externalInput != null && IsExcavated(c) && !IsSealed(c) && externalInput(c))
-			{
-				return true;
-			}
-			for (int d = 0; d < 4; d++)
-			{
-				int nb = Cardinal(c, d);
-				if (nb >= 0 && IsSource(nb) && world.CanSupply(nb) && HeadAllows(nb, c))
-				{
-					return true;
-				}
-			}
-			return false;
-		}
-
-		/// <summary>Lays <paramref name="amount"/> units into piece <paramref name="k"/> and its deeper pieces. Returns the units laid.</summary>
-		private int Assign(int k, int amount, bool drains)
-		{
-			LsComp comp = lsComps[k];
-			int free = amount;
-			for (int j = 0; j < comp.children.Count; j++)
-			{
-				free -= lsComps[comp.children[j]].water;
-			}
-			int laid = 0;
-			for (int j = 0; j < comp.children.Count; j++)
-			{
-				LsComp ch = lsComps[comp.children[j]];
-				int give = Math.Max(0, Math.Min(free, ch.cap - ch.water));
-				free -= give;
-				laid += Assign(comp.children[j], ch.water + give, drains);
-			}
-			int r = Math.Max(0, Math.Min(free, comp.cells.Count));
-			if (r > 0)
-			{
-				PickBand(comp, r, drains);
-				for (int i = 0; i < lsPick.Count; i++)
-				{
-					lsNewFill[lsPick[i]]++;
-				}
-				laid += lsPick.Count;
-			}
-			return laid;
-		}
-
-		private readonly SortedSet<long> lsFrontier = new SortedSet<long>();
-		private readonly List<int> lsDeferred = new List<int>();
-
-		/// <summary>The r squares of <paramref name="comp"/> that hold its band: grown best-first (by <see cref="CellKey"/>)
-		/// from the comp's best square through its own squares, so the part-filled band is always ONE contiguous patch.</summary>
-		private void PickBand(LsComp comp, int r, bool drains)
-		{
-			lsPick.Clear();
-			if (r >= comp.cells.Count)
-			{
-				lsPick.AddRange(comp.cells);
-				return;
-			}
-			int n = width * height;
-			int off = (comp.band - 1) * n;
-			int id = lsCompId[off + comp.cells[0]];
-			long best = long.MaxValue;
-			for (int i = 0; i < comp.cells.Count; i++)
-			{
-				long k = CellKey(comp.cells[i], drains);
-				if (k < best)
-				{
-					best = k;
-				}
-			}
-			lsPicked.Clear();
-			lsFrontier.Clear();
-			lsFrontier.Add(best);
-			lsPicked.Add((int)(best % n));
-			// LEVELSET_DIAGNOSE_SHALLOW_RIM_STAYS_DRY: a live mouth is passed THROUGH and filled last. The solve only re-lays the
-			// region's own volume, and the source adds a unit only when a mouth has room, so a brim mouth that kept its band
-			// left a shallow rim (or a square beyond the mouth) dry for ever beside a limitless source (FillsFromLimitless at
-			// the shipped flags: 194/2000 scenes). Deferred, the mouth is the square left short and the source tops it up.
-			bool fed = !drains && sourceHops.Count > 0;
-			lsDeferred.Clear();
-			while (lsPick.Count < r && lsFrontier.Count > 0)
-			{
-				long top = lsFrontier.Min;
-				lsFrontier.Remove(top);
-				int c = (int)(top % n);
-				if (fed && IsLiveMouth(c))
-				{
-					lsDeferred.Add(c);
-				}
-				else
-				{
-					lsPick.Add(c);
-				}
-				for (int d = 0; d < 4; d++)
-				{
-					int nb = Cardinal(c, d);
-					if (nb < 0 || lsCompStamp[off + nb] != lsStampValue || lsCompId[off + nb] != id || !lsPicked.Add(nb))
-					{
-						continue;
-					}
-					lsFrontier.Add(CellKey(nb, drains));
-				}
-			}
-			for (int i = 0; i < lsDeferred.Count && lsPick.Count < r; i++)
-			{
-				lsPick.Add(lsDeferred[i]);
-			}
-		}
-
-		/// <summary>Surface bucket 0..DepthCeiling for surface fill - depth in -DepthCeiling..0.</summary>
-		private int Bucket(int c)
-		{
-			return fill[c] - depth[c] + DepthCeiling;
-		}
-
-		private static int GotOrGave(Dictionary<int, int> counts, int c)
-		{
-			return counts.TryGetValue(c, out int v) ? v : 0;
-		}
-
-		/// <summary>Taker order within one surface bucket: the deepest bed, then the lowest cell index (depth does not
-		/// change during the pass, so the key is stable).</summary>
-		private long TakerKey(int c)
-		{
-			return (long)(DepthCeiling - depth[c]) * (width * height) + c;
-		}
-
-		private int CompareDeepestFirst(int a, int b)
-		{
-			int da = depth[a];
-			int db = depth[b];
-			if (da != db)
-			{
-				return db - da;
-			}
-			int sa = HopsOf(sourceHops, a);
-			int sb = HopsOf(sourceHops, b);
-			if (sa != sb)
-			{
-				return sa - sb;
-			}
-			int ka = HopsOf(sinkHops, a);
-			int kb = HopsOf(sinkHops, b);
-			if (ka != kb)
-			{
-				return kb - ka;
-			}
-			return a - b;
-		}
-
-		private static int HopsOf(Dictionary<int, int> hops, int c)
-		{
-			return hops.TryGetValue(c, out int h) ? h : 0;
-		}
-
-		/// <summary>FLOWWORKS_CHANNEL_OSCILLATION_1's per-component flow order: hops from every supplying source,
-		/// hops to every sink. Fixed for the whole pulse.</summary>
-		private void ComputeFlowOrder()
-		{
-			sourceHops.Clear();
-			sinkHops.Clear();
-			hopFrontier.Clear();
-			componentSet.Clear();
-			for (int i = 0; i < component.Count; i++)
-			{
-				int c = component[i];
-				componentSet.Add(c);
-				if (IsSource(c) && world.CanSupply(c))
-				{
-					hopFrontier.Add(c);
-				}
-			}
-			if (externalInput != null)
-			{
-				for (int i = 0; i < component.Count; i++)
-				{
-					int c = component[i];
-					if (IsExcavated(c) && !IsSealed(c) && externalInput(c))
-					{
-						sourceHops[c] = 0;   // an input cell is hop 0, like a source's own cell
-						hopFrontier.Add(c);
-					}
-				}
-			}
-			HopsFrom(sourceHops, false);
-			hopFrontier.Clear();
-			if (edgeSinksEnabled)
-			{
-				for (int i = 0; i < component.Count; i++)
-				{
-					int c = component[i];
-					if (IsExcavated(c) && world.IsSink(c) && !IsSealed(c))
-					{
-						hopFrontier.Add(c);
-					}
-				}
-			}
-			HopsFrom(sinkHops, true);
-			lowHops.Clear();
-			hopFrontier.Clear();
-			if (levelBySurfaceEnabled)
-			{
-				int deepest = 0;
-				for (int i = 0; i < component.Count; i++)
-				{
-					int c = component[i];
-					if (IsExcavated(c) && !IsSealed(c) && depth[c] > deepest)
-					{
-						deepest = depth[c];
-					}
-				}
-				for (int i = 0; i < component.Count; i++)
-				{
-					int c = component[i];
-					if (IsExcavated(c) && !IsSealed(c) && depth[c] == deepest)
-					{
-						hopFrontier.Add(c);
-					}
-				}
-				HopsFrom(lowHops, true);
-			}
-		}
-
-		private void HopsFrom(Dictionary<int, int> hops, bool seedsAreExcavated)
-		{
-			if (hopFrontier.Count == 0)
-			{
-				return;
-			}
-			if (seedsAreExcavated)
-			{
-				for (int i = 0; i < hopFrontier.Count; i++)
-				{
-					hops[hopFrontier[i]] = 0;
-				}
-			}
-			int head = 0;
-			while (head < hopFrontier.Count)
-			{
-				int c = hopFrontier[head++];
-				int hc = hops.TryGetValue(c, out int h) ? h : 0;
-				for (int i = 0; i < 4; i++)
-				{
-					int n = Cardinal(c, i);
-					if (n < 0 || hops.ContainsKey(n) || !componentSet.Contains(n) || !IsExcavated(n) || IsSealed(n))
-					{
-						continue;
-					}
-					hops[n] = hc + 1;
-					hopFrontier.Add(n);
-				}
-			}
-		}
-
-		/// <summary>LEVEL BY SURFACE (<see cref="levelBySurfaceEnabled"/>), or else GRAVITY (a neighbour gives to a deeper
-		/// cell) or OVERFLOW (a brimming neighbour gives to any cell with room); filtered by budget, no-mix, viscosity and the flow order. Fixed direction order, strict &gt;
-		/// on the score. Returns -1 for no donor.</summary>
-		private int PickDonor(int r, byte depthR, long pulseCount)
-		{
-			int best = -1;
-			int bestScore = -1;
-			for (int i = 0; i < 4; i++)
-			{
-				int n = Cardinal(r, i);
-				if (n < 0 || IsSealed(n))
-				{
-					continue;
-				}
-				byte dn;
-				byte fn;
-				bool source = IsSource(n);
-				if (source)
-				{
-					if (!world.CanSupply(n) || !HeadAllows(n, r))
-					{
-						continue;
-					}
-					dn = Superdeep;
-					fn = Superdeep;
-				}
-				else
-				{
-					dn = depth[n];
-					if (dn == 0)
-					{
-						continue;
-					}
-					fn = fill[n];
-				}
-				if (fn == 0)
-				{
-					continue;
-				}
-				object donorFluid = world.DonorFluid(n, source);
-				if (!RM_StockMath.FluidsCompatible(fill[r] > 0, world.CellFluid(r), donorFluid))
-				{
-					continue;
-				}
-				if (viscosityEnabled && !RM_StockMath.FluidMovesThisPulse(pulseCount, world.TicksPerTile(donorFluid)))
-				{
-					continue;
-				}
-				if (!source && HeldByCreep(n, donorFluid, pulseCount))
-				{
-					continue; // THICK_LIQUID_CREEP_1: filled this pulse, so it cannot pass a thick liquid on until the next
-				}
-				int score;
-				if (levelBySurfaceEnabled)
-				{
-					// Surfaces relative to ground: a source is brim-full (0); a dug cell is fill - depth (-DepthCeiling..0).
-					int drop = (fn - dn) - (fill[r] - depthR);
-					if (drop < 1 || (drop == 1 && !source && levelSetEnabled))
-					{
-						continue;
-					}
-					if (!source && (!componentSet.Contains(n)
-							|| (drop == 1 && !RM_StockMath.MayFlowBetween(
-								HopsOf(sourceHops, n), HopsOf(sinkHops, n), HopsOf(lowHops, n), dn,
-								HopsOf(sourceHops, r), HopsOf(sinkHops, r), HopsOf(lowHops, r), depthR))))
-					{
-						continue;
-					}
-					// Highest surface gives first; ties to the deeper bed, then the fixed direction order.
-					score = source ? SourceScore : ((fn - dn + DepthCeiling + 1) * ScoreScale + dn);
-				}
-				else
-				{
-					if (depthR <= dn && fn < dn)
-					{
-						continue;
-					}
-					if (!source && (!componentSet.Contains(n)
-							|| !RM_StockMath.MayFlowBetween(
-								HopsOf(sourceHops, n), HopsOf(sinkHops, n), dn,
-								HopsOf(sourceHops, r), HopsOf(sinkHops, r), depthR)))
-					{
-						continue;
-					}
-					score = source ? SourceScore : (fn * ScoreScale + dn);
-				}
-				if (score > bestScore)
-				{
-					bestScore = score;
-					best = n;
-				}
-			}
-			return best;
 		}
 
 		// ── body footprint (RM_LiquidStock.FormBody's walk) ─────────────────────

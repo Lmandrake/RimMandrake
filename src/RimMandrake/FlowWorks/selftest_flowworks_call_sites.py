@@ -71,8 +71,9 @@ SITES = [
          [r"driverInputs\.NoteWrite\( i ,"],
          "a driver write marks through RM_DriverInputs.NoteWrite", absent=[r"driverInputTick"], old='driverInputTick[i] = Find.TickManager.TicksGame;'),
     Site("P4", "RM_MapComponent_Excavation.cs", [r"private void DoPulse\(\)"],
-         [r"\(System\.Func<int, bool>\) ?driverInputs\.Contains", r"PruneDriverInputs\( \)"],
-         "the flow kernel's external input IS the driver-input set, pruned every pulse"),
+         [r"PruneDriverInputs\( \)"],
+         "the driver-input set is pruned every pulse (it no longer feeds the kernel: the whole-notch flow order it seeded was "
+         "deleted with RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES)"),
     Site("P4", "RM_MapComponent_Excavation.cs", [r"private void PruneDriverInputs\(\)"],
          [r"driverInputs\.Prune\("], "the prune goes through RM_DriverInputs.Prune", absent=[r"driverInputTick"], old='driverInputTick.Remove(k);'),
 
@@ -120,10 +121,11 @@ SITES = [
          "the release tick reaches the cooling"),
 
     # ── P7 e393177fd FLUID_PALETTE_EXHAUSTION_MEND_KEY_ZERO ──
-    Site("P7", "RM_FlowKernel.cs", [r"private void ResolveComponent\("],
-         [r"if \( fill\[r\] == 0 && ! world\.CanClaim\( world\.DonorFluid\( donor , IsSource\( donor \) \) \) \)"],
-         "the kernel refuses a dry recipient that cannot record the fluid",
-         order=(r"world\.CanClaim\(", r"world\.TryDebitLevel\( donor \)")),
+    # (the whole-notch ResolveComponent's donor check went with that engine, RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES;
+    # the exact domain walk holds the same rule)
+    Site("P7", "RM_FlowKernel.cs", [r"private void ExactDomain\("],
+         [r"if \( wn == 0 && ! exInDom\.Contains\( nb \) && ! world\.CanClaim\( fl \) \)"],
+         "the kernel refuses a dry recipient that cannot record the fluid"),
     Site("P7", "RM_MapComponent_Excavation.cs", [r"bool RM_IFlowWorld\.CanClaim\( object fluid \)"],
          [r"return TryPaletteKey\("], "the world's CanClaim asks the real palette"),
     Site("P7", "RM_MapComponent_Excavation.cs", [r"private bool TryPaletteKey\("],

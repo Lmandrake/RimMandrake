@@ -82,13 +82,16 @@ def ops_scene(seed):
     return sc + ({}, events)
 
 
-def oracle(sc, surface=False, level_set=False, creep=False, head_rule=False, exact=False):
+def oracle(sc):
+    """The exact-level engine (level_water.py through PulseOracle(level_exact=True)) at the shipped flags. The whole-notch
+    modes (depth, surface, levelset, shipped, pond) were deleted with the C# whole-notch kernel
+    (RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES): there is no second engine left to compare."""
     w, h, pulses, band, bodies, src, digs = sc[:7]
     beds = (sc[7] or None) if len(sc) > 7 else None
     events = sc[8] if len(sc) > 8 else []
     o = v.PulseOracle(w, h, dict(src), {b: dict(d) for b, d in bodies.items()}, per=1, budget=True,
-                      sink_band=band or None, algo="fixed", level_surface=surface, level_set=level_set,
-                      creep_water=creep, creep_thick=creep, head_rule=head_rule, beds=beds, level_exact=exact)
+                      sink_band=band or None, algo="fixed", level_surface=True, level_set=True,
+                      creep_water=True, creep_thick=True, head_rule=False, beds=beds, level_exact=True)
     order = []
     for c, d in digs:
         o.dig(c, d)
@@ -97,15 +100,12 @@ def oracle(sc, surface=False, level_set=False, creep=False, head_rule=False, exa
     parts = []
     for _ in range(pulses):
         o.pulse()
-        line = [str(o.W[c] if exact else o.F[c]) for c in order]
+        line = [str(o.W[c]) for c in order]
         for (p, kind, c, dl) in events:
             if p == len(parts):
                 line.append("e%d" % (v.level_water.pour(o, c, dl) if kind == 0 else v.level_water.fill_in(o, c)))
         parts.append(" ".join(line))
-    if exact:
-        tail = " ".join("L" if o.bodies[b]["limitless"] else str(v.level_water.pond_dl(o, b)) for b in sorted(o.bodies))
-    else:
-        tail = " ".join("L" if o.bodies[b]["limitless"] else "%.0f" % o.bodies[b]["stock"] for b in sorted(o.bodies))
+    tail = " ".join("L" if o.bodies[b]["limitless"] else str(v.level_water.pond_dl(o, b)) for b in sorted(o.bodies))
     return " | ".join(p for p in parts) + " | " + tail if parts else tail
 
 
@@ -294,12 +294,8 @@ def main():
             sys.exit("selftest build failed")
         dll = stock_wrapper._to_windows_path(os.path.join(stage_dir, "bin", "Release", "net8.0", "RimMandrakeFlowWorks.SelfTest.dll"))
         failed = []
-        # Three engines: the pre-surface rule, levelBySurfaceEnabled (WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND), and that plus
-        # levelSetEnabled (WATER_LEVELSET_SOLVE, shipped ON); "shipped" adds both creeps (and with them the mouth top-up,
-        # CANAL_MOUTH_DIAGNOSE_BLINKS_DRY_HALF_TIME).
-        # "pond" (POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD, D2): shipped plus the head rule, on scenes whose source cells carry
-        # beds and whose ponds stand below their brims.
-        # "exact" / "exactpond" (WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES): levelExactEnabled against northstar/level_water.py,
+        # "exact" / "exactpond" (WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES): the kernel (exact-only since
+        # RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES deleted the whole-notch modes) against northstar/level_water.py,
         # every dug cell's water in dL after every pulse and each pond's dL at the end; on the plain scenes (beds read 4) and
         # on the pond scenes (beds 2..6, ponds below their brims).
         # "exactops" (PUMP_CANAL_FEED / HOSE_LEFTOVER / CANAL_FILLIN fixes): exact, plus pours and fill-ins between pulses
@@ -308,12 +304,12 @@ def main():
         # (SelfTest/WaterBodyMendChecks.cs over RM_WaterBodyMath.cs) against union-find pieces, body sizes after every toggle.
         # "gaps" (SURFACEGAP_PARITY_FIX_TIES_ARE_UNSORTED): RM_SurfaceGap.Measure (LevelExactChecks.SurfaceGapScenes) against
         # level_water.surface_gaps on random scenes with mixed fluids, shut sluices, rects and fields of tied bodies.
-        modes = sys.argv[2].split(",") if len(sys.argv) > 2 else ("depth", "surface", "levelset", "shipped", "pond", "exact", "exactpond", "exactops", "bodies", "gaps")
-        known = ("depth", "surface", "levelset", "shipped", "pond", "exact", "exactpond", "exactops", "bodies", "gaps")
+        known = ("exact", "exactpond", "exactops", "bodies", "gaps")
+        modes = sys.argv[2].split(",") if len(sys.argv) > 2 else known
         if n < 1 or [m for m in modes if m not in known]:
             sys.exit("N must be >= 1 and every mode one of %s (a typo ran an unlabelled engine; N=0 compared nothing)" % ",".join(known))
         for mode in modes:
-            scenes = ponds if mode in ("pond", "exactpond") else opsc if mode == "exactops" else bodysc if mode == "bodies" else gapsc if mode == "gaps" else plain
+            scenes = ponds if mode == "exactpond" else opsc if mode == "exactops" else bodysc if mode == "bodies" else gapsc if mode == "gaps" else plain
             enc = encode_bodies if mode == "bodies" else encode_gaps if mode == "gaps" else encode
             os.makedirs(os.path.join(stage_dir, "bin"), exist_ok=True)
             scene_file = os.path.join(stage_dir, "bin", "oracle_scenes_%s.txt" % mode)   # in the stage, never the clone
@@ -321,11 +317,10 @@ def main():
                 f.write("\n".join(enc(sc) for sc in scenes) + "\n")
             t0 = time.time()
             exact = mode in ("exact", "exactpond", "exactops")
-            want = [oracle_bodies(sc) for sc in scenes] if mode == "bodies" else [oracle_surface_gaps(sc) for sc in scenes] if mode == "gaps" else [oracle(sc, mode != "depth", mode in ("levelset", "shipped", "pond"), mode in ("shipped", "pond"),
-                           mode == "pond", exact) for sc in scenes]
+            want = [oracle_bodies(sc) for sc in scenes] if mode == "bodies" else [oracle_surface_gaps(sc) for sc in scenes] if mode == "gaps" else [oracle(sc) for sc in scenes]
             t1 = time.time()
             cs_mode = "exact" if exact else mode
-            args = [dotnet, dll, "--oracle-scenes", stock_wrapper._to_windows_path(scene_file)] + ([cs_mode] if mode != "depth" else [])
+            args = [dotnet, dll, "--oracle-scenes", stock_wrapper._to_windows_path(scene_file), cs_mode]
             if mode == "gaps":
                 args = [dotnet, dll, "--surface-gaps", stock_wrapper._to_windows_path(scene_file)]
             res = winbuild.run_interop_captured(args, capture_output=True, text=True, timeout=300)

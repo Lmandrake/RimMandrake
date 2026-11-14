@@ -17,19 +17,7 @@ namespace RimMandrake.FlowWorks.SelfTest
         /// <summary>The shipped kernel configuration (RimMandrakeFlowWorksSettings defaults through DoPulse's copy lines).</summary>
         private static void Shipped(ArrayWorld world)
         {
-            world.k.levelBySurfaceEnabled = true;
-            world.k.levelSetEnabled = true;
-            world.k.creepWaterEnabled = true;
             world.k.viscosityEnabled = true;
-            world.k.sourceDrawdown = world.Drawdown;
-            world.k.returnLevel = (src, dug) =>
-            {
-                var body = world.bodies[world.bodyOf[src]];
-                float cap = body.cells.Sum(c => world.bed.TryGetValue(c, out int b) ? b : 0);
-                if (body.limitless || body.stock + 1f > cap + 1e-4f) return false;
-                body.stock += 1f;
-                return true;
-            };
         }
 
         /// <summary>The pond's water per square as StagePond lays it from the stock (Σ == floor(stock), S1).</summary>
@@ -45,7 +33,6 @@ namespace RimMandrake.FlowWorks.SelfTest
         private static void Step(ArrayWorld world, List<int> seeds, long p)
         {
             world.k.Pulse(seeds, p);
-            world.k.ReturnToPonds(seeds);
             world.Sync();
         }
 
@@ -67,17 +54,17 @@ namespace RimMandrake.FlowWorks.SelfTest
                 {
                     Step(world, canal, p);
                     int[] pic = Picture(world, body);
-                    log.Add("p" + p + " stock " + body.stock + " pond [" + string.Join(" ", pic) + "] canal [" + string.Join(" ", canal.Select(c => world.k.fill[c])) + "]");
+                    log.Add("p" + p + " stock " + body.stock + " pond [" + string.Join(" ", pic) + "] canal [" + string.Join(" ", canal.Select(c => world.WaterLevels(c))) + "]");
                 }
                 Console.WriteLine("    S5A trace:\n      " + string.Join("\n      ", log.Where((_, i) => i < 12 || i % 10 == 9)));
                 int[] end = Picture(world, body);
-                float total = body.stock + canal.Sum(c => world.k.fill[c]);
+                float total = body.stock + canal.Sum(c => world.WaterLevels(c));
                 Assert(Math.Abs(total - 36f) < 1e-4f, "conserved: " + total);
                 Assert(end.Sum() == (int)Math.Floor(body.stock), "picture holds the stock: Σ " + end.Sum() + " vs " + body.stock);
                 // One surface: every wet square of pond and canal stands within ONE level of every other (the smallest unit).
-                var surf = new List<int>();
-                surf.AddRange(end.Select(w => w - 4));
-                surf.AddRange(canal.Select(c => world.k.fill[c] - world.k.depth[c]));
+                var surf = new List<float>();
+                surf.AddRange(end.Select(w => (float)(w - 4)));
+                surf.AddRange(canal.Select(c => world.WaterLevels(c) - world.k.depth[c]));
                 Assert(surf.Max() - surf.Min() <= 1, "level surface: pond+canal surfaces span " + surf.Min() + ".." + surf.Max() + "\n" + log.Last());
             });
 
@@ -101,9 +88,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 for (int p = 1; p <= 30; p++)
                 {
                     Step(world, seeds, p);
-                    int[] pf = pond.Select(c => (int)world.k.fill[c]).ToArray();
+                    int[] pf = pond.Select(c => (int)world.WaterLevels(c)).ToArray();
                     worst = Math.Max(worst, pf.Max() - pf.Min());
-                    log.Add("p" + p + " pond [" + string.Join(" ", pf) + "] trench [" + string.Join(" ", trench.Select(c => world.k.fill[c])) + "]");
+                    log.Add("p" + p + " pond [" + string.Join(" ", pf) + "] trench [" + string.Join(" ", trench.Select(c => world.WaterLevels(c))) + "]");
                 }
                 Console.WriteLine("    S2 trace:\n      " + string.Join("\n      ", log.Where((_, i) => i < 16)));
                 Assert(worst <= 1, "the dug pond's four squares (one floor) differ by " + worst + " levels at some pulse\n" + string.Join("\n", log.Take(10)));
@@ -142,13 +129,13 @@ namespace RimMandrake.FlowWorks.SelfTest
                 for (int p = 1; p <= 60; p++)
                 {
                     Step(world, canal, p);
-                    string st = body.stock + "|" + string.Join(" ", canal.Select(c => world.k.fill[c]));
+                    string st = body.stock + "|" + string.Join(" ", canal.Select(c => world.WaterLevels(c)));
                     if (p > 20 && prev != null && st != prev) moves++;
                     prev = st;
-                    log.Add("p" + p + " stock " + body.stock + " canal [" + string.Join(" ", canal.Select(c => world.k.fill[c])) + "]");
+                    log.Add("p" + p + " stock " + body.stock + " canal [" + string.Join(" ", canal.Select(c => world.WaterLevels(c))) + "]");
                 }
                 Console.WriteLine("    S5B trace:\n      " + string.Join("\n      ", log.Where((_, i) => i < 8 || i % 10 == 9)));
-                float total = body.stock + canal.Sum(c => world.k.fill[c]);
+                float total = body.stock + canal.Sum(c => world.WaterLevels(c));
                 Assert(Math.Abs(total - 4f) < 1e-4f, "conserved: " + total);
                 Assert(moves == 0, "settled: the state changed " + moves + " times after pulse 20\n" + log.Last());
             });

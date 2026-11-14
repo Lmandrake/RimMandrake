@@ -248,7 +248,6 @@ namespace RimMandrake.FlowWorks.SelfTest.VV
 			var body = w.AddBody(limitless, 300f, bodyCells);
 			var digs = Enumerable.Range(10, 10).Select(x => 2 * 20 + x).ToList();
 			foreach (int c in digs) w.k.depth[c] = 1;
-			w.k.creepWaterEnabled = true;
 			int mouthDry = 0;
 			for (int p = 1; p <= pulses; p++)
 			{

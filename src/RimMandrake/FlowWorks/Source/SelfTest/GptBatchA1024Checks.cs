@@ -48,8 +48,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 foreach (bool disabled in new[] { false, true })
                 {
                     var w = new ArrayWorld(8, 3);
-                    w.k.levelBySurfaceEnabled = true; w.k.levelSetEnabled = true; w.k.creepWaterEnabled = true;
-                    w.k.creepEnabled = true; w.k.viscosityEnabled = true; w.k.levelExactEnabled = true;
+                    
+                    w.k.viscosityEnabled = true; 
                     var body = w.AddBody(false, 4f, new[] { 1 * 8 + 1 });
                     w.bed[1 * 8 + 1] = 4;
                     var canal = new System.Collections.Generic.List<int> { 1 * 8 + 2, 1 * 8 + 3, 1 * 8 + 4 };
@@ -82,7 +82,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 foreach (byte dep in new byte[] { 4, 10, 40 })
                 {
                     var w = new ArrayWorld(5, 3);
-                    w.k.levelBySurfaceEnabled = true; w.k.levelSetEnabled = true; w.k.levelExactEnabled = false;
+                    
                     int[] cells = { 1 * 5 + 1, 1 * 5 + 2, 1 * 5 + 3 };
                     byte[] start = { 3, 2, 1 };
                     for (int i = 0; i < 3; i++) { w.k.depth[cells[i]] = dep; w.k.fill[cells[i]] = start[i]; }

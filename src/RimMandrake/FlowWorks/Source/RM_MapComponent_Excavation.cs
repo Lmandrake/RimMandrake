@@ -2959,35 +2959,22 @@ namespace RimMandrake.FlowWorks
 			flowKernel.fill = fillGrid;
 			// WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES (owner 2026-10-17, ruled exactly level): decilitres, one surface per body.
 			flowKernel.part = partGrid;
-			flowKernel.levelExactEnabled = true;
 			flowKernel.flowPerPulse = RimMandrakeFlowWorksSettings.FlowPerPulse;
 			flowKernel.edgeSinksEnabled = RimMandrakeFlowWorksSettings.edgeSinksEnabled || MapControls.RM_MapControls.AnyDrainEdge(map);
 			flowKernel.viscosityEnabled = RimMandrakeFlowWorksSettings.viscosityEnabled;
-			flowKernel.creepEnabled = RimMandrakeFlowWorksSettings.viscosityEnabled && RimMandrakeFlowWorksSettings.thickCreepEnabled;
-			flowKernel.creepWaterEnabled = RimMandrakeFlowWorksSettings.waterFrontCreepEnabled;
-			flowKernel.levelBySurfaceEnabled = RimMandrakeFlowWorksSettings.levelBySurfaceEnabled;
-			flowKernel.levelSetEnabled = RimMandrakeFlowWorksSettings.levelBySurfaceEnabled && RimMandrakeFlowWorksSettings.levelSetEnabled;
 			// FLOW_ORDER_EXTERNAL_INPUT_1 part 2: the per-partition cap, and moving seams for a network bigger than it.
 			flowKernel.maxComponentCells = RimMandrakeFlowWorksSettings.MaxNetworkCells;
 			flowKernel.seamRotationEnabled = RimMandrakeFlowWorksSettings.networkSeamsMoveEnabled;
-			// FLOW_ORDER_EXTERNAL_INPUT_1: cells a driver (pump, drill) fed recently seed the flow order.
+			// FLOW_ORDER_EXTERNAL_INPUT_1: cells a driver (pump, drill) fed recently. They seeded the whole-notch engine's flow
+			// order, deleted with RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES; the exact solve needs no order. Kept pruned.
 			PruneDriverInputs();
-			flowKernel.externalInput = RimMandrakeFlowWorksSettings.pumpFedSpreadEnabled && driverInputs.Count > 0
-				? (System.Func<int, bool>)driverInputs.Contains
-				: null;
 			pulseSeeds.Clear();
 			foreach (IntVec3 seed in excavatedCells)
 			{
 				pulseSeeds.Add(map.cellIndices.CellToIndex(seed));
 			}
 			// POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD, D2 (owner 2026-10-16: "It should slosh around until it levels, pond or canal
-			// or otherwise."): a pond gives only while its surface stands above the ditch's water, and a canal above a pond's
-			// surface runs back into it (after the flow, mouth-paced).
-			// Exact-level water solves ponds and canals as one surface (RM_FlowKernel.ResolveExact): the whole-notch head rule and
-			// its return half are the old engine's and stand down.
-			// The whole-notch head rule (sourceDrawdown/returnLevel) was the whole-notch engine's; exact water levels by body.
-			flowKernel.sourceDrawdown = null;
-			flowKernel.returnLevel = null;
+			// or otherwise."): exact-level water solves ponds and canals as one surface (RM_FlowKernel.ResolveExact).
 			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: the flow runs in slices of about PulseSliceCells cells a tick (this tick
 			// first); the steps after it wait for the last slice (FinishPulseSlices).
 			// Pocket rain (ApplyRain decided it for this pulse): the kernel lands it pocket by pocket as it walks.

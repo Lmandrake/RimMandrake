@@ -115,12 +115,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 		private static ArrayWorld World(int w, int h)
 		{
 			var world = new ArrayWorld(w, h);
-			world.k.levelBySurfaceEnabled = true;
-			world.k.levelSetEnabled = true;
-			world.k.creepWaterEnabled = true;
-			world.k.creepEnabled = true;
 			world.k.viscosityEnabled = true;
-			world.k.levelExactEnabled = true;
 			return world;
 		}
 

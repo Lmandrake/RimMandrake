@@ -58,12 +58,7 @@ namespace RimMandrake.FlowWorks.SelfTest
         private static ArrayWorld World(int w, int h, bool exact)
         {
             var world = new ArrayWorld(w, h);
-            world.k.levelBySurfaceEnabled = true;
-            world.k.levelSetEnabled = true;
-            world.k.creepWaterEnabled = true;
-            world.k.creepEnabled = true;
             world.k.viscosityEnabled = true;
-            world.k.levelExactEnabled = exact;
             return world;
         }
 
@@ -289,27 +284,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(ring.All(c => s.k.WaterOf(c) == 0) && core.All(c => s.k.WaterOf(c) == 4L * U), "under the ledge the ring stays dry");
             });
 
-            Case("DeepDig_legacy_notch_kernel_survives_past_2m", () =>
-            {
-                // exact level OFF (a setting): the notch kernel bucketed surfaces over -4..0 and indexed out of range past 2 m
-                const int W = 8, H = 8;
-                var (ring, core) = Square(W, 2, 2);
-                var all = ring.Concat(core).ToList();
-                foreach (bool bySurface in new[] { true, false })
-                {
-                    var w = World(W, H, false);
-                    w.k.levelBySurfaceEnabled = bySurface;
-                    foreach (int c in ring) w.k.depth[c] = 8;
-                    foreach (int c in core) { w.k.depth[c] = 14; }
-                    foreach (int c in ring.Take(6)) { w.k.fill[c] = 8; w.cellFluid[c] = ArrayWorld.Water; }
-                    int sum0 = all.Sum(c => w.k.fill[c]);
-                    for (int p = 0; p < 300; p++) w.Pulse(all);
-                    int sum1 = all.Sum(c => w.k.fill[c]);
-                    Assert(sum0 == 48 && sum1 == 48, "notch kernel (bySurface " + bySurface + ") conserves 48 notches: " + sum1);
-                    Assert(core.Sum(c => w.k.fill[c]) >= 24, "water ran down into the 7 m core (bySurface " + bySurface + "): "
-                        + string.Join(",", core.Select(c => w.k.fill[c])));
-                }
-            });
+            // DeepDig_legacy_notch_kernel_survives_past_2m was deleted with the whole-notch kernel it guarded
+            // (RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES).
 
             Case("DeepDig_pits_past_2m_trap_by_band_ladders_and_ramps_by_delta", () =>
             {

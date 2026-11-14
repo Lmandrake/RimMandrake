@@ -239,9 +239,8 @@ namespace RimMandrake.FlowWorks.SelfTest
             if (args.Length > 0 && args[0] == "--oracle-scenes")
             {
                 // A file, not stdin: a large pipe into dotnet.exe across the WSL boundary hangs (measured, 3000 scenes).
-                // A third argument "surface" runs the kernel with levelBySurfaceEnabled (WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND);
-                // "levelset" adds levelSetEnabled (WATER_LEVELSET_SOLVE); "shipped" adds both creeps on top
-                // (CANAL_MOUTH_DIAGNOSE_BLINKS_DRY_HALF_TIME: the mouth top-up runs only with water creep on).
+                // A third argument "exact" runs the kernel (exact-level, its only engine since
+                // RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES deleted the whole-notch modes) and prints water in dL.
                 using (var reader = args.Length > 1 ? new System.IO.StreamReader(args[1]) : Console.In)
                 {
                     string mode = args.Length > 2 ? args[2] : "";
@@ -251,13 +250,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                     {
                         return WaterBodyMendChecks.OracleRun(reader, Console.Out);
                     }
-                    // "pond" = shipped plus the pond head rule (POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD, D2).
-                    bool shipped = mode == "shipped" || mode == "pond";
-                    // "exact" = WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: levelExactEnabled on the shipped flags (decilitres, one
-                    // surface per body); prints water in dL. Against northstar/level_water.py.
-                    bool exact = mode == "exact";
-                    return OracleScenes.Run(reader, Console.Out, mode == "surface" || mode == "levelset" || shipped || exact,
-                        mode == "levelset" || shipped || exact, shipped || exact, mode == "pond", exact);
+                    if (mode != "exact")
+                    {
+                        Console.Error.WriteLine("--oracle-scenes mode '" + mode + "': only exact and bodies remain (the whole-notch modes were deleted)");
+                        return 2;
+                    }
+                    return OracleScenes.Run(reader, Console.Out);
                 }
             }
 
@@ -1986,24 +1984,6 @@ namespace RimMandrake.FlowWorks.SelfTest
             KernelCase("Kernel_fuzz_ledger_bounds_nomix_settles", () => FlowKernelFuzz.Fuzz(5000, 101));
             KernelCase("Kernel_limitless_source_fills_its_component", () => FlowKernelFuzz.FillsFromLimitless(2000, 202));
             KernelCase("LEVELSET_DIAGNOSE_SHALLOW_RIM_STAYS_DRY_limitless_source_fills_at_shipped_flags", () => FlowKernelFuzz.FillsFromLimitless(2000, 1000, shipped: true));
-            Case("FLOW_ORDER_EXTERNAL_INPUT_1_pump_fed_channel_spreads_and_settles", () =>
-            {
-                string r = FlowKernelFuzz.PumpFedChannelSpreads();
-                Console.WriteLine("      " + r);
-                Assert(r.StartsWith("OK"), r);
-            });
-            Case("PUMP_FED_CHANNEL_STALL_PROVE_AFTER_RELOAD_brimming_outlet_reload_resumes_spread", () =>
-            {
-                string r = FlowKernelFuzz.PumpFedChannelResumesAfterReload();
-                Console.WriteLine("      " + r);
-                Assert(r.StartsWith("OK"), r);
-            });
-            Case("FLOWWORKS_PUMP_FIX_D1_CANAL_STALLS_driver_fed_d1_canal_fills", () =>
-            {
-                string r = FlowKernelFuzz.DriverFedD1CanalFills();
-                Console.WriteLine("      " + r);
-                Assert(r.StartsWith("OK"), r);
-            });
             Case("FLOWWORKS_SLUICE_FIX_BELOW_SOURCE_LUCK_upstream_of_shut_sluice_fills", () =>
             {
                 string r = FlowKernelFuzz.SealedSinkBelowSourceFillsUpstream();
@@ -2013,12 +1993,6 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("FLOWWORKS_STRIDE_FIX_WALKS_INTO_WALL_seam_start_covers_network", () =>
             {
                 string r = FlowKernelFuzz.SeamSlotCoversNetwork();
-                Console.WriteLine("      " + r);
-                Assert(r.StartsWith("OK"), r);
-            });
-            Case("FLOW_ORDER_EXTERNAL_INPUT_1_part2_oversized_network_exchanges_across_seams", () =>
-            {
-                string r = FlowKernelFuzz.OversizedNetworkExchanges();
                 Console.WriteLine("      " + r);
                 Assert(r.StartsWith("OK"), r);
             });
@@ -2042,30 +2016,6 @@ namespace RimMandrake.FlowWorks.SelfTest
                 var taken = RM_TakenByLandKernel.TakeWhere(book, x => x % 2 == 0);
                 Assert(taken.Count == 2 && book.Count == 3 && !book.Contains(2) && !book.Contains(4), "TakeWhere removes exactly the picked records");
             });
-            Case("THICK_LIQUID_CREEP_1_front_speed_down_a_40_cell_channel", () =>
-            {
-                string r = FlowKernelFuzz.FrontSpeed();
-                Console.WriteLine("      " + r);
-                Assert(r.StartsWith("OK"), r);
-            });
-            Case("WATER_SURFACE_REWIRE_flat_channel_levels", () =>
-            {
-                string r = FlowKernelFuzz.SurfaceFlatChannelLevels();
-                Console.WriteLine("      " + r);
-                Assert(r.StartsWith("OK"), r);
-            });
-            Case("WATER_SURFACE_REWIRE_edge_drained_channel_empties", () =>
-            {
-                string r = FlowKernelFuzz.SurfaceEdgeDrainedChannelEmpties();
-                Console.WriteLine("      " + r);
-                Assert(r.StartsWith("OK"), r);
-            });
-            Case("WATER_SURFACE_REWIRE_deep_hole_beside_shallow_trench_levels_by_surface", () =>
-            {
-                string r = FlowKernelFuzz.SurfaceDeepHoleBesideShallowTrench();
-                Console.WriteLine("      " + r);
-                Assert(r.StartsWith("OK"), r);
-            });
             Case("WATER_SURFACE_REWIRE_source_still_fills_channel", () =>
             {
                 string r = FlowKernelFuzz.SurfaceSourceStillFillsChannel();
@@ -2080,11 +2030,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             });
             // WATER_LEVELSET_SOLVE (owner 2026-10-16, station 1: "levelset down to a smooth 0 or 1 ... not 0, deep, 0").
             foreach (var (name, fn) in new (string, Func<string>)[] {
-                ("low_volume_wide_basin_one_patch", LevelSetChecks.LowVolumeWideBasinOnePatch),
-                ("enough_volume_flat_sheet", LevelSetChecks.EnoughVolumeFlatSheet),
                 ("stepped_floor_flat_surface", LevelSetChecks.SteppedFloorFlatSurface),
-                ("conserves_and_edge_drains", LevelSetChecks.ConservesAndDrains),
-                ("striped_save_gathers", LevelSetChecks.StripedSaveGathers),
                 ("wide_basin_cost", LevelSetChecks.WideBasinCost) })
             {
                 Case("WATER_LEVELSET_" + name, () =>
@@ -2097,9 +2043,6 @@ namespace RimMandrake.FlowWorks.SelfTest
             // The WATER_SURFACE_REWIRE cases again with the solve (shipped ON).
             FlowKernelFuzz.LevelSet = true;
             foreach (var (name, fn) in new (string, Func<string>)[] {
-                ("flat_channel_levels", FlowKernelFuzz.SurfaceFlatChannelLevels),
-                ("edge_drained_channel_empties", FlowKernelFuzz.SurfaceEdgeDrainedChannelEmpties),
-                ("deep_hole_beside_shallow_trench", FlowKernelFuzz.SurfaceDeepHoleBesideShallowTrench),
                 ("source_still_fills_channel", FlowKernelFuzz.SurfaceSourceStillFillsChannel),
                 ("random_scenes_settle_and_conserve", FlowKernelFuzz.SurfaceRandomScenesSettleAndConserve) })
             {
@@ -2111,12 +2054,13 @@ namespace RimMandrake.FlowWorks.SelfTest
                 });
             }
             FlowKernelFuzz.LevelSet = false;
-            Case("CANAL_FILL_FRONT_TRACE_MOUTH_STAYS_DRY_dead_end_fills_from_far_end", () =>
-            {
-                string r = FlowKernelFuzz.CanalMouthDeadEndFillsFromFarEnd();
-                Console.WriteLine("      " + r);
-                Assert(r.StartsWith("OK"), r);
-            });
+            // Deleted with the whole-notch engine (RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES, 2026-11-13): they pinned
+            // its mechanisms (driver-input flow order, seam exchange by flow order, thick/water creep fronts, the one-unit surface
+            // rule, level-set bands, the mouth top-up), which the shipped exact-level kernel never ran: FLOW_ORDER_EXTERNAL_INPUT_1
+            // pump_fed_channel_spreads + part2_oversized_network_exchanges, PUMP_FED_CHANNEL_STALL_PROVE_AFTER_RELOAD,
+            // FLOWWORKS_PUMP_FIX_D1_CANAL_STALLS, THICK_LIQUID_CREEP_1_front_speed, WATER_SURFACE_REWIRE flat_channel / edge_drained /
+            // deep_hole (and their WATER_LEVELSET_rewire_ twins), WATER_LEVELSET low_volume_wide_basin / enough_volume_flat_sheet /
+            // conserves_and_edge_drains / striped_save_gathers, CANAL_FILL_FRONT_TRACE_MOUTH_STAYS_DRY.
             Case("Ruling1_touching_water_and_tar_stay_separate", () =>
             {
                 string r = FlowKernelFuzz.TouchingFluidsStaySeparate();

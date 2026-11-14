@@ -333,7 +333,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 				Cases++;
 				int W = r.Next(3, 10), H = r.Next(3, 10);
 				var w = new ArrayWorld(W, H);
-				if (shipped) { w.k.levelBySurfaceEnabled = true; w.k.levelSetEnabled = true; w.k.viscosityEnabled = true; w.k.creepWaterEnabled = true; }
+				if (shipped) { w.k.viscosityEnabled = true; }
 				int src = r.Next(W * H);
 				w.natural[src] = true; w.terrainFluid[src] = ArrayWorld.Water;
 				var digs = new List<int>();
@@ -354,136 +354,6 @@ namespace RimMandrake.FlowWorks.SelfTest
 		}
 
 		// ── regression cases for the confirmed findings (flowworks_playtest_automation_2026-10-06.md) ──
-
-		/// <summary>FLOW_ORDER_EXTERNAL_INPUT_1: a pump-fed flat channel with no natural source. Without an input
-		/// seed every flow key is equal and the liquid stays beside the pump; with the pump cell as an external input
-		/// it spreads to the far end, and once the pump stops the channel settles (no period-2 shuttle).
-		/// Returns "OK ..." or "BROKEN ...".</summary>
-		public static string PumpFedChannelSpreads()
-		{
-			int Run(bool seeded, out bool settled)
-			{
-				var w = new ArrayWorld(10, 3);
-				var digs = new List<int>();
-				for (int x = 0; x < 10; x++) { int c = 1 * 10 + x; w.k.depth[c] = 2; digs.Add(c); }
-				int pump = digs[0];
-				w.k.externalInput = seeded ? (Func<int, bool>)(i => i == pump) : null;
-				for (int p = 0; p < 80; p++) { w.k.fill[pump] = 2; if (w.cellFluid[pump] == null) w.cellFluid[pump] = ArrayWorld.Water; w.Pulse(digs); Pulses++; }
-				for (int p = 0; p < 60; p++) { w.Pulse(digs); Pulses++; }
-				byte[] a = (byte[])w.k.fill.Clone();
-				w.Pulse(digs); byte[] b = (byte[])w.k.fill.Clone();
-				w.Pulse(digs); byte[] c2 = (byte[])w.k.fill.Clone();
-				settled = a.SequenceEqual(b) && b.SequenceEqual(c2);
-				return w.k.fill[digs[9]];
-			}
-			int farSeeded = Run(true, out bool settledSeeded);
-			int farPlain = Run(false, out _);
-			return farSeeded > 0 && settledSeeded && farPlain == 0
-				? $"OK: far end holds {farSeeded} with the pump as input (without: {farPlain}); settled after the pump stops"
-				: $"BROKEN: farSeeded={farSeeded} settled={settledSeeded} farPlain={farPlain}";
-		}
-
-		/// <summary>PUMP_FED_CHANNEL_STALL_PROVE_AFTER_RELOAD (P4, GPT G3.1): the brimming-outlet reload test, on the PRODUCTION
-		/// driver-input rule (RM_DriverInputs) and the production kernel. A pump feeds a 6-cell flat channel until it brims and
-		/// settles; the game is "reloaded" (the unsaved input set starts empty); the player digs the channel on by 6 dry cells
-		/// and the pump keeps running on its 250-tick cycle (pour one level when its cell has room, else it is backed up).
-		/// With <paramref name="backedUpMarks"/> false (the shipped rule before P4: only a write that raises the fill marks)
-		/// nothing ever re-marks the brimming outlet and the extension stays dry; true is the fix. Returns the far end's fill.
-		/// The cycle below restates Building_LiquidPump.TryPour's backed-up condition (Verse, not compiled here);
-		/// selftest_flowworks_call_sites.py pins that exact condition and its NoteDriverBackedUp call in the production file.</summary>
-		public static int PumpFedReloadFarFill(bool backedUpMarks, bool reload)
-		{
-			var w = new ArrayWorld(14, 3);
-			var digs = new List<int>();
-			for (int x = 0; x < 6; x++) { int c = 1 * 14 + x; w.k.depth[c] = 2; digs.Add(c); }
-			int pump = digs[0];
-			var inputs = new RM_DriverInputs();
-			int now = 0;
-			void Cycle(bool running)
-			{
-				now += RM_PumpMath.CycleTicks;
-				if (running)
-				{
-					if (w.k.fill[pump] < w.k.depth[pump])
-					{
-						int old = w.k.fill[pump];
-						w.k.fill[pump] = (byte)(old + 1);
-						if (w.cellFluid[pump] == null) w.cellFluid[pump] = ArrayWorld.Water;
-						inputs.NoteWrite(pump, old, old + 1, now);
-					}
-					else if (backedUpMarks)
-					{
-						inputs.NoteBackedUp(pump, now);
-					}
-				}
-				inputs.Prune(now, i => w.k.depth[i] == 0);
-				w.k.externalInput = inputs.Count > 0 ? (Func<int, bool>)inputs.Contains : null;
-				w.Pulse(digs); Pulses++;
-			}
-			for (int p = 0; p < 120; p++) Cycle(true);
-			if (reload) inputs = new RM_DriverInputs();
-			for (int x = 6; x < 12; x++) { int c = 1 * 14 + x; w.k.depth[c] = 2; digs.Add(c); }
-			for (int p = 0; p < 200; p++) Cycle(true);
-			return w.k.fill[digs[digs.Count - 1]];
-		}
-
-		/// <summary>P4 verdict plus its can-it-fail probe: the fixed rule fills the far end after a reload; the old rule
-		/// (backed-up pressure ignored) must leave it dry, or this scene cannot see the defect. Returns "OK ..." or "BROKEN ...".</summary>
-		public static string PumpFedChannelResumesAfterReload()
-		{
-			int fixedFar = PumpFedReloadFarFill(true, true);
-			int oldFar = PumpFedReloadFarFill(false, true);
-			return fixedFar > 0 && oldFar == 0
-				? $"OK: after a reload the far end of the dug-on channel holds {fixedFar} (old rule, probe: {oldFar}, the stall)"
-				: $"BROKEN: fixed far end {fixedFar} (want > 0), old-rule probe {oldFar} (want 0 - else the scene cannot fail)";
-		}
-
-		/// <summary>FLOWWORKS_PUMP_FIX_D1_CANAL_STALLS (GPT 1core #5): a dry D=1 canal fed ONLY by a driver at its inlet, at the
-		/// shipped flags (surface levelling + level-set). The neighbour pass never moves a drop of 1 under level-set, so the
-		/// solve must pass the inlet's unit on; if the inlet keeps it for being wet the run sits at 1,0,0,... for ever.
-		/// <paramref name="backedUpMarks"/> true = the pump (re-marks a brimming outlet), false = the drill (returns early
-		/// when its outlet is full, marks nothing). Returns the far end's fill after 200 driver cycles.</summary>
-		public static int DriverFedD1FarFill(bool backedUpMarks)
-		{
-			const int len = 8;
-			var w = new ArrayWorld(len, 1);
-			var digs = new List<int>();
-			for (int x = 0; x < len; x++) { w.k.depth[x] = 1; digs.Add(x); }
-			w.k.viscosityEnabled = true;
-			w.k.creepWaterEnabled = true;
-			w.k.levelBySurfaceEnabled = true;
-			w.k.levelSetEnabled = true;
-			int inlet = 0;
-			var inputs = new RM_DriverInputs();
-			int now = 0;
-			for (int p = 0; p < 200; p++)
-			{
-				now += RM_PumpMath.CycleTicks;
-				if (w.k.fill[inlet] < w.k.depth[inlet])
-				{
-					int old = w.k.fill[inlet];
-					w.k.fill[inlet] = (byte)(old + 1);
-					if (w.cellFluid[inlet] == null) w.cellFluid[inlet] = ArrayWorld.Water;
-					inputs.NoteWrite(inlet, old, old + 1, now);
-				}
-				else if (backedUpMarks)
-				{
-					inputs.NoteBackedUp(inlet, now);
-				}
-				inputs.Prune(now, i => w.k.depth[i] == 0);
-				w.k.externalInput = inputs.Count > 0 ? (Func<int, bool>)inputs.Contains : null;
-				w.Pulse(digs); Pulses++;
-			}
-			return w.k.fill[len - 1];
-		}
-
-		public static string DriverFedD1CanalFills()
-		{
-			int pump = DriverFedD1FarFill(true), drill = DriverFedD1FarFill(false);
-			return pump == 1 && drill == 1
-				? "OK: a D=1 canal fed only at its inlet fills to the far end (pump and drill)"
-				: $"BROKEN: far end pump-fed {pump}, drill-fed {drill} (want 1, 1; 0 = the inlet keeps its unit, 1,0,0,0 stall)";
-		}
 
 		/// <summary>FLOWWORKS_STRIDE_FIX_WALKS_INTO_WALL: over n pulses the seam start visits all n cells, for every n
 		/// including multiples of 7919 (the old stride pinned n = 7919 to cell 0).</summary>
@@ -520,156 +390,22 @@ namespace RimMandrake.FlowWorks.SelfTest
 				w.Pulse(chans);
 				foreach (int c in chans)
 				{
-					if (w.k.fill[c] == 0) continue;
+					if (w.k.WaterOf(c) == 0) continue;
 					if (!first.ContainsKey(c)) first[c] = w.cellFluid[c];
 					else if (!ReferenceEquals(first[c], w.cellFluid[c])) ok = false;   // a wet cell changed fluid: mixed
 				}
 			}
 			bool separate = water != tar && water.cells.Count == 2 && tar.cells.Count == 2
 				&& water.fluid == ArrayWorld.Water && tar.fluid == ArrayWorld.Tar;
-			ok = ok && w.k.fill[chanW] > 0 && w.cellFluid[chanW] == ArrayWorld.Water;   // can-fail: the scene reached the kernel
+			ok = ok && w.k.WaterOf(chanW) > 0 && w.cellFluid[chanW] == ArrayWorld.Water;   // can-fail: the scene reached the kernel
 			// reverse formation order must give the same bodies
 			var w2 = new ArrayWorld(4, 3);
 			for (int x = 0; x < 4; x++) { w2.natural[x] = true; w2.terrainFluid[x] = x < 2 ? ArrayWorld.Water : ArrayWorld.Tar; }
 			var tar2 = w2.BodyAt(3, 1f, false); var water2 = w2.BodyAt(0, 1f, false);
 			bool sameReverse = tar2 != water2 && tar2.cells.Count == 2 && water2.cells.Count == 2;
 			return separate && ok && sameReverse
-				? $"OK: water {water.cells.Count} cells, tar {tar.cells.Count} cells; channel over the tar holds {w.k.fill[chan]} {w.cellFluid[chan]?.name}"
-				: $"BROKEN: separate={separate} channelOk={ok} reverseOk={sameReverse} (channel {w.k.fill[chan]}/{w.k.depth[chan]} {w.cellFluid[chan]})";
-		}
-
-		/// <summary>FLOW_ORDER_EXTERNAL_INPUT_1 part 2: a network bigger than the partition cap. A 200-cell channel off a
-		/// limitless source, cap 50. Control (seams fixed, the shipped behaviour): the first partition fills and the
-		/// rest of the channel stays dry forever. Seams moving: the whole channel fills, settles (no shuttle across a
-		/// seam), and every pulse's ledger balances. A second control: on a network inside the cap, seams-moving on
-		/// gives a pulse-by-pulse identical result to off and never rotates. Returns "OK ..." or "BROKEN ...".</summary>
-		public static string OversizedNetworkExchanges()
-		{
-			int Run(int len, int cap, bool rotate, int pulses, out bool settled, out float worst, out int rotated, List<byte[]> trace)
-			{
-				var w = new ArrayWorld(len + 2, 1);
-				w.natural[0] = true; w.terrainFluid[0] = ArrayWorld.Water;
-				w.BodyAt(0, 1f, true);
-				var seeds = new List<int>();
-				for (int x = 1; x <= len; x++) { w.k.depth[x] = 1; seeds.Add(x); }
-				w.k.maxComponentCells = cap;
-				w.k.seamRotationEnabled = rotate;
-				worst = 0f;
-				for (int p = 0; p < pulses; p++)
-				{
-					w.Pulse(seeds); Pulses++;
-					worst = Math.Max(worst, w.k.worstImbalance);
-					trace?.Add((byte[])w.k.fill.Clone());
-				}
-				byte[] a = (byte[])w.k.fill.Clone();
-				w.Pulse(seeds); byte[] b = (byte[])w.k.fill.Clone();
-				w.Pulse(seeds); byte[] c = (byte[])w.k.fill.Clone();
-				settled = a.SequenceEqual(b) && b.SequenceEqual(c);
-				rotated = w.k.rotatedNetworks;
-				int filled = 0;
-				for (int x = 1; x <= len; x++) if (w.k.fill[x] > 0) filled++;
-				Cases++;
-				return filled;
-			}
-			int fixedFilled = Run(200, 50, false, 400, out _, out float e1, out int r1, null);
-			int movedEarly = Run(200, 50, true, 400, out _, out _, out _, null);
-			int wholeEarly = Run(200, 6000, false, 400, out _, out _, out _, null);
-			int movedFilled = Run(200, 50, true, 3000, out bool settled, out float e2, out int r2, null);
-			var offTrace = new List<byte[]>(); var onTrace = new List<byte[]>();
-			Run(40, 6000, false, 60, out _, out float e3, out _, offTrace);
-			Run(40, 6000, true, 60, out _, out float e4, out int r4, onTrace);
-			bool smallSame = offTrace.Count == onTrace.Count && offTrace.Zip(onTrace, (x, y) => x.SequenceEqual(y)).All(t => t) && r4 == 0;
-			bool controlStuck = fixedFilled < 200 && r1 == 0;     // the defect must be visible, or this proves nothing
-			bool balanced = Math.Max(Math.Max(e1, e2), Math.Max(e3, e4)) <= 0.001f;
-			string line = $"200-cell channel, cap 50: seams fixed {fixedFilled}/200 wet, seams moving {movedFilled}/200 wet after 3000 pulses ({r2} rotated walks; after 400: {movedEarly}, one uncapped piece {wholeEarly}), settled={settled}; 40-cell inside-cap control identical={smallSame}";
-			return controlStuck && movedFilled == 200 && settled && balanced && smallSame
-				? "OK: " + line
-				: $"BROKEN: {line} controlStuck={controlStuck} balanced={balanced}";
-		}
-
-		/// <summary>How far (cells down a 40-cell channel off a limitless source) the fill front is after N pulses.</summary>
-		public static int FrontAfter(Fluid f, bool creep, int pulses, out float worstImbalance)
-		{
-			var w = new ArrayWorld(42, 1);
-			w.natural[0] = true; w.terrainFluid[0] = f;
-			w.BodyAt(0, 1f, true);
-			var seeds = new List<int>();
-			for (int x = 1; x <= 40; x++) { w.k.depth[x] = 1; seeds.Add(x); }
-			w.k.viscosityEnabled = true;
-			w.k.creepEnabled = creep;
-			worstImbalance = 0f;
-			for (int p = 0; p < pulses; p++) { w.Pulse(seeds); worstImbalance = Math.Max(worstImbalance, w.k.worstImbalance); }
-			int front = 0;
-			for (int x = 1; x <= 40; x++) if (w.k.fill[x] > 0) front = x;
-			return front;
-		}
-
-		/// <summary>THICK_LIQUID_CREEP_1 (FL-2): measures how fast the front travels down a 40-cell channel. Control: with creep OFF a
-		/// tar front races the whole channel on its first moving pulse (this is the defect). With creep ON tar advances one cell per
-		/// moving pulse (stride 6: at most pulses/6 + 1 cells), slime slower still, and water is exactly as fast as before.</summary>
-		public static string FrontSpeed()
-		{
-			var tar = ArrayWorld.Tar;
-			var slime = new Fluid { name = "slime", tpt = 480 };
-			int tarOff = FrontAfter(tar, false, 30, out float e1);
-			int tarOn = FrontAfter(tar, true, 30, out float e2);
-			int slimeOn = FrontAfter(slime, true, 48, out float e3);
-			int waterOff = FrontAfter(ArrayWorld.Water, false, 10, out float e4);
-			int waterOn = FrontAfter(ArrayWorld.Water, true, 10, out float e5);
-			bool controlRaces = tarOff >= 40;                 // the old behaviour must be visible, or the fixture proves nothing
-			bool tarCrawls = tarOn >= 1 && tarOn <= 30 / 6 + 1;
-			bool slimeCrawls = slimeOn >= 1 && slimeOn <= 48 / 8 + 1;
-			bool waterSame = waterOff == waterOn && waterOn > 0;
-			bool balanced = Math.Max(Math.Max(e1, e2), Math.Max(e3, Math.Max(e4, e5))) <= 0.001f;
-			string line = $"front after 30 pulses: tar creep-off {tarOff}, tar creep-on {tarOn}; slime after 48: {slimeOn}; water after 10: off {waterOff} on {waterOn}";
-			return controlRaces && tarCrawls && slimeCrawls && waterSame && balanced
-				? "OK: " + line
-				: $"BROKEN: controlRaces={controlRaces} tarCrawls={tarCrawls} slimeCrawls={slimeCrawls} waterSame={waterSame} balanced={balanced} ({line})";
-		}
-
-		/// <summary>CANAL_FILL_FRONT_TRACE_MOUTH_STAYS_DRY / CANAL_FRONT_FIX_WRONG_END_WETS_FIRST: plot C's live shape offline. A
-		/// LIMITED 60-cell water body (stock 300) beside the mouth of a dead-end 1x10 D=1 channel. With water creep OFF the
-		/// level the mouth takes is pulled on in the same pulse (the old race): after 3 pulses the far end is wet and the mouth
-		/// dry. With it ON, at the SHIPPED flags (level by surface, level set, viscosity, both creeps), the wet front advances
-		/// outward from the mouth one cell a pulse: after EVERY pulse while the run fills, the wet cells are exactly the first p
-		/// from the mouth (so the mouth never reads dry behind the front), the body paid exactly the levels the channel holds,
-		/// and the run is full at pulse 10. CANAL_MOUTH_DIAGNOSE_BLINKS_DRY_HALF_TIME: before the mouth top-up this read
-		/// 1000000000 0100000000 1100000000 ... (mouth dry every even pulse, full only at pulse 19), and the old check looked at
-		/// pulse 1 only.</summary>
-		public static string CanalMouthDeadEndFillsFromFarEnd()
-		{
-			string race = CanalRun(false, 3, out string raceAt, out bool _r, out float _w1);
-			bool raceShape = raceAt == "0000000111";
-			bool order = true, bounded = true, conserved = true;
-			float worst = 0f;
-			var w = new ArrayWorld(20, 6);
-			var bodyCells = new List<int>();
-			for (int z = 0; z < 6; z++) for (int x = 0; x < 10; x++) bodyCells.Add(z * 20 + x);
-			var body = w.AddBody(false, 300f, bodyCells);
-			var digs = Enumerable.Range(10, 10).Select(x => 2 * 20 + x).ToList();
-			foreach (int c in digs) w.k.depth[c] = 1;
-			w.k.creepWaterEnabled = true;
-			w.k.creepEnabled = true;
-			w.k.viscosityEnabled = true;
-			w.k.levelBySurfaceEnabled = true;
-			w.k.levelSetEnabled = true;
-			var trace = new List<string>();
-			for (int p = 1; p <= 10; p++)
-			{
-				w.Pulse(digs); worst = Math.Max(worst, w.k.worstImbalance);
-				string at = string.Join("", digs.Select(c => w.k.fill[c]));
-				trace.Add(at);
-				int last = at.LastIndexOf('1');
-				if (last >= p) bounded = false;
-				if (Math.Abs((300f - body.stock) - at.Count(ch => ch == '1')) > 1f) conserved = false;
-				if (at != new string('1', p) + new string('0', 10 - p)) order = false;
-			}
-			string at20 = trace[trace.Count - 1];
-			bool full = at20 == "1111111111";
-			string line = $"race(off) after 3 = {raceAt}; shipped per pulse {string.Join(" ", trace)}, stock {body.stock:F1}; worst imbalance {worst:F3}";
-			return raceShape && order && bounded && conserved && full && worst <= 0.001f
-				? "OK: " + line
-				: $"BROKEN: raceShape={raceShape} mouthFirst={order} bounded={bounded} conserved={conserved} full={full} ({line})";
+				? $"OK: water {water.cells.Count} cells, tar {tar.cells.Count} cells; channel over the tar holds {w.k.WaterOf(chan)} dL {w.cellFluid[chan]?.name}"
+				: $"BROKEN: separate={separate} channelOk={ok} reverseOk={sameReverse} (channel {w.k.WaterOf(chan)} dL / D{w.k.depth[chan]} {w.cellFluid[chan]})";
 		}
 
 		private static string CanalRun(bool creepWater, int pulses, out string at, out bool ok, out float worst)
@@ -680,7 +416,6 @@ namespace RimMandrake.FlowWorks.SelfTest
 			w.AddBody(false, 300f, bodyCells);
 			var digs = Enumerable.Range(10, 10).Select(x => 2 * 20 + x).ToList();
 			foreach (int c in digs) w.k.depth[c] = 1;
-			w.k.creepWaterEnabled = creepWater;
 			worst = 0f;
 			for (int p = 0; p < pulses; p++) { w.Pulse(digs); worst = Math.Max(worst, w.k.worstImbalance); }
 			at = string.Join("", digs.Select(c => w.k.fill[c]));
@@ -704,9 +439,6 @@ namespace RimMandrake.FlowWorks.SelfTest
 			}
 			w.k.edgeSinksEnabled = sinkBand > 0;
 			w.k.viscosityEnabled = true;
-			w.k.creepWaterEnabled = true;
-			w.k.levelBySurfaceEnabled = surface;
-			w.k.levelSetEnabled = surface && LevelSet;
 			return w;
 		}
 
@@ -747,62 +479,6 @@ namespace RimMandrake.FlowWorks.SelfTest
 			return worst;
 		}
 
-		/// <summary>A closed, flat D=2 run with all its water at one end (2,2,2,2,0..0): by surface it spreads until no two
-		/// cells anywhere in the run differ by more than one unit (no 2,2,1,1,0 terrace), keeps all 8 units, and is at rest well inside 200 pulses. The old rule
-		/// moves nothing (a brim-full cell may only overflow down a flow order, and a sourceless, sinkless run has none).</summary>
-		public static string SurfaceFlatChannelLevels()
-		{
-			int[] depths = Enumerable.Repeat(2, 10).ToArray();
-			int[] fills = { 2, 2, 2, 2, 0, 0, 0, 0, 0, 0 };
-			var on = SurfaceRow(depths, fills, true);
-			string end = SurfaceRun(on, 200, out int settled, out float worst, out _);
-			int sum = on.k.fill.Sum(f => f);
-			int step = MaxNeighbourSurfaceStep(on);
-			int spread = on.k.fill.Max(f => f) - on.k.fill.Min(f => f);   // one bed depth: fill spread = surface spread
-			string old = SurfaceRun(SurfaceRow(depths, fills, false), 200, out _, out _, out _);
-			bool ok = sum == 8 && step <= 1 && spread <= 1 && settled >= 0 && settled < 150 && worst <= 0.001f && old == "2,2,2,2,0,0,0,0,0,0";
-			string line = $"surface F={end} (sum {sum}, max neighbour step {step}, spread {spread}, at rest after pulse {settled}, worst imbalance {worst:F3}); old rule F={old}";
-			return (ok ? "OK: " : "BROKEN: ") + line;
-		}
-
-		/// <summary>A full D=2 run breached into the sink band at x=0 drains to EMPTY by surface (the owner's review-station-1
-		/// sighting: the old rule strands the bottom unit of every cell), every unit accounted to the sink.</summary>
-		public static string SurfaceEdgeDrainedChannelEmpties()
-		{
-			int[] depths = Enumerable.Repeat(2, 13).ToArray();
-			int[] fills = Enumerable.Repeat(2, 13).ToArray();
-			var on = SurfaceRow(depths, fills, true, 1);
-			string end = SurfaceRun(on, 200, out int settled, out float worst, out float drained);
-			string old = SurfaceRun(SurfaceRow(depths, fills, false, 1), 200, out _, out _, out _);
-			bool empty = on.k.fill.All(f => f == 0);
-			bool ok = empty && Math.Abs(drained - 26f) < 0.001f && settled >= 0 && worst <= 0.001f && old.Contains("1");
-			string line = $"surface F={end} drained {drained:F0}/26 at rest after pulse {settled}; old rule F={old}";
-			return (ok ? "OK: " : "BROKEN: ") + line;
-		}
-
-		/// <summary>Depth stops deciding: (a) a D=1 trench holding water (1,1,1,1,1) beside an empty D=4 hole pours into
-		/// the hole until the surfaces are within one unit; (b) a D=3 cell at 1/3 (surface -2) beside a D=4 hole at 3/4
-		/// (surface -1) gives NOTHING: the old GRAVITY rule pushed it uphill into the deeper bed.</summary>
-		public static string SurfaceDeepHoleBesideShallowTrench()
-		{
-			var a = SurfaceRow(new[] { 1, 1, 1, 1, 1, 4 }, new[] { 1, 1, 1, 1, 1, 0 }, true);
-			string endA = SurfaceRun(a, 200, out int settledA, out float worstA, out _);
-			int stepA = MaxNeighbourSurfaceStep(a);
-			bool okA = a.k.fill.Sum(f => f) == 5 && stepA <= 1 && a.k.fill[5] >= 3 && settledA >= 0 && worstA <= 0.001f;
-			var b = SurfaceRow(new[] { 3, 4 }, new[] { 1, 3 }, true);
-			string endB = SurfaceRun(b, 50, out _, out float worstB, out _);
-			string oldB = SurfaceRun(SurfaceRow(new[] { 3, 4 }, new[] { 1, 3 }, false), 50, out _, out _, out _);
-			bool okB = endB == "1,3" && oldB == "0,4" && worstB <= 0.001f;
-			// (c) review finding: pit 3/4 | channel 1/1 | empty pit 0/4. The channel's one unit goes to a pit and the channel
-			// runs dry; the first pit must never be drawn below the channel floor (-1, i.e. F &lt; 3) through that dry square
-			// (a "wet region" that outlived its connector mid-pass did exactly that).
-			var c = SurfaceRow(new[] { 4, 1, 4 }, new[] { 3, 1, 0 }, true);
-			string endC = SurfaceRun(c, 50, out _, out float worstC, out _);
-			bool okC = (endC == "3,0,1" || endC == "4,0,0") && worstC <= 0.001f;
-			string line = $"(a) trench+hole F={endA} step {stepA} rest {settledA}; (b) 1/3 beside 3/4: surface {endB}, old rule {oldB}; (c) 3/4|1/1|0/4 -> {endC}";
-			return (okA && okB && okC ? "OK: " : "BROKEN: ") + line;
-		}
-
 		/// <summary>A limitless pond feeding a D=2 run still fills it full, mouth first (creep on), ledger balanced.</summary>
 		public static string SurfaceSourceStillFillsChannel()
 		{
@@ -810,7 +486,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 			w.AddBody(true, 0f, new[] { 0 });
 			var digs = Enumerable.Range(1, 10).ToList();
 			foreach (int c in digs) w.k.depth[c] = 2;
-			w.k.viscosityEnabled = true; w.k.creepWaterEnabled = true; w.k.levelBySurfaceEnabled = true; w.k.levelSetEnabled = LevelSet;
+			w.k.viscosityEnabled = true; 
 			w.Pulse(digs);
 			float worst = w.k.worstImbalance;   // pulse 1's ledger counts too
 			string first = string.Join("", digs.Select(c => w.k.fill[c]));
@@ -848,7 +524,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 					w.cellFluid[c] = w.k.fill[c] > 0 ? ArrayWorld.Water : null;
 				}
 				for (int i = 0; i < 64; i++) { int x = i % 8, z = i / 8; w.sink[i] = band > 0 && (x < band || z < band || x >= 8 - band || z >= 8 - band); }
-				w.k.edgeSinksEnabled = band > 0; w.k.viscosityEnabled = true; w.k.creepWaterEnabled = true; w.k.levelBySurfaceEnabled = true; w.k.levelSetEnabled = LevelSet;
+				w.k.edgeSinksEnabled = band > 0; w.k.viscosityEnabled = true; 
 				// WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: totals, rest and the level check read the WATER (fill + part) so the family
 				// holds at the shipped exact-level flags as well as at the whole-notch ones (part is null there: water = fill).
 				float startTotal = Enumerable.Range(0, 64).Sum(i => w.WaterLevels(i)) + (pond?.stock ?? 0f);
@@ -957,9 +633,6 @@ namespace RimMandrake.FlowWorks.SelfTest
 				w.sink[X(len - 1)] = true;
 				w.k.edgeSinksEnabled = true;
 				w.k.viscosityEnabled = true;
-				w.k.creepWaterEnabled = true;
-				w.k.levelBySurfaceEnabled = true;
-				w.k.levelSetEnabled = true;
 				w.k.sealedCell = idx => idx == X(4);
 				for (int p = 0; p < 60; p++) { w.Pulse(digs); Pulses++; }
 				return string.Join(",", Enumerable.Range(1, 3).Select(x => w.k.fill[X(x)]));
@@ -1007,21 +680,26 @@ namespace RimMandrake.FlowWorks.SelfTest
 		/// dig order (session) and index order (reload) give the same outcome, and the lower index is paid.</summary>
 		public static string ScarceSupplyPaidByPosition()
 		{
-			Func<int[], (int a, int b)> run = order =>
+			Func<int[], (long a, long b)> run = order =>
 			{
 				// a 1-cell pond at (2,0) with stock 1; channels A=(1,0) and B=(3,0)
 				var w = new ArrayWorld(5, 1);
 				w.natural[2] = true; w.terrainFluid[2] = ArrayWorld.Water;
+				// exact water: the pond's bed is one notch, so its one level of stock stands at the brim, above both D1 channels'
+				// floors (a superdeep bed would hold that level 1.5 m down, below them, and pay nothing)
+				w.bed[2] = 1;
 				var b = w.BodyAt(2, 0f, false); b.stock = 1f;
 				w.k.depth[1] = 1; w.k.depth[3] = 1;
 				w.Pulse(order);
-				return (w.k.fill[1], w.k.fill[3]);
+				return (w.k.WaterOf(1), w.k.WaterOf(3));
 			};
 			var session = run(new[] { 3, 1 });   // dug B first
 			var reload = run(new[] { 1, 3 });    // RebuildExcavatedSet: index order
-			return session == reload && session == (1, 0)
-				? $"OK: both orders pay (A,B)={session}"
-				: $"BROKEN: session (A,B)={session}, reload {reload}, expected (1, 0) for both";
+			// exact water (RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES): dL, the lower index paid first (A's share never
+			// below B's), and the dig order changes nothing
+			return session == reload && session.a > 0 && session.a >= session.b
+				? $"OK: both orders pay (A,B)={session} dL"
+				: $"BROKEN: session (A,B)={session} dL, reload {reload}, expected equal with A paid first";
 		}
 	}
 
@@ -1030,8 +708,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 	/// pulse, then each body's final stock.</summary>
 	internal static class OracleScenes
 	{
-		public static int Run(System.IO.TextReader input, System.IO.TextWriter output, bool levelBySurface = false, bool levelSet = false,
-			bool creep = false, bool headRule = false, bool exact = false)
+		public static int Run(System.IO.TextReader input, System.IO.TextWriter output)
 		{
 			string line;
 			while ((line = input.ReadLine()) != null)
@@ -1072,30 +749,21 @@ namespace RimMandrake.FlowWorks.SelfTest
 					int ne = N();
 					for (int i = 0; i < ne; i++) events.Add((N(), N(), N(), N()));
 				}
-				if (headRule)
-				{
-					world.k.sourceDrawdown = world.Drawdown;
-				}
 				if (band > 0)
 				{
 					world.k.edgeSinksEnabled = true;
 					for (int i = 0; i < w * h; i++) { int x = i % w, z = i / w; world.sink[i] = x < band || z < band || x >= w - band || z >= h - band; }
 				}
 				world.k.viscosityEnabled = true;
-				world.k.levelBySurfaceEnabled = levelBySurface;
-				world.k.levelSetEnabled = levelBySurface && levelSet;
-				world.k.creepWaterEnabled = creep;
-				world.k.creepEnabled = creep;
-				// WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: "exact" prints every dug cell's WATER in dL and each limited body's dL
-				// (northstar/level_water.py, PulseOracle(level_exact=True)).
-				world.k.levelExactEnabled = exact;
+				// WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: prints every dug cell's WATER in dL and each limited body's dL
+				// (northstar/level_water.py, PulseOracle(level_exact=True)); the kernel has no other engine.
 				var sb = new System.Text.StringBuilder();
 				for (int p = 0; p < pulses; p++)
 				{
 					// a square filled back in to the surface leaves the excavation's seeds (RM_MapComponent_Excavation.FillIn removes
 					// it from excavatedCells), so it leaves the pulse's seeds here too
 					world.Pulse(events.Count == 0 ? digs : digs.Where(c => world.k.depth[c] > 0).ToList());
-					foreach (int c in digs) sb.Append(exact ? world.k.WaterOf(c) : world.k.fill[c]).Append(' ');
+					foreach (int c in digs) sb.Append(world.k.WaterOf(c)).Append(' ');
 					foreach (var e in events)
 					{
 						if (e.p != p) continue;
@@ -1103,9 +771,9 @@ namespace RimMandrake.FlowWorks.SelfTest
 						sb.Append('e').Append(r).Append(' ');
 					}
 					sb.Append("| ");
-					if (exact && world.k.worstImbalance > 0) sb.Append("IMBALANCE ");
+					if (world.k.worstImbalance > 0) sb.Append("IMBALANCE ");
 				}
-				foreach (var b in world.bodies) sb.Append(b.limitless ? "L" : exact ? b.Dl().ToString() : b.stock.ToString("F0")).Append(' ');
+				foreach (var b in world.bodies) sb.Append(b.limitless ? "L" : b.Dl().ToString()).Append(' ');
 				output.WriteLine(sb.ToString().TrimEnd());
 			}
 			return 0;
