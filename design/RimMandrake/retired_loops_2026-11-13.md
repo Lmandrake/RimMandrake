@@ -53,7 +53,7 @@ Nothing here was paused. No `timers_guard.py pause` was used, so no resume timer
 - **Clones.**
   - The finished detached clones were returned to the pool with `detached_helper.py return`.
   - The five Whittle clones in `/home/mandrake/rm/scratch/BENCH/claude-*` were removed. First, their unpushed backup branches were bundled to `...\retire_loops_20261113\clones\*.unpushed.bundle` and verified.
-  - The four `ralph_*` clones there are kept for the owner to decide on.
+  - The four `ralph_*` clones there were cleaned up later the same day: three were removed and one was kept. See "The Ralph clones" below.
 
 ## Where state and code live (code is NOT deleted in this pass)
 
@@ -83,6 +83,26 @@ Designer, Operations and the Conductor seats are still running, along with:
 - `detached_helper.py` with the clone pool.
 
 `rm-relentless-job@` is masked, but `detached_helper.py` does not use it: it starts its own `rm-detached-*` transients.
+
+## The Ralph clones (cleanup, 2026-11-13 evening)
+
+The owner said, at 10:20 PM PST: "You are doing the Ralph's loop cleanup correctly. Proceed."
+
+Each clone's branch was compared file by file with origin/main. Before anything was removed:
+- every unpushed commit went to its own `ralph/*` remote branch as a fast-forward;
+- `origin/main..HEAD` was bundled and verified;
+- the dirty diff and the small untracked files were saved.
+
+The backups are in `D:\ClaudeWork\backups\rimmandrake\ralph_cleanup_20261113\<clone>\`, and the comparison tables are in `D:\ClaudeWork\rimmandrake\conductor\ralph_cleanup_20261113\`.
+
+| clone | on main? | result |
+|---|---|---|
+| `ralph_graffiti` | yes: all mod source is identical on main | Removed. Local fd650c5589 (loop files only) was pushed to `ralph/graffiti`. |
+| `ralph_gss` | yes: squash b05e9ce45d; 6 files were reworked later on main | Removed. Its gitignored `Transient/` scratch was not saved. |
+| `ralph_pyrelands` | yes: 8fb9f7f2b6; 2 fire-hawk files were reworked later on main | Removed. Reflog commit a8ade0b3c0 (`ralph/loop.sh`) was pushed to `ralph/pyrelands`. 571 `.rws` test saves were not saved. |
+| `ralph_flowworks` | no: 36 commits on `origin/ralph/flowworks` (`ec381202c5..69c6028177`) | Kept at `/home/mandrake/rm/scratch/BENCH/ralph_flowworks`; landing it is `RIMMANDRAKE_LAND_RALPH_FLOWWORKS_PIT_FEATURES`. |
+
+The flowworks clone's three agent worktrees were removed; their HEADs are on the remote branch. The 9.7 GB tarball of those worktrees was audited and deleted.
 
 ## Check that it is still off
 
