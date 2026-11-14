@@ -2,7 +2,7 @@
  "mod": "FlowWorks",
  "version": "0.1.0",
  "program": "preflight_fw.py (throwaway, advance row 3; copy in version/advance_scripts/)",
- "at": "2026-11-14T14:24:52-08:00",
+ "at": "2026-11-14T14:29:36-08:00",
  "dump": {
   "path": "a copy of game_paths.DEF_DUMP at /tmp/fw_pilot/defs.sqlite",
   "provenance": {
@@ -11,9 +11,9 @@
    "defs_total": "59262"
   }
  },
- "seconds": 0.32,
+ "seconds": 0.27,
  "verdict": "refuse",
- "refusals": 45,
+ "refusals": 23,
  "checks": [
   {
    "id": "C1_bars_complete",
@@ -36,7 +36,7 @@
    "what": "every test names a stage of 2, 4-5, 6 or 8",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "118 tests",
+   "evidence": "120 tests",
    "seconds": 0.0
   },
   {
@@ -44,7 +44,7 @@
    "what": "every built test's file exists",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "109 built tests",
+   "evidence": "111 built tests",
    "seconds": 0.0
   },
   {
@@ -52,7 +52,7 @@
    "what": "every file a test reads exists",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "278 reads",
+   "evidence": "280 reads",
    "seconds": 0.0
   },
   {
@@ -223,7 +223,7 @@
    "what": "every in-game test says why an offline test cannot decide it; every full-list test says why",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "31 in-game tests",
+   "evidence": "32 in-game tests",
    "seconds": 0.0
   },
   {
@@ -232,163 +232,23 @@
    "verdict": "refuse",
    "refusals": [
     {
-     "line": "2026-11-14#1",
-     "evidence": "held row not placed",
-     "smallest_fix": "place it on a bar and a test",
-     "route": "Stage 1",
-     "would_pass": "placed"
-    },
-    {
-     "line": "2026-11-14#10",
-     "evidence": "held row not placed",
-     "smallest_fix": "place it on a bar and a test",
-     "route": "Stage 1",
-     "would_pass": "placed"
-    },
-    {
-     "line": "2026-11-14#10b",
-     "evidence": "held row not placed",
-     "smallest_fix": "place it on a bar and a test",
-     "route": "Stage 1",
-     "would_pass": "placed"
-    },
-    {
-     "line": "2026-11-14#10c",
-     "evidence": "held row not placed",
-     "smallest_fix": "place it on a bar and a test",
-     "route": "Stage 1",
-     "would_pass": "placed"
-    },
-    {
-     "line": "2026-11-14#10d",
-     "evidence": "held row not placed",
-     "smallest_fix": "place it on a bar and a test",
-     "route": "Stage 1",
-     "would_pass": "placed"
-    },
-    {
-     "line": "2026-11-14#10e",
-     "evidence": "held row not placed",
-     "smallest_fix": "place it on a bar and a test",
-     "route": "Stage 1",
-     "would_pass": "placed"
-    },
-    {
-     "line": "2026-11-14#10f",
-     "evidence": "held row not placed",
-     "smallest_fix": "place it on a bar and a test",
-     "route": "Stage 1",
-     "would_pass": "placed"
-    },
-    {
-     "line": "2026-11-14#11",
-     "evidence": "held row not placed",
-     "smallest_fix": "place it on a bar and a test",
-     "route": "Stage 1",
-     "would_pass": "placed"
-    },
-    {
-     "line": "2026-11-14#12",
-     "evidence": "held row not placed",
-     "smallest_fix": "place it on a bar and a test",
-     "route": "Stage 1",
-     "would_pass": "placed"
-    },
-    {
-     "line": "2026-11-14#12b",
-     "evidence": "held row not placed",
-     "smallest_fix": "place it on a bar and a test",
-     "route": "Stage 1",
-     "would_pass": "placed"
-    },
-    {
-     "line": "2026-11-14#2",
-     "evidence": "held row not placed",
-     "smallest_fix": "place it on a bar and a test",
-     "route": "Stage 1",
-     "would_pass": "placed"
-    },
-    {
-     "line": "2026-11-14#3",
-     "evidence": "held row not placed",
-     "smallest_fix": "place it on a bar and a test",
-     "route": "Stage 1",
-     "would_pass": "placed"
-    },
-    {
      "line": "2026-11-14#4",
-     "evidence": "held row not placed",
-     "smallest_fix": "place it on a bar and a test",
-     "route": "Stage 1",
-     "would_pass": "placed"
-    },
-    {
-     "line": "2026-11-14#5",
-     "evidence": "held row not placed",
-     "smallest_fix": "place it on a bar and a test",
-     "route": "Stage 1",
-     "would_pass": "placed"
-    },
-    {
-     "line": "2026-11-14#6",
-     "evidence": "held row not placed",
-     "smallest_fix": "place it on a bar and a test",
-     "route": "Stage 1",
-     "would_pass": "placed"
-    },
-    {
-     "line": "2026-11-14#7",
-     "evidence": "held row not placed",
-     "smallest_fix": "place it on a bar and a test",
-     "route": "Stage 1",
-     "would_pass": "placed"
-    },
-    {
-     "line": "2026-11-14#7b",
-     "evidence": "held row not placed",
-     "smallest_fix": "place it on a bar and a test",
-     "route": "Stage 1",
-     "would_pass": "placed"
-    },
-    {
-     "line": "2026-11-14#8",
-     "evidence": "held row not placed",
-     "smallest_fix": "place it on a bar and a test",
-     "route": "Stage 1",
-     "would_pass": "placed"
-    },
-    {
-     "line": "2026-11-14#9",
-     "evidence": "held row not placed",
-     "smallest_fix": "place it on a bar and a test",
-     "route": "Stage 1",
-     "would_pass": "placed"
-    },
-    {
-     "line": "2026-11-14#9b",
-     "evidence": "held row not placed",
-     "smallest_fix": "place it on a bar and a test",
-     "route": "Stage 1",
-     "would_pass": "placed"
-    },
-    {
-     "line": "2026-11-13_dig_interface#2",
-     "evidence": "held statement has no 0.1.0 bar (NO 0.1.0 BAR yet: dig interface consolidation, his open call)",
+     "evidence": "held statement has no 0.1.0 bar (NO 0.1.0 BAR yet: no bar names the swale; Problem (a new bar now) or Divergent is his call)",
      "smallest_fix": "his call: Problem in 0.1.0 (a new bar) or Divergent (next_version)",
      "route": "owner question",
      "would_pass": "a bar or a next-version entry"
     }
    ],
-   "evidence": "103 held rows in the files, 83 placed",
-   "seconds": 0.0
+   "evidence": "103 held rows in the files, 103 placed",
+   "seconds": 0.001
   },
   {
    "id": "C9_defs_real",
    "what": "every RM_/RUT_/RSW_ name in the scenes and the table exists in the def dump or the repo (C# class names accepted)",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "10 names checked against 52793 defs/classes (dump defs.sqlite)",
-   "seconds": 0.18
+   "evidence": "11 names checked against 52793 defs/classes (dump defs.sqlite)",
+   "seconds": 0.186
   },
   {
    "id": "C10_mods_real",
@@ -396,7 +256,7 @@
    "verdict": "pass",
    "refusals": [],
    "evidence": "0 packageIds named",
-   "seconds": 0.005
+   "seconds": 0.004
   },
   {
    "id": "C11_settings_fields_real",
@@ -404,7 +264,7 @@
    "verdict": "pass",
    "refusals": [],
    "evidence": "0 settings fields named",
-   "seconds": 0.056
+   "seconds": 0.032
   },
   {
    "id": "C12_locked_files_unchanged",
@@ -412,28 +272,13 @@
    "verdict": "pass",
    "refusals": [],
    "evidence": "8 pinned files (stage.json is state, not a bar: exempt)",
-   "seconds": 0.021
+   "seconds": 0.01
   },
   {
    "id": "C13_scenes_prove_a_leaf",
    "what": "every scene names the leaves it proves",
-   "verdict": "refuse",
-   "refusals": [
-    {
-     "line": "sc_pit_trap_raid",
-     "evidence": "scene names no requirement (no leaf it proves)",
-     "smallest_fix": "name its leaves or mark it a showcase-only scene",
-     "route": "Stage 1",
-     "would_pass": "requirement non-empty"
-    },
-    {
-     "line": "sc_garden",
-     "evidence": "scene names no requirement (no leaf it proves)",
-     "smallest_fix": "name its leaves or mark it a showcase-only scene",
-     "route": "Stage 1",
-     "would_pass": "requirement non-empty"
-    }
-   ],
+   "verdict": "pass",
+   "refusals": [],
    "evidence": "28 scenes",
    "seconds": 0.0
   },
@@ -442,8 +287,8 @@
    "what": "every ticket a test is owed under exists in the ledger",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "7153 items known",
-   "seconds": 0.054
+   "evidence": "7154 items known",
+   "seconds": 0.039
   },
   {
    "id": "C15_tiers_consistent",

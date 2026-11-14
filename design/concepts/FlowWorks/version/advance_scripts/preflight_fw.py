@@ -100,7 +100,9 @@ def c7():
             out.append(R(k, "full-list test with no full-list reason", "say why the full list is needed", "Stage 1", "a written reason"))
     return out, "%d in-game tests" % sum(1 for t in tests.values() if t["kind"].startswith("live"))
 
-NOBAR = ("NO 0.1.0 BAR", "harness", "rule", "question", "process")
+# Stage 3, 2026-11-14: "next version" (his would_pass below names a next-version entry as a placement) and "other mod" (a
+# row about another mod's feature) are placements too
+NOBAR = ("NO 0.1.0 BAR", "harness", "rule", "question", "process", "next version", "other mod")
 def c8():
     out = []
     n = 0
@@ -182,8 +184,14 @@ def c12():
 
 def c13():
     out = []
+    leaves = {l["id"] for l in tree["leaves"]}
     for s in scn["scenes"]:
-        reqs = s.get("requirement")
+        # Stage 3, 2026-11-14: an interaction scene names its leaves under "features" (sc_pit_trap_raid, sc_garden); the
+        # first run read only "requirement" and refused them. Every named leaf must be a real one.
+        reqs = (s.get("requirement") or []) + (s.get("features") or [])
+        for r in reqs:
+            if r not in leaves:
+                out.append(R(s["id"], "names %s, not a leaf of tree.json" % r, "fix the leaf id", "Stage 1", "real leaves"))
         if not reqs:
             out.append(R(s["id"], "scene names no requirement (no leaf it proves)", "name its leaves or mark it a showcase-only scene", "Stage 1",
                          "requirement non-empty"))

@@ -1,6 +1,6 @@
 {
  "aliases": [],
- "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: OWNER HOLD, not a refusal: the Designer loop (stage runs and the coverage judge) is held while the Design Version 0.1.0 entry lands; it locks on his word after he reads the entry summary (owner 2026-11-13: \"Yes, we're going to do what you recommend.\"); was blocked at stage 5 on CONCEPT_LOCK_UNBLOCK_SIGNER_NEVER_CALLED; lift: python3 src/RimMandrake/rimflow/coverage_judge.py release design/concepts/FlowWorks --why \"<why>\"; judging stopped on FlowWorks (coverage_judge.py release <dir> --why ... grants one more look)",
+ "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: owner locked FlowWorks 0.1.0 on his word 2026-11-13 ~3:40 PM PST (\"Yes, lock the other four mods\", version/VERSION.json); no Designer or judge run on this version; the mod is in Maturation Stage 3 (journal.md); judging stopped on FlowWorks (coverage_judge.py release <dir> --why ... grants one more look)",
  "budget": {
   "cap": 4000000,
   "charges": [
@@ -299,6 +299,12 @@
    "stage": 5,
    "what": "coverage_stop",
    "why": "REFUSAL_NOTHING_COULD_EVER_PASS: OWNER HOLD, not a refusal: the Designer loop (stage runs and the coverage judge) is held while the Design Version 0.1.0 entry lands; it locks on his word after he reads the entry summary (owner 2026-11-13: \"Yes, we're going to do what you recommend.\"); was blocked at stage 5 on CONCEPT_LOCK_UNBLOCK_SIGNER_NEVER_CALLED; lift: python3 src/RimMandrake/rimflow/coverage_judge.py release design/concepts/FlowWorks --why \"<why>\"; judging stopped on FlowWorks (coverage_judge.py release <dir> --why ... grants one more look)"
+  },
+  {
+   "at": "2026-11-14T22:28:26Z",
+   "stage": 5,
+   "what": "lock",
+   "why": "FlowWorks Stage 3 (2026-11-14): stage.json still read the 2026-11-13 OWNER HOLD pending the lock; the lock landed on his word that day (VERSION.json), so status locked, as Explosive Knockback's"
   }
  ],
  "item": "FLOWWORKS_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -489,6 +495,6 @@
  "running": null,
  "schema": 1,
  "stage": 5,
- "status": "blocked",
+ "status": "locked",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }

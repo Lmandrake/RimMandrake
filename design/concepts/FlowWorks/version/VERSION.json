@@ -5,19 +5,23 @@
  "locked_on": "2026-11-13",
  "locked_by": "owner",
  "owner_words": "Yes, lock the other four mods (owner, 2026-11-13 ~3:40 PM PST, typed to the Conductor; said of FlowWorks, Gimme Some Slack, Pyrelands, Pyrelands Mechanics)",
- "bars_total": 59,
+ "bars_total": 61,
  "bars_met": 59,
  "judge_rounds": 1,
  "tokens_spent": 3729543,
  "locked_from_commit": "237b79116781821545f7ac58c23ed40bfc0250c4",
  "measured_from": {
-  "bars_total": "coverage_judge.required_ids(): record.json inventory (28) + tree.json leaves (31), the coverage checklist rows the judge passes or refuses on",
-  "bars_met": "tree.json coverage: signed covered by the Arbiter 2026-11-05T09:03:46Z at tree_hash 572198fed9 (= the tree at the lock) and sheet_hash 68f9946f8e (= the sheet at the lock)",
+  "bars_total": "coverage_judge.required_ids(): record.json inventory (30) + tree.json leaves (31) = 61; 59 at the lock (28 + 31) and his card of 2026-11-14 (OWNER:1794693278631337978) added inv_geyser_tub and inv_liquid_coating (journal.md interventions); version/test_table.json holds the same 61",
+  "bars_met": "tree.json coverage: the 59 bars of the lock signed covered by the Arbiter 2026-11-05T09:03:46Z at tree_hash 572198fed9 and sheet_hash 68f9946f8e; the 2 bars added 2026-11-14 were never judged, so 59 of 61",
   "judge_rounds": "one coverage signature (the Arbiter's, tree.json coverage); coverage_judge.rounds() reads 0 because that signing predates round recording and carried no charge",
   "tokens_spent": "stage.json budget.spent (cap 500000); every Designer stage run, helper, review and judge charge on this concept",
   "locked_from_commit": "origin/main when this version was entered, 2026-11-13; per-file blob hashes in bars.md"
  },
  "caveats": [
-  "stage.json reads status 'blocked' on CONCEPT_LOCK_UNBLOCK_SIGNER_NEVER_CALLED, which the ledger closed 2026-11-05T16:18Z: a stale block, not a gap"
+  "stage.json read status 'blocked' (an OWNER HOLD pending this lock) until 2026-11-14; now 'locked', as Explosive Knockback's"
+ ],
+ "bars_added_after_lock": [
+  "inv_geyser_tub",
+  "inv_liquid_coating"
  ]
 }

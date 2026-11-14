@@ -1,7 +1,7 @@
 {
  "mod": "FlowWorks",
  "version": "0.1.0",
- "made": "2026-11-14T11:50:14-08:00",
+ "made": "2026-11-14T14:29:10-08:00",
  "made_by": "rm-builder, Maturation advance row 2 beside the pilot (throwaway /tmp/fw_pilot/make_table.py, copy in version/advance_scripts/)",
  "stages": {
   "2": "preflight (a program)",
@@ -947,9 +947,9 @@
    "row": "2",
    "words": "\"We will want to think about what the dig interface should be. The vast grid of options when I selected Digging was... daunting and not how the game usually is. Worth some deeper design. There's also a LOT of options for dig, repair, fill in, all sorts of things. So a full consolidation of the UI is",
    "bars": [],
-   "test": "none until the design is ruled (RIMMANDRAKE_DESIGN_FLOWWORKS_DIG_INTERFACE_CONSOLIDATION)",
+   "test": "none: next version (version/next_version/README.md)",
    "stage": "-",
-   "kind": "NO 0.1.0 BAR yet: dig interface consolidation, his open call"
+   "kind": "next version (FlowWorks 0.2.0 Divergent): the dig-interface redesign, his card 2026-11-13 10:12 PM PST (\"All in the next version\")"
   },
   {
    "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13_evening.md",
@@ -1039,6 +1039,225 @@
    "test": "sc_geyser_tub (Hot Tub on mouse-over; owed Stage 3)",
    "stage": "6",
    "kind": "defect; bar added by his card 2026-11-14"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-14.md",
+   "tag": "2026-11-14",
+   "row": "1",
+   "words": "\"Why is the pit walk speed 4.2%? It should be full speed while walking on the floor of the pit. Pits should only slow you down while you're climbing up or down over the walls (if you can at all).\"",
+   "bars": [
+    "ways_in_and_out",
+    "inv_pit_access"
+   ],
+   "test": "T_PIT_LOOK_1114 (PitLook1114_pit_floor_walks_full_speed_readout_and_step) + PIT_LOOK_1114_LIVE",
+   "stage": "4-5 and 6",
+   "kind": "defect, fixed a9866498909a"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-14.md",
+   "tag": "2026-11-14",
+   "row": "2",
+   "words": "\"I noted that you couldn't overlap two interaction spots for furniture. Could we patch it so that you can? This would be put in some other RimMandrake mod I presume.\"",
+   "bars": [],
+   "test": "none: not this mod's",
+   "stage": "-",
+   "kind": "other mod: shared interaction spots (RIMMANDRAKE_ALLOW_SHARED_INTERACTION_SPOTS_TWO_BENCHES_ONE_STOOL)"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-14.md",
+   "tag": "2026-11-14",
+   "row": "3",
+   "words": "\"It should not let you install furniture that overlaps with a pit edge. Right now I can install a butcher table hanging over a pit in any configuration.\"",
+   "bars": [
+    "inv_pits"
+   ],
+   "test": "T_PIT_LOOK_1114 (PitLook1114_furniture_never_straddles_a_pit_edge) + PIT_LOOK_1114_LIVE",
+   "stage": "4-5 and 6",
+   "kind": "defect, fixed 7f25ff2060ea"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-14.md",
+   "tag": "2026-11-14",
+   "row": "4",
+   "words": "\"The Swale should be a floor-tile type that encourages rapid water absorption and transforms nearby terrain to fertile soil, not a weird metal slide-looking piece of furniture.\"",
+   "bars": [],
+   "test": "specified: RM_Swale is a TerrainDef, not a Building (RIMMANDRAKE_REBUILD_SWALE_AS_SOAKING_FLOOR_NOT_FURNITURE)",
+   "stage": "4-5",
+   "kind": "NO 0.1.0 BAR yet: no bar names the swale; Problem (a new bar now) or Divergent is his call"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-14.md",
+   "tag": "2026-11-14",
+   "row": "5",
+   "words": "\"What is a soft sand pit? It doesn't identify \"soft sand\" anywhere when I hover over it. The surrounding terrain type is just soil. We shouldn't be able to dig in sand or loose snow or other very loose types: the walls would just collapse. So I don't think we'd have a soft sand pit anyway. Not sure where this idea came from.\"",
+   "bars": [
+    "inv_dig_depth"
+   ],
+   "test": "specified offline: a dig in sand, mud or loose snow is refused on every path (RIMMANDRAKE_REFUSE_PITS_IN_LOOSE_GROUND_EVEN_BY_BRIDGE)",
+   "stage": "4-5",
+   "kind": "defect, owed; the dig scenario's sand pad (tree.json canal_reads_as_dug) now contradicts his row: question"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-14.md",
+   "tag": "2026-11-14",
+   "row": "6",
+   "words": "\"There is no water in the triangular array of pits of depth + water depth anymore.\"",
+   "bars": [],
+   "test": "none: staging",
+   "stage": "-",
+   "kind": "harness: the staged pits lost their water at the save-format change (diagnosed on RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE)"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-14.md",
+   "tag": "2026-11-14",
+   "row": "7",
+   "words": "\"In the large pits, you have correctly suppressed the battery and cooler icons, well done! The water murkiness looks great.\"",
+   "bars": [
+    "inv_looks",
+    "fill_level_legible"
+   ],
+   "test": "T_UNDERLIQUID (Submerge_overlays_follow_their_thing, Submerge_murk_keeps_rising_to_the_plateau) + LOOK_STAGE8",
+   "stage": "4-5 and 8",
+   "kind": "approval kept for re-check"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-14.md",
+   "tag": "2026-11-14",
+   "row": "7b",
+   "words": "\"The human bodies still show some flesh above the water while their clothing is not. It actually reads like they're floating (if that's what you intended). If not, they need a bit more work to put under the water.\"",
+   "bars": [
+    "inv_looks"
+   ],
+   "test": "T_PIT_LOOK_1114 (PitLook1114_drowned_body_cover_is_the_pawns_own_picture) + PIT_LOOK_1114_LIVE",
+   "stage": "4-5 and 6",
+   "kind": "defect, fixed 3f774eb730"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-14.md",
+   "tag": "2026-11-14",
+   "row": "8",
+   "words": "\"Next version comment: adding conductive liquid over electronics is the same as putting them out in the rain in terms of causing them to short and explode (borrow same game code).\"",
+   "bars": [],
+   "test": "none: next version",
+   "stage": "-",
+   "kind": "next version (FlowWorks 0.2.0 Divergent): RIMMANDRAKE_SHORT_DROWNED_ELECTRONICS_LIKE_RAIN_DOES, his own words"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-14.md",
+   "tag": "2026-11-14",
+   "row": "9",
+   "words": "\"I very much like how you arranged Pour Water in the debug menu tree. You identified a single item as a normalized example (how filled a specific pit size would be).\"",
+   "bars": [],
+   "test": "none: dev tooling",
+   "stage": "-",
+   "kind": "harness: approval of the debug Pour menu layout (dev tooling, no player bar)"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-14.md",
+   "tag": "2026-11-14",
+   "row": "9b",
+   "words": "\"Provide that same fill example for all the different options. But you referred to Fill N in the example, and we don't talk like that anymore. Define instead how full a single tile would be in terms of meters.\"",
+   "bars": [],
+   "test": "T_PIT_LOOK_1114 (PitLook1114_pour_steps_each_show_metres_on_one_tile, PitLook1114_no_fill_n_wording_in_visible_text)",
+   "stage": "4-5",
+   "kind": "harness: debug Pour menu wording (dev tooling), fixed 7acbbf887b"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-14.md",
+   "tag": "2026-11-14",
+   "row": "10",
+   "words": "\"I placed WAY too much water over the geyser and it spread over the surface of the ground pretty well. It did end up with random Spilled Water over the surface even though it is touching many open pits. We may want a \"helper\" to sweep over such situations and \"scoop up\" some of that water into the pits faster than a slow simulation would have it, a kind of shallow/spilled water helper that helps it find its way to available drains more readily. The ground should also be clearly indicated as wet, however we do that, as should any native terrain next to a pit filled with water types.\"",
+   "bars": [],
+   "test": "none until designed",
+   "stage": "-",
+   "kind": "next version (FlowWorks 0.2.0 Divergent): RIMMANDRAKE_DESIGN_SPILLED_WATER_WET_GROUND_ONE_STATE (row 10f's ruling)"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-14.md",
+   "tag": "2026-11-14",
+   "row": "10b",
+   "words": "\"I then emptied two pits completely (debug Drain option worked fantastic in both pits).\"",
+   "bars": [],
+   "test": "stage.py b2_drain_all row",
+   "stage": "-",
+   "kind": "harness: approval of the debug Drain option (dev tooling)"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-14.md",
+   "tag": "2026-11-14",
+   "row": "10c",
+   "words": "\"But none of the spilled water at the edges of the pit dripped back in.\"",
+   "bars": [],
+   "test": "none until designed",
+   "stage": "-",
+   "kind": "next version (FlowWorks 0.2.0 Divergent): RIMMANDRAKE_DESIGN_SPILLED_WATER_WET_GROUND_ONE_STATE (row 10f's ruling)"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-14.md",
+   "tag": "2026-11-14",
+   "row": "10d",
+   "words": "\"However, over time, we did watch it evaporate off the ground (I think it was likely evaporation) and the height in cm did reduce and it disappeared off terrain completely in places. That was welcome and looked good, though it should leave wetted ground again for awhile.\"",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "test": "T_SHEET (soak-in, freeze and thaw) + LOOK_STAGE8",
+   "stage": "4-5 and 8",
+   "kind": "approval kept for re-check (evaporation); the wet ground left after is next version (row 10f)"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-14.md",
+   "tag": "2026-11-14",
+   "row": "10e",
+   "words": "\"We need a design pass here. Do we still need wetted ground, or do we just use a very thin layer of spilled water to indicate wetted and let that suffice/act like wetted ground? That may be easier than carrying an extra state of \"wetted, no remaining liquid\" as now. Your advice is welcome here. It would primarily be for its effects on plants/agriculture.\"",
+   "bars": [],
+   "test": "none: answered by row 10f",
+   "stage": "-",
+   "kind": "question, answered by row 10f"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-14.md",
+   "tag": "2026-11-14",
+   "row": "10f",
+   "words": "Follow-up ruling, 2026-11-14 12:01 PM PST: \"I agree with your assessment: ALL game wetness should now migrate to a thin film. That means that when a natural body of water is drained, it reveals \"Mud\" surface that retains that thin film of water as \"wet mud\" itself, then this dries. That also means some terrains may look different when water is over them, and this makes sense. Wet and dry versions of some terrain will implicitly make sense, while things like Tile and Cement will not change. This is probably for next version in the relevant mods.\"",
+   "bars": [],
+   "test": "none until designed",
+   "stage": "-",
+   "kind": "next version (FlowWorks 0.2.0 Divergent): his ruling of 2026-11-14 12:01 PM PST, all wetness one thin film (RIMMANDRAKE_DESIGN_SPILLED_WATER_WET_GROUND_ONE_STATE)"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-14.md",
+   "tag": "2026-11-14",
+   "row": "11",
+   "words": "\"I added water to this pit, and where the Sluice Gate stands, it kept it at water level 0.0 nonsensically. Other furniture read correctly.\"",
+   "bars": [
+    "inv_doors",
+    "sluice_drains_on_command"
+   ],
+   "test": "specified offline: the cell under a sluice gate reads the pit's level (RIMMANDRAKE_SEAL_SLUICE_AT_ITS_PANEL_NOT_ITS_SQUARE)",
+   "stage": "4-5",
+   "kind": "defect, diagnosed not fixed"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-14.md",
+   "tag": "2026-11-14",
+   "row": "12",
+   "words": "\"FIX you can put \"floor types\" on a pit correctly, but when you hover over normal floor tile it says (in this case) Lanternstone floor. In the pit, it does not say Lanternstone floor, though the walk speed has correctly been changed to 100%. Then when you fill the pit with water, it correctly places water OVER the lanternstone OUTSIDE the pit, but inside the pit the lanternstone floor is destroyed.\"",
+   "bars": [
+    "inv_pits"
+   ],
+   "test": "T_PIT_LOOK_1114 (PitLook1114_floor_on_a_pit_survives_water_and_is_named) + PIT_LOOK_1114_LIVE",
+   "stage": "4-5 and 6",
+   "kind": "defect, fixed f64db2c740"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-14.md",
+   "tag": "2026-11-14",
+   "row": "12b",
+   "words": "\"We definitely want floor types at the bottom of pits (next version), as well as wall types too (next version). In the next version, these will reduce or encourage drainage into the surrounding land and give the pits enhanced hit points against enemies harming/destroying their way in and out of a pit with shovels. Digging into solid rock ground would then be represented by these same types: digging a pit into rock gets you free rock walls/floor, while soil is looser and lossier and easier (all next version).\"",
+   "bars": [],
+   "test": "none until designed",
+   "stage": "-",
+   "kind": "next version (FlowWorks 0.2.0 Divergent): RIMMANDRAKE_LINE_PITS_WITH_FLOORS_AND_WALLS_ROCK_FREE, his own words"
   }
  ],
  "tests": {
@@ -3380,6 +3599,40 @@
     "entry_exists": false,
     "why": "UNRUN: offline only, never the game in this run; entry function absent"
    }
+  },
+  "T_PIT_LOOK_1114": {
+   "id": "T_PIT_LOOK_1114",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+   "observes": "his look of 2026-11-14, fixed by RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE: pit floor walks full speed, Hot Tub on a sunk geyser pool, furniture never straddles a pit edge, a floor in a pit survives water and is named, a drowned body is covered by its own picture, pour steps in metres (C# PitLook1114_*)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only PitLook1114*",
+   "runs_today": {
+    "ran": false,
+    "why": "added 2026-11-14 Stage 3; filled by the next run"
+   }
+  },
+  "PIT_LOOK_1114_LIVE": {
+   "id": "PIT_LOOK_1114_LIVE",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/pit_look_1114_live.py",
+   "entry": "__main__",
+   "observes": "the same six fixes read in the running game on his sitting map (pit_floor WRITES to B2)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/pit_look_1114_live.py"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\pit_look_1114_live.py  (bridge held; FlowWorks deployed)",
+   "why_game": "a mouse-over string, a placement refusal and a drawn body exist only in a played map",
+   "owed_under": "RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "UNRUN: offline only, never the game in this run"
+   }
   }
  },
  "bars": [
@@ -3401,7 +3654,8 @@
    ],
    "held": [
     "2026-11-12#12",
-    "2026-11-13_dig_interface#1"
+    "2026-11-13_dig_interface#1",
+    "2026-11-14#5"
    ],
    "offline_decides": [
     "T_DIG",
@@ -3476,7 +3730,9 @@
    "supports": [
     "sc_garden"
    ],
-   "held": [],
+   "held": [
+    "2026-11-14#10d"
+   ],
    "offline_decides": [
     "T_SHEET",
     "PY_FLOWWORKS_SHEET_DROWN_MESSAGE"
@@ -3593,10 +3849,14 @@
    ],
    "supports": [
     "sc_moat_raid",
-    "sc_pit_trap_raid"
+    "sc_pit_trap_raid",
+    "T_PIT_LOOK_1114",
+    "PIT_LOOK_1114_LIVE"
    ],
    "held": [
-    "2026-11-12#11b"
+    "2026-11-12#11b",
+    "2026-11-14#3",
+    "2026-11-14#12"
    ],
    "offline_decides": [
     "T_PIT_DRAW",
@@ -3623,9 +3883,13 @@
     "sc_ways_out"
    ],
    "supports": [
-    "sc_pit_trap_raid"
+    "sc_pit_trap_raid",
+    "T_PIT_LOOK_1114",
+    "PIT_LOOK_1114_LIVE"
    ],
-   "held": [],
+   "held": [
+    "2026-11-14#1"
+   ],
    "offline_decides": [
     "T_PIT_ACCESS",
     "PY_FLOWWORKS_DRAFTED_MOVE_PIT",
@@ -3648,7 +3912,9 @@
    "supports": [
     "sc_moat_raid"
    ],
-   "held": [],
+   "held": [
+    "2026-11-14#11"
+   ],
    "offline_decides": [
     "T_DOORS",
     "PY_FW_GATE_LIFT"
@@ -3817,7 +4083,7 @@
     "PY_WATER_NOT_FOOD",
     "PY_NATIVES_DRINK_OWN_WATER"
    ],
-   "offline_green_today": false,
+   "offline_green_today": true,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
@@ -3970,7 +4236,9 @@
    "supports": [
     "OL_OWNER_LOOK_READS",
     "sc_fill_tiers",
-    "LOOK_STAGE8"
+    "LOOK_STAGE8",
+    "T_PIT_LOOK_1114",
+    "PIT_LOOK_1114_LIVE"
    ],
    "held": [
     "2026-11-12#1",
@@ -4016,7 +4284,9 @@
     "2026-11-13_evening#2",
     "2026-11-13_evening#3",
     "2026-11-13_evening#4",
-    "2026-11-13_evening#5"
+    "2026-11-13_evening#5",
+    "2026-11-14#7",
+    "2026-11-14#7b"
    ],
    "offline_decides": [
     "T_UNDERLIQUID",
@@ -4030,7 +4300,7 @@
     "T_WALL_FACES",
     "PY_FLOWWORKS_FLAT_SHADOW"
    ],
-   "offline_green_today": false,
+   "offline_green_today": true,
    "every_decider_runnable_today": false,
    "any_test_runnable_today": true
   },
@@ -4212,7 +4482,8 @@
     "2026-11-13_evening#2",
     "2026-11-13_evening#3",
     "2026-11-13_evening#4",
-    "2026-11-13_evening#5"
+    "2026-11-13_evening#5",
+    "2026-11-14#7"
    ],
    "offline_decides": [
     "T_UNDERLIQUID",
@@ -4406,7 +4677,10 @@
     "PY_FLOWWORKS_PIT_TRAVEL_TAGS",
     "sc_ways_out"
    ],
-   "supports": [],
+   "supports": [
+    "T_PIT_LOOK_1114",
+    "PIT_LOOK_1114_LIVE"
+   ],
    "held": [
     "2026-11-12#4",
     "2026-11-12#8",
@@ -4414,7 +4688,8 @@
     "2026-11-13#6",
     "2026-11-13#7",
     "2026-11-13#9",
-    "2026-11-13#17"
+    "2026-11-13#17",
+    "2026-11-14#1"
    ],
    "offline_decides": [
     "T_PIT_ACCESS",
@@ -4439,7 +4714,8 @@
     "sc_moat_raid"
    ],
    "held": [
-    "2026-11-12#5"
+    "2026-11-12#5",
+    "2026-11-14#11"
    ],
    "offline_decides": [
     "T_DOORS",

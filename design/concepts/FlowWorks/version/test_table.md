@@ -1,18 +1,18 @@
 # FlowWorks 0.1.0: test-and-stage table
 
-Generated 2026-11-14T11:50:14-08:00 from `test_table.json` (the record; this is its read view). Stages: 2 preflight, 4-5 blind offline, 6 in-game, 8 his walk. A bar passes when every deciding test passes. Columns match Explosive Knockback's table.
+Generated 2026-11-14T14:29:10-08:00 from `test_table.json` (the record; this is its read view). Stages: 2 preflight, 4-5 blind offline, 6 in-game, 8 his walk. A bar passes when every deciding test passes. Columns match Explosive Knockback's table.
 
 ## Counts (measured)
 
 - bars: 61
 - with at least one test runnable today (an offline test that ran, or an in-game scene whose entry exists): 52
 - with every deciding test runnable today: 25
-- with an offline deciding test, all green today: 45
+- with an offline deciding test, all green today: 47
 - with an offline deciding test that exists (built), green or red: 50
 - with no offline deciding test at all: 2
 - decided offline only (no game needed): 6
-- in-game scenes: 31, entry exists 14, absent 17
-- offline tests: 78 built (ran today: 74 PASS, 4 red), 7 specified for Stage 3
+- in-game scenes: 32, entry exists 15, absent 17
+- offline tests: 79 built (ran today: 77 PASS, 1 red), 7 specified for Stage 3
 
 ## Bars
 
@@ -26,8 +26,8 @@ Generated 2026-11-14T11:50:14-08:00 from `test_table.json` (the record; this is 
 | `inv_liquid_roster` | record | 6 | T_ROSTER, PY_LIQUID_DEFS_HAZARDS, PY_WATER_TERRAINS_NAME_LIQUID, PY_LAVA_ROW, PY_FLOWWORKS_HOT_WET_TERRAIN, sc_fill_tiers | sc_moat_raid | all | yes |
 | `inv_fire` | record | 6 | T_FIRE, PY_FLOWWORKS_FUEL_MOAT, sc_canal_fire | sc_moat_raid | all | yes |
 | `inv_slime` | record | 6 | T_SLIME, sc_slime | - | all | yes |
-| `inv_pits` | record | 6 | T_PIT_DRAW, PY_FLOWWORKS_PIT_DRAW_CENSUS, PY_FLOWWORKS_PIT_FLOOR_GROUND, PY_FLOWWORKS_REVIEW1022_SUPERDEEP, T_PIT_COVER, PY_FLOWWORKS_COVER_BREAKS, PY_SPIKE_FLOAT32_PARITY, sc_pit_reads, sc_covered_pit | sc_moat_raid, sc_pit_trap_raid | all | yes |
-| `inv_pit_access` | record | 6 | T_PIT_ACCESS, PY_FLOWWORKS_DRAFTED_MOVE_PIT, PY_FLOWWORKS_PIT_TRAVEL_TAGS, sc_ways_out | sc_pit_trap_raid | all | yes |
+| `inv_pits` | record | 6 | T_PIT_DRAW, PY_FLOWWORKS_PIT_DRAW_CENSUS, PY_FLOWWORKS_PIT_FLOOR_GROUND, PY_FLOWWORKS_REVIEW1022_SUPERDEEP, T_PIT_COVER, PY_FLOWWORKS_COVER_BREAKS, PY_SPIKE_FLOAT32_PARITY, sc_pit_reads, sc_covered_pit | sc_moat_raid, sc_pit_trap_raid, T_PIT_LOOK_1114, PIT_LOOK_1114_LIVE | all | yes |
+| `inv_pit_access` | record | 6 | T_PIT_ACCESS, PY_FLOWWORKS_DRAFTED_MOVE_PIT, PY_FLOWWORKS_PIT_TRAVEL_TAGS, sc_ways_out | sc_pit_trap_raid, T_PIT_LOOK_1114, PIT_LOOK_1114_LIVE | all | yes |
 | `inv_doors` | record | 6 | T_DOORS, PY_FW_GATE_LIFT, sc_sluice | sc_moat_raid | all | yes |
 | `inv_bridges` | record | 6 | T_BRIDGES, PY_FLOWWORKS_DRAWBRIDGE_POSE, PY_FLOWWORKS_SUSPENSION_LINKED, sc_hung_bridge | sc_moat_raid, sc_islands | all | yes |
 | `inv_trench_cover` | record | 6 | T_TRENCH, sc_trench_cover | sc_pit_trap_raid | some | yes |
@@ -35,14 +35,14 @@ Generated 2026-11-14T11:50:14-08:00 from `test_table.json` (the record; this is 
 | `inv_hoses` | record | 6 | T_HOSE, PY_HOSE_OFFLINE, PY_HOSE_PORTS, PY_HOSE_LAY_SETTLE, PY_HOSE_FITTINGS, sc_hose_look | sc_garden | some | yes |
 | `inv_liquid_net` | record | 6 | T_NET, PY_PUMP_STATION_PORTS, PY_FLOWWORKS_TANK_DRINK_RECHECK, PY_PIPE_SEAT, sc_one_network | sc_moat_raid, sc_garden | all | yes |
 | `inv_converters` | record | 4-5 | T_CONVERT | sc_garden | all | yes |
-| `inv_bottles_thirst` | record | 4-5 | T_THIRST, PY_WATER_NOT_FOOD, PY_NATIVES_DRINK_OWN_WATER | sc_garden | all | no |
+| `inv_bottles_thirst` | record | 4-5 | T_THIRST, PY_WATER_NOT_FOOD, PY_NATIVES_DRINK_OWN_WATER | sc_garden | all | yes |
 | `inv_drilling` | record | 4-5 | T_DRILL | sc_garden | all | yes |
 | `inv_sprinklers` | record | 4-5 | T_SPRINKLER | sc_garden | all | yes |
 | `inv_rivers` | record | 6 | T_RIVER, PY_FLOWWORKS_RIVERS, PY_FLOWWORKS_RIVER_COLORS, PY_WEIR_INSTALLED, sc_river | - | all | yes |
 | `inv_map_controls` | record | 6 | T_MAP_CONTROLS, sc_source_pays | - | some | yes |
 | `inv_quarry` | record | 6 | T_QUARRY, sc_dig_finds | - | all | yes |
 | `inv_settings` | record | 6 | T_SETTINGS_SWEEP_OFFLINE, PY_SETTINGS_REGISTRY, PY_SETTINGS_SEARCH, PY_FLOWWORKS_NORTHSTAR, PY_VALIDATION_V2_OFFLINE, sc_walk | - | some | no |
-| `inv_looks` | record | 6 | T_UNDERLIQUID, PY_FLOWWORKS_UNDERLIQUID_PARITY, PY_LIQUID_LOOK_TUNE, PY_FLOWWORKS_TANK_SHADOW, T_STYLES, PY_FW_OFFLINE_ART, PY_LIQUID_LOOKS, PY_FLOWWORKS_PIPE_POLE_ART, T_WALL_FACES, PY_FLOWWORKS_FLAT_SHADOW, LOOK_BLIND_READER | OL_OWNER_LOOK_READS, sc_fill_tiers, LOOK_STAGE8 | some | no |
+| `inv_looks` | record | 6 | T_UNDERLIQUID, PY_FLOWWORKS_UNDERLIQUID_PARITY, PY_LIQUID_LOOK_TUNE, PY_FLOWWORKS_TANK_SHADOW, T_STYLES, PY_FW_OFFLINE_ART, PY_LIQUID_LOOKS, PY_FLOWWORKS_PIPE_POLE_ART, T_WALL_FACES, PY_FLOWWORKS_FLAT_SHADOW, LOOK_BLIND_READER | OL_OWNER_LOOK_READS, sc_fill_tiers, LOOK_STAGE8, T_PIT_LOOK_1114, PIT_LOOK_1114_LIVE | some | yes |
 | `inv_prison_no_bed` | record | 6 | T_PRISON, T_PRISON_CARE_OFFLINE, sc_hole_prison | sc_moat_raid, sc_pit_trap_raid | some | no |
 | `inv_toss_flame` | record | 6 | T_TOSS_FLAME_OFFLINE, sc_toss_flame | sc_moat_raid | none | no |
 | `inv_raider_fetch_fallen` | record | 6 | T_FETCH_FALLEN_OFFLINE, sc_fetch_fallen | sc_pit_trap_raid | none | no |
@@ -56,7 +56,7 @@ Generated 2026-11-14T11:50:14-08:00 from `test_table.json` (the record; this is 
 | `pawn_height_follows_depth` | tree | 6 | T_SWIM, PY_SWIM_SHORE_REACH, sc_pawn_height | - | some | yes |
 | `pit_reads_as_hole` | tree | 6 | T_PIT_DRAW, PY_FLOWWORKS_PIT_DRAW_CENSUS, PY_FLOWWORKS_PIT_FLOOR_GROUND, PY_FLOWWORKS_REVIEW1022_SUPERDEEP, T_PIT_LABEL, sc_pit_reads, LOOK_BLIND_READER | OL_OWNER_LOOK_READS | some | yes |
 | `covered_pit_springs` | tree | 6 | T_PIT_COVER, PY_FLOWWORKS_COVER_BREAKS, PY_SPIKE_FLOAT32_PARITY, sc_covered_pit, LOOK_BLIND_READER | sc_pit_trap_raid | some | yes |
-| `ways_in_and_out` | tree | 6 | T_PIT_ACCESS, PY_FLOWWORKS_DRAFTED_MOVE_PIT, PY_FLOWWORKS_PIT_TRAVEL_TAGS, sc_ways_out | - | all | yes |
+| `ways_in_and_out` | tree | 6 | T_PIT_ACCESS, PY_FLOWWORKS_DRAFTED_MOVE_PIT, PY_FLOWWORKS_PIT_TRAVEL_TAGS, sc_ways_out | T_PIT_LOOK_1114, PIT_LOOK_1114_LIVE | all | yes |
 | `sluice_drains_on_command` | tree | 6 | T_DOORS, PY_FW_GATE_LIFT, sc_sluice | sc_moat_raid | all | yes |
 | `hose_reads_as_hose` | tree | 6 | T_HOSE, PY_HOSE_OFFLINE, PY_HOSE_PORTS, PY_HOSE_LAY_SETTLE, PY_HOSE_FITTINGS, sc_hose_look, LOOK_BLIND_READER | - | some | yes |
 | `one_liquid_network` | tree | 6 | T_NET, PY_PUMP_STATION_PORTS, PY_FLOWWORKS_TANK_DRINK_RECHECK, PY_PIPE_SEAT, sc_one_network | sc_garden | all | yes |
@@ -137,7 +137,7 @@ Generated 2026-11-14T11:50:14-08:00 from `test_table.json` (the record; this is 
 | `T_CONVERT` | offline | 4-5 | `src/RimMandrake/Utils/selftest_flowworks_stock.py` | PASS (8/8 cases ok), 531s |
 | `T_THIRST` | offline | 4-5 | `src/RimMandrake/Utils/selftest_flowworks_stock.py` | PASS (29/29 cases ok), 531s |
 | `PY_WATER_NOT_FOOD` | offline | 4-5 | `src/RimMandrake/FlowWorks/Tools/selftest_water_not_food.py` | PASS, 0.1s |
-| `PY_NATIVES_DRINK_OWN_WATER` | offline | 4-5 | `src/RimMandrake/FlowWorks/selftest_natives_drink_own_water.py` | RED rc 1, 7.4s |
+| `PY_NATIVES_DRINK_OWN_WATER` | offline | 4-5 | `src/RimMandrake/FlowWorks/selftest_natives_drink_own_water.py` | PASS, 4.6s |
 | `T_DRILL` | offline | 4-5 | `src/RimMandrake/Utils/selftest_flowworks_stock.py` | PASS (5/5 cases ok), 531s |
 | `T_SPRINKLER` | offline | 4-5 | `src/RimMandrake/Utils/selftest_flowworks_stock.py` | PASS (20/20 cases ok), 531s |
 | `T_RIVER` | offline | 4-5 | `src/RimMandrake/Utils/selftest_flowworks_stock.py` | PASS (64/64 cases ok), 531s |
@@ -153,15 +153,15 @@ Generated 2026-11-14T11:50:14-08:00 from `test_table.json` (the record; this is 
 | `PY_FLOWWORKS_TANK_SHADOW` | offline | 4-5 | `src/RimMandrake/FlowWorks/selftest_flowworks_tank_shadow.py` | PASS, 0.0s |
 | `T_STYLES` | offline | 4-5 | `src/RimMandrake/Utils/selftest_flowworks_stock.py` | PASS (15/15 cases ok), 531s |
 | `PY_FW_OFFLINE_ART` | offline | 4-5 | `src/RimMandrake/FlowWorks/Tools/selftest_fw_offline_art.py` | PASS, 14.1s |
-| `PY_LIQUID_LOOKS` | offline | 4-5 | `src/RimMandrake/FlowWorks/Tools/selftest_liquid_looks.py` | RED rc 1, 0.1s |
+| `PY_LIQUID_LOOKS` | offline | 4-5 | `src/RimMandrake/FlowWorks/Tools/selftest_liquid_looks.py` | PASS, 0.1s |
 | `PY_FLOWWORKS_PIPE_POLE_ART` | offline | 4-5 | `src/RimMandrake/FlowWorks/selftest_flowworks_pipe_pole_art.py` | PASS, 0.0s |
 | `T_GEYSER_TUB` | offline | 4-5 | `src/RimMandrake/Utils/selftest_flowworks_stock.py` | PASS (11/11 cases ok), 531s |
 | `PY_FLOWWORKS_GEYSER_TUB` | offline | 4-5 | `src/RimMandrake/FlowWorks/selftest_flowworks_geyser_tub.py` | PASS, 0.8s |
 | `T_SETTINGS_SWEEP_OFFLINE` | offline | 4-5 | `src/RimMandrake/Utils/selftest_flowworks_stock.py` | PASS (6/6 cases ok), 531s |
 | `PY_SETTINGS_REGISTRY` | offline | 4-5 | `src/RimMandrake/FlowWorks/northstar/selftest_settings_registry.py` | PASS, 0.0s |
 | `PY_SETTINGS_SEARCH` | offline | 4-5 | `src/RimMandrake/FlowWorks/selftest_settings_search.py` | PASS, 1.3s |
-| `PY_FLOWWORKS_NORTHSTAR` | offline | 4-5 | `src/RimMandrake/FlowWorks/northstar/selftest_flowworks_northstar.py` | RED rc 1, 10.4s |
-| `PY_VALIDATION_V2_OFFLINE` | offline | 4-5 | `src/RimMandrake/FlowWorks/northstar/validation_v2.py` | RED rc 1, 46.6s |
+| `PY_FLOWWORKS_NORTHSTAR` | offline | 4-5 | `src/RimMandrake/FlowWorks/northstar/selftest_flowworks_northstar.py` | PASS, 10.8s |
+| `PY_VALIDATION_V2_OFFLINE` | offline | 4-5 | `src/RimMandrake/FlowWorks/northstar/validation_v2.py` | RED rc 1, 58.3s |
 | `T_WETTING_OFFLINE` | offline | 4-5 | `(specified, Stage 3)` | not run: specified, not built |
 | `T_WETNESS_PROBE_OFFLINE` | offline | 4-5 | `(specified, Stage 3)` | not run: specified, not built |
 | `T_TOSS_FLAME_OFFLINE` | offline | 4-5 | `(specified, Stage 3)` | not run: specified, not built |
@@ -202,8 +202,10 @@ Generated 2026-11-14T11:50:14-08:00 from `test_table.json` (the record; this is 
 | `sc_geyser_tub` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry ABSENT |
 | `T_LIQUID_COATING_OFFLINE` | offline | 4-5 | `(specified, Stage 3)` | not run: specified, not built |
 | `sc_coating_wash` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry ABSENT |
+| `T_PIT_LOOK_1114` | offline | 4-5 | `src/RimMandrake/Utils/selftest_flowworks_stock.py` | not run: added 2026-11-14 Stage 3; filled by the next run |
+| `PIT_LOOK_1114_LIVE` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/pit_look_1114_live.py` | not run (offline only); entry exists |
 
-## Held look statements placed (83 rows)
+## Held look statements placed (103 rows)
 
 | row | bars | test | stage | kind |
 |---|---|---|---|---|
@@ -282,7 +284,7 @@ Generated 2026-11-14T11:50:14-08:00 from `test_table.json` (the record; this is 
 | 2026-11-13#17 | ways_in_and_out, pit_reads_as_hole | T_PIT_ACCESS (PY_FLOWWORKS_DRAFTED_MOVE_PIT checks only the destination remap; the release ring and the pit's top rows are unchecked) + sc_ways_out | 4-5 and 6 | offline (partly specified) + in-game read |
 | 2026-11-13#18 | - | harness: tier_cut_creature_check.py against proof-scene creatures | 2 | harness staging, no FlowWorks bar |
 | 2026-11-13_dig_interface#1 | canal_reads_as_dug, inv_dig_depth | T_DIG_TIME_ARITHMETIC (specified; his target not set) | 4-5 | offline arithmetic (specified); Problem-or-Divergent is his open call |
-| 2026-11-13_dig_interface#2 | - | none until the design is ruled (RIMMANDRAKE_DESIGN_FLOWWORKS_DIG_INTERFACE_CONSOLIDATION) | - | NO 0.1.0 BAR yet: dig interface consolidation, his open call |
+| 2026-11-13_dig_interface#2 | - | none: next version (version/next_version/README.md) | - | next version (FlowWorks 0.2.0 Divergent): the dig-interface redesign, his card 2026-11-13 10:12 PM PST ("All in the next version") |
 | 2026-11-13_evening#1 | inv_geyser_tub | T_GEYSER_TUB (fleck count, size, alpha in bounds; offline) | 4-5 | defect; bar added by his card 2026-11-14 |
 | 2026-11-13_evening#2 | fill_level_legible, inv_looks | T_UNDERLIQUID (things lying flat draw under the sheet) | 4-5 | offline law |
 | 2026-11-13_evening#3 | fill_level_legible, inv_looks, pit_reads_as_hole | T_UNDERLIQUID (every draw path enumerated; sprite inside the pit) | 4-5 | offline law |
@@ -290,6 +292,26 @@ Generated 2026-11-14T11:50:14-08:00 from `test_table.json` (the record; this is 
 | 2026-11-13_evening#5 | fill_level_legible, inv_looks | T_UNDERLIQUID (NeedsPower and PowerOff fade with depth) | 4-5 | offline law |
 | 2026-11-14#8b | inv_geyser_tub | T_GEYSER_TUB (GeyserTub_plume_is_bubbling_water) + LOOK_STAGE8 | 4-5 and 8 | approval (KEEP); bar added by his card 2026-11-14 |
 | 2026-11-14#8c | inv_geyser_tub | sc_geyser_tub (Hot Tub on mouse-over; owed Stage 3) | 6 | defect; bar added by his card 2026-11-14 |
+| 2026-11-14#1 | ways_in_and_out, inv_pit_access | T_PIT_LOOK_1114 (PitLook1114_pit_floor_walks_full_speed_readout_and_step) + PIT_LOOK_1114_LIVE | 4-5 and 6 | defect, fixed a9866498909a |
+| 2026-11-14#2 | - | none: not this mod's | - | other mod: shared interaction spots (RIMMANDRAKE_ALLOW_SHARED_INTERACTION_SPOTS_TWO_BENCHES_ONE_STOOL) |
+| 2026-11-14#3 | inv_pits | T_PIT_LOOK_1114 (PitLook1114_furniture_never_straddles_a_pit_edge) + PIT_LOOK_1114_LIVE | 4-5 and 6 | defect, fixed 7f25ff2060ea |
+| 2026-11-14#4 | - | specified: RM_Swale is a TerrainDef, not a Building (RIMMANDRAKE_REBUILD_SWALE_AS_SOAKING_FLOOR_NOT_FURNITURE) | 4-5 | NO 0.1.0 BAR yet: no bar names the swale; Problem (a new bar now) or Divergent is his call |
+| 2026-11-14#5 | inv_dig_depth | specified offline: a dig in sand, mud or loose snow is refused on every path (RIMMANDRAKE_REFUSE_PITS_IN_LOOSE_GROUND_EVEN_BY_BRIDGE) | 4-5 | defect, owed; the dig scenario's sand pad (tree.json canal_reads_as_dug) now contradicts his row: question |
+| 2026-11-14#6 | - | none: staging | - | harness: the staged pits lost their water at the save-format change (diagnosed on RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE) |
+| 2026-11-14#7 | inv_looks, fill_level_legible | T_UNDERLIQUID (Submerge_overlays_follow_their_thing, Submerge_murk_keeps_rising_to_the_plateau) + LOOK_STAGE8 | 4-5 and 8 | approval kept for re-check |
+| 2026-11-14#7b | inv_looks | T_PIT_LOOK_1114 (PitLook1114_drowned_body_cover_is_the_pawns_own_picture) + PIT_LOOK_1114_LIVE | 4-5 and 6 | defect, fixed 3f774eb730 |
+| 2026-11-14#8 | - | none: next version | - | next version (FlowWorks 0.2.0 Divergent): RIMMANDRAKE_SHORT_DROWNED_ELECTRONICS_LIKE_RAIN_DOES, his own words |
+| 2026-11-14#9 | - | none: dev tooling | - | harness: approval of the debug Pour menu layout (dev tooling, no player bar) |
+| 2026-11-14#9b | - | T_PIT_LOOK_1114 (PitLook1114_pour_steps_each_show_metres_on_one_tile, PitLook1114_no_fill_n_wording_in_visible_text) | 4-5 | harness: debug Pour menu wording (dev tooling), fixed 7acbbf887b |
+| 2026-11-14#10 | - | none until designed | - | next version (FlowWorks 0.2.0 Divergent): RIMMANDRAKE_DESIGN_SPILLED_WATER_WET_GROUND_ONE_STATE (row 10f's ruling) |
+| 2026-11-14#10b | - | stage.py b2_drain_all row | - | harness: approval of the debug Drain option (dev tooling) |
+| 2026-11-14#10c | - | none until designed | - | next version (FlowWorks 0.2.0 Divergent): RIMMANDRAKE_DESIGN_SPILLED_WATER_WET_GROUND_ONE_STATE (row 10f's ruling) |
+| 2026-11-14#10d | inv_overflow_sheet | T_SHEET (soak-in, freeze and thaw) + LOOK_STAGE8 | 4-5 and 8 | approval kept for re-check (evaporation); the wet ground left after is next version (row 10f) |
+| 2026-11-14#10e | - | none: answered by row 10f | - | question, answered by row 10f |
+| 2026-11-14#10f | - | none until designed | - | next version (FlowWorks 0.2.0 Divergent): his ruling of 2026-11-14 12:01 PM PST, all wetness one thin film (RIMMANDRAKE_DESIGN_SPILLED_WATER_WET_GROUND_ONE_STATE) |
+| 2026-11-14#11 | inv_doors, sluice_drains_on_command | specified offline: the cell under a sluice gate reads the pit's level (RIMMANDRAKE_SEAL_SLUICE_AT_ITS_PANEL_NOT_ITS_SQUARE) | 4-5 | defect, diagnosed not fixed |
+| 2026-11-14#12 | inv_pits | T_PIT_LOOK_1114 (PitLook1114_floor_on_a_pit_survives_water_and_is_named) + PIT_LOOK_1114_LIVE | 4-5 and 6 | defect, fixed f64db2c740 |
+| 2026-11-14#12b | - | none until designed | - | next version (FlowWorks 0.2.0 Divergent): RIMMANDRAKE_LINE_PITS_WITH_FLOORS_AND_WALLS_ROCK_FREE, his own words |
 
 ## Judge corrections
 

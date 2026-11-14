@@ -88,6 +88,7 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - CONDUCTOR INTERVENED (stage 3, 2026-11-14 2:05 PM PST, kind bar-added): bar `inv_geyser_tub` added to 0.1.0: "A pit dug on a geyser keeps the geyser at its bottom; once water or another harmless liquid covers the vent it bubbles there as real bubbling water, the pit reads Hot Tub on mouse-over, and pawns nearby bathe in it for vanilla's small hot-spring bonus, while a geyser beside the water rather than under it heats nothing." Checked at Stage 4-5 by `T_GEYSER_TUB` (C# `GeyserTub_*`, 11 cases green) and `PY_FLOWWORKS_GEYSER_TUB` (green); at Stage 6 by scene `sc_geyser_tub` (entry absent, owed Stage 3, UNRUN); looked at Stage 8. Its 11 held rows now name it; `record.json` re-pinned in `version/bars.md`. Source: owner by card 2026-11-14 (OWNER:1794693278631337978).
 - CONDUCTOR INTERVENED (stage 3, 2026-11-14 2:05 PM PST, kind bar-added): bar `inv_liquid_coating` added to 0.1.0: "A pawn who comes out of oil, tar, blood or another staining liquid carries it as a named condition with a clean, not crude, look, and walking into normal water plainly washes it off." Checked at Stage 4-5 by `T_LIQUID_COATING_OFFLINE` and at Stage 6 by scene `sc_coating_wash`, both owed Stage 3 (no coating condition exists in the code; item `RIMMANDRAKE_DESIGN_LIQUID_DIRT_AS_CONDITION_NOT_GRAPHICS`), the scene UNRUN; looked at Stage 8. Its 3 held rows now name it; `record.json` re-pinned in `version/bars.md`. Source: owner by card 2026-11-14 (OWNER:1794693278631337978).
 - CONDUCTOR INTERVENED (stage 3, 2026-11-14 2:16 PM PST, kind release): the 12:15 hold on Stage 3 is released; the look-fix builder in FlowWorks water code ended 12:54 PM PST with six fixes on origin/main, so Stage 3 "reconcile" starts now on detached run RIMMANDRAKE_ADVANCE_FLOWWORKS_OFFLINE_BESIDE_THE_PILOT. Source: ledger notes on RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE (2026-11-14T20:53Z, 20:54Z) and the Conductor's Stage 3 brief.
+- CONDUCTOR INTERVENED (stage 3, 2026-11-14 2:28 PM PST, kind decision): `stage.json` and `VERSION.json` made to agree with the truth, by the steward's standing decision in the Stage 3 brief. What was wrong: `stage.json` still read status `blocked` on the 2026-11-13 OWNER HOLD "pending the lock", a day after the lock landed on his word; `VERSION.json` said 59 bars and carried a caveat about the older CONCEPT_LOCK block, while the table and the lock record hold 61 since his card of 2026-11-14. Now `stage.json` reads `locked` (as Explosive Knockback's), and `VERSION.json` reads 61 bars, 59 of them met by the Arbiter's 2026-11-05 signing and the 2 added bars never judged. No bar file changed, so nothing re-pinned. Source: detached run RIMMANDRAKE_ADVANCE_FLOWWORKS_OFFLINE_BESIDE_THE_PILOT, batch 2.
 
 ### 2026-11-14 11:24 PST, advance begins (rm-builder, detached, offline only)
 
@@ -196,6 +197,21 @@ Batch 1, the four red offline deciders (preflight 48 → 45 refusals):
   **Left red, his call:** the negative control's X4 row wants a standing colonist's crown 1.2 heads below the rim at 4 m
   ("owner: walls 20% above the head"), but on 2026-11-13 ~9:50 PM PST he confirmed `pitSinkPerLevel` 0.05, which draws
   him 0.2 down. Two of his words disagree; making X4 pass means loosening a check, which is his. Question below.
+
+Batch 2, table work (preflight 45 → 23 refusals):
+
+- **The 20 held rows of 2026-11-14 are placed** (`version/advance_scripts/held_place_1114.py`): 6 on a bar with a test that
+  exists (rows 1, 3, 7b, 12 on the look-fix builder's C# `PitLook1114_*` cases, now table test `T_PIT_LOOK_1114`, and its
+  live script `PIT_LOOK_1114_LIVE`, UNRUN; rows 7 and 10d kept approvals), 2 on a bar with a specified test (5 loose-ground
+  dig refusal, 11 sluice square level), 6 next-version (8, 10, 10c, 10f, 12b per his own words or the 10f ruling), 4
+  harness or dev tooling (6, 9, 9b, 10b), 1 another mod's (2), 1 answered question (10e). Row 4, the swale rebuilt as a
+  soaking floor, has no 0.1.0 bar: his call (question below).
+- `dig_interface#2` is placed as next-version work (his card 2026-11-13 10:12 PM PST, recorded in 261f053e64).
+- **Two preflight check corrections**, meaning unchanged: C8 now accepts "next version" and "other mod" as placements (its
+  own would-pass named a next-version entry); C13 reads a scene's `features` as well as `requirement` (the two showcase
+  scenes named their leaves under `features`) and now refuses a named leaf that is not in `tree.json`. Both watched
+  failing on planted faults (an invented leaf, a scene with neither field: 2 refusals).
+- `version/advance_scripts/render_table.py` recomputes each bar's derived fields and rewrites `test_table.md`.
 
 ### What Stage 3 ("reconcile") must build, not begun here
 
