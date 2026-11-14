@@ -38,7 +38,7 @@ internal static class KnockbackFuzz
             baseCells = new[] { 1f, 2f, 4f, 4f, 6f, 8f }[r.Next(6)],
             maxCells = r.Next(1, 11),
             refMass = new[] { 30f, 60f, 70f, 70f, 120f }[r.Next(5)],
-            immuneBodySize = new[] { 1f, 2.5f, 2.5f, 3.6f, 9f }[r.Next(5)],
+            creatureMassLimit = new[] { 20f, 150f, 150f, 216f, 500f }[r.Next(5)],
             lightMassLimit = new[] { 10f, 75f, 75f, 300f }[r.Next(4)],
             impactEnabled = r.Next(5) != 0,
             impactPerCell = new[] { 0f, 2f, 4f, 4f, 9f }[r.Next(5)],
@@ -81,6 +81,24 @@ internal static class KnockbackFuzz
             var s2 = new KbSettings { globalMultiplier = s.globalMultiplier + 0.5f, baseCells = s.baseCells, maxCells = s.maxCells, refMass = s.refMass };
             var s1 = new KbSettings { globalMultiplier = s.globalMultiplier, baseCells = s.baseCells, maxCells = s.maxCells, refMass = s.refMass };
             Check(RM_KnockbackMath.ThrowCells(dist, radius, force, mass, s2) >= RM_KnockbackMath.ThrowCells(dist, radius, force, mass, s1), "a bigger global multiplier threw less");
+            {   // blast power (2026-11-13): more damage never throws less; at the reference it changes nothing; off = 1
+                float rd = new[] { -10f, 0f, 1f, 10f, 50f, 550f }[r.Next(6)];
+                float pct = new[] { 0f, 25f, 100f, 100f, 300f }[r.Next(5)];
+                float dmg = new[] { -1f, 0f, 1f, 24f, 50f, 100f, 550f }[r.Next(7)];
+                bool on = r.Next(4) != 0;
+                float q = RM_KnockbackMath.DamageRatio(dmg, rd, pct, on);
+                Check(q >= 0f && !float.IsNaN(q) && !float.IsInfinity(q), $"DamageRatio({dmg}, {rd}, {pct}, {on}) = {q}");
+                Check(RM_KnockbackMath.DamageRatio(dmg + 10f, rd, pct, on) >= q, "more damage gave less power");
+                if (!on || rd * pct <= 0f) Check(q == 1f, $"no usable reference / switch off gave {q}, not 1");
+                else
+                {
+                    Check(Math.Abs(RM_KnockbackMath.DamageRatio(rd * pct / 100f, rd, pct, on) - 1f) < 1e-5f, "a blast at the reference damage is not ratio 1");
+                    // proportional: ratio x reference = the damage (0 for a negative one)
+                    Check(Math.Abs(q * (rd * pct / 100f) - Math.Max(0f, dmg)) < 1e-3f * Math.Max(1f, dmg), $"DamageRatio({dmg}, {rd}, {pct}) = {q} is not damage / reference");
+                }
+                if (force > 0f) Check(RM_KnockbackMath.ThrowCells(dist, radius, force * RM_KnockbackMath.DamageRatio(dmg + 10f, rd, pct, on), mass, s)
+                    >= RM_KnockbackMath.ThrowCells(dist, radius, force * q, mass, s), "a bigger blast threw less");
+            }
             // mass scale clamps
             Check(RM_KnockbackMath.MassScale(0f, s) == RM_KnockbackMath.MassScale(1f, s), "mass below 1 not treated as 1");
             Check(RM_KnockbackMath.MassScale(-5f, s) == RM_KnockbackMath.MassScale(1f, s), "a negative mass (a corrupt stat) is not treated as 1 (sqrt of a negative is NaN)");
@@ -97,11 +115,11 @@ internal static class KnockbackFuzz
             // eligibility table
             foreach (KbKind k in new[] { KbKind.Pawn, KbKind.Item, KbKind.Corpse })
             {
-                float body = (float)(r.NextDouble() * 5);
-                if (r.Next(3) == 0) body = s.immuneBodySize;       // exactly on the line: immune (>=)
-                bool e = RM_KnockbackMath.Eligible(k, mass, body, s);
-                bool wantE = !((k != KbKind.Item && body >= s.immuneBodySize) || (k != KbKind.Pawn && mass > s.lightMassLimit));
-                Check(e == wantE, $"Eligible({k}, mass {mass}, body {body}) = {e}");
+                float m = mass;
+                if (r.Next(3) == 0) m = k == KbKind.Pawn ? s.creatureMassLimit : s.lightMassLimit;   // exactly on the line: thrown (>)
+                bool e = RM_KnockbackMath.Eligible(k, m, s);
+                bool wantE = !((k == KbKind.Pawn && m > s.creatureMassLimit) || (k != KbKind.Pawn && m > s.lightMassLimit));
+                Check(e == wantE, $"Eligible({k}, mass {m}) = {e}");
             }
         });
     }
@@ -323,7 +341,7 @@ internal static class KnockbackFuzz
         return Loop("cfg", n, seed, r =>
         {
             Steps++;
-            Func<KbConfig> mk = () => r.Next(2) == 0 ? null : new KbConfig { force = (float)r.Next(0, 5), ownCap = r.Next(-1, 12), impactFactor = new[] { -1f, 0f, 1f, 2f }[r.Next(4)], immuneOverride = new[] { 0f, 0f, 3.6f }[r.Next(3)] };
+            Func<KbConfig> mk = () => r.Next(2) == 0 ? null : new KbConfig { force = (float)r.Next(0, 5), ownCap = r.Next(-1, 12), impactFactor = new[] { -1f, 0f, 1f, 2f }[r.Next(4)], massLimitOverride = new[] { 0f, 0f, 216f }[r.Next(3)] };
             KbConfig p = mk(), w = mk(), d = mk();
             string expect = p != null ? "projectile" : w != null ? "weapon" : d != null ? "damageDef" : null;
             KbConfig first = p ?? w ?? d;
@@ -336,13 +354,13 @@ internal static class KnockbackFuzz
             var g = RandSettings(r);
             int globalCap = r.Next(1, 12);
             float scale = new[] { 0.1f, 0.2f, 0.5f, 1f, 1.5f, 2f }[r.Next(6)];
-            var before = (g.globalMultiplier, g.baseCells, g.maxCells, g.refMass, g.immuneBodySize, g.impactFactor);
+            var before = (g.globalMultiplier, g.baseCells, g.maxCells, g.refMass, g.creatureMassLimit, g.impactFactor);
             KbSettings a = KbLookup.Apply(g, got, globalCap, scale);
-            Check(before == (g.globalMultiplier, g.baseCells, g.maxCells, g.refMass, g.immuneBodySize, g.impactFactor), "Apply mutated the shared settings");
+            Check(before == (g.globalMultiplier, g.baseCells, g.maxCells, g.refMass, g.creatureMassLimit, g.impactFactor), "Apply mutated the shared settings");
             Check(!ReferenceEquals(a, g), "Apply returned the shared settings object");
             Check(a.maxCells >= 1 || got.ownCap <= 0, "cap below 1");
             Check(a.impactFactor >= 0f, "negative impact factor");
-            Check(a.immuneBodySize == (got.immuneOverride > 0f ? got.immuneOverride : g.immuneBodySize), "immune override");
+            Check(a.creatureMassLimit == (got.massLimitOverride > 0f ? got.massLimitOverride : g.creatureMassLimit), "mass limit override");
             Check(KbLookup.Apply(g, null, globalCap, scale).maxCells == globalCap && KbLookup.Apply(g, null, globalCap, scale).impactFactor == 1f, "null config does not mean global cap and factor 1");
             Check(RM_KnockbackMath.CapFor(0, globalCap, scale) == globalCap && RM_KnockbackMath.CapFor(-3, globalCap, scale) == globalCap, "ownCap <= 0 is not the global cap");
             int own = r.Next(1, 20);

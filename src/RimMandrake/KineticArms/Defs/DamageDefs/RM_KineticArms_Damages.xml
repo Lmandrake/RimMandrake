@@ -2,6 +2,8 @@
 <!-- Kinetic Arms damage families (design §3, §10). One DamageDef PER WEAPON because Explosive Knockback reads its
      throw force from the DamageDef only (RM_KnockbackExtension.force); the force is that weapon's throw multiplier and
      maxThrowCells its own maximum throw (owner card 2026-10-06: each weapon sets its own cap; grenades stay short).
+     refDamage (2026-11-13 blast power, force x damage / refDamage): set where the projectile's damage differs from the
+     family's defaultDamage (Concussive 6, Repulse 1), so each weapon at its own damage throws what it was tuned to.
      Kinetic Arms' "Kinetic throw strength" setting rescales these forces at load (RM_KineticArmsMod.ApplySettings).
      Concussive = a light bruising blast; Repulse = no wound at all (RM_DamageWorker_KineticOnly), the throw is the effect. -->
 <Defs>
@@ -69,7 +71,7 @@
     <defName>RM_Concussive_Slam</defName>
     <label>slam charge</label>
     <modExtensions>
-      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>2.2</force><maxThrowCells>7</maxThrowCells></li>
+      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>2.2</force><maxThrowCells>7</maxThrowCells><refDamage>8</refDamage></li>
     </modExtensions>
   </DamageDef>
 
@@ -77,7 +79,7 @@
     <defName>RM_Concussive_ThumpShell</defName>
     <label>thump shell</label>
     <modExtensions>
-      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>2.2</force><maxThrowCells>8</maxThrowCells></li>
+      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>2.2</force><maxThrowCells>8</maxThrowCells><refDamage>10</refDamage></li>
     </modExtensions>
   </DamageDef>
 
@@ -110,8 +112,9 @@
     <defName>RM_Repulse_GravRam</defName>
     <label>grav-ram pulse</label>
     <modExtensions>
-      <!-- immuneBodySizeOverride 3.6: moves bodies up to 3.5 (a centipede at 3.0), never a megasloth or thrumbo (4.0) -->
-      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>4.0</force><maxThrowCells>10</maxThrowCells><immuneBodySizeOverride>3.6</immuneBodySizeOverride></li>
+      <!-- creatureMassLimitOverride 216 kg (was body size 3.6, owner card 2026-11-13): moves a rhino (180 kg) or a centipede, never a
+           megasloth or thrumbo (240 kg) -->
+      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>4.0</force><maxThrowCells>10</maxThrowCells><creatureMassLimitOverride>216</creatureMassLimitOverride></li>
     </modExtensions>
   </DamageDef>
 

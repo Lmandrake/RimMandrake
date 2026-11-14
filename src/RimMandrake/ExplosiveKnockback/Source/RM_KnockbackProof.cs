@@ -48,6 +48,10 @@ namespace RimMandrake.ExplosiveKnockback
             "fire_half", "harmful_unpatched",
             // 2026-11-12 round 2: containers thrown whole, heavy goods knock, landings never bump, burning gas clumps.
             "container_thrown", "heavy_knock", "land_no_bump", "land_no_bump_pit", "gas_clumps",
+            // 2026-11-13 creature mass limit + blast power (sc_mass_and_power, the showcase): the run at damage 50, the run at
+            // 100, and the two control lanes (blastPowerFromDamage off; creatureMassLimit 250). NOT YET RUN LIVE.
+            "mass_and_power", "mass_and_power_x2", "mass_and_power_off", "mass_and_power_off_x2", "mass_and_power_250",
+            "mass_and_power_250_x2",
         };
 
         private static Map Map => Find.CurrentMap;
@@ -587,8 +591,29 @@ namespace RimMandrake.ExplosiveKnockback
 
         private static void Blast(IntVec3 c, float radius, DamageDef dt = null, int dmg = 1)
         {
-            GenExplosion.DoExplosion(c, Map, radius, dt ?? DamageDefOf.Bomb, null, dmg);
+            Boom(Map, c, radius, dt, dmg);
         }
+
+        /// <summary>Stages one explosion through the game's own call. realPower false (every scene before 2026-11-13): the
+        /// blast harms at dmg but pushes as a blast at its type's reference damage (ratio 1), so those scenes keep the
+        /// numbers they were written for. realPower true: the push reads the explosion's own damage, as in play.</summary>
+        private static Explosion Boom(Map m, IntVec3 c, float radius, DamageDef dt, int dmg, ThingDef proj = null, bool realPower = false)
+        {
+            dt = dt ?? DamageDefOf.Bomb;
+            GenExplosion.DoExplosion(c, m, radius, dt, null, dmg, -1f, null, null, proj);
+            // StartExplosion damages nothing (cells are hit from the next tick on), so registering after the call is in time
+            Explosion e = m.thingGrid.ThingsListAt(c).OfType<Explosion>().OrderByDescending(x => x.thingIDNumber).FirstOrDefault();
+            if (e != null && !realPower)
+            {
+                RM_Patch_DamageWorker_ExplosionKnockback.ProofPowerDamage[e.thingIDNumber] =
+                    RM_Patch_DamageWorker_ExplosionKnockback.RefDamageOf(dt) * RimMandrakeExplosiveKnockbackSettings.blastPowerRefPercent / 100f;
+            }
+            return e;
+        }
+
+        /// <summary>Proof build only: things whose damage is absorbed whole (sc_mass_and_power stages a real 50 / 100 damage
+        /// blast beside a 12 kg rat; the throw must be read, not the kill). Cleared by the scene's restore.</summary>
+        internal static readonly HashSet<int> NoHarm = new HashSet<int>();
 
         private static Pawn Adult(PawnKindDef k)
         {
@@ -961,7 +986,7 @@ namespace RimMandrake.ExplosiveKnockback
                     Colonist(s, "p0", O(s, 1, 0), drafted: false);
                     Colonist(s, "p1", O(s, 0, 1), drafted: false);
                     Colonist(s, "p2", O(s, -1, 0), drafted: false);
-                    GenExplosion.DoExplosion(s.o, Map, 2.9f, DamageDefOf.Bomb, null, 9999);
+                    Boom(Map, s.o, 2.9f, DamageDefOf.Bomb, 9999);
                     s.verdict = sc =>
                     {
                         int dead = 0, thrown = 0;
@@ -1029,8 +1054,9 @@ namespace RimMandrake.ExplosiveKnockback
                     s.verdict = sc =>
                     {
                         string m = Moved(sc, "big", out Thing t, out int cells);
-                        var skip = ForThing(sc, "skip", t).Where(r => (string)r["reason"] == "too_big").ToList();
-                        return Result(sc, skip.Count == 1 && ForThing(sc, "launch", t).Count == 0, m + " skips(too_big)=" + skip.Count);
+                        var skip = ForThing(sc, "skip", t).Where(r => (string)r["reason"] == "too_heavy_creature").ToList();
+                        return Result(sc, skip.Count == 1 && ForThing(sc, "launch", t).Count == 0, m + " skips(too_heavy_creature)=" + skip.Count
+                            + (skip.Count > 0 ? " [" + Rec(skip[0]) + "]" : ""));
                     };
                     return null;
 
@@ -1119,7 +1145,7 @@ namespace RimMandrake.ExplosiveKnockback
                     var ext = new RM_KnockbackExtension { force = zero ? 0f : 2.5f, maxThrowCells = 8 };
                     AddExt(s, proj, ext);
                     Colonist(s, "p", O(s, 1, 0));
-                    GenExplosion.DoExplosion(s.o, Map, 2.9f, DamageDefOf.Bomb, null, 1, -1f, null, null, proj);
+                    Boom(Map, s.o, 2.9f, DamageDefOf.Bomb, 1, proj);
                     s.verdict = sc =>
                     {
                         string m = Moved(sc, "p", out Thing t, out int cells);
@@ -1143,7 +1169,7 @@ namespace RimMandrake.ExplosiveKnockback
                     AddExt(s, proj, new RM_KnockbackExtension { force = 1f, impactFactor = 0f });
                     Colonist(s, "p", O(s, 1, 0));
                     Build("Wall", O(s, 3, 0), "BlocksGranite");
-                    GenExplosion.DoExplosion(s.o, Map, 2.9f, DamageDefOf.Bomb, null, 1, -1f, null, null, proj);
+                    Boom(Map, s.o, 2.9f, DamageDefOf.Bomb, 1, proj);
                     s.verdict = sc =>
                     {
                         string m = Moved(sc, "p", out Thing t, out int cells);
@@ -1156,25 +1182,30 @@ namespace RimMandrake.ExplosiveKnockback
 
                 case "body_override":
                 {
-                    // an animal with 2.5 <= body size < 3.6: immune under the global 2.5, thrown under a 3.6 override
+                    // a living animal heavier than the global 150 kg and at most 216 (a rhino, 180): spared by the global creature
+                    // mass limit, thrown under a creatureMassLimitOverride of 216 (the grav-ram's)
                     PawnKindDef big = DefDatabase<PawnKindDef>.AllDefs.Where(k => k.RaceProps != null && k.RaceProps.Animal
-                        && k.RaceProps.baseBodySize >= 2.5f && k.RaceProps.baseBodySize < 3.5f && k.RaceProps.IsFlesh
+                        && k.RaceProps.baseBodySize * 60f > 160f && k.RaceProps.baseBodySize * 60f < 205f && k.RaceProps.IsFlesh
                         && k.RaceProps.lifeStageAges.Count > 0).OrderBy(k => k.RaceProps.baseBodySize).FirstOrDefault();
                     if (big == null)
                     {
-                        return "no animal kind with body size 2.5-3.5 on this list";
+                        return "no flesh animal kind of 160-205 kg (60 x body size) on this list";
                     }
                     ThingDef proj = DefDatabase<ThingDef>.GetNamed("Bullet_Revolver");
-                    AddExt(s, proj, new RM_KnockbackExtension { force = 4f, maxThrowCells = 10, immuneBodySizeOverride = 3.6f });
+                    AddExt(s, proj, new RM_KnockbackExtension { force = 4f, maxThrowCells = 10, creatureMassLimitOverride = 216f });
                     Pawn a = Adult(big);
                     GenSpawn.Spawn(a, O(s, 1, 0), Map);
                     Track(s, "big", a);
                     Pawn b = Adult(big);
                     GenSpawn.Spawn(b, O(s, -1, 3), Map);
                     Track(s, "control", b);
-                    s.numbers["bodySize"] = a.BodySize;
-                    GenExplosion.DoExplosion(s.o, Map, 2.9f, DamageDefOf.Bomb, null, 1, -1f, null, null, proj);
-                    GenExplosion.DoExplosion(O(s, -1, 4), Map, 1.5f, DamageDefOf.Bomb, null, 1); // control: Bomb, global 2.5 holds
+                    s.numbers["mass"] = a.GetStatValue(StatDefOf.Mass) - MassUtility.InventoryMass(a);
+                    if (s.numbers["mass"] <= 150f || s.numbers["mass"] > 216f)
+                    {
+                        return big.defName + " weighs " + s.numbers["mass"].ToString("0") + " kg, not 150-216";
+                    }
+                    Boom(Map, s.o, 2.9f, DamageDefOf.Bomb, 1, proj);
+                    Boom(Map, O(s, -1, 4), 1.5f, DamageDefOf.Bomb, 1); // control: Bomb, the global 150 kg holds
                     s.verdict = sc =>
                     {
                         // Verdict from the JOURNAL, not displacement: both are live animals that walk or flee after a blast,
@@ -1184,9 +1215,9 @@ namespace RimMandrake.ExplosiveKnockback
                         string mc = Moved(sc, "control", out Thing tc, out int cc);
                         int bigLaunch = ForThing(sc, "launch", t).Count;
                         int ctrlLaunch = ForThing(sc, "launch", tc).Count;
-                        bool ctrlSkip = ForThing(sc, "skip", tc).Any(r => (string)r["reason"] == "too_big");
-                        return Result(sc, bigLaunch == 1 && ctrlLaunch == 0 && ctrlSkip, m + "; " + mc + " bodySize=" + sc.numbers["bodySize"].ToString("0.0")
-                            + " bigLaunches=" + bigLaunch + " controlLaunches=" + ctrlLaunch + " controlTooBig=" + ctrlSkip);
+                        bool ctrlSkip = ForThing(sc, "skip", tc).Any(r => (string)r["reason"] == "too_heavy_creature");
+                        return Result(sc, bigLaunch == 1 && ctrlLaunch == 0 && ctrlSkip, m + "; " + mc + " mass=" + sc.numbers["mass"].ToString("0")
+                            + " bigLaunches=" + bigLaunch + " controlLaunches=" + ctrlLaunch + " controlTooHeavy=" + ctrlSkip);
                     };
                     return null;
                 }
@@ -1204,7 +1235,7 @@ namespace RimMandrake.ExplosiveKnockback
                     {
                         if (p.Spawned)
                         {
-                            GenExplosion.DoExplosion(p.Position + IntVec3.West, m0, 2.9f, DamageDefOf.Bomb, null, 1);
+                            Boom(m0, p.Position + IntVec3.West, 2.9f, DamageDefOf.Bomb, 1);
                         }
                     }));
                     s.verdict = sc =>
@@ -1664,8 +1695,202 @@ namespace RimMandrake.ExplosiveKnockback
                         return Result(sc, cells == 0 && ForThing(sc, "request", t).Count == 0, m + " (EMP force 0: no request)");
                     };
                     return null;
+
+                case "mass_and_power":
+                case "mass_and_power_x2":
+                case "mass_and_power_off":
+                case "mass_and_power_off_x2":
+                case "mass_and_power_250":
+                case "mass_and_power_250_x2":
+                    return MassAndPower(s);
             }
             return "unknown scene " + s.name;
+        }
+
+        /// <summary>sc_mass_and_power (design/concepts/ExplosiveKnockback/scenes.json; owner cards 2026-11-13 "Cutoff -> A mass
+        /// limit", "Blast power -> Type x damage"): a rat N, a clothed colonist with a sidearm E, a muffalo S and a thrumbo W,
+        /// each one cell from one Bomb blast of radius 2.9 at damage 50 (or 100: the _x2 scenes). The blast REALLY deals that
+        /// damage, so the push reads it; NoHarm absorbs the injury on the four (asserted: no new hediff). Lanes: _off =
+        /// blastPowerFromDamage off; _250 = creatureMassLimit 250. Every other setting at its default (Reset, restored after).
+        /// Verdict from the JOURNAL's launch / skip records (animals walk after landing; displacement cannot tell).</summary>
+        private static string MassAndPower(Scene s)
+        {
+            bool x2 = s.name.EndsWith("_x2");
+            string lane = s.name.Contains("_off") ? "off" : s.name.Contains("_250") ? "250" : "default";
+            int damage = x2 ? 100 : 50;
+            // snapshot every setting, then defaults, then the lane's one change; the restore puts the snapshot back
+            var fields = typeof(RimMandrakeExplosiveKnockbackSettings).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)
+                .Where(f => !f.IsLiteral && !f.IsInitOnly).ToList();
+            var saved = fields.Select(f => f.GetValue(null)).ToList();
+            Action prev = s.restore;
+            s.restore = () =>
+            {
+                for (int i = 0; i < fields.Count; i++)
+                {
+                    fields[i].SetValue(null, saved[i]);
+                }
+                foreach (Thing t in s.things.Values)
+                {
+                    NoHarm.Remove(t.thingIDNumber);
+                }
+                prev?.Invoke();
+            };
+            RimMandrakeExplosiveKnockbackMod.Reset();
+            if (RimMandrakeExplosiveKnockbackSettings.creatureMassLimit != 150f || !RimMandrakeExplosiveKnockbackSettings.blastPowerFromDamage
+                || RimMandrakeExplosiveKnockbackSettings.maxThrowCells != 6)
+            {
+                return "defaults are not creatureMassLimit 150, blastPowerFromDamage on, maximum throw 6";
+            }
+            if (lane == "off")
+            {
+                RimMandrakeExplosiveKnockbackSettings.blastPowerFromDamage = false;
+            }
+            else if (lane == "250")
+            {
+                RimMandrakeExplosiveKnockbackSettings.creatureMassLimit = 250f;
+            }
+
+            Pawn rat = Adult(DefDatabase<PawnKindDef>.GetNamed("Rat"));
+            Pawn muffalo = Adult(DefDatabase<PawnKindDef>.GetNamed("Muffalo"));
+            Pawn thrumbo = Adult(DefDatabase<PawnKindDef>.GetNamed("Thrumbo"));
+            GenSpawn.Spawn(rat, O(s, 0, 1), Map);
+            Track(s, "rat", rat);
+            GenSpawn.Spawn(muffalo, O(s, 0, -1), Map);
+            Track(s, "muffalo", muffalo);
+            GenSpawn.Spawn(thrumbo, O(s, -1, 0), Map);
+            Track(s, "thrumbo", thrumbo);
+            // a colonist in ordinary clothes and a revolver, 64-76 kg as the kernel weighs it (the judge's band: under 63.5 kg a
+            // colonist ties the capped rat at damage 100, over 76.9 the muffalo at 50); generated clothes vary, so draw again
+            Pawn col = null;
+            ThingDef revolver = DefDatabase<ThingDef>.GetNamedSilentFail("Gun_Revolver");
+            for (int tries = 0; tries < 40 && col == null; tries++)
+            {
+                Pawn c = PawnGenerator.GeneratePawn(PawnKindDefOf.Colonist, Faction.OfPlayer);
+                c.equipment?.DestroyAllEquipment();
+                c.inventory?.DestroyAll();
+                if (revolver != null)
+                {
+                    c.equipment?.AddEquipment((ThingWithComps)ThingMaker.MakeThing(revolver));
+                }
+                float cm = c.GetStatValue(StatDefOf.Mass) - MassUtility.InventoryMass(c);
+                if (cm >= 64f && cm <= 76f)
+                {
+                    col = c;
+                }
+                else
+                {
+                    c.Destroy();
+                }
+            }
+            if (col == null)
+            {
+                return "no generated colonist weighed 64-76 kg in 40 draws";
+            }
+            GenSpawn.Spawn(col, O(s, 1, 0), Map);
+            if (col.drafter != null)
+            {
+                col.drafter.Drafted = true;
+            }
+            Track(s, "colonist", col);
+
+            KbSettings k = RimMandrakeExplosiveKnockbackSettings.Kernel();
+            float ratio = RM_KnockbackMath.DamageRatio(damage, RM_Patch_DamageWorker_ExplosionKnockback.RefDamageOf(DamageDefOf.Bomb),
+                RimMandrakeExplosiveKnockbackSettings.blastPowerRefPercent, RimMandrakeExplosiveKnockbackSettings.blastPowerFromDamage);
+            s.numbers["ratio"] = ratio;
+            var bands = new Dictionary<string, (float lo, float hi)>
+            {
+                ["rat"] = (1f, 30f), ["colonist"] = (64f, 76f), ["muffalo"] = (100f, 150f), ["thrumbo"] = (150.001f, 1000f),
+            };
+            foreach (string key in new[] { "rat", "colonist", "muffalo", "thrumbo" })
+            {
+                var p = (Pawn)s.things[key];
+                float mass = p.GetStatValue(StatDefOf.Mass) - MassUtility.InventoryMass(p);
+                if (mass < bands[key].lo || mass > bands[key].hi)
+                {
+                    return key + " weighs " + mass.ToString("0.0") + " kg, outside " + bands[key].lo.ToString("0") + "-" + bands[key].hi.ToString("0");
+                }
+                s.numbers["mass_" + key] = mass;
+                s.numbers["want_" + key] = RM_KnockbackMath.Eligible(KbKind.Pawn, mass, k)
+                    ? RM_KnockbackMath.ThrowCells(1f, 2.9f, 1f * ratio, mass, k) : 0f;
+                s.numbers["hediffs_" + key] = p.health.hediffSet.hediffs.Count;
+                NoHarm.Add(p.thingIDNumber);
+            }
+            // the table DEFAULTS.md states for the stated masses (rat 12, colonist ~70, muffalo 144, thrumbo 240)
+            var table = lane == "off" || !x2
+                ? new Dictionary<string, int> { ["rat"] = 5, ["colonist"] = 3, ["muffalo"] = 2, ["thrumbo"] = lane == "250" ? 1 : 0 }
+                : new Dictionary<string, int> { ["rat"] = 6, ["colonist"] = 5, ["muffalo"] = 4, ["thrumbo"] = lane == "250" ? 3 : 0 };
+            foreach (var kv in table)
+            {
+                s.numbers["table_" + kv.Key] = kv.Value;
+            }
+            Boom(Map, s.o, 2.9f, DamageDefOf.Bomb, damage, null, true);
+            s.verdict = sc => MassAndPowerVerdict(sc, damage, lane);
+            return null;
+        }
+
+        private static string MassAndPowerVerdict(Scene sc, int damage, string lane)
+        {
+            var sb = new StringBuilder();
+            bool ok = true, table = true;
+            var cells = new Dictionary<string, int>();
+            var dirs = new Dictionary<string, IntVec3> { ["rat"] = IntVec3.North, ["colonist"] = IntVec3.East, ["muffalo"] = IntVec3.South, ["thrumbo"] = IntVec3.West };
+            foreach (string key in new[] { "rat", "colonist", "muffalo", "thrumbo" })
+            {
+                var p = (Pawn)sc.things[key];
+                int want = (int)sc.numbers["want_" + key];
+                var req = ForThing(sc, "request", p);
+                var launch = ForThing(sc, "launch", p);
+                var skip = ForThing(sc, "skip", p);
+                bool reqOk = req.Count == 1 && Convert.ToInt32(Convert.ToSingle(req[0]["damage"])) == damage
+                    && Math.Abs(Convert.ToSingle(req[0]["radius"]) - 2.9f) < 0.01f
+                    && Math.Abs(Convert.ToSingle(req[0]["damageRatio"]) - sc.numbers["ratio"]) < 1e-3f;
+                int got = 0;
+                bool rowOk;
+                if (want == 0)
+                {
+                    rowOk = launch.Count == 0 && skip.Any(r => (string)r["reason"] == "too_heavy_creature");
+                }
+                else
+                {
+                    IntVec3 from = launch.Count == 1 ? (IntVec3)launch[0]["from"] : IntVec3.Invalid;
+                    IntVec3 to = launch.Count == 1 ? (IntVec3)launch[0]["to"] : IntVec3.Invalid;
+                    got = launch.Count == 1 ? Cheb(from, to) : -1;
+                    bool straight = launch.Count == 1 && to == from + dirs[key] * got;
+                    bool landed = ForThing(sc, "land", p).Any(r => (bool)r["spawned"] && !(bool)r["dead"]);
+                    rowOk = got == want && straight && landed && !p.Dead;
+                }
+                int newHediffs = p.health.hediffSet.hediffs.Count - (int)sc.numbers["hediffs_" + key];
+                if (newHediffs > 0)
+                {
+                    return "INVALID " + sc.name + " the injury hook let " + newHediffs + " hediff(s) through on " + key;
+                }
+                cells[key] = want == 0 ? 0 : got;
+                table &= cells[key] == (int)sc.numbers["table_" + key];
+                ok &= rowOk && reqOk;
+                sb.Append(" " + key + "(" + sc.numbers["mass_" + key].ToString("0.0") + "kg)=" + (want == 0 ? "spared" : got.ToString())
+                    + "/want " + want + (rowOk ? "" : "!") + (reqOk ? "" : " request!"));
+            }
+            bool order = cells["rat"] >= cells["colonist"] && cells["colonist"] > cells["muffalo"] && cells["muffalo"] > cells["thrumbo"]
+                && (lane == "250" || cells["thrumbo"] == 0) && (cells["rat"] > cells["colonist"] || cells["rat"] == 6);
+            return Result(sc, ok && order, "lane=" + lane + " damage=" + damage + " ratio=" + sc.numbers["ratio"].ToString("0.00")
+                + sb + " order=" + order + " statedTable=" + table);
+        }
+    }
+
+    /// <summary>Proof build only: absorbs ALL damage to the things RM_KnockbackProof.NoHarm names (sc_mass_and_power).
+    /// The explosion's damage still reaches the knockback hook: ExplosionDamageThing's postfix enqueues the throw.</summary>
+    [HarmonyPatch(typeof(Thing), nameof(Thing.TakeDamage))]
+    public static class RM_Patch_Thing_ProofNoHarm
+    {
+        [HarmonyPriority(Priority.First)]
+        public static bool Prefix(Thing __instance, ref DamageWorker.DamageResult __result)
+        {
+            if (RM_KnockbackProof.NoHarm.Count == 0 || !RM_KnockbackProof.NoHarm.Contains(__instance.thingIDNumber))
+            {
+                return true;
+            }
+            __result = new DamageWorker.DamageResult();
+            return false;
         }
     }
 }

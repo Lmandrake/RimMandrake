@@ -256,7 +256,8 @@ namespace RimMandrake.ExplosiveKnockback
             queue.Add(r);
             RM_KnockbackJournal.Add("request", r.explosionId, r.thing, "from", r.takeoff, "centre", r.centre,
                 "radius", r.radius, "force", r.force, "damType", r.damType?.defName, "source", r.config?.source ?? "damageDef",
-                "shieldAbsorbed", r.shield != null);
+                "shieldAbsorbed", r.shield != null, "typeForce", r.config?.typeForce ?? r.force, "damage", r.config?.damage ?? -1f,
+                "damageRatio", r.config?.damageRatio ?? 1f);
         }
 
 #if RM_PROOFS
@@ -406,7 +407,7 @@ namespace RimMandrake.ExplosiveKnockback
             }
             KbSettings s = RimMandrakeExplosiveKnockbackSettings.Kernel(cfg);
             float mass = t.GetStatValue(StatDefOf.Mass) * t.stackCount;
-            if (!RM_KnockbackMath.Eligible(KbKind.Item, mass, 0f, s))
+            if (!RM_KnockbackMath.Eligible(KbKind.Item, mass, s))
             {
                 return false;
             }
@@ -534,7 +535,7 @@ namespace RimMandrake.ExplosiveKnockback
                 return ThrowContainer(r, container);
             }
             KbKind kind;
-            float mass, bodySize;
+            float mass;
             Pawn pawn = t as Pawn;
             if (pawn != null)
             {
@@ -546,7 +547,6 @@ namespace RimMandrake.ExplosiveKnockback
                 }
                 kind = KbKind.Pawn;
                 mass = Mathf.Max(1f, pawn.GetStatValue(StatDefOf.Mass) - MassUtility.InventoryMass(pawn));
-                bodySize = pawn.BodySize;
             }
             else if (t is Corpse corpse)
             {
@@ -558,7 +558,6 @@ namespace RimMandrake.ExplosiveKnockback
                 kind = KbKind.Corpse;
                 Pawn inner = corpse.InnerPawn;
                 mass = inner != null ? inner.GetStatValue(StatDefOf.Mass) : corpse.GetStatValue(StatDefOf.Mass);
-                bodySize = inner?.BodySize ?? 1f;
             }
             else if (t.def.category == ThingCategory.Item)
             {
@@ -575,7 +574,6 @@ namespace RimMandrake.ExplosiveKnockback
                 }
                 kind = KbKind.Item;
                 mass = t.GetStatValue(StatDefOf.Mass) * t.stackCount;
-                bodySize = 0f;
             }
             else
             {
@@ -608,10 +606,10 @@ namespace RimMandrake.ExplosiveKnockback
                 RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", "immune", "recoversAt", recoversAt);
                 return false;
             }
-            if (!RM_KnockbackMath.Eligible(kind, mass, bodySize, s))
+            if (!RM_KnockbackMath.Eligible(kind, mass, s))
             {
-                RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", bodySize >= s.immuneBodySize ? "too_big" : "too_heavy",
-                    "mass", mass, "bodySize", bodySize);
+                RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", kind == KbKind.Pawn ? "too_heavy_creature" : "too_heavy",
+                    "mass", mass, "limit", kind == KbKind.Pawn ? s.creatureMassLimit : s.lightMassLimit);
                 return false;
             }
             IntVec3 start = t.Position;

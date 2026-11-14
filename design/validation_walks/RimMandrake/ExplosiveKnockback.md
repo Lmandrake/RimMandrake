@@ -5,14 +5,14 @@ list: modset_builder tier `explosiveknockback` (bridge + FlowWorks + Gimme Some 
 status-hint: first script, 2026-10-06
 
 Sources: `design/RimMandrake/explosive_knockback_design_2026-10-06.md` (§3, §5, §8, §11 owner rulings), `About/About.xml`,
-`Source/RM_KnockbackMath.cs` (kernel; offline K-01..K-16 in `selftest_explosiveknockback_kernel.py`), `Source/RM_KnockbackProof.cs` (scenes).
+`Source/RM_KnockbackMath.cs` (kernel; offline K-01..K-20 in `selftest_explosiveknockback_kernel.py`), `Source/RM_KnockbackProof.cs` (scenes).
 
 ## must be true
 - A Bomb blast (mortar, r 2.9) one cell from a human throws them 3 cells straight away from the centre, alive (owner Q7). → throw.mortar_beside_human_throws_3_cells
 - A wall behind the pawn stops the throw on the cell before it, with impact damage. → throw.wall_stops_throw_with_impact
 - A closed door stops the throw like a wall and takes a hit. → throw.closed_door_stops_throw_and_takes_a_hit
 - Pawns are thrown over sandbags and barricades (owner Q3). → throw.thrown_over_sandbags
-- A pawn of body size >= 2.5 is not thrown. → throw.body_size_2_5_is_not_thrown
+- A living creature heavier than the creature mass limit (150 kg, the game's Mass stat less carried inventory; owner card 2026-11-13) is not thrown: a thrumbo journals too_heavy_creature. → throw.creature_over_mass_limit_is_not_thrown
 - EMP (and every zero-force blast) throws nothing and enqueues nothing. → throw.emp_blast_throws_nothing
 - Light items are thrown by the same kernel (lighter flies farther, stack intact); an item over 75 kg stays (owner Q4). → light_things.items_thrown_by_mass_heavy_stays
 - An item on an open shelf scatters; an item in a closed container stays. → light_things.item_on_an_open_shelf_scatters
@@ -41,7 +41,13 @@ Sources: `design/RimMandrake/explosive_knockback_design_2026-10-06.md` (§3, §5
 - A projectile ThingDef's own knockback extension beats its DamageDef's, and the request journal names the source (design §2.1 lookup: projectile → weapon → DamageDef → unpatched). → config.projectile_extension_wins_over_damagedef
 - An explicit force 0 on the projectile wins over a DamageDef that throws: nothing is requested. → config.explicit_zero_on_projectile_throws_nothing
 - A blast with impactFactor 0 stops at a wall with zero impact damage. → config.impact_factor_zero_no_wall_impact
-- A blast with immuneBodySizeOverride 3.6 throws a 2.5–3.5 body; a plain Bomb beside the same kind does not (too_big). → config.body_override_throws_a_3_body_global_does_not
+- A blast with creatureMassLimitOverride 216 (the grav-ram's) throws a 150–216 kg animal (a rhino, 180); a plain Bomb beside the same kind does not (too_heavy_creature). → config.mass_override_throws_a_rhino_global_does_not
+- Heavier flies less, and a bigger blast throws farther (owner cards 2026-11-13, sc_mass_and_power): one Bomb r 2.9 at damage 50 one cell from a rat, a colonist (64-76 kg), a muffalo and a thrumbo throws 5 / 3 / 2 / spared. → mass_power.heavier_flies_less_rat_colonist_muffalo_thrumbo_spared
+- The same blast at damage 100 throws 6 (the cap) / 5 / 4 / spared, damage ratio 2.0. → mass_power.double_damage_throws_each_creature_farther
+- With "Bigger blasts throw harder" off, damage 50 throws 5 / 3 / 2 / spared. → mass_power.power_off_damage_50_throws_as_before
+- With it off, damage 100 throws the same as damage 50 (ratio 1.0). → mass_power.power_off_damage_100_throws_as_damage_50
+- With the creature mass limit at 250 kg, damage 50 throws the thrumbo 1 cell. → mass_power.limit_250_throws_the_thrumbo_1_cell
+- With the limit at 250 kg, damage 100 throws the thrumbo 3 cells. → mass_power.limit_250_double_damage_throws_the_thrumbo_3_cells
 - A pawn thrown once cannot be thrown again until its landing stun ends plus the recovery window: a second blast inside it journals "immune" and does not move it. → guards.second_blast_in_recovery_window_is_immune
 - A shield belt that absorbs a blast absorbs the throw: the wearer does not move, and the belt loses extra charge (owner Q4). → guards.shield_belt_absorbs_throw_and_drains
 - The recovery-window stamps survive a save/reload. → not_driven.immunity_survives_reload (UNMEASURED: save/load)
@@ -59,7 +65,9 @@ X. [S] (human pass) a blast reads as a blast: bodies fly, loot scatters, a cover
 
 ## criteria by level
 Printed by `python3 src/RimMandrake/ExplosiveKnockback/validation.py --criteria` (single source; this list mirrors it).
-- EK.K L0: kernel selftest K-01..K-16 PASS — **passing 2026-10-06 (88/88)**
+- EK.K L0: kernel selftest K-01..K-20 PASS
+- EK.mass L0: kernel K-18..K-20 PASS (creature mass limit, blast power)
+- EK.massLive L2: the six mass_and_power scenes PASS — owed (the owner looks at them in a sitting)
 - EK.static L0: validation.py STATIC PASS (config lookup order, shield/landing hooks, every setting saved + reset + shown, walk coverage)
 - EK.mock L0: validation.py --mock stages every scene
 - EK.load L1: explosiveknockback tier loads with no red error from this mod; Harmony patches applied — owed

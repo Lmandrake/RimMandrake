@@ -29,7 +29,7 @@ SCENES = [
     ("wall_stop", "throw", "wall_stops_throw_with_impact", "impactDamageEnabled"),
     ("door_stop", "throw", "closed_door_stops_throw_and_takes_a_hit", "doorsTakeDamage"),
     ("over_sandbags", "throw", "thrown_over_sandbags", "sandbagsStopThrow"),
-    ("heavy_skip", "throw", "body_size_2_5_is_not_thrown", "immuneBodySize"),
+    ("heavy_skip", "throw", "creature_over_mass_limit_is_not_thrown", "creatureMassLimit"),
     ("emp_no_throw", "throw", "emp_blast_throws_nothing", "unpatchedHarmfulPercent"),
     ("items", "light_things", "items_thrown_by_mass_heavy_stays", "throwItems"),
     ("shelf", "light_things", "item_on_an_open_shelf_scatters", "openStorageProtectsGoods"),
@@ -46,7 +46,7 @@ SCENES = [
     ("lookup_projectile", "config", "projectile_extension_wins_over_damagedef", "ownCapScale"),
     ("lookup_zero_wins", "config", "explicit_zero_on_projectile_throws_nothing", None),
     ("impact_factor", "config", "impact_factor_zero_no_wall_impact", None),
-    ("body_override", "config", "body_override_throws_a_3_body_global_does_not", None),
+    ("body_override", "config", "mass_override_throws_a_rhino_global_does_not", None),
     ("immunity_window", "guards", "second_blast_in_recovery_window_is_immune", "recoveryWindowTicks"),
     ("shield_counter", "guards", "shield_belt_absorbs_throw_and_drains", "shieldsAbsorbThrow"),
     # 2026-11-12 RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD: thrown goods fly in a carrier (proof build only)
@@ -64,6 +64,13 @@ SCENES = [
     ("land_no_bump", "flying_goods", "landing_never_shoves_a_resident", None),
     ("land_no_bump_pit", "pits", "landing_in_a_pit_never_shoves_a_resident_out", None),
     ("gas_clumps", "gas", "burning_gas_bursts_clump_by_clump_no_damage", "gasChain"),
+    # 2026-11-13 creature mass limit + blast power (owner cards; sc_mass_and_power, the showcase). NOT YET RUN LIVE.
+    ("mass_and_power", "mass_power", "heavier_flies_less_rat_colonist_muffalo_thrumbo_spared", "creatureMassLimit"),
+    ("mass_and_power_x2", "mass_power", "double_damage_throws_each_creature_farther", "blastPowerFromDamage"),
+    ("mass_and_power_off", "mass_power", "power_off_damage_50_throws_as_before", "blastPowerFromDamage"),
+    ("mass_and_power_off_x2", "mass_power", "power_off_damage_100_throws_as_damage_50", "blastPowerFromDamage"),
+    ("mass_and_power_250", "mass_power", "limit_250_throws_the_thrumbo_1_cell", "creatureMassLimit"),
+    ("mass_and_power_250_x2", "mass_power", "limit_250_double_damage_throws_the_thrumbo_3_cells", "blastPowerRefPercent"),
 ]
 NOT_DRIVEN = [
     ("hose_carry_drops_at_takeoff", "needs a laid hose reel and a colonist mid CarryHoseEnd job; DropCarriedHose is wired "
@@ -80,12 +87,14 @@ NOT_DRIVEN = [
 # The validation ladder (rimflow model.LEVELS): L0 offline, L1 resolved-live on the minimal list, L2 behaviour scenes,
 # L4 human. `python3 validation.py --criteria` prints these as `ID LEVEL: text` for `rimflow implemented --criteria-file`.
 CRITERIA = [
-    ("EK.K", "L0", "kernel selftest K-01..K-17 PASS (selftest_explosiveknockback_kernel.py)"),
+    ("EK.K", "L0", "kernel selftest K-01..K-20 PASS (selftest_explosiveknockback_kernel.py)"),
     ("EK.static", "L0", "validation.py STATIC PASS: config lookup, shield/landing hooks, settings saved+reset, walk coverage"),
     ("EK.mock", "L0", "validation.py --mock stages every scene"),
     ("EK.load", "L1", "explosiveknockback tier loads with no red error from this mod; Harmony patches applied"),
     ("EK.scenes18", "L2", "the 18 v1 scenes still PASS after the 2026-10-06 config/guard/shield change"),
     ("EK.config", "L2", "lookup_projectile, lookup_zero_wins, impact_factor, body_override PASS"),
+    ("EK.mass", "L0", "kernel K-18..K-20 PASS: creature mass limit 150 kg, blast power = force x damage / reference"),
+    ("EK.massLive", "L2", "the six mass_and_power scenes PASS (sc_mass_and_power and its two control lanes)"),
     ("EK.guards", "L2", "immunity_window and shield_counter PASS"),
     ("EK.reload", "L2", "recovery-window stamps survive a save/reload (no scene yet)"),
     ("EK.feel", "L4", "owner watches a blast and a shield belt: reads right"),
@@ -135,7 +144,7 @@ def l0_wiring(fields):
     mod, patch, comp, fly, kern = (src("RM_KnockbackMod.cs"), src("RM_Patch_DamageWorker_ExplosionKnockback.cs"),
                                    src("RM_MapComponent_Knockback.cs"), src("RM_PawnFlyerPatches.cs"), src("RM_KnockbackMath.cs"))
     ext = mod.split("class RM_KnockbackExtension", 1)[1].split("\n    }", 1)[0]
-    for f in ("force", "maxThrowCells", "impactFactor", "immuneBodySizeOverride"):
+    for f in ("force", "maxThrowCells", "impactFactor", "creatureMassLimitOverride", "refDamage"):
         if "public %s %s" % ("int" if f == "maxThrowCells" else "float", f) not in ext:
             bad.append("RM_KnockbackExtension lacks field " + f)
     res = kern.split("public static KbConfig Resolve", 1)[1].split("public static KbSettings Apply", 1)[0]

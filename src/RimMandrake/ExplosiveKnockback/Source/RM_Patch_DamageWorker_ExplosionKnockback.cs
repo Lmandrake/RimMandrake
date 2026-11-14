@@ -42,10 +42,40 @@ namespace RimMandrake.ExplosiveKnockback
         /// own DoExplosion usually neither. Tune on the projectile; the weapon is a fallback.</summary>
         public static KbConfig ConfigOf(Explosion explosion, DamageDef def)
         {
-            return KbLookup.Resolve(explosion?.projectile?.GetModExtension<RM_KnockbackExtension>()?.ToConfig(),
+            KbConfig c = KbLookup.Resolve(explosion?.projectile?.GetModExtension<RM_KnockbackExtension>()?.ToConfig(),
                 explosion?.weapon?.GetModExtension<RM_KnockbackExtension>()?.ToConfig(),
                 def?.GetModExtension<RM_KnockbackExtension>()?.ToConfig(),
                 def != null && def.harmsHealth, RimMandrakeExplosiveKnockbackSettings.unpatchedHarmfulPercent / 100f);
+            // blast power (owner card 2026-11-13, "Type x damage"): the resolved force x this explosion's own damage over its
+            // type's reference damage. Every config here is a fresh copy (ToConfig / Resolve), so scaling it is safe.
+            if (explosion != null)
+            {
+                float dmg = explosion.damAmount;
+#if RM_PROOFS
+                if (ProofPowerDamage.TryGetValue(explosion.thingIDNumber, out float pd))
+                {
+                    dmg = pd;
+                }
+#endif
+                c.typeForce = c.force;
+                c.damage = dmg;
+                c.damageRatio = RM_KnockbackMath.DamageRatio(dmg, RefDamageOf(def),
+                    RimMandrakeExplosiveKnockbackSettings.blastPowerRefPercent, RimMandrakeExplosiveKnockbackSettings.blastPowerFromDamage);
+                c.force *= c.damageRatio;
+            }
+            return c;
+        }
+
+        /// <summary>A damage type's reference damage for blast power: its extension's refDamage when set, else its own
+        /// defaultDamage (Bomb 50, Flame 10, BombSuper 550). 0 = none (ratio 1).</summary>
+        public static float RefDamageOf(DamageDef def)
+        {
+            if (def == null)
+            {
+                return 0f;
+            }
+            float own = def.GetModExtension<RM_KnockbackExtension>()?.refDamage ?? 0f;
+            return own > 0f ? own : def.defaultDamage;
         }
 
         /// <summary>Shield capture (owner Q4): the pawn whose damage is being applied right now, and the shield that
@@ -119,6 +149,12 @@ namespace RimMandrake.ExplosiveKnockback
         internal static bool ProofNoContentsShield;
 #endif
         internal static float spareFactor = 1f;
+#if RM_PROOFS
+        /// <summary>Proof build only: explosion id -> the damage blast power reads instead of the explosion's own. The older
+        /// scenes stage harmless 1-damage blasts and register their type's reference here, so they push exactly as before
+        /// blast power existed (RM_KnockbackProof.Boom).</summary>
+        internal static readonly Dictionary<int, float> ProofPowerDamage = new Dictionary<int, float>();
+#endif
 
         public static void Postfix(DamageWorker __instance, Explosion explosion, Thing t, KbConfig __state)
         {

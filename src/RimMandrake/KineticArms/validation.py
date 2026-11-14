@@ -160,8 +160,8 @@ def l0_wiring(fields):
     palm, ram = ext("RM_Repulse_Palm"), ext("RM_Repulse_GravRam")
     if palm is None or palm.findtext("impactFactor") != "0":
         bad.append("RM_Repulse_Palm lacks impactFactor 0 (palm thumper is the arrest tool)")
-    if ram is None or ram.findtext("immuneBodySizeOverride") != "3.6":
-        bad.append("RM_Repulse_GravRam lacks immuneBodySizeOverride 3.6")
+    if ram is None or ram.findtext("creatureMassLimitOverride") != "216":
+        bad.append("RM_Repulse_GravRam lacks creatureMassLimitOverride 216")
     for base in ("RM_ConcussiveBase", "RM_RepulseBase"):
         el = defs.get(("DamageDef", base))
         mx = el.find("modExtensions") if el is not None else None

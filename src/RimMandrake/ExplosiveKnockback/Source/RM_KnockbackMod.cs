@@ -19,8 +19,10 @@ namespace RimMandrake.ExplosiveKnockback
     /// ToxGas ship an explicit 0. Any other harmful explosion throws at the unpatched-harmful percent (default 100).
     /// maxThrowCells: this blast's own maximum throw (cells); 0 = the global "Maximum throw distance".
     /// impactFactor: scales wall / pawn / door impact damage for this blast (0 = no impact: an arrest tool).
-    /// immuneBodySizeOverride: replaces the global "too big to throw" body size for this blast (0 = unset); eligibility is
-    /// "body size below it", so 3.6 throws a 3.5 body.
+    /// creatureMassLimitOverride: replaces the global creature mass limit (kg) for this blast (0 = unset); a living pawn
+    /// heavier than it stays, so the grav-ram's 216 throws a rhino (180 kg) and never a thrumbo (240).
+    /// refDamage: on a DamageDef only, this type's reference damage for blast power (0 = unset: the def's defaultDamage);
+    /// a blast of this type at refDamage throws at its plain force, twice that damage twice as hard.
     /// Lookup (design §2.1): the explosion's PROJECTILE ThingDef, then its WEAPON ThingDef, then its DamageDef; the first
     /// that carries this extension supplies the whole configuration.</summary>
     public class RM_KnockbackExtension : DefModExtension
@@ -28,11 +30,12 @@ namespace RimMandrake.ExplosiveKnockback
         public float force = 1f;
         public int maxThrowCells = 0;
         public float impactFactor = 1f;
-        public float immuneBodySizeOverride = 0f;
+        public float creatureMassLimitOverride = 0f;
+        public float refDamage = 0f;
 
         public KbConfig ToConfig()
         {
-            return new KbConfig { force = force, ownCap = maxThrowCells, impactFactor = impactFactor, immuneOverride = immuneBodySizeOverride };
+            return new KbConfig { force = force, ownCap = maxThrowCells, impactFactor = impactFactor, massLimitOverride = creatureMassLimitOverride };
         }
     }
 
@@ -62,7 +65,15 @@ namespace RimMandrake.ExplosiveKnockback
         public static bool throwDowned = true;
         public static bool throwAnimals = true;
         public static bool throwMechanoids = true;
-        public static float immuneBodySize = 2.5f;
+        /// <summary>Owner card 2026-11-13 ("Cutoff -> A mass limit"): a living pawn heavier than this many kg (the game's Mass
+        /// stat: 60 kg x body size plus worn gear) is never thrown. 150 = the old body-size 2.5 line.</summary>
+        public static float creatureMassLimit = 150f;
+        /// <summary>Owner card 2026-11-13 ("Blast power -> Type x damage"): force x this explosion's damage / its damage type's
+        /// reference damage. Off = force ignores damage (what shipped before).</summary>
+        public static bool blastPowerFromDamage = true;
+        /// <summary>The reference damage, as a percent of each damage type's own normal damage (Bomb 50, Flame 10). 100 = a
+        /// blast at its type's normal damage throws exactly as before; 200 = it takes twice the damage to throw as far.</summary>
+        public static float blastPowerRefPercent = 100f;
         public static bool throwItems = true;
         public static bool throwCorpses = true;
         public static float lightMassLimit = 75f;
@@ -131,7 +142,7 @@ namespace RimMandrake.ExplosiveKnockback
             {
                 globalMultiplier = strength,
                 maxCells = RM_KnockbackMath.CapFor(ownCap, maxThrowCells, ownCapScale),
-                immuneBodySize = immuneBodySize,
+                creatureMassLimit = creatureMassLimit,
                 lightMassLimit = lightMassLimit,
                 impactEnabled = impactDamageEnabled,
                 impactPerCell = impactDamagePerCell,
@@ -152,7 +163,9 @@ namespace RimMandrake.ExplosiveKnockback
             Scribe_Values.Look(ref throwDowned, "throwDowned", true);
             Scribe_Values.Look(ref throwAnimals, "throwAnimals", true);
             Scribe_Values.Look(ref throwMechanoids, "throwMechanoids", true);
-            Scribe_Values.Look(ref immuneBodySize, "immuneBodySize", 2.5f);
+            Scribe_Values.Look(ref creatureMassLimit, "creatureMassLimit", 150f);
+            Scribe_Values.Look(ref blastPowerFromDamage, "blastPowerFromDamage", true);
+            Scribe_Values.Look(ref blastPowerRefPercent, "blastPowerRefPercent", 100f);
             Scribe_Values.Look(ref throwItems, "throwItems", true);
             Scribe_Values.Look(ref throwCorpses, "throwCorpses", true);
             Scribe_Values.Look(ref lightMassLimit, "lightMassLimit", 75f);
@@ -210,7 +223,7 @@ namespace RimMandrake.ExplosiveKnockback
                 list.GapLine();
             }
 
-            if (Group(list, "Throw strength and range", RimMandrake.Shared.SettingScope.Now, new[] { "strength", "maxThrowCells", "ownCapScale", "unpatchedHarmfulPercent" }))
+            if (Group(list, "Throw strength and range", RimMandrake.Shared.SettingScope.Now, new[] { "strength", "maxThrowCells", "ownCapScale", "unpatchedHarmfulPercent", "blastPowerFromDamage", "blastPowerRefPercent" }))
             {
                 list.Label("Throw strength: " + strength.ToString("0.00")
                     + "x  (1.0 = a mortar shell beside a person throws them 3 cells)");
@@ -224,16 +237,25 @@ namespace RimMandrake.ExplosiveKnockback
                 list.Label("Explosions from other mods with no knockback setting throw at: "
                     + unpatchedHarmfulPercent.ToString("0") + "%");
                 unpatchedHarmfulPercent = list.Slider(unpatchedHarmfulPercent, 0f, 100f);
+                list.CheckboxLabeled("Bigger blasts throw harder", ref blastPowerFromDamage,
+                    "On (the default): a blast's push is its type's strength times its damage over that type's normal damage, so a blast dealing twice the normal damage pushes twice as hard (still capped by the maximum throw). Vanilla grenades, mortars and IEDs all deal the normal 50 and throw as before. Off: damage does not change the push.");
+                if (blastPowerFromDamage)
+                {
+                    list.Label("Normal damage for a full push: " + blastPowerRefPercent.ToString("0")
+                        + "% of each damage type's own normal damage  (100% = Bomb 50, fire 10)");
+                    blastPowerRefPercent = Mathf.Round(list.Slider(blastPowerRefPercent, 25f, 400f));
+                }
                 list.GapLine();
             }
 
-            if (Group(list, "What gets thrown", RimMandrake.Shared.SettingScope.Now, new[] { "throwDowned", "throwAnimals", "throwMechanoids", "immuneBodySize", "throwItems", "throwCorpses", "lightMassLimit", "thrownGoodsBlastDamagePercent", "goodsWallImpactPerCell", "openStorageProtectsGoods", "shoveClosedContainers", "closedContainerMassLimit", "vanillaCratesClosed", "heavyGoodsKnock", "heavyGoodsMinMass", "heavyGoodsDamageMin", "heavyGoodsDamageMax", "heavyGoodsStaggerTicks" }))
+            if (Group(list, "What gets thrown", RimMandrake.Shared.SettingScope.Now, new[] { "throwDowned", "throwAnimals", "throwMechanoids", "creatureMassLimit", "throwItems", "throwCorpses", "lightMassLimit", "thrownGoodsBlastDamagePercent", "goodsWallImpactPerCell", "openStorageProtectsGoods", "shoveClosedContainers", "closedContainerMassLimit", "vanillaCratesClosed", "heavyGoodsKnock", "heavyGoodsMinMass", "heavyGoodsDamageMin", "heavyGoodsDamageMax", "heavyGoodsStaggerTicks" }))
             {
                 list.CheckboxLabeled("Throw downed pawns", ref throwDowned);
                 list.CheckboxLabeled("Throw animals", ref throwAnimals);
                 list.CheckboxLabeled("Throw mechanoids", ref throwMechanoids);
-                list.Label("Too big to throw at body size: " + immuneBodySize.ToString("0.0"));
-                immuneBodySize = list.Slider(immuneBodySize, 1f, 5f);
+                list.Label("Creatures heavier than " + creatureMassLimit.ToString("0")
+                    + " kg stay put  (150 kg: a muffalo, 144, flies; a rhino, 180, and a thrumbo, 240, do not)");
+                creatureMassLimit = Mathf.Round(list.Slider(creatureMassLimit, 20f, 500f));
                 list.CheckboxLabeled("Throw items", ref throwItems);
                 list.CheckboxLabeled("Throw corpses", ref throwCorpses);
                 list.Label("Items and corpses heavier than " + lightMassLimit.ToString("0") + " kg stay put");
@@ -410,7 +432,9 @@ namespace RimMandrake.ExplosiveKnockback
             RimMandrakeExplosiveKnockbackSettings.throwDowned = true;
             RimMandrakeExplosiveKnockbackSettings.throwAnimals = true;
             RimMandrakeExplosiveKnockbackSettings.throwMechanoids = true;
-            RimMandrakeExplosiveKnockbackSettings.immuneBodySize = 2.5f;
+            RimMandrakeExplosiveKnockbackSettings.creatureMassLimit = 150f;
+            RimMandrakeExplosiveKnockbackSettings.blastPowerFromDamage = true;
+            RimMandrakeExplosiveKnockbackSettings.blastPowerRefPercent = 100f;
             RimMandrakeExplosiveKnockbackSettings.throwItems = true;
             RimMandrakeExplosiveKnockbackSettings.throwCorpses = true;
             RimMandrakeExplosiveKnockbackSettings.lightMassLimit = 75f;

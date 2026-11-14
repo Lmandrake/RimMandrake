@@ -2,8 +2,8 @@
 """Offline lint of ExplosiveKnockback (mandrake.rm.explosiveknockback): defs/patches vs C# via lint_mod_defs.py, plus:
 
   ek-ext      every RM_KnockbackExtension li anywhere in src/ (this mod's patches, KineticArms' defs and patches): only the four fields
-              the class has (force, maxThrowCells, impactFactor, immuneBodySizeOverride), force 0..10, maxThrowCells integer 0..30,
-              impactFactor >= 0, immuneBodySizeOverride >= 0; a DamageDef xpath names a vanilla damage def we ship against or a def some
+              the class has (force, maxThrowCells, impactFactor, creatureMassLimitOverride, refDamage), force 0..10, maxThrowCells integer 0..30,
+              impactFactor >= 0, creatureMassLimitOverride >= 0, refDamage >= 0; a DamageDef xpath names a vanilla damage def we ship against or a def some
               mod defines. Sanity probe: the sweep sees this mod's six damage-def patches and KineticArms' extensions
   ek-flyer    RM_PawnFlyer_Knockback: PawnFlyerBase parent, thingClass PawnFlyer (FlowWorks' pit-landing postfix is on the base class),
               flight duration and speed positive, progress curve rises monotonically from (0,0) to (1,1), stun range lo <= hi
@@ -24,7 +24,7 @@ import lint_mod_defs  # noqa: E402
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 EXT = "RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"
-FIELDS = {"force", "maxThrowCells", "impactFactor", "immuneBodySizeOverride"}
+FIELDS = {"force", "maxThrowCells", "impactFactor", "creatureMassLimitOverride", "refDamage"}
 VANILLA_DAMAGE = {"Bomb", "Flame", "EMP", "Smoke", "Extinguish", "ToxGas", "Thump"}   # Core, Biotech (ToxGas) and Odyssey (Thump) damage defs this stack patches
 S = "RimMandrakeExplosiveKnockbackSettings"
 
@@ -77,7 +77,8 @@ def main(argv):
                 force = float(li.findtext("force") or 1)
                 cap = li.findtext("maxThrowCells")
                 imp = float(li.findtext("impactFactor") or 1)
-                imm = float(li.findtext("immuneBodySizeOverride") or 0)
+                imm = float(li.findtext("creatureMassLimitOverride") or 0)
+                ref = float(li.findtext("refDamage") or 0)
                 if not 0 <= force <= 10:
                     E("ek-ext", "%s: force %s outside 0..10" % (rel, force))
                 if cap is not None and not (re.fullmatch(r"\d+", cap.strip()) and 0 <= int(cap) <= 30):
@@ -85,7 +86,9 @@ def main(argv):
                 if imp < 0:
                     E("ek-ext", "%s: impactFactor %s < 0" % (rel, imp))
                 if imm < 0:
-                    E("ek-ext", "%s: immuneBodySizeOverride %s < 0" % (rel, imm))
+                    E("ek-ext", "%s: creatureMassLimitOverride %s < 0" % (rel, imm))
+                if ref < 0:
+                    E("ek-ext", "%s: refDamage %s < 0" % (rel, ref))
             except ValueError as e:
                 E("ek-ext", "%s: a field is not a number (%s)" % (rel, e))
     if in_mod < 6 or in_kinetic < 1:

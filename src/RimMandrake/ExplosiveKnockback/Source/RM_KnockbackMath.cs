@@ -51,7 +51,9 @@ namespace RimMandrake.ExplosiveKnockback
         // 70 kg = a clothed, armed human (body 60 kg + worn gear, which counts). The design's 60 kg calibrated a
         // NAKED human: with gear at ~8 kg a mortar beside a colonist threw 2, not the owner's 3 (Q7).
         public float refMass = 70f;
-        public float immuneBodySize = 2.5f;
+        // owner card 2026-11-13 ("Cutoff -> A mass limit"): a living pawn heavier than this (kg, the game's Mass stat less
+        // carried inventory) is never thrown. 150 = 60 kg x body size 2.5, the old body-size cutoff's line.
+        public float creatureMassLimit = 150f;
         public float lightMassLimit = 75f;
         public bool impactEnabled = true;
         public float impactPerCell = 4f;
@@ -69,7 +71,11 @@ namespace RimMandrake.ExplosiveKnockback
         public float force = 1f;
         public int ownCap = 0;               // 0 = the global maximum
         public float impactFactor = 1f;
-        public float immuneOverride = 0f;    // 0 = unset: the global immune body size holds
+        public float massLimitOverride = 0f; // kg; 0 = unset: the global creature mass limit holds (grav-ram 216)
+        // blast power (2026-11-13): force above is already typeForce x damageRatio once the game side has set these
+        public float typeForce = 1f;
+        public float damage = -1f;           // the explosion's own damage amount; -1 = not an explosion (gas burst)
+        public float damageRatio = 1f;
         public string source = "none";       // projectile | weapon | damageDef | unpatched | none (journal)
     }
 
@@ -97,7 +103,7 @@ namespace RimMandrake.ExplosiveKnockback
             return new KbConfig { force = harmsHealth ? unpatchedFraction : 0f, source = harmsHealth ? "unpatched" : "none" };
         }
 
-        /// <summary>A per-request copy of the global settings with this blast's cap, impact factor and body-size override
+        /// <summary>A per-request copy of the global settings with this blast's cap, impact factor and mass-limit override
         /// applied. Never mutates the shared settings.</summary>
         public static KbSettings Apply(KbSettings global, KbConfig c, int globalCap, float ownCapScale)
         {
@@ -107,7 +113,7 @@ namespace RimMandrake.ExplosiveKnockback
                 baseCells = global.baseCells,
                 maxCells = RM_KnockbackMath.CapFor(c?.ownCap ?? 0, globalCap, ownCapScale),
                 refMass = global.refMass,
-                immuneBodySize = c != null && c.immuneOverride > 0f ? c.immuneOverride : global.immuneBodySize,
+                creatureMassLimit = c != null && c.massLimitOverride > 0f ? c.massLimitOverride : global.creatureMassLimit,
                 lightMassLimit = global.lightMassLimit,
                 impactEnabled = global.impactEnabled,
                 impactPerCell = global.impactPerCell,
@@ -206,6 +212,20 @@ namespace RimMandrake.ExplosiveKnockback
             return cells < 1 ? 0 : cells;
         }
 
+        /// <summary>Blast power (owner card 2026-11-13, "Blast power -> Type x damage"): this explosion's damage over the
+        /// reference damage (the damage type's own defaultDamage, or its extension's refDamage) times refPercent / 100.
+        /// Multiplies the type's force. 1 when the switch is off or there is no usable reference, so a type at its own
+        /// normal damage throws exactly what shipped before; a negative damage counts as 0.</summary>
+        public static float DamageRatio(float damage, float refDamage, float refPercent, bool enabled)
+        {
+            float r = refDamage * refPercent / 100f;
+            if (!enabled || !(r > 0f))
+            {
+                return 1f;
+            }
+            return Math.Max(0f, damage) / r;
+        }
+
         /// <summary>The throw cap for one blast (owner, 2026-10-06, by question card: each weapon sets its own).
         /// ownCap > 0 = the blast's own maximum (its DamageDef's RM_KnockbackExtension.maxThrowCells) times the
         /// "weapons with their own maximum" scale, never below 1; ownCap <= 0 = the global maximum, as before.</summary>
@@ -219,10 +239,11 @@ namespace RimMandrake.ExplosiveKnockback
             return c < 1 ? 1 : c;
         }
 
-        /// <summary>Does this thing move at all, before geometry? bodySize only matters for pawns and corpses.</summary>
-        public static bool Eligible(KbKind kind, float mass, float bodySize, KbSettings s)
+        /// <summary>Does this thing move at all, before geometry? A living pawn heavier than the creature mass limit stays;
+        /// an item or corpse heavier than the goods limit stays (a corpse is goods: no body-size rule since 2026-11-13).</summary>
+        public static bool Eligible(KbKind kind, float mass, KbSettings s)
         {
-            if ((kind == KbKind.Pawn || kind == KbKind.Corpse) && bodySize >= s.immuneBodySize)
+            if (kind == KbKind.Pawn && mass > s.creatureMassLimit)
             {
                 return false;
             }

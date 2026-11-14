@@ -19,7 +19,7 @@
     <li>mandrake.rm.flowworks</li>
     <li>mandrake.rm.gimmesomeslack</li>
   </loadAfter>
-  <description>Every blast throws everything light near it - people, animals, mechanoids, items and corpses - straight away from its centre. A mortar shell beside a person throws them three cells; lighter things fly farther, heavier things less, and anything too big (body size 2.5+) or too heavy (items and corpses over 75 kg) stays put.
+  <description>Every blast throws everything light near it - people, animals, mechanoids, items and corpses - straight away from its centre. A mortar shell beside a person throws them three cells; lighter things fly farther, heavier things less, and a creature heavier than 150 kg (a rhino or a thrumbo; a muffalo still flies) or an item or corpse over 75 kg stays put. A bigger blast throws harder: the push scales with the blast's damage over its type's normal damage, so vanilla grenades, mortars and IEDs (all 50) throw as they always did.
 
 Thrown pawns fly over sandbags and barricades, stop early against walls, closed doors and other pawns (taking impact damage for the distance they did not travel), and land stunned. Items on shelves stay on the shelf.
 
@@ -29,7 +29,7 @@ With Gimme Some Slack: a colonist carrying a hose end drops it where they stood.
 
 A thrown pawn cannot be thrown again until its landing stun ends plus a recovery window (120 ticks by default), so no blast can juggle someone. A shield belt that absorbs a blast absorbs the throw too, and pays extra charge for it: a strong throw can pop the belt.
 
-Explosions only: Bomb (grenades, mortars, IEDs) throws; fire, EMP, smoke, firefoam and tox gas do not. Explosions from other mods throw only if patched with RimMandrake.ExplosiveKnockback.RM_KnockbackExtension (force; optionally maxThrowCells - its own maximum throw, impactFactor - scales impact damage, immuneBodySizeOverride - throws bigger bodies). The extension is read from the explosion's projectile ThingDef first, then its weapon ThingDef, then its DamageDef; the first one found supplies the whole configuration, or by the "unpatched explosions" setting (default 0%).
+Explosions only: Bomb (grenades, mortars, IEDs) throws; fire throws at half strength; EMP, smoke, firefoam and tox gas do not. Explosions from other mods throw if patched with RimMandrake.ExplosiveKnockback.RM_KnockbackExtension (force; optionally maxThrowCells - its own maximum throw, impactFactor - scales impact damage, creatureMassLimitOverride - its own creature mass limit in kg, refDamage - on a DamageDef, the damage that throws at plain force). The extension is read from the explosion's projectile ThingDef first, then its weapon ThingDef, then its DamageDef; the first one found supplies the whole configuration, or, unpatched, any harmful explosion throws at the "unpatched explosions" setting (default 100%).
 
 Every part has a Mod Settings toggle; all off is vanilla. Design: design/RimMandrake/explosive_knockback_design_2026-10-06.md.</description>
 </ModMetaData>

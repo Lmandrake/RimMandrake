@@ -534,27 +534,32 @@ namespace RimMandrake.KineticArms
 
                 case "gravram_big_body":
                     {
-                        // immuneBodySizeOverride 3.6: the grav-ram moves a 2.5-3.5 body that the repulsor (global 2.5) cannot
+                        // creatureMassLimitOverride 216 kg: the grav-ram moves a 160-205 kg animal (a rhino, 180) that the repulsor
+                        // (the global creature mass limit, 150 kg) cannot
                         PawnKindDef big = DefDatabase<PawnKindDef>.AllDefs.Where(k => k.RaceProps != null && k.RaceProps.Animal && k.RaceProps.IsFlesh
-                            && k.RaceProps.baseBodySize >= 2.5f && k.RaceProps.baseBodySize < 3.5f).OrderBy(k => k.RaceProps.baseBodySize).FirstOrDefault();
+                            && k.RaceProps.baseBodySize * 60f > 160f && k.RaceProps.baseBodySize * 60f < 205f).OrderBy(k => k.RaceProps.baseBodySize).FirstOrDefault();
                         if (big == null)
                         {
-                            return "no animal kind with body size 2.5-3.5 on this list";
+                            return "no flesh animal kind of 160-205 kg (60 x body size) on this list";
                         }
                         Pawn sh = Colonist(s, "shooter", O(s, -6, 0));
                         Pawn sh2 = Colonist(s, "shooter2", O(s, -6, 4));
                         Pawn a = Animal(s, "big", big, O(s, 0, 0));
                         Pawn b = Hold(Animal(s, "control", big, O(s, 0, 4)));
-                        s.numbers["body"] = a.BodySize;
+                        s.numbers["body"] = a.GetStatValue(StatDefOf.Mass) - MassUtility.InventoryMass(a);
+                        if (s.numbers["body"] <= 150f || s.numbers["body"] > 216f)
+                        {
+                            return big.defName + " weighs " + s.numbers["body"].ToString("0") + " kg, not 150-216";
+                        }
                         Fire(sh, "RM_Proj_GravRamPulse", a, "RM_Gun_GravRam");
                         Fire(sh2, "RM_Proj_RepulsorBolt", b, "RM_Gun_RepulsorRifle");
                         s.verdict = sc =>
                         {
                             string m = Moved(sc, "big", out int dx, out int dz);
                             bool controlStill = NotThrown(sc, "control", out string mc);
-                            bool tooBig = ForThing(sc, "skip", sc.things["control"]).Any(r => (string)r["reason"] == "too_big");
-                            return Result(sc, dx >= 1 && controlStill && tooBig, m + "; " + mc + " body=" + sc.numbers["body"].ToString("0.0")
-                                + " repulsorTooBig=" + tooBig);
+                            bool tooBig = ForThing(sc, "skip", sc.things["control"]).Any(r => (string)r["reason"] == "too_heavy_creature");
+                            return Result(sc, dx >= 1 && controlStill && tooBig, m + "; " + mc + " mass=" + sc.numbers["body"].ToString("0")
+                                + " repulsorTooHeavy=" + tooBig);
                         };
                         return null;
                     }
