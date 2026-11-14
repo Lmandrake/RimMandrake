@@ -665,11 +665,13 @@
  "ruled_conflicts": [
   {
    "entry": "dragonsnake_albino",
-   "conflict": "Dragonsnake page: Fallen Order dragonsnakes were unused concept art that never made the final cut, so the owner ruling accepting the four Fallen Order variants as the canon Dragonsnake rests on non-appearing art; ruling not edited"
+   "conflict": "Dragonsnake page: Fallen Order dragonsnakes were unused concept art that never made the final cut, so the owner ruling accepting the four Fallen Order variants as the canon Dragonsnake rests on non-appearing art; ruling not edited",
+   "owner_kept": "2026-11-14: the owner saw this Wookieepedia text beside the Fallen Order sheet and our four variants and kept the look (\"Art all accepted good job.\"); the conflict belongs to the dragonsnake entry, noted there under ## ruling. Do not flag again. Item CANON_RULINGS_DECIDE_SNAKE_NEVER_SHIPPED."
   },
   {
    "entry": "junglerancor",
-   "conflict": "Jungle rancor page: brightly colored blue and gray skin and orange and gray spines; the ruling says regenerate only on the brown/red image and eliminate the purple images as not canon, so skin and spine colour are not merged"
+   "conflict": "Jungle rancor page: brightly colored blue and gray skin and orange and gray spines; the ruling says regenerate only on the brown/red image and eliminate the purple images as not canon, so skin and spine colour are not merged",
+   "owner_kept": "2026-11-14: the owner saw this Wookieepedia text beside the brown/red Felucia picture and our jungle rancor and kept the look (\"Art all accepted good job.\"); noted in junglerancor under ## ruling. Do not flag again. Item CANON_RULINGS_DECIDE_SNAKE_NEVER_SHIPPED."
   }
  ]
 }

@@ -66,3 +66,11 @@ none known.
 Regen the Canon description based on that too."
 Enacted: the two purple images were removed from this entry, and the visual brief and `## Must show` were rebuilt
 from `wookieepedia_canon_2.webp` alone. Where the sourced text says blue and grey skin, this ruling governs the art.
+
+**Canon note — look kept against the text (owner, 2026-11-14).** Wookieepedia's Jungle rancor page (re-read through
+the API on 2026-11-14) says: "Orange and gray spines that ran along their bodies and the sides of their tongues. They
+had brightly colored blue and gray skin, a pair of eyes with black pupils, brown irises, and yellow sclerae, beaked
+mouths, and webbed hands and feet." The owner saw those lines beside the brown/red Felucia picture and our jungle
+rancor on 2026-11-14 and kept the look: "Art all accepted good job." The 2026-10-14 ruling stands. No canon check
+should flag this disagreement again (item `CANON_RULINGS_DECIDE_SNAKE_NEVER_SHIPPED`; recorded as `owner_kept` in
+`../gpt_review/LATE_MERGES.json`).

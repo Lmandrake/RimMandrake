@@ -68,3 +68,11 @@ none known
 > "Split into two official versions. The two pale versions let's call Dragonsnake_albino. The Jedi Fallen Order four variants lets accept as the canon Dragonsnake. Comission both in our Star Wars fauna mod. Remove the huntforziro and cisualencyclopedia versions as crude and cartoonish. Regenerate the "must have" descriptions from these two new creature specs."
 
 Done: pale images moved to `dragonsnake_albino/`; `wookieepedia_huntforziro.jpg` and `wookieepedia_visualencyclopedia.jpg` deleted; both entries' Must show regenerated; commission filed as rimflow item `DRAGONSNAKE_PAIR_BUILD_ONE_PALE_ONE_PROPER`.
+
+**Canon note — look kept against the text (owner, 2026-11-14).** Wookieepedia's Dragonsnake page (re-read through
+the API on 2026-11-14) says: "Dragonsnakes were originally going to make an appearance in the Star Wars video game
+Star Wars Jedi: Fallen Order on Dagobah, but it never made it into the final cut." So the four Fallen Order variants
+are concept art that never appeared. The owner saw that sentence beside the concept sheet and our four variants on
+2026-11-14 and kept the look: "Art all accepted good job." The 2026-10-17 ruling stands. No canon check should flag
+this disagreement again (item `CANON_RULINGS_DECIDE_SNAKE_NEVER_SHIPPED`; recorded as `owner_kept` in
+`../gpt_review/LATE_MERGES.json`).
