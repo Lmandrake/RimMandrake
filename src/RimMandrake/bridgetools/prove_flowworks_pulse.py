@@ -124,8 +124,9 @@ o = V2.PulseOracle(info.get("sizeX") or 250, info.get("sizeZ") or 250, {source: 
 for c in strip:
     o.dig(c, 1)
 pred = o.run(strip, 3)
-check("P2 every pulse vector == oracle %s" % pred, pulses and [LV(r) for r in pulses[1:]] == pred,
-      [LV(r) for r in pulses[1:]])
+# the oracle is the exact-level engine: its vectors are decilitres, compared to the bridge's per-cell dL
+check("P2 every pulse vector == oracle %s" % pred, pulses and [list(r["dl"]) for r in pulses[1:]] == pred,
+      [r["dl"] for r in pulses[1:]])
 # A receded cell is no longer liquid terrain, so body_report AT it answers body=null; read the
 # body by id from the pulse tool's own per-pulse bodies[] instead.
 bid = (b.get("body") or {}).get("id")
