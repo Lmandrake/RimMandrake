@@ -2,7 +2,7 @@
  "set": "Uvak_south_layers",
  "folder": "src/RimStarWars/SWBestiary/Textures/swanimals/Uvak",
  "prefix": "Uvak_Flying_",
- "note": "FLIER_AFTERNOON_EXPERIMENT_PROVE_STILL_TORSO (2026-10-21): layered south bake by flier_layer_bake.py. NOT an install config: the frames it describes live only in the agent-storage scratch. Source master = Uvak_Flying_3_south.png at 842bca0^ (our own artpipe painting, sha256 3f01973a...). Baked frame 1 is the master pose, so master = 1 here (the stabilizer's reference frame). protect = the rigid body (tail, head, neck, shoulders, torso, legs); each wing = master pixels inside its poly and outside protect. seam = the pinned flank attachment line (rotation axis); leading_edge = shoulder -> wrist (the fold compresses the fingers toward it).",
+ "note": "FLIER_AFTERNOON_EXPERIMENT_PROVE_STILL_TORSO (2026-10-21): layered south bake by flier_layer_bake.py. Installed 2026-11-14 through art install after the owner accepted v2 (\"Art all accepted good job.\"); Uvak.json now carries this south annotation. Source master = Uvak_Flying_3_south.png at 842bca0^ (our own artpipe painting, sha256 3f01973a...). Baked frame 1 is the master pose, so master = 1 here (the stabilizer's reference frame). protect = the rigid body (tail, head, neck, shoulders, torso, legs); each wing = master pixels inside its poly and outside protect. seam = the pinned flank attachment line (rotation axis); leading_edge = shoulder -> wrist (the fold compresses the fingers toward it).",
  "facings": {
   "south": {
    "master": 1,

@@ -2,7 +2,7 @@
  "set": "Uvak",
  "folder": "src/RimStarWars/SWBestiary/Textures/swanimals/Uvak",
  "prefix": "Uvak_Flying_",
- "note": "masters: north 2, east 4, south 3 - the painted frames that match the grounded Uvak_* art; south 1/2/4 and east 1 were flat donor cartoons and are gone. South upstroke half-folds the wings (scale 0.55): the spread span does not fit the 256 canvas raised. East frame 3 downstroke is sy 0.25 (wing low over the back): the old sy -0.35 flip mirrored the membrane under the body and bared the plate's wing-root spike and membrane stub (mangled). Run Uvak_cleanup.py on the build output (hip-feather strays).",
+ "note": "masters: north 2, east 4 - the painted frames that match the grounded Uvak_* art. SOUTH (since 2026-11-14) is the owner-accepted 8-frame layered bake by flier_layer_bake.py (FLIER_AFTERNOON_EXPERIMENT_PROVE_STILL_TORSO): its annotation here is copied from Uvak_south_layers.json (master 1); never rebuild south with flyer_cutout build. flyingAnimationFrameCount is 8 for every facing, so north and east frames 5-8 are byte copies of 1-4 and their poses here repeat 1-4 to match; after a north/east cut-out rebuild, recopy 1-4 over 5-8 (Uvak_cleanup.py cleans frame 1 north, not 5). East frame 3 downstroke is sy 0.25 (wing low over the back): the old sy -0.35 flip mirrored the membrane under the body and bared the plate's wing-root spike and membrane stub (mangled). Run Uvak_cleanup.py on a north/east build output (hip-feather strays).",
  "facings": {
   "north": {
    "master": 2,
@@ -88,6 +88,22 @@
       [
        0,
        0.97
+      ],
+      [
+       20,
+       0.95
+      ],
+      [
+       0,
+       0.97
+      ],
+      [
+       -22,
+       0.95
+      ],
+      [
+       0,
+       0.97
       ]
      ]
     },
@@ -120,6 +136,22 @@
      ],
      "sign": 1,
      "poses": [
+      [
+       20,
+       0.95
+      ],
+      [
+       0,
+       0.97
+      ],
+      [
+       -22,
+       0.95
+      ],
+      [
+       0,
+       0.97
+      ],
       [
        20,
        0.95
@@ -224,6 +256,26 @@
        0,
        1.0,
        0.5
+      ],
+      [
+       0,
+       1.0,
+       1.0
+      ],
+      [
+       0,
+       1.0,
+       0.5
+      ],
+      [
+       0,
+       1.0,
+       0.25
+      ],
+      [
+       0,
+       1.0,
+       0.5
       ]
      ]
     }
@@ -237,146 +289,249 @@
    ]
   },
   "south": {
-   "master": 3,
+   "master": 1,
+   "source_master": "Uvak_Flying_3_south.png",
+   "source_master_sha256": "3f01973ae07101e76d2db6266629549b4daab8a94bf0104ceec6477da23be67c",
    "order": "under",
+   "seam_px": 2,
    "protect": [
     [
      [
-      108,
-      12
+      117,
+      20
      ],
      [
-      178,
-      12
+      128,
+      22
      ],
      [
-      178,
-      95
+      127,
+      30
      ],
      [
-      168,
+      122,
+      40
+     ],
+     [
+      124,
+      49
+     ],
+     [
+      133,
+      47
+     ],
+     [
+      141,
+      50
+     ],
+     [
+      151,
+      54
+     ],
+     [
+      157,
+      62
+     ],
+     [
+      156,
+      80
+     ],
+     [
+      153,
+      89
+     ],
+     [
+      158,
+      91
+     ],
+     [
+      158,
       100
      ],
      [
-      172,
-      170
+      159,
+      112
      ],
      [
-      160,
-      185
+      158,
+      126
      ],
      [
-      112,
-      185
+      155,
+      136
      ],
      [
-      100,
+      156,
+      150
+     ],
+     [
+      154,
+      162
+     ],
+     [
+      146,
       165
      ],
      [
-      100,
-      135
+      136,
+      162
+     ],
+     [
+      134,
+      146
+     ],
+     [
+      120,
+      146
+     ],
+     [
+      120,
+      162
      ],
      [
       110,
+      165
+     ],
+     [
+      101,
+      161
+     ],
+     [
+      101,
+      140
+     ],
+     [
+      98,
+      132
+     ],
+     [
+      97,
+      116
+     ],
+     [
+      98,
       100
      ],
      [
-      116,
-      90
+      101,
+      92
      ],
      [
-      108,
-      60
+      105,
+      89
+     ],
+     [
+      105,
+      72
+     ],
+     [
+      101,
+      56
+     ],
+     [
+      101,
+      40
+     ],
+     [
+      105,
+      28
      ]
     ]
    ],
    "wings": [
     {
+     "id": "wing_left",
      "poly": [
       [
        0,
-       40
+       60
       ],
       [
-       130,
-       40
+       112,
+       60
       ],
       [
-       130,
-       245
+       112,
+       250
       ],
       [
        0,
-       245
+       250
       ]
      ],
      "hinge": [
-      128,
-      100
+      100,
+      96
      ],
      "sign": -1,
-     "poses": [
+     "seam": [
       [
-       0,
-       1.0
+       100,
+       95
       ],
       [
-       20,
-       0.7
-      ],
-      [
-       40,
-       0.55
-      ],
-      [
-       20,
-       0.7
+       98,
+       134
       ]
-     ]
+     ],
+     "leading_edge": [
+      [
+       100,
+       92
+      ],
+      [
+       44,
+       126
+      ]
+     ],
+     "occlusion": "under"
     },
     {
+     "id": "wing_right",
      "poly": [
       [
-       160,
-       40
+       144,
+       60
       ],
       [
        256,
-       40
+       60
       ],
       [
        256,
-       245
+       250
       ],
       [
-       160,
-       245
+       144,
+       250
       ]
      ],
      "hinge": [
-      160,
-      100
+      157,
+      96
      ],
      "sign": 1,
-     "poses": [
+     "seam": [
       [
-       0,
-       1.0
+       157,
+       95
       ],
       [
-       20,
-       0.7
-      ],
-      [
-       40,
-       0.55
-      ],
-      [
-       20,
-       0.7
+       157,
+       136
       ]
-     ]
+     ],
+     "leading_edge": [
+      [
+       157,
+       92
+      ],
+      [
+       212,
+       126
+      ]
+     ],
+     "occlusion": "under"
     }
    ],
    "eyes": [
@@ -388,7 +543,95 @@
      150.5,
      62.9
     ]
-   ]
+   ],
+   "landmarks": [
+    {
+     "id": "eye_left",
+     "role": "head",
+     "xy": [
+      133.4,
+      64.2
+     ]
+    },
+    {
+     "id": "eye_right",
+     "role": "head",
+     "xy": [
+      150.5,
+      62.9
+     ]
+    },
+    {
+     "id": "sternum",
+     "role": "torso",
+     "xy": [
+      128,
+      128
+     ]
+    },
+    {
+     "id": "tail_tip",
+     "role": "torso",
+     "xy": [
+      122,
+      25
+     ]
+    }
+   ],
+   "layer_bake": {
+    "projection": "south, model hinge (redo 2026-10-23: the owner read the v1 seam-axis bake as PADDLING, not lift). The flap axis is the body's long axis, which points at a south camera, so each wing swings UP/DOWN about its shoulder hinge in the picture plane, shortening by the key's scale (foreshortening + wrist fold) as it rises; attached at the shoulder (ramp_from hinge), so the armpit opens on the upstroke by design. Upstroke frames 1-6 (5 steps, membrane folded toward the leading edge), downstroke 6-1 (3 steps, spread). keys = [deg, fold, scale]. v1 (seam-axis, lift_k 0.8) is in git history at a67e9b2a8.",
+    "model": "hinge",
+    "ramp_from": "hinge",
+    "root_ramp_px": 10,
+    "fold_ramp_px": 30,
+    "keys": [
+     [
+      0,
+      1.0,
+      0.9
+     ],
+     [
+      14,
+      0.85,
+      0.88
+     ],
+     [
+      34,
+      0.65,
+      0.8
+     ],
+     [
+      56,
+      0.5,
+      0.68
+     ],
+     [
+      74,
+      0.45,
+      0.64
+     ],
+     [
+      84,
+      0.5,
+      0.62
+     ],
+     [
+      56,
+      0.9,
+      0.6
+     ],
+     [
+      22,
+      1.0,
+      0.68
+     ]
+    ],
+    "distal_lag": 0.06,
+    "distal_gain": 1.0,
+    "span_px": 100,
+    "shade_rise": 0.06,
+    "shade_turn": 0.1
+   }
   }
  }
 }

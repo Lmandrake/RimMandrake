@@ -16,6 +16,9 @@
   (`Uvak_Flying_{1,2,3,4}_{south,east,north}`). The donor's own
   `UvakPack_{south,east,north}` variants excluded — unreferenced by the
   donor's own def.
+  2026-11-14: the flying set is now 24 frames (`Uvak_Flying_{1..8}_*`): south
+  1-8 are the owner-accepted layered bake, north/east 5-8 repeat 1-4
+  (flyer_cutout_sets/Uvak.json).
 -->
 <Defs>
 <!-- ThingDef -->
@@ -163,7 +166,8 @@
     <combatPower>350</combatPower>
     <ecoSystemWeight>0.30</ecoSystemWeight>
     <flyingAnimationFramePathPrefix>swanimals/Uvak/Uvak_Flying_</flyingAnimationFramePathPrefix>
-    <flyingAnimationFrameCount>4</flyingAnimationFrameCount>
+    <!-- 8: the south flap is the owner-accepted 8-frame layered bake (2026-11-14); north and east frames 5-8 repeat 1-4 -->
+    <flyingAnimationFrameCount>8</flyingAnimationFrameCount>
     <flyingAnimationTicksPerFrame>10</flyingAnimationTicksPerFrame>
     <flyingAnimationDrawSize>1.0</flyingAnimationDrawSize>
     <flyingAnimationDrawSizeIsMultiplier>false</flyingAnimationDrawSizeIsMultiplier>
