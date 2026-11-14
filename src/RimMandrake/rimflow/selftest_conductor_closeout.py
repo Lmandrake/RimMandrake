@@ -216,8 +216,9 @@ def t_carry():
         long_text = "keep the first part. " * 200 + "delete the second part."
         g = CC.evaluate([{"key": "k", "ts": 1.0, "text": long_text}], None, root, DISMISSED)["gaps"][0]
         _, root3 = world("cut", [], [("keep the first part", AFTER)])
-        check(len(g["text"]) < len(long_text) and CC.still_open([g], root3, DISMISSED) == [g],
-              "a gap cut for display stays open on the sentence past the cut")
+        # the text is stored whole since 68a0b65847 (RIMMANDRAKE_STORE_TEXT_WHOLE_NO_CUTS); the old 2000-char cut is gone
+        check(g["text"] == long_text and CC.still_open([g], root3, DISMISSED) == [g],
+              "a long gap is kept whole and stays open on the sentence past where the old cut fell")
         blind = SR.closeout_check(os.path.join(root, "gone.jsonl"), {})
         SR.inherited_gaps = lambda: blind["gaps"]
         tx4, root4 = world("after_blind", [human("goodbye", "u3")])

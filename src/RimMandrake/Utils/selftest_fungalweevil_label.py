@@ -115,6 +115,8 @@ def dump_findings(pick):
                        "from defs where label is not null and label <> ''").fetchall()
     con.close()
     own = {(t, d) for d in TWINS for t in ("ThingDef", "PawnKindDef")} | {("ThingDef", e) for e in EGGS}
+    # the engine's implied corpse of a twin ("<pick> corpse") is the twin's own, as its eggs are
+    own |= {("ThingDef", "Corpse_" + d) for d in TWINS}
     bad = []
     for dtype, dn, lab, js in rows:
         if (dtype, dn) in own:
