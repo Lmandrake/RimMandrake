@@ -151,7 +151,7 @@ namespace RimMandrake.EnvironmentalHazards
             for (int i = 0; i < allThings.Count; i++)
             {
                 Thing t = allThings[i];
-                if (IsEmitter(t))
+                if (IsEmitter(t) && !Drowned(t))
                 {
                     PaintAround(t.Position, DefaultColumnRadius);
                 }
@@ -176,6 +176,31 @@ namespace RimMandrake.EnvironmentalHazards
                     columnField[map.cellIndices.CellToIndex(cell)] = true;
                 }
             }
+        }
+
+        /// <summary>A steam geyser whose every square stands in liquid (a vent sunk in a flooded FlowWorks pit) feeds no
+        /// column: it bubbles under the water instead (RM_VaporColumnMath). The hourly rescan picks up a flooding.</summary>
+        private bool Drowned(Thing t)
+        {
+            if (!(t is Building_SteamGeyser))
+            {
+                return false;
+            }
+            int squares = 0, wet = 0;
+            foreach (IntVec3 c in t.OccupiedRect())
+            {
+                if (!c.InBounds(map))
+                {
+                    continue;
+                }
+                squares++;
+                TerrainDef terrain = c.GetTerrain(map);
+                if (terrain != null && terrain.IsWater)
+                {
+                    wet++;
+                }
+            }
+            return !RM_VaporColumnMath.GeyserFeedsColumn(squares, wet);
         }
 
         private static bool IsEmitter(Thing t)

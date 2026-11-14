@@ -17,13 +17,14 @@ namespace RimMandrake.EnvironmentalHazards.SelfTest
             string only = null;
             i = Array.IndexOf(args, "--fuzz-only");
             if (i >= 0) only = args[i + 1];
-            string[] known = { "axis", "quant", "prim", "pool", "cooler", "held", "filthrain" };
+            string[] known = { "axis", "quant", "prim", "pool", "cooler", "held", "filthrain", "ventcol" };
             if (only != null && Array.IndexOf(known, only) < 0) { Console.WriteLine("FAIL unknown --fuzz-only family: " + only); return 1; }
             bool ok = AxisFuzz.Run(scale, one, only);
             ok &= PoolFuzz.Run(scale, one, only);
             ok &= CoolerFuzz.Run(scale, one, only);
             ok &= FilthRainFuzz.Run(scale, one, only);
-            if (AxisFuzz.Cases + PoolFuzz.Cases + CoolerFuzz.Cases + FilthRainFuzz.Cases == 0) { Console.WriteLine("FAIL no cases ran (--fuzz-scale too small?); a fuzz that checked nothing is not a pass"); return 1; }
+            ok &= VentColumnChecks.Run(only);
+            if (AxisFuzz.Cases + PoolFuzz.Cases + CoolerFuzz.Cases + FilthRainFuzz.Cases + VentColumnChecks.Cases == 0) { Console.WriteLine("FAIL no cases ran (--fuzz-scale too small?); a fuzz that checked nothing is not a pass"); return 1; }
             Console.WriteLine(ok ? "ENVHAZARDS FUZZ: PASS" : "ENVHAZARDS FUZZ: FAIL");
             return ok ? 0 : 1;
         }
