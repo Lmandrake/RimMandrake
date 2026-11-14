@@ -3911,6 +3911,9 @@ def andon(points, hist, last_measured, rules, now):
     flags += [{"rule": "bad_rule", "key": "rules." + x, "value": None, "window": "now",
                "detail": "rule section %s missing or not an object: that rule is off, the others run" % x} for x in sorted(off)]
     gone = {k: U("no longer reported by its collector") for k in last_measured if k not in points}
+    # a retired belt's keys that stopped coming (a churn item no alarm holds) are the retirement, not a blind instrument
+    rl_off = num(points.get(RL_RETIRED) or {}) == 1
+    gone = {k: (dict(p, judged_by=RL_RETIRED) if rl_off and k.startswith("relentless.") else p) for k, p in gone.items()}
     def one(k, p):
         v = num(p)
         meas = p.get("m") == "MEASURED" and v is not None

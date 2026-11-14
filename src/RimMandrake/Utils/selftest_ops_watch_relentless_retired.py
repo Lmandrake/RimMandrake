@@ -108,6 +108,19 @@ def main():
         ok(not [f for f in filed[before:] if not f.startswith("note:")], "retired: nothing new files (a clear note only)",
            filed[before:])
 
+        # andon: a relentless key its collector stopped reporting (a churn item no alarm holds) is the retirement, not
+        # a silent instrument, while relentless.retired reads 1; without that point it is still silent
+        rules = json.loads((HERE / "ops_watch_rules.json").read_text())
+        gone_key = ow.CHURN_ITEM_PREFIX + "SOME_ITEM_NO_ALARM_HOLDS"
+        lm = {gone_key: now - 5 * 3600, "queues.other.active": now - 5 * 3600}
+        flags = ow.andon({ow.RL_RETIRED: {"m": "MEASURED", "v": 1}}, {}, lm, rules, now)
+        sil = {f["key"] for f in flags if f["rule"] == "silent"}
+        ok(gone_key not in sil, "andon: a gone relentless key is not silent while retired", sil)
+        ok("queues.other.active" in sil, "andon: a gone non-relentless key is still silent", sil)
+        flags = ow.andon({}, {}, lm, rules, now)
+        ok(gone_key in {f["key"] for f in flags if f["rule"] == "silent"},
+           "andon: without relentless.retired a gone relentless key is silent", flags)
+
         # incident.readings: a judged_by point is sane
         status = {"t": now, "alarms": {}, "points": {
             "relentless.blind": {"m": "UNMEASURED", "class": None, "judged_by": ow.RL_RETIRED},
