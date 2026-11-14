@@ -1,0 +1,1 @@
+selftest_modlist_case.py 'every stored list lowercase' also reads gitignored ModsConfig.PRESWAP.*.xml snapshots in infrastructure/state/modlists, so its red lives in the nightly clone (/home/mandrake/rm/bench) only and a commit cannot fix it; lowercase the snapshots there with zoom_guard.lower_text (fixed 2026-11-14).
