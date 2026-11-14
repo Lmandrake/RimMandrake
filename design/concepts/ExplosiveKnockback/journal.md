@@ -67,6 +67,11 @@ his cards of 2026-11-13 and nothing inferred.
 
 ## History (dated, added to only)
 
+### Conductor interventions (one line each, added to only; the form is in the spec §5, "The steward and the journal")
+
+- CONDUCTOR INTERVENED (stage 3, 2026-11-14 12:15 PST, kind decision): a locked file that changed after the lock only by test-text corrections or by today's table work is re-pinned in `version/bars.md` with a journal line saying what changed; a changed bar is never re-pinned (the 3 post-lock changes in Oddities 2). Source: Steward's decisions in the Stage 3 brief of run `rm-detached-bench-rimmandrake-design-maturation-pipeline-w-1794687322`.
+- CONDUCTOR INTERVENED (stage 3, 2026-11-14 12:15 PST, kind decision): scene g4's colonist weight is pinned to 64-76 kg by a test-only proof hook; the bar is not changed (question 1). Source: the same brief.
+
 ### 2026-11-14 11:14 PST, pilot begins (rm-builder, detached, offline only)
 
 Brief from the Conductor: do pilot rows 1 to 3 by hand (journal, finish Stage 1, Stage 2), throwaway scripts only, stop

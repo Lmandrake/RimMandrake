@@ -79,6 +79,10 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 
 ## History (dated, added to only)
 
+### Conductor interventions (one line each, added to only; the form is in the spec §5, "The steward and the journal")
+
+- CONDUCTOR INTERVENED (stage 3, 2026-11-14 12:15 PST, kind hold): Stage 3 is held while the look-fix builder (item `RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE`, run since 11:53 PST) edits FlowWorks water code; the other three mods' Stage 3 runs started at 12:15 without it. Source: the Conductor's brief for the Maturation page (12:20 PST) and the detached-run records.
+
 ### 2026-11-14 11:24 PST, advance begins (rm-builder, detached, offline only)
 
 Brief from the Conductor: rows 1 to 3 of the pilot table by hand (journal, finish Stage 1, Stage 2), throwaway scripts

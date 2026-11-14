@@ -107,6 +107,11 @@ The nine-line version vision (shock rule, Wire down, the tap, four looks, switch
 
 ## History (dated, added to only)
 
+### Conductor interventions (one line each, added to only; the form is in the spec §5, "The steward and the journal")
+
+- CONDUCTOR INTERVENED (stage 3, 2026-11-14 12:15 PST, kind re-pin): the lock record is re-pinned to the text he actually locked (his lock word came after the gap fixes); done in `a4be8a3ff3` at `bf33322d77`, answering question 1. Source: Steward's decisions in the Stage 3 brief of run `rm-detached-bench-rimmandrake-advance-gimmesomeslack-offli-1794687332`.
+- CONDUCTOR INTERVENED (stage 3, 2026-11-14 12:15 PST, kind decision): the cords-over-battery bar question stays with him; Stage 3 adds no bar for it (question 2). Source: the same brief.
+
 ### 2026-11-14 11:25 PST, run begins (rm-builder, detached, offline only)
 
 Brief from the Conductor: rows 1 to 3 of the pilot table, by hand, throwaway scripts, stop before Stage 3. Owner,

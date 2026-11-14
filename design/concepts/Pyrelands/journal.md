@@ -78,6 +78,11 @@ fire's own cast of animals, three skies and never ordinary rain, whole on its ow
 
 ## History (dated, added to only)
 
+### Conductor interventions (one line each, added to only; the form is in the spec §5, "The steward and the journal")
+
+- CONDUCTOR INTERVENED (stage 3, 2026-11-14 12:15 PST, kind decision): a locked file that changed after the lock only by test-text corrections or by today's table work is re-pinned in `version/bars.md` with a journal line saying what changed; a changed bar is never re-pinned (`plan.md`'s fire-hawk reach change, question 5). Source: Steward's decisions in the Stage 3 brief of run `rm-detached-bench-rimmandrake-advance-pyrelands-offline-be-1794687328`.
+- CONDUCTOR INTERVENED (stage 3, 2026-11-14 12:15 PST, kind decision): the fire-hawk hunt rewards and the two places the judge asked for a new bar stay with him; Stage 3 builds no bar for them and keeps the named tests. Source: the same brief.
+
 ### 2026-11-14 11:25 PST, advance begins (rm-builder, detached, offline only)
 
 Brief from the Conductor: pilot rows 1 to 3 by hand for Pyrelands (journal, finish Stage 1, Stage 2), throwaway
