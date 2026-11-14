@@ -112,15 +112,22 @@ def main(argv):
             row["sky"] = V.open_sky_site(B, (x0 - 3, z0 - 3, w + 6, h + 6)).get("ok")
             for i in range(w):
                 for j in range(h):
-                    B.call("jawa/flowworks_excavation_drive", x=x0 + i, z=z0 + j, deepenLevels=DEPTH, setBodyWaterM=-1, fillInLevels=0)
+                    # idempotent: dig only the notches still missing (a restage on a saved scene must not dig 8 m)
+                    have = B.call("jawa/flowworks_excavation_drive", x=x0 + i, z=z0 + j, deepenLevels=0, setBodyWaterM=-1.0,
+                                  fillInLevels=0) or {}
+                    need = max(0, DEPTH - int(have.get("depth") or 0))
+                    if need:
+                        B.call("jawa/flowworks_excavation_drive", x=x0 + i, z=z0 + j, deepenLevels=need, setBodyWaterM=-1.0,
+                               fillInLevels=0)
         B.ticks(70)
         for r in rows:
             x0, z0, w, h = r["rect"]
             lx, lz, rot = r["ladder"]
             row = res[r["name"]]
             if r["fill"]:
+                # ProofFillRect takes METRES since the one water number (8734f51181); r["fill"] is notches (0.5 m)
                 row["fill"] = static("RimMandrake.FlowWorks.RM_SubmergeDraw", "ProofFillRect",
-                                     "%d,%d,%d,%d,%d,%s" % (x0, z0, w, h, r["fill"], r["fluid"]))
+                                     "%d,%d,%d,%d,%.2f,%s" % (x0, z0, w, h, r["fill"] * 0.5, r["fluid"]))
             row["ladder_spawn"] = str(B.call("jawa/spawn_batch", ops="%s:%d,%d,%d" % (LADDER, lx, lz, rot)))[:160]
         B.ticks(30)
         for r in rows:
@@ -128,7 +135,7 @@ def main(argv):
             static("RimMandrake.FlowWorks.RM_PromotionProofs", "ProofLadder", "%d,%d,lower" % (lx, lz))
         G = geysers()
     colonists = (B.call("rimworld/list_colonists") or {}).get("colonists") or []
-    pid = str((colonists[0].get("pawnId") or colonists[0].get("id") or colonists[0].get("thingId") or "")).replace("Thing_", "") if colonists else ""
+    pid = str(colonists[0].get("thingIdNumber") or colonists[0].get("pawnId") or colonists[0].get("id") or "").replace("Thing_Human", "").replace("Thing_", "") if colonists else ""
     answers = {}
     for r in rows:
         lx, lz, _ = r["ladder"]
