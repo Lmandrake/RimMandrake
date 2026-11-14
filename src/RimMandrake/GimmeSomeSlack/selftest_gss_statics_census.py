@@ -57,6 +57,7 @@ LISTED = {
     "Core/CordBuilder.cs::incidentIndexes": "a ConditionalWeakTable: an entry dies with its graph",
     "Core/CordBuilder.cs::finalRepairOwn": "a [ThreadStatic] scratch list refilled on each use",
     "Core/CordBuilder.cs::HopWhy": "a debug trace hook, null in play",
+    "Core/CordSlacken.cs::Why": "a debug trace hook (the geometry lab), null in play",
     "Core/CordBuilder.cs::HeapWalkTrace": "a debug trace hook, null in play",
     "Core/CordBuilder.cs::HeapWalkWhy": "a debug trace hook, null in play",
     "SectionLayer_RM_MessyCords.cs::PrintedVariants": "a print census keyed by variant number (not an id), read by probes as a delta",

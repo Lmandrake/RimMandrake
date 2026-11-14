@@ -177,6 +177,13 @@ ROW_LEAVES = dict(_MATRIX, **{
     "SC_shock_reach_three_values": ["shock_reach_setting"],
     "SC_shock_reach_deck_cord_per_value": ["shock_reach_setting"],
     "SC_dead_wire_lights_no_fuel": ["live_wire_lights_fuel"],
+    # sc_cords_under_items (scene_rows.cords_under_items, 2026-11-14): bar cords_draw_under_things is an inventory row, not a leaf; its rows cite
+    # the leaf the three held statements were first placed on (a cord drawn over what stands on it is not drawn true to the grid)
+    "SC_under_battery_dry": ["drawing_true_to_grid"],
+    "SC_under_item_stack_dry": ["drawing_true_to_grid"],
+    "SC_under_furniture_dry": ["drawing_true_to_grid"],
+    "SC_under_junction_piece_dry": ["drawing_true_to_grid"],
+    "SC_under_liquid_pit": ["drawing_true_to_grid"],
     # determinism, save/load, log, statics blocks (the walk leaf's reload and log-clean reads, measured short)
     "D1_zero_tick_rereads_same": ["drawing_true_to_grid"],
     "D2_fresh_builder_same": ["drawing_true_to_grid"],

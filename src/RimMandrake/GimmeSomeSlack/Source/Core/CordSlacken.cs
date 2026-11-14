@@ -85,8 +85,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
             var doorsOld = new HashSet<Cell>();
             foreach (V2 q in P) if (w.IsDoor(q.Floor)) doorsOld.Add(q.Floor);
             var no = new List<string>();
+            int audits = 0;
             List<V2> Accept(List<V2> Q, string tag)
             {
+                audits++;
                 if (Ratio(Q) < Bar) { no.Add(tag + " ratio " + Ratio(Q).ToString("0.00")); return null; }
                 if (chordAll > LongChord && Excursion(Q) < MinExcursion) { no.Add(tag + " flat " + Excursion(Q).ToString("0.00")); return null; }
                 int uNew = CordShapeAudit.Unforced(w, endA, endB, Q), kNew = CordShapeAudit.Corners(Q).Count;
@@ -121,6 +123,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 foreach (double r in Shoulders)
                     foreach (int sg in new[] { s0, -s0 })
                     {
+                        if (audits >= MaxAudits) break;
                         if (!Solve(ha, hb, Lm, W, sg, r, out double tA, out double tB)) { no.Add("solve"); continue; }
                         List<V2> mid = Lobe(ha, hb, tA, tB, r, Lm, W, ang, m0, m1);
                         string bad = Ground(mid, 0, mid.Count);
@@ -143,6 +146,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             foreach (double rad in LoopRadii)
                 foreach (int sg in new[] { s0, -s0 })
                 {
+                    if (audits >= MaxAudits + LoopAt.Length * 2) break;
                     List<V2> loop = CordLayer.Loop(P[im], tan, tan.Perp, rad, sg);
                     string bad = Ground(loop, 0, loop.Count);
                     if (bad != null) { no.Add("loop " + bad); continue; }
@@ -193,6 +197,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             double ratio0 = Ratio(P);
             int kOld = CordShapeAudit.Corners(P).Count;
             var no = new List<string>();
+            int audits = 0;
             List<V2> cur = P;
             for (int round = 0; round < 4 && count > 0; round++)
             {
@@ -239,6 +244,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                                 foreach (V2 q in mid)
                                     if (!Open(w, q) || (clear != null && !clear(q))) { ok = false; break; }
                                 if (!ok) { no.Add("ground"); continue; }
+                                if (++audits > MaxAudits) goto spent;
                                 var Q = new List<V2>(n + mid.Count);
                                 for (int i = 0; i <= ia; i++) Q.Add(cur[i]);
                                 for (int i = 1; i < mid.Count - 1; i++) Q.Add(mid[i]);
@@ -262,6 +268,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 cur = best;
                 count = Counted(cur, out S);
             }
+            spent:
             if (count > 0)
             {
                 var tally = new Dictionary<string, int>();
@@ -274,8 +281,11 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
         /// <summary><see cref="Unbend"/>'s windows (cells of cord before and after the bend), its lengths (shares of the window's old length) and its shoulders.</summary>
         private static readonly (double, double)[] UnbendWindows = { (0.8, 0.8), (1.2, 1.2), (0.5, 1.5), (1.5, 0.5), (1.8, 1.8), (0.3, 2.2), (2.2, 0.3), (2.5, 2.5) };
-        private static readonly double[] UnbendGrow = { 1.0, 1.08, 0.94, 1.18 };
-        private static readonly double[] UnbendShoulders = { 0.3, 0.42, 0.2 };
+        private static readonly double[] UnbendGrow = { 1.0, 1.08 };
+        private static readonly double[] UnbendShoulders = { 0.3, 0.2 };
+        /// <summary>The most candidates one strand's slackening or easing may lay and audit: an edge is laid whole inside one frame's budget (the slice gate's
+        /// 30 ms bound), so a strand that cannot be eased gives up after this many, by count, never by clock (a build stays bit-identical).</summary>
+        private const int MaxAudits = 30;
 
         /// <summary>Open floor a cord may be laid again on: walkable, no furniture, inside no machine's footprint.</summary>
         private static bool Open(CordWorld w, V2 q)

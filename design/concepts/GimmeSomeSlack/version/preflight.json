@@ -1,12 +1,12 @@
 {
  "mod": "GimmeSomeSlack",
  "version": "0.1.0",
- "ran_at": "2026-11-14T14:10:55-0800",
- "seconds": 5.08,
- "dump_read_seconds": 4.67,
+ "ran_at": "2026-11-14T15:54:03-0800",
+ "seconds": 5.21,
+ "dump_read_seconds": 4.8,
  "dump": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/captures/2026-11-12T08-10-06Z",
  "by": "design/concepts/GimmeSomeSlack/version/preflight_throwaway.py (throwaway, no model)",
- "verdict": "refuse",
+ "verdict": "pass",
  "checks": [
   {
    "check": "bars_match_required_ids",
@@ -21,17 +21,17 @@
   {
    "check": "every_test_names_its_stage",
    "result": "pass",
-   "n": 221
+   "n": 226
   },
   {
    "check": "every_cited_test_is_listed",
    "result": "pass",
-   "n": 692
+   "n": 702
   },
   {
    "check": "game_tests_say_why",
    "result": "pass",
-   "n": 194
+   "n": 199
   },
   {
    "check": "full_list_tests_say_why",
@@ -41,7 +41,7 @@
   {
    "check": "named_files_exist",
    "result": "pass",
-   "n": 1128
+   "n": 1142
   },
   {
    "check": "inventory_evidence_exists",
@@ -50,7 +50,7 @@
   },
   {
    "check": "built_mod_decider_entries_exist",
-   "result": "refuse",
+   "result": "pass",
    "n": 27
   },
   {
@@ -60,7 +60,7 @@
   },
   {
    "check": "built_offline_tests_green",
-   "result": "refuse",
+   "result": "pass",
    "n": 27
   },
   {
@@ -106,22 +106,7 @@
    "n": 8
   }
  ],
- "refusals": [
-  {
-   "check": "built_mod_decider_entries_exist",
-   "line": "sc_cords_under_items",
-   "evidence": "scenes.json names entry points that are not defined: 'def <entry>(' occurs 0 times in the named file",
-   "smallest_fix": "Stage 3 builds the entry points (item GSS_SCENES_BUILD_EVERY_CORD_A_FOIL, live), each red first",
-   "return_to": "3"
-  },
-  {
-   "check": "built_offline_tests_green",
-   "line": "T_CORD_GEOMETRY_OFFLINE",
-   "evidence": "ran red today; T_CORD_GEOMETRY_OFFLINE is filed as RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR",
-   "smallest_fix": "fix the mod, or (a flawed criterion) the neutral fixer repairs the bar with the owner; never loosen the test",
-   "return_to": "3"
-  }
- ],
+ "refusals": [],
  "name_classes": {
   "csharp": [
    "DecalKind",

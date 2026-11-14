@@ -256,13 +256,14 @@ for s in scn["scenes"]:
     tests[s["id"]] = row
 tests["sc_cords_under_items"] = dict(
     id="sc_cords_under_items", kind="live_minimal", stage="6", file=G + "validation.py", entry="scene_cords_under_items",
-    entry_exists=False, new=True, observes="a floor cord under a battery, a shelf of items and furniture, dry and in a FlowWorks pit: "
-    "the cord's draw altitude and queue read below the thing's, the junction piece too; control: a cord forced to the overhead queue reads above",
+    entry_exists=True, new=True, observes="a floor cord under a battery, a shelf of items and furniture, dry and in a FlowWorks pit: "
+    "the cord's draw altitude and queue read below the thing's, the junction piece too; the control is offline: planted reads (a cord over steel, a battery queued first) go red in northstar/selftest_gss_cords_under_items.py; a live debug flag only to prove the instrument is left out, as scene_rows does",
     reads=[G + "Source/CordUnderLiquid.cs", G + "Source/SectionLayer_RM_MessyCords.cs"], held=True,
     why_game="draw order is a property of the running renderer; the offline census proves the routing, not the drawn result",
-    command="python.exe src\\RimMandrake\\GimmeSomeSlack\\validation.py  (entry scene_cords_under_items; bridge held, minimal list)",
-    owed_under="GSS_SCENES_BUILD_EVERY_CORD_A_FOIL",
-    runs_today=dict(ran=False, why="UNRUN: offline only, never the game in this run; entry function absent (owed Stage 3)"))
+    command="python.exe src\\RimMandrake\\GimmeSomeSlack\\northstar\\proof_all.py --live --no-shots (tier gimmesomeslack_flowworks for its pit row), then "
+            "python3 src/RimMandrake/GimmeSomeSlack/validation.py --scenes-from <proof result json>",
+    runs_today=dict(ran=False, why="UNRUN: offline only, never the game in this run; entry built 2026-11-14 (scene_rows.cords_under_items, probe under:), "
+                                   "its offline half northstar/selftest_gss_cords_under_items.py green, its pit row a Stage 6 driver"))
 tests["LOOK_STAGE8"] = dict(id="LOOK_STAGE8", kind="look", stage="8", file=None, entry=None, entry_exists=False,
                             observes="his walk of a scavenger base on his full list, with a mid-way reload",
                             reads=[C + "sheet.md", C + "version/vision.md"], why_game="his eye is the instrument",

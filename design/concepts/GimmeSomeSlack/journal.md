@@ -12,21 +12,16 @@ mods read alike.
 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 ~3:40 PM PST (`version/VERSION.json`); the lock record pins the text
   at that word, `bf33322d77` (re-pinned 2026-11-14, steward's decision). Code: `src/RimMandrake/GimmeSomeSlack/` (C#, 62
-  sources; C# SelfTest 4508 checks; `validation.py`; `northstar/proof_all.py`, the one dense live proof).
-- **Stage now:** Stage 3 (reconcile) done 2026-11-14 13:05 PST, offline only. Preflight: 4 refusals before, **1 after**
-  (`built_offline_tests_green`: `T_CORD_GEOMETRY_OFFLINE` red, filed `RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR`); after
-  the bar his card added (2026-11-14 14:10 PST) **2**, the second `built_mod_decider_entries_exist`: `sc_cords_under_items`
-  has no entry point yet (owed Stage 3, item `GSS_SCENES_BUILD_EVERY_CORD_A_FOIL`). [measured]
-  Next: build that entry and decide the geometry red (mod or criterion), then Stages 4 and 5 (blind challenge), then Stage 6
-  runs the 27 scenes live.
+  sources; C# SelfTest 4515 checks; `validation.py`; `northstar/proof_all.py`, the one dense live proof).
+- **Stage now:** Stage 3 done 2026-11-14 3:40 PM PST, offline only. Preflight: **0 refusals** (2 before this run:
+  `sc_cords_under_items` had no entry; `T_CORD_GEOMETRY_OFFLINE` red). [measured]
+  Next: Stages 4 and 5 (blind challenge), then Stage 6 runs the 27 scenes live.
 - **Bars:** 48 (23 inventory rows of `record.json` + 26 leaves of `tree.json`; `shock_reach_setting` is both, so 49 rows
   name 48 ids; `cords_draw_under_things` added by his card 2026-11-14). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`), made by the throwaway `version/make_test_table.py`. Of 48
-  bars: 48 have a deciding test runnable today, 46 have every deciding test runnable (not `cords_draw_under_things`, whose
-  scene is owed, nor `walk_scavenger_base`, his walk), 22 have offline deciders all green today. [measured, 14:10 PST]
-- **Waiting on:** the geometry red's reading (below, question 4); Stage 6 for every in-game test (all UNRUN, commands in
-  `version/test_table.md`). Built in Stage 3: the floor-end shock and its three-value setting; the 4 offline tests; the 26
-  scene entry points; tier `gimmesomeslack_flowworks`.
+  bars: 48 have a deciding test runnable today (counts as of now: "Waiting on").
+- **Waiting on:** Stage 6 for every in-game test (all UNRUN, commands in `version/test_table.md`). Of 48 bars: 47 have every
+  deciding test runnable (not `walk_scavenger_base`, his walk), 25 have offline deciders all green. [measured, 3:40 PM PST]
 - **Open questions for him:** "Questions for him", the last part of this top section.
 
 ### The vision (his root paragraph, `record.json` root, OWNER:1793895896496551063)
@@ -97,15 +92,6 @@ The nine-line version vision (shock rule, Wire down, the tap, four looks, switch
    Recommendation: yes; it is what stood when he said "lock".
 3. ~~Two scenes need FlowWorks~~: answered by the steward, tier `gimmesomeslack_flowworks` (2026-11-14). Question 1 is
    answered the same way (re-pinned).
-4. **The geometry bar reads red offline.** `T_CORD_GEOMETRY_OFFLINE` reads the `cords_lie_slack` and `no_unforced_sharp_turn`
-   oracles as written: 25 of 76 strands on the oracle scenes are under 1.4 times their chord (all short leads, chord 2 to 3
-   cells), 1 long strand is flat, 7 bends are unforced. Is "1.4 per edge" meant for a 2-cell lead? If yes, the builder must
-   slacken short leads (a mod fix); if no, the bar needs a length floor (his change, through the neutral fixer). The unforced
-   bends are the mod's either way. Item `RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR`.
-5. **Seven Harmony patches belong to no switch.** The `settings_switch_cleanly` oracle says every patch maps to exactly one
-   switch, none unmapped. Seven are save-integrity bookkeeping (keep our components out of saves, load pre-rename saves,
-   drain the style queue before a save, mark sections stale); a switch on them would break saves. The sweep lists them as
-   "infra, no switch by design" and passes. Is that what the bar means?
 
 ## History (dated, added to only)
 
@@ -113,6 +99,8 @@ The nine-line version vision (shock rule, Wire down, the tap, four looks, switch
 
 - CONDUCTOR INTERVENED (stage 3, 2026-11-14 12:15 PST, kind re-pin): the lock record is re-pinned to the text he actually locked (his lock word came after the gap fixes); done in `a4be8a3ff3` at `bf33322d77`, answering question 1. Source: Steward's decisions in the Stage 3 brief of run `rm-detached-bench-rimmandrake-advance-gimmesomeslack-offli-1794687332`.
 - CONDUCTOR INTERVENED (stage 3, 2026-11-14 2:10 PM PST, kind bar-added): bar `cords_draw_under_things` added to 0.1.0 (record.json inventory, scope opened_by_owner): "A floor cord, and the strip or connector at its junction, draws beneath any item, building or furniture standing over it, a battery included, on dry floor and under the liquid of a pit alike, so nothing a player put down ever has a wire showing through it." Decided by `T_CORE` (slideunder "under", stage 4-5) and `sc_cords_under_items` (stage 6, entry owed Stage 3); the three held rows moved onto it; record.json re-pinned `a6fa51434c`. Source: owner by card 2026-11-14 (OWNER:1794693278631337978).
+- CONDUCTOR INTERVENED (stage 3, 2026-11-14 3:20 PM PST, kind decision): bar `settings_switch_cleanly` eased with his approval: every feature patch maps to exactly one setting; the seven save-housekeeping patches are listed by name and always on; a patch neither mapped nor listed fails. Was "maps each one to exactly one switch, none unmapped". Reworded in tree.json (oracle, scenario), scenes.json (`sc_settings` expect) and record.json (inventory `what`); `T_SETTINGS_SWEEP_OFFLINE` now also refuses a listed name with no patch class and a list that is not seven, and was watched failing on a real unlisted ungated patch. Source: owner by card 2026-11-14, "Exempt housekeeping" (question 5); run RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR.
+- CONDUCTOR INTERVENED (stage 3, 2026-11-14 3:20 PM PST, kind re-pin): tree.json, scenes.json and record.json re-pinned in `version/bars.md` for that easing (tree `5fa03c7a8e`, scenes `dd8be4a7f2`, record `5286159164`; tree hash `e80c7f93`). The exam's 26 of 26 was read on the earlier tree text. Source: owner by card 2026-11-14, "Exempt housekeeping"; run RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR.
 
 ### 2026-11-14 11:25 PST, run begins (rm-builder, detached, offline only)
 
@@ -235,6 +223,25 @@ Brief from the Conductor: rows 1 to 3 of the pilot table, by hand, throwaway scr
   whether save-integrity patches count as "unmapped" (question 5); keeping a derived `fallenWireShock` for another mod's
   reader rather than editing FlowWorks (another helper's code); making scenes verdicts over one dense run rather than 26
   loads (the spec's Stage 6 asks for dense maps); what a test may assume of bridge tools it cannot try offline.
+
+### 2026-11-14 3:40 PM PST, Stage 3: the three owner-decided changes (run RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR, offline only)
+
+- **Short leads slackened** (his card, "Loosen the short cords"; bar unchanged): new `Core/CordSlacken.cs`, run last in `CordBuilder.LayEdge`.
+  A strand under 1.4x keeps its fitted ends and takes a three-arc lobe (or, failing that, one broad loop) to 1.5x; a bend the bar
+  counts is eased by re-laying a window round it. `T_CORD_GEOMETRY_OFFLINE`: taut 25, flat 1, bends 7 with `--no-slacken`; taut 0,
+  flat 0, bends 0 with it; C# SelfTest 4515/4515. Landed `4c06e66056` (candidate caps added after). [measured]
+- **Oddity found:** with the fittings facing along a 2-cell chord, 1.4x cannot be reached at a curvature under the bend bar's 90 degrees
+  a cell; the lobe turns firmly just out of each fitting (offline solver, 2026-11-14). Two very short leads read as small tight
+  squiggles in the previews (`D:\ClaudeWork\rimmandrake\conductor\gss_short_cords_20261114\nodal_lead8.png`, `under_whole.png`, the bench lead).
+- **The slice gate's 30 ms bound is close.** One build of the 248-edge live scene held 31.2 ms once with the pass uncapped; the
+  pass now stops after 30 audited candidates a strand (a count, so builds stay bit-identical). The offline gate passes standalone;
+  it failed once inside the table run's load.
+- **Settings bar eased** (his card, "Exempt housekeeping"): intervention lines above.
+- **`sc_cords_under_items` built** (UNRUN): probe verb `under:x,z` (things' altitude and queue beside the cord's, and how much the
+  liquid lets show), `northstar/scene_rows.cords_under_items` (battery, steel stack, bed and a junction under steel on one run; the
+  pit row UNMEASURED with its Stage 6 driver), `validation.scene_cords_under_items`; offline half
+  `northstar/selftest_gss_cords_under_items.py` green, red on the base. Its rows cite `drawing_true_to_grid` (the leaf rule of
+  2026-11-13), so `sc_true_to_grid` now also wants them, the pit row included.
 
 ### Run total
 

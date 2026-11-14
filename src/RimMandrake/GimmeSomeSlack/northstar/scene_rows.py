@@ -16,7 +16,9 @@ ROWS = ["SC_doorway_run_is_one_cord", "SC_cut_never_powered_both_dead", "SC_cut_
         # sc_floor_end_shock and sc_shock_reach (RIMMANDRAKE_BUILD_GSS_FLOOR_END_SHOCK_ANSWERED_WEEK_AGO, Stage 3 2026-11-14)
         "SC_floor_end_live_shocks", "SC_floor_end_dead_spares", "SC_floor_end_cord_behind_spares", "SC_floor_end_unfinished_run_bites",
         "SC_floor_end_bites_aerial_master_off", "SC_floor_end_every_end_over_spark_budget", "SC_floor_end_fixer_spared_other_builder_shocked",
-        "SC_shock_reach_default_all", "SC_shock_reach_three_values", "SC_shock_reach_deck_cord_per_value"]
+        "SC_shock_reach_default_all", "SC_shock_reach_three_values", "SC_shock_reach_deck_cord_per_value",
+        # sc_cords_under_items (bar cords_draw_under_things, owner by card 2026-11-14)
+        "SC_under_battery_dry", "SC_under_item_stack_dry", "SC_under_furniture_dry", "SC_under_junction_piece_dry", "SC_under_liquid_pit"]
 
 
 def _site(B, V):
@@ -445,6 +447,54 @@ def shock_reach(B, V, rows):
                   "collapse row under each shockReach value (bites under All and OnlyDownedLines, not under None)"})
 
 
+UNDER_ROWS = ["SC_under_battery_dry", "SC_under_item_stack_dry", "SC_under_furniture_dry", "SC_under_junction_piece_dry", "SC_under_liquid_pit"]
+
+
+def under_verdict(read, want_piece=False):
+    """One cell of the probe's `under:x,z` read -> (status, cause, detail). PASS when a cord lies there (a junction piece, if
+    `want_piece`) and every thing standing on the cell draws above it: the cord's altitude below the thing's, and its queue (the
+    piece's for a junction) no later than the thing's. UNMEASURED SITE when the cell holds no cord or no thing; FAIL otherwise."""
+    if not read or not read.get("success"):
+        return "UNMEASURED", "HARNESS", {"read": read, "why": "the probe's under: verb gave no reading"}
+    cord, things = read.get("cord") or {}, [t for t in read.get("things") or [] if t.get("def") != "PowerConduit"]
+    have = cord.get("pieces", 0) > 0 if want_piece else cord.get("strands", 0) + cord.get("pieces", 0) > 0
+    if not have or not things:
+        return "UNMEASURED", "SITE", {"read": read, "why": "no %s on the cell, or nothing standing on it" % ("junction piece" if want_piece else "cord")}
+    q = cord.get("pieceQueue") if want_piece else max(cord.get("strandQueue", -1), cord.get("pieceQueue", -1) if cord.get("pieces") else -1)
+    over = [t for t in things if not (cord.get("altitude", 99) < t.get("altitude", -99) and (t.get("queue", -1) < 0 or q <= t["queue"]))]
+    return ("FAIL" if over else "PASS"), "MOD", {"cord": cord, "things": things, "drawnUnderCord": [t["def"] for t in over]}
+
+
+def cords_under_items(B, V, rows):
+    """sc_cords_under_items (bar cords_draw_under_things): a battery-fed floor run with a battery standing on it, a stack of steel and a
+    bed lying across it and a three-way junction with steel on the joint; at each such cell the probe's under: read must show the
+    thing drawn above the cord (under_verdict). The pit half needs FlowWorks: on any other tier it is UNMEASURED with its driver."""
+    x, z = SC0
+    _site(B, V)
+    run = _line(x, z, x + 12, z)
+    B.call("jawa/build_batch", ops=V.ops("PowerConduit", run + _line(x + 8, z + 1, x + 8, z + 3)), faction="player", wipeExisting=False)
+    B.call("jawa/build_batch", ops="Battery:%d,%d,0" % (x, z), faction="player", wipeExisting=False)
+    B.call("jawa/build_batch", ops="StandingLamp:%d,%d,0" % (x + 12, z + 1), faction="player", wipeExisting=False)
+    B.call("jawa/build_batch", ops="Bed:%d,%d,0" % (x + 5, z), faction="player", wipeExisting=False)
+    B.call("rimworld/spawn_thing", defName="Steel", stackCount=75, x=x + 3, z=z)
+    B.call("rimworld/spawn_thing", defName="Steel", stackCount=40, x=x + 8, z=z)
+    B.ticks(3)
+    _fill(B, (x - 2, z - 2, 18, 8))
+    B.probe("rebuild")
+    B.ticks(8)
+    for rid, cell, piece in (("SC_under_battery_dry", (x, z), False), ("SC_under_item_stack_dry", (x + 3, z), False),
+                             ("SC_under_furniture_dry", (x + 5, z), False), ("SC_under_junction_piece_dry", (x + 8, z), True)):
+        st, cause, detail = under_verdict(B.probe("under:%d,%d" % cell), want_piece=piece)
+        detail["cell"] = list(cell)
+        V.row(rows, rid, st, cause, detail)
+    V.row(rows, "SC_under_liquid_pit", "UNMEASURED", "HARNESS",
+          {"why": "a cord in a FlowWorks pit under liquid, with a battery on the pit floor over it: run on tier gimmesomeslack_flowworks; "
+                  "the pit-digging and filling calls are FlowWorks lines_proof's (not identified offline). Stage 6 driver: dig a pit over "
+                  "a conduit run, stand a battery on its floor, fill it, then read under: at the battery's cell (seen < 1 and the "
+                  "battery above the cord). Offline the pit routing is decided by FlowWorks' selftest_flowworks_pit_draw_census.py."})
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % SITE, categories="All")
+
+
 def run(B, V, rows):
     slack_and_shapes(B, V, rows)
     doorway(B, V, rows)
@@ -454,6 +504,7 @@ def run(B, V, rows):
     dead_wire(B, V, rows)
     floor_end_shock(B, V, rows)
     shock_reach(B, V, rows)
+    cords_under_items(B, V, rows)
     B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % SITE, categories="All")
     time.sleep(0.2)
 

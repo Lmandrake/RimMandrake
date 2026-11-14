@@ -100,6 +100,7 @@ namespace RimMandrake.GimmeSomeSlack
             if (cmd == "slack") return SlackTable(comp);
             if (cmd == "statics") return Statics();
             if (cmd.StartsWith("ends:")) return EndsNear(comp, cmd.Substring(5));
+            if (cmd.StartsWith("under:")) return UnderAt(map, comp, cmd.Substring(6));   // sc_cords_under_items (bar cords_draw_under_things)
             if (cmd == "motion") return Motion(map, comp);
             if (cmd == "motionreset")
             {
@@ -654,6 +655,38 @@ namespace RimMandrake.GimmeSomeSlack
                              e1.X.ToString("0.00", inv) + "," + e1.Z.ToString("0.00", inv) + "],\"overFace\":" + J.B(s.OverFace) + ",\"pts\":" + s.Pts.Count + "}");
                 }
             return "{\"success\":true,\"cmd\":\"ends\",\"rows\":[" + string.Join(",", rows) + "]}";
+        }
+
+        /// <summary>sc_cords_under_items (bar cords_draw_under_things, owner by card 2026-11-14): at one cell, every thing standing there with its draw
+        /// altitude and its material's render queue, beside the cord's (strand and junction piece) and how much of a floor cord the liquid over the cell
+        /// lets show (CordUnderLiquid; 1 without FlowWorks). Read only; the scene decides from it.</summary>
+        private static string UnderAt(Map map, RM_MapComponent_CordGraph comp, string args)
+        {
+            var inv = CultureInfo.InvariantCulture;
+            string[] a = args.Split(',');
+            var c = new IntVec3(int.Parse(a[0], inv), 0, int.Parse(a[1], inv));
+            if (!c.InBounds(map)) return "{\"success\":false,\"error\":\"out of bounds\"}";
+            var things = new List<string>();
+            foreach (Thing t in map.thingGrid.ThingsListAt(c))
+            {
+                int q = -1;
+                try { q = t.Graphic?.MatSingle?.renderQueue ?? -1; } catch (Exception) { }
+                things.Add("{\"def\":" + J.S(t.def.defName) + ",\"category\":" + J.S(t.def.category.ToString()) + ",\"layer\":" + J.S(t.def.altitudeLayer.ToString()) +
+                           ",\"altitude\":" + J.D(t.def.Altitude) + ",\"queue\":" + q + "}");
+            }
+            int strands = 0, pieces = 0;
+            var kinds = new List<string>();
+            foreach (LaidPiece p in comp.Pieces)
+            {
+                foreach (CordStrand s in p.Strands)
+                    if (!s.OverFace && s.Pts != null && s.Pts.Any(v => v.Floor.X == c.x && v.Floor.Z == c.z)) strands++;
+                foreach (CordDecal d in p.Decals)
+                    if (!d.OverFace && d.Pos.Floor.X == c.x && d.Pos.Floor.Z == c.z) { pieces++; kinds.Add(J.S(d.Kind.ToString())); }
+            }
+            return "{\"success\":true,\"cmd\":\"under\",\"cell\":[" + c.x + "," + c.z + "],\"things\":[" + string.Join(",", things) + "]" +
+                   ",\"cord\":{\"strands\":" + strands + ",\"pieces\":" + pieces + ",\"kinds\":[" + string.Join(",", kinds) + "]" +
+                   ",\"altitude\":" + J.D(AltitudeLayer.Conduits.AltitudeFor()) + ",\"strandQueue\":" + CordMaterials.StrandQueue + ",\"pieceQueue\":" + CordMaterials.PieceQueue +
+                   ",\"seen\":" + J.D(CordUnderLiquid.SeenAt(map, c.x + 0.5, c.z + 0.5)) + "}}";
         }
 
         private static string ArtFit(Map map, RM_MapComponent_CordGraph comp)
