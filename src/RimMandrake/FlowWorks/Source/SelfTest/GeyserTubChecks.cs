@@ -144,6 +144,17 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string plume = pit.Substring(a, b - a);
                 Assert(!plume.Contains("ThrowAirPuffUp"), "can-fail: no steam puffs drift off a submerged vent");
                 Assert(plume.Contains("RM_Fleck_VentFroth"), "can-fail: the plume throws the froth ring");
+                // round 8: the tan blobs drifting over the pit were the plume's vanilla WaterRipple (alpha 0.2, growing 1.66/s
+                // for 4 s: several squares wide); round 7 read the froth as a glaring white disc (three at alpha 0.75 overlapping)
+                Assert(!plume.Contains("WaterRipple"), "can-fail: no ripple swells off a submerged vent across the pit");
+                Assert(plume.Contains("RM_GeyserTubMath.FrothAlpha") && plume.Contains("RM_GeyserTubMath.FrothWhiten"),
+                    "can-fail: the froth's colour comes from the bounded constants");
+                float frothPeak = RM_GeyserTubMath.FrothAlpha * RM_GeyserTubMath.FrothPerSecond * RM_GeyserTubMath.FrothLifeSeconds;
+                Assert(RM_GeyserTubMath.FrothAlpha <= 0.3f && frothPeak <= 0.8f && frothPeak >= 0.3f,
+                    "can-fail: the froth ring is soft, not a glaring disc (alpha " + RM_GeyserTubMath.FrothAlpha + ", overlapped " + frothPeak + ")");
+                Assert(RM_GeyserTubMath.FrothWhiten > 0f && RM_GeyserTubMath.FrothWhiten <= 0.35f, "can-fail: the froth is the bubbles' colour, a little lifted");
+                Assert(RM_FleckCensusMath.Within(10.4f, 20.6f, 10, 20, 1f) && !RM_FleckCensusMath.Within(12.6f, 20.5f, 10, 20, 2f)
+                    && !RM_FleckCensusMath.Within(10.5f, 20.5f, 10, 20, 0f), "can-fail: the fleck census counts only inside its radius");
             });
             Case("GeyserTub_every_liquid_bubbles_in_its_own_colour", () =>
             {

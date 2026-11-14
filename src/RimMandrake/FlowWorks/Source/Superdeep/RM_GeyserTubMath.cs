@@ -197,6 +197,15 @@ namespace RimMandrake.FlowWorks
 		public const float FrothPerSecond = 2.5f;
 		public const float FrothDrawSize = 1.15f;
 
+		/// <summary>Round 8 (round 7 read the froth as a glaring white disc: about three alive at alpha 0.75, lifted halfway to
+		/// white): each froth ring's alpha, and how far its colour is lifted from the bubbles' toward white. About three
+		/// overlap (FrothPerSecond x FrothLifeSeconds), so the ring peaks near 0.66.</summary>
+		public const float FrothAlpha = 0.22f;
+		public const float FrothWhiten = 0.3f;
+
+		/// <summary>RM_Fleck_VentFroth's life (s): fade-in 0.3 + solid 0.4 + fade-out 0.5.</summary>
+		public const float FrothLifeSeconds = 1.2f;
+
 		/// <summary>Round 7 (owner: "the vent looks on top of the water"): under liquid the vanilla geyser art (a crisp hole,
 		/// a pale ring and a 4-cell grey splotch) is replaced by RM_SunkVent, a soft dark hole this wide (cells) drawn under the
 		/// liquid's sheet, so the water over the vent is the pit's water.</summary>
@@ -226,6 +235,18 @@ namespace RimMandrake.FlowWorks
 				return 0;
 			}
 			return (int)(perSecond / 60f + roll);
+		}
+	}
+
+	/// <summary>RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE round 8 (proof): the fleck census's one rule: a fleck spawned at
+	/// (<paramref name="x"/>, <paramref name="z"/>) counts when it lands within <paramref name="radius"/> cells of the centre
+	/// of cell (<paramref name="cx"/>, <paramref name="cz"/>). Verse-free: SelfTest GeyserTubChecks runs it.</summary>
+	public static class RM_FleckCensusMath
+	{
+		public static bool Within(float x, float z, int cx, int cz, float radius)
+		{
+			float dx = x - (cx + 0.5f), dz = z - (cz + 0.5f);
+			return radius > 0f && dx * dx + dz * dz <= radius * radius;
 		}
 	}
 }

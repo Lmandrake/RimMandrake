@@ -283,7 +283,7 @@ namespace RimMandrake.FlowWorks
 	/// vent in view, RM_Fleck_VentBubble (small, bright, mostly opaque; owner 2026-11-13: "It should be bubbling water, not
 	/// faint ghost bubbles rising up") is thrown in a tight cluster on the vent's mouth, short-lived and never stopping, in the
 	/// liquid's own colour (RM_GeyserTubMath.BubbleColour), more of it the deeper the liquid, fewer and bigger in thick
-	/// liquids, with a soft froth ring (RM_Fleck_VentFroth) and an odd ripple in thin ones; no steam wisp drifts off a submerged vent (round 7). Every 250 ticks a geyser whose seat
+	/// liquids, with a soft froth ring (RM_Fleck_VentFroth); no steam wisp and no ripple drifts off a submerged vent (rounds 7-8). Every 250 ticks a geyser whose seat
 	/// moved re-meshes its squares so the print follows the dig. Cosmetic RNG isolated (Rand.PushState).
 	/// </summary>
 	public class RM_MapComponent_GeyserPits : MapComponent
@@ -461,16 +461,14 @@ namespace RimMandrake.FlowWorks
 				}
 				if (frothFleck != null && Rand.Chance(RM_GeyserTubMath.FrothPerSecond / 60f))
 				{
-					// a soft brighter ring of froth round the patch; no steam puffs off a submerged vent (round 7)
+					// a soft froth ring round the patch, the bubbles' colour a little lifted (round 8: was a glaring white disc).
+					// No steam puffs and no ripples swell off a submerged vent (round 8: the plume's vanilla ripple fleck, growing to
+					// several squares over 4 s, was the tan blobs drifting over the pit and the grass)
+					float w = RM_GeyserTubMath.FrothWhiten;
 					FleckCreationData f = FleckMaker.GetDataStatic(ctr, map, frothFleck, Rand.Range(0.9f, 1.1f));
-					f.instanceColor = new Color(tint.r + (1f - tint.r) * 0.5f, tint.g + (1f - tint.g) * 0.5f, tint.b + (1f - tint.b) * 0.5f, 0.75f);
+					f.instanceColor = new Color(tint.r + (1f - tint.r) * w, tint.g + (1f - tint.g) * w, tint.b + (1f - tint.b) * w, RM_GeyserTubMath.FrothAlpha);
 					f.rotation = Rand.Range(0f, 360f);
 					map.flecks.CreateFleck(f);
-				}
-				if (spraying && !thick && Rand.Chance(0.05f))
-				{
-					Vector2 off = Rand.InsideUnitCircle * RM_GeyserTubMath.PlumeRadius;
-					FleckMaker.WaterRipple(ctr + new Vector3(off.x, 0f, off.y), map, Rand.Range(0.5f, 0.9f));
 				}
 			}
 			finally
@@ -653,6 +651,82 @@ namespace RimMandrake.FlowWorks
 				+ " pool=" + pool + " spraying=" + RM_GeyserPit.Spraying(g) + " plumeBubbles=" + RM_GeyserPit.plumeBubbles
 				+ " dryPuffs=" + RM_GeyserPit.dryPuffs + " coveredPuffsStopped=" + RM_GeyserPit.coveredPuffsStopped
 				+ " soakers=" + soakers + " capped=" + s.capped;
+		}
+	}
+
+	/// <summary>RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE round 8 (proof): which flecks spawn near a cell, and who threw them.
+	/// jawa/static_call RimMandrake.FlowWorks.RM_FleckCensus.Read "x,z,r" arms it (counts cleared), "dump" lists
+	/// "defName &lt;- caller &lt;- its caller = count", "off" disarms. Disarmed it costs one bool per fleck.</summary>
+	public static class RM_FleckCensus
+	{
+		internal static bool armed;
+		private static int cx, cz;
+		private static float radius;
+		private static readonly Dictionary<string, int> seen = new Dictionary<string, int>();
+
+		public static string Read(string arg)
+		{
+			if (arg == "off")
+			{
+				armed = false;
+				return "off";
+			}
+			if (string.IsNullOrEmpty(arg) || arg == "dump")
+			{
+				List<string> rows = new List<string>();
+				foreach (KeyValuePair<string, int> kv in seen)
+				{
+					rows.Add(kv.Key + " = " + kv.Value);
+				}
+				rows.Sort();
+				return "armed=" + armed + " at=" + cx + "," + cz + " r=" + radius.ToString("F1", CultureInfo.InvariantCulture)
+					+ (rows.Count == 0 ? " none" : " | " + string.Join(" | ", rows));
+			}
+			string[] p = arg.Split(',');
+			cx = int.Parse(p[0], CultureInfo.InvariantCulture);
+			cz = int.Parse(p[1], CultureInfo.InvariantCulture);
+			radius = p.Length > 2 ? float.Parse(p[2], CultureInfo.InvariantCulture) : 6f;
+			seen.Clear();
+			armed = true;
+			return "armed at=" + cx + "," + cz + " r=" + radius.ToString("F1", CultureInfo.InvariantCulture);
+		}
+
+		internal static void Note(FleckCreationData d)
+		{
+			if (d.def == null || !RM_FleckCensusMath.Within(d.spawnPosition.x, d.spawnPosition.z, cx, cz, radius))
+			{
+				return;
+			}
+			System.Diagnostics.StackFrame[] frames = new System.Diagnostics.StackTrace(1, false).GetFrames();
+			List<string> by = new List<string>();
+			for (int i = 0; frames != null && i < frames.Length && by.Count < 2; i++)
+			{
+				System.Reflection.MethodBase m = frames[i].GetMethod();
+				string name = m == null ? "?" : (m.DeclaringType != null ? m.DeclaringType.Name + "." : "") + m.Name;
+				if (name.Contains("CreateFleck") || name.Contains("Patch_RM_FleckCensus"))
+				{
+					continue;
+				}
+				by.Add(name);
+			}
+			string key = d.def.defName + " <- " + string.Join(" <- ", by);
+			seen.TryGetValue(key, out int n);
+			seen[key] = n + 1;
+		}
+	}
+
+	/// <summary>Feeds <see cref="RM_FleckCensus"/> while armed (a proof instrument; nothing is changed or stopped).</summary>
+	[HarmonyPatch(typeof(FleckManager), nameof(FleckManager.CreateFleck))]
+	[RimMandrake.Shared.PatchFeature("Geysers in pits (fleck census proof)", typeof(RimMandrake.FlowWorks.RM_GeyserPitSettings), "geyserSinksEnabled")]
+	internal static class Patch_RM_FleckCensus
+	{
+		[HarmonyPrefix]
+		private static void Prefix(FleckCreationData fleckData)
+		{
+			if (RM_FleckCensus.armed)
+			{
+				RM_FleckCensus.Note(fleckData);
+			}
 		}
 	}
 }
