@@ -132,7 +132,7 @@ S_RIVER = "RimMandrake.FlowWorks.ManyWaters.RiverSteamSettings"
 # The toggles this script's scenes rely on, at their shipped defaults. O2 checks them against a C# census of
 # every settings class (which must itself equal site_spec.SETTINGS); the census, not this table, is the floor.
 BOOL_DEFAULTS = {
-    S_FW: dict(depthEngineEnabled=True, digToDepthEnabled=True,
+    S_FW: dict(depthEngineEnabled=True, digToDepthEnabled=True, digLabourMultiplier=4.0,
                liquidCorrosionEnabled=True, liquidIgnitionEnabled=True, fillInEnabled=True,
                fillInDisplacementEnabled=True, sourceBudgetEnabled=True, stickyLimitlessEnabled=True,
                recessionEnabled=True, refillEnabled=True, rainFillsExcavationsEnabled=True,
@@ -1197,7 +1197,15 @@ class Live(object):
     def dig_scene(self, name):
         s = SCENES[name]
         fills = s.get("fill")
-        for i, c in enumerate(s["cells"]):
+        # RIMMANDRAKE_RESHAPE_E7A_PREFILL_READS_THREE_NOT_TWO (live round 5, 2026-11-13): the drive tool's water write is per
+        # BODY, so E7a's [0, 1, 1] dug as one run and then written became [1, 1, 1]: no room, its fill-in overflowed like
+        # E7b's, and E9 counted 2 conservation exceptions on a mod that destroyed only what it had to (measured: a fill-in
+        # with room conserves 9,999 -> 9,999 dL; a full body loses exactly one level, disclosed). Wet cells are dug and
+        # written first; a dry cell is cut after, so it joins the body empty (read back [0, 10000, 10000]).
+        order = list(enumerate(s["cells"]))
+        if isinstance(fills, list):
+            order.sort(key=lambda ic: fills[ic[0]] == 0)
+        for i, c in order:
             if s.get("D"):
                 self.dig(c, s["D"], oracle=s.get("oracle", True))
             if fills is not None:
@@ -1921,7 +1929,17 @@ def _snapshot(L):
 def phase_J(L, args):
     """Pawn jobs (E7 fill-in, E8 dig) are the only things that need the clock. The same ticks
     also carry E4 (engine OFF then ON under the REAL scheduler), E1b (cadence at the pinned,
-    clamped pulse) and E6n (rain falling with rainFillsExcavations OFF fills nothing)."""
+    clamped pulse) and E6n (rain falling with rainFillsExcavations OFF fills nothing).
+
+    Test Pilot sitting, live round 5 (2026-11-13), on "E8: pawns idle 2,220 ticks" and "E9: two overflows":
+    RULED OUT  pawn AI starved by direct tick stepping (E8 passed under _direct_step, 3,060 ticks).
+    RULED OUT  the dig job path broken by the one-water-number build (plain player case on a quicktest: one colonist,
+               Mining priority 1, a shovel, took RM_DigCanalJob at once and cut the cell).
+    RULED OUT  an unreachable or forbidden site cell (the probe said hasJobOnCell, the pawn stood adjacent).
+    RULED OUT  water created or lost in a fill-in (with room 9,999 -> 9,999 dL, overflow +0; full body -1 level, disclosed).
+    CAUSE      the job cap ignored the x4 labour multiplier (HARNESS); pawn_get carries no job field (the "idle" read was
+               blind); E7a's prefill was written per body as [1, 1, 1], so its fill-in overflowed and E9 counted two.
+    NOT HERE   an interrupted cut restarts from zero (vanilla AffectFloor): RIMMANDRAKE_KEEP_DIG_PROGRESS_ACROSS_MEALS_AND_NAPS."""
     B = L.B
     with L.step("J_jobs_scheduler", None) as st:
         for k in ("E4_engine", "E6_open", "E6_roofed", "E7a_fillin", "E7b_overflow", "E8_dig"):
@@ -1965,8 +1983,12 @@ def phase_J(L, args):
                 raise Abort("shovel not staged for %s: %s" % (k, why_))
         speed = min(v[1] for v in pawns.values())
         L._log("    job pawns %s (rejected, mining disabled: %s)" % (pawns, rejected))
-        # caps from the JobDriver work amounts: dig 3200 (WorkToDeepen(0)); fill-in D=1 -> 1600
-        cap = int(math.ceil(3200.0 / max(speed, 0.1) * 1.3)) + 240
+        # caps from the JobDriver work amounts: dig 3200 (WorkToDeepen(0)); fill-in D=1 -> 1600, BOTH times the labour
+        # multiplier (DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK, owner card 2026-10-25, shipped x4). Live round 5 (2026-11-13): the
+        # cap still read 3200 un-multiplied (2,220 ticks) while a soil notch costs 12,800, so E8/E7a/E7b went UNMEASURED
+        # "idle" on a mod that digs; the plain player case (one colonist, prio 1, shovel) took the job at once and cut it.
+        labour = _labour_multiplier(L)
+        cap = int(math.ceil(3200.0 * labour / max(speed, 0.1) * 1.3)) + 240
         cap = min(cap, args.max_job_ticks)
         e8, e7a, e7b = SCENES["E8_dig"]["cells"][0], SCENES["E7a_fillin"]["cells"][1], SCENES["E7b_overflow"]["cells"][1]
         for c, des in ((e8, "RM_DigCanal"), (e7a, "RM_FillInCanal"), (e7b, "RM_FillInCanal")):
@@ -2021,6 +2043,9 @@ def phase_J(L, args):
         if not L.row("J_orders_accepted", all(x[1] for x in orders), "HARNESS", orders):
             raise Abort("ordered jobs refused")
         sum7 = {k: sum(levels(q) for q in L.cells_read(SCENES[k]["cells"])) for k in ("E7a_fillin", "E7b_overflow")}
+        # the conservation compare is in dL: the body levels out to 6,667 a cell before the fill lands, and whole levels
+        # floored per cell would read 10,001 + 9,999 as 1 + 0.
+        sum7_dl = sum(int(q.get("dl") or 0) for q in L.cells_read(SCENES["E7a_fillin"]["cells"]))
         w = B.call("jawa/weather_set", weather="Rain", lockWeather=True)
         L.sset(S_FW, "rainFillsExcavationsEnabled", False)
         # pin rain to the UI maximum: at the shipped 0.1 a rising Rain rate adds < 1 level over the
@@ -2132,28 +2157,32 @@ def phase_J(L, args):
             for k, (pid, _) in pawns.items():
                 g = B.call("jawa/pawn_get", pawn=pid, limit=1)
                 pp = (g.get("pawns") or [{}])[0]
-                jobs_info[k] = {x: pp.get(x) for x in ("position", "curJob", "job", "jobDef", "drafted", "downed")}
+                jobs_info[k] = {x: pp.get(x) for x in ("position", "drafted", "downed")}
+                # live round 5: pawn_get carries no job field, so curJob read None for every pawn ("idle" was blind);
+                # attack_target_probe's curJob is the read droid_dig_live and ladder_wall_proof use.
+                jobs_info[k]["curJob"] = (B.call("jawa/attack_target_probe", pawn=str(pid), maxDist=1) or {}).get("curJob")
         q7 = {k: L.cells_read(SCENES[k]["cells"]) for k in ("E7a_fillin", "E7b_overflow")}
         dov = (e3.get("overflowDestroyedTotal") or 0) - (ov0 or 0)
         # full read 2026-10-19: dig_scene's prefill is not checked, so an E7a run left dry (0,0,0) "conserved" 0 -> 0 and
         # PASSed with nothing displaced. The prefill read before the order must be the scene's own.
         pre_bad = {k: (sum7[k], sum(SCENES[k]["fill"])) for k in sum7 if sum7[k] != sum(SCENES[k]["fill"])}
-        if pre_bad:
-            for k in ("E7a_fillin", "E7b_overflow"):
-                L.row("E7a_fillin_displaces" if k == "E7a_fillin" else "E7b_overflow_sanctioned", False, "HARNESS",
-                      "precondition: prefilled sum F %s, scene asks %s (the fill write did not take)" % pre_bad.get(
-                          k, (sum7[k], sum(SCENES[k]["fill"]))), status="UNMEASURED")
+        # live round 5 (2026-11-13): one scene's failed prefill used to sink BOTH rows (E7b read "sum F 3, scene asks 3",
+        # i.e. its own prefill was right). Each row now answers to its own precondition.
+        if "E7a_fillin" in pre_bad:
+            L.row("E7a_fillin_displaces", False, "HARNESS", "precondition: prefilled sum F %s, scene asks %s (the fill write "
+                  "did not take)" % pre_bad["E7a_fillin"], status="UNMEASURED")
         elif done.get("E7a"):
-            s_after = sum(levels(q) for q in q7["E7a_fillin"])
+            s_after = sum(int(q.get("dl") or 0) for q in q7["E7a_fillin"])
             mid = q7["E7a_fillin"][1]
-            L.row("E7a_fillin_displaces", s_after == sum7["E7a_fillin"] and mid.get("terrain") == "Soil" and not mid["isExcavated"],
-                  "MOD", "sum F %s -> %s (conserved), middle D=%s terrain %s, vector %s" % (
-                      sum7["E7a_fillin"], s_after, mid["d"], mid.get("terrain"), [levels(q) for q in q7["E7a_fillin"]]))
+            L.row("E7a_fillin_displaces", s_after == sum7_dl and mid.get("terrain") == "Soil" and not mid["isExcavated"],
+                  "MOD", "sum dL %s -> %s (conserved), middle D=%s terrain %s, dL vector %s" % (
+                      sum7_dl, s_after, mid["d"], mid.get("terrain"), [q.get("dl") for q in q7["E7a_fillin"]]))
         else:
             L.row("E7a_fillin_displaces", False, "UNRESOLVED", "job not done in %d ticks (cap %d): %s" % (spent, cap, jobs_info),
                   status="UNMEASURED")
-        if pre_bad:
-            pass                                # E7b's UNMEASURED row was written with E7a's above
+        if "E7b_overflow" in pre_bad:
+            L.row("E7b_overflow_sanctioned", False, "HARNESS", "precondition: prefilled sum F %s, scene asks %s (the fill "
+                  "write did not take)" % pre_bad["E7b_overflow"], status="UNMEASURED")
         elif done.get("E7b"):
             s_after = sum(levels(q) for q in q7["E7b_overflow"])
             L.row("E7b_overflow_sanctioned", s_after == sum7["E7b_overflow"] - 1 and abs(dov - 1) < 1e-3, "MOD",
@@ -3741,7 +3770,10 @@ class MockBridge(object):
         return dict(success=False, accepted=True, note="mock: queued")
 
     def t_jawa_pawn_get(self, **kw):
-        return dict(success=True, pawns=[dict(position=None, curJob=None)])
+        return dict(success=True, pawns=[dict(position=None)])
+
+    def t_jawa_attack_target_probe(self, **kw):
+        return dict(success=True, curJob=None)
 
     def t_jawa_designate_batch(self, action, designation, rect):
         x, z, _, _ = map(int, rect.split(","))
@@ -4026,6 +4058,15 @@ STEP_OPTS = {"mode": "step", "budget_ms": 40.0, "cap": 0}
 _STEPPERS = {}
 
 
+def _labour_multiplier(L):
+    """The dig/fill labour setting as the JobDriver uses it (RM_DigDepthMath.LabourMultiplier: held to 0.25..8, default 4)."""
+    try:
+        v = float(L.sget(S_FW, "digLabourMultiplier"))
+    except (Abort, KeyError, TypeError, ValueError):
+        return 4.0
+    return 4.0 if v != v else min(8.0, max(0.25, v))
+
+
 def _direct_step(B, n, timeout_ms, why):
     st = _STEPPERS.get(id(B))
     if st is None:
@@ -4248,6 +4289,11 @@ def compare_runs(pa, pb):
 
 def main(argv=None):
     import argparse
+    # live round 5 (2026-11-13): python.exe writing to a redirected file encodes cp1252; the bridge's "⚠️" in an
+    # ordered_job note crashed phase J (UnicodeEncodeError) and took E7a/E7b/E8 with it. Unprintable text is replaced.
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(errors="replace")
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--offline", action="store_true", help="tier O only (default)")
     ap.add_argument("--live", action="store_true", help="run L/S/E against the bridge (python.exe)")
@@ -4257,7 +4303,7 @@ def main(argv=None):
     ap.add_argument("--current-map", action="store_true", help="run on the current map (no load, no new map)")
     ap.add_argument("--site-save", default="calm", help="the clean saved site --live loads (test_site_saves.py; default calm)")
     ap.add_argument("--reset-settings", action="store_true", help="reset drifted Mod Settings instead of refusing")
-    ap.add_argument("--max-job-ticks", type=int, default=4000)
+    ap.add_argument("--max-job-ticks", type=int, default=9000)
     ap.add_argument("--progress", default=None, help="append per-step progress here")
     ap.add_argument("--out", default=None, help="result JSON (default: beside this script)")
     ap.add_argument("--compare", nargs=2, metavar="RESULT_JSON", help="determinism across runs: diff the 0-tick rows")
