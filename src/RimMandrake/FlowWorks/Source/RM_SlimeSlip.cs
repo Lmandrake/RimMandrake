@@ -49,7 +49,7 @@ namespace RimMandrake.FlowWorks
 				}
 				bool onGrate = share < 1f;
 				// wet above 5 cm (owner card 2026-11-13); the slip chance takes the exact water in dL
-				int waterDl = ex.IsExcavated(c) && ex.WetAt(c) ? ex.WaterDlAt(c) : 0;
+				int waterDl = WadeWaterDl(ex, c);
 				if (waterDl <= 0)
 				{
 					if (onGrate)
@@ -81,6 +81,13 @@ namespace RimMandrake.FlowWorks
 				}
 				Slip(p, map, fluid.label ?? "slime", climbingOut);
 			}
+		}
+
+		/// <summary>The water (dL) a wader's slip chance reads at <paramref name="c"/>: the dug cell's exact water when it is wet
+		/// (above 5 cm, owner card 2026-11-13), else 0. RM_PromotionProofs.ProofSlimeSlip reads the same.</summary>
+		public static int WadeWaterDl(RM_MapComponent_Excavation ex, IntVec3 c)
+		{
+			return ex.IsExcavated(c) && ex.WetAt(c) ? (int)ex.WaterDlAt(c) : 0;   // at most 40 notches x U: an int
 		}
 
 		/// <summary>The natural slime ground at <paramref name="c"/>, or null (dry, or not slime).</summary>

@@ -199,9 +199,10 @@ def _natural_slime_rate_probs(EXT):
     def chance(slip, fill, depth):      # port of RM_SlimeMath.SlipChance, not climbing, multiplier 1
         frac = 0.0 if fill <= 0 or depth <= 0 else (1.0 if fill >= depth else fill / depth)
         return min(cap, base * slip * (0.5 + 0.5 * frac))
-    # the natural call shape in RM_SlimeSlip.Tick: fill 1, depth 1, not climbing
-    if not re.search(r"SlipChance\(ground\.slipperiness,\s*1,\s*1,\s*false,\s*false,", slip_cs):
-        out.append("RM_SlimeSlip no longer rolls natural ground as SlipChance(s, 1, 1, false, ...): re-derive this check")
+    # the natural call shape in RM_SlimeSlip.Tick: one notch of water (U dL), depth 1, not climbing (SlipChance takes dL
+    # since RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES; chance() below works in notches, so that is fill 1)
+    if not re.search(r"SlipChance\(ground\.slipperiness,\s*RM_LevelSolve\.U,\s*1,\s*false,\s*false,", slip_cs):
+        out.append("RM_SlimeSlip no longer rolls natural ground as SlipChance(s, U, 1, false, ...): re-derive this check")
     # the canal wader fixture: dug D2, filled 2 (brim)
     canal = re.search(r"def _slime_canal\(.*?_dig_run\(t, cells, (\d+)\).*?_fill_fluid\(t, x, z, (\d+),\s*\"(\w+)\"", ext, re.S)
     if not canal:

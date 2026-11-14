@@ -406,5 +406,25 @@ namespace RimMandrake.FlowWorks
 			}
 			return sb.ToString();
 		}
+
+		/// <summary>RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES item 6, live: the slip chance RM_SlimeSlip rolls for a pawn
+		/// wading at x,z (no deck, not climbing out), from the cell's exact water. Probe: northstar/live_probes/fw_slime_slip_exact.py.</summary>
+		public static string ProofSlimeSlip(string arg)
+		{
+			RM_MapComponent_Excavation ex = Engine(out Map map);
+			string[] p = (arg ?? "").Split(',');
+			if (ex == null || p.Length != 2 || !int.TryParse(p[0], out int x) || !int.TryParse(p[1], out int z)
+				|| !new IntVec3(x, 0, z).InBounds(map))
+			{
+				return "REFUSED: arg must be x,z on a current map with FlowWorks";
+			}
+			IntVec3 c = new IntVec3(x, 0, z);
+			int waterDl = RM_SlimeSlip.WadeWaterDl(ex, c);
+			FluidDef fluid = ex.FluidAt(c) ?? ex.ActiveFluid;
+			float chance = waterDl <= 0 || fluid == null ? 0f : RM_SlimeMath.SlipChance(fluid.slipperiness, waterDl, ex.DepthAt(c), false,
+				false, RimMandrakeFlowWorksSettings.slimeSlipChanceMultiplier, RimMandrakeFlowWorksSettings.slimeClimbOutSlipFactor);
+			return "SLIP x=" + x + " z=" + z + " D=" + ex.DepthAt(c) + " waterDl=" + waterDl + " fluid=" + (fluid?.defName ?? "none")
+				+ " chance=" + chance.ToString("0.######", System.Globalization.CultureInfo.InvariantCulture);
+		}
 	}
 }
