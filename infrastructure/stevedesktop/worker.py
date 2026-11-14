@@ -168,7 +168,11 @@ STALE_KEPT_RE = re.compile(r"^STALE_LOAD: ", re.M)
 # MODCHECK_STALE_LOAD_FIX_UNINSTALLED_MOD: modcheck names a composed mod with no folder on this host as its own cause
 NOT_INSTALLED_RE = re.compile(r"HARNESS UNMEASURED: mod_not_installed: (.+)$", re.M)
 NO_GAME_RE = re.compile(r'"status":\s*"no_game"')      # the bridge's answer when the game has no current game
-GAME_FATAL_RE = re.compile(r"BadImageFormat|TypeLoadException")   # a game that loads but cannot make a world (10-31)
+# modcheck's own words when the debug quicktest never reached a map (11-14: AlienRace.HarmonyPatches died with
+# TypeInitializationException "Token 0x0 is not a valid MethodBase token"; the bridge never said no_game, so the
+# wounded pid 4400 was handed to Bacta and the filler lane braked)
+WORLD_START_FAILED_RE = re.compile(r"quicktest world start FAILED")
+GAME_FATAL_RE = re.compile(r"BadImageFormat|TypeLoadException|TypeInitializationException")   # loads, cannot make a world
 # STEVE_GAME_FIX_UNBOUNDED_MAPS: a kept game is recycled before a job at either limit, both under pid 7460 (17 h, 27 maps,
 # 20.9 GB on a 128 GB host, then deaf). Maps grow because river_site.py founds a site per run and keeps earlier sites.
 MAX_GAME_AGE_S = int(os.environ.get("TESTQ_MAX_GAME_AGE_S") or 8 * 3600)
@@ -1223,9 +1227,11 @@ class Attempt:
                     self.res["note"] = (self.res.get("note") or "") + "; " + self.liveness_unknown
                 if self.res.get("cause") == "CANARY":
                     self.stop_game_for_next_job("canary red")
-                elif self.res.get("cause") == "HARNESS" and NO_GAME_RE.search(tail or ""):
+                elif self.res.get("cause") == "HARNESS" and (NO_GAME_RE.search(tail or "")
+                                                             or WORLD_START_FAILED_RE.search(tail or "")):
                     # STEVE_WORKER_UNSTICK_WOUNDED_GAME_KEPT_UP: pid 30296 answered the bridge but could not make a map
                     # (10-31, AlienRace BadImageFormat): 00238b and dd60e2 both reused it. Other HARNESS deaths keep it.
+                    # 11-14: the same wound reached as modcheck's "quicktest world start FAILED" (no no_game string).
                     self.keep_game_log()
                     self.stop_game_for_next_job("no game loaded")
                 return ok

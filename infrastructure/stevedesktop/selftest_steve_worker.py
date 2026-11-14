@@ -88,6 +88,11 @@ if mode == "crash":
 if mode == "no_game":
     print('{"status": "no_game", "message": "No game is currently loaded", "state": {"programState": "Entry"}}')
     print("hasCurrentGame: False mapCount: None -> NOT READY"); sys.exit(1)
+if mode == "world_start_failed":     # 11-14 shape: runner.ensure_playing_map's raise, no no_game string anywhere
+    print("RuntimeError: quicktest world start FAILED (programState was 'Entry'): ded\", \"state\": "
+          "{\"programState\": \"Entry\", \"hasCurrentGame\": false}}")
+    print("started: False hasCurrentGame: False mapCount: None -> NOT FRESH (start refused: Timed out waiting "
+          "for RimWorld readiness 'mapData'.)"); sys.exit(1)
 stale_mark = os.path.join(os.environ["TESTQ_HOME"], "mock_stale_once")
 if mode in ("stale", "stale-nokeep") or (mode == "stale-once" and not os.path.exists(stale_mark)):
     open(stale_mark, "w").close()
@@ -549,6 +554,24 @@ def main():
         res = wait_result(o.get("attempt", "x"))
         check(res.get("cause") == "HARNESS" and not os.path.exists(hdowns),
               "a HARNESS death that names no lost game keeps the game: %s %s" % (res.get("cause"), res.get("note")))
+        # 11-14 repeat: HAR's static constructor died (TypeInitializationException), modcheck said "quicktest world
+        # start FAILED" and never no_game, so pid 4400 was kept and Bacta inherited the wound
+        wdowns = os.path.join(tmp, "world_start_downs")
+        wfix = (b"Error in static constructor of AlienRace.HarmonyPatches: System.TypeInitializationException: x\n"
+                b"System.ArgumentException: Token 0x0 is not a valid MethodBase token\n")
+        with open(game_log, "wb") as f:
+            f.write(wfix)
+        rc, o = w(["start"], job(), MOCK_MODE="world_start_failed", TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",
+                  TESTQ_CMD_DOWN="echo down >> %s; rm -f %s" % (wdowns, game_log), RM_GAME_LOGDIR=logdir, **load)
+        res = wait_result(o.get("attempt", "x"))
+        wkept = os.path.join(home, "attempts", o.get("attempt", "x"), "Player.log")
+        check(res.get("cause") == "HARNESS" and os.path.exists(wdowns) and len(open(wdowns).readlines()) == 1
+              and "cold-starts" in (res.get("note") or ""),
+              "a quicktest world start FAILED run stops the game once so the next job cold-starts: %s %s"
+              % (res.get("cause"), res.get("note")))
+        check(kept_whole(wkept, wfix) and "first fatal: Error in static constructor" in (res.get("note") or ""),
+              "the world-start failure keeps Player.log and names the TypeInitializationException line: %s"
+              % res.get("note"))
 
         cdowns = os.path.join(tmp, "canary_downs")
         rc, o = w(["start"], job(), MOCK_MODE="canary", TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",
