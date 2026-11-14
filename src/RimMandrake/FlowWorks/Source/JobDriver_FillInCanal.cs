@@ -6,8 +6,9 @@ using Verse.AI;
 namespace RimMandrake.FlowWorks
 {
 	/// <summary>Raises a cell one level. Same vanilla JobDriver_AffectFloor
-	/// engine the dig job rides, read in the other direction.</summary>
-	public class JobDriver_FillInCanal : JobDriver_AffectFloor
+	/// engine the dig job rides (<see cref="RM_JobDriver_ShovelFloor"/>, work
+	/// kept per square), read in the other direction.</summary>
+	public class JobDriver_FillInCanal : RM_JobDriver_ShovelFloor
 	{
 		/// <summary>Filling in is cheaper than cutting, and cheaper at every
 		/// level: shovelling spoil back into a hole is not the same labour as
@@ -42,6 +43,8 @@ namespace RimMandrake.FlowWorks
 		}
 
 		protected override DesignationDef DesDef => RimMandrakeFlowWorks_DefOf.RM_FillInCanal;
+
+		protected override bool IsFill => true;
 
 		/// <summary>DIG_SPOIL_BUILD_GRAVEL_PAYS_ITS_WAY: the pit (Floor layer, as vanilla) and one unit of the gravel or chunk
 		/// the filler fetches (targetB; absent for a pit already paid for).</summary>

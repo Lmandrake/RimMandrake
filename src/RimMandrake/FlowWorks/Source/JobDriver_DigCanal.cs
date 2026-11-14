@@ -6,8 +6,9 @@ namespace RimMandrake.FlowWorks
 	/// <summary>Cuts a cell one level deeper. Reuses vanilla's own
 	/// JobDriver_AffectFloor (the SmoothFloor engine) -- designation gating,
 	/// reservation, work-speed ticking and the progress bar all come for
-	/// free.</summary>
-	public class JobDriver_DigCanal : JobDriver_AffectFloor
+	/// free -- through <see cref="RM_JobDriver_ShovelFloor"/>, which keeps
+	/// the work done per square when the job is broken off.</summary>
+	public class JobDriver_DigCanal : RM_JobDriver_ShovelFloor
 	{
 		/// <summary>Work scales with the level being cut (ruling 19's four
 		/// depths): deeper spoil is further to move and further to throw. A
@@ -55,6 +56,12 @@ namespace RimMandrake.FlowWorks
 		}
 
 		protected override DesignationDef DesDef => RimMandrakeFlowWorks_DefOf.RM_DigCanal;
+
+		protected override bool IsFill => false;
+
+		/// <summary>A cut refused at this digger's cap keeps its finished work for whoever may make it (the finish action
+		/// below restores the order first).</summary>
+		protected override bool KeepWorkAfterEffect => cutRefusedButOwed;
 
 		/// <summary>Set when this job's cut landed (DoEffect): only then may the finish action re-designate a dig-to square.</summary>
 		private bool cutLanded;

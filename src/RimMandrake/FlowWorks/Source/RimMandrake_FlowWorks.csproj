@@ -172,6 +172,7 @@
     <Compile Include="Swale\RM_Swale.cs" />
     <Compile Include="RM_ExcavationDepth.cs" />
     <Compile Include="RM_DigDepthMath.cs" />
+    <Compile Include="RM_DigProgressMath.cs" />
     <Compile Include="RM_DigLabor.cs" />
     <Compile Include="RM_ShovelMath.cs" />
     <Compile Include="RM_Shovels.cs" />
@@ -202,6 +203,8 @@
     <Compile Include="Designator_DigCanal.cs" />
     <Compile Include="WorkGiver_DigCanal.cs" />
     <Compile Include="JobDriver_DigCanal.cs" />
+    <Compile Include="RM_JobDriver_ShovelFloor.cs" />
+    <Compile Include="RM_DigProgress.cs" />
     <Compile Include="Designator_FillInCanal.cs" />
     <Compile Include="Designator_RestoreGround.cs" />
     <Compile Include="WorkGiver_FillInCanal.cs" />

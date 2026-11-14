@@ -2143,6 +2143,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             PumpChecks.Run(Case);              // liquid networks L6: the pump as world mover (PumpChecks.cs)
             PumpHarness.PumpOutflowChecks.Run(Case); // complete production draw/cycle methods against explicit engine doubles
             DeepDigChecks.Run(Case);           // PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT + DIG_COST_TUNE_DEEP_IS_A_MEGAPROJECT (DeepDigChecks.cs)
+            DigProgressChecks.Run(Case);       // RIMMANDRAKE_KEEP_DIG_PROGRESS_ACROSS_MEALS_AND_NAPS: dig/fill work kept per square (DigProgressChecks.cs)
             RelativeRulesChecks.Run(Case);     // PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: R7 relative rules V2-V6 (RelativeRulesChecks.cs)
             FallRailChecks.Run(Case);          // FALL_GUARDRAILS_BUILD_REAL_OBJECT: rails and fences stop falls off a lip (FallRailChecks.cs)
             SwimChecks.Run(Case);              // DEEP_WATER_BUILD_SWIM_OR_SINK: R12 deep swimming (SwimChecks.cs)
