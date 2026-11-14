@@ -326,7 +326,7 @@
    "staged_by": "script",
    "entry_point": "src/RimMandrake/Pyrelands/validation.py::walk_season",
    "start": [
-    "fresh Pyrelands map on his full list, a paved ring round the colony",
+    "fresh Pyrelands map on his full list",
     "state digest recorded"
    ],
    "action": "play two weeks: harvest from a scar, sow on a fresh burn and on watered ash, shelter with a furnace-beast through ash fall; save mid-way while the front walks; reload; let the line pass a second field; second order: sow first and let the fire come to it; switch the mechanics off and on",

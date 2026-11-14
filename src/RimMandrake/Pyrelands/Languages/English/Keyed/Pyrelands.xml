@@ -33,7 +33,7 @@
   <RM_Compass_NW>north-west</RM_Compass_NW>
   <RM_Compass_Here>same spot</RM_Compass_Here>
   <RM_FireFrontLetterLabel>The grass has gone up</RM_FireFrontLetterLabel>
-  <RM_FireFrontLetterText>A line of ember-grass has caught somewhere out in the open, and it is walking.\n\nThis is the biome, not an attack. It happens every few days here and it is why the old camps here pave a strip instead of raising a fence. Decide now whether it comes anywhere near you — a burn-line is far cheaper to steer than to stop.</RM_FireFrontLetterText>
+  <RM_FireFrontLetterText>A line of ember-grass has caught somewhere out in the open, and it is walking.\n\nThis is the biome, not an attack. It happens every few days here. Decide now whether it comes anywhere near you — a burn-line is far cheaper to steer than to stop.</RM_FireFrontLetterText>
   <!-- Yesterday's fire (PyrelandsFireFront.TickOpeningFront): a fresh map's opening front lights the leading arc of the scar
        laid at generation. A message, not a letter, like the plain opening front. {0} is a compass word (RM_Compass*). -->
   <RM_YesterdayFireMessage>Smoke to the {0}: yesterday's grass fire is still burning along the edge of its scar.</RM_YesterdayFireMessage>
@@ -45,7 +45,7 @@
   <RM_BurnApproachLabel>The burn is coming</RM_BurnApproachLabel>
   <RM_BurnApproachLead>A burn line is {0} cells from your home, out to the {1}, and walking this way. It will be here in under a day.</RM_BurnApproachLead>
   <RM_BurnApproachLeadEdge>A burn line has reached the edge of your home, on the {0} side.</RM_BurnApproachLeadEdge>
-  <RM_BurnApproachLetter>{0}\n\nEverything left on open ground burns when it passes: food, wood, crops, bedding. Stone walls and a roof keep it out, but wood and steel walls catch, and a burning wall lights the beds and stores against it inside. Grass carries it; cut the grass around what you want to keep, or pave a strip, and put your stores indoors.\n\nWhat it leaves is worth having: for a few days the fresh ash feeds a crop as water would, and scorch-fruit cracks open in the scar, for about a day.</RM_BurnApproachLetter>
+  <RM_BurnApproachLetter>{0}\n\nEverything left on open ground burns when it passes: food, wood, crops, bedding. Stone walls and a roof keep it out, but wood and steel walls catch, and a burning wall lights the beds and stores against it inside. Grass carries it; cut the grass around what you want to keep, and put your stores indoors.\n\nWhat it leaves is worth having: for a few days the fresh ash feeds a crop as water would, and scorch-fruit cracks open in the scar, for about a day.</RM_BurnApproachLetter>
   <RM_BurnApproachMessage>The burn is {0} cells from home, out to the {1}.</RM_BurnApproachMessage>
   <RM_BurnApproachMessageEdge>The burn has reached home, on the {0} side.</RM_BurnApproachMessageEdge>
   <RM_Compass0>north</RM_Compass0>

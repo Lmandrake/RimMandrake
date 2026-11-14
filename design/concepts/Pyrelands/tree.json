@@ -422,7 +422,7 @@
    "leaf_kind": "walk",
    "clause_kind": "change",
    "experience": "The player plays a fresh Pyrelands colony through about two weeks on the full list: watches the burn line cross, picks scorch-fruit from the scar, sows on a fresh burn and on watered ash, shelters with a furnace-beast through an ash fall, saves mid-way while the front is walking, reloads, and finds the front, the scars, their bonuses and the fruit exactly as they were.",
-   "scenario": "Fresh map on his full list; save while the front walks and a fresh scar holds scorch-fruit; reload and compare front cells, scar ages, fertility parts and fruit; repeat the core action (let the line pass a second field and harvest again); then a second order: sow first and let the fire come to the crop, then harvest fruit; turn the Pyrelands mechanics switches off and on mid-game; a paved ring protects the colony throughout.",
+   "scenario": "Fresh map on his full list; save while the front walks and a fresh scar holds scorch-fruit; reload and compare front cells, scar ages, fertility parts and fruit; repeat the core action (let the line pass a second field and harvest again); then a second order: sow first and let the fire come to the crop, then harvest fruit; turn the Pyrelands mechanics switches off and on mid-game.",
    "false_pass": [
     "the reload is from a save made before the front lit",
     "the repeat runs on a fresh map"

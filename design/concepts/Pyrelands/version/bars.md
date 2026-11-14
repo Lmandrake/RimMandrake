@@ -8,13 +8,13 @@ Lock commit: `237b79116781821545f7ac58c23ed40bfc0250c4` (origin/main, 2026-11-13
 
 | file | git blob at the lock | role |
 |---|---|---|
-| `design/concepts/Pyrelands/tree.json` | `e600b1386c4dd5383106dadc6212ad5ad63ced82` | the leaves: each is an acceptance criterion with its scenario, false passes and red |
-| `design/concepts/Pyrelands/sheet.md` | `3486c02215c65c11bac1043961b58e0475a8609c` | his plain-words sheet: does, does not, his words |
-| `design/concepts/Pyrelands/scenes.json` | `57c653bbd444655585b9935e32ad3600b1e326eb` | the acceptance scenes and showcases the leaves are proven by |
+| `design/concepts/Pyrelands/tree.json` | `3e69f701e1c346a36924a7611069962bbc665d1e` | the leaves: each is an acceptance criterion with its scenario, false passes and red |
+| `design/concepts/Pyrelands/sheet.md` | `a8ffd7ef042caea500e8164caa4b55ff27b9d731` | his plain-words sheet: does, does not, his words |
+| `design/concepts/Pyrelands/scenes.json` | `ac9f25e61bd2d8025513f8a39520a21e452a7ac6` | the acceptance scenes and showcases the leaves are proven by |
 | `design/concepts/Pyrelands/floor.json` | `e2d58b07a62b036530ff175022a51ec732a55537` | the quality floor lines every mod meets |
 | `design/concepts/Pyrelands/exam.json` | `6793f3c53ff73f8f9f13b7d131a1579f29343a94` | the Cold Reader exam of tree and sheet |
-| `design/concepts/Pyrelands/record.json` | `f478008aa8be303144b492442c54b4a5664e72b0` | the inventory of built capabilities (checklist rows too); re-pinned 2026-11-14 for the bar his card added, `inv_firehawk_hunt_rewards` (journal, kind bar-added) |
-| `design/concepts/Pyrelands/plan.md` | `dd3ec4b45dc33c1d85e43a2258d37ac8a55c00d8` | the build and proof plan |
+| `design/concepts/Pyrelands/record.json` | `9c82b9770af208b61d92a0fba53f504ba3a80714` | the inventory of built capabilities (checklist rows too); re-pinned 2026-11-14 for the bar his card added, `inv_firehawk_hunt_rewards` (journal, kind bar-added) |
+| `design/concepts/Pyrelands/plan.md` | `b33e7b97b1396e4a92b45046b30df5518449d4b8` | the build and proof plan |
 | `design/concepts/Pyrelands/stage.json` | `3db94065beaee5d3c634042a2655b2420fb92ae6` | the Designer's stage, budget and judge rounds (state, not a bar) |
 
 **Re-pinned 2026-11-14 (Stage 3, the Conductor's steward decision: test-text corrections are re-pinned, a changed bar never is).**
@@ -30,7 +30,17 @@ removed; `scenes.json` holds tests; `sheet.md` lost the false lines g5, g12 and 
 to the largest unburnt fuel it can see. He kept that as Pyrelands 0.1.0, so `plan.md`'s lock blob `0d8be55bbc` is replaced
 by its current blob; no other locked file moved for it (no bar or check text said eighteen cells).
 
-Tree hash (`concept_tree.py hash`): `6dd32c14a94d4b84499ed155eb5c6da32302dcb8967583a414cc5c5773892c55`; sheet hash: `4f77fad249a2160d032c6514071758be5c5e17be45e7155a06dbbe8aaebe7d49`.
+**Re-pinned 2026-11-14 (owner by card, about 2:20 PM PST: "Drop the sentence").** The root's sentence that ordinary
+paving (a strip two cells wide) stops the ground fire is deleted, with every line that still promised it: `record.json`
+(root text, `d_firebreak_cut`, `d_root_ending`, the `inv_firebreak_firefoam` note), `tree.json` (the walk leaf's "a paved
+ring protects the colony"), `scenes.json` (`sc_walk`'s paved-ring start), `sheet.md` (the delegated firebreak line) and
+`plan.md` (owed change 2, the `paved_strip` entry point). Blobs before: `e600b1386c` (tree), `57c653bbd4`
+(scenes), `3486c02215` (sheet), `f478008aa8` (record), `dd3ec4b45d` (plan); the table carries the new ones. No leaf or
+row was added or removed and no `experience` or `red` moved. `exam.json` is a run record and stays as it ran (its scenario
+e9 still names the deleted leaf); the exam is rerun at stage 4 (VERSION.json caveat).
+
+Tree hash (`concept_tree.py hash`): `3ffd15d1aa89521618cd9b2c595684e582a864c7ccf14793717e1e2314c87107`; sheet hash: `2935f04bef8d7f632c3fc00707120d06694c664cb67e90709c2a32614fba46a1`
+(measured 2026-11-14 after this re-pin; before it they measured `def968a06e` and `85f40d772f`, not the `6dd32c14a9` and `4f77fad249` this line had said).
 
 ## Counts at the lock
 

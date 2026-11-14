@@ -15,8 +15,8 @@ built; this plan is the proof work and two owed changes, nothing new.
    fire-hygiene pads in `validation.py` and `human_review.py` (`_firebreak`) to a vanilla floor. Save compatibility: a
    save holding firebreak cells loads them as a missing terrain; state the outcome (`save_compat`). The firefoam sprayer
    stays: his root ending (OWNER:1793950669508519029) names it as the way to the scorch-fruit. The paved-strip leaf
-   was deleted by his card 2026-11-13; the offline row `paved_strip_excised` checks the floor stays gone. A fire-hawk
-   ember carried past a strip (anywhere on the map) is the sprayer's job (`firefoam_sprayer_reaches_the_fruit`).
+   was deleted by his card 2026-11-13; the offline row `paved_strip_excised` checks the floor stays gone. The root's
+   sentence that ordinary paving stops the ground fire was dropped by his card 2026-11-14; nothing promises it.
 3. **Biome text** (item `PYRELANDS_TEXT_FIX_ENGINEERED_NEVER_SAID`): the RM_Pyrelands description says the savanna was
    genetically engineered (leaf `biome_text_says_engineered`); About.xml and the furnace-beast description stop
    promising the world migration his card cut on 2026-10-23 (commit 84cc81013d).
@@ -34,7 +34,7 @@ built; this plan is the proof work and two owed changes, nothing new.
 2. The two owed changes above.
 3. Foils and starts on existing scenes (item `PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL`): every acceptance scene in
    `scenes.json` naming that item lacks its control, start assertion, vitals/incident guard or restore snapshot (stage 0
-   script audit); new entry points `paved_strip`, `firefoam_sprayer`, `rite_hook_alone`. Item
+   script audit); new entry points `firefoam_sprayer`, `rite_hook_alone`. Item
    `PYRELANDS_SCENES_BUILD_EIGHT_JUDGE_GAPS` (coverage judge rm-coverage-judge-1793932124): new `furnace_thermal_bed`
    (charge, heat immunity against an ullai in the same fire, bed smoulder; control furnace thermal off); `cinderfall`
    gains lightning counts, the black-rain ash wash and clear-sky and vanilla-rain fire pads; `firefoam_sprayer`,

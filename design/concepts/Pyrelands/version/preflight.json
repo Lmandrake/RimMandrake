@@ -2,7 +2,7 @@
  "mod": "Pyrelands",
  "version": "0.1.0",
  "program": "preflight_pyre.py (throwaway, advance row 3, adapted from preflight_ek.py)",
- "at": "2026-11-14T14:31:03-08:00",
+ "at": "2026-11-14T14:35:08-08:00",
  "dump": {
   "path": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/defs.sqlite",
   "provenance": {
@@ -16,7 +16,7 @@
    "defs_total": "59262"
   }
  },
- "seconds": 4.85,
+ "seconds": 5.11,
  "verdict": "pass",
  "refusals": 0,
  "checks": [
@@ -108,7 +108,7 @@
    "evidence": "20 names checked; dump defs.sqlite (captured 2026-11-12T08:10:06Z, 51081 defs, 316 mods); 582 of our repo defs are newer than the dump",
    "smallest_fix": null,
    "route": null,
-   "seconds": 4.197
+   "seconds": 4.436
   },
   {
    "id": "C10_mods_real",
@@ -118,7 +118,7 @@
    "evidence": "1 named: mandrake.rm.biomes",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.003
+   "seconds": 0.004
   },
   {
    "id": "C11_settings_fields_real",
@@ -128,7 +128,7 @@
    "evidence": "5 named, 41 static fields in the settings class",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.001
+   "seconds": 0.003
   },
   {
    "id": "C12_locked_files_unchanged",
@@ -138,7 +138,7 @@
    "evidence": "8 pins",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.009
+   "seconds": 0.014
   },
   {
    "id": "C13_corrections_hold",
@@ -148,7 +148,7 @@
    "evidence": "text checks of scenes.json, tree.json, sheet.md, record.json",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.001
+   "seconds": 0.0
   },
   {
    "id": "C14_csharp_symbols_real",
@@ -158,7 +158,7 @@
    "evidence": "3 of our types named",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.043
+   "seconds": 0.042
   },
   {
    "id": "C16_scenes_wired",
@@ -178,7 +178,7 @@
    "evidence": "8 items",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.547
+   "seconds": 0.561
   }
  ]
 }
