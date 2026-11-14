@@ -569,7 +569,7 @@
   },
   {
    "id": "mod_settings",
-   "what": "Master switch off restores vanilla conduit and lamp art without a restart; every Harmony patch belongs to a feature toggle; each toggle really switches its patch off",
+   "what": "Master switch off restores vanilla conduit and lamp art without a restart; every feature Harmony patch belongs to one feature toggle, the seven save-housekeeping patches listed by name and always on; each toggle really switches its patch off",
    "impl": "present",
    "impl_evidence": [
     "src/RimMandrake/GimmeSomeSlack/Source/GimmeSomeSlackMod.cs",

@@ -535,7 +535,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "per switch: the feature's observable state differs between off and on and returns on flip-back; master off: conduit draws vanilla AND a lamp on a styled run draws its vanilla lamp graphic, both without a restart, and both return on master on; a read of every Harmony patch the mod applies maps each one to exactly one switch, none unmapped; pipe-pole switch off: pipe poles change while the power masts' spans, sag and link count read unchanged; captures for the master",
+   "oracle_proposed": "per switch: the feature's observable state differs between off and on and returns on flip-back; master off: conduit draws vanilla AND a lamp on a styled run draws its vanilla lamp graphic, both without a restart, and both return on master on; a read of every Harmony patch the mod applies maps each feature patch to exactly one switch; the seven save-housekeeping patches (Patch_GenTypes_LegacyTypeName, Patch_Map_ExposeComponents_SkipAerial, Patch_Game_ExposeSmallComponents_SkipSessionReset, Patch_Map_ExposeComponents_SkipCordGraph, Patch_Map_ExposeComponents_SkipConduitRuns, Patch_GameDataSaveLoader_SaveGame_DrainConduitRuns, Patch_MapDrawer_MapMeshDirty_MarkStale) are listed by name and always on, and a patch neither mapped nor listed fails the read; pipe-pole switch off: pipe poles change while the power masts' spans, sag and link count read unchanged; captures for the master",
    "tier_reason": "patches and drawing are live",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -545,7 +545,7 @@
    ],
    "leaf_kind": "experience",
    "experience": "The player flips the master switch off and sees vanilla conduit and lamp art come back without a restart; flips each feature switch, including keep wires on gravship, cut wires on owner change, drip loops and slide under, and sees just that feature change; the FlowWorks pipe-pole switch moves pipe poles and leaves power poles alone. It must not read as a switch that does nothing, or one that needs a restart.",
-   "scenario": "For the master and each feature switch: read the feature's state, flip it, read again, flip back; read lamp art on a styled run under master off and on; list every applied Harmony patch against its switch; pipe-pole switch flipped with GSS master both on and off, power masts read before and after each flip.",
+   "scenario": "For the master and each feature switch: read the feature's state, flip it, read again, flip back; read lamp art on a styled run under master off and on; list every applied Harmony patch against its switch or the housekeeping list; pipe-pole switch flipped with GSS master both on and off, power masts read before and after each flip.",
    "false_pass": [
     "the setting value changes while the patch stays applied"
    ],

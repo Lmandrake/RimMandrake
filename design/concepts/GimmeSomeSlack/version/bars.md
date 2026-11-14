@@ -10,16 +10,16 @@ Designer's five gap fixes (`910f69411e`, 15:13 PST), which stood when he said "l
 
 | file | git blob at his lock word | role |
 |---|---|---|
-| `design/concepts/GimmeSomeSlack/tree.json` | `bf46f92b734b4434c3f62cc540fd42f9225185fe` | the leaves: each is an acceptance criterion with its scenario, false passes and red |
+| `design/concepts/GimmeSomeSlack/tree.json` | `5fa03c7a8e495b6ce516fa9dc778456e5a8bdd1f` | the leaves: each is an acceptance criterion with its scenario, false passes and red; re-pinned 2026-11-14 for the eased settings bar (owner by card, "Exempt housekeeping"; journal, kind decision) |
 | `design/concepts/GimmeSomeSlack/sheet.md` | `2ed09a26157d1dd9047fc3a2f941301cb8da5151` | his plain-words sheet: does, does not, his words |
-| `design/concepts/GimmeSomeSlack/scenes.json` | `bdf8d41bedf0dd3a2b99470bacc882db57dae417` | the acceptance scenes and showcases the leaves are proven by |
+| `design/concepts/GimmeSomeSlack/scenes.json` | `dd8be4a7f2a864872a85470db53d75ddec721b10` | the acceptance scenes and showcases the leaves are proven by; re-pinned 2026-11-14 for the eased settings bar (sc_settings' expect) |
 | `design/concepts/GimmeSomeSlack/floor.json` | `c1d425ed7da4dd6f54a6f8eb296bda78e8d2cd4e` | the quality floor lines every mod meets |
 | `design/concepts/GimmeSomeSlack/exam.json` | `a73f3abf604a93035ed90bb9cbea7dc9b7b6de72` | the Cold Reader exam of tree and sheet |
-| `design/concepts/GimmeSomeSlack/record.json` | `a6fa51434c9f3204fe71962de1e17271b2f2d65c` | the inventory of built capabilities (checklist rows too); re-pinned 2026-11-14 for the bar his card added (journal, kind bar-added) |
+| `design/concepts/GimmeSomeSlack/record.json` | `5286159164626dfdca61814c8e96fe31dfab7f2b` | the inventory of built capabilities (checklist rows too); re-pinned 2026-11-14 for the bar his card added (journal, kind bar-added), and again for the eased settings row |
 | `design/concepts/GimmeSomeSlack/plan.md` | `2021a347392bfbb57a37820a7963249446820983` | the build and proof plan |
 | `design/concepts/GimmeSomeSlack/stage.json` | `263894e52e1fe23dce1d9b3163d4867214fae118` | the Designer's stage, budget and judge rounds (state, not a bar) |
 
-Tree hash (`concept_tree.py hash`): `5e3aa0d412bb46c241b983d847b4062e574714088d2c8942dc1a7584035e712d`; sheet hash: `33b1cddc183d184ca4e68fdf603440e64fc2422a4cf79c8dc6590c770b6de57a`.
+Tree hash (`concept_tree.py hash`): `e80c7f93fa487266c314df629cadc0944afc5c0200727f4756b50755fdc7c388` since the 2026-11-14 settings easing (at his lock word `5e3aa0d412bb46c241b983d847b4062e574714088d2c8942dc1a7584035e712d`, which the exam below read); sheet hash: `33b1cddc183d184ca4e68fdf603440e64fc2422a4cf79c8dc6590c770b6de57a`.
 
 ## Counts at the lock
 

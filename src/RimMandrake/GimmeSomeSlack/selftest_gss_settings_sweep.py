@@ -8,12 +8,14 @@ out of the game as far as source can take it. No game, no build: a read of the m
    pure half: its read site is Verse-bound. A key with neither is refused.
 2. Every setting is read. Each key has a production read site outside its settings class (GimmeSomeSlackSettings.<key> /
    AerialSettings.<key>, or the floor BuildOptions copy in GimmeSomeSlackMod.cs), so a flip reaches the game.
-3. Every Harmony patch maps to exactly one switch. A [HarmonyPatch] class carries PatchFeature(label, settingsType, field)
-   naming a real setting; or a label-only PatchFeature whose class body reads exactly the one setting BODY_GATED names; or
-   it is an INFRA patch (save integrity, no switch by design: printed, see the journal's question); anything else is refused.
+3. Every feature patch maps to exactly one switch; the seven save-housekeeping patches are listed by name and always on (the
+   bar as eased by the owner, by card 2026-11-14, "Exempt housekeeping"). A [HarmonyPatch] class carries
+   PatchFeature(label, settingsType, field) naming a real setting; or a label-only PatchFeature whose class body reads exactly
+   the one setting BODY_GATED names; or it is listed in INFRA by name. Anything else is refused, and so is an INFRA name that
+   is no [HarmonyPatch] class in the source or a list that is not the seven.
 
-Planted (every run): a production read dropped (AerialSettings.maxStrands removed from the sources) and a [HarmonyPatch] class
-with no gate must each be refused. Exit 0 PASS, 1 FAIL.
+Planted (every run): a production read dropped (AerialSettings.maxStrands removed from the sources), a [HarmonyPatch] class
+with no gate and no listing, and a housekeeping listing whose class is gone must each be refused. Exit 0 PASS, 1 FAIL.
 
     python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_settings_sweep.py [--list]
 """
@@ -31,7 +33,8 @@ BODY_GATED = {
     "Patch_Thing_Graphic_LampMasterOff": ("GimmeSomeSlackSettings", "enabled"),
     "RM_LiveWirePathCost": ("AerialSettings", "shockReach"),
 }
-# patches with no switch by design: class -> why (save integrity; a switch would break saves)
+# the save-housekeeping patches, listed by name and always on (owner by card 2026-11-14, "Exempt housekeeping"): class -> why
+INFRA_COUNT = 7
 INFRA = {
     "Patch_GenTypes_LegacyTypeName": "loads saves written before the Messy Conduit rename; off would make those saves fail to load",
     "Patch_Map_ExposeComponents_SkipAerial": "keeps a save loadable without the mod; off would tie saves to the mod",
@@ -95,7 +98,8 @@ def owners(prod, st, live):
     return rows, faults
 
 
-def patch_map(prod):
+def patch_map(prod, infra=None):
+    infra = INFRA if infra is None else infra
     rows, faults = [], []
     settings = {"GimmeSomeSlackSettings": prod.get("GimmeSomeSlackMod.cs", ""), "AerialSettings": prod.get("Aerial/AerialSettings.cs", "")}
     for f, s in prod.items():
@@ -119,11 +123,17 @@ def patch_map(prod):
                 rows.append((name, "%s.%s" % (cls, field), "body"))
                 if (cls, field) not in got:
                     faults.append("%s: label-only gate; its body does not read %s.%s" % (name, cls, field))
-            elif name in INFRA:
-                rows.append((name, "none (infra: %s)" % INFRA[name], "infra"))
+            elif name in infra:
+                rows.append((name, "none (infra: %s)" % infra[name], "infra"))
             else:
                 rows.append((name, None, "UNGATED"))
-                faults.append("%s (%s): a Harmony patch no switch turns off" % (name, f))
+                faults.append("%s (%s): a Harmony patch no switch turns off and the housekeeping list does not name" % (name, f))
+    seen = {r[0] for r in rows}
+    for name in infra:
+        if name not in seen:
+            faults.append("%s: listed as save housekeeping but no [HarmonyPatch] class of that name is in the source" % name)
+    if len(infra) != INFRA_COUNT:
+        faults.append("the housekeeping list names %d patches; the bar lists %d" % (len(infra), INFRA_COUNT))
     return rows, faults
 
 
@@ -136,7 +146,7 @@ def main(argv):
     n_live = sum(1 for r in rows if r[2] == "live")
     print("settings: %d (%d floor, %d aerial): %d with an offline flip check, %d owned by a live row"
           % (len(rows), sum(r[0] == "floor" for r in rows), sum(r[0] == "aerial" for r in rows), n_off, n_live))
-    print("patches: %d: %d by a settings field, %d gated in the body, %d infra (no switch by design)"
+    print("patches: %d: %d by a settings field, %d gated in the body, %d save housekeeping (listed by name, always on)"
           % (len(prow), sum(r[2] == "field" for r in prow), sum(r[2] == "body" for r in prow), sum(r[2] == "infra" for r in prow)))
     if "--list" in argv:
         for r in rows:
@@ -152,8 +162,12 @@ def main(argv):
     p2 = dict(prod)
     p2["Planted.cs"] = "    [HarmonyPatch(typeof(Pawn), \"Tick\")]\n    internal static class Patch_Planted_Ungated\n    {\n    }\n"
     _, g2 = patch_map(p2)
-    planted = [any("maxStrands: no production read site" in x for x in g1), any("Patch_Planted_Ungated" in x for x in g2)]
-    print("planted: a dropped AerialSettings.maxStrands read %s; an ungated patch %s"
+    i3 = dict(INFRA)
+    i3["Patch_Planted_GoneHousekeeping"] = "planted: a listing whose class is gone"
+    _, g3 = patch_map(prod, i3)
+    planted = [any("maxStrands: no production read site" in x for x in g1), any("Patch_Planted_Ungated" in x for x in g2),
+               any("Patch_Planted_GoneHousekeeping" in x for x in g3)]
+    print("planted: a dropped AerialSettings.maxStrands read %s; an unlisted ungated patch %s; a gone housekeeping listing %s"
           % tuple("refused" if p else "NOT CAUGHT" for p in planted))
     ok = ok and all(planted)
     print("PASS" if ok else "FAIL")
