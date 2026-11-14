@@ -74,6 +74,10 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             }
             UnrelatedEditCheck(scenes.First(x => x.GetProperty("scene").GetProperty("name").GetString() == "nodal").GetProperty("scene"));
             LaneAChecks.Run(scenes);       // phase 1b lane A (rope settle, graph, live ends): LaneAChecks.cs
+            // T_CORD_GEOMETRY_OFFLINE (slack ratio, excursion, unforced bends per strand: CordGeometryChecks.cs) is red on the builder
+            // as it stands (item RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR); it runs with --geometry so T_CORE stays a green gate.
+            if (args.Contains("--geometry")) CordGeometryChecks.Run(scenes);
+            else Console.WriteLine("geometry: skipped (known red; run with --geometry)");
             AerialSelfTest.Run(Check);     // lane B (L5 aerial lines): AerialSelfTest.cs + ../Aerial/AerialMath.cs
             // the flexible-hose suites moved to FlowWorks/Source/SelfTest at the hose port (2026-10-11)
             ReviewRound1Checks.Run();      // owner human review round 1 (2026-10-04): ReviewRound1Checks.cs
