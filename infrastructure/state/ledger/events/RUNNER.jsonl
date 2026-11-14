@@ -7102,3 +7102,4 @@
 {"seat":"RUNNER","event":"raise","id":"SELFTEST_FIX_FLYER_TIER_TWO_ZDCE","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-14T12:19:04Z","tsn":1794658744734266337}
 {"seat":"RUNNER","event":"note","id":"OPS_FINDINGS_DIAGNOSE_XZLM","text":"ops_watch: WORSE at 2026-11-14T12:22:33Z: 8 -> 17 findings with no outcome yet, the rule's step is {\"factor\": 2}","ts":"2026-11-14T12:22:39Z","tsn":1794658959706568238}
 {"seat":"RUNNER","event":"note","id":"OPS_FINDINGS_DIAGNOSE_XZLM","text":"ops_watch: WORSE at 2026-11-14T12:23:49Z: 8 -> 17 findings with no outcome yet, the rule's step is {\"factor\": 2}","ts":"2026-11-14T12:23:55Z","tsn":1794659035010089837}
+{"seat":"RUNNER","event":"raise","id":"STEVE_LANE_UNSTICK_BRAKED_UNOWNED_940D","reason":"steward: lane unowned 34 min (BRAKED)","ts":"2026-11-14T12:30:06Z","tsn":1794659406496848007}
