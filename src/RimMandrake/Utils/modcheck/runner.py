@@ -92,8 +92,11 @@ def ensure_playing_map(dry_run=False, _client=None, _starter=None, _gate=None, _
             if _client is None:
                 import rimbridge_client as rb
                 host, port, token = rb.resolve_endpoint()
-                _client = rb.RimBridge(host=host, port=port, token=token, timeout=30.0)
-                _client.connect()
+                c = rb.RimBridge(host=host, port=port, token=token, timeout=30.0)
+                c.connect()
+                # kept only once connected: a client kept after a failed connect() answered every retry "never connected",
+                # hiding the first, real error (live 2026-11-13: "cannot reach the bridge from WSL" became 240 s of that)
+                _client = c
             r = _client.call("rimworld/get_ui_state", {}) or {}
             if isinstance(r, dict) and r.get("content"):
                 r = json.loads(r["content"][0]["text"])
