@@ -128,7 +128,7 @@ def main(argv):
                 # ProofFillRect takes METRES since the one water number (8734f51181); r["fill"] is notches (0.5 m)
                 row["fill"] = static("RimMandrake.FlowWorks.RM_SubmergeDraw", "ProofFillRect",
                                      "%d,%d,%d,%d,%.2f,%s" % (x0, z0, w, h, r["fill"] * 0.5, r["fluid"]))
-            row["ladder_spawn"] = str(B.call("jawa/spawn_batch", ops="%s:%d,%d,%d" % (LADDER, lx, lz, rot)))[:160]
+            row["ladder_spawn"] = str(B.call("jawa/spawn_batch", ops="%s:%d,%d" % (LADDER, lx, lz), rot=rot))[:160]  # ops are Def:x,z[,count]; rot is per call
         B.ticks(30)
         for r in rows:
             lx, lz, _ = r["ladder"]
