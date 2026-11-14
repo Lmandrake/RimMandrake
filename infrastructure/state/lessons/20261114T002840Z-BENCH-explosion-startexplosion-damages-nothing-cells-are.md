@@ -1,0 +1,1 @@
+Explosion.StartExplosion damages nothing (cells are hit from the next tick), so a proof can find the new Explosion on its cell right after GenExplosion.DoExplosion and register per-explosion data before any ExplosionDamageThing runs (measured from the 1.6 source, 2026-11-13, EK blast power).
