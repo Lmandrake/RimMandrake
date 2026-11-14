@@ -1759,8 +1759,9 @@ namespace RimMandrake.ExplosiveKnockback
             Track(s, "muffalo", muffalo);
             GenSpawn.Spawn(thrumbo, O(s, -1, 0), Map);
             Track(s, "thrumbo", thrumbo);
-            // a colonist in ordinary clothes and a revolver, 64-76 kg as the kernel weighs it (the judge's band: under 63.5 kg a
-            // colonist ties the capped rat at damage 100, over 76.9 the muffalo at 50); generated clothes vary, so draw again
+            // a colonist with a revolver, 45-76 kg as the kernel weighs it (Mass stat minus inventory: worn clothes add nothing,
+            // MEASURED live 2026-11-13 at 48.75 and 60.75 kg, so the old 64-76 band never drew one in 40 tries). Under 63.5 kg a
+            // colonist ties the capped rat at damage 100 (the order judge allows a tie at the cap); over 76.9 the muffalo at 50
             Pawn col = null;
             ThingDef revolver = DefDatabase<ThingDef>.GetNamedSilentFail("Gun_Revolver");
             for (int tries = 0; tries < 40 && col == null; tries++)
@@ -1773,7 +1774,7 @@ namespace RimMandrake.ExplosiveKnockback
                     c.equipment?.AddEquipment((ThingWithComps)ThingMaker.MakeThing(revolver));
                 }
                 float cm = c.GetStatValue(StatDefOf.Mass) - MassUtility.InventoryMass(c);
-                if (cm >= 64f && cm <= 76f)
+                if (cm >= 45f && cm <= 76f)
                 {
                     col = c;
                 }
@@ -1784,7 +1785,7 @@ namespace RimMandrake.ExplosiveKnockback
             }
             if (col == null)
             {
-                return "no generated colonist weighed 64-76 kg in 40 draws";
+                return "no generated colonist weighed 45-76 kg in 40 draws";
             }
             GenSpawn.Spawn(col, O(s, 1, 0), Map);
             if (col.drafter != null)
@@ -1799,7 +1800,7 @@ namespace RimMandrake.ExplosiveKnockback
             s.numbers["ratio"] = ratio;
             var bands = new Dictionary<string, (float lo, float hi)>
             {
-                ["rat"] = (1f, 30f), ["colonist"] = (64f, 76f), ["muffalo"] = (100f, 150f), ["thrumbo"] = (150.001f, 1000f),
+                ["rat"] = (1f, 30f), ["colonist"] = (45f, 76f), ["muffalo"] = (100f, 150f), ["thrumbo"] = (150.001f, 1000f),
             };
             foreach (string key in new[] { "rat", "colonist", "muffalo", "thrumbo" })
             {
