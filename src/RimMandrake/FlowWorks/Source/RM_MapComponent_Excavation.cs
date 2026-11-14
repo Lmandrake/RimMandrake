@@ -1726,9 +1726,9 @@ namespace RimMandrake.FlowWorks
 			if (Prefs.DevMode)
 			{
 				Log.Warning("[RimMandrake.FlowWorks] conservation exception: " +
-					levels.ToString("F1") + " fill level(s) overflowed with nowhere to go and were " +
+					RM_Volume.FormatLitres(levels * (double)RM_Volume.LitresPerNotch) + " overflowed with nowhere to go and was " +
 					"destroyed. Map total now " +
-					overflowDestroyedTotal.ToString("F1") + ".");
+					RM_Volume.FormatLitres(overflowDestroyedTotal * (double)RM_Volume.LitresPerNotch) + ".");
 			}
 		}
 

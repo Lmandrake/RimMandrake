@@ -147,7 +147,7 @@ namespace RimMandrake.FlowWorks.Drilling
 			if (Prefs.DevMode)
 			{
 				Log.Message("[RimMandrake.FlowWorks] subsurface survey: this map yields "
-					+ yieldedLiquid.defName + " (" + reserveUnits.ToString("F0") + " fill-units). "
+					+ yieldedLiquid.defName + " (" + reserveUnits.ToString("F0") + " stock units). "
 					+ "Rolled once — sticky like a liquid body's classification, and it never runs again.");
 			}
 		}

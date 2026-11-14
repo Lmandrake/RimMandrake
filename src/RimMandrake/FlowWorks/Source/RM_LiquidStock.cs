@@ -406,7 +406,7 @@ namespace RimMandrake.FlowWorks
 				body.stock = RM_Volume.MigratedStock(oldStock, oldCap, newCap);
 				n++;
 				Log.Message("[RimMandrake.FlowWorks] volume model 2: pond #" + body.id + " rescaled " + oldStock.ToString("F2")
-					+ "/" + oldCap.ToString("F0") + " -> " + body.stock.ToString("F2") + "/" + newCap.ToString("F0") + " fill-units.");
+					+ "/" + oldCap.ToString("F0") + " -> " + body.stock.ToString("F2") + "/" + newCap.ToString("F0") + " stock units.");
 			}
 			return n;
 		}

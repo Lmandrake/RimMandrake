@@ -2250,6 +2250,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             WaterLadderChecks.Run(Case);       // POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD (P14): one water ladder, base-layer dug water, migration (WaterLadderChecks.cs)
             PitLabelChecks.Run(Case);          // RIMMANDRAKE_LABEL_PIT_DEPTH_EXACT_ONE_WORD: a dug square reads "Pit, 2.5 m deep" (PitLabelChecks.cs)
             GodLiquidChecks.Run(Case);         // RIMMANDRAKE_GIVE_GODMODE_LIQUID_POUR_DRAIN: dev pour / drain / set-level tools (GodLiquidChecks.cs)
+            PitLook1114Checks.Run(Case);       // RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE: the owner's 2026-11-14 pit look fixes (PitLook1114Checks.cs)
             WaterLookChecks.Run(Case);         // WATER_ART_CANDIDATES_BUILD_WHAT_HE_APPROVED: deep navy tint steps, wet-wall shadow band, settings (WaterLookChecks.cs)
             SheetWaterChecks.Run(Case);        // CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED stage 0: the sheet-water kernel (SheetWaterChecks.cs)
             FloodReleaseChecks.Run(Case);      // CANAL_OVERFLOW step 1: Flood_FlowWorks' four accounting faults fixed (FloodReleaseChecks.cs)

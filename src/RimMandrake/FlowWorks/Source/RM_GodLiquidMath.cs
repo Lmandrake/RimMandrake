@@ -197,7 +197,6 @@ namespace RimMandrake.FlowWorks
 			return net;
 		}
 
-		/// <summary>A pour/drain step as the menu shows it ("2,048,000 L (16x16 pit, 4 m)").</summary>
 		/// <summary>The first square of <paramref name="order"/> (the click, then outward) that <paramref name="wet"/> holds, or -1:
 		/// where a drain on undug ground starts when the clicked square itself is dry (RIMMANDRAKE_LET_GROUND_DRAIN_ALL_FIND_SPILL_EMPTY_CLICK:
 		/// a part drain empties the clicked square first, and the rest of the spill lies around it).</summary>
@@ -213,10 +212,14 @@ namespace RimMandrake.FlowWorks
 			return -1;
 		}
 
+		/// <summary>RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE (owner look 2026-11-14, his 9: "Provide that same fill example for all the
+		/// different options ... Define instead how full a single tile would be in terms of meters."): every step carries the same
+		/// worked example, the depth it would stand on ONE square ("1 kL (one tile 0.5 m deep)").</summary>
 		public static string StepLabel(long litres)
 		{
-			string s = RM_Volume.FormatLitres(litres);
-			return litres == FullPit16x16x4mLitres ? s + " (a 16x16 pit 4 m deep)" : s;
+			double metres = litres / (double)RM_Volume.LitresPerNotch * RM_Volume.MetresPerNotch;
+			return RM_Volume.FormatLitres(litres) + " (one tile "
+				+ metres.ToString(metres < 1.0 ? "0.0#" : "0.#", System.Globalization.CultureInfo.InvariantCulture) + " m deep)";
 		}
 	}
 }

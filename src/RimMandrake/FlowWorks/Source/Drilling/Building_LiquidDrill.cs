@@ -318,7 +318,7 @@ namespace RimMandrake.FlowWorks.Drilling
 				list.Add(new DebugMenuOption(pick.defName, DebugMenuOptionMode.Action, delegate
 				{
 					survey.DebugSetYield(pick, DebugReserveUnits);
-					Log.Message("[RMFlowWorksDebug] subsurface yield set: " + pick.defName + ", " + DebugReserveUnits + " fill-units");
+					Log.Message("[RMFlowWorksDebug] subsurface yield set: " + pick.defName + ", " + DebugReserveUnits + " stock units");
 				}));
 			}
 			Find.WindowStack.Add(new Dialog_DebugOptionListLister(list));

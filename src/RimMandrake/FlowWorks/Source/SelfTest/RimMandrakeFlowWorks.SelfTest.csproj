@@ -56,6 +56,7 @@
     <Compile Include="PitLabelChecks.cs" />
     <Compile Include="..\RM_GodLiquidMath.cs" />
     <Compile Include="GodLiquidChecks.cs" />
+    <Compile Include="PitLook1114Checks.cs" />
     <Compile Include="..\RM_WaterLookMath.cs" />
     <Compile Include="WaterLookChecks.cs" />
     <Compile Include="LakeFloorChecks.cs" />

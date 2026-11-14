@@ -255,7 +255,7 @@ namespace RimMandrake.FlowWorks
 				{
 					if (tier != null && tier.temporary)
 					{
-						yield return "fill tier terrain " + tier.defName + " is <temporary>true</temporary>. Wet dug squares are "
+						yield return "wet-look terrain " + tier.defName + " is <temporary>true</temporary>. Wet dug squares are "
 							+ "written to the BASE layer (P14) and SetTerrain sends a temporary def to the temp layer instead.";
 					}
 				}
