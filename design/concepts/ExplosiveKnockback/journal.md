@@ -8,16 +8,15 @@ The top part, **the mod as it stands**, is rewritten at every stage change and s
 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Code exists:
   `src/RimMandrake/ExplosiveKnockback/`.
-- **Stage now:** Stage 2 (preflight) run by hand 2026-11-14 11:31 PST: **refuse, 26 refusals** (`version/preflight.json`).
-  Stage 3 ("reconcile") is next and not begun.
+- **Stage now:** Stage 3 ("reconcile") done as far as it goes offline, 2026-11-14 12:47 PST. Preflight re-run:
+  **refuse, 6 refusals** (was 26), all C6 "built: runs" (`version/preflight.json`). Stages 4-5 can start on everything
+  else; the 6 are listed under Stage 3 below with why each was not built.
 - **Bars:** 59 (30 inventory rows of `record.json` + 29 leaves of `tree.json`). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`).
-- **Measured 2026-11-14:** 46 of 59 bars have at least one test that runs today (an offline test that ran, or an
-  in-game scene whose entry exists in the proof code); 21 have every deciding test runnable; 33 have all their offline
-  deciding tests green. 20 of the 35 `scenes.json` scenes have no entry in the proof code. 5 offline tests are specified,
-  not built. Detail: `version/test_table.md`.
-- **Waiting on:** a builder for Stage 3 (22 tests to build); the Conductor's read of 3 post-lock file changes; the g4
-  question.
+- **Measured 2026-11-14 12:45 PST:** 53 of 59 bars have at least one test that runs today; 47 have every deciding test
+  runnable; 41 have all their offline deciding tests green. All 15 offline tests are built (13 PASS, 2 known red,
+  unchanged). In-game scenes: 56, entry exists 50, absent 6. Every in-game scene is UNRUN (Stage 6); commands in the table.
+- **Waiting on:** a builder for the 6 unbuilt scenes (or a Stage 4-5 start without them); the questions below.
 - **Open questions:** see "Questions" at the end of the history.
 
 ### The vision (his root paragraph, approved by card 2026-11-11, OWNER:1794468835221748501)
@@ -153,12 +152,53 @@ before Stage 3. Owner, 2026-11-14: "We need to get this going."
   Stage 3 "reconcile" (the spec says both; this run refuses and names Stage 3 as the route); whether each post-lock
   change is test text or meaning; the g4 fix.
 
+### 2026-11-14 12:47 PST, Stage 3 ("reconcile") done offline (rm-builder, detached, offline only)
+
+- **Preflight refusals:** 26 before (11:32 run), **6 after** (12:43 run), all measured by `preflight_ek.py`.
+- **Offline tests built, all PASS today, each watched red first** (on missing code, or on planted faults where the
+  behaviour already existed): T_HEAVY_KNOCK_RULE (K-21 in `Source/SelfTest/Program.cs`, red on a missing kernel function,
+  then green 152/152; a planted `<=` mutant goes red), T_ONLY_EXPLOSIONS_STATIC (`selftest_explosiveknockback_hook_scope.py`,
+  3/3 planted faults caught), T_GAS_TAG_CENSUS (`selftest_explosiveknockback_gas_census.py` + `gas_census.json`, red with no
+  census, 10 sources, 5/5 planted), T_GAS_CLUMP_ORDER (`selftest_explosiveknockback_gas_clumps.py`, the Cauldron's burn
+  scan as a model plus the rule read from the C#, 6/6 planted), T_SETTINGS_SWEEP_OFFLINE
+  (`selftest_explosiveknockback_settings_sweep.py` + `Source/SelfTest/KnockbackSweep.cs`: 24 runs, 2/2 coupling mutants and
+  4/4 planted static faults caught).
+- **Mod behaviour built:** the heavy-goods knock rule is now a kernel function (`RM_KnockbackMath.HeavyKnock`), called by
+  the flyer (same behaviour). A thrown pawn whose planned landing cell gets a pawn on it mid-flight now lands there and the
+  journal writes `land_on_pawn` naming that pawn (before, it was re-targeted to an earlier cell, against the leaf
+  pawn_flight_arc, "lands on the cell chosen at the blast"). A test-only mass pin (`RM_KnockbackProof.PinnedMass`, proof
+  build only) holds the sc_mass_and_power colonist at 64 to 76 kg (g4, the Conductor's decision).
+- **In-game scenes written and compile-checked, UNRUN (Stage 6).** Each runs as `python.exe
+  src\RimMandrake\ExplosiveKnockback\knockback_runner.py --scenes <entry> --ticks <n>` on a proof build: pawn_hits_pawn 300,
+  only_explosions 300, open_storage 300, no_cross_ordered 2000, spared_states 300, blast_kinds 300, goods_fly_wild 300,
+  gas_chain 300, gas_census 300, pawn_arc 900, pit_goods_fetch 60000. Three are renames of older scenes (goods_fly_wild of
+  goods_fly_rebound; gas_chain and gas_census of gas_clumps); what each renamed or trimmed scene does not yet check is in the
+  table's `partial` field.
+- **Not built (the 6 refusals), and why:** hose_carry_drop (stages a FlowWorks hose reel; another helper is editing
+  FlowWorks now); settings_sweep (the game-side wiring lanes, with the Cauldron and LWM's Deep Storage on the list; large);
+  closed_containers (LWM's Deep Storage, Jawa Armoury and its four dependencies on the list; large); frame_probe_selfcheck and
+  barrage_perf (need a frame-time instrument that does not exist yet); walk_storeroom_raid (full list, in `validation.py`).
+- **What the builder could not test:** nothing in the game ran (offline only). The flying lane of sc_spared is left out
+  on purpose: a flyer's flight is never live-tested without the owner present. The Outer Rim lanes of sc_blast_kinds are
+  left out (that mod is not on the minimal list).
+- **Re-pinned** in `version/bars.md`: `tree.json` (coverage stamp only), `scenes.json` (test text: sc_spared,
+  sc_mass_and_power with g4 back to 64 to 76 kg, sc_settings_sweep), `record.json` (decisions log only). No bar changed.
+- **Preflight fixed:** C9 now requires a def of ours in the repo's current Defs/Patches XML, not only in the older dump
+  (watched red on a planted deleted def, `RM_FE_Filth_LooseAsh`); C6 now measures each test's entry point in the code at
+  run time instead of trusting the table's saved flags.
+- **Landed:** f243b4bf1b, 8498e2b493, d9d5ec1122, cf40045d0c.
+- **Cost:** about $9.4 of model spend (the harness budget line, $0 to $9.4), 32 minutes wall, 0 of his minutes.
+- **Boring enough to automate:** compiling the proof build to check new scenes (the proof-gate selftest already does
+  it); regenerating the table and re-running the preflight after each batch; re-pinning a locked file after a
+  test-text change (hash, edit the pin row); the gas-source census (a program can list sources; only the reasons need a
+  writer); listing each renamed scene's unchecked clauses.
+- **Needed judgment:** which scene expectations can be met by renaming an older scene and what that leaves unchecked;
+  spotting that the landing patch re-targeted a pawn against the leaf; keeping the flyer lane out; deciding the census
+  reasons; telling the restore-check red apart from new leaks (the same pre-existing lines; none added).
+
 ### Questions (open)
 
-1. **g4, the colonist in `sc_mass_and_power`** (for the Conductor; his if it touches the leaf). Real colonists weigh
-   about 45-61 kg as the kernel weighs them; the leaf oracle's "colonist 5 at twice the damage" needs 64 kg or more.
-   Smallest fix that keeps the bar's meaning: a proof hook stages a colonist of 64-76 kg (Stage 3, test code only).
-   The other way, admitting a tie at the cap, changes the leaf's oracle and is his call.
+1. ~~g4~~ settled 2026-11-14 by the Conductor's decision: a test-only proof hook pins the colonist at 64 to 76 kg (Stage 3).
 2. **Held statements:** does this pilot's placement count as the ingest his 2026-11-12 ruling waits for (spec
    question 12)? Until then they stay in the holding store as well.
 3. **`record.json` state fields are stale** (not bar meaning): `inv_creature_mass_limit` and `inv_blast_power_damage`
@@ -171,3 +211,15 @@ before Stage 3. Owner, 2026-11-14: "We need to get this going."
    not urgent: the work is the same.
 5. **Three bar lists** (the 59, the 16 north-star bars, the 30 walk rows) are unreconciled; `validation.py` still reads
    the walk. Which one does Stage 6 report against? The table answers "the 59".
+6. **sc_settings_sweep's setting list is short of the settings class** (test text). The scene asserts its list plus
+   `enabled` and `shieldsAbsorbThrow` equals the saved fields, but it names 20 saved settings fewer (goods flight tuning,
+   gas tuning, the heavy-knock range, `blastPowerRefPercent`, `goodsReboundKeepPercent`, `openStorageProtectsGoods`,
+   `shoveClosedContainers` and more; the full list is printed by the sweep test). Live, the scene would fail its own
+   assertion. The offline sweep covers every saved field (kernel or game side, each named). A neutral fixer should
+   correct the scene text; not edited here.
+7. **sc_pawn_arc says the colonist re-hauls "the stack it dropped at takeoff"**, but the mod throws a pawn with its
+   carried thing (`flyWithCarriedThing: true`). Which is right is a design question (the leaf only says it resumes a job).
+8. **Landing on a pawn that walked in mid-flight**: it now lands there with a journal line and no damage. Should it hurt
+   either pawn? The scene asks only for an impact line.
+9. **`record.json` stale state fields** (question 3) are still not corrected: they sit inside inventory rows, which are
+   bars, and a changed bar is never re-pinned. The Conductor decides whether a state field is bar meaning.
