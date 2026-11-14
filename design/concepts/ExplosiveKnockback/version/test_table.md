@@ -1,6 +1,6 @@
 # Explosive Knockback 0.1.0: test-and-stage table
 
-Generated 2026-11-14T11:25:20-08:00 from `test_table.json` (the record; this is its read view). Stages: 2 preflight, 4-5 blind offline, 6 in-game, 8 his walk. A bar passes when every deciding test passes.
+Generated 2026-11-14T11:30:41-08:00 from `test_table.json` (the record; this is its read view). Stages: 2 preflight, 4-5 blind offline, 6 in-game, 8 his walk. A bar passes when every deciding test passes.
 
 ## Counts (measured)
 
@@ -80,15 +80,15 @@ Generated 2026-11-14T11:25:20-08:00 from `test_table.json` (the record; this is 
 
 | test | stage | kind | file :: entry | runs today | observes |
 |---|---|---|---|---|---|
-| `T_KERNEL` | 4-5 | offline | `src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py` | PASS rc=0 1.22s | K-01..K-20 kernel checks: throw cells, falloff, mass scale, path walk (walls, doors, water, sandbags, pits), dedupe, recovery window, shield debit, rebound, cre |
-| `T_FUZZ` | 4-5 | offline | `src/RimMandrake/Utils/selftest_explosiveknockback_fuzz.py` | PASS rc=0 2.67s | 42001 seeded random cases of the kernel against independent oracles (distance, line, grid walk, cap, lookup, guards) |
-| `T_LINT` | 2 | offline | `src/RimMandrake/Utils/lint_explosiveknockback_defs.py` | PASS rc=0 1.7s | defs and patches against the C#: every RM_KnockbackExtension field and range, the damage-def patches, the flyer def, reset-to-defaults inside sliders, kernel Ve |
-| `T_LINT_PLANTED` | 2 | offline | `src/RimMandrake/Utils/selftest_explosiveknockback_lint.py` | PASS rc=0 34.09s | the lint goes red on 20 planted defects and stays clean on the real mod |
-| `T_CENSUS` | 4-5 | offline | `src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_storage_census.py` | PASS rc=0 9.62s | every storage def is closed exactly when it hides its contents (Shelf, ShelfSmall, Hopper, Cold Storage open) |
-| `T_SCRIPT` | 2 | offline | `src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_script.py` | PASS rc=0 0.25s | validation.py STATIC (walk coverage, csproj, scene and toggle names, settings saved and reset) and --mock (every proof scene stages through a fake session) |
-| `T_PROOFGATE` | 4-5 | offline | `src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py` | PASS rc=0 4.04s | the release DLL carries no proof code, a proof build carries all of it, the gate reads the bridge's answer |
-| `T_RESTORE` | 4-5 | offline | `src/RimMandrake/Utils/selftest_proof_restore_check.py` | KNOWN RED RIMMANDRAKE_RESTORE_ON_THROW_IN_KNOCKBACK_PROOF_TWO_LEAKS rc=1 6.46s | every proof scene restores what it staged even when it throws |
-| `T_SETTINGS_SCREEN` | 4-5 | offline | `src/RimMandrake/Utils/selftest_settings_screens.py` | KNOWN RED RIMMANDRAKE_REGROUP_SETTINGS_SCREENS_FOUR_MODS_OUTGREW_AUDIT rc=1 1.96s | the Mod Settings screen: every setting grouped, resettable, scopes as audited |
+| `T_KERNEL` | 4-5 | offline | `src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py` | PASS rc=0 1.31s | K-01..K-20 kernel checks: throw cells, falloff, mass scale, path walk (walls, doors, water, sandbags, pits), dedupe, recovery window, shield debit, rebound, cre |
+| `T_FUZZ` | 4-5 | offline | `src/RimMandrake/Utils/selftest_explosiveknockback_fuzz.py` | PASS rc=0 3.12s | 42001 seeded random cases of the kernel against independent oracles (distance, line, grid walk, cap, lookup, guards) |
+| `T_LINT` | 2 | offline | `src/RimMandrake/Utils/lint_explosiveknockback_defs.py` | PASS rc=0 2.19s | defs and patches against the C#: every RM_KnockbackExtension field and range, the damage-def patches, the flyer def, reset-to-defaults inside sliders, kernel Ve |
+| `T_LINT_PLANTED` | 2 | offline | `src/RimMandrake/Utils/selftest_explosiveknockback_lint.py` | PASS rc=0 32.81s | the lint goes red on 20 planted defects and stays clean on the real mod |
+| `T_CENSUS` | 4-5 | offline | `src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_storage_census.py` | PASS rc=0 23.46s | every storage def is closed exactly when it hides its contents (Shelf, ShelfSmall, Hopper, Cold Storage open) |
+| `T_SCRIPT` | 2 | offline | `src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_script.py` | PASS rc=0 0.39s | validation.py STATIC (walk coverage, csproj, scene and toggle names, settings saved and reset) and --mock (every proof scene stages through a fake session) |
+| `T_PROOFGATE` | 4-5 | offline | `src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py` | PASS rc=0 5.69s | the release DLL carries no proof code, a proof build carries all of it, the gate reads the bridge's answer |
+| `T_RESTORE` | 4-5 | offline | `src/RimMandrake/Utils/selftest_proof_restore_check.py` | KNOWN RED RIMMANDRAKE_RESTORE_ON_THROW_IN_KNOCKBACK_PROOF_TWO_LEAKS rc=1 6.8s | every proof scene restores what it staged even when it throws |
+| `T_SETTINGS_SCREEN` | 4-5 | offline | `src/RimMandrake/Utils/selftest_settings_screens.py` | KNOWN RED RIMMANDRAKE_REGROUP_SETTINGS_SCREENS_FOUR_MODS_OUTGREW_AUDIT rc=1 1.84s | the Mod Settings screen: every setting grouped, resettable, scopes as audited |
 | `T_FW_COVER` | 4-5 | offline | `src/RimMandrake/FlowWorks/selftest_flowworks_cover_breaks.py` | PASS rc=0 0.05s | FlowWorks: a pit cover breaks on every fall, before the descent |
 | `T_SETTINGS_SWEEP_OFFLINE` | 4-5 | offline | `src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py` | specified, not built: Stage 3 builds it failing first | sc_settings_sweep's lane as kernel inputs, run once at default and once per kernel-side setting; each changes only its own outcomes with the scene's numbers; a  |
 | `T_GAS_TAG_CENSUS` | 4-5 | offline | `src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_gas_census.py` | specified, not built: Stage 3 builds it failing first | every flammable gas source of ours (Gas ThingDefs, our gas grids, the Cauldron's vent gas) carries the opt-in flammable tag, and nothing else does (the leaf our |

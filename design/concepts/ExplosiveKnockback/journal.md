@@ -8,14 +8,16 @@ The top part, **the mod as it stands**, is rewritten at every stage change and s
 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Code exists:
   `src/RimMandrake/ExplosiveKnockback/`.
-- **Stage now:** Stage 1 finished by hand 2026-11-14 11:27 PST (pilot row 2); Stage 2 next.
+- **Stage now:** Stage 2 (preflight) run by hand 2026-11-14 11:31 PST: **refuse, 26 refusals** (`version/preflight.json`).
+  Stage 3 ("reconcile") is next and not begun.
 - **Bars:** 59 (30 inventory rows of `record.json` + 29 leaves of `tree.json`). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`).
 - **Measured 2026-11-14:** 46 of 59 bars have at least one test that runs today (an offline test that ran, or an
   in-game scene whose entry exists in the proof code); 21 have every deciding test runnable; 33 have all their offline
   deciding tests green. 20 of the 35 `scenes.json` scenes have no entry in the proof code. 5 offline tests are specified,
   not built. Detail: `version/test_table.md`.
-- **Waiting on:** Stage 2's verdict on the table, then a builder for Stage 3 ("reconcile").
+- **Waiting on:** a builder for Stage 3 (22 tests to build); the Conductor's read of 3 post-lock file changes; the g4
+  question.
 - **Open questions:** see "Questions" at the end of the history.
 
 ### The vision (his root paragraph, approved by card 2026-11-11, OWNER:1794468835221748501)
@@ -114,6 +116,38 @@ before Stage 3. Owner, 2026-11-14: "We need to get this going."
   decide and why the rest needs the game (`why_game` per scene, to be re-asked by the Stage 4 challenger); spotting the
   reopened g4; the old proof-scene names (20 kept as support) versus the locked scene ids.
 
+### 2026-11-14 11:32 PST, row 3 done: Stage 2 preflight, by a throwaway program
+
+- **The program:** `version/pilot_throwaway/preflight_ek.py` (no model; reads `version/test_table.json`, the repo, the
+  def dump and the ledger; writes `version/preflight.json`). 15 checks. **Run time 0.7 s** (6.8 s on the D: drive copy).
+  Def list: the live dump `defs.sqlite`, 59262 defs, captured 2026-11-12T08:10Z (not the frozen official dump; every
+  name it was asked about was found in it or in the repo).
+- **Each check was watched going red** on a planted fault in a copy (bar dropped, bar without a test, stage 7, missing
+  file, missing read, no game reason, held row unplaced, unknown def, unknown packageId, unknown settings field, a Hopper
+  staged as closed, unknown item) and C13 was watched staying green with a 64-76 kg band. C14 missed its planted Hopper
+  on the first try (it read the whole start text, where "drawing" appears elsewhere) and was fixed to judge each mention.
+- **First run: 27 refusals.** One was Stage 1's own slip: the table (copied from the ticket text) named a settings field
+  `landingStun`; the fields are `landingStunMin` and `landingStunMax`. Fixed in the table at once (back to Stage 1 for
+  that line only) and re-run.
+- **Second run: 26 refusals, in three checks:**
+  - **C6 "Built: runs" (22).** 5 offline tests are specified, not built (the settings sweep, the gas tag census, the gas
+    clump order, the heavy-knock kernel cases, the explosions-only hook scope) and 17 deciding in-game scenes have no
+    entry in `RM_KnockbackProof.cs` (pawn_arc, spared_states, hose_carry_drop, settings_sweep, pawn_hits_pawn,
+    goods_fly_wild, open_storage, closed_containers, blast_kinds, only_explosions, gas_chain, gas_census,
+    no_cross_ordered, pit_goods_fetch, frame_probe_selfcheck, barrage_perf, walk_storeroom_raid). Route: Stage 3. The
+    bars are sound; the tests are owed, each under the item `scenes.json` names.
+  - **C12 locked files changed (3):** `tree.json` (the owner-certify stamp only), `scenes.json` (sc_spared,
+    sc_mass_and_power, sc_settings_sweep), `record.json` (decisions). Route: the Conductor reads each change; test text
+    is re-pinned in `bars.md`, a meaning change goes to him.
+  - **C13 g4 (1):** the reopened colonist band (Questions, 1).
+- **Cost:** about $1.2 (harness line, $3.1 to $4.3), 5 minutes wall.
+- **Boring enough to automate:** all 15 checks; they are mechanical. The program is the seed of build-order step 3
+  ("the Stage 2 preflight for a mod"). Def and packageId extraction from free scene text is a heuristic; a real
+  preflight wants scenes to list their defs and mods as fields.
+- **Needed judgment:** whether "Built: runs" (his card) should refuse a built mod's missing tests or route them to
+  Stage 3 "reconcile" (the spec says both; this run refuses and names Stage 3 as the route); whether each post-lock
+  change is test text or meaning; the g4 fix.
+
 ### Questions (open)
 
 1. **g4, the colonist in `sc_mass_and_power`** (for the Conductor; his if it touches the leaf). Real colonists weigh
@@ -126,5 +160,9 @@ before Stage 3. Owner, 2026-11-14: "We need to get this going."
    say `impl: absent` though both were built in 40f4e85120 (K-18 to K-20 pass); `inv_big_corpse_spared` names skip
    reason `too_big`, which the mass rule replaced (its scope note says the 75 kg goods limit now spares it, so the
    journal line would read `too_heavy`). Stage 3 "reconcile" should correct these fields.
-4. **Three bar lists** (the 59, the 16 north-star bars, the 30 walk rows) are unreconciled; `validation.py` still reads
+4. **"Built: runs" versus "reconcile".** His card says a built mod's tests run at the lock; the spec's Stage 3 for a
+   built mod builds the missing tests after it. Explosive Knockback was locked with 22 deciding tests not runnable.
+   Either the lock was early by his own rule, or "Built: runs" means "runs by the end of Stage 3". A question for him,
+   not urgent: the work is the same.
+5. **Three bar lists** (the 59, the 16 north-star bars, the 30 walk rows) are unreconciled; `validation.py` still reads
    the walk. Which one does Stage 6 report against? The table answers "the 59".
