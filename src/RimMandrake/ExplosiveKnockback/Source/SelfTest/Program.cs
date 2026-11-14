@@ -412,9 +412,9 @@ internal static class Program
         // than 150 kg is never thrown, whatever its body size; a corpse is weighed by the goods limit only
         {
             var g = new KbSettings();
-            Check("K-18 muffalo 144 kg body 2.4 thrown", RM_KnockbackMath.Eligible(KbKind.Pawn, 144f, g));
-            Check("K-18 rhino 180 kg body 3.0 spared", !RM_KnockbackMath.Eligible(KbKind.Pawn, 180f, g));
-            Check("K-18 thrumbo 240 kg spared", !RM_KnockbackMath.Eligible(KbKind.Pawn, 240f, g));
+            Check("K-18 gelagrub 144 kg body 2.4 thrown", RM_KnockbackMath.Eligible(KbKind.Pawn, 144f, g));
+            Check("K-18 dewback 180 kg body 3.0 spared", !RM_KnockbackMath.Eligible(KbKind.Pawn, 180f, g));
+            Check("K-18 bantha 240 kg spared", !RM_KnockbackMath.Eligible(KbKind.Pawn, 240f, g));
             Check("K-18 a 300 kg pawn of body 1.0 spared (mass, not size)", !RM_KnockbackMath.Eligible(KbKind.Pawn, 300f, g));
             Check("K-18 a 100 kg pawn of body 3.0 thrown (size no longer counts)", RM_KnockbackMath.Eligible(KbKind.Pawn, 100f, g));
             Check("K-18 exactly 150 kg thrown (heavier than the limit is spared)", RM_KnockbackMath.Eligible(KbKind.Pawn, 150f, g));
@@ -439,12 +439,12 @@ internal static class Program
             Check("K-19 reference percent 0 = ratio 1 (no divide by zero)", RM_KnockbackMath.DamageRatio(100f, 50f, 0f, true) == 1f);
             Check("K-19 negative damage is 0", RM_KnockbackMath.DamageRatio(-5f, 50f, 100f, true) == 0f);
             Check("K-19 rocket 24 of Bomb 50", Math.Abs(RM_KnockbackMath.DamageRatio(24f, 50f, 100f, true) - 0.48f) < 1e-5f);
-            Check("K-19 rat 12 kg: 5 at 50, 6 (cap) at 100", cellsAt(12f, 50f) == 5 && cellsAt(12f, 100f) == 6, cellsAt(12f, 50f) + "/" + cellsAt(12f, 100f));
+            Check("K-19 scurrier 12 kg: 5 at 50, 6 (cap) at 100", cellsAt(12f, 50f) == 5 && cellsAt(12f, 100f) == 6, cellsAt(12f, 50f) + "/" + cellsAt(12f, 100f));
             Check("K-19 colonist 70 kg: 3 at 50, 5 at 100", cellsAt(70f, 50f) == 3 && cellsAt(70f, 100f) == 5, cellsAt(70f, 50f) + "/" + cellsAt(70f, 100f));
-            Check("K-19 muffalo 144 kg: 2 at 50, 4 at 100", cellsAt(144f, 50f) == 2 && cellsAt(144f, 100f) == 4, cellsAt(144f, 50f) + "/" + cellsAt(144f, 100f));
-            Check("K-19 colonist band 64..76 kg keeps rat > colonist > muffalo", cellsAt(64f, 50f) == 3 && cellsAt(64f, 100f) == 5
+            Check("K-19 gelagrub 144 kg: 2 at 50, 4 at 100", cellsAt(144f, 50f) == 2 && cellsAt(144f, 100f) == 4, cellsAt(144f, 50f) + "/" + cellsAt(144f, 100f));
+            Check("K-19 colonist band 64..76 kg keeps scurrier > colonist > gelagrub", cellsAt(64f, 50f) == 3 && cellsAt(64f, 100f) == 5
                 && cellsAt(76f, 50f) == 3 && cellsAt(76f, 100f) == 5);
-            Check("K-19 thrumbo 240 kg under a 250 limit: 1 at 50, 3 at 100", cellsAt(240f, 50f) == 1 && cellsAt(240f, 100f) == 3);
+            Check("K-19 bantha 240 kg under a 250 limit: 1 at 50, 3 at 100", cellsAt(240f, 50f) == 1 && cellsAt(240f, 100f) == 3);
             Check("K-19 mortar beside a clothed colonist still 3 (calibration kept)", cellsAt(70f, 50f) == 3);
             Check("K-19 a 1-damage blast throws nothing", cellsAt(70f, 1f) == 0);
         }
@@ -455,13 +455,13 @@ internal static class Program
             KbSettings gr = KbLookup.Apply(g, new KbConfig { force = 4f, ownCap = 10, massLimitOverride = 216f }, 6, 1f);
             Check("K-20 default limit 150 kg", g.creatureMassLimit == 150f);
             Check("K-20 override applied, shared untouched", gr.creatureMassLimit == 216f && g.creatureMassLimit == 150f);
-            Check("K-20 grav-ram throws a rhino (180 kg)", RM_KnockbackMath.Eligible(KbKind.Pawn, 180f, gr)
+            Check("K-20 grav-ram throws a dewback (180 kg)", RM_KnockbackMath.Eligible(KbKind.Pawn, 180f, gr)
                 && !RM_KnockbackMath.Eligible(KbKind.Pawn, 180f, g));
-            Check("K-20 grav-ram throws a centurion at 216 kg, never a thrumbo (240)", RM_KnockbackMath.Eligible(KbKind.Pawn, 216f, gr)
+            Check("K-20 grav-ram throws a centurion at 216 kg, never a bantha (240)", RM_KnockbackMath.Eligible(KbKind.Pawn, 216f, gr)
                 && !RM_KnockbackMath.Eligible(KbKind.Pawn, 240f, gr));
             Check("K-20 unset override = the global limit", KbLookup.Apply(g, new KbConfig(), 6, 1f).creatureMassLimit == 150f);
             var hi = new KbSettings { creatureMassLimit = 250f };
-            Check("K-20 limit 250 throws the thrumbo", RM_KnockbackMath.Eligible(KbKind.Pawn, 240f, hi));
+            Check("K-20 limit 250 throws the bantha", RM_KnockbackMath.Eligible(KbKind.Pawn, 240f, hi));
             Check("K-20 the override never touches goods", !RM_KnockbackMath.Eligible(KbKind.Item, 100f, gr)
                 && !RM_KnockbackMath.Eligible(KbKind.Corpse, 100f, gr));
         }

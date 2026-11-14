@@ -19,7 +19,7 @@
     <li>mandrake.rm.flowworks</li>
     <li>mandrake.rm.gimmesomeslack</li>
   </loadAfter>
-  <description>Every blast throws everything light near it - people, animals, mechanoids, items and corpses - straight away from its centre. A mortar shell beside a person throws them three cells; lighter things fly farther, heavier things less, and a creature heavier than 150 kg (a rhino or a thrumbo; a muffalo still flies) or an item or corpse over 75 kg stays put. A bigger blast throws harder: the push scales with the blast's damage over its type's normal damage, so vanilla grenades, mortars and IEDs (all 50) throw as they always did.
+  <description>Every blast throws everything light near it - people, animals, mechanoids, items and corpses - straight away from its centre. A mortar shell beside a person throws them three cells; lighter things fly farther, heavier things less, and a creature heavier than 150 kg (a dewback or a bantha; a gelagrub still flies) or an item or corpse over 75 kg stays put. A bigger blast throws harder: the push scales with the blast's damage over its type's normal damage, so vanilla grenades, mortars and IEDs (all 50) throw as they always did.
 
 Thrown pawns fly over sandbags and barricades, stop early against walls, closed doors and other pawns (taking impact damage for the distance they did not travel), and land stunned. Items on shelves stay on the shelf.
 

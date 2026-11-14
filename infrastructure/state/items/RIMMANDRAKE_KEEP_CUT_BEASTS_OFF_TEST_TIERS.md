@@ -24,7 +24,12 @@ creatures on the SHIP list, defined by 5 mods: Core and DLC).
   were retired under this item.
 - On the full list Thrumbo is cut (live Cherry Picker settings and SHIP; also `IncidentDef/ThrumboPasses`).
 - Explosive Knockback's proof code also named vanilla beasts (Rat, Muffalo, Thrumbo, plus an any-animal search for
-  `body_override`). That was fixed alongside this item: the scenes now use our creatures, resolved by name.
+  `body_override`). That was fixed alongside this item: the scenes now use our creatures, resolved by name and
+  refused loudly when missing (`RM_KnockbackProof.Kind`): bestiary RSW_Scurrier 12 kg, RSW_Gelagrub 144, RSW_Dewback
+  180, RSW_Bantha 240 (60 x body size; the kernel's mass table is unchanged). The `explosiveknockback` tier now loads
+  `mandrake.rsw.swbestiary` so those scenes can stand them up; `kineticarms` and the `acc_*` tiers do not load it.
+- Not fixed here: `Things/Pawn/Animal/Thrumbo/Dessicated_Thrumbo` is vanilla art reused as the desiccated graphic of
+  RUT_Vhessk, RM_Dorrak and RM_MycoidColossus (no player-facing "Thrumbo" name).
 
 ## Options (not decided here)
 

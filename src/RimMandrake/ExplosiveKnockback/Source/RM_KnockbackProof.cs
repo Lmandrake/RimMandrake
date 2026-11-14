@@ -612,8 +612,28 @@ namespace RimMandrake.ExplosiveKnockback
         }
 
         /// <summary>Proof build only: things whose damage is absorbed whole (sc_mass_and_power stages a real 50 / 100 damage
-        /// blast beside a 12 kg rat; the throw must be read, not the kill). Cleared by the scene's restore.</summary>
+        /// blast beside a 12 kg scurrier; the throw must be read, not the kill). Cleared by the scene's restore.</summary>
         internal static readonly HashSet<int> NoHarm = new HashSet<int>();
+
+        /// <summary>The creatures the mass scenes stand up: OUR animals, all from the bestiary
+        /// (mandrake.rsw.swbestiary), so any list that loads it has them (owner 2026-11-13, at sc_mass_and_power: "We
+        /// shouldn't have anything called a Thrumbo in the game anymore"). Masses are 60 x body size, the stated table's: scurrier 12 (0.2), gelagrub 144 (2.4),
+        /// dewback 180 (3.0), bantha 240 (4.0). Never a vanilla beast: the full list cuts them (VANILLA_BEAST_EXCISION_1).</summary>
+        internal const string SmallKind = "RSW_Scurrier", UnderLimitKind = "RSW_Gelagrub", OverrideKind = "RSW_Dewback",
+            HeavyKind = "RSW_Bantha";
+
+        /// <summary>A scene's creature by defName, or a loud ERROR naming it: a missing kind never falls back to another animal.
+        /// Resolve every kind a scene needs before spawning anything, so a miss leaves nothing on the map.</summary>
+        private static PawnKindDef Kind(string defName)
+        {
+            PawnKindDef k = DefDatabase<PawnKindDef>.GetNamedSilentFail(defName);
+            if (k == null || k.RaceProps == null)
+            {
+                throw new InvalidOperationException("proof creature kind " + defName + " is not on this mod list (a tier "
+                    + "without mandrake.rsw.swbestiary, or the def was renamed)");
+            }
+            return k;
+        }
 
         private static Pawn Adult(PawnKindDef k)
         {
@@ -1044,8 +1064,8 @@ namespace RimMandrake.ExplosiveKnockback
 
                 case "heavy_skip":
                     {
-                        PawnKindDef big = DefDatabase<PawnKindDef>.GetNamed("Thrumbo");
-                        Pawn a = PawnGenerator.GeneratePawn(big, null);
+                        // an adult bantha, 240 kg: over the global 150 kg creature limit (a calf could weigh under it)
+                        Pawn a = Adult(Kind(HeavyKind));
                         GenSpawn.Spawn(a, O(s, 1, 0), Map);
                         Track(s, "big", a);
                         s.restore = () => { if (!a.Destroyed) a.Destroy(); };
@@ -1182,15 +1202,9 @@ namespace RimMandrake.ExplosiveKnockback
 
                 case "body_override":
                 {
-                    // a living animal heavier than the global 150 kg and at most 216 (a rhino, 180): spared by the global creature
-                    // mass limit, thrown under a creatureMassLimitOverride of 216 (the grav-ram's)
-                    PawnKindDef big = DefDatabase<PawnKindDef>.AllDefs.Where(k => k.RaceProps != null && k.RaceProps.Animal
-                        && k.RaceProps.baseBodySize * 60f > 160f && k.RaceProps.baseBodySize * 60f < 205f && k.RaceProps.IsFlesh
-                        && k.RaceProps.lifeStageAges.Count > 0).OrderBy(k => k.RaceProps.baseBodySize).FirstOrDefault();
-                    if (big == null)
-                    {
-                        return "no flesh animal kind of 160-205 kg (60 x body size) on this list";
-                    }
+                    // a living animal heavier than the global 150 kg and at most 216 (an adult dewback, 180): spared by the global
+                    // creature mass limit, thrown under a creatureMassLimitOverride of 216 (the grav-ram's)
+                    PawnKindDef big = Kind(OverrideKind);
                     ThingDef proj = DefDatabase<ThingDef>.GetNamed("Bullet_Revolver");
                     AddExt(s, proj, new RM_KnockbackExtension { force = 4f, maxThrowCells = 10, creatureMassLimitOverride = 216f });
                     Pawn a = Adult(big);
@@ -1708,7 +1722,7 @@ namespace RimMandrake.ExplosiveKnockback
         }
 
         /// <summary>sc_mass_and_power (design/concepts/ExplosiveKnockback/scenes.json; owner cards 2026-11-13 "Cutoff -> A mass
-        /// limit", "Blast power -> Type x damage"): a rat N, a clothed colonist with a sidearm E, a muffalo S and a thrumbo W,
+        /// limit", "Blast power -> Type x damage"): a scurrier N, a clothed colonist with a sidearm E, a gelagrub S and a bantha W,
         /// each one cell from one Bomb blast of radius 2.9 at damage 50 (or 100: the _x2 scenes). The blast REALLY deals that
         /// damage, so the push reads it; NoHarm absorbs the injury on the four (asserted: no new hediff). Lanes: _off =
         /// blastPowerFromDamage off; _250 = creatureMassLimit 250. Every other setting at its default (Reset, restored after).
@@ -1750,18 +1764,19 @@ namespace RimMandrake.ExplosiveKnockback
                 RimMandrakeExplosiveKnockbackSettings.creatureMassLimit = 250f;
             }
 
-            Pawn rat = Adult(DefDatabase<PawnKindDef>.GetNamed("Rat"));
-            Pawn muffalo = Adult(DefDatabase<PawnKindDef>.GetNamed("Muffalo"));
-            Pawn thrumbo = Adult(DefDatabase<PawnKindDef>.GetNamed("Thrumbo"));
-            GenSpawn.Spawn(rat, O(s, 0, 1), Map);
-            Track(s, "rat", rat);
-            GenSpawn.Spawn(muffalo, O(s, 0, -1), Map);
-            Track(s, "muffalo", muffalo);
-            GenSpawn.Spawn(thrumbo, O(s, -1, 0), Map);
-            Track(s, "thrumbo", thrumbo);
+            PawnKindDef smallKind = Kind(SmallKind), underKind = Kind(UnderLimitKind), heavyKind = Kind(HeavyKind);
+            Pawn scurrier = Adult(smallKind);
+            Pawn gelagrub = Adult(underKind);
+            Pawn bantha = Adult(heavyKind);
+            GenSpawn.Spawn(scurrier, O(s, 0, 1), Map);
+            Track(s, "scurrier", scurrier);
+            GenSpawn.Spawn(gelagrub, O(s, 0, -1), Map);
+            Track(s, "gelagrub", gelagrub);
+            GenSpawn.Spawn(bantha, O(s, -1, 0), Map);
+            Track(s, "bantha", bantha);
             // a colonist with a revolver, 45-76 kg as the kernel weighs it (Mass stat minus inventory: worn clothes add nothing,
             // MEASURED live 2026-11-13 at 48.75 and 60.75 kg, so the old 64-76 band never drew one in 40 tries). Under 63.5 kg a
-            // colonist ties the capped rat at damage 100 (the order judge allows a tie at the cap); over 76.9 the muffalo at 50
+            // colonist ties the capped scurrier at damage 100 (the order judge allows a tie at the cap); over 76.9 the gelagrub at 50
             Pawn col = null;
             ThingDef revolver = DefDatabase<ThingDef>.GetNamedSilentFail("Gun_Revolver");
             for (int tries = 0; tries < 40 && col == null; tries++)
@@ -1800,9 +1815,9 @@ namespace RimMandrake.ExplosiveKnockback
             s.numbers["ratio"] = ratio;
             var bands = new Dictionary<string, (float lo, float hi)>
             {
-                ["rat"] = (1f, 30f), ["colonist"] = (45f, 76f), ["muffalo"] = (100f, 150f), ["thrumbo"] = (150.001f, 1000f),
+                ["scurrier"] = (1f, 30f), ["colonist"] = (45f, 76f), ["gelagrub"] = (100f, 150f), ["bantha"] = (150.001f, 1000f),
             };
-            foreach (string key in new[] { "rat", "colonist", "muffalo", "thrumbo" })
+            foreach (string key in new[] { "scurrier", "colonist", "gelagrub", "bantha" })
             {
                 var p = (Pawn)s.things[key];
                 float mass = p.GetStatValue(StatDefOf.Mass) - MassUtility.InventoryMass(p);
@@ -1816,10 +1831,10 @@ namespace RimMandrake.ExplosiveKnockback
                 s.numbers["hediffs_" + key] = p.health.hediffSet.hediffs.Count;
                 NoHarm.Add(p.thingIDNumber);
             }
-            // the table DEFAULTS.md states for the stated masses (rat 12, colonist ~70, muffalo 144, thrumbo 240)
+            // the table DEFAULTS.md states for the stated masses (scurrier 12, colonist ~70, gelagrub 144, bantha 240)
             var table = lane == "off" || !x2
-                ? new Dictionary<string, int> { ["rat"] = 5, ["colonist"] = 3, ["muffalo"] = 2, ["thrumbo"] = lane == "250" ? 1 : 0 }
-                : new Dictionary<string, int> { ["rat"] = 6, ["colonist"] = 5, ["muffalo"] = 4, ["thrumbo"] = lane == "250" ? 3 : 0 };
+                ? new Dictionary<string, int> { ["scurrier"] = 5, ["colonist"] = 3, ["gelagrub"] = 2, ["bantha"] = lane == "250" ? 1 : 0 }
+                : new Dictionary<string, int> { ["scurrier"] = 6, ["colonist"] = 5, ["gelagrub"] = 4, ["bantha"] = lane == "250" ? 3 : 0 };
             foreach (var kv in table)
             {
                 s.numbers["table_" + kv.Key] = kv.Value;
@@ -1834,8 +1849,8 @@ namespace RimMandrake.ExplosiveKnockback
             var sb = new StringBuilder();
             bool ok = true, table = true;
             var cells = new Dictionary<string, int>();
-            var dirs = new Dictionary<string, IntVec3> { ["rat"] = IntVec3.North, ["colonist"] = IntVec3.East, ["muffalo"] = IntVec3.South, ["thrumbo"] = IntVec3.West };
-            foreach (string key in new[] { "rat", "colonist", "muffalo", "thrumbo" })
+            var dirs = new Dictionary<string, IntVec3> { ["scurrier"] = IntVec3.North, ["colonist"] = IntVec3.East, ["gelagrub"] = IntVec3.South, ["bantha"] = IntVec3.West };
+            foreach (string key in new[] { "scurrier", "colonist", "gelagrub", "bantha" })
             {
                 var p = (Pawn)sc.things[key];
                 int want = (int)sc.numbers["want_" + key];
@@ -1871,8 +1886,8 @@ namespace RimMandrake.ExplosiveKnockback
                 sb.Append(" " + key + "(" + sc.numbers["mass_" + key].ToString("0.0") + "kg)=" + (want == 0 ? "spared" : got.ToString())
                     + "/want " + want + (rowOk ? "" : "!") + (reqOk ? "" : " request!"));
             }
-            bool order = cells["rat"] >= cells["colonist"] && cells["colonist"] > cells["muffalo"] && cells["muffalo"] > cells["thrumbo"]
-                && (lane == "250" || cells["thrumbo"] == 0) && (cells["rat"] > cells["colonist"] || cells["rat"] == 6);
+            bool order = cells["scurrier"] >= cells["colonist"] && cells["colonist"] > cells["gelagrub"] && cells["gelagrub"] > cells["bantha"]
+                && (lane == "250" || cells["bantha"] == 0) && (cells["scurrier"] > cells["colonist"] || cells["scurrier"] == 6);
             return Result(sc, ok && order, "lane=" + lane + " damage=" + damage + " ratio=" + sc.numbers["ratio"].ToString("0.00")
                 + sb + " order=" + order + " statedTable=" + table);
         }

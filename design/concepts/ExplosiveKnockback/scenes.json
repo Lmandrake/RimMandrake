@@ -116,13 +116,13 @@
    "start": [
     "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists spared_states; INVALID otherwise)",
     "FlowWorks loaded (asserted: Names reports flowworks=true; INVALID otherwise)",
-    "beside one grenade, all two cells from the impact: a thrumbo (mass over the 150 kg creature mass limit, asserted: mass read), a colonist on a pit floor, a colonist carrying a downed pawn, a colonist in a bed, a thrumbo corpse, a stack and a corpse lying on the pit floor, and a flight-capable animal (the first loaded animal def whose race can fly, read) whose vanilla flight tracker (Pawn_FlightTracker) a test hook sets to the flying state by a field write, so vanilla Pawn.Flying reads true (asserted read before the grenade); nothing is launched and no flight is run, and the mod's own skip check (PawnSkipReason) is not touched or hooked",
+    "beside one grenade, all two cells from the impact: a bantha (mass over the 150 kg creature mass limit, asserted: mass read), a colonist on a pit floor, a colonist carrying a downed pawn, a colonist in a bed, a bantha corpse, a stack and a corpse lying on the pit floor, and a flight-capable animal (the first loaded animal def whose race can fly, read) whose vanilla flight tracker (Pawn_FlightTracker) a test hook sets to the flying state by a field write, so vanilla Pawn.Flying reads true (asserted read before the grenade); nothing is launched and no flight is run, and the mod's own skip check (PawnSkipReason) is not touched or hooked",
     "a plain colonist at the same distance",
-    "lane B, the same grenade with lightMassLimit raised above the thrumbo corpse's mass (asserted: mass read and setting read back): a second thrumbo corpse; and, with creatureMassLimit at 20 kg (asserted read back), a human corpse under 75 kg (asserted: mass read), both two cells from the impact",
+    "lane B, the same grenade with lightMassLimit raised above the bantha corpse's mass (asserted: mass read and setting read back): a second bantha corpse; and, with creatureMassLimit at 20 kg (asserted read back), a human corpse under 75 kg (asserted: mass read), both two cells from the impact",
     "lane C at default settings: a corpse of mass over 75 kg (asserted: mass read), two cells from the impact"
    ],
    "action": "each lane's grenade lands; step 300 ticks after each",
-   "expect": "each spared pawn on its own cell, with journal skip reasons too_heavy_creature, in_pit, carrying_pawn, in_bed and flying; the thrumbo corpse, the pit-floor stack and the pit-floor corpse unmoved with skip reasons too_heavy, in_pit and in_pit; the carried pawn has no request line; in lane B the thrumbo corpse is thrown (one request line: no body-size rule spares it) and the human corpse is thrown under creatureMassLimit 20 (the creature limit never weighs a corpse); in lane C the corpse unmoved with skip reason too_heavy",
+   "expect": "each spared pawn on its own cell, with journal skip reasons too_heavy_creature, in_pit, carrying_pawn, in_bed and flying; the bantha corpse, the pit-floor stack and the pit-floor corpse unmoved with skip reasons too_heavy, in_pit and in_pit; the carried pawn has no request line; in lane B the bantha corpse is thrown (one request line: no body-size rule spares it) and the human corpse is thrown under creatureMassLimit 20 (the creature limit never weighs a corpse); in lane C the corpse unmoved with skip reason too_heavy",
    "control": {
     "case": "the plain colonist in the same blast",
     "expect": "thrown, one launch line",
@@ -142,17 +142,17 @@
    "entry_point": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::mass_and_power",
    "start": [
     "quicktest map, minimal list; Explosive Knockback active (asserted: RM_KnockbackProof.Names lists mass_and_power; INVALID otherwise)",
-    "four creatures each orthogonally one cell from one impact cell (north, east, south, west), on open standable ground with no wall, pawn, pit or deep water within 7 cells of any ray (asserted): a rat (12 kg), a colonist in ordinary clothes and a sidearm (64 to 76 kg), a muffalo (144 kg) and a thrumbo (240 kg); each mass read as the kernel reads it, the Mass stat less carried inventory (asserted: rat under 30, colonist 64 to 76, muffalo 100 to 150, thrumbo over 150; else INVALID)",
+    "four creatures each orthogonally one cell from one impact cell (north, east, south, west), on open standable ground with no wall, pawn, pit or deep water within 7 cells of any ray (asserted): a scurrier (12 kg), a colonist in ordinary clothes and a sidearm (45 to 76 kg), a gelagrub (144 kg) and a bantha (240 kg); each mass read as the kernel reads it, the Mass stat less carried inventory (asserted: scurrier under 30, colonist 45 to 76, gelagrub 100 to 150, bantha over 150; else INVALID)",
     "every setting at default (asserted: Settings reset then read; creatureMassLimit 150, blastPowerFromDamage on, maximum throw 6)",
     "the blast is a Bomb explosion staged through the game's own explosion call at radius 2.9 (the mortar shell's) and damage 50 (Bomb's default, the mortar's), then on a fresh copy of the same staging the same at damage 100 (asserted: radius and damage read back from the journal's blast line each run)",
     "a test hook absorbs the staged explosion's injury on the four creatures (asserted: no new hediff on any of them after either run; INVALID otherwise), while the journal's damage ratio is still read from the explosion's damage"
    ],
    "action": "each blast in turn on its own fresh staging; step until every creature is at rest",
-   "expect": "each creature thrown straight away from the impact along its own ray by the cells the kernel gives for its read mass (baseCells 4 x force 1 x damage ratio x falloff 0.655 x MassScale sqrt(70/mass) clamped 0.25 to 2, rounded, capped at 6); for the stated masses: at damage 50 the rat 5, the colonist 3, the muffalo 2, the thrumbo 0 with journal skip too_heavy_creature; at damage 100 the rat 6 (the cap), the colonist 5, the muffalo 4, the thrumbo 0 with skip too_heavy_creature; the journal's damage ratio reads 1.0 then 2.0; within each run rat > colonist > muffalo > thrumbo; each thrown creature alive and stunned",
+   "expect": "each creature thrown straight away from the impact along its own ray by the cells the kernel gives for its read mass (baseCells 4 x force 1 x damage ratio x falloff 0.655 x MassScale sqrt(70/mass) clamped 0.25 to 2, rounded, capped at 6); for the stated masses: at damage 50 the scurrier 5, the colonist 3, the gelagrub 2, the bantha 0 with journal skip too_heavy_creature; at damage 100 the scurrier 6 (the cap), the colonist 5, the gelagrub 4, the bantha 0 with skip too_heavy_creature; the journal's damage ratio reads 1.0 then 2.0; within each run scurrier > colonist > gelagrub > bantha; each thrown creature alive and stunned",
    "control": {
     "case": "two lanes: the same two runs with blastPowerFromDamage off; and both runs (damage 50 and damage 100) with creatureMassLimit 250",
-    "expect": "off: both runs give the damage-50 cells (5, 3, 2, 0), ratio 1.0; at 250 kg the thrumbo is thrown 1 cell at damage 50 and 3 cells at damage 100 (the others as at default)",
-    "rules_out": "distance falloff or staging, not damage, making the second run throw farther; and the thrumbo staying for some reason other than the mass limit (a leftover body-size rule, a blast that misses it)"
+    "expect": "off: both runs give the damage-50 cells (5, 3, 2, 0), ratio 1.0; at 250 kg the bantha is thrown 1 cell at damage 50 and 3 cells at damage 100 (the others as at default)",
+    "rules_out": "distance falloff or staging, not damage, making the second run throw farther; and the bantha staying for some reason other than the mass limit (a leftover body-size rule, a blast that misses it)"
    },
    "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
    "hold": "immediate",
@@ -1079,7 +1079,7 @@
     "heavier_flies_less",
     "sc_mass_and_power"
    ],
-   "why": "the thrumbo over 150 kg skipped with reason too_heavy_creature at default and thrown at creatureMassLimit 250, in sc_mass_and_power"
+   "why": "the bantha over 150 kg skipped with reason too_heavy_creature at default and thrown at creatureMassLimit 250, in sc_mass_and_power"
   },
   {
    "capability": "inv_blast_power_damage",
