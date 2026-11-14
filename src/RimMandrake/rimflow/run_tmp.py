@@ -42,7 +42,7 @@ import time
 
 GRACE_S = 300
 ACTIVE = {"active", "activating", "deactivating", "reloading", "refreshing"}
-NONDUMPABLE = {"systemd", "(sd-pam)", "ssh-agent"}     # ours by uid, unreadable by design, never a run
+NONDUMPABLE = {"systemd", "(sd-pam)", "ssh-agent", "tailscaled"}     # ours by uid, unreadable by design, never a run (tailscaled: a Tailscale SSH session child, root-owned /proc)
 NAME = re.compile(r"^[A-Za-z0-9@._-]{1,200}$")
 PIN = re.compile(r"^\.reaping-(\d+)-(.+)$")
 PID_NAME = re.compile(r"^pid-(\d+)-(\d+)-")

@@ -54,7 +54,7 @@ def main():
         for op, want in (("raise", dict(exposed="True", marker="True", canReach="False")),
                          ("lower", dict(exposed="False", marker="False", canReach="True"))):
             s(PP, "ProofLadder", "%s,%s" % (lad, op))
-            s(WR, "ProofReachForce", "")
+            s(WR, "ProofReachForce", "-")
             now = read()
             B.ticks(260)
             later = read()

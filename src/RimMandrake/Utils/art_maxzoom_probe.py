@@ -34,7 +34,7 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 DEFAULT_SOURCES = (
-    "src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Thrumbo/Thrumbo_south.png",
+    "src/RimMandrake/Stillsand/Textures/Things/Pawn/Animal/RM_Aurrok/RM_Aurrok_south.png",
     "src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Vhessk/Vhessk_south.png",
     "src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Megatardi/Megatardi_south.png",
 )
