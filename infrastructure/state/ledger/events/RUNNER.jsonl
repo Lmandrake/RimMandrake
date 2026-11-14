@@ -7054,3 +7054,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_STEVE_SEATS_RESTORE_QTWK","result":"broken","detail":"Ops alarm STEVE_SEATS: unreachable -- steve.seats_absent_min = 25.0 min a Steve seat has been absent (MEASURED), line > 10","ts":"2026-11-14T08:57:16Z","tsn":1794646636019480849}
 {"seat":"RUNNER","event":"raise","id":"OPS_STEVE_SEATS_RESTORE_QTWK","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-14T08:57:21Z","tsn":1794646641142044963}
 {"seat":"RUNNER","event":"note","id":"OPS_TIMER_REPAIR_PRXC","text":"ops_watch: WORSE at 2026-11-14T08:58:43Z: 1 -> 2 failed user units, the rule's step is {\"factor\": 2}","ts":"2026-11-14T08:58:50Z","tsn":1794646730104724054}
+{"seat":"RUNNER","event":"note","id":"OPS_TIMER_REPAIR_PRXC","text":"ops_watch: WORSE at 2026-11-14T09:00:00Z: 1 -> 2 failed user units, the rule's step is {\"factor\": 2}","ts":"2026-11-14T09:00:06Z","tsn":1794646806267132862}
