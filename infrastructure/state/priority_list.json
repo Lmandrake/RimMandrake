@@ -1,21 +1,7 @@
 {
- "set_at": "2026-11-05T04:03:30Z",
+ "set_at": "2026-11-14T16:03:43Z",
  "set_by": "Conductor",
  "entries": [
-  {
-   "id": "CLOSE_GATE_ENFORCE_DONE_IS_EARNED",
-   "reading": {
-    "file": "infrastructure/state/codebase_health_last.json",
-    "key": "counts.green"
-   }
-  },
-  {
-   "id": "FOUNDRY_CONTEXT_BUILD_FRESH_PER_TICKET",
-   "reading": {
-    "file": "infrastructure/state/codebase_health_last.json",
-    "key": "counts.green"
-   }
-  },
   {
    "id": "HOSE_SPILL_FIX_OFF_SWITCH_STILL_POURS",
    "reading": {
@@ -32,13 +18,6 @@
    "id": "GSS_SWITCHES_PROVE_LAST_FOUR_STANDING",
    "reading": {
     "mod": "GimmeSomeSlack"
-   }
-  },
-  {
-   "id": "MINERAL_SHEET_REBUILD_FROM_PAINTED_MAP",
-   "reading": {
-    "file": "infrastructure/state/codebase_health_last.json",
-    "key": "counts.green"
    }
   }
  ]
