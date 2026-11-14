@@ -195,7 +195,7 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>Sink on cell <paramref name="c"/> of dug depth <paramref name="d"/>, held so the drawn centre
-		/// stays north of the near lip in that column (<see cref="RM_PitDrawMath.ClampSinkToLip"/>).</summary>
+		/// stays north of the near lip in that column, feet included (<see cref="RM_PitDrawMath.ClampSinkToLip"/>).</summary>
 		private static float Clamped(RM_MapComponent_Excavation ex, Map map, IntVec3 c, int d, float perLevel)
 		{
 			float sink = RM_PitDrawMath.SinkFor(d, perLevel);
@@ -208,14 +208,14 @@ namespace RimMandrake.FlowWorks
 				return sink;
 			}
 			float lipZ = RM_PitDrawMath.LipZBelow(c.x, c.z, d, SeenDepth, RM_PitDrawMath.SinkCapLevels * 2);
-			return RM_PitDrawMath.ClampSinkToLip(sink, c.z + 0.5f, lipZ);
+			return RM_PitDrawMath.ClampSinkToLip(sink, c.z + 0.5f - RM_PitDrawMath.FeetBelowCentre, lipZ);
 		}
 
 		/// <summary>The drawn-centre hold (RM_PitDrawMath.HoldToDrawnLip) under the same switch as the per-cell clamp: with the
 		/// clamp off (validation_v2's X rows measure the sink by depth) the sink is left whole.</summary>
 		private static float Held(float sink, Vector3 drawPos, int d)
 		{
-			return RimMandrakeFlowWorksSettings.pitSinkClampEnabled ? RM_PitDrawMath.HoldToDrawnLip(sink, drawPos.x, drawPos.z, d, SeenDepth) : sink;
+			return RimMandrakeFlowWorksSettings.pitSinkClampEnabled ? RM_PitDrawMath.HoldToDrawnLip(sink, drawPos.x, drawPos.z, d, SeenDepth, RM_PitDrawMath.FeetBelowCentre) : sink;
 		}
 
 		/// <summary>The lip finder's depth lookup (RM_PitDrawMath.LipZBelow) on the map <see cref="ExcavationOf"/> last cached

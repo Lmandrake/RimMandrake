@@ -127,7 +127,7 @@ namespace RimMandrake.FlowWorks
 		/// and vanilla's PawnTweener lags the logical cell (spring 0.09 a frame: about 0.85 cell behind a walking boar at any
 		/// game speed) and freezes outright while paused. A boar that stepped 38,22 -> 39,23 was sunk 1.5 (39,23's room) from
 		/// a tween still on 38,22 and drawn a cell south of the pit, on the wall. <paramref name="d"/> &lt;= 0: unchanged.</summary>
-		public static float HoldToDrawnLip(float sink, float drawX, float drawZ, int d, Func<int, int, int> seenDepth)
+		public static float HoldToDrawnLip(float sink, float drawX, float drawZ, int d, Func<int, int, int> seenDepth, float feetBelow = 0f)
 		{
 			if (!(sink > 0f) || d <= 0)
 			{
@@ -135,8 +135,13 @@ namespace RimMandrake.FlowWorks
 			}
 			int x = (int)Math.Floor(drawX);
 			int z = (int)Math.Floor(drawZ);
-			return ClampSinkToLip(sink, drawZ, LipZBelow(x, z, d, seenDepth, SinkCapLevels * 2));
+			return ClampSinkToLip(sink, drawZ - feetBelow, LipZBelow(x, z, d, seenDepth, SinkCapLevels * 2));
 		}
+
+		/// <summary>RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE round 7 (round 6, e_drafted_4m_pit: a colonist on a 4 m pit's south
+		/// row hung its legs and name over the rim onto the grass): how far a pawn's feet hang under its drawn centre (cells).
+		/// The lip clamps hold the FEET north of the near lip, so on a south row the sink is spent first.</summary>
+		public const float FeetBelowCentre = 0.5f;
 
 		/// <summary>PIT_SINK_FIX_SOIL_STRIP_OVER_WALL — the lowest z the near-lip cover may reach in column <paramref name="x"/>.
 		/// The cover hides the sprite band [<paramref name="bandBottom"/>, <paramref name="lipZ"/>] by re-drawing the GROUND there,

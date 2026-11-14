@@ -134,16 +134,18 @@ namespace RimMandrake.FlowWorks
 		/// <summary>The vent's bubbling (owner 2026-11-13, G2 under 1 m: "Bubbles are centered on vent itself, yes. They are too
 		/// large and too transparent. It should be bubbling water, not faint ghost bubbles rising up."): many small, bright,
 		/// mostly opaque bubbles (RM_Fleck_VentBubble, its own white art tinted per liquid) in a tight cluster on the vent's
-		/// centre, short-lived and never stopping. A second while the vent sprays; between sprays a third of it keeps going,
-		/// so a sunk geyser is always findable by eye. Before: 6 a second (1.2 between) of a 0.27..0.40-cell bubble at alpha
-		/// 0.29, living 1.3 s, over a 0.95-cell circle.</summary>
-		public const float SprayBubblesPerSecond = 24f;
-		public const float BetweenShare = 1f / 3f;
+		/// centre, short-lived and never stopping. A second while the vent sprays; between sprays some of it keeps going,
+		/// so a sunk geyser is always findable by eye (round 7: three quarters). Before: 6 a second (1.2 between) of a 0.27..0.40-cell bubble at alpha
+		/// 0.29, living 1.3 s, over a 0.95-cell circle.
+		/// Round 7 (Conductor's ruling, round 6 read "a handful of specks"): a boiling patch about one square across centred
+		/// on the vent, 30-60 bubbles alive at once of mixed sizes (0.06-0.25 squares), popping fast, with a soft froth ring
+		/// (RM_Fleck_VentFroth). Rates are bubbles alive / life.</summary>
+		public const float SprayBubblesPerSecond = 42f / BubbleLifeSeconds;
+		public const float BetweenShare = 0.75f;
 
 		/// <summary>Deeper liquid shows more of the column: the rate grows by DepthGain a metre over the seat, to DepthCap
-		/// metres (x2 at 4 m and below). Cost: at most 48 a second a geyser in view, each living about half a second, so about
-		/// 24 flecks alive a geyser (pooled, one instanced batch).</summary>
-		public const float DepthGain = 0.25f;
+		/// metres (x1.32 at 4 m and below). Cost: at most about 58 bubbles alive a geyser in view (pooled, one instanced batch).</summary>
+		public const float DepthGain = 0.08f;
 		public const float DepthCap = 4f;
 
 		/// <summary>A liquid this slow (FluidDef.ticksPerTile; water 60) is thick: fewer, bigger, slower bubbles, no ring.</summary>
@@ -170,18 +172,35 @@ namespace RimMandrake.FlowWorks
 			return (Thick(ticksPerTile) ? r * 0.4f : r) * DepthFactor(levelMetres) * density;
 		}
 
-		/// <summary>How far from the vent's centre a bubble rises (cells): a tight cluster on the vent mouth.</summary>
-		public const float PlumeRadius = 0.35f;
+		/// <summary>How far from the vent's centre a bubble rises (cells): the boiling patch, about one square across.</summary>
+		public const float PlumeRadius = 0.5f;
 
 		/// <summary>RM_Fleck_VentBubble's drawSize (cells): the scale range below multiplies it.</summary>
 		public const float BubbleDrawSize = 0.12f;
 
-		public static float PlumeScaleMin(int ticksPerTile) => Thick(ticksPerTile) ? 1.0f : 0.7f;
+		public static float PlumeScaleMin(int ticksPerTile) => Thick(ticksPerTile) ? 0.8f : 0.5f;
 
-		public static float PlumeScaleMax(int ticksPerTile) => Thick(ticksPerTile) ? 1.6f : 1.3f;
+		public static float PlumeScaleMax(int ticksPerTile) => Thick(ticksPerTile) ? 2.05f : 2.0f;
+
+		/// <summary>A bubble's scale for a uniform <paramref name="roll"/>: mostly small, a few big (min + span x roll^2).</summary>
+		public static float PlumeScale(int ticksPerTile, float roll)
+		{
+			float lo = PlumeScaleMin(ticksPerTile);
+			return lo + (PlumeScaleMax(ticksPerTile) - lo) * roll * roll;
+		}
 
 		/// <summary>A bubble's life (s): RM_Fleck_VentBubble's fade-in + solid + fade-out.</summary>
-		public const float BubbleLifeSeconds = 0.5f;
+		public const float BubbleLifeSeconds = 0.35f;
+
+		/// <summary>RM_Fleck_VentFroth (a soft brighter ring of froth round the boiling patch): thrown this often a second over
+		/// a covered vent in a thin liquid, each living about 1.2 s, drawn this wide (cells).</summary>
+		public const float FrothPerSecond = 2.5f;
+		public const float FrothDrawSize = 1.15f;
+
+		/// <summary>Round 7 (owner: "the vent looks on top of the water"): under liquid the vanilla geyser art (a crisp hole,
+		/// a pale ring and a 4-cell grey splotch) is replaced by RM_SunkVent, a soft dark hole this wide (cells) drawn under the
+		/// liquid's sheet, so the water over the vent is the pit's water.</summary>
+		public const float SunkVentDrawSize = 1.25f;
 
 		/// <summary>The colour a vent bubbles in: a liquid look's own bubble colour when it sets one, else (the class default
 		/// <paramref name="classDefault"/>) its own liquid colour lifted a quarter of the way to white, so tar bubbles dark grey,

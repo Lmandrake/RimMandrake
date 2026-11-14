@@ -27,14 +27,14 @@
   <!-- RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE (owner 2026-11-13, a sunk geyser under 1 m: "They are too large and too
        transparent. It should be bubbling water, not faint ghost bubbles rising up."): the geyser plume's bubble. Its own art
        (Textures/Things/Mote/RM_VentBubble.png: white, body alpha ~0.85, opaque rim), every vanilla bubble and foam texture
-       measuring at most 92/255 alpha. Small (drawSize 0.12 x 0.7..1.6), short-lived (0.5 s), jittered by the shaking
+       measuring at most 92/255 alpha. Small (drawSize 0.12 x 0.5..2.05), short-lived (0.35 s), jittered by the shaking
        shader, tinted per liquid by RM_GeyserTubMath.BubbleColour; thrown by RM_MapComponent_GeyserPits.Plume. -->
   <FleckDef ParentName="FleckBase_Thrown">
     <defName>RM_Fleck_VentBubble</defName>
     <altitudeLayer>MoteLow</altitudeLayer>
-    <fadeInTime>0.05</fadeInTime>
-    <solidTime>0.3</solidTime>
-    <fadeOutTime>0.15</fadeOutTime>
+    <fadeInTime>0.03</fadeInTime>
+    <solidTime>0.22</solidTime>
+    <fadeOutTime>0.1</fadeOutTime>
     <growthRate>0.1</growthRate>
     <graphicData>
       <graphicClass>Graphic_Fleck</graphicClass>
@@ -45,6 +45,23 @@
         <_Speed>9</_Speed>
       </shaderParameters>
       <drawSize>0.12</drawSize>
+    </graphicData>
+  </FleckDef>
+  <!-- Round 7 (RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE): a soft brighter ring of froth round a submerged vent's boiling
+       patch (Textures/Things/Mote/RM_VentFroth.png: white, ring alpha ~0.6, speckled inside), about a square across, thrown
+       2.5 a second by RM_MapComponent_GeyserPits.Plume in the bubbles' colour lifted halfway to white. -->
+  <FleckDef ParentName="FleckBase_Thrown">
+    <defName>RM_Fleck_VentFroth</defName>
+    <altitudeLayer>MoteLow</altitudeLayer>
+    <fadeInTime>0.3</fadeInTime>
+    <solidTime>0.4</solidTime>
+    <fadeOutTime>0.5</fadeOutTime>
+    <growthRate>0.15</growthRate>
+    <graphicData>
+      <graphicClass>Graphic_Fleck</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <texPath>Things/Mote/RM_VentFroth</texPath>
+      <drawSize>1.15</drawSize>
     </graphicData>
   </FleckDef>
 </Defs>

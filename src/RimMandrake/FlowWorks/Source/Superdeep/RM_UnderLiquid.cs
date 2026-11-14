@@ -383,13 +383,40 @@ namespace RimMandrake.FlowWorks
 		/// so a drowned thing looked laid on top of the water.)</summary>
 		public static float CoverAlpha(int q) => q >= Steps ? 0f : (q <= 0 ? 1f : 1f - (float)q / Steps);
 
-		/// <summary>An overlay icon (power off, needs power, forbidden, ...) sits over its thing's middle and is seen as that
-		/// part of the thing is: Seen(level - height/2); 0 (not drawn) under LabelHidden. A thing flush with the line shows its
-		/// icon at Seen(height/2), never whole (following the top, it stayed whole until the top went under).</summary>
+		/// <summary>How much is seen of the drowned part of a thing standing on the floor under <paramref name="levelMetres"/>
+		/// of liquid (alpha steps of 1/<see cref="Steps"/>): the law at the FULL depth over the floor it stands on, as the floor
+		/// and the big-pit items are seen (round 7, Conductor's ruling on the owner's "The ancient shopping Cart isn't shown as
+		/// under the water": banded by the depth at each band's middle, a 1 m cooler under 1 m read 90% of dry). One step for
+		/// the whole drowned part, so a thing poking out has a crisp waterline.</summary>
+		public static int DrownedStep(float clarity, float levelMetres) => BandAlphaStep(clarity, levelMetres);
+
+		/// <summary>Liquid over a thing's top (m) from which its overlay icons are hidden (owner 2026-11-13: "put the yellow
+		/// power disconnect icons under the water too when the item is under water").</summary>
+		public const float OverlayHideMetres = 0.5f;
+
+		/// <summary>An overlay icon (power off, needs power, forbidden, ...) sits over its thing's middle. Its middle above the
+		/// line: whole. Under it: at least its thing's tint (Seen at the full depth, <see cref="DrownedStep"/>), and hidden (0)
+		/// once <see cref="OverlayHideMetres"/> of liquid stands over the thing's top, or under LabelHidden.</summary>
 		public static float OverlayAlpha(float clarity, float levelMetres, float heightMetres)
 		{
-			float a = Seen(clarity, levelMetres - heightMetres * 0.5f);
+			if (levelMetres <= 0f || levelMetres < heightMetres * 0.5f)
+			{
+				return 1f;
+			}
+			if (levelMetres - heightMetres >= OverlayHideMetres - 1e-4f)
+			{
+				return 0f;
+			}
+			float a = Seen(clarity, levelMetres);
 			return a < LabelHidden ? 0f : a;
+		}
+
+		/// <summary>The colour an overlay icon seen at <paramref name="seen"/> is multiplied by: lerp(the liquid's body colour,
+		/// white, seen), so a drowned icon shifts toward the liquid as its thing does, not only fades.</summary>
+		public static Float3 OverlayTint(Float3 body, float seen)
+		{
+			float s = Clamp01(seen);
+			return new Float3(body.r + (1f - body.r) * s, body.g + (1f - body.g) * s, body.b + (1f - body.b) * s);
 		}
 
 		/// <summary>A cooler or vent stands in a wall slot: drawn as one metre high, not by its fillPercent (1 = a full wall,

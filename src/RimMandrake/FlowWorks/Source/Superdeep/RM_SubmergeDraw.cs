@@ -202,7 +202,7 @@ namespace RimMandrake.FlowWorks
 
 		// ── the print context (main thread only: section rebuilds) ──────────────
 
-		private static bool ctxOn, inSplit, ctxWorld, ctxPit, ctxClip, ctxFlat;
+		private static bool ctxOn, inSplit, ctxWorld, ctxPit, ctxClip, ctxFlat, ctxVent;
 		private static Thing ctxThing;
 		private static float ctxRx0, ctxRz0, ctxRx1, ctxRz1;
 		private static Color ctxCover;
@@ -220,6 +220,7 @@ namespace RimMandrake.FlowWorks
 			ctxThing = null;
 			ctxClip = false;
 			ctxFlat = false;
+			ctxVent = false;
 			if (!On || t == null)
 			{
 				return;
@@ -244,6 +245,7 @@ namespace RimMandrake.FlowWorks
 				// a vent, filth, a drowned plant: lies on the floor, so it is drawn under the liquid's sheet and seen as the floor
 				// is (a plant only once wholly under; one standing partly out is drawn as vanilla does)
 				ctxFlat = flat || levelM >= standing;
+				ctxVent = t is Building_SteamGeyser;
 				return;
 			}
 			if (plant)
@@ -312,6 +314,7 @@ namespace RimMandrake.FlowWorks
 			ctxThing = null;
 			ctxClip = false;
 			ctxFlat = false;
+			ctxVent = false;
 		}
 
 		/// <summary>Lies on the floor with no height of its own: filth, and a geyser sunk in a pit (its vent).</summary>
@@ -600,18 +603,13 @@ namespace RimMandrake.FlowWorks
 			Matrix4x4 at4 = Matrix4x4.TRS(new Vector3(body.x, Mathf.Max(drawLoc.y, body.y) + CoverLift, body.z), Quaternion.AngleAxis(angle, Vector3.up), Vector3.one);
 			RM_LiquidSurfaceLook look = LookAt(at.Map, RM_SuperdeepTrap.EngineOf(at.Map), at.Position);
 			Color col = CoverColour(look, clarity);
-			float line = levelM - s * h;
-			int n = !(clarity > 0f) ? 1 : RM_UnderLiquid.BandsFor(clarity, line < 0f ? 0f : line, levelM);
-			for (int b = 0; b < n; b++)
+			// the whole drowned part is seen as the floor under the full depth (round 7); hidden under an opaque liquid
+			float cover = RM_UnderLiquid.CoverAlpha(RM_UnderLiquid.DrownedStep(clarity, levelM));
+			Mesh band = cover > 0.01f ? SliceMesh(size, 0f, s, flip) : null;
+			if (band != null)
 			{
-				float a = s * b / n, e = s * (b + 1) / n;
-				float cover = 1f - RM_UnderLiquid.Seen(clarity, levelM - (a + e) * 0.5f * h);
-				Mesh band = cover > 0.01f ? SliceMesh(size, a, e, flip) : null;
-				if (band != null)
-				{
-					coverBlock.SetColor(ShaderPropertyIDs.Color, new Color(col.r, col.g, col.b, cover));
-					UnityEngine.Graphics.DrawMesh(band, at4, mat, 0, null, 0, coverBlock);
-				}
+				coverBlock.SetColor(ShaderPropertyIDs.Color, new Color(col.r, col.g, col.b, cover));
+				UnityEngine.Graphics.DrawMesh(band, at4, mat, 0, null, 0, coverBlock);
 			}
 		}
 
@@ -621,7 +619,7 @@ namespace RimMandrake.FlowWorks
 		// corpse, a pawn. The law is applied there, by layer, not per kind: a thing standing wet in a pit whose top is hidden
 		// (RM_UnderLiquid.LabelAlpha 0: an opaque liquid over it) is not drawn at all; one partly seen draws every Graphic it
 		// draws through Graphic.DrawMeshInt split and faded like a print (DrawUnder), and a flame under the line is out.
-		// Overlays (OverlayDrawer: power off, needs power, broken down, out of fuel, forbidden) are seen as their thing's middle is (RM_UnderLiquid.OverlayAlpha).
+		// Overlays (OverlayDrawer: power off, needs power, broken down, out of fuel, forbidden) take their thing's tint and hide half a metre under (RM_UnderLiquid.OverlayAlpha).
 
 		[System.ThreadStatic] private static bool rtOn;
 		private static float rtLevel, rtHeight, rtClarity, rtShare;
@@ -771,8 +769,8 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>How much of an overlay on <paramref name="t"/> shows (RIMMANDRAKE_SINK_COOLER_ARROW_UNDER_TAR, owner 2026-11-13:
 		/// "if we could put the yellow power disconnect icons under the water too when the item is under water that would be
-		/// great"): the icon sits over the thing's middle and is seen as that part of it is (RM_UnderLiquid.OverlayAlpha: Seen
-		/// at level - height/2, 0 = not drawn); 1 for anything not standing wet in a pit.</summary>
+		/// great"): the icon takes its thing's full-depth tint and is hidden half a metre under (RM_UnderLiquid.OverlayAlpha, 0 = not
+		/// drawn); 1 for anything not standing wet in a pit.</summary>
 		public static float OverlayAlpha(Thing t)
 		{
 			if (!On || t == null || !t.Spawned || !(t.def.category == ThingCategory.Item || t is Building))
@@ -790,6 +788,7 @@ namespace RimMandrake.FlowWorks
 		/// <summary>The fade of the overlay OverlayDrawer is rendering now (1 = none): set by its Render* methods (outermost
 		/// call), applied to every mesh they hand to the draw batch (<see cref="OverlayMaterial"/>). Main thread only.</summary>
 		private static float ovFade = 1f;
+		private static Color ovBody = Color.white;
 		private static int ovDepth;
 
 		internal static void BeginOverlay(Thing t)
@@ -797,6 +796,10 @@ namespace RimMandrake.FlowWorks
 			if (ovDepth++ == 0)
 			{
 				ovFade = OverlayAlpha(t);
+				if (ovFade < 1f && t != null && t.Spawned)
+				{
+					ovBody = BodyColour(LookAt(t.Map, RM_SuperdeepTrap.EngineOf(t.Map), t.Position));
+				}
 			}
 		}
 
@@ -817,7 +820,32 @@ namespace RimMandrake.FlowWorks
 			{
 				return m;
 			}
-			return FadedMaterialPool.FadedVersionOf(m, m.color.a * ovFade);
+			return FadedMaterialPool.FadedVersionOf(TintedOverlay(m) ?? m, m.color.a * ovFade);
+		}
+
+		private static readonly Dictionary<long, Material> tintedOverlays = new Dictionary<long, Material>();
+
+		/// <summary>Round 7: an overlay icon over a drowned thing shifts toward the liquid as its thing does
+		/// (RM_UnderLiquid.OverlayTint at the fade's step), not only fades; cached per texture, shader, step and colour.</summary>
+		private static Material TintedOverlay(Material m)
+		{
+			Texture2D tex = m.mainTexture as Texture2D;
+			if (tex == null || m.shader == null)
+			{
+				return null;
+			}
+			int q = RM_UnderLiquid.Step(ovFade);
+			long rgb = ((long)(byte)(ovBody.r * 255f) << 16) | ((long)(byte)(ovBody.g * 255f) << 8) | (byte)(ovBody.b * 255f);
+			long key = ((long)tex.GetInstanceID() << 32) ^ ((long)m.shader.GetInstanceID() << 40) ^ ((long)q << 24) ^ rgb;
+			if (tintedOverlays.TryGetValue(key, out Material t) && t != null)
+			{
+				return t;
+			}
+			RM_UnderLiquid.Float3 k = RM_UnderLiquid.OverlayTint(new RM_UnderLiquid.Float3(ovBody.r, ovBody.g, ovBody.b), (float)q / RM_UnderLiquid.Steps);
+			Color c = m.color;
+			t = MaterialPool.MatFrom(new MaterialRequest(tex, m.shader, new Color(c.r * k.r, c.g * k.g, c.b * k.b, 1f)) { renderQueue = m.renderQueue });
+			tintedOverlays[key] = t;
+			return t;
 		}
 
 		/// <summary>RIMMANDRAKE_ADD_OVERLAY_PROOF_HOOK_LAW_CANNOT_SEE_ICONS: [proof] "x,z" -> what the liquid law decides for every
@@ -881,6 +909,18 @@ namespace RimMandrake.FlowWorks
 			inSplit = true;
 			try
 			{
+				if (ctxFlat && ctxVent)
+				{
+					// round 7 (owner: "the vent looks on top of the water"): a sunk vent is a floor hole only, under the sheet
+					Material hole = SunkVentMat();
+					if (hole == null)
+					{
+						return false;
+					}
+					float vs = RM_GeyserTubMath.SunkVentDrawSize;
+					Emit(layer, center, new Vector2(vs, vs), hole, 0f, false, null, colors, bias, payload);
+					return true;
+				}
 				if (ctxFlat)
 				{
 					Material under = UnderSheetMat(mat);
@@ -919,7 +959,8 @@ namespace RimMandrake.FlowWorks
 					}
 					if (s >= 0.5f && clear)
 					{
-						Material c = CoverMat(mat, RM_UnderLiquid.BandAlphaStep(ctxClarity, MetresOf(0.5f, lo, hi, fromLow)));
+						Material c = CoverMat(mat, ctxWorld ? RM_UnderLiquid.BandAlphaStep(ctxClarity, MetresOf(0.5f, lo, hi, fromLow))
+							: RM_UnderLiquid.DrownedStep(ctxClarity, ctxLevel));
 						if (c != null)
 						{
 							Emit(layer, center + new Vector3(0f, CoverEps, 0f), size, c, rot, flipUv, uvs, colors, bias, payload);
@@ -950,6 +991,16 @@ namespace RimMandrake.FlowWorks
 					return true;
 				}
 				Emit(layer, center, size, mat, 0f, flipUv, uvs, colors, bias, payload);
+				if (!ctxWorld)
+				{
+					// standing on the floor: the whole drowned part is seen as the floor under the full depth (round 7)
+					Material whole = CoverMat(mat, RM_UnderLiquid.DrownedStep(ctxClarity, ctxLevel));
+					if (whole != null)
+					{
+						Piece(layer, center.y, whole, colors, bias, payload, 0f, s, x0, z0, x1, z1, CoverEps);
+					}
+					return true;
+				}
 				int n = RM_UnderLiquid.BandsFor(ctxClarity, MetresOf(s, lo, hi, fromLow), MetresOf(0f, lo, hi, fromLow));
 				for (int b = 0; b < n; b++)
 				{
@@ -1084,6 +1135,24 @@ namespace RimMandrake.FlowWorks
 			return m;
 		}
 
+		private static Material sunkVent;
+
+		/// <summary>RM_SunkVent (a soft dark hole, no ring, no splotch) on the transparent shader under the liquid's sheet: what
+		/// a vent under liquid prints instead of vanilla's geyser art (round 7). Null when the art is missing.</summary>
+		private static Material SunkVentMat()
+		{
+			if (sunkVent == null)
+			{
+				Texture2D tex = ContentFinder<Texture2D>.Get("Things/Building/RM_SunkVent", false);
+				if (tex == null)
+				{
+					return null;
+				}
+				sunkVent = MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent, Color.white) { renderQueue = RM_FaceMaterial.UnderSheetQueue });
+			}
+			return sunkVent;
+		}
+
 		private static readonly Dictionary<int, Material> underSheet = new Dictionary<int, Material>();
 
 		/// <summary><paramref name="mat"/> (its texture and colour) on the transparent shader in the queue under the liquid's sheet
@@ -1185,17 +1254,12 @@ namespace RimMandrake.FlowWorks
 			Color col = thing != null && thing.Spawned ? CoverColour(LookAt(thing.Map, RM_SuperdeepTrap.EngineOf(thing.Map), thing.Position), clarity)
 				: BodyColour(null);
 			Matrix4x4 over = at * Matrix4x4.Translate(new Vector3(0f, CoverEps, 0f));
-			float line = footMetres - s * heightMetres;
-			int n = RM_UnderLiquid.BandsFor(clarity, line < 0f ? 0f : line, footMetres);
-			for (int b = 0; b < n; b++)
+			// the whole drowned part is seen as the floor under the full depth (round 7)
+			Material m = CoverMat(mat, RM_UnderLiquid.DrownedStep(clarity, footMetres), col);
+			Mesh band = m != null ? SliceMesh(size, 0f, s, flip) : null;
+			if (band != null)
 			{
-				float a = s * b / n, e = s * (b + 1) / n, mid = footMetres - (a + e) * 0.5f * heightMetres;
-				Material m = CoverMat(mat, RM_UnderLiquid.BandAlphaStep(clarity, mid), col);
-				Mesh band = m != null ? SliceMesh(size, a, e, flip) : null;
-				if (band != null)
-				{
-					UnityEngine.Graphics.DrawMesh(band, over, m, 0);
-				}
+				UnityEngine.Graphics.DrawMesh(band, over, m, 0);
 			}
 			return s;
 		}

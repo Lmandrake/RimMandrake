@@ -283,14 +283,14 @@ namespace RimMandrake.FlowWorks
 	/// vent in view, RM_Fleck_VentBubble (small, bright, mostly opaque; owner 2026-11-13: "It should be bubbling water, not
 	/// faint ghost bubbles rising up") is thrown in a tight cluster on the vent's mouth, short-lived and never stopping, in the
 	/// liquid's own colour (RM_GeyserTubMath.BubbleColour), more of it the deeper the liquid, fewer and bigger in thick
-	/// liquids, with an odd ripple ring in thin ones and a steam wisp off a clear one while it sprays. Every 250 ticks a geyser whose seat
+	/// liquids, with a soft froth ring (RM_Fleck_VentFroth) and an odd ripple in thin ones; no steam wisp drifts off a submerged vent (round 7). Every 250 ticks a geyser whose seat
 	/// moved re-meshes its squares so the print follows the dig. Cosmetic RNG isolated (Rand.PushState).
 	/// </summary>
 	public class RM_MapComponent_GeyserPits : MapComponent
 	{
 		private readonly List<Building_SteamGeyser> geysers = new List<Building_SteamGeyser>();
 		private readonly Dictionary<int, int> seatDrawn = new Dictionary<int, int>();
-		private static FleckDef bubbleFleck;
+		private static FleckDef bubbleFleck, frothFleck;
 
 		public RM_MapComponent_GeyserPits(Map map) : base(map)
 		{
@@ -418,6 +418,7 @@ namespace RimMandrake.FlowWorks
 			if (bubbleFleck == null)
 			{
 				bubbleFleck = DefDatabase<FleckDef>.GetNamedSilentFail("RM_Fleck_VentBubble");
+				frothFleck = DefDatabase<FleckDef>.GetNamedSilentFail("RM_Fleck_VentFroth");
 				if (bubbleFleck == null)
 				{
 					return;
@@ -445,27 +446,31 @@ namespace RimMandrake.FlowWorks
 				ctr.y = AltitudeLayer.MoteLow.AltitudeFor();
 				for (int k = 0; k < n; k++)
 				{
-					Vector2 off = Rand.InsideUnitCircle * (RM_GeyserTubMath.PlumeRadius * Rand.Value);   // a tight cluster on the mouth
+					Vector2 off = Rand.InsideUnitCircle * RM_GeyserTubMath.PlumeRadius;   // the boiling patch, about a square across
 					Vector3 at = ctr + new Vector3(off.x, 0f, off.y);
 					if (!at.ShouldSpawnMotesAt(map))
 					{
 						continue;
 					}
-					FleckCreationData d = FleckMaker.GetDataStatic(at, map, bubbleFleck,
-						Rand.Range(RM_GeyserTubMath.PlumeScaleMin(tpt), RM_GeyserTubMath.PlumeScaleMax(tpt)));
+					FleckCreationData d = FleckMaker.GetDataStatic(at, map, bubbleFleck, RM_GeyserTubMath.PlumeScale(tpt, Rand.Value));
 					d.instanceColor = tint;
 					d.velocityAngle = Rand.Range(0f, 360f);
-					d.velocitySpeed = thick ? Rand.Range(0f, 0.02f) : Rand.Range(0.05f, 0.25f);
+					d.velocitySpeed = thick ? Rand.Range(0f, 0.02f) : Rand.Range(0f, 0.08f);   // they pop where they rise
 					map.flecks.CreateFleck(d);
 					RM_GeyserPit.plumeBubbles++;
-					if (spraying && !thick && Rand.Chance(0.08f))
-					{
-						FleckMaker.WaterRipple(at, map, Rand.Range(0.5f, 0.9f));
-					}
 				}
-				if (spraying && look != null && look.seeThrough > 0f && Rand.Chance(0.15f))
+				if (frothFleck != null && Rand.Chance(RM_GeyserTubMath.FrothPerSecond / 60f))
 				{
-					FleckMaker.ThrowAirPuffUp(ctr, map);   // a faint steam wisp off the surface of a clear liquid
+					// a soft brighter ring of froth round the patch; no steam puffs off a submerged vent (round 7)
+					FleckCreationData f = FleckMaker.GetDataStatic(ctr, map, frothFleck, Rand.Range(0.9f, 1.1f));
+					f.instanceColor = new Color(tint.r + (1f - tint.r) * 0.5f, tint.g + (1f - tint.g) * 0.5f, tint.b + (1f - tint.b) * 0.5f, 0.75f);
+					f.rotation = Rand.Range(0f, 360f);
+					map.flecks.CreateFleck(f);
+				}
+				if (spraying && !thick && Rand.Chance(0.05f))
+				{
+					Vector2 off = Rand.InsideUnitCircle * RM_GeyserTubMath.PlumeRadius;
+					FleckMaker.WaterRipple(ctr + new Vector3(off.x, 0f, off.y), map, Rand.Range(0.5f, 0.9f));
 				}
 			}
 			finally

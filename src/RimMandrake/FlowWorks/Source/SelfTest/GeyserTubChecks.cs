@@ -119,15 +119,31 @@ namespace RimMandrake.FlowWorks.SelfTest
                 float d1 = RM_GeyserTubMath.PlumeRate(true, true, 60, 1f, 1f), d2 = RM_GeyserTubMath.PlumeRate(true, true, 60, 1f, 2f),
                     d4 = RM_GeyserTubMath.PlumeRate(true, true, 60, 1f, 4f), d20 = RM_GeyserTubMath.PlumeRate(true, true, 60, 1f, 20f);
                 Assert(d1 < d2 && d2 < d4, "can-fail: deeper bubbles more (1 m " + d1 + ", 2 m " + d2 + ", 4 m " + d4 + ")");
-                Assert(d20 == d4 && d4 <= 2f * RM_GeyserTubMath.PlumeRate(true, true, 60, 1f, 0f) + 1e-4f, "can-fail: modestly: at most x2, capped at 4 m");
-                Assert(d20 * RM_GeyserTubMath.BubbleLifeSeconds <= 30f, "cost: at most 30 bubbles alive a geyser at density 1 (got " + d20 * RM_GeyserTubMath.BubbleLifeSeconds + ")");
+                Assert(d20 == d4, "can-fail: capped at 4 m");
+                // round 7 ruling: a boiling patch about one square across, 30-60 bubbles alive at once, 0.06-0.25 squares, popping fast
+                foreach (float m in new[] { 0.5f, 1f, 2f, 4f, 20f })
+                {
+                    foreach (bool sp in new[] { true, false })
+                    {
+                        float alive = RM_GeyserTubMath.PlumeRate(true, sp, 60, 1f, m) * RM_GeyserTubMath.BubbleLifeSeconds;
+                        Assert(alive >= 30f && alive <= 60f, "can-fail: 30-60 bubbles alive (" + m + " m, spraying " + sp + ": " + alive + ")");
+                    }
+                }
                 Assert(RM_GeyserTubMath.PlumeRate(false, true, 60, 1f, 4f) == 0f, "can-fail: the Mod Settings switch off throws none");
                 Assert(RM_GeyserTubMath.PlumeRate(true, true, 60, 0f, 4f) == 0f, "can-fail: density x0 throws none");
                 float lo = RM_GeyserTubMath.BubbleDrawSize * RM_GeyserTubMath.PlumeScaleMin(60), hi = RM_GeyserTubMath.BubbleDrawSize * RM_GeyserTubMath.PlumeScaleMax(360);
-                Assert(lo >= 0.06f && hi <= 0.2f, "can-fail: small: every bubble 0.06..0.2 cells (" + lo + ".." + hi + "; before 0.27..0.40)");
+                Assert(lo >= 0.06f - 1e-4f && hi <= 0.25f + 1e-4f, "can-fail: every bubble 0.06..0.25 squares (" + lo + ".." + hi + ")");
+                Assert(RM_GeyserTubMath.BubbleDrawSize * RM_GeyserTubMath.PlumeScaleMax(60) >= 0.2f, "can-fail: mixed sizes: water throws some big ones too");
                 Assert(RM_GeyserTubMath.PlumeScaleMin(360) > RM_GeyserTubMath.PlumeScaleMin(60), "can-fail: thick throws bigger");
-                Assert(RM_GeyserTubMath.PlumeRadius <= 0.5f, "can-fail: a tight cluster on the vent (radius <= 0.5 cell; before 0.95)");
-                Assert(RM_GeyserTubMath.BubbleLifeSeconds <= 0.8f, "can-fail: short lives (before 1.3 s)");
+                Assert(RM_GeyserTubMath.PlumeRadius >= 0.4f && RM_GeyserTubMath.PlumeRadius <= 0.6f, "can-fail: a patch about one square across");
+                Assert(RM_GeyserTubMath.BubbleLifeSeconds <= 0.4f, "can-fail: popping fast");
+                Assert(RM_GeyserTubMath.FrothPerSecond > 0f && RM_GeyserTubMath.FrothDrawSize >= 0.9f && RM_GeyserTubMath.FrothDrawSize <= 1.4f,
+                    "can-fail: a soft froth ring about a square across");
+                string pit = RiverSwitchFlipChecks.Src("Superdeep/RM_GeyserPit.cs");
+                int a = pit.IndexOf("private void Plume(", StringComparison.Ordinal), b = pit.IndexOf("DefaultBubble = new Color", a, StringComparison.Ordinal);
+                string plume = pit.Substring(a, b - a);
+                Assert(!plume.Contains("ThrowAirPuffUp"), "can-fail: no steam puffs drift off a submerged vent");
+                Assert(plume.Contains("RM_Fleck_VentFroth"), "can-fail: the plume throws the froth ring");
             });
             Case("GeyserTub_every_liquid_bubbles_in_its_own_colour", () =>
             {

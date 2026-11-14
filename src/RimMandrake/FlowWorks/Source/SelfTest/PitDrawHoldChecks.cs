@@ -319,6 +319,22 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_PitDrawMath.HoldToDrawnLip(0f, 38.5f, 22.5f, 8, BoarPit) == 0f, "no sink stays none");
             });
 
+            Case("PitDrawHold_round7_south_row_feet_stay_inside_the_rim", () =>
+            {
+                // Round 6 (e_drafted_4m_pit): a colonist on the south row of a 4 m pit hung its legs and name over the rim onto
+                // the grass (sink 0.4, the centre clamp let it through). Ruling: its FEET, not its centre, stay north of the lip.
+                float s = RM_PitDrawMath.SinkFor(8, 0.05f);
+                float f = RM_PitDrawMath.FeetBelowCentre;
+                Assert(f >= 0.45f && f <= 0.6f, "a colonist's feet hang about half a square under its drawn centre");
+                Assert(RM_PitDrawMath.ClampSinkToLip(s, 22.5f - f, 22f) == 0f, "can-fail: south row: no sink, the feet stay on the lip");
+                Assert(Math.Abs(RM_PitDrawMath.ClampSinkToLip(s, 23.5f - f, 22f) - s) < 1e-4f, "can-fail: one row in: the whole sink");
+                Assert(RM_PitDrawMath.HoldToDrawnLip(s, 38.5f, 22.5f, 8, BoarPit, f) == 0f, "can-fail: the hold keeps the feet in too");
+                Assert(Math.Abs(RM_PitDrawMath.HoldToDrawnLip(s, 38.5f, 22.5f, 8, BoarPit) - s) < 1e-4f, "without feet the old centre hold lets 0.4 through (the bug)");
+                string src = Src("Superdeep", "RM_PitDepthDraw.cs");
+                Assert(src.Contains("RM_PitDrawMath.ClampSinkToLip(sink, c.z + 0.5f - RM_PitDrawMath.FeetBelowCentre, lipZ)"), "can-fail: the per-cell clamp keeps the feet in");
+                Assert(src.Contains("HoldToDrawnLip(sink, drawPos.x, drawPos.z, d, SeenDepth, RM_PitDrawMath.FeetBelowCentre)"), "can-fail: the drawn hold keeps the feet in");
+            });
+
             Case("PitDrawHold_SinkOf_holds_the_drawn_position", () =>
             {
                 string src = Src("Superdeep", "RM_PitDepthDraw.cs");
@@ -326,7 +342,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(sinkOf.Contains("return Held(Clamped(ex, pawn.Map, from, dFrom, perLevel), drawPos, dFrom);"), "at rest SinkOf holds the drawn position");
                 Assert(sinkOf.Contains("return Held(sa + (sb - sa) * t, drawPos,"), "moving, SinkOf holds the drawn position");
                 string held = Between(src, "private static float Held(", "private static readonly Func<int, int, int> SeenDepth");
-                Assert(held.Contains("HoldToDrawnLip(sink, drawPos.x, drawPos.z, d, SeenDepth)"), "the hold reads the TWEENED draw position, not Position");
+                Assert(held.Contains("HoldToDrawnLip(sink, drawPos.x, drawPos.z, d, SeenDepth"), "the hold reads the TWEENED draw position, not Position");
                 Assert(held.Contains("pitSinkClampEnabled"), "the hold sits under the clamp switch (X rows run with it off)");
                 string clamped = Between(Src("Superdeep", "RM_PitDepthDraw.cs"), "private static float Clamped(", "private static RM_MapComponent_Excavation ExcavationOf(");
                 Assert(clamped.Contains("LipZBelow("), "the per-cell clamp uses the same lip finder");

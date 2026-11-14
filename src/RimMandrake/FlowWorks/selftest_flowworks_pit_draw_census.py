@@ -243,6 +243,32 @@ def bubble_art():
         bad.append("vent bubble art mean alpha %.2f < 0.75 (vanilla VatBubble ~0.29: ghost bubbles)" % mean)
     if max(a) < 250:
         bad.append("vent bubble art has no opaque rim")
+    return bad + sunk_vent_art()
+
+
+def sunk_vent_art():
+    """Round 7 (owner: "the vent looks on top of the water"): the sunk vent is a soft dark hole with no pale ring, and the
+    froth ring a soft white ring about a square across."""
+    bad = []
+    from PIL import Image
+    png = os.path.join(SRC, "FlowWorks", "Textures", "Things", "Building", "RM_SunkVent.png")
+    if not os.path.exists(png):
+        return ["sunk vent art missing: " + png]
+    im = Image.open(png).convert("RGBA")
+    w, h = im.size
+    px = im.load()
+    if px[w // 2, h // 2][3] < 216:
+        bad.append("sunk vent: the hole's centre is not dark and solid")
+    if max(px[0, 0][3], px[w - 1, 0][3], px[0, h - 1][3], px[w - 1, h - 1][3]) > 0:
+        bad.append("sunk vent: hard square edge (corners not clear)")
+    bright = max((max(p[:3]) for p in im.getdata() if p[3] > 10), default=0)
+    if bright > 70:
+        bad.append("sunk vent: a pale ring (a visible pixel at %d/255)" % bright)
+    xml = read("FlowWorks/Defs/LiquidTypes/FleckDefs/RM_LiquidBubble.xml")
+    if "<defName>RM_Fleck_VentFroth</defName>" not in xml:
+        bad.append("RM_Fleck_VentFroth is not defined")
+    if not os.path.exists(os.path.join(SRC, "FlowWorks", "Textures", "Things", "Mote", "RM_VentFroth.png")):
+        bad.append("froth art missing")
     return bad
 
 

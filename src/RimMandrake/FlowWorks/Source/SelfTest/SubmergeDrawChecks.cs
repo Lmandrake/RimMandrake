@@ -176,6 +176,54 @@ namespace RimMandrake.FlowWorks.SelfTest
 				Assert(draw.Contains("m.Name.StartsWith(\"Render\")") && draw.Contains("typeof(DrawBatch)"), "can-fail: every Render* and DrawBatch.DrawMesh are patched");
 				Assert(draw.Contains("Building_Cooler") && draw.Contains("RM_UnderLiquid.WallSlotMetres"), "can-fail: the cooler stands in a wall slot");
 			});
+			Case("Submerge_round7_drowned_thing_tinted_for_the_full_depth", () =>
+			{
+				// Conductor's ruling, round 7 (owner 2026-11-13: "The ancient shopping Cart isn't shown as under the water"; round 6
+				// read a 1 m cooler under 1 m at 90% of dry): a thing under the line is tinted for the FULL liquid depth over the
+				// floor it stands on, as the big-pit items are (images/3.png), never for the depth at its middle.
+				int floor1 = RM_UnderLiquid.BandAlphaStep(Water, 1f);
+				Assert(RM_UnderLiquid.DrownedStep(Water, 1f) == floor1, "can-fail: a 1 m cooler under 1 m is seen as the floor at 1 m");
+				Assert(RM_UnderLiquid.DrownedStep(Water, 1f) < RM_UnderLiquid.BandAlphaStep(Water, 0.5f), "can-fail: darker than its middle's depth");
+				Assert(RM_UnderLiquid.CoverAlpha(RM_UnderLiquid.DrownedStep(Water, 1f)) >= 0.25f, "can-fail: a real shift to the liquid's colour at 1 m");
+				Assert(RM_UnderLiquid.DrownedStep(0f, 1f) == 0, "can-fail: opaque: hidden");
+				string draw = RiverSwitchFlipChecks.Src("Superdeep/RM_SubmergeDraw.cs");
+				Assert(draw.Contains("RM_UnderLiquid.DrownedStep(ctxClarity, ctxLevel)") && draw.Contains("RM_UnderLiquid.DrownedStep(clarity, footMetres)")
+					&& draw.Contains("RM_UnderLiquid.DrownedStep(clarity, levelM)"), "can-fail: prints, realtime sprites and pawns all tint for the full depth");
+				Assert(!draw.Contains("Seen(clarity, levelM - (a + e) * 0.5f * h)") && !draw.Contains("BandAlphaStep(clarity, mid)"),
+					"can-fail: no drawer tints by its band's middle any more");
+			});
+			Case("Submerge_round7_overlays_hidden_half_a_metre_under", () =>
+			{
+				// owner: "put the yellow power disconnect icons under the water too when the item is under water"; "the Cooler
+				// still keeps its little red arrow icon above the surface". Ruling: at least the thing's tint; hidden once 0.5 m
+				// of liquid stands over the thing's top.
+				float wall = RM_UnderLiquid.WallSlotMetres;
+				Assert(RM_UnderLiquid.OverlayAlpha(Water, 0f, wall) == 1f, "dry: whole");
+				Assert(Near(RM_UnderLiquid.OverlayAlpha(Water, 1f, wall), RM_UnderLiquid.Seen(Water, 1f)), "can-fail: flush at 1 m: the full-depth tint");
+				Assert(RM_UnderLiquid.OverlayAlpha(Water, 1.5f, wall) == 0f && RM_UnderLiquid.OverlayAlpha(Water, 3f, wall) == 0f,
+					"can-fail: 0.5 m over the top: hidden");
+				Assert(RM_UnderLiquid.OverlayAlpha(Water, 1.4f, wall) > 0f, "can-fail: under 0.5 m over the top: still shown");
+				Assert(RM_UnderLiquid.OverlayAlpha(Water, 0.4f, 2f) == 1f, "the icon of a tall thing stays dry while its middle does");
+				RM_UnderLiquid.Float3 body = RM_UnderLiquid.Body(RM_UnderLiquid.WaterColour);
+				RM_UnderLiquid.Float3 t = RM_UnderLiquid.OverlayTint(body, RM_UnderLiquid.Seen(Water, 1f));
+				Assert(t.r < 0.9f && t.g < 0.95f && t.b > t.r, "can-fail: a colour shift toward the water, not only a fade (" + t.r + "," + t.g + "," + t.b + ")");
+				RM_UnderLiquid.Float3 d = RM_UnderLiquid.OverlayTint(body, 1f);
+				Assert(d.r == 1f && d.g == 1f && d.b == 1f, "dry: untinted");
+				string draw = RiverSwitchFlipChecks.Src("Superdeep/RM_SubmergeDraw.cs");
+				Assert(draw.Contains("RM_UnderLiquid.OverlayTint("), "can-fail: the overlay material is tinted, not only faded");
+			});
+			Case("Submerge_round7_sunk_vent_is_a_floor_hole_only", () =>
+			{
+				// owner: "No, the vent does not appear to be under water. The blue seems to fade away, and the vent looks on top of
+				// the water." Round 6: a crisp black hole with a pale ring, and vanilla's 4-cell grey splotch made the water over it
+				// slate. Ruling: under liquid the vent is a floor hole drawn under the sheet, no ring, no splotch.
+				string draw = RiverSwitchFlipChecks.Src("Superdeep/RM_SubmergeDraw.cs");
+				Assert(draw.Contains("SunkVentMat(") && draw.Contains("RM_GeyserTubMath.SunkVentDrawSize"), "can-fail: a wet vent prints the sunk-vent hole");
+				Assert(RM_GeyserTubMath.SunkVentDrawSize >= 0.8f && RM_GeyserTubMath.SunkVentDrawSize <= 1.6f, "can-fail: a hole about a square, not the 4-cell splotch");
+				// the art itself (a soft dark hole, no pale ring) is pinned by selftest_flowworks_pit_draw_census.py (sunk_vent_art):
+				// the staged build has no Textures folder
+				Assert(draw.Contains("\"Things/Building/RM_SunkVent\""), "can-fail: the hole's art is the one the census pins");
+			});
 			Case("Submerge_rim_clip_keeps_sprites_in_the_pit", () =>
 			{
 				// owner ~10:10 PM: "the chunks don't honor the pit, they overlap its edges unphysically".
