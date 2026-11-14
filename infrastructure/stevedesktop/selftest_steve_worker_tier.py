@@ -87,7 +87,10 @@ def main():
                    TESTQ_CMD_TIERCHECK="%s %s" % (sys.executable, check_py),
                    TESTQ_CMD_TIERSWAP="%s %s" % (sys.executable, swap_py), TESTQ_PROOFS_DIR=proofs,
                    TIER_STATE=state, TIER_LOG=log, RIMFLOW_DRIVER_LOCK=os.path.join(tmp, "DRIVER_LOCK.json"),
-                   RM_HOST="stevedesktop", RM_GAME_USERDATA=tmp, RIMFLOW_LEDGER=os.path.join(tmp, "ev.jsonl"))
+                   RM_HOST="stevedesktop", RM_GAME_USERDATA=tmp, RIMFLOW_LEDGER=os.path.join(tmp, "ev.jsonl"),
+                   # source_sha is the real HEAD, which holds no VITALS_X proofs file: preflight's proof_lines would
+                   # refuse every job (preflight is selftest_preflight.py's; this test is the tier gate's)
+                   TESTQ_PREFLIGHT="0")
         head = B.subprocess.run(["git", "-C", B.RUNNER, "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
         env["TESTQ_COMPANION_DIR"] = os.path.join(tmp, "BridgeTools", "JawaBench")
         B.CI.write_fixture(os.path.join(env["TESTQ_COMPANION_DIR"], B.CI.DLL_NAME), B.CI.srchash_at(B.RUNNER, head))

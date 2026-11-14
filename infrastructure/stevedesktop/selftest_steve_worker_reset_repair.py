@@ -98,7 +98,10 @@ def main():
                    TESTQ_PROOFS_DIR=proofs, RIMFLOW_DRIVER_LOCK=os.path.join(tmp, "DRIVER_LOCK.json"),
                    RM_HOST="stevedesktop", RM_GAME_USERDATA=tmp, RIMFLOW_LEDGER=os.path.join(tmp, "ev.jsonl"),
                    RM_MODSET_LOCK=os.path.join(tmp, "lock"), MB_RUNNER=B.RUNNER, MB_CONFIG=cfg, MB_BACKUPS=bk, MB_LOG=log,
-                   MB_TIER=TIER, MB_RESET=RESET_LIST, MB_LOADED_OK=ok_flag)
+                   MB_TIER=TIER, MB_RESET=RESET_LIST, MB_LOADED_OK=ok_flag,
+                   # the job's source_sha is the real HEAD, which can hold no VITALS_X proofs file, so preflight's
+                   # proof_lines check refuses every job; preflight is selftest_preflight.py's, this test is the repair's
+                   TESTQ_PREFLIGHT="0")
         env.pop("TESTQ_WORKER_HOST", None)
         head = B.subprocess.run(["git", "-C", B.RUNNER, "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
         env["TESTQ_COMPANION_DIR"] = os.path.join(tmp, "BridgeTools", "JawaBench")

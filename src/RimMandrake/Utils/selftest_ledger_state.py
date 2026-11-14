@@ -95,8 +95,13 @@ rf(B, "wait", ids[0], "--until", WAIT_UNTIL, "--reason", "not before he is back"
 # pointer states a last-verb reader got wrong: reopened by a failed verify after its close, and blocked then unblocked
 # a sha origin/main holds: rimflow refuses to close on a local-only commit, so HEAD broke this test in any clone with an
 # unpublished commit (and every mutation run there "caught" a break that was only that refusal)
-SHA = subprocess.run(["git", "-C", REPO, "merge-base", "HEAD", "origin/main"], capture_output=True, text=True).stdout.strip() \
+_BASE = subprocess.run(["git", "-C", REPO, "merge-base", "HEAD", "origin/main"], capture_output=True, text=True).stdout.strip() \
     or subprocess.check_output(["git", "-C", REPO, "rev-parse", "HEAD"], text=True).strip()
+# ... and one that touches more than the ledger: close refuses a ledger-only sha (cli._LEDGER_ONLY), and the nightly's HEAD
+# is nearly always a RUNNER/DISPATCHER ledger commit
+SHA = subprocess.run(["git", "-C", REPO, "log", "-1", "--format=%H", _BASE, "--", ".",
+                      ":(exclude)infrastructure/state/ledger", ":(exclude)infrastructure/state/items",
+                      ":(exclude)infrastructure/state/queue"], capture_output=True, text=True).stdout.strip() or _BASE
 REOPENED, UNBLOCKED = "STATENOW_TEST_PTR_REOPENED", "STATENOW_TEST_PTR_UNBLOCKED"
 rf(O, "file", REOPENED, "--for", O, "--title", "closed, then a fail reopened it")
 rf(O, "verify", REOPENED, "--result", "pass", "--config", "selftest", "--level", "L0", "--sha", SHA)
