@@ -187,7 +187,8 @@ Plain-text version of the same map:
 4. **A lock means changes are visible and have a reason, not that nothing changes.**
    - The check was wrong and the bar's meaning is unchanged: the steward (the Conductor) fixes it and re-pins it, with one journal line saying why. He is not asked.
    - A bar is added because of a discovery: agents may do it, recorded in the journal.
-   - A bar is loosened or removed: his call, brought to him with the discovery that made it wrong.
+   - A bar is made easier or deleted outright: his call, brought to him with the discovery that made it wrong.
+   - A bar is deferred (put off to a later stage or to the next Design Version): the Conductor decides and tells him after. **[HIS, 2026-11-14, about 1:05 PM PST]** "Let's try you deferring and letting me know. If it happens too often then we will change it." This is a trial he may withdraw. Each deferral is one journal line in the intervention form (§5 item 5), so the Maturation Now page counts deferrals per mod and "too often" can be seen.
    - A discovery that changes what the mod is: not a bar edit. It goes to the next Design Version.
 5. **Every one of these is one journal line** in the intervention form of §5 ("The steward and the journal", item 5), so the Maturation Now page shows it as a yellow arrow on that mod's stage box. A lock reopened again and again is the visible sign that the design was not ready.
 6. **The four locks of 2026-11-13** (Explosive Knockback, FlowWorks, Gimme Some Slack, Pyrelands) were valid under this rule, not early. Their missing checks are Stage 3 work.
@@ -421,7 +422,7 @@ Today's measured example: the Designer loop on Explosive Knockback charged about
 | Divergent goes to the next version | the road from Stage 8, or from any stage, to intake | CARRIED |
 | The now-or-next question is asked at filing | whenever a line item is written, at any stage | CARRIED (his card 2026-11-13) |
 | A judge round is a release candidate, rc.N | each arrival at Stage 7 | CARRIED; "what counts" is PROPOSAL |
-| A judge may propose deferring a bar that keeps failing on weak evidence; the Conductor approves, he sees it after | the Conductor (the steward), after three cycles; he confirms or changes it when next available | CARRIED (his card 2026-11-13) |
+| A judge may propose deferring a bar that keeps failing on weak evidence; the Conductor decides, tells him after, and writes one journal line per deferral so the Maturation Now page counts them. Making a bar easier or deleting it stays his call | the Conductor (the steward), after three cycles; he confirms or changes it when next available; a trial he may withdraw if deferrals happen too often | CARRIED (his card 2026-11-13); deferral trial HIS (typed, 2026-11-14) |
 | Pass record; passed tests become regression tests for later versions | after Stage 8 | PROPOSAL (Design Versions draft §3.7, not yet ruled) |
 
 ### The kept validation schemes
