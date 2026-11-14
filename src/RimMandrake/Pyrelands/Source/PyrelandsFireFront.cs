@@ -205,6 +205,12 @@ namespace RimMandrake.Pyrelands
             LayYesterdayFire(false);
         }
 
+        /// <summary>Test drive (MapComponent_BurnLine.ForceFrontDue): the scheduled front is due on the next tick.</summary>
+        internal void ForceDueForTest()
+        {
+            nextFrontTick = Find.TickManager.TicksGame;
+        }
+
         /// <summary>Called from MapComponent_BurnLine's already-gated tick: this
         /// only ever runs on a Pyrelands map, on the watch interval.</summary>
         public void Tick()

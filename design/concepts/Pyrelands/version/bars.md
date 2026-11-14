@@ -8,14 +8,24 @@ Lock commit: `237b79116781821545f7ac58c23ed40bfc0250c4` (origin/main, 2026-11-13
 
 | file | git blob at the lock | role |
 |---|---|---|
-| `design/concepts/Pyrelands/tree.json` | `3c3e252e28855cd87f94a0e924ec02c88e0138ca` | the leaves: each is an acceptance criterion with its scenario, false passes and red |
-| `design/concepts/Pyrelands/sheet.md` | `73d2aeb66c9b1a74331c36719e448dc31220a811` | his plain-words sheet: does, does not, his words |
-| `design/concepts/Pyrelands/scenes.json` | `a30b299bc20587a3e7d926146d1f1042f7187199` | the acceptance scenes and showcases the leaves are proven by |
+| `design/concepts/Pyrelands/tree.json` | `e600b1386c4dd5383106dadc6212ad5ad63ced82` | the leaves: each is an acceptance criterion with its scenario, false passes and red |
+| `design/concepts/Pyrelands/sheet.md` | `3486c02215c65c11bac1043961b58e0475a8609c` | his plain-words sheet: does, does not, his words |
+| `design/concepts/Pyrelands/scenes.json` | `57c653bbd444655585b9935e32ad3600b1e326eb` | the acceptance scenes and showcases the leaves are proven by |
 | `design/concepts/Pyrelands/floor.json` | `e2d58b07a62b036530ff175022a51ec732a55537` | the quality floor lines every mod meets |
 | `design/concepts/Pyrelands/exam.json` | `6793f3c53ff73f8f9f13b7d131a1579f29343a94` | the Cold Reader exam of tree and sheet |
-| `design/concepts/Pyrelands/record.json` | `19dddf23d7f858acd7b4b1586462a233c0eb2d87` | the inventory of built capabilities (checklist rows too) |
+| `design/concepts/Pyrelands/record.json` | `ee440984bcfdfcc22c3338d9c7b60ff48348b955` | the inventory of built capabilities (checklist rows too) |
 | `design/concepts/Pyrelands/plan.md` | `0d8be55bbc706a257b9a09f09e83eac665eea9ce` | the build and proof plan |
 | `design/concepts/Pyrelands/stage.json` | `3db94065beaee5d3c634042a2655b2420fb92ae6` | the Designer's stage, budget and judge rounds (state, not a bar) |
+
+**Re-pinned 2026-11-14 (Stage 3, the Conductor's steward decision: test-text corrections are re-pinned, a changed bar never is).**
+`tree.json`, `scenes.json`, `sheet.md` and `record.json` now carry their post-correction blobs; their lock blobs were
+`3c3e252e28`, `a30b299bc2`, `73d2aeb66c`, `19dddf23d7`. Measured field by field against the lock blobs: in `tree.json` only
+leaf `oracle_proposed` and `scenario` moved (every `experience`, `red` and id identical); in `record.json` the
+`inv_ash_field` evidence list, the `d_worldgen_outside_promise` text (g5) and the `inv_ullai_herd_giant` sentence about
+the cut migration's text (g12: it said the description still promised migration, which was false) moved, no row added or
+removed; `scenes.json` holds tests; `sheet.md` lost the false lines g5, g12 and g13 named. **`plan.md` is NOT re-pinned:**
+commit `82d9247595` (2026-11-13 19:42, after the lock) changed the fire-hawk's ember reach from eighteen cells to anywhere
+on the map, a behaviour change, so it stays a preflight refusal for the Conductor (journal question 5).
 
 Tree hash (`concept_tree.py hash`): `6dd32c14a94d4b84499ed155eb5c6da32302dcb8967583a414cc5c5773892c55`; sheet hash: `4f77fad249a2160d032c6514071758be5c5e17be45e7155a06dbbe8aaebe7d49`.
 

@@ -169,6 +169,19 @@ namespace RimMandrake.Pyrelands
         /// <summary>Test drive only (jawa/static_call; PYRE_OPENING_FRONT): treat the current map as fresh for the opening
         /// front, its window starting now, with a new yesterday's fire burned in for it to light, so a long-lived fixture can
         /// prove the arrival path. Returns 1, -1 with no component.</summary>
+        /// <summary>Test drive only (jawa/static_call; scene rite_hook_alone): the current map's next scheduled front is due
+        /// now, so the next watch interval runs one fire-clock beat (TryRunRite, then the plain front). 1, -1 with no component.</summary>
+        public static int ForceFrontDue()
+        {
+            MapComponent_BurnLine c = For(Find.CurrentMap);
+            if (c == null)
+            {
+                return -1;
+            }
+            c.fireFront.ForceDueForTest();
+            return 1;
+        }
+
         public static int RearmOpeningFront()
         {
             MapComponent_BurnLine c = For(Find.CurrentMap);

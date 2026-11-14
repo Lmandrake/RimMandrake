@@ -341,13 +341,28 @@ namespace RimMandrake.Pyrelands
             int now = Find.TickManager.TicksGame;
             TerrainDef t = c.GetTerrain(m);
             int i = m.cellIndices.CellToIndex(c);
-            return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-                "fertility={0:0.000};terrain={1};ashField={2};watered={3};bonus={4:0.000};burnTick={5};base={6:0.000};wateredFertility={7:0.000};raining={8};blackRainWateredUntil={9};now={10};active={11}",
-                m.fertilityGrid.FertilityAt(c), t?.defName, t != null && t.HasModExtension<RM_AshFieldExtension>(),
-                comp != null && comp.IsWatered(c, now), comp?.BonusAt(c, now) ?? 0f,
-                comp?.burnTick != null && comp.burnTick.Length > i ? comp.burnTick[i] : -1, t?.fertility ?? 0f,
-                t?.GetModExtension<RM_AshFieldExtension>()?.wateredFertility ?? 0f, m.weatherManager?.curWeather?.defName == BlackRainDefName,
-                comp?.blackRainWateredUntil ?? -1, now, comp != null && comp.active);
+            return RM_FireEcoKernel.ProbeLine(m.fertilityGrid.FertilityAt(c), t?.defName, t != null && t.HasModExtension<RM_AshFieldExtension>(),
+                comp != null && comp.IsWatered(c, now), t?.fertility ?? 0f, t?.GetModExtension<RM_AshFieldExtension>()?.wateredFertility ?? 0f,
+                comp?.BonusAt(c, now) ?? 0f, comp?.burnTick != null && comp.burnTick.Length > i ? comp.burnTick[i] : -1, now,
+                (int)(RM_PyrelandsSettings.freshBurnDays * GenDate.TicksPerDay), m.weatherManager?.curWeather?.defName == BlackRainDefName,
+                c.Roofed(m), comp?.blackRainWateredUntil ?? -1, comp != null && comp.active, RM_PyrelandsSettings.ashWaterFertilityEnabled,
+                PyrelandsMechanicsGate.On, FertilityCap);
+        }
+
+        /// <summary>Bar ash_fertility_probe: ProbeCell over a rectangle "x,z,w,h" (at most 400 cells), "x,z:line|x,z:line|...".
+        /// Refuses a malformed or oversized rectangle with `error=`.</summary>
+        public static string ProbeRect(string rect)
+        {
+            string[] p = (rect ?? "").Split(',');
+            if (p.Length != 4 || !int.TryParse(p[0], out int x0) || !int.TryParse(p[1], out int z0) || !int.TryParse(p[2], out int w)
+                || !int.TryParse(p[3], out int h) || w <= 0 || h <= 0)
+                return "error=rect must be x,z,w,h with w,h > 0";
+            if ((long)w * h > 400) return "error=rect holds " + ((long)w * h) + " cells; at most 400";
+            var parts = new List<string>();
+            for (int z = z0; z < z0 + h; z++)
+                for (int x = x0; x < x0 + w; x++)
+                    parts.Add(x + "," + z + ":" + ProbeCell(new IntVec3(x, 0, z)));
+            return string.Join("|", parts);
         }
 
         /// <summary>Harness freshness read (jawa/static_call): cells on the CURRENT map that have burned since generation (a burn

@@ -2835,6 +2835,322 @@ def sand_shovel(t):
                 _fail("shovel proof missing %r: %s" % (want, text))
 
 
+# --------------------------------------------------------------------------- Stage 3 scene entries (Pyrelands 0.1.0)
+# Built offline 2026-11-14 by the Stage 3 reconcile (RIMMANDRAKE_ADVANCE_PYRELANDS_OFFLINE_BESIDE_THE_PILOT) from
+# design/concepts/Pyrelands/scenes.json; UNRUN until Stage 6. Each chain's docstring names its scene, its control and
+# what it does NOT automate.
+
+PAD_VENOM = (30, 225)      # flamefang_venom
+PAD_RITE = (30, 30)        # rite_hook_alone
+PAD_SPRAY = (225, 30)      # firefoam_sprayer
+VENOM = "RM_FlamefangVenom"
+RITE_HOOK = "RimMandrake.Pyrelands.PyrelandsFireRiteHook"
+BURN_LINE = "RimMandrake.Pyrelands.MapComponent_BurnLine"
+VENOM_HOURS = 6
+PLAIN_BITER = "Fox_Fennec"   # control: a vanilla predator of like size whose bite carries no venom
+
+
+def _spawn_colonist(t, x, z):
+    r = t.bridge_call("jawa/spawn_pawn", kindDef="Colonist", x=x, z=z, faction="player", count=1)
+    if not _live(t):
+        return None
+    pid = (((r or {}).get("pawns") or [{}])[0]).get("id")
+    if not pid:
+        _fail("spawn_pawn(Colonist) returned no pawn: %r" % r)
+    t.session.track("pawn", pid, x=x, z=z)
+    return pid
+
+
+def hediff_severity(row, hediff):
+    """The highest severity of `hediff` in a list_pawns(includeHealth) row, None if absent or unreadable. Pure."""
+    best = None
+    for h in (((row or {}).get("health") or {}).get("hediffs") or []):
+        if isinstance(h, dict) and hediff in (h.get("def"), h.get("defName"), h.get("hediff")):
+            s = h.get("severity")
+            if isinstance(s, (int, float)) and (best is None or s > best):
+                best = float(s)
+    return best
+
+
+def venom_rises(series, min_rise=0.02):
+    """Hourly venom severities -> (ok, why). Rising = the last reading clearly above the first and no reading
+    falls more than noise. Untreated venom climbs +0.35/day (RM_FlamefangVenom), ~0.087 over six hours. Pure."""
+    vals = [s for s in series if s is not None]
+    if len(vals) < 3:
+        return False, "fewer than 3 readable severities: %r" % (series,)
+    if vals[-1] - vals[0] < min_rise:
+        return False, "severity %.3f -> %.3f over %d readings: not rising" % (vals[0], vals[-1], len(vals))
+    if any(b < a - 0.005 for a, b in zip(vals, vals[1:])):
+        return False, "severity fell between hourly readings: %r" % (vals,)
+    return True, "%.3f -> %.3f" % (vals[0], vals[-1])
+
+
+def _bite_until(t, victim, biter_kind, x, z, hediff=None, max_ticks=6000):
+    """Spawn `biter_kind` beside `victim`, manhunter, and run ticks until the victim carries `hediff` (or any injury
+    when hediff is None). Kills the biter at once after, so later readings are not more bites. -> victim row or None."""
+    bid = _spawn_wild(t, biter_kind, x + 1, z)
+    t.bridge_call("jawa/pawn_mental", pawn=bid, action="start", state="ManhunterPermanent")
+    row = None
+    for _ in range(max_ticks // 250):
+        _wait(t, 250)
+        row = _pawn_row(t, victim, health=True)
+        hs = ((row or {}).get("health") or {}).get("hediffs") or []
+        if (hediff and _has_hediff(row, hediff)) or (not hediff and hs):
+            break
+    t.bridge_call("jawa/damage", damageDef="Cut", amount=500.0, thingId=bid)
+    return row
+
+
+@suite.chain("flamefang_venom")
+def flamefang_venom(t):
+    """Scene sc_flamefang_venom (bar flamefang_bite_carries_venom). A clean colonist, a manhunting RM_Flamefang beside
+    it: once a bite connects RM_FlamefangVenom is present and its severity rises hour by hour for six hours, untreated.
+    Control: a fresh colonist bitten by a vanilla predator of like size (Fox_Fennec) carries a wound and no venom.
+    The tended half (severity falls when tended) is decided offline by selftest_pyrelands_defs_offline.py."""
+    _pad(t, PAD_VENOM)
+    x, z = PAD_VENOM
+    with _comp(t, "flamefang_bite_injects_venom"):
+        cid = _spawn_colonist(t, x, z)
+        row = _pawn_row(t, cid, health=True)
+        if _live(t) and (_has_hediff(row, VENOM) or _has_hediff(row, "ToxicBuildup")):
+            _unmeasured(t, "the test colonist already carries venom or toxic buildup: %r" % row.get("health"))
+        row = _bite_until(t, cid, "RM_Flamefang", x, z, hediff=VENOM)
+        if _live(t):
+            _note(t, "colonist health after the flamefang", (row or {}).get("health"))
+            if not _has_hediff(row, VENOM):
+                _fail("no %s after 6000 ticks beside a manhunting RM_Flamefang" % VENOM)
+    with _comp(t, "venom_rises_untreated"):
+        series = []
+        for _ in range(VENOM_HOURS + 1):
+            series.append(hediff_severity(_pawn_row(t, cid, health=True), VENOM))
+            _wait(t, 2500)
+        if _live(t):
+            _note(t, "venom severity each hour", series)
+            ok, why = venom_rises(series)
+            if not ok:
+                _fail(why)
+    _independent(t)
+    with _comp(t, "plain_bite_carries_no_venom"):
+        cid2 = _spawn_colonist(t, x + 6, z)
+        row = _bite_until(t, cid2, PLAIN_BITER, x + 6, z)
+        if _live(t):
+            hs = ((row or {}).get("health") or {}).get("hediffs") or []
+            _note(t, "control colonist health", hs)
+            if not hs:
+                _unmeasured(t, "the %s never bit in 6000 ticks: the control saw no bite" % PLAIN_BITER)
+            if _has_hediff(row, VENOM):
+                _fail("a %s bite carried %s: the venom is not the flamefang's own" % (PLAIN_BITER, VENOM))
+
+
+def rite_offers(before, after):
+    """ProbeHook lines before and after one forced fire-clock beat -> offers counted. Pure."""
+    a, b = parse_kv(before), parse_kv(after)
+    try:
+        return int(b.get("offers", "-1")) - int(a.get("offers", "-1"))
+    except ValueError:
+        return None
+
+
+@suite.chain("rite_hook_alone")
+@_teardown(fire=True)
+def rite_hook_alone(t):
+    """Scene sc_rite_hook_alone (bar fire_rite_hook_silent_alone). On a list without mandrake.rut.pyrelandsmechanics the
+    rite hook is null; a forced fire-clock beat (MapComponent_BurnLine.ForceFrontDue) runs and the log holds nothing
+    from the rite hook. Control: a test listener on PyrelandsFireRiteHook counts one offer per forced beat, so the
+    hook is offered and its silence is not a front that never fires."""
+    _pad(t, PAD_RITE)
+    with _comp(t, "rite_hook_silent_alone", toggle="fireClockEnabled"):
+        hook = t.bridge_call("jawa/static_call", type=RITE_HOOK, method="ProbeHook")
+        if _live(t):
+            h = parse_kv(str((hook or {}).get("result", "")))
+            _note(t, "rite hook before the beat", h)
+            if h.get("hook") != "null":
+                _unmeasured(t, "the rite hook is filled (%s): PyrelandsMechanics is on this list, so the scene's start "
+                               "(loaded without it) does not hold" % h.get("hook"))
+        t.bridge_call("jawa/drain_log", limit=500)
+        forced = t.bridge_call("jawa/static_call", type=BURN_LINE, method="ForceFrontDue")
+        _wait(t, 4 * BURN_WATCH_TICKS)
+        msgs = [m.get("text", "") for m in ((t.bridge_call("jawa/drain_log", limit=500) or {}).get("messages") or [])]
+        if _live(t):
+            if str((forced or {}).get("result")) != "1":
+                _unmeasured(t, "ForceFrontDue found no burn-line component: %r" % forced)
+            rite = [m[:200] for m in msgs if re.search(r"rite|PyrelandsFireRite|FireRiteHook", m, re.I)]
+            _note(t, "log lines over the beat", {"lines": len(msgs), "rite": rite})
+            if rite:
+                _fail("the log holds rite-hook lines on a list without the Tribes: %r" % rite[:3])
+    _independent(t)
+    with _comp(t, "rite_hook_offered_each_beat", toggle="fireClockEnabled"):
+        att = t.bridge_call("jawa/static_call", type=RITE_HOOK, method="AttachTestListener")
+        try:
+            before = str((att or {}).get("result", ""))
+            if _live(t) and "refused" in before:
+                _unmeasured(t, "the listener was refused: %s" % before)
+            for _ in range(2):
+                t.bridge_call("jawa/static_call", type=BURN_LINE, method="ForceFrontDue")
+                _wait(t, 4 * BURN_WATCH_TICKS)
+            after = str((t.bridge_call("jawa/static_call", type=RITE_HOOK, method="ProbeHook") or {}).get("result", ""))
+        finally:
+            if t.session is not None:   # the offline declaration probe has no session
+                _session_call(t, "jawa/static_call", type=RITE_HOOK, method="DetachTestListener")
+        if _live(t):
+            n = rite_offers(before, after)
+            _note(t, "offers over two forced beats", {"before": before, "after": after, "offers": n})
+            if n != 2:
+                _fail("the listener counted %r offers over two forced beats, want 2" % n)
+
+
+SPRAYER = "RM_FE_FirefoamSprayer"
+FRUIT_PLANT = "RM_FE_Plant_ScorchFruit"
+
+
+def burn_injuries(row):
+    """Burn hediffs in a list_pawns(includeHealth) row. Pure."""
+    return [h for h in (((row or {}).get("health") or {}).get("hediffs") or [])
+            if isinstance(h, dict) and "Burn" in str(h.get("def") or h.get("defName") or h.get("hediff") or "")]
+
+
+def _stage_burning_fruit(t, x, z):
+    """A 9x9 grass burn, ripe scorch-fruit in its 3x3 centre, a fire ring on every path in. -> (fruit ids, ring rect)."""
+    rect = "%d,%d,9,9" % (x, z)
+    t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
+    _plants(t, "RM_FE_Plant_EmberGrass", (x, z, 9, 9))
+    _plants(t, FRUIT_PLANT, (x + 3, z + 3, 3, 3))
+    _fire(t, (x, z, 9, 2))
+    _wait(t, 250)
+    fruit = [p.get("id") for p in _things(t, FRUIT_PLANT, "%d,%d,3,3" % (x + 3, z + 3), limit=20)]
+    fires = _count(t, "Fire", rect)
+    return fruit, fires
+
+
+def _harvest_through_fire(t, cid, fruit, ticks=3000):
+    for i, fid in enumerate(fruit[:3]):
+        t.bridge_call("jawa/ordered_job", pawnId=cid, jobDef="Harvest", targetAId=fid, queue=i > 0, waitTicks=0)
+    _wait(t, ticks)
+
+
+@suite.chain("firefoam_sprayer")
+@_teardown(fire=True, weather=True)
+def firefoam_sprayer(t):
+    """Scene sc_firefoam_sprayer (bar firefoam_sprayer_reaches_the_fruit). Firefoam researched; a colonist holding the
+    firefoam sprayer is ordered to harvest ripe scorch-fruit standing inside a live burn: the fruit is taken and the
+    colonist comes back with no burn injury. Control: the same burn and fruit, a colonist without the sprayer refuses
+    the path or comes back burned. NOT automated: whether the colonist foams on its own, unordered (the sprayer's aim
+    is proven by firefoam_aim_live_proof.py; if the colonist will not foam unordered this row says so as a FAIL)."""
+    x, z = PAD_SPRAY
+    _pad(t, PAD_SPRAY)
+    with _comp(t, "sprayer_reaches_the_fruit"):
+        t.bridge_call("jawa/research_finish_project", project="Firefoam")
+        fruit, fires = _stage_burning_fruit(t, x, z)
+        if _live(t) and (not fruit or not fires):
+            _unmeasured(t, "staging failed: %d fruit, %d fire cells" % (len(fruit), fires or 0))
+        cid = _spawn_colonist(t, x - 3, z + 4)
+        spr = t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d,1" % (SPRAYER, x - 3, z + 4))
+        gun = [g.get("id") for g in _things(t, SPRAYER, "%d,%d,1,1" % (x - 3, z + 4), limit=5)]
+        if gun:
+            t.bridge_call("jawa/ordered_job", pawnId=cid, jobDef="Equip", targetAId=gun[0], waitTicks=120)
+        _harvest_through_fire(t, cid, fruit)
+        left = set(p.get("id") for p in _things(t, FRUIT_PLANT, "%d,%d,3,3" % (x + 3, z + 3), limit=20))
+        row = _pawn_row(t, cid, health=True)
+        if _live(t):
+            _note(t, "sprayer run", {"spawned": spr, "gun": gun, "fruit": fruit, "left": sorted(left),
+                                     "burns": burn_injuries(row)})
+            if not gun:
+                _unmeasured(t, "no %s spawned beside the colonist" % SPRAYER)
+            if not [f for f in fruit if f not in left]:
+                _fail("the colonist with the sprayer took none of the burning fruit")
+            if burn_injuries(row):
+                _fail("the colonist with the sprayer came back burned: %r" % burn_injuries(row))
+        _extinguish(t)
+    _independent(t)
+    with _comp(t, "without_sprayer_fire_stops_or_burns"):
+        fruit, fires = _stage_burning_fruit(t, x, z)
+        cid = _spawn_colonist(t, x - 3, z + 4)
+        _harvest_through_fire(t, cid, fruit)
+        left = set(p.get("id") for p in _things(t, FRUIT_PLANT, "%d,%d,3,3" % (x + 3, z + 3), limit=20))
+        row = _pawn_row(t, cid, health=True)
+        if _live(t):
+            took = [f for f in fruit if f not in left]
+            _note(t, "control run", {"fruit": fruit, "took": took, "fires": fires, "burns": burn_injuries(row)})
+            if not fires:
+                _unmeasured(t, "the control burn did not light")
+            if took and not burn_injuries(row):
+                _fail("without the sprayer the colonist took the fruit unburned: the fruit was reachable without "
+                      "crossing fire, so the sprayer row proves nothing")
+
+
+WALK_DAYS = 7          # each half of the two-week walk
+WALK_SAVE = "pyre_walk"
+
+
+def walk_digest(t):
+    """The walk's state digest: counts that a correct save/reload keeps. -> dict, {} offline."""
+    d = {}
+    for k in ("Fire", FRUIT_PLANT, "RM_FE_ScorchFruitYield", "RM_FurnaceBeast", "RM_Ullai"):
+        d[k] = _count(t, k)
+    r = t.bridge_call("jawa/static_call", type=ASH_FIELD, method="ProbeRegrowth")
+    d["regrowth"] = str((r or {}).get("result", ""))[:400]
+    r = t.bridge_call("jawa/static_call", type=BURN_LINE, method="ProbeBurnHistory", args="0")
+    d["burnHistory"] = str((r or {}).get("result", ""))[:400]
+    return d if _live(t) else {}
+
+
+def digests_match(a, b):
+    """Two walk digests equal on every key both carry, and both non-empty. Pure."""
+    keys = set(a) & set(b)
+    return bool(keys) and all(a[k] == b[k] for k in keys)
+
+
+@suite.chain("walk_season")
+@_teardown(fire=True)
+def walk_season(t):
+    """Scene sc_walk (bar walk_season_on_the_pyre; FULL list, two weeks; Stage 6 only, hold owner_review). Saves
+    pre_walk, plays WALK_DAYS, saves mid-way while the front walks, takes a digest, reloads, and the digest after the
+    reload equals the one before; control: a reload of pre_walk gives a different digest. Then WALK_DAYS more: the
+    second pass yields fruit again; the mechanics switched off and on leave no fire behind; the log holds no error.
+    Runs only when PYRE_WALK=1 is in the environment (two game weeks; never in an ordinary suite run). NOT automated:
+    the harvest from a scar, the sowing on a fresh burn and on watered ash, and the shelter with a furnace-beast
+    through ash fall (the colony's own work over the two weeks; his Stage 8 walk reads them). Every walk save is kept."""
+    with _comp(t, "walk_reload_keeps_the_state"):
+        if os.environ.get("PYRE_WALK") != "1":
+            _unmeasured(t, "the two-week walk runs only with PYRE_WALK=1 (full list, Stage 6)")
+        t.bridge_call("rimworld/save_game", saveName=WALK_SAVE + "_pre")
+        _wait(t, WALK_DAYS * 60000)
+        t.bridge_call("rimworld/save_game", saveName=WALK_SAVE + "_mid")
+        mid = walk_digest(t)
+        t.bridge_call("rimworld/load_game", saveName=WALK_SAVE + "_mid")
+        again = walk_digest(t)
+        t.bridge_call("rimworld/load_game", saveName=WALK_SAVE + "_pre")
+        pre = walk_digest(t)
+        t.bridge_call("rimworld/load_game", saveName=WALK_SAVE + "_mid")
+        if _live(t):
+            _note(t, "walk digests", {"pre": pre, "mid": mid, "midReloaded": again})
+            if digests_match(pre, mid):
+                _unmeasured(t, "the pre-walk and mid-walk digests are equal: the walk changed nothing a reload could lose")
+            if not digests_match(mid, again):
+                _fail("the digest after the reload differs from the one before: %r vs %r" % (mid, again))
+    with _comp(t, "walk_second_pass_and_switches"):
+        _wait(t, WALK_DAYS * 60000)
+        fruit_born = _count(t, FRUIT_PLANT) or 0
+        t.bridge_call("jawa/drain_log", limit=500)
+        _set(t, {"pyrelandsEnabled": False})
+        _extinguish(t)
+        _wait(t, 2500)
+        fires_off = _count(t, "Fire") or 0
+        _set(t, {"pyrelandsEnabled": True})
+        _wait(t, 2500)
+        errs = [m.get("text", "")[:200] for m in ((t.bridge_call("jawa/drain_log", limit=500) or {}).get("messages") or [])
+                if str(m.get("level", "")).lower() in ("error", "exception")]
+        t.bridge_call("rimworld/save_game", saveName=WALK_SAVE + "_end")
+        if _live(t):
+            _note(t, "second half", {"fruitStanding": fruit_born, "firesWithMechanicsOff": fires_off, "errors": errs[:5]})
+            if not fruit_born:
+                _fail("no scorch-fruit stood after the second week: the second pass yielded none")
+            if fires_off:
+                _fail("%d fire cells burned with the mechanics off after an extinguish" % fires_off)
+            if errs:
+                _fail("the log holds %d error line(s) over the switch: %r" % (len(errs), errs[:2]))
+
+
 # Fire-hawk hunt rewards and the map-wide ember carry: live chains built WITH their items (owner 2026-11-13), kept in their own
 # file so this one is not a merge point; register() adds them to this suite with this module's helpers.
 def _register_firehawk_rewards():

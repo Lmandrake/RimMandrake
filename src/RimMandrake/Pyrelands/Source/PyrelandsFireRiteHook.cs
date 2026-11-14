@@ -29,5 +29,37 @@ namespace RimMandrake.Pyrelands
         /// enabled/frequency gating — the front just offers every scheduled
         /// firing and takes no for an answer.</summary>
         public static Func<Map, IntVec3, bool> TrySend;
+
+        // Bar fire_rite_hook_silent_alone (Pyrelands 0.1.0, scene rite_hook_alone): a test listener that counts the fire
+        // clock's offers and declines each one, so the scene's control can show the hook IS offered every beat. It refuses
+        // to replace a real hook, and Detach clears only its own.
+        private static bool testListening;
+        private static int testOffers;
+
+        /// <summary>jawa/static_call: "hook=null|test|set:&lt;type&gt;;offers=N".</summary>
+        public static string ProbeHook()
+        {
+            string h = TrySend == null ? "null" : testListening ? "test" : "set:" + (TrySend.Method.DeclaringType?.FullName ?? "?");
+            return "hook=" + h + ";offers=" + testOffers;
+        }
+
+        public static string AttachTestListener()
+        {
+            if (TrySend != null && !testListening) return "refused=a real rite hook is attached;" + ProbeHook();
+            testListening = true;
+            testOffers = 0;
+            TrySend = (map, origin) => { testOffers++; return false; };
+            return ProbeHook();
+        }
+
+        public static string DetachTestListener()
+        {
+            if (testListening)
+            {
+                TrySend = null;
+                testListening = false;
+            }
+            return ProbeHook();
+        }
     }
 }

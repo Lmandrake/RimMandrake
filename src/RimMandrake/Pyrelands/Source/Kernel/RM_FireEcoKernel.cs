@@ -110,6 +110,31 @@ namespace RimMandrake.Pyrelands
             return v < 0f ? 0f : v;
         }
 
+        /// <summary>Bar ash_fertility_probe (Pyrelands 0.1.0): one cell's fertility, part by part, as the probe's `key=value;...` line:
+        /// base (dry) fertility, the watered lift, the fresh-burn bonus with its age and days left, whether black rain falls on the
+        /// cell, and `expected` (AshFertility of those parts) beside the grid's `fertility`, so a probe that hands back the base
+        /// for every cell shows `consistent=False` on a wet or fresh cell. With the ash field off (the mechanics gate or
+        /// ashWaterFertilityEnabled) the line starts `refused=<reason>;` and still lists the parts, so a gate-off check reads them.</summary>
+        public static string ProbeLine(float fertility, string terrain, bool ashField, bool watered, float baseFertility, float wateredFertility,
+            float bonus, int burnTick, int now, int bonusDurationTicks, bool blackRainFalling, bool roofed, int blackRainWateredUntil,
+            bool active, bool waterOn, bool gateOn, float cap)
+        {
+            var inv = System.Globalization.CultureInfo.InvariantCulture;
+            string refused = !gateOn ? "Pyrelands mechanics are off (Mod enabled, or the Baroque Biomes roster toggle)"
+                : !waterOn ? "the ash field is off (ashWaterFertilityEnabled)" : null;
+            bool wetNow = waterOn && watered;
+            float lift = wetNow ? wateredFertility - baseFertility : 0f;
+            float expected = AshFertility(baseFertility, wateredFertility, watered, waterOn, bonus, cap);
+            string age = burnTick >= 0 && now >= burnTick ? ((now - burnTick) / 60000f).ToString("0.00", inv) : "-1";
+            string consistent = refused == null && ashField && active ? (Math.Abs(fertility - expected) < 0.001f ? "True" : "False") : "n/a";
+            return (refused != null ? "refused=" + refused + ";" : "") + string.Format(inv,
+                "fertility={0:0.000};terrain={1};ashField={2};watered={3};bonus={4:0.000};burnTick={5};base={6:0.000};wateredFertility={7:0.000};"
+                + "raining={8};blackRainWateredUntil={9};now={10};active={11};lift={12:0.000};bonusAgeDays={13};bonusDaysLeft={14:0.00};"
+                + "rainOnCell={15};expected={16:0.000};consistent={17}",
+                fertility, terrain, ashField, wetNow, bonus, burnTick, baseFertility, wateredFertility, blackRainFalling, blackRainWateredUntil,
+                now, active, lift, age, BonusDaysLeft(burnTick, now, bonusDurationTicks), blackRainFalling && !roofed, expected, consistent);
+        }
+
         /// <summary>Days of bonus left on the clock alone (the inspect line), 0 when none.</summary>
         public static float BonusDaysLeft(int burnTick, int now, int durationTicks)
         {
