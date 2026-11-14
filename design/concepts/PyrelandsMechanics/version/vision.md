@@ -1,4 +1,4 @@
-# Pyrelands 0.2.0 (the Deep Desert Tribes): the vision
+# Pyrelands Mechanics (the Deep Desert Tribes) 0.1.0: the vision
 
 Written only from the root paragraph he approved (`record.json` root, OWNER:1793895903357725756), `sheet.md` and his cards of 2026-11-05. Sentence 8 is the sheet's Mod Settings floor line, not his words. Convergent and Divergent are measured against this text.
 
