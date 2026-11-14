@@ -57,12 +57,13 @@ Sources: `About/About.xml`, `Defs/**` (trunk blocker, tier def, 5 crush rules, c
 8. [S] (human pass, OWED) the combined walk save, grid key `Transient/huge_titan_walk_plan_2026-10-07.md`: pawns walk around grath elders and under their caps; clicking the stem selects; nothing can be built inside one; titans read as mass, the T3 titans smash a giant fungus in their path and the T1/T2 titans go around it; owner decides.
 
 ## north star
-state: DRAFT
-validated-hash:
+state: VALIDATED
+validated-hash: a1590f2fd632ba2f9b3bede5a274e5032625791a2b8538bc69cc12281f50ec94
+validated-by: BY CARD: 2026-11-14 ~3:35 PM PST, HugeThings must-show bars: Plant bars 1-4 → all four validated (his typed answer: "Validate all four."); Titan bars → Validate 5-6, hold the crowd
 
 HugeThings makes two promises, kept apart: **giant plants** and **titans**. Each has its own demonstration on its
 own restored disposable site, and neither is proven by the other's. Every bar below was drafted by an agent from
-his words in this section, for him to cut, reword or keep; none is validated.
+his words in this section, for him to cut, reword or keep.
 
 ### the experience  (OWNER'S WORDS — verbatim)
 
@@ -79,6 +80,11 @@ A root across a doorway, same sitting:
 > *"To be honest I don't really like the safety rule. I think they have to cut it down to get in or out after it
 > grows."*
 
+By question card, 2026-11-13: what the crossing breaks is the walls, trees and crates in its path; the crowd is 3 or
+more pawns within 1 in-game day of the death. By question card, 2026-11-14, on the plant bars:
+
+> *"Validate all four."*
+
 ### must show — promise 1: giant plants  (demonstration: `src/RimMandrake/HugeThings/northstar/showcase_plants_live.py`)
 
 - [ ] `plant_trunk_solid_where_art_meets_ground` — a full-grown giant fungus's stem and roots are solid where its
@@ -90,11 +96,12 @@ A root across a doorway, same sitting:
 
 ### must show — promise 2: titans, showcase 1 in this order  (demonstration: `src/RimMandrake/HugeThings/northstar/showcase_titan_live.py`)
 
-- [ ] `titan_crossing_destroys` (change) — first: a titan walks across the site and what it walks through is broken by
-      its passage (walls, plants, crates) because something that large went by, not because it attacked
+- [ ] `titan_crossing_destroys` (change) — first: a titan walks across the site and the walls, trees and crates in its
+      path are broken by its passage, because something that large went by, not because it attacked
 - [ ] `titan_dies_into_remains` (change) — then: the titan dies on the map and its body stays as remains to be worked
-- [ ] `titan_crowd_comes_for_remains` (change) — then: a crowd comes for those remains, and it arrives after the death,
-      never before it
+
+Held by the owner by card 2026-11-14, not validated and so not a checklist line: `titan_crowd_comes_for_remains`
+(change) — then: a crowd of 3 or more pawns comes for those remains within 1 in-game day of the death, never before it.
 
 ### cannot show
 
