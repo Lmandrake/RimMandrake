@@ -10,8 +10,13 @@ Owner questions: `D:\ClaudeWork\rimmandrake\conductor\water_models_20261112\QUES
 
 Tags: [measured] = run by a harness and readable on disk; [guess ~N%] = my estimate with rough confidence.
 
+**This is an agents' recommendation, not the owner's decision.** Owner, 2026-11-14: *"I never approved the new water engine
+from model work. I'd like to hear the pros and cons of the top contenders. No need to review the really slow ones."* Nothing
+is built into FlowWorks on it until he chooses. Pros and cons for him:
+`D:\ClaudeWork\rimmandrake\conductor\water_engine_status_20261114.md`.
+
 **Updated 2026-11-13 by the stage-2 review (`RIMMANDRAKE_HARDEN_FAST_WATER_SOLVERS_VIA_GPT_PIPES_RING`; MandrakeModels
-`results/stage2.md`, 252407e): the winner is refined, not changed.** The engine is local-inertial **with every face
+`results/stage2.md`, 252407e): the recommendation is refined, not changed.** The recommended engine is local-inertial **with every face
 discharge capped at the critical-flow (weir) value, face Froude 0.544** (`local_inertial_frcap`): plain local-inertial floods
 early, and the cap puts it on the referee's schedule at the same cost. Virtual pipes is no longer a fallback.
 
@@ -39,9 +44,11 @@ early, and the cap puts it on the referee's schedule at the same cost. Virtual p
 6. **Stage C measured it:** on RimWorld's own Mono, local-inertial on integer decilitres costs **0.163 ms per tick on a
    realistic 325 river map** (bar 0.5: pass), 1.45 ms on the 50%-wet stress (bar 2: pass), books exactly 0 dL [measured,
    section 4a]. Two things the game build must carry: each 12-tick recompute splits into equal substeps (a ragged split makes
-   the scheme slosh), and the recompute's work is spread over its 12 ticks (it is a spike otherwise). Settled water does not
-   sleep yet, so the settled bar fails. These are figures for the uncapped scheme; the cap adds one multiply and one
-   square root per wet face (numpy cost unchanged within noise [measured]; C# UNMEASURED).
+   the scheme slosh), and the recompute's work is spread over its 12 ticks (it is a spike otherwise). Both are built in the
+   C# console now, with the cap and settled-water sleep (2026-11-14, MandrakeModels afb5008, `results/stagec.md` second
+   pass): capped 0.164 ms per tick on the 325 river map (the cap costs nothing measurable), a settled 325 lake 0.00058 ms per
+   tick asleep (bar 0.05: pass), the 325 stress spike 17 ms in one tick down to 1.8 ms p95 spread [measured]. Water stirred
+   by a dig does not fall back asleep (`RIMMANDRAKE_SETTLE_DISTURBED_LAKES_STILL_SLOSH_FIFTY_MINUTES_ON`).
 
 ## 2. The owner's rulings this has to obey
 
@@ -216,9 +223,9 @@ is measured but not binding; groundwater both ways.
 ## 7. What is not yet known
 
 - In-game cost: section 4a ran RimWorld's Mono outside Unity; the in-game figure is UNMEASURED.
-- Settled water sleeping and spreading a recompute over its 12 ticks are not built; the settled bar fails until the first is.
+- How to put water stirred by a dig back to sleep (it sloshes 3,000+ water-s; settled water sleeps and the recompute spreads,
+  2026-11-14).
 - No solver other than local-inertial has been ported to C#.
 - All nine water scenes were re-rendered at 128 with the stage-2 competitors and looked at (2026-11-13); the other-physics
   pages were not re-rendered.
-- The Froude cap is not in the C# port yet; stage C's figures are for the uncapped scheme.
 - Python timings were taken on a loaded machine; an idle re-time is owed in MandrakeModels.
