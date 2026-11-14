@@ -1,0 +1,210 @@
+{
+ "mod": "GimmeSomeSlack",
+ "version": "0.1.0",
+ "ran_at": "2026-11-14T11:47:44-0800",
+ "seconds": 10.4,
+ "dump_read_seconds": 9.98,
+ "dump": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/captures/2026-11-12T08-10-06Z",
+ "by": "design/concepts/GimmeSomeSlack/version/preflight_throwaway.py (throwaway, no model)",
+ "verdict": "refuse",
+ "checks": [
+  {
+   "check": "bars_match_required_ids",
+   "result": "pass",
+   "n": 47
+  },
+  {
+   "check": "every_bar_has_a_test",
+   "result": "pass",
+   "n": 47
+  },
+  {
+   "check": "every_test_names_its_stage",
+   "result": "pass",
+   "n": 211
+  },
+  {
+   "check": "every_cited_test_is_listed",
+   "result": "pass",
+   "n": 669
+  },
+  {
+   "check": "game_tests_say_why",
+   "result": "pass",
+   "n": 184
+  },
+  {
+   "check": "full_list_tests_say_why",
+   "result": "pass",
+   "n": 1
+  },
+  {
+   "check": "named_files_exist",
+   "result": "pass",
+   "n": 1091
+  },
+  {
+   "check": "inventory_evidence_exists",
+   "result": "pass",
+   "n": 69
+  },
+  {
+   "check": "built_mod_decider_entries_exist",
+   "result": "refuse",
+   "n": 26
+  },
+  {
+   "check": "built_mod_offline_deciders_run",
+   "result": "refuse",
+   "n": 5
+  },
+  {
+   "check": "built_offline_tests_green",
+   "result": "pass",
+   "n": 23
+  },
+  {
+   "check": "named_defs_and_symbols_real",
+   "result": "pass",
+   "n": 59
+  },
+  {
+   "check": "our_defs_in_dump",
+   "result": "note",
+   "n": 49,
+   "note": "0 of our 49 defNames are absent from the dump (dump predates them, or they failed to load): "
+  },
+  {
+   "check": "named_mods_on_the_tier",
+   "result": "refuse",
+   "n": 2
+  },
+  {
+   "check": "tier_loads_all_dlc",
+   "result": "pass",
+   "n": 1
+  },
+  {
+   "check": "mod_packageid_on_tier",
+   "result": "pass",
+   "n": 1
+  },
+  {
+   "check": "held_statements_placed",
+   "result": "pass",
+   "n": 2
+  },
+  {
+   "check": "held_statements_without_a_bar",
+   "result": "note",
+   "n": 3,
+   "note": "all three sit on the nearest bars; none of the 47 says cords draw beneath items (journal question 2)"
+  },
+  {
+   "check": "lock_pins_current",
+   "result": "refuse",
+   "n": 8
+  }
+ ],
+ "refusals": [
+  {
+   "check": "built_mod_decider_entries_exist",
+   "line": "sc_conduit_invisible, sc_cords_slack, sc_cut_ends, sc_dense_tangle, sc_fallen_span, sc_floor_end_shock, sc_four_looks, sc_fuel_ignition, sc_gravship, sc_junction_strips, sc_no_repeat, sc_no_sharp_turn, sc_owner_change, sc_removal_consequence, sc_restring, sc_rewire_cost, sc_settings, sc_shock, sc_shock_reach, sc_shock_restring, sc_spans, sc_statics_new_game, sc_tap_theft, sc_true_to_grid, sc_walk, sc_walls",
+   "evidence": "scenes.json names entry points that are not defined: 'def <entry>(' occurs 0 times in the named file",
+   "smallest_fix": "Stage 3 builds the entry points (item GSS_SCENES_BUILD_EVERY_CORD_A_FOIL, live), each red first",
+   "return_to": "3"
+  },
+  {
+   "check": "built_mod_offline_deciders_run",
+   "line": "T_CORD_GEOMETRY_OFFLINE, T_SETTINGS_SWEEP_OFFLINE, T_SHOCK_RULE_OFFLINE",
+   "evidence": "specified at this lock, not built",
+   "smallest_fix": "Stage 3 builds them, red first",
+   "return_to": "3"
+  },
+  {
+   "check": "named_mods_on_the_tier",
+   "line": "sc_settings, sc_shock_reach",
+   "evidence": "these scenes stage FlowWorks content (start text names FlowWorks); tier 'gimmesomeslack' wants ['brrainz.rimbridgeserver', 'mandrake.rm.gimmesomeslack', 'mandrake.rm.patches'], not mandrake.rm.flowworks",
+   "smallest_fix": "name the tier each of these scenes runs on (a GSS+FlowWorks tier exists? if not, add one), or drop the FlowWorks part to a FlowWorks-side test",
+   "return_to": "1"
+  },
+  {
+   "check": "lock_pins_current",
+   "line": "tree.json, sheet.md, scenes.json, exam.json, record.json, stage.json",
+   "evidence": "these locked files differ from the blobs bars.md pins at 237b791167; the gap fixes landed in 910f69411e before his lock word",
+   "smallest_fix": "the Conductor re-pins bars.md at the text he locked (journal question 1)",
+   "return_to": "1"
+  }
+ ],
+ "name_classes": {
+  "csharp": [
+   "DecalKind",
+   "ExternalContacts",
+   "IsBlob",
+   "JunctionPiece",
+   "JunctionTape",
+   "JunctionTin",
+   "NodeType",
+   "OwnerMismatchSweep",
+   "PoseJunction",
+   "PowerNet",
+   "PowerNets",
+   "PrintedStatic",
+   "RebuildContacts",
+   "ThingDef"
+  ],
+  "def": [
+   "HiddenConduit",
+   "PowerConduit",
+   "RM_FallenWireShock",
+   "RM_HoseReel",
+   "RM_RestringSpan",
+   "WaterproofConduit"
+  ],
+  "file": [
+   "AerialLineProfiles",
+   "AerialSettings",
+   "CompAerialAnchor",
+   "CompPowerTap",
+   "ConduitStyles",
+   "ConduitVisuals",
+   "CordAudit",
+   "CordBuilder",
+   "CordGraph",
+   "CordShapeAudit",
+   "CordSlideUnderChecks",
+   "GimmeSomeSlackMod",
+   "GssSessionReset",
+   "PowerStrip",
+   "PowerTheftConsequences",
+   "RM_AerialAnchors",
+   "RM_AerialRestring",
+   "RM_AerialStyles",
+   "RM_ConduitStyles",
+   "RM_LiveWirePathCost",
+   "RM_MapComponent_Aerial",
+   "RM_MapComponent_ConduitRuns",
+   "RM_MapComponent_CordGraph",
+   "RM_PowerTheft",
+   "RebuildGate",
+   "RestringJob",
+   "SliceWindow",
+   "SnapshotPool",
+   "StylePicker",
+   "SwitchFlipChecks",
+   "TapLedger",
+   "WallMount"
+  ],
+  "name": [
+   "FlowWorks",
+   "GimmeSomeSlack",
+   "MessyConduit",
+   "RimMandrake",
+   "SelfTest",
+   "StarWarsJawa"
+  ],
+  "save_or_id": [
+   "RM_gss_walk_20261015b"
+  ]
+ }
+}

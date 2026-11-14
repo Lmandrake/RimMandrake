@@ -13,13 +13,17 @@ mods read alike.
 - **Design Version 0.1.0, locked** on his word 2026-11-13 ~3:40 PM PST (`version/VERSION.json`). Code exists:
   `src/RimMandrake/GimmeSomeSlack/` (C#, 60 sources; a C# SelfTest of 4485 + 155 checks; 20 Python selftests; `validation.py`
   and `northstar/proof_all.py`, the live proof of 156 rows).
-- **Stage now:** Stage 1 finished by hand 2026-11-14 11:43 PST; Stage 2 (a throwaway preflight) next.
+- **Stage now:** Stage 2 ran 2026-11-14 11:48 PST (throwaway `version/preflight_throwaway.py`, record
+  `version/preflight.json`): **refused**, 4 refusals, 10.4 s. Next: Stage 3 as "reconcile" (not started; not this run's).
 - **Bars:** 47 (22 inventory rows of `record.json` + 26 leaves of `tree.json`; `shock_reach_setting` is both, so 48 rows
   name 47 ids). The test-and-stage table is `version/test_table.json` (read view `version/test_table.md`), made by the
   throwaway `version/make_test_table.py`. Of 47 bars: 18 have a deciding test runnable today, 2 have every deciding test
   runnable (both `no_hose` bars), 43 have some runnable evidence when the older proof rows count, 4 have nothing
   (`floor_end_shock`, `floor_end_shocks_crossers`, `shock_reach_setting`, `uninstall_clean`). [measured]
-- **Waiting on:** this run (row 3), then a builder for Stage 3.
+- **Waiting on:** a builder for Stage 3, and his answers to questions 1 and 2. Stage 3 owes, roughly in order: the floor-end
+  shock and its setting (unbuilt, item `RIMMANDRAKE_BUILD_GSS_FLOOR_END_SHOCK_ANSWERED_WEEK_AGO`), the 26 scene entry points
+  (item `GSS_SCENES_BUILD_EVERY_CORD_A_FOIL`), the 4 specified offline tests, the M2c bend and no-two-alike reds (item
+  `RIMMANDRAKE_UNBEND_GSS_LEAD_AT_JUNCTION_BATTERY_TWICE`), and a test tier for the two FlowWorks scenes.
 - **Open questions for him:** "Questions for him", the last part of this top section.
 
 ### The vision (his root paragraph, `record.json` root, OWNER:1793895896496551063)
@@ -96,6 +100,11 @@ The nine-line version vision (shock rule, Wire down, the tap, four looks, switch
    dry and under liquid". Add it to 0.1.0 as a Problem bar (its in-game read `sc_cords_under_items` is specified), or leave
    it to the walk? Recommendation: add it; a cord over a battery is the kind of thing a player rejects.
 
+3. **Two scenes need FlowWorks; the test tier has none.** `sc_settings` (the pipe-pole switch) and `sc_shock_reach` (the
+   FlowWorks deck cord) stage FlowWorks content, but tier `gimmesomeslack` loads only the bridge, GSS and patches. Run them
+   on a GSS+FlowWorks tier, or move their FlowWorks halves to FlowWorks-side tests? Recommendation: a GSS+FlowWorks tier for
+   those two scenes only. (A Stage 1 fact, for the Conductor; not his unless he cares.)
+
 ## History (dated, added to only)
 
 ### 2026-11-14 11:25 PST, run begins (rm-builder, detached, offline only)
@@ -110,7 +119,7 @@ Brief from the Conductor: rows 1 to 3 of the pilot table, by hand, throwaway scr
   pilot's journal and table. The offline gate (2 min 21 s) and the 20 selftests (about 2 min 11 s) ran alongside.
 - **Boring enough to automate:** the drift check (current blob and tree hash against `bars.md`, with commit times against his
   lock word); "does every `scenes.json` entry point exist"; collecting his words from `sheet.md`; finding held statements for
-  a mod (a grep of the holding store by mod name and short name found the three).
+  a mod (a grep by mod name finds two; the third, row 36, says "the wires" and belongs by context to row 34).
 - **Needed judgment:** reading the lock-pin drift as "which text did he lock", not as an error to fix; deciding the three held
   statements belong to GSS though they were said at FlowWorks looks.
 
@@ -145,3 +154,40 @@ Brief from the Conductor: rows 1 to 3 of the pilot table, by hand, throwaway scr
 - **Needed judgment:** which offline test *decides* a bar versus only supports it (the hand map in the script); calling the
   156 proof rows supports; which bar the three held statements belong to, and seeing that none fits; what of the settings
   sweep can leave the game.
+
+### 2026-11-14 11:48 PST, row 3 done: Stage 2, a throwaway preflight
+
+- **Program:** `version/preflight_throwaway.py`, no model; record `version/preflight.json`. 19 checks: the table holds
+  exactly `required_ids`; every bar has a deciding test; every test names a known stage; every cited test is listed;
+  every game test says why the game is needed and every full-list test why the full list; every named path is real (1091
+  paths); every `record.json` evidence path or item is real; built mod: every deciding scene's entry exists and every
+  deciding offline test was built and is green; the 59 def-like names in the bars' text are defs (dump of 2026-11-12, 316
+  mods, plus our XML), C# symbols or files; the mods the scenes stage are on the tier; all DLC on the tier; every held
+  statement naming GSS is placed; the locked blobs match `bars.md`.
+- **Watched it fail:** `GSS_PREFLIGHT_PLANT=1` plants one fault each (an unlisted test, a missing file, an empty
+  why-the-game, a dropped held placement, a fake item, a fake def name); all six checks went red. [measured]
+- **Its own first misses, fixed before the verdict:** it refused 24 items that exist only in the ledger (no prose file) and
+  two paths carrying `:line`; and it took "FlowWorks DLL md5 … + GSS" in a build column as a statement about GSS (17 false
+  rows). After the fixes those checks pass.
+- **Verdict: refuse, 4 refusals** (run 10.4 s, of which 10.0 s reading the 442 MB def dump over `/mnt/c`):
+  1. `built_mod_decider_entries_exist`: 26 deciding scenes have no entry point. Back to Stage 3 (reconcile), item
+     `GSS_SCENES_BUILD_EVERY_CORD_A_FOIL`.
+  2. `built_mod_offline_deciders_run`: 3 deciding offline tests are specified, not built (`T_SETTINGS_SWEEP_OFFLINE`,
+     `T_SHOCK_RULE_OFFLINE`, `T_CORD_GEOMETRY_OFFLINE`). Back to Stage 3.
+  3. `named_mods_on_the_tier`: `sc_settings` and `sc_shock_reach` stage FlowWorks; the tier lacks it. Back to Stage 1 as a
+     fact (question 3).
+  4. `lock_pins_current`: 6 of the 8 pinned files differ from `bars.md`'s blobs. Back to Stage 1: re-pin (question 1).
+  Refusals 1 and 2 say the same thing as his card "Built: runs": a built mod's lock wants every test runnable, and here
+  it is not. The spec's Stage 3 "reconcile" is where that is paid, as in the pilot.
+- **Cost:** about $1.2 of model spend (harness budget line, $4.2 to $5.4), 5 minutes wall.
+- **Boring enough to automate:** all of it; this script is a fair seed for the Stage 2 program (spec §9 build order 3).
+  The dump read wants a cached defName index keyed on the dump's fingerprint (10 s each run over `/mnt/c`).
+- **Needed judgment:** whether a refusal is the mod's or the instrument's (three of the first seven were the instrument);
+  where a refusal goes back to (a missing build is Stage 3, a wrong fact is Stage 1); and whether "every named def is
+  real" is even testable from prose: the name check covers CamelCase and `RM_` names only, so a plain word like "battery"
+  or "chemfuel puddle" is not checked.
+
+### Run total
+
+About $5.4 of model spend and 23 minutes wall for rows 1 to 3 (11:25 to 11:48 PST), plus the 4.6-minute test run inside
+row 2. No helpers, no game, no bridge.
