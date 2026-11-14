@@ -13,11 +13,14 @@ mods read alike.
 - **Design Version 0.1.0, locked** on his word 2026-11-13 ~3:40 PM PST (`version/VERSION.json`). Code exists:
   `src/RimMandrake/GimmeSomeSlack/` (C#, 60 sources; a C# SelfTest of 4485 + 155 checks; 20 Python selftests; `validation.py`
   and `northstar/proof_all.py`, the live proof of 156 rows).
-- **Stage now:** Stage 1 being finished by hand, 2026-11-14.
+- **Stage now:** Stage 1 finished by hand 2026-11-14 11:43 PST; Stage 2 (a throwaway preflight) next.
 - **Bars:** 47 (22 inventory rows of `record.json` + 26 leaves of `tree.json`; `shock_reach_setting` is both, so 48 rows
-  name 47 ids). The test-and-stage table will be `version/test_table.json` (read view `version/test_table.md`).
-- **Waiting on:** this run (rows 2 and 3), then a builder for Stage 3.
-- **Open questions for him:** see "Questions" at the end of the history.
+  name 47 ids). The test-and-stage table is `version/test_table.json` (read view `version/test_table.md`), made by the
+  throwaway `version/make_test_table.py`. Of 47 bars: 18 have a deciding test runnable today, 2 have every deciding test
+  runnable (both `no_hose` bars), 43 have some runnable evidence when the older proof rows count, 4 have nothing
+  (`floor_end_shock`, `floor_end_shocks_crossers`, `shock_reach_setting`, `uninstall_clean`). [measured]
+- **Waiting on:** this run (row 3), then a builder for Stage 3.
+- **Open questions for him:** "Questions for him", the last part of this top section.
 
 ### The vision (his root paragraph, `record.json` root, OWNER:1793895896496551063)
 
@@ -83,6 +86,16 @@ The nine-line version vision (shock rule, Wire down, the tap, four looks, switch
    the cords' draw order under liquid lives in `src/RimMandrake/GimmeSomeSlack/Source/CordUnderLiquid.cs`, the liquid in
    FlowWorks.
 
+### Questions for him (open; each written here, no bar edited)
+
+1. **Which bytes are 0.1.0?** `bars.md` pins `237b791167`; his "lock" came after `910f69411e` landed the five gap fixes
+   (4 leaves' `experience` text changed). This run reads the later text. Re-pin `bars.md` to `910f69411e`?
+   Recommendation: yes; it is what stood when he said "lock".
+2. **A held defect with no bar.** He reported cords drawn over a battery and over items (2026-11-12 rows 34, 36) and later
+   approved the fix (2026-11-13 row 16). No bar of the 47 says "floor cords draw beneath items, buildings and furniture,
+   dry and under liquid". Add it to 0.1.0 as a Problem bar (its in-game read `sc_cords_under_items` is specified), or leave
+   it to the walk? Recommendation: add it; a cord over a battery is the kind of thing a player rejects.
+
 ## History (dated, added to only)
 
 ### 2026-11-14 11:25 PST, run begins (rm-builder, detached, offline only)
@@ -100,3 +113,35 @@ Brief from the Conductor: rows 1 to 3 of the pilot table, by hand, throwaway scr
   a mod (a grep of the holding store by mod name and short name found the three).
 - **Needed judgment:** reading the lock-pin drift as "which text did he lock", not as an error to fix; deciding the three held
   statements belong to GSS though they were said at FlowWorks looks.
+
+### 2026-11-14 11:43 PST, row 2 done: Stage 1 finished (the test-and-stage table)
+
+- **What was done.** Every bar got its deciding and supporting tests and the stage that proves it, in the pilot's columns.
+  Every built offline test was run by the script (23, all PASS; the slowest are the C# SelfTest at 103 s and the offline
+  gate at 141 s, 4 min 38 s in all). In-game tests were not run: their "runnable" is whether their entry exists in code.
+- **The measured answer.** 0 of the 26 `scenes.json` scenes has an entry point, so no bar whose test is a scene is fully
+  runnable today. 18 bars have a deciding offline test that ran green (the C# SelfTest decides the logic half of most look
+  and graph bars; `T_NO_HOSE` decides both `no_hose` bars outright). The 156 older proof rows of `proof_all.py --live` all
+  exist in code and passed 154 of 156 on 2026-11-13; they are supports, not deciders, by `proof_leaves.py`'s own rule.
+- **The five judge corrections** (g1 to g5 of rm-coverage-judge-1794599377) are all present in the current `scenes.json`
+  text (needle check in the script); they were applied by the Designer and landed in `910f69411e`. Nothing new to apply.
+  No judge has read them.
+- **The held statements** (three, all about cords drawing over or under items) are placed on `drawing_true_to_grid` and
+  `walk_scavenger_base`, with FlowWorks' offline `selftest_flowworks_pit_draw_census.py` (PASS today) as support and a new
+  in-game draw-order read, `sc_cords_under_items`, specified. No bar of the 47 says "floor cords draw beneath items":
+  question 2.
+- **The settings sweep, moved offline.** Specified `T_SETTINGS_SWEEP_OFFLINE`: flip-and-return for each of the 26 shipped
+  floor settings and each aerial setting, or a listed reason and its live row; every Harmony patch gated by exactly one
+  setting (a source read). The C# SelfTest already flips the aerial switches offline (`SwitchFlipChecks.cs`). `sc_settings`
+  keeps only the renderer and live-Harmony parts. The leaf is not edited.
+- **Specified for Stage 3** (4 offline): `T_SETTINGS_SWEEP_OFFLINE`, `T_SHOCK_RULE_OFFLINE` (who is shocked, as a pure table),
+  `T_CORD_GEOMETRY_OFFLINE` (slack ratio 1.4, excursion, unforced turns, with the M2c site as a lab world: the bend that
+  failed live three times should be caught offline), `T_STATICS_CENSUS`.
+- **Cost:** about $1.6 of model spend (harness budget line, $2.5 to $4.2), 11 minutes wall, of which 4.6 minutes the script
+  running tests.
+- **Boring enough to automate:** all of the table except the decide/support map: scene lookup by requirement, inventory
+  rows to scenes from the verdict checklist, proof rows from `proof_leaves.ROW_LEAVES`, entry-exists, running the tests, the
+  correction needle check, the counts and the read view.
+- **Needed judgment:** which offline test *decides* a bar versus only supports it (the hand map in the script); calling the
+  156 proof rows supports; which bar the three held statements belong to, and seeing that none fits; what of the settings
+  sweep can leave the game.
