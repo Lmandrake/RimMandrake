@@ -273,6 +273,24 @@ namespace RimMandrake.ExplosiveKnockback
             return oneByOne && mass <= lightMassLimit && behindFree ? KbShove.Slide : KbShove.Jolt;
         }
 
+        /// <summary>RIMMANDRAKE_KNOCK_PEOPLE_HEAVY_GOODS (owner card d_c_heavy_knock): a flying good reaching a standing person's
+        /// cell. A stack of at least minMass hits (Blunt dmgMin..max(dmgMin, dmgMax) by roll in [0,1), a staggerTicks stun) and
+        /// its flight ends there; a lighter one, a corpse, a pawn, or the rule off passes with no damage. True = hit.</summary>
+        public static bool HeavyKnock(bool enabled, KbKind kind, bool personThere, float mass, float minMass, float dmgMin, float dmgMax,
+            float roll, int staggerTicks, out float damage, out int stun)
+        {
+            damage = 0f;
+            stun = 0;
+            if (!enabled || kind != KbKind.Item || !personThere || mass < minMass)
+            {
+                return false;
+            }
+            float hi = dmgMax < dmgMin ? dmgMin : dmgMax;
+            damage = dmgMin + (hi - dmgMin) * Clamp01(roll);
+            stun = staggerTicks < 0 ? 0 : staggerTicks;
+            return true;
+        }
+
         /// <summary>The cell a shove may enter: only open ground with nothing on it. Never a pit (open or covered), a wall,
         /// a door, sandbags, water, the map edge or a pawn.</summary>
         public static bool ShoveCellFree(KbCell c, bool hasThings)

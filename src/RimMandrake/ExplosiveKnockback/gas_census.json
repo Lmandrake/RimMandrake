@@ -1,0 +1,65 @@
+{
+ "about": "Explosive Knockback gas-source census (bar our_gases_burn, inv_gas_tags). Every gas source of ours: tagged flammable (it bursts clump by clump) or untagged with its reason. Checked by selftest_explosiveknockback_gas_census.py; a new gas source fails that test until it gets a row here.",
+ "sources": [
+  {
+   "id": "grid:RimMandrake.Cauldron.RM_MapComponent_VentGas",
+   "kind": "grid",
+   "tagged": true,
+   "reason": "the Cauldron's flammable vent gas (owner 2026-11-11: 'remember the gas in the Cauldron'); registered by RM_KnockbackCompat patching its Ignite"
+  },
+  {
+   "id": "def:RM_ChokingSpores",
+   "kind": "def",
+   "tagged": false,
+   "reason": "The Rot's choking spores: a damaging spore cloud, not a fuel gas; nothing in its design says it burns"
+  },
+  {
+   "id": "call:src/RimMandrake/Cauldron/Source/RM_CauldronFloraExpansion.cs::GasType.ToxGas",
+   "kind": "call_site",
+   "tagged": false,
+   "reason": "a vanilla GasType (ToxGas): the base game's gas, not ours to tag; the chain is opt-in for our own flammable gases"
+  },
+  {
+   "id": "call:src/RimMandrake/Cauldron/Source/RM_VentGas.cs::GasType.ToxGas",
+   "kind": "call_site",
+   "tagged": false,
+   "reason": "a vanilla GasType (ToxGas): the base game's gas, not ours to tag; the chain is opt-in for our own flammable gases; the vent gas itself is the tagged grid row"
+  },
+  {
+   "id": "call:src/RimMandrake/ExplosiveGrowth/Source/RM_TopResolver.cs::GasType.ToxGas",
+   "kind": "call_site",
+   "tagged": false,
+   "reason": "a vanilla GasType (ToxGas): the base game's gas, not ours to tag; the chain is opt-in for our own flammable gases"
+  },
+  {
+   "id": "call:src/RimMandrake/FlowWorks/Source/Machinery/Kits/RM_LiquidReaction.cs::r.ventGas",
+   "kind": "call_site",
+   "tagged": false,
+   "reason": "a vanilla GasType (chosen per reaction in XML): the base game's gas, not ours to tag; the chain is opt-in for our own flammable gases"
+  },
+  {
+   "id": "call:src/RimMandrake/GelatinousSlime/Source/GeneConditions.cs::GasType.RotStink",
+   "kind": "call_site",
+   "tagged": false,
+   "reason": "a vanilla GasType (RotStink): the base game's gas, not ours to tag; the chain is opt-in for our own flammable gases"
+  },
+  {
+   "id": "call:src/RimMandrake/TheForge/Source/RM_ForgePlumeFronts.cs::GasType.BlindSmoke",
+   "kind": "call_site",
+   "tagged": false,
+   "reason": "a vanilla GasType (BlindSmoke): the base game's gas, not ours to tag; the chain is opt-in for our own flammable gases; TheForge's plume is smoke"
+  },
+  {
+   "id": "call:src/RimMandrake/TileFeatures/Source/RM_CompGeyserGas.cs::Props.gasType",
+   "kind": "call_site",
+   "tagged": false,
+   "reason": "a vanilla GasType (chosen per geyser in XML): the base game's gas, not ours to tag; the chain is opt-in for our own flammable gases"
+  },
+  {
+   "id": "call:src/RimMandrake/Wastes/Source/RM_WasteCaskBay.cs::GasType.ToxGas",
+   "kind": "call_site",
+   "tagged": false,
+   "reason": "a vanilla GasType (ToxGas): the base game's gas, not ours to tag; the chain is opt-in for our own flammable gases"
+  }
+ ]
+}

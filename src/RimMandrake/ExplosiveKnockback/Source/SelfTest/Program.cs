@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using RimMandrake.ExplosiveKnockback;
 
-// Offline kernel tests K-01..K-17 (design §8.1). Compiles the PRODUCTION RM_KnockbackMath.cs.
+// Offline kernel tests K-01..K-21 (design §8.1). Compiles the PRODUCTION RM_KnockbackMath.cs.
 internal sealed class Grid : IKbGrid
 {
     public readonly int W, H;
@@ -51,6 +51,10 @@ internal static class Program
 
     private static int Main(string[] args)
     {
+        if (args.Contains("--sweep"))
+        {
+            return KnockbackSweep.Run();
+        }
         if (args.Any(a => a.StartsWith("--fuzz")))
         {
             double scale = 1;
@@ -464,6 +468,26 @@ internal static class Program
             Check("K-20 limit 250 throws a 240 kg pawn", RM_KnockbackMath.Eligible(KbKind.Pawn, 240f, hi));
             Check("K-20 the override never touches goods", !RM_KnockbackMath.Eligible(KbKind.Item, 100f, gr)
                 && !RM_KnockbackMath.Eligible(KbKind.Corpse, 100f, gr));
+        }
+
+        // K-21 heavy goods knock people (RIMMANDRAKE_KNOCK_PEOPLE_HEAVY_GOODS, owner card d_c_heavy_knock): a flying stack of at
+        // least heavyGoodsMinMass reaching a standing person's cell hits (Blunt heavyGoodsDamageMin..Max, a stagger) and stops;
+        // a lighter one passes unhurt. Defaults: on, 10 kg, 2..5, 30 ticks.
+        {
+            bool Hk(bool on, KbKind k, bool person, float m, float roll, out float d, out int st, float lo = 2f, float hi = 5f)
+                => RM_KnockbackMath.HeavyKnock(on, k, person, m, 10f, lo, hi, roll, 30, out d, out st);
+            bool hit = Hk(true, KbKind.Item, true, 15f, 0.5f, out float d1, out int st1);
+            Check("K-21 15 kg steel on a person: hits, 2..5 blunt, 30-tick stagger, stops", hit && d1 >= 2f && d1 <= 5f && st1 == 30, d1 + "/" + st1);
+            Check("K-21 roll 0 gives the minimum", Hk(true, KbKind.Item, true, 15f, 0f, out float d0, out _) && d0 == 2f, d0.ToString());
+            Check("K-21 roll near 1 stays at or under the maximum", Hk(true, KbKind.Item, true, 15f, 0.9999f, out float d9, out _) && d9 <= 5f && d9 > 4.9f, d9.ToString());
+            Check("K-21 exactly 10 kg hits (the threshold is inclusive)", Hk(true, KbKind.Item, true, 10f, 0.5f, out _, out _));
+            Check("K-21 9.9 kg cloth passes, no damage, no stagger", !Hk(true, KbKind.Item, true, 9.9f, 0.5f, out float dl, out int sl) && dl == 0f && sl == 0);
+            Check("K-21 no person on the cell: no hit", !Hk(true, KbKind.Item, false, 50f, 0.5f, out float dn, out _) && dn == 0f);
+            Check("K-21 heavyGoodsKnock off: a heavy stack passes", !Hk(false, KbKind.Item, true, 50f, 0.5f, out float doff, out _) && doff == 0f);
+            Check("K-21 a corpse and a pawn never use the goods knock", !Hk(true, KbKind.Corpse, true, 50f, 0.5f, out _, out _)
+                && !Hk(true, KbKind.Pawn, true, 50f, 0.5f, out _, out _));
+            Check("K-21 a max under the min collapses to the min", Hk(true, KbKind.Item, true, 15f, 0.7f, out float dc, out _, 4f, 1f) && dc == 4f, dc.ToString());
+            Check("K-21 heavier never passes where lighter hits", Hk(true, KbKind.Item, true, 75f, 0.5f, out _, out _) && Hk(true, KbKind.Item, true, 10.01f, 0.5f, out _, out _));
         }
 
         Console.WriteLine("explosive knockback kernel: " + pass + "/" + (pass + fail) + " passed");

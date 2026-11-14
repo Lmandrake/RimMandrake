@@ -234,22 +234,22 @@ namespace RimMandrake.ExplosiveKnockback
         private bool HeavyHit(Thing inner, IntVec3 cell)
         {
             Pawn p = cell.GetFirstPawn(Map);
-            if (p == null || p.Dead || kind != KbKind.Item || !RimMandrakeExplosiveKnockbackSettings.heavyGoodsKnock)
+            bool person = p != null && !p.Dead;
+            if (!RM_KnockbackMath.HeavyKnock(RimMandrakeExplosiveKnockbackSettings.heavyGoodsKnock, kind, person, mass,
+                    RimMandrakeExplosiveKnockbackSettings.heavyGoodsMinMass, RimMandrakeExplosiveKnockbackSettings.heavyGoodsDamageMin,
+                    RimMandrakeExplosiveKnockbackSettings.heavyGoodsDamageMax, Rand.Value, RimMandrakeExplosiveKnockbackSettings.heavyGoodsStaggerTicks,
+                    out float dmg, out int stun))
             {
+                if (person && kind == KbKind.Item && RimMandrakeExplosiveKnockbackSettings.heavyGoodsKnock)
+                {
+                    RM_KnockbackJournal.Add("goods_pass", explosionId, inner, "pawn", p.ThingID, "pawnId", p.thingIDNumber, "at", cell, "mass", mass);
+                }
                 return false;
             }
-            if (mass < RimMandrakeExplosiveKnockbackSettings.heavyGoodsMinMass)
-            {
-                RM_KnockbackJournal.Add("goods_pass", explosionId, inner, "pawn", p.ThingID, "pawnId", p.thingIDNumber, "at", cell, "mass", mass);
-                return false;
-            }
-            float lo = RimMandrakeExplosiveKnockbackSettings.heavyGoodsDamageMin;
-            float dmg = Rand.Range(lo, Mathf.Max(lo, RimMandrakeExplosiveKnockbackSettings.heavyGoodsDamageMax));
             if (dmg > 0f)
             {
                 p.TakeDamage(new DamageInfo(DamageDefOf.Blunt, dmg, 0f, -1f, instigator));
             }
-            int stun = RimMandrakeExplosiveKnockbackSettings.heavyGoodsStaggerTicks;
             if (stun > 0 && !p.Dead && p.stances?.stunner != null)
             {
                 p.stances.stunner.StunFor(stun, instigator, addBattleLog: false, showMote: true);
