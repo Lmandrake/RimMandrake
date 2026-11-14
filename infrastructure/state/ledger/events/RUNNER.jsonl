@@ -7073,3 +7073,4 @@
 {"seat":"RUNNER","event":"note","id":"OPS_STEVE_SEATS_RESTORE_QTWK","text":"ops_watch: cleared at 2026-11-14T09:44:13Z (steve.seats_absent_min now 0.0)","ts":"2026-11-14T09:44:22Z","tsn":1794649462373748864}
 {"seat":"RUNNER","event":"live","id":"OPS_STEVE_UNSTICK_UNCLAIMED_ETBS","result":"kept","detail":"sweep: running again","ts":"2026-11-14T09:48:06Z","tsn":1794649686719252540}
 {"seat":"RUNNER","event":"note","id":"OPS_STEVE_UNSTICK_UNCLAIMED_ETBS","text":"ops_watch: cleared at 2026-11-14T09:48:51Z (steve.incident_unclaimed_min now 0.0)","ts":"2026-11-14T09:48:56Z","tsn":1794649736944982985}
+{"seat":"RUNNER","event":"note","id":"OPS_TIMER_REPAIR_PRXC","text":"ops_watch: cleared at 2026-11-14T10:22:42Z (timers.failed_units now 0)","ts":"2026-11-14T10:22:48Z","tsn":1794651768438173772}
