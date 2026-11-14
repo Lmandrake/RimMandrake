@@ -180,7 +180,8 @@ namespace JawaBench.BridgeTools
                 "Run the FlowWorks depth engine's pulse N times DIRECTLY, synchronously, at 0 game " +
                 "ticks: invokes RM_MapComponent_Excavation's private DoPulse() by reflection - the " +
                 "exact body the MapComponentTick scheduler calls (rain, then stock refill/recession " +
-                "with dt = the clamped pulseIntervalTicks setting, then the flow solve). Returns the " +
+                "with dt = the clamped pulseIntervalTicks setting, then the flow solve), then FinishPulse() so " +
+                "each pulse is solved whole, not left in flight for the next tick's slices. Returns the " +
                 "RAW D/F vector over the chosen cells before pulse 1 (pulse 0) and after EVERY pulse. " +
                 "Cells: a rect (x,z,w,h) or, with w=h=0, every cell in the engine's raw excavated set; " +
                 "sorted by cell index, listed once in cells[] so vector position i is cells[i]. " +
@@ -238,6 +239,12 @@ namespace JawaBench.BridgeTools
                     return Fail("RM_MapComponent_Excavation.DoPulse() (no parameters) not found by reflection - signature changed? Nothing was run.",
                         new { pulseLikeMethods = near });
                 }
+                // DoPulse only BEGINS a pulse: the kernel solves it in slices (PulseSliceCells) and MapComponentTick finishes
+                // the rest on later ticks. Measured 2026-11-13 on a map with ~2,200 dug squares: without FinishPulse a 50-pulse
+                // call moved nothing, and the next game tick then moved the water. FinishPulse is what a save does.
+                MethodInfo finishPulse = type.GetMethod("FinishPulse", FwInst, null, Type.EmptyTypes, null);
+                if (finishPulse == null)
+                    return Fail("RM_MapComponent_Excavation.FinishPulse() (no parameters) not found by reflection - a sliced pulse could not be completed. Nothing was run.");
 
                 Type settings = GenTypes.GetTypeInAnyAssembly(FwSettingsTypeName);
                 if (settings == null) return Fail(FwSettingsTypeName + " not resolvable.");
@@ -269,6 +276,7 @@ namespace JawaBench.BridgeTools
                     try
                     {
                         doPulse.Invoke(comp, null);
+                        finishPulse.Invoke(comp, null);
                     }
                     catch (TargetInvocationException tie)
                     {

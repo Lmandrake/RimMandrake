@@ -4,7 +4,7 @@ RM_PromotionProofs.ProofSlimeSlip reads the chance RM_SlimeSlip would roll for a
 PASS = 0.75 m lies strictly between 0.50 m and 1.00 m (a notch count rounds 0.75 m to 0.50 m or 1.00 m), and each read's
 waterDl is the metres poured. Offline twin: SelfTest/SlimeChecks.cs Slime_fuller_and_climbing_out_slip_more.
 
-    python3 src/RimMandrake/FlowWorks/northstar/live_probes/fw_slime_slip_exact.py
+    python.exe src/RimMandrake/FlowWorks/northstar/live_probes/fw_slime_slip_exact.py
 """
 import sys, os, json
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "Utils"))

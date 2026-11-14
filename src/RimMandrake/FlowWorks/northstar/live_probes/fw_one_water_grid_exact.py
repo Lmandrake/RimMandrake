@@ -6,7 +6,7 @@ notch split), and it stands as one surface (every square within 3 dL of the othe
 Offline twins: SelfTest ExcavationSanity_corrupt_grid_is_clamped_and_palette_compacts (the dL load repair) and the
 StepPulse/ExcavationTick cases (the kernel on int[] water); guard selftest_flowworks_one_water_number.py.
 
-    python3 src/RimMandrake/FlowWorks/northstar/live_probes/fw_one_water_grid_exact.py
+    python.exe src/RimMandrake/FlowWorks/northstar/live_probes/fw_one_water_grid_exact.py
 """
 import sys, os, json
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "Utils"))
