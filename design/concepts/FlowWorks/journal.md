@@ -87,6 +87,7 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - CONDUCTOR INTERVENED (stage 3, 2026-11-14 12:15 PST, kind hold): Stage 3 is held while the look-fix builder (item `RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE`, run since 11:53 PST) edits FlowWorks water code; the other three mods' Stage 3 runs started at 12:15 without it. Source: the Conductor's brief for the Maturation page (12:20 PST) and the detached-run records.
 - CONDUCTOR INTERVENED (stage 3, 2026-11-14 2:05 PM PST, kind bar-added): bar `inv_geyser_tub` added to 0.1.0: "A pit dug on a geyser keeps the geyser at its bottom; once water or another harmless liquid covers the vent it bubbles there as real bubbling water, the pit reads Hot Tub on mouse-over, and pawns nearby bathe in it for vanilla's small hot-spring bonus, while a geyser beside the water rather than under it heats nothing." Checked at Stage 4-5 by `T_GEYSER_TUB` (C# `GeyserTub_*`, 11 cases green) and `PY_FLOWWORKS_GEYSER_TUB` (green); at Stage 6 by scene `sc_geyser_tub` (entry absent, owed Stage 3, UNRUN); looked at Stage 8. Its 11 held rows now name it; `record.json` re-pinned in `version/bars.md`. Source: owner by card 2026-11-14 (OWNER:1794693278631337978).
 - CONDUCTOR INTERVENED (stage 3, 2026-11-14 2:05 PM PST, kind bar-added): bar `inv_liquid_coating` added to 0.1.0: "A pawn who comes out of oil, tar, blood or another staining liquid carries it as a named condition with a clean, not crude, look, and walking into normal water plainly washes it off." Checked at Stage 4-5 by `T_LIQUID_COATING_OFFLINE` and at Stage 6 by scene `sc_coating_wash`, both owed Stage 3 (no coating condition exists in the code; item `RIMMANDRAKE_DESIGN_LIQUID_DIRT_AS_CONDITION_NOT_GRAPHICS`), the scene UNRUN; looked at Stage 8. Its 3 held rows now name it; `record.json` re-pinned in `version/bars.md`. Source: owner by card 2026-11-14 (OWNER:1794693278631337978).
+- CONDUCTOR INTERVENED (stage 3, 2026-11-14 2:16 PM PST, kind release): the 12:15 hold on Stage 3 is released; the look-fix builder in FlowWorks water code ended 12:54 PM PST with six fixes on origin/main, so Stage 3 "reconcile" starts now on detached run RIMMANDRAKE_ADVANCE_FLOWWORKS_OFFLINE_BESIDE_THE_PILOT. Source: ledger notes on RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE (2026-11-14T20:53Z, 20:54Z) and the Conductor's Stage 3 brief.
 
 ### 2026-11-14 11:24 PST, advance begins (rm-builder, detached, offline only)
 
@@ -173,6 +174,28 @@ minute to copy the 541 MB dump from the Windows drive). **Verdict: refuse, 37 re
 - **Boring enough to automate:** all fifteen checks; this script is the seed of the Stage 2 program (spec §9 build order 3).
 - **Needed judgment:** whether a bar-less held row is a refusal or a placement (taken as a refusal routed to him);
   reading C10/C11's zeros as blind rather than green.
+
+### 2026-11-14 from 2:16 PM PST, Stage 3 "reconcile" (rm-builder, detached, offline only)
+
+Batch 1, the four red offline deciders (preflight 48 → 45 refusals):
+
+- `PY_FLOWWORKS_NORTHSTAR`, **the test's table was wrong**: `site_spec.SETTINGS` lacked today's `pitEdgeStraddleRefusedEnabled`
+  and the whole `RM_GeyserPitSettings` class (14 bools, 4 numbers); the toggle count was pinned at 244 while e2fffa4f50 had
+  already made it 246. Table caught up, count 261. Bar meaning unchanged. Green.
+- `PY_LIQUID_LOOKS`, **the generator's table was wrong**: 441c321a20 (his look of 2026-11-12, "It should be dark indeed.")
+  and 9a7b10befc edited the generated XML by hand (dark tar, fresh water see-through 0.45, coolant labels), so the
+  byte-compare failed. The table in `Tools/generate_liquid_suite.py` now holds those values; the regenerated XML differs
+  only by two comments that moved into the generator. The tint assertion in `selftest_liquid_looks.py` and
+  `selftest_flowworks_looks_round.py` now names his newer word. Green.
+- `PY_NATIVES_DRINK_OWN_WATER`, **the mod was wrong**: three home waters were undrinkable to their natives against his
+  ruling of 2026-11-01 (Miasma's brackish band, both depths; The Chill's `RM_PropaneDeep`). Marked `nativeWater` (generator
+  flag for brackish, a patch for deep propane, like the shallows). Green, 0 blocked of 41 water rows.
+- `PY_VALIDATION_V2_OFFLINE`, two test faults fixed and one left for him. O2 compared a number (`digLabourMultiplier` 4.0)
+  through the bool census and read None: numbers in that table now compare with `site_spec`. O8 allowed one non-literal
+  bridge call and the file has two pure pass-throughs: both are named now. Each was watched failing on a planted fault.
+  **Left red, his call:** the negative control's X4 row wants a standing colonist's crown 1.2 heads below the rim at 4 m
+  ("owner: walls 20% above the head"), but on 2026-11-13 ~9:50 PM PST he confirmed `pitSinkPerLevel` 0.05, which draws
+  him 0.2 down. Two of his words disagree; making X4 pass means loosening a check, which is his. Question below.
 
 ### What Stage 3 ("reconcile") must build, not begun here
 

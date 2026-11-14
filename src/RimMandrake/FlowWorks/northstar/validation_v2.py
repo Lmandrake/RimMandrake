@@ -711,6 +711,13 @@ def o2_settings_defaults(spec=None):
                 probs.append("%s: C# %s, site_spec %s" % (f, init, want))
     for typ, fields in BOOL_DEFAULTS.items():
         for f, want in fields.items():
+            if not isinstance(want, bool):
+                # a number the scenes pin (digLabourMultiplier 4.0, 17436eaed6): the bool census cannot see it, so it is
+                # compared with site_spec.SETTINGS, which O2 already holds to the C# (FlowWorks Stage 3, 2026-11-14)
+                have = (spec.SETTINGS.get(typ) or {}).get(f)
+                if have is None or abs(float(have) - float(want)) > 1e-6:
+                    probs.append("%s: site_spec %s want %s (BOOL_DEFAULTS number)" % (f, have, want))
+                continue
             got = (census.get(typ) or {}).get(f)
             if got is None or got[0] != want:
                 probs.append("%s: C# %s want %s (BOOL_DEFAULTS)" % (f, got and got[0], want))
@@ -918,9 +925,14 @@ def o8_lint(src=None):
     L.STATS["calls"] = 0                                     # module-global counter: a second lint must not inherit the first's
     src = open(os.path.abspath(__file__), encoding="utf-8").read() if src is None else src
     probs = L.lint_source(src, os.path.basename(__file__), tools)
-    # exactly one non-literal call is allowed: RealBridge.call's own transport line
+    # two non-literal calls are allowed, both pure pass-throughs: RealBridge.call's own transport line and the tick
+    # stepper's lambda in _direct_step (FlowWorks Stage 3, 2026-11-14: the second one was red as "not the transport")
+    lines = src.splitlines()
+    PASS_THROUGH = ("self.S.call(tool, kw)", "lambda tool, **kw: B.call(tool, **kw)")
     transport = [p for p in probs if "non-literal tool name" in str(p)]
-    probs = [p for p in probs if "non-literal tool name" not in str(p)] + (transport[1:] if len(transport) > 1 else [])
+    stray = [p for p in transport if not (isinstance(p, tuple) and 0 < p[0] <= len(lines)
+                                          and any(t in lines[p[0] - 1] for t in PASS_THROUGH))]
+    probs = [p for p in probs if "non-literal tool name" not in str(p)] + stray
     n = L.STATS.get("calls", 0)
     if n < 90:                                               # sanity probe: the lint must SEE the calls (104 on 2026-10-11)
         return Check("O8", False, "lint saw only %d calls (blind?)" % n)

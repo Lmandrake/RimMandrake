@@ -2159,9 +2159,10 @@
    "command": "python3 src/RimMandrake/FlowWorks/selftest_natives_drink_own_water.py",
    "runs_today": {
     "ran": true,
-    "rc": 1,
-    "seconds": 7.4,
-    "tail": "   BLOCKED RM_TheChill: RM_PropaneDeep -> RM_Liquid_Propane"
+    "rc": 0,
+    "seconds": 4.6,
+    "tail": "PASS source + 8 mutants red; behaviour 31 cases on the production text + 25 mutants red; 36 biomes, 41 water rows, 0 blocked; report /home/mandrake/rm/relentless/clones/RIMMANDRAKE_ADVANCE_FLOWWORKS_OFFLINE_BESIDE_THE_PILOT.det/src/RimMandrake/FlowWorks/Tools/native_water_audit.md",
+    "at": "2026-11-14T14:23:10-08:00"
    }
   },
   "T_DRILL": {
@@ -2478,9 +2479,10 @@
    "command": "python3 src/RimMandrake/FlowWorks/Tools/selftest_liquid_looks.py",
    "runs_today": {
     "ran": true,
-    "rc": 1,
+    "rc": 0,
     "seconds": 0.1,
-    "tail": "1 FAIL"
+    "tail": "ALL PASS",
+    "at": "2026-11-14T14:22:54-08:00"
    }
   },
   "PY_FLOWWORKS_PIPE_POLE_ART": {
@@ -2607,9 +2609,10 @@
    "command": "python3 src/RimMandrake/FlowWorks/northstar/selftest_flowworks_northstar.py",
    "runs_today": {
     "ran": true,
-    "rc": 1,
-    "seconds": 10.4,
-    "tail": "FAIL: 2 failure(s): ['every settings class under Source/ is in site_spec.SETTINGS_SOURCES', '217 toggles: every registry bool (S.toggles), not the harness floor"
+    "rc": 0,
+    "seconds": 10.8,
+    "tail": "PASS: 0 failure(s)",
+    "at": "2026-11-14T14:23:05-08:00"
    }
   },
   "PY_VALIDATION_V2_OFFLINE": {
@@ -2625,8 +2628,9 @@
    "runs_today": {
     "ran": true,
     "rc": 1,
-    "seconds": 46.6,
-    "tail": "O-LIVE-NEG FAIL   clean mock run not green: [('X4_pit_wall_over_head', 'FAIL', \"colonist on D=4 drawn 0.200 cells down; wall over crown 0.200 x a person's heigh"
+    "seconds": 58.3,
+    "tail": "X4_pit_wall_over_head  FAIL       MOD      colonist on D=4 drawn 0.200 cells down; wall over crown 0.200 x a person's height (owner: walls 20% above the head, >= 1.2) | X4_pit_wall_over_head  FAIL       MOD      colonist on D=4 drawn 0.200 cells down; wall over crown 0.200 x a person's height (owner",
+    "at": "2026-11-14T14:24:08-08:00"
    }
   },
   "T_WETTING_OFFLINE": {

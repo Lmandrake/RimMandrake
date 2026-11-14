@@ -94,8 +94,9 @@ for k in ("slime_red",):
 
 # round 1b (13e7f8c82) moved tar off the water shader onto the plain Solid terrain shader (the lava shader tinted it olive)
 check(G.SURFACE_LOOKS["tar"].get("shader") == "Solid"
-      and G.SURFACE_LOOKS["tar"].get("tint") == "(0.24,0.24,0.24)",
-      "tar uses the plain Solid terrain shader with a near-black tint (owner 2026-10-06, round 1b)")
+      and G.SURFACE_LOOKS["tar"].get("tint") == "(0.07,0.065,0.06)",
+      "tar uses the plain Solid terrain shader with a near-black tint (owner 2026-10-06, round 1b; darker by his look "
+      "2026-11-12: \"It should be dark indeed.\")")
 
 # 5 generated output in sync
 with tempfile.TemporaryDirectory() as td:

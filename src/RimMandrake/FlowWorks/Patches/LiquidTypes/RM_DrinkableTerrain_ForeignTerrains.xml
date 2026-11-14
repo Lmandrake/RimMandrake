@@ -280,4 +280,19 @@
     </match>
   </Operation>
 
+  <!-- The Chill's lake fields name RM_PropaneDeep too (RM_TheChill.xml deepTerrain); mark it home water like the shallows
+       (FlowWorks Stage 3, 2026-11-14: the audit read it BLOCKED). -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TerrainDef[defName="RM_PropaneDeep"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/TerrainDef[defName="RM_PropaneDeep"]</xpath>
+      <value>
+        <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+          <liquid>RM_Liquid_Propane</liquid>
+          <nativeWater>true</nativeWater>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
 </Patch>

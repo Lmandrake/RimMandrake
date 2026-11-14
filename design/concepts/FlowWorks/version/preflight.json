@@ -2,7 +2,7 @@
  "mod": "FlowWorks",
  "version": "0.1.0",
  "program": "preflight_fw.py (throwaway, advance row 3; copy in version/advance_scripts/)",
- "at": "2026-11-14T14:04:43-08:00",
+ "at": "2026-11-14T14:24:52-08:00",
  "dump": {
   "path": "a copy of game_paths.DEF_DUMP at /tmp/fw_pilot/defs.sqlite",
   "provenance": {
@@ -11,9 +11,9 @@
    "defs_total": "59262"
   }
  },
- "seconds": 0.27,
+ "seconds": 0.32,
  "verdict": "refuse",
- "refusals": 48,
+ "refusals": 45,
  "checks": [
   {
    "id": "C1_bars_complete",
@@ -61,29 +61,8 @@
    "verdict": "refuse",
    "refusals": [
     {
-     "line": "PY_FLOWWORKS_NORTHSTAR",
-     "evidence": "red today (rc 1): FAIL: 2 failure(s): ['every settings class under Source/ is in site_spec.SETTINGS_SOURCES', '217 toggles: every registry bool (S.toggles), not the harness floor",
-     "smallest_fix": "fix the code or the test (a red test is a Stage 3 line)",
-     "route": "Stage 3",
-     "would_pass": "rc 0"
-    },
-    {
-     "line": "PY_LIQUID_LOOKS",
-     "evidence": "red today (rc 1): 1 FAIL",
-     "smallest_fix": "fix the code or the test (a red test is a Stage 3 line)",
-     "route": "Stage 3",
-     "would_pass": "rc 0"
-    },
-    {
-     "line": "PY_NATIVES_DRINK_OWN_WATER",
-     "evidence": "red today (rc 1):    BLOCKED RM_TheChill: RM_PropaneDeep -> RM_Liquid_Propane",
-     "smallest_fix": "fix the code or the test (a red test is a Stage 3 line)",
-     "route": "Stage 3",
-     "would_pass": "rc 0"
-    },
-    {
      "line": "PY_VALIDATION_V2_OFFLINE",
-     "evidence": "red today (rc 1): O-LIVE-NEG FAIL   clean mock run not green: [('X4_pit_wall_over_head', 'FAIL', \"colonist on D=4 drawn 0.200 cells down; wall over crown 0.200 x a person's heigh",
+     "evidence": "red today (rc 1): X4_pit_wall_over_head  FAIL       MOD      colonist on D=4 drawn 0.200 cells down; wall over crown 0.200 x a person's height (owner: walls 20% above the head, >= 1.2) | X4_pit_wall_over_head  FAIL    ",
      "smallest_fix": "fix the code or the test (a red test is a Stage 3 line)",
      "route": "Stage 3",
      "would_pass": "rc 0"
@@ -401,15 +380,15 @@
     }
    ],
    "evidence": "103 held rows in the files, 83 placed",
-   "seconds": 0.001
+   "seconds": 0.0
   },
   {
    "id": "C9_defs_real",
    "what": "every RM_/RUT_/RSW_ name in the scenes and the table exists in the def dump or the repo (C# class names accepted)",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "13 names checked against 52793 defs/classes (dump defs.sqlite)",
-   "seconds": 0.185
+   "evidence": "10 names checked against 52793 defs/classes (dump defs.sqlite)",
+   "seconds": 0.18
   },
   {
    "id": "C10_mods_real",
@@ -417,7 +396,7 @@
    "verdict": "pass",
    "refusals": [],
    "evidence": "0 packageIds named",
-   "seconds": 0.004
+   "seconds": 0.005
   },
   {
    "id": "C11_settings_fields_real",
@@ -425,7 +404,7 @@
    "verdict": "pass",
    "refusals": [],
    "evidence": "0 settings fields named",
-   "seconds": 0.031
+   "seconds": 0.056
   },
   {
    "id": "C12_locked_files_unchanged",
@@ -433,7 +412,7 @@
    "verdict": "pass",
    "refusals": [],
    "evidence": "8 pinned files (stage.json is state, not a bar: exempt)",
-   "seconds": 0.008
+   "seconds": 0.021
   },
   {
    "id": "C13_scenes_prove_a_leaf",
@@ -464,7 +443,7 @@
    "verdict": "pass",
    "refusals": [],
    "evidence": "7153 items known",
-   "seconds": 0.037
+   "seconds": 0.054
   },
   {
    "id": "C15_tiers_consistent",

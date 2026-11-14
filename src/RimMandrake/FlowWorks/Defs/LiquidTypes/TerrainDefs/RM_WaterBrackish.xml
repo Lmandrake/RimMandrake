@@ -42,6 +42,7 @@
     <modExtensions>
       <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
         <liquid>RM_Liquid_NotDrinkable</liquid>
+        <nativeWater>true</nativeWater>
       </li>
       <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
         <viscosityClass>Water</viscosityClass>
@@ -68,6 +69,7 @@
     <modExtensions>
       <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
         <liquid>RM_Liquid_NotDrinkable</liquid>
+        <nativeWater>true</nativeWater>
       </li>
       <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
         <viscosityClass>Water</viscosityClass>

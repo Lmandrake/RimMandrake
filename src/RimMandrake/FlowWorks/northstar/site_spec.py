@@ -73,7 +73,7 @@ SETTINGS = {
         "pitSlowClimbFactor": 2.0,   # PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS
         "pitRampsEnabled": True, "pitRampMaxSpan": 3, "pitLadderSlowness": 2.0,   # PIT_RAMP_BUILD_STAIRS_BEAT_LADDERS
         "ladderRaiseLowerEnabled": True, "liquidBubblesEnabled": True, "liquidBubbleDensity": 1.0,
-        "liquidSeeThroughEnabled": True, "pitWalkNormalEnabled": True,   # 2026-10-06 looks round / ladder raise-lower
+        "liquidSeeThroughEnabled": True, "pitWalkNormalEnabled": True, "pitEdgeStraddleRefusedEnabled": True,   # RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE (RM_PitEdgePlacement)   # 2026-10-06 looks round / ladder raise-lower
         # PIT_LEGACY_CODE_RETIRE_1: the four survivors of the retired PitsSettings, rehoused here
         "trapTriggerEnabled": True, "trapSensitivityMultiplier": 1.0,
         "fallDamageEnabled": True, "fallDamageMultiplier": 1.0, "fallDamagePerMetrePast2": 0.5, "fallDamageCap": 4.0, "fallDeathEnabled": True, "fallDeathFromMetres": 6.0, "fallDeathCertainMetres": 25.0,   # P7 V3; FALL_DAMAGE_BUILD_DEEP_DROPS_KILL
@@ -261,6 +261,14 @@ SETTINGS = {
     "RimMandrake.FlowWorks.RM_WaterLookSettings": {
         "deepWaterTintEnabled": True, "wetWallBandEnabled": True,
     },
+    # RIMMANDRAKE_SINK_GEYSER_INTO_PIT_BUBBLING_HOT_TUB (1eaef24497): own static class, Scribed into the FlowWorks file
+    "RimMandrake.FlowWorks.RM_GeyserPitSettings": {
+        "geyserSinksEnabled": True, "geyserPlumeEnabled": True, "geyserPlumeDensity": 1.0, "geyserPoolEnabled": True,
+        "geyserPoolReach": 2.5, "geyserPoolHealing": 1.25, "geyserPoolAfterglowEnabled": True, "geyserPoolMoodEnabled": True,
+        "geyserPoolMoodFactor": 1.0, "geyserPoolHidesClothes": True, "geyserBathTarEnabled": True, "geyserBathOilEnabled": True,
+        "geyserBathBloodEnabled": True, "geyserBathSlimeEnabled": True, "geyserBathFilthEnabled": True,
+        "geyserBathMoodCostEnabled": True, "geyserBathSlipEnabled": True, "geyserGeneratorOnSunkEnabled": True,
+    },
 }
 SETTINGS_SOURCES = {     # type -> C# file (relative to the mod's source folder)
     "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings": "RimMandrakeFlowWorksMod.cs",
@@ -283,6 +291,7 @@ SETTINGS_SOURCES = {     # type -> C# file (relative to the mod's source folder)
     "RimMandrake.FlowWorks.Sheet.RM_SheetSettings": os.path.join("Sheet", "RM_SheetSettings.cs"),
     "RimMandrake.FlowWorks.RM_LadderParitySettings": os.path.join("Superdeep", "RM_LadderParity.cs"),
     "RimMandrake.FlowWorks.RM_WaterLookSettings": "RM_WaterLooks.cs",
+    "RimMandrake.FlowWorks.RM_GeyserPitSettings": os.path.join("Superdeep", "RM_GeyserPitSettings.cs"),
 }
 # Scribed migration flags the MOD sets itself (hoseSettingsImported goes True on the first load after the hose port): no
 # control, never a player setting, never on the toggle floor, never compared to a shipped default.

@@ -90,7 +90,9 @@ def main():
     # live 2026-10-06: the water shader read blue, the lava-flow shader read OLIVE; only the plain terrain shader
     # over white gives exactly the tint
     assert tar.get("shader") == "Solid" and tar.get("texture") == "White", "tar must be Solid over White"
-    assert r == g == b and r <= 0.3, "tar tint %s is not a neutral dark grey" % tar["tint"]
+    # near-neutral, not exactly grey: the owner's look of 2026-11-12 ("It should be dark indeed.") set a faintly warm
+    # near-black (0.07,0.065,0.06) in 441c321a20
+    assert max(r, g, b) - min(r, g, b) <= 0.02 and max(r, g, b) <= 0.3, "tar tint %s is not a near-neutral dark" % tar["tint"]
     hl = tint(tar.get("highlight", "(1,1,1)"))
     assert hl[0] == hl[1] == hl[2], "tar gloss must have no hue: %s" % tar.get("highlight")
     for name in ("RM_Liquid_SlimeRed", "RM_Liquid_SlimeGreen", "RM_Liquid_SlimeWhite", "RM_Liquid_SlimeYellow"):

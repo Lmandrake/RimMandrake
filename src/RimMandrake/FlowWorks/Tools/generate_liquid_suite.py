@@ -201,6 +201,7 @@ LIQUID_ROWS = {
     # the extension "up the ladder" per §6's own phrasing.
     "brackish": {
         "drink_liquid": "RM_Liquid_NotDrinkable",  # LIQUID_TERRAINS_FIX_DRUNK_AS_FRESHWATER: no LiquidDef of its own; safe default, drink effect is an open design call
+        "native_water": True,   # NATIVES_DRINK_OWN_WATER_AUDIT_EVERY_BIOME: the Miasma's middle water band (RM_GradientAxisExtension)
         "defnamePrefix": "RM_WaterBrackish",
         "file_name": "RM_WaterBrackish.xml",
         "label_shallow": "brackish water",
@@ -277,7 +278,9 @@ LIQUID_ROWS = {
         # near-black slate colour (the water shader multiplies it). extinguishesFire False: WaterBase's true made
         # Fire.DoComplexCalcs put out any fire on a tar source cell (ruling 22), as the RM_Fill_Tar_* tiers already
         # fixed. waterBodyType None: the inherited Freshwater made a tar pool a fishable freshwater body.
-        "native_overrides": {"canFreeze": False, "color": "(86,82,88)", "extinguishesFire": False, "waterBodyType": "None"},
+        # color (18,17,16): owner look 2026-11-12, "It reads grey. It should be dark indeed." (441c321a20 set it in the XML;
+        # the table caught up in FlowWorks Stage 3, 2026-11-14)
+        "native_overrides": {"canFreeze": False, "color": "(18,17,16)", "extinguishesFire": False, "waterBodyType": "None"},
         "native_overrides_shallow": {"pathCost": 300},  # cited: "pathCost 300 Standable"
         "extension": {"viscosityClass": "heavy", "pH": 7},
         "compat_targets": [],
@@ -322,8 +325,8 @@ LIQUID_ROWS = {
         "drink_liquid": "RM_Liquid_NotDrinkable",  # LIQUID_TERRAINS_FIX_DRUNK_AS_FRESHWATER: no LiquidDef of its own; safe default, drink effect is an open design call
         "defnamePrefix": "RM_Coolant",
         "file_name": "RM_Coolant.xml",
-        "label_shallow": "coolant canal",
-        "label_deep": "coolant canal, deep",
+        "label_shallow": "coolant",          # no "canal" (9a7b10befc: a dug square reads 'Pit, X.X m deep'; set in the XML,
+        "label_deep": "deep coolant",        # the table caught up 2026-11-14)
         "description": (
             "Industrial runoff, engineered rather than natural — kept "
             "flowing, kept from freezing, kept out of the fish census."
@@ -613,7 +616,7 @@ def union_tags_affordances(leaf_fields, extra_tags, dbh_water=True):
 
 def build_terrain_xml(defname, label, description, leaf_fields,
                        native_overrides, extension, render_precedence, extra_tags, dbh_water=True,
-                       drink_liquid=None):
+                       drink_liquid=None, native_water=False):
     tags, affordances = union_tags_affordances(leaf_fields, extra_tags, dbh_water)
     is_deep = "Deep" in defname
     texture_path = "Terrain/Surfaces/WaterDeepRamp" if is_deep else "Terrain/Surfaces/WaterShallowRamp"
@@ -648,6 +651,9 @@ def build_terrain_xml(defname, label, description, leaf_fields,
             # by RM_ThirstUtility.DrinkLiquidAt; name what a pawn drinks here.
             lines.append('      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">')
             lines.append(f"        <liquid>{drink_liquid}</liquid>")
+            if native_water:
+                # NATIVES_DRINK_OWN_WATER_AUDIT_EVERY_BIOME: a biome's own environmental water (owner 2026-11-01)
+                lines.append("        <nativeWater>true</nativeWater>")
             lines.append("      </li>")
         lines.append('      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">')
         for fk, fv in extension.items():
@@ -679,13 +685,13 @@ def generate(liquid_key, defs_by_name, out_dir: Path):
         f"{prefix}Shallow", row["label_shallow"], row["description"],
         shallow_leaf, shallow_overrides, row["extension"],
         RENDER_PRECEDENCE_SHALLOW, extra_tags=["Water"] + row.get("extra_tags_shallow", []),
-        dbh_water=prefix in DBH_WATER_PREFIXES, drink_liquid=row.get("drink_liquid"),
+        dbh_water=prefix in DBH_WATER_PREFIXES, drink_liquid=row.get("drink_liquid"), native_water=row.get("native_water", False),
     )
     deep_xml = build_terrain_xml(
         f"{prefix}Deep", row["label_deep"], row["description"],
         deep_leaf, deep_overrides, row["extension"],
         RENDER_PRECEDENCE_DEEP, extra_tags=["Water"] + row.get("extra_tags_deep", []),
-        dbh_water=prefix in DBH_WATER_PREFIXES, drink_liquid=row.get("drink_liquid"),
+        dbh_water=prefix in DBH_WATER_PREFIXES, drink_liquid=row.get("drink_liquid"), native_water=row.get("native_water", False),
     )
 
     header = f"""<?xml version="1.0" encoding="utf-8"?>
@@ -1393,7 +1399,8 @@ LIQUID_CONTAINER_COLORS_MANYWATERS = {
 }
 SURFACE_LOOKS = {
     # the water family: vanilla shallow water, nothing drawn over it
-    "freshwater":     dict(_WATER),
+    # seeThrough 0.45: the share of the view left after 1 m (RM_UnderLiquid.Seen), owner look 2026-11-12 (441c321a20)
+    "freshwater":     dict(_WATER, seeThrough=0.45),
     "saltwater":      dict(_WATER),
     "brine":          dict(_WATER, tint="(0.86,0.97,0.93)", rippleDensity=0.7, wake=0.85),
     "boiling":        dict(_WATER, texture="Terrain/Surfaces/HotSpringRamp", rippleDensity=1.8, rippleIntensity=1.3,
@@ -1424,7 +1431,8 @@ SURFACE_LOOKS = {
     # "weird drifting motes of white stuff" -- overlay and highlight OFF; instead vanilla's water ripple pass is kept
     # over the solid colour (a Solid look keeps it when rippleDensity/rippleIntensity is set). A BASE for the live
     # tuning session (bridge liquid_look_set), not a verdict: paste the tuned look back here (liquid_look_dump).
-    "tar":            dict(_WATER, shader="Solid", texture="White", tint="(0.24,0.24,0.24)", depthDarken=0.10,
+    # tint: owner 2026-11-12, "It reads grey. It should be dark indeed." (441c321a20; was (0.24,0.24,0.24) of 2026-10-06)
+    "tar":            dict(_WATER, shader="Solid", texture="White", tint="(0.07,0.065,0.06)", depthDarken=0.10,
                            rippleDensity=1.0, rippleIntensity=1.0, seeThrough=0.0, overlay=False, strength=0.0,
                            splashes=True, wake=0.1),
     "slime_red":      dict(_SLIME, tint="(0.62,0.16,0.14)"),
