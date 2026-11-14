@@ -1,0 +1,1 @@
+A bridge round-trip cannot time work under ~5 ms: every RimBridge call waits for a frame (operation DurationMs ~46 ms here, 25 interleaved calls differed by -1 ms). Put a Stopwatch in the probe and return the ms in its answer (ProbeFuelPick recountMs, 2026-11-13).

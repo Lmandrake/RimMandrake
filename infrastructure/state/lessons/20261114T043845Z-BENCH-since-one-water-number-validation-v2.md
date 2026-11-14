@@ -1,0 +1,1 @@
+Since the one water number, validation_v2's every-cell oracle compare is exact to the dL, so anything PulseOracle does not model shows up as a few-dL MOD-labelled red: pond refill read 2-7 dL a cell on six rows. Before calling a dL-scale red MOD, rerun with the unmodelled mechanism switched off (2026-11-13: all six turned PASS).
