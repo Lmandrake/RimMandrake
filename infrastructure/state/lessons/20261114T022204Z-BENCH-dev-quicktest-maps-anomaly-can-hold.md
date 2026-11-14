@@ -1,0 +1,1 @@
+Dev quicktest maps (Anomaly) can hold an indestructible fallen VoidMonolith; destroy_batch leaves it and a knockback throw stops on it (lane 6 colonist thrown 1 of 6, a SITE result). list_things defName=VoidMonolith before laying out a test site (2026-11-13).

@@ -1,0 +1,1 @@
+jawa/letter_list returns each letter's label as a TaggedString object {"RawText": ...}, never a bare string: comparing l['label'] == 'text' reads 0 letters even when the letter was sent (firehawk letter chain, 2026-11-13). Compare label['RawText'].

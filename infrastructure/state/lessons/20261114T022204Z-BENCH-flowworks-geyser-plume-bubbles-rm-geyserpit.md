@@ -1,0 +1,1 @@
+FlowWorks geyser plume bubbles (RM_GeyserPit.plumeBubbles) are thrown only for geysers inside the camera view (cosmetic, by design). A bubble count taken with the camera elsewhere reads 0 on every pool: jump the camera onto the pool first (G2 27 vs off-pool 0 per 600 ticks, 2026-11-13).

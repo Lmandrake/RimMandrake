@@ -1,0 +1,1 @@
+Explosive Knockback proof: never Stage several RM_KnockbackProof scenes before their Verdicts. Stage sets the lane's GLOBAL setting (mass limit, power switch) and only Verdict restores it, so six staged-then-ticked lanes contaminate each other (4 of 6 FAIL, 2026-11-13). Stage -> ticks -> Verdict per scene, as knockback_runner.py does.
