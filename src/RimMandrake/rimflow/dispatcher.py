@@ -65,6 +65,7 @@ pull --rebase + ledger lint + push of one shard), lease.py's leases via `rimflow
 Names no host or account.
 """
 import argparse
+import contextlib
 import fcntl
 import fnmatch
 import glob
@@ -121,6 +122,14 @@ BEAT_END_RESERVE_S = 2.0
 # already popped, incidents, seat restarts) still runs, as before, with its notes bounded by the deadline (review gen29 #1)
 BEAT_DEFERRABLE = ("ring", "recover", "withdraw", "login_switch", "login_rescue", "login_poke", "role_launch")
 BEAT_STARVED_AFTER = 5        # beats in a row that deferred: an alarm, and the dead-man's last_ok_tick stops (review #2)
+# Every step of a beat's tick has a hard end (RIMMANDRAKE_FIT_DISPATCH_TICK_IN_ITS_BEAT: 25 of 639 beats killed at 20 s,
+# most before any act was journalled): observing and deciding end at the act reserve (no act could start after it),
+# execute and the helper budget BEAT_HARD_RESERVE_S before the kill, so the state save and the exit fit. A step past
+# its end is cut by SIGALRM (StepCut), given back as a killed tick gives back, and journalled `step_cut` by name.
+BEAT_HARD_RESERVE_S = 1.5
+BEAT_BUDGET_MIN_S = 1.0       # the helper budget (~0.25 s measured) starts only with this much left before its end
+STEPS_FILE = "tick_steps.jsonl"   # one line per beat's tick: seconds per step, for measuring which step is slow
+STEPS_MAX_BYTES = 2 * 1024 * 1024
 
 
 class Fenced(Exception):
@@ -129,6 +138,48 @@ class Fenced(Exception):
 
 class BeatSpent(Exception):
     """The metronome beat's deadline is too close to start another act: the rest waits for the next beat."""
+
+
+class StepCut(BaseException):
+    """A tick step ran past its end inside the beat. BaseException: the steps' `except Exception` must not swallow it."""
+
+    def __init__(self, step):
+        BaseException.__init__(self, step)
+        self.step = step
+
+
+@contextlib.contextmanager
+def step_limit(step, until):
+    """Bound one tick step at `until` (epoch): SIGALRM raises StepCut(step) in it. None = unbounded (outside a beat);
+    an end already passed cuts the step before it starts."""
+    if until is None:
+        yield
+        return
+    left = until - time.time()
+    if left <= 0:
+        raise StepCut(step)
+
+    def cut(signum, frame):
+        raise StepCut(step)
+    prev = signal.signal(signal.SIGALRM, cut)
+    signal.setitimer(signal.ITIMER_REAL, left)
+    try:
+        yield
+    finally:
+        signal.setitimer(signal.ITIMER_REAL, 0)
+        signal.signal(signal.SIGALRM, prev)
+
+
+def record_steps(root, rec):
+    """Append one tick's step timings to STEPS_FILE (rolled to .1 past STEPS_MAX_BYTES). Never raises."""
+    p = os.path.join(root, STEPS_FILE)
+    try:
+        if os.path.exists(p) and os.path.getsize(p) > STEPS_MAX_BYTES:
+            os.replace(p, p + ".1")
+        with open(p, "a", encoding="utf-8") as f:
+            f.write(json.dumps(rec, sort_keys=True) + "\n")
+    except Exception:  # noqa: BLE001 - a measurement must never fail the tick
+        pass
 
 
 def beat_deadline():
@@ -1456,6 +1507,16 @@ def publish_bounded(n, timeout, argv=None, kill_wait=10):
             except subprocess.TimeoutExpired:
                 continue
         return "publish KILLED after %d s (tick budget; the commit stays local, the next tick retries)" % timeout
+    except BaseException:
+        # cut (StepCut) or SIGTERMed mid-wait: the child has its own session, so nothing else would ever stop it
+        for sig in (signal.SIGTERM, signal.SIGKILL):
+            try:
+                os.killpg(p.pid, sig)
+                p.wait(timeout=0.3)
+                break
+            except (OSError, subprocess.TimeoutExpired):
+                continue
+        raise
     out = (out or "").strip()
     if p.returncode:
         return "publish child exit %d: %s" % (p.returncode, out)
@@ -2306,21 +2367,55 @@ def tick(sch, apply, obs=None, now=None, fx=None, still_owner=None, beat_end=Non
             deadline = min(deadline, beat_end - BEAT_END_RESERVE_S)
             act_deadline = beat_end - BEAT_ACT_RESERVE_S
         st.setdefault("last_ok_tick", None)   # present (null) from the first tick: the dead-man reads it, never last_tick
+        hard_end = beat_end - BEAT_HARD_RESERVE_S if beat_end is not None else None
+        t_start, steps, o = time.time(), {}, {}
+
+        def timed(step, t0):
+            steps[step] = round(time.time() - t0, 3)
+
+        def cut(e):
+            # a step past its end: given back as a killed tick gives back, but the tick goes on and ends by itself
+            steps[e.step] = "cut"
+            back = unreserve(st) + unreleased(st, acts, now)
+            rec = {"at": iso(now), "do": "step_cut", "step": e.step,
+                   "why": "%s ran past its end in the beat (%.1f s before the kill) and was cut; the next beat runs it "
+                          "again; given back: %s" % (e.step, beat_end - time.time(), ", ".join(back) or "none")}
+            journal(root, rec)
+            acts.append(rec)
         try:
-            o = obs or default_obs(sch, root, st)
-            decide(sch, st, o, now, apply, out=acts)
-            if not apply:
-                dry = live_runs_alarm(now)
-                if dry:
-                    acts.append(dry)
-            execute(acts, sch, st, root, apply, now, fx, persist=lambda: save(st, root), deadline=deadline,
-                    act_deadline=act_deadline, fence=still_owner)
+            try:
+                with step_limit("observe", act_deadline):     # no act could start past act_deadline anyway
+                    t0 = time.time()
+                    o = obs or default_obs(sch, root, st)
+                    timed("obs", t0)
+                    t0 = time.time()
+                    decide(sch, st, o, now, apply, out=acts)
+                    timed("decide", t0)
+                if not apply:
+                    dry = live_runs_alarm(now)
+                    if dry:
+                        acts.append(dry)
+                t0 = time.time()
+                with step_limit("execute", hard_end):
+                    execute(acts, sch, st, root, apply, now, fx, persist=lambda: save(st, root), deadline=deadline,
+                            act_deadline=act_deadline, fence=still_owner)
+                timed("execute", t0)
+            except StepCut as e:
+                cut(e)
             # the helper budget every seat's spawn hook reads (HELPER_BUDGET_MIGRATE_INTO_DISPATCHER); never raises
-            bud = HB.tick_step(sch, st, root, now, journal=lambda rec: (
-                journal(root, rec), apply and signal_alarm(sch, st, rec["kind"], rec["why"], now)),
-                tell=(lambda rec: (fx or {}).get("conductor_log", conductor_log)(sch, rec, now)) if apply else None)
-            if bud:
-                acts.append(bud)
+            try:
+                t0 = time.time()
+                # started only with BEAT_BUDGET_MIN_S left before its end (an end of 0 cuts it before it starts)
+                hb_end = hard_end if hard_end is None or hard_end - t0 >= BEAT_BUDGET_MIN_S else 0.0
+                with step_limit("helper_budget", hb_end):
+                    bud = HB.tick_step(sch, st, root, now, journal=lambda rec: (
+                        journal(root, rec), apply and signal_alarm(sch, st, rec["kind"], rec["why"], now)),
+                        tell=(lambda rec: (fx or {}).get("conductor_log", conductor_log)(sch, rec, now)) if apply else None)
+                timed("helper_budget", t0)
+                if bud:
+                    acts.append(bud)
+            except StepCut as e:
+                cut(e)
             if apply:
                 # a reservation no executed launch accounted for is given back on a tick that worked too (r2 #5)
                 back = unreserve(st)
@@ -2333,13 +2428,14 @@ def tick(sch, apply, obs=None, now=None, fx=None, still_owner=None, beat_end=Non
             # a tick that WORKED: no raise, and not blind (PAUSE is the owner's choice, a working tick) — review Q 11
             starved = None
             if beat_end is not None and apply:
-                if any(x.get("do") == "deferred" for x in acts):
+                if any(x.get("do") in ("deferred", "step_cut") for x in acts):
                     st["beat_deferred_streak"] = st.get("beat_deferred_streak", 0) + 1
                 else:
                     st.pop("beat_deferred_streak", None)
                 n = st.get("beat_deferred_streak", 0)
                 if n >= BEAT_STARVED_AFTER:
-                    starved = "%d beats in a row deferred acts at the beat deadline: the tick no longer fits its phase" % n
+                    starved = ("%d beats in a row deferred acts or cut a step at the beat deadline: the tick no longer "
+                               "fits its phase" % n)
                     if now - st["alarms"].get("tick:beat_starved", -1e18) >= sch.get("alarm_every_s", 6 * 3600):
                         st["alarms"]["tick:beat_starved"] = now
                         signal_alarm(sch, st, "tick:beat_starved", starved, now)
@@ -2367,6 +2463,9 @@ def tick(sch, apply, obs=None, now=None, fx=None, still_owner=None, beat_end=Non
             st["last_tick"] = iso(now)        # last ATTEMPT
             st["apply"] = apply
             save(st, root)
+            if beat_end is not None:
+                record_steps(root, dict(steps, at=iso(now), apply=apply, total=round(time.time() - t_start, 3),
+                                        left=round(beat_end - time.time(), 3)))
     return acts
 
 

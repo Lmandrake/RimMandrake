@@ -8,6 +8,10 @@ The metronome's dispatch phase kills a tick at METRONOME_DEADLINE (limit_s 20; l
                   row alarm tick:beat_starved and stop the dead-man's last_ok_tick
   fence           --metronome-gen: an act is started only while metronome.may_act says the generation is live;
                   Fenced stops the tick (exit 3), gives back what was not started and journals `fenced`, no alarm
+  step limits     observing+deciding end at the act reserve, execute and the helper budget BEAT_HARD_RESERVE_S before
+                  the kill: a step past its end is cut (SIGALRM), journalled `step_cut` naming it, its undone acts
+                  given back, and the tick still ends by itself inside the beat with its state saved; never
+                  tick:raised. Each beat's step seconds go to tick_steps.jsonl
   ownership       an --apply tick without a generation acts nothing while the phase table owns rm-dispatcher.timer
                   and that timer is not measured inactive; with it off, it is an on-demand wake and runs
 Nothing outside a temp dir is touched.
@@ -155,11 +159,15 @@ def test_tick_fenced_and_beat_end():
     def decide(sch, st, o, now, apply, out=None):
         rid = "r%d" % next(seq)
         st["seats"].setdefault("A", {})["ring"] = {"ring_id": rid}
-        out.extend([ring_act("A", rid)] + alarms(1))
+        out.extend([dict(alarms(1)[0], kind="k_" + rid), ring_act("A", rid)])    # a new kind: never rate-limited
         return out
     D.decide = decide
-    fx = {"lock": Lock, "note": lambda i, t: (True, ""), "publish": lambda n: "pushed",
+    # the alarm's note outlasts the act reserve, so the ring after it is deferred (decide itself ends in time)
+    fx = {"lock": Lock, "note": lambda i, t: time.sleep(0.5) or (True, ""), "publish": lambda n: "pushed",
           "conductor_log": lambda *a: "conductor log appended: t", "ring": lambda *a, **k: "rung"}
+
+    def at_end():
+        return time.time() + D.BEAT_ACT_RESERVE_S + 0.2
     try:
         try:
             D.tick(sch, True, obs=o, now=time.time(), fx=fx, still_owner=lambda w: False)
@@ -172,7 +180,7 @@ def test_tick_fenced_and_beat_end():
         check(not any(x.get("kind") == "tick:raised" for x in j), "a fenced tick is not a raised tick")
         st = D.load_state(root)
         check(not st.get("alarm_carry"), "a fenced tick carries no alarm to the next")
-        acts = D.tick(sch, True, obs=o, now=time.time(), fx=fx, beat_end=time.time() + D.BEAT_ACT_RESERVE_S - 1)
+        acts = D.tick(sch, True, obs=o, now=time.time(), fx=fx, beat_end=at_end())
         ran = [a["do"] for a in acts if "result" in a]
         check(ran == ["alarm"] and [a["do"] for a in acts][-1] == "deferred",
               "a tick at its beat's end defers its ring and still runs its alarm: ran %s" % ran)
@@ -182,7 +190,7 @@ def test_tick_fenced_and_beat_end():
               "one deferring beat: still a working tick, streak 1")
         t1 = time.time() + 10
         for k in range(D.BEAT_STARVED_AFTER - 1):
-            acts = D.tick(sch, True, obs=o, now=t1 + k, fx=fx, beat_end=time.time() + D.BEAT_ACT_RESERVE_S - 1)
+            acts = D.tick(sch, True, obs=o, now=t1 + k, fx=fx, beat_end=at_end())
         st = D.load_state(root)
         check(any(a.get("kind") == "tick:beat_starved" for a in acts), "beat %d deferring in a row alarms beat_starved"
               % D.BEAT_STARVED_AFTER)
@@ -233,9 +241,142 @@ def test_apply_without_generation_refuses_when_owned():
     check(D.metronome_owner() in (None, "dispatch"), "metronome_owner reads the real phase table")
 
 
+def test_step_limit():
+    import signal
+    sl = getattr(D, "step_limit", None)
+    check(sl is not None, "dispatcher has step_limit")
+    if sl is None:
+        return
+    prev = signal.getsignal(signal.SIGALRM)
+    t0, cut = time.time(), None
+    try:
+        with sl("slow", time.time() + 0.3):
+            time.sleep(3)
+    except BaseException as e:  # noqa: BLE001
+        cut = e
+    check(getattr(cut, "step", None) == "slow" and not isinstance(cut, Exception) and time.time() - t0 < 1.5,
+          "a step past its end is cut (a BaseException, so `except Exception` cannot swallow it): %r" % cut)
+    check(signal.getsignal(signal.SIGALRM) == prev and signal.getitimer(signal.ITIMER_REAL)[0] == 0,
+          "the cut restores SIGALRM and stops its timer")
+    with sl("fast", time.time() + 5):
+        pass
+    check(signal.getitimer(signal.ITIMER_REAL)[0] == 0, "a step inside its end leaves no timer running")
+    with sl("free", None):
+        time.sleep(0.05)
+    try:
+        with sl("late", time.time() - 1):
+            check(False, "a step whose end has passed must not start")
+    except BaseException as e:  # noqa: BLE001
+        check(getattr(e, "step", None) == "late", "an end already passed cuts the step before it starts")
+
+
+def test_cut_publish_child_dies():
+    sl = getattr(D, "step_limit", None)
+    pidf = os.path.join(TMP, "child.pid")
+    argv = [sys.executable, "-c", "import os,time; open(%r,'w').write(str(os.getpid())); time.sleep(30)" % pidf]
+    t0 = time.time()
+    try:
+        if sl is None:
+            raise RuntimeError("no step_limit")
+        with sl("execute", time.time() + 0.8):
+            D.publish_bounded(0, 20, argv=argv)
+    except BaseException:  # noqa: BLE001
+        pass
+    time.sleep(0.2)
+    pid = int(open(pidf).read()) if os.path.exists(pidf) else None
+    alive = False
+    if pid:
+        try:
+            os.kill(pid, 0)
+            alive = open("/proc/%d/stat" % pid).read().split()[2] != "Z"
+        except OSError:
+            alive = False
+    check(pid and not alive and time.time() - t0 < 3,
+          "a publish child is killed when its wait is cut (its own session: nothing else stops it): pid %s alive %s"
+          % (pid, alive))
+    if alive:
+        os.kill(pid, 9)
+
+
+def _cut_tick(name, decide, fx_extra=None, hb=None, beat_s=2.0):
+    """One --apply tick with small reserves (act 1.0 s, hard 0.5 s) and beat_end beat_s ahead.
+    -> (acts or the exception, seconds it took, beat_end, root)"""
+    saved = D.BEAT_ACT_RESERVE_S, getattr(D, "BEAT_HARD_RESERVE_S", None), D.decide, D.HB.tick_step
+    os.environ["RM_DISPATCHER_STATE"] = os.path.join(TMP, "cut_" + name)
+    D.BEAT_ACT_RESERVE_S, D.BEAT_HARD_RESERVE_S, D.decide = 1.0, 0.5, decide
+    if hb:
+        D.HB.tick_step = hb
+    fx = {"lock": Lock, "note": lambda i, t: (True, ""), "publish": lambda n: "pushed",
+          "conductor_log": lambda *a: "conductor log appended: t", "ring": lambda *a, **k: "rung"}
+    fx.update(fx_extra or {})
+    o = {"paused": None, "agents": {"state": "MEASURED", "sessions": []}}
+    t0 = time.time()
+    beat_end = t0 + beat_s
+    try:
+        out = D.tick(sched(), True, obs=o, now=t0, fx=fx, beat_end=beat_end)
+    except BaseException as e:  # noqa: BLE001
+        out = e
+    finally:
+        D.BEAT_ACT_RESERVE_S, D.BEAT_HARD_RESERVE_S, D.decide, D.HB.tick_step = saved
+        os.environ["RM_DISPATCHER_STATE"] = os.path.join(TMP, "state")
+    return out, time.time() - t0, beat_end, os.path.join(TMP, "cut_" + name)
+
+
+def _cut_checks(name, out, took, beat_end, root, step):
+    j = journal(root)
+    check(isinstance(out, list), "%s: the tick returns, it does not raise: %r" % (name, out if not isinstance(out, list) else ""))
+    check(time.time() < beat_end, "%s: the tick ends inside its beat (took %.2f s, %.2f s left)"
+          % (name, took, beat_end - time.time()))
+    check(any(x.get("do") == "step_cut" and x.get("step") == step for x in j),
+          "%s: the journal names the cut step %r: %s" % (name, step, [x.get("do") for x in j]))
+    check(not any(x.get("kind") == "tick:raised" for x in j), "%s: no tick:raised" % name)
+    st = D.load_state(root)
+    check(st.get("last_tick") and not st.get("alarm_carry") and st.get("beat_deferred_streak") == 1,
+          "%s: state saved, no alarm carried, the cut counts toward beat_starved" % name)
+    p = os.path.join(root, "tick_steps.jsonl")
+    rows = [json.loads(x) for x in open(p)] if os.path.exists(p) else []
+    check(rows and rows[-1].get(step) == "cut" and isinstance(rows[-1].get("total"), (int, float)),
+          "%s: tick_steps.jsonl records the cut and the tick's seconds: %s" % (name, rows[-1:]))
+    return st
+
+
+def ring_then(seconds, alarm_first=False):
+    def decide(sch, st, o, now, apply, out=None):
+        st["seats"].setdefault("A", {})["ring"] = {"ring_id": "rx"}
+        out.extend(([dict(alarms(1)[0], kind="slow", conductor_log=True)] if alarm_first else []) + [ring_act("A", "rx")])
+        if seconds:
+            time.sleep(seconds)
+        return out
+    return decide
+
+
+def test_slow_observe_is_cut():
+    out, took, end, root = _cut_tick("observe", ring_then(6))
+    st = _cut_checks("slow decide", out, took, end, root, "observe")
+    check("ring" not in (st.get("seats", {}).get("A") or {}), "slow decide: the ring it decided is given back")
+
+
+def test_slow_execute_is_cut():
+    hb = []
+    out, took, end, root = _cut_tick("execute", ring_then(0, alarm_first=True),
+                                     {"conductor_log": lambda *a: time.sleep(6) or "appended"},
+                                     hb=lambda *a, **k: hb.append(1))
+    st = _cut_checks("slow act", out, took, end, root, "execute")
+    check("ring" not in (st.get("seats", {}).get("A") or {}), "slow act: the ring not yet started is given back")
+    check(not hb, "slow act: no time left, so the helper budget is not started")
+
+
+def test_slow_helper_budget_is_cut():
+    out, took, end, root = _cut_tick("budget", ring_then(0), hb=lambda *a, **k: time.sleep(6))
+    _cut_checks("slow helper budget", out, took, end, root, "helper_budget")
+    j = journal(root)
+    check(any(x.get("do") == "ring" and x.get("result") for x in j), "slow helper budget: the acts before it ran")
+
+
 def main():
     for t in (test_beat_deadline_defers, test_deferred_launch_is_given_back, test_deferred_ring_is_given_back, test_fence_stops_the_tick,
-              test_tick_fenced_and_beat_end, test_apply_without_generation_refuses_when_owned):
+              test_tick_fenced_and_beat_end, test_apply_without_generation_refuses_when_owned, test_step_limit, test_cut_publish_child_dies,
+              test_slow_observe_is_cut, test_slow_execute_is_cut, test_slow_helper_budget_is_cut):
         try:
             t()
         except Exception as e:  # noqa: BLE001
