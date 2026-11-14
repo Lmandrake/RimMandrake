@@ -84,11 +84,11 @@ def judge(files_out, units_out, ps_out):
         if len(parts) < 2 or not parts[0].isdigit():
             continue
         if any(WORKER.match(os.path.basename(a)) for a in parts[1:4]):   # the interpreter and script, never a brief's prose
-            bad.append("worker process alive: pid %s %s" % (parts[0], " ".join(parts[1:4])[:100]))
+            bad.append("worker process alive: pid %s %s" % (parts[0], " ".join(parts[1:4])))
     bad = list(dict.fromkeys(bad))
     if bad:
         return {"status": "alarm", "problems": bad,
-                "line": "RETIRED LOOP BACK: %d problem(s): %s" % (len(bad), "; ".join(bad)[:600])}
+                "line": "RETIRED LOOP BACK: %d problem(s): %s" % (len(bad), "; ".join(bad))}
     return {"status": "ok", "problems": [],
             "line": "retired loops stay off: %d units masked, none loaded, no worker process" % len(RETIRED_UNITS)}
 

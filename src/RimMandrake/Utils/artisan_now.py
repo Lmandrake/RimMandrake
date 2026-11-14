@@ -1160,13 +1160,10 @@ def newest(d, pat):
                 if best is None or m > best[0]:
                     best = (m, e.path)
     return best
-try:   # the reader arrives on stdin, so the caller names its Utils folder in UTILS_DIR; the far machine lacks it and takes the glob
-    sys.path.insert(0, UTILS_DIR)
-    import game_paths  # noqa: E402  the one LocalLow seam
-    _low = game_paths.LOCALLOW
-except Exception:
-    _low = "/mnt/c/Users/*/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios"
-roots = glob.glob(os.environ.get("ARTISAN_TPS_ROOT") or os.path.join(_low, "JawaBench", "tps"))
+LOW = globals().get("LOW")   # the caller prepends it
+if not LOW:   # the far machine: no game_paths there, so its own profile
+    LOW = os.path.join(os.path.expanduser("~"), "AppData", "LocalLow", "Ludeon Studios", "RimWorld by Ludeon Studios")
+roots = glob.glob(os.environ.get("ARTISAN_TPS_ROOT") or os.path.join(LOW, "JawaBench", "tps"))
 out["tps_roots"] = len(roots)
 sessions = []
 for r in roots:
@@ -1269,12 +1266,18 @@ print(json.dumps(out))
 '''
 
 
+def _game_paths_low():
+    sys.path.insert(0, HERE)
+    import game_paths
+    return game_paths.LOCALLOW
+
+
 def read_machine(name):
     if name == "Archmagi":
         cmd = ["python3", "-"]
     else:
         cmd = ["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=6", "-o", "LogLevel=ERROR", STEVE_SSH, "python3", "-"]
-    rc, out, err = run(cmd, timeout=MACHINE_DEADLINE_S - 1, input_text="UTILS_DIR = %r\n" % HERE + READER)
+    rc, out, err = run(cmd, timeout=MACHINE_DEADLINE_S - 1, input_text="LOW = %r\n" % (_game_paths_low() if name == "Archmagi" else None) + READER)
     if rc:
         raise Unmeasured("%s: %s" % ("reader" if name == "Archmagi" else "ssh", short(err or "exit %d" % rc, 110)))
     try:
