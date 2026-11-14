@@ -99,6 +99,12 @@ namespace RimMandrake.FlowWorks
 		/// feature.</summary>
 		private Dictionary<int, TerrainDef> originalTerrain = new Dictionary<int, TerrainDef>();
 
+		/// <summary>RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE: a floor a player laid on a dug floor, held while liquid stands over it
+		/// (RM_PitFloorGroundMath.FloorUnderWater) and laid back when the square dries. Keyed by cell index.</summary>
+		private Dictionary<int, TerrainDef> sunkFloor = new Dictionary<int, TerrainDef>();
+		private List<int> sunkFloorKeys;
+		private List<TerrainDef> sunkFloorValues;
+
 		private List<int> originalTerrainKeys;
 
 		private List<TerrainDef> originalTerrainValues;
@@ -1036,6 +1042,11 @@ namespace RimMandrake.FlowWorks
 			// RM_LiquidBody.ExposeData), the rain remainder and the sink total.
 			Scribe_Collections.Look(ref originalTerrain, "RM_originalTerrain",
 				LookMode.Value, LookMode.Def, ref originalTerrainKeys, ref originalTerrainValues);
+			Scribe_Collections.Look(ref sunkFloor, "RM_sunkFloor", LookMode.Value, LookMode.Def, ref sunkFloorKeys, ref sunkFloorValues);
+			if (sunkFloor == null)
+			{
+				sunkFloor = new Dictionary<int, TerrainDef>();
+			}
 			Scribe_Deep.Look(ref stock, "RM_liquidStock");
 			Scribe_Values.Look(ref rainAccumulator, "RM_rainAccumulator", 0f);
 			Scribe_Values.Look(ref rainDecidedForPulse, "RM_rainDecidedForPulse", int.MinValue);
@@ -1599,6 +1610,29 @@ namespace RimMandrake.FlowWorks
 		/// <summary>RIMMANDRAKE_LABEL_PIT_DEPTH_EXACT_ONE_WORD: the label of a dug square ("Pit, 2.5 m deep", "Pit, 1.5 m water
 		/// in 4.0 m", RM_Volume.PitLabel) from the true depth grid, the cell's decilitres and its recorded liquid. Null for an
 		/// undug square. A dug square is named here, never by a per-depth TerrainDef label.</summary>
+		/// <summary>RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE: the floor a player laid on this dug square, dry on top or sunk under
+		/// its liquid (<paramref name="sunk"/>); null when there is none.</summary>
+		public TerrainDef FloorOverPitAt(IntVec3 c, out bool sunk)
+		{
+			sunk = false;
+			if (!c.InBounds(map))
+			{
+				return null;
+			}
+			int i = map.cellIndices.CellToIndex(c);
+			if (depthGrid[i] <= 0)
+			{
+				return null;
+			}
+			if (sunkFloor.TryGetValue(i, out TerrainDef s) && s != null)
+			{
+				sunk = true;
+				return s;
+			}
+			TerrainDef top = map.terrainGrid.TopTerrainAt(c);
+			return top != null && top.layerable && map.terrainGrid.UnderTerrainAt(c) != null ? top : null;
+		}
+
 		public string PitLabelAt(IntVec3 c)
 		{
 			if (!c.InBounds(map))
@@ -2054,6 +2088,7 @@ namespace RimMandrake.FlowWorks
 				return RM_RestoreResult.WriteFailed;
 			}
 			originalTerrain.Remove(i);
+			sunkFloor.Remove(i);
 			SetBed(i, 0);
 			return RM_RestoreResult.Restored;
 		}
@@ -3616,6 +3651,7 @@ namespace RimMandrake.FlowWorks
 			// stands (vanilla never removes a built thing on a terrain change, and neither did the temp-layer fill).
 			TerrainDef want = null;
 			TerrainDef keep = null;
+			bool wantWet = false;
 			if (WetDug(i))
 			{
 				if (fluid == null)
@@ -3623,6 +3659,7 @@ namespace RimMandrake.FlowWorks
 					return true;
 				}
 				want = fluid.WetTerrainForBand(RM_ExcavationDepth.FillTier(WaterDl(i)));
+				wantWet = want != null;
 				// EDGE_SINK_WATER_TAME_SEAM_FLICKER: within an eighth of a metre of a wet band edge, the picture of the band across
 				// that edge stays (RM_LevelSolve.LookStickyNeighbour); water swinging across the edge each pulse no longer redraws.
 				int sticky = RM_LevelSolve.LookStickyNeighbour(WaterDl(i));
@@ -3659,10 +3696,27 @@ namespace RimMandrake.FlowWorks
 			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES r15 lead 4: r15 timed one ApplyFillTerrain call at 95 ms. Time the
 			// vanilla terrain write alone (DoTerrainChangedEffects' cascade), split by whether the water-body type moved
 			// (Odyssey's WaterBodyTracker flood fill is the suspect), and keep the slowest call's particulars for r16.
+			// RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE (owner look 2026-11-14, his 12): a floor laid on the dug floor is sunk, not
+			// destroyed, by the water, and laid back when it drains (vanilla's SetTerrain of a liquid clears the under-layer)
+			TerrainDef top = map.terrainGrid.TopTerrainAt(c);
+			RM_PitFloorGroundMath.FloorStep floorStep = RM_PitFloorGroundMath.FloorUnderWater(
+				top != null && top.layerable && map.terrainGrid.UnderTerrainAt(c) != null, wantWet, sunkFloor.ContainsKey(i));
+			if (floorStep == RM_PitFloorGroundMath.FloorStep.SinkFloorThenWrite)
+			{
+				sunkFloor[i] = top;
+			}
 			int gc0 = System.GC.CollectionCount(0);
 			long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
 			map.terrainGrid.SetTerrain(c, want);
 			NoteTerrainWrite(c, cur, want, System.Diagnostics.Stopwatch.GetTimestamp() - t0, System.GC.CollectionCount(0) - gc0);
+			if (floorStep == RM_PitFloorGroundMath.FloorStep.WriteThenRelay && sunkFloor.TryGetValue(i, out TerrainDef floor))
+			{
+				sunkFloor.Remove(i);
+				if (floor != null)
+				{
+					map.terrainGrid.SetTerrain(c, floor);
+				}
+			}
 			if (drained)
 			{
 				Machinery.Kits.RM_FluidResidue.NoteDrained(map, c, held);

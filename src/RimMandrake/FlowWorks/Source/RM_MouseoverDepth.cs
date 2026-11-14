@@ -83,6 +83,12 @@ namespace RimMandrake.FlowWorks
 			float fertility = c.GetFertility(map);
 			string fert = fertility > 0.0001f ? " " + "FertShort".TranslateSimple() + " " + fertility.ToStringPercent() : "";
 			string label = pit ?? (polluted ? "PollutedTerrain".Translate(terrain.label).CapitalizeFirst().ToString() : terrain.LabelCap.ToString());
+			if (pit != null)
+			{
+				// his 12: a floor laid on the pit floor is named, dry or sunk under the liquid
+				TerrainDef floor = ex.FloorOverPitAt(c, out bool sunk);
+				label += RM_PitFloorGroundMath.FloorPhrase(floor?.LabelCap.ToString(), sunk, sunk ? (ex.FluidAt(c) ?? ex.ActiveFluid)?.label : null);
+			}
 			// RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE (owner look 2026-11-14, his 1: "Why is the pit walk speed 4.2%? It should be
 			// full speed while walking on the floor of the pit."): a dug square reads the speed of walking along its floor (a dry
 			// floor is walked free, RM_Patch_PitStepCost; water at its wading cost; dug water a pawn swims at the swim cost), never

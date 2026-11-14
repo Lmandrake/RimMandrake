@@ -1,6 +1,7 @@
 """Live bridge test for the owner's 2026-11-14 pit look fixes (RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE).
 
-    python.exe pit_look_1114_live.py [section ...]     sections: pour_labels pit_walk hot_tub pit_edge (default: all)
+    python.exe pit_look_1114_live.py [section ...]     sections: pour_labels pit_walk hot_tub pit_edge pit_floor (default: all;
+                                                       pit_floor WRITES to station B2)
 
 Read-only against the loaded save SITTING_20261114_PIT_FIXES (or any map with the same stations); each section prints
 PASS/FAIL/UNMEASURED rows. Status: UNRUN (written 2026-11-14 offline while the owner was in the game; run it with the bridge
@@ -68,7 +69,26 @@ def pit_edge():
         row("pit_edge_" + arg, got.startswith(want) if isinstance(got, str) else None, got)
 
 
-SECTIONS = {"pour_labels": pour_labels, "pit_walk": pit_walk, "hot_tub": hot_tub, "pit_edge": pit_edge}
+def label(cell):
+    return static("RimMandrake.FlowWorks.RM_Patch_MouseoverDepth", "ProofPitLabel", cell)
+
+
+def pit_floor():
+    """His 12 (fix half): WRITES on station B2 (dry 4 m pit x187-192 z186-191): lay a sandstone tile floor on 189,188, read
+    the label (names the floor), set the pit to 1 m of water (floor named 'under the water'), drain it dry (floor back on top)."""
+    GL = "RimMandrake.FlowWorks.RM_GodLiquid"
+    B.call("jawa/set_terrain_batch", ops="TileSandstone:189,188,1,1")
+    l0 = label("189,188")
+    row("pit_floor_named_dry", isinstance(l0, str) and "Sandstone tile" in l0 and "under" not in l0, l0)
+    r = static(GL, "SetLevel", "189,188|RM_Fluid_Water|1.0")
+    l1 = label("189,188")
+    row("pit_floor_named_sunk", isinstance(l1, str) and "Sandstone tile under the water" in l1, [r, l1])
+    r = static(GL, "DrainAll", "189,188")
+    l2 = label("189,188")
+    row("pit_floor_back_after_drain", isinstance(l2, str) and "Sandstone tile" in l2 and "under" not in l2, [r, l2])
+
+
+SECTIONS = {"pour_labels": pour_labels, "pit_walk": pit_walk, "hot_tub": hot_tub, "pit_edge": pit_edge, "pit_floor": pit_floor}
 
 if __name__ == "__main__":
     for name in (sys.argv[1:] or list(SECTIONS)):

@@ -105,6 +105,33 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(mod, @"CheckboxLabeled\(""[^""]+"", ref pitEdgeStraddleRefusedEnabled", "the setting has a checkbox");
             });
 
+            // his 12 (the fix half): "In the pit, it does not say Lanternstone floor ... when you fill the pit with water ... inside
+            // the pit the lanternstone floor is destroyed."
+            Case("PitLook1114_floor_on_a_pit_survives_water_and_is_named", () =>
+            {
+                // the picture write: water over a laid floor sinks the floor (kept), drying lays it back; nothing else changes
+                Assert(RM_PitFloorGroundMath.FloorUnderWater(true, true, false) == RM_PitFloorGroundMath.FloorStep.SinkFloorThenWrite,
+                    "water over a laid floor does not keep the floor");
+                Assert(RM_PitFloorGroundMath.FloorUnderWater(false, false, true) == RM_PitFloorGroundMath.FloorStep.WriteThenRelay,
+                    "a drained pit does not lay its sunk floor back");
+                Assert(RM_PitFloorGroundMath.FloorUnderWater(false, true, true) == RM_PitFloorGroundMath.FloorStep.Write, "a band change disturbs the sunk floor");
+                Assert(RM_PitFloorGroundMath.FloorUnderWater(false, true, false) == RM_PitFloorGroundMath.FloorStep.Write, "bare wet pit");
+                Assert(RM_PitFloorGroundMath.FloorUnderWater(false, false, false) == RM_PitFloorGroundMath.FloorStep.Write, "bare dry pit");
+                Assert(RM_PitFloorGroundMath.FloorUnderWater(true, false, false) == RM_PitFloorGroundMath.FloorStep.Write, "a dry floored pit");
+                // the readout names it
+                Assert(RM_PitFloorGroundMath.FloorPhrase("Lanternstone floor", false, null) == " \u00b7 Lanternstone floor", "dry floor phrase");
+                Assert(RM_PitFloorGroundMath.FloorPhrase("Lanternstone floor", true, "water") == " \u00b7 Lanternstone floor under the water", "sunk phrase");
+                Assert(RM_PitFloorGroundMath.FloorPhrase(null, true, "water") == "", "no floor, no phrase");
+                string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
+                RiverSwitchFlipChecks.Has(ex, @"RM_PitFloorGroundMath\.FloorUnderWater\(", "the picture write asks the floor rule");
+                RiverSwitchFlipChecks.Has(ex, @"sunkFloor\[i\] = top;[\s\S]*?map\.terrainGrid\.SetTerrain\(c, want\);[\s\S]*?map\.terrainGrid\.SetTerrain\(c, floor\);",
+                    "the floor is recorded before the water write and laid back after the dry one");
+                RiverSwitchFlipChecks.Has(ex, @"Scribe_Collections\.Look\(ref sunkFloor, ""RM_sunkFloor""", "a sunk floor survives a save");
+                RiverSwitchFlipChecks.Has(ex, @"originalTerrain\.Remove\(i\);\s*sunkFloor\.Remove\(i\);", "a filled-in square forgets its sunk floor");
+                string mouse = RiverSwitchFlipChecks.Src("RM_MouseoverDepth.cs");
+                RiverSwitchFlipChecks.Has(mouse, @"RM_PitFloorGroundMath\.FloorPhrase\(", "the readout names the floor");
+            });
+
             Case("PitLook1114_no_fill_n_wording_in_visible_text", () =>
             {
                 string root = Path.GetDirectoryName(RiverSwitchFlipChecks.SrcPath("RM_Volume.cs"));
