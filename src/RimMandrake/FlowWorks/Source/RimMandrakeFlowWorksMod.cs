@@ -160,7 +160,6 @@ namespace RimMandrake.FlowWorks
         public static bool pondDepthEnabled = true;
         public static float pondMudDays = 2f;
         public static float pondStageWritesPerPulse = 400f;
-        public static bool pondHeadRuleEnabled = true;
         // LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD (owner D2 2026-10-17): the deepest natural floor, in NOTCHES (0.5 m), shown in metres,
         // settable up to 250 = 125 m. LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP (R11): default 100 = 50 m, a bound only the mountain
         // and chasm bands reach; each lake's floor is drawn by RM_LakeFloorMath (per lake, per the map's roughness).
@@ -591,7 +590,6 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref pondDepthEnabled, "pondDepthEnabled", true);
             Scribe_Values.Look(ref pondMudDays, "pondMudDays", 2f);
             Scribe_Values.Look(ref pondStageWritesPerPulse, "pondStageWritesPerPulse", 400f);
-            Scribe_Values.Look(ref pondHeadRuleEnabled, "pondHeadRuleEnabled", true);
             Scribe_Values.Look(ref deepBedMaxDepth, "deepBedMaxDepth", 100f);
             Scribe_Values.Look(ref lakeDepthScale, "lakeDepthScale", 1f);
             Scribe_Values.Look(ref lakeFloorRoughness, "lakeFloorRoughness", 1f);
@@ -1223,7 +1221,7 @@ namespace RimMandrake.FlowWorks
 
             }
 
-            if (Section(list, "Ponds, lakes, rain and drainage", new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "stickyLimitlessEnabled", "wetnessCutoffEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "recedeSparesOutflow", "refillEnabled", "pondReturnLegEnabled", "refillWaitsForOccupants", "dugBedLeavesPondEnabled", "pondBedHollowEnabled", "deepBedsEnabled", "deepBedMaxDepth", "lakeDepthScale", "lakeFloorRoughness", "lakeShoreShelfMetres", "lakeWayOutMetres", "drainableLakeMaxCells", "pondDepthEnabled", "pondMudDays", "pondStageWritesPerPulse", "pondHeadRuleEnabled", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "rainPocketApproxEnabled", "excavationLoadRepairEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled", "edgeSinksEnabled" }))
+            if (Section(list, "Ponds, lakes, rain and drainage", new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "stickyLimitlessEnabled", "wetnessCutoffEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "recedeSparesOutflow", "refillEnabled", "pondReturnLegEnabled", "refillWaitsForOccupants", "dugBedLeavesPondEnabled", "pondBedHollowEnabled", "deepBedsEnabled", "deepBedMaxDepth", "lakeDepthScale", "lakeFloorRoughness", "lakeShoreShelfMetres", "lakeWayOutMetres", "drainableLakeMaxCells", "pondDepthEnabled", "pondMudDays", "pondStageWritesPerPulse", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "rainPocketApproxEnabled", "excavationLoadRepairEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled", "edgeSinksEnabled" }))
             {
             list.Label("How much liquid a natural body actually has, what happens when a pit "
                      + "drinks it dry, and where liquid goes when you fill a channel back in. "
@@ -1342,11 +1340,6 @@ namespace RimMandrake.FlowWorks
                 list.Label("A cost guard: how many pond squares may change their look in one pulse. A big lake crossing a level "
                          + "catches up over a few pulses; the water itself never lags.");
             }
-            list.CheckboxLabeled("Connected water levels to one surface", ref pondHeadRuleEnabled,
-                "Water sloshes until it levels, pond or pit: a pond feeds a ditch only while its surface stands above the "
-              + "ditch's water, so a shallow ditch stops drawing once the pond has dropped below its floor (dig deeper to keep "
-              + "drawing), and a pit standing above a pond's surface runs back into it. Off: a pond feeds any ditch until "
-              + "it is empty.");
 
             list.Label("Largest drainable lake (affects map generation): " + DrainableLakeMaxCells + " squares");
             drainableLakeMaxCells = list.Slider(drainableLakeMaxCells, RM_BedMath.OceanWalkCells, 62500f);

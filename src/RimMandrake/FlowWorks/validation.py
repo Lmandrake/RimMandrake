@@ -1678,7 +1678,7 @@ TOGGLES_NOT_ON_FLOOR = ["rainPocketApproxEnabled", "blastsBreakPitCovers", "pitS
                         "pipeStraightVariants", "sprinklerSprayEffects",
                         # POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD (2026-10-16): its live row is liquid_checks.pond_depth_verdict (L8, run
                         # with the bridge, selftested offline), not yet a toggle chain
-                        "pondDepthEnabled", "pondHeadRuleEnabled",
+                        "pondDepthEnabled",
                         # POND_BED_BUILD_HOLLOW_KEEPS_ITS_SHAPE step 2 (2026-10-14): its live rows (A1 hollow, A2 LIFO refill)
                         # are owed on the item, not yet a toggle chain
                         "pondBedHollowEnabled",
