@@ -30,8 +30,10 @@ not exhaustive and it is not the playtest.
   sheet per run.
 - **Failure**: auto-file a rimflow finding (screenshot attached) and CONTINUE the
   run to collect every failure.
-- **Retrofit**: full wave — every shipped mod gets a validation script, after the pilot
-  proves the format.
+- **Retrofit**: retired by his card 2026-11-14 ("Retire it for the pipeline"). No
+  every-mod validation-script wave runs, and no sheet format waits for his ratification. The
+  Maturation Pipeline (`design/specs/2026-11-13-maturation-pipeline.md`), where each bar names
+  its check, replaces it.
 
 ## 1. The validation script
 
@@ -215,7 +217,7 @@ content hash of the mod's files at run time.
    status registry, verify + HTML report, deploy-tool skip rule.
 2. `MOD_VALIDATION_PIT_PILOT_1` — the pit mod end-to-end: validation.py written from
    its settings toggles + beyond-toggle components (falls-in, climb-out vs not,
-   and the rest of its defined functionality), run green, sheet reviewed by the
-   owner once to ratify the report format.
-3. `MOD_VALIDATION_RETROFIT_1` — every shipped mod gets a validation script. Filed now,
-   starts only after the pilot ratifies the format.
+   and the rest of its defined functionality), run green (ran GREEN 3/3
+   live 2026-09-12; the format ratification it was to end in was retired by his card 2026-11-14).
+3. `MOD_VALIDATION_RETROFIT_1` — retired by his card 2026-11-14 ("Retire it for the
+   pipeline"), superseded by `RIMMANDRAKE_DESIGN_MATURATION_PIPELINE_WHOLE_MOD_IS_THE_UNIT`.

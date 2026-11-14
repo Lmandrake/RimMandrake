@@ -453,6 +453,7 @@ All **[PROPOSAL]** except where marked. Nothing is deleted by this document.
 - The older level words (L0 to L4, GREEN-MIN, GREEN-FULL) as stage names. Retiring them was already proposed in the earlier map and is still not his.
 - The Designer's scheduled judge loop after a lock. **[HIS by agreement]** for the five mods; as a general rule it is a proposal.
 - The first-touch items' wording "write it out for Relentless as build items".
+- The every-mod validation-file retrofit wave (`MOD_VALIDATION_RETROFIT_1`) and the modcheck sheet format that was to wait for his ratification (`MODCHECK_PITS_SHEET_REBUILD_DECAYED_UNSEEN`). **[HIS]** By card 2026-11-14: "Retire it for the pipeline". Each bar names its own check here instead; both items are superseded by `RIMMANDRAKE_DESIGN_MATURATION_PIPELINE_WHOLE_MOD_IS_THE_UNIT`.
 
 ---
 
