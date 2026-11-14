@@ -78,6 +78,16 @@ namespace RimMandrake.ExplosiveKnockback
             if (__state != null)
             {
                 RM_MapComponent_Knockback.NotifyLanded(__state); // stun-lock guard: stamps landing + stun end
+                if (__state.Spawned)
+                {
+                    foreach (Thing t in __state.Position.GetThingList(__state.Map))
+                    {
+                        if (t is Pawn o && o != __state)
+                        {
+                            RM_KnockbackJournal.Add("land_on_pawn", 0, __state, "at", __state.Position, "pawn", o.ThingID, "pawnId", o.thingIDNumber);
+                        }
+                    }
+                }
                 RM_KnockbackJournal.Add("land", 0, __state, "at", __state.Spawned ? __state.Position : IntVec3.Invalid,
                     "spawned", __state.Spawned, "dead", __state.Dead, "downed", __state.Downed,
                     "inPit", __state.Spawned && RM_KnockbackCompat.IsSuperdeep(__state.Map, __state.Position));
@@ -94,13 +104,8 @@ namespace RimMandrake.ExplosiveKnockback
             {
                 return false;
             }
-            foreach (Thing t in c.GetThingList(map))
-            {
-                if (t is Pawn o && o != p)
-                {
-                    return false;
-                }
-            }
+            // a pawn standing on the cell does not re-target the landing (bar pawn_flight_arc: "lands on the cell chosen at the
+            // blast"; Stage 3 reconcile 2026-11-14): pawns share cells, and the Postfix journals the pawn landed on
             return true;
         }
     }

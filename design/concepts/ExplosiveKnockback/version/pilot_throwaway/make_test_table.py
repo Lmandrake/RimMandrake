@@ -194,6 +194,7 @@ def main():
         "no_cross_ordered": "both walk orders and the covered pit are staged. Not yet: the concealed-pit raider control",
         "spared_states": "too_heavy_creature, in_pit (pawn and stack), carrying_pawn, in_bed and the heavy corpse. Not yet: the flying lane (a flyer's flight is never live-tested without the owner present)",
         "blast_kinds": "frag, BombSuper, Flame against the Bomb-swapped shell, and EMP, smoke, stun, extinguish, toxic gas. Not yet: the Outer Rim sonic and plasma lanes, the modded damaging explosion, the unpatched-percent-0 control",
+        "pawn_arc": "holder and in-between drawn position, landing on the planned cell with a land_on_pawn line naming the walker, stun end within landingStunMax, a haul job of the same stack after, the teleport control. Not yet: 'the stack it dropped at takeoff' (the flyer carries the stack: flyWithCarriedThing; a journal question)",
         "open_storage": "four open furniture defs, the guard's class read, no in_storage line. The floor control's cells are printed, not compared",
     }
     TICKS = {"no_cross_ordered": 2000, "pawn_arc": 900}

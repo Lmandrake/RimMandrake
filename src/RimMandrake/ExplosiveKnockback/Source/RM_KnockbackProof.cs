@@ -55,7 +55,7 @@ namespace RimMandrake.ExplosiveKnockback
             "mass_and_power_250_x2",
             // 2026-11-14 Stage 3 reconcile (Maturation Pipeline pilot): the locked scenes.json entry points. NOT YET RUN LIVE.
             "pawn_hits_pawn", "only_explosions", "open_storage", "no_cross_ordered", "spared_states", "blast_kinds",
-            "goods_fly_wild", "gas_chain", "gas_census",
+            "goods_fly_wild", "gas_chain", "gas_census", "pawn_arc",
         };
 
         private static Map Map => Find.CurrentMap;
@@ -1975,6 +1975,111 @@ namespace RimMandrake.ExplosiveKnockback
                         bool zeros = quiet.All(k => ForThing(sc, "request", sc.things[k]).Count == 0 && sc.things[k].Position == sc.starts[k]);
                         return Result(sc, flame && frag && zeros, "flame%=" + Pct("flame") + " swapped%=" + Pct("swapped") + " cells " + fc + "/" + bc
                             + " frag%=" + Pct("frag") + " bombsuper%=" + Pct("bombsuper") + " harmless quiet=" + zeros);
+                    };
+                    return null;
+
+                case "pawn_arc":
+                    {
+                        // sc_pawn_arc: a colonist ordered to haul a stack to a stockpile is thrown; a walker ordered onto the
+                        // landing planned at launch arrives mid-flight. Traced every tick: holder, drawn position, job. Control:
+                        // a third pawn moved by a debug teleport of the same distance, traced the same way.
+                        Zone_Stockpile zone = new Zone_Stockpile(StorageSettingsPreset.DefaultStockpile, Map.zoneManager);
+                        Map.zoneManager.RegisterZone(zone);
+                        zone.AddCell(O(s, 1, -5));
+                        Action prev = s.restore;
+                        s.restore = () => { if (zone.zoneManager != null) zone.Delete(); prev?.Invoke(); };
+                        Pawn p = Colonist(s, "p", O(s, 1, 0), drafted: false);
+                        Thing st = Item(s, "st", "Steel", 20, O(s, 1, 0));
+                        Job haul = JobMaker.MakeJob(JobDefOf.HaulToCell, st, O(s, 1, -5));
+                        haul.count = st.stackCount;
+                        haul.haulMode = HaulMode.ToCellStorage;
+                        p.jobs.TryTakeOrderedJob(haul);
+                        if (p.CurJobDef != JobDefOf.HaulToCell || p.CurJob.targetA.Thing != st)
+                        {
+                            return "the colonist's current job is not a haul of the stack";
+                        }
+                        Pawn w = Colonist(s, "w", O(s, 4, 3), drafted: true);
+                        Pawn tp = Colonist(s, "tp", O(s, -4, 4), drafted: true);
+                        Map m0 = Map;
+                        for (int d = 1; d <= 900; d++)
+                        {
+                            int dd = d;
+                            RM_MapComponent_Knockback.ProofSchedule.Add(new KeyValuePair<int, Action>(s.stagedTick + d, () =>
+                            {
+                                if (m0 != Find.CurrentMap)
+                                {
+                                    return;
+                                }
+                                var launch = ForThing(s, "launch", p);
+                                if (launch.Count == 1 && !s.numbers.ContainsKey("plannedX"))
+                                {
+                                    IntVec3 to = (IntVec3)launch[0]["to"];
+                                    s.numbers["plannedX"] = to.x;
+                                    s.numbers["plannedZ"] = to.z;
+                                    s.numbers["launchTick"] = dd;
+                                    w.jobs.TryTakeOrderedJob(JobMaker.MakeJob(JobDefOf.Goto, to));
+                                }
+                                if (!p.Spawned && p.ParentHolder is PawnFlyer f && f.def == RM_KnockbackDefOf.RM_PawnFlyer_Knockback && s.numbers.ContainsKey("plannedX"))
+                                {
+                                    float x = f.DrawPos.x, sx = s.starts["p"].x + 0.5f, ex = (float)s.numbers["plannedX"] + 0.5f;
+                                    if (x > Math.Min(sx, ex) + 0.05f && x < Math.Max(sx, ex) - 0.05f)
+                                    {
+                                        s.numbers["between"] = s.numbers.TryGetValue("between", out float b) ? b + 1 : 1;
+                                    }
+                                    if (s.numbers.ContainsKey("plannedX") && w.Position.x == (int)s.numbers["plannedX"] && w.Position.z == (int)s.numbers["plannedZ"])
+                                    {
+                                        s.numbers["walkerInFlight"] = dd;
+                                    }
+                                }
+                                if (p.Spawned && s.numbers.ContainsKey("launchTick") && !s.numbers.ContainsKey("landTick"))
+                                {
+                                    s.numbers["landTick"] = dd;
+                                }
+                                if (s.numbers.ContainsKey("landTick") && !s.numbers.ContainsKey("stunEnd") && p.stances?.stunner != null && !p.stances.stunner.Stunned)
+                                {
+                                    s.numbers["stunEnd"] = dd;
+                                }
+                                if (s.numbers.ContainsKey("stunEnd") && !s.numbers.ContainsKey("rehaul") && p.CurJob != null
+                                    && (p.CurJobDef == JobDefOf.HaulToCell || p.CurJobDef == JobDefOf.HaulToContainer) && p.CurJob.targetA.Thing == st)
+                                {
+                                    s.numbers["rehaul"] = dd;
+                                }
+                                if (dd == 5 && tp.Spawned)
+                                {
+                                    IntVec3 c = tp.Position + new IntVec3(3, 0, 0);
+                                    tp.DeSpawn();
+                                    GenSpawn.Spawn(tp, c, m0);
+                                }
+                                if (dd >= 4 && dd <= 7 && (!tp.Spawned || tp.ParentHolder is PawnFlyer))
+                                {
+                                    s.numbers["tpHeld"] = 1;
+                                }
+                            }));
+                        }
+                        Blast(s.o, 2.9f);
+                    }
+                    s.verdict = sc =>
+                    {
+                        Pawn p = (Pawn)sc.things["p"];
+                        if (!sc.numbers.ContainsKey("plannedX"))
+                        {
+                            return "INVALID " + sc.name + " no launch line for the colonist";
+                        }
+                        if (!sc.numbers.ContainsKey("walkerInFlight"))
+                        {
+                            return "INVALID " + sc.name + " the walker never stood on the planned cell between launch and landing";
+                        }
+                        var planned = new IntVec3((int)sc.numbers["plannedX"], 0, (int)sc.numbers["plannedZ"]);
+                        bool arc = sc.numbers.TryGetValue("between", out float bt) && bt >= 1;
+                        bool onPlanned = p.Spawned && sc.numbers.ContainsKey("landTick") && ForThing(sc, "redirect", p).Count == 0
+                            && ForThing(sc, "land", p).Any(r => (IntVec3)r["at"] == planned);
+                        bool hitWalker = ForThing(sc, "land_on_pawn", p).Any(r => (int)r["pawnId"] == sc.things["w"].thingIDNumber);
+                        bool stun = sc.numbers.ContainsKey("stunEnd") && sc.numbers["stunEnd"] - sc.numbers["landTick"] <= RimMandrakeExplosiveKnockbackSettings.landingStunMax;
+                        bool rehaul = sc.numbers.ContainsKey("rehaul");
+                        bool control = !sc.numbers.ContainsKey("tpHeld");
+                        return Result(sc, arc && onPlanned && hitWalker && stun && rehaul && control, "arcTicks=" + bt + " planned=" + planned.x + "," + planned.z
+                            + " onPlanned=" + onPlanned + " hitWalker=" + hitWalker + " stun=" + stun + " rehaul=" + rehaul + " teleportControlClean=" + control
+                            + " (step 900 ticks)");
                     };
                     return null;
 
