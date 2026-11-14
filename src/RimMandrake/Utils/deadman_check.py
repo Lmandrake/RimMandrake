@@ -3,7 +3,9 @@
 
 A separate no-AI program on its own systemd timer (rm-deadman.timer, every 15 min, from the Dispatcher's clone). Each
 pass rechecks (1) every `live` line on the ledger, (2) rimflow/live_baseline.txt, the running system's own promises,
-(3) each arm's LAST-RUN STAMP (DISPATCHER_BUILD_OUTSIDE_DEADMAN_HEARTBEAT: an arm cannot report its own death).
+(3) each arm's LAST-RUN STAMP (DISPATCHER_BUILD_OUTSIDE_DEADMAN_HEARTBEAT: an arm cannot report its own death),
+(4) that the retired Relentless/Artisan/Whittle loops stay off (retired_loops_check.py; arm `retired_loops`, item
+LIVE_RESTORE_RETIRED_LOOPS; Archmagi only).
 
 On failure it reopens the SAME item (`rimflow live --result broken`), filing LIVE_RESTORE_<NAME> first if the promise
 has no item. On recovery it puts the item back. The ledger is the only state, so one promise has one id and
@@ -174,6 +176,19 @@ def arm_faults(st, now, runner=subprocess.run):
     res = judge(arm_clocks(st, now, runner), now)
     return {a: why for a, why in res.items()
             if not (why and excused("unit=%s max_age=1h" % ARM_UNITS[a], runner))}
+
+
+def retired_loops_arm(measurer=None, now=None):
+    """The retired Relentless/Artisan/Whittle loops stay off (retired_loops_check): -> {"retired_loops": None | reason}.
+    A broken arm files the one fixed item LIVE_RESTORE_RETIRED_LOOPS and rings the phone, like a dead Dispatcher. The reading
+    (ops_watch/retired_loops.json) is rewritten every pass, which is what the item's `live` promise watches."""
+    import retired_loops_check as RL
+    res = (measurer or RL.measure)()
+    try:
+        RL.write_reading(ops_dir() / "retired_loops.json", res, now)
+    except OSError:
+        pass          # the reading is a witness; the alarm does not depend on it
+    return {"retired_loops": RL.arm_reason(res)}
 
 
 def item_id(line):
@@ -580,8 +595,10 @@ def main(argv=None):
         print("%d lines%s" % (len(lines), " written to %s" % BASELINE if a.write else ""))
         return 0
     import live_line
+    arms = arm_faults(stamps(), time.time())
+    arms.update(retired_loops_arm())
     report = sweep(time.time(), live_filer if a.file_alarms else None, read_items(), load_baseline(),
-                   arm_faults(stamps(), time.time()), sees=live_line.can_see(),
+                   arms, sees=live_line.can_see(),
                    pusher=real_pusher() if a.file_alarms else None, retired=load_retired())
     print("sweep: %s" % report["line"])
     for b_ in report["broken"]:
