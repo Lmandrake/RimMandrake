@@ -7105,3 +7105,4 @@
 {"seat":"RUNNER","event":"raise","id":"STEVE_LANE_UNSTICK_BRAKED_UNOWNED_940D","reason":"steward: lane unowned 34 min (BRAKED)","ts":"2026-11-14T12:30:06Z","tsn":1794659406496848007}
 {"seat":"RUNNER","event":"note","id":"STEVE_LANE_UNSTICK_BRAKED_UNOWNED_940D","text":"steward: started one capped headless BENCH session (budget $5, 2700 s cap); log /mnt/d/ClaudeWork/rimmandrake/testq/wake/20261114T122759Z.log","ts":"2026-11-14T12:30:23Z","tsn":1794659423817506082}
 {"seat":"RUNNER","event":"note","id":"SELFTEST_FIX_GIMMESOMESLACK_NWML","text":"ops_watch: new at 2026-11-14T12:45:04Z: src/RimMandrake/Utils/selftest_gimmesomeslack.py (due 2026-11-17T11:00:00Z)","ts":"2026-11-14T12:45:11Z","tsn":1794660311974904013}
+{"seat":"RUNNER","event":"note","id":"SELFTEST_FIX_GIMMESOMESLACK_NWML","text":"ops_watch: new at 2026-11-14T12:47:27Z: src/RimMandrake/Utils/selftest_gimmesomeslack.py (due 2026-11-17T11:00:00Z)","ts":"2026-11-14T12:47:33Z","tsn":1794660453887916905}
