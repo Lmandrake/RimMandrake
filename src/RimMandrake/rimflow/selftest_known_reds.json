@@ -2,27 +2,6 @@
  "_doc": "Written by src/RimMandrake/Utils/known_reds.py (add, drop); its docstring is the rule.",
  "entries": [
   {
-   "added": "2026-11-01T16:05:24Z",
-   "expires": "2026-11-15T16:05:24Z",
-   "item": "NIGHTLY_SELFTESTS_DRAIN_THIRTEEN_RED_NIGHTS",
-   "test": ".claude/hooks/selftest_block_delegated_cards.py",
-   "why": "seeded from the 2026-11-01 nightly; red 6 nights"
-  },
-  {
-   "added": "2026-11-13T07:53:42Z",
-   "expires": "2026-11-27T07:53:42Z",
-   "item": "RIMMANDRAKE_TRIAGE_TWENTY_TWO_REDS_BORN_AFTER_THE_NIGHTLY",
-   "test": "infrastructure/stevedesktop/selftest_steve_worker_reset_repair.py",
-   "why": "born after the 03:00 nightly; parked under its item [night rule skipped, owner-ruled: Mandrake card 2026-11-12 23:29 PST \"Ops-watch -> List them, switch on\"]"
-  },
-  {
-   "added": "2026-11-13T07:53:44Z",
-   "expires": "2026-11-27T07:53:44Z",
-   "item": "RIMMANDRAKE_TRIAGE_TWENTY_TWO_REDS_BORN_AFTER_THE_NIGHTLY",
-   "test": "infrastructure/stevedesktop/selftest_steve_worker_tier.py",
-   "why": "born after the 03:00 nightly; parked under its item [night rule skipped, owner-ruled: Mandrake card 2026-11-12 23:29 PST \"Ops-watch -> List them, switch on\"]"
-  },
-  {
    "added": "2026-11-13T07:53:45Z",
    "expires": "2026-11-27T07:53:45Z",
    "item": "RIMMANDRAKE_UNHOOK_SELFTESTS_FROM_LIVE_HOST_STATE_ON_WSL",
@@ -34,27 +13,6 @@
    "expires": "2026-11-27T07:53:46Z",
    "item": "RIMMANDRAKE_TRIAGE_TWENTY_TWO_REDS_BORN_AFTER_THE_NIGHTLY",
    "test": "src/RimMandrake/FlowWorks/Tools/selftest_liquid_looks.py",
-   "why": "born after the 03:00 nightly; parked under its item [night rule skipped, owner-ruled: Mandrake card 2026-11-12 23:29 PST \"Ops-watch -> List them, switch on\"]"
-  },
-  {
-   "added": "2026-11-13T07:53:47Z",
-   "expires": "2026-11-27T07:53:47Z",
-   "item": "RIMMANDRAKE_TRIAGE_TWENTY_TWO_REDS_BORN_AFTER_THE_NIGHTLY",
-   "test": "src/RimMandrake/FlowWorks/Tools/selftest_spike_float32_parity.py",
-   "why": "born after the 03:00 nightly; parked under its item [night rule skipped, owner-ruled: Mandrake card 2026-11-12 23:29 PST \"Ops-watch -> List them, switch on\"]"
-  },
-  {
-   "added": "2026-11-01T16:05:25Z",
-   "expires": "2026-11-15T16:05:25Z",
-   "item": "FLOWWORKS_PINS_FIX_EXCISED_SHAS",
-   "test": "src/RimMandrake/FlowWorks/Tools/selftest_weir_looks.py",
-   "why": "seeded from the 2026-11-01 nightly; red 3 nights"
-  },
-  {
-   "added": "2026-11-13T07:53:48Z",
-   "expires": "2026-11-27T07:53:48Z",
-   "item": "RIMMANDRAKE_TRIAGE_TWENTY_TWO_REDS_BORN_AFTER_THE_NIGHTLY",
-   "test": "src/RimMandrake/FlowWorks/northstar/selftest_b1_pristine_map.py",
    "why": "born after the 03:00 nightly; parked under its item [night rule skipped, owner-ruled: Mandrake card 2026-11-12 23:29 PST \"Ops-watch -> List them, switch on\"]"
   },
   {
@@ -93,20 +51,6 @@
    "why": "born after the 03:00 nightly; parked under its item [night rule skipped, owner-ruled: Mandrake card 2026-11-12 23:29 PST \"Ops-watch -> List them, switch on\"]"
   },
   {
-   "added": "2026-11-01T16:05:26Z",
-   "expires": "2026-11-15T16:05:26Z",
-   "item": "FLOWWORKS_GUARDS_FIX_THREE_RED_SELFTESTS",
-   "test": "src/RimMandrake/FlowWorks/selftest_flowworks_review1022_liquidnet.py",
-   "why": "seeded from the 2026-11-01 nightly; red 4 nights"
-  },
-  {
-   "added": "2026-11-01T16:05:27Z",
-   "expires": "2026-11-15T16:05:27Z",
-   "item": "HOSEOFFLINE_HO7_FIX_STALE_CACHEFRESH_PIN",
-   "test": "src/RimMandrake/FlowWorks/selftest_hose_offline.py",
-   "why": "seeded from the 2026-11-01 nightly; red 6 nights"
-  },
-  {
    "added": "2026-11-13T07:53:53Z",
    "expires": "2026-11-27T07:53:53Z",
    "item": "RIMMANDRAKE_TRIAGE_TWENTY_TWO_REDS_BORN_AFTER_THE_NIGHTLY",
@@ -128,13 +72,6 @@
    "why": "born after the 03:00 nightly; parked under its item [night rule skipped, owner-ruled: Mandrake card 2026-11-12 23:29 PST \"Ops-watch -> List them, switch on\"]"
   },
   {
-   "added": "2026-11-01T16:05:28Z",
-   "expires": "2026-11-15T16:05:28Z",
-   "item": "NIGHTLY_SELFTESTS_DRAIN_THIRTEEN_RED_NIGHTS",
-   "test": "src/RimMandrake/FlowWorks/selftest_tank_art_edges.py",
-   "why": "seeded from the 2026-11-01 nightly; red 3 nights"
-  },
-  {
    "added": "2026-11-13T05:16:17Z",
    "expires": "2026-11-27T05:16:17Z",
    "item": "RIMMANDRAKE_REFILE_TWILIGHTSEA_COMMISSION_THREE_YOUNG_COLOCLAWS",
@@ -149,25 +86,11 @@
    "why": "Extra-art commission: RM_TwilightSea owes 3 RSW_ColoClawFish young jobs (east/north/south)"
   },
   {
-   "added": "2026-11-13T07:53:55Z",
-   "expires": "2026-11-27T07:53:55Z",
-   "item": "RIMMANDRAKE_TRIAGE_TWENTY_TWO_REDS_BORN_AFTER_THE_NIGHTLY",
-   "test": "src/RimMandrake/Utils/art/selftest_flyer_tier_three.py",
-   "why": "born after the 03:00 nightly; parked under its item [night rule skipped, owner-ruled: Mandrake card 2026-11-12 23:29 PST \"Ops-watch -> List them, switch on\"]"
-  },
-  {
    "added": "2026-11-13T05:16:24Z",
    "expires": "2026-11-27T05:16:24Z",
    "item": "RIMMANDRAKE_CLEAR_DEAD_STANDINS_AND_REFIT_MORAVATHA_PACK",
    "test": "src/RimMandrake/Utils/art/selftest_standin_shadowed.py",
    "why": "Art drift: 4 dead shadowed stand-ins under src, and RM_Moravatha north pack overlay no lon"
-  },
-  {
-   "added": "2026-11-13T05:16:22Z",
-   "expires": "2026-11-27T05:16:22Z",
-   "item": "RIMMANDRAKE_REPAIR_NORTHSTAR_DRIVER_FIXTURES_COUNTS_DRIFTED",
-   "test": "src/RimMandrake/Utils/modcheck/selftest_checkout_identity.py",
-   "why": "Northstar driver fixtures drifted: graffiti mock rolls up 33 bars not 22, record_status se"
   },
   {
    "added": "2026-11-13T05:16:20Z",
@@ -198,41 +121,6 @@
    "why": "born after the 03:00 nightly; parked under its item [night rule skipped, owner-ruled: Mandrake card 2026-11-12 23:29 PST \"Ops-watch -> List them, switch on\"]"
   },
   {
-   "added": "2026-11-13T07:54:00Z",
-   "expires": "2026-11-27T07:54:00Z",
-   "item": "RIMMANDRAKE_TRIAGE_TWENTY_TWO_REDS_BORN_AFTER_THE_NIGHTLY",
-   "test": "src/RimMandrake/Utils/selftest_flowworks_sheet.py",
-   "why": "born after the 03:00 nightly; parked under its item [night rule skipped, owner-ruled: Mandrake card 2026-11-12 23:29 PST \"Ops-watch -> List them, switch on\"]"
-  },
-  {
-   "added": "2026-11-01T16:05:29Z",
-   "expires": "2026-11-15T16:05:29Z",
-   "item": "STOCK_SELFTEST_WIDEN_RUNNER_TIMEOUT",
-   "test": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
-   "why": "seeded from the 2026-11-01 nightly; red 5 nights"
-  },
-  {
-   "added": "2026-11-13T07:54:02Z",
-   "expires": "2026-11-27T07:54:02Z",
-   "item": "RIMMANDRAKE_TRIAGE_TWENTY_TWO_REDS_BORN_AFTER_THE_NIGHTLY",
-   "test": "src/RimMandrake/Utils/selftest_fungalweevil_label.py",
-   "why": "born after the 03:00 nightly; parked under its item [night rule skipped, owner-ruled: Mandrake card 2026-11-12 23:29 PST \"Ops-watch -> List them, switch on\"]"
-  },
-  {
-   "added": "2026-11-13T07:54:03Z",
-   "expires": "2026-11-27T07:54:03Z",
-   "item": "RIMMANDRAKE_TRIAGE_TWENTY_TWO_REDS_BORN_AFTER_THE_NIGHTLY",
-   "test": "src/RimMandrake/Utils/selftest_furnace_warmth.py",
-   "why": "born after the 03:00 nightly; parked under its item [night rule skipped, owner-ruled: Mandrake card 2026-11-12 23:29 PST \"Ops-watch -> List them, switch on\"]"
-  },
-  {
-   "added": "2026-11-01T16:05:30Z",
-   "expires": "2026-11-15T16:05:30Z",
-   "item": "NIGHTLY_SELFTESTS_DRAIN_THIRTEEN_RED_NIGHTS",
-   "test": "src/RimMandrake/Utils/selftest_handoff.py",
-   "why": "seeded from the 2026-11-01 nightly; red 18 nights"
-  },
-  {
    "added": "2026-11-01T16:05:31Z",
    "expires": "2026-11-15T16:05:31Z",
    "item": "NIGHTLY_SELFTESTS_DRAIN_THIRTEEN_RED_NIGHTS",
@@ -247,32 +135,11 @@
    "why": "metal_eater: a hungry RM_Khorrak beside Steel gets no RM_EatMetal job, and a fed one still"
   },
   {
-   "added": "2026-11-01T16:05:32Z",
-   "expires": "2026-11-15T16:05:32Z",
-   "item": "NIGHTLY_SELFTESTS_DRAIN_THIRTEEN_RED_NIGHTS",
-   "test": "src/RimMandrake/Utils/selftest_plant_tolerance_targets.py",
-   "why": "seeded from the 2026-11-01 nightly; red 4 nights"
-  },
-  {
-   "added": "2026-11-13T07:54:04Z",
-   "expires": "2026-11-27T07:54:04Z",
-   "item": "RIMMANDRAKE_TRIAGE_TWENTY_TWO_REDS_BORN_AFTER_THE_NIGHTLY",
-   "test": "src/RimMandrake/Utils/selftest_precious_caves.py",
-   "why": "born after the 03:00 nightly; parked under its item [night rule skipped, owner-ruled: Mandrake card 2026-11-12 23:29 PST \"Ops-watch -> List them, switch on\"]"
-  },
-  {
    "added": "2026-11-13T05:16:23Z",
    "expires": "2026-11-27T05:16:23Z",
    "item": "RIMMANDRAKE_RESTORE_ON_THROW_IN_KNOCKBACK_PROOF_TWO_LEAKS",
    "test": "src/RimMandrake/Utils/selftest_proof_restore_check.py",
    "why": "RM_KnockbackProof.cs:755 and :1285 do not restore on throw (proof_restore_check)"
-  },
-  {
-   "added": "2026-11-01T16:05:33Z",
-   "expires": "2026-11-15T16:05:33Z",
-   "item": "NIGHTLY_SELFTESTS_DRAIN_THIRTEEN_RED_NIGHTS",
-   "test": "src/RimMandrake/Utils/selftest_property_fabric.py",
-   "why": "seeded from the 2026-11-01 nightly; red 4 nights"
   },
   {
    "added": "2026-11-13T07:54:05Z",
@@ -310,13 +177,6 @@
    "why": "born after the 03:00 nightly; parked under its item [night rule skipped, owner-ruled: Mandrake card 2026-11-12 23:29 PST \"Ops-watch -> List them, switch on\"]"
   },
   {
-   "added": "2026-11-13T07:54:09Z",
-   "expires": "2026-11-27T07:54:09Z",
-   "item": "RIMMANDRAKE_TRIAGE_TWENTY_TWO_REDS_BORN_AFTER_THE_NIGHTLY",
-   "test": "src/RimMandrake/Utils/testq/selftest_testq_steward.py",
-   "why": "born after the 03:00 nightly; parked under its item [night rule skipped, owner-ruled: Mandrake card 2026-11-12 23:29 PST \"Ops-watch -> List them, switch on\"]"
-  },
-  {
    "added": "2026-11-13T05:16:32Z",
    "expires": "2026-11-27T05:16:32Z",
    "item": "RIMMANDRAKE_WRAP_NULL_TEXTURE_PROBE_WALKSTACK_IN_TRY",
@@ -329,13 +189,6 @@
    "item": "RIMMANDRAKE_TRIAGE_TWENTY_TWO_REDS_BORN_AFTER_THE_NIGHTLY",
    "test": "src/RimMandrake/rimflow/selftest_codex_seats.py",
    "why": "red in evening sweep; own fix item RIMMANDRAKE_REPAIR_CODEX_SEATS_FIXTURE_UNLISTED_RED_TWIST (bench clone's ledger view could not see it yet) [night rule skipped, owner-ruled: Mandrake card 2026-11-12 23:29 PST \"Ops-watch -> List them, switch on\"]"
-  },
-  {
-   "added": "2026-11-13T07:54:11Z",
-   "expires": "2026-11-27T07:54:11Z",
-   "item": "RIMMANDRAKE_TRIAGE_TWENTY_TWO_REDS_BORN_AFTER_THE_NIGHTLY",
-   "test": "src/RimMandrake/rimflow/selftest_conductor_closeout.py",
-   "why": "born after the 03:00 nightly; parked under its item [night rule skipped, owner-ruled: Mandrake card 2026-11-12 23:29 PST \"Ops-watch -> List them, switch on\"]"
   },
   {
    "added": "2026-11-13T09:23:37Z",
@@ -357,20 +210,6 @@
    "item": "RIMMANDRAKE_TRIAGE_TWENTY_TWO_REDS_BORN_AFTER_THE_NIGHTLY",
    "test": "src/RimMandrake/rimflow/selftest_no_bare_cuts.py",
    "why": "born after the 03:00 nightly; parked under its item [night rule skipped, owner-ruled: Mandrake card 2026-11-12 23:29 PST \"Ops-watch -> List them, switch on\"]"
-  },
-  {
-   "added": "2026-11-13T07:54:14Z",
-   "expires": "2026-11-27T07:54:14Z",
-   "item": "RIMMANDRAKE_TRIAGE_TWENTY_TWO_REDS_BORN_AFTER_THE_NIGHTLY",
-   "test": "src/RimMandrake/rimflow/selftest_relentless_live_tier.py",
-   "why": "born after the 03:00 nightly; parked under its item [night rule skipped, owner-ruled: Mandrake card 2026-11-12 23:29 PST \"Ops-watch -> List them, switch on\"]"
-  },
-  {
-   "added": "2026-11-01T16:05:35Z",
-   "expires": "2026-11-15T16:05:35Z",
-   "item": "ROLE_LAUNCH_KILL_DECIDE_ROLES_SURVIVORS",
-   "test": "src/RimMandrake/rimflow/selftest_role_launch_decide_mut.py",
-   "why": "seeded from the 2026-11-01 nightly; red 5 nights"
   },
   {
    "added": "2026-11-13T05:16:25Z",
