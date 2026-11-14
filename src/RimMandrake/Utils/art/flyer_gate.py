@@ -71,7 +71,7 @@ TIERS = {
 }
 TIER_ITEMS = {1: "FLYER_TIER_ONE_REBUILD_REDO_ROWS_FIRST", 2: "FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS",
               3: "FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY", 4: "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING"}
-ITEM_LIVE = ("proposed", "doing", "built", "implemented", "blocked", "open")
+ITEM_LIVE = ("proposed", "doing", "built", "implemented", "blocked", "open", "ready")
 
 
 def tex_index() -> dict:
