@@ -372,5 +372,135 @@ namespace RimMandrake.FlowWorks
 			uv[corner * 2] = us + (ue - us) * s;
 			uv[corner * 2 + 1] = vs + (ve - vs) * s;
 		}
+
+		// ── covers, overlays, wall slots, plants and the rim clip (RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE,
+		// RIMMANDRAKE_SINK_COOLER_ARROW_UNDER_TAR; owner 2026-11-13: "the vent looks on top of the water", "The ancient
+		// shopping Cart isn't shown as under the water", "the chunks don't honor the pit") ──────────────────────────
+
+		/// <summary>The alpha of the liquid-coloured cover drawn over a drowned part seen at <paramref name="q"/>/Steps: the
+		/// part reads lerp(liquid, own, Seen), as the floor beside it does under the sheet. 0 = no cover (whole), 1 = all
+		/// liquid. (A part drawn at alpha Seen over the tinted floor read q x own + (1 - q) x floor: no liquid colour on it,
+		/// so a drowned thing looked laid on top of the water.)</summary>
+		public static float CoverAlpha(int q) => q >= Steps ? 0f : (q <= 0 ? 1f : 1f - (float)q / Steps);
+
+		/// <summary>An overlay icon (power off, needs power, forbidden, ...) sits over its thing's middle and is seen as that
+		/// part of the thing is: Seen(level - height/2); 0 (not drawn) under LabelHidden. A thing flush with the line shows its
+		/// icon at Seen(height/2), never whole (following the top, it stayed whole until the top went under).</summary>
+		public static float OverlayAlpha(float clarity, float levelMetres, float heightMetres)
+		{
+			float a = Seen(clarity, levelMetres - heightMetres * 0.5f);
+			return a < LabelHidden ? 0f : a;
+		}
+
+		/// <summary>A cooler or vent stands in a wall slot: drawn as one metre high, not by its fillPercent (1 = a full wall,
+		/// 2 m), so liquid over its slot covers it, arrow and icons with it.</summary>
+		public const float WallSlotMetres = 1.0f;
+
+		/// <summary>Metres a plant stands per cell of its drawn height (a 1-cell grass 1 m, a 2.5-cell tree 2.5 m); never under
+		/// MinThingMetres.</summary>
+		public const float PlantMetresPerCell = 1.0f;
+
+		public static float PlantMetres(float drawHeightCells)
+		{
+			float m = drawHeightCells * PlantMetresPerCell;
+			return m > MinThingMetres ? m : MinThingMetres;
+		}
+
+		/// <summary>Floats per vertex of a clipped polygon: world x, z, then the source quad's own s (0 at -x, 1 at +x) and t (0
+		/// at -z, 1 at +z), which carry its uvs, colours and top bias.</summary>
+		public const int ClipStride = 4;
+
+		/// <summary>A convex quad cut by four half-planes has at most eight corners.</summary>
+		public const int ClipMaxVerts = 8;
+
+		private static readonly float[] clipA = new float[ClipMaxVerts * ClipStride], clipB = new float[ClipMaxVerts * ClipStride];
+
+		/// <summary>The rim clip: a printed plane (centre, size, rotation as Printer_Plane turns it) cut to the rectangle
+		/// [rx0, rx1] x [rz0, rz1] (an infinite bound is an open side). -1 = wholly inside, untouched (print it as asked); 0 =
+		/// nothing left; else the corner count n (3..8) of the kept polygon, written to <paramref name="outv"/>
+		/// (ClipMaxVerts x ClipStride floats) in the quad's own winding. Main thread only (shared scratch).</summary>
+		public static int ClipQuad(float cx, float cz, float sx, float sz, float rotDeg, float rx0, float rz0, float rx1, float rz1,
+			float[] outv)
+		{
+			float hx = sx * 0.5f, hz = sz * 0.5f;
+			double r = -rotDeg * System.Math.PI / 180.0;
+			float co = rotDeg == 0f ? 1f : (float)System.Math.Cos(r), si = rotDeg == 0f ? 0f : (float)System.Math.Sin(r);
+			float[] a = clipA;
+			bool inside = true;
+			for (int i = 0; i < 4; i++)
+			{
+				float s = i < 2 ? 0f : 1f, t = i == 1 || i == 2 ? 1f : 0f;
+				float lx = s == 0f ? -hx : hx, lz = t == 0f ? -hz : hz;
+				float x = cx + lx * co - lz * si, z = cz + lx * si + lz * co;
+				a[i * ClipStride] = x;
+				a[i * ClipStride + 1] = z;
+				a[i * ClipStride + 2] = s;
+				a[i * ClipStride + 3] = t;
+				if (x < rx0 || x > rx1 || z < rz0 || z > rz1)
+				{
+					inside = false;
+				}
+			}
+			if (inside)
+			{
+				return -1;
+			}
+			int n = 4;
+			float[] src = clipA, dst = clipB;
+			for (int p = 0; p < 4 && n > 0; p++)
+			{
+				int axis = p < 2 ? 0 : 1;
+				float bound = p == 0 ? rx0 : p == 1 ? rx1 : p == 2 ? rz0 : rz1;
+				if (float.IsInfinity(bound))
+				{
+					continue;
+				}
+				n = ClipPlane(src, n, dst, axis, bound, p == 0 || p == 2);
+				float[] sw = src;
+				src = dst;
+				dst = sw;
+			}
+			if (n < 3)
+			{
+				return 0;
+			}
+			System.Array.Copy(src, outv, n * ClipStride);
+			return n;
+		}
+
+		/// <summary>One Sutherland-Hodgman pass: keeps the side of axis (0 = x, 1 = z) at or above (<paramref name="keepAbove"/>)
+		/// or at or below <paramref name="bound"/>, every carried value lerped at the crossing.</summary>
+		private static int ClipPlane(float[] src, int n, float[] dst, int axis, float bound, bool keepAbove)
+		{
+			int m = 0;
+			for (int i = 0; i < n; i++)
+			{
+				int j = (i + 1) % n;
+				float di = src[i * ClipStride + axis] - bound, dj = src[j * ClipStride + axis] - bound;
+				if (!keepAbove)
+				{
+					di = -di;
+					dj = -dj;
+				}
+				bool inI = di >= 0f, inJ = dj >= 0f;
+				if (inI && m < ClipMaxVerts)
+				{
+					System.Array.Copy(src, i * ClipStride, dst, m * ClipStride, ClipStride);
+					m++;
+				}
+				if (inI != inJ && m < ClipMaxVerts)
+				{
+					float f = di / (di - dj);
+					for (int k = 0; k < ClipStride; k++)
+					{
+						float vi = src[i * ClipStride + k];
+						dst[m * ClipStride + k] = vi + (src[j * ClipStride + k] - vi) * f;
+					}
+					dst[m * ClipStride + axis] = bound;
+					m++;
+				}
+			}
+			return m;
+		}
 	}
 }

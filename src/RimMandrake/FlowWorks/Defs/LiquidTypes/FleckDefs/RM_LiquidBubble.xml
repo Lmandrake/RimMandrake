@@ -24,4 +24,27 @@
       <drawSize>0.18</drawSize>
     </graphicData>
   </FleckDef>
+  <!-- RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE (owner 2026-11-13, a sunk geyser under 1 m: "They are too large and too
+       transparent. It should be bubbling water, not faint ghost bubbles rising up."): the geyser plume's bubble. Its own art
+       (Textures/Things/Mote/RM_VentBubble.png: white, body alpha ~0.85, opaque rim), every vanilla bubble and foam texture
+       measuring at most 92/255 alpha. Small (drawSize 0.12 x 0.7..1.6), short-lived (0.5 s), jittered by the shaking
+       shader, tinted per liquid by RM_GeyserTubMath.BubbleColour; thrown by RM_MapComponent_GeyserPits.Plume. -->
+  <FleckDef ParentName="FleckBase_Thrown">
+    <defName>RM_Fleck_VentBubble</defName>
+    <altitudeLayer>MoteLow</altitudeLayer>
+    <fadeInTime>0.05</fadeInTime>
+    <solidTime>0.3</solidTime>
+    <fadeOutTime>0.15</fadeOutTime>
+    <growthRate>0.1</growthRate>
+    <graphicData>
+      <graphicClass>Graphic_Fleck</graphicClass>
+      <shaderType>TransparentShaking</shaderType>
+      <texPath>Things/Mote/RM_VentBubble</texPath>
+      <shaderParameters>
+        <_Amplitude>(0.04, 0.0, 0.04, 0)</_Amplitude>
+        <_Speed>9</_Speed>
+      </shaderParameters>
+      <drawSize>0.12</drawSize>
+    </graphicData>
+  </FleckDef>
 </Defs>

@@ -8,9 +8,15 @@ only what SectionLayer_ThingsGeneral prints. Round 2 applies it by LAYER:
   * print      SectionLayer_ThingsGeneral.TakePrintFrom -> Printer_Plane split (unchanged);
   * realtime   Thing.DynamicDrawPhase gate: hidden under an opaque liquid, Graphic.DrawMeshInt drawn cut and faded, a
                Graphic_Flicker flame under the line is out (RM_SubmergeDraw.BeginRealtime / DrawRealtime / FlameShows);
-  * overlays   OverlayDrawer.DrawOverlay (hidden) and RenderPulsingOverlayInternal (faded) follow the thing's top;
-  * order      a drowned part is Transparent (no depth write), so it is drawn in DrawOrder.DrownedQueue, above every
-               ground-level cord / hose / clamp queue: what lies under a drowned thing stays under it;
+  * overlays   OverlayDrawer.DrawOverlay (hidden) and every Render*(Thing ...) (depth set) with DrawBatch.DrawMesh (material
+               faded after vanilla's own pulse fade) are seen as their thing's middle is (owner 2026-11-13 ~10:15 PM: "the Cooler
+               still keeps its little red arrow icon above the surface"; ~10:25 PM: "put the yellow power disconnect icons under
+               the water too when the item is under water");
+  * order      a drowned part is its own colour whole under a liquid-coloured Silhouette cover (owner 2026-11-13 ~10 PM: "the
+               vent looks on top of the water"); the cover is drawn in DrawOrder.DrownedQueue, above every ground-level cord /
+               hose / clamp queue: what lies under a drowned thing stays under it. Flat things (vent, filth) print under the
+               sheet, tinted as the floor; a sprite bigger than its cell is clipped to the pit's rim (~10:10 PM: "the chunks don't
+               honor the pit, they overlap its edges unphysically");
   * cords      Gimme Some Slack's floor cords on a pit floor are faded by RM_SubmergeDraw.FloorSeen (found by name) and do
                not ripple per frame under liquid.
 Every C# file in our mods that draws per frame (Graphics.DrawMesh, DrawMeshNow, a draw batch, or a Thing / comp / Graphic draw
@@ -55,6 +61,8 @@ SITES = {
     "CreatureBehaviors/Source/RM_Mirage.cs": "LISTED: an air effect (mirage), not a thing standing on a floor",
     "SolarMirrors/Source/RM_MapComponent_MirrorLight.cs": "LISTED: reflected light, a lighting effect",
     "AcousticScanner/Source/RM_MapComponent_AcousticReading.cs": "LISTED: a scanner reading overlay (player information)",
+    "FlowWorks/Source/Superdeep/RM_PitDepthDraw.cs": "LISTED: the drafted-move destination ghost and circle (MetaOverlays), "
+        "player information drawn over everything",
     # open gaps, each filed
     "FlowWorks/Source/Hose/RM_MapComponent_Hoses.cs": "LISTED gap: a laid FlowWorks hose on a pit floor draws crisp "
         "(RIMMANDRAKE_FADE_LAID_HOSE_ON_PIT_FLOOR_LIKE_CORDS)",
@@ -80,11 +88,50 @@ VANILLA = {
     "Book (RealtimeOnly by the ThingDef default)": "ROUTED: the realtime gate (item, 0.3 m)",
     "Corpse / Pawn DynamicDrawPhaseAt": "ROUTED: gate (hidden under opaque) + CoverPawn (LayingFacing, body position)",
     "Building_HoldingPlatform / GrowthVat / GeneExtractor / GibbetCage / SubcoreScanner DynamicDrawPhaseAt": GATE,
-    "OverlayDrawer (power off, needs power, broken down, out of fuel, forbidden, ...)": "ROUTED: DrawOverlay + RenderPulsingOverlayInternal",
+    "OverlayDrawer (power off, needs power, broken down, out of fuel, forbidden, ...)": "ROUTED: DrawOverlay + every Render*(Thing) + "
+        "DrawBatch.DrawMesh (OVERLAY_PATHS)",
+    "Building_SteamGeyser (the vent print)": "ROUTED: flat, printed under the sheet (UnderSheetMat), tinted as the floor",
     "PawnFlyer DynamicDrawPhaseAt": "LISTED: in flight, above any liquid",
     "Motes, flecks, gas (Graphic_Mote*, Graphic_Fleck, Graphic_Gas)": "LISTED: air effects, not standing things",
     "SilhouetteUtility (zoomed-out silhouettes)": "LISTED: a zoom-out aid drawn over everything, like a label backdrop",
     "MinifiedThing (MapMeshOnly)": "ROUTED: the print split (crate and content planes)",
+}
+
+# Every icon OverlayDrawer can put on a thing (RimWorld 1.6 decompile, OverlayDrawer: each Render* takes the Thing first) and
+# DrawBatch.DrawMesh, where each lands. Patch_RM_SubmergeOverlayRender takes them by reflection (every Render* whose first
+# parameter is a Thing), so one added by a later version is covered too; this list names them (owner ~10:25 PM).
+OVERLAY_PATHS = {
+    "RenderNeedsPowerOverlay": "yellow bolt: needs power (owner ~10:25 PM)",
+    "RenderPowerOffOverlay": "yellow bolt crossed: power off (owner ~10:25 PM)",
+    "RenderBrokenDownOverlay": "broken down",
+    "RenderRechargineOverlay": "recharging",
+    "RenderOutOfFuelOverlay": "out of fuel",
+    "RenderPulsingOverlay": "the pulsing icons' entry (two overloads)",
+    "RenderPulsingOverlayInternal": "the pulse fade (vanilla re-fades after ours: hence the DrawBatch swap)",
+    "RenderForbiddenRefuelOverlay": "forbidden to refuel",
+    "RenderForbiddenAtomizerOverlay": "forbidden atomizer",
+    "RenderForbiddenOverlay": "forbidden",
+    "RenderForbiddenBigOverlay": "forbidden (big)",
+    "RenderBurningWick": "a lit wick",
+    "RenderQuestionMarkOverlay": "question mark",
+    "DrawBatch.DrawMesh": "where every one above lands: the material faded with its thing",
+    "Building_Cooler / Building_Vent texture arrow": "part of the sprite: a wall slot, drawn 1 m high (WallSlotMetres)",
+    "GSS unplugged marker": "none exists in Gimme Some Slack (grep, 2026-11-13)",
+}
+
+# Thing classes in a liquid cell: ROUTED (the one tint) or LISTED (why not). Owner ~10:10 PM: "The ancient shopping Cart isn't
+# shown as under the water. Not sure if the chunks are either."
+THING_CLASSES = {
+    "Item (chunks, stacks, books)": "ROUTED: print split, own whole + liquid cover; rim-clipped",
+    "Building (carts, furniture, machines)": "ROUTED: print split, own whole + liquid cover; rim-clipped south/east/west",
+    "Building_Cooler, Building_Vent": "ROUTED: wall slot, 1 m",
+    "Filth, Building_SteamGeyser": "ROUTED: flat, under the sheet",
+    "Plant wholly under": "ROUTED: print split by its drawn height",
+    "Plant partly under": "LISTED: drawn as vanilla draws it above its cut",
+    "Pawn, Corpse": "ROUTED: CoverPawn",
+    "realtime things": "ROUTED: gate + DrawRealtime cover; LISTED: not rim-clipped",
+    "Projectile, Gas, Attachment, Mote, Ethereal, PsychicEmitter": "LISTED: in the air or not a standing thing",
+    "GSS floor cords": "LISTED gap: CordUnderLiquid.Faded keeps the own-alpha fade (no liquid colour)",
 }
 
 ROUTES = [  # (file, pattern, what)
@@ -94,7 +141,18 @@ ROUTES = [  # (file, pattern, what)
     ("FlowWorks/Source/Superdeep/RM_SubmergeDraw.cs", r"\[HarmonyPatch\(typeof\(Graphic\), \"DrawMeshInt\"\)\]", "realtime mesh fade"),
     ("FlowWorks/Source/Superdeep/RM_SubmergeDraw.cs", r"\[HarmonyPatch\(typeof\(Graphic_Flicker\), nameof\(Graphic_Flicker\.DrawWorker\)\)\]", "flame out"),
     ("FlowWorks/Source/Superdeep/RM_SubmergeDraw.cs", r"\[HarmonyPatch\(typeof\(OverlayDrawer\), nameof\(OverlayDrawer\.DrawOverlay\)\)\]", "overlay hide"),
-    ("FlowWorks/Source/Superdeep/RM_SubmergeDraw.cs", r"\[HarmonyPatch\(typeof\(OverlayDrawer\), \"RenderPulsingOverlayInternal\"\)\]", "overlay fade"),
+    ("FlowWorks/Source/Superdeep/RM_SubmergeDraw.cs", r"m\.Name\.StartsWith\(\"Render\"\) && !m\.IsStatic && ps\.Length > 0 && ps\[0\]\.ParameterType == typeof\(Thing\)",
+     "every OverlayDrawer.Render*(Thing) sets the depth"),
+    ("FlowWorks/Source/Superdeep/RM_SubmergeDraw.cs", r"m\.Name == nameof\(DrawBatch\.DrawMesh\) && ps\.Length > 2 && ps\[2\]\.ParameterType == typeof\(Material\)",
+     "every DrawBatch.DrawMesh fades the icon after vanilla's pulse"),
+    ("FlowWorks/Source/Superdeep/RM_SubmergeDraw.cs", r"RM_UnderLiquid\.OverlayAlpha\(", "an icon is seen as its thing's middle"),
+    ("FlowWorks/Source/Superdeep/RM_SubmergeDraw.cs", r"ShaderDatabase\.Silhouette,", "the drowned cover is a Silhouette"),
+    ("FlowWorks/Source/Superdeep/RM_SubmergeDraw.cs", r"RM_UnderLiquid\.CoverAlpha\(q\)", "cover alpha 1 - Seen"),
+    ("FlowWorks/Source/Superdeep/RM_SubmergeDraw.cs", r"RM_FaceMaterial\.UnderSheetQueue", "flat things under the sheet"),
+    ("FlowWorks/Source/Superdeep/RM_SubmergeDraw.cs", r"ctxClip \? RM_UnderLiquid\.ClipQuad\(", "the rim clip"),
+    ("FlowWorks/Source/Superdeep/RM_SubmergeDraw.cs", r"t is Building_Cooler \|\| t is Building_Vent", "the wall slot"),
+    ("FlowWorks/Source/Superdeep/RM_GeyserPit.cs", r"GetNamedSilentFail\(\"RM_Fleck_VentBubble\"\)", "the plume throws the vent bubble"),
+    ("FlowWorks/Source/Superdeep/RM_GeyserPit.cs", r"RM_GeyserTubMath\.PlumeRate\(RM_GeyserPitSettings\.geyserPlumeEnabled,", "the plume switch"),
     ("FlowWorks/Source/Superdeep/RM_SubmergeDraw.cs", r"\{ renderQueue = DrownedQueue \}", "drowned parts in the drowned queue"),
     ("FlowWorks/Source/Superdeep/RM_SubmergeDraw.cs", r"r\.LayingFacing\(\)", "corpse cover faces as the body does"),
     ("FlowWorks/Source/Superdeep/RM_SubmergeDraw.cs", r"Vector3 body = r\.SilhouettePos;", "corpse cover sits where the body is"),
@@ -154,10 +212,48 @@ def check(found, sites, routes, rev=None):
     return bad
 
 
+def bubble_art():
+    """RM_Fleck_VentBubble and its art (owner 2026-11-13: "too large and too transparent"): small, short-lived, opaque."""
+    bad = []
+    xml = read("FlowWorks/Defs/LiquidTypes/FleckDefs/RM_LiquidBubble.xml")
+    m = re.search(r"<defName>RM_Fleck_VentBubble</defName>(.*?)</FleckDef>", xml, re.S)
+    if not m:
+        return ["RM_Fleck_VentBubble is not defined"]
+    body = m.group(1)
+    def num(tag):
+        g = re.search(r"<%s>([0-9.]+)</%s>" % (tag, tag), body)
+        return float(g.group(1)) if g else None
+    life = sum(num(t) or 0.0 for t in ("fadeInTime", "solidTime", "fadeOutTime"))
+    size = num("drawSize")
+    if not (0.3 <= life <= 0.8):
+        bad.append("vent bubble life %.2f s outside 0.3..0.8" % life)
+    if size is None or not (0.08 <= size <= 0.15):
+        bad.append("vent bubble drawSize %s outside 0.08..0.15 (before 0.18 x 1.5..2.2)" % size)
+    if "Graphic_FleckPulse" in body:
+        bad.append("vent bubble pulses its alpha (Graphic_FleckPulse): it must stay solid")
+    tex = re.search(r"<texPath>([^<]+)</texPath>", body)
+    png = os.path.join(SRC, "FlowWorks", "Textures", (tex.group(1) if tex else "") + ".png")
+    if not os.path.exists(png):
+        return bad + ["vent bubble art missing: " + png]
+    from PIL import Image
+    a = list(Image.open(png).convert("RGBA").getchannel("A").tobytes())
+    cov = [v for v in a if v > 0]
+    mean = sum(cov) / len(cov) / 255.0 if cov else 0.0
+    if mean < 0.75:
+        bad.append("vent bubble art mean alpha %.2f < 0.75 (vanilla VatBubble ~0.29: ghost bubbles)" % mean)
+    if max(a) < 250:
+        bad.append("vent bubble art has no opaque rim")
+    return bad
+
+
 def main(argv):
     rev = argv[argv.index("--base") + 1] if "--base" in argv else None
     found = hits()
     bad = check(found, SITES, ROUTES, rev)
+    bad += [] if rev else bubble_art()
+    for k, v in list(OVERLAY_PATHS.items()) + list(THING_CLASSES.items()):
+        if not v:
+            bad.append("unnamed path: " + k)
     # plants: each must go red
     plants = {
         "an unclassified draw site": check(found + ["Planted/Source/RM_NewOverlay.cs"], SITES, ROUTES),
@@ -169,8 +265,12 @@ def main(argv):
             bad.append("CAN-FAIL: the plant (%s) stayed green" % name)
     routed = sum(1 for v in list(SITES.values()) + list(VANILLA.values()) if v.startswith("ROUTED"))
     listed = sum(1 for v in list(SITES.values()) + list(VANILLA.values()) if not v.startswith("ROUTED"))
-    print("pit draw census: %d draw sites in our mods, %d vanilla rows; %d routed, %d listed; %d route pins%s"
-          % (len(found), len(VANILLA), routed, listed, len(ROUTES), " (base " + rev + ")" if rev else ""))
+    print("pit draw census: %d draw sites in our mods, %d vanilla rows; %d routed, %d listed; %d route pins; %d overlay paths; "
+          "%d thing classes%s" % (len(found), len(VANILLA), routed, listed, len(ROUTES), len(OVERLAY_PATHS), len(THING_CLASSES),
+                                  " (base " + rev + ")" if rev else ""))
+    for k, v in THING_CLASSES.items():
+        if not v.startswith("ROUTED: ") or "LISTED" in v:
+            print("  listed: %s -- %s" % (k, v))
     for b in bad:
         print("FAIL " + b)
     print("PASS" if not bad else "FAILED (%d)" % len(bad))

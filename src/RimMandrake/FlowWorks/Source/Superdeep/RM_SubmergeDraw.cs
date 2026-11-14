@@ -15,9 +15,10 @@ namespace RimMandrake.FlowWorks
 	/// variables, badly (major fix)"). Map-mesh things (ladders hung or lying flat, the pit ramp, items, minified things,
 	/// the swale) are split where they are printed: SectionLayer_ThingsGeneral.TakePrintFrom opens a context for the thing
 	/// (<see cref="Begin"/>), and every Printer_Plane.PrintPlane it makes (Graphic.Print, MinifiedThing's crate and its
-	/// content, atlas tiles and flips included) is drawn as the part above the line, as it is, plus the drowned part in up to
-	/// RM_UnderLiquid.Bands bands at alpha RM_UnderLiquid.Seen over the liquid terrain (clear liquids: tinted by depth;
-	/// opaque: hidden). The realtime gates (RM_FlowDoors) and stakes (RM_Spikes) draw the same split from <see cref="Wet"/>
+	/// content, atlas tiles and flips included) is drawn whole, its drowned part covered in up to RM_UnderLiquid.Bands bands
+	/// by its silhouette in the liquid's colour at 1 - RM_UnderLiquid.Seen (clear liquids: tinted by depth; opaque: only the
+	/// part above the line is drawn); a thing lying on the floor (a vent, filth) is drawn under the liquid's sheet as the floor
+	/// is; a print reaching past the pit's rim is cut at it (RM_UnderLiquid.ClipQuad). The realtime gates (RM_FlowDoors) and stakes (RM_Spikes) draw the same split from <see cref="Wet"/>
 	/// and <see cref="DrawUnder"/>; the pit's walls and floor (SectionLayer_RMExcavationWalls) use the same level, cut and
 	/// law. Setting pitSubmergeCutEnabled (on): off draws them whole over the liquid.
 	///
@@ -25,7 +26,7 @@ namespace RimMandrake.FlowWorks
 	/// submergeDrawn, cell index -> RM_UnderLiquid.LevelNote of the true level) is what the cell was printed at; the engine's
 	/// picture-writer (ApplyFillTerrain, which every write of a dug square's liquid calls) re-meshes a noted cell whose note
 	/// moved (<see cref="FillPictured"/>), and the re-print notes it again. Prints run only on a section rebuild; the split
-	/// uses static buffers and cached faded materials.
+	/// uses static buffers and cached cover materials.
 	/// </summary>
 	public static class RM_SubmergeDraw
 	{
@@ -185,6 +186,12 @@ namespace RimMandrake.FlowWorks
 			{
 				return RM_GeyserTubMath.GeyserMetres;   // RIMMANDRAKE_SINK_GEYSER_INTO_PIT_BUBBLING_HOT_TUB: a low vent mound
 			}
+			if (t is Building_Cooler || t is Building_Vent)
+			{
+				// RIMMANDRAKE_SINK_COOLER_ARROW_UNDER_TAR (owner 2026-11-13: "the Cooler still keeps its little red arrow icon
+				// above the surface"): a wall-slot fitting is a metre high, not a full wall, so its arrow goes under with it
+				return RM_UnderLiquid.WallSlotMetres;
+			}
 			if (t is RM_Building_Ladder || t is RM_Building_PitRamp || t is Building_RM_FlowDoor || t is Building_RM_Spikes
 				|| t is Pits.Building_SpanDeck)
 			{
@@ -195,8 +202,10 @@ namespace RimMandrake.FlowWorks
 
 		// ── the print context (main thread only: section rebuilds) ──────────────
 
-		private static bool ctxOn, inSplit, ctxWorld, ctxPit;
+		private static bool ctxOn, inSplit, ctxWorld, ctxPit, ctxClip, ctxFlat;
 		private static Thing ctxThing;
+		private static float ctxRx0, ctxRz0, ctxRx1, ctxRz1;
+		private static Color ctxCover;
 		private static float ctxPitLevel, ctxPitClarity;
 		private static int ctxFrom;
 		private static float ctxShare, ctxLevel, ctxHeight, ctxClarity, ctxCut, ctxFoot;
@@ -209,17 +218,38 @@ namespace RimMandrake.FlowWorks
 			ctxOn = false;
 			ctxPit = false;
 			ctxThing = null;
+			ctxClip = false;
+			ctxFlat = false;
 			if (!On || t == null)
 			{
 				return;
 			}
 			bool ladder = t is RM_Building_Ladder, ramp = t is RM_Building_PitRamp;
-			float standing = ladder || ramp ? 0f : StandingMetres(t);
-			if (!ladder && !ramp && standing <= 0f)
+			bool flat = LiesOnFloor(t), plant = t is Plant;
+			float standing = ladder || ramp || flat ? 0f
+				: plant ? RM_UnderLiquid.PlantMetres(t.def.graphicData != null ? t.def.graphicData.drawSize.y : 1f) : StandingMetres(t);
+			if (!ladder && !ramp && !flat && standing <= 0f)
 			{
 				return;
 			}
 			bool wet = Wet(t, out int d, out float levelM, out float clarity);
+			if (d > 0 && !ladder && !ramp && !IsSwale(t.def))
+			{
+				// RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE (owner 2026-11-13: "the chunks don't honor the pit, they overlap its
+				// edges unphysically"): a sprite wider than its square is cut at the rim
+				OpenClip(t, flat || t.def.category == ThingCategory.Item);
+			}
+			if (wet && (flat || plant))
+			{
+				// a vent, filth, a drowned plant: lies on the floor, so it is drawn under the liquid's sheet and seen as the floor
+				// is (a plant only once wholly under; one standing partly out is drawn as vanilla does)
+				ctxFlat = flat || levelM >= standing;
+				return;
+			}
+			if (plant)
+			{
+				return;
+			}
 			if (d > 0 && t is Building && standing > 0f && !IsSwale(t.def) && !(t is Building_SteamGeyser))
 			{
 				// a building standing in a pit, wet or dry: its vanilla shadows are off and it casts one floor shadow
@@ -271,6 +301,7 @@ namespace RimMandrake.FlowWorks
 				ctxHeight = standing;
 			}
 			ctxShare = RM_UnderLiquid.Share(levelM, 0f, ctxHeight);
+			ctxCover = CoverColour(LookAt(t.Map, eng, t.Position), clarity);
 			ctxOn = true;
 		}
 
@@ -279,6 +310,57 @@ namespace RimMandrake.FlowWorks
 			ctxOn = false;
 			ctxPit = false;
 			ctxThing = null;
+			ctxClip = false;
+			ctxFlat = false;
+		}
+
+		/// <summary>Lies on the floor with no height of its own: filth, and a geyser sunk in a pit (its vent).</summary>
+		private static bool LiesOnFloor(Thing t) => t is Filth || (t is Building_SteamGeyser && RM_GeyserPit.On);
+
+		/// <summary>The rim clip: the rectangle the thing's prints are cut to. Each side reaches out over the dug squares beside
+		/// the thing's footprint (every square of the next row dug and uncovered), up to <see cref="ClipReach"/> rows; a side
+		/// reaching that far is open. A lying thing is cut on all four sides; a standing one not on the north, where its height
+		/// rises out of the pit over the far bank as it should.</summary>
+		private static void OpenClip(Thing t, bool fourSides)
+		{
+			Map map = t.Map;
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+			if (eng == null)
+			{
+				return;
+			}
+			CellRect r = t.OccupiedRect();
+			int w = Reach(map, eng, r, 0), e = Reach(map, eng, r, 1), s = Reach(map, eng, r, 2);
+			int n = fourSides ? Reach(map, eng, r, 3) : ClipReach;
+			ctxRx0 = w >= ClipReach ? float.NegativeInfinity : r.minX - w;
+			ctxRx1 = e >= ClipReach ? float.PositiveInfinity : r.maxX + 1 + e;
+			ctxRz0 = s >= ClipReach ? float.NegativeInfinity : r.minZ - s;
+			ctxRz1 = n >= ClipReach ? float.PositiveInfinity : r.maxZ + 1 + n;
+			ctxClip = w < ClipReach || e < ClipReach || s < ClipReach || n < ClipReach;
+		}
+
+		/// <summary>Rows of dug squares a sprite may reach past its footprint before the rim clip leaves that side open (no
+		/// vanilla sprite overhangs its footprint by two squares).</summary>
+		private const int ClipReach = 2;
+
+		/// <summary>Rows (0..ClipReach) of dug, uncovered squares beside <paramref name="r"/> on a side (0 W, 1 E, 2 S, 3 N).</summary>
+		private static int Reach(Map map, RM_MapComponent_Excavation eng, CellRect r, int side)
+		{
+			for (int k = 1; k <= ClipReach; k++)
+			{
+				bool alongX = side >= 2;
+				int fixedAt = side == 0 ? r.minX - k : side == 1 ? r.maxX + k : side == 2 ? r.minZ - k : r.maxZ + k;
+				int from = alongX ? r.minX : r.minZ, to = alongX ? r.maxX : r.maxZ;
+				for (int i = from; i <= to; i++)
+				{
+					IntVec3 c = alongX ? new IntVec3(i, 0, fixedAt) : new IntVec3(fixedAt, 0, i);
+					if (!c.InBounds(map) || eng.HollowDepthAt(c) <= 0 || Pits.RM_PitCoverUtility.IsCovered(map, c))
+					{
+						return k - 1;
+					}
+				}
+			}
+			return ClipReach;
 		}
 
 		/// <summary>Printer_Shadow prefix: no vanilla contact shadow from a building standing in a pit (it would lie on the
@@ -434,7 +516,9 @@ namespace RimMandrake.FlowWorks
 			return new Color(b.r, b.g, b.b);
 		}
 
-		private static RM_UnderLiquid.Float3 LiquidColour(RM_LiquidSurfaceLook look)
+		/// <summary>The colour of the liquid a look belongs to (its LiquidDef's colour; fresh water's when none owns it). The
+		/// geyser plume bubbles in it (RM_GeyserTubMath.BubbleColour).</summary>
+		internal static RM_UnderLiquid.Float3 LiquidColour(RM_LiquidSurfaceLook look)
 		{
 			if (look == null)
 			{
@@ -537,10 +621,11 @@ namespace RimMandrake.FlowWorks
 		// corpse, a pawn. The law is applied there, by layer, not per kind: a thing standing wet in a pit whose top is hidden
 		// (RM_UnderLiquid.LabelAlpha 0: an opaque liquid over it) is not drawn at all; one partly seen draws every Graphic it
 		// draws through Graphic.DrawMeshInt split and faded like a print (DrawUnder), and a flame under the line is out.
-		// Overlays (OverlayDrawer: power off, needs power, broken down, out of fuel, forbidden) follow their thing's top.
+		// Overlays (OverlayDrawer: power off, needs power, broken down, out of fuel, forbidden) are seen as their thing's middle is (RM_UnderLiquid.OverlayAlpha).
 
 		[System.ThreadStatic] private static bool rtOn;
 		private static float rtLevel, rtHeight, rtClarity, rtShare;
+		private static Thing rtThing;
 
 		/// <summary>The drawn height (m) the law gives a realtime thing: a pawn's (PawnMetres), a corpse's, else a standing
 		/// thing's (StandingMetres); 0 = not one the law draws (motes, fire, projectiles, filth).</summary>
@@ -579,6 +664,7 @@ namespace RimMandrake.FlowWorks
 			rtLevel = levelM;
 			rtHeight = h;
 			rtClarity = clarity;
+			rtThing = t;
 			rtOn = true;
 			return true;
 		}
@@ -634,7 +720,7 @@ namespace RimMandrake.FlowWorks
 			rtOn = false;   // DrawUnder draws through Graphics directly; nothing re-enters, but never split twice
 			try
 			{
-				DrawUnder(mesh, size, Matrix4x4.TRS(loc, quat, Vector3.one), mat, rtLevel, rtHeight, rtClarity, flip);
+				DrawUnder(mesh, size, Matrix4x4.TRS(loc, quat, Vector3.one), mat, rtLevel, rtHeight, rtClarity, flip, rtThing);
 			}
 			finally
 			{
@@ -683,9 +769,56 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Graphic_Flicker.DrawWorker prefix: a flame whose thing's top is under the line is out (false).</summary>
 		internal static bool FlameShows => !rtOn || rtShare < 1f;
 
-		/// <summary>How much of an overlay on <paramref name="t"/> shows: it follows the thing's top (LabelAlpha); 1 for anything
-		/// not standing wet in a pit.</summary>
-		public static float OverlayAlpha(Thing t) => t != null && t.Spawned ? LabelAlpha(t) : 1f;
+		/// <summary>How much of an overlay on <paramref name="t"/> shows (RIMMANDRAKE_SINK_COOLER_ARROW_UNDER_TAR, owner 2026-11-13:
+		/// "if we could put the yellow power disconnect icons under the water too when the item is under water that would be
+		/// great"): the icon sits over the thing's middle and is seen as that part of it is (RM_UnderLiquid.OverlayAlpha: Seen
+		/// at level - height/2, 0 = not drawn); 1 for anything not standing wet in a pit.</summary>
+		public static float OverlayAlpha(Thing t)
+		{
+			if (!On || t == null || !t.Spawned || !(t.def.category == ThingCategory.Item || t is Building))
+			{
+				return 1f;
+			}
+			float h = StandingMetres(t);
+			if (h <= 0f || !Wet(t, out int _, out float levelM, out float clarity, false))
+			{
+				return 1f;
+			}
+			return RM_UnderLiquid.OverlayAlpha(clarity, levelM, h);
+		}
+
+		/// <summary>The fade of the overlay OverlayDrawer is rendering now (1 = none): set by its Render* methods (outermost
+		/// call), applied to every mesh they hand to the draw batch (<see cref="OverlayMaterial"/>). Main thread only.</summary>
+		private static float ovFade = 1f;
+		private static int ovDepth;
+
+		internal static void BeginOverlay(Thing t)
+		{
+			if (ovDepth++ == 0)
+			{
+				ovFade = OverlayAlpha(t);
+			}
+		}
+
+		internal static void EndOverlay()
+		{
+			if (ovDepth > 0 && --ovDepth == 0)
+			{
+				ovFade = 1f;
+			}
+		}
+
+		/// <summary>DrawBatch.DrawMesh prefix: inside an overlay render, the icon's material at its own alpha x the fade. Vanilla's
+		/// FadedMaterialPool.FadedVersionOf sets an absolute alpha, so a pulsing icon (already FadedVersionOf(mat, pulse)) is
+		/// faded to pulse x fade here, after vanilla's pulse (faded before it, the pulse overwrote the fade).</summary>
+		internal static Material OverlayMaterial(Material m)
+		{
+			if (ovFade >= 1f || m == null)
+			{
+				return m;
+			}
+			return FadedMaterialPool.FadedVersionOf(m, m.color.a * ovFade);
+		}
 
 		/// <summary>RIMMANDRAKE_ADD_OVERLAY_PROOF_HOOK_LAW_CANNOT_SEE_ICONS: [proof] "x,z" -> what the liquid law decides for every
 		/// drawer of every thing at the cell, read only (nothing printed, noted or drawn): one line per thing,
@@ -732,43 +865,67 @@ namespace RimMandrake.FlowWorks
 		private static readonly float[] Uv = new float[8];
 		private static readonly Vector2[] UvBuf = new Vector2[4];
 
-		/// <summary>Printer_Plane.PrintPlane prefix while a context is open: true when this drew the plane (split, faded or
-		/// hidden), false = vanilla prints it as asked.</summary>
+		/// <summary>Printer_Plane.PrintPlane prefix while a context is open: true when this drew the plane (split, covered, cut
+		/// at the rim, under the sheet or hidden), false = vanilla prints it as asked.
+		/// A drowned part is drawn whole in its own material with a cover in the liquid's colour over it (its silhouette, at
+		/// RM_UnderLiquid.CoverAlpha of the law's Seen, banded by depth), so it reads lerp(liquid, own, Seen) as a pawn does
+		/// (CoverPawn) and as the floor beside it does under the sheet; under an opaque liquid only the part above the line is
+		/// drawn. A thing lying on the floor (a vent, filth, a plant wholly under) is drawn under the sheet instead.</summary>
 		internal static bool Split(MapDrawLayer layer, Vector3 center, Vector2 size, Material mat, float rot, bool flipUv,
 			Vector2[] uvs, Color32[] colors, float bias, float payload)
 		{
-			if (!ctxOn || inSplit || mat == null)
-			{
-				return false;
-			}
-			float x0 = center.x - size.x * 0.5f, x1 = center.x + size.x * 0.5f;
-			float z0 = center.z - size.y * 0.5f, z1 = center.z + size.y * 0.5f;
-			bool alongZ = ctxFrom == RM_UnderLiquid.FromSouth || ctxFrom == RM_UnderLiquid.FromNorth;
-			bool fromLow = ctxFrom == RM_UnderLiquid.FromSouth || ctxFrom == RM_UnderLiquid.FromWest;
-			float lo = alongZ ? z0 - ctxCell.z : x0 - ctxCell.x, hi = alongZ ? z1 - ctxCell.z : x1 - ctxCell.x;
-			float s = ctxWorld ? RM_UnderLiquid.SpanShare(lo, hi, ctxCut, fromLow) : ctxShare;
-			if (s <= 0f)
+			if (inSplit || mat == null || !(ctxOn || ctxClip || ctxFlat))
 			{
 				return false;
 			}
 			inSplit = true;
 			try
 			{
+				if (ctxFlat)
+				{
+					Material under = UnderSheetMat(mat);
+					if (under == null)
+					{
+						return false;
+					}
+					Emit(layer, center, size, under, rot, flipUv, uvs, colors, bias, payload);
+					return true;
+				}
+				float s = 0f, lo = 0f, hi = 0f;
+				bool fromLow = true;
+				float x0 = center.x - size.x * 0.5f, x1 = center.x + size.x * 0.5f;
+				float z0 = center.z - size.y * 0.5f, z1 = center.z + size.y * 0.5f;
+				if (ctxOn)
+				{
+					bool alongZ = ctxFrom == RM_UnderLiquid.FromSouth || ctxFrom == RM_UnderLiquid.FromNorth;
+					fromLow = ctxFrom == RM_UnderLiquid.FromSouth || ctxFrom == RM_UnderLiquid.FromWest;
+					lo = alongZ ? z0 - ctxCell.z : x0 - ctxCell.x;
+					hi = alongZ ? z1 - ctxCell.z : x1 - ctxCell.x;
+					s = ctxWorld ? RM_UnderLiquid.SpanShare(lo, hi, ctxCut, fromLow) : ctxShare;
+				}
+				bool clear = ctxClarity > 0f;
+				if (s <= 0f)
+				{
+					Emit(layer, center, size, mat, rot, flipUv, uvs, colors, bias, payload);   // dry, or cut at the rim only
+					return true;
+				}
 				if (rot != 0f)
 				{
-					// a turned sprite (an item's random lie): whole above the line until half of it is under, then whole at
-					// the law's alpha for its middle
-					if (s >= 0.5f)
+					// a turned sprite (an item's random lie): whole above the line until half of it is under, then whole and
+					// covered at the law's alpha for its middle (hidden under an opaque liquid)
+					if (s < 0.5f || clear)
 					{
-						int q = RM_UnderLiquid.BandAlphaStep(ctxClarity, MetresOf(0.5f, lo, hi, fromLow));
-						Material m = q > 0 ? Faded(mat, q) : null;
-						if (m != null)
-						{
-							Printer_Plane.PrintPlane(layer, center, size, m, rot, flipUv, uvs, colors, bias, payload);
-						}
-						return true;
+						Emit(layer, center, size, mat, rot, flipUv, uvs, colors, bias, payload);
 					}
-					return false;
+					if (s >= 0.5f && clear)
+					{
+						Material c = CoverMat(mat, RM_UnderLiquid.BandAlphaStep(ctxClarity, MetresOf(0.5f, lo, hi, fromLow)));
+						if (c != null)
+						{
+							Emit(layer, center + new Vector3(0f, CoverEps, 0f), size, c, rot, flipUv, uvs, colors, bias, payload);
+						}
+					}
+					return true;
 				}
 				if (uvs != null)
 				{
@@ -784,19 +941,23 @@ namespace RimMandrake.FlowWorks
 					float ul = flipUv ? 1f : 0f, ur = flipUv ? 0f : 1f;
 					Uv0[0] = ul; Uv0[1] = 0f; Uv0[2] = ul; Uv0[3] = 1f; Uv0[4] = ur; Uv0[5] = 1f; Uv0[6] = ur; Uv0[7] = 0f;
 				}
-				if (s < 1f)
+				if (!clear)
 				{
-					Piece(layer, center.y, mat, colors, bias, payload, s, 1f, x0, z0, x1, z1);
+					if (s < 1f)
+					{
+						Piece(layer, center.y, mat, colors, bias, payload, s, 1f, x0, z0, x1, z1, 0f);
+					}
+					return true;
 				}
+				Emit(layer, center, size, mat, 0f, flipUv, uvs, colors, bias, payload);
 				int n = RM_UnderLiquid.BandsFor(ctxClarity, MetresOf(s, lo, hi, fromLow), MetresOf(0f, lo, hi, fromLow));
 				for (int b = 0; b < n; b++)
 				{
 					float a = s * b / n, e = s * (b + 1) / n;
-					int q = RM_UnderLiquid.BandAlphaStep(ctxClarity, MetresOf((a + e) * 0.5f, lo, hi, fromLow));
-					Material m = q > 0 ? Faded(mat, q) : null;
-					if (m != null)
+					Material c = CoverMat(mat, RM_UnderLiquid.BandAlphaStep(ctxClarity, MetresOf((a + e) * 0.5f, lo, hi, fromLow)));
+					if (c != null)
 					{
-						Piece(layer, center.y, m, colors, bias, payload, a, e, x0, z0, x1, z1);
+						Piece(layer, center.y, c, colors, bias, payload, a, e, x0, z0, x1, z1, CoverEps);
 					}
 				}
 				return true;
@@ -806,7 +967,6 @@ namespace RimMandrake.FlowWorks
 				inSplit = false;
 			}
 		}
-
 		/// <summary>Metres of liquid over the point a share <paramref name="share"/> in from the drowned side of a sprite
 		/// spanning [lo, hi] (cell-local): standing things by their drawn height, hung ones between the waterline and their
 		/// wall's foot.</summary>
@@ -821,12 +981,16 @@ namespace RimMandrake.FlowWorks
 			return RM_UnderLiquid.MetresAt(pos, ctxCut, ctxFoot, 0f, ctxLevel);
 		}
 
+		/// <summary>The slice [a, b] (from the drowned side) of the plane spanning x0..x1, z0..z1, lifted <paramref name="lift"/>
+		/// over it. Its top bias is the plane's own across the slice (a slice's foot sits where the whole plane's surface is
+		/// there), so a cover laid over the whole plane is never under it by depth.</summary>
 		private static void Piece(MapDrawLayer layer, float y, Material mat, Color32[] colors, float bias, float payload,
-			float a, float b, float x0, float z0, float x1, float z1)
+			float a, float b, float x0, float z0, float x1, float z1, float lift)
 		{
+			float oz0 = z0, hz = z1 - z0;
 			System.Array.Copy(Uv0, Uv, 8);
 			RM_UnderLiquid.Slice(ctxFrom, a, b, Uv, ref x0, ref z0, ref x1, ref z1);
-			if (x1 - x0 <= 0f || z1 - z0 <= 0f)
+			if (x1 - x0 <= 0f || z1 - z0 <= 0f || hz <= 0f)
 			{
 				return;
 			}
@@ -834,17 +998,119 @@ namespace RimMandrake.FlowWorks
 			{
 				UvBuf[j] = new Vector2(Uv[j * 2], Uv[j * 2 + 1]);
 			}
-			Printer_Plane.PrintPlane(layer, new Vector3((x0 + x1) * 0.5f, y, (z0 + z1) * 0.5f), new Vector2(x1 - x0, z1 - z0),
-				mat, 0f, false, UvBuf, colors, bias, payload);
+			float t0 = (z0 - oz0) / hz, t1 = (z1 - oz0) / hz;
+			Emit(layer, new Vector3((x0 + x1) * 0.5f, y + bias * t0 + lift, (z0 + z1) * 0.5f), new Vector2(x1 - x0, z1 - z0),
+				mat, 0f, false, UvBuf, colors, bias * (t1 - t0), payload);
 		}
 
-		private static readonly Dictionary<long, Material> faded = new Dictionary<long, Material>();
+		/// <summary>How far a cover lies over the part it covers (world y): over it by depth, under anything printed above.</summary>
+		private const float CoverEps = 0.0005f;
+
+		private static readonly float[] clipOut = new float[RM_UnderLiquid.ClipMaxVerts * RM_UnderLiquid.ClipStride];
+
+		private static readonly Vector2[] PlaneUvs = { new Vector2(0f, 0f), new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(1f, 0f) };
+		private static readonly Vector2[] PlaneUvsFlipped = { new Vector2(1f, 0f), new Vector2(1f, 1f), new Vector2(0f, 1f), new Vector2(0f, 0f) };
+
+		/// <summary>Prints a plane as Printer_Plane does, cut to the rim clip when one is open (RM_UnderLiquid.ClipQuad): a plane
+		/// wholly inside is printed as asked; a cut one is a fan of the kept polygon, its uvs, colours and top bias carried
+		/// bilinearly from the plane's corners; a plane wholly outside prints nothing. Cost: one ClipQuad (four corner tests,
+		/// and up to four plane passes over at most eight corners) per print, on a section rebuild only.</summary>
+		private static void Emit(MapDrawLayer layer, Vector3 center, Vector2 size, Material mat, float rot, bool flipUv,
+			Vector2[] uvs, Color32[] colors, float bias, float payload)
+		{
+			int n = ctxClip ? RM_UnderLiquid.ClipQuad(center.x, center.z, size.x, size.y, rot, ctxRx0, ctxRz0, ctxRx1, ctxRz1, clipOut) : -1;
+			if (n < 0)
+			{
+				Printer_Plane.PrintPlane(layer, center, size, mat, rot, flipUv, uvs, colors, bias, payload);
+				return;
+			}
+			if (n < 3)
+			{
+				return;
+			}
+			if (uvs == null)
+			{
+				uvs = flipUv ? PlaneUvsFlipped : PlaneUvs;
+			}
+			LayerSubMesh sm = layer.GetSubMesh(mat);
+			int b0 = sm.verts.Count;
+			const int k = RM_UnderLiquid.ClipStride;
+			for (int i = 0; i < n; i++)
+			{
+				float s = clipOut[i * k + 2], t = clipOut[i * k + 3];
+				sm.verts.Add(new Vector3(clipOut[i * k], center.y + t * bias, clipOut[i * k + 1]));
+				Vector2 uv = Vector2.Lerp(Vector2.Lerp(uvs[0], uvs[1], t), Vector2.Lerp(uvs[3], uvs[2], t), s);
+				sm.uvs.Add(new Vector3(uv.x, uv.y, payload));
+				sm.colors.Add(colors == null ? new Color32(255, 255, 255, 255)
+					: Color32.Lerp(Color32.Lerp(colors[0], colors[1], t), Color32.Lerp(colors[3], colors[2], t), s));
+			}
+			for (int i = 1; i + 1 < n; i++)
+			{
+				sm.tris.Add(b0);
+				sm.tris.Add(b0 + i);
+				sm.tris.Add(b0 + i + 1);
+			}
+		}
+
+		private static readonly Dictionary<long, Material> covers = new Dictionary<long, Material>();
+
+		/// <summary>The cover of a drowned part seen at <paramref name="q"/>/Steps: <paramref name="mat"/>'s silhouette (vanilla's
+		/// Silhouette shader: one flat colour through the sprite's own alpha; no depth write) in the context's liquid colour at
+		/// RM_UnderLiquid.CoverAlpha(q), in the drowned queue. Null when nothing covers it (q = Steps) or it has no texture.
+		/// Cached per material, step and colour.</summary>
+		private static Material CoverMat(Material mat, int q) => CoverMat(mat, q, ctxCover);
+
+		/// <summary><see cref="CoverMat(Material, int)"/> in the liquid colour <paramref name="col"/>.</summary>
+		private static Material CoverMat(Material mat, int q, Color col)
+		{
+			if (q >= RM_UnderLiquid.Steps || mat == null)
+			{
+				return null;
+			}
+			long rgb = ((long)(byte)(col.r * 255f) << 16) | ((long)(byte)(col.g * 255f) << 8) | (byte)(col.b * 255f);
+			long key = ((long)mat.GetInstanceID() << 32) | ((long)(q < 0 ? 0 : q) << 24) | rgb;
+			if (covers.TryGetValue(key, out Material m) && m != null)
+			{
+				return m;
+			}
+			Texture2D tex = mat.mainTexture as Texture2D;
+			if (tex == null)
+			{
+				return null;
+			}
+			m = MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Silhouette,
+				new Color(col.r, col.g, col.b, RM_UnderLiquid.CoverAlpha(q))) { renderQueue = DrownedQueue });
+			covers[key] = m;
+			return m;
+		}
+
+		private static readonly Dictionary<int, Material> underSheet = new Dictionary<int, Material>();
+
+		/// <summary><paramref name="mat"/> (its texture and colour) on the transparent shader in the queue under the liquid's sheet
+		/// (RM_FaceMaterial.UnderSheetQueue, as the pit floor's shadow): the sheet then hides it by the law as it hides the floor
+		/// it lies on. No depth write, so the sheet is never cut by it. Null when it has no texture.</summary>
+		private static Material UnderSheetMat(Material mat)
+		{
+			int id = mat.GetInstanceID();
+			if (underSheet.TryGetValue(id, out Material m) && m != null)
+			{
+				return m;
+			}
+			Texture2D tex = mat.mainTexture as Texture2D;
+			if (tex == null)
+			{
+				return null;
+			}
+			m = MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent, mat.color) { renderQueue = RM_FaceMaterial.UnderSheetQueue });
+			underSheet[id] = m;
+			return m;
+		}
 
 		private static int drownedQueue;
 
-		/// <summary>The render queue of a drowned part (RimMandrake.Shared.Slack.DrawOrder.DrownedQueue): above every
-		/// ground-level cord, hose and clamp, so what lies under a drowned thing stays under it as under the dry thing (whose
-		/// Cutout writes depth; a Transparent part does not), and below the overhead spans.</summary>
+		/// <summary>The render queue of a drowned part's cover (RimMandrake.Shared.Slack.DrawOrder.DrownedQueue): above every
+		/// ground-level cord, hose and clamp (the part itself is drawn whole in its own Cutout, which hides what lies under it
+		/// by depth as the dry thing does; the cover tints what shows of it), and below the overhead spans.</summary>
 		private static int DrownedQueue
 		{
 			get
@@ -857,32 +1123,6 @@ namespace RimMandrake.FlowWorks
 				}
 				return drownedQueue;
 			}
-		}
-
-		/// <summary><paramref name="mat"/> at alpha <paramref name="q"/>/Steps on the transparent shader (its texture and
-		/// colour kept), in the drowned queue: how a drowned part is seen over the liquid. Null when the material has no
-		/// texture. A whole (q = Steps) part keeps its own material: it hides what lies under it by depth.</summary>
-		public static Material Faded(Material mat, int q)
-		{
-			if (q >= RM_UnderLiquid.Steps)
-			{
-				return mat;
-			}
-			long key = ((long)mat.GetInstanceID() << 8) | (long)q;
-			if (faded.TryGetValue(key, out Material m) && m != null)
-			{
-				return m;
-			}
-			Texture2D tex = mat.mainTexture as Texture2D;
-			if (tex == null)
-			{
-				return null;
-			}
-			Color c = mat.color;
-			m = MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent,
-				new Color(c.r, c.g, c.b, c.a * q / RM_UnderLiquid.Steps)) { renderQueue = DrownedQueue });
-			faded[key] = m;
-			return m;
 		}
 
 		// ── realtime drawers (gates, stakes) ───────────────────────────────
@@ -918,11 +1158,13 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>A realtime upright sprite (<paramref name="whole"/>, <paramref name="size"/>) whose foot lies
-		/// <paramref name="footMetres"/> under the liquid and which spans <paramref name="heightMetres"/> up from there:
-		/// the part above the line as it is, the drowned part in bands at the law's alpha (<paramref name="flip"/>: the art is
-		/// mirrored, as on a flipped plane). Returns the share drawn under.</summary>
+		/// <paramref name="footMetres"/> under the liquid and which spans <paramref name="heightMetres"/> up from there
+		/// (<paramref name="flip"/>: the art is mirrored, as on a flipped plane). Under a clear liquid it is drawn whole and its
+		/// drowned part covered in bands by its silhouette in the liquid's colour (<paramref name="thing"/>'s cell's; fresh
+		/// water's when null) at RM_UnderLiquid.CoverAlpha, so it reads lerp(liquid, own, Seen) as a print does (Split); under
+		/// an opaque liquid only the part above the line is drawn. Returns the share drawn under.</summary>
 		public static float DrawUnder(Mesh whole, Vector2 size, Matrix4x4 at, Material mat, float footMetres, float heightMetres, float clarity,
-			bool flip = false)
+			bool flip = false, Thing thing = null)
 		{
 			float s = RM_UnderLiquid.Share(footMetres, 0f, heightMetres);
 			if (s <= 0f)
@@ -930,25 +1172,29 @@ namespace RimMandrake.FlowWorks
 				UnityEngine.Graphics.DrawMesh(whole, at, mat, 0);
 				return 0f;
 			}
-			if (s < 1f)
+			if (!(clarity > 0f))
 			{
-				Mesh kept = SliceMesh(size, s, 1f, flip);
+				Mesh kept = s < 1f ? SliceMesh(size, s, 1f, flip) : null;
 				if (kept != null)
 				{
 					UnityEngine.Graphics.DrawMesh(kept, at, mat, 0);
 				}
+				return s;
 			}
+			UnityEngine.Graphics.DrawMesh(whole, at, mat, 0);
+			Color col = thing != null && thing.Spawned ? CoverColour(LookAt(thing.Map, RM_SuperdeepTrap.EngineOf(thing.Map), thing.Position), clarity)
+				: BodyColour(null);
+			Matrix4x4 over = at * Matrix4x4.Translate(new Vector3(0f, CoverEps, 0f));
 			float line = footMetres - s * heightMetres;
 			int n = RM_UnderLiquid.BandsFor(clarity, line < 0f ? 0f : line, footMetres);
 			for (int b = 0; b < n; b++)
 			{
 				float a = s * b / n, e = s * (b + 1) / n, mid = footMetres - (a + e) * 0.5f * heightMetres;
-				int q = RM_UnderLiquid.BandAlphaStep(clarity, mid);
-				Material m = q > 0 ? Faded(mat, q) : null;
+				Material m = CoverMat(mat, RM_UnderLiquid.BandAlphaStep(clarity, mid), col);
 				Mesh band = m != null ? SliceMesh(size, a, e, flip) : null;
 				if (band != null)
 				{
-					UnityEngine.Graphics.DrawMesh(band, at, m, 0);
+					UnityEngine.Graphics.DrawMesh(band, over, m, 0);
 				}
 			}
 			return s;
@@ -1319,19 +1565,62 @@ namespace RimMandrake.FlowWorks
 		}
 	}
 
-	/// <summary>The pulsing status overlays (power off, needs power, broken down, out of fuel) fade with their thing's top.</summary>
-	[HarmonyPatch(typeof(OverlayDrawer), "RenderPulsingOverlayInternal")]
+	/// <summary>Every OverlayDrawer.Render* method that draws an icon on a thing (needs power, power off, broken down,
+	/// recharging, out of fuel, the pulsing helpers, forbidden, forbidden big, forbidden refuel, forbidden atomizer, burning
+	/// wick, question mark): its icon is faded with the thing (RM_SubmergeDraw.OverlayAlpha). All of them are patched, not
+	/// only the pulsing internal one, because the forbidden and wick icons go to the draw batch directly; the outermost call
+	/// sets the fade.</summary>
+	[HarmonyPatch]
 	[RimMandrake.Shared.PatchFeature("Pit contents under liquid (overlays)", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "pitSubmergeCutEnabled")]
-	internal static class Patch_RM_SubmergeOverlayFade
+	internal static class Patch_RM_SubmergeOverlayRender
 	{
-		[HarmonyPrefix]
-		private static void Prefix(Thing thing, ref Material mat)
+		private static System.Collections.Generic.IEnumerable<System.Reflection.MethodBase> TargetMethods()
 		{
-			float a = RM_SubmergeDraw.OverlayAlpha(thing);
-			if (a < 1f && mat != null)
+			foreach (System.Reflection.MethodInfo m in AccessTools.GetDeclaredMethods(typeof(OverlayDrawer)))
 			{
-				mat = FadedMaterialPool.FadedVersionOf(mat, a);
+				System.Reflection.ParameterInfo[] ps = m.GetParameters();
+				if (m.Name.StartsWith("Render") && !m.IsStatic && ps.Length > 0 && ps[0].ParameterType == typeof(Thing))
+				{
+					yield return m;
+				}
 			}
+		}
+
+		[HarmonyPrefix]
+		private static void Prefix(Thing __0)
+		{
+			RM_SubmergeDraw.BeginOverlay(__0);
+		}
+
+		[HarmonyFinalizer]
+		private static void Finalizer()
+		{
+			RM_SubmergeDraw.EndOverlay();
+		}
+	}
+
+	/// <summary>DrawBatch.DrawMesh (both overloads): inside an overlay render, the icon's material is faded with its thing
+	/// (RM_SubmergeDraw.OverlayMaterial). Outside one: one comparison.</summary>
+	[HarmonyPatch]
+	[RimMandrake.Shared.PatchFeature("Pit contents under liquid (overlays)", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "pitSubmergeCutEnabled")]
+	internal static class Patch_RM_SubmergeOverlayBatch
+	{
+		private static System.Collections.Generic.IEnumerable<System.Reflection.MethodBase> TargetMethods()
+		{
+			foreach (System.Reflection.MethodInfo m in AccessTools.GetDeclaredMethods(typeof(DrawBatch)))
+			{
+				System.Reflection.ParameterInfo[] ps = m.GetParameters();
+				if (m.Name == nameof(DrawBatch.DrawMesh) && ps.Length > 2 && ps[2].ParameterType == typeof(Material))
+				{
+					yield return m;
+				}
+			}
+		}
+
+		[HarmonyPrefix]
+		private static void Prefix(ref Material material)
+		{
+			material = RM_SubmergeDraw.OverlayMaterial(material);
 		}
 	}
 }

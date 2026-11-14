@@ -280,9 +280,10 @@ namespace RimMandrake.FlowWorks
 
 	/// <summary>
 	/// The geysers of one map (kept from spawn, never a map scan per tick) and the plume: while liquid covers a sunk, uncapped
-	/// vent in view, RM_Fleck_LiquidBubble (the bubble every liquid surface uses; real plume art is its own art item) is thrown
-	/// over the vent at the liquid's own bubble colour, larger and clustered to the centre, fewer and bigger in thick liquids,
-	/// with a ripple ring in thin ones and a steam wisp off a clear one while it sprays. Every 250 ticks a geyser whose seat
+	/// vent in view, RM_Fleck_VentBubble (small, bright, mostly opaque; owner 2026-11-13: "It should be bubbling water, not
+	/// faint ghost bubbles rising up") is thrown in a tight cluster on the vent's mouth, short-lived and never stopping, in the
+	/// liquid's own colour (RM_GeyserTubMath.BubbleColour), more of it the deeper the liquid, fewer and bigger in thick
+	/// liquids, with an odd ripple ring in thin ones and a steam wisp off a clear one while it sprays. Every 250 ticks a geyser whose seat
 	/// moved re-meshes its squares so the print follows the dig. Cosmetic RNG isolated (Rand.PushState).
 	/// </summary>
 	public class RM_MapComponent_GeyserPits : MapComponent
@@ -416,7 +417,7 @@ namespace RimMandrake.FlowWorks
 			}
 			if (bubbleFleck == null)
 			{
-				bubbleFleck = DefDatabase<FleckDef>.GetNamedSilentFail("RM_Fleck_LiquidBubble");
+				bubbleFleck = DefDatabase<FleckDef>.GetNamedSilentFail("RM_Fleck_VentBubble");
 				if (bubbleFleck == null)
 				{
 					return;
@@ -424,7 +425,8 @@ namespace RimMandrake.FlowWorks
 			}
 			bool spraying = RM_GeyserPit.Spraying(g);
 			int tpt = s.fluid.ticksPerTile;
-			float rate = RM_GeyserTubMath.PlumeRate(spraying, tpt, RM_GeyserPitSettings.geyserPlumeDensity);
+			float rate = RM_GeyserTubMath.PlumeRate(RM_GeyserPitSettings.geyserPlumeEnabled, spraying, tpt,
+				RM_GeyserPitSettings.geyserPlumeDensity, s.levelMetres);
 			Rand.PushState(Gen.HashCombineInt(Find.TickManager.TicksGame, g.thingIDNumber));
 			try
 			{
@@ -434,13 +436,16 @@ namespace RimMandrake.FlowWorks
 					return;
 				}
 				RM_LiquidSurfaceLook look = RM_SubmergeDraw.LookAt(map, RM_SuperdeepTrap.EngineOf(map), s.seatCell);
-				Color tint = look != null ? look.bubbleColor : new Color(0.9f, 0.95f, 1f);
+				Color own = look != null ? look.bubbleColor : DefaultBubble;
+				RM_UnderLiquid.Float3 c = RM_GeyserTubMath.BubbleColour(new RM_UnderLiquid.Float3(own.r, own.g, own.b),
+					new RM_UnderLiquid.Float3(DefaultBubble.r, DefaultBubble.g, DefaultBubble.b), RM_SubmergeDraw.LiquidColour(look));
+				Color tint = new Color(c.r, c.g, c.b);
 				bool thick = RM_GeyserTubMath.Thick(tpt);
 				Vector3 ctr = RM_GeyserPit.VentCentre(g);   // on the vent's own squares, as is its heated water
 				ctr.y = AltitudeLayer.MoteLow.AltitudeFor();
 				for (int k = 0; k < n; k++)
 				{
-					Vector2 off = Rand.InsideUnitCircle * (0.95f * Rand.Value);   // clustered toward the vent's centre
+					Vector2 off = Rand.InsideUnitCircle * (RM_GeyserTubMath.PlumeRadius * Rand.Value);   // a tight cluster on the mouth
 					Vector3 at = ctr + new Vector3(off.x, 0f, off.y);
 					if (!at.ShouldSpawnMotesAt(map))
 					{
@@ -450,12 +455,12 @@ namespace RimMandrake.FlowWorks
 						Rand.Range(RM_GeyserTubMath.PlumeScaleMin(tpt), RM_GeyserTubMath.PlumeScaleMax(tpt)));
 					d.instanceColor = tint;
 					d.velocityAngle = Rand.Range(0f, 360f);
-					d.velocitySpeed = thick ? Rand.Range(0f, 0.03f) : Rand.Range(0.02f, 0.12f);
+					d.velocitySpeed = thick ? Rand.Range(0f, 0.02f) : Rand.Range(0.05f, 0.25f);
 					map.flecks.CreateFleck(d);
 					RM_GeyserPit.plumeBubbles++;
-					if (spraying && !thick && Rand.Chance(0.6f))
+					if (spraying && !thick && Rand.Chance(0.08f))
 					{
-						FleckMaker.WaterRipple(at, map, Rand.Range(0.6f, 1.2f));
+						FleckMaker.WaterRipple(at, map, Rand.Range(0.5f, 0.9f));
 					}
 				}
 				if (spraying && look != null && look.seeThrough > 0f && Rand.Chance(0.15f))
@@ -468,6 +473,9 @@ namespace RimMandrake.FlowWorks
 				Rand.PopState();
 			}
 		}
+
+		/// <summary>RM_LiquidSurfaceLook.bubbleColor's class default: a look still on it bubbles in its own liquid's colour.</summary>
+		private static readonly Color DefaultBubble = new Color(0.9f, 0.95f, 1f);
 	}
 
 	/// <summary>Every geyser that spawns is kept on its map's list.</summary>

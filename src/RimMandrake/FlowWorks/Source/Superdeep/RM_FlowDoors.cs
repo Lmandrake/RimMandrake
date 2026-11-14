@@ -254,7 +254,7 @@ namespace RimMandrake.FlowWorks
 			if (wet)
 			{
 				float panelFoot = levelM - (h > 0f ? dz / h : 0f) * gateM;
-				RM_SubmergeDraw.DrawUnder(panelGraphic.MeshAt(Rotation), panelGraphic.drawSize, panelAt, panelMat, panelFoot, gateM, clarity);
+				RM_SubmergeDraw.DrawUnder(panelGraphic.MeshAt(Rotation), panelGraphic.drawSize, panelAt, panelMat, panelFoot, gateM, clarity, false, this);
 			}
 			else
 			{
@@ -266,7 +266,7 @@ namespace RimMandrake.FlowWorks
 			Material frameMat = frameGraphic.MatAt(Rotation, this);
 			if (wet)
 			{
-				RM_SubmergeDraw.DrawUnder(frameGraphic.MeshAt(Rotation), frameGraphic.drawSize, frameAt, frameMat, levelM, gateM, clarity);
+				RM_SubmergeDraw.DrawUnder(frameGraphic.MeshAt(Rotation), frameGraphic.drawSize, frameAt, frameMat, levelM, gateM, clarity, false, this);
 			}
 			else
 			{

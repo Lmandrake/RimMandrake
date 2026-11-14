@@ -102,17 +102,47 @@ namespace RimMandrake.FlowWorks.SelfTest
             {
                 Assert(Math.Abs(RM_GeyserTubMath.AfterglowDays(0.5f, 0.4f) - 1.25f) < 1e-4f, "can-fail: 0.5 falling 0.4 a day is 1.25 days");
             });
-            Case("GeyserTub_plume_rates", () =>
+            Case("GeyserTub_plume_is_bubbling_water", () =>
             {
+                // RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE (owner 2026-11-13: "They are too large and too transparent. It should
+                // be bubbling water, not faint ghost bubbles rising up."). Before: 6 a second (1.2 between), 0.27..0.40 cells,
+                // over a 0.95-cell circle. The art's alpha is pinned by selftest_flowworks_pit_draw_census.py.
                 foreach (int tpt in new[] { 60, 120, 360, 480 })
                 {
-                    float spray = RM_GeyserTubMath.PlumeRate(true, tpt, 1f), between = RM_GeyserTubMath.PlumeRate(false, tpt, 1f);
+                    float spray = RM_GeyserTubMath.PlumeRate(true, true, tpt, 1f, 1f), between = RM_GeyserTubMath.PlumeRate(true, false, tpt, 1f, 1f);
                     Assert(spray > between && between > 0f, "can-fail: spraying beats between, and between never stops (" + tpt + ")");
                 }
-                Assert(RM_GeyserTubMath.PlumeRate(true, 360, 1f) < RM_GeyserTubMath.PlumeRate(true, 60, 1f), "can-fail: thick throws fewer");
+                float w1 = RM_GeyserTubMath.PlumeRate(true, true, 60, 1f, 1f);
+                Assert(w1 >= 20f, "can-fail: many: water under 1 m bubbles at least 20 a second while spraying (got " + w1 + ")");
+                Assert(RM_GeyserTubMath.PlumeRate(true, false, 60, 1f, 1f) >= 6f, "can-fail: between sprays it keeps bubbling (>= 6 a second)");
+                Assert(RM_GeyserTubMath.PlumeRate(true, true, 360, 1f, 1f) < w1, "can-fail: thick throws fewer");
+                float d1 = RM_GeyserTubMath.PlumeRate(true, true, 60, 1f, 1f), d2 = RM_GeyserTubMath.PlumeRate(true, true, 60, 1f, 2f),
+                    d4 = RM_GeyserTubMath.PlumeRate(true, true, 60, 1f, 4f), d20 = RM_GeyserTubMath.PlumeRate(true, true, 60, 1f, 20f);
+                Assert(d1 < d2 && d2 < d4, "can-fail: deeper bubbles more (1 m " + d1 + ", 2 m " + d2 + ", 4 m " + d4 + ")");
+                Assert(d20 == d4 && d4 <= 2f * RM_GeyserTubMath.PlumeRate(true, true, 60, 1f, 0f) + 1e-4f, "can-fail: modestly: at most x2, capped at 4 m");
+                Assert(d20 * RM_GeyserTubMath.BubbleLifeSeconds <= 30f, "cost: at most 30 bubbles alive a geyser at density 1 (got " + d20 * RM_GeyserTubMath.BubbleLifeSeconds + ")");
+                Assert(RM_GeyserTubMath.PlumeRate(false, true, 60, 1f, 4f) == 0f, "can-fail: the Mod Settings switch off throws none");
+                Assert(RM_GeyserTubMath.PlumeRate(true, true, 60, 0f, 4f) == 0f, "can-fail: density x0 throws none");
+                float lo = RM_GeyserTubMath.BubbleDrawSize * RM_GeyserTubMath.PlumeScaleMin(60), hi = RM_GeyserTubMath.BubbleDrawSize * RM_GeyserTubMath.PlumeScaleMax(360);
+                Assert(lo >= 0.06f && hi <= 0.2f, "can-fail: small: every bubble 0.06..0.2 cells (" + lo + ".." + hi + "; before 0.27..0.40)");
                 Assert(RM_GeyserTubMath.PlumeScaleMin(360) > RM_GeyserTubMath.PlumeScaleMin(60), "can-fail: thick throws bigger");
-                Assert(RM_GeyserTubMath.PlumeScaleMin(60) >= 1.5f && RM_GeyserTubMath.PlumeScaleMax(360) <= 3f, "sizes 1.5..3 (ambient 0.8..1.8)");
-                Assert(RM_GeyserTubMath.PlumeRate(true, 60, 0f) == 0f, "can-fail: density x0 throws none");
+                Assert(RM_GeyserTubMath.PlumeRadius <= 0.5f, "can-fail: a tight cluster on the vent (radius <= 0.5 cell; before 0.95)");
+                Assert(RM_GeyserTubMath.BubbleLifeSeconds <= 0.8f, "can-fail: short lives (before 1.3 s)");
+            });
+            Case("GeyserTub_every_liquid_bubbles_in_its_own_colour", () =>
+            {
+                var def = new RM_UnderLiquid.Float3(0.9f, 0.95f, 1f);
+                var water = RM_UnderLiquid.WaterColour;
+                var tar = new RM_UnderLiquid.Float3(0.08f, 0.07f, 0.06f);
+                var blood = new RM_UnderLiquid.Float3(0.55f, 0.04f, 0.04f);
+                var acid = new RM_UnderLiquid.Float3(0.80f, 1.0f, 0.35f);
+                RM_UnderLiquid.Float3 bw = RM_GeyserTubMath.BubbleColour(def, def, water), bt = RM_GeyserTubMath.BubbleColour(def, def, tar),
+                    bb = RM_GeyserTubMath.BubbleColour(def, def, blood), ba = RM_GeyserTubMath.BubbleColour(acid, def, blood);
+                Assert(bw.b > bw.r && bw.r + bw.g + bw.b > water.r + water.g + water.b, "can-fail: water bubbles a brighter water blue");
+                Assert(bt.r < 0.5f && bt.g < 0.5f && bt.b < 0.5f, "can-fail: tar bubbles dark, not white (" + bt.r + ")");
+                Assert(bb.r > 2f * bb.g && bb.r > 2f * bb.b, "can-fail: blood bubbles red");
+                Assert(ba.r == acid.r && ba.g == acid.g && ba.b == acid.b, "can-fail: a look that sets its own bubble colour keeps it");
+                Assert(bt.r > tar.r, "lifted toward white so a bubble reads against its own liquid");
             });
             Case("GeyserTub_bubbles_this_tick_average_the_rate", () =>
             {

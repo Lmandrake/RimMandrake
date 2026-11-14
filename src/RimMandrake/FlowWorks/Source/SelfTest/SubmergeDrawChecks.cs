@@ -124,6 +124,85 @@ namespace RimMandrake.FlowWorks.SelfTest
 				Assert(depthCheck > 0 && hook > depthCheck && hook - depthCheck < 400, "can-fail: the fill picture-writer re-meshes a noted cell");
 				Assert(eng.Contains("if (submergeDrawn.Count != 0)"), "can-fail: nothing noted, nothing done (dry costs nothing)");
 			});
+			Case("Submerge_drowned_part_reads_as_under_the_liquid", () =>
+			{
+				// RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE (owner 2026-11-13 ~10 PM: "the vent does not appear to be under water. The
+				// blue seems to fade away, and the vent looks on top of the water"; ~10:10 PM: "The ancient shopping Cart isn't
+				// shown as under the water"). A drowned band is its own colour whole, under a cover in the liquid's colour at
+				// CoverAlpha(q): own weight q/Steps = Seen, liquid weight 1 - Seen, so it reads lerp(liquid, own, Seen) as the floor
+				// beside it does. Before: own at alpha q/Steps over the floor, liquid weight 0.
+				foreach (float m in new[] { 1f, 2f, 4f })
+				{
+					int q = RM_UnderLiquid.BandAlphaStep(Water, m);
+					float own = 1f - RM_UnderLiquid.CoverAlpha(q), seen = RM_UnderLiquid.Seen(Water, m);
+					Assert(Math.Abs(own - seen) <= 0.5f / RM_UnderLiquid.Steps + 1e-4f, "can-fail: own weight is Seen at " + m + " m (" + own + " vs " + seen + ")");
+					Assert(RM_UnderLiquid.CoverAlpha(q) > 0.25f, "can-fail: the liquid's colour is on a part " + m + " m under (cover " + RM_UnderLiquid.CoverAlpha(q) + ")");
+				}
+				Assert(RM_UnderLiquid.CoverAlpha(RM_UnderLiquid.Steps) == 0f && RM_UnderLiquid.CoverAlpha(0) == 1f, "can-fail: dry: no cover; hidden: all liquid");
+				Assert(RM_UnderLiquid.CoverAlpha(RM_UnderLiquid.BandAlphaStep(Water, 4f)) < RM_UnderLiquid.CoverAlpha(0), "the 4 m plateau still lets the floor through (KEEP murk)");
+				string draw = RiverSwitchFlipChecks.Src("Superdeep/RM_SubmergeDraw.cs");
+				Assert(draw.Contains("ShaderDatabase.Silhouette") && draw.Contains("RM_UnderLiquid.CoverAlpha(q)") && !draw.Contains("Material Faded("),
+					"can-fail: the cover is a Silhouette in the liquid colour; the old own-alpha fade is gone");
+			});
+			Case("Submerge_flat_vent_is_tinted_like_the_floor", () =>
+			{
+				// A geyser's vent and filth lie on the pit floor: drawn under the sheet (UnderSheetQueue), so the sheet tints them
+				// exactly as the floor at the same depth (brief: 1 m tinted, 2 m barely visible). The law's plateau is 0.10 from
+				// 4 m (images/3.png, KEEP): "not visible at 4 m" would need a new law, flagged, not done.
+				float s1 = RM_UnderLiquid.Seen(Water, 1f), s2 = RM_UnderLiquid.Seen(Water, 2f), s4 = RM_UnderLiquid.Seen(Water, 4f);
+				Assert(s1 > s2 && s2 > s4, "can-fail: deeper hides more (" + s1 + ", " + s2 + ", " + s4 + ")");
+				Assert(s1 < 0.9f && s1 > 0.5f, "can-fail: 1 m: tinted, still seen (" + s1 + ")");
+				Assert(s2 < 0.5f && s4 <= 0.11f, "can-fail: 2 m barely, 4 m about gone (" + s2 + ", " + s4 + ")");
+				string draw = RiverSwitchFlipChecks.Src("Superdeep/RM_SubmergeDraw.cs");
+				Assert(draw.Contains("t is Filth || (t is Building_SteamGeyser && RM_GeyserPit.On)") && draw.Contains("RM_FaceMaterial.UnderSheetQueue"),
+					"can-fail: the vent and filth print under the sheet");
+			});
+			Case("Submerge_overlays_follow_their_thing", () =>
+			{
+				// RIMMANDRAKE_SINK_COOLER_ARROW_UNDER_TAR (owner ~10:15 PM: "the Cooler still keeps its little red arrow icon above
+				// the surface"; ~10:25 PM: "if we could put the yellow power disconnect icons under the water too when the item is
+				// under water that would be great").
+				Assert(RM_UnderLiquid.OverlayAlpha(Water, 0f, RM_UnderLiquid.WallSlotMetres) == 1f, "dry: whole");
+				float flush = RM_UnderLiquid.OverlayAlpha(Water, 1f, 1f);
+				Assert(flush < 1f && flush > 0.5f, "can-fail: a thing flush with the line shows its icon dimmed, not whole (" + flush + ")");
+				Assert(RM_UnderLiquid.OverlayAlpha(Water, 4f, 1f) < RM_UnderLiquid.OverlayAlpha(Water, 1f, 1f), "can-fail: deeper icons dimmer");
+				Assert(RM_UnderLiquid.OverlayAlpha(0f, 1.5f, RM_UnderLiquid.WallSlotMetres) == 0f, "can-fail: a cooler under 1.5 m of tar: icons hidden");
+				Assert(RM_UnderLiquid.Share(1.5f, 0f, RM_UnderLiquid.WallSlotMetres) == 1f, "can-fail: 1.5 m covers a wall-slot cooler (arrow and all)");
+				string draw = RiverSwitchFlipChecks.Src("Superdeep/RM_SubmergeDraw.cs");
+				// The paths an overlay can take (OverlayDrawer, RimWorld 1.6): DrawOverlay (gate), every Render*(Thing ...) (depth
+				// set: NeedsPower, PowerOff, BrokenDown, Rechargine, OutOfFuel, Pulsing, Forbidden*, BurningWick, QuestionMark),
+				// and DrawBatch.DrawMesh where they all land (material faded after vanilla's own pulse fade).
+				Assert(draw.Contains("typeof(OverlayDrawer), \"DrawOverlay\"") || draw.Contains("nameof(OverlayDrawer.DrawOverlay)"), "can-fail: DrawOverlay gated");
+				Assert(draw.Contains("m.Name.StartsWith(\"Render\")") && draw.Contains("typeof(DrawBatch)"), "can-fail: every Render* and DrawBatch.DrawMesh are patched");
+				Assert(draw.Contains("Building_Cooler") && draw.Contains("RM_UnderLiquid.WallSlotMetres"), "can-fail: the cooler stands in a wall slot");
+			});
+			Case("Submerge_rim_clip_keeps_sprites_in_the_pit", () =>
+			{
+				// owner ~10:10 PM: "the chunks don't honor the pit, they overlap its edges unphysically".
+				float[] o = new float[RM_UnderLiquid.ClipMaxVerts * RM_UnderLiquid.ClipStride];
+				Assert(RM_UnderLiquid.ClipQuad(5f, 5f, 1f, 1f, 0f, 0f, 0f, 10f, 10f, o) == -1, "can-fail: inside: untouched");
+				Assert(RM_UnderLiquid.ClipQuad(20f, 5f, 1f, 1f, 0f, 0f, 0f, 10f, 10f, o) == 0, "can-fail: outside: nothing");
+				int n = RM_UnderLiquid.ClipQuad(0.1f, 5f, 1.6f, 1.6f, 30f, 0f, 0f, 10f, 10f, o);
+				Assert(n >= 3, "can-fail: over the rim: a kept polygon (" + n + ")");
+				for (int i = 0; i < n; i++)
+				{
+					float x = o[i * RM_UnderLiquid.ClipStride], s = o[i * RM_UnderLiquid.ClipStride + 2], t = o[i * RM_UnderLiquid.ClipStride + 3];
+					Assert(x >= -1e-4f && s >= -1e-4f && s <= 1f + 1e-4f && t >= -1e-4f && t <= 1f + 1e-4f, "can-fail: nothing past the rim, uvs inside the quad");
+				}
+				Assert(RM_UnderLiquid.ClipQuad(0.1f, 5f, 1f, 1f, 0f, float.NegativeInfinity, 0f, 10f, 10f, o) == -1, "an open side does not clip");
+			});
+			Case("Submerge_murk_keeps_rising_to_the_plateau", () =>
+			{
+				// owner ~10:10 PM: "the murk looks really good. If it gets even deeper it keeps getting more murky right?" (KEEP)
+				float prev = 1.01f;
+				foreach (float m in new[] { 0.5f, 1f, 2f, 3f, 4f, 6f, 10f, 20f })
+				{
+					float s = RM_UnderLiquid.Seen(Water, m);
+					Assert(s <= prev && s > 0f, "can-fail: never less murky deeper, never wholly hidden in clear water (" + m + " m: " + s + ")");
+					prev = s;
+				}
+				Assert(Near(RM_UnderLiquid.Seen(Water, 20f), RM_UnderLiquid.Seen(Water, 4f), 1e-3f), "can-fail: flat from 4 m (the plateau)");
+			});
 			Case("Submerge_defs_tar_dark_gates_shadowless", () =>
 			{
 				string reg = RiverSwitchFlipChecks.Src("../Defs/LiquidTypes/LiquidDefs/RM_LiquidDefRegistry.xml");

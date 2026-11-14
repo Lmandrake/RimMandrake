@@ -131,29 +131,72 @@ namespace RimMandrake.FlowWorks
 
 		// ── the plume ───────────────────────────────────────────────────
 
-		/// <summary>Bubbles a second over the footprint while the vent sprays; between sprays a fifth of it keeps going, so a
-		/// sunk geyser is always findable by eye.</summary>
-		public const float SprayBubblesPerSecond = 6f;
-		public const float BetweenShare = 0.2f;
+		/// <summary>The vent's bubbling (owner 2026-11-13, G2 under 1 m: "Bubbles are centered on vent itself, yes. They are too
+		/// large and too transparent. It should be bubbling water, not faint ghost bubbles rising up."): many small, bright,
+		/// mostly opaque bubbles (RM_Fleck_VentBubble, its own white art tinted per liquid) in a tight cluster on the vent's
+		/// centre, short-lived and never stopping. A second while the vent sprays; between sprays a third of it keeps going,
+		/// so a sunk geyser is always findable by eye. Before: 6 a second (1.2 between) of a 0.27..0.40-cell bubble at alpha
+		/// 0.29, living 1.3 s, over a 0.95-cell circle.</summary>
+		public const float SprayBubblesPerSecond = 24f;
+		public const float BetweenShare = 1f / 3f;
+
+		/// <summary>Deeper liquid shows more of the column: the rate grows by DepthGain a metre over the seat, to DepthCap
+		/// metres (x2 at 4 m and below). Cost: at most 48 a second a geyser in view, each living about half a second, so about
+		/// 24 flecks alive a geyser (pooled, one instanced batch).</summary>
+		public const float DepthGain = 0.25f;
+		public const float DepthCap = 4f;
 
 		/// <summary>A liquid this slow (FluidDef.ticksPerTile; water 60) is thick: fewer, bigger, slower bubbles, no ring.</summary>
 		public const int ThickTicksPerTile = 120;
 
 		public static bool Thick(int ticksPerTile) => ticksPerTile >= ThickTicksPerTile;
 
-		public static float PlumeRate(bool spraying, int ticksPerTile, float density)
+		public static float DepthFactor(float levelMetres)
 		{
-			if (!(density > 0f))
+			float m = levelMetres > 0f ? (levelMetres < DepthCap ? levelMetres : DepthCap) : 0f;
+			return 1f + DepthGain * m;
+		}
+
+		/// <summary>Bubbles a second over the vent: 0 with the plume switched off (Mod Settings, RM_GeyserPitSettings.
+		/// geyserPlumeEnabled) or density 0; else the spray or between rate, x0.4 in a thick liquid, x the depth factor, x the
+		/// density slider.</summary>
+		public static float PlumeRate(bool enabled, bool spraying, int ticksPerTile, float density, float levelMetres)
+		{
+			if (!enabled || !(density > 0f))
 			{
 				return 0f;
 			}
 			float r = SprayBubblesPerSecond * (spraying ? 1f : BetweenShare);
-			return (Thick(ticksPerTile) ? r * 0.4f : r) * density;
+			return (Thick(ticksPerTile) ? r * 0.4f : r) * DepthFactor(levelMetres) * density;
 		}
 
-		public static float PlumeScaleMin(int ticksPerTile) => Thick(ticksPerTile) ? 2.2f : 1.5f;
+		/// <summary>How far from the vent's centre a bubble rises (cells): a tight cluster on the vent mouth.</summary>
+		public const float PlumeRadius = 0.35f;
 
-		public static float PlumeScaleMax(int ticksPerTile) => Thick(ticksPerTile) ? 3f : 2.2f;
+		/// <summary>RM_Fleck_VentBubble's drawSize (cells): the scale range below multiplies it.</summary>
+		public const float BubbleDrawSize = 0.12f;
+
+		public static float PlumeScaleMin(int ticksPerTile) => Thick(ticksPerTile) ? 1.0f : 0.7f;
+
+		public static float PlumeScaleMax(int ticksPerTile) => Thick(ticksPerTile) ? 1.6f : 1.3f;
+
+		/// <summary>A bubble's life (s): RM_Fleck_VentBubble's fade-in + solid + fade-out.</summary>
+		public const float BubbleLifeSeconds = 0.5f;
+
+		/// <summary>The colour a vent bubbles in: a liquid look's own bubble colour when it sets one, else (the class default
+		/// <paramref name="classDefault"/>) its own liquid colour lifted a quarter of the way to white, so tar bubbles dark grey,
+		/// blood red, oil brown: every liquid in its own colour.</summary>
+		public static RM_UnderLiquid.Float3 BubbleColour(RM_UnderLiquid.Float3 own, RM_UnderLiquid.Float3 classDefault, RM_UnderLiquid.Float3 liquid)
+		{
+			bool set = System.Math.Abs(own.r - classDefault.r) > 1e-3f || System.Math.Abs(own.g - classDefault.g) > 1e-3f
+				|| System.Math.Abs(own.b - classDefault.b) > 1e-3f;
+			if (set)
+			{
+				return own;
+			}
+			const float lift = 0.25f;
+			return new RM_UnderLiquid.Float3(liquid.r + (1f - liquid.r) * lift, liquid.g + (1f - liquid.g) * lift, liquid.b + (1f - liquid.b) * lift);
+		}
 
 		/// <summary>Bubbles to throw this tick for <paramref name="perSecond"/>, with a uniform <paramref name="roll"/> in [0,1):
 		/// averages the rate exactly.</summary>
