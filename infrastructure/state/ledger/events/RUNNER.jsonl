@@ -7039,3 +7039,5 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_TIMER_REPAIR_PRXC","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-14T08:40:34Z","tsn":1794645634375767975}
 {"seat":"RUNNER","event":"live","id":"OPS_TIMER_REPAIR_PRXC","result":"broken","detail":"Ops alarm TIMER_FAILED: timers.failed_units = 1 failed user units (MEASURED), line > 0","ts":"2026-11-14T08:43:14Z","tsn":1794645794354999181}
 {"seat":"RUNNER","event":"raise","id":"OPS_TIMER_REPAIR_PRXC","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-14T08:43:19Z","tsn":1794645799643627113}
+{"seat":"RUNNER","event":"live","id":"OPS_TIMER_REPAIR_PRXC","result":"broken","detail":"Ops alarm TIMER_FAILED: timers.failed_units = 1 failed user units (MEASURED), line > 0","ts":"2026-11-14T08:44:48Z","tsn":1794645888892237434}
+{"seat":"RUNNER","event":"raise","id":"OPS_TIMER_REPAIR_PRXC","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-14T08:44:54Z","tsn":1794645894231377272}
