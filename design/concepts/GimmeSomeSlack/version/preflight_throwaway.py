@@ -121,7 +121,9 @@ check("built_mod_offline_deciders_run", not spec_off, len([t for t in deciders i
       return_to="3")
 red = sorted(t for t, v in TESTS.items() if v["kind"] == "offline" and v["runs_today"].get("ran") and v["runs_today"].get("result") != "PASS")
 check("built_offline_tests_green", not red, sum(1 for v in TESTS.values() if v["kind"] == "offline" and v["runs_today"].get("ran")),
-      line=", ".join(red), evidence="ran red today", smallest_fix="fix the mod or file the known red", return_to="3")
+      line=", ".join(red), evidence="ran red today" + "".join("; %s is filed as %s" % (t, TESTS[t]["known_red"]) for t in red if TESTS[t].get("known_red")),
+      smallest_fix="fix the mod, or (a flawed criterion) the neutral fixer repairs the bar with the owner; never loosen the test",
+      return_to="3")
 
 # 7. every named def is real: def-like names in the bars' own text, against the def dump, our Defs XML and our C# symbols
 txt = open(C + "scenes.json").read() + open(C + "tree.json").read() + open(C + "record.json").read() + EXTRA_TEXT

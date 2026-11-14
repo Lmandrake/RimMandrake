@@ -208,10 +208,25 @@ for k, t in OFF.items():
     row["runs_today"] = PREV[k]["runs_today"] if k in PREV else run(cmd)
     tests[k] = row
     print(k, row["runs_today"]["result"], row["runs_today"]["seconds"], flush=True)
+# Stage 3 (2026-11-14) built all four: a .py runs on its own; a SelfTest .cs is run by T_CORE (or, known red, under --geometry)
+NEW_CMD = {"T_CORD_GEOMETRY_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py", "--geometry"],
+           "T_SHOCK_RULE_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py"]}
 for k, t in NEW.items():
-    tests[k] = dict(id=k, kind="offline", stage=t["stage"], file=t["file"], observes=t["observes"], reads=t["reads"], new=True,
-                    command="python3 " + t["file"] if t["file"].endswith(".py") else "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py",
-                    runs_today=dict(ran=False, why="specified, not built: Stage 3 builds it failing first"))
+    argv = NEW_CMD.get(k) or [t["file"]]
+    row = dict(id=k, kind="offline", stage=t["stage"], file=t["file"], observes=t["observes"], reads=t["reads"], new=True,
+               built_in_stage="3", command="python3 " + " ".join(argv))
+    if not os.path.exists(t["file"]):
+        row["runs_today"] = dict(ran=False, why="specified, not built: Stage 3 builds it failing first")
+    elif k in PREV and PREV[k]["runs_today"].get("ran"):
+        row["runs_today"] = PREV[k]["runs_today"]
+    elif k == "T_SHOCK_RULE_OFFLINE" and "T_CORE" in tests:
+        row["runs_today"] = dict(tests["T_CORE"]["runs_today"], via="T_CORE")
+    else:
+        row["runs_today"] = run([sys.executable] + argv)
+    if k == "T_CORD_GEOMETRY_OFFLINE":
+        row["known_red"] = "RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR"
+    tests[k] = row
+    print(k, row["runs_today"].get("result"), row["runs_today"].get("seconds"), flush=True)
 
 # in-game scenes: entry named in scenes.json; exists only if the function is defined there
 SCENE_TIER = {"sc_settings": "gimmesomeslack_flowworks", "sc_shock_reach": "gimmesomeslack_flowworks"}
@@ -380,9 +395,11 @@ cnt = [
     "older proof rows (supports): %d mapped in proof_leaves.ROW_LEAVES (%d of them gravship_scene), code found for %d; last live "
     "run %s; mapped rows and run rows not reconciled one to one" % (len(prows), sum(t["id"].startswith("P_GS1") for t in prows),
                                                                     sum(t["entry_exists"] for t in prows), LAST),
-    "offline tests: %d built (ran today: %d PASS, %d FAIL), %d specified for Stage 3" % (
+    "offline tests: %d built before Stage 3 (ran today: %d PASS, %d FAIL); %d specified at the lock, built in Stage 3: %s" % (
         len(off_built), sum(t["runs_today"]["result"] == "PASS" for t in off_built),
-        sum(t["runs_today"]["result"] != "PASS" for t in off_built), len(NEW)),
+        sum(t["runs_today"]["result"] != "PASS" for t in off_built), len(NEW),
+        ", ".join("%s %s%s" % (k, tests[k]["runs_today"].get("result") or "NOT BUILT",
+                               " (known red, %s)" % tests[k]["known_red"] if tests[k].get("known_red") else "") for k in NEW)),
 ]
 L = ["# Gimme Some Slack 0.1.0: test-and-stage table", "",
      "Generated %s from `test_table.json` (the record; this is its read view) by the throwaway `make_test_table.py`. Stages: 2 "

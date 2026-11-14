@@ -26,10 +26,7 @@ SITE_ROWS = {"P1_fresh_map", "P2_tier_running_startup_log_clean", "P3_probes_sit
 
 # A leaf with no row yet, each owed by a LIVE item (infrastructure/state/items/<ID>.md, not closed/): the selftest stays green only
 # while that item is open, so closing it without adding the rows turns the selftest red. Nothing else may be listed here.
-OWED = {
-    "floor_end_shocks_crossers": "RIMMANDRAKE_BUILD_GSS_FLOOR_END_SHOCK_ANSWERED_WEEK_AGO",   # Designer stage 3, 2026-11-13; unbuilt
-    "shock_reach_setting": "RIMMANDRAKE_BUILD_GSS_FLOOR_END_SHOCK_ANSWERED_WEEK_AGO",
-}
+OWED = {}   # floor_end_shocks_crossers and shock_reach_setting were owed until 2026-11-14 (built: scene_rows.floor_end_shock / shock_reach)
 
 _MATRIX = {
     "MX_D00_n1_S0": ["dense_block_tangle", "drawing_true_to_grid"],
@@ -168,6 +165,17 @@ ROW_LEAVES = dict(_MATRIX, **{
     "SC_restring_work_scheduler_takes_it": ["restring_cut_span"],
     "SC_splicer_spared_bystander_shocked": ["fallen_wire_shocks_crossers"],
     "SC_dead_wire_shocks_nobody": ["fallen_wire_shocks_crossers", "cut_live_and_dead_ends"],
+    # RIMMANDRAKE_BUILD_GSS_FLOOR_END_SHOCK_ANSWERED_WEEK_AGO (scene_rows.floor_end_shock / shock_reach, 2026-11-14)
+    "SC_floor_end_live_shocks": ["floor_end_shocks_crossers"],
+    "SC_floor_end_dead_spares": ["floor_end_shocks_crossers", "cut_live_and_dead_ends"],
+    "SC_floor_end_cord_behind_spares": ["floor_end_shocks_crossers"],
+    "SC_floor_end_unfinished_run_bites": ["floor_end_shocks_crossers"],
+    "SC_floor_end_bites_aerial_master_off": ["floor_end_shocks_crossers"],
+    "SC_floor_end_every_end_over_spark_budget": ["floor_end_shocks_crossers"],
+    "SC_floor_end_fixer_spared_other_builder_shocked": ["floor_end_shocks_crossers"],
+    "SC_shock_reach_default_all": ["shock_reach_setting"],
+    "SC_shock_reach_three_values": ["shock_reach_setting"],
+    "SC_shock_reach_deck_cord_per_value": ["shock_reach_setting"],
     "SC_dead_wire_lights_no_fuel": ["live_wire_lights_fuel"],
     # determinism, save/load, log, statics blocks (the walk leaf's reload and log-clean reads, measured short)
     "D1_zero_tick_rereads_same": ["drawing_true_to_grid"],

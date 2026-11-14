@@ -1,128 +1,128 @@
 # Gimme Some Slack 0.1.0: test-and-stage table
 
-Generated 2026-11-14T11:43:41-08:00 from `test_table.json` (the record; this is its read view) by the throwaway `make_test_table.py`. Stages: 2 preflight, 4-5 blind offline, 6 in-game, 8 his walk. A bar passes when every deciding test passes. Columns follow Explosive Knockback's table.
+Generated 2026-11-14T12:58:08-08:00 from `test_table.json` (the record; this is its read view) by the throwaway `make_test_table.py`. Stages: 2 preflight, 4-5 blind offline, 6 in-game, 8 his walk. A bar passes when every deciding test passes. Columns follow Explosive Knockback's table.
 
 ## Counts (measured)
 
 - bars: 47
-- with a deciding test runnable today (an offline test that ran, or an in-game scene whose entry exists): 18
-- with every deciding test runnable today: 2
-- with at least one test of any kind runnable today, supports included (proof rows whose code exists count): 43
-- with an offline deciding test, all green today: 16
+- with a deciding test runnable today (an offline test that ran, or an in-game scene whose entry exists): 47
+- with every deciding test runnable today: 46
+- with at least one test of any kind runnable today, supports included (proof rows whose code exists count): 47
+- with an offline deciding test, all green today: 21
 - decided offline only (no game needed): 2
-- in-game scenes: 26 named in scenes.json plus 1 specified here; entry exists 0, absent 27
-- older proof rows (supports): 156 mapped in proof_leaves.ROW_LEAVES (2 of them gravship_scene), code found for 156; last live run J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard); mapped rows and run rows not reconciled one to one
-- offline tests: 23 built (ran today: 23 PASS, 0 FAIL), 4 specified for Stage 3
+- in-game scenes: 26 named in scenes.json plus 1 specified here; entry exists 26, absent 1
+- older proof rows (supports): 166 mapped in proof_leaves.ROW_LEAVES (2 of them gravship_scene), code found for 166; last live run J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard); mapped rows and run rows not reconciled one to one
+- offline tests: 23 built before Stage 3 (ran today: 23 PASS, 0 FAIL); 4 specified at the lock, built in Stage 3: T_SETTINGS_SWEEP_OFFLINE PASS, T_SHOCK_RULE_OFFLINE PASS, T_CORD_GEOMETRY_OFFLINE FAIL (known red, RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR), T_STATICS_CENSUS PASS
 
 ## Bars
 
 | bar | from | proves at | decides | supports (not proof rows) | proof rows | runnable today |
 |---|---|---|---|---|---|---|
-| `invisible_conduit` | record | 6 | sc_conduit_invisible | - | 7 | none |
-| `cord_slack_lay` | record | 6 | T_CORE, T_CORD_GEOMETRY_OFFLINE, sc_cords_slack, sc_walls, sc_no_sharp_turn | T_END_HEAP, T_MATRIX | 25 | some |
-| `junction_strips` | record | 6 | T_CORE, sc_junction_strips, sc_dense_tangle | T_JUNCTION_ART, T_STRIP_ART | 10 | some |
-| `connectivity_truth` | record | 6 | T_CORE, sc_true_to_grid | T_MATRIX | 48 | some |
-| `break_ends_live_dead` | record | 6 | T_CORE, sc_cut_ends | - | 18 | some |
-| `rebuild_cost` | record | 6 | sc_rewire_cost | T_CORE | 9 | none |
-| `overhead_spans` | record | 6 | sc_spans | T_CORE | 11 | none |
-| `downed_spans` | record | 6 | sc_fallen_span | T_CORE | 12 | none |
-| `fallen_wire_shock` | record | 6 | sc_shock, sc_shock_restring, sc_fuel_ignition | T_SHOCK_OUTLIVES, T_SHOCK_OUTLIVES_BINDING, T_SHOCK_BITES_BINDING, T_SHOCK_RULE_OFFLINE | 7 | none |
-| `wire_down_alert` | record | 6 | sc_restring | - | 7 | none |
-| `restring_job` | record | 6 | sc_restring | - | 7 | none |
-| `power_theft` | record | 6 | T_CORE, sc_tap_theft, sc_settings | - | 39 | some |
-| `four_styles` | record | 6 | T_CORE, sc_four_looks | T_GATE, T_JUNCTION_ART | 24 | some |
-| `mod_settings` | record | 6 | T_SETTINGS_SWEEP_OFFLINE, sc_settings | T_CORE, T_GATE | 37 | none |
-| `pipe_pole_switch` | record | 6 | T_CORE, sc_settings | - | 37 | some |
-| `gravship_connectivity` | record | 6 | sc_gravship | - | 6 | none |
-| `owner_change_cut` | record | 6 | sc_owner_change | - | 3 | none |
-| `game_statics_reset` | record | 6 | sc_statics_new_game | T_STATICS_CENSUS | 1 | none |
-| `uninstall_clean` | record | 6 | sc_removal_consequence | - | 0 | none |
+| `invisible_conduit` | record | 6 | sc_conduit_invisible | - | 7 | all |
+| `cord_slack_lay` | record | 6 | T_CORE, T_CORD_GEOMETRY_OFFLINE, sc_cords_slack, sc_walls, sc_no_sharp_turn | T_END_HEAP, T_MATRIX | 25 | all |
+| `junction_strips` | record | 6 | T_CORE, sc_junction_strips, sc_dense_tangle | T_JUNCTION_ART, T_STRIP_ART | 10 | all |
+| `connectivity_truth` | record | 6 | T_CORE, sc_true_to_grid | T_MATRIX | 48 | all |
+| `break_ends_live_dead` | record | 6 | T_CORE, sc_cut_ends | - | 19 | all |
+| `rebuild_cost` | record | 6 | sc_rewire_cost | T_CORE | 9 | all |
+| `overhead_spans` | record | 6 | sc_spans | T_CORE | 11 | all |
+| `downed_spans` | record | 6 | sc_fallen_span | T_CORE | 12 | all |
+| `fallen_wire_shock` | record | 6 | sc_shock, sc_shock_restring, sc_fuel_ignition | T_SHOCK_OUTLIVES, T_SHOCK_OUTLIVES_BINDING, T_SHOCK_BITES_BINDING, T_SHOCK_RULE_OFFLINE | 7 | all |
+| `wire_down_alert` | record | 6 | sc_restring | - | 7 | all |
+| `restring_job` | record | 6 | sc_restring | - | 7 | all |
+| `power_theft` | record | 6 | T_CORE, sc_tap_theft, sc_settings | - | 39 | all |
+| `four_styles` | record | 6 | T_CORE, sc_four_looks | T_GATE, T_JUNCTION_ART | 24 | all |
+| `mod_settings` | record | 6 | T_SETTINGS_SWEEP_OFFLINE, sc_settings | T_CORE, T_GATE | 37 | all |
+| `pipe_pole_switch` | record | 6 | T_CORE, sc_settings | - | 37 | all |
+| `gravship_connectivity` | record | 6 | sc_gravship | - | 6 | all |
+| `owner_change_cut` | record | 6 | sc_owner_change | - | 3 | all |
+| `game_statics_reset` | record | 6 | sc_statics_new_game | T_STATICS_CENSUS | 1 | all |
+| `uninstall_clean` | record | 6 | sc_removal_consequence | - | 0 | all |
 | `no_hose` | record | 4-5 | T_NO_HOSE | - | 0 | all |
-| `floor_end_shock` | record | 6 | T_SHOCK_RULE_OFFLINE, sc_floor_end_shock | - | 0 | none |
-| `shock_reach_setting` | both | 6 | T_SHOCK_RULE_OFFLINE, sc_shock_reach | - | 0 | none |
-| `conduit_invisible` | tree | 6 | sc_conduit_invisible | T_GATE | 7 | none |
-| `cords_lie_slack` | tree | 6 | T_CORE, T_CORD_GEOMETRY_OFFLINE, sc_cords_slack | T_MATRIX, T_END_HEAP | 19 | some |
-| `no_unforced_sharp_turn` | tree | 6 | T_CORD_GEOMETRY_OFFLINE, sc_no_sharp_turn | - | 1 | none |
-| `cords_meet_walls_at_face` | tree | 6 | sc_walls | T_CORE, T_END_HEAP | 5 | none |
-| `strip_at_every_junction` | tree | 6 | T_CORE, sc_junction_strips | T_JUNCTION_ART, T_STRIP_ART | 2 | some |
-| `dense_block_tangle` | tree | 6 | T_CORE, sc_dense_tangle | T_MATRIX | 8 | some |
-| `cord_shape_variation_probe` | tree | 6 | T_CORE, sc_no_repeat | - | 1 | some |
-| `cords_never_repeat` | tree | 6 | T_CORE, sc_no_repeat | T_H_NO_TWO_ALIKE_SHORT | 1 | some |
-| `drawing_true_to_grid` | tree | 6 | T_CORE, sc_true_to_grid | T_MATRIX, sc_cords_under_items | 48 | some |
-| `cut_live_and_dead_ends` | tree | 6 | T_CORE, sc_cut_ends | - | 18 | some |
-| `floor_end_shocks_crossers` | tree | 6 | T_SHOCK_RULE_OFFLINE, sc_floor_end_shock | - | 0 | none |
-| `no_stall_on_rewire` | tree | 6 | sc_rewire_cost | T_CORE | 9 | none |
-| `spans_above_everything` | tree | 6 | sc_spans | T_CORE, T_FW_PIT_DRAW_CENSUS, T_H_KINETIC_SWAY | 11 | none |
-| `fallen_span_on_ground` | tree | 6 | sc_fallen_span | T_CORE, T_H_EXPLODE_PARSE | 12 | none |
-| `fallen_wire_shocks_crossers` | tree | 6 | sc_shock | T_SHOCK_OUTLIVES, T_SHOCK_OUTLIVES_BINDING, T_SHOCK_BITES_BINDING, T_SHOCK_RULE_OFFLINE | 5 | none |
-| `restring_cut_span` | tree | 6 | sc_restring | T_H_RESTRING_PROOF | 7 | none |
-| `live_wire_lights_fuel` | tree | 6 | sc_fuel_ignition | - | 2 | none |
-| `tap_steals_and_costs_goodwill` | tree | 6 | T_CORE, sc_tap_theft | - | 3 | some |
-| `four_looks_one_run` | tree | 6 | T_CORE, sc_four_looks | T_GATE, T_JUNCTION_ART | 24 | some |
-| `settings_switch_cleanly` | tree | 6 | T_SETTINGS_SWEEP_OFFLINE, sc_settings | T_CORE, T_GATE, T_H_AERIAL_PROBE_BATCH | 37 | none |
-| `gravship_keeps_connections` | tree | 6 | sc_gravship | - | 6 | none |
-| `owner_change_coils_wires` | tree | 6 | sc_owner_change | - | 3 | none |
-| `statics_clear_between_games` | tree | 6 | sc_statics_new_game | T_STATICS_CENSUS | 1 | none |
+| `floor_end_shock` | record | 6 | T_SHOCK_RULE_OFFLINE, sc_floor_end_shock | - | 7 | all |
+| `shock_reach_setting` | both | 6 | T_SHOCK_RULE_OFFLINE, sc_shock_reach | - | 3 | all |
+| `conduit_invisible` | tree | 6 | sc_conduit_invisible | T_GATE | 7 | all |
+| `cords_lie_slack` | tree | 6 | T_CORE, T_CORD_GEOMETRY_OFFLINE, sc_cords_slack | T_MATRIX, T_END_HEAP | 19 | all |
+| `no_unforced_sharp_turn` | tree | 6 | T_CORD_GEOMETRY_OFFLINE, sc_no_sharp_turn | - | 1 | all |
+| `cords_meet_walls_at_face` | tree | 6 | sc_walls | T_CORE, T_END_HEAP | 5 | all |
+| `strip_at_every_junction` | tree | 6 | T_CORE, sc_junction_strips | T_JUNCTION_ART, T_STRIP_ART | 2 | all |
+| `dense_block_tangle` | tree | 6 | T_CORE, sc_dense_tangle | T_MATRIX | 8 | all |
+| `cord_shape_variation_probe` | tree | 6 | T_CORE, sc_no_repeat | - | 1 | all |
+| `cords_never_repeat` | tree | 6 | T_CORE, sc_no_repeat | T_H_NO_TWO_ALIKE_SHORT | 1 | all |
+| `drawing_true_to_grid` | tree | 6 | T_CORE, sc_true_to_grid | T_MATRIX, sc_cords_under_items | 48 | all |
+| `cut_live_and_dead_ends` | tree | 6 | T_CORE, sc_cut_ends | - | 19 | all |
+| `floor_end_shocks_crossers` | tree | 6 | T_SHOCK_RULE_OFFLINE, sc_floor_end_shock | - | 7 | all |
+| `no_stall_on_rewire` | tree | 6 | sc_rewire_cost | T_CORE | 9 | all |
+| `spans_above_everything` | tree | 6 | sc_spans | T_CORE, T_FW_PIT_DRAW_CENSUS, T_H_KINETIC_SWAY | 11 | all |
+| `fallen_span_on_ground` | tree | 6 | sc_fallen_span | T_CORE, T_H_EXPLODE_PARSE | 12 | all |
+| `fallen_wire_shocks_crossers` | tree | 6 | sc_shock | T_SHOCK_OUTLIVES, T_SHOCK_OUTLIVES_BINDING, T_SHOCK_BITES_BINDING, T_SHOCK_RULE_OFFLINE | 5 | all |
+| `restring_cut_span` | tree | 6 | sc_restring | T_H_RESTRING_PROOF | 7 | all |
+| `live_wire_lights_fuel` | tree | 6 | sc_fuel_ignition | - | 2 | all |
+| `tap_steals_and_costs_goodwill` | tree | 6 | T_CORE, sc_tap_theft | - | 3 | all |
+| `four_looks_one_run` | tree | 6 | T_CORE, sc_four_looks | T_GATE, T_JUNCTION_ART | 24 | all |
+| `settings_switch_cleanly` | tree | 6 | T_SETTINGS_SWEEP_OFFLINE, sc_settings | T_CORE, T_GATE, T_H_AERIAL_PROBE_BATCH | 37 | all |
+| `gravship_keeps_connections` | tree | 6 | sc_gravship | - | 6 | all |
+| `owner_change_coils_wires` | tree | 6 | sc_owner_change | - | 3 | all |
+| `statics_clear_between_games` | tree | 6 | sc_statics_new_game | T_STATICS_CENSUS | 1 | all |
 | `no_hose_in_gss` | tree | 4-5 | T_NO_HOSE | - | 0 | all |
-| `walk_scavenger_base` | tree | 8 | sc_walk, LOOK_STAGE8 | T_H_PLAYTEST_RUNNER, sc_cords_under_items | 6 | none |
+| `walk_scavenger_base` | tree | 8 | sc_walk, LOOK_STAGE8 | T_H_PLAYTEST_RUNNER, sc_cords_under_items | 6 | some |
 
-## Tests (offline and scenes; the 156 proof rows are in the JSON)
+## Tests (offline and scenes; the 166 proof rows are in the JSON)
 
 | test | stage | kind | file :: entry | runs today | observes |
 |---|---|---|---|---|---|
-| `T_CORE` | 4-5 | offline | `src/RimMandrake/Utils/selftest_gimmesomeslack.py` | PASS rc=0 106.08s | the C# SelfTest on the production core and aerial halves against the Python oracle: graph reduction, planner, slack laying, shape no-two-alike, junction strips, |
-| `T_GATE` | 2 | offline | `src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py` | PASS rc=0 140.97s | the offline tier O1-O8: mod files, csproj and DLL, the 26 shipped setting defaults, style art sanity with planted faults, review-round art, GPT fix shapes, lamp |
-| `T_MATRIX` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/northstar_matrix/selftest.py` | PASS rc=0 7.44s | the scene matrix generator, oracle, placer and fake game: 57 checks, 17 negative controls |
-| `T_NO_HOSE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_hose.py` | PASS rc=0 0.32s | the mod ships no hose, reel or pipe def, texture or class; a planted hose goes red |
+| `T_CORE` | 4-5 | offline | `src/RimMandrake/Utils/selftest_gimmesomeslack.py` | PASS rc=0 116.68s | the C# SelfTest on the production core and aerial halves against the Python oracle: graph reduction, planner, slack laying, shape no-two-alike, junction strips, |
+| `T_GATE` | 2 | offline | `src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py` | PASS rc=0 129.61s | the offline tier O1-O8: mod files, csproj and DLL, the 26 shipped setting defaults, style art sanity with planted faults, review-round art, GPT fix shapes, lamp |
+| `T_MATRIX` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/northstar_matrix/selftest.py` | PASS rc=0 7.94s | the scene matrix generator, oracle, placer and fake game: 57 checks, 17 negative controls |
+| `T_NO_HOSE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_hose.py` | PASS rc=0 0.35s | the mod ships no hose, reel or pipe def, texture or class; a planted hose goes red |
 | `T_SHOCK_OUTLIVES` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_shock_outlives_wire.py` | PASS rc=0 0.06s | a fallen wire's shock cells die with the wire (GSS_FALLEN_WIRE_FIX_SHOCK_OUTLIVES_WIRE) |
-| `T_SHOCK_OUTLIVES_BINDING` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_shock_outlives_wire_binding.py` | PASS rc=0 7.82s | the live binding of the shock-outlives fix, compiled offline |
+| `T_SHOCK_OUTLIVES_BINDING` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_shock_outlives_wire_binding.py` | PASS rc=0 8.29s | the live binding of the shock-outlives fix, compiled offline |
 | `T_SHOCK_BITES_BINDING` | 4-5 | offline | `src/RimMandrake/Utils/selftest_gss_shock_still_bites_binding.py` | PASS rc=0 0.4s | a live fallen wire still shocks after the outlives fix (binding, offline) |
 | `T_END_HEAP` | 4-5 | offline | `src/RimMandrake/Utils/selftest_gss_end_heap_budget.py` | PASS rc=0 0.01s | long-run end heaps stay inside the loop budget |
-| `T_JUNCTION_ART` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_junction_necks.py` | PASS rc=0 0.13s | the Modern and Futuristic T/X junction PNGs: body wider than the cord, necks meet the cord |
+| `T_JUNCTION_ART` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_junction_necks.py` | PASS rc=0 0.14s | the Modern and Futuristic T/X junction PNGs: body wider than the cord, necks meet the cord |
 | `T_STRIP_ART` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_strip_art.py` | PASS rc=0 0.05s | the Modern power-strip PNGs have no black fringe (his 2026-11-08 sitting) |
-| `T_FW_PIT_DRAW_CENSUS` | 4-5 | offline | `src/RimMandrake/FlowWorks/selftest_flowworks_pit_draw_census.py` | PASS rc=0 0.16s | everything drawn outside the map-mesh print against FlowWorks' under-liquid law; GSS floor cords on a pit floor are faded by FloorSeen (CordUnderLiquid), overhe |
-| `T_PROOF_LEAVES` | 2 | offline | `src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_proof_leaves.py` | PASS rc=0 0.07s | every proof row cites a leaf of tree.json and every leaf has a row or a live item owing it |
-| `T_H_RESTRING_PROOF` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_restring_proof.py` | PASS rc=0 0.14s | harness: the M15f re-string proof path's instruments |
-| `T_H_KINETIC_SWAY` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_kinetic_sway.py` | PASS rc=0 0.38s | harness: the M22 kinetic-sway proof rows, probe transport, launcher |
-| `T_H_AERIAL_PROBE_BATCH` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_aerial_probe_batch.py` | PASS rc=0 0.59s | harness: the aerial mod-settings probe batch |
-| `T_H_EXPLODE_PARSE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_explode_parse.py` | PASS rc=0 1.26s | harness: the explode probe's parsing against production AerialMath |
-| `T_H_NO_TWO_ALIKE_SHORT` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_two_alike_short.py` | PASS rc=0 0.01s | harness: SC_no_two_cords_alike exempts cords under 3 cells |
-| `T_H_PLAYTEST_RUNNER` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_playtest_runner.py` | PASS rc=0 0.03s | harness: the walk launcher's recipe expansion |
+| `T_FW_PIT_DRAW_CENSUS` | 4-5 | offline | `src/RimMandrake/FlowWorks/selftest_flowworks_pit_draw_census.py` | PASS rc=0 0.41s | everything drawn outside the map-mesh print against FlowWorks' under-liquid law; GSS floor cords on a pit floor are faded by FloorSeen (CordUnderLiquid), overhe |
+| `T_PROOF_LEAVES` | 2 | offline | `src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_proof_leaves.py` | PASS rc=0 0.08s | every proof row cites a leaf of tree.json and every leaf has a row or a live item owing it |
+| `T_H_RESTRING_PROOF` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_restring_proof.py` | PASS rc=0 0.15s | harness: the M15f re-string proof path's instruments |
+| `T_H_KINETIC_SWAY` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_kinetic_sway.py` | PASS rc=0 0.45s | harness: the M22 kinetic-sway proof rows, probe transport, launcher |
+| `T_H_AERIAL_PROBE_BATCH` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_aerial_probe_batch.py` | PASS rc=0 0.62s | harness: the aerial mod-settings probe batch |
+| `T_H_EXPLODE_PARSE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_explode_parse.py` | PASS rc=0 1.33s | harness: the explode probe's parsing against production AerialMath |
+| `T_H_NO_TWO_ALIKE_SHORT` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_two_alike_short.py` | PASS rc=0 0.02s | harness: SC_no_two_cords_alike exempts cords under 3 cells |
+| `T_H_PLAYTEST_RUNNER` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_playtest_runner.py` | PASS rc=0 0.02s | harness: the walk launcher's recipe expansion |
 | `T_H_PROOF_DRIVERS` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_proof_drivers.py` | PASS rc=0 0.17s | harness: the proof drivers' false-pass fixes |
-| `T_H_REVIEW_LEFTOVERS` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_review_leftovers.py` | PASS rc=0 0.23s | harness: post-approval proof-harness findings |
+| `T_H_REVIEW_LEFTOVERS` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_review_leftovers.py` | PASS rc=0 0.27s | harness: post-approval proof-harness findings |
 | `T_H_WEAKCLOSE_GUARDS` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_weakclose_guards.py` | PASS rc=0 0.01s | harness: source-shape guards for Verse-bound findings |
 | `T_H_HUMAN_REVIEW` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_human_review.py` | PASS rc=0 0.04s | harness: the review map layout |
-| `T_H_PROOF_ALL` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/northstar/selftest_proof_all.py` | PASS rc=0 11.29s | harness: proof_all's durability on a fake bridge |
-| `T_SETTINGS_SWEEP_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_settings_sweep.py` | SPECIFIED | the settings sweep, moved out of the game: for each key of the shipped floor table (validation.SHIPPED, 26) and each AerialSettings field, either an offline fli |
-| `T_SHOCK_RULE_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/Source/SelfTest/ShockRuleChecks.cs` | SPECIFIED | the who-is-shocked rule as a pure table: line kind (floor end, downed span, FlowWorks deck cord) x live by power path at the last poll x setting (None, Only dow |
-| `T_CORD_GEOMETRY_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/Source/SelfTest/CordGeometryChecks.cs` | SPECIFIED | on the oracle scenes and on the M2c junction-battery site as a lab world: every edge's drawn length is at least 1.4 times its chord, every edge over four cells  |
-| `T_STATICS_CENSUS` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_statics_census.py` | SPECIFIED | every mutable static field in Source (outside SelfTest) is cleared in GssSessionReset.cs or listed immutable with a reason; planted: a new static collection not |
-| `sc_conduit_invisible` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_conduit_invisible | entry ABSENT | no pipe drawn on any PowerConduit or WaterproofConduit cell, a cord per edge on both runs, overlay connector lines present; the HiddenConduit run owns no cord |
-| `sc_cords_slack` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_cords_slack | entry ABSENT | every edge at least 1.4 times its chord, no bend tighter than the minimum radius, an excursion off the conduit line on edges over four cells |
-| `sc_no_sharp_turn` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_no_sharp_turn | entry ABSENT | strands read greater than zero in every look (the instrument sees cords); unforced == 0 in every look, at plug and junction ends as well as mid-cord; every forc |
-| `sc_walls` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_walls | entry ABSENT | no sampled point on an impassable cell except wall-face stubs; a stub on both faces of each crossing; two plates on the pocket's dive |
-| `sc_junction_strips` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_junction_strips | entry ABSENT | one piece of the look's family per junction, every arm end in its socket, Modern pieces the PowerStrip art, Industrial the Junction_T/X box |
-| `sc_dense_tangle` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_dense_tangle | entry ABSENT | tangle-pile pieces over the block, crossings per cell above the sparse room's, the judge reads a tangle |
-| `sc_no_repeat` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_no_repeat | entry ABSENT | every pair above the minimum shape distance; the judge sees no repeated stamp |
-| `sc_true_to_grid` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_true_to_grid | entry ABSENT | every cord's ends on one net, one cord end per power connection, no second cable at the pump, no plug on a pipe slot; the cord reaching the dual-port device ent |
-| `sc_cut_ends` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_cut_ends | entry ABSENT | no edge across either gap; run one: the generator side live, the far side dead, and after switch-off both dead within one poll; run two: both ends live after th |
-| `sc_rewire_cost` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_rewire_cost | entry ABSENT | max slice under 20 ms and no frame over the bar for each lone and burst action; the touched edge's drawing current after |
-| `sc_spans` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_spans | entry ABSENT | the span's draw altitude reads above both the Pawn and Building altitude layers, sag above zero; the lamp mast's span joins the same PowerNet and its lamp reads |
-| `sc_fallen_span` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_fallen_span | entry ABSENT | each fallen wire draws cells on the ground between its anchors, at ground layer below pawns; live end sparking and dead end limp per net; the unpowered span's w |
-| `sc_shock` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_shock | entry ABSENT | hauler, visitor and the other span's re-stringer shocked; this wire's re-stringer not |
-| `sc_floor_end_shock` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_floor_end_shock | entry ABSENT | hauler 1, hauler 4, the visitor and constructor B shocked; hauler 1 shocked again with the aerial master off; with maxSparkingEnds 1 both live-end haulers shock |
-| `sc_shock_reach` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_shock_reach | entry ABSENT | the default reads All; All: all three haulers shocked; Only downed lines: the fallen-wire and deck-cord haulers shocked, the floor-end hauler not; None: none sh |
-| `sc_restring` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_restring | entry ABSENT | alert lists both the cut anchor and the grounded one; each jump centres the camera on the listed anchor's cell; the job runs at the cut anchor; after it the spa |
-| `sc_tap_theft` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_tap_theft | entry ABSENT | power flows from their net into ours only; their goodwill falls each day after sighting and stops after removal; every other faction's goodwill unchanged |
-| `sc_four_looks` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_four_looks | entry ABSENT | each run's members report one style, and the four runs' cord texture paths and junction defs all differ; a judge agent given the four captures in grayscale (art |
-| `sc_settings` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_settings | entry ABSENT | each feature's observable state changes with its switch and returns on flip-back, no restart: drip loops drawn or not at a mast; slideUnder off makes the dual-p |
-| `sc_gravship` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_gravship | entry ABSENT | switch on: the aboard span is still linked after landing and the true-to-grid read passes; switch off: the aboard span is down after landing (no link between th |
-| `sc_walk` | 6 | live_full | `src/RimMandrake/GimmeSomeSlack/northstar/gss_playtest_runner.py` :: scene_walk | entry ABSENT | after reload the true-to-grid and live/dead reads match before save; repeat and second order pass the same reads; each rewire's frame time under the 20 ms bar;  |
-| `sc_shock_restring` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_shock_restring | entry ABSENT | the hauler is shocked crossing the sparking end; the re-stringer is not; after the re-string power flows and no one is shocked |
-| `sc_owner_change` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_owner_change | entry ABSENT | switch on: no link from the middle mast to either mast of ours, the sweep's cut count equals the two links cut, the message shown, the middle mast unpowered by  |
-| `sc_fuel_ignition` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_fuel_ignition | entry ABSENT | live and switch on: fire on the fallen wire's puddle cell and none on the floor end's puddle cell; switch off: no fire; wire dead: no fire |
-| `sc_statics_new_game` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_statics_new_game | entry ABSENT | game 1 lists the tap and both picks, holds printed-section keys and strand names, and prices the fallen wire's cells under its map id; the new quicktest starts  |
-| `sc_removal_consequence` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_removal_consequence | entry ABSENT | the consequence is written down: which defs drop and what errors log |
+| `T_H_PROOF_ALL` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/northstar/selftest_proof_all.py` | PASS rc=0 12.81s | harness: proof_all's durability on a fake bridge |
+| `T_SETTINGS_SWEEP_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_settings_sweep.py` | PASS rc=0 2.29s | the settings sweep, moved out of the game: for each key of the shipped floor table (validation.SHIPPED, 26) and each AerialSettings field, either an offline fli |
+| `T_SHOCK_RULE_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/Source/SelfTest/ShockRuleChecks.cs` | PASS rc=0 116.68s | the who-is-shocked rule as a pure table: line kind (floor end, downed span, FlowWorks deck cord) x live by power path at the last poll x setting (None, Only dow |
+| `T_CORD_GEOMETRY_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/Source/SelfTest/CordGeometryChecks.cs` | FAIL rc=1 103.28s | on the oracle scenes and on the M2c junction-battery site as a lab world: every edge's drawn length is at least 1.4 times its chord, every edge over four cells  |
+| `T_STATICS_CENSUS` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_statics_census.py` | PASS rc=0 0.13s | every mutable static field in Source (outside SelfTest) is cleared in GssSessionReset.cs or listed immutable with a reason; planted: a new static collection not |
+| `sc_conduit_invisible` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_conduit_invisible | entry exists | no pipe drawn on any PowerConduit or WaterproofConduit cell, a cord per edge on both runs, overlay connector lines present; the HiddenConduit run owns no cord |
+| `sc_cords_slack` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_cords_slack | entry exists | every edge at least 1.4 times its chord, no bend tighter than the minimum radius, an excursion off the conduit line on edges over four cells |
+| `sc_no_sharp_turn` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_no_sharp_turn | entry exists | strands read greater than zero in every look (the instrument sees cords); unforced == 0 in every look, at plug and junction ends as well as mid-cord; every forc |
+| `sc_walls` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_walls | entry exists | no sampled point on an impassable cell except wall-face stubs; a stub on both faces of each crossing; two plates on the pocket's dive |
+| `sc_junction_strips` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_junction_strips | entry exists | one piece of the look's family per junction, every arm end in its socket, Modern pieces the PowerStrip art, Industrial the Junction_T/X box |
+| `sc_dense_tangle` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_dense_tangle | entry exists | tangle-pile pieces over the block, crossings per cell above the sparse room's, the judge reads a tangle |
+| `sc_no_repeat` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_no_repeat | entry exists | every pair above the minimum shape distance; the judge sees no repeated stamp |
+| `sc_true_to_grid` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_true_to_grid | entry exists | every cord's ends on one net, one cord end per power connection, no second cable at the pump, no plug on a pipe slot; the cord reaching the dual-port device ent |
+| `sc_cut_ends` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_cut_ends | entry exists | no edge across either gap; run one: the generator side live, the far side dead, and after switch-off both dead within one poll; run two: both ends live after th |
+| `sc_rewire_cost` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_rewire_cost | entry exists | max slice under 20 ms and no frame over the bar for each lone and burst action; the touched edge's drawing current after |
+| `sc_spans` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_spans | entry exists | the span's draw altitude reads above both the Pawn and Building altitude layers, sag above zero; the lamp mast's span joins the same PowerNet and its lamp reads |
+| `sc_fallen_span` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_fallen_span | entry exists | each fallen wire draws cells on the ground between its anchors, at ground layer below pawns; live end sparking and dead end limp per net; the unpowered span's w |
+| `sc_shock` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_shock | entry exists | hauler, visitor and the other span's re-stringer shocked; this wire's re-stringer not |
+| `sc_floor_end_shock` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_floor_end_shock | entry exists | hauler 1, hauler 4, the visitor and constructor B shocked; hauler 1 shocked again with the aerial master off; with maxSparkingEnds 1 both live-end haulers shock |
+| `sc_shock_reach` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_shock_reach | entry exists | the default reads All; All: all three haulers shocked; Only downed lines: the fallen-wire and deck-cord haulers shocked, the floor-end hauler not; None: none sh |
+| `sc_restring` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_restring | entry exists | alert lists both the cut anchor and the grounded one; each jump centres the camera on the listed anchor's cell; the job runs at the cut anchor; after it the spa |
+| `sc_tap_theft` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_tap_theft | entry exists | power flows from their net into ours only; their goodwill falls each day after sighting and stops after removal; every other faction's goodwill unchanged |
+| `sc_four_looks` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_four_looks | entry exists | each run's members report one style, and the four runs' cord texture paths and junction defs all differ; a judge agent given the four captures in grayscale (art |
+| `sc_settings` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_settings | entry exists | each feature's observable state changes with its switch and returns on flip-back, no restart: drip loops drawn or not at a mast; slideUnder off makes the dual-p |
+| `sc_gravship` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_gravship | entry exists | switch on: the aboard span is still linked after landing and the true-to-grid read passes; switch off: the aboard span is down after landing (no link between th |
+| `sc_walk` | 6 | live_full | `src/RimMandrake/GimmeSomeSlack/northstar/gss_playtest_runner.py` :: scene_walk | entry exists | after reload the true-to-grid and live/dead reads match before save; repeat and second order pass the same reads; each rewire's frame time under the 20 ms bar;  |
+| `sc_shock_restring` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_shock_restring | entry exists | the hauler is shocked crossing the sparking end; the re-stringer is not; after the re-string power flows and no one is shocked |
+| `sc_owner_change` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_owner_change | entry exists | switch on: no link from the middle mast to either mast of ours, the sweep's cut count equals the two links cut, the message shown, the middle mast unpowered by  |
+| `sc_fuel_ignition` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_fuel_ignition | entry exists | live and switch on: fire on the fallen wire's puddle cell and none on the floor end's puddle cell; switch off: no fire; wire dead: no fire |
+| `sc_statics_new_game` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_statics_new_game | entry exists | game 1 lists the tap and both picks, holds printed-section keys and strand names, and prices the fallen wire's cells under its map id; the new quicktest starts  |
+| `sc_removal_consequence` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_removal_consequence | entry exists | the consequence is written down: which defs drop and what errors log |
 | `sc_cords_under_items` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_cords_under_items | entry ABSENT | a floor cord under a battery, a shelf of items and furniture, dry and in a FlowWorks pit: the cord's draw altitude and queue read below the thing's, the junctio |
 | `LOOK_STAGE8` | 8 | look | `None` | entry ABSENT | his walk of a scavenger base on his full list, with a mid-way reload |
 

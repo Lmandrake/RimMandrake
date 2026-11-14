@@ -1,9 +1,9 @@
 {
  "mod": "GimmeSomeSlack",
  "version": "0.1.0",
- "ran_at": "2026-11-14T12:20:01-0800",
- "seconds": 4.72,
- "dump_read_seconds": 4.34,
+ "ran_at": "2026-11-14T12:58:14-0800",
+ "seconds": 5.63,
+ "dump_read_seconds": 5.19,
  "dump": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/captures/2026-11-12T08-10-06Z",
  "by": "design/concepts/GimmeSomeSlack/version/preflight_throwaway.py (throwaway, no model)",
  "verdict": "refuse",
@@ -21,17 +21,17 @@
   {
    "check": "every_test_names_its_stage",
    "result": "pass",
-   "n": 211
+   "n": 221
   },
   {
    "check": "every_cited_test_is_listed",
    "result": "pass",
-   "n": 669
+   "n": 688
   },
   {
    "check": "game_tests_say_why",
    "result": "pass",
-   "n": 184
+   "n": 194
   },
   {
    "check": "full_list_tests_say_why",
@@ -41,7 +41,7 @@
   {
    "check": "named_files_exist",
    "result": "pass",
-   "n": 1091
+   "n": 1128
   },
   {
    "check": "inventory_evidence_exists",
@@ -50,18 +50,18 @@
   },
   {
    "check": "built_mod_decider_entries_exist",
-   "result": "refuse",
+   "result": "pass",
    "n": 26
   },
   {
    "check": "built_mod_offline_deciders_run",
-   "result": "refuse",
+   "result": "pass",
    "n": 5
   },
   {
    "check": "built_offline_tests_green",
-   "result": "pass",
-   "n": 23
+   "result": "refuse",
+   "n": 27
   },
   {
    "check": "named_defs_and_symbols_real",
@@ -108,17 +108,10 @@
  ],
  "refusals": [
   {
-   "check": "built_mod_decider_entries_exist",
-   "line": "sc_conduit_invisible, sc_cords_slack, sc_cut_ends, sc_dense_tangle, sc_fallen_span, sc_floor_end_shock, sc_four_looks, sc_fuel_ignition, sc_gravship, sc_junction_strips, sc_no_repeat, sc_no_sharp_turn, sc_owner_change, sc_removal_consequence, sc_restring, sc_rewire_cost, sc_settings, sc_shock, sc_shock_reach, sc_shock_restring, sc_spans, sc_statics_new_game, sc_tap_theft, sc_true_to_grid, sc_walk, sc_walls",
-   "evidence": "scenes.json names entry points that are not defined: 'def <entry>(' occurs 0 times in the named file",
-   "smallest_fix": "Stage 3 builds the entry points (item GSS_SCENES_BUILD_EVERY_CORD_A_FOIL, live), each red first",
-   "return_to": "3"
-  },
-  {
-   "check": "built_mod_offline_deciders_run",
-   "line": "T_CORD_GEOMETRY_OFFLINE, T_SETTINGS_SWEEP_OFFLINE, T_SHOCK_RULE_OFFLINE",
-   "evidence": "specified at this lock, not built",
-   "smallest_fix": "Stage 3 builds them, red first",
+   "check": "built_offline_tests_green",
+   "line": "T_CORD_GEOMETRY_OFFLINE",
+   "evidence": "ran red today; T_CORD_GEOMETRY_OFFLINE is filed as RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR",
+   "smallest_fix": "fix the mod, or (a flawed criterion) the neutral fixer repairs the bar with the owner; never loosen the test",
    "return_to": "3"
   }
  ],

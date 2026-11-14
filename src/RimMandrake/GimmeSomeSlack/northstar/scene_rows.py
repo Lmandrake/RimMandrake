@@ -12,7 +12,11 @@ SITE = (SC0[0] - 2, SC0[1] - 2, 66, 40)
 SC_ALIKE_MIN_CELLS = 3             # SC_no_two_cords_alike judges length classes of 3 cells and up (owner, by card 2026-11-13)
 ROWS = ["SC_doorway_run_is_one_cord", "SC_cut_never_powered_both_dead", "SC_cut_battery_each_side_both_live", "SC_bend_draws_no_joint_tee_draws_one", "SC_sparse_room_no_tangle",
         "SC_cords_all_slack", "SC_no_two_cords_alike", "SC_restring_drafted_no_job", "SC_restring_work_scheduler_takes_it",
-        "SC_splicer_spared_bystander_shocked", "SC_dead_wire_shocks_nobody", "SC_dead_wire_lights_no_fuel"]
+        "SC_splicer_spared_bystander_shocked", "SC_dead_wire_shocks_nobody", "SC_dead_wire_lights_no_fuel",
+        # sc_floor_end_shock and sc_shock_reach (RIMMANDRAKE_BUILD_GSS_FLOOR_END_SHOCK_ANSWERED_WEEK_AGO, Stage 3 2026-11-14)
+        "SC_floor_end_live_shocks", "SC_floor_end_dead_spares", "SC_floor_end_cord_behind_spares", "SC_floor_end_unfinished_run_bites",
+        "SC_floor_end_bites_aerial_master_off", "SC_floor_end_every_end_over_spark_budget", "SC_floor_end_fixer_spared_other_builder_shocked",
+        "SC_shock_reach_default_all", "SC_shock_reach_three_values", "SC_shock_reach_deck_cord_per_value"]
 
 
 def _site(B, V):
@@ -327,6 +331,120 @@ def dead_wire(B, V, rows):
     B.ap("set:fallenWireKnockback=2")
 
 
+def _trial(B, cell):
+    """A downed animal on `cell` (validation_aerial._wire_trial): {"shocked": bool, ...}, or {"error": ...} when it never ran."""
+    from validation_aerial import _wire_trial
+    return _wire_trial(B, cell)
+
+
+def _verdict(trials, want):
+    """PASS when every trial ran and read `want` shocked-ness; UNMEASURED HARNESS when one never ran."""
+    if any("error" in t for t in trials):
+        return "UNMEASURED", "HARNESS"
+    return ("PASS" if all(t.get("shocked") is want for t in trials) else "FAIL"), "MOD"
+
+
+def _cut_run(B, V, z, cut=True):
+    """A battery-fed floor run on row z, west to east, x..x+12: cut at x+6 (live end x+5, dead end x+7, a lamp past the cut keeps
+    the east half a real run) or, with cut=False, simply stopped at x+8 (its loose end live). -> the probe's ends by cell."""
+    x = SC0[0]
+    B.call("jawa/build_batch", ops=V.ops("PowerConduit", _line(x, z, x + (12 if cut else 8), z)), faction="player", wipeExisting=False)
+    B.call("jawa/build_batch", ops="Battery:%d,%d,0" % (x, z + 1), faction="player", wipeExisting=False)
+    if cut:
+        B.call("jawa/build_batch", ops="StandingLamp:%d,%d,0" % (x + 12, z + 1), faction="player", wipeExisting=False)
+    B.ticks(3)
+    _fill(B, (x - 2, z - 2, 18, 6))
+    B.ticks(3)
+    if cut:
+        B.call("jawa/destroy_batch", rects="%d,%d,1,1" % (x + 6, z), categories="Building")
+        B.ticks(2)
+    B.probe("poll")
+    B.ticks(8)                     # FloorEndShock rebuilds its contacts after the poll, on its next 4-tick check
+    return _ends(_rect(B, x - 1, z - 3, 15, 7))
+
+
+def floor_end_shock(B, V, rows):
+    """sc_floor_end_shock (leaves floor_end_shocks_crossers, inventory floor_end_shock): only the live end cell bites, every live end
+    bites whatever the spark budget, the overhead-lines master does not gate it, and the constructor joining THIS end is spared.
+    The crossers are downed animals put on the cell (no path to assert: the pawn is on the cell or the trial errs)."""
+    x, z = SC0
+    _site(B, V)
+    B.ap("set:shockReach=All")
+    B.ap("set:fallenWireKnockback=0")             # a thrown pawn would leave the cell the next trial reads
+    ends = _cut_run(B, V, z)
+    w, e = ends.get((x + 5, z)), ends.get((x + 7, z))
+    if not (w and e and w.get("registryLive") is True and e.get("registryLive") is False):
+        for r in ("SC_floor_end_live_shocks", "SC_floor_end_dead_spares", "SC_floor_end_cord_behind_spares", "SC_floor_end_bites_aerial_master_off"):
+            V.row(rows, r, "UNMEASURED", "SITE", {"west": w, "east": e, "why": "the cut did not leave a live west end and a dead east end"})
+    else:
+        t = _trial(B, (x + 5, z))
+        V.row(rows, "SC_floor_end_live_shocks", *_verdict([t], True), {"trial": t})
+        t = _trial(B, (x + 7, z))
+        V.row(rows, "SC_floor_end_dead_spares", *_verdict([t], False), {"trial": t})
+        t = _trial(B, (x + 3, z))
+        V.row(rows, "SC_floor_end_cord_behind_spares", *_verdict([t], False), {"trial": t, "cell": "two back from the live end"})
+        B.ap("set:enabled=False")
+        B.ticks(8)
+        t = _trial(B, (x + 5, z))
+        B.ap("set:enabled=True")
+        V.row(rows, "SC_floor_end_bites_aerial_master_off", *_verdict([t], True), {"trial": t})
+    # a run the player stopped laying: its loose end is live and bites the same way
+    ends = _cut_run(B, V, z + 8, cut=False)
+    loose = ends.get((x + 8, z + 8))
+    if not (loose and loose.get("registryLive") is True):
+        V.row(rows, "SC_floor_end_unfinished_run_bites", "UNMEASURED", "SITE", {"end": loose})
+        V.row(rows, "SC_floor_end_every_end_over_spark_budget", "UNMEASURED", "SITE", {"end": loose})
+    else:
+        t = _trial(B, (x + 8, z + 8))
+        V.row(rows, "SC_floor_end_unfinished_run_bites", *_verdict([t], True), {"trial": t})
+        # two live ends, the spark budget at 1: both still bite (the shock reads every end, not the spark set)
+        B.probe("set:maxSparkingEnds=1")
+        B.ticks(8)
+        ts = [_trial(B, (x + 5, z)), _trial(B, (x + 8, z + 8))]
+        B.probe("set:maxSparkingEnds=24")
+        V.row(rows, "SC_floor_end_every_end_over_spark_budget", *_verdict(ts, True), {"trials": ts})
+    # the fixer: a pawn whose job delivers to / builds the conduit blueprint on the destroyed cell, and one building elsewhere
+    V.row(rows, "SC_floor_end_fixer_spared_other_builder_shocked", "UNMEASURED", "HARNESS",
+          {"why": "needs a PowerConduit blueprint on the cut cell and a colonist ordered onto it (jawa/ordered_job FinishFrame or "
+                  "HaulToContainer with targetAId); the blueprint-placing call is not identified offline. Stage 6 driver: place it, "
+                  "order one colonist to build it and walk him over the live end, another to build a blueprint 6 cells off and route "
+                  "him over the same end. Offline the rule is decided by ShockRuleChecks (TargetJoinsEnd)."})
+    B.ap("set:fallenWireKnockback=2")
+
+
+def shock_reach(B, V, rows):
+    """sc_shock_reach (leaf shock_reach_setting): the default is All; per value, the floor end bites only under All, a live fallen
+    wire under All and Only downed lines, nothing under None; no restart between values. The FlowWorks deck cord half runs on
+    the gimmesomeslack_flowworks tier (FlowWorks' lines_proof collapse row, under each value)."""
+    x, z = SC0
+    got = B.call("jawa/mod_settings_field", typeName="RimMandrake.GimmeSomeSlack.Aerial.AerialSettings", action="get", field="shockReach") or {}
+    V.row(rows, "SC_shock_reach_default_all", "PASS" if str(got.get("value")) == "All" else "FAIL" if got.get("value") else "UNMEASURED",
+          "MOD" if got.get("value") else "HARNESS", {"read": got, "note": "read before any poke; a fresh settings file is a SITE fact"})
+    _site(B, V)
+    B.ap("set:fallenWireKnockback=0")
+    ends = _cut_run(B, V, z)
+    _, _, live, tip = _span(B, V, (x + 2, z + 14), (x + 16, z + 14), (x + 2, z + 20))
+    if not ((ends.get((x + 5, z)) or {}).get("registryLive") is True and live and tip):
+        V.row(rows, "SC_shock_reach_three_values", "UNMEASURED", "SITE", {"floorEnd": ends.get((x + 5, z)), "wireLive": live, "tip": tip})
+    else:
+        want = {"All": (True, True), "OnlyDownedLines": (False, True), "None": (False, False)}
+        seen, ran = {}, True
+        for v, (floor, wire) in want.items():
+            B.ap("set:shockReach=%s" % v)
+            B.ticks(8)
+            tf, tw = _trial(B, (x + 5, z)), _trial(B, tip)
+            ran = ran and "error" not in tf and "error" not in tw
+            seen[v] = {"floorEnd": tf.get("shocked"), "fallenWire": tw.get("shocked")}
+        ok = all(seen[v] == {"floorEnd": f, "fallenWire": w} for v, (f, w) in want.items())
+        V.row(rows, "SC_shock_reach_three_values", ("PASS" if ok else "FAIL") if ran else "UNMEASURED", "MOD" if ran else "HARNESS",
+              {"seen": seen, "want": {v: {"floorEnd": f, "fallenWire": w} for v, (f, w) in want.items()}})
+    B.ap("set:shockReach=All")
+    B.ap("set:fallenWireKnockback=2")
+    V.row(rows, "SC_shock_reach_deck_cord_per_value", "UNMEASURED", "SITE",
+          {"why": "the FlowWorks deck cord needs FlowWorks loaded: run on tier gimmesomeslack_flowworks with FlowWorks lines_proof's "
+                  "collapse row under each shockReach value (bites under All and OnlyDownedLines, not under None)"})
+
+
 def run(B, V, rows):
     slack_and_shapes(B, V, rows)
     doorway(B, V, rows)
@@ -334,6 +452,8 @@ def run(B, V, rows):
     joints(B, V, rows)
     restring(B, V, rows)
     dead_wire(B, V, rows)
+    floor_end_shock(B, V, rows)
+    shock_reach(B, V, rows)
     B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % SITE, categories="All")
     time.sleep(0.2)
 

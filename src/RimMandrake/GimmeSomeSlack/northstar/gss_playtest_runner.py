@@ -93,6 +93,21 @@ def run_once(s, calls, a, recipe, resume=None):
     return recs
 
 
+def scene_walk(B=None, V=None, rows=None):
+    """scenes.json sc_walk (leaf walk_scavenger_base): the playtest walk is a Stage 8 look by the owner, staged by this runner's recipe.
+    Its machine half is the save/load and census rows of the one dense proof; with `rows` it appends SCENE_sc_walk over those
+    (validation.scene_verdict), without it it says how to stage the walk. UNRUN until Stage 6/8:
+        python.exe src\\RimMandrake\\GimmeSomeSlack\\northstar\\gss_playtest_runner.py   (the walk's own recipe)"""
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    import validation as Val
+    if rows is None or V is None:
+        return {"stage": "8", "how": "run this runner's recipe for the owner's walk; the scene's rows come from proof_all.py --live",
+                "rows": Val.scene_rows_for("sc_walk")}
+    status, detail = Val.scene_verdict("sc_walk", rows)
+    V.row(rows, "SCENE_sc_walk", status, "MOD" if status in ("PASS", "FAIL") else "HARNESS", detail)
+    return status
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--recipe", default="quick")

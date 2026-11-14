@@ -2240,10 +2240,185 @@ def proof_all_only_rows(t):
     _report_rows(t, rows, declare=PROOF_ALL_SHOW_IDS)
 
 
+# ---------------------------------------------------------------- the acceptance scenes (design/concepts/GimmeSomeSlack/scenes.json)
+# GimmeSomeSlack 0.1.0 Maturation Stage 3 (2026-11-14): each scenes.json entry point is defined here. A scene is decided by the
+# rows that are evidence for its requirement leaves (northstar/proof_leaves.ROW_LEAVES), measured by ONE dense live proof
+# (northstar/proof_all.py --live, Stage 6) rather than by a load of its own: scene_<x>(B, V, rows) stages nothing that run
+# has not staged, reads `rows` and appends one SCENE_<id> row. A scene is PASS only when every one of its rows PASSes, FAIL
+# when one FAILs, UNMEASURED when one is missing or unmeasured (a row the run never made is never a pass). The floor-end and
+# shock-reach scenes stage their own rows (northstar/scene_rows.floor_end_shock / shock_reach, in proof_all's scenes block).
+# UNRUN until Stage 6:  python.exe src\RimMandrake\GimmeSomeSlack\northstar\proof_all.py --live --no-shots
+#                       then  python3 src/RimMandrake/GimmeSomeSlack/validation.py --scenes-from <proof result json>
+SCENE_EXTRA_ROWS = {   # scenes with no requirement leaf, or rows the leaf map does not reach
+    "sc_shock_restring": ["SC_splicer_spared_bystander_shocked", "M15e_restring_is_a_colonist_job"],
+    "sc_removal_consequence": ["M9*"],
+}
+
+
+def scene_rows_for(sid, scenes=None, row_leaves=None):
+    """The row ids (a trailing * is a prefix) that decide scene `sid`."""
+    import json as _json
+    sys.path.insert(0, os.path.join(HERE, "northstar"))
+    if row_leaves is None:
+        import proof_leaves
+        row_leaves = proof_leaves.ROW_LEAVES
+    if scenes is None:
+        scenes = _json.load(open(os.path.join(HERE, "..", "..", "..", "design", "concepts", "GimmeSomeSlack", "scenes.json")))["scenes"]
+    sc = next((x for x in scenes if x["id"] == sid), None)
+    if sc is None:
+        raise KeyError("no scene %s in scenes.json" % sid)
+    req = set(sc.get("requirement") or [])
+    out = sorted(r for r, leaves in row_leaves.items() if req & set(leaves or ()))
+    return out + [r for r in SCENE_EXTRA_ROWS.get(sid, []) if r not in out]
+
+
+def scene_verdict(sid, rows, want=None):
+    """-> (status, detail) of scene `sid` over measured `rows` (validation_core row dicts)."""
+    want = scene_rows_for(sid) if want is None else want
+    got = {}
+    for w in want:
+        hits = [r for r in rows if (r["id"].startswith(w[:-1]) if w.endswith("*") else r["id"] == w)]
+        got[w] = sorted({r["status"] for r in hits}) or ["MISSING"]
+    flat = [x for v in got.values() for x in v]
+    if not want:
+        status = "UNMEASURED"
+    elif "FAIL" in flat:
+        status = "FAIL"
+    elif all(x == "PASS" for x in flat):
+        status = "PASS"
+    else:
+        status = "UNMEASURED"
+    return status, {"rows": got}
+
+
+def _scene_row(sid, B, V, rows):
+    status, detail = scene_verdict(sid, rows)
+    V.row(rows, "SCENE_" + sid, status, "MOD" if status in ("PASS", "FAIL") else "HARNESS", detail)
+    return status
+
+def scene_conduit_invisible(B, V, rows):
+    """scenes.json sc_conduit_invisible: its rows of the one dense live proof decide it (scene_verdict)."""
+    return _scene_row("sc_conduit_invisible", B, V, rows)
+
+def scene_cords_slack(B, V, rows):
+    """scenes.json sc_cords_slack: its rows of the one dense live proof decide it (scene_verdict)."""
+    return _scene_row("sc_cords_slack", B, V, rows)
+
+def scene_no_sharp_turn(B, V, rows):
+    """scenes.json sc_no_sharp_turn: its rows of the one dense live proof decide it (scene_verdict)."""
+    return _scene_row("sc_no_sharp_turn", B, V, rows)
+
+def scene_walls(B, V, rows):
+    """scenes.json sc_walls: its rows of the one dense live proof decide it (scene_verdict)."""
+    return _scene_row("sc_walls", B, V, rows)
+
+def scene_junction_strips(B, V, rows):
+    """scenes.json sc_junction_strips: its rows of the one dense live proof decide it (scene_verdict)."""
+    return _scene_row("sc_junction_strips", B, V, rows)
+
+def scene_dense_tangle(B, V, rows):
+    """scenes.json sc_dense_tangle: its rows of the one dense live proof decide it (scene_verdict)."""
+    return _scene_row("sc_dense_tangle", B, V, rows)
+
+def scene_no_repeat(B, V, rows):
+    """scenes.json sc_no_repeat: its rows of the one dense live proof decide it (scene_verdict)."""
+    return _scene_row("sc_no_repeat", B, V, rows)
+
+def scene_true_to_grid(B, V, rows):
+    """scenes.json sc_true_to_grid: its rows of the one dense live proof decide it (scene_verdict)."""
+    return _scene_row("sc_true_to_grid", B, V, rows)
+
+def scene_cut_ends(B, V, rows):
+    """scenes.json sc_cut_ends: its rows of the one dense live proof decide it (scene_verdict)."""
+    return _scene_row("sc_cut_ends", B, V, rows)
+
+def scene_rewire_cost(B, V, rows):
+    """scenes.json sc_rewire_cost: its rows of the one dense live proof decide it (scene_verdict)."""
+    return _scene_row("sc_rewire_cost", B, V, rows)
+
+def scene_spans(B, V, rows):
+    """scenes.json sc_spans: its rows of the one dense live proof decide it (scene_verdict)."""
+    return _scene_row("sc_spans", B, V, rows)
+
+def scene_fallen_span(B, V, rows):
+    """scenes.json sc_fallen_span: its rows of the one dense live proof decide it (scene_verdict)."""
+    return _scene_row("sc_fallen_span", B, V, rows)
+
+def scene_shock(B, V, rows):
+    """scenes.json sc_shock: its rows of the one dense live proof decide it (scene_verdict)."""
+    return _scene_row("sc_shock", B, V, rows)
+
+def scene_floor_end_shock(B, V, rows):
+    """scenes.json sc_floor_end_shock: its rows of the one dense live proof decide it (scene_verdict)."""
+    return _scene_row("sc_floor_end_shock", B, V, rows)
+
+def scene_shock_reach(B, V, rows):
+    """scenes.json sc_shock_reach: its rows of the one dense live proof decide it (scene_verdict)."""
+    return _scene_row("sc_shock_reach", B, V, rows)
+
+def scene_restring(B, V, rows):
+    """scenes.json sc_restring: its rows of the one dense live proof decide it (scene_verdict)."""
+    return _scene_row("sc_restring", B, V, rows)
+
+def scene_tap_theft(B, V, rows):
+    """scenes.json sc_tap_theft: its rows of the one dense live proof decide it (scene_verdict)."""
+    return _scene_row("sc_tap_theft", B, V, rows)
+
+def scene_four_looks(B, V, rows):
+    """scenes.json sc_four_looks: its rows of the one dense live proof decide it (scene_verdict)."""
+    return _scene_row("sc_four_looks", B, V, rows)
+
+def scene_settings(B, V, rows):
+    """scenes.json sc_settings: its rows of the one dense live proof decide it (scene_verdict)."""
+    return _scene_row("sc_settings", B, V, rows)
+
+def scene_gravship(B, V, rows):
+    """scenes.json sc_gravship: its rows of the one dense live proof decide it (scene_verdict)."""
+    return _scene_row("sc_gravship", B, V, rows)
+
+def scene_shock_restring(B, V, rows):
+    """scenes.json sc_shock_restring: its rows of the one dense live proof decide it (scene_verdict)."""
+    return _scene_row("sc_shock_restring", B, V, rows)
+
+def scene_owner_change(B, V, rows):
+    """scenes.json sc_owner_change: its rows of the one dense live proof decide it (scene_verdict)."""
+    return _scene_row("sc_owner_change", B, V, rows)
+
+def scene_fuel_ignition(B, V, rows):
+    """scenes.json sc_fuel_ignition: its rows of the one dense live proof decide it (scene_verdict)."""
+    return _scene_row("sc_fuel_ignition", B, V, rows)
+
+def scene_statics_new_game(B, V, rows):
+    """scenes.json sc_statics_new_game: its rows of the one dense live proof decide it (scene_verdict)."""
+    return _scene_row("sc_statics_new_game", B, V, rows)
+
+def scene_removal_consequence(B, V, rows):
+    """scenes.json sc_removal_consequence: its rows of the one dense live proof decide it (scene_verdict)."""
+    return _scene_row("sc_removal_consequence", B, V, rows)
+
+
+
+def scenes_from(path):
+    """Every scene's verdict over a saved proof result (its "rows"): one line each, the scene rows appended to nothing."""
+    import json as _json
+    res = _json.load(open(path))
+    rows = res.get("rows") or []
+    scn = _json.load(open(os.path.join(HERE, "..", "..", "..", "design", "concepts", "GimmeSomeSlack", "scenes.json")))["scenes"]
+    bad = 0
+    for sc in scn:
+        if not (sc.get("entry_point") or "").startswith("src/RimMandrake/GimmeSomeSlack/validation.py::"):
+            continue
+        status, detail = scene_verdict(sc["id"], rows)
+        bad += status != "PASS"
+        print("%-24s %-10s %s" % (sc["id"], status, ", ".join("%s=%s" % (k, "/".join(v)) for k, v in detail["rows"].items())))
+    return 1 if bad else 0
+
+
 def main(argv=None):
     import argparse
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--live", action="store_true")
+    ap.add_argument("--scenes-from", default=None, metavar="JSON", help="print every scenes.json scene's verdict over a proof result's rows")
     ap.add_argument("--fresh-map", action="store_true")
     ap.add_argument("--out", default=None)
     ap.add_argument("--save-load", default=None, metavar="NAME", help="census, save as NAME (new), load, census, compare")
@@ -2257,6 +2432,8 @@ def main(argv=None):
     ap.add_argument("--rows-json", default=None, metavar="-",
                     help="offline tier, then print its rows as one 'ROWS_JSON <json>' line (the suite's WSL hop)")
     a = ap.parse_args(argv)
+    if a.scenes_from:
+        return scenes_from(a.scenes_from)
     if a.rows_json:
         rows = run_offline()
         print("ROWS_JSON " + json.dumps(rows, default=str))
