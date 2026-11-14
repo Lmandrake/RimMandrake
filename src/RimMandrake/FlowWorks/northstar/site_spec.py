@@ -62,7 +62,7 @@ SETTINGS = {
         "minLimitlessBodyCells": 50.0, "refillRateMultiplier": 1.0,
         "rainFillPerPulse": 0.1, "rainPocketApproxEnabled": True,   # RAIN_POCKET_APPROX
         "recedeKeepsLastCell": True, "recedeSparesOutflow": True,   # 2026-10-09 recession passes
-        "legacyFillFallbackEnabled": True, "legacyFloodViaEngineEnabled": True, "pumpFedSpreadEnabled": True,
+        "legacyFillFallbackEnabled": True, "legacyFloodViaEngineEnabled": True,
         "networkSeamsMoveEnabled": True, "maxNetworkCells": 6000.0,   # FLOW_ORDER_EXTERNAL_INPUT_1 part 2
         "superdeepCaptureEnabled": True, "superdeepCapturesOwnFaction": False,
         "ladderRequiredToExitEnabled": True, "ladderPrisonDoorEnabled": True,
@@ -91,11 +91,7 @@ SETTINGS = {
         "slimeSlipEnabled": True, "slimeSlipChanceMultiplier": 1.0, "slimeSlipStunSeconds": 2.0,
         "slimeClimbOutSlipFactor": 2.0,    # SLIME_CROSSING_BUILD_SLIPPERY_SLOPE (PROVISIONAL)
         "viscosityEnabled": True,          # FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 viscosity (PROVISIONAL stride)
-        "waterFrontCreepEnabled": True,    # CANAL_FRONT_FIX_WRONG_END_WETS_FIRST: water front advances one cell per pulse from the mouth
-        "levelBySurfaceEnabled": True,     # WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND: water levels by surface, not dug depth
-        "levelSetEnabled": True,           # WATER_LEVELSET_SOLVE: each wet region solved to its flat level (one patch, never 0,1,0,1)
         "waterBodyTypeFlipFixEnabled": True,   # FLOWWORKS_WATERBODY_DIAGNOSE_SOIL_THROW: vanilla water-body count fix on type change
-        "thickCreepEnabled": True,         # THICK_LIQUID_CREEP_1: a thick front moves one cell per moving pulse
         "excavationLoadRepairEnabled": True,   # EXCAVATION_LOAD_SANITY_REPAIR_1: dig grids repaired and liquid list compacted on load
         "bottleLoopEnabled": True, "bottleDirtyStageEnabled": True,
         "tankLoopEnabled": True, "tankCapacityMultiplier": 1.0,

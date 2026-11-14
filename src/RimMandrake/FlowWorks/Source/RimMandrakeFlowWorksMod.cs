@@ -181,8 +181,6 @@ namespace RimMandrake.FlowWorks
         public static bool legacyFillFallbackEnabled = true;
         // FLOOD_DRIVER_OWNERSHIP_CONTRACT_1: a legacy flood release on an excavated cell fills it through the engine.
         public static bool legacyFloodViaEngineEnabled = true;
-        // FLOW_ORDER_EXTERNAL_INPUT_1: a pump/drill-fed channel with no natural source spreads away from its input.
-        public static bool pumpFedSpreadEnabled = true;
         // FLOW_ORDER_EXTERNAL_INPUT_1 part 2: a network over the partition cap moves its seams each pulse.
         public static bool networkSeamsMoveEnabled = true;
         // The partition cap. 6000 is the shipped value; raising the default waits on one in-game timing.
@@ -381,20 +379,9 @@ namespace RimMandrake.FlowWorks
         // FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 VISCOSITY (PROVISIONAL stride = ticksPerTile / 60): a viscous fluid's level
         // moves only every Nth pulse (tar 6, slime 8, oil 3), so its fill front lags water's.
         public static bool viscosityEnabled = true;
-        // THICK_LIQUID_CREEP_1: a thick liquid's fill front moves one cell per moving pulse (a cell that just received it cannot
-        // pass it on in the same pulse). Needs viscosityEnabled. PROVISIONAL: one cell per moving pulse.
-        public static bool thickCreepEnabled = true;
-        // CANAL_FRONT_FIX_WRONG_END_WETS_FIRST (owner 2026-10-12): water's fill front also advances one cell per pulse from the
-        // mouth, like a flood front, instead of racing the whole run in one pulse. Off = the old instant race.
-        public static bool waterFrontCreepEnabled = true;
-        // WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND (owner 2026-10-16, by card "Level by water surface"): water moves from a
-        // higher water SURFACE to a lower one whatever each square's dug depth, so a run levels out and drains to empty.
-        // Off = the old rule (only into a deeper bed, or out of a brim-full square), which left deep puddles behind.
-        public static bool levelBySurfaceEnabled = true;
-        // WATER_LEVELSET_SOLVE (owner 2026-10-16, review station 1: "levelset down to a smooth 0 or 1 across a too-wide
-        // field like this, not 0, deep, 0"). Needs levelBySurfaceEnabled. On: each wet region is solved to its flat level
-        // (RM_FlowKernel.LevelSetWetRegions). Off: the one-unit-at-a-time levelling, which stripes wide fields 0,1,0,1.
-        public static bool levelSetEnabled = true;
+        // thickCreepEnabled, waterFrontCreepEnabled, levelBySurfaceEnabled, levelSetEnabled and pumpFedSpreadEnabled are gone
+        // (RIMMANDRAKE_DECIDE_FIVE_WATER_SWITCHES_THAT_FEED_NOTHING, owner card 2026-11-14 "Remove them now"): they fed only the
+        // whole-notch kernel; the exact-level solve always levels by surface to one flat body, fronts and pumps included.
         // levelExactEnabled is gone (RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES, owner card 2026-11-13 "Delete it"):
         // water is always exact decilitres, one surface per connected body (RM_FlowKernel.ResolveExact, RM_LevelSolve).
 
@@ -616,7 +603,6 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref excavationLoadRepairEnabled, "excavationLoadRepairEnabled", true);
             Scribe_Values.Look(ref legacyFillFallbackEnabled, "legacyFillFallbackEnabled", true);
             Scribe_Values.Look(ref legacyFloodViaEngineEnabled, "legacyFloodViaEngineEnabled", true);
-            Scribe_Values.Look(ref pumpFedSpreadEnabled, "pumpFedSpreadEnabled", true);
             Scribe_Values.Look(ref networkSeamsMoveEnabled, "networkSeamsMoveEnabled", true);
             Scribe_Values.Look(ref maxNetworkCells, "maxNetworkCells", 6000f);
             Scribe_Values.Look(ref minLimitlessBodyCells, "minLimitlessBodyCells", 50f);
@@ -719,10 +705,6 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref pitScorchFadeDays, "pitScorchFadeDays", 20f);
             Scribe_Values.Look(ref flowDoorsSealedFromPitEnabled, "flowDoorsSealedFromPitEnabled", true);
             Scribe_Values.Look(ref viscosityEnabled, "viscosityEnabled", true);
-            Scribe_Values.Look(ref thickCreepEnabled, "thickCreepEnabled", true);
-            Scribe_Values.Look(ref waterFrontCreepEnabled, "waterFrontCreepEnabled", true);
-            Scribe_Values.Look(ref levelBySurfaceEnabled, "levelBySurfaceEnabled", true);
-            Scribe_Values.Look(ref levelSetEnabled, "levelSetEnabled", true);
             // ── LIQUID_BOTTLE_LOOP_1 (see the block above; kept contiguous) ─
             Scribe_Values.Look(ref bottleLoopEnabled, "bottleLoopEnabled", true);
             Scribe_Values.Look(ref bottleDirtyStageEnabled, "bottleDirtyStageEnabled", true);
@@ -799,7 +781,6 @@ namespace RimMandrake.FlowWorks
             .Declare("deepBedsEnabled", "deepBedMaxDepth", "lakeDepthScale", "lakeFloorRoughness", "lakeShoreShelfMetres", "lakeWayOutMetres")
             .Declare("pondDepthEnabled", "pondMudDays", "pondStageWritesPerPulse")
             .Declare("rainFillsExcavationsEnabled", "rainFillPerPulse", "rainPocketApproxEnabled")
-            .Declare("viscosityEnabled", "thickCreepEnabled")
             .Declare("liquidHeatPushEnabled", "liquidHeatStrength")
             .Declare("canalFireEnabled", "burnDaysPerNotch", "fireFrontSpeedMultiplier", "sourceFireReach",
                      "explosionIgnitesLiquidEnabled", "foamSmothersLiquidFireEnabled", "rainDousesLiquidFireEnabled",
@@ -1153,7 +1134,7 @@ namespace RimMandrake.FlowWorks
 
             }
 
-            if (Section(list, "Water engine: flow and levelling", new[] { "depthEngineEnabled", "pulseIntervalTicks", "flowPerPulse", "maxNetworkCells", "networkSeamsMoveEnabled", "viscosityEnabled", "thickCreepEnabled", "waterFrontCreepEnabled", "levelBySurfaceEnabled", "levelSetEnabled", "disabledFluids" }))
+            if (Section(list, "Water engine: flow and levelling", new[] { "depthEngineEnabled", "pulseIntervalTicks", "flowPerPulse", "maxNetworkCells", "networkSeamsMoveEnabled", "viscosityEnabled", "disabledFluids" }))
             {
             list.CheckboxLabeled("Depth engine", ref depthEngineEnabled,
                 "The depth/fill engine: liquid pours into the deepest excavated squares first "
@@ -1221,30 +1202,6 @@ namespace RimMandrake.FlowWorks
                 "Tar, slime, oil and blood creep along a channel: each level waits several pulses before it moves "
               + "on (blood 2, oil 3, tar 6, slime 8 pulses to water's 1), so a tar channel fills far behind a water "
               + "one dug beside it. Off: every liquid flows at water's pace.");
-            using (Dependent(list, "thickCreepEnabled"))
-            {
-                list.CheckboxLabeled("Thick liquids creep one square at a time", ref thickCreepEnabled,
-                    "Needs 'Thick liquids flow slower'. On: tar, slime, oil and blood advance one square each time they move, "
-                  + "so a long channel fills at its stated speed instead of all at once on one pulse. Water is not "
-                  + "affected. Off: a thick liquid that reaches a square can pass on to the next in the same pulse.");
-            }
-            list.CheckboxLabeled("Water fills a channel from the mouth outward", ref waterFrontCreepEnabled,
-                "On: water advances one square each pulse, so a dug channel wets from the end nearest the water and the wet "
-              + "front visibly travels along it like a flood. Off: a level can be passed the whole run in one pulse, "
-              + "which fills a dead-end channel from its far end first.");
-            list.CheckboxLabeled("Water levels out by its surface", ref levelBySurfaceEnabled,
-                "On: each square holds levels of water (half a metre, 1,000 litres each) and they spread toward the lowest water surface, whatever depth "
-              + "each square was dug to, so a channel settles to within one level everywhere and a draining channel "
-              + "empties instead of leaving deep puddles. Off: water only runs into a deeper square or out of a "
-              + "brim-full one, so partly filled squares of equal depth never even out.");
-            if (levelBySurfaceEnabled)
-            {
-                list.CheckboxLabeled("  Water settles to one flat level", ref levelSetEnabled,
-                    "On: each connected body of water is laid out at the flat level it would settle to, so a wide field ends "
-                  + "as an even sheet, or, with too little water to cover it, one patch of the shallowest depth (one level) "
-                  + "and the rest dry. Water never climbs over a dry sill to reach another hole. Off: water moves one level "
-                  + "at a time between neighbours, which can leave a wide field striped wet, dry, wet.");
-            }
 
             }
 
@@ -1266,7 +1223,7 @@ namespace RimMandrake.FlowWorks
 
             }
 
-            if (Section(list, "Ponds, lakes, rain and drainage", new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "stickyLimitlessEnabled", "wetnessCutoffEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "recedeSparesOutflow", "refillEnabled", "pondReturnLegEnabled", "refillWaitsForOccupants", "dugBedLeavesPondEnabled", "pondBedHollowEnabled", "deepBedsEnabled", "deepBedMaxDepth", "lakeDepthScale", "lakeFloorRoughness", "lakeShoreShelfMetres", "lakeWayOutMetres", "drainableLakeMaxCells", "pondDepthEnabled", "pondMudDays", "pondStageWritesPerPulse", "pondHeadRuleEnabled", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "rainPocketApproxEnabled", "excavationLoadRepairEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled", "pumpFedSpreadEnabled", "edgeSinksEnabled" }))
+            if (Section(list, "Ponds, lakes, rain and drainage", new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "stickyLimitlessEnabled", "wetnessCutoffEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "recedeSparesOutflow", "refillEnabled", "pondReturnLegEnabled", "refillWaitsForOccupants", "dugBedLeavesPondEnabled", "pondBedHollowEnabled", "deepBedsEnabled", "deepBedMaxDepth", "lakeDepthScale", "lakeFloorRoughness", "lakeShoreShelfMetres", "lakeWayOutMetres", "drainableLakeMaxCells", "pondDepthEnabled", "pondMudDays", "pondStageWritesPerPulse", "pondHeadRuleEnabled", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "rainPocketApproxEnabled", "excavationLoadRepairEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled", "edgeSinksEnabled" }))
             {
             list.Label("How much liquid a natural body actually has, what happens when a pit "
                      + "drinks it dry, and where liquid goes when you fill a channel back in. "
@@ -1442,11 +1399,6 @@ namespace RimMandrake.FlowWorks
               + "channel owns that liquid and it flows on with the rest. Off: a spill never enters a dug "
               + "channel. Spills only ever spread through dug channels (and, rarely, across thin ice over a "
               + "pond), so with this off a spill places almost nothing at all.");
-
-            list.CheckboxLabeled("Pumped liquid spreads along the channel", ref pumpFedSpreadEnabled,
-                "Liquid a pump or drill puts into a channel spreads outward from where it enters, even when no "
-              + "pond or river feeds that channel. Off: in a flat channel with no natural source, pumped liquid "
-              + "piles up beside the pump.");
 
             list.CheckboxLabeled("Map-edge sinks drain", ref edgeSinksEnabled,
                 "A channel dug into the strip along the map edge is a drain: liquid reaching it "

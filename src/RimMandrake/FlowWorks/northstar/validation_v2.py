@@ -146,7 +146,7 @@ BOOL_DEFAULTS = {
                pitExposureEnabled=True, pitDepthDrawOffsetEnabled=True,
                canalFireEnabled=True,      # FLOWWORKS_BUILD_PROGRAM_1 Phase 6
                pitDrowningEnabled=True, poisonFillEnabled=True,      # PIT_FILL_EFFECTS_1
-               viscosityEnabled=True, thickCreepEnabled=True, waterFrontCreepEnabled=True, levelBySurfaceEnabled=True, levelSetEnabled=True, recedeKeepsLastCell=True, recedeSparesOutflow=True),     # FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 viscosity (2026-10-05)    # rehoused from PitsSettings 2026-10-02
+               viscosityEnabled=True, recedeKeepsLastCell=True, recedeSparesOutflow=True),     # FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 viscosity (2026-10-05)    # rehoused from PitsSettings 2026-10-02
     S_RIVER: dict(riverSteamEnabled=True),
 }
 FLOAT_DEFAULTS = {"pulseIntervalTicks": 250.0, "flowPerPulse": 1.0, "rainFillPerPulse": 0.1,
@@ -1789,7 +1789,7 @@ def phase_A(L, args):
               "A %s / B %s" % (vec.get("E2_east_A", [])[:4], vec.get("E2_east_B", [])[:4]))
         full = {k: next((p + 1 for p, v in enumerate(vec.get(k, [])) if v == [1] * 4), None)
                 for k in ("E2_east_A", "E2_north", "E2_south", "E2_west")}
-        # shipped waterFrontCreepEnabled: the front advances one cell per pulse from the mouth (no brigade), so a
+        # the front advances one cell per pulse from the mouth (no brigade), so a
         # 4-cell D=1 channel is first full at n = 4 now the source tops the mouth up in the pulse it passes its unit on
         # (CANAL_MOUTH_DIAGNOSE_BLINKS_DRY_HALF_TIME; the live vectors of 2026-10-12e read 2n-1 = 7, the blink, before it)
         # Exact-level water (WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES, owner 2026-10-17): a channel off a LIMITLESS body fills

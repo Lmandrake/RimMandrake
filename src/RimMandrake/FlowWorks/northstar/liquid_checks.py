@@ -859,14 +859,9 @@ def main(argv=None):
             B.hp("pawn:%d=draft" % int(re.search(r"(\d+)$", str(cid)).group(1)))
 
     def blk_L7():
-        """Review map stations 1-2 (flow_drains, flow_spreads), read in place: the setting is on, then after --l7-pulses
-        flow pulses each station's dug squares hold no 1,0,1 stripe and no 2+ step (levelset_verdict)."""
-        on = sget(S_FW, "levelSetEnabled")
-        if str(on).strip().lower() != "true":
-            row("L7_levelset_setting_on", "UNMEASURED" if on is None else "FAIL", "HARNESS" if on is None else "MOD",
-                {"levelSetEnabled": on, "why": "field missing: the deployed DLL predates WATER_LEVELSET_SOLVE" if on is None else "switched off"})
-            return
-        row("L7_levelset_setting_on", "PASS", "MOD", {"levelSetEnabled": on})
+        """Review map stations 1-2 (flow_drains, flow_spreads), read in place: after --l7-pulses flow pulses each
+        station's dug squares hold no 1,0,1 stripe and no 2+ step (levelset_verdict). The flat-level solve is the only
+        engine (levelSetEnabled was removed, RIMMANDRAKE_DECIDE_FIVE_WATER_SWITCHES_THAT_FEED_NOTHING), so no setting row."""
         sys.path.insert(0, os.path.dirname(HERE))
         import review_map as RMAP
         st = {x["id"]: x for x in RMAP.station_list()}
