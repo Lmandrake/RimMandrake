@@ -240,6 +240,7 @@
     <Compile Include="Superdeep\RM_GeyserPit.cs" />
     <Compile Include="Superdeep\RM_PitFloorGroundMath.cs" />
     <Compile Include="Superdeep\RM_PitFloorGround.cs" />
+    <Compile Include="Superdeep\RM_PitEdgePlacement.cs" />
     <Compile Include="Superdeep\RM_GeyserPitSettings.cs" />
     <Compile Include="Superdeep\JobDriver_RM_SoakInGeyserPool.cs" />
     <Compile Include="Superdeep\RM_WallClimb.cs" />

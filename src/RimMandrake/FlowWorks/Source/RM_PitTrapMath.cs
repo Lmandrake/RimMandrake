@@ -574,6 +574,43 @@ namespace RimMandrake.FlowWorks
 			return walkNormal && !wet ? 0 : Math.Max(0, terrainCost);
 		}
 
+		/// <summary>RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE (owner look 2026-11-14, his 3: "It should not let you install furniture
+		/// that overlaps with a pit edge."): null when every square of a footprint stands at one depth (notches; 0 = the ground,
+		/// an unreadable square counts as ground), else the plain reason the placement is refused.</summary>
+		public static string StraddleRefusal(IList<int> standingNotches)
+		{
+			if (standingNotches == null || standingNotches.Count < 2)
+			{
+				return null;
+			}
+			int lo = int.MaxValue, hi = int.MinValue;
+			foreach (int d in standingNotches)
+			{
+				int v = Math.Max(0, d);
+				lo = Math.Min(lo, v);
+				hi = Math.Max(hi, v);
+			}
+			if (lo == hi)
+			{
+				return null;
+			}
+			var inv = System.Globalization.CultureInfo.InvariantCulture;
+			string deep = (hi * 0.5).ToString("0.0", inv) + " m";
+			if (lo == 0)
+			{
+				return "Cannot hang over a pit edge: part would stand on the ground, part " + deep + " down in the pit.";
+			}
+			return "Cannot straddle two pit floors (" + (lo * 0.5).ToString("0.0", inv) + " m and " + deep
+				+ " deep): every square must be on one floor.";
+		}
+
+		/// <summary>Whom the straddle rule holds: a building of more than one square, never FlowWorks' own pit work (ladders, ramps,
+		/// bridges, covers, sluices, pumps), which is made to meet an edge.</summary>
+		public static bool StraddleRuleApplies(bool isBuilding, int footprintCells, bool ownPitWork)
+		{
+			return isBuilding && footprintCells > 1 && !ownPitWork;
+		}
+
 		/// <summary>A walked step that stays on one pit floor (both ends dug, the same climb depth): no wall is climbed.</summary>
 		public static bool WalkedAlongFloor(int fromClimbDepth, int toClimbDepth)
 		{

@@ -77,6 +77,34 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "the hot tub is named on the heated cells, not only the vent");
             });
 
+            // his 3: "It should not let you install furniture that overlaps with a pit edge. Right now I can install a butcher
+            // table hanging over a pit in any configuration."
+            Case("PitLook1114_furniture_never_straddles_a_pit_edge", () =>
+            {
+                Assert(RM_PitTrapMath.StraddleRefusal(new[] { 8, 8 }) == null, "a table on one 4 m floor was refused");
+                Assert(RM_PitTrapMath.StraddleRefusal(new[] { 0, 0, 0 }) == null, "a table on the ground was refused");
+                Assert(RM_PitTrapMath.StraddleRefusal(new[] { 8 }) == null && RM_PitTrapMath.StraddleRefusal(null) == null, "one square refused");
+                string edge = RM_PitTrapMath.StraddleRefusal(new[] { 0, 8 });
+                Assert(edge == "Cannot hang over a pit edge: part would stand on the ground, part 4.0 m down in the pit.", "edge: " + edge);
+                string steps = RM_PitTrapMath.StraddleRefusal(new[] { 4, 8, 8 });
+                Assert(steps == "Cannot straddle two pit floors (2.0 m and 4.0 m deep): every square must be on one floor.", "steps: " + steps);
+                Assert(RM_PitTrapMath.StraddleRefusal(new[] { -1, 0 }) == null, "an unreadable square counts as a step");
+                // which things the rule is for: a building of more than one square that is not FlowWorks' own pit work
+                Assert(RM_PitTrapMath.StraddleRuleApplies(true, 2, false), "a two-square bench is exempt");
+                Assert(!RM_PitTrapMath.StraddleRuleApplies(true, 1, false), "a one-square thing cannot straddle");
+                Assert(!RM_PitTrapMath.StraddleRuleApplies(true, 3, true), "a ladder, ramp, bridge or sluice may not span an edge");
+                Assert(!RM_PitTrapMath.StraddleRuleApplies(false, 4, false), "a plant or item is held to the furniture rule");
+                string src = RiverSwitchFlipChecks.Src("Superdeep/RM_PitEdgePlacement.cs");
+                RiverSwitchFlipChecks.Has(src, @"\[HarmonyPatch\(typeof\(GenConstruct\), nameof\(GenConstruct\.CanPlaceBlueprintAt_NewTemp\)\)\]",
+                    "placement and install go through the refusal");
+                RiverSwitchFlipChecks.Has(src, @"RM_PitTrapMath\.StraddleRefusal\(", "the refusal reads the production rule");
+                RiverSwitchFlipChecks.Has(src, @"RM_PitTrapMath\.StraddleRuleApplies\(", "the exemption reads the production rule");
+                RiverSwitchFlipChecks.Has(src, @"RimMandrakeFlowWorksSettings\.pitEdgeStraddleRefusedEnabled", "the rule has its Mod Setting");
+                string mod = RiverSwitchFlipChecks.Src("RimMandrakeFlowWorksMod.cs");
+                RiverSwitchFlipChecks.Has(mod, @"Scribe_Values\.Look\(ref pitEdgeStraddleRefusedEnabled, ""pitEdgeStraddleRefusedEnabled"", true\)", "the setting is saved");
+                RiverSwitchFlipChecks.Has(mod, @"CheckboxLabeled\(""[^""]+"", ref pitEdgeStraddleRefusedEnabled", "the setting has a checkbox");
+            });
+
             Case("PitLook1114_no_fill_n_wording_in_visible_text", () =>
             {
                 string root = Path.GetDirectoryName(RiverSwitchFlipChecks.SrcPath("RM_Volume.cs"));

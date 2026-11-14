@@ -353,6 +353,7 @@ namespace RimMandrake.FlowWorks
         public static float underLiquidFullMetres = RM_UnderLiquid.DefaultFullMetres;    // depth fresh water reaches it at
         public static float underLiquidDarken = RM_UnderLiquid.DefaultDarken;            // how dark a clear liquid's body colour is
         public static float pitThingShadowAlpha = RM_UnderLiquid.DefaultThingShadowAlpha; // a thing's floor shadow in a pit
+        public static bool pitEdgeStraddleRefusedEnabled = true;   // RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE: furniture never hangs over a pit edge (RM_PitEdgePlacement)
         public static bool pitWalkNormalEnabled = true;            // walking along a pit floor is normal; only climbing is slow (item 9)
         // Liquids that may fill a cut (item 4): a FluidDef named here is refused by every fill (pump, drill, debug,
         // review map). Default empty = every liquid on. Labels come from the FluidDefs, so a new liquid appears itself.
@@ -706,6 +707,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref pitThingShadowAlpha, "pitThingShadowAlpha", RM_UnderLiquid.DefaultThingShadowAlpha);
             PushUnderLiquid();
             Scribe_Values.Look(ref pitWalkNormalEnabled, "pitWalkNormalEnabled", true);
+            Scribe_Values.Look(ref pitEdgeStraddleRefusedEnabled, "pitEdgeStraddleRefusedEnabled", true);
             Scribe_Collections.Look(ref disabledFluids, "disabledFluids", LookMode.Value);
             if (Scribe.mode == LoadSaveMode.PostLoadInit && disabledFluids == null)
             {
@@ -1531,7 +1533,7 @@ namespace RimMandrake.FlowWorks
 
             }
 
-            if (Section(list, "Pits and climbing", new[] { "superdeepCaptureEnabled", "superdeepCapturesOwnFaction", "pitStuckAlertEnabled", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "pitRelativeClimbEnabled", "pitClimbAbilityMultiplier", "pitSlowClimbFactor", "pitRampsEnabled", "pitRampMaxSpan", "pitLadderSlowness", "portableLadderEnabled", "portableLadderMaxLevels", "climbingGearEnabled", "climbingGearSlowness", "pitJumpLandsSafe", "pitTeleportLandsSafe", "pitFreeTravelEnabled", "reachSeesWallsAndCliffs", "pitRescueLadderEnabled", "buildInDugWaterEnabled", "pitFloorCarriesGroundEnabled", "pitWalkNormalEnabled" }))
+            if (Section(list, "Pits and climbing", new[] { "superdeepCaptureEnabled", "superdeepCapturesOwnFaction", "pitStuckAlertEnabled", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "pitRelativeClimbEnabled", "pitClimbAbilityMultiplier", "pitSlowClimbFactor", "pitRampsEnabled", "pitRampMaxSpan", "pitLadderSlowness", "portableLadderEnabled", "portableLadderMaxLevels", "climbingGearEnabled", "climbingGearSlowness", "pitJumpLandsSafe", "pitTeleportLandsSafe", "pitFreeTravelEnabled", "reachSeesWallsAndCliffs", "pitRescueLadderEnabled", "buildInDugWaterEnabled", "pitFloorCarriesGroundEnabled", "pitEdgeStraddleRefusedEnabled", "pitWalkNormalEnabled" }))
             {
             list.Label("A pit is any dug pocket nothing can climb out of, nothing more: there is no pit building. "
                      + "What holds a creature is the height of the step it must climb against its own size, never the "
@@ -1644,6 +1646,12 @@ namespace RimMandrake.FlowWorks
                 "On, a dry dug floor bears what the ground it was dug from bore: dug in soil, sand or packed dirt, it takes "
               + "benches, batteries, coolers, shelves and heavy machines like the ground above; dug in soft sand or marsh, "
               + "only light things, as before the dig. Off: a dug floor bears only light things (walls, beds, tables, lamps).");
+
+            list.CheckboxLabeled("Furniture never hangs over a pit edge", ref pitEdgeStraddleRefusedEnabled,
+                "On, a bench, table, shelf or machine of more than one square must stand wholly on the ground or wholly on one "
+              + "pit floor: placing or installing it across a pit's edge, or across two floors of different depth, is refused "
+              + "with the reason. Ladders, ramps, bridges, covers and sluices are made to meet an edge and are not held to it. "
+              + "Off: anything may hang over a pit, as before.");
 
             list.CheckboxLabeled("Walking along a pit floor is normal speed", ref pitWalkNormalEnabled,
                 "Only climbing into or out of a cut is slow (the deeper, the slower; a ladder too); walking around "
