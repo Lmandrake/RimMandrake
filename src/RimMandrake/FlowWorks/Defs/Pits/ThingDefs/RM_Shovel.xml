@@ -3,8 +3,9 @@
      v1."). Design: design/RimMandrake/shovels_v1_2026-10-25.md §1. A plain stuffable TOOL item, not a weapon: no
      equipmentType, no weaponTags, no verbs, so no weapon or inventory mod treats it as gear to equip. Carried in inventory;
      a digger or filler without one fetches the nearest free one (RM_Shovels). Machines dig without (RM_DigLabor).
-     PLACEHOLDER art: vanilla spear texture until SHOVEL_SPRITE_SKETCH_BLADE_DOWN_HANDLE_UP lands
-     (Textures/Things/Item/Equipment/RM_Shovel.png). -->
+     Art (SHOVEL_SPRITE_SKETCH_BLADE_DOWN_HANDLE_UP; owner 2026-11-13: "Shovels look terrible, commission much better
+     art please."): Textures/Things/Item/Equipment/RM_Shovel.png with mask RM_Shovel_m.png. CutoutComplex: the mask's
+     red marks the steel blade and socket, which take the stuff colour; the wooden shaft (mask black) draws as painted. -->
 <Defs>
   <ThingCategoryDef>
     <defName>RM_Tools</defName>
@@ -18,9 +19,9 @@
     <label>shovel</label>
     <description>A long-handled digging shovel. Nobody digs a pit, or fills one back in, with bare hands: a digger without a shovel in their pack fetches a free one first and keeps it. Machines dig without. Raiders who mean to shovel their way across a trench bring their own, or pick up yours.</description>
     <graphicData>
-      <!-- PLACEHOLDER art -->
-      <texPath>Things/Item/Equipment/WeaponMelee/Spear</texPath>
+      <texPath>Things/Item/Equipment/RM_Shovel</texPath>
       <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
     </graphicData>
     <techLevel>Neolithic</techLevel>
     <stackLimit>1</stackLimit>
