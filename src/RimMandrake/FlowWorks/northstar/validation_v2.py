@@ -1551,6 +1551,11 @@ def phase_site(L, args):
         # about flow, not lake floors (their own proofs: lake_floor_stage.py, SelfTest Lake_floor*), so it runs with the
         # floor generator off and its ponds keep the terrain rule (WaterShallow = ShallowBedLevels). Restored at the end.
         L.sset(S_FW, "deepBedsEnabled", False)
+        # HARNESS (live round 4, 2026-11-13): pond refill (RM_LiquidStock.Refill, a few dL a pulse into a pond below capacity)
+        # is not in PulseOracle, and the every-cell compare is exact to the dL since the one water number, so with refill on
+        # six flow rows read red by 2-7 dL a cell (9704 vs 9697); with it off all six PASS. Refill has its own proofs
+        # (deep_lake_proof.py, depth_rebuild_proofs.py); this site is about flow. Restored at the end.
+        L.sset(S_FW, "refillEnabled", False)
         for r in rects:
             c = B.call("jawa/clear_area", rect="%d,%d,%d,%d" % r, dryRun=False)
             if not c.get("success"):
