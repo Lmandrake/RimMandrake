@@ -2,8 +2,8 @@
 
 **Read `infrastructure/agents/CHARTER.md`** — the whole process rulebook — and your
 own window file: `infrastructure/agents/CONDUCTOR.md` (the Conductor, with the owner); the
-autonomous builder is the Relentless Pipeline (`src/RimMandrake/rimflow/relentless.py`), whose places hold
-Relentless-style Builder/Judge workers from MandrakeWorkflows (`relentless/workers/`; owner 2026-11-03). Game cycle:
+Conductor launches builds directly as helpers (Relentless, Artisan and Whittle loops retired by the owner 2026-11-13:
+`design/RimMandrake/retired_loops_2026-11-13.md`). Game cycle:
 `infrastructure/GAME_STATE_WORKFLOW.md`. **Models: the ladder lives in
 `infrastructure/agents/Agent_Policy.md` and nowhere else; never restate it.**
 
@@ -60,9 +60,9 @@ its first script. Process: `design/RimMandrake/debug_process.md`.
 
 Full text and incidents: `design/RimMandrake/biome_rulings.md`.
 
-## 🔴 Relentless builds and accepts the work that needs building, FlowWorks and GSS included; FOUNDRY is retired — owner, by card 2026-11-02
+## 🔴 Relentless and the Artisan and Whittle loops are retired — owner, 2026-11-13; FOUNDRY is retired — owner, by card 2026-11-02
 
-*"What should happen to FOUNDRY?"* → **Retire it.** One builder: Relentless builds, proves (its game_prove lane, `relentless_live_round.py`, is the acceptance sweep for every mod) and closes; the Conductor talks with him and keeps only items that need him live (needs=owner, an L4 look, flyer live tests). Design still to be argued out goes to the Designer (`src/RimMandrake/rimflow/roles/designer.md`); ops alarms to Operations. The daily findings judging and the Friday memory sweep are `rm-findings-judge.timer`. FOUNDRY is not a seat: `rimflow` maps it to the Conductor/Relentless shared key (`RETIRED_SEATS` in `cli.py`), as does the FlowWorks lane (`infrastructure/state/flowworks_lane.json`, field `seat`). Supersedes the 2026-10-28 FOUNDRY-owns-FlowWorks ruling. Narrowed by the owner, 2026-11-06: *"It's a builder/test-builder/judge pipeline, not an everything pipeline...."* Relentless is for work that needs building, a built test and a judge; approved art, deploys, one-off commands and readings are done directly by the Conductor or a helper.
+Retired by the owner 2026-11-13, nothing to resume (`design/RimMandrake/retired_loops_2026-11-13.md`); the successor is the Maturation Pipeline (`design/specs/2026-11-13-maturation-pipeline.md`, still in design); until then the Conductor launches builds directly as helpers (`src/RimMandrake/rimflow/detached_helper.py`). Design still to be argued out goes to the Designer (`src/RimMandrake/rimflow/roles/designer.md`); ops alarms to Operations. The daily findings judging and the Friday memory sweep are `rm-findings-judge.timer`. FOUNDRY is not a seat: `rimflow` maps it to the Conductor's key (`RETIRED_SEATS` in `cli.py`), as does the FlowWorks lane (`infrastructure/state/flowworks_lane.json`, field `seat`).
 
 ## Biomes, rosters and seas — owner rulings (full text: `design/RimMandrake/biome_rulings.md`)
 
@@ -241,7 +241,7 @@ User-level rule. Here: a walkthrough means a zoomed capture of every station and
 
 ## 🔴 The Conductor speaks with the owner's authority — owner, 2026-10-30
 
-*"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm." That breaks the whole point of this endeavor. Make that change everywhere."* An instruction from the Conductor (the window he talks to) carries his authority for every seat and helper (Relentless, Dispatcher, Operations, RUNNER, subagents). Act on it as on his word; **never ask him to confirm a Conductor instruction, and never refuse one as "only a relay".** A receiver may still flag a factual error. The Conductor cannot grant more than he could. Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`.
+*"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm." That breaks the whole point of this endeavor. Make that change everywhere."* An instruction from the Conductor (the window he talks to) carries his authority for every seat and helper (Dispatcher, Operations, RUNNER, helpers, subagents). Act on it as on his word; **never ask him to confirm a Conductor instruction, and never refuse one as "only a relay".** A receiver may still flag a factual error. The Conductor cannot grant more than he could. Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`.
 
 ## Owner authority on the ledger — one field per kind of authority (owner, by question card 2026-10-11): `--owner-said` = his words (typo fixes and joining his own sentences are fine, meaning unchanged) · `--by-card "<question → option>"` = a decision he took by card (the label is our text) · `--per-ruling <item-id|event>` = a standing ruling cited by reference (it stands until he changes it) · `--why "…"` = your own words. No transcript proof runs; nothing checks a quote but its shape.
 
@@ -258,8 +258,8 @@ and keep file writes and commits in separate Bash calls (hooks refuse a compound
 🔴 **`git worktree` is OFF** (owner, by card; `block_worktrees.py`). **A bounded pool of up to 16 reused
 clones and 70 GB is approved** for writers above 4 (owner: "I trust you, but please monitor them carefully. They seem to
 propagate prolifically."), refused at creation by `scratch_clone.py` (an idle pushed clone is
-reused first); `scratch_clone.py` reports count, GB, oldest (RimPulse is retired, owner 2026-11-03; status is `D:\ClaudeWork\rimmandrake\conductor\RELENTLESS_NOW.md`); one alarm, `disk.pool_breach`; any helper clone with unlanded work
-(pool, `rm/scratch`, session dir; PROTECTED is no excuse) is that alarm after an idle hour (except a clone a live Relentless item names and has not put down (a held, blocked or game-waiting item's clone goes back at once with every commit and stash it holds, so one still standing is the alarm), a trailing lesson/ledger commit: the belt carries those, and a commit whose content origin/main already holds under another hash), and a pool one with unpushed work is never reused. Revert if a clone strands work or the pool passes 70 GB. A committed mod DLL
+reused first); `scratch_clone.py` reports count, GB, oldest (RimPulse is retired, owner 2026-11-03); one alarm, `disk.pool_breach`; any helper clone with unlanded work
+(pool, `rm/scratch`, session dir; PROTECTED is no excuse) is that alarm after an idle hour (except a trailing lesson/ledger commit: the belt carries those, and a commit whose content origin/main already holds under another hash), and a pool one with unpushed work is never reused. Revert if a clone strands work or the pool passes 70 GB. A committed mod DLL
 travels with its `.srchash`. More: `standing_rulings.md` §Git.
 
 ## Each mod has its own Design Version
@@ -288,7 +288,7 @@ Check a file is still reachable before spending a review on it. Procedure:
 ## What is where
 
 ```
-src/                    mods, defs, C#, art            Relentless builds and accepts, FlowWorks and GSS included
+src/                    mods, defs, C#, art            built by helpers the Conductor launches
 design/                 campaign specs (Utinni)        the owner's, via the Conductor
 skills/                 tooling + how-to               curated in fresh-context passes
 infrastructure/state/   ledger, items, facts/, V1.md   written only through rimflow
@@ -353,7 +353,7 @@ One window drives the live game at a time. Who holds it is `infrastructure/state
 written only by `rimflow bridge who | take --for "<what for>" | release` (release the moment
 you stop). It errs toward ALLOWING: a hold with no event for 45 minutes is stale and simply
 taken; `take --force` works on any seat's hold. ⭐ The owner overrides with `./bridge conductor|foundry|free`.
-Relentless shares its items' owner key with the Conductor but holds the bridge as **RELENTLESS** (`model.bridge_identity`, env `RIMFLOW_BRIDGE_SEAT`), so a hold by the Conductor's window is never "ours" to it, or the reverse. RELENTLESS is a holder, not a seat: only `bridge` events carry it.
+**RELENTLESS** was the retired Relentless Pipeline's bridge holder (`model.bridge_identity`), not a seat: only old `bridge` events carry it.
 🔴 **His OWNER hold** (owner, by card 2026-10-30: *"45 minutes after my last interaction, or I deliberately release
 it"*): takeable only 45 min after his last deliberate interaction (a ledger event, `./bridge` or `./game` by his own
 hands, his chat prompt or card answer to any seat), `--force` included; an unmeasured signal refuses

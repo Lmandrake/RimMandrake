@@ -29,14 +29,13 @@ def check(name, ok):
         fails.append(name)
 
 
-# 1. The docs that introduce the system name the pipeline and its workers.
-claude = read("CLAUDE.md")
-check("CLAUDE.md names the Relentless Pipeline and Builder/Judge workers from MandrakeWorkflows",
-      "Relentless Pipeline" in claude and re.search(r"Relentless-style Builder/Judge workers from\s+MandrakeWorkflows", claude))
-charter = read("infrastructure/agents/CHARTER.md")
-check("CHARTER names the Relentless Pipeline and swappable Builder/Judge workers",
-      "the Relentless Pipeline" in charter and "Relentless-style Builder/Judge workers from MandrakeWorkflows" in charter
-      and "swappable" in charter)
+# 1. The owner retired Relentless on 2026-11-13: the docs that introduced it point at the retirement and no longer
+#    say it builds (design/RimMandrake/retired_loops_2026-11-13.md).
+RETIRED = "design/RimMandrake/retired_loops_2026-11-13.md"
+for rel in ("CLAUDE.md", "infrastructure/agents/CHARTER.md", "src/RimMandrake/rimflow/roles/conductor.md"):
+    text = read(rel)
+    check("%s points at the retirement and no longer says Relentless builds" % rel,
+          RETIRED in text and not re.search(r"Relentless builds|autonomous builder is (the )?Relentless", text))
 doc = read("src/RimMandrake/rimflow/relentless.py").split('"""')[1]
 check("relentless.py docstring: the Relentless Pipeline, workers Builder/Judge from MandrakeWorkflows",
       "the Relentless Pipeline" in doc and re.search(r"Relentless-style Builder/Judge from MandrakeWorkflows", doc))

@@ -1,0 +1,3 @@
+The Whittle loops were retired by the owner on 2026-11-13: "I want to ensure right now that the old Relentless per-ticket work will NOT come back on, nor will the Artisan or Whittle loops."
+This file is the Whittle Stop hook's off switch (.claude/hooks/whittle_stop.py): while it exists no session is held open by the hook, even one started with WHITTLE=1.
+See design/RimMandrake/retired_loops_2026-11-13.md. Do not delete this file.

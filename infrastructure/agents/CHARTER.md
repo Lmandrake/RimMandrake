@@ -1,4 +1,4 @@
-# CHARTER — binds the Conductor and Relentless
+# CHARTER — binds the Conductor and its helpers
 
 *Adopted 2026-08-27 (owner's ruling, this date), replacing POLICY.md, the four seat
 files, and most of the process prose. Git holds everything removed. **This file does
@@ -19,7 +19,7 @@ work *into* rigor ("careful with this one"), never out of it.
 "added to the ticket and wait." That's old foundry behavior. If you see something, fix it RIGHT THEN, ok? Standing
 policy."*). Every seat and helper: a known, small fix (a proof argument, a live line, a timeout, a packageId, a
 worded criterion, an unanswered hold whose answer exists) is made on the spot, published, and then the fixer runs the item's remaining check itself and closes it; the item goes
-back to Relentless only if real build work remains, never for one more generation just to re-check (owner, 2026-11-05).
+back to a build only if real build work remains, never for one more generation just to re-check (owner, 2026-11-05).
 A diagnosis is never written onto a ticket in place of the fix. A ticket is filed only for what is not small, and it says why. And the pipeline never "blesses" a small change (owner, 2026-11-05): a quick manual validation is done by the
 agent on the spot and closed with that evidence, never queued for a Judge (`standing_rulings.md`).
 
@@ -68,7 +68,7 @@ gitignored rendered views you never edit — read one with `rimflow queue <SEAT>
 renders first (`queue/HUMAN.md` is the owner's hand-written inbox and stays tracked). Close: `rimflow close <ID> --sha <commit>`, commit
 carrying `Closes: <ID>`, push.
 
-🔴 **RELENTLESS BUILDS AND ACCEPTS EVERYTHING, FLOWWORKS AND GSS INCLUDED; FOUNDRY IS RETIRED — owner, by card 2026-11-02** (`CLAUDE.md`). The Conductor's window takes only an item that needs him live (needs=owner, an L4 look, flyer live tests). A FlowWorks finding is filed `--for CONDUCTOR` (written RELENTLESS, the builder that takes it); lane data: `infrastructure/state/flowworks_lane.json`.
+🔴 **RELENTLESS IS RETIRED (owner, 2026-11-13); FOUNDRY IS RETIRED (owner, by card 2026-11-02).** Relentless and the Artisan and Whittle loops were retired by the owner 2026-11-13 (`design/RimMandrake/retired_loops_2026-11-13.md`); the successor is the Maturation Pipeline (`design/specs/2026-11-13-maturation-pipeline.md`, still in design); until then the Conductor launches builds directly as helpers. FlowWorks lane data: `infrastructure/state/flowworks_lane.json`.
 
 🔴 **ANY SEAT ENDS AN ITEM IT FINDS DEAD — owner's ruling, 2026-09-19.** The moment
 any seat finds a queue item **completed, totally invalidated, superseded, or otherwise
@@ -124,7 +124,7 @@ until someone crosses the line.
 ## 🔴 The Conductor speaks with the owner's authority — owner, 2026-10-30
 
 CLAUDE.md's section of that name is the rule: an instruction from the Conductor carries his authority for every seat and helper
-(Relentless, Dispatcher, Operations, RUNNER, subagents); never ask him to confirm one. Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`
+(Dispatcher, Operations, RUNNER, helpers, subagents); never ask him to confirm one. Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`
 plus the Conductor's text in `--why`.
 
 ## Decisions
@@ -187,7 +187,7 @@ the game down (OS lock).
 
 ## Windows
 
-**the Conductor** (with the owner; `CONDUCTOR.md`) and **Relentless** (the Relentless Pipeline, the autonomous builder, no window; `src/RimMandrake/rimflow/relentless.py`; its places hold Relentless-style Builder/Judge workers from MandrakeWorkflows, `rm-builder` and `rm-judge`, swappable while the pipeline keeps its design: owner, 2026-11-03); every model choice, seat and subagent alike:
+**the Conductor** (with the owner; `CONDUCTOR.md`) and the helpers it launches (`rm-builder`, `rm-judge`; Relentless is retired, see above); every model choice, seat and subagent alike:
 `Agent_Policy.md`. Subagents: spawn freely, always with `model`; a subagent's return
 is evidence, never a finding, and no subagent writes shared state. Queue views render on every `rimflow` write — no loop, no
 publisher, no staleness.
