@@ -10,6 +10,13 @@
 5 in a temp copy, a planted stage change and a planted new mod folder are absent before and shown after
 6 two runs on an unchanged tree differ only in the measurement line
 7 when stage.json and VERSION.json disagree about a mod, the page says so
+Round 2 (the owner, 2026-11-14 ~12:25 PM PST: yellow arrows where the Conductor intervened, cycling, what needs a reaction,
+phone images):
+8 every "CONDUCTOR INTERVENED" journal line is parsed and marked; a malformed one is listed under Needs Conductor
+9 runs are placed on stages and counted: a stage run twice reads CYCLED x2 with a derived relaunch arrow
+10 the reaction lists hold only real things (open question, answered one dropped, hold and release, long run, failed run)
+11 what cannot be measured reads UNMEASURED (no run records, no tokens, no dollars, no stage.json), never 0 or blank
+12 the phone images: an overview and one per mod, 1080 px wide, portrait
 
 Points 4, 5 and 7 run on a temp copy of design/concepts and the held-statement folder (--no-live: the ledger is not read).
 Point 6 runs on the live tree twice; a ledger shard or run record that moved between the runs earns one retry.
@@ -26,7 +33,7 @@ import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
-PROG = os.path.join(HERE, "maturation_now.py")
+PROG = os.environ.get("MATURATION_NOW_UNDER_TEST") or os.path.join(HERE, "maturation_now.py")   # a mutant, to watch red
 FAILS = []
 
 
@@ -48,8 +55,8 @@ def data_of(root, live=False):
     return json.loads(out)
 
 
-def page_of(root, live=False):
-    rc, out, err = run(["--root", root, "--print"] + ([] if live else ["--no-live"]))
+def page_of(root, live=False, env=None):
+    rc, out, err = run(["--root", root, "--print"] + ([] if live else ["--no-live"]), env=env)
     if rc != 0:
         raise RuntimeError("maturation_now.py --print exit %d: %s" % (rc, err[-600:]))
     return out
@@ -202,9 +209,10 @@ def p6_two_runs():
     def stamp():
         fs = glob.glob(os.path.join(REPO, "infrastructure", "state", "ledger", "events", "*.jsonl"))
         return sorted((f, os.path.getmtime(f)) for f in fs)
+    env = dict(os.environ, MATURATION_NOW_CLOCK=str(__import__("time").time()))   # "so far" minutes cannot tick
     for attempt in (1, 2):
         s0 = stamp()
-        a, b = page_of(REPO, live=True), page_of(REPO, live=True)
+        a, b = page_of(REPO, live=True, env=env), page_of(REPO, live=True, env=env)
         moved = stamp() != s0
         diff = [(x, y) for x, y in zip(a.splitlines(), b.splitlines()) if x != y]
         same_len = len(a.splitlines()) == len(b.splitlines())
@@ -244,6 +252,167 @@ def p7_disagreement():
         shutil.rmtree(t, ignore_errors=True)
 
 
+def MN():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("maturation_now_under_test", PROG)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+GOOD_IV = "- CONDUCTOR INTERVENED (stage 3, 2026-11-14 12:15 PST, kind hold): Stage 3 held for a planted reason. Source: test."
+BAD_IV = "- CONDUCTOR INTERVENED stage three: no parenthesis, no colon form"
+
+
+def p8_interventions(d, page):
+    M = MN()
+    g, b = M.parse_interventions(GOOD_IV + "\n" + BAD_IV + "\nplain line\n", "journal")
+    check("8 a well-formed line parses: stage 3, kind hold, 12:15 PM PST",
+          len(g) == 1 and g[0]["stage"] == "3" and g[0]["kind"] == "hold" and g[0]["when"].startswith("12:15 PM"),
+          "got %r" % g)
+    check("8 a malformed line is kept as unparsed, not dropped", len(b) == 1 and "stage three" in b[0]["line"], "got %r" % b)
+    g2, _ = M.parse_interventions("- CONDUCTOR INTERVENED (stage 5, kind re-pin): x", "j")
+    check("8 stage 5 is the 4+5 box; a line without a time reads UNMEASURED",
+          g2 and g2[0]["stage"] == "4+5" and g2[0]["when"] == "UNMEASURED", "got %r" % g2)
+    # the live tree: every journal line is on the page (count measured by grep here, not by the generator)
+    want = {}
+    for f in glob.glob(os.path.join(REPO, "design", "concepts", "*", "journal.md")):
+        n = sum(1 for ln in open(f, encoding="utf-8") if "CONDUCTOR INTERVENED" in ln)
+        if n:
+            want[os.path.basename(os.path.dirname(f))] = n
+    check("8 the live journals hold intervention lines to test against", sum(want.values()) >= 1, "none")
+    for folder, n in sorted(want.items()):
+        m = mod_of(d, folder)
+        got = len([i for i in (m or {}).get("ivs", []) if i.get("source") == "journal"]) + len((m or {}).get("iv_bad", []))
+        check("8 %s: %d journal intervention lines, %d on the page" % (folder, n, got), got == n)
+        card = card_of(page, (m or {}).get("label", "?"))
+        check("8 %s card shows a yellow arrow line per intervention" % folder,
+              card.count("<b>➤</b>") >= n, "arrows %d" % card.count("<b>➤</b>"))
+    check("8 the picture draws yellow arrows", page.count('fill="%s" stroke' % M.YELLOW) >= len(want))
+    t = temp_tree()
+    try:
+        j = os.path.join(t, "design", "concepts", "FlowWorks", "journal.md")
+        open(j, "a").write("\n" + BAD_IV + "\n")
+        d2 = data_of(t)
+        check("8 a malformed journal line is listed under Needs Conductor",
+              any("cannot read" in x and "stage three" in x for x in d2["needs"]["conductor"]), "%r" % d2["needs"]["conductor"][-3:])
+    finally:
+        shutil.rmtree(t, ignore_errors=True)
+
+
+def fake_recs(now, item="RIMMANDRAKE_ADVANCE_FOOMOD_OFFLINE"):
+    return [{"unit": "u1", "item": item, "model": "opus", "at": now - 7200, "ended": now - 6000, "status": "finished",
+             "result": "success (exited 0)", "tokens": 1000, "budget_usd": 15, "out": "/nonexistent"},
+            {"unit": "u2", "item": item, "model": "opus", "at": now - 5000, "ended": now - 4000, "status": "finished",
+             "result": "timeout (killed KILL)", "tokens": None, "budget_usd": 15, "out": "/nonexistent"},
+            {"unit": "u3", "item": item, "model": "opus", "at": now - 3700, "status": "running", "live_state": "running",
+             "budget_usd": 15, "out": "/nonexistent"}]
+
+
+def fake_journal(now):
+    import datetime as dt
+    from zoneinfo import ZoneInfo
+
+    def h(ts, what):
+        return "### %s, %s" % (dt.datetime.fromtimestamp(ts, ZoneInfo("America/Los_Angeles")).strftime("%Y-%m-%d %I:%M %p PST"), what)
+    return "\n".join([h(now - 7100, "row 2 done: Stage 1 finished"), h(now - 4900, "Stage 1 again, a second pass"),
+                      h(now - 3600, "Stage 3 begins")])
+
+
+def p9_cycles():
+    M = MN()
+    now = 1_800_000_000.0
+    j = M.parse_journal(fake_journal(now))
+    runs = M.runs_for_mods(["FooMod", "BarMod"], fake_recs(now), [], {"FooMod": j}, now, spend=lambda r: ("UNMEASURED", None, "UNMEASURED"))
+    r = runs["FooMod"]
+    check("9 three runs of a FOOMOD item are FooMod's, none BarMod's", len(r) == 3 and not runs["BarMod"], "%r" % runs)
+    check("9 runs placed by the journal headings in their time", [x["stages"] for x in r] == [["1"], ["1"], ["3"]],
+          "%r" % [x["stages"] for x in r])
+    m = {"column": "3", "label": "Foo Mod", "runs": r, "disagree": [], "his": [], "jquestions": []}
+    box = M.stage_boxes(m, r, [], "3")
+    check("9 Stage 1 ran twice: cycled 2 with one derived relaunch", box["1"]["cycled"] == 2 and
+          sum(1 for i in box["1"]["ivs"] if i.get("derived")) == 1, "%r" % box.get("1"))
+    m["boxes"] = box
+    lines = [t for _, t in M.box_lines(m, "1", box["1"])]
+    check("9 the box says CYCLED with the count", any("CYCLED: this stage has run 2 times" in x for x in lines), "%r" % lines)
+    check("9 the live run is in Stage 3's box", box["3"]["cycled"] == 1 and box["3"]["runs"][0]["live"])
+    check("9 item names: GSS initials, KNOCKBACK word, a tie names none",
+          M.item_mod("RIMMANDRAKE_PROVE_GSS_SWITCHBOARD", ["GimmeSomeSlack", "FlowWorks"]) == "GimmeSomeSlack"
+          and M.item_mod("RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH", ["ExplosiveKnockback"]) == "ExplosiveKnockback"
+          and M.item_mod("PYRELANDS_FINISH", ["Pyrelands", "PyrelandsMechanics"]) == "Pyrelands"
+          and M.item_mod("RIMMANDRAKE_SOMETHING_ELSE", ["Pyrelands"]) is None)
+    notes = [{"id": "RIMMANDRAKE_DESIGN_PIPELINE", "text": "see design/concepts/FooMod/journal.md and design/concepts/FooMod/x"}]
+    check("9 an item naming no mod is the one its notes cite", M.item_mod("RIMMANDRAKE_DESIGN_PIPELINE", ["FooMod", "BarMod"], notes) == "FooMod")
+    check("9 'stopped before Stage 3' names no Stage 3", M.stages_named("Rows 1-3 done, stopped before Stage 3.") == [])
+
+
+def p10_reactions():
+    M = MN()
+    now = 1_800_000_000.0
+    j = M.parse_journal(fake_journal(now))
+    r = M.runs_for_mods(["FooMod"], fake_recs(now), [], {"FooMod": j}, now, spend=lambda r: ("UNMEASURED", None, "UNMEASURED"))["FooMod"]
+    jtext = ("### Questions (open)\n\n1. **Which colour?** asked.\n2. **The g4 weight** (for the Conductor).\n"
+             "3. **Already settled.** x\n\n## History\n- the steward answers question 3 here.\n")
+    ivs, _ = M.parse_interventions(GOOD_IV, "journal")
+    m = {"column": "3", "label": "Foo Mod", "runs": r, "disagree": [], "his": [], "jquestions": M.journal_questions(jtext)}
+    m["boxes"] = M.stage_boxes(m, r, ivs, "3")
+    n = M.reactions([m], now)
+    me, co = " | ".join(n["mandrake"]), " | ".join(n["conductor"])
+    check("10 an open question for him is under Needs Mandrake", "Which colour?" in me, me)
+    check("10 a question 'for the Conductor' is under Needs Conductor", "The g4 weight" in co and "g4" not in me, co)
+    check("10 an answered question is in neither list", "Already settled" not in me + co)
+    check("10 a hold is listed with what holds it", "HELD" in co and "planted reason" in co, co)
+    check("10 a run live over an hour is listed", "has been live" in co, co)
+    check("10 a run that ended non-success is listed", "killed at its time limit" in co, co)
+    check("10 a successful run is not listed", "finished OK" not in co, co)
+    rel = ivs + M.parse_interventions("- CONDUCTOR INTERVENED (stage 3, 2026-11-14 12:30 PST, kind release): go.", "j")[0]
+    m["boxes"] = M.stage_boxes(m, r, rel, "3")
+    check("10 a hold followed by a release is no longer held", m["boxes"]["3"]["held"] is None)
+    r3 = M.runs_for_mods(["FooMod"], fake_recs(now)[:2] * 2, [], {"FooMod": j}, now,
+                         spend=lambda r: ("UNMEASURED", None, "UNMEASURED"))["FooMod"]
+    for x in r3:
+        x["stages"] = ["3"]
+    m["boxes"] = M.stage_boxes(m, r3, [], "3")
+    check("10 a current stage run 3+ times is listed", any("has run 4 times" in x for x in M.reactions([m], now)["conductor"]))
+
+
+def p11_unmeasured(d_nolive_page):
+    d_nolive_page = re.sub(r"<[^>]+>", "", d_nolive_page)
+    M = MN()
+    now = 1_800_000_000.0
+    r = M.run_view({"unit": "u", "item": "X", "at": now - 100, "ended": now, "status": "finished",
+                    "result": "success (exited 0)", "out": "/nonexistent"}, now)
+    line = M.run_line(r, 1)
+    check("11 a run with no tokens and no cost reads UNMEASURED for both", "tokens UNMEASURED" in line and
+          "dollars UNMEASURED" in line and " 0 tokens" not in line, line)
+    r2 = M.run_view({"unit": "u", "item": "X", "status": "finished"}, now)
+    check("11 a run with no times reads UNMEASURED wall time and outcome", r2["wall"] == "UNMEASURED" and r2["outcome"] == "UNMEASURED", "%r" % r2)
+    check("11 no stage.json: Designer cycles UNMEASURED", M.designer_cycles(None) == "UNMEASURED")
+    check("11 --no-live: stage boxes say runs UNMEASURED, never 0",
+          "Runs at this stage: UNMEASURED" in d_nolive_page and "Runs at this stage: 0" not in d_nolive_page)
+    check("11 --no-live: the cycle chip reads UNMEASURED", "cycles UNMEASURED" in d_nolive_page)
+
+
+def p12_phone():
+    import tempfile
+    out = tempfile.mkdtemp(prefix="maturation_now_phone_")
+    try:
+        rc, o, e = run(["--no-live", "--out", out])
+        ph = os.path.join(out, "MATURATION_NOW_phone")
+        files = sorted(os.listdir(ph)) if os.path.isdir(ph) else []
+        mods = [os.path.basename(os.path.dirname(os.path.dirname(f))) for f in
+                glob.glob(os.path.join(REPO, "design", "concepts", "*", "version", "VERSION.json"))
+                if not os.path.basename(os.path.dirname(os.path.dirname(f))).startswith("_")]
+        check("12 the program wrote an overview and one image per mod", rc == 0 and "00_overview.png" in files and
+              all("%s.png" % m in files for m in mods), "rc %d files %r %s" % (rc, files, e[-300:]))
+        from PIL import Image
+        for f in files:
+            w, h = Image.open(os.path.join(ph, f)).size
+            check("12 %s is 1080 wide and portrait" % f, w == 1080 and h > w, "%dx%d" % (w, h))
+    finally:
+        shutil.rmtree(out, ignore_errors=True)
+
+
 def main():
     if not os.path.exists(PROG):
         check("maturation_now.py exists", False, PROG)
@@ -258,6 +427,11 @@ def main():
     p5_stage_words()
     p6_two_runs()
     p7_disagreement()
+    p8_interventions(d, page)
+    p9_cycles()
+    p10_reactions()
+    p11_unmeasured(page_of(REPO))
+    p12_phone()
     print("FAILED: %d (%s)" % (len(FAILS), ", ".join(FAILS)) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
 
