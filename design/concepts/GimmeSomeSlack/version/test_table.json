@@ -1022,7 +1022,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry ABSENT in the code"
-   }
+   },
+   "tier": "gimmesomeslack"
   },
   "sc_cords_slack": {
    "id": "sc_cords_slack",
@@ -1042,7 +1043,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry ABSENT in the code"
-   }
+   },
+   "tier": "gimmesomeslack"
   },
   "sc_no_sharp_turn": {
    "id": "sc_no_sharp_turn",
@@ -1062,7 +1064,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry ABSENT in the code"
-   }
+   },
+   "tier": "gimmesomeslack"
   },
   "sc_walls": {
    "id": "sc_walls",
@@ -1082,7 +1085,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry ABSENT in the code"
-   }
+   },
+   "tier": "gimmesomeslack"
   },
   "sc_junction_strips": {
    "id": "sc_junction_strips",
@@ -1102,7 +1106,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry ABSENT in the code"
-   }
+   },
+   "tier": "gimmesomeslack"
   },
   "sc_dense_tangle": {
    "id": "sc_dense_tangle",
@@ -1122,7 +1127,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry ABSENT in the code"
-   }
+   },
+   "tier": "gimmesomeslack"
   },
   "sc_no_repeat": {
    "id": "sc_no_repeat",
@@ -1142,7 +1148,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry ABSENT in the code"
-   }
+   },
+   "tier": "gimmesomeslack"
   },
   "sc_true_to_grid": {
    "id": "sc_true_to_grid",
@@ -1162,7 +1169,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry ABSENT in the code"
-   }
+   },
+   "tier": "gimmesomeslack"
   },
   "sc_cut_ends": {
    "id": "sc_cut_ends",
@@ -1182,7 +1190,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry ABSENT in the code"
-   }
+   },
+   "tier": "gimmesomeslack"
   },
   "sc_rewire_cost": {
    "id": "sc_rewire_cost",
@@ -1202,7 +1211,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry ABSENT in the code"
-   }
+   },
+   "tier": "gimmesomeslack"
   },
   "sc_spans": {
    "id": "sc_spans",
@@ -1222,7 +1232,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry ABSENT in the code"
-   }
+   },
+   "tier": "gimmesomeslack"
   },
   "sc_fallen_span": {
    "id": "sc_fallen_span",
@@ -1242,7 +1253,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry ABSENT in the code"
-   }
+   },
+   "tier": "gimmesomeslack"
   },
   "sc_shock": {
    "id": "sc_shock",
@@ -1262,7 +1274,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry ABSENT in the code"
-   }
+   },
+   "tier": "gimmesomeslack"
   },
   "sc_floor_end_shock": {
    "id": "sc_floor_end_shock",
@@ -1282,7 +1295,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry ABSENT in the code"
-   }
+   },
+   "tier": "gimmesomeslack"
   },
   "sc_shock_reach": {
    "id": "sc_shock_reach",
@@ -1302,7 +1316,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry ABSENT in the code"
-   }
+   },
+   "tier": "gimmesomeslack_flowworks"
   },
   "sc_restring": {
    "id": "sc_restring",
@@ -1322,7 +1337,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry ABSENT in the code"
-   }
+   },
+   "tier": "gimmesomeslack"
   },
   "sc_tap_theft": {
    "id": "sc_tap_theft",
@@ -1342,7 +1358,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry ABSENT in the code"
-   }
+   },
+   "tier": "gimmesomeslack"
   },
   "sc_four_looks": {
    "id": "sc_four_looks",
@@ -1362,7 +1379,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry ABSENT in the code"
-   }
+   },
+   "tier": "gimmesomeslack"
   },
   "sc_settings": {
    "id": "sc_settings",
@@ -1382,7 +1400,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry ABSENT in the code"
-   }
+   },
+   "tier": "gimmesomeslack_flowworks"
   },
   "sc_gravship": {
    "id": "sc_gravship",
@@ -1402,7 +1421,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry ABSENT in the code"
-   }
+   },
+   "tier": "gimmesomeslack"
   },
   "sc_walk": {
    "id": "sc_walk",
@@ -1423,7 +1443,8 @@
     "ran": false,
     "why": "live: this run is offline only; entry ABSENT in the code"
    },
-   "why_full_list": "breadth failures show only on his full list in ordinary play with a mid-way reload"
+   "why_full_list": "breadth failures show only on his full list in ordinary play with a mid-way reload",
+   "tier": "gimmesomeslack"
   },
   "sc_shock_restring": {
    "id": "sc_shock_restring",
@@ -1443,7 +1464,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry ABSENT in the code"
-   }
+   },
+   "tier": "gimmesomeslack"
   },
   "sc_owner_change": {
    "id": "sc_owner_change",
@@ -1463,7 +1485,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry ABSENT in the code"
-   }
+   },
+   "tier": "gimmesomeslack"
   },
   "sc_fuel_ignition": {
    "id": "sc_fuel_ignition",
@@ -1483,7 +1506,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry ABSENT in the code"
-   }
+   },
+   "tier": "gimmesomeslack"
   },
   "sc_statics_new_game": {
    "id": "sc_statics_new_game",
@@ -1503,7 +1527,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry ABSENT in the code"
-   }
+   },
+   "tier": "gimmesomeslack"
   },
   "sc_removal_consequence": {
    "id": "sc_removal_consequence",
@@ -1523,7 +1548,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry ABSENT in the code"
-   }
+   },
+   "tier": "gimmesomeslack"
   },
   "sc_cords_under_items": {
    "id": "sc_cords_under_items",
@@ -1543,7 +1569,8 @@
    "runs_today": {
     "ran": false,
     "why": "specified for the held statements; not in scenes.json (journal question 2)"
-   }
+   },
+   "tier": "gimmesomeslack"
   },
   "LOOK_STAGE8": {
    "id": "LOOK_STAGE8",

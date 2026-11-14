@@ -9,16 +9,16 @@
  "bars_met": 39,
  "judge_rounds": 3,
  "tokens_spent": 12561376,
- "locked_from_commit": "237b79116781821545f7ac58c23ed40bfc0250c4",
+ "locked_from_commit": "bf33322d7754bb3a9e504924bc062dc7fb65fea3",
  "measured_from": {
   "bars_total": "coverage_judge.required_ids(): record.json inventory (22) + tree.json leaves (26), the coverage checklist rows the judge passes or refuses on",
   "bars_met": "checklist rows with every part ok in the latest verdict rm-coverage-judge-1794599377 (2026-11-13T19:49:37Z), judged at tree_hash eb1981b889 = the tree at the lock; verdict file copied to version/evidence/ (also landed as coverage_verdict.json in 910f69411e)",
   "judge_rounds": "coverage_judge.rounds(): 2 legacy rounds named by budget charges + 1 recorded in stage.json coverage_rounds",
   "tokens_spent": "stage.json budget.spent (cap 4000000); every Designer stage run, helper, review and judge charge on this concept",
-  "locked_from_commit": "origin/main when this version was entered, 2026-11-13; per-file blob hashes in bars.md"
+  "locked_from_commit": "the commit recording his lock word, 2026-11-13 15:40 PST (re-pinned 2026-11-14 from 237b791167, which predated the five gap fixes); per-file blob hashes in bars.md"
  },
  "caveats": [
-  "The Designer's stage-3 fix of all five gaps and the stage-4 exam pass (tree 5e3aa0d4, sheet 33b1cddc) landed in 910f69411e (2026-11-13 15:13 PST), before his lock word (~15:40, bf33322d77); bars.md still pins the blobs of 237b791167, which predate them. Whether to re-pin is open (journal.md, question 1).",
+  "The first pin (237b791167, 13:58 PST) predated the Designer's five gap fixes and exam pass (910f69411e, 15:13 PST; tree 5e3aa0d4, sheet 33b1cddc); re-pinned 2026-11-14 to bf33322d77, his lock word, by the steward's decision (journal 2026-11-14 Stage 3).",
   "1 budget charge is kind 'unmeasured': an estimate of 500000 tokens, included in budget.spent"
  ]
 }

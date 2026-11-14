@@ -38,7 +38,7 @@ if PLANT:
     TESTS["sc_settings"]["why_game"] = ""
     table["held_statements"] = table["held_statements"][1:]
     rec["inventory"][0]["impl_evidence"] = rec["inventory"][0]["impl_evidence"] + ["ITEM:GSS_NO_SUCH_ITEM_PLANTED"]
-    EXTRA_TEXT = " RM_PlantedDefThatIsNotReal "
+    EXTRA_TEXT = " RM_PlantedDefThatIsNotReal RM_PlantedStaleDef "
 
 
 def check(name, ok, n, **refusal):
@@ -129,22 +129,42 @@ toks = sorted(set(re.findall(r"\b(?:RM|RSW|RUT)_[A-Za-z0-9_]+\b|\b[A-Z][a-z]+(?:
 import refresh  # noqa: E402
 dump_dir = os.path.join(refresh.D_DUMP, "defs")
 t_dump = time.time()
-dump_names = set()
+dump_names, dump_ours = set(), set()
 for f in glob.glob(os.path.join(dump_dir, "*.json")):
     with open(f, encoding="utf-8") as fh:
-        dump_names.update(re.findall(r'"defName":"([^"]+)"', fh.read()))
+        for n, pk in re.findall(r'"defName":"([^"]+)"[^{}]*?"packageId":"([^"]+)"', fh.read()):
+            dump_names.add(n)
+            if pk.lower().startswith("mandrake."):
+                dump_ours.add(n)
 t_dump = time.time() - t_dump
 xml_names = set()
 for f in glob.glob(G + "Defs/**/*.xml", recursive=True) + glob.glob(G + "Patches/**/*.xml", recursive=True):
     xml_names.update(re.findall(r"<defName>([^<]+)</defName>", open(f, encoding="utf-8").read()))
+# Stale-dump hole (lesson 20261114T194216Z, Pyrelands run): the dump is a capture of 2026-11-12, so a def of OURS the repo has
+# since deleted still reads as real there. A name the dump attributes to a mandrake.* mod, or any RM_/RSW_/RUT_ name, counts as a
+# def only if the repo's CURRENT XML (every mod under src/RimMandrake) defines it.
+repo_names = set()
+for f in glob.glob("src/RimMandrake/**/*.xml", recursive=True):
+    try:
+        repo_names.update(re.findall(r"<defName>\s*([^<\s]+)\s*</defName>", open(f, encoding="utf-8", errors="replace").read()))
+    except OSError:
+        pass
+if PLANT:
+    dump_names.add("RM_PlantedStaleDef")
+    dump_ours.add("RM_PlantedStaleDef")
 src = " ".join(open(f, encoding="utf-8").read() for f in glob.glob(G + "Source/**/*.cs", recursive=True))
 src += " ".join(open(f, encoding="utf-8").read() for f in glob.glob("src/RimMandrake/FlowWorks/Source/**/*.cs", recursive=True))
 files = {os.path.splitext(os.path.basename(p))[0] for p in glob.glob(G + "**/*", recursive=True)}
 WORDS = {"GimmeSomeSlack", "FlowWorks", "RimMandrake", "MessyConduit", "SelfTest", "StarWarsJawa"}
 cls = {}
 for tok in toks:
-    if tok in dump_names or tok in xml_names:
+    ours = tok in dump_ours or re.match(r"(?:RM|RSW|RUT)_", tok)
+    if tok in xml_names or tok in repo_names:
         cls[tok] = "def"
+    elif tok in dump_names and not ours:
+        cls[tok] = "def"
+    elif tok in dump_names and ours:
+        cls[tok] = "STALE_DUMP_DEF"  # ours in the 2026-11-12 dump, gone from the repo: refused below
     elif tok in WORDS:
         cls[tok] = "name"
     elif tok in files:
@@ -155,10 +175,10 @@ for tok in toks:
         cls[tok] = "save_or_id"
     else:
         cls[tok] = "UNKNOWN"
-unk = sorted(t for t, c in cls.items() if c == "UNKNOWN")
-check("named_defs_and_symbols_real", not unk, len(toks), line=", ".join(unk),
+unk = sorted(t for t, c in cls.items() if c in ("UNKNOWN", "STALE_DUMP_DEF"))
+check("named_defs_and_symbols_real", not unk, len(toks), line=", ".join(("%s (%s)" % (t, cls[t])) for t in unk),
       evidence="named in tree/scenes/record; not a defName in the dump (%d names, capture %s) or our Defs, not a C# symbol of GSS "
-               "or FlowWorks, not a GSS file" % (len(dump_names), os.path.basename(refresh.D_DUMP)),
+               "or FlowWorks, not a GSS file; STALE_DUMP_DEF = a def of ours the dump holds but no repo XML defines now" % (len(dump_names), os.path.basename(refresh.D_DUMP)),
       smallest_fix="correct the name in the text (a fact) or say what it is", return_to="1")
 ours_not_in_dump = sorted(n for n in xml_names if n not in dump_names)
 checks.append(dict(check="our_defs_in_dump", result="note", n=len(xml_names),
@@ -174,10 +194,16 @@ for f in glob.glob("src/RimMandrake/*/About/About.xml"):
     if m:
         pkg[f.split("/")[2]] = m.group(1).lower()
 need_fw = sorted(s["id"] for s in scn["scenes"] if "FlowWorks" in json.dumps(s.get("start", "")))
-fw_in = pkg.get("FlowWorks") in [w.lower() for w in tier["want"]]
-check("named_mods_on_the_tier", fw_in or not need_fw, len(need_fw), line=", ".join(need_fw),
-      evidence="these scenes stage FlowWorks content (start text names FlowWorks); tier 'gimmesomeslack' wants %s, not %s"
-               % (tier["want"], pkg.get("FlowWorks")),
+# a scene's tier: test_table.json's "tier" on its test, else the mod's own tier
+def tier_of(sid):
+    return MB.TIERS.get((TESTS.get(sid) or {}).get("tier") or "gimmesomeslack")
+if PLANT:
+    need_fw = need_fw + ["sc_planted_fw_scene"]
+lack_fw = [s for s in need_fw if not tier_of(s) or pkg.get("FlowWorks") not in [w.lower() for w in tier_of(s)["want"]]]
+fw_in = not lack_fw
+check("named_mods_on_the_tier", fw_in or not need_fw, len(need_fw), line=", ".join(lack_fw),
+      evidence="these scenes stage FlowWorks content (start text names FlowWorks); the tier each runs on (test_table.json "
+               "'tier', default 'gimmesomeslack') does not load %s" % pkg.get("FlowWorks"),
       smallest_fix="name the tier each of these scenes runs on (a GSS+FlowWorks tier exists? if not, add one), or drop the "
                    "FlowWorks part to a FlowWorks-side test", return_to="1")
 check("tier_loads_all_dlc", bool(tier.get("dlc")), 1, line="gimmesomeslack tier", evidence="dlc flag off",
@@ -210,8 +236,8 @@ for p, blob in pins:
     if cur != blob:
         drift.append(os.path.basename(p))
 check("lock_pins_current", not drift, len(pins), line=", ".join(drift),
-      evidence="these locked files differ from the blobs bars.md pins at 237b791167; the gap fixes landed in 910f69411e "
-               "before his lock word", smallest_fix="the Conductor re-pins bars.md at the text he locked (journal question 1)",
+      evidence="these locked files differ from the blobs bars.md pins (his lock word, bf33322d77)",
+      smallest_fix="a test-text correction is re-pinned with a journal line; a changed bar is a new version",
       return_to="1")
 
 out = dict(mod="GimmeSomeSlack", version="0.1.0", ran_at=time.strftime("%Y-%m-%dT%H:%M:%S%z"),

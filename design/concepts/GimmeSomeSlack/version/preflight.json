@@ -1,9 +1,9 @@
 {
  "mod": "GimmeSomeSlack",
  "version": "0.1.0",
- "ran_at": "2026-11-14T11:47:44-0800",
- "seconds": 10.4,
- "dump_read_seconds": 9.98,
+ "ran_at": "2026-11-14T12:20:01-0800",
+ "seconds": 4.72,
+ "dump_read_seconds": 4.34,
  "dump": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/captures/2026-11-12T08-10-06Z",
  "by": "design/concepts/GimmeSomeSlack/version/preflight_throwaway.py (throwaway, no model)",
  "verdict": "refuse",
@@ -76,7 +76,7 @@
   },
   {
    "check": "named_mods_on_the_tier",
-   "result": "refuse",
+   "result": "pass",
    "n": 2
   },
   {
@@ -102,7 +102,7 @@
   },
   {
    "check": "lock_pins_current",
-   "result": "refuse",
+   "result": "pass",
    "n": 8
   }
  ],
@@ -120,20 +120,6 @@
    "evidence": "specified at this lock, not built",
    "smallest_fix": "Stage 3 builds them, red first",
    "return_to": "3"
-  },
-  {
-   "check": "named_mods_on_the_tier",
-   "line": "sc_settings, sc_shock_reach",
-   "evidence": "these scenes stage FlowWorks content (start text names FlowWorks); tier 'gimmesomeslack' wants ['brrainz.rimbridgeserver', 'mandrake.rm.gimmesomeslack', 'mandrake.rm.patches'], not mandrake.rm.flowworks",
-   "smallest_fix": "name the tier each of these scenes runs on (a GSS+FlowWorks tier exists? if not, add one), or drop the FlowWorks part to a FlowWorks-side test",
-   "return_to": "1"
-  },
-  {
-   "check": "lock_pins_current",
-   "line": "tree.json, sheet.md, scenes.json, exam.json, record.json, stage.json",
-   "evidence": "these locked files differ from the blobs bars.md pins at 237b791167; the gap fixes landed in 910f69411e before his lock word",
-   "smallest_fix": "the Conductor re-pins bars.md at the text he locked (journal question 1)",
-   "return_to": "1"
   }
  ],
  "name_classes": {

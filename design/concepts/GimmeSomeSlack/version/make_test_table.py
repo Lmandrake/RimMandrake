@@ -214,6 +214,7 @@ for k, t in NEW.items():
                     runs_today=dict(ran=False, why="specified, not built: Stage 3 builds it failing first"))
 
 # in-game scenes: entry named in scenes.json; exists only if the function is defined there
+SCENE_TIER = {"sc_settings": "gimmesomeslack_flowworks", "sc_shock_reach": "gimmesomeslack_flowworks"}
 TIER_STAGE = {"quicktest": "6", "live_minimal": "6", "live_full": "6", "offline": "4-5"}
 TIER_KIND = {"quicktest": "live_minimal", "live_minimal": "live_minimal", "live_full": "live_full"}
 for s in scn["scenes"]:
@@ -232,6 +233,8 @@ for s in scn["scenes"]:
                runs_today=dict(ran=False, why="live: this run is offline only; entry %s in the code" % ("exists" if exists else "ABSENT")))
     if tier == "live_full":
         row["why_full_list"] = why
+    # the test mod list it runs on (modset_builder.TIERS); the two FlowWorks scenes run on GSS+FlowWorks (Stage 3, 2026-11-14)
+    row["tier"] = SCENE_TIER.get(s["id"], "gimmesomeslack")
     tests[s["id"]] = row
 tests["sc_cords_under_items"] = dict(
     id="sc_cords_under_items", kind="live_minimal", stage="6", file=G + "validation.py", entry="scene_cords_under_items",

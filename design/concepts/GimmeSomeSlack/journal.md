@@ -187,6 +187,22 @@ Brief from the Conductor: rows 1 to 3 of the pilot table, by hand, throwaway scr
   real" is even testable from prose: the name check covers CamelCase and `RM_` names only, so a plain word like "battery"
   or "chemfuel puddle" is not checked.
 
+### 2026-11-14 12:40 PST, Stage 3 (reconcile) begins; batch 1: lock re-pinned, FlowWorks tier, preflight def hole
+
+- **Re-pinned** (steward's decision, Conductor, delegated): `version/bars.md` and `VERSION.json` now pin the 8 locked files at
+  `bf33322d77` (his lock word, 15:40 PST), not `237b791167` (13:58). What changed between the two: only the Designer's five
+  gap fixes of `910f69411e` (the `experience` text of 4 leaves, the oracle of 2, the text of 5 scenes, the exam and stage
+  record). No bar's meaning was edited by this run; all 8 files at HEAD are byte-identical to `bf33322d77`. [measured]
+  Answers question 1 by the steward's call.
+- **The test mod list for the two FlowWorks scenes:** tier `gimmesomeslack_flowworks` in `modset_builder.TIERS` (the
+  `gimmesomeslack` tier plus `mandrake.rm.flowworks`, both tiers' guards; dry-resolves to 12 mods). `sc_settings` and
+  `sc_shock_reach` carry `tier` in the table. Answers question 3 as recommended.
+- **Preflight stale-def hole fixed** (lesson `20261114T194216Z`): a name the 2026-11-12 dump attributes to a `mandrake.*`
+  mod, or any `RM_`/`RSW_`/`RUT_` name, counts as a def only if the repo's current XML under `src/RimMandrake` defines it;
+  otherwise it is refused as `STALE_DUMP_DEF`. Planted `RM_PlantedStaleDef` (in the dump, not the repo): refused. The
+  tier check now reads each scene's own tier (planted FlowWorks scene on the GSS tier: refused).
+- **Preflight:** 4 refusals before, 2 after (`built_mod_decider_entries_exist` 26, `built_mod_offline_deciders_run` 3).
+
 ### Run total
 
 About $5.4 of model spend and 23 minutes wall for rows 1 to 3 (11:25 to 11:48 PST), plus the 4.6-minute test run inside

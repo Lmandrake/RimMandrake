@@ -956,6 +956,16 @@ TIERS["heap_full_on_steve_half"] = {
     "dlc": True,
 }
 
+TIERS["gimmesomeslack_flowworks"] = {
+    "why": "GimmeSomeSlack 0.1.0 Maturation Stage 3 (design/concepts/GimmeSomeSlack/journal.md, question 3): the two GSS "
+           "scenes that stage FlowWorks content, sc_settings (the pipe-pole switch) and sc_shock_reach (the cord a collapsed "
+           "FlowWorks bridge deck drops). The gimmesomeslack tier plus FlowWorks, with both tiers' guards.",
+    "want": [BRIDGE, "mandrake.rm.gimmesomeslack", "mandrake.rm.flowworks", "mandrake.rm.patches"],
+    "forbid": ["glitchgoblin.invisibleconduitcont", "mandrake.rm.pits", "sarg.alphabiomes"],
+    "forbid_substr": ["manywaters"],
+    "dlc": True,
+}
+
 
 # LIGHTSPEED_REWIRE_ROUND_AS_TESTQ_CLIENT: a tier named by its mods, so every live-proof line can go to SteveDesktop
 # through testq (a job's profile is tier:<name>, and the worker resolves the name here, at the job's source_sha).
