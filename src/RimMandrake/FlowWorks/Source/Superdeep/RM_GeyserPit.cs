@@ -205,6 +205,38 @@ namespace RimMandrake.FlowWorks
 			return heated;
 		}
 
+		/// <summary>RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE (owner look 2026-11-14, his second 8: "it does not say Hot Tub
+		/// currently even though it should"): the cell readout's word for <paramref name="c"/>: "Hot tub" on an open pool's heated
+		/// cells and its vent, why not on a sunk wet vent's own squares (RM_GeyserTubMath.TubWord), else null. Read per repaint:
+		/// only geysers within the pool's reach of the mouse are read.</summary>
+		public static string TubReadoutAt(Map map, IntVec3 c)
+		{
+			if (!On || map == null)
+			{
+				return null;
+			}
+			int near = Mathf.CeilToInt(RM_GeyserPitSettings.geyserPoolReach) + 2;
+			foreach (Thing t in map.listerThings.ThingsOfDef(ThingDefOf.SteamGeyser))
+			{
+				if (!(t is Building_SteamGeyser g) || !g.Spawned || Mathf.Abs(c.x - g.Position.x) > near || Mathf.Abs(c.z - g.Position.z) > near)
+				{
+					continue;
+				}
+				State s = Read(g);
+				string word = RM_GeyserTubMath.TubWord(RM_GeyserPitSettings.geyserPoolEnabled, s.seat > 0, s.fluid != null, Bathable(s.fluid),
+					s.covered, s.capped);
+				if (word == null)
+				{
+					continue;
+				}
+				if (g.OccupiedRect().Contains(c) || (word == RM_GeyserTubMath.HotTub && HeatedCells(g, s).Contains(c)))
+				{
+					return word;
+				}
+			}
+			return null;
+		}
+
 		/// <summary>The cells of an open pool <paramref name="p"/> could soak in: the heated water (<see cref="HeatedCells"/>),
 		/// standable, and not over its head unless it keeps its head up (FlowWorks drowning).</summary>
 		public static IEnumerable<IntVec3> SoakCells(Building_SteamGeyser g, State s, Pawn p)

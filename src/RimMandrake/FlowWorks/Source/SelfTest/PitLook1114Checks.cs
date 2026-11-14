@@ -36,6 +36,47 @@ namespace RimMandrake.FlowWorks.SelfTest
                 }
             });
 
+            // his 1: "It should be full speed while walking on the floor of the pit. Pits should only slow you down while you're
+            // climbing up or down over the walls."
+            Case("PitLook1114_pit_floor_walks_full_speed_readout_and_step", () =>
+            {
+                // the readout's walking cost for a dug square: a step along its floor from the same depth
+                Assert(RM_PitTrapMath.FloorWalkCost(true, false, 300) == 0, "a dry 4 m floor reads its dry pit cost, not 100%");
+                Assert(RM_PitTrapMath.FloorWalkCost(true, true, 42) == 42, "a wet floor reads the water's own wading cost");
+                Assert(RM_PitTrapMath.FloorWalkCost(false, false, 300) == 300, "setting off: the old cost stands");
+                // a walked step along a wet floor keeps the water's cost; a climb into or out of a wet pit is still priced as the pit
+                Assert(RM_PitTrapMath.WalkedAlongFloor(8, 8), "along a 4 m floor is not 'along'");
+                Assert(!RM_PitTrapMath.WalkedAlongFloor(0, 8) && !RM_PitTrapMath.WalkedAlongFloor(8, 4), "a climb counts as along the floor");
+                Assert(!RM_PitTrapMath.WalkedAlongFloor(0, 0), "surface walking counts as a pit floor");
+                // a dry equal-depth step was already free (RM_Patch_PitStepCost): unchanged
+                Assert(RM_PitTrapMath.DryStepBaseCost(8, 8, 300) == 0, "a dry floor step is no longer free");
+                string mouse = RiverSwitchFlipChecks.Src("RM_MouseoverDepth.cs");
+                RiverSwitchFlipChecks.Has(mouse, @"RM_PitTrapMath\.FloorWalkCost\(", "the readout prices a dug square as its floor walk");
+                string step = RiverSwitchFlipChecks.Src("Superdeep/RM_PitStepCost.cs");
+                RiverSwitchFlipChecks.Has(step, @"Prefix\(PathGrid __instance, IntVec3 c, bool perceivedStatic, IntVec3 prevCell, ref int\? baseCostOverride\)[\s\S]*?RM_PitTrapMath\.WalkedAlongFloor\(",
+                    "the wet-pit planning cost lets a walked step along the floor keep its wading cost");
+            });
+
+            // his second 8: "Geyser under water in pit ... it does not say Hot Tub currently even though it should"
+            Case("PitLook1114_geyser_pool_says_hot_tub", () =>
+            {
+                Assert(RM_GeyserTubMath.TubWord(true, true, true, true, true, false) == "Hot tub", "an open pool does not say Hot tub");
+                Assert(RM_GeyserTubMath.TubWord(true, true, true, true, false, false) == "Not a hot tub yet: the vent is not under 0.4 m of liquid",
+                    "a shallow pool: " + RM_GeyserTubMath.TubWord(true, true, true, true, false, false));
+                Assert(RM_GeyserTubMath.TubWord(true, true, true, true, true, true) == "Not a hot tub: the geyser is capped", "capped");
+                Assert(RM_GeyserTubMath.TubWord(true, true, true, false, true, false) == "Not a hot tub: nobody bathes in this liquid", "unbathable");
+                Assert(RM_GeyserTubMath.TubWord(false, true, true, true, true, false) == null, "the feature off still talks");
+                Assert(RM_GeyserTubMath.TubWord(true, false, true, true, true, false) == null, "a surface geyser talks about tubs");
+                Assert(RM_GeyserTubMath.TubWord(true, true, false, true, true, false) == null, "a dry sunk geyser talks about tubs");
+                string mouse = RiverSwitchFlipChecks.Src("RM_MouseoverDepth.cs");
+                RiverSwitchFlipChecks.Has(mouse, @"RM_GeyserPit\.TubReadoutAt\(map, c\)", "the readout names the hot tub");
+                string pit = RiverSwitchFlipChecks.Src("Superdeep/RM_GeyserPit.cs");
+                RiverSwitchFlipChecks.Has(pit, @"public static string TubReadoutAt\(Map map, IntVec3 c\)[\s\S]*?RM_GeyserTubMath\.TubWord\(",
+                    "the hot tub word comes from the tub verdict");
+                RiverSwitchFlipChecks.Has(pit, @"public static string TubReadoutAt\(Map map, IntVec3 c\)[\s\S]*?HeatedCells\(g, s\)\.Contains\(c\)",
+                    "the hot tub is named on the heated cells, not only the vent");
+            });
+
             Case("PitLook1114_no_fill_n_wording_in_visible_text", () =>
             {
                 string root = Path.GetDirectoryName(RiverSwitchFlipChecks.SrcPath("RM_Volume.cs"));

@@ -565,6 +565,21 @@ namespace RimMandrake.FlowWorks
 		/// <paramref name="climbCost"/> (the deeper cell's dry path cost: climbing in or out, ladder included).
 		/// PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: the fall is the DROP (RM_RelativeRulesMath.StepIsAFall), never "the
 		/// destination is 2 m deep" (that priced a 2 m to 2.5 m step and a 4 m ledge to a 7 m core alike as free falls).</summary>
+		/// <summary>RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE (owner look 2026-11-14, his 1: "It should be full speed while walking on
+		/// the floor of the pit. Pits should only slow you down while you're climbing up or down over the walls"): the walking cost a
+		/// player reads for a dug square, a step along its floor from a square at the same depth. Dry (walking-normal on): free,
+		/// as RM_Patch_PitStepCost walks it; wet: the liquid's own wading cost; the setting off: the square's terrain cost.</summary>
+		public static int FloorWalkCost(bool walkNormal, bool wet, int terrainCost)
+		{
+			return walkNormal && !wet ? 0 : Math.Max(0, terrainCost);
+		}
+
+		/// <summary>A walked step that stays on one pit floor (both ends dug, the same climb depth): no wall is climbed.</summary>
+		public static bool WalkedAlongFloor(int fromClimbDepth, int toClimbDepth)
+		{
+			return toClimbDepth > 0 && fromClimbDepth == toClimbDepth;
+		}
+
 		public static int DryStepBaseCost(int fromDepth, int toDepth, int climbCost)
 		{
 			if (fromDepth == toDepth)

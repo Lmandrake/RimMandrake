@@ -70,7 +70,8 @@ namespace RimMandrake.FlowWorks
 			// RIMMANDRAKE_LABEL_PIT_DEPTH_EXACT_ONE_WORD (owner 2026-11-12: "It's supposed to show the precise depth no matter
 			// what"): a dug square is named "Pit, 2.5 m deep" / "Pit, 1.5 m water in 4.0 m" from the true depth grid, setting or
 			// not; the per-depth TerrainDef label ("canal (1 m)", "pit (2 m or more)") never names it.
-			string pit = seen ? map.GetComponent<RM_MapComponent_Excavation>()?.PitLabelAt(c) : null;
+			RM_MapComponent_Excavation ex = seen ? map.GetComponent<RM_MapComponent_Excavation>() : null;
+			string pit = ex?.PitLabelAt(c);
 			string suffix = RimMandrakeFlowWorksSettings.mouseoverDepthEnabled && seen
 				? DepthSuffix(map, c) : null;
 			if (suffix == null && pit == null)
@@ -82,9 +83,21 @@ namespace RimMandrake.FlowWorks
 			float fertility = c.GetFertility(map);
 			string fert = fertility > 0.0001f ? " " + "FertShort".TranslateSimple() + " " + fertility.ToStringPercent() : "";
 			string label = pit ?? (polluted ? "PollutedTerrain".Translate(terrain.label).CapitalizeFirst().ToString() : terrain.LabelCap.ToString());
+			// RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE (owner look 2026-11-14, his 1: "Why is the pit walk speed 4.2%? It should be
+			// full speed while walking on the floor of the pit."): a dug square reads the speed of walking along its floor (a dry
+			// floor is walked free, RM_Patch_PitStepCost; water at its wading cost; dug water a pawn swims at the swim cost), never
+			// the dry pit terrain's 300, which only route planning and a climb over the wall pay.
+			int cost = terrain.pathCost;
+			if (pit != null)
+			{
+				cost = ex.IsDugSwimCell(c) ? Swimming.RM_SwimSettings.swimPathCost
+					: RM_PitTrapMath.FloorWalkCost(RimMandrakeFlowWorksSettings.pitWalkNormalEnabled, ex.WetAt(c), terrain.pathCost);
+			}
 			string walk = terrain.passability != Traversability.Impassable
-				? string.Format(" ({0})", "WalkSpeed".Translate(GenPath.SpeedPercentString(terrain.pathCost)) + fert) : null;
-			return label + walk + (suffix != null ? " — " + suffix : "");
+				? string.Format(" ({0})", "WalkSpeed".Translate(GenPath.SpeedPercentString(cost)) + fert) : null;
+			// his second 8: a sunk geyser's pool says so
+			string tub = pit != null ? RM_GeyserPit.TubReadoutAt(map, c) : null;
+			return label + walk + (suffix != null ? " — " + suffix : "") + (tub != null ? " · " + tub : "");
 		}
 
 		/// <summary>RIMMANDRAKE_ADD_PIT_LABEL_STATE_READER_MOUSEOVER_HAS_NONE: [proof] "x,z" -> "line=&lt;the readout's terrain line

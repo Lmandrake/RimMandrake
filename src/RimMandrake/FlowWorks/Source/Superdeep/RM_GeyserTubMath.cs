@@ -69,6 +69,32 @@ namespace RimMandrake.FlowWorks
 			return seat;
 		}
 
+		/// <summary>RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE (owner look 2026-11-14: "it does not say Hot Tub currently even though it
+		/// should"): what the cell readout says of a sunk geyser under liquid: "Hot tub" for an open pool, else why not. Null where
+		/// there is nothing to say (the feature off, a geyser at the surface, a dry pit).</summary>
+		public static string TubWord(bool featureOn, bool sunk, bool hasFluid, bool bathable, bool covered, bool capped)
+		{
+			if (!featureOn || !sunk || !hasFluid)
+			{
+				return null;
+			}
+			if (capped)
+			{
+				return "Not a hot tub: the geyser is capped";
+			}
+			if (!bathable)
+			{
+				return "Not a hot tub: nobody bathes in this liquid";
+			}
+			if (!covered)
+			{
+				return "Not a hot tub yet: the vent is not under " + GeyserMetres.ToString("0.0#", System.Globalization.CultureInfo.InvariantCulture) + " m of liquid";
+			}
+			return HotTub;
+		}
+
+		public const string HotTub = "Hot tub";
+
 		/// <summary>The vent mouth is under once the liquid over the seat is deeper than the mound.</summary>
 		public static bool Covered(float levelMetresOverSeat) => levelMetresOverSeat > GeyserMetres;
 

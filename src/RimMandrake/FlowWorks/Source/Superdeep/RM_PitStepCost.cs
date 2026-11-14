@@ -152,7 +152,7 @@ namespace RimMandrake.FlowWorks
 	{
 		[HarmonyPrefix]
 		[HarmonyPriority(Priority.Low)]
-		public static void Prefix(PathGrid __instance, IntVec3 c, ref int? baseCostOverride)
+		public static void Prefix(PathGrid __instance, IntVec3 c, bool perceivedStatic, IntVec3 prevCell, ref int? baseCostOverride)
 		{
 			if (baseCostOverride.HasValue)
 			{
@@ -180,6 +180,15 @@ namespace RimMandrake.FlowWorks
 			if (eng.IsDugSwimCell(c))
 			{
 				baseCostOverride = Swimming.RM_SwimSettings.swimPathCost;
+				return;
+			}
+			// RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE (owner look 2026-11-14, his 1: "Pits should only slow you down while you're
+			// climbing up or down over the walls"): a WALKED step along one wet floor (CostToMoveIntoCell: perceivedStatic false, a
+			// valid prevCell at the same climb depth) is wading, priced by the water's own terrain; the dry pit's cost was charging
+			// it 300 (4.2%). Route planning and a climb into or out of the wet pit keep the pit's price below.
+			if (!perceivedStatic && prevCell.IsValid && RimMandrakeFlowWorksSettings.pitWalkNormalEnabled && prevCell.InBounds(map)
+				&& RM_PitTrapMath.WalkedAlongFloor(eng.ClimbDepthAt(prevCell), eng.ClimbDepthAt(c)))
+			{
 				return;
 			}
 			// P14: a wet dug square's water is its BASE terrain now (the one ladder, whose 0.5-1.5 m rungs cost less than a
