@@ -8,7 +8,7 @@ The top part, **the mod as it stands**, is rewritten at every stage change and s
 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Code exists:
   `src/RimMandrake/ExplosiveKnockback/`.
-- **Stage now:** Stage 3 ("reconcile") done as far as it goes offline, 2026-11-14 12:47 PST. Preflight re-run:
+- **Stage now:** Stage 3 ("reconcile") done as far as it goes offline, 2026-11-14 12:45 PST. Preflight re-run:
   **refuse, 6 refusals** (was 26), all C6 "built: runs" (`version/preflight.json`). Stages 4-5 can start on everything
   else; the 6 are listed under Stage 3 below with why each was not built.
 - **Bars:** 59 (30 inventory rows of `record.json` + 29 leaves of `tree.json`). The test-and-stage table is
@@ -150,7 +150,7 @@ before Stage 3. Owner, 2026-11-14: "We need to get this going."
   preflight wants scenes to list their defs and mods as fields.
 - **Needed judgment:** whether each post-lock change is test text or meaning; the g4 fix.
 
-### 2026-11-14 12:47 PST, Stage 3 ("reconcile") done offline (rm-builder, detached, offline only)
+### 2026-11-14 12:45 PST, Stage 3 ("reconcile") done offline (rm-builder, detached, offline only)
 
 - **Preflight refusals:** 26 before (11:32 run), **6 after** (12:43 run), all measured by `preflight_ek.py`.
 - **Offline tests built, all PASS today, each watched red first** (on missing code, or on planted faults where the
