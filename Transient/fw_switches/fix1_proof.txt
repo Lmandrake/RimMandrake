@@ -1,0 +1,15 @@
+base-commit red (new check vs 4016248102 Source): reported levelBySurfaceEnabled levelSetEnabled pondHeadRuleEnabled pumpFedSpreadEnabled thickCreepEnabled waterFrontCreepEnabled -> FAIL
+after: only pondHeadRuleEnabled (KNOWN_UNREAD) -> PASS
+ok    217 toggles: every registry bool (S.toggles), not the harness floor 
+ok    every Mod Settings field is read by live code (or named in KNOWN_UNREAD with its item) 
+ok    KNOWN_UNREAD holds no stale entry (each still a dead row) 
+ok    planted: a declared, saved, menu-only setting is reported dead 
+ok    planted: the same setting with one live read is not reported 
+PASS: 0 failure(s)
+C# suite:
+hose: 457/457 assertions passed (moved from Gimme Some Slack: 350; new: 107)
+
+FAILING CHECKS (rc 1):
+  FAIL  DeckCollapse_GSS_shock_seam_is_soft_and_load_safe
+  missing: public static void RebuildContacts(RM_MapComponent_Aerial aerial, Map map, Dictionary<int, IntVec3> contacts, List<IntVec3> tips)
+preflight before/after: refuse 7 (C6x6, C8x1) / refuse 7 (C6x6, C8x1)
