@@ -112,7 +112,7 @@ def main(argv):
             row["sky"] = V.open_sky_site(B, (x0 - 3, z0 - 3, w + 6, h + 6)).get("ok")
             for i in range(w):
                 for j in range(h):
-                    B.call("jawa/flowworks_excavation_drive", x=x0 + i, z=z0 + j, deepenLevels=DEPTH, setFill=-1, fillInLevels=0)
+                    B.call("jawa/flowworks_excavation_drive", x=x0 + i, z=z0 + j, deepenLevels=DEPTH, setBodyWaterM=-1, fillInLevels=0)
         B.ticks(70)
         for r in rows:
             x0, z0, w, h = r["rect"]
