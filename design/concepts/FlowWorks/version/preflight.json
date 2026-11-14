@@ -1,0 +1,401 @@
+{
+ "mod": "FlowWorks",
+ "version": "0.1.0",
+ "program": "preflight_fw.py (throwaway, advance row 3; copy in version/advance_scripts/)",
+ "at": "2026-11-14T11:52:18-08:00",
+ "dump": {
+  "path": "a copy of game_paths.DEF_DUMP at /tmp/fw_pilot/defs.sqlite",
+  "provenance": {
+   "builder": "measure/dumpdb.py",
+   "captured_utc": "2026-11-12T08:10:06Z",
+   "defs_total": "59262"
+  }
+ },
+ "seconds": 0.24,
+ "verdict": "refuse",
+ "refusals": 37,
+ "checks": [
+  {
+   "id": "C1_bars_complete",
+   "what": "the table holds exactly the locked bars (record inventory + tree leaves)",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "59 locked, 59 in table",
+   "seconds": 0.0
+  },
+  {
+   "id": "C2_every_bar_has_a_test",
+   "what": "every bar names at least one deciding test, and every named test is defined",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "59 bars",
+   "seconds": 0.0
+  },
+  {
+   "id": "C3_every_test_has_a_stage",
+   "what": "every test names a stage of 2, 4-5, 6 or 8",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "115 tests",
+   "seconds": 0.0
+  },
+  {
+   "id": "C4_test_files_real",
+   "what": "every built test's file exists",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "107 built tests",
+   "seconds": 0.0
+  },
+  {
+   "id": "C5_read_files_real",
+   "what": "every file a test reads exists",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "273 reads",
+   "seconds": 0.0
+  },
+  {
+   "id": "C6_built_tests_run",
+   "what": "built mod: every deciding test runs today (his card 2026-11-13, 'Built: runs. New: specified.')",
+   "verdict": "refuse",
+   "refusals": [
+    {
+     "line": "PY_FLOWWORKS_NORTHSTAR",
+     "evidence": "red today (rc 1): FAIL: 2 failure(s): ['every settings class under Source/ is in site_spec.SETTINGS_SOURCES', '217 toggles: every registry bool (S.toggles), not the harness floor",
+     "smallest_fix": "fix the code or the test (a red test is a Stage 3 line)",
+     "route": "Stage 3",
+     "would_pass": "rc 0"
+    },
+    {
+     "line": "PY_LIQUID_LOOKS",
+     "evidence": "red today (rc 1): 1 FAIL",
+     "smallest_fix": "fix the code or the test (a red test is a Stage 3 line)",
+     "route": "Stage 3",
+     "would_pass": "rc 0"
+    },
+    {
+     "line": "PY_NATIVES_DRINK_OWN_WATER",
+     "evidence": "red today (rc 1):    BLOCKED RM_TheChill: RM_PropaneDeep -> RM_Liquid_Propane",
+     "smallest_fix": "fix the code or the test (a red test is a Stage 3 line)",
+     "route": "Stage 3",
+     "would_pass": "rc 0"
+    },
+    {
+     "line": "PY_VALIDATION_V2_OFFLINE",
+     "evidence": "red today (rc 1): O-LIVE-NEG FAIL   clean mock run not green: [('X4_pit_wall_over_head', 'FAIL', \"colonist on D=4 drawn 0.200 cells down; wall over crown 0.200 x a person's heigh",
+     "smallest_fix": "fix the code or the test (a red test is a Stage 3 line)",
+     "route": "Stage 3",
+     "would_pass": "rc 0"
+    },
+    {
+     "line": "T_FETCH_FALLEN_OFFLINE",
+     "evidence": "specified, not built (deciding 2 bars: inv_raider_fetch_fallen, raiders_fetch_their_fallen)",
+     "smallest_fix": "Stage 3 builds it, failing first",
+     "route": "Stage 3",
+     "would_pass": "it runs and is green"
+    },
+    {
+     "line": "T_PRISON_CARE_OFFLINE",
+     "evidence": "specified, not built (deciding 2 bars: inv_prison_no_bed, drained_hole_is_a_prison)",
+     "smallest_fix": "Stage 3 builds it, failing first",
+     "route": "Stage 3",
+     "would_pass": "it runs and is green"
+    },
+    {
+     "line": "T_TOSS_FLAME_OFFLINE",
+     "evidence": "specified, not built (deciding 2 bars: inv_toss_flame, toss_flame_from_rim)",
+     "smallest_fix": "Stage 3 builds it, failing first",
+     "route": "Stage 3",
+     "would_pass": "it runs and is green"
+    },
+    {
+     "line": "T_WETNESS_PROBE_OFFLINE",
+     "evidence": "specified, not built (deciding 1 bars: wetness_probe)",
+     "smallest_fix": "Stage 3 builds it, failing first",
+     "route": "Stage 3",
+     "would_pass": "it runs and is green"
+    },
+    {
+     "line": "T_WETTING_OFFLINE",
+     "evidence": "specified, not built (deciding 3 bars: inv_irrigation, canal_wets_two_squares, wetting_is_not_flood)",
+     "smallest_fix": "Stage 3 builds it, failing first",
+     "route": "Stage 3",
+     "would_pass": "it runs and is green"
+    },
+    {
+     "line": "sc_fetch_fallen",
+     "evidence": "in-game scene: entry scene_fetch_fallen absent from src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+     "smallest_fix": "build the entry (owed under FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN)",
+     "route": "Stage 3",
+     "would_pass": "the entry function exists"
+    },
+    {
+     "line": "sc_fill_front",
+     "evidence": "in-game scene: entry scene_fill_front absent from src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+     "smallest_fix": "build the entry (owed under FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL)",
+     "route": "Stage 3",
+     "would_pass": "the entry function exists"
+    },
+    {
+     "line": "sc_hose_look",
+     "evidence": "in-game scene: entry scene_hose_look absent from src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+     "smallest_fix": "build the entry (owed under FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL)",
+     "route": "Stage 3",
+     "would_pass": "the entry function exists"
+    },
+    {
+     "line": "sc_ice",
+     "evidence": "in-game scene: entry scene_ice absent from src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+     "smallest_fix": "build the entry (owed under FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL)",
+     "route": "Stage 3",
+     "would_pass": "the entry function exists"
+    },
+    {
+     "line": "sc_islands",
+     "evidence": "in-game scene: entry scene_islands absent from src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+     "smallest_fix": "build the entry (owed under FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED)",
+     "route": "Stage 3",
+     "would_pass": "the entry function exists"
+    },
+    {
+     "line": "sc_moat_raid",
+     "evidence": "in-game scene: entry scene_moat_raid absent from src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+     "smallest_fix": "build the entry (owed under FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED)",
+     "route": "Stage 3",
+     "would_pass": "the entry function exists"
+    },
+    {
+     "line": "sc_one_surface",
+     "evidence": "in-game scene: entry scene_one_surface absent from src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+     "smallest_fix": "build the entry (owed under FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL)",
+     "route": "Stage 3",
+     "would_pass": "the entry function exists"
+    },
+    {
+     "line": "sc_pawn_height",
+     "evidence": "in-game scene: entry scene_pawn_height absent from src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+     "smallest_fix": "build the entry (owed under FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL)",
+     "route": "Stage 3",
+     "would_pass": "the entry function exists"
+    },
+    {
+     "line": "sc_source_pays",
+     "evidence": "in-game scene: entry scene_source_pays absent from src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+     "smallest_fix": "build the entry (owed under FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL)",
+     "route": "Stage 3",
+     "would_pass": "the entry function exists"
+    },
+    {
+     "line": "sc_toss_flame",
+     "evidence": "in-game scene: entry scene_toss_flame absent from src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+     "smallest_fix": "build the entry (owed under FLOWWORKS_FLAME_BUILD_TOSS_FROM_THE_RIM)",
+     "route": "Stage 3",
+     "would_pass": "the entry function exists"
+    },
+    {
+     "line": "sc_trench_cover",
+     "evidence": "in-game scene: entry scene_trench_cover absent from src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+     "smallest_fix": "build the entry (owed under FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL)",
+     "route": "Stage 3",
+     "would_pass": "the entry function exists"
+    },
+    {
+     "line": "sc_walk",
+     "evidence": "in-game scene: entry scene_walk_moat_season absent from src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+     "smallest_fix": "build the entry (owed under FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED)",
+     "route": "Stage 3",
+     "would_pass": "the entry function exists"
+    },
+    {
+     "line": "sc_wetting",
+     "evidence": "in-game scene: entry scene_wetting absent from src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+     "smallest_fix": "build the entry (owed under FLOWWORKS_WETTING_BUILD_TWO_SQUARES_DAMP)",
+     "route": "Stage 3",
+     "would_pass": "the entry function exists"
+    }
+   ],
+   "evidence": "108 deciding tests; built: runs (his card 2026-11-13). Live scenes judged by entry existence only (offline run)",
+   "seconds": 0.0
+  },
+  {
+   "id": "C7_game_reason_written",
+   "what": "every in-game test says why an offline test cannot decide it; every full-list test says why",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "29 in-game tests",
+   "seconds": 0.0
+  },
+  {
+   "id": "C8_held_statements_placed",
+   "what": "every held look statement for this mod is placed on a bar and a test, or says why it has none",
+   "verdict": "refuse",
+   "refusals": [
+    {
+     "line": "2026-11-12#33a",
+     "evidence": "held statement has no 0.1.0 bar (offline selftest; NO 0.1.0 BAR: geyser hot tub (question for him))",
+     "smallest_fix": "his call: Problem in 0.1.0 (a new bar) or Divergent (next_version)",
+     "route": "owner question",
+     "would_pass": "a bar or a next-version entry"
+    },
+    {
+     "line": "2026-11-12#33b",
+     "evidence": "held statement has no 0.1.0 bar (NO 0.1.0 BAR: geyser hot tub)",
+     "smallest_fix": "his call: Problem in 0.1.0 (a new bar) or Divergent (next_version)",
+     "route": "owner question",
+     "would_pass": "a bar or a next-version entry"
+    },
+    {
+     "line": "2026-11-12#33c",
+     "evidence": "held statement has no 0.1.0 bar (NO 0.1.0 BAR: geyser hot tub)",
+     "smallest_fix": "his call: Problem in 0.1.0 (a new bar) or Divergent (next_version)",
+     "route": "owner question",
+     "would_pass": "a bar or a next-version entry"
+    },
+    {
+     "line": "2026-11-12#42",
+     "evidence": "held statement has no 0.1.0 bar (NO 0.1.0 BAR: geyser hot tub)",
+     "smallest_fix": "his call: Problem in 0.1.0 (a new bar) or Divergent (next_version)",
+     "route": "owner question",
+     "would_pass": "a bar or a next-version entry"
+    },
+    {
+     "line": "2026-11-13#1",
+     "evidence": "held statement has no 0.1.0 bar (approval; NO 0.1.0 BAR: geyser hot tub)",
+     "smallest_fix": "his call: Problem in 0.1.0 (a new bar) or Divergent (next_version)",
+     "route": "owner question",
+     "would_pass": "a bar or a next-version entry"
+    },
+    {
+     "line": "2026-11-13#2",
+     "evidence": "held statement has no 0.1.0 bar (NO 0.1.0 BAR: geyser hot tub)",
+     "smallest_fix": "his call: Problem in 0.1.0 (a new bar) or Divergent (next_version)",
+     "route": "owner question",
+     "would_pass": "a bar or a next-version entry"
+    },
+    {
+     "line": "2026-11-13#4",
+     "evidence": "held statement has no 0.1.0 bar (NO 0.1.0 BAR: geyser hot tub)",
+     "smallest_fix": "his call: Problem in 0.1.0 (a new bar) or Divergent (next_version)",
+     "route": "owner question",
+     "would_pass": "a bar or a next-version entry"
+    },
+    {
+     "line": "2026-11-13#8",
+     "evidence": "held statement has no 0.1.0 bar (NO 0.1.0 BAR: liquid coating on pawns (question for him))",
+     "smallest_fix": "his call: Problem in 0.1.0 (a new bar) or Divergent (next_version)",
+     "route": "owner question",
+     "would_pass": "a bar or a next-version entry"
+    },
+    {
+     "line": "2026-11-13#10",
+     "evidence": "held statement has no 0.1.0 bar (NO 0.1.0 BAR: liquid coating on pawns)",
+     "smallest_fix": "his call: Problem in 0.1.0 (a new bar) or Divergent (next_version)",
+     "route": "owner question",
+     "would_pass": "a bar or a next-version entry"
+    },
+    {
+     "line": "2026-11-13#11",
+     "evidence": "held statement has no 0.1.0 bar (NO 0.1.0 BAR: washing off a coating)",
+     "smallest_fix": "his call: Problem in 0.1.0 (a new bar) or Divergent (next_version)",
+     "route": "owner question",
+     "would_pass": "a bar or a next-version entry"
+    },
+    {
+     "line": "2026-11-13#12",
+     "evidence": "held statement has no 0.1.0 bar (NO 0.1.0 BAR: geyser hot tub)",
+     "smallest_fix": "his call: Problem in 0.1.0 (a new bar) or Divergent (next_version)",
+     "route": "owner question",
+     "would_pass": "a bar or a next-version entry"
+    },
+    {
+     "line": "2026-11-13_dig_interface#2",
+     "evidence": "held statement has no 0.1.0 bar (NO 0.1.0 BAR yet: dig interface consolidation, his open call)",
+     "smallest_fix": "his call: Problem in 0.1.0 (a new bar) or Divergent (next_version)",
+     "route": "owner question",
+     "would_pass": "a bar or a next-version entry"
+    },
+    {
+     "line": "2026-11-13_evening#1",
+     "evidence": "held statement has no 0.1.0 bar (NO 0.1.0 BAR: geyser bubbles)",
+     "smallest_fix": "his call: Problem in 0.1.0 (a new bar) or Divergent (next_version)",
+     "route": "owner question",
+     "would_pass": "a bar or a next-version entry"
+    }
+   ],
+   "evidence": "81 held rows in the files, 81 placed",
+   "seconds": 0.001
+  },
+  {
+   "id": "C9_defs_real",
+   "what": "every RM_/RUT_/RSW_ name in the scenes and the table exists in the def dump or the repo (C# class names accepted)",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "12 names checked against 52790 defs/classes (dump defs.sqlite)",
+   "seconds": 0.165
+  },
+  {
+   "id": "C10_mods_real",
+   "what": "every packageId named is a mod in the dump's mod list or the repo",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "0 packageIds named",
+   "seconds": 0.004
+  },
+  {
+   "id": "C11_settings_fields_real",
+   "what": "every settings field a scene or leaf names exists in FlowWorks C#",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "0 settings fields named",
+   "seconds": 0.029
+  },
+  {
+   "id": "C12_locked_files_unchanged",
+   "what": "the locked bar files match the blobs pinned in version/bars.md",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "8 pinned files (stage.json is state, not a bar: exempt)",
+   "seconds": 0.008
+  },
+  {
+   "id": "C13_scenes_prove_a_leaf",
+   "what": "every scene names the leaves it proves",
+   "verdict": "refuse",
+   "refusals": [
+    {
+     "line": "sc_pit_trap_raid",
+     "evidence": "scene names no requirement (no leaf it proves)",
+     "smallest_fix": "name its leaves or mark it a showcase-only scene",
+     "route": "Stage 1",
+     "would_pass": "requirement non-empty"
+    },
+    {
+     "line": "sc_garden",
+     "evidence": "scene names no requirement (no leaf it proves)",
+     "smallest_fix": "name its leaves or mark it a showcase-only scene",
+     "route": "Stage 1",
+     "would_pass": "requirement non-empty"
+    }
+   ],
+   "evidence": "28 scenes",
+   "seconds": 0.0
+  },
+  {
+   "id": "C14_items_real",
+   "what": "every ticket a test is owed under exists in the ledger",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "7138 items known",
+   "seconds": 0.035
+  },
+  {
+   "id": "C15_tiers_consistent",
+   "what": "a leaf whose tier is the full list is decided by a full-list scene",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "tiers",
+   "seconds": 0.0
+  }
+ ]
+}

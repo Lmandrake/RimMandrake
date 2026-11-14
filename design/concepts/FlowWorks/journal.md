@@ -20,7 +20,8 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
   empty here.
 - **Held look statements for this mod:** 81 rows in four files of `design/RimMandrake/validation_holding/` (2026-11-12:
   56 rows; 2026-11-13 morning: 18; 2026-11-13 dig interface: 2; 2026-11-13 evening: 5). [measured, row count]
-- **Waiting on:** nothing yet (row 2 in progress).
+- **Waiting on:** a builder for Stage 3 "reconcile" (list at the end of the history), and four answers from him
+  ("Questions for him", none blocking). Stage 2 verdict: refuse, 37 refusals (`version/preflight.json`).
 
 ### The vision (his root paragraph, approved 2026-11-04, OWNER:1793794915205594887; eight lines in `version/vision.md`)
 
@@ -133,3 +134,55 @@ The table: `version/test_table.json` (read view `version/test_table.md`), same c
 - **Needed judgment:** which C# case families and which Python selftests decide which bar (the regex groups in
   `make_table.py`; a judge should challenge them); telling mod tests from harness tests; placing 81 held rows (which bar,
   or "no bar"); recognising that FlowWorks' "settings sweep" is the L2 live read and that O2 already decides it offline.
+
+### 2026-11-14 11:52 PST, row 3 done: Stage 2 by a throwaway program
+
+`version/advance_scripts/preflight_fw.py` (no model) checked the table against the repo, a copy of the def dump
+(`game_paths.DEF_DUMP`, captured 2026-11-12) and the ledger; record `version/preflight.json`. Fifteen checks, the pilot's
+C1–C12 and its items check plus "every scene proves a leaf" and "tiers consistent". **Run time 0.24 s** (plus about a
+minute to copy the 541 MB dump from the Windows drive). **Verdict: refuse, 37 refusals in three checks.**
+
+- **C6 built tests run (22):** 4 red offline deciders (`selftest_flowworks_northstar.py`, `selftest_liquid_looks.py`,
+  `selftest_natives_drink_own_water.py`, `validation_v2.py --offline`); 5 offline tests specified, not built (wetting,
+  wetness probe, toss flame, fetch fallen, bedless prison care); 13 in-game scenes whose entry function does not exist
+  (all in `northstar/concept_scenes.py`: fill front, one surface, source pays, pawn height, hose look, trench cover, ice,
+  moat raid, toss flame, wetting, fetch fallen, islands, the season walk). By his card "Built: runs" each is a Stage 3 line.
+- **C8 held statements (13):** every row is placed, but 13 have no 0.1.0 bar (geyser hot tub 9, liquid coating 3, dig
+  interface 1). Route: his call, Problem (a new bar now) or Divergent (`next_version`).
+- **C13 scenes prove a leaf (2):** `sc_pit_trap_raid` and `sc_garden` name no requirement; they are showcase scenes whose
+  inventory rows are named only in `showcases`. Test text, not bar meaning: a neutral fixer could add their leaves.
+- **Passed:** bars complete (59/59), every bar has a deciding test, every test has a stage, files and reads real (273
+  reads), game reasons written (29 in-game tests), defs real (12 RM_ names), locked files unchanged (7 pinned files
+  byte-identical; stage.json exempt as state), owed items real, tiers consistent. **C10 (mods) and C11 (settings fields)
+  pass vacuously:** the scenes name no packageId and no settings field (probed by grep), so they decide nothing here.
+- **The checker was watched failing:** planted faults (a dropped bar, an undefined test, an empty decides list, a missing
+  file, a blank game reason, an unplaced held row, an invented RM_ name, a red result) each turned their check red (C1,
+  C2, C4, C6, C7, C8, C9). C12 was not mutated.
+- One of my own table errors was caught on the way: the wetting test named an item I had not filed; it now points at the
+  existing `FLOWWORKS_WETTING_BUILD_TWO_SQUARES_DAMP`.
+- **Cost:** about $0.5 (harness $5.9 → $6.4 incl. the publish), 3 minutes wall.
+- **Boring enough to automate:** all fifteen checks; this script is the seed of the Stage 2 program (spec §9 build order 3).
+- **Needed judgment:** whether a bar-less held row is a refusal or a placement (taken as a refusal routed to him);
+  reading C10/C11's zeros as blind rather than green.
+
+### What Stage 3 ("reconcile") must build, not begun here
+
+1. Make the 4 red offline deciders green (settings registry / O2 `digLabourMultiplier`, liquid looks, natives' propane
+   drink, the v2 offline tier): small, a fixer each, unless the concurrent water work explains them.
+2. Build the 5 specified offline tests failing first, and their code where it is absent: wetting and the probe (code
+   absent: large), toss flame (absent: medium), raiders fetch their fallen (partly present in `RM_PitAccessMath`:
+   medium-large), bedless prison care (code present in `RM_PitPrisonCare.cs`: small test).
+3. Write the 13 missing scene entries in `concept_scenes.py` (live tests, built and listed UNRUN with their commands per
+   his 2026-11-13 ruling): large in total, about one hour of builder time each for the simple ones, more for the three raids.
+4. Reach or delete the 2 never-reached C# cases; add leaves to `sc_pit_trap_raid` and `sc_garden` (neutral fixer).
+5. The specified held checks (GodLiquid naming and never-"No room", the deep-opacity and blue-with-depth parity rows, the
+   drafted-move release ring): small each.
+
+### Questions for him (none blocks Stage 3)
+
+1. **The geyser hot tub** (9 held rows, his own 2026-11-12 request): it is built and tested (`GeyserTub_*`, 11 cases
+   green) but no 0.1.0 bar names it. Problem in 0.1.0 (a new bar) or Divergent (next version)?
+2. **Liquid coating on pawns and washing it off** (3 rows, filed to the Designer): same question.
+3. **The dig interface consolidation and the dig speed** ("daunting"; "it's slow"): already open with him on
+   RIMMANDRAKE_DESIGN_FLOWWORKS_DIG_INTERFACE_CONSOLIDATION; the dig-time test waits for his target.
+4. **Melee shove into a pit** (proposed for the next version): his now-or-next call is still open.
