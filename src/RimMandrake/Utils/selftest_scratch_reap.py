@@ -956,6 +956,12 @@ def review_cases(td: Path, origin: Path):
             R.Live._read, R.undumpable_system = real_read, real_system
             R._SYSTEM_PIDS.clear()
 
+        for comm, want in (("tailscaled", True), ("ssh-agent", True), ("claude", False), ("zsh", False)):
+            fake = td / f"proc_{comm}"
+            fake.mkdir(exist_ok=True)
+            (fake / "comm").write_text(comm + "\n")
+            check(R.undumpable_system(str(fake)) is want, f"undumpable_system({comm!r}) is {want}: a Tailscale ssh be-child never blinds the reap")
+
         real_open = open
 
         def status_denied(f, *a, **k):

@@ -438,7 +438,8 @@ def unpreserved_canon(c: Path, saves: list[str]) -> list[str]:
     return [os.path.relpath(s, c) for s in canonical_saves(saves) if not mirror_holds(Path(s))]
 
 
-NONDUMPABLE = {"systemd", "(sd-pam)", "ssh-agent"}     # ours by uid, unreadable by design, never an agent session
+NONDUMPABLE = {"systemd", "(sd-pam)", "ssh-agent", "tailscaled"}     # ours by uid, unreadable by design, never an agent session
+# tailscaled: the be-child of a Tailscale ssh login runs as us undumpable; the shell under it is its own readable pid
 
 
 def undumpable_system(base: str) -> bool:
