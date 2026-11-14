@@ -5,7 +5,8 @@ Usage: python3 preflight_ek.py <repo> [--dump <defs.sqlite>]"""
 import json, os, re, sqlite3, subprocess, sys, time, glob, datetime, math
 T0 = time.time()
 REPO = os.path.abspath(sys.argv[1]); os.chdir(REPO)
-DUMP = sys.argv[sys.argv.index("--dump") + 1] if "--dump" in sys.argv else "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/defs.sqlite"
+sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils")); from game_paths import DUMP_ROOT  # noqa: E402
+DUMP = sys.argv[sys.argv.index("--dump") + 1] if "--dump" in sys.argv else os.path.join(str(DUMP_ROOT), "defs.sqlite")
 C = "design/concepts/ExplosiveKnockback"; M = "src/RimMandrake/ExplosiveKnockback"
 tab = json.load(open(C + "/version/test_table.json")); tests, bars = tab["tests"], tab["bars"]
 tree = json.load(open(C + "/tree.json")); rec = json.load(open(C + "/record.json")); scenes = json.load(open(C + "/scenes.json"))

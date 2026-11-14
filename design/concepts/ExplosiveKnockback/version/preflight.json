@@ -2,7 +2,7 @@
  "mod": "ExplosiveKnockback",
  "version": "0.1.0",
  "program": "preflight_ek.py (throwaway, pilot row 3)",
- "at": "2026-11-14T11:32:00-08:00",
+ "at": "2026-11-14T11:33:11-08:00",
  "dump": {
   "path": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/defs.sqlite",
   "provenance": {
@@ -16,7 +16,7 @@
    "defs_total": "59262"
   }
  },
- "seconds": 0.7,
+ "seconds": 0.69,
  "verdict": "refuse",
  "refusals": 26,
  "checks": [
@@ -131,7 +131,7 @@
    "evidence": "17 names checked; dump defs.sqlite (4ad8ea9af8a56090, 51081 defs, 316 mods)",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.114
+   "seconds": 0.121
   },
   {
    "id": "C10_mods_real",
@@ -141,7 +141,7 @@
    "evidence": "6 named: lwm.deepstorage, mandrake.rm.cauldron, mandrake.rm.creaturebehaviors, mandrake.rm.environmentalhazards, mandrake.rm.flowworks, mandrake.rsw.armoury",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.002
+   "seconds": 0.003
   },
   {
    "id": "C11_settings_fields_real",
@@ -151,7 +151,7 @@
    "evidence": "22 named, 46 fields in the settings class",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.004
+   "seconds": 0.005
   },
   {
    "id": "C12_locked_files_unchanged",
@@ -197,7 +197,7 @@
    "evidence": "10 items",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.565
+   "seconds": 0.512
   }
  ]
 }
