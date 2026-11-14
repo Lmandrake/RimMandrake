@@ -44,14 +44,13 @@
 ## waived
 
 ## open
-- Furnace-beast herds no longer migrate across the world map: that leg was cut by your card on 2026-10-23; the description text still promising it is owed a fix
 - The walk has no bar for ullai drifting to old burns, the furnace-beast's sleep-ignition, the sand shovel, the firefoam sprayer or the fire-rite hook; each hangs on the nearest bar until an agent adds one
 
 ## delegated
 - The firebreak floor is cut on my evaluation at your request: the front, the smoulder relight and the hawk's ember all light cells through vanilla fire rules, so any paved strip two cells wide stops them; you can undo it. Its leaf was deleted by your card 2026-11-13; the offline row paved_strip_excised checks the floor stays gone
-- Showcase 2 is the fire cast at work (hawk, ashwallow diving and doming, ullai, and the giant furnace-beast among them) and showcase 3 is weathering the sky with a furnace-beast in a blackened ruin, as the most new ground after the burn line
+- Showcase 2 is the fire cast at work (hawk, ashwallow diving and doming, ullai, and the giant furnace-beast among them) and showcase 3 is the sky and shelter: the three skies forced in turn over a fire pad and an ash patch, two closed rooms with and without a furnace-beast, the blackened ruins read where they stand, and furnace-beasts asleep on grass, as the most new ground after the burn line
 - The sand shovel, the firefoam sprayer, the fire-rite hook, Mod Settings and the art are checked by their own scenes rather than a showcase
-- The Pyrelands promise covers your shipped world only, per your 2026-08-15 ruling; the built switch that lets vanilla place the biome on a newly generated world stays as built and nothing checks it. It ships off, labelled unsupported, by your card 2026-11-13 (PYRE_WORLDSWITCH_DECIDE_ON_BY_DEFAULT)
+- The Pyrelands promise covers your shipped world only, per your 2026-08-15 ruling; the built switch that lets vanilla place the biome on a newly generated world stays as built and is outside the promise; only its shipped default is checked (off, offline, by selftest_pyrelands_site.py). It ships off, labelled unsupported, by your card 2026-11-13 (PYRE_WORLDSWITCH_DECIDE_ON_BY_DEFAULT)
 - Fires going out under black rain is vanilla rain's own rule carried by black rain; the scene claims no more than that
 
 ## pruning

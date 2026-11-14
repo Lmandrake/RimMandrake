@@ -34,7 +34,7 @@
    "start": [
     "fresh Pyrelands map, clear weather at noon (asserted)"
    ],
-   "action": "census the terrain; capture open ground; force ash fall for half a day, counting loose ash and reading light each hour",
+   "action": "census the terrain; capture open ground; force ash fall for half a day, reading ash depth on the sand grid (ProbeAsh) and light each hour",
    "expect": "deep ash on most cells, soil and gravel only in pockets, richer ground by water; ash blowing in clear weather; drifts rise and the light falls under ash fall",
    "control": {
     "case": "a vanilla arid shrubland quicktest map read by the same census and capture",
@@ -58,10 +58,10 @@
     "same crop sown on the same tick"
    ],
    "action": "grow five days, reading growth each day",
-   "expect": "the watered strip clearly ahead; fertility about 140% watered and about 40% dry",
+   "expect": "the watered strip clearly ahead; fertility about 140% watered and about 70% dry",
    "control": {
     "case": "the same watered deep-ash strip with the watered-lift switch (ashWaterFertilityEnabled) off, sown on the same tick",
-    "expect": "reads dry-ash fertility (about 40%) and grows at the dry strip's rate",
+    "expect": "reads dry-ash fertility (about 70%) and grows at the dry strip's rate",
     "rules_out": "richer soil by the water passing for watered ash: the lift is the mechanism, not the ground"
    },
    "restore": "put back the pad terrain, plants, filth and things from the snapshot taken at scene-begin, extinguish every fire the scene lit (both strips and the channel), restore the watered-lift switch",
@@ -80,7 +80,7 @@
     "three deep-ash pads: fresh burn, fresh burn under black rain, old ash under black rain (asserted by the ash fertility probe)"
    ],
    "action": "start black rain over two pads for half a day; read the probe and crop growth on each through day 7",
-   "expect": "wet fresh scar about 190%, dry fresh scar about 90%, wet old ash about 140% while it rains; the burn bonus gone by day 6 to 7 on its own clock",
+   "expect": "wet fresh scar about 190%, dry fresh scar about 120%, wet old ash about 140% while it rains; the burn bonus gone by day 6 to 7 on its own clock",
    "control": {
     "case": "the same three pads with the burn bonus switch off",
     "expect": "the wet fresh scar reads the same as wet old ash",
@@ -170,7 +170,7 @@
     "fresh Pyrelands map holding ruins (asserted: at least one)"
    ],
    "action": "capture each ruin at play zoom; read footprint terrain and filth",
-   "expect": "blackened ruins on deep ash with loose ash in them",
+   "expect": "blackened ruins on deep ash with ash lying in them (ProbeAsh over the ruin footprint: ashed cells above zero)",
    "control": {
     "case": "a ruin on a vanilla temperate quicktest map read the same way",
     "expect": "reads clean, on soil",
@@ -282,10 +282,10 @@
    "start": [
     "the same map at noon, clear weather asserted",
     "three fire pads lit and burning (asserted)",
-    "a loose-ash patch laid and counted"
+    "an ash patch laid on the sand grid and its depth read (ProbeAsh)"
    ],
    "action": "force ash fall, cinderfall and black rain in turn, half a day each, over one fire pad and the ash patch; capture each at play zoom for a blind reader; count lightning strikes under each sky; count fire cells and loose ash each hour; keep one fire pad under clear sky and force vanilla rain over the third",
-   "expect": "the three captures are told apart and from vanilla rain; lightning strikes under cinderfall and none under ash fall; loose ash falls under black rain; fires go out under black rain while the clear-sky pad still burns",
+   "expect": "the three captures are told apart and from vanilla rain; lightning strikes under cinderfall and none under ash fall; the ash patch's depth (ProbeAsh depthSum) falls under black rain; fires go out under black rain while the clear-sky pad still burns",
    "control": {
     "case": "the clear-sky fire pad and the vanilla-rain fire pad over the same hours, and a vanilla rain capture shown to the blind reader",
     "expect": "the clear-sky pad keeps burning; the vanilla-rain pad also goes out; the reader names the vanilla capture ordinary rain",
@@ -467,13 +467,13 @@
    "entry_point_item": "PYRELANDS_SCENES_BUILD_VENOM_GIANT_DUST_DOME",
    "start": [
     "a pad painted wholly RM_FE_Ash_Deep (asserted: set_terrain changed or already correct on every cell) and grassed with ember grass",
-    "clear weather (asserted) and no loose-ash filth on the pad (asserted: count 0)"
+    "clear weather (asserted) and no ash on the pad (asserted: ProbeAsh ashed 0)"
    ],
-   "action": "light the pad and let it burn 2600 ticks; count RM_FE_Filth_LooseAsh on the pad",
-   "expect": "at least one loose-ash filth on the burned pad",
+   "action": "light the pad and let it burn 2600 ticks; read ash depth on the sand grid (ProbeAsh) on the pad",
+   "expect": "ashed cells on the burned pad above zero (ProbeAsh)",
    "control": {
     "case": "the same pad and burn with fire ash-dusting (ashDustingEnabled) off",
-    "expect": "no loose ash on the pad beyond what a pad left unburned beside it banks in the same window",
+    "expect": "no more ash depth on the pad (ProbeAsh) than a pad left unburned beside it banks in the same window",
     "rules_out": "ambient blowing ash or ash fall banking loose ash on the pad, rather than the fire leaving it"
    },
    "restore": "put back the pad terrain, plants, filth and things from the snapshot taken at scene-begin, extinguish every fire the scene lit, restore the ash-dusting switch and weather",
@@ -619,7 +619,7 @@
     "sc_three_skies",
     "biome_text_says_engineered"
    ],
-   "why": "he approved the art sheet; the floor's art and reads_as lines run on these scenes' captures, and the biome text is read offline"
+   "why": "the shipped art rests on his approval of the art sheet (OWNER:1792122659817386516, 2026-10-16); sc_three_skies' captures carry the floor's art and reads_as lines for the skies only; sc_populations takes no capture and checks only that the shipped cast is the biome's own; the biome text is read offline"
   }
  ]
 }

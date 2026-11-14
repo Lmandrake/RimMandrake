@@ -178,7 +178,7 @@
   {
    "id": "d_worldgen_outside_promise",
    "speaker": "agent",
-   "text": "Per his 2026-08-15 ruling (no worldgen feature in any version; players never generate anything, they receive the one frozen world): the Pyrelands promise covers only the shipped world. The built biomeGenerationEnabled switch (vanilla placement on newly generated worlds) stays as built and is outside the promise: no leaf, no scene, no check. The mod builds no worldgen of its own. Stage 3 owes: sheet floor:worldgen reworded to 'No worldgen of our own; the vanilla new-world placement switch is outside the promise and unchecked', floor.json worldgen line kept applicable with that reading, and coverage_rest naming the switch as out of promise (per-ruling, not a cut). Whether its default should be on is filed for him as PYRE_WORLDSWITCH_DECIDE_ON_BY_DEFAULT (2026-08-18 'no knobs that could roll a second world'); it does not block this concept. He can undo this.",
+   "text": "Per his 2026-08-15 ruling (no worldgen feature in any version; players never generate anything, they receive the one frozen world): the Pyrelands promise covers only the shipped world. The built biomeGenerationEnabled switch (vanilla placement on newly generated worlds) stays as built and is outside the promise: no leaf and no scene; only its shipped default (off, his card 2026-11-13) is checked, offline, by selftest_pyrelands_site.py. The mod builds no worldgen of its own. Stage 3 owes: sheet floor:worldgen reworded to 'No worldgen of our own; the vanilla new-world placement switch is outside the promise and unchecked', floor.json worldgen line kept applicable with that reading, and coverage_rest naming the switch as out of promise (per-ruling, not a cut). Whether its default should be on is filed for him as PYRE_WORLDSWITCH_DECIDE_ON_BY_DEFAULT (2026-08-18 'no knobs that could roll a second world'); it does not block this concept. He can undo this.",
    "source": "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs:60"
   },
   {
@@ -538,7 +538,7 @@
     "src/RimMandrake/Pyrelands/Defs/TerrainDefs/AshField.xml",
     "src/RimMandrake/Pyrelands/Defs/TerrainDefs/ScorchableGround.xml",
     "src/RimMandrake/Pyrelands/Source/PyrelandsAshField.cs",
-    "src/RimMandrake/Pyrelands/Defs/ThingDefs_Ash/Filth_LooseAsh.xml",
+    "src/RimMandrake/Pyrelands/Source/PyrelandsAshSand.cs",
     "design/RimMandrake/pyrelands_ash_redesign_2026-10-12.md"
    ],
    "proof": "stale",
@@ -714,7 +714,7 @@
   },
   {
    "id": "inv_ullai_herd_giant",
-   "what": "Ullai herds drift to where it burned about two days ago (burn-centre history), and the furnace-beast is a giant (size ratio); on the map a low-charge beast walks into the burn and a full one walks away. The world-map herd migration was built, then cut by his card 2026-10-23 (commit 84cc81013d); About.xml and the race description still promise it (owed: PYRELANDS_TEXT_FIX_ENGINEERED_NEVER_SAID)",
+   "what": "Ullai herds drift to where it burned about two days ago (burn-centre history), and the furnace-beast is a giant (size ratio); on the map a low-charge beast walks into the burn and a full one walks away. The world-map herd migration was built, then cut by his card 2026-10-23 (commit 84cc81013d); About.xml and the race descriptions no longer mention it (grep -i migrat over About, Defs, Languages and Patches finds only herdMigrationAllowed false and a patch comment, measured 2026-11-14); the absence is checked offline by T_CUT_STAYS_CUT (version/test_table.json, specified)",
    "impl": "present",
    "impl_evidence": [
     "src/RimMandrake/Pyrelands/Source/RM_PyrelandsGiants.cs",

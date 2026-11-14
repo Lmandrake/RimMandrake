@@ -12,12 +12,19 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Scope: the biome alone; the Deep
   Desert Tribes are a separate mod (`design/concepts/PyrelandsMechanics`), started only after this version passes.
   Code exists: `src/RimMandrake/Pyrelands/` (packageId `mandrake.rm.pyrelands`, ships composed in `mandrake.rm.biomes`).
-- **Stage now:** Stage 1 being finished by hand, 2026-11-14.
+- **Stage now:** Stage 1 finished by hand 2026-11-14 11:37 PST (advance row 2); Stage 2 next.
 - **Bars:** 41 (20 inventory rows of `record.json` + 21 leaves of `tree.json`), as `version/bars.md` counts them.
   Two inventory rows (`inv_firebreak_firefoam`, `inv_lightning_breaker`) are scope `out`: cut, kept only as absence checks.
-- **Judge gaps open:** 14 from the last coverage verdict (`version/gaps_sorted.md`): 6 PROBLEM, 1 POLISH, 7 CORRECTION.
-- **Held look statements for this mod:** 0 (measured below).
-- **Waiting on:** nothing yet; Stage 1 by hand is in progress.
+  The test-and-stage table is `version/test_table.json` (read view `version/test_table.md`), same columns as Explosive
+  Knockback's.
+- **Measured 2026-11-14:** 34 of 41 bars have at least one test that runs today (a built offline test that ran green, or
+  an in-game scene whose entry exists in `validation.py`); 27 have every deciding test runnable; 6 have offline deciding
+  tests, and none of those 6 is decided by built tests alone. 11 built offline tests ran green for this mod; 4 are
+  specified for Stage 3. 4 of the 23 `scenes.json` scenes have no entry in `validation.py`. No live scene ran (offline only).
+- **Judge gaps:** 14 from the last coverage verdict (`version/gaps_sorted.md`). 6 of the 7 CORRECTIONs are applied to test
+  text (g1 g3 g5 g11 g12 g13); g14 (rerun the exam) is a model step and stays open. 6 PROBLEM and 1 POLISH stay for Stage 3.
+- **Held look statements for this mod:** 0 (measured).
+- **Waiting on:** Stage 2's verdict on the table, then a builder for Stage 3 ("reconcile").
 
 ### The vision (his root paragraph, approved by card 2026-11-06, OWNER:1793950669508519029)
 
@@ -59,6 +66,13 @@ fire's own cast of animals, three skies and never ordinary rain, whole on its ow
    no (not run: offline only)` unless an offline test also decides it.
 6. **The Designer stage record says stage 4, blocked**, on a pending note about the 2026-11-06 verdict's five gaps.
    That note is stale (the worldgen question was answered by card 2026-11-13). The version lock supersedes it.
+7. **Built behaviour with no bar.** The fire-hawk's hunt rewards (the once-per-game letter and the crestfeather trophy,
+   `FireHawkRewards.cs`, two green selftests) are in the lock commit but no bar or inventory row names them. They are
+   left out of the table, as a question.
+8. **One entry, three skies.** `sc_three_skies` names `validation.py::cinderfall` as its entry; whether that function
+   also forces ash fall and black rain is for Stage 2 or the Stage 4 challenger to read, not assumed here.
+9. **`selftest_settings_screens.py` is red as a file** (851/856 today) on five rows of other mods (Explosive Knockback,
+   Rites, CathedralPass, KyberTradePlot); every Pyrelands row is green, and the table reads only those rows.
 
 ## History (dated, added to only)
 
@@ -79,3 +93,29 @@ FlowWorks water code). Owner, 2026-11-14: "We need to get this going."
   count per mod (one grep, but the mod's vocabulary has to be chosen); the stale-exam check (hash of tree and sheet
   against `exam.json`).
 - **Needed judgment:** which oddities a cold reader trips on (the two bar sets; the stale Designer note).
+
+### 2026-11-14 11:37 PST, row 2 done: Stage 1 finished by hand
+
+- **The table:** `version/test_table.json` and `.md`, made by a throwaway script
+  (`D:\ClaudeWork\scratch\pyrelands_advance\make_test_table.py`, 84 s, most of it the lint's planted-defect run). Each
+  of the 41 bars names the tests that decide it, the tests that support it, and the highest deciding stage. The counts are above.
+- **How many already had a runnable test: 34 of 41** (any test), 27 with every decider runnable [measured; "runnable" for a
+  live scene means its entry function exists, not that it ran].
+- **Corrections applied (test text only):** g1 (the deleted loose-ash def swapped for the sand-grid ash reading
+  `ProbeAsh`, in 4 scenes and 3 leaf oracles), g3 (dry ash 70%, dry fresh scar 120%, from the code's 0.70 / 1.40 / +0.50),
+  g5 (the world switch's default is checked, by `selftest_pyrelands_site.py`), g11 (art coverage rests on his sheet
+  approval), g12 (the false "still promises migration" lines removed; grep finds none), g13 (showcase 3 described as
+  staged). In `tree.json` only `oracle_proposed` and `scenario` fields moved; every `experience` and `red` is
+  byte-identical to the lock [measured against `237b791167`]. Where a judge fix asked for a new leaf (g5, g12) a test was
+  named instead, since a leaf is a bar. g14 not applied.
+- **The settings move:** `inv_settings_gate` was proven only by the two-week walk. It is now decided offline by
+  `T_SETTINGS_SWEEP_OFFLINE` (specified: defaults, readers, the roster gate checked by every mechanic), with the built
+  `selftest_settings_screens.py` (Pyrelands rows) and `selftest_pyrelands_site.py`; the walk keeps the gate-off read in
+  play only as support.
+- **Held statements placed:** none exist for this mod (0).
+- **Cost:** about $2.3 of model spend for the row (running total about $3.6), 7 minutes wall.
+- **Boring enough to automate:** entry-exists per scene; running every offline test with a time and a result; the
+  "only oracle and scenario fields moved" check; applying a judge's literal text fixes once its `smallest_fix` is exact.
+- **Needed judgment:** which tests decide a bar and which only support it; whether an existing test really observes the
+  bar (the fuzz covers the fertility kernel, not a crop growing); declining the judge's "add a leaf" (a new bar) for a
+  test; spotting the unbarred fire-hawk rewards.
