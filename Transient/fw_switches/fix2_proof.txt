@@ -1,0 +1,32 @@
+old case (base, per-square whole-notch model): holds 12 notches of 24 (poured 106, drained 94)
+RED (tests in, old tap code, bar run on old pour):
+      pour what fits: holds 23 levels of 24 (poured 120.9166, drained 97.9166)
+      whole levels only (the old pour): holds 22.5455 levels
+ok    MapControl_source_and_sink_conserve_through_the_kernel
+FAIL  MapControl_source_pours_what_fits
+        a source facing 0.6 level of room poured 0 dL, not 6000
+FAIL  MapControl_wiring_and_master_switch
+        the source does not pour what fits through the engine's driver write
+  FAIL  MapControl_source_pours_what_fits
+  a source facing 0.6 level of room poured 0 dL, not 6000
+  FAIL  MapControl_wiring_and_master_switch
+  the source does not pour what fits through the engine's driver write
+GREEN (new tap code):
+ok    MapControl_rate_to_levels
+ok    MapControl_rate_clamps
+ok    MapControl_blocked_source_never_banks
+ok    MapControl_pick_targets
+      pour what fits: holds 23 levels of 24 (poured 120.9166, drained 97.9166)
+      whole levels only (the old pour): holds 22.5455 levels
+ok    MapControl_source_and_sink_conserve_through_the_kernel
+ok    MapControl_source_pours_what_fits
+ok    MapControl_wiring_and_master_switch
+ok    MapControl_level_holder_need
+ok    MapControl_level_holder_conserves_through_the_kernel
+ok    MapControl_timer_schedule
+ok    MapControl_edge_rules
+ok    MapControl_thermostat_energy
+ok    MapControl_thermostat_subnotch_liquid
+ok    MapControl_six_wiring
+full C# suite: 1344 ok, 1 FAIL DeckCollapse_GSS_shock_seam_is_soft_and_load_safe (pre-existing, RIMMANDRAKE_REPAIR_DECK_COLLAPSE_SEAM_CHECK_LOST_ITS_ANCHOR)
+preflight after: refuse 7 (C6x6, C8x1), same as before
