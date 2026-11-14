@@ -1,10 +1,10 @@
 # Gimme Some Slack 0.1.0: open judge gaps, sorted
 
-Source: the latest coverage verdict, `rm-coverage-judge-1794599377` (2026-11-13 11:49 PST), judged at the tree locked here; copied to `evidence/` because its only copy is uncommitted in `/home/mandrake/rm/bench`. 39 of its 47 checklist rows met; 5 gaps, every one rated "criterion sound, cost edit".
+Source: the latest coverage verdict, `rm-coverage-judge-1794599377` (2026-11-13 11:49 PST), judged at the tree locked here; a copy is in `evidence/`, and `910f69411e` also landed it as `coverage_verdict.json`. 39 of its 47 checklist rows met; 5 gaps, every one rated "criterion sound, cost edit".
 
 Sort rule (same in every mod): **PROBLEM** = without the fix a defect a player would reject (or find strange or disappointing) can ship unnoticed; stays in 0.1.0. **POLISH** = improves play, not part of passing, needs his confirmation. **NEXT VERSION** = shifts or extends the vision. **CORRECTION** = the bar's or test's own text is wrong, contradictory or reads something that does not exist.
 
-⚠️ **All five are claimed fixed** by Designer run rm-role-designer-1794600246 and the exam then passed 26/26, but those edits (tree 5e3aa0d4, sheet 33b1cddc, 7 files) were never committed: they sit in `/home/mandrake/rm/bench`. Until they land, the committed bars still carry these five gaps.
+⚠️ **All five are claimed fixed** by Designer run rm-role-designer-1794600246 and the exam then passed 26/26; those edits (tree 5e3aa0d4, sheet 33b1cddc) landed in `910f69411e` on 2026-11-13. No coverage judge has read them since, so this verdict still stands as the latest.
 
 | gap | bars it touches | sort | reason |
 |---|---|---|---|
@@ -21,4 +21,4 @@ Counts: PROBLEM 5 · POLISH 0 · NEXT VERSION 0 · CORRECTION 0 (one part of g2)
 | line | where | suggested sort | reason |
 |---|---|---|---|
 | Which look a player picks is taste; none of the four is reject-level | `sheet.md` advisory | none | Already advisory, outside passing. |
-| The pending note says "Stage 3 must fix the five gaps" | `stage.json` pending_decision | not a gap | Stale on origin; the fix exists in the uncommitted bench edits. |
+| The pending note says "Stage 3 must fix the five gaps" | `stage.json` pending_decision | not a gap | Stale: the fix landed in `910f69411e`. |
