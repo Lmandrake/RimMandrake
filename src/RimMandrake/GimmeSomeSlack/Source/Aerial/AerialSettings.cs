@@ -50,9 +50,19 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public static float theftSightRange = 12f;
         /// <summary>GS-1: a span with both anchors aboard a launching gravship lands still strung.</summary>
         public static bool keepWiresOnGravship = true;
-        /// <summary>FALLEN_WIRE_SHOCK_1: a live fallen wire knocks out whoever touches it, colonists included; lethal
-        /// only to a weak heart (RM_FallenWireShock).</summary>
+        /// <summary>How far shock reaches (owner 2026-11-06: "Every sparking end shocks, but settable in settings to those three
+        /// options: None, only downed lines, or all."): All = sparking floor-cord ends (FloorEndShock) and downed lines (fallen
+        /// spans, FlowWorks' dropped deck cords: RM_FallenWireShock); Only downed lines = the latter; None = nothing. A shock
+        /// knocks out whoever it hits, colonists included, lethal only to a weak heart (FALLEN_WIRE_SHOCK_1). Floor ends do not
+        /// read the aerial master switch. The rule is ShockRule.Takes.</summary>
+        public static ShockReach shockReach = ShockReach.All;
+        /// <summary>DERIVED, not a setting: shockReach != None, refreshed by <see cref="SyncDerived"/> (load, reset, the window,
+        /// every contact rebuild). Kept so readers of the old on/off name (FlowWorks lines_proof.py) read the truth; a write to
+        /// it is overwritten at the next sync. Not saved, not drawn, not in the shipped-defaults table.</summary>
         public static bool fallenWireShock = true;
+
+        /// <summary>Refresh the derived <see cref="fallenWireShock"/> from <see cref="shockReach"/>.</summary>
+        public static void SyncDerived() { fallenWireShock = shockReach != ShockReach.None; }
         /// <summary>FALLEN_WIRE_SHOCK_1 (X-7): a live end lying in spilled fuel can light it.</summary>
         public static bool fallenWireIgnites = true;
         /// <summary>Cells a shock throws a pawn back, 0-3. PROVISIONAL.</summary>
@@ -86,13 +96,14 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             Scribe_Values.Look(ref theftGoodwillPerDay, "theftGoodwillPerDay", 2);
             Scribe_Values.Look(ref theftSightRange, "theftSightRange", 12f);
             Scribe_Values.Look(ref keepWiresOnGravship, "keepWiresOnGravship", true);
-            Scribe_Values.Look(ref fallenWireShock, "fallenWireShock", true);
+            Scribe_Values.Look(ref shockReach, "shockReach", ShockReach.All);
             Scribe_Values.Look(ref fallenWireIgnites, "fallenWireIgnites", true);
             Scribe_Values.Look(ref fallenWireKnockback, "fallenWireKnockback", 2);
             Scribe_Values.Look(ref wireDownAlert, "wireDownAlert", true);
             Scribe_Values.Look(ref cutWiresOnOwnerChange, "cutWiresOnOwnerChange", true);
             Scribe_Values.Look(ref dripLoops, "dripLoops", AerialMath.DripLoopsDefault);
             RimMandrake.Shared.PatchApplier.AfterExpose(GetType());
+            SyncDerived();
         }
 
         public static void ResetToDefaults()
@@ -113,7 +124,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             theftGoodwillPerDay = 2;
             theftSightRange = 12f;
             keepWiresOnGravship = true;
-            fallenWireShock = true;
+            shockReach = ShockReach.All;
+            SyncDerived();
             fallenWireIgnites = true;
             fallenWireKnockback = 2;
             wireDownAlert = true;
@@ -187,22 +199,26 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 list.GapLine();
             }
 
-            if (Group(list, "Damage, shock and alerts", RimMandrake.Shared.SettingScope.Now, new[] { "explosionsCut", "kineticSway", "fallenWireShock", "fallenWireKnockback", "fallenWireIgnites", "wireDownAlert", "cutWiresOnOwnerChange" }))
+            if (Group(list, "Damage, shock and alerts", RimMandrake.Shared.SettingScope.Now, new[] { "explosionsCut", "kineticSway", "shockReach", "fallenWireKnockback", "fallenWireIgnites", "wireDownAlert", "cutWiresOnOwnerChange" }))
             {
             list.CheckboxLabeled("Explosions cut wires (the halves hang and spark)", ref explosionsCut);
             list.CheckboxLabeled("Kinetic blasts (Kinetic Arms push waves) swing wires instead of cutting them", ref kineticSway,
                 "A push wave never cuts a wire. Off: the wires ignore it.");
-            using (Dependent(list, "fallenWireShock", "fallenWireKnockback", "fallenWireIgnites", "wireDownAlert", "cutWiresOnOwnerChange"))
-            {
-            list.CheckboxLabeled("Live fallen wires shock whoever touches them", ref fallenWireShock,
-                "Anyone, colonists included, who touches a live wire lying on the ground is thrown back and knocked out for a couple " +
-                "of hours. Only a weak heart (artery blockage, a heart attack, or a damaged heart) is killed. A dead wire is harmless. " +
-                "Also covers a powered Flow Works power cord dropped into a pit by a collapsing bridge. Applies now.");
-            using (Dependent(list, "fallenWireKnockback"))
-            {
+            // one shock choice, three values (owner 2026-11-06); read with the overhead-lines master off: floor ends still bite
+            list.Label((TaggedString)"Live lines shock whoever crosses them:", -1f,
+                "Anyone, colonists included, who crosses a live line is thrown back and knocked out for a couple of hours. Only a " +
+                "weak heart (artery blockage, a heart attack, or a damaged heart) is killed. A dead line is harmless, and so is the " +
+                "colonist rebuilding that very conduit or re-stringing that very wire. Applies now.");
+            foreach (ShockReach r in new[] { ShockReach.All, ShockReach.OnlyDownedLines, ShockReach.None })
+                if (list.RadioButton(r == ShockReach.All ? "All: sparking cord ends on the floor, and downed lines"
+                                     : r == ShockReach.OnlyDownedLines ? "Only downed lines: fallen overhead wires, and a Flow Works deck cord a collapse dropped"
+                                     : "None", shockReach == r, 12f))
+                    shockReach = r;
+            SyncDerived();
             list.Label("Shock throws the victim back: " + fallenWireKnockback + " cell(s)");
             fallenWireKnockback = Mathf.RoundToInt(list.Slider(fallenWireKnockback, 0f, 3f));
-            }
+            using (Dependent(list, "fallenWireIgnites", "wireDownAlert", "cutWiresOnOwnerChange"))
+            {
             list.CheckboxLabeled("Live fallen wires light spilled fuel", ref fallenWireIgnites,
                 "A live end lying in spilled chemfuel, or in a burnable Flow Works liquid when that mod is loaded, can set it alight. " +
                 "Applies now.");
@@ -262,14 +278,13 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// under the sway mode: a kinetic swing reads it with sway off. Clamp chain: tapsEnabled -> tapRate, tapEvents;
         /// tapEvents -> theftGoodwill (TapEvents.Raise -> PowerTheftConsequences.OnDrained) -> per-day loss, sight range.</summary>
         internal static readonly RimMandrake.Shared.SettingDependencies Masters = new RimMandrake.Shared.SettingDependencies()
-            .Declare("enabled", "sag", "autoLink", "dripLoops", "sway", "swayStrength", "fallenWireShock", "fallenWireIgnites",
+            .Declare("enabled", "sag", "autoLink", "dripLoops", "sway", "swayStrength", "fallenWireIgnites",
                      "wireDownAlert", "cutWiresOnOwnerChange", "tapsEnabled")
-            .Declare("fallenWireShock", "fallenWireKnockback")
             .Declare("tapsEnabled", "tapRate", "tapEvents")
             .Declare("tapEvents", "theftGoodwill")
             .Declare("theftGoodwill", "theftGoodwillPerDay", "theftSightRange")
-            .Independent("maxSpan", "maxStrands", "keepWiresOnGravship", "explosionsCut", "kineticSway")
-            .Name("enabled", "Aerial power lines (master switch)").Name("fallenWireShock", "Live fallen wires shock whoever touches them")
+            .Independent("maxSpan", "maxStrands", "keepWiresOnGravship", "explosionsCut", "kineticSway", "shockReach", "fallenWireKnockback")
+            .Name("enabled", "Aerial power lines (master switch)").Name("shockReach", "Live lines shock whoever crosses them")
             .Name("tapsEnabled", "Allow power-tap clamps").Name("tapEvents", "Taps have consequences").Name("theftGoodwill", "Caught theft drains goodwill");
 
         private static object GetField(string n) => typeof(AerialSettings).GetField(n, BindingFlags.Public | BindingFlags.Static)?.GetValue(null);
@@ -289,7 +304,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         {
             var d = new Dictionary<string, object>();
             foreach (FieldInfo f in typeof(AerialSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
-                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int) || f.FieldType == typeof(string) || f.FieldType.IsEnum)
+                if (f.Name == nameof(fallenWireShock)) continue;   // derived from shockReach, not a setting
+                else if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int) || f.FieldType == typeof(string) || f.FieldType.IsEnum)
                     d[f.Name] = f.GetValue(null);
             return d;
         }

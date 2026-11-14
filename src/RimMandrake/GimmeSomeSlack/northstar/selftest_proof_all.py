@@ -351,13 +351,13 @@ import validation_aerial as _VA
 
 class FakeB:
     def __init__(self, faithful):
-        self.faithful, self.s, self.pawns, self.n, self.sweeps = faithful, {"fallenWireShock": "True", "fallenWireIgnites": "True", "fallenWireKnockback": "2", "keepWiresOnGravship": "True"}, {}, 0, 0
+        self.faithful, self.s, self.pawns, self.n, self.sweeps = faithful, {"shockReach": "All", "fallenWireIgnites": "True", "fallenWireKnockback": "2", "keepWiresOnGravship": "True"}, {}, 0, 0
 
     def ticks(self, n):
         self._t = n
         for pw in self.pawns.values():
             if pw["age"] == 0 and n >= 20:
-                shock = self.s["fallenWireShock"] == "True" if self.faithful else True
+                shock = self.s["shockReach"] != "None" if self.faithful else True
                 kb = int(self.s["fallenWireKnockback"]) if self.faithful else 0
                 pw["shocked"] = shock
                 if shock and kb > 0:

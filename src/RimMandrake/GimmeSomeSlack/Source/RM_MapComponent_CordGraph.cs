@@ -524,8 +524,35 @@ namespace RimMandrake.GimmeSomeSlack
         {
             if (!GimmeSomeSlackSettings.enabled) return;
             int t = Find.TickManager.TicksGame;
-            if (t % 250 == map.uniqueID % 250) PollLive();
+            if (t % 250 == map.uniqueID % 250) { PollLive(); endShockBuilds = -1; }
             if (SparksAllowed) Sparks(t);
+            if (t % Aerial.RM_FallenWireShock.CheckInterval == 0) EndShock();
+        }
+
+        // RIMMANDRAKE_BUILD_GSS_FLOOR_END_SHOCK_ANSWERED_WEEK_AGO: a live floor-cord end bites (Aerial/FloorEndShock.cs). Its contact
+        // cells are rebuilt after every live poll and every rebuild of the pieces, and checked every CheckInterval ticks.
+        private readonly Dictionary<int, IntVec3> endShockCells = new Dictionary<int, IntVec3>();
+        private int endShockBuilds = -1;
+        private Aerial.ShockReach endShockReach = Aerial.ShockReach.All;
+        public int EndShockCellCount => endShockCells.Count;
+        public IEnumerable<IntVec3> EndShockCells() { foreach (int k in endShockCells.Keys) yield return map.cellIndices.IndexToCell(k); }
+
+        private void EndShock()
+        {
+            if (endShockBuilds != Builds || endShockReach != Aerial.AerialSettings.shockReach)
+            {
+                endShockBuilds = Builds;
+                endShockReach = Aerial.AerialSettings.shockReach;   // a changed setting applies at once, no restart
+                Aerial.FloorEndShock.RebuildContacts(map, this, endShockCells);
+            }
+            if (endShockCells.Count > 0) Aerial.FloorEndShock.CheckPawns(map, this, endShockCells);
+        }
+
+        /// <summary>Every floor-cord end on the map, live or dead, whatever the spark budget: the shock reads these.</summary>
+        internal IEnumerable<CordEnd> AllEnds()
+        {
+            foreach (LaidPiece p in pieces)
+                foreach (CordEnd e in p.Ends) yield return e;
         }
 
         /// <summary>Re-read live/dead for every conduit end and every LED key (tangle / device strips,

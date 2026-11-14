@@ -301,7 +301,7 @@ def dead_wire(B, V, rows):
     x, z = SC0
     _site(B, V)
     from validation_aerial import _wire_trial
-    for k, v in (("fallenWireShock", "True"), ("fallenWireIgnites", "True"), ("fallenWireKnockback", "0")):
+    for k, v in (("shockReach", "All"), ("fallenWireIgnites", "True"), ("fallenWireKnockback", "0")):
         B.ap("set:%s=%s" % (k, v))
     batt = (x + 2, z + 8)
     _, _, live, tip = _span(B, V, (x + 2, z + 4), (x + 16, z + 4), batt)

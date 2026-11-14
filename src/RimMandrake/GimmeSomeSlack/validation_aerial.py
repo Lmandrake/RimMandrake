@@ -965,7 +965,7 @@ def flips_block(B, rows, res):
         B.call("jawa/battery_set", thing=bid, mode="setPct", value=1.0)
     B.ticks(3)
     time.sleep(1.0)
-    for k, v in (("fallenWireShock", "True"), ("fallenWireIgnites", "True"), ("fallenWireKnockback", "2")):
+    for k, v in (("shockReach", "All"), ("fallenWireIgnites", "True"), ("fallenWireKnockback", "2")):
         B.ap("set:%s=%s" % (k, v))
     ap_ = anchors_by_pos(B.ap("census"))
     if F1 not in ap_ or F2 not in ap_:
@@ -986,12 +986,12 @@ def flips_block(B, rows, res):
     tip = (int(half["tip"][0] // 1), int(half["tip"][1] // 1))
     V.hrow(rows, "M20_flip_scene_built", "PASS", "SITE", {"tipCell": tip, "cuts": ce.get("cuts")})
 
-    # M20a fallenWireShock: off -> no hediff, on -> hediff
+    # M20a shockReach (the old fallenWireShock): None -> no hediff, All -> hediff
     B.ap("set:fallenWireKnockback=0")
-    B.ap("set:fallenWireShock=False")
+    B.ap("set:shockReach=None")
     B.ticks(250)                    # contacts are rebuilt only on the 250-tick sweep: let one run after each flip
     t_off = _wire_trial(B, tip)
-    B.ap("set:fallenWireShock=True")
+    B.ap("set:shockReach=All")
     B.ticks(250)                    # run 4 (2026-10-12): trial 24 ticks after the flip saw no contact cells -> 0 of 3 shocked
     t_on = _wire_trial(B, tip)
     if _trial_errors(t_off, t_on):       # a trial that never ran (no pawn spawned / listed) is not "no shock"
@@ -1016,7 +1016,7 @@ def flips_block(B, rows, res):
               {"knockback0": t0, "knockback3": t3})
 
     # M20c fallenWireIgnites: spilled fuel on the live tip; off -> no fire over 12 sweeps; on -> fire (35% per 250-tick sweep)
-    B.ap("set:fallenWireShock=False")                 # no pawn is there, but a shock-free contact map isolates the ignite switch
+    B.ap("set:shockReach=None")                 # no pawn is there, but a shock-free contact map isolates the ignite switch
     B.call("jawa/destroy_batch", rects="%d,%d,1,1" % tip, categories="All")
 
     if os.path.join(HERE, "northstar") not in sys.path:
@@ -1026,7 +1026,7 @@ def flips_block(B, rows, res):
     off_status, off_detail = ignition_control(B, tip)
     B.ap("set:fallenWireIgnites=True")
     on_status, on_detail = ignition_control(B, tip, stop_on_fire=True)
-    B.ap("set:fallenWireShock=True")
+    B.ap("set:shockReach=All")
     measured = "UNMEASURED" not in (off_status, on_status)
     V.row(rows, "M20c_fallen_wire_ignites_flip", ("PASS" if off_status == "PASS" and on_status == "FAIL" else "FAIL") if measured else "UNMEASURED",
           "MOD" if measured else "HARNESS",

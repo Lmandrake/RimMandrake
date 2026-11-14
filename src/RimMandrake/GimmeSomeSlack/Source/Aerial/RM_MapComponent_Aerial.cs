@@ -38,6 +38,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// ends themselves; rebuilt on the 250-tick sweep. Transient: a load rebuilds them within one sweep.</summary>
         private readonly Dictionary<int, IntVec3> shockCells = new Dictionary<int, IntVec3>();
         private readonly List<IntVec3> liveTips = new List<IntVec3>();
+        /// <summary>The shock cells another mod's dropped cords gave (LineKind.DroppedCord), rebuilt with shockCells.</summary>
+        private readonly HashSet<int> droppedCells = new HashSet<int>();
         public int ShockCellCount => shockCells.Count;
         /// <summary>State read (census, GSS_FALLEN_WIRE_FIX_SHOCK_OUTLIVES_WIRE): the cached shock cells, and how many of them a
         /// rebuild from the map as it stands NOW would not produce (an orphan = a shock cell that outlived its wire). Read-only for
@@ -161,7 +163,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             if (contactsDirty && !sweep)
             {
                 contactsDirty = false;
-                RM_FallenWireShock.RebuildContacts(this, map, shockCells, liveTips);
+                RM_FallenWireShock.RebuildContacts(this, map, shockCells, liveTips, droppedCells);
                 RM_LiveWirePathCost.Sync(map, shockCells);
             }
             if (sweep)
@@ -172,13 +174,13 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 RoofSweep();
                 PollFallen();
                 FallenGroundCheck();
-                RM_FallenWireShock.RebuildContacts(this, map, shockCells, liveTips);
+                RM_FallenWireShock.RebuildContacts(this, map, shockCells, liveTips, droppedCells);
                 RM_LiveWirePathCost.Sync(map, shockCells);
                 RM_FallenWireShock.TryIgnite(map, liveTips);
                 TapRegistry.Prune();
             }
             if (shockCells.Count > 0 && now % RM_FallenWireShock.CheckInterval == 0)
-                RM_FallenWireShock.CheckPawns(map, shockCells);
+                RM_FallenWireShock.CheckPawns(map, shockCells, droppedCells);
             Sparks(now);
             TapSparks(now);
         }

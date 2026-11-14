@@ -94,6 +94,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             WireSwayModeChecks.Run();      // aerial sway radio: Auto vs Always differ (TheftChecks.cs)
             DripLoopChecks.Run();          // design 2.5 drip loops (TheftChecks.cs)
             SwitchFlipChecks.Run();        // GSS_SWITCHES_PROVE_TWENTY_UNFLIPPED aerial half: SwitchFlipChecks.cs
+            ShockRuleChecks.Run();         // T_SHOCK_RULE_OFFLINE, floor-end shock + the three-value setting: ShockRuleChecks.cs + ../Aerial/ShockRule.cs
             MotionBucketChecks.SparkRidesTail();
             MotionBucketChecks.Run();      // CORD_GRAPH_TOPOLOGY_REVISION_1 perf half: MotionBucketChecks.cs
             ConduitTargetChecks.Run();     // design 5 per-def conduit toggles (MotionBucketChecks.cs)

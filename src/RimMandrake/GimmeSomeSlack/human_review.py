@@ -1029,7 +1029,7 @@ SETTINGS = [
     ("aerial", "swayStrength", "1.0", "wire sway strength", "6, 21"),
     ("aerial", "explosionsCut", "True", "explosions cut wires", "13"),
     ("aerial", "kineticSway", "True", "Kinetic Arms push waves swing wires, never cut", "no station (needs a Kinetic Arms push wave)"),
-    ("aerial", "fallenWireShock", "True", "live fallen wires shock whoever touches them", "29"),
+    ("aerial", "shockReach", "All", "live lines shock whoever crosses them: All (floor cord ends too) / Only downed lines / None", "29"),
     ("aerial", "fallenWireKnockback", "2", "cells a shock throws the victim", "29"),
     ("aerial", "fallenWireIgnites", "True", "live fallen wires light spilled fuel", "29"),
     ("aerial", "wireDownAlert", "True", "the 'Wire down' alert", "13, 29"),

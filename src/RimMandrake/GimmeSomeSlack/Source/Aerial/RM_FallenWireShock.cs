@@ -54,11 +54,15 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         }
 
         /// <summary>Contact cells (cell index -> the live end's tip) of every live fallen strand on the map.</summary>
-        public static void RebuildContacts(RM_MapComponent_Aerial aerial, Map map, Dictionary<int, IntVec3> contacts, List<IntVec3> tips)
+        /// <param name="dropped">When given, filled with the contact cells another mod's dropped cords gave (LineKind.DroppedCord).</param>
+        public static void RebuildContacts(RM_MapComponent_Aerial aerial, Map map, Dictionary<int, IntVec3> contacts, List<IntVec3> tips,
+                                           HashSet<int> dropped = null)
         {
             contacts.Clear();
             tips.Clear();
-            if (!AerialSettings.enabled || (!AerialSettings.fallenWireShock && !AerialSettings.fallenWireIgnites)) return;
+            dropped?.Clear();
+            AerialSettings.SyncDerived();
+            if (!AerialSettings.enabled || (!ShockRule.KindBites(AerialSettings.shockReach, LineKind.DownedSpan) && !AerialSettings.fallenWireIgnites)) return;
             foreach (CompAerialAnchor a in aerial.Anchors)
             {
                 if (a.fallen.Count == 0 || !(aerial.FallenLiveCached(a) ?? false)) continue;
@@ -80,7 +84,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                     }
                 }
             }
-            ExternalContacts(map, contacts, tips);
+            ExternalContacts(map, contacts, tips, dropped);
         }
 
         // ------------------------------------------------------------------ live wires another mod dropped
@@ -109,7 +113,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             map?.GetComponent<RM_MapComponent_Aerial>()?.MarkContactsDirty();
         }
 
-        private static void ExternalContacts(Map map, Dictionary<int, IntVec3> contacts, List<IntVec3> tips)
+        private static void ExternalContacts(Map map, Dictionary<int, IntVec3> contacts, List<IntVec3> tips, HashSet<int> dropped)
         {
             externalContacts = 0;
             for (int s = 0; s < liveWireSources.Count; s++)
@@ -122,6 +126,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                     {
                         if (!kv.Key.InBounds(map)) continue;
                         contacts[map.cellIndices.CellToIndex(kv.Key)] = kv.Value.InBounds(map) ? kv.Value : kv.Key;
+                        dropped?.Add(map.cellIndices.CellToIndex(kv.Key));
                         externalContacts++;
                         if (kv.Value.InBounds(map) && !tips.Contains(kv.Value)) tips.Add(kv.Value);
                     }
@@ -135,11 +140,12 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
         private static IntVec3 CellOf(P2 p) => new IntVec3((int)Math.Floor(p.X), 0, (int)Math.Floor(p.Z));
 
-        /// <summary>Shock every flesh pawn standing on a contact cell.</summary>
-        public static void CheckPawns(Map map, Dictionary<int, IntVec3> contacts)
+        /// <summary>Shock every flesh pawn standing on a contact cell, by ShockRule (the shockReach setting: a fallen span and a
+        /// dropped cord are both downed lines, biting under Only downed lines and All).</summary>
+        public static void CheckPawns(Map map, Dictionary<int, IntVec3> contacts, HashSet<int> dropped = null)
         {
             // GPT pre-release C2: the master switch counts too (contacts are also dropped at once on any lay change)
-            if (contacts.Count == 0 || !AerialSettings.enabled || !AerialSettings.fallenWireShock) return;
+            if (contacts.Count == 0 || !AerialSettings.enabled || AerialSettings.shockReach == ShockReach.None) return;
             ResolveDefs();
             if (shockDef == null) return;
             List<Pawn> hit = null;
@@ -149,7 +155,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 List<Thing> things = map.thingGrid.ThingsListAtFast(c);
                 for (int i = 0; i < things.Count; i++)
                 {
-                    if (things[i] is Pawn p && AerialMath.ShockTakes(p.RaceProps.IsFlesh, p.Dead, AlreadyOut(p), OnOwnCut(p, map, c)))
+                    LineKind kind = dropped != null && dropped.Contains(kv.Key) ? LineKind.DroppedCord : LineKind.DownedSpan;
+                    if (things[i] is Pawn p && ShockRule.Takes(AerialSettings.shockReach, kind, true, p.RaceProps.IsFlesh, p.Dead, AlreadyOut(p), OnOwnCut(p, map, c)))
                         (hit ??= new List<Pawn>()).Add(p);
                 }
             }
@@ -193,13 +200,21 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
         /// <summary>A pawn already knocked out by a shock is not re-shocked while it lies there (knock-out is a state,
         /// not damage; a pawn the knockback could not move would otherwise be hit every check).</summary>
-        private static bool AlreadyOut(Pawn p)
+        internal static bool AlreadyOut(Pawn p)
         {
+            ResolveDefs();
+            if (shockDef == null) return false;
             Hediff h = p.health.hediffSet.GetFirstHediffOfDef(shockDef);
             return h != null && h.Severity >= 0.3f;
         }
 
-        public static void Shock(Pawn p, Dictionary<int, IntVec3> contacts)
+        /// <summary>True once the shock hediff resolved (a missing def turns every shock off, never throws).</summary>
+        internal static bool Ready() { ResolveDefs(); return shockDef != null; }
+
+        public static void Shock(Pawn p, Dictionary<int, IntVec3> contacts) => Shock(p, contacts, "a live fallen wire");
+
+        /// <param name="source">What bit, for the player's message ("a live fallen wire", "a sparking cord end").</param>
+        public static void Shock(Pawn p, Dictionary<int, IntVec3> contacts, string source)
         {
             Map map = p.Map;
             IntVec3 at = p.Position;
@@ -219,7 +234,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 p.health.AddHediff(ha, heart);
                 if (!p.Dead) p.Kill(null, ha);
                 if (p.Faction == Faction.OfPlayer)
-                    Messages.Message(p.LabelShort + " touched a live fallen wire, and " + p.Possessive() + " weak heart gave out.",
+                    Messages.Message(p.LabelShort + " touched " + source + ", and " + p.Possessive() + " weak heart gave out.",
                         new TargetInfo(at, map), MessageTypeDefOf.PawnDeath);
                 return;
             }
@@ -229,7 +244,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             if (h != null) h.Severity = 1f;
             else p.health.AddHediff(shockDef);
             if (p.Faction == Faction.OfPlayer)
-                Messages.Message(p.LabelShort + " was thrown back and knocked out by a live fallen wire.", p, MessageTypeDefOf.NegativeHealthEvent);
+                Messages.Message(p.LabelShort + " was thrown back and knocked out by " + source + ".", p, MessageTypeDefOf.NegativeHealthEvent);
         }
 
         /// <summary>Weak heart: vanilla artery blockage, a heart attack already under way, or a natural heart that is

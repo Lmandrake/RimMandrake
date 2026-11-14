@@ -14,7 +14,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     /// Only while shocks are on: a harmless wire is just floor. The cost lives in the static perceived grid, so it is kept in step
     /// by RecalculatePerceivedPathCostAt on each cell whose state changed (<see cref="Sync"/>, after every contact rebuild).
     /// </summary>
-    [RimMandrake.Shared.PatchFeature("Live fallen wires: colonists step round them", typeof(AerialSettings), "fallenWireShock")]
+    [RimMandrake.Shared.PatchFeature("Live fallen wires: colonists step round them")]
     [HarmonyPatch(typeof(PathGrid), nameof(PathGrid.CalculatedCostAt))]
     public static class RM_LiveWirePathCost
     {
@@ -35,7 +35,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         {
             if (map == null) return;
             if (!byMap.TryGetValue(map.uniqueID, out HashSet<int> cur)) byMap[map.uniqueID] = cur = new HashSet<int>();
-            bool on = AerialSettings.fallenWireShock;
+            bool on = ShockRule.KindBites(AerialSettings.shockReach, LineKind.DownedSpan);
             var changed = new List<int>();
             foreach (int i in cur) if (!on || !contacts.ContainsKey(i)) changed.Add(i);
             if (on) foreach (int i in contacts.Keys) if (!cur.Contains(i)) changed.Add(i);

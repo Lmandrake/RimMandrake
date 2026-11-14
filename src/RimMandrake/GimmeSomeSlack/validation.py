@@ -530,7 +530,7 @@ GPT_READ_FIX_SHAPES = [   # the hose shapes (B1-B14) moved with the hose to Flow
 # that round's Verse-bound fixes (Verse-free halves: SelfTest/GptPreReleaseChecks.cs). Read by O7 with the list above.
 GPT_PRERELEASE_FIX_SHAPES = [
     ("C2 shock contacts follow a lay change at once", "Aerial/RM_MapComponent_Aerial.cs", "contactsDirty = true;"),
-    ("C2 aerial master gates the shock check", "Aerial/RM_FallenWireShock.cs", "!AerialSettings.enabled || !AerialSettings.fallenWireShock"),
+    ("C2 aerial master gates the shock check", "Aerial/RM_FallenWireShock.cs", "!AerialSettings.enabled || AerialSettings.shockReach == ShockReach.None"),
     ("C3 contacts from the grounded part only", "Aerial/RM_FallenWireShock.cs", "AerialMath.GroundPts(l)"),
     ("C6 knockback leaves the wire", "Aerial/RM_FallenWireShock.cs", "AerialMath.KnockbackDir("),
     ("D3 master off: lamps draw vanilla art", "Aerial/ConduitStylePicker.cs", "class Patch_Thing_Graphic_LampMasterOff"),

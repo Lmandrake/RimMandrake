@@ -57,6 +57,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="LaneAChecks.cs" />
     <Compile Include="..\Aerial\AerialMath.cs" />
+    <Compile Include="..\Aerial\ShockRule.cs" />
+    <Compile Include="ShockRuleChecks.cs" />
     <Compile Include="..\Aerial\TapLedger.cs" />
     <Compile Include="..\Aerial\TapWindow.cs" />
     <Compile Include="..\Aerial\BracketGeometryTable.cs" />
