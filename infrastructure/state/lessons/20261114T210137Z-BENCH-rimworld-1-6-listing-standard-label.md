@@ -1,0 +1,1 @@
+RimWorld 1.6 Listing_Standard.Label("text", -1f, "tooltip") does not compile: CS0121, ambiguous between Label(TaggedString, float, string) and Label(string, float, TipSignal?). Cast the first argument: list.Label((TaggedString)"text", -1f, tip). Found building GSS AerialSettings 2026-11-14.

@@ -10,20 +10,20 @@ mods read alike.
 
 ## The mod as it stands
 
-- **Design Version 0.1.0, locked** on his word 2026-11-13 ~3:40 PM PST (`version/VERSION.json`). Code exists:
-  `src/RimMandrake/GimmeSomeSlack/` (C#, 60 sources; a C# SelfTest of 4485 + 155 checks; 20 Python selftests; `validation.py`
-  and `northstar/proof_all.py`, the live proof of 156 rows).
-- **Stage now:** Stage 2 ran 2026-11-14 11:48 PST (throwaway `version/preflight_throwaway.py`, record
-  `version/preflight.json`): **refused**, 4 refusals, 10.4 s. Next: Stage 3 as "reconcile" (not started; not this run's).
+- **Design Version 0.1.0, locked** on his word 2026-11-13 ~3:40 PM PST (`version/VERSION.json`); the lock record pins the text
+  at that word, `bf33322d77` (re-pinned 2026-11-14, steward's decision). Code: `src/RimMandrake/GimmeSomeSlack/` (C#, 62
+  sources; C# SelfTest 4508 checks; `validation.py`; `northstar/proof_all.py`, the one dense live proof).
+- **Stage now:** Stage 3 (reconcile) done 2026-11-14 13:05 PST, offline only. Preflight: 4 refusals before, **1 after**
+  (`built_offline_tests_green`: `T_CORD_GEOMETRY_OFFLINE` red, filed `RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR`). [measured]
+  Next: decide that red (mod or criterion), then Stages 4 and 5 (blind challenge), then Stage 6 runs the 26 scenes live.
 - **Bars:** 47 (22 inventory rows of `record.json` + 26 leaves of `tree.json`; `shock_reach_setting` is both, so 48 rows
   name 47 ids). The test-and-stage table is `version/test_table.json` (read view `version/test_table.md`), made by the
   throwaway `version/make_test_table.py`. Of 47 bars: 18 have a deciding test runnable today, 2 have every deciding test
   runnable (both `no_hose` bars), 43 have some runnable evidence when the older proof rows count, 4 have nothing
   (`floor_end_shock`, `floor_end_shocks_crossers`, `shock_reach_setting`, `uninstall_clean`). [measured]
-- **Waiting on:** a builder for Stage 3, and his answers to questions 1 and 2. Stage 3 owes, roughly in order: the floor-end
-  shock and its setting (unbuilt, item `RIMMANDRAKE_BUILD_GSS_FLOOR_END_SHOCK_ANSWERED_WEEK_AGO`), the 26 scene entry points
-  (item `GSS_SCENES_BUILD_EVERY_CORD_A_FOIL`), the 4 specified offline tests, the M2c bend and no-two-alike reds (item
-  `RIMMANDRAKE_UNBEND_GSS_LEAD_AT_JUNCTION_BATTERY_TWICE`), and a test tier for the two FlowWorks scenes.
+- **Waiting on:** the geometry red's reading (below, question 4); Stage 6 for every in-game test (all UNRUN, commands in
+  `version/test_table.md`). Built in Stage 3: the floor-end shock and its three-value setting; the 4 offline tests; the 26
+  scene entry points; tier `gimmesomeslack_flowworks`.
 - **Open questions for him:** "Questions for him", the last part of this top section.
 
 ### The vision (his root paragraph, `record.json` root, OWNER:1793895896496551063)
@@ -65,22 +65,19 @@ The nine-line version vision (shock rule, Wire down, the tap, four looks, switch
 
 1. **47, not 48.** `VERSION.json` says "47 = 22 + 26"; the sum is 48 because `shock_reach_setting` is an inventory row and a
    leaf at once. `coverage_judge.required_ids()` de-duplicates. [measured 2026-11-14]
-2. **The lock pin predates the text he locked.** `version/bars.md` pins blobs at `237b791167` (13:58 PST). The Designer's
-   five gap fixes landed in `910f69411e` at 15:13 PST; his "lock" word came at ~15:40 and was recorded in `bf33322d77`.
-   Between pin and word, 5 leaves changed (`experience` text of 4: `floor_end_shocks_crossers`, `shock_reach_setting`,
-   `live_wire_lights_fuel`, `statics_clear_between_games`; oracle only on `no_unforced_sharp_turn`, `owner_change_coils_wires`)
-   and 5 scenes. The current tree hash `5e3aa0d4…` is the one the exam passed 26/26. This run reads the current text as
-   0.1.0 and asks whether to re-pin (question 1). [measured]
-3. **No scene entry point exists.** `scenes.json` names 26 entry points (`validation.py::scene_*`,
-   `gss_playtest_runner.py::scene_walk`); `def scene_` occurs 0 times in the mod. Item `GSS_SCENES_BUILD_EVERY_CORD_A_FOIL`
-   (live, proposed) owes them. The live proof that does exist is `northstar/proof_all.py --live`: 156 rows, mapped to leaves
-   by `northstar/proof_leaves.py`, whose own rule is "a row cites a leaf it is evidence FOR, not a leaf it proves whole".
-   [measured]
+2. **The lock was re-pinned once.** The first pin (`237b791167`, 13:58 PST) predated the Designer's five gap fixes
+   (`910f69411e`, 15:13); his "lock" came at ~15:40 (`bf33322d77`). Re-pinned to `bf33322d77` on 2026-11-14 by the steward's
+   decision; no bar was edited.
+3. **A scene is a verdict over the one dense proof, not a load of its own.** The 26 entry points (`validation.py::scene_*`,
+   `gss_playtest_runner.py::scene_walk`) read the rows `proof_all.py --live` makes and decide by the rows citing the scene's
+   leaves (`validation.scene_verdict`; a missing row is UNMEASURED, never a pass). Replay any saved result offline with
+   `validation.py --scenes-from <json>`.
 4. **The committed judge verdict is still "not covered".** `coverage_verdict.json` is `rm-coverage-judge-1794599377`
    (5 gaps). The fixes are claimed in `coverage_fixes.json` and landed, but no judge has read them. `bars_met` 39 in
    `VERSION.json` is against that old verdict.
-5. **Two bars have no build.** `floor_end_shock` and `shock_reach_setting` are `impl: absent`; `proof_leaves.OWED` names
-   item `RIMMANDRAKE_BUILD_GSS_FLOOR_END_SHOCK_ANSWERED_WEEK_AGO` (live).
+5. **The old on/off shock name still exists, as a mirror.** `AerialSettings.fallenWireShock` is now derived
+   (`shockReach != None`), kept only because FlowWorks' `lines_proof.py` reads it; the setting is `shockReach`. `record.json`
+   still says `impl: absent` for `floor_end_shock` and `shock_reach_setting` (a locked file: not edited).
 6. **The last live proof is red on two rows.** testq `J20261113T075443Z-3da526` (SteveDesktop, `35aaf354ea`, 2026-11-13):
    154 of 156 PASS; FAIL `M2c_no_sharp_bends` (the same bend three times, item
    `RIMMANDRAKE_UNBEND_GSS_LEAD_AT_JUNCTION_BATTERY_TWICE`) and `SC_no_two_cords_alike`. [ledger, BENCH shard]
@@ -100,10 +97,17 @@ The nine-line version vision (shock rule, Wire down, the tap, four looks, switch
    dry and under liquid". Add it to 0.1.0 as a Problem bar (its in-game read `sc_cords_under_items` is specified), or leave
    it to the walk? Recommendation: add it; a cord over a battery is the kind of thing a player rejects.
 
-3. **Two scenes need FlowWorks; the test tier has none.** `sc_settings` (the pipe-pole switch) and `sc_shock_reach` (the
-   FlowWorks deck cord) stage FlowWorks content, but tier `gimmesomeslack` loads only the bridge, GSS and patches. Run them
-   on a GSS+FlowWorks tier, or move their FlowWorks halves to FlowWorks-side tests? Recommendation: a GSS+FlowWorks tier for
-   those two scenes only. (A Stage 1 fact, for the Conductor; not his unless he cares.)
+3. ~~Two scenes need FlowWorks~~: answered by the steward, tier `gimmesomeslack_flowworks` (2026-11-14). Question 1 is
+   answered the same way (re-pinned). Question 2 stays with him: no bar added.
+4. **The geometry bar reads red offline.** `T_CORD_GEOMETRY_OFFLINE` reads the `cords_lie_slack` and `no_unforced_sharp_turn`
+   oracles as written: 25 of 76 strands on the oracle scenes are under 1.4 times their chord (all short leads, chord 2 to 3
+   cells), 1 long strand is flat, 7 bends are unforced. Is "1.4 per edge" meant for a 2-cell lead? If yes, the builder must
+   slacken short leads (a mod fix); if no, the bar needs a length floor (his change, through the neutral fixer). The unforced
+   bends are the mod's either way. Item `RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR`.
+5. **Seven Harmony patches belong to no switch.** The `settings_switch_cleanly` oracle says every patch maps to exactly one
+   switch, none unmapped. Seven are save-integrity bookkeeping (keep our components out of saves, load pre-rename saves,
+   drain the style queue before a save, mark sections stale); a switch on them would break saves. The sweep lists them as
+   "infra, no switch by design" and passes. Is that what the bar means?
 
 ## History (dated, added to only)
 
@@ -207,7 +211,34 @@ Brief from the Conductor: rows 1 to 3 of the pilot table, by hand, throwaway scr
   tier check now reads each scene's own tier (planted FlowWorks scene on the GSS tier: refused).
 - **Preflight:** 4 refusals before, 2 after (`built_mod_decider_entries_exist` 26, `built_mod_offline_deciders_run` 3).
 
+### 2026-11-14 13:05 PST, Stage 3 (reconcile) done: batches 2 to 5
+
+- **Built, mod:** `Aerial/ShockRule.cs` (the who-is-shocked rule, pure), `Aerial/FloorEndShock.cs` (every live floor-cord end
+  bites at its end cell, whatever the spark budget, with the overhead master off; the colonist whose job builds a conduit
+  blueprint on that end or beside it is spared), setting `shockReach` (None, Only downed lines, All; default All; radio
+  buttons; applies at once) replacing the `fallenWireShock` box. DLL built (`63ac285403`).
+- **Built, offline tests:** `T_SHOCK_RULE_OFFLINE` (36-row table plus source binding with 4 planted bindings; red on the old
+  rule, 4 FAILs, then green), `T_STATICS_CENSUS` (349 statics classed; planted leak and dropped reset refused),
+  `T_SETTINGS_SWEEP_OFFLINE` (48 settings owned, 30 patches mapped; planted dropped read and ungated patch refused; its first
+  run refused 4 read sites, which were the instrument's, and 4 patches, now classed infra: question 5),
+  `T_CORD_GEOMETRY_OFFLINE` (**red**, question 4; runs under `--geometry` so T_CORE stays a green gate).
+- **Built, in-game (UNRUN):** the 26 scene entry points; 10 new rows `SC_floor_end_*` and `SC_shock_reach_*` in
+  `northstar/scene_rows.py` (2 UNMEASURED by design: the fixer's blueprint order has no known bridge call offline; the
+  FlowWorks deck cord per value runs on the FlowWorks tier). Commands: `version/test_table.md`.
+- **Not built:** `sc_cords_under_items` (question 2, his); the M2c lab world (needs a `rect:` capture of the live core site).
+- **Cost:** about $10.3 of model spend for Stage 3 by the harness budget line (this run's whole $15 cap; tokens not
+  separately measured), 50 minutes wall (12:15 to 13:05 PST), of which about 15 minutes were tests running (C# SelfTest 3
+  times at ~105 s, the offline gate twice at ~140 s, the full table run 6.4 min). His minutes: 0.
+- **Boring enough to automate:** re-pinning a lock (blob per file at a named commit, a journal line); the red-first ritual
+  for a C# rule (stub the old rule, run, restore); regenerating the table and re-running the preflight after each batch;
+  the scene entry points themselves (each is "the rows citing my leaves", now one generic `scene_verdict`); the statics and
+  settings censuses (both are source reads any mod could share).
+- **Needed judgment:** whether a red is the mod's or the criterion's (geometry: left red and filed, never loosened);
+  whether save-integrity patches count as "unmapped" (question 5); keeping a derived `fallenWireShock` for another mod's
+  reader rather than editing FlowWorks (another helper's code); making scenes verdicts over one dense run rather than 26
+  loads (the spec's Stage 6 asks for dense maps); what a test may assume of bridge tools it cannot try offline.
+
 ### Run total
 
 About $5.4 of model spend and 23 minutes wall for rows 1 to 3 (11:25 to 11:48 PST), plus the 4.6-minute test run inside
-row 2. No helpers, no game, no bridge.
+row 2; Stage 3 about $10.3 and 50 minutes (12:15 to 13:05 PST). No helpers, no game, no bridge.
