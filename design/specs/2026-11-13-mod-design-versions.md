@@ -102,3 +102,5 @@ So: the current-version-or-next question is put to him **at filing**. An item fi
 **Who approves a Judge's bar deferral:** the Conductor; he sees each one after (by card: "Conductor, you see it after").
 
 **How the five existing mods enter:** by card, "Lock today's bars as 0.1.0": a short vision written from each existing design, today's bars locked as 0.1.0, open gaps sorted into Problem (stays), Polish list (confirmed with him) and next version.
+
+**Pyrelands is one mod with one Design Version** (by card 2026-11-13, "One mod, Tribes next version"): Pyrelands 0.1.0 is the biome alone (`design/concepts/Pyrelands`); the Deep Desert Tribes record (`design/concepts/PyrelandsMechanics`: rite, visit, fruit defence) is Pyrelands 0.2.0, its design kept as written. So four mods were locked at 0.1.0 on 2026-11-13: ExplosiveKnockback, FlowWorks, GimmeSomeSlack, Pyrelands. Cost he accepted on the card: the Tribes code already shipped must switch off cleanly for 0.1.0.

@@ -1,6 +1,6 @@
 # The Maturation Pipeline
 
-**Design Version 0.1.0 of the pipeline itself. DRAFT for Mandrake to argue with, 2026-11-13. Not a ruling. Nothing here is built.**
+**Design Version 0.1.0 of the pipeline itself. DRAFT for Mandrake to argue with, 2026-11-13. Nothing here is built.** He answered the six questions that blocked the pilot on the evening of 2026-11-13 (by card, two of them typed); those answers are written into this draft and listed in §8 as "Decided". Everything else marked [PROPOSAL] is still not his.
 
 Item: `RIMMANDRAKE_DESIGN_MATURATION_PIPELINE_WHOLE_MOD_IS_THE_UNIT`.
 Live status page: `D:\ClaudeWork\rimmandrake\conductor\MATURATION_NOW.md` (where each mod stands today).
@@ -58,14 +58,14 @@ His full message is also kept at `D:\ClaudeWork\rimmandrake\conductor\maturation
 ## 2. The idea in ten lines
 
 1. **[HIS]** The pipeline moves **whole versioned mods**, not tickets. Tickets stay in RimFlow.
-2. **[HIS]** Ideas wait at an intake. A mod then passes eight stages: Designer, preflight, offline build, offline blind challenge, offline game-logic testing, in-game acceptance, pre-human check, human live walk.
-3. **[HIS]** A judge that finds a fault at Stage 4 or 5 fixes it at once, shows it working, and hands the mod to a **new** blind judge. The cycles are counted on the mod.
+2. **[HIS]** Ideas wait at an intake. A mod then passes eight stages: Designer, preflight, offline build, offline blind challenge, offline game-logic testing, in-game acceptance, pre-human check, human live walk. **[HIS, by card 2026-11-13]** Stages 4 and 5 run as one stage, tests first (§8, decision 1).
+3. **[HIS]** A judge that finds a fault at Stages 4 and 5 fixes it at once, shows it working, and hands the mod to a **new** blind judge. The cycles are counted on the mod. **[HIS, 2026-11-13]** After three cycles the Conductor decides what to do, and he confirms or changes it when he is next available (§8, decision 3).
 4. **[HIS]** Operations and Dispatch float above. Dispatch knows which mods are advancing and gives them the two games and the offline builders as they need them.
 5. **[CARRIED]** The target holds still: a mod is built towards a locked Design Version. A change that shifts the vision goes to the next version. (His ruling of 2026-11-13.)
 6. **[CARRIED]** An objection sends back only the line items it touches, to the lowest stage that can show the fault. (Rule 2 of `validation_map_and_rules.md`, his card answer of 2026-11-12.)
 7. **[PROPOSAL]** The mod is the unit that flows. The line item is the unit that is re-tested.
-8. **[PROPOSAL]** Each mod has a **steward** and a **journal file**. The steward reads the evidence at every stage change. The journal holds the memory. This is the answer offered to "how do we preserve the intelligence".
-9. **[PROPOSAL]** He may look at any time, not only at Stage 8. An early look produces line items like any other.
+8. **[HIS, by card 2026-11-13]** The **steward** is the Conductor, always. **[PROPOSAL]** Each mod has a **journal file**; the Conductor reads the evidence at every stage change and the journal holds the memory. This is the answer offered to "how do we preserve the intelligence".
+9. **[HIS, 2026-11-13]** He may look at any stage, and questions may be sent to him at any time; the Conductor lets him know (§8, decision 5). **[PROPOSAL]** An early look produces line items like any other.
 10. **[HIS, by agreement]** It is done by hand on Explosive Knockback first. **[PROPOSAL]** Only what proved boring by hand gets automated.
 
 ---
@@ -80,25 +80,23 @@ flowchart TD
         direction LR
         OPS["OPERATIONS<br/>is the system healthy?<br/>logs, errors, stuck sessions, machines"]
         DIS["DISPATCH<br/>which advancing mods get<br/>a game or a builder right now?"]
-        STW["STEWARD (proposal)<br/>reads each mod's journal and evidence<br/>at every stage change; may re-route"]
+        STW["STEWARD: THE CONDUCTOR, ALWAYS<br/>reads each mod's journal and evidence<br/>at every stage change; may re-route;<br/>decides after three fix cycles"]
     end
 
     IN(["INTAKE<br/>mod ideas waiting"])
     S1["STAGE 1 · DESIGNER<br/>argue the idea, write vision,<br/>bars and tests, lock the version"]
     S2["STAGE 2 · PREFLIGHT<br/>Python checks the build spec:<br/>real files, real mods, real tests"]
     S3["STAGE 3 · OFFLINE BUILD<br/>build it, and every test<br/>the builder can think of"]
-    S4["STAGE 4 · BLIND OFFLINE CHALLENGE<br/>code review, planted faults,<br/>rerun of the builder's tests"]
-    S5["STAGE 5 · OFFLINE GAME-LOGIC TESTING<br/>rules and maths over many cases,<br/>no game"]
+    S4["STAGES 4 AND 5 · ONE STAGE, TESTS FIRST<br/>first: game-logic tests written from the bars alone,<br/>rules and maths over many cases, no game;<br/>then: code review, planted faults,<br/>rerun of the builder's tests"]
     S6["STAGE 6 · IN-GAME ACCEPTANCE<br/>dense prepared maps, scripts decide,<br/>explore, many screenshots"]
     S7["STAGE 7 · PRE-HUMAN CHECK<br/>is all the evidence consistent?<br/>anything odd that would waste his time?"]
     S8["STAGE 8 · HUMAN LIVE WALK<br/>Mandrake, on prepared saves"]
     PASS(["VERSION PASSED<br/>pass record written; the mod rests"])
 
-    IN --> S1 --> S2 --> S3 --> S4 --> S5 --> S6 --> S7 --> S8 --> PASS
+    IN --> S1 --> S2 --> S3 --> S4 --> S6 --> S7 --> S8 --> PASS
 
     S2 -. "spec refused: back to the Designer" .-> S1
-    S4 -. "fault found: fix in place,<br/>then a NEW blind judge" .-> S4
-    S5 -. "same: fix in place,<br/>then a NEW blind judge" .-> S5
+    S4 -. "fault found: fix in place,<br/>then a NEW blind judge<br/>(after three cycles: the Conductor decides)" .-> S4
     S6 -. "a failed line item goes to the<br/>lowest stage that can show it" .-> S3
     S7 -. "an anomaly goes back to the<br/>stage that made the evidence" .-> S6
     S8 -. "a Problem: touched line items only,<br/>lowest stage that can show it" .-> S3
@@ -112,33 +110,33 @@ Plain-text version of the same map:
 ```
   FLOATING ABOVE, THE WHOLE TIME
   ┌──────────────────────┬─────────────────────────────┬──────────────────────────────────┐
-  │ OPERATIONS           │ DISPATCH                    │ STEWARD (proposal)               │
+  │ OPERATIONS           │ DISPATCH                    │ STEWARD: THE CONDUCTOR, ALWAYS   │
   │ is the system        │ which advancing mods get a  │ reads each mod's journal and     │
   │ healthy?             │ game or a builder now?      │ evidence at every stage change   │
   └──────────────────────┴─────────────────────────────┴──────────────────────────────────┘
 
-  INTAKE ──▶ 1 DESIGNER ──▶ 2 PREFLIGHT ──▶ 3 OFFLINE BUILD ──▶ 4 BLIND OFFLINE ──▶ 5 OFFLINE GAME-
-  (ideas      (vision,       (Python,        (code + its own     CHALLENGE           LOGIC TESTING
-   waiting)    bars, tests,   no model)       tests)             (review, planted    (many cases,
-               lock)                                              faults, reruns)     no game)
-                  ▲               │                 ▲              │    ▲              │    ▲
-                  └── refused ────┘                 │              └────┘              └────┘
-                                                    │           fix in place,       fix in place,
-                                                    │           NEW blind judge     NEW blind judge
+  INTAKE ──▶ 1 DESIGNER ──▶ 2 PREFLIGHT ──▶ 3 OFFLINE BUILD ──▶ 4+5 ONE STAGE, TESTS FIRST
+  (ideas      (vision,       (Python,        (code + its own     (first: game-logic tests from the
+   waiting)    bars, tests,   no model)       tests)              bars alone, many cases, no game;
+               lock)                                              then: review, planted faults, reruns)
+                  ▲               │                 ▲              │    ▲
+                  └── refused ────┘                 │              └────┘
+                                                    │           fix in place, NEW blind judge;
+                                                    │           after three cycles the Conductor decides
                                                     │
   ──▶ 6 IN-GAME ACCEPTANCE ──▶ 7 PRE-HUMAN CHECK ──▶ 8 HUMAN LIVE WALK ──▶ VERSION PASSED
       (dense maps, scripts,     (is the evidence      (Mandrake, on          (pass record;
        explore, screenshots)     consistent?)          prepared saves)        the mod rests)
             │                        │                      │
             │                        │                      ├── a Problem ──▶ touched line items only,
-            └── failed line item ────┴── anomaly ───────────┘                to the LOWEST stage (3, 5
+            └── failed line item ────┴── anomaly ───────────┘                to the LOWEST stage (3, 4+5
                 goes to the lowest stage that can show it                    or 6) that can show it
                                                             └── a Divergent idea ──▶ next version ──▶ INTAKE
 ```
 
-**[HIS]** the eight stages, their order, their numbers, the fix-in-place loops at 4 and 5, Operations and Dispatch above.
+**[HIS]** the eight stages, their order, their numbers, the fix-in-place loop, Operations and Dispatch above. **[HIS, by card 2026-11-13]** Stages 4 and 5 as one stage, tests first; the steward is the Conductor, always; three cycles, then the Conductor decides.
 **[CARRIED]** the roads back from 6, 7 and 8 (rule 2, "lowest stage, touched line items only"); the Divergent road (Design Versions ruling).
-**[PROPOSAL]** the steward box; the road from "passed" back to intake.
+**[PROPOSAL]** keeping the numbers 6 to 8 unchanged after the merge (from the recommendation he answered; the card did not rule on numbering); the road from "passed" back to intake.
 
 ---
 
@@ -170,11 +168,13 @@ Plain-text version of the same map:
 | Model tier | Judgment work: see Agent_Policy.md, "The one question". | CARRIED |
 | Inputs | The idea. His words. If any code exists: a live walk of what exists, before more design is added. | CARRIED (his ruling 2026-11-12 5:06 PM PST, rule 7 of `validation_map_and_rules.md`) |
 | Outputs | The mod's version folder: a short vision, the bars, and for every bar **one test, with the stage that proves it**. Also the next-version file and the Polish list. | HIS by agreement (recommendation 3); folder layout CARRIED from the Design Versions ruling |
-| Exit ("ready" means) | He said "lock it" for this version. Every bar names its test and its stage. | CARRIED (Design Versions: locked on his word); test-per-bar HIS by agreement |
+| Exit ("ready" means) | He said "lock it" for this version. Every bar names its test and its stage. Each test runs (a built mod) or is specified (a new mod). | CARRIED (Design Versions: locked on his word); test-per-bar HIS by agreement; runs or specified HIS by card 2026-11-13 |
 | Road back | Stage 2 refuses the spec: back here for the refused lines only. After the lock, a Divergent idea never comes back here in this version; it opens the next one. | CARRIED (rule 2; Design Versions ruling) |
 | Tracked on the mod | Version number; state (drafting, locked); count of bars; tokens spent; his open questions. | CARRIED (Design Versions draft §3.7) |
 
-Two proposals inside Stage 1 are big enough to be open questions: whether the Designer's Exam and coverage judge stay as gates (open question "Do the Exam and the coverage judge stay"), and what a "runnable test at lock" means for a mod with no code yet (open question "What the lock requires of a test").
+**What a test must be at the lock.** **[HIS, by card 2026-11-13]** "Built: runs. New: specified." For a mod whose code exists, every bar's test runs at the lock. For a new mod, every bar's test is specified at the lock (a test id, its stage, the file it will live in, what it will observe, the files it reads; Stage 2 checks that mechanically) and Stage 3 makes each one run, failing first.
+
+One proposal inside Stage 1 is big enough to be an open question: whether the Designer's Exam and coverage judge stay as gates (open question 7).
 
 ### Stage 2: Preflight
 
@@ -206,40 +206,29 @@ Two proposals inside Stage 1 are big enough to be open questions: whether the De
 
 For a mod that is already built (all five current mods), Stage 3 is not "build". It is "reconcile": check each locked bar against what exists, and build only the missing tests and the missing pieces. **[PROPOSAL]**
 
-### Stage 4: Blind offline challenge
+### Stages 4 and 5: Blind offline challenge and game-logic testing, one stage, tests first
+
+**[HIS, by card 2026-11-13]** "One stage, tests first." His question "is this really different than Stage 4, or should it be folded in?" is answered: one stage. The independence two stages would have bought is kept by order: the blind agent writes and runs its own game-logic tests from the bars alone, before it opens the builder's code or tests, and only then does the code challenge. One load of the mod, one cycle, independent tests. The two parts are reported as two lanes so the pilot can count what each finds. **[PROPOSAL]** the stage keeps the label "Stages 4 and 5", so that his numbers 6 to 8 do not move.
 
 | | | mark |
 |---|---|---|
-| Purpose | "Offline blind code review, mutation-type coverage challenges, and verification of test outputs/rerunning plus judgement." In plain words: does the code do what it claims, can the tests actually fail, and do the builder's test results repeat? | HIS |
-| Who | A fresh agent that did not build the mod and is not told what any earlier judge found. | HIS ("a new blind judgement pass") |
+| Purpose | Stage 4: "Offline blind code review, mutation-type coverage challenges, and verification of test outputs/rerunning plus judgement." Stage 5: "Offline game logic testing in all its many forms." In plain words: are the mod's rules and maths right over thousands of cases without the game; does the code do what it claims; can the tests actually fail; do the builder's test results repeat? | HIS |
+| Who | A fresh agent that did not build the mod and is not told what any earlier judge found. | HIS ("a new blind judgement pass"; "send it back to a new blind you") |
 | Model tier | A judging role: see Agent_Policy.md, "Four places a cheaper tier is forbidden outright". | CARRIED |
-| Inputs | The locked bars; the code; the builder's tests and their recorded outputs. | PROPOSAL |
-| Outputs | A list of faults. Each one is as detailed as the evidence, says what would pass, and names the smallest fix. Planted-fault results (a planted fault is a deliberate bug put in to see whether a test catches it). Rerun results. | HIS for the content; record shape CARRIED (refusal ruling 2026-11-12) |
-| Exit ("ready" means) | A blind judge found nothing that is a Problem. | PROPOSAL (Problem versus Polish is CARRIED from his card of 2026-11-13) |
-| Road back | "If it finds issues, it should FIX THEM RIGHT THERE and force the system to pass, but then send it back to just before Stage 4 again for a new blind judgement pass." | HIS |
-| Tracked on the mod | "These cycles should be tracked on the work item so we can monitor a cycling ticket": the cycle count, and per cycle what was found, what was fixed, which tests were edited, tokens. | HIS for the count; detail PROPOSAL |
+| Order | First, with only the locked bars, the code's logic kernels (the game-free core of a mod's rules) and the mod's settings as shipped: write the game-logic tests and run them. Then open the code, the builder's tests and their recorded outputs for the review, planted faults and reruns. | HIS, by card ("tests first"); the exact inputs per part PROPOSAL |
+| Outputs | Lane 1 (game logic): test rows; random cases with the failing case shrunk to its smallest form; conservation checks (nothing created or lost); the shipped settings swept through their ranges. Lane 2 (challenge): a list of faults, each as detailed as the evidence, saying what would pass and naming the smallest fix; planted-fault results (a planted fault is a deliberate bug put in to see whether a test catches it); rerun results. | Lane 1 CARRIED (kept schemes, his picks of 2026-11-12: kernels with random cases, shipped-settings sweep with conservation laws); lane 2 HIS for the content, record shape CARRIED (refusal ruling 2026-11-12) |
+| Exit ("ready" means) | Every bar tagged "offline" is green. A blind judge found nothing that is a Problem. | PROPOSAL (Problem versus Polish is CARRIED from his card of 2026-11-13) |
+| Road back | "If it finds issues, it should FIX THEM RIGHT THERE and force the system to pass, but then send it back to just before Stage 4 again for a new blind judgement pass." "Once you make your list of what's wrong, you're the one who should fix it RIGHT NOW and show it working... then send it back to a new blind you." | HIS |
+| What the next blind judge reads | **"All once, then changes."** The first judge reads everything. After a fix, the new judge reads the changed files and the line items whose inputs changed, without being told what the last judge found. A fault found late in unchanged material is still fixed, and is logged as a miss of the first judge. | HIS, by card 2026-11-13 |
+| Tracked on the mod | "These cycles should be tracked on the work item so we can monitor a cycling ticket": the cycle count, and per cycle what each lane found, what was fixed, which tests were edited, tokens; lane 1 rows passing of total. | HIS for the count; detail PROPOSAL |
 
 **Guards on fix-in-place.** **[PROPOSAL]** from the Conductor; this writer agrees and adds the last one.
 
 - The fixer may not edit a bar or an acceptance criterion. A wrong criterion goes to the neutral fixer. (This part is [CARRIED], his refusal ruling.)
 - Every test the fixer edits is listed in the cycle record and shown to the next blind judge. Otherwise "force the system to pass" could be done by weakening a test.
-- Cycles are counted on the mod. At the limit the mod is raised to the steward. It never starts another automatic round. (The limit is the open question "How many fix cycles".)
 - Added by this writer: each fix is shown red first. The fixer records the test failing on the old code, then passing on the new. "Show it working" is his phrase; red-first is how it is shown.
 
-### Stage 5: Offline game-logic testing
-
-| | | mark |
-|---|---|---|
-| Purpose | "Offline game logic testing in all its many forms." The mod's rules and maths are run over thousands of cases without the game. | HIS |
-| Who | A fresh blind agent, as at Stage 4. | HIS ("send it back to a new blind you") |
-| Model tier | As Stage 4. | CARRIED |
-| Inputs | The bars; the code's logic kernels (the game-free core of a mod's rules); the mod's settings as shipped. | PROPOSAL |
-| Outputs | Test rows: random cases with the failing case shrunk to its smallest form; conservation checks (nothing created or lost); the shipped settings swept through their ranges. | CARRIED (kept schemes, his picks of 2026-11-12: kernels with random cases, shipped-settings sweep with conservation laws) |
-| Exit ("ready" means) | Every bar tagged "offline" is green. The blind agent's list of what is wrong is empty of Problems. | PROPOSAL |
-| Road back | "Once you make your list of what's wrong, you're the one who should fix it RIGHT NOW and show it working... then send it back to a new blind you." | HIS |
-| Tracked on the mod | Cycle count as at Stage 4; rows passing of total. | HIS / PROPOSAL as at Stage 4 |
-
-His question, "is this really different than Stage 4, or should it be folded in?", is the open question "Stage 4 and Stage 5: one stage or two".
+**After three cycles.** **[HIS, 2026-11-13, typed]** "After three cycles, Conductor is brought in (Fable 5.2 class reasoner) to make a decision on what to do. When the user is next available, they are informed and the decision is confirmed or changes made. Conductor may choose any of the options you offered, or yet more creative ones (it may see how to fix the problem in a way the judges did not)." The options offered were: defer a bar, repair a criterion, call it a design fault, or allow one more cycle. Cycles are counted on the mod; a fourth judge never starts on its own.
 
 ### Stage 6: In-game acceptance
 
@@ -316,9 +305,8 @@ Nothing changes in what Operations watches. **[PROPOSAL]** One thing is added to
 
 Today's measured example: the Designer loop on Explosive Knockback charged about 97 million tokens to its stage record without its judge ever passing, and its last six gaps were one-line paper edits. (Of that total, 86.5 million are estimates entered as "unmeasured" charges and 10.7 million are measured; source `design/concepts/ExplosiveKnockback/version/VERSION.json`.) By the Designer's own inner steps: 54 million in Write, 34 million in Exam, 8.5 million in Lock, which includes the judge. No single agent in that loop was in a position to say "this is silly".
 
-**[PROPOSAL] The steward** (the Conductor's proposal):
+**[HIS, by card 2026-11-13] The steward is the Conductor, always.** Not a standing seat per mod, and not a duty handed to any fresh agent. **[PROPOSAL]** for the rest of this list (the Conductor's proposal):
 
-- Each advancing mod has a steward. The steward is the Conductor, or a seat like it.
 - The steward reads the evidence at **every stage change**. It may look in on live runs. It is allowed to say "this is silly" and re-route the mod. It brings him short, ranked sittings.
 - Judgment lives at the stage changes. The plumbing between them is automated.
 - Each mod has a **journal**: one file with the vision, his words, the history, the oddities, and what was tried. The memory lives in the journal, not in any agent's context window, so it survives a restart.
@@ -327,9 +315,9 @@ Today's measured example: the Designer loop on Explosive Knockback charged about
 
 **Where this writer disagrees with the Conductor, or adds:**
 
-1. **The steward should be a duty, not a seat.** If the memory truly lives in the journal, then any capable fresh agent can do one stage change from the journal alone. That is the test of the journal. A standing seat per mod would quietly move the memory back into a context window, and it is one more long-lived session for Operations to watch. Proposal: the Conductor is the steward for the pilot; whether a standing seat is ever needed is decided from what the pilot's stage changes cost.
+1. **The journal is what keeps the Conductor from becoming the memory.** The steward is now always the Conductor (his card). The journal must still be complete enough that a restarted Conductor can do one stage change from the journal alone; that is the test of the journal.
 2. **The journal needs a shape or it becomes one more stale file.** Proposal: a top part of at most two screens, "the mod as it stands", rewritten at each stage change; below it, a dated history that is only added to. At each Stage 8 the top part is read to him. He is the only one who can say the picture of his mod is wrong.
-3. **A steward does not replace him spotting things.** What he describes as productive is a short loop: he looks, says something, and it changes while he is still there. Eight stages make that loop longer. So he must be able to look **early**: at any stage, a quick look at whatever runs. This is already his ruling for the Designer ("If we can insert an owner quick-look to settle a difficult or several questions swiftly, offer that loudly", 2026-11-12). Proposal: extend it to every stage. Stage 8 is the formal walk, not the first time he sees the mod.
+3. **A steward does not replace him spotting things.** What he describes as productive is a short loop: he looks, says something, and it changes while he is still there. Eight stages make that loop longer. **[HIS, 2026-11-13, typed]** "Yes, at any stage, and questions can be sent to the user at any time. If I can get to them, I might be able to steer out of a coming confusion early. Conductor will let me know." So the Conductor offers him a look at any stage and sends him questions as they arise, without waiting for Stage 8. Stage 8 is the formal walk, not the first time he sees the mod. (This extends his Designer ruling of 2026-11-12: "If we can insert an owner quick-look to settle a difficult or several questions swiftly, offer that loudly".)
 4. **Live looks must feed the design.** Today the Designer loop ran on paper beside the hands-on work, and what he saw in the game never reached its scenes (measured by the Conductor today). Proposal: every look, early or formal, writes its line items into the same version folder the Designer locked. There is one list of bars per version, not a paper one and a hands-on one.
 
 ---
@@ -352,7 +340,7 @@ Today's measured example: the Designer loop on Explosive Knockback charged about
 | Stage now, and since when | Stage 4, since 2026-11-14 10:20 PST |
 | What it is waiting on | a game / a builder / a blind judge / Mandrake / nothing |
 | Bars: total, with a test, passing at each stage | 59 / 59 / 51 offline, 0 in game |
-| Cycles at Stage 4 and at Stage 5 | 2, 0 |
+| Cycles at Stages 4 and 5 | 2 |
 | Release candidate number | rc.1 |
 | Cost per stage | tokens, wall time, his minutes |
 | Held items: Polish list size, next-version file size | 0, 1 |
@@ -368,7 +356,7 @@ Today's measured example: the Designer loop on Explosive Knockback charged about
 | door 0, Preflight | Python checks a ticket before any token | Stage 2, for the whole mod's build spec. The per-ticket check stays as a door on each ticket inside a stage. | HIS (Stage 2) / CARRIED |
 | 1, Agree | the bars are written and he signed | Stage 1 | HIS |
 | 2, Code check | selftests, lints, review, planted faults | Split. The builder's own checks are Stage 3. The blind review and the planted-fault challenge are Stage 4. | HIS |
-| 3, Logic off-game | kernels, random cases, conservation | Split. Writing them is Stage 3. Running and challenging them blind is Stage 5. | HIS |
+| 3, Logic off-game | kernels, random cases, conservation | Split. Writing them is Stage 3. Running and challenging them blind is the first part of Stages 4 and 5, before the code is opened. | HIS; the order HIS by card 2026-11-13 |
 | 4, In-game proof | a script's verdict through the game | Stage 6 | HIS |
 | 5, Pre-look | a fresh judge on the scene and the art | Stage 7. The looking at screenshots during the test itself is Stage 6. | HIS |
 | 6, Owner look | Mandrake on a labelled save | Stage 8 | HIS |
@@ -381,7 +369,7 @@ Today's measured example: the Designer loop on Explosive Knockback charged about
 |---|---|---|---|
 | 1 | Mechanism work is done on the script's verdict; work with a look goes on to him | Stage 6 closes mechanism line items. Stage 8 shows him look items, and anything he asks for. | CARRIED (his card 2026-11-12) |
 | 2 | An objection becomes line items; each re-enters at the lowest stage that can show it; only touched line items re-run; his passes are pinned; his objections close on his look | The roads back from 6, 7 and 8 | CARRIED (his cards 2026-11-12) |
-| 3 | A refusal carries its fix path; a broken criterion goes to a neutral fixer at once | Every judge at stages 4, 5 and 7; preflight refusals at Stage 2 | CARRIED (his ruling 2026-11-12) |
+| 3 | A refusal carries its fix path; a broken criterion goes to a neutral fixer at once | Every judge at Stages 4 and 5 and at Stage 7; preflight refusals at Stage 2 | CARRIED (his ruling 2026-11-12) |
 | 4 | Nothing reaches him unread; unfixed findings are listed first | Stage 7 | CARRIED |
 | 5 | The first human look is a dense, labelled savegame on matrix scenes (one prepared cell copied across the variables that matter) | Built in Stage 6, used in Stage 8 | CARRIED (his words 2026-11-12) |
 | 6 | A test site is checked, never hoped | Stage 6, before any row counts | CARRIED |
@@ -400,7 +388,7 @@ Today's measured example: the Designer loop on Explosive Knockback charged about
 | Argue the idea | agree the root idea with him | Stage 1 | HIS |
 | Argue the edge | settle the edge cases with him | Stage 1 | HIS |
 | Write | write the sheet, the tree of bars, the scenes | Stage 1. Its output gains the test-and-stage table. | HIS / HIS by agreement |
-| Exam | fresh readers answer questions from the written design | Stage 1. Whether it stays a gate is an open question. | PROPOSAL |
+| Exam | fresh readers answer questions from the written design | Stage 1. Whether it stays a gate is open question 7. | PROPOSAL |
 | Lock | a coverage judge, then the lock | Stage 1's exit. The scheduled judge loop is on hold for the five mods (recommendation 2). On Explosive Knockback the lock was made on his word (commit eab59259ec added that signature). | HIS by agreement |
 
 ### Design Versions
@@ -408,11 +396,11 @@ Today's measured example: the Designer loop on Explosive Knockback charged about
 | Design Versions idea | in the pipeline | mark |
 |---|---|---|
 | A version is a locked vision, bars and tests | Stage 1's exit | CARRIED |
-| Problem stays, Polish goes to the Polish list | every road back, and the exit of stages 4, 5 and 7 | CARRIED (his card 2026-11-13) |
+| Problem stays, Polish goes to the Polish list | every road back, and the exit of Stages 4 and 5 and of Stage 7 | CARRIED (his card 2026-11-13) |
 | Divergent goes to the next version | the road from Stage 8, or from any stage, to intake | CARRIED |
 | The now-or-next question is asked at filing | whenever a line item is written, at any stage | CARRIED (his card 2026-11-13) |
 | A judge round is a release candidate, rc.N | each arrival at Stage 7 | CARRIED; "what counts" is PROPOSAL |
-| A judge may propose deferring a bar that keeps failing on weak evidence; the Conductor approves, he sees it after | the steward at the cycle limit | CARRIED (his card 2026-11-13) |
+| A judge may propose deferring a bar that keeps failing on weak evidence; the Conductor approves, he sees it after | the Conductor (the steward), after three cycles; he confirms or changes it when next available | CARRIED (his card 2026-11-13) |
 | Pass record; passed tests become regression tests for later versions | after Stage 8 | PROPOSAL (Design Versions draft §3.7, not yet ruled) |
 
 ### The kept validation schemes
@@ -446,54 +434,25 @@ All **[PROPOSAL]** except where marked. Nothing is deleted by this document.
 
 ---
 
-## 8. Open questions for him
+## 8. Questions for him
 
-Each is a real choice. The first six block the pilot. The rest can wait until the pilot has shown something.
+Six questions blocked the pilot. He answered all six on the evening of 2026-11-13, four by card and two typed (recorded on `RIMMANDRAKE_DESIGN_MATURATION_PIPELINE_WHOLE_MOD_IS_THE_UNIT`), and each answer is written into the sections above. Questions 7 to 17 are still open; they can wait until the pilot has shown something.
 
-### Blocking the pilot
+### Decided, 2026-11-13
 
-**1. Stage 4 and Stage 5: one stage or two?** (His own question.)
+**1. Stage 4 and Stage 5: one stage or two?** **[HIS, by card]** "One stage, tests first." The blind agent first writes and runs its own game-logic tests from the bars alone, then opens the builder's code and tests for the challenge. One load of the mod, one cycle, two reported lanes. (§4, "Stages 4 and 5".)
 
-- *Two stages, as he numbered them.* Each has its own blind judge and its own fix loop. Cost: every re-judge cycle is paid twice, and both judges must load the same mod and bars.
-- *One stage with two reported lanes* (the Conductor's proposal). One blind judge does the code challenge and the logic testing in one sitting and reports them separately. Cost: one judge's blind spots cover both.
-- *One stage, and the logic tests are written from the bars before the code is opened* (this writer's proposal). The one real difference between the stages is whether the Stage 5 tests are written by someone who has not read the builder's tests. That independence can be had by order instead of by a second stage: the blind agent first writes its own tests from the bars alone, runs them, and only then opens the builder's code and tests for the Stage 4 work. One load of the mod, one cycle, independent tests.
-- The trade: two stages buy independence and pay twice. One stage pays once and risks one set of blind spots. The ordered version tries for both.
-- **Recommendation:** the ordered single stage, still reported as "Stage 4" and "Stage 5" so that his numbers 6 to 8 do not move. Run it that way on the pilot and count what each lane finds.
+**2. After a fix, does the new blind judge read everything, or only what changed?** **[HIS, by card]** "All once, then changes." The first judge reads everything. After that, each new judge reads the changed files and the line items whose inputs changed, without being told what the last judge found. A fault found late in unchanged material is still fixed, and is logged as a miss of the first judge.
 
-**2. After a fix, does the new blind judge read everything, or only what changed?**
+**3. How many fix cycles, and then what?** **[HIS, typed]** "After three cycles, Conductor is brought in (Fable 5.2 class reasoner) to make a decision on what to do. When the user is next available, they are informed and the decision is confirmed or changes made. Conductor may choose any of the options you offered, or yet more creative ones (it may see how to fix the problem in a way the judges did not)." The options offered were: defer a bar, repair a criterion, call it a design fault, or allow one more cycle.
 
-- *Everything, every cycle.* Truest to "a new blind judgement pass". Cost grows with every cycle.
-- *Only what changed.* Cheap. A fault missed in cycle one stays missed.
-- *Everything the first time; after that, the changed files and the line items whose inputs changed, without being told what the last judge found. A fault found late in unchanged material is still fixed, and is logged as a miss of the first judge.*
-- **Recommendation:** the third. It is the earlier refusal design applied here: a first refusal must be complete, and a late one counts against the judge.
+**4. Who is the steward?** **[HIS, by card]** "The Conductor, always." (§5, "The steward and the journal".)
 
-**3. How many fix cycles before the mod is raised to the steward?**
+**5. May he look early?** **[HIS, typed]** "(1) Yes, at any stage, and questions can be sent to the user at any time. If I can get to them, I might be able to steer out of a coming confusion early. Conductor will let me know."
 
-- Two, three or five. Today two numbers exist in drafts: "the 4th refusal raises the alarm" (refusal design) and "five or more judge rounds parks the version" (Design Versions draft).
-- The trade: a low number brings a human-level reader in early and often. A high number lets a loop burn. Explosive Knockback's paper loop ran 12 judge rounds by its version record.
-- **Recommendation:** three cycles at a stage. The fourth judge does not start; the steward reads the record and decides: defer a bar, repair a criterion, call it a design fault, or allow one more.
+**6. What must a test be at the lock?** **[HIS, by card]** "Built: runs. New: specified." A built mod's tests run at the lock. A new mod's tests are specified at the lock (id, stage, file, what it observes, files it reads) and made to run, failing first, in Stage 3. (§4, Stage 1.)
 
-**4. Who is the steward?**
-
-- *The Conductor itself.* No new seat. The Conductor's attention is the scarce thing.
-- *A standing seat per advancing mod.* Always there. Its memory drifts back into its context, and it is one more session to keep alive.
-- *A duty any fresh agent performs from the journal; the Conductor does it for the pilot.*
-- **Recommendation:** the third.
-
-**5. May he look early?**
-
-- *Only at Stage 8.* His time is protected. He sees faults late, after seven stages of cost.
-- *At any stage, as a short offered look; what he says becomes line items at once.*
-- The trade: early looks cost his minutes and can move a design that was locked. The Problem, Polish and Divergent sorting already exists to absorb that.
-- **Recommendation:** yes, at any stage. It is how the 1-on-1 work found things.
-
-**6. What must a test be at the lock?**
-
-- *Runnable at the lock.* Possible only when code exists. True for all five current mods.
-- *Specified at the lock, runnable by the end of Stage 3.* At lock every bar has a test id, its stage, the file it will live in, what it will observe and the files it reads. Stage 2 checks that mechanically. Stage 3 makes each one run, failing first.
-- **Recommendation:** specified at the lock for a new mod; runnable at the lock for a mod that is already built. Recommendation 3 said "runnable"; for an unbuilt mod that cannot be met, so this needs his word.
-
-### After the pilot has shown something
+### Still open: after the pilot has shown something
 
 **7. Do the Designer's Exam and coverage judge stay as gates before the lock?**
 
@@ -519,7 +478,7 @@ Each is a real choice. The first six block the pilot. The rest can wait until th
 
 - *Nothing; every version takes all eight stages.*
 - *A PATCH takes: preflight on the touched lines, the fix, one blind challenge of the diff, the touched in-game rows, and then appears as a "changed since your last look" cell in the next save he opens anyway. No sitting of its own.*
-- *A small mod with no art also merges stages 4 and 5 and lets the steward do Stage 7.*
+- *A small mod with no art also lets the Conductor do Stage 7.*
 - **Recommendation:** the second for a PATCH. Decide the third after the pilot.
 
 **11. Where does art sit?**
@@ -539,7 +498,7 @@ Each is a real choice. The first six block the pilot. The rest can wait until th
 
 - *Every blind judge run anywhere.* The number climbs fast and means little.
 - *Each arrival at Stage 7.* It then means "the system thought this was ready for him".
-- **Recommendation:** each arrival at Stage 7. Cycles at stages 4 and 5 are counted separately.
+- **Recommendation:** each arrival at Stage 7. Cycles at Stages 4 and 5 are counted separately.
 
 **14. Tickets that belong to no mod.**
 
@@ -568,7 +527,7 @@ Each is a real choice. The first six block the pilot. The rest can wait until th
 
 Where it starts (measured 2026-11-13 3:03 PM PST): the design is locked at 0.1.0 on his word. The mod's code exists (`src/RimMandrake/ExplosiveKnockback/`, with four selftests, an in-game script and three proof scripts). Its 59 bars are checklist rows; they are not yet a table of tests with stages. Six judge gaps are open, all corrections to test text, five of which the judge said "look fixed".
 
-The steward is the Conductor. No program is built for the pilot except throwaway scripts.
+The steward is the Conductor (his card: "The Conductor, always"). No program is built for the pilot except throwaway scripts.
 
 | step | what is done by hand | what is written down |
 |---|---|---|
@@ -576,14 +535,14 @@ The steward is the Conductor. No program is built for the pilot except throwaway
 | Finish Stage 1 | Turn the 59 bars into the test-and-stage table. Apply the six corrections. Place the 2 held statements. Move the settings sweep from the game to an offline test (his question of today). | The table; how many bars already had a runnable test. |
 | Stage 2 | A throwaway script checks the table against the repo and the def list. | Refusals; the run time. |
 | Stage 3, as "reconcile" | Build the missing tests, failing first. Build anything a bar needs that does not exist. | Tickets used; tokens. |
-| Stages 4 and 5 | One fresh blind agent, in the order of open question 1. Fix in place. A new blind agent. | Cycles; what each lane found; tests edited. |
+| Stages 4 and 5 | One fresh blind agent, tests first (§8, decision 1): its own game-logic tests from the bars, then the code. Fix in place. A new blind agent that reads the changes (decision 2). After three cycles the Conductor decides (decision 3). | Cycles; what each lane found; tests edited. |
 | Stage 6 | One dense prepared map on the minimal mod list, on one game. Scripts decide. Screenshots. | Rows; strange things; wall time. |
 | Stage 7 | One fresh reader over everything. | The walk brief. |
 | Stage 8 | His walk. | His words; the pass record, or the list that sends it back. |
 
 At every stage change the steward writes three things in the journal: what the stage cost (tokens, wall time, his minutes), what was boring enough to automate, and what needed judgment.
 
-**Limits for the pilot. [PROPOSAL]** A budget for stages 1 to 7 is set before it starts and the pilot stops and comes to him at that number. This writer has no measured basis for the number; it should be far below the 97 million charged to the paper loop. The cycle limit of open question 3 applies.
+**Limits for the pilot. [PROPOSAL]** A budget for stages 1 to 7 is set before it starts and the pilot stops and comes to him at that number. This writer has no measured basis for the number; it should be far below the 97 million charged to the paper loop. The cycle limit of three (§8, decision 3) applies.
 
 **What the pilot is not.** It does not test a from-nothing build, art, or a look-heavy mod. It does not prove the pipeline. It produces the first measured cost of one mod version from lock to his pass, and a list of what to automate.
 
@@ -607,7 +566,7 @@ At every stage change the steward writes three things in the journal: what the s
 ## 10. What this draft does not know
 
 - The count of mod ideas that sit inside tickets and are not first-touch items: UNMEASURED. No marker says "this ticket is a mod idea".
-- What a stage change costs the steward: UNMEASURED until the pilot.
+- What a stage change costs the Conductor as steward: UNMEASURED until the pilot.
 - His minutes per look: UNMEASURED.
 - The Explosive Knockback judge-round count has three answers on disk and in today's notes: 12 by its version record, 13 judge-review charges in its stage record, 19 in the Conductor's sitting note. Not reconciled.
 - Whether "Artisan-inspired" should mean more than is taken here. What this draft takes from Artisan (the loop method of 2026-11-07): his words are frozen and everything else belongs to the agents; the work unit is a whole piece, not a ticket; the finish line is something he would be shown; a fresh judge reads every claim. What it does not take: one unattended agent looping alone. Artisan's own record says zero acceptances as of 2026-11-07, so nothing here leans on it as proven.

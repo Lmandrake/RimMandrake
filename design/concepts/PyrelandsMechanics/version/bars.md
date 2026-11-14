@@ -1,6 +1,6 @@
-# PyrelandsMechanics 0.1.0: the bars, locked as they stood on 2026-11-13
+# Pyrelands 0.2.0 (the Deep Desert Tribes): the bars, pinned as they stood on 2026-11-13
 
-Owner, by card 2026-11-13: *"Lock today's bars as 0.1.0"*. Nothing here edits a bar: this file points at the bars and pins their bytes. State: locked, pending his read.
+Entered by card 2026-11-13 (*"Lock today's bars as 0.1.0"*) as its own 0.1.0; then, by card the same day, "One mod, Tribes next version": this record is Pyrelands 0.2.0, design kept as written, not locked as a version of its own. Nothing here edits a bar: this file points at the bars and pins their bytes.
 
 Lock commit: `237b79116781821545f7ac58c23ed40bfc0250c4` (origin/main, 2026-11-13).
 

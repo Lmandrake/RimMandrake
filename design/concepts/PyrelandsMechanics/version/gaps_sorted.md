@@ -1,8 +1,8 @@
-# Pyrelands Mechanics 0.1.0: open judge gaps, sorted
+# Pyrelands 0.2.0 (the Deep Desert Tribes): open judge gaps, sorted
 
 **No coverage judge has run on this concept** (no `coverage_verdict.json`, no judge rounds, no `park_summary.md`): it stopped at stage 4, the Cold Reader exam. The one open refusal is the exam's own.
 
-Sort rule (same in every mod): **PROBLEM** = without the fix a defect a player would reject (or find strange or disappointing) can ship unnoticed; stays in 0.1.0. **POLISH** = improves play, not part of passing, needs his confirmation. **NEXT VERSION** = shifts or extends the vision. **CORRECTION** = the bar's or test's own text is wrong, contradictory or reads something that does not exist.
+Sort rule (same in every mod): **PROBLEM** = without the fix a defect a player would reject (or find strange or disappointing) can ship unnoticed; stays in this version (0.2.0). **POLISH** = improves play, not part of passing, needs his confirmation. **NEXT VERSION** = shifts or extends the vision. **CORRECTION** = the bar's or test's own text is wrong, contradictory or reads something that does not exist.
 
 | gap | bars it touches | sort | reason |
 |---|---|---|---|

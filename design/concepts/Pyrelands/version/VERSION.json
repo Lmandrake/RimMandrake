@@ -1,7 +1,11 @@
 {
  "mod": "Pyrelands",
  "version": "0.1.0",
- "state": "locked-pending-owner-read",
+ "state": "locked",
+ "locked_on": "2026-11-13",
+ "locked_by": "owner",
+ "owner_words": "Yes, lock the other four mods (owner, 2026-11-13 ~3:40 PM PST, typed to the Conductor; said of FlowWorks, Gimme Some Slack, Pyrelands, Pyrelands Mechanics). Then by card, 2026-11-13 ~3:50 PM PST: One mod, Tribes next version",
+ "scope": "biome alone; Tribes are 0.2.0 (design/concepts/PyrelandsMechanics). The Tribes code already shipped (mandrake.rut.pyrelandsmechanics) must switch off cleanly for 0.1.0.",
  "bars_total": 41,
  "bars_met": "UNMEASURED",
  "judge_rounds": 3,

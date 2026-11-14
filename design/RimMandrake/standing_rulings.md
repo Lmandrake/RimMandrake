@@ -639,5 +639,6 @@ The rule is user-level since the same day (*"Semantic Versioning should be a Lod
 - **Problem or Polish:** a refinement that fixes a Problem (a defect, or an experience a player would reject as strange or disappointing) stays in the current version; Polish goes to the mod's Polish list, is not part of passing, and each move is confirmed with him. The Judge makes the call as best it can; the threshold is tuned with him.
 - **Asked at filing:** the current-or-next question is put to him when the ticket is filed as active, not when it is picked up. Once filed as current it moves to the next version only by Judge deferral.
 - **Judge deferral** of a bar is approved by the Conductor; he sees each one after.
-- **The five mods in the Designer enter as 0.1.0** at today's bars, their open gaps sorted into Problem, Polish and next version.
+- **The mods in the Designer enter as 0.1.0** at today's bars, their open gaps sorted into Problem, Polish and next version.
+- **Pyrelands is one mod, one Design Version** (card "One mod, Tribes next version"): 0.1.0 is the biome alone; the Deep Desert Tribes record (`design/concepts/PyrelandsMechanics`) is Pyrelands 0.2.0, design kept as written. The Tribes code already shipped must switch off cleanly for 0.1.0.
 His words in full and the build plan (lock, next-version file, pass record), still a draft: `design/specs/2026-11-13-mod-design-versions.md`.

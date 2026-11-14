@@ -1,7 +1,11 @@
 {
- "mod": "PyrelandsMechanics",
- "version": "0.1.0",
- "state": "locked-pending-owner-read",
+ "mod": "Pyrelands",
+ "version": "0.2.0",
+ "record": "PyrelandsMechanics",
+ "state": "planned: the next Design Version of mod Pyrelands (src/RimMandrake/Pyrelands, mandrake.rm.pyrelands); not a mod or version of its own",
+ "ruled_on": "2026-11-13",
+ "ruled_by": "owner",
+ "owner_words": "By card, 2026-11-13 ~3:50 PM PST: One mod, Tribes next version. Pyrelands 0.1.0 is the biome alone; the Deep Desert Tribes (rite, visit, fruit defence) become Pyrelands 0.2.0, design kept as written.",
  "bars_total": 22,
  "bars_met": "UNMEASURED",
  "judge_rounds": 0,
@@ -16,6 +20,7 @@
  },
  "caveats": [
   "stage.json reads status 'blocked' on EXAM_CONTROL_ENFORCE_FOUR_NEVER_MISSED, which the ledger closed 2026-11-06T19:55Z: a stale block; the exam itself still fails its control",
-  "tree.json root_state reads DRAFT although sheet.md records his card 'Yes, validate' (2026-11-05)"
+  "tree.json root_state reads DRAFT although sheet.md records his card 'Yes, validate' (2026-11-05)",
+  "entered on 2026-11-13 as 'PyrelandsMechanics 0.1.0'; bars_total, judge_rounds and tokens_spent describe that entry and carry over unchanged to 0.2.0"
  ]
 }

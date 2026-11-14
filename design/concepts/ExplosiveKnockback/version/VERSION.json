@@ -1,7 +1,10 @@
 {
  "mod": "ExplosiveKnockback",
  "version": "0.1.0",
- "state": "locked-pending-owner-read",
+ "state": "locked",
+ "locked_on": "2026-11-13",
+ "locked_by": "owner",
+ "owner_words": "\"Yes, fix it like that, and then please record this as an actual Pass.\" (owner, 2026-11-13T22:24:09Z, ledger OWNER:1794608649743135329); the Designer Lock stage landed on it in 1a52342277 (run bench-ek-owner-lock-st5-20261113, locked 2026-11-13T22:49:02Z)",
  "bars_total": 59,
  "bars_met": 56,
  "judge_rounds": 12,
@@ -16,7 +19,6 @@
  },
  "caveats": [
   "29 of the budget charges are kind 'unmeasured' (estimates, 86476989 tokens of the 97196907 total); the measured part is 10719918",
-  "stage.json reads waiting_owner and the concept is parked (park_summary.md): nothing runs on it until his word",
   "the judge said gaps g2-g6 'look fixed' but counted them open because no claim was written; claims for g2-g6 were written after (coverage_fixes.json), g1 has none"
  ]
 }

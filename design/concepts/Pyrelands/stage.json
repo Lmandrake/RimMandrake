@@ -824,7 +824,7 @@
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
  "mod": "RimMandrake/Pyrelands",
- "pending_decision": "worldgen placement switch: inv_biome_self_contained ships biomeGenerationEnabled (default on, labelled WORLDGEN-AFFECTING in RM_PyrelandsMod.cs:60) that places the Pyrelands on newly generated worlds, while sheet.md 'does not' says 'No worldgen of any kind' and the standing ruling (owner 2026-08-15) says there is no worldgen feature in any version. Which one the sheet and floor describe needs his word. Stage 3 then also owes the five coverage gaps in coverage_verdict.json (at 2026-11-06T16:05:05Z).",
+ "pending_decision": "Stage 3 owes the five coverage gaps in coverage_verdict.json (at 2026-11-06T16:05:05Z).",
  "recovery": [],
  "results": [
   {
