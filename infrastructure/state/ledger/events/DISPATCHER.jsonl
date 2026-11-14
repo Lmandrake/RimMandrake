@@ -1484,3 +1484,5 @@
 {"seat":"DISPATCHER","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"dispatcher: Conductor quick run: launched","ts":"2026-11-14T15:19:21Z","tsn":1794669561978458594}
 {"seat":"DISPATCHER","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"dispatcher: Conductor quick run: completed","ts":"2026-11-14T15:21:45Z","tsn":1794669705938200227}
 {"seat":"DISPATCHER","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"dispatcher: Conductor quick run: launched","ts":"2026-11-14T16:00:20Z","tsn":1794672021000183090}
+{"seat":"DISPATCHER","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"dispatcher: Conductor quick run: completed","ts":"2026-11-14T16:07:11Z","tsn":1794672431228789172}
+{"seat":"DISPATCHER","event":"note","id":"OPERATIONS_MONITOR_ACCOUNTS_OFF_SHARED_TABLE","text":"dispatcher alarm : Conductor run rm-role-conductor-1794672016 used 534108 weighted tokens (raw 2796223), budget 450000 [meant for V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE; token values stay off it]","ts":"2026-11-14T16:07:16Z","tsn":1794672436315507327}
