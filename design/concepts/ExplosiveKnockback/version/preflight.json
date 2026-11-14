@@ -2,7 +2,7 @@
  "mod": "ExplosiveKnockback",
  "version": "0.1.0",
  "program": "preflight_ek.py (throwaway, pilot row 3)",
- "at": "2026-11-14T12:43:26-08:00",
+ "at": "2026-11-14T14:52:06-08:00",
  "dump": {
   "path": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/defs.sqlite",
   "provenance": {
@@ -16,7 +16,7 @@
    "defs_total": "59262"
   }
  },
- "seconds": 3.32,
+ "seconds": 3.42,
  "verdict": "refuse",
  "refusals": 6,
  "checks": [
@@ -115,7 +115,7 @@
    "evidence": "17 names checked; dump defs.sqlite (4ad8ea9af8a56090, 51081 defs, 316 mods)",
    "smallest_fix": null,
    "route": null,
-   "seconds": 2.768
+   "seconds": 2.84
   },
   {
    "id": "C10_mods_real",
@@ -125,17 +125,17 @@
    "evidence": "6 named: lwm.deepstorage, mandrake.rm.cauldron, mandrake.rm.creaturebehaviors, mandrake.rm.environmentalhazards, mandrake.rm.flowworks, mandrake.rsw.armoury",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.002
+   "seconds": 0.011
   },
   {
    "id": "C11_settings_fields_real",
    "what": "every settings field named by the sweep scene, its offline split and the table exists in RM_KnockbackMod.cs",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "22 named, 46 fields in the settings class",
+   "evidence": "29 named, 46 fields in the settings class",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.004
+   "seconds": 0.005
   },
   {
    "id": "C12_locked_files_unchanged",
@@ -145,7 +145,7 @@
    "evidence": "8 pins",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.007
+   "seconds": 0.008
   },
   {
    "id": "C13_mass_scene_consistent",
@@ -175,7 +175,7 @@
    "evidence": "10 items",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.497
+   "seconds": 0.533
   }
  ]
 }

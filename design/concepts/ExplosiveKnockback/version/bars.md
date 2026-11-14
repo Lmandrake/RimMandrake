@@ -10,14 +10,16 @@ Lock commit: `237b79116781821545f7ac58c23ed40bfc0250c4` (origin/main, 2026-11-13
 |---|---|---|
 | `design/concepts/ExplosiveKnockback/tree.json` | `23420c4193e49209afaac9a6f4c6fb3c53828408` | the leaves: each is an acceptance criterion with its scenario, false passes and red |
 | `design/concepts/ExplosiveKnockback/sheet.md` | `f60dfd56898ef4ca5e4a671ab593336ab8ae5a19` | his plain-words sheet: does, does not, his words |
-| `design/concepts/ExplosiveKnockback/scenes.json` | `267627ebab2fae930456a3063804858b526ac5d1` | the acceptance scenes and showcases the leaves are proven by |
+| `design/concepts/ExplosiveKnockback/scenes.json` | `61ba1ba6fa5d42b4806a48291818c9275e44bed9` | the acceptance scenes and showcases the leaves are proven by |
 | `design/concepts/ExplosiveKnockback/floor.json` | `a322de650cb13e4bf77f91c24828ea008fe0ddf8` | the quality floor lines every mod meets |
 | `design/concepts/ExplosiveKnockback/exam.json` | `fe87a6930abe060a65af732e69f01660fdf34cff` | the Cold Reader exam of tree and sheet |
-| `design/concepts/ExplosiveKnockback/record.json` | `e608b943b33295f94b3a9bd6b2f17a7d096f7e61` | the inventory of built capabilities (checklist rows too) |
+| `design/concepts/ExplosiveKnockback/record.json` | `94a35620ff4e8d77af38e7452d0c8c704b35cb99` | the inventory of built capabilities (checklist rows too) |
 | `design/concepts/ExplosiveKnockback/plan.md` | `ff3f108cd33b2026cef013ee52fafad55fb43a79` | the build and proof plan |
 | `design/concepts/ExplosiveKnockback/stage.json` | `a5478f4fc032dc87e731264b51af0d3f7b4bb95f` | the Designer's stage, budget and judge rounds (state, not a bar) |
 
 **Re-pinned 2026-11-14 (Stage 3, by the steward's rule: a locked file changed only by test-text corrections or record-keeping is re-pinned; a changed bar never is).** `tree.json`: only the `coverage` key (the owner-certify stamp); the leaves are unchanged. `scenes.json`: test text only, in sc_spared, sc_mass_and_power (judge gap g4: the colonist back to 64 to 76 kg, pinned there by a test-only proof hook) and sc_settings_sweep. `record.json`: only the `decisions` log; the inventory rows (bars) are unchanged. The blobs at the lock were tree `06e6a1ff44`, scenes `e4a97d710a`, record `14e3015936`.
+
+**Re-pinned again 2026-11-14 (Stage 5, same rule; journal interventions of that date).** `scenes.json`: test text only, in sc_pawn_arc (it checks the colonist still holds its stack, as built and as the owner kept for 0.1.0, journal question 7; it had said the stack was dropped at takeoff) and sc_settings_sweep (its lane and action now name every saved setting, question 6). `record.json`: bookkeeping only, questions 3 and 9: `impl` absent to present with evidence on inv_creature_mass_limit and inv_blast_power_damage, and inv_big_corpse_spared's skip reason too_big to too_heavy (the body-size limit was replaced by the mass limit; the bar, a corpse of body size 2.5 or more is never thrown, is unchanged). The blobs before were scenes `267627ebab`, record `e608b943b3`.
 
 Tree hash (`concept_tree.py hash`): `02900038234b11c46790c7a09b75a68a0b877cd3270c7e57c94564ef758b15b2`; sheet hash: `234fd3c20e850bdde174efc6b3d4b20f1025dc5ddbf2c15caef766a925f0c722`.
 

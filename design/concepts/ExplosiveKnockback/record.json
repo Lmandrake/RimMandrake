@@ -1111,7 +1111,7 @@
   },
   {
    "id": "inv_big_corpse_spared",
-   "what": "A corpse of body size 2.5 or more (the Mod Settings limit) is never thrown (skip reason too_big)",
+   "what": "A corpse of body size 2.5 or more is never thrown (skip reason too_heavy: every such corpse weighs 150 kg or more, over the 75 kg goods mass limit, which replaced the body-size limit)",
    "impl": "present",
    "impl_evidence": [
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
@@ -1159,8 +1159,8 @@
   {
    "id": "inv_creature_mass_limit",
    "what": "A living pawn heavier than creatureMassLimit (150 kg) is never thrown (skip too_heavy_creature), replacing the body-size cutoff",
-   "impl": "absent",
-   "search_scope": "src/RimMandrake/ExplosiveKnockback/Source/*.cs for creatureMass (2026-11-13): none; the only pawn cutoff is immuneBodySize 2.5 (RM_KnockbackMath.cs Eligible)",
+   "impl": "present",
+   "search_scope": "2026-11-14: creatureMassLimit is read in RM_KnockbackMath.Eligible (a living pawn over the limit is not thrown) and journalled too_heavy_creature in RM_MapComponent_Knockback; built in 40f4e85120. (2026-11-13: none found; the body-size cutoff was the only one.)",
    "proof": "missing",
    "proof_evidence": [],
    "scope": "opened_by_owner",
@@ -1168,13 +1168,17 @@
    "source": [
     "OWNER:1794592407312114138"
    ],
-   "impl_evidence": []
+   "impl_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs"
+   ],
+   "proof_note": "kernel K-18 to K-20 pass (selftest_explosiveknockback_kernel.py); the live proof, sc_mass_and_power, is UNRUN (Stage 6). Bookkeeping corrected 2026-11-14 (steward, journal questions 3 and 9)."
   },
   {
    "id": "inv_blast_power_damage",
    "what": "A throw's force is the type force x this explosion's damage / the type's reference damage (blastPowerFromDamage, on)",
-   "impl": "absent",
-   "search_scope": "src/RimMandrake/ExplosiveKnockback/Source/*.cs for damAmount, defaultDamage, refDamage (2026-11-13): none; ThrowCells takes no damage term (RM_KnockbackMath.cs)",
+   "impl": "present",
+   "search_scope": "2026-11-14: RM_KnockbackMath.DamageRatio (damage / type reference x blastPowerRefPercent, off = 1.0) scales the force; built in 40f4e85120. (2026-11-13: none found.)",
    "proof": "missing",
    "proof_evidence": [],
    "scope": "opened_by_owner",
@@ -1182,7 +1186,11 @@
    "source": [
     "OWNER:1794592407312114138"
    ],
-   "impl_evidence": []
+   "impl_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs"
+   ],
+   "proof_note": "kernel K-18 to K-20 pass (selftest_explosiveknockback_kernel.py); the live proof, sc_mass_and_power, is UNRUN (Stage 6). Bookkeeping corrected 2026-11-14 (steward, journal questions 3 and 9)."
   }
  ],
  "built_reviewed": [],

@@ -1,0 +1,559 @@
+{
+ "mod": "ExplosiveKnockback",
+ "version": "0.1.0",
+ "made": "2026-11-14",
+ "rule": "Stage 6 reports against the 59 locked bars (version/test_table.json); the north-star bars and the walk rows are older lists mapped onto them here (steward decision, journal question 4).",
+ "made_by": "make_bar_map.py (throwaway; north-star from tree.json leaf roots, walk rows by hand)",
+ "counts": {
+  "locked_bars": 59,
+  "north_star": 16,
+  "north_star_unmapped": 0,
+  "walk_rows": 49,
+  "walk_unmapped": 3,
+  "walk_conflicts": 1,
+  "walk_partial": 1
+ },
+ "north_star": [
+  {
+   "id": "ek_blast_throws_people",
+   "bars": [
+    "people_thrown_three_cells",
+    "pawn_flight_arc",
+    "the_spared",
+    "heavier_flies_less",
+    "recovery_immunity",
+    "hose_drops_at_takeoff",
+    "settings_scale_and_switch",
+    "walk_storeroom_raid"
+   ]
+  },
+  {
+   "id": "ek_wall_stops_hard",
+   "bars": [
+    "wall_stops_dead",
+    "pawn_hits_pawn_stops",
+    "doors_and_deep_water_stop"
+   ]
+  },
+  {
+   "id": "ek_shield_belt_holds",
+   "bars": [
+    "shield_belt_holds"
+   ]
+  },
+  {
+   "id": "ek_goods_fly_wild",
+   "bars": [
+    "goods_arc_spin_rebound",
+    "settings_scale_and_switch",
+    "walk_storeroom_raid"
+   ]
+  },
+  {
+   "id": "ek_every_good_flies",
+   "bars": [
+    "every_good_moves"
+   ]
+  },
+  {
+   "id": "ek_open_storage_no_cover",
+   "bars": [
+    "open_shelf_scatters"
+   ]
+  },
+  {
+   "id": "ek_closed_container_holds",
+   "bars": [
+    "closed_container_holds",
+    "settings_scale_and_switch"
+   ]
+  },
+  {
+   "id": "ek_heavy_goods_knock",
+   "bars": [
+    "heavy_stack_knocks",
+    "settings_scale_and_switch"
+   ]
+  },
+  {
+   "id": "ek_every_harmful_blast_throws",
+   "bars": [
+    "every_harmful_blast_throws",
+    "only_explosions_throw",
+    "per_weapon_tuning",
+    "settings_scale_and_switch"
+   ]
+  },
+  {
+   "id": "ek_gas_clump_by_clump",
+   "bars": [
+    "gas_goes_clump_by_clump",
+    "settings_scale_and_switch",
+    "walk_storeroom_raid"
+   ]
+  },
+  {
+   "id": "ek_our_gases_burn",
+   "bars": [
+    "our_gases_burn"
+   ]
+  },
+  {
+   "id": "ek_blast_breaks_pit_cover",
+   "bars": [
+    "blast_breaks_pit_cover"
+   ]
+  },
+  {
+   "id": "ek_thrown_into_pit_falls",
+   "bars": [
+    "thrown_into_pit_falls",
+    "pit_goods_fetched"
+   ]
+  },
+  {
+   "id": "ek_goods_teleport",
+   "bars": [
+    "no_teleport"
+   ]
+  },
+  {
+   "id": "ek_careless_fall",
+   "bars": [
+    "no_careless_fall"
+   ]
+  },
+  {
+   "id": "ek_barrage_stays_smooth",
+   "bars": [
+    "barrage_frame_budget",
+    "frame_time_probe",
+    "walk_storeroom_raid"
+   ]
+  }
+ ],
+ "walk": [
+  {
+   "row": "A Bomb blast (mortar, r 2.9) one cell from a human throws them 3 cells straight away from the centre, alive (owner Q7).",
+   "slug": "throw.mortar_beside_human_throws_3_cells",
+   "bars": [
+    "people_thrown_three_cells",
+    "inv_kernel"
+   ],
+   "note": null
+  },
+  {
+   "row": "A wall behind the pawn stops the throw on the cell before it, with impact damage.",
+   "slug": "throw.wall_stops_throw_with_impact",
+   "bars": [
+    "wall_stops_dead"
+   ],
+   "note": null
+  },
+  {
+   "row": "A closed door stops the throw like a wall and takes a hit.",
+   "slug": "throw.closed_door_stops_throw_and_takes_a_hit",
+   "bars": [
+    "doors_and_deep_water_stop"
+   ],
+   "note": null
+  },
+  {
+   "row": "Pawns are thrown over sandbags and barricades (owner Q3).",
+   "slug": "throw.thrown_over_sandbags",
+   "bars": [
+    "people_thrown_three_cells"
+   ],
+   "note": null
+  },
+  {
+   "row": "A living creature heavier than the creature mass limit (150 kg, the game's Mass stat less carried inventory; owner card 2026-11-13) is not thrown: a 220-260 kg animal, chosen by mass from the loaded animals, journals too_heavy_creature.",
+   "slug": "throw.creature_over_mass_limit_is_not_thrown",
+   "bars": [
+    "the_spared",
+    "inv_creature_mass_limit"
+   ],
+   "note": null
+  },
+  {
+   "row": "EMP (and every zero-force blast) throws nothing and enqueues nothing.",
+   "slug": "throw.emp_blast_throws_nothing",
+   "bars": [
+    "every_harmful_blast_throws",
+    "inv_which_blasts"
+   ],
+   "note": null
+  },
+  {
+   "row": "Light items are thrown by the same kernel (lighter flies farther, stack intact); an item over 75 kg stays (owner Q4).",
+   "slug": "light_things.items_thrown_by_mass_heavy_stays",
+   "bars": [
+    "every_good_moves",
+    "inv_mass_limit_skip"
+   ],
+   "note": null
+  },
+  {
+   "row": "An item on an open shelf scatters; an item in a closed container stays.",
+   "slug": "light_things.item_on_an_open_shelf_scatters",
+   "bars": [
+    "open_shelf_scatters",
+    "closed_container_holds",
+    "inv_closed_guard"
+   ],
+   "note": null
+  },
+  {
+   "row": "A pawn the blast kills is thrown as a corpse.",
+   "slug": "light_things.pawn_killed_by_blast_thrown_as_corpse",
+   "bars": [
+    "goods_arc_spin_rebound",
+    "inv_killed_corpse"
+   ],
+   "note": null
+  },
+  {
+   "row": "Thrown goods truly fly (RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD): mid-flight the stack is inside a carrier, count intact.",
+   "slug": "flying_goods.stack_inside_carrier_mid_flight",
+   "bars": [
+    "goods_arc_spin_rebound",
+    "no_teleport",
+    "inv_goods_fly"
+   ],
+   "note": null
+  },
+  {
+   "row": "A flown stack lands on the cell the instant move would choose, count intact, no carrier left.",
+   "slug": "flying_goods.lands_on_the_instant_cell_count_intact",
+   "bars": [
+    "goods_arc_spin_rebound",
+    "inv_goods_fly"
+   ],
+   "note": null
+  },
+  {
+   "row": "A flight cut short by a wall (rebound off) lands beside it and takes today's wall impact there.",
+   "slug": "flying_goods.wall_cut_short_applies_impact",
+   "bars": [
+    "goods_arc_spin_rebound"
+   ],
+   "note": null
+  },
+  {
+   "row": "With rebound on, a cut-short flight bounces back with about 70% of the cells it had left; the impact applies at the bounce.",
+   "slug": "flying_goods.rebound_off_wall_at_keep_percent",
+   "bars": [
+    "goods_arc_spin_rebound",
+    "inv_goods_fly"
+   ],
+   "note": null
+  },
+  {
+   "row": "flyingGoods off is today's instant move (no carrier).",
+   "slug": "flying_goods.off_is_the_instant_move",
+   "bars": [
+    "settings_scale_and_switch"
+   ],
+   "note": "CONFLICT: the walk row says flyingGoods off is the old instant move; the locked bar settings_scale_and_switch says goods in the air off means loose goods are not thrown at all, never the old hop. The bar wins; the walk row is stale."
+  },
+  {
+   "row": "A closed container (a stasis locker, a sealed crate) that survives the blast is thrown whole, shorter than the same goods loose, its goods still in it and unhurt by the blast (owner 2026-11-12).",
+   "slug": "light_things.closed_container_thrown_whole_contents_inside_unhurt",
+   "bars": [
+    "closed_container_holds",
+    "inv_container_shove"
+   ],
+   "note": null
+  },
+  {
+   "row": "A flying stack of 10 kg or more that reaches a person hits them lightly, staggers them and drops there; a light stack flies past.",
+   "slug": "flying_goods.heavy_stack_hits_and_stops_light_passes",
+   "bars": [
+    "heavy_stack_knocks",
+    "inv_heavy_knock"
+   ],
+   "note": null
+  },
+  {
+   "row": "A thrown stack never shoves a stack already lying where it lands (a stackLimit-1 thing into a full cell lands beside it).",
+   "slug": "flying_goods.landing_never_shoves_a_resident",
+   "bars": [],
+   "note": "UNMAPPED: no locked bar says a thrown stack never shoves a stack already on its landing cell."
+  },
+  {
+   "row": "The same in a pit: a good already on the pit floor stays there when a thrown thing lands on its cell.",
+   "slug": "pits.landing_in_a_pit_never_shoves_a_resident_out",
+   "bars": [],
+   "note": "UNMAPPED: inv_pit_floor_goods_stay is about the blast not throwing pit-floor goods, not about a landing pushing them out."
+  },
+  {
+   "row": "Burning flammable gas (the Cauldron's vent gas) goes off clump by clump: a burst per burning cell over several ticks, goods at most 2 cells, people shoved 1 cell with no shove damage and at most once per 2 s, no pit cover damaged.",
+   "slug": "gas.burning_gas_bursts_clump_by_clump_no_damage",
+   "bars": [
+    "gas_goes_clump_by_clump",
+    "inv_gas_chain"
+   ],
+   "note": null
+  },
+  {
+   "row": "Fire and incendiary blasts throw at half a Bomb's force (owner card 2026-11-11).",
+   "slug": "throw.fire_and_incendiary_throw_at_half",
+   "bars": [
+    "every_harmful_blast_throws",
+    "inv_which_blasts"
+   ],
+   "note": null
+  },
+  {
+   "row": "A damaging explosion this mod does not patch throws at full force by default (owner card 2026-11-11).",
+   "slug": "throw.unpatched_harmful_blast_throws_at_full",
+   "bars": [
+    "every_harmful_blast_throws",
+    "inv_which_blasts"
+   ],
+   "note": null
+  },
+  {
+   "row": "A save taken mid-flight reloads with the carrier and its stack, which then lands intact.",
+   "slug": "not_driven.save_mid_flight_keeps_the_stack",
+   "bars": [
+    "walk_storeroom_raid"
+   ],
+   "note": null
+  },
+  {
+   "row": "A colonist thrown into an open pit lands on its floor and FlowWorks records exactly one descent.",
+   "slug": "pits.colonist_thrown_into_open_pit_falls",
+   "bars": [
+    "thrown_into_pit_falls",
+    "inv_pits_receive"
+   ],
+   "note": null
+  },
+  {
+   "row": "An enemy thrown into an open pit lands on its floor and falls (one descent).",
+   "slug": "pits.enemy_thrown_into_open_pit_falls",
+   "bars": [
+    "thrown_into_pit_falls",
+    "inv_pits_receive"
+   ],
+   "note": null
+  },
+  {
+   "row": "Nothing is thrown across a pit: a throw stops IN the first open pit cell.",
+   "slug": "pits.throw_stops_inside_a_1_wide_pit",
+   "bars": [
+    "thrown_into_pit_falls"
+   ],
+   "note": null
+  },
+  {
+   "row": "A pawn already in a pit is never thrown (you can't climb out).",
+   "slug": "pits.pawn_already_in_pit_not_thrown",
+   "bars": [
+    "the_spared",
+    "inv_who_is_spared"
+   ],
+   "note": null
+  },
+  {
+   "row": "A corpse thrown toward a pit lies on the pit floor (owner Q10).",
+   "slug": "pits.corpse_thrown_onto_pit_floor",
+   "bars": [
+    "thrown_into_pit_falls"
+   ],
+   "note": null
+  },
+  {
+   "row": "A damaging blast that reaches a pit cover breaks the whole deck and anyone on it falls (owner Q5/Q9, FlowWorks).",
+   "slug": "pits.blast_breaks_cover_and_pawn_on_it_falls",
+   "bars": [
+    "blast_breaks_pit_cover",
+    "inv_pits_receive"
+   ],
+   "note": null
+  },
+  {
+   "row": "No cap (owner 2026-11-12, \"No caps please.\"): a 5.9 blast over 10 people and 80 stacks throws every one it reaches, all item throws in the one tick the wave lands (over the old 40 and 60 caps).",
+   "slug": "caps.no_cap_every_throw_in_one_tick",
+   "bars": [
+    "every_good_moves",
+    "inv_caps"
+   ],
+   "note": null
+  },
+  {
+   "row": "Master switch off: the blast still damages, nothing moves.",
+   "slug": "settings.master_off_nothing_moves_but_wave_hit",
+   "bars": [
+    "inv_settings"
+   ],
+   "note": null
+  },
+  {
+   "row": "A projectile ThingDef's own knockback extension beats its DamageDef's, and the request journal names the source (design \u00a72.1 lookup: projectile \u2192 weapon \u2192 DamageDef \u2192 unpatched).",
+   "slug": "config.projectile_extension_wins_over_damagedef",
+   "bars": [
+    "per_weapon_tuning",
+    "inv_weapon_ext_fields"
+   ],
+   "note": null
+  },
+  {
+   "row": "An explicit force 0 on the projectile wins over a DamageDef that throws: nothing is requested.",
+   "slug": "config.explicit_zero_on_projectile_throws_nothing",
+   "bars": [
+    "per_weapon_tuning"
+   ],
+   "note": null
+  },
+  {
+   "row": "A blast with impactFactor 0 stops at a wall with zero impact damage.",
+   "slug": "config.impact_factor_zero_no_wall_impact",
+   "bars": [
+    "inv_weapon_ext_fields"
+   ],
+   "note": null
+  },
+  {
+   "row": "A blast with creatureMassLimitOverride 216 (the grav-ram's) throws a 160-200 kg animal chosen by mass; a plain Bomb beside the same kind does not (too_heavy_creature).",
+   "slug": "config.mass_override_throws_a_160_200_kg_animal_global_does_not",
+   "bars": [
+    "per_weapon_tuning",
+    "inv_weapon_ext_fields"
+   ],
+   "note": null
+  },
+  {
+   "row": "Heavier flies less, and a bigger blast throws farther (owner cards 2026-11-13, sc_mass_and_power): one Bomb r 2.9 at damage 50 one cell from the lightest loaded animal, a colonist (45-76 kg), the heaviest animal under 150 kg and a 220-260 kg animal (all chosen by mass; the row prints each label and measured mass) throws each the kernel's cells for its mass (12 / 70 / 144 / 240 kg: 5 / 3 / 2 / spared).",
+   "slug": "mass_power.heavier_flies_less_lightest_colonist_under_150_kg_heavy_spared",
+   "bars": [
+    "heavier_flies_less",
+    "inv_creature_mass_limit"
+   ],
+   "note": null
+  },
+  {
+   "row": "The same blast at damage 100 throws 6 (the cap) / 5 / 4 / spared, damage ratio 2.0.",
+   "slug": "mass_power.double_damage_throws_each_creature_farther",
+   "bars": [
+    "heavier_flies_less",
+    "inv_blast_power_damage"
+   ],
+   "note": null
+  },
+  {
+   "row": "With \"Bigger blasts throw harder\" off, damage 50 throws 5 / 3 / 2 / spared.",
+   "slug": "mass_power.power_off_damage_50_throws_as_before",
+   "bars": [
+    "settings_scale_and_switch",
+    "inv_blast_power_damage"
+   ],
+   "note": null
+  },
+  {
+   "row": "With it off, damage 100 throws the same as damage 50 (ratio 1.0).",
+   "slug": "mass_power.power_off_damage_100_throws_as_damage_50",
+   "bars": [
+    "settings_scale_and_switch",
+    "inv_blast_power_damage"
+   ],
+   "note": null
+  },
+  {
+   "row": "With the creature mass limit at 250 kg, damage 50 throws the 220-260 kg animal (240 kg: 1 cell).",
+   "slug": "mass_power.limit_250_throws_the_220_260_kg_animal",
+   "bars": [
+    "settings_scale_and_switch",
+    "inv_creature_mass_limit"
+   ],
+   "note": null
+  },
+  {
+   "row": "With the limit at 250 kg, damage 100 throws the 220-260 kg animal farther (240 kg: 3 cells).",
+   "slug": "mass_power.limit_250_double_damage_throws_the_220_260_kg_animal_farther",
+   "bars": [
+    "settings_scale_and_switch",
+    "inv_creature_mass_limit",
+    "inv_blast_power_damage"
+   ],
+   "note": null
+  },
+  {
+   "row": "A pawn thrown once cannot be thrown again until its landing stun ends plus the recovery window: a second blast inside it journals \"immune\" and does not move it.",
+   "slug": "guards.second_blast_in_recovery_window_is_immune",
+   "bars": [
+    "recovery_immunity",
+    "inv_recovery"
+   ],
+   "note": null
+  },
+  {
+   "row": "A shield belt that absorbs a blast absorbs the throw: the wearer does not move, and the belt loses extra charge (owner Q4).",
+   "slug": "guards.shield_belt_absorbs_throw_and_drains",
+   "bars": [
+    "shield_belt_holds",
+    "inv_shield"
+   ],
+   "note": null
+  },
+  {
+   "row": "The recovery-window stamps survive a save/reload.",
+   "slug": "not_driven.immunity_survives_reload",
+   "bars": [
+    "recovery_immunity",
+    "inv_recovery"
+   ],
+   "note": null
+  },
+  {
+   "row": "A colonist carrying a hose end drops it where they stood (owner Q6).",
+   "slug": "not_driven.hose_carry_drops_at_takeoff",
+   "bars": [
+    "hose_drops_at_takeoff",
+    "inv_hose_drop"
+   ],
+   "note": null
+  },
+  {
+   "row": "A flyer saved mid-air reloads with the pawn existing once.",
+   "slug": "not_driven.save_mid_flight",
+   "bars": [
+    "walk_storeroom_raid"
+   ],
+   "note": null
+  },
+  {
+   "row": "Raiders resume their lord's duty after landing.",
+   "slug": "not_driven.raid_lord_resumes_duty",
+   "bars": [
+    "pawn_flight_arc"
+   ],
+   "note": "PARTIAL: pawn_flight_arc says the thrown pawn goes back to what it was doing; a raider's lord duty is that case, but no scene of the 59 stages a raider."
+  },
+  {
+   "row": "Results are the same with VEF active (it patches PawnFlyer).",
+   "slug": "not_driven.vef_active_same_results",
+   "bars": [],
+   "note": "UNMAPPED: no locked bar names VEF (it patches PawnFlyer)."
+  },
+  {
+   "row": "A barrage costs little per tick.",
+   "slug": "not_driven.barrage_perf_ms_per_tick",
+   "bars": [
+    "barrage_frame_budget",
+    "inv_perf_all_fly"
+   ],
+   "note": null
+  },
+  {
+   "row": "Items/corpses on a pit floor can be hauled out by colonists (owner Q10 \"stay retrievable\").",
+   "slug": "UNCOVERED:pit_floor_haul",
+   "bars": [
+    "pit_goods_fetched",
+    "inv_pit_floor_haul"
+   ],
+   "note": null
+  }
+ ]
+}

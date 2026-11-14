@@ -48,10 +48,11 @@ his cards of 2026-11-13 and nothing inferred.
 
 ### Oddities (things a reader would otherwise get wrong)
 
-1. **Three bar sets exist.** The 59 coverage checklist rows are the bars of 0.1.0. The 16 "north-star bars" (his card
-   2026-11-12, "Approve as written") and the 30 "must be true" rows of
-   `design/validation_walks/RimMandrake/ExplosiveKnockback.md` are older lists that `validation.py` still reads. They are
-   not reconciled with the 59.
+1. **Three bar sets exist.** The 59 coverage checklist rows are the bars of 0.1.0, and Stage 6 reports against them.
+   The 16 "north-star bars" (his card 2026-11-12, "Approve as written") and the 49 "must be true" rows of
+   `design/validation_walks/RimMandrake/ExplosiveKnockback.md` (measured 2026-11-14; an older count said 30) are older
+   lists that `validation.py` still reads. `version/bar_lists_map.json` maps them onto the 59: north-star 16 of 16;
+   walk rows 49 with 3 unmapped, 1 in conflict and 1 partial (question 11).
 2. **The locked files moved after the lock.** `version/bars.md` pins blobs at `237b791167`; since then `scenes.json`
    (sc_spared, sc_mass_and_power, sc_settings_sweep), `record.json` (decisions) and `tree.json` (the owner-certify
    stamp only) changed. The scene edits are test text (creatures chosen by mass, never named; the g1 mass pin), not bar
@@ -70,6 +71,12 @@ his cards of 2026-11-13 and nothing inferred.
 
 - CONDUCTOR INTERVENED (stage 3, 2026-11-14 12:15 PST, kind decision): a locked file that changed after the lock only by test-text corrections or by today's table work is re-pinned in `version/bars.md` with a journal line saying what changed; a changed bar is never re-pinned (the 3 post-lock changes in Oddities 2). Source: Steward's decisions in the Stage 3 brief of run `rm-detached-bench-rimmandrake-design-maturation-pipeline-w-1794687322`.
 - CONDUCTOR INTERVENED (stage 3, 2026-11-14 12:15 PST, kind decision): scene g4's colonist weight is pinned to 64-76 kg by a test-only proof hook; the bar is not changed, answering question 1. Source: the same brief.
+- CONDUCTOR INTERVENED (stage 5, 2026-11-14 14:55 PST, kind re-pin): sc_pawn_arc's check text no longer says the colonist re-hauls "the stack it dropped at takeoff"; it checks the colonist holds the same stack through flight and landing, as built (`flyWithCarriedThing: true`) and as the owner kept for 0.1.0 ("For today have them hold it", question 7); bar meaning unchanged, `scenes.json` re-pinned in `version/bars.md`. Source: Conductor brief of 2026-11-14 about 2:45 PM PST to the BENCH builder (owner answers on questions 7 and 8; steward decisions on 3, 4, 6 and 9).
+- CONDUCTOR INTERVENED (stage 5, 2026-11-14 14:55 PST, kind decision): 0.1.0 keeps the harmless landing on a pawn that walked in mid-flight (owner by card, "Bruise in the next version", question 8). Source: Conductor brief of 2026-11-14 about 2:45 PM PST to the BENCH builder (owner answers on questions 7 and 8; steward decisions on 3, 4, 6 and 9).
+- CONDUCTOR INTERVENED (stage 5, 2026-11-14 14:55 PST, kind decision): deferred to 0.2.0 and listed in `version/next_version/README.md`: the carried thing flies its own trajectory (RIMMANDRAKE_FLING_KNOCKBACK_CARRY_ON_OWN_ARC, owner's words) and a landing on a pawn bruises both by the thrown pawn's weight (RIMMANDRAKE_BRUISE_KNOCKBACK_LANDING_ON_PAWN, by card). Source: Conductor brief of 2026-11-14 about 2:45 PM PST to the BENCH builder (owner answers on questions 7 and 8; steward decisions on 3, 4, 6 and 9).
+- CONDUCTOR INTERVENED (stage 5, 2026-11-14 14:55 PST, kind decision): Stage 6 reports against the 59 locked bars; the 16 north-star bars and the walk's "must be true" rows are mapped onto them in `version/bar_lists_map.json` (north-star 16 of 16; walk rows measured 49, not 30: 3 unmapped, 1 conflict, 1 partial; question 4). Source: Conductor brief of 2026-11-14 about 2:45 PM PST to the BENCH builder (owner answers on questions 7 and 8; steward decisions on 3, 4, 6 and 9).
+- CONDUCTOR INTERVENED (stage 5, 2026-11-14 14:55 PST, kind re-pin): `record.json` state fields are bookkeeping, not bar meaning: inv_creature_mass_limit and inv_blast_power_damage read `impl: present` with evidence (built 40f4e85120, K-18 to K-20 pass, live proof unrun), and inv_big_corpse_spared names skip reason too_heavy; re-pinned (questions 3 and 9). Source: Conductor brief of 2026-11-14 about 2:45 PM PST to the BENCH builder (owner answers on questions 7 and 8; steward decisions on 3, 4, 6 and 9).
+- CONDUCTOR INTERVENED (stage 5, 2026-11-14 14:55 PST, kind re-pin): sc_settings_sweep's lane, action and expectations now name every saved setting (46; 0 unnamed against 20 before, by the sweep test's own rule); test text, re-pinned (question 6). Source: Conductor brief of 2026-11-14 about 2:45 PM PST to the BENCH builder (owner answers on questions 7 and 8; steward decisions on 3, 4, 6 and 9).
 
 ### 2026-11-14 11:14 PST, pilot begins (rm-builder, detached, offline only)
 
@@ -199,24 +206,22 @@ before Stage 3. Owner, 2026-11-14: "We need to get this going."
   table when it reaches preflight, and that placement counts as the ingest (spec §8, decision 12). This mod's 2 were
   placed at row 2, so they are ingested; the former question 2 is deleted as answered.
 
+### 2026-11-14 about 2:55 PM PST, his answers on questions 7 and 8, and the steward's on 3, 4, 6 and 9
+
+- **Owner, 2026-11-14 about 2:40 PM PST (question 7):** "For today have them hold it. Next version it should go flying
+  independently of the person holding it. Different trajectories." **By card (question 8):** "Bruise in the next version".
+- Changed: `scenes.json` (sc_pawn_arc, sc_settings_sweep), `record.json` (three rows' state fields), `version/bars.md`
+  (both re-pinned), `version/bar_lists_map.json` (new), `version/next_version/README.md` (two 0.2.0 entries). Questions
+  3, 4, 6, 7, 8 and 9 are deleted as answered; 10 and 11 are new.
+- Preflight, measured: 6 refusals before (14:45 run) and 6 after (14:57 run), all C6 (built tests not yet run, such as
+  sc_hose_drop); C12, the locked-file pins, passes after the re-pin. Copies: `D:\ClaudeWork\rimmandrake\helpers\ek_owner_answers_20261114\`.
+
 ### Questions (open)
 
 1. ~~g4~~ settled 2026-11-14 by the Conductor's decision: a test-only proof hook pins the colonist at 64 to 76 kg (Stage 3).
-3. **`record.json` state fields are stale** (not bar meaning): `inv_creature_mass_limit` and `inv_blast_power_damage`
-   say `impl: absent` though both were built in 40f4e85120 (K-18 to K-20 pass); `inv_big_corpse_spared` names skip
-   reason `too_big`, which the mass rule replaced (its scope note says the 75 kg goods limit now spares it, so the
-   journal line would read `too_heavy`). Stage 3 "reconcile" should correct these fields.
-4. **Three bar lists** (the 59, the 16 north-star bars, the 30 walk rows) are unreconciled; `validation.py` still reads
-   the walk. Which one does Stage 6 report against? The table answers "the 59".
-6. **sc_settings_sweep's setting list is short of the settings class** (test text). The scene asserts its list plus
-   `enabled` and `shieldsAbsorbThrow` equals the saved fields, but it names 20 saved settings fewer (goods flight tuning,
-   gas tuning, the heavy-knock range, `blastPowerRefPercent`, `goodsReboundKeepPercent`, `openStorageProtectsGoods`,
-   `shoveClosedContainers` and more; the full list is printed by the sweep test). Live, the scene would fail its own
-   assertion. The offline sweep covers every saved field (kernel or game side, each named). A neutral fixer should
-   correct the scene text; not edited here.
-7. **sc_pawn_arc says the colonist re-hauls "the stack it dropped at takeoff"**, but the mod throws a pawn with its
-   carried thing (`flyWithCarriedThing: true`). Which is right is a design question (the leaf only says it resumes a job).
-8. **Landing on a pawn that walked in mid-flight**: it now lands there with a journal line and no damage. Should it hurt
-   either pawn? The scene asks only for an impact line.
-9. **`record.json` stale state fields** (question 3) are still not corrected: they sit inside inventory rows, which are
-   bars, and a changed bar is never re-pinned. The Conductor decides whether a state field is bar meaning.
+10. **The leaf settings_scale_and_switch names a "closed guard off" setting, but no such setting exists**
+    (`RM_KnockbackMod.cs` saves 46 settings; none switches the closed-container guard off: `shoveClosedContainers` throws the
+    container whole, `vanillaCratesClosed` covers only vanilla's sealed crates). Either the leaf's word is wrong or a setting is missing; it is bar text, so not edited here.
+11. **One walk row contradicts a bar**: `flying_goods.off_is_the_instant_move` says goods in the air off means an
+    instant move, while the bar says goods are then not thrown at all (`version/bar_lists_map.json`). Stage 6 reports
+    against the 59, but `validation.py` still reads the walk, so the row would report against the bar.
