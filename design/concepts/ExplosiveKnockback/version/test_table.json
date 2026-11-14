@@ -1,0 +1,2840 @@
+{
+ "mod": "ExplosiveKnockback",
+ "version": "0.1.0",
+ "made": "2026-11-14T11:25:20-08:00",
+ "made_by": "rm-builder, Maturation pilot row 2 (throwaway make_test_table.py)",
+ "stages": {
+  "2": "preflight (a program)",
+  "4-5": "blind offline challenge and game-logic testing",
+  "6": "in-game acceptance",
+  "8": "his live walk"
+ },
+ "rule": "a bar passes when every test in decides passes; proves_at is the highest stage among them; supports add evidence but decide nothing",
+ "settings_move": "settings_scale_and_switch and inv_settings: the kernel-side lines are decided offline by T_SETTINGS_SWEEP_OFFLINE (specified, RIMMANDRAKE_SPLIT_KNOCKBACK_SWEEP_OFFLINE_TABLE_LIVE_WIRING); sc_settings_sweep keeps only the game-side wiring. The leaf's text is not edited.",
+ "held_statements": [
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12_explosive_knockback.md",
+   "row": 1,
+   "words": "1: Anything that draws its contents is open.",
+   "bars": [
+    "closed_container_holds",
+    "open_shelf_scatters",
+    "inv_closed_guard"
+   ],
+   "test": "T_CENSUS",
+   "stage": "4-5",
+   "kind": "offline selftest (runs today)"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12_explosive_knockback.md",
+   "row": 2,
+   "words": "4: I am confused. Items should be blown off a shelf, and a shelf should be ruled as open, period. So the scene is staged misleadingly.",
+   "bars": [
+    "open_shelf_scatters",
+    "closed_container_holds"
+   ],
+   "test": "sc_closed_containers + sc_open_storage, plus the Stage 2 staging check (a closed-container scene stages only a def that hides its contents)",
+   "stage": "2 and 6",
+   "kind": "static staging check + fast in-game state read"
+  }
+ ],
+ "corrections": [
+  {
+   "gap": "g1",
+   "where": "sc_settings_sweep",
+   "needles": [
+    "an animal under 90 kg (asserted: mass read)",
+    "a mech under 90 kg (asserted: mass read)"
+   ],
+   "present": true,
+   "status": "applied 39886c4919"
+  },
+  {
+   "gap": "g2",
+   "where": "sc_gas_chain|sc_cauldron_gas|sc_cover_breaks|sc_gas_shove_into_pit|sc_settings_sweep",
+   "needles": [
+    "mandrake.rm.flowworks"
+   ],
+   "present": true,
+   "status": "applied dea7804728"
+  },
+  {
+   "gap": "g3",
+   "where": "sc_mass_and_power",
+   "needles": [
+    "no new hediff on any of them"
+   ],
+   "present": true,
+   "status": "applied dea7804728"
+  },
+  {
+   "gap": "g4",
+   "where": "sc_mass_and_power",
+   "needles": [
+    "creatureMassLimit 250",
+    "colonist"
+   ],
+   "present": true,
+   "status": "applied dea7804728, REOPENED by 92fe261f36 (band 45 to 76 kg; under 63.5 kg the kernel gives 6 at damage 100, tying the capped light animal, while the expect says light > colonist and the leaf oracle says colonist 5)"
+  },
+  {
+   "gap": "g5",
+   "where": "sc_settings_sweep",
+   "needles": [
+    "or at the cap",
+    "exactly as far"
+   ],
+   "present": true,
+   "status": "applied dea7804728"
+  },
+  {
+   "gap": "g6",
+   "where": "coverage_rest+showcases",
+   "needles": [],
+   "present": true,
+   "status": "applied dea7804728 (inv_who_is_spared by the_spared and sc_spared; one showcase)"
+  }
+ ],
+ "tests": {
+  "T_KERNEL": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+   "observes": "K-01..K-20 kernel checks: throw cells, falloff, mass scale, path walk (walls, doors, water, sandbags, pits), dedupe, recovery window, shield debit, rebound, creature mass limit, blast power",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/SelfTest/Program.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/SelfTest/KnockbackFuzz.cs"
+   ],
+   "id": "T_KERNEL",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 1.22,
+    "last": "explosive knockback kernel: 142/142 passed",
+    "at": "2026-11-14T11:25:20-08:00",
+    "result": "PASS"
+   }
+  },
+  "T_FUZZ": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_explosiveknockback_fuzz.py",
+   "observes": "42001 seeded random cases of the kernel against independent oracles (distance, line, grid walk, cap, lookup, guards)",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/SelfTest/Program.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/SelfTest/KnockbackFuzz.cs"
+   ],
+   "id": "T_FUZZ",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/Utils/selftest_explosiveknockback_fuzz.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 2.67,
+    "last": "explosiveknockback fuzz: 42001 cases, 922486 steps, 1.35s total -> OK",
+    "at": "2026-11-14T11:25:20-08:00",
+    "result": "PASS"
+   }
+  },
+  "T_LINT": {
+   "stage": "2",
+   "file": "src/RimMandrake/Utils/lint_explosiveknockback_defs.py",
+   "observes": "defs and patches against the C#: every RM_KnockbackExtension field and range, the damage-def patches, the flyer def, reset-to-defaults inside sliders, kernel Verse-free",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Patches/RM_Knockback_DamageDefs.xml",
+    "src/RimMandrake/ExplosiveKnockback/Defs/ThingDefs/RM_PawnFlyer_Knockback.xml",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "id": "T_LINT",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/Utils/lint_explosiveknockback_defs.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 1.7,
+    "last": "explosiveknockback data: 15 RM_KnockbackExtension li checked (6 here, 9 in KineticArms)",
+    "at": "2026-11-14T11:25:20-08:00",
+    "result": "PASS"
+   }
+  },
+  "T_LINT_PLANTED": {
+   "stage": "2",
+   "file": "src/RimMandrake/Utils/selftest_explosiveknockback_lint.py",
+   "observes": "the lint goes red on 20 planted defects and stays clean on the real mod",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Patches/RM_Knockback_DamageDefs.xml",
+    "src/RimMandrake/Utils/lint_explosiveknockback_defs.py"
+   ],
+   "id": "T_LINT_PLANTED",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/Utils/selftest_explosiveknockback_lint.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 34.09,
+    "last": "ExplosiveKnockback lint planted-defect selftest: 20/20 ok",
+    "at": "2026-11-14T11:25:20-08:00",
+    "result": "PASS"
+   }
+  },
+  "T_CENSUS": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_storage_census.py",
+   "observes": "every storage def is closed exactly when it hides its contents (Shelf, ShelfSmall, Hopper, Cold Storage open)",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake (every storage ThingDef)"
+   ],
+   "id": "T_CENSUS",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_storage_census.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 9.62,
+    "last": "PASS storage census: closed exactly when hidden",
+    "at": "2026-11-14T11:25:20-08:00",
+    "result": "PASS"
+   }
+  },
+  "T_SCRIPT": {
+   "stage": "2",
+   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_script.py",
+   "observes": "validation.py STATIC (walk coverage, csproj, scene and toggle names, settings saved and reset) and --mock (every proof scene stages through a fake session)",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/validation.py",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs",
+    "design/validation_walks/RimMandrake/ExplosiveKnockback.md"
+   ],
+   "id": "T_SCRIPT",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_script.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.25,
+    "last": "MOCK: PASS (41/41 scenes staged, all_green=False)",
+    "at": "2026-11-14T11:25:20-08:00",
+    "result": "PASS"
+   }
+  },
+  "T_PROOFGATE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py",
+   "observes": "the release DLL carries no proof code, a proof build carries all of it, the gate reads the bridge's answer",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Assemblies/RimMandrakeExplosiveKnockback.dll",
+    "src/RimMandrake/ExplosiveKnockback/proof_build_gate.py",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs"
+   ],
+   "id": "T_PROOFGATE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 4.04,
+    "last": "PASS proofgate (R1 P1 G1)",
+    "at": "2026-11-14T11:25:20-08:00",
+    "result": "PASS"
+   }
+  },
+  "T_RESTORE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_proof_restore_check.py",
+   "observes": "every proof scene restores what it staged even when it throws",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs"
+   ],
+   "known_red": "RIMMANDRAKE_RESTORE_ON_THROW_IN_KNOCKBACK_PROOF_TWO_LEAKS",
+   "id": "T_RESTORE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/Utils/selftest_proof_restore_check.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 1,
+    "seconds": 6.46,
+    "last": "<unknown>:2342: SyntaxWarning: \"\\.\" is an invalid escape sequence. Such sequences will not work in the future. Did you mean \"\\\\.\"? A raw string is also an option.",
+    "at": "2026-11-14T11:25:20-08:00",
+    "result": "KNOWN RED RIMMANDRAKE_RESTORE_ON_THROW_IN_KNOCKBACK_PROOF_TWO_LEAKS"
+   }
+  },
+  "T_SETTINGS_SCREEN": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_settings_screens.py",
+   "observes": "the Mod Settings screen: every setting grouped, resettable, scopes as audited",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs"
+   ],
+   "known_red": "RIMMANDRAKE_REGROUP_SETTINGS_SCREENS_FOUR_MODS_OUTGREW_AUDIT",
+   "id": "T_SETTINGS_SCREEN",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/Utils/selftest_settings_screens.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 1,
+    "seconds": 1.96,
+    "last": "settings screens selftest: 851/856 ok",
+    "at": "2026-11-14T11:25:20-08:00",
+    "result": "KNOWN RED RIMMANDRAKE_REGROUP_SETTINGS_SCREENS_FOUR_MODS_OUTGREW_AUDIT"
+   }
+  },
+  "T_FW_COVER": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_cover_breaks.py",
+   "observes": "FlowWorks: a pit cover breaks on every fall, before the descent",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/Pits/Building_PitCover.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPathing.cs"
+   ],
+   "id": "T_FW_COVER",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_cover_breaks.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.05,
+    "last": "ok  cover breaks on every fall: Spring destroys the whole deck before 1 descent call(s); the detector skips covered cells (and so does a jump's at-once fall); other drops require an open pit at the fa",
+    "at": "2026-11-14T11:25:20-08:00",
+    "result": "PASS"
+   }
+  },
+  "T_SETTINGS_SWEEP_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py",
+   "new": true,
+   "item": "RIMMANDRAKE_SPLIT_KNOCKBACK_SWEEP_OFFLINE_TABLE_LIVE_WIRING",
+   "observes": "sc_settings_sweep's lane as kernel inputs, run once at default and once per kernel-side setting; each changes only its own outcomes with the scene's numbers; a mutant coupling two settings goes red; the saved Scribe fields equal the sweep list plus enabled and shieldsAbsorbThrow, with no per-explosion, per-tick or body-size field",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/SelfTest/Program.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/SelfTest/KnockbackFuzz.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json"
+   ],
+   "id": "T_SETTINGS_SWEEP_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py",
+   "runs_today": {
+    "ran": false,
+    "why": "specified, not built: Stage 3 builds it failing first"
+   }
+  },
+  "T_GAS_TAG_CENSUS": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_gas_census.py",
+   "new": true,
+   "item": "RIMMANDRAKE_CHAIN_FLAMMABLE_GAS_CLUMPS",
+   "observes": "every flammable gas source of ours (Gas ThingDefs, our gas grids, the Cauldron's vent gas) carries the opt-in flammable tag, and nothing else does (the leaf our_gases_burn's own offline clause)",
+   "reads": [
+    "src/RimMandrake (Gas ThingDefs and gas grids)",
+    "src/RimMandrake/Cauldron"
+   ],
+   "id": "T_GAS_TAG_CENSUS",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_gas_census.py",
+   "runs_today": {
+    "ran": false,
+    "why": "specified, not built: Stage 3 builds it failing first"
+   }
+  },
+  "T_GAS_CLUMP_ORDER": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_gas_clumps.py",
+   "new": true,
+   "item": "RIMMANDRAKE_CHAIN_FLAMMABLE_GAS_CLUMPS",
+   "observes": "the clump plan of a lit cloud as pure logic: one burst per clump cell, ordered by distance from the lit edge, a fire not touching the cloud lights nothing, goods within 1.9 cells of a burst moved, people shoved one cell unhurt",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs"
+   ],
+   "id": "T_GAS_CLUMP_ORDER",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_gas_clumps.py",
+   "runs_today": {
+    "ran": false,
+    "why": "specified, not built: Stage 3 builds it failing first"
+   }
+  },
+  "T_HEAVY_KNOCK_RULE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py (new K- cases)",
+   "new": true,
+   "item": "RIMMANDRAKE_KNOCK_PEOPLE_HEAVY_GOODS",
+   "observes": "the heavy-stack rule as kernel cases: over the heavy threshold blunt 2 to 5 and a stagger and the stack stops; under it no damage and it passes",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/SelfTest/Program.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/SelfTest/KnockbackFuzz.cs"
+   ],
+   "id": "T_HEAVY_KNOCK_RULE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+   "runs_today": {
+    "ran": false,
+    "why": "specified, not built: Stage 3 builds it failing first"
+   }
+  },
+  "T_ONLY_EXPLOSIONS_STATIC": {
+   "stage": "2",
+   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_hook_scope.py",
+   "new": true,
+   "item": "RIMMANDRAKE_THROW_ALL_HARMFUL_BLASTS",
+   "observes": "the only Harmony patch that queues a throw is on the explosion's damage step (no melee or bullet damage worker is patched)",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_Patch_DamageWorker_ExplosionKnockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs"
+   ],
+   "id": "T_ONLY_EXPLOSIONS_STATIC",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_hook_scope.py",
+   "runs_today": {
+    "ran": false,
+    "why": "specified, not built: Stage 3 builds it failing first"
+   }
+  },
+  "sc_storeroom_bomb_pit": {
+   "id": "sc_storeroom_bomb_pit",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "storeroom_bomb_pit",
+   "observes": "the colonist one cell east of the impact is carried through the air straight away from it, stops dead at the east wall two cells on with a wall hit, and lands alive and stunned; the colonist one cell south is carried about three cells strai",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes storeroom_bomb_pit   (proof build, minimal list)",
+   "why_game": "the flagship interaction of every part at once, his chosen face of the mod",
+   "why_full_list": null,
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+   }
+  },
+  "sc_mortar_throw": {
+   "id": "sc_mortar_throw",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "calibration",
+   "observes": "the colonist lands 3 cells out along the blast ray, alive and stunned; one launch line, journal reason thrown, carried by RM_PawnFlyer_Knockback",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes calibration   (proof build, minimal list)",
+   "why_game": "landing cell, alive and stunned are the PawnFlyer's runtime; the kernel only gives the planned cells",
+   "why_full_list": null,
+   "entry_exists": true,
+   "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "sc_over_sandbags": {
+   "id": "sc_over_sandbags",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "over_sandbags",
+   "observes": "both colonists land 3 cells out, past the line, on standable ground; journal stop Distance",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes over_sandbags   (proof build, minimal list)",
+   "why_game": "the flyer passing a real sandbag thing; the kernel's sandbag rule is K-06",
+   "why_full_list": null,
+   "entry_exists": true,
+   "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "sc_pawn_arc": {
+   "id": "sc_pawn_arc",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "pawn_arc",
+   "observes": "mid-path the colonist is unspawned and held by a thing of def RM_PawnFlyer_Knockback whose drawn position lies strictly between the start and landing cells; it lands on the cell planned at launch, never a re-targeted one, with a pawn-into-p",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes pawn_arc   (proof build, minimal list)",
+   "why_game": "mid-flight drawn position inside RM_PawnFlyer_Knockback exists only in a running game",
+   "why_full_list": null,
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+   }
+  },
+  "sc_spared": {
+   "id": "sc_spared",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "spared_states",
+   "observes": "each spared pawn on its own cell, with journal skip reasons too_heavy_creature, in_pit, carrying_pawn, in_bed and flying; the heavy corpse, the pit-floor stack and the pit-floor corpse unmoved with skip reasons too_heavy, in_pit and in_pit;",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes spared_states   (proof build, minimal list)",
+   "why_game": "in_pit, carrying, in_bed and flying are live pawn states read by the map component, not kernel inputs",
+   "why_full_list": null,
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+   }
+  },
+  "sc_mass_and_power": {
+   "id": "sc_mass_and_power",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "mass_and_power",
+   "observes": "each creature thrown straight away from the impact along its own ray by the cells the kernel gives for its read mass (baseCells 4 x force 1 x damage ratio x falloff 0.655 x MassScale sqrt(70/mass) clamped 0.25 to 2, rounded, capped at 6); f",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes mass_and_power   (proof build, minimal list)",
+   "why_game": "the explosion's real damage and the Mass stat as the game computes it reach the kernel only in game (the cell table itself is K-19, offline)",
+   "why_full_list": null,
+   "entry_exists": true,
+   "item": "RIMMANDRAKE_BUILD_KNOCKBACK_CREATURE_MASS_AND_BLAST_POWER",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "sc_recovery": {
+   "id": "sc_recovery",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "immunity_window",
+   "observes": "inside the window the second blast gives skip reason immune and no second launch, before and after the reload",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes immunity_window   (proof build, minimal list)",
+   "why_game": "the stamps on the map component and their save and reload are runtime",
+   "why_full_list": null,
+   "entry_exists": true,
+   "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "sc_hose_drop": {
+   "id": "sc_hose_drop",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "hose_carry_drop",
+   "observes": "a launch line for the carrier; the hose end lies on the takeoff cell, connected and no longer carried; the carrier lands 3 cells out",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes hose_carry_drop   (proof build, minimal list)",
+   "why_game": "a colonist mid CarryHoseEnd job is a live job state",
+   "why_full_list": null,
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+   }
+  },
+  "sc_settings_off": {
+   "id": "sc_settings_off",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "settings_off",
+   "observes": "no request and no launch line; the colonist stays",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes settings_off   (proof build, minimal list)",
+   "why_game": "the master switch silencing the real explosion hook (not the kernel) is runtime",
+   "why_full_list": null,
+   "entry_exists": true,
+   "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "sc_settings_sweep": {
+   "id": "sc_settings_sweep",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "settings_sweep",
+   "observes": "each change alters only its own outcome: cells halved at strength 0.5; at most 2 cells; the own-cap grenade throws 2 cells under ownCapScale 0.5 while the plain grenade is unchanged; the unpatched explosion throws at full strength by defaul",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes settings_sweep   (proof build, minimal list)",
+   "why_game": "THIN after the move: only game-side settings (throwAnimals/Mechanoids/Downed/Items/Corpses, landingStun, doorsTakeDamage, debugDrawVectors, vanillaCratesClosed, heavy threshold, goods in air, closed guard, heavy knock, gas chain, fire at half) and one Settings -> Kernel() read-back per kernel-side setting; the kernel-side lines move to T_SETTINGS_SWEEP_OFFLINE",
+   "why_full_list": null,
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+   }
+  },
+  "sc_wall_stop": {
+   "id": "sc_wall_stop",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "wall_stop",
+   "observes": "the colonist lands on the cell before the wall, journal stop Wall, impact damage above 0, no second move; in the trace the drawn position never moves back toward the blast after it reaches the wall-side cell, not even part of a cell",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes wall_stop   (proof build, minimal list)",
+   "why_game": "impact damage applied to a real pawn by the flyer; the stop cell is K-07 offline",
+   "why_full_list": null,
+   "entry_exists": true,
+   "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "sc_pawn_hits_pawn": {
+   "id": "sc_pawn_hits_pawn",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "pawn_hits_pawn",
+   "observes": "the colonist lands on the cell before the standing pawn, journal stop Pawn, impact damage above 0",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes pawn_hits_pawn   (proof build, minimal list)",
+   "why_game": "two real pawns and the flyer's stop; the stop rule is K-09 offline",
+   "why_full_list": null,
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+   }
+  },
+  "sc_door_water": {
+   "id": "sc_door_water",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "door_stop",
+   "observes": "the first colonist lands before the door, journal stop Door with impact above 0 and a new injury on the colonist, door hit points down; the second lands on the last standable cell, journal stop Water",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes door_stop   (proof build, minimal list)",
+   "why_game": "door hit points and the colonist's injury are runtime; stop cells are K-07 offline",
+   "why_full_list": null,
+   "entry_exists": true,
+   "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "sc_shield": {
+   "id": "sc_shield",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "shield_counter",
+   "observes": "the colonist stays on its cell, journal skip reason shield, energy drop larger than the plain absorb",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes shield_counter   (proof build, minimal list)",
+   "why_game": "a real shield belt's energy after a real absorb; the debit maths is K-16 offline",
+   "why_full_list": null,
+   "entry_exists": true,
+   "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "sc_storeroom_mortar": {
+   "id": "sc_storeroom_mortar",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "goods_fly_wild",
+   "observes": "each thrown thing's height rises above zero mid-path and its rotation changes; at least one rebounds off the wall with speed near 0.7 of before; no thing id despawns at one cell and spawns at another; each good's request line carries its ke",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes goods_fly_wild   (proof build, minimal list)",
+   "why_game": "a per-tick trace of real thrown things (height, rotation, rebound) exists only in game; the rebound maths is K-17 offline",
+   "why_full_list": null,
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+   }
+  },
+  "sc_all_fly_no_cap": {
+   "id": "sc_all_fly_no_cap",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "all_fly_no_cap",
+   "observes": "stacks reached is over 60 (INVALID otherwise; a thing reached is one inside the radius whose kernel throw is at least one cell; a rim thing whose throw rounds to 0 logs skip too_weak); stacks moved equals stacks reached; every stack inside ",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes all_fly_no_cap   (proof build, minimal list)",
+   "why_game": "over 60 real things reached in one tick, all moved; the no-cap rule is K-11 offline",
+   "why_full_list": null,
+   "entry_exists": true,
+   "item": "RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "sc_open_storage": {
+   "id": "sc_open_storage",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "open_storage",
+   "observes": "every good on the open furniture moved; no in_storage line",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes open_storage   (proof build, minimal list)",
+   "why_game": "real furniture emptied by a real blast; the open rule is K-14 and the census offline",
+   "why_full_list": null,
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+   }
+  },
+  "sc_closed_containers": {
+   "id": "sc_closed_containers",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "closed_containers",
+   "observes": "the weapons lockers' and the tagged panel's contents unchanged, the panel's goods still on its cell (with it, if it slid); the free-backed locker and the 76-to-249 kg locker each slid one cell away from the blast (journal container line, ac",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes closed_containers   (proof build, minimal list)",
+   "why_game": "real lockers keeping contents and sliding; the hold and shove rules are K-14 offline",
+   "why_full_list": null,
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+   }
+  },
+  "sc_heavy_knock": {
+   "id": "sc_heavy_knock",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "heavy_knock",
+   "observes": "steel: 2 to 5 blunt and a stagger on the colonist, the stack stops on the colonist's cell; cloth: passes, no damage",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes heavy_knock   (proof build, minimal list)",
+   "why_game": "blunt damage and stagger on a real pawn",
+   "why_full_list": null,
+   "entry_exists": true,
+   "item": "RIMMANDRAKE_KNOCK_PEOPLE_HEAVY_GOODS",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "sc_blast_kinds": {
+   "id": "sc_blast_kinds",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "blast_kinds",
+   "observes": "the Flame lane's journal strength percent is exactly 50 and the Bomb-swapped lane's exactly 100, and the Flame lane's throw cells are about half the swapped lane's; the frag lane throws at 100 percent; the modded explosion's journal strengt",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes blast_kinds   (proof build, minimal list)",
+   "why_game": "the real damage defs reaching the hook at their real strengths; the patch values are T_LINT offline",
+   "why_full_list": null,
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_THROW_ALL_HARMFUL_BLASTS",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+   }
+  },
+  "sc_only_explosions": {
+   "id": "sc_only_explosions",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "only_explosions",
+   "observes": "melee and bullet: no request line, no move",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes only_explosions   (proof build, minimal list)",
+   "why_game": "a real melee hit and a real bullet producing no request line (the static half is T_ONLY_EXPLOSIONS_STATIC)",
+   "why_full_list": null,
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_THROW_ALL_HARMFUL_BLASTS",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+   }
+  },
+  "sc_lookup": {
+   "id": "sc_lookup",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "lookup_projectile",
+   "observes": "journal tuning source: (a) projectile, (b) weapon, (c) damage type, with throw cells ordered (a) > (b) > (c); (d) no request line and no move; (e) exactly 2 cells; (f) exactly 2 cells; (g) the global 6 cells; (h) stopped before the wall, jo",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes lookup_projectile   (proof build, minimal list)",
+   "why_game": "which def on a real projectile, weapon and damage type the hook reads; the lookup order is K-13 offline",
+   "why_full_list": null,
+   "entry_exists": true,
+   "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "sc_gas_chain": {
+   "id": "sc_gas_chain",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "gas_chain",
+   "observes": "bursts on many ticks, one per clump cell, ordered by distance from the lit edge; goods within about 1.9 cells of a burst moved at most 2 cells, including those outside the cloud; goods beyond did not move; colonist A reached by at least two",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes gas_chain   (proof build, minimal list)",
+   "why_game": "a real gas grid lit by a real fire, bursts over ticks",
+   "why_full_list": null,
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_CHAIN_FLAMMABLE_GAS_CLUMPS",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+   }
+  },
+  "sc_cauldron_gas": {
+   "id": "sc_cauldron_gas",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "gas_census",
+   "observes": "each tagged source yields clump bursts, the Cauldron's vent gas among them; the census list of tagged sources equals the sources carrying the tag, and no gas source of ours (def, grid or call site) is missing from the census",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes gas_census   (proof build, minimal list)",
+   "why_game": "the Cauldron's registered vent gas burning by registration, not by its own scan",
+   "why_full_list": null,
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_CHAIN_FLAMMABLE_GAS_CLUMPS",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+   }
+  },
+  "sc_cover_breaks": {
+   "id": "sc_cover_breaks",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "cover_breaks",
+   "observes": "first and second covers destroyed, one descent each; the journal shows a gas burst whose radius covers the third cover, its cover hit points unchanged and no descent through it (its raider shoved at most one cell, not into the pit); the fif",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes cover_breaks   (proof build, minimal list)",
+   "why_game": "a real cover deck and a real descent (FlowWorks' break rule is T_FW_COVER offline)",
+   "why_full_list": null,
+   "entry_exists": true,
+   "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "sc_pit_fall": {
+   "id": "sc_pit_fall",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "pit_colonist",
+   "observes": "the colonist and the stack each land in the first pit cell, one descent each; on the covered cell the colonist and the stack fall through, one descent each, and the cover is broken",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes pit_colonist   (proof build, minimal list)",
+   "why_game": "a real descent recorded by FlowWorks after a real throw; the stop-in-pit cell is K-08 offline",
+   "why_full_list": null,
+   "entry_exists": true,
+   "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "sc_pit_enemy": {
+   "id": "sc_pit_enemy",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "pit_enemy",
+   "observes": "the raider and the stack each land in the first pit cell, one descent each, the raider's descent journaled as a throw, not a walk",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes pit_enemy   (proof build, minimal list)",
+   "why_game": "a real raider's descent",
+   "why_full_list": null,
+   "entry_exists": true,
+   "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "sc_no_careless_fall": {
+   "id": "sc_no_careless_fall",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "no_cross_ordered",
+   "observes": "both arrive by a path round the pits; no descent",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes no_cross_ordered   (proof build, minimal list)",
+   "why_game": "real pathing around real pits",
+   "why_full_list": null,
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+   }
+  },
+  "sc_pit_fetch": {
+   "id": "sc_pit_fetch",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "pit_goods_fetch",
+   "observes": "the stack reaches a stockpile and the corpse a grave or stockpile outside the pit; the hauler used the ladder",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes pit_goods_fetch   (proof build, minimal list)",
+   "why_game": "a hauler's job and ladder route over up to a day of game time",
+   "why_full_list": null,
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_PROVE_PIT_GOODS_RETRIEVABLE",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+   }
+  },
+  "sc_frame_probe_check": {
+   "id": "sc_frame_probe_check",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "frame_probe_selfcheck",
+   "observes": "one row per frame, rows per second near the frame rate; the sleeping frame shows as a row of at least 100 ms; rows carry the count of things in the air",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes frame_probe_selfcheck   (proof build, minimal list)",
+   "why_game": "frames exist only in a running game",
+   "why_full_list": null,
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+   }
+  },
+  "sc_barrage_perf": {
+   "id": "sc_barrage_perf",
+   "kind": "live_full",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "barrage_perf",
+   "observes": "the worst frame across both events is at most 50 ms",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\validation.py --live barrage_perf   (full list)",
+   "why_game": "frame time is meaningful only on the real list and machine (leaf barrage_frame_budget)",
+   "why_full_list": "frame time is meaningful only on the real list and machine (leaf barrage_frame_budget)",
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+   }
+  },
+  "sc_walk_raid": {
+   "id": "sc_walk_raid",
+   "kind": "live_full",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/validation.py",
+   "entry": "walk_storeroom_raid",
+   "observes": "mortar impacts and throws recorded inside the storeroom rect; the pit trap's cover broken by the scripted grenade with one descent; the lit gas cloud bursts on many ticks, one per clump cell, ordered by distance from the lit edge, with good",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/validation.py",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\validation.py --live walk_storeroom_raid   (full list)",
+   "why_game": "the walk is the full list, played (leaf walk_storeroom_raid)",
+   "why_full_list": "the walk is the full list, played (leaf walk_storeroom_raid)",
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+   }
+  },
+  "sc_gas_shove_into_pit": {
+   "id": "sc_gas_shove_into_pit",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "gas_into_pit",
+   "observes": "the one-cell shove puts the colonist into the open pit, one descent, no blast injuries: a shove is not a throw, but it is force, and a pawn forced onto an open pit cell falls (thrown_into_pit_falls)",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes gas_into_pit   (proof build, minimal list)",
+   "why_game": "a gas burst shoving a real pawn into a real pit",
+   "why_full_list": null,
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_CHAIN_FLAMMABLE_GAS_CLUMPS",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+   }
+  },
+  "sc_killed_thrown": {
+   "id": "sc_killed_thrown",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "killed_by_blast",
+   "observes": "at least one colonist is killed by the blast, and every colonist it kills is thrown as a corpse away from the impact, with height above zero mid-flight and no despawn-spawn pair; any survivor is thrown as a pawn",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes killed_by_blast   (proof build, minimal list)",
+   "why_game": "a pawn killed by a real blast becoming a corpse that is thrown",
+   "why_full_list": null,
+   "entry_exists": true,
+   "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "sc_goods_obstacles": {
+   "id": "sc_goods_obstacles",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "goods_obstacles",
+   "observes": "lane D's stack rebounds off the door keeping about 0.7 of its speed and the door is closed after; lane S's stack passes over the sandbags and lands beyond them; lane W's stack comes to rest on the last cell before the deep water, spawned an",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes goods_obstacles   (proof build, minimal list)",
+   "why_game": "real things in flight meeting real walls, pawns and doors",
+   "why_full_list": null,
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+   }
+  },
+  "P_heavy_skip": {
+   "id": "P_heavy_skip",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "heavy_skip",
+   "observes": "older proof scene (validation.py SCENES): see RM_KnockbackProof.Verdict(\"heavy_skip\")",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes heavy_skip   (proof build)",
+   "why_game": "older scene kept as support; the locked scenes.json scene decides",
+   "entry_exists": true,
+   "support_only": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "P_emp_no_throw": {
+   "id": "P_emp_no_throw",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "emp_no_throw",
+   "observes": "older proof scene (validation.py SCENES): see RM_KnockbackProof.Verdict(\"emp_no_throw\")",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes emp_no_throw   (proof build)",
+   "why_game": "older scene kept as support; the locked scenes.json scene decides",
+   "entry_exists": true,
+   "support_only": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "P_fire_half": {
+   "id": "P_fire_half",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "fire_half",
+   "observes": "older proof scene (validation.py SCENES): see RM_KnockbackProof.Verdict(\"fire_half\")",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes fire_half   (proof build)",
+   "why_game": "older scene kept as support; the locked scenes.json scene decides",
+   "entry_exists": true,
+   "support_only": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "P_harmful_unpatched": {
+   "id": "P_harmful_unpatched",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "harmful_unpatched",
+   "observes": "older proof scene (validation.py SCENES): see RM_KnockbackProof.Verdict(\"harmful_unpatched\")",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes harmful_unpatched   (proof build)",
+   "why_game": "older scene kept as support; the locked scenes.json scene decides",
+   "entry_exists": true,
+   "support_only": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "P_items": {
+   "id": "P_items",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "items",
+   "observes": "older proof scene (validation.py SCENES): see RM_KnockbackProof.Verdict(\"items\")",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes items   (proof build)",
+   "why_game": "older scene kept as support; the locked scenes.json scene decides",
+   "entry_exists": true,
+   "support_only": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "P_shelf": {
+   "id": "P_shelf",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "shelf",
+   "observes": "older proof scene (validation.py SCENES): see RM_KnockbackProof.Verdict(\"shelf\")",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes shelf   (proof build)",
+   "why_game": "older scene kept as support; the locked scenes.json scene decides",
+   "entry_exists": true,
+   "support_only": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "P_in_pit_skip": {
+   "id": "P_in_pit_skip",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "in_pit_skip",
+   "observes": "older proof scene (validation.py SCENES): see RM_KnockbackProof.Verdict(\"in_pit_skip\")",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes in_pit_skip   (proof build)",
+   "why_game": "older scene kept as support; the locked scenes.json scene decides",
+   "entry_exists": true,
+   "support_only": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "P_no_cross": {
+   "id": "P_no_cross",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "no_cross",
+   "observes": "older proof scene (validation.py SCENES): see RM_KnockbackProof.Verdict(\"no_cross\")",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes no_cross   (proof build)",
+   "why_game": "older scene kept as support; the locked scenes.json scene decides",
+   "entry_exists": true,
+   "support_only": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "P_corpse_into_pit": {
+   "id": "P_corpse_into_pit",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "corpse_into_pit",
+   "observes": "older proof scene (validation.py SCENES): see RM_KnockbackProof.Verdict(\"corpse_into_pit\")",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes corpse_into_pit   (proof build)",
+   "why_game": "older scene kept as support; the locked scenes.json scene decides",
+   "entry_exists": true,
+   "support_only": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "P_body_override": {
+   "id": "P_body_override",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "body_override",
+   "observes": "older proof scene (validation.py SCENES): see RM_KnockbackProof.Verdict(\"body_override\")",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes body_override   (proof build)",
+   "why_game": "older scene kept as support; the locked scenes.json scene decides",
+   "entry_exists": true,
+   "support_only": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "P_impact_factor": {
+   "id": "P_impact_factor",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "impact_factor",
+   "observes": "older proof scene (validation.py SCENES): see RM_KnockbackProof.Verdict(\"impact_factor\")",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes impact_factor   (proof build)",
+   "why_game": "older scene kept as support; the locked scenes.json scene decides",
+   "entry_exists": true,
+   "support_only": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "P_lookup_zero_wins": {
+   "id": "P_lookup_zero_wins",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "lookup_zero_wins",
+   "observes": "older proof scene (validation.py SCENES): see RM_KnockbackProof.Verdict(\"lookup_zero_wins\")",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes lookup_zero_wins   (proof build)",
+   "why_game": "older scene kept as support; the locked scenes.json scene decides",
+   "entry_exists": true,
+   "support_only": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "P_goods_fly_midair": {
+   "id": "P_goods_fly_midair",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "goods_fly_midair",
+   "observes": "older proof scene (validation.py SCENES): see RM_KnockbackProof.Verdict(\"goods_fly_midair\")",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes goods_fly_midair   (proof build)",
+   "why_game": "older scene kept as support; the locked scenes.json scene decides",
+   "entry_exists": true,
+   "support_only": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "P_goods_fly_lands": {
+   "id": "P_goods_fly_lands",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "goods_fly_lands",
+   "observes": "older proof scene (validation.py SCENES): see RM_KnockbackProof.Verdict(\"goods_fly_lands\")",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes goods_fly_lands   (proof build)",
+   "why_game": "older scene kept as support; the locked scenes.json scene decides",
+   "entry_exists": true,
+   "support_only": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "P_goods_fly_wall": {
+   "id": "P_goods_fly_wall",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "goods_fly_wall",
+   "observes": "older proof scene (validation.py SCENES): see RM_KnockbackProof.Verdict(\"goods_fly_wall\")",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes goods_fly_wall   (proof build)",
+   "why_game": "older scene kept as support; the locked scenes.json scene decides",
+   "entry_exists": true,
+   "support_only": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "P_goods_fly_rebound": {
+   "id": "P_goods_fly_rebound",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "goods_fly_rebound",
+   "observes": "older proof scene (validation.py SCENES): see RM_KnockbackProof.Verdict(\"goods_fly_rebound\")",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes goods_fly_rebound   (proof build)",
+   "why_game": "older scene kept as support; the locked scenes.json scene decides",
+   "entry_exists": true,
+   "support_only": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "P_goods_fly_off": {
+   "id": "P_goods_fly_off",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "goods_fly_off",
+   "observes": "older proof scene (validation.py SCENES): see RM_KnockbackProof.Verdict(\"goods_fly_off\")",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes goods_fly_off   (proof build)",
+   "why_game": "older scene kept as support; the locked scenes.json scene decides",
+   "entry_exists": true,
+   "support_only": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "P_container_thrown": {
+   "id": "P_container_thrown",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "container_thrown",
+   "observes": "older proof scene (validation.py SCENES): see RM_KnockbackProof.Verdict(\"container_thrown\")",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes container_thrown   (proof build)",
+   "why_game": "older scene kept as support; the locked scenes.json scene decides",
+   "entry_exists": true,
+   "support_only": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "P_land_no_bump": {
+   "id": "P_land_no_bump",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "land_no_bump",
+   "observes": "older proof scene (validation.py SCENES): see RM_KnockbackProof.Verdict(\"land_no_bump\")",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes land_no_bump   (proof build)",
+   "why_game": "older scene kept as support; the locked scenes.json scene decides",
+   "entry_exists": true,
+   "support_only": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "P_land_no_bump_pit": {
+   "id": "P_land_no_bump_pit",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "land_no_bump_pit",
+   "observes": "older proof scene (validation.py SCENES): see RM_KnockbackProof.Verdict(\"land_no_bump_pit\")",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes land_no_bump_pit   (proof build)",
+   "why_game": "older scene kept as support; the locked scenes.json scene decides",
+   "entry_exists": true,
+   "support_only": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "P_gas_clumps": {
+   "id": "P_gas_clumps",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "gas_clumps",
+   "observes": "older proof scene (validation.py SCENES): see RM_KnockbackProof.Verdict(\"gas_clumps\")",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes gas_clumps   (proof build)",
+   "why_game": "older scene kept as support; the locked scenes.json scene decides",
+   "entry_exists": true,
+   "support_only": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   }
+  },
+  "LOOK_STAGE8": {
+   "id": "LOOK_STAGE8",
+   "kind": "look",
+   "stage": "8",
+   "file": "(his walk)",
+   "observes": "his walk of the flagship save: a bomb in a storeroom with people beside a pit",
+   "reads": [],
+   "runs_today": {
+    "ran": false,
+    "why": "Stage 8"
+   }
+  }
+ },
+ "bars": [
+  {
+   "id": "people_thrown_three_cells",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_KERNEL",
+    "sc_mortar_throw",
+    "sc_over_sandbags"
+   ],
+   "supports": [
+    "T_FUZZ",
+    "sc_storeroom_bomb_pit"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_KERNEL"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "pawn_flight_arc",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "sc_pawn_arc"
+   ],
+   "supports": [
+    "sc_storeroom_bomb_pit"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "the_spared",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_KERNEL",
+    "sc_spared"
+   ],
+   "supports": [
+    "T_SETTINGS_SWEEP_OFFLINE",
+    "P_heavy_skip",
+    "P_in_pit_skip"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_KERNEL"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "heavier_flies_less",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_KERNEL",
+    "sc_mass_and_power"
+   ],
+   "supports": [
+    "T_FUZZ"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_KERNEL"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "recovery_immunity",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_KERNEL",
+    "sc_recovery"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_KERNEL"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "hose_drops_at_takeoff",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "sc_hose_drop"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "wall_stops_dead",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_KERNEL",
+    "sc_wall_stop"
+   ],
+   "supports": [
+    "T_FUZZ"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_KERNEL"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "pawn_hits_pawn_stops",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_KERNEL",
+    "sc_pawn_hits_pawn"
+   ],
+   "supports": [
+    "T_FUZZ"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_KERNEL"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "doors_and_deep_water_stop",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_KERNEL",
+    "sc_door_water"
+   ],
+   "supports": [
+    "T_FUZZ"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_KERNEL"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "shield_belt_holds",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_KERNEL",
+    "sc_shield"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_KERNEL"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "goods_arc_spin_rebound",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_KERNEL",
+    "sc_storeroom_mortar",
+    "sc_killed_thrown"
+   ],
+   "supports": [
+    "sc_goods_obstacles",
+    "sc_storeroom_bomb_pit",
+    "P_goods_fly_midair",
+    "P_goods_fly_lands",
+    "P_goods_fly_wall",
+    "P_goods_fly_rebound",
+    "P_land_no_bump"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_KERNEL"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "every_good_moves",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_KERNEL",
+    "sc_all_fly_no_cap"
+   ],
+   "supports": [
+    "sc_storeroom_bomb_pit",
+    "P_items"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_KERNEL"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "open_shelf_scatters",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_CENSUS",
+    "T_KERNEL",
+    "sc_open_storage"
+   ],
+   "supports": [
+    "sc_storeroom_bomb_pit",
+    "P_shelf"
+   ],
+   "held": [
+    "1: Anything that draws its contents is open.",
+    "4: I am confused. Items should be blown off a shelf, and a shelf should be ruled as open, period. So the scene is staged misleadingly."
+   ],
+   "offline_decides": [
+    "T_CENSUS",
+    "T_KERNEL"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "closed_container_holds",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_CENSUS",
+    "T_KERNEL",
+    "sc_closed_containers"
+   ],
+   "supports": [
+    "sc_storeroom_bomb_pit",
+    "P_container_thrown"
+   ],
+   "held": [
+    "1: Anything that draws its contents is open.",
+    "4: I am confused. Items should be blown off a shelf, and a shelf should be ruled as open, period. So the scene is staged misleadingly."
+   ],
+   "offline_decides": [
+    "T_CENSUS",
+    "T_KERNEL"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "heavy_stack_knocks",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_HEAVY_KNOCK_RULE",
+    "sc_heavy_knock"
+   ],
+   "supports": [
+    "sc_storeroom_bomb_pit"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_HEAVY_KNOCK_RULE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "every_harmful_blast_throws",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_LINT",
+    "T_KERNEL",
+    "sc_blast_kinds"
+   ],
+   "supports": [
+    "T_LINT_PLANTED",
+    "P_emp_no_throw",
+    "P_fire_half",
+    "P_harmful_unpatched"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_LINT",
+    "T_KERNEL"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "only_explosions_throw",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_ONLY_EXPLOSIONS_STATIC",
+    "sc_only_explosions"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_ONLY_EXPLOSIONS_STATIC"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "per_weapon_tuning",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_KERNEL",
+    "T_LINT",
+    "sc_lookup"
+   ],
+   "supports": [
+    "T_FUZZ",
+    "P_body_override",
+    "P_impact_factor",
+    "P_lookup_zero_wins"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_KERNEL",
+    "T_LINT"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "gas_goes_clump_by_clump",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_GAS_CLUMP_ORDER",
+    "sc_gas_chain"
+   ],
+   "supports": [
+    "sc_gas_shove_into_pit",
+    "P_gas_clumps"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_GAS_CLUMP_ORDER"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "our_gases_burn",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_GAS_TAG_CENSUS",
+    "sc_cauldron_gas"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_GAS_TAG_CENSUS"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "blast_breaks_pit_cover",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_FW_COVER",
+    "sc_cover_breaks"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_FW_COVER"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "thrown_into_pit_falls",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_KERNEL",
+    "sc_pit_fall",
+    "sc_pit_enemy"
+   ],
+   "supports": [
+    "sc_gas_shove_into_pit",
+    "sc_storeroom_bomb_pit",
+    "P_no_cross",
+    "P_corpse_into_pit",
+    "P_land_no_bump_pit"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_KERNEL"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "pit_goods_fetched",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "sc_pit_fetch"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "no_teleport",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "sc_storeroom_mortar",
+    "sc_gas_chain"
+   ],
+   "supports": [
+    "P_goods_fly_midair"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "no_careless_fall",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "sc_no_careless_fall"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "settings_scale_and_switch",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_SETTINGS_SWEEP_OFFLINE",
+    "T_SETTINGS_SCREEN",
+    "sc_settings_sweep",
+    "sc_settings_off"
+   ],
+   "supports": [
+    "T_SCRIPT",
+    "P_goods_fly_off"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_SETTINGS_SWEEP_OFFLINE",
+    "T_SETTINGS_SCREEN"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "barrage_frame_budget",
+   "source": "tree.json",
+   "kind": "constraint",
+   "proves_at": "6",
+   "decides": [
+    "sc_barrage_perf"
+   ],
+   "supports": [
+    "sc_frame_probe_check"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "frame_time_probe",
+   "source": "tree.json",
+   "kind": "instrument",
+   "proves_at": "6",
+   "decides": [
+    "sc_frame_probe_check"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "walk_storeroom_raid",
+   "source": "tree.json",
+   "kind": "walk",
+   "proves_at": "8",
+   "decides": [
+    "sc_walk_raid",
+    "LOOK_STAGE8"
+   ],
+   "supports": [
+    "sc_storeroom_bomb_pit"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "inv_kernel",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "4-5",
+   "decides": [
+    "T_KERNEL",
+    "T_FUZZ"
+   ],
+   "supports": [
+    "T_LINT"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_KERNEL",
+    "T_FUZZ"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_hook",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_mortar_throw"
+   ],
+   "supports": [
+    "sc_blast_kinds",
+    "T_ONLY_EXPLOSIONS_STATIC"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_pawn_flyer",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_LINT",
+    "sc_pawn_arc",
+    "sc_wall_stop"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_LINT"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_which_blasts",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_LINT",
+    "T_KERNEL",
+    "sc_blast_kinds"
+   ],
+   "supports": [
+    "T_LINT_PLANTED",
+    "P_emp_no_throw",
+    "P_fire_half",
+    "P_harmful_unpatched"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_LINT",
+    "T_KERNEL"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_items_teleport",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_storeroom_mortar",
+    "sc_gas_chain"
+   ],
+   "supports": [
+    "P_goods_fly_midair"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_shelf_skip",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_KERNEL",
+    "T_CENSUS",
+    "sc_open_storage"
+   ],
+   "supports": [
+    "P_shelf"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_KERNEL",
+    "T_CENSUS"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_who_is_spared",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_KERNEL",
+    "sc_spared"
+   ],
+   "supports": [
+    "P_heavy_skip",
+    "P_in_pit_skip"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_KERNEL"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_shield",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_KERNEL",
+    "sc_shield"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_KERNEL"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_recovery",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_KERNEL",
+    "sc_recovery"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_KERNEL"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_caps",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_KERNEL",
+    "T_SETTINGS_SWEEP_OFFLINE",
+    "sc_all_fly_no_cap"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_KERNEL",
+    "T_SETTINGS_SWEEP_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_settings",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_SETTINGS_SWEEP_OFFLINE",
+    "T_SETTINGS_SCREEN",
+    "sc_settings_sweep",
+    "sc_settings_off"
+   ],
+   "supports": [
+    "T_SCRIPT",
+    "T_LINT",
+    "P_goods_fly_off"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_SETTINGS_SWEEP_OFFLINE",
+    "T_SETTINGS_SCREEN"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_pits_receive",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_FW_COVER",
+    "sc_pit_fall",
+    "sc_cover_breaks"
+   ],
+   "supports": [
+    "sc_pit_enemy",
+    "P_corpse_into_pit"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_FW_COVER"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_pit_floor_haul",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_pit_fetch"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "inv_hose_drop",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_hose_drop"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "inv_proof_scenes",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "4-5",
+   "decides": [
+    "T_SCRIPT",
+    "T_PROOFGATE",
+    "T_RESTORE"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_SCRIPT",
+    "T_PROOFGATE",
+    "T_RESTORE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_gas_chain",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_GAS_CLUMP_ORDER",
+    "sc_gas_chain"
+   ],
+   "supports": [
+    "sc_gas_shove_into_pit",
+    "P_gas_clumps"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_GAS_CLUMP_ORDER"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_goods_fly",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_KERNEL",
+    "sc_storeroom_mortar"
+   ],
+   "supports": [
+    "sc_goods_obstacles",
+    "P_items",
+    "P_goods_fly_midair",
+    "P_goods_fly_lands",
+    "P_goods_fly_wall",
+    "P_goods_fly_rebound"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_KERNEL"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_closed_guard",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_CENSUS",
+    "T_KERNEL",
+    "sc_closed_containers"
+   ],
+   "supports": [
+    "P_container_thrown"
+   ],
+   "held": [
+    "1: Anything that draws its contents is open."
+   ],
+   "offline_decides": [
+    "T_CENSUS",
+    "T_KERNEL"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_container_shove",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_KERNEL",
+    "sc_closed_containers"
+   ],
+   "supports": [
+    "P_container_thrown"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_KERNEL"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_heavy_knock",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_HEAVY_KNOCK_RULE",
+    "sc_heavy_knock"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_HEAVY_KNOCK_RULE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_gas_tags",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_GAS_TAG_CENSUS",
+    "sc_cauldron_gas"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_GAS_TAG_CENSUS"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "inv_perf_all_fly",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_barrage_perf"
+   ],
+   "supports": [
+    "sc_frame_probe_check"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "inv_weapon_ext_fields",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_KERNEL",
+    "T_LINT",
+    "sc_lookup"
+   ],
+   "supports": [
+    "P_body_override",
+    "P_impact_factor",
+    "P_lookup_zero_wins"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_KERNEL",
+    "T_LINT"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_killed_corpse",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_killed_thrown"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_pit_floor_goods_stay",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_spared"
+   ],
+   "supports": [
+    "P_in_pit_skip"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_big_corpse_spared",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_KERNEL",
+    "sc_spared"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_KERNEL"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_mass_limit_skip",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_KERNEL",
+    "sc_settings_sweep"
+   ],
+   "supports": [
+    "T_SETTINGS_SWEEP_OFFLINE",
+    "P_heavy_skip",
+    "P_items"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_KERNEL"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_too_weak_skip",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_KERNEL",
+    "sc_all_fly_no_cap"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_KERNEL"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_creature_mass_limit",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_KERNEL",
+    "sc_mass_and_power"
+   ],
+   "supports": [
+    "T_SETTINGS_SWEEP_OFFLINE",
+    "P_heavy_skip"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_KERNEL"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_blast_power_damage",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_KERNEL",
+    "sc_mass_and_power"
+   ],
+   "supports": [
+    "T_SETTINGS_SWEEP_OFFLINE"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_KERNEL"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  }
+ ]
+}
