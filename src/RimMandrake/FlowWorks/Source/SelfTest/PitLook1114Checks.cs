@@ -132,6 +132,23 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(mouse, @"RM_PitFloorGroundMath\.FloorPhrase\(", "the readout names the floor");
             });
 
+            // his 7: "The human bodies still show some flesh above the water while their clothing is not. It actually reads like
+            // they're floating." The cover was a stock lifestage silhouette (one generic human blob), so the pawn's own head, hands
+            // and apparel edges stuck out of it.
+            Case("PitLook1114_drowned_body_cover_is_the_pawns_own_picture", () =>
+            {
+                Assert(RM_UnderLiquid.CoverFromOwnPicture(false, 1f, true, false), "a body lying wholly under clear liquid is covered by a blob");
+                Assert(!RM_UnderLiquid.CoverFromOwnPicture(true, 1f, true, false), "an upright wader lost its banded cover");
+                Assert(!RM_UnderLiquid.CoverFromOwnPicture(false, 0.6f, true, false), "a part-drowned body takes a whole-picture cover");
+                Assert(!RM_UnderLiquid.CoverFromOwnPicture(false, 1f, false, false), "no cached picture: nothing to cover with");
+                Assert(!RM_UnderLiquid.CoverFromOwnPicture(false, 1f, true, true), "a stale (dirty) picture is used as the mask");
+                string src = RiverSwitchFlipChecks.Src("Superdeep/RM_SubmergeDraw.cs");
+                RiverSwitchFlipChecks.Has(src, @"RM_UnderLiquid\.CoverFromOwnPicture\(upright, s, ", "the body cover asks the rule");
+                RiverSwitchFlipChecks.Has(src, @"GlobalTextureAtlasManager\.TryGetPawnFrameSet\(pawn, out PawnTextureAtlasFrameSet fs, out bool fresh, false\)",
+                    "the cover reads the pawn's own cached picture, never creating an atlas");
+                RiverSwitchFlipChecks.Has(src, @"new MaterialRequest\(fs\.atlas, ShaderDatabase\.Silhouette", "the picture is drawn as a flat liquid-coloured silhouette");
+            });
+
             Case("PitLook1114_no_fill_n_wording_in_visible_text", () =>
             {
                 string root = Path.GetDirectoryName(RiverSwitchFlipChecks.SrcPath("RM_Volume.cs"));

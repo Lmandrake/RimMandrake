@@ -381,6 +381,16 @@ namespace RimMandrake.FlowWorks
 		/// part reads lerp(liquid, own, Seen), as the floor beside it does under the sheet. 0 = no cover (whole), 1 = all
 		/// liquid. (A part drawn at alpha Seen over the tinted floor read q x own + (1 - q) x floor: no liquid colour on it,
 		/// so a drowned thing looked laid on top of the water.)</summary>
+		/// <summary>RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE (owner look 2026-11-14, his 7: "The human bodies still show some flesh
+		/// above the water while their clothing is not."): a body lying wholly under the line (<paramref name="share"/> 1) is covered
+		/// through its OWN cached picture (head, hands, hair, apparel: exactly what vanilla drew), not the stock lifestage
+		/// silhouette; an upright wader keeps the banded silhouette (a whole picture cannot be cut at the line), and a missing or
+		/// stale picture falls back to it.</summary>
+		public static bool CoverFromOwnPicture(bool upright, float share, bool havePicture, bool pictureDirty)
+		{
+			return !upright && share >= 1f && havePicture && !pictureDirty;
+		}
+
 		public static float CoverAlpha(int q) => q >= Steps ? 0f : (q <= 0 ? 1f : 1f - (float)q / Steps);
 
 		/// <summary>How much is seen of the drowned part of a thing standing on the floor under <paramref name="levelMetres"/>

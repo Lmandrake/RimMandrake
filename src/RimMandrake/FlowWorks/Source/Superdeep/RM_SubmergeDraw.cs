@@ -605,12 +605,34 @@ namespace RimMandrake.FlowWorks
 			Color col = CoverColour(look, clarity);
 			// the whole drowned part is seen as the floor under the full depth (round 7); hidden under an opaque liquid
 			float cover = RM_UnderLiquid.CoverAlpha(RM_UnderLiquid.DrownedStep(clarity, levelM));
+			if (cover > 0.01f && !upright && s >= 1f && TryCoverWithOwnPicture(pawn, upright, s, rot, at4, col, cover))
+			{
+				return;
+			}
 			Mesh band = cover > 0.01f ? SliceMesh(size, 0f, s, flip) : null;
 			if (band != null)
 			{
 				coverBlock.SetColor(ShaderPropertyIDs.Color, new Color(col.r, col.g, col.b, cover));
 				UnityEngine.Graphics.DrawMesh(band, at4, mat, 0, null, 0, coverBlock);
 			}
+		}
+
+		/// <summary>RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE (his 7): a body wholly drowned is covered through vanilla's cached frame
+		/// of this pawn (the picture RenderPawnAt drew it from: body, head, hair, apparel), drawn where and as vanilla drew it, as
+		/// one flat liquid colour; false = no fresh frame, the silhouette band covers it as before.</summary>
+		private static bool TryCoverWithOwnPicture(Pawn pawn, bool upright, float s, Rot4 rot, Matrix4x4 at4, Color col, float cover)
+		{
+			bool have = GlobalTextureAtlasManager.TryGetPawnFrameSet(pawn, out PawnTextureAtlasFrameSet fs, out bool fresh, false)
+				&& !fresh && fs?.atlas != null;
+			int idx = have ? fs.GetIndex(rot, PawnDrawMode.BodyAndHead) : 0;
+			if (!RM_UnderLiquid.CoverFromOwnPicture(upright, s, have && fs.meshes[idx] != null, have && fs.isDirty[idx]))
+			{
+				return false;
+			}
+			Material m = MaterialPool.MatFrom(new MaterialRequest(fs.atlas, ShaderDatabase.Silhouette, Color.white));
+			coverBlock.SetColor(ShaderPropertyIDs.Color, new Color(col.r, col.g, col.b, cover));
+			UnityEngine.Graphics.DrawMesh(fs.meshes[idx], at4, m, 0, null, 0, coverBlock);
+			return true;
 		}
 
 		// ── the realtime layer (RIMMANDRAKE_SINK_HOSES_AND_OVERLAYS_TORCHES_BURN_IN_TAR) ─────────────────
