@@ -22,15 +22,15 @@ OFF = {
  "T_SETTINGS_SCREEN": dict(stage="4-5", file="src/RimMandrake/Utils/selftest_settings_screens.py", observes="the Mod Settings screen: every setting grouped, resettable, scopes as audited", reads=[MOD], known_red="RIMMANDRAKE_REGROUP_SETTINGS_SCREENS_FOUR_MODS_OUTGREW_AUDIT"),
  "T_FW_COVER": dict(stage="4-5", file="src/RimMandrake/FlowWorks/selftest_flowworks_cover_breaks.py", observes="FlowWorks: a pit cover breaks on every fall, before the descent", reads=["src/RimMandrake/FlowWorks/Source/Pits/Building_PitCover.cs", "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPathing.cs"]),
  # ---- specified, not built (Stage 3 builds them, failing first) ----
- "T_SETTINGS_SWEEP_OFFLINE": dict(stage="4-5", file=M + "/selftest_explosiveknockback_settings_sweep.py", new=True, item="RIMMANDRAKE_SPLIT_KNOCKBACK_SWEEP_OFFLINE_TABLE_LIVE_WIRING",
+ "T_SETTINGS_SWEEP_OFFLINE": dict(stage="4-5", file=M + "/selftest_explosiveknockback_settings_sweep.py", new=False, item="RIMMANDRAKE_SPLIT_KNOCKBACK_SWEEP_OFFLINE_TABLE_LIVE_WIRING",
      observes="sc_settings_sweep's lane as kernel inputs, run once at default and once per kernel-side setting; each changes only its own outcomes with the scene's numbers; a mutant coupling two settings goes red; the saved Scribe fields equal the sweep list plus enabled and shieldsAbsorbThrow, with no per-explosion, per-tick or body-size field", reads=SELFTEST_SRC + [MOD, C + "/scenes.json"]),
- "T_GAS_TAG_CENSUS": dict(stage="4-5", file=M + "/selftest_explosiveknockback_gas_census.py", new=True, item="RIMMANDRAKE_CHAIN_FLAMMABLE_GAS_CLUMPS",
+ "T_GAS_TAG_CENSUS": dict(stage="4-5", file=M + "/selftest_explosiveknockback_gas_census.py", new=False, item="RIMMANDRAKE_CHAIN_FLAMMABLE_GAS_CLUMPS",
      observes="every flammable gas source of ours (Gas ThingDefs, our gas grids, the Cauldron's vent gas) carries the opt-in flammable tag, and nothing else does (the leaf our_gases_burn's own offline clause)", reads=["src/RimMandrake (Gas ThingDefs and gas grids)", "src/RimMandrake/Cauldron"]),
- "T_GAS_CLUMP_ORDER": dict(stage="4-5", file=M + "/selftest_explosiveknockback_gas_clumps.py", new=True, item="RIMMANDRAKE_CHAIN_FLAMMABLE_GAS_CLUMPS",
+ "T_GAS_CLUMP_ORDER": dict(stage="4-5", file=M + "/selftest_explosiveknockback_gas_clumps.py", new=False, item="RIMMANDRAKE_CHAIN_FLAMMABLE_GAS_CLUMPS",
      observes="the clump plan of a lit cloud as pure logic: one burst per clump cell, ordered by distance from the lit edge, a fire not touching the cloud lights nothing, goods within 1.9 cells of a burst moved, people shoved one cell unhurt", reads=[MC]),
- "T_HEAVY_KNOCK_RULE": dict(stage="4-5", file=M + "/selftest_explosiveknockback_kernel.py (new K- cases)", new=True, item="RIMMANDRAKE_KNOCK_PEOPLE_HEAVY_GOODS",
+ "T_HEAVY_KNOCK_RULE": dict(stage="4-5", file=M + "/selftest_explosiveknockback_kernel.py", new=False, item="RIMMANDRAKE_KNOCK_PEOPLE_HEAVY_GOODS",
      observes="the heavy-stack rule as kernel cases: over the heavy threshold blunt 2 to 5 and a stagger and the stack stops; under it no damage and it passes", reads=SELFTEST_SRC),
- "T_ONLY_EXPLOSIONS_STATIC": dict(stage="2", file=M + "/selftest_explosiveknockback_hook_scope.py", new=True, item="RIMMANDRAKE_THROW_ALL_HARMFUL_BLASTS",
+ "T_ONLY_EXPLOSIONS_STATIC": dict(stage="2", file=M + "/selftest_explosiveknockback_hook_scope.py", new=False, item="RIMMANDRAKE_THROW_ALL_HARMFUL_BLASTS",
      observes="the only Harmony patch that queues a throw is on the explosion's damage step (no melee or bullet damage worker is patched)", reads=[M + "/Source/RM_Patch_DamageWorker_ExplosionKnockback.cs", MC]),
 }
 # ---- in-game tests: every scenes.json scene is one (stage 6 on the minimal list unless marked full; 8 = his look) ----
@@ -186,6 +186,17 @@ def main():
     names = re.search(r"Names\s*=\s*\{(.*?)\};", proof, re.S); names = set(re.findall(r'"(\w+)"', names.group(1))) if names else set()
     val = open(M + "/validation.py").read()
     tests = {}
+    # Stage 3 reconcile (2026-11-14): scenes built by rename or with lanes left out; what each does NOT yet check
+    PARTIAL = {
+        "goods_fly_wild": "rename of goods_fly_rebound: checks a wall rebound at about the keep percent, the stack ends on the blast side, no carrier left. Not yet: height and rotation mid-path, no despawn-spawn pair, wild/kernel ratio 1.3-2.0, the near-row good against the colonist, the mortar over a 5x5 stockpile with a corpse, the hop control",
+        "gas_chain": "rename of gas_clumps: checks 3 or more bursts on 2 or more ticks, goods moved within the goods cap, the colonist shoved at most 1 cell with no impact and the cooldown kept, the pit cover intact. Not yet: one burst per clump cell in distance order (offline in T_GAS_CLUMP_ORDER), goods beyond unmoved, colonist B's belt, no despawn-spawn pair, the igniter lane",
+        "gas_census": "gas_clumps plus the vent gas's registration read; the census list itself is offline (T_GAS_TAG_CENSUS). Not yet: the registration-removed control as its own lane",
+        "no_cross_ordered": "both walk orders and the covered pit are staged. Not yet: the concealed-pit raider control",
+        "spared_states": "too_heavy_creature, in_pit (pawn and stack), carrying_pawn, in_bed and the heavy corpse. Not yet: the flying lane (a flyer's flight is never live-tested without the owner present)",
+        "blast_kinds": "frag, BombSuper, Flame against the Bomb-swapped shell, and EMP, smoke, stun, extinguish, toxic gas. Not yet: the Outer Rim sonic and plasma lanes, the modded damaging explosion, the unpatched-percent-0 control",
+        "open_storage": "four open furniture defs, the guard's class read, no in_storage line. The floor control's cells are printed, not compared",
+    }
+    TICKS = {"no_cross_ordered": 2000, "pawn_arc": 900}
     now = datetime.datetime.now().astimezone().isoformat(timespec="seconds")
     for tid, t in OFF.items():
         t = dict(t, id=tid, kind="offline", command="python3 " + t["file"].split(" ")[0])
@@ -201,8 +212,8 @@ def main():
         full = sid in FULL
         tests[sid] = dict(id=sid, kind="live_full" if full else "live_minimal", stage="6", file=f, entry=meth,
             observes=s.get("expect", "")[:240], reads=[f, C + "/scenes.json", MC, MATH],
-            command=("python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes %s   (proof build, minimal list)" % meth) if not full else "python.exe src\\RimMandrake\\ExplosiveKnockback\\validation.py --live %s   (full list)" % meth,
-            why_game=WHY_GAME.get(sid, "UNSTATED"), why_full_list=FULL.get(sid), entry_exists=exists, item=s.get("entry_point_item"),
+            command=("python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes %s --ticks %d   (proof build, minimal list)" % (meth, TICKS.get(meth, 300))) if not full else "python.exe src\\RimMandrake\\ExplosiveKnockback\\validation.py --live %s   (full list)" % meth,
+            why_game=WHY_GAME.get(sid, "UNSTATED"), why_full_list=FULL.get(sid), entry_exists=exists, partial=PARTIAL.get(meth) if exists else None, item=s.get("entry_point_item"),
             runs_today=dict(ran=False, why="live: this pilot is offline only; entry %s in the proof code" % ("EXISTS" if exists else "ABSENT")))
     for nm, bl in OLD.items():
         ex = nm in names

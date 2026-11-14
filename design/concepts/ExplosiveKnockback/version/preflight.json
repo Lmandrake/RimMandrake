@@ -2,7 +2,7 @@
  "mod": "ExplosiveKnockback",
  "version": "0.1.0",
  "program": "preflight_ek.py (throwaway, pilot row 3)",
- "at": "2026-11-14T11:33:11-08:00",
+ "at": "2026-11-14T12:35:46-08:00",
  "dump": {
   "path": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/defs.sqlite",
   "provenance": {
@@ -16,9 +16,9 @@
    "defs_total": "59262"
   }
  },
- "seconds": 0.69,
+ "seconds": 3.55,
  "verdict": "refuse",
- "refusals": 26,
+ "refusals": 8,
  "checks": [
   {
    "id": "C1_bars_complete",
@@ -72,36 +72,22 @@
   },
   {
    "id": "C6_built_tests_run",
-   "what": "built mod: every deciding test runs today (his card 2026-11-13, 'Built: runs. New: specified.')",
+   "what": "built mod: every deciding test runs today (his card 2026-11-13, 'Built: runs. New: specified.'); measured live against the repo",
    "verdict": "refuse",
    "refusals": [
-    "T_SETTINGS_SWEEP_OFFLINE (offline, specified not built; item RIMMANDRAKE_SPLIT_KNOCKBACK_SWEEP_OFFLINE_TABLE_LIVE_WIRING) decides settings_scale_and_switch, inv_caps, inv_settings",
-    "T_GAS_TAG_CENSUS (offline, specified not built; item RIMMANDRAKE_CHAIN_FLAMMABLE_GAS_CLUMPS) decides our_gases_burn, inv_gas_tags",
-    "T_GAS_CLUMP_ORDER (offline, specified not built; item RIMMANDRAKE_CHAIN_FLAMMABLE_GAS_CLUMPS) decides gas_goes_clump_by_clump, inv_gas_chain",
-    "T_HEAVY_KNOCK_RULE (offline, specified not built; item RIMMANDRAKE_KNOCK_PEOPLE_HEAVY_GOODS) decides heavy_stack_knocks, inv_heavy_knock",
-    "T_ONLY_EXPLOSIONS_STATIC (offline, specified not built; item RIMMANDRAKE_THROW_ALL_HARMFUL_BLASTS) decides only_explosions_throw",
     "sc_pawn_arc (entry RM_KnockbackProof.cs::pawn_arc absent; item RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS) decides pawn_flight_arc, inv_pawn_flyer",
-    "sc_spared (entry RM_KnockbackProof.cs::spared_states absent; item RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS) decides the_spared, inv_who_is_spared, inv_pit_floor_goods_stay, inv_big_corpse_spared",
     "sc_hose_drop (entry RM_KnockbackProof.cs::hose_carry_drop absent; item RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS) decides hose_drops_at_takeoff, inv_hose_drop",
     "sc_settings_sweep (entry RM_KnockbackProof.cs::settings_sweep absent; item RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS) decides settings_scale_and_switch, inv_settings, inv_mass_limit_skip",
-    "sc_pawn_hits_pawn (entry RM_KnockbackProof.cs::pawn_hits_pawn absent; item RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS) decides pawn_hits_pawn_stops",
-    "sc_storeroom_mortar (entry RM_KnockbackProof.cs::goods_fly_wild absent; item RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD) decides goods_arc_spin_rebound, no_teleport, inv_items_teleport, inv_goods_fly",
-    "sc_open_storage (entry RM_KnockbackProof.cs::open_storage absent; item RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED) decides open_shelf_scatters, inv_shelf_skip",
     "sc_closed_containers (entry RM_KnockbackProof.cs::closed_containers absent; item RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED) decides closed_container_holds, inv_closed_guard, inv_container_shove",
-    "sc_blast_kinds (entry RM_KnockbackProof.cs::blast_kinds absent; item RIMMANDRAKE_THROW_ALL_HARMFUL_BLASTS) decides every_harmful_blast_throws, inv_which_blasts",
-    "sc_only_explosions (entry RM_KnockbackProof.cs::only_explosions absent; item RIMMANDRAKE_THROW_ALL_HARMFUL_BLASTS) decides only_explosions_throw",
-    "sc_gas_chain (entry RM_KnockbackProof.cs::gas_chain absent; item RIMMANDRAKE_CHAIN_FLAMMABLE_GAS_CLUMPS) decides gas_goes_clump_by_clump, no_teleport, inv_items_teleport, inv_gas_chain",
-    "sc_cauldron_gas (entry RM_KnockbackProof.cs::gas_census absent; item RIMMANDRAKE_CHAIN_FLAMMABLE_GAS_CLUMPS) decides our_gases_burn, inv_gas_tags",
-    "sc_no_careless_fall (entry RM_KnockbackProof.cs::no_cross_ordered absent; item RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS) decides no_careless_fall",
     "sc_pit_fetch (entry RM_KnockbackProof.cs::pit_goods_fetch absent; item RIMMANDRAKE_PROVE_PIT_GOODS_RETRIEVABLE) decides pit_goods_fetched, inv_pit_floor_haul",
     "sc_frame_probe_check (entry RM_KnockbackProof.cs::frame_probe_selfcheck absent; item RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF) decides frame_time_probe",
     "sc_barrage_perf (entry RM_KnockbackProof.cs::barrage_perf absent; item RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF) decides barrage_frame_budget, inv_perf_all_fly",
     "sc_walk_raid (entry validation.py::walk_storeroom_raid absent; item RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF) decides walk_storeroom_raid"
    ],
-   "evidence": "22 deciding tests not runnable",
+   "evidence": "8 deciding tests not runnable; 0 built since the table was written (table flags stale: none)",
    "smallest_fix": "build each named test, watched failing first, under its named item",
    "route": "Stage 3 (reconcile): the bar is sound, the test is owed",
-   "seconds": 0.0
+   "seconds": 0.001
   },
   {
    "id": "C7_game_reason_written",
@@ -121,17 +107,17 @@
    "evidence": "2 held rows found by file name",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.0
+   "seconds": 0.001
   },
   {
    "id": "C9_defs_real",
-   "what": "every def the table, the damage-def patch and the scenes name exists in the def dump or the repo (C# class names accepted)",
+   "what": "every def the table, the damage-def patch and the scenes name exists: ours in the repo's current Defs/Patches, others in the def dump (C# class names accepted)",
    "verdict": "pass",
    "refusals": [],
    "evidence": "17 names checked; dump defs.sqlite (4ad8ea9af8a56090, 51081 defs, 316 mods)",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.121
+   "seconds": 2.915
   },
   {
    "id": "C10_mods_real",
@@ -141,7 +127,7 @@
    "evidence": "6 named: lwm.deepstorage, mandrake.rm.cauldron, mandrake.rm.creaturebehaviors, mandrake.rm.environmentalhazards, mandrake.rm.flowworks, mandrake.rsw.armoury",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.003
+   "seconds": 0.002
   },
   {
    "id": "C11_settings_fields_real",
@@ -151,32 +137,26 @@
    "evidence": "22 named, 46 fields in the settings class",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.005
+   "seconds": 0.011
   },
   {
    "id": "C12_locked_files_unchanged",
    "what": "the locked bar files match the blobs pinned in version/bars.md",
-   "verdict": "refuse",
-   "refusals": [
-    "design/concepts/ExplosiveKnockback/tree.json: pinned 06e6a1ff44, now 23420c4193",
-    "design/concepts/ExplosiveKnockback/scenes.json: pinned e4a97d710a, now 64ce43d720",
-    "design/concepts/ExplosiveKnockback/record.json: pinned 14e3015936, now e608b943b3"
-   ],
+   "verdict": "pass",
+   "refusals": [],
    "evidence": "8 pins",
-   "smallest_fix": "the Conductor reads each post-lock change; a test-text change is re-pinned in bars.md, a meaning change goes to him",
-   "route": "Conductor (judgment: test text or meaning?)",
-   "seconds": 0.007
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 0.009
   },
   {
    "id": "C13_mass_scene_consistent",
    "what": "sc_mass_and_power: every admitted colonist mass satisfies the expect's order (judge gap g4)",
-   "verdict": "refuse",
-   "refusals": [
-    "colonist 45-76 kg admitted; 45-63 kg throw 6 at damage 100, tying the capped light animal (6), but the expect says 'light > colonist' and the leaf oracle says 'the colonist 5'"
-   ],
-   "evidence": "band colonist in ordinary clothes and a sidearm (45 to 76 kg); kernel formula as the expect states it",
-   "smallest_fix": "a proof hook stages a 64-76 kg colonist (test code); or, his call, the oracle admits a tie at the cap",
-   "route": "Stage 3 test code (Conductor confirms it is not a meaning change)",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "band colonist in ordinary clothes and a sidearm (64 to 76 kg); kernel formula as the expect states it",
+   "smallest_fix": null,
+   "route": null,
    "seconds": 0.0
   },
   {
@@ -197,7 +177,7 @@
    "evidence": "10 items",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.512
+   "seconds": 0.563
   }
  ]
 }

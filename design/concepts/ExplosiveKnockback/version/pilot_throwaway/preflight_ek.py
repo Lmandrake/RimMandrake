@@ -44,14 +44,36 @@ for h in tab["held_statements"]:
 check("C4_test_files_real", "every built test's file exists", r4, "", "fix the path", "Stage 1", t)
 check("C5_read_files_real", "every file a test reads exists", sorted(set(r5)), "", "fix the path or build the file", "Stage 1", t)
 # C6 Built: runs (his card 2026-11-13). A built mod's deciding tests must run at the lock.
+# Measured LIVE here, not read from the table's frozen flags (Stage 3, 2026-11-14): an offline test is built when its file
+# exists (and, for new kernel cases, its K- marker is in Program.cs); a live scene when its entry is a `case "<entry>":` of
+# the proof code's Build switch (or a name in validation.py for a validation.py entry).
 t = time.time(); r = []
+proof_src = open(M + "/Source/RM_KnockbackProof.cs", errors="replace").read()
+val_src = open(M + "/validation.py", errors="replace").read()
+prog_src = open(M + "/Source/SelfTest/Program.cs", errors="replace").read()
+def built(k, v):
+    if v["kind"] == "offline":
+        f = v.get("file", "").split(" ")[0]
+        if not os.path.exists(f): return False
+        if "new K- cases" in v.get("file", ""): return bool(re.search(r'Check\("K-2[1-9]', prog_src))
+        return True
+    if v["kind"].startswith("live"):
+        e = v.get("entry", "")
+        if v.get("file", "").endswith("validation.py"): return ('"%s"' % e) in val_src
+        return ('case "%s":' % e) in proof_src
+    return True
+live_built = {}
 for k, v in tests.items():
     users = [b["id"] for b in bars if k in b["decides"]]
+    live_built[k] = built(k, v)
     if not users or k == "LOOK_STAGE8": continue
-    if v.get("new"): r.append("%s (offline, specified not built; item %s) decides %s" % (k, v.get("item"), ", ".join(users)))
-    elif v["kind"].startswith("live") and not v.get("entry_exists"): r.append("%s (entry %s::%s absent; item %s) decides %s" % (k, v["file"].split("/")[-1], v["entry"], v.get("item"), ", ".join(users)))
-check("C6_built_tests_run", "built mod: every deciding test runs today (his card 2026-11-13, 'Built: runs. New: specified.')", r,
-      "%d deciding tests not runnable" % len(r), "build each named test, watched failing first, under its named item", "Stage 3 (reconcile): the bar is sound, the test is owed", t)
+    if not live_built[k]:
+        if v["kind"] == "offline": r.append("%s (offline, file %s not built; item %s) decides %s" % (k, v.get("file"), v.get("item"), ", ".join(users)))
+        else: r.append("%s (entry %s::%s absent; item %s) decides %s" % (k, v["file"].split("/")[-1], v["entry"], v.get("item"), ", ".join(users)))
+stale = sorted(k for k, v in tests.items() if (v.get("new") or (v["kind"].startswith("live") and not v.get("entry_exists"))) and live_built.get(k))
+check("C6_built_tests_run", "built mod: every deciding test runs today (his card 2026-11-13, 'Built: runs. New: specified.'); measured live against the repo", r,
+      "%d deciding tests not runnable; %d built since the table was written (table flags stale: %s)" % (len(r), len(stale), ", ".join(stale) or "none"),
+      "build each named test, watched failing first, under its named item", "Stage 3 (reconcile): the bar is sound, the test is owed", t)
 # C7 a game-stage test says why the game is needed; a full-list test says why
 t = time.time(); r = []
 for k, v in tests.items():
@@ -83,9 +105,17 @@ stext = json.dumps(scenes)
 named |= set(re.findall(r"\b((?:RM|RUT|RSW|LWM)_[A-Za-z0-9_]+)\b", stext))
 named |= set(w for w in re.findall(r"\b([A-Z][a-z]+(?:[A-Z][a-z0-9]+)+)\b", stext) if w in defs or w in repo_defs)  # CamelCase words that are defs: counted as found
 code_names = set(re.findall(r"\b(RM_\w+)\b", " ".join(open(f, errors="replace").read() for f in glob.glob(M + "/Source/*.cs"))))
+# Stage 3 fix (lesson 20261114T194216Z, the Pyrelands run): the dump is older than the source. A def of OURS (mandrake.*
+# in the dump, or an RM_/RSW_/RUT_ name) must be in the repo's CURRENT Defs or Patches XML; the dump alone does not count.
+ours_in_dump = set(x[0] for x in con.execute("select def_name from defs where package_id like 'mandrake.%'"))
+for f in glob.glob("src/Rim*/**/Defs/**/*.xml", recursive=True) + glob.glob("src/Rim*/**/Patches/**/*.xml", recursive=True):
+    repo_defs |= set(re.findall(r"<defName>(\w+)</defName>", open(f, errors="replace").read()))
+def ours(d): return d in ours_in_dump or re.match(r"(RM|RSW|RUT)_", d) is not None
 for d in sorted(named):
-    if d not in defs and d not in repo_defs and d not in code_names: r.append(d)
-check("C9_defs_real", "every def the table, the damage-def patch and the scenes name exists in the def dump or the repo (C# class names accepted)", r,
+    if ours(d) and d not in repo_defs and d not in code_names:
+        r.append(d + (" (only in the dump: our def, gone from the repo; the dump is older than the source)" if d in defs else ""))
+    elif not ours(d) and d not in defs and d not in repo_defs and d not in code_names: r.append(d)
+check("C9_defs_real", "every def the table, the damage-def patch and the scenes name exists: ours in the repo's current Defs/Patches, others in the def dump (C# class names accepted)", r,
       "%d names checked; dump %s (%s, %d defs, %d mods)" % (len(named), DUMP.split("/")[-1], prov.get("modlist_fingerprint", prov.get("capturedUtc", "?")), len(defs), len(pkgs)),
       "correct the name or build the def", "Stage 1 if a wrong name, Stage 3 if owed", t)
 # C10 every mod a scene names exists

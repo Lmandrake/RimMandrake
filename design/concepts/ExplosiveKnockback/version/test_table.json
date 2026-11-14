@@ -1,7 +1,7 @@
 {
  "mod": "ExplosiveKnockback",
  "version": "0.1.0",
- "made": "2026-11-14T11:30:41-08:00",
+ "made": "2026-11-14T12:34:15-08:00",
  "made_by": "rm-builder, Maturation pilot row 2 (throwaway make_test_table.py)",
  "stages": {
   "2": "preflight (a program)",
@@ -111,9 +111,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.31,
-    "last": "explosive knockback kernel: 142/142 passed",
-    "at": "2026-11-14T11:30:41-08:00",
+    "seconds": 1.68,
+    "last": "explosive knockback kernel: 152/152 passed",
+    "at": "2026-11-14T12:34:15-08:00",
     "result": "PASS"
    }
   },
@@ -132,9 +132,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 3.12,
-    "last": "explosiveknockback fuzz: 42001 cases, 922486 steps, 1.39s total -> OK",
-    "at": "2026-11-14T11:30:41-08:00",
+    "seconds": 3.89,
+    "last": "explosiveknockback fuzz: 42001 cases, 922486 steps, 1.36s total -> OK",
+    "at": "2026-11-14T12:34:15-08:00",
     "result": "PASS"
    }
   },
@@ -154,9 +154,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.19,
+    "seconds": 2.46,
     "last": "explosiveknockback data: 15 RM_KnockbackExtension li checked (6 here, 9 in KineticArms)",
-    "at": "2026-11-14T11:30:41-08:00",
+    "at": "2026-11-14T12:34:15-08:00",
     "result": "PASS"
    }
   },
@@ -174,9 +174,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 32.81,
+    "seconds": 33.06,
     "last": "ExplosiveKnockback lint planted-defect selftest: 20/20 ok",
-    "at": "2026-11-14T11:30:41-08:00",
+    "at": "2026-11-14T12:34:15-08:00",
     "result": "PASS"
    }
   },
@@ -194,9 +194,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 23.46,
+    "seconds": 11.9,
     "last": "PASS storage census: closed exactly when hidden",
-    "at": "2026-11-14T11:30:41-08:00",
+    "at": "2026-11-14T12:34:15-08:00",
     "result": "PASS"
    }
   },
@@ -216,9 +216,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.39,
+    "seconds": 0.18,
     "last": "MOCK: PASS (41/41 scenes staged, all_green=False)",
-    "at": "2026-11-14T11:30:41-08:00",
+    "at": "2026-11-14T12:34:15-08:00",
     "result": "PASS"
    }
   },
@@ -237,9 +237,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 5.69,
+    "seconds": 3.63,
     "last": "PASS proofgate (R1 P1 G1)",
-    "at": "2026-11-14T11:30:41-08:00",
+    "at": "2026-11-14T12:34:15-08:00",
     "result": "PASS"
    }
   },
@@ -257,9 +257,9 @@
    "runs_today": {
     "ran": true,
     "rc": 1,
-    "seconds": 6.8,
+    "seconds": 6.06,
     "last": "<unknown>:2342: SyntaxWarning: \"\\.\" is an invalid escape sequence. Such sequences will not work in the future. Did you mean \"\\\\.\"? A raw string is also an option.",
-    "at": "2026-11-14T11:30:41-08:00",
+    "at": "2026-11-14T12:34:15-08:00",
     "result": "KNOWN RED RIMMANDRAKE_RESTORE_ON_THROW_IN_KNOCKBACK_PROOF_TWO_LEAKS"
    }
   },
@@ -277,9 +277,9 @@
    "runs_today": {
     "ran": true,
     "rc": 1,
-    "seconds": 1.84,
+    "seconds": 1.88,
     "last": "settings screens selftest: 851/856 ok",
-    "at": "2026-11-14T11:30:41-08:00",
+    "at": "2026-11-14T12:34:15-08:00",
     "result": "KNOWN RED RIMMANDRAKE_REGROUP_SETTINGS_SCREENS_FOUR_MODS_OUTGREW_AUDIT"
    }
   },
@@ -299,14 +299,14 @@
     "rc": 0,
     "seconds": 0.05,
     "last": "ok  cover breaks on every fall: Spring destroys the whole deck before 1 descent call(s); the detector skips covered cells (and so does a jump's at-once fall); other drops require an open pit at the fa",
-    "at": "2026-11-14T11:30:41-08:00",
+    "at": "2026-11-14T12:34:15-08:00",
     "result": "PASS"
    }
   },
   "T_SETTINGS_SWEEP_OFFLINE": {
    "stage": "4-5",
    "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py",
-   "new": true,
+   "new": false,
    "item": "RIMMANDRAKE_SPLIT_KNOCKBACK_SWEEP_OFFLINE_TABLE_LIVE_WIRING",
    "observes": "sc_settings_sweep's lane as kernel inputs, run once at default and once per kernel-side setting; each changes only its own outcomes with the scene's numbers; a mutant coupling two settings goes red; the saved Scribe fields equal the sweep list plus enabled and shieldsAbsorbThrow, with no per-explosion, per-tick or body-size field",
    "reads": [
@@ -320,14 +320,18 @@
    "kind": "offline",
    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py",
    "runs_today": {
-    "ran": false,
-    "why": "specified, not built: Stage 3 builds it failing first"
+    "ran": true,
+    "rc": 0,
+    "seconds": 1.03,
+    "last": "explosive knockback settings sweep: PASS (24 runs, 0 faults, 2/2 coupling mutants caught) | static: 0 faults, 4/4 planted caught | PASS",
+    "at": "2026-11-14T12:34:15-08:00",
+    "result": "PASS"
    }
   },
   "T_GAS_TAG_CENSUS": {
    "stage": "4-5",
    "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_gas_census.py",
-   "new": true,
+   "new": false,
    "item": "RIMMANDRAKE_CHAIN_FLAMMABLE_GAS_CLUMPS",
    "observes": "every flammable gas source of ours (Gas ThingDefs, our gas grids, the Cauldron's vent gas) carries the opt-in flammable tag, and nothing else does (the leaf our_gases_burn's own offline clause)",
    "reads": [
@@ -338,14 +342,18 @@
    "kind": "offline",
    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_gas_census.py",
    "runs_today": {
-    "ran": false,
-    "why": "specified, not built: Stage 3 builds it failing first"
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.85,
+    "last": "explosive knockback gas census: PASS (10 sources, tagged grid:RimMandrake.Cauldron.RM_MapComponent_VentGas; 0 faults; 5/5 planted faults caught)",
+    "at": "2026-11-14T12:34:15-08:00",
+    "result": "PASS"
    }
   },
   "T_GAS_CLUMP_ORDER": {
    "stage": "4-5",
    "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_gas_clumps.py",
-   "new": true,
+   "new": false,
    "item": "RIMMANDRAKE_CHAIN_FLAMMABLE_GAS_CLUMPS",
    "observes": "the clump plan of a lit cloud as pure logic: one burst per clump cell, ordered by distance from the lit edge, a fire not touching the cloud lights nothing, goods within 1.9 cells of a burst moved, people shoved one cell unhurt",
    "reads": [
@@ -355,14 +363,18 @@
    "kind": "offline",
    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_gas_clumps.py",
    "runs_today": {
-    "ran": false,
-    "why": "specified, not built: Stage 3 builds it failing first"
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.02,
+    "last": "explosive knockback gas clumps: PASS (0 faults, 6/6 planted faults caught)",
+    "at": "2026-11-14T12:34:15-08:00",
+    "result": "PASS"
    }
   },
   "T_HEAVY_KNOCK_RULE": {
    "stage": "4-5",
-   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py (new K- cases)",
-   "new": true,
+   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+   "new": false,
    "item": "RIMMANDRAKE_KNOCK_PEOPLE_HEAVY_GOODS",
    "observes": "the heavy-stack rule as kernel cases: over the heavy threshold blunt 2 to 5 and a stagger and the stack stops; under it no damage and it passes",
    "reads": [
@@ -374,14 +386,18 @@
    "kind": "offline",
    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
    "runs_today": {
-    "ran": false,
-    "why": "specified, not built: Stage 3 builds it failing first"
+    "ran": true,
+    "rc": 0,
+    "seconds": 1.05,
+    "last": "explosive knockback kernel: 152/152 passed",
+    "at": "2026-11-14T12:34:15-08:00",
+    "result": "PASS"
    }
   },
   "T_ONLY_EXPLOSIONS_STATIC": {
    "stage": "2",
    "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_hook_scope.py",
-   "new": true,
+   "new": false,
    "item": "RIMMANDRAKE_THROW_ALL_HARMFUL_BLASTS",
    "observes": "the only Harmony patch that queues a throw is on the explosion's damage step (no melee or bullet damage worker is patched)",
    "reads": [
@@ -392,8 +408,12 @@
    "kind": "offline",
    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_hook_scope.py",
    "runs_today": {
-    "ran": false,
-    "why": "specified, not built: Stage 3 builds it failing first"
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.13,
+    "last": "explosive knockback hook scope: PASS (0 faults, 3/3 planted faults caught)",
+    "at": "2026-11-14T12:34:15-08:00",
+    "result": "PASS"
    }
   },
   "sc_storeroom_bomb_pit": {
@@ -409,10 +429,11 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes storeroom_bomb_pit   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes storeroom_bomb_pit --ticks 300   (proof build, minimal list)",
    "why_game": "the flagship interaction of every part at once, his chosen face of the mod",
    "why_full_list": null,
    "entry_exists": false,
+   "partial": null,
    "item": "RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF",
    "runs_today": {
     "ran": false,
@@ -432,10 +453,11 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes calibration   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes calibration --ticks 300   (proof build, minimal list)",
    "why_game": "landing cell, alive and stunned are the PawnFlyer's runtime; the kernel only gives the planned cells",
    "why_full_list": null,
    "entry_exists": true,
+   "partial": null,
    "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
    "runs_today": {
     "ran": false,
@@ -455,10 +477,11 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes over_sandbags   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes over_sandbags --ticks 300   (proof build, minimal list)",
    "why_game": "the flyer passing a real sandbag thing; the kernel's sandbag rule is K-06",
    "why_full_list": null,
    "entry_exists": true,
+   "partial": null,
    "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
    "runs_today": {
     "ran": false,
@@ -478,10 +501,11 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes pawn_arc   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes pawn_arc --ticks 900   (proof build, minimal list)",
    "why_game": "mid-flight drawn position inside RM_PawnFlyer_Knockback exists only in a running game",
    "why_full_list": null,
    "entry_exists": false,
+   "partial": null,
    "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
    "runs_today": {
     "ran": false,
@@ -501,14 +525,15 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes spared_states   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes spared_states --ticks 300   (proof build, minimal list)",
    "why_game": "in_pit, carrying, in_bed and flying are live pawn states read by the map component, not kernel inputs",
    "why_full_list": null,
-   "entry_exists": false,
+   "entry_exists": true,
+   "partial": "too_heavy_creature, in_pit (pawn and stack), carrying_pawn, in_bed and the heavy corpse. Not yet: the flying lane (a flyer's flight is never live-tested without the owner present)",
    "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
    "runs_today": {
     "ran": false,
-    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
    }
   },
   "sc_mass_and_power": {
@@ -524,10 +549,11 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes mass_and_power   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes mass_and_power --ticks 300   (proof build, minimal list)",
    "why_game": "the explosion's real damage and the Mass stat as the game computes it reach the kernel only in game (the cell table itself is K-19, offline)",
    "why_full_list": null,
    "entry_exists": true,
+   "partial": null,
    "item": "RIMMANDRAKE_BUILD_KNOCKBACK_CREATURE_MASS_AND_BLAST_POWER",
    "runs_today": {
     "ran": false,
@@ -547,10 +573,11 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes immunity_window   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes immunity_window --ticks 300   (proof build, minimal list)",
    "why_game": "the stamps on the map component and their save and reload are runtime",
    "why_full_list": null,
    "entry_exists": true,
+   "partial": null,
    "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
    "runs_today": {
     "ran": false,
@@ -570,10 +597,11 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes hose_carry_drop   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes hose_carry_drop --ticks 300   (proof build, minimal list)",
    "why_game": "a colonist mid CarryHoseEnd job is a live job state",
    "why_full_list": null,
    "entry_exists": false,
+   "partial": null,
    "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
    "runs_today": {
     "ran": false,
@@ -593,10 +621,11 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes settings_off   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes settings_off --ticks 300   (proof build, minimal list)",
    "why_game": "the master switch silencing the real explosion hook (not the kernel) is runtime",
    "why_full_list": null,
    "entry_exists": true,
+   "partial": null,
    "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
    "runs_today": {
     "ran": false,
@@ -616,10 +645,11 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes settings_sweep   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes settings_sweep --ticks 300   (proof build, minimal list)",
    "why_game": "THIN after the move: only game-side settings (throwAnimals/Mechanoids/Downed/Items/Corpses, landingStunMin and landingStunMax, doorsTakeDamage, debugDrawVectors, vanillaCratesClosed, heavy threshold, goods in air, closed guard, heavy knock, gas chain, fire at half) and one Settings -> Kernel() read-back per kernel-side setting; the kernel-side lines move to T_SETTINGS_SWEEP_OFFLINE",
    "why_full_list": null,
    "entry_exists": false,
+   "partial": null,
    "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
    "runs_today": {
     "ran": false,
@@ -639,10 +669,11 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes wall_stop   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes wall_stop --ticks 300   (proof build, minimal list)",
    "why_game": "impact damage applied to a real pawn by the flyer; the stop cell is K-07 offline",
    "why_full_list": null,
    "entry_exists": true,
+   "partial": null,
    "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
    "runs_today": {
     "ran": false,
@@ -662,14 +693,15 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes pawn_hits_pawn   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes pawn_hits_pawn --ticks 300   (proof build, minimal list)",
    "why_game": "two real pawns and the flyer's stop; the stop rule is K-09 offline",
    "why_full_list": null,
-   "entry_exists": false,
+   "entry_exists": true,
+   "partial": null,
    "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
    "runs_today": {
     "ran": false,
-    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
    }
   },
   "sc_door_water": {
@@ -685,10 +717,11 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes door_stop   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes door_stop --ticks 300   (proof build, minimal list)",
    "why_game": "door hit points and the colonist's injury are runtime; stop cells are K-07 offline",
    "why_full_list": null,
    "entry_exists": true,
+   "partial": null,
    "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
    "runs_today": {
     "ran": false,
@@ -708,10 +741,11 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes shield_counter   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes shield_counter --ticks 300   (proof build, minimal list)",
    "why_game": "a real shield belt's energy after a real absorb; the debit maths is K-16 offline",
    "why_full_list": null,
    "entry_exists": true,
+   "partial": null,
    "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
    "runs_today": {
     "ran": false,
@@ -731,14 +765,15 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes goods_fly_wild   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes goods_fly_wild --ticks 300   (proof build, minimal list)",
    "why_game": "a per-tick trace of real thrown things (height, rotation, rebound) exists only in game; the rebound maths is K-17 offline",
    "why_full_list": null,
-   "entry_exists": false,
+   "entry_exists": true,
+   "partial": "rename of goods_fly_rebound: checks a wall rebound at about the keep percent, the stack ends on the blast side, no carrier left. Not yet: height and rotation mid-path, no despawn-spawn pair, wild/kernel ratio 1.3-2.0, the near-row good against the colonist, the mortar over a 5x5 stockpile with a corpse, the hop control",
    "item": "RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD",
    "runs_today": {
     "ran": false,
-    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
    }
   },
   "sc_all_fly_no_cap": {
@@ -754,10 +789,11 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes all_fly_no_cap   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes all_fly_no_cap --ticks 300   (proof build, minimal list)",
    "why_game": "over 60 real things reached in one tick, all moved; the no-cap rule is K-11 offline",
    "why_full_list": null,
    "entry_exists": true,
+   "partial": null,
    "item": "RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD",
    "runs_today": {
     "ran": false,
@@ -777,14 +813,15 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes open_storage   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes open_storage --ticks 300   (proof build, minimal list)",
    "why_game": "real furniture emptied by a real blast; the open rule is K-14 and the census offline",
    "why_full_list": null,
-   "entry_exists": false,
+   "entry_exists": true,
+   "partial": "four open furniture defs, the guard's class read, no in_storage line. The floor control's cells are printed, not compared",
    "item": "RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED",
    "runs_today": {
     "ran": false,
-    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
    }
   },
   "sc_closed_containers": {
@@ -800,10 +837,11 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes closed_containers   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes closed_containers --ticks 300   (proof build, minimal list)",
    "why_game": "real lockers keeping contents and sliding; the hold and shove rules are K-14 offline",
    "why_full_list": null,
    "entry_exists": false,
+   "partial": null,
    "item": "RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED",
    "runs_today": {
     "ran": false,
@@ -823,10 +861,11 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes heavy_knock   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes heavy_knock --ticks 300   (proof build, minimal list)",
    "why_game": "blunt damage and stagger on a real pawn",
    "why_full_list": null,
    "entry_exists": true,
+   "partial": null,
    "item": "RIMMANDRAKE_KNOCK_PEOPLE_HEAVY_GOODS",
    "runs_today": {
     "ran": false,
@@ -846,14 +885,15 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes blast_kinds   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes blast_kinds --ticks 300   (proof build, minimal list)",
    "why_game": "the real damage defs reaching the hook at their real strengths; the patch values are T_LINT offline",
    "why_full_list": null,
-   "entry_exists": false,
+   "entry_exists": true,
+   "partial": "frag, BombSuper, Flame against the Bomb-swapped shell, and EMP, smoke, stun, extinguish, toxic gas. Not yet: the Outer Rim sonic and plasma lanes, the modded damaging explosion, the unpatched-percent-0 control",
    "item": "RIMMANDRAKE_THROW_ALL_HARMFUL_BLASTS",
    "runs_today": {
     "ran": false,
-    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
    }
   },
   "sc_only_explosions": {
@@ -869,14 +909,15 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes only_explosions   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes only_explosions --ticks 300   (proof build, minimal list)",
    "why_game": "a real melee hit and a real bullet producing no request line (the static half is T_ONLY_EXPLOSIONS_STATIC)",
    "why_full_list": null,
-   "entry_exists": false,
+   "entry_exists": true,
+   "partial": null,
    "item": "RIMMANDRAKE_THROW_ALL_HARMFUL_BLASTS",
    "runs_today": {
     "ran": false,
-    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
    }
   },
   "sc_lookup": {
@@ -892,10 +933,11 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes lookup_projectile   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes lookup_projectile --ticks 300   (proof build, minimal list)",
    "why_game": "which def on a real projectile, weapon and damage type the hook reads; the lookup order is K-13 offline",
    "why_full_list": null,
    "entry_exists": true,
+   "partial": null,
    "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
    "runs_today": {
     "ran": false,
@@ -915,14 +957,15 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes gas_chain   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes gas_chain --ticks 300   (proof build, minimal list)",
    "why_game": "a real gas grid lit by a real fire, bursts over ticks",
    "why_full_list": null,
-   "entry_exists": false,
+   "entry_exists": true,
+   "partial": "rename of gas_clumps: checks 3 or more bursts on 2 or more ticks, goods moved within the goods cap, the colonist shoved at most 1 cell with no impact and the cooldown kept, the pit cover intact. Not yet: one burst per clump cell in distance order (offline in T_GAS_CLUMP_ORDER), goods beyond unmoved, colonist B's belt, no despawn-spawn pair, the igniter lane",
    "item": "RIMMANDRAKE_CHAIN_FLAMMABLE_GAS_CLUMPS",
    "runs_today": {
     "ran": false,
-    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
    }
   },
   "sc_cauldron_gas": {
@@ -938,14 +981,15 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes gas_census   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes gas_census --ticks 300   (proof build, minimal list)",
    "why_game": "the Cauldron's registered vent gas burning by registration, not by its own scan",
    "why_full_list": null,
-   "entry_exists": false,
+   "entry_exists": true,
+   "partial": "gas_clumps plus the vent gas's registration read; the census list itself is offline (T_GAS_TAG_CENSUS). Not yet: the registration-removed control as its own lane",
    "item": "RIMMANDRAKE_CHAIN_FLAMMABLE_GAS_CLUMPS",
    "runs_today": {
     "ran": false,
-    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
    }
   },
   "sc_cover_breaks": {
@@ -961,10 +1005,11 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes cover_breaks   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes cover_breaks --ticks 300   (proof build, minimal list)",
    "why_game": "a real cover deck and a real descent (FlowWorks' break rule is T_FW_COVER offline)",
    "why_full_list": null,
    "entry_exists": true,
+   "partial": null,
    "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
    "runs_today": {
     "ran": false,
@@ -984,10 +1029,11 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes pit_colonist   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes pit_colonist --ticks 300   (proof build, minimal list)",
    "why_game": "a real descent recorded by FlowWorks after a real throw; the stop-in-pit cell is K-08 offline",
    "why_full_list": null,
    "entry_exists": true,
+   "partial": null,
    "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
    "runs_today": {
     "ran": false,
@@ -1007,10 +1053,11 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes pit_enemy   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes pit_enemy --ticks 300   (proof build, minimal list)",
    "why_game": "a real raider's descent",
    "why_full_list": null,
    "entry_exists": true,
+   "partial": null,
    "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
    "runs_today": {
     "ran": false,
@@ -1030,14 +1077,15 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes no_cross_ordered   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes no_cross_ordered --ticks 2000   (proof build, minimal list)",
    "why_game": "real pathing around real pits",
    "why_full_list": null,
-   "entry_exists": false,
+   "entry_exists": true,
+   "partial": "both walk orders and the covered pit are staged. Not yet: the concealed-pit raider control",
    "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
    "runs_today": {
     "ran": false,
-    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
    }
   },
   "sc_pit_fetch": {
@@ -1053,10 +1101,11 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes pit_goods_fetch   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes pit_goods_fetch --ticks 300   (proof build, minimal list)",
    "why_game": "a hauler's job and ladder route over up to a day of game time",
    "why_full_list": null,
    "entry_exists": false,
+   "partial": null,
    "item": "RIMMANDRAKE_PROVE_PIT_GOODS_RETRIEVABLE",
    "runs_today": {
     "ran": false,
@@ -1076,10 +1125,11 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes frame_probe_selfcheck   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes frame_probe_selfcheck --ticks 300   (proof build, minimal list)",
    "why_game": "frames exist only in a running game",
    "why_full_list": null,
    "entry_exists": false,
+   "partial": null,
    "item": "RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF",
    "runs_today": {
     "ran": false,
@@ -1103,6 +1153,7 @@
    "why_game": "frame time is meaningful only on the real list and machine (leaf barrage_frame_budget)",
    "why_full_list": "frame time is meaningful only on the real list and machine (leaf barrage_frame_budget)",
    "entry_exists": false,
+   "partial": null,
    "item": "RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF",
    "runs_today": {
     "ran": false,
@@ -1126,6 +1177,7 @@
    "why_game": "the walk is the full list, played (leaf walk_storeroom_raid)",
    "why_full_list": "the walk is the full list, played (leaf walk_storeroom_raid)",
    "entry_exists": false,
+   "partial": null,
    "item": "RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF",
    "runs_today": {
     "ran": false,
@@ -1145,10 +1197,11 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes gas_into_pit   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes gas_into_pit --ticks 300   (proof build, minimal list)",
    "why_game": "a gas burst shoving a real pawn into a real pit",
    "why_full_list": null,
    "entry_exists": false,
+   "partial": null,
    "item": "RIMMANDRAKE_CHAIN_FLAMMABLE_GAS_CLUMPS",
    "runs_today": {
     "ran": false,
@@ -1168,10 +1221,11 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes killed_by_blast   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes killed_by_blast --ticks 300   (proof build, minimal list)",
    "why_game": "a pawn killed by a real blast becoming a corpse that is thrown",
    "why_full_list": null,
    "entry_exists": true,
+   "partial": null,
    "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
    "runs_today": {
     "ran": false,
@@ -1191,10 +1245,11 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes goods_obstacles   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes goods_obstacles --ticks 300   (proof build, minimal list)",
    "why_game": "real things in flight meeting real walls, pawns and doors",
    "why_full_list": null,
    "entry_exists": false,
+   "partial": null,
    "item": "RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD",
    "runs_today": {
     "ran": false,
@@ -1714,7 +1769,7 @@
     "T_KERNEL"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -1807,7 +1862,7 @@
     "T_KERNEL"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -1872,7 +1927,7 @@
     "T_KERNEL"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -1919,7 +1974,7 @@
     "T_KERNEL"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -1964,8 +2019,8 @@
    "offline_decides": [
     "T_HEAVY_KNOCK_RULE"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -1990,7 +2045,7 @@
     "T_KERNEL"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -2007,9 +2062,9 @@
    "offline_decides": [
     "T_ONLY_EXPLOSIONS_STATIC"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "per_weapon_tuning",
@@ -2053,8 +2108,8 @@
    "offline_decides": [
     "T_GAS_CLUMP_ORDER"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -2071,9 +2126,9 @@
    "offline_decides": [
     "T_GAS_TAG_CENSUS"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "blast_breaks_pit_cover",
@@ -2148,7 +2203,7 @@
    "held": [],
    "offline_decides": [],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -2163,8 +2218,8 @@
    "held": [],
    "offline_decides": [],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "settings_scale_and_switch",
@@ -2320,7 +2375,7 @@
     "T_KERNEL"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -2338,7 +2393,7 @@
    "held": [],
    "offline_decides": [],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -2360,7 +2415,7 @@
     "T_CENSUS"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -2381,7 +2436,7 @@
     "T_KERNEL"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -2436,8 +2491,8 @@
     "T_KERNEL",
     "T_SETTINGS_SWEEP_OFFLINE"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -2555,8 +2610,8 @@
    "offline_decides": [
     "T_GAS_CLUMP_ORDER"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -2581,7 +2636,7 @@
     "T_KERNEL"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -2642,8 +2697,8 @@
    "offline_decides": [
     "T_HEAVY_KNOCK_RULE"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -2660,9 +2715,9 @@
    "offline_decides": [
     "T_GAS_TAG_CENSUS"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "inv_perf_all_fly",
@@ -2734,7 +2789,7 @@
    "held": [],
    "offline_decides": [],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -2752,7 +2807,7 @@
     "T_KERNEL"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {

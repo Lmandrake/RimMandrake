@@ -547,6 +547,12 @@ namespace RimMandrake.ExplosiveKnockback
                 }
                 kind = KbKind.Pawn;
                 mass = Mathf.Max(1f, pawn.GetStatValue(StatDefOf.Mass) - MassUtility.InventoryMass(pawn));
+#if RM_PROOFS
+                if (RM_KnockbackProof.PinnedMass.TryGetValue(pawn.thingIDNumber, out float pinned))
+                {
+                    mass = pinned;   // test-only: sc_mass_and_power pins its colonist to 64-76 kg (judge gap g4)
+                }
+#endif
             }
             else if (t is Corpse corpse)
             {

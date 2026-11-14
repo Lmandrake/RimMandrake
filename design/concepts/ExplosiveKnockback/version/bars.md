@@ -8,14 +8,16 @@ Lock commit: `237b79116781821545f7ac58c23ed40bfc0250c4` (origin/main, 2026-11-13
 
 | file | git blob at the lock | role |
 |---|---|---|
-| `design/concepts/ExplosiveKnockback/tree.json` | `06e6a1ff44b15e27867d9c9b2cc1d461dd682258` | the leaves: each is an acceptance criterion with its scenario, false passes and red |
+| `design/concepts/ExplosiveKnockback/tree.json` | `23420c4193e49209afaac9a6f4c6fb3c53828408` | the leaves: each is an acceptance criterion with its scenario, false passes and red |
 | `design/concepts/ExplosiveKnockback/sheet.md` | `f60dfd56898ef4ca5e4a671ab593336ab8ae5a19` | his plain-words sheet: does, does not, his words |
-| `design/concepts/ExplosiveKnockback/scenes.json` | `e4a97d710af27241db7646a74abb6aeaf7808ec4` | the acceptance scenes and showcases the leaves are proven by |
+| `design/concepts/ExplosiveKnockback/scenes.json` | `267627ebab2fae930456a3063804858b526ac5d1` | the acceptance scenes and showcases the leaves are proven by |
 | `design/concepts/ExplosiveKnockback/floor.json` | `a322de650cb13e4bf77f91c24828ea008fe0ddf8` | the quality floor lines every mod meets |
 | `design/concepts/ExplosiveKnockback/exam.json` | `fe87a6930abe060a65af732e69f01660fdf34cff` | the Cold Reader exam of tree and sheet |
-| `design/concepts/ExplosiveKnockback/record.json` | `14e3015936c6dc4019acd804095fc158f8729323` | the inventory of built capabilities (checklist rows too) |
+| `design/concepts/ExplosiveKnockback/record.json` | `e608b943b33295f94b3a9bd6b2f17a7d096f7e61` | the inventory of built capabilities (checklist rows too) |
 | `design/concepts/ExplosiveKnockback/plan.md` | `ff3f108cd33b2026cef013ee52fafad55fb43a79` | the build and proof plan |
 | `design/concepts/ExplosiveKnockback/stage.json` | `a5478f4fc032dc87e731264b51af0d3f7b4bb95f` | the Designer's stage, budget and judge rounds (state, not a bar) |
+
+**Re-pinned 2026-11-14 (Stage 3, by the steward's rule: a locked file changed only by test-text corrections or record-keeping is re-pinned; a changed bar never is).** `tree.json`: only the `coverage` key (the owner-certify stamp); the leaves are unchanged. `scenes.json`: test text only, in sc_spared, sc_mass_and_power (judge gap g4: the colonist back to 64 to 76 kg, pinned there by a test-only proof hook) and sc_settings_sweep. `record.json`: only the `decisions` log; the inventory rows (bars) are unchanged. The blobs at the lock were tree `06e6a1ff44`, scenes `e4a97d710a`, record `14e3015936`.
 
 Tree hash (`concept_tree.py hash`): `02900038234b11c46790c7a09b75a68a0b877cd3270c7e57c94564ef758b15b2`; sheet hash: `234fd3c20e850bdde174efc6b3d4b20f1025dc5ddbf2c15caef766a925f0c722`.
 

@@ -8,6 +8,7 @@ using System.Text;
 using HarmonyLib;
 using RimWorld;
 using Verse;
+using Verse.AI;
 
 namespace RimMandrake.ExplosiveKnockback
 {
@@ -52,6 +53,9 @@ namespace RimMandrake.ExplosiveKnockback
             // 100, and the two control lanes (blastPowerFromDamage off; creatureMassLimit 250). NOT YET RUN LIVE.
             "mass_and_power", "mass_and_power_x2", "mass_and_power_off", "mass_and_power_off_x2", "mass_and_power_250",
             "mass_and_power_250_x2",
+            // 2026-11-14 Stage 3 reconcile (Maturation Pipeline pilot): the locked scenes.json entry points. NOT YET RUN LIVE.
+            "pawn_hits_pawn", "only_explosions", "open_storage", "no_cross_ordered", "spared_states", "blast_kinds",
+            "goods_fly_wild", "gas_chain", "gas_census",
         };
 
         private static Map Map => Find.CurrentMap;
@@ -614,6 +618,11 @@ namespace RimMandrake.ExplosiveKnockback
         /// <summary>Proof build only: things whose damage is absorbed whole (sc_mass_and_power stages a real 50 / 100 damage
         /// blast beside the lightest loaded animal; the throw must be read, not the kill). Cleared by the scene's restore.</summary>
         internal static readonly HashSet<int> NoHarm = new HashSet<int>();
+
+        /// <summary>Test-only mass pins (thing id -> kg) the knockback request reads in place of the measured mass
+        /// (RM_MapComponent_Knockback, under RM_PROOFS). sc_mass_and_power pins its colonist to 64-76 kg; the scene's restore
+        /// removes every pin it set.</summary>
+        internal static readonly Dictionary<int, float> PinnedMass = new Dictionary<int, float>();
 
         /// <summary>The mass scenes choose their animals BY MASS from whatever animal kinds are loaded, never by name: this
         /// mod names no creature (a franchise-free RM_ tier mod; owner 2026-11-13 at sc_mass_and_power: "We shouldn't have
@@ -1410,6 +1419,7 @@ namespace RimMandrake.ExplosiveKnockback
                 }
 
                 case "goods_fly_rebound":
+                case "goods_fly_wild":   // sc_storeroom_mortar, by rename (Stage 3 reconcile): checks the rebound only; see the table
                 {
                     // rebound on: the cut-short flight bounces back off the wall with about goodsReboundKeepPercent of the
                     // cells it had left; the impact applies at the bounce, the stack ends west of the wall, no carrier left
@@ -1674,6 +1684,13 @@ namespace RimMandrake.ExplosiveKnockback
                     };
                     return null;
 
+                case "gas_census":       // sc_cauldron_gas, by rename: the tagged source (today the vent gas alone) must be registered
+                    if (s.name == "gas_census" && !RM_KnockbackCompat.VentGasRegistered)
+                    {
+                        return "the Cauldron's vent gas is not registered with the gas chain";
+                    }
+                    goto case "gas_clumps";
+                case "gas_chain":        // sc_gas_chain, by rename (Stage 3 reconcile): checks what gas_clumps checks; see the table
                 case "gas_clumps":
                     {
                         // RIMMANDRAKE_CHAIN_FLAMMABLE_GAS_CLUMPS: a radius-2 cloud of the Cauldron's vent gas, three steel stacks
@@ -1747,6 +1764,220 @@ namespace RimMandrake.ExplosiveKnockback
                     };
                     return null;
 
+                // ── Stage 3 reconcile, 2026-11-14 (Maturation Pipeline pilot): the locked scenes.json entry points that had
+                // no case. Written and compile-checked offline; NOT YET RUN LIVE (Stage 6).
+
+                case "pawn_hits_pawn":
+                    // sc_pawn_hits_pawn: a colonist one cell from the impact, a standing pawn two cells beyond on the ray.
+                    // Control: the same throw 5 cells north with nothing in the way lands 3 cells out.
+                    Colonist(s, "p", O(s, 1, 0));
+                    Colonist(s, "w", O(s, 3, 0), drafted: true);
+                    Colonist(s, "q", O(s, 1, 5));
+                    Blast(s.o, 2.9f);
+                    Blast(O(s, 0, 5), 2.9f);
+                    s.verdict = sc =>
+                    {
+                        string m = Moved(sc, "p", out Thing t, out int cells);
+                        Moved(sc, "q", out Thing _, out int qc);
+                        var b = ForThing(sc, "launch", t).Concat(ForThing(sc, "blocked", t)).ToList();
+                        bool pawnStop = b.Count == 1 && (string)b[0]["stop"] == "Pawn" && Convert.ToSingle(b[0]["impact"]) > 0f;
+                        if (qc != 3)
+                        {
+                            return "INVALID " + sc.name + " control threw " + qc + " cells, not 3";
+                        }
+                        return Result(sc, t.Spawned && t.Position == O(sc, 2, 0) && pawnStop, m + (b.Count > 0 ? " [" + Rec(b[0]) + "]" : " no record"));
+                    };
+                    return null;
+
+                case "only_explosions":
+                    {
+                        // sc_only_explosions: a melee blow and a rifle bullet at a standing colonist queue no throw; a grenade
+                        // two cells away then throws the same colonist (the control: it is throwable).
+                        Pawn p = Colonist(s, "p", O(s, 2, 0));
+                        Pawn hitter = Colonist(s, "h", O(s, 2, 1));
+                        int before = RM_KnockbackJournal.Recs.Count(r => (string)r["type"] == "request");
+                        p.TakeDamage(new DamageInfo(DamageDefOf.Blunt, 1f, 0f, -1f, hitter));
+                        p.TakeDamage(new DamageInfo(DamageDefOf.Bullet, 1f, 0f, -1f, hitter, null, DefDatabase<ThingDef>.GetNamedSilentFail("Gun_BoltActionRifle")));
+                        s.numbers["reqAfterHits"] = RM_KnockbackJournal.Recs.Count(r => (string)r["type"] == "request") - before;
+                        s.numbers["movedAfterHits"] = p.Position == s.starts["p"] ? 0 : 1;
+                        Blast(s.o, 2.9f);
+                    }
+                    s.verdict = sc =>
+                    {
+                        string m = Moved(sc, "p", out Thing t, out int cells);
+                        bool quiet = sc.numbers["reqAfterHits"] == 0 && sc.numbers["movedAfterHits"] == 0;
+                        bool thrown = cells >= 1 && ForThing(sc, "launch", t).Count == 1;
+                        if (!thrown)
+                        {
+                            return "INVALID " + sc.name + " the grenade control did not throw: " + m;
+                        }
+                        return Result(sc, quiet, "melee+bullet requests=" + sc.numbers["reqAfterHits"] + " moved=" + sc.numbers["movedAfterHits"] + "; grenade " + m);
+                    };
+                    return null;
+
+                case "open_storage":
+                    {
+                        // sc_open_storage (held statement, owner 2026-11-12: "Anything that draws its contents is open"): a shelf,
+                        // a small shelf, a hopper and a table, each holding goods, each classed open by the guard, beside one
+                        // blast. Control: the same goods on bare floor around a blast 5 cells south.
+                        string[] defs = { "ShelfSmall", "Hopper", "Shelf", "Table2x2c" };
+                        IntVec3[] at = { O(s, 1, 0), O(s, -1, 0), O(s, 0, 1), O(s, 0, -2) };
+                        for (int i = 0; i < defs.Length; i++)
+                        {
+                            if (DefDatabase<ThingDef>.GetNamedSilentFail(defs[i]) == null)
+                            {
+                                return defs[i] + " not loaded";
+                            }
+                            Thing f = Build(defs[i], at[i], DefDatabase<ThingDef>.GetNamed(defs[i]).MadeFromStuff ? "WoodLog" : null);
+                            Thing g = Item(s, "g" + i, "Steel", 20, at[i]);
+                            if (RM_MapComponent_Knockback.InClosedContainer(g, Map))
+                            {
+                                return defs[i] + " classed closed by the guard (it draws its contents: must be open)";
+                            }
+                            Item(s, "f" + i, "Steel", 20, at[i] + new IntVec3(0, 0, -5));
+                        }
+                        Blast(s.o, 2.9f);
+                        Blast(O(s, 0, -5), 2.9f);
+                    }
+                    s.verdict = sc =>
+                    {
+                        var sb = new StringBuilder();
+                        bool ok = true;
+                        for (int i = 0; i < 4; i++)
+                        {
+                            sb.Append(Moved(sc, "g" + i, out Thing g, out int gc)).Append(" | ");
+                            Moved(sc, "f" + i, out Thing _, out int fc);
+                            bool stored = ForThing(sc, "skip", g).Any(r => (string)r["reason"] == "in_storage");
+                            ok &= gc > 0 && !stored;
+                            sb.Append("floor control ").Append(fc).Append(" cells; ");
+                        }
+                        return Result(sc, ok, sb.ToString());
+                    };
+                    return null;
+
+                case "no_cross_ordered":
+                    {
+                        // sc_no_careless_fall: a colonist ordered across an open pit and a second across a covered pit both
+                        // walk round; no descent. (The concealed-pit raider control is not staged here: listed UNBUILT.)
+                        if (!RM_KnockbackCompat.FlowWorks || !Pit(O(s, 0, -3), 1, 3) || !Pit(O(s, 0, 2), 1, 3))
+                        {
+                            return "FlowWorks not loaded / dig failed";
+                        }
+                        Thing cover = Build("RM_PitCover_ReinforcedFrame", O(s, 0, 3));
+                        Track(s, "cover", cover);
+                        Pawn a = Colonist(s, "a", O(s, -3, -2), drafted: true);
+                        Pawn b = Colonist(s, "b", O(s, -3, 3), drafted: true);
+                        a.jobs.TryTakeOrderedJob(JobMaker.MakeJob(JobDefOf.Goto, O(s, 3, -2)));
+                        b.jobs.TryTakeOrderedJob(JobMaker.MakeJob(JobDefOf.Goto, O(s, 3, 3)));
+                        if (a.CurJobDef != JobDefOf.Goto || b.CurJobDef != JobDefOf.Goto)
+                        {
+                            return "the walk orders are not the current jobs";
+                        }
+                    }
+                    s.verdict = sc =>
+                    {
+                        Pawn a = (Pawn)sc.things["a"], b = (Pawn)sc.things["b"];
+                        int falls = Recs(sc, "descent").Count;
+                        bool arrived = a.Position == O(sc, 3, -2) && b.Position == O(sc, 3, 3);
+                        return Result(sc, arrived && falls == 0, "a@" + a.Position + " b@" + b.Position + " descents=" + falls + " (step 2000 ticks)");
+                    };
+                    return null;
+
+                case "spared_states":
+                    {
+                        // sc_spared: who is never thrown, each with its journal skip reason. The FLYING lane is not staged:
+                        // a flyer's flight is never live-tested without the owner present (standing rule); listed UNBUILT.
+                        if (!RM_KnockbackCompat.FlowWorks || !Pit(O(s, -2, -1), 1, 3))
+                        {
+                            return "FlowWorks not loaded / dig failed";
+                        }
+                        Pawn big = Adult(HeavyAnimal());
+                        GenSpawn.Spawn(big, O(s, 1, 0), Map);
+                        Track(s, "big", big);
+                        Colonist(s, "pit", O(s, -2, 0));
+                        Item(s, "pitstack", "Steel", 10, O(s, -2, 1));
+                        Pawn carrier = Colonist(s, "carrier", O(s, 0, 1), drafted: false);
+                        Pawn carried = Colonist(s, "carried", O(s, 0, 2), drafted: false);
+                        carrier.carryTracker.TryStartCarry(carried);
+                        Thing bed = Build("Bed", O(s, 1, -2), "WoodLog");
+                        Pawn sleeper = Colonist(s, "sleeper", bed.Position, drafted: false);
+                        sleeper.jobs.StartJob(JobMaker.MakeJob(JobDefOf.LayDown, bed), JobCondition.InterruptForced);
+                        Pawn corpseOf = Adult(HeavyAnimal());
+                        GenSpawn.Spawn(corpseOf, O(s, -1, -1), Map);
+                        corpseOf.Kill(null);
+                        Track(s, "corpse", corpseOf.Corpse);
+                        Action prev = s.restore;
+                        s.restore = () => { if (!big.Destroyed) big.Destroy(); prev?.Invoke(); };
+                        RM_MapComponent_Knockback.ProofSchedule.Add(new KeyValuePair<int, Action>(s.stagedTick + 60, () => Blast(s.o, 2.9f)));
+                    }
+                    s.verdict = sc =>
+                    {
+                        var want = new Dictionary<string, string> { ["big"] = "too_heavy_creature", ["pit"] = "in_pit", ["pitstack"] = "in_pit",
+                            ["carrier"] = "carrying_pawn", ["sleeper"] = "in_bed", ["corpse"] = "too_heavy" };
+                        var sb = new StringBuilder();
+                        bool ok = ((Pawn)sc.things["sleeper"]).InBed() || ForThing(sc, "skip", sc.things["sleeper"]).Count > 0;
+                        if (!ok)
+                        {
+                            return "INVALID " + sc.name + " the sleeper never lay in the bed before the blast";
+                        }
+                        foreach (var kv in want)
+                        {
+                            Thing t = sc.things[kv.Key];
+                            bool skip = ForThing(sc, "skip", t).Any(r => (string)r["reason"] == kv.Value);
+                            bool stayed = t.Spawned ? t.Position == sc.starts[kv.Key] : kv.Key == "carrier";
+                            ok &= skip && stayed && ForThing(sc, "launch", t).Count == 0;
+                            sb.Append(kv.Key).Append(skip ? " " + kv.Value : " NO " + kv.Value).Append(stayed ? "" : " MOVED").Append("; ");
+                        }
+                        return Result(sc, ok, sb.ToString() + "blast at +60 ticks (step 300)");
+                    };
+                    return null;
+
+                case "blast_kinds":
+                    {
+                        // sc_blast_kinds, the vanilla lanes (each colonist one cell east of its impact, lanes 3 cells apart):
+                        // frag (Bomb), Bomb-child BombSuper, an incendiary shell (Flame), the same shell swapped to Bomb, and
+                        // EMP, smoke, stun, extinguish and toxic gas. The Outer Rim lanes (sonic, plasma) and the unpatched
+                        // modded lane at percent 0 are not staged here: listed UNBUILT (their mod is not on the minimal list).
+                        ThingDef shell = DefDatabase<ThingDef>.GetNamedSilentFail("Shell_Incendiary");
+                        var lanes = new List<(string key, DamageDef dt, ThingDef proj)>
+                        {
+                            ("frag", DamageDefOf.Bomb, null), ("bombsuper", DefDatabase<DamageDef>.GetNamedSilentFail("BombSuper"), null),
+                            ("flame", DamageDefOf.Flame, shell), ("swapped", DamageDefOf.Bomb, shell),
+                            ("emp", DamageDefOf.EMP, null), ("smoke", DamageDefOf.Smoke, null), ("stun", DamageDefOf.Stun, null),
+                            ("extinguish", DamageDefOf.Extinguish, null), ("toxgas", DefDatabase<DamageDef>.GetNamedSilentFail("ToxGas"), null),
+                        };
+                        if (lanes.Any(l => l.dt == null) || shell == null)
+                        {
+                            return "a lane's damage type or the incendiary shell is not loaded";
+                        }
+                        for (int i = 0; i < lanes.Count; i++)
+                        {
+                            IntVec3 c = O(s, (i % 3) * 5 - 6, (i / 3) * 5 - 5);
+                            Colonist(s, lanes[i].key, c + IntVec3.East);
+                            NoHarm.Add(s.things[lanes[i].key].thingIDNumber);
+                            Boom(Map, c, 1.9f, lanes[i].dt, 1, lanes[i].proj);
+                        }
+                        Action prev = s.restore;
+                        s.restore = () => { foreach (Thing t in s.things.Values) NoHarm.Remove(t.thingIDNumber); prev?.Invoke(); };
+                    }
+                    s.verdict = sc =>
+                    {
+                        float Pct(string k)
+                        {
+                            var rq = ForThing(sc, "request", sc.things[k]);
+                            return rq.Count == 1 ? 100f * Convert.ToSingle(rq[0]["force"]) / Math.Max(1e-4f, Convert.ToSingle(rq[0]["damageRatio"])) : -1f;
+                        }
+                        Moved(sc, "flame", out Thing _, out int fc);
+                        Moved(sc, "swapped", out Thing _, out int bc);
+                        bool flame = Math.Abs(Pct("flame") - 50f) < 0.5f && Math.Abs(Pct("swapped") - 100f) < 0.5f && fc <= (bc + 1) / 2 + 1;
+                        bool frag = Math.Abs(Pct("frag") - 100f) < 0.5f && Math.Abs(Pct("bombsuper") - 100f) < 0.5f;
+                        var quiet = new[] { "emp", "smoke", "stun", "extinguish", "toxgas" };
+                        bool zeros = quiet.All(k => ForThing(sc, "request", sc.things[k]).Count == 0 && sc.things[k].Position == sc.starts[k]);
+                        return Result(sc, flame && frag && zeros, "flame%=" + Pct("flame") + " swapped%=" + Pct("swapped") + " cells " + fc + "/" + bc
+                            + " frag%=" + Pct("frag") + " bombsuper%=" + Pct("bombsuper") + " harmless quiet=" + zeros);
+                    };
+                    return null;
+
                 case "mass_and_power":
                 case "mass_and_power_x2":
                 case "mass_and_power_off":
@@ -1784,6 +2015,7 @@ namespace RimMandrake.ExplosiveKnockback
                 foreach (Thing t in s.things.Values)
                 {
                     NoHarm.Remove(t.thingIDNumber);
+                    PinnedMass.Remove(t.thingIDNumber);
                 }
                 prev?.Invoke();
             };
@@ -1812,9 +2044,10 @@ namespace RimMandrake.ExplosiveKnockback
             Track(s, "under", under);
             GenSpawn.Spawn(heavy, O(s, -1, 0), Map);
             Track(s, "heavy", heavy);
-            // a colonist with a revolver, 45-76 kg as the kernel weighs it (Mass stat minus inventory: worn clothes add nothing,
-            // MEASURED live 2026-11-13 at 48.75 and 60.75 kg, so the old 64-76 band never drew one in 40 tries). Under 63.5 kg a
-            // colonist ties a capped light animal at damage 100 (the order judge allows a tie at the cap); over 76.9 a 144 kg one at 50
+            // a colonist with a revolver, drawn at 45-76 kg as the kernel weighs it (Mass stat minus inventory: worn clothes add
+            // nothing, MEASURED live 2026-11-13 at 48.75 and 60.75 kg, so a 64-76 draw never came in 40 tries), then its kernel mass
+            // PINNED into 64-76 kg by the test-only PinnedMass hook (judge gap g4, the Conductor's decision 2026-11-14): under 63.5 kg
+            // a colonist ties a capped light animal at damage 100, against the oracle's "light > colonist"; over 76.9 a 144 kg one at 50
             Pawn col = null;
             ThingDef revolver = DefDatabase<ThingDef>.GetNamedSilentFail("Gun_Revolver");
             for (int tries = 0; tries < 40 && col == null; tries++)
@@ -1841,11 +2074,12 @@ namespace RimMandrake.ExplosiveKnockback
                 return "no generated colonist weighed 45-76 kg in 40 draws";
             }
             GenSpawn.Spawn(col, O(s, 1, 0), Map);
+            Track(s, "colonist", col);
+            PinnedMass[col.thingIDNumber] = Math.Min(76f, Math.Max(64f, col.GetStatValue(StatDefOf.Mass) - MassUtility.InventoryMass(col)));
             if (col.drafter != null)
             {
                 col.drafter.Drafted = true;
             }
-            Track(s, "colonist", col);
 
             KbSettings k = RimMandrakeExplosiveKnockbackSettings.Kernel();
             float ratio = RM_KnockbackMath.DamageRatio(damage, RM_Patch_DamageWorker_ExplosionKnockback.RefDamageOf(DamageDefOf.Bomb),
@@ -1853,12 +2087,12 @@ namespace RimMandrake.ExplosiveKnockback
             s.numbers["ratio"] = ratio;
             var bands = new Dictionary<string, (float lo, float hi)>
             {
-                ["small"] = (0.1f, 30f), ["colonist"] = (45f, 76f), ["under"] = (100f, 150f), ["heavy"] = (150.001f, 1000f),
+                ["small"] = (0.1f, 30f), ["colonist"] = (64f, 76f), ["under"] = (100f, 150f), ["heavy"] = (150.001f, 1000f),
             };
             foreach (string key in Keys)
             {
                 var p = (Pawn)s.things[key];
-                float mass = p.GetStatValue(StatDefOf.Mass) - MassUtility.InventoryMass(p);
+                float mass = PinnedMass.TryGetValue(p.thingIDNumber, out float pin) ? pin : p.GetStatValue(StatDefOf.Mass) - MassUtility.InventoryMass(p);
                 if (mass < bands[key].lo || mass > bands[key].hi)
                 {
                     return key + " " + p.kindDef.label + " weighs " + mass.ToString("0.0") + " kg, outside " + bands[key].lo.ToString("0") + "-" + bands[key].hi.ToString("0");
