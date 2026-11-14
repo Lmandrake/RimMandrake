@@ -55,9 +55,9 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
   "It's as though each case is independently set in these variables, badly (major fix)", "please ensure they can only be
   placed where there are two sides adjacent to solid ground, to avoid "covered pit bridges" being built."
 - 2026-11-13 09:55 PST, on Explosive Knockback: "Melee shove is a great idea, but it belongs in FlowWorks, not here."
-  (proposed for the next version, `version/next_version/README.md`; his now-or-next call is open)
+  (FlowWorks 0.2.0, Divergent, `version/next_version/README.md`; his card 2026-11-14: "Next FlowWorks version")
 - 2026-11-13 ~9:45 PM PST: "The vast grid of options when I selected Digging was... daunting and not how the game usually
-  is." (RIMMANDRAKE_DESIGN_FLOWWORKS_DIG_INTERFACE_CONSOLIDATION; his Problem-or-Divergent call is open)
+  is." (RIMMANDRAKE_DESIGN_FLOWWORKS_DIG_INTERFACE_CONSOLIDATION; FlowWorks 0.2.0, Divergent, his card 2026-11-13 10:12 PM PST: "All in the next version")
 
 ### Oddities (things a reader would otherwise get wrong)
 
@@ -192,6 +192,6 @@ minute to copy the 541 MB dump from the Windows drive). **Verdict: refuse, 37 re
 
 ### Questions for him (none blocks Stage 3)
 
-3. **The dig interface consolidation and the dig speed** ("daunting"; "it's slow"): already open with him on
-   RIMMANDRAKE_DESIGN_FLOWWORKS_DIG_INTERFACE_CONSOLIDATION; the dig-time test waits for his target.
-4. **Melee shove into a pit** (proposed for the next version): his now-or-next call is still open.
+3. **The dig speed** ("it's slow"): his target is a question inside the 0.2.0 dig-interface design
+   (RIMMANDRAKE_DESIGN_FLOWWORKS_DIG_INTERFACE_CONSOLIDATION; his card 2026-11-13 10:12 PM PST put the whole redesign in
+   0.2.0, `version/next_version/README.md`); the dig-time test waits for his target.

@@ -9,10 +9,11 @@ Input (read first): `design/specs/2026-11-13-flowworks-dig-interface-census.md` 
 5 Orders designators, a 40-entry "Dig to depth" float menu at default settings, 11 Structure special designators, 33 Architect buildables,
 gizmos, right-clicks, work types, dig-speed numbers).
 
-## OPEN OWNER CALL (not decided here)
+## Decided: FlowWorks 0.2.0 (owner by card 2026-11-13 10:12 PM PST)
 
-Whether this is a Problem in the current FlowWorks version (Design Version 0.1.0, locked 2026-11-13) or Divergent work for the next
-version is the owner's call. Nobody has ruled. Do not assume either; do not schedule it into 0.1.0 or out of it until he says.
+He was asked "Where does the dig interface redesign belong?" and answered by card "All in the next version"
+(OWNER:1794636834064875208). The whole dig-interface redesign, the 40-entry depth menu included, is Divergent work for
+FlowWorks 0.2.0 and moves no 0.1.0 bar. It is listed in `design/concepts/FlowWorks/version/next_version/README.md`.
 
 ## Not in scope of this filing
 
